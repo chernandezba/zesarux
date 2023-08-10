@@ -55,7 +55,18 @@ Improved ZX Desktop
 
 Improved Process Management: allow to copy any windows contents to internal clipboard
 
-Improved ZRCP: Allow multiple simultaneous clients
+Improved ZRCP:
+- Allow multiple simultaneous clients
+- Important changes on ZRCP:
+- Before:
+* when a ZRCP connection is broken, cpu-step-mode will be disabled.
+* when a ZRCP connection is closed by "quit", "exit" or "logout" command, cpu-step-mode will be disabled
+* cpu-step-mode can't be disabled from the menu
+
+- Now:
+* when a ZRCP connection is broken, cpu-step-mode is not modified.
+* when a ZRCP connection is closed by "quitt", "exit" or "logout" command, cpu-step-mode is not modified
+* cpu-step-mode can be disabled from the menu, pressing ESC
 
 Improved ZENG:
 - Allow to connect more than two hosts

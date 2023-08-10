@@ -24301,13 +24301,22 @@ void menu_inicio(void)
             while (menu_event_remote_protocol_enterstep.v) {
                 timer_sleep(100);
 
+                //printf("En menu en cpu step\n");
+
     #ifdef MINGW
                 int antes_menu_abierto=menu_abierto;
                 menu_abierto=0; //Para que no aparezca en gris al refrescar
                     scr_refresca_pantalla();
                 menu_abierto=antes_menu_abierto;
-                    scr_actualiza_tablas_teclado();
+
     #endif
+                //Si se pulsa ESC, salir de cpu-step
+                scr_actualiza_tablas_teclado();
+
+                if ((puerto_especial1&1)==0) {
+                    debug_printf(VERBOSE_DEBUG,"Exiting cpu-step by pressing ESC");
+                    remote_cpu_exit_step_continue_restore_multitask();
+                }
 
             }
 

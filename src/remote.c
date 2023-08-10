@@ -1991,16 +1991,23 @@ void remote_cpu_exit_step_continue(void)
 	remote_footer_cpu_step_clear();
 }
 
+
+void remote_cpu_exit_step_continue_restore_multitask(void)
+{
+
+	remote_cpu_exit_step_continue();
+
+ //Restaurar estado multitarea
+ menu_multitarea=menu_multitarea_antes_cpu_step;
+}
+
 void remote_cpu_exit_step(int misocket)
 {
   if (menu_event_remote_protocol_enterstep.v==0) {
     escribir_socket(misocket,"Error. You are not in step to step mode");
     return;
   }
-	remote_cpu_exit_step_continue();
-
- //Restaurar estado multitarea
- menu_multitarea=menu_multitarea_antes_cpu_step;
+    remote_cpu_exit_step_continue_restore_multitask();
 }
 
 
@@ -3013,7 +3020,7 @@ char *find_space_or_end(char *s)
 void remote_cerrar_conexion(void)
 {
 
-    printf("Remote cerrar conexion\n");
+    //printf("Remote cerrar conexion\n");
 
     //TODO
     //gestionar cada sock_connected_client de cada conexion
@@ -5881,7 +5888,7 @@ else if (!strcmp(comando_sin_parametros,"smartload") || !strcmp(comando_sin_para
 
 
         else if (!strcmp(comando_sin_parametros,"quit") || !strcmp(comando_sin_parametros,"exit") || !strcmp(comando_sin_parametros,"logout")) {
-          if (menu_event_remote_protocol_enterstep.v) remote_cpu_exit_step(misocket);
+          //if (menu_event_remote_protocol_enterstep.v) remote_cpu_exit_step(misocket);
 
           escribir_socket (misocket,"Sayonara baby\n");
 					*remote_salir_conexion_cliente=1;
@@ -6041,7 +6048,7 @@ int remote_initialize_port(void)
 
 	sock_listen=crear_socket_TCP();
 
-	printf("sock_listen: %d\n",sock_listen);
+	//printf("sock_listen: %d\n",sock_listen);
 
 //#ifndef MINGW
   if (sock_listen<0) {
@@ -6139,7 +6146,7 @@ void *zrcp_handle_new_connection(void *entrada)
 	//Ese puntero que nos llega es realmente el valor del numero de socket
     int sock_connected_client=(int)entrada;
 
-	printf("sock_connected_client en zrcp_handle_new_connection: %d\n",sock_connected_client);
+	//printf("sock_connected_client en zrcp_handle_new_connection: %d\n",sock_connected_client);
     //char *buffer_lectura_socket=((struct s_zrcp_new_connection_parms *)entrada)->buffer_lectura_socket;
 
     //Asignar memoria para los buffers de recepcion
@@ -6228,7 +6235,7 @@ void *zrcp_handle_new_connection(void *entrada)
                 while(z_atomic_test_and_set(&zrcp_command_semaforo)) {
                 //Pausa de 0.05 segundo
                 usleep(50000);
-                    printf("Esperando a liberar lock en zrcp_handle_new_connection\n");
+                    //printf("Esperando a liberar lock en zrcp_handle_new_connection\n");
                 }
 
                 interpreta_comando(buffer_lectura_socket,sock_connected_client,
@@ -6246,7 +6253,7 @@ void *zrcp_handle_new_connection(void *entrada)
     free(buffer_lectura_socket);
     free(buffer_lectura_socket_anterior);
 
-    printf("Fin thread de cliente\n");
+    //printf("Fin thread de cliente\n");
 
 
 #ifdef MINGW
@@ -6256,9 +6263,9 @@ void *zrcp_handle_new_connection(void *entrada)
 	//Se deberia hacer el WSACleanup al finalizar el emulador
 	//WSACleanup();
 #else
-	printf("Closing socket %d\n",sock_connected_client);
+	//printf("Closing socket %d\n",sock_connected_client);
     int retorno=close(sock_connected_client);
-    printf("Retorno close: %d\n",retorno);
+    //printf("Retorno close: %d\n",retorno);
 #endif
 
   return NULL;
@@ -6271,8 +6278,7 @@ void thread_remote_protocol_function_aux_new_conn(int sock_connected_client)
     //struct s_zrcp_new_connection_parms parametros_thread;
     //parametros_thread.sock_connected_client=sock_connected_client;
 
-	printf("sock_connected_client en thread_remote_protocol_function_aux_new_conn: %d\n",
-		sock_connected_client);
+	//printf("sock_connected_client en thread_remote_protocol_function_aux_new_conn: %d\n",sock_connected_client);
     //parametros_thread.buffer_lectura_socket=buffer_lectura_socket;
 
     //TODO: deberia llevar un control de cada thread que se crea?
@@ -6318,7 +6324,7 @@ void *thread_remote_protocol_function(void *nada)
 		if (!remote_protocol_ended.v) {
 			//printf ("ANTES accept\n");
 			sock_connected_client=accept(sock_listen,(struct sockaddr *)&adr,&long_adr);
-            printf("sock_connected_client: %d\n",sock_connected_client);
+            //printf("sock_connected_client: %d\n",sock_connected_client);
 		}
 
 		else {
@@ -6347,10 +6353,12 @@ void *thread_remote_protocol_function(void *nada)
 
 		}
 
-		debug_printf (VERBOSE_DEBUG,"Remote command. Exiting connection");
+		//debug_printf (VERBOSE_DEBUG,"Remote command. Exiting connection");
+
+        //printf ("Remote command. Exiting connection\n");
 
 		//Salir del modo step si estaba activado
-		if (menu_event_remote_protocol_enterstep.v) remote_cpu_exit_step_continue();
+		//if (menu_event_remote_protocol_enterstep.v) remote_cpu_exit_step_continue();
 
 	} //Fin while(1)
 
