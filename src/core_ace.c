@@ -185,8 +185,8 @@ void core_ace_fin_frame_pantalla(void)
     contador_parpadeo--;
     //printf ("Parpadeo: %d estado: %d\n",contador_parpadeo,estado_parpadeo.v);
     if (!contador_parpadeo) {
-            contador_parpadeo=16;
-            toggle_flash_state();
+        contador_parpadeo=16;
+        toggle_flash_state();
     }
 
 
@@ -206,7 +206,7 @@ void core_ace_fin_frame_pantalla(void)
 
     //Final de instrucciones ejecutadas en un frame de pantalla
     if (iff1.v==1) {
-            interrupcion_maskable_generada.v=1;
+        interrupcion_maskable_generada.v=1;
     }
 
 
@@ -305,8 +305,8 @@ void cpu_core_loop_ace(void)
 
             reg_r++;
 
-                    z80_no_ejecutado_block_opcodes();
-                    codsinpr[byte_leido_core_ace]  () ;
+            z80_no_ejecutado_block_opcodes();
+            codsinpr[byte_leido_core_ace]  () ;
 
 
 
@@ -366,6 +366,7 @@ void cpu_core_loop_ace(void)
         if (realtape_inserted.v && realtape_playing.v) {
             realtape_get_byte();
             //audio_valor_enviar_sonido += realtape_last_value;
+
             if (realtape_loading_sound.v) {
 				audio_valor_enviar_sonido /=2;
                 audio_valor_enviar_sonido += realtape_last_value/2;
