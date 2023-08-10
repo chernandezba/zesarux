@@ -217,10 +217,10 @@ void core_ace_fin_frame_pantalla(void)
 void cpu_core_loop_ace(void)
 {
 
-                debug_get_t_stados_parcial_pre();
+    debug_get_t_stados_parcial_pre();
 
 
-		timer_check_interrupt();
+    timer_check_interrupt();
 
 //#ifdef COMPILE_STDOUT
 //              if (screen_stdout_driver) scr_stdout_printchar();
@@ -229,230 +229,226 @@ void cpu_core_loop_ace(void)
 //#ifdef COMPILE_SIMPLETEXT
 //                if (screen_simpletext_driver) scr_simpletext_printchar();
 //#endif
-                if (chardetect_detect_char_enabled.v) chardetect_detect_char();
-                if (chardetect_printchar_enabled.v) chardetect_printchar();
+    if (chardetect_detect_char_enabled.v) chardetect_detect_char();
+    if (chardetect_printchar_enabled.v) chardetect_printchar();
 
 
-		//Autoload
-		//Si hay cinta insertada
-		if (  (tape_loadsave_inserted & TAPE_LOAD_INSERTED)!=0 || (realtape_inserted.v==1)
+    //Autoload
+    //Si hay cinta insertada
+    if (  (tape_loadsave_inserted & TAPE_LOAD_INSERTED)!=0 || (realtape_inserted.v==1)
 
-		) {
-			//Y si hay que hacer autoload
-			if (initial_tap_load.v==1 && initial_tap_sequence==0) {
+    ) {
+        //Y si hay que hacer autoload
+        if (initial_tap_load.v==1 && initial_tap_sequence==0) {
 
-				//Para Ace. TODO
-		                /*if (reg_pc==0xXXXXX) {
-        		                debug_printf (VERBOSE_INFO,"Autoload tape");
-                		        initial_tap_sequence=1;
-		                }
-				*/
-
-
-			}
-		}
+            //Para Ace. TODO
+                    /*if (reg_pc==0xXXXXX) {
+                            debug_printf (VERBOSE_INFO,"Autoload tape");
+                            initial_tap_sequence=1;
+                    }
+            */
 
 
+        }
+    }
 
 
-			if (tap_load_detect_ace()) {
-				audio_playing.v=0;
+    if (tap_load_detect_ace()) {
+        audio_playing.v=0;
 
-				draw_tape_text();
+        draw_tape_text();
 
-				tap_load_ace();
-
-
-	                        //audio_playing.v=1;
-        	                timer_reset();
-
-			}
-		//Interceptar rutina de grabacion. TODO
-
-			else	if (tap_save_detect_ace()) {
-        	                	audio_playing.v=0;
-
-					draw_tape_text();
-
-					tap_save_ace();
-
-	                        	timer_reset();
-
-        	        }
+        tap_load_ace();
 
 
-		else {
-			if (esperando_tiempo_final_t_estados.v==0) {
+        //audio_playing.v=1;
+        timer_reset();
+
+    }
+    //Interceptar rutina de grabacion. TODO
+
+    else if (tap_save_detect_ace()) {
+        audio_playing.v=0;
+
+        draw_tape_text();
+
+        tap_save_ace();
+
+        timer_reset();
+
+    }
 
 
-				byte_leido_core_ace=fetch_opcode();
+    else {
+        if (esperando_tiempo_final_t_estados.v==0) {
 
-				contend_read( reg_pc, 4 );
+
+            byte_leido_core_ace=fetch_opcode();
+
+            contend_read( reg_pc, 4 );
 
 #ifdef EMULATE_CPU_STATS
-                                util_stats_increment_counter(stats_codsinpr,byte_leido_core_ace);
+            util_stats_increment_counter(stats_codsinpr,byte_leido_core_ace);
 #endif
 
 
 
-                //Si la cpu está detenida por señal HALT, reemplazar opcode por NOP
-                if (z80_halt_signal.v) {
-                    byte_leido_core_ace=0;
+            //Si la cpu está detenida por señal HALT, reemplazar opcode por NOP
+            if (z80_halt_signal.v) {
+                byte_leido_core_ace=0;
+            }
+            else {
+                reg_pc++;
+            }
+
+            //reg_r_antes_zx8081=reg_r;
+
+            reg_r++;
+
+                    z80_no_ejecutado_block_opcodes();
+                    codsinpr[byte_leido_core_ace]  () ;
+
+
+
+            /*
+            if (iff1.v==1) {
+
+                //solo cuando cambia de 1 a 0
+                if ( (reg_r_antes_zx8081 & 64)==64 && (reg_r & 64)==0 ) {
+
+                    interrupcion_maskable_generada.v=1;
+
                 }
-                else {
-                    reg_pc++;
-                }
+            }
+            */
 
-				//reg_r_antes_zx8081=reg_r;
 
-				reg_r++;
-
-                        z80_no_ejecutado_block_opcodes();
-	                	codsinpr[byte_leido_core_ace]  () ;
+        }
+    }
 
 
 
-				/*
-				if (iff1.v==1) {
+    //Esto representa final de scanline
 
-					//solo cuando cambia de 1 a 0
-					if ( (reg_r_antes_zx8081 & 64)==64 && (reg_r & 64)==0 ) {
+    //normalmente
+    if ( (t_estados/screen_testados_linea)>t_scanline  ) {
 
-						interrupcion_maskable_generada.v=1;
-
-					}
-				}
-				*/
+        t_scanline++;
 
 
-                        }
-                }
+        //Envio sonido
+
+        audio_valor_enviar_sonido=0;
+
+        audio_valor_enviar_sonido +=da_output_ay();
 
 
+        if (beeper_enabled.v) {
 
-		//Esto representa final de scanline
+            if (beeper_real_enabled==0) {
+                    audio_valor_enviar_sonido += da_amplitud_speaker_ace();
+            }
 
-		//normalmente
-		if ( (t_estados/screen_testados_linea)>t_scanline  ) {
+            else {
+                    audio_valor_enviar_sonido += get_value_beeper_sum_array();
+                    beeper_new_line();
+            }
 
-			t_scanline++;
+        }
 
-			//generar_zx8081_horiz_sync();
-
-
-                        //Envio sonido
-
-                        audio_valor_enviar_sonido=0;
-
-                        audio_valor_enviar_sonido +=da_output_ay();
-
-
-			if (beeper_enabled.v) {
-
-	                        if (beeper_real_enabled==0) {
-        	                        audio_valor_enviar_sonido += da_amplitud_speaker_ace();
-                	        }
-
-                        	else {
-                                	audio_valor_enviar_sonido += get_value_beeper_sum_array();
-	                                beeper_new_line();
-        	                }
-
-			}
-
-			//else {
-			//	//Si no hay vsync sound, beeper sound off, forzamos que hay silencio de beepr
-			//	beeper_silence_detection_counter=SILENCE_DETECTION_MAX;
-			//}
+        //else {
+        //	//Si no hay vsync sound, beeper sound off, forzamos que hay silencio de beepr
+        //	beeper_silence_detection_counter=SILENCE_DETECTION_MAX;
+        //}
 
 
 
-                        if (realtape_inserted.v && realtape_playing.v) {
-                                realtape_get_byte();
-                                //audio_valor_enviar_sonido += realtape_last_value;
-				if (realtape_loading_sound.v) {
+        if (realtape_inserted.v && realtape_playing.v) {
+            realtape_get_byte();
+            //audio_valor_enviar_sonido += realtape_last_value;
+            if (realtape_loading_sound.v) {
 				audio_valor_enviar_sonido /=2;
-                                audio_valor_enviar_sonido += realtape_last_value/2;
+                audio_valor_enviar_sonido += realtape_last_value/2;
 				//Sonido alterado cuando top speed
 				if (timer_condicion_top_speed() ) audio_valor_enviar_sonido=audio_change_top_speed_sound(audio_valor_enviar_sonido);
-				}
-                        }
+            }
+        }
 
-                        //Ajustar volumen
-                        if (audiovolume!=100) {
-                                audio_valor_enviar_sonido=audio_adjust_volume(audio_valor_enviar_sonido);
-                        }
-
-
-			audio_send_mono_sample(audio_valor_enviar_sonido);
+        //Ajustar volumen
+        if (audiovolume!=100) {
+            audio_valor_enviar_sonido=audio_adjust_volume(audio_valor_enviar_sonido);
+        }
 
 
-                        ay_chip_siguiente_ciclo();
-
-			//se supone que hemos ejecutado todas las instrucciones posibles de toda la pantalla. refrescar pantalla y
-			//esperar para ver si se ha generado una interrupcion 1/50
-
-			//Final de frame
-
-			if (t_estados>=screen_testados_total) {
-
-                core_ace_fin_frame_pantalla();
-
-			}
+        audio_send_mono_sample(audio_valor_enviar_sonido);
 
 
+        ay_chip_siguiente_ciclo();
 
-		}
+        //se supone que hemos ejecutado todas las instrucciones posibles de toda la pantalla. refrescar pantalla y
+        //esperar para ver si se ha generado una interrupcion 1/50
 
-		if (esperando_tiempo_final_t_estados.v) {
-			timer_pause_waiting_end_frame();
-		}
+        //Final de frame
 
+        if (t_estados>=screen_testados_total) {
 
-              //Interrupcion de 1/50s. mapa teclas activas y joystick
-                if (interrupcion_fifty_generada.v) {
-                        interrupcion_fifty_generada.v=0;
-
-                        //y de momento actualizamos tablas de teclado segun tecla leida
-                        //printf ("Actualizamos tablas teclado %d ", temp_veces_actualiza_teclas++);
-                       scr_actualiza_tablas_teclado();
-
-
-                       //lectura de joystick
-                       realjoystick_main();
-
-                        //printf ("temp conta fifty: %d\n",tempcontafifty++);
-                }
-
-
-                //Interrupcion de procesador y marca final de frame
-                if (interrupcion_timer_generada.v) {
-                        interrupcion_timer_generada.v=0;
-                        esperando_tiempo_final_t_estados.v=0;
-                        interlaced_numero_frame++;
-                        //printf ("%d\n",interlaced_numero_frame);
-
-					//Para calcular lo que se tarda en ejecutar todo un frame
-					timer_get_elapsed_core_frame_pre();
-                }
-
-
-
-		//Interrupcion de cpu. gestion im0/1/2.
-		if (interrupcion_maskable_generada.v || interrupcion_non_maskable_generada.v) {
-
-            core_ace_handle_interrupts();
+            core_ace_fin_frame_pantalla();
 
         }
 
-        //Aplicar snapshot pendiente de ZRCP y ZENG envio snapshots. Despues de haber gestionado interrupciones
-        if (core_end_frame_check_zrcp_zeng_snap.v) {
-            core_end_frame_check_zrcp_zeng_snap.v=0;
-            check_pending_zrcp_put_snapshot();
-            zeng_send_snapshot_if_needed();
-        }
 
-        debug_get_t_stados_parcial_post();
+
+    }
+
+    if (esperando_tiempo_final_t_estados.v) {
+        timer_pause_waiting_end_frame();
+    }
+
+
+    //Interrupcion de 1/50s. mapa teclas activas y joystick
+    if (interrupcion_fifty_generada.v) {
+        interrupcion_fifty_generada.v=0;
+
+        //y de momento actualizamos tablas de teclado segun tecla leida
+        //printf ("Actualizamos tablas teclado %d ", temp_veces_actualiza_teclas++);
+        scr_actualiza_tablas_teclado();
+
+
+        //lectura de joystick
+        realjoystick_main();
+
+        //printf ("temp conta fifty: %d\n",tempcontafifty++);
+    }
+
+
+    //Interrupcion de procesador y marca final de frame
+    if (interrupcion_timer_generada.v) {
+        interrupcion_timer_generada.v=0;
+        esperando_tiempo_final_t_estados.v=0;
+        interlaced_numero_frame++;
+        //printf ("%d\n",interlaced_numero_frame);
+
+        //Para calcular lo que se tarda en ejecutar todo un frame
+        timer_get_elapsed_core_frame_pre();
+    }
+
+
+
+    //Interrupcion de cpu. gestion im0/1/2.
+    if (interrupcion_maskable_generada.v || interrupcion_non_maskable_generada.v) {
+
+        core_ace_handle_interrupts();
+
+    }
+
+    //Aplicar snapshot pendiente de ZRCP y ZENG envio snapshots. Despues de haber gestionado interrupciones
+    if (core_end_frame_check_zrcp_zeng_snap.v) {
+        core_end_frame_check_zrcp_zeng_snap.v=0;
+        check_pending_zrcp_put_snapshot();
+        zeng_send_snapshot_if_needed();
+    }
+
+    debug_get_t_stados_parcial_post();
 
 }
 
