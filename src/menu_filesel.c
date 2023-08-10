@@ -5575,38 +5575,38 @@ int menu_filesel(char *titulo,char *filtros[],char *archivo)
 					case 32:
 						menu_first_aid("filesel_enter_key");
 
-                                                item_seleccionado=menu_get_filesel_item(filesel_archivo_seleccionado+filesel_linea_seleccionada);
-                                                menu_reset_counters_tecla_repeticion();
+                        item_seleccionado=menu_get_filesel_item(filesel_archivo_seleccionado+filesel_linea_seleccionada);
+                        menu_reset_counters_tecla_repeticion();
 
-                                                //printf ("despues de get filesel item. item_seleccionado=%p\n",item_seleccionado);
+                        //printf ("despues de get filesel item. item_seleccionado=%p\n",item_seleccionado);
 
-                                                if (item_seleccionado==NULL) {
-                                                        //Esto pasa en las carpetas vacias, como /home en Mac OS
-                                                                        menu_filesel_exist_ESC();
-																		menu_filesel_preexit(ventana);
-                                                                        return 0;
+                        if (item_seleccionado==NULL) {
+                            //Esto pasa en las carpetas vacias, como /home en Mac OS
+                            menu_filesel_exist_ESC();
+                            menu_filesel_preexit(ventana);
+                            return 0;
 
 
-                                                }
+                        }
 
 						if (get_file_type(item_seleccionado->d_name)==2) {
 							debug_printf(VERBOSE_INFO,"Can't expand directories");
 						}
 
 						else {
-								debug_printf(VERBOSE_DEBUG,"Expanding file %s",item_seleccionado->d_name);
-                                                                char tmpdir[PATH_MAX];
+                            debug_printf(VERBOSE_DEBUG,"Expanding file %s",item_seleccionado->d_name);
+                            char tmpdir[PATH_MAX];
 
-                                                                if (menu_filesel_expand(item_seleccionado->d_name,tmpdir) ) {
-									//TODO: Si lanzo este warning se descuadra el dibujado de ventana
-									//menu_warn_message("Don't know how to expand that file");
-									debug_printf(VERBOSE_INFO,"Don't know how to expand that file");
-                                                                }
+                            if (menu_filesel_expand(item_seleccionado->d_name,tmpdir) ) {
+                                //TODO: Si lanzo este warning se descuadra el dibujado de ventana
+                                //menu_warn_message("Don't know how to expand that file");
+                                debug_printf(VERBOSE_INFO,"Don't know how to expand that file");
+                            }
 
-                                                                else {
-                                                                        menu_filesel_change_to_tmp(tmpdir);
-																		releer_directorio=1;
-                                                                }
+                            else {
+                                menu_filesel_change_to_tmp(tmpdir);
+                                releer_directorio=1;
+                            }
 						}
 
 
