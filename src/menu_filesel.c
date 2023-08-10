@@ -5513,6 +5513,7 @@ int menu_filesel(char *titulo,char *filtros[],char *archivo)
 						zxvision_menu_filesel_cursor_abajo(ventana);
 						//Para no releer todas las entradas
 						menu_speech_tecla_pulsada=1;
+                        zxvision_sound_event_cursor_movement();
 					break;
 
 					//arriba
@@ -5520,6 +5521,7 @@ int menu_filesel(char *titulo,char *filtros[],char *archivo)
 						zxvision_menu_filesel_cursor_arriba(ventana);
 						//Para no releer todas las entradas
 						menu_speech_tecla_pulsada=1;
+                        zxvision_sound_event_cursor_movement();
 					break;
 
 					//PgDn
@@ -5530,6 +5532,7 @@ int menu_filesel(char *titulo,char *filtros[],char *archivo)
 						menu_speech_tecla_pulsada=0;
 						//y decir selected item
 						menu_active_item_primera_vez=1;
+                        zxvision_sound_event_cursor_movement();
                     break;
 
 					//PgUp
@@ -5540,6 +5543,7 @@ int menu_filesel(char *titulo,char *filtros[],char *archivo)
 						menu_speech_tecla_pulsada=0;
 						//y decir selected item
 						menu_active_item_primera_vez=1;
+                        zxvision_sound_event_cursor_movement();
                     break;
 
 
@@ -5548,6 +5552,7 @@ int menu_filesel(char *titulo,char *filtros[],char *archivo)
 						menu_reset_counters_tecla_repeticion();
 						if (menu_filesel_show_utils.v==0) filesel_zona_pantalla=2;
 						else filesel_zona_pantalla=0; //Si hay utils, cursor se va arriba
+                        zxvision_sound_event_cursor_movement();
 					break;
 
 					//ESC
