@@ -8516,6 +8516,8 @@ margenx_izq=TBBLUE_LEFT_BORDER_NO_ZOOM*border_enabled.v;
 
 }
 
+//Indica que el raton esta encima de la zona de redimensionado y por tanto se dibuja diferente
+int ventana_marca_redimensionado_raton_encima=0;
 
 //dibuja cuadrado (4 lineas) usado en los menus para xwindows y fbdev
 //Entrada: x1,y1 punto superior izquierda,x2,y2 punto inferior derecha en resolucion de zx spectrum. Color
@@ -8578,23 +8580,27 @@ void menu_dibuja_cuadrado(int x1,int y1,int x2,int y2,int color)
             //		***
             //     ****
 
+            int color_marca_redimensionado=color;
+
+            if (ventana_marca_redimensionado_raton_encima) color_marca_redimensionado=ESTILO_GUI_COLOR_AVISO;
+
             //Arriba del todo
-            scr_putpixel_gui_zoom((x2-1)*menu_gui_zoom,(y2-4)*menu_gui_zoom,color,menu_gui_zoom);
+            scr_putpixel_gui_zoom((x2-1)*menu_gui_zoom,(y2-4)*menu_gui_zoom,color_marca_redimensionado,menu_gui_zoom);
 
             //Medio
-            scr_putpixel_gui_zoom((x2-1)*menu_gui_zoom,(y2-3)*menu_gui_zoom,color,menu_gui_zoom);
-            scr_putpixel_gui_zoom((x2-2)*menu_gui_zoom,(y2-3)*menu_gui_zoom,color,menu_gui_zoom);
+            scr_putpixel_gui_zoom((x2-1)*menu_gui_zoom,(y2-3)*menu_gui_zoom,color_marca_redimensionado,menu_gui_zoom);
+            scr_putpixel_gui_zoom((x2-2)*menu_gui_zoom,(y2-3)*menu_gui_zoom,color_marca_redimensionado,menu_gui_zoom);
 
             //Abajo
-            scr_putpixel_gui_zoom((x2-1)*menu_gui_zoom,(y2-2)*menu_gui_zoom,color,menu_gui_zoom);
-            scr_putpixel_gui_zoom((x2-2)*menu_gui_zoom,(y2-2)*menu_gui_zoom,color,menu_gui_zoom);
-            scr_putpixel_gui_zoom((x2-3)*menu_gui_zoom,(y2-2)*menu_gui_zoom,color,menu_gui_zoom);
+            scr_putpixel_gui_zoom((x2-1)*menu_gui_zoom,(y2-2)*menu_gui_zoom,color_marca_redimensionado,menu_gui_zoom);
+            scr_putpixel_gui_zoom((x2-2)*menu_gui_zoom,(y2-2)*menu_gui_zoom,color_marca_redimensionado,menu_gui_zoom);
+            scr_putpixel_gui_zoom((x2-3)*menu_gui_zoom,(y2-2)*menu_gui_zoom,color_marca_redimensionado,menu_gui_zoom);
 
             //Abajo del todo
-            scr_putpixel_gui_zoom((x2-1)*menu_gui_zoom,(y2-1)*menu_gui_zoom,color,menu_gui_zoom);
-            scr_putpixel_gui_zoom((x2-2)*menu_gui_zoom,(y2-1)*menu_gui_zoom,color,menu_gui_zoom);
-            scr_putpixel_gui_zoom((x2-3)*menu_gui_zoom,(y2-1)*menu_gui_zoom,color,menu_gui_zoom);
-            scr_putpixel_gui_zoom((x2-4)*menu_gui_zoom,(y2-1)*menu_gui_zoom,color,menu_gui_zoom);
+            scr_putpixel_gui_zoom((x2-1)*menu_gui_zoom,(y2-1)*menu_gui_zoom,color_marca_redimensionado,menu_gui_zoom);
+            scr_putpixel_gui_zoom((x2-2)*menu_gui_zoom,(y2-1)*menu_gui_zoom,color_marca_redimensionado,menu_gui_zoom);
+            scr_putpixel_gui_zoom((x2-3)*menu_gui_zoom,(y2-1)*menu_gui_zoom,color_marca_redimensionado,menu_gui_zoom);
+            scr_putpixel_gui_zoom((x2-4)*menu_gui_zoom,(y2-1)*menu_gui_zoom,color_marca_redimensionado,menu_gui_zoom);
 
         }
 
@@ -15959,7 +15965,23 @@ void zxvision_handle_mouse_events(zxvision_window *w)
 						//printf ("En barra titulo\n");
 					}
 					//Descartar linea titulo y ultima linea
+
+                if (zxvision_mouse_in_bottom_right(w)) {
+                    //printf("Raton en zona dimensionado\n");
+                    //Como continuamente se redibuja el marco de la ventana, se actualizara automaticamente
+                    //la zona de redimensionado indicando que el raton esta encima
+                    ventana_marca_redimensionado_raton_encima=1;
+                }
+                //Raton no apunta a zona redimensionado
+                else {
+                    ventana_marca_redimensionado_raton_encima=0;
+                }
 		}
+
+        //Raton fuera de ventana
+        else {
+            ventana_marca_redimensionado_raton_encima=0;
+        }
 
 	}
 

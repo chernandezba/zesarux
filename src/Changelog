@@ -47,6 +47,7 @@ Improved ZX Vision
 - Allow to use your own charset file on ZX Vision
 - Allow to get charset from a game and use as your own charset file on ZX Vision
 - Allow to press ESC when selecting a line on a history items
+- Now the resize position of a window (bottom right) changes colour when you move the mouse over it
 
 Improved ZX Desktop
 - When switching to full screen and disable ZX Desktop, windows are restored after disabling full screen

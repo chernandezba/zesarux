@@ -277,8 +277,6 @@ aprovechando cosas como el frequency generator
 -eventos: error, mover cursor, cerrar ventana (ventana no de menu)
 
 
--revisar todo pase de parametros a thread, si son estructuras que estén en memoria fija y no en stack, o se
-perdera probablemente ese stack la llegar al thread
 
 
 ok, aunque con retraso como antes-arreglar tecla ESC en curses: ni en mac ni en linux la lee
@@ -311,3 +309,5 @@ pero el impacto de no liberar esos pthreads es minimo, y como acabo de descubrir
 -que juego o programa para esta edición?
 
 -logo salamanquesa que cambie por otra si hago click simple?
+
+ok -Si se mueve ratón a zona redimensionado ventana, que la ventana cambie la esquina inferior derecha
