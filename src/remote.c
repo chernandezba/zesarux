@@ -6283,7 +6283,9 @@ void thread_remote_protocol_function_aux_new_conn(int sock_connected_client)
 
     //TODO: deberia llevar un control de cada thread que se crea?
     //porque pierdo el control despues de crearlo...,
-    //aparte de que hago malloc pero no libero en ningun sitio (aunque este malloc es de pthread_t que es un entero, unos pocos bytes)
+    //aparte de que hago malloc pero no libero en ningun sitio (aunque este malloc es de pthread_t que es un entero, unos pocos bytes),
+    //pero es un memory leak
+
     //Nota: no uso pthread_t temp_thread (sin hacer malloc) porque eso asignaria memoria temporal solo para esta funcion, en el stack,
     //pero luego se reusaria, y no tengo claro si ese pthread_t tiene que estar en un sitio "seguro"
     //Por tanto hago malloc y se que nadie liberara la memoria (a no ser que haga yo un free)
