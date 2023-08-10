@@ -277,8 +277,6 @@ aprovechando cosas como el frequency generator
 -eventos: error, mover cursor, cerrar ventana (ventana no de menu)
 
 
-
-
 -revisar todo pase de parametros a thread, si son estructuras que estén en memoria fija y no en stack, o se
 perdera probablemente ese stack la llegar al thread
 
@@ -287,8 +285,6 @@ ok, aunque con retraso como antes-arreglar tecla ESC en curses: ni en mac ni en 
 
 -en linux, con "stop emulation on menu", raton no mueve opciones de menu, ni deja mover ventanas
 
--icono de set machine, que el icono de maquina cambie segun parametro. Y que mantenga "flechita" que indica cambio de maquina
-Esto implica que el icono dibujaria dos realmente: uno primero con el icono de la maquina, y encima el de la flechita
 
 
 Pruebas ZENG
@@ -314,4 +310,3 @@ pero el impacto de no liberar esos pthreads es minimo, y como acabo de descubrir
 
 -que juego o programa para esta edición?
 
--movimiento cursor en file selector que haga "beep"
