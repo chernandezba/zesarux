@@ -52,7 +52,7 @@ Examples
 #define EMULATOR_SHORT_DATE "16/05/2023"
 #define EMULATOR_GAME_EDITION "10th Anniversary"
 #define EMULATOR_EDITION_NAME EMULATOR_GAME_EDITION " edition"
-#define ZESARUX_EXTRAS_HOST "github.com" 
+#define ZESARUX_EXTRAS_HOST "github.com"
 
 
 //testeo o para forzar una versión en develop
@@ -314,7 +314,7 @@ extern z80_bit temp_zx8081_lineasparimpar;
 #define MAX_MACHINE_NAME 40
 
 struct s_machine_names {
-	char nombre_maquina[MAX_MACHINE_NAME];  
+	char nombre_maquina[MAX_MACHINE_NAME];
 	int id;
 };
 

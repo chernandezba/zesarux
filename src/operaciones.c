@@ -166,59 +166,31 @@ void init_visualmembuffer(void)
 	int visualmem_size=get_visualmem_size();
 
 	debug_printf(VERBOSE_INFO,"Allocating %d bytes for visualmem write buffer",visualmem_size);
-
-	visualmem_buffer=malloc(visualmem_size);
-	if (visualmem_buffer==NULL) {
-		cpu_panic("Can not allocate visualmem write buffer");
-	}
+	visualmem_buffer=util_malloc_fill(visualmem_size,"Can not allocate visualmem write buffer",0);
 
 
 	debug_printf(VERBOSE_INFO,"Allocating %d bytes for visualmem read buffer",visualmem_size);
-
-	visualmem_read_buffer=malloc(visualmem_size);
-	if (visualmem_read_buffer==NULL) {
-		cpu_panic("Can not allocate visualmem read buffer");
-	}
+	visualmem_read_buffer=util_malloc_fill(visualmem_size,"Can not allocate visualmem read buffer",0);
 
 
 	debug_printf(VERBOSE_INFO,"Allocating %d bytes for visualmem opcode buffer",visualmem_size);
+	visualmem_opcode_buffer=util_malloc_fill(visualmem_size,"Can not allocate visualmem opcode buffer",0);
 
-	visualmem_opcode_buffer=malloc(visualmem_size);
-	if (visualmem_opcode_buffer==NULL) {
-		cpu_panic("Can not allocate visualmem opcode buffer");
-	}
 
 	debug_printf(VERBOSE_INFO,"Allocating %d bytes for visualmem mmc read buffer",VISUALMEM_MMC_BUFFER_SIZE);
-
-	visualmem_mmc_read_buffer=malloc(VISUALMEM_MMC_BUFFER_SIZE);
-	if (visualmem_mmc_read_buffer==NULL) {
-		cpu_panic("Can not allocate visualmem mmc read buffer");
-	}
+	visualmem_mmc_read_buffer=util_malloc_fill(VISUALMEM_MMC_BUFFER_SIZE,"Can not allocate visualmem mmc read buffer",0);
 
 
 	debug_printf(VERBOSE_INFO,"Allocating %d bytes for visualmem mmc write buffer",VISUALMEM_MMC_BUFFER_SIZE);
-
-	visualmem_mmc_write_buffer=malloc(VISUALMEM_MMC_BUFFER_SIZE);
-	if (visualmem_mmc_write_buffer==NULL) {
-		cpu_panic("Can not allocate visualmem mmc write buffer");
-	}
-
+	visualmem_mmc_write_buffer=util_malloc_fill(VISUALMEM_MMC_BUFFER_SIZE,"Can not allocate visualmem mmc write buffer",0);
 
 
 	debug_printf(VERBOSE_INFO,"Allocating %d bytes for visualmem HiLow read buffer",VISUALMEM_HILOW_BUFFER_SIZE);
-
-	visualmem_hilow_read_buffer=malloc(VISUALMEM_HILOW_BUFFER_SIZE);
-	if (visualmem_hilow_read_buffer==NULL) {
-		cpu_panic("Can not allocate visualmem HiLow read buffer");
-	}
+	visualmem_hilow_read_buffer=util_malloc_fill(VISUALMEM_HILOW_BUFFER_SIZE,"Can not allocate visualmem HiLow read buffer",0);
 
 
 	debug_printf(VERBOSE_INFO,"Allocating %d bytes for visualmem HiLow write buffer",VISUALMEM_HILOW_BUFFER_SIZE);
-
-	visualmem_hilow_write_buffer=malloc(VISUALMEM_HILOW_BUFFER_SIZE);
-	if (visualmem_hilow_write_buffer==NULL) {
-		cpu_panic("Can not allocate visualmem HiLow write buffer");
-	}
+	visualmem_hilow_write_buffer=util_malloc_fill(VISUALMEM_HILOW_BUFFER_SIZE,"Can not allocate visualmem HiLow write buffer",0);
 
 
 }

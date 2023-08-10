@@ -4559,9 +4559,11 @@ int util_write_configfile(void)
 
       fclose(ptr_configfile);
     }
-    return 1;
+
 
     free(config_settings);
+
+    return 1;
 
 }
 
@@ -4677,7 +4679,7 @@ void configfile_parse_lines(char *mem,char *p_argv[],int *p_argc)
 				//printf ("comillas iniciales en %s\n",mem);
 			}
 
-
+            //Indicar cada argumento con su puntero a memoria
 			p_argv[argumentos]=mem;
 			argumentos++;
                         if (argumentos>MAX_PARAMETERS_CONFIG_FILE) {
@@ -4702,16 +4704,19 @@ char *configfile_argv[MAX_PARAMETERS_CONFIG_FILE];
 int configfile_argc=0;
 
 //Convertir archivo de configuracion leido en argv
-
 //Ignorar lineas que empiecen con ; o #
 //Separar lineas y espacios en diferentes parametros; tener en cuenta texto que haya entre comillas, no separar por espacios
 //Cada final de parametro tendra codigo 0
 void configfile_parse(void)
 {
+    //Esta memoria no la liberamos nunca, pues se usara despues
+    //en varios sitios, como en parse_cmdline_options(0), y tambien se dejan fijados punteros a muchos parametros
+    //que se leen del archivo de config, como realtape_name=argv[puntero_parametro];
 	char *mem_config=malloc(MAX_SIZE_CONFIG_FILE+1);
-        //printf ("mem_config init: %p\n",mem_config);
 
-        if (mem_config==NULL) {
+
+
+    if (mem_config==NULL) {
 		cpu_panic("Unable to allocate memory for configuration file");
 	}
 
@@ -4719,7 +4724,6 @@ void configfile_parse(void)
 		//No hay archivo de configuracion. Parametros vacios
 		configfile_argv[0]="";
 		configfile_argc=1;
-                //free(mem_config);
 		return;
 	}
 
@@ -4734,9 +4738,6 @@ void configfile_parse(void)
 		}
 	}
 
-        //TODO: Este free da segmentation fault. Por que??? Revisar los otros free de leer archivos de config que estan comentados tambien
-        //printf ("mem_config in free: %p\n",mem_config);
-        //free(mem_config);
 	return;
 }
 
@@ -11330,7 +11331,7 @@ struct s_machines_short_names_id machines_short_names_id[]={
    {"SVI328",MACHINE_ID_SVI_328,bitmap_button_ext_desktop_my_machine_svi328},
 
    //Fin
-   {"",-1,bitmap_button_ext_desktop_my_machine_gomas}
+   {"",-1,bitmap_button_ext_desktop_my_machine_generic}
 };
 
 

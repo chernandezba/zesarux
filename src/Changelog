@@ -75,7 +75,9 @@ Fixed several memory leaks:
 - Downloading ZX Spectrum Next MMC image
 - Syncing file image from File Utilities
 - Copying a folder from File Utilities
+- Showing First Aid Windows
 
+Fixed Initialization of Visual memory tables
 Fixed ZX Vision relocation windows
 Fixed error when no permissions writing to mmc, ide, trd, dsk, hilow: disable persistent writes when it happens
 Fixed permissions when installing ZEsarUX on Linux: zxuno.flash and tbblue.mmc are now writable by anyone

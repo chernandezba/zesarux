@@ -11587,6 +11587,11 @@ void zxvision_generic_message_tooltip(char *titulo, int return_after_print_text,
 	if (return_after_print_text) {
         free(texto);
         free(new_buffer_lineas);
+
+        if (menu_generic_message_tooltip_text_initial!=NULL) {
+            debug_printf(VERBOSE_INFO,"Freeing previous buffer for initial text");
+            free(menu_generic_message_tooltip_text_initial);
+        }
         return;
     }
 

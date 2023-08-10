@@ -147,6 +147,10 @@ case $1 in
 
 	localsh)
 		docker build -f Dockerfile.local .  --progress plain --tag=zesarux.local
+		echo "**********************************"
+		echo "Entering shell on Docker container"
+		echo "You can use valgrind to diagnose memory leaks with: valgrind --tool=memcheck --leak-check=full --show-leak-kinds=all ./zesarux --vo null"
+		echo "**********************************"
 		docker run --name run-zesarux-localsh --rm -it --entrypoint /bin/bash zesarux.local
 	;;
 
