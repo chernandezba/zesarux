@@ -8530,7 +8530,8 @@ void menu_dibuja_cuadrado(int x1,int y1,int x2,int y2,int color)
 
 	int x,y;
 
-
+//Mejor cambiando todo el marco?
+if (ventana_marca_redimensionado_raton_encima) color=ESTILO_GUI_COLOR_AVISO;
 
 	//Para poner una marca en la ventana indicando si es de tipo zxvision
 	//int centro_marca_zxvison_x=x2-3-6;
@@ -15958,6 +15959,10 @@ void zxvision_handle_mouse_events(zxvision_window *w)
 
 	if (mouse_movido) {
 		//printf ("mouse movido\n");
+
+        //Asumimos raton no apunta a zona de redimensionado
+        ventana_marca_redimensionado_raton_encima=0;
+
 		if (si_menu_mouse_en_ventana() ) {
 				//if (menu_mouse_x>=0 && menu_mouse_y>=0 && menu_mouse_x<ventana_ancho && menu_mouse_y<ventana_alto ) {
 					//printf ("dentro ventana\n");
@@ -15966,22 +15971,15 @@ void zxvision_handle_mouse_events(zxvision_window *w)
 					}
 					//Descartar linea titulo y ultima linea
 
-                if (zxvision_mouse_in_bottom_right(w)) {
+                if (zxvision_mouse_in_bottom_right(w) && w->can_be_resized) {
                     //printf("Raton en zona dimensionado\n");
                     //Como continuamente se redibuja el marco de la ventana, se actualizara automaticamente
                     //la zona de redimensionado indicando que el raton esta encima
                     ventana_marca_redimensionado_raton_encima=1;
                 }
-                //Raton no apunta a zona redimensionado
-                else {
-                    ventana_marca_redimensionado_raton_encima=0;
-                }
+
 		}
 
-        //Raton fuera de ventana
-        else {
-            ventana_marca_redimensionado_raton_encima=0;
-        }
 
 	}
 
