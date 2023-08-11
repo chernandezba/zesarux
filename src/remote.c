@@ -5045,6 +5045,10 @@ void interpreta_comando(char *comando,int misocket,char *buffer_lectura_socket_a
 		//Enviar la tecla pero que no vuelva a entrar por zeng
 		if (enviar) {
 			debug_printf (VERBOSE_DEBUG,"Processing from ZRCP command send-keys-event: key %d event %d",tecla,evento);
+
+            debug_printf (VERBOSE_DEBUG,"Info joystick: fire: %d up: %d down: %d left: %d right: %d",
+                UTIL_KEY_JOY_FIRE,UTIL_KEY_JOY_UP,UTIL_KEY_JOY_DOWN,UTIL_KEY_JOY_LEFT,UTIL_KEY_JOY_RIGHT);
+
 			util_set_reset_key_continue_after_zeng(tecla,evento);
 		}
 

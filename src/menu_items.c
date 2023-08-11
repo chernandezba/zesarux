@@ -14269,7 +14269,7 @@ int menu_zeng_host_cond(void)
 void menu_zeng_host(MENU_ITEM_PARAMETERS)
 {
 
-	menu_ventana_scanf("Remote host",zeng_remote_hostname,MAX_ZENG_HOSTNAME);
+	menu_ventana_scanf("Remote hosts",zeng_remote_hostname,MAX_ZENG_HOSTNAME);
 
 }
 

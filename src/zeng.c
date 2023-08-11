@@ -762,6 +762,9 @@ Poder enviar mensajes a otros jugadores
 		while (!zeng_fifo_read_element(&elemento) && !error_desconectar) {
 			debug_printf (VERBOSE_DEBUG,"ZENG: Read event from zeng fifo and sending it to remote: key %d pressrelease %d",elemento.tecla,elemento.pressrelease);
 
+            debug_printf (VERBOSE_DEBUG,"Info joystick: fire: %d up: %d down: %d left: %d right: %d",
+                UTIL_KEY_JOY_FIRE,UTIL_KEY_JOY_UP,UTIL_KEY_JOY_DOWN,UTIL_KEY_JOY_LEFT,UTIL_KEY_JOY_RIGHT);
+
 			//command> help send-keys-event
 			//Syntax: send-keys-event key event
 				int error=zeng_send_keys(&elemento);

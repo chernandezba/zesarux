@@ -1,19 +1,5 @@
 Para esta version:
 
---Errores
-
-
-
-----
-
---Mejoras
-
---Fin mejoras
-
-
-
-
-
 
 Pruebas ZENG
 1.139 mac
@@ -24,12 +10,12 @@ Pruebas ZENG
 --zeng-remote-hostname 192.168.1.91,192.168.1.147,192.168.1.99
 --zeng-remote-port 10000
 
-
-
-
-
--por que docker de fedora va con sdl2?
+Instancia sola simple
+./zesarux --noconfigfile --zoom 1 --remoteprotocol-port 10010 --enable-remoteprotocol
 
 -que juego o programa para esta edición?
 
 -logo salamanquesa que cambie por otra si hago click simple?
+
+
+-ZENG colecovision no va bien. Raro. primero iba mal (enviaba cursores mezclados derecha-izquierda) y luego bien

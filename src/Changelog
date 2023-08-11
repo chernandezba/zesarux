@@ -86,7 +86,7 @@ Improved ZX Spectrum Next emulation:
 
 * Fixes:
 
-Fixed several memory leaks found on:
+Fixed several memory leaks (thanks to tool valgrind) found on:
 - Drawing Text Aventure Map
 - Loading .Z80 snapshots
 - Using the Speccy online browser
