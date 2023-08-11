@@ -8,7 +8,6 @@ Added Docker support
 Added new compiled versions: Ubuntu and Fedora
 Added screen previews of directories and compressed files on File Selector
 Added flash support on screen previews on File Selector
-Added ZX Desktop icons for TSConf, Baseconf
 Added PCW colour modes
 Added another toy ZXLife to a new menu Procrastinate
 Added compilation os release info, running os info
@@ -58,6 +57,7 @@ Improved ZX Desktop
 - When switching to full screen and disable ZX Desktop, windows are restored after disabling full screen
 - Allow to disable border and footer when switching to full screen
 - Set machine icon now is dynamic and shows machine icon indicated by parameter + an arrow
+- Added ZX Desktop icons for TSConf, Baseconf
 
 Improved Process Management: allow to copy any windows contents to internal clipboard
 
@@ -100,10 +100,9 @@ Fixed several memory leaks (thanks to tool valgrind) found on:
 
 Fixed Initialization of Visual memory tables
 Fixed ZX Vision relocation windows
-Fixed error when no permissions writing to mmc, ide, trd, dsk, hilow: disable persistent writes when it happens
+Fixed error when no permissions writing to mmc, ide, trd, dsk, ddh (hilow): disable persistent writes when it happens
 Fixed permissions when installing ZEsarUX on Linux: zxuno.flash and tbblue.mmc are now writable by anyone
 Fixed Text Adventure Graphics rendering invalid characters
-Fixed getting GAC objects
 Fixed esxdos handler when using fopen flags: FA_READ + FA_WRITE + FA_OPEN_CREAT
 Fixed ZRCP bug when closing connection (socket descriptor was kept open)
 Fixed reading ESC key on curses driver
