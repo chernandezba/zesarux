@@ -715,7 +715,7 @@ int main_leezx81(char *archivo_destino, char *texto_info_output,int si_load)
 
             if (!util_compare_file_extension(archivo_destino,"o")) {
                 es_zx81=0;
-            }            
+            }
         }
 
         if (es_zx81) {
@@ -1018,7 +1018,7 @@ void spec_debug_cabecera(int indice,int leidos)
 
         if (main_spec_rwaatap_pointer_print!=NULL) {
 		    sprintf (buffer_string,"Tape block. %s: %d. Length: %d\n\n",
-			      spec_tipos_fichero[4],spec_smp_memory[indice],  ( leidos>2 ? leidos-2 : leidos  )  );            
+			      spec_tipos_fichero[4],spec_smp_memory[indice],  ( leidos>2 ? leidos-2 : leidos  )  );
             int nocabe=util_concat_string(main_spec_rwaatap_pointer_print,buffer_string,main_spec_rwaatap_pointer_print_max);
             if (nocabe) return;
         }
@@ -1036,10 +1036,10 @@ void spec_debug_cabecera(int indice,int leidos)
 
 
     if (main_spec_rwaatap_pointer_print!=NULL) {
-        sprintf (buffer_string,"Tape block. Standard Header - %s: %s\n",spec_tipos_fichero[tipo],buffer_nombre);       
+        sprintf (buffer_string,"Tape block. Standard Header - %s: %s\n",spec_tipos_fichero[tipo],buffer_nombre);
         int nocabe=util_concat_string(main_spec_rwaatap_pointer_print,buffer_string,main_spec_rwaatap_pointer_print_max);
         if (nocabe) return;
-    }    
+    }
 
 	len=value_8_to_16(spec_smp_memory[indice+13],spec_smp_memory[indice+12]);
 	parm1=value_8_to_16(spec_smp_memory[indice+15],spec_smp_memory[indice+14]);
@@ -1051,7 +1051,7 @@ void spec_debug_cabecera(int indice,int leidos)
         sprintf (buffer_string,"- Length: %u Parm1: %u Parm2: %u\n",len,parm1,parm2);
         int nocabe=util_concat_string(main_spec_rwaatap_pointer_print,buffer_string,main_spec_rwaatap_pointer_print_max);
         if (nocabe) return;
-    }        
+    }
 
 
 	int variables=len-parm2;
@@ -1064,7 +1064,7 @@ void spec_debug_cabecera(int indice,int leidos)
 		    sprintf (buffer_string,"- Start: %u\n",parm1);
             int nocabe=util_concat_string(main_spec_rwaatap_pointer_print,buffer_string,main_spec_rwaatap_pointer_print_max);
             if (nocabe) return;
-        }              
+        }
 	}
 
 	if (!tipo) {
@@ -1076,7 +1076,7 @@ void spec_debug_cabecera(int indice,int leidos)
 
                 int nocabe=util_concat_string(main_spec_rwaatap_pointer_print,buffer_string,main_spec_rwaatap_pointer_print_max);
                 if (nocabe) return;
-            }                 
+            }
         }
 		else {
             debug_printf (VERBOSE_INFO,"- Variables:%u . Autorun: None",variables);
@@ -1085,7 +1085,7 @@ void spec_debug_cabecera(int indice,int leidos)
                 sprintf (buffer_string,"- Variables:%u . Autorun: None\n",variables);
                 int nocabe=util_concat_string(main_spec_rwaatap_pointer_print,buffer_string,main_spec_rwaatap_pointer_print_max);
                 if (nocabe) return;
-            }                 
+            }
         }
 	}
 
@@ -1094,7 +1094,7 @@ void spec_debug_cabecera(int indice,int leidos)
         sprintf (buffer_string,"\n");
         int nocabe=util_concat_string(main_spec_rwaatap_pointer_print,buffer_string,main_spec_rwaatap_pointer_print_max);
         if (nocabe) return;
-    }    
+    }
 
 
 }
@@ -1228,10 +1228,10 @@ int main_spec_rwaatap(long *array_block_positions,int max_array_block_positions,
             if (!agregado_info_inicio) {
                 agregado_info_inicio=1;
 
-                if (main_spec_rwaatap_pointer_print!=NULL) {          
+                if (main_spec_rwaatap_pointer_print!=NULL) {
                     int nocabe=util_concat_string(main_spec_rwaatap_pointer_print,"ZX Spectrum Tape\n\n",main_spec_rwaatap_pointer_print_max);
                     if (nocabe) return 0;
-                }                
+                }
             }
 
 			spec_debug_cabecera(spec_smp_write_index_tap_start+2,spec_bytes_leidos);
@@ -1300,7 +1300,7 @@ int main_spec_rwaatap(long *array_block_positions,int max_array_block_positions,
     //Indicar -1 al final del array de posiciones
     if (spec_array_block_positions!=NULL) {
         spec_array_block_positions[spec_current_block_positions]=-1;
-    }    
+    }
 
 
 	return 0;

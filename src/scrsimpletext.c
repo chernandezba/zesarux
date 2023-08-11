@@ -1,5 +1,5 @@
 /*
-    ZEsarUX  ZX Second-Emulator And Released for UniX 
+    ZEsarUX  ZX Second-Emulator And Released for UniX
     Copyright (C) 2013 Cesar Hernandez Bano
 
     This file is part of ZEsarUX.
@@ -43,7 +43,7 @@
 #include "coleco.h"
 #include "sg1000.h"
 #include "svi.h"
-#include "textspeech.h" 
+#include "textspeech.h"
 
 void scrsimpletext_repinta_pantalla(void);
 
@@ -83,25 +83,25 @@ void scrsimpletext_putpixel_final(int x GCC_UNUSED,int y GCC_UNUSED,unsigned int
 //Rutina de putchar para menu
 void scrsimpletext_putchar_menu(int x,int y, z80_byte caracter,int tinta,int papel)
 {
-	
+
 	//No escribimos nada. Este driver no soporta menu
 	//Para evitar warnings al compilar de "unused parameter"
 	x=y;
 	y=x;
 	caracter=tinta=papel;
 	tinta=papel=caracter;
-	
+
 }
 
 void scrsimpletext_putchar_footer(int x,int y, z80_byte caracter,int tinta,int papel)
 {
-	
+
 	//Para evitar warnings al compilar de "unused parameter"
 	x=y;
 	y=x;
 	caracter=tinta=papel;
 	tinta=papel=caracter;
-	
+
 }
 
 
@@ -154,27 +154,27 @@ void scrsimpletext_textspeech_filter_welcome_message(void)
 
 	char texto_welcome[40];
 	get_welcome_message(texto_welcome);
-	textspeech_print_speech(texto_welcome); 
+	textspeech_print_speech(texto_welcome);
 
 	char texto_edition[40];
 	sprintf(texto_edition," " EMULATOR_EDITION_NAME " ");
-	textspeech_print_speech(texto_edition);	
+	textspeech_print_speech(texto_edition);
 
-	
+
 }
 
-int scrsimpletext_init (void){ 
-	
-	debug_printf (VERBOSE_INFO,"Init simpletext Video Driver"); 
-	
-	
+int scrsimpletext_init (void){
+
+	debug_printf (VERBOSE_INFO,"Init simpletext Video Driver");
+
+
 	//Mismos mensajes de bienvenida a traves de filtro texto
 	if (opcion_no_welcome_message.v==0) scrsimpletext_textspeech_filter_welcome_message();
-	
-	
+
+
 	scr_debug_registers=scrsimpletext_debug_registers;
 	scr_messages_debug=scrsimpletext_messages_debug;
-	
+
 	scr_putchar_menu=scrsimpletext_putchar_menu;
 	scr_putchar_footer=scrsimpletext_putchar_footer;
 
@@ -184,8 +184,8 @@ int scrsimpletext_init (void){
         scr_get_menu_width=scrsimpletext_get_menu_width;
         scr_get_menu_height=scrsimpletext_get_menu_height;
 	//scr_driver_can_ext_desktop=scrsimpletext_driver_can_ext_desktop;
-	
-	
+
+
 	scr_set_fullscreen=scrsimpletext_set_fullscreen;
 	scr_reset_fullscreen=scrsimpletext_reset_fullscreen;
 	scr_z88_cpc_load_keymap=scrsimpletext_z88_cpc_load_keymap;
@@ -194,23 +194,23 @@ int scrsimpletext_init (void){
         //por defecto activamos esto en simpletext
         chardetect_printchar_enabled.v=1;
 
-	
-	
+
+
 	scr_set_driver_name("simpletext");
-	
+
 	screen_simpletext_driver=1;
-	
-	
-	return 0; 
-	
+
+
+	return 0;
+
 }
 
 void scrsimpletext_end(void)
 {
-	
+
 	debug_printf (VERBOSE_INFO,"Closing simpletext video driver");
-	
-	
+
+
 }
 
 void scrsimpletext_refresca_pantalla_solo_driver(void)
@@ -221,11 +221,11 @@ void scrsimpletext_refresca_pantalla_solo_driver(void)
 
 void scrsimpletext_refresca_pantalla(void){}
 z80_byte scrsimpletext_lee_puerto(z80_byte puerto_h,z80_byte puerto_l){
-	
+
 	//Para evitar warnings al compilar de "unused parameter"
 	puerto_h=puerto_l;
 	puerto_l=puerto_h;
-	
+
 	return 255;
 }
 
@@ -234,14 +234,14 @@ z80_byte scrsimpletext_lee_puerto(z80_byte puerto_h,z80_byte puerto_l){
 
 
 void scrsimpletext_actualiza_tablas_teclado(void){
-	
-	
+
+
 	//if (stdout_simpletext_automatic_redraw.v && (contador_segundo%200)==0) {
 	if (stdout_simpletext_automatic_redraw.v && (contador_segundo%(20*scrstdout_simpletext_refresh_factor))==0) {
 		scrsimpletext_repinta_pantalla();
 	}
-	
-	
+
+
 }
 void scrsimpletext_debug_registers(void){
 
@@ -260,8 +260,8 @@ void scrsimpletext_messages_debug(char *s)
 	printf ("%s\n",s);
 	//flush de salida standard. normalmente no hace falta esto, pero si ha finalizado el driver curses, deja la salida que no hace flush
 	fflush(stdout);
-	
-	
+
+
 }
 
 
@@ -287,17 +287,17 @@ void scr_simpletext_printchar_caracter_imprimible(z80_byte c)
 {
 	printf ("%c",c);
 	simpletext_x_position++;
-	
-	
-	
+
+
+
 	if (stdout_simpletext_line_width) {
 		if (simpletext_x_position>=stdout_simpletext_line_width) {
 			simpletext_x_position=0;
 			printf ("\n");
 		}
-		
+
 	}
-	
+
 }
 
 //Caracter anterior siempre que sea imprimible
@@ -311,39 +311,39 @@ void scr_simpletext_printchar_espacio_si_mayus(z80_byte c)
 		//printf ("-caracter anterior: %d (%c)-",scr_simpletext_printchar_caracter_anterior,scr_simpletext_printchar_caracter_anterior);
 		scr_simpletext_printchar_caracter_imprimible(' ');
 	}
-	
+
 }
 
 void scr_simpletext_printchar_caracter(z80_byte c)
 {
-	
+
 	if (scr_simpletext_printchar_ignorar_siguiente.v) {
 		scr_simpletext_printchar_ignorar_siguiente.v=0;
 		c=0;
 	}
-	
-	
+
+
 	if (c!=0) {
 		if (c>31 && c<128) {
 			scr_simpletext_printchar_caracter_imprimible(c);
 			scr_simpletext_printchar_caracter_anterior=c;
 		}
-		
+
 		else if (c==13) {
 			printf ("\n");
 			simpletext_x_position=0;
-			
+
 		}
-		
+
 		else {
 			debug_printf(VERBOSE_DEBUG,"Unknown character 0x%02X",c);
 		}
 	}
-	
+
 	//flush de salida standard. normalmente no hace falta esto, pero si ha finalizado el driver curses, deja la salida que no hace flush
 	fflush(stdout);
-	
-	
+
+
 }
 
 
@@ -425,22 +425,22 @@ void scrsimpletext_repinta_pantalla(void)
         sem_screen_refresh_reallocate_layers=1;
 
 
-	
+
 	//enviar Ansi inicio pantalla
 	screen_text_send_ansi_go_home();
-	
+
 		 //si todo de pixel a ascii art
      if (rainbow_enabled.v && screen_text_all_refresh_pixel.v) {
-     
+
 scr_refresca_pantalla_tsconf_text(scr_simpletext_common_fun_color,scr_simpletext_common_fun_caracter,scr_simpletext_common_fun_saltolinea,screen_text_all_refresh_pixel_scale);
-     
+
      }
-	
-	
+
+
 	else if (MACHINE_IS_ZX8081) {
 		screen_text_repinta_pantalla_zx81();
 	}
-	
+
 	else if (MACHINE_IS_Z88) {
 		//Si esta vofile activo, hay que dibujar dentro del buffer rainbow
 		//Aqui se llama 5 veces por segundo
@@ -451,7 +451,7 @@ scr_refresca_pantalla_tsconf_text(scr_simpletext_common_fun_color,scr_simpletext
 			set_z88_putpixel_zoom_function();
 			screen_z88_refresca_pantalla_comun();
 		}
-		
+
 		screen_text_repinta_pantalla_z88();
 	}
 
@@ -462,7 +462,7 @@ scr_refresca_pantalla_tsconf_text(scr_simpletext_common_fun_color,scr_simpletext
         else if (MACHINE_IS_SAM) {
                 screen_text_repinta_pantalla_sam();
         }
-        
+
         else if (MACHINE_IS_CPC) {
                 screen_text_repinta_pantalla_cpc();
         }
@@ -492,19 +492,19 @@ scr_refresca_pantalla_tsconf_text(scr_simpletext_common_fun_color,scr_simpletext
 		else {
 			screen_text_repinta_pantalla_spectrum();
 		}
-	}	
-	
-	
+	}
+
+
 	else {
 		//Refresco en Spectrum
 		screen_text_repinta_pantalla_spectrum();
-		
+
 	}
 
 
 	sem_screen_refresh_reallocate_layers=0;
-	
-	
+
+
 }
 
 

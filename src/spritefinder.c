@@ -109,7 +109,7 @@ z80_byte temp_conta;
 
 void spritefinder_handle_writing(z80_int dir,z80_byte valor)
 {
-	//Si se escribe en pantalla. De momento ignorar rutinas con doble buffer 
+	//Si se escribe en pantalla. De momento ignorar rutinas con doble buffer
 	if (dir>=16384 && dir<=22527) {
 
 		if (spritefinder_posible_dir==reg_pc) {
@@ -141,7 +141,7 @@ void spritefinder_handle_writing(z80_int dir,z80_byte valor)
 				if (x==lastx || x==lastx-8 || x==lastx-16 || x==lasty+8 || x==lasty+16) {
 					scanlinesleidos=2;
 				}
-			} 
+			}
 
 			if (scanlinesleidos==2) {
 				debug_printf (VERBOSE_DEBUG,"Detected possible scanline routine at address: %d",reg_pc);

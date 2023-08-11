@@ -260,9 +260,9 @@ z80_byte zesarux_zxi_read_string_register(char *s,z80_byte register_number)
 
 	//Si indice esta fuera de rango de string (posicion longitud+1) resetear a 0
 	//Indice siempre apunta a siguiente posicion a leer
-	register_value=zesarux_zxi_registers_array[register_number]; 
+	register_value=zesarux_zxi_registers_array[register_number];
 
-	longitud_string=strlen(s);  
+	longitud_string=strlen(s);
 	//Ejemplo String longitud 3: ABC. Ultima posicion valida: 3 (caracter 0)
 	//Si se ha retornado toda la string, tendra valor posicion 4
 	//Esto tambien evita que el usuario meta el indice en posicion mayor a la longitud de la string
@@ -345,11 +345,11 @@ void nmi_handle_pending_prepost_fetch(void)
 
     if (transtape_enabled.v) {
         transtape_nmi();
-    }  
+    }
 
     if (mhpokeador_enabled.v) {
         mhpokeador_nmi();
-    }  
+    }
 
     if (specmate_enabled.v) {
         specmate_nmi();
@@ -373,7 +373,7 @@ void nmi_handle_pending_prepost_fetch(void)
 
     if (dinamid3_enabled.v) {
         dinamid3_nmi();
-    }                            
+    }
 
 }
 
@@ -395,7 +395,7 @@ void generate_nmi_multiface_tbblue(void)
 
 	interrupcion_non_maskable_generada.v=1;
 
-   
+
 }
 
 /*
@@ -404,7 +404,7 @@ void old_generate_nmi_prepare_fetch(void)
     //Vamos a suponer que lo normal es que salte en 66h, o sea, con pre_opcode
 
     nmi_pending_pre_opcode=1;
-    
+
     if (MACHINE_IS_TBBLUE && multiface_enabled.v && multiface_type==MULTIFACE_TYPE_THREE) {
         //Pero en tbblue, salta con post. Entonces no se esta comportando como un mf3 realmente
         nmi_pending_post_opcode=1;
@@ -419,7 +419,7 @@ void generate_nmi_prepare_fetch(void)
     //Vamos a suponer que lo normal es que salte en 67h, o sea, con post_opcode
 
     nmi_pending_post_opcode=1;
-    
+
     if (!MACHINE_IS_TBBLUE && multiface_enabled.v && multiface_type==MULTIFACE_TYPE_THREE) {
         //Pero en mf3 (no en tbblue), salta con pre
         nmi_pending_pre_opcode=1;
@@ -429,13 +429,13 @@ void generate_nmi_prepare_fetch(void)
     //prueba betadisk. todo indica por la rom que hace pre, aunque luego igualmente al lanzar la nmi, peta
     if (betadisk_enabled.v) {
         nmi_pending_pre_opcode=1;
-        nmi_pending_post_opcode=0;        
+        nmi_pending_post_opcode=0;
     }
 
     //hilow. todo indica que lo hace con pre
     if (hilow_enabled.v) {
         nmi_pending_pre_opcode=1;
-        nmi_pending_post_opcode=0;        
+        nmi_pending_post_opcode=0;
     }
 
 
@@ -447,12 +447,12 @@ void generate_nmi_prepare_fetch(void)
     if (transtape_enabled.v) {
         nmi_pending_pre_opcode=1;
         nmi_pending_post_opcode=0;
-    } 
+    }
 
     if (mhpokeador_enabled.v) {
         nmi_pending_pre_opcode=1;
         nmi_pending_post_opcode=0;
-    }       
+    }
 
     if (specmate_enabled.v) {
         nmi_pending_pre_opcode=1;
@@ -482,7 +482,7 @@ void generate_nmi_prepare_fetch(void)
     if (dinamid3_enabled.v) {
         nmi_pending_pre_opcode=1;
         nmi_pending_post_opcode=0;
-    }                          
+    }
 
 }
 
@@ -499,7 +499,7 @@ void old_old_generate_nmi_prepare_fetch(void)
     //Betadisk tambien hace en pre??
     if (betadisk_enabled.v) {
         nmi_pending_post_opcode=0;
-        nmi_pending_pre_opcode=1;        
+        nmi_pending_pre_opcode=1;
     }
 }
 */
@@ -562,7 +562,7 @@ BREAK SPACE        %^ (es 56 pero con mayusculas)
 So when key 1 is pressed, we get an ‘a’ and when released we get a ‘b’.
 
 Que pasa con zxcvbnm symbol y space? Parece que generan diferentes pulsaciones segun el keyboard mapping del pc
-En caso de cocoa, leo el teclado en modo raw y no deberia afectar. 
+En caso de cocoa, leo el teclado en modo raw y no deberia afectar.
 En framebuffer, tampoco deberia afectar
 En XWindow, sí que afecta la localizacion. soluciones: leer en raw? O usar el keymapping setting que uso para Z88 por ejemplo?
 En SDL también le afecta la localización
@@ -635,7 +635,7 @@ BREAK SPACE        %^ (es 56 pero con mayusculas)
     //char recreated_key_table_minus[]="1234567890QWE";
     //char recreated_key_table_mayus[]="RTYUIOPASDFGH";
     if (tecla>='a' && tecla<='z') {
-        tecla -='a'; 
+        tecla -='a';
         //Par es press, impar es release
         if (tecla&1) *pressrelease=0;
         else *pressrelease=1;
@@ -647,7 +647,7 @@ BREAK SPACE        %^ (es 56 pero con mayusculas)
     }
 
     if (tecla>='A' && tecla<='Z') {
-        tecla -='A'; 
+        tecla -='A';
         //Par es press, impar es release
         if (tecla&1) *pressrelease=0;
         else *pressrelease=1;
@@ -821,7 +821,7 @@ BREAK SPACE        %^
         case '^':
             *pressrelease=0;
             *tecla_final=32;
-        break;        
+        break;
 
         default:
             //Valores sin alterar

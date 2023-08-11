@@ -93,25 +93,25 @@ void vdp_9918a_sms_reset(void)
     int i;
     //Y resetear tabla de colores de sms
     //16+16 colores (tiles + sprites)
-    
+
     for (i=0;i<2;i++) {
 
-        vdp_9918a_sms_cram[0+i*16]=0x00;	
-        vdp_9918a_sms_cram[1+i*16]=0x00;	
-        vdp_9918a_sms_cram[2+i*16]=0x08;	
-        vdp_9918a_sms_cram[3+i*16]=0x0C;	
-        vdp_9918a_sms_cram[4+i*16]=0x10;	
-        vdp_9918a_sms_cram[5+i*16]=0x30;	
-        vdp_9918a_sms_cram[6+i*16]=0x01;	
-        vdp_9918a_sms_cram[7+i*16]=0x3C;	
-        vdp_9918a_sms_cram[8+i*16]=0x02;	
-        vdp_9918a_sms_cram[9+i*16]=0x03;	
-        vdp_9918a_sms_cram[10+i*16]=0x05;	
-        vdp_9918a_sms_cram[11+i*16]=0x0f;	
-        vdp_9918a_sms_cram[12+i*16]=0x04;	
-        vdp_9918a_sms_cram[13+i*16]=0x33;	
-        vdp_9918a_sms_cram[14+i*16]=0x15;	
-        vdp_9918a_sms_cram[15+i*16]=0x3f;	
+        vdp_9918a_sms_cram[0+i*16]=0x00;
+        vdp_9918a_sms_cram[1+i*16]=0x00;
+        vdp_9918a_sms_cram[2+i*16]=0x08;
+        vdp_9918a_sms_cram[3+i*16]=0x0C;
+        vdp_9918a_sms_cram[4+i*16]=0x10;
+        vdp_9918a_sms_cram[5+i*16]=0x30;
+        vdp_9918a_sms_cram[6+i*16]=0x01;
+        vdp_9918a_sms_cram[7+i*16]=0x3C;
+        vdp_9918a_sms_cram[8+i*16]=0x02;
+        vdp_9918a_sms_cram[9+i*16]=0x03;
+        vdp_9918a_sms_cram[10+i*16]=0x05;
+        vdp_9918a_sms_cram[11+i*16]=0x0f;
+        vdp_9918a_sms_cram[12+i*16]=0x04;
+        vdp_9918a_sms_cram[13+i*16]=0x33;
+        vdp_9918a_sms_cram[14+i*16]=0x15;
+        vdp_9918a_sms_cram[15+i*16]=0x3f;
 
     }
 
@@ -137,7 +137,7 @@ int vdp_9918a_si_sms_video_mode4(void)
 {
     if (MACHINE_IS_SMS && (vdp_9918a_registers[0] & 4)) return 1;
 
-    else return 0;    
+    else return 0;
 }
 
 z80_int vdp_9918a_get_sprite_pattern_table_sms_mode4(void)
@@ -150,7 +150,7 @@ z80_int vdp_9918a_get_sprite_pattern_table_sms_mode4(void)
 z80_int vdp_9918a_sms_get_pattern_name_table(void)
 {
 
-    return (vdp_9918a_registers[2]&14) * 0x400; 
+    return (vdp_9918a_registers[2]&14) * 0x400;
 
 }
 
@@ -170,25 +170,25 @@ void vdp_9918a_render_ula_no_rainbow_sms(z80_byte *vram,int render_tiles_foregro
     //Modo 4 SMS. high-res mode, 256x192
 
 
-	int x,y,bit; 
+	int x,y,bit;
 	z80_int direccion_name_table;
     z80_byte byte_color;
-	
-	z80_int pattern_base_address; 
-	z80_int pattern_name_table; 
+
+	z80_int pattern_base_address;
+	z80_int pattern_name_table;
 
 	int char_width=8;
 
-	
 
-    z80_byte byte_leido1,byte_leido2,byte_leido3,byte_leido4;    
+
+    z80_byte byte_leido1,byte_leido2,byte_leido3,byte_leido4;
 
     pattern_name_table=vdp_9918a_get_pattern_name_table();
 
     pattern_base_address=vdp_9918a_get_pattern_base_address();
 
 
-    direccion_name_table=pattern_name_table;  
+    direccion_name_table=pattern_name_table;
 
     //scroll y
     z80_byte scroll_y=vdp_9918a_sms_get_scroll_vertical();
@@ -218,7 +218,7 @@ starting row, and the lower three bits are the fine scroll value.
     for (y=0;y<total_filas;y++) {
 
         //Maximo 28 en Y
-        z80_byte final_y=(y+fila_scroll_y) % 28;     
+        z80_byte final_y=(y+fila_scroll_y) % 28;
 
             //scroll x
             z80_byte scroll_x=vdp_9918a_sms_get_scroll_horizontal();
@@ -234,7 +234,7 @@ games.
 Register $00 - Mode Control No. 1
 
 D7 - 1= Disable vertical scrolling for columns 24-31
-D6 - 1= Disable horizontal scrolling for rows 0-1  
+D6 - 1= Disable horizontal scrolling for rows 0-1
 D5 - 1= Mask column 0 with overscan color from register #7
 D4 - (IE1) 1= Line interrupt enable
 D3 - (EC) 1= Shift sprites left by 8 pixels
@@ -247,19 +247,19 @@ D0 - 1= No sync, display is monochrome, 0= Normal display
 
             //Las 2 primeras lineas no tendran scroll si bit D6
             //Esto lo usa juego Astro Flash
-            if (vdp_9918a_registers[0] & 64 && y<2) scroll_x=0; 
+            if (vdp_9918a_registers[0] & 64 && y<2) scroll_x=0;
 
 
             int columna_scroll_x;
             z80_byte scroll_x_fino;
-            
+
 
             //scroll_x_fino=(255-scroll_x) & 7;
 
             //En alguna documentacion he leido que esto se restaba de 32, en vez de 31, cosa que no tiene sentido:
             //en sonic por ejemplo provocaria que cuando se hace el primer desplazamiento, salta la columna de golpe a 1,
             //en vez de simplemente quedarse en columna 0 aunque scroll_x_fino logicamente pasa a 1
-            
+
 
 //columna
             /*
@@ -277,25 +277,25 @@ column drawn is number 2 from the name table.
 
             columna_scroll_x=(scroll_negado >>3)&31;
 
-                            
-                
 
-        
+
+
+
 
             //TODO: la gestion de scroll fino en vertical y horizontal en modo rainbow, sera
             //algo distinto de este no rainbow (o deberia ser)
-    
+
             //1 columna mas si hay scroll horizontal
-    
+
             int total_columnas=32;
 
             if (scroll_x_fino) total_columnas++;
 
         //printf("%d\n",total_columnas);
 
-        for (x=0;x<total_columnas;x++) {  
-            
-            
+        for (x=0;x<total_columnas;x++) {
+
+
 
             int final_x;
 
@@ -303,7 +303,7 @@ column drawn is number 2 from the name table.
             final_x=(x+columna_scroll_x) % 32;
 
 
-            
+
             int offset_tile=final_x*2+final_y*64;
             direccion_name_table=pattern_name_table+offset_tile;
 
@@ -313,10 +313,10 @@ column drawn is number 2 from the name table.
                     x,vdp_9918a_sms_get_scroll_horizontal(),columna_scroll_x,scroll_x_fino,final_x,offset_tile);
             }*/
             //if (y==0 && x==28) printf("---\n");
-            
+
             z80_int pattern_word=vdp_9918a_read_vram_byte(vram,direccion_name_table)+256*vdp_9918a_read_vram_byte(vram,direccion_name_table+1);
 
-            
+
             /*
             MSB          LSB
 ---pcvhn nnnnnnnn
@@ -338,7 +338,7 @@ n = Pattern index, any one of 512 patterns in VRAM can be selected.
             z80_int caracter=pattern_word & 511;
 
             int palette_offset=(pattern_word & 0x0800 ? 16 : 0);
-            
+
             int priority_tile_bit=(pattern_word & 0x1000);
 
             int scanline;
@@ -346,14 +346,14 @@ n = Pattern index, any one of 512 patterns in VRAM can be selected.
             //z80_int pattern_address=(caracter*32+2048*tercio) ;
             z80_int pattern_address=(caracter*32) ; //32 bytes cada tile
             pattern_address +=pattern_base_address;
-            
-            
+
+
             //Si tiene mirror vertical, empezamos con la ultima linea del pattern
             if (mirror_y) {
                 pattern_address +=(8*4)-4;
             }
 
-    
+
 
             for (scanline=0;scanline<8;scanline++) {
 
@@ -377,7 +377,7 @@ n = Pattern index, any one of 512 patterns in VRAM can be selected.
 
                 //Similar para mayor de 192 cuando hay scroll y hacemos 25 filas (parte de la ultima 25)
                 if (ydestino>=0 && ydestino<=191) {
-                    
+
                 for (bit=0;bit<char_width;bit++) {
 
                     int priority_pixel=priority_tile_bit;
@@ -390,17 +390,17 @@ n = Pattern index, any one of 512 patterns in VRAM can be selected.
                     else {
 
                         byte_color=((byte_leido1>>7)&1) | ((byte_leido2>>6)&2) | ((byte_leido3>>5)&4) | ((byte_leido4>>4)&8);
-                
+
                     }
 
                     //Si color 0 y capa en foreground, se pasa a background
                         /*
-                        When a tile has its priority bit set, all pixels with index greater than 0 
-                        will be drawn on top of sprites. You must therefore choose a single colour 
-                        in palette position 0 to be the background colour for such tiles, and they 
-                        will have a "blank" background. Careful use of tile priority can make the 
+                        When a tile has its priority bit set, all pixels with index greater than 0
+                        will be drawn on top of sprites. You must therefore choose a single colour
+                        in palette position 0 to be the background colour for such tiles, and they
+                        will have a "blank" background. Careful use of tile priority can make the
                         graphics seem more multi-layered.
-                        */                    
+                        */
                     if (priority_pixel && byte_color==0) priority_pixel=0;
 
 
@@ -409,8 +409,8 @@ n = Pattern index, any one of 512 patterns in VRAM can be selected.
                     //maximo 64 colores de paleta
                     color_paleta &=63;
 
-                    
-                    
+
+
 
                     //No dibujar si x < 0. Esto sucede cuando se aplica scroll horizontal
                     //Similar para mayor de 255 cuando hay scroll x  y  hacemos 33 filas (parte de la ultima 33)
@@ -425,12 +425,12 @@ n = Pattern index, any one of 512 patterns in VRAM can be selected.
                             //TODO: que color? debe ser el del border
                             //TODO: esto creo que aplica tambien a sprites, en sonic por ejemplo los enemigos que se van
                             //por la izquierda se ven en esta columna oculta
-                            
+
                             //Y no ocultarlo si tenemos el setting de mostrar forzado columna 0
                             if (vdp_9918a_sms_force_show_column_zero.v==0) {
-                                color_paleta=vdp_9918a_sms_get_cram_color(vdp_9918a_get_border_color()); 
+                                color_paleta=vdp_9918a_sms_get_cram_color(vdp_9918a_get_border_color());
                             }
-                        }  
+                        }
 
                         if (reveal) {
                             int posx=xdestino&1;
@@ -445,7 +445,7 @@ n = Pattern index, any one of 512 patterns in VRAM can be selected.
                             int si_blanco_negro=posx ^ posy;
 
                             //Color 0 o 63 (negro / blanco)
-                            color_paleta=si_blanco_negro*(SMS_TOTAL_PALETTE_COLOURS-1);                            
+                            color_paleta=si_blanco_negro*(SMS_TOTAL_PALETTE_COLOURS-1);
                         }
 
                         int dibujar=0;
@@ -463,7 +463,7 @@ n = Pattern index, any one of 512 patterns in VRAM can be selected.
                         byte_leido1=byte_leido1>>1;
                         byte_leido2=byte_leido2>>1;
                         byte_leido3=byte_leido3>>1;
-                        byte_leido4=byte_leido4>>1;                                
+                        byte_leido4=byte_leido4>>1;
                     }
 
                     else {
@@ -473,11 +473,11 @@ n = Pattern index, any one of 512 patterns in VRAM can be selected.
                         byte_leido4=byte_leido4<<1;
                     }
 
-                    
+
                 }
 
                 }
-                
+
             }
 
 
@@ -486,7 +486,7 @@ n = Pattern index, any one of 512 patterns in VRAM can be selected.
 
     }
 
- 
+
 }
 
 int vdp_9918a_sms_get_sprite_height(void)
@@ -517,10 +517,10 @@ void vdp_9918a_render_sprites_sms_video_mode4_no_rainbow(z80_byte *vram)
 {
 
     z80_int sprite_pattern_table=vdp_9918a_get_sprite_pattern_table_sms_mode4();
-    
+
     z80_byte byte_leido1,byte_leido2,byte_leido3,byte_leido4;
 
-        
+
     //int sprite_size=vdp_9918a_get_sprite_size();
     int sprite_double=vdp_9918a_get_sprite_double();
 
@@ -542,7 +542,7 @@ TODO
  D2 - No effect
  D1 - Sprites are 1=16x16,0=8x8 (TMS9918), Sprites are 1=8x16,0=8x8 (Mode 4)
  D0 - Sprite pixels are doubled in size.
- */        
+ */
 
     //printf ("Sprite size: %d double: %d\n",sprite_size,sprite_double);
     //printf("Sprite size: 8x%d\n",(vdp_9918a_registers[1] & 2 ? 16 : 8));
@@ -576,7 +576,7 @@ remaining sprites of the 64 available will not be drawn. This only works
 in the 192-line display mode, in the 224 and 240-line modes a Y coordinate
 of $D0 has no special meaning.
     */
-    
+
     for (primer_sprite_final=0;primer_sprite_final<VDP_9918A_SMS_MODE4_MAX_SPRITES && !salir;primer_sprite_final++) {
         int offset_sprite=sprite_attribute_table+primer_sprite_final;
 
@@ -584,7 +584,7 @@ of $D0 has no special meaning.
         if (vert_pos==208) salir=1;
 
     }
-        
+
 
     //Siempre estara al siguiente
     primer_sprite_final--;
@@ -617,8 +617,8 @@ of $D0 has no special meaning.
  x = X coordinate
  n = Pattern index
  ? = Unused
-       
-*/        
+
+*/
 
     for (sprite=primer_sprite_final;sprite>=0;sprite--) {
         int vert_pos=vdp_9918a_read_vram_byte(vram,sprite_attribute_table+sprite);
@@ -644,7 +644,7 @@ to be taken from the first 256 or last 256 of the 512 available patterns.
 
         //Entre 255 y 256-32-> son coordenadas negativas
         if (vert_pos>=256-32) {
-            //printf ("sprite number: %d X: %d Y: %d Name: %d color_etc: %d\n",sprite,horiz_pos,vert_pos,sprite_name,attr_color_etc);                
+            //printf ("sprite number: %d X: %d Y: %d Name: %d color_etc: %d\n",sprite,horiz_pos,vert_pos,sprite_name,attr_color_etc);
             //printf ("Sprite Y negative: %d\n",vert_pos-256);
             vert_pos=vert_pos-256;
 
@@ -656,14 +656,14 @@ to be taken from the first 256 or last 256 of the 512 available patterns.
         //Si early clock, x-=32
 
         /*if (attr_color_etc & 128) {
-            //printf ("sprite number: %d X: %d Y: %d Name: %d color_etc: %d\n",sprite,horiz_pos,vert_pos,sprite_name,attr_color_etc);                
+            //printf ("sprite number: %d X: %d Y: %d Name: %d color_etc: %d\n",sprite,horiz_pos,vert_pos,sprite_name,attr_color_etc);
             horiz_pos -=32;
         }*/
 
         //printf ("sprite number: %d X: %d Y: %d Name: %d color_etc: %d\n",sprite,horiz_pos,vert_pos,sprite_name,attr_color_etc);
 
-    
-            
+
+
 
         //Si coord Y no esta en el borde inferior
         if (vert_pos<192) {
@@ -673,10 +673,10 @@ to be taken from the first 256 or last 256 of the 512 available patterns.
 
             int x,y;
 
-            
+
 
             //Sprites de 8x16 y 8x8
-            
+
 
                 for (y=0;y<sprite_height;y++) {
 
@@ -693,14 +693,14 @@ to be taken from the first 256 or last 256 of the 512 available patterns.
 
                         pos_x_final=horiz_pos+x*sprite_double;
                         pos_y_final=vert_pos+y*sprite_double;
-                        
+
                         if (pos_x_final>=0 && pos_x_final<=255 && pos_y_final>=0 && pos_y_final<=191) {
 
                             //Si bit a 1
                             if (1) {
                                 //Y si ese color no es transparente
 
-                                //TODO 
+                                //TODO
                                 //if (color!=0) {
                                 if (1) {
                                     //printf ("putpixel sprite x %d y %d\n",pos_x_final,pos_y_final);
@@ -709,7 +709,7 @@ to be taken from the first 256 or last 256 of the 512 available patterns.
 
 
 
-                                    //TODO: segunda paleta??  
+                                    //TODO: segunda paleta??
                                     z80_byte color_sprite=vdp_9918a_sms_cram[16 + (byte_color & 15)];
 
                                     //maximo 64 colores de paleta
@@ -729,12 +729,12 @@ to be taken from the first 256 or last 256 of the 512 available patterns.
 
                                         //Color 0 o 63 (negro / blanco)
                                         color_sprite=si_blanco_negro*(SMS_TOTAL_PALETTE_COLOURS-1);
-                                    }             
+                                    }
 
                                     //transparencia
-                                    if (byte_color!=0) {          
+                                    if (byte_color!=0) {
 
-                                        //if (x==0 && y==0) printf("Dibujando sprite %d\n",sprite);        
+                                        //if (x==0 && y==0) printf("Dibujando sprite %d\n",sprite);
 
 
                                         int mostrar=1;
@@ -742,12 +742,12 @@ to be taken from the first 256 or last 256 of the 512 available patterns.
                                         if (pos_x_final<=7 && (vdp_9918a_registers[0] & 32)) {
                                             //en sonic por ejemplo los enemigos que se van
                                             //por la izquierda se ven en esta columna oculta
-                                            
+
                                             //Y no ocultarlo si tenemos el setting de mostrar forzado columna 0
                                             if (vdp_9918a_sms_force_show_column_zero.v==0) {
-                                                mostrar=0; 
+                                                mostrar=0;
                                             }
-                                        }  
+                                        }
 
 
 
@@ -757,30 +757,30 @@ to be taken from the first 256 or last 256 of the 512 available patterns.
                                                 scr_putpixel_zoom(pos_x_final+1,  pos_y_final,    SMS_INDEX_FIRST_COLOR+color_sprite);
                                                 scr_putpixel_zoom(pos_x_final,    pos_y_final+1,  SMS_INDEX_FIRST_COLOR+color_sprite);
                                                 scr_putpixel_zoom(pos_x_final+1,  pos_y_final+1,  SMS_INDEX_FIRST_COLOR+color_sprite);
-                                            }             
-                                        }      
+                                            }
+                                        }
 
-                                    }                             
+                                    }
                                 }
                             }
                         }
 
-                    
-                        
+
+
                         byte_leido1=byte_leido1<<1;
                         byte_leido2=byte_leido2<<1;
                         byte_leido3=byte_leido3<<1;
-                        byte_leido4=byte_leido4<<1;                                    
+                        byte_leido4=byte_leido4<<1;
                     }
 
 
                 }
-            
+
 
         }
-        
 
-    }   
+
+    }
 
 
 }
@@ -800,14 +800,14 @@ void vdp_9918a_render_rainbow_display_line_sms(int scanline,z80_int *scanline_bu
 
     z80_int *destino_scanline_buffer_foreground;
     //printf("border: %d\n",screen_total_borde_izquierdo);
-    destino_scanline_buffer_foreground=&scanline_buffer_foreground[screen_total_borde_izquierdo];    
+    destino_scanline_buffer_foreground=&scanline_buffer_foreground[screen_total_borde_izquierdo];
 
-	int x,bit; 
+	int x,bit;
 	z80_int direccion_name_table;
     z80_byte byte_color;
-	
-	z80_int pattern_base_address; 
-	z80_int pattern_name_table; 
+
+	z80_int pattern_base_address;
+	z80_int pattern_name_table;
 
 
     pattern_base_address=vdp_9918a_get_pattern_base_address();
@@ -816,7 +816,7 @@ void vdp_9918a_render_rainbow_display_line_sms(int scanline,z80_int *scanline_bu
 
 	int char_width=8;
 
-	
+
 
     z80_byte byte_leido1,byte_leido2,byte_leido3,byte_leido4;
 
@@ -827,7 +827,7 @@ void vdp_9918a_render_rainbow_display_line_sms(int scanline,z80_int *scanline_bu
     pattern_name_table=vdp_9918a_get_pattern_name_table();
 
 
-    direccion_name_table=pattern_name_table;  
+    direccion_name_table=pattern_name_table;
 
 
     //scroll y
@@ -840,11 +840,11 @@ void vdp_9918a_render_rainbow_display_line_sms(int scanline,z80_int *scanline_bu
     scanline +=scroll_y_total;
 
     // In the regular 192-line display mode, the name table is 32x28 so the vertical scroll register wraps past 223
-    scanline = scanline  % 224;    
+    scanline = scanline  % 224;
 
 
     //El tratamiento del scroll en vertical es ligeramente diferente aqui en funcion rainbow o en funcion no rainbow
-    
+
 
 
     //Sumar el offset por linea
@@ -866,10 +866,10 @@ starting row, and the lower three bits are the fine scroll value.
     //z80_byte scroll_y_sublinea=scroll_y&7;
 
     //entre 0 y 7 dentro de la fila
-    
 
 
-    int scanline_fila=scanline % 8;  
+
+    int scanline_fila=scanline % 8;
 
 
     //TODO: la gestion de scroll fino en vertical y horizontal en modo rainbow, sera
@@ -902,7 +902,7 @@ games.
 Register $00 - Mode Control No. 1
 
 D7 - 1= Disable vertical scrolling for columns 24-31
-D6 - 1= Disable horizontal scrolling for rows 0-1  
+D6 - 1= Disable horizontal scrolling for rows 0-1
 D5 - 1= Mask column 0 with overscan color from register #7
 D4 - (IE1) 1= Line interrupt enable
 D3 - (EC) 1= Shift sprites left by 8 pixels
@@ -915,19 +915,19 @@ D0 - 1= No sync, display is monochrome, 0= Normal display
 
             //Las 2 primeras lineas no tendran scroll si bit D6
             //Esto lo usa juego Astro Flash
-            if (vdp_9918a_registers[0] & 64 && y<2) scroll_x=0; 
+            if (vdp_9918a_registers[0] & 64 && y<2) scroll_x=0;
 
 
             int columna_scroll_x;
             z80_byte scroll_x_fino;
-            
+
 
             //scroll_x_fino=(255-scroll_x) & 7;
 
             //En alguna documentacion he leido que esto se restaba de 32, en vez de 31, cosa que no tiene sentido:
             //en sonic por ejemplo provocaria que cuando se hace el primer desplazamiento, salta la columna de golpe a 1,
             //en vez de simplemente quedarse en columna 0 aunque scroll_x_fino logicamente pasa a 1
-            
+
 
 //columna
             /*
@@ -945,24 +945,24 @@ column drawn is number 2 from the name table.
 
             columna_scroll_x=(scroll_negado >>3)&31;
 
-                            
-            
 
-        
+
+
+
 
             //TODO: scroll_x fino se ve raro en boot de master system por ejemplo
-    
+
             //1 columna mas si hay scroll horizontal
-    
+
             int total_columnas=32;
 
             if (scroll_x_fino) total_columnas++;
 
         //printf("%d\n",total_columnas);
 
-        for (x=0;x<total_columnas;x++) {  
-            
-            
+        for (x=0;x<total_columnas;x++) {
+
+
 
             int final_x;
 
@@ -970,7 +970,7 @@ column drawn is number 2 from the name table.
             final_x=(x+columna_scroll_x) % 32;
 
 
-            
+
             int offset_tile=final_x*2+final_y*64;
             direccion_name_table=pattern_name_table+offset_tile;
 
@@ -980,10 +980,10 @@ column drawn is number 2 from the name table.
                     x,vdp_9918a_sms_get_scroll_horizontal(),columna_scroll_x,scroll_x_fino,final_x,offset_tile);
             }*/
             //if (y==0 && x==28) printf("---\n");
-            
+
             z80_int pattern_word=vdp_9918a_read_vram_byte(vram,direccion_name_table)+256*vdp_9918a_read_vram_byte(vram,direccion_name_table+1);
 
-            
+
             /*
             MSB          LSB
 ---pcvhn nnnnnnnn
@@ -1009,7 +1009,7 @@ n = Pattern index, any one of 512 patterns in VRAM can be selected.
             int priority_tile_bit=(pattern_word & 0x1000);
 
             if (vdp_9918a_force_bg_tiles.v) priority_tile_bit=0;
-            
+
 
             //z80_int pattern_address=(caracter*32+2048*tercio) ;
             z80_int pattern_address=(caracter*32) ; //32 bytes cada tile
@@ -1018,7 +1018,7 @@ n = Pattern index, any one of 512 patterns in VRAM can be selected.
 
 
             //scroll_y_sublinea
-            
+
             //Si tiene mirror vertical, empezamos con la ultima linea del pattern
             if (mirror_y) {
                 pattern_address +=(7-scanline_fila)*4;
@@ -1028,7 +1028,7 @@ n = Pattern index, any one of 512 patterns in VRAM can be selected.
                 pattern_address +=scanline_fila*4;
             }
 
-    
+
 
             //for (scanline=0;scanline<8;scanline++) {
 
@@ -1052,7 +1052,7 @@ n = Pattern index, any one of 512 patterns in VRAM can be selected.
 
                 //Similar para mayor de 192 cuando hay scroll y hacemos 25 filas (parte de la ultima 25)
                 //if (ydestino>=0 && ydestino<=191) {
-                    
+
                 for (bit=0;bit<char_width;bit++) {
 
                     int priority_pixel=priority_tile_bit;
@@ -1065,18 +1065,18 @@ n = Pattern index, any one of 512 patterns in VRAM can be selected.
                     else {
 
                         byte_color=((byte_leido1>>7)&1) | ((byte_leido2>>6)&2) | ((byte_leido3>>5)&4) | ((byte_leido4>>4)&8);
-                
+
                     }
 
                     //Si color 0 y capa en foreground, se pasa a background
                         /*
-                        When a tile has its priority bit set, all pixels with index greater than 0 
-                        will be drawn on top of sprites. You must therefore choose a single colour 
-                        in palette position 0 to be the background colour for such tiles, and they 
-                        will have a "blank" background. Careful use of tile priority can make the 
+                        When a tile has its priority bit set, all pixels with index greater than 0
+                        will be drawn on top of sprites. You must therefore choose a single colour
+                        in palette position 0 to be the background colour for such tiles, and they
+                        will have a "blank" background. Careful use of tile priority can make the
                         graphics seem more multi-layered.
-                        */                    
-                    if (priority_pixel && byte_color==0) priority_pixel=0;                    
+                        */
+                    if (priority_pixel && byte_color==0) priority_pixel=0;
 
 
                     int color_paleta=vdp_9918a_sms_cram[palette_offset+ (byte_color & 15)];
@@ -1084,8 +1084,8 @@ n = Pattern index, any one of 512 patterns in VRAM can be selected.
                     //maximo 64 colores de paleta
                     color_paleta &=63;
 
-                    
-                    
+
+
 
                     //No dibujar si x < 0. Esto sucede cuando se aplica scroll horizontal
                     //Similar para mayor de 255 cuando hay scroll x  y  hacemos 33 filas (parte de la ultima 33)
@@ -1100,12 +1100,12 @@ n = Pattern index, any one of 512 patterns in VRAM can be selected.
                             //TODO: que color? debe ser el del border
                             //TODO: esto creo que aplica tambien a sprites, en sonic por ejemplo los enemigos que se van
                             //por la izquierda se ven en esta columna oculta
-                            
+
                             //Y no ocultarlo si tenemos el setting de mostrar forzado columna 0
                             if (vdp_9918a_sms_force_show_column_zero.v==0) {
-                                color_paleta=vdp_9918a_sms_get_cram_color(vdp_9918a_get_border_color()); 
+                                color_paleta=vdp_9918a_sms_get_cram_color(vdp_9918a_get_border_color());
                             }
-                        }  
+                        }
 
                         //printf("xdestino: %d\n",xdestino);
                         //scr_putpixel_zoom(xdestino,ydestino,SMS_INDEX_FIRST_COLOR+color_paleta);
@@ -1127,7 +1127,7 @@ n = Pattern index, any one of 512 patterns in VRAM can be selected.
 
                                     //Color 0 o 63 (negro / blanco)
                                     color_paleta=si_blanco_negro*(SMS_TOTAL_PALETTE_COLOURS-1);
-                                }  
+                                }
 
                                 *destino_scanline_buffer_foreground=SMS_INDEX_FIRST_COLOR+color_paleta;
 
@@ -1152,24 +1152,24 @@ n = Pattern index, any one of 512 patterns in VRAM can be selected.
 
                                     //Color 0 o 63 (negro / blanco)
                                     color_paleta=si_blanco_negro*(SMS_TOTAL_PALETTE_COLOURS-1);
-                                }  
+                                }
 
                                 *destino_scanline_buffer=SMS_INDEX_FIRST_COLOR+color_paleta;
                             }
                         }
-                        destino_scanline_buffer++;    
+                        destino_scanline_buffer++;
                         destino_scanline_buffer_foreground++;
-                                            
+
                     }
 
-                    
+
 
 
                     if (mirror_x) {
                         byte_leido1=byte_leido1>>1;
                         byte_leido2=byte_leido2>>1;
                         byte_leido3=byte_leido3>>1;
-                        byte_leido4=byte_leido4>>1;                                
+                        byte_leido4=byte_leido4>>1;
                     }
 
                     else {
@@ -1179,18 +1179,18 @@ n = Pattern index, any one of 512 patterns in VRAM can be selected.
                         byte_leido4=byte_leido4<<1;
                     }
 
-                    
+
                 }
 
                 //}
-                
+
             //}
 
 
         }
 
 
-    
+
 
 }
 
@@ -1203,10 +1203,10 @@ void vdp_9918a_render_rainbow_sprites_line_post_sms(int scanline,z80_int *destin
 
 
    z80_int sprite_pattern_table=vdp_9918a_get_sprite_pattern_table_sms_mode4();
-    
+
     z80_byte byte_leido1,byte_leido2,byte_leido3,byte_leido4;
 
-        
+
     //int sprite_size=vdp_9918a_get_sprite_size();
     int sprite_double=vdp_9918a_get_sprite_double();
 
@@ -1214,7 +1214,7 @@ void vdp_9918a_render_rainbow_sprites_line_post_sms(int scanline,z80_int *destin
 
     //Asumimos que se resetea el bit 5S del status register
     //Bit  6    5S         1 if more than 4 sprites on a horizontal line
-    vdp_9918a_status_register&= (255-64);    
+    vdp_9918a_status_register&= (255-64);
 
 
     //TODO temp
@@ -1233,7 +1233,7 @@ TODO
  D2 - No effect
  D1 - Sprites are 1=16x16,0=8x8 (TMS9918), Sprites are 1=8x16,0=8x8 (Mode 4)
  D0 - Sprite pixels are doubled in size.
- */        
+ */
 
     //printf ("Sprite size: %d double: %d\n",sprite_size,sprite_double);
     //printf("Sprite size: 8x%d\n",(vdp_9918a_registers[1] & 2 ? 16 : 8));
@@ -1267,23 +1267,23 @@ remaining sprites of the 64 available will not be drawn. This only works
 in the 192-line display mode, in the 224 and 240-line modes a Y coordinate
 of $D0 has no special meaning.
     */
-    
+
     int maximo_sprites_por_linea=VDP_9918A_SMS_MAX_SPRITES_PER_LINE;
 
     //Si hay setting de no limite sprites por linea
     if (vdp_9918a_unlimited_sprites_line.v) {
         maximo_sprites_por_linea=9999;
-    }   
+    }
 
     for (primer_sprite_final=0;primer_sprite_final<VDP_9918A_SMS_MODE4_MAX_SPRITES && !salir;primer_sprite_final++) {
-                
+
         int offset_sprite=sprite_attribute_table+primer_sprite_final;
 
         z80_byte vert_pos=vdp_9918a_read_vram_byte(vram,offset_sprite);
         if (vert_pos==208) salir=1;
 
     }
-        
+
 
     //Siempre estara al siguiente
     primer_sprite_final--;
@@ -1316,8 +1316,8 @@ of $D0 has no special meaning.
  x = X coordinate
  n = Pattern index
  ? = Unused
-       
-*/        
+
+*/
 
     for (sprite=primer_sprite_final;sprite>=0 && sprites_en_linea<maximo_sprites_por_linea;sprite--) {
         int vert_pos=vdp_9918a_read_vram_byte(vram,sprite_attribute_table+sprite);
@@ -1343,7 +1343,7 @@ to be taken from the first 256 or last 256 of the 512 available patterns.
 
         //Entre 255 y 256-32-> son coordenadas negativas
         if (vert_pos>=256-32) {
-            //printf ("sprite number: %d X: %d Y: %d Name: %d color_etc: %d\n",sprite,horiz_pos,vert_pos,sprite_name,attr_color_etc);                
+            //printf ("sprite number: %d X: %d Y: %d Name: %d color_etc: %d\n",sprite,horiz_pos,vert_pos,sprite_name,attr_color_etc);
             //printf ("Sprite Y negative: %d\n",vert_pos-256);
             vert_pos=vert_pos-256;
 
@@ -1355,14 +1355,14 @@ to be taken from the first 256 or last 256 of the 512 available patterns.
         //Si early clock, x-=32
 
         /*if (attr_color_etc & 128) {
-            //printf ("sprite number: %d X: %d Y: %d Name: %d color_etc: %d\n",sprite,horiz_pos,vert_pos,sprite_name,attr_color_etc);                
+            //printf ("sprite number: %d X: %d Y: %d Name: %d color_etc: %d\n",sprite,horiz_pos,vert_pos,sprite_name,attr_color_etc);
             horiz_pos -=32;
         }*/
 
         //printf ("sprite number: %d X: %d Y: %d Name: %d color_etc: %d\n",sprite,horiz_pos,vert_pos,sprite_name,attr_color_etc);
 
-    
-            
+
+
 
         //Si posicion Y sprite esta en el margen
         //if (vert_pos<192) {
@@ -1377,12 +1377,12 @@ to be taken from the first 256 or last 256 of the 512 available patterns.
             //linea 0..7 dentro del sprite
             int fila_sprites=(scanline-vert_pos)/sprite_double;
 
-            offset_pattern_table +=fila_sprites*4;            
+            offset_pattern_table +=fila_sprites*4;
 
-            
+
 
             //Sprites de 8x16 y 8x8
-            
+
 
                 //for (y=0;y<sprite_height;y++) {
 
@@ -1399,14 +1399,14 @@ to be taken from the first 256 or last 256 of the 512 available patterns.
 
                         pos_x_final=horiz_pos+x*sprite_double;
                         //pos_y_final=vert_pos+y*sprite_double;
-                        
+
                         if (pos_x_final>=0 && pos_x_final<=255 /*&& pos_y_final>=0 && pos_y_final<=191*/) {
 
                             //Si bit a 1
                             if (1) {
                                 //Y si ese color no es transparente
 
-                                //TODO 
+                                //TODO
                                 //if (color!=0) {
                                 if (1) {
                                     //printf ("putpixel sprite x %d y %d\n",pos_x_final,pos_y_final);
@@ -1415,7 +1415,7 @@ to be taken from the first 256 or last 256 of the 512 available patterns.
 
 
 
-                                    //TODO: segunda paleta??  
+                                    //TODO: segunda paleta??
                                     z80_byte color_sprite=vdp_9918a_sms_cram[16 + (byte_color & 15)];
 
                                     //maximo 64 colores de paleta
@@ -1435,12 +1435,12 @@ to be taken from the first 256 or last 256 of the 512 available patterns.
 
                                         //Color 0 o 63 (negro / blanco)
                                         color_sprite=si_blanco_negro*(SMS_TOTAL_PALETTE_COLOURS-1);
-                                    }             
+                                    }
 
                                     //transparencia
-                                    if (byte_color!=0) {          
+                                    if (byte_color!=0) {
 
-                                        //if (x==0 && y==0) printf("Dibujando sprite %d\n",sprite);        
+                                        //if (x==0 && y==0) printf("Dibujando sprite %d\n",sprite);
 
 
                                         int mostrar=1;
@@ -1448,12 +1448,12 @@ to be taken from the first 256 or last 256 of the 512 available patterns.
                                         if (pos_x_final<=7 && (vdp_9918a_registers[0] & 32)) {
                                             //en sonic por ejemplo los enemigos que se van
                                             //por la izquierda se ven en esta columna oculta
-                                            
+
                                             //Y no ocultarlo si tenemos el setting de mostrar forzado columna 0
                                             if (vdp_9918a_sms_force_show_column_zero.v==0) {
-                                                mostrar=0; 
+                                                mostrar=0;
                                             }
-                                        }  
+                                        }
 
 
 
@@ -1465,33 +1465,33 @@ to be taken from the first 256 or last 256 of the 512 available patterns.
                                                 //scr_putpixel_zoom(pos_x_final+1,  pos_y_final,    SMS_INDEX_FIRST_COLOR+color_sprite);
                                                 //scr_putpixel_zoom(pos_x_final,    pos_y_final+1,  SMS_INDEX_FIRST_COLOR+color_sprite);
                                                 //scr_putpixel_zoom(pos_x_final+1,  pos_y_final+1,  SMS_INDEX_FIRST_COLOR+color_sprite);
-                                                
+
                                                 //TODO. Verificar esto
                                                 vdp9918a_put_sprite_pixel(&destino_scanline_buffer[pos_x_final+1],SMS_INDEX_FIRST_COLOR+color_sprite);
-                                            }             
-                                        }      
+                                            }
+                                        }
 
-                                    }                             
+                                    }
                                 }
                             }
                         }
 
-                    
-                        
+
+
                         byte_leido1=byte_leido1<<1;
                         byte_leido2=byte_leido2<<1;
                         byte_leido3=byte_leido3<<1;
-                        byte_leido4=byte_leido4<<1;                                    
+                        byte_leido4=byte_leido4<<1;
                     }
 
 
                 //}
-            
+
 
         }
-        
 
-    }   
+
+    }
 
 
 }
@@ -1557,10 +1557,10 @@ void screen_store_scanline_rainbow_solo_display_vdp_9918a_sms_3layer(z80_int *sc
         sms_scanline_buffer_sprites[i]=sms_scanline_buffer_tiles_background[i]=sms_scanline_buffer_tiles_foreground[i]=SMS_3LAYERS_TRANSPARENT_COLOUR;
     }
 
- 
+
     //Render las dos capas de tiles
     vdp_9918a_render_rainbow_display_line_sms(y_display,sms_scanline_buffer_tiles_background,sms_scanline_buffer_tiles_foreground,vram_memory_pointer);
-    
+
 
 
     //Render sprites
@@ -1592,7 +1592,7 @@ void screen_store_scanline_rainbow_solo_display_vdp_9918a_sms_3layer(z80_int *sc
         else {
             //Capa sprites no transparente?
             color_capa_sprites=sms_scanline_buffer_sprites[i];
-            if (color_capa_sprites!=SMS_3LAYERS_TRANSPARENT_COLOUR) scanline_buffer[i]=color_capa_sprites;            
+            if (color_capa_sprites!=SMS_3LAYERS_TRANSPARENT_COLOUR) scanline_buffer[i]=color_capa_sprites;
             else {
                 //Capa background no transparente?
                 color_capa_tiles_background=sms_scanline_buffer_tiles_background[i];
@@ -1610,8 +1610,8 @@ void screen_store_scanline_rainbow_solo_display_vdp_9918a_sms_3layer(z80_int *sc
         }
 
 
-    }     
-  
+    }
+
 
 }
 
@@ -1650,7 +1650,7 @@ void vdp_9918a_sms_raster_line_reset(void)
 }
 
 
-void vdp_9918a_sms_handle_raster_interrupt(void) 
+void vdp_9918a_sms_handle_raster_interrupt(void)
 {
 
     if (sms_disable_raster_interrupt.v) return;
@@ -1669,7 +1669,7 @@ void vdp_9918a_sms_handle_raster_interrupt(void)
             //if (vdp_9918a_registers[10]==0xFF) vdp_9918a_registers[0] &=(255-0x10);
 
 
-            //else 
+            //else
             vdp_9918a_sms_raster_line_reset();
 
 
@@ -1698,7 +1698,7 @@ void vdp_9918a_sms_handle_raster_interrupt(void)
                 */
 
                //if (vdp_9918a_registers[10]==0xFF) disparar_interrupcion=0;
-                
+
                 if (disparar_interrupcion) {
                     //printf("Fired Line interrupt enabled. Reg10: %d tscanline: %d\n",vdp_9918a_registers[10],t_scanline_draw);
                     //sms_pending_line_interrupt=1;
@@ -1749,7 +1749,7 @@ z80_byte vdp_9918a_sms_pre_write_reg(z80_byte vdp_register,z80_byte next_value)
                         next_value,vdp_9918a_registers[10],t_scanline_draw,vdp_9918a_sms_raster_line_counter,
                         reg_pc,reg_a,BC);
         */
-        
+
 
         /*
         //quiza si es 255 no altera su valor, solo desactiva la raster interrupt
@@ -1769,6 +1769,6 @@ z80_byte vdp_9918a_sms_pre_write_reg(z80_byte vdp_register,z80_byte next_value)
         }
 
     }
-              
+
     return next_value;
 }

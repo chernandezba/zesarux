@@ -224,13 +224,13 @@ z80_byte *get_base_mem_pantalla_continue(void)
         }
 			if (MACHINE_IS_BASECONF) {
 
-					
+
 
 					if (puerto_32765 & 8) {
 						return baseconf_ram_mem_table[7];
 					}
-					else return baseconf_ram_mem_table[5];	
-					
+					else return baseconf_ram_mem_table[5];
+
 				}
 
 				if (MACHINE_IS_TSCONF) {
@@ -246,7 +246,7 @@ z80_byte *get_base_mem_pantalla_continue(void)
 					if (puerto_32765 & 8) {
 						return tsconf_ram_mem_table[7];
 					}
-					else return tsconf_ram_mem_table[5];	
+					else return tsconf_ram_mem_table[5];
 					*/
 				}
 
@@ -301,7 +301,7 @@ z80_byte *get_base_mem_pantalla_continue(void)
     //TODO
 	if (MACHINE_IS_PCW) {
 		return memoria_spectrum;
-	}    
+	}
 
 	if (MACHINE_IS_SAM) {
 		return sam_ram_memory[0];
@@ -317,23 +317,23 @@ z80_byte *get_base_mem_pantalla_continue(void)
 
 	if (MACHINE_IS_MSX) {
 		return msx_vram_memory;
-	}	
+	}
 
 	if (MACHINE_IS_SVI) {
 		return svi_vram_memory;
-	}		
+	}
 
 	if (MACHINE_IS_COLECO) {
 		return coleco_vram_memory;
-	}		
+	}
 
 	if (MACHINE_IS_SG1000) {
 		return sg1000_vram_memory;
-	}		
+	}
 
 	if (MACHINE_IS_SMS) {
 		return sms_vram_memory;
-	}    
+	}
 
 	cpu_panic("get_base_mem_pantalla on this machine has no sense");
 
@@ -568,7 +568,7 @@ z80_byte mem_get_ram_page(void)
 	}
 
 	ram_entra=ram_entra|bit3|bit4|bit5;
-	
+
 	//en pentagon 1024, puerto eff7 bit 2 puede forzar 128kb
 	/*
 	From:
@@ -589,11 +589,11 @@ D2 = 1 - set 128 kB mode
 (if D2 of port EFF7=1 then D5 of port 7FFD is used for disable paging)
 D3 = 1 - disable rom and connect ram page 0 in adress space 0-3FFF
 	*/
-	
+
 	if (MACHINE_IS_PENTAGON && mem128_multiplicador==8 && (puerto_eff7 & 4) ) {
 	   ram_entra &= 7;
 	}
-	
+
 
 	//printf ("ram entra: %d\n",ram_entra);
 
@@ -675,7 +675,7 @@ void mem128_p2a_write_page_port(z80_int puerto, z80_byte value)
 				//Livingstone supongo II hace esto, continuamente cambia de Screen 5/7 y ademas cambia
 				//formato de paginas de 4,5,6,3 a 4,7,6,3 tambien continuamente
 				//Hay que tener en cuenta que pese a que no hace cambio de paginacion,
-				//si que permite cambiar de video shadow 5/7 ya que el puerto_32765 ya se ha escrito antes de entrar aqui				
+				//si que permite cambiar de video shadow 5/7 ya que el puerto_32765 ya se ha escrito antes de entrar aqui
 				return;
 			}
 
@@ -775,12 +775,12 @@ int mem_paging_is_enabled(void)
 	    //pentagon 1024 pero bloqueado a 128kb
 	    //dejar que siga al ultimo if
 	  }
-	  
+
 	  //no es pentagon
 	  else {
 	    return 1;
 	  }
-	  
+
 	}
 
 	if ((puerto_32765 & 32)==0) return 1;

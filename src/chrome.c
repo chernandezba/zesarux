@@ -175,7 +175,7 @@ void chrome_set_memory_pages(void)
 	Bit 0 If 1 maps banks 8 or 9 at 0000h (switch off rom).
 	Bit 1 High bit of ROM selection and bank 8 (0) or 9 (1) if bit0 = 1.
 	*/
-	
+
   z80_byte r0;
   r0=chrome_ram89_at_00();
 	if (r0) {

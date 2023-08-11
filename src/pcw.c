@@ -214,7 +214,7 @@ z80_byte pcw_get_mask_bank_ram(void)
 {
     //Si pcw_total_ram=256*1024, mascara 15
     //Si pcw_total_ram=512*1024, mascara 31
-    
+
     int max_banks=pcw_total_ram/16384;
 
     return max_banks-1;
@@ -232,8 +232,8 @@ void pcw_set_memory_pages(void)
 
     for (i=0;i<4;i++) {
 
-        //Sending the bank number (with b7 set) to one of ports &F0-&F3 selects that bank for reading and writing. 
-        //Sending the bank number for writing to b0-2 of a port and the bank for reading to b4-b6 (with b7 reset) 
+        //Sending the bank number (with b7 set) to one of ports &F0-&F3 selects that bank for reading and writing.
+        //Sending the bank number for writing to b0-2 of a port and the bank for reading to b4-b6 (with b7 reset)
         //maps separate banks in for reading and writing: this can only be used for the first 8 banks.
 
         bank=pcw_bank_registers[i];
@@ -242,7 +242,7 @@ void pcw_set_memory_pages(void)
         //hacen out F3,3, cuando realmente lo que quieren hacer es paginar en el modo extendido (sin tener el bit 7 alzado)
         //Con eso cargan los de opera, batman y demas...
         //bank |=128;
-        
+
 
         if (bank & 128) {
             //PCW (“extended”) paging mode
@@ -311,7 +311,7 @@ void pcw_reset(void)
     pcw_bank_registers[0]=0x80;
     pcw_bank_registers[1]=0x81;
     pcw_bank_registers[2]=0x82;
-    pcw_bank_registers[3]=0x83; 
+    pcw_bank_registers[3]=0x83;
 
     //Importante esto en arranque, si no, no van juegos de Opera por ejemplo
     pcw_port_f4_value=0xF1;
@@ -416,7 +416,7 @@ void pcw_out_port_f7(z80_byte value)
 
     modificado_border.v=1;
 
-    
+
 }
 
 
@@ -441,9 +441,9 @@ void pcw_interrupt_from_pd765(void)
         //TODO: No estoy seguro de lo siguiente
         //pcw_interrupt_from_pd765_type=0;
         //sleep(2);
-        
+
     }
-        
+
     //TODO Revisar esto. solo se genera cuando esta EI???
     if (pcw_interrupt_from_pd765_type==2) {
         //printf("Generate Maskable interrupt triggered from pd765\n");
@@ -453,22 +453,22 @@ void pcw_interrupt_from_pd765(void)
         //temp
         //pcw_interrupt_from_pd765_type=0;
         //sleep(3);
-        
+
     }
 }
 
 void pcw_out_port_f8(z80_byte value)
 {
-    
+
     //printf("PCW set port F8 value %02XH reg_pc %04XH\n",value,reg_pc);
 
     /*
-    0 end bootstrap, 
-    1 reboot, 
-    2/3/4 connect FDC to NMI/standard interrupts/neither, 
-    5/6 set/clear FDC terminal count, 
-    7/8 screen on/off (for external video), 
-    9/10 disc motor on/off, 
+    0 end bootstrap,
+    1 reboot,
+    2/3/4 connect FDC to NMI/standard interrupts/neither,
+    5/6 set/clear FDC terminal count,
+    7/8 screen on/off (for external video),
+    9/10 disc motor on/off,
     11/12 beep on/off
     */
 
@@ -485,7 +485,7 @@ void pcw_out_port_f8(z80_byte value)
             reg_pc=0;
 
             //Recargar contenido del boot de RAM
-            rom_load(NULL);            
+            rom_load(NULL);
         break;
 
         /*
@@ -521,7 +521,7 @@ void pcw_out_port_f8(z80_byte value)
         break;
 
         case 6:
-            //printf("Reset Terminal count\n"); 
+            //printf("Reset Terminal count\n");
             //Tal y como tenemos implementado el set, esto ya no tiene sentido
             //pd765_reset_terminal_count_signal();
         break;
@@ -529,7 +529,7 @@ void pcw_out_port_f8(z80_byte value)
 
         case 9:
             dsk_show_activity();
-            pd765_motor_on();        
+            pd765_motor_on();
         break;
 
         case 10:
@@ -539,20 +539,20 @@ void pcw_out_port_f8(z80_byte value)
         break;
 
         case 11:
-            
+
             //Trivial pursuit por ejemplo reproduce musica con este beeper
             //printf("set beeper\n");
             value_beeper=100;
         break;
 
         case 12:
-            
+
             //printf("reset beeper\n");
             value_beeper=0;
         break;
 
     }
-   
+
 }
 
 void pcw_increment_interrupt_counter(void)
@@ -572,12 +572,12 @@ z80_byte pcw_get_port_f8_value(void)
     z80_byte return_value=pcw_port_f8_value;
 
     if (pd765_interrupt_pending) {
-        
+
         //printf("Return F8 FDC interrupt\n");
 
         //printf("pd765_terminal_count_signal.v: %d\n",pd765_terminal_count_signal.v);
         return_value|=0x20;
-        
+
         //sleep(1);
     }
     else {
@@ -597,7 +597,7 @@ z80_byte pcw_in_port_f8(void)
 {
     //printf("LEE puerto F8H\n");
     return pcw_get_port_f8_value();
-        
+
 
 }
 
@@ -620,7 +620,7 @@ z80_byte pcw_in_port_f4(void)
 z80_byte pcw_in_port_fd(void)
 {
     //printf("LEE puerto FDH on PC=%04XH\n",reg_pc);
-    //Impresora. TODO completar    
+    //Impresora. TODO completar
     return 0x40; //bit 6: If 1, printer has finished.
 }
 
@@ -635,13 +635,13 @@ void pcw_keyboard_ticker_update(void)
     //3FFFh bit 7 is 1 if the keyboard is currently transmitting its state to the PCW, 0 if it is scanning its keys.
 	pcw_keyboard_table[15] &= 0x3F;
 	if (pcw_keyboard_ticker_update_counter & 1) pcw_keyboard_table[15] |= 0x80;
-	if (pcw_keyboard_ticker_update_counter & 2) pcw_keyboard_table[15] |= 0x40;    
+	if (pcw_keyboard_ticker_update_counter & 2) pcw_keyboard_table[15] |= 0x40;
 }
 
 z80_byte pcw_read_keyboard(z80_int dir)
 {
     /*
-The PCW's keyboard is directly mapped into the last 16 bytes of bank 3, even when interrupts are disabled. 
+The PCW's keyboard is directly mapped into the last 16 bytes of bank 3, even when interrupts are disabled.
 Each key is reflected by one bit in bytes &3FF0-&3FFA.
 b7:   k2     k1     [+]    .      ,      space  V      X      Z      del<   alt
 b6:   k3     k5     1/2    /      M      N      B      C      lock          k.
@@ -653,16 +653,16 @@ b1:   k0     ptr    ]      -      9      7      5      3      2             extr
 b0:   f4     exit   del>   =      0      8      6      4      1             f6
       &3FF0  &3FF1  &3FF2  &3FF3  &3FF4  &3FF5  &3FF6  &3FF7  &3FF8  &3FF9  &3FFA
 Bytes &3FFB-&3FFF reflect the keyboard in a different, incomplete way. These bytes are also used by Creative Technology's KeyMouse (in its standard "MicroDesign mode") and the Teqniche 102-key keyboard to provide additional functionality, creating some incompatibilities along the way. Among the more interesting mappings are the following:
-&3FFB	Standard keyboard  
+&3FFB	Standard keyboard
 KeyMouse	b7-b0 unused (0)
 b6-b0 horizontal movement counter.
 &3FFC	KeyMouse	b7-b6 high bits of vertical movement counter.
 &3FFD	All
-Standard keyboard 
-KeyMouse	b7 always set; b6 current state of SHIFT LOCK 
-b3-b0 cursor keys, b4 matrix key 
+Standard keyboard
+KeyMouse	b7 always set; b6 current state of SHIFT LOCK
+b3-b0 cursor keys, b4 matrix key
 b3-b0 low bits of vertical movement counter.
-&3FFE	KeyMouse	b7 left button, b6 right button.    
+&3FFE	KeyMouse	b7 left button, b6 right button.
     */
 
     //Quedarnos con ultimo byte de la direccion
@@ -673,7 +673,7 @@ b3-b0 low bits of vertical movement counter.
 
     //Teclas al pulsar activan bit
 
-    
+
     /*
 
 3FFFh bit 7 is 1 if the keyboard is currently transmitting its state to the PCW, 0 if it is scanning its keys.
@@ -695,13 +695,13 @@ If no keyboard is present, all 16 bytes of the memory map are zero.
     //if (fila==0xF) sleep(1);
 
     //3FFDh bit 7 is 0 if LK2 is present, 1 if not.
-    
+
     if (fila==0xD) return_value |=128;
 
     //Si hay algun tipo de joystick de pcw habilitado, las teclas de cursor no retornarlas
     //Estos joysticks se pueden probar con juego Head Over Heels
     //DKtronics tambien en knight lore
-    if (joystick_emulation==JOYSTICK_KEMPSTON || joystick_emulation==JOYSTICK_PCW_CASCADE 
+    if (joystick_emulation==JOYSTICK_KEMPSTON || joystick_emulation==JOYSTICK_PCW_CASCADE
         || joystick_emulation==JOYSTICK_PCW_DKTRONICS || joystick_emulation==JOYSTICK_OPQA_SPACE) {
         if (fila==1) {
             //left y up
@@ -717,7 +717,7 @@ If no keyboard is present, all 16 bytes of the memory map are zero.
         }
 
 
-    }   
+    }
 
     //Soporte joystick opqa space. Muchos (la mayoria?) de opera soft
     if (joystick_emulation==JOYSTICK_OPQA_SPACE && !zxvision_key_not_sent_emulated_mach()) {
@@ -732,13 +732,13 @@ If no keyboard is present, all 16 bytes of the memory map are zero.
 
         if (fila==5) {
             if ((puerto_especial_joystick&16)) return_value |=128;  //fire1. space
-        }        
+        }
 
         if (fila==8) {
             if ((puerto_especial_joystick&8)) return_value |=8;   //up. Q
             if ((puerto_especial_joystick&4)) return_value |=32;  //down. A
-        }        
-  
+        }
+
 
     }
 
@@ -748,7 +748,7 @@ If no keyboard is present, all 16 bytes of the memory map are zero.
     //sleep(1);
 
 
-   
+
     return return_value;
 }
 
@@ -769,7 +769,7 @@ z80_byte pcw_in_port_9f(void)
 
     }
 
-    return valor_joystick;   
+    return valor_joystick;
 }
 
 //Puerto joystick cascade
@@ -789,9 +789,9 @@ z80_byte pcw_in_port_e0(void)
 
     }
 
-    return valor_joystick;   
+    return valor_joystick;
 }
- 
+
 z80_byte pcw_in_port_dktronics_joystick(void)
 {
     //Retornar tal cual registro del chip
@@ -809,7 +809,7 @@ z80_byte pcw_in_port_dktronics_joystick(void)
 
     }
 
-    return valor_joystick;       
+    return valor_joystick;
 }
 
 void pcw_putpixel_border(int x,int y,unsigned int color)
@@ -849,7 +849,7 @@ void scr_refresca_border_pcw(unsigned int color)
     }
 
     //laterales
-    
+
     for (y=0;y<alto_pantalla*zoom_y;y++) {
         for (x=0;x<ancho_border*zoom_x;x++) {
             pcw_putpixel_border(x,alto_border*zoom_y+y,color);
@@ -857,7 +857,7 @@ void scr_refresca_border_pcw(unsigned int color)
         }
 
     }
-        
+
 
 }
 
@@ -870,7 +870,7 @@ void scr_refresca_pant_pcw_return_line_pointer(z80_byte roller_ram_bank,z80_int 
     z80_byte *puntero_roller_ram;
 
     puntero_roller_ram=pcw_ram_mem_table[roller_ram_bank];
-    puntero_roller_ram +=roller_ram_offset;    
+    puntero_roller_ram +=roller_ram_offset;
 
     z80_int valor=*puntero_roller_ram+256*puntero_roller_ram[1];
 
@@ -940,8 +940,8 @@ void pcw_refresca_putpixel(int x,int y,int color)
 Modo 0 (720x256x2), el nativo del PCW: negro y verde, o Negro y blanco, a elegir vía puente.
 Modo 1 (360x256x4): los colores de la paleta 1 con intensidad del modo de 4 colores de la CGA.
 Modo 2 (180x256x16): los colores de la paleta de la CGA (los 16 clásicos que trae por defecto la EGA).
-Modo 3 (360x256x16): los mismos colores que el modo 2. Aquí tenemos píxeles cuadrados, como el modo 1 
-    pero con los colores del modo 2. ¿La trampa? Es un modo de atributos: no podemos tener más de dos colores 
+Modo 3 (360x256x16): los mismos colores que el modo 2. Aquí tenemos píxeles cuadrados, como el modo 1
+    pero con los colores del modo 2. ¿La trampa? Es un modo de atributos: no podemos tener más de dos colores
     distintos en una celda 1x8. Facilita mucho portar cosas de Spectrum, MSX, Thomson, … Y si mantenemos los colores
     tenemos la mitad de memoria de vídeo, con lo que es más rápido el volcado, movimiento de sprites, etc.
 */
@@ -967,7 +967,7 @@ void scr_refresca_pantalla_pcw(void)
 
     //printf("Roller ram: bank: %02XH Offset: %02XH\n",roller_ram_bank,roller_ram_offset);
 
-    
+
     int x,y,scanline;
 
     for (y=0;y<256;y+=8) {
@@ -977,7 +977,7 @@ void scr_refresca_pantalla_pcw(void)
 
         //roller_ram_offset+=2;
         for (x=0;x<720;x+=8) {
-            
+
             for (scanline=0;scanline<8;scanline++) {
                 int yfinal=y+scanline;
 
@@ -1005,12 +1005,12 @@ void scr_refresca_pantalla_pcw(void)
 
                 //Reverse video
                 //Ejemplo de juego que usa reverse video: skywar.dsk
-                if ((pcw_port_f7_value & 0x80) && pcw_do_not_inverse_display.v==0) {                   
+                if ((pcw_port_f7_value & 0x80) && pcw_do_not_inverse_display.v==0) {
                     byte_leido ^=255;
-                }                
+                }
 
                 //Si pantalla no activa
-                if (!(pcw_port_f7_value & 0x40) && pcw_always_on_display.v==0) byte_leido=0;                
+                if (!(pcw_port_f7_value & 0x40) && pcw_always_on_display.v==0) byte_leido=0;
 
                 int bit;
                 int pixel_color;
@@ -1037,11 +1037,11 @@ void scr_refresca_pantalla_pcw(void)
                         pcw_refresca_putpixel_mode1(x+bit+1,y+scanline,pixel_color);
 
                         byte_leido=byte_leido<<2;
-                    }                    
+                    }
                 }
 
                 if (pcw_video_mode==2) {
-                    for (bit=0;bit<8;bit+=4) {           
+                    for (bit=0;bit<8;bit+=4) {
 
                         pixel_color=(byte_leido>>4) & 0xF;
 
@@ -1052,8 +1052,8 @@ void scr_refresca_pantalla_pcw(void)
                         pcw_refresca_putpixel_mode2(x+bit+3,y+scanline,pixel_color);
 
                         byte_leido=byte_leido<<4;
-                    }                    
-                }                
+                    }
+                }
             }
         }
     }
@@ -1130,7 +1130,7 @@ void pcw_handle_end_boot_disk(void)
 
     if (reg_pc==pcw_was_booting_disk_address) {
         DBG_PRINT_PCW VERBOSE_DEBUG,"Reached end of boot");
-        pcw_was_booting_disk_enabled=0; 
+        pcw_was_booting_disk_enabled=0;
 
 
         //Si habia disco insertado antes, reinsertar
@@ -1148,13 +1148,13 @@ void pcw_handle_end_boot_disk(void)
 
             noautoload.v=antes_noautoload;
         }
-		
+
     }
 }
 
 void pcw_boot_dsk_generic(char *filename,z80_int address_end_boot)
 {
-    
+
 
 	char buffer_nombre[PATH_MAX];
 
@@ -1168,12 +1168,12 @@ void pcw_boot_dsk_generic(char *filename,z80_int address_end_boot)
 		dsk_insert_disk(buffer_nombre);
 
 		dskplusthree_enable();
-		pd765_enable();  
+		pd765_enable();
 
-        //esté o no el autoload, hacemos reset   
-        reset_cpu();  
+        //esté o no el autoload, hacemos reset
+        reset_cpu();
 
-        
+
         if (address_end_boot && pcw_boot_reinsert_previous_dsk.v) {
             pcw_was_booting_disk_enabled=1;
             pcw_was_booting_disk_address=address_end_boot;
@@ -1183,7 +1183,7 @@ void pcw_boot_dsk_generic(char *filename,z80_int address_end_boot)
 
 	else {
         DBG_PRINT_PCW VERBOSE_ERR,"%s image not found",filename);
-	}    
+	}
 }
 
 void pcw_boot_locoscript(void)
@@ -1258,7 +1258,7 @@ void pcw_boot_check_dsk_not_bootable(void)
         //Esto no deberia suceder, pues CP/M es botable,
         //pero si por algo fallase, nos quedariamos en un bucle continuo de reinicios
         pcw_boot_timer=0;
-    }   
+    }
 
 }
 

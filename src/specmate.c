@@ -111,7 +111,7 @@ z80_byte cpu_core_loop_specmate(z80_int dir GCC_UNUSED, z80_byte value GCC_UNUSE
     specmate: parece que se desmapea rom al llegar a la 71H, esto en la rom normal:
     70H POP HL
     71H POP AF
-    72H RETN    
+    72H RETN
     */
 
     //Direccion de retorno
@@ -124,7 +124,7 @@ z80_byte cpu_core_loop_specmate(z80_int dir GCC_UNUSED, z80_byte value GCC_UNUSE
 
     //Ese PUSH AF se encuentra tambien logicamente en la rom normal:
     //66H PUSH AF
-    //67H PUSH HL    
+    //67H PUSH HL
 
     if (specmate_mapped_rom_memory.v && reg_pc==0x71) {
         //printf("Unmapping specmate rom from dir %X\n",reg_pc);
@@ -135,7 +135,7 @@ z80_byte cpu_core_loop_specmate(z80_int dir GCC_UNUSED, z80_byte value GCC_UNUSE
     debug_nested_core_call_previous(specmate_nested_id_core);
 
     //Para que no se queje el compilador, aunque este valor de retorno no lo usamos
-    return 0;    
+    return 0;
 
 }
 
@@ -144,7 +144,7 @@ void specmate_nmi(void)
     if (specmate_mapped_rom_memory.v==0) {
         debug_printf(VERBOSE_DEBUG,"Enabling specmate memory from nmi triggered");
         specmate_mapped_rom_memory.v=1;
-    }   
+    }
 }
 
 
@@ -210,7 +210,7 @@ int specmate_load_rom(void)
 void specmate_alloc_memory(void)
 {
 
-    int size=SPECMATE_ROM_SIZE;  
+    int size=SPECMATE_ROM_SIZE;
 
     debug_printf (VERBOSE_DEBUG,"Allocating %d kb of memory for specmate emulation",size/1024);
 

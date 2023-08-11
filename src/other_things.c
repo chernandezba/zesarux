@@ -1,5 +1,5 @@
 /*
-    ZEsarUX  ZX Second-Emulator And Released for UniX 
+    ZEsarUX  ZX Second-Emulator And Released for UniX
     Copyright (C) 2013 Cesar Hernandez Bano
 
     This file is part of ZEsarUX.
@@ -22,11 +22,11 @@
 
 /*
 
-Hi there! This is not really a source code file, this is an easter egg! 
+Hi there! This is not really a source code file, this is an easter egg!
 Congratulations!
 
-Actually this is a file where I list all the easter eggs in ZEsarUX, 
-so you can easily try them. 
+Actually this is a file where I list all the easter eggs in ZEsarUX,
+so you can easily try them.
 
 Please, keep the list secret and don't tell anyone,
 let's keep the magic :)
@@ -46,7 +46,7 @@ So, the list:
 - ZX Desktop Enabled: Go to the about menu, double click on the image (you need multitasking
 for the double click to be detected)
 
-- ZX Desktop Disabled: Go to the about menu, press f key (used to find text). 
+- ZX Desktop Disabled: Go to the about menu, press f key (used to find text).
 Just press enter with no text to find. You'll see a cursor in the window,
 select the second line and press Enter...
 

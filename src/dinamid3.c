@@ -98,7 +98,7 @@ void dinamid3_nmi(void)
     if (dinamid3_mapped_rom_memory.v==0) {
         debug_printf(VERBOSE_DEBUG,"Enabling dinamid3 memory from nmi triggered");
         dinamid3_mapped_rom_memory.v=1;
-    }   
+    }
 }
 
 
@@ -163,7 +163,7 @@ int dinamid3_load_rom(void)
 void dinamid3_alloc_memory(void)
 {
 
-    int size=DINAMID3_ROM_SIZE;  
+    int size=DINAMID3_ROM_SIZE;
 
     debug_printf (VERBOSE_DEBUG,"Allocating %d kb of memory for dinamid3 emulation",size/1024);
 

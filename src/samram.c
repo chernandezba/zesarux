@@ -69,7 +69,7 @@ z80_byte samram_settings_byte;
     joystick, as a normal Kempston joystickinterface would.  If written to,
     the port controls a programmable latch chip (the 74LS259) which
     contains 8 latches:
- 
+
 
        Bit    7   6   5   4   3   2   1   0
             ÚÄÄÄÂÄÄÄÂÄÄÄÂÄÄÄÂÄÄÄÂÄÄÄÂÄÄÄÂÄÄÄ¿
@@ -110,7 +110,7 @@ z80_byte samram_settings_byte;
 */
 
 //retorna direccion a memoria samram que hace referencia dir
-//NULL si no es memoria samram 
+//NULL si no es memoria samram
 
 /*
 Samram tambien usa opcodes nuevos (que entiendo que solo funcionaban en el emulador)
@@ -131,14 +131,14 @@ Otros posibles:
 ORG 0B7+(24 SHL 8)              ;ED FB
 LDOBHLA:                                ;Used in SamRam ROM, but also multi
 
-        
+
 
 TABLES.8
 ED_TABLE:
 ...
 
   F8    F9      FA     FB      FC       FD       FE
-queer1,queer2,ldobahl,ldobhla,getbyte,sendbyte,ldromhla        
+queer1,queer2,ldobahl,ldobhla,getbyte,sendbyte,ldromhla
 */
 
 
@@ -185,7 +185,7 @@ void samram_opcode_edf9(void)
 
 //INC H
 	inc_8bit(reg_h);
-    
+
 
 
 }
@@ -199,7 +199,7 @@ void samram_opcode_edfa(void)
 
     if (HL<32768) reg_a=debug_nested_peek_byte_no_time_call_previous(samram_nested_id_peek_byte,HL);
 
-    
+
     else {
         //reg_a=samram_peek_byte_no_time(HL,0);
         //reg_a=debug_nested_peek_byte_no_time_call_previous(samram_nested_id_peek_byte,HL);
@@ -220,10 +220,10 @@ void samram_opcode_edfa(void)
         }
 
     }
-    
-    
-    
-    //reg_a=samram_memory_pointer[HL];    
+
+
+
+    //reg_a=samram_memory_pointer[HL];
 }
 
 
@@ -245,15 +245,15 @@ void samram_opcode_edfb(void)
         }
         else {
             samram_memory_pointer[HL]=reg_a;
-        }        
+        }
 
     }
-    
+
 }
 
 void samram_opcode_edfe(void)
 {
-    //printf("EDFE=ROMPOKE HL,A HL=%d\n",HL);    
+    //printf("EDFE=ROMPOKE HL,A HL=%d\n",HL);
 
     debug_nested_poke_byte_no_time_call_previous(samram_nested_id_poke_byte,HL,reg_a);
 }
@@ -308,22 +308,22 @@ z80_byte *samram_check_if_sam_area(z80_int dir,int writing)
 
     //rom mapeada, ver cual
     int romblock=samram_get_rom_mapped();
-    
+
     int offset=dir+16384*romblock;
     //printf("romblock %d\n",romblock);
     return &samram_memory_pointer[offset];
-    
+
   }
-  
+
   //si mayor 32767
   if (dir>32767) {
-      
+
     if (samram_settings_byte & 32) {
         int offset=dir; //la shadow ram esta justo despues de la rom
         return &samram_memory_pointer[offset];
     }
   }
-  
+
   return NULL;
 }
 
@@ -338,8 +338,8 @@ z80_byte samram_poke_byte(z80_int dir,z80_byte valor)
     //Llamar a anterior
     //pero no cuando escribimos en shadow ram
     int escribir=1;
-    
-    
+
+
     z80_byte *samdir;
     samdir=samram_check_if_sam_area(dir,1);
     if (samdir!=NULL) {
@@ -348,7 +348,7 @@ z80_byte samram_poke_byte(z80_int dir,z80_byte valor)
             //printf("Poke byte shadow ram %d\n",dir);
             escribir=0;
         }
-        
+
         *samdir=valor;
     }
 
@@ -367,8 +367,8 @@ z80_byte samram_poke_byte_no_time(z80_int dir,z80_byte valor)
     //Llamar a anterior
     //pero no cuando escribimos en shadow ram
     int escribir=1;
-    
-    
+
+
     z80_byte *samdir;
     samdir=samram_check_if_sam_area(dir,1);
     if (samdir!=NULL) {
@@ -377,7 +377,7 @@ z80_byte samram_poke_byte_no_time(z80_int dir,z80_byte valor)
             //printf("Poke byte shadow ram %d\n",dir);
             escribir=0;
         }
-        
+
         *samdir=valor;
     }
 
@@ -385,8 +385,8 @@ z80_byte samram_poke_byte_no_time(z80_int dir,z80_byte valor)
 
 
     //Para que no se queje el compilador, aunque este valor de retorno no lo usamos
-    return 0;        
-        
+    return 0;
+
 
 }
 
@@ -402,7 +402,7 @@ z80_byte samram_peek_byte(z80_int dir,z80_byte value GCC_UNUSED)
         if (samdir!=NULL) {
           if (dir>32767) {
                //printf("peek byte shadow ram %d\n",dir);
-           }            
+           }
            return *samdir;
         }
 
@@ -415,13 +415,13 @@ z80_byte samram_peek_byte_no_time(z80_int dir,z80_byte value GCC_UNUSED)
 
 	z80_byte valor_leido=debug_nested_peek_byte_no_time_call_previous(samram_nested_id_peek_byte_no_time,dir);
 
-	
+
 	z80_byte *samdir;
         samdir=samram_check_if_sam_area(dir,0);
         if (samdir!=NULL) {
           if (dir>32767) {
                //printf("peek byte shadow ram %d\n",dir);
-           }               
+           }
            return *samdir;
         }
 
@@ -459,7 +459,7 @@ void samram_restore_peek_poke_functions(void)
 
 void samram_alloc_memory(void)
 {
-        int size=SAMRAM_SIZE;  
+        int size=SAMRAM_SIZE;
 
         debug_printf (VERBOSE_DEBUG,"Allocating %d kb of memory for samram emulation",size/1024);
 
@@ -528,16 +528,16 @@ void samram_enable(void)
 
 	samram_enabled.v=1;
 
-	
+
 	//samram_settings_byte=2; //no mapeado
 
 	samram_settings_byte=0; //activar cmos ram y seleccionar bank 0
 
 
 	joystick_emulation=JOYSTICK_KEMPSTON;
-	debug_printf(VERBOSE_DEBUG,"Setting joystick 1 emulation to Kempston as NMI menu needs it");    
+	debug_printf(VERBOSE_DEBUG,"Setting joystick 1 emulation to Kempston as NMI menu needs it");
 
-	reset_cpu();    
+	reset_cpu();
 
 
 
@@ -585,22 +585,22 @@ void samram_write_port(z80_byte value)
   //printf ("write sam ram value %02XH\n",value);
 
   int bitvalue=value&1;
-  
+
   int bitnumber=(value>>1)&7;
-  
+
   //samram_settings_byte
   z80_byte maskzero=1;
-  
+
   maskzero=maskzero<<bitnumber;
-  
+
   maskzero ^=255;
-  
+
   //poner a cero
   samram_settings_byte &=maskzero;
-  
+
   //y OR con valor
   bitvalue=bitvalue<<bitnumber;
-  
+
   samram_settings_byte |=bitvalue;
 
   //printf ("write sam ram final settings %02XH\n",samram_settings_byte);
@@ -615,7 +615,7 @@ void samram_write_port(z80_byte value)
         printf("0      Switch on write protect of CMOS RAM\n");
       break;
 
-            
+
                   case 1:
         printf("1          Writes to CMOS RAM allowed\n");
               break;

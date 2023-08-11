@@ -246,7 +246,7 @@ void instruccion_ed_36 ()
                 }
 
                 reg_a=result_a;
-        }  
+        }
         else invalid_opcode_ed("237 36");
 }
 
@@ -255,7 +255,7 @@ void instruccion_ed_37 ()
         if (MACHINE_IS_TBBLUE) {
                 //ld  hl,sp         ED 25          4+4 transfer SP to HL
                 HL=reg_sp;
-        }  
+        }
         else invalid_opcode_ed("237 37");
 }
 
@@ -266,16 +266,16 @@ void instruccion_ed_38 ()
 
 void instruccion_ed_39 ()
 {
-  
+
         if (MACHINE_IS_TBBLUE) {
                 //test N            ED 27           4+4+3 And A with $XX and set all flags. A is not affected.
                 //mismo que AND N pero sin afectar A
                 z80_byte valor=lee_byte_pc();
                 z80_byte temp_a=reg_a;
-                temp_a &= valor; 
-                Z80_FLAGS=FLAG_H | sz53p_table[temp_a]; 
+                temp_a &= valor;
+                Z80_FLAGS=FLAG_H | sz53p_table[temp_a];
 
-        }  
+        }
 
         else invalid_opcode_ed("237 39");
 }
@@ -397,7 +397,7 @@ void instruccion_ed_48 ()
         if (MACHINE_IS_TBBLUE) {
 		//mul  d,e          ED 30          4+4  D*E = DE
                 z80_int resultado=reg_d*reg_e;
-	
+
 		reg_d=value_16_to_8h(resultado);
 		reg_e=value_16_to_8l(resultado);
         }
@@ -411,7 +411,7 @@ void instruccion_ed_49 ()
                 //add  hl,a         ED 31          4+4  Add A to HL (no flags set)
                 HL +=reg_a;
         }
-        
+
         else invalid_opcode_ed("237 49");
 }
 
@@ -421,7 +421,7 @@ void instruccion_ed_50 ()
                 //add  de,a         ED 32          4+4  Add A to DE (no flags set)
                 DE +=reg_a;
         }
-        
+
         else invalid_opcode_ed("237 50");
 }
 
@@ -430,16 +430,16 @@ void instruccion_ed_51 ()
         if (MACHINE_IS_TBBLUE) {
                 //add  bc,a         ED 33          4+4  Add A to BC (no flags set)
                 BC +=reg_a;
-        }  
-        
+        }
+
         else invalid_opcode_ed("237 51");
 }
 
 void instruccion_ed_52 ()
 {
         if (MACHINE_IS_TBBLUE) {
-                //add  hl,$0000     ED 34 LO HI     Add XXXX to HL 
-              
+                //add  hl,$0000     ED 34 LO HI     Add XXXX to HL
+
 
                 z80_int operador;
                 operador= lee_byte_pc();
@@ -454,8 +454,8 @@ void instruccion_ed_52 ()
 
 void instruccion_ed_53 ()
 {        if (MACHINE_IS_TBBLUE) {
-                //add  de,$0000     ED 35 LO HI     Add XXXX to DE 
-              
+                //add  de,$0000     ED 35 LO HI     Add XXXX to DE
+
 
                 z80_int operador;
                 operador= lee_byte_pc();
@@ -470,8 +470,8 @@ void instruccion_ed_53 ()
 
 void instruccion_ed_54 ()
 {        if (MACHINE_IS_TBBLUE) {
-                //add  bc,$0000     ED 36 LO HI     Add XXXX to BC 
-              
+                //add  bc,$0000     ED 36 LO HI     Add XXXX to BC
+
 
                 z80_int operador;
                 operador= lee_byte_pc();
@@ -492,8 +492,8 @@ void instruccion_ed_55 ()
                 dehl++;
                 HL=dehl & 0xFFFF;
                 DE=(dehl>>16) & 0xFFFF;
-        }  
-        
+        }
+
         else invalid_opcode_ed("237 55");
 }
 
@@ -505,8 +505,8 @@ void instruccion_ed_56 ()
                 dehl--;
                 HL=dehl & 0xFFFF;
                 DE=(dehl>>16) & 0xFFFF;
-        }  
-        
+        }
+
         else invalid_opcode_ed("237 56");
 }
 
@@ -518,8 +518,8 @@ void instruccion_ed_57 ()
                 dehl +=reg_a;
                 HL=dehl & 0xFFFF;
                 DE=(dehl>>16) & 0xFFFF;
-        }  
-        
+        }
+
         else invalid_opcode_ed("237 57");
 }
 
@@ -531,8 +531,8 @@ void instruccion_ed_58 ()
                 dehl +=BC;
                 HL=dehl & 0xFFFF;
                 DE=(dehl>>16) & 0xFFFF;
-        }  
-        
+        }
+
         else invalid_opcode_ed("237 58");
 }
 
@@ -549,8 +549,8 @@ void instruccion_ed_59 ()
                 dehl +=operador;
                 HL=dehl & 0xFFFF;
                 DE=(dehl>>16) & 0xFFFF;
-        }  
-        
+        }
+
         else invalid_opcode_ed("237 59");
 }
 
@@ -562,8 +562,8 @@ void instruccion_ed_60 ()
                 dehl -=reg_a;
                 HL=dehl & 0xFFFF;
                 DE=(dehl>>16) & 0xFFFF;
-        }  
-        
+        }
+
         else invalid_opcode_ed("237 60");
 }
 
@@ -575,8 +575,8 @@ void instruccion_ed_61 ()
                 dehl -=BC;
                 HL=dehl & 0xFFFF;
                 DE=(dehl>>16) & 0xFFFF;
-        }  
-        
+        }
+
         else invalid_opcode_ed("237 61");
 }
 
@@ -1271,13 +1271,13 @@ void instruccion_ed_113 ()
 		//CMOS
         //printf("Outing 255 to %XH on pc=%d\n",BC,reg_pc);
 		out_port(BC, 255);
-        
+
 	}
 
 	else {
         //printf("Outing 0 to %XH on pc=%d\n",BC,reg_pc);
 	        out_port(BC, 0);
-            
+
 	}
 }
 
@@ -1593,7 +1593,7 @@ void instruccion_ed_147 ()
 		int x,y;
 		x=y=0;
 
-                
+
                 //Hay que preservar bits 7,6,5 de H
                 z80_byte mascara_offset=reg_h & (128+64+32);
 
@@ -1614,7 +1614,7 @@ void instruccion_ed_147 ()
                 z80_int resultado=screen_addr_table[y*32+x];
 
                 reg_h=value_16_to_8h(resultado) | mascara_offset;
-                reg_l=value_16_to_8l(resultado);	
+                reg_l=value_16_to_8l(resultado);
 
 		//printf ("pixeldn after. hl=%d. mascara: %02XH\n",reg_hl,mascara_offset);
 
@@ -1625,7 +1625,7 @@ void instruccion_ed_147 ()
 void instruccion_ed_148 ()
 {
 	if (MACHINE_IS_TBBLUE) {
-        	//pixelad ED 94	Using D as Y, and E as X, work out address of ULA screen address and store in HL 
+        	//pixelad ED 94	Using D as Y, and E as X, work out address of ULA screen address and store in HL
 		//screen_addr_table
 		int x=reg_e;
 		int y=reg_d;
@@ -1647,7 +1647,7 @@ void instruccion_ed_149 ()
 {
         if (MACHINE_IS_TBBLUE) {
                 //ED 95   DE holding the Y,X. Bits 0-2 of X (E) map to BIT 7 to 0 and store in A
-                //SETAE : A = 2^(7 - E&0x7)  The bottom 3 bits of E is a bit number and 7-that_bit is the bit set in A.  
+                //SETAE : A = 2^(7 - E&0x7)  The bottom 3 bits of E is a bit number and 7-that_bit is the bit set in A.
                 z80_byte numero_bit=reg_e & 7;
                 z80_byte resultado=128;
                 if (numero_bit>0) resultado=resultado>>numero_bit;
@@ -1890,13 +1890,13 @@ void instruccion_ed_165 ()
 
 		reg_l++;
 
-		inc_8bit(reg_d); 
+		inc_8bit(reg_d);
 	}
 	//Total T-estados = 8+3+3=14
-	
+
         else invalid_opcode_ed("237 165");
 
-	
+
 }
 
 void instruccion_ed_166 ()
@@ -2114,9 +2114,9 @@ void instruccion_ed_176 ()
 //LDIR
 
         if (cpu_ldir_lddr_hack_optimized.v) {
-                
+
                 instruccion_ed_176_optimized();
-               
+
                 return;
         }
 
@@ -2372,7 +2372,7 @@ void instruccion_ed_184_optimized ()
 
 //LDDR optimized
 //printf ("LDDR optimized origen %d destino %d long %d\n",HL,DE,BC);
-      
+
 
         z80_byte byte_leido;
 
@@ -2385,7 +2385,7 @@ void instruccion_ed_184_optimized ()
                 BC--;
         } while (BC!=0);
 
-     
+
 
         Z80_FLAGS &=(255-FLAG_H-FLAG_N-FLAG_PV-FLAG_3-FLAG_5);
 
@@ -2399,9 +2399,9 @@ void instruccion_ed_184 ()
 //LDDR
 
         if (cpu_ldir_lddr_hack_optimized.v) {
-                
+
                 instruccion_ed_184_optimized();
-               
+
                 return;
         }
 #ifdef EMULATE_MEMPTR
@@ -2585,7 +2585,7 @@ void instruccion_ed_188 ()
         }
         HL--; DE++;
 
-                
+
         }
         else invalid_opcode_ed("237 188");
 }

@@ -297,7 +297,7 @@ void scrcaca_refresca_pantalla(void)
 
         else if (MACHINE_IS_PCW) {
                 scr_refresca_pantalla_y_border_pcw();
-        }         
+        }
 
         else if (MACHINE_IS_SAM) {
                 scr_refresca_pantalla_y_border_sam();
@@ -313,23 +313,23 @@ void scrcaca_refresca_pantalla(void)
 
 	else if (MACHINE_IS_MSX) {
 		scr_refresca_pantalla_y_border_msx();
-	}    
+	}
 
 	else if (MACHINE_IS_SVI) {
 		scr_refresca_pantalla_y_border_svi();
-	}    	
+	}
 
 	else if (MACHINE_IS_COLECO) {
 		scr_refresca_pantalla_y_border_coleco();
-	}            
+	}
 
 	else if (MACHINE_IS_SG1000) {
 		scr_refresca_pantalla_y_border_sg1000();
-	}        
+	}
 
 	else if (MACHINE_IS_SMS) {
 		scr_refresca_pantalla_y_border_sms();
-	}       
+	}
 
 
 	//printf ("caca_dither_bitmap scrcaca_imgwidth=%d scrcaca_imgheight=%d\n",scrcaca_imgwidth,scrcaca_imgheight);

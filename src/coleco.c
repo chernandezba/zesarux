@@ -57,7 +57,7 @@ z80_bit coleco_cartridge_inserted={0};
 
 char *coleco_get_string_memory_type(int tipo)
 {
-    		
+
 
     switch (tipo) {
 
@@ -86,10 +86,10 @@ z80_byte *coleco_return_segment_address(z80_int direccion,int *tipo)
 2000-3FFF = Expansion port
 4000-5FFF = Expansion port
 6000-7FFF = RAM (1K mapped into an 8K spot)
-8000-9FFF = Cart ROM 
-A000-BFFF = Cart ROM 
-C000-DFFF = Cart ROM      
-E000-FFFF = Cart ROM 
+8000-9FFF = Cart ROM
+A000-BFFF = Cart ROM
+C000-DFFF = Cart ROM
+E000-FFFF = Cart ROM
 */
 
     //ROM
@@ -111,8 +111,8 @@ E000-FFFF = Cart ROM
     }
 
 
-    
-    
+
+
 
 
 
@@ -137,7 +137,7 @@ void coleco_reset(void)
     //Resetear vram
     int i;
 
-    for (i=0;i<16384;i++) coleco_vram_memory[i]=0;    
+    for (i=0;i<16384;i++) coleco_vram_memory[i]=0;
 
 }
 
@@ -193,7 +193,7 @@ void coleco_insert_rom_cartridge(char *filename)
     if (!si_existe_archivo(filename)) {
         debug_printf(VERBOSE_ERR,"File %s not found",filename);
         return;
-    }    
+    }
 
     long tamanyo_archivo=get_file_size(filename);
 
@@ -226,15 +226,15 @@ void coleco_insert_rom_cartridge(char *filename)
 
 A ROM needs a header to be auto-executed by the system when the COLECO is initialized.
 
-After finding the RAM and initializing the system variables, the COLECO looks for the ROM headers in all the slots 
-on the memory pages 4000h-7FFFh and 8000h-FFFh. The search is done in ascending order. 
+After finding the RAM and initializing the system variables, the COLECO looks for the ROM headers in all the slots
+on the memory pages 4000h-7FFFh and 8000h-FFFh. The search is done in ascending order.
 When a primary Slot is expanded, the search is done in the corresponding secondary Slots before going to the next Primary Slot.
 When the system finds a header, it selects the ROM slot only on the memory page corresponding to the address specified in INIT then, runs the program in ROM at the same address. (In short, it makes an inter-slot call.)
 
         */
         int offset=32768+bloque*16384;
 		int leidos=fread(&memoria_spectrum[offset],1,16384,ptr_cartridge);
-        if (leidos==16384) { 
+        if (leidos==16384) {
             //coleco_memory_slots[1][1+bloque]=COLECO_SLOT_MEMORY_TYPE_ROM;
             debug_printf (VERBOSE_INFO,"Loaded 16kb bytes of rom at slot 1 block %d",bloque);
 
@@ -264,7 +264,7 @@ When the system finds a header, it selects the ROM slot only on the memory page 
     */
 
 
-    
+
     //int i;
 
 
@@ -303,7 +303,7 @@ void coleco_empty_romcartridge_space(void)
 void scr_refresca_pantalla_y_border_coleco_no_rainbow(void)
 {
 
- 
+
 
     if (border_enabled.v && vdp_9918a_force_disable_layer_border.v==0) {
             //ver si hay que refrescar border
@@ -353,8 +353,8 @@ void scr_refresca_pantalla_y_border_coleco_no_rainbow(void)
     if (vdp_9918a_force_disable_layer_sprites.v==0) {
         vdp_9918a_render_sprites_no_rainbow(coleco_vram_memory);
     }
-        
-        
+
+
 
 
 }
@@ -380,7 +380,7 @@ void scr_refresca_pantalla_y_border_coleco(void)
 z80_int coleco_scanline_buffer[512];
 
 
-void screen_store_scanline_rainbow_coleco_border_and_display(void) 
+void screen_store_scanline_rainbow_coleco_border_and_display(void)
 {
 
     screen_store_scanline_rainbow_vdp_9918a_border_and_display(coleco_scanline_buffer,coleco_vram_memory);
@@ -436,9 +436,9 @@ void coleco_set_sn_freq(int canal,int frecuencia)
     aproximado=(frecuencia >>4) & 63;
 
     sn_set_channel_fine_tune(canal,fino);
-   
+
     sn_set_channel_aprox_tune(canal,aproximado);
-            
+
 }
 
 */
@@ -448,7 +448,7 @@ void coleco_set_sn_freq(int canal,int frecuencia)
 
 
 
-z80_byte coleco_get_joypad_a(void) 
+z80_byte coleco_get_joypad_a(void)
 {
 
     z80_byte valor_joystick=255;
@@ -519,7 +519,7 @@ INPUT_PORTS_END
 
 
 
-z80_byte coleco_get_joypad_b(void) 
+z80_byte coleco_get_joypad_b(void)
 {
 
     z80_byte valor_joystick=255;
@@ -563,7 +563,7 @@ z80_byte coleco_get_keypad_a(void)
 	if (!BIT(keypad, 11)) data &= 0x09;
     */
 
-  
+
 
     //Tecla 0
     //puerto_61438    db              255  ; 6    7    8    9    0     ;4
@@ -572,19 +572,19 @@ z80_byte coleco_get_keypad_a(void)
 
     //Tecla 1
     //puerto_63486    db              255  ; 5    4    3    2    1     ;3
-    if ((puerto_63486 & 1)==0) valor_joystick &=0x0d; 
+    if ((puerto_63486 & 1)==0) valor_joystick &=0x0d;
 
     //Tecla 2
     //puerto_63486    db              255  ; 5    4    3    2    1     ;3
-    if ((puerto_63486 & 2)==0) valor_joystick &=0x07;   
+    if ((puerto_63486 & 2)==0) valor_joystick &=0x07;
 
     //Tecla 3
     //puerto_63486    db              255  ; 5    4    3    2    1     ;3
-    if ((puerto_63486 & 4)==0) valor_joystick &=0x0c;     
+    if ((puerto_63486 & 4)==0) valor_joystick &=0x0c;
 
     //Tecla 4
     //puerto_63486    db              255  ; 5    4    3    2    1     ;3
-    if ((puerto_63486 & 8)==0) valor_joystick &=0x02;     
+    if ((puerto_63486 & 8)==0) valor_joystick &=0x02;
 
     //Tecla 5
     //puerto_63486    db              255  ; 5    4    3    2    1     ;3
@@ -592,21 +592,21 @@ z80_byte coleco_get_keypad_a(void)
 
     //Tecla 6
     //puerto_61438    db              255  ; 6    7    8    9    0     ;4
-    if ((puerto_61438 & 16)==0) valor_joystick &=0x0e; 
+    if ((puerto_61438 & 16)==0) valor_joystick &=0x0e;
 
     //Tecla 7
     //puerto_61438    db              255  ; 6    7    8    9    0     ;4
-    if ((puerto_61438 & 8)==0) valor_joystick &=0x05;    
+    if ((puerto_61438 & 8)==0) valor_joystick &=0x05;
 
 
 
     //Tecla 8
     //puerto_61438    db              255  ; 6    7    8    9    0     ;4
-    if ((puerto_61438 & 4)==0) valor_joystick &=0x01;  
-    
+    if ((puerto_61438 & 4)==0) valor_joystick &=0x01;
+
     //Tecla 9
     //puerto_61438    db              255  ; 6    7    8    9    0     ;4
-    if ((puerto_61438 & 2)==0) valor_joystick &=0x0b;   
+    if ((puerto_61438 & 2)==0) valor_joystick &=0x0b;
 
 
     //# -> tecla Z
@@ -618,9 +618,9 @@ z80_byte coleco_get_keypad_a(void)
 
     //* -> tecla X
     //puerto_65278   db    255  ; V    C    X    Z    Sh    ;0
-    if ((puerto_65278 & 4)==0) valor_joystick &=0x09; 
+    if ((puerto_65278 & 4)==0) valor_joystick &=0x09;
 
-                  
+
 
 
     return valor_joystick;

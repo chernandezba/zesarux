@@ -1,5 +1,5 @@
 /*
-    ZEsarUX  ZX Second-Emulator And Released for UniX 
+    ZEsarUX  ZX Second-Emulator And Released for UniX
     Copyright (C) 2013 Cesar Hernandez Bano
 
     This file is part of ZEsarUX.
@@ -110,7 +110,7 @@ int scrnull_driver_can_ext_desktop (void)
 
 
 //Null video drivers
-int scrnull_init (void){ 
+int scrnull_init (void){
 
 debug_printf (VERBOSE_INFO,"Init Null Video Driver");
 
@@ -136,7 +136,7 @@ debug_printf (VERBOSE_INFO,"Init Null Video Driver");
 	scr_detectedchar_print=scrnull_detectedchar_print;
 
 
-return 0; 
+return 0;
 
 }
 

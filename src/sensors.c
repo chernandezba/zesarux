@@ -154,7 +154,7 @@ int sensor_dropped_frames_get_value(int id GCC_UNUSED)
     //Evitar división por cero
     if (stats_frames_total==0) perc_dropped=0;
 
-    else perc_dropped=(stats_frames_total_dropped*100)/stats_frames_total;    
+    else perc_dropped=(stats_frames_total_dropped*100)/stats_frames_total;
 
     return perc_dropped;
 }
@@ -203,7 +203,7 @@ sensor_item sensors_array[TOTAL_SENSORS]={
     84,-9999,
     9999,-9999,
     sensor_ay_vol_chip_funcion_get_value,2
-    },   
+    },
 
 
     {
@@ -228,7 +228,7 @@ sensor_item sensors_array[TOTAL_SENSORS]={
     84,-9999,
     9999,-9999,
     sensor_ay_vol_chip_funcion_get_value,6
-    },  
+    },
 
 
 
@@ -254,7 +254,7 @@ sensor_item sensors_array[TOTAL_SENSORS]={
     84,-9999,
     9999,-9999,
     sensor_ay_vol_chip_funcion_get_value,10
-    },      
+    },
 
 /*
 Como las frecuencias de notas no siguen un factor lineal, quiza no tienen mucho uso como sensores,
@@ -300,7 +300,7 @@ pues de una octava a la otra es el doble de valor
     9999,-9999,
     sensor_sn_noise_chip_funcion_get_value,0
     },
-    
+
     {
     "fps","Frames per second","FPS",
     0,50,
@@ -329,17 +329,17 @@ pues de una octava a la otra es el doble de valor
     //core_cpu_timer_frame_difftime
    {
     "last_core_frame","Last Core Frame","CoreFrame",
-    0,20000, 
+    0,20000,
     9999,-9999,
     10000,-9999,
     sensor_last_core_frame_get_value,0
-    },    
+    },
 
     //En este el tiempo maximo y los porcentajes no tienen mucho sentido
     //core_cpu_timer_refresca_pantalla_difftime
    {
     "last_full_render","Last Full Render","FullRender",
-    0,20000, 
+    0,20000,
     9999,-9999,
     10000,-9999,
     sensor_last_full_render_get_value,0
@@ -348,7 +348,7 @@ pues de una octava a la otra es el doble de valor
 
    {
     "last_emul_render","Last Emul Render","EmulRender",
-    0,20000, 
+    0,20000,
     9999,-9999,
     10000,-9999,
     sensor_last_emulated_display_render,0
@@ -358,29 +358,29 @@ pues de una octava a la otra es el doble de valor
     //En este el tiempo maximo y los porcentajes no tienen mucho sentido
    {
     "last_menu_overlay_render","Last Menu Overlay Render","OvlMenRnd",
-    0,20000, 
+    0,20000,
     9999,-9999,
     10000,-9999,
     sensor_last_menu_overlay_render_get_value,0
-    },        
+    },
 
     //En este el tiempo maximo y los porcentajes no tienen mucho sentido
    {
     "avg_menu_overlay_render","Average Menu Overlay Render","AOvlMenRnd",
-    0,20000, 
+    0,20000,
     9999,-9999,
     10000,-9999,
     sensor_avg_menu_overlay_render_get_value,0
-    },         
+    },
 
     //En este el tiempo maximo y los porcentajes no tienen mucho sentido
    {
     "last_normal_text_overlay","Last ZX Vision text render","OvlTexRnd",
-    0,20000, 
+    0,20000,
     9999,-9999,
     10000,-9999,
     sensor_last_normal_text_overlay_get_value,0
-    },               
+    },
 
     //En este el tiempo maximo y los porcentajes no tienen mucho sentido
    {
@@ -389,23 +389,23 @@ pues de una octava a la otra es el doble de valor
     9999,-9999,
     22000,-9999,
     sensor_time_betw_frames_get_value,0
-    },    
+    },
 
    {
     "perc_dropped_frames","Percent Dropped Video Frames","%DropFrame",
-    0,100, 
+    0,100,
     50,-9999,
     9999,-9999,
     sensor_dropped_frames_get_value,0
-    },     
+    },
 
    {
     "perc_audio_buffer","Percent Audio Buffer","%AudioBuff",
-    0,100, 
+    0,100,
     85,15,
     9999,-9999,
     sensor_audio_buffer_get_value,0
-    },        
+    },
 
 };
 

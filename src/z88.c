@@ -163,7 +163,7 @@ A11 (#3) | -      RGT     3       E       D       C       K       9
 A10 (#2) | =      DWN     4       R       F       V       J       O
 A9  (#1) | \      UP      5       T       G       B       U       I
 A8  (#0) | DEL    ENTER   6       Y       H       N       7       8
-------------------------------------------------------------------------- 
+-------------------------------------------------------------------------
 
 
 CTRL = Diamond
@@ -302,10 +302,10 @@ CTRL ALT SPACE ALT CTRL
 
 void z88_set_default_memory_pages(void)
 {
-	blink_mapped_memory_banks[0]=0;	
-	blink_mapped_memory_banks[1]=0;	
-	blink_mapped_memory_banks[2]=0;	
-	blink_mapped_memory_banks[3]=0;	
+	blink_mapped_memory_banks[0]=0;
+	blink_mapped_memory_banks[1]=0;
+	blink_mapped_memory_banks[2]=0;
+	blink_mapped_memory_banks[3]=0;
 
 	// COM.RAMS = 0 (lower 8K = Bank 0)
 	blink_com &=(255-4);
@@ -380,7 +380,7 @@ void z88_reset_slot3_activity_indicator(void)
     menu_footer_z88();
 
     //Reflejar cambios en el icono del slot 3
-    menu_draw_ext_desktop();   
+    menu_draw_ext_desktop();
 }
 
 //Indicador de actividad para escritura en slot 3
@@ -397,16 +397,16 @@ void z88_set_slot3_activity_indicator(void)
     menu_footer_z88();
 
     //Reflejar cambios en el icono del slot 3
-    menu_draw_ext_desktop(); 
+    menu_draw_ext_desktop();
 
-    z88_footer_timer_slot3_activity_indicator=2;    
+    z88_footer_timer_slot3_activity_indicator=2;
 }
 
 void z88_set_z88_eprom_or_flash_must_flush_to_disk(void)
 {
 
     //marcamos bit para decir que se ha escrito en eprom para luego hacer flush
-    z88_eprom_or_flash_must_flush_to_disk=1;    
+    z88_eprom_or_flash_must_flush_to_disk=1;
 
     //Indicar actividad en slot 3
     z88_set_slot3_activity_indicator();
@@ -472,7 +472,7 @@ void z88_procesar_flash_command(z80_byte valor,z80_byte slot,z80_long_int offset
 	//Si estamos en modo comando
         if (z88_memory_slots[slot].z88_flash_card_in_command_mode.v) {
             if (z88_memory_slots[slot].executing_command_number == 0x10 || z88_memory_slots[slot].executing_command_number == 0x40) {
-                // Byte Program Command, Part 2 (initial Byte Program command received), 
+                // Byte Program Command, Part 2 (initial Byte Program command received),
                 // we've fetched the Byte Program Address & Data, programming will now begin...
                 //programByteAtAddress(addr, b);
 
@@ -480,8 +480,8 @@ void z88_procesar_flash_command(z80_byte valor,z80_byte slot,z80_long_int offset
 					z88_memory_slots[slot].statusRegister = 0x98; // SR.7 = Ready, SR.4 = 1 (Program Error), SR.3 = 1 (no VPP)
 					return;
 				}
-                              
-				//1           VPPON       Set to turn programming voltage ON  
+
+				//1           VPPON       Set to turn programming voltage ON
                                 if ((blink_com & 1)==0) {
 					z88_memory_slots[slot].statusRegister = 0x98; // SR.7 = Ready, SR.4 = 1 (Program Error), SR.3 = 1 (no VPP)
                                         debug_printf (VERBOSE_DEBUG,"Trying to write to Flash but VPP programming voltage bit not enabled");
@@ -498,17 +498,17 @@ void z88_procesar_flash_command(z80_byte valor,z80_byte slot,z80_long_int offset
                                 z88_set_z88_eprom_or_flash_must_flush_to_disk();
 
 		                z88_memory_slots[slot].executing_command_number = 0x70;
-          } 
+          }
 
 	  else {
             switch (valor) {
 
-		
-		case 0x20:  // Erase Command, part 1  
+
+		case 0x20:  // Erase Command, part 1
 			// wait for new sub command sequence for erase block
 			z88_memory_slots[slot].executing_command_number = 0x20;
 			break;
-		
+
 
 		case 0x50: // Clear Status Register
 			z88_memory_slots[slot].executing_command_number  = 0;
@@ -521,17 +521,17 @@ void z88_procesar_flash_command(z80_byte valor,z80_byte slot,z80_long_int offset
 		break;
 
 
-		case 0x90:  // Chip Identification (get Manufacturer & Device Code) 
+		case 0x90:  // Chip Identification (get Manufacturer & Device Code)
 			z88_memory_slots[slot].executing_command_number = 0x90;
 		break;
 
 
 		case 0x10:
-		case 0x40:  // Byte Program Command, Part 1, get address and byte to program.. 
+		case 0x40:  // Byte Program Command, Part 1, get address and byte to program..
 			z88_memory_slots[slot].executing_command_number = 0x40;
 		break;
 
-		case 0xD0: // Block Erase Command (which this bank is part of), part 2 
+		case 0xD0: // Block Erase Command (which this bank is part of), part 2
 			if (z88_memory_slots[slot].executing_command_number == 0x20) {
 			z88_memory_slots[slot].executing_command_number = 0xD0;
 				z88_flash_erase_block(slot,offset);
@@ -552,11 +552,11 @@ void z88_procesar_flash_command(z80_byte valor,z80_byte slot,z80_long_int offset
 				z88_memory_slots[slot].executing_command_number=0;
 
 				return;
-		break; 
+		break;
 	   }
 	  }
 	}
-				
+
 }
 
 //Retornar status de la flash card
@@ -577,13 +577,13 @@ z80_byte z88_get_flash_status(z80_byte slot,z80_int addr)
 
             case 0x90: // Get Device Identification
                 //if ((getBankNumber() & 0x3F) == 0) {
-                    // Device and Manufacturer Code can only be  
+                    // Device and Manufacturer Code can only be
                     // fetched in bottom bank of card...
 
 
                     switch (addr) {
                         case 0:
-                            return z88_memory_slots[slot].flash_manufacturer_code;    // 0000 = Manufacturer Code 
+                            return z88_memory_slots[slot].flash_manufacturer_code;    // 0000 = Manufacturer Code
 			break;
 
                         case 1:
@@ -602,7 +602,7 @@ z80_byte z88_get_flash_status(z80_byte slot,z80_int addr)
 
 	    break;
 
-            default: // unknown command! 
+            default: // unknown command!
 		debug_printf (VERBOSE_DEBUG,"Unknown command 0x%X where reading flash status",z88_memory_slots[slot].executing_command_number);
                 return 0xFF;
 	    break;
@@ -671,13 +671,13 @@ z80_byte poke_peek_byte_no_time_z88_aux(z80_byte bank,z80_byte slot,z80_long_int
                 case 4:
                     //Primeros 512kb: RAM
                     //Siguientes 512kb: EPROM
-                    
+
 
                     //Si zona eprom
 /*
     Banks   40 - 7F  are wired to Slot 1
     Banks   80 - BF  are wired to Slot 2
-    Banks   C0 - FF  are wired to Slot 3 
+    Banks   C0 - FF  are wired to Slot 3
 */
                     //They are organized with ram on the bottom (bank 00-1F) and flash (bank 20-3F) on top.
                     seccion=bank-slot*0x40;
@@ -783,8 +783,8 @@ z80_byte poke_peek_byte_no_time_z88_bank_no_check_low(z80_int dir,z80_byte bank,
 
 	return poke_peek_byte_no_time_z88_aux(bank,slot,offset_total,valor,accion,dir);
 
-        
-        
+
+
 }
 
 
@@ -800,36 +800,36 @@ z80_byte poke_peek_byte_no_time_z88_low(z80_int dir,z80_byte bank,z80_byte valor
 
 	//Se establece a 0, se lee en funcion auxiliar
 	int slot=0;
-        
-        
+
+
         //caso segmento 0-16383
-        if (dir<8192) { 
+        if (dir<8192) {
                 //ROM0 o RAM20H
                 if ((blink_com & 4)==0) {//ROM0
                         bank=0;
-                }       
-                else {  
+                }
+                else {
                         //printf ("leer/escribir en direccion<8192 y es ram 20H. dir=%d\n",dir);
                         bank=0x20;
-                }       
+                }
                 offset_total=bank*16384;
                 offset_total+=dir;
-                
+
                 return poke_peek_byte_no_time_z88_aux(bank,slot,offset_total,valor,accion,dir);
-                
-                
+
+
         }
-        
+
         else {
                 //8kb superiores
                 if ((bank&1)==0) dir &= 0x1FFF;
                 bank=bank&254;
-                
+
                 offset_total=bank*16384;
                 offset_total+=dir;
                 return poke_peek_byte_no_time_z88_aux(bank,slot,offset_total,valor,accion,dir);
-        }       
-        
+        }
+
 
 }
 
@@ -1102,10 +1102,10 @@ z80_byte lee_puerto_z88_no_time(z80_byte puerto_h,z80_byte puerto_l)
 					//temp_byte_leido_core_z88_antes_de_snooze=byte_leido_core_z88;
 
 					z88_generar_maskable_si_top_speed();
-					
 
-			
-					//cuando se vuelve de snooze, el valor devuelto a sentencia IN al despertar, no importa	
+
+
+					//cuando se vuelve de snooze, el valor devuelto a sentencia IN al despertar, no importa
 					//acumulado=255;
 
                 	        }
@@ -1223,7 +1223,7 @@ $74         SBR, screen base reg.   -
 				blink_tim[3]=0;
 				blink_tim[4]=0;
 			}
-				
+
 
                         //debug_printf (VERBOSE_DEBUG,"establecer puerto b0 a valor: 0x%x",value);
 
@@ -1238,7 +1238,7 @@ $74         SBR, screen base reg.   -
 				silence_detection_counter=0;
 				beeper_silence_detection_counter=0;
 			}
-			
+
                         blink_com=value;
 
 			set_value_beeper_on_array(z88_get_beeper_sound() );
@@ -1309,7 +1309,7 @@ $74         SBR, screen base reg.   -
 		break;
 
 		case 0xE6:
-			value=value ^255;	
+			value=value ^255;
 			blink_uit &=value;
 		break;
 
@@ -1390,7 +1390,7 @@ void z88_notificar_tecla(void)
 	//avisamos que ya no estamos en snooze
 	if (z88_snooze.v) {
 		z88_awake_from_snooze();
-		//parece que al llegar aqui blink_int suele ser 187 -> 10111011 
+		//parece que al llegar aqui blink_int suele ser 187 -> 10111011
 
 		//truco
 		//reg_a=z88_return_keyboard_port_value(temp_fila_leida_antes_de_snooze);
@@ -1410,7 +1410,7 @@ void z88_notificar_tecla(void)
 				printf ("In con prefijo 237\n");
 			break;
 
-	
+
 
 			case 219:
 				//Es un IN A,(N)
@@ -1420,7 +1420,7 @@ void z88_notificar_tecla(void)
 		}
 		*/
 
-		
+
 
 	}
 
@@ -1513,7 +1513,7 @@ void z88_open_flap(void)
    menu_footer_z88();
 
     //Reflejar cambios al abrir el flap
-    menu_draw_ext_desktop();      
+    menu_draw_ext_desktop();
 
    //notificar apertura
    //iff1.v=1;
@@ -1540,7 +1540,7 @@ void z88_close_flap_ahora(void)
 	menu_footer_z88();
 
     //Reflejar cambios al abrir el flap
-    menu_draw_ext_desktop();          
+    menu_draw_ext_desktop();
 
     /*
     En el cierre de flap se interesa que haga esto precisamente:
@@ -1570,7 +1570,7 @@ void hard_reset_cpu_z88(void)
 	//z80_int dir=0;
 	z80_byte valor=0;
 
-        //numero de banco 
+        //numero de banco
 	z80_byte bank=0x21;
 
         //Offset dentro del slot de memoria
@@ -1607,7 +1607,7 @@ void z88_flush_card_if_writable(int slot)
 //Cargar tarjeta EPROM
 //Formato puede ser:
 //-Archivo epr: un solo archivo
-//-archivos .62, .63 de 16kb cada uno, se cargan en orden, desde el numero mas bajo: 
+//-archivos .62, .63 de 16kb cada uno, se cargan en orden, desde el numero mas bajo:
 // puede haber un solo .63 ,o un .62 y un .63, o varios desde .48 hasta el .63, etc...
 void z88_load_eprom_card(char *archivo, int slot)
 {
@@ -1619,12 +1619,12 @@ void z88_load_eprom_card(char *archivo, int slot)
 
         //si habia una eprom o flash y en el slot 3, vaciarla a disco antes
 	z88_flush_card_if_writable(3);
-        //if (slot==3) { 
+        //if (slot==3) {
         //        if (z88_memory_slots[slot].size!=0 && (z88_memory_slots[slot].type==2 || z88_memory_slots[slot].type==3) ) {
-        //                debug_printf (VERBOSE_INFO,"Flush flash/eprom changes to disk if necessary before removing it"); 
+        //                debug_printf (VERBOSE_INFO,"Flush flash/eprom changes to disk if necessary before removing it");
         //                z88_flush_eprom_or_flash_to_disk();
-        //        }       
-        //}   
+        //        }
+        //}
 
 
 	z88_open_flap();
@@ -1633,7 +1633,7 @@ void z88_load_eprom_card(char *archivo, int slot)
 	if (!util_compare_file_extension(archivo,"63")) {
 		//archivos .63, .62, .61 etc  se cargan en orden empezando por el mas bajo.
 		//ver el archivo mas bajo
-		
+
 		//obtenemos nombre archivo y directorio por separado
 		char nombre[NAME_MAX];
 		char nombre_sin_ext[NAME_MAX];
@@ -1756,7 +1756,7 @@ void z88_load_eprom_card(char *archivo, int slot)
         	z80_long_int leidos=fread(z88_puntero_memoria+z88_memory_slots[slot].offset_total,1,1024*1024,ptr_romfile);
 		fclose(ptr_romfile);
 
-		//metemos cartucho 
+		//metemos cartucho
 		debug_printf (VERBOSE_INFO,"Setting EPROM card at slot %d with %d bytes length",slot,leidos);
 		z88_memory_slots[slot].size=leidos-1;
         	z88_memory_slots[slot].type=2;
@@ -1794,7 +1794,7 @@ void old_z88_load_eprom_card(char *archivo, int slot)
 		return;
 	}
 
-	//Controlar tamanyos conocidos. 
+	//Controlar tamanyos conocidos.
 	if (size_file!=32*1024 && size_file!=128*1024 && size_file!=256*1024) {
 		debug_printf (VERBOSE_ERR,"EPROM size not valid. Must be 32 KB, 128 KB or 256 KB");
 		return;
@@ -1836,20 +1836,20 @@ void old_z88_load_eprom_card(char *archivo, int slot)
 //Formato tiene que ser un unico archivo (normalmente con extension .flash)
 void z88_load_flash_intel_card(char *archivo, int slot)
 {
-        
+
         if (slot<1 || slot>3) cpu_panic ("Invalid slot on load card");
-        
+
         debug_printf(VERBOSE_INFO,"Inserting Z88 Intel Flash card: %s on slot: %d",archivo,slot);
 
-        
+
         //Controlar tamanyo archivo demasiado grande
         int size_file=get_file_size(archivo);
         if (size_file>1024*1024) {
                 debug_printf (VERBOSE_ERR,"Flash file size too big. Maximum 1 MB");
                 return;
         }
-        
-        //Controlar tamanyos conocidos. 
+
+        //Controlar tamanyos conocidos.
         if (size_file!=512*1024 && size_file!=1024*1024) {
                 debug_printf (VERBOSE_ERR,"Intel Flash size not valid. Must be 512 KB or 1MB");
                 return;
@@ -1864,16 +1864,16 @@ void z88_load_flash_intel_card(char *archivo, int slot)
         //        }
         //}
 
-        
+
         z88_open_flap();
-        
+
         FILE *ptr_flashfile;
         ptr_flashfile=fopen(archivo,"rb");
         //maximo 1 MB
         z80_long_int leidos=fread(z88_puntero_memoria+z88_memory_slots[slot].offset_total,1,1024*1024,ptr_flashfile);
         fclose(ptr_flashfile);
 
-        
+
         //metemos cartucho
         z88_memory_slots[slot].size=leidos-1;
         z88_memory_slots[slot].type=3;
@@ -1885,7 +1885,7 @@ void z88_load_flash_intel_card(char *archivo, int slot)
 
         //guardamos nombre archivo
         strcpy(z88_memory_slots[slot].eprom_flash_nombre_archivo,archivo);
-        
+
         z88_close_flap();
 
 }
@@ -2111,7 +2111,7 @@ void z88_flush_eprom_or_flash_to_disk_63(int size)
                         debug_printf (VERBOSE_INFO,"Writing eprom segment file %s offset %d",nombre_bucle_fullpath,offset);
 
 
-                
+
 			z88_flush_eprom_or_flash_to_disk_one_file(nombre_bucle_fullpath,
 				z88_puntero_memoria+z88_memory_slots[3].offset_total+offset,16384);
 
@@ -2343,7 +2343,7 @@ void z88_return_eprom_flash_file (z88_dir *dir,z88_eprom_flash_file *file)
 
 	file->namelength=namelength;
 
-	
+
 	if (namelength==255) return;
 
 	z88_increment_pointer(dir);
@@ -2354,7 +2354,7 @@ void z88_return_eprom_flash_file (z88_dir *dir,z88_eprom_flash_file *file)
 	for (i=0;i<namelength;i++) {
 		file->name[i]=peek_byte_no_time_z88_bank_no_check_low(dir->dir,dir->bank);
 		z88_increment_pointer(dir);
-	}	
+	}
 
 	//copiar tamanyo
 	for (i=0;i<4;i++) {
@@ -2384,7 +2384,7 @@ void z88_return_new_ptr_eprom_flash_file (z80_byte **ptr_dir,z88_eprom_flash_fil
 
 	file->namelength=namelength;
 
-	
+
 	if (namelength==255) return;
 
 	//z88_increment_pointer(dir);
@@ -2396,16 +2396,16 @@ void z88_return_new_ptr_eprom_flash_file (z80_byte **ptr_dir,z88_eprom_flash_fil
 	for (i=0;i<namelength;i++) {
 		//file->name[i]=peek_byte_no_time_z88_bank_no_check_low(dir->dir,dir->bank);
 		file->name[i]=*dir;
-		
+
 		//z88_increment_pointer(dir);
 		dir++;
-	}	
+	}
 
 	//copiar tamanyo
 	for (i=0;i<4;i++) {
 		//file->size[i]=peek_byte_no_time_z88_bank_no_check_low(dir->dir,dir->bank);
 		file->size[i]=*dir;
-		
+
 		//z88_increment_pointer(dir);
 		dir++;
         }
@@ -2420,7 +2420,7 @@ void z88_return_new_ptr_eprom_flash_file (z80_byte **ptr_dir,z88_eprom_flash_fil
 
 	*ptr_dir=dir;
 
-}		
+}
 
 
 //Funcion auxiliar. Retorna tamanyo eprom/flash total (tamanyo EPROM/FLASH), ocupado (segun puntero actual dir) y disponible (restando incluso bytes de final)
@@ -2503,7 +2503,7 @@ int z88_write_eprom_flash_file(z88_dir *dir,z88_eprom_flash_file *file,z80_byte 
 	z88_flash_forced_writing_mode.v=1;
 
 	int i;
-	
+
 	//Escribimos tamanyo nombre
 	poke_byte_no_time_z88_bank_no_check_low(dir->dir,dir->bank,file->namelength);
 	z88_increment_pointer(dir);
@@ -2542,7 +2542,7 @@ int z88_write_eprom_flash_file(z88_dir *dir,z88_eprom_flash_file *file,z80_byte 
 	z88_flash_forced_writing_mode.v=0;
 
 	return 0;
-}	
+}
 
 //Escribe archivo en EPROM/FLASH de slot 3 teniendo el nombre y puntero a datos
 //Tener en cuenta que nombre en eprom es sin ruta ni nada
@@ -2625,7 +2625,7 @@ void z88_debug_print_eprom_flash_file(z88_eprom_flash_file *file)
 
 
                         //mostrar contenido
-			
+
 			//No. Volvemos sin mostrar contenido
 			return;
 
@@ -2660,22 +2660,22 @@ z80_byte z88_get_bank_slot(int slot)
         switch (slot) {
                 case 1:
                         bank=0x40;
-                break;  
-                
+                break;
+
                 case 2:
                         bank=0x80;
-                break;  
-              
+                break;
+
                 case 3:
                         bank=0xc0;
-                break;  
-                
+                break;
+
                 default:
                         cpu_panic("Invalid slot number on z88_get_bank_slot");
 
 			//aunque aqui no se llega, solo lo dejo para el compilador no se queje de warning
 			bank=0;
-                break;  
+                break;
 
         }
 
@@ -2694,7 +2694,7 @@ void z88_eprom_flash_find_init(z88_dir *dir,int slot)
         dir->dir=0;
 
 }
- 
+
 //Retorna 0 si no hay mas archivos.
 //Funcion similar a z88_eprom_flash_find_next pero las funciones usan punteros de memoria en vez de variables z88_dir
 int z88_eprom_new_ptr_flash_find_next(z80_byte **ptr_dir,z88_eprom_flash_file *file)
@@ -2857,7 +2857,7 @@ void z88_find_eprom_flash_free_space (z88_dir *dir,int slot)
 			return;
 		}
 
-        
+
 
 	        if (file.namelength==255) {
         	        //printf ("no hay mas archivos. bank: %x dir: %x\n",dir->bank,dir->dir);
@@ -2914,7 +2914,7 @@ void z88_find_eprom_flash_file (z88_dir *dir,z88_eprom_flash_file *file,char *no
                         return;
                 }
 
-        
+
 
                 if (file->namelength==255) {
                         //printf ("no hay mas archivos. bank: %x dir: %x\n",dir->bank,dir->dir);
@@ -2980,7 +2980,7 @@ z80_long_int z88_eprom_flash_reclaim_free_space_and_recover(int recoverdeleted)
         }
 
 
-	//Puntero destino. 
+	//Puntero destino.
 
 	z88_dir dest_dir;
 
@@ -3091,7 +3091,7 @@ z80_long_int z88_eprom_flash_reclaim_free_space_and_recover(int recoverdeleted)
 			datos.dir=file.datos.dir;
 
 			z80_long_int copia_file_size=file_size;
-	
+
 		        for (;copia_file_size>0;copia_file_size--) {
                			byte_leido=peek_byte_no_time_z88_bank_no_check_low(datos.dir,datos.bank);
 		                z88_increment_pointer(&datos);
@@ -3141,7 +3141,7 @@ z80_long_int z88_eprom_flash_reclaim_free_space_and_recover(int recoverdeleted)
 	if (recoverdeleted) return undeleted_total;
 
 	return total_liberados;
-	
+
 
 }
 
@@ -3152,7 +3152,7 @@ z80_long_int z88_eprom_flash_reclaim_free_space(void)
 	return z88_eprom_flash_reclaim_free_space_and_recover(0);
 }
 
-//Recupera archivos borrados de eprom/flash 
+//Recupera archivos borrados de eprom/flash
 //Retorna archivos recuperados
 z80_long_int z88_eprom_flash_recover_deleted(void)
 {
@@ -3287,7 +3287,7 @@ es:
 1 enero 1970 00:00:00
 es:
 
-003118a41200H    
+003118a41200H
 
 
 000000000000H = 23/11/4713 BC

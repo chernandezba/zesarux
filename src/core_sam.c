@@ -1,5 +1,5 @@
 /*
-    ZEsarUX  ZX Second-Emulator And Released for UniX 
+    ZEsarUX  ZX Second-Emulator And Released for UniX
     Copyright (C) 2013 Cesar Hernandez Bano
 
     This file is part of ZEsarUX.
@@ -56,7 +56,7 @@ void cpu_core_loop_sam(void)
 {
 
 		debug_get_t_stados_parcial_pre();
-  
+
 		timer_check_interrupt();
 
 
@@ -66,7 +66,7 @@ void cpu_core_loop_sam(void)
 
 		//Gestionar autoload
 		gestionar_autoload_sam();
-		
+
 		/*
 		if (tap_load_detect()) {
         	                //si estamos en pausa, no hacer nada
@@ -82,13 +82,13 @@ void cpu_core_loop_sam(void)
 					//audio_playing.v=1;
 					timer_reset();
 				}
-			
+
 				else {
 					core_spectrum_store_rainbow_current_atributes();
 					//generamos nada. como si fuera un NOP
-					
+
 					contend_read( reg_pc, 4 );
-		
+
 
 				}
 		}
@@ -118,7 +118,7 @@ void cpu_core_loop_sam(void)
 
 #ifdef DEBUG_SECOND_TRAP_STDOUT
 
-        //Para poder debugar rutina que imprima texto. Util para aventuras conversacionales 
+        //Para poder debugar rutina que imprima texto. Util para aventuras conversacionales
         //hay que definir este DEBUG_SECOND_TRAP_STDOUT manualmente en compileoptions.h despues de ejecutar el configure
 
 	scr_stdout_debug_print_char_routine();
@@ -138,7 +138,7 @@ void cpu_core_loop_sam(void)
 
                 //Si la cpu está detenida por señal HALT, reemplazar opcode por NOP
                 if (z80_halt_signal.v) {
-                    byte_leido_core_sam=0;      
+                    byte_leido_core_sam=0;
                 }
                 else {
                     reg_pc++;
@@ -155,7 +155,7 @@ void cpu_core_loop_sam(void)
 				//Soporte interrupciones raster zxuno
 				//Aqui haremos interrupciones raster de sam coupe
 				//if (MACHINE_IS_ZXUNO) zxuno_handle_raster_interrupts();
-					
+
 
 
 
@@ -167,8 +167,8 @@ void cpu_core_loop_sam(void)
 		//ejecutar esto al final de cada una de las scanlines (312)
 		//esto implica que al final del frame de pantalla habremos enviado 312 bytes de sonido
 
-		
-		//A final de cada scanline 
+
+		//A final de cada scanline
 		if ( (t_estados/screen_testados_linea)>t_scanline  ) {
 			//printf ("%d\n",t_estados);
 			//if (t_estados>69000) printf ("t_scanline casi final: %d\n",t_scanline);
@@ -181,9 +181,9 @@ void cpu_core_loop_sam(void)
 
 				audio_valor_enviar_sonido=0;
 
-				
+
 				audio_valor_enviar_sonido +=da_output_ay();
-				
+
 
 
 				if (beeper_enabled.v) {
@@ -226,12 +226,12 @@ void cpu_core_loop_sam(void)
 
 
 			//final de linea
-			
+
 
 			//copiamos contenido linea y border a buffer rainbow
 			if (rainbow_enabled.v==1) {
 				screen_store_scanline_rainbow_solo_border();
-				screen_store_scanline_rainbow_solo_display();	
+				screen_store_scanline_rainbow_solo_display();
 
 				//t_scanline_next_border();
 
@@ -291,7 +291,7 @@ void cpu_core_loop_sam(void)
 
 				cpu_loop_refresca_pantalla();
 
-				vofile_send_frame(rainbow_buffer);	
+				vofile_send_frame(rainbow_buffer);
 
 
 				siguiente_frame_pantalla();
@@ -306,7 +306,7 @@ void cpu_core_loop_sam(void)
                 	                toggle_flash_state();
 	                        }
 
-			
+
 				if (!interrupcion_timer_generada.v) {
 					//Llegado a final de frame pero aun no ha llegado interrupcion de timer. Esperemos...
 					//printf ("no demasiado\n");
@@ -355,7 +355,7 @@ void cpu_core_loop_sam(void)
 			//printf ("%d\n",interlaced_numero_frame);
 
 					//Para calcular lo que se tarda en ejecutar todo un frame
-					timer_get_elapsed_core_frame_pre();					
+					timer_get_elapsed_core_frame_pre();
                 }
 
 
@@ -389,7 +389,7 @@ void cpu_core_loop_sam(void)
                                                 t_estados += 14;
 
 
-                                              
+
 
 												push_valor(reg_pc,PUSH_VALUE_TYPE_NON_MASKABLE_INTERRUPT);
 
@@ -410,13 +410,13 @@ void cpu_core_loop_sam(void)
 
 
 
-						
+
 					}
 
 					if (1==1) {
 					//else {
 
-						
+
 					//justo despues de EI no debe generar interrupcion
 					//e interrupcion nmi tiene prioridad
 						if (interrupcion_maskable_generada.v && byte_leido_core_sam!=251) {
@@ -424,8 +424,8 @@ void cpu_core_loop_sam(void)
 						//Tratar interrupciones maskable
 						interrupcion_maskable_generada.v=0;
 
-					
-												
+
+
 												push_valor(reg_pc,PUSH_VALUE_TYPE_MASKABLE_INTERRUPT);
 
 						reg_r++;
@@ -441,8 +441,8 @@ void cpu_core_loop_sam(void)
 
 							poke_byte_no_time(dir,255);
 						}
-						
-						
+
+
 						//desactivar interrupciones al generar una
 						iff1.v=iff2.v=0;
 						//Modelos spectrum
@@ -454,7 +454,7 @@ void cpu_core_loop_sam(void)
 						//IM 2.
 
 							z80_int temp_i;
-							z80_byte dir_l,dir_h;   
+							z80_byte dir_l,dir_h;
 							temp_i=get_im2_interrupt_vector();
 							dir_l=peek_byte(temp_i++);
 							dir_h=peek_byte(temp_i);
@@ -463,7 +463,7 @@ void cpu_core_loop_sam(void)
 
 
 						}
-						
+
 					}
 				}
 

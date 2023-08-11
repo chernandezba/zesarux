@@ -146,8 +146,8 @@ int cpc_rgb_table[32]={
 0x008000, //22
 0x0080FF, //23
 
-0x800080, //24 
-0x80FF80, //25 
+0x800080, //24
+0x80FF80, //25
 0x80FF00, //26
 0x80FFFF, //27
 
@@ -256,10 +256,10 @@ Bit	Value	Function
 0	x
 
 
-The 3bit RAM Config value is used to access the second 64K of the total 128K RAM that is built into the CPC 6128 
-or the additional 64K-512K of standard memory expansions. These contain up to eight 64K ram banks, 
-which are selected with bit 3-5. A standard CPC 6128 only contains bank 0. 
-Normally the register is set to 0, so that only the first 64K RAM are used (identical to the CPC 464 and 664 models). 
+The 3bit RAM Config value is used to access the second 64K of the total 128K RAM that is built into the CPC 6128
+or the additional 64K-512K of standard memory expansions. These contain up to eight 64K ram banks,
+which are selected with bit 3-5. A standard CPC 6128 only contains bank 0.
+Normally the register is set to 0, so that only the first 64K RAM are used (identical to the CPC 464 and 664 models).
 The register can be used to select between the following eight predefined configurations only:
 
  -Address-     0      1      2      3      4      5      6      7
@@ -269,40 +269,40 @@ The register can be used to select between the following eight predefined config
  C000-FFFF   RAM_3  RAM_7  RAM_7  RAM_7  RAM_3  RAM_3  RAM_3  RAM_3
 The Video RAM is always located in the first 64K, VRAM is in no way affected by this register.
 
-*/	
+*/
 		switch (ram_config) {
 
 			case 1:
-				pages_array[3]=7;			
+				pages_array[3]=7;
 			break;
 
 			case 2:
 				pages_array[0]=4;
 				pages_array[1]=5;
 				pages_array[2]=6;
-				pages_array[3]=7;			
+				pages_array[3]=7;
 			break;
 
 			case 3:
 				pages_array[1]=3;
-				pages_array[3]=7;			
-			break;						
+				pages_array[3]=7;
+			break;
 
 			case 4:
 				pages_array[1]=4;
-			break;	
+			break;
 
 			case 5:
-				pages_array[1]=5;		
-			break;	
+				pages_array[1]=5;
+			break;
 
 			case 6:
-				pages_array[1]=6;	
-			break;	
+				pages_array[1]=6;
+			break;
 
 			case 7:
-				pages_array[1]=7;		
-			break;													
+				pages_array[1]=7;
+			break;
 
 		}
 
@@ -345,18 +345,18 @@ The Video RAM is always located in the first 64K, VRAM is in no way affected by 
 	//Bloque 16384-32767
 	//RAM
 	pagina_entra=pages_array[1];
-	cpc_memory_paged_read[1]=cpc_ram_mem_table[pagina_entra];	
-	debug_cpc_type_memory_paged_read[1]=CPC_MEMORY_TYPE_RAM;		
+	cpc_memory_paged_read[1]=cpc_ram_mem_table[pagina_entra];
+	debug_cpc_type_memory_paged_read[1]=CPC_MEMORY_TYPE_RAM;
 	debug_cpc_paginas_memoria_mapeadas_read[1]=pagina_entra;
-	
+
 
 	//Bloque 32768-49151
 	//RAM
 	pagina_entra=pages_array[2];
-	cpc_memory_paged_read[2]=cpc_ram_mem_table[pagina_entra];	
+	cpc_memory_paged_read[2]=cpc_ram_mem_table[pagina_entra];
 	debug_cpc_type_memory_paged_read[2]=CPC_MEMORY_TYPE_RAM;
 	debug_cpc_paginas_memoria_mapeadas_read[2]=2;
-	
+
     //Bloque 49152-65535
     if (cpc_gate_registers[2] &8 ) {
     	//Entra RAM
@@ -366,7 +366,7 @@ The Video RAM is always located in the first 64K, VRAM is in no way affected by 
 		debug_cpc_paginas_memoria_mapeadas_read[3]=pagina_entra;
     }
     else {
-        //Entra ROM 
+        //Entra ROM
         //en 6128 y 664 ver si entra amsdos rom
         if ((MACHINE_IS_CPC_HAS_FLOPPY) && cpc_port_df==7) {
             //Entra AMSDOS
@@ -487,7 +487,7 @@ note 1: This function is not available in the Gate-Array, but is performed by a 
                                 cpc_border_color=color;
                                 //printf("cambio color border. color =%d contador= %d\n",color,cpc_border_change_frame_counter);
                                 modificado_border.v=1;
-                                
+
 
                                 cpc_border_change_frame_counter++;
                                 //printf("cambio color border. total cambios: %d\n",cpc_border_change_frame_counter);
@@ -512,7 +512,7 @@ note 1: This function is not available in the Gate-Array, but is performed by a 
 
 
 		break;
-		
+
 		case 2:
 
                 /*
@@ -537,7 +537,7 @@ note 1: This function is not available in the Gate-Array, but is performed by a 
 			if (value&16) {
 				//Esto resetea bit 5 de contador de scanline
 				//printf ("Resetting bit 5 of cpc_scanline_counter\n");
-                //If bit 4 of the "Select screen mode and rom configuration" register of the Gate-Array 
+                //If bit 4 of the "Select screen mode and rom configuration" register of the Gate-Array
                 //(bit 7="1" and bit 6="0") is set to "1" then the interrupt request is cleared and the 6-bit counter is reset to "0".
 				cpc_scanline_counter &=(255-32);
                 cpc_crt_pending_interrupt.v=0;
@@ -563,10 +563,10 @@ Bit	Value	Function
 0	x
 
 
-The 3bit RAM Config value is used to access the second 64K of the total 128K RAM that is built into the CPC 6128 
-or the additional 64K-512K of standard memory expansions. 
-These contain up to eight 64K ram banks, which are selected with bit 3-5. A standard CPC 6128 only contains bank 0. 
-Normally the register is set to 0, so that only the first 64K RAM are used (identical to the CPC 464 and 664 models). 
+The 3bit RAM Config value is used to access the second 64K of the total 128K RAM that is built into the CPC 6128
+or the additional 64K-512K of standard memory expansions.
+These contain up to eight 64K ram banks, which are selected with bit 3-5. A standard CPC 6128 only contains bank 0.
+Normally the register is set to 0, so that only the first 64K RAM are used (identical to the CPC 464 and 664 models).
 The register can be used to select between the following eight predefined configurations only:
 
  -Address-     0      1      2      3      4      5      6      7
@@ -578,7 +578,7 @@ The Video RAM is always located in the first 64K, VRAM is in no way affected by 
 
 
 
-*/			
+*/
 		break;
 	}
 }
@@ -647,7 +647,7 @@ int cpc_get_crtc_final_display_zone(void)
 
     return cpc_crtc_get_total_vertical();
 
-    
+
 }
 
 //t_scanline_draw va contando en el caso de cpc:
@@ -687,7 +687,7 @@ int cpc_convert_scanline_to_final_y(void)
         return t_scanline_draw+borde_superior;
     }
 
-    
+
 }
 
 
@@ -695,7 +695,7 @@ int cpc_convert_scanline_to_final_y(void)
 //y resetear t_scanline_draw a 0 cuando finaliza dicha vsync
 //Ver http://www.cpcwiki.eu/index.php/CRTC#HSYNC_and_VSYNC
 /*
-The VSYNC is also modified before being sent to the monitor. It happens two lines* after the VSYNC from the CRTC 
+The VSYNC is also modified before being sent to the monitor. It happens two lines* after the VSYNC from the CRTC
 and stay two lines (same cut rule if VSYNC is lower than 4). PAL (50Hz) does need two lines VSYNC_width, and 4us HSYNC_width.
 */
 
@@ -708,7 +708,7 @@ void cpc_handle_vsync_state(void)
 
     //mi t_scanline_draw es el del monitor (el ga gate array)
     //cpc_crtc_contador_scanline es la cuenta de scanlines del CRTC
-   
+
 
 	//Duracion vsync
 
@@ -717,7 +717,7 @@ void cpc_handle_vsync_state(void)
 	//Si es 0, en algunos chips significa 16
 	if (vsync_lenght==0) vsync_lenght=16;
 
-	//if (cpc_send_double_vsync.v) vsync_lenght *=2;	
+	//if (cpc_send_double_vsync.v) vsync_lenght *=2;
 
 	int vsync_position=cpc_crtc_get_vsync_position();
 
@@ -730,13 +730,13 @@ void cpc_handle_vsync_state(void)
         cpc_vsync_signal.v=1;
 
 /*
-The Gate-Array senses the VSYNC signal. If two HSYNCs have been detected following the start of the VSYNC 
+The Gate-Array senses the VSYNC signal. If two HSYNCs have been detected following the start of the VSYNC
 then there are two possible actions:
 
-If the top bit of the 6-bit counter is set to "1" (i.e. the counter >=32), then there is no interrupt request, 
+If the top bit of the 6-bit counter is set to "1" (i.e. the counter >=32), then there is no interrupt request,
 and the 6-bit counter is reset to "0". (If a interrupt was requested and acknowledged it would be closer than 3
 2 HSYNCs compared to the position of the previous interrupt).
-If the top bit of the 6-bit counter is set to "0" (i.e. the counter <32), then a interrupt request is issued, 
+If the top bit of the 6-bit counter is set to "0" (i.e. the counter <32), then a interrupt request is issued,
 and the 6-bit counter is reset to "0".
 In both cases the following interrupt requests are synchronised with the VSYNC.
 */
@@ -751,7 +751,7 @@ In both cases the following interrupt requests are synchronised with the VSYNC.
         ;; The interrupt counter is updated every HSYNC.
         ;; The interrupt counter reset is synchronised to the start of the VSYNC.
         ;; A interrupt request is issued when the interrupt counter reaches 52.
-        ;; 
+        ;;
         ;; The next interrupt could occur in two HSYNC times, assuming that
         ;; the previous interrupt was not serviced less than 32 lines ago.
         ;;
@@ -764,13 +764,13 @@ In both cases the following interrupt requests are synchronised with the VSYNC.
         */
 
        //Por tanto creo que vsync solo resetea cpc_scanline_counter y nada mas
-        
+
 
         if (cpc_crtc_contador_scanline==vsync_position+2) {
             if (cpc_scanline_counter>=32 && ay_player_playing.v==0) {
             	cpc_crt_pending_interrupt.v=1;
             }
-      
+
             cpc_scanline_counter=0;
 
             //Resetear contador de cambios de modo de video en un frame
@@ -778,7 +778,7 @@ In both cases the following interrupt requests are synchronised with the VSYNC.
             //Y de border
             cpc_border_change_frame_counter=0;
         }
-        
+
 
     }
 	else {
@@ -804,7 +804,7 @@ z80_byte cpc_get_vsync_bit(void)
 //http://www.cpcwiki.eu/index.php/8255
 z80_byte cpc_in_ppi(z80_byte puerto_h)
 {
-	
+
 /*
 Bit 9	Bit 8	PPI Function	Read/Write status
 0	0	Port A data	Read/Write
@@ -850,13 +850,13 @@ I/O address	A9	A8	Description	Read/Write status	Used Direction	Used for
                 if (input_file_keyboard_is_playing() ) {
                                 input_file_keyboard_get_key();
                 }
-                
+
 
 
                     if (linea_teclado==9) {
                         //printf("leyendo joystick\n");
                         //&49	DEL	Joy 1 Fire 3 (CPC only)	Joy 1 Fire 2	Joy1 Fire 1	Joy1 right	Joy1 left	Joy1 down	Joy1 up
-                        
+
                         //Solo preservar bit 7 donde está la tecla DEL
                         z80_byte valor_joystick=cpc_keyboard_table[9] & 128;
 
@@ -877,7 +877,7 @@ I/O address	A9	A8	Description	Read/Write status	Used Direction	Used for
                         }
 
                         return valor_joystick;
-                                      
+
 
                     }
 
@@ -894,9 +894,9 @@ I/O address	A9	A8	Description	Read/Write status	Used Direction	Used for
                     if (linea_teclado==1 && joystick_emulation==JOYSTICK_CPC_1) {
                         //&41	F0	F2	F1	F5	F8	F7	COPY	CURLEFT
                         byte_teclado |=1+2;
- 
-                    }                    
-					
+
+                    }
+
 					return byte_teclado;
 
 				}
@@ -924,7 +924,7 @@ I/O address	A9	A8	Description	Read/Write status	Used Direction	Used for
 			//Parallel, expansion port a 0
 			valor &=(255-64-32);
 
-			//Bit 0 (vsync) 
+			//Bit 0 (vsync)
 			valor &=(255-1);
 			valor |=cpc_get_vsync_bit();
 
@@ -940,7 +940,7 @@ I/O address	A9	A8	Description	Read/Write status	Used Direction	Used for
 			}
 			return valor;
 
-			
+
 		break;
 
 		case 2:
@@ -961,7 +961,7 @@ I/O address	A9	A8	Description	Read/Write status	Used Direction	Used for
 
 z80_byte cpc_psg_control_bits=0;
 
-void cpc_cassette_motor_control (int valor_bit) 
+void cpc_cassette_motor_control (int valor_bit)
 {
     //primero vemos si hay cinta insertada
     if (realtape_name!=NULL && realtape_inserted.v) {
@@ -1002,25 +1002,25 @@ Bit 9   Bit 8   PPI Function    Read/Write status
 
         switch (port_number) {
                 case 0:
-                        
+
                         //printf ("Writing PPI port A value %d en pc=%d\n",value,reg_pc);
                         cpc_ppi_ports[0]=value;
 
-                        
+
                         //Si control esta en output
                     /*
                     if ((cpc_psg_control_bits & 16)==0) {
                         printf ("Writing PPI port A value %d en pc en modo escritura=%d\n",value,reg_pc);
 			            cpc_ppi_ports[0]=value;
                     }
-                    
+
                     else {
                         printf ("Writing PPI port A value %d en pc en modo lectura=%d\n",value,reg_pc);
 			            //cpc_ppi_ports[0]=value;
                         ay_3_8912_registro_sel[ay_chip_selected]=value;
                     }
                     */
-                        
+
 
                 break;
 
@@ -1057,7 +1057,7 @@ Bit 7	Bit 6	Function
 			//Write to selected PSG register
 			if (psg_function==2) {
 				//Enviar valor a psg
-				//printf ("Enviamos PSG valor %d al registro %d\n",cpc_ppi_ports[0],ay_3_8912_registro_sel[ay_chip_selected]);                
+				//printf ("Enviamos PSG valor %d al registro %d\n",cpc_ppi_ports[0],ay_3_8912_registro_sel[ay_chip_selected]);
                 out_port_ay(49149,cpc_ppi_ports[0]);
                 cpc_ppi_ports[2]=value;
             }
@@ -1065,7 +1065,7 @@ Bit 7	Bit 6	Function
             //Read from selected PSG register
             if (psg_function==1) {
                 cpc_ppi_ports[2]=value;
-            }            
+            }
 
             //Inactive
             if (psg_function==0) {
@@ -1077,7 +1077,7 @@ Bit 7	Bit 6	Function
                 /*
                 Previo a versión ZEsarUX 9.2 aquí no se hacia nada, pero revisando con juegos con musica con el Arkos Player
                 se observa que es necesario (caso del sword of ianna por ejemplo)
-                Usa sentencias OUT (C), 0 para pasar a este modo inactivo 
+                Usa sentencias OUT (C), 0 para pasar a este modo inactivo
                 La traza de ejecuciones es:
 
                 Enviamos PSG valor 0 al registro 0
@@ -1113,17 +1113,17 @@ Register selection
 
 Before reading or writing to the PSG, the appropiate register must be selected.
 
-This is done by putting the register number (0-14) into port &F4xx, and setting bits 7 and 6 of port &F6xx to 1. 
-The register will now be selected and the user can now read or write a value to it. Finally, the PSG must be put into 
+This is done by putting the register number (0-14) into port &F4xx, and setting bits 7 and 6 of port &F6xx to 1.
+The register will now be selected and the user can now read or write a value to it. Finally, the PSG must be put into
 an inactive state by setting bit 7 and 6 to 0 of port &F6xx.
 
-This is necessary, otherwise if the register select command was still in operation, and a byte was sent to port &F4xx, 
+This is necessary, otherwise if the register select command was still in operation, and a byte was sent to port &F4xx,
 it would use this and change the data in the last register selected. (see below)
 
 Writing to a PSG register
 
-To write data to the PSG, the user must put the data in port &F4xx, and then set bit 7 to 1 and bit 6 to 0 of port &F6xx. 
-The data will be written into the register. Finally, the PSG must be put into an inactive state by setting bit 7 and 6 to 0 of port &F6xx.            
+To write data to the PSG, the user must put the data in port &F4xx, and then set bit 7 to 1 and bit 6 to 0 of port &F6xx.
+The data will be written into the register. Finally, the PSG must be put into an inactive state by setting bit 7 and 6 to 0 of port &F6xx.
 
                 */
             }
@@ -1148,8 +1148,8 @@ If Bit 7 is "1" then the other bits will initialize Port A-B as Input or Output:
  Bit 5,6  MS0,MS1  Mode for Port A and Port Ch      (always zero in CPC)
  Bit 7    SF       Must be "1" to setup the above bits
 CAUTION: Writing to PIO Control Register (with Bit7 set), automatically resets PIO Ports A,B,C to 00h each!
-In the CPC only Bit 4 is of interest, all other bits are always having the same value. 
-In order to write to the PSG sound registers, a value of 82h must be written to this register. 
+In the CPC only Bit 4 is of interest, all other bits are always having the same value.
+In order to write to the PSG sound registers, a value of 82h must be written to this register.
 In order to read from the keyboard (through PSG register 0Eh), a value of 92h must be written to this register.
 
 PPI Control with Bit7=0
@@ -1203,11 +1203,11 @@ Otherwise, if Bit 7 is "0" then the register is used to set or clear a single bi
 				//printf ("Valor despues Reg C: %d\n",cpc_ppi_ports[2]);
 
 				if (numero_bit==4) {
-					//motor control	
+					//motor control
 					cpc_cassette_motor_control(valor_bit);
 				}
 			}
-				
+
                 break;
 
 
@@ -1368,8 +1368,8 @@ int cpc_crtc_get_total_vertical(void)
 
 	int valor=cpc_crtc_registers[4]+1; //en R0 tambien se suma 1
 
-    int alto_caracter=cpc_crtc_get_height_character();        
-	valor *=alto_caracter;    
+    int alto_caracter=cpc_crtc_get_height_character();
+	valor *=alto_caracter;
 
 
 
@@ -1401,7 +1401,7 @@ int cpc_crtc_get_height_character(void)
 
 int cpc_crtc_get_total_hsync_width(void)
 {
-    int valor=(cpc_crtc_registers[3] & 15) * 16; 
+    int valor=(cpc_crtc_registers[3] & 15) * 16;
     if (valor==0) valor=16*16; //HSync pulse width in characters (0 means 16 on some CRTC),
     //printf("hsync width: %d\n",valor);
     return valor;
@@ -1505,7 +1505,7 @@ void cpc_adjust_horizontal_border_sizes(int *p_top,int *p_bottom)
 int cpc_crtc_get_top_border_height(void)
 {
 
- 
+
     int top,bottom;
     cpc_adjust_horizontal_border_sizes(&top,&bottom);
 
@@ -1642,7 +1642,7 @@ void scr_refresca_pantalla_cpc(void)
 
 
 	z80_int x,y;
-	
+
 	z80_int offset_tabla;
 	z80_byte byte_leido;
 
@@ -1951,7 +1951,7 @@ void scr_refresca_pantalla_y_border_cpc_rainbow(void)
 
 
 		}
-		
+
 	}
 
 
@@ -1989,7 +1989,7 @@ void screen_store_scanline_rainbow_solo_border_cpc(void)
         //alto_caracter=cpc_crtc_get_height_character();
 
         ancho_total=cpc_crtc_get_total_pixels_horizontal();
-        total_alto=cpc_crtc_get_total_pixels_vertical();         
+        total_alto=cpc_crtc_get_total_pixels_vertical();
 
 
 
@@ -2010,20 +2010,20 @@ void screen_store_scanline_rainbow_solo_border_cpc(void)
     int ancho_maximo=CPC_DISPLAY_WIDTH+CPC_LEFT_BORDER_NO_ZOOM*2;
     int alto_maximo=(CPC_DISPLAY_HEIGHT+CPC_TOP_BORDER_NO_ZOOM*2)/2;
 
-    //printf("ancho total: %d\n",ancho_total);     
+    //printf("ancho total: %d\n",ancho_total);
 
     if (ancho_total>ancho_maximo) ancho_total=ancho_maximo;
     if (total_alto>alto_maximo) total_alto=alto_maximo;
     if (offset_x<0) offset_x=0;
-    if (offset_x+ancho_total>ancho_maximo) offset_x=ancho_maximo-ancho_total;   
+    if (offset_x+ancho_total>ancho_maximo) offset_x=ancho_maximo-ancho_total;
 
-         
+
 
     int inicio_pantalla;
     int final_pantalla;
 
 
-    //printf("ancho total despues limite: %d ancho maximo %d borde_izqu %d offset_x: %d\n",ancho_total,ancho_maximo,borde_izq,offset_x);    
+    //printf("ancho total despues limite: %d ancho maximo %d borde_izqu %d offset_x: %d\n",ancho_total,ancho_maximo,borde_izq,offset_x);
 
 
     //int total_scanlines=(CPC_DISPLAY_HEIGHT+CPC_TOP_BORDER_NO_ZOOM*2)/2;
@@ -2036,14 +2036,14 @@ void screen_store_scanline_rainbow_solo_border_cpc(void)
 
     final_pantalla=inicio_pantalla+total_alto;
 
-    
+
 
   //Si en zona pantalla (no border superior ni inferior)
   //printf("margenes: %d %d\n",inicio_pantalla,final_pantalla);
   //Borde superior o inferior
 
   if (cpc_convert_scanline_to_final_y()<inicio_pantalla || cpc_convert_scanline_to_final_y()>=final_pantalla) {
-      
+
 
 
         //linea en coordenada display (no border) que se debe leer
@@ -2056,7 +2056,7 @@ void screen_store_scanline_rainbow_solo_border_cpc(void)
 
     if (cpc_debug_borders.v) {
         if (cpc_convert_scanline_to_final_y()<inicio_pantalla) {
-        
+
             color=1;
         }
 
@@ -2111,11 +2111,11 @@ void screen_store_scanline_rainbow_solo_border_cpc(void)
     int x;
 
     for (x=0;x<cpc_get_maximum_width_window();x++) {
-       cpc_putpixel_zoom_rainbow(x,puntero_buf_rainbow,color); 
+       cpc_putpixel_zoom_rainbow(x,puntero_buf_rainbow,color);
     }
 
   }
-  
+
 
   //Borde izquierdo y derecho
 
@@ -2128,7 +2128,7 @@ void screen_store_scanline_rainbow_solo_border_cpc(void)
         //linea en coordenada display (no border) que se debe leer
         //int y_display=t_scanline_draw-inicio_pantalla;
 
- 
+
 
         int left_border=cpc_crtc_get_total_left_border();
         int right_border=cpc_crtc_get_total_right_border();
@@ -2172,18 +2172,18 @@ void screen_store_scanline_rainbow_solo_border_cpc(void)
     int x;
 
     for (x=0;x<left_border;x++) {
-       cpc_putpixel_zoom_rainbow(x,puntero_buf_rainbow,color); 
+       cpc_putpixel_zoom_rainbow(x,puntero_buf_rainbow,color);
     }
 
 
     if (cpc_debug_borders.v) {
-        color=4;    
+        color=4;
     }
 
     int offset_right=left_border+cpc_crtc_get_total_pixels_horizontal();
     for (x=0;x<right_border;x++) {
-       cpc_putpixel_zoom_rainbow(x+offset_right,puntero_buf_rainbow,color); 
-    }    
+       cpc_putpixel_zoom_rainbow(x+offset_right,puntero_buf_rainbow,color);
+    }
 
   }
 
@@ -2194,7 +2194,7 @@ void screen_store_scanline_rainbow_solo_border_cpc(void)
 
 
 
-//Guardar en buffer rainbow la linea actual. 
+//Guardar en buffer rainbow la linea actual.
 //Tener en cuenta que si border esta desactivado, la primera linea del buffer sera de display,
 //en cambio, si border esta activado, la primera linea del buffer sera de border
 //void screen_store_scanline_rainbow_solo_display_cpc(z80_int *scanline_buffer,z80_byte *vram_memory_pointer)
@@ -2209,7 +2209,7 @@ void screen_store_scanline_rainbow_solo_display_cpc(void)
     alto_caracter=cpc_crtc_get_height_character();
 
     ancho_total=cpc_crtc_get_total_pixels_horizontal();
-    total_alto=cpc_crtc_get_total_pixels_vertical();         
+    total_alto=cpc_crtc_get_total_pixels_vertical();
 
     //printf("Bordes: %d %d\n",cpc_crtc_get_total_left_border(),cpc_crtc_get_total_right_border() );
 
@@ -2224,20 +2224,20 @@ void screen_store_scanline_rainbow_solo_display_cpc(void)
     int ancho_maximo=CPC_DISPLAY_WIDTH+CPC_LEFT_BORDER_NO_ZOOM*2;
     int alto_maximo=(CPC_DISPLAY_HEIGHT+CPC_TOP_BORDER_NO_ZOOM*2)/2;
 
-    //printf("ancho total: %d\n",ancho_total);     
+    //printf("ancho total: %d\n",ancho_total);
 
     if (ancho_total>ancho_maximo) ancho_total=ancho_maximo;
     if (total_alto>alto_maximo) total_alto=alto_maximo;
     if (offset_x<0) offset_x=0;
-    if (offset_x+ancho_total>ancho_maximo) offset_x=ancho_maximo-ancho_total;   
+    if (offset_x+ancho_total>ancho_maximo) offset_x=ancho_maximo-ancho_total;
 
-         
+
 
     int inicio_pantalla;
     int final_pantalla;
 
 
-    //printf("ancho total despues limite: %d ancho maximo %d borde_izqu %d offset_x: %d\n",ancho_total,ancho_maximo,borde_izq,offset_x);    
+    //printf("ancho total despues limite: %d ancho maximo %d borde_izqu %d offset_x: %d\n",ancho_total,ancho_maximo,borde_izq,offset_x);
 
 
     //int total_scanlines=(CPC_DISPLAY_HEIGHT+CPC_TOP_BORDER_NO_ZOOM*2)/2;
@@ -2258,7 +2258,7 @@ void screen_store_scanline_rainbow_solo_display_cpc(void)
         //linea en coordenada display (no border) que se debe leer
         int y_display=cpc_convert_scanline_to_final_y()-inicio_pantalla;
 
- 
+
 
 
 
@@ -2275,7 +2275,7 @@ void screen_store_scanline_rainbow_solo_display_cpc(void)
 
    int y_destino_rainbow=cpc_convert_scanline_to_final_y()*2;
 
-    
+
     //TODO: calculo con border desactivado
 
 
@@ -2304,7 +2304,7 @@ void screen_store_scanline_rainbow_solo_display_cpc(void)
 
     z80_byte byte_leido;
 
-    
+
 
     int x;
     int color0,color1,color2,color3;
@@ -2315,7 +2315,7 @@ void screen_store_scanline_rainbow_solo_display_cpc(void)
 
         crtc_offset_videoram *=2;
 
-        
+
 
 
 
@@ -2338,14 +2338,14 @@ void screen_store_scanline_rainbow_solo_display_cpc(void)
         //puntero=cpc_ram_mem_table[3]+offset_tabla;
 
 
-                    
-                                                
+
+
 
     	for (x=offset_x;x<ancho_total+offset_x;) {
 			switch (modo_video) {
 		                case 0:  //160x200
 
-    
+
 
                 		        //printf ("Mode 0, 160x200 resolution, 16 colours\n");
 					//Cada pixel por cuaduplicado
@@ -2421,7 +2421,7 @@ pixel 0 (bit 1)	pixel 1 (bit 1)	pixel 2 (bit 1)	pixel 3 (bit 1)	pixel 0 (bit 0)	
 					cpc_putpixel_zoom_rainbow(x++,puntero_buf_rainbow,color3);
 
 
-                		break;            
+                		break;
 
 
 		                case 2:
@@ -2468,7 +2468,7 @@ pixel 0 (bit 1)	pixel 1 (bit 1)	pixel 2 (bit 1)	pixel 3 (bit 1)	pixel 0 (bit 0)	
                     cpc_putpixel_zoom_rainbow(x++,puntero_buf_rainbow,color1);
 
                 		break;
-            
+
 
 
             default:
@@ -2482,9 +2482,9 @@ pixel 0 (bit 1)	pixel 1 (bit 1)	pixel 2 (bit 1)	pixel 3 (bit 1)	pixel 0 (bit 0)	
     }
 
 
-   
-  }    
-  
+
+  }
+
 
 }
 
@@ -2524,11 +2524,11 @@ void cpc_if_autoenable_realvideo(void)
 
 void cpc_if_autoenable_realvideo_on_changemodes(void)
 {
-    if (rainbow_enabled.v==0 && autodetect_rainbow.v) {    
+    if (rainbow_enabled.v==0 && autodetect_rainbow.v) {
         if (cpc_video_modes_change_frame_counter>=2) {
             debug_printf(VERBOSE_INFO,"Autoenabling realvideo because 2 or mode video mode changes in a frame");
             //printf("Autoenabling realvideo because 2 or mode video mode changes in a frame (%d)\n",cpc_video_modes_change_frame_counter);
-            enable_rainbow();            
+            enable_rainbow();
         }
     }
 }
@@ -2536,11 +2536,11 @@ void cpc_if_autoenable_realvideo_on_changemodes(void)
 
 void cpc_if_autoenable_realvideo_on_changeborder(void)
 {
-    if (rainbow_enabled.v==0 && autodetect_rainbow.v) {    
+    if (rainbow_enabled.v==0 && autodetect_rainbow.v) {
         if (cpc_border_change_frame_counter>=3) {
             debug_printf(VERBOSE_INFO,"Autoenabling realvideo because 3 or more border changes in a frame");
             //printf("Autoenabling realvideo because 3 or more border changes in a frame\n");
-            enable_rainbow();            
+            enable_rainbow();
         }
     }
 }
@@ -2550,7 +2550,7 @@ void cpc_out_port_fa7e(z80_byte value)
 {
 
     //Port FA7Eh - Floppy Motor On/Off Flipflop
-    //Writing 00h to Port FA7Eh turns all disk drive motors off, 
+    //Writing 00h to Port FA7Eh turns all disk drive motors off,
     //writing 01h turns all motors on. It is not possible to turn on/off the motor of a specific drive separately.
 
 
@@ -2562,5 +2562,5 @@ void cpc_out_port_fa7e(z80_byte value)
         //Pues realmente si motor va a off, no hay actividad
         pd765_motor_off();
     }
- 
+
 }

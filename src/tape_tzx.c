@@ -1,5 +1,5 @@
 /*
-    ZEsarUX  ZX Second-Emulator And Released for UniX 
+    ZEsarUX  ZX Second-Emulator And Released for UniX
     Copyright (C) 2013 Cesar Hernandez Bano
 
     This file is part of ZEsarUX.
@@ -104,7 +104,7 @@ int tape_block_tzx_read_header(void)
 	fread(&tzx_major,1,1,ptr_mycinta_tzx);
 	fread(&tzx_minor,1,1,ptr_mycinta_tzx);
 	debug_printf(VERBOSE_INFO,"TZX Version major:%d minor:%d",tzx_major,tzx_minor);
-	
+
 
 	return 0;
 }
@@ -118,7 +118,7 @@ void tzx_read_id(void)
 
 int last_tzx_pause=0;
 
-//Dice que la operacion de read volvio con unknown id. Usado en quickload para detectar si la cinta 
+//Dice que la operacion de read volvio con unknown id. Usado en quickload para detectar si la cinta
 //tzx se reconoce toda o tiene tags desconocidos
 z80_bit tzx_read_returned_unknown_id;
 
@@ -126,46 +126,46 @@ z80_bit tzx_read_returned_unknown_id;
 void tape_tzx_get_archive_info(z80_byte type_text,char *buffer_text_description)
 {
 	switch (type_text) {
-							case 0:	
+							case 0:
 								sprintf(buffer_text_description,"Full title");
-							break;					
+							break;
 
-							case 1:	
+							case 1:
 								sprintf(buffer_text_description,"Software house/publisher");
-							break;					
+							break;
 
-							case 2:	
+							case 2:
 								sprintf(buffer_text_description,"Author(s)");
-							break;					
-							
-							case 3:	
+							break;
+
+							case 3:
 								sprintf(buffer_text_description,"Year of publication");
-							break;					
+							break;
 
-							case 4:	
+							case 4:
 								sprintf(buffer_text_description,"Language");
-							break;					
+							break;
 
-							case 5:	
+							case 5:
 								sprintf(buffer_text_description,"Game/utility type");
-							break;					
+							break;
 
-							case 6:	
+							case 6:
 								sprintf(buffer_text_description,"Price");
-							break;					
+							break;
 
-							case 7:	
+							case 7:
 								sprintf(buffer_text_description,"Protection scheme/loader");
-							break;					
+							break;
 
-							case 8:	
+							case 8:
 								sprintf(buffer_text_description,"Origin");
-							break;					
-					
-							case 0xFF:	
+							break;
+
+							case 0xFF:
 								sprintf(buffer_text_description,"Comment(s)");
-							break;					
-					
+							break;
+
 
 
 							default:
@@ -195,7 +195,7 @@ int tape_block_tzx_read(void *dir,int longitud)
 				tzx_read_id();
 			break;
 
-			case 0x10:	
+			case 0x10:
 				if (begin_of_id==1) {
 					debug_printf(VERBOSE_DEBUG,"Begin of TZX id 0x10");
 					//leemos pausa
@@ -221,7 +221,7 @@ int tape_block_tzx_read(void *dir,int longitud)
 					}
 
 
-					//Para debug	
+					//Para debug
 					/*
 					z80_byte byte_leido=*((z80_byte *)dir);
 					printf ("Byte leido: %d\n",byte_leido);
@@ -240,13 +240,13 @@ int tape_block_tzx_read(void *dir,int longitud)
 					if (last_tzx_pause!=0) {
 						//calculamos en fracciones de 1/50s
 						tape_pause=last_tzx_pause/20;
-					
+
 						//maximo 2 segundos
 						if (tape_pause>100) tape_pause=100;
 						//Pause
 						debug_printf(VERBOSE_INFO,"Read TZX Pause of: %d ms, but making %d ms (max 2000 ms)",last_tzx_pause,tape_pause*20);
 					}
-					
+
 
 					return leidos;
 				}
@@ -273,7 +273,7 @@ int tape_block_tzx_read(void *dir,int longitud)
 
                                         fread(read_buffer,1,2,ptr_mycinta_tzx);
 
-					
+
                                         //int tzx_archive_length=value_8_to_16(read_buffer[1],read_buffer[0]);
 					//de momento lo saltamos
 					//fseek(ptr_mycinta_tzx,tzx_archive_length,SEEK_CUR);
@@ -284,11 +284,11 @@ int tape_block_tzx_read(void *dir,int longitud)
 					z80_byte type_text,long_text;
 					char buffer_text[256];
 					char buffer_text_description[100];
-					
+
 					for (;text_strings;text_strings--) {
 						fread(&type_text,1,1,ptr_mycinta_tzx);
 						tape_tzx_get_archive_info(type_text,buffer_text_description);
-						
+
 						//leemos long
 						fread(&long_text,1,1,ptr_mycinta_tzx);
 						//texto longitud
@@ -297,11 +297,11 @@ int tape_block_tzx_read(void *dir,int longitud)
 						fread(buffer_text,1,long_text,ptr_mycinta_tzx);
 						buffer_text[long_text]=0;
 						debug_printf(VERBOSE_INFO,"TZX Text id %d : %s : %s",type_text,buffer_text_description,buffer_text);
-						
+
 					}
 				tzx_read_id();
 
-			
+
 
 			break;
 
@@ -322,7 +322,7 @@ int tape_block_tzx_read(void *dir,int longitud)
 
                 //saltar todo eso
                 z80_byte byte_leido;
-                
+
                 for (;longitud_total>0;longitud_total--) {
                     fread(&byte_leido,1,1,ptr_mycinta_tzx);
                 }
@@ -331,7 +331,7 @@ int tape_block_tzx_read(void *dir,int longitud)
 
 
             break;
-					
+
 			default:
 				if (!quickload_guessing_tzx_type.v) debug_printf(VERBOSE_ERR,"TZX ID 0x%x not supported on standard tape",last_id_read);
 				else debug_printf (VERBOSE_INFO,"TZX ID 0x%x not supported on standard tape",last_id_read);
@@ -425,7 +425,7 @@ void tape_write_tzx_header_ptr(FILE *ptr_archivo, int in_fatfs, FIL *fil_tzxfile
 	//"ZXTape!",0x1a,version 1,subversion 20
 	char cabecera[]={0x5a,0x58,0x54, 0x61, 0x70, 0x65, 0x21, 0x1a, 0x01, 0x14};
     zvfs_fwrite(in_fatfs,(z80_byte *)cabecera,sizeof(cabecera),ptr_archivo,fil_tzxfile);
-    
+
 
 
     char time_string[40];
@@ -474,8 +474,8 @@ void tape_write_tzx_header(void)
 	//30, longitud, "Created by ZEsarUX emulator"
 	char cabecera[]={0x5a,0x58,0x54, 0x61, 0x70, 0x65, 0x21, 0x1a, 0x01, 0x14,
 	0x30,27,
-	0x43,0x72,0x65,0x61,0x74,0x65,0x64,0x20,0x62,0x79,0x20,0x5a,0x45,0x73,  
-        0x61,0x72,0x55,0x58,0x20,0x65,0x6d,0x75,0x6c,0x61,0x74,0x6f,0x72 
+	0x43,0x72,0x65,0x61,0x74,0x65,0x64,0x20,0x62,0x79,0x20,0x5a,0x45,0x73,
+        0x61,0x72,0x55,0x58,0x20,0x65,0x6d,0x75,0x6c,0x61,0x74,0x6f,0x72
 	};
 
 	//no contamos el 0 del final
@@ -486,15 +486,15 @@ void tape_write_tzx_header(void)
 
 void tape_block_tzx_begin_save(int longitud GCC_UNUSED,z80_byte flag GCC_UNUSED)
 {
- 
-	tape_write_tzx_header();
-	
 
-	//Escribir id 10	
+	tape_write_tzx_header();
+
+
+	//Escribir id 10
 	//pausa de 1000 ms
 	char buffer[]={0x10,232,3};
 	fwrite(buffer, 1, sizeof(buffer), ptr_mycinta_tzx_out);
-	
+
 }
 
 

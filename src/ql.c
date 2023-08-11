@@ -71,14 +71,14 @@ void ql_writebyte(unsigned int Address, unsigned char Data)
     }
 
     if (Address<0x18000 || Address>QL_MEM_LIMIT) return;
-    
+
 
     unsigned char valor=Data;
-    
+
     memoria_ql[Address]=valor;
 
     #ifdef EMULATE_VISUALMEM
-    
+
     //Escribimos en visualmem a partir de direccion 18000H
     set_visualmembuffer(Address);
 

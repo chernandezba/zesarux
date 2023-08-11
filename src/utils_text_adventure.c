@@ -111,7 +111,7 @@ void util_init_unpawsgac_hotkeys(void)
         int i;
 
         for (i=0;i<TOTAL_UNPAWSGAC_HOTKEYS;i++) {
-             util_unpawsgac_hotkeys[i]=0;   
+             util_unpawsgac_hotkeys[i]=0;
         }
 }
 
@@ -123,7 +123,7 @@ void util_unpawsgac_add_word_kb(char *palabra)
         //Buffer de maximo tamanyo y agregando dos ~~ al principio
         char buffer_palabra_destino[MAX_OSD_ADV_KEYB_TEXT_LENGTH+2];
         //De momento sin hotkey
-        sprintf (buffer_palabra_destino,"%s",palabra);        
+        sprintf (buffer_palabra_destino,"%s",palabra);
 
         //Agregamos la palabra metiendo hotkey si conviene
         char inicial=letra_minuscula(*palabra);
@@ -157,14 +157,14 @@ void util_unpaws_get_maintop_mainattr(z80_int *final_maintop,z80_int *final_main
         z80_int MainTop=daad_peek_word(65533);
         z80_int MainAttr=MainTop+311;
 
-        if   (MainTop<=(65535-321) 
+        if   (MainTop<=(65535-321)
    && (MainTop>=(16384-311))
    && (daad_peek(MainAttr) == 16)
    && (daad_peek(MainAttr+2) == 17)
    && (daad_peek(MainAttr+4) == 18)
    && (daad_peek(MainAttr+6) == 19)
    && (daad_peek(MainAttr+8) == 20)
-   && (daad_peek(MainAttr+10) == 21) 
+   && (daad_peek(MainAttr+10) == 21)
         ) {
                 //debug_printf (VERBOSE_DEBUG,"PAW signature found");
         }
@@ -200,7 +200,7 @@ void util_unpaws_get_maintop_mainattr(z80_int *final_maintop,z80_int *final_main
            else {
                    quillversion=-1;
            }
-     
+
       }
   }
 
@@ -259,9 +259,9 @@ char *util_unpaws_get_parser_name(void)
 
 int util_paws_quill_is_quill(void)
 {
-         if (util_unpaws_get_version()==0) return 0; //paws             
+         if (util_unpaws_get_version()==0) return 0; //paws
 
-        return 1; //quill      
+        return 1; //quill
 }
 
 int util_undaad_unpaws_is_quill(void)
@@ -367,7 +367,7 @@ void util_unpaws_init_parameters(void)
  {
    util_unpaws_tOffs=mainattr+13;
    util_unpaws_NumMsg=daad_peek(util_unpaws_tOffs+3);
-   if (quillversion==1) 
+   if (quillversion==1)
    {
     util_unpaws_OffSys=maintop+168;
     util_unpaws_NumSys=32;
@@ -405,7 +405,7 @@ void util_unpaws_init_parameters(void)
    util_unpaws_compressed=(quillversion==3) && (daad_peek(util_unpaws_OffAbreviations)<128) && (daad_peek(util_unpaws_OffAbreviations+1)==128);
 
    util_unpaws_Patched= (daad_peek_word(24791)==daad_peek_word(23606)) || (daad_peek_word(24802)==daad_peek_word(23606));
-   
+
    if(!util_unpaws_Patched) {
                          if ((daad_peek_word(23606)<16384)) util_unpaws_NumFonts=0;
                          else util_unpaws_NumFonts=1;
@@ -422,9 +422,9 @@ void util_unpaws_init_parameters(void)
       util_unpaws_OffGraphAttr=daad_peek_word(64186);
       util_unpaws_GraphCount=daad_peek(64190);
    }
-   else 
+   else
     util_unpaws_OffGraph=0;
-} 
+}
 
 
 }
@@ -468,10 +468,10 @@ void util_daad_get_language_parser(char *texto)
     z80_byte language=daad_peek(dir+1);
 
     /*
-     2) En la siguiente direccion debe conterner un 0x10 o un 0x11 (marca que es juego de spectrum en ingles la primera, 
+     2) En la siguiente direccion debe conterner un 0x10 o un 0x11 (marca que es juego de spectrum en ingles la primera,
      juego de Spectrum en español la segunda)
-    Para Amstrad, 0x31/0x30 en el 0x2882 en lugar de 0x11/0x10   
-    */    
+    Para Amstrad, 0x31/0x30 en el 0x2882 en lugar de 0x11/0x10
+    */
 
    z80_byte id_english=0x10;
    z80_byte id_spanish=0x11;
@@ -518,11 +518,11 @@ int util_unpaws_detect_version(z80_int *p_mainattr)
 
         int quillversion;
         z80_int MainTop;
-        z80_int MainAttr;        
+        z80_int MainAttr;
 
         util_unpaws_get_maintop_mainattr(&MainTop,&MainAttr,&quillversion);
 
-    
+
 
   if (quillversion>=0) {
       //debug_printf (VERBOSE_DEBUG,"%s signature found",quillversions_strings[quillversion]);
@@ -599,7 +599,7 @@ CONST tVocs:ARRAY [0..6] OF String=(
 "Adjective",
 "Preposition",
 "Conjunction",
-"Pronoun"        
+"Pronoun"
   };
 
 int util_paws_dump_vocabulary(int *p_quillversion)
@@ -676,7 +676,7 @@ END;
           *p_quillversion=-1;
           return 0;
   }
-  
+
   util_clear_text_adventure_kdb();
 
   z80_int vocptr;
@@ -715,7 +715,7 @@ END;
 
                 indice_palabra=peek_byte_no_time(vocptr+j);
                 palabra[j]=0;
-                tipo_palabra=0; //no hay tipos. lo dejamos forzado                  
+                tipo_palabra=0; //no hay tipos. lo dejamos forzado
           }
 
           char buf_tipo_palabra[30];
@@ -759,10 +759,10 @@ END;
 
                   else {
                       debug_printf (VERBOSE_DEBUG,"Not adding word %s to array list as it is a longer synonim of %s",
-                      palabra_sin_espacios,lista_palabras[tipo_palabra][indice_palabra]);    
+                      palabra_sin_espacios,lista_palabras[tipo_palabra][indice_palabra]);
                   }
 
-                  
+
           }
 
           if (quillversion==0) vocptr+=7;
@@ -788,7 +788,7 @@ END;
                 //printf ("i %d j %d\n",i,j);
                 if (lista_palabras[i][j][0]!=0) {
                         debug_printf (VERBOSE_DEBUG,"Adding word %s to OSD Adventure text keyboard",lista_palabras[i][j]);
-                        util_unpawsgac_add_word_kb(lista_palabras[i][j]);   
+                        util_unpawsgac_add_word_kb(lista_palabras[i][j]);
                 }
         }
   }
@@ -808,7 +808,7 @@ Debug: Adding word IT to array list
 
 
 //detectar si aventura es paws o quill
-int util_textadv_detect_paws_quill(void) 
+int util_textadv_detect_paws_quill(void)
 {
 
   if (!MACHINE_IS_SPECTRUM) return 0;
@@ -836,7 +836,7 @@ int util_gac_palabras_agregadas;
 
 int util_gac_get_offset_dictionary(int index)
 {
-    return index*(MAX_DICT_GAC_STRING_LENGTH+1);        
+    return index*(MAX_DICT_GAC_STRING_LENGTH+1);
 }
 
 void util_gac_put_string_dictionary(int index,z80_byte *memoria,char *string)
@@ -844,7 +844,7 @@ void util_gac_put_string_dictionary(int index,z80_byte *memoria,char *string)
 
     char string_shown[256];
 
-    //menu_tape_settings_trunc_name(string,string_shown,MAX_DICT_GAC_STRING_LENGTH+1);       
+    //menu_tape_settings_trunc_name(string,string_shown,MAX_DICT_GAC_STRING_LENGTH+1);
     //int longitud_texto=strlen(string);
     strcpy(string_shown,string);
     string_shown[MAX_DICT_GAC_STRING_LENGTH]=0;
@@ -883,7 +883,7 @@ void util_gac_dump_diccionario(char *destino)
         sprintf(buf_linea,"%5d: %s\n",i,buf_palabra);
 
         //Y concatenar a final
-        util_concat_string(destino,buf_linea,MAX_TEXTO_GENERIC_MESSAGE);        
+        util_concat_string(destino,buf_linea,MAX_TEXTO_GENERIC_MESSAGE);
     }
 
 
@@ -967,7 +967,7 @@ void util_gac_readstring(z80_int puntero, int size,char *result,z80_byte *mem_di
       strncat(result,working,255);
    } while (size>0 && end==0);
 
-}         
+}
 
 
 
@@ -1014,7 +1014,7 @@ int startptr, endptr;
 
             char buffer_palabra[256];
 
-            util_gac_readstring( puntero, size,buffer_palabra,mem_diccionario);            
+            util_gac_readstring( puntero, size,buffer_palabra,mem_diccionario);
             //strcpy(roomdescription,result);
 
             //printf ("Object %3d weight: %3d word: %s\n",object,weight,buffer_palabra);
@@ -1038,17 +1038,17 @@ int startptr, endptr;
                             if (nombre_objeto!=NULL) strcpy(nombre_objeto,buffer_palabra);
                             if (peso!=NULL) *peso=weight;
                         }
-                    }       
+                    }
 
                     else {
                         debug_printf (VERBOSE_DEBUG,"Adding word %s to OSD Adventure text keyboard",buffer_palabra);
                         //printf("Object addr %X %d %s location %d\n",fileptr,object,buffer_palabra,start);
                         util_unpawsgac_add_word_kb(buffer_palabra);
                         util_gac_palabras_agregadas++;
-                    }             
-                } 
+                    }
+                }
 
-            }           
+            }
 
          j+=size;
          j+=3;
@@ -1060,7 +1060,7 @@ int startptr, endptr;
    } while (puntero<endptr);
 
    //return current-1;
-//}         
+//}
 }
 
 
@@ -1123,7 +1123,7 @@ void util_gac_readwords(z80_int puntero,z80_int endptr,z80_byte *mem_diccionario
                     if (id_buscar_palabra_count==count) {
                         strcpy(palabra_encontrada,buffer_palabra);
                         return;
-                    } 
+                    }
                 }
 
                 else {
@@ -1146,7 +1146,7 @@ void util_gac_readwords(z80_int puntero,z80_int endptr,z80_byte *mem_diccionario
                         if (!strcasecmp(buffer_palabra,"NO") || !strcasecmp(buffer_palabra,"NW")) gac_id_palabra_direccion_northwest=count;
 
                         if (!strcasecmp(buffer_palabra,"SE")) gac_id_palabra_direccion_southeast=count;
-                        if (!strcasecmp(buffer_palabra,"SO") || !strcasecmp(buffer_palabra,"SW")) gac_id_palabra_direccion_southwest=count;                        
+                        if (!strcasecmp(buffer_palabra,"SO") || !strcasecmp(buffer_palabra,"SW")) gac_id_palabra_direccion_southwest=count;
 
                         if (!strcasecmp(buffer_palabra,"BAJAR") || !strcasecmp(buffer_palabra,"ABAJO") || !strcasecmp(buffer_palabra,"DOWN")) gac_id_palabra_direccion_down=count;
                         if (!strcasecmp(buffer_palabra,"SUBIR") || !strcasecmp(buffer_palabra,"ARRIBA") || !strcasecmp(buffer_palabra,"UP")) gac_id_palabra_direccion_up=count;
@@ -1265,7 +1265,7 @@ int util_gac_readrooms(int solo_esta_habitacion,char *roomdescription,int rellen
             //debug_printf(VERBOSE_ERR,"Rooms > 255 are not supported yet\n");
             //printf("Rooms >= %d are not supported yet\n",TEXT_ADVENTURE_MAX_LOCATIONS);
             return current;
-        }      
+        }
 
       if (room!=0)
       {
@@ -1278,7 +1278,7 @@ int util_gac_readrooms(int solo_esta_habitacion,char *roomdescription,int rellen
          z80_int picture=peek_word_no_time(puntero);
          puntero +=2;
          //printf("room %d Picture: %d\n",room, picture);
-         
+
          //rooms[current]->picture=get16bit(infile);
          //j+=6;
          len-=2;
@@ -1294,7 +1294,7 @@ int util_gac_readrooms(int solo_esta_habitacion,char *roomdescription,int rellen
             {
                 z80_int destination=peek_word_no_time(puntero);
                 puntero +=2;
-                
+
 
                 /*
                 Para guerra de las vajillas, estos id son los valores de "count":
@@ -1328,13 +1328,13 @@ int util_gac_readrooms(int solo_esta_habitacion,char *roomdescription,int rellen
                         else if (scrap==gac_id_palabra_direccion_northeast) text_adventure_connections_table[room].northeast=destination;
                         else if (scrap==gac_id_palabra_direccion_southwest) text_adventure_connections_table[room].southwest=destination;
                         else if (scrap==gac_id_palabra_direccion_southeast) text_adventure_connections_table[room].southeast=destination;
-                        else if (scrap==gac_id_palabra_direccion_down) text_adventure_connections_table[room].down=destination;                        
+                        else if (scrap==gac_id_palabra_direccion_down) text_adventure_connections_table[room].down=destination;
                         else if (scrap==gac_id_palabra_direccion_up) text_adventure_connections_table[room].up=destination;
 
                         text_adventure_connections_table[room].gac_location_picture=picture;
                     }
 
-                    
+
                 }
 
                 //Volcar salida para menu connections
@@ -1351,19 +1351,19 @@ int util_gac_readrooms(int solo_esta_habitacion,char *roomdescription,int rellen
                     sprintf(buffer_linea,"%s: %d, ", buffer_palabra_direccion,destination);
 
                     util_concat_string(buffer_linea_conexiones,buffer_linea,max_string);
-                   
+
                 }
 
                len-=2;
                curexit++;
             }
          } while (scrap != 0);
-            
+
 
         if (roomdescription!=NULL) {
             char result[256];
 
-            util_gac_readstring( puntero, len,result,mem_diccionario);            
+            util_gac_readstring( puntero, len,result,mem_diccionario);
             strcpy(roomdescription,result);
         }
 
@@ -1377,13 +1377,13 @@ int util_gac_readrooms(int solo_esta_habitacion,char *roomdescription,int rellen
             //salir=util_concat_string(texto,buffer_linea,max_string);
             util_concat_string(string_dump_connections,buffer_linea,max_string);
 
-            
-            
+
+
             char texto_localidad[MAX_ALLOWED_TEXT_ADVENTURE_LOCATION_LENGTH+1];
 
             char result[256];
 
-            util_gac_readstring( puntero, len,result,mem_diccionario);            
+            util_gac_readstring( puntero, len,result,mem_diccionario);
             strcpy(texto_localidad,result);
 
             //printf("Localidad %d : %s\n",room,texto_localidad);
@@ -1401,12 +1401,12 @@ int util_gac_readrooms(int solo_esta_habitacion,char *roomdescription,int rellen
             }
 
             util_concat_string(string_dump_connections,"\n\n",max_string);
-            
+
         }
-        
+
         //debug
         //printf("Location description: %s\n",result);
-        
+
 
         puntero +=len;
 
@@ -1424,7 +1424,7 @@ int util_gac_readrooms(int solo_esta_habitacion,char *roomdescription,int rellen
    } while (puntero<endptr && !salir);
 
    return current-1;
-}   
+}
 
 
 void util_gac_dump_messages(char *texto_destino,int max_texto)
@@ -1434,10 +1434,10 @@ void util_gac_dump_messages(char *texto_destino,int max_texto)
 
     if (!util_gac_detect()) {
         return;
-    }    
+    }
 
 
-    util_gac_get_diccionario();        
+    util_gac_get_diccionario();
 
 
     z80_int spec_start;
@@ -1514,10 +1514,10 @@ void util_gac_get_diccionario(void)
     gac_total_entradas_diccionario=0;
 
     debug_printf(VERBOSE_DEBUG,"Recreating GAC dictionary");
-    //Asignar memoria para el diccionario. 
+    //Asignar memoria para el diccionario.
     //z80_byte *diccionario_array;
 
-    //Asignar memoria para el diccionario. 
+    //Asignar memoria para el diccionario.
     gac_diccionario_array=malloc(MAX_DICT_GAC_ENTRIES*(MAX_DICT_GAC_STRING_LENGTH+1));
 
     if (gac_diccionario_array==NULL) cpu_panic("Can not allocate memory");
@@ -1540,7 +1540,7 @@ void util_gac_get_diccionario(void)
 
 
 
-    z80_int endptr=peek_word_no_time(spec_start+10*2); 
+    z80_int endptr=peek_word_no_time(spec_start+10*2);
 
     z80_byte longitud_palabra;
 
@@ -1593,7 +1593,7 @@ int util_gac_dump_dictonary(int *p_gacversion)
         debug_printf (VERBOSE_DEBUG,"It does not seem to be a GAC game");
         *p_gacversion=-1;
         return 0;
-    }        
+    }
 
     util_clear_text_adventure_kdb();
     util_gac_palabras_agregadas=0;
@@ -1630,7 +1630,7 @@ int util_gac_dump_dictonary(int *p_gacversion)
 
 
     debug_printf (VERBOSE_DEBUG,"Dumping verbs. Start at %04XH",verbptr);
-    util_gac_readwords(verbptr,nounptr,gac_diccionario_array,0,-1,NULL,NULL);        
+    util_gac_readwords(verbptr,nounptr,gac_diccionario_array,0,-1,NULL,NULL);
 
     debug_printf (VERBOSE_DEBUG,"Dumping nouns. Start at %04XH",nounptr);
     util_gac_readwords(nounptr,adverbptr,gac_diccionario_array,0,-1,NULL,NULL);
@@ -1657,7 +1657,7 @@ void util_gac_dump_verbs_etc(int tipo,char *texto)
 
     if (!util_gac_detect()) {
        return;
-    }        
+    }
 
 
     z80_int spec_start;
@@ -1692,7 +1692,7 @@ void util_gac_dump_verbs_etc(int tipo,char *texto)
         case 2:
             //adverbios
             util_gac_readwords(adverbptr,objectptr,gac_diccionario_array,0,-1,NULL,texto);
-        break;        
+        break;
     }
 
 
@@ -1704,7 +1704,7 @@ void util_gac_dump_objects_from_menu(char *texto_dump_desde_menu)
     texto_dump_desde_menu[0]=0;
 
     if (!util_gac_detect()) return;
-   
+
 
     z80_int spec_start;
     z80_int room_data;
@@ -1728,7 +1728,7 @@ void util_gac_get_direction_words(void)
 
     if (!util_gac_detect()) {
         return;
-    }      
+    }
 
 
     z80_int spec_start;
@@ -1748,7 +1748,7 @@ void util_gac_get_direction_words(void)
 
     util_gac_get_diccionario();
 
-    util_gac_readwords(verbptr,nounptr,gac_diccionario_array,1,-1,NULL,NULL);        
+    util_gac_readwords(verbptr,nounptr,gac_diccionario_array,1,-1,NULL,NULL);
 
 
 
@@ -1763,7 +1763,7 @@ void util_gac_get_verb(int id_count,char *texto)
 
     if (!util_gac_detect()) {
         return;
-    }      
+    }
 
 
     z80_int spec_start;
@@ -1778,12 +1778,12 @@ void util_gac_get_verb(int id_count,char *texto)
 
     z80_int verbptr=room_data+2;
 
- 
+
     util_gac_get_diccionario();
 
 
 
-    util_gac_readwords(verbptr,nounptr,gac_diccionario_array,0,id_count,texto,NULL);        
+    util_gac_readwords(verbptr,nounptr,gac_diccionario_array,0,id_count,texto,NULL);
 
 
 
@@ -1794,7 +1794,7 @@ int util_gac_get_object_location(int id_objeto)
 
     if (!util_gac_detect()) {
         return -1;
-    }   
+    }
 
     //este puntero se ha obtenido haciendo pruebas
     z80_int table_objects_location=0xA1FD;
@@ -1804,7 +1804,7 @@ int util_gac_get_object_location(int id_objeto)
     return peek_word_no_time(table_objects_location);
 
 
-}   
+}
 
 
 void util_gac_get_object_name(int objeto,char *texto,int *peso)
@@ -1815,7 +1815,7 @@ void util_gac_get_object_name(int objeto,char *texto,int *peso)
     if (!util_gac_detect()) {
         *texto=0;
         return;
-    }      
+    }
 
 
 
@@ -1846,16 +1846,16 @@ void util_gac_get_locations_table(void)
 
     if (!util_gac_detect()) {
         return;
-    }    
+    }
 
     //Recrear diccionario
     util_gac_free_diccionario();
 
-    util_gac_get_diccionario();        
+    util_gac_get_diccionario();
 
     util_gac_get_direction_words();
 
-    util_gac_readrooms(-1,NULL,1,NULL,0,0);       
+    util_gac_readrooms(-1,NULL,1,NULL,0,0);
 
 
 
@@ -1871,12 +1871,12 @@ void util_gac_get_location_name(int room,char *destino)
     if (!util_gac_detect()) {
         strcpy(destino,"Not GAC game");
         return;
-    }        
+    }
 
     //Necesario para traer los textos de la descripcion de la localidad
     util_gac_get_diccionario();
 
-    util_gac_readrooms(room,destino,0,NULL,0,0);    
+    util_gac_readrooms(room,destino,0,NULL,0,0);
 
 }
 
@@ -1887,7 +1887,7 @@ void util_gac_dump_connections(char *texto,int max_string)
 
     if (!util_gac_detect()) {
         return;
-    }        
+    }
 
     //Recrear diccionario GAC por si hemos cambiado el juego
     util_gac_free_diccionario();
@@ -1895,7 +1895,7 @@ void util_gac_dump_connections(char *texto,int max_string)
     //Necesario para traer los textos de la descripcion de la localidad
     util_gac_get_diccionario();
 
-    util_gac_readrooms(-1,NULL,0,texto,max_string,0);   
+    util_gac_readrooms(-1,NULL,0,texto,max_string,0);
 
 }
 
@@ -1907,12 +1907,12 @@ void util_gac_dump_locations(char *texto,int max_string)
 
     if (!util_gac_detect()) {
         return;
-    }        
+    }
 
     //Necesario para traer los textos de la descripcion de la localidad
     util_gac_get_diccionario();
 
-    util_gac_readrooms(-1,NULL,0,texto,max_string,1);   
+    util_gac_readrooms(-1,NULL,0,texto,max_string,1);
 
 }
 
@@ -1922,12 +1922,12 @@ int util_gac_get_total_locations(void)
 
     if (!util_gac_detect()) {
         return 0;
-    }        
+    }
 
 
     // obtener habitaciones
     //printf("Reading rooms\n");
-    int total_rooms=util_gac_readrooms(-1,NULL,0,NULL,0,0);       
+    int total_rooms=util_gac_readrooms(-1,NULL,0,NULL,0,0);
     //printf("Total rooms: %d\n",total_rooms);
 
     return total_rooms;
@@ -1950,9 +1950,9 @@ int util_unpawsetc_dump_words(char *mensaje)
 
     int version;
 
-    int palabras=util_paws_dump_vocabulary(&version);      
+    int palabras=util_paws_dump_vocabulary(&version);
 
-    //printf ("Despues extraer palabras\n");  
+    //printf ("Despues extraer palabras\n");
 
     //Es Paws?
     if (version>=0) {
@@ -1966,7 +1966,7 @@ int util_unpawsetc_dump_words(char *mensaje)
         if (version>=0) {
             sprintf(mensaje,"OK. %s signature found. %d words added",
             gacversions_strings[version],palabras);
-        }	
+        }
 
         else {
             //Ni paws ni gac
@@ -1994,19 +1994,19 @@ int util_has_daad_signature(z80_int dir)
             }
     }
 
-    return 0;    
+    return 0;
 }
 
 
 z80_int util_daad_get_start_pointers(void)
 {
     /*
-    1) En la dirección 0x8400 ha de haber un 1 o un 2. Si son juegos DAAD hechos hoy en día habrá un 2, si son antiguos habrá un 1. 
+    1) En la dirección 0x8400 ha de haber un 1 o un 2. Si son juegos DAAD hechos hoy en día habrá un 2, si son antiguos habrá un 1.
     2) En la siguiente direccion debe conterner un 0x10 o un 0x11 (marca que es juego de spectrum en ingles la primera, juego de Spectrum en español la segunda)
     Para Amstrad, 0x31/0x30 en el 0x2882 en lugar de 0x11/0x10
-    3) En la siguiente direccion lo normal es encontrar un 95 decimal. 
+    3) En la siguiente direccion lo normal es encontrar un 95 decimal.
 
-    */    
+    */
     if (MACHINE_IS_CPC) return 0x2880;
 
     else {
@@ -2057,9 +2057,9 @@ z80_int util_textadventure_get_start_connections(void)
     else if (util_textadv_detect_paws_quill() ){
         //Paws
         util_unpaws_init_parameters();
-        dir=util_unpaws_OffCon;   
+        dir=util_unpaws_OffCon;
     }
-    
+
     else {
         dir=0;
     }
@@ -2075,7 +2075,7 @@ z80_int util_daad_get_start_vocabulary(void)
 
 
         dir=value_8_to_16(daad_peek(util_daad_get_start_pointers()+0x17),daad_peek(util_daad_get_start_pointers()+0x16));
-       
+
 
 
         return dir;
@@ -2087,16 +2087,16 @@ z80_int util_paws_get_start_vocabulary(void)
 {
         z80_int dir;
 
-        
+
         util_unpaws_init_parameters();
         dir=util_unpaws_OffVoc;
-        
+
 
         return dir;
 }
 
 //Volcar vocabulario para el extractor de palabras (teclado text adventure) o como un string con saltos de linea
-//tipo=0: para text adventure. 1:para string 
+//tipo=0: para text adventure. 1:para string
 int util_daad_dump_vocabulary(int tipo,char *texto,int max_string)
 {
 
@@ -2109,8 +2109,8 @@ int util_daad_dump_vocabulary(int tipo,char *texto,int max_string)
         //Leer entradas de 7 bytes
         /*
         5 para 5 letras de la palabra (puede incluir espacios de padding al final si es más corta), con xor 255
-        1 byte para el número de palabra 
-        1 byte para el tipo de palabra 
+        1 byte para el número de palabra
+        1 byte para el tipo de palabra
         */
 
        //Rellenamos con espacio para que se vea centrado
@@ -2189,7 +2189,7 @@ int util_daad_dump_vocabulary(int tipo,char *texto,int max_string)
 
 
 //Volcar vocabulario para el extractor de palabras (teclado text adventure) o como un string con saltos de linea
-//tipo=0: para text adventure. 1:para string 
+//tipo=0: para text adventure. 1:para string
 //Nota: actualmente solo lo utilizo con tipo 1:para string
 int util_paws_dump_vocabulary_tostring(int tipo,char *texto,int max_string)
 {
@@ -2203,8 +2203,8 @@ int util_paws_dump_vocabulary_tostring(int tipo,char *texto,int max_string)
         //Leer entradas de 7 bytes
         /*
         5 para 5 letras de la palabra (puede incluir espacios de padding al final si es más corta), con xor 255
-        1 byte para el número de palabra 
-        1 byte para el tipo de palabra 
+        1 byte para el número de palabra
+        1 byte para el tipo de palabra
 
         Quill es de 5 bytes, 4 para caracteres de palabra y 1 numero
         */
@@ -2360,7 +2360,7 @@ z80_int util_daad_get_start_flags(void)
                     if (util_daad_is_spanish()) {
                         z80_int dir=util_daad_get_start_pointers();
                         //printf("dir: %x\n",dir);
-                        
+
                         //excepciones
                         if (dir==0x8480) {
 
@@ -2369,7 +2369,7 @@ z80_int util_daad_get_start_flags(void)
 
                             //jabato1
                             if (reg_ix==0x8187) return 0x8187;
-                            
+
 
                             //aventura original 1 y demas
                             return 0x8171;
@@ -2406,7 +2406,7 @@ z80_int util_daad_get_start_flags(void)
                 return dir;
         }
 
-        
+
 }
 
 
@@ -2419,7 +2419,7 @@ z80_int util_daad_get_start_objects(void)
         }
 
         else return util_daad_get_start_flags()+256;
-        
+
 }
 
 z80_byte util_daad_get_flag_value(z80_byte index)
@@ -2456,7 +2456,7 @@ void util_daad_locate_word(z80_byte numero_palabra_buscar,z80_byte tipo_palabra_
         //Leer entradas de 7 bytes
         /*
         5 para 5 letras de la palabra (puede incluir espacios de padding al final si es más corta), con xor 255
-        1 byte para el número de palabra 
+        1 byte para el número de palabra
         1 byte para el tipo de palabra. Si 255, cualquiera. Si no, de 0 hasta: ("verb", "adverb", "noun", "adjective", "preposition","conjugation", "pronoun");
         */
 
@@ -2519,8 +2519,8 @@ void util_daad_locate_word(z80_byte numero_palabra_buscar,z80_byte tipo_palabra_
                 }
 
        } while (!salir);
-     
-} 
+
+}
 
 void util_paws_locate_word(z80_byte numero_palabra_buscar,z80_byte tipo_palabra_buscar,char *texto_destino)
 {
@@ -2529,7 +2529,7 @@ void util_paws_locate_word(z80_byte numero_palabra_buscar,z80_byte tipo_palabra_
         //Leer entradas de 7 bytes
         /*
         5 para 5 letras de la palabra (puede incluir espacios de padding al final si es más corta), con xor 255
-        1 byte para el número de palabra 
+        1 byte para el número de palabra
         1 byte para el tipo de palabra. Si 255, cualquiera. Si no, de 0 hasta: ("verb", "adverb", "noun", "adjective", "preposition","conjugation", "pronoun");
 
         En quill, entradas de 5 bytes
@@ -2551,7 +2551,7 @@ void util_paws_locate_word(z80_byte numero_palabra_buscar,z80_byte tipo_palabra_
                 longitud_total_palabra=7;
                 longitud_palabra=5;
         }
-        
+
         else {
                 longitud_total_palabra=5;
                 longitud_palabra=4;
@@ -2619,7 +2619,7 @@ void util_paws_locate_word(z80_byte numero_palabra_buscar,z80_byte tipo_palabra_
                 }
 
        } while (!salir);
-     
+
 }
 
 void util_daad_paws_locate_word(z80_byte numero_palabra_buscar,z80_byte tipo_palabra_buscar,char *texto_destino)
@@ -2648,7 +2648,7 @@ z80_int util_daad_get_start_objects_names(void)
 
         if (util_daad_detect()) {
         puntero=util_daad_get_start_pointers()+12;
-        dir=value_8_to_16(daad_peek(puntero+1),daad_peek(puntero));        
+        dir=value_8_to_16(daad_peek(puntero+1),daad_peek(puntero));
         }
         else {
                 util_unpaws_init_parameters();
@@ -2772,21 +2772,21 @@ z80_int util_daad_get_graphics_attr(z80_byte location,int *ink,int *paper,int *i
 
     if (table_attr==0) {
         return 0;
-    }    
+    }
 
-    z80_byte gflag;    
+    z80_byte gflag;
 
     if (esdaad) {
-        gflag = peek_byte_no_time(table_attr+location*5);    
+        gflag = peek_byte_no_time(table_attr+location*5);
     }
-    else {    
+    else {
         gflag = peek_byte_no_time(table_attr+location);
     }
 
     *is_picture=gflag & 0x80;
     *ink=gflag & 7;
     *paper=(gflag >> 3) & 7;
-            
+
 
     return table_attr;
 }
@@ -2798,7 +2798,7 @@ int util_daad_has_graphics(void)
    z80_int table_attr=util_daad_get_start_graphics_attr();
 
     if (table_dir==0 || table_attr==0) return 0;
-    else return 1;    
+    else return 1;
 }
 
 z80_int util_gac_get_start_graphics(void)
@@ -2964,10 +2964,10 @@ z80_int util_gac_daad_get_total_graphics(void)
 
     if (util_gac_detect() ) {
         max_localizaciones=util_gac_get_total_graphics();
-    }  
+    }
     else {
         max_localizaciones=util_daad_get_total_graphics();
-    }    
+    }
 
     return max_localizaciones;
 }
@@ -3007,7 +3007,7 @@ z80_int util_daad_get_start_sys_messages(void)
 
         if (util_daad_detect()) {
         puntero=util_daad_get_start_pointers()+18;
-        dir=value_8_to_16(daad_peek(puntero+1),daad_peek(puntero));        
+        dir=value_8_to_16(daad_peek(puntero+1),daad_peek(puntero));
         }
         else {
                 //Paws
@@ -3030,7 +3030,7 @@ z80_int util_daad_get_start_compressed_messages(void)
 
         if (util_daad_detect()) {
         puntero=util_daad_get_start_pointers()+8;
-        dir=value_8_to_16(daad_peek(puntero+1),daad_peek(puntero));        
+        dir=value_8_to_16(daad_peek(puntero+1),daad_peek(puntero));
         }
         else {
                 //paws
@@ -3052,7 +3052,7 @@ z80_int util_daad_get_num_objects_description(void)
 
         if (util_daad_detect()) {
         puntero=util_daad_get_start_pointers()+3;
-        dir=daad_peek(puntero);        
+        dir=daad_peek(puntero);
         }
         else {
                 //paws
@@ -3073,7 +3073,7 @@ z80_int util_daad_get_num_locat_messages(void)
 
         if (util_daad_detect()) {
         puntero=util_daad_get_start_pointers()+4;
-        dir=daad_peek(puntero);        
+        dir=daad_peek(puntero);
         }
         else {
                 //Paws
@@ -3127,7 +3127,7 @@ z80_int util_daad_get_num_sys_messages(void)
 
         if (util_daad_detect()) {
         puntero=util_daad_get_start_pointers()+6;
-        dir=daad_peek(puntero);        
+        dir=daad_peek(puntero);
         }
         else {
                 //paws
@@ -3164,11 +3164,11 @@ int util_paws_is_opcodes_parser(z80_int dir)
                  if (
                         daad_peek(dir)==0x0a &&
                         daad_peek(dir+1)==0xfe &&
-                        daad_peek(dir+2)==0xff 
-                ) {    
+                        daad_peek(dir+2)==0xff
+                ) {
                         return 1;
                 }
-                else return 0;   
+                else return 0;
 }
 
 z80_int util_paws_get_pc_parser(void)
@@ -3182,7 +3182,7 @@ z80_int util_paws_get_pc_parser(void)
 
         z80_int dir=0x76a6; //por defecto
 
-        
+
 
                 z80_int dir2=0x7671;
                 if (util_paws_is_opcodes_parser(dir2)) dir=dir2;
@@ -3197,12 +3197,12 @@ z80_int util_paws_get_pc_parser(void)
 
                 //quill (bugsy)
                 z80_int dir5=0x6448;
-                if (util_paws_is_opcodes_parser(dir5)) dir=dir5;          
+                if (util_paws_is_opcodes_parser(dir5)) dir=dir5;
 
                 //quill (evil realm)
                 z80_int dir6=0x644d;
-                if (util_paws_is_opcodes_parser(dir6)) dir=dir6;                                         
-    
+                if (util_paws_is_opcodes_parser(dir6)) dir=dir6;
+
 
         return dir;
 }
@@ -3210,14 +3210,14 @@ z80_int util_paws_get_pc_parser(void)
 int util_paws_is_in_parser(void)
 {
         if (reg_pc==util_paws_get_pc_parser() ) return 1;
-        
+
         else return 0;
 }
 
 int util_daad_is_in_parser(void)
 {
         if (reg_pc==util_daad_get_pc_parser() ) return 1;
-        
+
         else return 0;
 }
 
@@ -3307,8 +3307,8 @@ void util_textadventure_filter_message(char *texto)
             texto[dest++]=c;
         }
 
-        
-    }    
+
+    }
 
     texto[dest]=0;
 }
@@ -3322,7 +3322,7 @@ void util_daad_get_object_description(z80_byte index,char *texto)
         util_daad_get_message_table_lookup(index,table_dir,texto,util_daad_get_num_objects_description() );
 
     //filtrar caracteres
-    util_textadventure_filter_message(texto);        
+    util_textadventure_filter_message(texto);
 
 }
 
@@ -3347,7 +3347,7 @@ void util_daad_get_sys_message(z80_byte index,char *texto)
        */
 
         z80_int table_dir=util_daad_get_start_sys_messages();
-        
+
         util_daad_get_message_table_lookup(index,table_dir,texto,util_daad_get_num_sys_messages());
 }
 
@@ -3360,7 +3360,7 @@ void util_daad_get_locat_message(z80_byte index,char *texto)
 
     //filtrar caracteres
     util_textadventure_filter_message(texto);
-   
+
 }
 
 void util_textadventure_get_locat_message(z80_byte index,char *texto)
@@ -3386,9 +3386,9 @@ void old_delete_util_daad_get_graphics_list_commands(z80_byte location,char *tex
 
     z80_byte gflag;
 
-    char buffer_temporal[200];       
+    char buffer_temporal[200];
 
-    int esdaad=util_daad_detect();     
+    int esdaad=util_daad_detect();
 
 
     z80_int table_attr=util_daad_get_start_graphics_attr();
@@ -3396,11 +3396,11 @@ void old_delete_util_daad_get_graphics_list_commands(z80_byte location,char *tex
     if (table_attr==0) {
         menu_error_message("Graphics attributes not found");
         return;
-    }        
+    }
 
     //Write(FOut,'Location ',n:3, ' graphics flags: ');
     if (esdaad) {
-        gflag = peek_byte_no_time(table_attr+location*5);    
+        gflag = peek_byte_no_time(table_attr+location*5);
     }
     else {
         gflag = peek_byte_no_time(table_attr+location);
@@ -3408,7 +3408,7 @@ void old_delete_util_daad_get_graphics_list_commands(z80_byte location,char *tex
 
 
     /*
-       if (gflag & 0x80)  
+       if (gflag & 0x80)
            Write(FOut,'Picture.    ')
        else
            Write(FOut,'Subroutine. ');
@@ -3416,14 +3416,14 @@ void old_delete_util_daad_get_graphics_list_commands(z80_byte location,char *tex
        WriteLn(FOut, 'Ink=',gflag mod 8 ,' Paper=',
                (gflag and $3f) div 8, ' Bit6=', (gflag and 64) div  64);*/
 
-            
+
     sprintf(buffer_temporal,"Location %-3d graphics flags: %s Ink=%d Paper=%d Bit6=%d\n",location,
         (gflag & 0x80 ? "Picture.    " : "Subroutine. "),
-        gflag & 7, (gflag >> 3) & 7, (gflag>>6) & 1 
+        gflag & 7, (gflag >> 3) & 7, (gflag>>6) & 1
     );
 
     util_concat_string(texto,buffer_temporal,MAX_TEXTO_GENERIC_MESSAGE);
-        
+
 
         printf("OffGraph: %d\n",table_dir);
 
@@ -3441,8 +3441,8 @@ char *plot_moves[]= {
 "-001  000",
 "-001 -001",
 " 000 -001",
-" 001 -001" 
-}; 
+" 001 -001"
+};
 
     int salir=0;
 
@@ -3453,12 +3453,12 @@ char *plot_moves[]= {
 
     int quillversion;
 
-    util_unpaws_get_maintop_mainattr(&maintop,&mainattr,&quillversion);    
+    util_unpaws_get_maintop_mainattr(&maintop,&mainattr,&quillversion);
 
     //printf("quill version: %d\n",quillversion);
 
 
-    
+
 
     while (!salir) {
 
@@ -3478,7 +3478,7 @@ char *plot_moves[]= {
         //---x---- Bit 4 (0x10) : inverse / flags      |
         //--x----- Bit 5 (0x20): flags                 |  Parametro 0 ("value")
         //-x------ Bit 6 (0x40): signo parametro 1    -|
-        //x------- Bit 7 (0x80): signo parametro 2 / flags   
+        //x------- Bit 7 (0x80): signo parametro 2 / flags
 
         int i;
         for (i=0;i<8;i++) neg[i]=0;
@@ -3487,7 +3487,7 @@ char *plot_moves[]= {
         if ((gflag & 8) != 0) ovr = 'o';
         if ((gflag & 16) !=0) inv = 'i';
         value = gflag /  8;
-        nargs=0;        
+        nargs=0;
 
         switch (gflag & 7) {
 	         case 0:
@@ -3501,13 +3501,13 @@ char *plot_moves[]= {
                 }
             break;
 
-	         case 1: 
+	         case 1:
                 nargs = 2;
-                
+
                 if ((gflag & 0x40) != 0) neg[0] = 1;
                 if ((gflag & 0x80) != 0) neg[1] = 1;
 
-		     if (ovr=='o' && inv=='i') 
+		     if (ovr=='o' && inv=='i')
                        sprintf (buffer_temporal,"REL MOVE   ");
 		     else {
                        sprintf (buffer_temporal,"LINE    %c%c ",ovr,inv);
@@ -3520,22 +3520,22 @@ char *plot_moves[]= {
                                nargs=1;
                            }
                        }
-             
-                       
+
+
 		    break;
 
 
                 case 2:
-                
-	         
-                     if ((gflag & 0x10)!=0  && (gflag & 0x20)!=0) 
+
+
+                     if ((gflag & 0x10)!=0  && (gflag & 0x20)!=0)
 		      {
                             if ((gflag & 0x40) !=0) neg[0] = 1;
                             if ((gflag & 0x80) !=0) neg[1] = 1;
-                        
+
 			    nargs = 3;
-                
-                            if (quillversion==0) 
+
+                            if (quillversion==0)
                              sprintf (buffer_temporal,"SHADE   %c%c ",ovr,inv);
                             else
                              sprintf (buffer_temporal,"BSHADE     ");
@@ -3561,28 +3561,28 @@ char *plot_moves[]= {
 			    nargs = 2;
                             sprintf (buffer_temporal,"FILL       ");
 		      }
-		    
-            
+
+
             break;
 
 
-	         case 3: 
+	         case 3:
                      nargs = 1;
                      int mirror_x=gflag&64;
                      int mirror_y=gflag&128;
 
                     if (!esdaad) mirror_x=mirror_y=0;
- 
+
                      //Chichen itza, localizacion 4 utiliza esto
                      sprintf (buffer_temporal,"GOSUB    sc=%d %s %s",value & 7,
                         (mirror_x ? "MX" : "  "),
                         (mirror_y ? "MY" : "  ")
                      );
-                    
+
 		    break;
 
             case 4:
-            
+
                      if (quillversion==0)
                      {
                        nargs = 3;
@@ -3594,32 +3594,32 @@ char *plot_moves[]= {
                        nargs=0;
                        sprintf (buffer_temporal,"RPLOT   %c%c %s",ovr,inv,plot_moves[value/4]);
                      }
-                     
-            
+
+
 
 		    break;
 
 	        case 5:
 
                      nargs = 0;
-                     
-		     if ((gflag & 0x80) !=0) 
+
+		     if ((gflag & 0x80) !=0)
                       sprintf (buffer_temporal,"BRIGHT      %d",value & 15);
                      else
                       sprintf (buffer_temporal,"PAPER      %d",value & 15);
-        
-            
+
+
            break;
 
-           case 6: 
+           case 6:
                      nargs = 0;
-                     
-		     if ((gflag & 0x80) !=0) 
+
+		     if ((gflag & 0x80) !=0)
                       sprintf (buffer_temporal,"FLASH       %d",value & 15);
                      else
                       sprintf (buffer_temporal,"INK         %d",value & 15);
-                      
-		    
+
+
             break;
             case 7:
                 sprintf (buffer_temporal,"END ");
@@ -3629,7 +3629,7 @@ char *plot_moves[]= {
         }
 
         graphics++;
-        
+
         util_concat_string(texto,buffer_temporal,MAX_TEXTO_GENERIC_MESSAGE);
 
         if (line_comprimido) {
@@ -3642,7 +3642,7 @@ char *plot_moves[]= {
             sprintf(buffer_temporal,"%c%-3d ",(neg[0]!=0 ? '-' : ' ' ), arg1);
             util_concat_string(texto,buffer_temporal,MAX_TEXTO_GENERIC_MESSAGE);
             sprintf(buffer_temporal,"%c%-3d ",(neg[1]!=0 ? '-' : ' ' ), arg2);
-            util_concat_string(texto,buffer_temporal,MAX_TEXTO_GENERIC_MESSAGE);            
+            util_concat_string(texto,buffer_temporal,MAX_TEXTO_GENERIC_MESSAGE);
             graphics++;
         }
 
@@ -3751,36 +3751,36 @@ int util_daad_condact_uses_message(void)
 	z80_int direccion_desensamblar=value_8_to_16(reg_b,reg_c);
 
 	z80_byte opcode_daad=daad_peek(direccion_desensamblar) & 127;
-	
+
 
 	if (opcode_daad==77 || opcode_daad==38 || opcode_daad==54 || opcode_daad==19 || opcode_daad==69|| opcode_daad==16 || opcode_daad==70 || opcode_daad==17 || opcode_daad==68) {
                 return 1;
-	} 
+	}
 
 	else return 0;
 }
 
 int util_daad_get_limit_flags(void)
 {
-        int limite_max=255;        
+        int limite_max=255;
         		//quill tiene 33 flags y 210 objetos
 		//Tabla Para quill de 33 flags y 210 objetos (33 oficiales, realmente 37)
 		if (util_undaad_unpaws_is_quill() ) {
-				limite_max=36;			
-		}	
+				limite_max=36;
+		}
 
         return limite_max;
 }
 
 int util_daad_get_limit_objects(void)
 {
-        int limite_max=255;        
+        int limite_max=255;
         		//quill tiene 33 flags y 210 objetos
 		//Tabla Para quill de 33 flags y 210 objetos
 		if (util_undaad_unpaws_is_quill() ) {
 			//objetos
 			limite_max=209;
-		}	
+		}
 
         return limite_max;
 }
@@ -3826,38 +3826,38 @@ void util_daad_get_condact_message(char *buffer)
 
 	if (opcode_daad==77 || opcode_daad==38) {
 		util_daad_get_user_message(param_message,buffer);
-	} 
+	}
 
 	if (opcode_daad==54) {
 		util_daad_get_sys_message(param_message,buffer);
-	} 	
+	}
 
 	if (opcode_daad==19) {
 		util_daad_get_locat_message(param_message,buffer);
-	} 		
+	}
 
 	//{1,"NOUN2  "}, //  69 $45
 	if (opcode_daad==69) {
 		util_daad_paws_locate_word(param_message,2,buffer);
-	} 		
+	}
 
   //{1,"ADJECT1"}, //  16 $10
   //{1,"ADJECT2"}, //  70 $46
   	if (opcode_daad==16 || opcode_daad==70) {
 		util_daad_paws_locate_word(param_message,3,buffer);
-	} 	
+	}
 
 
 
   	//{1,"ADVERB "}, //  17 $11
     if (opcode_daad==17) {
 		util_daad_paws_locate_word(param_message,1,buffer);
-	} 
+	}
 
-    //{1,"PREP   "}, //  68 $44	
+    //{1,"PREP   "}, //  68 $44
 	if (opcode_daad==68) {
 		util_daad_paws_locate_word(param_message,4,buffer);
-	} 	
+	}
 
 
 	menu_generic_message("Message",buffer);
@@ -3889,7 +3889,7 @@ void debug_get_daad_step_breakpoint_string(char *texto)
 	z80_int breakpoint_dir;
 
 	if (util_daad_detect() ) breakpoint_dir=util_daad_get_pc_parser();
-	if (util_textadv_detect_paws_quill() ) breakpoint_dir=util_paws_get_pc_parser();	
+	if (util_textadv_detect_paws_quill() ) breakpoint_dir=util_paws_get_pc_parser();
 
 
 	//de momento en decimal (dado que aun no mostamos hexadecimal en parser) para que al comparar salga igual
@@ -3967,7 +3967,7 @@ z80_byte chardetect_convert_daad_accents(z80_byte c)
 			//eñe
 			if (c=='\x1a') c='n';
 
-			return c;	
+			return c;
 }
 
 z80_byte chardetect_convert_paws_accents(z80_byte c)
@@ -3978,12 +3978,12 @@ z80_byte chardetect_convert_paws_accents(z80_byte c)
 			if (c=='$') c='i';
 			if (c=='%') c='o';
 			if (c=='&') c='u';
-			
-			
+
+
 			//eñe
 			if (c=='|') c='n';
 
-            return c;    
+            return c;
 }
 
 //Tabla de desensamblado de condacts de daad
@@ -4100,24 +4100,24 @@ struct s_daad_paws_contacts paws_contacts_array[]={
 {1,"MOVE   "},
 {0,"PROTECT"},  //107
 {0,"UNKNOWN"},  //108
-{0,"UNKNOWN"},  
+{0,"UNKNOWN"},
 {0,"UNKNOWN"},  //110
-{0,"UNKNOWN"},  
-{0,"UNKNOWN"},  
-{0,"UNKNOWN"},  
-{0,"UNKNOWN"},  
+{0,"UNKNOWN"},
+{0,"UNKNOWN"},
+{0,"UNKNOWN"},
+{0,"UNKNOWN"},
 {0,"UNKNOWN"},  //115
-{0,"UNKNOWN"},  
-{0,"UNKNOWN"},  
-{0,"UNKNOWN"},  
-{0,"UNKNOWN"},  
+{0,"UNKNOWN"},
+{0,"UNKNOWN"},
+{0,"UNKNOWN"},
+{0,"UNKNOWN"},
 {0,"UNKNOWN"},  //120
-{0,"UNKNOWN"},  
-{0,"UNKNOWN"},  
-{0,"UNKNOWN"},  
-{0,"UNKNOWN"},  
+{0,"UNKNOWN"},
+{0,"UNKNOWN"},
+{0,"UNKNOWN"},
+{0,"UNKNOWN"},
 {0,"UNKNOWN"},  //125
-{0,"UNKNOWN"},  
+{0,"UNKNOWN"},
 {0,"UNKNOWN"},  //127
 
 };
@@ -4179,7 +4179,7 @@ struct s_daad_paws_contacts daad_contacts_array[]={
   {1,"PRINT  "}, //  53 $35
   {1,"SYSMESS"}, //  54 $36
   {2,"ISAT   "}, //  55 $37
-  {1,"SETCO  "}, //  56 $38 COPYOF in old games 
+  {1,"SETCO  "}, //  56 $38 COPYOF in old games
   {0,"SPACE  "}, //  57 $39 COPYOO in old games
   {1,"HASAT  "}, //  58 $3A COPYFO in old games
   {1,"HASNAT "}, //  59 $3B COPYFF in old games
@@ -4244,7 +4244,7 @@ struct s_daad_paws_contacts daad_contacts_array[]={
   {1,"TAB    "}, // 118 $76
   {2,"COPYOF "}, // 119 $77
   {0,"dumb   "}, // 120 $78 (according DAAD manual, internal)
-  {2,"COPYOO "}, // 121 $79 
+  {2,"COPYOO "}, // 121 $79
   {0,"dumb   "}, // 122 $7A (according DAAD manual, internal)
   {2,"COPYFO "}, // 123 $7B
   {0,"dumb   "}, // 124 $7C (according DAAD manual, internal)
@@ -4272,14 +4272,14 @@ void menu_debug_daad_init_flagobject(void)
 	debug_daad_flag_object[2].indice=33;
 	debug_daad_flag_object[3].indice=34;
 	debug_daad_flag_object[4].indice=35;
-	debug_daad_flag_object[5].indice=38;	
-	debug_daad_flag_object[6].indice=51;	
+	debug_daad_flag_object[5].indice=38;
+	debug_daad_flag_object[6].indice=51;
 
 	//todos tipo flag
 	int i;
 	for (i=0;i<MENU_DEBUG_NUMBER_FLAGS_OBJECTS;i++) 	debug_daad_flag_object[i].tipo=0;
 
-			
+
 }
 
 //comprobamos si algun valor de la tabla se sale del rango admitido. Esto pasa en quill por ejemplo
@@ -4298,8 +4298,8 @@ void menu_debug_daad_check_init_flagobject(void)
 
 		if (indice>limite_max) debug_daad_flag_object[i].indice=0; //Poner un indice admitido
 
-	}	
-			
+	}
+
 }
 
 
@@ -4319,7 +4319,7 @@ void menu_debug_daad_string_flagobject(z80_byte num_linea,char *destino)
 
 	else {
 		letra_mostrar='O';
-		valor=util_daad_get_object_value(indice);		
+		valor=util_daad_get_object_value(indice);
 	}
 
 	sprintf (destino,"%d.%c%03d %d",num_linea+1,letra_mostrar,indice,valor);
@@ -4341,14 +4341,14 @@ int util_textadventure_get_current_location_flag(void)
 {
 
     if (util_daad_detect() ) {
-       return 38; 
+       return 38;
     }
 
     else if (util_textadv_detect_paws_quill() ) {
         if (util_paws_quill_is_quill()) {
             return 35;
         }
-        else return 38; 
+        else return 38;
     }
 
     //cualquier otra cosa
@@ -4423,7 +4423,7 @@ int util_textdaventure_dump_connections(char *texto,int max_string)
 
 
             char texto_localidad[MAX_ALLOWED_TEXT_ADVENTURE_LOCATION_LENGTH+1];
-            util_daad_get_locat_message(i,texto_localidad); 
+            util_daad_get_locat_message(i,texto_localidad);
 
 
             //printf("location %3d connections table: %d\n",i,connection_table);
@@ -4459,11 +4459,11 @@ int util_textdaventure_dump_connections(char *texto,int max_string)
                 if (buffer_verbo[0]!='?') {
                     //printf("%s",buffer_verbo);
                     util_clear_final_spaces(buffer_verbo,palabra_sin_espacios);
-                    
+
                 }
 
                 else {
-                    
+
                     //TODO: solo considerar en principio nombres < 16
                     util_daad_paws_locate_word(palabra,2,buffer_nombre);
                     if (buffer_nombre[0]!='?') {
@@ -4477,11 +4477,11 @@ int util_textdaventure_dump_connections(char *texto,int max_string)
                     }
                 }
 
-                  
-                
+
+
                 //salir=util_concat_string(texto,palabra_sin_espacios,max_string);
                 util_concat_string(texto,palabra_sin_espacios,max_string);
-                
+
 
                 //printf(" destino %d\n",destino);
                 sprintf(buffer_linea," %d, ",destino);
@@ -4504,7 +4504,7 @@ int util_textdaventure_dump_connections(char *texto,int max_string)
 
         return 0;
     }
-    
+
     else {
         //unsuported parser
         return -1;
@@ -4568,12 +4568,12 @@ void init_textadventure_connections_table(void)
         text_adventure_connections_table[i].dudoso_southwest=0;
         text_adventure_connections_table[i].dudoso_southeast=0;
         text_adventure_connections_table[i].dudoso_up=0;
-        text_adventure_connections_table[i].dudoso_down=0;        
+        text_adventure_connections_table[i].dudoso_down=0;
 
 
-        text_adventure_connections_table[i].habitacion_dudosa=0;  
+        text_adventure_connections_table[i].habitacion_dudosa=0;
 
-        text_adventure_connections_table[i].gac_location_picture=0;      
+        text_adventure_connections_table[i].gac_location_picture=0;
     }
 }
 
@@ -4621,7 +4621,7 @@ int textadventure_room_has_exits(int i)
         (se!=-1 && se!=i) ||
 
         (up!=-1 && up!=i) ||
-        (dn!=-1 && dn!=i) 
+        (dn!=-1 && dn!=i)
 
     ) {
         return 1;
@@ -4657,7 +4657,7 @@ void textadventure_generate_connections_table(void)
 
 
             char texto_localidad[MAX_ALLOWED_TEXT_ADVENTURE_LOCATION_LENGTH+1];
-            util_daad_get_locat_message(i,texto_localidad); 
+            util_daad_get_locat_message(i,texto_localidad);
 
 
             //printf("location %3d connections table: %d\n",i,connection_table);
@@ -4677,7 +4677,7 @@ void textadventure_generate_connections_table(void)
             z80_byte palabra;
             z80_byte destino;
 
-            //Dado que solo las 16 primeras palabras (nombres y verbos) se consideran direcciones, para cada localidad habrá un maximo de 16+16=32 
+            //Dado que solo las 16 primeras palabras (nombres y verbos) se consideran direcciones, para cada localidad habrá un maximo de 16+16=32
             //posibles direcciones
             //Limitar esto a 32, esto tambien evita usar mucha cpu cuando una aventura se detecta erroneamente y esta corrupta
             //como por ejemplo cargar una aventura de 128k en modo 48k
@@ -4701,11 +4701,11 @@ void textadventure_generate_connections_table(void)
                     if (buffer_verbo[0]!='?') {
                         //printf("%s",buffer_verbo);
                         util_clear_final_spaces(buffer_verbo,palabra_sin_espacios);
-                        
+
                     }
 
                     else {
-                        
+
                         util_daad_paws_locate_word(palabra,2,buffer_nombre);
                         if (buffer_nombre[0]!='?') {
                             //printf("%s",buffer_nombre);
@@ -4718,8 +4718,8 @@ void textadventure_generate_connections_table(void)
                         }
                     }
 
-                    
-                    
+
+
                     //salir=util_concat_string(texto,palabra_sin_espacios,max_string);
                     //salir=util_concat_string(texto,", ",max_string);
 
@@ -4758,8 +4758,8 @@ void textadventure_generate_connections_table(void)
 
                     if (!strcasecmp("se",palabra_sin_espacios)) text_adventure_connections_table[i].southeast=destino;
 
-                    if (!strcasecmp("up",palabra_sin_espacios) || 
-                        !strcasecmp("u",palabra_sin_espacios) || 
+                    if (!strcasecmp("up",palabra_sin_espacios) ||
+                        !strcasecmp("u",palabra_sin_espacios) ||
                         !strcasecmp("subo",palabra_sin_espacios) ||
                         !strcasecmp("sube",palabra_sin_espacios)) {
                         text_adventure_connections_table[i].up=destino;
@@ -4791,7 +4791,7 @@ void textadventure_generate_connections_table(void)
                     text_adventure_connections_table[i].southeast,
                     text_adventure_connections_table[i].up,
                     text_adventure_connections_table[i].down
-            );            
+            );
 
 
             printf("\n");*/
@@ -4809,13 +4809,13 @@ void textadventure_generate_connections_table(void)
     else if (util_gac_detect() ) {
         util_gac_get_locations_table();
     }
-    
+
     else {
         //unsuported parser
         return;
     }
 
- 
+
 
 
 }
@@ -4829,7 +4829,7 @@ int textdaventure_position_exists(int x,int y,int z,int current,int id_mapa)
     //Evitamos esta pues la detecta al principio
     //TODO: esto no es perfecto pero...
     if (x==0 && y==0 && z==0) return -1;
-    
+
     for (i=0;i<util_daad_get_num_locat_messages();i++) {
         if (i!=current) {
             if (text_adventure_connections_table[i].x==x &&
@@ -4839,7 +4839,7 @@ int textdaventure_position_exists(int x,int y,int z,int current,int id_mapa)
                 text_adventure_connections_table[i].mapa==id_mapa
                 )
                  {
-            
+
                 return i;
             }
         }
@@ -4890,7 +4890,7 @@ int textadventure_walk(int room, int x, int y, int z, int recurse_level,int id_m
 
         //Esa posicion ya estaba ocupada. Indicamos que esta direccion es dudosa
         if (ret!=-1) text_adventure_connections_table[room].dudoso_north=1;
-            
+
     }
 
     if (text_adventure_connections_table[room].south!=-1) {
@@ -4915,7 +4915,7 @@ int textadventure_walk(int room, int x, int y, int z, int recurse_level,int id_m
         //Esa posicion ya estaba ocupada. Indicamos que esta direccion es dudosa
         if (ret!=-1) text_adventure_connections_table[room].dudoso_east=1;
 
-    }        
+    }
 
     if (text_adventure_connections_table[room].northwest!=-1) {
         int ret=textadventure_walk(text_adventure_connections_table[room].northwest,x-1,y+1,z,recurse_level+1,id_mapa);
@@ -4947,7 +4947,7 @@ int textadventure_walk(int room, int x, int y, int z, int recurse_level,int id_m
         //Esa posicion ya estaba ocupada. Indicamos que esta direccion es dudosa
         if (ret!=-1) text_adventure_connections_table[room].dudoso_southeast=1;
 
-    }        
+    }
 
     if (text_adventure_connections_table[room].up!=-1) {
         int ret=textadventure_walk(text_adventure_connections_table[room].up,x,y,z+1,recurse_level+1,id_mapa);
@@ -4963,7 +4963,7 @@ int textadventure_walk(int room, int x, int y, int z, int recurse_level,int id_m
         //Esa posicion ya estaba ocupada. Indicamos que esta direccion es dudosa
         if (ret!=-1) text_adventure_connections_table[room].dudoso_down=1;
 
-    }         
+    }
 
 
     return existe_posicion;
@@ -4978,14 +4978,14 @@ int textadventure_find_room_by_coords(int x,int y,int z)
     int i;
 
     for (i=0;i<TEXT_ADVENTURE_MAX_LOCATIONS;i++) {
-        if (text_adventure_connections_table[i].x==x && 
-        text_adventure_connections_table[i].y==y && 
+        if (text_adventure_connections_table[i].x==x &&
+        text_adventure_connections_table[i].y==y &&
         text_adventure_connections_table[i].z==z &&
         textadventure_room_has_exits(i)
         ) {
             return i;
         }
-    }    
+    }
 
     return -1;
 }
@@ -5001,11 +5001,11 @@ int textadventure_get_size_map(int mapa,int z,int *ancho,int *alto,int *min_x,in
     *min_y=9999;
     *max_x=-9999;
     *max_y=-9999;
-    
+
     int encontrado=0;
 
     for (i=0;i<TEXT_ADVENTURE_MAX_LOCATIONS;i++) {
-        if ( 
+        if (
             textadventure_room_has_exits(i)
         ) {
 
@@ -5027,9 +5027,9 @@ int textadventure_get_size_map(int mapa,int z,int *ancho,int *alto,int *min_x,in
             }
 
         }
-    }        
+    }
 
-    
+
 
     //Y calcular ancho y alto
     *ancho=(*max_x)-(*min_x)+1;
@@ -5049,17 +5049,17 @@ void textadventure_get_range_z_map(int *min_z,int *max_z)
     *max_z=-9999;
 
     for (i=0;i<TEXT_ADVENTURE_MAX_LOCATIONS;i++) {
-        if ( 
+        if (
             textadventure_room_has_exits(i) && text_adventure_connections_table[i].recorrida
         ) {
 
 
                 if (text_adventure_connections_table[i].z<(*min_z)) *min_z=text_adventure_connections_table[i].z;
                 if (text_adventure_connections_table[i].z>(*max_z)) *max_z=text_adventure_connections_table[i].z;
-            
+
 
         }
-    }        
+    }
 
 }
 
@@ -5072,7 +5072,7 @@ void textadventure_apply_offset_map(int mapa,int z,int offset_x,int offset_y)
 
 
     for (i=0;i<TEXT_ADVENTURE_MAX_LOCATIONS;i++) {
-        if (text_adventure_connections_table[i].z==z && 
+        if (text_adventure_connections_table[i].z==z &&
             text_adventure_connections_table[i].mapa==mapa &&
             textadventure_room_has_exits(i)
         ) {
@@ -5080,9 +5080,9 @@ void textadventure_apply_offset_map(int mapa,int z,int offset_x,int offset_y)
             //printf("Aplicando offset %d %d a habitacion %d\n",offset_x,offset_y,i);
             text_adventure_connections_table[i].x +=offset_x;
             text_adventure_connections_table[i].y +=offset_y;
-            
+
         }
-    }        
+    }
 
 }
 
@@ -5112,13 +5112,13 @@ void textadventure_rearrange_maps(int z,int total_mapas)
         int ancho_mapa,alto_mapa,min_x_mapa,max_x_mapa,min_y_mapa,max_y_mapa;
 
         int encontrado;
-    
+
         encontrado=textadventure_get_size_map(i,z,&ancho_mapa,&alto_mapa,&min_x_mapa,&max_x_mapa,&min_y_mapa,&max_y_mapa,0);
 
         if (encontrado) {
 
             //printf("1 Mapa %d Ancho %d Alto %d minx: %d miny: %d maxx: %d maxy: %d\n",
-            //    i,ancho_mapa,alto_mapa,min_x_mapa,min_y_mapa,max_x_mapa,max_y_mapa);        
+            //    i,ancho_mapa,alto_mapa,min_x_mapa,min_y_mapa,max_x_mapa,max_y_mapa);
 
             //hacer el calculo del offset_x y offset_y
             //restarle el minimo (con lo que se ubicaria en 0,0) y sumar el offset que tenemos de x
@@ -5149,7 +5149,7 @@ void textadventure_rearrange_maps(int z,int total_mapas)
                 encontrado=textadventure_get_size_map(i+1,z,&ancho_mapa,&alto_mapa,&min_x_mapa,&max_x_mapa,&min_y_mapa,&max_y_mapa,0);
 
                 //printf("2 Mapa %d Ancho %d Alto %d minx: %d miny: %d maxx: %d maxy: %d\n",
-                //    i+1,ancho_mapa,alto_mapa,min_x_mapa,min_y_mapa,max_x_mapa,max_y_mapa);            
+                //    i+1,ancho_mapa,alto_mapa,min_x_mapa,min_y_mapa,max_x_mapa,max_y_mapa);
 
                 //No cabe a la derecha, pues va para arriba
                 if (encontrado && x+ancho_mapa>=xfinal) {
@@ -5230,7 +5230,7 @@ void textadventure_follow_connections(int follow_rooms_no_connections)
 
     //printf("Total mapas: %d\n",total_mapas);
 
-    
+
     int min_z,max_z;
     textadventure_get_range_z_map(&min_z,&max_z);
     //printf("Rango Z: min %d max %d\n",min_z,max_z);
@@ -5267,7 +5267,7 @@ void textadventure_follow_connections(int follow_rooms_no_connections)
 
 }
 
-//Mostrar mapa en consola de texto. Codigo no usado, solo para debug 
+//Mostrar mapa en consola de texto. Codigo no usado, solo para debug
 void textadventure_debug_show_map(void)
 {
     int x,y,z;
@@ -5286,7 +5286,7 @@ void textadventure_debug_show_map(void)
         if (text_adventure_connections_table[current_room].recorrida) {
             z=text_adventure_connections_table[current_room].z;
         }
-    }        
+    }
 
     //mostrarlas en listado para debug
 
@@ -5305,10 +5305,10 @@ void textadventure_debug_show_map(void)
 
 
 
-    //obtener tamaño de todos los mapas 
+    //obtener tamaño de todos los mapas
             //Sacar dimensiones de cada mapa
     //int ancho_mapa,alto_mapa,min_x_mapa,max_x_mapa,min_y_mapa,max_y_mapa;
-    
+
     textadventure_get_size_map(0,0,&ancho_mapa,&alto_mapa,&min_x_mapa,&max_x_mapa,&min_y_mapa,&max_y_mapa,1);
 
     //printf("Tamaño para todos los mapas: Ancho %d Alto %d minx: %d miny: %d maxx: %d maxy: %d\n",
@@ -5332,7 +5332,7 @@ void textadventure_debug_show_map(void)
 
         printf("\n");
     }
-   
+
 
 }
 
@@ -5379,7 +5379,7 @@ int max_textadv_location_desc_no_char_counter=1000;
 char textadv_location_text[TEXTADV_LOCATION_MAX_DESCRIPTION+1];
 int textadv_location_text_index=0;
 
-//Cuando se ha generado la ultima imagen. Para poner limites y no generar imagenes muy seguidas 
+//Cuando se ha generado la ultima imagen. Para poner limites y no generar imagenes muy seguidas
 //(que pueden generar coste economico en la API externa de OpenAI por ejemplo)
 int textadv_location_desc_last_image_generated_counter=0;
 
@@ -5415,7 +5415,7 @@ int textadv_location_set_method_by_string(char *s)
             textadv_location_additional_room_change_method=i;
             return 0;
         }
-    }    
+    }
 
     return 1;
 }
@@ -5437,7 +5437,7 @@ void textadv_location_add_char(z80_byte c)
     if (textadv_location_text_index==TEXTADV_LOCATION_MAX_DESCRIPTION) {
         debug_printf(VERBOSE_PARANOID,"Reached maximum description length");
         return;
-    }   
+    }
 
     //Fitros de otros caracteres especiales
     switch (c) {
@@ -5459,7 +5459,7 @@ void textadv_location_add_char(z80_byte c)
             c=32;
         break;
     }
-    
+
     //filtros de caracteres, se supone que aqui solo llegan caracteres imprimibles, pero por si acaso
     if (c>31 && c<127) {
 
@@ -5474,7 +5474,7 @@ void textadv_location_reset_last_room_number(void)
     if (textadv_location_additional_room_change_method==TEXTADV_LOCATION_ADD_ROOM_CHANGE_METHOD_ROOM_NUMBER ||
     textadv_location_additional_room_change_method==TEXTADV_LOCATION_ADD_ROOM_CHANGE_METHOD_CLS_AND_ROOM_NUMBER
     ) {
-        
+
         int current_location=util_textadventure_get_current_location();
 
         //Y solo si realmente son aventuras de texto
@@ -5483,10 +5483,10 @@ void textadv_location_reset_last_room_number(void)
                 textadv_location_last_location=current_location;
         }
 
-        
-    }  
 
-    textadv_location_desc_state=TEXTADV_LOC_STATE_IDLE;    
+    }
+
+    textadv_location_desc_state=TEXTADV_LOC_STATE_IDLE;
 }
 
 
@@ -5499,7 +5499,7 @@ void textadv_location_desc_ended_description(void)
         debug_printf(VERBOSE_PARANOID,"Do not accept finish location description until some time passes");
         return;
     }
-    
+
 
     //Aceptar un minimo de caracteres
     if (textadv_location_text_index<10) {
@@ -5530,9 +5530,9 @@ void textadv_location_desc_ended_description(void)
             textadv_location_desc_last_image_generated_counter,textadv_location_desc_last_image_generated_min);
     }
 
-    else {    
+    else {
         //Avisar a la ventana de text adventure image que estamos recreando imagen
-        menu_textadv_loc_image_tell_show_creating_image(); 
+        menu_textadv_loc_image_tell_show_creating_image();
         textadv_location_desc_run_convert();
 
     }
@@ -5548,13 +5548,13 @@ void textadv_location_desc_ended_description(void)
     //de cambio de numero de habitacion (y no el de cls) no detectara cambio de habitacion. El usuario debe espearse al tiempo
     //de timeout de no-char
 
-    textadv_location_reset_last_room_number();     
+    textadv_location_reset_last_room_number();
 
 }
 
 int check_cls_display(void)
 {
-    
+
 
     //Ver la pantalla esta borrada
     //TODO: quiza solo comprobar primer tercio?
@@ -5576,7 +5576,7 @@ void handle_textadv_location_changed(void)
 {
     textadv_location_desc_state=TEXTADV_LOC_STATE_CLS;
     textadv_location_desc_counter=0;
-    textadv_location_text_index=0;    
+    textadv_location_text_index=0;
 }
 
 
@@ -5613,15 +5613,15 @@ void handle_textadv_location_states(void)
 
         }
     }
-        
+
     if (textadv_location_desc_state==TEXTADV_LOC_STATE_IDLE) {
 
-        
+
 
         if (textadv_location_additional_room_change_method==TEXTADV_LOCATION_ADD_ROOM_CHANGE_METHOD_ROOM_NUMBER ||
         textadv_location_additional_room_change_method==TEXTADV_LOCATION_ADD_ROOM_CHANGE_METHOD_CLS_AND_ROOM_NUMBER
         ) {
-           
+
             int current_location=util_textadventure_get_current_location();
 
             //Y solo si realmente son aventuras de texto
@@ -5629,25 +5629,25 @@ void handle_textadv_location_states(void)
             if (current_location>=0) {
 
                 //printf("\nlocation: %d\n",current_location);
-            
+
                 if (current_location!=textadv_location_last_location) {
-                    
-                    
+
+
                     textadv_location_last_location=current_location;
-                    
+
                     debug_printf(VERBOSE_DEBUG,"Room number detection: room has changed to %d",textadv_location_last_location);
 
                     handle_textadv_location_changed();
-                    
+
                 }
 
             }
-            
 
-        }        
+
+        }
     }
 
- 
+
 
 
 }
@@ -5676,7 +5676,7 @@ void handle_textadv_read_keyboard_memory(z80_int dir)
     //quiza hacer que se haya leido un minimo de texto (al menos 10 caracteres?)
 
     if (reg_pc<16384) return;
-    
+
     if (dir==0x5c00) {
         debug_printf(VERBOSE_PARANOID,"Ended description reading from 0x5c00 PC=%XH",reg_pc);
         textadv_location_desc_ended_description();
@@ -5686,7 +5686,7 @@ void handle_textadv_read_keyboard_memory(z80_int dir)
     if (dir==0x5c3b) {
         debug_printf(VERBOSE_PARANOID,"Ended description reading from 0x5c3b PC=%XH",reg_pc);
         textadv_location_desc_ended_description();
-    }    
+    }
 
     /*if (dir==0x5c08) {
         printf("\nEnded description reading from 0x5c08 PC=%XH\n",reg_pc);
@@ -5737,10 +5737,10 @@ z80_byte textadv_location_desc_peek_byte_no_time(z80_int dir,z80_byte value GCC_
 	z80_byte valor_leido=debug_nested_peek_byte_no_time_call_previous(textadv_location_desc_nested_id_peek_byte_no_time,dir);
 
     handle_textadv_read_keyboard_memory(dir);
-    
+
     return valor_leido;
 
-	
+
 }
 
 z80_byte textadv_location_desc_peek_byte(z80_int dir,z80_byte value GCC_UNUSED)
@@ -5750,7 +5750,7 @@ z80_byte textadv_location_desc_peek_byte(z80_int dir,z80_byte value GCC_UNUSED)
     handle_textadv_read_keyboard_memory(dir);
 
   return valor_leido;
-  
+
 
 }
 
@@ -5761,7 +5761,7 @@ void textadv_location_desc_set_peek_poke_functions(void)
     textadv_location_desc_nested_id_poke_byte=debug_nested_poke_byte_add(textadv_location_desc_poke_byte,"textadv_location_desc poke_byte");
     textadv_location_desc_nested_id_poke_byte_no_time=debug_nested_poke_byte_no_time_add(textadv_location_desc_poke_byte_no_time,"textadv_location_desc poke_byte_no_time");
             textadv_location_desc_nested_id_peek_byte=debug_nested_peek_byte_add(textadv_location_desc_peek_byte,"textadv_location_desc peek_byte");
-            textadv_location_desc_nested_id_peek_byte_no_time=debug_nested_peek_byte_no_time_add(textadv_location_desc_peek_byte_no_time,"textadv_location_desc peek_byte_no_time");    
+            textadv_location_desc_nested_id_peek_byte_no_time=debug_nested_peek_byte_no_time_add(textadv_location_desc_peek_byte_no_time,"textadv_location_desc peek_byte_no_time");
 
 }
 
@@ -5777,7 +5777,7 @@ void textadv_location_desc_restore_peek_poke_functions(void)
     debug_nested_poke_byte_del(textadv_location_desc_nested_id_poke_byte);
     debug_nested_poke_byte_no_time_del(textadv_location_desc_nested_id_poke_byte_no_time);
         debug_nested_peek_byte_del(textadv_location_desc_nested_id_peek_byte);
-        debug_nested_peek_byte_no_time_del(textadv_location_desc_nested_id_peek_byte_no_time);    
+        debug_nested_peek_byte_no_time_del(textadv_location_desc_nested_id_peek_byte_no_time);
 
 
 }
@@ -5810,7 +5810,7 @@ int proceso_hijo_text_convert;
 void textadv_location_desc_run_convert(void)
 {
 
-  
+
     if (textimage_filter_program[0]==0) return;
 
 
@@ -5823,7 +5823,7 @@ void textadv_location_desc_run_convert(void)
 
 
 
-   
+
     //printf("Launching child process\n");
     proceso_hijo_text_convert = fork();
 
@@ -5835,7 +5835,7 @@ void textadv_location_desc_run_convert(void)
         break;
 
         case 0:
-      
+
             execlp(textimage_filter_program,textimage_filter_program,textadv_location_text,NULL);
 
             //Si se llega aqui es que ha habido un error al executar programa filtro
@@ -5850,13 +5850,13 @@ void textadv_location_desc_run_convert(void)
            /*
                     printf("Wait for text filter child\n");
                     waitpid (proceso_hijo_text_convert, NULL, 0);
-         
+
 
             printf("despues de waitpid\n");
             */
 
 
-                
+
         break;
 
     }
@@ -5866,7 +5866,7 @@ void textadv_location_desc_run_convert(void)
 
 	all_interlace_scr_refresca_pantalla();
 
-	
+
 
     //En caso de Windows esto simplemente dice que hay hijo pero no el pid concreto
     proceso_hijo_text_convert=1;
@@ -5917,7 +5917,7 @@ void textadv_location_desc_run_convert(void)
 
 
 
-	
+
 #endif
 
 }

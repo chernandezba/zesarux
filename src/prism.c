@@ -1,5 +1,5 @@
 /*
-    ZEsarUX  ZX Second-Emulator And Released for UniX 
+    ZEsarUX  ZX Second-Emulator And Released for UniX
     Copyright (C) 2013 Cesar Hernandez Bano
 
     This file is part of ZEsarUX.
@@ -141,7 +141,7 @@ when "16K vram aperture" is turned on, then VRAM0 is at 0x4000 - 0x5FFF and VRAM
 IO port 36411 is used to write to sixteen registers which control much of ULA2's functionality.
 
 The register to be changed is selected by the most significant nibble of the data output to 0x8E3B, and the register's new contents is contained in the least significant nibble eg OUT 36411,BIN "00000010" changes the CPU speed to 7MHz, OUT 36411,BIN"00000000" changes it back to 3.5MHz and OUT 36411,BIN"00100011" changes the screen resolution to 512x384.
- 
+
 OUT 36411,BIN "RRRRxxxx" where RRRR is a 4-bit number selecting the register and xxxx is the value you're setting it to. This method was chosen to reduce the number of IO ports Prism uses but still give single-OUT control over the majority of Prism/ULA2 functionality.
 */
 
@@ -156,8 +156,8 @@ OUT 44603,register - selects register
 OUT 40507,x Set register selected above to value X
 
 
-Default value of colour register 0 (the one which controls the prism border colour) is BIN "00000000". 
-Default vaulue of colour register 1 is "11000111"    
+Default value of colour register 0 (the one which controls the prism border colour) is BIN "00000000".
+Default vaulue of colour register 1 is "11000111"
 Default value of colour register 2 is "11000100".
 */
 
@@ -201,10 +201,10 @@ void prism_out_9e3b(z80_byte value)
                         	if (i>=0 && i<CURRENT_PRISM_BORDER_BUFFER) {
 
 	                               prism_ula2_border_colour_buffer[i]=value;
-					
+
         	                }
      }
-                        
+
 }
 
 
@@ -239,7 +239,7 @@ void prism_page_ram_in_rom(void)
 								paginas[1]=5;
 								paginas[2]=6;
 								paginas[3]=7;
-          
+
                 break;
 
 
@@ -251,19 +251,19 @@ void prism_page_ram_in_rom(void)
 								paginas[1]=5;
 								paginas[2]=6;
 								paginas[3]=3;
-                           
+
 
 
                 break;
 
                 case 3:
                         //debug_printf (VERBOSE_DEBUG,"Pages 4,7,6,3");
-              
+
 								paginas[0]=4;
 								paginas[1]=7;
 								paginas[2]=6;
 								paginas[3]=3;
-                           
+
                 break;
 
 
@@ -286,7 +286,7 @@ void prism_page_ram_in_rom(void)
         prism_type_memory_paged[i*2+1]=PRISM_MEMORY_TYPE_HOME;
 
 		}
- 
+
 
 }
 
@@ -352,7 +352,7 @@ Bit 4 de 32765 afecta a Bit 0 de 60987
 		prism_page_ram_in_rom();
 		return;
 	}
-	
+
 
 
 
@@ -395,7 +395,7 @@ Bit 4 de 32765 afecta a Bit 0 de 60987
 	//Pagina segun puerto 32765
 	// 7  6  5  4  3  2  1  0  ->Bits puerto
 	// 4  3  x  x  x  2  1  0  ->Pagina
-	//    64 32 16 8  4  2  1 
+	//    64 32 16 8  4  2  1
 	z80_byte ram_entra;
 
 
@@ -505,10 +505,10 @@ Bit 4 de 32765 afecta a Bit 0 de 60987
 	int j;
 	for (j=0;j<8;j++) {
 extern z80_byte *prism_return_segment_memory(z80_int dir);
-		//Y direccion segun poke 
+		//Y direccion segun poke
 		z80_byte *puntero=prism_return_segment_memory(j*8192);
 		printf ("Paged segment %d address: %p initial addr: %p\n",j,prism_memory_paged[j],puntero);
-		
+
 
 	}
 	//debug direcciones habituales, vram
@@ -522,7 +522,7 @@ extern z80_byte *prism_return_segment_memory(z80_int dir);
 */
 
 	//fin debug
-	
+
 
 	//printf ("end prism_set_memory_pages\n\n");
 
@@ -648,7 +648,7 @@ void prism_splash_videomode_change(void) {
 		screentype=prism_ula2_registers[6];
 		sprintf (mensaje,"Setting screen type: %s, colour type: %s, palette: %d",
 			prism_texts_linear_modes[screentype],prism_texts_screendatadecoding[screendatadecoding],palette);
-	}		
+	}
 
 	else {
 
@@ -697,7 +697,7 @@ void prism_out_ula2(z80_byte value)
 
 
 		//x1xx - Disable Timex screen modes selected using port FF
-		//Disabling timex screen modes turns off high res or high colour mode if either is selected. 
+		//Disabling timex screen modes turns off high res or high colour mode if either is selected.
 		//It also resets the timex shadow screen if it had been selected.
 		if ((value&4)!=anterior_timex_enabled) {
 			if (value&4) {
@@ -811,7 +811,7 @@ Colours 32-255 yet to be "officially" defined (but let me know when you implemen
 
 */
 
-//16 initial redefinable palette. 
+//16 initial redefinable palette.
 int initial_prism_palette_two[]={
 /*
 Colour 0 - "0000"&"0000"&"0000", -- Black
@@ -840,7 +840,7 @@ Colour 8 -  "0000"&"0000"&"0000", -- Black
 };
 
 
-//Ver docs/prism/palette_0.txt 
+//Ver docs/prism/palette_0.txt
 int initial_prism_palette_zero[]={
 0,7,1792,1799,112,119,1904,1911,
 0,15,3840,3855,240,255,4080,4095,
@@ -905,7 +905,7 @@ void init_prism_palettes(void)
 
 }
 
-//Ajustar modo turbo. Resto de bits de ese registro no usados 
+//Ajustar modo turbo. Resto de bits de ese registro no usados
 void prism_set_emulator_setting_cpuspeed(void)
 {
         z80_byte speed=prism_ula2_registers[0];

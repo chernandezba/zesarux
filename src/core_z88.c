@@ -184,7 +184,7 @@ void z88_gestionar_interrupcion(void)
 
     z80_adjust_flags_interrupt_block_opcode();
 
-    
+
                         //ver si esta en HALT
                         if (z80_halt_signal.v) {
                                         z80_halt_signal.v=0;
@@ -230,7 +230,7 @@ void z88_gestionar_interrupcion(void)
                                                 interrupcion_maskable_generada.v=0;
 
 
-                                              
+
 
                                                 push_valor(reg_pc,PUSH_VALUE_TYPE_MASKABLE_INTERRUPT);
 
@@ -306,7 +306,7 @@ void cpu_core_loop_z88(void)
 
                     //Si la cpu está detenida por señal HALT, reemplazar opcode por NOP
                     if (z80_halt_signal.v) {
-                        byte_leido_core_z88=0;           
+                        byte_leido_core_z88=0;
                     }
                     else {
                         reg_pc++;
@@ -554,7 +554,7 @@ void cpu_core_loop_z88(void)
 			}
 
                         //Para calcular lo que se tarda en ejecutar todo un frame
-                        timer_get_elapsed_core_frame_pre();		                        
+                        timer_get_elapsed_core_frame_pre();
 
 
                 }

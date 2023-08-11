@@ -69,7 +69,7 @@ void traps_plus3dos_return_error(void)
 }
 
 /*
-archivo de pruebas en cinta 
+archivo de pruebas en cinta
 pruebaplustres.tap
 
 0   (de program)
@@ -78,15 +78,15 @@ pruebaplustres.tap
 
 
 datos:
-00 01 0e 00 ea 68 6f 6c 
-61 20 71 75 65 20 74 61  6c 0d 00 02 07 00 ea 61  
+00 01 0e 00 ea 68 6f 6c
+61 20 71 75 65 20 74 61  6c 0d 00 02 07 00 ea 61
  64 69 6f 73 0d
 
 */
 
 z80_byte p3dos_prueba_header[]={0,0x1d, 0x00, 00, 0x80, 0x1d ,00,0};
-z80_byte p3dos_prueba_datos[]={00 ,0x01 ,0x0e ,0x00 ,0xea ,0x68 ,0x6f ,0x6c 
-,0x61 ,0x20 ,0x71 ,0x75 ,0x65 ,0x20 ,0x74 ,0x61  ,0x6c ,0x0d ,0x00 ,0x02 ,0x07 ,0x00 ,0xea ,0x61  
+z80_byte p3dos_prueba_datos[]={00 ,0x01 ,0x0e ,0x00 ,0xea ,0x68 ,0x6f ,0x6c
+,0x61 ,0x20 ,0x71 ,0x75 ,0x65 ,0x20 ,0x74 ,0x61  ,0x6c ,0x0d ,0x00 ,0x02 ,0x07 ,0x00 ,0xea ,0x61
  ,0x64 ,0x69 ,0x6f ,0x73 ,0x0d};
 
 
@@ -158,7 +158,7 @@ EXIT CONDITIONS
 	}
 }
 
-                        
+
 void traps_plus3dos_dd_l_dpb(void)
 {
 /*
@@ -252,12 +252,12 @@ int traps_plus3dos_getoff_start_track(int pista_lineal)
 
 
 
-//Retorna el offset al dsk segun la pista y sector dados 
+//Retorna el offset al dsk segun la pista y sector dados
 //Pista empieza en 0
 //Sectores empiezan en el 1....
 int traps_plus3dos_getoff_track_sector(int pista_buscar,int sector_buscar)
 {
-    z80_byte sector_fisico; 
+    z80_byte sector_fisico;
     printf("Buscando pista %d sector %d\n",pista_buscar,sector_buscar);
 
     //int offset=dsk_get_physical_sector(pista_buscar,sector_buscar);
@@ -282,7 +282,7 @@ sectores van alternados:
 1,6,2,7,3,8
 
 
-0 1 2 3 4 5 6 7 8  
+0 1 2 3 4 5 6 7 8
 0,5,1,6,2,7,3,8,4
 
 */
@@ -306,12 +306,12 @@ sectores van alternados:
 		iniciopista +=0x18;
 
 		for (sector=0;sector<sectores_en_pista;sector++) {
-			int offset_tabla_sector=sector*8; 
+			int offset_tabla_sector=sector*8;
 			z80_byte pista_id=plus3dsk_get_byte_disk(iniciopista+offset_tabla_sector); //Leemos pista id
 			z80_byte sector_id=plus3dsk_get_byte_disk(iniciopista+offset_tabla_sector+2); //Leemos c1, c2, etc
 
 			debug_printf(VERBOSE_DEBUG,"%02X ",sector_id);
-            
+
 
             //POSIBLEMAL: no se deberia hacer este and de sector_id. pero si lo quito, no va el handler
 			sector_id &=0xF;
@@ -330,7 +330,7 @@ sectores van alternados:
 
                 		//int iniciopista=traps_plus3dos_getoff_start_track(pista);
                         return offset+traps_plus3dos_bytes_sector*sector;
-                        
+
                         //POSIBLEMAL: estas dos lineas de abajo se retornaban antes
                         //int offset_retorno=offset+traps_plus3dos_bytes_sector*sector;
 		                //return offset_retorno;
@@ -344,7 +344,7 @@ sectores van alternados:
 		iniciopista_orig +=traps_plus3dos_bytes_sector*sectores_en_pista;
 	}
 
-	debug_printf(VERBOSE_DEBUG,"Not found sector %d/%d",pista_buscar,sector_buscar);	
+	debug_printf(VERBOSE_DEBUG,"Not found sector %d/%d",pista_buscar,sector_buscar);
 	//TODO
 	//de momento retornamos offset fuera de rango
 	return DSK_MAX_BUFFER_DISCO;
@@ -393,7 +393,7 @@ void traps_poke_addr_page(z80_byte page,z80_int dir,z80_byte value)
 	else {
 		p=memory_paged[segmento];
 	}
-	
+
 
         p[dir&16383]=value;
 
@@ -465,7 +465,7 @@ EXIT CONDITIONS
 
 }
 
-                                       
+
 void traps_plus3dos_read_sector(void)
 {
 
@@ -589,10 +589,10 @@ void traps_plus3dos_siguiente_sector(void)
     }
     else {
         traps_plus3dos_ultimo_sector_fisico_read=0;
-    }  
+    }
 
     //Por si acaso, aunque esto no deberia pasar
-    if (traps_plus3dos_ultimo_sector_fisico_read<0) traps_plus3dos_ultimo_sector_fisico_read=0;  
+    if (traps_plus3dos_ultimo_sector_fisico_read<0) traps_plus3dos_ultimo_sector_fisico_read=0;
 }
 
 void traps_plus3dos_read_id(void)
@@ -651,9 +651,9 @@ Track1
    //Devolver CHRN siguiente
    z80_byte leido_id_c,leido_id_h,leido_id_r,leido_id_n;
 
-  
 
-    
+
+
     //TODO de momento solo cara 0
     //TODO: retornar error si no hay sectores en esta pista
    dsk_get_chrn(reg_d,0,sector,&leido_id_c,&leido_id_h,&leido_id_r,&leido_id_n);
@@ -662,7 +662,7 @@ Track1
 	//z80_byte sector_id=0xc0 | (sector+1);
 
 	reg_a=leido_id_r;
-	reg_hl=49152; 
+	reg_hl=49152;
 
 
         int i=0;
@@ -694,7 +694,7 @@ Track1
                 p[i]=0;
 		i++;
     */
-    
+
 	//Incrementar sector??? ni idea
 	traps_plus3dos_return_ok();
 }
@@ -712,7 +712,7 @@ void old_traps_plus3dos_read_id(void)
 	z80_byte sector_id=0xc0 | (sector+1);
 
 	reg_a=sector_id;
-	reg_hl=49152; 
+	reg_hl=49152;
 
 
         int i=0;
@@ -754,7 +754,7 @@ void traps_plus3dos(void)
 
 	if (!MACHINE_IS_SPECTRUM_P2A_P3) return;
 
-	
+
 		z80_byte rom_entra=((puerto_32765>>4)&1) + ((puerto_8189>>1)&2);
 
 		if (rom_entra!=2) return;
@@ -828,18 +828,18 @@ EXIT CONDITIONS
 
 					//Problema: Como asigno IX dentro de pagina 7? A saber
 					//traps_plus3dos_handle_ref_head();
-					
+
 
 
 					//Z80_FLAGS=(Z80_FLAGS & (255-FLAG_Z));
 					//traps_plus3dos_return_ok();
-					
+
 				break;
 
 				case 274:
 					debug_printf(VERBOSE_DEBUG,"-----DOS READ. Address: %d Length: %d",reg_hl,reg_de);
 					debug_printf(VERBOSE_DEBUG,"reg_pc=%d %04xH",reg_pc,reg_pc);
-					
+
 					//traps_plus3dos_handle_dos_read();
 					//traps_plus3dos_return_ok();
 				break;
@@ -870,7 +870,7 @@ EXIT CONDITIONS
 				case 0x197c:
 				case 0x1bff:
 					debug_printf(VERBOSE_DEBUG,"-----DD READ SECTOR track %d sector %d buffer %d xdpb: %d",
-					reg_d,reg_e,reg_hl,reg_ix);	
+					reg_d,reg_e,reg_hl,reg_ix);
 					debug_printf(VERBOSE_DEBUG,"reg_pc=%d %04xH",reg_pc,reg_pc);
 /*
 ENTRY CONDITIONS
@@ -880,12 +880,12 @@ ENTRY CONDITIONS
 	E = Logical sector, 0 base
 	HL = Address of buffer
 	IX = Address of XDPB
-	*/		
+	*/
 					dsk_show_activity(); //Aunque ya lo hace al encender motor, pero por si acaso
 					traps_plus3dos_read_sector();
-								
+
 				break;
-			
+
 
 				case 349:
 					debug_printf(VERBOSE_DEBUG,"-----DD SETUP");
@@ -897,7 +897,7 @@ ENTRY CONDITIONS
 					debug_printf(VERBOSE_DEBUG,"reg_pc=%d %04xH",reg_pc,reg_pc);
 					//traps_plus3dos_return_ok();
 				break;
-			
+
 
 				case 0x1f27:
 				case 343:
@@ -905,7 +905,7 @@ ENTRY CONDITIONS
 					debug_printf(VERBOSE_DEBUG,"reg_pc=%d %04xH",reg_pc,reg_pc);
 					//traps_plus3dos_return_ok();
 				break;
-			
+
 				case 379:
 					debug_printf(VERBOSE_DEBUG,"-----DD ASK 1");
 					debug_printf(VERBOSE_DEBUG,"reg_pc=%d %04xH",reg_pc,reg_pc);
@@ -935,7 +935,7 @@ ENTRY CONDITIONS
                 		        dsk_show_activity();
 					traps_plus3dos_return_ok();
 				break;
-                 		
+
 				case 367:
 				case 0x1c36:
 					debug_printf(VERBOSE_DEBUG,"-----DD_READ_ID");
@@ -973,7 +973,7 @@ ENTRY CONDITIONS
 				case 0x1c0d:
 					debug_printf(VERBOSE_DEBUG,"-----DD_WRITE_SECTOR");
 					debug_printf(VERBOSE_DEBUG,"reg_pc=%d %04xH",reg_pc,reg_pc);
-					
+
 					dsk_show_activity(); //Aunque ya lo hace al encender motor, pero por si acaso
 					traps_plus3dos_write_sector();
 				break;
@@ -994,7 +994,7 @@ ENTRY CONDITIONS
 					debug_printf(VERBOSE_DEBUG,"-----DD_FORMAT");
 					debug_printf(VERBOSE_DEBUG,"reg_pc=%d %04xH",reg_pc,reg_pc);
 					dsk_show_activity(); //Aunque ya lo hace al encender motor, pero por si acaso
-					traps_plus3dos_return_ok(); 
+					traps_plus3dos_return_ok();
 				break;
 
 
@@ -1172,10 +1172,10 @@ ENTRY CONDITIONS
 		}
 
 			if (estrap) debug_printf(VERBOSE_DEBUG,"PLUS3DOS call. After trap table: reg_pc=%d %04xH",reg_pc,reg_pc);
-			
+
 		}
 
-	
+
 }
 
 

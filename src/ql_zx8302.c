@@ -124,7 +124,7 @@ pc.netmd equ    %00011000       network mode
 *   ?   equ     4       0
 *   ?   equ     3       1
 *   ?   equ     2       1
-*   ?   equ     1       data bit for IPC (comctl/wr 
+*   ?   equ     1       data bit for IPC (comctl/wr
 *   ?   equ     0       0
 
 *************** pc_ipcrd and pc_mctrl read.
@@ -259,7 +259,7 @@ void ql_debug_port(unsigned int Address)
 
 void ql_zx8032_write(unsigned int Address, unsigned char Data)
 {
-	
+
 
 	int anterior_video_mode;
 
@@ -348,7 +348,7 @@ moto_byte ql_zx8032_readbyte(unsigned int Address)
         case 0x18001:
         case 0x18002:
         case 0x18003:
-            //RTC. 
+            //RTC.
             /*
             pc_clock equ    $18000  real time clock in seconds (long word)
             *************** pc_clock function:
@@ -392,7 +392,7 @@ moto_byte ql_zx8032_readbyte(unsigned int Address)
 
 
 
-        break;                        
+        break;
 
 		case 	0x18020:
 			//printf ("Leyendo IPC. PC=%06XH\n",get_pc_register());
@@ -455,7 +455,7 @@ XL00352 EQU L00352
 
 
             return ql_pc_intr;
-			
+
 		break;
 
 	}

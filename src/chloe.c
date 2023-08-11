@@ -1,5 +1,5 @@
 /*
-    ZEsarUX  ZX Second-Emulator And Released for UniX 
+    ZEsarUX  ZX Second-Emulator And Released for UniX
     Copyright (C) 2013 Cesar Hernandez Bano
 
     This file is part of ZEsarUX.
@@ -100,7 +100,7 @@ D5       Inhabilitacion de la paginacion
 
 
 	//Pagina 5
-	z80_byte *puntero_ram5=chloe_home_ram_mem_table[5];	
+	z80_byte *puntero_ram5=chloe_home_ram_mem_table[5];
 	chloe_memory_paged[2]=puntero_ram5;
 	chloe_memory_paged[3]=&puntero_ram5[8192];
     chloe_type_memory_paged[2]=CHLOE_MEMORY_TYPE_HOME;
@@ -109,7 +109,7 @@ D5       Inhabilitacion de la paginacion
 	debug_chloe_paginas_memoria_mapeadas[3]=5;
 
 	//Pagina 2
-	z80_byte *puntero_ram2=chloe_home_ram_mem_table[2];	
+	z80_byte *puntero_ram2=chloe_home_ram_mem_table[2];
 	chloe_memory_paged[4]=puntero_ram2;
 	chloe_memory_paged[5]=&puntero_ram2[8192];
     chloe_type_memory_paged[4]=CHLOE_MEMORY_TYPE_HOME;

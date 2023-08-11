@@ -95,7 +95,7 @@ void debug_nested_peek_byte_del(int id)
 		//lista vacia. asignar peek_byte normal
 		debug_printf (VERBOSE_DEBUG,"peek_byte nested empty. Assign normal peek_byte");
 		peek_byte=peek_byte_no_nested;
-	}		
+	}
 }
 
 
@@ -132,7 +132,7 @@ z80_byte debug_nested_peek_byte_call_previous(int id,z80_int dir)
 		else {
 			//Hay anterior. Llamarlo
 			//if (t_estados<20) printf ("Calling previous element in list. Name: %s\n",actual->function_name);
-			return actual->funcion(dir,0); 
+			return actual->funcion(dir,0);
 		}
 	}
 }
@@ -238,7 +238,7 @@ void debug_nested_peek_byte_no_time_del(int id)
 		//lista vacia. asignar peek_byte_no_time normal
 		debug_printf (VERBOSE_DEBUG,"peek_byte_no_time nested empty. Assign normal peek_byte_no_time");
 		peek_byte_no_time=peek_byte_no_time_no_nested;
-	}		
+	}
 }
 
 
@@ -275,7 +275,7 @@ z80_byte debug_nested_peek_byte_no_time_call_previous(int id,z80_int dir)
 		else {
 			//Hay anterior. Llamarlo
 			//if (t_estados<20) printf ("Calling previous element in list. Name: %s\n",actual->function_name);
-			return actual->funcion(dir,0); 
+			return actual->funcion(dir,0);
 		}
 	}
 }
@@ -375,7 +375,7 @@ void debug_nested_poke_byte_del(int id)
 		//lista vacia. asignar poke_byte normal
 		debug_printf (VERBOSE_DEBUG,"poke_byte nested empty. Assign normal poke_byte normal");
 		poke_byte=poke_byte_no_nested;
-	}		
+	}
 }
 
 
@@ -414,7 +414,7 @@ void debug_nested_poke_byte_call_previous(int id,z80_int dir,z80_byte value)
 		else {
 			//Hay anterior. Llamarlo
 			//if (t_estados<20) printf ("Calling previous element in list. Name: %s\n",actual->function_name);
-			actual->funcion(dir,value); 
+			actual->funcion(dir,value);
 			return;
 		}
 	}
@@ -515,7 +515,7 @@ void debug_nested_poke_byte_no_time_del(int id)
 		//lista vacia. asignar poke_byte_no_time normal
 		debug_printf (VERBOSE_DEBUG,"poke_byte_no_time nested empty. Assign normal poke_byte_no_time normal");
 		poke_byte_no_time=poke_byte_no_time_no_nested;
-	}		
+	}
 }
 
 
@@ -554,7 +554,7 @@ void debug_nested_poke_byte_no_time_call_previous(int id,z80_int dir,z80_byte va
 		else {
 			//Hay anterior. Llamarlo
 			//if (t_estados<20) printf ("Calling previous element in list. Name: %s\n",actual->function_name);
-			actual->funcion(dir,value); 
+			actual->funcion(dir,value);
 			return;
 		}
 	}
@@ -655,7 +655,7 @@ void debug_nested_push_valor_del(int id)
 		//lista vacia. asignar push_valor normal
 		debug_printf (VERBOSE_DEBUG,"push_valor nested empty. Assign normal push_valor normal");
 		push_valor=push_valor_no_nested;
-	}		
+	}
 }
 
 
@@ -694,7 +694,7 @@ void debug_nested_push_valor_call_previous(int id,z80_int valor,z80_byte tipo)
 		else {
 			//Hay anterior. Llamarlo
 			//if (t_estados<20) printf ("Calling previous element in list. Name: %s\n",actual->function_name);
-			actual->funcion(valor,tipo); 
+			actual->funcion(valor,tipo);
 			return;
 		}
 	}

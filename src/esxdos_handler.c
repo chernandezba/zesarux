@@ -155,7 +155,7 @@ void esxdos_handler_copy_hl_to_string(char *buffer_fichero)
 
 	esxdos_handler_copy_register_to_string(buffer_fichero,*registro_parametros_hl_ix);
 
-/*	
+/*
 	int i;
 
 	for (i=0;peek_byte_no_time((*registro_parametros_hl_ix)+i);i++) {
@@ -205,7 +205,7 @@ void esxdos_handler_get_fullpath(char *nombre_inicial,char *fullpath)
 	if (nombre_inicial[0]=='/' || nombre_inicial[0]=='\\') sprintf (fullpath,"%s%s",esxdos_handler_root_dir,nombre_inicial);
 
 	//TODO: habria que proteger que en el nombre indicado no se use ../.. para ir a ruta raiz inferior a esxdos_handler_root_dir
-	else sprintf (fullpath,"%s/%s/%s",esxdos_handler_root_dir,esxdos_handler_cwd,nombre_inicial);	
+	else sprintf (fullpath,"%s/%s/%s",esxdos_handler_root_dir,esxdos_handler_cwd,nombre_inicial);
 }
 
 //rellena fullpath con ruta completa
@@ -365,12 +365,12 @@ void esxdos_handler_call_f_unlink(void)
 ; Fc=1
 ; A=error code
 */
-	
+
 	char nombre_archivo[PATH_MAX];
 	char fullpath[PATH_MAX];
 	esxdos_handler_copy_hl_to_string(nombre_archivo);
 
-	
+
 	esxdos_handler_pre_fileopen(nombre_archivo,fullpath);
 
 	debug_printf (VERBOSE_DEBUG,"ESXDOS handler: fullpath file: %s",fullpath);
@@ -385,8 +385,8 @@ void esxdos_handler_call_f_unlink(void)
         debug_printf(VERBOSE_DEBUG,"ESXDOS handler: Device is open read only");
         esxdos_handler_error_carry(ESXDOS_ERROR_ERDONLY);
         return;
-    
-    }        
+
+    }
 
 	unlink(fullpath);
 
@@ -412,7 +412,7 @@ void esxdos_handler_call_f_rename(void)
 ; A=error code
 
 */
-	
+
 	char nombre_archivo[PATH_MAX];
 	char fullpath[PATH_MAX];
 
@@ -434,8 +434,8 @@ void esxdos_handler_call_f_rename(void)
         debug_printf(VERBOSE_DEBUG,"ESXDOS handler: Device is open read only");
         esxdos_handler_error_carry(ESXDOS_ERROR_ERDONLY);
         return;
-    
-    }    
+
+    }
 
 	esxdos_handler_copy_register_to_string(nombre_archivo_destino,reg_de);
 	esxdos_handler_pre_fileopen(nombre_archivo_destino,fullpath_destino);
@@ -474,12 +474,12 @@ void esxdos_handler_call_f_stat(void)
 ; +5(2) datestamp (MS-DOS format)
 ; +7(4) file size in bytes
 */
-	
+
 	char nombre_archivo[PATH_MAX];
 	char fullpath[PATH_MAX];
 	esxdos_handler_copy_hl_to_string(nombre_archivo);
 
-	
+
 	esxdos_handler_pre_fileopen(nombre_archivo,fullpath);
 
 	debug_printf (VERBOSE_DEBUG,"ESXDOS handler: fullpath file: %s",fullpath);
@@ -732,7 +732,7 @@ Esto se usa en NextDaw, es open+truncate
         	Byte 10         - Version number
         	Bytes 11...14   - Length of the file in bytes, 32 bit number,
                             least significant byte in lowest address
-        	Bytes 15...22   - +3 BASIC header data			
+        	Bytes 15...22   - +3 BASIC header data
 			*/
 
 			//Leer los primeros 8 bytes
@@ -784,7 +784,7 @@ Esto se usa en NextDaw, es open+truncate
 						debug_printf (VERBOSE_DEBUG,"ESXDOS handler: Unable to get status of file %s",fullpath);
 		}
 
-		
+
 		esxdos_handler_call_f_open_post(free_handle,nombre_archivo,fullpath);
 
 
@@ -882,7 +882,7 @@ void esxdos_handler_call_f_seek(void)
 		esxdos_handler_error_carry(ESXDOS_ERROR_EBADF);
 		esxdos_handler_old_return_call();
 		return;
-	}	
+	}
 
 
 	long initial_offset=ftell(esxdos_fopen_files[file_handler].esxdos_last_open_file_handler_unix);
@@ -985,7 +985,7 @@ void esxdos_handler_call_f_write(void)
 			esxdos_handler_error_carry(ESXDOS_ERROR_EBADF);
 			esxdos_handler_old_return_call();
 			return;
-		}	
+		}
 
 
 		/*
@@ -1131,9 +1131,9 @@ void esxdos_handler_call_f_sync(void)
 		esxdos_handler_error_carry(ESXDOS_ERROR_EBADF);
 		esxdos_handler_old_return_call();
 		return;
-	}	
+	}
 
-		
+
 	fflush(esxdos_fopen_files[file_handler].esxdos_last_open_file_handler_unix);
 
 }
@@ -1508,7 +1508,7 @@ if (esxdos_fopen_files[file_handler].esxdos_handler_dfd==NULL) {
 		esxdos_handler_error_carry(ESXDOS_ERROR_EBADF);
 		esxdos_handler_old_return_call();
 		return;
-	}	
+	}
 
 
 	if (!esxdos_aux_readdir(file_handler)) {
@@ -1601,7 +1601,7 @@ void esxdos_handler_call_f_seekdir(void)
 		esxdos_handler_error_carry(ESXDOS_ERROR_EBADF);
 		esxdos_handler_old_return_call();
 		return;
-	}	
+	}
 
 
 	//Reabrimos el directorio
@@ -1610,7 +1610,7 @@ void esxdos_handler_call_f_seekdir(void)
 	esxdos_fopen_files[file_handler].contador_directorio=0;
 
 	//Y leemos tantos como se indique la pisicion
-	
+
 
 
 	while (posicion>0)
@@ -1640,11 +1640,11 @@ void esxdos_handler_call_f_seekdir(void)
 	esxdos_handler_no_error_uncarry();
 	esxdos_handler_old_return_call();
 
-}		
+}
 
 void esxdos_handler_call_f_rewinddir(void)
 {
-	
+
 	int file_handler=reg_a;
 
 
@@ -1675,17 +1675,17 @@ if (esxdos_fopen_files[file_handler].esxdos_handler_dfd==NULL) {
 		esxdos_handler_error_carry(ESXDOS_ERROR_EBADF);
 		esxdos_handler_old_return_call();
 		return;
-	}	
+	}
 
 
 	//Reabrimos el directorio
 	rewinddir(esxdos_fopen_files[file_handler].esxdos_handler_dfd);
 
-	
+
 	esxdos_handler_no_error_uncarry();
 	esxdos_handler_old_return_call();
 
-}		
+}
 
 
 void esxdos_handler_call_f_telldir(void)
@@ -1721,7 +1721,7 @@ if (esxdos_fopen_files[file_handler].esxdos_handler_dfd==NULL) {
 		esxdos_handler_error_carry(ESXDOS_ERROR_EBADF);
 		esxdos_handler_old_return_call();
 		return;
-	}	
+	}
 
 
 
@@ -1819,7 +1819,7 @@ void esxdos_handler_call_disk_status(void)
 {
 
 	//Si primer disco, retornar ok
-	if (reg_a==0x80) esxdos_handler_no_error_uncarry();	
+	if (reg_a==0x80) esxdos_handler_no_error_uncarry();
 	else esxdos_handler_error_carry(ESXDOS_ERROR_ENODRV);
 }
 
@@ -1841,7 +1841,7 @@ Offset Size Description
 3   1  dword  Drive size in 512 bytes blocks (little-endian)
 7   -  asciiz File System Type
 -   -  asciiz Volume Label
-*/	
+*/
 
 	//char *texto="HO";
 
@@ -1873,13 +1873,13 @@ Offset Size Description
 	poke_byte_no_time(puntero++,partinfo6);
 
 	z80_byte partinfo7=0xFF;
-	poke_byte_no_time(puntero++,partinfo7);		
+	poke_byte_no_time(puntero++,partinfo7);
 
 	//Name?
 	char *fsname="ZXFAT";
 
 	for (i=0;fsname[i];i++) {
-		poke_byte_no_time(puntero++,fsname[i]);		
+		poke_byte_no_time(puntero++,fsname[i]);
 	}
 
 	poke_byte_no_time(puntero++,0);
@@ -1888,10 +1888,10 @@ Offset Size Description
 	char *fslabel="ESXHandler";
 
 	for (i=0;fslabel[i];i++) {
-		poke_byte_no_time(puntero++,fslabel[i]);		
+		poke_byte_no_time(puntero++,fslabel[i]);
 	}
 
-	poke_byte_no_time(puntero++,0);	
+	poke_byte_no_time(puntero++,0);
 
 
 	reg_a=1; //Numero particiones en a
@@ -1976,14 +1976,14 @@ This needs changing/fixing for virtual devs, etc.
 	poke_byte_no_time(puntero++,0xFF);
 	poke_byte_no_time(puntero++,0xFF);
 	poke_byte_no_time(puntero++,0xFF);
-	poke_byte_no_time(puntero++,0xFF);	
+	poke_byte_no_time(puntero++,0xFF);
 
 	//Disk label.
 	//Label?
 	/*char *disklabel="ZEsarUX";
 
 	for (i=0;disklabel[i];i++) {
-		poke_byte_no_time(puntero++,disklabel[i]);		
+		poke_byte_no_time(puntero++,disklabel[i]);
 	}
 	*/
 
@@ -1992,7 +1992,7 @@ This needs changing/fixing for virtual devs, etc.
 		poke_byte_no_time(puntero++,0);
 	}
 
-	esxdos_handler_no_error_uncarry();	
+	esxdos_handler_no_error_uncarry();
 
 }
 
@@ -2011,7 +2011,7 @@ void esxdos_handler_begin_handling_commands(void)
 		case ESXDOS_RST8_DISK_STATUS:
 			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_DISK_STATUS. A register: %02XH",reg_a);
 			esxdos_handler_call_disk_status();
-			esxdos_handler_new_return_call();			
+			esxdos_handler_new_return_call();
 		break;
 
 		case ESXDOS_RST8_DISK_READ:
@@ -2023,23 +2023,23 @@ void esxdos_handler_begin_handling_commands(void)
 			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_DISK_INFO. A register: %02XH",reg_a);
 			esxdos_handler_call_disk_info();
 			//esxdos_handler_run_normal_rst8();
-			//esxdos_handler_no_error_uncarry();	
+			//esxdos_handler_no_error_uncarry();
 			esxdos_handler_new_return_call();
-		break;	
+		break;
 
 		case ESXDOS_RST8_M_DRIVEINFO:
 			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_M_DRIVE_INFO. A register: %02XH",reg_a);
 			esxdos_handler_call_m_drive_info();
-			//esxdos_handler_no_error_uncarry();	
+			//esxdos_handler_no_error_uncarry();
 			esxdos_handler_new_return_call();
-		break;	
+		break;
 
 		case ESXDOS_RST8_F_MOUNT:
 			//Pues de momento retornar ok tal cual
 			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_F_MOUNT. A register: %02XH",reg_a);
 			esxdos_handler_no_error_uncarry();
 			esxdos_handler_new_return_call();
-		break;	 
+		break;
 
 
 		case ESXDOS_RST8_M_GETSETDRV:
@@ -2079,7 +2079,7 @@ void esxdos_handler_begin_handling_commands(void)
 			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_F_SYNC");
 			esxdos_handler_call_f_sync();
 			esxdos_handler_new_return_call();
-		break;		
+		break;
 
 		case ESXDOS_RST8_F_READ:
 		//Read BC bytes at HL from file handle A.
@@ -2094,7 +2094,7 @@ void esxdos_handler_begin_handling_commands(void)
 
 			//temp
 			//debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_F_Write. content 1 byte: %02XH",peek_byte_no_time(*registro_parametros_hl_ix));
-			
+
 			esxdos_handler_call_f_write();
 			esxdos_handler_new_return_call();
 		break;
@@ -2129,21 +2129,21 @@ void esxdos_handler_begin_handling_commands(void)
 			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_F_MKDIR: %s",buffer_fichero);
 			esxdos_handler_call_f_mkdir();
 			esxdos_handler_new_return_call();
-		break;		
+		break;
 
 		case ESXDOS_RST8_F_STAT:
 			esxdos_handler_copy_hl_to_string(buffer_fichero);
 			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_F_STAT: %s",buffer_fichero);
 			esxdos_handler_call_f_stat();
 			esxdos_handler_new_return_call();
-		break;		
+		break;
 
 		case ESXDOS_RST8_F_UNLINK:
 			esxdos_handler_copy_hl_to_string(buffer_fichero);
 			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_F_UNLINK: %s",buffer_fichero);
 			esxdos_handler_call_f_unlink();
 			esxdos_handler_new_return_call();
-		break;		
+		break;
 
 		case ESXDOS_RST8_F_RENAME:
 			esxdos_handler_copy_register_to_string(buffer_fichero,*registro_parametros_hl_ix);
@@ -2151,7 +2151,7 @@ void esxdos_handler_begin_handling_commands(void)
 			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_F_RENAME: %s to %s",buffer_fichero,buffer_fichero2);
 			esxdos_handler_call_f_rename();
 			esxdos_handler_new_return_call();
-		break;					
+		break;
 
 		case ESXDOS_RST8_F_OPENDIR:
 			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_F_OPENDIR");
@@ -2205,7 +2205,7 @@ void esxdos_handler_begin_handling_commands(void)
 			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: Unimplemented ESXDOS_RST8_DISK_IOCTL. Return ok. PC=%XH",reg_pc);
 		//desconocida. salta al hacer "list" en tr-dos con una imagen trd montada
 			esxdos_handler_run_normal_rst8();
-			
+
 			//reg_a=0xff; //???
 			//poke_byte_no_time(0x2382,0x81);
 			esxdos_handler_no_error_uncarry();
@@ -2230,20 +2230,20 @@ void esxdos_handler_begin_handling_commands(void)
 ;
 ; Exit (failure):
 ; Fc=1
-;       A=error                
+;       A=error
                 */
                 debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_DISK_FILEMAP. File handle: %02XH DE=%04XH PC=%04XH",reg_a,DE,reg_pc);
                 //de momento dar error, no tengo claro como simular esto mediante esxdos handler, o directamente no tiene sentido
                 //a no ser que uses una MMC real
                 //DE=0;
                 //reg_a=0;
-	            //esxdos_handler_no_error_uncarry();       
+	            //esxdos_handler_no_error_uncarry();
                 esxdos_handler_error_carry(ESXDOS_ERROR_EBADF);
 
                 esxdos_handler_new_return_call();
             }
             else {
-               debug_printf (VERBOSE_DEBUG,"ESXDOS handler: Unhandled ESXDOS_RST8 : %02XH (DISK_FILEMAP)!! ",funcion); 
+               debug_printf (VERBOSE_DEBUG,"ESXDOS handler: Unhandled ESXDOS_RST8 : %02XH (DISK_FILEMAP)!! ",funcion);
                rst(8);
             }
         break;

@@ -29,7 +29,7 @@
 #include "debug.h"
 #include "screen.h"
 #include "settings.h"
-#include "vdp_9918a_sms.h" 
+#include "vdp_9918a_sms.h"
 
 /*
 Nota: parece que en el documento chipstms9918 la numeracion de bits está al revés, por ejemplo,
@@ -57,7 +57,7 @@ z80_byte vdp_9918a_last_vram_bytes[3];
 z80_int vdp_9918a_last_vram_position;
 
 
-//Forzar desde menu a desactivar capas 
+//Forzar desde menu a desactivar capas
 z80_bit vdp_9918a_force_disable_layer_ula={0};
 z80_bit vdp_9918a_force_disable_layer_sprites={0};
 z80_bit vdp_9918a_force_disable_layer_border={0};
@@ -111,7 +111,7 @@ z80_byte vdp_9918a_in_vram_data(z80_byte *vram_memory)
     vdp_9918a_last_vram_position++;
 
     //temp. simular retardo al leer de vram
-    //t_estados +=7;    
+    //t_estados +=7;
 
     return value;
 
@@ -143,7 +143,7 @@ z80_byte vdp_9918a_in_vdp_status(void)
     vdp_9918a_status_register&= (255-32-128);
 
     //Pero... al parecer si borramos tambien bit 7, en MSX Rom no lee teclado
-    //vdp_9918a_status_register&= (255-32);    
+    //vdp_9918a_status_register&= (255-32);
 
     return retorno;
 
@@ -180,20 +180,20 @@ void vdp_9918a_out_command_status(z80_byte value)
             }
 
             if ( (vdp_9918a_last_command_status_bytes[1] &  (128+64)) == 0 ) {
-                
+
 
                 vdp_9918a_last_vram_position=(vdp_9918a_last_command_status_bytes[0]) | ((vdp_9918a_last_command_status_bytes[1] & 63)<<8);
                 //printf ("Write VDP Address setup to VRAM read. address: %04XH\n",vdp_9918a_last_vram_position);
-            }            
+            }
 
             if ( (vdp_9918a_last_command_status_bytes[1] &  (128+64)) == 128 ) {
                 //printf ("Write VDP Register setup.\n");
 
                 //vdp_9918a_last_vram_position=(vdp_9918a_last_command_status_bytes[1] & 63) | (vdp_9918a_last_command_status_bytes[0]<<6);
-                z80_byte vdp_register=vdp_9918a_last_command_status_bytes[1] & (VDP_9918A_TOTAL_REGISTERS-1); 
+                z80_byte vdp_register=vdp_9918a_last_command_status_bytes[1] & (VDP_9918A_TOTAL_REGISTERS-1);
 
                 z80_byte next_value=vdp_9918a_last_command_status_bytes[0];
-                
+
                 //Casos para Master System modo video 4
                 if (vdp_9918a_si_sms_video_mode4() ) next_value=vdp_9918a_sms_pre_write_reg(vdp_register,next_value);
 
@@ -216,7 +216,7 @@ void vdp_9918a_out_command_status(z80_byte value)
 
                     }
                 }
-                
+
 
                 //printf ("Write VDP Register register: %02XH value %02XH\n",vdp_register,vdp_9918a_last_command_status_bytes[0]);
 
@@ -226,15 +226,15 @@ void vdp_9918a_out_command_status(z80_byte value)
 
 	//z80_byte video_mode=video_mode_m12 | video_mode_m3;
 
-	//printf ("video_mode: %d\n",video_mode);  
+	//printf ("video_mode: %d\n",video_mode);
 
-            }     
+            }
 
 
             //Paleta colores SMS
             if ( (vdp_9918a_last_command_status_bytes[1] &  (128+64)) == 192  && MACHINE_IS_SMS) {
                 vdp_9918a_sms_set_writing_cram(vdp_9918a_last_command_status_bytes[0]);
-            }       
+            }
         break;
     }
 
@@ -281,12 +281,12 @@ z80_int vdp_9918a_get_pattern_name_table(void)
     if (vdp_9918a_si_sms_video_mode4() ) {
         return vdp_9918a_sms_get_pattern_name_table();
     }
-    else return (vdp_9918a_registers[2]&15) * 0x400; 
+    else return (vdp_9918a_registers[2]&15) * 0x400;
 }
 
 
 
-char *get_vdp_9918_string_video_mode(void) 
+char *get_vdp_9918_string_video_mode(void)
 {
 
 
@@ -296,7 +296,7 @@ char *get_vdp_9918_string_video_mode(void)
 
 	z80_byte video_mode=vdp_9918a_get_video_mode();
 
-	
+
 	switch(video_mode) {
 
 		case 0:
@@ -316,7 +316,7 @@ char *get_vdp_9918_string_video_mode(void)
 
 		case 128:
 			string_mode=s_vdp_9918a_video_mode_sms_4;
-		break;        
+		break;
     }
 
     return (char *)string_mode;
@@ -349,9 +349,9 @@ int vdp_9918a_get_tile_width(void)
 
     }
 
-    return width;   
+    return width;
 
-    
+
 }
 
 //Color border/background
@@ -364,7 +364,7 @@ z80_byte vdp_9918a_get_border_color(void)
 z80_byte vdp_9918a_get_foreground_color(void)
 {
     z80_byte ink=(vdp_9918a_registers[7]>>4)&15;
-    
+
     return ink;
 }
 
@@ -393,10 +393,10 @@ int vdp_9918a_get_tile_heigth(void)
 		break;
     }
 
-    return heigth;   
+    return heigth;
     */
 
-    
+
 }
 
 
@@ -418,7 +418,7 @@ z80_int vdp_9918a_get_pattern_color_table(void)
 z80_int vdp_9918a_get_pattern_base_address(void)
 {
 
-    z80_int pattern_base_address=(vdp_9918a_registers[4]&7) * 0x800; 
+    z80_int pattern_base_address=(vdp_9918a_registers[4]&7) * 0x800;
 
     if (vdp_9918a_si_sms_video_mode4()) {
         //TODO. esto siempre asi??
@@ -433,8 +433,8 @@ int vdp_9918a_get_sprite_size(void)
 /*
 This register can be only written. Use the MSX-BASIC instruction VDP(1) to access it. The instruction reads the system variable REG1SAV (0F3E0h) to return the requested value.
 
-        Bit 7	Bit 6	Bit 5	Bit 4	Bit 3	Bit 2	Bit 1	Bit 0	
-R#1:	4/16K	BL	    IE0	    M2	    M1	    0	    SI  	MAG	
+        Bit 7	Bit 6	Bit 5	Bit 4	Bit 3	Bit 2	Bit 1	Bit 0
+R#1:	4/16K	BL	    IE0	    M2	    M1	    0	    SI  	MAG
 
 4/16K selects VRAM configuration. Write 1 if the VDP is not a V9938 nor V9958.
 
@@ -452,7 +452,7 @@ MAG enlarges the sprites when 1 is written. (0 by default)
 
 
 
-   return sprite_size; 
+   return sprite_size;
 }
 
 int vdp_9918a_get_sprite_double(void)
@@ -493,22 +493,22 @@ void vdp_9918a_render_ula_no_rainbow(z80_byte *vram)
 	//printf ("video_mode: %d\n",video_mode);
 
 
-	int x,y,bit; 
+	int x,y,bit;
 	z80_int direccion_name_table;
 	z80_byte byte_leido;
     z80_byte byte_color;
 	int color=0;
-	
+
     //int zx,zy;
 
 	z80_byte ink,paper;
 
 
     z80_int pattern_color_table;
-	z80_int pattern_base_address; 
-	z80_int pattern_name_table; 
+	z80_int pattern_base_address;
+	z80_int pattern_name_table;
 
-	pattern_name_table=vdp_9918a_get_pattern_name_table(); 
+	pattern_name_table=vdp_9918a_get_pattern_name_table();
 
 
 	pattern_color_table=vdp_9918a_get_pattern_color_table();
@@ -522,17 +522,17 @@ void vdp_9918a_render_ula_no_rainbow(z80_byte *vram)
 	int char_width;
 
 	switch(video_mode) {
-		
+
 		case 4:
 		case 0:
 		//"screen 0": Text, characters of 6 x 8	40 x 24 characters
-		//video_mode: 4		
+		//video_mode: 4
 
-	
 
-		//pattern_base_address=0; //TODO: Puesto a pelo		
+
+		//pattern_base_address=0; //TODO: Puesto a pelo
 		//"screen 1": Text, characters of 8 x 8	, 32 x 24 characters
-		//video_mode: 0	
+		//video_mode: 0
 
 
 
@@ -543,11 +543,11 @@ void vdp_9918a_render_ula_no_rainbow(z80_byte *vram)
 			//En modo texto 40x24, color tinta y papel fijos
 
 			//ink=(vdp_9918a_registers[7]>>4)&15;
-			//paper=(vdp_9918a_registers[7])&15;			
+			//paper=(vdp_9918a_registers[7])&15;
 
 
 			ink=vdp_9918a_get_foreground_color();
-			paper=vdp_9918a_get_border_color();          
+			paper=vdp_9918a_get_border_color();
 		}
 
 		else {
@@ -556,14 +556,14 @@ void vdp_9918a_render_ula_no_rainbow(z80_byte *vram)
 		}
 
 
-		direccion_name_table=pattern_name_table;  
+		direccion_name_table=pattern_name_table;
 
         for (y=0;y<24;y++) {
-			for (x=0;x<chars_in_line;x++) {  
-       
-            		
+			for (x=0;x<chars_in_line;x++) {
+
+
 				z80_byte caracter=vdp_9918a_read_vram_byte(vram,direccion_name_table);
-                
+
 				if (video_mode==0) {
 					int posicion_color=caracter/8;
 
@@ -581,13 +581,13 @@ void vdp_9918a_render_ula_no_rainbow(z80_byte *vram)
 				for (scanline=0;scanline<8;scanline++) {
 
 					byte_leido=vdp_9918a_read_vram_byte(vram,pattern_address++);
-	                       
+
 
                     for (bit=0;bit<char_width;bit++) {
 
 						//int fila=(x*char_width+bit)/8;
-						
-						
+
+
 						//Ver en casos en que puede que haya menu activo y hay que hacer overlay
 						//if (scr_ver_si_refrescar_por_menu_activo(fila,y)) {
 							color= ( byte_leido & 128 ? ink : paper );
@@ -602,7 +602,7 @@ void vdp_9918a_render_ula_no_rainbow(z80_byte *vram)
 				direccion_name_table++;
 
 			}
-			
+
 
    		 }
 
@@ -613,15 +613,15 @@ void vdp_9918a_render_ula_no_rainbow(z80_byte *vram)
 			//video_mode: 2
 
 
-			direccion_name_table=pattern_name_table;  
+			direccion_name_table=pattern_name_table;
 
 			for (y=0;y<24;y++) {
-				for (x=0;x<32;x++) {  
-		
-							
+				for (x=0;x<32;x++) {
+
+
 					z80_byte caracter=vdp_9918a_read_vram_byte(vram,direccion_name_table++);
-					
-								
+
+
 					int incremento_byte=(y&3)*2;
 
 
@@ -635,10 +635,10 @@ void vdp_9918a_render_ula_no_rainbow(z80_byte *vram)
 					for (row=0;row<2;row++) {
 
 						byte_leido=vdp_9918a_read_vram_byte(vram,pattern_address++);
-						
+
 						int col;
 						for (col=0;col<2;col++) {
-											
+
 							//Ver en casos en que puede que haya menu activo y hay que hacer overlay
 							//if (scr_ver_si_refrescar_por_menu_activo(x,y)) {
 
@@ -647,22 +647,22 @@ void vdp_9918a_render_ula_no_rainbow(z80_byte *vram)
 
 								byte_leido=byte_leido << 4;
 
-								
+
 								int subpixel_x,subpixel_y;
 
 								int xfinal=x*8+col*4;
-								int yfinal=y*8+row*4;							
+								int yfinal=y*8+row*4;
 
 								for (subpixel_y=0;subpixel_y<4;subpixel_y++) {
 									for (subpixel_x=0;subpixel_x<4;subpixel_x++) {
-								
+
 										scr_putpixel_zoom(xfinal+subpixel_x,  yfinal+subpixel_y,  VDP_9918_INDEX_FIRST_COLOR+color);
 									}
 
 								}
-								
+
 							//}
-						
+
 						}
 
 					}
@@ -671,7 +671,7 @@ void vdp_9918a_render_ula_no_rainbow(z80_byte *vram)
 
 			}
 
-		break;	        
+		break;
 
 
 		//Screen 2. high-res mode, 256x192
@@ -684,11 +684,11 @@ void vdp_9918a_render_ula_no_rainbow(z80_byte *vram)
 
             //printf ("pattern base address before mask: %d\n",pattern_base_address);
 
-            //printf ("pattern color table before mask:  %d\n",pattern_color_table);            
+            //printf ("pattern color table before mask:  %d\n",pattern_color_table);
 
 
 			pattern_base_address &=8192; //Cae en offset 0 o 8192
-          
+
 			pattern_color_table &=8192; //Cae en offset 0 o 8192
 
 
@@ -696,31 +696,31 @@ void vdp_9918a_render_ula_no_rainbow(z80_byte *vram)
 
             //printf ("pattern color table after mask:  %d\n",pattern_color_table);
 
-			direccion_name_table=pattern_name_table;  
+			direccion_name_table=pattern_name_table;
 
 			for (y=0;y<24;y++) {
 
 				int tercio=y/8;
 
-				for (x=0;x<chars_in_line;x++) {  
-					
-					
+				for (x=0;x<chars_in_line;x++) {
+
+
 					z80_byte caracter=vdp_9918a_read_vram_byte(vram,direccion_name_table);
-					
+
 
 					int scanline;
 
 					z80_int pattern_address=(caracter*8+2048*tercio) ;
 					pattern_address +=pattern_base_address;
-					
-					
+
+
 
 
 					z80_int color_address=(caracter*8+2048*tercio) ;
 					color_address +=pattern_color_table;
 
-	
-			
+
+
 
 					for (scanline=0;scanline<8;scanline++) {
 
@@ -732,12 +732,12 @@ void vdp_9918a_render_ula_no_rainbow(z80_byte *vram)
 						ink=(byte_color>>4) &15;
 						paper=byte_color &15;
 
-							
+
 						for (bit=0;bit<char_width;bit++) {
 
 							//int fila=(x*char_width+bit)/8;
 
-													
+
 							//Ver en casos en que puede que haya menu activo y hay que hacer overlay
 							//if (scr_ver_si_refrescar_por_menu_activo(fila,y)) {
 								color= ( byte_leido & 128 ? ink : paper );
@@ -748,7 +748,7 @@ void vdp_9918a_render_ula_no_rainbow(z80_byte *vram)
 						}
 					}
 
-						
+
 					direccion_name_table++;
 
 				}
@@ -761,14 +761,14 @@ void vdp_9918a_render_ula_no_rainbow(z80_byte *vram)
 
 
 
-	}    
+	}
 }
 
 
 
 void vdp_9918a_render_sprites_no_rainbow(z80_byte *vram)
 {
- 
+
     if (vdp_9918a_si_sms_video_mode4()) {
         //printf("Render sprites modo 4 sms\n");
         vdp_9918a_render_sprites_sms_video_mode4_no_rainbow(vram);
@@ -786,10 +786,10 @@ void vdp_9918a_render_sprites_no_rainbow(z80_byte *vram)
 
 
     z80_int sprite_pattern_table=vdp_9918a_get_sprite_pattern_table();
-    
+
     z80_byte byte_leido;
 
-        
+
         int sprite_size=vdp_9918a_get_sprite_size();
         int sprite_double=vdp_9918a_get_sprite_double();
 
@@ -843,7 +843,7 @@ void vdp_9918a_render_sprites_no_rainbow(z80_byte *vram)
   0: Y-pos, Vertical position (FFh is topmost, 00h is second line, etc.)
   1: X-pos, Horizontal position (00h is leftmost)
   2: Pattern number
-  3: Attributes. b0-3:Color, b4-6:unused, b7:EC (Early Clock)            
+  3: Attributes. b0-3:Color, b4-6:unused, b7:EC (Early Clock)
 */
 
             vert_pos++; //255->coordenada 0
@@ -851,7 +851,7 @@ void vdp_9918a_render_sprites_no_rainbow(z80_byte *vram)
 
             //Entre 255 y 256-32-> son coordenadas negativas
             if (vert_pos>=256-32) {
-                //printf ("sprite number: %d X: %d Y: %d Name: %d color_etc: %d\n",sprite,horiz_pos,vert_pos,sprite_name,attr_color_etc);                
+                //printf ("sprite number: %d X: %d Y: %d Name: %d color_etc: %d\n",sprite,horiz_pos,vert_pos,sprite_name,attr_color_etc);
                 //printf ("Sprite Y negative: %d\n",vert_pos-256);
                 vert_pos=vert_pos-256;
 
@@ -863,14 +863,14 @@ void vdp_9918a_render_sprites_no_rainbow(z80_byte *vram)
             //Si early clock, x-=32
 
             if (attr_color_etc & 128) {
-                //printf ("sprite number: %d X: %d Y: %d Name: %d color_etc: %d\n",sprite,horiz_pos,vert_pos,sprite_name,attr_color_etc);                
+                //printf ("sprite number: %d X: %d Y: %d Name: %d color_etc: %d\n",sprite,horiz_pos,vert_pos,sprite_name,attr_color_etc);
                 horiz_pos -=32;
             }
 
             //printf ("sprite number: %d X: %d Y: %d Name: %d color_etc: %d\n",sprite,horiz_pos,vert_pos,sprite_name,attr_color_etc);
 
-       
-                
+
+
 
                 //Si coord Y no esta en el borde inferior
                 if (vert_pos<192) {
@@ -887,7 +887,7 @@ void vdp_9918a_render_sprites_no_rainbow(z80_byte *vram)
                         for (quad_x=0;quad_x<2;quad_x++) {
                             for (quad_y=0;quad_y<2;quad_y++) {
                                 for (y=0;y<8;y++) {
-                                
+
                                     byte_leido=vdp_9918a_read_vram_byte(vram,offset_pattern_table++);
                                     for (x=0;x<8;x++) {
 
@@ -896,13 +896,13 @@ void vdp_9918a_render_sprites_no_rainbow(z80_byte *vram)
 
                                         pos_x_final=horiz_pos+((quad_x*8)+x)*sprite_double;
                                         pos_y_final=vert_pos+((quad_y*8)+y)*sprite_double;
-                                        
+
                                         //Si dentro de limites
                                         if (pos_x_final>=0 && pos_x_final<=255 && pos_y_final>=0 && pos_y_final<=191) {
 
                                             //Si bit a 1
                                             if (byte_leido & 128) {
-                                                //Y si ese color no es transparente 
+                                                //Y si ese color no es transparente
                                                 if (color!=0) {
                                                     //printf ("putpixel sprite x %d y %d\n",pos_x_final,pos_y_final);
 
@@ -939,7 +939,7 @@ void vdp_9918a_render_sprites_no_rainbow(z80_byte *vram)
                                     }
                                 }
                             }
-                        }                        
+                        }
                     }
 
                     //Sprites de 8x8
@@ -955,7 +955,7 @@ void vdp_9918a_render_sprites_no_rainbow(z80_byte *vram)
 
                                     pos_x_final=horiz_pos+x*sprite_double;
                                     pos_y_final=vert_pos+y*sprite_double;
-                                    
+
                                     if (pos_x_final>=0 && pos_x_final<=255 && pos_y_final>=0 && pos_y_final<=191) {
 
                                         //Si bit a 1
@@ -978,27 +978,27 @@ void vdp_9918a_render_sprites_no_rainbow(z80_byte *vram)
 
                                                     int si_blanco_negro=posx ^ posy;
                                                     color_sprite=si_blanco_negro*15;
-                                                }                                            
+                                                }
                                                 scr_putpixel_zoom(pos_x_final,  pos_y_final,  VDP_9918_INDEX_FIRST_COLOR+color_sprite);
                                                 if (sprite_double==2) {
                                                     scr_putpixel_zoom(pos_x_final+1,  pos_y_final,    VDP_9918_INDEX_FIRST_COLOR+color_sprite);
                                                     scr_putpixel_zoom(pos_x_final,    pos_y_final+1,  VDP_9918_INDEX_FIRST_COLOR+color_sprite);
                                                     scr_putpixel_zoom(pos_x_final+1,  pos_y_final+1,  VDP_9918_INDEX_FIRST_COLOR+color_sprite);
-                                                }                                                
+                                                }
                                             }
                                         }
                                     }
 
                                     byte_leido = byte_leido << 1;
                                 }
-                            
+
                         }
                     }
 
                 }
-            
 
-        }   
+
+        }
 }
 
 int vdp_9918a_get_final_border_if_disable(void)
@@ -1010,8 +1010,8 @@ int vdp_9918a_get_final_border_if_disable(void)
         color_final_border=vdp_9918a_sms_get_final_color_border();
 
         if (vdp_9918a_force_disable_layer_border.v) color_final_border=SMS_INDEX_FIRST_COLOR; //color 0 de su paleta de colores
-    }    
-    
+    }
+
     else {
         color_final_border=vdp_9918a_get_border_color()+VDP_9918_INDEX_FIRST_COLOR;
 
@@ -1039,7 +1039,7 @@ void vdp_9918a_refresca_border(void)
 
 	//Top border cambia en spectrum y zx8081 y ace
 	int topborder=VDP_9918A_TOP_BORDER;
-	
+
 
 	//color +=spectrum_palette_offset;
 
@@ -1070,7 +1070,7 @@ void vdp_9918a_refresca_border(void)
                         scr_putpixel(x,topborder+y,color_final_border);
                 }
 
-        
+
 
         }
 
@@ -1078,7 +1078,7 @@ void vdp_9918a_refresca_border(void)
         int ancho_border_derecho=VDP_9918A_LEFT_BORDER;
 
         //laterales. En modo 0, 40x24, border derecho es 16 pixeles mas ancho
-        z80_byte video_mode=vdp_9918a_get_video_mode();        
+        z80_byte video_mode=vdp_9918a_get_video_mode();
 
         if (video_mode==4) {
             ancho_pantalla -=16;
@@ -1089,7 +1089,7 @@ void vdp_9918a_refresca_border(void)
 
                 for (x=0;x<ancho_border_derecho;x++) {
                         scr_putpixel(VDP_9918A_LEFT_BORDER+ancho_pantalla*zoom_x+x,topborder+y,color_final_border);
-                }                
+                }
 
         }
 
@@ -1116,12 +1116,12 @@ void vdp_9918a_render_rainbow_display_line(int scanline,z80_int *scanline_buffer
 	//printf ("video_mode: %d\n",video_mode);
 
 
-	int x,bit; 
+	int x,bit;
 	z80_int direccion_name_table;
 	z80_byte byte_leido;
     z80_byte byte_color;
 	int color=0;
-	
+
 	//int zx,zy;
 
 	z80_byte ink,paper;
@@ -1130,7 +1130,7 @@ void vdp_9918a_render_rainbow_display_line(int scanline,z80_int *scanline_buffer
 	z80_int pattern_base_address; //=2048; //TODO: Puesto a pelo
 	z80_int pattern_name_table; //=0; //TODO: puesto a pelo
 
-	pattern_name_table=vdp_9918a_get_pattern_name_table(); //(vdp_9918a_registers[2]&15) * 0x400; 
+	pattern_name_table=vdp_9918a_get_pattern_name_table(); //(vdp_9918a_registers[2]&15) * 0x400;
 
 
 
@@ -1145,7 +1145,7 @@ void vdp_9918a_render_rainbow_display_line(int scanline,z80_int *scanline_buffer
     int fila=scanline/8;
 
     //entre 0 y 7 dentro de la fila
-    int scanline_fila=scanline % 8;    
+    int scanline_fila=scanline % 8;
 
     int offset_sumar_linea;
 
@@ -1158,13 +1158,13 @@ void vdp_9918a_render_rainbow_display_line(int scanline,z80_int *scanline_buffer
 		case 4:
 		case 0:
 		//"screen 0": Text, characters of 6 x 8	40 x 24 characters
-		//video_mode: 4		
+		//video_mode: 4
 
-	
 
-		//pattern_base_address=0; //TODO: Puesto a pelo		
+
+		//pattern_base_address=0; //TODO: Puesto a pelo
 		//"screen 1": Text, characters of 8 x 8	, 32 x 24 characters
-		//video_mode: 0	
+		//video_mode: 0
 
 
 		if (video_mode==4) {
@@ -1174,7 +1174,7 @@ void vdp_9918a_render_rainbow_display_line(int scanline,z80_int *scanline_buffer
 			//En modo texto 40x24, color tinta y papel fijos
 
 			ink=(vdp_9918a_registers[7]>>4)&15;
-			paper=(vdp_9918a_registers[7])&15;			
+			paper=(vdp_9918a_registers[7])&15;
 		}
 
 		else {
@@ -1187,7 +1187,7 @@ void vdp_9918a_render_rainbow_display_line(int scanline,z80_int *scanline_buffer
 
 
 
-		direccion_name_table=pattern_name_table;  
+		direccion_name_table=pattern_name_table;
 
 
 
@@ -1197,13 +1197,13 @@ void vdp_9918a_render_rainbow_display_line(int scanline,z80_int *scanline_buffer
 
         direccion_name_table +=offset_sumar_linea;
 
-       
-			for (x=0;x<chars_in_line;x++) {  
-       
-            		
+
+			for (x=0;x<chars_in_line;x++) {
+
+
 				z80_byte caracter=vdp_9918a_read_vram_byte(vram,direccion_name_table);
                 //printf ("%d ",caracter);
-                
+
 				if (video_mode==0) {
 					int posicion_color=caracter/8;
 
@@ -1221,13 +1221,13 @@ void vdp_9918a_render_rainbow_display_line(int scanline,z80_int *scanline_buffer
 
 
 					byte_leido=vdp_9918a_read_vram_byte(vram,pattern_address);
-	                       
+
 
                     for (bit=0;bit<char_width;bit++) {
 
 						//int columna=(x*char_width+bit)/8;
-						
-						
+
+
 						//Ver en casos en que puede que haya menu activo y hay que hacer overlay
 						//if (scr_ver_si_refrescar_por_menu_activo(columna,fila)) {
 							color= ( byte_leido & 128 ? ink : paper );
@@ -1242,7 +1242,7 @@ void vdp_9918a_render_rainbow_display_line(int scanline,z80_int *scanline_buffer
                 direccion_name_table++;
 
 			}
-			
+
 
 		break;
 
@@ -1255,21 +1255,21 @@ void vdp_9918a_render_rainbow_display_line(int scanline,z80_int *scanline_buffer
 			chars_in_line=32;
 			char_width=8;
 
-			direccion_name_table=pattern_name_table;  
+			direccion_name_table=pattern_name_table;
 
         offset_sumar_linea=chars_in_line*fila;
 
         //printf ("offset: %d\n",offset_sumar_linea);
 
-        direccion_name_table +=offset_sumar_linea;            
+        direccion_name_table +=offset_sumar_linea;
 
 			//for (y=0;y<24;y++) {
-				for (x=0;x<32;x++) {  
-		
-							
+				for (x=0;x<32;x++) {
+
+
 					z80_byte caracter=vdp_9918a_read_vram_byte(vram,direccion_name_table++);
-					
-								
+
+
 					int incremento_byte=(fila&3)*2;
 
 
@@ -1283,10 +1283,10 @@ void vdp_9918a_render_rainbow_display_line(int scanline,z80_int *scanline_buffer
 					//for (row=0;row<2;row++) {
 
 						byte_leido=vdp_9918a_read_vram_byte(vram,pattern_address++);
-						
+
 						int col;
 						for (col=0;col<2;col++) {
-											
+
 							//Ver en casos en que puede que haya menu activo y hay que hacer overlay
 							//if (scr_ver_si_refrescar_por_menu_activo(x,fila)) {
 
@@ -1295,28 +1295,28 @@ void vdp_9918a_render_rainbow_display_line(int scanline,z80_int *scanline_buffer
 
 								byte_leido=byte_leido << 4;
 
-								
+
 								int subpixel_x;
                                 //int subpixel_y;
 
 								int xfinal=x*8+col*4;
-								//int yfinal=y*8+row*4;							
+								//int yfinal=y*8+row*4;
 
 								//for (subpixel_y=0;subpixel_y<4;subpixel_y++) {
 									for (subpixel_x=0;subpixel_x<4;subpixel_x++) {
-								
+
 										//scr_putpixel_zoom(xfinal+subpixel_x,  yfinal+subpixel_y,  VDP_9918_INDEX_FIRST_COLOR+color);
 
                                         destino_scanline_buffer[xfinal+subpixel_x]=VDP_9918_INDEX_FIRST_COLOR+color;
 
                                         //destino_scanline_buffer++;
-                            
+
 									}
 
 								//}
-								
+
 							//}
-						
+
 						}
 
 					//}
@@ -1325,7 +1325,7 @@ void vdp_9918a_render_rainbow_display_line(int scanline,z80_int *scanline_buffer
 
 			//}
 
-		break;	        
+		break;
 
 
 		//Screen 2. high-res mode, 256x192
@@ -1339,11 +1339,11 @@ void vdp_9918a_render_rainbow_display_line(int scanline,z80_int *scanline_buffer
 
             //printf ("pattern base address before mask: %d\n",pattern_base_address);
 
-            //printf ("pattern color table before mask:  %d\n",pattern_color_table);            
+            //printf ("pattern color table before mask:  %d\n",pattern_color_table);
 
 
 			pattern_base_address &=8192; //Cae en offset 0 o 8192
-          
+
 			pattern_color_table &=8192; //Cae en offset 0 o 8192
 
 
@@ -1351,35 +1351,35 @@ void vdp_9918a_render_rainbow_display_line(int scanline,z80_int *scanline_buffer
 
             //printf ("pattern color table after mask:  %d\n",pattern_color_table);
 
-			direccion_name_table=pattern_name_table;  
+			direccion_name_table=pattern_name_table;
 
             offset_sumar_linea=chars_in_line*fila;
 
-            direccion_name_table +=offset_sumar_linea;            
+            direccion_name_table +=offset_sumar_linea;
 
 			//for (y=0;y<24;y++) {
 
 				int tercio=fila/8;
 
-				for (x=0;x<chars_in_line;x++) {  
-					
-					
+				for (x=0;x<chars_in_line;x++) {
+
+
 					z80_byte caracter=vdp_9918a_read_vram_byte(vram,direccion_name_table);
-					
+
 
 					//int scanline;
 
 					z80_int pattern_address=(caracter*8+2048*tercio) ;
 					pattern_address +=pattern_base_address+scanline_fila;
-					
-					
+
+
 
 
 					z80_int color_address=(caracter*8+2048*tercio) ;
 					color_address +=pattern_color_table+scanline_fila;
 
-	
-			
+
+
 
 					//for (scanline=0;scanline<8;scanline++) {
 
@@ -1391,25 +1391,25 @@ void vdp_9918a_render_rainbow_display_line(int scanline,z80_int *scanline_buffer
 						ink=(byte_color>>4) &15;
 						paper=byte_color &15;
 
-							
+
 						for (bit=0;bit<char_width;bit++) {
 
 							//int columna=(x*char_width+bit)/8;
 
-													
+
 							//Ver en casos en que puede que haya menu activo y hay que hacer overlay
 							//if (scr_ver_si_refrescar_por_menu_activo(columna,fila)) {
 								color= ( byte_leido & 128 ? ink : paper );
 								//scr_putpixel_zoom(x*char_width+bit,y*8+scanline,VDP_9918_INDEX_FIRST_COLOR+color);
                                 *destino_scanline_buffer=VDP_9918_INDEX_FIRST_COLOR+color;
-                                destino_scanline_buffer++;                                
+                                destino_scanline_buffer++;
 							//}
 
 							byte_leido=byte_leido<<1;
 						}
 					//}
 
-						
+
 					direccion_name_table++;
 
 				}
@@ -1418,12 +1418,12 @@ void vdp_9918a_render_rainbow_display_line(int scanline,z80_int *scanline_buffer
 		break;
 
 
-	
 
 
 
 
-	}    
+
+	}
 
 }
 
@@ -1446,7 +1446,7 @@ void vdp9918a_put_sprite_pixel(z80_int *destino,z80_int color)
     //C: sprite colision (coincidence) flag
     //fifth sprite number
 
-    
+
         vdp_9918a_status_register |=32;
 
     }
@@ -1455,7 +1455,7 @@ void vdp9918a_put_sprite_pixel(z80_int *destino,z80_int color)
 }
 
 
-//Renderiza una linea de sprites 
+//Renderiza una linea de sprites
 void vdp_9918a_render_rainbow_sprites_line_post(int scanline,z80_int *destino_scanline_buffer,z80_byte *vram)
 {
 
@@ -1464,7 +1464,7 @@ void vdp_9918a_render_rainbow_sprites_line_post(int scanline,z80_int *destino_sc
 	//z80_int pattern_base_address; //=2048; //TODO: Puesto a pelo
 	//z80_int pattern_name_table; //=0; //TODO: puesto a pelo
 
-	//pattern_name_table=vdp_9918a_get_pattern_name_table(); //(vdp_9918a_registers[2]&15) * 0x400; 
+	//pattern_name_table=vdp_9918a_get_pattern_name_table(); //(vdp_9918a_registers[2]&15) * 0x400;
 
 
 
@@ -1479,12 +1479,12 @@ void vdp_9918a_render_rainbow_sprites_line_post(int scanline,z80_int *destino_sc
     //int fila=scanline/8;
 
     //entre 0 y 7 dentro de la fila
-    //int scanline_fila=scanline % 8;    
+    //int scanline_fila=scanline % 8;
 
 
 
     z80_int sprite_pattern_table=vdp_9918a_get_sprite_pattern_table();
-    
+
     z80_byte byte_leido;
 
     int sprites_en_linea=0;
@@ -1494,7 +1494,7 @@ void vdp_9918a_render_rainbow_sprites_line_post(int scanline,z80_int *destino_sc
     //Bit  6    5S         1 if more than 4 sprites on a horizontal line
     vdp_9918a_status_register&= (255-64);
 
-        
+
         int sprite_size=vdp_9918a_get_sprite_size();
         int sprite_double=vdp_9918a_get_sprite_double();
 
@@ -1570,7 +1570,7 @@ void vdp_9918a_render_rainbow_sprites_line_post(int scanline,z80_int *destino_sc
   0: Y-pos, Vertical position (FFh is topmost, 00h is second line, etc.)
   1: X-pos, Horizontal position (00h is leftmost)
   2: Pattern number
-  3: Attributes. b0-3:Color, b4-6:unused, b7:EC (Early Clock)            
+  3: Attributes. b0-3:Color, b4-6:unused, b7:EC (Early Clock)
 */
 
             vert_pos++; //255->coordenada 0
@@ -1578,7 +1578,7 @@ void vdp_9918a_render_rainbow_sprites_line_post(int scanline,z80_int *destino_sc
 
             //Entre 255 y 256-32-> son coordenadas negativas
             if (vert_pos>=256-32) {
-                //printf ("sprite number: %d X: %d Y: %d Name: %d color_etc: %d\n",sprite,horiz_pos,vert_pos,sprite_name,attr_color_etc);                
+                //printf ("sprite number: %d X: %d Y: %d Name: %d color_etc: %d\n",sprite,horiz_pos,vert_pos,sprite_name,attr_color_etc);
                 //printf ("Sprite Y negative: %d\n",vert_pos-256);
                 vert_pos=vert_pos-256;
 
@@ -1590,21 +1590,21 @@ void vdp_9918a_render_rainbow_sprites_line_post(int scanline,z80_int *destino_sc
             //Si early clock, x-=32
 
             if (attr_color_etc & 128) {
-                //printf ("sprite number: %d X: %d Y: %d Name: %d color_etc: %d\n",sprite,horiz_pos,vert_pos,sprite_name,attr_color_etc);                
+                //printf ("sprite number: %d X: %d Y: %d Name: %d color_etc: %d\n",sprite,horiz_pos,vert_pos,sprite_name,attr_color_etc);
                 horiz_pos -=32;
             }
 
             //printf ("sprite number: %d X: %d Y: %d Name: %d color_etc: %d\n",sprite,horiz_pos,vert_pos,sprite_name,attr_color_etc);
 
-       
-                
+
+
 
                 //Si posicion Y sprite esta en el margen
                 if (scanline>=vert_pos && scanline<vert_pos+sprite_size*sprite_double) {
                 //if (vert_pos<192) {
                     //int offset_pattern_table=sprite_name*bytes_per_sprite+sprite_pattern_table;
 
-                    
+
 
                       int offset_pattern_table=sprite_name*8+sprite_pattern_table;
                     z80_byte color=attr_color_etc & 15;
@@ -1636,7 +1636,7 @@ void vdp_9918a_render_rainbow_sprites_line_post(int scanline,z80_int *destino_sc
                         for (quad_x=0;quad_x<2;quad_x++) {
                             //for (quad_y=0;quad_y<2;quad_y++) {
                                 //for (y=0;y<8;y++) {
-                                
+
                                     byte_leido=vdp_9918a_read_vram_byte(vram,offset_pattern_table);
                                     for (x=0;x<8;x++) {
 
@@ -1645,7 +1645,7 @@ void vdp_9918a_render_rainbow_sprites_line_post(int scanline,z80_int *destino_sc
 
                                         pos_x_final=horiz_pos+((quad_x*8)+x)*sprite_double;
                                         //pos_y_final=vert_pos+(quad_y*8)+y;
-                                        
+
                                         //Si dentro de limites
                                         if (pos_x_final>=0 && pos_x_final<=255 /*&& pos_y_final>=0 && pos_y_final<=191*/) {
 
@@ -1653,7 +1653,7 @@ void vdp_9918a_render_rainbow_sprites_line_post(int scanline,z80_int *destino_sc
 
                                             //Si bit a 1
                                             if (byte_leido & 128) {
-                                                //Y si ese color no es transparente 
+                                                //Y si ese color no es transparente
                                                 if (color!=0) {
                                                     //printf ("putpixel sprite x %d y %d\n",pos_x_final,pos_y_final);
 
@@ -1688,7 +1688,7 @@ void vdp_9918a_render_rainbow_sprites_line_post(int scanline,z80_int *destino_sc
                                                     if (sprite_double==2) {
                                                         vdp9918a_put_sprite_pixel(&destino_scanline_buffer[pos_x_final+1],VDP_9918_INDEX_FIRST_COLOR+color_sprite);
                                                     }
-                                
+
                                                 }
                                             }
 
@@ -1699,7 +1699,7 @@ void vdp_9918a_render_rainbow_sprites_line_post(int scanline,z80_int *destino_sc
                             //}
 
                             offset_pattern_table+=16; //byte del cuadrante derecho
-                        }                        
+                        }
                     }
 
                     //Sprites de 8x8
@@ -1721,7 +1721,7 @@ void vdp_9918a_render_rainbow_sprites_line_post(int scanline,z80_int *destino_sc
 
                                     pos_x_final=horiz_pos+x*sprite_double;
                                     //pos_y_final=vert_pos+y;
-                                    
+
                                     if (pos_x_final>=0 && pos_x_final<=255 /*&& pos_y_final>=0 && pos_y_final<=191*/) {
 
 
@@ -1750,7 +1750,7 @@ void vdp_9918a_render_rainbow_sprites_line_post(int scanline,z80_int *destino_sc
 
                                                     int si_blanco_negro=posx ^ posy;
                                                     color_sprite=si_blanco_negro*15;
-                                                }                                            
+                                                }
                                                 //scr_putpixel_zoom(pos_x_final,  pos_y_final,  VDP_9918_INDEX_FIRST_COLOR+color_sprite);
                                                 //destino_scanline_buffer[pos_x_final]=VDP_9918_INDEX_FIRST_COLOR+color_sprite;
 
@@ -1764,17 +1764,17 @@ void vdp_9918a_render_rainbow_sprites_line_post(int scanline,z80_int *destino_sc
 
                                     byte_leido = byte_leido << 1;
                                 }
-                            
+
                         //}
                     }
 
 
-                    if (dibujado_sprite) sprites_en_linea++; 
+                    if (dibujado_sprite) sprites_en_linea++;
 
                 }
-            
 
-        }   
+
+        }
 
 
         //Si llega al maximo de sprites
@@ -1860,7 +1860,7 @@ void screen_store_scanline_rainbow_solo_border_vdp_9918a_section(z80_int *buffer
 void screen_store_scanline_rainbow_solo_border_vdp_9918a(z80_int *scanline_buffer)
 {
 
-    
+
 
 	int ancho_pantalla=256;
 
@@ -1869,11 +1869,11 @@ void screen_store_scanline_rainbow_solo_border_vdp_9918a(z80_int *scanline_buffe
     if ( (t_scanline_draw>=screen_invisible_borde_superior && t_scanline_draw<screen_indice_inicio_pant) ||
              (t_scanline_draw>=screen_indice_fin_pant && t_scanline_draw<screen_indice_fin_pant+screen_total_borde_inferior)
 	   ) {
- 
+
 
         screen_store_scanline_rainbow_solo_border_vdp_9918a_section(scanline_buffer,
             screen_total_borde_izquierdo+ancho_pantalla+screen_total_borde_derecho);
-		
+
     }
 
         //zona de border + pantalla + border
@@ -1888,7 +1888,7 @@ void screen_store_scanline_rainbow_solo_border_vdp_9918a(z80_int *scanline_buffe
         int ancho_border_derecho=screen_total_borde_derecho;
 
         //laterales. En modo 0, 40x24, border derecho es 16 pixeles mas ancho
-        z80_byte video_mode=vdp_9918a_get_video_mode();        
+        z80_byte video_mode=vdp_9918a_get_video_mode();
 
         if (video_mode==4) {
             ancho_pantalla -=16;
@@ -1928,7 +1928,7 @@ void screen_store_scanline_rainbow_solo_display_vdp_9918a(z80_int *scanline_buff
             return;
         }
 
- 
+
         //Render pixeles
         if (vdp_9918a_force_disable_layer_ula.v==0 && vdp_9918a_reveal_layer_ula.v==0) {
             vdp_9918a_render_rainbow_display_line(y_display,scanline_buffer,vram_memory_pointer);
@@ -1954,7 +1954,7 @@ void screen_store_scanline_rainbow_solo_display_vdp_9918a(z80_int *scanline_buff
                     int si_blanco_negro=posx ^ posy;
 
                     //color 0 o 15
-                    color=si_blanco_negro*15;                    
+                    color=si_blanco_negro*15;
                 }
 
                 scanline_buffer[inicio_buffer+i]=VDP_9918_INDEX_FIRST_COLOR+color;
@@ -1972,15 +1972,15 @@ void screen_store_scanline_rainbow_solo_display_vdp_9918a(z80_int *scanline_buff
         }
 
 
-        
 
-  }    
+
+  }
 
 }
 
 
 
-void screen_store_scanline_rainbow_vdp_9918a_border_and_display(z80_int *scanline_buffer,z80_byte *vram_memory) 
+void screen_store_scanline_rainbow_vdp_9918a_border_and_display(z80_int *scanline_buffer,z80_byte *vram_memory)
 {
 
     //Renderizar zonas de border y display
@@ -2068,14 +2068,14 @@ void vdp_9918a_scr_refresca_pantalla_y_border_rainbow(void)
 
 
 	for (y=0;y<alto;y++) {
-		
+
 		for (x=0;x<ancho;x++) {
 
             color_pixel=*puntero++;
             scr_putpixel_zoom_rainbow(x,y,color_pixel);
 
 		}
-		
+
 	}
 
 }

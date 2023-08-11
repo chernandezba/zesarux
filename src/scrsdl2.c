@@ -143,7 +143,7 @@ void scrsdl_destruye_ventana(void)
 }
 
 void scrsdl_putpixel_final_rgb(int x,int y,unsigned int color_rgb)
-{	
+{
     int ancho=screen_get_window_size_width_zoom_border_en();
     ancho +=screen_get_ext_desktop_width_zoom();
     Uint8 *p = (Uint8 *)scrsdl_pixeles + (y * ancho + x) * 4;
@@ -164,24 +164,24 @@ void scrsdl_putpixel_final(int x,int y,unsigned int color)
     unsigned int color32=spectrum_colortable[color];
 
     //y escribir
-    scrsdl_putpixel_final_rgb(x,y,color32);                
+    scrsdl_putpixel_final_rgb(x,y,color32);
 
 
 }
 
 void scrsdl_putpixel(int x,int y,unsigned int color)
-{	
+{
     if (menu_overlay_activo==0) {
         //Putpixel con menu cerrado
         scrsdl_putpixel_final(x,y,color);
         return;
-    }          
+    }
 
     //Metemos pixel en layer adecuado
-    buffer_layer_machine[y*ancho_layer_menu_machine+x]=color;        
+    buffer_layer_machine[y*ancho_layer_menu_machine+x]=color;
 
-    //Putpixel haciendo mix  
-    screen_putpixel_mix_layers(x,y);   
+    //Putpixel haciendo mix
+    screen_putpixel_mix_layers(x,y);
 
 }
 
@@ -224,7 +224,7 @@ void scrsdl_putchar_menu(int x,int y, z80_byte caracter,int tinta,int papel)
 }
 
 /*
-void old_scrsdl_putchar_footer(int x,int y, z80_byte caracter,int tinta,int papel) 
+void old_scrsdl_putchar_footer(int x,int y, z80_byte caracter,int tinta,int papel)
 {
 
 
@@ -247,7 +247,7 @@ void old_scrsdl_putchar_footer(int x,int y, z80_byte caracter,int tinta,int pape
 }
 */
 
-void scrsdl_putchar_footer(int x,int y, z80_byte caracter,int tinta,int papel) 
+void scrsdl_putchar_footer(int x,int y, z80_byte caracter,int tinta,int papel)
 {
     scr_putchar_footer_comun_zoom(caracter,x,y,tinta,papel);
 }
@@ -327,7 +327,7 @@ void scrsdl_refresca_pantalla(void)
 
         else if (MACHINE_IS_TBBLUE) {
                 screen_tbblue_refresca_pantalla();
-        }        
+        }
 
 
         else if (MACHINE_IS_SPECTRUM) {
@@ -374,7 +374,7 @@ void scrsdl_refresca_pantalla(void)
 
         else if (MACHINE_IS_PCW) {
                 scr_refresca_pantalla_y_border_pcw();
-        }         
+        }
 
         else if (MACHINE_IS_SAM) {
                 scr_refresca_pantalla_y_border_sam();
@@ -390,24 +390,24 @@ void scrsdl_refresca_pantalla(void)
 
 	else if (MACHINE_IS_MSX) {
 		scr_refresca_pantalla_y_border_msx();
-	}    
+	}
 
 	else if (MACHINE_IS_SVI) {
 		scr_refresca_pantalla_y_border_svi();
-	}    	        
+	}
 
 	else if (MACHINE_IS_COLECO) {
 		scr_refresca_pantalla_y_border_coleco();
-	}    
-        
+	}
+
 	else if (MACHINE_IS_SG1000) {
 		scr_refresca_pantalla_y_border_sg1000();
-	}    
+	}
 
 
 	else if (MACHINE_IS_SMS) {
 		scr_refresca_pantalla_y_border_sms();
-	}       
+	}
 
 
         //printf ("%d\n",spectrum_colortable[1]);
@@ -759,7 +759,7 @@ void scrsdl_deal_raw_keys(int pressrelease,int scancode)
 
                 case SDL_SCANCODE_COMMA:
 			util_set_reset_key(',',pressrelease);
-                break;                
+                break;
 
 		case SDL_SCANCODE_PERIOD:
 			util_set_reset_key('.',pressrelease);
@@ -885,35 +885,35 @@ void scrsdl_deal_raw_keys(int pressrelease,int scancode)
 
                 case SDL_SCANCODE_BACKSPACE:
                         util_set_reset_key(UTIL_KEY_BACKSPACE,pressrelease);
-                break;                
+                break;
 
                 case SDL_SCANCODE_LEFTBRACKET:
                         util_set_reset_key('[',pressrelease);
-                break;              
+                break;
 
                 case SDL_SCANCODE_RIGHTBRACKET:
                         util_set_reset_key(']',pressrelease);
-                break;                     
+                break;
 
                 case SDL_SCANCODE_MINUS:
                         util_set_reset_key('-',pressrelease);
-                break;                                            
+                break;
 
                 case SDL_SCANCODE_EQUALS:
                         util_set_reset_key('=',pressrelease);
-                break;                     
+                break;
 
                 case SDL_SCANCODE_SEMICOLON:
                         util_set_reset_key(';',pressrelease);
-                break;                     
+                break;
 
                 case SDL_SCANCODE_APOSTROPHE:
                         util_set_reset_key('\'',pressrelease);
-                break; 
+                break;
 
                 case SDL_SCANCODE_SLASH:
                         util_set_reset_key('/',pressrelease);
-                break; 
+                break;
 
                 //En caso raw, enviamos cursore del keypad igual que cursores normales
                 case SDL_SCANCODE_KP_4:
@@ -930,7 +930,7 @@ void scrsdl_deal_raw_keys(int pressrelease,int scancode)
 
                 case SDL_SCANCODE_KP_8:
                         util_set_reset_key(UTIL_KEY_UP,pressrelease);
-                break;        
+                break;
 
 	}
 }
@@ -1055,7 +1055,7 @@ void scrsdl_deal_keys(int pressrelease,int tecla)
 
                         case SDLK_RGUI:
                                 util_set_reset_key(UTIL_KEY_WINKEY_R,pressrelease);
-                        break;                        
+                        break;
 
                         case SDLK_DELETE:
                                 util_set_reset_key(UTIL_KEY_DEL,pressrelease);
@@ -1355,7 +1355,7 @@ void scrsdl_resize(int width,int height)
     debug_printf (VERBOSE_INFO,"width: %d get_window_width: %d height: %d get_window_height: %d",width,screen_get_window_size_width_no_zoom_border_en(),height,screen_get_window_size_height_no_zoom_border_en());
 
     //printf ("allocate layers menu\n");
-    scr_reallocate_layers_menu(width,height);   
+    scr_reallocate_layers_menu(width,height);
 
     //zoom_x_calculado=width/screen_get_window_size_width_no_zoom_border_en();
     zoom_x_calculado=width/(screen_get_window_size_width_no_zoom_border_en()+screen_get_ext_desktop_width_no_zoom() );
@@ -1385,7 +1385,7 @@ void scrsdl_resize(int width,int height)
     scrsdl_destruye_ventana();
     scrsdl_crea_ventana();
 
-   
+
 
 
 }
@@ -1428,7 +1428,7 @@ void scrsdl_actualiza_tablas_teclado(void)
                 clear_putpixel_cache();
                 scrsdl_debe_redimensionar=0;
                 scrsdl_destruye_ventana();
-                scrsdl_crea_ventana();                               
+                scrsdl_crea_ventana();
             }
 		}
 
@@ -1611,7 +1611,7 @@ int scrsdl_init (void) {
 	debug_printf (VERBOSE_INFO,"Init SDL2 Video Driver");
 
     //Esto tiene que ir al principio de inicializar driver para leer correctamente el tamaño de ventana
-    screen_este_driver_permite_ext_desktop=1;    
+    screen_este_driver_permite_ext_desktop=1;
 
 
         //Inicializaciones necesarias
@@ -1620,7 +1620,7 @@ int scrsdl_init (void) {
         scr_putpixel_final_rgb=scrsdl_putpixel_final_rgb;
 
         scr_get_menu_width=scrsdl_get_menu_width;
-        scr_get_menu_height=scrsdl_get_menu_height;              
+        scr_get_menu_height=scrsdl_get_menu_height;
 	//scr_driver_can_ext_desktop=scrsdl_driver_can_ext_desktop;
 
         scr_putchar_zx8081=scrsdl_putchar_zx8081;

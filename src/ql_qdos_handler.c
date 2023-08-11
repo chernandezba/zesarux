@@ -81,7 +81,7 @@ void ql_footer_mdflp_operating(void)
 	if (!zxdesktop_icon_mdv_flp_inverse) {
 			zxdesktop_icon_mdv_flp_inverse=1;
 			menu_draw_ext_desktop();
-	}		
+	}
 }
 
 
@@ -235,7 +235,7 @@ void core_ql_trap_one(void)
     m68k_get_reg(NULL,M68K_REG_D3),m68k_get_reg(NULL,M68K_REG_A0),
     m68k_get_reg(NULL,M68K_REG_A1),m68k_get_reg(NULL,M68K_REG_A6),m68k_get_reg(NULL,M68K_REG_PC));
 
-    //En principio mostramos con VERBOSE_PARANOID traps que no gestionamos, 
+    //En principio mostramos con VERBOSE_PARANOID traps que no gestionamos,
     //y VERBOSE_DEBUG traps que gestionamos
 
   switch(m68k_get_reg(NULL,M68K_REG_D0)) {
@@ -250,15 +250,15 @@ void core_ql_trap_one(void)
 
       case 0x0A:
         debug_printf (VERBOSE_PARANOID,"QDOS handler: Trap 1: MT.ACTIV");
-      break;      
+      break;
 
       case 0x0C:
         debug_printf (VERBOSE_PARANOID,"QDOS handler: Trap 1: MT.ALLOC");
-      break;  
+      break;
 
       case 0x0D:
         debug_printf (VERBOSE_PARANOID,"QDOS handler: Trap 1: MT.LNKFR");
-      break;      
+      break;
 
       case 0x10:
         debug_printf (VERBOSE_PARANOID,"QDOS handler: Trap 1: MT.DMODE");
@@ -297,7 +297,7 @@ void core_ql_trap_two(void)
     m68k_get_reg(NULL,M68K_REG_D0),m68k_get_reg(NULL,M68K_REG_D1),m68k_get_reg(NULL,M68K_REG_A0),m68k_get_reg(NULL,M68K_REG_A1),m68k_get_reg(NULL,M68K_REG_D3),
     m68k_get_reg(NULL,M68K_REG_PC));
 
-    //En principio mostramos con VERBOSE_PARANOID traps que no gestionamos, 
+    //En principio mostramos con VERBOSE_PARANOID traps que no gestionamos,
     //y VERBOSE_DEBUG traps que gestionamos
 
   switch(m68k_get_reg(NULL,M68K_REG_D0)) {
@@ -340,8 +340,8 @@ void core_ql_trap_three(void)
     m68k_get_reg(NULL,M68K_REG_A6),m68k_get_reg(NULL,M68K_REG_PC));
 
 
-    //En principio mostramos con VERBOSE_PARANOID traps que no gestionamos, 
-    //y VERBOSE_DEBUG traps que gestionamos    
+    //En principio mostramos con VERBOSE_PARANOID traps que no gestionamos,
+    //y VERBOSE_DEBUG traps que gestionamos
 
   switch(m68k_get_reg(NULL,M68K_REG_D0)) {
     case 0x2:
@@ -355,19 +355,19 @@ void core_ql_trap_three(void)
       debug_printf (VERBOSE_DEBUG,"QDOS handler: Trap 3: IO.FSTRG. fetch a string of bytes");
       	      //Guardar registros
       ql_store_a_registers(pre_io_fline_fstrg_a,7);
-      ql_store_d_registers(pre_io_fline_fstrg_d,7);	  
+      ql_store_d_registers(pre_io_fline_fstrg_d,7);
 	break;
 
     case 0x4:
       debug_printf (VERBOSE_DEBUG,"QDOS handler: Trap 3: IO.EDLIN");
       	      //Guardar registros
       ql_store_a_registers(pre_io_edlin_a,7);
-      ql_store_d_registers(pre_io_edlin_d,7);	      
+      ql_store_d_registers(pre_io_edlin_d,7);
     break;
 
     case 0x5:
       debug_printf (VERBOSE_PARANOID,"QDOS handler: Trap 3: IO.SBYTE");
-    break;	
+    break;
 
     case 0x7:
       debug_printf (VERBOSE_DEBUG,"QDOS handler: Trap 3: IO.SSTRG");
@@ -375,16 +375,16 @@ void core_ql_trap_three(void)
       ql_store_a_registers(pre_io_sstrg_a,7);
       ql_store_d_registers(pre_io_sstrg_d,7);
     break;
-    
+
 
     case 0xB:
       debug_printf (VERBOSE_PARANOID,"QDOS handler: Trap 3: SD.CHENQ");
-    break;	    
+    break;
 
 
     case 0xF:
       debug_printf (VERBOSE_PARANOID,"QDOS handler: Trap 3: SD.CURS");
-    break;	    
+    break;
 
     case 0x45:
         debug_printf (VERBOSE_DEBUG,"QDOS handler: Trap 3: FS.MDINF");
@@ -400,7 +400,7 @@ void core_ql_trap_three(void)
     	      //Guardar registros
       ql_store_a_registers(pre_fs_heads_a,7);
       ql_store_d_registers(pre_fs_heads_d,7);
-    break;    
+    break;
 
 
     case 0x47:
@@ -438,7 +438,7 @@ void core_ql_trap_three(void)
       ql_store_d_registers(pre_fs_save_d,7);
 
 
-    break;    
+    break;
 
     default:
       debug_printf (VERBOSE_PARANOID,"QDOS handler: Trap 3: Unknown call : %02XH",m68k_get_reg(NULL,M68K_REG_D0));
@@ -456,20 +456,20 @@ En este caso aplica a A1 pero podria aplicar a cualquier otro puntero
 https://qlforum.co.uk/viewtopic.php?f=3&t=2230
 
 "
-Because of this complicated floating BASIC areas, the system cannot simply hand an absolute pointer to any system 
-call that wants one (like the buffer address for IO.FLINE). QDOS works around this by introducing TRAP #4, 
-which is basically a switch - The next system call after a TRAP #4 is instructed to interpret anything that 
-is a pointer as relative to a6. Let's assume a6 is $30000 and an IO.FLINE trap is issued without a TRAP #4 
-before, with A1 containing $20000, the system will use $20000 as a target load address. If, however, a TRAP #4 
-has been issued before an IO.FLINE call, the system will load to (a6, a1), thus at absolute address $50000. 
-Thus, pointers in traps have to be interpreted according to this switch (which is per-job and re-set after 
+Because of this complicated floating BASIC areas, the system cannot simply hand an absolute pointer to any system
+call that wants one (like the buffer address for IO.FLINE). QDOS works around this by introducing TRAP #4,
+which is basically a switch - The next system call after a TRAP #4 is instructed to interpret anything that
+is a pointer as relative to a6. Let's assume a6 is $30000 and an IO.FLINE trap is issued without a TRAP #4
+before, with A1 containing $20000, the system will use $20000 as a target load address. If, however, a TRAP #4
+has been issued before an IO.FLINE call, the system will load to (a6, a1), thus at absolute address $50000.
+Thus, pointers in traps have to be interpreted according to this switch (which is per-job and re-set after
 the next TRAP #1, 2, or 3).
 "
 
 So, short answer to your question after all this explanation:
 
 If the very same job that calls the IO.FLINE trap has not issued a TRAP #4 directly before, a1 is the absolute target load address, and will be updated after the call to the end of used buffer area.
-If, however, the last TRAP issued by the job in question directly before the IO.FLINE trap was a TRAP #4, the address is 
+If, however, the last TRAP issued by the job in question directly before the IO.FLINE trap was a TRAP #4, the address is
 (a6,a1),   and a1 will be updated relatively (i.e. only incremented by the amount of bytes read).
 
 */
@@ -524,7 +524,7 @@ int ql_if_file_has_header(unsigned int indice_canal)
         //Esto no es deteccion de cabecera, esto es para detectar
         //que es un archivo SIN cabecera, pero con la info tipica de un QDOS task
         //Ejemplo del QL chess (chess_exe)
-        
+
 
         /*
         00000000  60 00 00 1a 00 00 4a fb  00 12 50 73 69 6f 6e 20  |`.....J...Psion |
@@ -555,10 +555,10 @@ void ql_get_file_header(unsigned int indice_canal,unsigned int destino)
 
     Sobre cabeceras en archivos de datos generados por emulador:
 
-QL files have a special piece of information associated with them, called the ‘QDOS file header’. 
+QL files have a special piece of information associated with them, called the ‘QDOS file header’.
 The header stores such information as the file name and whether the file is an executable program.
 
-Q-emuLator for Windows stores part of the header at the beginning of files. 
+Q-emuLator for Windows stores part of the header at the beginning of files.
 The header is present only when it is useful, ie. only if it contains non-default information.
 
 The header has the following format:
@@ -571,12 +571,12 @@ OFFSET LENGTH(bytes)       CONTENT
 
 The first 18 bytes are there to detect whether the header is present (ID string).
 
-The headers Q-emuLator supports can be 30 bytes or 44 bytes long (the value of the corresponding byte at offset 19 is either 15 or 22). 
-In the first case, there are 10 bytes with the values present in bytes 4 to 13 of the 64 bytes QDOS header. 
-In the second case the same piece of information is followed by 14 bytes containing a microdrive sector header, 
+The headers Q-emuLator supports can be 30 bytes or 44 bytes long (the value of the corresponding byte at offset 19 is either 15 or 22).
+In the first case, there are 10 bytes with the values present in bytes 4 to 13 of the 64 bytes QDOS header.
+In the second case the same piece of information is followed by 14 bytes containing a microdrive sector header,
 useful for emulating microdrive protection schemes. Additional header information (file length, name, dates) is obtained
 directly from the file through the host file system.
-  
+
     */
 
 
@@ -586,7 +586,7 @@ directly from the file through the host file system.
 
 
   pagina 38 qltm.pdf. 7.0 Directory Device Drivers
-  Each file is assumed to have a 64-byte header (the logical beginning of file is set to byte 64, not byte zero). 
+  Each file is assumed to have a 64-byte header (the logical beginning of file is set to byte 64, not byte zero).
   This header should be formatted as follows:
 
   00  long        file length
@@ -613,10 +613,10 @@ directly from the file through the host file system.
   Las cabeceras de los archivos de QL se pierden cuando se descomprimen de un zip:
 
 "
-  If the zip file contains a QL executable (a program you can EXEC), DO NOT unzip it in Windows. 
-  It won't work. Not at all. Windows doesn't understand QL file headers and these are lost totally 
-  and irretrievably by Windows. You can usually tell when you copy it to a QL and find that when you try to 
-  EXEC a program it stops with a 'bad parameter' or similar error when the QL realises there is no executable 
+  If the zip file contains a QL executable (a program you can EXEC), DO NOT unzip it in Windows.
+  It won't work. Not at all. Windows doesn't understand QL file headers and these are lost totally
+  and irretrievably by Windows. You can usually tell when you copy it to a QL and find that when you try to
+  EXEC a program it stops with a 'bad parameter' or similar error when the QL realises there is no executable
   file header and no dataspace information.
 "
 
@@ -664,24 +664,24 @@ https://qlforum.co.uk/viewtopic.php?t=113
     //Nota: Estos -$0E(A6,A1.L),D2 se supone que lee la direccion:
     //A6+A1-0eH, y el contenido lo guarda en D2
 
-    
+
     //Llamar a MT.CJOB
     //En este:
     D2.L length of code (bytes)
-    D3.L length of data space AO 
+    D3.L length of data space AO
     A1 start address or 0
 
        TRAP    #$01
 
     //Ese trap no inicia la tarea, sino que la asigna:
 
-    This trap allocates space in the transient program area, 
-    and sets up a job entry in the scheduler tables. This does not invoke the job and the only initialisation 
-    is that two words of 0 are put on the stack. The program itself would normally be loaded, by another job, 
-    into the space allocated, after this system call. The stack pointer saved in the job control area points 
-    initially to two zero words on the stack (at the highest addresses in the job's data area); if channels are 
+    This trap allocates space in the transient program area,
+    and sets up a job entry in the scheduler tables. This does not invoke the job and the only initialisation
+    is that two words of 0 are put on the stack. The program itself would normally be loaded, by another job,
+    into the space allocated, after this system call. The stack pointer saved in the job control area points
+    initially to two zero words on the stack (at the highest addresses in the job's data area); if channels are
     to be opened for the job, or a command string is to be passed to the job, then this can be done before the job is activated.
-    If D1 is negative, the new job is independent, otherwise it is owned by the calling job.    
+    If D1 is negative, the new job is independent, otherwise it is owned by the calling job.
 */
 
     //Guardar tamanyo big endian
@@ -705,12 +705,12 @@ https://qlforum.co.uk/viewtopic.php?t=113
     ql_writebyte(destino+6,(ql_task_default_data_size>>24)&255);
     ql_writebyte(destino+7,(ql_task_default_data_size>>16)&255);
     ql_writebyte(destino+8,(ql_task_default_data_size>>8)&255);
-    ql_writebyte(destino+9,ql_task_default_data_size&255);    
+    ql_writebyte(destino+9,ql_task_default_data_size&255);
 
     //Tipo. Asumimos siempre ejecutable 1
-    ql_writebyte(destino+5,1); //ejecutable 1  
+    ql_writebyte(destino+5,1); //ejecutable 1
 
-    
+
 
 
   //Ver si tiene cabecera el archivo
@@ -736,7 +736,7 @@ https://qlforum.co.uk/viewtopic.php?t=113
 
             ql_writebyte(destino_cabecera,byte_leido);
         }
- 
+
 
         //printf("Nombre: %s\n",qltraps_fopen_files[indice_canal].ql_file_name);
 
@@ -750,8 +750,8 @@ https://qlforum.co.uk/viewtopic.php?t=113
 
         for (i=0;i<longitud;i++) {
             ql_writebyte(destino+0x10+i,qltraps_fopen_files[indice_canal].ql_file_name[i]);
-        } 
-        */       
+        }
+        */
 
   }
 
@@ -762,17 +762,17 @@ https://qlforum.co.uk/viewtopic.php?t=113
     }
 
     //printf("assuming default data size: %d\n",ql_task_default_data_size);
-    
+
     unsigned int leido_data_size=(ql_readbyte(destino+6)<<24)|(ql_readbyte(destino+7)<<16)|(ql_readbyte(destino+8)<<8)|(ql_readbyte(destino+9));
     debug_printf(VERBOSE_DEBUG,"QDOS handler: Final data size: %d",leido_data_size);
 
-    
+
 }
 
 
 void ql_put_file_header(unsigned int indice_canal,unsigned int destino)
 {
- 
+
 
   debug_printf(VERBOSE_DEBUG,"QDOS handler: Writing header for file on address %05XH",destino);
 
@@ -798,15 +798,15 @@ OFFSET LENGTH(bytes)       CONTENT
 
 The first 18 bytes are there to detect whether the header is present (ID string).
 
-The headers Q-emuLator supports can be 30 bytes or 44 bytes long (the value of the corresponding byte at offset 19 is either 15 or 22). 
-In the first case, there are 10 bytes with the values present in bytes 4 to 13 of the 64 bytes QDOS header. 
+The headers Q-emuLator supports can be 30 bytes or 44 bytes long (the value of the corresponding byte at offset 19 is either 15 or 22).
+In the first case, there are 10 bytes with the values present in bytes 4 to 13 of the 64 bytes QDOS header.
 
-  
+
   Sobre cabeceras del QDOS:
 
 
   pagina 38 qltm.pdf. 7.0 Directory Device Drivers
-  Each file is assumed to have a 64-byte header (the logical beginning of file is set to byte 64, not byte zero). 
+  Each file is assumed to have a 64-byte header (the logical beginning of file is set to byte 64, not byte zero).
   This header should be formatted as follows:
 
   00  long        file length
@@ -817,19 +817,19 @@ In the first case, there are 10 bytes with the values present in bytes 4 to 13 o
 
 
     //Indicar longitud
-    buffer_header[19]=QL_POSSIBLE_HEADER_LENGTH_ONE/2;    
+    buffer_header[19]=QL_POSSIBLE_HEADER_LENGTH_ONE/2;
 
     //Y luego ya la info que nos llega
 
 
 
-   
-    
+
+
     //printf("Writing qdos header\n");
-    
+
     /*
     //mostrar algunos bytes
-     unsigned int reg_a1=ql_get_a1_after_trap_4();    
+     unsigned int reg_a1=ql_get_a1_after_trap_4();
     for (i=0;i<10;i++) {
         unsigned int offset=reg_a1+4+i;
         moto_byte byte_leido;
@@ -837,7 +837,7 @@ In the first case, there are 10 bytes with the values present in bytes 4 to 13 o
         buffer_header[20+i]=byte_leido;
 
         printf ("%02XH ",byte_leido);
-    }      
+    }
 
     printf("\n");
     */
@@ -845,7 +845,7 @@ In the first case, there are 10 bytes with the values present in bytes 4 to 13 o
 
     //Y escribir dicha cabecera
     FILE *ptr_file;
-    ptr_file=qltraps_fopen_files[indice_canal].qltraps_last_open_file_handler_unix;      
+    ptr_file=qltraps_fopen_files[indice_canal].qltraps_last_open_file_handler_unix;
     fwrite(buffer_header,1,QL_POSSIBLE_HEADER_LENGTH_ONE,ptr_file);
 
 
@@ -894,7 +894,7 @@ void ql_split_path_device_name(char *ql_path, char *ql_device, char *ql_file,int
 
   ql_file[destino]=0;
 
-  
+
 
 	//Y en destino, cambio las "_", empezando desde el final, y solo quitando una "_" dependiendo de replace_underscore_dot_only_one
 	if (replace_underscore_dot) {
@@ -911,7 +911,7 @@ void ql_split_path_device_name(char *ql_path, char *ql_device, char *ql_file,int
 			}
 		}
 	}
-  
+
 
     debug_printf(VERBOSE_DEBUG,"QDOS handler: Source path: %s Device: %s File: %s",ql_path,ql_device,ql_file);
 }
@@ -968,7 +968,7 @@ int ql_si_ruta_mdv_flp(char *texto)
 
 //int temp_conta_dir=0;
 
-//Leer archivo linea a linea. Retorna bytes leidos, y valor de retorno. 
+//Leer archivo linea a linea. Retorna bytes leidos, y valor de retorno.
 //Si hay eof, se debe retornar solo el eof y sin bytes leidos
 
 
@@ -1018,11 +1018,11 @@ unsigned int ql_read_io_fline(unsigned int canal,unsigned int puntero_destino,un
 				fseek(ptr_archivo,-1,SEEK_CUR);
 
 				return total_leidos;
-			}			
+			}
 
 
 			//printf ("Escribiendo byte %d (%c) direccion %XH\n",bytes_leidos,(bytes_leidos>32 && bytes_leidos<128 ? bytes_leidos : '.'),puntero_destino);
-			
+
 			/*
 			if (bytes_leidos>=32 && bytes_leidos<=126) {
 				printf("%c",(bytes_leidos>=32 && bytes_leidos<=126 ? bytes_leidos : '.'));
@@ -1031,7 +1031,7 @@ unsigned int ql_read_io_fline(unsigned int canal,unsigned int puntero_destino,un
 				printf("-%02XH-",bytes_leidos);
 			}
 			*/
-			
+
 
 
 			ql_writebyte(puntero_destino++,bytes_leidos);
@@ -1043,16 +1043,16 @@ unsigned int ql_read_io_fline(unsigned int canal,unsigned int puntero_destino,un
 		if (m68k_get_reg(NULL,M68K_REG_D0)==0x2 && bytes_leidos==10) salir=1;
 
 	}
-	
+
 	//printf("\nEND ql_read_io_fline\n");
 
 	return total_leidos;
-	
+
 
 }
 
 
-//Leer archivo linea a linea. Retorna bytes leidos, y valor de retorno. 
+//Leer archivo linea a linea. Retorna bytes leidos, y valor de retorno.
 //Si hay eof, se debe retornar solo el eof y sin bytes leidos
 
 
@@ -1101,7 +1101,7 @@ unsigned int ql_read_io_edlin(unsigned int canal,unsigned int puntero_destino,un
 				fseek(ptr_archivo,-1,SEEK_CUR);
 
 				return total_leidos;
-			}			
+			}
 
 
 			ql_writebyte(puntero_destino++,bytes_leidos);
@@ -1113,11 +1113,11 @@ unsigned int ql_read_io_edlin(unsigned int canal,unsigned int puntero_destino,un
 		if (bytes_leidos==10) salir=1;
 
 	}
-	
+
 	//printf("\nEND ql_read_io_fline\n");
 
 	return total_leidos;
-	
+
 
 }
 
@@ -1161,7 +1161,7 @@ void ql_qdos_set_return_no_error(void)
 
 
     //No error.
-    ql_dos_set_error(0);    
+    ql_dos_set_error(0);
 }
 
 void ql_qdos_return_from_trap(void)
@@ -1171,10 +1171,10 @@ void ql_qdos_return_from_trap(void)
     //Serviria cualquier otra dirección con RTE
     m68k_set_reg(M68K_REG_PC,0x5e);
 
-    //Ajustar stack para volver. Saltamos 3 long words 
+    //Ajustar stack para volver. Saltamos 3 long words
     unsigned int reg_a7=m68k_get_reg(NULL,M68K_REG_A7);
     reg_a7 +=12;
-    m68k_set_reg(M68K_REG_A7,reg_a7);    
+    m68k_set_reg(M68K_REG_A7,reg_a7);
 }
 
 //int temp_conta=0;
@@ -1241,19 +1241,19 @@ void qltraps_dir(int indice_canal)
         ql_dos_set_error(QDOS_ERROR_CODE_NC);
         ql_qdos_return_from_trap();
 		return;
-	}	
-    
+	}
+
 
    	if (!qltraps_dir_aux_readdir(indice_canal)) {
 		//no hay mas archivos
 		debug_printf(VERBOSE_DEBUG,"QDOS handler: Returning no more files to readdir");
         ql_dos_set_error(QDOS_ERROR_CODE_EF);
-        m68k_set_reg(M68K_REG_D1,0);  //0 byte leido 
+        m68k_set_reg(M68K_REG_D1,0);  //0 byte leido
         ql_qdos_return_from_trap();
 
-        return;      
+        return;
 
-	
+
 	}
 
     /*
@@ -1261,9 +1261,9 @@ void qltraps_dir(int indice_canal)
 
     1) IO.OPEN dispositivo "mdv1_"
     2) FS.MDINF para obtener nombre microdrive
-    3) IO.FSTRG. D2=64 (Channel ID=32 Base of buffer A1=00000100H A3=00000668H A6=00028000H). Hasta que se retorne EOF 
+    3) IO.FSTRG. D2=64 (Channel ID=32 Base of buffer A1=00000100H A3=00000668H A6=00028000H). Hasta que se retorne EOF
     */
-   
+
     //Lo que ocupa una entrada de directorio
     int longitud_entrada=64;
 
@@ -1321,20 +1321,20 @@ void qltraps_dir(int indice_canal)
 
 
 
-    m68k_set_reg(M68K_REG_A1,registro_a1); 
+    m68k_set_reg(M68K_REG_A1,registro_a1);
 
 
 
 
     ql_qdos_set_return_no_error();
-    m68k_set_reg(M68K_REG_D1,longitud_entrada);       
+    m68k_set_reg(M68K_REG_D1,longitud_entrada);
 
     ql_qdos_return_from_trap();
 }
 
-void handle_trap_io_fline_fstrg(void) 
+void handle_trap_io_fline_fstrg(void)
 {
-		
+
 		//printf("last trap = %d previous was trap4: %d\n",ql_last_trap,ql_previous_trap_was_4);
 
 		if (m68k_get_reg(NULL,M68K_REG_D0)==0x2) {
@@ -1358,25 +1358,25 @@ void handle_trap_io_fline_fstrg(void)
 
         	//Indicar actividad en md flp
         	ql_footer_mdflp_operating();
-        	
+
         	debug_printf (VERBOSE_PARANOID,"QDOS handler: Returning IO.FLINE/IO.FSTRG from our microdrive channel without error");
 
           	ql_restore_d_registers(pre_io_fline_fstrg_d,7);
-          	ql_restore_a_registers(pre_io_fline_fstrg_a,6);            
+          	ql_restore_a_registers(pre_io_fline_fstrg_a,6);
 
 
-        	//Si es un dispositivo entero, estamos haciendo un dir 
+        	//Si es un dispositivo entero, estamos haciendo un dir
         	if (qltraps_fopen_files[indice_canal].es_dispositivo) {
                 debug_printf(VERBOSE_DEBUG,"QDOS handler: Reading directory %s",qltraps_fopen_files[indice_canal].ql_file_name);
-        		
-                
+
+
                 if (!ql_microdrive_floppy_emulation) {
                     debug_printf(VERBOSE_DEBUG,"QDOS handler: Microdrive emulation not enabled");
                     //Retornar Not found (NF)
                     //m68k_set_reg(M68K_REG_D0,-7);
 
                     //Volver sin mas
-                    return;                
+                    return;
                 }
 
                 qltraps_dir(indice_canal);
@@ -1422,10 +1422,10 @@ void handle_trap_io_fline_fstrg(void)
           	unsigned int puntero_destino;
 
 			/*
-			If the very same job that calls the IO.FLINE trap has not issued a TRAP #4 directly before, 
+			If the very same job that calls the IO.FLINE trap has not issued a TRAP #4 directly before,
 			a1 is the absolute target load address, and will be updated after the call to the end of used buffer area.
 
-			If, however, the last TRAP issued by the job in question directly before the IO.FLINE trap was a TRAP #4, 
+			If, however, the last TRAP issued by the job in question directly before the IO.FLINE trap was a TRAP #4,
 			the address is (a6,a1), and a1 will be updated relatively (i.e. only incremented by the amount of bytes read).
 
 			*/
@@ -1438,12 +1438,12 @@ void handle_trap_io_fline_fstrg(void)
         		m68k_get_reg(NULL,M68K_REG_A6),puntero_destino, m68k_get_reg(NULL,M68K_REG_D2) & 0xFFFF);
 
 
-                  
+
           	unsigned int valor_retorno;
-			
+
           	unsigned int leidos=ql_read_io_fline(indice_canal,puntero_destino,&valor_retorno,m68k_get_reg(NULL,M68K_REG_D2) & 0xFFFF);
 
-          	
+
 
           	m68k_set_reg(M68K_REG_D0,valor_retorno);
 
@@ -1454,8 +1454,8 @@ void handle_trap_io_fline_fstrg(void)
           	//printf ("Leidos: %d\n",leidos);
           	m68k_set_reg(M68K_REG_D1,leidos);
 
-	  	
-        
+
+
           //Volver de ese trap
           ql_qdos_return_from_trap();
 
@@ -1466,9 +1466,9 @@ void handle_trap_io_fline_fstrg(void)
 
 
 
-void handle_trap_io_edlin(void) 
+void handle_trap_io_edlin(void)
 {
-		
+
 		//printf("last trap = %d previous was trap4: %d\n",ql_last_trap,ql_previous_trap_was_4);
 
 		if (m68k_get_reg(NULL,M68K_REG_D0)==0x2) {
@@ -1476,7 +1476,7 @@ void handle_trap_io_edlin(void)
         		m68k_get_reg(NULL,M68K_REG_A0),m68k_get_reg(NULL,M68K_REG_A1),m68k_get_reg(NULL,M68K_REG_A3),m68k_get_reg(NULL,M68K_REG_A6)
 				,m68k_get_reg(NULL,M68K_REG_D2) );
 		}
-	
+
 
         //Si canal es de los mios
         //int indice_canal=qltraps_find_open_file(m68k_get_reg(NULL,M68K_REG_A0));
@@ -1485,7 +1485,7 @@ void handle_trap_io_edlin(void)
 
         	 //Indicar actividad en md flp
         	ql_footer_mdflp_operating();
-        	
+
         	debug_printf (VERBOSE_PARANOID,"QDOS handler: Returning IO.EDLIN from our microdrive channel without error. EXPERIMENTAL!!!");
 
 
@@ -1503,12 +1503,12 @@ void handle_trap_io_edlin(void)
 
           	/*
           	Entrada:
-            D1 cursor/line length 
-            D2.W length of buffer 
+            D1 cursor/line length
+            D2.W length of buffer
             D3.W timeout
             A0 channel ID
             A1 pointer to end of line
-            
+
           	Salida:
           	D1 cursor/line length
             D2 preserved
@@ -1523,7 +1523,7 @@ void handle_trap_io_edlin(void)
           	Errores:
           	NC not complete
           	NO channel not open
-          	BO buffer overflow 
+          	BO buffer overflow
 
             NOTA: !! A1 dice que va el puntero a final de linea, PERO lo trato igual que IO.FLINE (base buffer) y parece funcionar
             Para probar esto, por ejemplo:
@@ -1548,10 +1548,10 @@ void handle_trap_io_edlin(void)
           	unsigned int puntero_destino;
 
 			/*
-			If the very same job that calls the IO.FLINE trap has not issued a TRAP #4 directly before, 
+			If the very same job that calls the IO.FLINE trap has not issued a TRAP #4 directly before,
 			a1 is the absolute target load address, and will be updated after the call to the end of used buffer area.
 
-			If, however, the last TRAP issued by the job in question directly before the IO.FLINE trap was a TRAP #4, 
+			If, however, the last TRAP issued by the job in question directly before the IO.FLINE trap was a TRAP #4,
 			the address is (a6,a1), and a1 will be updated relatively (i.e. only incremented by the amount of bytes read).
 
 			*/
@@ -1564,13 +1564,13 @@ void handle_trap_io_edlin(void)
         		m68k_get_reg(NULL,M68K_REG_A6),puntero_destino, m68k_get_reg(NULL,M68K_REG_D2) & 0xFFFF);
 
 
-                  
+
 
           	unsigned int valor_retorno;
-			
+
           	unsigned int leidos=ql_read_io_edlin(indice_canal,puntero_destino,&valor_retorno,m68k_get_reg(NULL,M68K_REG_D2) & 0xFFFF);
 
-          	
+
 
           	m68k_set_reg(M68K_REG_D0,valor_retorno);
 
@@ -1581,8 +1581,8 @@ void handle_trap_io_edlin(void)
           	//printf ("Leidos: %d\n",leidos);
           	m68k_set_reg(M68K_REG_D1,leidos);
 
-	  	
-          
+
+
           //Volver de ese trap
           ql_qdos_return_from_trap();
 
@@ -1603,7 +1603,7 @@ void handle_trap_fs_headr(void)
     if (indice_canal>=0 ) {
 
         //Indicar actividad en md flp
-        ql_footer_mdflp_operating();        
+        ql_footer_mdflp_operating();
 
         ql_restore_d_registers(pre_fs_headr_d,7);
         ql_restore_a_registers(pre_fs_headr_a,6);
@@ -1613,10 +1613,10 @@ void handle_trap_fs_headr(void)
 
         //TODO: asumimos siempre meter 14 bytes de cabecera, aunque se hayan pedido menos
 
-        
+
         ql_get_file_header(indice_canal,ql_get_a1_after_trap_4() );
-        
-        
+
+
         //Volver de ese trap
         ql_qdos_return_from_trap();
 
@@ -1629,7 +1629,7 @@ void handle_trap_fs_headr(void)
         m68k_set_reg(M68K_REG_D1,longitud);
 
         //Decimos que A1 es A1 top of read buffer
-        
+
         //A1 retorna tal cual como entraba (sin sumar posible A6) y sumar la longitud 14
         unsigned int reg_a1;
         reg_a1=m68k_get_reg(NULL,M68K_REG_A1);
@@ -1653,7 +1653,7 @@ void handle_trap_fs_mdinf(void)
     if (indice_canal>=0 ) {
 
         //Indicar actividad en md flp
-        ql_footer_mdflp_operating();        
+        ql_footer_mdflp_operating();
 
         //printf ("Mi canal MDINF\n");
 
@@ -1662,14 +1662,14 @@ void handle_trap_fs_mdinf(void)
         ql_restore_a_registers(pre_fs_mdinf_a,6);
 
         //Retornamos :
-        //D1.L empty/good sectors. The number of empty sectors is in the most significant word (msw) of D1, 
+        //D1.L empty/good sectors. The number of empty sectors is in the most significant word (msw) of D1,
         //the total available on the medium is in the least significant word (lsw). A sector is 512 bytes.
         //de momento ,MDV files in QLAY format. Thee files must be exactly 174930 bytes 174930/512->aprox 341
         m68k_set_reg(M68K_REG_D1,32*65536+341); //32 sectores libres, 341 sectores ocupados
         //Por qué 32 sectores libres? Nada, por probar, porque no diga 0 simplemente
 
-        
-        
+
+
         //Volver de ese trap
         ql_qdos_return_from_trap();
 
@@ -1708,7 +1708,7 @@ void handle_trap_fs_heads(void)
 {
         debug_printf (VERBOSE_PARANOID,"QDOS handler: FS.HEADS. Channel ID=%d",m68k_get_reg(NULL,M68K_REG_A0) );
 
-        
+
 
 		//printf("last trap = %d previous was trap4: %d\n",ql_last_trap,ql_previous_trap_was_4);
 
@@ -1718,7 +1718,7 @@ void handle_trap_fs_heads(void)
         if (indice_canal>=0 ) {
 
              //Indicar actividad en md flp
-        	ql_footer_mdflp_operating();        	
+        	ql_footer_mdflp_operating();
 
 
         	ql_restore_d_registers(pre_fs_heads_d,7);
@@ -1737,7 +1737,7 @@ void handle_trap_fs_heads(void)
             m68k_set_reg(M68K_REG_D1,14);
 
             //mostrar algunos bytes
-          unsigned int reg_a1=ql_get_a1_after_trap_4();    
+          unsigned int reg_a1=ql_get_a1_after_trap_4();
 
 
           /*
@@ -1745,14 +1745,14 @@ void handle_trap_fs_heads(void)
           int i=0;
           for (i=0;i<64;i++) {
               printf ("%02XH ",peek_byte_z80_moto(reg_a1+i));
-          }      
+          }
           printf("End header\n");
-          */ 
+          */
 
           reg_a1 +=14;
-          m68k_set_reg(M68K_REG_A1,reg_a1);            
-        	
-          
+          m68k_set_reg(M68K_REG_A1,reg_a1);
+
+
           //Volver de ese trap
           ql_qdos_return_from_trap();
 
@@ -1778,8 +1778,8 @@ void handle_trap_io_sstrg(void)
         if (indice_canal>=0 ) {
 
             //Indicar actividad en md flp
-        	ql_footer_mdflp_operating();     
-        	
+        	ql_footer_mdflp_operating();
+
         	debug_printf (VERBOSE_PARANOID,"QDOS handler: Returning IO.SSTRG from our microdrive channel without error");
 
           	ql_restore_d_registers(pre_io_sstrg_d,7);
@@ -1804,7 +1804,7 @@ void handle_trap_io_sstrg(void)
 
           	*/
 
-        	    	
+
 
         	//O a A1 a secas
         	//depende de si se ha llamado trap4 o no
@@ -1813,9 +1813,9 @@ void handle_trap_io_sstrg(void)
 
           	unsigned int puntero_origen;
 
-			
+
 			puntero_origen=ql_get_a1_after_trap_4();
-			
+
 
 
           	debug_printf (VERBOSE_PARANOID,"QDOS handler: IO.SSTRG - restoreg registers. Channel ID=%d Base of buffer A1=%08XH A3=%08XH A6=%08XH D2=%08XH",
@@ -1823,7 +1823,7 @@ void handle_trap_io_sstrg(void)
             m68k_get_reg(NULL,M68K_REG_A6),m68k_get_reg(NULL,M68K_REG_D2) );
 
 
-                	
+
           	int longitud=m68k_get_reg(NULL,M68K_REG_D2) & 0xFFFF;
 
             //Grabar los datos en disco
@@ -1835,7 +1835,7 @@ void handle_trap_io_sstrg(void)
                 byte_leido=peek_byte_z80_moto(puntero_origen+i);
                 fwrite(&byte_leido,1,1,ptr_file);
             }
-            
+
 
           	//Mostrar parte del mensaje enviado en SSTRG
           	//unsigned int puntero_destino=m68k_get_reg(NULL,M68K_REG_A1)+m68k_get_reg(NULL,M68K_REG_A6);
@@ -1856,7 +1856,7 @@ void handle_trap_io_sstrg(void)
 
           			i+=4;
           		}
-          		
+
           		puntero_origen++;
 				  longitud--;
           	}
@@ -1864,9 +1864,9 @@ void handle_trap_io_sstrg(void)
           	buffer_mensaje[i]=0;
 
           	debug_printf (VERBOSE_PARANOID,"QDOS handler: IO.SSTRG - message sent: %s",buffer_mensaje);
-          
 
-          	//bytes enviados 
+
+          	//bytes enviados
           	m68k_set_reg(M68K_REG_D1,m68k_get_reg(NULL,M68K_REG_D2) );
 
 
@@ -1877,9 +1877,9 @@ void handle_trap_io_sstrg(void)
 
 
 
-        	  //No error. 
+        	  //No error.
           	ql_qdos_set_return_no_error();
-         
+
           //Volver de ese trap
           ql_qdos_return_from_trap();
 
@@ -1889,12 +1889,12 @@ void handle_trap_io_sstrg(void)
 
 		else {
 			//Pruebas debug mensaje. Parece que solo muestra correctamente texto de los canales inferiores
-			
+
           	unsigned int puntero_origen;
 
-			
+
 			puntero_origen=ql_get_a1_after_trap_4();
-			
+
 
           	//Mostrar parte del mensaje enviado en SSTRG
           	//unsigned int puntero_destino=m68k_get_reg(NULL,M68K_REG_A1)+m68k_get_reg(NULL,M68K_REG_A6);
@@ -1918,7 +1918,7 @@ void handle_trap_io_sstrg(void)
 
           			i+=4;
           		}
-          		
+
           		puntero_origen++;
 				longitud--;
           	}
@@ -1928,7 +1928,7 @@ void handle_trap_io_sstrg(void)
           	debug_printf (VERBOSE_PARANOID,"QDOS handler: IO.SSTRG - message sent: %s",buffer_mensaje);
 
 			//printf ("message sent: %s\n",buffer_mensaje);
-          
+
 
 		}
 }
@@ -1944,7 +1944,7 @@ void handle_trap_fs_load(void)
         if (indice_canal>=0 ) {
 
             //Indicar actividad en md flp
-        	ql_footer_mdflp_operating();            
+        	ql_footer_mdflp_operating();
 
           ql_restore_d_registers(pre_fs_load_d,7);
           ql_restore_a_registers(pre_fs_load_a,6);
@@ -1994,7 +1994,7 @@ void handle_trap_fs_save(void)
         if (indice_canal>=0 ) {
 
             //Indicar actividad en md flp
-            ql_footer_mdflp_operating();            
+            ql_footer_mdflp_operating();
 
           ql_restore_d_registers(pre_fs_save_d,7);
           ql_restore_a_registers(pre_fs_save_a,6);
@@ -2141,7 +2141,7 @@ set-register pc=04B50h
 
     //Decir 1 tecla pulsada. Se supone que este trap no deberia hacer falta si se gestionase del todo bien el ipc
     if (get_pc_register()==0x02E6A) {
-      
+
       if (ql_pulsado_tecla()) {
         //debug_printf(VERBOSE_DEBUG,"QL Trap ROM: Tell 1 key pressed");
         m68k_set_reg(M68K_REG_D1,1);
@@ -2159,7 +2159,7 @@ Info rapida de como funcionan los traps:
 Detectar primero si se llama a trap 1, 2 o 3 , y llamar a core_ql_trap_one, two o three segun detectado
 En esas funciones , cuando es alguna funcion de qdos que estamos gestionando, se guardan los registros A y D del Motorola, para su posterior uso
 
-Esos traps en la rom acaban saltando a unas direcciones mas altas, y son las que posteriormente intercepto, 
+Esos traps en la rom acaban saltando a unas direcciones mas altas, y son las que posteriormente intercepto,
 con la funcion exacta del qdos, como ejemplo:
 
 
@@ -2167,7 +2167,7 @@ con la funcion exacta del qdos, como ejemplo:
 if (get_pc_register()==0x032B4 && m68k_get_reg(NULL,M68K_REG_D0)==1) {
 
 Cuando salta ahi, los registros A y D se han modificado algunos desde que he detectado el trap, por eso los guardo antes.
-Cuando se detecta la funcion exacta del qdos, como este con D0=1, restauro los registros que tenia salvados antes para obtener 
+Cuando se detecta la funcion exacta del qdos, como este con D0=1, restauro los registros que tenia salvados antes para obtener
 las variables de entrada (tal y como entraban al principio del trap). Con esos registros restaurados ya se qué hace la llamada a qdos.
 Se realiza la función adecuada a esa llamada: abrir fichero, cerrar, leer, etc
 
@@ -2236,17 +2236,17 @@ void ql_post_trap_three(void)
 
         //Trap 3 IO.FLINE
         case 0x2:
-            handle_trap_io_fline_fstrg();   
+            handle_trap_io_fline_fstrg();
         break;
 
         //Trap 3 IO.FSTRG
         case 0x3:
-            handle_trap_io_fline_fstrg();           
+            handle_trap_io_fline_fstrg();
         break;
 
         //Trap 3 IO.EDLIN
         case 0x4:
-            handle_trap_io_edlin();       
+            handle_trap_io_edlin();
         break;
 
         //Trap 3 IO.SSTRG
@@ -2254,9 +2254,9 @@ void ql_post_trap_three(void)
             handle_trap_io_sstrg();
         break;
 
-        //Trap 3 FS.MDINF 
+        //Trap 3 FS.MDINF
         case 0x45:
-            handle_trap_fs_mdinf();     
+            handle_trap_fs_mdinf();
         break;
 
         //Trap 3 FS.HEADS. Se usa con sbytes: hace io.open y luego llama aqui
@@ -2312,7 +2312,7 @@ D3.L: code:
   //Pero, si lo hacemos asi, si no habilitamos emulacion de micro&floppy, al pasar del menu de inicio (F1,F2) buscara el archivo BOOT, y como no salta el
   //trap, se queda bloqueado
   //Mas adelante en este caso comprobamos si esta habilitada emulacion de microdrive
-  //Ademas cualquier load desde microdrive (con ql_microdrive_floppy_emulation desactivado) se quedaria colgado si no lo interceptamos 
+  //Ademas cualquier load desde microdrive (con ql_microdrive_floppy_emulation desactivado) se quedaria colgado si no lo interceptamos
 
     if (m68k_get_reg(NULL,M68K_REG_D0)==1) {
       //en A0
@@ -2349,7 +2349,7 @@ D3.L: code:
 
 
       debug_printf (VERBOSE_PARANOID,"QDOS handler: Channel name: %s",ql_nombre_archivo_load);
-      
+
 
 
 
@@ -2368,7 +2368,7 @@ D3.L: code:
           hacer_trap=1;
       }
 
-        /* esto en teoria ya no sirve 
+        /* esto en teoria ya no sirve
       if (!hacer_trap) {
       	if (
       		ql_si_ruta_parametro(ql_nombre_archivo_load,"mdv") ||
@@ -2385,7 +2385,7 @@ D3.L: code:
      if (
          !strcasecmp(ql_nombre_archivo_load,"mdv1_") ||
          !strcasecmp(ql_nombre_archivo_load,"mdv2_") ||
-         !strcasecmp(ql_nombre_archivo_load,"flp1_") 
+         !strcasecmp(ql_nombre_archivo_load,"flp1_")
      )
      {
             //printf("hacer trap y es dispositivo\n");
@@ -2393,12 +2393,12 @@ D3.L: code:
             //Se supone que hacer_trap ya se ha activado en la comprobacion anterior, pero por si acaso
 
       		hacer_trap=1;
-      		es_dispositivo=1;         
+      		es_dispositivo=1;
      }
 
 
       moto_byte file_mode;
-      
+
 
       if (hacer_trap) {
 
@@ -2456,7 +2456,7 @@ A0: 00000D88 A1: 00000D88 A2: 00006906 A3: 00000668 A4: 00000012 A5: 00000670 A6
           		debug_printf(VERBOSE_DEBUG,"QDOS handler: Microdrive emulation not enabled");
           		//Retornar Not found (NF)
           		m68k_set_reg(M68K_REG_D0,-7);
-          		return;                
+          		return;
             }
 
 
@@ -2490,7 +2490,7 @@ A0: 00000D88 A1: 00000D88 A2: 00006906 A3: 00000668 A4: 00000012 A5: 00000670 A6
         //ptr_io_fline=NULL;
         	if (!si_existe_archivo(ql_nombrecompleto)) {
           		debug_printf(VERBOSE_DEBUG,"QDOS handler: File %s not found. Trying changing last _ to .",ql_nombrecompleto);
-   	     
+
                 ql_split_path_device_name(ql_nombre_archivo_load,ql_io_open_device,ql_io_open_file,1,1);
 
         	    ql_return_full_path(ql_io_open_device,ql_io_open_file,ql_nombrecompleto);
@@ -2498,11 +2498,11 @@ A0: 00000D88 A1: 00000D88 A2: 00006906 A3: 00000668 A4: 00000012 A5: 00000670 A6
 
         	if (!si_existe_archivo(ql_nombrecompleto)) {
           		debug_printf(VERBOSE_DEBUG,"QDOS handler: File %s not found. Trying changing all _ to .",ql_nombrecompleto);
-   	     
+
                 ql_split_path_device_name(ql_nombre_archivo_load,ql_io_open_device,ql_io_open_file,1,0);
 
         	    ql_return_full_path(ql_io_open_device,ql_io_open_file,ql_nombrecompleto);
-        	}            
+        	}
 
 
         	if (!si_existe_archivo(ql_nombrecompleto)) {
@@ -2515,7 +2515,7 @@ A0: 00000D88 A1: 00000D88 A2: 00006906 A3: 00000668 A4: 00000012 A5: 00000670 A6
            }
 	}
 
-        
+
 
 	//Obtenemos canal disponible
 	int canal=qltraps_find_free_fopen();
@@ -2525,11 +2525,11 @@ A0: 00000D88 A1: 00000D88 A2: 00006906 A3: 00000668 A4: 00000012 A5: 00000670 A6
   		return;
 	}
 
-	//Se ha retornado indice al array. Canal sera sumando 
+	//Se ha retornado indice al array. Canal sera sumando
 	m68k_set_reg(M68K_REG_A0,canal+QLTRAPS_START_FILE_NUMBER);
 
 
-	//Resetear eof 
+	//Resetear eof
 	qltraps_fopen_files[canal].next_eof_ptr_io_fline=0;
 
 
@@ -2545,8 +2545,8 @@ A0: 00000D88 A1: 00000D88 A2: 00006906 A3: 00000668 A4: 00000012 A5: 00000670 A6
                     //Retornar Not found (NF)
                     m68k_set_reg(M68K_REG_D0,-7);
 
-                    return;                
-                }        
+                    return;
+                }
 
 
 
@@ -2617,16 +2617,16 @@ A0: 00000D88 A1: 00000D88 A2: 00006906 A3: 00000668 A4: 00000012 A5: 00000670 A6
             int tiene_cabecera=ql_if_file_has_header(canal);
 
             if (tiene_cabecera) {
-                
+
 
                 //Leemos esa cabecera
                     //printf("Reading QDOS file header\n");
 
- 
-                    
+
+
                     qltraps_fopen_files[canal].has_header_on_read=1;
                     fread(qltraps_fopen_files[canal].file_header,1,tiene_cabecera,archivo);
-                
+
 
 
                     //Debug escribir cabecera
@@ -2644,7 +2644,7 @@ A0: 00000D88 A1: 00000D88 A2: 00006906 A3: 00000668 A4: 00000012 A5: 00000670 A6
 
 
             }
-        }   
+        }
 
 
 		//Le hacemos un stat
@@ -2660,9 +2660,9 @@ A0: 00000D88 A1: 00000D88 A2: 00006906 A3: 00000668 A4: 00000012 A5: 00000670 A6
 
                 //Y poner nombres para debug
                 strcpy(qltraps_fopen_files[canal].debug_name,ql_nombre_archivo_load);
-                strcpy(qltraps_fopen_files[canal].debug_fullpath,ql_nombrecompleto);    
+                strcpy(qltraps_fopen_files[canal].debug_fullpath,ql_nombrecompleto);
 
-	
+
 
         //D1= Job ID. TODO. Parece que da error "error in expression" porque no se asigna un job id valido?
         //Parece que D1 entra con -1, que quiere decir "the channel will be associated with the current job"
@@ -2694,8 +2694,8 @@ A0: 00000D88 A1: 00000D88 A2: 00006906 A3: 00000668 A4: 00000012 A5: 00000670 A6
 
         debug_printf (VERBOSE_DEBUG,"QDOS handler: IO.CLOSE. Channel ID=%d",pre_io_close_a[0] & 0xFFFF );
 
-  
-      	//Si canal es el mio ficticio 
+
+      	//Si canal es el mio ficticio
        	int indice_canal=qltraps_find_open_file(pre_io_close_a[0] & 0xFFFF);
 
         if (indice_canal>=0  ) {
@@ -2705,7 +2705,7 @@ A0: 00000D88 A1: 00000D88 A2: 00006906 A3: 00000668 A4: 00000012 A5: 00000670 A6
         	debug_printf (VERBOSE_DEBUG,"QDOS handler: Closing file/device %s",qltraps_fopen_files[indice_canal].ql_file_name);
 
     	    ql_restore_d_registers(pre_io_close_d,7);
-            ql_restore_a_registers(pre_io_close_a,6);            
+            ql_restore_a_registers(pre_io_close_a,6);
 
         	//Si no es dispositivo, fclose
         	if (!qltraps_fopen_files[indice_canal].es_dispositivo) {
@@ -2764,15 +2764,15 @@ A0: 00000D88 A1: 00000D88 A2: 00006906 A3: 00000668 A4: 00000012 A5: 00000670 A6
 
 
       debug_printf (VERBOSE_PARANOID,"QDOS handler: Channel name: %s",ql_nombre_archivo_delet);
-      
+
 
 
 
 
         //Si tiene prefijo mdv1, mdv2 o flp1
       if (ql_si_ruta_mdv_flp(ql_nombre_archivo_delet)) {
-          
-    
+
+
         ql_restore_d_registers(pre_io_delet_d,7);
         ql_restore_a_registers(pre_io_delet_a,6);
         //ql_restore_a_registers(pre_io_open_a,7);
@@ -2790,7 +2790,7 @@ A0: 00000D88 A1: 00000D88 A2: 00006906 A3: 00000668 A4: 00000012 A5: 00000670 A6
 
         char ql_nombrecompleto[PATH_MAX];
 
-        
+
 
 
         //Si no hay root folder, directamente decimos que no se encuentra archivo
@@ -2798,7 +2798,7 @@ A0: 00000D88 A1: 00000D88 A2: 00006906 A3: 00000668 A4: 00000012 A5: 00000670 A6
             debug_printf(VERBOSE_DEBUG,"QDOS handler: Microdrive emulation not enabled");
             //Retornar Not found (NF)
             m68k_set_reg(M68K_REG_D0,-7);
-            return;                
+            return;
         }
 
 
@@ -2811,13 +2811,13 @@ A0: 00000D88 A1: 00000D88 A2: 00006906 A3: 00000668 A4: 00000012 A5: 00000670 A6
 
         ql_return_full_path(ql_io_delet_device,ql_io_delet_file,ql_nombrecompleto);
 
-        
-        
+
+
 
 
         if (!si_existe_archivo(ql_nombrecompleto)) {
             debug_printf(VERBOSE_DEBUG,"QDOS handler: File %s not found. Trying changing last _ to .",ql_nombrecompleto);
-        
+
             ql_split_path_device_name(ql_nombre_archivo_delet,ql_io_delet_device,ql_io_delet_file,1,1);
 
             ql_return_full_path(ql_io_delet_device,ql_io_delet_file,ql_nombrecompleto);
@@ -2825,11 +2825,11 @@ A0: 00000D88 A1: 00000D88 A2: 00006906 A3: 00000668 A4: 00000012 A5: 00000670 A6
 
         if (!si_existe_archivo(ql_nombrecompleto)) {
             debug_printf(VERBOSE_DEBUG,"QDOS handler: File %s not found. Trying changing all _ to .",ql_nombrecompleto);
-        
+
             ql_split_path_device_name(ql_nombre_archivo_delet,ql_io_delet_device,ql_io_delet_file,1,0);
 
             ql_return_full_path(ql_io_delet_device,ql_io_delet_file,ql_nombrecompleto);
-        }            
+        }
 
 
         if (!si_existe_archivo(ql_nombrecompleto)) {
@@ -2839,7 +2839,7 @@ A0: 00000D88 A1: 00000D88 A2: 00006906 A3: 00000668 A4: 00000012 A5: 00000670 A6
             return;
         }
 
-        
+
 
 
         //Ver si ese device esta permitido escribir (ql_io_delet_device)
@@ -2851,11 +2851,11 @@ A0: 00000D88 A1: 00000D88 A2: 00006906 A3: 00000668 A4: 00000012 A5: 00000670 A6
         }
 
         debug_printf (VERBOSE_DEBUG,"Deleting file %s",ql_nombrecompleto);
-        util_delete(ql_nombrecompleto);                
+        util_delete(ql_nombrecompleto);
 
-    
 
-     
+
+
 
 	}
 
@@ -2868,7 +2868,7 @@ A0: 00000D88 A1: 00000D88 A2: 00006906 A3: 00000668 A4: 00000012 A5: 00000670 A6
 
 
 
-    
+
 
 
 

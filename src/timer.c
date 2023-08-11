@@ -595,7 +595,7 @@ void timer_check_interrupt(void)
                 }
             }
         }
-     
+
         if (z88_pendiente_cerrar_tapa_timer) {
             z88_pendiente_cerrar_tapa_timer--;
             if (z88_pendiente_cerrar_tapa_timer==0) z88_close_flap_ahora();
@@ -734,7 +734,7 @@ void timer_check_interrupt(void)
             //resetear texto splash
             reset_welcome_message();
 
-        
+
 
             //temporizador de carga de cinta para escribir texto loading en pantalla
             /*if (tape_loading_counter) {
@@ -744,10 +744,10 @@ void timer_check_interrupt(void)
                 }
             }*/
 
-                            
-            //contador para juego de la vida 
+
+            //contador para juego de la vida
             gamelife_timer_counter++;
-                
+
 
             //temporizador de impresion para escribir generico footer en pantalla
             if (generic_footertext_operating_counter) {
@@ -765,7 +765,7 @@ void timer_check_interrupt(void)
                 }
             }
 
- 
+
 
             //Temporizador para decir si se ha detectado real joystick
             //dado que si no hay joystick, por defecto está habilitado el bit de joystick presente, pero luego
@@ -777,7 +777,7 @@ void timer_check_interrupt(void)
                 menu_tell_if_realjoystick_detected_counter--;
                 if (menu_tell_if_realjoystick_detected_counter==0) menu_tell_if_realjoystick_detected();
             }
-                
+
 
 
 
@@ -823,7 +823,7 @@ void timer_check_interrupt(void)
             dskplusthree_flush_contents_to_disk();
 
             //escritura de contenido de HiLow a disco
-            hilow_flush_contents_to_disk();            
+            hilow_flush_contents_to_disk();
 
             rzx_print_footer();
 
@@ -922,7 +922,7 @@ long timer_get_elapsed_seconds_since_first_version(void)
 
 
 
-	//24th September 2013	
+	//24th September 2013
 	long first_version=1379973600;
 
         gettimeofday(&ahora, NULL);
@@ -933,7 +933,7 @@ long timer_get_elapsed_seconds_since_first_version(void)
 	//printf ("segundos desde creacion: %ld\n",z80_uptime_seconds);
 
 	return z80_total_seconds;
- 
+
 }
 
 
@@ -962,7 +962,7 @@ void timer_toggle_top_speed_timer(void)
 void timer_get_elapsed_core_frame_pre(void)
 {
 	//Para calcular lo que se tarda en ejecutar todo un frame
-	timer_stats_current_time(&core_cpu_timer_frame_antes);       
+	timer_stats_current_time(&core_cpu_timer_frame_antes);
 }
 
 
@@ -974,5 +974,5 @@ void timer_get_elapsed_core_frame_post(void)
 	//printf ("tiempo transcurrido: %ld microsec\n",tiempo_timer_difftime);
 	//media de tiempo
 	core_cpu_timer_frame_media=(core_cpu_timer_frame_media+core_cpu_timer_frame_difftime)/2;
-	//printf ("tiempo medio transcurrido: %ld microsec\n",core_cpu_timer_frame_media);	
+	//printf ("tiempo medio transcurrido: %ld microsec\n",core_cpu_timer_frame_media);
 }

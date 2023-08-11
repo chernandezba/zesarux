@@ -116,7 +116,7 @@ void stats_ask_if_enable(void)
 										"-Operating system\n"
 										"-Emulator version\n"
 										"-Emulator build number\n"
-	
+
 										,"Send statistics",&valor_opcion);
 
 	stats_asked.v=1;
@@ -126,7 +126,7 @@ void stats_ask_if_enable(void)
 	if (valor_opcion) stats_enable();
 	else stats_disable();
 
-	
+
 }
 
 
@@ -144,7 +144,7 @@ void *send_stats_server_pthread(void *nada GCC_UNUSED)
 	int total_leidos;
 	//int retorno;
 
-	
+
 
 	int minutes=stats_get_current_total_minutes_use();
 
@@ -157,7 +157,7 @@ void *send_stats_server_pthread(void *nada GCC_UNUSED)
     stats_uuid,os_release_name,COMPILATION_SYSTEM,COMPILATION_SYSTEM_RELEASE,minutes,
 	 stats_total_speccy_browser_queries,
   stats_total_zx81_browser_queries,
-	
+
 	EMULATOR_VERSION,BUILDNUMBER);
 	//Normalizar solo la parte de parametros. Si hicieramos toda la url, el "/" del inicio de la url se convertiria a %2f
 	util_normalize_query_http(query_url_parameters,query_url_parameters_normalized);
@@ -193,7 +193,7 @@ void send_stats_server(void)
 
 	if (pthread_create( &thread_send_stats_server, NULL, &send_stats_server_pthread, NULL) ) {
 		debug_printf(VERBOSE_ERR,"Can not create send_stats_server pthread");
-	}	
+	}
 	#endif
 }
 
@@ -234,11 +234,11 @@ void *stats_check_updates_pthread(void *nada GCC_UNUSED)
 	int total_leidos;
 	//int retorno;
 
-	char redirect_url[NETWORK_MAX_URL];	    
+	char redirect_url[NETWORK_MAX_URL];
 	zsock_http(REMOTE_ZESARUX_SERVER,url_update,&http_code,&mem,&total_leidos,&mem_after_headers,1,"",0,redirect_url,0,"");
 
 	orig_mem=mem;
-	
+
 	if (mem_after_headers!=NULL) {
 		if (http_code==200) {
 			int dif_header=mem_after_headers-mem;
@@ -252,7 +252,7 @@ void *stats_check_updates_pthread(void *nada GCC_UNUSED)
 				util_read_line(mem_after_headers,update_version_string,total_leidos,MAX_UPDATE_VERSION_STRING,&leidos_linea);
 				if (leidos_linea) {
 					debug_printf (VERBOSE_DEBUG,"Update version string [%s]",update_version_string);
-	
+
 					//Comparar si ese string es diferente de la version actual
 					if (strcmp(EMULATOR_VERSION,update_version_string)) {
 						debug_printf (VERBOSE_DEBUG,"Remote version string different than current");
@@ -278,20 +278,20 @@ void *stats_check_updates_pthread(void *nada GCC_UNUSED)
 					}
 
 					//Y guardar dicha version como ultima
-					strcpy(stats_last_remote_version,update_version_string);	
+					strcpy(stats_last_remote_version,update_version_string);
 
 				}
 			}
 		}
-	
+
 		free(orig_mem);
 	}
 
 	debug_printf(VERBOSE_INFO,"Finishing check updates pthread");
 	return NULL;
 
-}	
-	
+}
+
 
 #ifdef USE_PTHREADS
 pthread_t thread_check_updates;
@@ -306,7 +306,7 @@ void stats_check_updates(void)
 
 	if (pthread_create( &thread_check_updates, NULL, &stats_check_updates_pthread, NULL) ) {
 		debug_printf(VERBOSE_ERR,"Can not create check_updates pthread");
-	}	
+	}
 	#endif
 }
 
@@ -339,11 +339,11 @@ void *stats_check_yesterday_users_pthread(void *nada GCC_UNUSED)
 	int total_leidos;
 	//int retorno;
 
-	char redirect_url[NETWORK_MAX_URL];	    
+	char redirect_url[NETWORK_MAX_URL];
 	zsock_http(REMOTE_ZESARUX_SERVER,url_yesterday_users,&http_code,&mem,&total_leidos,&mem_after_headers,1,"",0,redirect_url,0,"");
 
 	orig_mem=mem;
-	
+
 	if (mem_after_headers!=NULL) {
 		if (http_code==200) {
 			int dif_header=mem_after_headers-mem;
@@ -357,22 +357,22 @@ void *stats_check_yesterday_users_pthread(void *nada GCC_UNUSED)
 				util_read_line(mem_after_headers,yesterday_users_string,total_leidos,MAX_YESTERDAY_USERS_STRING,&leidos_linea);
 				if (leidos_linea) {
 					debug_printf (VERBOSE_DEBUG,"yesterday_users string [%s]",yesterday_users_string);
-	
+
 					//Y guardar ese texto
-					strcpy(stats_last_yesterday_users,yesterday_users_string);	
+					strcpy(stats_last_yesterday_users,yesterday_users_string);
 
 				}
 			}
 		}
-	
+
 		free(orig_mem);
 	}
 
 	debug_printf(VERBOSE_INFO,"Finishing check yesterday_users pthread");
 	return NULL;
 
-}	
-	
+}
+
 
 #ifdef USE_PTHREADS
 pthread_t thread_check_yesterday_users;
@@ -387,6 +387,6 @@ void stats_check_yesterday_users(void)
 
 	if (pthread_create( &thread_check_yesterday_users, NULL, &stats_check_yesterday_users_pthread, NULL) ) {
 		debug_printf(VERBOSE_ERR,"Can not create check_yesterday_users pthread");
-	}	
+	}
 	#endif
 }

@@ -135,7 +135,7 @@ void cpu_core_loop_reduced_spectrum(void)
 
                 //Si la cpu está detenida por señal HALT, reemplazar opcode por NOP
                 if (z80_halt_signal.v) {
-                    byte_leido_core_spectrum=0;          
+                    byte_leido_core_spectrum=0;
                 }
                 else {
                     reg_pc++;
@@ -150,7 +150,7 @@ void cpu_core_loop_reduced_spectrum(void)
 
 				//printf ("t_estados:%d\n",t_estados);
 
-			
+
 
             }
         }
@@ -295,7 +295,7 @@ void cpu_core_loop_reduced_spectrum(void)
 
 					//TSConf lo gestiona mediante interrupciones de frame
 					if (MACHINE_IS_TSCONF) interrupcion_maskable_generada.v=0;
-					
+
 
 
 				}
@@ -332,7 +332,7 @@ void cpu_core_loop_reduced_spectrum(void)
 				core_end_frame_check_zrcp_zeng_snap.v=1;
 
                 //snapshot en ram
-                snapshot_add_in_ram();                
+                snapshot_add_in_ram();
 
 			}
 			//Fin bloque final de pantalla
@@ -400,7 +400,7 @@ void cpu_core_loop_reduced_spectrum(void)
 				t_estados += 14;
 
 
-			
+
 				push_valor(reg_pc,PUSH_VALUE_TYPE_NON_MASKABLE_INTERRUPT);
 
 
@@ -414,7 +414,7 @@ void cpu_core_loop_reduced_spectrum(void)
 				//Total NMI: NMI WAIT 14 estados + NMI CALL 12 estados
 				reg_pc= 0x66;
 
-				
+
 
 				t_estados -=15;
 
@@ -429,7 +429,7 @@ void cpu_core_loop_reduced_spectrum(void)
 
 
 			}
-	
+
 
 			//justo despues de EI no debe generar interrupcion
 			//e interrupcion nmi tiene prioridad
@@ -442,7 +442,7 @@ void cpu_core_loop_reduced_spectrum(void)
 				interrupcion_maskable_generada.v=0;
 
 				interrupcion_si_despues_lda_ir();
-		
+
 
 				push_valor(reg_pc,PUSH_VALUE_TYPE_MASKABLE_INTERRUPT);
 
@@ -488,7 +488,7 @@ void cpu_core_loop_reduced_spectrum(void)
 
 			}
 
-		
+
   	  	}
 	  	//Fin gestion interrupciones
 
@@ -496,7 +496,7 @@ void cpu_core_loop_reduced_spectrum(void)
 		if (core_end_frame_check_zrcp_zeng_snap.v) {
 			core_end_frame_check_zrcp_zeng_snap.v=0;
 			check_pending_zrcp_put_snapshot();
-			zeng_send_snapshot_if_needed();			
+			zeng_send_snapshot_if_needed();
 		}
 
 

@@ -1,5 +1,5 @@
 /*
-    ZEsarUX  ZX Second-Emulator And Released for UniX 
+    ZEsarUX  ZX Second-Emulator And Released for UniX
     Copyright (C) 2013 Cesar Hernandez Bano
 
     This file is part of ZEsarUX.
@@ -105,17 +105,17 @@ if(fcntl(ptr_audiodsp,F_SETFL,flags)==-1)
 		ioctl_rate=FRECUENCIA_SONIDO;
 
 
-		if (ioctl(ptr_audiodsp,SNDCTL_DSP_SETFMT,&ioctl_format) == -1) {		
+		if (ioctl(ptr_audiodsp,SNDCTL_DSP_SETFMT,&ioctl_format) == -1) {
 			debug_printf(VERBOSE_ERR,"Format selection failed : %s ",strerror(errno));
 			return 1;
 		}
 
-		if (ioctl(ptr_audiodsp,SNDCTL_DSP_CHANNELS,&ioctl_channels) == -1) {		
+		if (ioctl(ptr_audiodsp,SNDCTL_DSP_CHANNELS,&ioctl_channels) == -1) {
 			debug_printf(VERBOSE_ERR,"Channels selection failed : %s ",strerror(errno));
 			return 1;
 		}
 
-		if (ioctl(ptr_audiodsp,SNDCTL_DSP_SPEED,&ioctl_rate) == -1) {		
+		if (ioctl(ptr_audiodsp,SNDCTL_DSP_SPEED,&ioctl_rate) == -1) {
 			debug_printf(VERBOSE_ERR,"Rate selection failed : %s ",strerror(errno));
 			return 1;
 		}
@@ -144,7 +144,7 @@ int audiodsp_thread_finish(void)
 
 	//Pausa de 0.1 segundo
 	 usleep(100000);
-	
+
 #endif
 
 return 0;
@@ -180,7 +180,7 @@ void audiodsp_pthread_tiempo_inicial(void)
 int audiodsp_pthread_tiempo_final(void)
 {
 
-        long audiodsp_pthread_timer_mtime, audiodsp_pthread_timer_seconds, audiodsp_pthread_timer_useconds;    
+        long audiodsp_pthread_timer_mtime, audiodsp_pthread_timer_seconds, audiodsp_pthread_timer_useconds;
 
         gettimeofday(&audiodsp_pthread_timer_ahora, NULL);
 
@@ -281,7 +281,7 @@ void *audiodsp_enviar_audio(void *nada)
 
 
 	return NULL;
-} 
+}
 
 pthread_t thread1=0;
 
@@ -302,13 +302,13 @@ void audiodsp_send_frame(char *buffer)
 	audiodsp_pthread_tiempo_inicial();
      if (pthread_create( &thread1, NULL, &audiodsp_enviar_audio, NULL) ) {
                 cpu_panic("Can not create audiodsp pthread");
-        }      
+        }
 	}
 
 
-	
+
 }
-#else 
+#else
 void audiodsp_send_frame(char *buffer)
 {
 		//printf ("temp envio sonido\n");

@@ -73,7 +73,7 @@ int menu_file_viewer_read_text_file_char_print(z80_byte caracter)
 	if (caracter>=9 && caracter<=13) return 1; //9=horiz tab, 10=LF, 11=vert tab, 12=new page, 13=CR
 
 	return 0;
-	
+
 }
 
 void menu_file_viewer_sped_show(char *file_read_memory,int longitud)
@@ -107,7 +107,7 @@ void menu_file_viewer_sped_show(char *file_read_memory,int longitud)
 			}
 
 			else if (caracter>=128) {
-				caracter -=128;	
+				caracter -=128;
 				int tabcolumn;
 				if (x<7) tabcolumn=7;
 				else tabcolumn=12;
@@ -148,7 +148,7 @@ void menu_file_viewer_read_text_file(char *title,char *file_name)
     //printf("inicio menu_file_viewer_read_text_file\n");
 
 
-    
+
 
 
 
@@ -163,16 +163,16 @@ void menu_file_viewer_read_text_file(char *title,char *file_name)
     //FRESULT fr;     /* FatFs return code */
 
     int in_fatfs;
-    
+
     //printf("antes zvfs_fopen_read\n");
-    
+
     if (zvfs_fopen_read(file_name,&in_fatfs,&ptr_file_name,&fil)<0) {
         debug_printf (VERBOSE_ERR,"Unable to open file");
         return;
     }
 
     //printf("despues zvfs_fopen_read\n");
-    
+
     /*
     =util_path_is_prefix_mmc_fatfs(file_name);
     printf("txt esta en fatfs: %d\n",in_fatfs);
@@ -183,15 +183,15 @@ void menu_file_viewer_read_text_file(char *title,char *file_name)
         {
             debug_printf (VERBOSE_ERR,"Unable to open %s file",file_name);
             return;
-        }     
+        }
 
         //Esto solo para que no se queje el compilador al llamar a zvfs_fread
-        ptr_file_name=NULL;           
+        ptr_file_name=NULL;
     }
 
     else {
 	    ptr_file_name=fopen(file_name,"rb");
-    
+
 
 
         if (!ptr_file_name)
@@ -221,7 +221,7 @@ void menu_file_viewer_read_text_file(char *title,char *file_name)
 
     else {
         leidos=fread(file_read_memory,1,MAX_TEXTO_GENERIC_MESSAGE,ptr_file_name);
-    }    
+    }
 */
 
 
@@ -266,7 +266,7 @@ void menu_file_viewer_read_text_file(char *title,char *file_name)
 		zxvision_generic_message_tooltip("Tape browser" , 0 , 0, 0, 1, NULL, 1, "%s", buffer_texto);
 
         free(file_read_memory);
-		
+
 		return;
 	}
 
@@ -305,7 +305,7 @@ void menu_file_viewer_read_text_file(char *title,char *file_name)
 
 		if (caracter>=32 && caracter<=127) sped_ascii=1;
 		if (caracter>127) sped_beyond_128=1;
-		
+
 	}
 
 	//Deteccion sped
@@ -345,7 +345,7 @@ void menu_file_viewer_read_text_file(char *title,char *file_name)
 
 void menu_file_sp_browser_show(char *filename)
 {
-	
+
 	//Leemos cabecera archivo sp
         FILE *ptr_file_sp_browser;
 
@@ -376,7 +376,7 @@ void menu_file_sp_browser_show(char *filename)
         int leidos;
 
         leidos=zvfs_fread(in_fatfs,sp_header,38,ptr_file_sp_browser,&fil);
-        
+
         //leidos=fread(sp_header,1,38,ptr_file_sp_browser);
 
 	if (leidos==0) {
@@ -422,7 +422,7 @@ void menu_file_sp_browser_show(char *filename)
 
     z80_byte i_leido=sp_header[27];
     sprintf(buffer_texto,"I register: %02XH",i_leido);
-    indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);    
+    indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
 
     z80_byte ints_leido=sp_header[36] &1;
     sprintf(buffer_texto,"Interrupts: %s", (ints_leido ? "Enabled" : "Disabled"));
@@ -442,7 +442,7 @@ void menu_file_sp_browser_show(char *filename)
 
 void menu_file_zx_browser_show(char *filename)
 {
-	
+
 	//Leemos cabecera archivo zx
         FILE *ptr_file_zx_browser;
 
@@ -471,7 +471,7 @@ void menu_file_zx_browser_show(char *filename)
 	z80_byte zx_header[201];
 
         int leidos;
-        
+
         leidos=zvfs_fread(in_fatfs,zx_header,201,ptr_file_zx_browser,&fil);
         //leidos=fread(zx_header,1,201,ptr_file_zx_browser);
 
@@ -498,7 +498,7 @@ void menu_file_zx_browser_show(char *filename)
 	char *texto_browser=util_malloc_max_texto_browser();
 	int indice_buffer=0;
 
-	
+
      //printf ("nombre: %s c1: %d\n",buffer_nombre,buffer_nombre[0]);
 	z80_byte zx_version=zx_header[38];
 	sprintf(buffer_texto,"ZX File version: %d",zx_version);
@@ -545,7 +545,7 @@ void menu_file_zx_browser_show(char *filename)
 
     z80_byte ints_leido=zx_header[36] &1;
     sprintf(buffer_texto,"Interrupts: %s", (ints_leido ? "Enabled" : "Disabled"));
-    indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);     
+    indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
 
 
 	texto_browser[indice_buffer]=0;
@@ -571,7 +571,7 @@ void menu_file_zsf_browser_show(char *filename)
 		debug_printf(VERBOSE_ERR,"Unable to assign memory");
 		return;
 	}
-	
+
 	//Leemos archivo zsf
         FILE *ptr_file_zsf_browser;
 
@@ -600,7 +600,7 @@ void menu_file_zsf_browser_show(char *filename)
     */
 
         int leidos;
-        
+
         leidos=zvfs_fread(in_fatfs,zsf_file_memory,bytes_to_load,ptr_file_zsf_browser,&fil);
         //leidos=fread(zsf_file_memory,1,bytes_to_load,ptr_file_zsf_browser);
 
@@ -613,7 +613,7 @@ void menu_file_zsf_browser_show(char *filename)
         //fclose(ptr_file_zsf_browser);
 
 
-        
+
 
 
 	char buffer_texto[64]; //2 lineas, por si acaso
@@ -625,7 +625,7 @@ void menu_file_zsf_browser_show(char *filename)
 	char *texto_browser=util_malloc_max_texto_browser();
 	int indice_buffer=0;
 
-	
+
 
 
  	sprintf(buffer_texto,"ZSF ZEsarUX Snapshot");
@@ -673,7 +673,7 @@ Every block is defined with a header:
 4 bytes - 32 bit: block Lenght
 After these 6 bytes, the data for the block comes.
 */
-	
+
 
 	while (bytes_to_load>0) {
 		    z80_int block_id;
@@ -697,7 +697,7 @@ After these 6 bytes, the data for the block comes.
 						value_8_to_16(zsf_file_memory[indice_zsf+3],zsf_file_memory[indice_zsf+2]),zsf_file_memory[indice_zsf+1],
 						zsf_file_memory[indice_zsf+0],zsf_file_memory[indice_zsf+4],zsf_file_memory[indice_zsf+5]);
 
-    				indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);					
+    				indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
 				}
 
 				//Mas info si el campo es de creator
@@ -712,8 +712,8 @@ After these 6 bytes, the data for the block comes.
 
 	}
 
-	
-	
+
+
 
 
 	texto_browser[indice_buffer]=0;
@@ -738,7 +738,7 @@ void menu_z88_new_ptr_card_browser(char *archivo)
 
         //Asignar 1 mb
 
-        
+
         int bytes_to_load=1024*1024;
 
         z80_byte *flash_file_memory;
@@ -747,8 +747,8 @@ void menu_z88_new_ptr_card_browser(char *archivo)
                 debug_printf(VERBOSE_ERR,"Unable to assign memory");
                 return;
         }
-        
-        //Leemos cabecera archivo 
+
+        //Leemos cabecera archivo
         FILE *ptr_file_flash_browser;
         ptr_file_flash_browser=fopen(archivo,"rb");
 
@@ -836,7 +836,7 @@ void menu_file_zxuno_flash_browser_show(char *filename)
 
 	//Asignar 4 mb
 
-	
+
 	int bytes_to_load=4*1024*1024;
 
 	z80_byte *zxuno_flash_file_memory;
@@ -845,7 +845,7 @@ void menu_file_zxuno_flash_browser_show(char *filename)
 		debug_printf(VERBOSE_ERR,"Unable to assign memory");
 		return;
 	}
-	
+
 	//Leemos cabecera archivo zxuno_flash
         FILE *ptr_file_zxuno_flash_browser;
         ptr_file_zxuno_flash_browser=fopen(filename,"rb");
@@ -868,7 +868,7 @@ void menu_file_zxuno_flash_browser_show(char *filename)
         fclose(ptr_file_zxuno_flash_browser);
 
 
-        
+
 
 
 	char buffer_texto[64]; //2 lineas, por si acaso
@@ -880,7 +880,7 @@ void menu_file_zxuno_flash_browser_show(char *filename)
 	char *texto_browser=util_malloc_max_texto_browser();
 	int indice_buffer=0;
 
-	
+
 
 
  	sprintf(buffer_texto,"ZX-Uno Flash image");
@@ -939,7 +939,7 @@ Bitstreams
 000071f0  20 20 20 20 20 20 00 20  20 20 20 20 20 20 20 20  |      .         |
 
 */
-        
+
 
 	sprintf(buffer_texto,"\nBitstreams:");
 	indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
@@ -969,7 +969,7 @@ void menu_file_superupgrade_flash_browser_show(char *filename)
 
 	//Asignar 512 kb
 
-	
+
 	int bytes_to_load=4*1024*1024;
 
 	z80_byte *superupgrade_flash_file_memory;
@@ -978,7 +978,7 @@ void menu_file_superupgrade_flash_browser_show(char *filename)
 		debug_printf(VERBOSE_ERR,"Unable to assign memory");
 		return;
 	}
-	
+
 	//Leemos cabecera archivo superupgrade_flash
         FILE *ptr_file_superupgrade_flash_browser;
         ptr_file_superupgrade_flash_browser=fopen(filename,"rb");
@@ -1011,7 +1011,7 @@ void menu_file_superupgrade_flash_browser_show(char *filename)
 	char *texto_browser=util_malloc_max_texto_browser();
 	int indice_buffer=0;
 
-	
+
 
 
  	sprintf(buffer_texto,"Superupgrade Flash image");
@@ -1087,7 +1087,7 @@ void menu_file_flash_browser_show(char *filename)
 {
 
 
-	
+
 	//Leemos cabecera archivo flash
 	z80_byte flash_cabecera[256];
 
@@ -1128,7 +1128,7 @@ void menu_file_flash_browser_show(char *filename)
         	&& flash_cabecera[3]==0
         	&& flash_cabecera[4]==0
         	&& flash_cabecera[5]==0
-       	 	) { 
+       	 	) {
        		//adivinar que es z88 flash
        		//01 00 00 00 00 00
 
@@ -1191,7 +1191,7 @@ int menu_dsk_detect_extended_dsk(z80_byte *dsk_memoria)
     if (!memcmp("EXTENDED",dsk_memoria,8)) {
         //printf("Detected Extended DSK\n");
         return 1;
-    }    
+    }
 
     else return 0;
 }
@@ -1205,7 +1205,7 @@ int menu_dsk_get_sector_size_track_from_offset(z80_byte *dsk_file_memory,int lon
     return menu_dsk_get_sector_size_from_n_value(sector_size_byte);
 }
 
-//Retorna numero de pista. 
+//Retorna numero de pista.
 //Entrada: offset: offset a track-info
 int menu_dsk_get_track_number_from_offset(z80_byte *dsk_file_memory,int longitud_dsk,int offset)
 {
@@ -1213,7 +1213,7 @@ int menu_dsk_get_track_number_from_offset(z80_byte *dsk_file_memory,int longitud
     return track_number;
 }
 
-//Retorna numero de cata. 
+//Retorna numero de cata.
 //Entrada: offset: offset a track-info
 int menu_dsk_get_track_side_from_offset(z80_byte *dsk_file_memory,int longitud_dsk,int offset)
 {
@@ -1243,13 +1243,13 @@ int menu_dsk_extended_get_start_track(z80_byte *dsk_file_memory,int longitud_dsk
     for (pista=0;pista<total_pistas;pista++) {
         for (cara=0;cara<menu_dsk_get_total_sides(dsk_file_memory,longitud_dsk);cara++) {
             //printf("Pista: %d cara: %d\n",pista,cara);
-            
+
 
             z80_byte track_number=menu_dsk_get_track_number_from_offset(dsk_file_memory,longitud_dsk,offset);
             z80_byte side_number=menu_dsk_get_track_side_from_offset(dsk_file_memory,longitud_dsk,offset);
 
             //printf("menu_dsk_extended_get_start_track: pista: %d current_track: %d offset: %XH buscar pista: %d\n",
-            //    pista,track_number,offset,pista_encontrar);        
+            //    pista,track_number,offset,pista_encontrar);
 
             if (track_number==pista_encontrar && side_number==cara_encontrar) {
                 //printf("dsk_extended_get_start_track: return %X\n",offset);
@@ -1262,11 +1262,11 @@ int menu_dsk_extended_get_start_track(z80_byte *dsk_file_memory,int longitud_dsk
                 return -1;
             }
 
-            
+
             int saltar=util_get_byte_protect(dsk_file_memory,longitud_dsk,offset_track_table)*256;
             offset +=saltar;
 
-            
+
             offset_track_table++;
 
 
@@ -1287,8 +1287,8 @@ int menu_dsk_basic_get_start_track(z80_byte *dsk_file_memory,int longitud_dsk,in
 
     for (pista=0;pista<total_pistas;pista++) {
         //printf("Pista: %d\n",pista);
-   
- 
+
+
         z80_byte track_number=util_get_byte_protect(dsk_file_memory,longitud_dsk,offset+0x10);
         z80_byte side_number=util_get_byte_protect(dsk_file_memory,longitud_dsk,offset+0x11);
 
@@ -1341,7 +1341,7 @@ sectores van alternados:
 1,6,2,7,3,8
 
 
-0 1 2 3 4 5 6 7 8  
+0 1 2 3 4 5 6 7 8
 0,5,1,6,2,7,3,8,4
 
 */
@@ -1374,7 +1374,7 @@ sectores van alternados:
 		iniciopista +=0x18;
 
 		for (sector=0;sector<sectores_en_pista;sector++) {
-			int offset_tabla_sector=sector*8; 
+			int offset_tabla_sector=sector*8;
 
 			//printf("before getting pista_id sumando %d %d\n",iniciopista,offset_tabla_sector);
 
@@ -1438,8 +1438,8 @@ sectores van alternados:
 
     //printf("Not found sector %d/%d\n",pista_buscar,sector_buscar);
 
-	debug_printf(VERBOSE_DEBUG,"Not found sector %d/%d",pista_buscar,sector_buscar);	
-	
+	debug_printf(VERBOSE_DEBUG,"Not found sector %d/%d",pista_buscar,sector_buscar);
+
 	//retornamos offset fuera de rango
 	//printf("returning -1\n");
 	return -1;
@@ -1480,7 +1480,7 @@ void menu_dsk_getoff_block(z80_byte *dsk_file_memory,int longitud_dsk,int bloque
 
 			sector_total++;
 			pista=sector_total/9; //9 sectores por pista
-			sector_en_pista=sector_total % 9;			
+			sector_en_pista=sector_total % 9;
 
 			//printf("before getting offset2\n");
 			*offset2=menu_dsk_getoff_track_sector(dsk_file_memory,total_pistas,pista,sector_en_pista,longitud_dsk);
@@ -1499,7 +1499,7 @@ int menu_dsk_get_start_filesystem(z80_byte *dsk_file_memory,int longitud_dsk,int
     int puntero;
 
     for (pista=0;pista<=2;pista++) {
-	
+
         //printf("Pista: %d\n",pista);
 
         puntero=menu_dsk_getoff_track_sector(dsk_file_memory,total_pistas,pista,0,longitud_dsk);
@@ -1507,13 +1507,13 @@ int menu_dsk_get_start_filesystem(z80_byte *dsk_file_memory,int longitud_dsk,int
         //O si segundo caracter no es ascii
 
         if (puntero>=0) {
-     
+
             z80_byte byte_name=util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero+1);
 
-            if (byte_name!=0xe5 && (byte_name>=32 && byte_name<=127)) {        
+            if (byte_name!=0xe5 && (byte_name>=32 && byte_name<=127)) {
 
                 break;
-                
+
             }
 
         }
@@ -1578,7 +1578,7 @@ void menu_file_dsk_browser_show_file(z80_byte *origen,char *destino,int sipuntoe
             caracter &=127;
 
             if (caracter<32 || caracter>126) caracter='?';
-		
+
 			origen++;
 
             /*
@@ -1592,13 +1592,13 @@ void menu_file_dsk_browser_show_file(z80_byte *origen,char *destino,int sipuntoe
 			if (!salir) {
 				*destino=caracter;
 				destino++;
-			
+
 				if (sipuntoextension && i==7) {
 					*destino='.';
 					destino++;
 				}
 			}
-		
+
 	}
 
     if (file_readonly) {
@@ -1659,7 +1659,7 @@ void menu_file_dsk_browser_visualmem_all_blocks(int archivo_seleccionado)
 
 
 
-    }      
+    }
 }
 
 
@@ -1689,7 +1689,7 @@ void menu_file_dsk_browser_show_click_file(MENU_ITEM_PARAMETERS)
 {
 
     menu_file_dsk_browser_show_click_file_archivo_seleccionado=valor_opcion;
- 
+
     char buffer_texto[64]; //2 lineas, por si acaso
 
 
@@ -1707,7 +1707,7 @@ void menu_file_dsk_browser_show_click_file(MENU_ITEM_PARAMETERS)
 
 
         //menu_file_dsk_browser_visualmem_all_blocks(valor_opcion);
-        
+
         int total_bloques=util_dsk_get_blocks_entry_file(menu_file_dsk_browser_show_click_file_dsk_file_memory,
             menu_file_dsk_browser_show_click_file_longitud_dsk,bloques,valor_opcion);
 
@@ -1715,7 +1715,7 @@ void menu_file_dsk_browser_show_click_file(MENU_ITEM_PARAMETERS)
         //Gestion de visual floppy que muestra todos los bloques
         menu_add_item_menu_seleccionado(array_menu_common,menu_file_dsk_browser_all_sectors);
 
-        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Used blocks:");    
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Used blocks:");
         //Gestion de visual floppy que muestra todos los bloques
         menu_add_item_menu_seleccionado(array_menu_common,menu_file_dsk_browser_all_sectors);
 
@@ -1756,14 +1756,14 @@ void menu_file_dsk_browser_show_click_file(MENU_ITEM_PARAMETERS)
                 items_en_linea++;
             }
 
-        }  
+        }
 
         //Si queda algun item por agregar de la linea
         if (items_en_linea) {
             menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,buffer_texto);
             //Gestion de visual floppy que muestra todos los bloques
-            menu_add_item_menu_seleccionado(array_menu_common,menu_file_dsk_browser_all_sectors);            
-        }  
+            menu_add_item_menu_seleccionado(array_menu_common,menu_file_dsk_browser_all_sectors);
+        }
 
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Tracks and physical sectors");
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"for every block");
@@ -1784,14 +1784,14 @@ void menu_file_dsk_browser_show_click_file(MENU_ITEM_PARAMETERS)
 
             //Cada bloque son dos sectores:
 
-            
+
             menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Track %02X Sector %X",pista1,sector1);
             //Gestion de visual floppy para cada item separado, al seleccionar, sin tener que pulsar enter
             menu_add_item_menu_seleccionado(array_menu_common,menu_file_dsk_browser_separate_sectors);
             //Indica con opcion pista y sector
             menu_add_item_menu_valor_opcion(array_menu_common,pista1*256+sector1);
 
-            
+
             menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Track %02X Sector %X",pista2,sector2);
             //Gestion de visual floppy para cada item separado, al seleccionar, sin tener que pulsar enter
             menu_add_item_menu_seleccionado(array_menu_common,menu_file_dsk_browser_separate_sectors);
@@ -1799,7 +1799,7 @@ void menu_file_dsk_browser_show_click_file(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_valor_opcion(array_menu_common,pista2*256+sector2);
 
 
-        }  
+        }
 
 
 
@@ -1851,7 +1851,7 @@ void menu_file_dsk_browser_show(char *filename)
 
     menu_file_dsk_browser_show_click_file_longitud_dsk=longitud_dsk;
     menu_file_dsk_browser_show_click_file_dsk_file_memory=dsk_file_memory;
-	
+
 	//Leemos archivo dsk
     FILE *ptr_file_dsk_browser;
 
@@ -1872,9 +1872,9 @@ void menu_file_dsk_browser_show(char *filename)
 
 
     int leidos;
-    
+
     leidos=zvfs_fread(in_fatfs,dsk_file_memory,bytes_to_load,ptr_file_dsk_browser,&fil);
-    
+
 
 	if (leidos==0) {
         debug_printf(VERBOSE_ERR,"Error reading file");
@@ -1882,7 +1882,7 @@ void menu_file_dsk_browser_show(char *filename)
     }
 
     zvfs_fclose(in_fatfs,ptr_file_dsk_browser,&fil);
-    
+
 
 	char buffer_texto[64]; //2 lineas, por si acaso
 
@@ -1895,7 +1895,7 @@ void menu_file_dsk_browser_show(char *filename)
 
     do {
 
-        
+
         menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"DSK disk image");
 
 
@@ -1930,7 +1930,7 @@ void menu_file_dsk_browser_show(char *filename)
         //La extension es de 1 byte
 
 
-    
+
 
 
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Signature:");
@@ -1942,19 +1942,19 @@ void menu_file_dsk_browser_show(char *filename)
         menu_add_item_menu_separator(array_menu_common);
 
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Creator:");
-        
+
 
         util_binary_to_ascii(&dsk_file_memory[0x22], buffer_texto, 14, 14);
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,buffer_texto);
 
         menu_add_item_menu_separator(array_menu_common);
-        
+
 
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Total tracks: %d",dsk_file_memory[0x30]);
-        
+
 
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Total sides: %d",dsk_file_memory[0x31]);
-        
+
 
         //Si tiene Especificacion de formato PCW/+3
         int puntero;
@@ -2008,42 +2008,42 @@ void menu_file_dsk_browser_show(char *filename)
             menu_add_item_menu_separator(array_menu_common);
 
             menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Known disc format:");
-            
+
             menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL," Type: %s",menu_dsk_spec_formats[spec_disk_type]);
-            
+
 
             int sides_show=spec_disk_sides;
             if (sides_show>=2) sides_show=1;
             menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,
                 " Sides: %d%s",sides_show+1,(spec_disk_sides==2 ? "(successive sides)" : ""));
-            
+
 
             menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL," Tracks/Sides: %d",
                 spec_tracks_side);
-            
+
             menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL," Sectors/Track: %d",
                 spec_sectors_track);
-            
+
 
             int sector_size=128 << util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero+4);
             menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL," Sector Size: %d",
                 sector_size);
-            
+
             menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL," Reserved Tracks: %d",
                 util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero+5));
-            
+
             menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL," Block size: %d",
                 util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero+6));
-            
+
             menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL," Directory blocks: %d",
                 util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero+7));
-            
+
             menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL," Gap length (rw): %d",
                 util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero+8));
-            
+
             menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL," Gap length (format): %d",
                 util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero+9));
-            
+
 
             //Calcular checksum de todo el sector
             int i;
@@ -2061,27 +2061,27 @@ void menu_file_dsk_browser_show(char *filename)
             z80_byte checksum_in_disk=util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero+15);
 
             menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL," Checksum: %02XH",checksum_in_disk);
-            
+
 
             if (calculated_checksum==checksum_in_disk) {
                 menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL," Bootable disk");
-            }                                    
-                                                    
+            }
+
         }
 
         menu_add_item_menu_separator(array_menu_common);
 
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"First Filesystem entries:");
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"(Enter on any for more info)");
-        
 
-        int pista_filesystem;    
+
+        int pista_filesystem;
         puntero=menu_dsk_get_start_filesystem(dsk_file_memory,bytes_to_load,&pista_filesystem);
 
 
         //printf("Inicio filesystem: %XH\n",puntero);
 
-        
+
         //puntero++; //Saltar el primer byte en la entrada de filesystem
 
         menu_file_dsk_browser_show_click_file_incremento_pista_filesystem=pista_filesystem;
@@ -2110,7 +2110,7 @@ void menu_file_dsk_browser_show(char *filename)
 
 
         }
-        
+
 
         menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
@@ -2158,13 +2158,13 @@ void menu_file_trd_browser_show(char *filename,char *tipo_imagen)
 		debug_printf(VERBOSE_ERR,"Unable to assign memory");
 		return;
 	}
-	
+
 	//Leemos cabecera archivo trd
         FILE *ptr_file_trd_browser;
 
         //Soporte para FatFS
         FIL fil;        /* File object */
-    
+
         int in_fatfs;
 
         if (zvfs_fopen_read(filename,&in_fatfs,&ptr_file_trd_browser,&fil)<0) {
@@ -2185,7 +2185,7 @@ void menu_file_trd_browser_show(char *filename,char *tipo_imagen)
 
 
         int leidos;
-        
+
         leidos=zvfs_fread(in_fatfs,trd_file_memory,bytes_to_load,ptr_file_trd_browser,&fil);
         //leidos=fread(trd_file_memory,1,bytes_to_load,ptr_file_trd_browser);
 
@@ -2198,7 +2198,7 @@ void menu_file_trd_browser_show(char *filename,char *tipo_imagen)
         //fclose(ptr_file_trd_browser);
 
 
-        
+
 
 
 	char buffer_texto[64]; //2 lineas, por si acaso
@@ -2210,7 +2210,7 @@ void menu_file_trd_browser_show(char *filename,char *tipo_imagen)
 	char *texto_browser=util_malloc_max_texto_browser();
 	int indice_buffer=0;
 
-	
+
 
 
  	sprintf(buffer_texto,"TRD disk image");
@@ -2298,9 +2298,9 @@ void menu_file_trd_browser_show(char *filename,char *tipo_imagen)
 		z80_byte start_track=trd_file_memory[puntero+15];
 		debug_printf (VERBOSE_DEBUG,"File %s starts at track %d sector %d",buffer_texto,start_track,start_sector);
 
-		puntero +=tamanyo_trd_entry;	
+		puntero +=tamanyo_trd_entry;
 	}
-	
+
 
 
 	texto_browser[indice_buffer]=0;
@@ -2327,7 +2327,7 @@ void menu_file_mmc_browser_show_file(z80_byte *origen,char *destino,int sipuntoe
 		char caracter;
 		caracter=*origen;
 
-		
+
 			origen++;
 			if (caracter<32 || caracter>126) {
 				//Si detectamos final de texto y siempre que no este en primer caracter
@@ -2338,13 +2338,13 @@ void menu_file_mmc_browser_show_file(z80_byte *origen,char *destino,int sipuntoe
 			if (!salir) {
 				*destino=caracter;
 				destino++;
-			
+
 				if (sipuntoextension && i==7) {
 					*destino='.';
 					destino++;
 				}
 			}
-		
+
 	}
 
 	*destino=0;
@@ -2388,7 +2388,7 @@ void menu_file_mmc_browser_show(char *filename,char *tipo_imagen)
 		debug_printf(VERBOSE_ERR,"Unable to assign memory");
 		return;
 	}
-	
+
 	//Leemos cabecera archivo mmc
         FILE *ptr_file_mmc_browser;
         ptr_file_mmc_browser=fopen(filename,"rb");
@@ -2411,7 +2411,7 @@ void menu_file_mmc_browser_show(char *filename,char *tipo_imagen)
         fclose(ptr_file_mmc_browser);
 
 
-        
+
 
 
 	char buffer_texto[64]; //2 lineas, por si acaso
@@ -2423,7 +2423,7 @@ void menu_file_mmc_browser_show(char *filename,char *tipo_imagen)
 	char *texto_browser=util_malloc_max_texto_browser();
 	int indice_buffer=0;
 
-	
+
 
 
  	sprintf(buffer_texto,"RAW disk image");
@@ -2515,11 +2515,11 @@ Bytes   Content
 				indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
 			}
 
-			puntero +=tamanyo_vfat_entry;	
+			puntero +=tamanyo_vfat_entry;
 		}
 	}
 
-    
+
 
 	//memcpy(filesystem,&mmc_file_memory[0],10);
 
@@ -2550,10 +2550,10 @@ Bytes   Content
 				indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
 			}
 
-			puntero +=tamanyo_plus3_entry;	
+			puntero +=tamanyo_plus3_entry;
 		}
 	}
-	
+
 
 	texto_browser[indice_buffer]=0;
 	char titulo_ventana[32];
@@ -2572,7 +2572,7 @@ Bytes   Content
 
 void menu_file_p_browser_show(char *filename)
 {
-	
+
 	//Leemos cabecera archivo p
         FILE *ptr_file_p_browser;
 
@@ -2602,9 +2602,9 @@ void menu_file_p_browser_show(char *filename)
 	z80_byte p_header[128];
 
         int leidos;
-        
-        leidos=zvfs_fread(in_fatfs,p_header,128,ptr_file_p_browser,&fil);        
-        
+
+        leidos=zvfs_fread(in_fatfs,p_header,128,ptr_file_p_browser,&fil);
+
         //leidos=fread(p_header,1,128,ptr_file_p_browser);
 
 	if (leidos==0) {
@@ -2613,7 +2613,7 @@ void menu_file_p_browser_show(char *filename)
         }
 
         zvfs_fclose(in_fatfs,ptr_file_p_browser,&fil);
-        
+
         //fclose(ptr_file_p_browser);
 
 
@@ -2626,7 +2626,7 @@ void menu_file_p_browser_show(char *filename)
 
 	sprintf(buffer_texto,"Machine: ZX-81");
 	indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
-	
+
 
     z80_int p_pc_reg=0x207;
     sprintf(buffer_texto,"PC Register: %04XH",p_pc_reg);
@@ -2647,7 +2647,7 @@ void menu_file_p_browser_show(char *filename)
 
     zxvision_generic_message_tooltip("P file Browser" , 0 , 0, 0, 1, NULL, 1, "%s", texto_browser);
 
-	
+
     free(texto_browser);
 
 }
@@ -2655,7 +2655,7 @@ void menu_file_p_browser_show(char *filename)
 
 void menu_file_o_browser_show(char *filename)
 {
-	
+
 	//Leemos cabecera archivo o
         FILE *ptr_file_o_browser;
 
@@ -2685,7 +2685,7 @@ void menu_file_o_browser_show(char *filename)
 	z80_byte o_header[128];
 
         int leidos;
-        
+
         leidos=zvfs_fread(in_fatfs,o_header,128,ptr_file_o_browser,&fil);
         //leidos=fread(o_header,1,128,ptr_file_o_browser);
 
@@ -2709,7 +2709,7 @@ void menu_file_o_browser_show(char *filename)
 
 	sprintf(buffer_texto,"Machine: ZX-80");
 	indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
-	
+
 
         z80_int o_pc_reg=0x283;
         sprintf(buffer_texto,"PC Register: %04XH",o_pc_reg);
@@ -2723,7 +2723,7 @@ void menu_file_o_browser_show(char *filename)
     indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
 
     strcpy(buffer_texto,"Interrupts: Disabled");
-    indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);     
+    indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
 
 
 	texto_browser[indice_buffer]=0;
@@ -2752,7 +2752,7 @@ void menu_file_hexdump_browser_show(char *filename)
 		debug_printf(VERBOSE_ERR,"Unable to assign memory");
 		return;
 	}
-	
+
 	//Leemos cabecera archivo hexdump
         FILE *ptr_file_hexdump_browser;
 
@@ -2764,16 +2764,16 @@ void menu_file_hexdump_browser_show(char *filename)
 
 
     int in_fatfs;
-    
-    
+
+
     if (zvfs_fopen_read(filename,&in_fatfs,&ptr_file_hexdump_browser,&fil)<0) {
         debug_printf (VERBOSE_ERR,"Unable to open file");
         free(hexdump_file_memory);
         return;
     }
 
-    
-/*    
+
+/*
     =util_path_is_prefix_mmc_fatfs(filename);
     printf("txt esta en fatfs: %d\n",in_fatfs);
 
@@ -2783,7 +2783,7 @@ void menu_file_hexdump_browser_show(char *filename)
         {
             debug_printf (VERBOSE_ERR,"Unable to open %s file",filename);
             return;
-        }    
+        }
 
         //Esto solo para que no se queje el compilador al llamar a zvfs_fread
         ptr_file_hexdump_browser=NULL;
@@ -2813,8 +2813,8 @@ void menu_file_hexdump_browser_show(char *filename)
         leidos=leidos_fatfs;
     }
 
-    else {        
-        
+    else {
+
         leidos=fread(hexdump_file_memory,1,bytes_to_load,ptr_file_hexdump_browser);
     }
 */
@@ -2835,7 +2835,7 @@ void menu_file_hexdump_browser_show(char *filename)
         fclose(ptr_file_hexdump_browser);
     }
     */
-        
+
 
 
 	char buffer_texto[64]; //2 lineas, por si acaso
@@ -2845,12 +2845,12 @@ void menu_file_hexdump_browser_show(char *filename)
 	//int longitud_texto;
 #define MAX_TEXTO_BROWSER_HEX (MAX_HEXDUMP_FILE*5)
 //Por cada linea de texto de 33 bytes, se muestran 8 bytes del fichero. Por tanto, podemos aproximar por lo alto,
-//que el texto ocupa 5 veces los bytes. Ejemplo 8*5=40 
+//que el texto ocupa 5 veces los bytes. Ejemplo 8*5=40
 
 	char texto_browser[MAX_TEXTO_BROWSER_HEX];
 	int indice_buffer=0;
 
-	
+
  	sprintf(buffer_texto,"Hexadecimal view");
 	indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
 
@@ -2895,7 +2895,7 @@ void menu_file_realtape_browser_show(char *filename)
 
     char *texto_browser=util_malloc_max_texto_browser();
 
-    
+
 
     util_realtape_browser(filename, texto_browser, MAX_TEXTO_BROWSER,NULL,NULL,0,NULL);
 
@@ -2903,12 +2903,12 @@ void menu_file_realtape_browser_show(char *filename)
     if (texto_browser[0]==0) {
         //Intentamos con conversión ZX80/81
 
-        //TODO: no autodetectara cintas de ZX80, hay que seleccionar maquina ZX80 como actual para que el conversor asuma ZX80 
+        //TODO: no autodetectara cintas de ZX80, hay que seleccionar maquina ZX80 como actual para que el conversor asuma ZX80
         convert_realtape_to_po(filename, NULL, texto_browser,0);
     }
 
     if (texto_browser[0]==0) {
-        strcpy(texto_browser,"Tape empty or unknown audio data");    
+        strcpy(texto_browser,"Tape empty or unknown audio data");
     }
 
 
@@ -2971,7 +2971,7 @@ void menu_file_cas_browser_show(char *filename)
     if (zvfs_fopen_read(filename,&in_fatfs,&ptr_file_cas_browser,&fil)<0) {
 		debug_printf(VERBOSE_ERR,"Error opening cas file %s",filename);
 		return;
-    }    
+    }
 
     /*
 	ptr_file_cas_browser=fopen(filename,"rb");
@@ -2986,16 +2986,16 @@ void menu_file_cas_browser_show(char *filename)
 
     char *texto_browser=util_malloc_max_texto_browser();
 
-    
+
 	while (zvfs_fread(in_fatfs,buffer,8,ptr_file_cas_browser,&fil)==8) {
-    
+
 		if (!memcmp(buffer,msx_cabecera_firma,8)) {
-		
+
 
 			if (zvfs_fread(in_fatfs,buffer,10,ptr_file_cas_browser,&fil)==10) {
-			
+
 				if (next==CAS_NEXT_BINARY) {
-				
+
 					zvfs_fseek(in_fatfs,ptr_file_cas_browser,posicion_lectura+8,SEEK_SET,&fil);
 
                     //void zvfs_fseek(int in_fatfs,FILE *ptr_file, long offset, int whence,FIL *fil)
@@ -3014,16 +3014,16 @@ void menu_file_cas_browser_show(char *filename)
 					if (!exec) exec=start;
 
 					sprintf(buffer_texto,"Binary: %s\n  Start: %d Stop: %d\n  Exec:  %d",cas_filename,start,stop,exec);
-					indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);	  
+					indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
 					next=CAS_NEXT_NONE;
 				}
-				
+
 				else if (next==CAS_NEXT_DATA) {
 					next=CAS_NEXT_NONE;
 				}
-				
+
 				else if (!memcmp(buffer,cas_ascii,10)) {
-				
+
 					z80_byte buffer_nombre[7];
 
                     zvfs_fread(in_fatfs,buffer_nombre,6,ptr_file_cas_browser,&fil);
@@ -3032,19 +3032,19 @@ void menu_file_cas_browser_show(char *filename)
 					menu_file_cas_browser_show_getname(buffer_nombre,cas_filename);
 
 					sprintf(buffer_texto,"Ascii: %s",cas_filename);
-					indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);	  	  
+					indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
 
 					while (zvfs_fgetc(in_fatfs,ptr_file_cas_browser,&fil)!=0x1a && !zvfs_feof(in_fatfs,ptr_file_cas_browser,&fil) );
-                    
 
-                    
+
+
 
 
                     //long zvfs_ftell(int in_fatfs,FILE *ptr_file, FIL *fil)
 					posicion_lectura=zvfs_ftell(in_fatfs,ptr_file_cas_browser,&fil);
-				} 
-				
-				else if (!memcmp(buffer,cas_bin,10)) {  
+				}
+
+				else if (!memcmp(buffer,cas_bin,10)) {
 					z80_byte buffer_nombre[7];
 
                     zvfs_fread(in_fatfs,buffer_nombre,6,ptr_file_cas_browser,&fil);
@@ -3060,32 +3060,32 @@ void menu_file_cas_browser_show(char *filename)
                     zvfs_fread(in_fatfs,buffer_nombre,6,ptr_file_cas_browser,&fil);
 					//fread(buffer_nombre,1,6,ptr_file_cas_browser);
 
-					menu_file_cas_browser_show_getname(buffer_nombre,cas_filename);					
-				
+					menu_file_cas_browser_show_getname(buffer_nombre,cas_filename);
+
 					next=CAS_NEXT_DATA;
 					sprintf(buffer_texto,"Basic: %s", cas_filename);
-					indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);		  
+					indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
 				}
-				
+
 				else  {
 					sprintf(buffer_texto,"Custom");
-					indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);			
+					indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
 				}
-			
+
 			}
 
     	}
-	
+
 		posicion_lectura++;
         zvfs_fseek(in_fatfs,ptr_file_cas_browser,posicion_lectura,SEEK_SET,&fil);
     	//fseek(ptr_file_cas_browser,posicion_lectura,SEEK_SET);
 
-      
+
 	}
 
     zvfs_fclose(in_fatfs,ptr_file_cas_browser,&fil);
 	//fclose(ptr_file_cas_browser);
-	
+
 	texto_browser[indice_buffer]=0;
 	zxvision_generic_message_tooltip("CAS file viewer" , 0 , 0, 0, 1, NULL, 1, "%s", texto_browser);
 
@@ -3115,7 +3115,7 @@ void menu_file_pzx_browser_show(char *filename)
 
         //Soporte para FatFS
         FIL fil;        /* File object */
-    
+
         int in_fatfs;
 
         if (zvfs_fopen_read(filename,&in_fatfs,&ptr_file_pzx_browser,&fil)<0) {
@@ -3133,7 +3133,7 @@ void menu_file_pzx_browser_show(char *filename)
         */
 
         int leidos;
-        
+
         leidos=zvfs_fread(in_fatfs,pzx_file_mem,filesize,ptr_file_pzx_browser,&fil);
         //leidos=fread(pzx_file_mem,1,filesize,ptr_file_pzx_browser);
 
@@ -3146,10 +3146,10 @@ void menu_file_pzx_browser_show(char *filename)
         zvfs_fclose(in_fatfs,ptr_file_pzx_browser,&fil);
         //fclose(ptr_file_pzx_browser);
 
-      
+
 	//char buffer_texto[300]; //Para poder contener info de pzx extensa
 
- 
+
 
 	char *texto_browser=util_malloc_max_texto_browser();
 	int indice_buffer=0;
@@ -3189,14 +3189,14 @@ void menu_file_pzx_browser_show(char *filename)
 		tag_name[4]=0;
 
 		z80_long_int block_size;
-		
-		
+
+
 
 		block_size=pzx_file_mem[puntero_lectura]+
 					(pzx_file_mem[puntero_lectura+1]*256)+
 					(pzx_file_mem[puntero_lectura+2]*65536)+
-					(pzx_file_mem[puntero_lectura+3]*16777216);   
-		puntero_lectura +=4;                     
+					(pzx_file_mem[puntero_lectura+3]*16777216);
+		puntero_lectura +=4;
 
 		//printf ("Block tag name: [%s] size: [%u]\n",tag_name,block_size);
 
@@ -3213,7 +3213,7 @@ void menu_file_pzx_browser_show(char *filename)
 			indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_bloque);
 
 			z80_byte *memoria;
-			memoria=&pzx_file_mem[puntero_lectura];			
+			memoria=&pzx_file_mem[puntero_lectura];
 
 
 			int block_size_tag=block_size;
@@ -3263,7 +3263,7 @@ void menu_file_pzx_browser_show(char *filename)
 				memoria=&pzx_file_mem[puntero_lectura];
 
 			z80_int count;
-			int duration; 
+			int duration;
 
 			//int valor_pulso_inicial=0;
 			//int t_estado_actual=*p_t_estado_actual;
@@ -3306,9 +3306,9 @@ void menu_file_pzx_browser_show(char *filename)
 							debug_printf(VERBOSE_ERR,"Too many entries. Showing only what is allowed on memory");
 							salir=1;
 							break;
-					}					
+					}
 
-					
+
 			}
 
 
@@ -3323,7 +3323,7 @@ void menu_file_pzx_browser_show(char *filename)
 
   				int initial_pulse;
 
-        z80_long_int count;   
+        z80_long_int count;
 
         //int t_estado_actual=*p_t_estado_actual;
 
@@ -3341,7 +3341,7 @@ void menu_file_pzx_browser_show(char *filename)
                 (memoria[1]*256);
 
         memoria +=2;
-        
+
         z80_byte num_pulses_zero=*memoria;
         memoria++;
 
@@ -3367,9 +3367,9 @@ void menu_file_pzx_browser_show(char *filename)
                 memoria +=2;
         }
 
-					   
 
-    
+
+
         //Procesar el total de bits
         //int bit_number=7;
         //z80_byte processing_byte;
@@ -3377,9 +3377,9 @@ void menu_file_pzx_browser_show(char *filename)
         //z80_int *sequence_bit;
         //int longitud_sequence_bit;
 
-        //z80_long_int total_bits_read; 
+        //z80_long_int total_bits_read;
 
-	     
+
 
 
 			//Saltamos flag
@@ -3388,8 +3388,8 @@ void menu_file_pzx_browser_show(char *filename)
 
 			//Metemos un espacio delante
 			buffer_bloque[0]=' ';
-			util_tape_get_info_tapeblock(memoria,flag,count/8,&buffer_bloque[1]);	
-			indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_bloque);	
+			util_tape_get_info_tapeblock(memoria,flag,count/8,&buffer_bloque[1]);
+			indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_bloque);
 
 
 			//Y debug del bloque
@@ -3397,23 +3397,23 @@ void menu_file_pzx_browser_show(char *filename)
 			indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_bloque);
 
         	sprintf(buffer_bloque," count: %d initial_pulse: %d tail: %d num_pulses_0: %d num_pulses_1: %d",
-            		count,initial_pulse,tail,num_pulses_zero,num_pulses_one); 
-			indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_bloque);		             
+            		count,initial_pulse,tail,num_pulses_zero,num_pulses_one);
+			indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_bloque);
 
 
-		}                
+		}
 
 		else if (!strcmp(tag_name,"PAUS")) {
 				//convert_pzx_to_rwa_tag_paus(&pzx_file_mem[puntero_lectura],block_size,ptr_destino,&estado_actual);
 
 			//int initial_pulse;
 
-			z80_long_int count;   
+			z80_long_int count;
 
 							z80_byte *memoria;
 					memoria=&pzx_file_mem[puntero_lectura];
 
-	
+
 
 
 			count=memoria[0]+
@@ -3429,17 +3429,17 @@ void menu_file_pzx_browser_show(char *filename)
 			indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_bloque);
 
 
-		}   
+		}
 
 		else {
 			//debug_printf (VERBOSE_DEBUG,"PZX: Unknown block type: %02XH %02XH %02XH %02XH. Skipping it",
 			//    tag_name[0],tag_name[1],tag_name[2],tag_name[3]);
-		}             
+		}
 
 
 		//Y saltar al siguiente bloque
 		puntero_lectura +=block_size;
-		
+
 	}
 
 
@@ -3467,13 +3467,13 @@ void menu_file_tzx_browser_show(char *filename)
 		return;
 	}
 
-	
+
 	//Leemos cabecera archivo tzx
         FILE *ptr_file_tzx_browser;
 
         //Soporte para FatFS
         FIL fil;        /* File object */
-    
+
         int in_fatfs;
 
         if (zvfs_fopen_read(filename,&in_fatfs,&ptr_file_tzx_browser,&fil)<0) {
@@ -3490,7 +3490,7 @@ void menu_file_tzx_browser_show(char *filename)
     */
 
         int leidos;
-        
+
         leidos=zvfs_fread(in_fatfs,tzx_file_mem,filesize,ptr_file_tzx_browser,&fil);
         //leidos=fread(tzx_file_mem,1,filesize,ptr_file_tzx_browser);
 
@@ -3523,7 +3523,7 @@ void menu_file_tzx_browser_show(char *filename)
 	int indice_buffer=0;
 
 	//TODO. controlar que no se salga del maximo de texto_browser
-	
+
 	z80_byte tzx_version_major=tzx_file_mem[8];
 	z80_byte tzx_version_minor=tzx_file_mem[9];
 	sprintf(buffer_texto,"TZX File version: %d.%d",tzx_version_major,tzx_version_minor);
@@ -3560,14 +3560,14 @@ void menu_file_tzx_browser_show(char *filename)
 
 
 				puntero+=2;
-			
+
 
 			        longitud_sub_bloque=util_tape_tap_get_info(&tzx_file_mem[puntero],buffer_bloque,0);
 				indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_bloque);
 
-					
+
 				puntero +=longitud_sub_bloque;
-				
+
 
 
 			break;
@@ -3575,7 +3575,7 @@ void menu_file_tzx_browser_show(char *filename)
 
 			case 0x11:
 
-				
+
 				sprintf(buffer_texto,"ID 11 - Turbo Data Block:");
 				indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
 
@@ -3588,13 +3588,13 @@ void menu_file_tzx_browser_show(char *filename)
 
 				//Lo escribimos con espacio
 				buffer_bloque[0]=' ';
-			        
+
 				util_tape_get_info_tapeblock(&tzx_file_mem[puntero+1],tzx_file_mem[puntero],longitud_larga,&buffer_bloque[1]);
 
 				indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_bloque);
 
 				puntero +=longitud_larga;
-				
+
 
 
 			break;
@@ -3603,13 +3603,13 @@ void menu_file_tzx_browser_show(char *filename)
 
 			case 0x20:
 
-				
+
 				sprintf(buffer_texto,"ID 20 - Pause");
 				indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
 
 
 				puntero+=2;
-				
+
 
 
 			break;
@@ -3710,18 +3710,18 @@ void menu_tape_browser_show(char *filename)
 	}
 
 	//Si pzx
-	if (!util_compare_file_extension(filename,"pzx") 
+	if (!util_compare_file_extension(filename,"pzx")
 		) {
 		menu_file_pzx_browser_show(filename);
 		return;
-	}	
+	}
 
 	//Si cas
-	if (!util_compare_file_extension(filename,"cas") 
+	if (!util_compare_file_extension(filename,"cas")
 		) {
 		menu_file_cas_browser_show(filename);
 		return;
-	}		
+	}
 
     //wav, rwa, etc
 	if (!util_compare_file_extension(filename,"wav") ||
@@ -3730,7 +3730,7 @@ void menu_tape_browser_show(char *filename)
 		) {
 		menu_file_realtape_browser_show(filename);
 		return;
-	}	    
+	}
 
 	//tapefile
 	if (util_compare_file_extension(filename,"tap")!=0) {
@@ -3780,8 +3780,8 @@ void menu_tape_browser_show(char *filename)
 
         int leidos;
 
-        leidos=zvfs_fread(in_fatfs,taperead,total_mem,ptr_tapebrowser,&fil);        
-        
+        leidos=zvfs_fread(in_fatfs,taperead,total_mem,ptr_tapebrowser,&fil);
+
         //leidos=fread(taperead,1,total_mem,ptr_tapebrowser);
 
 	if (leidos==0) {
@@ -3841,7 +3841,7 @@ void menu_tape_browser_show(char *filename)
 void menu_hilow_datadrive_browser_aux_get_label(z80_byte *orig,char *dest)
 {
     memcpy(dest,orig,9);
-    dest[9]=0;    
+    dest[9]=0;
 }
 
 /*int menu_hilow_datadrive_browser_get_file_offset(int indice_archivo)
@@ -3866,7 +3866,7 @@ void menu_hilow_datadrive_browser_get_name_info(int indice_archivo,z80_byte *pun
 
     int offset_archivo=hilow_util_get_file_offset(indice_archivo);
 
-          
+
     //Maximo 17 bytes. Copiamos a buffer temporal para evitar que se salga puntero de sitio
     z80_byte buffer_temp[17];
     util_memcpy_protect_origin(buffer_temp, &puntero_memoria[offset_archivo], 17, 0, 17);
@@ -3874,14 +3874,14 @@ void menu_hilow_datadrive_browser_get_name_info(int indice_archivo,z80_byte *pun
 
     //printf("Archivo: %s\n",buffer_file_name);
 
-    
+
     z80_int cabecera_longitud=value_8_to_16(puntero_memoria[offset_archivo+12],puntero_memoria[offset_archivo+11]);
     z80_int cabecera_inicio=value_8_to_16(puntero_memoria[offset_archivo+14],puntero_memoria[offset_archivo+13]);
     z80_int cabecera_aux=value_8_to_16(puntero_memoria[offset_archivo+16],puntero_memoria[offset_archivo+15]);
-    
 
 
-    sprintf(buffer_file_info," Start: %d Lenght: %d Aux: %d",cabecera_inicio,cabecera_longitud,cabecera_aux);    
+
+    sprintf(buffer_file_info," Start: %d Lenght: %d Aux: %d",cabecera_inicio,cabecera_longitud,cabecera_aux);
 }
 
 int menu_hilow_datadrive_browser_get_sectors_file(int indice_archivo,z80_byte *puntero_memoria,int *sectores)
@@ -3906,7 +3906,7 @@ void menu_hilow_browser_print_char_sector(zxvision_window *w,int sector,char car
 
     menu_hilow_datadrive_browser_get_xy_mapa_sector(sector,&xmapa,&ymapa);
 
-    zxvision_print_string_defaults_format(w,xmapa+1,ymapa+hilow_browser_inicio_y_mapa,"%c",caracter);    
+    zxvision_print_string_defaults_format(w,xmapa+1,ymapa+hilow_browser_inicio_y_mapa,"%c",caracter);
 }
 
 int hilow_browser_fragmentation_total_sectors=0;
@@ -3925,14 +3925,14 @@ void menu_hilow_browser_print_used_sectors(zxvision_window *w,z80_byte *puntero_
 
     for (current_file=0;current_file<total_files;current_file++) {
 
-            int total_sectores=menu_hilow_datadrive_browser_get_sectors_file(current_file,puntero_memoria,sectores);  
+            int total_sectores=menu_hilow_datadrive_browser_get_sectors_file(current_file,puntero_memoria,sectores);
 
             int i;
             z80_byte sector_anterior=255;
 
             int parcial_fragmentacion=0;
 
-            for (i=0;i<total_sectores;i++) {  
+            for (i=0;i<total_sectores;i++) {
                 z80_byte sector_actual=sectores[i];
 
                 //Id de sectores usados empieza por el 1
@@ -3950,7 +3950,7 @@ void menu_hilow_browser_print_used_sectors(zxvision_window *w,z80_byte *puntero_
                         parcial_fragmentacion++;
                     }
                 }
-                
+
 
                 sector_anterior=sector_actual;
 
@@ -3978,7 +3978,7 @@ void menu_hilow_datadrive_browser(z80_byte *puntero_memoria_orig)
     //Preguntar si ver copia del sector 0 o 1
     /*int opcion=menu_simple_two_choices("Directory browser","You want to see","Sector 0","Sector 1");
 
-    if (opcion==0) return; //ESC    
+    if (opcion==0) return; //ESC
 
 
     z80_byte *puntero_memoria;
@@ -4022,17 +4022,17 @@ Maximo sectores por archivo: 25
     0123456789012345678901234567890123456789012345678901
 0    Label: cinta
 1    Usage counter: 714
-2    Free sectors: 89 (178 KB)  
+2    Free sectors: 89 (178 KB)
 3    File: 11/20 Next File Previous File
 4    Directory sector: 0
 5    Fragmentation: 30%
 6
 7    File: Screen$ .pant
 8    Start: 16384 Lenght: 6912 Aux: 32990
-9    Sectors (25): 255 255 255 255 255 255 255 255 
+9    Sectors (25): 255 255 255 255 255 255 255 255
 10                 255 255 255 255 255 255 255 255
 11                 255 255 255 255 255 255 255 255
-12                 255 
+12                 255
 13
 14   Legend
 15   uu................................................
@@ -4045,13 +4045,13 @@ Maximo sectores por archivo: 25
     u : usado
     X : usado por ese archivo
 
-    */    
+    */
 
    z80_byte tecla;
    int current_file=0;
    int sector_directorio=0;
 
-    do {   
+    do {
 
         z80_byte *puntero_memoria;
 
@@ -4060,7 +4060,7 @@ Maximo sectores por archivo: 25
         if (sector_directorio) {
             //Ir al siguiente sector
             puntero_memoria +=HILOW_SECTOR_SIZE;
-        }        
+        }
 
         int linea=0;
 
@@ -4068,8 +4068,8 @@ Maximo sectores por archivo: 25
 
         //Forzar a mostrar atajos
         z80_bit antes_menu_writing_inverse_color;
-        antes_menu_writing_inverse_color.v=menu_writing_inverse_color.v;    
-        menu_writing_inverse_color.v=1;           
+        antes_menu_writing_inverse_color.v=menu_writing_inverse_color.v;
+        menu_writing_inverse_color.v=1;
 
 
         char buffer_file_label[10];
@@ -4093,7 +4093,7 @@ Maximo sectores por archivo: 25
         linea++;
 
         int total_files=menu_hilow_datadrive_browser_get_total_files(puntero_memoria);
-        
+
 
         if (!total_files) {
             zxvision_print_string_defaults_format(&ventana,1,linea++,"No files");
@@ -4101,12 +4101,12 @@ Maximo sectores por archivo: 25
         else {
 
             zxvision_print_string_defaults_format(&ventana,1,linea++,"File: %2d/%2d ~~Next ~~Previous",current_file+1,total_files);
-          
+
 
             char buffer_file_name[100];
             char buffer_file_info[100];
 
-            menu_hilow_datadrive_browser_get_name_info(current_file,puntero_memoria,buffer_file_name,buffer_file_info);      
+            menu_hilow_datadrive_browser_get_name_info(current_file,puntero_memoria,buffer_file_name,buffer_file_info);
 
             zxvision_print_string_defaults_fillspc(&ventana,1,linea++,buffer_file_name);
             zxvision_print_string_defaults_fillspc(&ventana,1,linea++,buffer_file_info);
@@ -4118,7 +4118,7 @@ Maximo sectores por archivo: 25
 
             //char buffer_sectors[HILOW_BUFFER_SECTORS*2]; //mas que suficiente (espero)
 
-            int total_sectores=menu_hilow_datadrive_browser_get_sectors_file(current_file,puntero_memoria,sectores);  
+            int total_sectores=menu_hilow_datadrive_browser_get_sectors_file(current_file,puntero_memoria,sectores);
 
             zxvision_print_string_defaults_fillspc_format(&ventana,1,linea,"Sectors (%2d): ",total_sectores);
 
@@ -4126,10 +4126,10 @@ Maximo sectores por archivo: 25
 
             int col=0;
             int i;
-            
+
             for (i=0;i<HILOW_MAX_SECTORS;i++) {
                 menu_hilow_browser_print_char_sector(&ventana,i,'.');
-            }        
+            }
 
 
             //mostrar los usados con "u". Y calcular fragmentacion
@@ -4160,7 +4160,7 @@ Maximo sectores por archivo: 25
 
 
             col=0;
-            
+
             for (i=0;i<total_sectores;i++) {
 
                 zxvision_print_string_defaults_format(&ventana,columna_sectores+col,linea,"%3d ",sectores[i]);
@@ -4169,12 +4169,12 @@ Maximo sectores por archivo: 25
                 int sector_file=sectores[i];
                 //No mostrar sector si es menor que 3
                 if (sector_file>=3) menu_hilow_browser_print_char_sector(&ventana,sector_file-1,'F');
-           
+
 
                 if ((i+1) % sectores_por_linea == 0) {
                     linea++;
                     col=0;
-                } 
+                }
                 else {
                     col +=4;
                 }
@@ -4185,14 +4185,14 @@ Maximo sectores por archivo: 25
         }
 
         //Restaurar comportamiento atajos
-        menu_writing_inverse_color.v=antes_menu_writing_inverse_color.v;          
+        menu_writing_inverse_color.v=antes_menu_writing_inverse_color.v;
 
         zxvision_draw_window_contents(&ventana);
 
 
-		tecla=zxvision_common_getkey_refresh();				
+		tecla=zxvision_common_getkey_refresh();
 
-        
+
 		switch (tecla) {
 
 			case 'p':
@@ -4207,14 +4207,14 @@ Maximo sectores por archivo: 25
                 sector_directorio ^=1;
                 current_file=0;
             break;
-		}		
-
-		
-
-	} while (tecla!=2 && tecla!=3); 
+		}
 
 
-    zxvision_destroy_window(&ventana);    
+
+	} while (tecla!=2 && tecla!=3);
+
+
+    zxvision_destroy_window(&ventana);
 
     return;
 
@@ -4238,8 +4238,8 @@ void menu_file_ddh_browser_show(char *filename)
 		debug_printf(VERBOSE_ERR,"Unable to assign memory");
 		return;
 	}
-	
-	//Leemos archivo 
+
+	//Leemos archivo
     FILE *ptr_file_ddh_browser;
 
     //Soporte para FatFS
@@ -4258,20 +4258,20 @@ void menu_file_ddh_browser_show(char *filename)
 
 
     int leidos;
-        
+
     leidos=zvfs_fread(in_fatfs,ddh_file_memory,bytes_to_load,ptr_file_ddh_browser,&fil);
-    
+
 	if (leidos==0) {
         debug_printf(VERBOSE_ERR,"Error reading file");
         return;
     }
 
     zvfs_fclose(in_fatfs,ptr_file_ddh_browser,&fil);
-    
+
     //Permitir mostrar caracteres hotkeys, los desactiva desde menu_file_viewer_read_file
     int antes_menu_disable_special_chars=menu_disable_special_chars.v;
     menu_disable_special_chars.v=0;
-        
+
     menu_hilow_datadrive_browser(ddh_file_memory);
 
     menu_disable_special_chars.v=antes_menu_disable_special_chars;
@@ -4293,7 +4293,7 @@ z80_byte menu_file_bas_browser_show_peek(z80_int dir)
 
 void menu_file_basic_browser_show(char *filename)
 {
-	
+
 	//Leemos archivo .bas
         FILE *ptr_file_bas_browser;
 
@@ -4301,9 +4301,9 @@ void menu_file_basic_browser_show(char *filename)
     FIL fil;        /* File object */
     //FRESULT fr;     /* FatFs return code */
 
-    int in_fatfs;    
+    int in_fatfs;
 
-    //printf("menu_file_basic_browser_show %s\n",filename);    
+    //printf("menu_file_basic_browser_show %s\n",filename);
 
     if (zvfs_fopen_read(filename,&in_fatfs,&ptr_file_bas_browser,&fil)<0) {
         debug_printf(VERBOSE_ERR,"Unable to open file");
@@ -4334,7 +4334,7 @@ void menu_file_basic_browser_show(char *filename)
 
 
     int leidos;
-    
+
     //leidos=fread(memoria,1,tamanyo,ptr_file_bas_browser);
     leidos=zvfs_fread(in_fatfs,memoria,tamanyo,ptr_file_bas_browser,&fil);
 
@@ -4352,7 +4352,7 @@ void menu_file_basic_browser_show(char *filename)
 	strcpy(titulo_ventana,"View Basic");
 
   	char **dir_tokens;
-  	int inicio_tokens;	
+  	int inicio_tokens;
 
 	int dir_inicio_linea=0;
 
@@ -4397,9 +4397,9 @@ void menu_file_basic_browser_show(char *filename)
 
                 tipo=1;
 
-		strcpy(titulo_ventana,"View ZX80 Basic");				
+		strcpy(titulo_ventana,"View ZX80 Basic");
 
-	}	
+	}
 
 	//Si extension z88 o si firma de final de archivo parece ser .z88
 	else if (!util_compare_file_extension(filename,"basz88") || file_is_z88_basic(filename)) {
@@ -4409,10 +4409,10 @@ void menu_file_basic_browser_show(char *filename)
   		menu_generic_message_format("View Z88 Basic","%s",results_buffer);
 		free(memoria);
 	//void debug_view_z88_basic_from_memory(char *results_buffer,int dir_inicio_linea,int final_basic,
-	//z80_byte (*lee_byte_function)(z80_int dir) )	
+	//z80_byte (*lee_byte_function)(z80_int dir) )
 		//Este finaliza aqui
         free(results_buffer);
-		return;	
+		return;
 	}
 
 	else {
@@ -4440,7 +4440,7 @@ void menu_file_basic_browser_show(char *filename)
 
 		if (leidos>2 && util_compare_file_extension(filename,"b") ) {
 			z80_byte caracter1=memoria[indice_memoria];
-			z80_byte caracter2=memoria[indice_memoria+1]; 
+			z80_byte caracter2=memoria[indice_memoria+1];
 			if (caracter1>=32 && caracter1<=127 && caracter2>=32 && caracter2<=127) {
 				//Es ascii. abrir visor ascii
 				debug_printf(VERBOSE_INFO,".bas file type is guessed as simple text");
@@ -4477,7 +4477,7 @@ void menu_file_basic_browser_show(char *filename)
 
 void menu_file_spg_browser_show(char *filename)
 {
-	
+
 	//Leemos cabecera archivo spg
 
 
@@ -4511,7 +4511,7 @@ void menu_file_spg_browser_show(char *filename)
 
 
 
-	
+
 
         //z80_int spg_pc_reg=value_8_to_16(spg_header[31],spg_header[30]);
         //sprintf(buffer_texto,"PC Register: %04XH",spg_pc_reg);
@@ -4560,7 +4560,7 @@ void menu_file_spg_browser_show(char *filename)
 
 void menu_file_nex_browser_show(char *filename)
 {
-	
+
 	//Leemos cabecera archivo spg
 
 
@@ -4624,10 +4624,10 @@ void menu_file_nex_browser_show(char *filename)
     indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
 
     sprintf(buffer_texto,"Required core v. %d.%d.%d",nex_header[135],nex_header[136],nex_header[137]);
-    indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);    
-    //135	3	Required core version, three bytes 
-    //0..15 "major", 0..15 "minor", 0..255 "subminor" version numbers. 
-    //(core version is checked only when reported machine-ID is 10 = "Next", 
+    indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
+    //135	3	Required core version, three bytes
+    //0..15 "major", 0..15 "minor", 0..255 "subminor" version numbers.
+    //(core version is checked only when reported machine-ID is 10 = "Next",
     //on other machine or emulator=8 the latest loaders will skip the check)
 
 
@@ -4645,10 +4645,10 @@ void menu_file_nex_browser_show(char *filename)
 
 void menu_file_sna_browser_show(char *filename)
 {
-	
+
 	//Leemos cabecera archivo sna
 	//Leer 27 bytes de la cabecera
-	z80_byte sna_header[27];    
+	z80_byte sna_header[27];
     /*
         FILE *ptr_file_sna_browser;
         ptr_file_sna_browser=fopen(filename,"rb");
@@ -4672,7 +4672,7 @@ void menu_file_sna_browser_show(char *filename)
     */
 
 
-    lee_archivo(filename,(char *)sna_header,27);        
+    lee_archivo(filename,(char *)sna_header,27);
 
 
 	char buffer_texto[64]; //2 lineas, por si acaso
@@ -4684,7 +4684,7 @@ void menu_file_sna_browser_show(char *filename)
 
 	int indice_buffer=0;
 
-	
+
 
         //z80_int sna_pc_reg=value_8_to_16(sna_header[31],sna_header[30]);
         //sprintf(buffer_texto,"PC Register: %04XH",sna_pc_reg);
@@ -4726,13 +4726,13 @@ void menu_file_sna_browser_show(char *filename)
 
     z80_byte i_leido=sna_header[0];
     sprintf(buffer_texto,"I register: %02XH",i_leido);
-    indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);      
+    indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
 
     z80_byte ints_leido;
 	if (sna_header[19] & 4) ints_leido=1;
 	else ints_leido=0;
     sprintf(buffer_texto,"Interrupts: %s", (ints_leido ? "Enabled" : "Disabled"));
-    indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);    
+    indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
 
 
 
@@ -4749,7 +4749,7 @@ void menu_file_sna_browser_show(char *filename)
 
 void menu_file_sms_browser_show(char *filename)
 {
-	
+
 	//Leemos cabecera archivo sms
     FILE *ptr_file_z80_browser;
 
@@ -4774,9 +4774,9 @@ void menu_file_sms_browser_show(char *filename)
 
 
     int leidos;
-    
+
     leidos=zvfs_fread(in_fatfs,buffer_cabecera,32768,ptr_file_z80_browser,&fil);
-    
+
 
     if (leidos==0) {
         debug_printf(VERBOSE_ERR,"Error reading file");
@@ -4787,16 +4787,16 @@ void menu_file_sms_browser_show(char *filename)
 
     char *texto_browser=util_malloc_max_texto_browser();
 
-    //The header can be at offset $1ff0, $3ff0 or $7ff0 in the ROM, 
-    //although only the last of these seems to be used in known software. 
+    //The header can be at offset $1ff0, $3ff0 or $7ff0 in the ROM,
+    //although only the last of these seems to be used in known software.
     //The header is 16 bytes long.
 
     /*
     TMR SEGA ($7ff0, 8 bytes)
-    The first eight bytes of the header are the ASCII text "TMR SEGA". 
+    The first eight bytes of the header are the ASCII text "TMR SEGA".
     The export Master System and Game Gear BIOSes require this to be present to indicate valid data.
     */
-		
+
 
     char *signature="TMR SEGA";
 
@@ -4812,9 +4812,9 @@ void menu_file_sms_browser_show(char *filename)
 
     else {
 
-		
 
-	
+
+
     char buffer_texto[512];
 	int indice_buffer=0;
 
@@ -4824,13 +4824,13 @@ This little-endian word gives the ROM checksum for export SMS BIOSes. Game Gear 
 The BIOS checksum routines compare the calculated value to this to determine if the cartridge data is valid.
 
 Product code ($7ffc, 2.5 bytes)
-The first 2 bytes are a Binary Coded Decimal representation of the last four digits of the product code. 
+The first 2 bytes are a Binary Coded Decimal representation of the last four digits of the product code.
 Hence, data 26 70 gives a product code 7026.
-The high 4 bits of the next byte (hence, 0.5 bytes) are a hexadecimal representation of any remaining digits of the product code. 
+The high 4 bits of the next byte (hence, 0.5 bytes) are a hexadecimal representation of any remaining digits of the product code.
 Hence, data 26 70 2 gives a product code of 27026 and 26 70 a gives a product code of 107026.
 
 Version ($7ffe, 0.5 bytes)
-The low 4 bits of the 15th byte of the header give a version number. 
+The low 4 bits of the 15th byte of the header give a version number.
 This is generally 0 for the first release and incremented for later revisions (which often have bugfixes).
 
 Region code (0x7fff, 0.5 bytes)
@@ -4848,11 +4848,11 @@ The final 4 bits give the ROM size, which may be used by the BIOS to determine t
 Value	Rom size	Comment
 $a	8KB	Unused
 $b	16KB	Unused
-$c	32KB	 
+$c	32KB
 $d	48KB	Unused, buggy
 $e	64KB	Rarely used
-$f	128KB	 
-$0	256KB	 
+$f	128KB
+$0	256KB
 $1	512KB	Rarely used
 $2	1MB	Unused, buggy
 
@@ -4863,9 +4863,9 @@ $2	1MB	Unused, buggy
 
 /*
 Product code ($7ffc, 2.5 bytes)
-The first 2 bytes are a Binary Coded Decimal representation of the last four digits of the product code. 
+The first 2 bytes are a Binary Coded Decimal representation of the last four digits of the product code.
 Hence, data 26 70 gives a product code 7026.
-The high 4 bits of the next byte (hence, 0.5 bytes) are a hexadecimal representation of any remaining digits of the product code. 
+The high 4 bits of the next byte (hence, 0.5 bytes) are a hexadecimal representation of any remaining digits of the product code.
 Hence, data 26 70 2 gives a product code of 27026 and 26 70 a gives a product code of 107026.
 */
  	sprintf(buffer_texto,"Serial Number: %02X%02X",
@@ -4876,7 +4876,7 @@ Hence, data 26 70 2 gives a product code of 27026 and 26 70 a gives a product co
 
 
  	sprintf(buffer_texto,"Software Revision: %d",buffer_cabecera[offset+0xe]);
- 	indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);   
+ 	indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
 
     z80_byte region_code=(buffer_cabecera[offset+0xf] >> 4) & 0xF;
     char buffer_region[32];
@@ -4906,7 +4906,7 @@ Hence, data 26 70 2 gives a product code of 27026 and 26 70 a gives a product co
     }
 
  	sprintf(buffer_texto,"Region: %d %s",region_code,buffer_region);
- 	indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);       
+ 	indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
 
     z80_byte rom_size=buffer_cabecera[offset+0xf] & 0xF;
     int total_rom_size=0;
@@ -4925,7 +4925,7 @@ Hence, data 26 70 2 gives a product code of 27026 and 26 70 a gives a product co
         case 0xc:
             total_rom_size=32;
         break;
-        
+
         case 0xd:
             total_rom_size=48;
         break;
@@ -4937,11 +4937,11 @@ Hence, data 26 70 2 gives a product code of 27026 and 26 70 a gives a product co
         case 0xf:
             total_rom_size=128;
         break;
-        
+
         case 0x0:
             total_rom_size=256;
         break;
-        
+
         case 0x1:
             total_rom_size=512;
         break;
@@ -4954,7 +4954,7 @@ Hence, data 26 70 2 gives a product code of 27026 and 26 70 a gives a product co
     }
 
  	sprintf(buffer_texto,"ROM size: %d KB",total_rom_size);
- 	indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);       
+ 	indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
 
 	texto_browser[indice_buffer]=0;
 	zxvision_generic_message_tooltip("SMS file browser" , 0 , 0, 0, 1, NULL, 1, "%s", texto_browser);
@@ -4975,7 +4975,7 @@ Hence, data 26 70 2 gives a product code of 27026 and 26 70 a gives a product co
 
 void menu_file_col_browser_show(char *filename)
 {
-	
+
 	//Leemos cabecera archivo col
         FILE *ptr_file_z80_browser;
 
@@ -4985,7 +4985,7 @@ void menu_file_col_browser_show(char *filename)
 
         int in_fatfs;
 
-  
+
         if (zvfs_fopen_read(filename,&in_fatfs,&ptr_file_z80_browser,&fil)<0) {
             debug_printf(VERBOSE_ERR,"Unable to open file");
             return;
@@ -5004,7 +5004,7 @@ void menu_file_col_browser_show(char *filename)
 	z80_byte z80_header[256];
 
         int leidos;
-        
+
         leidos=zvfs_fread(in_fatfs,z80_header,256,ptr_file_z80_browser,&fil);
         //leidos=fread(z80_header,1,256,ptr_file_z80_browser);
 
@@ -5034,8 +5034,8 @@ void menu_file_col_browser_show(char *filename)
 
 			int salir=0;
 
-			
-			
+
+
 
 			int destino=0;
 
@@ -5052,7 +5052,7 @@ void menu_file_col_browser_show(char *filename)
 
 					//Fin
 					if (digitos_anyos==4) salir=1;
-				}				
+				}
 
 				//Contar cuantas barras division
 				if (letra=='/') contador_barras++;
@@ -5066,7 +5066,7 @@ void menu_file_col_browser_show(char *filename)
 				texto_info[destino++]=letra;
 
 
-		
+
 
 			}
 
@@ -5084,7 +5084,7 @@ void menu_file_col_browser_show(char *filename)
 	sprintf(buffer_texto,"Game description:\n%s\n",texto_info);
  	indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
 	/*
-	8002 - 8003:   Pointer to RAM copy of the sprite name table 
+	8002 - 8003:   Pointer to RAM copy of the sprite name table
 8004 - 8005:   Pointer to RAM sprite table
 8006 - 8007:   Pointer to free buffer space in RAM
 8008 - 8009:   Pointer to controller memory map
@@ -5095,13 +5095,13 @@ void menu_file_col_browser_show(char *filename)
  	indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
 
  	sprintf(buffer_texto,"Sprite table:           %02X%02XH",z80_header[0x05],z80_header[0x04]);
- 	indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);	 
+ 	indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
 
  	sprintf(buffer_texto,"Free buffer space:      %02X%02XH",z80_header[0x07],z80_header[0x06]);
- 	indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);	
+ 	indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
 
  	sprintf(buffer_texto,"Controller memory map:  %02X%02XH",z80_header[0x09],z80_header[0x08]);
- 	indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);	 	 
+ 	indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
 
  	sprintf(buffer_texto,"Code start:             %02X%02XH",z80_header[0x0b],z80_header[0x0a]);
  	indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
@@ -5120,7 +5120,7 @@ void menu_file_col_browser_show(char *filename)
 
 void menu_file_z80_browser_show(char *filename)
 {
-	
+
 	//Leemos cabecera archivo z80
         FILE *ptr_file_z80_browser;
 
@@ -5148,7 +5148,7 @@ void menu_file_z80_browser_show(char *filename)
 	z80_byte z80_header[87];
 
         int leidos;
-        
+
         leidos=zvfs_fread(in_fatfs,z80_header,30,ptr_file_z80_browser,&fil);
         //leidos=fread(z80_header,1,30,ptr_file_z80_browser);
 
@@ -5158,7 +5158,7 @@ void menu_file_z80_browser_show(char *filename)
         }
 
 
-        
+
 
         //Ver si version 2 o 3
         z80_byte z80_version=1;
@@ -5168,7 +5168,7 @@ void menu_file_z80_browser_show(char *filename)
         if (z80_pc_reg==0) {
         	z80_version=2; //minimo 2
 
-        	//Leer cabecera adicional 
+        	//Leer cabecera adicional
             zvfs_fread(in_fatfs,&z80_header[30],57,ptr_file_z80_browser,&fil);
         	//fread(&z80_header[30],1,57,ptr_file_z80_browser);
 
@@ -5180,7 +5180,7 @@ void menu_file_z80_browser_show(char *filename)
         zvfs_fclose(in_fatfs,ptr_file_z80_browser,&fil);
         //fclose(ptr_file_z80_browser);
 
-       
+
 	char buffer_texto[64]; //2 lineas, por si acaso
 
 	//int longitud_bloque;

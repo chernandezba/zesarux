@@ -136,7 +136,7 @@ void baseconf_set_memory_pages(void)
                 }
 
                 if (baseconf_last_port_eff7&8) {
-                        /* 3: When placing a 1 in box # 0000 .. # 3FFF forces the zero page RAM. 
+                        /* 3: When placing a 1 in box # 0000 .. # 3FFF forces the zero page RAM.
                         This bit has priority over all other ways to switch the memory page in the window.
                         Value after reset - 0.
                         */
@@ -161,7 +161,7 @@ void baseconf_set_memory_pages(void)
 
                 //printf ("segmento %d pagina %d\n",i,pagina);
         }
-	
+
 
 
   //printf ("32765: %02XH rom %d ram1 %d ram2 %d ram3 %d\n",puerto_32765,rom_page,ram_page_40,ram_page_80,ram_page_c0);
@@ -179,7 +179,7 @@ void baseconf_hard_reset(void)
   baseconf_memory_segments[0]=baseconf_memory_segments[1]=baseconf_memory_segments[2]=baseconf_memory_segments[3]=255;
   baseconf_memory_segments_type[0]=baseconf_memory_segments_type[1]=baseconf_memory_segments_type[2]=baseconf_memory_segments_type[3]=0;
 
- 
+
   reset_cpu();
 
 
@@ -189,7 +189,7 @@ void baseconf_hard_reset(void)
        //Borrar toda memoria ram
         int d;
         z80_byte *puntero;
-        
+
         for (i=0;i<BASECONF_RAM_PAGES;i++) {
                 puntero=baseconf_ram_mem_table[i];
                 for (d=0;d<16384;d++,puntero++) {
@@ -207,12 +207,12 @@ baseconf_last_port_eff7=0;
 
 //Cambia el valor de entrada de numero de pagina ram segun :
 /*
-for RAM - in the window there is a substitution under 3 or 6 bits (depending on the mode of ZX Spectrum 128k or pentagon 1024k) 
+for RAM - in the window there is a substitution under 3 or 6 bits (depending on the mode of ZX Spectrum 128k or pentagon 1024k)
 page numbers are not inverse bits from port # 7FFD.
 */
 z80_byte baseconf_change_ram_page_7ffd(z80_byte value)
 {
-        
+
 /*
 baseconf_last_port_eff7;
 2: off for a 1 - mode ZX Spectrum 128k, otherwise - mode pentagon 1024k.
@@ -246,7 +246,7 @@ z80_byte baseconf_change_rom_page_trdos(z80_byte value)
         value=value&254;
         if ((baseconf_shadow_mode_port_77&2)==0) {
                 //printf ("TODO: If 0 then -force- the inclusion of TR-DOS and the shadow ports. 0 after reset\n");
-                /* 
+                /*
                 A9: If 0 then "force" the inclusion of TR-DOS and the shadow ports. 0 after reset.
                 */
 
@@ -260,20 +260,20 @@ void baseconf_out_port(z80_int puerto,z80_byte valor)
 
         z80_byte puerto_h=puerto>>8;
 
-      
+
 
         //xxBFH
         //Enable shadow mode ports write permission in ROM.
         if ( (puerto&0x00FF)==0xBF ) {
-               baseconf_last_port_bf=valor; 
+               baseconf_last_port_bf=valor;
 
                baseconf_set_memory_pages();
-        }        
+        }
 
         //xx77H
         else if ( (puerto&0x00FF)==0x77 && baseconf_shadow_ports_available() ) {
                 baseconf_shadow_mode_port_77=puerto_h;
-               baseconf_last_port_77=valor; 
+               baseconf_last_port_77=valor;
 
                baseconf_set_memory_pages();
         }
@@ -288,9 +288,9 @@ void baseconf_out_port(z80_int puerto,z80_byte valor)
         //xFF7H
         //The memory manager pages.
         else if ( (puerto&0x0FFF)==0xFF7 && baseconf_shadow_ports_available() ) {
-               
 
-                
+
+
                   z80_byte pagina=valor ^ 255;
                          z80_byte es_ram=valor & 64;
 
@@ -307,9 +307,9 @@ void baseconf_out_port(z80_int puerto,z80_byte valor)
                                 if (valor&128) pagina=baseconf_change_ram_page_7ffd(pagina);
                  }
 
-                 baseconf_memory_segments[segmento]=pagina;  
+                 baseconf_memory_segments[segmento]=pagina;
                  baseconf_memory_segments_type[segmento]=es_ram;
-                
+
 
                baseconf_set_memory_pages();
         }
@@ -347,12 +347,12 @@ segmento 0 pagina 0
 
                 if (valor&128) pagina=baseconf_change_ram_page_7ffd(pagina);
 
-                baseconf_memory_segments[segmento]=pagina;  
-                baseconf_memory_segments_type[segmento]=es_ram;      
+                baseconf_memory_segments[segmento]=pagina;
+                baseconf_memory_segments_type[segmento]=es_ram;
 
 
                baseconf_set_memory_pages();
-        }        
+        }
 
         else if (puerto==0x7ffd) {
                 //mapeamos ram y rom , pero sin habilitando memory manager
@@ -365,7 +365,7 @@ segmento 0 pagina 0
                 //rom
                 baseconf_memory_segments[0] &=254;
                 if (valor&16) baseconf_memory_segments[0] |= 1;
-                baseconf_memory_segments_type[0]=0;       
+                baseconf_memory_segments_type[0]=0;
 
 
                 puerto_32765=valor;
@@ -375,7 +375,7 @@ segmento 0 pagina 0
                 //printf ("mapping segun puerto 32765\n");
         }
 
-        //Puertos NVRAM. 
+        //Puertos NVRAM.
 	else if (puerto==0xeff7 && !baseconf_shadow_ports_available() ) puerto_eff7=valor;
 	else if (puerto==0xdff7 && !baseconf_shadow_ports_available() ) zxevo_last_port_dff7=valor;
         else if (puerto==0xdef7 && baseconf_shadow_ports_available() ) zxevo_last_port_dff7=valor;

@@ -281,7 +281,7 @@ char temporary_audiosdl_fifo_sdl_buffer[AUDIO_BUFFER_SIZE*MAX_AUDIOSDL_FIFO_MULT
 //ver http://www.libsdl.org/release/SDL-1.2.15/docs/html/guideaudioexamples.html
 
 //TODO: este callback es el comun para todos pero en SDL1 este es el usado por defecto en no-windows, y hay otro de Windows
-//Aqui se probó la variante de callback de windows, 
+//Aqui se probó la variante de callback de windows,
 //pero ejecutandose en Linux, y sucedia que se quedaba dentro del bucle while
 //Testear ese nuevo callback tanto para Linux como Windows y ver que funciona
 void audiosdl_callback(void *udata, Uint8 *stream, int len)
@@ -311,7 +311,7 @@ void audiosdl_callback(void *udata, Uint8 *stream, int len)
         if (audiosdl_use_new_callback.v) {
 
             int indice=0;
-  
+
 
             int tamanyo_fifo=audiosdl_fifo_sdl_return_size();
 
@@ -328,16 +328,16 @@ void audiosdl_callback(void *udata, Uint8 *stream, int len)
 
 
             else {
-                
+
                 //printf ("audiosdl_callback. enviando sonido\n");
                 if (leer) {
-                    audiosdl_fifo_sdl_read(&temporary_audiosdl_fifo_sdl_buffer[indice],leer);       
+                    audiosdl_fifo_sdl_read(&temporary_audiosdl_fifo_sdl_buffer[indice],leer);
                 }
-                
+
             }
         }
 
-        //Viejo Callback        
+        //Viejo Callback
         else {
             //printf ("audiosdl_callback. longitud pedida: %d AUDIO_BUFFER_SIZE: %d\n",len,AUDIO_BUFFER_SIZE);
             if (len>audiosdl_fifo_sdl_return_size()) {

@@ -90,7 +90,7 @@ struct s_z_sockets_struct {
 };
 
 
-//funciones zsock no permito usarlas sin pthreads. Por que? Porque no tiene sentido realizar funciones de red si no se pueden meter 
+//funciones zsock no permito usarlas sin pthreads. Por que? Porque no tiene sentido realizar funciones de red si no se pueden meter
 //las funciones en background, que se quedaria el emulador congelado al usar el speccy browser (por ejemplo, aunque seria un mal menor),
 //o al usar ZENG (ahi es imposible usarlo si no hay threads, como todo ZRCP). Al final se trata de simplificar las rutinas:
 //Si no hay soporte de threads, no hay funciones de red. Y punto
@@ -132,11 +132,11 @@ char *z_sock_get_error(int error)
 
 		case Z_ERR_NUM_SSL_UNAVAIL:
 			return z_err_msg_ssl_unavail;
-		break;	
+		break;
 
 		case Z_ERR_NUM_SOCK_NOT_OPEN:
-        	return z_err_msg_sock_not_open; 
-		break;		
+        	return z_err_msg_sock_not_open;
+		break;
 
 		case Z_ERR_NUM_WRITE_SOCKET:
 			return z_err_msg_write_socket;
@@ -275,7 +275,7 @@ void z_disconnect_ssl(int indice_tabla)
 
 	debug_printf (VERBOSE_DEBUG,"SSL_CTX_free");
 	SSL_CTX_free(sockets_list[indice_tabla].ssl_ctx);
-	
+
 }
 
 
@@ -288,7 +288,7 @@ void z_disconnect_ssl(int indice_tabla)
 
 
 
- 
+
 #ifndef NETWORKING_DISABLED
 
 
@@ -324,9 +324,9 @@ int omplir_adr_internet(struct sockaddr_in *adr,char *host,unsigned short n_port
 
 	//Adquirir lock
 	//Parece ser que si aqui se entra simultaneamente desde varios sitios,
-	//como h->h_addr tiene mismo valor cuando host es el mismo (ejemplo 51.83.33.13 al 
+	//como h->h_addr tiene mismo valor cuando host es el mismo (ejemplo 51.83.33.13 al
 	//enviar estadisticas, comprobar update y obtener usuarios de ayer),
-	//si se acceden todos a la vez acaba petando la sentencia 
+	//si se acceden todos a la vez acaba petando la sentencia
 	//adr->sin_addr=*(struct in_addr *)h->h_addr;
 	//con segfault
 	//Parece que con este semaforo ya no peta
@@ -335,7 +335,7 @@ int omplir_adr_internet(struct sockaddr_in *adr,char *host,unsigned short n_port
 	//de este bloqueo no seria para nada eficiente
 	while(z_atomic_test_and_set(&omplir_adr_internet_semaforo)) {
 		//printf("Esperando a liberar lock en omplir_adr_internet_semaforo\n");
-	} 
+	}
 
         struct hostent *h;
 
@@ -344,7 +344,7 @@ int omplir_adr_internet(struct sockaddr_in *adr,char *host,unsigned short n_port
 
 
 			h=gethostbyname(host);
-            
+
 			if (h==NULL) {
 
 				//Liberar lock
@@ -352,7 +352,7 @@ int omplir_adr_internet(struct sockaddr_in *adr,char *host,unsigned short n_port
 				return -1;
 			}
 
-	
+
                 adr->sin_addr=*(struct in_addr *)h->h_addr;
 
                 //printf ("\nncdd_util: %s : %d = %lX\n",host,(int)n_port,(unsigned long)adr->sin_addr.s_addr);
@@ -446,7 +446,7 @@ int leidos=recv(s,buffer,longitud,0);
 }
 
 
-int connectar_socket(int s,struct sockaddr_in *adr) 
+int connectar_socket(int s,struct sockaddr_in *adr)
 {
 	//TODO: como funciona esto en Windows?
 	int retorno=connect(s,(struct sockaddr *)adr,sizeof(struct sockaddr_in));
@@ -482,9 +482,9 @@ int zsock_available_data(int socket)
 			//TODO: en windows siempre retorna datos disponibles. lo cual seria un problema por que si no hay datos,
 			//la conexion se queda en read colgada
 
-//-En Windows para saber si un socket tiene datos para leer, 
+//-En Windows para saber si un socket tiene datos para leer,
 //metemos primero el socket en modo no bloqueante,
-//luego usar llamada a read con 0 bytes y devolverá error si no hay bytes para leer	
+//luego usar llamada a read con 0 bytes y devolverá error si no hay bytes para leer
 //Es la mejor manera esta? No estoy seguro, pero funciona
 
 #ifdef MINGW
@@ -589,7 +589,7 @@ int leer_socket(int s GCC_UNUSED, char *buffer GCC_UNUSED, int longitud GCC_UNUS
 
 
 
-int connectar_socket(int s GCC_UNUSED,struct sockaddr_in *adr GCC_UNUSED) 
+int connectar_socket(int s GCC_UNUSED,struct sockaddr_in *adr GCC_UNUSED)
 {
 
 	debug_printf (VERBOSE_ERR,"Pthreads unavailable but trying to use TCP/IP sockets");
@@ -681,12 +681,12 @@ int z_sock_assign_socket(void)
 	//Adquirir lock
 	while(z_atomic_test_and_set(&network_semaforo)) {
 		//printf("Esperando a liberar lock en network_semaforo en z_sock_assign_socket\n");
-	} 
+	}
 
 	int indice_tabla=find_free_socket();
 	if (indice_tabla<0) {
 		//Dado que es un error grave, que lo muestre como error y por ventana. Tambien retornamos numero error
-		debug_printf(VERBOSE_ERR,"Too many ZEsarUX open sockets (%d)",MAX_Z_SOCKETS);	
+		debug_printf(VERBOSE_ERR,"Too many ZEsarUX open sockets (%d)",MAX_Z_SOCKETS);
 		indice_tabla=Z_ERR_NUM_TOO_MANY_SOCKETS;
 	}
 	else {
@@ -697,7 +697,7 @@ int z_sock_assign_socket(void)
 	}
 
 	//Liberar lock
-	z_atomic_reset(&network_semaforo);	
+	z_atomic_reset(&network_semaforo);
 
 	return indice_tabla;
 }
@@ -712,12 +712,12 @@ void z_sock_free_socket(int indice_tabla)
 	//Adquirir lock
 	while(z_atomic_test_and_set(&network_semaforo)) {
 		//printf("Esperando a liberar lock en network_semaforo en z_sock_free_socket\n");
-	} 
+	}
 
 	sockets_list[indice_tabla].used=0;
 
 	//Liberar lock
-	z_atomic_reset(&network_semaforo);	
+	z_atomic_reset(&network_semaforo);
 
 
 }
@@ -731,12 +731,12 @@ int z_sock_open_connection(char *host,int port,int use_ssl,char *ssl_sni_host_na
 
 	int indice_tabla=z_sock_assign_socket();
 	if (indice_tabla<0) {
-		return -1;		
+		return -1;
 	}
-	
+
 	int test_socket;
 
-	//Aqui ya se ha asignado socket en la lista. Si hay error posterior, liberar dicho socket		
+	//Aqui ya se ha asignado socket en la lista. Si hay error posterior, liberar dicho socket
 	int error=0;
 	int error_num=-1;
 
@@ -783,13 +783,13 @@ int z_sock_open_connection(char *host,int port,int use_ssl,char *ssl_sni_host_na
 #else
 		//printf ("SSL requested but ssl libraries unavailable\n");
 		return Z_ERR_NUM_SSL_UNAVAIL;
-	
+
 #endif
 	}
 
 	return indice_tabla;
 
-} 
+}
 
 int get_socket_number(int indice_tabla)
 {
@@ -802,15 +802,15 @@ int get_socket_number(int indice_tabla)
 	if (!sockets_list[indice_tabla].used) {
 		//printf ("socket indice %d no esta usado\n",indice_tabla);
 		return Z_ERR_NUM_SOCK_NOT_OPEN;
-	}	
+	}
 
 	else {
 		return sockets_list[indice_tabla].socket_number;
 	}
 }
-	
 
-int z_sock_close_connection(int indice_tabla) 
+
+int z_sock_close_connection(int indice_tabla)
 {
 
 	int sock=get_socket_number(indice_tabla);
@@ -829,10 +829,10 @@ int z_sock_close_connection(int indice_tabla)
 #else
 		//printf ("SSL requested but ssl libraries unavailable\n");
 		return Z_ERR_NUM_SSL_UNAVAIL;
-	
+
 #endif
 
-	}	
+	}
 
 
 
@@ -841,7 +841,7 @@ int z_sock_close_connection(int indice_tabla)
 
 
 //Liberar el socket de la lista pero sin desconectar
-int z_sock_free_connection(int indice_tabla) 
+int z_sock_free_connection(int indice_tabla)
 {
 
 	int sock=get_socket_number(indice_tabla);
@@ -873,7 +873,7 @@ int z_sock_read(int indice_tabla, z80_byte *buffer, int longitud)
 #else
 		//printf ("SSL requested but ssl libraries unavailable\n");
 		return Z_ERR_NUM_SSL_UNAVAIL;
-	
+
 #endif
 	}
 
@@ -883,7 +883,7 @@ int z_sock_read(int indice_tabla, z80_byte *buffer, int longitud)
 
 
 int z_sock_write_string(int indice_tabla, char *buffer)
-{ 
+{
 
 	int sock=get_socket_number(indice_tabla);
 
@@ -900,7 +900,7 @@ int z_sock_write_string(int indice_tabla, char *buffer)
 #else
 		//printf ("SSL requested but ssl libraries unavailable\n");
 		return Z_ERR_NUM_SSL_UNAVAIL;
-	
+
 #endif
 	}
 
@@ -920,7 +920,7 @@ int zsock_wait_until_command_prompt(int indice_tabla)
 
 	if (sock<0) {
 				return sock;
-	}	
+	}
 
 
 
@@ -956,7 +956,7 @@ int zsock_read_all(int indice_tabla,z80_byte *buffer,int max_buffer)
 
 	if (sock<0) {
 		return sock;
-	}	
+	}
 
 
 	int pos_destino=0;
@@ -1007,7 +1007,7 @@ int zsock_read_all_until_command(int indice_tabla,z80_byte *buffer,int max_buffe
 
 	if (sock<0) {
 		return sock;
-	}	
+	}
 
 
 	int pos_destino=0;
@@ -1078,7 +1078,7 @@ char *zsock_http_skip_headers(char *mem,int total_leidos,int *http_code,char *re
 	int i=0;
 	int salir=0;
 	int linea=0;
-	
+
 	//de momento
 	redirect[0]=0;
 
@@ -1097,7 +1097,7 @@ char *zsock_http_skip_headers(char *mem,int total_leidos,int *http_code,char *re
 		else {
 			next_mem=util_read_line(mem,buffer_linea,total_leidos,1024,&leidos);
 			total_leidos -=leidos;
-			
+
 			//si linea primera http code
 			if (linea==0) {
 				char *existe;
@@ -1108,9 +1108,9 @@ char *zsock_http_skip_headers(char *mem,int total_leidos,int *http_code,char *re
 					if ((*http_code)==302) redireccion=1;
 				}
 			}
-			
+
 			linea++;
-		
+
 			if (buffer_linea[0]==0) {
 				salir=1;
 				//printf ("salir con linea vacia final\n");
@@ -1132,7 +1132,7 @@ char *zsock_http_skip_headers(char *mem,int total_leidos,int *http_code,char *re
 					existe=strstr(buffer_linea,"Location: ");
 					existe_minus=strstr(buffer_linea,"location: ");
 
-					if (existe!=NULL || existe_minus!=NULL) {			
+					if (existe!=NULL || existe_minus!=NULL) {
 						int longitud=strlen(pref_location);
 						debug_printf (VERBOSE_DEBUG,"zsock_http_skip_headers Detected redirect %s",buffer_linea);
 						strcpy(redirect,&buffer_linea[longitud]);
@@ -1142,11 +1142,11 @@ char *zsock_http_skip_headers(char *mem,int total_leidos,int *http_code,char *re
 				i++;
 				mem=next_mem;
 			}
-		
+
 			if (total_leidos<=0) salir=1;
 		}
 	} while (!salir);
-	
+
 	//printf ("respuesta despues cabeceras:\n%s\n",mem)
 	return mem;
 }
@@ -1172,20 +1172,20 @@ int zsock_http(char *host, char *url,int *http_code,char **mem,int *t_leidos, ch
 		//printf ("retornamos desde zsock http. errnum: %d\n",indice_socket);
 		return indice_socket;
 	}
-		
+
 		int sock=get_socket_number(indice_socket);
 
 	if (sock<0) {
 		return sock;
-	}	
-		
+	}
+
 	char request[1024];
-	
+
 	sprintf(request,"GET %s HTTP/1.0\r\n"
 					"Host: %s\r\n"
 					"User-Agent: ZEsarUX " EMULATOR_VERSION " " COMPILATION_SYSTEM "\r\n"
 					"Accept-Encoding: identity\r\n"
-					"%s" 
+					"%s"
 					"\r\n",
 					url,host,add_headers);
 
@@ -1204,10 +1204,10 @@ If no Accept-Encoding field is present in a request, the server MAY
    to the client.
 		*/
 
-	//Cuidado que este debug_printf no exceda el valor de DEBUG_MAX_MESSAGE_LENGTH, que no llegará, pero por si acaso...			
+	//Cuidado que este debug_printf no exceda el valor de DEBUG_MAX_MESSAGE_LENGTH, que no llegará, pero por si acaso...
 	debug_printf (VERBOSE_DEBUG,"zsock_http Request:\n%s",request);
 
-	
+
 	int escritos=z_sock_write_string(indice_socket,request);
 
 
@@ -1215,30 +1215,30 @@ If no Accept-Encoding field is present in a request, the server MAY
 		//Error escribiendo en el socket
 		return Z_ERR_NUM_WRITE_SOCKET;
 	}
-	
+
 	//todo buffer asignar
 	char *response;
 	int max_buffer=MAX_ZSOCK_HTTP_BUFFER; //1024*1024; //1 mb max por defecto
-	
+
 	if (estimated_maximum_size>max_buffer) max_buffer=estimated_maximum_size;
-	
-	
+
+
 	debug_printf (VERBOSE_DEBUG,"Allocating max block for download: %d",max_buffer);
-	
-	
+
+
 	response=malloc(max_buffer);
 	if (response==NULL) cpu_panic ("Can not allocate memory for http response");
-	
-	
+
+
 	//char response[65535];
-	
+
 	//int leido_content_length=0;
 	int pos_destino=0;
-	
+
 	int leidos;
 	int salir=0;
 	int total_leidos=0;
-	
+
 	//todo leer hasta content-length o hasta cierre de socket
 	//todo usar funcion parecida a zsock_read_all_until_command pero con condicion redefinible
 	//todo ver si el socket se ha cerrado
@@ -1266,7 +1266,7 @@ If no Accept-Encoding field is present in a request, the server MAY
 				if (total_leidos>1024*1024) print_total_leidos_mb=1;
 
 				int print_estimated_maximum_size_mb=0;
-				if (estimated_maximum_size>1024*1024) print_estimated_maximum_size_mb=1;				
+				if (estimated_maximum_size>1024*1024) print_estimated_maximum_size_mb=1;
 
 				debug_printf (VERBOSE_DEBUG,"Read data on zsock_http (z_sock_read): %d (current %d%s estimated max %d%s) chunk count: %d (max %d)",leidos,
 											(print_total_leidos_mb ? total_leidos/1024/1024: total_leidos),
@@ -1292,7 +1292,7 @@ If no Accept-Encoding field is present in a request, the server MAY
 			}
 		} while (leidos>0 && max_buffer>0 && !salir);
 		//int leidos=z_sock_read(indice_socket,&response[pos_destino],65535);
-		
+
 		if (!salir) {
 			usleep(10000); //10 ms. Suponiendo max_reintentos=500 y 10 ms de pausa, esto nos lleva 5 segundos continuos de pausa
 			reintentos++;
@@ -1301,9 +1301,9 @@ If no Accept-Encoding field is present in a request, the server MAY
 		//controlar maximo reintentos
 		//TODO: realmente hace falta? Realmente estos reintentos son, mas bien, trozos en que se divide la descarga (o sea, veces que lanzamos la peticion http)
 	} while (reintentos<max_reintentos && !salir);
-	
+
 	debug_printf (VERBOSE_PARANOID,"zsock_http: Retries: %d",reintentos);
-		
+
 	if (total_leidos>0) {
 		response[total_leidos]=0;
 		debug_printf (VERBOSE_DEBUG,"zsock_http: Total read data: %d",total_leidos);
@@ -1311,16 +1311,16 @@ If no Accept-Encoding field is present in a request, the server MAY
 		//printf ("respuesta:\n%s\n",response);
 		z_sock_close_connection(indice_socket);
 		*mem=response;
-		
+
 		if (skip_headers) {
-			
+
 			*mem_after_headers=zsock_http_skip_headers(*mem,total_leidos,http_code,redirect_url);
-			
+
 		}
 		return 0;
 	}
-	
+
 	else return -1;
-		
-		
+
+
 }

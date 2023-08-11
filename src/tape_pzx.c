@@ -1,5 +1,5 @@
 /*
-    ZEsarUX  ZX Second-Emulator And Released for UniX 
+    ZEsarUX  ZX Second-Emulator And Released for UniX
     Copyright (C) 2013 Cesar Hernandez Bano
 
     This file is part of ZEsarUX.
@@ -98,7 +98,7 @@ int tape_block_pzx_blockmem_fread(z80_byte *puntero_memoria,int leer)
         *puntero_memoria=tape_block_pzx_blockmem_getnext();
         puntero_memoria++;
         leer--;
-    } 
+    }
 
     return leer_orig;
 }
@@ -159,7 +159,7 @@ int pzx_read_id(void)
 
 
     //Leer el contenido del bloque en memoria
-    
+
 
     pzx_blockmem_pointer=util_malloc(pzx_last_blockmem_length,"Can not allocate memory for PZX read");
     leidos=fread(pzx_blockmem_pointer,1,pzx_last_blockmem_length,ptr_mycintanew_pzx);
@@ -168,7 +168,7 @@ int pzx_read_id(void)
         pzx_blockmem_feof=1;
         return 0;
     }
-      
+
     pzx_blockmem_position=0;
     return 1;
 
@@ -186,12 +186,12 @@ int tape_block_pzx_read(void *dir,int longitud)
 		debug_printf (VERBOSE_ERR,"Tape uninitialized");
 		return 0;
 	}
-    
 
 
 
 
-				
+
+
     debug_printf(VERBOSE_DEBUG,"Reading %d bytes.",longitud);
     int leidos=tape_block_pzx_blockmem_fread(dir,longitud);
     if (leidos==0) {
@@ -203,7 +203,7 @@ int tape_block_pzx_read(void *dir,int longitud)
 
     pzx_last_length_read -=longitud;
     debug_printf(VERBOSE_DEBUG,"Remaining bytes in block: %d",pzx_last_length_read);
-    
+
 
     return leidos;
 
@@ -228,7 +228,7 @@ int tape_pzx_seek_data_block(void)
         if (!pzx_read_id()) return 0;
 
         debug_printf(VERBOSE_INFO,"PZX Read Block type: [%s]",pzx_last_block_id_name);
-        
+
         if (!strcasecmp(pzx_last_block_id_name,"DATA")) {
             return 1;
         }
@@ -242,7 +242,7 @@ int tape_pzx_seek_data_block(void)
             //pzx_last_block_id_length -=2;
 
             debug_printf(VERBOSE_INFO,"PZX PZXT block. Version %d.%d",buffer_version[0],buffer_version[1]);
-		           
+
             //asigna memoria
             z80_byte *info_bloque;
             info_bloque=util_malloc(pzx_last_blockmem_length-2,"Can not allocate for PZXT block");
@@ -266,15 +266,15 @@ int tape_pzx_seek_data_block(void)
                 puntero_strings +=longitud_string+1; //saltar incluso el 0 final
 
                 //Y restar de la longitud total
-                longitud_textos -=(longitud_string+1); 
+                longitud_textos -=(longitud_string+1);
             }
 
             free(info_bloque);
-    
+
         }
 
 
-    } while(1);   
+    } while(1);
 }
 
 int tape_pzx_see_if_standard_tape(void)
@@ -288,7 +288,7 @@ int tape_pzx_see_if_standard_tape(void)
 	}
 
 	do {
-        
+
 
         if (!pzx_read_id()) {
             debug_printf(VERBOSE_DEBUG,"PZX seems to be a ZX Spectrum standard tape");
@@ -296,10 +296,10 @@ int tape_pzx_see_if_standard_tape(void)
         }
 
         //printf("tape_pzx_see_if_standard_tape. Bloque %s\n",pzx_last_block_id_name);
-        
+
         if (!strcasecmp(pzx_last_block_id_name,"DATA")) {
 
-            
+
             //saltar los 6 bytes que indican longitud en bits y la duracion del tail
             z80_byte buffer_nada[6];
             tape_block_pzx_blockmem_fread(buffer_nada,6);
@@ -313,7 +313,7 @@ int tape_pzx_see_if_standard_tape(void)
 
             //bit 0: 855,855
             //bit 1: 1710,1710
-            
+
             z80_byte pzx_data_block[10]={0x02,0x02,0x57,0x03,0x57,0x03,0xae,0x06,0xae,0x06};
 
 
@@ -321,24 +321,24 @@ int tape_pzx_see_if_standard_tape(void)
 
 		    tape_block_pzx_blockmem_fread(buffer_data,10);
 
-            
+
 
             if (memcmp(pzx_data_block,buffer_data,10)) {
                 debug_printf(VERBOSE_DEBUG,"PZX is not standard tape: DATA block with different pulse parameters than ZX Spectrum");
                 return 0;
             }
 
-            
+
         }
 
         else if (!strcasecmp(pzx_last_block_id_name,"PULS")) {
 
-            
+
 
             //Si longitud no es 8, seguro que no es un pulso estandard
             if (pzx_last_blockmem_length!=8) {
                 debug_printf(VERBOSE_DEBUG,"PZX is not standard tape: PULS block with length != 8");
-                return 0;  
+                return 0;
             }
 
             //Tono guia de un flag <128 (largo)
@@ -370,12 +370,12 @@ int tape_pzx_see_if_standard_tape(void)
                 return 0;
             }
 
-           
-        }        
+
+        }
 
 
-    } while(1); 
-    
+    } while(1);
+
 }
 
 int tape_block_pzx_readlength(void)
@@ -404,18 +404,18 @@ int tape_block_pzx_readlength(void)
 8           u16[p0]          s0    sequence of pulse durations encoding bit equal to 0.
 8+2*p0      u16[p1]          s1    sequence of pulse durations encoding bit equal to 1.
 8+2*(p0+p1) u8[ceil(bits/8)] data  data stream, see below.
-        */     
+        */
 
         //leemos longitud
-        
+
         z80_byte buffer_longitud[4];
         tape_block_pzx_blockmem_fread(buffer_longitud,4);
-        
+
 
         int longitud_bits=   buffer_longitud[0]+
                                 (buffer_longitud[1]*256)+
                                 (buffer_longitud[2]*65536)+
-                                ((buffer_longitud[3]&127)*16777216);      
+                                ((buffer_longitud[3]&127)*16777216);
 
         //printf("longitud bits: %d\n",longitud_bits);
 		pzx_last_length_read=longitud_bits/8;
@@ -430,16 +430,16 @@ int tape_block_pzx_readlength(void)
         tape_block_pzx_blockmem_fread(&pulsos_cero,1);
         tape_block_pzx_blockmem_fread(&pulsos_uno,1);
 
-        
+
 
         for(;pulsos_cero;pulsos_cero--) tape_block_pzx_blockmem_fread(buffer_nada,2);
         for(;pulsos_uno;pulsos_uno--) tape_block_pzx_blockmem_fread(buffer_nada,2);
 
 
-        
+
 
 		debug_printf(VERBOSE_DEBUG,"PZX Data Block length: %d",pzx_last_length_read);
-		
+
 		return pzx_last_length_read;
 }
 
@@ -458,13 +458,13 @@ int tape_block_pzx_seek(int longitud,int direccion)
         return -1;
     }
 
-   
+
     debug_printf(VERBOSE_DEBUG,"PZX Seek %d bytes",longitud);
 
     pzx_blockmem_position +=longitud;
-    
+
     pzx_last_length_read -=longitud;
-    
+
 
     return 0;
 }
@@ -512,8 +512,8 @@ void tape_write_pzx_header_ptr(FILE *ptr_archivo, int in_fatfs, FIL *fil_pzxfile
 
         //Metemos version
         cabecera[8]=PZX_CURRENT_MAJOR_VERSION;
-        cabecera[9]=PZX_CURRENT_MINOR_VERSION;   
- 
+        cabecera[9]=PZX_CURRENT_MINOR_VERSION;
+
 	//fwrite(cabecera, 1, longitud_cabecera, ptr_archivo);
     zvfs_fwrite(in_fatfs,(z80_byte *)cabecera,longitud_cabecera,ptr_archivo,fil_pzxfile);
 }
@@ -542,7 +542,7 @@ void tape_write_pzx_header(void)
 
 	tape_write_pzx_header_ptr(ptr_mycinta_pzx_out,0,NULL); //No usamos descriptor de zvfs
 
-	
+
 }
 
 int tape_out_block_pzx_open(void)
@@ -588,7 +588,7 @@ void tape_block_pzx_begin_save_ptr(FILE *ptr_archivo,int longitud,z80_byte flag,
 
 
 
-	//Escribir id 10	
+	//Escribir id 10
 	//pausa de 1000 ms
 	/*char buffer[]={0x10,232,3};
 	fwrite(buffer, 1, sizeof(buffer), ptr_mycinta_pzx_out);*/
@@ -602,7 +602,7 @@ void tape_block_pzx_begin_save_ptr(FILE *ptr_archivo,int longitud,z80_byte flag,
         */
 
        /*
-       
+
        PULS - Pulse sequence
 ---------------------
 
@@ -611,10 +611,10 @@ offset type   name      meaning
                         bit 15 repeat count present: 0 not present 1 present
 2      u16    duration1 bits 0-14 low/high (see bit 15) pulse duration bits
                         bit 15 duration encoding: 0 duration1 1 ((duration1<<16)+duration2)
-4      u16    duration2 optional low bits of pulse duration (see bit 15 of duration1) 
+4      u16    duration2 optional low bits of pulse duration (see bit 15 of duration1)
 6      ...    ...       ditto repeated until the end of the block
 
-       
+
        For example, the standard pilot tone of Spectrum header block (leader < 128)
 may be represented by following sequence:
 
@@ -635,7 +635,7 @@ The standard pilot tone of Spectrum data block (leader >= 128) would be:
        block_buffer[4]=8;
        block_buffer[5]=0;
        block_buffer[6]=0;
-       block_buffer[7]=0;    
+       block_buffer[7]=0;
 
 
 
@@ -666,8 +666,8 @@ The standard pilot tone of Spectrum data block (leader >= 128) would be:
         block_buffer[13]=value_16_to_8h(667);
 
         block_buffer[14]=value_16_to_8l(735);
-        block_buffer[15]=value_16_to_8h(735);                        
-	
+        block_buffer[15]=value_16_to_8h(735);
+
 
         //Escribir bloque PULS
         //fwrite(block_buffer, 1, 16, ptr_archivo);
@@ -710,7 +710,7 @@ bit 1: 1710,1710
        block_buffer[4]=longitud_bloque & 0xFF;
        block_buffer[5]=(longitud_bloque>>8) & 0xFF;
        block_buffer[6]=(longitud_bloque>>16) & 0xFF;
-       block_buffer[7]=(longitud_bloque>>24) & 0xFF;      
+       block_buffer[7]=(longitud_bloque>>24) & 0xFF;
 
        /*
 offset      type             name  meaning
@@ -721,21 +721,21 @@ offset      type             name  meaning
 7           u8               p1    number of pulses encoding bit equal to 1.
 8           u16[p0]          s0    sequence of pulse durations encoding bit equal to 0.
 8+2*p0      u16[p1]          s1    sequence of pulse durations encoding bit equal to 1.
-8+2*(p0+p1) u8[ceil(bits/8)] data  data stream, see below.       
-       */ 
+8+2*(p0+p1) u8[ceil(bits/8)] data  data stream, see below.
+       */
 
       //z80_long_int numero_bits=longitud_bloque*8;
       z80_long_int numero_bits=longitud*8;
- 
+
        block_buffer[8]=numero_bits & 0xFF;
        block_buffer[9]=(numero_bits>>8) & 0xFF;
        block_buffer[10]=(numero_bits>>16) & 0xFF;
-       block_buffer[11]=((numero_bits>>24) & 0x7F) | 128; //estado inicial high   
+       block_buffer[11]=((numero_bits>>24) & 0x7F) | 128; //estado inicial high
 
        z80_int tail=945;
 
        block_buffer[12]=tail & 0xFF;
-       block_buffer[13]=(tail>>8) & 0xFF;       
+       block_buffer[13]=(tail>>8) & 0xFF;
 
 /*
 6           u8               p0    number of pulses encoding bit equal to 0.
@@ -751,28 +751,28 @@ bit 1: 1710,1710
         block_buffer[16]=value_16_to_8l(855);
         block_buffer[17]=value_16_to_8h(855);
         block_buffer[18]=value_16_to_8l(855);
-        block_buffer[19]=value_16_to_8h(855);       
+        block_buffer[19]=value_16_to_8h(855);
 
         block_buffer[20]=value_16_to_8l(1710);
         block_buffer[21]=value_16_to_8h(1710);
         block_buffer[22]=value_16_to_8l(1710);
-        block_buffer[23]=value_16_to_8h(1710);   
+        block_buffer[23]=value_16_to_8h(1710);
 
         //Escribir bloque DATA
-        //fwrite(block_buffer, 1, 24, ptr_archivo);        
+        //fwrite(block_buffer, 1, 24, ptr_archivo);
         zvfs_fwrite(in_fatfs,block_buffer, 24, ptr_archivo,fil_pzxfile);
 
-        //Y a partir de aqui ya vienen los datos, que los escribe desde tape_block_pzx_save     
+        //Y a partir de aqui ya vienen los datos, que los escribe desde tape_block_pzx_save
 
 }
 
 
 void tape_block_pzx_begin_save(int longitud,z80_byte flag)
 {
-       
+
     //Escribir cabecera pzx si conviene
     tape_write_pzx_header();
-	
+
 
     tape_block_pzx_begin_save_ptr(ptr_mycinta_pzx_out,longitud,flag,0,NULL); //No usamos descriptores de zvfs
 }

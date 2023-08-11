@@ -2,8 +2,8 @@
     mdvtool.c: Tool from MIST emulator to extract contents of a .mdv qlay file format. File should be 174930 bytes in size
     (c) 2015 by Till Harbaum
     https://github.com/mist-devel
-  
-    Copyright (c) 2015 Till Harbaum <till@harbaum.org> 
+
+    Copyright (c) 2015 Till Harbaum <till@harbaum.org>
 
     ZEsarUX  ZX Second-Emulator And Released for UniX
     Copyright (C) 2013 Cesar Hernandez Bano
@@ -96,7 +96,7 @@ unsigned short sum(unsigned char *p, int len) {
 unsigned short mdvtool_get_index(int s) {
   int i;
   for(i=0;i<MDVTOOL_MAX_SECTORS;i++)
-    if(mdvtool_sector_table[i] == s) 
+    if(mdvtool_sector_table[i] == s)
       return i;
 
   // not found
@@ -104,10 +104,10 @@ unsigned short mdvtool_get_index(int s) {
 }
 
 int mdvtool_check_preamble(unsigned char *p, int zeros) {
-  if(!mdvtool_isbyte(p, 0, zeros)) 
+  if(!mdvtool_isbyte(p, 0, zeros))
     return -1;
 
-  if(!mdvtool_isbyte(p+zeros, 0xff, 2)) 
+  if(!mdvtool_isbyte(p+zeros, 0xff, 2))
     return -1;
 
   return 0;
@@ -149,12 +149,12 @@ void mdv_check_mapping(void) {
   }
 }
 
-void mdvtool_file_dump_chain(int f) {	
+void mdvtool_file_dump_chain(int f) {
   int j;
 
   // dump block chain
   for(j=0;j<256;j++) {
-    if(mdvtool_files[f][j] != 255) 
+    if(mdvtool_files[f][j] != 255)
       printf("%s%d", j?", ":"", mdvtool_files[f][j]);
   }
   printf("\n");
@@ -190,18 +190,18 @@ void mdvtool_create_label(char *medium_name,char *dest_dir)
    char *buffer_contenido="Dummy file just to generate a file label";
 
    util_save_file((z80_byte *)buffer_contenido,strlen(buffer_contenido),nombre_final);
-    
+
 
 }
 
 int mdv_load(char *name,char *dest_dir) {
 
   printf("Loading %s ...\n", name);
-  
+
   memset(mdvtool_medium_name, 0, sizeof(mdvtool_medium_name));
   memset(mdvtool_sector_table, 0xff, sizeof(mdvtool_sector_table));
   memset(mdvtool_files, 0xff, sizeof(mdvtool_files));
-  
+
   mdv = fopen(name, "rb");
   if(!mdv) {
     fprintf(stderr, "Unable to open %s\n", name);
@@ -221,20 +221,20 @@ int mdv_load(char *name,char *dest_dir) {
     }
   } else {
     fprintf(stderr, "Uexpected file size\n");
-    
+
     // check if it's a qemulator image and load and convert it
-    
-    
+
+
     return -1;
   }
-    
+
   // check all chunks
   int i, free=0;
   int used = 0;
   for(i=0;i<MDVTOOL_MAX_SECTORS;i++) {
     /* -------------------- header checks ---------------- */
     hdr_t *hdr = &buffer[i].hdr;
-    
+
     // check preamble
     if(mdvtool_check_preamble(hdr->preamble, 10) != 0) {
       fprintf(stderr, "Header @%d: Preamble check failed\n", i);
@@ -242,7 +242,7 @@ int mdv_load(char *name,char *dest_dir) {
       //algun juego da error aqui
       //return -1;
     }
-    
+
     if(hdr->ff != 0xff) {
       // silently ignore unused entries
       //      fprintf(stderr, "Header %d ff check failed\n", i);
@@ -252,7 +252,7 @@ int mdv_load(char *name,char *dest_dir) {
     //algun juego da error aqui
 	//return -1;
       }
-      
+
       if(!mdvtool_medium_name[0]) {
 	memcpy(mdvtool_medium_name, hdr->name, 10);
       } else {
@@ -262,7 +262,7 @@ int mdv_load(char *name,char *dest_dir) {
 	  return -1;
 	}
       }
-      
+
       if(mdvtool_sector_table[i] != 0xff) {
 	fprintf(stderr, "Header @%d: Multiple sector number %d\n",
 		i, hdr->snum);
@@ -271,25 +271,25 @@ int mdv_load(char *name,char *dest_dir) {
 	    //return -1;
       }
       mdvtool_sector_table[i] = hdr->snum;
-      
+
       /* -------------------- sector checks ---------------- */
       sector_t *sec = &buffer[i].sec;
-      
+
       // check preamble
       if(mdvtool_check_preamble(sec->bh_preamble, 10) != 0) {
 	fprintf(stderr, "Sector @%d: Block header preamble check failed\n", i);
 	return -1;
       }
-      
+
       if(sec->bh_csum != sum(&sec->file, 2)) {
 	printf("WARNING: Sector @%d(%d): Block header checksum failed\n", i, hdr->snum);
       }
-      
+
       if(sec->data_csum != sum(sec->data, 512)) {
-	printf("WARNING: Sector @%d(%d): Data checksum failed %x != %x\n", 
+	printf("WARNING: Sector @%d(%d): Data checksum failed %x != %x\n",
 	       i, hdr->snum, sec->data_csum, sum(sec->data, 512));
       }
-      
+
       // save the file index if it's not a free sector (file == 253)
       if(sec->file == 253)
 	free++;
@@ -300,7 +300,7 @@ int mdv_load(char *name,char *dest_dir) {
           //algun juego da error aqui
 	  //return -1;
 	}
-	
+
 	used++;
 	mdvtool_files[sec->file][sec->block] = hdr->snum;
       }
@@ -316,7 +316,7 @@ int mdv_load(char *name,char *dest_dir) {
     if(mdvtool_sector_table[i] != 255) {
       // for every sector != 0 the previous sector must also exist
       if(mdvtool_sector_table[i] > 0) {
-	     if(mdvtool_get_index(mdvtool_sector_table[i]-1) == 0xffff) 
+	     if(mdvtool_get_index(mdvtool_sector_table[i]-1) == 0xffff)
 	       fprintf(stderr, "WARNING: Missing sector %d\n", mdvtool_sector_table[i]-1);
       }
     }
@@ -330,7 +330,7 @@ int mdv_load(char *name,char *dest_dir) {
 }
 
 sector_t *mdvtool_file_get_sector(int file, int block) {
-  if(mdvtool_files[file][block] == 255) 
+  if(mdvtool_files[file][block] == 255)
     return NULL;
 
   return &buffer[mdvtool_get_index(mdvtool_files[file][block])].sec;
@@ -346,12 +346,12 @@ void mdv_files_check() {
       if(mdvtool_files[i][j] != 255) {
 	bused++;
 
-	if((j > 0) && (mdvtool_files[i][j-1] == 255)) 
+	if((j > 0) && (mdvtool_files[i][j-1] == 255))
 	  printf("File %d: Missing entry for block %d\n", i, j-1);
       }
     }
 
-    if(bused) 
+    if(bused)
       if((i > 0)&&(i < 128))
 	used++;
   }
@@ -386,7 +386,7 @@ int mdvtool_file_size(int i) {
 char *mdvtool_file_name(int i) {
   file_t *f = mdvtool_file_get_entry(i);
   if(!f) return NULL;
-  
+
   return f->name;
 }
 
@@ -426,7 +426,7 @@ void mdvtool_file_export_dest(char *name,char *destination_name) {
       printf("\nERROR: File %s is missing block %d\n", name, block);
       return;
     }
-  
+
     // block 0 contains a file header which we need to skip
     int offset = (!block)?sizeof(file_t):0;
     int bytes2copy = (size>512-offset)?(512-offset):size;
@@ -470,7 +470,7 @@ void show_file_entry(file_t *f) {
 
 void mdv_files_list_chains() {
   printf("File chains:\n");
-  
+
   int f;
   for(f=0;f<256;f++) {
     sector_t *s = mdvtool_file_get_sector(f,0);
@@ -494,13 +494,13 @@ void mdv_show_sector_mapping() {
   int i;
 
   printf("File offset -> sector number\n");
-  for(i=0;i<MDVTOOL_MAX_SECTORS;i++) 
-    if(mdvtool_sector_table[i] != 255) 
+  for(i=0;i<MDVTOOL_MAX_SECTORS;i++)
+    if(mdvtool_sector_table[i] != 255)
       printf("%3d -> %3d\n", i, mdvtool_sector_table[i]);
 }
 
 void mdv_dir() {
-  
+
   int entries = mdvtool_file_size(0)/sizeof(file_t);
   if(entries >= 1) {
     printf("DIR listing from directory file:\n");
@@ -545,7 +545,7 @@ int entries = mdvtool_file_size(0)/sizeof(file_t);
     for(j=1;j<entries;j++) {
       file_t *f = mdvtool_file_get_entry(j);
       if(f) {
-	//show_file_entry(f);	
+	//show_file_entry(f);
 	printf("%s\n",f->name);
 
 	char finalpath[PATH_MAX];
@@ -568,7 +568,7 @@ int entries = mdvtool_file_size(0)/sizeof(file_t);
 }
 
 void mdvtool_file_write(file_t *file, char *data) {
-  printf("Writing file '%s' with %d bytes to mdv image ...\n", 
+  printf("Writing file '%s' with %d bytes to mdv image ...\n",
 	 file->name, SWAP32(file->length));
 
   // many programs have been modified to run from floppy
@@ -594,21 +594,21 @@ void mdvtool_file_write(file_t *file, char *data) {
   // search for a free directory entry
   int file_index = -1;
   int entries = mdvtool_file_size(0)/sizeof(file_t);
-  
+
   // check if we need to extend the directory file
   if((entries & 7) == 7) {
     printf("ERROR: Directory file extension not supported yet\n");
     return;
   }
-  
-  // write directory entry 
+
+  // write directory entry
   file_index = entries;
   file_t *new_entry = mdvtool_file_get_entry(file_index);
   if(!new_entry) {
     fprintf(stderr, "ERROR: Locating new entry\n");
     return;
   }
-  
+
   // write new entry
   memcpy(new_entry, file, sizeof(file_t));
 
@@ -750,12 +750,12 @@ void mdv_erase(void) {
 
     if(sec) {
       if(file) {
-	//	printf("erasing file %d, block %d\n", file, block); 
-	
+	//	printf("erasing file %d, block %d\n", file, block);
+
 	mdvtool_files[file][block] = 0xff;
 	buffer[0].sec.data[2*i] = 0xfd;
 	buffer[0].sec.data[2*i+1] = 0x00;
-	
+
 	// adjust headers
 	sec->file = 0xfd;
 	sec->block = 0x00;
@@ -820,7 +820,7 @@ int main_mdvtool(int argc, char **argv) {
     printf("   erase                - erase the MDV image\n");
     printf("   name image_name      - rename the MDV image\n");
     printf("   import file_name     - import a file to the MDV image\n");
-    printf("   write file_name      - write the MDV image\n"); 
+    printf("   write file_name      - write the MDV image\n");
     return 0;
   }
 
@@ -859,7 +859,7 @@ int main_mdvtool(int argc, char **argv) {
       mdvtool_mdvtool_file_export_all(argv[c]);
     }
 
-    
+
     else if(!strcasecmp(argv[c], "import")) {
       if(++c >= argc) {
 	printf("import needs a file name as parameter\n");

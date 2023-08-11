@@ -1,5 +1,5 @@
 /*
-    ZEsarUX  ZX Second-Emulator And Released for UniX 
+    ZEsarUX  ZX Second-Emulator And Released for UniX
     Copyright (C) 2013 Cesar Hernandez Bano
 
     This file is part of ZEsarUX.
@@ -28,7 +28,7 @@
 #include "utils.h"
 #include "settings.h"
 
- 
+
 
 z80_byte offset_xycb;
 
@@ -42,7 +42,7 @@ void invalid_opcode_ddfd(char *s)
 	reg_r--;
 
 
-}	
+}
 
 
 void instruccion_ddfd_0 ()
@@ -66,8 +66,8 @@ void instruccion_ddfd_3 ()
 }
 
 void instruccion_ddfd_4 ()
-{                                                                                                                                                      
-        invalid_opcode_ddfd("221/253 4");                                                                                                                
+{
+        invalid_opcode_ddfd("221/253 4");
 }
 
 void instruccion_ddfd_5 ()
@@ -467,9 +467,9 @@ void instruccion_ddfd_52 ()
         z80_int desp16,puntero;
 
 	desp=peek_byte(reg_pc);
-        contend_read_no_mreq( reg_pc, 1 ); 
+        contend_read_no_mreq( reg_pc, 1 );
 	contend_read_no_mreq( reg_pc, 1 );
-        contend_read_no_mreq( reg_pc, 1 ); 
+        contend_read_no_mreq( reg_pc, 1 );
 	contend_read_no_mreq( reg_pc, 1 );
         contend_read_no_mreq( reg_pc, 1 );
 	reg_pc++;
@@ -492,9 +492,9 @@ void instruccion_ddfd_53 ()
         z80_int desp16,puntero;
 
         desp=peek_byte(reg_pc);
-        contend_read_no_mreq( reg_pc, 1 ); 
+        contend_read_no_mreq( reg_pc, 1 );
 	contend_read_no_mreq( reg_pc, 1 );
-        contend_read_no_mreq( reg_pc, 1 ); 
+        contend_read_no_mreq( reg_pc, 1 );
 	contend_read_no_mreq( reg_pc, 1 );
         contend_read_no_mreq( reg_pc, 1 );
         reg_pc++;
@@ -516,15 +516,15 @@ void instruccion_ddfd_54 ()
 //LD (IX+d),N
         z80_byte valor_leido,desp;
         z80_int desp16,puntero;
-        
+
         desp=peek_byte(reg_pc);
-        contend_read_no_mreq( reg_pc, 1 ); 
-	contend_read_no_mreq( reg_pc, 1 ); 
+        contend_read_no_mreq( reg_pc, 1 );
+	contend_read_no_mreq( reg_pc, 1 );
 	reg_pc++;
 
         desp16=desp8_to_16(desp);
         puntero=*registro_ixiy + desp16;
-        
+
         valor_leido=lee_byte_pc();
         poke_byte(puntero,valor_leido);
 
@@ -642,11 +642,11 @@ void instruccion_ddfd_70 ()
 
         z80_byte desp;
         desp=peek_byte(reg_pc);
-        contend_read_no_mreq( reg_pc, 1 ); 
+        contend_read_no_mreq( reg_pc, 1 );
 	contend_read_no_mreq( reg_pc, 1 );
-        contend_read_no_mreq( reg_pc, 1 ); 
+        contend_read_no_mreq( reg_pc, 1 );
 	contend_read_no_mreq( reg_pc, 1 );
-        contend_read_no_mreq( reg_pc, 1 ); 
+        contend_read_no_mreq( reg_pc, 1 );
 	reg_pc++;
 	reg_b = peek_byte_desp(*registro_ixiy,desp);
 
@@ -707,11 +707,11 @@ void instruccion_ddfd_78 ()
 
         z80_byte desp;
         desp=peek_byte(reg_pc);
-        contend_read_no_mreq( reg_pc, 1 ); 
+        contend_read_no_mreq( reg_pc, 1 );
 	contend_read_no_mreq( reg_pc, 1 );
-        contend_read_no_mreq( reg_pc, 1 ); 
+        contend_read_no_mreq( reg_pc, 1 );
 	contend_read_no_mreq( reg_pc, 1 );
-        contend_read_no_mreq( reg_pc, 1 ); 
+        contend_read_no_mreq( reg_pc, 1 );
         reg_pc++;
         reg_c = peek_byte_desp(*registro_ixiy,desp);
 
@@ -775,11 +775,11 @@ void instruccion_ddfd_86 ()
 
         z80_byte desp;
         desp=peek_byte(reg_pc);
-        contend_read_no_mreq( reg_pc, 1 ); 
+        contend_read_no_mreq( reg_pc, 1 );
 	contend_read_no_mreq( reg_pc, 1 );
-        contend_read_no_mreq( reg_pc, 1 ); 
+        contend_read_no_mreq( reg_pc, 1 );
 	contend_read_no_mreq( reg_pc, 1 );
-        contend_read_no_mreq( reg_pc, 1 ); 
+        contend_read_no_mreq( reg_pc, 1 );
         reg_pc++;
         reg_d = peek_byte_desp(*registro_ixiy,desp);
 
@@ -841,11 +841,11 @@ void instruccion_ddfd_94 ()
 
         z80_byte desp;
         desp=peek_byte(reg_pc);
-        contend_read_no_mreq( reg_pc, 1 ); 
+        contend_read_no_mreq( reg_pc, 1 );
 	contend_read_no_mreq( reg_pc, 1 );
-        contend_read_no_mreq( reg_pc, 1 ); 
+        contend_read_no_mreq( reg_pc, 1 );
 	contend_read_no_mreq( reg_pc, 1 );
-        contend_read_no_mreq( reg_pc, 1 ); 
+        contend_read_no_mreq( reg_pc, 1 );
         reg_pc++;
         reg_e = peek_byte_desp(*registro_ixiy,desp);
 
@@ -926,11 +926,11 @@ void instruccion_ddfd_102 ()
 
         z80_byte desp;
         desp=peek_byte(reg_pc);
-        contend_read_no_mreq( reg_pc, 1 ); 
+        contend_read_no_mreq( reg_pc, 1 );
 	contend_read_no_mreq( reg_pc, 1 );
-        contend_read_no_mreq( reg_pc, 1 ); 
+        contend_read_no_mreq( reg_pc, 1 );
 	contend_read_no_mreq( reg_pc, 1 );
-        contend_read_no_mreq( reg_pc, 1 ); 
+        contend_read_no_mreq( reg_pc, 1 );
         reg_pc++;
         reg_h = peek_byte_desp(*registro_ixiy,desp);
 
@@ -1014,11 +1014,11 @@ void instruccion_ddfd_110 ()
 
         z80_byte desp;
         desp=peek_byte(reg_pc);
-        contend_read_no_mreq( reg_pc, 1 ); 
+        contend_read_no_mreq( reg_pc, 1 );
 	contend_read_no_mreq( reg_pc, 1 );
-        contend_read_no_mreq( reg_pc, 1 ); 
+        contend_read_no_mreq( reg_pc, 1 );
 	contend_read_no_mreq( reg_pc, 1 );
-        contend_read_no_mreq( reg_pc, 1 ); 
+        contend_read_no_mreq( reg_pc, 1 );
         reg_pc++;
         reg_l = peek_byte_desp(*registro_ixiy,desp);
 
@@ -1042,11 +1042,11 @@ void instruccion_ddfd_112 ()
 
         z80_byte desp;
         desp=peek_byte(reg_pc);
-        contend_read_no_mreq( reg_pc, 1 ); 
+        contend_read_no_mreq( reg_pc, 1 );
 	contend_read_no_mreq( reg_pc, 1 );
-        contend_read_no_mreq( reg_pc, 1 ); 
+        contend_read_no_mreq( reg_pc, 1 );
 	contend_read_no_mreq( reg_pc, 1 );
-        contend_read_no_mreq( reg_pc, 1 ); 
+        contend_read_no_mreq( reg_pc, 1 );
         reg_pc++;
 
         poke_byte_desp(*registro_ixiy,desp,reg_b);
@@ -1060,9 +1060,9 @@ void instruccion_ddfd_113 ()
 //LD (IX+d),C
         z80_byte desp;
         desp=peek_byte(reg_pc);
-        contend_read_no_mreq( reg_pc, 1 ); 	
+        contend_read_no_mreq( reg_pc, 1 );
 	contend_read_no_mreq( reg_pc, 1 );
-        contend_read_no_mreq( reg_pc, 1 ); 
+        contend_read_no_mreq( reg_pc, 1 );
 	contend_read_no_mreq( reg_pc, 1 );
         contend_read_no_mreq( reg_pc, 1 );
         reg_pc++;
@@ -1076,9 +1076,9 @@ void instruccion_ddfd_114 ()
 //LD (IX+d),D
         z80_byte desp;
         desp=peek_byte(reg_pc);
-        contend_read_no_mreq( reg_pc, 1 ); 
+        contend_read_no_mreq( reg_pc, 1 );
 	contend_read_no_mreq( reg_pc, 1 );
-        contend_read_no_mreq( reg_pc, 1 ); 
+        contend_read_no_mreq( reg_pc, 1 );
 	contend_read_no_mreq( reg_pc, 1 );
         contend_read_no_mreq( reg_pc, 1 );
         reg_pc++;
@@ -1092,9 +1092,9 @@ void instruccion_ddfd_115 ()
 //LD (IX+d),E
         z80_byte desp;
         desp=peek_byte(reg_pc);
-        contend_read_no_mreq( reg_pc, 1 ); 
+        contend_read_no_mreq( reg_pc, 1 );
 	contend_read_no_mreq( reg_pc, 1 );
-        contend_read_no_mreq( reg_pc, 1 ); 
+        contend_read_no_mreq( reg_pc, 1 );
 	contend_read_no_mreq( reg_pc, 1 );
         contend_read_no_mreq( reg_pc, 1 );
         reg_pc++;
@@ -1108,9 +1108,9 @@ void instruccion_ddfd_116 ()
 //LD (IX+d),H
         z80_byte desp;
         desp=peek_byte(reg_pc);
-        contend_read_no_mreq( reg_pc, 1 ); 
+        contend_read_no_mreq( reg_pc, 1 );
 	contend_read_no_mreq( reg_pc, 1 );
-        contend_read_no_mreq( reg_pc, 1 ); 
+        contend_read_no_mreq( reg_pc, 1 );
 	contend_read_no_mreq( reg_pc, 1 );
         contend_read_no_mreq( reg_pc, 1 );
         reg_pc++;
@@ -1124,9 +1124,9 @@ void instruccion_ddfd_117 ()
 //LD (IX+d),L
         z80_byte desp;
         desp=peek_byte(reg_pc);
-        contend_read_no_mreq( reg_pc, 1 ); 
+        contend_read_no_mreq( reg_pc, 1 );
 	contend_read_no_mreq( reg_pc, 1 );
-        contend_read_no_mreq( reg_pc, 1 ); 
+        contend_read_no_mreq( reg_pc, 1 );
 	contend_read_no_mreq( reg_pc, 1 );
         contend_read_no_mreq( reg_pc, 1 );
         reg_pc++;
@@ -1147,9 +1147,9 @@ void instruccion_ddfd_119 ()
 //LD (IX+d),A
         z80_byte desp;
         desp=peek_byte(reg_pc);
-        contend_read_no_mreq( reg_pc, 1 ); 
+        contend_read_no_mreq( reg_pc, 1 );
 	contend_read_no_mreq( reg_pc, 1 );
-        contend_read_no_mreq( reg_pc, 1 ); 
+        contend_read_no_mreq( reg_pc, 1 );
 	contend_read_no_mreq( reg_pc, 1 );
         contend_read_no_mreq( reg_pc, 1 );
         reg_pc++;
@@ -1210,11 +1210,11 @@ void instruccion_ddfd_126 ()
 
         z80_byte desp;
         desp=peek_byte(reg_pc);
-        contend_read_no_mreq( reg_pc, 1 ); 
+        contend_read_no_mreq( reg_pc, 1 );
 	contend_read_no_mreq( reg_pc, 1 );
-        contend_read_no_mreq( reg_pc, 1 ); 
+        contend_read_no_mreq( reg_pc, 1 );
 	contend_read_no_mreq( reg_pc, 1 );
-        contend_read_no_mreq( reg_pc, 1 ); 
+        contend_read_no_mreq( reg_pc, 1 );
         reg_pc++;
         reg_a = peek_byte_desp(*registro_ixiy,desp);
 
@@ -1272,9 +1272,9 @@ void instruccion_ddfd_134 ()
 //ADD A,(IX+d)
         z80_byte desp;
         desp=peek_byte(reg_pc);
-        contend_read_no_mreq( reg_pc, 1 ); 
+        contend_read_no_mreq( reg_pc, 1 );
 	contend_read_no_mreq( reg_pc, 1 );
-        contend_read_no_mreq( reg_pc, 1 ); 
+        contend_read_no_mreq( reg_pc, 1 );
 	contend_read_no_mreq( reg_pc, 1 );
         contend_read_no_mreq( reg_pc, 1 );
         reg_pc++;
@@ -1332,9 +1332,9 @@ void instruccion_ddfd_142 ()
 //ADC A,(IX+d)
         z80_byte desp;
         desp=peek_byte(reg_pc);
-        contend_read_no_mreq( reg_pc, 1 ); 
+        contend_read_no_mreq( reg_pc, 1 );
 	contend_read_no_mreq( reg_pc, 1 );
-        contend_read_no_mreq( reg_pc, 1 ); 
+        contend_read_no_mreq( reg_pc, 1 );
 	contend_read_no_mreq( reg_pc, 1 );
         contend_read_no_mreq( reg_pc, 1 );
         reg_pc++;
@@ -1391,9 +1391,9 @@ void instruccion_ddfd_150 ()
 //SUB (IX+d)
         z80_byte desp;
         desp=peek_byte(reg_pc);
-        contend_read_no_mreq( reg_pc, 1 ); 
+        contend_read_no_mreq( reg_pc, 1 );
 	contend_read_no_mreq( reg_pc, 1 );
-        contend_read_no_mreq( reg_pc, 1 ); 
+        contend_read_no_mreq( reg_pc, 1 );
 	contend_read_no_mreq( reg_pc, 1 );
         contend_read_no_mreq( reg_pc, 1 );
         reg_pc++;
@@ -1450,9 +1450,9 @@ void instruccion_ddfd_158 ()
 //SBC A,(IX+d)
         z80_byte desp;
         desp=peek_byte(reg_pc);
-        contend_read_no_mreq( reg_pc, 1 ); 
+        contend_read_no_mreq( reg_pc, 1 );
 	contend_read_no_mreq( reg_pc, 1 );
-        contend_read_no_mreq( reg_pc, 1 ); 
+        contend_read_no_mreq( reg_pc, 1 );
 	contend_read_no_mreq( reg_pc, 1 );
         contend_read_no_mreq( reg_pc, 1 );
         reg_pc++;
@@ -1510,9 +1510,9 @@ void instruccion_ddfd_166 ()
 //AND (IX+d)
         z80_byte desp;
         desp=peek_byte(reg_pc);
-        contend_read_no_mreq( reg_pc, 1 ); 
+        contend_read_no_mreq( reg_pc, 1 );
 	contend_read_no_mreq( reg_pc, 1 );
-        contend_read_no_mreq( reg_pc, 1 ); 
+        contend_read_no_mreq( reg_pc, 1 );
 	contend_read_no_mreq( reg_pc, 1 );
         contend_read_no_mreq( reg_pc, 1 );
         reg_pc++;
@@ -1572,9 +1572,9 @@ void instruccion_ddfd_174 ()
 //XOR (IX+d)
         z80_byte desp;
         desp=peek_byte(reg_pc);
-        contend_read_no_mreq( reg_pc, 1 ); 
+        contend_read_no_mreq( reg_pc, 1 );
 	contend_read_no_mreq( reg_pc, 1 );
-        contend_read_no_mreq( reg_pc, 1 ); 
+        contend_read_no_mreq( reg_pc, 1 );
 	contend_read_no_mreq( reg_pc, 1 );
         contend_read_no_mreq( reg_pc, 1 );
         reg_pc++;
@@ -1632,9 +1632,9 @@ void instruccion_ddfd_182 ()
 //OR (IX+d)
         z80_byte desp;
         desp=peek_byte(reg_pc);
-        contend_read_no_mreq( reg_pc, 1 ); 
+        contend_read_no_mreq( reg_pc, 1 );
 	contend_read_no_mreq( reg_pc, 1 );
-        contend_read_no_mreq( reg_pc, 1 ); 
+        contend_read_no_mreq( reg_pc, 1 );
 	contend_read_no_mreq( reg_pc, 1 );
         contend_read_no_mreq( reg_pc, 1 );
         reg_pc++;
@@ -1692,9 +1692,9 @@ void instruccion_ddfd_190 ()
 //CP (IX+d)
         z80_byte desp;
         desp=peek_byte(reg_pc);
-        contend_read_no_mreq( reg_pc, 1 ); 
+        contend_read_no_mreq( reg_pc, 1 );
 	contend_read_no_mreq( reg_pc, 1 );
-        contend_read_no_mreq( reg_pc, 1 ); 
+        contend_read_no_mreq( reg_pc, 1 );
 	contend_read_no_mreq( reg_pc, 1 );
         contend_read_no_mreq( reg_pc, 1 );
         reg_pc++;
@@ -1792,7 +1792,7 @@ void instruccion_ddfd_203 ()
 #endif
 
 
-                contend_read_no_mreq( reg_pc, 1 ); 
+                contend_read_no_mreq( reg_pc, 1 );
 		contend_read_no_mreq( reg_pc, 1 );
                 reg_pc++;
 
@@ -1807,7 +1807,7 @@ void instruccion_ddfd_203 ()
 
 			case 128:
 				//printf ("aquires ");
-				registro=devuelve_reg_offset(pref_ddfd_203_opcode_leido & 7);	
+				registro=devuelve_reg_offset(pref_ddfd_203_opcode_leido & 7);
 				numerobit=(pref_ddfd_203_opcode_leido >> 3) & 7;
 				res_bit_ixiy_desp_reg(numerobit,offset_xycb,registro);
 			break;
@@ -1862,7 +1862,7 @@ void instruccion_ddfd_203 ()
 			break;
 
 		}
-		
+
 
 }
 
@@ -1993,7 +1993,7 @@ void instruccion_ddfd_227 ()
         valor=peek_word(reg_sp);
 	contend_read_no_mreq( reg_sp + 1, 1 );
         poke_word(reg_sp,*registro_ixiy);
-	contend_write_no_mreq( reg_sp, 1 ); 
+	contend_write_no_mreq( reg_sp, 1 );
 	contend_write_no_mreq( reg_sp, 1 );
 
 	*registro_ixiy=valor;
@@ -2166,7 +2166,7 @@ void instruccion_ddfd_255 ()
 
 
 
-void (*codprddfd[]) ()   = { 
+void (*codprddfd[]) ()   = {
 instruccion_ddfd_0,
 instruccion_ddfd_1,
 instruccion_ddfd_2,

@@ -484,14 +484,14 @@ void new_audioalsa_enviar_audio_envio(void)
 			//printf ("temp envio sonido\n");
 
 			//manera normal usando funciones de fifo
-			fifo_alsa_read(buf_enviar,len); 
+			fifo_alsa_read(buf_enviar,len);
 			ret = snd_pcm_writei( pcm_handle, buf_enviar, len );
 
 			//Siguiente fragmento de audio. Es mejor hacerlo aqui que no esperar
 			//Esto da sonido correcto. Porque? No estoy seguro del todo...
 
 			if (ret==len) {
-				fifo_alsa_read(buf_enviar,len); 
+				fifo_alsa_read(buf_enviar,len);
 				//printf ("enviar audio alsa len: %d\n",len);
 				ret = snd_pcm_writei( pcm_handle, buf_enviar, len );
 			}

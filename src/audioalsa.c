@@ -677,7 +677,7 @@ void audioalsa_convert_mono(char *origen)
 	for (i=0;i<AUDIO_BUFFER_SIZE;i++) {
 		canal_izquierdo=*origen;
 		origen++;
-		
+
 		canal_derecho=*origen;
 		origen++;
 
@@ -690,7 +690,7 @@ void audioalsa_convert_mono(char *origen)
 		destino++;
 	}
 }
-		
+
 
 void audioalsa_send_frame(char *buffer)
 {
@@ -881,13 +881,13 @@ snd_rawmidi_t *alsa_raw_handle_out = 0;
 void alsa_midi_output_reset(void)
 {
 
-	z80_byte reset[] = {0xFF, 0, 0,0}; 
+	z80_byte reset[] = {0xFF, 0, 0,0};
 
 	if (audio_midi_raw_mode) {
 		//TODO: Esto no parece hacer nada. El reset de midi solo parece funcionar en windows
 		snd_rawmidi_write(alsa_raw_handle_out,reset,4);
 	}
-	
+
 }
 
 //enviar nota midi raw inmediatamente, esto viene de las funciones aymidi_rs232_, solo valido cuando hay modo raw
@@ -899,7 +899,7 @@ int alsa_midi_raw(z80_byte value)
 	//printf ("Sending alsa_midi_raw value %02XH\n",value);
 
 	snd_rawmidi_write(alsa_raw_handle_out,&value,1);
-	
+
 
 	return 0;
 
@@ -940,10 +940,10 @@ int alsa_note_on_raw(unsigned char channel, unsigned char note,unsigned char vel
 
   debug_printf (VERBOSE_PARANOID,"noteon event channel %d note %d velocity %d",channel,note,velocity);
 
-  z80_byte noteon[] = {0x90, note, velocity}; 
+  z80_byte noteon[] = {0x90, note, velocity};
 
   snd_rawmidi_write(alsa_raw_handle_out,noteon,3);
-  
+
 
   return 0;
 }
@@ -965,13 +965,13 @@ int alsa_change_instrument_raw(unsigned char channel,unsigned char instrument)
     //El mensaje seria 0xC0 + canal
 
 
-    z80_byte instrumentchange[] = {0xC0+channel, instrument & 127}; 
+    z80_byte instrumentchange[] = {0xC0+channel, instrument & 127};
 
-    snd_rawmidi_write(alsa_raw_handle_out,instrumentchange,2);        
-    
+    snd_rawmidi_write(alsa_raw_handle_out,instrumentchange,2);
 
 
-  return 0;  
+
+  return 0;
 }
 
 int alsa_change_instrument_noraw(unsigned char channel,unsigned char instrument)
@@ -1032,12 +1032,12 @@ int alsa_note_off_raw(unsigned char channel, unsigned char note,unsigned char ve
 
   debug_printf (VERBOSE_PARANOID,"noteoff event channel %d note %d velocity %d",channel,note,velocity);
 
-  z80_byte noteoff[] = {0x80, note, velocity}; 
+  z80_byte noteoff[] = {0x80, note, velocity};
 
   snd_rawmidi_write(alsa_raw_handle_out,noteoff,3);
 
 
-  return 0;  
+  return 0;
 }
 
 int alsa_note_off(unsigned char channel, unsigned char note,unsigned char velocity)
@@ -1249,7 +1249,7 @@ void alsa_mid_finish_all_raw(void)
 void alsa_mid_finish_all(void)
 {
 	if (audio_midi_raw_mode) alsa_mid_finish_all_raw();
-	else alsa_mid_finish_all_noraw();	
+	else alsa_mid_finish_all_noraw();
 }
 
 
@@ -1268,5 +1268,5 @@ void alsa_midi_output_flush_output_raw(void)
 void alsa_midi_output_flush_output(void)
 {
 	if (audio_midi_raw_mode) alsa_midi_output_flush_output_raw();
-	else alsa_midi_output_flush_output_noraw();	
+	else alsa_midi_output_flush_output_noraw();
 }

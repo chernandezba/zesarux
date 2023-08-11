@@ -198,7 +198,7 @@ void audiosdl_fifo_sdl_write(char *origen,int longitud)
 
 		//Canal derecho
 		audiosdl_fifo_sdl_buffer[audiosdl_fifo_sdl_write_position]=*origen++;
-		audiosdl_fifo_sdl_write_position=audiosdl_fifo_sdl_next_index(audiosdl_fifo_sdl_write_position);		
+		audiosdl_fifo_sdl_write_position=audiosdl_fifo_sdl_next_index(audiosdl_fifo_sdl_write_position);
 	}
 }
 
@@ -272,7 +272,7 @@ void audiosdl_callback(void *udata, Uint8 *stream, int len)
         if (audiosdl_use_new_callback.v) {
 
             int indice=0;
-  
+
 
             int tamanyo_fifo=audiosdl_fifo_sdl_return_size();
 
@@ -289,12 +289,12 @@ void audiosdl_callback(void *udata, Uint8 *stream, int len)
 
 
             else {
-                
+
                 //printf ("audiosdl_callback. enviando sonido\n");
                 if (leer) {
-                    audiosdl_fifo_sdl_read(&temporary_audiosdl_fifo_sdl_buffer[indice],leer);       
+                    audiosdl_fifo_sdl_read(&temporary_audiosdl_fifo_sdl_buffer[indice],leer);
                 }
-                
+
             }
         }
 
@@ -351,7 +351,7 @@ viendo código de otros emuladores que usan sdl vi varias maneras de gestionar e
 
 2) retornar la cantidad generada +silencio para rellenar: eso provoca clicks
 
-3) retornar lo mismo que habias enviado antes: eso no genera clicks. Asunto resuelto :) 
+3) retornar lo mismo que habias enviado antes: eso no genera clicks. Asunto resuelto :)
 Esto lo vi en el emulador Xpeccy, archivo Xpeccy/src/xcore/sound.cpp
 */
 

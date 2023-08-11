@@ -129,10 +129,10 @@ void core_msx_fin_frame_pantalla(void)
 
 		        t_scanline=0;
 
-		      
+
 					set_t_scanline_draw_zero();
 
-		     
+
 
 
                                 //Parche para maquinas que no generan 312 lineas, porque si enviamos menos sonido se escuchara un click al final
@@ -166,7 +166,7 @@ void core_msx_fin_frame_pantalla(void)
 					interrupcion_maskable_generada.v=1;
 
 
-			
+
 
 
 					//Si la anterior instruccion ha tardado 32 ciclos o mas
@@ -174,7 +174,7 @@ void core_msx_fin_frame_pantalla(void)
 						debug_printf (VERBOSE_PARANOID,"Losing last interrupt because last opcode lasts 32 t-states or more");
 						interrupcion_maskable_generada.v=0;
 					}
-				 	
+
 
 
 
@@ -189,7 +189,7 @@ void core_msx_fin_frame_pantalla(void)
 
 					//Avisar vsync en vdp
 					vdp_9918a_status_register |=128;
-				}						
+				}
 
 
 				cpu_loop_refresca_pantalla();
@@ -226,7 +226,7 @@ void core_msx_fin_frame_pantalla(void)
 				core_end_frame_check_zrcp_zeng_snap.v=1;
 
                 //snapshot en ram
-                snapshot_add_in_ram();                
+                snapshot_add_in_ram();
 
 
 }
@@ -259,10 +259,10 @@ void core_msx_fin_scanline(void)
 						beeper_new_line();
 					}
 
-					
+
 				}
 
-			
+
 
 				if (realtape_inserted.v && realtape_playing.v) {
 					realtape_get_byte();
@@ -287,7 +287,7 @@ void core_msx_fin_scanline(void)
 					audio_valor_enviar_sonido_derecho=audio_adjust_volume(audio_valor_enviar_sonido_derecho);
 				}
 
-				
+
 				if (audio_tone_generator) {
 					audio_send_mono_sample(audio_tone_generator_get() );
 				}
@@ -300,7 +300,7 @@ void core_msx_fin_scanline(void)
 
 				ay_chip_siguiente_ciclo();
 
-			
+
 
 			}
 
@@ -338,7 +338,7 @@ void core_msx_fin_scanline(void)
 				//TIMESENSOR_ENTRY_PRE(TIMESENSOR_ID_core_msx_fin_frame_pantalla);
 				core_msx_fin_frame_pantalla();
 				//TIMESENSOR_ENTRY_POST(TIMESENSOR_ID_core_msx_fin_frame_pantalla);
-			} 
+			}
 			//Fin bloque final de pantalla
 
 
@@ -353,7 +353,7 @@ void core_msx_handle_interrupts(void)
 
 			//printf ("Generada interrupcion Z80\n");
 
-			
+
 
 			//if (interrupcion_non_maskable_generada.v) printf ("generada nmi\n");
 
@@ -363,7 +363,7 @@ void core_msx_handle_interrupts(void)
                                         //reg_pc++;
                         }
 
-					
+
 
 			if (1==1) {
 
@@ -377,7 +377,7 @@ void core_msx_handle_interrupts(void)
                                                 t_estados += 14;
 
 
-                                                
+
 
 												push_valor(reg_pc,PUSH_VALUE_TYPE_NON_MASKABLE_INTERRUPT);
 
@@ -398,9 +398,9 @@ void core_msx_handle_interrupts(void)
 
                                                 t_estados -=15;
 
-											
 
-					
+
+
 
 						generate_nmi_prepare_fetch();
 
@@ -408,9 +408,9 @@ void core_msx_handle_interrupts(void)
 					}
 
 					if (1==1) {
-					
 
-			
+
+
 
 
 					//justo despues de EI no debe generar interrupcion
@@ -425,14 +425,14 @@ void core_msx_handle_interrupts(void)
 
 						interrupcion_si_despues_lda_ir_msx();
 
-						
 
-						
+
+
 						push_valor(reg_pc,PUSH_VALUE_TYPE_MASKABLE_INTERRUPT);
 
 						reg_r++;
 
-						
+
 
 
 
@@ -449,7 +449,7 @@ void core_msx_handle_interrupts(void)
 							z80_int temp_i;
 							z80_byte dir_l,dir_h;
 
-							
+
 
                             temp_i=get_im2_interrupt_vector();
 							dir_l=peek_byte(temp_i++);
@@ -490,19 +490,19 @@ void core_msx_ciclo_fetch(void)
 
 #endif
 
-				
+
 
 				if (nmi_pending_pre_opcode) {
 						//Dado que esto se activa despues de lanzar nmi y antes de leer opcode, aqui saltara cuando PC=66H
 						//debug_printf (VERBOSE_DEBUG,"Handling nmi mapping pre opcode fetch at %04XH",reg_pc);
 						nmi_handle_pending_prepost_fetch();
-				}				
+				}
 
 
 				int t_estados_antes_opcode=t_estados;
 				core_refetch=0;
 
-				
+
 
         	                        contend_read( reg_pc, 4 );
 					byte_leido_core_msx=fetch_opcode();
@@ -516,27 +516,27 @@ void core_msx_ciclo_fetch(void)
 
                 //Si la cpu está detenida por señal HALT, reemplazar opcode por NOP
                 if (z80_halt_signal.v) {
-                    byte_leido_core_msx=0;                 
+                    byte_leido_core_msx=0;
                 }
                 else {
                     reg_pc++;
                 }
 
-				//Nota: agregar estos dos if de nmi_pending_pre_opcode y nmi_pending_post_opcode 
+				//Nota: agregar estos dos if de nmi_pending_pre_opcode y nmi_pending_post_opcode
 				//supone un 0.2 % de uso mas en mi iMac: pasa de usar 5.4% cpu a 5.6% cpu en --vo null y --ao null
 				//Es muy poco...
 				if (nmi_pending_post_opcode) {
 					//Dado que esto se activa despues de lanzar nmi y leer opcode, aqui saltara cuando PC=67H
 					//debug_printf (VERBOSE_DEBUG,"Handling nmi mapping post opcode fetch at %04XH",reg_pc);
-					nmi_handle_pending_prepost_fetch(); 
-				}				
+					nmi_handle_pending_prepost_fetch();
+				}
 
 				reg_r++;
 
-				
 
 
-#ifdef EMULATE_SCF_CCF_UNDOC_FLAGS	
+
+#ifdef EMULATE_SCF_CCF_UNDOC_FLAGS
 				//Guardar antes F
 				scf_ccf_undoc_flags_before=Z80_FLAGS;
 #endif
@@ -545,24 +545,24 @@ void core_msx_ciclo_fetch(void)
 	            codsinpr[byte_leido_core_msx]  () ;
 
 
-#ifdef EMULATE_SCF_CCF_UNDOC_FLAGS	
+#ifdef EMULATE_SCF_CCF_UNDOC_FLAGS
 				//Para saber si se ha modificado
 				scf_ccf_undoc_flags_after_changed=(Z80_FLAGS  == scf_ccf_undoc_flags_before ? 0 : 1);
-#endif				
+#endif
 
 				//Ultima duracion, si es que ultimo opcode no genera fetch de nuevo del opcode
 				if (!core_refetch) duracion_ultimo_opcode_msx=t_estados-t_estados_antes_opcode;
 				else duracion_ultimo_opcode_msx +=t_estados-t_estados_antes_opcode;
-						
-					
-
-				
 
 
-			
 
 
-				
+
+
+
+
+
+
 
 }
 
@@ -587,7 +587,7 @@ void cpu_core_loop_msx(void)
 
 		if (chardetect_detect_char_enabled.v) chardetect_detect_char();
 		if (chardetect_printchar_enabled.v) chardetect_printchar();
-	
+
 
 
 		//Gestionar autoload. TODO
@@ -612,19 +612,19 @@ void cpu_core_loop_msx(void)
 
 
 
-		
 
 
-		//A final de cada scanline 
+
+		//A final de cada scanline
 		if ( (t_estados/screen_testados_linea)>t_scanline  ) {
 			//TIMESENSOR_ENTRY_PRE(TIMESENSOR_ID_core_msx_fin_scanline);
-			core_msx_fin_scanline();			
+			core_msx_fin_scanline();
 			//TIMESENSOR_ENTRY_POST(TIMESENSOR_ID_core_msx_fin_scanline);
 		}
-		
+
 
 		//Ya hemos leido duracion ultimo opcode. Resetearla a 0 si no hay que hacer refetch
-		if (!core_refetch) duracion_ultimo_opcode_msx=0;		
+		if (!core_refetch) duracion_ultimo_opcode_msx=0;
 
 
 
@@ -683,7 +683,7 @@ void cpu_core_loop_msx(void)
 		if (core_end_frame_check_zrcp_zeng_snap.v) {
 			core_end_frame_check_zrcp_zeng_snap.v=0;
 			check_pending_zrcp_put_snapshot();
-			zeng_send_snapshot_if_needed();			
+			zeng_send_snapshot_if_needed();
 		}
 
 

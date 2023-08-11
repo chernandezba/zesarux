@@ -1,5 +1,5 @@
 /*
-    ZEsarUX  ZX Second-Emulator And Released for UniX 
+    ZEsarUX  ZX Second-Emulator And Released for UniX
     Copyright (C) 2013 Cesar Hernandez Bano
 
     This file is part of ZEsarUX.
@@ -71,7 +71,7 @@ void spectra_poke_shadow_ram(z80_int dir,z80_byte valor)
 
 		//Segment C000H
 		else if (dir>=49152) {
-			//See mapped ram 
+			//See mapped ram
 			//TODO: Do not look at special paging modes RAM in ROM of Spectrum +2A
 			//puerto_32765 has the value for port 32765
 			ram_write=puerto_32765&7;
@@ -96,10 +96,10 @@ void spectra_poke_shadow_ram(z80_int dir,z80_byte valor)
 		if (ram_write==7) {
                         //Get offset in range 0-16383
                         offset=dir&16383;
-                        
+
                         //Look at which spectra shadow ram
                         if ((spectra_display_mode_register&64)==0) offset+=16384;
-                        
+
                         //Write in spectra memory
                         spectra_ram[offset]=valor;
 
@@ -194,7 +194,7 @@ void spectra_enable(void)
 			if (spectra_ram==NULL) cpu_panic ("Error allocating Spectra RAM");
 		}
 
-		//Copiar contenido de 16384-32767 en las dos rams de spectra, para que 
+		//Copiar contenido de 16384-32767 en las dos rams de spectra, para que
 		//al habilitar spectra no aparezca la pantalla en negro (porque no tiene datos)
 		z80_int i;
 		z80_byte leido;
@@ -273,7 +273,7 @@ void spectra_return_text_mode(z80_byte mode_register,char *text)
 	sprintf (text,"%cx%c%c%c",width,height,singledouble,basicextra);
 }
 
-	
+
 
 
 void spectra_write(z80_byte value)

@@ -66,7 +66,7 @@ int daad_tipo_mensaje_opcion_seleccionada=0;
 
 
 //Indice a donde apunta el run backwards. El 0 sera el mas reciente
-int indice_debug_cpu_backwards_history=0; 
+int indice_debug_cpu_backwards_history=0;
 
 
 int menu_debug_registers_print_main_step(zxvision_window *ventana);
@@ -122,7 +122,7 @@ menu_z80_moto_int menu_debug_disassemble_subir(menu_z80_moto_int dir_inicial)
 		//dir_anterior=dir;
 
 		debugger_disassemble(buffer,30,&longitud_opcode,dir);
-		
+
 		dir+=longitud_opcode;
 		dir=adjust_address_memory_size(dir);
 		puntero_ficticio+=longitud_opcode;
@@ -132,7 +132,7 @@ menu_z80_moto_int menu_debug_disassemble_subir(menu_z80_moto_int dir_inicial)
 		if (puntero_ficticio>=decremento) {
 			return menu_debug_hexdump_adjusta_en_negativo(dir_inicial-longitud_opcode,1);
 		}
-		
+
 
 	} while (1);
 
@@ -279,7 +279,7 @@ z80_byte menu_debug_get_mapped_byte(int direccion)
 		//printf ("menu_debug_get_mapped_byte dir %04XH result %02XH\n",direccion,peek_byte_z80_moto(direccion));
 		//printf ("menu_debug_get_mapped_byte 1.5\n");
 		return peek_byte_z80_moto(direccion);
-	}	
+	}
 
 	//printf ("menu_debug_get_mapped_byte 2\n");
 
@@ -288,7 +288,7 @@ z80_byte menu_debug_get_mapped_byte(int direccion)
 	direccion=direccion % menu_debug_memory_zone_size;
 	//printf ("menu_debug_get_mapped_byte 3\n");
 	return *(machine_get_memory_zone_pointer(menu_debug_memory_zone,direccion));
-	
+
 
 
 }
@@ -315,7 +315,7 @@ void menu_debug_write_mapped_byte(int direccion,z80_byte valor)
 	//Aqui si se ha hecho fallback a mapped zone, recomprobar de nuevo
 	if (menu_debug_show_memory_zones==0) {
 		return poke_byte_z80_moto(direccion,valor);
-	}	
+	}
 
 	direccion=direccion % menu_debug_memory_zone_size;
 	*(machine_get_memory_zone_pointer(menu_debug_memory_zone,direccion))=valor;
@@ -347,7 +347,7 @@ menu_z80_moto_int adjust_address_memory_size(menu_z80_moto_int direccion)
 void menu_debug_set_memory_zone_mapped(void)
 {
 		menu_debug_memory_zone=-1;
-		menu_debug_show_memory_zones=0;	
+		menu_debug_show_memory_zones=0;
 		menu_debug_memory_zone_size=65536;
 }
 
@@ -364,7 +364,7 @@ int menu_change_memory_zone_list_title(char *titulo)
 
                 char buffer_texto[MACHINE_MAX_MEMORY_ZONE_NAME_LENGHT+1];
 
-				
+
 
 				menu_add_item_menu_inicial_format(&array_menu_memory_zones,MENU_OPCION_NORMAL,NULL,NULL,"Mapped memory");
 				menu_add_item_menu_valor_opcion(array_menu_memory_zones,-1);
@@ -388,19 +388,19 @@ int menu_change_memory_zone_list_title(char *titulo)
 
 
                 menu_add_item_menu(array_menu_memory_zones,"",MENU_OPCION_SEPARADOR,NULL,NULL);
-                
+
                 menu_add_ESC_item(array_menu_memory_zones);
 
                 retorno_menu=menu_dibuja_menu(&menu_change_memory_zone_list_opcion_seleccionada,&item_seleccionado,array_menu_memory_zones,titulo );
 
-                
+
 
 
 				if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
 						//Cambiamos la zona
 						int valor_opcion=item_seleccionado.valor_opcion;
 						return valor_opcion;
-                    
+
                 }
 
 	return -2;
@@ -420,14 +420,14 @@ if (valor_opcion<0) {
 	else {
 		menu_debug_show_memory_zones=1;
 		menu_debug_memory_zone=valor_opcion;
-	}	
+	}
 }
 
 void menu_debug_change_memory_zone(void)
 {
 	int valor_opcion=menu_change_memory_zone_list();
 	if (valor_opcion==-2) return; //Pulsado ESC
-	
+
 	menu_set_memzone(valor_opcion);
 
 
@@ -460,7 +460,7 @@ void menu_debug_change_memory_zone_non_interactive(void)
 
 		}
 	}
-	
+
 }
 
 void menu_debug_set_memory_zone(int zone)
@@ -554,7 +554,7 @@ void menu_mem_breakpoints_edit(MENU_ITEM_PARAMETERS)
         if (dir<0 || dir>65535) {
                 debug_printf (VERBOSE_ERR,"Invalid address %d",dir);
                 return;
-        }				
+        }
 
         strcpy (string_type,"0");
 
@@ -569,7 +569,7 @@ void menu_mem_breakpoints_edit(MENU_ITEM_PARAMETERS)
 
 	debug_set_mem_breakpoint(dir,brkp_type);
 	//mem_breakpoint_array[dir]=brkp_type;
-	
+
 
 }
 
@@ -606,7 +606,7 @@ void menu_mem_breakpoints_list(MENU_ITEM_PARAMETERS)
 				sprintf (&results_buffer[index_buffer],"%s\n",buf_linea);
                 index_buffer +=strlen(buf_linea);
                 encontrados++;
-                
+
 
                 //controlar maximo
                 //33 bytes de margen
@@ -675,14 +675,14 @@ void menu_mem_breakpoints(MENU_ITEM_PARAMETERS)
                 menu_add_ESC_item(array_menu_mem_breakpoints);
                 retorno_menu=menu_dibuja_menu(&mem_breakpoints_opcion_seleccionada,&item_seleccionado,array_menu_mem_breakpoints,"Memory Breakpoints" );
 
-                
+
 
                 if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
                         //llamamos por valor de funcion
                         if (item_seleccionado.menu_funcion!=NULL) {
                                 //printf ("actuamos por funcion\n");
                                 item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
-                                
+
                         }
                 }
 
@@ -712,8 +712,8 @@ void menu_breakpoints_conditions_set(MENU_ITEM_PARAMETERS)
   char string_texto[MAX_BREAKPOINT_CONDITION_LENGTH];
 
 			exp_par_tokens_to_exp(debug_breakpoints_conditions_array_tokens[breakpoint_index],string_texto,MAX_PARSER_TOKENS_NUM);
-			
-			
+
+
 
   menu_ventana_scanf("Condition",string_texto,MAX_BREAKPOINT_CONDITION_LENGTH);
 
@@ -767,7 +767,7 @@ void menu_breakpoints_condition_evaluate_new(MENU_ITEM_PARAMETERS)
 
 	int result=exp_par_evaluate_expression(string_texto,buffer_salida,string_detoken);
 	if (result==0) {
-		menu_generic_message_format("Result","Parsed string: %s\nResult: %s",string_detoken,buffer_salida);		
+		menu_generic_message_format("Result","Parsed string: %s\nResult: %s",string_detoken,buffer_salida);
 	}
 
 	else if (result==1) {
@@ -778,7 +778,7 @@ void menu_breakpoints_condition_evaluate_new(MENU_ITEM_PARAMETERS)
 		menu_generic_message_format("Error","%s parsed string: %s",buffer_salida,string_detoken);
 	}
 
-	
+
 }
 
 
@@ -859,17 +859,17 @@ void menu_breakpoints(MENU_ITEM_PARAMETERS)
             #define LENGTH_STRING_CONDITION_ACTION (LENGTH_STRING_CONDITION_SHOWN+LENGTH_STRING_ACTION_SHOWN+3)
 			char string_condition_action[LENGTH_STRING_CONDITION_ACTION];
 
-			
+
 
 			if (debug_breakpoints_conditions_array_tokens[i][0].tipo!=TPT_FIN) {
-			
+
 				//nuevo parser de breakpoints
 				char buffer_temp_breakpoint[MAX_BREAKPOINT_CONDITION_LENGTH];
 				exp_par_tokens_to_exp(debug_breakpoints_conditions_array_tokens[i],buffer_temp_breakpoint,MAX_PARSER_TOKENS_NUM);
 
 
 				menu_tape_settings_trunc_name(buffer_temp_breakpoint,string_condition_shown,LENGTH_STRING_CONDITION_SHOWN);
-				
+
 				//printf ("brkp %d [%s]\n",i,string_condition_shown);
 
 				menu_tape_settings_trunc_name(debug_breakpoints_actions_array[i],string_action_shown,LENGTH_STRING_ACTION_SHOWN);
@@ -892,13 +892,13 @@ void menu_breakpoints(MENU_ITEM_PARAMETERS)
 				menu_add_item_menu_format(array_menu_breakpoints,MENU_OPCION_NORMAL,menu_breakpoints_conditions_set,menu_breakpoints_cond,
                     "Di %d: %s",i+1,string_condition_action_shown);
 			}
-            
+
 			else {
 				menu_add_item_menu_format(array_menu_breakpoints,MENU_OPCION_NORMAL,menu_breakpoints_conditions_set,menu_breakpoints_cond,
                     "En %d: %s",i+1,string_condition_action_shown);
 			}
 
-           
+
             menu_add_item_menu_tooltip(array_menu_breakpoints,"Set a condition breakpoint. Press Space to disable or enable");
 
 			menu_add_item_menu_espacio(array_menu_breakpoints,menu_breakpoints_condition_enable_disable);
@@ -925,14 +925,14 @@ void menu_breakpoints(MENU_ITEM_PARAMETERS)
         menu_add_ESC_item(array_menu_breakpoints);
         retorno_menu=menu_dibuja_menu(&breakpoints_opcion_seleccionada,&item_seleccionado,array_menu_breakpoints,"Breakpoints" );
 
-                
+
 
         if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
                 //llamamos por valor de funcion
                 if (item_seleccionado.menu_funcion!=NULL) {
                         //printf ("actuamos por funcion\n");
                         item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
-                        
+
                 }
         }
 
@@ -950,7 +950,7 @@ void menu_debug_registers_dump_hex_decimal(char *texto,menu_z80_moto_int direcci
 	int puntero=0;
 
 	for (;longitud>0;longitud--) {
-		
+
 		direccion=adjust_address_memory_size(direccion);
 
         byte_leido=menu_debug_get_mapped_byte(direccion);
@@ -1032,7 +1032,7 @@ void menu_debug_registers_dump_ascii(char *texto,menu_z80_moto_int direccion,int
         }
 }
 
-//Retorna paginas mapeadas (nombres cortos) 
+//Retorna paginas mapeadas (nombres cortos)
 void menu_debug_get_memory_pages(char *s)
 {
 	debug_memory_segment segmentos[MAX_DEBUG_MEMORY_SEGMENTS];
@@ -1042,14 +1042,14 @@ void menu_debug_get_memory_pages(char *s)
         int longitud;
         int indice=0;
 
-        for (i=0;i<total_segmentos;i++) { 
+        for (i=0;i<total_segmentos;i++) {
         	longitud=strlen(segmentos[i].shortname)+1;
         	sprintf(&s[indice],"%s ",segmentos[i].shortname);
 
         	indice +=longitud;
 
         }
-		
+
 }
 
 
@@ -1059,13 +1059,13 @@ void menu_debug_get_memory_pages(char *s)
 //2=linea assembler, registros cpu, otros registros internos
 //3=9 lineas assembler, otros registros internos
 //4=14 lineas assembler
-//5=9 lineas hexdump, otros registros internos  
-//6=14 lineas hexdump   
+//5=9 lineas hexdump, otros registros internos
+//6=14 lineas hexdump
 //7=vista minima con ventana pequeña
 //8=vista debug quill/paws/daad
 */
 //
-  
+
 int menu_debug_registers_current_view=1;
 
 
@@ -1159,7 +1159,7 @@ int menu_debug_cpu_calculate_expression(char *string_address,menu_z80_moto_int *
 
 	int result=exp_par_evaluate_expression(string_address,buffer_salida,string_detoken);
 	if (result==0) {
-		//menu_generic_message_format("Result","Parsed string: %s\nResult: %s",string_detoken,buffer_salida);		
+		//menu_generic_message_format("Result","Parsed string: %s\nResult: %s",string_detoken,buffer_salida);
         *output_value=parse_string_to_number(buffer_salida);
         return 0;
 	}
@@ -1177,7 +1177,7 @@ int menu_debug_cpu_calculate_expression(char *string_address,menu_z80_moto_int *
 
 char *menu_debug_registers_change_ptr_historial[UTIL_SCANF_HISTORY_MAX_LINES]={
     NULL
-};  
+};
 
 void menu_debug_registers_change_ptr(void)
 {
@@ -1200,7 +1200,7 @@ void menu_debug_registers_change_ptr(void)
         }
 
     }
-    
+
 
 }
 
@@ -1395,22 +1395,22 @@ z80_long_int debug_modified_registers_ed_list[256]={
     0,0,0,0,0,0,0,0,
 
     //160 LDI, CPI
-    MOD_REG_BC|MOD_REG_DE|MOD_REG_HL|MOD_REG_F|MOD_REG_DE_MEM, MOD_REG_BC|MOD_REG_HL|MOD_REG_F, 
+    MOD_REG_BC|MOD_REG_DE|MOD_REG_HL|MOD_REG_F|MOD_REG_DE_MEM, MOD_REG_BC|MOD_REG_HL|MOD_REG_F,
     //INI, OUTI, NOP, NOP, NOP
     MOD_REG_B|MOD_REG_HL|MOD_REG_F|MOD_REG_HL_MEM, MOD_REG_B|MOD_REG_HL|MOD_REG_F,0,0,0,0,
 
     //168 LDD, CPD
-    MOD_REG_BC|MOD_REG_DE|MOD_REG_HL|MOD_REG_F|MOD_REG_DE_MEM, MOD_REG_BC|MOD_REG_HL|MOD_REG_F, 
+    MOD_REG_BC|MOD_REG_DE|MOD_REG_HL|MOD_REG_F|MOD_REG_DE_MEM, MOD_REG_BC|MOD_REG_HL|MOD_REG_F,
     //IND, OUTD, NOP, NOP, NOP
     MOD_REG_B|MOD_REG_HL|MOD_REG_F|MOD_REG_HL_MEM, MOD_REG_B|MOD_REG_HL|MOD_REG_F,0,0,0,0,
 
     //176 LDIR, CPIR
-    MOD_REG_BC|MOD_REG_DE|MOD_REG_HL|MOD_REG_F|MOD_REG_DE_MEM, MOD_REG_BC|MOD_REG_HL|MOD_REG_F, 
+    MOD_REG_BC|MOD_REG_DE|MOD_REG_HL|MOD_REG_F|MOD_REG_DE_MEM, MOD_REG_BC|MOD_REG_HL|MOD_REG_F,
     //INIR, OTIR, NOP, NOP, NOP
     MOD_REG_B|MOD_REG_HL|MOD_REG_F|MOD_REG_HL_MEM, MOD_REG_B|MOD_REG_HL|MOD_REG_F,0,0,0,0,
 
     //184 LDDR, CPDR
-    MOD_REG_BC|MOD_REG_DE|MOD_REG_HL|MOD_REG_F|MOD_REG_DE_MEM, MOD_REG_BC|MOD_REG_HL|MOD_REG_F, 
+    MOD_REG_BC|MOD_REG_DE|MOD_REG_HL|MOD_REG_F|MOD_REG_DE_MEM, MOD_REG_BC|MOD_REG_HL|MOD_REG_F,
     //INDR, OTDR, NOP, NOP, NOP
     MOD_REG_B|MOD_REG_HL|MOD_REG_F|MOD_REG_HL_MEM, MOD_REG_B|MOD_REG_HL|MOD_REG_F,0,0,0,0,
 
@@ -1502,7 +1502,7 @@ z80_long_int menu_debug_get_modified_registers(menu_z80_moto_int direccion)
         opcode=menu_debug_get_mapped_byte(direccion);
         z80_long_int modificados=debug_modified_registers_ed_list[opcode];
         return modificados;
-    }    
+    }
 
     //Para opcodes con DD o FD
     if (opcode==0xDD || opcode==0xFD) {
@@ -1521,7 +1521,7 @@ z80_long_int menu_debug_get_modified_registers(menu_z80_moto_int direccion)
             direccion=adjust_address_memory_size(direccion);
             opcode=menu_debug_get_mapped_byte(direccion);
             modificados=debug_modified_registers_cb_list[opcode];
-            //En este caso tambien se agregan flags de lectura o escritura de (ix/iy+d) 
+            //En este caso tambien se agregan flags de lectura o escritura de (ix/iy+d)
             if (opcode>=0x40 && opcode<=0x80) {
                 //lectura de bits BIT 0,(IX+d)...
                 modificados |=MOD_READ_IXIY_d_MEM8;
@@ -1554,7 +1554,7 @@ z80_long_int menu_debug_get_modified_registers(menu_z80_moto_int direccion)
 
         }
         return modificados;
-    }   
+    }
 
     z80_long_int modificados=debug_modified_registers_list[opcode];
 
@@ -1617,12 +1617,12 @@ void menu_debug_show_register_line(int linea,char *textoregistros,int *columnas_
 
 		return;
 	}
-	
+
 	//para mostrar vector interrupcion
 	char string_vector_int[10]="     ";
 	if (im_mode==2) {
-	
-	
+
+
     z80_int temp_i;
     z80_int puntero_int;
     z80_byte dir_l,dir_h;
@@ -1631,9 +1631,9 @@ void menu_debug_show_register_line(int linea,char *textoregistros,int *columnas_
     dir_l=peek_byte_no_time(temp_i++);
     dir_h=peek_byte_no_time(temp_i);
     puntero_int=value_8_to_16(dir_h,dir_l);
-							
+
 	sprintf(string_vector_int,"@%04X",puntero_int);
-	
+
 	}
 
 	if (CPU_IS_Z80) {
@@ -1657,7 +1657,7 @@ void menu_debug_show_register_line(int linea,char *textoregistros,int *columnas_
 
             case 3:
                 sprintf (textoregistros,"%c%c%c%c%c%c%c%c",DEBUG_STRING_FLAGS);
-            break;		
+            break;
 
             case 4:
                 sprintf (textoregistros,"HL %04X'%02X%02X",HL,reg_h_shadow,reg_l_shadow);
@@ -1670,7 +1670,7 @@ void menu_debug_show_register_line(int linea,char *textoregistros,int *columnas_
                 sprintf (textoregistros,"DE %04X'%02X%02X",DE,reg_d_shadow,reg_e_shadow);
                 if (registros_modificados & MOD_REG_D)          *columnas_modificadas |=1;      //columna 1 registro D
                 if (registros_modificados & MOD_REG_E)          *columnas_modificadas |=(2<<4); //columna 2 registro E
-                if (registros_modificados & MOD_REG_DE_SHADOW)  *columnas_modificadas |=(8<<8); //columna 8 registro DE'                
+                if (registros_modificados & MOD_REG_DE_SHADOW)  *columnas_modificadas |=(8<<8); //columna 8 registro DE'
             break;
 
             case 6:
@@ -1709,30 +1709,30 @@ void menu_debug_show_register_line(int linea,char *textoregistros,int *columnas_
                 sprintf (textoregistros,"(HL) %02X %02X",peek_byte_z80_moto(HL),peek_byte_z80_moto(HL+1));
                 //mostrar cuando se modifica (HL)
                 //columna 1,2,3,4 registro (HL)
-                if (registros_modificados & MOD_REG_HL_MEM)          *columnas_modificadas |=1|(2<<4)|(3<<8)|(4<<12);      
-            break;      
+                if (registros_modificados & MOD_REG_HL_MEM)          *columnas_modificadas |=1|(2<<4)|(3<<8)|(4<<12);
+            break;
 
             case 12:
                 sprintf (textoregistros,"(DE) %02X %02X",peek_byte_z80_moto(DE),peek_byte_z80_moto(DE+1));
                 //mostrar cuando se modifica (DE)
                 //columna 1,2,3,4 registro (DE)
-                if (registros_modificados & MOD_REG_DE_MEM)          *columnas_modificadas |=1|(2<<4)|(3<<8)|(4<<12);                      
-            break; 
+                if (registros_modificados & MOD_REG_DE_MEM)          *columnas_modificadas |=1|(2<<4)|(3<<8)|(4<<12);
+            break;
 
             case 13:
                 sprintf (textoregistros,"(BC) %02X %02X",peek_byte_z80_moto(BC),peek_byte_z80_moto(BC+1));
-                //mostrar cuando se modifica (BC)    
+                //mostrar cuando se modifica (BC)
                 //columna 1,2,3,4 registro (BC)
-                if (registros_modificados & MOD_REG_BC_MEM)          *columnas_modificadas |=1|(2<<4)|(3<<8)|(4<<12);                      
-            break;               
+                if (registros_modificados & MOD_REG_BC_MEM)          *columnas_modificadas |=1|(2<<4)|(3<<8)|(4<<12);
+            break;
 
-    
+
             case 14:
                 //Aqui mostrar referencias a ld xx,(NN) y similares. y ld (nn),xx
                 if ((registros_modificados & MOD_READ_NN_MEM8) || (registros_modificados & MOD_WRITE_NN_MEM8)) {
                     //puntero
                     z80_int puntero=peek_byte_z80_moto(menu_debug_memory_pointer+1)+256*peek_byte_z80_moto(menu_debug_memory_pointer+2);
-                    
+
                     sprintf (textoregistros,"(%04X) %02X",puntero,peek_byte_z80_moto(puntero));
                 }
 
@@ -1785,9 +1785,9 @@ void menu_debug_show_register_line(int linea,char *textoregistros,int *columnas_
 
                     sprintf (textoregistros,"(%s%s) %02X",texto_ix_iy,string_offset,
                         peek_byte_z80_moto(puntero));
-                }                
+                }
 
-                
+
 
                 else {
                     //Nada. Esta linea es opcional solo para cuando hay registros tipo MOD_READ*
@@ -1806,7 +1806,7 @@ void menu_debug_show_register_line(int linea,char *textoregistros,int *columnas_
                 //Mostrar en una linea, dos bloques de memoria mapeadas
                 offset_bloque=linea-16;  //este 16 debe coincidir con el primer case de este bloque
                                         //para que la primera linea de este bloque sea offset_bloque=0
-                
+
                 offset_bloque *=2; //2 bloques por cada linea
                 //primer bloque
                 if (offset_bloque<total_segmentos) {
@@ -1820,7 +1820,7 @@ void menu_debug_show_register_line(int linea,char *textoregistros,int *columnas_
                     }
                 }
             break;
-            
+
 
         }
 
@@ -1904,7 +1904,7 @@ void menu_debug_show_register_line(int linea,char *textoregistros,int *columnas_
 			case 8:
 				 sprintf (textoregistros,"A3 %08X",m68k_get_reg(NULL, M68K_REG_A3) );
 			break;
-            
+
 			case 9:
 				 sprintf (textoregistros,"A4 %08X",m68k_get_reg(NULL, M68K_REG_A4) );
 			break;
@@ -1954,14 +1954,14 @@ void menu_debug_show_register_line(int linea,char *textoregistros,int *columnas_
 
 			case 20:
 				sprintf (textoregistros,"D7 %08X",m68k_get_reg(NULL, M68K_REG_D7) );
-            break;            
-            
+            break;
+
 
 		}
 	}
 /*
    else if (CPU_IS_MOTOROLA) {
-                             
+
                                 menu_debug_registers_print_register_aux_moto(textoregistros,&linea,0,M68K_REG_A0,M68K_REG_D0);
                                 menu_debug_registers_print_register_aux_moto(textoregistros,&linea,1,M68K_REG_A1,M68K_REG_D1);
                                 menu_debug_registers_print_register_aux_moto(textoregistros,&linea,2,M68K_REG_A2,M68K_REG_D2);
@@ -2023,7 +2023,7 @@ menu_z80_moto_int menu_debug_register_decrement_half(menu_z80_moto_int posicion,
 	return posicion;
 }
 
- 
+
 
 
 
@@ -2115,7 +2115,7 @@ int menu_debug_if_flag(int numero_flag)
 
         case 3:
             if( Z80_FLAGS & FLAG_C ) return 1;
-        break;        
+        break;
 
         case 4:
             if( !(Z80_FLAGS & FLAG_PV) ) return 1;
@@ -2123,7 +2123,7 @@ int menu_debug_if_flag(int numero_flag)
 
         case 5:
             if( Z80_FLAGS & FLAG_PV ) return 1;
-        break;    
+        break;
 
         case 6:
             if( !(Z80_FLAGS & FLAG_S) ) return 1;
@@ -2131,7 +2131,7 @@ int menu_debug_if_flag(int numero_flag)
 
         case 7:
             if( Z80_FLAGS & FLAG_S ) return 1;
-        break;   
+        break;
 
 
     }
@@ -2140,7 +2140,7 @@ int menu_debug_if_flag(int numero_flag)
 }
 
 //Segun el opcode mira si se cumple condicion y mete en buffer la condicion que se cumple
-//Si no, no mete nada 
+//Si no, no mete nada
 //Retorna 0 si no se cumple, 1 si se cumple
 int menu_debug_get_condicion_satisfy(z80_byte opcode,char *buffer)
 {
@@ -2163,25 +2163,25 @@ int menu_debug_get_condicion_satisfy(z80_byte opcode,char *buffer)
     //11ccc000
     if ((opcode & (1+2+4+64+128))==64+128) {
         condicion=(opcode>>3)&7;
-    }        
+    }
 
     //JP CC, NN
     //11ccc010
     if ((opcode & (1+2+4+64+128))==2+64+128) {
         condicion=(opcode>>3)&7;
-    }    
+    }
 
     //CALL CC, NN
     //11ccc100
     if ((opcode & (1+2+4+64+128))==4+64+128) {
         condicion=(opcode>>3)&7;
-    }      
+    }
 
 
     //Caso DJNZ dis, que no usa flag
     if (opcode==16 && reg_b!=1) {
         sprintf(buffer,"-> satisfy B=%02X",reg_b);
-        return 1;        
+        return 1;
     }
 
     if (condicion>=0 && menu_debug_if_flag(condicion)) {
@@ -2220,7 +2220,7 @@ void menu_debug_registros_colorea_columnas_modificadas(zxvision_window *w,int li
     if (columna4) {
         columna4--;
         zxvision_set_attr(w,xinicial+columna4,linea,ESTILO_GUI_TINTA_OPCION_MARCADA,ESTILO_GUI_PAPEL_OPCION_MARCADA,0);
-    }            
+    }
 }
 
 int menu_debug_registers_print_registers(zxvision_window *w,int linea)
@@ -2247,7 +2247,7 @@ int menu_debug_registers_print_registers(zxvision_window *w,int linea)
 	//Conservamos valor original y usamos uno de copia
 	menu_debug_memory_pointer_copia=menu_debug_memory_pointer;
 
-	char buffer_linea[MAX_ESCR_LINEA_OPCION_ZXVISION_LENGTH];	
+	char buffer_linea[MAX_ESCR_LINEA_OPCION_ZXVISION_LENGTH];
 
 
 
@@ -2410,7 +2410,7 @@ int menu_debug_registers_print_registers(zxvision_window *w,int linea)
 					reg_i,
 					im_mode,
 					DEBUG_STRING_IFF12,
-				
+
 					texto_nmi);
 
 				//01234567890123456789012345678901
@@ -2430,7 +2430,7 @@ int menu_debug_registers_print_registers(zxvision_window *w,int linea)
 
 
 			int longitud_op;
-			
+
 
 			int limite=menu_debug_get_main_list_view(w);
 
@@ -2460,13 +2460,13 @@ int menu_debug_registers_print_registers(zxvision_window *w,int linea)
 
 				int i;
 
-			
-
-				z80_int direccion_desensamblar=value_8_to_16(reg_b,reg_c);		
 
 
+				z80_int direccion_desensamblar=value_8_to_16(reg_b,reg_c);
 
-				//char buffer_linea[MAX_LINE_CPU_REGISTERS_LENGTH];	
+
+
+				//char buffer_linea[MAX_LINE_CPU_REGISTERS_LENGTH];
 
                 //no se soporta debug parser de GAC de momento
                 if (util_gac_detect() ) {
@@ -2479,10 +2479,10 @@ int menu_debug_registers_print_registers(zxvision_window *w,int linea)
 					//zxvision_print_string_defaults_fillspc(w,1,linea++,"Not in condacts");
 				}
 
-				else {				
+				else {
 
 					char buffer_verbo[6];
-					char buffer_nombre[6];		
+					char buffer_nombre[6];
 
 					z80_byte verbo=util_daad_get_flag_value(33);
 					z80_byte nombre=util_daad_get_flag_value(34);
@@ -2497,7 +2497,7 @@ int menu_debug_registers_print_registers(zxvision_window *w,int linea)
 
 					if (verbo!=255) util_daad_paws_locate_word(verbo,0,buffer_verbo);
 					if (nombre!=255) {
-						z80_byte tipo_palabra=2; 
+						z80_byte tipo_palabra=2;
 						if (util_undaad_unpaws_is_quill() ) tipo_palabra=0;
 						util_daad_paws_locate_word(nombre,tipo_palabra,buffer_nombre);
 					}
@@ -2520,7 +2520,7 @@ int menu_debug_registers_print_registers(zxvision_window *w,int linea)
 /*
 Para sacar el verbo + nombre de la entrada:
 
-En el flag 33 está el código del verbo, el 34 el código del nombre. 
+En el flag 33 está el código del verbo, el 34 el código del nombre.
 Si cualquiera de los dos vale 255 no buscas palabra y en su lugar pones un guion bajo (no-palabra)
 
 Si es otro valor, en 0x8416  está la dirección donde está el vocabulario, si tomas esa direccion irás a una tabla en memoria con bloques de 7 bytes:
@@ -2532,17 +2532,17 @@ Si es otro valor, en 0x8416  está la dirección donde está el vocabulario, si 
 Solo tienes que buscar en esa tabla el número de palabra de flag 33, que sea de tipo 0 , y el código del flag 34 que sea de tipo 2
 */
 
-				//linea++;	
+				//linea++;
 
 				//Posicion fija para la columna de watches
-				int columna_watches=20;		
+				int columna_watches=20;
 
-				int terminador=0; //Si se ha llegado a algun terminador de linea	
+				int terminador=0; //Si se ha llegado a algun terminador de linea
 
 				for (i=0;i<total_lineas_debug;i++) {
 
 					//Inicializamos linea a mostrar con espacios primero
-					//int j; 
+					//int j;
 					//for (j=0;j<MAX_ESCR_LINEA_OPCION_ZXVISION_LENGTH;j++) buffer_linea[j]=32;
                     util_fill_string_character(buffer_linea,MAX_ESCR_LINEA_OPCION_ZXVISION_LENGTH-1,32);
 
@@ -2565,7 +2565,7 @@ Solo tienes que buscar en esa tabla el número de palabra de flag 33, que sea de
 								if (opcode==0xFF) {
 									//printf ("Hay terminador FF\n");
 									terminador=1;
-								}							
+								}
 							}
 
 
@@ -2574,7 +2574,7 @@ Solo tienes que buscar en esa tabla el número de palabra de flag 33, que sea de
 							if (!terminador) {
 								//Cambiamos temporalmente a zona de memoria de condacts de daad, para que desensamble como si fueran condacts
 								int antes_menu_debug_memory_zone=menu_debug_memory_zone;
-								if (util_daad_detect()) menu_debug_memory_zone=MEMORY_ZONE_NUM_DAAD_CONDACTS;	
+								if (util_daad_detect()) menu_debug_memory_zone=MEMORY_ZONE_NUM_DAAD_CONDACTS;
 								else menu_debug_memory_zone=MEMORY_ZONE_NUM_PAWS_CONDACTS;
 								debugger_disassemble(dumpassembler,32,&longitud_op,direccion_desensamblar);
 								menu_debug_memory_zone=antes_menu_debug_memory_zone;
@@ -2585,12 +2585,12 @@ Solo tienes que buscar en esa tabla el número de palabra de flag 33, que sea de
 							}
 
 						}
-						
 
 
-						
+
+
 						menu_debug_registros_parte_derecha(i,buffer_linea,columna_watches,0,&columnas_modificadas);
-						
+
 
 						//printf ("linea: %s\n",buffer_linea);
 
@@ -2604,7 +2604,7 @@ Solo tienes que buscar en esa tabla el número de palabra de flag 33, que sea de
 
 						direccion_desensamblar +=longitud_op;
 
-				
+
 		        }
 
                 //Obtener versión parser
@@ -2619,8 +2619,8 @@ Solo tienes que buscar en esa tabla el número de palabra de flag 33, que sea de
                 else {
 
                     util_unpaws_daad_get_version_string(buffer_version);
-                    
-                    
+
+
                     buffer_idioma[0]=0;
                     if (util_daad_detect() ) {
                         util_daad_get_language_parser(buffer_idioma);
@@ -2635,12 +2635,12 @@ Solo tienes que buscar en esa tabla el número de palabra de flag 33, que sea de
                 linea++;
                 zxvision_print_string_defaults_fillspc(w,1,linea++,buffer_linea);
 
-				
+
                 //temp. obtener conexiones
                 //printf("conexiones: %d\n",util_textadventure_get_connections());
 
 
-		}		
+		}
 
         if (menu_debug_registers_current_view==1) {
 
@@ -2662,17 +2662,17 @@ Solo tienes que buscar en esa tabla el número de palabra de flag 33, que sea de
 
 				//Donde empieza la vista. Subir desde direccion actual, desensamblando "hacia atras" , tantas veces como posicion cursor actual
 				menu_debug_memory_pointer_copia=menu_debug_disassemble_subir_veces(puntero_ptr_inicial,menu_debug_line_cursor);
-         
 
 
 
-				//Comportamiento de 1 caracter de margen a la izquierda en ventana 
+
+				//Comportamiento de 1 caracter de margen a la izquierda en ventana
 				int antes_menu_escribe_linea_startx=menu_escribe_linea_startx;
 
 				menu_escribe_linea_startx=0;
 
                 int guessed_next_pos_source=-1;
-					
+
 				//char buffer_linea[MAX_LINE_CPU_REGISTERS_LENGTH];
                 for (i=0;i<limite;i++) {
 
@@ -2680,19 +2680,19 @@ Solo tienes que buscar en esa tabla el número de palabra de flag 33, que sea de
 					//buffer_registros[0]=0;
 
 					//Inicializamos linea a mostrar primero con espacios
-					
-					//int j; 
+
+					//int j;
 					//for (j=0;j<MAX_ESCR_LINEA_OPCION_ZXVISION_LENGTH;j++) buffer_linea[j]=32;
 
                     util_fill_string_character(buffer_linea,MAX_ESCR_LINEA_OPCION_ZXVISION_LENGTH-1,32);
 
 					int opcion_actual=-1;
 
-					int opcion_activada=1;  
+					int opcion_activada=1;
 
 					//Si esta linea tiene el cursor
 					if (i==menu_debug_line_cursor) {
-						opcion_actual=linea;			
+						opcion_actual=linea;
 						menu_debug_memory_pointer_copia=puntero_ptr_inicial;
 						//printf ("draw line is the current. pointer=%04XH\n",menu_debug_memory_pointer_copia);
 					}
@@ -2736,7 +2736,7 @@ Solo tienes que buscar en esa tabla el número de palabra de flag 33, que sea de
 
 					if (tiene_pc && tiene_brk) buffer_linea[0]='+'; //Cuando coinciden breakpoint y cursor
 
-					
+
 
                     debugger_disassemble(dumpassembler,32,&longitud_op,menu_debug_memory_pointer_copia);
 
@@ -2757,8 +2757,8 @@ int menu_debug_registers_subview_type=0;
 					if (menu_debug_registers_subview_type==1)	menu_debug_registers_dump_hex(dumpassembler,puntero_dir,longitud_op);
                     if (menu_debug_registers_subview_type==2)	menu_debug_registers_dump_decimal(dumpassembler,puntero_dir,longitud_op);
 					if (menu_debug_registers_subview_type==3)  menu_debug_registers_dump_ascii(dumpassembler,puntero_dir,longitud_op,menu_debug_hexdump_with_ascii_modo_ascii,0);
-					
-					
+
+
 
                     //char buffer_desensamblado[200];
 
@@ -2772,7 +2772,7 @@ int menu_debug_registers_subview_type=0;
                         int pos_source=remote_disassemble_find_label(puntero_dir);
                         if (pos_source>=0) guessed_next_pos_source=pos_source;
 
-                
+
                         if (pos_source>=0 || guessed_next_pos_source>=0) {
                             //Escribiremos directamente en buffer_linea
                             int longitud_texto=strlen(buffer_linea);
@@ -2784,13 +2784,13 @@ int menu_debug_registers_subview_type=0;
                             }
 
                             //final de cadena
-                            buffer_linea[inicio]=0; 
+                            buffer_linea[inicio]=0;
 
                             //Y escribir linea codigo fuente
 			                char *puntero_source=NULL;
 
 		                    //int indice=remote_parsed_source_code_indexes_pointer[pos_source];
-                            //puntero_source=&remote_raw_source_code_pointer[indice];  
+                            //puntero_source=&remote_raw_source_code_pointer[indice];
 
                             //Intentamos mostrar la siguiente linea
                             if (pos_source>=0) {
@@ -2814,13 +2814,13 @@ int menu_debug_registers_subview_type=0;
                                     puntero_source++;
                                 }
                             }
-                        } 
-                    }                   
+                        }
+                    }
                     if (guessed_next_pos_source>=0) guessed_next_pos_source++;
 
-					
+
 					menu_debug_registros_parte_derecha(i,buffer_linea,columna_registros,1,&columnas_modificadas);
-					
+
 
 					//printf ("buffer_linea: [%s]\n",buffer_linea);
 
@@ -2859,9 +2859,9 @@ int menu_debug_registers_subview_type=0;
 
                 util_fill_string_character(buffer_linea,MAX_ESCR_LINEA_OPCION_ZXVISION_LENGTH-1,32);
 
-				
+
 				menu_debug_registros_parte_derecha(i,buffer_linea,columna_registros,1,&columnas_modificadas);
-				
+
 
 				//primero borramos esa linea, por si cambiamos de subvista con M y hay "restos" ahi
 				zxvision_print_string_defaults_fillspc(w,1,linea,"");
@@ -2886,7 +2886,7 @@ int menu_debug_registers_subview_type=0;
 
 				menu_escribe_linea_startx=antes_menu_escribe_linea_startx;
 
-			
+
 
 				//Linea de stack
 				//No mostrar stack en caso de scmp
@@ -2923,9 +2923,9 @@ int menu_debug_registers_subview_type=0;
 			//Hacer que texto ventana empiece pegado a la izquierda
 			menu_escribe_linea_startx=0;
 
-		
+
 			int longitud_linea=8;
-			
+
 
 			int limite=menu_debug_get_main_list_view(w);
 
@@ -2967,7 +2967,7 @@ int menu_debug_registers_subview_type=0;
 
 			char buffer_estadosparcial[32];
 			/*int estadosparcial=debug_t_estados_parcial;
-			
+
 
 			if (estadosparcial>999999999) sprintf (buffer_estadosparcial,"%s","OVERFLOW");
 			else sprintf (buffer_estadosparcial,"%09u",estadosparcial);*/
@@ -3024,7 +3024,7 @@ int menu_debug_registers_subview_type=0;
         	    else if (MACHINE_IS_Z88) {
             		sprintf (flashtext,"FLASH: %d ",estado_parpadeo.v);
             	}
-	
+
 	            else flashtext[0]=0;
 
 
@@ -3046,13 +3046,13 @@ int menu_debug_registers_subview_type=0;
 
 
 			//
-			// Linea audio 
+			// Linea audio
 			//
 			if (MACHINE_IS_SPECTRUM || MACHINE_IS_ZX8081) {
                         sprintf (textoregistros,"AUDIO: BEEPER: %03d AY: %03d", (MACHINE_IS_ZX8081 ? da_amplitud_speaker_zx8081() :  value_beeper),da_output_ay() );
                         //menu_escribe_linea_opcion(linea++,-1,1,textoregistros);
 			zxvision_print_string_defaults_fillspc(w,1,linea++,textoregistros);
-			}						
+			}
 
 
 
@@ -3161,13 +3161,13 @@ int menu_debug_registers_get_height_ventana_vista(void)
 
         else if (menu_debug_registers_current_view==8) {
                 alto_ventana=16;
-        }		
+        }
 
         else {
                 alto_ventana=24;
         }
 
-	return alto_ventana;	
+	return alto_ventana;
 }
 */
 
@@ -3178,7 +3178,7 @@ void menu_debug_registers_zxvision_ventana_set_height(zxvision_window *w)
 
 	int alto_ventana=menu_debug_registers_get_height_ventana_vista();
 
-    
+
 
 	zxvision_set_visible_height(w,alto_ventana);
 }
@@ -3231,7 +3231,7 @@ void menu_debug_registers_ventana_common(zxvision_window *ventana)
 	//Cambiar el alto visible segun la vista actual
 	menu_debug_registers_zxvision_ventana_set_height(ventana);
 
-	ventana->can_use_all_width=1; //Para poder usar la ultima columna de la derecha donde normalmente aparece linea scroll	
+	ventana->can_use_all_width=1; //Para poder usar la ultima columna de la derecha donde normalmente aparece linea scroll
 }
 */
 
@@ -3243,7 +3243,7 @@ void menu_debug_registers_zxvision_ventana(zxvision_window *ventana)
     if (!zxvision_if_window_already_exists(ventana)) {
 
         int xorigin,yorigin,alto_ventana,ancho_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
-        //en este caso no usamos ancho_antes_minimize,alto_antes_minimize, pues estamos usando 
+        //en este caso no usamos ancho_antes_minimize,alto_antes_minimize, pues estamos usando
         //zxvision_new_window_nocheck_staticsize en vez de zxvision_new_window_gn_cim
 
         if (!util_find_window_geometry("debugcpu",&xorigin,&yorigin,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
@@ -3270,7 +3270,7 @@ void menu_debug_registers_zxvision_ventana(zxvision_window *ventana)
         //indicar nombre del grabado de geometria
         //strcpy(ventana->geometry_name,"debugcpu");
         //restaurar estado minimizado de ventana
-        //ventana->is_minimized=is_minimized;    
+        //ventana->is_minimized=is_minimized;
 
         //Puede enviar hotkeys con raton
         ventana->can_mouse_send_hotkeys=1;
@@ -3284,7 +3284,7 @@ void menu_debug_registers_zxvision_ventana(zxvision_window *ventana)
         ventana->overlay_function=NULL;
 
         zxvision_activate_this_window(ventana);
-    }    
+    }
 
 
 }
@@ -3307,19 +3307,19 @@ void menu_watches_daad(void)
 		char string_line[10];
 		char buffer_titulo[32];
 
-		
+
 
 		sprintf (buffer_titulo,"Line? (1-%d)",MENU_DEBUG_NUMBER_FLAGS_OBJECTS);
 		string_line[0]=0;
         menu_ventana_scanf(buffer_titulo,string_line,2);
-		int linea=parse_string_to_number(string_line);		
+		int linea=parse_string_to_number(string_line);
 		if (linea<1 || linea>MENU_DEBUG_NUMBER_FLAGS_OBJECTS) return;
 		linea--; //indice empieza en 0
 
 
 
         int tipo=menu_simple_two_choices("Watch type","Type","Flag","Object");
-        if (tipo==0) return; //ESC	
+        if (tipo==0) return; //ESC
 		tipo--; //tipo empieza en 0
 
 
@@ -3339,12 +3339,12 @@ void menu_watches_daad(void)
 			strcpy(tipo_watch,"Object");
 		}
 
-		
+
 
 		sprintf (ventana_titulo,"%s? (max %d)",tipo_watch,limite_max);
 		menu_ventana_scanf(ventana_titulo,string_line,4);
 		int indice=parse_string_to_number(string_line);
-	
+
 
 		if (indice<0 || indice>limite_max) {
 			menu_error_message("Out of range");
@@ -3353,7 +3353,7 @@ void menu_watches_daad(void)
 
 
 		debug_daad_flag_object[linea].tipo=tipo;
-		debug_daad_flag_object[linea].indice=indice;	
+		debug_daad_flag_object[linea].indice=indice;
 }
 
 
@@ -3366,8 +3366,8 @@ void menu_watches_overlay_mostrar_texto(void)
 
     linea=1; //Empezar justo en cada linea Result
 
-    
-  
+
+
 				char buf_linea[32];
 
 				//char string_detoken[MAX_BREAKPOINT_CONDITION_LENGTH];
@@ -3375,7 +3375,7 @@ void menu_watches_overlay_mostrar_texto(void)
 				int i;
 
 				for (i=0;i<DEBUG_MAX_WATCHES;i++) {
-					
+
                         int error_code;
 
                         int resultado=exp_par_evaluate_token(debug_watches_array[i],MAX_PARSER_TOKENS_NUM,&error_code);
@@ -3392,12 +3392,12 @@ void menu_watches_overlay_mostrar_texto(void)
 
 
 
-	                sprintf (buf_linea,"  Result: %XH",resultado); 
+	                sprintf (buf_linea,"  Result: %XH",resultado);
 					zxvision_print_string_defaults_fillspc(menu_watches_overlay_window,1,linea,buf_linea);
 
 					linea+=2;
 
-								
+
 				}
 
 }
@@ -3416,7 +3416,7 @@ void menu_watches_overlay(void)
 
     //printf("overlay watches %d\n",contador_segundo);
 
- 
+
 
     menu_watches_overlay_mostrar_texto();
     zxvision_draw_window_contents(menu_watches_overlay_window);
@@ -3457,12 +3457,12 @@ void menu_watches(MENU_ITEM_PARAMETERS)
                return;
        }
 
-	
-	
+
+
 	//Watches normales
 
 	menu_espera_no_tecla();
-	menu_reset_counters_tecla_repeticion();		
+	menu_reset_counters_tecla_repeticion();
 
     zxvision_window *ventana;
     ventana=&zxvision_window_watches;
@@ -3473,7 +3473,7 @@ void menu_watches(MENU_ITEM_PARAMETERS)
     //zxvision_delete_window_if_exists(ventana);
 
     //Crear ventana si no existe
-    if (!zxvision_if_window_already_exists(ventana)) {    
+    if (!zxvision_if_window_already_exists(ventana)) {
 
 
         int xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
@@ -3491,13 +3491,13 @@ void menu_watches(MENU_ITEM_PARAMETERS)
 
         //zxvision_new_window(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"Watches");
         zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"Watches","watches",
-                is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);  
+                is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
 
-        ventana->can_be_backgrounded=1;	
+        ventana->can_be_backgrounded=1;
         //indicar nombre del grabado de geometria
         //strcpy(ventana->geometry_name,"watches");
         //restaurar estado minimizado de ventana
-        //ventana->is_minimized=is_minimized;    
+        //ventana->is_minimized=is_minimized;
 
     }
 
@@ -3505,19 +3505,19 @@ void menu_watches(MENU_ITEM_PARAMETERS)
     else {
 
         zxvision_activate_this_window(ventana);
-    }    
+    }
 
-	zxvision_draw_window(ventana);		
-
-
+	zxvision_draw_window(ventana);
 
 
 
 
-	menu_watches_overlay_window=ventana; //Decimos que el overlay lo hace sobre la ventana que tenemos aqui	
+
+
+	menu_watches_overlay_window=ventana; //Decimos que el overlay lo hace sobre la ventana que tenemos aqui
 
     //Cambiamos funcion overlay de texto de menu
-    zxvision_set_window_overlay(ventana,menu_watches_overlay);    
+    zxvision_set_window_overlay(ventana,menu_watches_overlay);
 
 
 	//Toda ventana que este listada en zxvision_known_window_names_array debe permitir poder salir desde aqui
@@ -3525,22 +3525,22 @@ void menu_watches(MENU_ITEM_PARAMETERS)
 	if (zxvision_currently_restoring_windows_on_start) {
 			//printf ("Saliendo de ventana ya que la estamos restaurando en startup\n");
 			return;
-	}	
+	}
 
     menu_item *array_menu_watches_settings;
     menu_item item_seleccionado;
-    int retorno_menu;						
+    int retorno_menu;
 
     do {
 
-		//Valido tanto para cuando multitarea es off y para que nada mas entrar aqui, se vea, sin tener que esperar el medio segundo 
+		//Valido tanto para cuando multitarea es off y para que nada mas entrar aqui, se vea, sin tener que esperar el medio segundo
 		//que he definido en el overlay para que aparezca
 		menu_watches_overlay_mostrar_texto();
 
         int lin=0;
 
-		
-		
+
+
 		int i;
 
 		char string_detoken[MAX_BREAKPOINT_CONDITION_LENGTH];
@@ -3550,8 +3550,8 @@ void menu_watches(MENU_ITEM_PARAMETERS)
 
 
 		for (i=0;i<DEBUG_MAX_WATCHES;i++) {
-			
-			//Convertir token de watch a texto 
+
+			//Convertir token de watch a texto
 			if (debug_watches_array[i][0].tipo==TPT_FIN) {
 				strcpy(string_detoken,"None");
 			}
@@ -3563,23 +3563,23 @@ void menu_watches(MENU_ITEM_PARAMETERS)
  			menu_add_item_menu_format(array_menu_watches_settings,MENU_OPCION_NORMAL,menu_watches_edit,NULL,"%2d: %s",i+1,texto_expresion_shown);
 
 			//En que linea va
-			menu_add_item_menu_tabulado(array_menu_watches_settings,1,lin);		
+			menu_add_item_menu_tabulado(array_menu_watches_settings,1,lin);
 
 			//Indicamos el indice
 			menu_add_item_menu_valor_opcion(array_menu_watches_settings,i);
-		
 
-			lin+=2;			
-		}	
-		
-				
+
+			lin+=2;
+		}
+
+
 
     retorno_menu=menu_dibuja_menu(&menu_watches_opcion_seleccionada,&item_seleccionado,array_menu_watches_settings,"Watches" );
 
 	if (retorno_menu!=MENU_RETORNO_BACKGROUND) {
 
 	//En caso de menus tabulados, es responsabilidad de este de borrar la ventana
-        
+
 
 				//Nombre de ventana solo aparece en el caso de stdout
                 if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
@@ -3588,14 +3588,14 @@ void menu_watches(MENU_ITEM_PARAMETERS)
                                 //printf ("actuamos por funcion\n");
 
 
-                                      
+
                                 item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
 
 								zxvision_clear_window_contents(ventana); //limpiar de texto anterior en linea de watch
 								zxvision_draw_window(ventana);
 
 
-                                
+
                         }
                 }
 	}
@@ -3605,19 +3605,19 @@ void menu_watches(MENU_ITEM_PARAMETERS)
 
 
         //En caso de menus tabulados, suele ser necesario esto. Si no, la ventana se quedaria visible
-	   
 
-	util_add_window_geometry_compact(ventana);	   
+
+	util_add_window_geometry_compact(ventana);
 
 
 	if (retorno_menu==MENU_RETORNO_BACKGROUND) {
         zxvision_message_put_window_background();
     }
 
-    else {	
+    else {
 
 		//En caso de menus tabulados, es responsabilidad de este de liberar ventana
-		zxvision_destroy_window(ventana);			   
+		zxvision_destroy_window(ventana);
 
 	}
 
@@ -3644,13 +3644,13 @@ void menu_debug_registers_set_view(zxvision_window *ventana,int vista)
     //esto tenia sentido hace tiempo cuando no existia ZX Vision y las ventanas eran estaticas y no redimensionables por el usuario
     /*
 
-	
+
 	//Dado que se cambia de vista, podemos estar en vista 7 , por ejemplo, que es pequeña, y el alto total es minimo,
 	//y si se cambiara a vista 1 por ejemplo, es una vista mayor pero el alto total no variaria y no se veria mas que las primeras 3 lineas
 	//Entonces, tenemos que destruir la ventana y volverla a crear
-	 
 
-	
+
+
 
 	int ventana_x=ventana->x;
 	int ventana_y=ventana->y;
@@ -3665,7 +3665,7 @@ void menu_debug_registers_set_view(zxvision_window *ventana,int vista)
 	//Cerrar la ventana y volverla a crear pero cambiando maximo alto
 
 	//asignamos mismo ancho visible que ancho total para poder usar la ultima columna de la derecha, donde se suele poner scroll vertical
-	zxvision_new_window(ventana,ventana_x,ventana_y,ventana_visible_width,ventana_visible_height,ventana_visible_width,ventana_visible_height-2,"Debug CPU");	
+	zxvision_new_window(ventana,ventana_x,ventana_y,ventana_visible_width,ventana_visible_height,ventana_visible_width,ventana_visible_height-2,"Debug CPU");
 
 	menu_debug_registers_ventana_common(ventana);
 
@@ -3813,7 +3813,7 @@ z80_bit debug_allow_daad_breakpoint={0};
 
 z80_bit debug_daad_breakpoint_runtoparse_fired={0};
 
-void menu_breakpoint_fired(char *s) 
+void menu_breakpoint_fired(char *s)
 {
 /*
 //Si mostrar aviso cuando se cumple un breakpoint
@@ -3919,7 +3919,7 @@ void menu_debug_toggle_breakpoint(void)
     	}
 		debug_printf (VERBOSE_DEBUG,"Putting breakpoint [%s] at next free slot",condicion);
 
-		debug_add_breakpoint_free(condicion,""); 
+		debug_add_breakpoint_free(condicion,"");
 	}
 }
 
@@ -3947,7 +3947,7 @@ void menu_debug_runto(void)
     	}
 		debug_printf (VERBOSE_DEBUG,"Putting breakpoint [%s] at next free slot",condicion);
 
-		debug_add_breakpoint_free(condicion,""); 
+		debug_add_breakpoint_free(condicion,"");
 	}
 
 	//Y salir
@@ -3973,7 +3973,7 @@ void menu_debug_daad_step_breakpoint(void)
 
 
 	//Antes quitamos cualquier otra aparicion
-	menu_debug_delete_daad_step_breakpoint();	
+	menu_debug_delete_daad_step_breakpoint();
 
 	char breakpoint_add[64];
 	debug_get_daad_step_breakpoint_string(breakpoint_add);
@@ -3994,7 +3994,7 @@ void menu_debug_daad_step_breakpoint(void)
     	}
 		debug_printf (VERBOSE_DEBUG,"Putting breakpoint [%s] at next free slot",breakpoint_add);
 
-		debug_add_breakpoint_free(breakpoint_add,""); 
+		debug_add_breakpoint_free(breakpoint_add,"");
 	}
 */
 	//Y salir
@@ -4017,7 +4017,7 @@ void menu_debug_daad_parse_breakpoint(void)
 {
 
 	//Antes quitamos cualquier otra aparicion
-	menu_debug_delete_daad_parse_breakpoint();	
+	menu_debug_delete_daad_parse_breakpoint();
 
 	char breakpoint_add[64];
 	debug_get_daad_runto_parse_string(breakpoint_add);
@@ -4071,7 +4071,7 @@ void menu_debug_add_daad_special_breakpoint(void)
     	}
 		debug_printf (VERBOSE_DEBUG,"Putting breakpoint [%s] at next free slot",breakpoint_add);
 
-		debug_add_breakpoint_free(breakpoint_add,""); 
+		debug_add_breakpoint_free(breakpoint_add,"");
 	}*/
 
 	//Y salir
@@ -4103,7 +4103,7 @@ void menu_debug_add_daad_special_breakpoint(void)
     	}
 		debug_printf (VERBOSE_DEBUG,"Putting breakpoint [%s] at next free slot",breakpoint_add);
 
-		debug_add_breakpoint_free(breakpoint_add,""); 
+		debug_add_breakpoint_free(breakpoint_add,"");
 	}
 
 	//Y salir
@@ -4156,7 +4156,7 @@ int menu_debug_registers_show_ptr_text(zxvision_window *w,int linea)
 								//sprintf(buffer_mensaje,"P~~tr:%sH ~~FlwPC:%s ~~1-~~%c:View",
                                 //        string_direccion,(menu_debug_follow_pc.v ? "Yes" : "No"),maxima_vista );
 
-                                
+
 				zxvision_print_string_defaults_fillspc(w,1,linea++,buffer_mensaje);
 
 				}
@@ -4169,7 +4169,7 @@ int menu_debug_registers_show_ptr_text(zxvision_window *w,int linea)
 void menu_debug_switch_follow_pc(void)
 {
 	menu_debug_follow_pc.v ^=1;
-	
+
 	//if (follow_pc.v==0) menu_debug_memory_pointer=menu_debug_register_decrement_half(menu_debug_memory_pointer);
 }
 
@@ -4195,7 +4195,7 @@ void menu_debug_get_legend(int linea,char *s,zxvision_window *w)
                     return;
                 }
 							//01234567890123456789012345678901
-							// chReg Brkp. Toggle Runto Watch		
+							// chReg Brkp. Toggle Runto Watch
 
 				char step_condact_buffer[32];
 				if (!util_daad_is_in_parser() && !util_paws_is_in_parser()) {
@@ -4217,17 +4217,17 @@ void menu_debug_get_legend(int linea,char *s,zxvision_window *w)
 
 					menu_get_legend_short_long(s,ancho_visible,
 							//01234567890123456789012345678901
-							// StM DAsm En:Stp StOvr CntSt Md	
+							// StM DAsm En:Stp StOvr CntSt Md
 							"~~StM ~~D~~Asm ~~E~~n:Stp St~~Ovr ~~CntSt H~~x",
 								//          10        20        30        40        50        60
 								//012345678901234567890123456789012345678901234567890123456789012
 							//     StepMode DisAssemble Enter:Step StepOver ContinuosStep Mode
 
 							"~~StepMode ~~Dis~~Assemble ~~E~~n~~t~~e~~r:Step Step~~Over ~~ContinousStep He~~x"
-					
-					); 
 
-				
+					);
+
+
 				}
 
 				else {
@@ -4238,10 +4238,10 @@ void menu_debug_get_legend(int linea,char *s,zxvision_window *w)
 							"~~StpM ~~D~~Asm ~~E~~n~~t:Stp St~~Ovr ~~ContSt",
 								//          10        20        30        40        50        60
 								//012345678901234567890123456789012345678901234567890123456789012
-							//     StepMode Disassemble Enter:Step StepOver ContinuosStep 
+							//     StepMode Disassemble Enter:Step StepOver ContinuosStep
 
 							"~~StepMode ~~Dis~~Assemble ~~E~~nter:Step Step~~Over ~~ContinousStep"
-					
+
 					);
 
 				}
@@ -4265,9 +4265,9 @@ void menu_debug_get_legend(int linea,char *s,zxvision_window *w)
 
 
 				}
-				else {			
+				else {
 							//01234567890123456789012345678901
-							// Stepmode Disassemble Assemble				
+							// Stepmode Disassemble Assemble
 					sprintf(s,"~~StepMode ~~Disassemble ~~Assemble");
 				}
 			}
@@ -4291,10 +4291,10 @@ void menu_debug_get_legend(int linea,char *s,zxvision_window *w)
 
 				menu_get_legend_short_long(s,ancho_visible,
 							//01234567890123456789012345678901
-							// Chr brk wtch Togl Run Runto Ret	
+							// Chr brk wtch Togl Run Runto Ret
 							  "Ch~~r ~~brk ~~wtch Tog~~l Ru~~n R~~unto R~~et",
 
-							// Changeregisters breakpoints watch Toggle Run Runto Ret	
+							// Changeregisters breakpoints watch Toggle Run Runto Ret
 							//012345678901234567890123456789012345678901234567890123456789012
 							  "Change~~registers ~~breakpoints ~~watches Togg~~le Ru~~n R~~unto R~~et"
 				);
@@ -4304,7 +4304,7 @@ void menu_debug_get_legend(int linea,char *s,zxvision_window *w)
 
 				menu_get_legend_short_long(s,ancho_visible,
 							//01234567890123456789012345678901
-							// changeReg Breakpoints Watches					
+							// changeReg Breakpoints Watches
 							  "Change~~reg ~~breakpoints ~~watches",
 
 							// Changeregisters breakpoints watches
@@ -4326,7 +4326,7 @@ void menu_debug_get_legend(int linea,char *s,zxvision_window *w)
                 buffer_temp_graphics[0]=0;
 
                 if (util_gac_detect()) {
-				    strcpy(s,"~~Graphics Co~~nnections ~~advmap");                    
+				    strcpy(s,"~~Graphics Co~~nnections ~~advmap");
                     return;
                 }
 
@@ -4354,10 +4354,10 @@ void menu_debug_get_legend(int linea,char *s,zxvision_window *w)
 			if (cpu_step_mode.v) {
 
 							//01234567890123456789012345678901
-							// ClrTstPart Write VScr MemZn 99	
+							// ClrTstPart Write VScr MemZn 99
 				sprintf (buffer_intermedio_short,"ClrTst~~Part Wr~~ite ~~VScr %sMem~~Zn %d",buffer_temp_gac_short,menu_debug_memory_zone);
 							//012345678901234567890123456789012345678901234567890123456789012
-							// ClearTstatesPartial Write ViewScreen MemoryZone 99	
+							// ClearTstatesPartial Write ViewScreen MemoryZone 99
 				sprintf (buffer_intermedio_long,"ClearTstates~~Partial Wr~~ite ~~ViewScreen %sMemory~~Zone %d",buffer_temp_gac_long,menu_debug_memory_zone);
 
 
@@ -4369,7 +4369,7 @@ void menu_debug_get_legend(int linea,char *s,zxvision_window *w)
 				sprintf (buffer_intermedio_short,"ClrTst~~Part Wr~~ite %sMem~~Zone %d",buffer_temp_gac_short,menu_debug_memory_zone);
 
 							//012345678901234567890123456789012345678901234567890123456789012
-							// ClearTstatesPartial Write MemoryZone 99	
+							// ClearTstatesPartial Write MemoryZone 99
 				sprintf (buffer_intermedio_long,"ClearTstates~~Partial Wr~~ite %sMemory~~Zone %d",buffer_temp_gac_long,menu_debug_memory_zone);
 
 				menu_get_legend_short_long(s,ancho_visible,buffer_intermedio_short,buffer_intermedio_long);
@@ -4399,7 +4399,7 @@ void menu_debug_get_legend(int linea,char *s,zxvision_window *w)
                 else {
                     //printf("NO hay backstep\n");
                     string_backwards[0]=0;
-                }                
+                }
 
                 char string_history[32];
                 if (CPU_IS_Z80) strcpy(string_history," cpu~^Hist");
@@ -4413,8 +4413,8 @@ void menu_debug_get_legend(int linea,char *s,zxvision_window *w)
                     (CPU_IS_Z80 ? " st~~k" : ""),
                     (CPU_IS_Z80 ? " cpu~^Hst" : ""),
                     (cpu_step_mode.v && cpu_history_enabled.v && cpu_history_started.v ? " b~^Stp bru~^N" : "")
-                    
-                );                
+
+                );
 
 
                 sprintf (buffer_intermedio_long,"set~^Pc=ptr%s%s%s%s ~~F~~1:help",
@@ -4422,7 +4422,7 @@ void menu_debug_get_legend(int linea,char *s,zxvision_window *w)
                     (CPU_IS_Z80 ? " stac~~k" : ""),
                     (CPU_IS_Z80 ? " cpu~^Hist" : ""),
                     (cpu_step_mode.v && cpu_history_enabled.v && cpu_history_started.v ? " back~^Step backru~^N" : "")
-                    
+
                 );
 
 
@@ -4447,12 +4447,12 @@ void menu_debug_registers_next_cont_speed(void)
 	if (menu_debug_continuous_speed==5) menu_debug_continuous_speed=0;
 }
 
- 
+
 
 //Si borra el menu a cada pulsacion y muestra la pantalla de la maquina emulada debajo
 void menu_debug_registers_if_cls(void)
 {
-                                
+
 	//A cada pulsacion de tecla, mostramos la pantalla del ordenador emulado
 	if (debug_settings_show_screen.v) {
 		cls_menu_overlay();
@@ -4531,7 +4531,7 @@ int menu_debug_registers_buffer_pre_y=-1;
 void menu_debug_showscan_putpixel(z80_int *destino,int x,int y,int ancho,int color)
 {
 
-	screen_generic_putpixel_indexcolour(destino,x,y,ancho,color);	
+	screen_generic_putpixel_indexcolour(destino,x,y,ancho,color);
 
 }
 
@@ -4554,7 +4554,7 @@ void menu_debug_registers_show_scan_pos_putcursor(int x_inicial,int y)
 	if (x_inicial<0 || y<0) return;
 
 	//TBBlue tiene doble de alto. El ancho ya lo viene multiplicado por 2 al entrar aqui
-	if (MACHINE_IS_TBBLUE) y *=2;		
+	if (MACHINE_IS_TBBLUE) y *=2;
 
 	//Restauramos lo que habia en la posicion anterior del cursor
 	if (menu_debug_registers_buffer_pre_x>=0 && menu_debug_registers_buffer_pre_y>=0) {
@@ -4594,7 +4594,7 @@ void menu_debug_registers_show_scan_pos_putcursor(int x_inicial,int y)
 				menu_debug_registers_buffer_precursor[x]=color_anterior;
 
 				//Y ponemos pixel
-			
+
 	    		menu_debug_showscan_putpixel(rainbow_buffer,x_final,y,ancho,colores_rainbow[indice_color]);
 			}
 		}
@@ -4648,10 +4648,10 @@ printf ("\n");
 
 		menu_debug_registers_show_scan_pos_putcursor(x,y+si_salta_linea);
 
-				
+
 
 	}
-                                
+
 }
 
 
@@ -4663,17 +4663,17 @@ int menu_debug_registers_print_legend(zxvision_window *w,int linea)
      if (menu_debug_registers_current_view!=7) {
 		char buffer_mensaje[128];
 
-				menu_debug_get_legend(0,buffer_mensaje,w);                                
+				menu_debug_get_legend(0,buffer_mensaje,w);
 				zxvision_print_string_defaults_fillspc(w,1,linea++,buffer_mensaje);
 
-				menu_debug_get_legend(1,buffer_mensaje,w);                            
+				menu_debug_get_legend(1,buffer_mensaje,w);
 				zxvision_print_string_defaults_fillspc(w,1,linea++,buffer_mensaje);
 
-				menu_debug_get_legend(2,buffer_mensaje,w);                                
+				menu_debug_get_legend(2,buffer_mensaje,w);
 				zxvision_print_string_defaults_fillspc(w,1,linea++,buffer_mensaje);
 
-				menu_debug_get_legend(3,buffer_mensaje,w);                                
-				zxvision_print_string_defaults_fillspc(w,1,linea++,buffer_mensaje);                
+				menu_debug_get_legend(3,buffer_mensaje,w);
+				zxvision_print_string_defaults_fillspc(w,1,linea++,buffer_mensaje);
 
       }
 
@@ -4691,7 +4691,7 @@ int menu_debug_registers_get_line_legend(zxvision_window *w)
 	else return 12; //get_menu_debug_num_lineas_full(w)-3; //12;
 
 
-}	
+}
 
 
 void menu_debug_daad_edit_flagobject(void)
@@ -4699,11 +4699,11 @@ void menu_debug_daad_edit_flagobject(void)
 		char string_line[10];
 		char buffer_titulo[32];
 
-		
+
         int tipo=menu_simple_two_choices("Watch type","Type","Flag","Object");
-        if (tipo==0) return; //ESC	
+        if (tipo==0) return; //ESC
 		tipo--; //tipo empieza en 0
-		
+
 		if (tipo==0) strcpy (buffer_titulo,"Flag to modify?");
 		else strcpy (buffer_titulo,"Object to modify?");
 
@@ -4715,7 +4715,7 @@ void menu_debug_daad_edit_flagobject(void)
 		string_line[0]=0;
 		menu_ventana_scanf("Value to set?",string_line,4);
 		int valor=parse_string_to_number(string_line);
-		if (valor<0 || valor>255) return;		
+		if (valor<0 || valor>255) return;
 
 		if (tipo==0) {
 			util_daad_put_flag_value(indice,valor);
@@ -4759,25 +4759,25 @@ void menu_debug_daad_view_messages(MENU_ITEM_PARAMETERS)
 			funcion_mensajes=util_daad_get_sys_message;
 			sprintf(window_title,"%s System Messages",titulo_parser);
 			//entry_message="Sys Message";
-		break;		
+		break;
 
 		case 3:
 			total_messages=util_daad_get_num_locat_messages();
 			funcion_mensajes=util_daad_get_locat_message;
 			sprintf(window_title,"%s Locations Messages",titulo_parser);
 			//entry_message="Location Message";
-		break;		
+		break;
 
 		case 4:
 			total_messages=128;
 			funcion_mensajes=util_daad_get_compressed_message;
 			sprintf(window_title,"%s Compression Tokens",titulo_parser);
 			//entry_message="Compressed Message";
-		break;		
+		break;
 
 		case 5:
 			strcpy(window_title,"Vocabulary");
-		break;		
+		break;
 
 		default:
 			total_messages=util_daad_get_num_objects_description();
@@ -4795,7 +4795,7 @@ void menu_debug_daad_view_messages(MENU_ITEM_PARAMETERS)
 	int resultado=0;
 
 
-	if (valor_opcion==5) { 
+	if (valor_opcion==5) {
 			if (util_daad_detect() ) util_daad_dump_vocabulary(1,texto,MAX_TEXTO_GENERIC_MESSAGE);
 			else util_paws_dump_vocabulary_tostring(1,texto,MAX_TEXTO_GENERIC_MESSAGE);
 	}
@@ -4805,7 +4805,7 @@ void menu_debug_daad_view_messages(MENU_ITEM_PARAMETERS)
 		for (i=0;i<total_messages && !resultado;i++) {
 
 			char buffer_temp[256];
-			funcion_mensajes(i,buffer_temp); 
+			funcion_mensajes(i,buffer_temp);
 			//printf ("object %d: %s\n",i,buffer_temp);
 
 			char buffer_linea[300];
@@ -4829,7 +4829,7 @@ void menu_debug_daad_view_messages(MENU_ITEM_PARAMETERS)
 void menu_debug_daad_connections(void)
 {
 
-    
+
 	//int i;
 
     char *texto=util_malloc_max_texto_generic_message("Can not allocate memory for showing messages");
@@ -4847,7 +4847,7 @@ void menu_debug_daad_connections(void)
 
 void menu_debug_gac_view_objects(MENU_ITEM_PARAMETERS)
 {
-    
+
 
     char *texto=util_malloc_max_texto_generic_message("Can not allocate memory for showing messages");
 	texto[0]=0;
@@ -4858,12 +4858,12 @@ void menu_debug_gac_view_objects(MENU_ITEM_PARAMETERS)
 
 	menu_generic_message("GAC objects",texto);
 
-    free(texto);    
+    free(texto);
 }
 
 void menu_debug_gac_view_dictionary(MENU_ITEM_PARAMETERS)
 {
-    
+
 
     char *texto=util_malloc_max_texto_generic_message("Can not allocate memory for showing messages");
 	texto[0]=0;
@@ -4874,13 +4874,13 @@ void menu_debug_gac_view_dictionary(MENU_ITEM_PARAMETERS)
 
 	menu_generic_message("GAC dictionary",texto);
 
-    free(texto);    
+    free(texto);
 }
 
 
 void menu_debug_gac_view_verbs_etc(MENU_ITEM_PARAMETERS)
 {
-    
+
 
     char *texto=util_malloc_max_texto_generic_message("Can not allocate memory for showing messages");
 	texto[0]=0;
@@ -4902,20 +4902,20 @@ void menu_debug_gac_view_verbs_etc(MENU_ITEM_PARAMETERS)
 
         case 2:
             sprintf(buffer_titulo,"GAC adverbs");
-        break;        
+        break;
     }
 
 
 	menu_generic_message(buffer_titulo,texto);
 
-    free(texto);    
+    free(texto);
 }
 
 
 void menu_debug_gac_view_locations(MENU_ITEM_PARAMETERS)
 {
 
-    
+
 	//int i;
 
     char *texto=util_malloc_max_texto_generic_message("Can not allocate memory for showing messages");
@@ -4935,7 +4935,7 @@ void menu_debug_gac_view_locations(MENU_ITEM_PARAMETERS)
 void menu_debug_gac_view_messages(MENU_ITEM_PARAMETERS)
 {
 
-    
+
 	//int i;
 
     char *texto=util_malloc_max_texto_generic_message("Can not allocate memory for showing messages");
@@ -4965,7 +4965,7 @@ void menu_debug_gac_view_messages_ask(void)
 	do {
 
 	    menu_add_item_menu_inicial_format(&array_menu_daad_tipo_mensaje,MENU_OPCION_NORMAL,menu_debug_gac_view_dictionary,NULL,"~~Dictionary");
-		menu_add_item_menu_shortcut(array_menu_daad_tipo_mensaje,'d');	
+		menu_add_item_menu_shortcut(array_menu_daad_tipo_mensaje,'d');
 
 	    menu_add_item_menu_format(array_menu_daad_tipo_mensaje,MENU_OPCION_NORMAL,menu_debug_gac_view_objects,NULL,"~~Objects");
 		menu_add_item_menu_shortcut(array_menu_daad_tipo_mensaje,'o');
@@ -4981,7 +4981,7 @@ void menu_debug_gac_view_messages_ask(void)
 
 		menu_add_item_menu_format(array_menu_daad_tipo_mensaje,MENU_OPCION_NORMAL,menu_debug_gac_view_verbs_etc,NULL,"~~Adverbs");
 		menu_add_item_menu_shortcut(array_menu_daad_tipo_mensaje,'a');
-        menu_add_item_menu_valor_opcion(array_menu_daad_tipo_mensaje,2);     
+        menu_add_item_menu_valor_opcion(array_menu_daad_tipo_mensaje,2);
 
 
 		menu_add_item_menu_format(array_menu_daad_tipo_mensaje,MENU_OPCION_NORMAL,menu_debug_gac_view_locations,NULL,"~~Locations");
@@ -4993,13 +4993,13 @@ void menu_debug_gac_view_messages_ask(void)
 
 
 
-    
+
 
         menu_add_item_menu(array_menu_daad_tipo_mensaje,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 		menu_add_ESC_item(array_menu_daad_tipo_mensaje);
 
         retorno_menu=menu_dibuja_menu(&daad_tipo_mensaje_opcion_seleccionada,&item_seleccionado,array_menu_daad_tipo_mensaje,"Message type" );
-                
+
 
 		/*if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
 			menu_debug_daad_view_messages(daad_tipo_mensaje_opcion_seleccionada);
@@ -5020,7 +5020,7 @@ void menu_debug_gac_view_messages_ask(void)
                         }
                 }
 
-        } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);	
+        } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
 
 
 }
@@ -5033,7 +5033,7 @@ void menu_debug_daad_view_messages_ask(void)
 	int retorno_menu;
 	do {
 
-		
+
 
 	    menu_add_item_menu_inicial_format(&array_menu_daad_tipo_mensaje,MENU_OPCION_NORMAL,menu_debug_daad_view_messages,NULL,"~~Objects");
 		menu_add_item_menu_shortcut(array_menu_daad_tipo_mensaje,'o');
@@ -5058,13 +5058,13 @@ void menu_debug_daad_view_messages_ask(void)
 		menu_add_item_menu_format(array_menu_daad_tipo_mensaje,MENU_OPCION_NORMAL,menu_debug_daad_view_messages,NULL,"~~Vocabulary");
 		menu_add_item_menu_shortcut(array_menu_daad_tipo_mensaje,'v');
 		menu_add_item_menu_valor_opcion(array_menu_daad_tipo_mensaje,5);
-    
+
 
         menu_add_item_menu(array_menu_daad_tipo_mensaje,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 		menu_add_ESC_item(array_menu_daad_tipo_mensaje);
 
         retorno_menu=menu_dibuja_menu(&daad_tipo_mensaje_opcion_seleccionada,&item_seleccionado,array_menu_daad_tipo_mensaje,"Message type" );
-                
+
 
 		/*if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
 			menu_debug_daad_view_messages(daad_tipo_mensaje_opcion_seleccionada);
@@ -5085,7 +5085,7 @@ void menu_debug_daad_view_messages_ask(void)
                         }
                 }
 
-        } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);	
+        } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
 
 
 }
@@ -5102,7 +5102,7 @@ void menu_debug_daad_get_condact_message(void)
 
 
 	char buffer[256];
-	
+
 	util_daad_get_condact_message(buffer);
 	menu_generic_message("Message",buffer);
 
@@ -5159,7 +5159,7 @@ void render_paws_putpixel(zxvision_window *w,int x,int y,int color)
 
 
 
-    
+
 }
 
 
@@ -5204,7 +5204,7 @@ void menu_daad_render_aux_command_location(char *buffer_temporal,char *buffer_te
                     //Assembler
                     util_concat_string(buffer_texto_comandos," ; ",MAX_TEXTO_GENERIC_MESSAGE);
                 break;
-            
+
                 case 2:
                     //C
                     util_concat_string(buffer_texto_comandos," /* ",MAX_TEXTO_GENERIC_MESSAGE);
@@ -5222,7 +5222,7 @@ void menu_daad_render_aux_command_location(char *buffer_temporal,char *buffer_te
         util_concat_string(buffer_texto_comandos,drawstring,MAX_TEXTO_GENERIC_MESSAGE);
 
         //Caracter de final comentario
-        switch(tipo_texto) {       
+        switch(tipo_texto) {
             case 2:
                 //C
                 util_concat_string(buffer_texto_comandos," */",MAX_TEXTO_GENERIC_MESSAGE);
@@ -5232,7 +5232,7 @@ void menu_daad_render_aux_command_location(char *buffer_temporal,char *buffer_te
                 //Pascal
                 util_concat_string(buffer_texto_comandos," *)",MAX_TEXTO_GENERIC_MESSAGE);
             break;
-        }        
+        }
 
 
 
@@ -5240,13 +5240,13 @@ void menu_daad_render_aux_command_location(char *buffer_temporal,char *buffer_te
         util_concat_string(buffer_texto_comandos,"\n",MAX_TEXTO_GENERIC_MESSAGE);
 
     }
-        
+
 }
 
 void menu_daad_render_aux_command_end_location(char *buffer_texto_comandos,int tipo_texto)
 {
 
-    //Fin de dibujo. 
+    //Fin de dibujo.
     if (buffer_texto_comandos!=NULL) {
         switch(tipo_texto) {
             //Asm
@@ -5280,8 +5280,8 @@ void menu_gac_render_aux_header_location(char *buffer_temporal,char *buffer_text
 
             //Assembler
             case 1:
-                
-            
+
+
                 sprintf(buffer_temporal,
                     "Location_%d:\n"
                     "Location_%d_id:      DB %d\n"
@@ -5296,7 +5296,7 @@ void menu_gac_render_aux_header_location(char *buffer_temporal,char *buffer_text
 
             //C
             case 2:
-                             
+
                 sprintf(buffer_temporal,
                     "unsigned char Location_%d_id=%d;\n"
                     "unsigned char Location_%d_DRAWSTRING[] = {\n"
@@ -5305,12 +5305,12 @@ void menu_gac_render_aux_header_location(char *buffer_temporal,char *buffer_text
                     location
                     );
 
-            break;     
+            break;
 
             //Pascal
             case 3:
-                
-            
+
+
                 sprintf(buffer_temporal,
                     "var Location_%d_id: byte = %d;\n"
                     "var Location_%d_DRAWSTRING: array of byte = (\n"
@@ -5319,20 +5319,20 @@ void menu_gac_render_aux_header_location(char *buffer_temporal,char *buffer_text
                     location
                     );
 
-            break;                     
-                
+            break;
+
             //0 o default: drawstring
             default:
-            
+
                 sprintf(buffer_temporal,"Location %-3d ID %d\n",location,
                     location_id);
 
-                
-            break;                
+
+            break;
         }
 
         util_concat_string(buffer_texto_comandos,buffer_temporal,MAX_TEXTO_GENERIC_MESSAGE);
-        
+
     }
 
 
@@ -5396,7 +5396,7 @@ void menu_debug_daad_view_graphics_render_recursive_gac(zxvision_window *w,z80_b
     z80_int puntero_grafico;
 
     z80_byte gflag;
-    char buffer_temporal[200];    
+    char buffer_temporal[200];
 
     char drawstring[200];
 
@@ -5406,7 +5406,7 @@ void menu_debug_daad_view_graphics_render_recursive_gac(zxvision_window *w,z80_b
     int longitud_habitacion_gac;
 
 
-        
+
 
     //ungac de https://www.seasip.info/Unix/UnQuill/
 
@@ -5426,7 +5426,7 @@ void menu_debug_daad_view_graphics_render_recursive_gac(zxvision_window *w,z80_b
 
     longitud_habitacion_gac=peek_byte_no_time(puntero_grafico++);
     //printf("longitud habitacion: %d\n",longitud_habitacion_gac);
-    
+
 
     /*
     sprintf(buffer_temporal,"Location %-3d ID %d\n",location,
@@ -5455,23 +5455,23 @@ void menu_debug_daad_view_graphics_render_recursive_gac(zxvision_window *w,z80_b
             paws_render_bright=0;
         }
         */
-  
+
         //Rellenamos ventana con color indicado
         //tener en cuenta char width
-       
-       
+
+
         int ancho_rellenar=256/menu_char_width;
-        
+
         int rellena_x,rellena_y;
         for (rellena_y=RENDER_PAWS_START_Y_DRAW;rellena_y<RENDER_PAWS_START_Y_DRAW+24;rellena_y++) {
             for (rellena_x=RENDER_PAWS_START_X_DRAW;rellena_x<RENDER_PAWS_START_X_DRAW+ancho_rellenar;rellena_x++) {
                 if (w!=NULL) zxvision_print_char_simple(w,rellena_x,rellena_y,gac_render_default_ink,
                             gac_render_default_paper,0,' ');
-                    
+
             }
         }
-        
-         
+
+
     }
 
 
@@ -5491,15 +5491,15 @@ void menu_debug_daad_view_graphics_render_recursive_gac(zxvision_window *w,z80_b
 
 
         int x1,x2,y1,y2;
-                
 
 
-        z80_int id_localizacion;  
+
+        z80_int id_localizacion;
 
 
         //Leer los siguientes 4 parámetros, algunos usados en diferentes comandos
-        z80_byte parm0_byte=peek_byte_no_time(puntero_grafico+1);                       
-        z80_byte parm1_byte=peek_byte_no_time(puntero_grafico+2);                       
+        z80_byte parm0_byte=peek_byte_no_time(puntero_grafico+1);
+        z80_byte parm1_byte=peek_byte_no_time(puntero_grafico+2);
         z80_byte parm2_byte=peek_byte_no_time(puntero_grafico+3);
         z80_byte parm3_byte=peek_byte_no_time(puntero_grafico+4);
 
@@ -5515,10 +5515,10 @@ void menu_debug_daad_view_graphics_render_recursive_gac(zxvision_window *w,z80_b
                 sprintf(drawstring,"PLOT    %3d %3d", parm0_byte, parm1_byte);
                 longitud_comando += 2;
 
-                    
+
                 if (paws_render_disable_plot.v==0 && w!=NULL) {
                     render_paws_putpixel(w,parm0_byte,parm1_byte,paws_render_ink+paws_render_bright*8);
-                }      
+                }
 
             break;
 
@@ -5541,17 +5541,17 @@ void menu_debug_daad_view_graphics_render_recursive_gac(zxvision_window *w,z80_b
             break;
 
             case 0x04:
-                sprintf(drawstring,"FILL    %3d %3d", parm0_byte, parm1_byte); 
+                sprintf(drawstring,"FILL    %3d %3d", parm0_byte, parm1_byte);
                 longitud_comando += 2;
             break;
 
             case 0x05:
-                sprintf(drawstring,"BGFILL  %3d %3d", parm0_byte, parm1_byte); 
+                sprintf(drawstring,"BGFILL  %3d %3d", parm0_byte, parm1_byte);
                 longitud_comando += 2;
             break;
-            
+
             case 0x06:
-                sprintf(drawstring,"SHADE   %3d %3d", parm0_byte, parm1_byte); 
+                sprintf(drawstring,"SHADE   %3d %3d", parm0_byte, parm1_byte);
                 longitud_comando += 2;
             break;
 
@@ -5567,7 +5567,7 @@ void menu_debug_daad_view_graphics_render_recursive_gac(zxvision_window *w,z80_b
                     if (nivel_recursivo>=10) {
                         //printf("Maximum nested gosub reached\n");
                     }
-                    else {                         
+                    else {
 
                         //Buscar el numero de habitacion
                         int nueva_ubicacion=util_gac_get_index_location_by_id(id_localizacion);
@@ -5581,7 +5581,7 @@ void menu_debug_daad_view_graphics_render_recursive_gac(zxvision_window *w,z80_b
                             menu_debug_daad_view_graphics_render_recursive_gac(w,nueva_ubicacion,nivel_recursivo+1,NULL,0);
                             //printf("llamar recursivo text=%p w=%p\n",buffer_texto_comandos,w);
                         }
-                        
+
                     }
                 }
 
@@ -5598,10 +5598,10 @@ void menu_debug_daad_view_graphics_render_recursive_gac(zxvision_window *w,z80_b
                 y1=parm1_byte;
 
                 x2=parm2_byte;
-                y2=parm3_byte;                        
+                y2=parm3_byte;
 
                 if (paws_render_disable_rectangle.v==0 && w!=NULL) {
-                    //Abajo                        
+                    //Abajo
                     zxvision_draw_line(w,x1,y1,x2,y1,paws_render_ink+paws_render_bright*8,render_paws_putpixel);
                     //Arriba
                     zxvision_draw_line(w,x1,y2,x2,y2,paws_render_ink+paws_render_bright*8,render_paws_putpixel);
@@ -5609,7 +5609,7 @@ void menu_debug_daad_view_graphics_render_recursive_gac(zxvision_window *w,z80_b
                     zxvision_draw_line(w,x1,y1,x1,y2,paws_render_ink+paws_render_bright*8,render_paws_putpixel);
                     //Derecha
                     zxvision_draw_line(w,x2,y1,x2,y2,paws_render_ink+paws_render_bright*8,render_paws_putpixel);
-                }                    
+                }
             break;
 
             case 0x09:
@@ -5618,12 +5618,12 @@ void menu_debug_daad_view_graphics_render_recursive_gac(zxvision_window *w,z80_b
                         parm2_byte, parm3_byte);
                 longitud_comando += 4;
 
-                
+
                 x1=parm0_byte;
                 y1=parm1_byte;
 
                 x2=parm2_byte;
-                y2=parm3_byte;                        
+                y2=parm3_byte;
 
                 if (paws_render_disable_line.v==0) {
                     if (w!=NULL) zxvision_draw_line(w,x1,y1,x2,y2,paws_render_ink+paws_render_bright*8,render_paws_putpixel);
@@ -5632,14 +5632,14 @@ void menu_debug_daad_view_graphics_render_recursive_gac(zxvision_window *w,z80_b
             break;
 
             case 0x10:
-                sprintf (drawstring,"INK     %3d",parm0_byte);  
+                sprintf (drawstring,"INK     %3d",parm0_byte);
                 if (paws_render_disable_ink.v==0) paws_render_ink=parm0_byte & 7;
                 longitud_comando++;
             break;
 
             case 0x11:
                 sprintf(drawstring,"PAPER   %3d", parm0_byte);
-                if (paws_render_disable_paper.v==0) paws_render_paper=parm0_byte;                
+                if (paws_render_disable_paper.v==0) paws_render_paper=parm0_byte;
                 longitud_comando++;
             break;
 
@@ -5654,29 +5654,29 @@ void menu_debug_daad_view_graphics_render_recursive_gac(zxvision_window *w,z80_b
                 longitud_comando++;
             break;
 
-            default: 
+            default:
                 sprintf(drawstring,"OP%02x", gflag);
-            
-            break;                    
+
+            break;
 
 
         }
-            
-     
+
+
         /*if (buffer_texto_comandos!=NULL) {
             //printf("Agregando texto %s\n",buffer_temporal);
             util_concat_string(buffer_texto_comandos,buffer_temporal,MAX_TEXTO_GENERIC_MESSAGE);
         }*/
 
         menu_daad_render_aux_command_location(buffer_temporal,buffer_texto_comandos,drawstring,tipo_texto,
-            puntero_grafico,longitud_comando);        
+            puntero_grafico,longitud_comando);
 
         puntero_grafico +=longitud_comando;
 
 
     }
 
-    //Fin de dibujo. 
+    //Fin de dibujo.
     menu_daad_render_aux_command_end_location(buffer_texto_comandos,tipo_texto);
 
 
@@ -5696,14 +5696,14 @@ void menu_daad_render_aux_header_location(char *buffer_temporal,char *buffer_tex
 
             //Assembler
             case 1:
-                
-/*                
+
+/*
 Location_0:
 Location_0_isSoubrotine:               DB 1
 Location_0_INK:                        DB 7
-Location_0_PAPER:                      DB 0     
-Location_0_DRAWSTRING:           
-*/              
+Location_0_PAPER:                      DB 0
+Location_0_DRAWSTRING:
+*/
                 sprintf(buffer_temporal,
                     "Location_%d:\n"
                     "Location_%d_is_subroutine:      DB %d\n"
@@ -5722,13 +5722,13 @@ Location_0_DRAWSTRING:
 
             //C
             case 2:
-                
-/*                
+
+/*
 unsigned char Location_0_isSoubrotine = 1;
 unsigned char Location_0_INK =7;
-unsigned char Location_0_PAPER = 0;  
-unsigned char Location_0_DRAWSTRING[] = {           
-*/              
+unsigned char Location_0_PAPER = 0;
+unsigned char Location_0_DRAWSTRING[] = {
+*/
                 sprintf(buffer_temporal,
                     "unsigned char Location_%d_is_subroutine=%d;\n"
                     "unsigned char Location_%d_INK=%d;\n"
@@ -5741,17 +5741,17 @@ unsigned char Location_0_DRAWSTRING[] = {
                     location
                     );
 
-            break;     
+            break;
 
             //Pascal
             case 3:
-                
-/*                
+
+/*
 var Location_0_isSoubrotine: byte = 1;
 var Location_0_INK: byte =7;
-var Location_0_PAPER: byte = 0;   
-var Location_0_DRAWSTRING : array of byte = (2,3,...);         
-*/              
+var Location_0_PAPER: byte = 0;
+var Location_0_DRAWSTRING : array of byte = (2,3,...);
+*/
                 sprintf(buffer_temporal,
                     "var Location_%d_is_subroutine: byte = %d;\n"
                     "var Location_%d_INK: byte = %d;\n"
@@ -5764,20 +5764,20 @@ var Location_0_DRAWSTRING : array of byte = (2,3,...);
                     location
                     );
 
-            break;                     
-                
+            break;
+
             //0 o default: drawstring
             default:
                 sprintf(buffer_temporal,"Location %-3d graphics flags: %s Ink=%d Paper=%d\n",location,
                     (is_picture ? "Picture " : "Subroutine "),
-                    tinta_attr, paper_attr 
+                    tinta_attr, paper_attr
                 );
-                
-            break;                
+
+            break;
         }
 
         util_concat_string(buffer_texto_comandos,buffer_temporal,MAX_TEXTO_GENERIC_MESSAGE);
-        
+
     }
 
 
@@ -5806,7 +5806,7 @@ void menu_debug_daad_view_graphics_render_recursive(zxvision_window *w,z80_byte 
     int *p_total_comandos,int *p_total_tamanyo,int *contador_limite,int tipo_texto)
 {
 
-    
+
     //int i;
 
     //printf("menu_debug_daad_view_graphics_render_recursive location: %d nivel_recursivo: %d contador_limite: %d\n",
@@ -5845,14 +5845,14 @@ void menu_debug_daad_view_graphics_render_recursive(zxvision_window *w,z80_byte 
 
     int tinta_attr,paper_attr;
     int is_picture;
-    z80_int table_attr=util_daad_get_graphics_attr(location,&tinta_attr,&paper_attr,&is_picture);    
+    z80_int table_attr=util_daad_get_graphics_attr(location,&tinta_attr,&paper_attr,&is_picture);
 
     if (table_attr==0) {
         //menu_error_message("Graphics attributes not found");
         //printf("Graphics attributes not found\n");
         //zxvision_draw_window_contents(w);
         return;
-    }        
+    }
 
 
    //Nota: El bit 6 del byte de attr no sé para que sirve y por tanto no lo muestro
@@ -5860,7 +5860,7 @@ void menu_debug_daad_view_graphics_render_recursive(zxvision_window *w,z80_byte 
     /*
     sprintf(buffer_temporal,"Location %-3d graphics flags: %s Ink=%d Paper=%d\n",location,
         (is_picture ? "Picture " : "Subroutine "),
-        tinta_attr, paper_attr 
+        tinta_attr, paper_attr
     );
 
     if (buffer_texto_comandos!=NULL) {
@@ -5881,14 +5881,14 @@ void menu_debug_daad_view_graphics_render_recursive(zxvision_window *w,z80_byte 
             paws_render_ink=paws_render_default_ink;
             paws_render_paper=paws_render_default_paper;
             paws_render_bright=0;
-        }        
-  
+        }
+
         //Rellenamos ventana con color indicado
         //tener en cuenta char width
         //Solo si escala global es 1, pues de otra manera se trataria de dibujado dentro del mapa de conexiones
         if (paws_render_total_escalado==1) {
             int ancho_rellenar=256/menu_char_width;
-            
+
             int rellena_x,rellena_y;
             for (rellena_y=RENDER_PAWS_START_Y_DRAW;rellena_y<RENDER_PAWS_START_Y_DRAW+24;rellena_y++) {
                 for (rellena_x=RENDER_PAWS_START_X_DRAW;rellena_x<RENDER_PAWS_START_X_DRAW+ancho_rellenar;rellena_x++) {
@@ -5921,9 +5921,9 @@ char *plot_moves[]= {
 "-001  000",
 "-001 -001",
 " 000 -001",
-" 001 -001" 
+" 001 -001"
 };
-*/ 
+*/
 
 int new_plot_moves[8][2]={
     {0,   1},
@@ -5933,7 +5933,7 @@ int new_plot_moves[8][2]={
     {0,  -1},
     {-1, -1},
     {-1,  0},
-    {1,  -1}     
+    {1,  -1}
 };
 
     int salir=0;
@@ -5969,7 +5969,7 @@ int new_plot_moves[8][2]={
         int parm0;
         int parm1;
         int parm2;
-                
+
 
         //int estexto=0;
 
@@ -5979,7 +5979,7 @@ int new_plot_moves[8][2]={
         //---x---- Bit 4 (0x10) : inverse / flags      |
         //--x----- Bit 5 (0x20): flags                 |  Parametro 0 ("value")
         //-x------ Bit 6 (0x40): signo parametro 1    -|
-        //x------- Bit 7 (0x80): signo parametro 2 / flags   
+        //x------- Bit 7 (0x80): signo parametro 2 / flags
 
         //neg[0]=neg[1]=0;
         signo[0]=signo[1]=+1;
@@ -5988,10 +5988,10 @@ int new_plot_moves[8][2]={
         if ((gflag & 8) != 0) ovr = 'o';
         if ((gflag & 16) !=0) inv = 'i';
         value = gflag /  8;
-        
-        //nargs=0;    
 
-        int dibujar;    
+        //nargs=0;
+
+        int dibujar;
 
 
         int longitud_comando=1;
@@ -5999,8 +5999,8 @@ int new_plot_moves[8][2]={
 
 
         //Leer los siguientes 4 parámetros, algunos usados en diferentes comandos
-        z80_byte parm0_byte=peek_byte_no_time(puntero_grafico+1);                       
-        z80_byte parm1_byte=peek_byte_no_time(puntero_grafico+2);                       
+        z80_byte parm0_byte=peek_byte_no_time(puntero_grafico+1);
+        z80_byte parm1_byte=peek_byte_no_time(puntero_grafico+2);
         z80_byte parm2_byte=peek_byte_no_time(puntero_grafico+3);
         z80_byte parm3_byte=peek_byte_no_time(puntero_grafico+4);
 
@@ -6031,12 +6031,12 @@ int new_plot_moves[8][2]={
                 }
 
                 longitud_comando +=2;
-                
+
             break;
 
             //REL MOVE, LINE
-            case 1: 
-                
+            case 1:
+
                 if ((gflag & 0x40) != 0) signo[0] = -1;
                 if ((gflag & 0x80) != 0) signo[1] = -1;
 
@@ -6047,9 +6047,9 @@ int new_plot_moves[8][2]={
                     if (gflag & 0x20) {
                         line_comprimido=1;
                     }
-                }                       
-             
-                
+                }
+
+
                 if (line_comprimido) {
                     //Formato comprimido usando solo 1 byte para desplazamiento x,y
                     parm0=(parm0_byte>>4)&0xF;
@@ -6094,7 +6094,7 @@ int new_plot_moves[8][2]={
 
                 parm0=(parm0*multpli)/8;
                 parm1=(parm1*multpli)/8;
-                       
+
                 //Punto final
                 int x2=x1+parm0;
                 int y2=y1+parm1;
@@ -6102,7 +6102,7 @@ int new_plot_moves[8][2]={
                 if (dibujar && paws_render_disable_line.v==0) {
                     int color_tinta=paws_render_ink+paws_render_bright*8;
                     if (inv=='i' && paws_render_disable_ink.v==0) color_tinta=paws_render_paper+paws_render_bright*8;
-                    //Juanito y su baloncito tiene alguna pantalla con inverse (la 4)      
+                    //Juanito y su baloncito tiene alguna pantalla con inverse (la 4)
 
                     if (w!=NULL) zxvision_draw_line(w,x1,y1,x2,y2,color_tinta,render_paws_putpixel);
                 }
@@ -6110,24 +6110,24 @@ int new_plot_moves[8][2]={
                 paws_render_last_x=x2;
                 paws_render_last_y=y2;
 
-                
+
 		    break;
 
 
             //SHADE, BSHADE, BLOCK, SHADE, FILL
             case 2:
-                
+
                 if ((gflag & 0x10)!=0  && (gflag & 0x20)!=0)  {
-		      
+
                     if ((gflag & 0x40) !=0) signo[0] = -1;
                     if ((gflag & 0x80) !=0) signo[1] = -1;
-                        
+
                     parm0=parm0_byte*signo[0];
                     parm1=parm1_byte*signo[1];
                     parm2=parm2_byte;
 
                     longitud_comando +=3;
-        
+
                     if (quillversion==0) {
                         sprintf (drawstring,"SHADE %c%c   %4d %4d %4d",ovr,inv,parm0,parm1,parm2);
                     }
@@ -6138,7 +6138,7 @@ int new_plot_moves[8][2]={
 
 
 		        else if ((gflag & 0x10) !=0) {
-      
+
                     z80_byte x1,y1,x2,y2;
                     z80_byte ancho,alto;
 
@@ -6155,17 +6155,17 @@ int new_plot_moves[8][2]={
                     int temp_x=((x1+RENDER_PAWS_START_X_DRAW)*8)/menu_char_width;
                     x1=temp_x;
 
-                        
+
                     //Tener en cuenta char width
 
                     int temp_ancho=(ancho*8)/menu_char_width;
                     ancho=temp_ancho;
 
                     x2=x1+ancho;
-                    
+
                     y2=y1+alto;
 
-                    
+
                     //ordenado. teniendo x1 el mas bajo, y1 el mas bajo
                     if (x1>x2) {
                         z80_byte temp_valor=x1;
@@ -6201,9 +6201,9 @@ int new_plot_moves[8][2]={
                                         zxvision_set_attr(w,rellena_x,rellena_y+RENDER_PAWS_START_Y_DRAW,
                                             paws_render_ink+paws_render_bright*8,paws_render_paper+paws_render_bright*8,0);
                                     }
-                                    
 
-                            
+
+
                             }
                         }
                     }
@@ -6227,7 +6227,7 @@ int new_plot_moves[8][2]={
             else {
                 if ((gflag & 0x40) !=0 ) signo[0] = -1;
                 if ((gflag & 0x80) !=0 ) signo[1] = -1;
-                
+
                 parm0=parm0_byte*signo[0];
                 parm1=parm1_byte*signo[1];
 
@@ -6235,13 +6235,13 @@ int new_plot_moves[8][2]={
 
                 sprintf (drawstring,"FILL       %4d %4d",parm0,parm1);
             }
-		    
-            
+
+
             break;
 
             //GOSUB
-            case 3: 
-                                
+            case 3:
+
                 mirror_x=(gflag&64 ? -1 : +1);
                 mirror_y=(gflag&128 ? -1 : +1);
 
@@ -6256,23 +6256,23 @@ int new_plot_moves[8][2]={
                         (mirror_x==-1 ? "MX" : "  "),
                         (mirror_y==-1 ? "MY" : "  "),
                         nueva_ubicacion
-                );                        
+                );
 
                 int escala=value&7;
-                    
- 
+
+
                 //Chichen itza, localizacion 4 utiliza mirror_x
 
                 //No hacemos recursivo si no hay puntero zxvision, pues es en el unico modo que tiene sentido,
-                //ya que cuando solo se saca la lista de comandos (sin dibujar) no queremos saltar con gosub                
-            
+                //ya que cuando solo se saca la lista de comandos (sin dibujar) no queremos saltar con gosub
+
                 if (paws_render_disable_gosub.v==0 && w!=NULL) {
 
                     //Saltar a subrutina
                     if (nivel_recursivo>=DAAD_RENDER_GRAPHICS_MAX_NESTED_LEVELS) {
                         //printf("Maximum nested gosub reached\n");
                     }
-                    else {                         
+                    else {
 
                         //cambio temporal mirror
                         int antes_paws_render_mirror_x=paws_render_mirror_x;
@@ -6295,20 +6295,20 @@ int new_plot_moves[8][2]={
                         paws_render_mirror_x=antes_paws_render_mirror_x;
                         paws_render_mirror_y=antes_paws_render_mirror_y;
                         paws_render_escala=antes_paws_render_escala;
-                        
+
                     }
                 }
-                    
+
 		    break;
 
             //TEXT, RPLOT
             case 4:
-            
+
                 if (quillversion==0) {
-                    
-                    parm0=parm0_byte;                       
-                    parm1=parm1_byte;                       
-                    parm2=parm2_byte;  
+
+                    parm0=parm0_byte;
+                    parm1=parm1_byte;
+                    parm2=parm2_byte;
 
                     //Filtrar caracteres no validos
                     int caracter_mostrar=(parm0>=32 && parm0<=126 ? parm0 : '?');
@@ -6355,19 +6355,19 @@ int new_plot_moves[8][2]={
 
                     if (paws_render_disable_plot.v==0 && w!=NULL) {
                         int color_tinta=paws_render_ink+paws_render_bright*8;
-                        if (inv=='i' && paws_render_disable_ink.v==0) color_tinta=paws_render_paper+paws_render_bright*8;                            
+                        if (inv=='i' && paws_render_disable_ink.v==0) color_tinta=paws_render_paper+paws_render_bright*8;
 
                         render_paws_putpixel(w,paws_render_last_x,paws_render_last_y,color_tinta);
                     }
 
                 }
-                            
+
 
 		    break;
 
             //BRIGHT, PAPER
-	        case 5: 
-            
+	        case 5:
+
                 if ((gflag & 0x80) !=0) {
                     sprintf (drawstring,"BRIGHT     %4d",value & 15);
 
@@ -6377,25 +6377,25 @@ int new_plot_moves[8][2]={
                 else {
                     sprintf (drawstring,"PAPER      %4d",value & 15);
 
-                    if (paws_render_disable_paper.v==0) paws_render_paper=value & 15;                         
+                    if (paws_render_disable_paper.v==0) paws_render_paper=value & 15;
                 }
-        
-            
+
+
             break;
 
             //FLASH, INK
-            case 6: 
-                
+            case 6:
+
                 if ((gflag & 0x80) !=0)  {
                     sprintf (drawstring,"FLASH      %4d",value & 15);
                 }
 
                 else {
-                    sprintf (drawstring,"INK        %4d",value & 15);  
+                    sprintf (drawstring,"INK        %4d",value & 15);
                     if (paws_render_disable_ink.v==0) paws_render_ink=value & 15;
                 }
-                      
-		    
+
+
             break;
 
             //END
@@ -6405,7 +6405,7 @@ int new_plot_moves[8][2]={
             break;
         }
 
-        
+
         /*if (buffer_texto_comandos!=NULL) {
             util_concat_string(buffer_texto_comandos,buffer_temporal,MAX_TEXTO_GENERIC_MESSAGE);
         }*/
@@ -6419,9 +6419,9 @@ int new_plot_moves[8][2]={
 
     }
 
-    
 
-    //Fin de dibujo. 
+
+    //Fin de dibujo.
     menu_daad_render_aux_command_end_location(buffer_texto_comandos,tipo_texto);
 
 
@@ -6436,7 +6436,7 @@ int new_plot_moves[8][2]={
         //da la vuelta. el valor no es real pero para evitar poner un valor negativo
         if (resta<0) resta=65536-original_puntero_grafico;
         *p_total_tamanyo=resta;
-    } 
+    }
 
 }
 
@@ -6458,10 +6458,10 @@ void menu_debug_daad_view_graphics_render_overlay(void)
 
     //Por defecto
     paws_render_last_x=paws_render_initial_x;
-    paws_render_last_y=paws_render_initial_y;    
+    paws_render_last_y=paws_render_initial_y;
     paws_render_ink=0;
     paws_render_paper=7;
-    paws_render_bright=0;    
+    paws_render_bright=0;
     paws_render_mirror_x=+1;
     paws_render_mirror_y=+1;
     paws_render_escala=0;
@@ -6511,7 +6511,7 @@ void menu_debug_daad_view_graphics_list_commands_aux(int localizacion,char *text
     if (util_gac_detect() ) {
         menu_debug_daad_view_graphics_render_recursive_gac(NULL,localizacion,0,texto,tipo_texto);
     }
-    else menu_debug_daad_view_graphics_render_recursive(NULL,localizacion,0,texto,NULL,NULL,&contador_limite,tipo_texto);    
+    else menu_debug_daad_view_graphics_render_recursive(NULL,localizacion,0,texto,NULL,NULL,&contador_limite,tipo_texto);
 }
 
 void menu_debug_daad_view_graphics_render_list_commands(MENU_ITEM_PARAMETERS)
@@ -6532,7 +6532,7 @@ void menu_debug_daad_view_graphics_render_export_commands(MENU_ITEM_PARAMETERS)
     int tipo=menu_simple_two_choices("Export commands","Which picture?","Current One","All");
     if (tipo==0) return; //ESC
 
-    
+
     int posicion_dibujo=menu_debug_daad_view_graphics_render_localizacion;
     int max_localizaciones=util_gac_daad_get_total_graphics();
 
@@ -6571,7 +6571,7 @@ void menu_debug_daad_view_graphics_render_export_commands(MENU_ITEM_PARAMETERS)
 
         if (menu_confirm_yesno_texto("File exists","Overwrite?")==0) return;
 
-    }    
+    }
 
     FILE *ptr_destino;
     ptr_destino=fopen(archivo,"wb");
@@ -6604,7 +6604,7 @@ void menu_debug_daad_view_graphics_render_export_commands(MENU_ITEM_PARAMETERS)
 
         //printf("\n");
 
-        
+
         int longitud=strlen(texto);
 
         fwrite(texto,1,longitud,ptr_destino);
@@ -6640,7 +6640,7 @@ void menu_debug_daad_view_graphics_render_set(MENU_ITEM_PARAMETERS)
 void menu_debug_daad_view_graphics_render_disable_block(MENU_ITEM_PARAMETERS)
 {
     paws_render_disable_block.v ^=1;
-}   
+}
 
 void menu_debug_daad_view_graphics_render_disable_gosub(MENU_ITEM_PARAMETERS)
 {
@@ -6650,32 +6650,32 @@ void menu_debug_daad_view_graphics_render_disable_gosub(MENU_ITEM_PARAMETERS)
 void menu_debug_daad_view_graphics_render_disable_plot(MENU_ITEM_PARAMETERS)
 {
     paws_render_disable_plot.v ^=1;
-}  
+}
 
 void menu_debug_daad_view_graphics_render_disable_line(MENU_ITEM_PARAMETERS)
 {
     paws_render_disable_line.v ^=1;
-}  
+}
 
 void menu_debug_daad_view_graphics_render_disable_text(MENU_ITEM_PARAMETERS)
 {
     paws_render_disable_text.v ^=1;
-}  
+}
 
 void menu_debug_daad_view_graphics_render_disable_ink(MENU_ITEM_PARAMETERS)
 {
     paws_render_disable_ink.v ^=1;
-}  
+}
 
 void menu_debug_daad_view_graphics_render_disable_paper(MENU_ITEM_PARAMETERS)
 {
     paws_render_disable_paper.v ^=1;
-}  
+}
 
 void menu_debug_daad_view_graphics_render_disable_bright(MENU_ITEM_PARAMETERS)
 {
     paws_render_disable_bright.v ^=1;
-}  
+}
 
 void menu_debug_daad_view_graphics_render_disable_rectangle(MENU_ITEM_PARAMETERS)
 {
@@ -6685,7 +6685,7 @@ void menu_debug_daad_view_graphics_render_disable_rectangle(MENU_ITEM_PARAMETERS
 void menu_debug_daad_view_graphics_render_disable_ellipse(MENU_ITEM_PARAMETERS)
 {
     paws_render_disable_ellipse.v ^=1;
-} 
+}
 
 void menu_debug_daad_view_graphics_render_initial_x(MENU_ITEM_PARAMETERS)
 {
@@ -6721,10 +6721,10 @@ void menu_debug_daad_view_graphics(void)
     //Renderizar un grafico de paws
 
     menu_espera_no_tecla();
-    menu_reset_counters_tecla_repeticion();    
+    menu_reset_counters_tecla_repeticion();
 
     zxvision_window *ventana;
-    ventana=&zxvision_window_paws_render; 
+    ventana=&zxvision_window_paws_render;
 
 
     int ancho_ventana,alto_ventana,xventana,yventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
@@ -6743,7 +6743,7 @@ void menu_debug_daad_view_graphics(void)
         xventana=menu_center_x()-ancho_ventana/2;
         yventana=menu_center_y()-alto_ventana/2;
 
-    }    
+    }
 
     char titulo_ventana[100];
     sprintf(titulo_ventana,"%s Graphics Render",util_undaad_unpaws_ungac_get_parser_name() );
@@ -6756,7 +6756,7 @@ void menu_debug_daad_view_graphics(void)
 
     zxvision_draw_window(ventana);
     //indicar nombre del grabado de geometria
-    //strcpy(ventana->geometry_name,"textadvgraphics");    
+    //strcpy(ventana->geometry_name,"textadvgraphics");
     //restaurar estado minimizado de ventana
     //ventana->is_minimized=is_minimized;
 
@@ -6766,11 +6766,11 @@ void menu_debug_daad_view_graphics(void)
     //Por cierto que esta ventana no la permitimos que se haga background. Por que? Quizá no tiene sentido,
     //pues no el contenido no varia a no ser que se esté en la ventana y tocando opciones
     //Ademas, creo que puede provocar efectos inesperados si esta la ventana abierta y cargamos otro juego
-    menu_debug_daad_view_graphics_render_overlay_window=ventana; //Decimos que el overlay lo hace sobre la ventana que tenemos aqui    
+    menu_debug_daad_view_graphics_render_overlay_window=ventana; //Decimos que el overlay lo hace sobre la ventana que tenemos aqui
 
     //cambio overlay
     zxvision_set_window_overlay(ventana,menu_debug_daad_view_graphics_render_overlay);
-   
+
 
 
     //zxvision_wait_until_esc(ventana);
@@ -6801,7 +6801,7 @@ void menu_debug_daad_view_graphics(void)
 
         int tinta,papel,is_picture;
 
-        util_daad_get_graphics_attr(menu_debug_daad_view_graphics_render_localizacion,&tinta,&papel,&is_picture); 
+        util_daad_get_graphics_attr(menu_debug_daad_view_graphics_render_localizacion,&tinta,&papel,&is_picture);
 
         int es_gac=util_gac_detect();
 
@@ -6818,11 +6818,11 @@ void menu_debug_daad_view_graphics(void)
 
             int location_commands,location_size;
 
-            util_gac_get_graphics_size(menu_debug_daad_view_graphics_render_localizacion,&location_commands,&location_size);            
+            util_gac_get_graphics_size(menu_debug_daad_view_graphics_render_localizacion,&location_commands,&location_size);
 
             sprintf(buffer_linea,"Size: %d commands (%d Bytes)",location_commands, location_size);
 
-            zxvision_print_string_defaults_fillspc(ventana,1,1,buffer_linea);            
+            zxvision_print_string_defaults_fillspc(ventana,1,1,buffer_linea);
         }
 
         else {
@@ -6854,22 +6854,22 @@ void menu_debug_daad_view_graphics(void)
                 location_commands,location_size,
                 tinta,papel);
 
-            zxvision_print_string_defaults_fillspc(ventana,1,1,buffer_linea);            
+            zxvision_print_string_defaults_fillspc(ventana,1,1,buffer_linea);
         }
 
         int linea=2;
 
 
 		menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_debug_daad_view_graphics_render_prev,NULL,"~~Prev");
-		menu_add_item_menu_tabulado(array_menu_common,1,linea);   
-        menu_add_item_menu_shortcut(array_menu_common,'p'); 
+		menu_add_item_menu_tabulado(array_menu_common,1,linea);
+        menu_add_item_menu_shortcut(array_menu_common,'p');
 
 		menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_debug_daad_view_graphics_render_next,NULL,"~~Next");
-		menu_add_item_menu_tabulado(array_menu_common,6,linea); 
+		menu_add_item_menu_tabulado(array_menu_common,6,linea);
         menu_add_item_menu_shortcut(array_menu_common,'n');
 
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_debug_daad_view_graphics_render_set,NULL,"~~Set");
-		menu_add_item_menu_tabulado(array_menu_common,11,linea);      
+		menu_add_item_menu_tabulado(array_menu_common,11,linea);
         menu_add_item_menu_shortcut(array_menu_common,'s');
 
         if (es_gac) {
@@ -6898,11 +6898,11 @@ void menu_debug_daad_view_graphics(void)
 
 
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_debug_daad_view_graphics_render_list_commands,NULL,"~~commands");
-        menu_add_item_menu_tabulado(array_menu_common,27,linea);   
-        menu_add_item_menu_shortcut(array_menu_common,'c');    
+        menu_add_item_menu_tabulado(array_menu_common,27,linea);
+        menu_add_item_menu_shortcut(array_menu_common,'c');
 
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_debug_daad_view_graphics_render_export_commands,NULL,"Exp.");
-        menu_add_item_menu_tabulado(array_menu_common,36,linea);                    
+        menu_add_item_menu_tabulado(array_menu_common,36,linea);
 
 
         //0123456789012345678901234567890123456789
@@ -6911,72 +6911,72 @@ void menu_debug_daad_view_graphics(void)
 
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_debug_daad_view_graphics_render_disable_gosub,NULL,
             "[%c] ~~Gosub",(paws_render_disable_gosub.v==0 ? 'X' : ' ') );
-        menu_add_item_menu_tabulado(array_menu_common,1,linea+1);   
+        menu_add_item_menu_tabulado(array_menu_common,1,linea+1);
         menu_add_item_menu_shortcut(array_menu_common,'g');
 
         if (util_gac_detect() ) {
             menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_debug_daad_view_graphics_render_disable_rectangle,NULL,
                 "[%c] Rec~~t",(paws_render_disable_rectangle.v==0 ? 'X' : ' ') );
-            menu_add_item_menu_tabulado(array_menu_common,11,linea+1);   
-            menu_add_item_menu_shortcut(array_menu_common,'t');       
+            menu_add_item_menu_tabulado(array_menu_common,11,linea+1);
+            menu_add_item_menu_shortcut(array_menu_common,'t');
 
             menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_debug_daad_view_graphics_render_disable_ellipse,NULL,
                 "[%c] ~~Ellip",(paws_render_disable_ellipse.v==0 ? 'X' : ' ') );
-            menu_add_item_menu_tabulado(array_menu_common,20,linea+1);   
-            menu_add_item_menu_shortcut(array_menu_common,'e');                       
+            menu_add_item_menu_tabulado(array_menu_common,20,linea+1);
+            menu_add_item_menu_shortcut(array_menu_common,'e');
         }
         else {
             menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_debug_daad_view_graphics_render_disable_block,NULL,
                 "[%c] ~~Block",(paws_render_disable_block.v==0 ? 'X' : ' ') );
-            menu_add_item_menu_tabulado(array_menu_common,11,linea+1);   
+            menu_add_item_menu_tabulado(array_menu_common,11,linea+1);
             menu_add_item_menu_shortcut(array_menu_common,'b');
 
             menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_debug_daad_view_graphics_render_disable_text,NULL,
                 "[%c] ~~Text",(paws_render_disable_text.v==0 ? 'X' : ' ') );
-            menu_add_item_menu_tabulado(array_menu_common,21,linea+1);   
-            menu_add_item_menu_shortcut(array_menu_common,'t');            
+            menu_add_item_menu_tabulado(array_menu_common,21,linea+1);
+            menu_add_item_menu_shortcut(array_menu_common,'t');
         }
 
 
-        
+
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_debug_daad_view_graphics_render_disable_plot,NULL,
             "[%c] Pl~~ot",(paws_render_disable_plot.v==0 ? 'X' : ' ') );
-        menu_add_item_menu_tabulado(array_menu_common,30,linea+1);   
+        menu_add_item_menu_tabulado(array_menu_common,30,linea+1);
         menu_add_item_menu_shortcut(array_menu_common,'o');
 
 
 
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_debug_daad_view_graphics_render_disable_line,NULL,
             "[%c] ~~Line",(paws_render_disable_line.v==0 ? 'X' : ' ') );
-        menu_add_item_menu_tabulado(array_menu_common,1,linea+2);   
+        menu_add_item_menu_tabulado(array_menu_common,1,linea+2);
         menu_add_item_menu_shortcut(array_menu_common,'l');
 
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_debug_daad_view_graphics_render_disable_ink,NULL,
             "[%c] ~~Ink",(paws_render_disable_ink.v==0 ? 'X' : ' ') );
-        menu_add_item_menu_tabulado(array_menu_common,10,linea+2);   
+        menu_add_item_menu_tabulado(array_menu_common,10,linea+2);
         menu_add_item_menu_shortcut(array_menu_common,'i');
-                
+
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_debug_daad_view_graphics_render_disable_paper,NULL,
             "[%c] P~~aper",(paws_render_disable_paper.v==0 ? 'X' : ' ') );
-        menu_add_item_menu_tabulado(array_menu_common,18,linea+2);   
+        menu_add_item_menu_tabulado(array_menu_common,18,linea+2);
         menu_add_item_menu_shortcut(array_menu_common,'a');
 
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_debug_daad_view_graphics_render_disable_bright,NULL,
             "[%c] B~~right",(paws_render_disable_bright.v==0 ? 'X' : ' ') );
-        menu_add_item_menu_tabulado(array_menu_common,28,linea+2);   
+        menu_add_item_menu_tabulado(array_menu_common,28,linea+2);
         menu_add_item_menu_shortcut(array_menu_common,'r');
 
 
 		retorno_menu=menu_dibuja_menu(&comun_opcion_seleccionada,&item_seleccionado,array_menu_common,"PAWS Graphics Render");
 
 
-			
+
 			if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
 					//llamamos por valor de funcion
 					if (item_seleccionado.menu_funcion!=NULL) {
 							//printf ("actuamos por funcion\n");
 							item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
-							
+
 					}
 			}
 
@@ -6985,14 +6985,14 @@ void menu_debug_daad_view_graphics(void)
 
 
     //En caso de menus tabulados, suele ser necesario esto. Si no, la ventana se quedaria visible
-    
+
 
     //Grabar geometria ventana
-    util_add_window_geometry_compact(ventana);    
+    util_add_window_geometry_compact(ventana);
 
     //printf("salir_todos_menus %d\n",salir_todos_menus);
 
-    zxvision_destroy_window(ventana);            
+    zxvision_destroy_window(ventana);
 }
 
 
@@ -7005,7 +7005,7 @@ void menu_debug_registers_zxvision_save_size(zxvision_window *ventana,int *venta
 	*ventana_ancho_antes=ventana->visible_width;
 	*ventana_alto_antes=ventana->visible_height;
 }
-	
+
 
 zxvision_window zxvision_window_menu_debug_registers;
 
@@ -7029,7 +7029,7 @@ z80_byte menu_debug_cpu_handle_mouse(zxvision_window *ventana)
 
             //teclas
             //10 cursor down
-            //11 cursor up            
+            //11 cursor up
             if (mouse_wheel_vertical<0) {
                 //abajo
 
@@ -7065,7 +7065,7 @@ z80_byte menu_debug_cpu_handle_mouse(zxvision_window *ventana)
         }
 
         return 0;
-        
+
     }
 
     //Pulsado boton izquierdo
@@ -7094,7 +7094,7 @@ z80_byte menu_debug_cpu_handle_mouse(zxvision_window *ventana)
 
             //Primero nos posicionamos en la direccion de arriba del todo
             //TODO: lo mejor sería tener una variable que cuando muestre vista 1 indique la direccion de memoria de la primera linea,
-            //para no tener que recalcularla aqui 
+            //para no tener que recalcularla aqui
             menu_debug_memory_pointer=menu_debug_disassemble_subir_veces(menu_debug_memory_pointer,menu_debug_line_cursor);
 
             //Cursor a 0
@@ -7143,7 +7143,7 @@ void debug_cpu_next_breakpoint_pc_dir(void)
 
     int i;
 
-    
+
     //for (i=0;i<total;i++) {
     //    printf("i: %d = %d\n",i,lista_breakpoints[i]);
     //}
@@ -7167,7 +7167,7 @@ void debug_cpu_next_breakpoint_pc_dir(void)
         if (lista_breakpoints[i]>menu_debug_memory_pointer) {
             menu_debug_memory_pointer=lista_breakpoints[i];
             debug_printf(VERBOSE_INFO,"Setting ptr to %XH",menu_debug_memory_pointer);
-            
+
             return;
         }
     }
@@ -7175,7 +7175,7 @@ void debug_cpu_next_breakpoint_pc_dir(void)
     //No hay ninguno mayor. Resetear al primero
     menu_debug_memory_pointer=lista_breakpoints[0];
     debug_printf(VERBOSE_INFO,"Setting ptr to %XH",menu_debug_memory_pointer);
-    
+
 }
 
 
@@ -7189,7 +7189,7 @@ void menu_debug_cpu_backwards_history(void)
     if (total_elementos_in_history==0) {
         menu_warn_message("History is empty");
         return;
-    }    
+    }
 
 
     int indice=total_elementos_in_history-indice_debug_cpu_backwards_history-1;
@@ -7198,12 +7198,12 @@ void menu_debug_cpu_backwards_history(void)
     if (indice<0) {
         menu_warn_message("You are at the oldest item");
         return;
-    }    
+    }
 
-    
+
     cpu_history_regs_bin_restore(indice);
 
-    indice_debug_cpu_backwards_history++;    
+    indice_debug_cpu_backwards_history++;
 }
 
 void menu_debug_cpu_backwards_history_run(zxvision_window *ventana)
@@ -7221,7 +7221,7 @@ void menu_debug_cpu_backwards_history_run(zxvision_window *ventana)
     if (total_elementos_in_history-indice_debug_cpu_backwards_history-1<0) {
         menu_warn_message("You are at the oldest item");
         return;
-    }    
+    }
 
     //printf("indice_debug_cpu_backwards_history %d\n",indice_debug_cpu_backwards_history);
 
@@ -7337,11 +7337,11 @@ void menu_debug_cpu_history(void)
         if (menu_confirm_yesno("Enable & start cpu history?")) {
 
             if (cpu_history_enabled.v==0) set_cpu_core_history();
-    
+
             if (cpu_history_started.v==0) cpu_history_started.v=1;
 
             menu_generic_message_splash("Cpu history","Come back later after running some cpu opcodes");
-            
+
         }
 
         return;
@@ -7353,7 +7353,7 @@ void menu_debug_cpu_history(void)
     //por ZRCP hay permitidos muchos mas
     if (total_items_menus>1000) total_items_menus=1000;
 
-    int menu_debug_cpu_history_opcion_seleccionada=0;    
+    int menu_debug_cpu_history_opcion_seleccionada=0;
 
     menu_item *array_menu_common;
     menu_item item_seleccionado;
@@ -7368,11 +7368,11 @@ void menu_debug_cpu_history(void)
 
         int i;
         for (i=0;i<total_items_menus;i++) {
-		
+
 			//Al solicitarlo, el 0 es el item mas reciente. el 1 es el anterior a este
 			int indice=total_elementos_in_history-i-1;
 
-            char string_pc[32]; 
+            char string_pc[32];
             //obtiene el historial de PC en esa posicion, en hexadecimal
             cpu_history_get_pc_register_element(indice,string_pc);
 
@@ -7390,7 +7390,7 @@ void menu_debug_cpu_history(void)
 
             char string_disassemble[64];
             size_t longitud_op;
-            debugger_disassemble(string_disassemble,32,&longitud_op,valor);            
+            debugger_disassemble(string_disassemble,32,&longitud_op,valor);
 
             //quitamos la H de la string para no mostrarla, queda redundante
             string_pc[longitud-1]=0;
@@ -7399,8 +7399,8 @@ void menu_debug_cpu_history(void)
                 string_pc,string_disassemble);
 
             menu_add_item_menu_ayuda(array_menu_common,"The element at the top is the most recent opcode ran");
-            
-            
+
+
             //en item de menu metemos el indice a historial
             menu_add_item_menu_valor_opcion(array_menu_common,indice);
         }
@@ -7427,7 +7427,7 @@ void menu_debug_cpu_history(void)
             }
         }
 
-    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);   
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
 }
 
 int menu_debug_registers_print_main_step(zxvision_window *ventana)
@@ -7455,7 +7455,7 @@ int menu_debug_registers_print_main_step(zxvision_window *ventana)
     linea=menu_debug_registers_get_line_legend(ventana);
 
 
-    return linea; 
+    return linea;
 }
 
 void menu_debug_help(void)
@@ -7478,7 +7478,7 @@ void menu_debug_help(void)
         "\n"
         "6 - Vista de 19 líneas de hexadecimal y ascii\n"
         "\n"
-        "7 - Vista de una línea de desensamblado y el contador de t-estados y scanline actual\n"   
+        "7 - Vista de una línea de desensamblado y el contador de t-estados y scanline actual\n"
         "\n"
         "8 - Vista de depuración de aventura conversacional, sólo disponible si se carga una aventura hecha con Quill, Paws, o Daad\n"
         "\n"
@@ -7607,7 +7607,7 @@ void menu_debug_help(void)
         "2: pausa de 0.02 segons entre cada instrucció\n"
         "3: sense pausa entre cada instrucció\n"
         "4: sense pausa entre cada grup de 10 instruccions\n"
-        "\n"        
+        "\n"
         "d: desassemblar: Es té una finestra addicional de desassemblat i exportació del llistat a fitxer de text\n"
         "\n"
         "a: assemblar: Es pot assemblar codi màquina, línia a línia\n"
@@ -7715,7 +7715,7 @@ void menu_debug_help(void)
         "2: 0.02 pause between every opcode\n"
         "3: no pause between every opcode\n"
         "4: no pause between every group of 10 opcodes\n"
-        "\n"        
+        "\n"
         "d: disassemble: An additional window for disassembly and exporting listings to text files\n"
         "\n"
         "a: assemble: You can assemble machine code, line by line\n"
@@ -7871,7 +7871,7 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
 	menu_debug_set_memory_zone_attr();
 
     //Resetear posicion de backwards siempre al entrar de nuevo en esta ventana
-    indice_debug_cpu_backwards_history=0;        
+    indice_debug_cpu_backwards_history=0;
 
 
 	//Ver si hemos entrado desde un breakpoint
@@ -7901,7 +7901,7 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
 
     //guardar tamanyo inicial para cuando se recrea la ventana indicarlo como tamanyo de antes minimizado
     //int ancho_ventana_inicial=ventana->visible_width;
-    //int alto_ventana_inicial=ventana->visible_height;    
+    //int alto_ventana_inicial=ventana->visible_height;
 
 
 	//Guardar ancho y alto anterior para recrear la ventana si cambia
@@ -7927,7 +7927,7 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
 				//printf ("Overlay al finalizar desde inicio: %p\n",ventana->overlay_function);
 
                 return;
-        }	
+        }
 
 
         if (menu_breakpoint_exception.v) {
@@ -7950,12 +7950,12 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
                 audio_playing.v=0;
                 //printf ("pc: %d\n",reg_pc);
 
-          
+
                 menu_breakpoint_fired(catch_breakpoint_message);
 
                 //restaurar estado multitarea
 
-                menu_emulation_paused_on_menu=antes_menu_emulation_paused_on_menu;                
+                menu_emulation_paused_on_menu=antes_menu_emulation_paused_on_menu;
 
 
             }
@@ -7969,7 +7969,7 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
 
 
 	//Si se habia lanzado un runtoparse de daad
-    
+
 	if (debug_daad_breakpoint_runtoparse_fired.v) {
 		debug_printf (VERBOSE_DEBUG,"Going back from a daad breakpoint runtoparse. Adding a step to step condact breakpoint and exiting window");
 
@@ -7983,10 +7983,10 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
         //La idea es que el runtoparse hace el primer breakpoint, hasta aqui, que le situa en un condacto de tipo parse,
         //pero se pone otro breakpoint automatico que retornara el usuario despues del comando parse
         //O sea, este comando "runtoparse" se convierte mas bien en "runtoafterparse"
-        
+
 		menu_debug_daad_step_breakpoint();
 		salir_todos_menus=1;
-              
+
         //Ademas quitamos el flag de abrir menu que se habia quedado activado
         //Esto realmente solo hace falta cuando se ejecuta step si el menu debug cpu se ha abierto como consecuencia de un breakpoint
         //esto fijarse en funcion menu_inicio cuando se usa zxvision_switch_to_window_on_open_menu, que se abre ventana
@@ -8005,9 +8005,9 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
 
 
 		return;
-        
+
 	}
-    
+
 
 
 
@@ -8019,7 +8019,7 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
 
 	do {
 
-	
+
         //printf("Al principio del do while\n");
 
 		//Si es la vista 8, siempre esta en cpu step mode, y zona de memoria es la mapped
@@ -8061,7 +8061,7 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
                 antes_menu_writing_inverse_color.v=menu_writing_inverse_color.v;
                 menu_writing_inverse_color.v=1;
 
-                        
+
 				linea=menu_debug_registers_print_registers(ventana,linea);
 				//linea=19;
 
@@ -8082,7 +8082,7 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
 
 	        }
 
-        
+
 
         	menu_cpu_core_loop();
 
@@ -8153,15 +8153,15 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
             }
 
 			//No hay tecla pulsada
-			if ( (acumulado & MENU_PUERTO_TECLADO_NINGUNA) ==MENU_PUERTO_TECLADO_NINGUNA ) {    
+			if ( (acumulado & MENU_PUERTO_TECLADO_NINGUNA) ==MENU_PUERTO_TECLADO_NINGUNA ) {
                 //Para poder usar repeticiones
-                menu_reset_counters_tecla_repeticion();                  
-            }      
+                menu_reset_counters_tecla_repeticion();
+            }
 
 			//Hay tecla pulsada
 			if ( (acumulado & MENU_PUERTO_TECLADO_NINGUNA) !=MENU_PUERTO_TECLADO_NINGUNA ) {
 				//tecla=zxvision_common_getkey_refresh();
-                if (!accion_mouse_pulsado) { 
+                if (!accion_mouse_pulsado) {
                     //printf("Antes zxvision_common_getkey_refresh_noesperanotec. wheel: %d acumulado: %d movido: %d\n",
                     //    mouse_wheel_vertical,acumulado,mouse_movido);
 
@@ -8188,7 +8188,7 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
                     //para forzar refresco rapido de pantalla
                     //importante para que se vea al momento acciones como mover el wheel de raton o pulsar cursores
                     forzar_refresco_ventana=1;
-                    //printf("tecla pulsada. forzar refresco\n");                    
+                    //printf("tecla pulsada. forzar refresco\n");
                 }
 
                 //printf("despues de tecla\n");
@@ -8222,7 +8222,7 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
 				    	//La cerramos pues el envio de watches a background no funciona bien si hay otra ventana detras
 					    //zxvision_destroy_window(ventana);
                         menu_debug_textadventure_map_connections(0);
-                        //menu_debug_registers_zxvision_ventana(ventana);		
+                        //menu_debug_registers_zxvision_ventana(ventana);
 
                         menu_emulation_paused_on_menu=antes_menu_emulation_paused_on_menu;
                     }
@@ -8232,8 +8232,8 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
                     }
                     //Decimos que no hay tecla pulsada
                     acumulado=MENU_PUERTO_TECLADO_NINGUNA;
-				}	
-             			
+				}
+
 
 				if (tecla=='b') {
 					menu_breakpoints(0);
@@ -8245,7 +8245,7 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
                     menu_debug_cpu_view_stack();
                     //Decimos que no hay tecla pulsada
                     acumulado=MENU_PUERTO_TECLADO_NINGUNA;
-                }                
+                }
 
 				if (tecla=='x' && menu_debug_registers_current_view==1) {
                     menu_debug_next_dis_show_hexa();
@@ -8264,27 +8264,27 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
                     menu_debug_daad_view_graphics();
 
                     //Decimos que no hay tecla pulsada
-                    acumulado=MENU_PUERTO_TECLADO_NINGUNA;                    
+                    acumulado=MENU_PUERTO_TECLADO_NINGUNA;
                 }
 
 				if (tecla=='u' && menu_debug_registers_current_view==1) {
 					menu_debug_runto();
                     tecla=2; //Simular ESC
 					salir_todos_menus=1;
-                }			
+                }
 
 				if (tecla=='n' && menu_debug_registers_current_view==1) {
 					//run tal cual. como runto pero sin poner breakpoint
                     tecla=2; //Simular ESC
 					salir_todos_menus=1;
-                }	
+                }
 
 				if (tecla=='n' && menu_debug_registers_current_view==8) {
 					menu_debug_daad_connections();
 
                     //Decimos que no hay tecla pulsada
-                    acumulado=MENU_PUERTO_TECLADO_NINGUNA;   
-                }	                									
+                    acumulado=MENU_PUERTO_TECLADO_NINGUNA;
+                }
 
 				if (tecla=='w') {
 					//La cerramos pues el envio de watches a background no funciona bien si hay otra ventana detras
@@ -8295,8 +8295,8 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
                     acumulado=MENU_PUERTO_TECLADO_NINGUNA;
                 }
 
-								
-								
+
+
 				if (tecla=='i') {
 					last_debug_poke_dir=menu_debug_memory_pointer;
 					if (menu_debug_registers_current_view==8) {
@@ -8305,14 +8305,14 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
                     else menu_debug_poke(0);
                     //Decimos que no hay tecla pulsada
                     acumulado=MENU_PUERTO_TECLADO_NINGUNA;
-                }								
+                }
 
                 if (tecla=='p') {
 					if (menu_debug_registers_current_view==8) {
 						//Esto es run hasta Parse Daad
 						menu_debug_daad_runto_parse();
                     	tecla=2; //Simular ESC
-						salir_todos_menus=1;	
+						salir_todos_menus=1;
 
                     //Ademas quitamos el flag de abrir menu que se habia quedado activado
                     //Esto realmente solo hace falta cuando se ejecuta step si el menu debug cpu se ha abierto como consecuencia de un breakpoint
@@ -8321,7 +8321,7 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
                     //Esta sentencia y comentarios estan repetidos en varios sitios
                     //TODO: Creo que en vez de cambiar este menu_event_open_menu.v=0, habria que llamar a menu_inicio_pre_retorno_reset_flags
                     //cuando se sale de la apertura de ventana en el caso de zxvision_switch_to_window_on_open_menu
-                    menu_event_open_menu.v=0;                        					
+                    menu_event_open_menu.v=0;
 					}
 					else {
 						debug_t_estados_parcial=0;
@@ -8346,7 +8346,7 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
                     debug_cpu_next_breakpoint_pc_dir();
                     //Decimos que no hay tecla pulsada
                     acumulado=MENU_PUERTO_TECLADO_NINGUNA;
-                }       
+                }
 
 
                 if (tecla=='H' && CPU_IS_Z80) {
@@ -8363,7 +8363,7 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
                     //Restaurar estado multitarea despues de menu_debug_registers_ventana, pues si hay algun error derivado
                     //de cambiar registros, se mostraria ventana de error, y se ejecutaria opcodes de la cpu, al tener que leer el teclado
 					menu_emulation_paused_on_menu=antes_menu_emulation_paused_on_menu;
-					
+
                 }
 
                 //ayuda
@@ -8373,9 +8373,9 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
 
                     //Decimos que no hay tecla pulsada
                     acumulado=MENU_PUERTO_TECLADO_NINGUNA;
-					
-                }                
-                	                
+
+                }
+
 
 				//Vista. Entre 1 y 8
 				if (tecla>='1' && tecla<='8') {
@@ -8457,7 +8457,7 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
 
             linea=menu_debug_registers_print_main_step(ventana);
 
-            
+
             /*
 			menu_debug_registers_set_title(ventana);
 			zxvision_draw_window(ventana);
@@ -8465,12 +8465,12 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
 			menu_breakpoint_exception_pending_show.v=0;
 
 			menu_debug_registers_adjust_ptr_on_follow();
-	
+
    	        linea=0;
 	        linea=menu_debug_registers_show_ptr_text(ventana,linea);
 
         	linea++;
-		
+
 
             //Zona central de la vista: desensamblado, registros, etc
             linea=menu_debug_registers_print_registers(ventana,linea);
@@ -8490,7 +8490,7 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
             z80_bit antes_menu_writing_inverse_color;
 	        antes_menu_writing_inverse_color.v=menu_writing_inverse_color.v;
             menu_writing_inverse_color.v=1;
-            
+
 
 
 			if (continuous_step==0) {
@@ -8551,11 +8551,11 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
 
 			//Esperamos tecla
 			if (continuous_step==0)
-			{ 
+			{
 
 
 				//menu_espera_tecla_no_cpu_loop();
-					
+
 				//No quiero que se llame a core loop si multitarea esta activo pero aqui estamos en cpu step
 				int antes_menu_emulation_paused_on_menu=menu_emulation_paused_on_menu;
 				menu_emulation_paused_on_menu=1;
@@ -8574,7 +8574,7 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
                     if (tecla!=0) {
                         accion_mouse_pulsado=1;
                         //printf("Accion mouse en modo step\n");
-                    }                    
+                    }
                 }
 
                 //Cualquier otra vista, si se pulsa rueda, resetearla
@@ -8668,9 +8668,9 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
                     //La cerramos pues el envio de watches a background no funciona bien si hay otra ventana detras
                     //zxvision_destroy_window(ventana);
                     menu_debug_textadventure_map_connections(0);
-                    //menu_debug_registers_zxvision_ventana(ventana);		
+                    //menu_debug_registers_zxvision_ventana(ventana);
 
-                 
+
 
                     //Decimos que no hay tecla pulsada
                     acumulado=MENU_PUERTO_TECLADO_NINGUNA;
@@ -8682,7 +8682,7 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
                     //de cambiar registros, se mostraria ventana de error, y se ejecutaria opcodes de la cpu, al tener que leer el teclado
 					menu_emulation_paused_on_menu=antes_menu_emulation_paused_on_menu;
 
-                }                
+                }
 
 
 
@@ -8703,7 +8703,7 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
                     //de cambiar registros, se mostraria ventana de error, y se ejecutaria opcodes de la cpu, al tener que leer el teclado
 					menu_emulation_paused_on_menu=antes_menu_emulation_paused_on_menu;
 
-				}								
+				}
 
                 if (tecla=='b') {
 					//Detener multitarea, porque si no, se input ejecutara opcodes de la cpu, al tener que leer el teclado
@@ -8722,7 +8722,7 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
                     //Restaurar estado multitarea despues de menu_debug_registers_ventana, pues si hay algun error derivado
                     //de cambiar registros, se mostraria ventana de error, y se ejecutaria opcodes de la cpu, al tener que leer el teclado
 					menu_emulation_paused_on_menu=antes_menu_emulation_paused_on_menu;
-					
+
                 }
 
                 if (tecla=='w') {
@@ -8733,7 +8733,7 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
 					//La cerramos pues el envio de watches a background no funciona bien si hay otra ventana detras
 					zxvision_destroy_window(ventana);
                     menu_watches(0);
-					menu_debug_registers_zxvision_ventana(ventana);					
+					menu_debug_registers_zxvision_ventana(ventana);
 
                     //Decimos que no hay tecla pulsada
                     acumulado=MENU_PUERTO_TECLADO_NINGUNA;
@@ -8751,12 +8751,12 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
                 	//Detener multitarea, porque si no, se input ejecutara opcodes de la cpu, al tener que leer el teclado
 					int antes_menu_emulation_paused_on_menu=menu_emulation_paused_on_menu;
 					menu_emulation_paused_on_menu=1;
-				
+
 					last_debug_poke_dir=menu_debug_memory_pointer;
 					if (menu_debug_registers_current_view==8) {
 						menu_debug_daad_edit_flagobject();
 					}
-                    else menu_debug_poke(0);					
+                    else menu_debug_poke(0);
 
                 	//Decimos que no hay tecla pulsada
                     acumulado=MENU_PUERTO_TECLADO_NINGUNA;
@@ -8787,14 +8787,14 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
 
                     //Decimos que no hay tecla pulsada
                     acumulado=MENU_PUERTO_TECLADO_NINGUNA;
-                                        
+
 					//decirle que despues de pulsar esta tecla no tiene que ejecutar siguiente instruccion
                     si_ejecuta_una_instruccion=0;
 
                     //Restaurar estado multitarea despues de menu_debug_registers_ventana, pues si hay algun error derivado
                     //de cambiar registros, se mostraria ventana de error, y se ejecutaria opcodes de la cpu, al tener que leer el teclado
 					menu_emulation_paused_on_menu=antes_menu_emulation_paused_on_menu;
-                }                
+                }
 
 
 				//Mensaje al que apunta instruccion de condact
@@ -8841,11 +8841,11 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
                     //de cambiar registros, se mostraria ventana de error, y se ejecutaria opcodes de la cpu, al tener que leer el teclado
 					menu_emulation_paused_on_menu=antes_menu_emulation_paused_on_menu;
 
-                }			
+                }
 
 				//Graficos paws/quill/daad y gac
 				if (tecla=='g'  && (
-                                    (menu_debug_registers_current_view==8 && util_daad_has_graphics() ) 
+                                    (menu_debug_registers_current_view==8 && util_daad_has_graphics() )
                                     ||
                                     (util_gac_detect() )
                                     )
@@ -8868,7 +8868,7 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
                     //de cambiar registros, se mostraria ventana de error, y se ejecutaria opcodes de la cpu, al tener que leer el teclado
 					menu_emulation_paused_on_menu=antes_menu_emulation_paused_on_menu;
 
-                }	                	
+                }
 
 		        if (tecla=='l' && menu_debug_registers_current_view==1) {
                     menu_debug_toggle_breakpoint();
@@ -8885,7 +8885,7 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
                     acumulado=MENU_PUERTO_TECLADO_NINGUNA;
                     //decirle que despues de pulsar esta tecla no tiene que ejecutar siguiente instruccion
                     si_ejecuta_una_instruccion=0;
-                }			
+                }
 
                 //Establecer PC con valor de PTR
 		        if (tecla=='P') {
@@ -8897,8 +8897,8 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
                     acumulado=MENU_PUERTO_TECLADO_NINGUNA;
                     //decirle que despues de pulsar esta tecla no tiene que ejecutar siguiente instruccion
                     si_ejecuta_una_instruccion=0;
-                }	                	
-								
+                }
+
 				if (tecla=='u' && menu_debug_registers_current_view==1) {
                     menu_debug_runto();
                     //decirle que despues de pulsar esta tecla no tiene que ejecutar siguiente instruccion
@@ -8907,9 +8907,9 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
 					cpu_step_mode.v=0;
 					acumulado=0; //teclas pulsadas
 					//Con esto saldremos
-                }	
+                }
 
-				
+
 				if (tecla=='n' && menu_debug_registers_current_view==1) {
 					//run tal cual. como runto pero sin poner breakpoint
                     //decirle que despues de pulsar esta tecla no tiene que ejecutar siguiente instruccion
@@ -8918,15 +8918,15 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
 					cpu_step_mode.v=0;
 					acumulado=0; //teclas pulsadas
 					//Con esto saldremos
-                }				
+                }
 
                 if (tecla=='n' && menu_debug_registers_current_view==8) {
                     	menu_debug_daad_connections();
                     //Decimos que no hay tecla pulsada
                     acumulado=MENU_PUERTO_TECLADO_NINGUNA;
                     //decirle que despues de pulsar esta tecla no tiene que ejecutar siguiente instruccion
-                    si_ejecuta_una_instruccion=0;					
-                }                	
+                    si_ejecuta_una_instruccion=0;
+                }
 
 
                 if (tecla=='p') {
@@ -8937,7 +8937,7 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
 						salir_todos_menus=1;
 						cpu_step_mode.v=0;
 						acumulado=0; //teclas pulsadas
-						//Con esto saldremos	
+						//Con esto saldremos
 
                     //Ademas quitamos el flag de abrir menu que se habia quedado activado
                     //Esto realmente solo hace falta cuando se ejecuta step si el menu debug cpu se ha abierto como consecuencia de un breakpoint
@@ -8946,7 +8946,7 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
                     //Esta sentencia y comentarios estan repetidos en varios sitios
                     //TODO: Creo que en vez de cambiar este menu_event_open_menu.v=0, habria que llamar a menu_inicio_pre_retorno_reset_flags
                     //cuando se sale de la apertura de ventana en el caso de zxvision_switch_to_window_on_open_menu
-                    menu_event_open_menu.v=0;                        					
+                    menu_event_open_menu.v=0;
 					}
 					else {
 						debug_t_estados_parcial=0;
@@ -8966,7 +8966,7 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
                     acumulado=MENU_PUERTO_TECLADO_NINGUNA;
                     //decirle que despues de pulsar esta tecla no tiene que ejecutar siguiente instruccion
                     si_ejecuta_una_instruccion=0;
-                }   
+                }
 
                 if (tecla=='H' && CPU_IS_Z80) {
 					//Detener multitarea, porque si no, se input ejecutara opcodes de la cpu, al tener que leer el teclado
@@ -8985,7 +8985,7 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
                     //Restaurar estado multitarea despues de menu_debug_registers_ventana, pues si hay algun error derivado
                     //de cambiar registros, se mostraria ventana de error, y se ejecutaria opcodes de la cpu, al tener que leer el teclado
 					menu_emulation_paused_on_menu=antes_menu_emulation_paused_on_menu;
-					
+
                 }
 
 
@@ -9001,13 +9001,13 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
                     acumulado=MENU_PUERTO_TECLADO_NINGUNA;
 
                     //decirle que despues de pulsar esta tecla no tiene que ejecutar siguiente instruccion
-                    si_ejecuta_una_instruccion=0;                        
+                    si_ejecuta_una_instruccion=0;
 
                     //Restaurar estado multitarea despues de menu_debug_registers_ventana, pues si hay algun error derivado
                     //de cambiar registros, se mostraria ventana de error, y se ejecutaria opcodes de la cpu, al tener que leer el teclado
 					menu_emulation_paused_on_menu=antes_menu_emulation_paused_on_menu;
-					
-                }                  
+
+                }
 
                 //backstep
                 if (tecla=='S' && cpu_history_enabled.v && cpu_history_started.v) {
@@ -9015,7 +9015,7 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
                     //Decimos que no hay tecla pulsada
                     acumulado=MENU_PUERTO_TECLADO_NINGUNA;
                     //decirle que despues de pulsar esta tecla no tiene que ejecutar siguiente instruccion
-                    si_ejecuta_una_instruccion=0;                    
+                    si_ejecuta_una_instruccion=0;
                 }
 
                 //backrun
@@ -9031,11 +9031,11 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
                     //Decimos que no hay tecla pulsada
                     acumulado=MENU_PUERTO_TECLADO_NINGUNA;
                     //decirle que despues de pulsar esta tecla no tiene que ejecutar siguiente instruccion
-                    si_ejecuta_una_instruccion=0;    
+                    si_ejecuta_una_instruccion=0;
 
-                    //Restaurar estado multitarea 
-					menu_emulation_paused_on_menu=antes_menu_emulation_paused_on_menu;                                    
-                }                
+                    //Restaurar estado multitarea
+					menu_emulation_paused_on_menu=antes_menu_emulation_paused_on_menu;
+                }
 
 				//Vista. Entre 1 y 8
 				if (tecla>='1' && tecla<='8') {
@@ -9075,8 +9075,8 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
                     //Restaurar estado multitarea despues de menu_debug_registers_ventana, pues si hay algun error derivado
                     //de cambiar registros, se mostraria ventana de error, y se ejecutaria opcodes de la cpu, al tener que leer el teclado
 					menu_emulation_paused_on_menu=antes_menu_emulation_paused_on_menu;
-					
-                }                          
+
+                }
 
 				//Daad breakpoint
 		        if (tecla=='k' && menu_debug_registers_current_view==8) {
@@ -9095,7 +9095,7 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
                     acumulado=MENU_PUERTO_TECLADO_NINGUNA;
                     //decirle que despues de pulsar esta tecla no tiene que ejecutar siguiente instruccion
                     si_ejecuta_una_instruccion=0;
-                }				
+                }
 
                 if (tecla=='r') {
                 	//Detener multitarea, porque si no, se input ejecutara opcodes de la cpu, al tener que leer el teclado
@@ -9106,7 +9106,7 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
 
                     //Decimos que no hay tecla pulsada
                     acumulado=MENU_PUERTO_TECLADO_NINGUNA;
-                    
+
                     //decirle que despues de pulsar esta tecla no tiene que ejecutar siguiente instruccion
                     si_ejecuta_una_instruccion=0;
 
@@ -9145,7 +9145,7 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
                     //decirle que despues de pulsar esta tecla no tiene que ejecutar siguiente instruccion
                     si_ejecuta_una_instruccion=0;
                 }
-                
+
 				//25 pgdn
                 if (tecla==25) {
                     //PgDn
@@ -9178,7 +9178,7 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
 					zxvision_draw_window(ventana);
 				}
 
-				if (tecla=='s') { 
+				if (tecla=='s') {
 					cpu_step_mode.v=0;
 					//Decimos que no hay tecla pulsada
 					acumulado=MENU_PUERTO_TECLADO_NINGUNA;
@@ -9196,18 +9196,18 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
 				}
 
 				if (tecla==3) { //background
-                    
+
                     //Mantener emulacion pausada fuera de aqui, ya que estamos en step mode
                     debug_printf(VERBOSE_DEBUG,"Keep emulation paused out of debug cpu as we are in step mode");
                     menu_emulation_paused_on_menu_by_debug_step_mode=1;
-                
+
 					cpu_step_mode.v=0;
 					//decirle que despues de pulsar esta tecla no tiene que ejecutar siguiente instruccion
                     si_ejecuta_una_instruccion=0;
                     acumulado=0; //teclas pulsadas
                     //Con esto saldremos
 
-				}				
+				}
 
 				//Cualquier tecla no enter, no ejecuta instruccion
 				if (tecla!=13) {
@@ -9282,7 +9282,7 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
                         salir_todos_menus=1;
                         acumulado=0;
 
-                        
+
                         //Ademas quitamos el flag de abrir menu que se habia quedado activado
                         //Esto realmente solo hace falta cuando se ejecuta step si el menu debug cpu se ha abierto como consecuencia de un breakpoint
                         //esto fijarse en funcion menu_inicio cuando se usa zxvision_switch_to_window_on_open_menu, que se abre ventana
@@ -9293,8 +9293,8 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
                         menu_event_open_menu.v=0;
 
                     }
-					
-                }					
+
+                }
 
 				else {
                     //printf("ejecutando cpu_core_loop. PC=%XH\n",reg_pc);
@@ -9355,17 +9355,17 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
 	//Si no estamos haciendo runto Parse de daad, quitar breakpoint del parser
 	if (debug_stepping_daad_runto_parse.v==0) {
 		menu_debug_delete_daad_parse_breakpoint();
-	}	
+	}
 
 
 
 
-    
+
 
 	util_add_window_geometry_compact(ventana);
 
 
-    //Caso especial. Pulsada tecla background o 
+    //Caso especial. Pulsada tecla background o
     //salir_todos_menus (que se ha pulsado tecla closeallmenus por ejemplo desde ventana breakpoints, con background permitido)
 	if (tecla==3 || (salir_todos_menus && menu_allow_background_windows) ) {
 		//En este caso, dado que no hay overlay, borramos contenido de la ventana
@@ -9376,10 +9376,10 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
 	}
 
 	else {
-		zxvision_destroy_window(ventana);	
+		zxvision_destroy_window(ventana);
         //Se sale de ventana. quitar pausado de emulacion
-        menu_emulation_paused_on_menu_by_debug_step_mode=0;	
- 	}	
+        menu_emulation_paused_on_menu_by_debug_step_mode=0;
+ 	}
 
 
 	//zxvision_destroy_window(ventana);
@@ -9430,7 +9430,7 @@ void menu_debug_textadventure_map_horiz_line(zxvision_window *w,int x,int y,int 
 /*void new_menu_debug_textadventure_map_horiz_line(zxvision_window *w,int base_x,int base_y,int offset_x,int offset_y,int ancho,int color)
 {
     int i;
-    
+
 
     printf("horiz line base x: %d longitud: %d\n",base_x,ancho);
 
@@ -9540,7 +9540,7 @@ void menu_debug_textadventure_map_connections_put_room(zxvision_window *w,int x,
 
         x *=tamanyo_celda;
         y *=tamanyo_celda;
-        
+
         int tamanyo_punto=2;
 
         tamanyo_punto *=menu_debug_textadventure_map_connections_zoom;
@@ -9549,7 +9549,7 @@ void menu_debug_textadventure_map_connections_put_room(zxvision_window *w,int x,
         int inicio_celda_x=x+map_adventure_offset_x;
         int inicio_celda_y=y+map_adventure_offset_y;
 
-        
+
         int centro_x=inicio_celda_x+(tamanyo_celda/2);
         int centro_y=inicio_celda_y+(tamanyo_celda/2);
 
@@ -9570,7 +9570,7 @@ void menu_debug_textadventure_map_connections_put_room(zxvision_window *w,int x,
         }
 
         int x_caracteres=(centro_x/menu_char_width)-1;
-        int y_caracteres=centro_y/menu_char_height;        
+        int y_caracteres=centro_y/menu_char_height;
 
         //mostrar numero habitacion si zoom suficientemente grande
         if (menu_debug_textadventure_map_connections_zoom>=3) {
@@ -9584,7 +9584,7 @@ void menu_debug_textadventure_map_connections_put_room(zxvision_window *w,int x,
                 sprintf(buffer_habitacion,"%d",room);
             }
 
-            
+
             if (current_room==room) {
                 zxvision_print_string(w,x_caracteres,y_caracteres,ESTILO_GUI_TINTA_OPCION_MARCADA,ESTILO_GUI_PAPEL_OPCION_MARCADA,0,buffer_habitacion);
             }
@@ -9599,17 +9599,17 @@ void menu_debug_textadventure_map_connections_put_room(zxvision_window *w,int x,
             int tinta_attr,paper_attr;
             int is_picture;
 
-            gac_location_picture=text_adventure_connections_table[room].gac_location_picture; 
+            gac_location_picture=text_adventure_connections_table[room].gac_location_picture;
 
             //GAC no tiene el concepto de subrutina
             if (util_gac_detect()) {
                 if (gac_location_picture>0) mostrar_dibujos=1;
-            } 
+            }
 
-            else {            
-                util_daad_get_graphics_attr(room,&tinta_attr,&paper_attr,&is_picture);  
+            else {
+                util_daad_get_graphics_attr(room,&tinta_attr,&paper_attr,&is_picture);
 
-                if (is_picture) mostrar_dibujos=1; 
+                if (is_picture) mostrar_dibujos=1;
             }
 
 
@@ -9639,32 +9639,32 @@ void menu_debug_textadventure_map_connections_put_room(zxvision_window *w,int x,
             int antes_paws_render_default_paper=paws_render_default_paper;
 
             int antes_paws_render_ink=paws_render_ink;
-            int antes_paws_render_paper=paws_render_paper;            
-    
+            int antes_paws_render_paper=paws_render_paper;
+
             int antes_gac_render_default_ink=gac_render_default_ink;
             int antes_gac_render_default_paper=gac_render_default_paper;
 
             //Por defecto
             paws_render_last_x=0;
-            paws_render_last_y=0;    
+            paws_render_last_y=0;
 
             //Miniaturas salen siempre con color por defecto del tema
             paws_render_default_ink=ESTILO_GUI_TINTA_NORMAL;
-            paws_render_default_paper=ESTILO_GUI_PAPEL_NORMAL;                  
+            paws_render_default_paper=ESTILO_GUI_PAPEL_NORMAL;
 
             gac_render_default_ink=ESTILO_GUI_TINTA_NORMAL;
-            gac_render_default_paper=ESTILO_GUI_PAPEL_NORMAL;         
+            gac_render_default_paper=ESTILO_GUI_PAPEL_NORMAL;
 
             paws_render_ink=ESTILO_GUI_TINTA_NORMAL;
-            paws_render_paper=ESTILO_GUI_PAPEL_NORMAL;           
+            paws_render_paper=ESTILO_GUI_PAPEL_NORMAL;
 
-            paws_render_bright=0;    
+            paws_render_bright=0;
             paws_render_mirror_x=+1;
             paws_render_mirror_y=+1;
             paws_render_escala=0;
 
 
-            
+
 
             paws_render_total_escalado=256/tamanyo_interior_celda;
             //reducir aun mas
@@ -9681,20 +9681,20 @@ void menu_debug_textadventure_map_connections_put_room(zxvision_window *w,int x,
 
 
             if (util_gac_detect() ) {
-                
+
 
 
 
                 int id_picture=util_gac_locate_room_location(gac_location_picture);
                 //printf("Drawing GAC picture: room %d gac_location_picture %d id_picture %d\n",room,gac_location_picture,id_picture);
-                
+
                 render_gac_in_text_adventure_map=1;
                 menu_debug_daad_view_graphics_render_recursive_gac(w,id_picture,0,NULL,0);
                 render_gac_in_text_adventure_map=0;
 
 
         //void menu_debug_daad_view_graphics_render_recursive_gac(zxvision_window *w,z80_byte location,int nivel_recursivo,
-        //  char *buffer_texto_comandos,int tipo_texto)        
+        //  char *buffer_texto_comandos,int tipo_texto)
             }
 
             else menu_debug_daad_view_graphics_render_recursive(w,room,0,NULL,NULL,NULL,&contador_limite,0);
@@ -9702,7 +9702,7 @@ void menu_debug_textadventure_map_connections_put_room(zxvision_window *w,int x,
         //void menu_debug_daad_view_graphics_render_recursive(zxvision_window *w,z80_byte location,int nivel_recursivo,char *buffer_texto_comandos,
             //int *p_total_comandos,int *p_total_tamanyo,int *contador_limite,int tipo_texto)
 
-            
+
 
             paws_render_total_escalado=antes_paws_render_total_escalado;
 
@@ -9711,13 +9711,13 @@ void menu_debug_textadventure_map_connections_put_room(zxvision_window *w,int x,
             paws_render_total_offset_y=0;
 
             paws_render_default_ink=antes_paws_render_default_ink;
-            paws_render_default_paper=antes_paws_render_default_paper;            
+            paws_render_default_paper=antes_paws_render_default_paper;
 
             gac_render_default_ink=antes_gac_render_default_ink;
-            gac_render_default_paper=antes_gac_render_default_paper;    
+            gac_render_default_paper=antes_gac_render_default_paper;
 
             paws_render_ink=antes_paws_render_ink;
-            paws_render_paper=antes_paws_render_paper;                
+            paws_render_paper=antes_paws_render_paper;
 
             paws_render_disable_block.v=antes_paws_render_disable_block;
             paws_render_disable_text.v=antes_paws_render_disable_text;
@@ -9735,7 +9735,7 @@ void menu_debug_textadventure_map_connections_put_room(zxvision_window *w,int x,
             int maxima_longitud=(tamanyo_interior_celda/menu_char_width)-2;
 
             char texto_localidad[MAX_ALLOWED_TEXT_ADVENTURE_LOCATION_LENGTH+1];
-            util_textadventure_get_locat_message(room,texto_localidad); 
+            util_textadventure_get_locat_message(room,texto_localidad);
 
 
             //trocear
@@ -9744,13 +9744,13 @@ void menu_debug_textadventure_map_connections_put_room(zxvision_window *w,int x,
             //Un maximo de MAX_ALLOWED_TEXT_ADVENTURE_LOCATION_LENGTH lineas
             char *punteros_lineas[MAX_ALLOWED_TEXT_ADVENTURE_LOCATION_LENGTH];
 
-    
+
 
             //maximo permitido en ancho
-            #define MAX_GAMEMAP_LENGTH_LINE_LOCATION 100    
+            #define MAX_GAMEMAP_LENGTH_LINE_LOCATION 100
             if  (maxima_longitud>=MAX_GAMEMAP_LENGTH_LINE_LOCATION) maxima_longitud=MAX_GAMEMAP_LENGTH_LINE_LOCATION-1;
 
-            
+
             //char buffer_lineas[256][MAX_GAMEMAP_LENGTH_LINE_LOCATION+1];
 
             char *buffer_lineas=util_malloc(MAX_ALLOWED_TEXT_ADVENTURE_LOCATION_LENGTH*MAX_GAMEMAP_LENGTH_LINE_LOCATION,"Can not allocate memory location messages");
@@ -9772,11 +9772,11 @@ void menu_debug_textadventure_map_connections_put_room(zxvision_window *w,int x,
             int maximo_permitido_alto=(((tamanyo_celda/2)-1)/menu_char_height)-1; //-1 de margen de arriba
 
             if (total_lineas>maximo_permitido_alto) total_lineas=maximo_permitido_alto;
-            
+
             for (i=0;i<total_lineas;i++) {
                     //printf("linea %d : %s\n",i,punteros_lineas[i]);
-                    zxvision_print_string_defaults(w,x_location,y_location+i,punteros_lineas[i]);	  
-            }            
+                    zxvision_print_string_defaults(w,x_location,y_location+i,punteros_lineas[i]);
+            }
 
 
             //0 al final
@@ -9787,9 +9787,9 @@ void menu_debug_textadventure_map_connections_put_room(zxvision_window *w,int x,
 
             free(buffer_lineas);
         }
-            
 
-        
+
+
 
 
         //mostrar objeto
@@ -9803,7 +9803,7 @@ void menu_debug_textadventure_map_connections_put_room(zxvision_window *w,int x,
             //TODO: seguro que cabe alguno mas si zoom mas alto, esto deberia recalcularse segun el zoom, pero de momento ya me vale asi
             //int max_mostrar_objetos=4; //con zoom 9 permitiamos 4 objetos
 
-            int max_mostrar_objetos=((tamanyo_interior_celda/2)/menu_char_height)-2; 
+            int max_mostrar_objetos=((tamanyo_interior_celda/2)/menu_char_height)-2;
             //-2 porque empezamos 2 lineas por debajo
 
             //caso especial para 12
@@ -9831,8 +9831,8 @@ void menu_debug_textadventure_map_connections_put_room(zxvision_window *w,int x,
                 }
 
             }
-            
-                  
+
+
             if (util_gac_detect()) {
                 char buffer_temp[256];
                 char pre_buffer_temp[256];
@@ -9846,12 +9846,12 @@ void menu_debug_textadventure_map_connections_put_room(zxvision_window *w,int x,
                     //TODO: Esto no es nada eficiente, esta continuamente buscando los objetos y a donde pertenecen
                     if (room_object==room && total_objetos_mostrados<max_mostrar_objetos) {
 
-                        int peso; 
+                        int peso;
                         //printf("Objeto %d en habitacion %d\n",i,room);
-                        
+
                         util_gac_get_object_name(i,pre_buffer_temp,&peso);
 
-                        
+
 
                          //printf("Objeto %s\n",pre_buffer_temp);
 
@@ -9875,7 +9875,7 @@ void menu_debug_textadventure_map_connections_put_room(zxvision_window *w,int x,
                          if (buffer_temp[0]==0) {
                             sprintf(buffer_temp,"Object %d",i);
                          }
-                    
+
 
                         //recalcular de nuevo por caracteres que se hayan suprimido
                         int longitud_texto_objeto=strlen(buffer_temp);
@@ -9889,7 +9889,7 @@ void menu_debug_textadventure_map_connections_put_room(zxvision_window *w,int x,
                             //poner puntos suspensivos
                             //por si acaso. comprobacion adicional
                             if (maxima_longitud>=3) {
-                                
+
                                 buffer_temp[maxima_longitud-1]='.';
                                 buffer_temp[maxima_longitud-2]='.';
                                 buffer_temp[maxima_longitud-3]='.';
@@ -9897,17 +9897,17 @@ void menu_debug_textadventure_map_connections_put_room(zxvision_window *w,int x,
                             }
                         }
 
-                        
+
 
                         zxvision_print_string_defaults_format(w,texto_objeto_x,texto_objeto_y,buffer_temp);
 
                         texto_objeto_y++;
-                        total_objetos_mostrados++;                        
+                        total_objetos_mostrados++;
 
                     }
                 }
 
-                
+
             }
             else {
 
@@ -9917,9 +9917,9 @@ void menu_debug_textadventure_map_connections_put_room(zxvision_window *w,int x,
                 /*
                 TODO: tratar especiales?
 
-                252 es para objetos no creados, por ejemplo, todavía no existen dentro del juego. 
+                252 es para objetos no creados, por ejemplo, todavía no existen dentro del juego.
                 253 tiene todos los objetos llevados encima (puestos) por el jugador.
-                254 tiene todos los objetos llevados por el jugador, pero no puestos encima.                
+                254 tiene todos los objetos llevados por el jugador, pero no puestos encima.
 
 
                 */
@@ -9942,7 +9942,7 @@ void menu_debug_textadventure_map_connections_put_room(zxvision_window *w,int x,
                         //poner puntos suspensivos
                         //por si acaso. comprobacion adicional
                         if (maxima_longitud>=3) {
-                            
+
                             buffer_temp[maxima_longitud-1]='.';
                             buffer_temp[maxima_longitud-2]='.';
                             buffer_temp[maxima_longitud-3]='.';
@@ -9950,7 +9950,7 @@ void menu_debug_textadventure_map_connections_put_room(zxvision_window *w,int x,
                         }
                     }
 
-                    
+
 
                     zxvision_print_string_defaults_format(w,texto_objeto_x,texto_objeto_y,buffer_temp);
 
@@ -9964,14 +9964,14 @@ void menu_debug_textadventure_map_connections_put_room(zxvision_window *w,int x,
 
 
         }
-                
+
 
         //dibujar contorno
         int longitud_linea=3*menu_debug_textadventure_map_connections_zoom;
 
         int longitud_escalon=1*menu_debug_textadventure_map_connections_zoom;
 
-        
+
 
         longitud_total_linea *=menu_debug_textadventure_map_connections_zoom;
 
@@ -10005,10 +10005,10 @@ Subir. Esquina inferior izquierda
               x8 x7
 
 *         *      ###             y3
-*         *      #      
+*         *      #
 *         *    ###               y5
-*         *    #        
-*         *    #        
+*         *    #
+*         *    #
 ********* *********         y4
 
                   x2
@@ -10029,7 +10029,7 @@ Bajar. Esquina inferior derecha
 
           x3
 
-*/        
+*/
 
         int x1=x;
         int y1=y;
@@ -10074,7 +10074,7 @@ Bajar. Esquina inferior derecha
         northwest=text_adventure_connections_table[room].northwest;
         northeast=text_adventure_connections_table[room].northeast;
         southwest=text_adventure_connections_table[room].southwest;
-        southeast=text_adventure_connections_table[room].southeast;   
+        southeast=text_adventure_connections_table[room].southeast;
 
         up=text_adventure_connections_table[room].up;
         down=text_adventure_connections_table[room].down;
@@ -10087,7 +10087,7 @@ Bajar. Esquina inferior derecha
         dudoso_northwest=text_adventure_connections_table[room].dudoso_northwest;
         dudoso_northeast=text_adventure_connections_table[room].dudoso_northeast;
         dudoso_southwest=text_adventure_connections_table[room].dudoso_southwest;
-        dudoso_southeast=text_adventure_connections_table[room].dudoso_southeast;   
+        dudoso_southeast=text_adventure_connections_table[room].dudoso_southeast;
 
         dudoso_up=text_adventure_connections_table[room].dudoso_up;
         dudoso_down=text_adventure_connections_table[room].dudoso_down;
@@ -10108,7 +10108,7 @@ Bajar. Esquina inferior derecha
             if (dudoso_south) color_final=ESTILO_GUI_COLOR_AVISO;
             menu_debug_textadventure_map_horiz_line(w,x2,y4,longitud_linea,color_final);
             if (menu_debug_textadventure_map_connections_zoom>=3) menu_debug_textadventure_map_horiz_line(w,x2,y4+1,longitud_linea,color_final);
-        }        
+        }
 
         //Si se puede ir al oeste
         if (west>=0) {
@@ -10124,7 +10124,7 @@ Bajar. Esquina inferior derecha
             if (dudoso_east) color_final=ESTILO_GUI_COLOR_AVISO;
             menu_debug_textadventure_map_vert_line(w,x4,y2,longitud_linea,color_final);
             if (menu_debug_textadventure_map_connections_zoom>=3) menu_debug_textadventure_map_vert_line(w,x4+1,y2,longitud_linea,color_final);
-        }     
+        }
 
         //Si se puede ir al noroeste
         if (northwest>=0) {
@@ -10134,9 +10134,9 @@ Bajar. Esquina inferior derecha
             menu_debug_textadventure_map_vert_line(w,x1,y1,longitud_linea,color_final);
             if (menu_debug_textadventure_map_connections_zoom>=3) {
                 menu_debug_textadventure_map_horiz_line(w,x1,y1-1,longitud_linea,color_final);
-                menu_debug_textadventure_map_vert_line(w,x1-1,y1,longitud_linea,color_final);                
+                menu_debug_textadventure_map_vert_line(w,x1-1,y1,longitud_linea,color_final);
             }
-        }   
+        }
 
         //Si se puede ir al noreste
         if (northeast>=0) {
@@ -10146,9 +10146,9 @@ Bajar. Esquina inferior derecha
             menu_debug_textadventure_map_vert_line(w,x4,y1,longitud_linea,color_final);
             if (menu_debug_textadventure_map_connections_zoom>=3) {
                 menu_debug_textadventure_map_horiz_line(w,x3,y1-1,longitud_linea,color_final);
-                menu_debug_textadventure_map_vert_line(w,x4+1,y1,longitud_linea,color_final);                
+                menu_debug_textadventure_map_vert_line(w,x4+1,y1,longitud_linea,color_final);
             }
-        }   
+        }
 
         //Si se puede ir al suroeste
         if (southwest>=0) {
@@ -10158,9 +10158,9 @@ Bajar. Esquina inferior derecha
             menu_debug_textadventure_map_vert_line(w,x1,y3,longitud_linea,color_final);
             if (menu_debug_textadventure_map_connections_zoom>=3) {
                 menu_debug_textadventure_map_horiz_line(w,x1,y4+1,longitud_linea,color_final);
-                menu_debug_textadventure_map_vert_line(w,x1-1,y3,longitud_linea,color_final);                
+                menu_debug_textadventure_map_vert_line(w,x1-1,y3,longitud_linea,color_final);
             }
-        }      
+        }
 
         //Si se puede ir al sureste
         if (southeast>=0) {
@@ -10170,9 +10170,9 @@ Bajar. Esquina inferior derecha
             menu_debug_textadventure_map_vert_line(w,x4,y3,longitud_linea,color_final);
             if (menu_debug_textadventure_map_connections_zoom>=3) {
                 menu_debug_textadventure_map_horiz_line(w,x3,y4+1,longitud_linea,color_final);
-                menu_debug_textadventure_map_vert_line(w,x4+1,y3,longitud_linea,color_final);                
+                menu_debug_textadventure_map_vert_line(w,x4+1,y3,longitud_linea,color_final);
             }
-        }                               
+        }
 
         //Si se puede subir
         if (up>=0) {
@@ -10182,7 +10182,7 @@ Bajar. Esquina inferior derecha
             menu_debug_textadventure_map_vert_line(w,x7,y3,longitud_escalon,color_final);
             menu_debug_textadventure_map_horiz_line(w,x8,y5,longitud_escalon,color_final);
             menu_debug_textadventure_map_vert_line(w,x8,y5,longitud_escalon,color_final);
-        }         
+        }
 
         //Si se puede bajar
         if (down>=0) {
@@ -10204,10 +10204,10 @@ Bajar. Esquina inferior derecha
               #   *
 ********* *********         y4  */
 
-      
+
     }
 
-    
+
 }
 
 //Si centramos el mapa
@@ -10262,7 +10262,7 @@ void menu_debug_textadventure_follow_connections(zxvision_window *w)
         //porque si no, provoca que cambie la ventana activa a esta, independientemente de la ventana en que estemos
         //TODO: si tenemos zoom grande, al cargar otra aventura, zoom pasa a pequeño, pero al no recrearse la ventana (porque NO se debe hacer)
         //se veran las franjas de scroll, porque la ventana sigue siendo grande, hasta que entremos en la ventana y entonces ya si, se recrea pequeña
-        
+
         //No: ya no hace falta cambiar el zoom
         //menu_debug_textadventure_map_connections_zoom=0;
 
@@ -10309,7 +10309,7 @@ int textadv_map_if_visible_compass(zxvision_window *w)
     //solo mostrarlo si hay un minimo de ancho
     if (w->visible_width<30) return 0;
 
-    return 1;    
+    return 1;
 }
 
 //putpixel evitando escribir en las lineas superiores de texto
@@ -10326,7 +10326,7 @@ void old_textadv_map_putpixel(zxvision_window *w,int x,int y,int color)
         //Y mas chulo aun. Evitar la zona de la brujula
         int efectiva_x=x-w->offset_x*menu_char_width;
 
-        
+
         int inicio_compass_x=((w->visible_width-textadv_map_get_space_compass_right() )*menu_char_width)-COMPASS_RADIO_CIRCULO;
         int final_compass_x=inicio_compass_x+COMPASS_RADIO_CIRCULO*2+2*menu_char_width;  //2*menu_char_width para margen por la derecha
 
@@ -10367,7 +10367,7 @@ void menu_debug_textadventure_map_connections_draw_map_compass(zxvision_window *
     int texto_x=w->offset_x+w->visible_width;
     int texto_y=w->offset_y;
 
-      
+
 
     int pos_x_linea=texto_x*menu_char_width-textadv_map_get_space_compass_right();
     int pos_y_linea=(texto_y+(map_adventure_offset_y/menu_char_height))*menu_char_height;
@@ -10384,9 +10384,9 @@ void menu_debug_textadventure_map_connections_draw_map_compass(zxvision_window *
 
     int p4_x;
     int p4_y;
-    
+
     //int p5_x;
-    //int p5_y;    
+    //int p5_y;
 
     //la "n" de la brujula
     /*
@@ -10399,18 +10399,18 @@ void menu_debug_textadventure_map_connections_draw_map_compass(zxvision_window *
     *   * *
     *    **
     *     *
-    p3    p4 
-    
+    p3    p4
+
     */
     int ancho_letra=COMPASS_ANCHO_LETRA;
     int alto_letra=COMPASS_ALTO_LETRA;
 
 
     p1_x=pos_x_linea;
-    p1_y=pos_y_linea; 
+    p1_y=pos_y_linea;
 
     p2_x=pos_x_linea+ancho_letra;
-    p2_y=p1_y;    
+    p2_y=p1_y;
 
     p3_x=p1_x;
     p3_y=p1_y+alto_letra;
@@ -10419,7 +10419,7 @@ void menu_debug_textadventure_map_connections_draw_map_compass(zxvision_window *
     p4_y=p3_y;
 
     int ancho_triangulo=COMPASS_ANCHO_TRIANGULO;
-    int alto_triangulo=COMPASS_ALTO_TRIANGULO;    
+    int alto_triangulo=COMPASS_ALTO_TRIANGULO;
 
 
     //Primero borramos (ponemos con color de fondo) la zona de la brujula, para evitar que haya texto que se meta ahi y se mezcle
@@ -10427,7 +10427,7 @@ void menu_debug_textadventure_map_connections_draw_map_compass(zxvision_window *
     int final_borrado_x=inicio_borrado_x+COMPASS_RADIO_CIRCULO*2;
 
     int inicio_borrado_y=p1_y;
-    
+
 
     int centro_circulo_y=pos_y_linea+alto_letra+COMPASS_SEPARACION_LETRA_TRIANGULO+alto_triangulo/2;
     int final_borrado_y=centro_circulo_y+COMPASS_RADIO_CIRCULO;
@@ -10443,7 +10443,7 @@ void menu_debug_textadventure_map_connections_draw_map_compass(zxvision_window *
 
     zxvision_draw_line(w,p1_x,p1_y,p3_x,p3_y,ESTILO_GUI_TINTA_NORMAL,compass_putpixel);
     zxvision_draw_line(w,p1_x,p1_y,p4_x,p4_y,ESTILO_GUI_TINTA_NORMAL,compass_putpixel);
-    zxvision_draw_line(w,p2_x,p2_y,p4_x,p4_y,ESTILO_GUI_TINTA_NORMAL,compass_putpixel);        
+    zxvision_draw_line(w,p2_x,p2_y,p4_x,p4_y,ESTILO_GUI_TINTA_NORMAL,compass_putpixel);
 
 
 
@@ -10466,7 +10466,7 @@ brujula sencilla
  **                 **     p2,p3
 
 
-*/    
+*/
 
 
     p1_x=pos_x_linea+ancho_letra/2;
@@ -10482,7 +10482,7 @@ brujula sencilla
     p4_y=p1_y+alto_triangulo/2;
 
     //p5_x=p1_x;
-    //p5_y=p1_y+alto_triangulo/2;    
+    //p5_y=p1_y+alto_triangulo/2;
 
 
     //circulo. En el centro del triangulo
@@ -10499,7 +10499,7 @@ brujula sencilla
     */
 
     //El circulo
-    zxvision_draw_ellipse(w,p4_x,p4_y,radio,radio,ESTILO_GUI_TINTA_NORMAL,compass_putpixel,360);    
+    zxvision_draw_ellipse(w,p4_x,p4_y,radio,radio,ESTILO_GUI_TINTA_NORMAL,compass_putpixel,360);
 
 
     //la flecha de la brujula
@@ -10507,8 +10507,8 @@ brujula sencilla
     zxvision_draw_line(w,p2_x,p2_y,p4_x,p4_y,ESTILO_GUI_TINTA_NORMAL,compass_putpixel);
     zxvision_draw_line(w,p4_x,p4_y,p3_x,p3_y,ESTILO_GUI_TINTA_NORMAL,compass_putpixel);
     zxvision_draw_line(w,p3_x,p3_y,p1_x,p1_y,ESTILO_GUI_TINTA_NORMAL,compass_putpixel);
-    
-    
+
+
 }
 
 
@@ -10536,7 +10536,7 @@ void menu_debug_textadventure_map_connections_overlay(void)
     if (util_textadventure_is_daad_quill_paws_gac() ) {
 
 
-        //Estamos redibujando siempre el mapa porque hay que reflejar cosas como que el usuario ha cogido un objeto y 
+        //Estamos redibujando siempre el mapa porque hay que reflejar cosas como que el usuario ha cogido un objeto y
         //ya no se muestra el objeto en el mapa
 
         menu_debug_textadventure_follow_connections(w);
@@ -10556,8 +10556,8 @@ void menu_debug_textadventure_map_connections_overlay(void)
 
         //de momento recorrer todas habitaciones
         int ancho_mapa,alto_mapa,min_x_mapa,max_x_mapa,min_y_mapa,max_y_mapa;
-        
-        textadventure_get_size_map(0,0,&ancho_mapa,&alto_mapa,&min_x_mapa,&max_x_mapa,&min_y_mapa,&max_y_mapa,1);    
+
+        textadventure_get_size_map(0,0,&ancho_mapa,&alto_mapa,&min_x_mapa,&max_x_mapa,&min_y_mapa,&max_y_mapa,1);
 
         int i;
         int z;
@@ -10570,11 +10570,11 @@ void menu_debug_textadventure_map_connections_overlay(void)
         if (current_room<TEXT_ADVENTURE_MAX_LOCATIONS) {
 
             if (text_adventure_connections_table[current_room].recorrida && menu_debug_textadventure_map_connections_center_current) {
-           
-                menu_debug_textadventure_map_connections_current_z=text_adventure_connections_table[current_room].z;   
+
+                menu_debug_textadventure_map_connections_current_z=text_adventure_connections_table[current_room].z;
             }
 
-        }      
+        }
 
         //Si ha cambiado posicion z
         if (z!=textadventure_map_last_z) {
@@ -10590,7 +10590,7 @@ void menu_debug_textadventure_map_connections_overlay(void)
             if (text_adventure_connections_table[i].recorrida && textadventure_room_has_exits(i) &&
                 text_adventure_connections_table[i].z==z /* &&
                 !text_adventure_connections_table[i].habitacion_dudosa */
-            
+
             ) {
                 int x=text_adventure_connections_table[i].x;
                 int y=text_adventure_connections_table[i].y;
@@ -10630,7 +10630,7 @@ void menu_debug_textadventure_map_connections_overlay(void)
                     //justo el centro de la habitacion
                     int offset_x=(x*tamanyo_habitacion+map_adventure_offset_x+tamanyo_habitacion/2)/menu_char_width;
                     int offset_y=(y*tamanyo_habitacion+map_adventure_offset_y+tamanyo_habitacion/2)/menu_char_height;
-                    
+
                     //cuanto es la mitad de pantalla
                     int mitad_ancho=(w->visible_width)/2;
                     int mitad_alto=(w->visible_height)/2;
@@ -10662,7 +10662,7 @@ void menu_debug_textadventure_map_connections_overlay(void)
                         debug_printf(VERBOSE_DEBUG,"Text adventure map. Following current location and set window scroll y: %d (was %d)",offset_y,w->offset_y);
                         zxvision_set_offset_y(w,offset_y);
                     }
-                
+
 
                 }
             }
@@ -10696,17 +10696,17 @@ void menu_debug_textadventure_map_connections_overlay(void)
 
         zxvision_print_string_defaults_fillspc_format(w,texto_x,texto_y,"~~Z: -zoom ~~X: +zoom ~~up ~~down ~~Teleport ~~f~~1: help");
 
-        texto_y++;   
+        texto_y++;
 
         zxvision_print_string_defaults_fillspc_format(w,texto_x,texto_y,"[%c] ~~Follow [%c] ~~Objects [%c] ~~Pictures",
             (menu_debug_textadventure_map_connections_center_current ? 'X' : ' ' ),
             (menu_debug_textadventure_map_connections_show_objects ? 'X' : ' ' ),
             (menu_debug_textadventure_map_connections_show_pictures ? 'X' : ' ' )
-            );    
+            );
 
-        texto_y++;      
+        texto_y++;
 
-        zxvision_print_string_defaults_fillspc_format(w,texto_x,texto_y,"[%c] Also un~~visited [%c] Also un~~connected",            
+        zxvision_print_string_defaults_fillspc_format(w,texto_x,texto_y,"[%c] Also un~~visited [%c] Also un~~connected",
             (menu_debug_textadventure_map_connections_show_unvisited ? 'X' : ' ' ),
             (menu_debug_textadventure_map_connections_show_rooms_no_connections ? 'X' : ' ' )
             );
@@ -10718,7 +10718,7 @@ void menu_debug_textadventure_map_connections_overlay(void)
 
         //Dibujar señal que apunta al norte
         menu_debug_textadventure_map_connections_draw_map_compass(w);
-    }     
+    }
 
     else {
         zxvision_set_offset_x(w,0);
@@ -10749,7 +10749,7 @@ void menu_debug_textadventure_map_connections_dec_zoom(void)
     if (menu_debug_textadventure_map_connections_zoom>0) menu_debug_textadventure_map_connections_zoom--;
 
     if (menu_debug_textadventure_map_connections_zoom==0) {
-    
+
         //si no esta centrado, ponemos offset 0, porque al hacerse pequeña podemos ver las vista de donde esta el mapa
         if (!menu_debug_textadventure_map_connections_center_current) {
             zxvision_set_offset_x(menu_debug_textadventure_map_connections_overlay_window,0);
@@ -10796,17 +10796,17 @@ void menu_debug_textadventure_map_connections_create_window(zxvision_window *ven
             xventana=menu_center_x()-ancho_ventana/2;
             yventana=menu_center_y()-alto_ventana/2;
 
-        }    
+        }
 
 
         //obtener ancho y alto total
         int ancho_mapa,alto_mapa,min_x_mapa,max_x_mapa,min_y_mapa,max_y_mapa;
-        
-        textadventure_get_size_map(0,0,&ancho_mapa,&alto_mapa,&min_x_mapa,&max_x_mapa,&min_y_mapa,&max_y_mapa,1); 
+
+        textadventure_get_size_map(0,0,&ancho_mapa,&alto_mapa,&min_x_mapa,&max_x_mapa,&min_y_mapa,&max_y_mapa,1);
 
         //de momento fuerzo alto y ancho total
         int alto_total; //=400;
-        int ancho_total; //=300;     
+        int ancho_total; //=300;
 
 
         if (menu_debug_textadventure_map_connections_zoom==0) {
@@ -10817,16 +10817,16 @@ void menu_debug_textadventure_map_connections_create_window(zxvision_window *ven
         else {
             int tamanyo_celda=MAP_ADVENTURE_CELL_SIZE;
 
-            tamanyo_celda *=menu_debug_textadventure_map_connections_zoom;  
+            tamanyo_celda *=menu_debug_textadventure_map_connections_zoom;
 
             //printf("tamanyo celda: %d\n",tamanyo_celda);
             //printf("ancho y alto mapa: %d %d\n",ancho_mapa,alto_mapa);
 
             ancho_total=ancho_mapa;
-            alto_total=alto_mapa;        
+            alto_total=alto_mapa;
 
-            ancho_total *=tamanyo_celda;  
-            alto_total *=tamanyo_celda;  
+            ancho_total *=tamanyo_celda;
+            alto_total *=tamanyo_celda;
 
             //pasar a caracteres
             ancho_total /=menu_char_width;
@@ -10855,24 +10855,24 @@ void menu_debug_textadventure_map_connections_create_window(zxvision_window *ven
         ventana->can_be_backgrounded=1;
 
         //No refrescar contenido al cambiar scroll. Esto permite que la parte superior de la ventana, donde estan
-        //las teclas y la leyenda no se mueva temporalmente al cambiar scroll. Total la funcion de overlay ya 
+        //las teclas y la leyenda no se mueva temporalmente al cambiar scroll. Total la funcion de overlay ya
         //refrescara convenientemente
         ventana->no_refresh_change_offset=1;
 
         //decimos que tiene que borrar fondo cada vez al redibujar
         //por tanto es como decirle que no use cache de putchar
         //dado que el fondo de texto es casi todo texto con caracter " " eso borra los pixeles que metemos con overlay del frame anterior
-        ventana->must_clear_cache_on_draw=1; 
+        ventana->must_clear_cache_on_draw=1;
 
         //Cambiamos funcion overlay de texto de menu
         //Por cierto que esta ventana no la permitimos que se haga background. Por que? Quizá no tiene sentido,
         //pues no el contenido no varia a no ser que se esté en la ventana y tocando opciones
         //Ademas, creo que puede provocar efectos inesperados si esta la ventana abierta y cargamos otro juego
-        menu_debug_textadventure_map_connections_overlay_window=ventana; //Decimos que el overlay lo hace sobre la ventana que tenemos aqui         
+        menu_debug_textadventure_map_connections_overlay_window=ventana; //Decimos que el overlay lo hace sobre la ventana que tenemos aqui
 
         //cambio overlay
         zxvision_set_window_overlay(ventana,menu_debug_textadventure_map_connections_overlay);
-            
+
 
 
     }
@@ -10880,7 +10880,7 @@ void menu_debug_textadventure_map_connections_create_window(zxvision_window *ven
     //Si ya existe, activar esta ventana
     else {
         zxvision_activate_this_window(ventana);
-    }     
+    }
 }
 
 
@@ -10888,14 +10888,14 @@ void menu_debug_textadventure_map_connections_recreate_window(zxvision_window *v
 {
     //recrear para calcular tamaño segun zoom
     debug_printf(VERBOSE_INFO,"Recreating Text Adventure map window");
-    
+
     //guardar geometria por si se redimensiona y luego pulsa boton zoom, que sepa tamaño anterior
-    util_add_window_geometry_compact(ventana);    
+    util_add_window_geometry_compact(ventana);
     zxvision_destroy_window(ventana);
 
     menu_debug_textadventure_map_connections_create_window(ventana);
 
-    zxvision_draw_window(ventana);        
+    zxvision_draw_window(ventana);
 }
 
 //incdec: si es +1, es incrementar. Si 0, decrementar
@@ -10904,7 +10904,7 @@ void menu_debug_textadventure_map_incdec_zoom(zxvision_window *ventana,int incde
     //Obtener el tanto por ciento (por 10000 realmente) del scroll usado
     //TODO: mejorar esto, si reduzco y amplio varias veces, se va desplazando la vista, no quedandose siempre en el mismo punto
     //Se ha probado tambien, en vez de sacar el porcentaje, sino aplicando el cociente de antes_offset_x/antes_total_width
-    //pero tambien resulta ser algo imperfecto. Creo que la solución perfecta dependería de cambiar el scroll para hacerlo de otra 
+    //pero tambien resulta ser algo imperfecto. Creo que la solución perfecta dependería de cambiar el scroll para hacerlo de otra
     //manera, como por ejemplo saber qué localidad tengo visible en pantalla y aplicar scroll siempre para que estuviera ahi visible
     int porcentaje_scroll_x;
     //Por si acaso evitar divisiones por 0, aunque no deberia suceder este caso nunca
@@ -10919,7 +10919,7 @@ void menu_debug_textadventure_map_incdec_zoom(zxvision_window *ventana,int incde
     if (incdec) menu_debug_textadventure_map_connections_inc_zoom();
     else menu_debug_textadventure_map_connections_dec_zoom();
 
-    menu_debug_textadventure_map_connections_recreate_window(ventana);        
+    menu_debug_textadventure_map_connections_recreate_window(ventana);
 
     //Y aplicar el scroll
     int scroll_final_x=(ventana->total_width*porcentaje_scroll_x)/10000;
@@ -11030,7 +11030,7 @@ void menu_debug_text_adventure_help(void)
         "p: Show pictures\n"
         "v: Show all locations, or just the locations we have visited\n"
         "c: Show also unconnected rooms (that have no exits)\n"
-        "Apart from these keys, by using the arrow keys, PgUp/Down, and the mouse, you can scroll the map conveniently.\n"                  
+        "Apart from these keys, by using the arrow keys, PgUp/Down, and the mouse, you can scroll the map conveniently.\n"
         );
     }
 }
@@ -11043,10 +11043,10 @@ void menu_debug_textadventure_map_connections(MENU_ITEM_PARAMETERS)
     //Renderizar un grafico de paws
 
     menu_espera_no_tecla();
-    menu_reset_counters_tecla_repeticion();    
+    menu_reset_counters_tecla_repeticion();
 
     zxvision_window *ventana;
-    ventana=&zxvision_window_textadv_map; 
+    ventana=&zxvision_window_textadv_map;
 
     //IMPORTANTE! no crear ventana si ya existe. Esto hay que hacerlo en todas las ventanas que permiten background.
     //si no se hiciera, se crearia la misma ventana, y en la lista de ventanas activas , al redibujarse,
@@ -11059,7 +11059,7 @@ void menu_debug_textadventure_map_connections(MENU_ITEM_PARAMETERS)
 
     zxvision_draw_window(ventana);
 
-   
+
 
 
 
@@ -11069,14 +11069,14 @@ void menu_debug_textadventure_map_connections(MENU_ITEM_PARAMETERS)
         //printf ("Saliendo de ventana ya que la estamos restaurando en startup\n");
 
         //Este es un caso especial
-        //cuando entra 
-        //arrancando ZEsarUX, la ventana se crea desde menu_debug_textadventure_map_connections_create_window y 
+        //cuando entra
+        //arrancando ZEsarUX, la ventana se crea desde menu_debug_textadventure_map_connections_create_window y
         //aun no tiene el juego en memoria del snapshot y por tanto no ha calculado bien el ancho y alto total del mapa
         //Ya no hace falta hacer esto porque esta a 1 por defecto
         //menu_debug_textadventure_map_connections_forzar_recreate_window=1;
 
         return;
-    }    
+    }
 
 
     //Entrar en la ventana siempre regenera las conexiones, por si la deteccion automatica de cambio de aventura en el overlay no funciona
@@ -11087,7 +11087,7 @@ void menu_debug_textadventure_map_connections(MENU_ITEM_PARAMETERS)
     //no se deberia, en principio, recrear la ventana cuando esta está en segundo plano, pues pueden suceder diferentes glitches
     if (menu_debug_textadventure_map_connections_forzar_recreate_window) {
         //printf("Recreate window\n");
-        menu_debug_textadventure_map_connections_recreate_window(ventana);  
+        menu_debug_textadventure_map_connections_recreate_window(ventana);
         menu_debug_textadventure_map_connections_forzar_recreate_window=0;
     }
 
@@ -11123,11 +11123,11 @@ void menu_debug_textadventure_map_connections(MENU_ITEM_PARAMETERS)
 
             if (tecla=='z' && menu_debug_textadventure_map_connections_zoom>0) {
                 menu_debug_textadventure_map_incdec_zoom(ventana,0);
-            }   
+            }
 
             if (tecla=='x' && menu_debug_textadventure_map_connections_zoom<MAX_TEXTADVENTURE_MAP_ZOOM ) {
                 menu_debug_textadventure_map_incdec_zoom(ventana,1);
-            }   
+            }
 
 
             if (tecla=='f') {
@@ -11137,7 +11137,7 @@ void menu_debug_textadventure_map_connections(MENU_ITEM_PARAMETERS)
             if (tecla=='t') {
                 menu_debug_textadventure_map_connections_teleport();
                 zxvision_draw_window(ventana);
-            }    
+            }
 
             if (tecla=='v') {
                 menu_debug_textadventure_map_connections_show_unvisited ^=1;
@@ -11149,7 +11149,7 @@ void menu_debug_textadventure_map_connections(MENU_ITEM_PARAMETERS)
 
             if (tecla=='p') {
                 menu_debug_textadventure_map_connections_show_pictures ^=1;
-            }            
+            }
 
             if (tecla=='c') {
                 menu_debug_textadventure_map_connections_show_rooms_no_connections ^=1;
@@ -11157,7 +11157,7 @@ void menu_debug_textadventure_map_connections(MENU_ITEM_PARAMETERS)
                 //Y volver a crear mapa
                 textadventure_follow_connections(menu_debug_textadventure_map_connections_show_rooms_no_connections);
 
-                menu_debug_textadventure_map_connections_recreate_window(ventana);                    
+                menu_debug_textadventure_map_connections_recreate_window(ventana);
             }
 
             if (tecla=='u') {
@@ -11173,19 +11173,19 @@ void menu_debug_textadventure_map_connections(MENU_ITEM_PARAMETERS)
             }
 
 
-       }    
+       }
 
         //printf ("tecla: %d\n",tecla);
-    } while (tecla!=2 && tecla!=3);    
+    } while (tecla!=2 && tecla!=3);
 
 
-    
+
 
     //Grabar geometria ventana
-    util_add_window_geometry_compact(ventana);    
+    util_add_window_geometry_compact(ventana);
 
     //printf("salir_todos_menus %d\n",salir_todos_menus);
-  
+
 
     if (tecla==3) {
         zxvision_message_put_window_background();
@@ -11193,6 +11193,6 @@ void menu_debug_textadventure_map_connections(MENU_ITEM_PARAMETERS)
 
     else {
         zxvision_destroy_window(ventana);
-    }         
+    }
 }
 

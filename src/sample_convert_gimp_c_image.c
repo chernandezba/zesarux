@@ -58,7 +58,7 @@ int get_pixel(int x,int y)
     //Color en 24 bit
 	unsigned int valor=(gimp_image.pixel_data[offset] << 16) |
 			   (gimp_image.pixel_data[offset+1] << 8) |
-			   (gimp_image.pixel_data[offset+2]   ); 
+			   (gimp_image.pixel_data[offset+2]   );
 
     //Color de fondo tratamos como 0
     if (valor==8553090) return 0;
@@ -91,7 +91,7 @@ void print_ascii_code(int codigo)
             if (color) valor_byte |=1;
             //printf("%d",color);
 
-            
+
         }
         //printf("\n");
         printf("0x%02x,",valor_byte);

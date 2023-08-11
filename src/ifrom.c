@@ -92,7 +92,7 @@ void ifrom_handle_special_dirs(z80_int dir,z80_byte value)
 5 bits bajos: es la pagina de los 512 kb de eeprom
 bit 7: bit de bloqueo (a 1), impide futuras escrituras en este byte de paginacion
 		*/
-		
+
 		//Banco final
 		ifrom_active_bank=value&31;
 
@@ -196,7 +196,7 @@ void ifrom_restore_peek_poke_functions(void)
 
 void ifrom_alloc_memory(void)
 {
-        int size=IFROM_SIZE;  
+        int size=IFROM_SIZE;
 
         debug_printf (VERBOSE_DEBUG,"Allocating %d kb of memory for ifrom emulation",size/1024);
 
@@ -269,7 +269,7 @@ void ifrom_enable(void)
 
 	//ifrom_active_bank=0;
 	//ifrom_protected.v=0;
-	
+
 
 
 

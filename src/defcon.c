@@ -96,7 +96,7 @@ void defcon_nmi(void)
     if (defcon_mapped_rom_memory.v==0) {
         debug_printf(VERBOSE_DEBUG,"Enabling defcon memory from nmi triggered");
         defcon_mapped_rom_memory.v=1;
-    }   
+    }
 }
 
 
@@ -160,7 +160,7 @@ int defcon_load_rom(void)
 void defcon_alloc_memory(void)
 {
 
-    int size=DEFCON_ROM_SIZE;  
+    int size=DEFCON_ROM_SIZE;
 
     debug_printf (VERBOSE_DEBUG,"Allocating %d kb of memory for defcon emulation",size/1024);
 

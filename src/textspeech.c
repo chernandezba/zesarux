@@ -396,7 +396,7 @@ void set_nonblock_flag(int desc)
 #ifndef MINGW
     int oldflags = fcntl(desc, F_GETFL, 0);
     if (oldflags == -1) return;
-    
+
     oldflags |= O_NONBLOCK;
 
     fcntl(desc, F_SETFL, oldflags);
@@ -442,9 +442,9 @@ int textspeech_get_stdout_childs(void)
             if (count>1) {
                 if (buffer[count-2]==10 || buffer[count-2]==13) buffer[count-2]=0;
             }
-            debug_printf(VERBOSE_ONLY_DEBUG_CONSOLE_WINDOW,"%s",buffer); 
+            debug_printf(VERBOSE_ONLY_DEBUG_CONSOLE_WINDOW,"%s",buffer);
 
-            return 1;           
+            return 1;
         }
     }
 
@@ -469,10 +469,10 @@ int textspeech_get_stdout_childs(void)
                 if (buffer[count-1]==10 || buffer[count-1]==13) buffer[count-1]=0;
                 debug_printf(VERBOSE_ONLY_DEBUG_CONSOLE_WINDOW,"%s",buffer);
             }
-            
+
 
             return 1;
-        }      
+        }
 #endif
 
     }
@@ -516,11 +516,11 @@ void scrtextspeech_filter_run_pending(void)
     //int fds_output[2];
     if (textspeech_get_stdout.v) {
         if (!textspeech_fds_output_initialized) {
-            
+
             if (pipe(textspeech_fds_output)<0) {
                     debug_printf (VERBOSE_ERR,"Can not make pipe to speech for receiving text");
                     return;
-            } 
+            }
             set_nonblock_flag(textspeech_fds_output[0]);
             set_nonblock_flag(textspeech_fds_output[1]);
 
@@ -581,7 +581,7 @@ void scrtextspeech_filter_run_pending(void)
 
             //printf("despues de waitpid\n");
 
-                
+
         break;
 
     }

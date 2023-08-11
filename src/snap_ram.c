@@ -104,10 +104,10 @@ z80_byte *save_zsf_snapshot_to_ram(int *p_longitud)
 
     //Asignamos primero lo máximo pues no sabemos cuanto ocupara nuestro snapshot
     z80_byte *buffer_temp;
-    buffer_temp=malloc(MAX_ZSF_SNAPSHOT_SIZE); 
+    buffer_temp=malloc(MAX_ZSF_SNAPSHOT_SIZE);
     if (buffer_temp==NULL) cpu_panic("Can not allocate memory for save_zsf_snapshot_to_ram");
 
-    z80_byte *puntero=buffer_temp; 
+    z80_byte *puntero=buffer_temp;
     int longitud;
 
     save_zsf_snapshot_file_mem(NULL,puntero,&longitud);
@@ -117,7 +117,7 @@ z80_byte *save_zsf_snapshot_to_ram(int *p_longitud)
     //Y luego asignamos ya la memoria definitiva y copiamos dicho snapshot
 
     z80_byte *buffer_final;
-    buffer_final=malloc(longitud); 
+    buffer_final=malloc(longitud);
     if (buffer_final==NULL) cpu_panic("Can not allocate memory for save_zsf_snapshot_to_ram");
 
     memcpy(buffer_final,buffer_temp,longitud);
@@ -152,7 +152,7 @@ void snapshot_to_ram_element(int indice)
 
     snapshots_in_ram[indice].memoria=puntero;
     snapshots_in_ram[indice].longitud=longitud;
-                
+
     //fecha grabacion
     //agregar hora, minutos, segundos
     time_t tiempo = time(NULL);
@@ -207,7 +207,7 @@ void snapshot_add_in_ram(void)
 
         //Y el primero avanza
         snapshots_in_ram_first_element=snapshot_increment_index(snapshots_in_ram_first_element);
-        
+
     }
 
     else {
@@ -376,7 +376,7 @@ void snapshot_in_ram_rewind(void)
     snapshot_in_ram_enabled_timer=snapshot_in_ram_enabled_timer_timeout;
 
     //Y el contador de rewind se decrementa, pues va desplazandose atras en el tiempo
-    if (snapshot_in_ram_rewind_last_position>=0) snapshot_in_ram_rewind_last_position--;    
+    if (snapshot_in_ram_rewind_last_position>=0) snapshot_in_ram_rewind_last_position--;
 
     //Y esta mas lejos el snapshot de referencia, dado que hemos ido uno mas atras
     snapshot_in_ram_rewind_cuantos_pasado++;
@@ -402,10 +402,10 @@ void snapshot_in_ram_ffw(void)
 
     //Y el contador de rewind se incrementa, pues va desplazandose atras en el tiempo
     if (snapshot_in_ram_rewind_last_position<snapshots_in_ram_maximum-1) {
-        snapshot_in_ram_rewind_last_position++;    
+        snapshot_in_ram_rewind_last_position++;
     }
 
-    //printf("snapshot_in_ram_rewind_last_position %d\n",snapshot_in_ram_rewind_last_position);    
+    //printf("snapshot_in_ram_rewind_last_position %d\n",snapshot_in_ram_rewind_last_position);
 
     //Esto sucedera cuando va pulsando ffw hasta ir mas alla del final
     if (snapshot_in_ram_rewind_last_position>snapshot_in_ram_rewind_initial_position) {

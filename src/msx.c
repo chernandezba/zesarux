@@ -69,7 +69,7 @@ const char *msx_string_memory_type_empty="EMPTY";
 
 char *msx_get_string_memory_type(int tipo)
 {
-    		
+
 
     switch (tipo) {
 
@@ -93,7 +93,7 @@ char *msx_get_string_memory_type(int tipo)
 z80_byte *msx_return_segment_address(z80_int direccion,int *tipo)
 {
     int segmento=direccion/16384;
-   
+
     z80_byte slot=msx_ppi_register_a;
 
     /*
@@ -107,7 +107,7 @@ z80_byte *msx_return_segment_address(z80_int direccion,int *tipo)
     |   |   ---------- Slot for page 1
     |   |
     |   -------------- Slot for page 2
-    |   
+    |
     ------------------ Slot for page 3
 
 
@@ -122,7 +122,7 @@ z80_byte *msx_return_segment_address(z80_int direccion,int *tipo)
 
     slot &=3;
 
-     
+
 
     *tipo=msx_memory_slots[slot][segmento];
 
@@ -162,7 +162,7 @@ void msx_init_memory_tables(void)
 
 
 
- 
+
 
 
 }
@@ -216,7 +216,7 @@ void msx_out_port_ppi(z80_byte puerto_l,z80_byte value)
             //printf ("Out port ppi. Port %02XH value %02XH\n",puerto_l,value);
 
     //temporal mostrar mapeos
-    
+
 /*
     for (slot=0;slot<4;slot++) {
         for (segment=0;segment<4;segment++) {
@@ -237,7 +237,7 @@ void msx_out_port_ppi(z80_byte puerto_l,z80_byte value)
 
             //Curiosidad: Chase HQ utiliza esto
             //printf ("Posible beep: %d\n",value&128);
-            
+
 			set_value_beeper_on_array(da_amplitud_speaker_msx() );
 
 
@@ -255,8 +255,8 @@ z80_byte msx_in_port_ppi(z80_byte puerto_l)
 
         case 0xA8:
             return msx_ppi_register_a;
-        break;        
- 
+        break;
+
         case 0xA9:
             //Leer registro B (filas teclado)
             //que fila? msx_ppi_register_c
@@ -271,24 +271,24 @@ z80_byte msx_in_port_ppi(z80_byte puerto_l)
             //Si row8, donde estan los cursores, y tipo joystick es msx, entonces no retornamos cursores
             //row 8 derecha abajo arriba izquierda	DEL	INS	HOME	SPACE
 
-            if (fila==8 && joystick_emulation==JOYSTICK_MSX) valor_fila |=0xF0;         
+            if (fila==8 && joystick_emulation==JOYSTICK_MSX) valor_fila |=0xF0;
 
-            
+
             return valor_fila;
 
         break;
 
         case 0xAA:
-        
+
         /*
-AAh	is the port to access the register that control the keyboard CAP LED, 
+AAh	is the port to access the register that control the keyboard CAP LED,
 two signals to data recorder and a matrix row (use the port C of PPI).
 
 bits 0~3 = Row number of specified keyboard matrix to read via port B
 bit 4 = Data recorder motor (reset to turn on)
 bit 5 = Set to write on tape
 bit 6 = Keyboard LED CAPS (reset to turn on)
-bit 7 = 1, then 0 shortly thereafter to make a clicking sound (used for the keyboard).        
+bit 7 = 1, then 0 shortly thereafter to make a clicking sound (used for the keyboard).
         */
 
 
@@ -317,7 +317,7 @@ void msx_out_port_psg(z80_byte puerto_l,z80_byte value)
         if (puerto_l==0xA1) {
                         activa_ay_chip_si_conviene();
                         if (ay_chip_present.v==1) {
-                            
+
                             if (ay_3_8912_registro_sel[ay_chip_selected]==14 || ay_3_8912_registro_sel[ay_chip_selected]==15) {
 
                                 //de momento registros 14 y 15 nada
@@ -325,8 +325,8 @@ void msx_out_port_psg(z80_byte puerto_l,z80_byte value)
                             else out_port_ay(49149,value);
 
                         }
-        }    
- 
+        }
+
 }
 
 
@@ -388,8 +388,8 @@ void msx_insert_rom_cartridge(char *filename)
 
 A ROM needs a header to be auto-executed by the system when the MSX is initialized.
 
-After finding the RAM and initializing the system variables, the MSX looks for the ROM headers in all the slots 
-on the memory pages 4000h-7FFFh and 8000h-FFFh. The search is done in ascending order. 
+After finding the RAM and initializing the system variables, the MSX looks for the ROM headers in all the slots
+on the memory pages 4000h-7FFFh and 8000h-FFFh. The search is done in ascending order.
 When a primary Slot is expanded, the search is done in the corresponding secondary Slots before going to the next Primary Slot.
 When the system finds a header, it selects the ROM slot only on the memory page corresponding to the address specified in INIT then, runs the program in ROM at the same address. (In short, it makes an inter-slot call.)
 
@@ -428,7 +428,7 @@ When the system finds a header, it selects the ROM slot only on the memory page 
     }
 
 
-    
+
     //int i;
 
 
@@ -465,7 +465,7 @@ void msx_empty_romcartridge_space(void)
 void scr_refresca_pantalla_y_border_msx_no_rainbow(void)
 {
 
- 
+
 
     if (border_enabled.v && vdp_9918a_force_disable_layer_border.v==0) {
             //ver si hay que refrescar border
@@ -515,8 +515,8 @@ void scr_refresca_pantalla_y_border_msx_no_rainbow(void)
     if (vdp_9918a_force_disable_layer_sprites.v==0) {
         vdp_9918a_render_sprites_no_rainbow(msx_vram_memory);
     }
-        
-        
+
+
 
 
 }
@@ -548,14 +548,14 @@ int da_amplitud_speaker_msx(void)
 z80_int msx_scanline_buffer[512];
 
 
-void screen_store_scanline_rainbow_msx_border_and_display(void) 
+void screen_store_scanline_rainbow_msx_border_and_display(void)
 {
 
     screen_store_scanline_rainbow_vdp_9918a_border_and_display(msx_scanline_buffer,msx_vram_memory);
 
 
 }
-					
+
 
 
 
@@ -653,17 +653,17 @@ void msx_cas_read_byte(void)
             //Quitar carry y volver
             Z80_FLAGS &=(255-FLAG_C);
             return;
-        
+
     }
 
 
     //Error. devolver carry
     Z80_FLAGS |= FLAG_C;
 
-    
+
     //Expulsar cinta
     tape_loadsave_inserted = tape_loadsave_inserted & (255 - TAPE_LOAD_INSERTED);
-    
+
 }
 
 
@@ -751,12 +751,12 @@ You might want to look at the casdir.c code, which implemented the above.
 
 z80_byte msx_read_psg(void)
 {
-    	//if (puerto_l==0xA0 && ay_3_8912_registro_sel[0]==14) { 
+    	//if (puerto_l==0xA0 && ay_3_8912_registro_sel[0]==14) {
 
 		//printf ("reading from psg\n");
-		
-			
-		if ( (ay_3_8912_registro_sel[ay_chip_selected] & 15) ==14) { 				
+
+
+		if ( (ay_3_8912_registro_sel[ay_chip_selected] & 15) ==14) {
 			//printf ("Read AY register 14. read tape / joystick\n");
 
 			//Bit 7 cinta
@@ -770,7 +770,7 @@ Bit	Description	Comment
 4	Input joystick pin 6	0 = trigger A
 5	Input joystick pin 7	0 = trigger B
 6	Japanese keyboard layout bit	1 = JIS, 0 = ANSI/AIUEO/50on
-7	Cassette input signal				
+7	Cassette input signal
 			*/
 			z80_byte valor=255;
 			if (realtape_inserted.v && realtape_playing.v) {
@@ -782,11 +782,11 @@ Bit	Description	Comment
 					}
 
 					//Cambiar color border si conviene
-					z80_byte border_reg=vdp_9918a_registers[7]; 
+					z80_byte border_reg=vdp_9918a_registers[7];
 
 					border_reg &=0xF0;
 
-					if (realtape_get_current_bit_playing()) { 
+					if (realtape_get_current_bit_playing()) {
 							valor=valor|128;
 							//printf ("1 ");
 							//valor=255;
@@ -811,10 +811,10 @@ Bit	Description	Comment
 					if (msx_loading_stripes.v) vdp_9918a_registers[7]=border_reg;
 
 
-                       
+
 
 					//temp_conta_lee_puerto_msx1_no_time++; if ((temp_conta_lee_puerto_msx1_no_time % 1000)==0) printf ("\n");
-			}	
+			}
 
             //Si esta activada emulacion de joystick msx
             if (joystick_emulation==JOYSTICK_MSX) {
@@ -829,7 +829,7 @@ Bit	Description	Comment
                         5	Input joystick pin 7	0 = trigger B
                         */
                     //z80_byte puerto_especial_joystick=0; //Fire Up Down Left Right
-                    
+
                     if ((puerto_especial_joystick&8)) valor &=(255-1);  //up
                     if ((puerto_especial_joystick&4)) valor &=(255-2);  //down
                     if ((puerto_especial_joystick&2)) valor &=(255-4);   //left
@@ -853,17 +853,17 @@ Bit	Description	Comment
 1	Output joystick port 1, pin 7	Set to 1 to allow input
 2	Output joystick port 2, pin 6	Set to 1 to allow input
 3	Output joystick port 2, pin 7	Set to 1 to allow input
-4	Output joystick port 1, pin 8	
-5	Output joystick port 2, pin 8	
+4	Output joystick port 1, pin 8
+5	Output joystick port 2, pin 8
 6	Joystick input selection, for r#14 inputs	1 = port 2
-7	Kana led control	1 = off		
+7	Kana led control	1 = off
 		*/
-		else if ( (ay_3_8912_registro_sel[ay_chip_selected] & 15) ==15) { 		
+		else if ( (ay_3_8912_registro_sel[ay_chip_selected] & 15) ==15) {
 			return 255;
 		}
 
 		else {
 			return in_port_ay(0xFF);
 		}
-	
+
 }

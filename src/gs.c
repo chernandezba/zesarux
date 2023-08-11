@@ -151,13 +151,13 @@ digits D4 - D7 are not used
         //->no hay combinacion para 30,31, por tanto los ultimos 32 kb se pierden??
         mapped_value--;
 
-        
+
 
         mapped_value *=2;
         gs_memory_mapped[2]=gs_ram_memory_tables[mapped_value];
         gs_memory_mapped_types[2]=1;
         gs_memory_mapped[3]=gs_ram_memory_tables[mapped_value+1];
-        gs_memory_mapped_types[3]=1;        
+        gs_memory_mapped_types[3]=1;
 
         //printf("Mapping RAMS %d and %d in upper segment. reg_pc=%04XH\n",mapped_value,mapped_value+1,reg_pc);
     }
@@ -178,7 +178,7 @@ void gs_mix_dac_channels(void)
         suma_right = gs_dac_channels[2] + gs_dac_channels[3];
 
         suma_left  /=2;
-        suma_right /=2;        
+        suma_right /=2;
     }
     else {
         for (i=0;i<4;i++) {
@@ -249,14 +249,14 @@ Data for channels should be located at the following addresses:
 ║             ├───┬───┬───┬───╢ # 6100 - # 61FF - channel 2 data
 ║             │ 1 │ 2 │ 3 │ 4 ║ # 6200 - # 62FF - channel 3 data
 ╟─────────────┼───┼───┼───┼───╢ # 6300 - # 63FF - channel 4 data
-║ A0 - A7     │ X │ X │ X │ X ║ # 6400 - # 64FF - channel 1 data    
+║ A0 - A7     │ X │ X │ X │ X ║ # 6400 - # 64FF - channel 1 data
     */
 
    if (dir_orig>=0x6000 && dir_orig<=0x7fff) {
        //write DAC
        int canal=(dir_orig>>8) & 3;
 
-       
+
 
        //temporal
        //printf ("Send DAC %d canal\n",valor,canal);
@@ -264,12 +264,12 @@ Data for channels should be located at the following addresses:
         //Tener en cuenta que valor central es 128 (unsigned sample)
         int valor_signed=valor-128;
 
-       
-       //aplicar volumen. 
-        
+
+       //aplicar volumen.
+
         int volumen=gs_volumes[canal] & 0x3F;
 
-        int dac_final=128 + (valor_signed * volumen) / 0x3F;       
+        int dac_final=128 + (valor_signed * volumen) / 0x3F;
 
         gs_dac_channels[canal]=dac_final;
 
@@ -319,7 +319,7 @@ void gs_poke_byte(z80_int dir,z80_byte valor)
     t_estados += 3;
 
     gs_poke_byte_no_time(dir,valor);
-    
+
 }
 
 
@@ -330,37 +330,37 @@ z80_byte gs_lee_puerto(z80_byte puerto_h GCC_UNUSED,z80_byte puerto_l)
     puerto_l &=0xf;
 
 	switch (puerto_l) {
-		
-		case 1: 
-		    return gs_command_register; 
+
+		case 1:
+		    return gs_command_register;
 		break;
-		
-		case 2: 
-		    gs_state_register &=0x7f; 
+
+		case 2:
+		    gs_state_register &=0x7f;
 		    return gs_data_register;
 		break;
-		
-		case 3: 
-		    gs_state_register |=0x80; 
-		break;
-		
-		case 4: 
-		    return gs_state_register; 
-		break;
-		
-		case 5: 
-		    gs_state_register &=0xfe; 
-		break;
-		
 
-		case 10: 
-		    if (gs_memory_mapping_value & 0x01) gs_state_register &=0x7f; 
-		    else gs_state_register |=0x80; 
+		case 3:
+		    gs_state_register |=0x80;
 		break;
-		
-		case 11: 
-		    if (gs_volumes[0] & 0x20) gs_state_register |=1; 
-		    else gs_state_register &=0xfe; 
+
+		case 4:
+		    return gs_state_register;
+		break;
+
+		case 5:
+		    gs_state_register &=0xfe;
+		break;
+
+
+		case 10:
+		    if (gs_memory_mapping_value & 0x01) gs_state_register &=0x7f;
+		    else gs_state_register |=0x80;
+		break;
+
+		case 11:
+		    if (gs_volumes[0] & 0x20) gs_state_register |=1;
+		    else gs_state_register &=0xfe;
 		break;
 	}
 
@@ -383,49 +383,49 @@ void gs_out_port(z80_int puerto,z80_byte value)
         break;
 
 
-        case 2: 
+        case 2:
             gs_state_register &=0x7f;
 		break;
-			
-		case 3: 
+
+		case 3:
 		    gs_state_register |=0x80;
 			gs_output_register=value ;
 		break;
-		
-		
-		case 5: 
+
+
+		case 5:
 		    gs_state_register &=0xfe;
 		break;
-		
-		case 6: 
+
+		case 6:
             gs_volumes[0] = value & 0x3f;
 		break;
 
-		case 7: 
+		case 7:
             gs_volumes[1] = value & 0x3f;
 		break;
 
-		case 8: 
+		case 8:
             gs_volumes[2] = value & 0x3f;
 		break;
 
-		case 9: 
+		case 9:
             gs_volumes[3] = value & 0x3f;
 		break;
 
-       
-		case 10: 
+
+		case 10:
 		    if (gs_memory_mapping_value & 0x01) gs_state_register &=0x7f;
 			else gs_state_register |=0x80;
 		break;
-			
-		case 11: 
+
+		case 11:
 		    if (gs_volumes[0] & 0x20) gs_state_register |=1;
 			else gs_state_register &=0xfe;
-		break;    
-            
+		break;
+
     }
-    
+
 }
 
 z80_byte gs_fetch_opcode(void)
@@ -461,7 +461,7 @@ void gs_init_peek_poke_etc(void)
     general_sound_z80_cpu.contend_read=gs_contend_read;
     general_sound_z80_cpu.contend_read_no_mreq=gs_contend_read_no_mreq;
     general_sound_z80_cpu.contend_write_no_mreq=gs_contend_write_no_mreq;
-    general_sound_z80_cpu.memoria_spectrum=gs_memory_pointer;    
+    general_sound_z80_cpu.memoria_spectrum=gs_memory_pointer;
 }
 
 void gs_init_memory_tables(void)
@@ -499,7 +499,7 @@ void gs_reset(void)
 
 void gs_alloc_memory(void)
 {
-    int size=(GS_ROM_SIZE+GS_RAM_SIZE)*1024;  
+    int size=(GS_ROM_SIZE+GS_RAM_SIZE)*1024;
 
     debug_printf (VERBOSE_DEBUG,"Allocating %d kb of memory for general sound emulation",size/1024);
 
@@ -596,7 +596,7 @@ void gs_save_machine_state(struct gs_machine_state *m)
     m->r_bc_shadow=REG_BC_SHADOW;
     m->r_de_shadow=REG_DE_SHADOW;
     m->r_hl_shadow=REG_HL_SHADOW;
-    m->r_af_shadow=REG_AF_SHADOW;    
+    m->r_af_shadow=REG_AF_SHADOW;
 
 
     m->r_ix=reg_ix;
@@ -655,7 +655,7 @@ void gs_restore_machine_state(struct gs_machine_state *m)
     reg_a_shadow=value_16_to_8h(m->r_af_shadow);
     Z80_FLAGS_SHADOW=value_16_to_8l(m->r_af_shadow);
 
-    
+
     reg_ix=m->r_ix;
     reg_iy=m->r_iy;
 
@@ -663,7 +663,7 @@ void gs_restore_machine_state(struct gs_machine_state *m)
     reg_i=value_16_to_8h(m->r_ir);
     reg_r=value_16_to_8l(m->r_ir) & 127;
     reg_r_bit7=value_16_to_8l(m->r_ir) & 128;
-    
+
 
     iff1.v=m->iff1.v;
     iff2.v=m->iff2.v;
@@ -696,7 +696,7 @@ void gs_restore_machine_state(struct gs_machine_state *m)
 void gs_generate_interrupt(void)
 {
     //printf("Generar interrupcion en GS\n");
-					
+
 
     if (z80_halt_signal.v) {
         z80_halt_signal.v=0;
@@ -715,9 +715,9 @@ void gs_generate_interrupt(void)
 
     if (im_mode==0 || im_mode==1) {
         cpu_common_jump_im01();
-    }   
+    }
     else {
-            
+
         //IM 2.
 
         z80_int temp_i;
@@ -729,11 +729,11 @@ void gs_generate_interrupt(void)
         dir_h=peek_byte(temp_i);
         reg_pc=value_8_to_16(dir_h,dir_l);
         t_estados += 7;
-    
-        
+
+
     }
 
-                            
+
 }
 
 
@@ -751,7 +751,7 @@ void gs_new_video_frame(void)
 
 void gs_run_scanline_cycles(void)
 {
-    
+
 
 
     while (t_estados/GS_MAX_STATES_LINE<=gs_scanline) {
@@ -781,7 +781,7 @@ void gs_run_scanline_cycles(void)
             gs_number_interrupts++;
             //Generar interrupcion
             if (iff1.v==1) {
-                gs_generate_interrupt();                
+                gs_generate_interrupt();
             }
         }
 
@@ -845,7 +845,7 @@ void gs_write_port_bb_from_speccy(z80_byte value)
 
     gs_command_register=value;
 
-	gs_state_register |=1;    
+	gs_state_register |=1;
 }
 
 void gs_write_port_b3_from_speccy(z80_byte value)
@@ -853,15 +853,15 @@ void gs_write_port_b3_from_speccy(z80_byte value)
     //printf("Write port B3 from speccy side. value %02XH\n",value);
     gs_data_register=value;
 
-	gs_state_register |=0x80;		
+	gs_state_register |=0x80;
 
 }
 
 z80_byte gs_read_port_bb_from_speccy(void)
 {
-    //printf("Read port BB from speccy side. value = %d.\n",gs_state_register);    
+    //printf("Read port BB from speccy side. value = %d.\n",gs_state_register);
 
-	
+
 
 
     return gs_state_register;
@@ -869,7 +869,7 @@ z80_byte gs_read_port_bb_from_speccy(void)
 
 z80_byte gs_read_port_b3_from_speccy(void)
 {
-    //printf("Read port B3 from speccy side.\n");    
+    //printf("Read port B3 from speccy side.\n");
 
     gs_state_register &=0x7f;
     return gs_output_register;

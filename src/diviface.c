@@ -67,7 +67,7 @@ z80_bit diviface_eprom_write_jumper={0};
 //void (*cpu_core_loop_no_diviface) (void);
 
 int diviface_current_ram_memory_bits=4; //Por defecto 128 KB
-//tbblue y zxuno tienen tambien 128kb 
+//tbblue y zxuno tienen tambien 128kb
 /*
 -using 2 bits: 32 kb
 -using 3 bits: 64 kb
@@ -209,7 +209,7 @@ void diviface_post_opcode_fetch(void)
 
 
 
-//Escritura de puerto de control divide/divmmc. 
+//Escritura de puerto de control divide/divmmc.
 void diviface_write_control_register(z80_byte value)
 {
 
@@ -344,32 +344,32 @@ int diviface_poke_byte_to_internal_memory(z80_int dir,z80_byte valor)
 {
 
 
-    //No escribir cuando mapram activo y segmento 0 o banco 3 en segmento 1 
+    //No escribir cuando mapram activo y segmento 0 o banco 3 en segmento 1
     if (dir<16384 && !diviface_conmem_enabled() && diviface_mapram_enabled() && diviface_paginacion_automatica_activa.v) {
-        
+
 //CONMEM clear, MAPRAM set, entrypoint executed:
 
 //0000h-1FFFh - Bank 3, read-only
-//2000h-3FFFh - 8K RAM selected by BANK bits. Writable, unless bank 3.        
-        
+//2000h-3FFFh - 8K RAM selected by BANK bits. Writable, unless bank 3.
+
         if (dir<0x2000) return 0;
 
 
         int pagina=diviface_control_register&get_diviface_ram_mask();
         if (pagina==3) return 0;
-    
+
     }
 
 	//Dado que en tbblue, divmmc tiene prioridad sobre layer2 en tbblue, no hay caso especial para layer2
-	
+
 
 	if (!diviface_conmem_enabled() && diviface_paginacion_automatica_activa.v==0) {
 		return 0;
-	}	
+	}
 
 	else {
 
-	
+
 	/*
 
 Prioridades Next. Divmmc encima de mmu. Por tanto no hay caso especial
@@ -396,7 +396,7 @@ Prioridades Next. Divmmc encima de mmu. Por tanto no hay caso especial
 
 
 */
-	
+
 		//Si poke a eprom o ram 3 read only.
 
 		if (dir<8192) {
@@ -484,8 +484,8 @@ z80_byte diviface_peek_byte_to_internal_memory(z80_int dir)
 {
 	//printf ("returning diviface internal memory address from diviface_peek_byte_no_time %XH\n",dir);
 	z80_byte *puntero=diviface_return_memory_paged_pointer(dir);
-		
-		
+
+
 //
 /*
 
@@ -513,7 +513,7 @@ Prioridades Next. Divmmc encima de mmu. Por tanto no hay caso especial
 
 
 */
-		
+
 
 	return *puntero;
 }
@@ -522,17 +522,17 @@ z80_byte diviface_peek_byte_no_time(z80_int dir,z80_byte value GCC_UNUSED)
 {
 	z80_byte valor_leido=debug_nested_peek_byte_no_time_call_previous(diviface_nested_id_peek_byte_no_time,dir);
 
-    
+
     //if (dir<16384 && !diviface_conmem_enabled() && diviface_mapram_enabled() && diviface_paginacion_automatica_activa.v) {
-        
+
 //CONMEM clear, MAPRAM set, entrypoint executed:
 
 //0000h-1FFFh - Bank 3, read-only
-//2000h-3FFFh - 8K RAM selected by BANK bits. Writable, unless bank 3.        
-        
+//2000h-3FFFh - 8K RAM selected by BANK bits. Writable, unless bank 3.
+
     //    return diviface_peek_byte_to_internal_memory(dir);
     //}
-    
+
 
 	if (!diviface_conmem_enabled() && diviface_paginacion_automatica_activa.v==0) {
 		//printf ("returning NON diviface internal memory address from diviface_peek_byte_no_time %XH\n",dir);
@@ -736,7 +736,7 @@ void diviface_enable(char *romfile)
 }
 
 void diviface_disable(void)
-{ 
+{
 
 	if (diviface_enabled.v==0) return;
 

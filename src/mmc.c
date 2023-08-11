@@ -162,7 +162,7 @@ void mmc_footer_mmc_operating(void)
 	//Y poner icono de mmc en inverso
 	if (!zxdesktop_icon_mmc_inverse) {
 		zxdesktop_icon_mmc_inverse=1;
-		menu_draw_ext_desktop();	
+		menu_draw_ext_desktop();
 	}
 }
 
@@ -381,7 +381,7 @@ int mmc_read_hdf_header(void)
                 cpu_panic ("No enough memory for mmc emulation");
         }
 
-   
+
 	unsigned int leidos=0;
 	debug_printf (VERBOSE_DEBUG,"Reading %d bytes of hdf header",mmc_file_header_hdf_size);
 
@@ -426,7 +426,7 @@ void mmc_insert(void)
 		debug_printf (VERBOSE_INFO,"File has hdf header");
 		if (mmc_read_hdf_header()) {
 			mmc_disable();
-                	return;	
+                	return;
 		}
 		mmc_size -=mmc_file_header_hdf_size;
 		mmc_file_inserted_hdf.v=1;
@@ -637,7 +637,7 @@ void mmc_set_visualmem_read(unsigned int address)
 
 #endif
 }
- 
+
 void mmc_set_visualmem_write(unsigned int address)
 {
 #ifdef EMULATE_VISUALMEM
@@ -648,7 +648,7 @@ void mmc_set_visualmem_write(unsigned int address)
 
 #endif
 }
- 
+
 z80_byte mmc_read_byte_memory(unsigned int address)
 {
 
@@ -732,13 +732,13 @@ z80_byte mmc_read(void)
 		//Parece que es de deteccion de MMC/SD
 		case 0x48:
 			debug_printf (VERBOSE_DEBUG,"MMC Read command CMD8 SEND_IF_COND unhandled");
-			
+
 			//mmc_r1 |=4; //Devolver error
 
-            //Parche para poder actualizar desde la bios de zxuno 
+            //Parche para poder actualizar desde la bios de zxuno
             if (MACHINE_IS_ZXUNO) {
-                //CMD8, SEND_IF_COND (send interface condition), is used to check whether the card is 
-                //first generation or Version 2.00 (or later). If the card is of first generation, 
+                //CMD8, SEND_IF_COND (send interface condition), is used to check whether the card is
+                //first generation or Version 2.00 (or later). If the card is of first generation,
                 //it will respond with R1 with bit 2 set (illegal command).
                 return 4;
             }

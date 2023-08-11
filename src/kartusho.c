@@ -187,7 +187,7 @@ void kartusho_restore_peek_poke_functions(void)
 
 void kartusho_alloc_memory(void)
 {
-        int size=KARTUSHO_SIZE;  
+        int size=KARTUSHO_SIZE;
 
         debug_printf (VERBOSE_DEBUG,"Allocating %d kb of memory for kartusho emulation",size/1024);
 
@@ -260,7 +260,7 @@ void kartusho_enable(void)
 
 	//kartusho_active_bank=0;
 	//kartusho_protected.v=0;
-	
+
 
 
 

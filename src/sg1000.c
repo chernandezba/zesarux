@@ -57,8 +57,8 @@ z80_bit sg1000_cartridge_inserted={0};
 
 char *sg1000_get_string_memory_type(int tipo)
 {
-    		
-            
+
+
 
     switch (tipo) {
 
@@ -121,8 +121,8 @@ $ffff	Mapper slot 2 control
         */
     }
 
-    
-    
+
+
 
 
 
@@ -200,7 +200,7 @@ void sg1000_insert_rom_cartridge(char *filename)
     if (!si_existe_archivo(filename)) {
         debug_printf(VERBOSE_ERR,"File %s not found",filename);
         return;
-    }        
+    }
 
     long tamanyo_archivo=get_file_size(filename);
 
@@ -222,7 +222,7 @@ void sg1000_insert_rom_cartridge(char *filename)
     int leidos=fread(memoria_spectrum,1,tamanyo_archivo,ptr_cartridge);
 
     debug_printf(VERBOSE_INFO,"Loaded %d bytes of cartridge rom",leidos);
-    
+
 
     fclose(ptr_cartridge);
 
@@ -258,7 +258,7 @@ void sg1000_empty_romcartridge_space(void)
 void scr_refresca_pantalla_y_border_sg1000_no_rainbow(void)
 {
 
- 
+
 
     if (border_enabled.v && vdp_9918a_force_disable_layer_border.v==0) {
             //ver si hay que refrescar border
@@ -308,8 +308,8 @@ void scr_refresca_pantalla_y_border_sg1000_no_rainbow(void)
     if (vdp_9918a_force_disable_layer_sprites.v==0) {
         vdp_9918a_render_sprites_no_rainbow(sg1000_vram_memory);
     }
-        
-        
+
+
 
 
 }
@@ -335,7 +335,7 @@ void scr_refresca_pantalla_y_border_sg1000(void)
 z80_int sg1000_scanline_buffer[512];
 
 
-void screen_store_scanline_rainbow_sg1000_border_and_display(void) 
+void screen_store_scanline_rainbow_sg1000_border_and_display(void)
 {
 
     screen_store_scanline_rainbow_vdp_9918a_border_and_display(sg1000_scanline_buffer,sg1000_vram_memory);
@@ -354,7 +354,7 @@ void screen_store_scanline_rainbow_sg1000_border_and_display(void)
             Mascara de puertos 0b11000001 = 193 = 0xC1
 
 
-            
+
 
 
             //puerto DC =  1101 1100  - mask 0b11000001 (193 decimal) = 1100000000 -> joypad A
@@ -362,11 +362,11 @@ void screen_store_scanline_rainbow_sg1000_border_and_display(void)
  Player 1                        A       B
             up down left right fire/space Z
 
-Player 2 
-             q   a    o    p     m       n 
+Player 2
+             q   a    o    p     m       n
 
 
-             A B cont reset 
+             A B cont reset
 
              Z X   C    R
 
@@ -376,7 +376,7 @@ Player 2
 */
 
 
-z80_byte sg1000_get_joypad_a(void) 
+z80_byte sg1000_get_joypad_a(void)
 {
 
 
@@ -421,7 +421,7 @@ JOYPAD1_UP:     = 0b00000001;
 
 
             //Player 2. Q
-            //puerto_64510    db              255  ; T    R    E    W    Q     ;2            
+            //puerto_64510    db              255  ; T    R    E    W    Q     ;2
             if ((puerto_64510 & 1)==0) valor_joystick &=(255-64);
 
 
@@ -441,7 +441,7 @@ JOYPAD1_UP:     = 0b00000001;
 
 
 
-z80_byte sg1000_get_joypad_b(void) 
+z80_byte sg1000_get_joypad_b(void)
 {
 
     //si estamos en el menu, no devolver tecla
@@ -470,12 +470,12 @@ JOYPAD2_LEFT:   = 0b00000001;
 
 
             //Player 2. O
-            //puerto_57342    db              255  ; Y    U    I    O    P     ;5         
+            //puerto_57342    db              255  ; Y    U    I    O    P     ;5
             if ((puerto_57342 & 2)==0) valor_joystick &=(255-1);
 
 
             //Player 2. P
-            //puerto_57342    db              255  ; Y    U    I    O    P     ;5         
+            //puerto_57342    db              255  ; Y    U    I    O    P     ;5
             if ((puerto_57342 & 1)==0) valor_joystick &=(255-2);
 
 
@@ -486,31 +486,31 @@ JOYPAD2_LEFT:   = 0b00000001;
 
             //Player 2. N
             //puerto_32766    db              255  ; B    N    M    Simb Space ;7
-            if ((puerto_32766 & 8)==0) valor_joystick &=(255-8);            
+            if ((puerto_32766 & 8)==0) valor_joystick &=(255-8);
 
 /*
-             A B cont reset 
+             A B cont reset
 
              Z X   C    R
 */
 
             //Player 2. Reset (R)
             //puerto_64510    db              255  ; T    R    E    W    Q     ;2
-            if ((puerto_64510 & 8)==0) valor_joystick &=(255-16);   
+            if ((puerto_64510 & 8)==0) valor_joystick &=(255-16);
 
 
             //Player 2. Cont (C)
             //puerto_65278   db    255  ; V    C    X    Z    Sh    ;0
-            if ((puerto_65278 & 8)==0) valor_joystick &=(255-32); 
+            if ((puerto_65278 & 8)==0) valor_joystick &=(255-32);
 
 
             //A  (Z)
             //puerto_65278   db    255  ; V    C    X    Z    Sh    ;0
-            if ((puerto_65278 & 2)==0) valor_joystick &=(255-64); 
+            if ((puerto_65278 & 2)==0) valor_joystick &=(255-64);
 
             //B  (X)
             //puerto_65278   db    255  ; V    C    X    Z    Sh    ;0
-            if ((puerto_65278 & 4)==0) valor_joystick &=(255-128);             
+            if ((puerto_65278 & 4)==0) valor_joystick &=(255-128);
 
 
     return valor_joystick;

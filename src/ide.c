@@ -475,7 +475,7 @@ void ide_footer_ide_operating(void)
 	if (!zxdesktop_icon_ide_inverse) {
 			zxdesktop_icon_ide_inverse=1;
 			menu_draw_ext_desktop();
-	}		
+	}
 }
 
 
@@ -566,11 +566,11 @@ void ide_write_command_register(z80_byte value)
 
 
 			//Identify drive
-			
+
 
                         drive=(ide_register_drive_head&16)>>4;
 
-            debug_printf (VERBOSE_PARANOID,"Ata command identify drive %d",drive);                        
+            debug_printf (VERBOSE_PARANOID,"Ata command identify drive %d",drive);
 
 			//No hay disco numero 1. Solo el disco numero 0
                         if (drive==1) {
@@ -601,7 +601,7 @@ void ide_write_command_register(z80_byte value)
 			ide_return_buffer[16]=(ide_disk_sectors_card>>24)&255;
 			ide_return_buffer[17]=(ide_disk_sectors_card>>16)&255;
 
-            
+
 			ide_return_buffer[18]=0;
 			ide_return_buffer[19]=0;
 			ide_return_buffer[20]=' ';
@@ -680,20 +680,20 @@ void ide_write_command_register(z80_byte value)
 
 			ide_return_buffer[108]=value_16_to_8h(ide_disk_cylinders);
             ide_return_buffer[109]=value_16_to_8l(ide_disk_cylinders);
-            
+
 			ide_return_buffer[110]=value_16_to_8h(ide_disk_heads);
             ide_return_buffer[111]=value_16_to_8l(ide_disk_heads);
-			
+
             ide_return_buffer[112]=value_16_to_8h(ide_disk_sectors_track);
             ide_return_buffer[113]=value_16_to_8l(ide_disk_sectors_track);
-			
+
 
             ide_return_buffer[114]=(ide_disk_sectors_card>>8)&255;
             ide_return_buffer[115]=(ide_disk_sectors_card)&255;
 
             ide_return_buffer[116]=(ide_disk_sectors_card>>24)&255;
             ide_return_buffer[117]=(ide_disk_sectors_card>>16)&255;
-            
+
 
 
 			ide_return_buffer[118]=0x01;
@@ -785,12 +785,12 @@ void ide_write_command_register(z80_byte value)
 		case 0x91:
 			debug_printf (VERBOSE_PARANOID,"Initialize Drive Parameters");
 			/*
-This command enables the host to set the number of sectors per track and the number of heads per cylinder. 
+This command enables the host to set the number of sectors per track and the number of heads per cylinder.
 Only the Sector Count and the Card/Drive/Head registers are used by this command.
-NOTE: SanDisk recommends NOT using this command in any system because DOS determines the offset to the 
-Boot Record based on the number of heads and sectors per track. 
-If a CompactFlash Memory Card is “Formatted” with one head and sector per track value, 
-the same CompactFlash Card will not operate correctly with DOS configured with another 
+NOTE: SanDisk recommends NOT using this command in any system because DOS determines the offset to the
+Boot Record based on the number of heads and sectors per track.
+If a CompactFlash Memory Card is “Formatted” with one head and sector per track value,
+the same CompactFlash Card will not operate correctly with DOS configured with another
 heads and sectors per track value.
 			*/
 
@@ -931,7 +931,7 @@ z80_byte ide_get_data_register(void)
     int indice;
 
     indice=ide_index_return_buffer&(IDE_MAX_RETURN_BUFFER-1);
-    return ide_return_buffer[indice];    
+    return ide_return_buffer[indice];
 }
 
 z80_byte ide_get_error_register(void)
@@ -959,7 +959,7 @@ z80_byte ide_read_command_block_register(z80_byte ide_register)
         switch (ide_register) {
 
 		case 0:
-            //Data Register 
+            //Data Register
 			//printf ("Reading return buffer index: %d\n",ide_index_return_buffer);
             return_value=ide_get_data_register();
 			//indice=ide_index_return_buffer&(IDE_MAX_RETURN_BUFFER-1);
@@ -1015,7 +1015,7 @@ z80_byte ide_read_command_block_register(z80_byte ide_register)
 #define IDE_STATUS_ERR  1
 */
 
-    
+
 			return_value=ide_status_register;
 			debug_printf (VERBOSE_PARANOID,"Returning status register: %d",return_value);
 			//debug_printf (VERBOSE_PARANOID,"Returning status register: %d PC=%d contador=%d",return_value,reg_pc,temp_contador_tonto);

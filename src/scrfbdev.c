@@ -423,7 +423,7 @@ void scrfbdev_refresca_pantalla_solo_driver(void)
 
 
         z80_byte *origen;
-        z80_byte *destino;        
+        z80_byte *destino;
 
         for (y=0;y<totalspectrumalto;y++) {
 
@@ -466,7 +466,7 @@ void scrfbdev_refresca_pantalla(void)
 
         else if (MACHINE_IS_TBBLUE) {
                 screen_tbblue_refresca_pantalla();
-        }		
+        }
 
 
 	else if (MACHINE_IS_SPECTRUM) {
@@ -511,7 +511,7 @@ void scrfbdev_refresca_pantalla(void)
 
         else if (MACHINE_IS_PCW) {
                 scr_refresca_pantalla_y_border_pcw();
-        }         
+        }
 
         else if (MACHINE_IS_SAM) {
                 scr_refresca_pantalla_y_border_sam();
@@ -527,24 +527,24 @@ void scrfbdev_refresca_pantalla(void)
 
 	else if (MACHINE_IS_MSX) {
 		scr_refresca_pantalla_y_border_msx();
-	}    
+	}
 
 	else if (MACHINE_IS_SVI) {
 		scr_refresca_pantalla_y_border_svi();
-	}    		
+	}
 
 
 	else if (MACHINE_IS_COLECO) {
 		scr_refresca_pantalla_y_border_coleco();
-	}    
+	}
 
 	else if (MACHINE_IS_SG1000) {
 		scr_refresca_pantalla_y_border_sg1000();
-	}  
+	}
 
 	else if (MACHINE_IS_SMS) {
 		scr_refresca_pantalla_y_border_sms();
-	}         
+	}
 
 
 	screen_render_menu_overlay_if_active();
@@ -1628,7 +1628,7 @@ void scrfbdev_putpixel_final_rgb(int x,int y,unsigned int color_rgb)
 
 	r=color_rgb;
 
-	putpixel_fbdev_lowlevel(x,y,r,g,b);	
+	putpixel_fbdev_lowlevel(x,y,r,g,b);
 }
 
 
@@ -1649,13 +1649,13 @@ void scrfbdev_putpixel(int x,int y,unsigned int color)
                 //Putpixel con menu cerrado
                 scrfbdev_putpixel_final(x,y,color);
                 return;
-        }          
+        }
 
         //Metemos pixel en layer adecuado
-	buffer_layer_machine[y*ancho_layer_menu_machine+x]=color;        
+	buffer_layer_machine[y*ancho_layer_menu_machine+x]=color;
 
-        //Putpixel haciendo mix  
-        screen_putpixel_mix_layers(x,y);   
+        //Putpixel haciendo mix
+        screen_putpixel_mix_layers(x,y);
 }
 
 void scrfbdev_special_scale_putpixel(int x,int y,unsigned int color)
@@ -1899,7 +1899,7 @@ int scrfbdev_init (void){
 	scr_putchar_footer=scrfbdev_putchar_footer;
 
         scr_get_menu_width=scrfbdev_get_menu_width;
-        scr_get_menu_height=scrfbdev_get_menu_height;	
+        scr_get_menu_height=scrfbdev_get_menu_height;
 	//scr_driver_can_ext_desktop=scrfbdev_driver_can_ext_desktop;
 
 
@@ -1940,7 +1940,7 @@ int scrfbdev_init (void){
 
 	// Get fixed screen information
 	if (ioctl(fbdev_filedescriptor, FBIOGET_FSCREENINFO, &fixinfo)) {
-	//ponemos este mensaje en debug y no en error para que no se active menu y 
+	//ponemos este mensaje en debug y no en error para que no se active menu y
 	//salga error cuando hace autodeteccion de driver de video. es especialmente molesto si el driver es stdout
 	//mensaje de abajo de variable information tambien seria susceptible de cambiar a debug
 		debug_printf(VERBOSE_DEBUG,"fbdev: Error reading fixed information.");
@@ -2040,7 +2040,7 @@ int scrfbdev_init (void){
 	scr_putpixel=scrfbdev_putpixel;
 
     scr_putpixel_final=scrfbdev_putpixel_final;
-    scr_putpixel_final_rgb=scrfbdev_putpixel_final_rgb;	
+    scr_putpixel_final_rgb=scrfbdev_putpixel_final_rgb;
 
 	if (ventana_fullscreen && fbdev_decimal_full_scale_fbdev) {
 
@@ -2221,7 +2221,7 @@ int scrfbdev_init (void){
 
 	scr_z88_cpc_load_keymap();
 
-    scr_reallocate_layers_menu(fbdev_ancho,fbdev_alto);    	
+    scr_reallocate_layers_menu(fbdev_ancho,fbdev_alto);
 
 	return 0;
 

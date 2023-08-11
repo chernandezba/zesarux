@@ -79,7 +79,7 @@ int scrsdl_crea_ventana(void)
     flags=SDL_SWSURFACE | SDL_RESIZABLE;
 
     if (ventana_fullscreen) {
-        flags |=SDL_FULLSCREEN; 
+        flags |=SDL_FULLSCREEN;
     }
 
     int ancho=screen_get_window_size_width_zoom_border_en();
@@ -122,7 +122,7 @@ void scrsdl_putpixel_final_rgb(int x,int y,unsigned int color_rgb)
 
 
     //escribir de golpe los 32 bits.
-            
+
     //agregar alpha
     color_rgb |=0xFF000000;
     //y escribir
@@ -137,7 +137,7 @@ void scrsdl_putpixel_final(int x,int y,unsigned int color)
     unsigned int color32=spectrum_colortable[color];
 
     //y escribir
-    scrsdl_putpixel_final_rgb(x,y,color32);                
+    scrsdl_putpixel_final_rgb(x,y,color32);
 
 
 }
@@ -148,13 +148,13 @@ void scrsdl_putpixel(int x,int y,unsigned int color)
         //Putpixel con menu cerrado
         scrsdl_putpixel_final(x,y,color);
         return;
-    }          
+    }
 
     //Metemos pixel en layer adecuado
-    buffer_layer_machine[y*ancho_layer_menu_machine+x]=color;        
+    buffer_layer_machine[y*ancho_layer_menu_machine+x]=color;
 
-    //Putpixel haciendo mix  
-    screen_putpixel_mix_layers(x,y);   
+    //Putpixel haciendo mix
+    screen_putpixel_mix_layers(x,y);
 }
 
 void scrsdl_putchar_zx8081(int x,int y, z80_byte caracter)
@@ -216,7 +216,7 @@ void old_scrsdl_putchar_footer(int x,int y, z80_byte caracter,int tinta,int pape
 }
 */
 
-void scrsdl_putchar_footer(int x,int y, z80_byte caracter,int tinta,int papel) 
+void scrsdl_putchar_footer(int x,int y, z80_byte caracter,int tinta,int papel)
 {
     scr_putchar_footer_comun_zoom(caracter,x,y,tinta,papel);
 }
@@ -259,7 +259,7 @@ void scrsdl_refresca_pantalla_solo_driver(void)
     ancho +=screen_get_ext_desktop_width_zoom();
 
     int alto=screen_get_window_size_height_zoom_border_en();
-    alto +=screen_get_ext_desktop_height_zoom();        
+    alto +=screen_get_ext_desktop_height_zoom();
 
     SDL_UpdateRect(sdl_screen, 0, 0, ancho, alto );
 
@@ -308,7 +308,7 @@ void scrsdl_refresca_pantalla(void)
 
     else if (MACHINE_IS_TBBLUE) {
             screen_tbblue_refresca_pantalla();
-    }        
+    }
 
 
     else if (MACHINE_IS_SPECTRUM) {
@@ -356,7 +356,7 @@ void scrsdl_refresca_pantalla(void)
 
     else if (MACHINE_IS_PCW) {
             scr_refresca_pantalla_y_border_pcw();
-    }     
+    }
 
     else if (MACHINE_IS_SAM) {
             scr_refresca_pantalla_y_border_sam();
@@ -372,23 +372,23 @@ void scrsdl_refresca_pantalla(void)
 
     else if (MACHINE_IS_MSX) {
         scr_refresca_pantalla_y_border_msx();
-    }    
+    }
 
     else if (MACHINE_IS_SVI) {
         scr_refresca_pantalla_y_border_svi();
-    }    	        
+    }
 
     else if (MACHINE_IS_COLECO) {
         scr_refresca_pantalla_y_border_coleco();
-    }    
+    }
 
     else if (MACHINE_IS_SG1000) {
         scr_refresca_pantalla_y_border_sg1000();
-    }    
+    }
 
     else if (MACHINE_IS_SMS) {
         scr_refresca_pantalla_y_border_sms();
-    }       
+    }
 
 
     //printf ("%d\n",spectrum_colortable[1]);
@@ -401,7 +401,7 @@ void scrsdl_refresca_pantalla(void)
     scrsdl_refresca_pantalla_solo_driver();
 
 
-    sem_screen_refresh_reallocate_layers=0;        
+    sem_screen_refresh_reallocate_layers=0;
 
 }
 
@@ -729,7 +729,7 @@ void scrsdl_deal_raw_keys(int pressrelease,int scancode)
 
                 case ZESARUX_SDL_SCANCODE_COMMA:
 			util_set_reset_key(',',pressrelease);
-                break;                
+                break;
 
 		case ZESARUX_SDL_SCANCODE_PERIOD:
 			util_set_reset_key('.',pressrelease);
@@ -741,15 +741,15 @@ void scrsdl_deal_raw_keys(int pressrelease,int scancode)
 
                 case ZESARUX_SDL_SCANCODE_LCTRL:
 			util_set_reset_key(UTIL_KEY_CONTROL_L,pressrelease);
-		break;                
+		break;
 
                 case ZESARUX_SDL_SCANCODE_ESCAPE:
                         util_set_reset_key(UTIL_KEY_ESC,pressrelease);
-                break;   
+                break;
 
                 case ZESARUX_SDL_SCANCODE_RETURN:
                         util_set_reset_key(UTIL_KEY_ENTER,pressrelease);
-                break;  
+                break;
 
                 case ZESARUX_SDL_SCANCODE_SPACE:
                         util_set_reset_key(UTIL_KEY_SPACE,pressrelease);
@@ -769,7 +769,7 @@ void scrsdl_deal_raw_keys(int pressrelease,int scancode)
 
                 case ZESARUX_SDL_SCANCODE_UP:
                         util_set_reset_key(UTIL_KEY_UP,pressrelease);
-                break;  
+                break;
 
                         //F1 pulsado
                         case ZESARUX_SDL_SCANCODE_F1:
@@ -855,35 +855,35 @@ void scrsdl_deal_raw_keys(int pressrelease,int scancode)
 
                 case ZESARUX_SDL_SCANCODE_BACKSPACE:
                         util_set_reset_key(UTIL_KEY_BACKSPACE,pressrelease);
-                break;   
+                break;
 
                 case ZESARUX_SDL_SCANCODE_LEFTBRACKET:
                         util_set_reset_key('[',pressrelease);
-                break;              
+                break;
 
                 case ZESARUX_SDL_SCANCODE_RIGHTBRACKET:
                         util_set_reset_key(']',pressrelease);
-                break;     
+                break;
 
                 case ZESARUX_SDL_SCANCODE_MINUS:
                         util_set_reset_key('-',pressrelease);
-                break;                                            
+                break;
 
                 case ZESARUX_SDL_SCANCODE_EQUALS:
                         util_set_reset_key('=',pressrelease);
-                break; 
+                break;
 
                 case ZESARUX_SDL_SCANCODE_SEMICOLON:
                         util_set_reset_key(';',pressrelease);
-                break;                     
+                break;
 
                 case ZESARUX_SDL_SCANCODE_APOSTROPHE:
                         util_set_reset_key('\'',pressrelease);
-                break;  
+                break;
 
                 case ZESARUX_SDL_SCANCODE_SLASH:
                         util_set_reset_key('/',pressrelease);
-                break;                                                                                                                                 
+                break;
 
 
                 //En caso raw, enviamos cursore del keypad igual que cursores normales
@@ -901,7 +901,7 @@ void scrsdl_deal_raw_keys(int pressrelease,int scancode)
 
                 case ZESARUX_SDL_SCANCODE_KP_8:
                         util_set_reset_key(UTIL_KEY_UP,pressrelease);
-                break;     			
+                break;
 
         }
 }
@@ -1026,7 +1026,7 @@ void scrsdl_deal_keys(int pressrelease,int tecla)
 
                         case SDLK_RSUPER:
                                 util_set_reset_key(UTIL_KEY_WINKEY_R,pressrelease);
-                        break;                        
+                        break;
 
                         case SDLK_DELETE:
                                 util_set_reset_key(UTIL_KEY_DEL,pressrelease);
@@ -1319,7 +1319,7 @@ void scrsdl_resize(int width,int height)
         debug_printf (VERBOSE_INFO,"width: %d get_window_width: %d height: %d get_window_height: %d",width,screen_get_window_size_width_no_zoom_border_en(),height,screen_get_window_size_height_no_zoom_border_en());
 
 
-        scr_reallocate_layers_menu(width,height);    
+        scr_reallocate_layers_menu(width,height);
 
 
 	//zoom_x_calculado=width/screen_get_window_size_width_no_zoom_border_en();
@@ -1486,7 +1486,7 @@ void scrsdl_actualiza_tablas_teclado(void)
 #endif
                 if ( event.button.button == SDL_BUTTON_WHEELRIGHT ) {
                         mouse_wheel_horizontal=-1;
-                }                        
+                }
 
 
 		}
@@ -1519,7 +1519,7 @@ void scrsdl_detectedchar_print(z80_byte caracter)
 //Estos valores no deben ser mayores de OVERLAY_SCREEN_MAX_WIDTH y OVERLAY_SCREEN_MAX_HEIGTH
 int scrsdl_get_menu_width(void)
 {
-        
+
         int max=screen_get_emulated_display_width_no_zoom_border_en();
 
         max +=screen_get_ext_desktop_width_no_zoom();
@@ -1626,7 +1626,7 @@ int realjoystick_sdl_init(void)
                 }
         }
 
- 
+
         //Inicializar estados a 0
         int i;
         for (i=0;i<SDL_JOY_MAX_BOTONS;i++) sdl_states_joy_buttons[i]=0;
@@ -1655,7 +1655,7 @@ int sdl_convert_hat_windows(int v)
 
     //Convertir de:
     // 1 arriba, 2 derecha, 4 abajo, 8 izquierda, y diagonales sumando bits. 0 es no movimiento
-    //a 
+    //a
     //0,1,2,3,4,5,6,7 empezando con direccion arriba y yendo en las agujas del reloj
     switch (v)
     {
@@ -1729,8 +1729,8 @@ int sdl_states_joy_axes[SDL_JOY_MAX_AXES];
         if (total_axes>SDL_JOY_MAX_AXES) total_axes=SDL_JOY_MAX_AXES;
 
         int total_hats=sdl_num_hats;
-        if (total_axes>SDL_JOY_MAX_HATS) total_hats=SDL_JOY_MAX_HATS;        
- 
+        if (total_axes>SDL_JOY_MAX_HATS) total_hats=SDL_JOY_MAX_HATS;
+
         for (i=0;i<total_botones;i++) {
                 int valorboton=SDL_JoystickGetButton(sdl_joy, i);
                 //printf ("boton %d: %d\n",i,valorboton);
@@ -1753,7 +1753,7 @@ int sdl_states_joy_axes[SDL_JOY_MAX_AXES];
 
                 int valorfinalaxis;
 
- 
+
 
                 //Parametro de autocalibrado para valores 0
                 if (valoraxis>-realjoystick_autocalibrate_value && valoraxis<realjoystick_autocalibrate_value) valorfinalaxis=0;
@@ -1762,15 +1762,15 @@ int sdl_states_joy_axes[SDL_JOY_MAX_AXES];
 /*
 *en test joystick, sdl hará que last raw value se actualice al leer siempre que axis coincida con último last axis leído
 Dicho valor de axis se sobreescribira si se pulsa otro axis
-El funcionamiento será que se verá actualizado continuamente en test joystick cuando pase el umbral de calibrado. 
-A partir de entonces se verá continuo hasta que se pulse otro axis. Y vuelta a empezar 
+El funcionamiento será que se verá actualizado continuamente en test joystick cuando pase el umbral de calibrado.
+A partir de entonces se verá continuo hasta que se pulse otro axis. Y vuelta a empezar
 */
 
 
 
                 if (realjoystick_ultimo_axis==i) {
                         //printf ("guardar para test joystick axis boton %d valor %d\n",i,valoraxis);
-                        menu_info_joystick_last_raw_value=valoraxis;   
+                        menu_info_joystick_last_raw_value=valoraxis;
                 }
 
                 if (valorfinalaxis!=sdl_states_joy_axes[i]) {
@@ -1792,12 +1792,12 @@ A partir de entonces se verá continuo hasta que se pulse otro axis. Y vuelta a 
 
                 int valorfinalaxis;
 
- 
+
 /*
 *en test joystick, sdl hará que last raw value se actualice al leer siempre que axis coincida con último last axis leído
 Dicho valor de axis se sobreescribira si se pulsa otro axis
-El funcionamiento será que se verá actualizado continuamente en test joystick cuando pase el umbral de calibrado. 
-A partir de entonces se verá continuo hasta que se pulse otro axis. Y vuelta a empezar 
+El funcionamiento será que se verá actualizado continuamente en test joystick cuando pase el umbral de calibrado.
+A partir de entonces se verá continuo hasta que se pulse otro axis. Y vuelta a empezar
 */
 
                 valorfinalaxis=valoraxis;
@@ -1806,17 +1806,17 @@ A partir de entonces se verá continuo hasta que se pulse otro axis. Y vuelta a 
 //por alguna razon caprichosa, en Windows estos valores no se reciben igual
 #ifdef MINGW
                 valorfinalaxis=sdl_convert_hat_windows(valorfinalaxis);
-#endif    
+#endif
 
                 if (valorfinalaxis!=sdl_states_joy_hats[i]) {
                         //printf ("Enviar cambio estado hat %d : %d\n",i,valorfinalaxis);
 
                         debug_printf (VERBOSE_DEBUG,"SDL Joystick: Sending state change, hat: %d value: %d",i,valorfinalaxis);
-                    
+
 
                         realjoystick_common_set_hat(i,valorfinalaxis);
-                      
-                }   
+
+                }
 
 
                 sdl_states_joy_hats[i]=valorfinalaxis;
@@ -1829,7 +1829,7 @@ A partir de entonces se verá continuo hasta que se pulse otro axis. Y vuelta a 
 int realjoystick_sdl_hit(void)
 {
 
-        
+
 
         if (realjoystick_present.v==0) return 0;
 
@@ -1850,7 +1850,7 @@ int scrsdl_init (void) {
 	debug_printf (VERBOSE_INFO,"Init SDL Video Driver");
 
     //Esto tiene que ir al principio de inicializar driver para leer correctamente el tamaño de ventana
-    screen_este_driver_permite_ext_desktop=1;    
+    screen_este_driver_permite_ext_desktop=1;
 
 
         //Inicializaciones necesarias
@@ -1859,7 +1859,7 @@ int scrsdl_init (void) {
         scr_putpixel_final_rgb=scrsdl_putpixel_final_rgb;
 
         scr_get_menu_width=scrsdl_get_menu_width;
-        scr_get_menu_height=scrsdl_get_menu_height;        
+        scr_get_menu_height=scrsdl_get_menu_height;
 	//scr_driver_can_ext_desktop=scrsdl_driver_can_ext_desktop;
 
 
@@ -1877,13 +1877,13 @@ int scrsdl_init (void) {
 
 
         if (!realjoystick_is_linux_native() ) {
-                
+
 
 	        realjoystick_init=realjoystick_sdl_init;
 	        realjoystick_main=realjoystick_sdl_main;
 
-                realjoystick_initialize_joystick();  
-        }     
+                realjoystick_initialize_joystick();
+        }
 
 
 

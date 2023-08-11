@@ -1,5 +1,5 @@
 /*
-    ZEsarUX  ZX Second-Emulator And Released for UniX 
+    ZEsarUX  ZX Second-Emulator And Released for UniX
     Copyright (C) 2013 Cesar Hernandez Bano
 
     This file is part of ZEsarUX.
@@ -301,7 +301,7 @@ void scraa_refresca_pantalla(void)
 
         else if (MACHINE_IS_PCW) {
                 scr_refresca_pantalla_y_border_pcw();
-        }         
+        }
 
         else if (MACHINE_IS_SAM) {
                 scr_refresca_pantalla_y_border_sam();
@@ -318,23 +318,23 @@ void scraa_refresca_pantalla(void)
 
 	else if (MACHINE_IS_MSX) {
 		scr_refresca_pantalla_y_border_msx();
-	}    
+	}
 
 	else if (MACHINE_IS_SVI) {
 		scr_refresca_pantalla_y_border_svi();
-	}    	
+	}
 
 	else if (MACHINE_IS_COLECO) {
 		scr_refresca_pantalla_y_border_coleco();
-	}            
+	}
 
 	else if (MACHINE_IS_SG1000) {
 		scr_refresca_pantalla_y_border_sg1000();
-	}     
+	}
 
 	else if (MACHINE_IS_SMS) {
 		scr_refresca_pantalla_y_border_sms();
-	}     
+	}
 
 
 	//Espacio para footer
@@ -357,7 +357,7 @@ void scraa_refresca_pantalla(void)
 
 	screen_render_menu_overlay_if_active();
 
-	
+
         //Escribir footer
         draw_middle_footer();
 
@@ -374,7 +374,7 @@ sem_screen_refresh_reallocate_layers=0;
 
 void scraa_deal_with_keys(int tecla,int pressrelease)
 {
- 
+
 
 	//printf ("tecla: %d\n",tecla);
 
@@ -433,7 +433,7 @@ void scraa_deal_with_keys(int tecla,int pressrelease)
 					blink_kbd_a14 ^= 16;
                                 }
 
-			break;				
+			break;
 
 
 			case 340:
@@ -450,7 +450,7 @@ void scraa_deal_with_keys(int tecla,int pressrelease)
                                 }
 
 			break;
-		
+
 
 
 
@@ -532,7 +532,7 @@ int c;
 int pressrelease;
 
 
-//parece que no siempre se envia la orden release en modo consola... 
+//parece que no siempre se envia la orden release en modo consola...
 if (aa_sends_release.v==0) {
 	//Liberar tecla solo cuando ha pasado un tiempo y antes habia tecla pulsada
 	if (scraa_contador_libera_tecla>0) {
@@ -542,7 +542,7 @@ if (aa_sends_release.v==0) {
 			reset_keyboard_ports();
 		}
 	}
-		
+
 }
 
 	do {
@@ -558,7 +558,7 @@ if (aa_sends_release.v==0) {
 					pressrelease=0;
 					//printf ("Release\n");
 					c  &= ~AA_RELEASE;
-					scraa_deal_with_keys(c,pressrelease);	
+					scraa_deal_with_keys(c,pressrelease);
 				}
 				else {
 					pressrelease=1;
@@ -566,10 +566,10 @@ if (aa_sends_release.v==0) {
 					//printf ("Press\n");
 					if (aa_sends_ESC.v==0 && c==tecla_alternativa_esc) {
 						//envio ESC a traves de tecla alternativa
-						scraa_deal_with_keys(AA_ESC,pressrelease);	
+						scraa_deal_with_keys(AA_ESC,pressrelease);
 					}
-						
-					else scraa_deal_with_keys(c,pressrelease);	
+
+					else scraa_deal_with_keys(c,pressrelease);
 				}
 
 			}
@@ -714,7 +714,7 @@ int scraa_driver_can_ext_desktop (void)
 */
 
 
-int scraa_init (void) 
+int scraa_init (void)
 {
 
 	debug_printf (VERBOSE_INFO,"Init AAlib Video Driver");
@@ -741,7 +741,7 @@ int scraa_init (void)
 
 
 int aa_kbdmode;
-	//si en modo consola normal, las operaciones RELEASE no se envian correctamente	
+	//si en modo consola normal, las operaciones RELEASE no se envian correctamente
 	if (strstr(context->driver->name,"X11") !=NULL) {
 	//driver X11
 	aa_sends_release.v=1;

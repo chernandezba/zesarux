@@ -1,5 +1,5 @@
 /*
-    ZEsarUX  ZX Second-Emulator And Released for UniX 
+    ZEsarUX  ZX Second-Emulator And Released for UniX
     Copyright (C) 2013 Cesar Hernandez Bano
 
     This file is part of ZEsarUX.
@@ -114,7 +114,7 @@ void load_snap_cpu(FILE *f)
                 if (!strcmp(tok,"HL")) HL = hex2dec(get_token(f));
                 if (!strcmp(tok,"DE")) DE = hex2dec(get_token(f));
                 if (!strcmp(tok,"BC")) BC = hex2dec(get_token(f));
-		
+
 
 		//Realmente no es importante los registros dado que al final de la carga los establecemos como en basic normal,
 		//igual que snapshots .p y .o
@@ -124,7 +124,7 @@ void load_snap_cpu(FILE *f)
 			reg_a=value_16_to_8h(registro);
 			store_flags(value_16_to_8l(registro));
 		}
-	
+
                 if (!strcmp(tok,"HL_")) {
 			registro = hex2dec(get_token(f));
 			reg_l_shadow=value_16_to_8l(registro);
@@ -158,7 +158,7 @@ void load_snap_cpu(FILE *f)
                 //if (!strcmp(tok,"HT")) z80.halted = hex2dec(get_token(f));
                 if (!strcmp(tok,"HT")) nada = hex2dec(get_token(f));
                 if (!strcmp(tok,"IR"))
-		
+
                 {
                         int a;
 
@@ -172,7 +172,7 @@ void load_snap_cpu(FILE *f)
 
 				//Registro I tiene valor tipico de ZX80. Hacemos hotswap a ZX80
 
-                               //ZX80  
+                               //ZX80
                                debug_printf (VERBOSE_INFO,"Register I has tipical ZX80 value 0x0E. Hotswapping to ZX80");
                                 current_machine_type=120;
                                 set_machine_params();
@@ -224,7 +224,7 @@ void load_snap_zx81(FILE *f)
 }
 
 
-//Me encuentro con snaps de ZX80 que hacen poke mas alla de la ram asignada. Entonces la sentencia poke 
+//Me encuentro con snaps de ZX80 que hacen poke mas alla de la ram asignada. Entonces la sentencia poke
 //mas alla de la RAMTOP lo que haria es pokear en dir & (ramtop), borrando lo que ya se haya escrito en la RAM....
 //Por tanto, miramos si el poke quiere ir mas alla y entonces volvemos sin mas
 void load_z81_poke (z80_int dir, z80_byte value)
@@ -283,7 +283,7 @@ void load_snap_ace(FILE *f)
 
 	//de momento volver sin mas
 	//y que el compilador no se queje de variable no usada
-	f=NULL;	
+	f=NULL;
 	f++;
 	return;
 /*
@@ -468,7 +468,7 @@ int save_snap_z81(char *filename)
                 memory[puntero_memoria] = z80.iff2; puntero_memoria+=4;
                 memory[puntero_memoria] = z80.i; puntero_memoria+=4;
                 memory[puntero_memoria] = z80.r;
-                
+
                 Addr=0x2000;
 
                 while(Addr<32768)

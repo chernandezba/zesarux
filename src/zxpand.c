@@ -208,7 +208,7 @@ void zxpand_footer_print_zxpand_operating(void)
 	if (!zxdesktop_icon_zxpand_inverse) {
 			zxdesktop_icon_zxpand_inverse=1;
 			menu_draw_ext_desktop();
-	}		
+	}
 }
 
 void zxpand_footer_zxpand_operating(void)

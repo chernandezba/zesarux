@@ -31,7 +31,7 @@
 Rutinas:
 
 - z_atomic_test_and_set
-Ver el valor del semáforo. 
+Ver el valor del semáforo.
 
 Si es 1, volver y retornar 1
 Si es 0, modificarla a 1 y retornar 0
@@ -57,14 +57,14 @@ int z_atomic_test_and_set(z_atomic_semaphore *s)
 	//return OSAtomicTestAndSet(1,s);
     return atomic_fetch_or_explicit(s,1,memory_order_relaxed);
 }
- 
+
 void z_atomic_reset(z_atomic_semaphore *s)
 {
 	//OSAtomicAnd32(0,s);
     atomic_fetch_and_explicit(s,0,memory_order_relaxed);
 }
 
-    #else 
+    #else
 
     #ifdef MINGW
         //En Windows
@@ -104,7 +104,7 @@ void z_atomic_reset(z_atomic_semaphore *s)
 {
 	__atomic_clear(s,__ATOMIC_RELAXED);
 }
-		
+
 
     #endif
 

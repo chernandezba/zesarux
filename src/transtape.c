@@ -93,12 +93,12 @@ int transtape_signal_rom_enable(z80_int dir)
 
 int transtape_check_if_rom_area(z80_int dir)
 {
-   
+
     return transtape_signal_rom_enable(dir);
 }
 
 int transtape_check_if_ram_area(z80_int dir)
-{   
+{
     return transtape_signal_ram_enable(dir);
 }
 
@@ -135,7 +135,7 @@ z80_byte transtape_read_rom_byte(z80_int dir)
     Donde X <= 3
 
     Quien programó el código de la ROM usaba direcciones del espacio 0-A11 bit, o sea, desde 0 hasta 0FFFh
-    Por tanto no veremos ningún call, jp o similar que use direcciones mayor que 0fffh pretendiendo usar su rom    
+    Por tanto no veremos ningún call, jp o similar que use direcciones mayor que 0fffh pretendiendo usar su rom
     */
 }
 
@@ -144,7 +144,7 @@ z80_byte transtape_read_ram_byte(z80_int dir)
 {
 
 	//printf ("Read ram byte from %04XH\n",dir);
-	
+
 
     dir &= (TRANSTAPE_RAM_SIZE-1);
 
@@ -162,7 +162,7 @@ void transtape_poke_ram(z80_int dir,z80_byte value)
         dir &= (TRANSTAPE_RAM_SIZE-1);
 
 		//La RAM esta despues de la rom
-		transtape_memory_pointer[TRANSTAPE_ROM_SIZE+dir]=value;	
+		transtape_memory_pointer[TRANSTAPE_ROM_SIZE+dir]=value;
 	}
 
 
@@ -187,7 +187,7 @@ z80_byte transtape_poke_byte(z80_int dir,z80_byte valor)
 
 z80_byte transtape_poke_byte_no_time(z80_int dir,z80_byte valor)
 {
- 
+
 	//Llamar a anterior
 	debug_nested_poke_byte_no_time_call_previous(transtape_nested_id_poke_byte_no_time,dir,valor);
 
@@ -231,7 +231,7 @@ z80_byte transtape_peek_byte_no_time(z80_int dir,z80_byte value GCC_UNUSED)
 	if (transtape_check_if_rom_area(dir)) {
         return transtape_read_rom_byte(dir);
     }
-	
+
 
 	return valor_leido;
 }
@@ -252,13 +252,13 @@ int transtape_if_rom_basic_enabled(void)
         //maquina 128k. rom 1 mapeada
         if ((puerto_32765 & 16) ==16)
         return 1;
-    }    
+    }
 
     if (MACHINE_IS_SPECTRUM_P2A_P3) {
         //maquina +2A
         if ((puerto_32765 & 16) ==16   && ((puerto_8189&4) ==4  ))
         return 1;
-    }    
+    }
 
     return 0;
 }
@@ -271,7 +271,7 @@ void transtape_nmi(void)
         debug_printf(VERBOSE_DEBUG,"Enabling transtape memory from nmi triggered");
         transtape_mapped_ram_memory.v=1;
         transtape_mapped_rom_memory.v=1;
-    }   
+    }
 }
 
 void transtape_footer_operating(void)
@@ -324,7 +324,7 @@ void transtape_restore_peek_poke_functions(void)
 void transtape_alloc_rom_ram_memory(void)
 {
     //memoria de la ram y rom
-    int size=TRANSTAPE_MEM_SIZE;  
+    int size=TRANSTAPE_MEM_SIZE;
 
     debug_printf (VERBOSE_DEBUG,"Allocating %d kb of memory for transtape emulation",size/1024);
 
@@ -442,8 +442,8 @@ void transtape_write_port(z80_byte puerto_l,z80_byte value GCC_UNUSED)
     switch (puerto_l) {
         case 1: //00xxxxxxx1  (habitualmente 63)
             //rom spectrum pero ram transtape
-            transtape_mapped_ram_memory.v=0; 
-            //al cargar desde un snapshot sin menu, llama a este puerto 
+            transtape_mapped_ram_memory.v=0;
+            //al cargar desde un snapshot sin menu, llama a este puerto
             //Segun el esquema, linea de OE (output enable) se activa de igual manera tanto para la ram como rom,
             //por tanto la activacion/desactivacio de ram/rom se produce en los mismos casos
             //Manual dice que desactiva transtape (apaga led), supongo que deja de responder a acciones nmi,
@@ -455,13 +455,13 @@ void transtape_write_port(z80_byte puerto_l,z80_byte value GCC_UNUSED)
         case 65: //01xxxxx1 (habitualmente 127)
             //rom y ram de transtape
             transtape_mapped_ram_memory.v=1;
-            transtape_mapped_rom_memory.v=1;            
+            transtape_mapped_rom_memory.v=1;
         break;
- 
+
         case 129: //10xxxxx1 (habitualmente 191)
             //desactivar rom y ram de transtape
             transtape_mapped_ram_memory.v=0;
-            transtape_mapped_rom_memory.v=0;              
+            transtape_mapped_rom_memory.v=0;
         break;
     }
 }

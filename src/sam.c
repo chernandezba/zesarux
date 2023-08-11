@@ -88,7 +88,7 @@ z80_byte puerto_teclado_sam_bff9=255;
 z80_byte puerto_teclado_sam_7ff9=255;
 /*
 
-	D7	D6	D5 
+	D7	D6	D5
 FE 	F3	F2	F1
 FD	F6	F5	F4
 FB	F9	F8	F7
@@ -153,7 +153,7 @@ available only in mode 3.
 (See section entitled
 CLUT IN MODE 4 & MODE 3
 in the text ahead)
-If this bit is set when the CPU addresses high memory, then the external signal XMEM goes low and the Coupe looks on its expansion connector for memory sections C and D (addresses 32768 to 65536).	
+If this bit is set when the CPU addresses high memory, then the external signal XMEM goes low and the Coupe looks on its expansion connector for memory sections C and D (addresses 32768 to 65536).
 
 
 */
@@ -181,7 +181,7 @@ If we write 02H to the HMPR then page 2 of the memory is allocated to section C 
 	debug_sam_paginas_memoria_mapeadas[0]= pagina0;
 
 	int pagina1=(pagina_lmpr+1)&sam_memoria_total_mascara;
-	sam_memory_paged[1]=	sam_ram_memory[pagina1];  
+	sam_memory_paged[1]=	sam_ram_memory[pagina1];
 	debug_sam_paginas_memoria_mapeadas[1]= pagina1;
 
 	int pagina2=pagina_hmpr;
@@ -189,7 +189,7 @@ If we write 02H to the HMPR then page 2 of the memory is allocated to section C 
 	debug_sam_paginas_memoria_mapeadas[2]= pagina2;
 
 	int pagina3=(pagina_hmpr+1)&sam_memoria_total_mascara;
-	sam_memory_paged[3]=	sam_ram_memory[pagina3];  
+	sam_memory_paged[3]=	sam_ram_memory[pagina3];
 	debug_sam_paginas_memoria_mapeadas[3]= pagina3;
 
 
@@ -212,7 +212,7 @@ If we write 02H to the HMPR then page 2 of the memory is allocated to section C 
 		//printf ("Rom is in page 3\n");
 	}
 }
-	
+
 
 void sam_init_memory_tables(void)
 {

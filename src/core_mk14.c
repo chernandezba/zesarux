@@ -247,7 +247,7 @@ else printf ("   ");
                         //printf ("%d\n",interlaced_numero_frame);
 
                         //Para calcular lo que se tarda en ejecutar todo un frame
-                        timer_get_elapsed_core_frame_pre();		                        
+                        timer_get_elapsed_core_frame_pre();
                 }
 
 

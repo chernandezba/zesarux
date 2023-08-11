@@ -29,7 +29,7 @@
 /*
 Function to generate sine table to distort audio when using top speed
 Inspired by Nagravision audio codec
-Compile and run manually to generate table for audio_sine_table.c. 
+Compile and run manually to generate table for audio_sine_table.c.
 */
 
 int main()

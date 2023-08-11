@@ -66,7 +66,7 @@ Here's the second frequency register:
 
 0: This denotes that we are sending the 2nd part of the frequency
 
-D9-D4 is 6 more bits of frequency 
+D9-D4 is 6 more bits of frequency
 
 
 To write a 10-bit word for frequenct into the sound chip you must first
@@ -125,7 +125,7 @@ Here's a control word:
 FB= Feedback:
 
 0= 'Periodic' noise
-1= 'white' noise 
+1= 'white' noise
 
 The white noise sounds, well, like white noise.
 The periodic noise is intresting.  Depending on the frequency, it can
@@ -186,7 +186,7 @@ int sn_chip_frequency=FRECUENCIA_COLECO_SN;
 char sn_volume_table[16]={24,20,16,15,
 			   10,8,6,4,
 			   3,2,2,1,
-			   1,1,0,0};			   
+			   1,1,0,0};
 
 
 
@@ -274,7 +274,7 @@ R8 Volume C
 R9 Noise
 R10 Noise Volume
 
-//Aunque solo uso 10, dejo total 16 
+//Aunque solo uso 10, dejo total 16
 */
 z80_byte sn_chip_registers[16];
 
@@ -307,10 +307,10 @@ void init_chip_sn(void)
 	sn_ultimo_valor_tono_B=+32767;
 	sn_ultimo_valor_tono_C=+32767;
 
-	
+
 
 	sn_ultimo_valor_ruido=+32767;
-	
+
 
 	int i;
 
@@ -358,7 +358,7 @@ float sineval,radians;
 
 
 
-void sn_randomize(void) 
+void sn_randomize(void)
 {
 /*
 ;Seguimos la misma formula RND del spectrum:
@@ -412,10 +412,10 @@ char sn_da_output_canal(short ultimo_valor_tono,z80_byte volumen)
 	char valor8;
 	int valor;
 
-	
+
 	valor=ultimo_valor_tono;
 	silence_detection_counter=0;
-	
+
 	volumen=volumen & 15; //Evitar valores de volumen fuera de rango que vengan de los registros de volumen
 
 
@@ -442,10 +442,10 @@ char sn_da_output_canal_ruido(void)
 	z80_byte volumen=sn_chip_registers[10];
 
 
-	
+
 	valor=sn_ultimo_valor_ruido;
 	silence_detection_counter=0;
-        
+
 
 
 	volumen=volumen & 15; //Evitar valores de volumen fuera de rango que vengan de los registros de volumen
@@ -514,7 +514,7 @@ void sn_chip_siguiente_ciclo_siguiente(void)
 	sn_contador_tono_C +=sn_freq_tono_C;
 	if (sn_contador_tono_C>=FRECUENCIA_CONSTANTE_NORMAL_SONIDO) {
 			sn_contador_tono_C -=FRECUENCIA_CONSTANTE_NORMAL_SONIDO;
-	} 
+	}
 
 
 	sn_contador_ruido +=sn_freq_ruido;
@@ -523,7 +523,7 @@ void sn_chip_siguiente_ciclo_siguiente(void)
 			sn_chip_valor_aleatorio();
 	}
 
-	
+
 
 }
 
@@ -534,7 +534,7 @@ void sn_chip_siguiente_ciclo(void)
 
 
 	sn_chip_siguiente_ciclo_siguiente();
-	
+
 
 }
 
@@ -550,7 +550,7 @@ Frecuencia real= X = (CPU Speed / 32) / Desired frequency
 
 
 	int freq_temp;
-	
+
 
 	freq_temp=(sn_chip_registers[indice] & 0xF) | ((sn_chip_registers[indice+1] & 63)<<4);
 
@@ -568,7 +568,7 @@ Frecuencia real= X = (CPU Speed / 32) / Desired frequency
 
 
     if (*freq_tono>FRECUENCIA_CONSTANTE_NORMAL_SONIDO) {
-		
+
 		*freq_tono=FRECUENCIA_CONSTANTE_NORMAL_SONIDO;
 	}
 
@@ -592,9 +592,9 @@ Frecuencia real= X = (CPU Speed / 32) / Desired frequency
 int sn_retorna_frecuencia_valor_registro(z80_byte value_l,z80_byte value_h)
 {
 	int freq_temp;
-	
+
 int freq_tono;
-	
+
 	freq_temp=(value_l & 0xF) | ((value_h & 63)<<4);
 
 	//printf ("Valor freq_temp : %d Hz\n",freq_temp);
@@ -631,14 +631,14 @@ int sn_retorna_frecuencia(int registro)
 void sn_set_register_port(z80_byte value)
 {
 		//seleccion de registro
-		sn_3_8912_registro_sel=value & 15; //evitamos valores fuera de rango	
+		sn_3_8912_registro_sel=value & 15; //evitamos valores fuera de rango
 }
 
 
 void sn_establece_frecuencia_ruido(void)
 {
 
-	
+
 			//Frecuencia ruido
 			int freq_temp=sn_chip_registers[9] & 31;
 	       		//printf ("Valor registros ruido : %d Hz\n",freq_temp);
@@ -654,13 +654,13 @@ void sn_establece_frecuencia_ruido(void)
 			//printf ("Frecuencia ruido: %d Hz\n",sn_freq_ruido);
 
 			//sn_freq_ruido realmente tiene frecuencia*2... dice cada cuando se conmuta de signo
-			
+
 			sn_freq_ruido=sn_freq_ruido*2;
 
 
 
 			if (sn_freq_ruido>FRECUENCIA_CONSTANTE_NORMAL_SONIDO) {
-	                  
+
         	          sn_freq_ruido=FRECUENCIA_CONSTANTE_NORMAL_SONIDO;
 			}
 
@@ -674,7 +674,7 @@ void sn_establece_frecuencia_ruido(void)
 			//printf ("Frecuencia ruido final: %d Hz\n",sn_freq_ruido);
 
 
-		
+
 
 }
 
@@ -689,7 +689,7 @@ void sn_set_value_register(z80_byte value)
 
 
 		//valor a registro
-		
+
 
 		sn_chip_registers[sn_3_8912_registro_sel&15]=value;
 
@@ -720,9 +720,9 @@ void sn_set_value_register(z80_byte value)
 
 		}
 
-	
 
-	
+
+
 }
 
 
@@ -775,7 +775,7 @@ void sn_init_filters(void)
 {
 
 		sn_filtros=0;
-	
+
 }
 
 
@@ -794,7 +794,7 @@ void sn_set_volume_tone_channel(z80_byte canal,z80_byte volumen_final)
 {
 
             sn_set_register_port(6+canal);
-            sn_set_value_register(volumen_final);        
+            sn_set_value_register(volumen_final);
 }
 
 //de momento no se establece tipo
@@ -814,7 +814,7 @@ Here's a control word:
 FB= Feedback:
 
 0= 'Periodic' noise
-1= 'white' noise 
+1= 'white' noise
 
 The white noise sounds, well, like white noise.
 The periodic noise is intresting.  Depending on the frequency, it can
@@ -855,7 +855,7 @@ channels.
                 R6 � Control del generador de ruido, D4-DO
 El periodo del generador de ruido se toma contando los cinco bits inferiores del regis-
 tro de ruido cada periodo del reloj de sonido dividido por 16.
-                */	
+                */
 }
 
 
@@ -865,7 +865,7 @@ void sn_set_channel_fine_tune(z80_byte canal,z80_byte fino)
 
 
             sn_set_register_port(2*canal);
-            sn_set_value_register(fino);   
+            sn_set_value_register(fino);
 
 }
 
@@ -873,7 +873,7 @@ void sn_set_channel_fine_tune(z80_byte canal,z80_byte fino)
 void sn_set_channel_aprox_tune(z80_byte canal,z80_byte aproximado)
 {
             sn_set_register_port(1+2*canal);
-            sn_set_value_register(aproximado);   
+            sn_set_value_register(aproximado);
 }
 
 
@@ -920,7 +920,7 @@ R2-R0 the register number:
             //ruido
             if (tipo==0) {
                 //|1 |1 |1 |0 |xx|FB|M1|M0|
-                
+
                 //establecer frecuencia ruido
                 sn_set_noise_type(sound_data);
 
@@ -936,13 +936,13 @@ R2-R0 the register number:
             return;
         }
 
-        
+
 
         if (tipo==0) {
             sn_last_audio_channel_frequency=canal;
 
             sn_set_register_port(2*canal);
-            sn_set_value_register(sound_data);               
+            sn_set_value_register(sound_data);
         }
 
         if (tipo==1) {
@@ -966,7 +966,7 @@ Here's the second frequency register:
 
 0: This denotes that we are sending the 2nd part of the frequency
 
-D9-D4 is 6 more bits of frequency 
+D9-D4 is 6 more bits of frequency
 
 
 To write a 10-bit word for frequenct into the sound chip you must first
@@ -987,7 +987,7 @@ to it, it uses which ever register you used in the control word.
 
 
             sn_set_register_port(2*sn_last_audio_channel_frequency+1);
-            sn_set_value_register(value);               
+            sn_set_value_register(value);
     }
 }
 
@@ -995,7 +995,7 @@ to it, it uses which ever register you used in the control word.
 
 void sn_establece_frecuencias_todos_canales(void)
 {
-		
+
 	sn_establece_frecuencia_tono(0,&sn_freq_tono_A);
 
 	sn_establece_frecuencia_tono(2,&sn_freq_tono_B);
@@ -1003,5 +1003,5 @@ void sn_establece_frecuencias_todos_canales(void)
 	sn_establece_frecuencia_tono(4,&sn_freq_tono_C);
 
 	sn_establece_frecuencia_ruido();
-		
-}			
+
+}

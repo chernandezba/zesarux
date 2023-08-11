@@ -1,5 +1,5 @@
 /*
-    ZEsarUX  ZX Second-Emulator And Released for UniX 
+    ZEsarUX  ZX Second-Emulator And Released for UniX
     Copyright (C) 2013 Cesar Hernandez Bano
 
     This file is part of ZEsarUX.
@@ -66,7 +66,7 @@ enum zxpand_comandos {
 	ZXPAND_READ_JOYSTICK
 };
 
-//Ultimo comando enviado. 
+//Ultimo comando enviado.
 enum zxpand_comandos zxpand_last_command;
 
 //Indice al mensaje comando. -1 si no se ha recibido ninguno
@@ -134,7 +134,7 @@ void zxpand_footer_zxpand_operating(void)
 
 void delete_zxpand_text(void)
 {
-    
+
                                                             // " ZXPAND "
         menu_putstring_footer(WINDOW_FOOTER_ELEMENT_X_ZXPAND,1,"        ",WINDOW_FOOTER_INK,WINDOW_FOOTER_PAPER);
 }
@@ -148,21 +148,21 @@ int zxpand_load_rom_overlay(void)
 
         //debug_printf (VERBOSE_INFO,"Loading zxpand rom %s",ZXPAND_ROM_NAME);
         printf ("Loading zxpand rom %s\n",ZXPAND_ROM_NAME);
-        
+
         //ptr_zxpand_romfile=fopen(ZXPAND_ROM_NAME,"rb");
         open_sharedfile(ZXPAND_ROM_NAME,&ptr_zxpand_romfile);
-        
-        
+
+
         if (ptr_zxpand_romfile!=NULL) {
-                
+
                 leidos=fread(zxpand_memory_pointer,1,8192,ptr_zxpand_romfile);
                 //leidos=fread(memoria_spectrum,1,8192,ptr_zxpand_romfile);
                 fclose(ptr_zxpand_romfile);
-                
+
         }
-        
-        
-        
+
+
+
         if (leidos!=8192 || ptr_zxpand_romfile==NULL) {
                 debug_printf (VERBOSE_ERR,"Error reading ZXPAND rom. Disabling ZXpand");
 		zxpand_disable();
@@ -246,7 +246,7 @@ z80_byte old_zxpand_read(void)
 		//load
 		case ZXPAND_FOPEN_READ:
 
-			
+
 
 			zxpand_index_command++;
 
@@ -271,7 +271,7 @@ z80_byte old_zxpand_read(void)
 			}
 
 			//siguientes parametros es longitud?
-//chernandez@supertux:~/docs cesar/spectrum/zesarux$ ls -l  PRUEBA.P 
+//chernandez@supertux:~/docs cesar/spectrum/zesarux$ ls -l  PRUEBA.P
 //-rw-r--r-- 1 chernandez chernandez 12898 jul 27 12:33 PRUEBA.P
 			longit=get_file_size(zxpand_buffer_comando);
 			mensaje[0]=value_16_to_8l(longit);
@@ -289,7 +289,7 @@ z80_byte old_zxpand_read(void)
 			}
 
 			else inicio=zxpand_load_parameter_address;
-			
+
 			printf ("direccion inicio: %d\n",inicio);
 			//if (zxpand_index_command==2) sleep(1);
 
@@ -298,7 +298,7 @@ z80_byte old_zxpand_read(void)
 
 			//flags. 0
 			mensaje[4]=0;
-		
+
 
 			//Esto lo va metiendo la rom en la direccion 16444 (PR_BUF)
 
@@ -307,7 +307,7 @@ z80_byte old_zxpand_read(void)
                                 return mensaje[zxpand_index_command-2];
                         }
 
-						
+
 
 		break;
 
@@ -334,7 +334,7 @@ z80_byte old_zxpand_read(void)
 /*
 despues de leer valor hace:
 cp 40
-ret z 
+ret z
 add a,3f
 ld hl,fffb
 adc hl,sp
@@ -352,7 +352,7 @@ jp (hl)
 			zxpand_index_command++;
 			//mensaje[31]=118;
 
-			//Si metemos un 0x14, parece que hace un new con la direccion de ramtop que se le indica 
+			//Si metemos un 0x14, parece que hace un new con la direccion de ramtop que se le indica
 			//Esto corresponde a CONFIG "R=nnnn"
 			//mensaje[0]=0x14;
 			//[1],[2]=ramtop- va  a la 4004 4005 h
@@ -372,7 +372,7 @@ jp (hl)
 			//Devolver 0x40 es un ok
 			//Valores a partir de 0x41 son mensajes de error. aparecen con letra invertida
 			if (zxpand_index_command==1) {
-				return 0x40;		
+				return 0x40;
 			}
 
 
@@ -390,10 +390,10 @@ jp (hl)
 			if (zxpand_index_command>3+long_texto_config-1) return 0xff;
 
 
-			//if (zxpand_index_command==1) return 0x49;		
+			//if (zxpand_index_command==1) return 0x49;
 			//if (zxpand_index_command>=2 && zxpand_index_command<=2+32-1) {
 			//	printf ("Devolviendo mensaje de config indice: %d\n",zxpand_index_command-2);
-			//	return mensaje[zxpand_index_command-2];		
+			//	return mensaje[zxpand_index_command-2];
 			//}
 		break;
 
@@ -403,7 +403,7 @@ jp (hl)
                         zxpand_index_command++;
                         if (zxpand_index_command==1) return 0x40;
 
-//chernandez@supertux:~/docs cesar/spectrum/zesarux$ ls -l  PRUEBA.P 
+//chernandez@supertux:~/docs cesar/spectrum/zesarux$ ls -l  PRUEBA.P
 //-rw-r--r-- 1 chernandez chernandez 12898 jul 27 12:33 PRUEBA.P
 
 
@@ -429,7 +429,7 @@ jp (hl)
 
 		break;
 
-		case ZXPAND_FCLOSE: 
+		case ZXPAND_FCLOSE:
 			//desconocido de despues de load bytes. Despues de cada bloque de 256. fclose?
 			zxpand_index_command++;
 
@@ -456,7 +456,7 @@ jp (hl)
 			//Valores negativos hace que se reintente
 			if (zxpand_index_command==1) {
 				//que devuelvo???
-				//le suma 3f. 
+				//le suma 3f.
 				//return 0;
 				//return 127;
 				//return 0x0f;
@@ -580,7 +580,7 @@ Devolviendo valor 0x40
 			if (zxpand_index_command>=2) {
 				//que retorno aqui??
 				//return 0x40;
-	
+
 				//le suma 3f. por tanto, 3f+c1=00
 				return 0xC1;
 			}
@@ -634,12 +634,12 @@ Devolviendo valor 0x40
 				if (temp_numero_archivos==5) {
 					sprintf (archivo_ficticio,"IMAGE.BMP");
 				}
-				
+
 				//Prueba archivo texto
 				if (temp_numero_archivos==6) {
 					sprintf (archivo_ficticio,"PRUEBA.TXT");
 				}
-				
+
 
 				int longit_arch=strlen(archivo_ficticio);
 
@@ -699,7 +699,7 @@ Devolviendo valor 0x40
 				if (zxpand_index_command==2+longit_arch+2) return value_16_to_8l(tamanyo);
 				if (zxpand_index_command==2+longit_arch+2+1) return value_16_to_8h(tamanyo);
 				if (zxpand_index_command==2+longit_arch+2+2) return 0;
-				
+
 				return 12;
 			}
 
@@ -708,7 +708,7 @@ Devolviendo valor 0x40
 			//12b'name + 1b'flags + 3b'length
 
 		break;
-		
+
 
 		case ZXPAND_READ_JOYSTICK:
 			//leer joystick
@@ -848,7 +848,7 @@ api_rdjoy      .equ $1ffe
 void old_zxpand_write(z80_byte puerto_h,z80_byte value)
 {
 
-	
+
 	//Supuestamente el canal esta en los 3 bits superiores
 	printf ("puerto_h: 0x%x\n",puerto_h);
 	z80_byte canal=(puerto_h>>5)&7;
@@ -870,7 +870,7 @@ void old_zxpand_write(z80_byte puerto_h,z80_byte value)
 		if (value==0xFF) {
 			printf ("Recibido inicio mensaje\n");
 			zxpand_index_message=0;
-		}			
+		}
 
 
 		break;
@@ -906,7 +906,7 @@ void old_zxpand_write(z80_byte puerto_h,z80_byte value)
 		case 3:
 			if (value==0) {
 			printf ("open dir\n");
-			zxpand_last_command=ZXPAND_OPEN_DIR; 
+			zxpand_last_command=ZXPAND_OPEN_DIR;
 			zxpand_index_message=-1;
 			zxpand_index_command=0;
 			temp_numero_archivos=0;
@@ -934,7 +934,7 @@ void old_zxpand_write(z80_byte puerto_h,z80_byte value)
 
 			if (value==0) {
 				printf ("comando load\n");
-				zxpand_last_command=ZXPAND_FOPEN_READ; 
+				zxpand_last_command=ZXPAND_FOPEN_READ;
 				zxpand_index_message=-1;
 				zxpand_index_command=0;
 
@@ -950,7 +950,7 @@ void old_zxpand_write(z80_byte puerto_h,z80_byte value)
 
 				char *encontrado;
 				encontrado=strstr(zxpand_buffer_comando,";");
-			
+
 				if (encontrado!=NULL) {
 					//Ver si es X o address
 					//Ponemos 0 de final de texto
@@ -985,8 +985,8 @@ void old_zxpand_write(z80_byte puerto_h,z80_byte value)
 
                         }
 
-			
-		
+
+
 			else {
 				printf ("---------canal 4 pero comando no load ni save ni fin de load?\n");
 				sleep(5);
@@ -1012,7 +1012,7 @@ void old_zxpand_write(z80_byte puerto_h,z80_byte value)
 		case 7:
 
 			printf ("Comando config\n");
-			zxpand_last_command=ZXPAND_CONFIG; 
+			zxpand_last_command=ZXPAND_CONFIG;
 			zxpand_index_message=-1;
 			zxpand_index_command=0;
 
@@ -1021,7 +1021,7 @@ void old_zxpand_write(z80_byte puerto_h,z80_byte value)
 				printf ("Desactivar overlay rom hasta nuevo reset\n");
 				zxpand_overlay_rom.v=0;
 				//printf ("No desactivamos overlay rom aunque hemos recibido peticion de ello\n");
-				//Nota: ver supuesto mensaje fclose 
+				//Nota: ver supuesto mensaje fclose
 				sleep(5);
 			}
 
@@ -1036,7 +1036,7 @@ void old_zxpand_write(z80_byte puerto_h,z80_byte value)
 
 		default:
 			printf ("------------canal %d comando desconocido. Esto no deberia pasar pues se consideran "
-                                "todos los casos 0-7\n",canal);			
+                                "todos los casos 0-7\n",canal);
 			sleep(10);
 		break;
 
@@ -1053,7 +1053,7 @@ void old_zxpand_write(z80_byte puerto_h,z80_byte value)
 /*
 >> -variable LATD holds the value returned to a IN opcode
 >> -variable PORTD holds the value sent to a OUT opcode
->> -variable PORTA is the 8 bit high port address (>>5) send to a IN or OUT function 
+>> -variable PORTA is the 8 bit high port address (>>5) send to a IN or OUT function
 */
 z80_byte zxpand_latd;
 z80_byte zxpand_portd;
@@ -1156,7 +1156,7 @@ char isValidFN(unsigned char* buffer)
       //char c = chk_chr(validfns, *buffer);
 
 	c=*buffer;
-	
+
 	if (
 	     !
 		(
@@ -1167,11 +1167,11 @@ char isValidFN(unsigned char* buffer)
 			(c=='.')
 
 		)
-	   ) 
+	   )
 	{
 		c=0;
 	}
-	
+
       if (c == 0 || c == ';') return c;
       ++buffer;
    }
@@ -1287,7 +1287,7 @@ z80_byte zxpand_fileopen(char *modo,char *fullpath)
 	sprintf (fullpath,"%s/%s/%s",zxpand_root_dir,zxpand_cwd,(char *)fp_fn);
 
 	printf ("llamando fopen para nombre %s (fullpath: %s) con modo %s\n",fp_fn,fullpath,modo);
-	
+
 	ptr_zxpand_read_file_command=fopen(fullpath,modo);
 	if (ptr_zxpand_read_file_command==NULL) {
 		//file not found.
@@ -1309,7 +1309,7 @@ void zxpand_COM_FileOpenRead(void)
   if (res==0x40)
    {
 	long long int longitud_total=get_file_size(fullpath);
-	
+
 
       if (zxpand_length == 0)
       {
@@ -1814,7 +1814,7 @@ void zxpand_get_final_directory(char *dir, char *finaldir, char *localdir)
 		sprintf (zxpand_cwd,"%s",dir);
 		sprintf (dir_pedido,"%s/%s",zxpand_root_dir,zxpand_cwd);
 	}
-		
+
 
 	else {
 		sprintf (dir_pedido,"%s/%s/%s",zxpand_root_dir,zxpand_cwd,dir);
@@ -1916,7 +1916,7 @@ void zxpand_COM_DirectoryOpen(void)
         int tmpdirret=mkdir(directorio_final);
 #endif
 
-	//TODO 
+	//TODO
 	ret = 0x40;
 
 
@@ -2019,7 +2019,7 @@ void zxpand_COM_DirectoryRead(void)
 	do {
 
 		zxpand_dp = readdir(zxpand_dfd);
-	
+
 		if (zxpand_dp == NULL) {
 			closedir(zxpand_dfd);
 			zxpand_dfd=NULL;
@@ -2072,7 +2072,7 @@ void zxpand_COM_DirectoryRead(void)
 
 	zxpand_latd=0x40;
 
-	
+
 }
 
 
@@ -2165,11 +2165,11 @@ void zxpand_process(int waswrite)
 
    // file control port
    case 0x04:
-      
+
          if (waswrite)
          {
 
-	
+
 
             z80_byte pd = zxpand_portd;
             zxpand_latd=0x80;
@@ -2228,7 +2228,7 @@ void zxpand_process(int waswrite)
                worker = zxpand_COM_FileDelete;
             }
          }
-      
+
       break;
 
    // get data from file
@@ -2287,7 +2287,7 @@ void zxpand_process(int waswrite)
                //
 		//TODO
 		zxpand_latd=0xff;
-	
+
                //char temp = GETJS;
                //LATD = temp & 0xf9;
             }
@@ -2366,7 +2366,7 @@ void zxpand_process(int waswrite)
 	*/
 
             else
-            //  0xBn functions set something and may take time 
+            //  0xBn functions set something and may take time
             if (pd == 0xb0)
             {
                // temporarily disable overlay until next zeddy reset

@@ -99,7 +99,7 @@ void phoenix_nmi(void)
     if (phoenix_mapped_rom_memory.v==0) {
         debug_printf(VERBOSE_DEBUG,"Enabling phoenix memory from nmi triggered");
         phoenix_mapped_rom_memory.v=1;
-    }   
+    }
 }
 
 
@@ -163,7 +163,7 @@ int phoenix_load_rom(void)
 void phoenix_alloc_memory(void)
 {
 
-    int size=PHOENIX_ROM_SIZE;  
+    int size=PHOENIX_ROM_SIZE;
 
     debug_printf (VERBOSE_DEBUG,"Allocating %d kb of memory for phoenix emulation",size/1024);
 

@@ -216,10 +216,10 @@ void dandanator_run_command(void)
 	if (dandanator_state==Commands_Locked) {
 		if (dandanator_received_command==46) {
 			/*
-Comando especial 46: Bloquear, desbloquear, deshabilitar. – Este comando bloquea, desbloquea o deshabilita futuros comandos. 
+Comando especial 46: Bloquear, desbloquear, deshabilitar. – Este comando bloquea, desbloquea o deshabilita futuros comandos.
 Es el único comando reconocido si los comandos están bloqueados.
 Parámetros:
-- Data 1: 1 para bloquear, 16 para desbloquear y habilitar comandos, 
+- Data 1: 1 para bloquear, 16 para desbloquear y habilitar comandos,
 31 para deshabilitar comandos hasta un reboot frío. - Data 2: Debe ser igual a Data1 o el comando será ignorado.
 			*/
 			debug_printf (VERBOSE_DEBUG,"Dandanator: was in blocked mode. Received command 46 with data1 %d data2 %d",
@@ -269,9 +269,9 @@ Parámetros:
 		switch (dandanator_received_command) {
 			case 40:
 /*
-Comando especial 40: Cambio Rápido – Este comando cambia a un banco determinado y 
-ejecuta una acción en el momento de recibir el pulso de confirmación. Normalmente se usa para devolver el control a un 
-software cambiando rápidamente de banco sin esperar los 5ms de la ventana de cambio normal. 
+Comando especial 40: Cambio Rápido – Este comando cambia a un banco determinado y
+ejecuta una acción en el momento de recibir el pulso de confirmación. Normalmente se usa para devolver el control a un
+software cambiando rápidamente de banco sin esperar los 5ms de la ventana de cambio normal.
 Pruebas empíricas determinan el cambio de banco en el rango de los 12us.
 Parámetros:
 - Data 1: Número de banco para ejecutar el cambio.
@@ -349,7 +349,7 @@ void dandanator_write_byte_spectrum(z80_int dir,z80_byte valor)
 			//Contador para ejecutar comando especial despues de 35 t-estados
 			dandanator_needed_t_states_command=35;
 			dandanator_set_pending_run_command();
-            
+
 		}
 
 		if (dir==1) {
@@ -618,7 +618,7 @@ void dandanator_set_peek_poke_functions(void)
 
 	if (MACHINE_IS_SPECTRUM) {
    		debug_printf (VERBOSE_DEBUG,"Setting dandanator poke / peek Spectrum functions");
-   
+
 		//Asignar mediante nuevas funciones de core anidados
 		dandanator_nested_id_poke_byte=debug_nested_poke_byte_add(dandanator_poke_byte_spectrum,"Dandanator poke_byte");
 		dandanator_nested_id_poke_byte_no_time=debug_nested_poke_byte_no_time_add(dandanator_poke_byte_spectrum_no_time,"Dandanator poke_byte_no_time");
@@ -629,7 +629,7 @@ void dandanator_set_peek_poke_functions(void)
 
 	else {
 		debug_printf (VERBOSE_DEBUG,"Setting dandanator poke / peek CPC functions");
-   
+
 		//Asignar mediante nuevas funciones de core anidados
 		dandanator_nested_id_poke_byte=debug_nested_poke_byte_add(dandanator_poke_byte_cpc,"Dandanator poke_byte");
 		dandanator_nested_id_poke_byte_no_time=debug_nested_poke_byte_no_time_add(dandanator_poke_byte_cpc_no_time,"Dandanator poke_byte_no_time");
@@ -703,7 +703,7 @@ void dandanator_cpc_execute_ret_delayed_config(z80_byte value)
 {
 /*
 Delayed configuration parameters are:
-- Disable further commands until reset ->  dandanator_cpc_config_2 bit 5  
+- Disable further commands until reset ->  dandanator_cpc_config_2 bit 5
 - Trigger FollowRomEnable, so Dandanator will only be enabled if a Rom is selected
 in the CPC. Useful for low-high rom substitution (poor-man rombox).  -> dandanator_cpc_config_2 bit 4
 - A15 values for Zone 0 and Zone 1 so you can change them between segments  -> dandanator_cpc_config_2 bit 3-2
@@ -790,14 +790,14 @@ z80_byte cpu_core_loop_cpc_dandanator(z80_int dir GCC_UNUSED, z80_byte value GCC
 		//Gestion opcodes
 		/*
 		- Zone 0 Command: Trigger + LD (IY+0),B
-		- Zone 1 Command: Trigger + LD (IY+0),C		
+		- Zone 1 Command: Trigger + LD (IY+0),C
 		*/
 
 
 		//printf ("%04X %02X %02X\n",reg_pc,preffix,opcode);
 
 
-		if (preffix==201 && dandanator_cpc_pending_wait_ret.v) { 
+		if (preffix==201 && dandanator_cpc_pending_wait_ret.v) {
 			dandanator_cpc_execute_ret_delayed_config(dandanator_cpc_change_ret_config);
 			dandanator_cpc_pending_wait_ret.v=0;
             //printf("1\n");
@@ -826,7 +826,7 @@ z80_byte cpu_core_loop_cpc_dandanator(z80_int dir GCC_UNUSED, z80_byte value GCC
 
 					case 113:
 						//LD (IY+d),C
-						//Zone 1 Command: Trigger + LD (IY+0),C		
+						//Zone 1 Command: Trigger + LD (IY+0),C
 						dandanator_cpc_zone_slots[1]=reg_c;
                         //printf("3\n");
                         //dandanator_footer_operating();
@@ -858,7 +858,7 @@ z80_byte cpu_core_loop_cpc_dandanator(z80_int dir GCC_UNUSED, z80_byte value GCC
 							//printf ("Delaying some config change until ret\n");
 
 							dandanator_cpc_execute_ret_nondelayed_config(reg_a);
-						
+
 						}
 
 						else {

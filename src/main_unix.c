@@ -1,5 +1,5 @@
 /*
-    ZEsarUX  ZX Second-Emulator And Released for UniX 
+    ZEsarUX  ZX Second-Emulator And Released for UniX
     Copyright (C) 2013 Cesar Hernandez Bano
 
     This file is part of ZEsarUX.
@@ -22,7 +22,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-#include <unistd.h>                
+#include <unistd.h>
 #include <string.h>
 
 #include "cpu.h"

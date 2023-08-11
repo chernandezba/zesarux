@@ -1,5 +1,5 @@
 /*
-    ZEsarUX  ZX Second-Emulator And Released for UniX 
+    ZEsarUX  ZX Second-Emulator And Released for UniX
     Copyright (C) 2013 Cesar Hernandez Bano
 
     This file is part of ZEsarUX.
@@ -84,7 +84,7 @@ void joystick_possible_rightalt_key(int pressrelease)
 }
 
 void joystick_possible_rightctrl_key(int pressrelease)
-{            
+{
     if (joystick_defined_key_fire==JOYSTICK_KEY_FIRE_IS_RIGHTCTRL && joystick_emulation!=JOYSTICK_NONE) util_set_reset_key(UTIL_KEY_FIRE,pressrelease);
     else util_set_reset_key(UTIL_KEY_CONTROL_R,pressrelease);
 }
@@ -93,7 +93,7 @@ void joystick_possible_rightctrl_key(int pressrelease)
 int gunstick_emulation=0;
 
 //Coordenadas x,y en formato scanlines y pixeles totales, es decir,
-//x entre 0 y 351 
+//x entre 0 y 351
 //y entre 0 y 295
 //0,0 esta arriba a la izquierda
 
@@ -109,7 +109,7 @@ int gunstick_y_offset=0;
 int gunstick_solo_brillo=0;
 
 //Coordenadas x,y tal cual las retorna el driver de video, segun el tamanyo de ventana activo
-//en xwindows, normalmente entre 
+//en xwindows, normalmente entre
 //x entre 0 y 351
 //y entre 0 y 295
 //0,0 esta arriba a la izquierda
@@ -339,9 +339,9 @@ int gunstick_view_white(void)
 
 	if (gunstick_x<ancho && gunstick_y<alto) {
 		int indice_cache;
-                                       
+
 		indice_cache=(get_total_ancho_rainbow()*gunstick_y)+gunstick_x;
-                                        
+
 		z80_byte color=putpixel_cache[indice_cache];
 
 		//color blanco con o sin brillo
@@ -399,7 +399,7 @@ int gunstick_view_electron(void)
 
 	        ancho=screen_get_emulated_display_width_no_zoom();
         	alto=screen_get_emulated_display_height_no_zoom();
-     
+
         	if (x<ancho && y<alto) {
 
 			//Ver si hay algo en blanco cerca de donde se ha disparado
@@ -428,7 +428,7 @@ int gunstick_view_electron(void)
                                 	color=putpixel_cache[indice_cache];
 
                                         //color blanco con o sin brillo
-					//si no es color valido	
+					//si no es color valido
 					if (color>15) return 0;
 
 					int maskbrillo=7;
@@ -450,7 +450,7 @@ int gunstick_view_electron(void)
 
   return 0;
 
-   
+
 
   //}
 

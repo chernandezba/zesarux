@@ -1,5 +1,5 @@
 /*
-    ZEsarUX  ZX Second-Emulator And Released for UniX 
+    ZEsarUX  ZX Second-Emulator And Released for UniX
     Copyright (C) 2013 Cesar Hernandez Bano
 
     This file is part of ZEsarUX.
@@ -35,7 +35,7 @@ z80_byte *read_hilow_audio_file(char *archivo)
     z80_byte *puntero;
 
 
-   
+
 
     //Asignar memoria
     int tamanyo=hilow_read_audio_get_file_size(archivo);
@@ -95,7 +95,7 @@ void hilow_read_audio_read_hilow_ddh_file(char *archivo)
     }
 
     fread(hilow_read_audio_hilow_ddh,1,tamanyo,ptr_ddhfile);
-    fclose(ptr_ddhfile);    
+    fclose(ptr_ddhfile);
 
 
 
@@ -117,14 +117,14 @@ void hilow_read_audio_write_hilow_ddh_file(char *archivo)
     }
 
     fwrite(hilow_read_audio_hilow_ddh,1,tamanyo,ptr_ddhfile);
-    fclose(ptr_ddhfile);    
+    fclose(ptr_ddhfile);
 
 }
 
 int hilow_read_audio_ask_save_sector(void)
 {
     /*
-    Posibles salidas: 
+    Posibles salidas:
     -Fin. Finalizar proceso: Salida -1
     -No Grabar sector: Salida 0
     -Grabar sector: Salida 1
@@ -161,11 +161,11 @@ int hilow_read_audio_ask_save_sector(void)
                         hilow_read_audio_autoajustar_duracion_bits,hilow_read_audio_modo_verbose,hilow_read_audio_modo_verbose_extra,
                         hilow_read_audio_invertir_senyal, hilow_read_audio_autocorrect);
 
-                    
+
                     char buffer_parm[100];
                     scanf("%s",buffer_parm);
                     parm=atoi(buffer_parm);
-                    
+
                     if (parm==1) hilow_read_audio_autoajustar_duracion_bits ^=1;
                     if (parm==2) hilow_read_audio_modo_verbose ^=1;
                     if (parm==3) hilow_read_audio_modo_verbose_extra ^=1;
@@ -174,7 +174,7 @@ int hilow_read_audio_ask_save_sector(void)
 
 
                 } while(parm!=0);
-            }              
+            }
 
             if (buffer_pregunta[0]=='e') {
                 printf("Nuevo sector? : ");
@@ -183,7 +183,7 @@ int hilow_read_audio_ask_save_sector(void)
                 scanf("%s",buffer_sector);
                 sector=atoi(buffer_sector);
                 printf("Nuevo sector: %d\n",sector);
-            }    
+            }
 
             if (buffer_pregunta[0]=='n') {
                 printf("Not saving this sector\n");
@@ -193,13 +193,13 @@ int hilow_read_audio_ask_save_sector(void)
             if (buffer_pregunta[0]=='s') {
                 printf("Saving this sector\n");
                 return 1;
-            }            
+            }
 
         } while (1);
-    } 
+    }
 
     //Esta en modo automatico. Asumimos grabar sector
-    return 1;  
+    return 1;
 }
 
 void hilow_read_audio_dump_sector_contents(void)
@@ -207,7 +207,7 @@ void hilow_read_audio_dump_sector_contents(void)
      int total=HILOW_SECTOR_SIZE+1;
 
     //dump total ascii+hexa
-    int colwidth=50;     
+    int colwidth=50;
 
     int i;
 
@@ -220,7 +220,7 @@ void hilow_read_audio_dump_sector_contents(void)
             z80_byte byte_leido=hilow_read_audio_buffer_result[i+col];
 
             printf("%02X",byte_leido);
-        }        
+        }
 
         printf(" ");
 
@@ -233,9 +233,9 @@ void hilow_read_audio_dump_sector_contents(void)
 
         printf("\n");
 
-    } 
+    }
 
-    printf("\n");      
+    printf("\n");
 }
 
 int hilow_read_audio_lee_sector_preguntando(int posicion,int *total_bytes_leidos)
@@ -257,23 +257,23 @@ int hilow_read_audio_lee_sector_preguntando(int posicion,int *total_bytes_leidos
 
 
         hilow_read_audio_pausa(1);
-        hilow_read_audio_dump_sector_contents();   
-        
+        hilow_read_audio_dump_sector_contents();
+
         if (!hilow_read_audio_directo_a_pista) {
             if (hilow_read_audio_warn_if_sector_mismatch(sector)) {
                 printf("Probably sector mismatch!\n");
                 hilow_read_audio_print_mostrar_ids_sector();
-                hilow_read_audio_pausa(2);            
+                hilow_read_audio_pausa(2);
             }
         }
 
         printf("Total bytes leidos: %d\n",*total_bytes_leidos);
-        printf("Sector %d\n",sector);        
+        printf("Sector %d\n",sector);
 
         respuesta=hilow_read_audio_ask_save_sector();
 
         /*
-        Posibles salidas: 
+        Posibles salidas:
         -Fin. Finalizar proceso: Salida -1
         -No Grabar sector: Salida 0
         -Grabar sector: Salida 1
@@ -306,8 +306,8 @@ int main(int argc,char *argv[])
     if(argc<3 || mostrar_ayuda) {
         printf( "Usage: %s source.raw destination.ddh\n",argv[0]);
         printf("Available switches:\n"
-                "\n"   
-                "--autocorrect: Try to fix read errors depending on S_START_BYTE signal\n"   
+                "\n"
+                "--autocorrect: Try to fix read errors depending on S_START_BYTE signal\n"
                 "--autoadjust_bit_width: Try to adjust bit length width depending on the S_START_BYTE signal\n"
                 "--automatic: Do not ask anything\n"
                 "--bside: Needed to convert audio from B side\n"
@@ -320,7 +320,7 @@ int main(int argc,char *argv[])
         exit(1);
     }
 
-    
+
 
     char *archivo;
 
@@ -332,7 +332,7 @@ int main(int argc,char *argv[])
     char *archivo_ddh;
     archivo_ddh=argv[2];
 
-    
+
 
     int indice_argumento=3;
 
@@ -377,7 +377,7 @@ int main(int argc,char *argv[])
     int posicion=0;
     int total_bytes_leidos;
 
-    if (hilow_read_audio_directo_a_pista) {  
+    if (hilow_read_audio_directo_a_pista) {
         hilow_read_audio_lee_sector_preguntando(posicion,&total_bytes_leidos);
     }
 
@@ -388,7 +388,7 @@ int main(int argc,char *argv[])
             printf("\n");
             posicion=hilow_read_audio_buscar_inicio_sector(posicion);
             if (hilow_read_audio_modo_verbose) printf("Posicion inicio bits de datos de sector: %d\n",posicion);
-            
+
             posicion=hilow_read_audio_lee_sector_preguntando(posicion,&total_bytes_leidos);
 
         }

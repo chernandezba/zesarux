@@ -61,8 +61,8 @@ char mhpokeador_rom_filename[PATH_MAX]="";
 int mhpokeador_tipo_rom_cargar=MHPOKEADOR_TIPO_ROM_POKEADOR;
 
 int mhpokeador_check_if_ram_area(z80_int dir)
-{   
-    if ( 
+{
+    if (
         (dir>=0x60 && dir<=0x6f)
         ||
         (dir>=0x3900 && dir<=0x3cff)
@@ -86,7 +86,7 @@ z80_byte *mhpokeador_return_memory_pointer(z80_int dir)
         dir -=0x3900;
 	    dir &= 1023;
         return &mhpokeador_memory_pointer[1024+dir];
-    }    
+    }
 }
 
 
@@ -133,7 +133,7 @@ z80_byte mhpokeador_poke_byte(z80_int dir,z80_byte valor)
 
 z80_byte mhpokeador_poke_byte_no_time(z80_int dir,z80_byte valor)
 {
- 
+
 	//Llamar a anterior
 	debug_nested_poke_byte_no_time_call_previous(mhpokeador_nested_id_poke_byte_no_time,dir,valor);
 
@@ -221,7 +221,7 @@ void mhpokeador_alloc_ram_memory(void)
 {
     //Asignamos 2 kb de ram, igual que la interfaz real
     //aunque realmente se usan unos pocos bytes del primer kb (60h-6fh), y el segundo kb (3900h-3cffh)
-    int size=MHPOKEADOR_RAM_SIZE;  
+    int size=MHPOKEADOR_RAM_SIZE;
 
     debug_printf (VERBOSE_DEBUG,"Allocating %d kb of memory for mhpokeador emulation",size/1024);
 

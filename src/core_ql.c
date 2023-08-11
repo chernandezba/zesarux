@@ -67,11 +67,11 @@ void ql_chapuza_parpadeo_cursor(void)
         if (ql_simular_parpadeo_cursor.v==0) return;
 
                                 //SV_FSTAT $AA word flashing cursor status
-                                              
+
                         z80_byte parpadeo=peek_byte_z80_moto(0x280aa);
                         z80_byte parpadeo2=peek_byte_z80_moto(0x280ab);
                         //printf("parpadeo: %02X%02XH\n",parpadeo,parpadeo2);
-                        
+
                         temporal_parpadeo_ql++;
                         if ((temporal_parpadeo_ql % 16)==0) {
 
@@ -191,7 +191,7 @@ void cpu_core_loop_ql(void)
 
 			t_scanline++;
 
-           
+
 
 
 
@@ -203,7 +203,7 @@ void cpu_core_loop_ql(void)
             //Usando simulacion por AY
             //audio_valor_enviar_sonido +=da_output_ay();
 
-            //Usando emulacion del chip intel 
+            //Usando emulacion del chip intel
             audio_valor_enviar_sonido +=ql_audio_da_output();
 
 
@@ -217,7 +217,7 @@ void cpu_core_loop_ql(void)
             audio_send_mono_sample(audio_valor_enviar_sonido);
 
 
-            
+
 
             ql_audio_next_cycle();
 
@@ -301,7 +301,7 @@ pc_intr equ     $18021  bits 4..0 set as pending level 2 interrupts
                 core_end_frame_check_zrcp_zeng_snap.v=1;
 
                 //snapshot en ram
-                snapshot_add_in_ram();            
+                snapshot_add_in_ram();
 
 			}
 
@@ -345,10 +345,10 @@ pc_intr equ     $18021  bits 4..0 set as pending level 2 interrupts
                 if (core_end_frame_check_zrcp_zeng_snap.v) {
                     core_end_frame_check_zrcp_zeng_snap.v=0;
                     check_pending_zrcp_put_snapshot();
-                    zeng_send_snapshot_if_needed();			
+                    zeng_send_snapshot_if_needed();
                 }
 
-	
+
                 debug_get_t_stados_parcial_post();
 
 

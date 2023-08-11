@@ -80,7 +80,7 @@ Cada condición genera 0 o 1
 Evaluar valores: por orden, evaluar valores, variables  y posibles operadores de cálculo: +,-,*,/. & (and), | (or), ^ (xor)
 
 
-NO existe el uso de paréntesis. 
+NO existe el uso de paréntesis.
 
 Aquí lo difícil es el parser que convierte el ascii en tokens
 
@@ -130,7 +130,7 @@ token_parser_textos_indices tpti_funciones[]={
     {TPI_F_OPMWA,"OPMWA("},
     {TPI_F_OPMRA,"OPMRA("},
     {TPI_F_OPMWV,"OPMWV("},
-    {TPI_F_OPMRV,"OPMRV("},    
+    {TPI_F_OPMRV,"OPMRV("},
 
 
     {TPI_FIN,""}
@@ -190,7 +190,7 @@ token_parser_textos_indices tpti_variables[]={
     {TPI_V_ROM,"ROM"},
 
     {TPI_V_PD765_PCN,"PD765PCN"},
-    	
+
 
     {TPI_FIN,""}
 };
@@ -202,7 +202,7 @@ token_parser_textos_indices tpti_registros[]={
     {TPI_R_SP,"SP"},
     {TPI_R_USP,"USP"},
     {TPI_R_IX,"IX"},
-    {TPI_R_IY,"IY"},	
+    {TPI_R_IY,"IY"},
 
 	{TPI_R_A,"A"},
 	{TPI_R_B,"B"},
@@ -218,7 +218,7 @@ token_parser_textos_indices tpti_registros[]={
         {TPI_R_AF,"AF"},
         {TPI_R_BC,"BC"},
         {TPI_R_DE,"DE"},
-        {TPI_R_HL,"HL"},    
+        {TPI_R_HL,"HL"},
 
 	{TPI_R_A_SHADOW,"A'"},
 	{TPI_R_B_SHADOW,"B'"},
@@ -233,37 +233,37 @@ token_parser_textos_indices tpti_registros[]={
         {TPI_R_AF_SHADOW,"AF'"},
         {TPI_R_BC_SHADOW,"BC'"},
         {TPI_R_DE_SHADOW,"DE'"},
-        {TPI_R_HL_SHADOW,"HL'"},   
+        {TPI_R_HL_SHADOW,"HL'"},
 
         {TPI_R_FS,"FS"},
         {TPI_R_FZ,"FZ"},
         {TPI_R_FP,"FP"},
-        {TPI_R_FV,"FV"},    
+        {TPI_R_FV,"FV"},
         {TPI_R_FH,"FH"},
         {TPI_R_FN,"FN"},
-        {TPI_R_FC,"FC"},  
+        {TPI_R_FC,"FC"},
 
 
 
 
 	//De motorola
-        {TPI_R_D0,"D0"},     
-        {TPI_R_D1,"D1"}, 
-        {TPI_R_D2,"D2"}, 
-        {TPI_R_D3,"D3"}, 
-        {TPI_R_D4,"D4"}, 
-        {TPI_R_D5,"D5"}, 
-        {TPI_R_D6,"D6"}, 
-        {TPI_R_D7,"D7"}, 
+        {TPI_R_D0,"D0"},
+        {TPI_R_D1,"D1"},
+        {TPI_R_D2,"D2"},
+        {TPI_R_D3,"D3"},
+        {TPI_R_D4,"D4"},
+        {TPI_R_D5,"D5"},
+        {TPI_R_D6,"D6"},
+        {TPI_R_D7,"D7"},
 
-        {TPI_R_A0,"A0"},     
-        {TPI_R_A1,"A1"}, 
-        {TPI_R_A2,"A2"}, 
-        {TPI_R_A3,"A3"}, 
-        {TPI_R_A4,"A4"}, 
-        {TPI_R_A5,"A5"}, 
-        {TPI_R_A6,"A6"}, 
-        {TPI_R_A7,"A7"},     
+        {TPI_R_A0,"A0"},
+        {TPI_R_A1,"A1"},
+        {TPI_R_A2,"A2"},
+        {TPI_R_A3,"A3"},
+        {TPI_R_A4,"A4"},
+        {TPI_R_A5,"A5"},
+        {TPI_R_A6,"A6"},
+        {TPI_R_A7,"A7"},
 
     //De SCMP
 	{TPI_R_AC,"AC"},
@@ -271,13 +271,13 @@ token_parser_textos_indices tpti_registros[]={
     {TPI_R_SR,"SR"},
     {TPI_R_P1,"P1"},
     {TPI_R_P2,"P2"},
-    {TPI_R_P3,"P3"},  
+    {TPI_R_P3,"P3"},
 
     //De Tbblue
     {TPI_R_COPPERPC,"COPPERPC"},
 
     {TPI_R_EPC,"EPC"},
-             
+
 
 
     {TPI_FIN,""}
@@ -304,7 +304,7 @@ token_parser_textos_indices tpti_operador_condicional[]={
 	{TPI_OC_DIFERENTE,"<>"},
 
 	{TPI_OC_MENOR_IGUAL,"<="},
-	{TPI_OC_MAYOR_IGUAL,">="},    
+	{TPI_OC_MAYOR_IGUAL,">="},
 
     {TPI_FIN,""}
 };
@@ -317,12 +317,12 @@ token_parser_textos_indices tpti_operador_calculo[]={
 	{TPI_OC_RESTA,"-"},
 	{TPI_OC_MULTIPLICACION,"*"},
 	{TPI_OC_DIVISION,"/"},
-	{TPI_OC_AND,"&"},	
+	{TPI_OC_AND,"&"},
 	{TPI_OC_OR,"|"},
 	{TPI_OC_XOR,"^"},
 
     {TPI_FIN,""}
-};    
+};
 
 //Dice si caracter es digito 0...9
 int exp_par_is_digit(char c)
@@ -483,12 +483,12 @@ int exp_par_is_funcion(char *texto,int *final,enum token_parser_indice *indice_f
     int indice=exp_par_is_token_parser_textos_indices(buffer_texto,tpti_funciones);
     if (indice>=0) {
         //printf ("[%s] es funcion\n",buffer_texto);
-        *final=strlen(buffer_texto)-1; //quitarle el parentesis 
+        *final=strlen(buffer_texto)-1; //quitarle el parentesis
         *indice_final=indice;
         return 1;
     }
 
- 
+
     return 0;
 
 }
@@ -506,7 +506,7 @@ int exp_par_is_operador(char *texto,int *final)
 
     char buffer_texto[3];
 
-    
+
     primer_caracter=*texto;
     buffer_texto[0]=primer_caracter;
     buffer_texto[1]=0;
@@ -515,7 +515,7 @@ int exp_par_is_operador(char *texto,int *final)
     if (texto[0]=='<' && texto[1]=='>') {
         buffer_texto[0]='<';
         buffer_texto[1]='>';
-        buffer_texto[2]=0;        
+        buffer_texto[2]=0;
     }
 
     //considerar condicionales <= >=
@@ -525,8 +525,8 @@ int exp_par_is_operador(char *texto,int *final)
     ) {
         buffer_texto[0]=texto[0];
         buffer_texto[1]='=';
-        buffer_texto[2]=0;        
-    }    
+        buffer_texto[2]=0;
+    }
 
     //tpti_operador_condicional
     if (exp_par_is_token_parser_textos_indices(buffer_texto,tpti_operador_condicional)>=0) {
@@ -572,7 +572,7 @@ int exp_par_char_is_reg_aux_more(char c,int i)
 //Retorna 1 si lo es. 0 si no. -1 si hay error parseando
 int exp_par_is_var_reg(char *texto,int *final)
 {
-   
+
 
     //Buscar hasta final letras
     char buffer_texto[MAX_PARSER_TEXTOS_INDICE_LENGTH];
@@ -615,7 +615,7 @@ int exp_par_is_var_reg(char *texto,int *final)
 //Devuelve 0 si no existe
 int exp_par_parse_var_reg(char *texto,enum token_parser_tipo *tipo,enum token_parser_indice *indice_final)
 {
-   
+
     int indice;
 
     indice=exp_par_is_token_parser_textos_indices(texto,tpti_variables);
@@ -643,7 +643,7 @@ int exp_par_parse_operador(char *texto,enum token_parser_tipo *tipo,enum token_p
 {
     int indice;
 
- 
+
     indice=exp_par_is_token_parser_textos_indices(texto,tpti_operador_condicional);
     if (indice>=0) {
         *tipo=TPT_OPERADOR_CONDICIONAL;
@@ -716,33 +716,33 @@ int exp_par_exp_to_tokens(char *expression,token_parser *tokens)
         else if ( exp_par_is_parentesis_abrir(*expression) ) { //si hay parentesis abrir o cerrar,saltar
                 //printf ("abrir parentesis\n");
                 tokens[indice_token].tipo=TPT_PARENTESIS;
-                tokens[indice_token].indice=TPI_P_ABRIR;      
+                tokens[indice_token].indice=TPI_P_ABRIR;
                 expression++;
-                indice_token++;          
+                indice_token++;
         }
         else if ( exp_par_is_parentesis_cerrar(*expression) ) { //si hay parentesis abrir o cerrar,saltar
                 //printf ("cerrar parentesis\n");
                 tokens[indice_token].tipo=TPT_PARENTESIS;
-                tokens[indice_token].indice=TPI_P_CERRAR;      
+                tokens[indice_token].indice=TPI_P_CERRAR;
                 expression++;
-                indice_token++;          
-        }      
+                indice_token++;
+        }
 
         else if (exp_par_is_funcion(expression,&final,&indice_funcion)) {
             //meter funcion
             tokens[indice_token].tipo=TPT_FUNCION;
-            tokens[indice_token].indice=indice_funcion;      
+            tokens[indice_token].indice=indice_funcion;
 
-            indice_token++;    
+            indice_token++;
 
             //Apuntamos al parentesis de abrir
-            expression=&expression[final];                 
+            expression=&expression[final];
 
         }
 
         else {
             //Obtener numero
-            
+
             int resultado;
 
             //Suponer primero que son variables/registros
@@ -771,7 +771,7 @@ int exp_par_exp_to_tokens(char *expression,token_parser *tokens)
                 tokens[indice_token].tipo=tipo;
                 tokens[indice_token].indice=indice;
 
-           
+
             }
 
             else {
@@ -790,16 +790,16 @@ int exp_par_exp_to_tokens(char *expression,token_parser *tokens)
                 if ( (*expression)=='+') {
                     signo_valor=+1; //aunque ya viene asi por defecto antes, pero para que quede mas claro
                     expression++;
-                }                
+                }
 
                 resultado=exp_par_is_number(expression,&final);
-            
+
                 if (resultado<=0) {
                     //printf ("return number with error (evaluated [%s]\n",expression);
                     return -1; //error
                 }
 
-            
+
                 //printf ("final index: %d\n",final);
                 //Es un numero
                 //printf ("end number: %c\n",expression[final]);
@@ -807,7 +807,7 @@ int exp_par_exp_to_tokens(char *expression,token_parser *tokens)
 
                 //Metemos en buffer temporal
                 char buffer_temp[MAX_PARSER_TEXTOS_INDICE_LENGTH];
-                exp_par_copy_string(expression,buffer_temp,final);                
+                exp_par_copy_string(expression,buffer_temp,final);
 
                 //Parseamos numero
                 enum token_parser_formato formato;
@@ -823,7 +823,7 @@ int exp_par_exp_to_tokens(char *expression,token_parser *tokens)
 
             }
 
-            
+
 
             //Siguiente expresion
             indice_token++;
@@ -835,22 +835,22 @@ int exp_par_exp_to_tokens(char *expression,token_parser *tokens)
             while ( exp_par_is_parentesis_abrir(*expression) ) { //si hay parentesis abrir o cerrar,saltar
                 //printf ("abrir parentesis en bucle\n");
                 tokens[indice_token].tipo=TPT_PARENTESIS;
-                tokens[indice_token].indice=TPI_P_ABRIR;      
+                tokens[indice_token].indice=TPI_P_ABRIR;
                 expression++;
-                indice_token++;          
+                indice_token++;
             }
             while ( exp_par_is_parentesis_cerrar(*expression) ) { //si hay parentesis abrir o cerrar,saltar
                 //printf ("cerrar parentesis en bucle\n");
                 tokens[indice_token].tipo=TPT_PARENTESIS;
-                tokens[indice_token].indice=TPI_P_CERRAR;      
+                tokens[indice_token].indice=TPI_P_CERRAR;
                 expression++;
-                indice_token++;          
-            }    
+                indice_token++;
+            }
 
             //saltar espacios
-            while ( (*expression)==' ') expression++;                          
+            while ( (*expression)==' ') expression++;
 
-            //Si no final, 
+            //Si no final,
             if ( (*expression)!=0) {
                 //Calcular operador
                 //printf ("parsing operador from %s\n",expression);
@@ -879,9 +879,9 @@ int exp_par_exp_to_tokens(char *expression,token_parser *tokens)
                 }
 
                 tokens[indice_token].tipo=tipo;
-                tokens[indice_token].indice=indice;                
-       
-            
+                tokens[indice_token].indice=indice;
+
+
                 //Siguiente expresion
                 indice_token++;
                 expression=&expression[final];
@@ -953,10 +953,10 @@ void exp_par_tokens_to_exp(token_parser *tokens,char *expression,int maximo)
                 indice_a_tabla=tpti_operador_calculo;
             break;
 
-            case TPT_FUNCION: 
+            case TPT_FUNCION:
                 indice_a_tabla=tpti_funciones;
                 esfuncion=1;
-            break;            
+            break;
 
             case TPT_FIN:
                 //esto se gestiona desde el while y por tanto no se llega nunca aqui. Lo pongo para que no se queje el compilador
@@ -969,44 +969,44 @@ void exp_par_tokens_to_exp(token_parser *tokens,char *expression,int maximo)
            int valor_final=tokens[i].valor;
 
             //aplicar signo
-            valor_final *=tokens[i].signo;        
-            
+            valor_final *=tokens[i].signo;
+
            enum token_parser_formato formato;
            formato=tokens[i].formato;
 
            switch (formato) {
 
                case TPF_HEXADECIMAL:
-                sprintf(&expression[dest_string],"%XH",valor_final); 
-               break;   
+                sprintf(&expression[dest_string],"%XH",valor_final);
+               break;
 
                case TPF_DECIMAL:
-               sprintf(&expression[dest_string],"%d",valor_final); 
+               sprintf(&expression[dest_string],"%d",valor_final);
                break;
 
                case TPF_ASCII:
                //controlar rango, por si acaso
-               if (valor_final>=32 && valor_final<=126) sprintf(&expression[dest_string],"\'%c\'",valor_final); 
-               else sprintf(&expression[dest_string],"%d",valor_final); 
-               break;     
+               if (valor_final>=32 && valor_final<=126) sprintf(&expression[dest_string],"\'%c\'",valor_final);
+               else sprintf(&expression[dest_string],"%d",valor_final);
+               break;
 
-               case TPF_BINARIO:  
+               case TPF_BINARIO:
                 util_ascii_to_binary(valor_final,buffer_temporal_binario,33);
                 strcpy(&expression[dest_string],buffer_temporal_binario);
-               break;      
+               break;
 
                default:
                //cualquier otra cosa, decimal (aunque aqui no deberia llegar nunca)
-               sprintf(&expression[dest_string],"%d",valor_final); 
+               sprintf(&expression[dest_string],"%d",valor_final);
                break;
 
                	//TPF_DECIMAL,
 	            //TPF_HEXADECIMAL,
 	            //TPF_BINARIO,
 	            //TPF_ASCII
-               
+
            }
-           
+
         }
 
         else {
@@ -1020,14 +1020,14 @@ void exp_par_tokens_to_exp(token_parser *tokens,char *expression,int maximo)
 
             //Meter en buffer el texto
             char buf_tok_str[MAX_PARSER_TEXTOS_INDICE_LENGTH];
-            
+
             strcpy(buf_tok_str,indice_a_tabla[j].texto);
 
             //Si es funcion, eliminar ultimo caracter que sera "("
             if (esfuncion) {
                 int l=strlen(buf_tok_str);
                 if (l) buf_tok_str[l-1]=0;
-            }            
+            }
 
             if (!espacio) sprintf(&expression[dest_string],"%s",buf_tok_str);
             else sprintf(&expression[dest_string]," %s ",buf_tok_str);
@@ -1036,9 +1036,9 @@ void exp_par_tokens_to_exp(token_parser *tokens,char *expression,int maximo)
         }
 
         int longitud=strlen(&expression[dest_string]);
-        dest_string +=longitud;    
+        dest_string +=longitud;
 
-            
+
 		i++;
         maximo--;
 	}
@@ -1090,7 +1090,7 @@ int exp_par_calculate_numvarreg(token_parser *token)
 
         case TPT_VARIABLE: //mra,mrw, etc
             switch (indice) {
-                    
+
 
                 //Variables de la MMU
                 //Memoria
@@ -1125,33 +1125,33 @@ int exp_par_calculate_numvarreg(token_parser *token)
                 //se acaba de lanzar un in
                 case TPI_V_INFIRED: return debug_fired_in; break;
                 //se acaba de generar una interrupcion
-                case TPI_V_INTFIRED: return debug_fired_interrupt; break;	
+                case TPI_V_INTFIRED: return debug_fired_interrupt; break;
 
 
                 case TPI_V_ENTERROM:
 
-                
+
                     if (debug_enterrom==1) {
                         debug_enterrom++;
                         return 1;
                     }
                     return 0;
-                
+
 
                 break;
 
                 case TPI_V_EXITROM:
 
-                
+
                     if (debug_exitrom==1) {
                         debug_exitrom++;
                         return 1;
                     }
                     return 0;
-                
+
 
                 break;
-            
+
 
 
                 case TPI_V_OPCODE1:
@@ -1190,23 +1190,23 @@ int exp_par_calculate_numvarreg(token_parser *token)
                 case TPI_V_SEG3:
                     if (MACHINE_IS_Z88) return blink_mapped_memory_banks[3];
                     if (MACHINE_IS_TBBLUE) return debug_paginas_memoria_mapeadas[3];
-                break;          
+                break;
 
                 case TPI_V_SEG4:
                     if (MACHINE_IS_TBBLUE) return debug_paginas_memoria_mapeadas[4];
-                break;           
+                break;
 
                 case TPI_V_SEG5:
                     if (MACHINE_IS_TBBLUE) return debug_paginas_memoria_mapeadas[5];
-                break;           
+                break;
 
                 case TPI_V_SEG6:
                     if (MACHINE_IS_TBBLUE) return debug_paginas_memoria_mapeadas[6];
-                break;           
+                break;
 
                 case TPI_V_SEG7:
                     if (MACHINE_IS_TBBLUE) return debug_paginas_memoria_mapeadas[7];
-                break;           
+                break;
 
                 case TPI_V_HILOWMAPPED:
                     return hilow_mapped_rom.v; //sirve tambien para ram, se mapean ram y rom al mismo tiempo
@@ -1217,7 +1217,7 @@ int exp_par_calculate_numvarreg(token_parser *token)
                     if (MACHINE_IS_SPECTRUM_128_P2_P2A_P3) return (debug_paginas_memoria_mapeadas[0] & 127);
 
                 break;
-            
+
                 case TPI_V_RAM:
                 //ram mapeada en 49152-65535 de Spectrum
                     if (MACHINE_IS_SPECTRUM_128_P2_P2A_P3) {
@@ -1243,7 +1243,7 @@ int exp_par_calculate_numvarreg(token_parser *token)
 
 
             }
-  
+
         break;
 
 /*
@@ -1265,7 +1265,7 @@ int exp_par_calculate_numvarreg(token_parser *token)
 		}
 	}
 
-	
+
 
 	//enterrom, exitrom
 
@@ -1353,7 +1353,7 @@ int exp_par_calculate_numvarreg(token_parser *token)
                 case TPI_R_A4: return m68k_get_reg(NULL, M68K_REG_A4); break;
                 case TPI_R_A5: return m68k_get_reg(NULL, M68K_REG_A5); break;
                 case TPI_R_A6: return m68k_get_reg(NULL, M68K_REG_A6); break;
-                case TPI_R_A7: return m68k_get_reg(NULL, M68K_REG_A7); break;       
+                case TPI_R_A7: return m68k_get_reg(NULL, M68K_REG_A7); break;
 
 
 
@@ -1363,7 +1363,7 @@ int exp_par_calculate_numvarreg(token_parser *token)
 
                 }
             }
-               //Fin registros motorola                
+               //Fin registros motorola
 
 
                 /*/if (indice==TPI_R_A) return reg_a;
@@ -1373,7 +1373,7 @@ int exp_par_calculate_numvarreg(token_parser *token)
                 case TPI_R_PC: return reg_pc; break;
                 case TPI_R_SP: return reg_sp; break;
                 case TPI_R_IX: return reg_ix; break;
-                case TPI_R_IY: return reg_iy; break;	
+                case TPI_R_IY: return reg_iy; break;
 
                 case TPI_R_A: return reg_a; break;
                 case TPI_R_B: return reg_b; break;
@@ -1410,8 +1410,8 @@ int exp_par_calculate_numvarreg(token_parser *token)
                 case TPI_R_FS: return ( Z80_FLAGS & FLAG_S ? 1 : 0); break;
                 case TPI_R_FZ: return ( Z80_FLAGS & FLAG_Z ? 1 : 0); break;
 
-                case TPI_R_FP: 
-                case TPI_R_FV: 
+                case TPI_R_FP:
+                case TPI_R_FV:
                     return ( Z80_FLAGS & FLAG_PV ? 1 : 0);
                 break;
 
@@ -1428,7 +1428,7 @@ int exp_par_calculate_numvarreg(token_parser *token)
                         int segmento=reg_pc/16384;
 
                         //Y el offset
-                        int offset=reg_pc & 16383;                        
+                        int offset=reg_pc & 16383;
 
                         int banco=blink_mapped_memory_banks[segmento];
 
@@ -1463,7 +1463,7 @@ int exp_par_calculate_numvarreg(token_parser *token)
                         //EPC=XXZYYYY donde XX es la página de ram o rom, Z vale 0 para ram y 1 para rom, y YYYY es el offset
                         //2 paginas de rom, 8 de ram
                         //Obtener primero el segmento 0-3
-                        int segmento=reg_pc/16384; 
+                        int segmento=reg_pc/16384;
 
                         //Y el offset
                         int offset=reg_pc & 16383;
@@ -1494,8 +1494,8 @@ int exp_par_calculate_numvarreg(token_parser *token)
 
         break;
 
-         
-            
+
+
 
 
         case TPT_OPERADOR_LOGICO:  //and, or, xor
@@ -1514,12 +1514,12 @@ int exp_par_calculate_numvarreg(token_parser *token)
     return resultado;
 }
 
-//calcula valor resultante de aplicar operador, puede ser 
+//calcula valor resultante de aplicar operador, puede ser
 int exp_par_calculate_operador(int valor_izquierda,int valor_derecha,enum token_parser_tipo tipo,enum token_parser_indice indice)
 {
 
     int resultado=0; //asumimos cero
-    
+
     /*
     	TPT_OPERADOR_LOGICO, //and, or, xor
 	TPT_OPERADOR_CONDICIONAL, //=, <,>, <>,
@@ -1541,47 +1541,47 @@ int exp_par_calculate_operador(int valor_izquierda,int valor_derecha,enum token_
 
 	        case TPT_OPERADOR_LOGICO:  //and, or, xor
 
-                if (indice==TPI_OL_AND) {   
+                if (indice==TPI_OL_AND) {
                     if (valor_izquierda && valor_derecha) return 1;
                 }
 
-                if (indice==TPI_OL_OR) {   
+                if (indice==TPI_OL_OR) {
                     if (valor_izquierda || valor_derecha) return 1;
-                }                
+                }
 
                 if (indice==TPI_OL_XOR) {
-                    if (valor_izquierda && valor_derecha) return 0;  
-                    else if (!valor_izquierda && valor_derecha) return 1;  
-                    else if (valor_izquierda && !valor_derecha) return 1;  
+                    if (valor_izquierda && valor_derecha) return 0;
+                    else if (!valor_izquierda && valor_derecha) return 1;
+                    else if (valor_izquierda && !valor_derecha) return 1;
                     else return 0; //ambos a 0
-                }                   
+                }
 
             break;
 
             case TPT_OPERADOR_CONDICIONAL:  //=, <,>, <>,
-            //printf ("operaodr condicional\n"); 
+            //printf ("operaodr condicional\n");
                 if (indice==TPI_OC_MAYOR) {
-                    //printf ("operaodr mayor\n");    
+                    //printf ("operaodr mayor\n");
                     if (valor_izquierda>valor_derecha) return 1;
                 }
-                if (indice==TPI_OC_MENOR) {   
+                if (indice==TPI_OC_MENOR) {
                     if (valor_izquierda<valor_derecha) return 1;
                 }
 
                 if (indice==TPI_OC_MAYOR_IGUAL) {
                     if (valor_izquierda>=valor_derecha) return 1;
                 }
-                if (indice==TPI_OC_MENOR_IGUAL) {   
+                if (indice==TPI_OC_MENOR_IGUAL) {
                     if (valor_izquierda<=valor_derecha) return 1;
-                }                
+                }
 
-                if (indice==TPI_OC_IGUAL) {   
+                if (indice==TPI_OC_IGUAL) {
                     if (valor_izquierda==valor_derecha) return 1;
-                }           
+                }
 
-                if (indice==TPI_OC_DIFERENTE) {  
+                if (indice==TPI_OC_DIFERENTE) {
                     if (valor_izquierda!=valor_derecha) return 1;
-                }                          
+                }
 
             break;
 
@@ -1590,16 +1590,16 @@ int exp_par_calculate_operador(int valor_izquierda,int valor_derecha,enum token_
                 if (indice==TPI_OC_SUMA) {
                     //printf ("sumando %d y %d\n",valor_izquierda,valor_derecha);
                     return valor_izquierda + valor_derecha;
-                }         
+                }
 
                 if (indice==TPI_OC_RESTA) {
                     return valor_izquierda - valor_derecha;
-                }          
+                }
 
                 if (indice==TPI_OC_MULTIPLICACION) {
                     //printf ("multiplicando %d y %d\n",valor_izquierda,valor_derecha);
                     return valor_izquierda * valor_derecha;
-                }         
+                }
 
                 if (indice==TPI_OC_DIVISION) {
 
@@ -1609,19 +1609,19 @@ int exp_par_calculate_operador(int valor_izquierda,int valor_derecha,enum token_
                         return 0xffff;
                     }
                     else return valor_izquierda / valor_derecha;
-                }        
+                }
 
                 if (indice==TPI_OC_AND) {
                     return valor_izquierda & valor_derecha;
-                }     
+                }
 
                 if (indice==TPI_OC_OR) {
                     return valor_izquierda | valor_derecha;
-                }          
+                }
 
                 if (indice==TPI_OC_XOR) {
                     return valor_izquierda ^ valor_derecha;
-                }                                                                          
+                }
 
             break;
 
@@ -1638,7 +1638,7 @@ int exp_par_calculate_funcion(int valor,enum token_parser_tipo tipo,enum token_p
 {
 
     int resultado=0; //asumimos cero
-    
+
 
     switch (tipo) {
             case TPT_NUMERO:
@@ -1666,7 +1666,7 @@ int exp_par_calculate_funcion(int valor,enum token_parser_tipo tipo,enum token_p
                     case TPI_F_FPEEK:
         				return far_peek_byte(valor);
                     break;
-                    
+
                     case TPI_F_IN:
                     if (MACHINE_IS_SPECTRUM) {
                         return lee_puerto_spectrum_no_time(value_16_to_8h(valor),value_16_to_8l(valor));
@@ -1692,7 +1692,7 @@ int exp_par_calculate_funcion(int valor,enum token_parser_tipo tipo,enum token_p
 
                     else if (MACHINE_IS_SAM) {
                         return lee_puerto_sam_no_time(value_16_to_8h(valor),value_16_to_8l(valor));
-                    }                                                            
+                    }
 
                     else if (MACHINE_IS_MSX) {
                         return lee_puerto_msx1_no_time(value_16_to_8h(valor),value_16_to_8l(valor));
@@ -1708,11 +1708,11 @@ int exp_par_calculate_funcion(int valor,enum token_parser_tipo tipo,enum token_p
 
                     else if (MACHINE_IS_SMS) {
                         return lee_puerto_sms_no_time(value_16_to_8h(valor),value_16_to_8l(valor));
-                    }                    
+                    }
 
                     else if (MACHINE_IS_SVI) {
                         return lee_puerto_svi_no_time(value_16_to_8h(valor),value_16_to_8l(valor));
-                    }                                                            
+                    }
 
                     else return 255;
                     break;
@@ -1720,16 +1720,16 @@ int exp_par_calculate_funcion(int valor,enum token_parser_tipo tipo,enum token_p
 
                     case TPI_F_NOT:
         				return !valor;
-                    break;       
+                    break;
 
                     case TPI_F_ABS:
         				if (valor<0) return -valor;
                         else return valor;
-                    break;         
+                    break;
 
                     case TPI_F_BYTE:
         				return valor & 0xFF;
-                    break;          
+                    break;
 
                     case TPI_F_WORD:
         				return valor & 0xFFFF;
@@ -1743,7 +1743,7 @@ int exp_par_calculate_funcion(int valor,enum token_parser_tipo tipo,enum token_p
                     case TPI_F_OPMRA:
                         if (debug_mmu_mra==(unsigned int)valor || anterior_debug_mmu_mra==(unsigned int)valor) return 1;
                         else return 0;
-                    break;    
+                    break;
 
                     case TPI_F_OPMWV:
                         if (debug_mmu_mwv==(unsigned int)valor || anterior_debug_mmu_mwv==(unsigned int)valor) return 1;
@@ -1753,12 +1753,12 @@ int exp_par_calculate_funcion(int valor,enum token_parser_tipo tipo,enum token_p
                     case TPI_F_OPMRV:
                         if (debug_mmu_mrv==(unsigned int)valor || anterior_debug_mmu_mrv==(unsigned int)valor) return 1;
                         else return 0;
-                    break;                                      
+                    break;
 
                     default:
                         //Para que no se queje el compilador por demas valores enum no tratados
-                    break;    
-                    
+                    break;
+
                 }
             break;
 
@@ -1785,7 +1785,7 @@ int exp_par_final_parentesis(token_parser *tokens,int longitud_tokens)
     for (;i<longitud_tokens && tokens[i].tipo!=TPT_FIN;i++) {
         if (tokens[i].tipo==TPT_PARENTESIS) {
             if (tokens[i].indice==TPI_P_ABRIR) {
-              nivel_parentesis++;  
+              nivel_parentesis++;
             }
             else if (tokens[i].indice==TPI_P_CERRAR) {
                 nivel_parentesis--;
@@ -1847,7 +1847,7 @@ Evaluar valores: por orden, evaluar valores, variables  y posibles operadores de
     exp_par_tokens_to_exp(tokens,buffer_destino,longitud_tokens);
     printf ("--exp_par_evaluate_token. expression to parse: [%s]\n",buffer_destino);
     */
-    
+
     //fin debug mostrar tokens
 
     //int calculado_izquierda=0;
@@ -1879,7 +1879,7 @@ Evaluar valores: por orden, evaluar valores, variables  y posibles operadores de
 
             int otro_err_code;
             valor_izquierda=exp_par_evaluate_token(&tokens[i],final_par-1,&otro_err_code);
-            
+
             if ( otro_err_code <0) {
                 *error_code=otro_err_code;
                 return 0; //ha habido error
@@ -1905,8 +1905,8 @@ Evaluar valores: por orden, evaluar valores, variables  y posibles operadores de
 
         if (tokens[i].tipo==TPT_OPERADOR_LOGICO && !nivel_parentesis ) {
             //Evaluar parte izquierda y derecha y aplicar operador
-            
-            
+
+
 
             int errorcode1,errorcode2;
 
@@ -1944,13 +1944,13 @@ Evaluar valores: por orden, evaluar valores, variables  y posibles operadores de
 
         if (tokens[i].tipo==TPT_OPERADOR_CONDICIONAL && !nivel_parentesis) {
             //Evaluar parte izquierda y derecha y aplicar operador
-            
+
 
 
             int errorcode1,errorcode2;
 
             int longitud_izquierda=i;
-            int longitud_derecha=longitud_tokens-longitud_izquierda-1;            
+            int longitud_derecha=longitud_tokens-longitud_izquierda-1;
 
             //printf ("operador condicionales\n");
 
@@ -1969,29 +1969,29 @@ Evaluar valores: por orden, evaluar valores, variables  y posibles operadores de
     }
 
     //printf ("fin check condicionales\n");
-    
+
 
     nivel_parentesis=0;
     for (i=0;i<longitud_tokens && tokens[i].tipo!=TPT_FIN;i++) {
-   
+
         //Al separar por operador, ver que no estemos dentro de parentesis
         if (tokens[i].tipo==TPT_PARENTESIS && tokens[i].indice==TPI_P_ABRIR) nivel_parentesis++;
         if (tokens[i].tipo==TPT_PARENTESIS && tokens[i].indice==TPI_P_CERRAR) nivel_parentesis--;
 
         //Para sumas y restas, mas prioridad que dividir o multiplicar
 
-        if (tokens[i].tipo==TPT_OPERADOR_CALCULO && 
+        if (tokens[i].tipo==TPT_OPERADOR_CALCULO &&
                 !nivel_parentesis &&
                 (tokens[i].indice==TPI_OC_SUMA || tokens[i].indice==TPI_OC_RESTA)
         ) {
             //Evaluar parte izquierda y derecha y aplicar operador
-            
+
 
 
             int errorcode1,errorcode2;
 
             int longitud_izquierda=i;
-            int longitud_derecha=longitud_tokens-longitud_izquierda-1;            
+            int longitud_derecha=longitud_tokens-longitud_izquierda-1;
 
             //printf ("operador suma/resta\n");
 
@@ -2002,7 +2002,7 @@ Evaluar valores: por orden, evaluar valores, variables  y posibles operadores de
 
 
             return exp_par_calculate_operador(valor_izquierda,valor_derecha,tokens[i].tipo,tokens[i].indice);
-        }   
+        }
 
     }
 
@@ -2011,8 +2011,8 @@ Evaluar valores: por orden, evaluar valores, variables  y posibles operadores de
 
         //Al separar por operador, ver que no estemos dentro de parentesis
         if (tokens[i].tipo==TPT_PARENTESIS && tokens[i].indice==TPI_P_ABRIR) nivel_parentesis++;
-        if (tokens[i].tipo==TPT_PARENTESIS && tokens[i].indice==TPI_P_CERRAR) nivel_parentesis--;        
-   
+        if (tokens[i].tipo==TPT_PARENTESIS && tokens[i].indice==TPI_P_CERRAR) nivel_parentesis--;
+
         //Pero no sumas y restas
 
         if (tokens[i].tipo==TPT_OPERADOR_CALCULO &&
@@ -2020,13 +2020,13 @@ Evaluar valores: por orden, evaluar valores, variables  y posibles operadores de
         (tokens[i].indice!=TPI_OC_SUMA && tokens[i].indice!=TPI_OC_RESTA)
         ) {
             //Evaluar parte izquierda y derecha y aplicar operador
-            
+
 
 
             int errorcode1,errorcode2;
 
             int longitud_izquierda=i;
-            int longitud_derecha=longitud_tokens-longitud_izquierda-1;            
+            int longitud_derecha=longitud_tokens-longitud_izquierda-1;
 
             //printf ("operador multi/divi etc\n");
 
@@ -2037,7 +2037,7 @@ Evaluar valores: por orden, evaluar valores, variables  y posibles operadores de
 
 
             return exp_par_calculate_operador(valor_izquierda,valor_derecha,tokens[i].tipo,tokens[i].indice);
-        }   
+        }
 
     }
 
@@ -2066,7 +2066,7 @@ Evaluar valores: por orden, evaluar valores, variables  y posibles operadores de
 
             *error_code=errorcode2;
 
-            
+
             if ( *error_code ) {
                 return 0; //ha habido error
             }
@@ -2104,11 +2104,11 @@ Evaluar valores: por orden, evaluar valores, variables  y posibles operadores de
 
             *error_code=errorcode2;
 
-            
+
             if ( *error_code ) {
                 return 0; //ha habido error
             }
-        
+
             return valor_parentesis;
         }
     }
@@ -2177,10 +2177,10 @@ int exp_par_evaluate_expression(char *entrada,char *salida,char *string_detoken)
 			//Pasamos primero a string de nuevo
 			//char string_detoken[MAX_BREAKPOINT_CONDITION_LENGTH];
 			exp_par_tokens_to_exp(tokens,string_detoken,MAX_PARSER_TOKENS_NUM);
-			
-			int error_code;  
-			
-			
+
+			int error_code;
+
+
 			int resultado=exp_par_evaluate_token(tokens,MAX_PARSER_TOKENS_NUM,&error_code);
             if (error_code) {
                 strcpy(salida,"Error evaluating");
@@ -2219,9 +2219,9 @@ int exp_par_evaluate_expression_to_number(char *entrada)
 	result=exp_par_exp_to_tokens(entrada,tokens);
 	//printf ("result: %d\n",result);
 	if (result>=0) {
-			
-			int error_code;  
-		
+
+			int error_code;
+
 			int resultado=exp_par_evaluate_token(tokens,MAX_PARSER_TOKENS_NUM,&error_code);
             if (error_code) {
                 //Error evaluating

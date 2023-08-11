@@ -168,7 +168,7 @@ ds1307_registers[6]=ds1307_decimal_to_bcd(tm.tm_year+1900-2000); //año
 
 void tbblue_trap_return_rtc(void)
 {
-	
+
 
 //fecha grabacion
 time_t tiempo = time(NULL);
@@ -188,10 +188,10 @@ int anyo=tm.tm_year+1900; //año
 /*
 
 ; OUTPUT
-; reg BC is Date 
+; reg BC is Date
 ;	year - 1980 (7 bits) + month (4 bits) + day (5 bits). EJ= BC=3200H -> 2005
 
-;   
+;
 
 ;	note that DS1307 only supports 2000-2099.
 ;
@@ -344,7 +344,7 @@ void ds1307_write_port_data(z80_byte value)
 				ds1307_last_register_received &=(255-1);
 				ds1307_last_register_received|=value&1;
 
-				
+
 			}
 
 			//Es ack. ignorar y cambiar estado

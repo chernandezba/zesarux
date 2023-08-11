@@ -93,7 +93,7 @@
 #include "spritefinder.h"
 #include "snap_spg.h"
 #include "betadisk.h"
-#include "tape_tzx.h" 
+#include "tape_tzx.h"
 #include "snap_zsf.h"
 #include "compileoptions.h"
 
@@ -161,7 +161,7 @@ char zesarux_zxi_hardware_debug_file[PATH_MAX]="";
 
 
 //Si se muestra visualmem grafico en drivers grafico. Si no, muestra visualmem de texto en drivers graficos
-z80_bit setting_mostrar_visualmem_grafico={1}; 
+z80_bit setting_mostrar_visualmem_grafico={1};
 
 //Si se muestra direccion en cada linea en View Basic
 z80_bit debug_view_basic_show_address={0};
@@ -184,7 +184,7 @@ char autosave_snapshot_path_buffer[PATH_MAX];
 z80_bit sync_clock_to_z88={1};
 
 //Guardar contenido de la ROM en snapshot, util por ejemplo para cuando has iniciado con una rom personalizada y quieres
-//que el snapshot la restaure 
+//que el snapshot la restaure
 z80_bit zsf_snap_save_rom={0};
 
 
@@ -215,7 +215,7 @@ z80_bit pd765_silent_write_protection={0};
 //
 
 //Si se muestra piano grafico en drivers grafico. Si no, muestra piano de texto en drivers graficos
-z80_bit setting_mostrar_ay_piano_grafico={1}; 
+z80_bit setting_mostrar_ay_piano_grafico={1};
 
 //Zoom usado en Audio Chip piano y Wave Piano
 int audiochip_piano_zoom_x=3;
@@ -327,9 +327,9 @@ z80_bit menu_show_advanced_items={0};
 z80_bit setting_process_switcher_immutable={0};
 
 
-//Logo de decimo aniversario. 
+//Logo de decimo aniversario.
 //En version 10.10 es esta habilitado por defecto
-//TODO: este setting no lo autoguardamos en la config en la versión 10.10, por que si no, 
+//TODO: este setting no lo autoguardamos en la config en la versión 10.10, por que si no,
 //la gente que use la 10.10, se le autoguardaria el setting y luego en la version 11 le seguiria saliendo el logo del X anniversary
 //A partir de la versión 11 sí que haré que se autoguarde
 z80_bit xanniversary_logo={1};

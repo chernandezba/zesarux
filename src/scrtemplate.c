@@ -1,5 +1,5 @@
 /*
-    ZEsarUX  ZX Second-Emulator And Released for UniX 
+    ZEsarUX  ZX Second-Emulator And Released for UniX
     Copyright (C) 2013 Cesar Hernandez Bano
 
     This file is part of ZEsarUX.
@@ -68,13 +68,13 @@ void scrvideoname_putpixel(int x,int y,unsigned int color)
                 //Putpixel con menu cerrado
                 scrvideoname_putpixel_final(x,y,color);
                 return;
-        }          
+        }
 
         //Metemos pixel en layer adecuado
-	buffer_layer_machine[y*ancho_layer_menu_machine+x]=color;        
+	buffer_layer_machine[y*ancho_layer_menu_machine+x]=color;
 
-        //Putpixel haciendo mix  
-        screen_putpixel_mix_layers(x,y);   
+        //Putpixel haciendo mix
+        screen_putpixel_mix_layers(x,y);
 
 }
 
@@ -117,9 +117,9 @@ void scrvideoname_putchar_menu(int x,int y, z80_byte caracter,int tinta,int pape
 }
 
 //Rutina de putchar para footer window
-void scrvideoname_putchar_footer(int x,int y, z80_byte caracter,int tinta,int papel) 
+void scrvideoname_putchar_footer(int x,int y, z80_byte caracter,int tinta,int papel)
 {
-    scr_putchar_footer_comun_zoom(caracter,x,y,tinta,papel);        
+    scr_putchar_footer_comun_zoom(caracter,x,y,tinta,papel);
 }
 
 
@@ -210,7 +210,7 @@ void scrvideoname_refresca_pantalla(void)
 
         else if (MACHINE_IS_PCW) {
                 scr_refresca_pantalla_y_border_pcw();
-        }         
+        }
 
 
         //printf ("%d\n",spectrum_colortable[1]);

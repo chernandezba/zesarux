@@ -1,5 +1,5 @@
 /*
-    ZEsarUX  ZX Second-Emulator And Released for UniX 
+    ZEsarUX  ZX Second-Emulator And Released for UniX
     Copyright (C) 2013 Cesar Hernandez Bano
 
     This file is part of ZEsarUX.
@@ -22,7 +22,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-#include <unistd.h>                
+#include <unistd.h>
 #include <string.h>
 #include <dirent.h>
 
@@ -83,8 +83,8 @@ void new_tape_load_zx80(void)
     //Si es SMP
 
 
-    if (!util_compare_file_extension(tapefile,"rwa") || 
-        !util_compare_file_extension(tapefile,"smp") || 
+    if (!util_compare_file_extension(tapefile,"rwa") ||
+        !util_compare_file_extension(tapefile,"smp") ||
         !util_compare_file_extension(tapefile,"wav")
 
     ) {
@@ -137,8 +137,8 @@ void new_tape_load_zx81(void)
     debug_printf (VERBOSE_INFO,"Loading tape %s. RAMTOP=%d",tapefile,variable_ramtop);
 
 
-    if (!util_compare_file_extension(tapefile,"rwa") || 
-        !util_compare_file_extension(tapefile,"smp") || 
+    if (!util_compare_file_extension(tapefile,"rwa") ||
+        !util_compare_file_extension(tapefile,"smp") ||
         !util_compare_file_extension(tapefile,"wav")
     ) {
         debug_printf (VERBOSE_INFO,"Tape is raw audio");
@@ -257,7 +257,7 @@ void new_save_zx80_o_snapshot(char *filename)
 
         z80_int bytes_grabar;
         z80_int e_line;
-        
+
 
 
                 e_line=value_8_to_16(peek_byte_no_time(16395),peek_byte_no_time(16394) );
@@ -302,13 +302,13 @@ void new_save_zx81_p_snapshot(char *filename)
 
         z80_int bytes_grabar;
         z80_int e_line;
-        
+
 
 
                 puntero_inicio=0x4009;
                 e_line=value_8_to_16(peek_byte_no_time(16405),peek_byte_no_time(16404) );
 
-		//En caso que e_line tenga valor invalido... por ejemplo que grabamos snapshot desde juego en ejecucion, 
+		//En caso que e_line tenga valor invalido... por ejemplo que grabamos snapshot desde juego en ejecucion,
 		//que puede que este valor se sale de rango
 
 		//TODO: comprobar rampacks
@@ -357,9 +357,9 @@ int new_tap_save_detect_zx80(void)
 
 int new_tap_load_detect_zx81(void)
 {
-    
+
     if (zx8081_disable_tape_traps.v) return 0;
-    
+
         if (reg_pc!=0x0347) return 0;
         //if (reg_pc!=0x0340) return 0;
 
@@ -391,7 +391,7 @@ int new_tap_load_detect_zx81(void)
                 char buffer_nombre[256];
 
                 int i=0;
-        
+
                 z80_byte letra;
                 //letra=da_codigo81(peek_byte_no_time(registrohl++),&inv);
                 //buffer_nombre[i++]=letra;
@@ -415,7 +415,7 @@ int new_tap_load_detect_zx81(void)
 
 
                 //si nombre no es "", insertar cinta
-        
+
                 //si no es un LOAD"", insertar cinta "nombre"
 //      if (registrode<32768) {
 //      if (buffer_nombre[1]!='"') {
@@ -457,7 +457,7 @@ int new_tap_load_detect_zx81(void)
                 strcpy(&nombre_cinta_load_nombre_81[l],&buffer_nombre[0]);
 
                 debug_printf (VERBOSE_DEBUG,"Final tape name: %s",nombre_cinta_load_nombre_81);
-        
+
                 tapefile=nombre_cinta_load_nombre_81;
 
                 debug_printf (VERBOSE_INFO,"Inserting tape: %s",tapefile);
@@ -493,7 +493,7 @@ int new_tap_load_detect_zx81(void)
 int new_tap_load_detect_zx80(void)
 {
     if (zx8081_disable_tape_traps.v) return 0;
-    
+
         if (reg_pc!=0x0206) return 0;
         if (tapefile==0) return 0;
         //if (tape_load_inserted.v==0) return 0;
@@ -660,11 +660,11 @@ void new_load_zx80_o_snapshot_in_mem(char *archivo)
                   ptr_zx8081file=fopen(archivo,"rb");
                   if (ptr_zx8081file) {
 
-                        
+
                                 puntero_inicio=memoria_spectrum+0x4000;
                                 max_leer=65536-0x4000;
-                        
-                        
+
+
 
                         buffer_lectura=malloc(65536);
                         if (buffer_lectura==NULL) cpu_panic("Error allocating read buffer");
@@ -690,10 +690,10 @@ void new_load_zx80_o_snapshot_in_mem(char *archivo)
                         z80_bit inverse;
 
                         int i;
-                        for (i=0;i<leidos;i++) 
+                        for (i=0;i<leidos;i++)
                         printf ("%c",da_codigo81(puntero_inicio[i],&inverse) );
                         */
-                
+
 
                         fclose(ptr_zx8081file);
 
@@ -714,7 +714,7 @@ void new_load_zx80_o_snapshot_in_mem(char *archivo)
 
 
 //Rutina para cargar archivo snap zx81 en memoria
-void new_load_zx81_p_snapshot_in_mem(char *archivo) 
+void new_load_zx81_p_snapshot_in_mem(char *archivo)
 {
 
         int leidos;
@@ -727,11 +727,11 @@ void new_load_zx81_p_snapshot_in_mem(char *archivo)
                   ptr_zx8081file=fopen(archivo,"rb");
                   if (ptr_zx8081file) {
 
-                        
-                        
+
+
                                 puntero_inicio=memoria_spectrum+0x4009;
                                 max_leer=65536-0x4009;
-                       
+
 
                         buffer_lectura=malloc(65536);
                         if (buffer_lectura==NULL) cpu_panic("Error allocating read buffer");
@@ -759,10 +759,10 @@ void new_load_zx81_p_snapshot_in_mem(char *archivo)
                         z80_bit inverse;
 
                         int i;
-                        for (i=0;i<leidos;i++) 
+                        for (i=0;i<leidos;i++)
                         printf ("%c",da_codigo81(puntero_inicio[i],&inverse) );
                         */
-                
+
 
 
                         fclose(ptr_zx8081file);
@@ -850,7 +850,7 @@ void new_load_zx80_set_common_registers(void)
                 /* don't ask me why, but the ZX80 ROM load routine does this if it
                  * works...
                  */
-        
+
                 reg_pc=0x0283;
 
 
@@ -882,7 +882,7 @@ void new_load_zx81_set_common_registers(z80_int ramtopvalue)
 
     z80_byte constante_ramtop_masuno_l=value_16_to_8l(constante_ramtop_masuno);
     z80_byte constante_ramtop_masuno_h=value_16_to_8h(constante_ramtop_masuno);
-        
+
 
 
 
@@ -959,7 +959,7 @@ void new_load_zx81_set_common_registers(z80_int ramtopvalue)
 
 //Rutina para cargar cinta de tipo SMP para zx80
 void new_snap_load_zx80_smp(char *archivo)
-{       
+{
         //Cargamos archivo en memoria
         snap_load_zx80_zx81_load_smp();
 

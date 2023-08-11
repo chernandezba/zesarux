@@ -25,7 +25,7 @@
 #include <AudioUnit/AudioUnit.h>
 #include <CoreAudio/AudioHardware.h>
 
-#include <CoreMIDI/CoreMIDI.h>    
+#include <CoreMIDI/CoreMIDI.h>
 
 
 
@@ -399,7 +399,7 @@ void audiocoreaudio_fifo_write(char *origen,int longitud)
 
     //Canal derecho
 		audiocoreaudio_fifo_buffer[audiocoreaudio_fifo_write_position]=*origen++;
-		audiocoreaudio_fifo_write_position=audiocoreaudio_fifo_next_index(audiocoreaudio_fifo_write_position);    
+		audiocoreaudio_fifo_write_position=audiocoreaudio_fifo_next_index(audiocoreaudio_fifo_write_position);
 	}
 }
 
@@ -519,7 +519,7 @@ MIDIPacket *coreaudio_midi_currentpacket=NULL;
 //Mas que suficiente para almacenar 3 notas*3 canales
 //de todas maneras, si no cabe al agregar, hace flush y reintenta
 #define COREAUDIO_MIDI_BUFFER_SIZE 16384
-z80_byte coreaudio_midi_buffer[COREAUDIO_MIDI_BUFFER_SIZE];       
+z80_byte coreaudio_midi_buffer[COREAUDIO_MIDI_BUFFER_SIZE];
 
 void coreaudio_mid_add_note(z80_byte *note,int messagesize)
 {
@@ -542,7 +542,7 @@ void coreaudio_mid_add_note(z80_byte *note,int messagesize)
 
 void coreaudio_mid_raw_send(z80_byte value)
 {
-    z80_byte rawpacket[] = {value}; 
+    z80_byte rawpacket[] = {value};
 
   coreaudio_mid_add_note(rawpacket,1);
 }
@@ -556,7 +556,7 @@ void coreaudio_mid_initialize_queue(void)
 void coreaudio_midi_output_flush_output(void)
 {
 
-   // send the MIDI data 
+   // send the MIDI data
    //Por si acaso comprobamos que no sea NULL
   if (coreaudio_midi_packetlist!=NULL) playPacketListOnAllDevices(coreaudio_midi_midiout, coreaudio_midi_packetlist);
 
@@ -570,7 +570,7 @@ void coreaudio_midi_output_reset(void)
 //printf ("reset\n");
 
 //TODO: Esto no parece hacer nada. El reset de midi solo parece funcionar en windows
-		
+
 
 
     z80_byte resetcommand[] = {0xFF,0,0,0};
@@ -584,15 +584,15 @@ void coreaudio_midi_output_reset(void)
   printf ("Sending reset\n");
 
   //All Sound Off=120
-  //z80_byte resetcommand[] = {176, 121, 0}; 
-  z80_byte resetcommand[] = {176, 120, 0}; 
+  //z80_byte resetcommand[] = {176, 121, 0};
+  z80_byte resetcommand[] = {176, 120, 0};
 
   resetcommand[0] &=0xF0;
   resetcommand[0] |=channel;
 
   coreaudio_mid_add_note(resetcommand,3);
 
-  z80_byte notesoffcommand[] = {176, 123, 0}; 
+  z80_byte notesoffcommand[] = {176, 123, 0};
 
   notesoffcommand[0] &=0xF0;
   notesoffcommand[0] |=channel;
@@ -613,7 +613,7 @@ int coreaudio_mid_initialize_all(void)
    status = MIDIClientCreate(CFSTR("ZEsarUX"), NULL, NULL, &coreaudio_midi_midiclient);
    if (status) {
        debug_printf(VERBOSE_ERR,"Error trying to create MIDI Client structure: %d", status);
-       //printf("%s\n", GetMacOSStatusErrorString(status)); 
+       //printf("%s\n", GetMacOSStatusErrorString(status));
        return 1;
    }
    status = MIDIOutputPortCreate(coreaudio_midi_midiclient, CFSTR("ZEsarUX output"), &coreaudio_midi_midiout);
@@ -622,7 +622,7 @@ int coreaudio_mid_initialize_all(void)
        //printf("%s\n", GetMacOSStatusErrorString(status));
        return 1;
    }
-  
+
 
   coreaudio_mid_initialize_queue();
 
@@ -658,7 +658,7 @@ int coreaudio_note_on(unsigned char channel, unsigned char note,unsigned char ve
 
   debug_printf (VERBOSE_PARANOID,"noteon event channel %d note %d velocity %d",channel,note,velocity);
 
-  z80_byte noteon[] = {0x90, note, velocity}; 
+  z80_byte noteon[] = {0x90, note, velocity};
 
   coreaudio_mid_add_note(noteon,3);
 
@@ -670,12 +670,12 @@ int coreaudio_note_off(unsigned char channel, unsigned char note,unsigned char v
 
   debug_printf (VERBOSE_PARANOID,"noteoff event channel %d note %d velocity %d",channel,note,velocity);
 
-  z80_byte noteoff[] = {0x80, note, velocity}; 
+  z80_byte noteoff[] = {0x80, note, velocity};
 
   coreaudio_mid_add_note(noteoff,3);
 
 
-  return 0;  
+  return 0;
 }
 
 int coreaudio_change_instrument(unsigned char instrument)
@@ -688,13 +688,13 @@ int coreaudio_change_instrument(unsigned char instrument)
     int i;
     for (i=0;i<16;i++) {
 
-        z80_byte instrumentchange[] = {0xC0+i, instrument & 127}; 
+        z80_byte instrumentchange[] = {0xC0+i, instrument & 127};
 
         coreaudio_mid_add_note(instrumentchange,2);
     }
 
 
-  return 0;  
+  return 0;
 }
 
 
@@ -707,7 +707,7 @@ int coreaudio_change_instrument(unsigned char instrument)
 //    (Send the MIDI message(s) to all MIDI out ports).
 //
 
-void playPacketListOnAllDevices(MIDIPortRef midiout,const MIDIPacketList* pktlist) 
+void playPacketListOnAllDevices(MIDIPortRef midiout,const MIDIPacketList* pktlist)
 {
    // send MIDI message to all MIDI output devices connected to computer:
    ItemCount nDests = MIDIGetNumberOfDestinations();

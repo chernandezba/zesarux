@@ -307,7 +307,7 @@ unsigned char ql_keyboard_table[8]={
 void ql_return_columna_fila_puertos(int *columna,int *fila)
 {
 
-	int c,f; 
+	int c,f;
 	c=-1;
 	f=-1;
 
@@ -449,7 +449,7 @@ void ql_ipc_write_ipc_teclado(void)
 
 
     if ( (columna>=0 && fila>=0) || ql_pressed_backspace) {
-        
+
         if (ql_mantenido_pulsada_tecla==0 || (ql_mantenido_pulsada_tecla==1 && ql_mantenido_pulsada_tecla_timer>=50) )  {
             if (ql_mantenido_pulsada_tecla==0) {
                 ql_mantenido_pulsada_tecla=1;
@@ -908,7 +908,7 @@ moto_int ql_get_counter_from_pitch(moto_byte pitch)
 
     //printf("frecuencia: %d\n",frecuencia);
 
-    
+
 
     //Para 7800 hz (15600/2), contador valdra 1
     //Para 3900 Hz, contador valdra 2
@@ -926,7 +926,7 @@ moto_int ql_get_counter_from_pitch(moto_byte pitch)
 int ql_audio_switch_pitch_current_index=0;
 
 //0=high pitch, 1=low pitch
-moto_byte ql_audio_switch_pitch_array[2]; 
+moto_byte ql_audio_switch_pitch_array[2];
 
 //Current pitch
 moto_byte ql_audio_switch_pitch_current_pitch;
@@ -968,7 +968,7 @@ void ql_adjust_audio_settings_with_mixer(void)
 //Inicialización de los procesos de cambio entre dos pitches
 void ql_audio_switch_pitches_init(void)
 {
-    //Si pitch2, o grad_x, o grad_y es 0, no hacer cambios 
+    //Si pitch2, o grad_x, o grad_y es 0, no hacer cambios
     if (!ql_audio_pitch2 || !ql_audio_grad_x || !ql_audio_grad_y) {
 
         ql_audio_pitch_counter_initial=ql_get_counter_from_pitch(ql_audio_pitch1);
@@ -995,7 +995,7 @@ void ql_audio_switch_pitches_init(void)
     }
     else {
         higher_pitch=ql_audio_pitch2;
-        lower_pitch=ql_audio_pitch1;     
+        lower_pitch=ql_audio_pitch1;
     }
 
     //convertir grad_y a algo con signo
@@ -1007,7 +1007,7 @@ void ql_audio_switch_pitches_init(void)
         //-1=15
         //-2=14
         //....
-        //-6=10 
+        //-6=10
         //-7=9
         //-8=8
        signed_ql_audio_grad_y=-16+ql_audio_grad_y;
@@ -1015,12 +1015,12 @@ void ql_audio_switch_pitches_init(void)
 
     //printf("i8049: higher pitch: %d lower pitch: %d signed_grad_y: %d\n",higher_pitch,lower_pitch,signed_ql_audio_grad_y);
 
-   
+
 
     ql_audio_switch_pitch_array[0]=higher_pitch;
     ql_audio_switch_pitch_array[1]=lower_pitch;
 
-    
+
 
     //Incremento positivo, bajar de high to low
     if (signed_ql_audio_grad_y>=0) ql_audio_switch_pitch_current_index=0; //empieza en high
@@ -1039,14 +1039,14 @@ void ql_audio_switch_pitches_init(void)
     ql_audio_pitch_counter_initial=ql_get_counter_from_pitch(ql_audio_switch_pitch_current_pitch);
 
 
-    ql_audio_pitch_counter_current=ql_audio_pitch_counter_initial;   
+    ql_audio_pitch_counter_current=ql_audio_pitch_counter_initial;
 
 
 }
 
 moto_int ql_get_audio_interval_steps_random(void)
 {
-        //Random just randomises the steps 
+        //Random just randomises the steps
         //Retornar el steps aplicando random
     //Si random 0, nada
     if (ql_audio_randomness_of_step==0) return ql_audio_grad_x;
@@ -1054,12 +1054,12 @@ moto_int ql_get_audio_interval_steps_random(void)
 
     //Valor random entre 1 y 15, y ver que total no excede 32768
     if (ql_audio_grad_x>32000) return ql_audio_grad_x;
-    
+
 
   ay_randomize(0);
 
   //valor_random es valor de 16 bits
-  int valor_random=randomize_noise[0];    
+  int valor_random=randomize_noise[0];
 
 
     int step_add_random=valor_random % ql_audio_randomness_of_step;
@@ -1068,7 +1068,7 @@ moto_int ql_get_audio_interval_steps_random(void)
 
     return ql_audio_grad_x+step_add_random;
 
-    
+
 }
 
 //Modifica el pitch, si conviene, cuando pitch2 no es 0
@@ -1079,34 +1079,34 @@ void ql_audio_switch_pitches(void)
     pitch2      0,255: a second pitch level between which the sound will "bounce"
     grad_x      -32768,32767: time interval between pitch steps
     grad_y      -8,7: size of each step. grad_x and grad_y control the rate at which the pitch bounces between levels
-    wrap        0,15: will force the sound to wrap around the specified number of times. if wrap is equal to 15 the sound 
-                will grap around forever    
+    wrap        0,15: will force the sound to wrap around the specified number of times. if wrap is equal to 15 the sound
+                will grap around forever
     fuzzy       0,15: defined the amount of fuzziness to be added to the sound
-    random      0,15: defined the amount of randomness to be added to the sound                
+    random      0,15: defined the amount of randomness to be added to the sound
     */
 
    /*
    Harmonic
-    The second pitch (pitch_2), I will refer to as the Harmonic, add a Time Interval (grad_x) and a Pitch Step (grad_y), 
+    The second pitch (pitch_2), I will refer to as the Harmonic, add a Time Interval (grad_x) and a Pitch Step (grad_y),
     they create a sequence of sound variations ordered by the time duration and number of steps between the main pitch and second pitch.
 
-    The Time Interval (grad_x) again is in multiple units of 72 microseconds for each note in the sequence. 
+    The Time Interval (grad_x) again is in multiple units of 72 microseconds for each note in the sequence.
 
-    The Pitch Step (grad_y) range is -8 to 7 where step 1 to 7 scales downwards high to low pitch and -8 to 0 starts the sequence 
-    scaling upwards from low to a higher pitch. From then on the sequence bounces between the two pitches. 
+    The Pitch Step (grad_y) range is -8 to 7 where step 1 to 7 scales downwards high to low pitch and -8 to 0 starts the sequence
+    scaling upwards from low to a higher pitch. From then on the sequence bounces between the two pitches.
 
-    A Harmonic without a Time Interval (grad_x) and/or Pitch Step (grad_y) has no affect. Adding a Pitch step of 1 when Harmonic and Time Interval are both 0 
+    A Harmonic without a Time Interval (grad_x) and/or Pitch Step (grad_y) has no affect. Adding a Pitch step of 1 when Harmonic and Time Interval are both 0
     identifies the pitch as a high zero. Harmonic plus a Pitch step with Time Interval 0 just changes Main Pitch to the Harmonic.
 
     Wraps
-    Wraps repeat the sequence of harmonics produced by the pitch_1, pitch_2, grad_x, grad_y parameters a number of times. 
-    Zero continues the bounce affect of the harmonic. Increasing values 1 to 7 creates scaling high to low for the number of Wraps. 
+    Wraps repeat the sequence of harmonics produced by the pitch_1, pitch_2, grad_x, grad_y parameters a number of times.
+    Zero continues the bounce affect of the harmonic. Increasing values 1 to 7 creates scaling high to low for the number of Wraps.
     Scaling 8 to 15 creates Wraps from low to high.
 
 
     Fuzzy & Random
-    Fuzzy decreases the purity of the pitch, Random just randomises the steps until little of the original sequence is evident. 
-    Both of these have a range 0 to 15, zero has no effect and the active range is more like 8 to 15. 
+    Fuzzy decreases the purity of the pitch, Random just randomises the steps until little of the original sequence is evident.
+    Both of these have a range 0 to 15, zero has no effect and the active range is more like 8 to 15.
     Increasing the fuzzy range as said before blurs the pitch to a buzz.
 
     */
@@ -1123,12 +1123,12 @@ void ql_audio_switch_pitches(void)
    //Reaplicar cambios en el mixer
    ql_adjust_audio_settings_with_mixer();
 
-   //Si pitch2, o grad_x, o grad_y es 0, no hacer cambios 
+   //Si pitch2, o grad_x, o grad_y es 0, no hacer cambios
    if (!ql_audio_pitch2 || !ql_audio_grad_x || !ql_audio_grad_y) return;
 
     //Ver si hay que cambiar la nota en curso
 
-    //Random just randomises the steps 
+    //Random just randomises the steps
 
     if (ql_audio_next_cycle_counter>=ql_get_audio_interval_steps_random() ) {
         //ql_audio_next_cycle_counter -=ql_audio_grad_x; //restamos en vez de poner a 0 para que sea tiempo acumulativo
@@ -1141,7 +1141,7 @@ void ql_audio_switch_pitches(void)
         //    ql_audio_switch_pitch_array[0]=higher_pitch;
         // ql_audio_switch_pitch_array[1]=lower_pitch;
         //Y incremento en signed_ql_audio_grad_y
-        
+
 
         ql_audio_switch_pitch_current_pitch += signed_ql_audio_grad_y;
 
@@ -1149,7 +1149,7 @@ void ql_audio_switch_pitches(void)
         if (signed_ql_audio_grad_y>=0) {
             //Ver si nos pasamos
             if (ql_audio_switch_pitch_current_pitch>=ql_audio_switch_pitch_array[0]) {
-                //Sobrepasado limite. 
+                //Sobrepasado limite.
                 //printf("Reached upper limit.\n");
                 //printf("wrap counter: %d\n",ql_audio_wrap_counter);
 
@@ -1190,7 +1190,7 @@ void ql_audio_switch_pitches(void)
         ql_audio_pitch_counter_initial=ql_get_counter_from_pitch(ql_audio_switch_pitch_current_pitch);
 
 
-        ql_audio_pitch_counter_current=ql_audio_pitch_counter_initial;   
+        ql_audio_pitch_counter_current=ql_audio_pitch_counter_initial;
     }
 
 }
@@ -1220,7 +1220,7 @@ void ql_audio_next_cycle(void)
     if (ql_current_sound_duration!=0) {
 
         ql_current_sound_duration--;
-                
+
         if (ql_current_sound_duration==0) {
             //Silenciar
             //printf("stop sound\n");
@@ -1255,7 +1255,7 @@ char ql_audio_da_output(void)
 
 
 			valor_mixer &=(255-1); //Canal 0 tono
-			
+
 			//printf ("set mixer chip ay 0. tonos: %02XH ruidos: %02XH final: %02XH\n",mixer_tonos,mixer_ruido,valor_mixer);
 
 			ay_chip_selected=0;
@@ -1281,10 +1281,10 @@ char ql_audio_da_output(void)
 	out_port_ay(49149,(frecuencia << 4) & 0xF0); //Aqui los 4 bits bajos
 
 	out_port_ay(65533,1);
-	out_port_ay(49149,(frecuencia>>4) & 0xF );  //Y aqui los 4 bits altos     
+	out_port_ay(49149,(frecuencia>>4) & 0xF );  //Y aqui los 4 bits altos
 */
 
- 
+
 //}
 
 
@@ -1293,9 +1293,9 @@ char ql_audio_da_output(void)
 unsigned char ql_ipc_sound_command_buffer[8*2];
 
 
-void ql_ipc_set_sound_parameters(void) 
+void ql_ipc_set_sound_parameters(void)
 {
-							
+
     /*
     BEEP syntax:
 
@@ -1349,7 +1349,7 @@ void ql_ipc_set_sound_parameters(void)
 
 
     ql_adjust_audio_settings_with_mixer();
-             
+
 
     debug_printf(VERBOSE_PARANOID,"i8049: setting sound: pitch1 %d pitch2 %d interval_steps %d duration %d step_in_pitch %d wrap %d randomness_of_step %d fuziness %d",
         ql_audio_pitch1,ql_audio_pitch2,ql_audio_grad_x,ql_audio_duration,
@@ -1358,7 +1358,7 @@ void ql_ipc_set_sound_parameters(void)
     //ql_simulate_sound(ql_audio_pitch1,ql_audio_duration);
 
 
-    ql_current_sound_duration=ql_audio_duration;    
+    ql_current_sound_duration=ql_audio_duration;
 
     //ql_audio_pitch_counter_initial=ql_audio_pitch1;
 
@@ -1382,7 +1382,7 @@ int ql_ipc_get_frecuency_sound_value(int pitch)
     //ql_audio_pitch
 
     //Cada scanline, se decrementa el contador. Por tanto, son 15600 hz de base
-    
+
     //No deberia ser 0 nunca, pero por si acaso
     if (pitch==0) return FRECUENCIA_SONIDO;
 
@@ -1549,7 +1549,7 @@ ipc..wp equ     6       return state of p26, currently not connected
 							debug_printf (VERBOSE_PARANOID,"i8049: ipc command 10 inso_cmd initiate sound process");
                             //printf ("ipc command 10 inso_cmd initiate sound process\n");
 							//sleep(5);
-                            
+
                             ql_estado_ipc=QL_STATUS_IPC_WRITING; //Mejor lo desactivo porque si no se queda en estado writing y no sale de ahi
 						break;
 
@@ -1587,7 +1587,7 @@ ipc..wp equ     6       return state of p26, currently not connected
                         default:
                             debug_printf(VERBOSE_DEBUG,"i8049: IPC write. status idle. unhandled command: %d",ql_ipc_last_command);
 
-                        break;                        
+                        break;
 
 					}
 				break;
@@ -1678,12 +1678,12 @@ ipc..wp equ     6       return state of p26, currently not connected
                         default:
                             printf("i8049: IPC write. status writing. unhandled command: %d\n",ql_ipc_last_command);
 
-                        break;                        
+                        break;
 
 					}
 			break;
 			}
-			
+
 	}
 
 

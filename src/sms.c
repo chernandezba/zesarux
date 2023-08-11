@@ -75,8 +75,8 @@ int sms_cartridge_size=0;
 
 char *sms_get_string_memory_type(int tipo)
 {
-    		
-            
+
+
 
     switch (tipo) {
 
@@ -105,7 +105,7 @@ z80_byte *sms_return_segment_address(z80_int direccion,int *tipo)
     switch (sms_mapper_type) {
 
         case SMS_MAPPER_TYPE_SEGA:
-        
+
         /*
         Addresses $fffd-$ffff: ROM mapping
         Control register	ROM bank select for slot
@@ -160,7 +160,7 @@ Bit	Function
         else {
             *tipo=SMS_SLOT_MEMORY_TYPE_RAM;
 
-            //total 1 MByte ROM + 8 kb RAM 
+            //total 1 MByte ROM + 8 kb RAM
 
             //Esto sin mapper:
             return &memoria_spectrum[SMS_MAX_ROM_SIZE + (direccion & 8191)];
@@ -183,20 +183,20 @@ Bit	Function
             */
         }
 
-        break;        
+        break;
 
         case SMS_MAPPER_TYPE_CODEMASTERS:
-        
+
         /*
         ROM mapping
-        This mapper presents three 16KB slots to the address bus as before. 
+        This mapper presents three 16KB slots to the address bus as before.
         However, the control registers are mapped to the first byte of each bank and the first 1KB is no longer protected.
         Control register	Slot
         $0000	0 ($0000-$3fff)
         $4000	1 ($4000-$7fff)
         $8000	2 ($8000-$bfff)
         The mapper is initialised with banks 0, 1 and 0 in slots 0, 1 and 2 respectively.
-        When using slot 0, care must be taken to replace interrupt vectors appropriately. 
+        When using slot 0, care must be taken to replace interrupt vectors appropriately.
         Also note that there is no RAM mirroring of mapper writes so there is no way to retrieve the last value written.
         */
 
@@ -228,17 +228,17 @@ Bit	Function
         else {
             *tipo=SMS_SLOT_MEMORY_TYPE_RAM;
 
-            //total 1 MByte ROM + 8 kb RAM 
+            //total 1 MByte ROM + 8 kb RAM
 
             //Esto sin mapper:
             return &memoria_spectrum[SMS_MAX_ROM_SIZE + (direccion & 8191)];
         }
 
-        break;              
+        break;
 
         //NONE o cualquier otro
         default:
-        
+
         //El orden dentro de toda la memoria asignada es: primero toda la posible ROM y luego los 8 KB de RAM
 
         //ROM
@@ -251,7 +251,7 @@ Bit	Function
         else {
             *tipo=SMS_SLOT_MEMORY_TYPE_RAM;
 
-            //total 1 MByte ROM + 8 kb RAM 
+            //total 1 MByte ROM + 8 kb RAM
 
             //Esto sin mapper:
             return &memoria_spectrum[SMS_MAX_ROM_SIZE + (direccion & 8191)];
@@ -280,7 +280,7 @@ Bit	Function
 
     }
 
-    
+
 
 
 }
@@ -385,13 +385,13 @@ void sms_set_mapper_mask_bits(void)
     else if (sms_cartridge_size<=65536*4) {
         //16 bloques. Hasta 256 KB
         sms_mapper_mask_bits=0x0F;
-    }    
+    }
 
     else if (sms_cartridge_size<=65536*8) {
         //32 bloques. Hasta 512 KB
         sms_mapper_mask_bits=0x1F;
-    }      
- 
+    }
+
 
     //printf("Mapper type: %d mask %d\n",sms_mapper_type,sms_mapper_mask_bits);
 
@@ -401,7 +401,7 @@ void sms_set_mapper_type_from_size(void)
 {
     //Asumimos no mapper
     sms_mapper_type=SMS_MAPPER_TYPE_NONE;
- 
+
 
     //Si mayor de 48kb, mapper type sega
     if (sms_cartridge_size>49152) {
@@ -417,7 +417,7 @@ void sms_insert_rom_cartridge(char *filename)
     if (!si_existe_archivo(filename)) {
         debug_printf(VERBOSE_ERR,"File %s not found",filename);
         return;
-    }        
+    }
 
     long tamanyo_archivo=get_file_size(filename);
 
@@ -448,7 +448,7 @@ void sms_insert_rom_cartridge(char *filename)
     int leidos=fread(memoria_spectrum,1,tamanyo_archivo,ptr_cartridge);
 
     debug_printf(VERBOSE_INFO,"Loaded %d bytes of cartridge rom",leidos);
-    
+
 
     fclose(ptr_cartridge);
 
@@ -494,7 +494,7 @@ void scr_refresca_pantalla_y_border_sms_no_rainbow(void)
 {
 
     //Renderizar border
- 
+
     //Si se desactiva el layer de border, lo que hara sera mostrarlo con color 0
     if (border_enabled.v) {
             //ver si hay que refrescar border
@@ -561,9 +561,9 @@ void scr_refresca_pantalla_y_border_sms_no_rainbow(void)
     if (vdp_9918a_force_disable_layer_sprites.v==0) {
         vdp_9918a_render_sprites_no_rainbow(sms_vram_memory);
     }
-        
 
-    //Renderizar tiles foreground. Esto solo para sms modo video 4  
+
+    //Renderizar tiles foreground. Esto solo para sms modo video 4
     if (vdp_9918a_si_sms_video_mode4()) {
         if (vdp_9918a_force_bg_tiles.v==0) {
             vdp_9918a_render_ula_no_rainbow_sms(sms_vram_memory,1,vdp_9918a_reveal_layer_tile_fg.v,vdp_9918a_force_disable_layer_tile_fg.v);
@@ -593,7 +593,7 @@ void scr_refresca_pantalla_y_border_sms(void)
 z80_int sms_scanline_buffer[512];
 
 
-void screen_store_scanline_rainbow_sms_border_and_display(void) 
+void screen_store_scanline_rainbow_sms_border_and_display(void)
 {
 
     screen_store_scanline_rainbow_vdp_9918a_border_and_display(sms_scanline_buffer,sms_vram_memory);
@@ -612,7 +612,7 @@ void screen_store_scanline_rainbow_sms_border_and_display(void)
             Mascara de puertos 0b11000001 = 193 = 0xC1
 
 
-            
+
 
 
             //puerto DC =  1101 1100  - mask 0b11000001 (193 decimal) = 1100000000 -> joypad A
@@ -620,11 +620,11 @@ void screen_store_scanline_rainbow_sms_border_and_display(void)
  Player 1                        A       B
             up down left right fire/space Z
 
-Player 2 
-             q   a    o    p     m       n 
+Player 2
+             q   a    o    p     m       n
 
 
-             A B cont reset 
+             A B cont reset
 
              Z X   C    R
 
@@ -634,7 +634,7 @@ Player 2
 */
 
 
-z80_byte sms_get_joypad_a(void) 
+z80_byte sms_get_joypad_a(void)
 {
 
 
@@ -675,7 +675,7 @@ Bit	Function
 
             //Z tambien vale como Fire/A
             //puerto_65278   db    255  ; V    C    X    Z    Sh    ;0
-            if ((puerto_65278 & 2)==0) valor_joystick &=(255-16);            
+            if ((puerto_65278 & 2)==0) valor_joystick &=(255-16);
 
             //Boton 2 = Tecla X
 
@@ -686,7 +686,7 @@ Bit	Function
 
 
             //Player 2. Q
-            //puerto_64510    db              255  ; T    R    E    W    Q     ;2            
+            //puerto_64510    db              255  ; T    R    E    W    Q     ;2
             if ((puerto_64510 & 1)==0) valor_joystick &=(255-64);
 
 
@@ -706,7 +706,7 @@ Bit	Function
 
 
 
-z80_byte sms_get_joypad_b(void) 
+z80_byte sms_get_joypad_b(void)
 {
 
     //si estamos en el menu, no devolver tecla
@@ -736,12 +736,12 @@ Bit	Function
 
 
             //Player 2. O
-            //puerto_57342    db              255  ; Y    U    I    O    P     ;5         
+            //puerto_57342    db              255  ; Y    U    I    O    P     ;5
             if ((puerto_57342 & 2)==0) valor_joystick &=(255-1);
 
 
             //Player 2. P
-            //puerto_57342    db              255  ; Y    U    I    O    P     ;5         
+            //puerto_57342    db              255  ; Y    U    I    O    P     ;5
             if ((puerto_57342 & 1)==0) valor_joystick &=(255-2);
 
 
@@ -754,7 +754,7 @@ Bit	Function
             if ((puerto_32766 & 4)==0) valor_joystick &=(255-8);
 
 /*
-             A B cont reset 
+             A B cont reset
 
              Z X   C    R
 */
@@ -762,21 +762,21 @@ Bit	Function
 /*
             //Player 2. Reset (R)
             //puerto_64510    db              255  ; T    R    E    W    Q     ;2
-            if ((puerto_64510 & 8)==0) valor_joystick &=(255-16);   
+            if ((puerto_64510 & 8)==0) valor_joystick &=(255-16);
 
 
             //Player 2. Cont (C)
             //puerto_65278   db    255  ; V    C    X    Z    Sh    ;0
-            if ((puerto_65278 & 8)==0) valor_joystick &=(255-32); 
+            if ((puerto_65278 & 8)==0) valor_joystick &=(255-32);
 
 
             //A  (Z)
             //puerto_65278   db    255  ; V    C    X    Z    Sh    ;0
-            if ((puerto_65278 & 2)==0) valor_joystick &=(255-64); 
+            if ((puerto_65278 & 2)==0) valor_joystick &=(255-64);
 
             //B  (X)
             //puerto_65278   db    255  ; V    C    X    Z    Sh    ;0
-            if ((puerto_65278 & 4)==0) valor_joystick &=(255-128);             
+            if ((puerto_65278 & 4)==0) valor_joystick &=(255-128);
 */
 
     return valor_joystick;

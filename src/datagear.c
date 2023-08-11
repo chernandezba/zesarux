@@ -113,10 +113,10 @@ void datagear_reset(void)
 				z80_int transfer_length=value_8_to_16(datagear_block_length_high,datagear_block_length_low);
 				z80_int transfer_port_a,transfer_port_b;
 
-		
+
 					transfer_port_a=value_8_to_16(datagear_port_a_start_addr_high,datagear_port_a_start_addr_low);
 					transfer_port_b=value_8_to_16(datagear_port_b_start_addr_high,datagear_port_b_start_addr_low);
-							
+
 
 				if (datagear_wr0 & 4) printf ("Copying %d bytes from %04XH to %04XH\n",transfer_length,transfer_port_a,transfer_port_b);
                 else printf ("Copying %d bytes from %04XH to %04XH\n",transfer_length,transfer_port_b,transfer_port_a);
@@ -133,7 +133,7 @@ void datagear_reset(void)
 
                     else {
                         byte_leido=peek_byte_no_time(transfer_port_b);
-					    poke_byte_no_time(transfer_port_a,byte_leido);                        
+					    poke_byte_no_time(transfer_port_a,byte_leido);
                     }
 
                     if ( (datagear_wr1 & 32) == 0 ) {
@@ -144,7 +144,7 @@ void datagear_reset(void)
                     if ( (datagear_wr2 & 32) == 0 ) {
                         if (datagear_wr2 & 16) transfer_port_b++;
                         else transfer_port_b--;
-                    }                    
+                    }
 
 					transfer_length--;
 				//}
@@ -182,7 +182,7 @@ void datagear_write_value(z80_byte value)
 					case 1:
 						datagear_port_a_start_addr_high=value;
 						//printf ("Setting port a start address high to %02XH\n",value);
-					break;					
+					break;
 
 					case 2:
 						datagear_block_length_low=value;
@@ -221,7 +221,7 @@ void datagear_write_value(z80_byte value)
 				}
 
 				datagear_mask_commands=datagear_mask_commands >> 1;
-				datagear_command_index++;			
+				datagear_command_index++;
 			break;
 
 			//WR2
@@ -274,7 +274,7 @@ D7  D6  D5  D4  D3  D2  D1  D0  ZXN PRESCALAR (FIXED TIME TRANSFER)
 						datagear_last_command=128+2;
 
 						datagear_mask_commands=1;        //Realmente esto cualquier cosa diferente de 0 nos vale
-						
+
 						}
 					break;
 				}
@@ -282,7 +282,7 @@ D7  D6  D5  D4  D3  D2  D1  D0  ZXN PRESCALAR (FIXED TIME TRANSFER)
 				//Siempre que no vayamos a recibir el prescaler
 				if (datagear_last_command!=130) {
 					datagear_mask_commands=datagear_mask_commands >> 1;
-					datagear_command_index++;	            
+					datagear_command_index++;
 				}
 			break;
 
@@ -310,12 +310,12 @@ D7  D6  D5  D4  D3  D2  D1  D0  ZXN PRESCALAR (FIXED TIME TRANSFER)
 					case 1:
 						datagear_port_b_start_addr_high=value;
 						//printf ("Setting port b start address high to %02XH\n",value);
-					break;					
+					break;
 
 				}
 
 				datagear_mask_commands=datagear_mask_commands >> 1;
-				datagear_command_index++;				
+				datagear_command_index++;
 			break;
 
 			//WR5
@@ -359,7 +359,7 @@ D7  D6  D5  D4  D3  D2  D1  D0  ZXN PRESCALAR (FIXED TIME TRANSFER)
 #  D7  D6  D5  D4  D3  D2  D1  D0  BLOCK LENGTH (LOW BYTE)
 #       V
 #  D7  D6  D5  D4  D3  D2  D1  D0  BLOCK LENGTH (HIGH BYTE)
-*/		
+*/
 
 		datagear_mask_commands=(value>>3)&15;
 
@@ -389,7 +389,7 @@ D7  D6  D5  D4  D3  D2  D1  D0  ZXN PRESCALAR (FIXED TIME TRANSFER)
 
 
 
-	}	
+	}
 
 	if (value_mask_wr0_wr3==128+2+1) {
 		//printf ("WR6\n");
@@ -412,27 +412,27 @@ D7  D6  D5  D4  D3  D2  D1  D0  ZXN PRESCALAR (FIXED TIME TRANSFER)
                 //datagear_do_transfer();
                 datagear_dma_last_testados=t_estados;
 
-			break;	
+			break;
 
 			case 0x83:
 				//printf ("Disable DMA\n");
                 datagear_is_dma_transfering.v=0;
 
-			break;					
-			
+			break;
+
 			case 0xB3:
 				//printf ("Force an internal ready condition independent 'on the rdy' input\n");
-			break;				
+			break;
 
 			case 0xB7:
 				//printf ("Enable after RETI so dma requests bus only after receiving a reti\n");
 			break;
 
 
-		}		
+		}
 
 
-	}	
+	}
 
 	z80_byte value_mask_wr1_wr2=value&(128+4+2+1);
 	if (value_mask_wr1_wr2==4) {
@@ -442,7 +442,7 @@ D7  D6  D5  D4  D3  D2  D1  D0  ZXN PRESCALAR (FIXED TIME TRANSFER)
 
 		//Ver bits D6
         //D6 Port A variable timing byte
-	
+
 		datagear_mask_commands=(value>>6)&1;
 
 	}
@@ -454,8 +454,8 @@ D7  D6  D5  D4  D3  D2  D1  D0  ZXN PRESCALAR (FIXED TIME TRANSFER)
 
 		//Ver bits D6
         //D6 Port B variable timing byte
-	
-		datagear_mask_commands=(value>>6)&1;        
+
+		datagear_mask_commands=(value>>6)&1;
 	}
 
 	z80_byte value_mask_wr5=value&(128+64+4+2+1);
@@ -504,8 +504,8 @@ int datagear_return_resta_testados(int anterior, int actual)
 
 	if (resta<0) resta=screen_testados_total-anterior+actual;
 
-	return resta; 
-}		
+	return resta;
+}
 
 int datagear_condicion_transferencia(z80_int transfer_length,int dma_continuous,int resta,int dmapre)
 {
@@ -536,15 +536,15 @@ void datagear_handle_dma(void)
       				z80_int transfer_length=value_8_to_16(datagear_block_length_high,datagear_block_length_low);
 				z80_int transfer_port_a,transfer_port_b;
 
-		
+
 					transfer_port_a=value_8_to_16(datagear_port_a_start_addr_high,datagear_port_a_start_addr_low);
 					transfer_port_b=value_8_to_16(datagear_port_b_start_addr_high,datagear_port_b_start_addr_low);
-							
+
 
 				//if (datagear_wr0 & 4) printf ("Copying %d bytes from %04XH to %04XH\n",transfer_length,transfer_port_a,transfer_port_b);
                 //else printf ("Copying %d bytes from %04XH to %04XH\n",transfer_length,transfer_port_b,transfer_port_a);
 
-                
+
 
 
 
@@ -582,7 +582,7 @@ Excepción:
 # operated in the special fixed time transfer mode.  In this mode, the ZXN DMA chip will let the CPU
 # run while it waits for the fixed time to expire between bytes transferred.  Note that there is no
 # byte transfer mode as in the Z80 DMA.
-*/		
+*/
 
 		//Por tanto de momento:
 		if (MACHINE_IS_TBBLUE && dma_continuous==0) {
@@ -597,7 +597,7 @@ Excepción:
 				dma_continuous=1; //no tiene pre escalar
 			}
 		}
-			
+
 
 		//TODO Ver ese delay
 		/*
@@ -629,7 +629,7 @@ Excepción:
 # If non-zero, a delay will be inserted after each byte is transferred
 # such that the total time needed for the transfer is at least the number
 # of cycles indicated by the prescalar.  This works in both the continuous
-# mode and the burst mode.		
+# mode and the burst mode.
 		*/
 
 		//TEMP hacerlo de golpe. ejemplo: dmafill
@@ -655,7 +655,7 @@ Excepción:
 
                     else {
                         byte_leido=datagear_read_operation(transfer_port_b,datagear_wr2 & 8);
-					    datagear_write_operation(transfer_port_a,byte_leido,datagear_wr1 & 8);                        
+					    datagear_write_operation(transfer_port_a,byte_leido,datagear_wr1 & 8);
                     }
 
                     if ( (datagear_wr1 & 32) == 0 ) {
@@ -666,7 +666,7 @@ Excepción:
                     if ( (datagear_wr2 & 32) == 0 ) {
                         if (datagear_wr2 & 16) transfer_port_b++;
                         else transfer_port_b--;
-                    }                    
+                    }
 
 					transfer_length--;
 
@@ -680,7 +680,7 @@ Excepción:
 			//printf ("post ajuste %d\n",datagear_dma_last_testados);
 
 			resta=datagear_return_resta_testados(datagear_dma_last_testados,t_estados);
-	
+
 			//printf ("En transferencia: dmapre: %6d datagear_dma_last_testados %6d t_estados %6d resta %6d\n",	dmapre,datagear_dma_last_testados,t_estados,resta);
 
 		//si da la vuelta
@@ -696,7 +696,7 @@ Excepción:
 
 
         //Guardar valores contadores
-  
+
         datagear_block_length_low=value_16_to_8l(transfer_length);
         datagear_block_length_high=value_16_to_8h(transfer_length);
 
@@ -704,9 +704,9 @@ Excepción:
         datagear_port_a_start_addr_high=value_16_to_8h(transfer_port_a);
 
         datagear_port_b_start_addr_low=value_16_to_8l(transfer_port_b);
-        datagear_port_b_start_addr_high=value_16_to_8h(transfer_port_b);        
-	
-   
+        datagear_port_b_start_addr_high=value_16_to_8h(transfer_port_b);
+
+
 				//}
 
     if (transfer_length==0) datagear_is_dma_transfering.v=0;

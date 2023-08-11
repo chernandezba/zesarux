@@ -221,7 +221,7 @@ z80_int randomize_noise[MAX_AY_CHIPS];
 //Mascara para bits no usados en registros de chip
 z80_byte ay_mascara_registros[16]={
   0xff, 0x0f, 0xff, 0x0f, 0xff, 0x0f, 0x1f, 0xff,
-  0x1f, 0x1f, 0x1f, 0xff, 0xff, 0x0f, 0xff, 0xff,	
+  0x1f, 0x1f, 0x1f, 0xff, 0xff, 0x0f, 0xff, 0xff,
 };
 
 void return_envelope_name(int value,char *string)
@@ -540,11 +540,11 @@ int ay3_custom_stereo_C=2;
           1=ACB Stereo (Canal A=Izq,Canal C=Centro,Canal B=Der)
           2=ABC Stereo (Canal A=Izq,Canal B=Centro,Canal C=Der)
 		  3=BAC Stereo (Canal A=Centro,Canal B=Izquierdo,Canal C=Der)
-		  4=Custom. Depende de variables 
-		  	ay3_custom_stereo_A 
+		  4=Custom. Depende de variables
+		  	ay3_custom_stereo_A
 			ay3_custom_stereo_B
 			ay3_custom_stereo_C
-			En cada una de esas 3, si vale 0=Left. Si 1=Center, Si 2=Right		  
+			En cada una de esas 3, si vale 0=Left. Si 1=Center, Si 2=Right
 */
 
 void da_output_ay_3_canales(char *canal_A,char *canal_B, char *canal_C)
@@ -603,8 +603,8 @@ void da_output_ay_izquierdo_derecho(char *iz, char *de)
           2=ABC Stereo (Canal A=Izq,Canal B=Centro,Canal C=Der)
 		  3=BAC Stereo (Canal A=Centro,Canal B=Izquierdo,Canal C=Der)
           4=CBA Stereo (Canal A=Der,Canal B=Centro, Canal C=Izq)
-		  5=Custom. Depende de variables 
-		  	ay3_custom_stereo_A 
+		  5=Custom. Depende de variables
+		  	ay3_custom_stereo_A
 			ay3_custom_stereo_B
 			ay3_custom_stereo_C
 			En cada una de esas 3, si vale 0=Left. Si 1=Center, Si 2=Right
@@ -629,7 +629,7 @@ void da_output_ay_izquierdo_derecho(char *iz, char *de)
 		case 4:
 			altavoz_izquierdo=canal_C+canal_B;
 			altavoz_derecho=canal_A+canal_B;
-		break;        
+		break;
 
 		case 5:
 			//Left
@@ -655,7 +655,7 @@ void da_output_ay_izquierdo_derecho(char *iz, char *de)
 			if (ay3_custom_stereo_A==2) altavoz_derecho +=canal_A;
 			if (ay3_custom_stereo_B==2) altavoz_derecho +=canal_B;
 			if (ay3_custom_stereo_C==2) altavoz_derecho +=canal_C;
-						
+
 		break;
 
 		default:
@@ -664,7 +664,7 @@ void da_output_ay_izquierdo_derecho(char *iz, char *de)
 			altavoz_derecho=altavoz_izquierdo;
 		break;
 
-	}	
+	}
 
 	*iz=altavoz_izquierdo;
 	*de=altavoz_derecho;
@@ -1025,7 +1025,7 @@ void ay_establece_frecuencia_tono(z80_byte indice, int *freq_tono)
 
 void ay_establece_frecuencia_ruido(void)
 {
-			
+
 	//Frecuencia ruido
 	int freq_temp=ay_3_8912_registros[ay_chip_selected][6] & 31;
 		//printf ("Valor registros ruido : %d Hz\n",freq_temp);
@@ -1061,7 +1061,7 @@ if ( freq_ruido[ay_chip_selected]==FRECUENCIA_CONSTANTE_NORMAL_SONIDO) freq_ruid
 	//printf ("Frecuencia ruido final: %d Hz\n",freq_ruido);
 
 
-		
+
 }
 
 
@@ -1095,7 +1095,7 @@ void ay_establece_frecuencia_envelope(void)
 
 		        //controlamos divisiones por cero
 			if (!freq_temp) freq_temp++;
-			
+
 		        freq_envelope[ay_chip_selected]=FRECUENCIA_ENVELOPE/freq_temp;
 
 		        if (freq_envelope[ay_chip_selected]>FRECUENCIA_CONSTANTE_NORMAL_SONIDO) {
@@ -1135,7 +1135,7 @@ void ay_establece_frecuencia_envelope(void)
 
 Explicacion del mismo Miguel sobre esto:
 
-MIDI es una transmisión serie a 32.768 kbps. Entre bit y bit pasan 107 T 
+MIDI es una transmisión serie a 32.768 kbps. Entre bit y bit pasan 107 T
 estados (de un reloj de 3.5 MHz) o bien 108 T estados si se usa como base un
 reloj de 3.54 MHz (128K). Las tolerancias pueden ser de entre 100 y 120 T para
 dar por buena una señal MIDI. Aunque aquí yo use siempre 108 como valor nominal
@@ -1202,7 +1202,7 @@ static unsigned char aymidi_rs232_dato_midi;
 // contador de aymidi_rs232_bits
 static int aymidi_rs232_bits;
 
-//Si esta habilitado el envio de valores de registros midi 
+//Si esta habilitado el envio de valores de registros midi
 z80_bit aymidi_rs232_enabled={1};
 
 void procesar_aymidi_rs232_dato_midi(z80_byte value)
@@ -1211,7 +1211,7 @@ void procesar_aymidi_rs232_dato_midi(z80_byte value)
 	if (aymidi_rs232_enabled.v==0) return;
 
 	debug_printf (VERBOSE_DEBUG,"Sending MIDI data: %02XH",value);
-	audio_midi_output_raw(value);	
+	audio_midi_output_raw(value);
 }
 
 
@@ -1421,7 +1421,7 @@ void out_port_ay(z80_int puerto,z80_byte value)
 		if (ay_3_8912_registro_sel[ay_chip_selected] ==6) {
 			//Frecuencia ruido
 			ay_establece_frecuencia_ruido();
-	
+
 		}
 
 		//Envelope
@@ -1556,7 +1556,7 @@ z80_byte ay_retorna_mixer_register(int chip)
 
 void ay_establece_frecuencias_todos_canales(void)
 {
-		
+
 	int chips=ay_retorna_numero_chips();
 	int j;
 	for (j=0;j<chips;j++) {
@@ -1573,5 +1573,5 @@ void ay_establece_frecuencias_todos_canales(void)
 
 		ay_establece_frecuencia_envelope();
 	}
-		
-}	
+
+}

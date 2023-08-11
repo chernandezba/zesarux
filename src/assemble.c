@@ -43,12 +43,12 @@
 
 //Retorna opcode y primer y segundo operador
 /*
-Formato entrada: 
+Formato entrada:
 
 
-OPCODE 
+OPCODE
 OPCODE OP1
-OPCODE OP1,OP2  
+OPCODE OP1,OP2
 
 Retorna puntero a primer parametro, util para comandos como DEFB 0,0,0,.....
 */
@@ -84,7 +84,7 @@ char *asm_return_op_ops(char *origen,char *opcode,char *primer_op,char *segundo_
         }
 
         *primer_op=0;
-	
+
 	if (origen[i]==',') i++;
 
 	//Y ya hasta final de cadena
@@ -108,7 +108,7 @@ Tablas de opcodes para ensamblado:
 Ejemplos:   LD r,n .  LD RR,NN.    o HALT (sin parametros).
 
 LD r,n. base opcode=6 (00000110). tipo parametros: r. mascara parametro 1: 00XXX000
-Por ejemplo, si LD A,33 -> A en tabla r vale 7. 
+Por ejemplo, si LD A,33 -> A en tabla r vale 7.
 Valor final:
 00000110  OR 00111000 = 00111110 = 62
 
@@ -211,16 +211,16 @@ tabla_ensamblado array_tabla_ensamblado[]={
 	{"LD",50,0,  ASM_PARM_PARENTHESIS_NN,0,NULL, ASM_PARM_CONST, 0,"A"},   //LD (NNNN),A
 	{"LD",58,0,  ASM_PARM_CONST, 0,"A", ASM_PARM_PARENTHESIS_NN,0,NULL },   //LD A,(NNNN)
 
-        {"LD",64,0, ASM_PARM_R,3,NULL,  ASM_PARM_R,  0,NULL},   //LD r,r   
+        {"LD",64,0, ASM_PARM_R,3,NULL,  ASM_PARM_R,  0,NULL},   //LD r,r
 
-        {"LD",1,0,    ASM_PARM_RP,4,NULL, ASM_PARM_NN, 0,NULL},   //LD rp,NN     
-        {"LD",6,0,  ASM_PARM_R,3,NULL,  ASM_PARM_N,  0,NULL},   //LD r,n           
+        {"LD",1,0,    ASM_PARM_RP,4,NULL, ASM_PARM_NN, 0,NULL},   //LD rp,NN
+        {"LD",6,0,  ASM_PARM_R,3,NULL,  ASM_PARM_N,  0,NULL},   //LD r,n
 
 
-        {"INC",3,0,    ASM_PARM_RP,4,NULL, ASM_PARM_NONE, 0,NULL},   //INC rp        
+        {"INC",3,0,    ASM_PARM_RP,4,NULL, ASM_PARM_NONE, 0,NULL},   //INC rp
         {"INC",4,0,  ASM_PARM_R,3,NULL,  ASM_PARM_NONE,  0,NULL},   //INC r
         {"DEC",5,0,  ASM_PARM_R,3,NULL,  ASM_PARM_NONE,  0,NULL},   //DEC r
-     
+
 
         {"RLCA",7,0, ASM_PARM_NONE,0,NULL, ASM_PARM_NONE,0,NULL},
         {"EX",8,0,  ASM_PARM_CONST,0,"AF", ASM_PARM_CONST, 0,"AF'"},   //EX AF,AF'
@@ -237,79 +237,79 @@ tabla_ensamblado array_tabla_ensamblado[]={
         {"JR",24,0, ASM_PARM_DIS,0,NULL, ASM_PARM_NONE,0,NULL},
         {"RRA",31,0, ASM_PARM_NONE,0,NULL, ASM_PARM_NONE,0,NULL},
 
-        {"JR",32,0, ASM_PARM_CC,3,NULL, ASM_PARM_DIS,0,NULL},     
+        {"JR",32,0, ASM_PARM_CC,3,NULL, ASM_PARM_DIS,0,NULL},
 
-        {"DAA",39,0, ASM_PARM_NONE,0,NULL, ASM_PARM_NONE,0,NULL},   
-	{"CPL",47,0, ASM_PARM_NONE,0,NULL, ASM_PARM_NONE,0,NULL},  
-	{"SCF",55,0, ASM_PARM_NONE,0,NULL, ASM_PARM_NONE,0,NULL},   
-	{"CCF",63,0, ASM_PARM_NONE,0,NULL, ASM_PARM_NONE,0,NULL}, 
+        {"DAA",39,0, ASM_PARM_NONE,0,NULL, ASM_PARM_NONE,0,NULL},
+	{"CPL",47,0, ASM_PARM_NONE,0,NULL, ASM_PARM_NONE,0,NULL},
+	{"SCF",55,0, ASM_PARM_NONE,0,NULL, ASM_PARM_NONE,0,NULL},
+	{"CCF",63,0, ASM_PARM_NONE,0,NULL, ASM_PARM_NONE,0,NULL},
 
-	{"HALT",118,0, ASM_PARM_NONE,0,NULL, ASM_PARM_NONE,0,NULL},   
+	{"HALT",118,0, ASM_PARM_NONE,0,NULL, ASM_PARM_NONE,0,NULL},
 
-	{"ADD",128,0, ASM_PARM_CONST,0,"A",  ASM_PARM_R,  0,NULL},   //ADD A,r  
-	{"ADC",136,0, ASM_PARM_CONST,0,"A",  ASM_PARM_R,  0,NULL},   //ADC A,r   
+	{"ADD",128,0, ASM_PARM_CONST,0,"A",  ASM_PARM_R,  0,NULL},   //ADD A,r
+	{"ADC",136,0, ASM_PARM_CONST,0,"A",  ASM_PARM_R,  0,NULL},   //ADC A,r
 
-	{"SUB",144,0, ASM_PARM_R,  0,NULL, ASM_PARM_NONE,0,NULL},   //SUB r 
-	{"SBC",152,0, ASM_PARM_CONST,0,"A",  ASM_PARM_R,  0,NULL},   //SBC A,r   
-	{"AND",160,0, ASM_PARM_R,  0,NULL, ASM_PARM_NONE,0,NULL},   //AND r 
-	{"XOR",168,0, ASM_PARM_R,  0,NULL, ASM_PARM_NONE,0,NULL},   //XOR r 
-	{"OR",176,0, ASM_PARM_R,  0,NULL, ASM_PARM_NONE,0,NULL},   //OR r 
-	{"CP",184,0, ASM_PARM_R,  0,NULL, ASM_PARM_NONE,0,NULL},   //CP r 
+	{"SUB",144,0, ASM_PARM_R,  0,NULL, ASM_PARM_NONE,0,NULL},   //SUB r
+	{"SBC",152,0, ASM_PARM_CONST,0,"A",  ASM_PARM_R,  0,NULL},   //SBC A,r
+	{"AND",160,0, ASM_PARM_R,  0,NULL, ASM_PARM_NONE,0,NULL},   //AND r
+	{"XOR",168,0, ASM_PARM_R,  0,NULL, ASM_PARM_NONE,0,NULL},   //XOR r
+	{"OR",176,0, ASM_PARM_R,  0,NULL, ASM_PARM_NONE,0,NULL},   //OR r
+	{"CP",184,0, ASM_PARM_R,  0,NULL, ASM_PARM_NONE,0,NULL},   //CP r
 
-	{"RET",192,0, ASM_PARM_CC,  3,NULL, ASM_PARM_NONE,0,NULL},   //RET cc 
-	{"POP",193,0,  ASM_PARM_RP2,4,NULL, ASM_PARM_NONE, 0,NULL},   //POP rp2   
-	{"JP",194,0, ASM_PARM_CC,3,NULL, ASM_PARM_NN,0,NULL},    //JP CC,NN   
-	{"JP",195,0, ASM_PARM_NN,0,NULL, ASM_PARM_NONE, 0,NULL },    //JP NN  
-	{"CALL",196,0, ASM_PARM_CC,3,NULL, ASM_PARM_NN,0,NULL},    //CALL CC,NN    
+	{"RET",192,0, ASM_PARM_CC,  3,NULL, ASM_PARM_NONE,0,NULL},   //RET cc
+	{"POP",193,0,  ASM_PARM_RP2,4,NULL, ASM_PARM_NONE, 0,NULL},   //POP rp2
+	{"JP",194,0, ASM_PARM_CC,3,NULL, ASM_PARM_NN,0,NULL},    //JP CC,NN
+	{"JP",195,0, ASM_PARM_NN,0,NULL, ASM_PARM_NONE, 0,NULL },    //JP NN
+	{"CALL",196,0, ASM_PARM_CC,3,NULL, ASM_PARM_NN,0,NULL},    //CALL CC,NN
 
-	{"PUSH",197,0,  ASM_PARM_RP2,4,NULL, ASM_PARM_NONE, 0,NULL},   //PUSH rp2  
+	{"PUSH",197,0,  ASM_PARM_RP2,4,NULL, ASM_PARM_NONE, 0,NULL},   //PUSH rp2
 
-	{"ADD",198,0, ASM_PARM_CONST,0,"A",  ASM_PARM_N,  0,NULL},   //ADD A,N   
+	{"ADD",198,0, ASM_PARM_CONST,0,"A",  ASM_PARM_N,  0,NULL},   //ADD A,N
 
-	{"RST",199,0,  ASM_PARM_RST,3,NULL, ASM_PARM_NONE, 0,NULL},   //RST n   
+	{"RST",199,0,  ASM_PARM_RST,3,NULL, ASM_PARM_NONE, 0,NULL},   //RST n
 
 	{"RET",201,0, ASM_PARM_NONE,0,NULL, ASM_PARM_NONE,0,NULL},    //RET
 	{"CALL",205,0, ASM_PARM_NN,0,NULL, ASM_PARM_NONE,0,NULL},   //CALL NN
-	{"ADC",206,0, ASM_PARM_CONST,0,"A",  ASM_PARM_N,  0,NULL},   //ADC A,N  
+	{"ADC",206,0, ASM_PARM_CONST,0,"A",  ASM_PARM_N,  0,NULL},   //ADC A,N
 
 	//Este OUT tiene que estar antes del otro
 	{"OUT",65,237, ASM_PARM_CONST,0,"(C)",  ASM_PARM_R,  3,NULL},   //OUT (C),r
 	{"OUT",211,0,  ASM_PARM_PARENTHESIS_N,0,NULL, ASM_PARM_CONST, 0,"A"},   //OUT (N),A
 
-	{"SUB",214,0, ASM_PARM_N,  0,NULL, ASM_PARM_NONE,0,NULL  },   //SUB N  
+	{"SUB",214,0, ASM_PARM_N,  0,NULL, ASM_PARM_NONE,0,NULL  },   //SUB N
 
-	{"EXX",217,0, ASM_PARM_NONE,0,NULL, ASM_PARM_NONE,0,NULL},   
+	{"EXX",217,0, ASM_PARM_NONE,0,NULL, ASM_PARM_NONE,0,NULL},
 
 
 	//Este IN tiene que estar antes del otro
-	{"IN",64,237, ASM_PARM_R,  3,NULL, ASM_PARM_CONST,0,"(C)"},   //IN r,(C) 
+	{"IN",64,237, ASM_PARM_R,  3,NULL, ASM_PARM_CONST,0,"(C)"},   //IN r,(C)
 
 	{"IN",219,0,  ASM_PARM_CONST, 0,"A", ASM_PARM_PARENTHESIS_N,0,NULL },   //IN A,(N)
 
 
-	{"SBC",222,0, ASM_PARM_CONST,0,"A",  ASM_PARM_N,  0,NULL},   //SBC A,N 
+	{"SBC",222,0, ASM_PARM_CONST,0,"A",  ASM_PARM_N,  0,NULL},   //SBC A,N
 
 	{"EX",227,0,  ASM_PARM_CONST, 0,"(SP)", ASM_PARM_CONST,0,"HL" },   //EX (SP),HL
 
-	{"AND",230,0, ASM_PARM_N,  0,NULL, ASM_PARM_NONE,0,NULL  },   //AND N  	
+	{"AND",230,0, ASM_PARM_N,  0,NULL, ASM_PARM_NONE,0,NULL  },   //AND N
 
-	{"JP",233,0, ASM_PARM_CONST,  0,"HL", ASM_PARM_NONE,0,NULL  },   //JP HL	
+	{"JP",233,0, ASM_PARM_CONST,  0,"HL", ASM_PARM_NONE,0,NULL  },   //JP HL
 	{"JP",233,0, ASM_PARM_CONST,  0,"(HL)", ASM_PARM_NONE,0,NULL  },   //JP (HL)
 
-	{"EX",235,0,  ASM_PARM_CONST, 0,"DE", ASM_PARM_CONST,0,"HL" },   //EX DE,HL	
+	{"EX",235,0,  ASM_PARM_CONST, 0,"DE", ASM_PARM_CONST,0,"HL" },   //EX DE,HL
 
-	{"XOR",238,0, ASM_PARM_N,  0,NULL, ASM_PARM_NONE,0,NULL  },   //XOR N  
+	{"XOR",238,0, ASM_PARM_N,  0,NULL, ASM_PARM_NONE,0,NULL  },   //XOR N
 
 	{"DI",243,0, ASM_PARM_NONE,0,NULL, ASM_PARM_NONE,0,NULL},  //DI
 
-	{"OR",246,0, ASM_PARM_N,  0,NULL, ASM_PARM_NONE,0,NULL  },   //OR N  
+	{"OR",246,0, ASM_PARM_N,  0,NULL, ASM_PARM_NONE,0,NULL  },   //OR N
 
 
 	{"LD",249,0,  ASM_PARM_CONST, 0,"SP", ASM_PARM_CONST,0,"HL" },   //LD SP,HL
 
-	{"EI",251,0, ASM_PARM_NONE,0,NULL, ASM_PARM_NONE,0,NULL},  //EI	
+	{"EI",251,0, ASM_PARM_NONE,0,NULL, ASM_PARM_NONE,0,NULL},  //EI
 
-	{"CP",254,0, ASM_PARM_N,  0,NULL, ASM_PARM_NONE,0,NULL  },   //CP N 
+	{"CP",254,0, ASM_PARM_N,  0,NULL, ASM_PARM_NONE,0,NULL  },   //CP N
 
 
 
@@ -322,53 +322,53 @@ tabla_ensamblado array_tabla_ensamblado[]={
 	{"NEG",68,237, ASM_PARM_NONE,0,NULL, ASM_PARM_NONE,0,NULL},   //NEG
 	{"RETN",69,237, ASM_PARM_NONE,0,NULL, ASM_PARM_NONE,0,NULL},   //RETN
 	{"IM",70,237,  ASM_PARM_IM,3,NULL, ASM_PARM_NONE, 0,NULL},   //IM 0,1,2
-	{"LD",71,237, ASM_PARM_CONST,0,"I",  ASM_PARM_CONST,0,"A"},   //LD I,A 	
+	{"LD",71,237, ASM_PARM_CONST,0,"I",  ASM_PARM_CONST,0,"A"},   //LD I,A
 
 	{"ADC",74,237, ASM_PARM_CONST,0,"HL",  ASM_PARM_RP,  4,NULL},   //ADC HL,rp
 	{"LD",75,237,  ASM_PARM_RP,  4,NULL,  ASM_PARM_PARENTHESIS_NN,0,NULL},   //LD rp,(NN)
 
 	{"RETI",77,237, ASM_PARM_NONE,0,NULL, ASM_PARM_NONE,0,NULL},   //RETN
-	{"LD",79,237, ASM_PARM_CONST,0,"R",  ASM_PARM_CONST,0,"A"},   //LD R,A 	
+	{"LD",79,237, ASM_PARM_CONST,0,"R",  ASM_PARM_CONST,0,"A"},   //LD R,A
 
 	{"RRD",103,237, ASM_PARM_NONE,0,NULL, ASM_PARM_NONE,0,NULL},
 	{"RLD",111,237, ASM_PARM_NONE,0,NULL, ASM_PARM_NONE,0,NULL},
 
 	{"IN",112,237, ASM_PARM_CONST,0,"F",  ASM_PARM_CONST,0,"(C)"},   //IN F,(C)
 	{"OUT",113,237, ASM_PARM_CONST,0,"(C)", ASM_PARM_CONST,0,"0"  },   //OUT (C),0
-	
-	{"LDI",160,237,  ASM_PARM_NONE,0,NULL, ASM_PARM_NONE,0,NULL},   
-	{"CPI",161,237,  ASM_PARM_NONE,0,NULL, ASM_PARM_NONE,0,NULL}, 
+
+	{"LDI",160,237,  ASM_PARM_NONE,0,NULL, ASM_PARM_NONE,0,NULL},
+	{"CPI",161,237,  ASM_PARM_NONE,0,NULL, ASM_PARM_NONE,0,NULL},
 	{"INI",162,237,  ASM_PARM_NONE,0,NULL, ASM_PARM_NONE,0,NULL},
-	{"OUTI",163,237,  ASM_PARM_NONE,0,NULL, ASM_PARM_NONE,0,NULL},   
+	{"OUTI",163,237,  ASM_PARM_NONE,0,NULL, ASM_PARM_NONE,0,NULL},
 
-	{"LDD",168,237,  ASM_PARM_NONE,0,NULL, ASM_PARM_NONE,0,NULL},   
-	{"CPD",169,237,  ASM_PARM_NONE,0,NULL, ASM_PARM_NONE,0,NULL}, 
+	{"LDD",168,237,  ASM_PARM_NONE,0,NULL, ASM_PARM_NONE,0,NULL},
+	{"CPD",169,237,  ASM_PARM_NONE,0,NULL, ASM_PARM_NONE,0,NULL},
 	{"IND",170,237,  ASM_PARM_NONE,0,NULL, ASM_PARM_NONE,0,NULL},
-	{"OUTD",171,237,  ASM_PARM_NONE,0,NULL, ASM_PARM_NONE,0,NULL}, 	
+	{"OUTD",171,237,  ASM_PARM_NONE,0,NULL, ASM_PARM_NONE,0,NULL},
 
-	{"LDIR",176,237, ASM_PARM_NONE,0,NULL, ASM_PARM_NONE,0,NULL}, 
-	{"CPIR",177,237,  ASM_PARM_NONE,0,NULL, ASM_PARM_NONE,0,NULL}, 
+	{"LDIR",176,237, ASM_PARM_NONE,0,NULL, ASM_PARM_NONE,0,NULL},
+	{"CPIR",177,237,  ASM_PARM_NONE,0,NULL, ASM_PARM_NONE,0,NULL},
 	{"INIR",178,237,  ASM_PARM_NONE,0,NULL, ASM_PARM_NONE,0,NULL},
-	{"OTIR",179,237,  ASM_PARM_NONE,0,NULL, ASM_PARM_NONE,0,NULL},   
+	{"OTIR",179,237,  ASM_PARM_NONE,0,NULL, ASM_PARM_NONE,0,NULL},
 
 
-	{"LDDR",184,237, ASM_PARM_NONE,0,NULL, ASM_PARM_NONE,0,NULL},   
-	{"CPDR",185,237,  ASM_PARM_NONE,0,NULL, ASM_PARM_NONE,0,NULL}, 
+	{"LDDR",184,237, ASM_PARM_NONE,0,NULL, ASM_PARM_NONE,0,NULL},
+	{"CPDR",185,237,  ASM_PARM_NONE,0,NULL, ASM_PARM_NONE,0,NULL},
 	{"INDR",186,237,  ASM_PARM_NONE,0,NULL, ASM_PARM_NONE,0,NULL},
-	{"OTDR",187,237,  ASM_PARM_NONE,0,NULL, ASM_PARM_NONE,0,NULL}, 	
+	{"OTDR",187,237,  ASM_PARM_NONE,0,NULL, ASM_PARM_NONE,0,NULL},
 
 	//CB opcodes
-	{"RLC",0,203, ASM_PARM_R,  0,NULL, ASM_PARM_NONE,0,NULL},   
-	{"RRC",8,203, ASM_PARM_R,  0,NULL, ASM_PARM_NONE,0,NULL},   
-	{"RL",16,203, ASM_PARM_R,  0,NULL, ASM_PARM_NONE,0,NULL},   
-	{"RR",24,203, ASM_PARM_R,  0,NULL, ASM_PARM_NONE,0,NULL},   
-	{"SLA",32,203, ASM_PARM_R,  0,NULL, ASM_PARM_NONE,0,NULL},   
-	{"SRA",40,203, ASM_PARM_R,  0,NULL, ASM_PARM_NONE,0,NULL}, 
-	{"SLL",48,203, ASM_PARM_R,  0,NULL, ASM_PARM_NONE,0,NULL},   
-	{"SRL",56,203, ASM_PARM_R,  0,NULL, ASM_PARM_NONE,0,NULL}, 
-	{"BIT",64,203, ASM_PARM_BIT,3,NULL, ASM_PARM_R,  0,NULL }, //BIT x,r  
-	{"RES",128,203, ASM_PARM_BIT,3,NULL, ASM_PARM_R,  0,NULL }, //RES x,r  
-	{"SET",192,203, ASM_PARM_BIT,3,NULL, ASM_PARM_R,  0,NULL }, //RES x,r  
+	{"RLC",0,203, ASM_PARM_R,  0,NULL, ASM_PARM_NONE,0,NULL},
+	{"RRC",8,203, ASM_PARM_R,  0,NULL, ASM_PARM_NONE,0,NULL},
+	{"RL",16,203, ASM_PARM_R,  0,NULL, ASM_PARM_NONE,0,NULL},
+	{"RR",24,203, ASM_PARM_R,  0,NULL, ASM_PARM_NONE,0,NULL},
+	{"SLA",32,203, ASM_PARM_R,  0,NULL, ASM_PARM_NONE,0,NULL},
+	{"SRA",40,203, ASM_PARM_R,  0,NULL, ASM_PARM_NONE,0,NULL},
+	{"SLL",48,203, ASM_PARM_R,  0,NULL, ASM_PARM_NONE,0,NULL},
+	{"SRL",56,203, ASM_PARM_R,  0,NULL, ASM_PARM_NONE,0,NULL},
+	{"BIT",64,203, ASM_PARM_BIT,3,NULL, ASM_PARM_R,  0,NULL }, //BIT x,r
+	{"RES",128,203, ASM_PARM_BIT,3,NULL, ASM_PARM_R,  0,NULL }, //RES x,r
+	{"SET",192,203, ASM_PARM_BIT,3,NULL, ASM_PARM_R,  0,NULL }, //RES x,r
 
 
         {NULL,0,0, ASM_PARM_NONE,0,NULL, ASM_PARM_NONE,0,NULL}
@@ -465,14 +465,14 @@ int asm_check_parameter_in_table(enum asm_tipo_parametro_entrada tipo_parametro_
 		case ASM_PARM_IN_CC:
 			if (tipo_en_tabla==ASM_PARM_CC) return 1;
 
-                        
+
 			else return 0;
-		break;   
+		break;
 
 		case ASM_PARN_IN_PARENTHESIS_NUMERO:
 			if (tipo_en_tabla==ASM_PARM_PARENTHESIS_N || tipo_en_tabla==ASM_PARM_PARENTHESIS_NN) return 1;
 			else return 0;
-		break;                             
+		break;
 
 		case ASM_PARM_IN_NUMERO:
 			if (tipo_en_tabla==ASM_PARM_N || tipo_en_tabla==ASM_PARM_NN || tipo_en_tabla==ASM_PARM_DIS || tipo_en_tabla==ASM_PARM_RST || tipo_en_tabla==ASM_PARM_IM || tipo_en_tabla==ASM_PARM_BIT) return 1;
@@ -498,7 +498,7 @@ int assemble_sustituir_ixiy_despl_aux(int es_prefijo_ix_iy,char *buf_op,char *va
 			}
 			else if (letra_mayuscula(buf_op[2])=='Y') {
 				es_prefijo_ix_iy=253;
-			}			
+			}
 
 			else return es_prefijo_ix_iy;
 
@@ -515,12 +515,12 @@ int assemble_sustituir_ixiy_despl_aux(int es_prefijo_ix_iy,char *buf_op,char *va
 			//printf ("Parsear numero [%s] de desplazamiento ix/iy\n",buffer_numero);
 
 			int valor_desplazamiento_nochar=parse_string_to_number(buffer_numero);
-			*valor_desplazamiento=valor_desplazamiento_nochar;	
+			*valor_desplazamiento=valor_desplazamiento_nochar;
 
 			//Y cambiar por (HL)
-			strcpy(buf_op,"(HL)");	
+			strcpy(buf_op,"(HL)");
 
-			//printf ("Es IX/IY+d\n");	
+			//printf ("Es IX/IY+d\n");
 
 		}
 	}
@@ -544,65 +544,65 @@ int assemble_sustituir_ixiy(int es_prefijo_ix_iy,char *buf_primer_op,char *buf_s
 	if (!strcasecmp(buf_primer_op,"IX")) {
 		es_prefijo_ix_iy=221;
 		strcpy(buf_primer_op,"HL");
-	}	
+	}
 
 	if (!strcasecmp(buf_segundo_op,"IX")) {
 		es_prefijo_ix_iy=221;
 		strcpy(buf_segundo_op,"HL");
-	}	
+	}
 
 	if (!strcasecmp(buf_primer_op,"IY")) {
 		es_prefijo_ix_iy=253;
 		strcpy(buf_primer_op,"HL");
-	}	
+	}
 
 	if (!strcasecmp(buf_segundo_op,"IY")) {
 		es_prefijo_ix_iy=253;
 		strcpy(buf_segundo_op,"HL");
-	}	
+	}
 
 
 	if (!strcasecmp(buf_primer_op,"IXL") || !strcasecmp(buf_primer_op,"IX_L")) {
 		es_prefijo_ix_iy=221;
 		strcpy(buf_primer_op,"L");
-	}	
+	}
 
 	if (!strcasecmp(buf_segundo_op,"IXL") || !strcasecmp(buf_segundo_op,"IX_L")) {
 		es_prefijo_ix_iy=221;
 		strcpy(buf_segundo_op,"L");
-	}	
+	}
 
 	if (!strcasecmp(buf_primer_op,"IXH") || !strcasecmp(buf_primer_op,"IX_H")) {
 		es_prefijo_ix_iy=221;
 		strcpy(buf_primer_op,"H");
-	}	
+	}
 
 	if (!strcasecmp(buf_segundo_op,"IXH") || !strcasecmp(buf_segundo_op,"IX_H")) {
 		es_prefijo_ix_iy=221;
 		strcpy(buf_segundo_op,"H");
-	}	
+	}
 
 
 	if (!strcasecmp(buf_primer_op,"IYL") || !strcasecmp(buf_primer_op,"IY_L")) {
 		es_prefijo_ix_iy=253;
 		strcpy(buf_primer_op,"L");
-	}	
+	}
 
 	if (!strcasecmp(buf_segundo_op,"IYL") || !strcasecmp(buf_segundo_op,"IY_L")) {
 		es_prefijo_ix_iy=253;
 		strcpy(buf_segundo_op,"L");
-	}		
+	}
 
 
 	if (!strcasecmp(buf_primer_op,"IYH") || !strcasecmp(buf_primer_op,"IY_H")) {
 		es_prefijo_ix_iy=253;
 		strcpy(buf_primer_op,"H");
-	}	
+	}
 
 	if (!strcasecmp(buf_segundo_op,"IYH") || !strcasecmp(buf_segundo_op,"IY_H")) {
 		es_prefijo_ix_iy=253;
 		strcpy(buf_segundo_op,"H");
-	}	
+	}
 
 	return es_prefijo_ix_iy;
 
@@ -611,7 +611,7 @@ int assemble_sustituir_ixiy(int es_prefijo_ix_iy,char *buf_primer_op,char *buf_s
 
 int assemble_opcode_defm(char *texto,z80_byte *destino)
 {
-	//Asumimos que el primer parámetro empieza just despues de "defm " " 
+	//Asumimos que el primer parámetro empieza just despues de "defm " "
 	//posicion 6
 	int indice=6;
 
@@ -632,7 +632,7 @@ int assemble_opcode_defm(char *texto,z80_byte *destino)
 
 int assemble_opcode_defs(char *texto,z80_byte *destino)
 {
-	//Asumimos que el primer parámetro empieza just despues de "defs " 
+	//Asumimos que el primer parámetro empieza just despues de "defs "
 	//posicion 5
 	int indice=5;
 
@@ -644,7 +644,7 @@ int assemble_opcode_defs(char *texto,z80_byte *destino)
 	int i;
 
 	for (i=0;i<longitud_total;i++) {
-		
+
 		*destino=0; //meter ceros en destino
 		destino++;
 
@@ -656,7 +656,7 @@ int assemble_opcode_defs(char *texto,z80_byte *destino)
 
 int assemble_opcode_defb_defw(int si_defw,char *texto,z80_byte *destino)
 {
-	//Asumimos que el primer parámetro empieza just despues de "defb " 
+	//Asumimos que el primer parámetro empieza just despues de "defb "
 	//posicion 5
 	int indice=5;
 	char buffer_numero[255];
@@ -669,7 +669,7 @@ int assemble_opcode_defb_defw(int si_defw,char *texto,z80_byte *destino)
 			buffer_numero[indice_buffer_numero++]=texto[indice++];
 		}
 		buffer_numero[indice_buffer_numero]=0;
-		
+
 		int numero=parse_string_to_number(buffer_numero);
 		//printf ("numero: [%s] [%d]\n",buffer_numero,numero);
 
@@ -681,7 +681,7 @@ int assemble_opcode_defb_defw(int si_defw,char *texto,z80_byte *destino)
 			numero=numero>>8;
 			*destino=numero & 0xFF;
 			destino++;
-			longitud_total++;			
+			longitud_total++;
 		}
 
 		if (texto[indice]!=0) indice++;
@@ -694,7 +694,7 @@ int assemble_opcode_defb_defw(int si_defw,char *texto,z80_byte *destino)
 //Ensamblado de instruccion.
 //Retorna longitud de opcode. 0 si error
 //Lo ensambla en puntero indicado destino
-//Maximo 255 bytes 
+//Maximo 255 bytes
 //direccion_destino es necesario para instrucciones tipo jr dis, djnz dis, etc
 int assemble_opcode(int direccion_destino,char *texto,z80_byte *destino)
 {
@@ -717,7 +717,7 @@ int assemble_opcode(int direccion_destino,char *texto,z80_byte *destino)
 
         int parametros_entrada=0;
         if (buf_segundo_op[0]!=0) parametros_entrada++;
-        if (buf_primer_op[0]!=0) parametros_entrada++;       
+        if (buf_primer_op[0]!=0) parametros_entrada++;
 
         //Aqui tenemos ya el numero de parametros
 
@@ -734,14 +734,14 @@ int assemble_opcode(int direccion_destino,char *texto,z80_byte *destino)
 		if (!strcasecmp("defw",buf_opcode)) {
 			return assemble_opcode_defb_defw(1,texto,destino);
 		}
- 
+
 		if (!strcasecmp("defm",buf_opcode)) {
 			return assemble_opcode_defm(texto,destino);
-		}		
+		}
 
 		if (!strcasecmp("defs",buf_opcode)) {
 			return assemble_opcode_defs(texto,destino);
-		}				
+		}
 
 	}
 
@@ -757,7 +757,7 @@ int assemble_opcode(int direccion_destino,char *texto,z80_byte *destino)
 
 	es_prefijo_ix_iy=assemble_sustituir_ixiy(es_prefijo_ix_iy,buf_primer_op,buf_segundo_op);
 
-	//Si es IX+d	
+	//Si es IX+d
 
 	unsigned int valor_parametro_1=0; //Valor del parametro 1 cuando no es N ni NN
 	unsigned int valor_parametro_2=0; //Valor del parametro 2 cuando no es N ni NN
@@ -770,8 +770,8 @@ int assemble_opcode(int direccion_destino,char *texto,z80_byte *destino)
                 //printf ("%s\n",array_tabla_ensamblado[i].texto_opcode);
                 if (!strcasecmp(buf_opcode,array_tabla_ensamblado[i].texto_opcode)) {
                         //printf ("Match opcode\n");
-                        
-	
+
+
 			//Contar numero de parametros en array
 			int parametros_array=0;
 
@@ -791,11 +791,11 @@ int assemble_opcode(int direccion_destino,char *texto,z80_byte *destino)
 					}
 
 					else {
-		
+
 						enum asm_tipo_parametro_entrada tipo_parametro_entrada_1;
 
 						tipo_parametro_entrada_1=assemble_find_param_type(buf_primer_op,&valor_parametro_1);
-				
+
 						//Que coincidan los tipos
 						if (!asm_check_parameter_in_table(tipo_parametro_entrada_1,array_tabla_ensamblado[i].tipo_parametro_1)) {
 							//printf ("No coinciden los tipos en parm1\n");
@@ -839,7 +839,7 @@ int assemble_opcode(int direccion_destino,char *texto,z80_byte *destino)
 				longitud_instruccion=1;
 
 
-				//Salir del bucle 
+				//Salir del bucle
                 salir=1;
 				encontrado_indice=i;
 			}
@@ -862,14 +862,14 @@ int assemble_opcode(int direccion_destino,char *texto,z80_byte *destino)
 		if (es_prefijo_ix_iy) {
 			*destino=es_prefijo_ix_iy;
 			destino++;
-			longitud_instruccion++;		
+			longitud_instruccion++;
 		}
 
 		//Prefijo
 		if (array_tabla_ensamblado[encontrado_indice].prefijo) {
 			*destino=array_tabla_ensamblado[encontrado_indice].prefijo;
 			destino++;
-			longitud_instruccion++;		
+			longitud_instruccion++;
 		}
 
 		//meter base opcode y mascara parametros
@@ -898,7 +898,7 @@ int assemble_opcode(int direccion_destino,char *texto,z80_byte *destino)
 			desplazamiento_mascara_tabla=array_tabla_ensamblado[encontrado_indice].desplazamiento_mascara_p2;
 			buffer_operador=buf_segundo_op;
 			valor_parametro=valor_parametro_2;
-		}		
+		}
 
 		if (tipo_parametro_tabla!=ASM_PARM_NONE) {
 			if (tipo_parametro_tabla==ASM_PARM_N || tipo_parametro_tabla==ASM_PARM_NN
@@ -914,7 +914,7 @@ int assemble_opcode(int direccion_destino,char *texto,z80_byte *destino)
                         valor_parametro=parse_string_to_number(&buffer_operador[1]);
                         //printf("Evaluado: %02XH\n",valor_parametro);
                 }
-                        
+
 				else valor_parametro=parse_string_to_number(buffer_operador);
 
 				//Si es N
@@ -956,23 +956,23 @@ int assemble_opcode(int direccion_destino,char *texto,z80_byte *destino)
 						valor_parametro=parse_string_to_number(buffer_operador);
 						//printf ("Valor parametro 1 en RST: %d\n",valor_parametro_1);
 						valor_parametro /=8;
-						 
+
 					}
 
 					//Si es IM
 					if (tipo_parametro_tabla==ASM_PARM_IM) {
 						valor_parametro=parse_string_to_number(buffer_operador);
-						//0,0,1,2,0,0,1,2 
+						//0,0,1,2,0,0,1,2
 						if (valor_parametro==1) valor_parametro=2;
 						else if (valor_parametro==2) valor_parametro=3;
 						//Usamos los valores oficiales 0,0,1,2 (el "segundo" 0 corresponderia a im0 no documentado)
-						 
-					}			
+
+					}
 
 					//Si es BIT
 					if (tipo_parametro_tabla==ASM_PARM_BIT) {
 						valor_parametro=parse_string_to_number(buffer_operador);
-					}									
+					}
 
 					//En caso de IX+d
 					int es_ddfd_cb=0;
@@ -981,7 +981,7 @@ int assemble_opcode(int direccion_destino,char *texto,z80_byte *destino)
 						if (array_tabla_ensamblado[encontrado_indice].prefijo==203) {
 							//printf ("Opcode con DD/FD+CB\n");
 							valor_parametro <<= desplazamiento_mascara_tabla;
-							opcode_final |= valor_parametro;							
+							opcode_final |= valor_parametro;
 							//printf ("opcode_final: %02X %02X\n",desplazamiento_ixiy,opcode_final);
 							destino[1]=opcode_final;
 							//destino[2]=opcode_final;
@@ -1007,13 +1007,13 @@ int assemble_opcode(int direccion_destino,char *texto,z80_byte *destino)
 					}
 				}
 
-				
+
 			}
 		}
 
 		} //for paso parametro
 
-		
+
 
 
 		*destino=opcode_final;

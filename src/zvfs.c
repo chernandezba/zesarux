@@ -81,7 +81,7 @@ long zvfs_ftell(int in_fatfs,FILE *ptr_file, FIL *fil)
 }
 
 //funcion fclose que soporta nativo del sistema o fatfs
-void zvfs_fclose(int in_fatfs,FILE *ptr_file_name,FIL *fil) 
+void zvfs_fclose(int in_fatfs,FILE *ptr_file_name,FIL *fil)
 {
     if (in_fatfs) {
         f_close(fil);
@@ -92,7 +92,7 @@ void zvfs_fclose(int in_fatfs,FILE *ptr_file_name,FIL *fil)
 }
 
 //funcion fclose que soporta nativo del sistema o fatfs
-int zvfs_feof(int in_fatfs,FILE *ptr_file_name,FIL *fil) 
+int zvfs_feof(int in_fatfs,FILE *ptr_file_name,FIL *fil)
 {
     if (in_fatfs) {
         return f_eof(fil);
@@ -121,15 +121,15 @@ int zvfs_fopen_read(char *file_name,int *in_fatfs,FILE **ptr_file_name,FIL *fil)
         {
             //debug_printf (VERBOSE_ERR,"Unable to open %s file",file_name);
             return -1;
-        }     
+        }
 
         //Esto solo para que no se queje el compilador al llamar a zvfs_fread
-        *ptr_file_name=NULL;           
+        *ptr_file_name=NULL;
     }
 
     else {
 	    *ptr_file_name=fopen(file_name,"rb");
-    
+
 
 
         if (!(*ptr_file_name))
@@ -163,15 +163,15 @@ int zvfs_fopen_write(char *file_name,int *in_fatfs,FILE **ptr_file_name,FIL *fil
         {
             //debug_printf (VERBOSE_ERR,"Unable to open file for writing",file_name);
             return -1;
-        }     
+        }
 
         //Esto solo para que no se queje el compilador al llamar a zvfs_fread
-        *ptr_file_name=NULL;           
+        *ptr_file_name=NULL;
     }
 
     else {
 	    *ptr_file_name=fopen(file_name,"wb");
-    
+
 
 
         if (!(*ptr_file_name))
@@ -198,8 +198,8 @@ int zvfs_fread(int in_fatfs,z80_byte *puntero_memoria,int bytes_to_load,FILE *pt
         leidos=leidos_fatfs;
     }
 
-    else {        
-        
+    else {
+
         leidos=fread(puntero_memoria,1,bytes_to_load,ptr_file_hexdump_browser);
     }
 
@@ -210,7 +210,7 @@ int zvfs_fread(int in_fatfs,z80_byte *puntero_memoria,int bytes_to_load,FILE *pt
 //funcion getc que soporta nativo del sistema o fatfs
 z80_byte zvfs_fgetc(int in_fatfs,FILE *ptr_file_hexdump_browser,FIL *fil)
 {
-   
+
 
     if (in_fatfs) {
         UINT leidos_fatfs;
@@ -219,7 +219,7 @@ z80_byte zvfs_fgetc(int in_fatfs,FILE *ptr_file_hexdump_browser,FIL *fil)
         return byte_leido;
     }
 
-    else {      
+    else {
         return fgetc(ptr_file_hexdump_browser);
     }
 }
@@ -235,7 +235,7 @@ int zvfs_fwrite(int in_fatfs,z80_byte *puntero_memoria,int bytes_to_save,FILE *p
         escritos=escritos_fatfs;
     }
 
-    else {        
+    else {
         escritos=fwrite(puntero_memoria,1,bytes_to_save,ptr_file_hexdump_browser);
     }
 
@@ -316,7 +316,7 @@ void zvfs_rename(char *old,char *new)
     }
     else {
         rename(old,new);
-    }    
+    }
 }
 
 int zvfs_delete(char *filename)

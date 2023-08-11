@@ -1,5 +1,5 @@
 /*
-    ZEsarUX  ZX Second-Emulator And Released for UniX 
+    ZEsarUX  ZX Second-Emulator And Released for UniX
     Copyright (C) 2013 Cesar Hernandez Bano
 
     This file is part of ZEsarUX.
@@ -21,15 +21,15 @@
 
 /*
 
-Hello there... I'm glad you are curious and want to know more about my code. 
+Hello there... I'm glad you are curious and want to know more about my code.
 
 First what you have to know is that this pd765.c code is not optimized, but created
 in order to be an understandable code. In fact, this is the second version of this code, there
 was a first version, that you may find on ZEsarUX versions before 10.3, that had the first version of this code,
-which didn't work at all. 
+which didn't work at all.
 
 That first version of the code was started on ZEsarUX 4.1 (16 July 2016), it didn't worked at all,
-and was left untouched until version 7.0 (25 May 2018) where I added +3DOS Traps. 
+and was left untouched until version 7.0 (25 May 2018) where I added +3DOS Traps.
 That was a quick way to have it working, actually it was trapping
 all +3DOS calls and simulate to use disk. That was far from being perfect and only 10% of games were working.
 Also, the pd765 layer was not fixed. That code was left untouched again during 4 years...
@@ -38,15 +38,15 @@ Then, when I started ZEsarUX 10.3 (27 October 2022), I wanted to fix pd765 emula
 I erased the old pd765.c and created a new blank one. Started again to read the chip specifications and slowly created, this time,
 a new pd765 emulation layer that really worked.
 
-Fun fact: The old code didn't work because I was interpreting the READ DATA command in a bad way: instead of returning first the sector data, 
+Fun fact: The old code didn't work because I was interpreting the READ DATA command in a bad way: instead of returning first the sector data,
 and then the ST0,1,2,CHRN values, I was returning them inverted: first ST0,1,2,CHRN values and then the sector data... Funny, isn't it?
 
 Anyway, as I said, don't expect it to be an optimized code, it was created to be understandable, and also
 as a way to know how the PD765 chip worked, as I knew almost nothing before.
 Also, there are some chip commands that are not implemented yet. There's a reason: I don't have any program or game that uses them.
 So, instead of adding them and not trying with a real program (I could create a test program but it would work according to what
-I understand from the chip, that could be wrong), I prefer to have them unemulated. 
-So, if you have a real test program, which works on a real +3 Spectrum machine, and there in ZEsarUX shows an error like 
+I understand from the chip, that could be wrong), I prefer to have them unemulated.
+So, if you have a real test program, which works on a real +3 Spectrum machine, and there in ZEsarUX shows an error like
 "Invalid command", please tell me, so I could add that command and test it.
 
 So, the list of the unemulated commands are:
@@ -57,7 +57,7 @@ SCAN LOW OR EQUAL
 SCAN HIGH OR EQUAL
 
 Also, there could be (probably) some features or behaviour of some commands that are not emulated the right way.
-I have tested my code with lots of disks (943 exactly) and tried to have it working the best way. 
+I have tested my code with lots of disks (943 exactly) and tried to have it working the best way.
 There are still known bugs and disks that can't be read right, I have collected my results in the following list:
 
 Spectrum +3 Disks:
@@ -376,7 +376,7 @@ z80_bit pd765_seek_was_recalibrating={0};
 
 void pd765_signal_se_function_triggered(void)
 {
-    
+
     pd765_pcn=pd765_input_parameter_ncn;
 
     DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: seek has finished. Changing PCN from NCN: %d",pd765_pcn);
@@ -406,7 +406,7 @@ void pd765_signal_se_function_triggered(void)
     //pd765_main_status_register &= (0xFF - PD765_MAIN_STATUS_REGISTER_DIO_MASK);
 
     //TODO: correcto esto aqui?
-    pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_D0B_MASK - PD765_MAIN_STATUS_REGISTER_D1B_MASK - PD765_MAIN_STATUS_REGISTER_D2B_MASK - PD765_MAIN_STATUS_REGISTER_D3B_MASK);                
+    pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_D0B_MASK - PD765_MAIN_STATUS_REGISTER_D1B_MASK - PD765_MAIN_STATUS_REGISTER_D2B_MASK - PD765_MAIN_STATUS_REGISTER_D3B_MASK);
 
     pd765_phase=PD765_PHASE_COMMAND;
 
@@ -478,7 +478,7 @@ z80_byte pd765_get_buffer(void)
 
 void pd765_put_buffer(z80_byte value)
 {
-    
+
     if (pd765_result_buffer_length>=PD765_MAX_RESULT_BUFFER) {
         debug_printf(VERBOSE_ERR,"Error putting PD765 buffer beyond limit: %d",pd765_result_buffer_length);
         return;
@@ -624,9 +624,9 @@ z80_byte pd765_get_st3(void)
 
    //TODO: posible WP (si protegemos para escritura desde menu) y FT (en que casos?)
 
-   
 
-   return (PD765_STATUS_REGISTER_THREE_RD_MASK) | (pd765_signal_ts0.v * PD765_STATUS_REGISTER_THREE_T0_MASK) 
+
+   return (PD765_STATUS_REGISTER_THREE_RD_MASK) | (pd765_signal_ts0.v * PD765_STATUS_REGISTER_THREE_T0_MASK)
         | (pd765_input_parameter_hd<<2) | (pd765_input_parameter_us1<<1) | pd765_input_parameter_us0 ;
 
     //Two side??
@@ -658,11 +658,11 @@ void pd765_read_parameters_specify(z80_byte value)
 
         //Fin de comando
         pd765_input_parameters_index=0;
-        
+
         DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: End command parameters for SPECIFY");
 
         pd765_handle_command_specify();
-    }       
+    }
 }
 
 void pd765_handle_command_sense_interrupt_status(void)
@@ -679,8 +679,8 @@ void pd765_handle_command_sense_interrupt_status(void)
     //Estos bits se resetean con un sense interrupt
     //if (pd765_sc_get(&signal_se)) {
     //    //TODO: dudoso hacer esto aqui
-    //    pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_D0B_MASK - PD765_MAIN_STATUS_REGISTER_D1B_MASK - PD765_MAIN_STATUS_REGISTER_D2B_MASK - PD765_MAIN_STATUS_REGISTER_D3B_MASK);                
-    //}    
+    //    pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_D0B_MASK - PD765_MAIN_STATUS_REGISTER_D1B_MASK - PD765_MAIN_STATUS_REGISTER_D2B_MASK - PD765_MAIN_STATUS_REGISTER_D3B_MASK);
+    //}
 
     //Mientras dura, indicar que FDC esta busy
     //TODO: aunque creo que esto iria en la fase de ejecucion y no en la de resultado
@@ -690,19 +690,19 @@ void pd765_handle_command_sense_interrupt_status(void)
     /*
     if (pd765_sc_get(&signal_se)) {
         DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Reset DB0 etc");
-        pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_D0B_MASK - PD765_MAIN_STATUS_REGISTER_D1B_MASK - PD765_MAIN_STATUS_REGISTER_D2B_MASK - PD765_MAIN_STATUS_REGISTER_D3B_MASK);    
+        pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_D0B_MASK - PD765_MAIN_STATUS_REGISTER_D1B_MASK - PD765_MAIN_STATUS_REGISTER_D2B_MASK - PD765_MAIN_STATUS_REGISTER_D3B_MASK);
 
         pd765_sc_reset(&signal_se);
     }
     */
 
         //DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Reset DB0 etc");
-        //pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_D0B_MASK - PD765_MAIN_STATUS_REGISTER_D1B_MASK - PD765_MAIN_STATUS_REGISTER_D2B_MASK - PD765_MAIN_STATUS_REGISTER_D3B_MASK);    
+        //pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_D0B_MASK - PD765_MAIN_STATUS_REGISTER_D1B_MASK - PD765_MAIN_STATUS_REGISTER_D2B_MASK - PD765_MAIN_STATUS_REGISTER_D3B_MASK);
 
 
 }
 
-//R de sector a buscar en siguiente comando de read 
+//R de sector a buscar en siguiente comando de read
 z80_byte pd765_read_command_searching_parameter_r;
 
 //R de sector a buscar en siguiente comando de write
@@ -735,8 +735,8 @@ void pd765_read_put_chrn_in_bus(void)
 
         return_value=pd765_input_parameter_n;
         DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning N: %02XH",return_value);
-        pd765_put_buffer(return_value);    
-    }      
+        pd765_put_buffer(return_value);
+    }
 
     //else if (pd765_read_command_searching_parameter_r==pd765_input_parameter_eot) {
     //Cuando ambos son iguales. TODO: puede suceder que pd765_read_command_searching_parameter_r sea mayor que eot?
@@ -759,10 +759,10 @@ void pd765_read_put_chrn_in_bus(void)
 
         return_value=pd765_input_parameter_n;
         DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning N: %02XH",return_value);
-        pd765_put_buffer(return_value);    
+        pd765_put_buffer(return_value);
     }
 
-  
+
 }
 
 //Esto se puso para intentar cargar Alien\ Storm\ \(Erbe\).dsk
@@ -773,10 +773,10 @@ void pd765_read_put_chrn_in_bus(void)
 void pd765_read_chrn_put_return_in_bus(z80_byte leido_st0,z80_byte leido_id_st1,z80_byte leido_id_st2)
 {
     DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning ST0: %02XH (%s)",leido_st0,(leido_st0 & 32 ? "SE" : ""));
-    pd765_put_buffer(leido_st0);    
+    pd765_put_buffer(leido_st0);
 
     DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning ST1: %02XH",leido_id_st1);
-    pd765_put_buffer(leido_id_st1);    
+    pd765_put_buffer(leido_id_st1);
 
     DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning ST2: %02XH",leido_id_st2);
     pd765_put_buffer(leido_id_st2);
@@ -837,21 +837,21 @@ int pd765_common_dsk_not_inserted_readwrite(void)
 
 int pd765_common_if_track_unformatted(int pista,int cara)
 {
-    
+
     if (!dsk_is_track_formatted(pista,cara)) {
         /*
-        The READ ID Command is used to give the present position of the recording head. 
-        The FDC stores the values from the first ID Field it is able to read. 
-        If no proper ID Address Mark is found on the diskette, before the INDEX HOLE is encountered 
-        for the second time then the MA (Missing Address Mark) flag in Status Register 1 is set to a 1 (high), 
-        and if no data is found then the ND (No Data) flag is also set in Status Register 1 to a 1 (high). 
-        The command is then terminated with Bits 7 and 6 in Status Register O set to 0 and 1 respectively. 
+        The READ ID Command is used to give the present position of the recording head.
+        The FDC stores the values from the first ID Field it is able to read.
+        If no proper ID Address Mark is found on the diskette, before the INDEX HOLE is encountered
+        for the second time then the MA (Missing Address Mark) flag in Status Register 1 is set to a 1 (high),
+        and if no data is found then the ND (No Data) flag is also set in Status Register 1 to a 1 (high).
+        The command is then terminated with Bits 7 and 6 in Status Register O set to 0 and 1 respectively.
         During this command there is no data transfer between FDC and the CPU except during the result phase.
         */
         DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Track %02XH Side %d unformatted!!!!!!!!!",pista,cara);
-        
-        
-        pd765_set_interrupt_pending();    
+
+
+        pd765_set_interrupt_pending();
 
 
         //E indicar fase ejecucion ha finalizado
@@ -932,10 +932,10 @@ void pd765_siguiente_sector(void)
     }
     else {
         pd765_ultimo_sector_fisico_read=0;
-    }  
+    }
 
     //Por si acaso, aunque esto no deberia pasar
-    if (pd765_ultimo_sector_fisico_read<0) pd765_ultimo_sector_fisico_read=0;  
+    if (pd765_ultimo_sector_fisico_read<0) pd765_ultimo_sector_fisico_read=0;
 }
 
 void pd765_handle_command_read_id(void)
@@ -956,7 +956,7 @@ void pd765_handle_command_read_id(void)
     }
 
 
-    pd765_set_interrupt_pending();    
+    pd765_set_interrupt_pending();
 
     //Cambiamos a fase de resultado
     pd765_phase=PD765_PHASE_RESULT;
@@ -975,9 +975,9 @@ void pd765_handle_command_read_id(void)
 
     //Metemos resultado de leer en buffer de salida
 
-  
+
     /*
-    
+
     ST0
     ST1
     ST2
@@ -987,13 +987,13 @@ void pd765_handle_command_read_id(void)
     N
 
     READ ID
-    The READ ID Command is used to give the present position of the recording head. 
-    The FDC stores the values from the first ID Field it is able to read. 
-    If no proper ID Address Mark is found on the diskette, 
-    before the INDEX HOLE is encountered for the second time then the MA (Missing Address Mark) flag in Status Register 1 is set to a 1 (high), 
-    and if no data is found then the ND (No Data) flag is also set in Status Register 1 to a 1 (high). 
-    The command is then terminated with Bits 7 and 6 in Status Register O set to 0 and 1 respectively. 
-    During this command there is no data transfer between FDC and the CPU except during the result phase.    
+    The READ ID Command is used to give the present position of the recording head.
+    The FDC stores the values from the first ID Field it is able to read.
+    If no proper ID Address Mark is found on the diskette,
+    before the INDEX HOLE is encountered for the second time then the MA (Missing Address Mark) flag in Status Register 1 is set to a 1 (high),
+    and if no data is found then the ND (No Data) flag is also set in Status Register 1 to a 1 (high).
+    The command is then terminated with Bits 7 and 6 in Status Register O set to 0 and 1 respectively.
+    During this command there is no data transfer between FDC and the CPU except during the result phase.
 
     */
 
@@ -1002,7 +1002,7 @@ void pd765_handle_command_read_id(void)
    //Devolver CHRN siguiente
    z80_byte leido_id_c,leido_id_h,leido_id_r,leido_id_n;
 
-  
+
     //Devolvemos el siguiente lector al anterior leido por read id
     pd765_siguiente_sector();
 
@@ -1010,7 +1010,7 @@ void pd765_handle_command_read_id(void)
     int sector=pd765_ultimo_sector_fisico_read;
 
 
-    
+
     //TODO de momento solo cara 0
     //TODO: retornar error si no hay sectores en esta pista
     DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Get ID from Read id for sector %d of track %02XH",sector,pd765_pcn);
@@ -1020,7 +1020,7 @@ void pd765_handle_command_read_id(void)
     pd765_debug_last_sector_id_c_read=leido_id_c;
     pd765_debug_last_sector_id_h_read=leido_id_h;
     pd765_debug_last_sector_id_r_read=leido_id_r;
-    pd765_debug_last_sector_id_n_read=leido_id_n;  
+    pd765_debug_last_sector_id_n_read=leido_id_n;
 
     DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: read_id: last_r: %d",pd765_debug_last_sector_id_r_read);
 
@@ -1033,11 +1033,11 @@ void pd765_handle_command_read_id(void)
     //TODO: no estoy seguro si tengo que usar alguno de los bits de st1 o st2 del sector, quiza
     //de ST1: b2 ND (No Data)
     //de ST2: b0 MD (Missing address Mark in Data field)
-    //dsk_get_st12(pd765_pcn,0,sector,&leido_st1,&leido_st2); 
+    //dsk_get_st12(pd765_pcn,0,sector,&leido_st1,&leido_st2);
 
     DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning ST0: %02XH (%s)",leido_st0,(leido_st0 & 32 ? "SE" : ""));
     DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning ST1: %02XH",leido_st1);
-    DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning ST2: %02XH",leido_st2);  
+    DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning ST2: %02XH",leido_st2);
 
 
 
@@ -1047,17 +1047,17 @@ void pd765_handle_command_read_id(void)
     }
     else {
         DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Sector with address mark");
-    } */   
-    
+    } */
+
     DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning C: %02XH",leido_id_c);
     DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning H: %02XH",leido_id_h);
     DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning R: %02XH",leido_id_r);
     DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning N: %02XH",leido_id_n);
 
-    pd765_put_buffer(leido_st0);    
+    pd765_put_buffer(leido_st0);
     pd765_put_buffer(leido_st1);
     pd765_put_buffer(leido_st2);
-    
+
     pd765_put_buffer(leido_id_c);
     pd765_put_buffer(leido_id_h);
     pd765_put_buffer(leido_id_r);
@@ -1104,16 +1104,16 @@ void pd765_read_parameters_sense_drive_status(z80_byte value)
         pd765_input_parameter_hd=(value>>2) & 0x01;
         pd765_input_parameter_us1=(value>>1) & 0x01;
         pd765_input_parameter_us0=value  & 0x01;
-        
+
         DBG_PRINT_PD765 VERBOSE_INFO,"PD765: SENSE DRIVE STATUS parameters: HD=%XH US1=%XH US0=%XH",pd765_input_parameter_hd,pd765_input_parameter_us1,pd765_input_parameter_us0);
 
         //Fin de comando
         pd765_input_parameters_index=0;
-        
+
         DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: End command parameters for SENSE DRIVE STATUS");
 
         pd765_handle_command_sense_drive_status();
-    }       
+    }
 }
 
 void pd765_read_parameters_read_id(z80_byte value)
@@ -1123,16 +1123,16 @@ void pd765_read_parameters_read_id(z80_byte value)
         pd765_input_parameter_hd=(value>>2) & 0x01;
         pd765_input_parameter_us1=(value>>1) & 0x01;
         pd765_input_parameter_us0=value  & 0x01;
-        
+
         DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: HD=%XH US1=%XH US0=%XH",pd765_input_parameter_hd,pd765_input_parameter_us1,pd765_input_parameter_us0);
 
         //Fin de comando
         pd765_input_parameters_index=0;
-        
+
         DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: End command parameters for READ ID");
 
         pd765_handle_command_read_id();
-    }       
+    }
 }
 
 //Indicar si cuando se va a hacer seek o recalibrate, ya se esta en pista indicada, y por tanto no empezar de nuevo
@@ -1153,19 +1153,19 @@ void pd765_handle_command_recalibrate(void)
     /*
     RECALIBRATE
     The function of this command is to retract the read/write head within the FDD to the Track 0 position.
-    The FDC clears the contents of the PCN counter, and checks the status of the Track 0 signal from the FDD. 
+    The FDC clears the contents of the PCN counter, and checks the status of the Track 0 signal from the FDD.
     As long as the Track O signal is low, the Direction signal remains O (low) and Step Pulses are issued.
-    When the Track 0 signal goes high, the SE (SEEK END) flag in Status Register O is set to a 1 (high) and 
-    the command is terminated. 
-    
-    If the Track O signal is still low after 77 Step Pulse have been issued, 
-    the FDC sets the SE (SEEK END) and EC (EQUIPMENT CHECK) flags of Status Register 0 to both 1s (highs), 
+    When the Track 0 signal goes high, the SE (SEEK END) flag in Status Register O is set to a 1 (high) and
+    the command is terminated.
+
+    If the Track O signal is still low after 77 Step Pulse have been issued,
+    the FDC sets the SE (SEEK END) and EC (EQUIPMENT CHECK) flags of Status Register 0 to both 1s (highs),
     and terminates the command after bits 7 and 6 of Status Register 0 is set to 0 and 1 respectively.
-    The ability to do overlap RECALIBRATE Commands to multiple FDDs and the loss of the READY signal, 
-    as described in the SEEK Command, also applies to the RECALIBRATE Command.    
+    The ability to do overlap RECALIBRATE Commands to multiple FDDs and the loss of the READY signal,
+    as described in the SEEK Command, also applies to the RECALIBRATE Command.
     */
-   
-    //esto no bien en +3 aunque bien en PCW. 
+
+    //esto no bien en +3 aunque bien en PCW.
     //TODO: tengo la duda de si un recalibrate/seek sin disco, deberia retornar error o no
     /*if (pd765_common_dsk_not_inserted_readwrite()) {
         DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: DSK not inserted on recalibrate");
@@ -1196,7 +1196,7 @@ void pd765_handle_command_recalibrate(void)
     //pd765_interrupt_pending=0;
 
     pd765_if_seek_already_end();
-   
+
 }
 
 
@@ -1207,16 +1207,16 @@ void pd765_read_parameters_recalibrate(z80_byte value)
     if (pd765_input_parameters_index==1) {
         pd765_input_parameter_us1=(value>>1) & 0x01;
         pd765_input_parameter_us0=value  & 0x01;
-        
+
         DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: US1=%XH US0=%XH",pd765_input_parameter_us1,pd765_input_parameter_us0);
 
         //Fin de comando
         pd765_input_parameters_index=0;
-        
+
         DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: End command parameters for RECALIBRATE");
 
         pd765_handle_command_recalibrate();
-    }       
+    }
 }
 
 void pd765_handle_command_seek(void)
@@ -1226,8 +1226,8 @@ void pd765_handle_command_seek(void)
     */
 
     //Si DSK no insertado
-    //esto no bien en +3 aunque bien en PCW. 
-    //TODO: tengo la duda de si un recalibrate/seek sin disco, deberia retornar error o no    
+    //esto no bien en +3 aunque bien en PCW.
+    //TODO: tengo la duda de si un recalibrate/seek sin disco, deberia retornar error o no
     /*if (pd765_common_dsk_not_inserted_readwrite()) {
         DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: DSK not inserted on seek");
         return;
@@ -1240,7 +1240,7 @@ void pd765_handle_command_seek(void)
     pd765_main_status_register |=PD765_MAIN_STATUS_REGISTER_EXM_MASK;
 
     //Decir datos no libres
-    //pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_RQM_MASK);    
+    //pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_RQM_MASK);
 
     //Indicar seek unidad 0
     pd765_main_status_register |=PD765_MAIN_STATUS_REGISTER_D0B_MASK;
@@ -1252,13 +1252,13 @@ void pd765_handle_command_seek(void)
     //TODO: siempre hay que activarlo cuando se esta en este estado?
     //TODO2: por que no estoy haciendo pd765_phase=PD765_PHASE_EXECUTION ?
     //TODO: no tengo claro que en un seek o recalibrate se haga tambien
-    //pd765_set_interrupt_pending();    
+    //pd765_set_interrupt_pending();
 
     //pd765_interrupt_pending=0;
 
     pd765_if_seek_already_end();
 
-   
+
 }
 
 //Indica que el comando read data se debe detener (no leer sectores siguientes) despues de este
@@ -1272,21 +1272,21 @@ void pd765_handle_command_read_data_put_sector_data_in_bus(int sector_size, int 
 
     for (indice=0;indice<sector_size;indice++) {
         //DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Inicio sector de C: %d R: %d : %XH",pd765_input_parameter_c,pd765_input_parameter_r,iniciosector);
-    
+
         z80_byte return_value=plus3dsk_get_byte_disk(iniciosector+indice);
         pd765_put_buffer(return_value);
 
-    }    
+    }
 }
 
 
 void old_pd765_read_chrn_put_return_in_bus(z80_byte leido_st0,z80_byte leido_id_st1,z80_byte leido_id_st2)
 {
     DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning ST0: %02XH (%s)",leido_st0,(leido_st0 & 32 ? "SE" : ""));
-    pd765_put_buffer(leido_st0);    
+    pd765_put_buffer(leido_st0);
 
     DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning ST1: %02XH",leido_id_st1);
-    pd765_put_buffer(leido_id_st1);    
+    pd765_put_buffer(leido_id_st1);
 
     DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning ST2: %02XH",leido_id_st2);
     pd765_put_buffer(leido_id_st2);
@@ -1294,7 +1294,7 @@ void old_pd765_read_chrn_put_return_in_bus(z80_byte leido_st0,z80_byte leido_id_
 
     z80_byte return_value=pd765_input_parameter_c;
     //return_value=leido_id_c;
-    //if (pd765_input_parameter_r==pd765_input_parameter_eot) return_value++;   
+    //if (pd765_input_parameter_r==pd765_input_parameter_eot) return_value++;
     DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning C: %02XH",return_value);
     pd765_put_buffer(return_value);
 
@@ -1315,7 +1315,7 @@ void old_pd765_read_chrn_put_return_in_bus(z80_byte leido_st0,z80_byte leido_id_
     return_value=pd765_input_parameter_n;
     //return_value=leido_id_n;
     DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning N: %02XH",return_value);
-    pd765_put_buffer(return_value);      
+    pd765_put_buffer(return_value);
 }
 void pd765_handle_command_read_data_read_chrn_etc(int sector_fisico,int put_values_in_bus)
 {
@@ -1328,7 +1328,7 @@ void pd765_handle_command_read_data_read_chrn_etc(int sector_fisico,int put_valu
     //TODO: de momento solo cara 0
     dsk_get_chrn(pd765_pcn,0,sector_fisico,&leido_id_c,&leido_id_h,&leido_id_r,&leido_id_n);
 
-    
+
     pd765_debug_last_sector_id_c_read=leido_id_c;
     pd765_debug_last_sector_id_h_read=leido_id_h;
     pd765_debug_last_sector_id_r_read=leido_id_r;
@@ -1338,7 +1338,7 @@ void pd765_handle_command_read_data_read_chrn_etc(int sector_fisico,int put_valu
     z80_byte leido_st0=pd765_get_st0();
     z80_byte leido_id_st1 ,leido_id_st2;
     //TODO: de momento solo cara 0
-    dsk_get_st12(pd765_pcn,0,sector_fisico,&leido_id_st1,&leido_id_st2);    
+    dsk_get_st12(pd765_pcn,0,sector_fisico,&leido_id_st1,&leido_id_st2);
 
     /*if (anormal_termination) {
         leido_st0 |= PD765_STATUS_REGISTER_ZERO_AT;
@@ -1352,7 +1352,7 @@ void pd765_handle_command_read_data_read_chrn_etc(int sector_fisico,int put_valu
 
     //TODO: otros bits de st1 y st2 en este caso y en read id, por ejemplo missing address mark(d0) en st1
 
-    
+
     if (leido_id_c!=pd765_input_parameter_c) {
         DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Cylinder read from disk (%02XH) is not what asked (%02XH)",leido_id_c,pd765_input_parameter_c);
         //Wrong cylinder
@@ -1402,12 +1402,12 @@ void pd765_handle_command_read_data_read_chrn_etc(int sector_fisico,int put_valu
         */
 
         //TODO: como afecta bit MD??
-        //bubble bobble y black lamp 
+        //bubble bobble y black lamp
 
         //Leido un sector normal, sin marca de borrado
         if ((leido_id_st2 & PD765_STATUS_REGISTER_TWO_CM_MASK)==0) {
             if (pd765_input_parameter_sk) {
-                //el skip ya se ha gestionado desde al llamar a dsk_get_sector 
+                //el skip ya se ha gestionado desde al llamar a dsk_get_sector
                     DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Sector not deleted and SK=1");
                     //sleep(5);
             }
@@ -1428,8 +1428,8 @@ void pd765_handle_command_read_data_read_chrn_etc(int sector_fisico,int put_valu
 
                 //Paris Dakar carga algo mejor si retorno 40h, 80h, 00
                 //leido_st0=0x40; //Abnormal termination of command (NT)
-                //leido_id_st1=PD765_STATUS_REGISTER_ONE_EN_MASK; 
-         
+                //leido_id_st1=PD765_STATUS_REGISTER_ONE_EN_MASK;
+
             }
         }
 
@@ -1451,22 +1451,22 @@ void pd765_handle_command_read_data_read_chrn_etc(int sector_fisico,int put_valu
                 //End of Cylinder. When the FDC tries to access a Sector beyond the final Sector of a Cylinder, this flag is set
                 //TODO: a saber por qué hay que activar este flag, yo solo se que Wec Le Mans (Erbe).dsk espera exactamente
                 //este valor. Si no, no carga
-                leido_id_st1=PD765_STATUS_REGISTER_ONE_EN_MASK; 
+                leido_id_st1=PD765_STATUS_REGISTER_ONE_EN_MASK;
 
                 //quitar el bit de CM
-                leido_id_st2 &= (255-PD765_STATUS_REGISTER_TWO_CM_MASK);     
+                leido_id_st2 &= (255-PD765_STATUS_REGISTER_TWO_CM_MASK);
             }
         }
 
 
         //TODO: quitar el bit de CM de manera general, tiene sentido??
-        //leido_id_st2 &= (255-PD765_STATUS_REGISTER_TWO_CM_MASK);     
+        //leido_id_st2 &= (255-PD765_STATUS_REGISTER_TWO_CM_MASK);
 
 
     }
-    
 
-    
+
+
     if (pd765_command_received==PD765_COMMAND_READ_DATA) {
         /*
         read data
@@ -1482,12 +1482,12 @@ void pd765_handle_command_read_data_read_chrn_etc(int sector_fisico,int put_valu
         //leido un sector borrado
         if (leido_id_st2 & PD765_STATUS_REGISTER_TWO_CM_MASK) {
             if (pd765_input_parameter_sk) {
-                    //el skip ya se ha gestionado desde al llamar a dsk_get_sector 
+                    //el skip ya se ha gestionado desde al llamar a dsk_get_sector
                     DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: next sector when sector deleted and sk=1");
                     //sleep(5);
             }
             else {
-                    
+
                     /*
                     If the FDC reads a Deleted Data Address Mark off the diskette, and the SK bit (bit D5 in the first Command
                     Word) is not set (SK = 0), then the FDC sets the CM (Control Mark) flag in Status Register 2 to a 1 (high),
@@ -1505,7 +1505,7 @@ void pd765_handle_command_read_data_read_chrn_etc(int sector_fisico,int put_valu
 
 
                     //DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: TODO. Sector deleted and SK=0");
-                    //sleep(5);                          
+                    //sleep(5);
             }
         }
         else {
@@ -1516,11 +1516,11 @@ void pd765_handle_command_read_data_read_chrn_etc(int sector_fisico,int put_valu
             else {
                     //leer tal cual
                     //DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: TODO. Sector not deleted and SK=0");
-                    //sleep(5);                          
-            }            
+                    //sleep(5);
+            }
         }
 
-    }        
+    }
 
     // Comprobar CRC
     /*
@@ -1541,8 +1541,8 @@ void pd765_handle_command_read_data_read_chrn_etc(int sector_fisico,int put_valu
     if (put_values_in_bus) {
         pd765_read_chrn_put_return_in_bus(leido_st0,leido_id_st1,leido_id_st2);
     }
-    
- 
+
+
 }
 
 int pd765_total_sectors_read_track=0;
@@ -1586,7 +1586,7 @@ field are not checked when SK = 1.
     pd765_read_command_must_stop_anormal_termination=0;
 
     //Inicializar buffer retorno
-    pd765_reset_buffer();    
+    pd765_reset_buffer();
 
 
     //de momento esto a 0 por si el comando no lee (por dsk no insertado, seek beyond limit, etc)
@@ -1594,7 +1594,7 @@ field are not checked when SK = 1.
 
     if (pd765_common_dsk_not_inserted_readwrite()) {
 
-        pd765_read_command_state=PD765_READ_COMMAND_STATE_ENDING_READING_DATA; 
+        pd765_read_command_state=PD765_READ_COMMAND_STATE_ENDING_READING_DATA;
 
         pd765_read_command_must_stop_anormal_termination=1;
 
@@ -1608,7 +1608,7 @@ field are not checked when SK = 1.
     //TODO: de momento solo cara 0
     if (pd765_common_if_track_unformatted(pd765_pcn,0)) {
 
-        pd765_read_command_state=PD765_READ_COMMAND_STATE_ENDING_READING_DATA; 
+        pd765_read_command_state=PD765_READ_COMMAND_STATE_ENDING_READING_DATA;
 
         pd765_read_command_must_stop_anormal_termination=1;
 
@@ -1616,11 +1616,11 @@ field are not checked when SK = 1.
 
 
         return;
-    }    
+    }
 
 
     //En fase de ejecucion se activa
-    pd765_set_interrupt_pending();    
+    pd765_set_interrupt_pending();
 
     //Cambiamos a fase de resultado
     //TODO: realmente la fase seria ejecucion, arreglar esto
@@ -1635,11 +1635,11 @@ field are not checked when SK = 1.
     pd765_output_parameters_index=0;
 
     //E indicar fase ejecucion ha empezado
-    pd765_main_status_register |=PD765_MAIN_STATUS_REGISTER_EXM_MASK;    
+    pd765_main_status_register |=PD765_MAIN_STATUS_REGISTER_EXM_MASK;
 
     //Mientras dura, indicar que FDC esta busy
     //TODO: aunque creo que esto iria en la fase de ejecucion y no en la de resultado
-    pd765_main_status_register |=PD765_MAIN_STATUS_REGISTER_CB_MASK;    
+    pd765_main_status_register |=PD765_MAIN_STATUS_REGISTER_CB_MASK;
 
 
     //E indicar que hay que leer datos
@@ -1664,9 +1664,9 @@ field are not checked when SK = 1.
 
 
 
-   sector_size=dsk_get_sector_size_track(pd765_pcn,0); //TODO: de momento una cara solamente; 
+   sector_size=dsk_get_sector_size_track(pd765_pcn,0); //TODO: de momento una cara solamente;
 
- 
+
     z80_byte sector_fisico;
 
 
@@ -1694,7 +1694,7 @@ field are not checked when SK = 1.
         DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Trying to seek next sector after physical %d on track %d with id %02XH",pd765_ultimo_sector_fisico_read,pd765_pcn,pd765_read_command_searching_parameter_r);
         iniciosector=dsk_get_sector(pd765_pcn,pd765_read_command_searching_parameter_r,&sector_fisico,pd765_ultimo_sector_fisico_read,search_deleted,pd765_input_parameter_sk,1);
 
-        
+
         if (iniciosector<0) {
             //no hay siguiente, volver a girar la pista
             DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Next sector with asked ID not found. Starting from the beginning of track");
@@ -1704,19 +1704,19 @@ field are not checked when SK = 1.
     }
 
     //gestionar error si sector no encontrado
-    //Megaphoenix esta dando este error: 
+    //Megaphoenix esta dando este error:
     //NOT Found sector ID 02H on track 4
     //Rainbow islands tambien, intenta leer de pista 39, que no esta formateada
     //Tambien abadia del crimen
     if (iniciosector<0) {
         /*
-        If the FDC detects the Index Hole twice without finding the right sector, (indicated in "R"), 
+        If the FDC detects the Index Hole twice without finding the right sector, (indicated in "R"),
         then the FDC sets the ND (No Data) flag in Status Register 1 to a 1 (high), and terminates the Read Data Command.
         (Status Register 0 also has bits 7 and 6 set to 0 and 1 respectively.)
         */
 
        //TODO: valores de retorno de CRHN son correctos? Que se devuelve en este caso?
-       //Creo que no aplicaria la tabla de la pagina 9, porque siempre habla de "ultimo sector transferido", y si 
+       //Creo que no aplicaria la tabla de la pagina 9, porque siempre habla de "ultimo sector transferido", y si
        //por ejemplo no hemos ni transferido un sector, que habria que poner entonces?
 
         DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: sector not found");
@@ -1732,7 +1732,7 @@ field are not checked when SK = 1.
 
         //E indicar que hay que leer datos
         pd765_main_status_register |=PD765_MAIN_STATUS_REGISTER_DIO_MASK;
-           
+
 
         z80_byte return_value=pd765_get_st0();
 
@@ -1746,9 +1746,9 @@ field are not checked when SK = 1.
         DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning ST1: %02XH",return_value);
         pd765_put_buffer(return_value);
 
-        return_value=PD765_STATUS_REGISTER_TWO_MD_MASK;        
+        return_value=PD765_STATUS_REGISTER_TWO_MD_MASK;
         DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning ST2: %02XH",return_value);
-        pd765_put_buffer(return_value);     
+        pd765_put_buffer(return_value);
 
 
         pd765_read_put_chrn_in_bus();
@@ -1772,12 +1772,12 @@ field are not checked when SK = 1.
 
         return_value=pd765_input_parameter_n;
         DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning N: %02XH",return_value);
-        pd765_put_buffer(return_value);       
-        */  
+        pd765_put_buffer(return_value);
+        */
 
 
 
-        pd765_read_command_state=PD765_READ_COMMAND_STATE_ENDING_READING_DATA;  
+        pd765_read_command_state=PD765_READ_COMMAND_STATE_ENDING_READING_DATA;
 
         return;
 
@@ -1788,7 +1788,7 @@ field are not checked when SK = 1.
     //Indicar ultimo sector leido para debug
     pd765_debug_last_sector_read=sector_fisico;
 
-    //Ultimo sector leido 
+    //Ultimo sector leido
     pd765_ultimo_sector_fisico_read=sector_fisico;
 
 
@@ -1817,7 +1817,7 @@ field are not checked when SK = 1.
         //se van a leer menos datos
     }
 
-    
+
 
     pd765_last_sector_size_read_data=sector_size;
 
@@ -1830,13 +1830,13 @@ field are not checked when SK = 1.
     //Evaluar condiciones que hacen abortar el comando
     pd765_handle_command_read_data_read_chrn_etc(pd765_ultimo_sector_fisico_read,0);
 
-   
+
 }
 
 
 void pd765_write_put_chrn_in_bus(void)
 {
-  
+
     z80_byte return_value;
 
     return_value=pd765_input_parameter_c+1;
@@ -1856,10 +1856,10 @@ void pd765_write_put_chrn_in_bus(void)
 
     return_value=pd765_input_parameter_n;
     DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning N: %02XH",return_value);
-    pd765_put_buffer(return_value);    
-    
+    pd765_put_buffer(return_value);
 
-  
+
+
 }
 
 
@@ -1871,7 +1871,7 @@ void pd765_read_parameters_seek(z80_byte value)
         pd765_input_parameter_hd=(value>>2) & 0x01;
         pd765_input_parameter_us1=(value>>1) & 0x01;
         pd765_input_parameter_us0=value  & 0x01;
-        
+
         DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: HD=%XH US1=%XH US0=%XH",pd765_input_parameter_hd,pd765_input_parameter_us1,pd765_input_parameter_us0);
 
         pd765_input_parameters_index++;
@@ -1883,11 +1883,11 @@ void pd765_read_parameters_seek(z80_byte value)
 
         //Fin de comando
         pd765_input_parameters_index=0;
-        
+
         DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: End command parameters for SEEK");
 
         pd765_handle_command_seek();
-    }       
+    }
 }
 
 
@@ -1946,7 +1946,7 @@ const char *pd765_last_command_name(void)
 
         case PD765_COMMAND_WRITE_DATA:
             return pd765_last_command_name_write_data;
-        break;        
+        break;
 
         case PD765_COMMAND_FORMAT_TRACK:
             return pd765_last_command_name_format_track;
@@ -1970,7 +1970,7 @@ void pd765_read_parameters_read_data(z80_byte value)
         pd765_input_parameter_hd=(value>>2) & 0x01;
         pd765_input_parameter_us1=(value>>1) & 0x01;
         pd765_input_parameter_us0=value  & 0x01;
-        
+
         DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: HD=%XH US1=%XH US0=%XH",pd765_input_parameter_hd,pd765_input_parameter_us1,pd765_input_parameter_us0);
 
         pd765_input_parameters_index++;
@@ -1981,7 +1981,7 @@ void pd765_read_parameters_read_data(z80_byte value)
         DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: C=%XH",pd765_input_parameter_c);
 
         pd765_input_parameters_index++;
-    }  
+    }
 
     else if (pd765_input_parameters_index==3) {
         pd765_input_parameter_h=value;
@@ -2008,21 +2008,21 @@ void pd765_read_parameters_read_data(z80_byte value)
         }
 
         pd765_input_parameters_index++;
-    }   
+    }
 
     else if (pd765_input_parameters_index==6) {
         pd765_input_parameter_eot=value;
         DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: EOT=%XH",pd765_input_parameter_eot);
 
         pd765_input_parameters_index++;
-    } 
+    }
 
     else if (pd765_input_parameters_index==7) {
         pd765_input_parameter_gpl=value;
         DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: GPL=%XH",pd765_input_parameter_gpl);
 
         pd765_input_parameters_index++;
-    } 
+    }
 
     else if (pd765_input_parameters_index==8) {
         pd765_input_parameter_dtl=value;
@@ -2031,13 +2031,13 @@ void pd765_read_parameters_read_data(z80_byte value)
 
         //Fin de comando
         pd765_input_parameters_index=0;
-        
+
         DBG_PRINT_PD765 VERBOSE_INFO,"PD765: End receiving command parameters for %s."
         " C=%02XH H=%02XH R=%02XH N=%02XH EOT=%02XH GPL=%02XH DTL=%02XH. Current track: %02XH",
         pd765_last_command_name(),
         pd765_input_parameter_c,pd765_input_parameter_h,pd765_input_parameter_r,pd765_input_parameter_n,
         pd765_input_parameter_eot,pd765_input_parameter_gpl,pd765_input_parameter_dtl,pd765_pcn
-        
+
         );
 
 
@@ -2053,7 +2053,7 @@ void pd765_read_parameters_read_data(z80_byte value)
         pd765_read_command_searching_parameter_r=pd765_input_parameter_r;
 
         pd765_handle_command_read_data();
-    }       
+    }
 
 
 }
@@ -2067,7 +2067,7 @@ void pd765_handle_command_start_write_data(void)
     pd765_write_command_must_stop_anormal_termination=0;
 
     //Inicializar buffer retorno
-    pd765_reset_buffer();    
+    pd765_reset_buffer();
 
 
     //de momento esto a 0 por si el comando no lee (por dsk no insertado, seek beyond limit, etc)
@@ -2075,7 +2075,7 @@ void pd765_handle_command_start_write_data(void)
 
     if (pd765_common_dsk_not_inserted_readwrite()) {
 
-        pd765_write_command_state=PD765_WRITE_COMMAND_STATE_ENDING_WRITING_DATA; 
+        pd765_write_command_state=PD765_WRITE_COMMAND_STATE_ENDING_WRITING_DATA;
 
         pd765_write_command_must_stop_anormal_termination=1;
 
@@ -2089,7 +2089,7 @@ void pd765_handle_command_start_write_data(void)
     //TODO: de momento solo cara 0
     if (pd765_common_if_track_unformatted(pd765_pcn,0)) {
 
-        pd765_write_command_state=PD765_WRITE_COMMAND_STATE_ENDING_WRITING_DATA; 
+        pd765_write_command_state=PD765_WRITE_COMMAND_STATE_ENDING_WRITING_DATA;
 
         pd765_write_command_must_stop_anormal_termination=1;
 
@@ -2097,10 +2097,10 @@ void pd765_handle_command_start_write_data(void)
 
 
         return;
-    }    
+    }
 
     //En fase de ejecucion se activa
-    pd765_set_interrupt_pending();    
+    pd765_set_interrupt_pending();
 
     //Cambiamos a fase de resultado
     //TODO: realmente la fase seria ejecucion, arreglar esto
@@ -2115,11 +2115,11 @@ void pd765_handle_command_start_write_data(void)
     pd765_output_parameters_index=0;
 
     //E indicar fase ejecucion ha empezado
-    pd765_main_status_register |=PD765_MAIN_STATUS_REGISTER_EXM_MASK;    
+    pd765_main_status_register |=PD765_MAIN_STATUS_REGISTER_EXM_MASK;
 
     //Mientras dura, indicar que FDC esta busy
     //TODO: aunque creo que esto iria en la fase de ejecucion y no en la de resultado
-    pd765_main_status_register |=PD765_MAIN_STATUS_REGISTER_CB_MASK;    
+    pd765_main_status_register |=PD765_MAIN_STATUS_REGISTER_CB_MASK;
 
 
     //E indicar que hay que escribir datos
@@ -2144,9 +2144,9 @@ void pd765_handle_command_start_write_data(void)
 
 
 
-   sector_size=dsk_get_sector_size_track(pd765_pcn,0); //TODO: de momento una cara solamente; 
+   sector_size=dsk_get_sector_size_track(pd765_pcn,0); //TODO: de momento una cara solamente;
 
- 
+
     z80_byte sector_fisico;
 
 
@@ -2176,7 +2176,7 @@ void pd765_handle_command_start_write_data(void)
         DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Trying to seek next sector after physical %d on track %d with id %02XH",pd765_ultimo_sector_fisico_write,pd765_pcn,pd765_write_command_searching_parameter_r);
         iniciosector=dsk_get_sector(pd765_pcn,pd765_write_command_searching_parameter_r,&sector_fisico,pd765_ultimo_sector_fisico_write,search_deleted,pd765_input_parameter_sk,1);
 
-        
+
         if (iniciosector<0) {
             //no hay siguiente, volver a girar la pista
             DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Next sector with asked ID not found. Starting from the beginning of track");
@@ -2186,19 +2186,19 @@ void pd765_handle_command_start_write_data(void)
     }
 
     //gestionar error si sector no encontrado
-    //Megaphoenix esta dando este error: 
+    //Megaphoenix esta dando este error:
     //NOT Found sector ID 02H on track 4
     //Rainbow islands tambien, intenta leer de pista 39, que no esta formateada
     //Tambien abadia del crimen
     if (iniciosector<0) {
         /*
-        If the FDC detects the Index Hole twice without finding the right sector, (indicated in "R"), 
+        If the FDC detects the Index Hole twice without finding the right sector, (indicated in "R"),
         then the FDC sets the ND (No Data) flag in Status Register 1 to a 1 (high), and terminates the Read Data Command.
         (Status Register 0 also has bits 7 and 6 set to 0 and 1 respectively.)
         */
 
        //TODO: valores de retorno de CRHN son correctos? Que se devuelve en este caso?
-       //Creo que no aplicaria la tabla de la pagina 9, porque siempre habla de "ultimo sector transferido", y si 
+       //Creo que no aplicaria la tabla de la pagina 9, porque siempre habla de "ultimo sector transferido", y si
        //por ejemplo no hemos ni transferido un sector, que habria que poner entonces?
 
         DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: sector not found");
@@ -2214,7 +2214,7 @@ void pd765_handle_command_start_write_data(void)
 
         //E indicar que hay que leer datos
         pd765_main_status_register |=PD765_MAIN_STATUS_REGISTER_DIO_MASK;
-           
+
 
         z80_byte return_value=pd765_get_st0();
 
@@ -2228,15 +2228,15 @@ void pd765_handle_command_start_write_data(void)
         DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning ST1: %02XH",return_value);
         pd765_put_buffer(return_value);
 
-        return_value=PD765_STATUS_REGISTER_TWO_MD_MASK;        
+        return_value=PD765_STATUS_REGISTER_TWO_MD_MASK;
         DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning ST2: %02XH",return_value);
-        pd765_put_buffer(return_value);     
+        pd765_put_buffer(return_value);
 
 
         pd765_write_put_chrn_in_bus();
 
 
-        pd765_write_command_state=PD765_WRITE_COMMAND_STATE_ENDING_WRITING_DATA;  
+        pd765_write_command_state=PD765_WRITE_COMMAND_STATE_ENDING_WRITING_DATA;
 
         return;
 
@@ -2247,7 +2247,7 @@ void pd765_handle_command_start_write_data(void)
     //Indicar ultimo sector leido para debug
     pd765_debug_last_sector_write=sector_fisico;
 
-    //Ultimo sector leido 
+    //Ultimo sector leido
     pd765_ultimo_sector_fisico_write=sector_fisico;
 
 
@@ -2276,7 +2276,7 @@ void pd765_handle_command_start_write_data(void)
         //se van a leer menos datos
     }
 
-    
+
 
     pd765_last_sector_size_write_data=sector_size;
 
@@ -2294,7 +2294,7 @@ void pd765_handle_command_start_write_data(void)
 
     pd765_last_inicio_sector_read=iniciosector;
 
-   
+
 }
 
 
@@ -2307,11 +2307,11 @@ void pd765_handle_command_write_data_put_sector_data_from_bus(int sector_size, i
         z80_byte byte_sector=pd765_get_buffer();
 
         //DBG_PRINT_PD765 VERBOSE_DEBUG,"%c",(byte_sector>=32 && byte_sector<=126 ? byte_sector : '?'));
-    
-        plus3dsk_put_byte_disk(iniciosector+indice,byte_sector);
-        
 
-    }    
+        plus3dsk_put_byte_disk(iniciosector+indice,byte_sector);
+
+
+    }
     //DBG_PRINT_PD765 VERBOSE_DEBUG,"");
 }
 
@@ -2330,10 +2330,10 @@ int pd765_if_write_protected(void)
     pd765_set_interrupt_pending();
 
     //E indicar que hay que leer datos
-    pd765_main_status_register |=PD765_MAIN_STATUS_REGISTER_DIO_MASK;     
+    pd765_main_status_register |=PD765_MAIN_STATUS_REGISTER_DIO_MASK;
 
     //E indicar fase ejecucion ha finalizado
-    pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_EXM_MASK);                       
+    pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_EXM_MASK);
 
     //No esperamos mas parametros de input
     //Fin de comando
@@ -2350,7 +2350,7 @@ int pd765_if_write_protected(void)
     DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning ST0: %02XH (%s)",leido_st0,(leido_st0 & 32 ? "SE" : ""));
     pd765_put_buffer(leido_st0);
 
-    
+
     leido_st1 |=PD765_STATUS_REGISTER_ONE_NW_MASK;
 
     DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning ST1: %02XH",leido_st1);
@@ -2378,7 +2378,7 @@ int pd765_if_write_protected(void)
 
     return_value=pd765_input_parameter_n;
     DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning N: %02XH",return_value);
-    pd765_put_buffer(return_value);                                
+    pd765_put_buffer(return_value);
 
     return 1;
 
@@ -2398,7 +2398,7 @@ void pd765_read_parameters_write_data(z80_byte value)
         pd765_input_parameter_hd=(value>>2) & 0x01;
         pd765_input_parameter_us1=(value>>1) & 0x01;
         pd765_input_parameter_us0=value  & 0x01;
-        
+
         DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: HD=%XH US1=%XH US0=%XH",pd765_input_parameter_hd,pd765_input_parameter_us1,pd765_input_parameter_us0);
 
         pd765_input_parameters_index++;
@@ -2409,7 +2409,7 @@ void pd765_read_parameters_write_data(z80_byte value)
         DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: C=%XH",pd765_input_parameter_c);
 
         pd765_input_parameters_index++;
-    }  
+    }
 
     else if (pd765_input_parameters_index==3) {
         pd765_input_parameter_h=value;
@@ -2436,21 +2436,21 @@ void pd765_read_parameters_write_data(z80_byte value)
         }
 
         pd765_input_parameters_index++;
-    }   
+    }
 
     else if (pd765_input_parameters_index==6) {
         pd765_input_parameter_eot=value;
         DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: EOT=%XH",pd765_input_parameter_eot);
 
         pd765_input_parameters_index++;
-    } 
+    }
 
     else if (pd765_input_parameters_index==7) {
         pd765_input_parameter_gpl=value;
         DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: GPL=%XH",pd765_input_parameter_gpl);
 
         pd765_input_parameters_index++;
-    } 
+    }
 
     else if (pd765_input_parameters_index==8) {
         pd765_input_parameter_dtl=value;
@@ -2460,7 +2460,7 @@ void pd765_read_parameters_write_data(z80_byte value)
         //Fin de comando
         //pd765_input_parameters_index=0;
         pd765_input_parameters_index++;
-        
+
         DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: End command parameters for %s. Writing to CHRN=%02XH %02XH %02XH %02XH ",
         pd765_last_command_name(),pd765_input_parameter_c,pd765_input_parameter_h,pd765_input_parameter_r,pd765_input_parameter_n
         );
@@ -2471,17 +2471,17 @@ void pd765_read_parameters_write_data(z80_byte value)
 
         pd765_handle_command_start_write_data();
 
-    }    
+    }
 
     //Leyendo datos de sector a escribir
-    else if (pd765_input_parameters_index>=9 && pd765_input_parameters_index<9+pd765_last_sector_size_write_data) {   
+    else if (pd765_input_parameters_index>=9 && pd765_input_parameters_index<9+pd765_last_sector_size_write_data) {
         DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Writing sector index %d",pd765_input_parameters_index-9);
 
         //notificar visual floppy
         menu_visual_floppy_buffer_add(pd765_pcn,pd765_ultimo_sector_fisico_write,pd765_input_parameters_index-9);
 
         //Estadisticas escritura
-        pd765_write_stats_bytes_sec_acumulated++;        
+        pd765_write_stats_bytes_sec_acumulated++;
 
         //meter dato en buffer
         pd765_put_buffer(value);
@@ -2506,7 +2506,7 @@ void pd765_read_parameters_write_data(z80_byte value)
                 pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_EXM_MASK);
 
 
-                pd765_set_interrupt_pending();    
+                pd765_set_interrupt_pending();
 
                 //Cambiamos a fase de resultado
                 pd765_phase=PD765_PHASE_RESULT;
@@ -2521,13 +2521,13 @@ void pd765_read_parameters_write_data(z80_byte value)
 
                 z80_byte leido_st0=pd765_get_st0();
                 z80_byte leido_st1=pd765_get_st1();
-                z80_byte leido_st2=pd765_get_st2();                
+                z80_byte leido_st2=pd765_get_st2();
 
                 DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning ST0: %02XH (%s)",leido_st0,(leido_st0 & 32 ? "SE" : ""));
-                pd765_put_buffer(leido_st0);    
+                pd765_put_buffer(leido_st0);
 
                 DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning ST1: %02XH",leido_st1);
-                pd765_put_buffer(leido_st1);    
+                pd765_put_buffer(leido_st1);
 
                 DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning ST2: %02XH",leido_st2);
                 pd765_put_buffer(leido_st2);
@@ -2552,12 +2552,12 @@ void pd765_read_parameters_write_data(z80_byte value)
 
                 return_value=pd765_input_parameter_n;
                 DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning N: %02XH",return_value);
-                pd765_put_buffer(return_value);  
-
-                              
+                pd765_put_buffer(return_value);
 
 
-        
+
+
+
     }
 
 
@@ -2573,13 +2573,13 @@ int pd765_formatting_currentsector=0;
 void pd765_format_sector_track(int track,int sector,int sector_size,z80_byte fill_byte,
     z80_byte parametro_c,z80_byte parametro_h,z80_byte parametro_r,z80_byte parametro_n)
 {
-    //TODO escribir valores CHRN sector y otros necesarios... realmente solo seria CHRN, 
+    //TODO escribir valores CHRN sector y otros necesarios... realmente solo seria CHRN,
     //resto de info del dsk se tiene que conservar y tener creado al inicializar un dsk.
     //O no? por si partimos de un dsk con formato extraño y lo queremos inicializar entero? por tanto hay que escribir mas cosas aparte de CHRN
     //tal y como dice la especificacion, meter formato IBM noseque...
 
     //Escribir CHRN
-    //TODO: solo una cara 
+    //TODO: solo una cara
     dsk_put_chrn(track,0,sector,parametro_c,parametro_h,parametro_r,parametro_n);
 
     //Escribir valores ST1 y ST2
@@ -2607,7 +2607,7 @@ void pd765_format_sector_track(int track,int sector,int sector_size,z80_byte fil
     if (iniciosector<0) {
         DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: TODO handle error");
         return;
-    }   
+    }
 
     int indice;
 
@@ -2620,12 +2620,12 @@ void pd765_format_sector_track(int track,int sector,int sector_size,z80_byte fil
         menu_visual_floppy_buffer_add(track,sector,indice);
 
         //Estadisticas escritura
-        pd765_write_stats_bytes_sec_acumulated++;        
+        pd765_write_stats_bytes_sec_acumulated++;
 
 
     }
     //DBG_PRINT_PD765 VERBOSE_DEBUG,"");
-  
+
 }
 
 
@@ -2641,7 +2641,7 @@ void pd765_read_parameters_format_track(z80_byte value)
         pd765_input_parameter_hd=(value>>2) & 0x01;
         pd765_input_parameter_us1=(value>>1) & 0x01;
         pd765_input_parameter_us0=value  & 0x01;
-        
+
         DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: HD=%XH US1=%XH US0=%XH",pd765_input_parameter_hd,pd765_input_parameter_us1,pd765_input_parameter_us0);
 
         pd765_input_parameters_index++;
@@ -2652,7 +2652,7 @@ void pd765_read_parameters_format_track(z80_byte value)
         DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: N=%XH",pd765_input_parameter_n_format);
 
         pd765_input_parameters_index++;
-    }  
+    }
 
     else if (pd765_input_parameters_index==3) {
         pd765_input_parameter_sc=value;
@@ -2674,7 +2674,7 @@ void pd765_read_parameters_format_track(z80_byte value)
 
         pd765_input_parameters_index++;
 
-        //En fase de ejecucion se activa 
+        //En fase de ejecucion se activa
         pd765_set_interrupt_pending();
 
         //TODO calcular bien este valore
@@ -2688,24 +2688,24 @@ void pd765_read_parameters_format_track(z80_byte value)
         pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_DIO_MASK);
 
         //Decir que ya no esta busy
-        pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_CB_MASK);            
+        pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_CB_MASK);
 
         //Y pasamos a fase command
         pd765_phase=PD765_PHASE_COMMAND;
 
         //Fin de comando
-        pd765_input_parameters_index=0;   
+        pd765_input_parameters_index=0;
         */
 
         //sleep(3);
-      
+
 
     //E indicar fase ejecucion para recibir valores CHRN de este sector a formatear
-    pd765_main_status_register |=PD765_MAIN_STATUS_REGISTER_EXM_MASK;        
-    
+    pd765_main_status_register |=PD765_MAIN_STATUS_REGISTER_EXM_MASK;
 
-    }   
-    
+
+    }
+
     else if (pd765_input_parameters_index>=6) {
         //Recepcion de cada chrn de cada sector
         int indice=pd765_input_parameters_index-6;
@@ -2754,16 +2754,16 @@ void pd765_read_parameters_format_track(z80_byte value)
                 pd765_phase=PD765_PHASE_RESULT;
 
                 //E indicar que hay que leer datos
-                pd765_main_status_register |=PD765_MAIN_STATUS_REGISTER_DIO_MASK;     
+                pd765_main_status_register |=PD765_MAIN_STATUS_REGISTER_DIO_MASK;
 
                 //E indicar fase ejecucion ha finalizado
-                pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_EXM_MASK);                       
+                pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_EXM_MASK);
 
                 //No esperamos mas parametros de input
                 //Fin de comando
                 pd765_input_parameters_index=0;
 
-                pd765_set_interrupt_pending();    
+                pd765_set_interrupt_pending();
 
                 // meter datos st0,st1, st2,chrn
                 pd765_reset_buffer();
@@ -2800,7 +2800,7 @@ void pd765_read_parameters_format_track(z80_byte value)
 
                 return_value=pd765_input_parameter_n;
                 DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning N: %02XH",return_value);
-                pd765_put_buffer(return_value);                                
+                pd765_put_buffer(return_value);
 
 
             //sleep(5);
@@ -2810,8 +2810,8 @@ void pd765_read_parameters_format_track(z80_byte value)
             pd765_input_parameters_index++;
             //sleep(1);
         }
-    } 
-    
+    }
+
 
 
 
@@ -2835,7 +2835,7 @@ void pd765_read_parameters_format_track(z80_byte value)
                 pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_EXM_MASK);
 
 
-                pd765_set_interrupt_pending();    
+                pd765_set_interrupt_pending();
 
                 //Cambiamos a fase de resultado
                 pd765_phase=PD765_PHASE_RESULT;
@@ -2850,13 +2850,13 @@ void pd765_read_parameters_format_track(z80_byte value)
 
                 z80_byte leido_st0=pd765_get_st0();
                 z80_byte leido_st1=pd765_get_st1();
-                z80_byte leido_st2=pd765_get_st2();                
+                z80_byte leido_st2=pd765_get_st2();
 
                 DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning ST0: %02XH (%s)",leido_st0,(leido_st0 & 32 ? "SE" : ""));
-                pd765_put_buffer(leido_st0);    
+                pd765_put_buffer(leido_st0);
 
                 DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning ST1: %02XH",leido_st1);
-                pd765_put_buffer(leido_st1);    
+                pd765_put_buffer(leido_st1);
 
                 DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning ST2: %02XH",leido_st2);
                 pd765_put_buffer(leido_st2);
@@ -2881,12 +2881,12 @@ void pd765_read_parameters_format_track(z80_byte value)
 
                 return_value=pd765_input_parameter_n;
                 DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning N: %02XH",return_value);
-                pd765_put_buffer(return_value);  
-
-                              
+                pd765_put_buffer(return_value);
 
 
-        
+
+
+
     }
     */
 
@@ -2899,7 +2899,7 @@ void pd765_write_handle_phase_command(z80_byte value)
     if (pd765_input_parameters_index==0) {
         //Hay que recibir el comando
         DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Byte command: %02XH",value);
-        
+
         //si esta haciendo seek y se lanza otro comando no seek, no aceptar
         if (signal_se.running) {
             if (value!=7 && value!=0xf) {
@@ -2907,7 +2907,7 @@ void pd765_write_handle_phase_command(z80_byte value)
                 return;
             }
         }
-        
+
 
         if (value==8 && !pd765_interrupt_pending) {
             DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Received command SENSE INTERRUPT without interrupt pending. Will generate invalid command");
@@ -2924,14 +2924,14 @@ void pd765_write_handle_phase_command(z80_byte value)
             //Sense drive status
             DBG_PRINT_PD765 VERBOSE_INFO,"PD765: Received command SENSE DRIVE STATUS");
             pd765_command_received=PD765_COMMAND_SENSE_DRIVE_STATUS;
-            pd765_input_parameters_index++;            
+            pd765_input_parameters_index++;
         }
 
         else if (value==7) {
             //Recalibrate
             DBG_PRINT_PD765 VERBOSE_INFO,"PD765: Received command RECALIBRATE");
             pd765_command_received=PD765_COMMAND_RECALIBRATE;
-            pd765_input_parameters_index++;            
+            pd765_input_parameters_index++;
         }
 
         else if (value==8 && pd765_interrupt_pending) {
@@ -2941,7 +2941,7 @@ void pd765_write_handle_phase_command(z80_byte value)
 
             pd765_interrupt_pending=0;
 
-            
+
             //No tiene parametros. Solo resultados
             pd765_handle_command_sense_interrupt_status();
         }
@@ -2951,7 +2951,7 @@ void pd765_write_handle_phase_command(z80_byte value)
             //TODO: bit MF
             DBG_PRINT_PD765 VERBOSE_INFO,"PD765: Received command READ ID. Current track: %02XH",pd765_pcn);
             pd765_command_received=PD765_COMMAND_READ_ID;
-            pd765_input_parameters_index++; ;            
+            pd765_input_parameters_index++; ;
         }
 
         else if ((value & 0x1F)==0x06) {
@@ -2970,8 +2970,8 @@ void pd765_write_handle_phase_command(z80_byte value)
 
             pd765_command_received=PD765_COMMAND_READ_DATA;
 
-            pd765_input_parameters_index++;         
-        }    
+            pd765_input_parameters_index++;
+        }
 
         else if ((value & 0x1F)==0x0c) {
             //Read deleted data
@@ -2982,17 +2982,17 @@ void pd765_write_handle_phase_command(z80_byte value)
             DBG_PRINT_PD765 VERBOSE_INFO,"PD765: Received command READ DELETED DATA. MT=%d MF=%d SK=%d. Current track: %02XH",
                 pd765_input_parameter_mt,pd765_input_parameter_mf,pd765_input_parameter_sk,pd765_pcn);
             //sleep(10);
-            
+
             if (pd765_input_parameter_mt) {
                 DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: MT parameter not handled yet");
                 //sleep(3);
             }
 
-             
+
             pd765_command_received=PD765_COMMAND_READ_DELETED_DATA;
 
-            pd765_input_parameters_index++;         
-        }   
+            pd765_input_parameters_index++;
+        }
 
         //Batman - The Movie (Erbe).dsk usa esto
         else if ((value & 0x9F)==0x02) {
@@ -3003,11 +3003,11 @@ void pd765_write_handle_phase_command(z80_byte value)
             pd765_input_parameter_sk=(value>>5)&1;
             DBG_PRINT_PD765 VERBOSE_INFO,"PD765: Received command READ TRACK. MF=%d SK=%d. Current track: %02XH",
                 pd765_input_parameter_mf,pd765_input_parameter_sk,pd765_pcn);
-           
+
 
             pd765_command_received=PD765_COMMAND_READ_TRACK;
 
-            pd765_input_parameters_index++;         
+            pd765_input_parameters_index++;
         }
 
         else if ((value & 0x3F)==0x05) {
@@ -3026,9 +3026,9 @@ void pd765_write_handle_phase_command(z80_byte value)
             pd765_command_received=PD765_COMMAND_WRITE_DATA;
 
             //Indicamos que el icono es el de grabado, 3 segundos de tiempo
-            cf2_floppy_icon_is_saving=3;            
+            cf2_floppy_icon_is_saving=3;
 
-            pd765_input_parameters_index++;         
+            pd765_input_parameters_index++;
         }
 
         else if ((value & 0xBF)==0x0D) {
@@ -3044,15 +3044,15 @@ void pd765_write_handle_phase_command(z80_byte value)
             //Indicamos que el icono es el de grabado, 3 segundos de tiempo
             cf2_floppy_icon_is_saving=3;
 
-            pd765_input_parameters_index++;         
-        }                                    
+            pd765_input_parameters_index++;
+        }
 
         else if (value==0x0F) {
             //Seek
             DBG_PRINT_PD765 VERBOSE_INFO,"PD765: Received command SEEK");
             pd765_command_received=PD765_COMMAND_SEEK;
-            pd765_input_parameters_index++;            
-        }                
+            pd765_input_parameters_index++;
+        }
 
         else {
             DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Received command INVALID");
@@ -3073,15 +3073,15 @@ void pd765_write_handle_phase_command(z80_byte value)
         DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Receiving command parameters. Index=%d",pd765_input_parameters_index);
         switch(pd765_command_received) {
             case PD765_COMMAND_SPECIFY:
-                pd765_read_parameters_specify(value); 
+                pd765_read_parameters_specify(value);
             break;
 
             case PD765_COMMAND_SENSE_DRIVE_STATUS:
-                pd765_read_parameters_sense_drive_status(value); 
-            break;    
+                pd765_read_parameters_sense_drive_status(value);
+            break;
 
             case PD765_COMMAND_RECALIBRATE:
-                pd765_read_parameters_recalibrate(value); 
+                pd765_read_parameters_recalibrate(value);
             break;
 
             case PD765_COMMAND_SENSE_INTERRUPT_STATUS:
@@ -3090,30 +3090,30 @@ void pd765_write_handle_phase_command(z80_byte value)
 
 
             case PD765_COMMAND_READ_ID:
-                pd765_read_parameters_read_id(value); 
-            break; 
+                pd765_read_parameters_read_id(value);
+            break;
 
             case PD765_COMMAND_READ_DATA:
             case PD765_COMMAND_READ_DELETED_DATA:
             case PD765_COMMAND_READ_TRACK:
-                pd765_read_parameters_read_data(value); 
+                pd765_read_parameters_read_data(value);
             break;
 
             case PD765_COMMAND_WRITE_DATA:
-                pd765_read_parameters_write_data(value); 
+                pd765_read_parameters_write_data(value);
             break;
 
             case PD765_COMMAND_FORMAT_TRACK:
-                pd765_read_parameters_format_track(value); 
-            break;                             
+                pd765_read_parameters_format_track(value);
+            break;
 
             case PD765_COMMAND_SEEK:
-                pd765_read_parameters_seek(value); 
-            break;   
+                pd765_read_parameters_seek(value);
+            break;
 
             case PD765_COMMAND_INVALID:
                 DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: ERROR INVALID command has no input parameters");
-            break;                                         
+            break;
         }
     }
 }
@@ -3185,15 +3185,15 @@ z80_byte pd765_read_result_command_invalid(void)
 
         /*
         INVALID
-        If an invalid command is sent to the FDC (a commend not defined above), then the FDC will terminate the command 
-        after bits 7 and 6 of Status Register 0 are set to 1 and 0 respectively. No interrupt is generated by the MPD766 
-        during this condition. Bit 6 and bit 7 (DIO and RQM) in the Main Status Register are both high ("1") indicating 
-        to the processor that the uPD765 is in the Result Phase and the contents of Status Register 0 (STO) must be read. 
+        If an invalid command is sent to the FDC (a commend not defined above), then the FDC will terminate the command
+        after bits 7 and 6 of Status Register 0 are set to 1 and 0 respectively. No interrupt is generated by the MPD766
+        during this condition. Bit 6 and bit 7 (DIO and RQM) in the Main Status Register are both high ("1") indicating
+        to the processor that the uPD765 is in the Result Phase and the contents of Status Register 0 (STO) must be read.
         When the processor reads Status Register 0 it will find a 80 hex indicating an invalid command was received.
-        A Sense Interrupt Status Command must be sent after a Seek or Recalibrate Interrupt, otherwise the FDC will consider 
+        A Sense Interrupt Status Command must be sent after a Seek or Recalibrate Interrupt, otherwise the FDC will consider
         the next command to be an Invelid Command.
         In some applications the user may wish to use this command as a No-Op command, to place the FDC in a standby or no operation state.
-        */        
+        */
 
         return 0x80;
     }
@@ -3222,12 +3222,12 @@ z80_byte pd765_read_result_command_sense_interrupt_status(void)
     3.    End of Seek or Recalibrate Command
     4.    During Execution Phase in the NON-DMA Mode
 
-    Interrupts caused by reasons 1 and 4 above occur during normal command operations and are easily 
-    discernible by the processor. During an execution phase in NON-DMA Mode, DB5 in Main Status Register is high. 
-    Upon entering Result Phase this bit gets clear. Reason 1 and 4 does not require Sense Interrupt Status command. 
-    The interrupt is cleared by reading/writing data to FDC. 
-    Interrupts caused by reasons 2 and 3 above may be uniquely 
-    identified with the aid of the Sense Interrupt Status Commend. This command when issued resets the interrupt signal 
+    Interrupts caused by reasons 1 and 4 above occur during normal command operations and are easily
+    discernible by the processor. During an execution phase in NON-DMA Mode, DB5 in Main Status Register is high.
+    Upon entering Result Phase this bit gets clear. Reason 1 and 4 does not require Sense Interrupt Status command.
+    The interrupt is cleared by reading/writing data to FDC.
+    Interrupts caused by reasons 2 and 3 above may be uniquely
+    identified with the aid of the Sense Interrupt Status Commend. This command when issued resets the interrupt signal
     and via bits 5, 6, and 7 of Status Register 0 identifies the cause of the interrupt.
 
     SEEK END |  INTERRUPT CODE | CAUSE
@@ -3237,8 +3237,8 @@ z80_byte pd765_read_result_command_sense_interrupt_status(void)
     1           0          0   | Normal Termination of Seek or Recalibrate Command
     1           1          0   | Abnormal Termination of Seek or Recalibrate Command
 
-    Neither the Seek or Recalibrate Command have a Result Phase. Therefore, it is mandatory to use the 
-    Sense Interrupt Status Command after these commends to effectively terminate them and to provide verification 
+    Neither the Seek or Recalibrate Command have a Result Phase. Therefore, it is mandatory to use the
+    Sense Interrupt Status Command after these commends to effectively terminate them and to provide verification
     of where the heed is positioned (PCN).
     Issuing Sense Interrupt Status Command without interrupt pending is treated as an invalid command.
     */
@@ -3250,7 +3250,7 @@ z80_byte pd765_read_result_command_sense_interrupt_status(void)
         /*if (pd765_sc_get(&signal_se)) {
             DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Reset DB0 etc");
 
-            pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_D0B_MASK - PD765_MAIN_STATUS_REGISTER_D1B_MASK - PD765_MAIN_STATUS_REGISTER_D2B_MASK - PD765_MAIN_STATUS_REGISTER_D3B_MASK);                
+            pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_D0B_MASK - PD765_MAIN_STATUS_REGISTER_D1B_MASK - PD765_MAIN_STATUS_REGISTER_D2B_MASK - PD765_MAIN_STATUS_REGISTER_D3B_MASK);
         }*/
 
 
@@ -3263,7 +3263,7 @@ z80_byte pd765_read_result_command_sense_interrupt_status(void)
             //Y quitamos anormal_termination
             //TODO: esto se deberia hacer directamente en un byte de valor st0 y alterar ahi?
             anormal_termination=0;
-        } */ 
+        } */
 
         DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning ST0: %02XH (%s)",return_value,(return_value & 32 ? "SE" : ""));
 
@@ -3278,7 +3278,7 @@ z80_byte pd765_read_result_command_sense_interrupt_status(void)
 
 
             //TODO: dudoso si hacer esto aqui o donde: se resetea D0B, D1B etc antes o despues del sense interrupt?
-            //pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_D0B_MASK - PD765_MAIN_STATUS_REGISTER_D1B_MASK - PD765_MAIN_STATUS_REGISTER_D2B_MASK - PD765_MAIN_STATUS_REGISTER_D3B_MASK);                
+            //pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_D0B_MASK - PD765_MAIN_STATUS_REGISTER_D1B_MASK - PD765_MAIN_STATUS_REGISTER_D2B_MASK - PD765_MAIN_STATUS_REGISTER_D3B_MASK);
 
         }
 
@@ -3288,7 +3288,7 @@ z80_byte pd765_read_result_command_sense_interrupt_status(void)
             //return_value |=0x80;
         //}
 
-        return return_value;        
+        return return_value;
     }
 
     else if (pd765_output_parameters_index==1) {
@@ -3299,7 +3299,7 @@ z80_byte pd765_read_result_command_sense_interrupt_status(void)
         pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_DIO_MASK);
 
         //Decir que ya no esta busy
-        pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_CB_MASK);        
+        pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_CB_MASK);
 
         //Y pasamos a fase command
         pd765_phase=PD765_PHASE_COMMAND;
@@ -3323,7 +3323,7 @@ z80_byte pd765_read_result_command_read_id(void)
 
 
     //if (pd765_output_parameters_index>=pd765_result_buffer_length) {
-    if (pd765_buffer_read_is_final()) {        
+    if (pd765_buffer_read_is_final()) {
         DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: End of result buffer of READ_ID");
 
         //Y decir que ya no hay que devolver mas datos
@@ -3341,7 +3341,7 @@ z80_byte pd765_read_result_command_read_id(void)
     }
 
 
-    return return_value;        
+    return return_value;
 
 }
 
@@ -3355,7 +3355,7 @@ z80_byte pd765_read_result_command_format_track(void)
 
 
     //if (pd765_output_parameters_index>=pd765_result_buffer_length) {
-    if (pd765_buffer_read_is_final()) {        
+    if (pd765_buffer_read_is_final()) {
         DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: End of result buffer of FORMAT_TRACK");
 
         //Y decir que ya no hay que devolver mas datos
@@ -3372,7 +3372,7 @@ z80_byte pd765_read_result_command_format_track(void)
     }
 
 
-    return return_value;        
+    return return_value;
 
 }
 
@@ -3395,7 +3395,7 @@ z80_byte pd765_read_result_command_read_data(void)
         pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_EXM_MASK);
 
 
-        pd765_set_interrupt_pending();    
+        pd765_set_interrupt_pending();
 
         //Cambiamos a fase de resultado
         pd765_phase=PD765_PHASE_RESULT;
@@ -3468,14 +3468,14 @@ z80_byte pd765_read_result_command_read_data(void)
                     condition_end_sector=1;
                 }
             }
-   
+
             if (condition_end_sector || pd765_read_command_must_stop_anormal_termination) {
                 DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Stopping reading next sector because R (%02XH) is EOT (%02XH) or Anormal termination, and send output parameters ST0,1,2, CHRN",
                     pd765_read_command_searching_parameter_r,pd765_input_parameter_eot);
 
                 //pd765_input_parameter_r++;
                 //pd765_read_command_searching_parameter_r++;
-                    
+
                 pd765_handle_command_read_data_read_chrn_etc(pd765_ultimo_sector_fisico_read,1);
 
 
@@ -3483,7 +3483,7 @@ z80_byte pd765_read_result_command_read_data(void)
                 pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_EXM_MASK);
 
 
-                pd765_set_interrupt_pending();    
+                pd765_set_interrupt_pending();
 
                 //Cambiamos a fase de resultado
                 pd765_phase=PD765_PHASE_RESULT;
@@ -3507,7 +3507,7 @@ z80_byte pd765_read_result_command_read_data(void)
         }
 
 
-        //Estaba enviando valores ST1, ..CHRN 
+        //Estaba enviando valores ST1, ..CHRN
         else {
             DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: End returning output parameters ST0,1,2, CHRN");
 
@@ -3515,18 +3515,18 @@ z80_byte pd765_read_result_command_read_data(void)
             pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_DIO_MASK);
 
             //Decir que ya no esta busy
-            pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_CB_MASK);            
+            pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_CB_MASK);
 
             //Y pasamos a fase command
             pd765_phase=PD765_PHASE_COMMAND;
 
-                   
+
 
         }
     }
 
 
-    return return_value;        
+    return return_value;
 
 }
 
@@ -3534,7 +3534,7 @@ z80_byte pd765_read_result_command_read_data(void)
 z80_byte pd765_read_result_command_write_data(void)
 {
 
- 
+
     z80_byte return_value=pd765_get_buffer();
     DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Return byte from %s at index %d: %02XH",
         pd765_last_command_name(),
@@ -3559,32 +3559,32 @@ z80_byte pd765_read_result_command_write_data(void)
         //Fin de buffer de lectura
         pd765_reset_buffer();
 
-       
-        //Estaba enviando valores ST1, ..CHRN 
-        
+
+        //Estaba enviando valores ST1, ..CHRN
+
         DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: End returning output parameters ST0,1,2, CHRN from WRITE_DATA");
 
         //Y decir que ya no hay que devolver mas datos
         pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_DIO_MASK);
 
         //Decir que ya no esta busy
-        pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_CB_MASK);            
+        pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_CB_MASK);
 
         //Y pasamos a fase command
         pd765_phase=PD765_PHASE_COMMAND;
 
         //Fin de comando
-        pd765_input_parameters_index=0;            
+        pd765_input_parameters_index=0;
 
         //sleep(1);
 
-                   
 
-        
+
+
     }
 
 
-    return return_value;        
+    return return_value;
 
 }
 
@@ -3592,20 +3592,20 @@ z80_byte pd765_read_handle_phase_result(void)
 {
     switch(pd765_command_received) {
         case PD765_COMMAND_SPECIFY:
-            //No tiene resultado 
+            //No tiene resultado
         break;
 
         case PD765_COMMAND_SENSE_DRIVE_STATUS:
             return pd765_read_result_command_sense_drive_status();
-        break;            
+        break;
 
         case PD765_COMMAND_RECALIBRATE:
-            //No tiene resultado 
+            //No tiene resultado
         break;
 
         case PD765_COMMAND_SEEK:
-            //No tiene resultado 
-        break;         
+            //No tiene resultado
+        break;
 
         case PD765_COMMAND_SENSE_INTERRUPT_STATUS:
             return pd765_read_result_command_sense_interrupt_status();
@@ -3613,7 +3613,7 @@ z80_byte pd765_read_handle_phase_result(void)
 
         case PD765_COMMAND_READ_ID:
             return pd765_read_result_command_read_id();
-        break; 
+        break;
 
         case PD765_COMMAND_READ_DATA:
         case PD765_COMMAND_READ_DELETED_DATA:
@@ -3627,12 +3627,12 @@ z80_byte pd765_read_handle_phase_result(void)
 
         case PD765_COMMAND_FORMAT_TRACK:
             return pd765_read_result_command_format_track();
-        break;             
+        break;
 
         case PD765_COMMAND_INVALID:
             return pd765_read_result_command_invalid();
-        break;                     
-    }    
+        break;
+    }
 
     return 255;
 }
@@ -3654,7 +3654,7 @@ z80_byte pd765_read(void)
         case PD765_PHASE_RESULT:
             return pd765_read_handle_phase_result();
         break;
-    }    
+    }
 
     return 255;
 }
@@ -3698,7 +3698,7 @@ z80_byte pd765_read_status_register(void)
 /*
 void pd765_out_port_1ffd(z80_byte value)
 {
-    //0x1ffd: Setting bit 3 high will turn the drive motor (or motors, if you have more than one drive attached) on. 
+    //0x1ffd: Setting bit 3 high will turn the drive motor (or motors, if you have more than one drive attached) on.
     //Setting bit 3 low will turn them off again. (0x1ffd is also used for memory control).
 
     if (value&8) {
@@ -3709,7 +3709,7 @@ void pd765_out_port_1ffd(z80_byte value)
         //Pues realmente si motor va a off, no hay actividad
         pd765_motor_off();
     }
- 
+
 }
 */
 
@@ -3724,8 +3724,8 @@ void pd765_out_port_data_register(z80_byte value)
 void pd765_set_terminal_count_signal(void)
 {
 
-    
-    
+
+
     if (pd765_command_received==PD765_COMMAND_READ_DATA && pd765_read_command_state==PD765_READ_COMMAND_STATE_READING_DATA) {
         DBG_PRINT_PD765 VERBOSE_INFO,"PD765: Stopping reading data because a Terminal Count signal has been fired");
         //sleep(10);
@@ -3739,7 +3739,7 @@ void pd765_set_terminal_count_signal(void)
         pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_EXM_MASK);
 
 
-        pd765_set_interrupt_pending();    
+        pd765_set_interrupt_pending();
 
         //Cambiamos a fase de resultado
         pd765_phase=PD765_PHASE_RESULT;
@@ -3749,11 +3749,11 @@ void pd765_set_terminal_count_signal(void)
 
         pd765_read_command_state=PD765_READ_COMMAND_STATE_ENDING_READING_DATA;
 
-        
+
 
         //TODO: no se si realmente hay que hacer clear, porque en este caso, para que querria el PCW
-        //otro comando para hacer el clear si ya lo hace aqui automaticamente?  
-        //pd765_reset_terminal_count_signal();   
+        //otro comando para hacer el clear si ya lo hace aqui automaticamente?
+        //pd765_reset_terminal_count_signal();
     }
 
     if (pd765_command_received==PD765_COMMAND_WRITE_DATA && pd765_write_command_state==PD765_WRITE_COMMAND_STATE_WRITING_DATA) {
@@ -3770,7 +3770,7 @@ void pd765_set_terminal_count_signal(void)
         pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_EXM_MASK);
 
 
-        pd765_set_interrupt_pending();    
+        pd765_set_interrupt_pending();
 
         //Cambiamos a fase de resultado
         pd765_phase=PD765_PHASE_RESULT;
@@ -3780,12 +3780,12 @@ void pd765_set_terminal_count_signal(void)
 
         pd765_read_command_state=PD765_WRITE_COMMAND_STATE_ENDING_WRITING_DATA;
 
-        
+
 
         //TODO: no se si realmente hay que hacer clear, porque en este caso, para que querria el PCW
-        //otro comando para hacer el clear si ya lo hace aqui automaticamente?  
-        //pd765_reset_terminal_count_signal();   
-    }         
+        //otro comando para hacer el clear si ya lo hace aqui automaticamente?
+        //pd765_reset_terminal_count_signal();
+    }
 }
 
 /*
@@ -3815,22 +3815,22 @@ void cf2_floppy_icon_activity(void)
 
     if (pd765_motor_status) {
         //printf("Refrescar icono floppy con motor encendido\n");
-        menu_draw_ext_desktop();      
+        menu_draw_ext_desktop();
     }
 
     else {
         //Si ha cambiado de encendido a apagado
         if (cf2_floppy_icon_activity_antes_motor!=pd765_motor_status) {
-    
+
             //Refrescar para hacer desaparecer el "puntito" del icono de floppy cuando se apaga motor
             //Y no quiero que salga el icono en color inverso, vendria inverso por el envio de algun comando final
 
             //printf("Refrescar icono floppy cuando se apaga motor\n");
-            
+
             zxdesktop_icon_plus3_inverse=0;
-            menu_draw_ext_desktop(); 
+            menu_draw_ext_desktop();
         }
-    
+
     }
 
    cf2_floppy_icon_activity_antes_motor=pd765_motor_status;

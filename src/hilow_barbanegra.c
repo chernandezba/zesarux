@@ -82,7 +82,7 @@ z80_byte hilow_bbn_read_ram_byte(z80_int dir)
 {
 
 	//printf ("Read ram byte from %04XH\n",dir);
-	
+
 
     dir &= (HILOW_BARBANEGRA_RAM_SIZE-1);
 
@@ -101,7 +101,7 @@ void hilow_bbn_poke_ram(z80_int dir,z80_byte value)
         dir &= (HILOW_BARBANEGRA_RAM_SIZE-1);
 
 		//La RAM esta despues de los 8kb de rom
-		hilow_bbn_memory_pointer[HILOW_BARBANEGRA_ROM_SIZE+dir]=value;	
+		hilow_bbn_memory_pointer[HILOW_BARBANEGRA_ROM_SIZE+dir]=value;
 	}
 
 }
@@ -123,7 +123,7 @@ z80_byte hilow_bbn_poke_byte(z80_int dir,z80_byte valor)
 
 z80_byte hilow_bbn_poke_byte_no_time(z80_int dir,z80_byte valor)
 {
- 
+
 	//Llamar a anterior
 	debug_nested_poke_byte_no_time_call_previous(hilow_bbn_nested_id_poke_byte_no_time,dir,valor);
 
@@ -148,7 +148,7 @@ z80_byte hilow_bbn_peek_byte(z80_int dir,z80_byte value GCC_UNUSED)
 
 	if (hilow_bbn_check_if_ram_area(dir)) {
 		return hilow_bbn_read_ram_byte(dir);
-	}	
+	}
 
 	return valor_leido;
 }
@@ -165,7 +165,7 @@ z80_byte hilow_bbn_peek_byte_no_time(z80_int dir,z80_byte value GCC_UNUSED)
 
 	if (hilow_bbn_check_if_ram_area(dir)) {
 		return hilow_bbn_read_ram_byte(dir);
-	}			
+	}
 
 	return valor_leido;
 }
@@ -186,13 +186,13 @@ int hilow_bbn_if_rom_basic_enabled(void)
         //maquina 128k. rom 1 mapeada
         if ((puerto_32765 & 16) ==16)
         return 1;
-    }    
+    }
 
     if (MACHINE_IS_SPECTRUM_P2A_P3) {
         //maquina +2A
         if ((puerto_32765 & 16) ==16   && ((puerto_8189&4) ==4  ))
         return 1;
-    }    
+    }
 
     return 0;
 }
@@ -204,7 +204,7 @@ void hilow_bbn_nmi(void)
     if (hilow_bbn_mapped_memory.v==0) {
         debug_printf(VERBOSE_DEBUG,"Enabling hilow_bbn memory from nmi triggered");
         hilow_bbn_mapped_memory.v=1;
-    }   
+    }
 }
 
 void hilow_bbn_footer_operating(void)
@@ -257,7 +257,7 @@ void hilow_bbn_restore_peek_poke_functions(void)
 void hilow_bbn_alloc_rom_ram_memory(void)
 {
     //memoria de la ram y rom
-    int size=HILOW_BARBANEGRA_MEM_SIZE;  
+    int size=HILOW_BARBANEGRA_MEM_SIZE;
 
     debug_printf (VERBOSE_DEBUG,"Allocating %d kb of memory for hilow_bbn emulation",size/1024);
 
@@ -369,9 +369,9 @@ void hilow_bbn_write_port_fd(z80_int port GCC_UNUSED,z80_byte value GCC_UNUSED)
 z80_byte hilow_bbn_read_port_fd(z80_int puerto)
 {
 
-    
 
-    return 255; 
+
+    return 255;
 
 
 }

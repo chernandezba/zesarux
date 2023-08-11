@@ -49,7 +49,7 @@ z80_byte m_bAddressLatch = 0;
 
 
 
-#define ATOM_LITE_REG_MASK  0x07  
+#define ATOM_LITE_REG_MASK  0x07
 // Device address mask
 
 int m_uActive = 0;

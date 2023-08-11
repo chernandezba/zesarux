@@ -75,12 +75,12 @@ void uartbridge_enable(void)
 
 void uartbridge_disable(void)
 {
-	if (uartbridge_enabled.v==0) return;	
+	if (uartbridge_enabled.v==0) return;
 
 	debug_printf(VERBOSE_DEBUG,"Closing uart bridge");
 
 	if (chardevice_close(uartbridge_handler)<0) {
-		debug_printf (VERBOSE_ERR,"Error closing uart bridge");		
+		debug_printf (VERBOSE_ERR,"Error closing uart bridge");
 	}
 
 	uartbridge_enabled.v=0;
@@ -130,7 +130,7 @@ void uartbridge_writedata(z80_byte value)
 	if (status<1) {
 		//Error escribiendo
 		//de momento no decir nada
-	}	
+	}
 
 }
 

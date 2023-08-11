@@ -61,7 +61,7 @@ int p3dsk_buffer_disco_size=DSK_MAX_BUFFER_DISCO; //Tamanyo del dsk leido. De mo
 void dsk_insert_disk(char *nombre)
 {
     strcpy(dskplusthree_file_name,nombre);
-                
+
     if (noautoload.v==0) {
 
         debug_printf (VERBOSE_INFO,"Restarting autoload");
@@ -75,12 +75,12 @@ void dsk_insert_disk(char *nombre)
         if (fast_autoload.v && !MACHINE_IS_PCW && !MACHINE_IS_CPC) {
             debug_printf (VERBOSE_INFO,"Set top speed from DSK insert disk");
             top_speed_timer.v=1;
-        }        
+        }
 	}
 
     else {
         initial_tap_load.v=0;
-    }    
+    }
 }
 
 
@@ -158,7 +158,7 @@ void dskplusthree_flush_contents_to_disk(void)
 
         if (ptr_dskplusthreefile!=NULL) {
                 z80_byte *puntero;
-                puntero=p3dsk_buffer_disco; 
+                puntero=p3dsk_buffer_disco;
 
                 //Justo antes del fwrite se pone flush a 0, porque si mientras esta el fwrite entra alguna operacion de escritura,
                 //metera flush a 1
@@ -178,7 +178,7 @@ void dskplusthree_flush_contents_to_disk(void)
 
         if (escritos!=size || ptr_dskplusthreefile==NULL) {
                 debug_printf (VERBOSE_ERR,"Error writing to DSK file. Disabling write file operations");
-                dskplusthree_persistent_writes.v=0;                  
+                dskplusthree_persistent_writes.v=0;
         }
 
 }
@@ -238,8 +238,8 @@ void dsk_create(char *filename,int tracks,int sides,int sectors_track,int bytes_
     //Y luego llenar con texto
     for (i=0;i<longitud_maxima && buffer_creator[i];i++) {
         newdsk[0x22+i]=buffer_creator[i];
-    }    
-    
+    }
+
     newdsk[0x30]=tracks;
     newdsk[0x31]=sides;
     newdsk[0x32]=value_16_to_8l(size_of_a_track);
@@ -294,20 +294,20 @@ void dsk_create(char *filename,int tracks,int sides,int sectors_track,int bytes_
 
 
 
-    //Crear archivo 
+    //Crear archivo
 
     FILE *ptr_dskplusthreefile;
     ptr_dskplusthreefile=fopen(filename,"wb");
 
 
     if (ptr_dskplusthreefile!=NULL) {
-    
+
         fwrite(newdsk,1,total_size,ptr_dskplusthreefile);
-    
-    
+
+
         fclose(ptr_dskplusthreefile);
     }
-                                    
+
 
     free(newdsk);
 }
@@ -326,7 +326,7 @@ void dskplusthree_disable(void)
     dsk_memory_zone_dsk_sector_enabled.v=0;
 }
 
-                                
+
 const char *dsk_signature_basic=   "MV - CPC";
 //Usada en captain blood: "MV - CPC format Disk Image (DU54)\r\nDisk-Info"
 
@@ -344,7 +344,7 @@ void dsk_get_string_protected(int offset,char *buffer_signature,int total_bytes)
         buffer_signature[i]=c;
     }
 
-    buffer_signature[i]=0;    
+    buffer_signature[i]=0;
 }
 
 
@@ -415,7 +415,7 @@ void dskplusthree_enable(void)
 
     char buffer_creator[DSK_CREATOR_LENGTH+1];
     dsk_get_creator(buffer_creator);
-    DBG_PRINT_DSK VERBOSE_INFO,"DSK creator: %s",buffer_creator);    
+    DBG_PRINT_DSK VERBOSE_INFO,"DSK creator: %s",buffer_creator);
 
     DBG_PRINT_DSK VERBOSE_INFO,"DSK total tracks: %d total sides: %d",dsk_get_total_tracks(),dsk_get_total_sides());
 
@@ -473,8 +473,8 @@ char *dsk_protection_scheme_alkatraz="THE ALKATRAZ PROTECTION SYSTEM   (C) 1987"
 char *dsk_protection_scheme_three_inch="Loader Copyright Three Inch Software";
 
 //Este viene en Norte y Sur, al parecer ejecuta comandos invalidos pero funciona en ZEsarUX
-//NEW DISK PROTECTION SYSTEM. (C) 1990 BY NEW FRONTIER SOFT.                              
-//SI TIENES CONCIMIENTOS DE CODIGO MAQUINA PUEDES TENER TRABAJO LLAMANDO AL NUMERO: (93) 485-11-57 O ESCRIBENDO A: 
+//NEW DISK PROTECTION SYSTEM. (C) 1990 BY NEW FRONTIER SOFT.
+//SI TIENES CONCIMIENTOS DE CODIGO MAQUINA PUEDES TENER TRABAJO LLAMANDO AL NUMERO: (93) 485-11-57 O ESCRIBENDO A:
 //C/FRANCISCO DE ARANDA, 45-47 ENTLO. 1 08005 BARCELONA.
 /*
 Sectores de 4kb
@@ -507,7 +507,7 @@ int dsk_get_protection_scheme(char *buffer)
     if (dsk_get_protection_scheme_aux(dsk_protection_scheme_speedlock_disc)) {
         strcpy(buffer,"SPEEDLOCK DISC 1989");
         return 1;
-    }    
+    }
 
     if (dsk_get_protection_scheme_aux(dsk_protection_scheme_paul_owen)) {
         strcpy(buffer,"Ocean Paul Owens");
@@ -522,8 +522,8 @@ int dsk_get_protection_scheme(char *buffer)
     if (dsk_get_protection_scheme_aux(dsk_protection_scheme_three_inch)) {
         strcpy(buffer,"Three Inch");
         return 1;
-    }    
-    
+    }
+
     //Este si que esta soportado
     if (dsk_get_protection_scheme_aux(dsk_protection_scheme_new_frontier)) {
         strcpy(buffer,"New Frontier");
@@ -533,12 +533,12 @@ int dsk_get_protection_scheme(char *buffer)
     if (dsk_get_protection_scheme_aux_longitud(dsk_protection_scheme_unknown1,16)) {
         strcpy(buffer,"Unknown 1");
         return 1;
-    } 
+    }
 
     if (dsk_get_protection_scheme_aux_longitud(dsk_protection_scheme_unknown2,16)) {
         strcpy(buffer,"SPEEDLOCK +3 DISC 1988-2");
         return 1;
-    } 
+    }
 
     strcpy(buffer,"None");
     return 0;
@@ -598,7 +598,7 @@ void dsk_show_activity(void)
 	if (!zxdesktop_icon_plus3_inverse) {
 			zxdesktop_icon_plus3_inverse=1;
 			menu_draw_ext_desktop();
-	}	
+	}
 }
 
 
@@ -735,7 +735,7 @@ int dsk_check_track_signature(int offset)
         int leido_pista=plus3dsk_get_byte_disk(offset+i);
         if (leido_firma!=leido_pista) return -1;
     }
-    return 0;    
+    return 0;
 }
 
 int dsk_basic_get_start_track(int pista_encontrar,int cara_encontrar)
@@ -745,10 +745,10 @@ int dsk_basic_get_start_track(int pista_encontrar,int cara_encontrar)
 
     for (pista=0;pista<dsk_get_total_tracks();pista++) {
         //Validar que estemos en informacion de pista realmente mirando la firma
-        //TODO: quiza esta validacion se pueda quitar y/o hacerla al abrir el dsk 
+        //TODO: quiza esta validacion se pueda quitar y/o hacerla al abrir el dsk
         if (dsk_check_track_signature(offset)) {
             debug_printf(VERBOSE_ERR,"DSK: Basic DSK, track signature not found on track %XH offset %XH",pista,offset);
-        }    
+        }
 
         z80_byte track_number=plus3dsk_get_byte_disk(offset+0x10);
         z80_byte side_number=plus3dsk_get_byte_disk(offset+0x11);
@@ -774,7 +774,7 @@ int dsk_basic_get_start_track(int pista_encontrar,int cara_encontrar)
 
 }
 
-//Retorna numero de pista. 
+//Retorna numero de pista.
 //Entrada: offset: offset a track-info
 int dsk_get_track_number_from_offset(int offset)
 {
@@ -790,7 +790,7 @@ int dsk_get_track_number(int pista,int cara)
 }
 
 
-//Retorna numero de cata. 
+//Retorna numero de cata.
 //Entrada: offset: offset a track-info
 int dsk_get_track_side_from_offset(int offset)
 {
@@ -814,16 +814,16 @@ int dsk_extended_get_start_track(int pista_encontrar,int cara_encontrar)
     for (pista=0;pista<dsk_get_total_tracks();pista++) {
         for (cara=0;cara<dsk_get_total_sides();cara++) {
             //Validar que estemos en informacion de pista realmente mirando la firma
-            //TODO: quiza esta validacion se pueda quitar y/o hacerla al abrir el dsk 
+            //TODO: quiza esta validacion se pueda quitar y/o hacerla al abrir el dsk
             if (dsk_check_track_signature(offset)) {
                 debug_printf(VERBOSE_ERR,"DSK: Extended DSK, track signature not found on track %XH size %d offset %XH",pista,cara,offset);
-            } 
+            }
 
             z80_byte track_number=dsk_get_track_number_from_offset(offset);
             z80_byte side_number=dsk_get_track_side_from_offset(offset);
 
             //printf("dsk_extended_get_start_track: pista: %d current_track: %d offset: %XH buscar pista: %d\n",
-            //    pista,track_number,offset,pista_encontrar);        
+            //    pista,track_number,offset,pista_encontrar);
 
             if (track_number==pista_encontrar && side_number==cara_encontrar) {
                 //printf("dsk_extended_get_start_track: return %X\n",offset);
@@ -836,11 +836,11 @@ int dsk_extended_get_start_track(int pista_encontrar,int cara_encontrar)
                 return -1;
             }
 
-            
+
             int saltar=plus3dsk_get_byte_disk(offset_track_table)*256;
             offset +=saltar;
 
-            
+
             offset_track_table++;
 
 
@@ -864,10 +864,10 @@ int dsk_get_start_track(int pista,int cara)
 int dsk_extended_get_track_size(int pista,int cara)
 {
     int offset_track_table=0x34;
-    
+
     //este incremento sobre la tabla es el doble cuando el disco tiene dos caras
     int incremento=pista*dsk_get_total_sides();
-    
+
     offset_track_table +=incremento;
 
     if (cara==1) offset_track_table++;
@@ -903,7 +903,7 @@ int dsk_get_physical_sector(int pista,int sector)
             if (sector_size<0) {
                 debug_printf(VERBOSE_ERR,"dsk_get_sector: Sector size not supported on track %d sector %d",pista,sector);
                 return -1;
-            }                        
+            }
 
             //int iniciopista=traps_plus3dos_getoff_start_track(pista);
             int offset_retorno=offset+sector_size*sector;
@@ -912,11 +912,11 @@ int dsk_get_physical_sector(int pista,int sector)
             //*sector_fisico=sector;
             //printf("Found sector ID %02XH on track %d at offset in DSK: %XH\n",parametro_r,pista,offset_retorno);
             return offset_retorno;
-        
+
 
 }
 
-//Retorna el offset al dsk segun la pista y sector id dados 
+//Retorna el offset al dsk segun la pista y sector id dados
 //Retorna tambien el sector fisico: 0,1,2,3....
 //Parametro minimo_sector permite escoger un sector mayor que dicho parametro
 //search_deleted: si buscar sectores borrados
@@ -929,9 +929,9 @@ int dsk_get_sector(int pista,int parametro_r,z80_byte *sector_fisico,int minimo_
 
     DBG_PRINT_DSK VERBOSE_PARANOID,"DSK Start track %d: %XH",pista,iniciopista);
 
-    int total_sectors=dsk_get_total_sectors_track_from_offset(iniciopista);   
+    int total_sectors=dsk_get_total_sectors_track_from_offset(iniciopista);
 
-    DBG_PRINT_DSK VERBOSE_PARANOID,"DSK Start track: %d",total_sectors); 
+    DBG_PRINT_DSK VERBOSE_PARANOID,"DSK Start track: %d",total_sectors);
 
 
     int sector_information_list=iniciopista+0x18;
@@ -943,13 +943,13 @@ int dsk_get_sector(int pista,int parametro_r,z80_byte *sector_fisico,int minimo_
         DBG_PRINT_DSK VERBOSE_PARANOID,"Looking for sector ID %02XH on track %d we are in position sector %d",parametro_r,pista,sector);
 
 
-        z80_byte sector_id=plus3dsk_get_byte_disk(sector_information_list+2); 
+        z80_byte sector_id=plus3dsk_get_byte_disk(sector_information_list+2);
 
 
-        
+
         //Para obtener el tipo de sector (borrado si/no)
-        z80_byte leido_id_st1=plus3dsk_get_byte_disk(sector_information_list+4); 
-        z80_byte leido_id_st2=plus3dsk_get_byte_disk(sector_information_list+5); 
+        z80_byte leido_id_st1=plus3dsk_get_byte_disk(sector_information_list+4);
+        z80_byte leido_id_st2=plus3dsk_get_byte_disk(sector_information_list+5);
 
         //sector borrado
         int deleted_sector=0;
@@ -982,7 +982,7 @@ int dsk_get_sector(int pista,int parametro_r,z80_byte *sector_fisico,int minimo_
         if (check_r_parameter) {
             if (sector_id==parametro_r) {
                 condition_r_equals=1;
-            }            
+            }
         }
 
         //No validamos que R tenga el valor esperado
@@ -1016,7 +1016,7 @@ int dsk_get_sector(int pista,int parametro_r,z80_byte *sector_fisico,int minimo_
             if (sector_size<0) {
                 debug_printf(VERBOSE_ERR,"dsk_get_sector: Sector size not supported on track %d sector %d",pista,sector);
                 return -1;
-            }                        
+            }
 
             //int iniciopista=traps_plus3dos_getoff_start_track(pista);
             int offset_retorno=offset+sector_size*sector;
@@ -1043,7 +1043,7 @@ int dsk_get_sector(int pista,int parametro_r,z80_byte *sector_fisico,int minimo_
 int dsk_get_sector_fisico(int pista,int cara,int sector_fisico)
 {
 
-    int iniciopista=dsk_get_start_track(pista,cara); 
+    int iniciopista=dsk_get_start_track(pista,cara);
 
     //printf("Inicio pista %d: %XH\n",pista,iniciopista);
 
@@ -1063,13 +1063,13 @@ int dsk_get_sector_fisico(int pista,int cara,int sector_fisico)
     if (sector_size<0) {
         debug_printf(VERBOSE_ERR,"dsk_get_sector: Sector size not supported on track %d sector %d",pista,sector_fisico);
         return -1;
-    }                        
+    }
 
     //int iniciopista=traps_plus3dos_getoff_start_track(pista);
     int offset_retorno=offset+sector_size*sector_fisico;
     //printf("Offset sector: %XH\n",offset_retorno);
 
-    
+
     //printf("Found sector ID %02XH on track %d at offset in DSK: %XH\n",parametro_r,pista,offset_retorno);
     return offset_retorno;
 
@@ -1084,7 +1084,7 @@ int dsk_get_start_sector_info(int pista,int cara,int sector_fisico)
 {
 
 
-    int iniciopista=dsk_get_start_track(pista,cara); 
+    int iniciopista=dsk_get_start_track(pista,cara);
 
     //printf("En dsk_get_chrn Inicio pista %d: %XH\n",pista,iniciopista);
 
@@ -1092,14 +1092,14 @@ int dsk_get_start_sector_info(int pista,int cara,int sector_fisico)
     iniciopista +=0x18;
 
 
-    int offset_tabla_sector=sector_fisico*8; 
+    int offset_tabla_sector=sector_fisico*8;
     //z80_byte pista_id=plus3dsk_get_byte_disk(iniciopista+offset_tabla_sector); //Leemos pista id
     //z80_byte sector_id=plus3dsk_get_byte_disk(iniciopista+offset_tabla_sector+2); //Leemos c1, c2, etc
 
     //debug_printf(VERBOSE_DEBUG,"%02X ",sector_id);
 
-    return iniciopista+offset_tabla_sector;            
-            
+    return iniciopista+offset_tabla_sector;
+
 
 
 }
@@ -1111,11 +1111,11 @@ void dsk_get_chrn(int pista,int cara,int sector_fisico,z80_byte *parametro_c,z80
 
     int offset=dsk_get_start_sector_info(pista,cara,sector_fisico);
 
-    *parametro_c=plus3dsk_get_byte_disk(offset); 
-    *parametro_h=plus3dsk_get_byte_disk(offset+1); 
-    *parametro_r=plus3dsk_get_byte_disk(offset+2); 
-    *parametro_n=plus3dsk_get_byte_disk(offset+3);             
-            
+    *parametro_c=plus3dsk_get_byte_disk(offset);
+    *parametro_h=plus3dsk_get_byte_disk(offset+1);
+    *parametro_r=plus3dsk_get_byte_disk(offset+2);
+    *parametro_n=plus3dsk_get_byte_disk(offset+3);
+
 
 }
 
@@ -1130,7 +1130,7 @@ void dsk_put_chrn(int pista,int cara,int sector_fisico,z80_byte parametro_c,z80_
     plus3dsk_put_byte_disk(offset+1,parametro_h);
     plus3dsk_put_byte_disk(offset+2,parametro_r);
     plus3dsk_put_byte_disk(offset+3,parametro_n);
-            
+
 
 }
 
@@ -1142,9 +1142,9 @@ void dsk_get_st12(int pista,int cara,int sector_fisico,z80_byte *parametro_st1,z
 
     int offset=dsk_get_start_sector_info(pista,cara,sector_fisico);
 
-    *parametro_st1=plus3dsk_get_byte_disk(offset+4); 
-    *parametro_st2=plus3dsk_get_byte_disk(offset+5);             
-            
+    *parametro_st1=plus3dsk_get_byte_disk(offset+4);
+    *parametro_st2=plus3dsk_get_byte_disk(offset+5);
+
 }
 
 //Escribir st1,2 de una pista y sector concreto
@@ -1153,9 +1153,9 @@ void dsk_put_st12(int pista,int cara,int sector_fisico,z80_byte parametro_st1,z8
 
     int offset=dsk_get_start_sector_info(pista,cara,sector_fisico);
 
-    plus3dsk_put_byte_disk(offset+4,parametro_st1); 
-    plus3dsk_put_byte_disk(offset+5,parametro_st2);             
-            
+    plus3dsk_put_byte_disk(offset+4,parametro_st1);
+    plus3dsk_put_byte_disk(offset+5,parametro_st2);
+
 }
 
 
@@ -1164,7 +1164,7 @@ void dsk_put_st12(int pista,int cara,int sector_fisico,z80_byte parametro_st1,z8
 int dsk_get_real_sector_size_extended(int pista,int cara,int sector_fisico)
 {
 
-    int iniciopista=dsk_get_start_track(pista,cara); 
+    int iniciopista=dsk_get_start_track(pista,cara);
 
     //printf("En dsk_get_st12 Inicio pista %d: %XH\n",pista,iniciopista);
 
@@ -1172,16 +1172,16 @@ int dsk_get_real_sector_size_extended(int pista,int cara,int sector_fisico)
     iniciopista +=0x18;
 
 
-    int offset_tabla_sector=sector_fisico*8; 
+    int offset_tabla_sector=sector_fisico*8;
     //z80_byte pista_id=plus3dsk_get_byte_disk(iniciopista+offset_tabla_sector); //Leemos pista id
     //z80_byte sector_id=plus3dsk_get_byte_disk(iniciopista+offset_tabla_sector+2); //Leemos c1, c2, etc
 
     //debug_printf(VERBOSE_DEBUG,"%02X ",sector_id);
 
 
-    int tamanyo=plus3dsk_get_byte_disk(iniciopista+offset_tabla_sector+6)+256*plus3dsk_get_byte_disk(iniciopista+offset_tabla_sector+7);  
+    int tamanyo=plus3dsk_get_byte_disk(iniciopista+offset_tabla_sector+6)+256*plus3dsk_get_byte_disk(iniciopista+offset_tabla_sector+7);
 
-    return tamanyo;            
+    return tamanyo;
 
 
 }

@@ -203,7 +203,7 @@ void set_snaptape_filemachine(char *filename GCC_UNUSED)
 
 
 
- 
+
 	/*
 
         if (!strcmp(md5file,"5b1c8a978c59983761558ce2f33635d5")) {
@@ -1266,7 +1266,7 @@ void set_snaptape_fileoptions(char *filename)
 
 		autoselect_options_put_footer();
 
-		
+
 	}
 
 
@@ -1284,7 +1284,7 @@ void put_footer_first_message(char *mensaje)
 	tape_options_set_second_message_counter=0;
 
         strcpy(mostrar_footer_first_message,mensaje);
-       
+
 
 		//Texto mostrado
 		sprintf (mostrar_footer_first_message_mostrado,"%s",mostrar_footer_first_message);
@@ -1296,8 +1296,8 @@ void put_footer_first_message(char *mensaje)
 
 		autoselect_options_put_footer();
 
-		
-	
+
+
 }
 
 //Pone el footer segun lo que corresponda, si primer mensaje o segundo mensaje activo
@@ -1371,7 +1371,7 @@ void delete_tape_options_set_first_message(void)
 
 			autoselect_options_put_footer();
 
-			
+
 
                         return;
 	}
@@ -1387,7 +1387,7 @@ void delete_tape_options_set_first_message(void)
 
 		autoselect_options_put_footer();
 
-	
+
 
 	}
 

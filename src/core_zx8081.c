@@ -1,5 +1,5 @@
 /*
-    ZEsarUX  ZX Second-Emulator And Released for UniX 
+    ZEsarUX  ZX Second-Emulator And Released for UniX
     Copyright (C) 2013 Cesar Hernandez Bano
 
     This file is part of ZEsarUX.
@@ -136,7 +136,7 @@ z80_byte byte_leido_core_zx8081;
 //bucle principal de ejecucion de la cpu de zx80/81
 void cpu_core_loop_zx8081(void)
 {
- 
+
                 debug_get_t_stados_parcial_pre();
 
 		timer_check_interrupt();
@@ -169,8 +169,8 @@ void cpu_core_loop_zx8081(void)
 	                	}
 			}
 		}
-		
-		
+
+
 		//Interceptar rutina de carga
 
 			if (new_tap_load_detect_zx8081()) {
@@ -178,7 +178,7 @@ void cpu_core_loop_zx8081(void)
 
 				draw_tape_text();
 
-				if (MACHINE_IS_ZX80_TYPE) new_tape_load_zx80();	
+				if (MACHINE_IS_ZX80_TYPE) new_tape_load_zx80();
 				else new_tape_load_zx81();
 
 	                        //audio_playing.v=1;
@@ -211,18 +211,18 @@ void cpu_core_loop_zx8081(void)
                                 util_stats_increment_counter(stats_codsinpr,byte_leido_core_zx8081);
 #endif
 
-				
-				
+
+
                 //Si la cpu está detenida por señal HALT, reemplazar opcode por NOP
                 if (z80_halt_signal.v) {
-                    byte_leido_core_zx8081=0;            
+                    byte_leido_core_zx8081=0;
                 }
                 else {
                     reg_pc++;
                 }
 
 				reg_r_antes_zx8081=reg_r;
-				
+
 				reg_r++;
 
                         z80_no_ejecutado_block_opcodes();
@@ -230,13 +230,13 @@ void cpu_core_loop_zx8081(void)
 
 
 
-				if (iff1.v==1) {	
-	
+				if (iff1.v==1) {
+
 					//solo cuando cambia de 1 a 0
 					if ( (reg_r_antes_zx8081 & 64)==64 && (reg_r & 64)==0 ) {
 
 						interrupcion_maskable_generada.v=1;
-						
+
 					}
 				}
 
@@ -321,7 +321,7 @@ void cpu_core_loop_zx8081(void)
 
                                 //Parche para maquinas que no generan 312 lineas, porque si enviamos menos sonido se escuchara un click al final
                                 //Es necesario que cada frame de pantalla contenga 312 bytes de sonido
-				//Igualmente en la rutina de envio_audio se vuelve a comprobar que todo el sonido a enviar 
+				//Igualmente en la rutina de envio_audio se vuelve a comprobar que todo el sonido a enviar
 				//este completo; esto es necesario para Z88
 
                                 int linea_estados=t_estados/screen_testados_linea;
@@ -368,7 +368,7 @@ void cpu_core_loop_zx8081(void)
 				core_end_frame_check_zrcp_zeng_snap.v=1;
 
                 //snapshot en ram
-                snapshot_add_in_ram();                
+                snapshot_add_in_ram();
 
 				//para el detector de vsync sound
 				if (zx8081_detect_vsync_sound.v) {
@@ -384,23 +384,23 @@ void cpu_core_loop_zx8081(void)
 						//no hay vsync. por tanto hay sonido
 						//printf ("no hay vsync completo. hay sonido. contador: %d\n",zx8081_detect_vsync_sound_counter);
 						zx8081_vsync_sound.v=1;
-	
+
 					}
 					if (zx8081_detect_vsync_sound_counter<ZX8081_DETECT_VSYNC_SOUND_COUNTER_MAX) zx8081_detect_vsync_sound_counter++;
 
 				}
 
-			
+
 			}
 
 
-			
-			//Inicializar siguiente linea. Esto es importante que este aqui despues de 
+
+			//Inicializar siguiente linea. Esto es importante que este aqui despues de
 			//una posible actualizacion de pantalla, para que no se vea la linea blanca inicializada
 			if (rainbow_enabled.v==1) {
                                 init_zx8081_scanline();
                         }
-		}		
+		}
 
 		if (esperando_tiempo_final_t_estados.v) {
 			timer_pause_waiting_end_frame();
@@ -462,7 +462,7 @@ void cpu_core_loop_zx8081(void)
 						t_estados += 14;
 
 
-                                 
+
 
 
 												push_valor(reg_pc,PUSH_VALUE_TYPE_NON_MASKABLE_INTERRUPT);
@@ -482,13 +482,13 @@ void cpu_core_loop_zx8081(void)
 
 						t_estados -=15;
 
-						
+
 					}
 
 					//else {
 					if (1==1) {
 
-						
+
 					//justo despues de EI no debe generar interrupcion
 					//e interrupcion nmi tiene prioridad
 						if (interrupcion_maskable_generada.v && byte_leido_core_zx8081!=251) {
@@ -501,10 +501,10 @@ void cpu_core_loop_zx8081(void)
 
 						interrupcion_maskable_generada.v=0;
 
-						
+
 
 						push_valor(reg_pc,PUSH_VALUE_TYPE_MASKABLE_INTERRUPT);
-						
+
 						reg_r++;
 
 						//desactivar interrupciones al generar una
@@ -523,7 +523,7 @@ void cpu_core_loop_zx8081(void)
 						//IM 2.
 
 							z80_int temp_i;
-							z80_byte dir_l,dir_h;	
+							z80_byte dir_l,dir_h;
 							temp_i=get_im2_interrupt_vector();
 							dir_l=peek_byte(temp_i++);
 							dir_h=peek_byte(temp_i);
@@ -544,7 +544,7 @@ void cpu_core_loop_zx8081(void)
 	if (core_end_frame_check_zrcp_zeng_snap.v) {
 		core_end_frame_check_zrcp_zeng_snap.v=0;
 		check_pending_zrcp_put_snapshot();
-		zeng_send_snapshot_if_needed();			
+		zeng_send_snapshot_if_needed();
 	}
 
     debug_get_t_stados_parcial_post();

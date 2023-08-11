@@ -1,5 +1,5 @@
 /*
-    leezx81_unix 
+    leezx81_unix
     Copyright (C) 2013 Cesar Hernandez Bano
 
     leezx81_unix is free software: you can redistribute it and/or modify
@@ -73,12 +73,12 @@ int lee_byte(void)
   byte_cambio=fgetc(fic);
   fic_leido++;
  //printf (" %d\n",fic_leido);
-	 
+
   if (feof(fic)) {
 	 final_fichero=1;
 	 return 0;
   }
-	 
+
   return byte_cambio;
 }
 
@@ -87,14 +87,14 @@ int lee_onda(unsigned char *longitud)
 //Devuelve -1 si se llega al final del fichero
 //Se lee a 11111hz, 8 bit, mono, unsigned
 {
-  
+
   unsigned char veces;
   int byte,byte_ant;
 
   //Primero posicionarse en una onda de sonido
   //Ver si la onda cambia bruscamente (mas de 2) en mas de 2 bytes
 
-  
+
   byte_ant=lee_byte();
 
   veces=0;
@@ -118,7 +118,7 @@ int lee_onda(unsigned char *longitud)
 
   //Se tiene byte
   veces=0;
-  
+
   byte_ant=byte;
   do {
 	if (debugonda) printf ("O");
@@ -159,7 +159,7 @@ int dice_bit(char numero)
   unsigned int n=(unsigned int)numero;
   printf ("Value %d not accepted\n",n);
   return -1;
-  
+
 }
 
 int lee_1_bit(void)
@@ -171,10 +171,10 @@ int lee_1_bit(void)
   if (lee_onda(&longitud)==-1) return -1;
 
   return dice_bit(longitud);
-}	
-  
+}
+
 int lee_8_bits(void/*char si_longitud_anterior*/)
-//Devuelve 8 bits leidos 
+//Devuelve 8 bits leidos
 //Devuelve -1 si se llega al final de los datos
 {
   char bit;
@@ -219,7 +219,7 @@ void input_num(int *v)
 	 printf ("Write the new value: ");
 	 scanf("%d",v);
   }
-} 
+}
 
 
 int lee_todos_bytes(unsigned char *m)
@@ -254,7 +254,7 @@ int lee_todos_bytes(unsigned char *m)
  return bytes_leidos;
 
 }
- 
+
 
 int main(int argc,char *argv[])
 {
@@ -320,7 +320,7 @@ int main(int argc,char *argv[])
 
 
 
-  
+
   //Asignar memoria
   if ((buffer_memoria=(unsigned char *)malloc(65536L))==NULL) {
 	 printf ("Error allocating memory\n");
@@ -328,10 +328,10 @@ int main(int argc,char *argv[])
   }
 
   buffer_memoria_orig=buffer_memoria;
-  
+
 
   //memoria=memoria_original;
-  
+
   printf ("Reading data...\n\n");
 
 
@@ -357,7 +357,7 @@ int main(int argc,char *argv[])
 			mejor_sensibilidad_cambio=sensibilidad_cambio;
 			mejor_fic_leido=fic_leido;
 		}
-	
+
 		sensibilidad_cambio++;
 	}
 
@@ -373,8 +373,8 @@ int main(int argc,char *argv[])
 
 
   }
-	
-  
+
+
   if (bytes_leidos) {
 
 	 int i;
@@ -403,7 +403,7 @@ int main(int argc,char *argv[])
 			if ((fic_p=fopen(fichero_p,"a+b"))==NULL) {
 				printf ("\nError opening file %s\n",fichero_p);
 				exit(0);
-			}      
+			}
 
 
 		  fwrite(buffer_memoria,1,bytes_leidos,fic_p);
@@ -419,6 +419,6 @@ int main(int argc,char *argv[])
   free(buffer_memoria_orig);
 
 return 0;
-  
-}  
+
+}
 

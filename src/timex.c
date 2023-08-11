@@ -1,5 +1,5 @@
 /*
-    ZEsarUX  ZX Second-Emulator And Released for UniX 
+    ZEsarUX  ZX Second-Emulator And Released for UniX
     Copyright (C) 2013 Cesar Hernandez Bano
 
     This file is part of ZEsarUX.
@@ -32,7 +32,7 @@
 
 #include "chloe.h"
 #include "prism.h"
-#include "zxuno.h" 
+#include "zxuno.h"
 #include "tbblue.h"
 
 
@@ -114,7 +114,7 @@ void timex_set_memory_pages(void)
 
 	for (pagina=0;pagina<3;pagina++) {
 
-        	z80_byte *puntero_ram=timex_home_ram_mem_table[pagina];     
+        	z80_byte *puntero_ram=timex_home_ram_mem_table[pagina];
 
 	        timex_memory_paged[bloque_8k]=puntero_ram;
         	timex_type_memory_paged[bloque_8k]=TIMEX_MEMORY_TYPE_HOME;
@@ -481,7 +481,7 @@ void set_timex_port_ff(z80_byte value)
 		if (MACHINE_IS_TIMEX_TS_TC_2068) timex_set_memory_pages();
 		if (is_zxuno_chloe_mmu() ) zxuno_set_memory_pages();
 		if (MACHINE_IS_TBBLUE) {
-			//Sincronizar los 5 bits bajos a registro tbblue			
+			//Sincronizar los 5 bits bajos a registro tbblue
 
 			/*
 			(W) 0x69 (105) => DISPLAY CONTROL 1 REGISTER

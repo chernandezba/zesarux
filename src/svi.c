@@ -77,7 +77,7 @@ const char *svi_string_memory_type_empty="EMPTY";
 
 char *svi_get_string_memory_type(int tipo)
 {
-    		
+
 
     switch (tipo) {
 
@@ -145,8 +145,8 @@ z80_byte *svi_return_segment_address(z80_int direccion,int *tipo)
     //temp_prin_page_config++; if ((temp_prin_page_config % 5000) ==0  ) printf ("page config: %02XH\n",page_config);
 
 
-    int offset_segment_low=svi_return_offset_rom_page(0,direccion);  
-    int offset_segment_high=svi_return_offset_ram_page(0,direccion);    
+    int offset_segment_low=svi_return_offset_rom_page(0,direccion);
+    int offset_segment_high=svi_return_offset_ram_page(0,direccion);
 
     int tipo_low=SVI_SLOT_MEMORY_TYPE_ROM;
     int tipo_high=SVI_SLOT_MEMORY_TYPE_RAM;
@@ -164,20 +164,20 @@ z80_byte *svi_return_segment_address(z80_int direccion,int *tipo)
             offset_segment_low=svi_return_offset_ram_page(1,direccion);
             tipo_low=SVI_SLOT_MEMORY_TYPE_RAM;
             //if ((temp_prin_page_config % 5000) ==0  ) printf ("Ram 1 en segmento bajo\n");
-        }    
+        }
 
         if ((page_config & 4)==0) {
             offset_segment_high=svi_return_offset_ram_page(2,direccion);
-        }    
+        }
 
         if ((page_config & 8)==0) {
             tipo_low=SVI_SLOT_MEMORY_TYPE_RAM;
             offset_segment_low=svi_return_offset_ram_page(3,direccion);
-        }    
+        }
 
         if ((page_config & 16)==0) {
             offset_segment_high=svi_return_offset_ram_page(4,direccion);
-        }    
+        }
 
         //TODO bits 5,6,7
         // 5: Cap Lamp (Keyboard Cap Lock)
@@ -193,7 +193,7 @@ z80_byte *svi_return_segment_address(z80_int direccion,int *tipo)
     }
     else {
         *tipo=tipo_high;
-        return &memoria_spectrum[offset_segment_high];      
+        return &memoria_spectrum[offset_segment_high];
     }
 
 
@@ -211,10 +211,10 @@ Bit Name    Description
 7   /ROMEN0 Memory bank 12, ROM 8000-BFFF* (Cartridge /CCS3)        -> Rom 2.0 para mi (16 kb)
 8   /ROMEN1 Memory bank 12, ROM C000-FFFF* (Cartridge /CCS4)        -> Rom 2.1 para mi (16 kb)
 
-Total:  3 ROMS de 32 kb, 5 RAMS de 32 kb, 
+Total:  3 ROMS de 32 kb, 5 RAMS de 32 kb,
 
  The /CART signal must be active for any effect,
-  then all banks of RAM are disabled. 
+  then all banks of RAM are disabled.
 
   Por defecto: bank01 rom basic, bank02 ram
 
@@ -253,7 +253,7 @@ void svi_get_string_memory_slot(char *buffer_mem_type,char *long_buffer_memory_t
 							}
 							else {
 								strcpy(buffer_mem_type,"CRO12");
-							}						
+							}
 						break;
 
 						case 2:
@@ -262,7 +262,7 @@ void svi_get_string_memory_slot(char *buffer_mem_type,char *long_buffer_memory_t
 							}
 							else {
 								strcpy(buffer_mem_type,"RAM22");
-							}						
+							}
 						break;
 
 						default:
@@ -271,7 +271,7 @@ void svi_get_string_memory_slot(char *buffer_mem_type,char *long_buffer_memory_t
 							}
 							else {
 								strcpy(buffer_mem_type,"RAM32");
-							}						
+							}
 						break;
 
 					}
@@ -283,7 +283,7 @@ void svi_get_string_memory_slot(char *buffer_mem_type,char *long_buffer_memory_t
             }
             else {
                 strcpy(long_buffer_memory_type,"Cartridge ROM 12");
-            }		
+            }
         }
         else {
             strcpy(long_buffer_memory_type,buffer_mem_type);
@@ -318,7 +318,7 @@ void svi_init_memory_tables(void)
 
     */
 
- 
+
 
 
 }
@@ -341,7 +341,7 @@ void svi_out_port_vdp_data(z80_byte value)
     //printf ("out port vdp data %02XH char: %c\n",value,
     //(value>=32 && value<=126 ? value : '?') );
 
-	  
+
 
     vdp_9918a_out_vram_data(svi_vram_memory,value);
 }
@@ -379,7 +379,7 @@ void svi_out_port_ppi(z80_byte puerto_l,z80_byte value)
             //printf ("Out port ppi. Port %02XH value %02XH\n",puerto_l,value);
 
     //temporal mostrar mapeos
-    
+
 /*
     for (slot=0;slot<4;slot++) {
         for (segment=0;segment<4;segment++) {
@@ -398,9 +398,9 @@ void svi_out_port_ppi(z80_byte puerto_l,z80_byte value)
         case 0x96:
             svi_ppi_register_c=value;
 
-            
+
                 //printf ("Posible beep: %d\n",value&128);
-            
+
 			set_value_beeper_on_array(da_amplitud_speaker_svi() );
 
 
@@ -424,7 +424,7 @@ z80_byte svi_in_port_ppi(z80_byte puerto_l)
             if (joystick_emulation==JOYSTICK_SVI) {
                 //si estamos con menu abierto, no retornar nada
                 if (!zxvision_key_not_sent_emulated_mach() ) {
-                    
+
                     if ((puerto_especial_joystick&16)) valor &=(255-16);  //fire1
                     //TODO: boton 2
                 }
@@ -451,12 +451,12 @@ z80_byte svi_in_port_ppi(z80_byte puerto_l)
 							//printf ("0 \n");
 							//valor=0;
 					}
-			}	            
+			}
 
 
             return valor;
-        break;        
- 
+        break;
+
         case 0x99:
             //Leer registro B (filas teclado)
             //que fila? svi_ppi_register_c
@@ -494,7 +494,7 @@ z80_byte svi_in_port_ppi(z80_byte puerto_l)
                                 valor=(valor & (255-128));
                                 printf ("0 ");
                         }
-                }	
+                }
 		return valor;*/
 
 
@@ -523,7 +523,7 @@ void svi_out_port_psg(z80_byte puerto_l,z80_byte value)
         if (puerto_l==0x8c) {
                         activa_ay_chip_si_conviene();
                         if (ay_chip_present.v==1) {
-                            
+
                             /*if (ay_3_8912_registro_sel[ay_chip_selected]==14 || ay_3_8912_registro_sel[ay_chip_selected]==15) {
 
                                 //de momento registros 14 y 15 nada
@@ -534,13 +534,13 @@ void svi_out_port_psg(z80_byte puerto_l,z80_byte value)
 
                                 //if (ay_3_8912_registro_sel[ay_chip_selected]==15) {
                                 //    printf ("Out port AY register 15: %02XH\n",value);
-                                //}                            
-                            
+                                //}
+
                             out_port_ay(49149,value);
 
                         }
-        }    
- 
+        }
+
 }
 
 
@@ -569,7 +569,7 @@ void svi_insert_rom_cartridge(char *filename)
     if (!si_existe_archivo(filename)) {
         debug_printf(VERBOSE_ERR,"File %s not found",filename);
         return;
-    }        
+    }
 
     long tamanyo_archivo=get_file_size(filename);
 
@@ -625,7 +625,7 @@ void svi_empty_romcartridge_space(void)
 
 
     //Mapear inicialmente todo a slot 0
-    ay_3_8912_registros[ay_chip_selected][15]=0xFF;  
+    ay_3_8912_registros[ay_chip_selected][15]=0xFF;
 
 
     //Limpiar 32 kb de espacio rom de cartucho
@@ -659,7 +659,7 @@ void svi_empty_romcartridge_space(void)
 void scr_refresca_pantalla_y_border_svi_no_rainbow(void)
 {
 
- 
+
 
     if (border_enabled.v && vdp_9918a_force_disable_layer_border.v==0) {
             //ver si hay que refrescar border
@@ -709,8 +709,8 @@ void scr_refresca_pantalla_y_border_svi_no_rainbow(void)
     if (vdp_9918a_force_disable_layer_sprites.v==0) {
         vdp_9918a_render_sprites_no_rainbow(svi_vram_memory);
     }
-        
-        
+
+
 
 
 }
@@ -741,14 +741,14 @@ int da_amplitud_speaker_svi(void)
 z80_int svi_scanline_buffer[512];
 
 
-void screen_store_scanline_rainbow_svi_border_and_display(void) 
+void screen_store_scanline_rainbow_svi_border_and_display(void)
 {
 
     screen_store_scanline_rainbow_vdp_9918a_border_and_display(svi_scanline_buffer,svi_vram_memory);
 
 
 }
-					
+
 
 
 int svi_cas_load_detect(void)
@@ -772,7 +772,7 @@ int svi_cas_load_detect(void)
 
 
     return 0;
-}                    
+}
 
 
 
@@ -835,8 +835,8 @@ void svi_cas_lookup_header(void)
                 //No tengo claro que los flags vayan asi
                 Z80_FLAGS |= FLAG_C;
 
-            
-                return;        
+
+                return;
         }
 
         //Error
@@ -952,11 +952,11 @@ z80_byte svi_read_psg(void)
 {
 
         //Registro 14 del ay chip realmente es el port A del ay chip
-		if ( (ay_3_8912_registro_sel[ay_chip_selected] & 15) ==14) { 				
-			
-            
+		if ( (ay_3_8912_registro_sel[ay_chip_selected] & 15) ==14) {
+
+
 			z80_byte valor=255;
-	
+
 
             //Si esta activada emulacion de joystick msx
             if (joystick_emulation==JOYSTICK_SVI) {
@@ -970,7 +970,7 @@ z80_byte svi_read_psg(void)
                         Bits 4,5,6,7 son del segundo joystick. El fire va por el registro svi_ppi_register_a
                         */
                     //z80_byte puerto_especial_joystick=0; //Fire Up Down Left Right
-                    
+
                     if ((puerto_especial_joystick&8)) valor &=(255-1);  //up
                     if ((puerto_especial_joystick&4)) valor &=(255-2);  //down
                     if ((puerto_especial_joystick&2)) valor &=(255-4);   //left

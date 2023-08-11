@@ -1,5 +1,5 @@
 /*
-    ZEsarUX  ZX Second-Emulator And Released for UniX 
+    ZEsarUX  ZX Second-Emulator And Released for UniX
     Copyright (C) 2013 Cesar Hernandez Bano
 
     This file is part of ZEsarUX.
@@ -63,7 +63,7 @@ void core_pcw_final_frame(void)
     t_scanline=0;
     set_t_scanline_draw_zero();
 
-    timer_get_elapsed_core_frame_post();						
+    timer_get_elapsed_core_frame_post();
 
     //TODO: controlar si t_scanline_draw se va "por debajo" del borde inferior
     //tampoco deberia pasar nada porque al hacer render rainbow ya se controla que sea superior y en ese caso no renderiza nada
@@ -75,7 +75,7 @@ void core_pcw_final_frame(void)
     //if (pcw_endframe_workaround.v) {
     //    t_scanline_draw=0;
     //}
-    
+
 
 
     //Parche para maquinas que no generan 312 lineas, porque si enviamos menos sonido se escuchara un click al final
@@ -97,7 +97,7 @@ void core_pcw_final_frame(void)
 
     cpu_loop_refresca_pantalla();
 
-    vofile_send_frame(rainbow_buffer);	
+    vofile_send_frame(rainbow_buffer);
 
 
     siguiente_frame_pantalla();
@@ -112,7 +112,7 @@ void core_pcw_final_frame(void)
         toggle_flash_state();
     }
 
-			
+
     if (!interrupcion_timer_generada.v) {
         //Llegado a final de frame pero aun no ha llegado interrupcion de timer. Esperemos...
         //printf ("no demasiado\n");
@@ -128,7 +128,7 @@ void core_pcw_final_frame(void)
     core_end_frame_check_zrcp_zeng_snap.v=1;
 
     //snapshot en ram
-    snapshot_add_in_ram();    
+    snapshot_add_in_ram();
 
 
 }
@@ -164,12 +164,12 @@ void core_pcw_end_scanline_stuff(void)
         }*/
 
 
-    }    
+    }
 
     //Ajustar volumen
     if (audiovolume!=100) {
         audio_valor_enviar_sonido_izquierdo=audio_adjust_volume(audio_valor_enviar_sonido_izquierdo);
-        audio_valor_enviar_sonido_derecho=audio_adjust_volume(audio_valor_enviar_sonido_derecho);        
+        audio_valor_enviar_sonido_derecho=audio_adjust_volume(audio_valor_enviar_sonido_derecho);
     }
 
     if (audio_tone_generator) {
@@ -178,14 +178,14 @@ void core_pcw_end_scanline_stuff(void)
 
     else {
         audio_send_stereo_sample(audio_valor_enviar_sonido_izquierdo,audio_valor_enviar_sonido_derecho);
-    }    
+    }
 
     ay_chip_siguiente_ciclo();
-    
-    
+
+
     //printf("Llega Info %d t: %d pcw_crtc_contador_scanline %d t_scanline_draw %d\n",
     //    pcw_scanline_counter,t_estados,pcw_crtc_contador_scanline,t_scanline_draw);
-    
+
     //final de linea
     //copiamos contenido linea y border a buffer rainbow
 
@@ -216,21 +216,21 @@ void core_pcw_end_scanline_stuff(void)
 
     //Esto tiene que ir antes de pcw_handle_vsync_state
     //pcw_scanline_counter++;
-    
+
     //printf ("crtc counter: %d t: %d scanline_draw: %d\n",pcw_scanline_counter,t_estados,t_scanline_draw);
 
 
 
     //Con ay player, interrupciones a 50 Hz
 
-    
+
     if (pcw_scanline_counter>=52 && ay_player_playing.v==0) {
         pcw_pending_interrupt.v=1;
 
         //printf ("Llega interrupcion crtc del Z80 en counter: %d pcw_crtc_contador_scanline: %d t: %d scanline_draw: %d\n",
         //pcw_scanline_counter,pcw_crtc_contador_scanline,t_estados,t_scanline_draw);
 
-  
+
         if (iff1.v==1) {
             //printf ("Llega interrupcion crtc con interrupciones habilitadas del Z80 en counter: %d t: %d t_scanline_draw %d\n",pcw_scanline_counter,t_estados,t_scanline_draw);
 
@@ -243,7 +243,7 @@ void core_pcw_end_scanline_stuff(void)
 
         pcw_increment_interrupt_counter();
     }
-    
+
 
 /*
     //Ver si resetear t_scanline_draw
@@ -265,7 +265,7 @@ void core_pcw_end_scanline_stuff(void)
 
     //Fin final de frame
 
-    
+
 
 }
 
@@ -287,7 +287,7 @@ void core_pcw_handle_interrupts(void)
         //reg_pc++;
     }
 
-   
+
 
     if (interrupcion_non_maskable_generada.v) {
         debug_anota_retorno_step_nmi();
@@ -299,7 +299,7 @@ void core_pcw_handle_interrupts(void)
         t_estados += 14;
 
 
-        
+
         push_valor(reg_pc,PUSH_VALUE_TYPE_NON_MASKABLE_INTERRUPT);
 
 
@@ -318,11 +318,11 @@ void core_pcw_handle_interrupts(void)
         t_estados -=15;
 
 
-        
+
     }
 
- 
-                  
+
+
     //justo despues de EI no debe generar interrupcion
     //e interrupcion nmi tiene prioridad
     if (interrupcion_maskable_generada.v && byte_leido_core_pcw!=251) {
@@ -330,14 +330,14 @@ void core_pcw_handle_interrupts(void)
         //Tratar interrupciones maskable
         interrupcion_maskable_generada.v=0;
 
-        
+
 
         push_valor(reg_pc,PUSH_VALUE_TYPE_MASKABLE_INTERRUPT);
 
         reg_r++;
 
-    
-             
+
+
         //desactivar interrupciones al generar una
         iff1.v=iff2.v=0;
 
@@ -349,7 +349,7 @@ void core_pcw_handle_interrupts(void)
         //IM 2.
 
             z80_int temp_i;
-            z80_byte dir_l,dir_h;   
+            z80_byte dir_l,dir_h;
             temp_i=get_im2_interrupt_vector();
             dir_l=peek_byte(temp_i++);
             dir_h=peek_byte(temp_i);
@@ -358,10 +358,10 @@ void core_pcw_handle_interrupts(void)
 
 
         }
-                    
+
     }
-            
-    
+
+
 
 }
 
@@ -373,11 +373,11 @@ void cpu_core_loop_pcw(void)
 
     debug_get_t_stados_parcial_pre();
 
-  
+
     timer_check_interrupt();
 
 
-//#ifdef COMPILE_STDOUT 
+//#ifdef COMPILE_STDOUT
 //		if (screen_stdout_driver) scr_stdout_printchar();
 //#endif
 //
@@ -388,7 +388,7 @@ void cpu_core_loop_pcw(void)
     if (chardetect_printchar_enabled.v) chardetect_printchar();
 
 
-	
+
 
 
     if (esperando_tiempo_final_t_estados.v==0) {
@@ -403,7 +403,7 @@ void cpu_core_loop_pcw(void)
 
 #ifdef DEBUG_SECOND_TRAP_STDOUT
 
-    //Para poder debugar rutina que imprima texto. Util para aventuras conversacionales 
+    //Para poder debugar rutina que imprima texto. Util para aventuras conversacionales
     //hay que definir este DEBUG_SECOND_TRAP_STDOUT manualmente en compileoptions.h despues de ejecutar el configure
 
         scr_stdout_debug_print_char_routine();
@@ -422,7 +422,7 @@ void cpu_core_loop_pcw(void)
 
         //Si la cpu está detenida por señal HALT, reemplazar opcode por NOP
         if (z80_halt_signal.v) {
-            byte_leido_core_pcw=0;            
+            byte_leido_core_pcw=0;
         }
         else {
             reg_pc++;
@@ -430,20 +430,20 @@ void cpu_core_loop_pcw(void)
 
         reg_r++;
 
-        z80_no_ejecutado_block_opcodes();	
+        z80_no_ejecutado_block_opcodes();
         codsinpr[byte_leido_core_pcw]  () ;
 
 
     }
-    
 
 
-		
-    //A final de cada scanline 
+
+
+    //A final de cada scanline
     if ( (t_estados/screen_testados_linea)>t_scanline  ) {
 
         core_pcw_end_scanline_stuff();
-		
+
     }
 
 
@@ -479,13 +479,13 @@ void cpu_core_loop_pcw(void)
         //printf ("%d\n",interlaced_numero_frame);
 
         //Para calcular lo que se tarda en ejecutar todo un frame
-        timer_get_elapsed_core_frame_pre();									
+        timer_get_elapsed_core_frame_pre();
     }
 
 
 
     //Si habia interrupcion pendiente  y están las interrupciones habilitadas
-    
+
     if (pcw_pending_interrupt.v && iff1.v==1) {
 
 
@@ -500,7 +500,7 @@ void cpu_core_loop_pcw(void)
         //sleep(2);
 
     }
-    
+
     //TODO si habia interrupcion pendiente y no se atiende por estar en DI, la perdemos??
     //if (pcw_pending_interrupt.v) pcw_pending_interrupt.v=0;
 
@@ -515,9 +515,9 @@ void cpu_core_loop_pcw(void)
 	if (core_end_frame_check_zrcp_zeng_snap.v) {
 		core_end_frame_check_zrcp_zeng_snap.v=0;
 		check_pending_zrcp_put_snapshot();
-		zeng_send_snapshot_if_needed();			
-	}				
-     
+		zeng_send_snapshot_if_needed();
+	}
+
 	debug_get_t_stados_parcial_post();
 
 }

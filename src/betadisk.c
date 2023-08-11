@@ -205,7 +205,7 @@ void betadisk_show_activity(void)
 	if (!zxdesktop_icon_betadisk_inverse) {
 			zxdesktop_icon_betadisk_inverse=1;
 			menu_draw_ext_desktop();
-	}	
+	}
 }
 
 z80_byte cpu_core_loop_betadisk(z80_int dir GCC_UNUSED, z80_byte value GCC_UNUSED)
@@ -266,7 +266,7 @@ l1e67h:
   push bc
   push hl
   call sub_1e36h
-  
+
 			*/
 
 /*
@@ -274,7 +274,7 @@ l1e67h:
 				if (reg_c==5) {
 
 // #05 ³Read sectors. HL=memory address, DE=start sector/trackº
-//      ³B=number of sectors  
+//      ³B=number of sectors
 
 	z80_byte numero_sectores=reg_b;
 	z80_byte pista=reg_d;
@@ -302,7 +302,7 @@ l1e67h:
 // D = pista del primer sector a usar (0..159)
 // E = primer sector a usar de la pista (0..15)
 // HL = dirección de memoria para carga o lectura de los sectores
-// 
+//
 
 			if (reg_pc==0x1e3d || reg_pc==0x1e4d) {
 	z80_byte numero_sectores=reg_b;
@@ -314,7 +314,7 @@ l1e67h:
 	 debug_printf (VERBOSE_DEBUG,"From %04XH %s %d sectors from track %d sector %d  address %04XH",
 	 reg_pc,
 	 (reg_pc==0x1e3d ? "Reading" : "Writing" ),
-	 
+
 	 numero_sectores,pista,sector,destino);
 
 			}
@@ -372,7 +372,7 @@ void betadisk_restore_core_function(void)
 
 void betadisk_alloc_memory(void)
 {
-        int size=BETADISK_SIZE;  
+        int size=BETADISK_SIZE;
 
         debug_printf (VERBOSE_DEBUG,"Allocating %d kb of memory for betadisk emulation",size/1024);
 
@@ -497,7 +497,7 @@ z80_byte betadisk_get_byte_disk(int pista, int sector, int byte_en_sector)
 	if (offset<0) return 0;
 
 	z80_byte byte_leido=trd_memory_pointer[offset];
-	
+
 	return byte_leido;
 }
 
@@ -505,7 +505,7 @@ z80_byte betadisk_get_byte_disk(int pista, int sector, int byte_en_sector)
 void betadisk_put_byte_disk(int pista, int sector, int byte_en_sector,z80_byte byte_a_escribir)
 {
 
-	
+
 	int offset=betadisk_get_offset_tracksectorbyte(pista,sector,byte_en_sector);
         if (offset<0) return;
 
@@ -613,7 +613,7 @@ A=0 read, A=255 write
 	}
 
 	//printf ("\ntotal leidos: %d\n",leidos);
-	
+
 	//No error
 	reg_a=0;
 	Z80_FLAGS |=FLAG_Z;
@@ -642,10 +642,10 @@ A=0 read, A=255 write
 	reg_pc=pop_valor();
 }
 
-	
 
 
-	
+
+
 
 
 
@@ -774,7 +774,7 @@ void trd_flush_contents_to_disk(void)
 
         if (escritos!=size || ptr_trdfile==NULL) {
                 debug_printf (VERBOSE_ERR,"Error writing to TRD file. Disabling write file operations");
-                trd_persistent_writes.v=0;                
+                trd_persistent_writes.v=0;
         }
 
 }

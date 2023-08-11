@@ -111,7 +111,7 @@ void ramjet_nmi(void)
     if (ramjet_mapped_rom_memory.v==0) {
         debug_printf(VERBOSE_DEBUG,"Enabling ramjet memory from nmi triggered");
         ramjet_mapped_rom_memory.v=1;
-    }   
+    }
 }
 
 
@@ -184,7 +184,7 @@ int ramjet_load_rom(void)
 void ramjet_alloc_memory(void)
 {
 
-    int size=RAMJET_ROM_SIZE;  
+    int size=RAMJET_ROM_SIZE;
 
     debug_printf (VERBOSE_DEBUG,"Allocating %d kb of memory for ramjet emulation",size/1024);
 
@@ -257,7 +257,7 @@ void ramjet_write_port(z80_byte value)
     }
     else {
         //printf("Activando ramjet a peticion puerto\n");
-        ramjet_mapped_rom_memory.v=1;        
+        ramjet_mapped_rom_memory.v=1;
     }
 }
 
@@ -269,7 +269,7 @@ int ramjet_save_detect(void)
 2202h: save en ramjet3.rom desde copion
 
 0581h: save en ramjet2.rom. ex af,af', inc de , dec ix, di, ld a,2....
-184ch: save en ramjet2.rom desde copion    
+184ch: save en ramjet2.rom desde copion
     */
     if (ramjet_version==2) {
         if (reg_pc==0x0581 || reg_pc==0x184c) return 1;

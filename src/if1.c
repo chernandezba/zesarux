@@ -1,5 +1,5 @@
 /*
-    ZEsarUX  ZX Second-Emulator And Released for UniX 
+    ZEsarUX  ZX Second-Emulator And Released for UniX
     Copyright (C) 2013 Cesar Hernandez Bano
 
     This file is part of ZEsarUX.
@@ -97,7 +97,7 @@ z80_byte cpu_core_loop_if1(z80_int dir GCC_UNUSED, z80_byte value GCC_UNUSED)
 		//Traps de funciones
 		if (reg_pc==0x1F3F) {
 			//THE 'READ SECTOR' HOOK CODE
-			//Sector esta en IX+$0D  CHREC 
+			//Sector esta en IX+$0D  CHREC
 			printf ("Read sector routine. Sector=%d\n",peek_byte_no_time(reg_iy+0x0d) );
 		}
 
@@ -210,7 +210,7 @@ z80_byte if1_poke_byte_no_time(z80_int dir,z80_byte valor)
         //Para que no se queje el compilador, aunque este valor de retorno no lo usamos
         return 0;
 
-	
+
 }
 
 z80_byte if1_peek_byte(z80_int dir,z80_byte value GCC_UNUSED)
@@ -287,14 +287,14 @@ void if1_set_peek_poke_functions(void)
 	        if1_nested_id_poke_byte=debug_nested_poke_byte_add(if1_poke_byte,"if1 poke_byte");
         	if1_nested_id_poke_byte_no_time=debug_nested_poke_byte_no_time_add(if1_poke_byte_no_time,"if1 poke_byte_no_time");
 	        if1_nested_id_peek_byte=debug_nested_peek_byte_add(if1_peek_byte,"if1 peek_byte");
-        	if1_nested_id_peek_byte_no_time=debug_nested_peek_byte_no_time_add(if1_peek_byte_no_time,"if1 peek_byte_no_time");		
+        	if1_nested_id_peek_byte_no_time=debug_nested_peek_byte_no_time_add(if1_peek_byte_no_time,"if1 peek_byte_no_time");
 
         }
 }
 
 //Restaurar rutinas de if1
 void if1_restore_peek_poke_functions(void)
-{       
+{
                 debug_printf (VERBOSE_DEBUG,"Restoring original poke / peek functions before IF1");
                 //poke_byte=if1_original_poke_byte;
                 //poke_byte_no_time=if1_original_poke_byte_no_time;
@@ -347,7 +347,7 @@ void if1_restore_core_function(void)
 	//cpu_core_loop=cpu_core_loop_no_if1;
         debug_nested_core_del(if1_nested_id_core);
 }
-		
+
 void disable_if1(void)
 {
 	if1_restore_core_function();
@@ -374,17 +374,17 @@ void enable_if1(void)
         int leidos=0;
 
         debug_printf (VERBOSE_INFO,"Loading if1 firmware %s",IF1_ROM_NAME);
-        
+
         open_sharedfile(IF1_ROM_NAME,&ptr_if1_romfile);
-        
-        
+
+
         if (ptr_if1_romfile!=NULL) {
                 leidos=fread(if1_memory_pointer,1,size,ptr_if1_romfile);
                 fclose(ptr_if1_romfile);
         }
-        
-        
-        
+
+
+
         if (leidos!=size || ptr_if1_romfile==NULL) {
                 debug_printf (VERBOSE_ERR,"Error reading Interface 1 firmware, file " IF1_ROM_NAME );
                 //Lo desactivamos asi porque el disable hace otras cosas, como cambiar el core loop, que no queremos
@@ -409,11 +409,11 @@ void enable_if1(void)
 
 	else {
 		//Leer todo el archivo microdrive de prueba
-		int leidos=fread(if1_microdrive_buffer,1,98284,ptr_microdrive_file);	
+		int leidos=fread(if1_microdrive_buffer,1,98284,ptr_microdrive_file);
 		printf ("leidos %d bytes de microdrive\n",leidos);
 		fclose(ptr_microdrive_file);
 	}
-	
+
 
 
 	//Cambio core cpu

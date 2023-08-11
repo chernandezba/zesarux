@@ -228,7 +228,7 @@ void realjoystick_init_events_keys_tables(void)
 	realjoystick_clear_events_array();
 
 	//y teclas
-	realjoystick_clear_keys_array();	
+	realjoystick_clear_keys_array();
 }
 
 
@@ -358,7 +358,7 @@ int realjoystick_simulador_init(void)
 		        "WARNING: using joystick simulator. Don't enable it on production version. Use F7 key to simulate joystick event\n"
 			"!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
 		sleep(4);
-	
+
 
 
 	strcpy(realjoystick_joy_name,"Joystick simulator");
@@ -391,7 +391,7 @@ void read_simulador_joystick(void)
 	if (value<-32767 || value>32767) {
 		printf ("Invalid value\n");
 		return;
-	}	
+	}
 
 	printf ("OK simulating joystick button/axis: button: %d type: %d value: %d\n",button,type,value);
 
@@ -550,7 +550,7 @@ void realjoystick_set_reset_key(int index,int value)
 
         else {
 		debug_printf (VERBOSE_DEBUG,"reset key %c",tecla);
-		ascii_to_keyboard_port_set_clear(tecla,0);	
+		ascii_to_keyboard_port_set_clear(tecla,0);
 	}
 
 }
@@ -612,7 +612,7 @@ void realjoystick_set_reset_action(int index,int value)
 
 		case REALJOYSTICK_EVENT_EXIT_EMULATOR:
 			if (value) realjoystick_send_f_function(F_FUNCION_EXITEMULATOR);
-		break;        
+		break;
 
 
         case REALJOYSTICK_EVENT_MENU_TAB:
@@ -675,7 +675,7 @@ void realjoystick_set_reset_action(int index,int value)
 		case REALJOYSTICK_EVENT_ENTER:
 			if (value) puerto_49150 &=255-1;
             else puerto_49150 |=1;
-                
+
         break;
 
 
@@ -690,13 +690,13 @@ void realjoystick_set_reset_action(int index,int value)
 			if (value) {
                 realjoystick_send_f_function(F_FUNCION_REWIND);
 			}
-		break;        
+		break;
 
 		case REALJOYSTICK_EVENT_FFORWARD:
 			if (value) {
 				realjoystick_send_f_function(F_FUNCION_FFW);
 			}
-		break;        
+		break;
 
 
 		case REALJOYSTICK_EVENT_QUICKSAVE:
@@ -705,7 +705,7 @@ void realjoystick_set_reset_action(int index,int value)
 				realjoystick_send_f_function(F_FUNCION_QUICKSAVE);
 		      	//Activar funcion f en menu. Primera funcion que llamo desde joystick de la misma manera que cuando se pulsa tecla F de funcion
 			}
-		break;		
+		break;
 
 		case REALJOYSTICK_EVENT_OSDKEYBOARD:
             if (value) {
@@ -1094,7 +1094,7 @@ void realjoystick_common_set_event(int button,int type,int value)
 		if ( (type&REALJOYSTICK_INPUT_EVENT_INIT)!=REALJOYSTICK_INPUT_EVENT_INIT) {
 
 
-	
+
 
 			menu_info_joystick_last_button=button;
 
@@ -1102,7 +1102,7 @@ void realjoystick_common_set_event(int button,int type,int value)
 			menu_info_joystick_last_value=value;
 
 			menu_info_joystick_last_index=-1; //de momento suponemos ningun evento
-			
+
 
 			//buscamos el evento. En axis busca tanto la direccion como la opuesta
 			int index=-1;
@@ -1216,7 +1216,7 @@ void realjoystick_initialize_joystick(void)
 			if (realjoystick_init()) {
 				realjoystick_present.v=0;
 			}
-	}	
+	}
 }
 
 
@@ -1243,7 +1243,7 @@ void realjoystick_common_set_hat(int boton,int direccion)
     //TODO: esto es completamente arbitrario y solo para poder usar bien funcion realjoystick_common_set_event como si fuera un AXIS
 
 
-    //Valores deducidos mediante dos joystick con hat: 
+    //Valores deducidos mediante dos joystick con hat:
     //0,1,2,3,4,5,6,7 empezando con direccion arriba y yendo en las agujas del reloj
     //15 es no movimiento (o centro?). Para el caso, cualquier otro valor diferente de 0-7, equivale a no movimiento
     //aunque se elige el 15 porque es el mismo que se recibe desde la lectura de un hat de joystick
@@ -1254,7 +1254,7 @@ void realjoystick_common_set_hat(int boton,int direccion)
     menu_info_joystick_last_raw_value=0;
 
 
-    int bitmask_direction=0;  //Up 8 Down 4 Left 2 Right 1  
+    int bitmask_direction=0;  //Up 8 Down 4 Left 2 Right 1
 
     #define BITMASK_DIR_UP    8
     #define BITMASK_DIR_DOWN  4
@@ -1300,7 +1300,7 @@ void realjoystick_common_set_hat(int boton,int direccion)
 
     }
 
-    
+
 
     //boton: up : -32767 down: 32767
     //boton+1 left: -32767, right: 32767
@@ -1309,24 +1309,24 @@ void realjoystick_common_set_hat(int boton,int direccion)
 
 
         if (bitmask_direction&BITMASK_DIR_LEFT) {
-            realjoystick_common_set_event(boton,REALJOYSTICK_INPUT_EVENT_AXIS,-32767);    
+            realjoystick_common_set_event(boton,REALJOYSTICK_INPUT_EVENT_AXIS,-32767);
             menu_info_joystick_last_raw_value=-32767;
         }
 
         if (bitmask_direction&BITMASK_DIR_RIGHT) {
-            realjoystick_common_set_event(boton,REALJOYSTICK_INPUT_EVENT_AXIS,+32767);    
+            realjoystick_common_set_event(boton,REALJOYSTICK_INPUT_EVENT_AXIS,+32767);
             menu_info_joystick_last_raw_value=+32767;
-        }     
+        }
 
         if (bitmask_direction&BITMASK_DIR_UP) {
-            realjoystick_common_set_event(boton+1,REALJOYSTICK_INPUT_EVENT_AXIS,-32767);    
+            realjoystick_common_set_event(boton+1,REALJOYSTICK_INPUT_EVENT_AXIS,-32767);
             menu_info_joystick_last_raw_value=-32767;
         }
 
         if (bitmask_direction&BITMASK_DIR_DOWN) {
-            realjoystick_common_set_event(boton+1,REALJOYSTICK_INPUT_EVENT_AXIS,+32767);    
+            realjoystick_common_set_event(boton+1,REALJOYSTICK_INPUT_EVENT_AXIS,+32767);
             menu_info_joystick_last_raw_value=+32767;
-        }                   
+        }
 
 
         realjoystick_hit=1;

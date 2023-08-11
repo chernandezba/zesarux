@@ -138,9 +138,9 @@ zx80 tiene en la posicion 1 , el "
 Despues de ?(), en posicion 18:
 
        18 19 20 21 22 23 24
--zx80: -  +  *  /  =  >  < 
+-zx80: -  +  *  /  =  >  <
 
--zx81: >  <  =  +  -  *  / 
+-zx81: >  <  =  +  -  *  /
 */
 
 
@@ -273,7 +273,7 @@ void enable_wrx(void)
 		debug_printf (VERBOSE_INFO,"ZXpand can only be enabled on ZX80/81");
 		return;
 	}
-  
+
 	if (wrx_present.v==0) {
 		screen_print_splash_text_center(ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,"Enabling WRX video mode");
 		debug_printf (VERBOSE_INFO,"Enabling WRX video mode");

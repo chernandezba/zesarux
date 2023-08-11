@@ -1,5 +1,5 @@
 /*
-    ZEsarUX  ZX Second-Emulator And Released for UniX 
+    ZEsarUX  ZX Second-Emulator And Released for UniX
     Copyright (C) 2013 Cesar Hernandez Bano
 
     This file is part of ZEsarUX.
@@ -71,9 +71,9 @@ int audioonebitspeaker_init_gpio_path(char *name,char *text)
         return 1;
     }
 
-    close(fd);   
+    close(fd);
 
-    return 0; 
+    return 0;
 }
 
 int raspberry_gpio_init(void)
@@ -88,7 +88,7 @@ int raspberry_gpio_init(void)
     if (audioonebitspeaker_init_gpio_path(GPIO_EXPORT_PATH,buffer_gpio)) {
         debug_printf(VERBOSE_ERR,"Can not open gpio export device");
         return 1;
-    }        
+    }
 
 
 	//Pausa de 0.1 segundo. Necesaria para que aparezca el device de gpi direction
@@ -99,7 +99,7 @@ int raspberry_gpio_init(void)
     if (audioonebitspeaker_init_gpio_path(buffer_gpio,"out\n")) {
         debug_printf(VERBOSE_ERR,"Can not set gpio direction. Path: %s",buffer_gpio);
         return 1;
-    }    
+    }
 
 
     //echo 1 > /sys/class/gpio/gpio22/value
@@ -119,12 +119,12 @@ int audioonebitspeaker_init(void)
 	//audio_driver_accepts_stereo.v=1;
 
     //de momento asumir no inicializado
-    audioonebitspeaker_initialized=0;    
+    audioonebitspeaker_initialized=0;
 
     debug_printf (VERBOSE_INFO,"Init One Bit Speaker Audio Driver");
 
     //Detectamos tipo. En Raspberry, no se permite tipo PCSpeaker
-//#ifdef EMULATE_RASPBERRY    
+//#ifdef EMULATE_RASPBERRY
 //    audioonebitspeaker_tipo_altavoz=TIPO_ALTAVOZ_ONEBITSPEAKER_RPI_GPIO;
 //    debug_printf (VERBOSE_WARN,"Setting Speaker type to GPIO");
 //#endif
@@ -172,7 +172,7 @@ int audioonebitspeaker_thread_finish(void)
 
 	//Pausa de 0.1 segundo
     usleep(100000);
-	
+
 
 	return 0;
 
@@ -186,14 +186,14 @@ void audioonebitspeaker_end(void)
 
     if (audioonebitspeaker_tipo_altavoz==TIPO_ALTAVOZ_ONEBITSPEAKER_RPI_GPIO) {
         close(gpio_file_handle);
-        
+
         //echo 22 > /sys/class/gpio/unexport
         char buffer_gpio[256];
         sprintf(buffer_gpio,"%d\n",audioonebitspeaker_rpi_gpio_pin);
 
         if (audioonebitspeaker_init_gpio_path(GPIO_UNEXPORT_PATH,buffer_gpio)) {
             debug_printf(VERBOSE_ERR,"Can not open gpio unexport device");
-        }             
+        }
     }
 
     audioonebitspeaker_initialized=0;
@@ -218,7 +218,7 @@ void audioonebitspeakertiempo_inicial(void)
 long audioonebitspeakertiempo_final_usec(void)
 {
 
-    long audioonebitspeakertimer_time, audioonebitspeakertimer_seconds, audioonebitspeakertimer_useconds;    
+    long audioonebitspeakertimer_time, audioonebitspeakertimer_seconds, audioonebitspeakertimer_useconds;
 
     gettimeofday(&audioonebitspeakertimer_ahora, NULL);
 
@@ -258,18 +258,18 @@ void audioonebitspeaker_send_1bit(z80_byte bit_final_speaker)
     if (!audioonebitspeaker_initialized) return;
 
     if (audioonebitspeaker_tipo_altavoz==TIPO_ALTAVOZ_ONEBITSPEAKER_PCSPEAKER) {
-        outb(audioonebitspeaker_pcspeaker_valor_puerto_original | bit_final_speaker,0x61);    
+        outb(audioonebitspeaker_pcspeaker_valor_puerto_original | bit_final_speaker,0x61);
     }
     else {
         //GPIO raspberry
-        
+
         if (bit_final_speaker) {
             write(gpio_file_handle,"1",1);
         }
         else{
             write(gpio_file_handle,"0",1);
         }
-        fsync(gpio_file_handle);      
+        fsync(gpio_file_handle);
     }
 }
 
@@ -303,7 +303,7 @@ Bit 0    Effect
 -----------------------------------------------------------------
   0      The state of the speaker will follow bit 1 of port 61h
   1      The speaker will be connected to PIT channel 2, bit 1 is
-         used as switch ie 0 = not connected, 1 = connected.		
+         used as switch ie 0 = not connected, 1 = connected.
 		*/
         if (audioonebitspeaker_tipo_altavoz==TIPO_ALTAVOZ_ONEBITSPEAKER_PCSPEAKER && audioonebitspeaker_initialized) {
 		    audioonebitspeaker_pcspeaker_valor_puerto_original=inb(0x61);
@@ -314,11 +314,11 @@ Bit 0    Effect
 
 		z80_byte bit_final_speaker;
 		for (;len>0;len--) {
-			
+
 			audioonebitspeakertiempo_inicial();
 			char current_audio_sample=buffer_playback_onebitspeaker[ofs];
                 audioonebitspeaker_agudo_filtro_contador++;
-			
+
 			//Si valor actual es mayor, enviar 1
 			if (current_audio_sample>last_audio_sample) {
 				// altavoz a 1
@@ -368,7 +368,7 @@ Bit 0    Effect
 			int tiempo_pasado_usec=audioonebitspeakertiempo_final_usec();
 
 			//Y esperamos a que hayan pasado 64 microsegundos desde el anterior envio de altavoz
-            //Nota: antiguamente usabamos usleep para hacer pausa de unos 64 microsegundos 
+            //Nota: antiguamente usabamos usleep para hacer pausa de unos 64 microsegundos
             //(descontando el tiempo que se tardaba en ejecutar este codigo), pero parece
             //que en Linux no funcionan bien esas pausas de tan poco tiempo, no son perfectas
 			while (tiempo_pasado_usec<64) {
@@ -376,7 +376,7 @@ Bit 0    Effect
 				tiempo_pasado_usec=audioonebitspeakertiempo_final_usec();
 			}
 		}
-         
+
 
 		while (audio_playing.v==0 || silence_detection_counter==SILENCE_DETECTION_MAX) {
 				//1 ms
@@ -384,7 +384,7 @@ Bit 0    Effect
 		}
 
 		//Esperamos a que llegue el siguiente frame de sonido , si es que no ha llegado ya
-		//TODO: esto deberia ser una variable atomica, pero la probabilidad que se modifique 
+		//TODO: esto deberia ser una variable atomica, pero la probabilidad que se modifique
 		//en esta funcion y en audioonebitspeaker_send_frame a la vez es casi nula
 		//ademas si se pierde un frame, entrara el siguiente
 		while (audioonebitspeaker_esperando_frame) {
@@ -401,7 +401,7 @@ Bit 0    Effect
 
 
 	return NULL;
-} 
+}
 
 pthread_t audioonebitspeaker_thread1=0;
 
@@ -420,11 +420,11 @@ void audioonebitspeaker_send_frame(char *buffer)
 		buffer_playback_onebitspeaker=buffer;
      	if (pthread_create( &audioonebitspeaker_thread1, NULL, &audioonebitspeaker_enviar_audio, NULL) ) {
                 cpu_panic("Can not create audioonebitspeaker pthread");
-        }      
+        }
 	}
 
 	audioonebitspeaker_esperando_frame=0;
-	
+
 }
 
 
@@ -432,7 +432,7 @@ void audioonebitspeaker_send_frame(char *buffer)
 void audioonebitspeaker_get_buffer_info (int *buffer_size,int *current_size)
 {
   *buffer_size=AUDIO_BUFFER_SIZE*2; //*2 porque es stereo
-  
+
   //realmente no usa un buffer fifo, esto puede ser engañoso porque siempre dice que está lleno el buffer
   //pero mejor asi que no diga que siempre esta vacio
   //total esto solo se usa para estadisticas en Core Statistics

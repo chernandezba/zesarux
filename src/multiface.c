@@ -280,7 +280,7 @@ void multiface_enable(void)
 	        if (multiface_load_rom()) return;
         }
 
-        
+
 
 	multiface_set_peek_poke_functions();
 

@@ -1,5 +1,5 @@
 /*
-    ZEsarUX  ZX Second-Emulator And Released for UniX 
+    ZEsarUX  ZX Second-Emulator And Released for UniX
     Copyright (C) 2013 Cesar Hernandez Bano
 
     This file is part of ZEsarUX.
@@ -258,7 +258,7 @@ void zxprinter_write_buffer_ocr(void)
 	fwrite(buffer_salida,1,33,ptr_zxprinter_ocr);
 
 	fflush(ptr_zxprinter_ocr);
-	
+
 }
 
 //salto de linea
@@ -280,7 +280,7 @@ void zxprinter_cr(void)
 	if (zxprinter_y==8) {
 
 		if (zxprinter_ocr_filename!=NULL) zxprinter_write_buffer_ocr();
-		
+
 		zxprinter_y=0;
 	}
 }
@@ -360,7 +360,7 @@ void zxprinter_write_port(z80_byte value)
 
 	                                if (zxprinter_x>=256) {
         	                                //printf ("\n");
-		
+
 						zxprinter_cr();
                         	        }
 				}
@@ -397,8 +397,8 @@ int zxprinter_file_bitmap_init(void)
 
         if (!ptr_zxprinter_bitmap) {
                 debug_printf(VERBOSE_ERR,"Unable to open zxprinter bitmap file %s",zxprinter_bitmap_filename);
-		
-		
+
+
                 eject_zxprinter_bitmap_file();
                 return 1;
         }
@@ -413,8 +413,8 @@ int zxprinter_file_bitmap_init(void)
 
 
         return 0;
-                        
-}  
+
+}
 
 int zxprinter_file_ocr_init(void)
 {

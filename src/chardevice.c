@@ -70,7 +70,7 @@ int chardevice_open(char *path,enum chardevice_openmode mode)
     if (handler>=0) {
         //Agregar no bloqueo. manera estandard
         //Haciendolo con el open tambien seria valido, pero mejor asi
-#ifndef MINGW        
+#ifndef MINGW
         int flags = fcntl(handler, F_GETFL, 0);
         fcntl(handler, F_SETFL, flags | O_NONBLOCK);
 #endif
@@ -228,12 +228,12 @@ struct termios options;
         debug_printf(VERBOSE_ERR,"Error getting port properties when setting speed");
         return;
     }
-    
+
     if (cfsetispeed(&options, vdestino)!=0) {
         debug_printf(VERBOSE_ERR,"Error setting input port speed");
         return;
     }
-    
+
     if (cfsetospeed(&options, vdestino)!=0) {
         debug_printf(VERBOSE_ERR,"Error setting output port speed");
         return;

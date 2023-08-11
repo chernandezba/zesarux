@@ -145,10 +145,10 @@ struct s_tbblue_extended_string_opcode tbblue_extended_string_opcode[TOTAL_TBBLU
   {"INC DEHL",0x37,0},
   {"DEC DEHL",0x38,0},
   {"ADD DEHL,A",0x39,0},
-  {"ADD DEHL,BC",0x3A,0}, 
+  {"ADD DEHL,BC",0x3A,0},
   {"ADD DEHL,NN",0x3B,2},
-  {"SUB DEHL,A",0x3C,0}, 
-  {"SUB DEHL,BC",0x3D,0}, 
+  {"SUB DEHL,A",0x3C,0},
+  {"SUB DEHL,BC",0x3D,0},
   {"PUSH NN",0x8A,2},
   {"OUTINB",0x90,0},
   {"NEXTREG N,N",0x91,2},
@@ -205,11 +205,11 @@ void debugger_disassemble_crear_rep_spaces(char *origen)
 
 		else {
 			//No Habia otro?
-			if (repetido==0) {	
+			if (repetido==0) {
 				repetido=1;
 				*destino=caracter;
                  	       destino++;
-	                }	
+	                }
 
 			else {
 				//Habia otro
@@ -224,7 +224,7 @@ void debugger_disassemble_crear_rep_spaces(char *origen)
 
 	*destino=0;
 }
-		
+
 
 
 /* A very thin wrapper to avoid exposing the USE_HL constant */
@@ -296,7 +296,7 @@ debugger_disassemble( char *buffer, size_t buflen, size_t *length,
 			sprintf (buffer,"MOVE %d,%d",registro,value);
 		}
 
-		
+
 		return;
 	}
 
@@ -313,7 +313,7 @@ debugger_disassemble( char *buffer, size_t buflen, size_t *length,
     buffer_vocabulary[0]=0;
 
     /*
-    Por otro lado, el valor del opcode le tienes que hacer AND 0x7F, porque solo los 7 bits bajos son el opcode, el bit alto indica si el 
+    Por otro lado, el valor del opcode le tienes que hacer AND 0x7F, porque solo los 7 bits bajos son el opcode, el bit alto indica si el
 primer parámetro tiene indirección, cosa que en lo que a ti afecta, solo te supone poner el parametro 1 entre corechetes o no.
   */
 
@@ -334,24 +334,24 @@ primer parámetro tiene indirección, cosa que en lo que a ti afecta, solo te su
 	//{1,"NOUN2  "}, //  69 $45
 	if (op==69) {
 		util_daad_locate_word(arg_vocabulary,2,buffer_vocabulary);
-	} 		
+	}
 
   //{1,"ADJECT1"}, //  16 $10
   //{1,"ADJECT2"}, //  70 $46
   	if (op==16 || op==70) {
 		util_daad_locate_word(arg_vocabulary,3,buffer_vocabulary);
-	} 	
+	}
 
 
   	//{1,"ADVERB "}, //  17 $11
     if (op==17) {
 		util_daad_locate_word(arg_vocabulary,1,buffer_vocabulary);
-	} 
+	}
 
-    //{1,"PREP   "}, //  68 $44	
+    //{1,"PREP   "}, //  68 $44
 	if (op==68) {
 		util_daad_locate_word(arg_vocabulary,4,buffer_vocabulary);
-	} 	
+	}
 
   int vocabulario_encontrado=0;
 
@@ -361,8 +361,8 @@ primer parámetro tiene indirección, cosa que en lo que a ti afecta, solo te su
   if (indireccion) sprintf (buffer_parametro1,"@%d",arg1);
   else {
     //Skip utiliza parametro en complemento a 2
-    if (op==116) sprintf (buffer_parametro1,"%d",(char) arg1);  
-    else sprintf (buffer_parametro1,"%d",arg1);  
+    if (op==116) sprintf (buffer_parametro1,"%d",(char) arg1);
+    else sprintf (buffer_parametro1,"%d",arg1);
   }
 
 
@@ -374,13 +374,13 @@ primer parámetro tiene indirección, cosa que en lo que a ti afecta, solo te su
     else if (num_parametros==1) {
       if (vocabulario_encontrado) sprintf (buffer,"%s %s (%s)",nombre_condact,buffer_vocabulary,buffer_parametro1);
       else sprintf (buffer,"%s %s",nombre_condact,buffer_parametro1);
-    }    
+    }
 
     else {
       sprintf (buffer,"%s %s %3d",nombre_condact,buffer_parametro1,arg2);
-    }   
+    }
 
-    *length=1+num_parametros; 
+    *length=1+num_parametros;
 
     return;
   }
@@ -399,7 +399,7 @@ primer parámetro tiene indirección, cosa que en lo que a ti afecta, solo te su
     buffer_vocabulary[0]=0;
 
     /*
-    Por otro lado, el valor del opcode le tienes que hacer AND 0x7F, porque solo los 7 bits bajos son el opcode, el bit alto indica si el 
+    Por otro lado, el valor del opcode le tienes que hacer AND 0x7F, porque solo los 7 bits bajos son el opcode, el bit alto indica si el
 primer parámetro tiene indirección, cosa que en lo que a ti afecta, solo te supone poner el parametro 1 entre corechetes o no.
   */
 
@@ -420,24 +420,24 @@ primer parámetro tiene indirección, cosa que en lo que a ti afecta, solo te su
 	//{1,"NOUN2  "}, //  69 $45
 	if (op==69) {
 		util_paws_locate_word(arg_vocabulary,2,buffer_vocabulary);
-	} 		
+	}
 
   //{1,"ADJECT1"}, //  16 $10
   //{1,"ADJECT2"}, //  70 $46
   	if (op==16 || op==70) {
 		util_paws_locate_word(arg_vocabulary,3,buffer_vocabulary);
-	} 	
+	}
 
 
   	//{1,"ADVERB "}, //  17 $11
     if (op==17) {
 		util_paws_locate_word(arg_vocabulary,1,buffer_vocabulary);
-	} 
+	}
 
-    //{1,"PREP   "}, //  68 $44	
+    //{1,"PREP   "}, //  68 $44
 	if (op==68) {
 		util_paws_locate_word(arg_vocabulary,4,buffer_vocabulary);
-	} 	
+	}
 
   int vocabulario_encontrado=0;
 
@@ -447,8 +447,8 @@ primer parámetro tiene indirección, cosa que en lo que a ti afecta, solo te su
   if (indireccion) sprintf (buffer_parametro1,"@%d",arg1);
   else {
     //Skip utiliza parametro en complemento a 2
-    if (op==116) sprintf (buffer_parametro1,"%d",(char) arg1);  
-    else sprintf (buffer_parametro1,"%d",arg1);  
+    if (op==116) sprintf (buffer_parametro1,"%d",(char) arg1);
+    else sprintf (buffer_parametro1,"%d",arg1);
   }
 
 
@@ -460,13 +460,13 @@ primer parámetro tiene indirección, cosa que en lo que a ti afecta, solo te su
     else if (num_parametros==1) {
       if (vocabulario_encontrado) sprintf (buffer,"%s %s (%s)",nombre_condact,buffer_vocabulary,buffer_parametro1);
       else sprintf (buffer,"%s %s",nombre_condact,buffer_parametro1);
-    }    
+    }
 
     else {
       sprintf (buffer,"%s %s %3d",nombre_condact,buffer_parametro1,arg2);
-    }   
+    }
 
-    *length=1+num_parametros; 
+    *length=1+num_parametros;
 
     return;
   }

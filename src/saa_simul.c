@@ -76,7 +76,7 @@ void saa_simul_establece_frecuencia(z80_byte canal)
 	if (canal==4) octava=sam_saa_simul_chip[18]&7;
 	if (canal==5) octava=(sam_saa_simul_chip[18]>>4)&7;
 
-	int frecuencia_final=saa_simul_calcular_frecuencia(freq,octava); //max 7810 
+	int frecuencia_final=saa_simul_calcular_frecuencia(freq,octava); //max 7810
 
 	//en chip ay, frecuencia =
 	// f=FRECUENCIA_AY/(r*16). siendo r el contenido de los registros de tono del chip ay
@@ -97,7 +97,7 @@ void saa_simul_establece_frecuencia(z80_byte canal)
 	if (canal>2) {
 		canal -=3;
 		ay_chip_selected++;
-	}		
+	}
 
 	int registro_ay=canal*2;
 
@@ -110,7 +110,7 @@ void saa_simul_establece_frecuencia(z80_byte canal)
 	out_port_ay(65533,registro_ay+1);
 	out_port_ay(49149,(frecuencia_registro>>8) & 0xF );
 
-	
+
 }
 
 int saa_simul_calcular_frecuencia_ruido(z80_byte freq,int generador)
@@ -237,7 +237,7 @@ void saa_simul_write_data(z80_byte value)
 		}
 
 		//Si son frecuencias o octavas
-		if ( 
+		if (
 		(sam_saa_simul_chip_last_selected>=8 && sam_saa_simul_chip_last_selected<=13)
 		||
 		(sam_saa_simul_chip_last_selected>=16 && sam_saa_simul_chip_last_selected<=18)

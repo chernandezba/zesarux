@@ -26,7 +26,7 @@ Interface007 emulation
 */
 
 //Parece que dinamid3, interface007 y phoenix comparten código rom y debieron originarse de un mismo sitio
-//https://github.com/alvaroalea/Interface007 
+//https://github.com/alvaroalea/Interface007
 //https://www.va-de-retro.com/foros/viewtopic.php?f=63&t=693&start=70
 //https://spectrumcomputing.co.uk/entry/1000191/Hardware/Interface_007
 
@@ -99,7 +99,7 @@ void interface007_nmi(void)
     if (interface007_mapped_rom_memory.v==0) {
         debug_printf(VERBOSE_DEBUG,"Enabling interface007 memory from nmi triggered");
         interface007_mapped_rom_memory.v=1;
-    }   
+    }
 }
 
 
@@ -164,7 +164,7 @@ int interface007_load_rom(void)
 void interface007_alloc_memory(void)
 {
 
-    int size=INTERFACE007_ROM_SIZE;  
+    int size=INTERFACE007_ROM_SIZE;
 
     debug_printf (VERBOSE_DEBUG,"Allocating %d kb of memory for interface007 emulation",size/1024);
 

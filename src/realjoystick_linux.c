@@ -395,7 +395,7 @@ int realjoystick_linux_hit(void)
 int realjoystick_linux_init(void)
 {
 
-	
+
 
 
 	debug_printf(VERBOSE_DEBUG,"Initializing real joystick. Using native linux support. Using device %s",string_dev_joystick);
@@ -436,14 +436,14 @@ int realjoystick_linux_init(void)
 		strcpy(realjoystick_joy_name,"Unknown");
 	}
 
-	debug_printf(VERBOSE_DEBUG,"Name: %s", realjoystick_joy_name);	
+	debug_printf(VERBOSE_DEBUG,"Name: %s", realjoystick_joy_name);
 
 
 	char number_of_axes;
 	ioctl (ptr_realjoystick_linux, JSIOCGAXES, &number_of_axes);
 	debug_printf(VERBOSE_DEBUG,"Number of axes: %d",number_of_axes);
 	realjoystick_total_axes=number_of_axes;
-	
+
 
 	char number_of_buttons;
 	ioctl (ptr_realjoystick_linux, JSIOCGBUTTONS, &number_of_buttons);
@@ -460,13 +460,13 @@ int realjoystick_linux_init(void)
 
 The joystick driver defines the following ioctl(2) operations.
 
-				 function			3rd arg  
-	#define JSIOCGAXES	 get number of axes		char	 
-	#define JSIOCGBUTTONS	 get number of buttons	char	 
-	#define JSIOCGVERSION	get driver version		int	 
-	#define JSIOCGNAME(len)  get identifier string	char	 
-	#define JSIOCSCORR	 set correction values	&js_corr 
-	#define JSIOCGCORR	 get correction values	&js_corr 
+				 function			3rd arg
+	#define JSIOCGAXES	 get number of axes		char
+	#define JSIOCGBUTTONS	 get number of buttons	char
+	#define JSIOCGVERSION	get driver version		int
+	#define JSIOCGNAME(len)  get identifier string	char
+	#define JSIOCSCORR	 set correction values	&js_corr
+	#define JSIOCGCORR	 get correction values	&js_corr
 
 For example, to read the number of axes
 
@@ -552,13 +552,13 @@ int realjoystick_linux_read_event(int *button,int *type,int *value)
 
 
 
-	
+
 		int leidos=read(ptr_realjoystick_linux, &e, sizeof(e));
 		if (leidos<0) {
 			debug_printf (VERBOSE_ERR,"Error reading real joystick. Disabling it");
 			realjoystick_present.v=0;
 		}
-	
+
 
 	debug_printf (VERBOSE_DEBUG,"event: time: %d value: %d type: %d number: %d",e.time,e.value,e.type,e.number);
 

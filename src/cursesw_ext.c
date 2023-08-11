@@ -1,5 +1,5 @@
 /*
-    ZEsarUX  ZX Second-Emulator And Released for UniX 
+    ZEsarUX  ZX Second-Emulator And Released for UniX
     Copyright (C) 2013 Cesar Hernandez Bano
 
     This file is part of ZEsarUX.
@@ -36,7 +36,7 @@ ncursesw5-config --cflags --libs
 #include <curses.h>
 #include <string.h>
 #include <unistd.h>
-#include <locale.h> 
+#include <locale.h>
 
 #include "cpu.h"
 #include "debug.h"
@@ -50,7 +50,7 @@ ncursesw5-config --cflags --libs
 void cursesw_ext_print_pixel(int valor_get_pixel)
 {
 
-        
+
    if (valor_get_pixel==1) {
 				const cchar_t wch = {A_NORMAL, L"▘"};
 				add_wch(&wch);
@@ -114,8 +114,8 @@ void cursesw_ext_print_pixel(int valor_get_pixel)
    else if (valor_get_pixel==13) {
 				const cchar_t wch = {A_NORMAL, L"▙"};
 				add_wch(&wch);
-                                	
-   }   
+
+   }
 
 
    else if (valor_get_pixel==14) {
@@ -134,7 +134,7 @@ void cursesw_ext_print_pixel(int valor_get_pixel)
 				const cchar_t wch = {A_NORMAL, L" "};
 				add_wch(&wch);
    }
-   
+
 
 }
 

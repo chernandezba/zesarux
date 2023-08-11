@@ -1,5 +1,5 @@
 /*
-    ZEsarUX  ZX Second-Emulator And Released for UniX 
+    ZEsarUX  ZX Second-Emulator And Released for UniX
     Copyright (C) 2013 Cesar Hernandez Bano
 
     This file is part of ZEsarUX.
@@ -24,7 +24,7 @@
 #include <ncursesw/curses.h>
 #include <string.h>
 #include <unistd.h>
-#include <locale.h> 
+#include <locale.h>
 
 #include "cpu.h"
 #include "scrcurses.h"
@@ -118,7 +118,7 @@ void scrcurses_putchar_menu(int x,int y, z80_byte caracter,int tinta,int papel)
 
         tinta=tinta&15;
         papel=papel&15;
-	
+
 
 	//brillo para papel o tinta
 	//tinta=(tinta&7);
@@ -161,56 +161,56 @@ void scrcurses_putchar_footer(int x,int y, z80_byte caracter,int tinta,int papel
         tinta=tinta&15;
         papel=papel&15;
 
-        
+
         //brillo para papel o tinta
         tinta=(tinta&7);
-        
+
         if (papel>7 || tinta>7) {
                 brillo=A_BOLD;
                 papel=(papel&7);
                 tinta=(tinta&7);
         }
 
-        
+
         else brillo=0;
-        
+
         attron(COLOR_PAIR(tinta+papel*8+1));
 
 	y +=CURSES_LINE_FOOTER;
 
 	x +=CURSES_IZQ_BORDER*border_enabled.v;
 
-        
+
 	move(y,x);
-        
+
         addch(caracter|brillo);
 }
 
 void scrcurses_blank_footer(void)
-{       
+{
         if (menu_footer==0) return;
 
 
         int brillo;
 
-	z80_byte tinta=WINDOW_FOOTER_INK; 
+	z80_byte tinta=WINDOW_FOOTER_INK;
 	z80_byte papel=WINDOW_FOOTER_PAPER;
 
-        
+
         //brillo para papel o tinta
         tinta=(tinta&7);
-        
+
         if (papel>7 || tinta>7) {
                 brillo=A_BOLD;
                 papel=(papel&7);
                 tinta=(tinta&7);
         }
 
-        
+
         else brillo=0;
-        
+
         attron(COLOR_PAIR(tinta+papel*8+1));
-        
+
         int x,y;
 
         for (y=0;y<3;y++) {
@@ -300,7 +300,7 @@ void asigna_color (int x,int y,int *brillo,int *parpadeo)
 
 
 
-	//parpadeo 
+	//parpadeo
 	//no hacemos parpadeo mediante A_BLINK
 	*parpadeo=0;
         //if (scrcurses_screen[offset] & 128) *parpadeo=A_BLINK;
@@ -756,12 +756,12 @@ void scrcurses_refresca_pantalla_chloe(void)
                 for (x=0;x<80;x++,chloe_screen++) {
 
 
-                        caracter=*chloe_screen; 
+                        caracter=*chloe_screen;
 
 			brillo=0;
 			inv=0;
 
-			
+
 
                         if (colores) {
                           //(x,y,&brillo,&parpadeo);
@@ -770,7 +770,7 @@ void scrcurses_refresca_pantalla_chloe(void)
                         else {
                           brillo=0;
                         }
-			
+
 
 			if (caracter==0) {
 				//caracter='C'; //copyright character
@@ -855,7 +855,7 @@ void scrcurses_refresca_pantalla_sam(void)
 				}
 
 				else scrcurses_refresca_border_sam_mode2(sam_border&7);
-				
+
                                 modificado_border.v=0;
                         }
 
@@ -928,7 +928,7 @@ void scrcurses_refresca_pantalla_zx8081_rainbow(void)
 
 	for (y=yinicial,yencurses=0;y<yinicial+alto;y++,yencurses++) {
                 for (x=xinicial,xencurses=0;x<xinicial+ancho;x++,xencurses++) {
-                
+
 			int spritelin;
 			caracter=255;
 
@@ -938,7 +938,7 @@ void scrcurses_refresca_pantalla_zx8081_rainbow(void)
 					caracter=compare_char_tabla_rainbow(caracter_sprite,&inverse,&memoria_spectrum[direccion]);
 					//if (caracter) debug_printf (VERBOSE_ERR,"xx: %d spritelin: %d caracter: %d ",xx,spritelin,caracter);
 				}
-			
+
 
                         if (caracter!=255) {
 
@@ -1011,7 +1011,7 @@ void scrcurses_refresca_pantalla_z88_print_char(struct s_z88_return_character_at
 
                                 //Gestion subrallado
                                 if (z88_caracter->subrallado) {
-                                       caracter |= WA_UNDERLINE; 
+                                       caracter |= WA_UNDERLINE;
                                 }
 
                                 //Gestion parpadeo
@@ -1115,7 +1115,7 @@ void scrcurses_refresca_pantalla_common_fun_caracter(int x,int y,int brillo, uns
 
 void scrcurses_refresca_pantalla_cpc(void)
 {
-        
+
 	if (border_enabled.v) {
                         //ver si hay que refrescar border
                         if (modificado_border.v)
@@ -1216,7 +1216,7 @@ void scrcurses_refresca_pantalla(void)
 	}
 
 
-	else if (MACHINE_IS_SPECTRUM && !MACHINE_IS_TSCONF) { 
+	else if (MACHINE_IS_SPECTRUM && !MACHINE_IS_TSCONF) {
 
 	        if (rainbow_enabled.v==0) {
         		//modo clasico. sin rainbow
@@ -1231,7 +1231,7 @@ void scrcurses_refresca_pantalla(void)
 					modificado_border.v=0;
 				}
 
-		  	}  
+		  	}
 
 			scrcurses_refresca_pantalla_no_rainbow();
 
@@ -1273,7 +1273,7 @@ void scrcurses_refresca_pantalla(void)
 			set_z88_putpixel_zoom_function();
 			screen_z88_refresca_pantalla_comun();
 		}
-		
+
 		scrcurses_refresca_pantalla_z88();
 	}
 
@@ -1303,9 +1303,9 @@ void scrcurses_refresca_pantalla(void)
 			for (;mensaje_long;mensaje_long--)
 				mvaddstr(CURSES_LINE_MESSAGES, mensaje_long-1, " ");
 		}
-        
+
 		else  {
-			
+
 			//borramos lo que queda del texto anterior
 			attron(COLOR_PAIR(7+1));
 			if (curses_last_message_length) {
@@ -1337,7 +1337,7 @@ sem_screen_refresh_reallocate_layers=0;
 }
 
 
-unsigned char retorna_color_curses (unsigned char c) 
+unsigned char retorna_color_curses (unsigned char c)
 {
 
 	switch (c) {
@@ -1394,7 +1394,7 @@ void scrcurses_inicializa_colores(void)
 			color++;
 		}
 	}
-		
+
 
 }
 
@@ -1417,7 +1417,7 @@ void scrcurses_end(void)
 	clear();
 	endwin();
 
-	//Al finalizar curses deja todo bien excepto el flushing de stdout... todas las llamadas a printf deberan tener un 
+	//Al finalizar curses deja todo bien excepto el flushing de stdout... todas las llamadas a printf deberan tener un
 	//fflush(stdout); sino no se vera el texto
 
 }
@@ -1493,7 +1493,7 @@ int scrcurses_init (void) {
 
 	debug_printf (VERBOSE_INFO,"Init Curses Video Driver");
 
-    
+
 	/*  Initialize ncurses  */
 
 
@@ -1518,7 +1518,7 @@ int scrcurses_init (void) {
 	wtimeout(mainwin,0);
 	notimeout(mainwin, TRUE);
 
-	//enviar todas teclas y no gestionar ni CTRL+C 
+	//enviar todas teclas y no gestionar ni CTRL+C
 	raw();
 
 	mousemask(ALL_MOUSE_EVENTS, NULL);
@@ -1528,7 +1528,7 @@ int scrcurses_init (void) {
 
 	if(has_colors() == FALSE)
 	{
-		
+
 		colores=0;
 	}
 
@@ -1583,10 +1583,10 @@ return 0;
 //Convierte coordenadas mouse curses a gunstick, kempston mouse
 void scrcurses_convert_mouse_xy(int curses_x,int curses_y)
 {
-	
+
 /*
 //Coordenadas x,y en formato scanlines y pixeles totales, es decir,
-//x entre 0 y 351 
+//x entre 0 y 351
 //y entre 0 y 295
 //0,0 esta arriba a la izquierda
 
@@ -1630,7 +1630,7 @@ z80_byte kempston_mouse_x=0,kempston_mouse_y=0;
                 if (curses_y<CURSES_TOP_BORDER) {
 			//Dentro del border
                         curses_y = (curses_y*border_arr_entre_ocho)/CURSES_TOP_BORDER;
-                }       
+                }
                 else {
                         curses_y=(curses_y-CURSES_TOP_BORDER)+border_arr_entre_ocho;
                 }
@@ -1643,7 +1643,7 @@ z80_byte kempston_mouse_x=0,kempston_mouse_y=0;
 	kempston_mouse_x=(gunstick_x)%256;
 	kempston_mouse_y=255-(gunstick_y)%256;
 }
-	
+
 
 
 #define SCRCURSES_MAX_CONTADOR_NOTECLA 5
@@ -1706,7 +1706,7 @@ void scrcurses_actualiza_tablas_teclado(void)
 
                                         }
 		}
-		
+
 		//simular esc en menu con @
 		if (c=='@' && menu_abierto) {
 		  util_set_reset_key(UTIL_KEY_ESC,1);
@@ -1832,7 +1832,7 @@ void scrcurses_actualiza_tablas_teclado(void)
 						Por tanto luego el lightgun no suele funcionar porque libera a un tiempo diferente
 						del que esperan los juegos
 						*/
-						
+
 						if (event.bstate & BUTTON1_RELEASED) {
 							util_set_reset_mouse(UTIL_MOUSE_LEFT_BUTTON,0);
 							//mouse_left=0;
@@ -1841,14 +1841,14 @@ void scrcurses_actualiza_tablas_teclado(void)
 							util_set_reset_mouse(UTIL_MOUSE_RIGHT_BUTTON,0);
 							//mouse_right=0;
 						}
-						
+
 
 						mouse_x=event.x;
 						mouse_y=event.y;
 						scrcurses_convert_mouse_xy(mouse_x,mouse_y);
 
 						//printf ("gunstick x: %d y: %d kempst x: %d y: %d\n",gunstick_x,gunstick_y,kempston_mouse_x,kempston_mouse_y);
-						
+
 					}
 				break;
 
@@ -1871,7 +1871,7 @@ int scrcurses_return_gunstick_view_white(void)
 	chtype caracter;
 
 	move(mouse_y,mouse_x);
-	
+
 	caracter=inch();
 
 	int color=((caracter & A_COLOR)>>8)-1;
@@ -1896,7 +1896,7 @@ int scrcurses_return_gunstick_view_white(void)
 	return 0;
 }
 
-	
+
 
 
 z80_byte scrcurses_lee_puerto(z80_byte puerto_h,z80_byte puerto_l)

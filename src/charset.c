@@ -1,5 +1,5 @@
 /*
-    ZEsarUX  ZX Second-Emulator And Released for UniX 
+    ZEsarUX  ZX Second-Emulator And Released for UniX
     Copyright (C) 2013 Cesar Hernandez Bano
 
     This file is part of ZEsarUX.
@@ -53,13 +53,13 @@ struct s_charset_list charset_list[]={
     {"Sam Coupe",char_set_sam},
     {"Z88",char_set_z88},
     {"ZX Spectrum",char_set_spectrum},
-    {"CustomFile",char_set_customfile}, 
-    
+    {"CustomFile",char_set_customfile},
+
     {"",NULL}
 };
 
 //char set por defecto, que corresponde a estilo gui por defecto (ZEsarUX plus)
-unsigned char *char_set=char_set_dos; 
+unsigned char *char_set=char_set_dos;
 
 //charset alterado por el usuario
 int user_charset=-1;
@@ -931,7 +931,7 @@ unsigned char char_set_spectrum[TOTAL_ASCII_CHARSET_ELEMENTS]={		0
 	,	161
 	,	153
 	,	66
-	,	60 
+	,	60
 
 //caracter adicional para menu - franja de color de spectrum
 
@@ -1068,7 +1068,7 @@ unsigned char char_set_spectrum[TOTAL_ASCII_CHARSET_ELEMENTS]={		0
 };
 
 
-unsigned char char_set_cpc[TOTAL_ASCII_CHARSET_ELEMENTS]={ 
+unsigned char char_set_cpc[TOTAL_ASCII_CHARSET_ELEMENTS]={
 0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x18,0x18,0x18,0x18,0x18,0x00,0x18,0x00   //32
 ,0x6c,0x6c,0x6c,0x00,0x00,0x00,0x00,0x00,0x6c,0x6c,0xfe,0x6c,0xfe,0x6c,0x6c,0x00
 ,0x18,0x3e,0x58,0x3c,0x1a,0x7c,0x18,0x00,0x00,0xc6,0xcc,0x18,0x30,0x66,0xc6,0x00
@@ -1739,8 +1739,8 @@ unsigned char char_set_mansoftware[TOTAL_ASCII_CHARSET_ELEMENTS]={
 0x00,0x7e,0x7e,0x18,0x18,0x18,0x18,0x18, 0x00,0x63,0x63,0x63,0x63,0x63,0x7f,0x3e,
 0x00,0x63,0x63,0x63,0x63,0x63,0x36,0x1c, 0x00,0x63,0x63,0x63,0x63,0x6b,0x77,0x63,
 0x00,0x41,0x63,0x36,0x1c,0x1c,0x36,0x63, 0x00,0x63,0x36,0x1c,0x1c,0x1c,0x1c,0x1c,
-0x00,0x3f,0x7f,0x06,0x0c,0x18,0x3f,0x7e, 0x00,0x0E,0x08,0x08,0x08,0x08,0x0E,0x00, //90,91   
-0x00,0x00,0x40,0x20,0x10,0x08,0x04,0x00, 0x00,0x70,0x10,0x10,0x10,0x10,0x70,0x00, //92,93  
+0x00,0x3f,0x7f,0x06,0x0c,0x18,0x3f,0x7e, 0x00,0x0E,0x08,0x08,0x08,0x08,0x0E,0x00, //90,91
+0x00,0x00,0x40,0x20,0x10,0x08,0x04,0x00, 0x00,0x70,0x10,0x10,0x10,0x10,0x70,0x00, //92,93
 0x00,0x00,0x18,0x3c,0x5a,0x18,0x18,0x18, 0x00,0x00,0x00,0x00,0x00,0x7f,0x7f,0x00, //94,95
 0x00,0x60,0x30,0x00,0x00,0x00,0x00,0x00, 0x00,0x00,0x3c,0x42,0x1e,0x22,0x46,0x39,
 0x00,0x30,0x30,0x30,0x3c,0x32,0x32,0x3c, 0x00,0x00,0x00,0x3e,0x40,0x40,0x40,0x3e,
@@ -1760,7 +1760,7 @@ unsigned char char_set_mansoftware[TOTAL_ASCII_CHARSET_ELEMENTS]={
 0x00,0x00,0x00,0x11,0x2a,0x44,0x00,0x00, 0x00,0x3e,0x41,0x5d,0x51,0x5d,0x41,0x3e
 
 //A este charset se le aplicaron varias correcciones:
-//Correccion \ y ] . charset original contiene enye mayuscula (Ñ) y simbolo inicio interrogación ¿ 
+//Correccion \ y ] . charset original contiene enye mayuscula (Ñ) y simbolo inicio interrogación ¿
 //Correccion |. charset original contiene enye minuscula ñ
 //Correccion [ . charset original contiene simbolo inicio exclamacion ¡
 //Y otras dos correcciones en 123 { y 125 }, donde habían ç y ü
@@ -1898,7 +1898,7 @@ unsigned char char_set_mansoftware[TOTAL_ASCII_CHARSET_ELEMENTS]={
 unsigned char char_set_ql[TOTAL_ASCII_CHARSET_ELEMENTS]={
 
 0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,  //32
-0x10,0x10,0x10,0x10,0x10,0x00,0x10,0x00, 
+0x10,0x10,0x10,0x10,0x10,0x00,0x10,0x00,
 0x28,0x28,0x00,0x00,0x00,0x00,0x00,0x00,
 0x28,0x28,0x7c,0x28,0x7c,0x28,0x28,0x00,
 0x38,0x50,0x50,0x38,0x14,0x14,0x38,0x00,
@@ -2353,7 +2353,7 @@ unsigned char char_set_retromac[TOTAL_ASCII_CHARSET_ELEMENTS]={
 };
 
 //Tipo de letra "topaz" de amiga500, workbench version 1.3
-unsigned char char_set_amigaos[TOTAL_ASCII_CHARSET_ELEMENTS]={ 
+unsigned char char_set_amigaos[TOTAL_ASCII_CHARSET_ELEMENTS]={
 0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00, //32
 0x18,0x3C,0x3C,0x18,0x18,0x00,0x18,0x00,
 0x6C,0x6C,0x00,0x00,0x00,0x00,0x00,0x00,
@@ -2537,7 +2537,7 @@ unsigned char char_set_amigaos[TOTAL_ASCII_CHARSET_ELEMENTS]={
 255,129,255,129,255,129,255,0,
 
 //Caracter maximizar - 152
-//0,126,66+8,66+8,66+8+16+32,66,126,0, //alternativo 
+//0,126,66+8,66+8,66+8+16+32,66,126,0, //alternativo
 0,126,66+16,66+16+32,66,66,126,0,
 
 //Caracter franjas verticales colores titulo - 153
@@ -2585,7 +2585,7 @@ unsigned char char_set_amigaos[TOTAL_ASCII_CHARSET_ELEMENTS]={
 };
 
 
-unsigned char char_set_ataritos[TOTAL_ASCII_CHARSET_ELEMENTS]={ 
+unsigned char char_set_ataritos[TOTAL_ASCII_CHARSET_ELEMENTS]={
 0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,  //32
 0x18,0x18,0x18,0x18,0x18,0x00,0x18,0x00,
 0x66,0x66,0x66,0x00,0x00,0x00,0x00,0x00,
@@ -3275,7 +3275,7 @@ unsigned char char_set_beos[TOTAL_ASCII_CHARSET_ELEMENTS]={
 //Portado de su version png a crudo 8x8
 //generado con sample_convert_gimp_c_image.c
 //Usado en OS/2 y otros estilos
-unsigned char char_set_dos[TOTAL_ASCII_CHARSET_ELEMENTS]={ 
+unsigned char char_set_dos[TOTAL_ASCII_CHARSET_ELEMENTS]={
 0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,    //32
 0x30,0x78,0x78,0x30,0x30,0x00,0x30,0x00,
 0x6c,0x6c,0x6c,0x00,0x00,0x00,0x00,0x00,
@@ -3568,333 +3568,333 @@ char *charset_icons_text[]={
 "  x",
 "  x",
 " x ",
- 
-//42 
+
+//42
 "x x",
 " x ",
 "xxx",
 " x ",
 "x x",
- 
+
 " x ",
 " x ",
 "xxx",
 " x ",
 " x ",
- 
+
 "   ",
 "   ",
 "  x",
 "  x",
 " x ",
- 
+
 "   ",
 "   ",
 "xxx",
 "   ",
 "   ",
- 
+
 "   ",
 "   ",
 "   ",
 " xx",
 " xx",
- 
+
 "  x",
 "  x",
 " x ",
 "x  ",
 "x  ",
- 
+
 //0
 " x ",
 "x x",
 "x x",
 "x x",
 " x ",
- 
+
 "  x",
 " xx",
 "x x",
 "  x",
 "  x",
- 
+
 "xxx",
 "  x",
 "xxx",
 "x  ",
 "xxx",
- 
+
 "xxx",
 "  x",
 "xxx",
 "  x",
 "xxx",
- 
+
 //52
 "x x",
 "x x",
 "xxx",
 "  x",
 "  x",
- 
+
 "xxx",
 "x  ",
 "xx ",
 "  x",
 "xx ",
- 
+
 "xxx",
 "x  ",
 "xxx",
 "x x",
 "xxx",
- 
+
 "xxx",
 "  x",
 "  x",
 " x ",
 " x ",
- 
+
 "xxx",
 "x x",
 "xxx",
 "x x",
 "xxx",
- 
+
 "xxx",
 "x x",
 "xxx",
 "  x",
 "xxx",
- 
+
 " xx",
 " xx",
 "   ",
 " xx",
 " xx",
- 
+
 " xx",
 " xx",
 "   ",
 "  x",
 " x ",
- 
+
 "  x",
 " x ",
 "x  ",
 " x ",
 "  x",
- 
+
 "   ",
 "xxx",
 "   ",
 "xxx",
 "   ",
- 
+
 //62
 "x  ",
 " x ",
 "  x",
 " x ",
 "x  ",
- 
+
 "xx ",
 "  x",
 " x ",
 "   ",
 " x ",
- 
+
 " x ",
 "xxx",
 "xxx",
 "x  ",
 " xx",
- 
+
 //A
 "xxx",
 "x x",
 "xxx",
 "x x",
 "x x",
- 
+
 "xx ",
 "x x",
 "xx ",
 "x x",
 "xx ",
- 
+
 "xxx",
 "x  ",
 "x  ",
 "x  ",
 "xxx",
- 
+
 "xx ",
 "x x",
 "x x",
 "x x",
 "xx ",
- 
+
 "xxx",
 "x  ",
 "xx ",
 "x  ",
 "xxx",
- 
+
 "xxx",
 "x  ",
 "xx ",
 "x  ",
 "x  ",
- 
+
 "xxx",
 "x  ",
 "x  ",
 "x x",
 "xxx",
- 
+
 //72
 "x x",
 "x x",
 "xxx",
 "x x",
 "x x",
- 
+
 " x ",
 " x ",
 " x ",
 " x ",
 " x ",
- 
+
 "  x",
 "  x",
 "  x",
 "x x",
 "xxx",
- 
+
 "x x",
 "xx ",
 "x  ",
 "xx ",
 "x x",
- 
+
 "x  ",
 "x  ",
 "x  ",
 "x  ",
 "xxx",
- 
+
 "x x",
 "xxx",
 "xxx",
 "x x",
 "x x",
- 
+
 "x x",
 "xxx",
 "x x",
 "x x",
 "x x",
- 
+
 "xxx",
 "x x",
 "x x",
 "x x",
 "xxx",
- 
+
 "xxx",
 "x x",
 "xxx",
 "x  ",
 "x  ",
- 
+
 "xxx",
 "x x",
 "x x",
 "xxx",
 "xxx",
- 
+
 //82
 "xx ",
 "x x",
 "xx ",
 "x x",
 "x x",
- 
+
 "xxx",
 "x  ",
 "xxx",
 "  x",
 "xxx",
- 
+
 "xxx",
 " x ",
 " x ",
 " x ",
 " x ",
- 
+
 "x x",
 "x x",
 "x x",
 "x x",
 "xxx",
- 
+
 "x x",
 "x x",
 "x x",
 " x ",
 " x ",
- 
+
 "x x",
 "x x",
 "x x",
 "xxx",
 "xxx",
- 
+
 "x x",
 "x x",
 " x ",
 "x x",
 "x x",
- 
+
 "x x",
 "x x",
 " x ",
 " x ",
 " x ",
- 
+
 "xxx",
 "  x",
 " x ",
 "x  ",
 "xxx",
- 
+
 " xx",
 " x ",
 " x ",
 " x ",
 " xx",
- 
+
 //92
 "x  ",
 "x  ",
 " x ",
 "  x",
 "  x",
- 
+
 " xx",
 "  x",
 "  x",
 "  x",
 " xx",
- 
+
 " x ",
 "x x",
 "   ",
 "   ",
 "   ",
- 
+
 "   ",
 "   ",
 "   ",
@@ -3906,185 +3906,185 @@ char *charset_icons_text[]={
 "   ",
 "   ",
 "   ",
- 
+
 //a
 "   ",
 " x ",
 "x x",
 "x x",
 " xx",
- 
+
 "x  ",
 "x  ",
 "xxx",
 "x x",
 "xxx",
- 
+
 "   ",
 "xxx",
 "x  ",
 "x  ",
 "xxx",
- 
+
 "  x",
 "  x",
 "xxx",
 "x x",
 "xxx",
- 
+
 "   ",
 "xxx",
 "xxx",
 "x  ",
 " xx",
- 
+
 //102
 " xx",
 " x ",
 "xxx",
 " x ",
 " x ",
- 
+
 "   ",
 "xxx",
 "xxx",
 "  x",
 "xxx",
- 
+
 "x  ",
 "x  ",
 "xxx",
 "x x",
 "x x",
- 
+
 " x ",
 "   ",
 " x ",
 " x ",
 " x ",
- 
+
 "  x",
 "   ",
 "  x",
 "  x",
 "xx ",
- 
+
 "   ",
 "   ",
 "x x",
 "xx ",
 "x x",
- 
+
 "   ",
 "x  ",
 "x  ",
 "x  ",
 " xx",
- 
+
 "   ",
 " x ",
 "xxx",
 "xxx",
 "x x",
- 
+
 "   ",
 " x ",
 "x x",
 "x x",
 "x x",
- 
+
 "   ",
 "xxx",
 "x x",
 "x x",
 "xxx",
- 
+
 //112
 "   ",
 " x ",
 "x x",
 "xx ",
 "x  ",
- 
+
 "   ",
 " x ",
 "x x",
 " xx",
 "  x",
- 
+
 "   ",
 " xx",
 "x  ",
 "x  ",
 "x  ",
- 
+
 " xx",
 "x  ",
 " x ",
 "  x",
 "xx ",
- 
+
 " x ",
 "xxx",
 " x ",
 " x ",
 " xx",
- 
+
 "   ",
 "x x",
 "x x",
 "x x",
 "xxx",
- 
+
 "   ",
 "x x",
 "x x",
 "x x",
 " x ",
- 
+
 "   ",
 "x x",
 "x x",
 "xxx",
 " x ",
- 
+
 "   ",
 "   ",
 "x x",
 " x ",
 "x x",
- 
+
 "   ",
 "x x",
 "x x",
 " xx",
 "  x",
- 
+
 //122
 "   ",
 "xxx",
 " x ",
 "x  ",
 "xxx",
- 
+
 " xx",
 " x ",
 "x  ",
 " x ",
 " xx",
- 
+
 " x ",
 " x ",
 "   ",
 " x ",
 " x ",
- 
+
 "xx ",
 " x ",
 "  x",
 " x ",
 "xx ",
- 
+
 //126
 "   ",
 "xx ",
@@ -4093,6 +4093,6 @@ char *charset_icons_text[]={
 "   ",
 
 
- 
+
 
 };

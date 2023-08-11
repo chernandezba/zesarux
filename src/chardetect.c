@@ -1,5 +1,5 @@
 /*
-    ZEsarUX  ZX Second-Emulator And Released for UniX 
+    ZEsarUX  ZX Second-Emulator And Released for UniX
     Copyright (C) 2013 Cesar Hernandez Bano
 
     This file is part of ZEsarUX.
@@ -158,7 +158,7 @@ int charfilter_set(char *s)
             chardetect_char_filter=i;
             return 0;
         }
-    }    
+    }
 
     return 1;
 }
@@ -231,17 +231,17 @@ void chardetect_detect_char(void)
 
 
 
-	
-	
+
+
 	if (chardetect_second_trap_char_dir==0 && trap_char_detection_routine_number && reg_pc>=chardetect_second_trap_detect_pc_min && reg_pc<=chardetect_second_trap_detect_pc_max) {
-		
-		
-		
+
+
+
 		switch (trap_char_detection_routine_number) {
 			case TRAP_CHAR_DETECTION_ROUTINE_AD42:
 				//detectar esto:
-				/*				
-				 * 
+				/*
+				 *
 				 * ED 5B F7 FF LD DE,(FFF7)
 				 * F1 POP AF
 				 * 6F LD L,A   <-Aqui registro A tiene el caracter a imprimir
@@ -255,9 +255,9 @@ void chardetect_detect_char(void)
 				 * 3E 08 LD A,08
 				 * 08 EX AF,AF'
 				 * E5 PUSH HL
-				 * 
+				 *
 				 */
-				
+
 				if (chardetect_detect_trap_aux(detection_pattern_ad42,sizeof(detection_pattern_ad42)) ) {
 					chardetect_print_splash_detected ();
 					chardetect_disassemble_trozo(reg_pc);
@@ -268,15 +268,15 @@ void chardetect_detect_char(void)
 					chardetect_line_width_wait_space.v=0;
                     chardetect_line_width_wait_dot.v=1;
                     chardetect_ignore_newline.v=1;
-				}		
-				
+				}
+
 				break;
-				
+
 				//Observado en: Sherlock
 			case TRAP_CHAR_DETECTION_ROUTINE_COMMON_ONE:
 				//detectar esto:
 				/*
-				 * 
+				 *
 				 * 50056 F5 PUSH AF
 				 * 50057 C5 PUSH BC
 				 * 50058 D5 PUSH DE
@@ -287,8 +287,8 @@ void chardetect_detect_char(void)
 				 * 50064 29 ADD HL,HL
 				 * 50065 29 ADD HL,HL
 				 */
-				
-				if (chardetect_detect_trap_aux(detection_pattern_common_one,sizeof(detection_pattern_common_one)) ) {		
+
+				if (chardetect_detect_trap_aux(detection_pattern_common_one,sizeof(detection_pattern_common_one)) ) {
 					chardetect_print_splash_detected ();
 					chardetect_disassemble_trozo(reg_pc);
 					chardetect_second_trap_char_dir=reg_pc;
@@ -299,16 +299,16 @@ void chardetect_detect_char(void)
                     chardetect_line_width_wait_dot.v=1;
                     chardetect_ignore_newline.v=1;
 				}
-				
+
 				break;
-				
-				
+
+
 				//Observado en: Red Moon
 			case TRAP_CHAR_DETECTION_ROUTINE_COMMON_TWO:
 				//detectar esto:
 				/*
 				 * 63092 D6 20 SUB 20
-				 * 
+				 *
 				 * 63094 5F        LD E,A
 				 * 63095 16 00     LD D,00
 				 * 63097 CB 23     SLA E
@@ -319,10 +319,10 @@ void chardetect_detect_char(void)
 				 * 63107 CB 12     RL D
 				 * 63109 21 00 3D  LD HL,3D00
 				 * 63112 19        ADD HL,DE
-				 * 
-				 * 
+				 *
+				 *
 				 */
-				
+
 				if (chardetect_detect_trap_aux(detection_pattern_common_two,sizeof(detection_pattern_common_two)) ) {
 					chardetect_print_splash_detected ();
 					chardetect_disassemble_trozo(reg_pc);
@@ -334,14 +334,14 @@ void chardetect_detect_char(void)
                     chardetect_line_width_wait_dot.v=1;
                     chardetect_ignore_newline.v=1;
 				}
-				
+
 				break;
-				
+
 				//Observado en: Lancelot
 			case TRAP_CHAR_DETECTION_ROUTINE_COMMON_THREE:
 				//detectar esto:
 				/*
-				 * 
+				 *
 				 * 63928 B7        OR A
 				 * 63929 C8        RET Z
 				 * 63930 F5        PUSH AF
@@ -351,9 +351,9 @@ void chardetect_detect_char(void)
 				 * 63939 12        LD (DE),A
 				 * 63940 F1        POP AF
 				 * 63941 C9        RET
-				 * 
+				 *
 				 */
-				
+
 				if (chardetect_detect_trap_aux(detection_pattern_common_three,sizeof(detection_pattern_common_three)) ) {
 					chardetect_print_splash_detected ();
 					chardetect_disassemble_trozo(reg_pc);
@@ -365,14 +365,14 @@ void chardetect_detect_char(void)
                     chardetect_line_width_wait_dot.v=1;
                     chardetect_ignore_newline.v=1;
 				}
-				
+
 				break;
-				
-				
+
+
 			case TRAP_CHAR_DETECTION_ROUTINE_COMMON_FOUR:
 				//detectar esto:
 				/*
-				 * 
+				 *
 				 * 27512 F5        PUSH AF
 				 * 27513 FE 5B     CP 5B
 				 * 27515 28 10     JR Z,6B8D
@@ -384,9 +384,9 @@ void chardetect_detect_char(void)
 				 * 27529 3C        INC A
 				 * 27530 32 54 63  LD (6354),A
 				 * 27533 3A 54 63  LD A,(6354)
-				 * 
+				 *
 				 */
-				
+
 				if (chardetect_detect_trap_aux(detection_pattern_common_four,sizeof(detection_pattern_common_four)) ) {
 					chardetect_print_splash_detected ();
 					chardetect_disassemble_trozo(reg_pc);
@@ -398,13 +398,13 @@ void chardetect_detect_char(void)
                     chardetect_line_width_wait_dot.v=1;
                     chardetect_ignore_newline.v=1;
 				}
-				
+
 				break;
-	
+
 			case TRAP_CHAR_DETECTION_ROUTINE_COMMON_FIVE:
 				//detectar esto:
 				/*
-				 * 
+				 *
 				 * 26999 ED 5B 38 63       LD DE,(6338)
 				 * 27003 01 30 60  LD BC,6030
 				 * 27006 D6 20     SUB 20
@@ -419,8 +419,8 @@ void chardetect_detect_char(void)
 				 * 27017 3A 3B 63  LD A,(633B)
 				 * 27020 E6 03     AND 03
 				 * 27022 FE 03     CP 03
-				 * 
-				 * 
+				 *
+				 *
 				 */
 
 				if (chardetect_detect_trap_aux(detection_pattern_common_five,sizeof(detection_pattern_common_five)) ) {
@@ -434,14 +434,14 @@ void chardetect_detect_char(void)
                     chardetect_line_width_wait_dot.v=1;
                     chardetect_ignore_newline.v=1;
 				}
-				
+
 				break;
-			
-				
+
+
 			case TRAP_CHAR_DETECTION_ROUTINE_COMMON_SIX:
 				//detectar esto:
-				/*                                      
-				 * 
+				/*
+				 *
 				 * 62557 E5        PUSH HL
 				 * 62558 D5        PUSH DE
 				 * 62559 C5        PUSH BC
@@ -455,8 +455,8 @@ void chardetect_detect_char(void)
 				 * 62573 29        ADD HL,HL
 				 * 62574 19        ADD HL,DE
 				 * 62575 EB        EX DE,HL
-				 * 
-				 * 
+				 *
+				 *
 				 */
 				if (chardetect_detect_trap_aux(detection_pattern_common_six,sizeof(detection_pattern_common_six)) ) {
 					chardetect_print_splash_detected ();
@@ -468,30 +468,30 @@ void chardetect_detect_char(void)
 					chardetect_line_width_wait_space.v=0;
                     chardetect_line_width_wait_dot.v=1;
                     chardetect_ignore_newline.v=1;
-				}       
-				
+				}
+
 				break;
-				
+
 			case TRAP_CHAR_DETECTION_ROUTINE_MULTIPLY_EIGHT:
 				//detectar esto:
-				/*                                      
-				 * 
+				/*
+				 *
 				 * 62571 29        ADD HL,HL
 				 * 62572 29        ADD HL,HL
 				 * 62573 29        ADD HL,HL
 				 * 62574 19        ADD HL,DE
 				 * o
 				 * 62574 09        ADD HL,BC
-				 * 
-				 * 
+				 *
+				 *
 				 */
-				
-				
+
+
 				//y siempre que reg_a sea ascii
 				if (reg_a>31 && reg_a<127) {
-					
+
 					if (chardetect_detect_trap_aux(detection_pattern_multiply_eight,sizeof(detection_pattern_multiply_eight)) ) {
-						
+
 						//ver si ultima sentencia add hl,de o add hl,bc
 						if (peek_byte_no_time(reg_pc+3)==0x09 || peek_byte_no_time(reg_pc+3)==0x19 ) {
 							chardetect_print_splash_detected ();
@@ -504,9 +504,9 @@ void chardetect_detect_char(void)
                             chardetect_line_width_wait_dot.v=1;
                             chardetect_ignore_newline.v=1;
 						}
-					}       
+					}
 				}
-				
+
 				break;
 
 			case TRAP_CHAR_DETECTION_ROUTINE_AUTOMATIC:
@@ -524,7 +524,7 @@ void chardetect_detect_char(void)
 
 
 					//Probar todas las anteriores mientras no se encuentre second_trap_char_dir
-					while (trap_char_detection_routine_number!=TRAP_CHAR_DETECTION_ROUTINES_TOTAL 
+					while (trap_char_detection_routine_number!=TRAP_CHAR_DETECTION_ROUTINES_TOTAL
 						&& chardetect_second_trap_char_dir==0) {
 							//printf ("probando con rutina: %d\n",trap_char_detection_routine_number);
 							chardetect_detect_char();
@@ -539,12 +539,12 @@ void chardetect_detect_char(void)
 					//si lo ha encontrado, quitar el automatico
 					else trap_char_detection_routine_number=TRAP_CHAR_DETECTION_ROUTINE_NONE;
 
-					
+
 
 				}
-		
+
 			break;
-				
+
 		}
 	}
 }
@@ -601,7 +601,7 @@ void chardetect_set_poke_function(void)
         if (activar) {
                 debug_printf (VERBOSE_DEBUG,"Setting chardetect_automatic poke / peek functions");
        		chardetect_automatic_nested_id_poke_byte=debug_nested_poke_byte_add(chardetect_automatic_poke_byte,"chardetect_automatic poke_byte");
-                
+
         }
 
 
@@ -780,11 +780,11 @@ int chardetect_printchar_letras_e_seguidas=0;
 
 void chardetect_printchar_caracter_imprimible(z80_byte c)
 {
-	
+
     //Escribirlo en consola
 	scr_detectedchar_print(c);
 	chardetect_x_position++;
-	
+
 
     //printf ("caracter: %d\n",c);
     //Y pasarlo al buffer de speech
@@ -795,14 +795,14 @@ void chardetect_printchar_caracter_imprimible(z80_byte c)
     textadv_location_add_char(c);
 
     //printf("chardetect_line_width %d\n",chardetect_line_width);
-	
+
 	if (chardetect_line_width) {
         //printf("chardetect_x_position %d\n",chardetect_x_position);
 		if (chardetect_x_position>=chardetect_line_width) {
 			int saltar=0;
 
             //printf("caracter: %c\n",c);
-			
+
 			//con texto justificado, no cortar si no hay espacio o , o ; o .
 			if (chardetect_line_width_wait_space.v==1 || chardetect_line_width_wait_dot.v==1) {
                 if (chardetect_line_width_wait_space.v) {
@@ -811,11 +811,11 @@ void chardetect_printchar_caracter_imprimible(z80_byte c)
 
                 if (chardetect_line_width_wait_dot.v==1) {
                     if (c=='.') saltar=1;
-                }                  
+                }
 			}
 
             else saltar=1;
-						
+
 			if (saltar) {
 				chardetect_x_position=0;
 
@@ -832,14 +832,14 @@ void chardetect_printchar_caracter_imprimible(z80_byte c)
 				textspeech_add_speech_fifo();
 			}
 		}
-		
+
 	}
 
 	else {
 		//printf ("width es 0.\n");
 		//if (c==13) printf ("salto de linea\n");
 	}
-	
+
 }
 
 //Caracter anterior siempre que sea imprimible
@@ -853,26 +853,26 @@ void chardetect_printchar_espacio_si_mayus(z80_byte c)
 		//printf ("-caracter anterior: %d (%c)-",chardetect_printchar_caracter_anterior,chardetect_printchar_caracter_anterior);
 		chardetect_printchar_caracter_imprimible(' ');
 	}
-	
+
 }
 
 
 
 z80_byte chardetect_printchar_caracter_gestion_filtros(z80_byte c)
 {
-	
+
 	//Gestionar filtros
 	switch (chardetect_char_filter) {
 		//Ninguno
 		case CHAR_FILTER_NONE:
-			
+
 			break;
-			
+
 			//Generico
 		case CHAR_FILTER_GENERIC:
 			//Si hay una mayuscula, y antes no habia mayuscula, meter espacio antes
 			//chardetect_printchar_espacio_si_mayus(c);
-			
+
 			//Despues de punto, ","  o ";" espacio o simbolos de interrogacion/exclamacion
 			if (c=='.' || c==',' || c==';' || c=='?' || c=='!') {
 				chardetect_printchar_caracter_imprimible(c);
@@ -883,22 +883,22 @@ z80_byte chardetect_printchar_caracter_gestion_filtros(z80_byte c)
 			if (c==16) chardetect_printchar_ignorar_siguiente.v=1;
 			//Ignorar control de papel
 			if (c==17) chardetect_printchar_ignorar_siguiente.v=1;
-			
+
 			break;
-			
+
 			//Aventuras AD
-		case CHAR_FILTER_AD42:		
-			
-			
-			
+		case CHAR_FILTER_AD42:
+
+
+
 			//Acentuadas. De momento las retornamos tal cual sin acentos
 			/*
 			if (c=='\x15') {
 				//printf ("antes: %d\n",temp_antes_c);
 				c='a';
-				
+
 			}
-			
+
 			if (c=='\x16') c='e';
 			if (c=='\x17') c='i';
 			if (c=='\x18') c='o';
@@ -909,25 +909,25 @@ z80_byte chardetect_printchar_caracter_gestion_filtros(z80_byte c)
 			*/
 
 			c=chardetect_convert_daad_accents(c);
-			
+
 			//ignorar "_"
 			if (c=='_') c=0;
 
 			//ignorar ">"
 			if (c=='>') c=0;
-			
+
 			if (c==8 || c==9) chardetect_printchar_ignorar_siguiente.v=1;
-			
+
 			//Si hay una mayuscula, y antes no habia mayuscula, meter espacio antes
 			//chardetect_printchar_espacio_si_mayus(c);
-			
+
 			//Despues de punto, ","  o ";" espacio o simbolos de interrogacion/exclamacion
 			if (c=='.' || c==',' || c==';' || c=='?' || c=='!') {
 				chardetect_printchar_caracter_imprimible(c);
 				c=' ';
 			}
-			
-			
+
+
 			//Diosa cozumel genera texto "eeeeeeeeee" a veces. ignorar 3 seguidos
 			if (c>31 && c<127 && chardetect_printchar_ignorar_siguiente.v==0) {
 				if (c=='e') {
@@ -940,13 +940,13 @@ z80_byte chardetect_printchar_caracter_gestion_filtros(z80_byte c)
 					chardetect_printchar_letras_e_seguidas=0;
 				}
 			}
-			
+
 			break;
-			
+
 		case CHAR_FILTER_PAWS:
-			
+
             c=chardetect_convert_paws_accents(c);
-	
+
 
 			//simbolos de cursores y cosas que no interesa que no se vean
 
@@ -957,7 +957,7 @@ z80_byte chardetect_printchar_caracter_gestion_filtros(z80_byte c)
 
 			//abrir corchete es abrir exclamacion. poner espacio
 			if (c=='[') c=32;
-			
+
 			//cerrar corchete es abrir interrogacion. poner espacio
 			if (c==']') c=32;
 
@@ -969,67 +969,67 @@ z80_byte chardetect_printchar_caracter_gestion_filtros(z80_byte c)
                         //Ignorar control de papel
                         if (c==17) chardetect_printchar_ignorar_siguiente.v=1;
 
-			
+
 			//Si hay una mayuscula, meter espacio antes
 			//chardetect_printchar_espacio_si_mayus(c);
-			
+
 			//Despues de punto, ","  o ";" espacio o simbolos de interrogacion/exclamacion
 			if (c=='.' || c==',' || c==';' || c=='?' || c=='!') {
-				
+
 				chardetect_printchar_caracter_imprimible(c);
 				c=' ';
 			}
-			
-			
+
+
 			break;
-			
+
 		case CHAR_FILTER_HOBBIT:
-			
+
 			//Eliminar simbolo "+"
 			if (c=='+') c=0;
-			
+
 			//Si hay una mayuscula, meter espacio antes
 			//chardetect_printchar_espacio_si_mayus(c);
-			
+
 			//Despues de punto, ","  o ";" espacio o simbolos de interrogacion/exclamacion
 			if (c=='.' || c==',' || c==';' || c=='?' || c=='!') {
 				chardetect_printchar_caracter_imprimible(c);
 				c=' ';
 			}
-			
+
 			break;
-			
+
 	}
-	
-	
+
+
 	return c;
-	
-}	
+
+}
 
 void chardetect_printchar_caracter(z80_byte c)
 {
-	
+
 	if (chardetect_printchar_ignorar_siguiente.v) {
 		chardetect_printchar_ignorar_siguiente.v=0;
 		c=0;
 	}
-	
+
 	//Debug para ver caracteres especiales
 	//Parece ser que el juego "El anillo" utiliza caracteres > 128 (por ejemplo 201) para hacer espacios a final de linea
 	//O quiza es que los caracteres > 128 son tokens (conjuntos de letras) que salen del compresor de texto del PAWS
 	//if (c>=32 && c<=126) printf (" %c ",c);
-	//else 
+	//else
  	//printf (" %d=%c ",c,(c>31 && c<128 ? c : '.' ));
 
 
 	c=chardetect_printchar_caracter_gestion_filtros(c);
-	
-	//printf (" %d=%c ",c,(c>31 && c<128 ? c : '.' ));	
-	
+
+	//printf (" %d=%c ",c,(c>31 && c<128 ? c : '.' ));
+
 	//temp_antes_c=c;
 
-	
-	
+
+
 	if (c!=0) {
 		//Codigo 22 (AT) equivaldra a mismo salto de linea
 		if (c==22) c=13;
@@ -1040,20 +1040,20 @@ void chardetect_printchar_caracter(z80_byte c)
 
         //ignorar saltos de linea
         //printf("Ignoramos salto de linea\n");
-        if (chardetect_ignore_newline.v && c==13) c=32;        
+        if (chardetect_ignore_newline.v && c==13) c=32;
 
 
 		if (c>31 && c<127) {
 			chardetect_printchar_caracter_imprimible(c);
 			chardetect_printchar_caracter_anterior=c;
 		}
-	
-		//salto de linea 
+
+		//salto de linea
 		else if (c==13) {
 			if (chardetect_line_width) {
 				scr_detectedchar_print ('\n');
 				chardetect_x_position=0;
-			
+
 				textspeech_add_speech_fifo();
 			}
 			else {
@@ -1061,38 +1061,38 @@ void chardetect_printchar_caracter(z80_byte c)
 				chardetect_printchar_caracter_imprimible(' ');
 				chardetect_printchar_caracter_anterior=c;
 	                }
-			
+
 		}
 
 		//Retroceder un caracter
-		else if (c==8) {		
+		else if (c==8) {
 			scr_detectedchar_print (8);
 			if (chardetect_x_position) chardetect_x_position--;
 
 
         		textspeech_add_character(c);
 
-			
+
 		}
-		
+
 		else {
 			debug_printf(VERBOSE_DEBUG,"Unknown character 0x%02X",c);
 		}
 	}
-	
+
 	//flush de salida standard. normalmente no hace falta esto, pero si ha finalizado el driver curses, deja la salida que no hace flush
 	//fflush(stdout);
-	
-	
+
+
 }
 
 
 //Imprime caracter si es que estamos en trap de rst16 (o oz rom), second trap o third trap
 void chardetect_printchar(void)
 {
-	
-	
-	
+
+
+
 	//Primer trap rst y z88 rom calls
 	screen_text_printchar(chardetect_printchar_caracter);
 
@@ -1101,7 +1101,7 @@ void chardetect_printchar(void)
 		if (reg_pc==chardetect_second_trap_char_dir) {
 
 			//printf ("coincide reg pc con rutina second\n");
-			
+
 			//Si leemos algun espacio, quiere decir que tenemos que sumar 32
 			//solo durante los primeros caracteres
 			if (chardetect_second_trap_sum32_counter<MAX_STDOUT_SUM32_COUNTER && chardetect_second_trap_sum32.v==0) {
@@ -1112,29 +1112,29 @@ void chardetect_printchar(void)
 					//Cuando lo hace una vez, ya no hacer mas, a no ser que se inicialice la deteccion automatica
 					chardetect_second_trap_sum32_counter=MAX_STDOUT_SUM32_COUNTER;
 				}
-				
+
 			}
 
             z80_byte caracter_final=reg_a;
-			
+
 			if (chardetect_second_trap_sum32.v) {
                 caracter_final +=32;
             }
-			
+
 			screen_text_printchar_next(caracter_final,chardetect_printchar_caracter);
-			
-			
+
+
 			return;
 		}
 	}
-	
-	
+
+
 	//Tercer tipo de trap
 	if (chardetect_third_trap_char_dir) {
 		if (reg_pc==chardetect_third_trap_char_dir) {
 			screen_text_printchar_next(reg_a,chardetect_printchar_caracter);
 		}
 	}
-	
+
 }
 

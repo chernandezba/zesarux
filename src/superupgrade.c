@@ -200,7 +200,7 @@ Pokeing in rom address 0004H value A2H PC=33EAH
 
   if (reg_pc==0x33E1 || reg_pc==0x33EA || reg_pc==0x33F4 || reg_pc==0x0E19) {
     //printf ("Write comes from rom bug. Do not do anything\n");
-		//printf("Zona Bug, Addr=%d, Data=%d, index=%d \n", dir,valor,superupgrade_write_buffer_index);        
+		//printf("Zona Bug, Addr=%d, Data=%d, index=%d \n", dir,valor,superupgrade_write_buffer_index);
    return;
   }
 
@@ -209,9 +209,9 @@ Pokeing in rom address 0004H value A2H PC=33EAH
 
     //Guardar byte en buffer
     superupgrade_write_buffer[superupgrade_write_buffer_index++]=valor;
-	//printf("Escritura en ROM, Addr=%d Data=%d, index=%d, PC=%d \n", dir,valor,superupgrade_write_buffer_index,reg_pc);        
+	//printf("Escritura en ROM, Addr=%d Data=%d, index=%d, PC=%d \n", dir,valor,superupgrade_write_buffer_index,reg_pc);
 
-//	printf(str, "Escritura en ROM, Addr=%d Data=%d, index=%d, , stat=%d, PC=%d \n", dir,valor,superupgrade_write_buffer_index, superupgrade_write_status, reg_pc);        
+//	printf(str, "Escritura en ROM, Addr=%d Data=%d, index=%d, , stat=%d, PC=%d \n", dir,valor,superupgrade_write_buffer_index, superupgrade_write_status, reg_pc);
 
 
 
@@ -224,12 +224,12 @@ Pokeing in rom address 0004H value A2H PC=33EAH
         //Ver si la escritura es un posible comando
         if (slot==1 && dir==0x1555 && valor==0xAA) {
           //Es inicio de comando, cambiar estado
-			//printf("primer byte, Addr=%d Data=%d, index=%d \n", dir,valor,superupgrade_write_buffer_index);        
+			//printf("primer byte, Addr=%d Data=%d, index=%d \n", dir,valor,superupgrade_write_buffer_index);
          superupgrade_write_status=1;
         }
         else {
           //Tiene que ser escritura tal cual.
-			//printf("Escritura normal en ROM, Addr=%d Data=%d, index=%d, PC=%d status=%d\n", dir,valor,superupgrade_write_buffer_index,reg_pc,superupgrade_write_status);        
+			//printf("Escritura normal en ROM, Addr=%d Data=%d, index=%d, PC=%d status=%d\n", dir,valor,superupgrade_write_buffer_index,reg_pc,superupgrade_write_status);
 //          superupgrade_write_status=2;
 			if (superupgrade_flash_write_protected.v==0){
 				superupgrade_write_status=2;
@@ -252,7 +252,7 @@ Pokeing in rom address 0004H value A2H PC=33EAH
  			superupgrade_write_buffer_index =0;
 			superupgrade_write_status=0;
          } else {
-			//printf("segundo byte, Addr=%d Data=%d, index=%d \n", dir,valor,superupgrade_write_buffer_index);        
+			//printf("segundo byte, Addr=%d Data=%d, index=%d \n", dir,valor,superupgrade_write_buffer_index);
 		  }
         }
 
@@ -262,7 +262,7 @@ Pokeing in rom address 0004H value A2H PC=33EAH
             if (valor==0xA0) {
             //Fin de comando de poner el chip en modo protegido
 	    debug_printf (VERBOSE_DEBUG,"End superupgrade command protect flash (unprotect+write+protect)");
-			//printf("End superupgrade command protect flash (unprotect+write+protect), Addr=%d Data=%d, index=%d\n", dir,valor,superupgrade_write_buffer_index);        
+			//printf("End superupgrade command protect flash (unprotect+write+protect), Addr=%d Data=%d, index=%d\n", dir,valor,superupgrade_write_buffer_index);
             superupgrade_write_status=0;
             superupgrade_write_buffer_index=0;
             superupgrade_flash_write_protected.v=0;
@@ -322,7 +322,7 @@ Pokeing in rom address 0004H value A2H PC=33EAH
 
       case 2:
       //Se esta escriendo sector de 256 bytes
-			//printf("escribiendo, Addr=%d, Data=%d, index=%d, status=%d \n", dir,valor,superupgrade_write_buffer_index,superupgrade_write_status);        
+			//printf("escribiendo, Addr=%d, Data=%d, index=%d, status=%d \n", dir,valor,superupgrade_write_buffer_index,superupgrade_write_status);
       break;
 
       default:

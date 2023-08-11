@@ -124,10 +124,10 @@ char zxuno_flash_spi_name[PATH_MAX]="";
 
 /*
 Para registro de COREID:
-$FF	COREID	Lectura	Cada operación de lectura proporciona el siguiente carácter ASCII de la cadena que contiene 
-la revisión actual del core del ZX-Uno. Cuando la cadena termina,lecturas posteriores emiten bytes con el valor 0 
-(al menos se emite uno de ellos) hasta que vuelve a comenzar la cadena. Este puntero vuelve a 0 automáticamente 
-tras un reset o una escritura en el registro $FC3B. Los caracteres entregados que forman parte de la cadena 
+$FF	COREID	Lectura	Cada operación de lectura proporciona el siguiente carácter ASCII de la cadena que contiene
+la revisión actual del core del ZX-Uno. Cuando la cadena termina,lecturas posteriores emiten bytes con el valor 0
+(al menos se emite uno de ellos) hasta que vuelve a comenzar la cadena. Este puntero vuelve a 0 automáticamente
+tras un reset o una escritura en el registro $FC3B. Los caracteres entregados que forman parte de la cadena
 son ASCII estándar imprimibles (códigos 32-127). Cualquier otro valor es indicativo de que este registro no está operativo.
 */
 int zxuno_core_id_indice=0;
@@ -173,7 +173,7 @@ z80_int zxuno_dma_current_len;
 z80_bit zxuno_dma_disabled={0};
 
 
-//Donde empieza la vram0 de zxuno, de modo prism 256x192x4bpp 
+//Donde empieza la vram0 de zxuno, de modo prism 256x192x4bpp
 //Luego va vram1, 2 y vram3
 z80_byte *zxuno_begin_vram0_pointer;
 
@@ -264,7 +264,7 @@ void zxuno_dma_operate(void)
 			//retrigger. TODO meter esto en funcion aparte que tambien lanza cuando se cambia dma_ctrl
 	    	zxuno_dma_current_src=value_8_to_16(zxuno_dmareg[0][1],zxuno_dmareg[0][0]);
         	zxuno_dma_current_dst=value_8_to_16(zxuno_dmareg[1][1],zxuno_dmareg[1][0]);
-        	zxuno_dma_current_len=value_8_to_16(zxuno_dmareg[3][1],zxuno_dmareg[3][0]);	
+        	zxuno_dma_current_len=value_8_to_16(zxuno_dmareg[3][1],zxuno_dmareg[3][0]);
 		}
 
 		else {
@@ -283,7 +283,7 @@ int zxuno_return_resta_testados(int anterior, int actual)
 
 	if (resta<0) resta=screen_testados_total-anterior+actual;
 
-	return resta; 
+	return resta;
 }
 
 
@@ -306,7 +306,7 @@ void zxuno_handle_dma(void)
 
 	//Por si acaso
 	if (dmapre==65536) return;
-	
+
 
 	//Si es ram to ram, la velocidad es 8 veces mas que otro tipo
 	/*
@@ -322,7 +322,7 @@ void zxuno_handle_dma(void)
 	//TODO Modo dma burst transfer de momento la hago de golpe la transferencia
 	if ((dma_ctrl&3)==1) { //Esto es modo  01 = burst DMA transfer. CPU is halted during the transfer. One shot.
 		//transferir de golpe
-		//todo cuando pre=0 
+		//todo cuando pre=0
 		//printf ("burst dma transfer source %04XH dest %04XH lenght %04XH\n",zxuno_dma_current_src,zxuno_dma_current_dst,zxuno_dma_current_len);
 
 		do {
@@ -366,7 +366,7 @@ void zxuno_handle_dma(void)
 
 		//printf ("resta %d\n",resta);
 
-		
+
 	}
 
 
@@ -401,7 +401,7 @@ void zxuno_footer_print_flash_operating(void)
         //printf("icon activity\n");
         zxdesktop_icon_zxunoflash_inverse=1;
         menu_draw_ext_desktop();
-    }    
+    }
 }
 
 void zxuno_footer_flash_operating(void)
@@ -423,13 +423,13 @@ void zxuno_set_emulador_settings(void)
   zxuno_set_emulator_setting_devcontrol_ditay();
   zxuno_set_emulator_setting_disd();
   zxuno_set_emulator_setting_ditimex();
-  zxuno_set_emulator_setting_diulaplus(); 
-  zxuno_set_emulator_setting_diven(); 
+  zxuno_set_emulator_setting_diulaplus();
+  zxuno_set_emulator_setting_diven();
   zxuno_set_emulator_setting_i2kb();
   zxuno_set_emulator_setting_scandblctrl();
   zxuno_set_emulator_setting_timing();
-  
-  
+
+
 }
 
 
@@ -608,7 +608,7 @@ void zxuno_write_spi(z80_byte value)
         memoria_spectrum[ (ZXUNO_ROM_SIZE+ZXUNO_SRAM_SIZE)*1024 + indice_spi ]=valor_a_escribir;
 */
 					zxuno_spi_page_program(sector_erase_address,255);
-					
+
 					debug_printf (VERBOSE_PARANOID,"Sector Erase in progress. Address: 0x%06x",sector_erase_address);
 					sector_erase_address++;
 				}
@@ -684,7 +684,7 @@ z80_byte zxuno_read_spi(void)
 			debug_printf (VERBOSE_DEBUG,"Read SPI. Read JEDEC ID (9Fh)");
             //Incompleto. Retornar siempre el mismo byte (0x16), para indicar flash de 4MB y poder actualizar la flash de zxuno desde la bios de zxuno
 			return 0x16; //16h= 4 MB. 18h=16 MB
-			break;            
+			break;
 
 		default:
 			debug_printf (VERBOSE_DEBUG,"Read SPI. Command 0x%02X not implemented",zxuno_spi_bus[0]);
@@ -744,7 +744,7 @@ z80_byte zxuno_read_port(z80_int puerto)
 		else if (last_port_FC3B>=0xa1 && last_port_FC3B<=0xa5) {
 			dma_index_register=last_port_FC3B-0xa1;
 			dma_index_nibble=zxuno_index_nibble_dma_read[dma_index_register];
-				
+
 			//Leer de registro dma indicado
 			z80_byte valor_retorno=zxuno_dmareg[dma_index_register][dma_index_nibble];
 
@@ -1034,7 +1034,7 @@ void zxuno_write_port(z80_int puerto, z80_byte value)
             case 0x51:
                 zxuno_prism_set_color_palette();
             break;
-			
+
 
 			//Registros DMA de 16 bits
 			case 0xa1:
@@ -1044,7 +1044,7 @@ void zxuno_write_port(z80_int puerto, z80_byte value)
 			case 0xa5:
 				dma_index_register=last_port_FC3B-0xa1;
 				dma_index_nibble=zxuno_index_nibble_dma_write[dma_index_register];
-				
+
 				//Escribir en registro dma indicado
 				zxuno_dmareg[dma_index_register][dma_index_nibble]=value;
 
@@ -1078,12 +1078,12 @@ void zxuno_write_port(z80_int puerto, z80_byte value)
 			//UART_STAT_REG
 			//case ZXUNO_UART_STAT_REG:
 				//registro no es de escritura
-			//break;			
+			//break;
 
 			case 0xfd:
 				/*
 				COREBOOT
-				Registro de control de arranque. Escribiendo un 1 en el bit 0 de este registro (el resto de bits están reservados y deben quedarse a 0) hace que se desencadene el mecanismo interno de la FPGA que permite arrancar otro core. La dirección de comienzo de este segundo core será la última que se escribiera usando el registro COREADDR. 
+				Registro de control de arranque. Escribiendo un 1 en el bit 0 de este registro (el resto de bits están reservados y deben quedarse a 0) hace que se desencadene el mecanismo interno de la FPGA que permite arrancar otro core. La dirección de comienzo de este segundo core será la última que se escribiera usando el registro COREADDR.
 				*/
 				if (value & 1) hard_reset_cpu();
 			break;
@@ -1131,10 +1131,10 @@ void zxuno_p2a_write_page_port(z80_int puerto, z80_byte value)
 		lo habitual es no repaginar cuando esta la paginacion ram en rom, ya que paginaria una ram probablemente distinta en c000h
 		Pero en zxuno esto ya lo detecto en la funcion siguiente zxuno_set_memory_pages,
 		ya que ahí verá que está la paginacion ram en rom y pondrá correctamente la paginacion que toca, sin poner una ram distinta en c000h
-		Realmente, si esta la paginación de ram en rom, los cambios en el puerto 32765 no tienen efecto a nivel de páginas (pero si 
+		Realmente, si esta la paginación de ram en rom, los cambios en el puerto 32765 no tienen efecto a nivel de páginas (pero si
 		a nivel de cambio video shadow 5/7 o incluso desactivar paginacion)
 		TODO: se deberia cambiar la paginacion habitual del 128kb tal y como la hago aqui, con una funcion comun set_memory_pages
-		para puertos 32765 y 8189 y detecte si esta paginacion ram en rom 
+		para puertos 32765 y 8189 y detecte si esta paginacion ram en rom
 		if ((puerto_8189&1)==1) {
 			//printf ("Ram in ROM enabled. So RAM paging change with 32765 not allowed. out value:%d\n",value);
 			//Livingstone supongo II hace esto, continuamente cambia de Screen 5/7 y ademas cambia
@@ -1143,7 +1143,7 @@ void zxuno_p2a_write_page_port(z80_int puerto, z80_byte value)
 			//si que permite cambiar de video shadow 5/7 ya que el puerto_32765 ya se ha escrito antes de entrar aqui
 			return;
 		}
-		*/	
+		*/
 
 		zxuno_set_memory_pages();
 
@@ -1223,7 +1223,7 @@ void zxuno_set_timing_128k(void)
 	screen_invisible_borde_superior=7;
 	screen_invisible_borde_derecho=104;
 
-	port_from_ula=port_from_ula_48k; 
+	port_from_ula=port_from_ula_48k;
 	contend_pages_128k_p2a=contend_pages_128k;
 
 
@@ -1502,7 +1502,7 @@ void zxuno_chloe_init_memory_tables(void)
 	//64 kb dock
 
 	z80_byte *puntero;
-	
+
 
 	//int puntero=16384; //saltamos los primeros 16kb de rom del bootloader
 
@@ -1758,7 +1758,7 @@ void zxuno_set_memory_pages(void)
             if (zxuno_is_prism_mapping_enabled()) {
                 zxuno_memory_paged_brandnew[1*2]=zxuno_get_vram_mapped_address();
             }
-            else { 
+            else {
 			    zxuno_memory_paged_brandnew[1*2]=zxuno_sram_mem_table_new[pagina1];
             }
 
@@ -1803,18 +1803,18 @@ z80_byte zxuno_get_radaspalbank_offset(void)
 	¿Se pueden usar distintos bancos de paleta en modo radastan?
 	Sí. Para ello se puede usar, desde el core EXP25, el registro RADASPALBANK, el numero 0x43 (67). Se usan los bits 2,1 y 0.
 
-La paleta de ULAPlus tiene 64 colores y a priori en el modo radastan podemos usar los 16 primeros, 
-con los bits 1 y 0 indicamos cual de los cuatro bancos de 16 colores de entre los 64 totales se usará, 
-si los 16 primeros (si valen 00), los 16 siguientes si vale 01, los 16 terceros si vale (10) o los 16 últimos si vale (00). 
+La paleta de ULAPlus tiene 64 colores y a priori en el modo radastan podemos usar los 16 primeros,
+con los bits 1 y 0 indicamos cual de los cuatro bancos de 16 colores de entre los 64 totales se usará,
+si los 16 primeros (si valen 00), los 16 siguientes si vale 01, los 16 terceros si vale (10) o los 16 últimos si vale (00).
 Por defecto es 00 y por eso se usan los 16 primeros.
 
-El bit 2 indica que mitad de la paleta del modo radastan se usará para fijar el color de borde, 
-indicando un 0 que se usa las primeras 8 entradas del bloque de 16 seleccionado, y un 1 las últimas 8. 
-Así un BORDER 7 usará el color 7 de la paleta si el bit es 0, y el color 15 si el bit 2 vale 1, 
-pero si hemos cambiado a otro banco de 16 colores, en lugar del 7 o el 15 un BORDER 7 usará el color 7 del bloque actual, 
+El bit 2 indica que mitad de la paleta del modo radastan se usará para fijar el color de borde,
+indicando un 0 que se usa las primeras 8 entradas del bloque de 16 seleccionado, y un 1 las últimas 8.
+Así un BORDER 7 usará el color 7 de la paleta si el bit es 0, y el color 15 si el bit 2 vale 1,
+pero si hemos cambiado a otro banco de 16 colores, en lugar del 7 o el 15 un BORDER 7 usará el color 7 del bloque actual,
 o el color 15 del bloque actual. Por ejemplo, si los tres bits valen 1 (111) un BORDER 7 usará la entrada 63 de la paleta.
 
-Notese que utilizando la interrupción raster y este registro al tiempo, es posible conseguir 
+Notese que utilizando la interrupción raster y este registro al tiempo, es posible conseguir
 hasta 64 colores en pantalla (cambiando de bloque de paleta cada vez que llega la interrupción)
 */
 	return (zxuno_ports[0x43]&3)*16;
@@ -1843,9 +1843,9 @@ z80_byte zxuno_uartbridge_readstatus(void)
 	//No dispositivo abierto
 	if (!uartbridge_available()) return 0;
 
-	
+
 	int status=chardevice_status(uartbridge_handler);
-	
+
 
 	z80_byte status_retorno=0;
 
@@ -1914,21 +1914,21 @@ IGRB  color      puro    real
 */
 
 0x000000,
-0x0000C0,  
-0xC00000,  
-0xC000C0,  
-0x00C000,  
-0x00C0C0,  
-0xC0C000,  
-0xC0C0C0,  
-0x606060,  
-0x0000FF,  
-0xFF0000,  
-0xFF00FF,  
-0x00FF00,  
-0x00FFFF,  
-0xFFFF00,  
-0xFFFFFF  
+0x0000C0,
+0xC00000,
+0xC000C0,
+0x00C000,
+0x00C0C0,
+0xC0C000,
+0xC0C0C0,
+0x606060,
+0x0000FF,
+0xFF0000,
+0xFF00FF,
+0x00FF00,
+0x00FFFF,
+0xFFFF00,
+0xFFFFFF
 
 };
 
@@ -1973,7 +1973,7 @@ void zxuno_prism_set_color_palette(void)
 
     int valor_color=zxuno_ports[0x51];
 
-    //Mantener entre 0 y 2 
+    //Mantener entre 0 y 2
     zxuno_prism_index_last_palette_component = zxuno_prism_index_last_palette_component % 3;
 
     zxuno_prism_current_palette[indice_paleta].rgb[zxuno_prism_index_last_palette_component]=valor_color;
@@ -2047,8 +2047,8 @@ int zxuno_get_prism_pixel_color(z80_byte byte_vram0,z80_byte byte_vram1,z80_byte
     int rgb15=zxuno_prism_current_palette[indice_color].index_palette_15bit;
 
     return TSCONF_INDEX_FIRST_COLOR+rgb15;
-    
-        
+
+
 }
 
 
@@ -2085,7 +2085,7 @@ void zxuno_prism_screen_store_scanline_rainbow(void)
 
     int color;
 
-      
+
     direccion=screen_addr_table[(scanline_copia<<5)];
 
 
@@ -2096,7 +2096,7 @@ void zxuno_prism_screen_store_scanline_rainbow(void)
 
 
     for (x=0;x<32;x++) {
-            
+
         byte_vram0=vram0_pointer[direccion];
         byte_vram1=vram1_pointer[direccion];
         byte_vram2=vram2_pointer[direccion];
@@ -2105,15 +2105,15 @@ void zxuno_prism_screen_store_scanline_rainbow(void)
         for (bit=0;bit<8;bit++) {
 
             color=zxuno_get_prism_pixel_color(byte_vram0,byte_vram1,byte_vram2,byte_vram3);
-            
+
             store_value_rainbow(puntero_buf_rainbow,color);
-            
+
 
             byte_vram0=byte_vram0<<1;
             byte_vram1=byte_vram1<<1;
             byte_vram2=byte_vram2<<1;
             byte_vram3=byte_vram3<<1;
-            
+
         }
         direccion++;
 
@@ -2127,9 +2127,9 @@ void zxuno_prism_screen_store_scanline_rainbow(void)
 
 
 int zxuno_prism_get_border_color(void)
-{ 
+{
                 int rgb15=zxuno_prism_current_palette[screen_border_last_color].index_palette_15bit;
-                return TSCONF_INDEX_FIRST_COLOR+rgb15;  
+                return TSCONF_INDEX_FIRST_COLOR+rgb15;
 }
 
 
@@ -2148,14 +2148,14 @@ Aunque es exclusivo de zxuno la manera facil es:
 cp 48.rom pruebabloque.raw
 cat chasehq.scr >> pruebabloque.raw
 
--Al arrancar con : 
+-Al arrancar con :
 ./zesarux --noconfigfile --machine zxuno --zxuno-initial-64k pruebabloque.raw
 
 Se vera la pantalla un instante y se hara el reset normal la rom del spectrum 48
 
 Logicamente esto no es un archivo de 64kb total pero para la prueba vale
 
-Se puede tambien agregar cadenas de texto al archivo y luego visualizarlas con debug->hexadecimal editor 
+Se puede tambien agregar cadenas de texto al archivo y luego visualizarlas con debug->hexadecimal editor
 (habiendo pausado antes la emulacion, claro, o se reseteara)
 
 cat prueba.txt >> pruebabloque.raw
@@ -2169,10 +2169,10 @@ void zxuno_load_additional_64k_block(void)
     //hay path?
     if (zxuno_initial_64k_file[0]==0) return;
 
-    
-    
 
-    //printf("bootm=%d\n",zxuno_ports[0]);    
+
+
+    //printf("bootm=%d\n",zxuno_ports[0]);
 
     //solo hacerlo una vez. aunque esto solo se llama al crear la maquina, no deberia suceder mas veces
     //if (zxuno_already_loaded_block) {
@@ -2182,7 +2182,7 @@ void zxuno_load_additional_64k_block(void)
 
     //zxuno_already_loaded_block=1;
 
-    debug_printf(VERBOSE_INFO,"ZX-Uno: Loading additional 64kb block from file %s",zxuno_initial_64k_file);    
+    debug_printf(VERBOSE_INFO,"ZX-Uno: Loading additional 64kb block from file %s",zxuno_initial_64k_file);
 
     //printf("first time load block\n");
 
@@ -2190,7 +2190,7 @@ void zxuno_load_additional_64k_block(void)
     //de todas maneras miro en los segmentos actuales, da igual si son esos u otros
 
 
-   
+
     FILE *ptr_configfile;
     ptr_configfile=fopen(zxuno_initial_64k_file,"rb");
 
@@ -2205,7 +2205,7 @@ void zxuno_load_additional_64k_block(void)
     for (i=0;i<8;i++) {
         debug_printf(VERBOSE_INFO,"ZX-Uno: Loading 8kb block to segment %d",i);
         fread(zxuno_memory_paged_brandnew[i],1,8192,ptr_configfile);
-    }     
+    }
 
 
 
