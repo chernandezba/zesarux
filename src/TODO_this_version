@@ -11,7 +11,7 @@ Para esta version:
 --Fin mejoras
 
 
--en linux, con "stop emulation on menu", raton no mueve opciones de menu, ni deja mover ventanas
+
 
 
 
@@ -24,12 +24,9 @@ Pruebas ZENG
 --zeng-remote-hostname 192.168.1.91,192.168.1.147,192.168.1.99
 --zeng-remote-port 10000
 
--No uso pthread_detach en pthreads que solo se lanzan una vez, como send_stats_server. Aunque deberia hacerlo,
-pero el impacto de no liberar esos pthreads es minimo, y como acabo de descubrir esa funcion pthread_detach, prefiero no
-"arriesgarme" a usarla mas alla de lo necesario
 
 
--dandanator no va bien en cpc 664,6128. ejemplo bruce lee carga pantalla y luego se cuelga. rambo II también falla
+
 
 -por que docker de fedora va con sdl2?
 

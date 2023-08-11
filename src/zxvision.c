@@ -24324,7 +24324,9 @@ void menu_inicio(void)
 
                 if ((puerto_especial1&1)==0) {
                     debug_printf(VERBOSE_DEBUG,"Exiting cpu-step by pressing ESC");
+#ifndef NETWORKING_DISABLED
                     remote_cpu_exit_step_continue_restore_multitask();
+#endif
                 }
 
             }

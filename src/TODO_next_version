@@ -103,6 +103,9 @@ Ejemplo: AY Player, pulsar Editar playlist, y ahí cerrar todos menus
 
 -full screen en cpc + real video (y creo que sin real video tambien) se ve mal. Probar por ejemplo con brunilda dandanator
 
+-en linux, con "stop emulation on menu", raton no mueve opciones de menu, ni deja mover ventanas
+->no he conseguido reproducirlo
+
 ---Fin Errores---
 
 

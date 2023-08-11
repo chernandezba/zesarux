@@ -1,4 +1,4 @@
-- Otras cosas por hacer sin categorizar 
+- Otras cosas por hacer sin categorizar
 
 
 --- expression parser
@@ -14,8 +14,8 @@ es porque acaba desglosando:
 6   -     22   -> -16
 
 el 20+2 deberia tener en consideracion quiza el signo de delante:
-6 -      20 - 2 
-6 - 18 -> -12 
+6 -      20 - 2
+6 - 18 -> -12
 
 O esto lo apunto como un bug que el usuario le ponga parentesis y listo
 
@@ -83,10 +83,10 @@ Sped:
 
 -Idea de compresión de texto en sped:
 Si línea empieza con comentario, los espacios de indican cómo el bit 7 del siguiente carácter alzado
-Entiendo que esto no se hace así ya, solo se hace para los dos tabuladores de una línea con opcodes 
+Entiendo que esto no se hace así ya, solo se hace para los dos tabuladores de una línea con opcodes
 Aunque esto comprime muy poco, solo se ahorra 1 byte por cada espacio, pero algo es algo...
 
--Licencia gpl para toda mi carpeta de software propio de spectrum: sped, realdebug etc 
+-Licencia gpl para toda mi carpeta de software propio de spectrum: sped, realdebug etc
 -----------------------
 
 
@@ -120,7 +120,7 @@ ver que hace zxpand aqui....
 *recomendar que o bien usen todo mayusculas o todo minusculas... en mac o windows no hay problemas, en linux si
 -FAQ esxdos handler. Comentar mayúsculas etc
 
--Evitar el uso de ../../ etc en esxdos handler para evitar que puedan salir del root de esxdos. Esto también está planteado para zxpand 
+-Evitar el uso de ../../ etc en esxdos handler para evitar que puedan salir del root de esxdos. Esto también está planteado para zxpand
 
 -------------
 
@@ -195,13 +195,17 @@ entonces en el servidor, en el archivo de update de la estable, ya habré actual
 -- de una carpeta del proyecto, que se cree un archivo mmc mediante herramientas de acceso chan fat fs y luego una copia recursiva. y la partición como crearla?
 
 
+-No uso pthread_detach en pthreads que solo se lanzan una vez, como send_stats_server. Aunque deberia hacerlo,
+pero el impacto de no liberar esos pthreads es minimo, y como acabo de descubrir esa funcion pthread_detach, prefiero no
+"arriesgarme" a usarla mas alla de lo necesario
+
 
 -Programa de descompresión zip para esxdos. Luego browser wos/zx info/spec computing para esxdos: ya hay un unzip para Next
 
 -cpuid ("zxid") según especificación de mcleod
 
 -Joystick simulation que se pueda lanzar por ZRCP también (y sin tener que activar —realjoystick-simulator).
- O quizá sí que necesita el setting, dado que necesita que real Joystick este activado 
+ O quizá sí que necesita el setting, dado que necesita que real Joystick este activado
 
 
 -página man de ZEsarUX. que no diga opciones, que haga referencia a --help y --experthelp
@@ -225,7 +229,7 @@ eliminar warnings de funciones sin definir como extern
 -s TOTAL_MEMORY=167772160 -o zesarux.html  --embed-file roms
 
 
--Alguna especie de "top" de partes del emulador 
+-Alguna especie de "top" de partes del emulador
 
 -Efecto de encefalograma... para..?
 
@@ -299,7 +303,7 @@ TODO: algunos valores de xor 255 no son realmente xor 255. Quizá son letras con
 -unpaws con quill:
 *compression tokens existen?
 
--unpaws: 
+-unpaws:
 *compression tokens no siempre estan hasta el 255
 
 
@@ -312,7 +316,7 @@ TODO: algunos valores de xor 255 no son realmente xor 255. Quizá son letras con
 
 -reorganizar capturas de pantalla del readme.md para que esten todas las maquinas
 -en github, Screenshot sir Fred pixel y ascii todo junto. el de ascii, esta cortado
--Revisar archivo install. En caso de Linux y otros binarios ya compilados, enseñarlo más fácilmente. Otro documento quizá que diga cómo compilarlo  
+-Revisar archivo install. En caso de Linux y otros binarios ya compilados, enseñarlo más fácilmente. Otro documento quizá que diga cómo compilarlo
 
 
 
@@ -422,7 +426,7 @@ E indicar valor por defecto
 
 -Juegos fallan
 -powerup. al cargar. hay que reinsertar cinta, y hay que cargarlo en modo usr0 . no me preocupa mucho porque es una demo de pentagon...
-comparacion con zxspectr. 
+comparacion con zxspectr.
 powerup: ok
 
 

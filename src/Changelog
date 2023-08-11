@@ -76,6 +76,7 @@ Improved ZRCP:
 
 Improved ZENG:
 - Allow to connect more than two hosts
+- Hostnames/IPs accept changing port using ":port"
 - Allow to disable sending input events (keyboard, joystick)
 - Sync flash state between instances
 - Added ZENG support for Jupiter Ace
@@ -85,7 +86,7 @@ Improved ZX Spectrum Next emulation:
 
 * Fixes:
 
-Fixed several memory leaks:
+Fixed several memory leaks found on:
 - Drawing Text Aventure Map
 - Loading .Z80 snapshots
 - Using the Speccy online browser
