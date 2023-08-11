@@ -8,13 +8,8 @@ Para esta version:
 
 --Mejoras
 
-
-
 --Fin mejoras
 
-
-
-ok, aunque con retraso como antes-arreglar tecla ESC en curses: ni en mac ni en linux la lee
 
 -en linux, con "stop emulation on menu", raton no mueve opciones de menu, ni deja mover ventanas
 
@@ -29,11 +24,9 @@ Pruebas ZENG
 --zeng-remote-hostname 192.168.1.91,192.168.1.147,192.168.1.99
 --zeng-remote-port 10000
 
-
 -No uso pthread_detach en pthreads que solo se lanzan una vez, como send_stats_server. Aunque deberia hacerlo,
 pero el impacto de no liberar esos pthreads es minimo, y como acabo de descubrir esa funcion pthread_detach, prefiero no
 "arriesgarme" a usarla mas alla de lo necesario
-
 
 -tecla Copy en CPC está asignada a tecla Home del teclado de pc. Quizá cambiar tecla a otra, o poder asignar otra. copy es tambien fire (Home) por defecto...
 

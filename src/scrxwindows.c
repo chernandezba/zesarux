@@ -1399,6 +1399,10 @@ void deal_with_keys(XEvent *event,int pressrelease)
 				joystick_possible_home_key(pressrelease);
                         break;
 
+            case XK_End:
+                util_set_reset_key(UTIL_KEY_END,pressrelease);
+            break;
+
 			case XK_Left:
 				util_set_reset_key(UTIL_KEY_LEFT,pressrelease);
                         break;

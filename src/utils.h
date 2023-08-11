@@ -152,10 +152,10 @@ extern z80_bit debug_parse_config_file;
 #define RAWKEY_comma 0x33
 #define RAWKEY_period 0x34
 #define RAWKEY_slash 0x35
-#define RAWKEY_KP_Divide 0x35
+#define RAWKEY_Keypad_Divide 0x35
 #define RAWKEY_Shift_R 0x36
 
-#define RAWKEY_KP_Multiply 0x37
+#define RAWKEY_Keypad_Multiply 0x37
 
 #define RAWKEY_Alt_L 0x38
 #define RAWKEY_Space 0x39
@@ -182,12 +182,12 @@ extern z80_bit debug_parse_config_file;
 #define RAWKEY_Keypad_Home 0x47
 #define RAWKEY_Keypad_Up 0x48
 #define RAWKEY_Keypad_Page_Up 0x49
-#define RAWKEY_KP_Subtract 0x4a
+#define RAWKEY_Keypad_Subtract 0x4a
 #define RAWKEY_Keypad_Left 0x4b
 #define RAWKEY_Keypad_5 = 0x4c,
 #define RAWKEY_Keypad_Right 0x4d
-#define RAWKEY_KP_Add 0x4e
-#define RAWKEY_KP_End 0x4f
+#define RAWKEY_Keypad_Add 0x4e
+#define RAWKEY_Keypad_End 0x4f
 #define RAWKEY_Keypad_Down 0x50
 #define RAWKEY_Keypad_Page_Down 0x51
 #define RAWKEY_Keypad_0 0x52
@@ -255,6 +255,7 @@ enum util_teclas
 	UTIL_KEY_SPACE=128,  //128 en adelante para no entrar en conflicto con teclas ascii <128
 	UTIL_KEY_ENTER,
     UTIL_KEY_HOME,
+    UTIL_KEY_END,
     UTIL_KEY_DEL,
 	UTIL_KEY_SHIFT_L,
 	UTIL_KEY_SHIFT_R,

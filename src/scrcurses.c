@@ -2017,6 +2017,10 @@ void scrcurses_actualiza_tablas_teclado(void)
 							joystick_possible_home_key(1);
                     break;
 
+                    case KEY_END:
+                            util_set_reset_key(UTIL_KEY_END,1);
+                    break;
+
 					case KEY_LEFT:
 							util_set_reset_key(UTIL_KEY_LEFT,1);
 					break;

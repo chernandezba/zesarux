@@ -983,6 +983,10 @@ void scrfbdev_actualiza_tablas_teclado_rawmode(void){
 				joystick_possible_home_key(pressrelease);
 				break;
 
+            case RAWKEY_Keypad_End:
+                util_set_reset_key(UTIL_KEY_END,pressrelease);
+            break;
+
 			case RAWKEY_Keypad_Left:
 				util_set_reset_key(UTIL_KEY_LEFT,pressrelease);
 				break;
@@ -1019,20 +1023,20 @@ void scrfbdev_actualiza_tablas_teclado_rawmode(void){
 				break;
 
 
-			case RAWKEY_KP_Subtract:
+			case RAWKEY_Keypad_Subtract:
 				util_set_reset_key(UTIL_KEY_KP_MINUS,pressrelease);
 				break;
 
-			case RAWKEY_KP_Add:
+			case RAWKEY_Keypad_Add:
 				util_set_reset_key(UTIL_KEY_KP_PLUS,pressrelease);
 				break;
 
-			case RAWKEY_KP_Divide:
+			case RAWKEY_Keypad_Divide:
 				//util_set_reset_key(UTIL_KEY_SLASH,pressrelease);
 				util_set_reset_key('/',pressrelease);
 				break;
 
-			case RAWKEY_KP_Multiply:
+			case RAWKEY_Keypad_Multiply:
 				util_set_reset_key(UTIL_KEY_KP_MULTIPLY,pressrelease);
 				break;
 
@@ -1115,6 +1119,10 @@ void scrfbdev_actualiza_tablas_teclado_rawmode(void){
 			case RAWKEY_RPI_Home:
 				joystick_possible_home_key(pressrelease);
 			break;
+
+            case RAWKEY_RPI_End:
+                util_set_reset_key(UTIL_KEY_END,pressrelease);
+            break;
 
 			case RAWKEY_RPI_Up:
 				util_set_reset_key(UTIL_KEY_UP,pressrelease);

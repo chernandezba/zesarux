@@ -691,7 +691,7 @@ Q: What is CPC 4128?
 A: Is a fictional model with tape and 128kb RAM. I created it to be able to test some games which need 128kb but can load from tape (and not from disk, which I don't emulate on CPC)
 
 Q: Where is Copy key located?
-A: Copy key function is assigned to key Home on your PC keyboard 
+A: Copy key function is assigned to key End on your PC keyboard 
 
 
 ----------------------------------------------------------------------------

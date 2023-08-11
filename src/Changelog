@@ -2,6 +2,8 @@ Version X - 10th Anniversary edition. 16 May 2023
 
 This is a special edition. Version is called "X" (actually is 10.10)
 
+* New things added:
+
 Added Docker support
 Added new compiled versions: Ubuntu and Fedora
 Added screen previews of directories and compressed files on File Selector
@@ -14,6 +16,8 @@ Added rom file selection for any machine you select, rom file is saved on config
 Added Ascii Table window
 Added Creator Info to ZSF snapshots
 Added Joysticks support for PCW: Kempston, Cascade, DKTronics, OPQASpace
+
+* Improvements:
 
 Improved Accessibility: Added Sounds for GUI events
 
@@ -79,6 +83,8 @@ Improved ZENG:
 Improved ZX Spectrum Next emulation:
 - Updated machine id list
 
+* Fixes:
+
 Fixed several memory leaks:
 - Drawing Text Aventure Map
 - Loading .Z80 snapshots
@@ -100,6 +106,10 @@ Fixed getting GAC objects
 Fixed esxdos handler when using fopen flags: FA_READ + FA_WRITE + FA_OPEN_CREAT
 Fixed ZRCP bug when closing connection (socket descriptor was kept open)
 Fixed reading ESC key on curses driver
+
+* Misc Changes:
+
+Changed CPC Copy key assignation to End key on your keyboard
 
 * As always, there are some other minor bugfixes and improvements
 

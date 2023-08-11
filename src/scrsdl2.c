@@ -1070,6 +1070,10 @@ void scrsdl_deal_keys(int pressrelease,int tecla)
                                 joystick_possible_home_key(pressrelease);
                         break;
 
+                        case SDLK_END:
+				                util_set_reset_key(UTIL_KEY_END,pressrelease);
+                        break;
+
                         case SDLK_LEFT:
                                 util_set_reset_key(UTIL_KEY_LEFT,pressrelease);
                         break;

@@ -7574,12 +7574,16 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
 
 
                         case UTIL_KEY_HOME:
+
+                        break;
+
+                        case UTIL_KEY_END:
                                 if (pressrelease) {
-                                        //Home en cpc es copy
+                                        //End en cpc es copy
                                         cpc_keyboard_table[1] &=(255-2);
                                 }
                                 else {
-                                        //Home en cpc es copy
+                                        //End en cpc es copy
                                         cpc_keyboard_table[1] |=2;
                                 }
                         break;
