@@ -1139,6 +1139,9 @@ z80_bit menu_hide_close_button={0};
 //Quiero que por defecto esté oculto
 z80_bit menu_hide_background_button_on_inactive={1};
 
+//Si se cambia color marco ventana al pasar raton por zona de redimensionado
+z80_bit menu_change_frame_when_resize_zone={1};
+
 //Si se invierte sentido movimiento scroll raton
 z80_bit menu_invert_mouse_scroll={0};
 
@@ -1334,7 +1337,7 @@ void menu_file_dsk_browser_show(char *filename);
 
 
 
-void menu_process_f_functions_by_action_index(int accion);
+void menu_process_f_functions_by_action_index(int accion,int si_pulsado_boton_redefinido);
 
 z80_byte menu_retorna_caracter_background(void);
 
@@ -8530,8 +8533,8 @@ void menu_dibuja_cuadrado(int x1,int y1,int x2,int y2,int color)
 
 	int x,y;
 
-//Mejor cambiando todo el marco?
-if (ventana_marca_redimensionado_raton_encima) color=ESTILO_GUI_COLOR_AVISO;
+    //Si ratón está encima de la zona de redimensionado
+    if (ventana_marca_redimensionado_raton_encima && menu_change_frame_when_resize_zone.v) color=ESTILO_GUI_COLOR_AVISO;
 
 	//Para poner una marca en la ventana indicando si es de tipo zxvision
 	//int centro_marca_zxvison_x=x2-3-6;
@@ -8581,27 +8584,23 @@ if (ventana_marca_redimensionado_raton_encima) color=ESTILO_GUI_COLOR_AVISO;
             //		***
             //     ****
 
-            int color_marca_redimensionado=color;
-
-            if (ventana_marca_redimensionado_raton_encima) color_marca_redimensionado=ESTILO_GUI_COLOR_AVISO;
-
             //Arriba del todo
-            scr_putpixel_gui_zoom((x2-1)*menu_gui_zoom,(y2-4)*menu_gui_zoom,color_marca_redimensionado,menu_gui_zoom);
+            scr_putpixel_gui_zoom((x2-1)*menu_gui_zoom,(y2-4)*menu_gui_zoom,color,menu_gui_zoom);
 
             //Medio
-            scr_putpixel_gui_zoom((x2-1)*menu_gui_zoom,(y2-3)*menu_gui_zoom,color_marca_redimensionado,menu_gui_zoom);
-            scr_putpixel_gui_zoom((x2-2)*menu_gui_zoom,(y2-3)*menu_gui_zoom,color_marca_redimensionado,menu_gui_zoom);
+            scr_putpixel_gui_zoom((x2-1)*menu_gui_zoom,(y2-3)*menu_gui_zoom,color,menu_gui_zoom);
+            scr_putpixel_gui_zoom((x2-2)*menu_gui_zoom,(y2-3)*menu_gui_zoom,color,menu_gui_zoom);
 
             //Abajo
-            scr_putpixel_gui_zoom((x2-1)*menu_gui_zoom,(y2-2)*menu_gui_zoom,color_marca_redimensionado,menu_gui_zoom);
-            scr_putpixel_gui_zoom((x2-2)*menu_gui_zoom,(y2-2)*menu_gui_zoom,color_marca_redimensionado,menu_gui_zoom);
-            scr_putpixel_gui_zoom((x2-3)*menu_gui_zoom,(y2-2)*menu_gui_zoom,color_marca_redimensionado,menu_gui_zoom);
+            scr_putpixel_gui_zoom((x2-1)*menu_gui_zoom,(y2-2)*menu_gui_zoom,color,menu_gui_zoom);
+            scr_putpixel_gui_zoom((x2-2)*menu_gui_zoom,(y2-2)*menu_gui_zoom,color,menu_gui_zoom);
+            scr_putpixel_gui_zoom((x2-3)*menu_gui_zoom,(y2-2)*menu_gui_zoom,color,menu_gui_zoom);
 
             //Abajo del todo
-            scr_putpixel_gui_zoom((x2-1)*menu_gui_zoom,(y2-1)*menu_gui_zoom,color_marca_redimensionado,menu_gui_zoom);
-            scr_putpixel_gui_zoom((x2-2)*menu_gui_zoom,(y2-1)*menu_gui_zoom,color_marca_redimensionado,menu_gui_zoom);
-            scr_putpixel_gui_zoom((x2-3)*menu_gui_zoom,(y2-1)*menu_gui_zoom,color_marca_redimensionado,menu_gui_zoom);
-            scr_putpixel_gui_zoom((x2-4)*menu_gui_zoom,(y2-1)*menu_gui_zoom,color_marca_redimensionado,menu_gui_zoom);
+            scr_putpixel_gui_zoom((x2-1)*menu_gui_zoom,(y2-1)*menu_gui_zoom,color,menu_gui_zoom);
+            scr_putpixel_gui_zoom((x2-2)*menu_gui_zoom,(y2-1)*menu_gui_zoom,color,menu_gui_zoom);
+            scr_putpixel_gui_zoom((x2-3)*menu_gui_zoom,(y2-1)*menu_gui_zoom,color,menu_gui_zoom);
+            scr_putpixel_gui_zoom((x2-4)*menu_gui_zoom,(y2-1)*menu_gui_zoom,color,menu_gui_zoom);
 
         }
 
@@ -23133,7 +23132,7 @@ void menu_inicio_handle_configurable_icon_presses(void)
 
         zxdesktop_configurable_icons_current_executing=pulsado_boton;
 
-        menu_process_f_functions_by_action_name(id_funcion,1,-1);
+        menu_process_f_functions_by_action_name(id_funcion,1,-1,0);
         //printf("Despues procesar funcion\n");
     }
 
@@ -23159,7 +23158,7 @@ int menu_inicio_handle_button_presses_userdef(int boton)
 
 
     if (accion!=F_FUNCION_DEFAULT) {
-        menu_process_f_functions_by_action_index(indice_tabla);
+        menu_process_f_functions_by_action_index(indice_tabla,1); //Indicar que viene de boton redefinido por el usuario
         return 1;
     }
 
@@ -23592,14 +23591,14 @@ menu_init_footer hace falta pues el layer de menu se borra y se queda negro en l
 
 }
 
-void menu_process_f_functions_by_action_index(int indice)
+void menu_process_f_functions_by_action_index(int indice,int si_pulsado_boton_redefinido)
 {
 
     //printf("id indice: %d\n",indice);
 
     int id_funcion=menu_da_accion_direct_functions_indice(indice);
 
-    menu_process_f_functions_by_action_name(id_funcion,0,menu_button_f_function_index);
+    menu_process_f_functions_by_action_name(id_funcion,0,menu_button_f_function_index,si_pulsado_boton_redefinido);
 }
 
 void menu_process_f_functions(void)
@@ -23613,7 +23612,7 @@ void menu_process_f_functions(void)
 
 	//printf ("Menu process Tecla: F%d Accion: %s\n",indice+1,defined_direct_functions_array[indice_tabla].texto_funcion);
 
-	menu_process_f_functions_by_action_index(indice_tabla);
+	menu_process_f_functions_by_action_index(indice_tabla,0);
 
 }
 
@@ -24342,7 +24341,7 @@ void menu_inicio(void)
             //Esto evita por ejemplo que al abrir menu con F5, si se entra a submenu, se crea que hemos pulsado F5 y cierre el menu y vuelva a abrir menu principal
             menu_button_f_function.v=0;
 
-            //printf ("pulsada tecl de funcion\n");
+            //printf ("pulsada tecla de funcion\n");
             //Entrada
             //menu_espera_no_tecla();
             osd_kb_no_mostrar_desde_menu=0; //Volver a permitir aparecer teclado osd
@@ -24353,7 +24352,7 @@ void menu_inicio(void)
             if (menu_button_f_function_action==0) menu_process_f_functions();
             else {
                 //O procesar cuando se envia una accion concreta, normalmente viene de evento de joystick
-                menu_process_f_functions_by_action_name(menu_button_f_function_action,0,-1);
+                menu_process_f_functions_by_action_name(menu_button_f_function_action,0,-1,0);
                 menu_button_f_function_action=0;
             }
 

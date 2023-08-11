@@ -38854,7 +38854,9 @@ void menu_process_f_function_topspeed(void)
 
 
 //Procesar accion tecla F, o pulsado de boton superior reconfigurado, o pulsado de icono en ZX Desktop
-void menu_process_f_functions_by_action_name(int id_funcion,int si_pulsado_icono_zxdesktop,int id_tecla_f_pulsada)
+//si_pulsado_icono_zxdesktop=1 en caso de iconos de ZX Desktop
+//si_pulsado_icono_zxdesktop=0 en caso de teclas F o botones superior reconfigurado, y para distinguirlos, se usa si_pulsado_boton_redefinido
+void menu_process_f_functions_by_action_name(int id_funcion,int si_pulsado_icono_zxdesktop,int id_tecla_f_pulsada,int si_pulsado_boton_redefinido)
 {
 
     //printf("enum: %d\n",id_funcion);
@@ -38906,7 +38908,9 @@ void menu_process_f_functions_by_action_name(int id_funcion,int si_pulsado_icono
 
         case F_FUNCION_OPEN_WINDOW:
 
-            //Si viene de pulsar icono, obtener parametro de icono que indica ventana a abrir
+            //Abrir ventana que viene especificado como parametro del icono o tecla F.
+
+            //Si viene de pulsar icono
             if (si_pulsado_icono_zxdesktop) {
                 indice_icono=zxdesktop_configurable_icons_current_executing;
 
@@ -38918,12 +38922,19 @@ void menu_process_f_functions_by_action_name(int id_funcion,int si_pulsado_icono
 
                 }
             }
+
+            //Viene de pulsar tecla F o boton ZX Desktop redefinido
             else {
-				if (id_tecla_f_pulsada<0) debug_printf(VERBOSE_ERR,"This action can only be fired from a ZX Desktop icon");
-				else {
-					char *nombre=defined_f_functions_keys_array_parameters[id_tecla_f_pulsada];
-					zxvision_open_window_by_name(nombre);
-				}
+                if (si_pulsado_boton_redefinido) {
+                    debug_printf(VERBOSE_ERR,"This action can only be fired from a ZX Desktop icon or F-key");
+                }
+                else {
+                    if (id_tecla_f_pulsada<0) debug_printf(VERBOSE_ERR,"Error getting F-Key info");
+                    else {
+                        char *nombre=defined_f_functions_keys_array_parameters[id_tecla_f_pulsada];
+                        zxvision_open_window_by_name(nombre);
+                    }
+                }
 
             }
         break;
@@ -38932,44 +38943,63 @@ void menu_process_f_functions_by_action_name(int id_funcion,int si_pulsado_icono
         case F_FUNCION_DESKTOP_TAPE:
         case F_FUNCION_DESKTOP_GENERIC_SMARTLOAD:
 
-            //Si viene de pulsar icono, obtener parametro de icono que indica cinta/snap/... a cargar
+            //Hacer smartload del archivo que viene especificado como parametro del icono o tecla F.
+
+            //Si viene de pulsar icono
             if (si_pulsado_icono_zxdesktop) {
                 indice_icono=zxdesktop_configurable_icons_current_executing;
 
                 if (indice_icono!=-1) {
 
                     char *nombre=zxdesktop_configurable_icons_list[indice_icono].extra_info;
-                    strcpy(quickload_file,nombre);
-
-                    quickfile=quickload_file;
-
-                    //Ver si es un zip que viene de una descarga online por ejemplo
-                    if (!util_compare_file_extension(nombre,"zip")) {
-                        menu_smartload(0);
+                    //Si nombre vacio, indicar al usuario
+                    if (nombre[0]==0) {
+                        debug_printf(VERBOSE_ERR,"You should write a file name on the Icon parameters");
                     }
 
                     else {
-                        quickload(quickload_file);
+
+                        strcpy(quickload_file,nombre);
+
+                        quickfile=quickload_file;
+
+                        //Ver si es un zip que viene de una descarga online por ejemplo
+                        if (!util_compare_file_extension(nombre,"zip")) {
+                            menu_smartload(0);
+                        }
+
+                        else {
+                            quickload(quickload_file);
+                        }
                     }
                 }
             }
+
+            //Viene de pulsar tecla F o boton ZX Desktop redefinido
             else {
-				if (id_tecla_f_pulsada<0) debug_printf(VERBOSE_ERR,"This action can only be fired from a ZX Desktop icon");
-				else {
-					char *nombre=defined_f_functions_keys_array_parameters[id_tecla_f_pulsada];
-                    strcpy(quickload_file,nombre);
-
-                    quickfile=quickload_file;
-
-                    //Ver si es un zip que viene de una descarga online por ejemplo
-                    if (!util_compare_file_extension(nombre,"zip")) {
-                        menu_smartload(0);
-                    }
-
+                if (si_pulsado_boton_redefinido) {
+                    //No hay parametros. Abrir smartload tal cual
+                    //printf("Pulsado boton redefinido\n");
+                    menu_smartload(0);
+                }
+                else {
+                    if (id_tecla_f_pulsada<0) debug_printf(VERBOSE_ERR,"Error getting F-Key info");
                     else {
-                        quickload(quickload_file);
+                        char *nombre=defined_f_functions_keys_array_parameters[id_tecla_f_pulsada];
+                        strcpy(quickload_file,nombre);
+
+                        quickfile=quickload_file;
+
+                        //Ver si es un zip que viene de una descarga online por ejemplo
+                        if (!util_compare_file_extension(nombre,"zip")) {
+                            menu_smartload(0);
+                        }
+
+                        else {
+                            quickload(quickload_file);
+                        }
                     }
-				}
+                }
 
             }
         break;
@@ -39045,24 +39075,56 @@ void menu_process_f_functions_by_action_name(int id_funcion,int si_pulsado_icono
         case F_FUNCION_SET_MACHINE:
         case F_FUNCION_MACHINE_SELECTION:
 
-            //Si viene de pulsar icono, obtener parametro de icono que indica maquina a cambiar
-            indice_icono=zxdesktop_configurable_icons_current_executing;
+            //Elegir maquina si viene especificado como parametro del icono o tecla F. Y si no, abrir menu de seleccion de maquina
 
-            if (indice_icono!=-1) {
-                //Si parametro icono en blanco
-                if (zxdesktop_configurable_icons_list[indice_icono].extra_info[0]==0) {
-                    menu_machine_selection(0);
-                }
-                else {
-                    int maquina=get_machine_id_by_name(zxdesktop_configurable_icons_list[indice_icono].extra_info);
-                    if (maquina==-1) return;
+            //Si viene de pulsar icono
+            if (si_pulsado_icono_zxdesktop) {
+                //printf("Pulsado icono\n");
+                indice_icono=zxdesktop_configurable_icons_current_executing;
 
-                    menu_machine_set_machine_by_id(maquina);
+                if (indice_icono!=-1) {
+                    //Si parametro icono en blanco
+                    if (zxdesktop_configurable_icons_list[indice_icono].extra_info[0]==0) {
+                        menu_machine_selection(0);
+                    }
+                    else {
+                        int maquina=get_machine_id_by_name(zxdesktop_configurable_icons_list[indice_icono].extra_info);
+                        if (maquina==-1) return;
+
+                        menu_machine_set_machine_by_id(maquina);
+                    }
                 }
             }
 
-            //Si no se pulsa icono
-            else menu_machine_selection(0);
+            //Viene de pulsar tecla F o boton ZX Desktop redefinido
+            else {
+                if (si_pulsado_boton_redefinido) {
+                    //printf("Pulsado boton redefinido\n");
+                    menu_machine_selection(0);
+                }
+
+                else {
+
+                    //printf("Pulsado tecla F\n");
+                    if (id_tecla_f_pulsada<0) debug_printf(VERBOSE_ERR,"Error getting F-Key info");
+                    else {
+                        //printf("tecla F %d\n",id_tecla_f_pulsada);
+                        if (defined_f_functions_keys_array_parameters[id_tecla_f_pulsada][0]==0) {
+                            menu_machine_selection(0);
+                        }
+
+                        else  {
+                            int maquina=get_machine_id_by_name(defined_f_functions_keys_array_parameters[id_tecla_f_pulsada]);
+                            if (maquina==-1) return;
+
+                            menu_machine_set_machine_by_id(maquina);
+                        }
+
+                    }
+
+                }
+
+            }
 
 
         break;

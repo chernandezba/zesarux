@@ -77,3 +77,6 @@ ejemplo badlands.dsk y rutina en la 2114h que esta en los traps
 ---ZRCP
 *array para guardar los threads que se van lanzando?
 -completar remote_cerrar_conexion para que cierre todas las conexiones de cliente que puedan haber
+
+
+-botones superiores redefinidos que puedan tener parametros asociados, por ejemplo set-machine y parametro "48k"

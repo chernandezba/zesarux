@@ -2597,6 +2597,7 @@ printf("\n"
         "--hide-menu-maximize-button              Hides maximize button on the title window\n"
 		"--hide-menu-close-button                 Hides close button on the title window\n"
         "--show-menu-background-button            Shows background button on inactive windows\n"
+        "--no-change-frame-resize-zone            Do not change frame window when mouse if over resize zone\n"
 		"--invert-menu-mouse-scroll               Inverts mouse scroll movement\n"
         "--right-mouse-esc                        Right button mouse simulates ESC key and not secondary actions\n"
         "--process-switcher-immutable             Massive actions on menu Windows, like minimize all, cascade, etc, don't affect the Process switcher window\n"
@@ -8316,6 +8317,10 @@ int parse_cmdline_options(int desde_commandline) {
 			else if (!strcmp(argv[puntero_parametro],"--show-menu-background-button")) {
                                 menu_hide_background_button_on_inactive.v=0;
 			}
+
+            else if (!strcmp(argv[puntero_parametro],"--no-change-frame-resize-zone")) {
+                menu_change_frame_when_resize_zone.v=0;
+            }
 
 			else if (!strcmp(argv[puntero_parametro],"--hide-menu-submenu-indicator")) {
                 menu_hide_submenu_indicator.v=1;
