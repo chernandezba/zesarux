@@ -29,6 +29,7 @@ extern void enable_and_init_remote_protocol(void);
 extern z80_bit remote_ack_enter_cpu_step;
 extern z80_bit remote_calling_end_emulator;
 
+extern void remote_cpu_exit_step_continue_restore_multitask(void);
 
 //extern int   towindows_remote_cpu_run_misocket;
 //extern int towindows_remote_cpu_run_verbose;

@@ -1234,8 +1234,6 @@ int get_mid_number_note(char *str)
 //Si no coincide, retornar -1
 int get_frequency_note(char *str)
 {
-	//nota_musical tabla_notas_musicales[MAX_NOTAS_MUSICALES]={
-	const int offset_inicial=12;  //C0=12
 
 	//cadena vacia, -1
 	if (str[0]==0) return -1;
