@@ -66,6 +66,10 @@ Total solo se verá al abrir una app que no estaba abierta. Si ya estaba, la mar
 
 --- ZX Vision
 
+-quiza otras acciones sobre ventana que hagan cambiar el color del marco en determinados eventos al mover el raton? Ejemplo:
+-mostrar titulo ventana entero al pasar raton sobre zona titulo
+-cambiar los botones al pasar por encima de ellos
+
 -Botón derecho sobre titulo ventana, activa acciones como: minimizar, maximizar, forzar siempre visible etc
 
 -con la nueva manera de conmutar ventanas, ya no se recrean al entrar y por tanto se puede quedar con barras de scroll permanentemente

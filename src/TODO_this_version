@@ -28,17 +28,11 @@ Pruebas ZENG
 pero el impacto de no liberar esos pthreads es minimo, y como acabo de descubrir esa funcion pthread_detach, prefiero no
 "arriesgarme" a usarla mas alla de lo necesario
 
--tecla Copy en CPC está asignada a tecla Home del teclado de pc. Quizá cambiar tecla a otra, o poder asignar otra. copy es tambien fire (Home) por defecto...
 
--dandanator no va bien en cpc 664,6128. ejemplo bruce lee carga pantalla y luego se cuelga
+-dandanator no va bien en cpc 664,6128. ejemplo bruce lee carga pantalla y luego se cuelga. rambo II también falla
 
 -por que docker de fedora va con sdl2?
 
 -que juego o programa para esta edición?
 
 -logo salamanquesa que cambie por otra si hago click simple?
-
-ok -Si se mueve ratón a zona redimensionado ventana, que la ventana cambie el marco
-quiza otras acciones sobre ventana que hagan cambiar el color del marco en determinados eventos al mover el raton? Ejemplo:
--mostrar titulo ventana entero al pasar raton sobre zona titulo
--cambiar los botones al pasar por encima de ellos

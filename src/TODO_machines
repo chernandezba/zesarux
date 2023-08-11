@@ -6,7 +6,7 @@
 -Que QL, cuando busque un archivo, lo haga todo en minusculas y tambien todo en mayusculas
 -Soft QL
 http://www.rwapadventures.com/ql_wiki/index.php?title=Sinclair%20QL%20Home%20Computer&lang=en
--Mirar uqlx a ver cómo hace el load 
+-Mirar uqlx a ver cómo hace el load
 
 -QL mejorar teclado y repeticiones:
 *si pulsar menos de 1 segundo, devolver esa tecla y ninguna mas en ese segundo
@@ -46,9 +46,9 @@ void FrameInt(void)
 -Intento interceptar funciones de lectura de sectores de microdrive. MD.READ. aparentemente tiene que saltar desde la direccion
 525CH pero ahi no parece saltar nunca,
 si desactivo todo trap de rom de ql, se queda colgado despues del menu inicial, seguramente intentando detectar microdrive
-si no desactivo traps, no parece llegar tampoco ahi, aunque esto me ha llevado a interceptar el trap FS.MDINF, 
+si no desactivo traps, no parece llegar tampoco ahi, aunque esto me ha llevado a interceptar el trap FS.MDINF,
 que se usa en dir mdv1_,
-cosa que ahora consigo mostrar sectores libres/usados aunque no aparece el nombre del microdrive 
+cosa que ahora consigo mostrar sectores libres/usados aunque no aparece el nombre del microdrive
 (registro A1 donde hay que guardar eso contiene direccion 100H !)
 
 -teniendo desactivada la emulacion de microdrive , igualmente consulta cosas al root path
@@ -86,7 +86,7 @@ Pero dado que aún no se los otros parámetros cómo funcionan (step, fuzziness 
 Funciones de peek y poke nested soporta punteros de Motorola?
 Quizá no funciona bien en ql en el momento que se activa debug
 
-NO. Dado que no usa peek byte y poke normales sino que tiene funciones propias a las que no le afecta el nested de peek y poke. 
+NO. Dado que no usa peek byte y poke normales sino que tiene funciones propias a las que no le afecta el nested de peek y poke.
 Solo le afecta el nested del core cpu
 
 -resolucion esta ok pero tamanyo pantalla deberia ser 4:3. hacer escalado chungo...
@@ -96,7 +96,7 @@ http://foro.speccy.org/viewtopic.php?f=15&t=2008&start=4
 como el psion chess
 ver docs/ql/qdos_file_header.txt
 
--software 
+-software
 http://www.dilwyn.me.uk/downloads.html
 
 -Pendiente todo lo relacionado con texto: drivers modo texto para curses, stdout, ocr, input spool file, etc
@@ -130,7 +130,7 @@ golf(basic)
 starport
 thress
 psion chess (chess_exe)
-games/Fives 
+games/Fives
 match point
 
 Ya conocidos:
@@ -232,10 +232,10 @@ Esto es tal cual tenia el soporte de TAP, al no guardar el flag, eso no se puede
 
 http://speccy.info/Pentagon
 
-Misma wiki para info de cosas de TSConf, como el z controller ide 
+Misma wiki para info de cosas de TSConf, como el z controller ide
 
 
--Quiza algunas demos no se ven bien efectos de linea debidos al turbo? se ven mas arriba: ejemplos chess, 200, 
+-Quiza algunas demos no se ven bien efectos de linea debidos al turbo? se ven mas arriba: ejemplos chess, 200,
 
 -Render modo spectrum compatible debería leer de buffer atributos y pixeles ; para que demos como overscan se vean bien
 
@@ -257,14 +257,14 @@ hay rutinas, como gestion de sprites y tiles, que se podrian mejorar ligeramente
 -Tsconf: escritura dma en fmaps. No he encontrado ningun juego que lo haga
 
 -tsconf:
-*tsconf: 
+*tsconf:
 -limite sprites en scanline
 -revisar mapeo rom mediante 32765, parece que a veces no va fina
 
 -Cuando se interpreta solo vram y cuando bit shadow de 128k?
 
 -Más info tsconf
-http://forum.tslabs.info/viewtopic.php?f=12&t=157 
+http://forum.tslabs.info/viewtopic.php?f=12&t=157
 
 
 
@@ -410,7 +410,7 @@ D3 = 1 - disable rom and connect ram page 0 in adress space 0-3FFF
 
 -Page cashe pentagon:
 
-Try use D3(counting from zero) bit for EFF7  - zero page will be displayed to #0000 address. 
+Try use D3(counting from zero) bit for EFF7  - zero page will be displayed to #0000 address.
 
 There also other schematics that uses ports(Like LPRINT 3):
  * IN 251 - Enable cache
@@ -419,18 +419,18 @@ There also other schematics that uses ports(Like LPRINT 3):
 IN #FB - enable cache/ IN #7B disable.
 
 Zero page is ram0 from 128kb ram
-On pentagon 
+On pentagon
 
 
 EFF7 - just memory managment
-This strange thing "CASHE MEMORY" 
+This strange thing "CASHE MEMORY"
 
 -------------
 
 --- ZX Spectrum Next ---
 
--Activar el kempston mouse entra en conflicto con el editor de basic. 
-Al mover raton hace cosas raras. Tambien en el menu de tbblue: probablemente eso sea error de NextOS tal cual, 
+-Activar el kempston mouse entra en conflicto con el editor de basic.
+Al mover raton hace cosas raras. Tambien en el menu de tbblue: probablemente eso sea error de NextOS tal cual,
 o bien que están limitando a puerto 1f y 3f el kempston joystick y el mouse entra en conflicto
 Quiza deberia leer el kempston solo por 1f o 3f??
 
@@ -447,7 +447,7 @@ Activando el maximo turbo permitido, tambien hace una franja negra en el border,
 -priority sprites. ver BigSprite4b.sh
 
 Refresco de Tbblue para curses , stdout y simpletext en caso de:
--rainbow y modos tiles etc habilitados. O simplemente modo rainbow  
+-rainbow y modos tiles etc habilitados. O simplemente modo rainbow
 
 -Multiface: Nextreg 0x0A selects multiface version from 1, 128 v87.12, 128 v87.2 or +3
 
@@ -460,7 +460,7 @@ Refresco de Tbblue para curses , stdout y simpletext en caso de:
 -cambiar de maquina no tbblue a tbblue provoca que no funcione divmmc
 porque?
 
-TBBLUE: 
+TBBLUE:
 *eliminar puerto 55h. Corregir demo tosprram para que use 5bh en vez de 55h
 *y otras novedades * New machine type: Pentagon 128K.. Ver registros 3, 7, 21
 *Desactivar puertos viejos de establecer paleta sprites get/set
@@ -494,7 +494,7 @@ El parchecillo va en core_spectrum.c , aqui:
 +				}
 
 
--Agregar turbo spool setting en tbblue -> va relacionado con la funcion de peek_byte turbo que se ve alterada al cambiar 
+-Agregar turbo spool setting en tbblue -> va relacionado con la funcion de peek_byte turbo que se ve alterada al cambiar
 la velocidad de la cpu en nextos
 
 -registro paleta tiles. no hacemos las combinaciones de Tilemap
@@ -506,7 +506,7 @@ la velocidad de la cpu en nextos
     100 = ULA second palette
     001 = Layer 2 first palette
     101 = Layer 2 second palette
-    010 = Sprites first palette 
+    010 = Sprites first palette
     110 = Sprites second palette
     011 = Tilemap first palette
     111 = Tilemap second palette
@@ -525,8 +525,8 @@ https://docs.google.com/spreadsheets/d/1CFjp6sRIPRTShESC_1I5-pR6v7kTymk0hhUC1TN9
 --en menu.c, no permitido en gui settings
 
 
--Mantener archivo de especificaciones de next (la lista completa de los registros internos) tal cual como los emulo. 
-Así es más fácil saber cuando agregan o modifican algo nuevo 
+-Mantener archivo de especificaciones de next (la lista completa de los registros internos) tal cual como los emulo.
+Así es más fácil saber cuando agregan o modifican algo nuevo
 -Ensamblador opcodes extendidos next
 -Puerto dffd next
 https://specnext.dev/wiki/Next_Memory_Bank_Select
@@ -534,7 +534,7 @@ https://specnext.dev/wiki/Next_Memory_Bank_Select
 
 
 -Soporte ulaplus en Next
-	
+
 
 -reloj deberia salir en nextos, ya que implementa el chip de reloj. Aparece pero con valor 000
 -probar que pasa cuando llega a mas de MAX_SPRITES_PER_LINE (100) sprites en linea tbblue
@@ -561,7 +561,7 @@ https://www.specnext.com/forum/viewtopic.php?p=8226#p8226
 
 
 -tbblue: considerar mejor prioridades de capas de memoria, por ejemplo al escribir altrom esta comprobando aparte si esta diviface habilitdo
-esto por ejemplo fallaria si alguien le da por escribir en altrom pero habilitando layer2, creo que layer2 tiene mas prioridad por tanto altrom no se deberia escribir 
+esto por ejemplo fallaria si alguien le da por escribir en altrom pero habilitando layer2, creo que layer2 tiene mas prioridad por tanto altrom no se deberia escribir
 Hay una lista de capas de prioridades en el codigo fuente de la fpga. Segun src/zxnext.vhd:
 
    -- memory decode order
@@ -612,11 +612,11 @@ Implementar 48KB puerto layer2 0x123B:
   bit 3 = Reserved, must be 0
   bits 2:0 = 16K bank offset applied to layer 2 memory mapping
 
-Memory pointed at by nextreg 0x12 or nextreg 0x13 can be mapped into the lower 16K or 48K if 
-layer 2 memory mapping is enabled in bit 2 and/or bit 0.  This mechanism is separate from MMU 
-and will overlay the paging state set by MMU but only if the memory access type matches 
-the enable condition (read-only, write-only). The particular 16K bank(s) mapped in begin 
-at the pointed bank plus an optional offset written when bit 4 = 1.  For out of range banks, 
+Memory pointed at by nextreg 0x12 or nextreg 0x13 can be mapped into the lower 16K or 48K if
+layer 2 memory mapping is enabled in bit 2 and/or bit 0.  This mechanism is separate from MMU
+and will overlay the paging state set by MMU but only if the memory access type matches
+the enable condition (read-only, write-only). The particular 16K bank(s) mapped in begin
+at the pointed bank plus an optional offset written when bit 4 = 1.  For out of range banks,
 writes do not have an effect and reads return unspecified data.
 
 
@@ -708,7 +708,7 @@ Author: aralbrec <alvin_albrecht@hotmail.com>
 Date:   Mon Jul 12 21:55:14 2021 -0600
 
     #6 #7: Divmmc bank 3 always read only when mapram is set, conmem does not bring in divmmc rom when mapram is set (departure from standard divmmc hardwa
-re)             
+re)
 
 
 
@@ -797,6 +797,15 @@ http://velesoft.speccy.cz/sam_zx128.htm
 
 --- CPC ---
 
+-dandanator no va bien en cpc 664,6128. ejemplo bruce lee carga pantalla y luego se cuelga. rambo II también falla
+Probado en sitios que hace:
+
+if (MACHINE_IS_CPC_HAS_FLOPPY) {
+cambiar por
+if (MACHINE_IS_CPC_HAS_FLOPPY && dandanator_enabled.v==0) {
+Pero sigue sin ir...
+
+
 -ay player en modo cpc no borra debajo de pantalla diferentes ventanas
 --machine cpc464 en aa,caca en consola de texto real da segmentation fault
 -Que pasa con keymap y otras teclas de cpc en drivers que no soportan keymap
@@ -806,7 +815,7 @@ Luego en cpc con más de 64 kb se puede re mapear según registro 3 del gate arr
 
 -cpc664. disco y rom de 24 kb. Paginacion de diferentes roms mediante puerto DFXX. http://www.grimware.org/doku.php/documentations/devices/gatearray#upper.rom
 
--segundo boton fire joystick 
+-segundo boton fire joystick
 
 -Carga de .zx falla en uno (cara.zx)
 -Video out to file?
@@ -856,7 +865,7 @@ http://www.spinpoint.org/2016/05/06/m4-board-retrofun-8-bit-amstrad-cpc-wifi/#co
 https://www.cpc-power.com/cpcarchives/index.php?page=articles&num=67
 
 When the interrupt is acknowledged, this is sensed by the Gate-Array. The top bit (bit 5), of the counter is set to "0" and the interrupt request is cleared. This prevents the next interrupt from occuring closer than 32 HSYNCs time.
-If bit 4 of the "Select screen mode and rom configuration" register of the Gate-Array (bit 7="1" and bit 6="0") 
+If bit 4 of the "Select screen mode and rom configuration" register of the Gate-Array (bit 7="1" and bit 6="0")
 is set to "1" then the interrupt request is cleared and the 6-bit counter is reset to "0".
 
 no estoy haciendo caso del bit del gate array registro 2:
@@ -947,11 +956,11 @@ Quizá demo raster zxuno falla porque la interrupción tarda demasiado...
 --- Fallos especificos de zx80/81: ---
 
 - si quiero cargar de wav en real tape por ejemplo, si hago LOAD "" va bien
-Pero si hago LOAD "nombre", me inserta siempre un standart tape nombre.p, por tanto 
+Pero si hago LOAD "nombre", me inserta siempre un standart tape nombre.p, por tanto
 no puedo cargar de real tape cuando uso load "nombre"
 Deberia haber alguna opcion para evitar esos traps de cinta
 
--timings de display seguramente incorrectos. Esta suponiendo inicio scanline en zona izquierda. es normal? aplica a funciones de repintado y 
+-timings de display seguramente incorrectos. Esta suponiendo inicio scanline en zona izquierda. es normal? aplica a funciones de repintado y
 tambien a screen_get_x_coordinate_tstates
 
 -nuevo core segun http://www.sinclairzxworld.com/viewtopic.php?f=7&t=1780&sid=4a25aa27ef1c6d926f2d9c78f92052c9
@@ -1105,7 +1114,7 @@ Segun MESS:
 
 -expulsar cartucho en msx, svi etc solo deberia aparecer si cartucho insertado? Pero luego como se extrae un cartucho al cargar un snapshot con cartucho? Porque en ese caso no sabe que tiene cartucho aunque esta aho
 
-- Msx games browser desde planetemu. Mismo sirve para coleco y sg1000. Problema: quiza planetemu no admite peticiones http simple. 
+- Msx games browser desde planetemu. Mismo sirve para coleco y sg1000. Problema: quiza planetemu no admite peticiones http simple.
 Probado con curl y no parece funcionar
 
 -Contención en hacer out e in a vram?
@@ -1126,7 +1135,7 @@ Como ejemplo, el Toshiba HX-10 (un modelo de 64KB) tiene esta configuración de 
 
 --- Spectravideo ---
 
--Quizá para 16kb svi 318 hacer que si direccion > 16kb, retorne tipo vacío y así no escribe ni lee nada 
+-Quizá para 16kb svi 318 hacer que si direccion > 16kb, retorne tipo vacío y así no escribe ni lee nada
 O quizá esa rom es del 328 en vez del 318
 -muchas cintas .cas no cargan o cargan mal el juego
 
@@ -1151,7 +1160,7 @@ creo que falla por esto ???:
 
 terminator: se ven mal la mayoria de tiles
 
-road rash: se ralentiza mucho en juego y en intro 
+road rash: se ralentiza mucho en juego y en intro
 pitufos: fase dos en rio se ve raro
 micromachines: se ve mal (pero esto creo que es debido a que usa mas de 192 lineas)
 bank panic: scroll mal, parece que se corrige con setting scroll hack
@@ -1178,22 +1187,22 @@ chase hq
 cosmic spacehead
 golvellius
 
--al seleccionar algun juego de sms que falla, deja emulacion que no funciona correctamente (parece error con vram), 
+-al seleccionar algun juego de sms que falla, deja emulacion que no funciona correctamente (parece error con vram),
 quiza el flag que habilita escritura en cram??
 
 -line interrupts:
  Line interrupts
 
-There is another vdp interrupt called the line interrupt. 
-This is a value set by the programmer which counts down during the active display period 
-(and the first line of the inactive display period)each time the vdp moves onto a new scanline. 
-This is so the programmer can be informed of when the vdp starts drawing a specific scanline. 
-When the line counter goes below zero then the vdp requests an interrupt 
-(only if the line interrupts are enabled by setting bit 4 of control register 0) 
-and the line counter is reset to the value of register 10. If the cpu decides to 
-ignore the vdp interrupt then the request is lost so this interrupt is either handled 
-straight away or not at all. The value of the line counter is set to the value of register 10 
-however the line counter is only set to the value of register 10 when the current scanline is 
+There is another vdp interrupt called the line interrupt.
+This is a value set by the programmer which counts down during the active display period
+(and the first line of the inactive display period)each time the vdp moves onto a new scanline.
+This is so the programmer can be informed of when the vdp starts drawing a specific scanline.
+When the line counter goes below zero then the vdp requests an interrupt
+(only if the line interrupts are enabled by setting bit 4 of control register 0)
+and the line counter is reset to the value of register 10. If the cpu decides to
+ignore the vdp interrupt then the request is lost so this interrupt is either handled
+straight away or not at all. The value of the line counter is set to the value of register 10
+however the line counter is only set to the value of register 10 when the current scanline is
 past the FIRST scanline of the inactive display period
 
  D4 - (IE1) 1= Line interrupt enable
