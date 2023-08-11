@@ -1674,6 +1674,10 @@ int scrcocoa_keymap_z88_cpc_leftz; //Tecla a la izquierda de la Z. usada en Chlo
                         joystick_possible_home_key(pressrelease);
                 break;
 
+                case COCOA_KEY_END:
+                        util_set_reset_key(UTIL_KEY_END,pressrelease);
+                break;
+
 
                 case ' ':
                         util_set_reset_key(UTIL_KEY_SPACE,pressrelease);
