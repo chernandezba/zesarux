@@ -1,5 +1,5 @@
 /*
-    ZEsarUX  ZX Second-Emulator And Released for UniX 
+    ZEsarUX  ZX Second-Emulator And Released for UniX
     Copyright (C) 2013 Cesar Hernandez Bano
 
     This file is part of ZEsarUX.
@@ -24,22 +24,22 @@
 
 #include "cpu.h"
 
-#define ZXPAND_FR_OK 0 
-#define ZXPAND_FR_DISK_ERR 1 
-#define ZXPAND_FR_INT_ERR 2 
-#define ZXPAND_FR_NOT_READY 3 
-#define ZXPAND_FR_NO_FILE 4 
-#define ZXPAND_FR_NO_PATH 5 
-#define ZXPAND_FR_INVALID_NAME 6 
-#define ZXPAND_FR_DENIED 7 
-#define ZXPAND_FR_EXIST 8 
-#define ZXPAND_FR_INVALID_OBJECT 9 
-#define ZXPAND_FR_WRITE_PROTECTED 10 
-#define ZXPAND_FR_INVALID_DRIVE 11 
-#define ZXPAND_FR_NOT_ENABLED 12 
-#define ZXPAND_FR_NO_FILESYSTEM 13 
-#define ZXPAND_FR_MKFS_ABORTED 14 
-#define ZXPAND_FR_TIMEOUT 15 
+#define ZXPAND_FR_OK 0
+#define ZXPAND_FR_DISK_ERR 1
+#define ZXPAND_FR_INT_ERR 2
+#define ZXPAND_FR_NOT_READY 3
+#define ZXPAND_FR_NO_FILE 4
+#define ZXPAND_FR_NO_PATH 5
+#define ZXPAND_FR_INVALID_NAME 6
+#define ZXPAND_FR_DENIED 7
+#define ZXPAND_FR_EXIST 8
+#define ZXPAND_FR_INVALID_OBJECT 9
+#define ZXPAND_FR_WRITE_PROTECTED 10
+#define ZXPAND_FR_INVALID_DRIVE 11
+#define ZXPAND_FR_NOT_ENABLED 12
+#define ZXPAND_FR_NO_FILESYSTEM 13
+#define ZXPAND_FR_MKFS_ABORTED 14
+#define ZXPAND_FR_TIMEOUT 15
 
 extern z80_bit zxpand_enabled;
 

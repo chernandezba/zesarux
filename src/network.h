@@ -78,7 +78,7 @@ extern int zsock_read_all_until_command(int indice_tabla,z80_byte *buffer,int ma
 
 extern int zsock_http(char *host, char *url,int *http_code,char **mem,int *t_leidos, char **mem_after_headers,int skip_headers,
     char *add_headers,int use_ssl,char *redirect_url,int estimated_maximum_size, char *ssl_sni_host_name);
-    
+
 extern char *z_sock_get_error(int error);
 extern int z_sock_assign_socket(void);
 extern void omplir_adr_internet_semaforo_init(void);

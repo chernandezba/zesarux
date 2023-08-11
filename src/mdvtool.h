@@ -33,8 +33,8 @@
 
 typedef struct {
   unsigned char preamble[12];   // 10*0, 2*ff
-  unsigned char ff;  
-  unsigned char snum;  
+  unsigned char ff;
+  unsigned char snum;
   char name[10];
   unsigned short rnd;
   unsigned short csum;

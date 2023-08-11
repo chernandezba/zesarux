@@ -35,7 +35,7 @@ struct s_snapshots_in_ram {
     //longitud de ese snapshot
     int longitud;
 
-    //cuando se ha generado 
+    //cuando se ha generado
     int hora,minuto,segundo;
 };
 

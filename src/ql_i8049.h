@@ -27,7 +27,7 @@
 extern int ql_ipc_reading_bit_ready;
 
 extern unsigned char ql_read_ipc(void);
-extern void ql_write_ipc(unsigned char Data); 
+extern void ql_write_ipc(unsigned char Data);
 extern char ql_audio_da_output(void);
 extern void ql_audio_next_cycle(void);
 

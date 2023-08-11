@@ -1,5 +1,5 @@
 /*
-    ZEsarUX  ZX Second-Emulator And Released for UniX 
+    ZEsarUX  ZX Second-Emulator And Released for UniX
     Copyright (C) 2013 Cesar Hernandez Bano
 
     This file is part of ZEsarUX.
@@ -98,7 +98,7 @@ struct s_pd765_signal_counter {
 
     //Funcion que se llama al activar valor
     void (*function_triggered)(void);
-    
+
 };
 
 typedef struct s_pd765_signal_counter pd765_signal_counter;

@@ -1,5 +1,5 @@
 /*
-    ZEsarUX  ZX Second-Emulator And Released for UniX 
+    ZEsarUX  ZX Second-Emulator And Released for UniX
     Copyright (C) 2013 Cesar Hernandez Bano
 
     This file is part of ZEsarUX.
@@ -82,7 +82,7 @@ extern void hilow_flush_contents_to_disk(void);
 extern z80_bit hilow_persistent_writes;
 
 extern z80_bit hilow_write_protection;
- 
+
 //extern void hilow_press_button(void);
 extern void hilow_enable(void);
 extern void hilow_disable(void);

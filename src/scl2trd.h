@@ -21,7 +21,7 @@
 
 #ifndef SCL2TRD_H
 #define SCL2TRD_H
- 
+
 extern void scl2trd_main(char *input,char *output);
 
 #endif

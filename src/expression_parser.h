@@ -103,7 +103,7 @@ enum token_parser_indice {
     TPI_R_SP,
 	TPI_R_USP, //de motorola
     TPI_R_IX,
-    TPI_R_IY,	
+    TPI_R_IY,
 
 	TPI_R_A,
 	TPI_R_B,
@@ -138,7 +138,7 @@ enum token_parser_indice {
         TPI_R_FS,
         TPI_R_FZ,
         TPI_R_FP,
-        TPI_R_FV,    
+        TPI_R_FV,
         TPI_R_FH,
         TPI_R_FN,
         TPI_R_FC,
@@ -161,7 +161,7 @@ enum token_parser_indice {
 	TPI_R_A4,
 	TPI_R_A5,
 	TPI_R_A6,
-	TPI_R_A7,	
+	TPI_R_A7,
 
 	//De SCMP
 	TPI_R_AC,
@@ -195,7 +195,7 @@ enum token_parser_indice {
 	TPI_OC_RESTA,
 	TPI_OC_MULTIPLICACION,
 	TPI_OC_DIVISION,
-	TPI_OC_AND,	
+	TPI_OC_AND,
 	TPI_OC_OR,
 	TPI_OC_XOR,
 

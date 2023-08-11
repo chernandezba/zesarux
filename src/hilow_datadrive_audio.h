@@ -1,5 +1,5 @@
 /*
-    ZEsarUX  ZX Second-Emulator And Released for UniX 
+    ZEsarUX  ZX Second-Emulator And Released for UniX
     Copyright (C) 2013 Cesar Hernandez Bano
 
     This file is part of ZEsarUX.
@@ -66,7 +66,7 @@ extern hilow_read_audio_callback_function hilow_read_audio_probably_sync_error_c
 extern int hilow_read_audio_current_phase;
 
 
-#define HILOW_LONGITUD_FINAL_SECTOR 28    
+#define HILOW_LONGITUD_FINAL_SECTOR 28
 extern z80_byte hilow_read_audio_buffer_end_sector[];
 
 

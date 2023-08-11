@@ -1,5 +1,5 @@
 /*
-    ZEsarUX  ZX Second-Emulator And Released for UniX 
+    ZEsarUX  ZX Second-Emulator And Released for UniX
     Copyright (C) 2013 Cesar Hernandez Bano
 
     This file is part of ZEsarUX.
@@ -32,7 +32,7 @@ extern int tape_options_set_second_message_counter;
 extern void delete_tape_options_set_second_message(void);
 extern int tape_options_set_first_message_counter;
 extern int tape_options_set_second_message_counter;
- 
+
 extern char *mostrar_footer_game_name;
 extern void autoselect_options_put_footer(void);
 extern char *mostrar_footer_second_message;

@@ -37,7 +37,7 @@
     typedef _Atomic int z_atomic_semaphore;
 
 
-    #else 
+    #else
 
     #ifdef MINGW
         //En Windows

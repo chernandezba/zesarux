@@ -559,7 +559,7 @@ extern char *debug_machine_info_family(int machine_id);
 
 
 #ifdef TIMESENSORS_ENABLED
- 
+
 
 #include <time.h>
 #include <sys/time.h>

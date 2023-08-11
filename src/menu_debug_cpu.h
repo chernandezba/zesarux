@@ -71,7 +71,7 @@ extern char *menu_debug_registers_change_ptr_historial[];
 extern int map_adventure_offset_x;
 extern int map_adventure_offset_y;
 
-//"[VARIABLE][VOP][CONDITION][VALUE] [OPERATOR] [VARIABLE][VOP][CONDITION][VALUE] [OPERATOR] .... where: \n" 
+//"[VARIABLE][VOP][CONDITION][VALUE] [OPERATOR] [VARIABLE][VOP][CONDITION][VALUE] [OPERATOR] .... where: \n"
 
 #define HELP_MESSAGE_CONDITION_BREAKPOINT \
 "A condition breakpoint evaluates an expression and the breakpoint will be fired if the expression is not 0.\n" \

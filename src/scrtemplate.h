@@ -1,5 +1,5 @@
 /*
-    ZEsarUX  ZX Second-Emulator And Released for UniX 
+    ZEsarUX  ZX Second-Emulator And Released for UniX
     Copyright (C) 2013 Cesar Hernandez Bano
 
     This file is part of ZEsarUX.
@@ -24,7 +24,7 @@
 This is a template for a video driver. It can be used as an example for a graphical video driver,
 like xwindows or fbdev. Some other drivers, like curses or cacalib works in a different way
 
-Replace: 
+Replace:
 VIDEONAME_CAP with the video driver name in capital letters, like "XWINDOWS"
 videoname with the video driver name in lowercase letters, like "xwindows"
 

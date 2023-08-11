@@ -1,5 +1,5 @@
 /*
-    ZEsarUX  ZX Second-Emulator And Released for UniX 
+    ZEsarUX  ZX Second-Emulator And Released for UniX
     Copyright (C) 2013 Cesar Hernandez Bano
 
     This file is part of ZEsarUX.
@@ -76,11 +76,11 @@ struct s_z88_memory_slot {
 	z80_byte statusRegister;
 
 
-	//si slot vacio, size=0. 
+	//si slot vacio, size=0.
 	// y tambien tipo=0 (RAM). Sino hay funciones, por ejemplo flush eprom, que aunque size sea 0, si tipo es eprom, intenta hacer flush
 
 
-	//offset dentro de la memoria de 4 MB donde comienza el slot: 
+	//offset dentro de la memoria de 4 MB donde comienza el slot:
         //        0,
         //        0x40*16384,
         //        0x80*16384,
@@ -128,25 +128,25 @@ archivo borrado, empieza con byte 0 en el nombre, en vez de '/'
 en una flash se puede haber borrado desde flashstore
 en eprom, si se guarda un archivo con mismo nombre que otro que ya habia, el anterior se marca como borrado
 en eprom esto es posible porque el byte '/' se convierte a 00 (en una eprom se puede pasar siempre de bit 1 a 0, cosa como en este caso,
-pero no al reves, de bit 0 a 1) entonces una eprom no puede pasar de 00 a '/', esto solo lo hace el menu del emulador, 
+pero no al reves, de bit 0 a 1) entonces una eprom no puede pasar de 00 a '/', esto solo lo hace el menu del emulador,
 en la opcion undelete, porque se "salta" las normas de escritura de eprom
 
 
 En tarjetas flash, el flashstore las inicializa con un archivo nulo:
 
-01   00    00 00 00 00   
+01   00    00 00 00 00
 
 Borrado, longitud nombre 1, nombre byte 0 (borrado), con 0 longitud. Porque? Respuesta:
 
 Oh yeah, that has a story!
 We discovered very early on the development of the Intel flash libraries
 that the Flash Chip would go into command mode without us understanding why.
- 
+
 We believe it has to do with what data you put in the bottom bank
 (memory) on that chip.
- 
+
 So, we solved it by putting some null data... when formatting a file area.
- 
+
 This is only relevant for real intel flash cards. The null-file is not
 displayed by either the Filer nor FlashStore. It's an end-user secret.
 
@@ -260,7 +260,7 @@ extern int z88_slot3_activity_indicator;
 extern void z88_reset_slot3_activity_indicator(void);
 
 extern int z88_create_blank_eprom_flash_file(char *nombre,int size);
- 
+
 extern void z88_change_internal_ram(int size);
 
 extern void z88_increment_pointer(z88_dir *dir);
@@ -351,7 +351,7 @@ extern void z88_set_system_clock_to_z88(void);
 
 #define BM_COMLCDON     0x01
 //Bit 0, LCDON       Set to turn LCD ON, clear to turn LCD OFF
-      
+
 
 
 #define BM_INTKWAIT 0x80

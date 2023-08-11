@@ -698,7 +698,7 @@ extern void screen_switch_rainbow_buffer(void);
 #define PCW_COLOUR_START_MODE2 (PCW_COLOUR_START_MODE1+4)
 
 //16 colores normales spectrum, 16 grises de modo scanline, 256 de gigascreen, 4 de z88, 16 de spectrum 17/48/+ real, 256 de ulaplus, 64 de spectra, 32 de CPC, 4096 de Prism, 128 de SAM, 256 de RGB8, 32768 de TSCONF, 16 de solarized
-//actualizar aqui y tambien estructura de total_palette_colours_array y #define TOTAL_PALETAS_COLORES 
+//actualizar aqui y tambien estructura de total_palette_colours_array y #define TOTAL_PALETAS_COLORES
 #define EMULATOR_TOTAL_PALETTE_COLOURS (SPECCY_TOTAL_PALETTE_COLOURS+SPECCY_GREY_SCANLINE_TOTAL_PALETTE_COLOURS+GIGASCREEN_TOTAL_PALETTE_COLOURS+Z88_TOTAL_PALETTE_COLOURS+ULAPLUS_TOTAL_PALETTE_COLOURS+SPECTRA_TOTAL_PALETTE_COLOURS+CPC_TOTAL_PALETTE_COLOURS+PRISM_TOTAL_PALETTE_COLOURS+SAM_TOTAL_PALETTE_COLOURS+RGB9_TOTAL_PALETTE_COLOURS+TSCONF_TOTAL_PALETTE_COLOURS+HEATMAP_TOTAL_PALETTE_COLOURS+SOLARIZED_TOTAL_PALETTE_COLOURS+BMP_TOTAL_PALETTE_COLOURS+BMP_SECOND_TOTAL_PALETTE_COLOURS+VDP_9918_TOTAL_PALETTE_COLOURS+QL_TOTAL_PALETTE_COLOURS+TURBOVISION_TOTAL_PALETTE_COLOURS+SMS_TOTAL_PALETTE_COLOURS+BEOS_TOTAL_PALETTE_COLOURS+RETROMAC_TOTAL_PALETTE_COLOURS+AMIGAOS_TOTAL_PALETTE_COLOURS+ATARITOS_TOTAL_PALETTE_COLOURS+OSDOS_TOTAL_PALETTE_COLOURS+ZESARUX_PLUS_TOTAL_PALETTE_COLOURS+RISCOS_TOTAL_PALETTE_COLOURS+PCW_TOTAL_PALETTE_COLOURS)
 
 
@@ -901,7 +901,7 @@ agregando duplicidad de funciones sin verdadera necesidad...
 #define store_value_rainbow(p,x) *p++=x;
 
 //Funcion con debug
-//#define store_value_rainbow(p,x) store_value_rainbow_debug(&p,x);            
+//#define store_value_rainbow(p,x) store_value_rainbow_debug(&p,x);
 
 
 extern z80_bit spectrum_1648_use_real_palette;
@@ -976,7 +976,7 @@ extern void screen_putpixel_mix_layers(int x,int y);
 extern char *screen_menu_mix_methods_strings[];
 
 extern int screen_menu_mix_method;
-extern int screen_menu_mix_transparency; 
+extern int screen_menu_mix_transparency;
 extern z80_bit screen_menu_reduce_bright_machine;
 extern void scr_clear_layer_menu(void);
 extern z80_bit screen_machine_bw_no_multitask;
@@ -985,7 +985,7 @@ extern z80_int *buffer_layer_machine;
 extern z80_int *buffer_layer_menu;
 
 extern int ancho_layer_menu_machine;
-extern int alto_layer_menu_machine;	
+extern int alto_layer_menu_machine;
 
 extern void scr_reallocate_layers_menu(int ancho,int alto);
 extern void scr_init_layers_menu(void);
@@ -1003,7 +1003,7 @@ extern void screen_render_menu_overlay_if_active(void);
 #define SCREEN_LAYER_TRANSPARENT_MENU 65535
 
 extern void scr_driver_redraw_desktop_windows(void);
-extern void scr_set_pending_redraw_desktop_windows(void);		
+extern void scr_set_pending_redraw_desktop_windows(void);
 
 
 #endif

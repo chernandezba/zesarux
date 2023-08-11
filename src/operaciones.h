@@ -247,17 +247,17 @@ extern void poke_byte_spectrum_48k(z80_int dir,z80_byte valor);
 
 extern z80_byte chardetect_automatic_poke_byte(z80_int dir,z80_byte valor);
 
-extern z80_byte lee_puerto_spectrum_no_time(z80_byte puerto_h,z80_byte puerto_l);                    
-extern z80_byte lee_puerto_z88_no_time(z80_byte puerto_h,z80_byte puerto_l);                            
-extern z80_byte lee_puerto_ace_no_time(z80_byte puerto_h,z80_byte puerto_l);                 
-extern z80_byte lee_puerto_cpc_no_time(z80_byte puerto_h,z80_byte puerto_l);           
-extern z80_byte lee_puerto_sam_no_time(z80_byte puerto_h,z80_byte puerto_l);               
-extern z80_byte lee_puerto_msx1_no_time(z80_byte puerto_h,z80_byte puerto_l);                 
-extern z80_byte lee_puerto_coleco_no_time(z80_byte puerto_h,z80_byte puerto_l);                
-extern z80_byte lee_puerto_sg1000_no_time(z80_byte puerto_h,z80_byte puerto_l);     
-extern z80_byte lee_puerto_sms_no_time(z80_byte puerto_h,z80_byte puerto_l);           
+extern z80_byte lee_puerto_spectrum_no_time(z80_byte puerto_h,z80_byte puerto_l);
+extern z80_byte lee_puerto_z88_no_time(z80_byte puerto_h,z80_byte puerto_l);
+extern z80_byte lee_puerto_ace_no_time(z80_byte puerto_h,z80_byte puerto_l);
+extern z80_byte lee_puerto_cpc_no_time(z80_byte puerto_h,z80_byte puerto_l);
+extern z80_byte lee_puerto_sam_no_time(z80_byte puerto_h,z80_byte puerto_l);
+extern z80_byte lee_puerto_msx1_no_time(z80_byte puerto_h,z80_byte puerto_l);
+extern z80_byte lee_puerto_coleco_no_time(z80_byte puerto_h,z80_byte puerto_l);
+extern z80_byte lee_puerto_sg1000_no_time(z80_byte puerto_h,z80_byte puerto_l);
+extern z80_byte lee_puerto_sms_no_time(z80_byte puerto_h,z80_byte puerto_l);
 extern z80_byte lee_puerto_svi_no_time(z80_byte puerto_h,z80_byte puerto_l);
-                        
+
 
 extern void poke_byte_spectrum_128k(z80_int dir,z80_byte valor);
 extern void poke_byte_spectrum_128kp2a(z80_int dir,z80_byte valor);
@@ -425,7 +425,7 @@ extern char *push_value_types_strings[];
 
 
 
-extern void (*push_valor)(z80_int valor,z80_byte tipo); 
+extern void (*push_valor)(z80_int valor,z80_byte tipo);
 
 extern void push_valor_default(z80_int valor,z80_byte tipo) ;
 

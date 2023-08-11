@@ -30,7 +30,7 @@
 
 #define DAAD_PARSER_BREAKPOINT_PC_SPECTRUM 0x617c
 
-#define DAAD_PARSER_BREAKPOINT_PC_CPC 0x09b4 
+#define DAAD_PARSER_BREAKPOINT_PC_CPC 0x09b4
 //0x14df
 
 #define DAAD_PARSER_CONDACT_BREAKPOINT 220
@@ -153,7 +153,7 @@ extern z80_int util_daad_get_graphics_location(z80_byte location);
 extern z80_byte daad_peek(z80_int dir);
 extern void daad_poke(z80_int dir,z80_byte value);
 extern z80_int util_daad_get_pc_parser(void);
-extern z80_int util_paws_get_pc_parser(void); 
+extern z80_int util_paws_get_pc_parser(void);
 extern void util_daad_get_version_daad(int *official_version,int *version_pointers);
 
 extern void util_unpaws_daad_get_version_string(char *texto);

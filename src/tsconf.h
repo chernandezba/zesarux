@@ -139,7 +139,7 @@ struct s_tsconf_debug_sprite {
 
 
 	  		z80_byte xf;
-			z80_byte yf;             
+			z80_byte yf;
 
             z80_byte act;
 

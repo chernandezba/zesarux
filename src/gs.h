@@ -1,5 +1,5 @@
 /*
-    ZEsarUX  ZX Second-Emulator And Released for UniX 
+    ZEsarUX  ZX Second-Emulator And Released for UniX
     Copyright (C) 2013 Cesar Hernandez Bano
 
     This file is part of ZEsarUX.
@@ -72,7 +72,7 @@ struct gs_machine_state {
     void (*poke_byte)(z80_int dir,z80_byte valor);
     void (*poke_byte_no_time)(z80_int dir,z80_byte valor);
     z80_byte (*peek_byte)(z80_int dir);
-    z80_byte (*peek_byte_no_time)(z80_int dir);    
+    z80_byte (*peek_byte_no_time)(z80_int dir);
     z80_byte (*lee_puerto)(z80_byte puerto_h,z80_byte puerto_l);
     void (*out_port)(z80_int puerto,z80_byte value);
     z80_byte (*fetch_opcode)(void);
