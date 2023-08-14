@@ -85,7 +85,7 @@ asi en smartload y similares no aparecerian -> pero en caso de UART si que deben
 --en sdl1, con windows en maquina virtual, parece que pone una resolucion menor que la ventana de ZEsarUX, y el footer y la pantalla emulada quedan mezcladas
 
 
--cambio de maquina con full screen (16k a 48k) peta
+-cambio de maquina con full screen (16k a 48k) peta: quiza son en Mac?
 
 -boton derecho sobre una ventana, que conmute a esa ventana (pero solo cuando el uso de boton derecho no sea ESC)
 aunque cuando conmuta con boton izquierdo, espera a liberar el boton y por tanto no se lanza la accion del boton izquierdo
@@ -125,7 +125,7 @@ esto a nivel de estadística, permito saber en estadisticas web (enviando un par
 * https://www.w3.org/TR/low-vision-needs/
 * eventos en menu con sonidos. metiendo sonido raw directamente en buffer de sonido? o quizá sonidos que sean frecuencias fijas (notas)
 aprovechando cosas como el frequency generator
--eventos: error, mover cursor, cerrar ventana (ventana no de menu)
+ok-eventos: error, mover cursor, cerrar ventana (ventana no de menu)
 
 -dall-e. text aventure location image
 *esperar a waitpid?
@@ -259,7 +259,7 @@ ejemplo badlands.dsk y rutina en la 2114h que esta en los traps
 
 -conviene ocultar Wall y Wextra en version estable? puede salir algun warning util solo en version estable? no deberia, son warnings muy especificos
 
--Botón derecho botones acciones: editar botón superior. Y en dispositivos? Quizá setting...
+-Botón derecho botones acciones: editar botón superior. Y en dispositivos? Quizá settings de ese dispositivo?
 
 -Quiza registro DE al volver de rutina de trap load, deberia ser DE -=bytes_leidos
 
