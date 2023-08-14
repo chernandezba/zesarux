@@ -9526,7 +9526,9 @@ int screen_if_refresh(void)
 		}
 
 		else {
-			if ((top_speed_real_frames%50)!=0) return 0;
+            //Hacemos 2 FPS en caso de top speed
+            //Con 1 FPS a veces ni se ve redibujar
+			if ((top_speed_real_frames%25)!=0) return 0;
 		}
 		return 1;
 	}

@@ -11226,7 +11226,7 @@ void menu_cpu_settings(MENU_ITEM_PARAMETERS)
 			menu_add_item_menu_shortcut(array_menu_cpu_settings,'o');
 			menu_add_item_menu_tooltip(array_menu_cpu_settings,"Runs at maximum speed, when menu closed. Not available on Z88");
 			menu_add_item_menu_ayuda(array_menu_cpu_settings,"Runs at maximum speed, using 100% of CPU of host machine, when menu closed. "
-						"The display is refreshed 1 time per second. This mode is also entered when loading a real tape and "
+						"The display is refreshed 2 times per second. This mode is also entered when loading a real tape and "
 						"accelerate loaders setting is enabled. Not available on Z88");
 
 		}
