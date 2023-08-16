@@ -71,11 +71,11 @@ Improved ZRCP:
 
 - Now:
 * when a ZRCP connection is broken, cpu-step-mode is not modified.
-* when a ZRCP connection is closed by "quitt", "exit" or "logout" command, cpu-step-mode is not modified
+* when a ZRCP connection is closed by "quit", "exit" or "logout" command, cpu-step-mode is not modified
 * cpu-step-mode can be disabled from the menu, pressing ESC
 
 Improved ZENG:
-- Allow to connect more than two hosts
+- Allow to connect more than two hosts (up to 16)
 - Hostnames/IPs accept changing port using ":port"
 - Allow to disable sending input events (keyboard, joystick)
 - Sync flash state between instances
