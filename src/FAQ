@@ -774,6 +774,35 @@ Q: I'm using cacalib or curses driver and the position of the kempston mouse is 
 A: Mouse position on text mode drivers (cacalib and curses) is only read when you push a button, and not when you move the mouse.
 
 
+Q: How do I use the Artificial Intelligence feature to get realistic images for Text Adventure Descriptions?
+A: ZEsarUX guesses the Text Adventure description text, and then uses external scripts to get images from an Artificial Intelligence.
+You can use any AI API for that task, but I have prepared scripts for OpenAI (which uses the Dall-E feature). They are located on text_image_filters/ folder, and there are scripts for Windows and Linux.
+You must first register to OpenAI website (not Dall-E website) and set your payment details. Yes, you must pay for that API, as I am using 512x512 images, the price is $0.018 / image. Get an API key and then:
+- On Linux, you must export the key before running ZEsarUX, so:
+
+export OPENAI_API_KEY="sk-EYH3Nblahblahblahblahblahandmoreblah"
+./zesarux
+
+- On Windows, you must export the key before running ZEsarUX, so:
+
+set OPENAI_API_KEY="sk-EYH3Nblahblahblahblahblahandmoreblah"
+zesarux.exe
+
+Then, go to menu Display-> Text Adventure Tools-> Location Description Processing.
+On Converter item, choose the script: dalle_text_to_image.bat on Windows, or dalle_text_to_image.sh on Linux. Both call an external Python script, dalle_aux_text_to_image.py, that need some dependencies. Look at that dalle_aux_text_to_image.py file and install Python and its module dependencies.
+The Algorith item, tells ZEsarUX how to guess the Text Description for every room:
+- Room_Number: Detect when you change the room (only works for Daad, Paws, Quill or GAC Adventure, which are the most)
+- CLS: Detect when the display has been cleared. It works for all kind of Text Adventure Games, the only requirement is that the display is cleared when you move to another room, and that doesn't happen on all adventures.
+I recommend you to choose both methods.
+The Window image item opens you the window that will show the image for that room.
+There are more settings in that menu, I recommend you to play a little.
+If everything is correct, you will see beautiful images on the Window image.
+
+One more thing... for Daad text adventures and some other adventures which don't use the standard ROM routines to print text, you will need to open the Print Char traps submenu and set the best method to detect characters (I recommend you "Enable 2nd trap detection" and "Auto&All detect routine").
+
+You may take a look at this demo video: https://youtu.be/LrCFvoAQdrk
+
+
 Q: Where is now located the extras folder in the source file?
 A: It has been moved to another repository. See:
 https://github.com/chernandezba/zesarux-extras
