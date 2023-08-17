@@ -18372,7 +18372,7 @@ void menu_text_adventure_tools(MENU_ITEM_PARAMETERS)
 
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_textimage_max_nochar_value,NULL,
-            "    Minium no-char","    Mínimo no-char","    Miním no-char");
+            "    Minimum no-char","    Mínimo no-char","    Miním no-char");
             menu_add_item_menu_sufijo_format(array_menu_common," [%d ms]",max_textadv_location_desc_no_char_counter);
             menu_add_item_menu_tooltip(array_menu_common,"After that time (in miliseconds) without receiving any character, "
                 "we can guess it's the end of the location description. Increase it if the descriptions are not full read");
@@ -18381,7 +18381,7 @@ void menu_text_adventure_tools(MENU_ITEM_PARAMETERS)
 
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_textimage_max_after_clear_value,NULL,
-            "    Minium after-room","    Mínimo después-hab","    Miním després-hab");
+            "    Minimum after-room","    Mínimo después-hab","    Miním després-hab");
             menu_add_item_menu_sufijo_format(array_menu_common," [%d ms]",max_textadv_location_desc_counter);
             menu_add_item_menu_tooltip(array_menu_common,"After room change and after that time (in miliseconds), "
                 "we can guess it's the end of the location description. Increase it if the descriptions are blank or not full read");
