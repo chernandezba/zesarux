@@ -10,7 +10,7 @@ Added PCW Joysticks support: Kempston, Cascade, DKTronics, OPQASpace
 Added screen previews of directories and compressed files on File Selector
 Added flash support on screen previews on File Selector
 Added rom file selection for any machine you select, rom file is saved on configuration
-Added another toy ZXLife to a new menu Procrastinate
+Added another toy "ZXLife" to a new menu Procrastinate
 Added Ascii Table window
 Added Creator Info to ZSF snapshots
 Added compilation system release to Compile info window
@@ -53,7 +53,7 @@ Improved ZX Vision
 - Allow to use your own charset file on ZX Vision
 - Allow to get charset from a game and use as your own charset file on ZX Vision
 - Allow to render only changed pixels (so it speeds up render). Internal flag: dirty_user_must_draw_contents
-- Added more utf-8 characters (ï)
+- Added support for utf-8 character "ï"
 - Process switcher can be set to immutable, so massive actions on menu Windows, like minimize all, cascade, etc, don't affect it
 - Allow to press ESC when selecting a line on a history items
 - Now the window frame changes colour when you move the mouse over the resize zone (bottom right)
@@ -97,7 +97,7 @@ Fixed several memory leaks (thanks to tool valgrind) found on:
 - Showing First Aid Windows
 
 Fixed Initialization of Visual memory tables
-Fixed ZX Vision relocation windows
+Fixed ZX Vision windows relocation
 Fixed rendering display when CPU is on Top Speed mode
 Fixed error when no permissions writing to mmc, ide, trd, dsk, ddh (hilow): disable persistent writes when it happens
 Fixed permissions when installing ZEsarUX on Linux: zxuno.flash and tbblue.mmc are now writable by anyone

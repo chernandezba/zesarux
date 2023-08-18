@@ -1,4 +1,118 @@
-Version X - Edición décimo aniversario. 16 Mayo 2023
+Version X - Edición décimo aniversario. 24 septiembre 2023
+
+Esta es una edición especial para celebrar los 10 años de ZEsarUX. La versión se llama "X" (en realidad es 10.10)
+
+* Cosas nuevas añadidas:
+
+Se agregaron nuevas versiones compiladas: Ubuntu y Fedora
+Se agregaron los modos de color en PCW
+Se agregó soporte de joysticks PCW: Kempston, Cascade, DKTronics, OPQASpace
+Se agregaron vistas previas de pantalla de directorios y archivos comprimidos en el Selector de archivos
+Se agregó soporte de flash en las vistas previas de pantalla en el Selector de archivos
+Se agregó la selección de archivo rom para cualquier máquina que seleccione, el archivo rom se guarda en la configuración
+Se agregó otro juguete "ZXLife" a un nuevo menú Procrastinar
+Se agregó ventana de tabla ASCII
+Se agregó información del creador a los snapshots de ZSF
+Se agregó la versión del sistema de compilación a la ventana de información de compilación
+Se agregó compatibilidad con Docker
+Se agregó otro huevo de Pascua ;)
+
+* Mejoras:
+
+Mejoras en ZENG:
+- Permitir conectar más de dos hosts (hasta 16)
+- Los nombres de host / IP aceptan cambiar el puerto usando ":puerto"
+- Permitir deshabilitar el envío de eventos de entrada (teclado, joystick)
+- Sincronizar estado de flash entre instancias
+- Se agregó soporte ZENG para Jupiter Ace
+
+Mejoras en Reproductor AY:
+- Se agregó playlist
+- Se agregó modo aleatorio
+- Se agregó detección de silencio
+- Se agregó mostrar la canción AY actual en la consola
+
+Mejoras en Aventuras Conversacionales:
+- Uso de inteligencia artificial para obtener imágenes realistas para el texto de descripción de la ubicación
+- Se agregó parámetro de configuración del filtro de caracteres
+- Se agregó parámetros de configuración para Text Adventure Map: seguir, mostrar no visitados, mostrar no conectados, mostrar objetos, mostrar imágenes, nivel de zoom
+- Se agregó exportación de cadenas de dibujo a un archivo externo (txt, asm, c o pas)
+- Se conserva el nivel de zoom en Text Adventure Map al cargar juegos
+- Se agregó soporte GAC para Text Adventure Map
+- Se agregó compatibilidad con GAC para Debug Adventure (vista de CPU 8) compatible con:
+   - Tabla de conexiones
+   - Diccionario
+   - Objetos
+   - Verbos
+   - Adverbios
+   - Ubicaciones
+   - Mensajes
+
+Mejoras en ZX Vision
+- Acción agregada para poner ventanas en cascada.
+- Permitir usar su propio archivo de juego de caracteres en ZX Vision
+- Permitir obtener el juego de caracteres de un juego y utilizarlo como tu propio juego de caracteres en ZX Vision
+- Permitir renderizar solo los píxeles modificados (por lo que acelera el renderizado). Indicador interno: dirty_user_must_draw_contents
+- Se agregó soporte utf-8 para el caracter "ï"
+- El conmutador de procesos se puede configurar como inmutable, por lo que las acciones masivas en el menú de Windows, como minimizar todo, cascada, etc., no le afectan
+- Permitir presionar ESC al seleccionar una línea en un elemento del historial
+- Ahora el marco de la ventana cambia de color cuando mueve el ratón sobre la zona de cambio de tamaño (abajo a la derecha)
+- Mejorar el manejo de algunas acciones F/Iconos/botones redefinidos: ventana abierta, enlace a, selección de máquina
+
+Mejoras en ZX Desktop
+- Permitir desactivar el borde y el pie de página al cambiar a pantalla completa
+- Al cambiar a pantalla completa y deshabilitar ZX Desktop, las ventanas se restauran después de deshabilitar la pantalla completa
+- Establecer el icono de la máquina ahora es dinámico y muestra el icono de la máquina indicado por el parámetro + una flecha
+- Se agregaron iconos de ZX Desktop para TSConf, Baseconf
+
+Mejoras en ZRCP:
+- Permitir múltiples clientes simultáneos
+- Cambios importantes en ZRCP:
+- Antes:
+* cuando se interrumpe una conexión ZRCP, el modo cpu-step se desactivará.
+* cuando una conexión ZRCP se cierra con el comando "quit", "exit" o "logout", el modo cpu-step se desactivará
+* cpu-step-mode no se puede deshabilitar desde el menú
+
+- Ahora:
+* cuando se interrumpe una conexión ZRCP, cpu-step-mode no se modifica.
+* cuando una conexión ZRCP se cierra con el comando "quit", "exit" o "logout", cpu-step-mode no se modifica
+* cpu-step-mode se puede deshabilitar desde el menú, presionando ESC
+
+Emulación ZX Spectrum Next mejorada: lista de ID de máquinas actualizada
+Gestión de procesos mejorada: permite copiar cualquier contenido de ventana en el portapapeles interno
+Accesibilidad mejorada: Se agregaron sonidos para eventos de GUI
+
+* Correcciones:
+
+Se corrigieron varias fugas de memoria "memory leaks" (gracias a la herramienta valgrind) encontradas en:
+- Dibujo de Mapa de Aventura de Texto Aventure
+- Cargando instantáneas .Z80
+- Usando el navegador en línea Speccy
+- Ejecutando Hilow Audio Convert
+- Habilitar de ZRCP
+- Descarga de extras de ZEsarUX
+- Descargando la imagen MMC de ZX Spectrum Next
+- Sincronización de imagen de archivo desde File Utilities
+- Copiar una carpeta desde File Utilities
+- Mostrando Ventanas de Primeros Auxilios
+
+Coregida inicialización de tablas de memoria visual
+Se corrigió la reubicación de las ventanas de ZX Vision
+Se corrigió la visualización de renderizado cuando la CPU está en el modo de velocidad máxima
+Se corrigió el error cuando no había permisos para escribir en mmc, ide, trd, dsk, ddh (hilow): se deshabilitan las escrituras persistentes cuando sucede
+Corregido permisos al instalar ZEsarUX en Linux: zxuno.flash y tbblue.mmc ahora pueden ser escritos por cualquiera
+Corregido al mostrar los Gráficos de aventura cuando hay caracteres no válidos
+Se corrigió el esxdos handler cuando se usaban banderas fopen: FA_READ + FA_WRITE + FA_OPEN_CREAT
+Se corrigió el error ZRCP al cerrar la conexión (el descriptor de socket se mantenia abierto)
+Se corrigió la lectura de la tecla ESC en el driver curses
+
+* Cambios varios:
+
+Cambió la asignación de la tecla Copiar CPC a la tecla Finalizar en su teclado
+
+* Como siempre, hay otras mejoras y correcciones de errores menores.
+
+----------------------------------------
 
 
 Version 10.3 - La Abadia del Crimen edition. 10 Mayo 2023
