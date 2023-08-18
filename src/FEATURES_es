@@ -173,7 +173,7 @@
 
 * Emulación Kempston mouse
 
-* Soporta juego en Red mediante su propio protocolo (ZEsarUX Network Gaming protocol - ZENG), que te permite jugar a cualquier juego emulado, mediante dos instancias de ZEsarUX, localizadas cada una en cualquier parte del mundo o en una red local. Los juegos no necesitan ser modificados, puedes jugar a cualquier juego existente
+* Soporta juego en Red mediante su propio protocolo (ZEsarUX Network Gaming protocol - ZENG), que te permite jugar a cualquier juego emulado, mediante dos o mas (hasta 16) instancias de ZEsarUX, localizadas cada una en cualquier parte del mundo o en una red local. Los juegos no necesitan ser modificados, puedes jugar a cualquier juego existente
 
 * Emulación Uart en modo puente: permite usar un dispositivo real uart-wifi conectado a tu ordenador, sólo para GNU/Linux (Windows, Mac pueden simularlo)
 
