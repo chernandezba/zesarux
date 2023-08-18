@@ -108,7 +108,7 @@ Fixed reading ESC key on curses driver
 
 * Misc Changes:
 
-Changed CPC Copy key assignation to End key on your keyboard
+Changed CPC Copy key assignation: now is the End key on your keyboard
 
 * As always, there are some other minor bugfixes and improvements
 

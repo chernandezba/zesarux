@@ -49,7 +49,7 @@ Mejoras en Aventuras Conversacionales:
    - Mensajes
 
 Mejoras en ZX Vision
-- Acción agregada para poner ventanas en cascada.
+- Se añade acción para poner ventanas en cascada.
 - Permitir usar su propio archivo de juego de caracteres en ZX Vision
 - Permitir obtener el juego de caracteres de un juego y utilizarlo como tu propio juego de caracteres en ZX Vision
 - Permitir renderizar solo los píxeles modificados (por lo que acelera el renderizado). Indicador interno: dirty_user_must_draw_contents
@@ -108,7 +108,7 @@ Se corrigió la lectura de la tecla ESC en el driver curses
 
 * Cambios varios:
 
-Cambió la asignación de la tecla Copiar CPC a la tecla Finalizar en su teclado
+Cambió la asignación de la tecla Copy de CPC: ahora es la tecla Fin en su teclado
 
 * Como siempre, hay otras mejoras y correcciones de errores menores.
 
