@@ -169,9 +169,9 @@ Agregado soporte ZSF para Timex TS2068, MK14, Chrome, Prism, Chloe, Sam Coupe
 Agregada opción de ruta donde descargar archivos desde el navegador en línea speccy y zx81
 Agregado navegación de imagen de disco desde menús de almacenamiento MMC/IDE
 Agregado soporte de carga PZX como cinta estándar
-Agregado conversor de TAP a PZX 
+Agregado conversor de TAP a PZX
 Agregado conversor de TAP a TZX turbo (TZX Turbo 4000 baudios, para usar con ROMS de Rodolfo Guerra)
-Agregado conversor de TAP a SCR 
+Agregado conversor de TAP a SCR
 Agregadas algunas acciones que se pueden disparar desde la línea de comandos y no inician ZEsarUX:
 --convert-tap-tzx, --convert-tap-tzx-turbo-rg, --convert-tap-pzx , --convert-tap-scr, --convert-tzx-tap, --convert-pzx-tap
 
@@ -202,7 +202,7 @@ Depuración mejorada:
 -Advertir en el pie de página cuando está en modo step
 -Ampliar el ancho de la lista de breakpoints
 
-Mejorado SmartLoad & Drag-Drop: 
+Mejorado SmartLoad & Drag-Drop:
 -Permitir cargar un archivo .rom como un archivo rom personalizado para la máquina actual
 -Permitir arrastrar y soltar cuando se abre el menú
 
@@ -291,8 +291,8 @@ Agregado otro huevo de Pascua;)
 
 
 Depuración de aventura de texto mejorada:
--Agreado Mapa de aventura de texto 
--Añadida Lista de conexiones de ubicaciones 
+-Agreado Mapa de aventura de texto
+-Añadida Lista de conexiones de ubicaciones
 -Agregado una entrada de menú directo y f-función vista 8 (depuración de aventura)
 -Detección mejorada de algunas aventuras de paws (como superlopez y abracadabra)
 -Detección mejorada de algunas aventuras daad (como jabato)
@@ -329,7 +329,7 @@ Mejorado ZX Vision:
 -Agregada traducción de elementos del menú al español y al catalán
 -Agregado un asistente de atajos para ver las hotkeys pulsadas
 -Vista previa de botón agregada al personalizar los botones o teclas F de ZX Desktop
--Mejor detección de archivos de pantalla de Spectrum: cualquier archivo de tamaño 6912 bytes 
+-Mejor detección de archivos de pantalla de Spectrum: cualquier archivo de tamaño 6912 bytes
 -Mostrar cuando un menú tiene submenús usando el carácter ">"
 -Preservar el estado minimizado y maximizado en las ventanas
 -Recordar el tamaño antes de minimizar y maximizar la ventana
@@ -425,7 +425,7 @@ Agregado comandos ZRCP:
 -snapshot-inram-get-index: Retorna indice a una posición de snapshot en RAM
 -snapshot-inram-load: Carga snapshot de RAM de una posición
 
-Agregado conversores: 
+Agregado conversores:
 -wav/rwa/smp a tap
 -wav/rwa/smp a p
 -wav/rwa/smp a o
@@ -476,7 +476,7 @@ Mejorado emulación Next:
 -ZSF snapshots incluyen toda la info del puerto 123b (previos snapshots TBBlue .zsf son incompatibles con esta versión, lo siento!)
 -Agregado mensaje splash al cambiar modos Layer 2
 
-Mejorado características de Aventuras Conversacionales: 
+Mejorado características de Aventuras Conversacionales:
 -Mejorado detección de aventuras Daad en debugging
 -Traducción en tiempo real de aventuras conversacionales en una ventana de ZEsarUX, mediante scripts
 -Puedes renderizar cualquier imagen de una aventura conversacional de Spectrum (parsers soportados: Quill, Paws, Daad, Gac)
