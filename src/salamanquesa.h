@@ -23,5 +23,6 @@
 #define SALAMANQUESA_H
 
 extern unsigned char bitmap_salamanquesa[];
+extern unsigned char bitmap_salamanquesa_otra_mas[];
 
 #endif

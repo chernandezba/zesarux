@@ -356,4 +356,13 @@ Seria: error message: igual que hay ahora. Y luego clases: 0001 out of memory. 0
 
 -En imagen IA de descripción, botón para pedir otra imagen a la IA
 
+-Estandarizar el nombre del User agent en las peticiones web
+Ahora:
+"ZEsarUX X Darwin"
+
+Uno de ejemplo de Safari:
+"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.6.1 Safari/605.1.15"
+
+Esto permite estadisticas mejor con goaccess. Aunque no parece reconocer el browser como tal "ZEsarUX/10.0"
+
 ---Fin Mejoras---

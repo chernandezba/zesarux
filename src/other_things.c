@@ -50,7 +50,9 @@ for the double click to be detected)
 Just press enter with no text to find. You'll see a cursor in the window,
 select the second line and press Enter...
 
-6. Christmas mode. From December 20 until January 8, there are some changes in the logo and in the welcome message...
+6. Having ZX Desktop Enabled, similar to number 5. Go to the about menu, hold and click on the image during 1 second
+
+7. Christmas mode. From December 20 until January 8, there are some changes in the logo and in the welcome message...
 
 */
 

@@ -21628,6 +21628,22 @@ zxvision_window *menu_new_about_window_overlay_window;
 
 int new_about_window_ancho_mostrar=0;
 
+//Dice si esta activa la 0 o la 1
+int cual_salamanquesa=0;
+
+unsigned char *retorna_bitmap_salamanquesa(void)
+{
+    if (!cual_salamanquesa) return bitmap_salamanquesa;
+    else return bitmap_salamanquesa_otra_mas;
+}
+
+int retorna_color_transparente_salamanquesa(void)
+{
+    if (!cual_salamanquesa) return 255;
+    else return 0xfe;
+
+}
+
 void menu_new_about_window_overlay(void)
 {
 
@@ -21659,7 +21675,9 @@ void menu_new_about_window_overlay(void)
 
     //mostrarla solo si hay archivo cargado. podria ser que alguien borrase el bmp
 	//if (new_about_window_bmp_file_mem!=NULL) {
-        screen_render_bmpfile(bitmap_salamanquesa,BMP_INDEX_FIRST_COLOR,ventana,1,1,new_about_window_ancho_mostrar,255,ESTILO_GUI_PAPEL_NORMAL);
+        int color_transparente=retorna_color_transparente_salamanquesa();
+
+        screen_render_bmpfile(retorna_bitmap_salamanquesa(),BMP_INDEX_FIRST_COLOR,ventana,1,1,new_about_window_ancho_mostrar,color_transparente,ESTILO_GUI_PAPEL_NORMAL);
     //}
 
 
@@ -21831,7 +21849,7 @@ void menu_about_new(MENU_ITEM_PARAMETERS)
 */
 
     //La salamanquesa no se carga de disco sino que esta incrustada en el codigo. Es un BMP
-    util_bmp_load_palette(bitmap_salamanquesa,BMP_INDEX_FIRST_COLOR);
+    util_bmp_load_palette(retorna_bitmap_salamanquesa(),BMP_INDEX_FIRST_COLOR);
 
     //Metemos todo el contenido de la ventana con caracter transparente, para que no haya parpadeo
     //en caso de drivers xwindows por ejemplo, pues continuamente redibuja el texto (espacios) y encima el overlay
@@ -21894,12 +21912,20 @@ void menu_about_new(MENU_ITEM_PARAMETERS)
 
 	z80_byte tecla;
 
+    //llevar un temporizador de cuanto tiempo se esta pulsando en el logo
+    int tiempo_pulsando_inicial=0;
+
 	do {
 		tecla=zxvision_common_getkey_refresh();
 		zxvision_handle_cursors_pgupdn(ventana,tecla);
 		//printf ("tecla: %d\n",tecla);
-        if (mouse_is_clicking && mouse_is_double_clicking) {
-            //printf("double click\n");
+        if (mouse_is_clicking) {
+            //empezamos a contar
+            if (!tiempo_pulsando_inicial) {
+                //printf("Start pressing\n");
+                tiempo_pulsando_inicial=contador_segundo_infinito;
+            }
+
             if (si_menu_mouse_en_ventana() ) {
                 //printf("Mouse en ventana\n");
                 if (menu_mouse_x<x_texto) {
@@ -21909,15 +21935,34 @@ void menu_about_new(MENU_ITEM_PARAMETERS)
                     //y=0 es el titulo
                     if (menu_mouse_y>0 && menu_mouse_y<alto_imagen_salamanquesa_chars+1) {
                         //printf("Clicked en salamanquesa\n");
-                        menu_about_about_load_editionamegame();
-                        //simular tecla esc
-                        tecla=2;
+
+                        if (mouse_is_double_clicking) {
+                            menu_about_about_load_editionamegame();
+                            //simular tecla esc
+                            tecla=2;
+                        }
+
+                        else {
+                            if (contador_segundo_infinito-tiempo_pulsando_inicial>1000) {
+                                //printf("Switch logo\n");
+                                //click normal. cambiar a la otra salamanquesa
+                                cual_salamanquesa ^=1;
+                                tiempo_pulsando_inicial=0;
+                            }
+                        }
                     }
                 }
 
             }
 
         }
+
+        else {
+            //no contamos
+            tiempo_pulsando_inicial=0;
+            //printf("Not pressing\n");
+        }
+
 	} while (tecla!=2);
 
 
