@@ -1,20 +1,6 @@
 Para esta version:
 
 
-Pruebas ZENG
-1.139 mac
-1.91 debian 32
-1.147 debian 64
-1.99 freebsd
+-que juego o programa para esta edición? Mortadelo y Filemon 2?
 
---zeng-remote-hostname 192.168.1.91,192.168.1.147,192.168.1.99
---zeng-remote-port 10000
-
-Instancia sola simple
-./zesarux --noconfigfile --zoom 1 --remoteprotocol-port 10010 --enable-remoteprotocol
-
--que juego o programa para esta edición?
-
-
--ZENG colecovision no va bien. Raro. primero iba mal (enviaba cursores mezclados derecha-izquierda) y luego bien
 

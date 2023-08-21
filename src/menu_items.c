@@ -21629,7 +21629,8 @@ zxvision_window *menu_new_about_window_overlay_window;
 int new_about_window_ancho_mostrar=0;
 
 //Dice si esta activa la 0 o la 1
-int cual_salamanquesa=0;
+//Por defecto la nueva
+int cual_salamanquesa=1;
 
 unsigned char *retorna_bitmap_salamanquesa(void)
 {
