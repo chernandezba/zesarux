@@ -320,7 +320,10 @@ TODO: algunos valores de xor 255 no son realmente xor 255. Quizá son letras con
 
 
 
-
+-Para hacer mapas de juegos
+Teclas F que pulsemos e indiquemos si hemos ido al norte sur este o oeste
+Que se vaya generando un png juntando cada pantalla
+Ventana que muestre miniatura y donde estamos
 
 ***********
 
