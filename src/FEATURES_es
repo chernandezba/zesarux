@@ -221,7 +221,7 @@
 
 * Soporta ejecución en Docker, probado en contenedores Debian, Ubuntu y Fedora
 
-* Otras características: Visualmem menu, CPU Statistics, Juguete ZXeyes, Juguete ZXlife, Sensors
+* Otras características: Visualmem menu, CPU Statistics, Juguete ZXeyes, Juguete ZXlife, Tabla Ascii, Sensors
 
 * Incluye siete huevos de pascua. Puedes encontrarlos? :)
 

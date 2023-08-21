@@ -10911,6 +10911,18 @@ void parse_customfile_options(void)
 		else if (!strcmp(argv[puntero_parametro],"--programsettingsinfo")) {
                         siguiente_parametro_argumento();
                         mostrar_footer_second_message=argv[puntero_parametro];
+
+                        //Parche para poder soportar la letra eñe en ZEsarUX 10.10
+                        //Cambiar la # por el caracter 129 que es nuestro caracter interno
+                        int jj;
+                        int longitud=strlen(mostrar_footer_second_message);
+                        for (jj=0;jj<longitud;jj++) {
+                            if (mostrar_footer_second_message[jj]=='#') {
+                                if (si_complete_video_driver()) mostrar_footer_second_message[jj]=0x81;
+                                else mostrar_footer_second_message[jj]='n';
+                            }
+                        }
+
                 }
 
 

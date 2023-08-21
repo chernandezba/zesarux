@@ -365,4 +365,7 @@ Uno de ejemplo de Safari:
 
 Esto permite estadisticas mejor con goaccess. Aunque no parece reconocer el browser como tal "ZEsarUX/10.0"
 
+Soportar uft-8 en el footer, que sirva para texto footer normal pero tambien con opciones de --programsettingsinfo de archivos .config.
+Quitar el parche para soportar la eñe en dicha opcion
+
 ---Fin Mejoras---

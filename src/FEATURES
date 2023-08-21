@@ -221,7 +221,7 @@
 
 * Supports execution on Docker, tested on Debian, Ubuntu and Fedora containers
 
-* Other features: Visualmem menu, CPU Statistics, Toy ZXeyes, Toy ZXlife, Sensors
+* Other features: Visualmem menu, CPU Statistics, Toy ZXeyes, Toy ZXlife, Ascii Table, Sensors
 
 * Includes seven easter eggs. Can you find them? :)
 
