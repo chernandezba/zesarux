@@ -1296,6 +1296,11 @@ int main_spec_rwaatap(long *array_block_positions,int max_array_block_positions,
 
 			spec_debug_cabecera(spec_smp_write_index_tap_start+2,spec_bytes_leidos);
 
+            //temp
+            printf("1 bloque\n");
+            //sleep(20);
+
+
             //leer posicion dentro del archivo
             //spec_last_file_position=ftell(ptr_mycinta_smp);
 

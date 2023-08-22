@@ -2,3 +2,5 @@ Para esta version:
 
 
 panic despues de tape viewer de un .tap en real tape
+
+compilacion sin pthreads no debe entrar funciones pthread*...

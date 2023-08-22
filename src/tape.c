@@ -72,6 +72,15 @@
         #include <sys/syslimits.h>
 #endif
 
+
+#ifdef USE_PTHREADS
+
+#include <pthread.h>
+#include <sys/types.h>
+
+
+#endif
+
 char *realtape_name;
 
 char *tapefile;
@@ -2259,18 +2268,32 @@ void realtape_load_visuals(char *filename)
 
 }
 
-void realtape_insert_detect_blocks(char *name_to_use)
+
+
+struct realtape_insert_detect_blocks_struct {
+	char name_to_use[PATH_MAX];
+};
+
+struct realtape_insert_detect_blocks_struct realtape_insert_detect_blocks_parametros;
+
+void *realtape_insert_detect_blocks_thread_function(void *parametros)
 {
-        //precargar posiciones de cada bloque en cinta para luego mostrar en Visual Real Tape
 
+    printf("Inicio pthread\n");
+    //sleep(20);
 
-    realtape_visual_detected_tape_type=0; //de momento tipo desconocido
+        realtape_visual_detected_tape_type=0; //de momento tipo desconocido
     int codigo_retorno;
+
+    char *name_to_use=((struct realtape_insert_detect_blocks_struct *)parametros)->name_to_use;
+
     util_realtape_browser(name_to_use, visual_realtape_textbrowse,MAX_TEXTO_BROWSER,NULL,
         visual_realtape_array_positions, VISUAL_REALTAPE_MAX_POSITIONS,&codigo_retorno);
     //temp
     //codigo_retorno=0;
     //strcpy(visual_realtape_textbrowse,"ZX");
+
+    printf("Texto browser: %s\n",visual_realtape_textbrowse);
 
     printf("Despues util_realtape_browser\n");
 
@@ -2316,7 +2339,57 @@ void realtape_insert_detect_blocks(char *name_to_use)
         realtape_visual_detected_tape_type=1;
     }
 
+
+    printf("Fin pthread\n");
+
+    return NULL;
+
 }
+
+
+#ifdef USE_PTHREADS
+
+pthread_t realtape_insert_detect_blocks_thread;
+
+void realtape_insert_detect_blocks(char *name_to_use)
+{
+        //precargar posiciones de cada bloque en cinta para luego mostrar en Visual Real Tape
+
+		//Esta funcion se puede lanzar como un thread aparte porque Visual Real Tape, mientras no
+        //finalice el pthread, no mostrará bloques
+
+
+		strcpy(realtape_insert_detect_blocks_parametros.name_to_use,name_to_use);
+
+
+
+        if (pthread_create( &realtape_insert_detect_blocks_thread, NULL, &realtape_insert_detect_blocks_thread_function,
+                (void *)&realtape_insert_detect_blocks_parametros) ) {
+                debug_printf(VERBOSE_ERR,"Can not create menu_uncompress_zip_progress_thread thread");
+                return;
+        }
+
+        //y pthread en estado detached asi liberara su memoria asociada a thread al finalizar, sin tener que hacer un pthread_join
+        pthread_detach(realtape_insert_detect_blocks_thread);
+
+
+}
+
+#else
+
+//Rutina sin soporte de threads. Ejecutarla en modo sincrono
+void realtape_insert_detect_blocks(char *name_to_use)
+{
+
+
+		strcpy(realtape_insert_detect_blocks_parametros.name_to_use,name_to_use);
+
+        realtape_insert_detect_blocks_thread_function((void *)&realtape_insert_detect_blocks_parametros);
+
+
+}
+
+#endif
 
 void realtape_insert(void)
 {
