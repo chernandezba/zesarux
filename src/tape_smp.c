@@ -845,14 +845,20 @@ int spec_da_ascii(int codigo)
 	return (codigo<127 && codigo>31 ? codigo : '.');
 }
 
+
+#define spec_da_abs(X)    ((X>=0 ? X : -X))
+
+/*
 int spec_da_abs(int valor)
 {
-	if (valor>=0) return valor;
+    if (valor>=0) return valor;
 	else return -valor;
+
 }
+*/
 
 
-int tempp=0;
+//int tempp=0;
 
 int spec_lee_byte(void)
 //Funcion que lee byte del fichero
@@ -866,7 +872,7 @@ int spec_lee_byte(void)
 
 	else {
 		spec_byte_cambio=fgetc(ptr_mycinta_smp);
-		tempp++;
+		//tempp++;
 		//printf ("l: %d\n",tempp);
 		//unsigned char v;
 		//v=spec_byte_cambio;
@@ -883,6 +889,9 @@ int spec_lee_byte(void)
 	return spec_byte_cambio;
 }
 
+#define spec_da_signo(X) (X>=0 ? 1 : -1)
+
+/*
 char spec_da_signo(char valor)
 //Devuelve el signo de valor: -1,+1 o 0
 {
@@ -893,6 +902,7 @@ char spec_da_signo(char valor)
 	//TODO: aqui se llega alguna vez?
 	return 0;
 }
+*/
 
 int spec_lee_onda(unsigned char *longitud,unsigned char *amplitud)
 //Funcion que lee una onda completa de sonido
@@ -915,7 +925,7 @@ int spec_lee_onda(unsigned char *longitud,unsigned char *amplitud)
 		byte=spec_lee_byte();
 		if (spec_final_fichero) return -1;
 
-		if (spec_da_abs(byte)>*amplitud) *amplitud=spec_da_abs(byte);
+		if (spec_da_abs(byte)>(*amplitud)) *amplitud=spec_da_abs(byte);
 
 		//printf ("amplitud: %d\n",*amplitud);
 
@@ -1183,6 +1193,7 @@ int main_spec_rwaatap(long *array_block_positions,int max_array_block_positions,
 		} while (n<SPEC_ONDAS_GUIA);
 
 		debug_printf (VERBOSE_DEBUG,"Reading pilot tone...");
+
 		do {
 			if (spec_lee_onda(&longitud,&amplitud)==-1) goto fin;
 		} while (amplitud>=SPEC_NO_RUIDO && (longitud>=spec_tono_guia-margen_spec_tono_guia &&

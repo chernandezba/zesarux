@@ -2437,6 +2437,9 @@ void realtape_insert(void)
     int codigo_retorno;
     util_realtape_browser(name_to_use, visual_realtape_textbrowse,MAX_TEXTO_BROWSER,NULL,
         visual_realtape_array_positions, VISUAL_REALTAPE_MAX_POSITIONS,&codigo_retorno);
+    //temp
+    //codigo_retorno=0;
+    //strcpy(visual_realtape_textbrowse,"ZX");
 
     printf("Despues util_realtape_browser\n");
 
@@ -2483,7 +2486,7 @@ void realtape_insert(void)
     }
 
 
-
+    printf("Despues detectar tipo cinta\n");
 
 
 	//Activamos realvideo para que:

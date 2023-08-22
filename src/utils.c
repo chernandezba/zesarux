@@ -9511,7 +9511,6 @@ void convert_tap_to_rwa_write_bit(FILE *ptr_archivo,int bit)
 	//Bit a 1 son 4 bytes high , 4 low
     longitud=(bit==0 ? 4 : 8);
 
-	int i;
 
     //bytes arriba
     fwrite(&convert_tap_to_rwa_wave_high,1,longitud,ptr_archivo);
@@ -20956,6 +20955,8 @@ void util_realtape_browser(char *filename, char *texto_browser,int maxima_longit
 
     ptr_mycinta_smp=fopen(file_to_open,"rb");
 
+    printf("1\n");
+
     if (ptr_mycinta_smp==NULL) {
         debug_printf(VERBOSE_ERR,"Error opening file");
     }
@@ -20967,17 +20968,24 @@ void util_realtape_browser(char *filename, char *texto_browser,int maxima_longit
         //cada vez se abre el archivo de nuevo, y evitar que se tenga que convertir (por ejemplo de wav) una y otra vez
         lee_smp_ya_convertido=0;
 
+        printf("1.1\n");
+
         main_spec_rwaatap(array_block_positions,max_array_block_positions,codigo_retorno);
+
+        printf("1.2\n");
 
         //generar el tap de salida si conviene
         if (tap_output!=NULL) {
             util_save_file(spec_smp_memory,spec_smp_total_read,tap_output);
         }
 
+        printf("1.3\n");
+
         //Este lo ha asignado la rutina main_spec_rwaatap
         free(spec_smp_memory);
     }
 
+    printf("2\n");
 
     main_spec_rwaatap_pointer_print=NULL;
 
