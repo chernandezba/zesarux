@@ -2262,6 +2262,8 @@ void realtape_load_visuals(char *filename)
 void realtape_insert(void)
 {
 
+    printf("Antes conversiones\n");
+
 	debug_printf (VERBOSE_INFO,"Inserting real tape: %s",realtape_name);
         realtape_file_size_counter=0;
 
@@ -2424,7 +2426,9 @@ void realtape_insert(void)
         name_to_use=realtape_name_rwa;
     }
 
+    printf("Antes visuals\n");
     realtape_load_visuals(name_to_use);
+    printf("Despues visuals\n");
 
 
 
@@ -2433,6 +2437,8 @@ void realtape_insert(void)
     int codigo_retorno;
     util_realtape_browser(name_to_use, visual_realtape_textbrowse,MAX_TEXTO_BROWSER,NULL,
         visual_realtape_array_positions, VISUAL_REALTAPE_MAX_POSITIONS,&codigo_retorno);
+
+    printf("Despues util_realtape_browser\n");
 
     if (codigo_retorno) {
         debug_printf(VERBOSE_INFO,"Error trying to convert audio to Spectrum Tape Blocks. Probably invalid carry in some blocks");
