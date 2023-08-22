@@ -9487,35 +9487,38 @@ void convert_tap_to_rwa_write_silence(FILE *ptr_archivo,int segundos)
 
 #define SPEC_AMPLITUD_BIT 50
 
+//Para acelerar las escrituras, tablas pregeneradas
+unsigned char convert_tap_to_rwa_wave_high[]={
+    128+SPEC_AMPLITUD_BIT,128+SPEC_AMPLITUD_BIT,
+    128+SPEC_AMPLITUD_BIT,128+SPEC_AMPLITUD_BIT,
+    128+SPEC_AMPLITUD_BIT,128+SPEC_AMPLITUD_BIT,
+    128+SPEC_AMPLITUD_BIT,128+SPEC_AMPLITUD_BIT
+};
+
+unsigned char convert_tap_to_rwa_wave_low[]={
+    128-SPEC_AMPLITUD_BIT,128-SPEC_AMPLITUD_BIT,
+    128-SPEC_AMPLITUD_BIT,128-SPEC_AMPLITUD_BIT,
+    128-SPEC_AMPLITUD_BIT,128-SPEC_AMPLITUD_BIT,
+    128-SPEC_AMPLITUD_BIT,128-SPEC_AMPLITUD_BIT
+};
+
 //escribe 1 o 0
 void convert_tap_to_rwa_write_bit(FILE *ptr_archivo,int bit)
 {
-
-    unsigned char valor_high=128+SPEC_AMPLITUD_BIT;
-    unsigned char valor_low=128-SPEC_AMPLITUD_BIT;
 
 	int longitud;
 
 	//Bit a 1 son 4 bytes high , 4 low
     longitud=(bit==0 ? 4 : 8);
-	//if (bit==0) longitud=4;
-	//else longitud=8;
 
-	//z80_byte escrito;
 	int i;
-	for (i=0;i<longitud;i++) {
 
-		//bytes arriba
-		fwrite(&valor_high,1,1,ptr_archivo);
+    //bytes arriba
+    fwrite(&convert_tap_to_rwa_wave_high,1,longitud,ptr_archivo);
 
-	}
 
-	for (i=0;i<longitud;i++) {
-
-		//bytes abajo
-		fwrite(&valor_low,1,1,ptr_archivo);
-
-	}
+    //bytes abajo
+    fwrite(&convert_tap_to_rwa_wave_low,1,longitud,ptr_archivo);
 
 
 }
@@ -9525,18 +9528,18 @@ void convert_tap_to_rwa_write_byte(FILE *ptr_archivo,unsigned char leido)
 {
 
 
-                //meter los 8 bits. en orden, primero el mas alto
-                int numerobit,bit;
-                for (numerobit=0;numerobit<8;numerobit++) {
-                        bit=(leido&128 ? 1 : 0);
-                        //if (leido&128) bit=1;
-                        //else bit=0;
+    //meter los 8 bits. en orden, primero el mas alto
+    int numerobit,bit;
+    for (numerobit=0;numerobit<8;numerobit++) {
+        bit=(leido&128 ? 1 : 0);
+        //if (leido&128) bit=1;
+        //else bit=0;
 
-                        leido=leido<<1;
+        leido=leido<<1;
 
 
-                        convert_tap_to_rwa_write_bit(ptr_archivo,bit);
-                }
+        convert_tap_to_rwa_write_bit(ptr_archivo,bit);
+    }
 }
 
 void convert_tap_to_rwa_write_pilot(FILE *ptr_archivo,z80_byte flag_bloque)
