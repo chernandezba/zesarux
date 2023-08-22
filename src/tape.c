@@ -2259,6 +2259,65 @@ void realtape_load_visuals(char *filename)
 
 }
 
+void realtape_insert_detect_blocks(char *name_to_use)
+{
+        //precargar posiciones de cada bloque en cinta para luego mostrar en Visual Real Tape
+
+
+    realtape_visual_detected_tape_type=0; //de momento tipo desconocido
+    int codigo_retorno;
+    util_realtape_browser(name_to_use, visual_realtape_textbrowse,MAX_TEXTO_BROWSER,NULL,
+        visual_realtape_array_positions, VISUAL_REALTAPE_MAX_POSITIONS,&codigo_retorno);
+    //temp
+    //codigo_retorno=0;
+    //strcpy(visual_realtape_textbrowse,"ZX");
+
+    printf("Despues util_realtape_browser\n");
+
+    if (codigo_retorno) {
+        debug_printf(VERBOSE_INFO,"Error trying to convert audio to Spectrum Tape Blocks. Probably invalid carry in some blocks");
+        //de momento no tratamos el error
+    }
+
+    if (visual_realtape_textbrowse[0]==0) {
+        //printf("Intentamos conversion ZX80/81\n");
+        //Intentamos con conversión ZX80/81
+
+        //TODO: no autodetectara cintas de ZX80, hay que seleccionar maquina ZX80 como actual para que el conversor asuma ZX80
+        convert_realtape_to_po(name_to_use, NULL, visual_realtape_textbrowse,0);
+        //printf("texto: %s\n",visual_realtape_textbrowse);
+        //array de posiciones con un solo bloque
+        visual_realtape_array_positions[0]=0;
+        visual_realtape_array_positions[1]=-1;
+
+
+        //si el texto empieza con "ZX80 Tape", es ZX80
+        if (visual_realtape_textbrowse[0]=='Z' &&
+            visual_realtape_textbrowse[1]=='X' &&
+            visual_realtape_textbrowse[2]=='8' &&
+            visual_realtape_textbrowse[3]=='0') {
+
+            realtape_visual_detected_tape_type=2;
+        }
+
+        //si el texto empieza con "ZX81 Tape", es ZX81
+        if (visual_realtape_textbrowse[0]=='Z' &&
+            visual_realtape_textbrowse[1]=='X' &&
+            visual_realtape_textbrowse[2]=='8' &&
+            visual_realtape_textbrowse[3]=='1') {
+
+            realtape_visual_detected_tape_type=3;
+        }
+
+    }
+
+    else {
+        //cinta spectrum
+        realtape_visual_detected_tape_type=1;
+    }
+
+}
+
 void realtape_insert(void)
 {
 
@@ -2433,58 +2492,7 @@ void realtape_insert(void)
 
 
     //precargar posiciones de cada bloque en cinta para luego mostrar en Visual Real Tape
-    realtape_visual_detected_tape_type=0; //de momento tipo desconocido
-    int codigo_retorno;
-    util_realtape_browser(name_to_use, visual_realtape_textbrowse,MAX_TEXTO_BROWSER,NULL,
-        visual_realtape_array_positions, VISUAL_REALTAPE_MAX_POSITIONS,&codigo_retorno);
-    //temp
-    //codigo_retorno=0;
-    //strcpy(visual_realtape_textbrowse,"ZX");
-
-    printf("Despues util_realtape_browser\n");
-
-    if (codigo_retorno) {
-        debug_printf(VERBOSE_INFO,"Error trying to convert audio to Spectrum Tape Blocks. Probably invalid carry in some blocks");
-        //de momento no tratamos el error
-    }
-
-    if (visual_realtape_textbrowse[0]==0) {
-        //printf("Intentamos conversion ZX80/81\n");
-        //Intentamos con conversión ZX80/81
-
-        //TODO: no autodetectara cintas de ZX80, hay que seleccionar maquina ZX80 como actual para que el conversor asuma ZX80
-        convert_realtape_to_po(name_to_use, NULL, visual_realtape_textbrowse,0);
-        //printf("texto: %s\n",visual_realtape_textbrowse);
-        //array de posiciones con un solo bloque
-        visual_realtape_array_positions[0]=0;
-        visual_realtape_array_positions[1]=-1;
-
-
-        //si el texto empieza con "ZX80 Tape", es ZX80
-        if (visual_realtape_textbrowse[0]=='Z' &&
-            visual_realtape_textbrowse[1]=='X' &&
-            visual_realtape_textbrowse[2]=='8' &&
-            visual_realtape_textbrowse[3]=='0') {
-
-            realtape_visual_detected_tape_type=2;
-        }
-
-        //si el texto empieza con "ZX81 Tape", es ZX81
-        if (visual_realtape_textbrowse[0]=='Z' &&
-            visual_realtape_textbrowse[1]=='X' &&
-            visual_realtape_textbrowse[2]=='8' &&
-            visual_realtape_textbrowse[3]=='1') {
-
-            realtape_visual_detected_tape_type=3;
-        }
-
-    }
-
-    else {
-        //cinta spectrum
-        realtape_visual_detected_tape_type=1;
-    }
-
+    realtape_insert_detect_blocks(name_to_use);
 
     printf("Despues detectar tipo cinta\n");
 
