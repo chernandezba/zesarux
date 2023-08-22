@@ -1147,6 +1147,8 @@ void spec_debug_cabecera(int indice,int leidos)
 int main_spec_rwaatap(long *array_block_positions,int max_array_block_positions,int *codigo_retorno,int longitud_archivo_smp)
 {
 
+    printf("inicio main_spec_rwaatap\n");
+
     spec_longitud_total_archivo_smp=longitud_archivo_smp;
 
     spec_array_block_positions=array_block_positions;
