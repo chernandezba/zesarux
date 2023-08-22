@@ -105,6 +105,7 @@ Fixed Text Adventure Graphics rendering invalid characters
 Fixed esxdos handler when using fopen flags: FA_READ + FA_WRITE + FA_OPEN_CREAT
 Fixed ZRCP bug when closing connection (socket descriptor was kept open)
 Fixed reading ESC key on curses driver
+Fixed support for .config files on .dsk
 
 * Misc Changes:
 

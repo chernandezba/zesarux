@@ -21,7 +21,6 @@ echo "Porcentaje=$PERCCOMPLETADO %"
 
 -ejecutar tests/automatic_test_cycle_machines.sh
 
--probar cambio idioma menu y ver diferentes menus
 
 Drivers video:
 -probar drivers video xwindows, sdl, fbdev, curses, aa, caca, stdout, simpletext, null. desde dentro de xwindows y desde consola de texto real
@@ -83,22 +82,14 @@ Drivers audio:
 -probar juegos varios de zx80,zx81, spectrum, aquellos que hacen efectos especiales hi-res, etc
 -probar juegos zx81 multipart: wrx/voyage , wrx/blockbuster
 -probar particularidades Inves: no contended memory. Puerto ficticio para hacer visible RAM baja, requiere hardware debug ports , se puede probar con inves-switch-lowram.tap. Ver RAM baja con view hexdump. Probar con musica Lemmings. Probar investest.tap, que testea entre otras cosas: 64 kb ram, OUT ula AND RAM (border color, snow in border, no sound),  colour ula delay, interrupt starts at video display (not at the top of the border), interrupt escribe en direccion I*256+R valor 255
--probar hotswap maquina
--probar custom rom desde menu y desde linea de comandos. probar todas roms
 -probar realvideo spectrum
 -probar realvideo zx80/81
 -probar realvideo z88
 -probar snoweffect de 48k, 128k, con juegos y con extras/media/spectrum/tests/snow_effect.tap. Las que son de pentagon, hacer hotswap a 128
 -probar simular pantalla zx81 en spectrum
--probar desactivar colores pantalla spectrum
 -probar modos hi-res zx81: hrg, chr$128, udg, wrx, otros hi-res. probar xtricator, pacman 
 -probar autodetect WRX mode on ZX80/81
 -probar chip sonido AY, en spectrum (ay y fuller) y zx81 (quicksilva(asteroids, defenda zx80)  y bi-pak (aydemo, pink panther...))
--probar turbosound, 3 chips ay
--probar specdrum, covox
--probar general sound
--probar opcion ay speech on/off con chase hq por ejemplo
--probar abc/acb/bac stereo con demos y tests/stereotest.sh
 -probar view ay piano con extras/media/spectrum/tests/testpiano.tap  y demos turbosound
 -probar menu ay piano, beeper piano. nota: beeper piano con notas largas, como la musica del Zorro
 -probar menu aysheet
