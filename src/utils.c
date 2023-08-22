@@ -5698,7 +5698,7 @@ int quickload_continue(char *nombre) {
         if (MACHINE_IS_MSX) msx_insert_rom_cartridge(nombre);
         else if (MACHINE_IS_SVI) svi_insert_rom_cartridge(nombre);
         else {
-            //En cualquier otro, cargar la rom como la rom de la maquina (como seleccionar custom machine)
+            //En cualquier otro, cargar la rom como la rom de la maquina (como seleccionar custom machine pero sin dejar la rom definida para siempre)
             set_machine(nombre);
             cold_start_cpu_registers();
             reset_cpu();

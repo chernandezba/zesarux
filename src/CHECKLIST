@@ -145,8 +145,8 @@ Probar delete, rename, etc y resto de acciones con CMDR, con archivos en minuscu
 -probar superupgrade. Básico, programa de modificación de rom. Programa en basic extras/media/spectrum/tests/superupgrade-test.tap y usando 512kb de rom que sean siempre la misma rom de spectrum 48k. Probar con rman.tap
 -probar kartusho
 -probar ifrom
--probar betadisk
--probar discos +3
+-probar betadisk. visual floppy de betadisk
+-probar discos +3. visual floppy de dsk
 -probar file browser
 
 -probar spectra. Test modos. Comparar con ZXSP. X128 NO es correcto del todo, falla la implementacion del flash
