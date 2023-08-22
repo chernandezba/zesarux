@@ -23910,6 +23910,14 @@ void menu_visual_realtape_reinsert(MENU_ITEM_PARAMETERS)
 }
 
 
+void menu_realtape_message_reading(void)
+{
+    //TODO: lo ideal es que este mensaje se quedase todo el rato mientras se convierte la cinta a
+    //Visual Real Tape, que es lo que tarda realmente
+    //Pero para eso habria que hacer la conversión por debajo con un pthread
+    menu_generic_message_splash("Insert Real Tape","Tape being read...");
+}
+
 
 void menu_realtape_open(MENU_ITEM_PARAMETERS)
 {
@@ -23959,6 +23967,9 @@ void menu_realtape_open(MENU_ITEM_PARAMETERS)
 
         if (ret==1) {
                 realtape_name=menu_realtape_name;
+
+                menu_realtape_message_reading();
+
         	realtape_insert();
 	}
 
@@ -30722,7 +30733,11 @@ void menu_tape_output_insert(MENU_ITEM_PARAMETERS)
 
 void menu_realtape_insert(MENU_ITEM_PARAMETERS)
 {
-	if (realtape_inserted.v==0) realtape_insert();
+	if (realtape_inserted.v==0) {
+        menu_realtape_message_reading();
+
+        realtape_insert();
+    }
 	else realtape_eject();
 }
 
