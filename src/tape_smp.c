@@ -103,6 +103,7 @@ void tape_smp_open_input_file(void)
 
 
 	else {
+        //printf("cinta no es smp ni wav\n");
 		ptr_mycinta_smp=fopen(tapefile,"rb");
 	}
 
@@ -948,6 +949,7 @@ int spec_lee_onda(unsigned char *longitud,unsigned char *amplitud)
 	} while (1);
 }
 
+/*
 int spec_dice_bit(char longitud)
 //Dice si el bit es 0 o 1 segun su amplitud
 //Devuelve -1 si no es un bit aceptado
@@ -957,6 +959,7 @@ int spec_dice_bit(char longitud)
 	debug_printf (VERBOSE_DEBUG,"Invalid length for bit: %d",longitud);
 	return -1;
 }
+*/
 
 int spec_lee_8_bits(void)
 //Devuelve 8 bits leidos
@@ -978,8 +981,19 @@ int spec_lee_8_bits(void)
 		if (spec_lee_onda(&longitud,&amplitud)==-1) return -1;
 
 		if (amplitud<SPEC_NO_RUIDO) return -2;
-		bit=spec_dice_bit(longitud);
-		if (bit==-1) return -3;
+
+
+        if (longitud>=spec_ceros-margen_spec_ceros && longitud<=spec_ceros+margen_spec_ceros) bit=0;
+        else if (longitud>=spec_unos-margen_spec_unos && longitud<=spec_unos+margen_spec_unos) bit=1;
+        else {
+            debug_printf (VERBOSE_DEBUG,"Invalid length for bit: %d",longitud);
+            return -3;
+        }
+
+		//bit=spec_dice_bit(longitud);
+		//if (bit==-1) return -3;
+
+
 
 		byte=byte*2+bit;
 	}
@@ -1193,6 +1207,7 @@ int main_spec_rwaatap(long *array_block_positions,int max_array_block_positions,
 		} while (n<SPEC_ONDAS_GUIA);
 
 		debug_printf (VERBOSE_DEBUG,"Reading pilot tone...");
+        //printf("Reading pilot tone...\n");
 
 		do {
 			if (spec_lee_onda(&longitud,&amplitud)==-1) goto fin;
@@ -1211,6 +1226,8 @@ int main_spec_rwaatap(long *array_block_positions,int max_array_block_positions,
 
 		debug_printf (VERBOSE_DEBUG,"Reading data...");
 
+        //printf("Reading data...\n");
+
 
 		//Despues del tono guia viene una onda falsa, no utilizable,
 		//parecida a un bit 0
@@ -1218,7 +1235,8 @@ int main_spec_rwaatap(long *array_block_positions,int max_array_block_positions,
 		do {
 			byte=spec_lee_8_bits(/*-1*/);
 			//if (byte==-1) goto fin;
-			if (byte==-1) break;
+
+			//if (byte==-1) break;
 			if (byte<0) break;
 
 			if (spec_smp_write_mem_byte(spec_smp_write_index_tap,byte)) {
