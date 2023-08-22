@@ -73,12 +73,13 @@ char inputfile_name_rwa[PATH_MAX];
 
 //si archivo es rwa. lo abre tal cual
 //si es smp u otros, lo convierte
-void tape_smp_open_input_file(void)
+int tape_smp_open_input_file(void)
 {
 
 	//Inicializar siempre esto. Si no se confunde si ha habido una conversion anterior
 	ptr_mycinta_smp=NULL;
 
+    int longitud_archivo_smp;
 
 	if (!util_compare_file_extension(tapefile,"smp")) {
 		if (lee_smp_ya_convertido==0) {
@@ -87,6 +88,8 @@ void tape_smp_open_input_file(void)
 		}
 
 		ptr_mycinta_smp=fopen(inputfile_name_rwa,"rb");
+
+        longitud_archivo_smp=get_file_size(inputfile_name_rwa);
 		//printf ("convertido a rwa : %s\n",inputfile_name_rwa);
 	}
 
@@ -95,20 +98,25 @@ void tape_smp_open_input_file(void)
 			convert_to_rwa_common_tmp(tapefile,inputfile_name_rwa);
 			if (convert_wav_to_rwa(tapefile,inputfile_name_rwa)) {
 				debug_printf (VERBOSE_ERR,"Error converting wav to rwa");
-				return;
+				return 0;
 			}
 		}
 		ptr_mycinta_smp=fopen(inputfile_name_rwa,"rb");
+
+        longitud_archivo_smp=get_file_size(inputfile_name_rwa);
 	}
 
 
 	else {
         //printf("cinta no es smp ni wav\n");
 		ptr_mycinta_smp=fopen(tapefile,"rb");
+        longitud_archivo_smp=get_file_size(tapefile);
 	}
 
 
 	lee_smp_ya_convertido=1;
+
+    return longitud_archivo_smp;
 
 
 }
@@ -140,7 +148,7 @@ int tape_block_smp_open(void)
 		//cada vez se abre el archivo de nuevo, y evitar que se tenga que convertir (por ejemplo de wav) una y otra vez
 		lee_smp_ya_convertido=0;
 
-		tape_smp_open_input_file();
+		int longitud_archivo_smp=tape_smp_open_input_file();
 
 		if (!ptr_mycinta_smp)
 		{
@@ -150,8 +158,7 @@ int tape_block_smp_open(void)
 		}
 
 
-
-		main_spec_rwaatap(NULL,0,NULL);
+		main_spec_rwaatap(NULL,0,NULL,longitud_archivo_smp);
 
 
 		return 0;
@@ -841,6 +848,9 @@ char margen_spec_unos=3;
 char spec_byte_cambio,spec_cambio=0;
 char spec_final_fichero=0;
 
+z80_byte *memoria_archivo_smp;
+int memoria_archivo_smp_puntero;
+
 int spec_da_ascii(int codigo)
 {
 	return (codigo<127 && codigo>31 ? codigo : '.');
@@ -861,6 +871,8 @@ int spec_da_abs(int valor)
 
 //int tempp=0;
 
+int spec_longitud_total_archivo_smp;
+
 int spec_lee_byte(void)
 //Funcion que lee byte del fichero
 //Mira si hay un byte de cambio de onda, en cuyo caso lo devuelve
@@ -872,7 +884,11 @@ int spec_lee_byte(void)
 	}
 
 	else {
-		spec_byte_cambio=fgetc(ptr_mycinta_smp);
+		//spec_byte_cambio=fgetc(ptr_mycinta_smp);
+        //Es mas rapido leer de memoria que no andar haciendo fgetc
+        spec_byte_cambio=memoria_archivo_smp[memoria_archivo_smp_puntero++];
+
+
 		//tempp++;
 		//printf ("l: %d\n",tempp);
 		//unsigned char v;
@@ -880,7 +896,9 @@ int spec_lee_byte(void)
 		// printf ("%x ",v);
 	}
 
-	if (feof(ptr_mycinta_smp)) {
+    if (memoria_archivo_smp_puntero>=spec_longitud_total_archivo_smp) {
+
+	//if (feof(ptr_mycinta_smp)) {
 		spec_final_fichero=1;
 		return 0;
 	}
@@ -1126,8 +1144,10 @@ void spec_debug_cabecera(int indice,int leidos)
 //array_block_positions, max_array_block_positions usados para guardar las posiciones de los bloques
 //codigo_retorno: si es NULL, si hay error de carga se genera mensaje de error por VERBOSE_ERR
 //si no es NULL, no hay mensaje por VERBOSE_ERR y se almacena en codigo retorno: 0: ok, 1: error
-int main_spec_rwaatap(long *array_block_positions,int max_array_block_positions,int *codigo_retorno)
+int main_spec_rwaatap(long *array_block_positions,int max_array_block_positions,int *codigo_retorno,int longitud_archivo_smp)
 {
+
+    spec_longitud_total_archivo_smp=longitud_archivo_smp;
 
     spec_array_block_positions=array_block_positions;
     spec_max_array_block_positions=max_array_block_positions;
@@ -1176,6 +1196,15 @@ int main_spec_rwaatap(long *array_block_positions,int max_array_block_positions,
 			cpu_panic ("Error allocating memory for tape buffer");
 		}
 	}
+
+    //Asignar memoria para archivo de entrada
+
+
+    memoria_archivo_smp=util_malloc(longitud_archivo_smp,"Can not allocate memory for smp read");
+    fread(memoria_archivo_smp,1,longitud_archivo_smp,ptr_mycinta_smp);
+    fclose(ptr_mycinta_smp);
+
+    memoria_archivo_smp_puntero=0;
 
 	do {
 		spec_carry=0;
@@ -1266,7 +1295,11 @@ int main_spec_rwaatap(long *array_block_positions,int max_array_block_positions,
 			spec_debug_cabecera(spec_smp_write_index_tap_start+2,spec_bytes_leidos);
 
             //leer posicion dentro del archivo
-            spec_last_file_position=ftell(ptr_mycinta_smp);
+            //spec_last_file_position=ftell(ptr_mycinta_smp);
+
+            spec_last_file_position=memoria_archivo_smp_puntero;
+
+
 
 			n=spec_bytes_leidos;
 
@@ -1320,7 +1353,8 @@ int main_spec_rwaatap(long *array_block_positions,int max_array_block_positions,
 
 	fin:
 
-	fclose(ptr_mycinta_smp);
+
+    free(memoria_archivo_smp);
 
 	if (spec_smp_total_read==0) {
 		debug_printf(VERBOSE_INFO,"Converted Zero bytes of data from SMP file. May be a corrupted file or unsupported format");

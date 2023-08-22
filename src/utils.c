@@ -20953,6 +20953,8 @@ void util_realtape_browser(char *filename, char *texto_browser,int maxima_longit
         return;
     }
 
+    int longitud_archivo_smp=get_file_size(file_to_open);
+
     ptr_mycinta_smp=fopen(file_to_open,"rb");
 
     printf("1\n");
@@ -20970,7 +20972,7 @@ void util_realtape_browser(char *filename, char *texto_browser,int maxima_longit
 
         printf("1.1\n");
 
-        main_spec_rwaatap(array_block_positions,max_array_block_positions,codigo_retorno);
+        main_spec_rwaatap(array_block_positions,max_array_block_positions,codigo_retorno,longitud_archivo_smp);
 
         printf("1.2\n");
 

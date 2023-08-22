@@ -35,7 +35,7 @@ extern int main_leezx81(char *archivo_destino, char *texto_info_output,int si_lo
 extern z80_byte *spec_smp_memory;
 extern int tape_guessing_parameters;
 
-extern int main_spec_rwaatap(long *array_block_positions,int max_array_block_positions,int *codigo_retorno);
+extern int main_spec_rwaatap(long *array_block_positions,int max_array_block_positions,int *codigo_retorno,int longitud_archivo_smp);
 extern int spec_smp_read_index_tap;
 extern int spec_smp_write_index_tap;
 extern int spec_smp_total_read;
