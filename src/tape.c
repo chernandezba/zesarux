@@ -2201,6 +2201,13 @@ void realtape_load_visuals(char *filename)
         return;
     }
 
+    //Cargarlo todo en memoria. Esto es algo mas rapido que andar haciendo fread de 1 byte cada vez
+    z80_byte *memoria=util_malloc(total_archivo,"Can not allocate memory for Load Visuals");
+    fread(memoria,1,total_archivo,ptr_visual);
+    fclose(ptr_visual);
+
+    z80_byte *puntero=memoria;
+
     //-r 15600 -b 8 -e unsigned -c 1
 
     int minimo,maximo;
@@ -2208,10 +2215,13 @@ void realtape_load_visuals(char *filename)
     int posicion_visual=0;
 
     minimo=maximo=128;
+    z80_byte byte_leido;
 
     while (total_archivo>0) {
-        z80_byte byte_leido;
-        fread(&byte_leido,1,1,ptr_visual);
+
+        byte_leido=*puntero;
+        puntero++;
+        //fread(&byte_leido,1,1,ptr_visual);
 
         //acumulado=acumulado+byte_leido;
         if (byte_leido<minimo) minimo=byte_leido;
@@ -2234,6 +2244,7 @@ void realtape_load_visuals(char *filename)
             }
             else {
                 //printf("Trying to write beyond realtape visual: %d\n",posicion_visual);
+                free(memoria);
                 return;
             }
 
@@ -2243,8 +2254,8 @@ void realtape_load_visuals(char *filename)
     }
 
 
-
-    fclose(ptr_visual);
+    free(memoria);
+    //fclose(ptr_visual);
 
 }
 
