@@ -104,8 +104,8 @@ Drivers audio:
 
 -probar diferentes cargas, a continuacion, hay ejemplos en carpeta snap_tests y tambien alguno suelto, como canciones.smp y orquesta.smp
 *probar carga binaria (tape) smp,wav,rwa en zx80
-*probar carga binaria (tape) smp,wav,rwa en zx81: con audio real, con save desde basic y aofile (wav y rwa), con rutina de conversion de .p a rwa en real tape
-*probar carga realtape : . zx80: smp,wav,rwa,o. zx81: smp,wav,rwa,p
+*probar carga binaria (tape)  zx81: con save desde basic y aofile (wav y rwa)
+*probar carga realtape : . zx80: smp,wav,rwa,o. 
 
 -probar watermark, reduce 0.75
 
