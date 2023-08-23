@@ -1234,6 +1234,7 @@ if [ "$OPTIONLINUXREALJOYSTICK" != "" ]; then
 
         cat > $TEMPFILE << _EOF
 #include <linux/joystick.h>
+#include <pthread.h>
 int main () {
 return 0;
 }
