@@ -101,6 +101,22 @@ char zeng_send_message_footer[AUTOSELECTOPTIONS_MAX_FOOTER_LENGTH+100];
 
 int pending_zeng_send_message_footer=0;
 
+//Cantidad de snapshots no enviados porque hay otro pendiente
+int zeng_snapshots_not_sent=0;
+
+//Forzar a reconectar si llega a 3 failed snapshots
+z80_bit zeng_force_reconnect_failed_retries={0};
+
+//No mostrar error en thread send
+int zeng_thread_send_not_show_error=0;
+
+//Indica que ha habido un error en ejecutar zeng_send_snapshot_uno_concreto
+int return_zeng_send_snapshot_uno_concreto;
+
+int zeng_enable_thread_running=0;
+
+
+#ifdef USE_PTHREADS
 
 int zeng_next_position(int pos)
 {
@@ -416,11 +432,7 @@ int zeng_connect_remotes(void)
             return 0;
        }
 
-       //Para testeo, si esta esta variable definida en entorno de compilacion, puerto se incrementa en cada host
-       //asi puedo arrancar varias instancias de ZEsarUX en puertos consecutivos
-#ifdef ZENG_TESTING_INCREMENT_PORT
-       puerto++;
-#endif
+
 
     }
 
@@ -660,17 +672,7 @@ int zeng_send_message(void)
 
 }
 
-//Cantidad de snapshots no enviados porque hay otro pendiente
-int zeng_snapshots_not_sent=0;
 
-//Forzar a reconectar si llega a 3 failed snapshots
-z80_bit zeng_force_reconnect_failed_retries={0};
-
-//No mostrar error en thread send
-int zeng_thread_send_not_show_error=0;
-
-//Indica que ha habido un error en ejecutar zeng_send_snapshot_uno_concreto
-int return_zeng_send_snapshot_uno_concreto;
 
 //Estructura para el pase de parametros de envio de threads de envio de snapshots
 struct s_zeng_send_snapshot_uno_concreto {
@@ -969,14 +971,14 @@ void zeng_send_snapshot_if_needed(void)
 	}
 }
 
-int zeng_enable_thread_running=0;
+
 
 void *zeng_enable_thread_function(void *nada GCC_UNUSED)
 {
 
 	zeng_enable_thread_running=1;
 
-#ifdef USE_PTHREADS
+
 
 	//No hay pendiente snapshot
 	zeng_send_snapshot_pending=0;
@@ -1011,7 +1013,7 @@ void *zeng_enable_thread_function(void *nada GCC_UNUSED)
 
 	zeng_enabled.v=1;
 
-#endif
+
 	zeng_enable_thread_running=0;
 
 	return 0;
@@ -1026,9 +1028,9 @@ void zeng_cancel_connect(void)
 
 	debug_printf(VERBOSE_DEBUG,"Cancelling ZENG connect");
 
-	#ifdef USE_PTHREADS
+
 		pthread_cancel(zeng_thread_connect);
-	#endif
+
 
 	zeng_enable_thread_running=0;
 }
@@ -1041,7 +1043,7 @@ void zeng_enable(void)
 
 	if (zeng_remote_hostname[0]==0) return;
 
-#ifdef USE_PTHREADS
+
 
 	//Inicializar thread
 
@@ -1053,7 +1055,7 @@ void zeng_enable(void)
 	//y pthread en estado detached asi liberara su memoria asociada a thread al finalizar, sin tener que hacer un pthread_join
 	pthread_detach(zeng_thread_connect);
 
-#endif
+
 
 
 
@@ -1069,7 +1071,7 @@ void zeng_disable_normal(int forced)
 	if (zeng_enabled.v==0) return;
 
 
-#ifdef USE_PTHREADS
+
 
 	zeng_enabled.v=0;
 
@@ -1101,10 +1103,10 @@ void zeng_disable_normal(int forced)
         }
 	}
 
-#else
+    //#else
 	//sin threads
-	zeng_enabled.v=0;
-#endif
+	//zeng_enabled.v=0;
+
 
 
 }
@@ -1130,3 +1132,44 @@ void zeng_add_pending_send_message_footer(char *mensaje)
 
 }
 
+#else
+
+//Funciones sin pthreads. ZENG no se llama nunca cuando no hay pthreads, pero hay que crear estas funciones vacias
+//para evitar errores de compilacion cuando no hay pthreads
+
+void zeng_send_snapshot_if_needed(void)
+{
+}
+
+void zeng_send_key_event(enum util_teclas tecla,int pressrelease)
+{
+}
+
+void zeng_add_pending_send_message_footer(char *mensaje)
+{
+}
+
+void zeng_cancel_connect(void)
+{
+}
+
+void zeng_disable(void)
+{
+	zeng_enabled.v=0;
+}
+
+void zeng_enable(void)
+{
+}
+
+int zeng_fifo_add_element(zeng_key_presses *elemento)
+{
+    return 0;
+}
+
+int zeng_fifo_read_element(zeng_key_presses *elemento)
+{
+    return 1;
+}
+
+#endif
