@@ -2302,6 +2302,9 @@ else
 #si no hay pthreads, tampoco habra networking
 OPTIONNETWORKING=""
 
+#ni soporte real joystick en linux
+OPTIONLINUXREALJOYSTICK=""
+
 fi
 
 

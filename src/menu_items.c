@@ -32160,11 +32160,13 @@ void menu_hilow_convert_audio_callback(int valor,int posicion)
     */
 
 
+#ifdef USE_PTHREADS
     //Si se quiere cancelar  el thread
 
     //Esta funcion, si el thread no se tiene que cancelar, no hace nada
     //Y si se tiene que cancelar, la cancela
     pthread_testcancel();
+#endif
 
 
     menu_hilow_convert_audio_last_audio_sample_three=valor;
