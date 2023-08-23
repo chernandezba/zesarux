@@ -2627,6 +2627,19 @@ void menu_file_p_browser_show(char *filename)
 	sprintf(buffer_texto,"Machine: ZX-81");
 	indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
 
+    char nombre_corto[PATH_MAX];
+    util_get_file_no_directory(filename,nombre_corto);
+
+    char nombre_sin_extension[PATH_MAX];
+    util_get_file_without_extension(nombre_corto,nombre_sin_extension);
+    string_a_mayusculas(nombre_sin_extension,nombre_sin_extension);
+
+	sprintf(buffer_texto,"Program name: %s",nombre_sin_extension);
+	indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
+
+    int tamanyo_archivo=get_file_size(filename);
+	sprintf(buffer_texto,"Size: %d",tamanyo_archivo);
+	indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
 
     z80_int p_pc_reg=0x207;
     sprintf(buffer_texto,"PC Register: %04XH",p_pc_reg);
@@ -2710,9 +2723,13 @@ void menu_file_o_browser_show(char *filename)
 	sprintf(buffer_texto,"Machine: ZX-80");
 	indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
 
+    int tamanyo_archivo=get_file_size(filename);
+	sprintf(buffer_texto,"Size: %d",tamanyo_archivo);
+	indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
 
-        z80_int o_pc_reg=0x283;
-        sprintf(buffer_texto,"PC Register: %04XH",o_pc_reg);
+
+    z80_int o_pc_reg=0x283;
+    sprintf(buffer_texto,"PC Register: %04XH",o_pc_reg);
  	indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
 
     //Los siguientes registros son fijos, pero queda bonito mostrarlo

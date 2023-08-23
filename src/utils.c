@@ -11561,6 +11561,20 @@ void string_a_minusculas(char *origen, char *destino)
 	*destino=0;
 }
 
+//Convierte una string en mayusculas
+void string_a_mayusculas(char *origen, char *destino)
+{
+	char letra;
+
+	for (;*origen;origen++,destino++) {
+		letra=*origen;
+		letra=letra_mayuscula(letra);
+		*destino=letra;
+	}
+
+	*destino=0;
+}
+
 //Dice si ruta es absoluta. 1 si es absoluta. 0 si no
 int si_ruta_absoluta(char *ruta)
 {

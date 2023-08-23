@@ -463,6 +463,8 @@ extern char letra_minuscula(char c);
 
 extern void string_a_minusculas(char *origen, char *destino);
 
+extern void string_a_mayusculas(char *origen, char *destino);
+
 extern int si_ruta_absoluta(char *ruta);
 
 extern int get_file_type(char *nombre);
