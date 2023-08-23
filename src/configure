@@ -1246,7 +1246,7 @@ _EOF
                 OPTIONLINUXREALJOYSTICK=""
 
 	#necesita pthreads
-	elif [ "$OPTIONPTHREADS" != "" ]
+	elif [ "$OPTIONPTHREADS" != "" ]; then
                 echo "found"
                 LDFLAGS="$LDFLAGS -lpthread"
         fi
