@@ -4,3 +4,8 @@ Para esta version:
 
 compilacion sin pthreads no debe entrar funciones pthread*...
 
+-browse P y O es facil:
+O: decir longitud
+P: decir longitud y nombre
+
+y no hay que hacer esos pasos intermedios de convertir a rwa
