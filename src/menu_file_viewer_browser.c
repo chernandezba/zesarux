@@ -3735,7 +3735,15 @@ void menu_tape_browser_show(char *filename)
 
 
     //ZX80 O, ZX81 P
+    if (!util_compare_file_extension(filename,"p")) {
+        menu_file_p_browser_show(filename);
+        return;
+    }
 
+    if (!util_compare_file_extension(filename,"o")) {
+        menu_file_o_browser_show(filename);
+        return;
+    }
 
 
 	//tapefile
