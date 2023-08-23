@@ -1831,12 +1831,12 @@ extern int convert_p_to_rwa_tmpdir(char *origen, char *destino);
 
                         case 3:
                                 sprintf(archivo_destino,"%s/%s.p",directorio,archivo);
-                                convert_realtape_to_po(fullpath, archivo_destino,NULL,0);
+                                convert_realtape_to_po(fullpath, archivo_destino,NULL,0,0);
                         break;
 
                         case 4:
                                 sprintf(archivo_destino,"%s/%s.o",directorio,archivo);
-                                convert_realtape_to_po(fullpath, archivo_destino,NULL,0);
+                                convert_realtape_to_po(fullpath, archivo_destino,NULL,0,0);
                         break;
 
                 }
@@ -1868,12 +1868,12 @@ extern int convert_p_to_rwa_tmpdir(char *origen, char *destino);
 
                         case 2:
                                 sprintf(archivo_destino,"%s/%s.p",directorio,archivo);
-                                convert_realtape_to_po(fullpath, archivo_destino,NULL,0);
+                                convert_realtape_to_po(fullpath, archivo_destino,NULL,0,0);
                         break;
 
                         case 3:
                                 sprintf(archivo_destino,"%s/%s.o",directorio,archivo);
-                                convert_realtape_to_po(fullpath, archivo_destino,NULL,0);
+                                convert_realtape_to_po(fullpath, archivo_destino,NULL,0,0);
                         break;
 
                 }
@@ -1905,12 +1905,12 @@ extern int convert_p_to_rwa_tmpdir(char *origen, char *destino);
 
                         case 2:
                                 sprintf(archivo_destino,"%s/%s.p",directorio,archivo);
-                                convert_realtape_to_po(fullpath, archivo_destino,NULL,0);
+                                convert_realtape_to_po(fullpath, archivo_destino,NULL,0,0);
                         break;
 
                         case 3:
                                 sprintf(archivo_destino,"%s/%s.o",directorio,archivo);
-                                convert_realtape_to_po(fullpath, archivo_destino,NULL,0);
+                                convert_realtape_to_po(fullpath, archivo_destino,NULL,0,0);
                         break;
 
                 }

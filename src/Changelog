@@ -82,6 +82,7 @@ Improved ZX Spectrum Next emulation: updated machine id list
 Improved Process Management: allow to copy any windows contents to internal clipboard
 Improved Accessibility: Added Sounds for GUI events
 Improved inserting Real Tape: process is faster and part runs on background
+Improved Tape browser: allow browsing P and O files
 
 * Fixes:
 

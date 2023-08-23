@@ -2333,7 +2333,7 @@ void *realtape_insert_detect_blocks_thread_function(void *parametros)
         //Intentamos con conversión ZX80/81
 
         //TODO: no autodetectara cintas de ZX80, hay que seleccionar maquina ZX80 como actual para que el conversor asuma ZX80
-        convert_realtape_to_po(name_to_use, NULL, visual_realtape_textbrowse,0);
+        convert_realtape_to_po(name_to_use, NULL, visual_realtape_textbrowse,0,0);
         //printf("texto: %s\n",visual_realtape_textbrowse);
         //array de posiciones con un solo bloque
         visual_realtape_array_positions[0]=0;

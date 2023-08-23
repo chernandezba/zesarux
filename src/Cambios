@@ -82,6 +82,7 @@ Emulación ZX Spectrum Next mejorada: lista de ID de máquinas actualizada
 Gestión de procesos mejorada: permite copiar cualquier contenido de ventana en el portapapeles interno
 Accesibilidad mejorada: Se agregaron sonidos para eventos de GUI
 Mejorada inserción de Cinta Real: el proceso es mas rápido y parte se ejecuta en segundo plano
+Mejorado Tape browser: permitir browse archivos P y O
 
 * Correcciones:
 
