@@ -743,7 +743,9 @@ int main_leezx81(char *archivo_destino, char *texto_info_output,int si_load)
         else {
             debug_printf (VERBOSE_INFO,"Total bytes read: %d",bytes_leidos);
 
-            if (texto_info_output!=NULL) sprintf(texto_info_output,"ZX80 Tape\nTotal bytes read: %d\n",bytes_leidos);
+            if (texto_info_output!=NULL) {
+                sprintf(texto_info_output,"ZX80 Tape\n\nTotal bytes read: %d\n",bytes_leidos);
+            }
         }
 
 

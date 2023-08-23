@@ -110,6 +110,7 @@ Corregido soporte de archivos .config en .dsk
 Corregido segfault cuando: autorebobinar activado+insertar rwa/smp/wav como cinta estándar+fin de cinta+intentar cargar
 Corregido posible segfault al descargar y descomprimir archivos zip y cancelar operación
 Corregida compilación al desactivar soporte de pthreads
+Corregido al mostrar información en Visual Real Tape cuando se inserta una cinta de audio de ZX80
 
 * Cambios varios:
 
