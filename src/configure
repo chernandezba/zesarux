@@ -1241,12 +1241,13 @@ _EOF
 
         $CCOMPILER $CFLAGS $TEMPFILE -o $TEMPFILE.o >> $LOGFILE 2>&1
         RESULTCODE=$?
-        if [ $RESULTCODE != 0 ]; then
+
+	#necesita pthreads
+        if [ $RESULTCODE != 0 ] || [ "$OPTIONPTHREADS" == "" ]; then
                 echo "not found"
                 OPTIONLINUXREALJOYSTICK=""
 
-	#necesita pthreads
-	elif [ "$OPTIONPTHREADS" != "" ]; then
+	else
                 echo "found"
                 LDFLAGS="$LDFLAGS -lpthread"
         fi
