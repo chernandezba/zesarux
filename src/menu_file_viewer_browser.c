@@ -2904,7 +2904,7 @@ void menu_file_realtape_browser_show(char *filename)
         //Intentamos con conversión ZX80/81
 
         //TODO: no autodetectara cintas de ZX80, hay que seleccionar maquina ZX80 como actual para que el conversor asuma ZX80
-        convert_realtape_to_po(filename, NULL, texto_browser,0,0);
+        convert_realtape_to_po(filename, NULL, texto_browser,0);
     }
 
     if (texto_browser[0]==0) {
@@ -3732,67 +3732,11 @@ void menu_tape_browser_show(char *filename)
 		return;
 	}
 
-    //ZX81 P
-    //Esto es un poco cutre porque hacemos:
-    //Convertir P a raw audio
-    //Usar rutina de lectura raw audio para obtener los bloques de datos
-    //TODO: deberia haber una rutina que hiciera browse de un archivo P directamente
-	if (!util_compare_file_extension(filename,"p")
-		) {
 
-        menu_generic_message_splash("P Browser","Tape being read...");
 
-        char filename_rwa[PATH_MAX];
+    //ZX80 O, ZX81 P
 
-        if (convert_p_to_rwa_tmpdir(filename,filename_rwa)) {
-                //debug_printf(VERBOSE_ERR,"Error converting input file");
-                return;
-        }
 
-        if (!si_existe_archivo(filename_rwa)) {
-                debug_printf(VERBOSE_ERR,"Error converting input file. Target file not found");
-                return;
-        }
-
-        char *texto_browser=util_malloc_max_texto_browser();
-        convert_realtape_to_po(filename_rwa, NULL, texto_browser,0,1);
-
-        menu_generic_message("P Browser",texto_browser);
-        free(texto_browser);
-
-		return;
-	}
-
-    //ZX80 O
-    //Esto es un poco cutre porque hacemos:
-    //Convertir O a raw audio
-    //Usar rutina de lectura raw audio para obtener los bloques de datos
-    //TODO: deberia haber una rutina que hiciera browse de un archivo O directamente
-	if (!util_compare_file_extension(filename,"o")
-		) {
-
-        menu_generic_message_splash("O Browser","Tape being read...");
-
-        char filename_rwa[PATH_MAX];
-
-        if (convert_o_to_rwa_tmpdir(filename,filename_rwa)) {
-                //debug_printf(VERBOSE_ERR,"Error converting input file");
-                return;
-        }
-
-        if (!si_existe_archivo(filename_rwa)) {
-                debug_printf(VERBOSE_ERR,"Error converting input file. Target file not found");
-                return;
-        }
-
-        char *texto_browser=util_malloc_max_texto_browser();
-        convert_realtape_to_po(filename_rwa, NULL, texto_browser,0,2);
-
-        menu_generic_message("O Browser",texto_browser);
-        free(texto_browser);
-
-		return;
-	}
 
 	//tapefile
 	if (util_compare_file_extension(filename,"tap")!=0) {

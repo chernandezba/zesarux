@@ -227,7 +227,7 @@ int tape_block_smp_seek(int longitud,int direccion)
 //Cargar en RAM datos obtenidos del audio de SMP
 void snap_load_zx80_zx81_load_smp(void)
 {
-	if (main_leezx81(NULL,NULL,1,0)==0) {
+	if (main_leezx81(NULL,NULL,1)==0) {
         debug_printf (VERBOSE_ERR,"Error: Program length is zero");
     }
 }
@@ -557,9 +557,8 @@ int zx8081_lee_todos_bytes(unsigned char *m)
 //Quien llama debe indicar si quiere extension P u O, aunque el contenido final es el mismo, solo cambia la extension
 //texto_info_output es para obtener la descripcion de la cinta, NULL si no se obtiene
 //si_load: si es 0, indica que no hay que cargar nada en la memoria del zx80/81
-//forzar_si_p_o si no es 0 , indica que hay que asumir una cinta P (valor 1) o O (valor 2)
 //retorna bytes leidos
-int main_leezx81(char *archivo_destino, char *texto_info_output,int si_load,int forzar_si_p_o)
+int main_leezx81(char *archivo_destino, char *texto_info_output,int si_load)
 //int main_leezx81(int argc,char *argv[])
 {
 
@@ -724,10 +723,6 @@ int main_leezx81(char *archivo_destino, char *texto_info_output,int si_load,int 
                 es_zx81=0;
             }
         }
-
-        //si hay forzado
-        if (forzar_si_p_o==1) es_zx81=1; //zx81
-        if (forzar_si_p_o==2) es_zx81=0; //zx80
 
         if (es_zx81) {
             //Si carga en memoria, saltar cabecera con el nombre

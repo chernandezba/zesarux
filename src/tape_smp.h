@@ -31,7 +31,7 @@ extern int tape_block_smp_readlength(void);
 extern int tape_block_smp_seek(int longitud,int direccion);
 
 extern void snap_load_zx80_zx81_load_smp(void);
-extern int main_leezx81(char *archivo_destino, char *texto_info_output,int si_load,int forzar_si_p_o);
+extern int main_leezx81(char *archivo_destino, char *texto_info_output,int si_load);
 extern z80_byte *spec_smp_memory;
 extern int tape_guessing_parameters;
 
