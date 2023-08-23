@@ -3769,8 +3769,11 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_ayuda(array_menu_settings_audio,"Change this setting if you are listening some audio 'clicks'");
         menu_add_item_menu_es_avanzado(array_menu_settings_audio);
 
-        menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_change_audio_driver,NULL,"    Change Audio Driv~~er");
-        menu_add_item_menu_spanish_catalan(array_menu_settings_audio,"    Cambiar Driv~~er Audio","    Canviar Driv~~er Audio");
+		menu_add_item_menu(array_menu_settings_audio,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_es_avanzado(array_menu_settings_audio);
+
+        menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_change_audio_driver,NULL,"Change Audio Driv~~er");
+        menu_add_item_menu_spanish_catalan(array_menu_settings_audio,"Cambiar Driv~~er Audio","Canviar Driv~~er Audio");
         menu_add_item_menu_shortcut(array_menu_settings_audio,'e');
         menu_add_item_menu_tiene_submenu(array_menu_settings_audio);
         menu_add_item_menu_es_avanzado(array_menu_settings_audio);
