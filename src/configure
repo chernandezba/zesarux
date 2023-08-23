@@ -1244,7 +1244,9 @@ _EOF
         if [ $RESULTCODE != 0 ]; then
                 echo "not found"
                 OPTIONLINUXREALJOYSTICK=""
-        else
+
+	#necesita pthreads
+	elif [ "$OPTIONPTHREADS" != "" ]
                 echo "found"
                 LDFLAGS="$LDFLAGS -lpthread"
         fi
