@@ -370,4 +370,17 @@ Quitar el parche para soportar la eñe en dicha opcion
 
 -Cat en cpc 6128 con pd765 desactivado, se cuelga
 
+revisar paso de parametros en pthread_create, debe ser con estructuras estaticas (no en stack) o bien estructuras en malloc
+y los miembros no deben ser punteros a *, sino contenido todo en la estructura
+Por ejemplo en
+menu_zsock_http(
+    Si se cancela la query y el thread sigue activo, hay el riesgo de acceder a memoria que ya no esta disponible
+Esa funcion se llama por ejemplo desde speccy browser y viene con punteros que habria que convertir todos en una estructura
+mejorada de menu_zsock_http_struct en que no haya punteros
+Lista en teoria completa de llamadas a pthreads con parametros a revisar:
+menu_zsock_http
+menu_download_file
+
+
+
 ---Fin Mejoras---

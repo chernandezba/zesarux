@@ -290,8 +290,33 @@ void set_tape_file_machine(char *filename)
 
 
 
+//Esta no hace nada, solo se crea porque es necesario indicar una funcion para esto
+int tape_block_default_feof(void)
+{
+    return 0;
+}
+
+//Esta no hace nada, solo se crea porque es necesario indicar una funcion para esto
+void tape_block_default_rewindbegin(void)
+{
+
+}
+
+
 void tape_init(void)
 {
+
+    //Funciones por defecto necesarias por ejemplo para que no pete el caso siguiente:
+    //autorewind activado
+    //-insertar cancione.smp como cinta estandard. dejar que cargue entero
+    //load """
+    //segfault porque no existe tape_block_feof
+
+    tape_block_feof=tape_block_default_feof;
+    tape_block_rewindbegin=tape_block_default_rewindbegin;
+
+
+
                 if (tapefile!=0) {
                         debug_printf (VERBOSE_INFO,"Initializing Tape File");
 
@@ -361,6 +386,10 @@ void tape_init(void)
                                         tape_block_read=tape_block_smp_read;
                                         tape_block_readlength=tape_block_smp_readlength;
                                         tape_block_seek=tape_block_smp_seek;
+
+                                        //TODO: necesario crear tape_block_feof y tape_block_rewindbegin? Si es que queremos hacer rewind de esto
+                                        //de momento está cubierto al principio de esta funcion haciendo uso de las funciones por defecto
+
                                         insert_tape_load();
 
                                 }
@@ -2279,8 +2308,6 @@ struct realtape_insert_detect_blocks_struct realtape_insert_detect_blocks_parame
 void *realtape_insert_detect_blocks_thread_function(void *parametros)
 {
 
-    printf("Inicio pthread\n");
-    //sleep(20);
 
         realtape_visual_detected_tape_type=0; //de momento tipo desconocido
     int codigo_retorno;
@@ -2293,9 +2320,8 @@ void *realtape_insert_detect_blocks_thread_function(void *parametros)
     //codigo_retorno=0;
     //strcpy(visual_realtape_textbrowse,"ZX");
 
-    printf("Texto browser: %s\n",visual_realtape_textbrowse);
+    //printf("Texto browser: %s\n",visual_realtape_textbrowse);
 
-    printf("Despues util_realtape_browser\n");
 
     if (codigo_retorno) {
         debug_printf(VERBOSE_INFO,"Error trying to convert audio to Spectrum Tape Blocks. Probably invalid carry in some blocks");
@@ -2339,8 +2365,6 @@ void *realtape_insert_detect_blocks_thread_function(void *parametros)
         realtape_visual_detected_tape_type=1;
     }
 
-
-    printf("Fin pthread\n");
 
     return NULL;
 
@@ -2394,7 +2418,6 @@ void realtape_insert_detect_blocks(char *name_to_use)
 void realtape_insert(void)
 {
 
-    printf("Antes conversiones\n");
 
 	debug_printf (VERBOSE_INFO,"Inserting real tape: %s",realtape_name);
         realtape_file_size_counter=0;
@@ -2558,16 +2581,13 @@ void realtape_insert(void)
         name_to_use=realtape_name_rwa;
     }
 
-    printf("Antes visuals\n");
     realtape_load_visuals(name_to_use);
-    printf("Despues visuals\n");
 
 
 
     //precargar posiciones de cada bloque en cinta para luego mostrar en Visual Real Tape
     realtape_insert_detect_blocks(name_to_use);
 
-    printf("Despues detectar tipo cinta\n");
 
 
 	//Activamos realvideo para que:

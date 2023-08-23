@@ -81,6 +81,7 @@ Mejoras en ZRCP:
 Emulación ZX Spectrum Next mejorada: lista de ID de máquinas actualizada
 Gestión de procesos mejorada: permite copiar cualquier contenido de ventana en el portapapeles interno
 Accesibilidad mejorada: Se agregaron sonidos para eventos de GUI
+Mejorada inserción de Cinta Real: el proceso es mas rápido y parte se ejecuta en segundo plano
 
 * Correcciones:
 
@@ -96,7 +97,7 @@ Se corrigieron varias fugas de memoria "memory leaks" (gracias a la herramienta 
 - Copiar una carpeta desde File Utilities
 - Mostrando Ventanas de Primeros Auxilios
 
-Coregida inicialización de tablas de memoria visual
+Corregida inicialización de tablas de memoria visual
 Se corrigió la reubicación de las ventanas de ZX Vision
 Se corrigió la visualización de renderizado cuando la CPU está en el modo de velocidad máxima
 Se corrigió el error cuando no había permisos para escribir en mmc, ide, trd, dsk, ddh (hilow): se deshabilitan las escrituras persistentes cuando sucede
@@ -105,6 +106,9 @@ Corregido al mostrar los Gráficos de aventura cuando hay caracteres no válidos
 Se corrigió el esxdos handler cuando se usaban banderas fopen: FA_READ + FA_WRITE + FA_OPEN_CREAT
 Se corrigió el error ZRCP al cerrar la conexión (el descriptor de socket se mantenia abierto)
 Se corrigió la lectura de la tecla ESC en el driver curses
+Corregido soporte de archivos .config en .dsk
+Corregido segfault cuando: autorebobinar activado+insertar rwa/smp/wav como cinta estándar+fin de cinta+intentar cargar
+Corregido posible segfault al descargar y descomprimir archivos zip y cancelar operación
 
 * Cambios varios:
 

@@ -23914,7 +23914,8 @@ void menu_realtape_message_reading(void)
 {
     //TODO: lo ideal es que este mensaje se quedase todo el rato mientras se convierte la cinta a
     //Visual Real Tape, que es lo que tarda realmente
-    //Pero para eso habria que hacer la conversión por debajo con un pthread
+    //Pero para eso habria que hacer toda la conversión por debajo con un pthread
+    //actualmente solo la parte de obtener los trozos de cada bloque se hace con un phtread
     menu_generic_message_splash("Insert Real Tape","Tape being read...");
 }
 

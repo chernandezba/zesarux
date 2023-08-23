@@ -224,7 +224,6 @@ int tape_block_smp_seek(int longitud,int direccion)
 
 
 
-
 //Cargar en RAM datos obtenidos del audio de SMP
 void snap_load_zx80_zx81_load_smp(void)
 {
@@ -1147,7 +1146,6 @@ void spec_debug_cabecera(int indice,int leidos)
 int main_spec_rwaatap(long *array_block_positions,int max_array_block_positions,int *codigo_retorno,int longitud_archivo_smp)
 {
 
-    printf("inicio main_spec_rwaatap\n");
 
     spec_longitud_total_archivo_smp=longitud_archivo_smp;
 
@@ -1296,9 +1294,6 @@ int main_spec_rwaatap(long *array_block_positions,int max_array_block_positions,
 
 			spec_debug_cabecera(spec_smp_write_index_tap_start+2,spec_bytes_leidos);
 
-            //temp
-            printf("1 bloque\n");
-            //sleep(20);
 
 
             //leer posicion dentro del archivo

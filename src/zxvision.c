@@ -20556,8 +20556,8 @@ int menu_uncompress_zip_progress_cond(zxvision_window *w GCC_UNUSED)
 
 
 struct menu_uncompress_zip_progress_struct {
-	char *archivo_zip;
-	char *directorio_destino;
+	char archivo_zip[PATH_MAX];
+	char directorio_destino[PATH_MAX];
 };
 
 void *menu_uncompress_zip_progress_thread_function(void *entrada)
@@ -20602,6 +20602,7 @@ void menu_uncompress_zip_progress_print(zxvision_window *w)
 }
 
 
+struct menu_uncompress_zip_progress_struct menu_uncompress_zip_progress_parametros;
 
 //Funcion para descomprimir con ventana de progreso y pthread aparte de descompresion
 void menu_uncompress_zip_progress(char *zip_file,char *dest_dir)
@@ -20612,16 +20613,17 @@ void menu_uncompress_zip_progress(char *zip_file,char *dest_dir)
 
 
 		//Lanzar el thread de descarga
-        struct menu_uncompress_zip_progress_struct parametros;
 
-		parametros.archivo_zip=zip_file;
-		parametros.directorio_destino=dest_dir;
+        //Todo parametro a un thread debe estar en una memoria estatica, nada de stack ni punteros a variables de stack
+		strcpy(menu_uncompress_zip_progress_parametros.archivo_zip,zip_file);
+		strcpy(menu_uncompress_zip_progress_parametros.directorio_destino,dest_dir);
 
 
         //Antes de lanzarlo, decir que se ejecuta, por si el usuario le da enter rapido a la ventana de progreso y el thread aun no se ha lanzado
         menu_uncompress_zip_progress_thread_running=1;
 
-        if (pthread_create( &menu_uncompress_zip_progress_thread, NULL, &menu_uncompress_zip_progress_thread_function, (void *)&parametros) ) {
+        if (pthread_create( &menu_uncompress_zip_progress_thread, NULL, &menu_uncompress_zip_progress_thread_function,
+            (void *)&menu_uncompress_zip_progress_parametros) ) {
                 debug_printf(VERBOSE_ERR,"Can not create menu_uncompress_zip_progress_thread thread");
                 return;
         }

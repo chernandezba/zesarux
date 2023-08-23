@@ -107,6 +107,8 @@ Fixed esxdos handler when using fopen flags: FA_READ + FA_WRITE + FA_OPEN_CREAT
 Fixed ZRCP bug when closing connection (socket descriptor was kept open)
 Fixed reading ESC key on curses driver
 Fixed support for .config files on .dsk
+Fixed segfault when: autorewind enabled+insert rwa/smp/wav file as standard tape+end of tape+try to load
+Fixed possible segfault when downloading and uncompressing zip files and canceling operation
 
 * Misc Changes:
 
