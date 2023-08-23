@@ -2641,6 +2641,29 @@ void menu_file_p_browser_show(char *filename)
 	sprintf(buffer_texto,"Size: %d",tamanyo_archivo);
 	indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
 
+	sprintf(buffer_texto,"\nSystem variables:");
+	indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
+
+    //Inicio de los datos de un archivo P va a la direccion 0x4009 (16393)
+    z80_int start_data=16393;
+
+    //16394 E_PPC Number of current line (with program cursor)
+    z80_int sysvar_e_ppc=p_header[16394-start_data]+256*p_header[16395-start_data];
+	sprintf(buffer_texto,"E_PPC: %d",sysvar_e_ppc);
+	indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
+
+    //16425 NXTLIN Address of next program line to be executed
+    z80_int sysvar_nxtlin=p_header[16425-start_data]+256*p_header[16426-start_data];
+	sprintf(buffer_texto,"NXTLIN: %d",sysvar_nxtlin);
+	indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
+
+    //16427 OLDPPC Line number to which CONT jumps.
+    z80_int sysvar_oldppc=p_header[16427-start_data]+256*p_header[16428-start_data];
+	sprintf(buffer_texto,"OLDPPC: %d",sysvar_oldppc);
+	indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
+
+	indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],"");
+
     z80_int p_pc_reg=0x207;
     sprintf(buffer_texto,"PC Register: %04XH",p_pc_reg);
  	indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
@@ -2727,6 +2750,19 @@ void menu_file_o_browser_show(char *filename)
 	sprintf(buffer_texto,"Size: %d",tamanyo_archivo);
 	indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
 
+    //Inicio de los datos de un archivo O va a la direccion 0x4000
+	sprintf(buffer_texto,"\nSystem variables:");
+	indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
+
+    z80_int start_data=16384;
+
+
+    //16427 OLDPPC Line number to which CONT jumps.
+    z80_int sysvar_oldppc=o_header[16407-start_data]+256*o_header[16408-start_data];
+	sprintf(buffer_texto,"OLDPPC: %d",sysvar_oldppc);
+	indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
+
+	indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],"");
 
     z80_int o_pc_reg=0x283;
     sprintf(buffer_texto,"PC Register: %04XH",o_pc_reg);
