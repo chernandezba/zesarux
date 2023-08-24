@@ -2670,7 +2670,7 @@ void menu_file_p_browser_show(char *filename)
     int total_vars=start_data+tamanyo_archivo-sysvar_vars;
     total_vars-=2; //Por alguna razon que desconozco esto es 2 menos, probado con archivos sin variables y con una sola variable
     if (total_vars<0) total_vars=0;
-	sprintf(buffer_texto,"Basic Variables size:          %d",total_vars);
+	sprintf(buffer_texto," Basic Variables size:         %d",total_vars);
 	indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
 
     //16434 SEED. The seed for RND. This is the variable that is set by RAND
@@ -2783,7 +2783,7 @@ void menu_file_o_browser_show(char *filename)
     int total_vars=start_data+tamanyo_archivo-sysvar_vars;
     total_vars-=2; //Por alguna razon que desconozco esto es 2 menos, probado con archivos sin variables y con una sola variable
     if (total_vars<0) total_vars=0;
-	sprintf(buffer_texto,"Basic Variables size:        %d",total_vars);
+	sprintf(buffer_texto," Basic Variables size:       %d",total_vars);
 	indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
 
     //16412 SEED. The seed for RND. This is the variable that is set by RAND

@@ -240,7 +240,7 @@ nota: cacalib, curses  en consola texto (no X) el mouse solo notifica al pulsar 
 -probar smartload. probar deteccion de tipo tzx (standard o turbo) en quickload
 -probar recent files, drive
 -probar autoload & autosave
--probar diferentes joysticks: kempston (inves y no-inves), cursor, fuller, etc. autofire
+-probar diferentes joysticks: kempston (inves y no-inves), cursor, fuller, etc. autofire. autoleft/right
 -probar on screen keyboard, con F8 y con joystick
 -probar on screen adventure keyboard 
 -probar asignar teclas f a funciones
