@@ -2501,7 +2501,7 @@ void easter_scanline_putchar_front(z80_byte caracter,int x,int y,int scanline,z8
 
     offset=(caracter-32)*8;
 
-    puntero_caracter=&char_set_spectrum[offset+scanline];
+    puntero_caracter=&char_set_dos[offset+scanline];
     byte_leido=*puntero_caracter;
 
     //Hacemos bold
