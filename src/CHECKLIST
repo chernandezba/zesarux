@@ -280,7 +280,6 @@ nota: cacalib, curses  en consola texto (no X) el mouse solo notifica al pulsar 
 -probar accelerate loaders
 -probar mantransferv3
 -probar multiface, transtape, etc... todos los dispositivos de copia
--probar betadisk
 
 -keymaps en xwindows y sdl para z88, cpc, chloe, sam, ql, ...
 
