@@ -2997,13 +2997,15 @@ void remote_easter_egg(int misocket)
     remote_cpu_enter_step(misocket);
     if (menu_event_remote_protocol_enterstep.v==0) return;
 
-
+    zrcp_easter_egg_running.v=1;
 
     remote_easter_egg_mostrar();
     sleep(5);
 
 
     remote_cpu_exit_step(misocket);
+
+    zrcp_easter_egg_running.v=0;
 
 }
 

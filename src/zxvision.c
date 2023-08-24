@@ -1241,6 +1241,8 @@ int menu_button_f_function_action=0;
 //Para evento de entrada en paso a paso desde remote protocol
 z80_bit menu_event_remote_protocol_enterstep={0};
 
+//mostrando easter egg desde ZRCP
+z80_bit zrcp_easter_egg_running={0};
 
 //Si menus de confirmacion asumen siempre yes y no preguntan nunca
 z80_bit force_confirm_yes={0};
@@ -24334,7 +24336,8 @@ void menu_inicio(void)
                 //Si se pulsa ESC, salir de cpu-step
                 scr_actualiza_tablas_teclado();
 
-                if ((puerto_especial1&1)==0) {
+
+                if ((puerto_especial1&1)==0 && zrcp_easter_egg_running.v==0) {
                     debug_printf(VERBOSE_DEBUG,"Exiting cpu-step by pressing ESC");
 #ifndef NETWORKING_DISABLED
                     remote_cpu_exit_step_continue_restore_multitask();
