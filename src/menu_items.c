@@ -21758,7 +21758,7 @@ void menu_about_new(MENU_ITEM_PARAMETERS)
     sprintf (mensaje_about[0],"ZEsarUX v." EMULATOR_VERSION " (" EMULATOR_SHORT_DATE ")");
     sprintf (mensaje_about[1]," - " EMULATOR_EDITION_NAME " - ");
     //sprintf (mensaje_about[2],"(C) 2013 Cesar Hernandez Ba%co",letra_enye);
-    sprintf (mensaje_about[2],"(C) 2013 ÁCésar Hernández Bañó");
+    sprintf (mensaje_about[2],"(C) 2013 César Hernández Bañó");
     //sprintf (mensaje_about[2],"(C) 2013 Cesar Hernandez Bano");
 
     int ancho_maximo=0;

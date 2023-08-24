@@ -7631,7 +7631,7 @@ unsigned char menu_escribe_texto_convert_utf(unsigned char prefijo_utf,unsigned 
 		if (caracter==0x81) {
 			//Á Acentuada mayuscula
 			if (si_complete_video_driver()) {
-                return 168; //Eñe mayuscula
+                return 168;
             }
             else {
                 return 'A';
