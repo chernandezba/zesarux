@@ -139,7 +139,6 @@ Modo 6 512x192 real/simulado a 256x192 con timmy.tap y testtimexmode6.tap y test
 -probar visualmem, tambien en drivers no graficos como curses, aa, etc
 -probar waveform, tambien en drivers no graficos como curses, aa, etc
 -probar paleta gris, roja, verde, azul, inverso, real, etc. tambien con modos ulaplus, gigascreen, scanlines, spectra, timex, prism, sam
--ver paletas de colores
 -probar expansiones de ram de zx80/81
 -probar a generar algun error y que aparezca en menu
 -probar tooltip y ayuda de opciones en menu
