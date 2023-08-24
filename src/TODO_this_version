@@ -4,5 +4,3 @@ Para esta version:
 
 compilacion sin pthreads no debe entrar funciones pthread*...
 
--tape browser O meter mas sysvariables
--P lo mismo
