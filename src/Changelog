@@ -53,7 +53,7 @@ Improved ZX Vision
 - Allow to use your own charset file on ZX Vision
 - Allow to get charset from a game and use as your own charset file on ZX Vision
 - Allow to render only changed pixels (so it speeds up render). Internal flag: dirty_user_must_draw_contents
-- Added support for utf-8 character "ï"
+- Added support for utf-8 characters "ï" and "Á"
 - Process switcher can be set to immutable, so massive actions on menu Windows, like minimize all, cascade, etc, don't affect it
 - Allow to press ESC when selecting a line on a history items
 - Now the window frame changes colour when you move the mouse over the resize zone (bottom right)

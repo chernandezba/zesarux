@@ -53,7 +53,7 @@ Mejoras en ZX Vision
 - Permitir usar su propio archivo de juego de caracteres en ZX Vision
 - Permitir obtener el juego de caracteres de un juego y utilizarlo como tu propio juego de caracteres en ZX Vision
 - Permitir renderizar solo los píxeles modificados (por lo que acelera el renderizado). Indicador interno: dirty_user_must_draw_contents
-- Se agregó soporte utf-8 para el caracter "ï"
+- Se agregó soporte utf-8 para los caracteres "ï" y "Á"
 - El conmutador de procesos se puede configurar como inmutable, por lo que las acciones masivas en el menú de Windows, como minimizar todo, cascada, etc., no le afectan
 - Permitir presionar ESC al seleccionar una línea en un elemento del historial
 - Ahora el marco de la ventana cambia de color cuando mueve el ratón sobre la zona de cambio de tamaño (abajo a la derecha)

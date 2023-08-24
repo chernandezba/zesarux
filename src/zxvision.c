@@ -7628,6 +7628,16 @@ unsigned char menu_escribe_texto_convert_utf(unsigned char prefijo_utf,unsigned 
 
 	if (prefijo_utf==0xC3) {
 
+		if (caracter==0x81) {
+			//Á Acentuada mayuscula
+			if (si_complete_video_driver()) {
+                return 168; //Eñe mayuscula
+            }
+            else {
+                return 'A';
+            }
+        }
+
 		if (caracter==0x91) {
 			//Eñe mayuscula
 			if (si_complete_video_driver()) {
