@@ -382,5 +382,8 @@ menu_zsock_http
 menu_download_file
 
 
+-Visor de variables de sistema de programa en ejecución. Con nombre y descripción. Para spectrum, zx80 y 81
+-Poder ver variables de una cinta .P, .O e incluso basic de spectrum (desde el bloque de basic de un .tap?)
+
 
 ---Fin Mejoras---

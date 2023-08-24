@@ -2649,34 +2649,42 @@ void menu_file_p_browser_show(char *filename)
 
     //16394 E_PPC Number of current line (with program cursor)
     z80_int sysvar_e_ppc=p_header[16394-start_data]+256*p_header[16395-start_data];
-	sprintf(buffer_texto,"E_PPC: %d",sysvar_e_ppc);
+	sprintf(buffer_texto,"E_PPC  (current curs. line):   %d",sysvar_e_ppc);
 	indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
 
     //16425 NXTLIN Address of next program line to be executed
     z80_int sysvar_nxtlin=p_header[16425-start_data]+256*p_header[16426-start_data];
-	sprintf(buffer_texto,"NXTLIN: %d",sysvar_nxtlin);
+	sprintf(buffer_texto,"NXTLIN (add. next line ex.):   %d",sysvar_nxtlin);
 	indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
 
     //16427 OLDPPC Line number to which CONT jumps.
     z80_int sysvar_oldppc=p_header[16427-start_data]+256*p_header[16428-start_data];
-	sprintf(buffer_texto,"OLDPPC: %d",sysvar_oldppc);
+	sprintf(buffer_texto,"OLDPPC (line CONT sentence):   %d",sysvar_oldppc);
 	indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
 
-	indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],"");
+    //16400 VARS
+    z80_int sysvar_vars=p_header[16400-start_data]+256*p_header[16401-start_data];
+	sprintf(buffer_texto,"VARS   (Basic Variables):      %d",sysvar_vars);
+	indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
 
-    z80_int p_pc_reg=0x207;
-    sprintf(buffer_texto,"PC Register: %04XH",p_pc_reg);
- 	indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
+    int total_vars=start_data+tamanyo_archivo-sysvar_vars;
+    total_vars-=2; //Por alguna razon que desconozco esto es 2 menos, probado con archivos sin variables y con una sola variable
+    if (total_vars<0) total_vars=0;
+	sprintf(buffer_texto,"Basic Variables size:          %d",total_vars);
+	indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
 
-    //Los siguientes registros son fijos, pero queda bonito mostrarlo
-    strcpy(buffer_texto,"IM mode: 1");
-    indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
+    //16434 SEED. The seed for RND. This is the variable that is set by RAND
+    z80_int sysvar_seed=p_header[16434-start_data]+256*p_header[16435-start_data];
+	sprintf(buffer_texto,"SEED   (seed for RND):         %d",sysvar_seed);
+	indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
 
-    strcpy(buffer_texto,"I register: 1EH");
-    indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
+    //16436 FRAMES. Counts the frames displayed on the television. Bit 15 is 1.
+    //Bits 0 to 14 are decremented for each frame sent to the television.
+    z80_int sysvar_frames=p_header[16436-start_data]+256*p_header[16437-start_data];
+	sprintf(buffer_texto,"FRAMES (frames displayed-dec): %d",sysvar_frames);
+	indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
 
-    strcpy(buffer_texto,"Interrupts: Disabled");
-    indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
+
 
 
 	texto_browser[indice_buffer]=0;
@@ -2757,26 +2765,36 @@ void menu_file_o_browser_show(char *filename)
     z80_int start_data=16384;
 
 
-    //16427 OLDPPC Line number to which CONT jumps.
-    z80_int sysvar_oldppc=o_header[16407-start_data]+256*o_header[16408-start_data];
-	sprintf(buffer_texto,"OLDPPC: %d",sysvar_oldppc);
+    //16390 E_PPC Number of current line (with program cursor)
+    z80_int sysvar_e_ppc=o_header[16390-start_data]+256*o_header[16391-start_data];
+	sprintf(buffer_texto,"E_PPC  (current curs. line): %d",sysvar_e_ppc);
 	indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
 
-	indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],"");
+    //16427 OLDPPC Line number to which CONT jumps.
+    z80_int sysvar_oldppc=o_header[16407-start_data]+256*o_header[16408-start_data];
+	sprintf(buffer_texto,"OLDPPC (line CONT sentence): %d",sysvar_oldppc);
+	indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
 
-    z80_int o_pc_reg=0x283;
-    sprintf(buffer_texto,"PC Register: %04XH",o_pc_reg);
- 	indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
+    //16392 VARS
+    z80_int sysvar_vars=o_header[16392-start_data]+256*o_header[16393-start_data];
+	sprintf(buffer_texto,"VARS   (Basic Variables):    %d",sysvar_vars);
+	indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
 
-    //Los siguientes registros son fijos, pero queda bonito mostrarlo
-    strcpy(buffer_texto,"IM mode: 1");
-    indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
+    int total_vars=start_data+tamanyo_archivo-sysvar_vars;
+    total_vars-=2; //Por alguna razon que desconozco esto es 2 menos, probado con archivos sin variables y con una sola variable
+    if (total_vars<0) total_vars=0;
+	sprintf(buffer_texto,"Basic Variables size:        %d",total_vars);
+	indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
 
-    strcpy(buffer_texto,"I register: 0EH");
-    indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
+    //16412 SEED. The seed for RND. This is the variable that is set by RAND
+    z80_int sysvar_seed=o_header[16412-start_data]+256*o_header[16413-start_data];
+	sprintf(buffer_texto,"SEED   (seed for RND):       %d",sysvar_seed);
+	indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
 
-    strcpy(buffer_texto,"Interrupts: Disabled");
-    indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
+    //16414 FRAMES. number of frames displayed since the ZX-80 was switched on
+    z80_int sysvar_frames=o_header[16414-start_data]+256*o_header[16415-start_data];
+	sprintf(buffer_texto,"FRAMES (frames displayed):   %d",sysvar_frames);
+	indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
 
 
 	texto_browser[indice_buffer]=0;

@@ -8692,6 +8692,9 @@ void debug_view_basic_variables(char *results_buffer,int maxima_longitud_texto)
 
   	}
 
+    sprintf (buffer_linea,"%d: End variables",dir);
+    util_concat_string(results_buffer,buffer_linea,maxima_longitud_texto);
+
 
 
 }
