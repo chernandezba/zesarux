@@ -653,7 +653,12 @@ static int fbdev_activate_current(int tty)
 
 void fbdev_cls(void)
 {
-return;
+    //TODO: este cls da problemas, creo que por que se sale de rango. Pero como no he podido determinar aun el error, mejor lo desactivo
+    //puede que fbdev_ancho y alto sean el total del driver, pero no lo que manejo con pixeles (aunque hay al final un realocate de layers de ese tamaño)
+    //Creo que simplemente se sale de rango
+
+    return;
+
 	int x,y;
 
 	//Borrar pantalla
@@ -670,9 +675,8 @@ void scrfbdev_end(void)
 {
 	debug_printf (VERBOSE_INFO,"Closing video driver");
 
-    //Este cls da segfault al cambiar de maquina, probablemente porque hay que hacerlo antes de que el menu empiece a redefinir
-    //parametros de la maquina nueva
-    //fbdev_cls();
+    //Este cls da segfault al cambiar de maquina, en pc. no acabo de ver por que. funcion tiene un return tal cual
+    fbdev_cls();
 
 	//establecer consola texto
 	ioctl(fbdev_tty, KDSETMODE, KD_TEXT);
@@ -2191,6 +2195,7 @@ int scrfbdev_init (void){
 
 
 		//Borrar pantalla
+        //Este cls da segfault al cambiar de maquina, en pc. no acabo de ver por que. funcion tiene un return tal cual
 		fbdev_cls();
 
 

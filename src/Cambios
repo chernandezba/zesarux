@@ -113,6 +113,7 @@ Corregido segfault cuando: autorebobinar activado+insertar rwa/smp/wav como cint
 Corregido posible segfault al descargar y descomprimir archivos zip y cancelar operación
 Corregida compilación al desactivar soporte de pthreads
 Corregido al mostrar información en Visual Real Tape cuando se inserta una cinta de audio de ZX80
+Corregido segfault en driver fbdev al cambiar maquina
 
 * Cambios varios:
 

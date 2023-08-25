@@ -113,6 +113,7 @@ Fixed segfault when: autorewind enabled+insert rwa/smp/wav file as standard tape
 Fixed possible segfault when downloading and uncompressing zip files and canceling operation
 Fixed compilation when disabling pthreads support
 Fixed showing info on Visual Real Tape when inserting a ZX80 audio tape
+Fixed segfault on fbdev driver when changing machine
 
 * Misc Changes:
 
