@@ -386,4 +386,6 @@ menu_download_file
 -Poder ver variables de una cinta .P, .O e incluso basic de spectrum (desde el bloque de basic de un .tap?)
 
 
+-fbdev en linux, peta al cambiar de maquina. Ejemplo de 48k a +3
+
 ---Fin Mejoras---

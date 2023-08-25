@@ -653,7 +653,7 @@ static int fbdev_activate_current(int tty)
 
 void fbdev_cls(void)
 {
-
+return;
 	int x,y;
 
 	//Borrar pantalla
