@@ -3164,6 +3164,36 @@ char *bitmap_button_ext_desktop_debugcpu[EXT_DESKTOP_BUTTONS_ANCHO]={
     "       R    R             "   //25
 };
 
+char *bitmap_button_ext_desktop_debugconsole[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+	"byyyyyyyyyyyyyyyyyyyyyyyyb",	//0
+	"bbbbbbbbbbbbbbbbbbbbbbbbbb",
+	"bbbbbWbbbbWWWWbbWWWWbbbbbb",
+	"bbbbbWbbbbWbbWbbWbbWbbbbbb",
+	"byyybWbbbbWbbWbbWbbbbbyyyb",
+	"bbbbbWbbbbWbbWbbWbWWbbbbbb",
+	"bbbbbWbbbbWbbWbbWbbWbbbbbb",
+	"bbbbbWWWbbWWWWbbWWWWbbbbbb",
+	"byyyyyyyyyyyyyyyyyyyyyyyyb",
+	"bbbbbbbbbbbbbbbbbbbbbbbbbb",
+	"bbbbbbbbbbbbbbbbbbbbbbbbbb",	//10
+	"bbbbbbbbbbbbbbbbbbbbbbbbbb",
+	"byyyyyyyyyyyyyyyyyyyyyyyyb",
+    "bbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "                 R        ",
+    "                R         ",
+  	"          RRRRRR          ",
+	"         RRRRRRRR         ",
+	"         RRRRRRRR         ",
+	"          RRRRRRR         ",
+	"         RR      R        ",   //20
+	"        RRRR  R   R       ",
+	"        RRRRRRR   R       ",
+	"         RR               ",
+	"        R  R              ",
+    "       R    R             "    //25
+};
+
 
 char *bitmap_button_ext_desktop_cpustatistics[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345
@@ -3592,6 +3622,103 @@ char *bitmap_button_ext_desktop_viewsprites[EXT_DESKTOP_BUTTONS_ANCHO]={
 	"                          " 	 //25
 };
 
+
+
+char *bitmap_button_ext_desktop_tsconftbbluespritenav[EXT_DESKTOP_BUTTONS_ANCHO]={
+   //01234567890123456789012345
+    "                          ",	//0
+    "      xxxxxxxxxxxxxxx     ",
+  	"      xxxxxWWWWWxxxxx     ",
+	"      xxxxWWxxWWWxxxx     ",
+	"      xxxWxWWWxWxWWWx     ",
+	"      xxxWxWWWxxWWxxx     ",
+	"      xxxWxWxxWWxxxxx     ",
+	"      xxxWxxWWxxWxxxx     ",
+	"      xxxWWWxxWWxWWxx     ",
+	"      xxWWxxWWWWWWWxx     ",
+	"      xxxxxWWWWWWxxxx     ",	//10
+	"      xxWxxxxxxxxxxxx     ",
+	"      xWWWxWxxxWxxxxx     ",
+	"      xxWxxWxxWWWxxxx     ",
+	"      xxWxWWxxxWWxxxx     ",
+	"      xxWxWWWxxxxxxxx     ",
+	"      xxWxxxxxWxxxxxx     ",
+	"      xxWxWWWWWWWxxxx     ",
+	"wwwwwwwwwwwwWWxWxxxxx     ",
+	"wrwwrwrwwwrwWxWWWxxxx     ",
+	"wrwwrwrwwwrwxxxxxxWxx     ",	//20
+	"wrrrrwrwwwrwxxxWWWWxx     ",
+	"wrwwrwrwrwrwWxxWWWxxx     ",
+	"wrwwrwwrwrwwxxxxxxxxx     ",
+	"wwwwwwwwwwww              ",
+	"                          " 	 //25
+};
+
+/*
+Inspirado en:
+Piet Mondrian, 1921 - Composition en rouge, jaune, bleu et noir
+*/
+char *bitmap_button_ext_desktop_tsconftbbluetilenav[EXT_DESKTOP_BUTTONS_ANCHO]={
+   //01234567890123456789012345
+    "                          ",     //0
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
+	"xwwwwwxWWWWWWWWxyyyyyyxwwx",
+	"xwwwwwxWWWWWWWWxyyyyyyxwwx",
+	"xxxxxxxxxxxxxxxxxxxxxxxwwx",
+	"xWWWxrrrrrrrrrrxyyyyyyxwwx",
+	"xWWWxrrrrrrrrrrxyyyyyyxwwx",
+	"xWWWxrrrrrrrrrrxyyyyyyxwwx",
+	"xWWWxrrrrrrrrrrxyyyyyyxwwx",
+	"xxxxxrrrrrrrrrrxxxxxxxxwwx",
+	"xwwwxrrrrrrrrrrxWWWxWWxwwx",
+	"xwwwxrrrrrrrrrrxWWWxWWxwwx",
+	"xwwwxrrrrrrrrrrxWWWxWWxwwx",
+	"xwwwxrrrrrrrrrrxWWWxWWxwwx",
+	"xwwwxxxxxxxxxxxxxxxxxxxwwx",
+	"xwwwxxxxxxwwwwwxWWWWWWxwwx",
+	"xwwwxxxxxxwwwwwxWWWWWWxwwx",
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
+	"xyyyxxxxxxwwwwwxbbbbbbxrrx",
+	"xyyyxxxxxxwwwwwxbbbbbbxrrx",
+	"xyyyxxxxxxxxxxxxbbbbbbxrrx",
+	"xyyyxWWWWxxxxxxxbbbbbbxrrx",
+	"xyyyxWWWWxxxxxxxxxxxxxxrrx",
+	"xyyyxWWWWxWWWWWWWWWWWWxrrx",
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
+	"                          " 	 //25
+};
+
+
+
+char *bitmap_button_ext_desktop_shortcutshelper[EXT_DESKTOP_BUTTONS_ANCHO]={
+   //01234567890123456789012345
+	"bbbbbbbbbbbbbbbbbbbbbbbbbb",	//0
+	"bWbbbWbbWWWWbbWbbbWbbWbbWb",
+	"bWWbWWbbWbbbbbWWbbWbbWbbWb",
+	"bWbWbWbbWWWbbbWbWbWbbWbbWb",
+	"bWbbbWbbWbbbbbWbbWWbbWbbWb",
+	"bWbbbWbbWWWWbbWbbbWbbWWWWb",
+	"bbbbbbbbbbbbbbbbbbbbbbbbbb",
+	"bbbbbbbbbbbbbbWbbbbbbbbbbb",
+	"bbbbbbbbbbbbbWWWbbbbbbbbbb",
+	"bbbbbbbbbbbbbbWbbbbbbbbbbb",
+	"bbbbbbbbbbbbbbbbbbbbbbbbbb",	//10
+	"bbbbbbbbbbbbWWWWbbbbbbbbbb",
+	"bbbbbbbbbbbbWbbbbbbbbbbbbb",
+	"bbbbbbbbbbbbWWWbbbbbbbbbbb",
+	"bbbbbbbbbbbbWbbbbbbbbbbbbb",
+	"bbbbbbbbbbbbWWWWbbbbbbbbbb",
+	"bbbbbbbbbbbbbbbbbbbbbbbbbb",
+	"bbbbbbbbbbbbbbWbbbbbbbbbbb",
+	"bbbbbbbbbbbbbWWWbbbbbbbbbb",
+	"bbbbbbbbbbbbbbWbbbbbbbbbbb",
+	"bbbbbbbbbbbbbbbbbbbbbbbbbb",	//20
+	"bbbbbbbbbbbbWWWbbbbbbbbbbb",
+	"bbbbbbbbbbbbWbbWbbbbbbbbbb",
+	"bbbbbbbbbbbbWWWbbbbbbbbbbb",
+	"bbbbbbbbbbbbWbbWbbbbbbbbbb",
+	"bbbbbbbbbbbbWbbWbbbbbbbbbb"	//25
+};
 
 char *bitmap_button_ext_desktop_fileutils[EXT_DESKTOP_BUTTONS_ANCHO]={
    //01234567890123456789012345

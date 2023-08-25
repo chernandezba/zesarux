@@ -5262,7 +5262,7 @@ void menu_keyboard_settings(MENU_ITEM_PARAMETERS)
 			menu_add_item_menu_ayuda(array_menu_keyboard_settings,"Enables real keyboard emulation, even with the keyboard matrix error.\n"
 						"This is the error/feature that returns more key pressed than the real situation, for example, "
 						"pressing keys ASQ, will return ASQW. Using a pc keyboard is difficult to test that effect, because "
-						"that most of them can return more than two or three keys pressed at a time. But using the on-screen keyboard "
+						"that most of them can only read two or three keys pressed at a time. But using the on-screen keyboard "
 						"and also the Recreated Keyboard, you can test it");
 
 		}

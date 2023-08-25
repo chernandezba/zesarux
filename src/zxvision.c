@@ -5766,6 +5766,9 @@ void menu_ext_desktop_draw_configurable_icon(int index_icon,int pulsado)
                 int y_app_abierta=y+menu_get_ext_desktop_icons_size();
 
                 //Una linea por debajo
+                //TODO: la linea se sale dos pixeles a la derecha, porque asi esta definido para dibujar el background de un icono,
+                //pero en la linea quiza no nos interesa. Eso no se aprecia en ninguna app excepto la de shortcutshelper, en que
+                //el icono llega a la derecha del todo y la linea de apertura se va mas 2 pixeles mas a la derecha
                 menu_draw_ext_desktop_one_configurable_icon_background(x,y_app_abierta,menu_get_ext_desktop_icons_size(),
                     1*zoom_y,ESTILO_GUI_COLOR_AVISO);
             }
@@ -9294,11 +9297,11 @@ zxvision_known_window_names zxvision_known_window_names_array[]={
 	{"watches",menu_watches,bitmap_button_ext_desktop_watches},
 	{"displaypalettes",menu_display_total_palette,bitmap_button_ext_desktop_colour_palettes},
 	{"videoinfo",menu_debug_tsconf_tbblue_msx_videoregisters,bitmap_button_ext_desktop_videoinfo},
-	{"tsconftbbluespritenav",menu_debug_tsconf_tbblue_msx_spritenav,bitmap_button_ext_desktop_userdefined},
-	{"tsconftbbluetilenav",menu_debug_tsconf_tbblue_msx_tilenav,bitmap_button_ext_desktop_userdefined},
+	{"tsconftbbluespritenav",menu_debug_tsconf_tbblue_msx_spritenav,bitmap_button_ext_desktop_tsconftbbluespritenav},
+	{"tsconftbbluetilenav",menu_debug_tsconf_tbblue_msx_tilenav,bitmap_button_ext_desktop_tsconftbbluetilenav},
 	{"debugcpu",menu_debug_registers,bitmap_button_ext_desktop_debugcpu},
 	{"helpshowkeyboard",menu_help_show_keyboard,bitmap_button_ext_desktop_helpkeyboard},
-    {"debugconsole",menu_debug_unnamed_console,bitmap_button_ext_desktop_userdefined},
+    {"debugconsole",menu_debug_unnamed_console,bitmap_button_ext_desktop_debugconsole},
     {"audiogensound",menu_audio_general_sound,bitmap_button_ext_desktop_geneneralsoundregisters},
     {"debugioports",menu_debug_ioports,bitmap_button_ext_desktop_ioports},
     {"hexeditor",menu_debug_hexdump,bitmap_button_ext_desktop_hexeditor},
@@ -9306,7 +9309,7 @@ zxvision_known_window_names zxvision_known_window_names_array[]={
     {"viewsensors",menu_debug_view_sensors,bitmap_button_ext_desktop_view_sensors},
     {"visualrealtape",menu_visual_realtape,bitmap_button_ext_desktop_visualrealtape},
     {"textadvmap",menu_debug_textadventure_map_connections,bitmap_button_ext_desktop_text_adventure_map},
-    {"shortcutshelper",menu_shortcuts_window,bitmap_button_ext_desktop_userdefined},
+    {"shortcutshelper",menu_shortcuts_window,bitmap_button_ext_desktop_shortcutshelper},
     {"processmanagement",menu_display_window_list,bitmap_button_ext_desktop_processmanagement},
     {"hilowconvertaudio",menu_hilow_convert_audio,bitmap_lowericon_ext_desktop_hilow_convert},
     {"visualfloppy",menu_visual_floppy,bitmap_button_ext_desktop_visualfloppy},

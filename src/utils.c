@@ -4773,7 +4773,7 @@ void configfile_parse_custom_file(char *archivo)
                 //No hay archivo de configuracion. Parametros vacios
                 configfile_argv[0]="";
                 configfile_argc=1;
-                //free(custom_config_mem_pointer);
+
                 return;
         }
 
@@ -4788,7 +4788,7 @@ void configfile_parse_custom_file(char *archivo)
                 }
         }
 
-        //free(custom_config_mem_pointer);
+
         return;
 }
 
