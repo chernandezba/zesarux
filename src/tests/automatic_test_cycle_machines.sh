@@ -18,4 +18,9 @@ else
 	./zesarux --noconfigfile --quickexit --machine $i --zoom $ZOOM --exit-after 10
 fi
 
+if [ $? != 0 ]; then
+	echo "Error running machine $i"
+	exit 1
+fi
+
 done

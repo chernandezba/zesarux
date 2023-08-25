@@ -13,8 +13,6 @@ echo "Porcentaje=$PERCCOMPLETADO %"
 ok Mac
 ok Linux
 
--ejecutar automatic_tests.sh
-
 -ejecutar tests/manual_tests.sh
 
 -ejecutar tests/machines_test.sh
