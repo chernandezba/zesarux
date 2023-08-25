@@ -669,6 +669,9 @@ void fbdev_cls(void)
 void scrfbdev_end(void)
 {
 	debug_printf (VERBOSE_INFO,"Closing video driver");
+
+    fbdev_cls();
+
 	//establecer consola texto
 	ioctl(fbdev_tty, KDSETMODE, KD_TEXT);
 
@@ -704,7 +707,7 @@ if (tcsetattr(fbdev_tty, TCSANOW, &termios_valores)==-1) {
 	//return 1;
 }
 */
-	fbdev_cls();
+
 
 	munmap(fbdev_pointer, fbdev_screensize);
 	close(fbdev_filedescriptor);
