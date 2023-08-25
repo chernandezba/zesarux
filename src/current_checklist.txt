@@ -43,7 +43,7 @@ Drivers video:
 **en stdout, probar con modo traprst16 y modo autoredraw
 **en fbdev, probar tambien con --no-use-ttyfbdev y --no-use-ttyrawfbdev y --decimal-full-scale-fbdev
 **probar recreated
--ejecutar tests/videotest.sh
+ok Linux -ejecutar tests/videotest.sh
 
 
 -probar desactivando xextensions en configure con --disable-xext
@@ -60,12 +60,13 @@ Drivers audio:
 **aumentar/bajar velocidad cpu
 ***usar tests/soundtest.sh
 ***en dsp, si no se tiene dsp real, se puede probar con aoss (que se oye entrecortado continuo) o en cygwin (que distorsiona)
+ok todos los de linux. Falta Mac
 
 -probar targets:
 * linux 32 bits
-* linux 64 bits
+ok * linux 64 bits
 * raspberry. y activando extensiones raspberry
-* mac os x, con y sin optimizaciones
+ok  * mac os x, con y sin optimizaciones
 * windows mingw, con y sin pthreads
 * windows cygwin
 

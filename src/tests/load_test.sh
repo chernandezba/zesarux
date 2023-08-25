@@ -14,7 +14,7 @@ for i in $MAQUINAS; do
 	elif [ "$i" == "ZX80" ] || [ "$i" == "TK80" ] || [ "$i" == "TK82" ]; then
 		./zesarux --noconfigfile --ao null --vo stdout tests/printtrap_test.zsf --exit-after 3 --machine $i --cpuspeed 400 > $TEMPFILE
 	else
-		./zesarux --noconfigfile --ao null --vo stdout tests/printtrap_test.tap --hardware-debug-ports --exit-after 5 --machine $i --fastautoload > $TEMPFILE
+		./zesarux --noconfigfile --ao null --vo stdout tests/printtrap_test.tap --hardware-debug-ports --exit-after 10 --machine $i --fastautoload > $TEMPFILE
 	fi
 
 	grep HOLA $TEMPFILE

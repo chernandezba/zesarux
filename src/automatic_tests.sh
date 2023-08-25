@@ -38,7 +38,7 @@ fi
 
 tests/load_test.sh
 if [ $? != 0 ]; then
-        echo "Error printtrap tests"
+        echo "Error load tests"
         exit 1
 fi
 

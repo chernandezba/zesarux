@@ -367,6 +367,7 @@ Esto permite estadisticas mejor con goaccess. Aunque no parece reconocer el brow
 
 Soportar uft-8 en el footer, que sirva para texto footer normal pero tambien con opciones de --programsettingsinfo de archivos .config.
 Quitar el parche para soportar la eñe en dicha opcion
+Cuidado que  en la consola si hay verbose debug, se muestra caracter extraño para la ñ
 
 -Cat en cpc 6128 con pd765 desactivado, se cuelga
 

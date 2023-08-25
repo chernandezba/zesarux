@@ -235,6 +235,11 @@ A: These machines have "big" resolutions (compared to a Speccy 256x192). So mayb
 If you don't want to have this automatically changed, just change Settings-> General-> Autochange Zoom big display,
 or use command line setting: --no-autochange-zoom-big-display
 
+
+Q: I started ZEsarUX on Linux a pure text console mode, tried the fbdev driver but gives me an error:
+"fbdev: ioctl VT_GETSTATE: Inappropriate ioctl for device (not a linux console?)"
+A: You need to start it from a pseudo-text console mode, I mean, it's a text console but set in a graphics mode. To do that, you must set a vga mode parameter on the kernel boot. Try adding this parameter to the Grub boot: "vga=792"
+
 ----------------------------------------------------------------------------
 
 
