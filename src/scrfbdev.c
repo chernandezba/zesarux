@@ -670,7 +670,9 @@ void scrfbdev_end(void)
 {
 	debug_printf (VERBOSE_INFO,"Closing video driver");
 
-    fbdev_cls();
+    //Este cls da segfault al cambiar de maquina, probablemente porque hay que hacerlo antes de que el menu empiece a redefinir
+    //parametros de la maquina nueva
+    //fbdev_cls();
 
 	//establecer consola texto
 	ioctl(fbdev_tty, KDSETMODE, KD_TEXT);
