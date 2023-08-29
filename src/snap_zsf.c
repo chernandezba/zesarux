@@ -768,11 +768,11 @@ Por otra parte, tener bloques diferentes ayuda a saber mejor qué tipos de bloqu
 //Maxima longitud de los bloques de descripcion
 #define MAX_ZSF_BLOCK_ID_NAMELENGTH 30
 
-//Total de nombres sin contar el unknown final
+//Id maximo de nombres sin contar el unknown final
 #define MAX_ZSF_BLOCK_ID_NAMES 61
 char *zsf_block_id_names[]={
  //123456789012345678901234567890
-  "ZSF_NOOP",
+  "ZSF_NOOP",                 //0
   "ZSF_MACHINEID",
   "ZSF_Z80_REGS",
   "ZSF_MOTO_REGS",
@@ -782,7 +782,7 @@ char *zsf_block_id_names[]={
   "ZSF_AYCHIP",
   "ZSF_ULA",
   "ZSF_ULAPLUS",
-  "ZSF_ZXUNO_RAMBLOCK",
+  "ZSF_ZXUNO_RAMBLOCK",      //10
   "ZSF_ZXUNO_CONF",
   "ZSF_ZX8081_CONF",
   "ZSF_ZXEVO_NVRAM",
@@ -792,7 +792,7 @@ char *zsf_block_id_names[]={
   "ZSF_DIVIFACE_MEM",
   "ZSF_CPC_RAMBLOCK",
   "ZSF_CPC_CONF",
-  "ZSF_PENTAGON_CONF",
+  "ZSF_PENTAGON_CONF",    //20
   "ZSF_TBBLUE_RAMBLOCK",
   "ZSF_TBBLUE_CONF",
   "ZSF_TBBLUE_PALETTES",
@@ -802,7 +802,7 @@ char *zsf_block_id_names[]={
   "ZSF_MSX_CONF",
   "ZSF_VDP_9918A_VRAM",
   "ZSF_GENERIC_LINEAR_MEM",
-  "ZSF_VDP_9918A_CONF",
+  "ZSF_VDP_9918A_CONF",  //30
   "ZSF_SNCHIP",
   "ZSF_SVI_CONF",
   "ZSF_DATETIME",
@@ -812,7 +812,7 @@ char *zsf_block_id_names[]={
   "ZSF_SMS_RAMBLOCK",
   "ZSF_SMS_CONF",
   "ZSF_SMS_CRAM",
-  "ZSF_ACE_CONF",
+  "ZSF_ACE_CONF",     //40
   "ZSF_Z88_MEMBLOCK",
   "ZSF_Z88_CONF",
   "ZSF_Z80_HALT_STATE",
@@ -822,7 +822,7 @@ char *zsf_block_id_names[]={
   "ZSF_MK14_LEDS",
   "ZSF_CHROME_RAMBLOCK",
   "ZSF_PRISM_CONF",
-  "ZSF_PRISM_RAMBLOCK",
+  "ZSF_PRISM_RAMBLOCK",  //50
   "ZSF_PRISM_VRAMBLOCK",
   "ZSF_CHLOE_HOME_RAMBLOCK",
   "ZSF_CHLOE_EX_RAMBLOCK",
@@ -832,7 +832,7 @@ char *zsf_block_id_names[]={
   "ZSF_PCW_CONF",
   "ZSF_PCW_RAMBLOCK",
   "ZSF_COMMON_ROMBLOCK",
-  "ZSF_CREATOR",
+  "ZSF_CREATOR",     //60
   "ZSF_FLASH_STATE",
 
   "Unknown"  //Este siempre al final
@@ -843,7 +843,7 @@ char zsf_magic_header[]="ZSF ZEsarUX Snapshot File.";
 
 char *zsf_get_block_id_name(int block_id)
 {
-  if (block_id>=MAX_ZSF_BLOCK_ID_NAMES) return zsf_block_id_names[MAX_ZSF_BLOCK_ID_NAMES];
+  if (block_id>MAX_ZSF_BLOCK_ID_NAMES) return zsf_block_id_names[MAX_ZSF_BLOCK_ID_NAMES+1]; //retornar el unknown
   else return zsf_block_id_names[block_id];
 }
 
