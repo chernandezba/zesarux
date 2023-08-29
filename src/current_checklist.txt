@@ -11,8 +11,6 @@ echo "Porcentaje=$PERCCOMPLETADO %"
 
 -ejecutar tests/machines_test.sh
 
-
-
 -probar desactivando xextensions en configure con --disable-xext
 -probar desactivando algun driver de video en compilacion, como x11, y ver que funcionan los otros
 
@@ -38,24 +36,11 @@ ok  * mac os x, con y sin optimizaciones
 -probar a guardar snapshots versiones anteriores (1, 2, 3, 4, 5 y 6) y cargar en ZEsarUX versiones viejas y ZXSpectr
 
 -probar ZXMMC menor de 1 GB y mayor de 1 GB. Probar snap_tests/pruebasplus3e.mmc. cat tab, load, format to 0,4, etc
--probar divmmc con zxuno y sin zxuno. tambien en instalado en /Applications en Mac y en /usr/ de Linux. Probar reload mmc
--probar esxdos handler
 -probar divide. Probar reload ide
 -probar zxpand: config "V", config "D=", CAT, CAT "+DIR", DELETE, load "NOMBRE", SAVE "NOMBRE" etc. En zx80, zx81
 config "O=X" donde X es 0, 1 o 2 y probar a sobreescribir archivos, dragons lair version lenta y rapida (optimizada). zxpand linea comandos --enable-zxpand y --zxpand-root-dir (y este probando con path completo, relativo, y con y sin / al final)
 Probar delete, rename, etc y resto de acciones con CMDR, con archivos en minusculas y mayusculas
--probar dandanator: spectrum y CPC
 -probar superupgrade. Básico, programa de modificación de rom. Programa en basic extras/media/spectrum/tests/superupgrade-test.tap y usando 512kb de rom que sean siempre la misma rom de spectrum 48k. Probar con rman.tap
-
--probar spectra. Test modos. Comparar con ZXSP. X128 NO es correcto del todo, falla la implementacion del flash
-Comparar test 128 pantalla con tabla docs/spectra/SPECTRA 128 Test.txt
-
--probar modos video timex. Mode 0 standard, 1 dual screen, 2 hires colour 8x1), timex+ulaplus. Mode 6 (512x192 monochrome)
-Modo 0 con solo habilitarlo
-Modo 1 con testtimexmode1.tap
-Modo 2 con demos
-Modo 2 con timex+ulaplus demo slideshow_timex_64.tap, DemoHAM8, DemoHAM8x1.tzx
-Modo 6 512x192 real/simulado a 256x192 con timmy.tap y testtimexmode6.tap y testtimexmode6-ulaplus.tap y alternaterom_sebasic4_rom01.rom(mode 1)
 
 -probar simulacion de carga en spectrum, zx80, zx81
 -probar desactivando border, con y sin realvideo, en spectrum y zx8081
@@ -103,10 +88,7 @@ nota: cacalib, curses  en consola texto (no X) el mouse solo notifica al pulsar 
 -probar speech: texto a speech linux, mac os, windows. ruta a --textspeechprogram relativa y absoluta
 -probar speech en stdout
 -probar poke: manual y pok file (tanto buenos como corrupt, longline, desde snap_tests/)
--probar ram refresh junto con extras/media/spectrum/tests/memoryrefresh.tap
 -probar opcion para desactivar paging en ram/rom
--probar cpu transaction log
--probar real beeper activo/desactivado
 -probar tone generator --tonegenerator con 1,2 y 3 en spectrum 48k. Ver menu waveform
 -probar modo interlaced, scanlines y tapes/spectrum/tests/interlace-test.tap. interlaced zx81 con ilena
 -probar modo gigascreen. demos e imagenes
@@ -122,7 +104,6 @@ nota: cacalib, curses  en consola texto (no X) el mouse solo notifica al pulsar 
 -probar Timex. Tests, carga trap, grabar tap
 -Probar Prism: extras/media/spectrum/prism/allvideotests.tap. Tests de chloe. Failsafe mode. Modos lineales de video extras/media/spectrum/prism/linear_modes/
 -Probar Sam Coupe. Todas teclas. Probar atomlite
--probar ZX-Uno. diferentes maquinas (48k, 128k, +2a), juegos rom. Probar spi flash file, default y custom. En 48k, 128k, +2a: probar carga tap y grabacion tap, y autosend LOAD"". Probar rutina carga de cinta desde la BIOS. Probar DMA
 -Probar Baseconf
 -Probar Chrome
 -Probar MK14
