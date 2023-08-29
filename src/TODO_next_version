@@ -405,4 +405,7 @@ algun programa que lo use? el zxunocfg?
 
 -poder usar tipo de letra de los iconos en el menu. cuando se active char width a 4
 
+-cuando se llama a funcion overlay de cada ventana, se deberia pasar como parametro la propia ventana (zxvision_window *),
+asi la funcion de overlay no tiene que guardar un puntero estatico fuera siempre
+
 ---Fin Mejoras---
