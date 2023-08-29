@@ -22,7 +22,8 @@
 #ifndef SNAP_ZSF_H
 #define SNAP_ZSF_H
 
-
+//Importante NO alterar los ID existentes o se rompera compatibilidad hacia atras del formato ZSF
+//Siempre agregar, nunca modificar ni borrar
 #define ZSF_NOOP_ID 0
 #define ZSF_MACHINEID 1
 #define ZSF_Z80_REGS_ID 2
@@ -85,6 +86,9 @@
 #define ZSF_COMMON_ROMBLOCK 59
 #define ZSF_CREATOR 60
 #define ZSF_FLASH_STATE 61
+//Importante NO alterar los ID existentes o se rompera compatibilidad hacia atras del formato ZSF
+//Siempre agregar, nunca modificar ni borrar
+
 
 #define MAX_ZSF_SNAPSHOT_SIZE 1024*1024*16
 
