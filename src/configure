@@ -1275,7 +1275,7 @@ echo Final LDFLAGS=$LDFLAGS >>$LOGFILE
 
 echo "Creating Makefile"
 cat > Makefile << _EOF
-EMULATOR_VERSION=10.10
+EMULATOR_VERSION=X
 CFLAGS=$CFLAGS
 LDFLAGS=$LDFLAGS
 CC=$CCOMPILER
@@ -2463,7 +2463,9 @@ export LANG=C
 
 #Estadisticas
 #Lineas codigo fuente
-LINES_SOURCE=`wc -l *.c *.m *.h|tail -1|awk '{printf $1}'`
+#Descartando lineas vacias
+LINES_SOURCE=`cat *.c *.m *.h|grep -v "^$"|wc -l|tail -1|awk '{printf $1}'`
+
 #Cantidad comentarios (TODO: esto es aprox porque puede haber un comentario en varias lineas con //)
 COMMENTS_TYPE_LINE=`grep '//' *.c *.m *.h|wc -l|tail -1|awk '{printf $1}'`
 COMMENTS_TYPE_BLOCK=`grep '/\*' *.c *.m *.h|wc -l|tail -1|awk '{printf $1}'`

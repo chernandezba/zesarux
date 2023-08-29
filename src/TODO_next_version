@@ -389,4 +389,20 @@ menu_download_file
 
 -fbdev en linux, fbdev_cls peta al cambiar de maquina. Ejemplo de 48k a +3
 
+-asociar archivos tap, tzx etc en Mac a ZEsarUX
+
+-otro tipo de overlay pero que no se llame continuamente, solo se llame al mover/redimensionar ventanas.
+y desde su aplicacion logicamente si que se llama a su overlay para dibujar
+ejemplo: process switcher: no se necesita que continuamente se estén redibujando todos los iconos, solo cuando haya movimiento de ventanas
+(pues en ese caso se repintan todas).
+otro ejemplo: el logo de la ventana de about: solo hay que redibujarlo cuando hay cambios de ventanas
+otro ejemplo: help keyboard
+y muchos otros ejemplos en que son pixeles que no cambian, que no hay que redibujar continuamente
+Con eso se reducirá mucho el uso de cpu en cada frame
+
+-cambio modo stereo de zxuno mediante hardware. registro F7. https://www.zxuno.com/wiki/index.php/ZX_Spectrum
+algun programa que lo use? el zxunocfg?
+
+-poder usar tipo de letra de los iconos en el menu. cuando se active char width a 4
+
 ---Fin Mejoras---

@@ -59,10 +59,10 @@ Examples
 //#define ZESARUX_EXTRAS_URL "https://github.com/chernandezba/zesarux/releases/download/ZEsarUX-10.0/ZEsarUX_extras-10.0.zip"
 
 //especial solo para esta version 10.10
-#define ZESARUX_EXTRAS_URL "/chernandezba/zesarux/releases/download/ZEsarUX-" EMULATOR_VERSION "/ZEsarUX_extras-10.10.zip"
+//#define ZESARUX_EXTRAS_URL "/chernandezba/zesarux/releases/download/ZEsarUX-" EMULATOR_VERSION "/ZEsarUX_extras-10.10.zip"
 
 //final
-//#define ZESARUX_EXTRAS_URL "/chernandezba/zesarux/releases/download/ZEsarUX-" EMULATOR_VERSION "/ZEsarUX_extras-" EMULATOR_VERSION ".zip"
+#define ZESARUX_EXTRAS_URL "/chernandezba/zesarux/releases/download/ZEsarUX-" EMULATOR_VERSION "/ZEsarUX_extras-" EMULATOR_VERSION ".zip"
 
 #define EDITION_NAME_GAME "editionnamegame.dsk"
 

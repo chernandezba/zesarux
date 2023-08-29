@@ -118,7 +118,8 @@ Drivers audio:
 -probar sonido vsync en zx81, con orquesta.p, sound.p, beatles.p. probar vsync sound detection
 -probar snaps de spectrum, zx80, zx81, z88. Cargar y grabar. .zx, .o, .p, .z80, solo carga: .z81, .sna. En grabar, generar los mismos p** que hay en snap_tests/ en una carpeta temporal y luego probar a cargarlos (desde zesarux, fuse y eightyone) - esto se hace con automatic_test_save_all.sh. Probar snaps grabados en otros emuladores: Fuse, Eightyone, etc. 
 -probar cintas. Cargar cinta con formato tap, tzx. Grabar cinta con comando save en tap, tzx, p, o
--probar a guardar snapshots versiones anteriores (1, 2, 3, 4, 5 y 6) y cargar en ZEsarUX versiones viejas y ZXSpectr
+-probar a guardar snapshots versiones anteriores .zx (1, 2, 3, 4, 5 y 6) y cargar en ZEsarUX versiones viejas y ZXSpectr
+-probar a guardar snapshots .zsf y cargar en ZEsarUX versiones viejas
 -probar any flag loading cintas, con copiador, rocman
 -probar archivos zip, tar, rar, gz
 -probar expansor archivos tap, tzx, dsk, trd, etc
@@ -300,6 +301,7 @@ nota: cacalib, curses  en consola texto (no X) el mouse solo notifica al pulsar 
 -Pruebas interfaz menu:
 * habilitar zx desktop. probar botones, iconos
 * zx vision: mover ventana, maximizar, restaurar, minimizar, enviar a background, shift+derecha
+* sonidos en menu al moverse cursor, etc
 
 -probar Sprite chip con demo
 -probar textos splash en cambio de modo de video por ejemplo

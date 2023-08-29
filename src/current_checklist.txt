@@ -16,43 +16,9 @@ ok Linux
 -ejecutar tests/machines_test.sh
 
 
-Drivers video:
--probar drivers video xwindows, sdl, fbdev, curses, aa, caca, stdout, simpletext, null. desde dentro de xwindows y desde consola de texto real
-*por cada driver (incluido null) y con y sin pthreads:
-**probar redimensionar ventana
-**probar cambio zoom desde menu
-**probar fullscreen en aquellos que lo soportan: xwindows, fbdev, sdl, cocoa
-**probar todas maquinas. probar teclas mayus, ctrl, alt. en z88 mayus izq, der, ctrl, alt, f1, f2, f3
-**probar ocultar raton
-**probar zx desktop
-**probar F6, F7 en curses, caca, aa en Z88 y en Spectrum
-**probar drag&drop en cocoa, sdl2 (a partir 2.0.5)
-**probar desactivando border
-**probar desactivando footer
-**en curses, aa, caca, stdout, simpletext probar juegos para ver que tal "emula" los graficos
-**en curses, aa, caca, stdout, simpletext probar realvideo
-**en aa, caca probar mensajes debug
-**en stdout, probar con modo traprst16 y modo autoredraw
-**en fbdev, probar tambien con --no-use-ttyfbdev y --no-use-ttyrawfbdev y --decimal-full-scale-fbdev
-**probar recreated
-ok Linux. falta mac -ejecutar tests/videotest.sh
-
 
 -probar desactivando xextensions en configure con --disable-xext
 -probar desactivando algun driver de video en compilacion, como x11, y ver que funcionan los otros
-
-Drivers audio:
--probar drivers sonido pulse, alsa, dsp, sdl, coreaudio, null. con y sin pthreads
-*por cada driver (incluido null) y con y sin pthreads:
-**quitar multitask de menu
-**activar stop emulation en menu
-**esperar a silencio
-**ver en todos casos usos de cpu
-**probar sonido Z88, Spectrum (beep y ay), ZX80/81 (vsync sound y ay)
-**aumentar/bajar velocidad cpu
-***usar tests/soundtest.sh
-***en dsp, si no se tiene dsp real, se puede probar con aoss (que se oye entrecortado continuo) o en cygwin (que distorsiona)
-ok todos los de linux. Falta Mac
 
 -probar targets:
 * linux 32 bits
@@ -62,18 +28,12 @@ ok  * mac os x, con y sin optimizaciones
 * windows mingw, con y sin pthreads
 * windows cygwin
 
-
-
 -Funciones de Red:
 --Mac: Probar ZX81 browser, Download TBBLUE SD
 --Linux: Probar ZX81 browser, Download TBBLUE SD 
 
 -probar con --disable-sndfile
--probar vofile. Con spectrum (border on, border off, ulaplus, spectra, timex), zx80/81 (border on, border off), z88. Con xwindows, curses, stdout y simpletext: en estos drivers probar tanto spectrum, zx81, y z88
 -probar todas maquinas, una por una 
--probar juegos varios de zx80,zx81, spectrum, aquellos que hacen efectos especiales hi-res, etc
--probar juegos zx81 multipart: wrx/voyage , wrx/blockbuster
--probar particularidades Inves: no contended memory. Puerto ficticio para hacer visible RAM baja, requiere hardware debug ports , se puede probar con inves-switch-lowram.tap. Ver RAM baja con view hexdump. Probar con musica Lemmings. Probar investest.tap, que testea entre otras cosas: 64 kb ram, OUT ula AND RAM (border color, snow in border, no sound),  colour ula delay, interrupt starts at video display (not at the top of the border), interrupt escribe en direccion I*256+R valor 255
 -probar realvideo z88
 -probar snoweffect de 48k, 128k, con juegos y con extras/media/spectrum/tests/snow_effect.tap. Las que son de pentagon, hacer hotswap a 128
 -probar simular pantalla zx81 en spectrum
@@ -83,8 +43,6 @@ ok  * mac os x, con y sin optimizaciones
 -probar view ay piano con extras/media/spectrum/tests/testpiano.tap  y demos turbosound
 -probar menu ay piano, beeper piano. nota: beeper piano con notas largas, como la musica del Zorro
 -probar midi output to real device. En Mac se puede usar fluidsynth (brew install fluidsynth) y copiar un soundfont (de aqui por ejemplo http://www.schristiancollins.com/generaluser.php). Se inicia en consola, ahi en la consola dira donde copiar el soundfount
--probar export to .mid
--probar autoactivado de chip ay: en spectrum (ay, fuller), zx8081 (en zx80/81 solo con bi-pak (aydemo, pink panther...) )
 -probar snaps de spectrum, zx80, zx81, z88. Cargar y grabar. .zx, .o, .p, .z80, solo carga: .z81, .sna. En grabar, generar los mismos p** que hay en snap_tests/ en una carpeta temporal y luego probar a cargarlos (desde zesarux, fuse y eightyone) - esto se hace con automatic_test_save_all.sh. Probar snaps grabados en otros emuladores: Fuse, Eightyone, etc. 
 -probar cintas. Cargar cinta con formato tap, tzx. Grabar cinta con comando save en tap, tzx, p, o
 -probar a guardar snapshots versiones anteriores (1, 2, 3, 4, 5 y 6) y cargar en ZEsarUX versiones viejas y ZXSpectr
