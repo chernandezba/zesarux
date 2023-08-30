@@ -110,10 +110,6 @@ nota: cacalib, curses  en consola texto (no X) el mouse solo notifica al pulsar 
 
 -probar textos splash en cambio de modo de video por ejemplo
 -probar en general mayoria de cintas, snaps y eproms incluidas
--probar instalando en ruta concreta y ejecutando desde alli
--probar generando archivo binario y probar a ejecutar, e instalar. 
--probar generando archivo source y probar a compilar e instalar cambiando prefix
--probar versiones finales: binario->bajar y ejecutar, instalar. source->bajar, compilar y ejecutar, instalar.
 
 pruebas Z88:
 -cambio ram interna
