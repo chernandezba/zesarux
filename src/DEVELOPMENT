@@ -172,47 +172,50 @@ con contenido numero de version, ejemplo:
 "8.1"
 
 
-
-
 ** Linux 
 Generar estos dos binarios de Linux (32 y 64 bits):
-ZEsarUX-version-linux-debian10-x32.tar.gz 
-ZEsarUX-version-linux-debian10-x64.tar.gz 
+ZEsarUX_linux-version-debian11_i686.tar.gz 
+ZEsarUX_linux-version-debian11_x86_64.tar.gz 
+Habilita drivers video: xwindows, sdl, fbdev, curses, stdout, simpletext y drivers audio: pulse, alsa, sdl, dsp, pcspeaker. 
+
 con comandos:
 export CFLAGS=-O3
 export LDFLAGS=-O3
 ./configure --enable-memptr --enable-visualmem --enable-cpustats --enable-ssl --disable-caca --disable-aa --disable-cursesw --prefix /usr
-(Habilita drivers video: xwindows, sdl, fbdev, curses, stdout, simpletext y drivers audio: pulse, alsa, sdl, dsp, pcspeaker. )
 make clean
 make
-make bintargz
+make debian32 o make debian64
 
 
 ** Ubuntu
+desde entorno con Docker:
 make ubuntu
 
 
 ** Fedora
+desde entorno con Docker:
 make fedora
 
 
 ** FreeBSD 
 Generar este binarios de FreeBSD:
-ZEsarUX-version-freebsd-12.1-x64.tar.gz 
+ZEsarUX_freebsd-version-freebsd12_amd64.tar.gz 
+Habilita drivers video: xwindows, sdl, fbdev, curses, stdout, simpletext y drivers audio: pulse, alsa, sdl, dsp, pcspeaker. 
+
 con comandos:
 export CFLAGS=-O3
 export LDFLAGS=-O3
 ./configure --enable-memptr --enable-visualmem --enable-cpustats --enable-ssl --disable-caca --disable-aa --disable-cursesw --prefix /usr
-(Habilita drivers video: xwindows, sdl, fbdev, curses, stdout, simpletext y drivers audio: pulse, alsa, sdl, dsp, pcspeaker. )
 make clean
 make
-make bintargz
+make freebsd
 
 
 ** Raspbian
 Generar este binario de Raspbian:
 ZEsarUX-version-raspbian9.tar.gz 
-(Habilita extensiones raspberry, drivers video: fbdev, curses, y drivers audio: alsa, sdl, dsp. )
+Habilita extensiones raspberry, drivers video: fbdev, curses, y drivers audio: alsa, sdl, dsp. 
+
 con comandos:
 export CFLAGS=-O3
 export LDFLAGS=-O3
@@ -245,9 +248,10 @@ Luego:
 
 make clean
 make
-make bintargz
+make rpi
 (Con O3, tarda 08:40 en compilar con 800MHz)
 (Con O2, tarda 06:30 en compilar con 800MHz)
+
 
 ** Mac
 
@@ -377,6 +381,14 @@ la siguiente, que no usa threads, tendra dlls adicionales en esa carpeta y se co
 
 Nota: se podria compilar en 64 bits, pero SDL 1.2 solo tiene version 32 bits
 Nota: pasar antes antivirus al exe y al dll por si acaso
+
+
+** Otros Linux/Unix genericos
+
+./configure
+make clean
+make
+make bintargz
 
 —————
 
