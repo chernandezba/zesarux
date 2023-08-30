@@ -3666,7 +3666,7 @@ for (y=0;y<192;y+=8) {
 				//En ZX81 solo existen mayusculas
 				caracter=letra_mayuscula(caracter);
 
-				scr_putsprite(&char_set[(caracter-32)*8],x/8,y/8,inversebit);
+				scr_putsprite(&char_set_spectrum[(caracter-32)*8],x/8,y/8,inversebit);
 
 			}
 

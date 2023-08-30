@@ -114,6 +114,7 @@ Fixed possible segfault when downloading and uncompressing zip files and canceli
 Fixed compilation when disabling pthreads support
 Fixed showing info on Visual Real Tape when inserting a ZX80 audio tape
 Fixed segfault on fbdev driver when changing machine
+Fixed charset on simulate ZX80/81 Display on Speccy
 
 * Misc Changes:
 

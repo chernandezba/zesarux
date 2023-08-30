@@ -114,6 +114,7 @@ Corregido posible segfault al descargar y descomprimir archivos zip y cancelar o
 Corregida compilación al desactivar soporte de pthreads
 Corregido al mostrar información en Visual Real Tape cuando se inserta una cinta de audio de ZX80
 Corregido segfault en driver fbdev al cambiar maquina
+Corregido charset en simulación de pantalla ZX80/81 en Speccy
 
 * Cambios varios:
 

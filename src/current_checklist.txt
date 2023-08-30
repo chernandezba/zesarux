@@ -26,11 +26,8 @@ ok  * mac os x, con y sin optimizaciones
 --Mac: Probar ZX81 browser, Download TBBLUE SD
 --Linux: Probar ZX81 browser, Download TBBLUE SD 
 
--probar con --disable-sndfile
 -probar todas maquinas, una por una 
 -probar realvideo z88
--probar snoweffect de 48k, 128k, con juegos y con extras/media/spectrum/tests/snow_effect.tap. Las que son de pentagon, hacer hotswap a 128
--probar simular pantalla zx81 en spectrum
 -probar modos hi-res zx81: hrg, chr$128, udg, wrx, otros hi-res. probar xtricator, pacman 
 -probar cintas. Cargar cinta con formato tap, tzx. Grabar cinta con comando save en tap, tzx, p, o
 -probar a guardar snapshots versiones anteriores (1, 2, 3, 4, 5 y 6) y cargar en ZEsarUX versiones viejas y ZXSpectr
