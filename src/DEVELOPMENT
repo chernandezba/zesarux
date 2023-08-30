@@ -258,6 +258,8 @@ make rpi
 Generar dos binarios de Mac:
 (-Quizá versión legacy de Mac ya no tiene sentido. Requiere Mac OS reciente y los cflags O2 estarán soportados en todos los recientes )
 ZEsarUX-version-macos-legacy.dmg.gz 
+Habilita drivers video: cocoa, stdout, simpletext y drivers audio: coreaudio. 
+
 con comandos:
 Versión sin optimizaciones, sin SSL:
 
@@ -265,18 +267,17 @@ export CFLAGS="-mmacosx-version-min=10.13"
 export LDFLAGS="-mmacosx-version-min=10.13"
 
 ./configure --enable-memptr --enable-visualmem --enable-cpustats --disable-xwindows --disable-sdl --disable-fbdev --disable-caca --disable-aa --disable-curses --disable-sndfile 
-(Habilita drivers video: cocoa, stdout, simpletext y drivers audio: coreaudio. )
 make clean
 make
 make macapp
 
 Y
 
+
 ZEsarUX-version-macos.dmg.gz 
+Habilita drivers video: cocoa, stdout, simpletext y drivers audio: coreaudio. 
 con comandos:
 Versión con optimizaciones, sin SSL:
-
-
 
 
 export CFLAGS="-O3"
@@ -286,7 +287,6 @@ export LDFLAGS="-O3"
 #-Use otool -l /path/to/binary and inspect the LC_VERSION_MIN_MACOSX load command; 
 
 ./configure --enable-memptr --enable-visualmem --enable-cpustats --disable-xwindows --disable-sdl --disable-fbdev --disable-caca --disable-aa --disable-curses --disable-sndfile 
-#(Habilita drivers video: cocoa, stdout, simpletext y drivers audio: coreaudio. )
 make clean
 make
 make macapp
