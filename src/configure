@@ -1783,9 +1783,9 @@ clean:
 	rm -f ZEsarUX_win-\$(EMULATOR_VERSION).zip
 	rm -f ZEsarUX_extras-\$(EMULATOR_VERSION).zip
 
-COMMONFILES=ACKNOWLEDGEMENTS LICENSE LICENSES_info Changelog Cambios TODO* README HISTORY FEATURES FEATURES_es EXCLUSIVEFEATURES INSTALL INSTALLWINDOWS ALTERNATEROMS INCLUDEDTAPES DONATE DONORS FAQ *.odt mantransfev3.bin *.rom zxuno.flash tbblue.mmc pcw_8x_boot*dsk zesarux.mp3 zesarux.xcf editionnamegame.* bin_sprite_to_c.sh keyboard_*.bmp z88_shortcuts.bmp zesarux.pdf docs/ licenses/ my_soft/ speech_filters/ text_image_filters/
+COMMONFILES=ACKNOWLEDGEMENTS LICENSE LICENSES_info Changelog Cambios TODO* README HISTORY FEATURES FEATURES_es EXCLUSIVEFEATURES INSTALL INSTALLWINDOWS ALTERNATEROMS INCLUDEDTAPES DONATE DONORS FAQ *.odt mantransfev3.bin *.rom zxuno.flash tbblue.mmc pcw_8x_boot*dsk zesarux.mp3 zesarux.xcf editionnamegame.* bin_sprite_to_c.sh keyboard_*.bmp z88_shortcuts.bmp zesarux.pdf docs licenses my_soft speech_filters text_image_filters
 
-ONLYSOURCEFILES=icons_buttons/ macos/ patches/ tests/ *.c *.m *.h *.tpl DEVELOPMENT CHECKLIST configure *.sh *.asm benchmark_*.txt current_checklist.txt prism_change_boot.txt Dockerfile*
+ONLYSOURCEFILES=icons_buttons macos patches tests *.c *.m *.h *.tpl DEVELOPMENT CHECKLIST configure *.sh *.asm benchmark_*.txt current_checklist.txt prism_change_boot.txt Dockerfile*
 
 
 
@@ -1866,6 +1866,7 @@ ubuntu:
 	mkdir -p bintargztemp/ZEsarUX-\$(EMULATOR_VERSION)
 	cp -a \$(COMMONFILES) \$(ONLYUNIXBINARIES) bintargztemp/ZEsarUX-\$(EMULATOR_VERSION)/
 	tar -C bintargztemp -cvzf ZEsarUX_linux-\$(EMULATOR_VERSION)-ubuntu22_x86_64.tar.gz ZEsarUX-\$(EMULATOR_VERSION)
+	rm zesarux install.sh
 	echo
 	echo "Generated file is : ZEsarUX_linux-\$(EMULATOR_VERSION)-ubuntu22_x86_64.tar.gz"
 
@@ -1878,6 +1879,7 @@ fedora:
 	mkdir -p bintargztemp/ZEsarUX-\$(EMULATOR_VERSION)
 	cp -a \$(COMMONFILES) \$(ONLYUNIXBINARIES) bintargztemp/ZEsarUX-\$(EMULATOR_VERSION)/
 	tar -C bintargztemp -cvzf ZEsarUX_linux-\$(EMULATOR_VERSION)-fedora38_x86_64.tar.gz ZEsarUX-\$(EMULATOR_VERSION)
+	rm zesarux install.sh
 	echo
 	echo "Generated file is : ZEsarUX_linux-\$(EMULATOR_VERSION)-fedora38_x86_64.tar.gz"
 
