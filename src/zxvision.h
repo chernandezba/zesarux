@@ -1067,6 +1067,7 @@ extern z80_bit menu_splash_text_active;
 extern int menu_splash_segundos;
 extern void show_all_windows_startup(void);
 extern z80_byte menu_da_todas_teclas(void);
+extern z80_byte menu_da_todas_teclas_si_reset_mouse_movido(int reset_mouse_movido);
 extern int menu_si_tecla_pulsada(void);
 extern void menu_espera_tecla_o_joystick(void);
 extern void menu_espera_no_tecla(void);

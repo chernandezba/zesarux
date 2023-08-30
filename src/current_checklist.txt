@@ -30,16 +30,13 @@ ok  * mac os x, con y sin optimizaciones
 -probar realvideo z88
 -probar modos hi-res zx81: hrg, chr$128, udg, wrx, otros hi-res. probar xtricator, pacman 
 -probar cintas. Cargar cinta con formato tap, tzx. Grabar cinta con comando save en tap, tzx, p, o
--probar a guardar snapshots versiones anteriores (1, 2, 3, 4, 5 y 6) y cargar en ZEsarUX versiones viejas y ZXSpectr
 
 -probar ZXMMC menor de 1 GB y mayor de 1 GB. Probar snap_tests/pruebasplus3e.mmc. cat tab, load, format to 0,4, etc
--probar divide. Probar reload ide
 -probar zxpand: config "V", config "D=", CAT, CAT "+DIR", DELETE, load "NOMBRE", SAVE "NOMBRE" etc. En zx80, zx81
 config "O=X" donde X es 0, 1 o 2 y probar a sobreescribir archivos, dragons lair version lenta y rapida (optimizada). zxpand linea comandos --enable-zxpand y --zxpand-root-dir (y este probando con path completo, relativo, y con y sin / al final)
 Probar delete, rename, etc y resto de acciones con CMDR, con archivos en minusculas y mayusculas
 -probar superupgrade. Básico, programa de modificación de rom. Programa en basic extras/media/spectrum/tests/superupgrade-test.tap y usando 512kb de rom que sean siempre la misma rom de spectrum 48k. Probar con rman.tap
 
--probar simulacion de carga en spectrum, zx80, zx81
 -probar desactivando border, con y sin realvideo, en spectrum y zx8081
 -probar efectos border: btime, overscan, vectron, BorderTrix, Hercules, dark star (cuando te matan), aqua plane, paperboy, super wonder boy (pausa), thelosttapesofalbion0 (pausa), rotatrix, shock megademo, KnightsDemonsDX. en modos 128, 48k e inves.
 -probar ula48.tap, ula128.tap, scroll2017. Deberian verse bien sin necesidad de cambiar early / late timings
