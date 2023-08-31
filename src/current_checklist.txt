@@ -27,32 +27,9 @@ ok  * mac os x, con y sin optimizaciones
 --Linux: Probar ZX81 browser, Download TBBLUE SD 
 
 -probar todas maquinas, una por una 
--probar realvideo z88
--probar modos hi-res zx81: hrg, chr$128, udg, wrx, otros hi-res. probar xtricator, pacman 
--probar cintas. Cargar cinta con formato tap, tzx. Grabar cinta con comando save en tap, tzx, p, o
 
 -probar ZXMMC menor de 1 GB y mayor de 1 GB. Probar snap_tests/pruebasplus3e.mmc. cat tab, load, format to 0,4, etc
--probar zxpand: config "V", config "D=", CAT, CAT "+DIR", DELETE, load "NOMBRE", SAVE "NOMBRE" etc. En zx80, zx81
-config "O=X" donde X es 0, 1 o 2 y probar a sobreescribir archivos, dragons lair version lenta y rapida (optimizada). zxpand linea comandos --enable-zxpand y --zxpand-root-dir (y este probando con path completo, relativo, y con y sin / al final)
-Probar delete, rename, etc y resto de acciones con CMDR, con archivos en minusculas y mayusculas
--probar superupgrade. Básico, programa de modificación de rom. Programa en basic extras/media/spectrum/tests/superupgrade-test.tap y usando 512kb de rom que sean siempre la misma rom de spectrum 48k. Probar con rman.tap
 
--probar desactivando border, con y sin realvideo, en spectrum y zx8081
--probar efectos border: btime, overscan, vectron, BorderTrix, Hercules, dark star (cuando te matan), aqua plane, paperboy, super wonder boy (pausa), thelosttapesofalbion0 (pausa), rotatrix, shock megademo, KnightsDemonsDX. en modos 128, 48k e inves.
--probar ula48.tap, ula128.tap, scroll2017. Deberian verse bien sin necesidad de cambiar early / late timings
--probar color border en ULAPlus
--probar desactivando ssl
--probar activando ssl
--probar azerty. se puede probar pulsando guion o cedilla
--probar redefinir teclas, en menu y linea comandos
--probar desactivando contended memory en compilacion
-
-
--probar desactivando memptr i pasar z80tests.tap de spectrum. probar activando memptr i pasar z80tests.tap
--probar cpustats
--probar visualmem, tambien en drivers no graficos como curses, aa, etc
--probar waveform, tambien en drivers no graficos como curses, aa, etc
--probar paleta gris, roja, verde, azul, inverso, real, etc. tambien con modos ulaplus, gigascreen, scanlines, spectra, timex, prism, sam
 -probar expansiones de ram de zx80/81
 -probar opcion desactivar contended memory en menu
 -probar fuller audio box emulation
@@ -85,22 +62,8 @@ nota: cacalib, curses  en consola texto (no X) el mouse solo notifica al pulsar 
 -probar opcion para desactivar paging en ram/rom
 -probar tone generator --tonegenerator con 1,2 y 3 en spectrum 48k. Ver menu waveform
 -probar modo interlaced, scanlines y tapes/spectrum/tests/interlace-test.tap. interlaced zx81 con ilena
--probar modo gigascreen. demos e imagenes
--probar modos ULA Plus: rgb estandard, modo 3 radastan, modos ZEsarUX. modos ham (cambio rapido de paleta por interrupciones) multicolor demo, etc. hardware scroll radastan+zxuno
--probar turbo mode. manual y en zxuno, prism, chloe y tbblue
--probar mantransferv3
--probar multiface, transtape, etc... todos los dispositivos de copia
 
--keymaps en xwindows y sdl para z88, cpc, chloe, sam, ql, ...
-
--probar Jupiter Ace. centipede (chip ay) y valkyr (speaker y chip ay). cargar y grabar ace. cargar wav
--probar Chloe 140, 280. Tests, carga trap, grabar tap, chloe keyboard
--probar Timex. Tests, carga trap, grabar tap
--Probar Prism: extras/media/spectrum/prism/allvideotests.tap. Tests de chloe. Failsafe mode. Modos lineales de video extras/media/spectrum/prism/linear_modes/
--Probar Sam Coupe. Todas teclas. Probar atomlite
 -Probar Baseconf
--Probar Chrome
--Probar MK14
 
 -probar textos splash en cambio de modo de video por ejemplo
 -probar en general mayoria de cintas, snaps y eproms incluidas
