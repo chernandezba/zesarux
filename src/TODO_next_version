@@ -408,4 +408,6 @@ algun programa que lo use? el zxunocfg?
 -cuando se llama a funcion overlay de cada ventana, se deberia pasar como parametro la propia ventana (zxvision_window *),
 asi la funcion de overlay no tiene que guardar un puntero estatico fuera siempre
 
+-poder hacer save pantalla a .txt, usando ocr y pixeles a caracteres, como hace curses
+
 ---Fin Mejoras---
