@@ -5209,17 +5209,17 @@ void menu_keyboard_settings(MENU_ITEM_PARAMETERS)
 
 
 		menu_add_item_menu_en_es_ca(array_menu_keyboard_settings,MENU_OPCION_NORMAL,menu_hardware_recreated_keyboard,NULL,
-            "ZX Recreated support","Soporta ZX Recreated","Suporta ZX Recreated");
+            "ZX Recreated mode","Modo ZX Recreated","Mode ZX Recreated");
 		menu_add_item_menu_prefijo_format(array_menu_keyboard_settings,"[%c] ",(recreated_zx_keyboard_support.v ? 'X' : ' ') );
-		menu_add_item_menu_tooltip(array_menu_keyboard_settings,"Enables ZX Recreated support. Press F1 to see details");
-		menu_add_item_menu_ayuda(array_menu_keyboard_settings,"Enables ZX Recreated support. You have to consider the following:\n"
+		menu_add_item_menu_tooltip(array_menu_keyboard_settings,"Enables ZX Recreated mode. Press F1 to see details");
+		menu_add_item_menu_ayuda(array_menu_keyboard_settings,"Enables ZX Recreated mode. You have to consider the following:\n"
 						"- It supports Game Mode/Layer A on ZX Recreated. QWERTY mode/Layer B works like a normal keyboard\n"
 						"- You must use the ZX Recreated only on the machine emulated, not on the menu\n"
-						"- You must use your normal PC keyboard on the menu\n"
+						"- You must use your normal PC keyboard on the menu. Your normal PC keyboard will not work correctly out of the menu when this mode is enabled\n"
 						"- I can't distinguish between normal keyboard and ZX Recreated keyboard key press. "
-						"So if you enable ZX Recreated support and press keys on your normal PC keyboard, out of the menu, will produce strange combination of keys. "
+						"So if you enable ZX Recreated mode and press keys on your normal PC keyboard, out of the menu, will produce strange combination of keys. "
 						"If you press keys on the ZX Recreated on the menu, will produce strange combination of keys too. "
-						"On the other hand, if you have ZX Recreated support disabled, and press keys on the ZX Recreated, will produce strange combination of keys too.\n"
+						"On the other hand, if you have ZX Recreated mode disabled, and press keys on the ZX Recreated, will produce strange combination of keys too.\n"
 						"- If you use Mac OS X, you are probably using the Cocoa driver, so it will work only by enabling this setting\n"
 						"- If you use Linux, you should use the SDL1 or SDL2 video driver, and also enable the SDL Raw keyboard setting. "
 						"It won't work well using other video drivers (last row of keys will fail)\n"

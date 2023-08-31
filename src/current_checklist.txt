@@ -15,10 +15,7 @@ echo "Porcentaje=$PERCCOMPLETADO %"
 -probar desactivando algun driver de video en compilacion, como x11, y ver que funcionan los otros
 
 -probar targets:
-* linux 32 bits
-ok * linux 64 bits
-* raspberry. y activando extensiones raspberry
-ok  * mac os x, con y sin optimizaciones
+* linux 64 bits
 * windows mingw, con y sin pthreads
 * windows cygwin
 
