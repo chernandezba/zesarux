@@ -20,17 +20,12 @@ echo "Porcentaje=$PERCCOMPLETADO %"
 * windows cygwin
 
 -Funciones de Red:
---Mac: Probar ZX81 browser, Download TBBLUE SD
 --Linux: Probar ZX81 browser, Download TBBLUE SD 
 
 -probar todas maquinas, una por una 
 
--probar ZXMMC menor de 1 GB y mayor de 1 GB. Probar snap_tests/pruebasplus3e.mmc. cat tab, load, format to 0,4, etc
-
 -probar fallback de drivers graficos y de sonido
 -probar desactivar putpixel cache en compilacion
 -probar Setting putpixel functions to zoom 1, variable, interlace
--probar teclas en menu: normal, mayus, minus, -+ ,. TAB BACKSPACE, en mk14, zx8081, spectrum,  , ql, cpc, z88  ( ',' y "." en zx80/81 no va en menu porque se interpreta como symbol+shift y es lo mismo que TAB). en driver xwindow y curses, para cada maquina (total: 6 pruebas)
 -probar speech: texto a speech linux, mac os, windows. ruta a --textspeechprogram relativa y absoluta
 -probar speech en stdout
--probar opcion para desactivar paging en ram/rom
