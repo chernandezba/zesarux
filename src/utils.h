@@ -212,6 +212,7 @@ extern z80_bit debug_parse_config_file;
 #define RAWKEY_RPI_Up 0x67
 #define RAWKEY_RPI_Left 0x69
 #define RAWKEY_RPI_Right 0x6a
+#define RAWKEY_RPI_End 0x6b
 #define RAWKEY_RPI_Down 0x6c
 
 
