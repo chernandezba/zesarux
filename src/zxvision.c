@@ -19033,6 +19033,10 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
     //esteticamente queda algo raro manipular siempre (*opcion_inicial) pero es lo mas fácil para
     //poder hacer esa lectura de la variable, continuamente, desde fuera
 
+    //desactivamos salir_todos_menus, por si viene activado de un menu anterior, por ejemplo:
+    //menu->Audio->Waveform: ahi se quedaria salir_todos_menus=1
+    //Y entonces al por ejemplo cambiar tipo onda en waveform, se cerraria todo
+    salir_todos_menus=0;
 
 	//no escribir letras de atajos de teclado al entrar en un menu
 	menu_writing_inverse_color.v=0;
