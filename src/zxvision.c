@@ -25294,9 +25294,10 @@ char *first_aid_string_smartload="This smartload window allows you to load any f
 							"Press TAB to change between areas in the file browser";
 
 int first_aid_no_initial_menu=0;
-char *first_aid_string_initial_menu="This is the Main Menu. You can select an item by using cursor keys and mouse. Most of them have help, "
+char *first_aid_string_initial_menu="This is the Main Menu. You can select an item by using cursor keys, Enter (or right key) and mouse. Most of them have help, "
 	"try pressing F1. Also, many have tooltip help, that means if you don't press a key, it will appear a tooltip "
-	"about what the item does. ESC or right mouse button closes a menu, you can also close it by pressing the top-left button in the window. "
+	"about what the item does. ESC closes all menus, you can also close it by pressing the top-left button in the window. "
+    "You can go back a menu pressing cursor left. "
 	"You can also use your mouse to resize or move windows";
 
 int first_aid_no_ssl_wos=0;

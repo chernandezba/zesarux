@@ -29106,6 +29106,7 @@ void menu_plusthreedisk(MENU_ITEM_PARAMETERS)
 
         menu_add_item_menu_en_es_ca(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_visual_floppy,NULL,
             "Visual Floppy","Visual Floppy","Visual Floppy");
+        menu_add_item_menu_se_cerrara(array_menu_plusthreedisk);
 
         menu_add_item_menu_en_es_ca(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_plusthreedisk_info,menu_storage_dskplusthree_info_cond,
             "Disk Info","Disk Info","Disk Info");
@@ -33762,6 +33763,7 @@ void menu_betadisk(MENU_ITEM_PARAMETERS)
 
         menu_add_item_menu_en_es_ca(array_menu_betadisk,MENU_OPCION_NORMAL,menu_visual_floppy,NULL,
             "Visual Floppy","Visual Floppy","Visual Floppy");
+        menu_add_item_menu_se_cerrara(array_menu_betadisk);
 
         menu_add_item_menu(array_menu_betadisk,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 

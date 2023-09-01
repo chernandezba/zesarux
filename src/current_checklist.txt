@@ -25,7 +25,5 @@ echo "Porcentaje=$PERCCOMPLETADO %"
 -probar todas maquinas, una por una 
 
 -probar fallback de drivers graficos y de sonido
--probar desactivar putpixel cache en compilacion
--probar Setting putpixel functions to zoom 1, variable, interlace
 -probar speech: texto a speech linux, mac os, windows. ruta a --textspeechprogram relativa y absoluta
 -probar speech en stdout

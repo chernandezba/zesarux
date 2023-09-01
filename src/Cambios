@@ -9,7 +9,7 @@ Se agregaron los modos de color en PCW
 Se agregó soporte de joysticks PCW: Kempston, Cascade, DKTronics, OPQASpace
 Se agregaron vistas previas de pantalla de directorios y archivos comprimidos en el Selector de archivos
 Se agregó soporte de flash en las vistas previas de pantalla en el Selector de archivos
-Se agregó la selección de archivo rom para cualquier máquina que seleccione, el archivo rom se guarda en la configuración
+Se agregó la selección de archivo rom para cualquier máquina que seleccione, el nombre del archivo rom se guarda en la configuración
 Se agregó otro juguete "ZXLife" a un nuevo menú Procrastinar
 Se agregó ventana de tabla ASCII
 Se agregó información del creador a los snapshots de ZSF
@@ -48,7 +48,7 @@ Mejoras en Aventuras Conversacionales:
    - Ubicaciones
    - Mensajes
 
-Mejoras en ZX Vision
+Mejoras en ZX Vision:
 - Nuevo comportamiento del menú:
    - La tecla ESC siempre cierra todos los menús.
    - Al cerrar una ventana creada a partir de un menú, se cerrarán todos los menús.
@@ -57,7 +57,7 @@ Mejoras en ZX Vision
 - Se añade acción para poner ventanas en cascada.
 - Permitir usar su propio archivo de juego de caracteres en ZX Vision
 - Permitir obtener el juego de caracteres de un juego y utilizarlo como tu propio juego de caracteres en ZX Vision
-- Permitir renderizar solo los píxeles modificados (por lo que acelera el renderizado). Indicador interno: dirty_user_must_draw_contents
+- Permitir renderizar solo los píxeles modificados (por lo que acelera el renderizado)
 - Se agregó soporte utf-8 para los caracteres "ï" y "Á"
 - El conmutador de procesos se puede configurar como inmutable, por lo que las acciones masivas en el menú de Windows, como minimizar todo, cascada, etc., no le afectan
 - Permitir presionar ESC al seleccionar una línea en un elemento del historial
@@ -73,15 +73,15 @@ Mejoras en ZX Desktop
 Mejoras en ZRCP:
 - Permitir múltiples clientes simultáneos
 - Cambios importantes en ZRCP:
-- Antes:
-* cuando se interrumpe una conexión ZRCP, el modo cpu-step se desactivará.
-* cuando una conexión ZRCP se cierra con el comando "quit", "exit" o "logout", el modo cpu-step se desactivará
-* cpu-step-mode no se puede deshabilitar desde el menú
+  - Antes:
+  * cuando se interrumpe una conexión ZRCP, el modo cpu-step se desactivará.
+  * cuando una conexión ZRCP se cierra con el comando "quit", "exit" o "logout", el modo cpu-step se desactivará
+  * cpu-step-mode no se puede deshabilitar desde el menú
 
-- Ahora:
-* cuando se interrumpe una conexión ZRCP, cpu-step-mode no se modifica.
-* cuando una conexión ZRCP se cierra con el comando "quit", "exit" o "logout", cpu-step-mode no se modifica
-* cpu-step-mode se puede deshabilitar desde el menú, presionando ESC
+  - Ahora:
+  * cuando se interrumpe una conexión ZRCP, cpu-step-mode no se modifica.
+  * cuando una conexión ZRCP se cierra con el comando "quit", "exit" o "logout", cpu-step-mode no se modifica
+  * cpu-step-mode se puede deshabilitar desde el menú, presionando ESC
 
 Emulación ZX Spectrum Next mejorada: lista de ID de máquinas actualizada
 Gestión de procesos mejorada: permite copiar cualquier contenido de ventana en el portapapeles interno

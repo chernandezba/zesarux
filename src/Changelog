@@ -9,7 +9,7 @@ Added PCW colour modes
 Added PCW Joysticks support: Kempston, Cascade, DKTronics, OPQASpace
 Added screen previews of directories and compressed files on File Selector
 Added flash support on screen previews on File Selector
-Added rom file selection for any machine you select, rom file is saved on configuration
+Added rom file selection for any machine you select, rom file name is saved on configuration
 Added another toy "ZXLife" to a new menu Procrastinate
 Added Ascii Table window
 Added Creator Info to ZSF snapshots
@@ -48,17 +48,16 @@ Improved Text Adventure features:
   - Locations
   - Messages
 
-Improved ZX Vision
-
-- New menu behaviour
+Improved ZX Vision:
+- New menu behaviour:
   - ESC key always closes all menus
   - When closing a window that's created from a menu, all menus will be closed
-  - Cursor left go back to the previous menu, Cursor right activates the item (the same as Enter)
+  - Cursor left go back to the previous menu, cursor right activates the item (the same as Enter)
 
 - Added action to put windows in cascade
 - Allow to use your own charset file on ZX Vision
 - Allow to get charset from a game and use as your own charset file on ZX Vision
-- Allow to render only changed pixels (so it speeds up render). Internal flag: dirty_user_must_draw_contents
+- Allow to render only changed pixels (so it speeds up render)
 - Added support for utf-8 characters "ï" and "Á"
 - Process switcher can be set to immutable, so massive actions on menu Windows, like minimize all, cascade, etc, don't affect it
 - Allow to press ESC when selecting a line on a history items
@@ -74,15 +73,15 @@ Improved ZX Desktop
 Improved ZRCP:
 - Allow multiple simultaneous clients
 - Important changes on ZRCP:
-- Before:
-* when a ZRCP connection is broken, cpu-step-mode will be disabled.
-* when a ZRCP connection is closed by "quit", "exit" or "logout" command, cpu-step-mode will be disabled
-* cpu-step-mode can't be disabled from the menu
+  - Before:
+  * when a ZRCP connection is broken, cpu-step-mode will be disabled.
+  * when a ZRCP connection is closed by "quit", "exit" or "logout" command, cpu-step-mode will be disabled
+  * cpu-step-mode can't be disabled from the menu
 
-- Now:
-* when a ZRCP connection is broken, cpu-step-mode is not modified.
-* when a ZRCP connection is closed by "quit", "exit" or "logout" command, cpu-step-mode is not modified
-* cpu-step-mode can be disabled from the menu, pressing ESC
+  - Now:
+  * when a ZRCP connection is broken, cpu-step-mode is not modified.
+  * when a ZRCP connection is closed by "quit", "exit" or "logout" command, cpu-step-mode is not modified
+  * cpu-step-mode can be disabled from the menu, pressing ESC
 
 Improved ZX Spectrum Next emulation: updated machine id list
 Improved Process Management: allow to copy any windows contents to internal clipboard
