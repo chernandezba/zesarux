@@ -27495,7 +27495,7 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
 
 		menu_add_item_menu(array_menu_debug,"~~Debug CPU",MENU_OPCION_NORMAL,menu_debug_registers,NULL);
 		menu_add_item_menu_shortcut(array_menu_debug,'d');
-        menu_add_item_menu_se_cerrara(array_menu_debug);
+        //menu_add_item_menu_se_cerrara(array_menu_debug);
 		menu_add_item_menu_tooltip(array_menu_debug,"Open debug window");
 		menu_add_item_menu_ayuda(array_menu_debug,"This window opens the debugger. You can see there some Z80 registers "
 					"easily recognizable. Some other variables and entries need further explanation:\n"

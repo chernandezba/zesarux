@@ -19886,14 +19886,27 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
         return MENU_RETORNO_ESC;
     }
 
+    //Se deja cierre pendiente para la ventana que se abre, y al cerrarla se cerraran los menus
     if (menu_se_cerrara && menu_old_behaviour_close_menus.v==0) {
         salir_todos_menus=1;
-        //printf("cerrar todos menus\n");
+        //printf("pendiente para cerrar todos menus\n");
+    }
+
+    //Se selecciona opcion de ESC, hay que cerrar todos menus
+    if ((item_seleccionado->tipo_opcion)&MENU_OPCION_ESC && menu_old_behaviour_close_menus.v==0) {
+        salir_todos_menus=1;
+        //printf("Seleccionado opcion ESC\n");
     }
 
 	if (tecla==MENU_RETORNO_ESC) {
-        zxvision_helper_menu_shortcut_delete_last();
-        if (menu_old_behaviour_close_menus.v==0) salir_todos_menus=1;
+
+        if (menu_old_behaviour_close_menus.v==0) {
+            salir_todos_menus=1;
+        }
+        else {
+           zxvision_helper_menu_shortcut_delete_last();
+        }
+
         return MENU_RETORNO_ESC;
     }
 
