@@ -19,8 +19,5 @@ echo "Porcentaje=$PERCCOMPLETADO %"
 * windows mingw, con y sin pthreads
 * windows cygwin
 
--Funciones de Red:
---Linux: Probar ZX81 browser, Download TBBLUE SD 
-
 -probar todas maquinas, una por una 
 

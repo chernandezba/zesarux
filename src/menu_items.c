@@ -11920,7 +11920,14 @@ void menu_debug_view_sprites(MENU_ITEM_PARAMETERS)
 					break;
 
 					case 'h':
-						if (MACHINE_IS_TBBLUE || MACHINE_IS_TSCONF || MACHINE_HAS_VDP_9918A) view_sprites_hardware ^=1;
+						if (MACHINE_IS_TBBLUE || MACHINE_IS_TSCONF || MACHINE_HAS_VDP_9918A) {
+                            view_sprites_hardware ^=1;
+                            //Otra alternativa de borrar el fondo. En vez de tener esta variable must_clear_cache_on_draw=1 siempre,
+                            //solo la alteramos momentaneamente al cambiar tipo de sprite hardware, con esto se borra correctamente y en cambio
+                            //el uso de cpu cuando no modificamos pasa por ejemplo de un uso de 82% teniendo esto siempre a 1,
+                            //a usar 52% cuando lo tenemos a 0
+                            ventana->must_clear_cache_on_draw_once=1;
+                        }
 					break;
 
 					case 'e':
