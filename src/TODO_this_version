@@ -5,3 +5,4 @@ Para esta version:
 compilacion sin pthreads no debe entrar funciones pthread*...
 
 -comprobar bien funcionamiento ESC, flecha izquierda, derecha. comprobar ventana shortcut helper
+-tiene sentido items de "ESC back/close"?
