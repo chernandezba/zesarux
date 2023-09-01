@@ -19892,19 +19892,44 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
         //printf("pendiente para cerrar todos menus\n");
     }
 
-    //Se selecciona opcion de ESC, hay que cerrar todos menus
-    if ((item_seleccionado->tipo_opcion)&MENU_OPCION_ESC && menu_old_behaviour_close_menus.v==0) {
-        salir_todos_menus=1;
-        //printf("Seleccionado opcion ESC\n");
+    //Para el helper shortcut
+    int tecla_atajo=item_seleccionado->atajo_tecla;
+    if (tecla_atajo==0) tecla_atajo='?';
+
+    int ya_borrado_helper_atras=0;
+
+    //Se selecciona opcion de ESC
+    if ((item_seleccionado->tipo_opcion)&MENU_OPCION_ESC) {
+        //hay que cerrar todos menus
+        if (menu_old_behaviour_close_menus.v==0) {
+            salir_todos_menus=1;
+            //printf("Seleccionado opcion ESC\n");
+            //no indicar helper
+            tecla_atajo=0;
+        }
+        else {
+            //Comportamiento antiguo. ESC nos lleva hacia atras
+            zxvision_helper_menu_shortcut_delete_last();
+            ya_borrado_helper_atras=1;
+
+            //no indicar helper
+            tecla_atajo=0;
+        }
     }
 
+    //Se pulsa tecla ESC
 	if (tecla==MENU_RETORNO_ESC) {
 
+        //Cerrar todos menus
         if (menu_old_behaviour_close_menus.v==0) {
             salir_todos_menus=1;
         }
+
+        //Comportamiento antiguo. ESC nos lleva hacia atras
         else {
-           zxvision_helper_menu_shortcut_delete_last();
+            //Aqui podria suceder que pulsamos ESC en la propia opcion de ESC
+            //Solo borrar en total una letra
+           if (!ya_borrado_helper_atras) zxvision_helper_menu_shortcut_delete_last();
         }
 
         return MENU_RETORNO_ESC;
@@ -19916,9 +19941,8 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 	else if (tecla==MENU_RETORNO_BACKGROUND) return MENU_RETORNO_BACKGROUND;
 
 	else {
-        int tecla_atajo=item_seleccionado->atajo_tecla;
-        if (tecla_atajo==0) tecla_atajo='?';
-        zxvision_helper_menu_shortcut_print(tecla_atajo);
+
+        if (tecla_atajo) zxvision_helper_menu_shortcut_print(tecla_atajo);
 
         return MENU_RETORNO_NORMAL;
     }
