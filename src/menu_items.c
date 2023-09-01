@@ -25943,15 +25943,17 @@ void menu_about_help(MENU_ITEM_PARAMETERS)
 
 	if (!menu_cond_stdout() ) {
 		menu_generic_message("Help",
+            "On Menu:\n"
 			"Use cursor keys to move\n"
 			"Press F1 (or h on some video drivers) on an option to see its help\n"
-			"Press Enter to select a menu item\n"
+			"Press Enter or cursor right to select a menu item\n"
 			"Press Space on some menu items to enable/disable\n"
 			"Press a key between a and z to select an entry with shortcuts; shortcut clues appear when you wait some seconds or press a key "
 			"not associated with any shortcut.\n"
 			"Unavailable options may be hidden, or disabled, which are shown with red colour or with x cursor on some video drivers\n"
             "Character > on the right of a menu item means the menu has submenus\n"
-			"ESC Key gives you to the previous menu, except in the case with aalib driver and pure text console, which is changed to another key (shown on the menu). On curses driver, ESC key is a bit slow, you have to wait one second after pressing it; you can also use key @ to simulate ESC on menu on curses driver. "
+			"ESC Key closes all menus, except in the case with aalib driver and pure text console, which is changed to another key (shown on the menu). On curses driver, ESC key is a bit slow, you have to wait one second after pressing it; you can also use key @ to simulate ESC on menu on curses driver.\n"
+            "Cursor left gives you to the previous menu\n"
 			"\n\n"
 			"On File Browser:\n"
 			"- Use cursors and PgDn/Up\n"
@@ -33520,14 +33522,17 @@ void menu_hilow(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_en_es_ca(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_format,menu_storage_hilow_enabled_cond,
             "Fo~~rmat","Fo~~rmatear","Fo~~rmatejar");
         menu_add_item_menu_shortcut(array_menu_hilow,'r');
+        menu_add_item_menu_se_cerrara(array_menu_hilow);
 
         menu_add_item_menu_en_es_ca(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_browser,menu_storage_hilow_enabled_cond,
             "~~Browse","~~Browse","~~Browse");
         menu_add_item_menu_shortcut(array_menu_hilow,'b');
+        menu_add_item_menu_se_cerrara(array_menu_hilow);
 
         menu_add_item_menu_en_es_ca(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_chkdsk,menu_storage_hilow_enabled_cond,
             "~~Chkdsk","~~Chkdsk","~~Chkdsk");
         menu_add_item_menu_shortcut(array_menu_hilow,'c');
+        menu_add_item_menu_se_cerrara(array_menu_hilow);
 
 
         menu_add_item_menu_separator(array_menu_hilow);
@@ -33536,6 +33541,8 @@ void menu_hilow(MENU_ITEM_PARAMETERS)
 #ifdef USE_PTHREADS
         menu_add_item_menu_en_es_ca(array_menu_hilow,MENU_OPCION_NORMAL,menu_hilow_convert_audio,NULL,
             "Convert Audio","Convertir Audio","Convertir Audio");
+        menu_add_item_menu_se_cerrara(array_menu_hilow);
+
         menu_add_item_menu_separator(array_menu_hilow);
 #endif
 

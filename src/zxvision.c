@@ -20444,8 +20444,9 @@ void menu_add_ESC_item(menu_item *array_menu_item)
         char *accio_esc="Tancar";
         char *action_esc="Close";
 
-
-        if (menu_old_behaviour_close_menus.v) {
+        //Si antiguo comportamiento o si driver stdout
+        //pues el menu de stdout no tiene el comportamiento de "cerrar todos menus" que se activa con menu_add_item_menu_se_cerrara()
+        if (menu_old_behaviour_close_menus.v || !strcmp(scr_new_driver_name,"stdout") ) {
             accion_esc="Volver";
             accio_esc="Tornar";
             action_esc="Back";
