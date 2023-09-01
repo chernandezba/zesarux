@@ -1203,7 +1203,7 @@ int salir_todos_menus;
 
 //char *welcome_message_key=" Press ESC for menu ";
 
-char *esc_key_message="ESC";
+char esc_key_message[10]="ESC";
 char *openmenu_key_message="F5/Button";
 
 //Si desde el gestor de ventanas, una ventana se ha ido a background
@@ -20438,13 +20438,24 @@ char *string_esc_go_back="ESC always goes back to the previous menu, or return b
 void menu_add_ESC_item(menu_item *array_menu_item)
 {
 
-        char mensaje_esc_back[32];
+        char mensaje_esc[32];
 
-        if (gui_language==GUI_LANGUAGE_SPANISH) sprintf (mensaje_esc_back,"%s Volver",esc_key_message);
-        else if (gui_language==GUI_LANGUAGE_CATALAN) sprintf (mensaje_esc_back,"%s Tornar",esc_key_message);
-        else sprintf (mensaje_esc_back,"%s Back",esc_key_message);
+        char *accion_esc="Cerrar";
+        char *accio_esc="Tancar";
+        char *action_esc="Close";
 
-        menu_add_item_menu(array_menu_item,mensaje_esc_back,MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
+
+        if (menu_old_behaviour_close_menus.v) {
+            accion_esc="Volver";
+            accio_esc="Tornar";
+            action_esc="Back";
+        }
+
+        if (gui_language==GUI_LANGUAGE_SPANISH) sprintf (mensaje_esc,"%s %s",esc_key_message,accion_esc);
+        else if (gui_language==GUI_LANGUAGE_CATALAN) sprintf (mensaje_esc,"%s %s",esc_key_message,accio_esc);
+        else sprintf (mensaje_esc,"%s %s",esc_key_message,action_esc);
+
+        menu_add_item_menu(array_menu_item,mensaje_esc,MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
 		menu_add_item_menu_tooltip(array_menu_item,string_esc_go_back);
 		menu_add_item_menu_ayuda(array_menu_item,string_esc_go_back);
 

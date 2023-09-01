@@ -240,7 +240,7 @@ extern void (*menu_overlay_function)(void);
 
 extern int overlay_visible_when_menu_closed;
 
-extern char *esc_key_message;
+extern char esc_key_message[];
 extern char *openmenu_key_message;
 
 extern z80_bit menu_desactivado;

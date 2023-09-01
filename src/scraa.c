@@ -756,7 +756,7 @@ int aa_kbdmode;
 	aa_kbdmode=0;
 	aa_sends_ESC.v=0;
 	//Volver (ESC) con tecla "<"
-	esc_key_message="<";
+	strcpy(esc_key_message,"<");
 	tecla_alternativa_esc='<';
 	}
 

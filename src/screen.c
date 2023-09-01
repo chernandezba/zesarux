@@ -8899,7 +8899,7 @@ void screen_reset_scr_driver_params(void)
 
 	scr_messages_debug=NULL;
 
-	esc_key_message="ESC";
+	strcpy(esc_key_message,"ESC");
 
     screen_este_driver_permite_ext_desktop=0;
 }
