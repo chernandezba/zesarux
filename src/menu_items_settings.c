@@ -1980,6 +1980,11 @@ void menu_interface_not_change_frame_when_resize_zone(MENU_ITEM_PARAMETERS)
     menu_change_frame_when_resize_zone.v ^=1;
 }
 
+void menu_item_old_behaviour_close_menus(MENU_ITEM_PARAMETERS)
+{
+    menu_old_behaviour_close_menus.v ^=1;
+}
+
 void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
 {
     menu_item *array_menu_common;
@@ -2251,6 +2256,24 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
 
 
         menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+
+
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_item_old_behaviour_close_menus,NULL,
+            "Old menu behaviour (ESC, etc)","Antiguo comportamiento menú (ESC, etc)","Antic comportament menú (ESC, etc)");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_old_behaviour_close_menus.v ? 'X' : ' ' ));
+        menu_add_item_menu_tooltip(array_menu_common,"Old menu behaviour reacts different to ESC key and closing app windows");
+        menu_add_item_menu_ayuda(array_menu_common,"The Old menu behaviour:\n"
+            "- ESC key always go back to the previous menu\n"
+            "- When closing a window that's created from a menu, you will go back to the menu\n"
+            "- Cursors left or right do nothing\n"
+            "\n"
+            "The New menu behaviour (starting from ZEsarUX X):\n"
+            "- ESC key always closes all menus\n"
+            "- When closing a window that's created from a menu, all menus will be closed\n"
+            "- Cursor left go back to the previous menu, Cursor right activates the item (the same as Enter)\n"
+        );
+        menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+
 
 		menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_allow_background_windows,NULL,
             "~~Background windows","Ventanas en ~~background","Finestres a ~~background");

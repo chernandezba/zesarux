@@ -49,6 +49,11 @@ Mejoras en Aventuras Conversacionales:
    - Mensajes
 
 Mejoras en ZX Vision
+- Nuevo comportamiento del menú:
+   - La tecla ESC siempre cierra todos los menús.
+   - Al cerrar una ventana creada a partir de un menú, se cerrarán todos los menús.
+   - Cursor izquierda vuelve al menú anterior, cursor derecha activa el elemento (lo mismo que Enter)
+
 - Se añade acción para poner ventanas en cascada.
 - Permitir usar su propio archivo de juego de caracteres en ZX Vision
 - Permitir obtener el juego de caracteres de un juego y utilizarlo como tu propio juego de caracteres en ZX Vision

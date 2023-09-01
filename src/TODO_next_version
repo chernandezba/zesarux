@@ -407,6 +407,10 @@ algun programa que lo use? el zxunocfg?
 
 -cuando se llama a funcion overlay de cada ventana, se deberia pasar como parametro la propia ventana (zxvision_window *),
 asi la funcion de overlay no tiene que guardar un puntero estatico fuera siempre
+complementario: quizá en todos los overlay que no necesiten redibujar siempre, detectar el flag que indica precisamente que se ha borrado, movido, etc, para solo redibujar cuando haya que hacerlo (dirty_user_must_draw_contents)
+->Realmente hay pocas ventanas que tengan overlay de pixeles estaticos
+Una de ellas es el "About" pero ya esta usando dirty_user_must_draw_contents
+
 
 -poder hacer save pantalla a .txt, usando ocr y pixeles a caracteres, como hace curses
 

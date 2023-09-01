@@ -179,7 +179,7 @@ struct s_zxvision_window {
     //para ventanas con overlay de pixel, en que habitualmente no dibujan todos los pixeles, solo los cambios,
     //pero en caso que dirty_user_must_draw_contents, ese frame lo tienen que dibujar con todos los pixeles, y
     //luego corresponde al usuario ponerlo a 0
-    //Ver uso en juego zxlife
+    //Ver uso en juego zxlife o en menu About
     int dirty_user_must_draw_contents;
 
     //indica a algunas ventanas (como Keyboard Help) que se ha lanzado zxvision_draw_window_contents y redibujado el fondo de texto
@@ -891,6 +891,11 @@ struct s_menu_item {
 	int menu_tabulado_x;
 	int menu_tabulado_y;
 
+    //Indica que al disparar la accion, se cerraran todos los menus (se activa salir_todos_menus=1)
+    //no haria falta activar esto para items que abren menus tabulados, pues en este caso, al pulsar ESC dentro de un menu tabulado,
+    //este ya enviara la orden de cerrar todos menus
+    int menu_se_cerrara;
+
 	//tipo de la opcion
 	int tipo_opcion;
 	//funcion a la que debe saltar
@@ -946,6 +951,7 @@ extern void menu_add_item_menu_tiene_submenu(menu_item *m);
 extern void menu_add_item_menu_es_avanzado(menu_item *m);
 extern void menu_add_item_menu_separator(menu_item *m);
 extern void menu_add_item_menu_seleccionado(menu_item *m,void (*menu_funcion_seleccionada)(struct s_menu_item *));
+extern void menu_add_item_menu_se_cerrara(menu_item *m);
 
 extern void menu_add_item_menu_spanish(menu_item *m,char *s);
 extern void menu_add_item_menu_spanish_format(menu_item *m,const char * format , ...);
@@ -1047,6 +1053,7 @@ extern z80_bit menu_change_frame_when_resize_zone;
 extern z80_bit menu_hide_background_button_on_inactive;
 extern z80_bit menu_invert_mouse_scroll;
 extern z80_bit menu_mouse_right_send_esc;
+extern z80_bit menu_old_behaviour_close_menus;
 
 extern z80_bit auto_frameskip_even_when_movin_windows;
 extern z80_bit frameskip_draw_zxdesktop_background;

@@ -2591,6 +2591,7 @@ printf("\n"
 		"--disablemultitaskmenu                   When multitask is disabled, both emulation, background windows and other menu features are stopped when opening the menu\n"
 		//"--disablebw-no-multitask   Disable changing to black & white colours on the emulator machine when menu open and multitask is off\n"
         "--stopemulationmenu                      When multitask is enabled, you can disable emulation when opening the menu\n"
+        "--old-behaviour-menu-esc-etc             Old menu behaviour: ESC go back, Apps go back to previous menu\n"
 		"--hide-menu-percentage-bar               Hides vertical percentaje bar on the right of text windows and file selector\n"
         "--hide-menu-submenu-indicator            Hides submenu indicator character (>) on menu items with submenus\n"
 		"--hide-menu-minimize-button              Hides minimize button on the title window\n"
@@ -6974,6 +6975,10 @@ int parse_cmdline_options(int desde_commandline) {
 
             else if (!strcmp(argv[puntero_parametro],"--stopemulationmenu")) {
                 menu_emulation_paused_on_menu=1;
+            }
+
+            else if (!strcmp(argv[puntero_parametro],"--old-behaviour-menu-esc-etc")) {
+                menu_old_behaviour_close_menus.v=1;
             }
 
 			else if (!strcmp(argv[puntero_parametro],"--disablebw-no-multitask")) {

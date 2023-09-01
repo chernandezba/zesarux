@@ -4,3 +4,19 @@ Para esta version:
 
 compilacion sin pthreads no debe entrar funciones pthread*...
 
+
+-idea recurrente: menus sin tabulado (pues los tabulados son ventanas con aplicacion) que:
+*se cierren todos menus al pulsar ESC o click en boton cerrar ventana
+*se cierren todos menus al volver de la ventana que abren, por ejemplo si se va a help->about
+*pero que no se cierren menus si llama a una funcion de cambiar un setting por ejemplo, o cualquier otra accion que queremos que se siga viendo el menu
+*se vaya a menu anterior al pulsar flecha izquierda
+Cambios para esto:
+-un nuevo menu_add_item_XXX que indique que ese item abre una ventana que no es menu. Eso hara que se active salir_todos_menus=1.
+El nombre tiene que ser algo asi como que indique cerrar menus , por ejemplo menu_add_item_menu_will_be_closed
+-tecla flecha izquierda tiene que hacer lo mismo que ESC hasta ahora (cerrar solo menu actual)
+-tecla ESC cierra todos menus
+
+Queda:
+-agregar todos los menu_add_item_menu_se_cerrara que sean necesarios
+-indicar en ayuda comportamiento de teclas izquierda, derecha, esc
+-quiza texto de "ESC Back" en los menus deberia ser "ESC Close" (y que ESC Back solo aparezca cuando este la opcion de viejo comportamiento)

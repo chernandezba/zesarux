@@ -1148,6 +1148,16 @@ z80_bit menu_invert_mouse_scroll={0};
 //Boton derecho no hace ESC
 z80_bit menu_mouse_right_send_esc={0};
 
+//Viejo comportamiento de tecla ESC en menu y de cierre ventanas:
+// Tecla ESC siempre lleva a menu anterior
+// Si se cierra una ventana que sale de un menu, se vuelve al menu que lo ha creado
+// Flecha izquierda o derecha no hace nada (en menus no tabulados)
+//El nuevo comportamiento (por defecto en ZEsarUX X):
+// Tecla ESC cierra todos menus
+// Si se cierra una ventana que sale de un menu, se cerraran todos menus
+// Flecha izquierda lleva al menu anterior, flecha derecha es como enter (esto en menus no tabulados)
+z80_bit menu_old_behaviour_close_menus={0};
+
 //indica que se ha pulsado ESC y por tanto debe aparecer el menu, o gestion de breakpoints, osd, etc
 //y tambien, la lectura de puertos de teclado (254) no devuelve nada
 int menu_abierto=0;
@@ -19210,6 +19220,8 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 
 	//printf ("despues de zxvision_draw_window\n");
 
+    int salir_con_flecha_izquierda=0;
+
 	//Entrar aqui cada vez que se dibuje otra subventana aparte, como tooltip o ayuda
 	do {
 		redibuja_ventana=0;
@@ -19240,7 +19252,9 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 	}
 
 
-	while (tecla!=13 && tecla!=32 && tecla!=MENU_RETORNO_ESC && tecla!=MENU_RETORNO_F1 && tecla!=MENU_RETORNO_F2 && tecla!=MENU_RETORNO_F10 && tecla!=MENU_RETORNO_BACKGROUND && redibuja_ventana==0 && menu_tooltip_counter<TOOLTIP_SECONDS) {
+	while (tecla!=13 && tecla!=32 && tecla!=MENU_RETORNO_ESC && tecla!=MENU_RETORNO_F1 && tecla!=MENU_RETORNO_F2 &&
+        tecla!=MENU_RETORNO_F10 && tecla!=MENU_RETORNO_BACKGROUND && redibuja_ventana==0 &&
+        !salir_con_flecha_izquierda && menu_tooltip_counter<TOOLTIP_SECONDS) {
 
 		//printf ("tecla desde bucle: %d\n",tecla);
 
@@ -19552,6 +19566,11 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 
 		//printf ("tecla en dibuja menu: %d\n",tecla);
 
+        //flecha derecha se comporta como enter en menus no tabulados
+        if (m->es_menu_tabulado==0) {
+            if (tecla=='8' && menu_old_behaviour_close_menus.v==0) tecla=13;
+        }
+
 		switch (tecla) {
 			case 13:
 				//ver si la opcion seleccionada esta activa
@@ -19564,14 +19583,22 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
                         break;
 
 
-			//Mover Izquierda, solo en tabulados
+			//Mover Izquierda:
+            //En tabulados, sigue el cursor
+            //En no tabulados, menu anterior
             case '5':
-            	//en menus tabulados, misma funcion que arriba para un no tabulado
-                if (m->es_menu_tabulado==0) break;
 
-                //Si es tabulado, seguira hasta la opcion '7'
-				(*opcion_inicial)=menu_dibuja_menu_cursor_arriba((*opcion_inicial),max_opciones,m);
-                zxvision_sound_event_cursor_movement();
+                if (m->es_menu_tabulado==0) {
+                    if (menu_old_behaviour_close_menus.v==0) salir_con_flecha_izquierda=1;
+                }
+
+                else {
+
+                    //en menus tabulados, misma funcion que arriba para un no tabulado
+                    //Si es tabulado, seguira hasta la opcion '7'
+                    (*opcion_inicial)=menu_dibuja_menu_cursor_arriba((*opcion_inicial),max_opciones,m);
+                    zxvision_sound_event_cursor_movement();
+                }
 			break;
 
 
@@ -19812,6 +19839,8 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 	strcpy(item_seleccionado->texto_opcion,menu_retorna_item_language(menu_sel));
 	strcpy(item_seleccionado->texto_misc,menu_sel->texto_misc);
 
+    int menu_se_cerrara=menu_sel->menu_se_cerrara;
+
 	//printf ("misc selected: %s %s\n",item_seleccionado->texto_misc,menu_sel->texto_misc);
 
 	//guardamos antes si el tipo es tabulado antes de
@@ -19847,10 +19876,23 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 
 	//printf ("tecla al salir de dibuja menu: %d\n",tecla);
 
-	if (tecla==MENU_RETORNO_ESC) {
+    //Parecido a ESC, pero no cerramos todos menus
+    if (salir_con_flecha_izquierda) {
         zxvision_helper_menu_shortcut_delete_last();
         return MENU_RETORNO_ESC;
     }
+
+    if (menu_se_cerrara && menu_old_behaviour_close_menus.v==0) {
+        salir_todos_menus=1;
+        //printf("cerrar todos menus\n");
+    }
+
+	if (tecla==MENU_RETORNO_ESC) {
+        zxvision_helper_menu_shortcut_delete_last();
+        if (menu_old_behaviour_close_menus.v==0) salir_todos_menus=1;
+        return MENU_RETORNO_ESC;
+    }
+
 	else if (tecla==MENU_RETORNO_F1) return MENU_RETORNO_F1;
 	else if (tecla==MENU_RETORNO_F2) return MENU_RETORNO_F2;
 	else if (tecla==MENU_RETORNO_F10) return MENU_RETORNO_F10;
@@ -19896,6 +19938,7 @@ void menu_add_item_menu_common_defaults(menu_item *m,int tipo_opcion,t_menu_func
     m->atajo_tecla=0;
     m->tiene_submenu=0;
     m->item_avanzado=0;
+    m->menu_se_cerrara=0;
 
     m->menu_funcion_espacio=NULL;
 
@@ -20043,6 +20086,19 @@ void menu_add_item_menu_tiene_submenu(menu_item *m)
         }
 
         m->tiene_submenu=1;
+}
+
+//Decirle que todos los menus se cerraran al disparar esta accion
+void menu_add_item_menu_se_cerrara(menu_item *m)
+{
+       //busca el ultimo item i le añade el indicado
+
+        while (m->siguiente_item!=NULL)
+        {
+                m=m->siguiente_item;
+        }
+
+        m->menu_se_cerrara=1;
 }
 
 void menu_add_item_menu_es_avanzado(menu_item *m)
@@ -25218,7 +25274,7 @@ char *first_aid_string_filesel_uppercase_keys="If you want to select a file by i
 							"If you want to execute actions shown in the bottom of the window, in inverted colour, please press shift+letter";
 
 int first_aid_no_filesel_enter_key=0;
-char *first_aid_string_filesel_enter_key="Press ENTER to select a file or change directory.\n"
+char *first_aid_string_filesel_enter_key="Press ENTER or left mouse button to select a file or change directory.\n"
 							"Press Space to expand files, like tap, tzx, trd, scl... etc and also all the compressed supported files";
 
 int first_aid_no_smartload=0;

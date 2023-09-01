@@ -49,6 +49,12 @@ Improved Text Adventure features:
   - Messages
 
 Improved ZX Vision
+
+- New menu behaviour
+  - ESC key always closes all menus
+  - When closing a window that's created from a menu, all menus will be closed
+  - Cursor left go back to the previous menu, Cursor right activates the item (the same as Enter)
+
 - Added action to put windows in cascade
 - Allow to use your own charset file on ZX Vision
 - Allow to get charset from a game and use as your own charset file on ZX Vision
