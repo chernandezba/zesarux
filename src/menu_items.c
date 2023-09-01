@@ -26094,6 +26094,10 @@ void menu_licenses(MENU_ITEM_PARAMETERS)
         int retorno_menu;
         do {
 
+            //En este menu no hago que al abrir un item se cierren todos los menus (usando menu_add_item_menu_se_cerrara(array_menu_common); ),
+            //porque creo que puede ser lógico que si un usuario lee una licencia, quiera leer las demás, y así no se le cierra el menu
+            //y las tiene todas a mano
+
             menu_add_item_menu_inicial(&array_menu_common,"~~Information",MENU_OPCION_NORMAL,menu_about_licenses_info,NULL);
 			menu_add_item_menu_shortcut(array_menu_common,'i');
 
@@ -30974,6 +30978,7 @@ void menu_storage_tape(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_en_es_ca(array_menu_tape_settings,MENU_OPCION_NORMAL,menu_visual_realtape,NULL,
             "~~Visual Real Tape","Cinta Real ~~Visual","Cinta Real ~~Visual");
         menu_add_item_menu_shortcut(array_menu_tape_settings,'v');
+        menu_add_item_menu_se_cerrara(array_menu_tape_settings);
         menu_add_item_menu_tooltip(array_menu_tape_settings,"See an audio render of your tape, see tape blocks and rewind or move forward the cassette player");
         menu_add_item_menu_ayuda(array_menu_tape_settings,"See an audio render of your tape, see tape blocks and rewind or move forward the cassette player");
 
@@ -38769,6 +38774,7 @@ void menu_inicio_bucle_main(void)
             menu_add_item_menu_en_es_ca_inicial(&array_menu_principal,MENU_OPCION_NORMAL,menu_smartload,NULL,
                 "~~Smart load","Carga ingenio~~sa","Càrrega enginyo~~sa");
             menu_add_item_menu_shortcut(array_menu_principal,'s');
+            menu_add_item_menu_se_cerrara(array_menu_principal);
             menu_add_item_menu_tooltip(array_menu_principal,"Smart load tapes, snapshots, floppies, memory cards, cartridges...");
             menu_add_item_menu_ayuda(array_menu_principal,"This option loads the file depending on its type: \n"
                 "-Binary tapes are inserted as standard tapes and loaded quickly\n"
