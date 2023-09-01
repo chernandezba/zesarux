@@ -414,4 +414,15 @@ Una de ellas es el "About" pero ya esta usando dirty_user_must_draw_contents
 
 -poder hacer save pantalla a .txt, usando ocr y pixeles a caracteres, como hace curses
 
+-menus (pero no menus tabulados) no deberian permitir minimizar, aunque sí redimensionar.
+Creo que no hay setting en zxvision_window para permitir redimensionar pero no minimizar
+
+
+-con speech en menu habilitado
+*teniendo varias ventanas abiertas
+*pulsar F5 para abrir menu principal
+*pulsar ESC
+*se cierra menu, se va el foco a la ventana de mas arriba, y se lee el contenido a speech. ERROR!
+*luego se quita el foco de esa ventana y todo prosigue normalmente
+
 ---Fin Mejoras---

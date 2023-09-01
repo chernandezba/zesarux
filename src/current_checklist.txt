@@ -24,6 +24,3 @@ echo "Porcentaje=$PERCCOMPLETADO %"
 
 -probar todas maquinas, una por una 
 
--probar fallback de drivers graficos y de sonido
--probar speech: texto a speech linux, mac os, windows. ruta a --textspeechprogram relativa y absoluta
--probar speech en stdout
