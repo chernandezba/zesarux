@@ -121,6 +121,7 @@ Fixed showing info on Visual Real Tape when inserting a ZX80 audio tape
 Fixed segfault on fbdev driver when changing machine
 Fixed charset on simulate ZX80/81 Display on Speccy
 Fixed simulate real loading when mouse movement
+Fixed glitch switching hardware sprites on View Sprites
 
 * Misc Changes:
 

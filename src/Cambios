@@ -121,6 +121,7 @@ Corregido al mostrar información en Visual Real Tape cuando se inserta una cint
 Corregido segfault en driver fbdev al cambiar maquina
 Corregido charset en simulación de pantalla ZX80/81 en Speccy
 Corregido simulación de carga real cuando hay movimiento de ratón
+Corregido glitch al conmutar sprites hardware en View Sprites
 
 * Cambios varios:
 
