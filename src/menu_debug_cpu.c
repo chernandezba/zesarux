@@ -5012,6 +5012,10 @@ void menu_debug_gac_view_messages_ask(void)
         retorno_menu=menu_dibuja_menu(&daad_tipo_mensaje_opcion_seleccionada,&item_seleccionado,array_menu_daad_tipo_mensaje,"Message type" );
 
 
+        //no queremos que al pulsar ESC aqui se cierren todos los menus anteriores
+        salir_todos_menus=0;
+
+
 		/*if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
 			menu_debug_daad_view_messages(daad_tipo_mensaje_opcion_seleccionada);
 
@@ -5076,6 +5080,9 @@ void menu_debug_daad_view_messages_ask(void)
 
         retorno_menu=menu_dibuja_menu(&daad_tipo_mensaje_opcion_seleccionada,&item_seleccionado,array_menu_daad_tipo_mensaje,"Message type" );
 
+
+        //no queremos que al pulsar ESC aqui se cierren todos los menus anteriores
+        salir_todos_menus=0;
 
 		/*if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
 			menu_debug_daad_view_messages(daad_tipo_mensaje_opcion_seleccionada);
@@ -6980,6 +6987,9 @@ void menu_debug_daad_view_graphics(void)
 
 		retorno_menu=menu_dibuja_menu(&comun_opcion_seleccionada,&item_seleccionado,array_menu_common,"PAWS Graphics Render");
 
+
+        //no queremos que al pulsar ESC aqui se cierren todos los menus anteriores
+        salir_todos_menus=0;
 
 
 			if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {

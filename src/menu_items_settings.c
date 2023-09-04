@@ -10860,7 +10860,6 @@ void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(screen_ext_desktop_place_menu ? 'X' : ' ' ) );
 			menu_add_item_menu_tooltip(array_menu_ext_desktop_settings,"Try to place new menu items on the ZX Desktop space");
 			menu_add_item_menu_ayuda(array_menu_ext_desktop_settings,"Try to place new menu items on the ZX Desktop space");
-            menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
         }
 
         menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_switch_button,NULL,
@@ -11084,13 +11083,11 @@ void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
                     menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_zxdesktop_scrfile_mix_background,NULL,
                         "SCR background mix","SCR mezclar con fondo","SCR mesclar amb fons");
                     menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(zxdesktop_draw_scrfile_mix_background ? 'X' : ' ' ));
-                    menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
 
 
                     menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_zxdesktop_scrfile_disable_flash,NULL,
                         "SCR allow flash","SCR permitir parpadeo","SCR permetre parpelleig");
                     menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(zxdesktop_draw_scrfile_disable_flash==0 ? 'X' : ' ' ));
-                    menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
 
 
                 }

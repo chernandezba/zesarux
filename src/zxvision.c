@@ -6227,8 +6227,6 @@ void zxdesktop_draw_scrfile_load(void)
 
         //Extraer scr de esa cinta, snapshot, etc
 
-        //TODO: detectar si es tap, tzx, etc... o bien usar rutina comun que convierta segun extension
-
         char tmpdir[PATH_MAX];
         sprintf (tmpdir,"%s/zxdesktop_scr",get_tmpdir_base());
         menu_filesel_mkdir(tmpdir);
