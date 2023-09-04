@@ -6309,7 +6309,8 @@ void menu_ayplayer_edit_playlist(MENU_ITEM_PARAMETERS)
 
         retorno_menu=menu_dibuja_menu(&linea_seleccionada,&item_seleccionado,array_menu_common,"Playlist");
 
-
+        //no queremos que al pulsar ESC aqui se cierren todos los menus anteriores
+        salir_todos_menus=0;
 
         if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
             //llamamos por valor de funcion
@@ -8777,7 +8778,7 @@ void menu_tsconf_layer_settings(MENU_ITEM_PARAMETERS)
 	menu_espera_no_tecla();
 	menu_reset_counters_tecla_repeticion();
 
-	int ancho=20;
+	int ancho=21;
 	int alto=22;
 
 	int x;
@@ -13221,6 +13222,9 @@ void menu_record_mid_instrument(MENU_ITEM_PARAMETERS)
 
         retorno_menu=menu_dibuja_menu(&record_mid_instrument_opcion_seleccionada,&item_seleccionado,array_menu_common,"Instrument");
 
+        //no queremos que al pulsar ESC aqui se cierren todos los menus anteriores
+        salir_todos_menus=0;
+
         if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
             //Cambiar instrumento y salir
             mid_instrument=record_mid_instrument_opcion_seleccionada;
@@ -13501,6 +13505,9 @@ void menu_midi_output_instrument(MENU_ITEM_PARAMETERS)
         menu_add_ESC_item(array_menu_common);
 
         retorno_menu=menu_dibuja_menu(&midi_output_instrument_opcion_seleccionada,&item_seleccionado,array_menu_common,"Instrument");
+
+        //no queremos que al pulsar ESC aqui se cierren todos los menus anteriores
+        salir_todos_menus=0;
 
         if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
             //Cambiar instrumento y salir
@@ -18501,7 +18508,8 @@ void menu_display_settings(MENU_ITEM_PARAMETERS)
 		menu_add_item_menu_en_es_ca(array_menu_display_settings,MENU_OPCION_NORMAL,menu_view_screen,NULL,
             "~~View Screen","~~Ver Pantalla","~~Veure Pantalla");
 		menu_add_item_menu_shortcut(array_menu_display_settings,'v');
-        menu_add_item_menu_se_cerrara(array_menu_display_settings);
+        //No cerrar menu al volver de view screen, queremos que se vuelva al menu
+        //menu_add_item_menu_se_cerrara(array_menu_display_settings);
 
 
         menu_add_item_menu_en_es_ca(array_menu_display_settings,MENU_OPCION_NORMAL,menu_display_total_palette,NULL,
@@ -20108,10 +20116,22 @@ void menu_debug_tsconf_tbblue_msx(MENU_ITEM_PARAMETERS)
 	int retorno_menu;
         do {
 
+/*
+-con el nuevo comportamiento de menus en ZEsarUX X
+*si no se hace lo contrario, al pulsar ESC en un menu (logicamente tambien los tabulados) cerrara todo
+*en debug msx por ejemplo, se juntan varias ventanas/menus que tienen comportamientos distintos al pulsar ESC:
+ - video info, sprite navigator, tile navigator es una ventana no menu, por tanto al pulsar ESC vuelve a debug msx
+ - video layers, memory info son menus tabulados, por tanto al pulsar ESC cierran todos menus
+ que habria que hacer en este caso? que en todas cierren todos los menus? que todas vuelvan a debug msx?
 
+ ->pues todos deberian cerrar todos menus, pues para el usuario son ventanas tal cual y no menus de opciones
+ por tanto meto menu_add_item_menu_se_cerrara en todos los items, incluso los que son de menus, en que implicitamente
+ el sistema de menus ya cerrara todo al pulsar ESC, pero asi queda mas limpio y consistente aqui
+*/
 
 		menu_add_item_menu_inicial_format(&array_menu_debug_tsconf_tbblue_msx,MENU_OPCION_NORMAL,menu_debug_tsconf_tbblue_msx_videoregisters,NULL,"Video ~~Info");
 		menu_add_item_menu_shortcut(array_menu_debug_tsconf_tbblue_msx,'i');
+        menu_add_item_menu_se_cerrara(array_menu_debug_tsconf_tbblue_msx);
 
         if (MACHINE_IS_CPC && rainbow_enabled.v) {
             menu_add_item_menu(array_menu_debug_tsconf_tbblue_msx,"",MENU_OPCION_SEPARADOR,NULL,NULL);
@@ -20125,21 +20145,25 @@ void menu_debug_tsconf_tbblue_msx(MENU_ITEM_PARAMETERS)
         if (!MACHINE_IS_CPC) {
 		menu_add_item_menu_format(array_menu_debug_tsconf_tbblue_msx,MENU_OPCION_NORMAL,menu_tsconf_layer_settings,NULL,"Video ~~Layers");
 		menu_add_item_menu_shortcut(array_menu_debug_tsconf_tbblue_msx,'l');
+        menu_add_item_menu_se_cerrara(array_menu_debug_tsconf_tbblue_msx);
         }
 
         if (!MACHINE_IS_CPC) {
 		menu_add_item_menu_format(array_menu_debug_tsconf_tbblue_msx,MENU_OPCION_NORMAL,menu_debug_tsconf_tbblue_msx_spritenav,NULL,"~~Sprite navigator");
 		menu_add_item_menu_shortcut(array_menu_debug_tsconf_tbblue_msx,'s');
+        menu_add_item_menu_se_cerrara(array_menu_debug_tsconf_tbblue_msx);
         }
 
         if (MACHINE_IS_TBBLUE) {
 		    menu_add_item_menu_format(array_menu_debug_tsconf_tbblue_msx,MENU_OPCION_NORMAL,menu_debug_sprite_mangement_disable,NULL,"Sprite ~~disabling");
 		    menu_add_item_menu_shortcut(array_menu_debug_tsconf_tbblue_msx,'d');
+            menu_add_item_menu_se_cerrara(array_menu_debug_tsconf_tbblue_msx);
         }
 
 		if (MACHINE_IS_TSCONF || MACHINE_IS_TBBLUE || MACHINE_HAS_VDP_9918A) {
 			menu_add_item_menu_format(array_menu_debug_tsconf_tbblue_msx,MENU_OPCION_NORMAL,menu_debug_tsconf_tbblue_msx_tilenav,NULL,"~~Tile navigator");
 			menu_add_item_menu_shortcut(array_menu_debug_tsconf_tbblue_msx,'t');
+            menu_add_item_menu_se_cerrara(array_menu_debug_tsconf_tbblue_msx);
 		}
 
         if (MACHINE_IS_TBBLUE) {
@@ -20151,6 +20175,7 @@ void menu_debug_tsconf_tbblue_msx(MENU_ITEM_PARAMETERS)
 		if (MACHINE_IS_MSX || MACHINE_IS_SVI) {
 			menu_add_item_menu_format(array_menu_debug_tsconf_tbblue_msx,MENU_OPCION_NORMAL,menu_debug_msx_svi_memory_info,NULL,"~~Memory Info");
 			menu_add_item_menu_shortcut(array_menu_debug_tsconf_tbblue_msx,'m');
+            menu_add_item_menu_se_cerrara(array_menu_debug_tsconf_tbblue_msx);
 		}
 
                 menu_add_item_menu(array_menu_debug_tsconf_tbblue_msx,"",MENU_OPCION_SEPARADOR,NULL,NULL);
@@ -27495,6 +27520,7 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
 
 		menu_add_item_menu(array_menu_debug,"~~Debug CPU",MENU_OPCION_NORMAL,menu_debug_registers,NULL);
 		menu_add_item_menu_shortcut(array_menu_debug,'d');
+        //No activamos salir_todos_menus o se saldria de debug cpu, porque se detecta dicha variable
         //menu_add_item_menu_se_cerrara(array_menu_debug);
 		menu_add_item_menu_tooltip(array_menu_debug,"Open debug window");
 		menu_add_item_menu_ayuda(array_menu_debug,"This window opens the debugger. You can see there some Z80 registers "

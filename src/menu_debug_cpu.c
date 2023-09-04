@@ -394,6 +394,8 @@ int menu_change_memory_zone_list_title(char *titulo)
                 retorno_menu=menu_dibuja_menu(&menu_change_memory_zone_list_opcion_seleccionada,&item_seleccionado,array_menu_memory_zones,titulo );
 
 
+                //no queremos que al pulsar ESC aqui se cierren todos los menus anteriores
+                salir_todos_menus=0;
 
 
 				if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
@@ -675,6 +677,8 @@ void menu_mem_breakpoints(MENU_ITEM_PARAMETERS)
                 menu_add_ESC_item(array_menu_mem_breakpoints);
                 retorno_menu=menu_dibuja_menu(&mem_breakpoints_opcion_seleccionada,&item_seleccionado,array_menu_mem_breakpoints,"Memory Breakpoints" );
 
+        //no queremos que al pulsar ESC aqui se cierren todos los menus anteriores
+        salir_todos_menus=0;
 
 
                 if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
@@ -937,6 +941,10 @@ void menu_breakpoints(MENU_ITEM_PARAMETERS)
         }
 
     } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+
+    //Hago expresamente que no se cierren los menus al pulsar ESC, porque quiero que se vuelva al menu de Debug cpu
+    salir_todos_menus=0;
+
 }
 
 
@@ -3618,6 +3626,9 @@ void menu_watches(MENU_ITEM_PARAMETERS)
 
 		//En caso de menus tabulados, es responsabilidad de este de liberar ventana
 		zxvision_destroy_window(ventana);
+
+        //Hago expresamente que no se cierren los menus al pulsar ESC, porque quiero que se vuelva al menu de Debug cpu
+        salir_todos_menus=0;
 
 	}
 
@@ -7416,7 +7427,8 @@ void menu_debug_cpu_history(void)
 
         retorno_menu=menu_dibuja_menu(&menu_debug_cpu_history_opcion_seleccionada,&item_seleccionado,array_menu_common,"CPU History");
 
-
+        //no queremos que al pulsar ESC aqui se cierren todos los menus anteriores
+        salir_todos_menus=0;
 
         if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
             //llamamos por valor de funcion
@@ -7821,7 +7833,8 @@ void menu_debug_cpu_view_stack(void)
 
         retorno_menu=menu_dibuja_menu(&menu_debug_cpu_view_stack_opcion_seleccionada,&item_seleccionado,array_menu_common,"View Stack");
 
-
+        //no queremos que al pulsar ESC aqui se cierren todos los menus anteriores
+        salir_todos_menus=0;
 
         if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
             //Cambiar puntero con el valor seleccionado
@@ -9383,6 +9396,14 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
 
 
 	//zxvision_destroy_window(ventana);
+
+    //Forzamos que siempre borre todos los menus anteriores a este
+    //En el llamado desde el menu de Debug, no activamos menu_add_item_menu_se_cerrara,
+    //porque al principio de aqui, se detectaria salir_todos_menus y se saldria al momento
+    //Pero interesa que al salir de aqui cierre dicho menu de Debug
+    //Efecto secundario: si hubiera algun otro menu que llamase aqui, tambien se cerraria al salir,
+    //aunque por lo pronto eso no lo hay y no es un problema
+    salir_todos_menus=1;
 
 }
 

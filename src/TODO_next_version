@@ -425,4 +425,14 @@ Creo que no hay setting en zxvision_window para permitir redimensionar pero no m
 *se cierra menu, se va el foco a la ventana de mas arriba, y se lee el contenido a speech. ERROR!
 *luego se quita el foco de esa ventana y todo prosigue normalmente
 
+-algun tipo de indicacion en un menu que diga que no debe activar salir_todos_menus al pulsar ESC, por ejemplo en algunos no quiero
+que se cierren los anteriores, ejemplo:
+*cambio de zona de memoria desde debug cpu o hexdump
+*breakpoints
+*watches
+En estos casos de momento lo que he hecho es que al final de cada menu se haga un "salir_todos_menus=0"
+
+
+-hexadecimal editor deberia refrescar continuamente al estar dentro de la ventana?
+
 ---Fin Mejoras---
