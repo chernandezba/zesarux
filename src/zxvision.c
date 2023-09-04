@@ -1791,7 +1791,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         0 //caracter franja normal
     },
 
-    //Paleta de color "Ocean" de OS/2
+
 	{1,"OS/2",OSDOS_COLOUR_GRAY,0,
 		0,1,0,0, 		//No mostrar cursor,mostrar recuadro,no mostrar rainbow
 		OSDOS_COLOUR_BLUE,7+8, 		//Colores para opcion seleccionada

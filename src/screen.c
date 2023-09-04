@@ -518,10 +518,21 @@ const int ataritos_colortable_original[ATARITOS_TOTAL_PALETTE_COLOURS]={
     0xdedede   //Blanco
 };
 
+
+//Paleta de color "Ocean" de OS/2
+/*
 const int osdos_colortable_original[OSDOS_TOTAL_PALETTE_COLOURS]={
     0x0000a3,  //Azul titulo ventana papel, texto seleccionado
     0xd7d7d7, //Tinta gris ventana inactiva, papel
     0x808080 //Tinta opcion no disponible, titulo ventana inactiva
+};
+*/
+
+//Paleta de color "Warp 4" de OS/2
+const int osdos_colortable_original[OSDOS_TOTAL_PALETTE_COLOURS]={
+    0x2900b0,  //Azul titulo ventana papel, texto seleccionado
+    0xcccccc, //gris de papel, tinta titulo ventana inactiva
+    0x808080, //Tinta opcion no disponible, titulo ventana inactiva papel
 };
 
 const int zesarux_plus_colortable_original[ZESARUX_PLUS_TOTAL_PALETTE_COLOURS]={
