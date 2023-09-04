@@ -1798,7 +1798,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
 		OSDOS_COLOUR_GRAY,OSDOS_COLOUR_GRAY_INACTIVE,OSDOS_COLOUR_BLUE,OSDOS_COLOUR_GRAY_INACTIVE, 	//Colores para opcion no disponible
 
 		OSDOS_COLOUR_BLUE,7+8,        	//Colores para el titulo ventana
-        OSDOS_COLOUR_GRAY_INACTIVE,              //Color recuadro
+        0,              //Color recuadro
 		OSDOS_COLOUR_GRAY_INACTIVE,OSDOS_COLOUR_GRAY,        	//Colores para el titulo ventana inactiva
 
 		OSDOS_COLOUR_BLUE,		//Color waveform

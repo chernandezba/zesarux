@@ -435,4 +435,8 @@ En estos casos de momento lo que he hecho es que al final de cada menu se haga u
 
 -hexadecimal editor deberia refrescar continuamente al estar dentro de la ventana?
 
+-si pulsado OSD keyboard (F8) desde una ventana, al volver con ESC quedan mal redibujadas las ventanas
+
+-tecla de (G)graphics en vista 8 ya no deberia salir para GAC, porque eso ya se hace desde vista 8
+
 ---Fin Mejoras---
