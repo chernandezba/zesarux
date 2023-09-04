@@ -25896,6 +25896,10 @@ void menu_about_about(MENU_ITEM_PARAMETERS)
 	//unsigned char letra_enye,letra_e_acentuada,letra_a_acentuada,letra_o_acentuada;
 	unsigned char letra_enye;
 
+    //TODO: esto tambien sale con zx desktop cerrado en drivers video completos,
+    //no aparecen acentos
+    //Podria usar acentos (e incluso eñe) todo utf , y sale bien (en curses simplemente sale sin acentos y la eñe es una ene)
+    //pero en curses detecta que los caracteres ocupan mas de lo que ocupan realmente y el apellido queda en una linea inferior
 
 	if (si_complete_video_driver() ) {
 		//mensaje completo con enye en segundo apellido y acentos
