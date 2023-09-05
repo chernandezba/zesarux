@@ -18,11 +18,13 @@ The following are features exclusive to ZEsarUX and not found on any emulator of
 
 * Emulates Dinamic SD1
 
-* Real time playback from emulated sound chips AY, SN76489AN, i8049 to external MIDI device 
+* Real time playback from emulated sound chips AY, SN76489AN, i8049 to external MIDI device
 
 * On Screen keyboard with words, useful for playing Text Adventures. Also a tool to extract words from text adventures (Daad, Paws, Quill and Gac) and configure this on screen text keyboard
 
 * Text Adventure Map
+
+* Use artificial intelligence to get realistic images for location description on Text Adventure games
 
 * DAAD/PAWS/Quill Debugger
 

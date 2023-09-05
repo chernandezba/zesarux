@@ -1,11 +1,11 @@
 * en cpu.h, actualizar numero de version, comentar SNAPSHOT_VERSION, borrar -SN o -RC sufijo de EMULATOR_VERSION
 * cambiar fechas en EMULATOR_DATE, EMULATOR_SHORT_DATE
-* cambiar nombre edicion en EMULATOR_EDITION_NAME 
+* cambiar nombre edicion en EMULATOR_EDITION_NAME
 * en Changelog cambiar nombre edicion y fechas
 * activar capture segmentation fault en cpu.c
 * activar capture floating point exception en cpu.c
 * ZESARUX_EXTRAS_URL en cpu.h en principio no hay que tocarlo
-* Cambiar EMULATOR_VERSION en archivo configure 
+* Cambiar EMULATOR_VERSION en archivo configure
 * Cambiar version en macos/apptemplate/Contents/Info.plist, tag CFBundleVersion
 * Ajustar juego editionnamegame.tap, si juego no permitido distribucion, eliminar. Ajustar EDITION_NAME_GAME en cpu.h sobretodo si cambia a tap o tzx o dsk. Crear editionnamegame.tap.config o editionnamegame.tzx.config si es necesario
 * Ajustar EMULATOR_GAME_EDITION
@@ -22,16 +22,16 @@ tener en cuenta de sacar de esta lista los casos que retornan hacia rst8 (con fu
 
 *cuando hay nueva versión hay que actualizar archivo txt del servidor
 Si es estable, actualizar ambos archivos
-Si es beta, actualizar solo el archivo de snapshot 
+Si es beta, actualizar solo el archivo de snapshot
 
 
 nombres ediciones:
 Exploding fist, Bubble bobble, Star raiders 2, Sabre wulf, Night Shift, Saint Dragon, Dynamite Dan 2,
-Silent service, Frank n stein, Match day, Bruce lee, Zorro, Three weeks in Paradise, 
+Silent service, Frank n stein, Match day, Bruce lee, Zorro, Three weeks in Paradise,
 Exolon, Koronis Rift, Fox Fights back, Gauntlet, Pheenix, Death Wish 3, Rygar, Target renegade
 
 
-*hysteria, *rainbow islands, *jetpac, *hard drivin', *lemmings, *sir fred, *rick, *agent dan, *id, *rainbow, *rainbow+, *saint george, 
+*hysteria, *rainbow islands, *jetpac, *hard drivin', *lemmings, *sir fred, *rick, *agent dan, *id, *rainbow, *rainbow+, *saint george,
 *chase hq, *Rescue on Fractalus, *gunfright, *xeno, *Neula, *world destruction, *the great escape, *turbo esprit, *toi acid,
 *cliff hanger, *clive sinclair, *carrier command, *Abadia del Crimen
 
@@ -130,7 +130,7 @@ menu_generic_message_splash
 en el caso de mostrar un OK de alguna operación realizada
 
 
-* menu_generic_message_splash: suele mostrar un OK de alguna operación realizada, en que no es muy importante que el usuario 
+* menu_generic_message_splash: suele mostrar un OK de alguna operación realizada, en que no es muy importante que el usuario
 lea detenidamente el mensaje. Ejemplo:
 
 menu_generic_message_splash("Clear CPU statistics","OK. Statistics cleared");
@@ -143,40 +143,49 @@ menu_generic_message("Change DIVMMC ROM","OK. Remember to enable DIVMMC paging t
 menu_generic_message("Rename file","OK. File renamed");
 
 
---------------
+-----------------------------------------
+- Generación de una nueva release
 
+Se generan los siguientes archivos:
 
-* source a generar
+LEEME
+MD5SUM
+README
+ZEsarUX_extras-[version].zip
+ZEsarUX_freebsd-[version]-freebsd12_amd64.tar.gz
+ZEsarUX_linux-[version]-debian11_i686.tar.gz
+ZEsarUX_linux-[version]-debian11_x86_64.tar.gz
+ZEsarUX_linux-[version]-fedora38_x86_64.tar.gz
+ZEsarUX_linux-[version]-ubuntu22_x86_64.tar.gz
+ZEsarUX_macos-[version]-legacy.dmg
+ZEsarUX_macos-[version].dmg
+ZEsarUX_raspberrypios-framebuffer-[version]_armv6l.tar.gz
+ZEsarUX_src-[version].tar.gz
+ZEsarUX_windows-[version]-legacy.zip
+ZEsarUX_windows-[version].zip
 
-ZEsarUX-version-src.tar.gz
+Donde [version] es el numero de version, por ejemplo 10.3
 
-con comandos:
-make sourcetargz
-
-Nota: no hacerlo desde Mac pues agrega todos esos archivos ._*
-
-#antes de subir los archivos a sourceforge, generar los MD5SUMS de todos
-
-
-----
-
-
-* Binarios a generar. Generarlos partiendo del codigo fuente generado antes
-
-De todos los archivos generados y subidos a github, crear suma MD5SUM en local de cada archivo y luego subirlo en archivo MD5SUM
-con todos los archivos subidos comprimidos y README (y excluyendo este mismo MD5SUM)
-
+Al final de la subida,
 Generar en servidor ZEsarUX, en ruta
 STATS_URL_UPDATE_STABLE_VERSION
 con contenido numero de version, ejemplo:
 "8.1"
 
+* LEEME, README
 
-** Linux 
+Es el contenido del Changelog y el Cambios, solo del trozo de esta versión en concreto
+
+
+* Binarios a generar
+
+
+
+** Linux
 Generar estos dos binarios de Linux (32 y 64 bits):
-ZEsarUX_linux-version-debian11_i686.tar.gz 
-ZEsarUX_linux-version-debian11_x86_64.tar.gz 
-Habilita drivers video: xwindows, sdl, fbdev, curses, stdout, simpletext y drivers audio: pulse, alsa, sdl, dsp, pcspeaker. 
+ZEsarUX_linux-version-debian11_i686.tar.gz
+ZEsarUX_linux-version-debian11_x86_64.tar.gz
+Habilita drivers video: xwindows, sdl, fbdev, curses, stdout, simpletext y drivers audio: pulse, alsa, sdl, dsp, pcspeaker.
 
 con comandos:
 export CFLAGS=-O3
@@ -197,10 +206,10 @@ desde entorno con Docker:
 make fedora
 
 
-** FreeBSD 
+** FreeBSD
 Generar este binarios de FreeBSD:
-ZEsarUX_freebsd-version-freebsd12_amd64.tar.gz 
-Habilita drivers video: xwindows, sdl, fbdev, curses, stdout, simpletext y drivers audio: pulse, alsa, sdl, dsp, pcspeaker. 
+ZEsarUX_freebsd-version-freebsd12_amd64.tar.gz
+Habilita drivers video: xwindows, sdl, fbdev, curses, stdout, simpletext y drivers audio: pulse, alsa, sdl, dsp, pcspeaker.
 
 con comandos:
 export CFLAGS=-O3
@@ -213,8 +222,8 @@ make freebsd
 
 ** Raspbian
 Generar este binario de Raspbian:
-ZEsarUX-version-raspbian9.tar.gz 
-Habilita extensiones raspberry, drivers video: fbdev, curses, y drivers audio: alsa, sdl, dsp. 
+ZEsarUX-version-raspbian9.tar.gz
+Habilita extensiones raspberry, drivers video: fbdev, curses, y drivers audio: alsa, sdl, dsp.
 
 con comandos:
 export CFLAGS=-O3
@@ -223,15 +232,15 @@ export LDFLAGS=-O3
 
 La salida debe ser similar a:
  Enabled Video output drivers: curses sdl fbdev null
- Disabled Video output drivers: stdout simpletext cursesw aa caca cocoa xwindows 
+ Disabled Video output drivers: stdout simpletext cursesw aa caca cocoa xwindows
  Enabled Audio output drivers: dsp alsa sdl null
- Disabled Audio output drivers: pcspeaker pulse coreaudio 
- Enabled Audio File output drivers: raw 
- Disabled Audio File output drivers: wav 
+ Disabled Audio output drivers: pcspeaker pulse coreaudio
+ Enabled Audio File output drivers: raw
+ Disabled Audio File output drivers: wav
  Pthreads support: yes
  SSL support: yes
  Networking support: yes
- Remote command protocol support: yes 
+ Remote command protocol support: yes
  Linux real joystick support: yes
  MEMPTR emulation: no
  Visual memory option: no
@@ -249,16 +258,14 @@ Luego:
 make clean
 make
 make rpi
-(Con O3, tarda 08:40 en compilar con 800MHz)
-(Con O2, tarda 06:30 en compilar con 800MHz)
 
 
 ** Mac
 
 Generar dos binarios de Mac:
 (-Quizá versión legacy de Mac ya no tiene sentido. Requiere Mac OS reciente y los cflags O2 estarán soportados en todos los recientes )
-ZEsarUX-version-macos-legacy.dmg.gz 
-Habilita drivers video: cocoa, stdout, simpletext y drivers audio: coreaudio. 
+ZEsarUX-version-macos-legacy.dmg.gz
+Habilita drivers video: cocoa, stdout, simpletext y drivers audio: coreaudio.
 
 con comandos:
 Versión sin optimizaciones, sin SSL:
@@ -266,7 +273,7 @@ Versión sin optimizaciones, sin SSL:
 export CFLAGS="-mmacosx-version-min=10.13"
 export LDFLAGS="-mmacosx-version-min=10.13"
 
-./configure --enable-memptr --enable-visualmem --enable-cpustats --disable-xwindows --disable-sdl --disable-fbdev --disable-caca --disable-aa --disable-curses --disable-sndfile 
+./configure --enable-memptr --enable-visualmem --enable-cpustats --disable-xwindows --disable-sdl --disable-fbdev --disable-caca --disable-aa --disable-curses --disable-sndfile
 make clean
 make
 make macapp
@@ -274,8 +281,8 @@ make macapp
 Y
 
 
-ZEsarUX-version-macos.dmg.gz 
-Habilita drivers video: cocoa, stdout, simpletext y drivers audio: coreaudio. 
+ZEsarUX-version-macos.dmg.gz
+Habilita drivers video: cocoa, stdout, simpletext y drivers audio: coreaudio.
 con comandos:
 Versión con optimizaciones, sin SSL:
 
@@ -284,45 +291,19 @@ export CFLAGS="-O3"
 export LDFLAGS="-O3"
 
 #Al menos poner un 10.x dos versiones inferior al que yo tenga, suponiendo que funcione bien...
-#-Use otool -l /path/to/binary and inspect the LC_VERSION_MIN_MACOSX load command; 
+#-Use otool -l /path/to/binary and inspect the LC_VERSION_MIN_MACOSX load command;
 
-./configure --enable-memptr --enable-visualmem --enable-cpustats --disable-xwindows --disable-sdl --disable-fbdev --disable-caca --disable-aa --disable-curses --disable-sndfile 
+./configure --enable-memptr --enable-visualmem --enable-cpustats --disable-xwindows --disable-sdl --disable-fbdev --disable-caca --disable-aa --disable-curses --disable-sndfile
 make clean
 make
 make macapp
 
 
 
-## NO Versión con optimizaciones, CON SSL:
-#
-#export CFLAGS=-O3
-#export LDFLAGS=-O3
-#
-#./configure --enable-memptr --enable-visualmem --enable-cpustats --enable-ssl --disable-xwindows --disable-sdl --disable-fbdev --disable-caca --disable-aa --disable-curses --disable-sndfile 
-#(Habilita SSL, drivers video: cocoa(GL), stdout, simpletext y drivers audio: coreaudio. )
-#make clean
-#make
-#
-#cp -f /usr/local/opt/openssl/lib/libssl.1.0.0.dylib /usr/local/opt/openssl/lib/libcrypto.1.0.0.dylib extras/macos_ssl/
-#cp zesarux extras/macos_ssl/zesarux.ssl
-
-
-
-
-** Extra files
-
-#make extra_files
-desde carpeta de zesarux-extras
-zip -r ZEsarUX_extras-\$(EMULATOR_VERSION).zip extras/
-Y subir el zip a github, al repo de zesarux, en releases
-#Nota: Los extra_files generarlos despues de las versiones de Mac pues se incluyen los extras para zesarux con SSL
-#Nota2: Tener en cuenta que la carpeta extras este visible, sea como enlace o como submodulo
-
-
 
 **Windows
 Generar este binario de Windows, mingw:
-ZEsarUX-version-windows.zip  
+ZEsarUX-version-windows.zip
 
 
 Ver documento INSTALLWINDOWS, Native Windows (with mingw)
@@ -345,15 +326,15 @@ Esto compilara con SDL1
 
 La salida debe ser:
  Enabled Video output drivers: simpletext sdl null
- Disabled Video output drivers: stdout curses aa caca cocoa xwindows fbdev 
+ Disabled Video output drivers: stdout curses aa caca cocoa xwindows fbdev
  Enabled Audio output drivers: sdl null
- Disabled Audio output drivers: dsp alsa pulse coreaudio 
+ Disabled Audio output drivers: dsp alsa pulse coreaudio
  ...
  Pthreads support: yes
  SSL support: yes
 
 make clean
-make 
+make
 
 copiar SDL.dll aqui:
 copy c:\mingw\sdl\bin\SDL.dll .
@@ -383,6 +364,33 @@ Nota: se podria compilar en 64 bits, pero SDL 1.2 solo tiene version 32 bits
 Nota: pasar antes antivirus al exe y al dll por si acaso
 
 
+* source a generar
+
+ZEsarUX_src-[version].tar.gz
+
+con comandos:
+make sourcetargz
+
+Nota: no hacerlo desde Mac pues agrega todos esos archivos ._*
+
+
+* Extra files
+
+#make extra_files
+desde carpeta de zesarux-extras
+zip -r ZEsarUX_extras-[version].zip extras/
+Y subir el zip a github, al repo de zesarux, en releases
+#Nota: Los extra_files generarlos despues de las versiones de Mac pues se incluyen los extras para zesarux con SSL
+#Nota2: Tener en cuenta que la carpeta extras este visible, sea como enlace o como submodulo
+
+
+
+* MD5SUM
+
+Suma md5 de todos los archivos, generar al final
+
+
+
 ** Otros Linux/Unix genericos
 
 ./configure
@@ -390,20 +398,20 @@ make clean
 make
 make bintargz
 
-—————
+-------------------------------------------------
 
 Sobre menu y overlay y ventanas en background:
 
-menu_overlay_activo indica que hay un overlay sobre el render normal de la máquina emulada. 
+menu_overlay_activo indica que hay un overlay sobre el render normal de la máquina emulada.
 Esto puede ser el menú pero también mensajes de splash, logo de bienvenida, botón joystick numselect etc
 
-Para mostrar ese overlay es muy simple: cada driver de vídeo tiene esta parte de código, 
+Para mostrar ese overlay es muy simple: cada driver de vídeo tiene esta parte de código,
 después de haber hecho refresco de la máquina emulada:
 
 screen_render_menu_overlay_if_active();
 
 La función de overlay que dibuja texto es : normal_overlay_texto_menu
-Las ventanas que hacen dibujado de pixel, como waveform, cambian este overlay para llamar a sus funciones internas 
+Las ventanas que hacen dibujado de pixel, como waveform, cambian este overlay para llamar a sus funciones internas
 
 En normal_overlay_texto_menu se dibuja el texto de las ventanas, y también se llama a las funciones de overlay
 de las ventanas en background (si es que está habilitado el background de ventanas)
@@ -438,13 +446,13 @@ al estilo por ejemplo de: "zxvision_window zxvision_window_view_sprites;". Luego
 
         if (!util_find_window_geometry("processswitcher",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
            ...
-         
+
     }
 
     //Si ya existe, activar esta ventana
     else {
         zxvision_activate_this_window(ventana);
-    }    
+    }
 
 	zxvision_draw_window(ventana);
 
@@ -462,7 +470,7 @@ al estilo por ejemplo de: "zxvision_window zxvision_window_view_sprites;". Luego
 	}
 
 	else {
-		zxvision_destroy_window(ventana);		
+		zxvision_destroy_window(ventana);
  	}
 
 	 O alternativa para menus:
@@ -503,7 +511,7 @@ index 9e32a67e..16a8f772 100644
  				//Si estuviese antes, al mover el cursor hacia abajo dejándolo pulsado, el texto no se vería hasta que no se soltase la tecla
 -				normal_overlay_texto_menu();
 +				if (!zxvision_drawing_in_background) normal_overlay_texto_menu();
-+               menu_speech_tecla_pulsada=1; //Habitualmente esto, cuando hay texto. Si no, envia continuamente todo ese texto a speech   
++               menu_speech_tecla_pulsada=1; //Habitualmente esto, cuando hay texto. Si no, envia continuamente todo ese texto a speech
 +               //si ventana minimizada, no ejecutar todo el codigo de overlay
 +               if (xxxx_overlay_window->is_minimized) return; //Sustituir xxxx_overlay_window por lo que convenga
 
@@ -600,7 +608,7 @@ index 9e32a67e..16a8f772 100644
 
          } while (salir==0);
 
- 				
+
 -        set_menu_overlay_function(normal_overlay_texto_menu);
 
 	//Antes de restaurar funcion overlay, guardarla en estructura ventana, por si nos vamos a background
@@ -632,10 +640,10 @@ index 9e32a67e..16a8f772 100644
 Mas notas devel: TODO: apuntarlas en otro sitio
 
 -activar background windows + even with menu closed, implica que incluso con menu cerrado, las funciones de putpixel están haciendo siempre
-mix de la maquina emulada con los pixeles del menu (llamando a screen_putpixel_mix_layers). 
+mix de la maquina emulada con los pixeles del menu (llamando a screen_putpixel_mix_layers).
 No implica mucho mas uso de cpu (si hay poca ventana abierta) pero hay que tener en cuenta que por el hecho de tener esa opcion activada, incluso con todas las ventanas cerradas, ya consume algo mas de cpu
 
-----  
+----
 
 Borrador rapido de como se redibuja pantalla
 
@@ -645,7 +653,7 @@ Borrador rapido de como se redibuja pantalla
 Hay dos optimizaciones de cache:
 
 1) Campo .modificado en overlay dice que se ha escrito ese caracter y al refrescar desde nomal_overlay_texto_menu debe renderizarlo. Desde alli,
-al renderizar, se pondra ese campo .modificado a 0. Asi en ventanas como help->readme, si no se mueve no hace scroll ni nada, 
+al renderizar, se pondra ese campo .modificado a 0. Asi en ventanas como help->readme, si no se mueve no hace scroll ni nada,
 solo se renderiza una vez, en cada refresco de pantalla no se renderiza de nuevo, ahorrando monton de ciclos de cpu
 
 2) Si el caracter a escribir es el mismo, con mismos atributos, y parametro use_cache_mismo_caracter=1, no modificamos ese caracter, por tanto
@@ -657,12 +665,12 @@ no se renderizara desde nomal_overlay_texto_menu. Dado que es mismo caracter, ah
 //pero lo que hemos hecho es que en putchar_menu_overlay y putchar_menu_overlay_parpadeo, siempre llama sin cache
 
 -ventanas que dibujan en pixeles, suele ser responsabilidad de ellas borrar los pixeles del frame anterior, o quedaran "restos".
-Alternativamente se puede usar parametro must_clear_cache_on_draw de la ventana, que indica que a cada refresco, se redibuja siempre el fondo de texto, 
+Alternativamente se puede usar parametro must_clear_cache_on_draw de la ventana, que indica que a cada refresco, se redibuja siempre el fondo de texto,
 que suele ser caracter " " y se le dice que no haga cache de ese caracter, con lo que se borra la ventana (incluido logicamente los pixeles)
 
 Aparte de todo eso, cuando no se permite background windows, habitualmente solo se tiene una ventana visible, pero se puede dar en caso de 2 a la vez, por ejemplo al pulsar F1 en algun item de menu. Es por eso que hay varias funciones que consideran cuando hay mas de 1 ventana a la vez (aunque no se permitan en background), como el redraw all windows o la función de ver si una ventana está encima de otra que se llama desde draw window contents (zxvision_coords_in_superior_windows)
 
-otro: se puede usar dirty_user_must_draw_contents para saber el usuario cuando tiene que redibujar todos los pixeles de una ventana. 
+otro: se puede usar dirty_user_must_draw_contents para saber el usuario cuando tiene que redibujar todos los pixeles de una ventana.
 en caso que no este activo eso, se pueden dibujar solo los pixeles que cambian, y no todos
 
 ---
@@ -699,8 +707,8 @@ index 38b9613..54e1043 100644
  Added ZSF support for Timex TS2068
  Added setting for path where to download files from the speccy and zx81 online browser
 +Added machine Spectrum 48k+
- 
- 
+
+
  Improved ZX Spectrum Next emulation: added sprite rendering priority bit
 
 ## Agregar en FEATURES y FEATURES_es
@@ -712,11 +720,11 @@ index 49b094c..a6e5fe2 100644
      * Science of Cambridge MK14
      * Sinclair ZX80
      * Sinclair ZX81
--    * Spectrum models: 16k, 48k (English and Spanish), Inves Spectrum +, Spectrum 128k (English and Spanish), Spectrum +2 (English, Spanish and French), Spectrum +2A (English and Spanish), Spectrum +3 (English and Spanish), Microdigital TK90X (Portuguese and Spanish), TK95 
-+    * Spectrum models: 16k, 48k (English and Spanish), 48k+ (English and Spanish), Inves Spectrum +, Spectrum 128k (English and Spanish), Spectrum +2 (English, Spanish and French), Spectrum +2A (English and Spanish), Spectrum +3 (English and Spanish), Microdigital TK90X (Portuguese and Spanish), TK95 
+-    * Spectrum models: 16k, 48k (English and Spanish), Inves Spectrum +, Spectrum 128k (English and Spanish), Spectrum +2 (English, Spanish and French), Spectrum +2A (English and Spanish), Spectrum +3 (English and Spanish), Microdigital TK90X (Portuguese and Spanish), TK95
++    * Spectrum models: 16k, 48k (English and Spanish), 48k+ (English and Spanish), Inves Spectrum +, Spectrum 128k (English and Spanish), Spectrum +2 (English, Spanish and French), Spectrum +2A (English and Spanish), Spectrum +3 (English and Spanish), Microdigital TK90X (Portuguese and Spanish), TK95
      * Sinclair QL
      * Cambridge Z88
-     * Timex TS 2068 
+     * Timex TS 2068
 
 ## Agregar ID maquina
 diff --git a/src/cpu.h b/src/cpu.h
@@ -726,19 +734,19 @@ index 563c78c..090b532 100644
 @@ -386,6 +386,7 @@ extern z80_bit stdout_simpletext_automatic_redraw;
  #define MACHINE_ID_SPECTRUM_P3_41		26
  #define MACHINE_ID_SPECTRUM_P3_SPA		27
- 
+
 +#define MACHINE_ID_SPECTRUM_48_PLUS_ENG		28
- 
+
  #define MACHINE_ID_COLECO 100
  #define MACHINE_ID_SG1000 101
 @@ -477,8 +478,9 @@ extern z80_bit stdout_simpletext_automatic_redraw;
- 
- 
- 
+
+
+
 -#define MACHINE_IS_SPECTRUM_16_48 ( (current_machine_type<=MACHINE_ID_MICRODIGITAL_TK95) || MACHINE_IS_SPECTRUM_48_SPA )
 +#define MACHINE_IS_SPECTRUM_48_PLUS_ENG (current_machine_type==MACHINE_ID_SPECTRUM_48_PLUS_ENG)
 +#define MACHINE_IS_SPECTRUM_16_48 ( (current_machine_type<=MACHINE_ID_MICRODIGITAL_TK95) || MACHINE_IS_SPECTRUM_48_PLUS_SPA || MACHINE_IS_SPECTRUM_48_PLUS_ENG)
- 
+
  #define MACHINE_IS_SPECTRUM_128_P2 ( (current_machine_type>=MACHINE_ID_SPECTRUM_128 && current_machine_type<=MACHINE_ID_SPECTRUM_P2_SPA) || MACHINE_IS_PENTAGON)
 
 ## Agregar en listado descriptivo
@@ -753,12 +761,12 @@ index 7771e2a..0bc9509 100644
 +              " 48kp     ZX Spectrum+ 48k\n"
  							" 128k     ZX Spectrum+ 128k\n"
  							" QL       QL\n"
- 
+
 ## Agregar en lista nombre maquinas
 @@ -2662,6 +2664,8 @@ struct s_machine_names machine_names[]={
      {"ZX Spectrum +3 (ROM v4.1)",		MACHINE_ID_SPECTRUM_P3_41},
      {"ZX Spectrum +3 (Spanish)",		MACHINE_ID_SPECTRUM_P3_SPA},
- 
+
 +    {"ZX Spectrum+ 48k",		MACHINE_ID_SPECTRUM_48_PLUS_ENG},
 +
      {"MSX1",MACHINE_ID_MSX1},
@@ -774,12 +782,12 @@ index 7771e2a..0bc9509 100644
 +29=Timex TC2048
  100=colecovision
  101=sega sg1000
- 102=Spectravideo 318         
+ 102=Spectravideo 318
 
- ## Agregar en set_machine_params, casos de maquinas y funciones lectura, escritura memoria y puertos   
+ ## Agregar en set_machine_params, casos de maquinas y funciones lectura, escritura memoria y puertos
 @@ -3746,7 +3751,8 @@ You don't need timings for H/V sync =)
  		break;
- 
+
  		case 1:
 		case MACHINE_ID_SPECTRUM_48_PLUS_SPA:
 +        case MACHINE_ID_SPECTRUM_48_PLUS_ENG:
@@ -790,17 +798,17 @@ index 7771e2a..0bc9509 100644
 ## Agregar en carga de ROM
 @@ -4589,6 +4595,7 @@ void rom_load(char *romfilename)
                  break;
- 
+
                  case 1:
 +                case MACHINE_ID_SPECTRUM_48_PLUS_ENG:
                  romfilename="48.rom";
                  break;
- 
 
 
 
 
- 
+
+
 
 
 
@@ -816,38 +824,38 @@ index 77ac612..a405ae3 100644
 @@ -3294,6 +3294,36 @@ char *bitmap_button_ext_desktop_my_machine_spectrum_128_spa[EXT_DESKTOP_BUTTONS_
  	"xxxxxxxxxxxxxxxxxxrygbxxxx" 	 //25
  };
- 
+
 +//Icono "My machine" para un Spectrum 48k+ Spanish
 +char *bitmap_button_ext_desktop_my_machine_spectrum_48_spa[EXT_DESKTOP_BUTTONS_ANCHO]={
 +    //01234567890123456789012345
 +    "                          ",     //0
-+  	"                          ", 		
-+	"                          ",	
-+	"                          ",
-+	"                          ",		
++  	"                          ",
 +	"                          ",
 +	"                          ",
 +	"                          ",
 +	"                          ",
-+    "                          ",	
-+	"                          ",	//10	
-+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
-+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
-+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
-+	"xxrxrrxxxxxxxxxxxxxxxxxxxx",		
-+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
-+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
-+	"xxwwxwwxwwxwwxwwxwwxwwwxxx",		
-+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
-+	"xxwxwwxwwxwwxwwxwwxwwxwxxx",		
++	"                          ",
++	"                          ",
++	"                          ",
++    "                          ",
++	"                          ",	//10
++	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
++	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
++	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
++	"xxrxrrxxxxxxxxxxxxxxxxxxxx",
++	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
++	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
++	"xxwwxwwxwwxwwxwwxwwxwwwxxx",
++	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
++	"xxwxwwxwwxwwxwwxwwxwwxwxxx",
 +	"xxxxxxxxxxxxxxxxxxxxxxwxxx",    //20
-+	"xxwwwxwwxwwxwwxwwxwwxwwxxx",		
-+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
-+	"xxwxwwxwwxwwwwwwxwwxwwrygb",		
++	"xxwwwxwwxwwxwwxwwxwwxwwxxx",
++	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
++	"xxwxwwxwwxwwwwwwxwwxwwrygb",
 +	"xxxxxxxxxxxxxxxxxxxxxrygbx",
 +	"xxxxxxxxxxxxxxxxxxxxrygbxx" 	 //25
 +};
- 
+
  //Icono "My machine" para un Spectrum 128k+ English
  char *bitmap_button_ext_desktop_my_machine_spectrum_128_eng[EXT_DESKTOP_BUTTONS_ANCHO]={
 diff --git a/src/menu_bitmaps.h b/src/menu_bitmaps.h
@@ -859,9 +867,9 @@ index d7693a9..fdb310d 100644
  extern char *bitmap_button_ext_desktop_my_machine_spectrum_p2[];
  extern char *bitmap_button_ext_desktop_my_machine_spectrum_p3[];
 +extern char *bitmap_button_ext_desktop_my_machine_spectrum_48_spa[];
- 
+
  #define EXT_DESKTOP_TOTAL_BUTTONS 14
- 
+
 diff --git a/src/menu_items.c b/src/menu_items.c
 index 1f3ba0d..728d9ef 100644
 --- a/src/menu_items.c
@@ -873,7 +881,7 @@ index 1f3ba0d..728d9ef 100644
      else if (MACHINE_IS_SPECTRUM_48_PLUS_SPA) strcpy(nombrebmp,"keyboard_48s.bmp");
 +    else if (MACHINE_IS_SPECTRUM_48_PLUS_ENG) strcpy(nombrebmp,"keyboard_48p.bmp"); //mismo teclado que el 128, aunque dejo archivos separados
      else if (MACHINE_IS_SPECTRUM_128) strcpy(nombrebmp,"keyboard_128.bmp");
-     else if (MACHINE_IS_SPECTRUM_128_SPA) strcpy(nombrebmp,"keyboard_128s.bmp");		
+     else if (MACHINE_IS_SPECTRUM_128_SPA) strcpy(nombrebmp,"keyboard_128s.bmp");
      else if (MACHINE_IS_ZX80) strcpy(nombrebmp,"keyboard_zx80.bmp");
 
 
@@ -896,13 +904,13 @@ index a6b8c23..8e3051b 100644
 --- a/src/utils.c
 +++ b/src/utils.c
 @@ -564,7 +564,7 @@ char array_fabricantes_hotkey_letra[]="aobcdiurmyewpngs tlvz";
- 
+
  //Array de maquinas por fabricante, acabado en 255
  int array_maquinas_sinclair[]={
 -	120,121,0,1,6,160,255
 +	120,121,0,1,MACHINE_ID_SPECTRUM_48_PLUS_ENG,6,160,255
  };
- 
+
  int array_maquinas_timex_sinclair[]={
 @@ -752,6 +752,7 @@ int return_fabricante_maquina(int maquina)
  		case 0:
@@ -929,14 +937,14 @@ index 363164e..23697c6 100644
 --- a/src/zxvision.c
 +++ b/src/zxvision.c
 @@ -5130,6 +5130,14 @@ char **menu_ext_desktop_draw_configurable_icon_return_machine_icon(void)
- 
+
          else if (MACHINE_IS_SPECTRUM_P3) {
              bitmap=bitmap_button_ext_desktop_my_machine_spectrum_p3;
-+        }  
++        }
 +
 +        else if (MACHINE_IS_SPECTRUM_48_PLUS_ENG) {
 +            bitmap=bitmap_button_ext_desktop_my_machine_spectrum_48_spa;
-         }            
+         }
      }
 
 # Agregar en debug.c, en struct s_machine_family machine_family_list[]={ , si no es una maquina de la familia Spectrum
@@ -945,7 +953,7 @@ index 363164e..23697c6 100644
 # Entrada en contend.c si conviene
 
 
------
+------------------------------
 
 Sobre tipos de datos
 
@@ -996,7 +1004,7 @@ typedef unsigned int z80_32bit;
 typedef long long int z80_64bit;
 
 
------
+-------------------
 
 How Z80 core in debug mode works (and nested functions)
 
@@ -1007,7 +1015,7 @@ Then, when something is enabled in the cpu core (like breakpoints or betadisk em
 
 -You start ZEsarUX. Z80 core function is set to cpu_core_loop
 
--You enable breakpoints. Z80 core function is set to cpu_core_loop_nested_handler. 
+-You enable breakpoints. Z80 core function is set to cpu_core_loop_nested_handler.
 cpu_core_loop_nested_handler runs the following functions:
 1. cpu_core_loop_debug (the one that checks breakpoints)
 2. cpu_core_loop
