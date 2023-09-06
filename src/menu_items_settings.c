@@ -1078,7 +1078,13 @@ void menu_general_settings_disable_footer_on_full_screen(MENU_ITEM_PARAMETERS)
     disable_footer_on_full_screen ^=1;
 }
 
+void menu_interface_logo_type(MENU_ITEM_PARAMETERS)
+{
+    xanniversary_logo.v ^=1;
 
+	clear_putpixel_cache();
+	menu_init_footer();
+}
 
 
 void menu_general_settings(MENU_ITEM_PARAMETERS)
@@ -1314,6 +1320,10 @@ void menu_general_settings(MENU_ITEM_PARAMETERS)
             "~~Language","~~Lenguaje","~~Llenguatge");
         menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%s] ",idioma);
         menu_add_item_menu_shortcut(array_menu_window_settings,'l');
+
+       	menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_logo_type,NULL,
+            "ZEsarUX logo","ZEsarUX logo","ZEsarUX logo");
+        menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%s] ",(xanniversary_logo.v ? "X Anniversary" : "Normal"));
 
 
         char string_online_download_path[16];

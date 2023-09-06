@@ -2120,8 +2120,8 @@ printf("\n"
 		"--no-cpu-temp                                  Do not show host CPU temperature on footer\n"
 		"--no-fps                                       Do not show FPS on footer\n"
         "--nowelcomemessage                             Disable welcome message\n"
-        "--enable-xanniversary-logo                     Enable X Anniversary logo (enabled by default on 10.10 version)\n"
-        "--disable-xanniversary-logo                    Disable X Anniversary logo (enabled by default on 10.10 version)\n"
+        "--enable-xanniversary-logo                     Enable X Anniversary logo (enabled by default only on X version)\n"
+        "--disable-xanniversary-logo                    Disable X Anniversary logo. It's the default behaviour, only kept here for backwards compatibility\n"
         "--disablemenufileutils                         Disable File Utilities menu\n"
 
 

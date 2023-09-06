@@ -328,11 +328,8 @@ z80_bit setting_process_switcher_immutable={0};
 
 
 //Logo de decimo aniversario.
-//En version 10.10 es esta habilitado por defecto
-//TODO: este setting no lo autoguardamos en la config en la versión 10.10, por que si no,
-//la gente que use la 10.10, se le autoguardaria el setting y luego en la version 11 le seguiria saliendo el logo del X anniversary
-//A partir de la versión 11 sí que haré que se autoguarde
-z80_bit xanniversary_logo={1};
+//En version X (10.10) estaba habilitado por defecto
+z80_bit xanniversary_logo={0};
 
 //
 // ZX Desktop Settings
