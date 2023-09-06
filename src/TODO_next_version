@@ -441,4 +441,23 @@ En estos casos de momento lo que he hecho es que al final de cada menu se haga u
 
 -tiene sentido items de "ESC back/close"?
 
+-cargando La Guerra De Las Vajillas - Side A.tzx, con real tape y adventure map abierto, se acaba colgando cuando lleva 68% de cinta leida
+probablemente entre en un bucle de habitaciones
+
+
+-Process management: Render emulated display incluye tiempo de todas las ventanas? Si abro el text adventure map, que consume 6 ms con la guerra
+de las vajillas, el tiempo de render dice 8 ms. si cierro text adventure map, el render baja a 3 ms
+
+-tooltips en botones superiores y en dispositivos inferiores, y en botones de ventanas
+
+-quizá: si con el menu abierto un usuario pulsa en la ventana de emulacion, se queda abierto el menu pero el foco se va a la ventana de emulacion
+posibles:
+*que al pulsar ventana de emulacion, se cierre el menu. quiza no siempre , en algunos casos interesa tener menu abierto aun con el foco en ventana emulacion
+*que cuando lleve un rato el foco en ventana de emulacion (30 segundos quizá?) se cierre el menu
+
+
+-"BKWIND" en footer al cerrar menu con background windows+even menu closed, ya no tiene sentido,es algo molesto incluso
+
+-boton derecho en botones superiores, o en dispositivos inferiores, deberia llevar a algun sitio?
+
 ---Fin Mejoras---

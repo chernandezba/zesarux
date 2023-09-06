@@ -21426,7 +21426,11 @@ void screen_print_splash_text_center(int tinta,int papel,char *texto)
 
 //retorna 1 si y
 //otra cosa, 0
-int menu_confirm_yesno_texto(char *texto_ventana,char *texto_interior)
+//texto_adicional y funcion_texto_adicional sirven para agregar una opcion, debajo del si/no:
+// texto_adicional: funcion que retorna el texto a mostrar, debe ser un puntero a algo fuera del stack
+// funcion_trigger_texto_adicional: funcion que se ejecuta al darle al enter en dicho item adicional
+//Si no se quiere adicional, pasarlas como NULL
+int menu_confirm_yesno_texto_additional_item(char *texto_ventana,char *texto_interior,char *(*texto_adicional)(void),void (*funcion_trigger_texto_adicional) (void) )
 {
 
 	//Si se fuerza siempre yes
@@ -21483,6 +21487,10 @@ int menu_confirm_yesno_texto(char *texto_ventana,char *texto_interior)
         menu_add_item_menu_format(array_menu_confirm_yes_no,MENU_OPCION_SEPARADOR,NULL,NULL," ");
 
 
+        if (texto_adicional!=NULL) {
+            menu_add_item_menu_format(array_menu_confirm_yes_no,MENU_OPCION_NORMAL,NULL,NULL,texto_adicional() );
+        }
+
 
         retorno_menu=menu_dibuja_menu(&confirm_yes_no_opcion_seleccionada,&item_seleccionado,array_menu_confirm_yes_no,texto_ventana);
 
@@ -21490,8 +21498,16 @@ int menu_confirm_yesno_texto(char *texto_ventana,char *texto_interior)
 
         if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
             //llamamos por valor de funcion
-			if (confirm_yes_no_opcion_seleccionada==1) return 1;
-			else return 0;
+            if (funcion_trigger_texto_adicional!=NULL && confirm_yes_no_opcion_seleccionada==4) {
+                 funcion_trigger_texto_adicional();
+            }
+
+            else {
+
+                if (confirm_yes_no_opcion_seleccionada==1) return 1;
+                else return 0;
+
+            }
         }
 
     } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
@@ -21499,6 +21515,14 @@ int menu_confirm_yesno_texto(char *texto_ventana,char *texto_interior)
 	return 0;
 
 
+}
+
+
+//retorna 1 si y
+//otra cosa, 0
+int menu_confirm_yesno_texto(char *texto_ventana,char *texto_interior)
+{
+    return menu_confirm_yesno_texto_additional_item(texto_ventana,texto_interior,NULL,NULL);
 }
 
 
@@ -25422,7 +25446,7 @@ char *first_aid_string_votext="Do you know you can run ZEsarUX using a Text mode
  "stdout and simpletext drivers. They are not all compiled by default, only stdout, you maybe need to compile ZEsarUX by yourself to test all of them";
 
 int first_aid_no_easteregg=0;
-char *first_aid_string_eastereg="ZEsarUX includes three easter eggs. Can you find them? :)";
+char *first_aid_string_eastereg="ZEsarUX includes seven easter eggs. Can you find them? :)";
 
 
 int first_aid_no_multitask=0;

@@ -26108,7 +26108,6 @@ void menu_help_background_windows(MENU_ITEM_PARAMETERS)
 			"and goes to the emulated machine. To return the keyboard focus to the menu, press on any of the background windows, "
 			"or in the ZEsarUX logo, or press F5. \n"
 			"\n"
-			"Pressing ESC on the main menu, makes disappear all windows. But pressing F5 again will restore all windows. \n"
 			"Keep in mind that F-keys are only read when menu is closed (except F4, F5 and F6, which are also read with menu open). "
 			"\n"
 			"You can enable a setting to restore windows when ZEsarUX is opened (from Settings-> ZX Vision-> "
@@ -26116,6 +26115,7 @@ void menu_help_background_windows(MENU_ITEM_PARAMETERS)
 			"\n"
             "You can enable a setting to view windows in background even when menu closed (but you can't interact with them), "
             "from Settings-> ZX Vision-> Background Windows-Even when menu closed\n"
+            "When setting Background Windows-Even is disabled, pressing ESC on the main menu, makes disappear all windows. But pressing F5 again will restore all windows. \n"
 			"You can have background windows enabled but multitasking disabled (not recommended, but allowed). "
 
 
@@ -38691,8 +38691,21 @@ void menu_onscreen_keyboard(MENU_ITEM_PARAMETERS)
 
 }
 
+char menu_exit_emulator_additional_save_config[100]="";
+
+char *menu_exit_emulator_additional_item(void)
+{
+    sprintf(menu_exit_emulator_additional_save_config,
+        "[%c] Save config",(save_configuration_file_on_exit.v ? 'X' : ' '));
+
+    return menu_exit_emulator_additional_save_config;
+}
 
 
+void menu_exit_emulator_additional_item_trigger(void)
+{
+    save_configuration_file_on_exit.v ^=1;
+}
 
 
 void menu_exit_emulator(MENU_ITEM_PARAMETERS)
@@ -38700,30 +38713,44 @@ void menu_exit_emulator(MENU_ITEM_PARAMETERS)
 
 	menu_reset_counters_tecla_repeticion();
 
+    //Conservar el estado anterior por si el usuario finalmente no sale
+    int antes_save_configuration_file_on_exit=save_configuration_file_on_exit.v;
+
 	int salir=0;
 
 	//Si quickexit, no preguntar
 	if (quickexit.v) salir=1;
 
-	else salir=menu_confirm_yesno("Exit ZEsarUX");
+	else {
+        //Si tiene opcion de guardado configuracion, damos opcion para que no la guarde
+        if (save_configuration_file_on_exit.v) {
+            salir=menu_confirm_yesno_texto_additional_item("Exit ZEsarUX",menu_get_string_language("Sure?"),
+                menu_exit_emulator_additional_item,menu_exit_emulator_additional_item_trigger);
+        }
+        else {
+            salir=menu_confirm_yesno("Exit ZEsarUX");
+        }
+    }
 
-                        if (salir) {
+    if (salir) {
 
-				//menu_footer=0;
 
-                                cls_menu_overlay();
+        cls_menu_overlay();
 
-                                reset_menu_overlay_function();
-                                menu_abierto=0;
+        reset_menu_overlay_function();
+        menu_abierto=0;
 
-                                //if (autosave_snapshot_on_exit.v) autosave_snapshot();
 
-                                //end_emulator();
+        end_emulator_autosave_snapshot();
 
-                                end_emulator_autosave_snapshot();
+    }
 
-                        }
-                        cls_menu_overlay();
+    else {
+        //restaurar estado anterior porque el usuario no ha salido
+        save_configuration_file_on_exit.v=antes_save_configuration_file_on_exit;
+    }
+
+    cls_menu_overlay();
 }
 
 

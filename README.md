@@ -108,7 +108,7 @@ __FEATURES__
     * Timex Computer 2048, 2068
     * Inves Spectrum +
     * Sam Coupe
-    * Pentagon 
+    * Pentagon
     * Chloe 140 SE, 280 SE
     * Chrome
     * Prism
@@ -119,7 +119,7 @@ __FEATURES__
     * Jupiter Ace
     * Amstrad CPC 464, CPC 4128, CPC 664, CPC 6128
     * Amstrad PCW 8256, PCW 8512
-    * MSX1 
+    * MSX1
     * Spectravideo 318/328
     * Colecovision
     * Sega SG1000
@@ -195,7 +195,7 @@ __FEATURES__
 
 * Handles cartridge formats: DCK, ROM, COL, SG
 
-* Handles RZX playback 
+* Handles RZX playback
 
 * Emulates the following Copy Interfaces: Defcon, Dinamid3, Hilow Barbanegra, Interface007, Microhobby Pokeador Automatico, Multiface One, 128 and Three, Phoenix, Ramjet, Spec-Mate, Transtape
 
@@ -233,7 +233,7 @@ __FEATURES__
 
 * Handles compressed formats zip (with internal decompressor), and tar, rar, gz through external utilities
 
-* Emulates AY Audio Chip, Turbosound (2 AY Channels), 3 AY Channels, MIDI channels, different DAC: Specdrum, Covox, ACB/ABC/BAC/CBA Stereo 
+* Emulates AY Audio Chip, Turbosound (2 AY Channels), 3 AY Channels, MIDI channels, different DAC: Specdrum, Covox, ACB/ABC/BAC/CBA Stereo
 
 * Emulates General Sound
 
@@ -253,7 +253,7 @@ __FEATURES__
 
 * Supports RAM packs on Jupiter Ace up to 51 KB
 
-* Joystick emulation with real joystick and keyboard cursors: Kempston, Sinclair 1&2, Cursor Joystick, Cursor & Shift, OPQA, Fuller, Zebra, Mikro-Gen, ZXPand, SAM Coupe Cursors, CPC, MSX, Spectravideo. Autofire function too
+* Joystick emulation with real joystick and keyboard cursors: Kempston, Sinclair 1&2, Cursor Joystick, Cursor & Shift, OPQA, Fuller, Zebra, Mikro-Gen, ZXPand, SAM Coupe Cursors, CPC, MSX, Spectravideo, Cascade, DKTronics. Autofire function too
 
 * On Screen keyboard useful when playing with joystick, two types: one with keyboard letters, and another with words, useful for playing Text Adventures. Also a tool to extract words from text adventures (Daad, Paws, Quill and Gac)
 
@@ -269,7 +269,7 @@ __FEATURES__
 
 * Kempston mouse emulation
 
-* Supports Network gaming using its own protocol (ZEsarUX Network Gaming protocol - ZENG), which allows you to play to any emulated game, using two ZEsarUX instances, located each one on any part of the world or in a local network. Games doesn't have to be modified, you can use any existing game
+* Supports Network gaming using its own protocol (ZEsarUX Network Gaming protocol - ZENG), which allows you to play to any emulated game, using two or more (up to 16) ZEsarUX instances, located each one on any part of the world or in a local network. Games doesn't have to be modified, you can use any existing game
 
 * Uart bridge emulation: allows you to use a real uart-wifi device connected to your computer, on GNU/Linux only (Windows, Mac can simulate it)
 
@@ -289,7 +289,7 @@ __FEATURES__
 
 * AY Mixer
 
-* Visual Real Tape: you have an audio render of your tape, see tape blocks and rewind or move forward the cassette player 
+* Visual Real Tape: you have an audio render of your tape, see tape blocks and rewind or move forward the cassette player
 
 * Visual Floppy: allow to see floppy activity: disk movement, reads, writes, head seek, etc
 
@@ -301,7 +301,9 @@ __FEATURES__
 
 * Powerful debug features: Reverse Debugging, CPU History, Assembler, Registers, Dissassemble, Conditional Breakpoints using text expressions, Watches, Step-to-step, Step-over, Runto, Show TV electron position, Load source code, Hexadecimal Editor, View Sprites, View Tiles, Find bytes, Infinite lives finder, CPU Transaction log, View BASIC, View BASIC variables, verbose messages on console
 
-* Text adventure debugger: On a Quill/Paws/Daad text adventure you can Step to Step condact, watch flags/objects, list messages (objects, user/system messages, locations, compressed tokens, vocabulary), connections, Text Adventure Map. Can also view graphics from a Quill, Paws, Daad or Gac aventure.
+* Text adventure debugger: On a Quill/Paws/Daad/Gac text adventure you can Step to Step condact, watch flags/objects, list messages (objects, user/system messages, locations, compressed tokens, vocabulary), connections, Text Adventure Map. Can also view graphics from a Quill, Paws, Daad or Gac aventure.
+
+* Use artificial intelligence to get realistic images for location description on Text Adventure games
 
 * File utilities menu: Allowing to view, expand and convert some common file formats: tap, tzx, pzx, trd, dsk, mdv, hdf, ddh, etc. Can also browse inside file system images (.mmc, .img, etc)
 
@@ -313,9 +315,11 @@ __FEATURES__
 
 * Supports command line settings, configuration file settings and per-game configuration settings
 
-* Other features: Visualmem menu, CPU Statistics, Toy ZXeyes, Sensors
+* Supports execution on Docker, tested on Debian, Ubuntu and Fedora containers
 
-* Includes six easter eggs. Can you find them? :)
+* Other features: Visualmem menu, CPU Statistics, Toy ZXeyes, Toy ZXlife, Ascii Table, Sensors
+
+* Includes seven easter eggs. Can you find them? :)
 
 
 
