@@ -23724,7 +23724,8 @@ menu_init_footer hace falta pues el layer de menu se borra y se queda negro en l
 		//decir que ventana principal no esta activa, para indicar que están todas en background
 		ventana_tipo_activa=0;
 
-		generic_footertext_print_operating("BKWIND");
+        //este footer me parece ya molesto.
+		//generic_footertext_print_operating("BKWIND");
 
 		zxvision_redraw_all_windows();
 	}
@@ -25199,7 +25200,6 @@ void show_all_windows_startup(void)
         //decir que ventana principal no esta activa, para indicar que están todas en background
         ventana_tipo_activa=0;
 
-        //generic_footertext_print_operating("BKWIND");
 
         zxvision_redraw_all_windows();
 
