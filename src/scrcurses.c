@@ -1911,10 +1911,13 @@ void scrcurses_actualiza_tablas_teclado(void)
 
     //soporte zeng. liberamos la ultima tecla pulsada
     //TODO: no llevamos control de otras teclas, como backspace o cursores, que acaban llamando a util_set_reset_key y este a zeng
-    if (scrcurses_ultima_tecla_zeng) {
-        zeng_send_key_event(scrcurses_ultima_tecla_zeng,0);
+    /*if (scrcurses_ultima_tecla_zeng) {
+        scrcurses_ultima_tecla_zeng,0);
         scrcurses_ultima_tecla_zeng=0;
-    }
+    }*/
+
+    //en este caso da igual el valor 0 o 1
+    zeng_send_key_event(UTIL_KEY_RESET_ALL,0);
 
 	//inicializar botones de raton a nada
 	mouse_left=mouse_right=0;
@@ -2098,7 +2101,7 @@ void scrcurses_actualiza_tablas_teclado(void)
                 //pues no soporta varias teclas a la vez, tenemos que agregar este trozo zeng aqui
                 //Enviar tecla si no es cursor (esto se trata como joystick aparte)
                 if (c!=UTIL_KEY_FIRE && c!=UTIL_KEY_LEFT && c!=UTIL_KEY_RIGHT && c!=UTIL_KEY_DOWN && c!=UTIL_KEY_UP) {
-                    scrcurses_ultima_tecla_zeng=c;
+                    //scrcurses_ultima_tecla_zeng=c;
                         zeng_send_key_event(c,1);
                 }
 			break;

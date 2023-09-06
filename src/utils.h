@@ -318,7 +318,10 @@ enum util_teclas
 	UTIL_KEY_JOY_UP,
 	UTIL_KEY_JOY_DOWN,
 	UTIL_KEY_JOY_LEFT,
-	UTIL_KEY_JOY_RIGHT
+	UTIL_KEY_JOY_RIGHT,
+
+    //Esta es para enviar mediante ZENG una orden de reset todas teclas. Usado en driver curses
+    UTIL_KEY_RESET_ALL
 };
 
 //valores usados en funcion util_set_reset_key_z88_keymap

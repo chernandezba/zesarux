@@ -5051,7 +5051,15 @@ void interpreta_comando(char *comando,int misocket,char *buffer_lectura_socket_a
             debug_printf (VERBOSE_DEBUG,"Info joystick: fire: %d up: %d down: %d left: %d right: %d",
                 UTIL_KEY_JOY_FIRE,UTIL_KEY_JOY_UP,UTIL_KEY_JOY_DOWN,UTIL_KEY_JOY_LEFT,UTIL_KEY_JOY_RIGHT);
 
-			util_set_reset_key_continue_after_zeng(tecla,evento);
+            //Si tecla especial de reset todas teclas
+            if (tecla==UTIL_KEY_RESET_ALL) {
+                printf("Reset todas teclas\n");
+                reset_keyboard_ports();
+            }
+
+            else {
+			    util_set_reset_key_continue_after_zeng(tecla,evento);
+            }
 		}
 
 
