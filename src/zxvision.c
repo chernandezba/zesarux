@@ -19231,6 +19231,9 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 							ancho-1+1,alto-2,titulo);		 //hacer de momento igual de ancho que ancho visible para poder usar ultima columna
 
 
+        //no queremos que un menu se pueda minimizar (excluyendo los tabulados claro)
+        ventana_menu.can_be_minimized=0;
+
 		//Si no hay barra scroll vertical, usamos hasta la ultima columna
 		menu_dibuja_menu_adjust_last_column(&ventana_menu,ancho,alto);
 
@@ -22321,8 +22324,9 @@ void menu_ventana_scanf(char *titulo,char *texto,int max_length)
 	zxvision_new_window(&ventana,scanf_x,scanf_y,scanf_ancho,scanf_alto,
 							scanf_ancho-1,scanf_alto-2,titulo);
 
-	//No queremos que se pueda redimensionar
+	//No queremos que se pueda redimensionar ni minimizar
 	ventana.can_be_resized=0;
+    ventana.can_be_minimized=0;
 
 	zxvision_draw_window(&ventana);
 
