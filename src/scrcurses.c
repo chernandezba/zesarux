@@ -1882,7 +1882,9 @@ z80_byte kempston_mouse_x=0,kempston_mouse_y=0;
 int scrcurses_contador_notecla=0;
 
 
-int scrcurses_ultima_tecla_zeng=0;
+//int scrcurses_ultima_tecla_zeng=0;
+
+int scrcurses_pendiente_reset_zeng=0;
 
 void scrcurses_actualiza_tablas_teclado(void)
 {
@@ -1917,7 +1919,10 @@ void scrcurses_actualiza_tablas_teclado(void)
     }*/
 
     //en este caso da igual el valor 0 o 1
-    zeng_send_key_event(UTIL_KEY_RESET_ALL,0);
+    if (scrcurses_pendiente_reset_zeng) {
+        zeng_send_key_event(UTIL_KEY_RESET_ALL,0);
+        scrcurses_pendiente_reset_zeng=0;
+    }
 
 	//inicializar botones de raton a nada
 	mouse_left=mouse_right=0;
@@ -1929,6 +1934,9 @@ void scrcurses_actualiza_tablas_teclado(void)
 
     if (c!=ERR) {
         //printf ("Tecla: %d  \r",c);
+
+        scrcurses_pendiente_reset_zeng=1;
+
         scrcurses_contador_notecla=0;
 
 
