@@ -2104,13 +2104,17 @@ void scrcurses_actualiza_tablas_teclado(void)
 			default:
                 ascii_to_keyboard_port(c);
 
-
                 //Soporte zeng. Dado que scrcurses no utiliza funcion util_set_reset_key para enviar la tecla,
                 //pues no soporta varias teclas a la vez, tenemos que agregar este trozo zeng aqui
                 //Enviar tecla si no es cursor (esto se trata como joystick aparte)
                 if (c!=UTIL_KEY_FIRE && c!=UTIL_KEY_LEFT && c!=UTIL_KEY_RIGHT && c!=UTIL_KEY_DOWN && c!=UTIL_KEY_UP) {
                     //scrcurses_ultima_tecla_zeng=c;
-                        zeng_send_key_event(c,1);
+
+                    int tecla_zeng_enviar=c;
+                    //Caso especial para enter
+                    if (tecla_zeng_enviar==10) tecla_zeng_enviar=UTIL_KEY_ENTER;
+
+                    zeng_send_key_event(tecla_zeng_enviar,1);
                 }
 			break;
 
