@@ -1880,6 +1880,9 @@ z80_byte kempston_mouse_x=0,kempston_mouse_y=0;
 //Para que ese ERR no se interprete como no tecla pulsada, damos un minimo de veces que se debe suceder para que realmente se considere no tecla
 int scrcurses_contador_notecla=0;
 
+
+int scrcurses_ultima_tecla_zeng=0;
+
 void scrcurses_actualiza_tablas_teclado(void)
 {
 
@@ -1904,6 +1907,13 @@ void scrcurses_actualiza_tablas_teclado(void)
 
         //inicializar todas las teclas a nada - 255
 	reset_keyboard_ports();
+
+    //soporte zeng. liberamos la ultima tecla pulsada
+    //TODO: no llevamos control de otras teclas, como backspace o cursores, que acaban llamando a util_set_reset_key y este a zeng
+    if (scrcurses_ultima_tecla_zeng) {
+        zeng_send_key_event(scrcurses_ultima_tecla_zeng,0);
+        scrcurses_ultima_tecla_zeng=0;
+    }
 
 	//inicializar botones de raton a nada
 	mouse_left=mouse_right=0;
@@ -2112,6 +2122,15 @@ void scrcurses_actualiza_tablas_teclado(void)
 
 			default:
         	        	ascii_to_keyboard_port(c);
+
+
+                //Soporte zeng. Dado que scrcurses no utiliza funcion util_set_reset_key para enviar la tecla,
+                //pues no soporta varias teclas a la vez, tenemos que agregar este trozo zeng aqui
+                //Enviar tecla si no es cursor (esto se trata como joystick aparte)
+                if (c!=UTIL_KEY_FIRE && c!=UTIL_KEY_LEFT && c!=UTIL_KEY_RIGHT && c!=UTIL_KEY_DOWN && c!=UTIL_KEY_UP) {
+                    scrcurses_ultima_tecla_zeng=c;
+                        zeng_send_key_event(c,1);
+                }
 			break;
 
 		}
