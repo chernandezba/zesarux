@@ -1360,7 +1360,9 @@ int cuadrado_x1,cuadrado_y1,cuadrado_x2,cuadrado_y2,cuadrado_color;
 
 //Y si dicho recuadro tiene marca de redimensionado posible para zxvision
 int cuadrado_activo_resize=0;
-int cuadrado_activo_minimize=0;
+
+//Indica que la ventana activa tiene boton de minimizar
+int ventana_activa_puede_minimizar=0;
 //int ventana_activa_tipo_zxvision=0;
 
 //Si estamos dibujando las ventanas de debajo de la del frente, y por tanto no muestra boton de cerrar por ejemplo
@@ -3115,12 +3117,12 @@ void menu_call_onscreen_keyboard_from_menu(void)
 	//Guardamos linea cuadrado ventana
 	int antes_cuadrado_activo=0;
 	int antes_cuadrado_activo_resize=0;
-    int antes_cuadrado_activo_minimize=0;
+    int antes_ventana_activa_puede_minimizar=0;
 	int antes_cuadrado_x1,antes_cuadrado_y1,antes_cuadrado_x2,antes_cuadrado_y2,antes_cuadrado_color;
 
 	antes_cuadrado_activo=cuadrado_activo;
 	antes_cuadrado_activo_resize=cuadrado_activo_resize;
-    antes_cuadrado_activo_minimize=cuadrado_activo_minimize;
+    antes_ventana_activa_puede_minimizar=ventana_activa_puede_minimizar;
 	antes_cuadrado_x1=cuadrado_x1;
 	antes_cuadrado_y1=cuadrado_y1;
 	antes_cuadrado_x2=cuadrado_x2;
@@ -3178,7 +3180,7 @@ void menu_call_onscreen_keyboard_from_menu(void)
 	//Restaurar linea cuadrado ventana
 	cuadrado_activo=antes_cuadrado_activo;
 	cuadrado_activo_resize=antes_cuadrado_activo_resize;
-    cuadrado_activo_minimize=antes_cuadrado_activo_minimize;
+    ventana_activa_puede_minimizar=antes_ventana_activa_puede_minimizar;
 	cuadrado_x1=antes_cuadrado_x1;
 	cuadrado_y1=antes_cuadrado_y1;
 	cuadrado_x2=antes_cuadrado_x2;
@@ -7525,7 +7527,7 @@ void menu_establece_cuadrado(int x1,int y1,int x2,int y2,int color)
 
 	//Por defecto no se ve marca de resize, para compatibilidad con ventanas no zxvision
 	cuadrado_activo_resize=0;
-    cuadrado_activo_minimize=0;
+    ventana_activa_puede_minimizar=0;
 	//ventana_activa_tipo_zxvision=0;
 
 }
@@ -7535,7 +7537,7 @@ void menu_desactiva_cuadrado(void)
 {
 	cuadrado_activo=0;
 	cuadrado_activo_resize=0;
-    cuadrado_activo_minimize=0;
+    ventana_activa_puede_minimizar=0;
 	//ventana_activa_tipo_zxvision=0;
 }
 
@@ -9061,7 +9063,7 @@ void menu_dibuja_ventana_botones(void)
 
 				}
 
-				if (cuadrado_activo_minimize) {
+				if (ventana_activa_puede_minimizar) {
                     //Minimizar
 					z80_byte caracter_minimizar=menu_retorna_caracter_minimizar(zxvision_current_window);
 					if (menu_hide_minimize_button.v) caracter_minimizar=' ';
@@ -9714,7 +9716,7 @@ void zxvision_set_draw_window_parameters(zxvision_window *w)
 	//ventana_activa_tipo_zxvision=1;
 
 	cuadrado_activo_resize=w->can_be_resized;
-    cuadrado_activo_minimize=w->can_be_minimized;
+    ventana_activa_puede_minimizar=w->can_be_minimized;
 
 }
 
@@ -12199,7 +12201,7 @@ void zxvision_draw_window(zxvision_window *w)
 	//Ver si se puede redimensionar
 	//Dado que cada vez que se dibuja ventana, la marca de resize se establece por defecto a desactivada
 	cuadrado_activo_resize=w->can_be_resized;
-    cuadrado_activo_minimize=w->can_be_minimized;
+    ventana_activa_puede_minimizar=w->can_be_minimized;
 	//ventana_activa_tipo_zxvision=1;
 
 
@@ -12231,7 +12233,7 @@ void zxvision_set_not_minimizable(zxvision_window *w)
 {
 	//Decimos que no se puede minimizar
 	//printf ("set not resizable\n");
-	cuadrado_activo_minimize=0;
+	ventana_activa_puede_minimizar=0;
 
 	w->can_be_minimized=0;
 }
