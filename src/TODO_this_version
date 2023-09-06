@@ -459,4 +459,10 @@ Por tanto , probablemente, cualquier ventana que use funcion de menu_dibuja_menu
 -botones superiores redefinidos que puedan tener parametros asociados, por ejemplo set-machine y parametro "48k"
 en ese de set-machine el icono deberia ser la de la maquina a cambiar+flecha
 
+-si se desactivan botones inferiores y superiores, el limite al mover iconos sigue siendo la zona de esos botones, aunque ya no existan
+Lo mismo pasa con un reorder
+Y lo mismo con posición de nuevos iconos
+
+-subir limite de iconos de 100 a... ?
+
 ---Fin Mejoras---
