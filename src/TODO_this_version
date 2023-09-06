@@ -19,9 +19,6 @@ Para esta version:
 -ZENG para msx se leen los cursores en destino
 
 
-
-
-
 -revisar en menu_debug_change_registers(void),
 //Si lanzo con debug_print ERR, y estamos en modo step, se habilita multitarea, por que?
 
@@ -36,14 +33,9 @@ Para esta version:
 
 -quiza en threads que no se cancelan en windows (zeng?) agregar llamada a pthread_testcancel();
 
-
-
 -en daad debug, pulsar m de condmessage, sale dos veces (con cozumel 1 y inventario)
 
 -text adventure map: opcion mostrar descripciones. localidad 14 por ejemplo se mezcla??
-
-
-
 
 
 -en menus al moverse con pgup down creo que no siempre va bien, por ejemplo en tracks list de +3 al pgdn siempre queda abajo, mientras que pgup no
@@ -252,7 +244,7 @@ ejemplo badlands.dsk y rutina en la 2114h que esta en los traps
 -completar remote_cerrar_conexion para que cierre todas las conexiones de cliente que puedan haber
 
 
--botones superiores redefinidos que puedan tener parametros asociados, por ejemplo set-machine y parametro "48k"
+
 
 -algun tipo de build que no sea ni linux ni mac ni windows, sino simplemente UNIX_GENERIC o algo similar
 
@@ -413,9 +405,6 @@ Una de ellas es el "About" pero ya esta usando dirty_user_must_draw_contents
 
 -poder hacer save pantalla a .txt, usando ocr y pixeles a caracteres, como hace curses
 
--menus (pero no menus tabulados) no deberian permitir minimizar, aunque sí redimensionar.
-Creo que no hay setting en zxvision_window para permitir redimensionar pero no minimizar
-
 
 -con speech en menu habilitado
 *teniendo varias ventanas abiertas
@@ -466,5 +455,8 @@ y por tanto, incluso los cuadros de dialogo (ayuda-changelog por ejemplo) - que 
 Por tanto , probablemente, cualquier ventana que use funcion de menu_dibuja_menu (excluyendo tabulados) no deberian poderse minimizar.
 
 -en menu con curses, no se puede escribir el punto "." ? probado con ZENG host por ejemplo
+
+-botones superiores redefinidos que puedan tener parametros asociados, por ejemplo set-machine y parametro "48k"
+en ese de set-machine el icono deberia ser la de la maquina a cambiar+flecha
 
 ---Fin Mejoras---
