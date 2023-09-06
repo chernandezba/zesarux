@@ -52,6 +52,7 @@
 #include "sg1000.h"
 #include "sms.h"
 #include "svi.h"
+#include "zeng.h"
 
 #ifdef COMPILE_CURSESW
 	#include "cursesw_ext.h"
@@ -1888,24 +1889,24 @@ void scrcurses_actualiza_tablas_teclado(void)
 
 
 
-        int c;
+    int c;
 
-        c = getch();
+    c = getch();
 
-        //printf ("Tecla: %d  \r",c);
+    //printf ("Tecla: %d  \r",c);
 
 
-        if (c==ERR) {
-                if (scrcurses_contador_notecla<=SCRCURSES_MAX_CONTADOR_NOTECLA) {
-                        scrcurses_contador_notecla++;
-                        //hasta que no pasen unas cuantas veces, no liberar esa tecla
-                        return;
-                }
+    if (c==ERR) {
+        if (scrcurses_contador_notecla<=SCRCURSES_MAX_CONTADOR_NOTECLA) {
+            scrcurses_contador_notecla++;
+            //hasta que no pasen unas cuantas veces, no liberar esa tecla
+            return;
         }
+    }
 
-        //printf ("Tecla: %d  \r",c);
+    //printf ("Tecla: %d  \r",c);
 
-        //inicializar todas las teclas a nada - 255
+    //inicializar todas las teclas a nada - 255
 	reset_keyboard_ports();
 
     //soporte zeng. liberamos la ultima tecla pulsada
@@ -1923,25 +1924,25 @@ void scrcurses_actualiza_tablas_teclado(void)
 
 
 
-        if (c!=ERR) {
+    if (c!=ERR) {
         //printf ("Tecla: %d  \r",c);
-                scrcurses_contador_notecla=0;
+        scrcurses_contador_notecla=0;
 
 
 		notificar_tecla_interrupcion_si_z88();
 
 		if (c==27) {
-                                        //ALT
-                                        //printf ("Alt\n");
+            //ALT
+            //printf ("Alt\n");
 
-                                        set_symshift();
+            set_symshift();
 
-                                        c = getch();
-                                        if (c==ERR) {
-                                                //pulsado ESC
-						util_set_reset_key(UTIL_KEY_ESC,1);
+            c = getch();
+            if (c==ERR) {
+                //pulsado ESC
+                util_set_reset_key(UTIL_KEY_ESC,1);
 
-                                        }
+            }
 		}
 
 		//simular esc en menu con @
@@ -1951,177 +1952,146 @@ void scrcurses_actualiza_tablas_teclado(void)
 		}
 
 		if (c==KEY_F(1)) {
-			util_set_reset_key(UTIL_KEY_F1,1);
+            util_set_reset_key(UTIL_KEY_F1,1);
 		}
 
 		else if (c==KEY_F(2)) {
-                        util_set_reset_key(UTIL_KEY_F2,1);
-                }
+            util_set_reset_key(UTIL_KEY_F2,1);
+        }
 
-                else if (c==KEY_F(3)) {
-                        util_set_reset_key(UTIL_KEY_F3,1);
-                }
+        else if (c==KEY_F(3)) {
+                util_set_reset_key(UTIL_KEY_F3,1);
+        }
 
-                else if (c==KEY_F(4)) {
-                        util_set_reset_key(UTIL_KEY_F4,1);
-                }
+        else if (c==KEY_F(4)) {
+                util_set_reset_key(UTIL_KEY_F4,1);
+        }
 
-                else if (c==KEY_F(5)) {
-                        util_set_reset_key(UTIL_KEY_F5,1);
-                }
+        else if (c==KEY_F(5)) {
+                util_set_reset_key(UTIL_KEY_F5,1);
+        }
 
 
 		//F6 es Ctrl /diamond
 		//F7 es Alt / square
-                else if (c==KEY_F(6)) {
-                        util_set_reset_key(UTIL_KEY_CONTROL_L,1);
-                }
+        else if (c==KEY_F(6)) {
+                util_set_reset_key(UTIL_KEY_CONTROL_L,1);
+        }
 
-                else if (c==KEY_F(7)) {
-                        util_set_reset_key(UTIL_KEY_ALT_L,1);
-                }
+        else if (c==KEY_F(7)) {
+                util_set_reset_key(UTIL_KEY_ALT_L,1);
+        }
 
 
-                else if (c==KEY_F(8)) {
-                        util_set_reset_key(UTIL_KEY_F8,1);
-                }
+        else if (c==KEY_F(8)) {
+                util_set_reset_key(UTIL_KEY_F8,1);
+        }
 
-                else if (c==KEY_F(9)) {
-                        util_set_reset_key(UTIL_KEY_F9,1);
-                }
+        else if (c==KEY_F(9)) {
+                util_set_reset_key(UTIL_KEY_F9,1);
+        }
 
-                else if (c==KEY_F(10)) {
-                        util_set_reset_key(UTIL_KEY_F10,1);
-                }
+        else if (c==KEY_F(10)) {
+                util_set_reset_key(UTIL_KEY_F10,1);
+        }
 
 
 
 		switch (c) {
-			        /*case KEY_HOME:
-							joystick_set_fire();
-                    break;
 
-					case KEY_LEFT:
-							joystick_set_left();
-							blink_kbd_a12 &= (255-64);
-					break;
+            case KEY_HOME:
+                    joystick_possible_home_key(1);
+            break;
 
-					case KEY_RIGHT:
-							joystick_set_right();
-							blink_kbd_a11 &= (255-64);
-					break;
+            case KEY_END:
+                    util_set_reset_key(UTIL_KEY_END,1);
+            break;
 
-					case KEY_DOWN:
-							joystick_set_down();
-							blink_kbd_a10 &= (255-64);
-					break;
+            case KEY_LEFT:
+                    util_set_reset_key(UTIL_KEY_LEFT,1);
+            break;
 
-					case KEY_UP:
-							joystick_set_up();
-							blink_kbd_a9 &= (255-64);
-					break;*/
+            case KEY_RIGHT:
+                    util_set_reset_key(UTIL_KEY_RIGHT,1);
+            break;
 
+            case KEY_DOWN:
+                    util_set_reset_key(UTIL_KEY_DOWN,1);
+            break;
 
-
-			        case KEY_HOME:
-							joystick_possible_home_key(1);
-                    break;
-
-                    case KEY_END:
-                            util_set_reset_key(UTIL_KEY_END,1);
-                    break;
-
-					case KEY_LEFT:
-							util_set_reset_key(UTIL_KEY_LEFT,1);
-					break;
-
-					case KEY_RIGHT:
-							util_set_reset_key(UTIL_KEY_RIGHT,1);
-					break;
-
-					case KEY_DOWN:
-							util_set_reset_key(UTIL_KEY_DOWN,1);
-					break;
-
-					case KEY_UP:
-							util_set_reset_key(UTIL_KEY_UP,1);
-					break;
+            case KEY_UP:
+                    util_set_reset_key(UTIL_KEY_UP,1);
+            break;
 
 
-                                case KEY_BACKSPACE:
-				//En algunos terminales, como Mac, genera 127
-				//Se puede tambien simular mediante CTRL-H
-				case 127:
-									util_set_reset_key(UTIL_KEY_BACKSPACE,1);
-                                        //puerto_65278 &=255-1;
-                                        //puerto_61438 &=255-1;
-					//blink_kbd_a8 &= (255-128);
-                                break;
+            case KEY_BACKSPACE:
+            //En algunos terminales, como Mac, genera 127
+            //Se puede tambien simular mediante CTRL-H
+            case 127:
+                util_set_reset_key(UTIL_KEY_BACKSPACE,1);
+            break;
 
-                                //TAB Emula shift+symbol -> Extended
-                                case 9:
-                                		util_set_reset_key(UTIL_KEY_TAB,1);
-                                        //puerto_32766 &=255-2;
-                                        //puerto_65278 &=255-1;
-					//blink_kbd_a14 &= (255-32);
-                                break;
+            //TAB Emula shift+symbol -> Extended
+            case 9:
+                    util_set_reset_key(UTIL_KEY_TAB,1);
+            break;
 
-	                        //PgUp
-        	                case 339:
+            //PgUp
+            case 339:
 
-                                        puerto_especial1 &=255-2;
-                	        break;
+                puerto_especial1 &=255-2;
+            break;
 
-                        	//PgDn
-	                        case 338:
+            //PgDn
+            case 338:
 
-                                        puerto_especial1 &=255-4;
-        	                break;
+                puerto_especial1 &=255-4;
+            break;
 
 
-				//Mouse
-				case KEY_MOUSE:
-					//printf ("evento mouse\n");
-					if (getmouse(&event) == OK) {
-						//coordenadas (0,0) arriba a la izquierda
-						if (event.bstate & BUTTON1_PRESSED) {
-							util_set_reset_mouse(UTIL_MOUSE_LEFT_BUTTON,1);
-							//mouse_left=1;
-						}
-						if (event.bstate & BUTTON3_PRESSED) {
-							util_set_reset_mouse(UTIL_MOUSE_RIGHT_BUTTON,1);
-							//mouse_right=1;
-						}
+            //Mouse
+            case KEY_MOUSE:
+                //printf ("evento mouse\n");
+                if (getmouse(&event) == OK) {
+                    //coordenadas (0,0) arriba a la izquierda
+                    if (event.bstate & BUTTON1_PRESSED) {
+                        util_set_reset_mouse(UTIL_MOUSE_LEFT_BUTTON,1);
+                        //mouse_left=1;
+                    }
+                    if (event.bstate & BUTTON3_PRESSED) {
+                        util_set_reset_mouse(UTIL_MOUSE_RIGHT_BUTTON,1);
+                        //mouse_right=1;
+                    }
 
-						/* Los release no se reciben casi nunca
-						por tanto los desactivamos y hacemos que por defecto, al hacer reset_keys, luego metemos botones a 0
-						Por tanto luego el lightgun no suele funcionar porque libera a un tiempo diferente
-						del que esperan los juegos
-						*/
+                    /* Los release no se reciben casi nunca
+                    por tanto los desactivamos y hacemos que por defecto, al hacer reset_keys, luego metemos botones a 0
+                    Por tanto luego el lightgun no suele funcionar porque libera a un tiempo diferente
+                    del que esperan los juegos
+                    */
 
-						if (event.bstate & BUTTON1_RELEASED) {
-							util_set_reset_mouse(UTIL_MOUSE_LEFT_BUTTON,0);
-							//mouse_left=0;
-						}
-						if (event.bstate & BUTTON3_RELEASED) {
-							util_set_reset_mouse(UTIL_MOUSE_RIGHT_BUTTON,0);
-							//mouse_right=0;
-						}
+                    if (event.bstate & BUTTON1_RELEASED) {
+                        util_set_reset_mouse(UTIL_MOUSE_LEFT_BUTTON,0);
+                        //mouse_left=0;
+                    }
+                    if (event.bstate & BUTTON3_RELEASED) {
+                        util_set_reset_mouse(UTIL_MOUSE_RIGHT_BUTTON,0);
+                        //mouse_right=0;
+                    }
 
 
-						mouse_x=event.x;
-						mouse_y=event.y;
-						scrcurses_convert_mouse_xy(mouse_x,mouse_y);
+                    mouse_x=event.x;
+                    mouse_y=event.y;
+                    scrcurses_convert_mouse_xy(mouse_x,mouse_y);
 
-						//printf ("gunstick x: %d y: %d kempst x: %d y: %d\n",gunstick_x,gunstick_y,kempston_mouse_x,kempston_mouse_y);
+                    //printf ("gunstick x: %d y: %d kempst x: %d y: %d\n",gunstick_x,gunstick_y,kempston_mouse_x,kempston_mouse_y);
 
-					}
-				break;
+                }
+            break;
 
 
 
 			default:
-        	        	ascii_to_keyboard_port(c);
+                ascii_to_keyboard_port(c);
 
 
                 //Soporte zeng. Dado que scrcurses no utiliza funcion util_set_reset_key para enviar la tecla,

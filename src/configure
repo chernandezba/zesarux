@@ -2060,7 +2060,7 @@ fi
 if [ "$OPTIONOBJCURSES" != "" ]; then
 
 cat >> Makefile << _EOF
-scrcurses.o: scrcurses.c cpu.h scrcurses.h compileoptions.h operaciones.h mem128.h charset.h debug.h zx8081.h screen.h audio.h zxvision.h utils.h joystick.h ula.h z88.h sam.h charset.h tsconf.h baseconf.h settings.h chloe.h timex.h msx.h svi.h coleco.h sg1000.h sms.h
+scrcurses.o: scrcurses.c cpu.h scrcurses.h compileoptions.h operaciones.h mem128.h charset.h debug.h zx8081.h screen.h audio.h zxvision.h utils.h joystick.h ula.h z88.h sam.h charset.h tsconf.h baseconf.h settings.h chloe.h timex.h msx.h svi.h coleco.h sg1000.h sms.h zeng.h
 	\$(CC) \$(CFLAGS) -c scrcurses.c
 
 _EOF
