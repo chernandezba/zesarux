@@ -1360,6 +1360,7 @@ int cuadrado_x1,cuadrado_y1,cuadrado_x2,cuadrado_y2,cuadrado_color;
 
 //Y si dicho recuadro tiene marca de redimensionado posible para zxvision
 int cuadrado_activo_resize=0;
+int cuadrado_activo_minimize=0;
 //int ventana_activa_tipo_zxvision=0;
 
 //Si estamos dibujando las ventanas de debajo de la del frente, y por tanto no muestra boton de cerrar por ejemplo
@@ -3114,10 +3115,12 @@ void menu_call_onscreen_keyboard_from_menu(void)
 	//Guardamos linea cuadrado ventana
 	int antes_cuadrado_activo=0;
 	int antes_cuadrado_activo_resize=0;
+    int antes_cuadrado_activo_minimize=0;
 	int antes_cuadrado_x1,antes_cuadrado_y1,antes_cuadrado_x2,antes_cuadrado_y2,antes_cuadrado_color;
 
 	antes_cuadrado_activo=cuadrado_activo;
 	antes_cuadrado_activo_resize=cuadrado_activo_resize;
+    antes_cuadrado_activo_minimize=cuadrado_activo_minimize;
 	antes_cuadrado_x1=cuadrado_x1;
 	antes_cuadrado_y1=cuadrado_y1;
 	antes_cuadrado_x2=cuadrado_x2;
@@ -3175,6 +3178,7 @@ void menu_call_onscreen_keyboard_from_menu(void)
 	//Restaurar linea cuadrado ventana
 	cuadrado_activo=antes_cuadrado_activo;
 	cuadrado_activo_resize=antes_cuadrado_activo_resize;
+    cuadrado_activo_minimize=antes_cuadrado_activo_minimize;
 	cuadrado_x1=antes_cuadrado_x1;
 	cuadrado_y1=antes_cuadrado_y1;
 	cuadrado_x2=antes_cuadrado_x2;
@@ -7521,6 +7525,7 @@ void menu_establece_cuadrado(int x1,int y1,int x2,int y2,int color)
 
 	//Por defecto no se ve marca de resize, para compatibilidad con ventanas no zxvision
 	cuadrado_activo_resize=0;
+    cuadrado_activo_minimize=0;
 	//ventana_activa_tipo_zxvision=0;
 
 }
@@ -7530,6 +7535,7 @@ void menu_desactiva_cuadrado(void)
 {
 	cuadrado_activo=0;
 	cuadrado_activo_resize=0;
+    cuadrado_activo_minimize=0;
 	//ventana_activa_tipo_zxvision=0;
 }
 
@@ -9047,13 +9053,6 @@ void menu_dibuja_ventana_botones(void)
 			//Boton de minimizar y maximizar
 			if (ventana_tipo_activa) {
 				if (cuadrado_activo_resize) {
-                    //Minimizar
-					z80_byte caracter_minimizar=menu_retorna_caracter_minimizar(zxvision_current_window);
-					if (menu_hide_minimize_button.v) caracter_minimizar=' ';
-					//Si no mostrar, meter solo espacio. es importante esto, si no hay boton, y no escribieramos espacio,
-					//se veria el texto de titulo en caso de que ancho de ventana la hagamos pequeña
-
-					putchar_menu_overlay(x+zxvision_return_minimize_button_position(ancho),y,caracter_minimizar,ESTILO_GUI_TINTA_TITULO,ESTILO_GUI_PAPEL_TITULO);
 
                     //Maximizar
                     z80_byte caracter_maximizar=menu_retorna_caracter_maximizar(zxvision_current_window);
@@ -9062,7 +9061,16 @@ void menu_dibuja_ventana_botones(void)
 
 				}
 
+				if (cuadrado_activo_minimize) {
+                    //Minimizar
+					z80_byte caracter_minimizar=menu_retorna_caracter_minimizar(zxvision_current_window);
+					if (menu_hide_minimize_button.v) caracter_minimizar=' ';
+					//Si no mostrar, meter solo espacio. es importante esto, si no hay boton, y no escribieramos espacio,
+					//se veria el texto de titulo en caso de que ancho de ventana la hagamos pequeña
 
+					putchar_menu_overlay(x+zxvision_return_minimize_button_position(ancho),y,caracter_minimizar,ESTILO_GUI_TINTA_TITULO,ESTILO_GUI_PAPEL_TITULO);
+
+				}
 
 			}
 
@@ -9706,6 +9714,7 @@ void zxvision_set_draw_window_parameters(zxvision_window *w)
 	//ventana_activa_tipo_zxvision=1;
 
 	cuadrado_activo_resize=w->can_be_resized;
+    cuadrado_activo_minimize=w->can_be_minimized;
 
 }
 
@@ -10141,6 +10150,9 @@ void zxvision_new_window_no_check_range(zxvision_window *w,int x,int y,int visib
 
 	//Decimos que se puede redimensionar
 	w->can_be_resized=1;
+	//Decimos que se puede minimizar
+	w->can_be_minimized=1;
+
 
     //Decimos que su contenido se puede redimensionar si se aumenta
     w->contents_can_be_enlarged=1;
@@ -11370,7 +11382,10 @@ void zxvision_generic_message_crea_ventana(zxvision_window *ventana,int xventana
 
 	//printf ("despues de zxvision_new_window\n");
 
-	if (!resizable) zxvision_set_not_resizable(ventana);
+	if (!resizable) {
+        zxvision_set_not_resizable(ventana);
+        zxvision_set_not_minimizable(ventana);
+    }
 
 	if (mostrar_cursor) zxvision_set_visible_cursor(ventana);
 
@@ -12184,6 +12199,7 @@ void zxvision_draw_window(zxvision_window *w)
 	//Ver si se puede redimensionar
 	//Dado que cada vez que se dibuja ventana, la marca de resize se establece por defecto a desactivada
 	cuadrado_activo_resize=w->can_be_resized;
+    cuadrado_activo_minimize=w->can_be_minimized;
 	//ventana_activa_tipo_zxvision=1;
 
 
@@ -12209,6 +12225,15 @@ void zxvision_draw_window(zxvision_window *w)
     zxvision_set_flag_dirty_must_draw_contents(w);
 
 
+}
+
+void zxvision_set_not_minimizable(zxvision_window *w)
+{
+	//Decimos que no se puede minimizar
+	//printf ("set not resizable\n");
+	cuadrado_activo_minimize=0;
+
+	w->can_be_minimized=0;
 }
 
 void zxvision_set_not_resizable(zxvision_window *w)
@@ -14688,7 +14713,7 @@ int zxvision_mouse_in_bottom_right(zxvision_window *w)
 void zxvision_handle_click_minimize(zxvision_window *w)
 {
 
-	if (w->can_be_resized) {
+	if (w->can_be_minimized) {
 
 		//Para cualquiera de los dos casos, la ponemos como minimizada
 		//Luego en restaurar, restauramos valores originales
@@ -16061,7 +16086,7 @@ void zxvision_handle_mouse_events(zxvision_window *w)
 
 
 					//Si se pulsa en boton minimizar, indicar que se esta pulsando
-					if (last_x_mouse_clicked==zxvision_return_minimize_button_position(w->visible_width) && menu_hide_minimize_button.v==0 && w->can_be_resized) {
+					if (last_x_mouse_clicked==zxvision_return_minimize_button_position(w->visible_width) && menu_hide_minimize_button.v==0 && w->can_be_minimized) {
 						putchar_menu_overlay(w->x+zxvision_return_minimize_button_position(w->visible_width),w->y,menu_retorna_caracter_minimizar(w),ESTILO_GUI_PAPEL_TITULO,ESTILO_GUI_TINTA_TITULO);
 					}
 
@@ -22366,6 +22391,7 @@ int zxvision_scanf_history(char *titulo,char *texto,int max_length,char **textos
 	//No queremos que se pueda redimensionar, el tamaño es suficiente para que quepa historial
     //ademas eventos de resize habria que tratarlos debajo adecuadamente
 	ventana.can_be_resized=0;
+    ventana.can_be_minimized=0;
 
     int tecla=0;
 

@@ -134,6 +134,9 @@ struct s_zxvision_window {
 	char geometry_name[MAX_NAME_WINDOW_GEOMETRY];
 
 	int can_be_resized;
+
+    int can_be_minimized;
+
     //Si el contenido se recrea al aumentar tamaño ventana
     int contents_can_be_enlarged;
 	int is_minimized;
@@ -478,6 +481,7 @@ extern void zxvision_fill_window_transparent(zxvision_window *w);
 
 extern void zxvision_set_not_resizable(zxvision_window *w);
 extern void zxvision_set_resizable(zxvision_window *w);
+extern void zxvision_set_not_minimizable(zxvision_window *w);
 
 
 extern void zxvision_window_save_size(zxvision_window *ventana,int *ventana_ancho_antes,int *ventana_alto_antes);

@@ -17067,6 +17067,7 @@ void menu_display_window_list_info(zxvision_window *w)
         "Always visible: %s\n"
         "Immutable: %s\n"
         "Can be resized: %s\n"
+        "Can be minimized: %s\n"
         ,
         w->pid,w->window_title,w->geometry_name,w->x,w->y,w->visible_width,w->visible_height,w->total_width,w->total_height,
         w->offset_x,w->offset_y,
@@ -17074,7 +17075,8 @@ void menu_display_window_list_info(zxvision_window *w)
         (w->is_maximized ? "Yes" : "No"),
         (w->always_visible ? "Yes" : "No"),
         (w->not_altered_by_massive_changes ? "Yes" : "No"),
-        (w->can_be_resized ? "Yes" : "No")
+        (w->can_be_resized ? "Yes" : "No"),
+        (w->can_be_minimized ? "Yes" : "No")
     );
 
 
@@ -21867,6 +21869,7 @@ void menu_about_new(MENU_ITEM_PARAMETERS)
     //opcion para buscar texto asi... hay que hacerlo desde el otro about, que se dispara si no hay zx desktop habilitado
 
     ventana->can_be_resized=0;
+    ventana->can_be_minimized=0;
 
 	zxvision_draw_window(ventana);
 
