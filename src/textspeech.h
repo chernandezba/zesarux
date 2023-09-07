@@ -81,6 +81,6 @@ extern void textspeech_stop_filter_program_check_spaces(void);
 
 extern char *textspeech_stop_filter_program;
 
-extern void ocr_get_text(char *s);
+extern void ocr_get_text(char *s,int solo_texto);
 
 #endif

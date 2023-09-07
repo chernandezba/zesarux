@@ -1154,12 +1154,12 @@ void ocr_enviar_speech_pantalla_cpc(void)
 
 
 
-void ocr_get_text(char *s)
+void ocr_get_text(char *s,int solo_texto)
 {
     ocr_text_buffer=s;
     ocr_index_position=0;
-    if (MACHINE_IS_SPECTRUM) screen_text_repinta_pantalla_spectrum_comun(0,ocr_enviar_printf,1,0);
-    else if (MACHINE_IS_ZX8081) screen_text_repinta_pantalla_zx81_comun(0,ocr_enviar_printf,1);
+    if (MACHINE_IS_SPECTRUM) screen_text_repinta_pantalla_spectrum_comun(0,ocr_enviar_printf,solo_texto,0);
+    else if (MACHINE_IS_ZX8081) screen_text_repinta_pantalla_zx81_comun(0,ocr_enviar_printf,solo_texto);
     else if (MACHINE_IS_Z88) {
         struct s_z88_return_character_atributes z88_caracter;
 

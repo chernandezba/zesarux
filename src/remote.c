@@ -4416,7 +4416,7 @@ void interpreta_comando(char *comando,int misocket,char *buffer_lectura_socket_a
 
 	else if (!strcmp(comando_sin_parametros,"get-ocr")) {
 		char buffer_ocr[8192];
-		ocr_get_text(buffer_ocr);
+		ocr_get_text(buffer_ocr,1);
 		escribir_socket (misocket,buffer_ocr);
 	}
 
