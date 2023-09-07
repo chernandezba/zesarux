@@ -8850,10 +8850,8 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
                 }
 
 				//Graficos paws/quill/daad y gac
-				if (tecla=='g'  && (
-                                    menu_debug_registers_current_view==8 && ( util_daad_has_graphics() || util_gac_detect() )
-
-                                    )
+				if (tecla=='g'  && menu_debug_registers_current_view==8  &&
+                                ( util_daad_has_graphics() || util_gac_detect() )
                    ){
 
 
