@@ -12693,10 +12693,10 @@ void screen_text_repinta_pantalla_spectrum_comun_addr(int si_border,void (*punte
 //si_border: Si debe dibujar con border. Luego las funciones screen_text_borde_horizontal, etc no lo dibujan si border en general esta desactivado
 //rutina puntero_printchar_caracter apunta a rutina de impresion de texto
 //solo_texto: solo muestra texto normal, nada de ascii art ni ? si no se reconoce caracter
-void screen_text_repinta_pantalla_spectrum_comun(int si_border,void (*puntero_printchar_caracter) (z80_byte),int solo_texto)
+void screen_text_repinta_pantalla_spectrum_comun(int si_border,void (*puntero_printchar_caracter) (z80_byte),int solo_texto,int colores_ansi)
 {
 
-    int colores_ansi=!solo_texto;
+    //int colores_ansi=!solo_texto;
 
 
         char caracter;
@@ -12779,7 +12779,10 @@ void screen_text_repinta_pantalla_spectrum_comun(int si_border,void (*puntero_pr
         if (si_border) screen_text_borde_horizontal();
 
 
-				if (colores_ansi) screen_text_set_normal_text();
+    if (colores_ansi) {
+        //printf ("Es ansi color\n");
+        screen_text_set_normal_text();
+    }
 
 }
 
@@ -12792,7 +12795,7 @@ void screen_text_repinta_pantalla_normal_printf (z80_byte c)
 
 void screen_text_repinta_pantalla_spectrum(void)
 {
-	screen_text_repinta_pantalla_spectrum_comun(1,screen_text_repinta_pantalla_normal_printf,0);
+	screen_text_repinta_pantalla_spectrum_comun(1,screen_text_repinta_pantalla_normal_printf,0,1);
 }
 
 

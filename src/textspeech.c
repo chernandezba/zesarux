@@ -901,7 +901,7 @@ void textspeech_enviar_speech_pantalla_printf (z80_byte c)
 void textspeech_enviar_speech_pantalla_spectrum(void)
 {
 
-    screen_text_repinta_pantalla_spectrum_comun(0,textspeech_enviar_speech_pantalla_printf,1);
+    screen_text_repinta_pantalla_spectrum_comun(0,textspeech_enviar_speech_pantalla_printf,1,0);
 }
 
 void textspeech_refresca_pantalla_sam_modo_013_fun_color(z80_byte color GCC_UNUSED, int *brillo GCC_UNUSED, int *parpadeo GCC_UNUSED)
@@ -1158,7 +1158,7 @@ void ocr_get_text(char *s)
 {
     ocr_text_buffer=s;
     ocr_index_position=0;
-    if (MACHINE_IS_SPECTRUM) screen_text_repinta_pantalla_spectrum_comun(0,ocr_enviar_printf,1);
+    if (MACHINE_IS_SPECTRUM) screen_text_repinta_pantalla_spectrum_comun(0,ocr_enviar_printf,1,0);
     else if (MACHINE_IS_ZX8081) screen_text_repinta_pantalla_zx81_comun(0,ocr_enviar_printf,1);
     else if (MACHINE_IS_Z88) {
         struct s_z88_return_character_atributes z88_caracter;
