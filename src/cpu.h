@@ -341,9 +341,7 @@ extern z80_bit autoselect_snaptape_options;
 
 extern z80_bit tape_loading_simulate;
 extern z80_bit tape_loading_simulate_fast;
-extern void end_emulator(void);
 
-extern void end_emulator_autosave_snapshot(void);
 extern int ending_emulator_flag;
 
 extern z80_bit snow_effect_enabled;
@@ -703,7 +701,7 @@ extern z80_bit windows_no_disable_console;
 
 extern char *string_machines_list_description;
 
-extern void set_menu_gui_zoom(void);
+
 
 
 extern int exit_emulator_after_seconds;

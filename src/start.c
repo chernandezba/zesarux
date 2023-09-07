@@ -7417,3 +7417,17 @@ void end_emulator_saveornot_config(int saveconfig)
   exit(0);
 
 }
+
+
+void end_emulator(void)
+{
+	end_emulator_saveornot_config(1);
+}
+
+void end_emulator_autosave_snapshot(void)
+{
+
+    if (autosave_snapshot_on_exit.v) autosave_snapshot();
+
+    end_emulator();
+}

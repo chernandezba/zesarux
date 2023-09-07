@@ -30,4 +30,8 @@ extern void random_ram(z80_byte *puntero,int longitud);
 extern void dump_ram_file_on_exit(void);
 extern void end_emulator_saveornot_config(int saveconfig);
 
+extern void end_emulator(void);
+
+extern void end_emulator_autosave_snapshot(void);
+
 #endif

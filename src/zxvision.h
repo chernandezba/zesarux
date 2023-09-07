@@ -1540,6 +1540,8 @@ extern int menu_center_x_from_width(int ancho_ventana);
 extern int menu_origin_x(void);
 extern int menu_center_y(void);
 
+extern void set_menu_gui_zoom(void);
+
 extern z80_bit no_close_menu_after_smartload;
 
 extern z80_bit menu_zxdesktop_buttons_enabled;

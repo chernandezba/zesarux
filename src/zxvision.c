@@ -53,6 +53,7 @@
 #include "menu_filesel.h"
 #include "screen.h"
 #include "cpu.h"
+#include "start.h"
 #include "debug.h"
 #include "ay38912.h"
 #include "tape.h"
@@ -26045,4 +26046,23 @@ void zxvision_sound_event_close_window(void)
 void zxvision_sound_event_new_window(void)
 {
     zxvision_sound_event_aux("C4",5);
+}
+
+
+void set_menu_gui_zoom(void)
+{
+	//Ajustar zoom del gui. por defecto 1
+	menu_gui_zoom=1;
+	//printf ("calling set_menu_gui_zoom. driver: %s\n",scr_new_driver_name);
+	//printf("machine id: %d si_complete_video_driver: %d\n",current_machine_type ,si_complete_video_driver() );
+
+	//Realmente da igual mirar si driver video completo: como el menu gui zoom solo se usa en drivers
+	//completos, no hace falta testear. Ademas, aqui al iniciar el emulador se llama
+	//antes de iniciar el driver de video, por tanto el driver de video no existe aun y no retornaria que es completo
+	//esto provocaria que al iniciar tbblue por ejemplo, el gui zoom no fuera 2
+	//if (si_complete_video_driver() ) {
+		if (MACHINE_IS_QL || MACHINE_IS_TSCONF || MACHINE_IS_CPC || MACHINE_IS_PCW || MACHINE_IS_PRISM || MACHINE_IS_SAM || MACHINE_IS_TBBLUE) menu_gui_zoom=2;
+	//}
+
+	debug_printf (VERBOSE_INFO,"Setting GUI menu zoom to %d",menu_gui_zoom);
 }

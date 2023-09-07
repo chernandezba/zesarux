@@ -25,6 +25,7 @@
 #include <errno.h>
 
 #include "cpu.h"
+#include "start.h"
 #include "audio.h"
 #include "debug.h"
 #include "screen.h"

@@ -25,6 +25,7 @@
 
 #include "ula.h"
 #include "cpu.h"
+#include "start.h"
 #include "debug.h"
 #include "screen.h"
 #include "contend.h"

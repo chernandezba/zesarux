@@ -34,6 +34,7 @@
 
 
 #include "cpu.h"
+#include "start.h"
 #include "debug.h"
 #include "utils.h"
 #include "network.h"

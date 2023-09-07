@@ -51,6 +51,7 @@
 #include "menu_debug_cpu.h"
 #include "screen.h"
 #include "cpu.h"
+#include "start.h"
 #include "debug.h"
 #include "zx8081.h"
 #include "ay38912.h"
