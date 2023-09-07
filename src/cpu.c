@@ -1995,23 +1995,24 @@ void set_machine_params(void)
 22=Chrome
 23=ZX-Evolution TS-Conf
 24=ZX-Evolution BaseConf (no implementado aun)
-
 25=Amstrad +3 (ROM v4.0)
 26=Amstrad +3 (ROM v4.1)
 27=Amstrad +3 - Espa�ol
-
 28=Spectrum + English
 29=Timex TC2048
 30=Timex TC2068
 31=tk95s
 32-39=Reservadas otras Spectrum
+
 100=colecovision
 101=sega sg1000
 102=Spectravideo 318
 103=Spectravideo 328
 104=sega Master System
+
 110-119 msx:
 110 msx1
+
 120=zx80 (old 20)
 121=zx81 (old 21)
 122=jupiter ace (old 22)
@@ -2022,18 +2023,23 @@ void set_machine_params(void)
 127=Microdigital TK82C
 128=Microdigital TK83
 129=Microdigital TK85
+
 130=z88 (old 30)
+
 140=amstrad cpc464
 141=amstrad cpc4128
 142=amstrad cpc664
 143=amstrad cpc6128
+
 150=Sam Coupe (old 50)
 151-59 reservado para otros sam (old 51-59)
+
 160=QL Standard
 161-179 reservado para otros QL
 
 180=MK14 Standard
 181-189 reservado para otros MK14
+
 190=Amstrad PCW 8256
 191=Amstrad PCW 8512
 192-199 reservado para otros PCW
@@ -3973,10 +3979,4 @@ unsigned int buildnumber_int=0;
 unsigned int last_buildnumber_int=0;
 
 z80_bit zesarux_has_been_downgraded={0};
-
-
-
-
-
-
 

@@ -425,7 +425,6 @@ En estos casos de momento lo que he hecho es que al final de cada menu se haga u
 
 -si pulsado OSD keyboard (F8) desde una ventana, al volver con ESC quedan mal redibujadas las ventanas
 
--tecla de (G)graphics en vista 8 ya no deberia salir para GAC, porque eso ya se hace desde vista 8
 
 -tiene sentido items de "ESC back/close"?
 

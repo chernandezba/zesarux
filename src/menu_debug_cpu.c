@@ -4351,25 +4351,16 @@ void menu_debug_get_legend(int linea,char *s,zxvision_window *w)
 			char buffer_intermedio_short[128];
 			char buffer_intermedio_long[128];
 
-            //Tecla graficos para GAC
-            char buffer_temp_gac_short[32];
-            char buffer_temp_gac_long[32];
-            buffer_temp_gac_short[0]=0;
-            buffer_temp_gac_long[0]=0;
 
-            if (util_gac_detect() ) {
-                strcpy(buffer_temp_gac_short,"~~Gph ");
-                strcpy(buffer_temp_gac_long,"~~Graphics ");
-            }
 
 			if (cpu_step_mode.v) {
 
 							//01234567890123456789012345678901
 							// ClrTstPart Write VScr MemZn 99
-				sprintf (buffer_intermedio_short,"ClrTst~~Part Wr~~ite ~~VScr %sMem~~Zn %d",buffer_temp_gac_short,menu_debug_memory_zone);
+				sprintf (buffer_intermedio_short,"ClrTst~~Part Wr~~ite ~~VScr Mem~~Zn %d",menu_debug_memory_zone);
 							//012345678901234567890123456789012345678901234567890123456789012
 							// ClearTstatesPartial Write ViewScreen MemoryZone 99
-				sprintf (buffer_intermedio_long,"ClearTstates~~Partial Wr~~ite ~~ViewScreen %sMemory~~Zone %d",buffer_temp_gac_long,menu_debug_memory_zone);
+				sprintf (buffer_intermedio_long,"ClearTstates~~Partial Wr~~ite ~~ViewScreen Memory~~Zone %d",menu_debug_memory_zone);
 
 
 				menu_get_legend_short_long(s,ancho_visible,buffer_intermedio_short,buffer_intermedio_long);
@@ -4377,11 +4368,11 @@ void menu_debug_get_legend(int linea,char *s,zxvision_window *w)
 			else {
 							//01234567890123456789012345678901
 							// Clrtstpart Write MemZone 99
-				sprintf (buffer_intermedio_short,"ClrTst~~Part Wr~~ite %sMem~~Zone %d",buffer_temp_gac_short,menu_debug_memory_zone);
+				sprintf (buffer_intermedio_short,"ClrTst~~Part Wr~~ite Mem~~Zone %d",menu_debug_memory_zone);
 
 							//012345678901234567890123456789012345678901234567890123456789012
 							// ClearTstatesPartial Write MemoryZone 99
-				sprintf (buffer_intermedio_long,"ClearTstates~~Partial Wr~~ite %sMemory~~Zone %d",buffer_temp_gac_long,menu_debug_memory_zone);
+				sprintf (buffer_intermedio_long,"ClearTstates~~Partial Wr~~ite Memory~~Zone %d",menu_debug_memory_zone);
 
 				menu_get_legend_short_long(s,ancho_visible,buffer_intermedio_short,buffer_intermedio_long);
 
