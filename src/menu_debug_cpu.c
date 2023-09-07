@@ -8273,14 +8273,6 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
                     acumulado=MENU_PUERTO_TECLADO_NINGUNA;
 				}
 
-                //Graficos gac. No necesita vista 8 y se puede hacer tambien sin step mode
-				if (tecla=='g'  && util_gac_detect() ) {
-                    menu_debug_daad_view_graphics();
-
-                    //Decimos que no hay tecla pulsada
-                    acumulado=MENU_PUERTO_TECLADO_NINGUNA;
-                }
-
 				if (tecla=='u' && menu_debug_registers_current_view==1) {
 					menu_debug_runto();
                     tecla=2; //Simular ESC
@@ -8859,11 +8851,10 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
 
 				//Graficos paws/quill/daad y gac
 				if (tecla=='g'  && (
-                                    (menu_debug_registers_current_view==8 && util_daad_has_graphics() )
-                                    ||
-                                    (util_gac_detect() )
+                                    menu_debug_registers_current_view==8 && ( util_daad_has_graphics() || util_gac_detect() )
+
                                     )
-                ) {
+                   ){
 
 
 					//Detener multitarea, porque si no, se input ejecutara opcodes de la cpu, al tener que leer el teclado
