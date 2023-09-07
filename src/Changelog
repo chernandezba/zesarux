@@ -4,6 +4,7 @@ Allow to not save configuration when exiting ZEsarUX
 Allow to select normal ZEsarUX logo or X Anniversary logo
 Menus can no longer be minimized (that had no sense)
 Added support for ZENG on curses driver
+Allow to save screen to .txt file
 
 ----
 

@@ -61,6 +61,7 @@
 #include "stats.h"
 #include "chardetect.h"
 #include "pcw.h"
+#include "textspeech.h"
 
 //Incluimos estos dos para la funcion de fade out
 #ifdef COMPILE_XWINDOWS
@@ -5444,6 +5445,15 @@ void save_screen(char *screen_save_file)
 
 		util_write_screen_bmp(screen_save_file);
 
+	}
+
+	else if (!util_compare_file_extension(screen_save_file,"txt")) {
+
+		//util_write_screen_bmp(screen_save_file);
+		char buffer_ocr[8192];
+		ocr_get_text(buffer_ocr,0);
+		int longitud=strlen(buffer_ocr);
+        util_save_file((z80_byte *)buffer_ocr,longitud,screen_save_file);
 	}
 
 	else {

@@ -16995,19 +16995,21 @@ void menu_display_save_screen(MENU_ITEM_PARAMETERS)
 
 	char screen_save_file[PATH_MAX];
 
-	char *filtros[4];
+	char *filtros[5];
 
 
 	if (MACHINE_IS_SPECTRUM) {
 		filtros[0]="scr";
 		filtros[1]="pbm";
 		filtros[2]="bmp";
-		filtros[3]=0;
+        filtros[3]="txt";
+		filtros[4]=0;
 	}
 
 	else {
 		filtros[0]="bmp";
-		filtros[1]=0;
+        filtros[1]="txt";
+		filtros[2]=0;
 	}
 
 
