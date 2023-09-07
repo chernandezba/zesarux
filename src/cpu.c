@@ -43,10 +43,6 @@
 #endif
 
 
-#if defined(__APPLE__)
-	//Para _NSGetExecutablePath
-	#include <mach-o/dyld.h>
-#endif
 
 
 #include "cpu.h"
@@ -114,7 +110,6 @@
 #include "kartusho.h"
 #include "ifrom.h"
 #include "betadisk.h"
-#include "codetests.h"
 #include "pd765.h"
 #include "core_reduced_spectrum.h"
 #include "baseconf.h"
@@ -320,9 +315,7 @@ z80_bit autoselect_snaptape_options;
 
 
 
-int argc;
-char **argv;
-int puntero_parametro;
+
 
 
 
@@ -369,24 +362,7 @@ z80_bit core_spectrum_uses_reduced={0};
 
 
 
-int siguiente_parametro(void)
-{
-	argc--;
-	if (argc==0) {
-		//printf ("Error sintaxis\n");
-		return 1;
-	}
-	puntero_parametro++;
-	return 0;
-}
 
-void siguiente_parametro_argumento(void)
-{
-	if (siguiente_parametro()) {
-		printf ("Syntax error. Parameter %s missing value\n",argv[puntero_parametro]);
-		exit(1);
-	}
-}
 
 z80_registro registro_hl;
 

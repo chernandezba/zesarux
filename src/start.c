@@ -263,6 +263,11 @@ char dump_ram_file[PATH_MAX]="";
 //el build number segun la config
 char last_version_string[255]="";
 
+int argc;
+char **argv;
+int puntero_parametro;
+
+
 //Inicio command_line flags
 z80_bit command_line_zx8081_vsync_sound={0};
 z80_bit command_line_wrx={0};
@@ -517,6 +522,25 @@ void get_os_release(void)
         strcpy(os_release_name,COMPILATION_SYSTEM);
     }
     debug_printf(VERBOSE_INFO,"Running OS Release: %s",os_release_name);
+}
+
+int siguiente_parametro(void)
+{
+	argc--;
+	if (argc==0) {
+		//printf ("Error sintaxis\n");
+		return 1;
+	}
+	puntero_parametro++;
+	return 0;
+}
+
+void siguiente_parametro_argumento(void)
+{
+	if (siguiente_parametro()) {
+		printf ("Syntax error. Parameter %s missing value\n",argv[puntero_parametro]);
+		exit(1);
+	}
 }
 
 

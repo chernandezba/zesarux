@@ -662,12 +662,9 @@ extern int last_alto_ventana;
 extern z80_bit cambio_parametros_maquinas_lentas;
 extern z80_bit opcion_no_welcome_message;
 
-extern int argc;
-extern char **argv;
-extern int puntero_parametro;
-extern int siguiente_parametro(void);
 
-extern void siguiente_parametro_argumento(void);
+
+
 
 extern int joystickkey_definidas;
 extern void rom_load(char *romfilename);

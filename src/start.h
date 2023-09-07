@@ -34,4 +34,12 @@ extern void end_emulator(void);
 
 extern void end_emulator_autosave_snapshot(void);
 
+extern int argc;
+extern char **argv;
+extern int puntero_parametro;
+
+extern int siguiente_parametro(void);
+
+extern void siguiente_parametro_argumento(void);
+
 #endif

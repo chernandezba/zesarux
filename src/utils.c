@@ -54,6 +54,7 @@
 
 
 #include "cpu.h"
+#include "start.h"
 #include "utils.h"
 #include "debug.h"
 #include "joystick.h"
