@@ -12567,7 +12567,7 @@ void screen_text_ansi_asigna_color_atributo(z80_byte atributo)
 
 
 //Asigna color al siguiente caracter, obteniendolo de la pantalla de spectrum
-void screen_text_ansi_asigna_color (int x,int y)
+void screen_text_ansi_asigna_color(int x,int y)
 {
 
 	if (!screen_text_accept_ansi)  return;
@@ -12696,7 +12696,8 @@ void screen_text_repinta_pantalla_spectrum_comun_addr(int si_border,void (*punte
 void screen_text_repinta_pantalla_spectrum_comun(int si_border,void (*puntero_printchar_caracter) (z80_byte),int solo_texto)
 {
 
-        //char caracteres_artisticos[]=" ''\".|/r.\\|7_LJ#";
+    int colores_ansi=!solo_texto;
+
 
         char caracter;
         int x,y;
@@ -12717,7 +12718,7 @@ void screen_text_repinta_pantalla_spectrum_comun(int si_border,void (*puntero_pr
 
 
 
-			if (!solo_texto) screen_text_ansi_asigna_color(x,y);
+			if (colores_ansi) screen_text_ansi_asigna_color(x,y);
 
                         caracter=compare_char(&scrscreen_text_screen[  calcula_offset_screen(x,y)  ] , &inv);
 
@@ -12768,7 +12769,7 @@ void screen_text_repinta_pantalla_spectrum_comun(int si_border,void (*puntero_pr
                         }
 
                 }
-		if (!solo_texto) screen_text_set_normal_text();
+		if (colores_ansi) screen_text_set_normal_text();
                 if (si_border) screen_text_borde_vertical();
                 //printf ("\n");
 		puntero_printchar_caracter('\n');
@@ -12778,7 +12779,7 @@ void screen_text_repinta_pantalla_spectrum_comun(int si_border,void (*puntero_pr
         if (si_border) screen_text_borde_horizontal();
 
 
-				if (!solo_texto) screen_text_set_normal_text();
+				if (colores_ansi) screen_text_set_normal_text();
 
 }
 
