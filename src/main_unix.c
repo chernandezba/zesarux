@@ -26,6 +26,7 @@
 #include <string.h>
 
 #include "cpu.h"
+#include "start.h"
 
 //Proceso inicial
 int main (int main_argc,char *main_argv[]) {

@@ -342,7 +342,7 @@ extern z80_bit autoselect_snaptape_options;
 extern z80_bit tape_loading_simulate;
 extern z80_bit tape_loading_simulate_fast;
 extern void end_emulator(void);
-extern void end_emulator_saveornot_config(int saveconfig);
+
 extern void end_emulator_autosave_snapshot(void);
 extern int ending_emulator_flag;
 
@@ -658,7 +658,9 @@ extern char *z80_cpu_types_strings[];
 #define MAX_OS_RELEASE_NAME 50
 extern char os_release_name[];
 
-extern int zesarux_main (int main_argc,char *main_argv[]);
+extern int last_ancho_ventana;
+extern int last_alto_ventana;
+
 extern z80_bit cambio_parametros_maquinas_lentas;
 extern z80_bit opcion_no_welcome_message;
 

@@ -22,6 +22,12 @@
 #ifndef START_H
 #define START_H
 
+#include "cpu.h"
 
+extern int zesarux_main (int main_argc,char *main_argv[]);
+extern void set_last_dimensiones_ventana(void);
+extern void random_ram(z80_byte *puntero,int longitud);
+extern void dump_ram_file_on_exit(void);
+extern void end_emulator_saveornot_config(int saveconfig);
 
 #endif

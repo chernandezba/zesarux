@@ -56,6 +56,7 @@
 
 #include "compileoptions.h"
 #include "cpu.h"
+#include "start.h"
 #include "screen.h"
 #include "charset.h"
 #include "debug.h"
