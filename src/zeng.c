@@ -818,6 +818,8 @@ Poder enviar mensajes a otros jugadores
 
                 }
 
+                zeng_send_snapshot_pending=0;
+
                 //Esperar a que finalicen
 
                 int finished;
