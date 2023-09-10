@@ -474,4 +474,6 @@ esa manera si que se podría aumentar el límite sin perjudicar dichas operacion
 *zx desktop activado (junto con background windows)
 *etc...
 
+-doble buffer de envio snapshot zeng: sino, con invervalos de 20 ms, peta
+
 ---Fin Mejoras---

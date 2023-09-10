@@ -62,7 +62,8 @@ extern int zeng_do_not_send_input_events;
 //Puerto remoto
 extern int zeng_remote_port;
 extern int zeng_i_am_master;
-extern int zeng_segundos_cada_snapshot;
+//extern int zeng_segundos_cada_snapshot;
+extern int zeng_frames_video_cada_snapshot;
 
 extern void zeng_add_pending_send_message_footer(char *mensaje);
 extern int pending_zeng_send_message_footer;

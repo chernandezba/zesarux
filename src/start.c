@@ -1258,11 +1258,11 @@ printf("\n"
 		"-------\n"
 		"\n"
 
-		"--zeng-remote-hostname s      ZENG last remote hostname\n"
-		"--zeng-remote-port n          ZENG last remote port\n"
-		"--zeng-snapshot-interval n    ZENG snapshot interval\n"
-		"--zeng-iam-master             Tells this machine is a ZENG master\n"
-        "--zeng-not-send-input-events  Do not send ZENG input events (keyboard, joystick) to other hosts\n"
+		"--zeng-remote-hostname s             ZENG last remote hostname\n"
+		"--zeng-remote-port n                 ZENG last remote port\n"
+		"--zeng-snapshot-interval-frames n    ZENG snapshot interval, on video frames\n"
+		"--zeng-iam-master                    Tells this machine is a ZENG master\n"
+        "--zeng-not-send-input-events         Do not send ZENG input events (keyboard, joystick) to other hosts\n"
 
 
 
@@ -5836,7 +5836,7 @@ int parse_cmdline_options(int desde_commandline) {
 				zeng_remote_port=valor;
 			}
 
-
+            //por compatibilidad hacia atras
 			else if (!strcmp(argv[puntero_parametro],"--zeng-snapshot-interval")) {
 				siguiente_parametro_argumento();
 
@@ -5846,7 +5846,19 @@ int parse_cmdline_options(int desde_commandline) {
 						exit(1);
 				}
 
-				zeng_segundos_cada_snapshot=valor;
+				zeng_frames_video_cada_snapshot=valor*50;
+			}
+
+			else if (!strcmp(argv[puntero_parametro],"--zeng-snapshot-interval-frames")) {
+				siguiente_parametro_argumento();
+
+				int valor=parse_string_to_number(argv[puntero_parametro]);
+				if (valor<1 || valor>9*50) {
+						printf ("Invalid value %d for setting --zeng-snapshot-interval-frames\n",valor);
+						exit(1);
+				}
+
+				zeng_frames_video_cada_snapshot=valor;
 			}
 
 			else if (!strcmp(argv[puntero_parametro],"--zeng-iam-master")) {

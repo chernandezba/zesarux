@@ -3022,7 +3022,7 @@ void load_zsf_snapshot_file_mem(char *filename,z80_byte *origin_memory,int longi
       break;
 
       case ZSF_MACHINEID:
-        //Si modo rapido, no resetea maquina al cargar snapshot, esto se usa en zeng
+        //Si modo rapido, no resetea maquina al cargar snapshot, si es que la maquina actual es la misma que el snapshot, esto se usa en zeng
         if (load_fast_mode) {
           if (current_machine_type==*block_data) {
             cambio_maquina=0;

@@ -14317,24 +14317,26 @@ void menu_zeng_master(MENU_ITEM_PARAMETERS)
 }
 
 
-void menu_zeng_snapshot_seconds(MENU_ITEM_PARAMETERS)
+void menu_zeng_snapshot_frames(MENU_ITEM_PARAMETERS)
 {
 
-		char string_seconds[2];
+        //hasta valor de 9*50*20=9000
+		char string_frames[5];
 
-		sprintf (string_seconds,"%d",zeng_segundos_cada_snapshot);
+        //El valor se enseña al usuario en milisegundos, que es mas entendedor (creo) que frames de video
+		sprintf (string_frames,"%d",zeng_frames_video_cada_snapshot*20);
 
 
-		menu_ventana_scanf("Snapshot seconds?",string_seconds,2);
-		int numero=parse_string_to_number(string_seconds);
+		menu_ventana_scanf("Snapshot every ms?",string_frames,5);
+		int numero=parse_string_to_number(string_frames);
 
-		if (numero<1 || numero>9) {
+		if (numero<20 || numero>9*50*20) {
 			menu_error_message("Invalid interval");
 			return;
 		}
 
 
-		zeng_segundos_cada_snapshot=numero;
+		zeng_frames_video_cada_snapshot=numero/20;
 
 }
 
@@ -14414,7 +14416,9 @@ void menu_zeng(MENU_ITEM_PARAMETERS)
 			menu_add_item_menu_shortcut(array_menu_common,'m');
 
 			if (zeng_i_am_master) {
-				menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_snapshot_seconds,NULL,"[%d] Snapshot seconds",zeng_segundos_cada_snapshot);
+				menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_snapshot_frames,NULL,"[%d ms] Snapshot ms",zeng_frames_video_cada_snapshot*20);
+                menu_add_item_menu_tooltip(array_menu_common,"Snapshot sending frequency on miliseconds");
+                menu_add_item_menu_ayuda(array_menu_common,"Snapshot sending frequency on miliseconds");
 
                 menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_snapshot_force_reconnect,NULL,"[%c] Force reconnect",
                 (zeng_force_reconnect_failed_retries.v ? 'X' : ' ' ));

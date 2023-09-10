@@ -4296,7 +4296,8 @@ int util_write_configfile(void)
 
   if (zeng_remote_hostname[0]!=0)             ADD_STRING_CONFIG,"--zeng-remote-hostname %s",zeng_remote_hostname);
                                               ADD_STRING_CONFIG,"--zeng-remote-port %d",zeng_remote_port);
-                                              ADD_STRING_CONFIG,"--zeng-snapshot-interval %d",zeng_segundos_cada_snapshot);
+                                              //ADD_STRING_CONFIG,"--zeng-snapshot-interval %d",zeng_segundos_cada_snapshot);
+                                              ADD_STRING_CONFIG,"--zeng-snapshot-interval-frames %d",zeng_frames_video_cada_snapshot);
   if (zeng_i_am_master)                       ADD_STRING_CONFIG,"--zeng-iam-master");
   if (zeng_do_not_send_input_events)          ADD_STRING_CONFIG,"--zeng-not-send-input-events");
 

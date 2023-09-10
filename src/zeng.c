@@ -88,7 +88,9 @@ char zeng_remote_hostname[MAX_ZENG_HOSTNAME]="";
 //Puerto remoto
 int zeng_remote_port=10000;
 
-int zeng_segundos_cada_snapshot=2;
+//int zeng_segundos_cada_snapshot=2;
+
+int zeng_frames_video_cada_snapshot=2;
 
 int zeng_i_am_master=0;
 
@@ -905,7 +907,8 @@ void zeng_send_snapshot_if_needed(void)
 	if (zeng_i_am_master) {
 		contador_envio_snapshot++;
 		//printf ("%d %d\n",contador_envio_snapshot,(contador_envio_snapshot % (50*zeng_segundos_cada_snapshot) ));
-		if ( (contador_envio_snapshot % (50*zeng_segundos_cada_snapshot) )==0) { //cada 5 segundos
+		if (contador_envio_snapshot>=zeng_frames_video_cada_snapshot) {
+                contador_envio_snapshot=0;
 				//Si esta el anterior snapshot aun pendiente de enviar
 				if (zeng_send_snapshot_pending) {
                     zeng_snapshots_not_sent++;
