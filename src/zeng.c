@@ -814,11 +814,10 @@ Poder enviar mensajes a otros jugadores
                         error_desconectar=1;
                     }
 
-                    zeng_send_snapshot_pending=0;
 
                 }
 
-                zeng_send_snapshot_pending=0;
+                //zeng_send_snapshot_pending=0;
 
                 //Esperar a que finalicen
 
@@ -851,6 +850,10 @@ Poder enviar mensajes a otros jugadores
                 if (!error_desconectar) {
                     free(zeng_send_snapshot_mem_hexa);
                     zeng_send_snapshot_mem_hexa=NULL;
+
+                    //Esto liberarlo al final, asi le dice a la funcion que llena el snapshot que ya puede
+                    //crear otro snapshot
+                    zeng_send_snapshot_pending=0;
 
                     //temp_memoria_liberada++;
                     //printf("Asignada: %d liberada: %d\n",temp_memoria_asignada,temp_memoria_liberada);
@@ -923,7 +926,7 @@ void zeng_send_snapshot_if_needed(void)
                     con lo que aqui lo da como bueno y no incrementa el contador de retries
                     */
                     if (zeng_force_reconnect_failed_retries.v) {
-                        if (zeng_snapshots_not_sent>=3) {
+                        if (zeng_snapshots_not_sent>=3*50) { //Si pasan mas de 3 segundos y no ha enviado aun el ultimo snapshot
                             debug_printf (VERBOSE_INFO,"ZENG: Forcing reconnect");
                             //printf("Before forcing ZENG reconnect\n");
                             zeng_force_reconnect();
