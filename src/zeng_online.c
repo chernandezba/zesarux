@@ -94,7 +94,7 @@ void init_zeng_online_rooms(void)
 
     for (i=0;i<ZENG_ONLINE_MAX_ROOMS;i++) {
         zeng_online_rooms_list[i].created=0;
-        strcpy(zeng_online_rooms_list[i].name,"<free>");
+        strcpy(zeng_online_rooms_list[i].name,"<free>                        ");
         zeng_online_rooms_list[i].snapshot_memory=NULL;
     }
 }
@@ -107,7 +107,74 @@ void init_zeng_online_rooms(void)
 
 pthread_t xxxxxxx;
 
+void enable_zeng_online(void)
+{
+    zeng_online_enabled=1;
+    //TODO: acciones adicionales al activarlo
+}
 
+void disable_zeng_online(void)
+{
+    zeng_online_enabled=0;
+    //TODO: acciones adicionales al desactivarlo
+}
+
+void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv)
+{
+    //TODO: si el parse para un comando largo, como put-snapshot, fuese lento, habria que procesarlo diferente:
+    //ir hasta el primer espacio, y no procesar los dos parametros
+
+    if (comando_argc<1) {
+        escribir_socket(misocket,"ERROR. Needs at least one parameter");
+        return;
+    }
+
+    if (!strcmp(comando_argv[0],"is-enabled")) {
+        escribir_socket_format(misocket,"%d",zeng_online_enabled);
+    }
+
+    else if (!strcmp(comando_argv[0],"enable")) {
+        if (zeng_online_enabled) {
+            escribir_socket(misocket,"ERROR. Already enabled");
+        }
+        else {
+            enable_zeng_online();
+        }
+    }
+
+    else if (!strcmp(comando_argv[0],"disable")) {
+        if (!zeng_online_enabled) {
+            escribir_socket(misocket,"ERROR. Already disabled");
+        }
+        else {
+            disable_zeng_online();
+        }
+    }
+
+    else if (!strcmp(comando_argv[0],"list-rooms")) {
+        if (!zeng_online_enabled) {
+            escribir_socket(misocket,"ERROR. ZENG Online is not enabled");
+            return;
+        }
+
+        int i;
+
+        escribir_socket(misocket,"N.  Name                           Created\n");
+
+        for (i=0;i<zeng_online_current_max_rooms;i++) {
+            escribir_socket_format(misocket,"%3d %s %d\n",
+                i,
+                zeng_online_rooms_list[i].name,
+                zeng_online_rooms_list[i].created
+            );
+        }
+    }
+
+    else {
+        escribir_socket(misocket,"ERROR. Invalid command for zeng-online");
+        return;
+    }
+}
 
 
 #else

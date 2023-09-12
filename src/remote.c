@@ -905,10 +905,11 @@ struct s_items_ayuda items_ayuda[]={
 	{"zeng-is-master",NULL,NULL,"Tells if ZENG is configured as master or not"},
 
 
-  {"zeng-online","|zo","command parameter","Related ZENG Online actions. command can be:\n"
+  {"zeng-online","|zo","command parameter","Related ZENG Online actions. Command can be:\n"
     "disable             Disables ZENG Online\n"
 	"enable              Enables ZENG Online\n"
     "is-enabled          Returns enabled status\n"
+    "list-rooms          Returns rooms list\n"
 
 },
 
@@ -4784,7 +4785,7 @@ void interpreta_comando(char *comando,int misocket,char *buffer_lectura_socket_a
 
 	}
 
-//Este comando se usa (o se usara) en la funcion de juegos online
+    //Este comando se usa en ZENG
 	else if (!strcmp(comando_sin_parametros,"put-snapshot") ) {
 		/*
 		Se puede enviar un snapshot por script asi:
@@ -6036,6 +6037,11 @@ else if (!strcmp(comando_sin_parametros,"write-port") ) {
 		escribir_socket_format(misocket,"%d",zeng_i_am_master);
 	}
 
+	else if (!strcmp(comando_sin_parametros,"zeng-online") || !strcmp(comando_sin_parametros,"zo")) {
+        remote_parse_commands_argvc(parametros);
+        zeng_online_parse_command(misocket,remote_command_argc,remote_command_argv);
+
+	}
 
 
 		else if (!strcmp(comando_sin_parametros,"zxevo-get-nvram") ) {
