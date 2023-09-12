@@ -21731,12 +21731,11 @@ void util_get_operating_system_release(char *destino,int maximo)
 
 }
 
-//Obtener versión del emulador
+//Obtener versión del emulador en numero
+//Generalmente es lo mismo que EMULATOR_VERSION, pero en alguna version (como ZEsarUX X) EMULATOR_VERSION era "X" pero el numero era "10.10"
 //De manera general es EMULATOR_VERSION, pero para el caso de la version X (10.10) se retorna 10.10 en vez de X
 //Esto solo se usa en ZRCP y ZENG, pues ZRCP el get-version tiene que retornar un numero.algo(y opcionalmente -SN o -RC)
-void util_get_emulator_version(char *buffer)
+void util_get_emulator_version_number(char *buffer)
 {
-        //Caso especial para version 10.10. Retornar 10.10 en vez de "X"
-        if (!strcasecmp(EMULATOR_VERSION,"X")) strcpy (buffer,"10.10");
-        else strcpy (buffer,EMULATOR_VERSION);
+    strcpy (buffer,EMULATOR_NUMBER_VERSION);
 }

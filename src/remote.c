@@ -4517,7 +4517,7 @@ void interpreta_comando(char *comando,int misocket,char *buffer_lectura_socket_a
 
 	else if (!strcmp(comando_sin_parametros,"get-version")) {
 		char buffer[30];
-		util_get_emulator_version(buffer);
+		util_get_emulator_version_number(buffer);
 
 		escribir_socket (misocket,buffer);
 	}

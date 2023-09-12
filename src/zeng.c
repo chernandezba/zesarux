@@ -363,7 +363,7 @@ int zeng_connect_remotes(void)
 
 		//Comprobar que version remota sea como local
         char myversion[30];
-        util_get_emulator_version(myversion);
+        util_get_emulator_version_number(myversion);
         if (strcasecmp(myversion,buffer)) {
 			debug_printf (VERBOSE_ERR,"Local and remote ZEsarUX versions do not match");
             //printf("Local %s remote %s\n",myversion,buffer);

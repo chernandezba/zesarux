@@ -991,7 +991,7 @@ extern int util_if_filesystem_fat16(z80_byte *memoria,int total_size);
 
 extern int util_parity(z80_byte value);
 
-extern void util_get_emulator_version(char *buffer);
+extern void util_get_emulator_version_number(char *buffer);
 
 
 //Contando el NULL del final

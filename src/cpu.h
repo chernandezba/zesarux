@@ -24,8 +24,17 @@
 
 #include "compileoptions.h"
 
+
+
+
+//#define EMULATOR_VERSION "10.10-SN"
+//#define EMULATOR_VERSION "10.10-B1"
+//#define EMULATOR_VERSION "10.10-RC"
+#define EMULATOR_VERSION "X"
+//#define SNAPSHOT_VERSION
+
 /*
-Emulator version format:
+EMULATOR_NUMBER_VERSION format:
 XX.YY-S
 
 XX: Major version number. 1 or 2 digits number. Currently using only one digit but could be greater (on ZEsarUX version 10 or higher)
@@ -40,13 +49,12 @@ Examples
 6.2-RC3: Means major version 6, minor version 2, beta version: RC3
 
 */
-
-
-//#define EMULATOR_VERSION "10.10-SN"
-//#define EMULATOR_VERSION "10.10-B1"
-//#define EMULATOR_VERSION "10.10-RC"
-#define EMULATOR_VERSION "X"
-//#define SNAPSHOT_VERSION
+//EMULATOR_VERSION siempre tiene que ser un numero
+//Normalmente esto coincide con EMULATOR_VERSION, pero por si queremos sacar otra edición especial (como la X):
+//EMULATOR_VERSION podria ser "XII"
+//Y EMULATOR_NUMBER_VERSION como siempre es un numero, podria ser "12.0"
+//Para obtener EMULATOR_NUMBER_VERSION se deberia usar siempre util_get_emulator_version_number
+#define EMULATOR_NUMBER_VERSION "10.10"
 
 #define EMULATOR_DATE "24 September 2023"
 #define EMULATOR_SHORT_DATE "24/09/2023"
