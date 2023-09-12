@@ -96,8 +96,13 @@ struct zeng_online_room {
     int max_players;
     int current_players;
     char name[ZENG_ONLINE_MAX_ROOM_NAME+1]; //+1 para el 0 del final
-    char password[ZENG_ROOM_PASSWORD_LENGTH+1]; //+1 para el 0 del final. un password simple, para tener un minimo de seguridad
+
+    char user_password[ZENG_ROOM_PASSWORD_LENGTH+1]; //+1 para el 0 del final. un password simple, para tener un minimo de seguridad
     //que no se pueden lanzar acciones sobre una habitacion sino se ha unido a dicha habitacion
+
+    char creator_password[ZENG_ROOM_PASSWORD_LENGTH+1]; //+1 para el 0 del final. un password simple, para las operaciones
+      //del que ha creado la habitacion
+
     z80_byte *snapshot_memory; //Donde esta asignado el snapshot
 };
 
@@ -162,7 +167,7 @@ void zeng_online_set_room_name(int room,char *room_name)
 
 }
 
-void zeng_online_assign_password(int room)
+void zeng_online_assign_room_passwords(int room)
 {
 
     int i;
@@ -177,7 +182,20 @@ void zeng_online_assign_password(int room)
 
         char caracter_password='A'+letra;
 
-        zeng_online_rooms_list[room].password[i]=caracter_password;
+        zeng_online_rooms_list[room].user_password[i]=caracter_password;
+    }
+
+    for (i=0;i<ZENG_ROOM_PASSWORD_LENGTH;i++) {
+        //letras mayus de la A a la Z (26 caracteres)
+        ay_randomize(0);
+
+        int valor_random=randomize_noise[0];
+
+        int letra=valor_random % 26;
+
+        char caracter_password='A'+letra;
+
+        zeng_online_rooms_list[room].creator_password[i]=caracter_password;
     }
 
 }
@@ -197,13 +215,16 @@ void zeng_online_create_room(int misocket,int room_number,char *room_name)
     }
 
     zeng_online_set_room_name(room_number,room_name);
-    zeng_online_assign_password(room_number);
+    zeng_online_assign_room_passwords(room_number);
 
     zeng_online_rooms_list[room_number].max_players=ZENG_ONLINE_MAX_PLAYERS_PER_ROOM;
     zeng_online_rooms_list[room_number].current_players=0;
     zeng_online_rooms_list[room_number].snapshot_memory=NULL;
 
     zeng_online_rooms_list[room_number].created=1;
+
+    //Retornar el creator password
+    escribir_socket(misocket,zeng_online_rooms_list[room_number].creator_password);
 
 }
 
@@ -276,7 +297,7 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
         zeng_online_create_room(misocket,room_number,comando_argv[2]);
     }
 
-        //TODO esto solo es temporal
+    //TODO esto solo es temporal
     else if (!strcmp(comando_argv[0],"pass-room")) {
         if (!zeng_online_enabled) {
             escribir_socket(misocket,"ERROR. ZENG Online is not enabled");
@@ -296,15 +317,52 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
         }
 
 
-        escribir_socket_format(misocket,"%s",zeng_online_rooms_list[room_number].password);
+        escribir_socket_format(misocket,"%s",zeng_online_rooms_list[room_number].user_password);
+    }
+
+    //et-max-players user_pass n m  Define max-players (m) for room (n). Requires user_pass of that room\n"
+    else if (!strcmp(comando_argv[0],"set-max-players")) {
+        if (!zeng_online_enabled) {
+            escribir_socket(misocket,"ERROR. ZENG Online is not enabled");
+            return;
+        }
+
+        if (comando_argc<3) {
+            escribir_socket(misocket,"ERROR. Needs three parameters");
+            return;
+        }
+
+        int room_number=parse_string_to_number(comando_argv[2]);
+
+        if (!zeng_online_rooms_list[room_number].created) {
+            escribir_socket(misocket,"ERROR. Room is not created");
+            return;
+        }
+
+        //validar user_pass. comando_argv[1]
+        if (strcmp(comando_argv[1],zeng_online_rooms_list[room_number].creator_password)) {
+            escribir_socket(misocket,"ERROR. Invalid creator password for that room");
+            return;
+        }
+
+
+        int max_players=parse_string_to_number(comando_argv[3]);
+
+        if (max_players<1 || max_players>ZENG_ONLINE_MAX_PLAYERS_PER_ROOM) {
+            escribir_socket(misocket,"ERROR. Max players beyond limit");
+            return;
+        }
+
+        zeng_online_rooms_list[room_number].max_players=max_players;
+
     }
 
     //TODO comandos
-    //set-max-players: para una room concreta, requiere que este creada, y requiere password. TODO: esto solo lo deberia poder hacer
+    //set-max-players: para una room concreta, requiere que este creada, y requiere creator_password. TODO: esto solo lo deberia poder hacer
     //  quien ha creado la room. como? quiza al crear la room se retorna un password de admin, y el password de join es un password no admin
     //  por tanto habria que tener dos passwords
-    //join: para una room concreta, requiere que este creada, y retorna password
-    //leave: para una room concreta, requiere que este creada, requiere password. hay que asegurarse que el leave
+    //join: para una room concreta, requiere que este creada, y retorna user_password
+    //leave: para una room concreta, requiere que este creada, requiere user_password. hay que asegurarse que el leave
     //       es de esta conexion, y no de una nueva. como controlar eso??? el leave decrementara el numero de jugadores conectados, logicamente
 
     else {

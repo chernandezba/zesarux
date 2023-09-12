@@ -907,11 +907,12 @@ struct s_items_ayuda items_ayuda[]={
 
 
   {"zeng-online","|zo","command parameter","Related ZENG Online actions. Command can be:\n"
-    "create-room n name  Creates a room. It must be in non-created state\n"
-    "disable             Disables ZENG Online\n"
-	"enable              Enables ZENG Online\n"
-    "is-enabled          Returns enabled status\n"
-    "list-rooms          Returns rooms list\n"
+    "create-room n name             Creates a room n. It must be in non-created state\n"
+    "disable                        Disables ZENG Online\n"
+	"enable                         Enables ZENG Online\n"
+    "is-enabled                     Returns enabled status\n"
+    "list-rooms                     Returns rooms list\n"
+    "set-max-players user_pass n m  Define max-players (m) for room (n). Requires user_pass of that room\n"
 
 },
 
