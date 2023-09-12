@@ -70,6 +70,7 @@ El slave hace:
 #include "remote.h"
 #include "snap_zsf.h"
 #include "autoselectoptions.h"
+#include "ay38912.h"
 
 
 
@@ -139,7 +140,7 @@ void disable_zeng_online(void)
     //TODO: acciones adicionales al desactivarlo
 }
 
-void zeng_set_room_name(int room,char *room_name)
+void zeng_online_set_room_name(int room,char *room_name)
 {
     //primero rellenar con espacios, asi queda siempre alineado
     int i;
@@ -161,6 +162,26 @@ void zeng_set_room_name(int room,char *room_name)
 
 }
 
+void zeng_online_assign_password(int room)
+{
+
+    int i;
+
+    for (i=0;i<ZENG_ROOM_PASSWORD_LENGTH;i++) {
+        //letras mayus de la A a la Z (26 caracteres)
+        ay_randomize(0);
+
+        int valor_random=randomize_noise[0];
+
+        int letra=valor_random % 26;
+
+        char caracter_password='A'+letra;
+
+        zeng_online_rooms_list[room].password[i]=caracter_password;
+    }
+
+}
+
 void zeng_online_create_room(int misocket,int room_number,char *room_name)
 {
     //comprobaciones
@@ -175,7 +196,8 @@ void zeng_online_create_room(int misocket,int room_number,char *room_name)
         return;
     }
 
-    zeng_set_room_name(room_number,room_name);
+    zeng_online_set_room_name(room_number,room_name);
+    zeng_online_assign_password(room_number);
 
     zeng_online_rooms_list[room_number].max_players=ZENG_ONLINE_MAX_PLAYERS_PER_ROOM;
     zeng_online_rooms_list[room_number].current_players=0;
@@ -253,6 +275,37 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
         int room_number=parse_string_to_number(comando_argv[1]);
         zeng_online_create_room(misocket,room_number,comando_argv[2]);
     }
+
+        //TODO esto solo es temporal
+    else if (!strcmp(comando_argv[0],"pass-room")) {
+        if (!zeng_online_enabled) {
+            escribir_socket(misocket,"ERROR. ZENG Online is not enabled");
+            return;
+        }
+
+        if (comando_argc<1) {
+            escribir_socket(misocket,"ERROR. Needs one parameter");
+            return;
+        }
+
+        int room_number=parse_string_to_number(comando_argv[1]);
+
+        if (!zeng_online_rooms_list[room_number].created) {
+            escribir_socket(misocket,"ERROR. Room is not created");
+            return;
+        }
+
+
+        escribir_socket_format(misocket,"%s",zeng_online_rooms_list[room_number].password);
+    }
+
+    //TODO comandos
+    //set-max-players: para una room concreta, requiere que este creada, y requiere password. TODO: esto solo lo deberia poder hacer
+    //  quien ha creado la room. como? quiza al crear la room se retorna un password de admin, y el password de join es un password no admin
+    //  por tanto habria que tener dos passwords
+    //join: para una room concreta, requiere que este creada, y retorna password
+    //leave: para una room concreta, requiere que este creada, requiere password. hay que asegurarse que el leave
+    //       es de esta conexion, y no de una nueva. como controlar eso??? el leave decrementara el numero de jugadores conectados, logicamente
 
     else {
         escribir_socket(misocket,"ERROR. Invalid command for zeng-online");
