@@ -334,6 +334,11 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
 
         int room_number=parse_string_to_number(comando_argv[2]);
 
+        if (room_number<0 || room_number>=zeng_online_current_max_rooms) {
+            escribir_socket_format(misocket,"ERROR. Room number beyond limit");
+            return;
+        }
+
         if (!zeng_online_rooms_list[room_number].created) {
             escribir_socket(misocket,"ERROR. Room is not created");
             return;
