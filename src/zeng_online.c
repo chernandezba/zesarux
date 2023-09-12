@@ -71,6 +71,7 @@ El slave hace:
 #include "snap_zsf.h"
 #include "autoselectoptions.h"
 #include "ay38912.h"
+#include "atomic.h"
 
 
 
@@ -106,6 +107,11 @@ struct zeng_online_room {
 
     z80_byte *snapshot_memory; //Donde esta asignado el snapshot
     int snapshot_size;
+
+    //Es un contador atomico, mas que un semaforo realmente. Indica cuantas personas en esa room estan usando un snapshot
+    z_atomic_semaphore reading_snapshot;
+
+
 };
 
 //Array de habitaciones en zeng online
@@ -125,6 +131,10 @@ void init_zeng_online_rooms(void)
         strcpy(zeng_online_rooms_list[i].name,"<free>                        ");
         zeng_online_rooms_list[i].snapshot_memory=NULL;
         zeng_online_rooms_list[i].snapshot_size=0;
+
+        z_atomic_reset(&zeng_online_rooms_list[i].reading_snapshot);
+
+
     }
 }
 
