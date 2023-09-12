@@ -64,6 +64,16 @@ void z_atomic_reset(z_atomic_semaphore *s)
     atomic_fetch_and_explicit(s,0,memory_order_relaxed);
 }
 
+void z_atomic_inc(z_atomic_semaphore *s)
+{
+    atomic_fetch_add_explicit(s, 1, memory_order_relaxed );
+}
+
+void z_atomic_dec(z_atomic_semaphore *s)
+{
+    atomic_fetch_sub_explicit(s, 1, memory_order_relaxed );
+}
+
     #else
 
     #ifdef MINGW
@@ -87,6 +97,16 @@ void z_atomic_reset(z_atomic_semaphore *s)
 }
 
 
+void z_atomic_inc(z_atomic_semaphore *s)
+{
+    (*s)++;
+}
+
+void z_atomic_dec(z_atomic_semaphore *s)
+{
+    (*s)--;
+}
+
 
         #else
 
@@ -103,6 +123,16 @@ int z_atomic_test_and_set(z_atomic_semaphore *s)
 void z_atomic_reset(z_atomic_semaphore *s)
 {
 	__atomic_clear(s,__ATOMIC_RELAXED);
+}
+
+void z_atomic_inc(z_atomic_semaphore *s)
+{
+    __atomic_fetch_add(s, 1, __ATOMIC_RELAXED );
+}
+
+void z_atomic_dec(z_atomic_semaphore *s)
+{
+    __atomic_fetch_sub(s, 1, __ATOMIC_RELAXED );
 }
 
 

@@ -95,6 +95,7 @@ struct zeng_online_room {
     int created;
     int max_players;
     int current_players;
+    int do_not_allow_events; //TODO: no permitir envio de eventos en esta room, util para solo transmitir desde el master y que nadie interactue
     char name[ZENG_ONLINE_MAX_ROOM_NAME+1]; //+1 para el 0 del final
 
     char user_password[ZENG_ROOM_PASSWORD_LENGTH+1]; //+1 para el 0 del final. un password simple, para tener un minimo de seguridad
@@ -104,6 +105,7 @@ struct zeng_online_room {
       //del que ha creado la habitacion
 
     z80_byte *snapshot_memory; //Donde esta asignado el snapshot
+    int snapshot_size;
 };
 
 //Array de habitaciones en zeng online
@@ -122,6 +124,7 @@ void init_zeng_online_rooms(void)
         zeng_online_rooms_list[i].current_players=0;
         strcpy(zeng_online_rooms_list[i].name,"<free>                        ");
         zeng_online_rooms_list[i].snapshot_memory=NULL;
+        zeng_online_rooms_list[i].snapshot_size=0;
     }
 }
 
