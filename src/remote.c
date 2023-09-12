@@ -904,6 +904,14 @@ struct s_items_ayuda items_ayuda[]={
 	{"write-port",NULL,"port value","Writes value at port"},
 	{"zeng-is-master",NULL,NULL,"Tells if ZENG is configured as master or not"},
 
+
+  {"zeng-online","|zo","command parameter","Related ZENG Online actions. command can be:\n"
+    "disable             Disables ZENG Online\n"
+	"enable              Enables ZENG Online\n"
+    "is-enabled          Returns enabled status\n"
+
+},
+
  {"zxevo-get-nvram",NULL,"index","Get ZX-Evo NVRAM value at index"},
 
   {NULL,NULL,NULL,NULL}

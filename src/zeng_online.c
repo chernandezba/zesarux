@@ -25,6 +25,19 @@ Online Network Play (using a central server) related code
 
 */
 
+/*
+
+Snapshots:
+-cuando se pide un snapshot desde un slave, se asigna memoria y se copia ahí el contenido del último snapshot.
+Mientras se copia se incrementa un contador atómico, de tal manera que si hay dos conexiones pidiendo snapshot al mismo tiempo,
+contador será 2 por ejemplo
+
+-cuando un máster envía un slave, primero se envía a una memoria temporal. Y luego se enviará a la memoria de snapshot ,
+antes esperando a que el contador atómico esté a 0
+
+
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -50,10 +63,41 @@ Online Network Play (using a central server) related code
 
 #endif
 
-//Variables, estructuras etc que se pueden compilar aun sin soporte de pthreads
+//Variables, estructuras,funciones etc que se pueden compilar aun sin soporte de pthreads
 
+//Numero maximo de habitaciones para esta sesion que se pueden crear
+//Interesa que este valor se pueda bajar o subir (pero no subir nunca mas alla de ZENG_ONLINE_MAX_ROOMS),
+//porque segun la potencia del server se puede permitir mas o menos
+int zeng_online_current_max_rooms=10;
 
+//Numero maximo de jugadores por cada habitacion
+int zeng_online_current_max_players=20;
 
+int zeng_online_enabled=0;
+
+//Estructura de una habitacion de zeng online
+struct zeng_online_room {
+    int created;
+    char name[ZENG_ONLINE_MAX_ROOM_NAME+1]; //+1 para el 0 del final
+    z80_byte *snapshot_memory; //Donde esta asignado el snapshot
+};
+
+//Array de habitaciones en zeng online
+struct zeng_online_room zeng_online_rooms_list[ZENG_ONLINE_MAX_ROOMS];
+
+void init_zeng_online_rooms(void)
+{
+
+    debug_printf(VERBOSE_INFO,"Initializing ZENG Online rooms");
+
+    int i;
+
+    for (i=0;i<ZENG_ONLINE_MAX_ROOMS;i++) {
+        zeng_online_rooms_list[i].created=0;
+        strcpy(zeng_online_rooms_list[i].name,"<free>");
+        zeng_online_rooms_list[i].snapshot_memory=NULL;
+    }
+}
 
 //Funciones que usan pthreads
 #ifdef USE_PTHREADS

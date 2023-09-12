@@ -22,5 +22,13 @@
 #ifndef ZENG_ONLINE_H
 #define ZENG_ONLINE_H
 
+//Maximo nombre para una habitacion
+#define ZENG_ONLINE_MAX_ROOM_NAME 30
+
+//Maximo total de habitaciones que se pueden crear. Valor hardcoded, no se puede fijar mas que este limite (pero si marcar un limite inferior)
+#define ZENG_ONLINE_MAX_ROOMS 30
+
+
+extern void init_zeng_online_rooms(void);
 
 #endif

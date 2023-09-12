@@ -151,6 +151,7 @@
 #include "dsk.h"
 #include "plus3dos_handler.h"
 #include "pcw.h"
+#include "zeng_online.h"
 
 
 #ifdef COMPILE_STDOUT
@@ -7266,6 +7267,9 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
 
 
 	init_network_tables();
+
+    //Inicializar ZENG online
+    init_zeng_online_rooms();
 
 	//Iniciar ZRCP
 	init_remote_protocol();
