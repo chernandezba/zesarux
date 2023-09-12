@@ -36,6 +36,22 @@ contador será 2 por ejemplo
 antes esperando a que el contador atómico esté a 0
 
 
+Rooms:
+Al crear una habitacion, se genera un password que es el que debe usarse siempre para hacer acciones sobre esa habitacion, como:
+-establecer maximo de jugadores
+-envio snapshot
+-envio eventos teclado/joystick
+Para obtener ese password, hay que unirse a la habitacion
+
+Nota: el master hace:
+-crear habitacion
+-unirse a habitacion creada
+-y en bucle: enviar snapshots
+
+El slave hace:
+-unirse a una habitacion que se selecione
+-y en bucle: enviar eventos, obtener snapshots
+
 */
 
 #include <stdio.h>
@@ -70,15 +86,17 @@ antes esperando a que el contador atómico esté a 0
 //porque segun la potencia del server se puede permitir mas o menos
 int zeng_online_current_max_rooms=10;
 
-//Numero maximo de jugadores por cada habitacion
-int zeng_online_current_max_players=20;
 
 int zeng_online_enabled=0;
 
 //Estructura de una habitacion de zeng online
 struct zeng_online_room {
     int created;
+    int max_players;
+    int current_players;
     char name[ZENG_ONLINE_MAX_ROOM_NAME+1]; //+1 para el 0 del final
+    char password[ZENG_ROOM_PASSWORD_LENGTH+1]; //+1 para el 0 del final. un password simple, para tener un minimo de seguridad
+    //que no se pueden lanzar acciones sobre una habitacion sino se ha unido a dicha habitacion
     z80_byte *snapshot_memory; //Donde esta asignado el snapshot
 };
 
@@ -94,6 +112,8 @@ void init_zeng_online_rooms(void)
 
     for (i=0;i<ZENG_ONLINE_MAX_ROOMS;i++) {
         zeng_online_rooms_list[i].created=0;
+        zeng_online_rooms_list[i].max_players=ZENG_ONLINE_MAX_PLAYERS_PER_ROOM;
+        zeng_online_rooms_list[i].current_players=0;
         strcpy(zeng_online_rooms_list[i].name,"<free>                        ");
         zeng_online_rooms_list[i].snapshot_memory=NULL;
     }
@@ -117,6 +137,52 @@ void disable_zeng_online(void)
 {
     zeng_online_enabled=0;
     //TODO: acciones adicionales al desactivarlo
+}
+
+void zeng_set_room_name(int room,char *room_name)
+{
+    //primero rellenar con espacios, asi queda siempre alineado
+    int i;
+
+    for (i=0;i<ZENG_ONLINE_MAX_ROOM_NAME;i++) {
+        zeng_online_rooms_list[room].name[i]=' ';
+    }
+
+    //Y el 0 del final
+    zeng_online_rooms_list[room].name[i]=0;
+
+    //Y ahora el nombre, excluyendo el 0 del final, y filtrando caracteres raros
+    for (i=0;room_name[i] && i<ZENG_ONLINE_MAX_ROOM_NAME;i++) {
+        z80_byte caracter=room_name[i];
+        if (caracter<32 || caracter>126) caracter='?';
+
+        zeng_online_rooms_list[room].name[i]=caracter;
+    }
+
+}
+
+void zeng_online_create_room(int misocket,int room_number,char *room_name)
+{
+    //comprobaciones
+    if (room_number<0 || room_number>=zeng_online_current_max_rooms) {
+        escribir_socket_format(misocket,"ERROR. Room number beyond limit");
+        return;
+    }
+
+    //Ver si esta libre
+    if (zeng_online_rooms_list[room_number].created) {
+        escribir_socket_format(misocket,"ERROR. Room is already created");
+        return;
+    }
+
+    zeng_set_room_name(room_number,room_name);
+
+    zeng_online_rooms_list[room_number].max_players=ZENG_ONLINE_MAX_PLAYERS_PER_ROOM;
+    zeng_online_rooms_list[room_number].current_players=0;
+    zeng_online_rooms_list[room_number].snapshot_memory=NULL;
+
+    zeng_online_rooms_list[room_number].created=1;
+
 }
 
 void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv)
@@ -159,15 +225,33 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
 
         int i;
 
-        escribir_socket(misocket,"N.  Name                           Created\n");
+        escribir_socket(misocket,"N.  Name                           Created Players Max\n");
 
         for (i=0;i<zeng_online_current_max_rooms;i++) {
-            escribir_socket_format(misocket,"%3d %s %d\n",
+            escribir_socket_format(misocket,"%3d %s %d     %3d       %3d\n",
                 i,
                 zeng_online_rooms_list[i].name,
-                zeng_online_rooms_list[i].created
+                zeng_online_rooms_list[i].created,
+                zeng_online_rooms_list[i].current_players,
+                zeng_online_rooms_list[i].max_players
             );
         }
+    }
+
+    //create-room, cuando se crea desde menu, debe comprobar que no se retorna mensaje de ERROR, y/o mostrar el error al usuario
+    else if (!strcmp(comando_argv[0],"create-room")) {
+        if (!zeng_online_enabled) {
+            escribir_socket(misocket,"ERROR. ZENG Online is not enabled");
+            return;
+        }
+
+        if (comando_argc<2) {
+            escribir_socket(misocket,"ERROR. Needs two parameters");
+            return;
+        }
+
+        int room_number=parse_string_to_number(comando_argv[1]);
+        zeng_online_create_room(misocket,room_number,comando_argv[2]);
     }
 
     else {

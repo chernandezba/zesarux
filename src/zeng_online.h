@@ -28,7 +28,12 @@
 #define ZENG_ONLINE_MAX_ROOM_NAME 30
 
 //Maximo total de habitaciones que se pueden crear. Valor hardcoded, no se puede fijar mas que este limite (pero si marcar un limite inferior)
-#define ZENG_ONLINE_MAX_ROOMS 30
+#define ZENG_ONLINE_MAX_ROOMS 40
+
+//Maximo total de jugadores permitidos en una habitacion. Valor hardcoded, no se puede ir mas alla pero si menos
+#define ZENG_ONLINE_MAX_PLAYERS_PER_ROOM 100
+
+#define ZENG_ROOM_PASSWORD_LENGTH 10
 
 
 extern void init_zeng_online_rooms(void);

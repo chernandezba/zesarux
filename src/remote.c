@@ -69,6 +69,7 @@
 #include "snap_zsf.h"
 #include "autoselectoptions.h"
 #include "zeng.h"
+#include "zeng_online.h"
 #include "ql_qdos_handler.h"
 #include "tape.h"
 #include "snap_ram.h"
@@ -906,6 +907,7 @@ struct s_items_ayuda items_ayuda[]={
 
 
   {"zeng-online","|zo","command parameter","Related ZENG Online actions. Command can be:\n"
+    "create-room n name  Creates a room. It must be in non-created state\n"
     "disable             Disables ZENG Online\n"
 	"enable              Enables ZENG Online\n"
     "is-enabled          Returns enabled status\n"
