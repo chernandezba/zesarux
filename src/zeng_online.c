@@ -33,7 +33,8 @@ Mientras se copia se incrementa un contador atómico, de tal manera que si hay d
 contador será 2 por ejemplo
 
 -cuando un máster envía un slave, primero se envía a una memoria temporal. Y luego se enviará a la memoria de snapshot ,
-antes esperando a que el contador atómico esté a 0
+antes esperando a que el contador atómico esté a 0. problema: puede estar a 0 pero cuando se vaya a enviar el nuevo snapshot,
+puede entrar lectura de snapshot desde slave. como solventarlo?
 
 
 Rooms:
