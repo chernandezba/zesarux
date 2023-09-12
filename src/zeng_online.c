@@ -320,7 +320,7 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
         escribir_socket_format(misocket,"%s",zeng_online_rooms_list[room_number].user_password);
     }
 
-    //et-max-players user_pass n m  Define max-players (m) for room (n). Requires user_pass of that room\n"
+    //set-max-players user_pass n m  Define max-players (m) for room (n). Requires user_pass of that room\n"
     else if (!strcmp(comando_argv[0],"set-max-players")) {
         if (!zeng_online_enabled) {
             escribir_socket(misocket,"ERROR. ZENG Online is not enabled");
@@ -362,13 +362,54 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
 
     }
 
+
+
+    //join n. Aunque el master requiere join tambien, no necesita el user_password que le retorna, pero debe leerlo
+    //para quitar esa respuesta del socket
+    else if (!strcmp(comando_argv[0],"join")) {
+        if (!zeng_online_enabled) {
+            escribir_socket(misocket,"ERROR. ZENG Online is not enabled");
+            return;
+        }
+
+        if (comando_argc<1) {
+            escribir_socket(misocket,"ERROR. Needs one parameter");
+            return;
+        }
+
+        int room_number=parse_string_to_number(comando_argv[1]);
+
+        if (room_number<0 || room_number>=zeng_online_current_max_rooms) {
+            escribir_socket_format(misocket,"ERROR. Room number beyond limit");
+            return;
+        }
+
+        if (!zeng_online_rooms_list[room_number].created) {
+            escribir_socket(misocket,"ERROR. Room is not created");
+            return;
+        }
+
+        if (zeng_online_rooms_list[room_number].current_players >= zeng_online_rooms_list[room_number].max_players) {
+            escribir_socket(misocket,"ERROR. Maximum players in that room reached");
+            return;
+        }
+
+        //TODO: seguro que hay que hacer mas cosas en el join...
+        zeng_online_rooms_list[room_number].current_players++;
+
+        //Y retornamos el user_password
+        escribir_socket(misocket,zeng_online_rooms_list[room_number].user_password);
+
+    }
+
     //TODO comandos
-    //set-max-players: para una room concreta, requiere que este creada, y requiere creator_password. TODO: esto solo lo deberia poder hacer
-    //  quien ha creado la room. como? quiza al crear la room se retorna un password de admin, y el password de join es un password no admin
-    //  por tanto habria que tener dos passwords
-    //join: para una room concreta, requiere que este creada, y retorna user_password
+    //
+    //delete-room: para una room concreta, requiere creator_password.
     //leave: para una room concreta, requiere que este creada, requiere user_password. hay que asegurarse que el leave
     //       es de esta conexion, y no de una nueva. como controlar eso??? el leave decrementara el numero de jugadores conectados, logicamente
+    //put-snapshot: para una room concreta, requiere creator_password.
+    //get-snapshot: para una room concreta, requiere user_password.
+    //send-keys-event: para una room concreta, requiere user_password.
 
     else {
         escribir_socket(misocket,"ERROR. Invalid command for zeng-online");
