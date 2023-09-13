@@ -53,6 +53,12 @@ El slave hace:
 -unirse a una habitacion que se selecione
 -y en bucle: enviar eventos, obtener snapshots
 
+
+TODO: cada nueva conexión a ZRCP ocupa 32MB, según este código en remote.c:
+char *buffer_lectura_socket=malloc(MAX_LENGTH_PROTOCOL_COMMAND);
+
+32 MB son muchos MB para cada conexión... con 100 conexiones nos comemos 3 GB. Como solventar esto?
+
 */
 
 #include <stdio.h>
