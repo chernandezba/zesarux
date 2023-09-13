@@ -1407,7 +1407,7 @@ void *thread_codetests_getsnap_function(void *nada GCC_UNUSED)
 void codetests_zengonline_putget_snapshot(void)
 {
 
-    printf("Wait 10 seconds..\n");
+    //printf("Wait 10 seconds..\n");
 
 	if (pthread_create( &pthread_zengonline_put_snapshot_thread, NULL, &thread_codetests_putsnap_function, NULL) ) {
 		debug_printf(VERBOSE_ERR,"Can not create pthread_zengonline_put_snapshot_thread");
@@ -1416,7 +1416,7 @@ void codetests_zengonline_putget_snapshot(void)
     //Esperar 1 segundo a que se genere al menos 1 snapshot
     sleep(1);
 
-    //100 leyendo
+    //muchos leyendo
     int i;
     for (i=0;i<100;i++) {
         if (pthread_create( &pthread_zengonline_get_snapshot_thread, NULL, &thread_codetests_getsnap_function, NULL) ) {
@@ -1425,6 +1425,8 @@ void codetests_zengonline_putget_snapshot(void)
         }
 
     }
+
+    printf("Created %d threads reading, 1 writing. Wait 10 seconds...\n",i);
 
     sleep(10);
 }

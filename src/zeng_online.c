@@ -36,8 +36,6 @@ contador será 2 por ejemplo
 antes esperando a que el contador atómico esté a 0. problema: puede estar a 0 pero cuando se vaya a enviar el nuevo snapshot,
 puede entrar lectura de snapshot desde slave. como solventarlo?
 
-Solucion para el snapshot. problema del writer y readers:
-https://www.tutorialspoint.com/readers-writers-problem
 
 
 Rooms:
@@ -130,6 +128,9 @@ struct zeng_online_room {
 struct zeng_online_room zeng_online_rooms_list[ZENG_ONLINE_MAX_ROOMS];
 
 //Obtiene el snapshot de una habitacion y mirando que no haya nadie escribiendo (o sea un put snapshot en curso)
+//Es el problema tipico del readers-writers (aunque en mi caso solo tengo un writer)
+//Quiero que puedan leer muchos simultaneamente, pero que solo pueda escribir cuando no hay nadie leyendo
+//https://www.tutorialspoint.com/readers-writers-problem
 void zengonline_get_snapshot(int room,z80_byte *destino)
 {
     //Adquirir lock mutex
@@ -172,6 +173,9 @@ void zengonline_get_snapshot(int room,z80_byte *destino)
 }
 
 //Lo mueve de una memoria a la memoria del snapshot de esa habitacion
+//Es el problema tipico del readers-writers (aunque en mi caso solo tengo un writer)
+//Quiero que puedan leer muchos simultaneamente, pero que solo pueda escribir cuando no hay nadie leyendo
+//https://www.tutorialspoint.com/readers-writers-problem
 void zengonline_put_snapshot(int room,z80_byte *origen,int longitud)
 {
     z80_byte *destino_snapshot;
