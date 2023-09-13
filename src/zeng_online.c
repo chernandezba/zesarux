@@ -134,7 +134,7 @@ void zengonline_get_snapshot(int room,z80_byte *destino)
 {
     //Adquirir lock mutex
 	while(z_atomic_test_and_set(&zeng_online_rooms_list[room].mutex_reading_snapshot)) {
-		//printf("Esperando a liberar lock en zengonline_put_snapshot\n");
+		//printf("Esperando a liberar lock mutex_reading_snapshot en zengonline_put_snapshot\n");
 	}
 
     //Incrementar contador de cuantos leen
@@ -143,7 +143,7 @@ void zengonline_get_snapshot(int room,z80_byte *destino)
         //Si es el primer lector, bloqueamos escritura
 
     	while(z_atomic_test_and_set(&zeng_online_rooms_list[room].semaphore_writing_snapshot)) {
-		//printf("Esperando a liberar lock en zengonline_get_snapshot\n");
+		    //printf("Esperando a liberar lock semaphore_writing_snapshot en zengonline_get_snapshot\n");
 	    }
     }
 
@@ -154,7 +154,7 @@ void zengonline_get_snapshot(int room,z80_byte *destino)
 
     //Adquirir lock mutex
 	while(z_atomic_test_and_set(&zeng_online_rooms_list[room].mutex_reading_snapshot)) {
-		//printf("Esperando a liberar lock en zengonline_put_snapshot\n");
+	    //printf("Esperando a liberar lock mutex_reading_snapshot en zengonline_put_snapshot\n");
 	}
 
 
@@ -182,7 +182,7 @@ void zengonline_put_snapshot(int room,z80_byte *origen,int longitud)
     //Aqui llega la parte exclusiva, parte del problema de writer-readers
 	//Adquirir lock
 	while(z_atomic_test_and_set(&zeng_online_rooms_list[room].semaphore_writing_snapshot)) {
-		//printf("Esperando a liberar lock en zengonline_put_snapshot\n");
+		//printf("Esperando a liberar lock semaphore_writing_snapshot en zengonline_put_snapshot\n");
 	}
 
 
