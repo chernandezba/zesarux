@@ -47,6 +47,7 @@
 #include "network.h"
 #include "settings.h"
 #include "atomic.h"
+#include "zeng_online.h"
 
 void codetests_repetitions(void)
 {
@@ -1361,16 +1362,16 @@ pthread_t pthread_zengonline_get_snapshot_thread;
 
 void *thread_codetests_putsnap_function(void *nada GCC_UNUSED)
 {
-    printf("Put snap thread\n");
+    //printf("Put snap thread\n");
 
 
 
     while (1) {
-        zengonline_put_snapshot(0,codetest_putsnap_string_mysnap1,strlen(codetest_putsnap_string_mysnap1)+1);
+        zengonline_put_snapshot(0,(z80_byte *)codetest_putsnap_string_mysnap1,strlen(codetest_putsnap_string_mysnap1)+1);
 
-        zengonline_put_snapshot(0,codetest_putsnap_string_mysnap2,strlen(codetest_putsnap_string_mysnap2)+1);
+        zengonline_put_snapshot(0,(z80_byte *)codetest_putsnap_string_mysnap2,strlen(codetest_putsnap_string_mysnap2)+1);
 
-        zengonline_put_snapshot(0,codetest_putsnap_string_mysnap3,strlen(codetest_putsnap_string_mysnap3)+1);
+        zengonline_put_snapshot(0,(z80_byte *)codetest_putsnap_string_mysnap3,strlen(codetest_putsnap_string_mysnap3)+1);
     }
     return NULL;
 }
@@ -1382,7 +1383,7 @@ void *thread_codetests_getsnap_function(void *nada GCC_UNUSED)
     char buffer_get_snap[1024];
 
     while (1) {
-        zengonline_get_snapshot(0,buffer_get_snap);
+        zengonline_get_snapshot(0,(z80_byte *)buffer_get_snap);
         //printf("Desde un lector thread, snapshot leido: %s\n",buffer_get_snap);
 
         //Tiene que coincidir con alguna de las 3 strings
@@ -1405,6 +1406,9 @@ void *thread_codetests_getsnap_function(void *nada GCC_UNUSED)
 
 void codetests_zengonline_putget_snapshot(void)
 {
+
+    printf("Wait 10 seconds..\n");
+
 	if (pthread_create( &pthread_zengonline_put_snapshot_thread, NULL, &thread_codetests_putsnap_function, NULL) ) {
 		debug_printf(VERBOSE_ERR,"Can not create pthread_zengonline_put_snapshot_thread");
 		exit(1);
