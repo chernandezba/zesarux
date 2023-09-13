@@ -6829,6 +6829,76 @@ void menu_debug_hexdump_copy(void)
 
 }
 
+
+void menu_debug_hexdump_rotate(void)
+{
+
+
+    char string_address[10];
+    char string_direction[2];
+
+    sprintf (string_address,"%XH",menu_debug_hexdump_direccion);
+    menu_ventana_scanf("Source?",string_address,10);
+	menu_z80_moto_int source=parse_string_to_number(string_address);
+
+    sprintf (string_direction,"l");
+    menu_ventana_scanf("Direction? (l/r)",string_direction,2);
+
+
+
+    strcpy (string_address,"1");
+    menu_ventana_scanf("Length?",string_address,10);
+	menu_z80_moto_int longitud=parse_string_to_number(string_address);
+
+
+
+	if (menu_confirm_yesno("Rotate bytes")) {
+        int carry=0;
+
+
+        if (string_direction[0]=='r') {
+            for (;longitud>0;source++,longitud--) {
+
+                source=adjust_address_memory_size(source);
+                z80_byte valor=menu_debug_get_mapped_byte(source);
+
+                int newcarry=valor & 1;
+
+                valor/=2;
+                valor |=(carry ? 128 : 0);
+
+                carry=newcarry;
+
+
+                menu_debug_write_mapped_byte(source,valor);
+            }
+
+        }
+
+
+        if (string_direction[0]=='l') {
+            source +=longitud-1;
+            for (;longitud>0;source--,longitud--) {
+
+                source=adjust_address_memory_size(source);
+                z80_byte valor=menu_debug_get_mapped_byte(source);
+
+                int newcarry=valor & 128;
+
+                valor *=2;
+                valor |=(carry ? 1 : 0);
+
+                carry=newcarry;
+
+                menu_debug_write_mapped_byte(source,valor);
+            }
+
+        }
+	}
+
+
+}
+
 void menu_debug_hexdump_aviso_edit_filezone(zxvision_window *w)
 {
     menu_warn_message("Memory zone is File zone. Changes won't be saved to the file");
@@ -7066,7 +7136,7 @@ int menu_debux_hexdump_leyenda(zxvision_window *ventana,int linea)
 			buffer_puntero[0]=0;
 		}
 
-		sprintf (buffer_linea,"%smemptr%s C%sopy",string_atajos,buffer_puntero,string_atajos);
+		sprintf (buffer_linea,"%smemptr%s C%sopy ~~Rotate",string_atajos,buffer_puntero,string_atajos);
 
 
 		//menu_escribe_linea_opcion(linea++,-1,1,buffer_linea);
@@ -7446,6 +7516,14 @@ void menu_debug_hexdump(MENU_ITEM_PARAMETERS)
             case 'o':
                 if (!menu_hexdump_editando_en_zona_ascii)  {
                     menu_debug_hexdump_copy();
+                    //menu_debug_hexdump_ventana();
+                    zxvision_draw_window(ventana);
+                }
+            break;
+
+            case 'r':
+                if (!menu_hexdump_editando_en_zona_ascii)  {
+                    menu_debug_hexdump_rotate();
                     //menu_debug_hexdump_ventana();
                     zxvision_draw_window(ventana);
                 }

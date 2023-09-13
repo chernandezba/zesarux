@@ -6,6 +6,7 @@ Menus can no longer be minimized (that had no sense)
 Added support for ZENG on curses driver
 Allow to save screen to .txt file
 Allow to seng ZENG snapshots more frequently (even every 20 ms)
+Add function to rotate bits on Hex Editor
 
 ----
 
