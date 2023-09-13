@@ -36,6 +36,9 @@ contador será 2 por ejemplo
 antes esperando a que el contador atómico esté a 0. problema: puede estar a 0 pero cuando se vaya a enviar el nuevo snapshot,
 puede entrar lectura de snapshot desde slave. como solventarlo?
 
+Solucion para el snapshot. problema del writer y readers:
+https://www.tutorialspoint.com/readers-writers-problem
+
 
 Rooms:
 Al crear una habitacion, se genera un password que es el que debe usarse siempre para hacer acciones sobre esa habitacion, como:
@@ -115,14 +118,85 @@ struct zeng_online_room {
     z80_byte *snapshot_memory; //Donde esta asignado el snapshot
     int snapshot_size;
 
-    //Es un contador atomico, mas que un semaforo realmente. Indica cuantas personas en esa room estan usando un snapshot
-    z_atomic_semaphore reading_snapshot;
+    z_atomic_semaphore mutex_reading_snapshot;
+    int reading_snapshot_count;
+
+    z_atomic_semaphore semaphore_writing_snapshot;
 
 
 };
 
 //Array de habitaciones en zeng online
 struct zeng_online_room zeng_online_rooms_list[ZENG_ONLINE_MAX_ROOMS];
+
+//Obtiene el snapshot de una habitacion y mirando que no haya nadie escribiendo (o sea un put snapshot en curso)
+void zengonline_get_snapshot(int room,z80_byte *destino)
+{
+    //Adquirir lock mutex
+	while(z_atomic_test_and_set(&zeng_online_rooms_list[room].mutex_reading_snapshot)) {
+		//printf("Esperando a liberar lock en zengonline_put_snapshot\n");
+	}
+
+    //Incrementar contador de cuantos leen
+    zeng_online_rooms_list[room].reading_snapshot_count++;
+    if (zeng_online_rooms_list[room].reading_snapshot_count==1) {
+        //Si es el primer lector, bloqueamos escritura
+
+    	while(z_atomic_test_and_set(&zeng_online_rooms_list[room].semaphore_writing_snapshot)) {
+		//printf("Esperando a liberar lock en zengonline_get_snapshot\n");
+	    }
+    }
+
+    //Liberar lock mutex
+	z_atomic_reset(&zeng_online_rooms_list[room].mutex_reading_snapshot);
+
+    memcpy(destino,zeng_online_rooms_list[room].snapshot_memory,zeng_online_rooms_list[room].snapshot_size);
+
+    //Adquirir lock mutex
+	while(z_atomic_test_and_set(&zeng_online_rooms_list[room].mutex_reading_snapshot)) {
+		//printf("Esperando a liberar lock en zengonline_put_snapshot\n");
+	}
+
+
+    zeng_online_rooms_list[room].reading_snapshot_count--;
+    //Si somos el ultimo lector, liberar bloqueo escritura
+
+    if (zeng_online_rooms_list[room].reading_snapshot_count==0) {
+        z_atomic_reset(&zeng_online_rooms_list[room].semaphore_writing_snapshot);
+    }
+
+    //Liberar lock mutex
+    z_atomic_reset(&zeng_online_rooms_list[room].mutex_reading_snapshot);
+
+
+}
+
+//Lo mueve de una memoria a la memoria del snapshot de esa habitacion
+void zengonline_put_snapshot(int room,z80_byte *origen,int longitud)
+{
+    z80_byte *destino_snapshot;
+    destino_snapshot=util_malloc(longitud,"Can not allocate memory for new snapshot");
+
+    memcpy(destino_snapshot,origen,longitud);
+
+    //Aqui llega la parte exclusiva, parte del problema de writer-readers
+	//Adquirir lock
+	while(z_atomic_test_and_set(&zeng_online_rooms_list[room].semaphore_writing_snapshot)) {
+		//printf("Esperando a liberar lock en zengonline_put_snapshot\n");
+	}
+
+
+    //Aqui cambiamos el snapshot de la habitacion por ese otro
+    if (zeng_online_rooms_list[room].snapshot_memory!=NULL) free(zeng_online_rooms_list[room].snapshot_memory);
+
+    zeng_online_rooms_list[room].snapshot_memory=destino_snapshot;
+    zeng_online_rooms_list[room].snapshot_size=longitud;
+
+
+	//Liberar lock
+	z_atomic_reset(&zeng_online_rooms_list[room].semaphore_writing_snapshot);
+
+}
 
 void init_zeng_online_rooms(void)
 {
@@ -138,8 +212,10 @@ void init_zeng_online_rooms(void)
         strcpy(zeng_online_rooms_list[i].name,"<free>                        ");
         zeng_online_rooms_list[i].snapshot_memory=NULL;
         zeng_online_rooms_list[i].snapshot_size=0;
+        zeng_online_rooms_list[i].reading_snapshot_count=0;
 
-        z_atomic_reset(&zeng_online_rooms_list[i].reading_snapshot);
+        z_atomic_reset(&zeng_online_rooms_list[i].mutex_reading_snapshot);
+        z_atomic_reset(&zeng_online_rooms_list[i].semaphore_writing_snapshot);
 
 
     }
