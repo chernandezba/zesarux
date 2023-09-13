@@ -1377,13 +1377,13 @@ void *thread_codetests_putsnap_function(void *nada GCC_UNUSED)
 
 void *thread_codetests_getsnap_function(void *nada GCC_UNUSED)
 {
-    printf("Get snap thread\n");
+    //printf("Get snap thread\n");
 
     char buffer_get_snap[1024];
 
     while (1) {
         zengonline_get_snapshot(0,buffer_get_snap);
-        printf("Desde un lector thread, snapshot leido: %s\n",buffer_get_snap);
+        //printf("Desde un lector thread, snapshot leido: %s\n",buffer_get_snap);
 
         //Tiene que coincidir con alguna de las 3 strings
         if (
@@ -1395,7 +1395,8 @@ void *thread_codetests_getsnap_function(void *nada GCC_UNUSED)
             //coincide
         }
         else {
-            printf("Snapshot no es el esperado. Error!\n");
+            printf("Snapshot no es el esperado, leido (entre corchetes): [%s]\n",buffer_get_snap);
+            printf("Error!\n");
             exit(1);
         }
     }
@@ -1408,22 +1409,18 @@ void codetests_zengonline_putget_snapshot(void)
 		debug_printf(VERBOSE_ERR,"Can not create pthread_zengonline_put_snapshot_thread");
 		exit(1);
 	}
+    //Esperar 1 segundo a que se genere al menos 1 snapshot
+    sleep(1);
 
-    //3 leyendo
-	if (pthread_create( &pthread_zengonline_get_snapshot_thread, NULL, &thread_codetests_getsnap_function, NULL) ) {
-		debug_printf(VERBOSE_ERR,"Can not create pthread_zengonline_put_snapshot_thread");
-		exit(1);
-	}
+    //100 leyendo
+    int i;
+    for (i=0;i<100;i++) {
+        if (pthread_create( &pthread_zengonline_get_snapshot_thread, NULL, &thread_codetests_getsnap_function, NULL) ) {
+            debug_printf(VERBOSE_ERR,"Can not create pthread_zengonline_put_snapshot_thread");
+            exit(1);
+        }
 
-	if (pthread_create( &pthread_zengonline_get_snapshot_thread, NULL, &thread_codetests_getsnap_function, NULL) ) {
-		debug_printf(VERBOSE_ERR,"Can not create pthread_zengonline_put_snapshot_thread");
-		exit(1);
-	}
-
-	if (pthread_create( &pthread_zengonline_get_snapshot_thread, NULL, &thread_codetests_getsnap_function, NULL) ) {
-		debug_printf(VERBOSE_ERR,"Can not create pthread_zengonline_put_snapshot_thread");
-		exit(1);
-	}
+    }
 
     sleep(10);
 }
