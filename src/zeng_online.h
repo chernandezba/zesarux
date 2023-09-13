@@ -39,4 +39,7 @@
 extern void init_zeng_online_rooms(void);
 extern void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv);
 
+extern void zengonline_get_snapshot(int room,z80_byte *destino);
+extern void zengonline_put_snapshot(int room,z80_byte *origen,int longitud);
+
 #endif

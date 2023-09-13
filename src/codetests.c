@@ -1352,6 +1352,82 @@ void codetests_atomic(void)
 }
 
 
+pthread_t pthread_zengonline_put_snapshot_thread;
+pthread_t pthread_zengonline_get_snapshot_thread;
+
+    char  *codetest_putsnap_string_mysnap1="Hola que tal";
+    char  *codetest_putsnap_string_mysnap2="Yo muy bien";
+    char  *codetest_putsnap_string_mysnap3="Y tu como vas";
+
+void *thread_codetests_putsnap_function(void *nada GCC_UNUSED)
+{
+    printf("Put snap thread\n");
+
+
+
+    while (1) {
+        zengonline_put_snapshot(0,codetest_putsnap_string_mysnap1,strlen(codetest_putsnap_string_mysnap1)+1);
+
+        zengonline_put_snapshot(0,codetest_putsnap_string_mysnap2,strlen(codetest_putsnap_string_mysnap2)+1);
+
+        zengonline_put_snapshot(0,codetest_putsnap_string_mysnap3,strlen(codetest_putsnap_string_mysnap3)+1);
+    }
+    return NULL;
+}
+
+void *thread_codetests_getsnap_function(void *nada GCC_UNUSED)
+{
+    printf("Get snap thread\n");
+
+    char buffer_get_snap[1024];
+
+    while (1) {
+        zengonline_get_snapshot(0,buffer_get_snap);
+        printf("Desde un lector thread, snapshot leido: %s\n",buffer_get_snap);
+
+        //Tiene que coincidir con alguna de las 3 strings
+        if (
+            !strcmp(buffer_get_snap,codetest_putsnap_string_mysnap1) ||
+            !strcmp(buffer_get_snap,codetest_putsnap_string_mysnap2) ||
+            !strcmp(buffer_get_snap,codetest_putsnap_string_mysnap3)
+        )
+        {
+            //coincide
+        }
+        else {
+            printf("Snapshot no es el esperado. Error!\n");
+            exit(1);
+        }
+    }
+    return NULL;
+}
+
+void codetests_zengonline_putget_snapshot(void)
+{
+	if (pthread_create( &pthread_zengonline_put_snapshot_thread, NULL, &thread_codetests_putsnap_function, NULL) ) {
+		debug_printf(VERBOSE_ERR,"Can not create pthread_zengonline_put_snapshot_thread");
+		exit(1);
+	}
+
+    //3 leyendo
+	if (pthread_create( &pthread_zengonline_get_snapshot_thread, NULL, &thread_codetests_getsnap_function, NULL) ) {
+		debug_printf(VERBOSE_ERR,"Can not create pthread_zengonline_put_snapshot_thread");
+		exit(1);
+	}
+
+	if (pthread_create( &pthread_zengonline_get_snapshot_thread, NULL, &thread_codetests_getsnap_function, NULL) ) {
+		debug_printf(VERBOSE_ERR,"Can not create pthread_zengonline_put_snapshot_thread");
+		exit(1);
+	}
+
+	if (pthread_create( &pthread_zengonline_get_snapshot_thread, NULL, &thread_codetests_getsnap_function, NULL) ) {
+		debug_printf(VERBOSE_ERR,"Can not create pthread_zengonline_put_snapshot_thread");
+		exit(1);
+	}
+
+    sleep(10);
+}
+
 void *thread_codetests_network_function(void *nada GCC_UNUSED)
 {
 	while (1) {
@@ -2150,6 +2226,9 @@ void codetests_main(int main_argc,char *main_argv[])
 
     printf("\nRunning ay playlist codetests\n");
     codetests_ay_playlist();
+
+    printf("\nRunning zeng online put-get snapshot tests\n");
+    codetests_zengonline_putget_snapshot();
 
     //temporal crear dsk
     //dsk_create("/tmp/maspruebas.dsk",40,1,9,512);
