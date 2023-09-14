@@ -486,4 +486,25 @@ Alternativa: que funcione bien envio de eventos de master a slaves, y de slaves 
 de que un slave enviaria su evento, y luego al leerlo le llegaria ese mismo, con lo que se aplicaria dos veces... aunque no es un gran problema,
 pero es un gasto de ancho de banda....
 
+
+-Quitar bloqueos de comandos simultáneos ZRCP cuando son Zeng online
+
+Activar bloqueo de un semáforo al crear una habitación , para evitar crear la misma desde dos sitios. O el semaforo es tal cual la variable que dice que esta creado. lanzar un z_atomic_test_and_set, si devuelve 1 , es que estaba creada ya antes
+
+
+Envío y lectura de eventos.
+-array circular
+
+Envío de eventos
+Se envía al array de la room, se agrega al array y si llega al final va al principio
+
+Lectura de eventos
+-cliente lee continuamente (tanto máster como slave)
+-el server en la conexión ZRCP en pausa de 20ms. Si hay eventos en el array (posicion lectura no es igual a la de escritura), enviarlos todos. Y volver a dormir 20ms
+
+De esta manera una instancia recibirá un evento propio que haya enviado, aunque no tiene porque ser un problema. O si? Porque recibirá una Tecla / liberación de Tecla suya con retraso. Pero como viene en orden puede ser un problema?
+Quizá se puede enviar con un id único de cliente y al leer evento diga de que cliente es. Y si es el suyo mismo, pues ignorarlo. Como asignar ese id? Pues cuando se una a la habitación, se le da un id y es el que tiene que usar al enviar eventos
+El id también podría ser el uuid que todos ZEsarUX tienen, en teoría únicos. Así no hay que obtenerlo del servidor
+Ese uuid siempre está? Aunque no se guarde configuración y/o no se envíen estadísticas? Pues debería estar siempre. Si no se guarda en config, que se genere de nuevo cada vez
+
 ---Fin Mejoras---
