@@ -43,7 +43,7 @@
 #endif
 
 
-
+//Se utiliza en estadisticas pero tambien en envio de eventos para zeng online
 char stats_uuid[128]="";
 
 z80_bit stats_enabled={0};
@@ -68,7 +68,7 @@ int stats_frames_total_dropped=0;
 
 void generate_stats_uuid(void)
 {
-
+    //printf("Initial uuid: %s\n",stats_uuid);
 	//Hay un id anterior. conservarlo
 	if (stats_uuid[0]!=0) {
 		debug_printf (VERBOSE_DEBUG,"Found previous uuid. Preserve it");
@@ -95,7 +95,7 @@ void generate_stats_uuid(void)
 void stats_enable(void)
 {
 	stats_enabled.v=1;
-	generate_stats_uuid();
+	//generate_stats_uuid();
 }
 
 void stats_disable(void)

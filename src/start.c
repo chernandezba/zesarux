@@ -7275,6 +7275,7 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
 	init_remote_protocol();
 
 
+    generate_stats_uuid();
 
 	//Funciones de red en background
 	stats_check_updates();
