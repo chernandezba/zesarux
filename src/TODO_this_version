@@ -476,4 +476,14 @@ esa manera si que se podría aumentar el límite sin perjudicar dichas operacion
 
 -zeng-online se llamara la variante que usa servidor para juego en red
 
+-problema con zeng-online y envio de eventos:
+*del master a los slaves hay que enviar eventos, si no enviasemos eventos, si el tiempo de snapshot es algo lento (por ejemplo medio minuto)
+veremos cosas como que jugando al chase hq, el coche acelera y decelera continuamente
+Quiza para solventar eso se podria enviar un snapshot que contenga el valor de los puertos de teclado y/o joystick kempston
+problema: que habria que implementar eso de los puertos en todas las maquinas que se quiera snapshot...
+Igualmente los slaves tienen que poder seguir enviando eventos
+Alternativa: que funcione bien envio de eventos de master a slaves, y de slaves al master. pero eso llevaria el problema
+de que un slave enviaria su evento, y luego al leerlo le llegaria ese mismo, con lo que se aplicaria dos veces... aunque no es un gran problema,
+pero es un gasto de ancho de banda....
+
 ---Fin Mejoras---
