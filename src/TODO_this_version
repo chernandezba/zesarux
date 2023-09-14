@@ -507,4 +507,6 @@ Quizá se puede enviar con un id único de cliente y al leer evento diga de que 
 El id también podría ser el uuid que todos ZEsarUX tienen, en teoría únicos. Así no hay que obtenerlo del servidor
 Ese uuid siempre está? Aunque no se guarde configuración y/o no se envíen estadísticas? Pues debería estar siempre. Si no se guarda en config, que se genere de nuevo cada vez
 
+-menus en Beos se ven con un hueco en la barra de titulo donde estaria el boton de minimizar
+
 ---Fin Mejoras---

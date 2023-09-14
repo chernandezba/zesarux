@@ -7,7 +7,7 @@ Added support for ZENG on curses driver
 Allow to save screen to .txt file
 Allow to seng ZENG snapshots more frequently (even every 20 ms)
 Add function to shift bits on Hex Editor
-
+ZX Vision: improve window title background when not all buttons are visible
 ----
 
 

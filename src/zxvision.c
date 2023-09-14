@@ -9059,21 +9059,23 @@ void menu_dibuja_ventana_botones(void)
 
                     //Maximizar
                     z80_byte caracter_maximizar=menu_retorna_caracter_maximizar(zxvision_current_window);
-                    if (menu_hide_maximize_button.v) caracter_maximizar=' ';
+                    if (menu_hide_maximize_button.v) caracter_maximizar=menu_retorna_caracter_espacio_titulo();
 					putchar_menu_overlay(x+zxvision_return_maximize_button_position(ancho),y,caracter_maximizar,ESTILO_GUI_TINTA_TITULO,ESTILO_GUI_PAPEL_TITULO);
 
 				}
 
-				if (ventana_activa_puede_minimizar) {
+				//if (ventana_activa_puede_minimizar) {
                     //Minimizar
 					z80_byte caracter_minimizar=menu_retorna_caracter_minimizar(zxvision_current_window);
-					if (menu_hide_minimize_button.v) caracter_minimizar=' ';
+					if (menu_hide_minimize_button.v || !ventana_activa_puede_minimizar) caracter_minimizar=menu_retorna_caracter_espacio_titulo();
 					//Si no mostrar, meter solo espacio. es importante esto, si no hay boton, y no escribieramos espacio,
 					//se veria el texto de titulo en caso de que ancho de ventana la hagamos pequeña
+                    //Tambien, necesario en Beos, porque si no, las ventanas (y menu) que no permiten minimizar, tendrian
+                    //un hueco entre el titulo y el boton de maximizar de la derecha
 
 					putchar_menu_overlay(x+zxvision_return_minimize_button_position(ancho),y,caracter_minimizar,ESTILO_GUI_TINTA_TITULO,ESTILO_GUI_PAPEL_TITULO);
 
-				}
+				//}
 
 			}
 
@@ -9229,7 +9231,7 @@ void menu_dibuja_ventana(int x,int y,int ancho,int alto,char *titulo_original)
 		if (menu_hide_close_button.v || ventana_es_background || !ventana_tipo_activa) {
             //strcpy(titulo_mostrar,titulo);
             //Ancho del titulo sera igual, aun sin el boton de cerrar
-            sprintf (titulo_mostrar," %c%s",caracter_espacio_titulo,titulo);
+            sprintf (titulo_mostrar,"%c%c%s",caracter_espacio_titulo,caracter_espacio_titulo,titulo);
         }
 		else {
             sprintf (titulo_mostrar,"%c%c%s",caracter_cerrar,caracter_espacio_titulo,titulo);
