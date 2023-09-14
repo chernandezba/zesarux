@@ -6829,34 +6829,36 @@ void menu_debug_hexdump_copy(void)
 
 }
 
+char menu_debug_hexdump_shift_bits_last_address[10]="";
+char menu_debug_hexdump_shift_bits_last_direction[2]="l";
+char menu_debug_hexdump_shift_bits_last_length[10]="1";
 
-void menu_debug_hexdump_rotate(void)
+void menu_debug_hexdump_shift_bits(void)
 {
 
 
-    char string_address[10];
-    char string_direction[2];
+    //char string_address[10];
+    //char string_direction[2];
 
-    sprintf (string_address,"%XH",menu_debug_hexdump_direccion);
-    menu_ventana_scanf("Source?",string_address,10);
-	menu_z80_moto_int source=parse_string_to_number(string_address);
+    if (menu_debug_hexdump_shift_bits_last_address[0]==0) {
+        sprintf (menu_debug_hexdump_shift_bits_last_address,"%XH",menu_debug_hexdump_direccion);
+    }
 
-    sprintf (string_direction,"l");
-    menu_ventana_scanf("Direction? (l/r)",string_direction,2);
+    if (menu_ventana_scanf("Start address?",menu_debug_hexdump_shift_bits_last_address,10)==-1) return;
+	menu_z80_moto_int source=parse_string_to_number(menu_debug_hexdump_shift_bits_last_address);
 
+    if (menu_ventana_scanf("Direction? (l/r)",menu_debug_hexdump_shift_bits_last_direction,2)==-1) return;
 
-
-    strcpy (string_address,"1");
-    menu_ventana_scanf("Length?",string_address,10);
-	menu_z80_moto_int longitud=parse_string_to_number(string_address);
-
+    if (menu_ventana_scanf("Length bytes?",menu_debug_hexdump_shift_bits_last_length,10)==-1) return;
+	menu_z80_moto_int longitud=parse_string_to_number(menu_debug_hexdump_shift_bits_last_length);
 
 
-	if (menu_confirm_yesno("Rotate bytes")) {
+
+	if (menu_confirm_yesno("Shift bits")) {
         int carry=0;
 
 
-        if (string_direction[0]=='r') {
+        if (menu_debug_hexdump_shift_bits_last_direction[0]=='r') {
             for (;longitud>0;source++,longitud--) {
 
                 source=adjust_address_memory_size(source);
@@ -6876,7 +6878,7 @@ void menu_debug_hexdump_rotate(void)
         }
 
 
-        if (string_direction[0]=='l') {
+        else if (menu_debug_hexdump_shift_bits_last_direction[0]=='l') {
             source +=longitud-1;
             for (;longitud>0;source--,longitud--) {
 
@@ -6893,6 +6895,10 @@ void menu_debug_hexdump_rotate(void)
                 menu_debug_write_mapped_byte(source,valor);
             }
 
+        }
+
+        else {
+            menu_error_message("Invalid direction. It can only be left (l) or right (r)");
         }
 	}
 
@@ -7136,7 +7142,7 @@ int menu_debux_hexdump_leyenda(zxvision_window *ventana,int linea)
 			buffer_puntero[0]=0;
 		}
 
-		sprintf (buffer_linea,"%smemptr%s C%sopy ~~Rotate",string_atajos,buffer_puntero,string_atajos);
+		sprintf (buffer_linea,"%smemptr%s C%sopy ~~shiftbits",string_atajos,buffer_puntero,string_atajos);
 
 
 		//menu_escribe_linea_opcion(linea++,-1,1,buffer_linea);
@@ -7521,9 +7527,9 @@ void menu_debug_hexdump(MENU_ITEM_PARAMETERS)
                 }
             break;
 
-            case 'r':
+            case 's':
                 if (!menu_hexdump_editando_en_zona_ascii)  {
-                    menu_debug_hexdump_rotate();
+                    menu_debug_hexdump_shift_bits();
                     //menu_debug_hexdump_ventana();
                     zxvision_draw_window(ventana);
                 }

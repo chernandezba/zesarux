@@ -59,7 +59,6 @@ extern int z_atomic_test_and_set(z_atomic_semaphore *s);
 
 extern void z_atomic_reset(z_atomic_semaphore *s);
 
-extern void z_atomic_inc(z_atomic_semaphore *s);
-extern void z_atomic_dec(z_atomic_semaphore *s);
+
 
 #endif

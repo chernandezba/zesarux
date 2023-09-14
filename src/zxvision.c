@@ -22284,7 +22284,8 @@ int menu_confirm_yesno(char *texto_ventana)
 
 
 //max_length contando caracter 0 del final, es decir, para un texto de 4 caracteres, debemos especificar max_length=5
-void menu_ventana_scanf(char *titulo,char *texto,int max_length)
+//Retorna -1 si se ha salido con ESC
+int menu_ventana_scanf(char *titulo,char *texto,int max_length)
 {
 
     //En caso de stdout, es mas simple, mostrar texto y esperar texto
@@ -22299,7 +22300,7 @@ void menu_ventana_scanf(char *titulo,char *texto,int max_length)
 		if (l>max_length-1) {
 			printf ("Too long\n");
 			scrstdout_menu_print_speech_macro("Too long");
-			return;
+			return 0;
 		}
 
 
@@ -22307,7 +22308,7 @@ void menu_ventana_scanf(char *titulo,char *texto,int max_length)
 
 		//scanf("%s",texto);
 
-		return;
+		return 0;
 	}
 
 	//int scanf_x=1;
@@ -22332,7 +22333,7 @@ void menu_ventana_scanf(char *titulo,char *texto,int max_length)
 	zxvision_draw_window(&ventana);
 
 
-	zxvision_scanf(&ventana,texto,max_length,scanf_ancho-2,1,0,0,0);
+	int tecla=zxvision_scanf(&ventana,texto,max_length,scanf_ancho-2,1,0,0,0);
 
 	//menu_scanf(texto,max_length,scanf_ancho-2,scanf_x+1,scanf_y+1);
 	//int menu_scanf(char *string,unsigned int max_length,int max_length_shown,int x,int y)
@@ -22342,6 +22343,9 @@ void menu_ventana_scanf(char *titulo,char *texto,int max_length)
 	menu_cls_refresh_emulated_screen();
 
 	zxvision_destroy_window(&ventana);
+
+    if (tecla==2) return -1;
+    else return 0;
 
 }
 
