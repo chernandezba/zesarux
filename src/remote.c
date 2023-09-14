@@ -913,6 +913,7 @@ struct s_items_ayuda items_ayuda[]={
     "is-enabled                        Returns enabled status\n"
     "join n                            Joins to room n. Returns the user_password\n"
     "list-rooms                        Returns rooms list\n"
+    "put-snapshot creator_pass n data  Put a snapshot on room n, requieres creator_pass for that room. Data must be hexadecimal characters without spaces\n"
     "set-max-players creator_pass n m  Define max-players (m) for room (n). Requires creator_pass of that room\n"
 
 },

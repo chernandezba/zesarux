@@ -83,11 +83,7 @@ char *buffer_lectura_socket=malloc(MAX_LENGTH_PROTOCOL_COMMAND);
 
 
 
-#ifdef USE_PTHREADS
 
-
-
-#endif
 
 //Variables, estructuras,funciones etc que se pueden compilar aun sin soporte de pthreads
 
@@ -225,13 +221,7 @@ void init_zeng_online_rooms(void)
     }
 }
 
-//Funciones que usan pthreads
-#ifdef USE_PTHREADS
 
-#include <pthread.h>
-#include <sys/types.h>
-
-pthread_t xxxxxxx;
 
 void enable_zeng_online(void)
 {
@@ -462,6 +452,73 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
 
     }
 
+    //"put-snapshot creator_pass n data
+    else if (!strcmp(comando_argv[0],"put-snapshot")) {
+        if (!zeng_online_enabled) {
+            escribir_socket(misocket,"ERROR. ZENG Online is not enabled");
+            return;
+        }
+
+        if (comando_argc<3) {
+            escribir_socket(misocket,"ERROR. Needs three parameters");
+            return;
+        }
+
+        int room_number=parse_string_to_number(comando_argv[2]);
+
+        if (room_number<0 || room_number>=zeng_online_current_max_rooms) {
+            escribir_socket_format(misocket,"ERROR. Room number beyond limit");
+            return;
+        }
+
+        if (!zeng_online_rooms_list[room_number].created) {
+            escribir_socket(misocket,"ERROR. Room is not created");
+            return;
+        }
+
+        //validar user_pass. comando_argv[1]
+        if (strcmp(comando_argv[1],zeng_online_rooms_list[room_number].creator_password)) {
+            escribir_socket(misocket,"ERROR. Invalid creator password for that room");
+            return;
+        }
+
+        //longitud del snapshot es la longitud del parametro snapshot /2 (porque viene en hexa)
+        int longitud_snapshot=strlen(comando_argv[3]);
+
+			char *s=comando_argv[3];
+			int parametros_recibidos=0;
+
+			z80_byte *buffer_destino;
+			buffer_destino=malloc(longitud_snapshot);
+			if (buffer_destino==NULL) cpu_panic("Can not allocate memory for put-snapshot");
+
+            z80_byte valor;
+
+
+			while (*s) {
+				char buffer_valor[4];
+				buffer_valor[0]=s[0];
+				buffer_valor[1]=s[1];
+				buffer_valor[2]='H';
+				buffer_valor[3]=0;
+				//printf ("%s\n",buffer_valor);
+                //TODO: quiza este parse como es continuo se puede acelerar de alguna manera
+				valor=parse_string_to_number(buffer_valor);
+				//printf ("valor: %d\n",valor);
+
+				buffer_destino[parametros_recibidos++]=valor;
+				//menu_debug_write_mapped_byte(direccion++,valor);
+
+				s++;
+				if (*s) s++;
+			}
+
+			zengonline_put_snapshot(room_number,buffer_destino,longitud_snapshot);
+
+            free(buffer_destino);
+
+
+    }
 
 
     //join n. Aunque el master requiere join tambien, no necesita el user_password que le retorna, pero debe leerlo
@@ -518,14 +575,3 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
 }
 
 
-#else
-
-//Funciones sin pthreads. ZENG_ONLINE no se llama nunca cuando no hay pthreads, pero hay que crear estas funciones vacias
-//para evitar errores de compilacion cuando no hay pthreads
-
-void zeng_online_xxxxx(void)
-{
-}
-
-
-#endif
