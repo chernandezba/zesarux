@@ -362,6 +362,12 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
         return;
     }
 
+    //Este comando_argc indicara los parametros del comando zengonline XXX, o sea,
+    //zengonline enable : parametros 0
+    //zengonline join 0: parametros 1
+    comando_argc--;
+    //printf("Parametros zeng online comando: %d\n",comando_argc);
+
     if (!strcmp(comando_argv[0],"is-enabled")) {
         escribir_socket_format(misocket,"%d",zeng_online_enabled);
     }
