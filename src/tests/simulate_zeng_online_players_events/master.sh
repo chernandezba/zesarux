@@ -13,7 +13,7 @@ echo "Joining room"
 USER_PASS=`( sleep 1 ; echo "zo join 0" ; sleep 1 )|telnet $REMOTESERVER 10000|grep "command>"|head -1|awk '{printf $2}'`
 echo "User pass: $USER_PASS"
 
-TECLA=32
+TECLA=1
 while true; do
 	echo "Putting event"
 	( sleep 1 ; echo "zo send-keys $USER_PASS 0 CUALQUIERUUID $TECLA 1 0" ; sleep 1 )|telnet $REMOTESERVER 10000
