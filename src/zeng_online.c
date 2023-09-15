@@ -527,6 +527,66 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
 
     }
 
+    //get-keys user_pass n
+    else if (!strcmp(comando_argv[0],"get-keys")) {
+        if (!zeng_online_enabled) {
+            escribir_socket(misocket,"ERROR. ZENG Online is not enabled");
+            return;
+        }
+
+        if (comando_argc<2) {
+            escribir_socket(misocket,"ERROR. Needs two parameters");
+            return;
+        }
+
+        int room_number=parse_string_to_number(comando_argv[2]);
+
+        if (room_number<0 || room_number>=zeng_online_current_max_rooms) {
+            escribir_socket_format(misocket,"ERROR. Room number beyond limit");
+            return;
+        }
+
+        if (!zeng_online_rooms_list[room_number].created) {
+            escribir_socket(misocket,"ERROR. Room is not created");
+            return;
+        }
+
+        //validar user_pass. comando_argv[1]
+        if (strcmp(comando_argv[1],zeng_online_rooms_list[room_number].user_password)) {
+            escribir_socket(misocket,"ERROR. Invalid user password for that room");
+            return;
+        }
+
+        //Siempre empiezo desde la posicion actual del buffer
+        int indice_lectura=zeng_online_rooms_list[room_number].index_event;
+
+        //TODO: ver posible manera de salir de aqui??
+        while (1) {
+            if (zeng_online_rooms_list[room_number].index_event==indice_lectura) {
+                //Esperar algo. 10 ms, suficiente porque es un mitad de frame
+                usleep(10000); //dormir 10 ms
+            }
+            else {
+                //Retornar evento de la lista
+                //Returned format is: uuid key event nomenu"
+                escribir_socket_format(misocket,"%s %d %d %d\n",
+                    zeng_online_rooms_list[room_number].events[indice_lectura].uuid,
+                    zeng_online_rooms_list[room_number].events[indice_lectura].tecla,
+                    zeng_online_rooms_list[room_number].events[indice_lectura].pressrelease,
+                    zeng_online_rooms_list[room_number].events[indice_lectura].nomenu
+                );
+
+                indice_lectura++;
+                if (indice_lectura>=ZENG_ONLINE_MAX_EVENTS) {
+                    indice_lectura=0;
+                }
+
+            }
+        }
+
+
+    }
+
     //"get-snapshot user_pass n          Get a snapshot from room n, returns ERROR if no snapshot there. Requires user_pass\n"
     else if (!strcmp(comando_argv[0],"get-snapshot")) {
         if (!zeng_online_enabled) {

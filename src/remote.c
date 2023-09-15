@@ -910,6 +910,9 @@ struct s_items_ayuda items_ayuda[]={
     "create-room n name                Creates a room n. It must be in non-created state. Returns the creator_password\n"
     "disable                           Disables ZENG Online\n"
 	"enable                            Enables ZENG Online\n"
+    "get-keys user_pass n              This command returns continuously (never ends) keys from room n, every one separated by NL character.\n"
+    "                                  If there is not any key to get, it will block until one is generated\n"
+    "                                  Returned format is: uuid key event nomenu"
     "get-snapshot user_pass n          Get a snapshot from room n, returns ERROR if no snapshot there. Requires user_pass\n"
     "is-enabled                        Returns enabled status\n"
     "join n                            Joins to room n. Returns the user_password\n"
@@ -6273,10 +6276,13 @@ void *zrcp_handle_new_connection(void *entrada)
                 }
 
                 //Adquirir lock
-                while(z_atomic_test_and_set(&zrcp_command_semaforo)) {
-                //Pausa de 0.05 segundo
-                usleep(50000);
-                    //printf("Esperando a liberar lock en zrcp_handle_new_connection\n");
+                //Pero solo si no esta activado zeng-online, en ese caso se permiten multiples conexiones
+                if (!zeng_online_enabled) {
+                    while(z_atomic_test_and_set(&zrcp_command_semaforo)) {
+                        //Pausa de 0.05 segundo
+                        usleep(50000);
+                        //printf("Esperando a liberar lock en zrcp_handle_new_connection\n");
+                    }
                 }
 
                 interpreta_comando(buffer_lectura_socket,sock_connected_client,
