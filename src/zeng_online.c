@@ -151,7 +151,7 @@ void zengonline_add_event(int room_number,char *uuid,int tecla,int event_type,in
 
     //Obtenemos siguiente indice
     index_event++;
-    if (index_event>=ZENG_ONLINE_MAX_ROOMS) index_event=0;
+    if (index_event>=ZENG_ONLINE_MAX_EVENTS) index_event=0;
 
     zeng_online_rooms_list[room_number].index_event=index_event;
 }
@@ -422,7 +422,7 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
     }
 
     //TODO esto solo es temporal
-    else if (!strcmp(comando_argv[0],"pass-room")) {
+    /*else if (!strcmp(comando_argv[0],"pass-room")) {
         if (!zeng_online_enabled) {
             escribir_socket(misocket,"ERROR. ZENG Online is not enabled");
             return;
@@ -443,6 +443,7 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
 
         escribir_socket_format(misocket,"%s",zeng_online_rooms_list[room_number].user_password);
     }
+    */
 
     //set-max-players user_pass n m  Define max-players (m) for room (n). Requires user_pass of that room\n"
     else if (!strcmp(comando_argv[0],"set-max-players")) {

@@ -36,7 +36,9 @@
 #define ZENG_ROOM_PASSWORD_LENGTH 10
 
 //Maximo de eventos (tecla, joystick) que se mantiene en cola de una habitacion
-#define ZENG_ONLINE_MAX_EVENTS 100
+//TODO: cual es el mejor valor para esto? Consideramos algo multiplicado por ZENG_ONLINE_MAX_PLAYERS_PER_ROOM?
+//Aunque no asumo que todos los usuarios (100??) de una sala vayan a pulsar las teclas a la vez
+#define ZENG_ONLINE_MAX_EVENTS 30
 
 extern void init_zeng_online_rooms(void);
 extern void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv);

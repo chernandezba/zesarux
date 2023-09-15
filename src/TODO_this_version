@@ -515,3 +515,48 @@ y luego dos slaves que fueran los que estuvieran compitiendo
 
 
 ---Fin Mejoras---
+
+
+----ZENG online
+
+Funcionamiento:
+
+- El server ZENG online, se le tiene que hacer un "zengonline enable"
+- Un ZEsarUX, el que hara de master, menu ZENG Online -> Create room, esto lo convierte en master. Se listan las habitaciones
+y tiene que escoger una que este vacia. Esto hace un create-room (nos guardamos el creator_password), y un join-room (nos guardamos user_password)
+- Al ser master, empieza un thread de envio de snapshot, cada x milisegundos
+- Tambien se activa el thread de envio de eventos al pulsar teclas (igual en master que slave)
+
+- Los clientes ZEsarUX, menu ZENG Online -> Join room. Esto nos convierte en slave. Nos guardamos el user_password
+- Al ser slave, empieza un thread de lectura de snapshot, cada x milisegundos
+- Tambien se activa el thread de envio de eventos al pulsar teclas (igual en master que slave)
+
+Toda esta parte cliente de "backend" estara contenida en zeng_online_client.c
+La parte de menus , el "frontend" estara contenida en menu_items_zeng_online.c
+
+
+Se debe crear comando que recibe respuesta hasta prompt o texto ERROR, excepto en el proceso que recibe eventos, pues un get-keys se queda continuamente pillado
+
+Total comandos:
+    "create-room n name                Creates a room n. It must be in non-created state. Returns the creator_password\n"
+    "disable                           Disables ZENG Online\n"
+	"enable                            Enables ZENG Online\n"
+    "get-keys user_pass n              This command returns continuously (never ends) keys from room n, every one separated by NL character.\n"
+    "                                  If there is not any key to get, it will block until one is generated\n"
+    "                                  Returned format is: uuid key event nomenu"
+    "get-snapshot user_pass n          Get a snapshot from room n, returns ERROR if no snapshot there. Requires user_pass\n"
+    "is-enabled                        Returns enabled status\n"
+    "join n                            Joins to room n. Returns the user_password\n"
+    "list-rooms                        Returns rooms list\n"
+    "put-snapshot creator_pass n data  Put a snapshot on room n, requieres creator_pass for that room. Data must be hexadecimal characters without spaces\n"
+    "send-keys user_pass n uuid key event nomenu   Simulates sending key press/release to room n.\n"
+    "                                  uuid is a unique identifier for the client, usually can be the same as Statistics uuid\n"
+    "                                  See file utils.h, enum util_teclas for key values\n"
+    "                                  Event must be 0 for release, or different to 0 for press\n"
+	"                                  nomenu if set to non 0, tells the key is not sent when menu is open\n"
+
+    "set-max-players creator_pass n m  Define max-players (m) for room (n). Requires creator_pass of that room\n"
+
+
+
+---------------
