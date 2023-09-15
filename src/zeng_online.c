@@ -667,6 +667,11 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
         //longitud del snapshot es la longitud del parametro snapshot /2 (porque viene en hexa)
         int longitud_snapshot=strlen(comando_argv[3])/2;
 
+        if (longitud_snapshot<1) {
+            escribir_socket(misocket,"ERROR. Received an empty snapshot");
+            return;
+        }
+
         char *s=comando_argv[3];
         int parametros_recibidos=0;
 
@@ -697,7 +702,7 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
 
         zengonline_put_snapshot(room_number,buffer_destino,longitud_snapshot);
 
-            free(buffer_destino);
+        free(buffer_destino);
 
 
     }
