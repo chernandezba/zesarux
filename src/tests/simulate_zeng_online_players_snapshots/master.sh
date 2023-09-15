@@ -17,8 +17,6 @@ while true; do
 
 	echo "Putting snapshot to remote"
 	( sleep $PAUSA ; echo "zo put-snapshot $CREATOR_PASS 0 $SNAPSHOT_DATA" ; sleep 1 )|telnet $REMOTESERVER 10000
-	#( sleep $PAUSA ; echo "zo put-snapshot $CREATOR_PASS 0" ; sleep 1 )|telnet $REMOTESERVER 10000
-	#( sleep $PAUSA ; echo "zo put-snapshot" ; sleep 1 )|telnet $REMOTESERVER 10000
 done
 
 
