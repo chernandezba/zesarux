@@ -509,4 +509,9 @@ Ese uuid siempre está? Aunque no se guarde configuración y/o no se envíen est
 
 -menus en Beos se ven con un hueco en la barra de titulo donde estaria el boton de minimizar
 
+-para juego en red, el master siempre tiene ventaja, pues el no recibe snapshots y su instancia siempre está sincronizada
+Por tanto, para que no haya desventaja al jugar dos personas, lo ideal es que hubiera un master, que no participase,
+y luego dos slaves que fueran los que estuvieran compitiendo
+
+
 ---Fin Mejoras---

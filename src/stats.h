@@ -38,6 +38,7 @@ extern int stats_get_current_total_minutes_use(void);
 
 #define MAX_UPDATE_VERSION_STRING 1024
 #define MAX_YESTERDAY_USERS_STRING 99
+#define STATS_UUID_MAX_LENGTH 40
 
 extern char stats_last_remote_version[];
 extern z80_bit stats_check_updates_enabled;

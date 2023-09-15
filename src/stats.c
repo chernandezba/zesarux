@@ -44,7 +44,7 @@
 
 
 //Se utiliza en estadisticas pero tambien en envio de eventos para zeng online
-char stats_uuid[128]="";
+char stats_uuid[STATS_UUID_MAX_LENGTH+1]="";
 
 z80_bit stats_enabled={0};
 z80_bit stats_asked={0};

@@ -35,6 +35,8 @@
 
 #define ZENG_ROOM_PASSWORD_LENGTH 10
 
+//Maximo de eventos (tecla, joystick) que se mantiene en cola de una habitacion
+#define ZENG_ONLINE_MAX_EVENTS 100
 
 extern void init_zeng_online_rooms(void);
 extern void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv);

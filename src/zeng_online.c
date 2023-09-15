@@ -80,6 +80,7 @@ char *buffer_lectura_socket=malloc(MAX_LENGTH_PROTOCOL_COMMAND);
 #include "autoselectoptions.h"
 #include "ay38912.h"
 #include "atomic.h"
+#include "stats.h"
 
 
 
@@ -94,6 +95,14 @@ int zeng_online_current_max_rooms=10;
 
 
 int zeng_online_enabled=0;
+
+//Estructura de un evento: Tecla, press/release, y uuid del cliente que lo envia
+struct s_zeng_online_eventkeys {
+    int tecla;
+    int pressrelease;
+    char uuid[STATS_UUID_MAX_LENGTH];
+    int nomenu; //nomenu if set to non 0, tells the key is not sent when menu is open
+};
 
 //Estructura de una habitacion de zeng online
 struct zeng_online_room {
@@ -117,11 +126,35 @@ struct zeng_online_room {
 
     z_atomic_semaphore semaphore_writing_snapshot;
 
+    //donde se almacenan los eventos. Es un array circular, si se llega al final se sobreescriben
+    //No pasa nada si sobreescribimos la posicion donde un cliente esta leyendo, si se pierde el evento, se pierde...
+    //Ya le llegara un snapshot que lo corrija
+    //Esto es parecido a la compresión de video: se van enviando deltas de diferencias y cada cierto tiempo se envia una imagen entera
+    struct s_zeng_online_eventkeys events[ZENG_ONLINE_MAX_EVENTS];
+    int index_event;
+
 
 };
 
 //Array de habitaciones en zeng online
 struct zeng_online_room zeng_online_rooms_list[ZENG_ONLINE_MAX_ROOMS];
+
+//Agregar evento de tecla/joystick
+void zengonline_add_event(int room_number,char *uuid,int tecla,int event_type,int nomenu)
+{
+    //No hace falta semaforos. Escribimos el dato y luego
+    int index_event=zeng_online_rooms_list[room_number].index_event;
+    zeng_online_rooms_list[room_number].events[index_event].tecla=tecla;
+    zeng_online_rooms_list[room_number].events[index_event].pressrelease=event_type;
+    zeng_online_rooms_list[room_number].events[index_event].nomenu=nomenu;
+    strcpy(zeng_online_rooms_list[room_number].events[index_event].uuid,uuid);
+
+    //Obtenemos siguiente indice
+    index_event++;
+    if (index_event>=ZENG_ONLINE_MAX_ROOMS) index_event=0;
+
+    zeng_online_rooms_list[room_number].index_event=index_event;
+}
 
 //Obtiene el snapshot de una habitacion y mirando que no haya nadie escribiendo (o sea un put snapshot en curso)
 //Es el problema tipico del readers-writers (aunque en mi caso solo tengo un writer)
@@ -213,6 +246,7 @@ void init_zeng_online_rooms(void)
         zeng_online_rooms_list[i].snapshot_memory=NULL;
         zeng_online_rooms_list[i].snapshot_size=0;
         zeng_online_rooms_list[i].reading_snapshot_count=0;
+        zeng_online_rooms_list[i].index_event=0;
 
         z_atomic_reset(&zeng_online_rooms_list[i].mutex_reading_snapshot);
         z_atomic_reset(&zeng_online_rooms_list[i].semaphore_writing_snapshot);
@@ -449,6 +483,47 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
         }
 
         zeng_online_rooms_list[room_number].max_players=max_players;
+
+    }
+
+    //"send-keys user_pass n uuid key event nomenu   Simulates sending key press/release to room n.\n"
+    else if (!strcmp(comando_argv[0],"send-keys")) {
+        if (!zeng_online_enabled) {
+            escribir_socket(misocket,"ERROR. ZENG Online is not enabled");
+            return;
+        }
+
+        if (comando_argc<6) {
+            escribir_socket(misocket,"ERROR. Needs six parameters");
+            return;
+        }
+
+        int room_number=parse_string_to_number(comando_argv[2]);
+
+        if (room_number<0 || room_number>=zeng_online_current_max_rooms) {
+            escribir_socket_format(misocket,"ERROR. Room number beyond limit");
+            return;
+        }
+
+        if (!zeng_online_rooms_list[room_number].created) {
+            escribir_socket(misocket,"ERROR. Room is not created");
+            return;
+        }
+
+        //validar user_pass. comando_argv[1]
+        if (strcmp(comando_argv[1],zeng_online_rooms_list[room_number].user_password)) {
+            escribir_socket(misocket,"ERROR. Invalid user password for that room");
+            return;
+        }
+
+
+        //uuid key event nomenu
+
+		int tecla=parse_string_to_number(comando_argv[4]);
+		int event_type=parse_string_to_number(comando_argv[5]);
+		int nomenu=parse_string_to_number(comando_argv[6]);
+        zengonline_add_event(room_number,comando_argv[3],tecla,event_type,nomenu);
+
 
     }
 
