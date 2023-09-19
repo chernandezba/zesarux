@@ -94,8 +94,32 @@ int zeng_online_client_list_rooms_connect(void)
 
 
 
+        //Calculo aproximado de memoria necesaria para listado de habitaciones
+        //escribir_socket(misocket,"N.  Name                           Created Players Max\n");
+        int espacio_por_room=ZENG_ONLINE_MAX_ROOM_NAME+1024; //Margen mas que suficiente
+        int total_listado_rooms_memoria=espacio_por_room*ZENG_ONLINE_MAX_ROOMS;
 
 
+		debug_printf(VERBOSE_DEBUG,"ZENG Online: Getting zeng-online rooms");
+        if (zeng_remote_list_rooms_buffer==NULL) {
+
+            zeng_remote_list_rooms_buffer=util_malloc(total_listado_rooms_memoria,"Can not allocate memory for getting list-rooms");
+
+
+            /*
+                    for (i=0;i<zeng_online_current_max_rooms;i++) {
+            escribir_socket_format(misocket,"%3d %s %d     %3d       %3d\n",
+                i,
+                zeng_online_rooms_list[i].name,
+                zeng_online_rooms_list[i].created,
+                zeng_online_rooms_list[i].current_players,
+                zeng_online_rooms_list[i].max_players
+            );
+            }
+            */
+
+        }
+        zeng_remote_list_rooms_buffer[0]=0;
 
 		int indice_socket=z_sock_open_connection(zeng_online_server,zeng_online_server_port,0,"");
 
@@ -214,27 +238,8 @@ int zeng_online_client_list_rooms_connect(void)
 
 
         //Obtener rooms
-		debug_printf(VERBOSE_DEBUG,"ZENG Online: Getting zeng-online rooms");
-        if (zeng_remote_list_rooms_buffer==NULL) {
-            //escribir_socket(misocket,"N.  Name                           Created Players Max\n");
-            int espacio_por_room=ZENG_ONLINE_MAX_ROOM_NAME+1024; //Margen mas que suficiente
-            int total_listado_rooms_memoria=espacio_por_room*ZENG_ONLINE_MAX_ROOMS;
-            zeng_remote_list_rooms_buffer=util_malloc(total_listado_rooms_memoria,"Can not allocate memory for getting list-rooms");
 
-            //Calculo aproximado de memoria necesaria para listado de habitaciones
-            /*
-                    for (i=0;i<zeng_online_current_max_rooms;i++) {
-            escribir_socket_format(misocket,"%3d %s %d     %3d       %3d\n",
-                i,
-                zeng_online_rooms_list[i].name,
-                zeng_online_rooms_list[i].created,
-                zeng_online_rooms_list[i].current_players,
-                zeng_online_rooms_list[i].max_players
-            );
-            }
-            */
 
-        }
 
 		escritos=z_sock_write_string(indice_socket,"zeng-online list-rooms\n");
 
@@ -243,7 +248,7 @@ int zeng_online_client_list_rooms_connect(void)
 			return 0;
 		}
 
-		leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)zeng_remote_list_rooms_buffer,ZENG_BUFFER_INITIAL_CONNECT,&posicion_command);
+		leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)zeng_remote_list_rooms_buffer,total_listado_rooms_memoria,&posicion_command);
 		if (leidos>0) {
 			buffer[leidos]=0; //fin de texto
 			debug_printf(VERBOSE_DEBUG,"ZENG: Received text for zeng-online list-rooms (length %d): \n[\n%s\n]",leidos,zeng_remote_list_rooms_buffer);

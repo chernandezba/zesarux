@@ -109,7 +109,9 @@ void menu_zeng_online_list_rooms(void)
     //strcpy(menu_zeng_connect_print_host,zeng_online_server);
     zxvision_simple_progress_window("ZENG Online connection", menu_zeng_online_list_rooms_cond,menu_zeng_online_list_rooms_print );
 
-
+    if (zeng_remote_list_rooms_buffer[0]!=0) {
+        menu_generic_message("Rooms",zeng_remote_list_rooms_buffer);
+    }
 
 }
 

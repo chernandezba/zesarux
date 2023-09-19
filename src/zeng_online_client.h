@@ -27,5 +27,6 @@ extern void zeng_online_client_list_rooms(void);
 
 extern char zeng_online_server[];
 extern int zeng_online_server_port;
+extern char *zeng_remote_list_rooms_buffer;
 
 #endif
