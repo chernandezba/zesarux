@@ -21,7 +21,7 @@
 
 /*
 
-Online Network Play (using a central server) related code
+Online Network Play (using a central server) Server related code
 
 */
 
