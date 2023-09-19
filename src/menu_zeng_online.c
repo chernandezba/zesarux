@@ -59,13 +59,37 @@ y tiene que escoger una que este vacia. Esto hace un create-room (nos guardamos 
 
 int zeng_online_opcion_seleccionada=0;
 
-int zeng_online_i_am_master=0;
+z80_bit zeng_online_i_am_master={0};
+z80_bit zeng_online_i_am_joined={0};
+int zeng_online_joined_to_room_number=0;
 
 
 char zeng_online_server[ZENG_ONLINE_MAX_SERVER_NAME+1]="localhost";
+int zeng_online_server_port=10000;
 
 void menu_zeng_online_server(MENU_ITEM_PARAMETERS)
 {
+    //TODO
+}
+
+void menu_zeng_online_server_port(MENU_ITEM_PARAMETERS)
+{
+    //TODO
+}
+
+void menu_zeng_online_create_room(MENU_ITEM_PARAMETERS)
+{
+    //TODO
+}
+
+void menu_zeng_online_destroy_room(MENU_ITEM_PARAMETERS)
+{
+    //TODO
+}
+
+void menu_zeng_online_join_room(MENU_ITEM_PARAMETERS)
+{
+    //TODO
 }
 
 void menu_zeng_online(MENU_ITEM_PARAMETERS)
@@ -78,14 +102,32 @@ void menu_zeng_online(MENU_ITEM_PARAMETERS)
 
         menu_add_item_menu_en_es_ca_inicial(&array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_server,NULL,
             "~~Server","~~Servidor","~~Servidor");
-
-
         char string_zeng_online_server[16];
         menu_tape_settings_trunc_name(zeng_online_server,string_zeng_online_server,16);
-
-
         menu_add_item_menu_prefijo_format(array_menu_common,"[%s] ",string_zeng_online_server);
+        menu_add_item_menu_shortcut(array_menu_common,'s');
 
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_server_port,NULL,
+            "~~Port","~~Puerto","~~Port");
+        menu_add_item_menu_prefijo_format(array_menu_common," [%d] ",zeng_online_server_port);
+        menu_add_item_menu_shortcut(array_menu_common,'p');
+
+        //Create room + join / destroy room
+        if (zeng_online_i_am_joined.v==0) {
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_create_room,NULL,
+            "~~Create room","~~Crear habitación","~~Crear habitació");
+            menu_add_item_menu_shortcut(array_menu_common,'c');
+
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_join_room,NULL,
+            "Jo~~in to room","Un~~irse a habitación","Un~~ir-se a habitació");
+            menu_add_item_menu_shortcut(array_menu_common,'i');
+
+        }
+        else {
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_destroy_room,NULL,
+            "~~Destroy room","~~Destruir habitación","~~Destruir habitació");
+            menu_add_item_menu_shortcut(array_menu_common,'d');
+        }
 
         menu_add_item_menu_separator(array_menu_common);
 
