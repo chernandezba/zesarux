@@ -14,7 +14,7 @@ echo "User pass: $USER_PASS"
 
 while true; do
 	echo "Getting remote snapshot"
-	RETURNED_SNAPSHOT_DATA=`( sleep $PAUSA ; echo "zo get-snapshot $USER_PASS 0" ; sleep 1 )|telnet $REMOTESERVER 10000|grep "command>"|head -1|awk '{printf $2}'`
+	RETURNED_SNAPSHOT_DATA=`( sleep $PAUSA ; echo "zo get-snapshot $USER_PASS 0" ; sleep 10 )|telnet $REMOTESERVER 10000|grep "command>"|head -1|awk '{printf $2}'`
 
 	echo "Received snapshot: $RETURNED_SNAPSHOT_DATA"
 

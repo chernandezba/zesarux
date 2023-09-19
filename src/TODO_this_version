@@ -544,7 +544,7 @@ Total comandos:
     "get-keys user_pass n              This command returns continuously (never ends) keys from room n, every one separated by NL character.\n"
     "                                  If there is not any key to get, it will block until one is generated\n"
     "                                  Returned format is: uuid key event nomenu"
-    "get-snapshot user_pass n          Get a snapshot from room n, returns ERROR if no snapshot there. Requires user_pass\n"
+    "get-snapshot user_pass n          "get-snapshot user_pass n          This command returns continuously (never ends) snapshots from room n, returns ERROR if no snapshot there. Requires user_pass\n"
     "is-enabled                        Returns enabled status\n"
     "join n                            Joins to room n. Returns the user_password\n"
     "list-rooms                        Returns rooms list\n"
@@ -559,4 +559,6 @@ Total comandos:
 
 
 
+
+-Si se corta en un zo get-snapshot desde la parte cliente, se recibe continuamente: "Received signal sigpipe"
 ---------------

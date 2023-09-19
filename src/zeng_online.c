@@ -120,6 +120,7 @@ struct zeng_online_room {
 
     z80_byte *snapshot_memory; //Donde esta asignado el snapshot
     int snapshot_size;
+    int snapshot_id; //Para saber cuando cambia el snapshot
 
     z_atomic_semaphore mutex_reading_snapshot;
     int reading_snapshot_count;
@@ -224,6 +225,8 @@ void zengonline_put_snapshot(int room,z80_byte *origen,int longitud)
 
     zeng_online_rooms_list[room].snapshot_memory=destino_snapshot;
     zeng_online_rooms_list[room].snapshot_size=longitud;
+    //Incrementamos el id de snapshot
+    zeng_online_rooms_list[room].snapshot_id++;
 
 
 	//Liberar lock
@@ -245,6 +248,7 @@ void init_zeng_online_rooms(void)
         strcpy(zeng_online_rooms_list[i].name,"<free>                        ");
         zeng_online_rooms_list[i].snapshot_memory=NULL;
         zeng_online_rooms_list[i].snapshot_size=0;
+        zeng_online_rooms_list[i].snapshot_id=0;
         zeng_online_rooms_list[i].reading_snapshot_count=0;
         zeng_online_rooms_list[i].index_event=0;
 
@@ -568,6 +572,7 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
         int indice_lectura=zeng_online_rooms_list[room_number].index_event;
 
         //TODO: ver posible manera de salir de aqui??
+        //TODO: detectar si el socket se ha cerrado desde el cliente, lo que genera un sigpipe
         while (1) {
             if (zeng_online_rooms_list[room_number].index_event==indice_lectura) {
                 //Esperar algo. 10 ms, suficiente porque es un mitad de frame
@@ -629,13 +634,35 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
             return;
         }
 
-        z80_byte *puntero_snapshot=zeng_online_rooms_list[room_number].snapshot_memory;
-        int longitud=zeng_online_rooms_list[room_number].snapshot_size;
+        //Id de snapshot inicial cualquiera que no sea el indicado, para obtenerlo
+        int snapshot_id=-1;
 
-		int i;
-		for (i=0;i<longitud;i++,puntero_snapshot++) {
-			escribir_socket_format(misocket,"%02X",*puntero_snapshot);
-		}
+        //TODO: ver posible manera de salir de aqui??
+        //TODO: detectar si el socket se ha cerrado desde el cliente, lo que genera un sigpipe
+        while (1) {
+            if (zeng_online_rooms_list[room_number].snapshot_id==snapshot_id) {
+                //Esperar algo. 10 ms, suficiente porque es un mitad de frame
+                usleep(10000); //dormir 10 ms
+            }
+            else {
+                //Retornar snapshot
+                snapshot_id=zeng_online_rooms_list[room_number].snapshot_id;
+
+                z80_byte *puntero_snapshot=zeng_online_rooms_list[room_number].snapshot_memory;
+                int longitud=zeng_online_rooms_list[room_number].snapshot_size;
+
+                int i;
+                for (i=0;i<longitud;i++,puntero_snapshot++) {
+                    escribir_socket_format(misocket,"%02X",*puntero_snapshot);
+                }
+
+                //Y salto de linea para indicar el final del snapshot
+                escribir_socket(misocket,"\n");
+
+            }
+        }
+
+
 
 
     }
