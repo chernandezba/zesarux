@@ -57,9 +57,165 @@ pthread_t thread_zeng_online_client_list_rooms;
 //Variables y funciones que no son de pthreads
 int zeng_online_client_list_rooms_thread_running=0;
 
+
+char zeng_online_server[NETWORK_MAX_URL+1]="localhost";
+int zeng_online_server_port=10000;
+
 #ifdef USE_PTHREADS
 
 //Funciones que usan pthreads
+
+
+
+//Devuelve 0 si no conectado
+int zeng_online_client_list_rooms_connect(void)
+{
+
+    //Inicialmente desconectado
+    //zeng_remote_socket=-1;
+
+    //Almacenar aqui hostname hasta la ,
+    /*char buffer_hostname[MAX_ZENG_HOSTNAME];
+
+    //Almacenar aqui la copia del campo entero, para facilitar cortar
+    char copia_zeng_remote_hostname[MAX_ZENG_HOSTNAME];
+
+    strcpy(copia_zeng_remote_hostname,zeng_remote_hostname);
+
+
+    char *puntero_hostname=copia_zeng_remote_hostname;
+
+    zeng_total_remotes=0;*/
+
+
+
+
+
+
+
+		int indice_socket=z_sock_open_connection(zeng_online_server,zeng_online_server_port,0,"");
+
+		if (indice_socket<0) {
+			debug_printf(VERBOSE_ERR,"Error connecting to %s:%d. %s",
+                zeng_online_server,zeng_online_server_port,
+                z_sock_get_error(indice_socket));
+			return 0;
+		}
+
+		 int posicion_command;
+
+#define ZENG_BUFFER_INITIAL_CONNECT 199
+
+		//Leer algo
+		char buffer[ZENG_BUFFER_INITIAL_CONNECT+1];
+
+		//int leidos=z_sock_read(indice_socket,buffer,199);
+		int leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)buffer,ZENG_BUFFER_INITIAL_CONNECT,&posicion_command);
+		if (leidos>0) {
+			buffer[leidos]=0; //fin de texto
+			//printf("Received text (length: %d):\n[\n%s\n]\n",leidos,buffer);
+		}
+
+		if (leidos<0) {
+			debug_printf(VERBOSE_ERR,"ERROR. Can't read remote prompt: %s",z_sock_get_error(leidos));
+			return 0;
+		}
+
+		//zsock_wait_until_command_prompt(indice_socket);
+
+		debug_printf(VERBOSE_DEBUG,"ZENG: Sending get-version");
+
+		//Enviar un get-version
+		int escritos=z_sock_write_string(indice_socket,"get-version\n");
+
+		if (escritos<0) {
+			debug_printf(VERBOSE_ERR,"ERROR. Can't send get-version: %s",z_sock_get_error(escritos));
+			return 0;
+		}
+
+
+		//reintentar
+		leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)buffer,ZENG_BUFFER_INITIAL_CONNECT,&posicion_command);
+		if (leidos>0) {
+			buffer[leidos]=0; //fin de texto
+			debug_printf(VERBOSE_DEBUG,"ZENG: Received text for get-version (length %d): \n[\n%s\n]",leidos,buffer);
+		}
+
+		if (leidos<0) {
+			debug_printf(VERBOSE_ERR,"ERROR. Can't receive version: %s",z_sock_get_error(leidos));
+			return 0;
+		}
+
+		//1 mas para eliminar el salto de linea anterior a "command>"
+		if (posicion_command>=1) {
+			buffer[posicion_command-1]=0;
+			debug_printf(VERBOSE_DEBUG,"ZENG: Received version: %s",buffer);
+		}
+		else {
+			debug_printf (VERBOSE_ERR,"Error receiving ZEsarUX remote version");
+			return 0;
+		}
+
+		//Comprobar que version remota sea como local
+        char myversion[30];
+        util_get_emulator_version_number(myversion);
+        if (strcasecmp(myversion,buffer)) {
+			debug_printf (VERBOSE_ERR,"Local and remote ZEsarUX versions do not match");
+            //printf("Local %s remote %s\n",myversion,buffer);
+			return 0;
+		}
+
+
+		//Comprobar que, si nosotros somos master, el remoto no lo sea
+		//El usuario puede activarlo, aunque no es recomendable. Yo solo compruebo y ya que haga lo que quiera
+
+
+        //ver si zeng online enabled
+		debug_printf(VERBOSE_DEBUG,"ZENG Online: Getting zeng-online status");
+
+		escritos=z_sock_write_string(indice_socket,"zeng-online is-enabled\n");
+
+		if (escritos<0) {
+			debug_printf(VERBOSE_ERR,"ERROR. Can't send zeng-online is-enabled: %s",z_sock_get_error(escritos));
+			return 0;
+		}
+
+		leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)buffer,ZENG_BUFFER_INITIAL_CONNECT,&posicion_command);
+		if (leidos>0) {
+			buffer[leidos]=0; //fin de texto
+			debug_printf(VERBOSE_DEBUG,"ZENG: Received text for zeng-online is-enabled (length %d): \n[\n%s\n]",leidos,buffer);
+		}
+
+		if (leidos<0) {
+			debug_printf(VERBOSE_ERR,"ERROR. Can't receive zeng-online is-enabled: %s",z_sock_get_error(leidos));
+			return 0;
+		}
+
+		//1 mas para eliminar el salto de linea anterior a "command>"
+		if (posicion_command>=1) {
+			buffer[posicion_command-1]=0;
+			debug_printf(VERBOSE_DEBUG,"ZENG: Received zeng-online is-enabled: %s",buffer);
+		}
+		else {
+			debug_printf (VERBOSE_ERR,"Error receiving ZEsarUX zeng-online is-enabled");
+			return 0;
+		}
+
+        //Si somos master, que el remoto no lo sea tambien
+        int esta_activado=parse_string_to_number(buffer);
+        if (!esta_activado) {
+            debug_printf (VERBOSE_ERR,"ZENG Online is not enabled on remote server");
+        }
+
+
+		//TODO: fin conexion
+
+
+
+	//zeng_remote_socket=indice_socket;
+
+	return 1;
+}
 
 
 void *zeng_online_client_list_rooms_function(void *nada GCC_UNUSED)
@@ -70,19 +226,17 @@ void *zeng_online_client_list_rooms_function(void *nada GCC_UNUSED)
 
 
 	//Conectar a remoto
-    /*
-	if (!zeng_connect_remotes()) {
+
+	if (!zeng_online_client_list_rooms_connect()) {
 		//Desconectar solo si el socket estaba conectado
 
-		//if (zeng_remote_socket>=0)
         //Desconectar los que esten conectados
-        zeng_disconnect_remote();
+        //TODO zeng_disconnect_remote();
 
 		zeng_online_client_list_rooms_thread_running=0;
 		return 0;
 	}
-    */
-   sleep(5);
+
 
 
 

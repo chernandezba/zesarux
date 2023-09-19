@@ -66,8 +66,6 @@ z80_bit zeng_online_i_am_joined={0};
 int zeng_online_joined_to_room_number=0;
 
 
-char zeng_online_server[NETWORK_MAX_URL+1]="localhost";
-int zeng_online_server_port=10000;
 
 void menu_zeng_online_server(MENU_ITEM_PARAMETERS)
 {
