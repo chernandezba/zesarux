@@ -271,7 +271,7 @@ int zeng_online_client_list_rooms_connect(void)
 
         printf("Habitaciones: %s\n",zeng_remote_list_rooms_buffer);
 
-		//TODO: fin conexion
+		//TODO: finalizar conexion
 
 
 
