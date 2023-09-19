@@ -37,6 +37,7 @@ Online Network Play (using a central server) Client related code
 #include "utils.h"
 #include "network.h"
 #include "compileoptions.h"
+#include "zeng_online.h"
 #include "zeng_online_client.h"
 #include "remote.h"
 #include "snap_zsf.h"
@@ -60,6 +61,9 @@ int zeng_online_client_list_rooms_thread_running=0;
 
 char zeng_online_server[NETWORK_MAX_URL+1]="localhost";
 int zeng_online_server_port=10000;
+
+//Buffer donde guardar listado de rooms remotas
+char *zeng_remote_list_rooms_buffer=NULL;
 
 #ifdef USE_PTHREADS
 
@@ -205,8 +209,62 @@ int zeng_online_client_list_rooms_connect(void)
         int esta_activado=parse_string_to_number(buffer);
         if (!esta_activado) {
             debug_printf (VERBOSE_ERR,"ZENG Online is not enabled on remote server");
+            return 0;
         }
 
+
+        //Obtener rooms
+		debug_printf(VERBOSE_DEBUG,"ZENG Online: Getting zeng-online rooms");
+        if (zeng_remote_list_rooms_buffer==NULL) {
+            //escribir_socket(misocket,"N.  Name                           Created Players Max\n");
+            int espacio_por_room=ZENG_ONLINE_MAX_ROOM_NAME+1024; //Margen mas que suficiente
+            int total_listado_rooms_memoria=espacio_por_room*ZENG_ONLINE_MAX_ROOMS;
+            util_malloc(total_listado_rooms_memoria,"Can not allocate memory for getting list-rooms");
+
+            //Calculo aproximado de memoria necesaria para listado de habitaciones
+            /*
+                    for (i=0;i<zeng_online_current_max_rooms;i++) {
+            escribir_socket_format(misocket,"%3d %s %d     %3d       %3d\n",
+                i,
+                zeng_online_rooms_list[i].name,
+                zeng_online_rooms_list[i].created,
+                zeng_online_rooms_list[i].current_players,
+                zeng_online_rooms_list[i].max_players
+            );
+            }
+            */
+
+        }
+
+		escritos=z_sock_write_string(indice_socket,"zeng-online list-rooms\n");
+
+		if (escritos<0) {
+			debug_printf(VERBOSE_ERR,"ERROR. Can't send zeng-online list-rooms: %s",z_sock_get_error(escritos));
+			return 0;
+		}
+
+		leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)zeng_remote_list_rooms_buffer,ZENG_BUFFER_INITIAL_CONNECT,&posicion_command);
+		if (leidos>0) {
+			buffer[leidos]=0; //fin de texto
+			debug_printf(VERBOSE_DEBUG,"ZENG: Received text for zeng-online list-rooms (length %d): \n[\n%s\n]",leidos,zeng_remote_list_rooms_buffer);
+		}
+
+		if (leidos<0) {
+			debug_printf(VERBOSE_ERR,"ERROR. Can't receive zeng-online list-rooms: %s",z_sock_get_error(leidos));
+			return 0;
+		}
+
+		//1 mas para eliminar el salto de linea anterior a "command>"
+		if (posicion_command>=1) {
+			zeng_remote_list_rooms_buffer[posicion_command-1]=0;
+			debug_printf(VERBOSE_DEBUG,"ZENG: Received zeng-online list-rooms: %s",zeng_remote_list_rooms_buffer);
+		}
+		else {
+			debug_printf (VERBOSE_ERR,"Error receiving ZEsarUX zeng-online list-rooms");
+			return 0;
+		}
+
+        printf("Habitaciones: %s\n",zeng_remote_list_rooms_buffer);
 
 		//TODO: fin conexion
 
