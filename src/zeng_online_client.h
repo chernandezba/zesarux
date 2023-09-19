@@ -22,6 +22,7 @@
 #ifndef ZENG_ONLINE_CLIENT_H
 #define ZENG_ONLINE_CLIENT_H
 
-
+extern int zeng_online_client_list_rooms_thread_running;
+extern void zeng_online_client_list_rooms(void);
 
 #endif

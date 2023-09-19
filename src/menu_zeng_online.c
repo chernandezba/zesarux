@@ -39,6 +39,8 @@
 #include "cpu.h"
 #include "debug.h"
 #include "menu_zeng_online.h"
+#include "zeng_online_client.h"
+#include "network.h"
 
 
 /*
@@ -64,7 +66,7 @@ z80_bit zeng_online_i_am_joined={0};
 int zeng_online_joined_to_room_number=0;
 
 
-char zeng_online_server[ZENG_ONLINE_MAX_SERVER_NAME+1]="localhost";
+char zeng_online_server[NETWORK_MAX_URL+1]="localhost";
 int zeng_online_server_port=10000;
 
 void menu_zeng_online_server(MENU_ITEM_PARAMETERS)
@@ -77,9 +79,47 @@ void menu_zeng_online_server_port(MENU_ITEM_PARAMETERS)
     //TODO
 }
 
+
+int contador_menu_zeng_online_list_rooms_print=0;
+
+
+void menu_zeng_online_list_rooms_print(zxvision_window *w)
+{
+    char buf_temp[NETWORK_MAX_URL+256];
+    sprintf(buf_temp,"Connecting to %s",zeng_online_server);
+
+    menu_common_connect_print(w,buf_temp);
+}
+
+
+
+int menu_zeng_online_list_rooms_cond(zxvision_window *w GCC_UNUSED)
+{
+	return !zeng_online_client_list_rooms_thread_running;
+}
+
+void menu_zeng_online_list_rooms(void)
+{
+
+
+    //Lanzar el thread de listar rooms
+    zeng_online_client_list_rooms();
+
+    contador_menu_zeng_connect_print=0;
+
+
+    //strcpy(menu_zeng_connect_print_host,zeng_online_server);
+    zxvision_simple_progress_window("ZENG Online connection", menu_zeng_online_list_rooms_cond,menu_zeng_online_list_rooms_print );
+
+
+
+}
+
+
+
 void menu_zeng_online_create_room(MENU_ITEM_PARAMETERS)
 {
-    //TODO
+    menu_zeng_online_list_rooms();
 }
 
 void menu_zeng_online_destroy_room(MENU_ITEM_PARAMETERS)

@@ -49,18 +49,80 @@ Online Network Play (using a central server) Client related code
 #include <sys/types.h>
 
 
-pthread_t xxxxxthread_zeng;
-pthread_t xxxxxzeng_thread_connect;
+pthread_t thread_zeng_online_client_list_rooms;
+
 
 #endif
 
 //Variables y funciones que no son de pthreads
-
+int zeng_online_client_list_rooms_thread_running=0;
 
 #ifdef USE_PTHREADS
 
 //Funciones que usan pthreads
 
+
+void *zeng_online_client_list_rooms_function(void *nada GCC_UNUSED)
+{
+
+	zeng_online_client_list_rooms_thread_running=1;
+
+
+
+	//Conectar a remoto
+    /*
+	if (!zeng_connect_remotes()) {
+		//Desconectar solo si el socket estaba conectado
+
+		//if (zeng_remote_socket>=0)
+        //Desconectar los que esten conectados
+        zeng_disconnect_remote();
+
+		zeng_online_client_list_rooms_thread_running=0;
+		return 0;
+	}
+    */
+   sleep(5);
+
+
+
+
+
+	//zeng_enabled.v=1;
+
+
+	zeng_online_client_list_rooms_thread_running=0;
+
+	return 0;
+
+}
+
+
+void zeng_online_client_list_rooms(void)
+{
+
+	//ya  inicializado
+	/*if (zeng_enabled.v) return;
+
+	if (zeng_remote_hostname[0]==0) return;*/
+
+
+
+	//Inicializar thread
+
+	if (pthread_create( &thread_zeng_online_client_list_rooms, NULL, &zeng_online_client_list_rooms_function, NULL) ) {
+		debug_printf(VERBOSE_ERR,"Can not create zeng online list rooms pthread");
+		return;
+	}
+
+	//y pthread en estado detached asi liberara su memoria asociada a thread al finalizar, sin tener que hacer un pthread_join
+	pthread_detach(thread_zeng_online_client_list_rooms);
+
+
+
+
+
+}
 
 
 #else
@@ -68,7 +130,7 @@ pthread_t xxxxxzeng_thread_connect;
 //Funciones sin pthreads. ZENG no se llama nunca cuando no hay pthreads, pero hay que crear estas funciones vacias
 //para evitar errores de compilacion cuando no hay pthreads
 
-void xxxxxx(void)
+void zeng_online_client_list_rooms(void)
 {
 }
 

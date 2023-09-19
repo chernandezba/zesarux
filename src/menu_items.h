@@ -105,6 +105,8 @@ extern void menu_network(MENU_ITEM_PARAMETERS);
 
 extern void menu_debug_change_memory_zone_splash(void);
 
+extern void menu_common_connect_print(zxvision_window *w,char *texto);
+extern int contador_menu_zeng_connect_print;
 
 extern void menu_zeng_send_message(MENU_ITEM_PARAMETERS);
 

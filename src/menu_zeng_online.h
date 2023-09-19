@@ -24,6 +24,5 @@
 
 extern void menu_zeng_online(MENU_ITEM_PARAMETERS);
 
-#define ZENG_ONLINE_MAX_SERVER_NAME 128
 
 #endif
