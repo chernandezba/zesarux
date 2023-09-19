@@ -384,7 +384,7 @@ int assignar_adr_internet
 
 
 
-
+//Retorna bytes escritos
 int escribir_socket(int socket, char *buffer)
 {
 
@@ -624,7 +624,7 @@ int zsock_available_data(int socket GCC_UNUSED)
 
 //Funciones (pocas) que no necesitan pthreads
 
-void escribir_socket_format (int misocket, const char * format , ...)
+int escribir_socket_format(int misocket, const char * format , ...)
 {
 
     char buffer_final[4096];
@@ -634,7 +634,7 @@ void escribir_socket_format (int misocket, const char * format , ...)
     vsprintf (buffer_final,format, args);
     va_end (args);
 
-    escribir_socket(misocket,buffer_final);
+    return escribir_socket(misocket,buffer_final);
 }
 
 

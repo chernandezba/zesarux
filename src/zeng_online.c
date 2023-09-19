@@ -581,7 +581,7 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
             else {
                 //Retornar evento de la lista
                 //Returned format is: uuid key event nomenu"
-                escribir_socket_format(misocket,"%s %d %d %d\n",
+                int escritos=escribir_socket_format(misocket,"%s %d %d %d\n",
                     zeng_online_rooms_list[room_number].events[indice_lectura].uuid,
                     zeng_online_rooms_list[room_number].events[indice_lectura].tecla,
                     zeng_online_rooms_list[room_number].events[indice_lectura].pressrelease,
@@ -591,6 +591,12 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
                 indice_lectura++;
                 if (indice_lectura>=ZENG_ONLINE_MAX_EVENTS) {
                     indice_lectura=0;
+                }
+
+                //printf("Escritos socket: %d\n",escritos);
+                if (escritos<0) {
+                    debug_printf(VERBOSE_DEBUG,"Error returning zeng-online get-keys. Client connection may be closed");
+                    return;
                 }
 
             }
@@ -657,7 +663,12 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
                 }
 
                 //Y salto de linea para indicar el final del snapshot
-                escribir_socket(misocket,"\n");
+                int escritos=escribir_socket(misocket,"\n");
+                //printf("Escritos socket: %d\n",escritos);
+                if (escritos<0) {
+                    debug_printf(VERBOSE_DEBUG,"Error returning zeng-online get-snapshot. Client connection may be closed");
+                    return;
+                }
 
             }
         }

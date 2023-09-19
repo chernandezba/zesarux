@@ -63,7 +63,7 @@ extern int omplir_adr_internet(struct sockaddr_in *adr,char *host,unsigned short
 extern int connectar_socket(int s,struct sockaddr_in *adr);
 
 extern int leer_socket(int s, char *buffer, int longitud);
-extern void escribir_socket_format (int misocket, const char * format , ...);
+extern int escribir_socket_format (int misocket, const char * format , ...);
 extern int assignar_adr_internet(int sock,char *host,unsigned short n_port);
 extern int cerrar_socket(int s);
 extern void init_network_tables(void);
