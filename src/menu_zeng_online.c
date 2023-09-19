@@ -20,57 +20,24 @@
 */
 
 /*
-
-Online Network Play (using a central server) Client related code
-
+   Funciones menu de ZENG Online
 */
 
-#include <stdio.h>
+
 #include <stdlib.h>
+#include <stdio.h>
 #include <string.h>
-#include <fcntl.h>
+#include <unistd.h>
+#include <time.h>
 
 
 
+#include "menu_zeng_online.h"
+#include "zxvision.h"
+#include "menu_items.h"
+#include "compileoptions.h"
+#include "screen.h"
 #include "cpu.h"
 #include "debug.h"
-#include "utils.h"
-#include "network.h"
-#include "compileoptions.h"
-#include "zeng_online_client.h"
-#include "remote.h"
-#include "snap_zsf.h"
 
 
-
-#ifdef USE_PTHREADS
-
-#include <pthread.h>
-#include <sys/types.h>
-
-
-pthread_t xxxxxthread_zeng;
-pthread_t xxxxxzeng_thread_connect;
-
-#endif
-
-//Variables y funciones que no son de pthreads
-
-
-#ifdef USE_PTHREADS
-
-//Funciones que usan pthreads
-
-
-
-#else
-
-//Funciones sin pthreads. ZENG no se llama nunca cuando no hay pthreads, pero hay que crear estas funciones vacias
-//para evitar errores de compilacion cuando no hay pthreads
-
-void xxxxxx(void)
-{
-}
-
-
-#endif

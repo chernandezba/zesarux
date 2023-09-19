@@ -532,7 +532,7 @@ y tiene que escoger una que este vacia. Esto hace un create-room (nos guardamos 
 - Tambien se activa el thread de envio de eventos al pulsar teclas (igual en master que slave)
 
 Toda esta parte cliente de "backend" estara contenida en zeng_online_client.c
-La parte de menus , el "frontend" estara contenida en menu_items_zeng_online.c
+La parte de menus , el "frontend" estara contenida en menu_zeng_online.c
 
 
 Se debe crear comando que recibe respuesta hasta prompt o texto ERROR, excepto en el proceso que recibe eventos, pues un get-keys se queda continuamente pillado
