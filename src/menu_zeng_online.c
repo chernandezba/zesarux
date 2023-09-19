@@ -32,12 +32,76 @@
 
 
 
-#include "menu_zeng_online.h"
 #include "zxvision.h"
 #include "menu_items.h"
 #include "compileoptions.h"
 #include "screen.h"
 #include "cpu.h"
 #include "debug.h"
+#include "menu_zeng_online.h"
 
 
+/*
+----ZENG online
+
+Funcionamiento:
+
+- El server ZENG online, se le tiene que hacer un "zengonline enable"
+- Un ZEsarUX, el que hara de master, menu ZENG Online -> Create room, esto lo convierte en master. Se listan las habitaciones
+y tiene que escoger una que este vacia. Esto hace un create-room (nos guardamos el creator_password), y un join-room (nos guardamos user_password)
+- Al ser master, empieza un thread de envio de snapshot, cada x milisegundos
+- Tambien se activa el thread de envio de eventos al pulsar teclas (igual en master que slave)
+
+- Los clientes ZEsarUX, menu ZENG Online -> Join room. Esto nos convierte en slave. Nos guardamos el user_password
+- Al ser slave, empieza un thread de lectura de snapshot, cada x milisegundos
+- Tambien se activa el thread de envio de eventos al pulsar teclas (igual en master que slave)
+*/
+
+int zeng_online_opcion_seleccionada=0;
+
+int zeng_online_i_am_master=0;
+
+
+char zeng_online_server[ZENG_ONLINE_MAX_SERVER_NAME+1]="localhost";
+
+void menu_zeng_online_server(MENU_ITEM_PARAMETERS)
+{
+}
+
+void menu_zeng_online(MENU_ITEM_PARAMETERS)
+{
+    menu_item *array_menu_common;
+    menu_item item_seleccionado;
+    int retorno_menu;
+    do {
+
+
+        menu_add_item_menu_en_es_ca_inicial(&array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_server,NULL,
+            "~~Server","~~Servidor","~~Servidor");
+
+
+        char string_zeng_online_server[16];
+        menu_tape_settings_trunc_name(zeng_online_server,string_zeng_online_server,16);
+
+
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%s] ",string_zeng_online_server);
+
+
+        menu_add_item_menu_separator(array_menu_common);
+
+        menu_add_ESC_item(array_menu_common);
+
+        retorno_menu=menu_dibuja_menu(&zeng_online_opcion_seleccionada,&item_seleccionado,array_menu_common,"ZENG Online");
+
+
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+                //llamamos por valor de funcion
+                if (item_seleccionado.menu_funcion!=NULL) {
+                        //printf ("actuamos por funcion\n");
+                        item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+
+                }
+        }
+
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+}

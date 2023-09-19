@@ -517,19 +517,7 @@ y luego dos slaves que fueran los que estuvieran compitiendo
 ---Fin Mejoras---
 
 
-----ZENG online
 
-Funcionamiento:
-
-- El server ZENG online, se le tiene que hacer un "zengonline enable"
-- Un ZEsarUX, el que hara de master, menu ZENG Online -> Create room, esto lo convierte en master. Se listan las habitaciones
-y tiene que escoger una que este vacia. Esto hace un create-room (nos guardamos el creator_password), y un join-room (nos guardamos user_password)
-- Al ser master, empieza un thread de envio de snapshot, cada x milisegundos
-- Tambien se activa el thread de envio de eventos al pulsar teclas (igual en master que slave)
-
-- Los clientes ZEsarUX, menu ZENG Online -> Join room. Esto nos convierte en slave. Nos guardamos el user_password
-- Al ser slave, empieza un thread de lectura de snapshot, cada x milisegundos
-- Tambien se activa el thread de envio de eventos al pulsar teclas (igual en master que slave)
 
 Toda esta parte cliente de "backend" estara contenida en zeng_online_client.c
 La parte de menus , el "frontend" estara contenida en menu_zeng_online.c
