@@ -55,7 +55,8 @@ y tiene que escoger una que este vacia. Esto hace un create-room (nos guardamos 
 - Tambien se activa el thread de envio de eventos al pulsar teclas (igual en master que slave)
 
 - Los clientes ZEsarUX, menu ZENG Online -> Join room. Esto nos convierte en slave. Nos guardamos el user_password
-- Al ser slave, empieza un thread de lectura de snapshot, cada x milisegundos
+- Al ser slave, empieza un thread de lectura de snapshot, de manera continua recibe snaps
+- Al ser slave, empieza un thread de lectura de keys, de manera continua recibe keys
 - Tambien se activa el thread de envio de eventos al pulsar teclas (igual en master que slave)
 */
 
