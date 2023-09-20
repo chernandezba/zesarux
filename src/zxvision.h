@@ -336,13 +336,7 @@ extern z80_bit christmas_mode;
 
 
 
-struct s_generic_message_tooltip_return {
-	char texto_seleccionado[40];
-	int linea_seleccionada;
-	int estado_retorno; //Retorna 1 si sale con enter. Retorna 0 si sale con ESC
-};
 
-typedef struct s_generic_message_tooltip_return generic_message_tooltip_return;
 
 #define OVERLAY_SCREEN_MAX_WIDTH 256
 #define OVERLAY_SCREEN_MAX_HEIGTH 128
@@ -456,8 +450,7 @@ extern void zxvision_print_string_defaults_fillspc(zxvision_window *w,int x,int 
 extern void zxvision_print_string_defaults_fillspc_format(zxvision_window *w,int x,int y,const char * format , ...);
 
 extern void zxvision_handle_mouse_events(zxvision_window *w);
-extern void zxvision_generic_message_tooltip(char *titulo, int return_after_print_text, int volver_timeout, int tooltip_enabled, int mostrar_cursor, generic_message_tooltip_return *retorno, int resizable, const char * texto_format , ...);
-extern int zxvision_generic_message_aux_justificar_lineas(char *orig_texto,int longitud,int max_ancho_texto,char **buffer_lineas);
+
 
 extern void zxvision_handle_click_minimize(zxvision_window *w);
 extern void zxvision_minimize_window(zxvision_window *w);
@@ -769,6 +762,17 @@ extern overlay_screen overlay_screen_array[];
 extern int menu_generic_message_aux_wordwrap(char *texto,int inicio, int final);
 extern void menu_generic_message_aux_copia(char *origen,char *destino, int longitud);
 extern int menu_generic_message_aux_filter(char *texto,int inicio, int final);
+
+struct s_generic_message_tooltip_return {
+	char texto_seleccionado[MAX_ANCHO_LINEAS_GENERIC_MESSAGE];
+	int linea_seleccionada;
+	int estado_retorno; //Retorna 1 si sale con enter. Retorna 0 si sale con ESC
+};
+
+typedef struct s_generic_message_tooltip_return generic_message_tooltip_return;
+
+extern void zxvision_generic_message_tooltip(char *titulo, int return_after_print_text, int volver_timeout, int tooltip_enabled, int mostrar_cursor, generic_message_tooltip_return *retorno, int resizable, const char * texto_format , ...);
+extern int zxvision_generic_message_aux_justificar_lineas(char *orig_texto,int longitud,int max_ancho_texto,char **buffer_lineas);
 
 //Posiciones de texto mostrado en second overlay
 #define WINDOW_FOOTER_ELEMENT_X_JOYSTICK 0

@@ -527,4 +527,7 @@ Luego nombre puede contener espacios porque no lo parseamos para nada
 O sea:
 
 escribir_socket(misocket,"N.  Created Players Max Name                           \n");
+
+
+-En join comprobar que no se haya llegado al máximo de usuarios
 ---------------

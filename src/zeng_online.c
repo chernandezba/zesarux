@@ -402,15 +402,15 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
 
         int i;
 
-        escribir_socket(misocket,"N.  Name                           Created Players Max\n");
+        escribir_socket(misocket,"N.  Created Players Max Name                           \n");
 
         for (i=0;i<zeng_online_current_max_rooms;i++) {
-            escribir_socket_format(misocket,"%3d %s %d     %3d       %3d\n",
+            escribir_socket_format(misocket,"%3d %d     %3d       %3d %s\n",
                 i,
-                zeng_online_rooms_list[i].name,
                 zeng_online_rooms_list[i].created,
                 zeng_online_rooms_list[i].current_players,
-                zeng_online_rooms_list[i].max_players
+                zeng_online_rooms_list[i].max_players,
+                zeng_online_rooms_list[i].name
             );
         }
     }
@@ -572,7 +572,6 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
         int indice_lectura=zeng_online_rooms_list[room_number].index_event;
 
         //TODO: ver posible manera de salir de aqui??
-        //TODO: detectar si el socket se ha cerrado desde el cliente, lo que genera un sigpipe
         while (1) {
             if (zeng_online_rooms_list[room_number].index_event==indice_lectura) {
                 //Esperar algo. 10 ms, suficiente porque es un mitad de frame
@@ -644,7 +643,6 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
         int snapshot_id=-1;
 
         //TODO: ver posible manera de salir de aqui??
-        //TODO: detectar si el socket se ha cerrado desde el cliente, lo que genera un sigpipe
         while (1) {
             if (zeng_online_rooms_list[room_number].snapshot_id==snapshot_id) {
                 //Esperar algo. 10 ms, suficiente porque es un mitad de frame
