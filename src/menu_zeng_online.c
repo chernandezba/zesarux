@@ -275,6 +275,10 @@ void menu_zeng_online_create_room(MENU_ITEM_PARAMETERS)
 
         zxvision_simple_progress_window("ZENG Online Create Room", menu_zeng_online_create_room_cond,menu_zeng_online_create_room_print );
 
+        //TODO: join room
+        //TODO: inicio thread de envio de snapshot, cada x milisegundos
+        //TODO: inicio thread de envio de eventos al pulsar teclas (igual en master que slave)
+
 
     }
 }
