@@ -271,7 +271,8 @@ int zeng_online_client_list_rooms_connect(void)
 
         printf("Habitaciones: %s\n",zeng_remote_list_rooms_buffer);
 
-		//TODO: finalizar conexion
+		//finalizar conexion
+        z_sock_close_connection(indice_socket);
 
 
 
@@ -318,13 +319,6 @@ void *zeng_online_client_list_rooms_function(void *nada GCC_UNUSED)
 void zeng_online_client_list_rooms(void)
 {
 
-	//ya  inicializado
-	/*if (zeng_enabled.v) return;
-
-	if (zeng_remote_hostname[0]==0) return;*/
-
-
-
 	//Inicializar thread
 
 	if (pthread_create( &thread_zeng_online_client_list_rooms, NULL, &zeng_online_client_list_rooms_function, NULL) ) {
@@ -334,9 +328,6 @@ void zeng_online_client_list_rooms(void)
 
 	//y pthread en estado detached asi liberara su memoria asociada a thread al finalizar, sin tener que hacer un pthread_join
 	pthread_detach(thread_zeng_online_client_list_rooms);
-
-
-
 
 
 }
