@@ -111,7 +111,6 @@ int menu_zeng_online_list_rooms(int *room_number,int *created,int *current_playe
     contador_menu_zeng_connect_print=0;
 
 
-    //strcpy(menu_zeng_connect_print_host,zeng_online_server);
     zxvision_simple_progress_window("ZENG Online connection", menu_zeng_online_list_rooms_cond,menu_zeng_online_list_rooms_print );
 
     if (zeng_online_client_list_rooms_thread_running) {
@@ -231,6 +230,16 @@ int menu_zeng_online_list_rooms(int *room_number,int *created,int *current_playe
 
 }
 
+void menu_zeng_online_create_room_print(zxvision_window *w)
+{
+
+    menu_common_connect_print(w,"Creating room");
+}
+
+int menu_zeng_online_create_room_cond(zxvision_window *w GCC_UNUSED)
+{
+	return !zeng_online_client_create_room_thread_running;
+}
 
 
 void menu_zeng_online_create_room(MENU_ITEM_PARAMETERS)
@@ -255,6 +264,16 @@ void menu_zeng_online_create_room(MENU_ITEM_PARAMETERS)
             return;
         }
 
+        //Create room
+
+
+        //Lanzar el thread de crear room
+        zeng_online_client_create_room(room_number,room_name);
+
+        contador_menu_zeng_connect_print=0;
+
+
+        zxvision_simple_progress_window("ZENG Online Create Room", menu_zeng_online_create_room_cond,menu_zeng_online_create_room_print );
 
 
     }

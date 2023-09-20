@@ -23,7 +23,10 @@
 #define ZENG_ONLINE_CLIENT_H
 
 extern int zeng_online_client_list_rooms_thread_running;
+
+extern int zeng_online_client_create_room_thread_running;
 extern void zeng_online_client_list_rooms(void);
+extern void zeng_online_client_create_room(int room_number,char *room_name);
 
 extern char zeng_online_server[];
 extern int zeng_online_server_port;
