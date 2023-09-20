@@ -275,9 +275,11 @@ void menu_zeng_online_create_room(MENU_ITEM_PARAMETERS)
 
         zxvision_simple_progress_window("ZENG Online Create Room", menu_zeng_online_create_room_cond,menu_zeng_online_create_room_print );
 
-        //TODO: join room
+        //TODO: join room.
+        //TODO: flag que indique a nivel global que somos master, no slave
         //TODO: inicio thread de envio de snapshot, cada x milisegundos
         //TODO: inicio thread de envio de eventos al pulsar teclas (igual en master que slave)
+        //TODO: en menu no debe dejar crear room o join
 
 
     }
@@ -290,7 +292,27 @@ void menu_zeng_online_destroy_room(MENU_ITEM_PARAMETERS)
 
 void menu_zeng_online_join_room(MENU_ITEM_PARAMETERS)
 {
-    //TODO
+    char texto_linea[MAX_ANCHO_LINEAS_GENERIC_MESSAGE];
+
+
+    int room_number,created,current_players,max_players;
+    char room_name[ZENG_ONLINE_MAX_ROOM_NAME+1];
+
+    int retorno=menu_zeng_online_list_rooms(&room_number,&created,&current_players,&max_players,room_name);
+
+    if (retorno>=0) {
+
+
+        if (created==0) {
+            debug_printf(VERBOSE_ERR,"Room is not created");
+            return;
+        }
+
+        //TODO join
+        //TODO flag que indique a nivel global que somos slave , no master
+        //TODO: en menu no debe dejar crear room o join
+
+    }
 }
 
 void menu_zeng_online(MENU_ITEM_PARAMETERS)
