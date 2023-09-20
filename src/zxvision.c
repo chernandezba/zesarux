@@ -1852,7 +1852,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
 
     //Risc Os V.1 ("Arthur")
 	{1,"RiscOS",7+8,RISCOS_COLOUR_DARKBLUE,
-		0,1,0,0, 		//No mostrar cursor,mostrar recuadro,mostrar rainbow
+		0,1,0,0, 		//No mostrar cursor,mostrar recuadro,no mostrar rainbow
 		RISCOS_COLOUR_DARKBLUE,7+8, 		//Colores para opcion seleccionada
 		7+8,RISCOS_COLOUR_DARKBLUE,RISCOS_COLOUR_DARKBLUE,RISCOS_COLOUR_RED, 	//Colores para opcion no disponible
 
@@ -1879,6 +1879,33 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         -1, //-1, //si texto inverso solo cambia color tinta
         0, //rellenar titulo
         char_set_dos,
+        0 //caracter franja normal
+    },
+
+	{0,"TempleOS",7+8,1,
+		0,1,0,0, 		//No mostrar cursor,mostrar recuadro,no mostrar rainbow
+		6+8,1, 		//Colores para opcion seleccionada
+		7+8,2,7,2, 	//Colores para opcion no disponible
+
+		7+8,1,        	//Colores para el titulo ventana
+        1,              //Color recuadro
+		7+8,1,        	//Colores para el titulo ventana inactiva
+
+		4,		//Color waveform
+		7,		//Color para zona no usada en visualmem
+        7,      //color block visualtape
+		2,7+8,		//Color para opcion marcada
+		'X',
+        '-', //caracter de minimizar ventana
+        '+', //caracter de maximizar ventana
+        '=', //caracter de restaurar ventana
+        '!', //caracter de background ventana
+        148, //caracter de fondo de titulo
+		2, //color de aviso
+		colores_franja_speccy_brillo,colores_franja_speccy_oscuro,
+        -1, //si texto inverso solo cambia color tinta
+        0, //rellenar titulo
+        char_set_templeos,
         0 //caracter franja normal
     },
 

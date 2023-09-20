@@ -2994,6 +2994,17 @@ int scr_putchar_menu_comun_zoom_reduce_charwidth(int bit)
 		saltar_pixeles_size5[2]=2;
 	}
 
+	if (char_set==char_set_templeos)	{
+		saltar_pixeles_size7=0;
+
+		saltar_pixeles_size6[0]=0;
+		saltar_pixeles_size6[1]=1;
+
+		saltar_pixeles_size5[0]=0;
+		saltar_pixeles_size5[1]=1;
+		saltar_pixeles_size5[2]=2;
+	}
+
 	if (char_set==char_set_sam) {
 		saltar_pixeles_size7=0;
 

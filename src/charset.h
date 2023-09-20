@@ -37,6 +37,7 @@ extern unsigned char char_set_ataritos[];
 extern unsigned char char_set_msx[];
 extern unsigned char char_set_beos[];
 extern unsigned char char_set_dos[];
+extern unsigned char char_set_templeos[];
 extern unsigned char char_set_customfile[];
 
 extern char char_set_customfile_path[];
