@@ -522,12 +522,10 @@ y luego dos slaves que fueran los que estuvieran compitiendo
 Toda esta parte cliente de "backend" estara contenida en zeng_online_client.c
 La parte de menus , el "frontend" estara contenida en menu_zeng_online.c
 
--Al leer rooms, campo nombre a la derecha del todo, para poder parsear todas las otras columnas por espacios
-Luego nombre puede contener espacios porque no lo parseamos para nada
-O sea:
-
-escribir_socket(misocket,"N.  Created Players Max Name                           \n");
 
 
 -En join comprobar que no se haya llegado al máximo de usuarios
+
+-Implementar retornar ID en get-snapshot para saber si el que nos llega es el mismo que el anterior
+-put-snapshot se acaba ralentizando por alguna razon que desconozco: puede que se lean datos de otro socket por alguna razon que desconozco
 ---------------

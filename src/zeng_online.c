@@ -645,21 +645,15 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
 
         zengonline_get_snapshot(room_number,puntero_snapshot);
 
-                //TODO: esta longitud se debe obtener tambien con bloqueo de semaforo
-                int longitud=zeng_online_rooms_list[room_number].snapshot_size;
+        //TODO: esta longitud se debe obtener tambien con bloqueo de semaforo
+        int longitud=zeng_online_rooms_list[room_number].snapshot_size;
 
-                int i;
-                for (i=0;i<longitud;i++,puntero_snapshot++) {
-                    escribir_socket_format(misocket,"%02X",*puntero_snapshot);
-                }
+        int i;
+        for (i=0;i<longitud;i++) {
+            escribir_socket_format(misocket,"%02X",puntero_snapshot[i]);
+        }
 
-                //Y salto de linea para indicar el final del snapshot
-                /*int escritos=escribir_socket(misocket,"\n");
-                //printf("Escritos socket: %d\n",escritos);
-                if (escritos<0) {
-                    debug_printf(VERBOSE_DEBUG,"Error returning zeng-online get-snapshot. Client connection may be closed");
-                    return;
-                }*/
+        free(puntero_snapshot);
 
 
 

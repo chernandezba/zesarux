@@ -686,6 +686,7 @@ int zoc_send_snapshot(int indice_socket)
 
 
         z80_byte buffer[200];
+        buffer[0]=0; //temp para tener buffer limpio
         //Leer hasta prompt
         //printf("before zsock_read_all_until_command\n");
         leidos=zsock_read_all_until_command(indice_socket,buffer,199,&posicion_command);
@@ -1044,7 +1045,7 @@ void zeng_online_client_prepare_snapshot_if_needed(void)
                     //temp_memoria_asignada++;
                     //printf("Asignada: %d liberada: %d\n",temp_memoria_asignada,temp_memoria_liberada);
 
-					zoc_send_snapshot_mem_hexa=malloc(ZRCP_GET_PUT_SNAPSHOT_MEM*2); //16 MB es mas que suficiente
+					if (zoc_send_snapshot_mem_hexa==NULL) zoc_send_snapshot_mem_hexa=malloc(ZRCP_GET_PUT_SNAPSHOT_MEM*2); //16 MB es mas que suficiente
 
 					int char_destino=0;
 
