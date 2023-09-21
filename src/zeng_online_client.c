@@ -650,6 +650,52 @@ void zeng_online_client_create_room(int room_number,char *room_name)
 	pthread_detach(thread_zeng_online_client_create_room);
 }
 
+int zoc_frames_video_cada_snapshot=10;
+int zoc_contador_envio_snapshot=0;
+int zoc_snapshots_not_sent=0;
+char *zoc_send_snapshot_mem_hexa=NULL;
+
+int zoc_send_snapshot(int indice_socket)
+{
+	//Enviar snapshot cada 20*250=5000 ms->5 segundos
+		debug_printf (VERBOSE_DEBUG,"ZENG: Sending snapshot");
+
+		int posicion_command;
+		int escritos,leidos;
+
+
+        char buffer_comando[200];
+        //printf ("Sending put-snapshot\n");
+        //put-snapshot creator_pass n data
+        sprintf(buffer_comando,"zeng-online put-snapshot %s %d ",created_room_creator_password,zeng_online_joined_to_room_number);
+        escritos=z_sock_write_string(indice_socket,buffer_comando);
+        //printf("after z_sock_write_string 1\n");
+        if (escritos<0) return escritos;
+
+
+        //TODO esto es ineficiente y que tiene que calcular la longitud. hacer otra z_sock_write sin tener que calcular
+        //printf("before z_sock_write_string 2\n");
+        escritos=z_sock_write_string(indice_socket,zoc_send_snapshot_mem_hexa);
+        //printf("after z_sock_write_string 2\n");
+
+
+
+        if (escritos<0) return escritos;
+
+
+
+        z80_byte buffer[200];
+        //Leer hasta prompt
+        //printf("before zsock_read_all_until_command\n");
+        leidos=zsock_read_all_until_command(indice_socket,buffer,199,&posicion_command);
+        //printf("after zsock_read_all_until_command\n");
+        return leidos;
+
+
+}
+
+
+
 void *zoc_snapshot_sending_function(void *nada GCC_UNUSED)
 {
 
@@ -693,6 +739,11 @@ void *zoc_snapshot_sending_function(void *nada GCC_UNUSED)
             usleep(10000); //dormir 10 ms
         }
         else {
+            int error=zoc_send_snapshot(indice_socket);
+
+            if (error<0) {
+                //TODO
+            }
 
             //Enviado. Avisar no pendiente
             zoc_pending_send_snapshot=0;
@@ -716,10 +767,7 @@ void zoc_start_snapshot_sending(void)
 }
 
 
-int zoc_frames_video_cada_snapshot=10;
-int zoc_contador_envio_snapshot=0;
-int zoc_snapshots_not_sent=0;
-char *zoc_send_snapshot_mem_hexa=NULL;
+
 
 void zeng_online_client_prepare_snapshot_if_needed(void)
 {
