@@ -689,6 +689,7 @@ int zoc_send_snapshot(int indice_socket)
         //printf("before zsock_read_all_until_command\n");
         leidos=zsock_read_all_until_command(indice_socket,buffer,199,&posicion_command);
         //printf("after zsock_read_all_until_command\n");
+        printf("Recibido respuesta despues de put-snapshot: [%s]\n",buffer);
         return leidos;
 
 
@@ -743,10 +744,12 @@ void *zoc_snapshot_sending_function(void *nada GCC_UNUSED)
 
             if (error<0) {
                 //TODO
+                printf("Error sending snapshot to zeng online server\n");
             }
 
             //Enviado. Avisar no pendiente
             zoc_pending_send_snapshot=0;
+            printf("Snapshot sent\n");
         }
     }
 
