@@ -678,6 +678,8 @@ int zoc_send_snapshot(int indice_socket)
         //TODO esto es ineficiente y que tiene que calcular la longitud. hacer otra z_sock_write sin tener que calcular
         //printf("before z_sock_write_string 2\n");
         printf("Sending snapshot data length: %lu\n",strlen(zoc_send_snapshot_mem_hexa));
+        printf("First bytes of snapshot: %c%c%c%c\n",
+            zoc_send_snapshot_mem_hexa[0],zoc_send_snapshot_mem_hexa[1],zoc_send_snapshot_mem_hexa[2],zoc_send_snapshot_mem_hexa[3]);
         escritos=z_sock_write_string(indice_socket,zoc_send_snapshot_mem_hexa);
         //printf("after z_sock_write_string 2\n");
 
@@ -688,7 +690,7 @@ int zoc_send_snapshot(int indice_socket)
 
 
         z80_byte buffer[200];
-        buffer[0]=0; //temp para tener buffer limpio
+        //buffer[0]=0; //temp para tener buffer limpio
         //Leer hasta prompt
         //printf("before zsock_read_all_until_command\n");
         leidos=zsock_read_all_until_command(indice_socket,buffer,199,&posicion_command);

@@ -1367,10 +1367,13 @@ void *thread_codetests_putsnap_function(void *nada GCC_UNUSED)
 
 
     while (1) {
+        printf("put snapshot 1\n");
         zengonline_put_snapshot(0,(z80_byte *)codetest_putsnap_string_mysnap1,strlen(codetest_putsnap_string_mysnap1)+1);
 
+        printf("put snapshot 2\n");
         zengonline_put_snapshot(0,(z80_byte *)codetest_putsnap_string_mysnap2,strlen(codetest_putsnap_string_mysnap2)+1);
 
+        printf("put snapshot 3\n");
         zengonline_put_snapshot(0,(z80_byte *)codetest_putsnap_string_mysnap3,strlen(codetest_putsnap_string_mysnap3)+1);
     }
     return NULL;
@@ -1416,11 +1419,13 @@ void codetests_zengonline_putget_snapshot(void)
     //Esperar 1 segundo a que se genere al menos 1 snapshot
     sleep(1);
 
+
+
     //muchos leyendo
     int i;
     for (i=0;i<100;i++) {
         if (pthread_create( &pthread_zengonline_get_snapshot_thread, NULL, &thread_codetests_getsnap_function, NULL) ) {
-            debug_printf(VERBOSE_ERR,"Can not create pthread_zengonline_put_snapshot_thread");
+            debug_printf(VERBOSE_ERR,"Can not create pthread_zengonline_get_snapshot_thread");
             exit(1);
         }
 
