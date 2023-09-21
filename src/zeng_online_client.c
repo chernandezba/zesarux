@@ -56,6 +56,7 @@ pthread_t thread_zeng_online_client_list_rooms;
 pthread_t thread_zeng_online_client_create_room;
 pthread_t thread_zeng_online_client_join_room;
 pthread_t thread_zoc_snapshot_sending;
+pthread_t thread_zoc_snapshot_receiving;
 
 
 #endif
@@ -757,6 +758,120 @@ void *zoc_snapshot_sending_function(void *nada GCC_UNUSED)
 
 }
 
+char *zoc_get_snapshot_mem_hexa=NULL;
+
+int zoc_receive_snapshot(int indice_socket)
+{
+	//Enviar snapshot cada 20*250=5000 ms->5 segundos
+		debug_printf (VERBOSE_DEBUG,"ZENG: Receiving snapshot");
+
+		int posicion_command;
+		int escritos,leidos;
+
+
+        char buffer_comando[200];
+        //printf ("Sending put-snapshot\n");
+        //get-snapshot user_pass n
+        sprintf(buffer_comando,"zeng-online get-snapshot %s %d\n",created_room_user_password,zeng_online_joined_to_room_number);
+        escritos=z_sock_write_string(indice_socket,buffer_comando);
+        //printf("after z_sock_write_string 1\n");
+        if (escritos<0) return escritos;
+
+	    int sock=get_socket_number(indice_socket);
+
+
+
+
+        while (1) {
+            if (zsock_available_data(sock)) {
+        //Ver si hay datos disponibles
+
+                if (zoc_get_snapshot_mem_hexa==NULL) {
+                    zoc_get_snapshot_mem_hexa=util_malloc(ZRCP_GET_PUT_SNAPSHOT_MEM*2,"Can not allocate memory for getting snapshot"); //16 MB es mas que suficiente
+
+
+                    //Leer hasta prompt
+                    //printf("before zsock_read_all_until_command\n");
+                    leidos=zsock_read_all_until_newline(indice_socket,(z80_byte *)zoc_get_snapshot_mem_hexa,ZRCP_GET_PUT_SNAPSHOT_MEM*2,&posicion_command);
+                    //printf("after zsock_read_all_until_command\n");
+                    printf("Recibido respuesta despues de get-snapshot: [%s]\n",zoc_get_snapshot_mem_hexa);
+                    //return leidos;
+                }
+                else {
+                    printf("get-snapshot no disponible. esperar\n");
+                    //Esperar algo. 10 ms, suficiente porque es un mitad de frame
+                    usleep(10000); //dormir 10 ms
+                }
+
+            }
+
+        }
+
+
+}
+
+
+
+void *zoc_snapshot_receiving_function(void *nada GCC_UNUSED)
+{
+
+    //conectar a remoto
+
+    //zeng_remote_list_rooms_buffer[0]=0;
+
+    int indice_socket=z_sock_open_connection(zeng_online_server,zeng_online_server_port,0,"");
+
+    if (indice_socket<0) {
+        debug_printf(VERBOSE_ERR,"Error connecting to %s:%d. %s",
+            zeng_online_server,zeng_online_server_port,
+            z_sock_get_error(indice_socket));
+        return 0;
+    }
+
+        int posicion_command;
+
+#define ZENG_BUFFER_INITIAL_CONNECT 199
+
+    //Leer algo
+    char buffer[ZENG_BUFFER_INITIAL_CONNECT+1];
+
+    //int leidos=z_sock_read(indice_socket,buffer,199);
+    int leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)buffer,ZENG_BUFFER_INITIAL_CONNECT,&posicion_command);
+    if (leidos>0) {
+        buffer[leidos]=0; //fin de texto
+        //printf("Received text (length: %d):\n[\n%s\n]\n",leidos,buffer);
+    }
+
+    if (leidos<0) {
+        debug_printf(VERBOSE_ERR,"ERROR. Can't read remote prompt: %s",z_sock_get_error(leidos));
+        return 0;
+    }
+
+    //bucle continuo de si hay snapshot de final de frame, leerlo de remoto
+    //TODO: ver posible manera de salir de aqui??
+    while (1) {
+        if (!zoc_pending_send_snapshot) {
+            //Esperar algo. 10 ms, suficiente porque es un mitad de frame
+            usleep(10000); //dormir 10 ms
+        }
+        else {
+            int error=zoc_receive_snapshot(indice_socket);
+
+            if (error<0) {
+                //TODO
+                printf("Error sending snapshot to zeng online server\n");
+            }
+
+            //Enviado. Avisar no pendiente
+            zoc_pending_send_snapshot=0;
+            printf("Snapshot sent\n");
+        }
+    }
+
+	return 0;
+
+}
+
 //Inicio del thread que como master va enviando snapshot a servidor zeng online
 void zoc_start_snapshot_sending(void)
 {
@@ -769,7 +884,17 @@ void zoc_start_snapshot_sending(void)
 	pthread_detach(thread_zoc_snapshot_sending);
 }
 
+//Inicio del thread que como slave va recibiendo snapshot de servidor zeng online
+void zoc_start_snapshot_receiving(void)
+{
+	if (pthread_create( &thread_zoc_snapshot_receiving, NULL, &zoc_snapshot_receiving_function, NULL) ) {
+		debug_printf(VERBOSE_ERR,"Can not create zeng online receive snapshot pthread");
+		return;
+	}
 
+	//y pthread en estado detached asi liberara su memoria asociada a thread al finalizar, sin tener que hacer un pthread_join
+	pthread_detach(thread_zoc_snapshot_receiving);
+}
 
 
 void zeng_online_client_prepare_snapshot_if_needed(void)

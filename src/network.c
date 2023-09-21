@@ -1071,6 +1071,85 @@ int zsock_read_all_until_command(int indice_tabla,z80_byte *buffer,int max_buffe
 
 }
 
+
+//devuelve en posicion_command donde empieza el salto de linea, si es >=0
+int zsock_read_all_until_newline(int indice_tabla,z80_byte *buffer,int max_buffer,int *posicion_command)
+{
+
+	//Leemos hasta que no haya mas datos para leer. Idealmente estara el "\n"
+	int leidos;
+
+	//Inicialmente no sabemos la posicion del command>
+	*posicion_command=-1;
+
+	int sock=get_socket_number(indice_tabla);
+
+	if (sock<0) {
+		return sock;
+	}
+
+
+	int pos_destino=0;
+	int total_leidos=0;
+	int leido_command_prompt=0;
+	int reintentos=0;
+
+	do {
+
+		do {
+			//if (chardevice_status(sock) & CHDEV_ST_RD_AVAIL_DATA) {
+			if (zsock_available_data(sock)) {
+				leidos=z_sock_read(indice_tabla,&buffer[pos_destino],max_buffer);
+				//printf ("leidos en zsock_wait_until_command_prompt: %d\n",leidos);
+				if (leidos<0) return -1;
+				else {
+					max_buffer -=leidos;
+					total_leidos +=leidos;
+					pos_destino +=leidos;
+				}
+			}
+			else {
+				leidos=0;
+			}
+		} while (leidos>0 && max_buffer>0);
+
+		//Ver si hay "\n" al final
+		if (total_leidos>=1) { //"\n" ocupa 9
+			//printf ("Leido al final: %02XH %02XH [%c%c]\n",buffer[total_leidos-2],buffer[total_leidos-1],
+			//util_printable_char(buffer[total_leidos-2]),util_printable_char(buffer[total_leidos-1]));
+
+			//printf ("Leido todo: ");
+			//zsock_debug_dump_ascii(buffer,total_leidos);
+			//printf ("\n");
+
+			if (buffer[total_leidos-1]=='\n') {
+				leido_command_prompt=1;
+				*posicion_command=total_leidos-1;
+				//printf ("Recibido command prompt\n");
+			}
+		}
+
+		else {
+			//printf ("total leidos: %d\n",total_leidos);
+		}
+
+
+		if (!leido_command_prompt) {
+			//printf ("NO recibido command prompt. Reintentar\n");
+			usleep(10000); //10 ms
+		}
+
+		reintentos++;
+
+		//TODO controlar maximo reintentos
+	} while (!leido_command_prompt && reintentos<500);
+	//5 segundos de reintentos
+
+	//TODO: si se llega aqui sin haber recibido command prompt. Se gestionara en retorno mediante posicion_command
+	return total_leidos;
+
+}
+
 char *zsock_http_skip_headers(char *mem,int total_leidos,int *http_code,char *redirect)
 {
 //leer linea a linea hasta fin cabecera
