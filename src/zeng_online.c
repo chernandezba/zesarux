@@ -161,7 +161,7 @@ void zengonline_add_event(int room_number,char *uuid,int tecla,int event_type,in
 //Es el problema tipico del readers-writers (aunque en mi caso solo tengo un writer)
 //Quiero que puedan leer muchos simultaneamente, pero que solo pueda escribir cuando no hay nadie leyendo
 //https://www.tutorialspoint.com/readers-writers-problem
-void zengonline_get_snapshot(int room,z80_byte *destino)
+int zengonline_get_snapshot(int room,z80_byte *destino)
 {
     //Adquirir lock mutex
 	while(z_atomic_test_and_set(&zeng_online_rooms_list[room].mutex_reading_snapshot)) {
@@ -181,7 +181,9 @@ void zengonline_get_snapshot(int room,z80_byte *destino)
     //Liberar lock mutex
 	z_atomic_reset(&zeng_online_rooms_list[room].mutex_reading_snapshot);
 
-    memcpy(destino,zeng_online_rooms_list[room].snapshot_memory,zeng_online_rooms_list[room].snapshot_size);
+    int longitud_snapshot=zeng_online_rooms_list[room].snapshot_size;
+
+    memcpy(destino,zeng_online_rooms_list[room].snapshot_memory,longitud_snapshot);
 
     //Adquirir lock mutex
 	while(z_atomic_test_and_set(&zeng_online_rooms_list[room].mutex_reading_snapshot)) {
@@ -198,6 +200,8 @@ void zengonline_get_snapshot(int room,z80_byte *destino)
 
     //Liberar lock mutex
     z_atomic_reset(&zeng_online_rooms_list[room].mutex_reading_snapshot);
+
+    return longitud_snapshot;
 
 
 }
@@ -643,10 +647,8 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
 
         z80_byte *puntero_snapshot=util_malloc(ZRCP_GET_PUT_SNAPSHOT_MEM*2,"Can not allocate memory for get snapshot");
 
-        zengonline_get_snapshot(room_number,puntero_snapshot);
+        int longitud=zengonline_get_snapshot(room_number,puntero_snapshot);
 
-        //TODO: esta longitud se debe obtener tambien con bloqueo de semaforo
-        int longitud=zeng_online_rooms_list[room_number].snapshot_size;
 
         int i;
         for (i=0;i<longitud;i++) {
