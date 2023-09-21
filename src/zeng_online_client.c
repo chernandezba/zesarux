@@ -651,7 +651,7 @@ void zeng_online_client_create_room(int room_number,char *room_name)
 	pthread_detach(thread_zeng_online_client_create_room);
 }
 
-int zoc_frames_video_cada_snapshot=10;
+int zoc_frames_video_cada_snapshot=1;
 int zoc_contador_envio_snapshot=0;
 int zoc_snapshots_not_sent=0;
 char *zoc_send_snapshot_mem_hexa=NULL;
@@ -788,22 +788,23 @@ int zoc_receive_snapshot(int indice_socket)
 
                 if (zoc_get_snapshot_mem_hexa==NULL) {
                     zoc_get_snapshot_mem_hexa=util_malloc(ZRCP_GET_PUT_SNAPSHOT_MEM*2,"Can not allocate memory for getting snapshot"); //16 MB es mas que suficiente
-
-
-                    //Leer hasta prompt
-                    //printf("before zsock_read_all_until_command\n");
-                    leidos=zsock_read_all_until_newline(indice_socket,(z80_byte *)zoc_get_snapshot_mem_hexa,ZRCP_GET_PUT_SNAPSHOT_MEM*2,&posicion_command);
-                    //printf("after zsock_read_all_until_command\n");
-                    printf("Recibido respuesta despues de get-snapshot: [%s]\n",zoc_get_snapshot_mem_hexa);
-                    //return leidos;
                 }
-                else {
-                    printf("get-snapshot no disponible. esperar\n");
-                    //Esperar algo. 10 ms, suficiente porque es un mitad de frame
-                    usleep(10000); //dormir 10 ms
-                }
+
+                //Leer hasta prompt
+                //printf("before zsock_read_all_until_command\n");
+                leidos=zsock_read_all_until_newline(indice_socket,(z80_byte *)      zoc_get_snapshot_mem_hexa,ZRCP_GET_PUT_SNAPSHOT_MEM*2,&posicion_command);
+                //printf("after zsock_read_all_until_command\n");
+                printf("Recibido respuesta despues de get-snapshot: [%s]\n",zoc_get_snapshot_mem_hexa);
+                //return leidos;
 
             }
+            else {
+                printf("get-snapshot no disponible. esperar\n");
+                //Esperar algo. 10 ms, suficiente porque es un mitad de frame
+                usleep(10000); //dormir 10 ms
+            }
+
+
 
         }
 
@@ -850,22 +851,23 @@ void *zoc_snapshot_receiving_function(void *nada GCC_UNUSED)
     //bucle continuo de si hay snapshot de final de frame, leerlo de remoto
     //TODO: ver posible manera de salir de aqui??
     while (1) {
-        if (!zoc_pending_send_snapshot) {
+        /*if (!zoc_pending_send_snapshot) {
             //Esperar algo. 10 ms, suficiente porque es un mitad de frame
             usleep(10000); //dormir 10 ms
         }
-        else {
+        else {*/
             int error=zoc_receive_snapshot(indice_socket);
 
             if (error<0) {
                 //TODO
                 printf("Error sending snapshot to zeng online server\n");
+                usleep(10000); //dormir 10 ms
             }
 
             //Enviado. Avisar no pendiente
             zoc_pending_send_snapshot=0;
             printf("Snapshot sent\n");
-        }
+        //}
     }
 
 	return 0;
