@@ -799,6 +799,28 @@ int zoc_receive_snapshot(int indice_socket)
                 //printf("after zsock_read_all_until_command\n");
                 printf("Recibido respuesta despues de get-snapshot: [%s]\n",zoc_get_snapshot_mem_hexa);
 
+                //Nos quedamos con la respuesta hasta el ultimo
+                //Es decir, si en get-snapshot el server remoto nos ha dejado en cola 2, 3 o mas snapshots, estamos pillando el ultimo
+                //Recordemos que lo envia de manera continua con saltos de linea despues de cada uno de ellos
+                //TODO: esto esta MAL. Hay que escoger el que tiene el ultimo salto de linea
+                int i;
+
+                int inicio_datos_snapshot=0;
+                //int leidos_saltos_linea=0;
+
+                for (i=0;i<leidos;i++) {
+                    if (zoc_get_snapshot_mem_hexa[i]=='\n') {
+                        //Y quitar ese salto de linea, si es el final no queremos que se procese
+                        zoc_get_snapshot_mem_hexa[i]=0;
+
+                        //Si hay algo mas despues del salto de linea
+                        if (i!=leidos-1) inicio_datos_snapshot=i+1;
+                    }
+                }
+
+
+                printf("Buffer despues de truncar: [%s]\n",&zoc_get_snapshot_mem_hexa[inicio_datos_snapshot]);
+
                 //TODO: detectar texto ERROR en respuesta
                 //return leidos;
 
@@ -808,7 +830,7 @@ int zoc_receive_snapshot(int indice_socket)
                 }
 
 
-                char *s=zoc_get_snapshot_mem_hexa;
+                char *s=&zoc_get_snapshot_mem_hexa[inicio_datos_snapshot];
                 int parametros_recibidos=0;
                 z80_byte valor;
 
