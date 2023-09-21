@@ -669,6 +669,7 @@ int zoc_send_snapshot(int indice_socket)
         //printf ("Sending put-snapshot\n");
         //put-snapshot creator_pass n data
         sprintf(buffer_comando,"zeng-online put-snapshot %s %d ",created_room_creator_password,zeng_online_joined_to_room_number);
+        printf("Sending command: [%s]\n",buffer_comando);
         escritos=z_sock_write_string(indice_socket,buffer_comando);
         //printf("after z_sock_write_string 1\n");
         if (escritos<0) return escritos;
@@ -676,6 +677,7 @@ int zoc_send_snapshot(int indice_socket)
 
         //TODO esto es ineficiente y que tiene que calcular la longitud. hacer otra z_sock_write sin tener que calcular
         //printf("before z_sock_write_string 2\n");
+        printf("Sending snapshot data length: %lu\n",strlen(zoc_send_snapshot_mem_hexa));
         escritos=z_sock_write_string(indice_socket,zoc_send_snapshot_mem_hexa);
         //printf("after z_sock_write_string 2\n");
 
@@ -960,8 +962,8 @@ void *zoc_snapshot_receiving_function(void *nada GCC_UNUSED)
             }
 
             //Enviado. Avisar no pendiente
-            zoc_pending_send_snapshot=0;
-            printf("Snapshot sent\n");
+            //zoc_pending_send_snapshot=0;
+            //printf("Snapshot sent\n");
         //}
     }
 
