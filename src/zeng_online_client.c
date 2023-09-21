@@ -23,6 +23,8 @@
 
 Online Network Play (using a central server) Client related code
 
+Functions starting with zoc_ means: zeng online client
+
 */
 
 #include <stdio.h>
@@ -53,6 +55,7 @@ Online Network Play (using a central server) Client related code
 pthread_t thread_zeng_online_client_list_rooms;
 pthread_t thread_zeng_online_client_create_room;
 pthread_t thread_zeng_online_client_join_room;
+pthread_t thread_zoc_snapshot_sending;
 
 
 #endif
@@ -65,6 +68,11 @@ int zeng_online_client_join_room_thread_running=0;
 z80_bit zeng_online_i_am_master={0};
 z80_bit zeng_online_i_am_joined={0};
 int zeng_online_joined_to_room_number=0;
+
+int zoc_pending_send_snapshot=0;
+
+//Si esta conectado
+z80_bit zeng_online_connected={0};
 
 char zeng_online_server[NETWORK_MAX_URL+1]="localhost";
 int zeng_online_server_port=10000;
@@ -507,7 +515,7 @@ int zeng_online_client_create_room_connect(void)
 
 
 
-        zeng_remote_list_rooms_buffer[0]=0;
+        //zeng_remote_list_rooms_buffer[0]=0;
 
 		int indice_socket=z_sock_open_connection(zeng_online_server,zeng_online_server_port,0,"");
 
@@ -642,6 +650,159 @@ void zeng_online_client_create_room(int room_number,char *room_name)
 	pthread_detach(thread_zeng_online_client_create_room);
 }
 
+void *zoc_snapshot_sending_function(void *nada GCC_UNUSED)
+{
+
+    //conectar a remoto
+
+    //zeng_remote_list_rooms_buffer[0]=0;
+
+    int indice_socket=z_sock_open_connection(zeng_online_server,zeng_online_server_port,0,"");
+
+    if (indice_socket<0) {
+        debug_printf(VERBOSE_ERR,"Error connecting to %s:%d. %s",
+            zeng_online_server,zeng_online_server_port,
+            z_sock_get_error(indice_socket));
+        return 0;
+    }
+
+        int posicion_command;
+
+#define ZENG_BUFFER_INITIAL_CONNECT 199
+
+    //Leer algo
+    char buffer[ZENG_BUFFER_INITIAL_CONNECT+1];
+
+    //int leidos=z_sock_read(indice_socket,buffer,199);
+    int leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)buffer,ZENG_BUFFER_INITIAL_CONNECT,&posicion_command);
+    if (leidos>0) {
+        buffer[leidos]=0; //fin de texto
+        //printf("Received text (length: %d):\n[\n%s\n]\n",leidos,buffer);
+    }
+
+    if (leidos<0) {
+        debug_printf(VERBOSE_ERR,"ERROR. Can't read remote prompt: %s",z_sock_get_error(leidos));
+        return 0;
+    }
+
+    //bucle continuo de si hay snapshot de final de frame, enviarlo a remoto
+    //TODO: ver posible manera de salir de aqui??
+    while (1) {
+        if (!zoc_pending_send_snapshot) {
+            //Esperar algo. 10 ms, suficiente porque es un mitad de frame
+            usleep(10000); //dormir 10 ms
+        }
+        else {
+
+            //Enviado. Avisar no pendiente
+            zoc_pending_send_snapshot=0;
+        }
+    }
+
+	return 0;
+
+}
+
+//Inicio del thread que como master va enviando snapshot a servidor zeng online
+void zoc_start_snapshot_sending(void)
+{
+	if (pthread_create( &thread_zoc_snapshot_sending, NULL, &zoc_snapshot_sending_function, NULL) ) {
+		debug_printf(VERBOSE_ERR,"Can not create zeng online send snapshot pthread");
+		return;
+	}
+
+	//y pthread en estado detached asi liberara su memoria asociada a thread al finalizar, sin tener que hacer un pthread_join
+	pthread_detach(thread_zoc_snapshot_sending);
+}
+
+
+int zoc_frames_video_cada_snapshot=10;
+int zoc_contador_envio_snapshot=0;
+int zoc_snapshots_not_sent=0;
+char *zoc_send_snapshot_mem_hexa=NULL;
+
+void zeng_online_client_prepare_snapshot_if_needed(void)
+{
+
+	if (zeng_online_connected.v==0) return;
+
+	if (zeng_online_i_am_master.v) {
+		zoc_contador_envio_snapshot++;
+		//printf ("%d %d\n",contador_envio_snapshot,(contador_envio_snapshot % (50*zeng_segundos_cada_snapshot) ));
+		if (zoc_contador_envio_snapshot>=zoc_frames_video_cada_snapshot) {
+                zoc_contador_envio_snapshot=0;
+				//Si esta el anterior snapshot aun pendiente de enviar
+				if (zoc_pending_send_snapshot) {
+                    zoc_snapshots_not_sent++;
+					debug_printf (VERBOSE_DEBUG,"ZENG: Last snapshot has not been sent yet. Total unsent: %d",zoc_snapshots_not_sent);
+
+                    //Si llegado a un limite, reconectar. Suele suceder con ZENG en slave windows
+                    //Sucede que se queda la operacion de send a socket que no acaba
+                    /*
+                    Aun con esto, parece que a veces va enviando snapshots pero el remoto no parece procesarlos,
+                    con lo que aqui lo da como bueno y no incrementa el contador de retries
+                    */
+
+                   //TODO
+                   /*
+                    if (zeng_force_reconnect_failed_retries.v) {
+                        if (zoc_snapshots_not_sent>=3*50) { //Si pasan mas de 3 segundos y no ha enviado aun el ultimo snapshot
+                            debug_printf (VERBOSE_INFO,"ZENG: Forcing reconnect");
+                            //printf("Before forcing ZENG reconnect\n");
+                            zeng_force_reconnect();
+                            //printf("After forcing ZENG reconnect\n");
+                        }
+                    }
+                    */
+				}
+				else {
+                    zoc_snapshots_not_sent=0;
+
+					//zona de memoria donde se guarda el snapshot pero sin pasar a hexa
+					z80_byte *buffer_temp;
+					buffer_temp=malloc(ZRCP_GET_PUT_SNAPSHOT_MEM); //16 MB es mas que suficiente
+
+					if (buffer_temp==NULL) cpu_panic("Can not allocate memory for sending snapshot");
+
+					int longitud;
+
+  					save_zsf_snapshot_file_mem(NULL,buffer_temp,&longitud);
+
+
+                    //temp_memoria_asignada++;
+                    //printf("Asignada: %d liberada: %d\n",temp_memoria_asignada,temp_memoria_liberada);
+
+					zoc_send_snapshot_mem_hexa=malloc(ZRCP_GET_PUT_SNAPSHOT_MEM*2); //16 MB es mas que suficiente
+
+					int char_destino=0;
+
+					int i;
+
+					for (i=0;i<longitud;i++,char_destino +=2) {
+						sprintf (&zoc_send_snapshot_mem_hexa[char_destino],"%02X",buffer_temp[i]);
+					}
+
+					//metemos salto de linea y 0 al final
+					strcpy (&zoc_send_snapshot_mem_hexa[char_destino],"\n");
+
+					debug_printf (VERBOSE_DEBUG,"ZENG Online: Queuing snapshot to send, length: %d",longitud);
+
+                    printf ("ZENG Online: Queuing snapshot to send, length: %d\n",longitud);
+
+
+					//Liberar memoria que ya no se usa
+					free(buffer_temp);
+
+
+					zoc_pending_send_snapshot=1;
+
+
+				}
+		}
+	}
+}
+
+
 #else
 
 //Funciones sin pthreads. ZENG no se llama nunca cuando no hay pthreads, pero hay que crear estas funciones vacias
@@ -652,6 +813,10 @@ void zeng_online_client_list_rooms(void)
 }
 
 void zeng_online_client_create_room(int room_number,char *room_name)
+{
+}
+
+void zoc_start_snapshot_sending(void)
 {
 }
 

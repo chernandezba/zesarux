@@ -308,7 +308,13 @@ void menu_zeng_online_create_room(MENU_ITEM_PARAMETERS)
 
         //join room
         menu_zeng_join_room_aux(room_number);
-        //TODO: flag que indique a nivel global que somos master, no slave
+        //flag que indique a nivel global que somos master, no slave
+        zeng_online_i_am_master.v=1;
+
+        zeng_online_connected.v=1;
+
+
+        zoc_start_snapshot_sending();
         //TODO: inicio thread de envio de snapshot, cada x milisegundos
         //TODO: inicio thread de envio de eventos al pulsar teclas (igual en master que slave)
         //TODO: en menu no debe dejar crear room o join
@@ -342,8 +348,14 @@ void menu_zeng_online_join_room(MENU_ITEM_PARAMETERS)
 
         //join room
         menu_zeng_join_room_aux(room_number);
-        //TODO flag que indique a nivel global que somos slave , no master
+
+        //flag que indique a nivel global que somos slave , no master
+        zeng_online_i_am_master.v=0;
+        zeng_online_connected.v=1;
+
         //TODO: en menu no debe dejar crear room o join
+
+
 
     }
 }
@@ -380,10 +392,16 @@ void menu_zeng_online(MENU_ITEM_PARAMETERS)
 
         }
         else {
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,
+            "Joined to room: ","Unido a habitación: ","Unit a habitació: ");
+            menu_add_item_menu_sufijo_format(array_menu_common,"%d",zeng_online_joined_to_room_number);
+
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_destroy_room,NULL,
             "~~Destroy room","~~Destruir habitación","~~Destruir habitació");
             menu_add_item_menu_shortcut(array_menu_common,'d');
         }
+
+        //TODO: desconectar con zeng_online_connected.v=0;
 
         menu_add_item_menu_separator(array_menu_common);
 
