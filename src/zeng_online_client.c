@@ -759,6 +759,9 @@ void *zoc_snapshot_sending_function(void *nada GCC_UNUSED)
 }
 
 char *zoc_get_snapshot_mem_hexa=NULL;
+z80_byte *zoc_get_snapshot_mem_binary=NULL;
+int zoc_get_snapshot_mem_binary_longitud=0;
+int zoc_pending_apply_received_snapshot=0;
 
 int zoc_receive_snapshot(int indice_socket)
 {
@@ -783,8 +786,8 @@ int zoc_receive_snapshot(int indice_socket)
 
 
         while (1) {
-            if (zsock_available_data(sock)) {
-        //Ver si hay datos disponibles
+            if (zsock_available_data(sock) && !zoc_pending_apply_received_snapshot) {
+        //Ver si hay datos disponibles y no esta pendiente aplicar ultimo snapshot
 
                 if (zoc_get_snapshot_mem_hexa==NULL) {
                     zoc_get_snapshot_mem_hexa=util_malloc(ZRCP_GET_PUT_SNAPSHOT_MEM*2,"Can not allocate memory for getting snapshot"); //16 MB es mas que suficiente
@@ -792,10 +795,47 @@ int zoc_receive_snapshot(int indice_socket)
 
                 //Leer hasta prompt
                 //printf("before zsock_read_all_until_command\n");
-                leidos=zsock_read_all_until_newline(indice_socket,(z80_byte *)      zoc_get_snapshot_mem_hexa,ZRCP_GET_PUT_SNAPSHOT_MEM*2,&posicion_command);
+                leidos=zsock_read_all_until_newline(indice_socket,(z80_byte *)zoc_get_snapshot_mem_hexa,ZRCP_GET_PUT_SNAPSHOT_MEM*2,&posicion_command);
                 //printf("after zsock_read_all_until_command\n");
                 printf("Recibido respuesta despues de get-snapshot: [%s]\n",zoc_get_snapshot_mem_hexa);
+
+                //TODO: detectar texto ERROR en respuesta
                 //return leidos;
+
+                //Convertir hexa a memoria
+                if (zoc_get_snapshot_mem_binary==NULL) {
+                    zoc_get_snapshot_mem_binary=util_malloc(ZRCP_GET_PUT_SNAPSHOT_MEM*2,"Can not allocate memory for apply snapshot");
+                }
+
+
+			char *s=zoc_get_snapshot_mem_hexa;
+			int parametros_recibidos=0;
+            z80_byte valor;
+
+
+			while (*s) {
+				char buffer_valor[4];
+				buffer_valor[0]=s[0];
+				buffer_valor[1]=s[1];
+				buffer_valor[2]='H';
+				buffer_valor[3]=0;
+				//printf ("%s\n",buffer_valor);
+				valor=parse_string_to_number(buffer_valor);
+				//printf ("valor: %d\n",valor);
+
+				zoc_get_snapshot_mem_binary[parametros_recibidos++]=valor;
+				//menu_debug_write_mapped_byte(direccion++,valor);
+
+				s++;
+				if (*s) s++;
+			}
+
+
+			zoc_get_snapshot_mem_binary_longitud=parametros_recibidos;
+
+
+
+                zoc_pending_apply_received_snapshot=1;
 
             }
             else {
@@ -811,7 +851,25 @@ int zoc_receive_snapshot(int indice_socket)
 
 }
 
+void zeng_online_client_apply_pending_received_snapshot(void)
+{
+    if (zeng_online_connected.v==0) return;
 
+    if (zeng_online_i_am_master.v) return;
+
+    if (!zoc_pending_apply_received_snapshot) return;
+
+
+    printf("Putting snapshot coming from ZRCP\n");
+
+    load_zsf_snapshot_file_mem(NULL,zoc_get_snapshot_mem_binary,zoc_get_snapshot_mem_binary_longitud,1);
+
+    free(zoc_get_snapshot_mem_binary);
+    zoc_get_snapshot_mem_binary=NULL;
+
+    zoc_pending_apply_received_snapshot=0;
+
+}
 
 void *zoc_snapshot_receiving_function(void *nada GCC_UNUSED)
 {
