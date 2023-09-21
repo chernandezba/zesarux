@@ -693,6 +693,12 @@ int zoc_send_snapshot(int indice_socket)
         //printf("before zsock_read_all_until_command\n");
         leidos=zsock_read_all_until_command(indice_socket,buffer,199,&posicion_command);
         //printf("after zsock_read_all_until_command\n");
+
+                if (posicion_command>=1) {
+                    buffer[posicion_command-1]=0;
+                    //debug_printf(VERBOSE_DEBUG,"ZENG: Received text: %s",zoc_get_snapshot_mem_hexa);
+                }
+
         printf("Recibido respuesta despues de put-snapshot: [%s]\n",buffer);
         return leidos;
 
@@ -780,7 +786,7 @@ int zoc_receive_snapshot(int indice_socket)
         while (1) {
 
             if (!zoc_pending_apply_received_snapshot) {
-        //printf ("Sending put-snapshot\n");
+
         //get-snapshot user_pass n
         sprintf(buffer_comando,"zeng-online get-snapshot %s %d\n",created_room_user_password,zeng_online_joined_to_room_number);
         escritos=z_sock_write_string(indice_socket,buffer_comando);
