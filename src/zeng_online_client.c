@@ -52,6 +52,7 @@ Online Network Play (using a central server) Client related code
 
 pthread_t thread_zeng_online_client_list_rooms;
 pthread_t thread_zeng_online_client_create_room;
+pthread_t thread_zeng_online_client_join_room;
 
 
 #endif
@@ -59,7 +60,11 @@ pthread_t thread_zeng_online_client_create_room;
 //Variables y funciones que no son de pthreads
 int zeng_online_client_list_rooms_thread_running=0;
 int zeng_online_client_create_room_thread_running=0;
+int zeng_online_client_join_room_thread_running=0;
 
+z80_bit zeng_online_i_am_master={0};
+z80_bit zeng_online_i_am_joined={0};
+int zeng_online_joined_to_room_number=0;
 
 char zeng_online_server[NETWORK_MAX_URL+1]="localhost";
 int zeng_online_server_port=10000;
@@ -334,12 +339,167 @@ void zeng_online_client_list_rooms(void)
 
 }
 
+//El creator password de una room que hemos creado
+char created_room_creator_password[ZENG_ROOM_PASSWORD_LENGTH+1]; //+1 para el 0 del final. un password simple, para las operaciones
+
+//El user password de una room que nos hemos unido
+char created_room_user_password[ZENG_ROOM_PASSWORD_LENGTH+1];
+
+int param_join_room_number;
+
+//Devuelve 0 si no conectado
+int zeng_online_client_join_room_connect(void)
+{
+
+
+
+
+        zeng_remote_list_rooms_buffer[0]=0;
+
+		int indice_socket=z_sock_open_connection(zeng_online_server,zeng_online_server_port,0,"");
+
+		if (indice_socket<0) {
+			debug_printf(VERBOSE_ERR,"Error connecting to %s:%d. %s",
+                zeng_online_server,zeng_online_server_port,
+                z_sock_get_error(indice_socket));
+			return 0;
+		}
+
+		 int posicion_command;
+
+#define ZENG_BUFFER_INITIAL_CONNECT 199
+
+		//Leer algo
+		char buffer[ZENG_BUFFER_INITIAL_CONNECT+1];
+
+		//int leidos=z_sock_read(indice_socket,buffer,199);
+		int leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)buffer,ZENG_BUFFER_INITIAL_CONNECT,&posicion_command);
+		if (leidos>0) {
+			buffer[leidos]=0; //fin de texto
+			//printf("Received text (length: %d):\n[\n%s\n]\n",leidos,buffer);
+		}
+
+		if (leidos<0) {
+			debug_printf(VERBOSE_ERR,"ERROR. Can't read remote prompt: %s",z_sock_get_error(leidos));
+			return 0;
+		}
+
+		//zsock_wait_until_command_prompt(indice_socket);
+
+		debug_printf(VERBOSE_DEBUG,"ZENG: Sending join-room");
+
+        char buffer_enviar[1024];
+        sprintf(buffer_enviar,"zeng-online join %d\n",param_join_room_number);
+
+		int escritos=z_sock_write_string(indice_socket,buffer_enviar);
+
+		if (escritos<0) {
+			debug_printf(VERBOSE_ERR,"ERROR. Can't send zeng-online join: %s",z_sock_get_error(escritos));
+			return 0;
+		}
+
+
+		//reintentar
+		leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)buffer,ZENG_BUFFER_INITIAL_CONNECT,&posicion_command);
+		if (leidos>0) {
+			buffer[leidos]=0; //fin de texto
+			debug_printf(VERBOSE_DEBUG,"ZENG: Received text for zeng-online join (length %d): \n[\n%s\n]",leidos,buffer);
+		}
+
+		if (leidos<0) {
+			debug_printf(VERBOSE_ERR,"ERROR. Can't receive zeng-online join: %s",z_sock_get_error(leidos));
+			return 0;
+		}
+
+		//1 mas para eliminar el salto de linea anterior a "command>"
+		if (posicion_command>=1) {
+			buffer[posicion_command-1]=0;
+			debug_printf(VERBOSE_DEBUG,"ZENG: Received text: %s",buffer);
+		}
+		else {
+			debug_printf (VERBOSE_ERR,"Error receiving ZEsarUX zeng-online join");
+			return 0;
+		}
+
+        printf("Retorno join-room: [%s]\n",buffer);
+        //Si hay ERROR
+        if (strstr(buffer,"ERROR")!=NULL) {
+            debug_printf(VERBOSE_ERR,"Error joining room: %s",buffer);
+            return 0;
+        }
+        strcpy(created_room_user_password,buffer);
+
+        printf("User password: [%s]\n",created_room_user_password);
+
+		//finalizar conexion
+        z_sock_close_connection(indice_socket);
+
+        zeng_online_i_am_joined.v=1;
+
+        zeng_online_joined_to_room_number=param_join_room_number;
+
+
+
+	//zeng_remote_socket=indice_socket;
+
+	return 1;
+}
+
+void *zeng_online_client_join_room_function(void *nada GCC_UNUSED)
+{
+
+	zeng_online_client_join_room_thread_running=1;
+
+
+
+	//Conectar a remoto
+
+	if (!zeng_online_client_join_room_connect()) {
+		//Desconectar solo si el socket estaba conectado
+
+        //Desconectar los que esten conectados
+        //TODO zeng_disconnect_remote();
+
+		zeng_online_client_join_room_thread_running=0;
+		return 0;
+	}
+
+
+
+
+
+
+	//zeng_enabled.v=1;
+
+
+	zeng_online_client_join_room_thread_running=0;
+
+	return 0;
+
+}
+
+void zeng_online_client_join_room(int room_number)
+{
+
+	//Inicializar thread
+    //Paso de parametro mediante variable estatica
+    param_join_room_number=room_number;
+
+	if (pthread_create( &thread_zeng_online_client_join_room, NULL, &zeng_online_client_join_room_function, NULL) ) {
+		debug_printf(VERBOSE_ERR,"Can not create zeng online join room pthread");
+		return;
+	}
+
+	//y pthread en estado detached asi liberara su memoria asociada a thread al finalizar, sin tener que hacer un pthread_join
+	pthread_detach(thread_zeng_online_client_join_room);
+
+
+}
+
 char param_create_room_name[ZENG_ONLINE_MAX_ROOM_NAME+1];
 int param_create_room_number;
 
-//El creator password de una room que hemos creado
 
-char created_room_creator_password[ZENG_ROOM_PASSWORD_LENGTH+1]; //+1 para el 0 del final. un password simple, para las operaciones
 
 //Devuelve 0 si no conectado
 int zeng_online_client_create_room_connect(void)

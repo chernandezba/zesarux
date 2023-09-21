@@ -63,9 +63,7 @@ y tiene que escoger una que este vacia. Esto hace un create-room (nos guardamos 
 
 int zeng_online_opcion_seleccionada=0;
 
-z80_bit zeng_online_i_am_master={0};
-z80_bit zeng_online_i_am_joined={0};
-int zeng_online_joined_to_room_number=0;
+
 
 
 
@@ -79,8 +77,41 @@ void menu_zeng_online_server_port(MENU_ITEM_PARAMETERS)
     //TODO
 }
 
+void menu_zeng_online_join_room_print(zxvision_window *w)
+{
+    char buf_temp[NETWORK_MAX_URL+256];
+    sprintf(buf_temp,"Connecting to %s",zeng_online_server);
 
-int contador_menu_zeng_online_list_rooms_print=0;
+    menu_common_connect_print(w,buf_temp);
+}
+
+
+
+int menu_zeng_online_join_room_cond(zxvision_window *w GCC_UNUSED)
+{
+	return !zeng_online_client_join_room_thread_running;
+}
+
+void menu_zeng_join_room_aux(int room_number)
+{
+
+
+    //Lanzar el thread de join room
+    zeng_online_client_join_room(room_number);
+
+    contador_menu_zeng_connect_print=0;
+
+
+    zxvision_simple_progress_window("ZENG Join Room", menu_zeng_online_join_room_cond,menu_zeng_online_join_room_print );
+
+    if (zeng_online_client_join_room_thread_running) {
+        menu_warn_message("Connection has not finished yet");
+    }
+
+
+}
+
+//int contador_menu_zeng_online_list_rooms_print=0;
 
 
 void menu_zeng_online_list_rooms_print(zxvision_window *w)
@@ -275,7 +306,8 @@ void menu_zeng_online_create_room(MENU_ITEM_PARAMETERS)
 
         zxvision_simple_progress_window("ZENG Online Create Room", menu_zeng_online_create_room_cond,menu_zeng_online_create_room_print );
 
-        //TODO: join room.
+        //join room
+        menu_zeng_join_room_aux(room_number);
         //TODO: flag que indique a nivel global que somos master, no slave
         //TODO: inicio thread de envio de snapshot, cada x milisegundos
         //TODO: inicio thread de envio de eventos al pulsar teclas (igual en master que slave)
@@ -308,7 +340,8 @@ void menu_zeng_online_join_room(MENU_ITEM_PARAMETERS)
             return;
         }
 
-        //TODO join
+        //join room
+        menu_zeng_join_room_aux(room_number);
         //TODO flag que indique a nivel global que somos slave , no master
         //TODO: en menu no debe dejar crear room o join
 
