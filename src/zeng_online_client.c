@@ -808,32 +808,30 @@ int zoc_receive_snapshot(int indice_socket)
                 }
 
 
-			char *s=zoc_get_snapshot_mem_hexa;
-			int parametros_recibidos=0;
-            z80_byte valor;
+                char *s=zoc_get_snapshot_mem_hexa;
+                int parametros_recibidos=0;
+                z80_byte valor;
 
 
-			while (*s) {
-				char buffer_valor[4];
-				buffer_valor[0]=s[0];
-				buffer_valor[1]=s[1];
-				buffer_valor[2]='H';
-				buffer_valor[3]=0;
-				//printf ("%s\n",buffer_valor);
-				valor=parse_string_to_number(buffer_valor);
-				//printf ("valor: %d\n",valor);
+                while (*s) {
+                    char buffer_valor[4];
+                    buffer_valor[0]=s[0];
+                    buffer_valor[1]=s[1];
+                    buffer_valor[2]='H';
+                    buffer_valor[3]=0;
+                    //printf ("%s\n",buffer_valor);
+                    valor=parse_string_to_number(buffer_valor);
+                    //printf ("valor: %d\n",valor);
 
-				zoc_get_snapshot_mem_binary[parametros_recibidos++]=valor;
-				//menu_debug_write_mapped_byte(direccion++,valor);
+                    zoc_get_snapshot_mem_binary[parametros_recibidos++]=valor;
+                    //menu_debug_write_mapped_byte(direccion++,valor);
 
-				s++;
-				if (*s) s++;
-			}
-
-
-			zoc_get_snapshot_mem_binary_longitud=parametros_recibidos;
+                    s++;
+                    if (*s) s++;
+                }
 
 
+			    zoc_get_snapshot_mem_binary_longitud=parametros_recibidos;
 
                 zoc_pending_apply_received_snapshot=1;
 
@@ -860,7 +858,7 @@ void zeng_online_client_apply_pending_received_snapshot(void)
     if (!zoc_pending_apply_received_snapshot) return;
 
 
-    printf("Putting snapshot coming from ZRCP\n");
+    printf("Putting snapshot coming from ZRCP: %p %d\n",zoc_get_snapshot_mem_binary,zoc_get_snapshot_mem_binary_longitud);
 
     load_zsf_snapshot_file_mem(NULL,zoc_get_snapshot_mem_binary,zoc_get_snapshot_mem_binary_longitud,1);
 
