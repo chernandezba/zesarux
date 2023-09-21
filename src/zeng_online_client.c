@@ -75,7 +75,7 @@ int zoc_pending_send_snapshot=0;
 //Si esta conectado
 z80_bit zeng_online_connected={0};
 
-char zeng_online_server[NETWORK_MAX_URL+1]="51.83.33.13";
+char zeng_online_server[NETWORK_MAX_URL+1]="localhost";
 int zeng_online_server_port=10000;
 
 //Buffer donde guardar listado de rooms remotas
@@ -773,6 +773,10 @@ int zoc_receive_snapshot(int indice_socket)
 
 
         char buffer_comando[200];
+
+        while (1) {
+
+            if (!zoc_pending_apply_received_snapshot) {
         //printf ("Sending put-snapshot\n");
         //get-snapshot user_pass n
         sprintf(buffer_comando,"zeng-online get-snapshot %s %d\n",created_room_user_password,zeng_online_joined_to_room_number);
@@ -780,13 +784,13 @@ int zoc_receive_snapshot(int indice_socket)
         //printf("after z_sock_write_string 1\n");
         if (escritos<0) return escritos;
 
-	    int sock=get_socket_number(indice_socket);
+	    //int sock=get_socket_number(indice_socket);
 
 
 
 
-        while (1) {
-            if (zsock_available_data(sock) && !zoc_pending_apply_received_snapshot) {
+
+
         //Ver si hay datos disponibles y no esta pendiente aplicar ultimo snapshot
 
                 if (zoc_get_snapshot_mem_hexa==NULL) {
@@ -795,9 +799,21 @@ int zoc_receive_snapshot(int indice_socket)
 
                 //Leer hasta prompt
                 //printf("before zsock_read_all_until_command\n");
-                leidos=zsock_read_all_until_newline(indice_socket,(z80_byte *)zoc_get_snapshot_mem_hexa,ZRCP_GET_PUT_SNAPSHOT_MEM*2,&posicion_command);
+                leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)zoc_get_snapshot_mem_hexa,ZRCP_GET_PUT_SNAPSHOT_MEM*2,&posicion_command);
                 //printf("after zsock_read_all_until_command\n");
                 printf("Recibido respuesta despues de get-snapshot: [%s]\n",zoc_get_snapshot_mem_hexa);
+
+                //1 mas para eliminar el salto de linea anterior a "command>"
+                if (posicion_command>=1) {
+                    zoc_get_snapshot_mem_hexa[posicion_command-1]=0;
+                    //debug_printf(VERBOSE_DEBUG,"ZENG: Received text: %s",zoc_get_snapshot_mem_hexa);
+                }
+                else {
+                    debug_printf (VERBOSE_ERR,"Error receiving ZEsarUX zeng-online create-room");
+                    return 0;
+                }
+
+                printf("Recibido respuesta despues de truncar: [%s]\n",zoc_get_snapshot_mem_hexa);
 
                 //Nos quedamos con la respuesta hasta el ultimo
                 //Es decir, si en get-snapshot el server remoto nos ha dejado en cola 2, 3 o mas snapshots, estamos pillando el ultimo
@@ -805,7 +821,7 @@ int zoc_receive_snapshot(int indice_socket)
                 //TODO: esto esta MAL. Hay que escoger el que tiene el ultimo salto de linea
                 int i;
 
-                int inicio_datos_snapshot=0;
+                /*int inicio_datos_snapshot=0;
                 //int leidos_saltos_linea=0;
 
                 for (i=0;i<leidos;i++) {
@@ -817,9 +833,9 @@ int zoc_receive_snapshot(int indice_socket)
                         if (i!=leidos-1) inicio_datos_snapshot=i+1;
                     }
                 }
+                */
 
-
-                printf("Buffer despues de truncar: [%s]\n",&zoc_get_snapshot_mem_hexa[inicio_datos_snapshot]);
+                //printf("Buffer despues de truncar: [%s]\n",&zoc_get_snapshot_mem_hexa[inicio_datos_snapshot]);
 
                 //TODO: detectar texto ERROR en respuesta
                 //return leidos;
@@ -830,7 +846,7 @@ int zoc_receive_snapshot(int indice_socket)
                 }
 
 
-                char *s=&zoc_get_snapshot_mem_hexa[inicio_datos_snapshot];
+                char *s=zoc_get_snapshot_mem_hexa;
                 int parametros_recibidos=0;
                 z80_byte valor;
 
@@ -857,16 +873,16 @@ int zoc_receive_snapshot(int indice_socket)
 
                 zoc_pending_apply_received_snapshot=1;
 
-            }
-            else {
-                printf("get-snapshot no disponible. esperar\n");
-                //Esperar algo. 10 ms, suficiente porque es un mitad de frame
-                usleep(10000); //dormir 10 ms
-            }
-
-
+        }
+        else {
+            printf("get-snapshot no disponible. esperar\n");
 
         }
+
+        //Esperar algo. 10 ms, suficiente porque es un mitad de frame
+        usleep(10000); //dormir 10 ms
+
+    }
 
 
 }

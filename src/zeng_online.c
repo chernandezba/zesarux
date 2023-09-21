@@ -639,20 +639,13 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
             return;
         }
 
-        //Id de snapshot inicial cualquiera que no sea el indicado, para obtenerlo
-        int snapshot_id=-1;
 
-        //TODO: ver posible manera de salir de aqui??
-        while (1) {
-            if (zeng_online_rooms_list[room_number].snapshot_id==snapshot_id) {
-                //Esperar algo. 10 ms, suficiente porque es un mitad de frame
-                usleep(10000); //dormir 10 ms
-            }
-            else {
-                //Retornar snapshot
-                snapshot_id=zeng_online_rooms_list[room_number].snapshot_id;
 
-                z80_byte *puntero_snapshot=zeng_online_rooms_list[room_number].snapshot_memory;
+        z80_byte *puntero_snapshot=util_malloc(ZRCP_GET_PUT_SNAPSHOT_MEM*2,"Can not allocate memory for get snapshot");
+
+        zengonline_get_snapshot(room_number,puntero_snapshot);
+
+                //TODO: esta longitud se debe obtener tambien con bloqueo de semaforo
                 int longitud=zeng_online_rooms_list[room_number].snapshot_size;
 
                 int i;
@@ -661,15 +654,12 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
                 }
 
                 //Y salto de linea para indicar el final del snapshot
-                int escritos=escribir_socket(misocket,"\n");
+                /*int escritos=escribir_socket(misocket,"\n");
                 //printf("Escritos socket: %d\n",escritos);
                 if (escritos<0) {
                     debug_printf(VERBOSE_DEBUG,"Error returning zeng-online get-snapshot. Client connection may be closed");
                     return;
-                }
-
-            }
-        }
+                }*/
 
 
 
