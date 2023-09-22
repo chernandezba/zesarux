@@ -3674,12 +3674,13 @@ void remote_visualmem_generic_compact(int misocket, z80_byte *buffer, int final_
 //para poder repetir comando anterior solo pulsando enter
 //char *buffer_lectura_socket_anterior;
 
-char *parametros;
+//char *parametros;
 
 void interpreta_comando(char *comando,int misocket,char *buffer_lectura_socket_anterior,int *remote_salir_conexion_cliente)
 {
 
 	char buffer_retorno[2048];
+    char *parametros;
 
 	int longitud_comando=strlen(comando);
 

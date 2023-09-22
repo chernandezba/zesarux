@@ -9,6 +9,7 @@ Allow to seng ZENG snapshots more frequently (even every 20 ms)
 Add function to shift bits on Hex Editor
 ZX Vision: improve window title background when not all buttons are visible
 Added GUI Style TempleOS
+Fixed bug on ZRCP when handling simultaneous connections
 ----
 
 
