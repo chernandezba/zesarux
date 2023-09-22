@@ -527,5 +527,10 @@ La parte de menus , el "frontend" estara contenida en menu_zeng_online.c
 -En join comprobar que no se haya llegado al máximo de usuarios
 
 -Implementar retornar ID en get-snapshot para saber si el que nos llega es el mismo que el anterior
--put-snapshot se acaba ralentizando por alguna razon que desconozco: puede que se lean datos de otro socket por alguna razon que desconozco
+-put-snapshot se acaba ralentizando por alguna razon que desconozco: puede que se lean datos de otro socket por alguna razon que desconozco:
+se trata de estas dos variables globales en remote.c que hay que hacerlas dependiendo de thread:
+
+char *remote_command_argv[REMOTE_MAX_PARAMETERS_COMMAND];
+int remote_command_argc;
+
 ---------------

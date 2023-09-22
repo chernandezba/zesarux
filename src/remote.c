@@ -3075,17 +3075,21 @@ void remote_cerrar_conexion(void)
 */
 }
 
+
+
 //Parseo de parametros de comando.
 #define REMOTE_MAX_PARAMETERS_COMMAND 10
 //array de punteros a comando y sus argumentos
-char *remote_command_argv[REMOTE_MAX_PARAMETERS_COMMAND];
-int remote_command_argc;
+//char *remote_command_argv[REMOTE_MAX_PARAMETERS_COMMAND];
+//int remote_command_argc;
+
+
 
 //Separar comando con codigos 0 y rellenar array de parametros
-void remote_parse_commands_argvc(char *texto)
+void remote_parse_commands_argvc(char *texto,int *remote_command_argc, char **remote_command_argv)
 {
 
-  remote_command_argc=util_parse_commands_argvc_comillas(texto, remote_command_argv, REMOTE_MAX_PARAMETERS_COMMAND);
+  *remote_command_argc=util_parse_commands_argvc_comillas(texto, remote_command_argv, REMOTE_MAX_PARAMETERS_COMMAND);
 
 }
 
@@ -3681,6 +3685,10 @@ void interpreta_comando(char *comando,int misocket,char *buffer_lectura_socket_a
 
 	char buffer_retorno[2048];
     char *parametros;
+    int remote_command_argc;
+
+    //punteros de parametros
+    char *remote_command_argv[REMOTE_MAX_PARAMETERS_COMMAND];
 
 	int longitud_comando=strlen(comando);
 
@@ -3860,7 +3868,7 @@ void interpreta_comando(char *comando,int misocket,char *buffer_lectura_socket_a
 	}
 
   else if (!strcmp(comando_sin_parametros,"ayplayer") || !strcmp(comando_sin_parametros,"ayp")) {
-    remote_parse_commands_argvc(parametros);
+    remote_parse_commands_argvc(parametros,&remote_command_argc,remote_command_argv);
 
     if (remote_command_argc<1) {
       escribir_socket(misocket,"ERROR. Needs one parameter at least");
@@ -3925,7 +3933,7 @@ void interpreta_comando(char *comando,int misocket,char *buffer_lectura_socket_a
   }
 
   else if (!strcmp(comando_sin_parametros,"cpu-code-coverage") ) {
-    remote_parse_commands_argvc(parametros);
+    remote_parse_commands_argvc(parametros,&remote_command_argc,remote_command_argv);
 
     if (remote_command_argc<1) {
       escribir_socket(misocket,"ERROR. Needs at least one parameter");
@@ -3947,7 +3955,7 @@ void interpreta_comando(char *comando,int misocket,char *buffer_lectura_socket_a
 
 
   else if (!strcmp(comando_sin_parametros,"cpu-history") ) {
-    remote_parse_commands_argvc(parametros);
+    remote_parse_commands_argvc(parametros,&remote_command_argc,remote_command_argv);
 
     if (remote_command_argc<1) {
       escribir_socket(misocket,"ERROR. Needs at least one parameter");
@@ -3993,7 +4001,7 @@ void interpreta_comando(char *comando,int misocket,char *buffer_lectura_socket_a
 
 
   else if (!strcmp(comando_sin_parametros,"cpu-transaction-log") ) {
-    remote_parse_commands_argvc(parametros);
+    remote_parse_commands_argvc(parametros,&remote_command_argc,remote_command_argv);
 
     if (remote_command_argc<2) {
       escribir_socket(misocket,"ERROR. Needs two parameters");
@@ -4007,7 +4015,7 @@ void interpreta_comando(char *comando,int misocket,char *buffer_lectura_socket_a
 
 	else if (!strcmp(comando_sin_parametros,"debug-analyze-command")) {
 		//Parseamos los parametros porque me sirven para debugar
-		remote_parse_commands_argvc(parametros);
+		remote_parse_commands_argvc(parametros,&remote_command_argc,remote_command_argv);
 
 		int i;
 
@@ -4145,7 +4153,7 @@ void interpreta_comando(char *comando,int misocket,char *buffer_lectura_socket_a
 		  return;
 	  }
 
-    remote_parse_commands_argvc(parametros);
+    remote_parse_commands_argvc(parametros,&remote_command_argc,remote_command_argv);
 
     if (remote_command_argc<1) {
       escribir_socket(misocket,"ERROR. Needs at least one parameter");
@@ -4203,7 +4211,7 @@ void interpreta_comando(char *comando,int misocket,char *buffer_lectura_socket_a
 	int inicio=1;
 	int items=MAX_BREAKPOINTS_CONDITIONS;
 
-		remote_parse_commands_argvc(parametros);
+		remote_parse_commands_argvc(parametros,&remote_command_argc,remote_command_argv);
                 if (remote_command_argc>0) {
 			inicio=parse_string_to_number(remote_command_argv[0]);
 			if (inicio<1 || inicio>MAX_BREAKPOINTS_CONDITIONS) {
@@ -4226,7 +4234,7 @@ void interpreta_comando(char *comando,int misocket,char *buffer_lectura_socket_a
         int inicio=1;
         int items=MAX_BREAKPOINTS_CONDITIONS;
 
-                remote_parse_commands_argvc(parametros);
+                remote_parse_commands_argvc(parametros,&remote_command_argc,remote_command_argv);
                 if (remote_command_argc>0) {
                         inicio=parse_string_to_number(remote_command_argv[0]);
 			if (inicio<1 || inicio>MAX_BREAKPOINTS_CONDITIONS) {
@@ -4248,7 +4256,7 @@ void interpreta_comando(char *comando,int misocket,char *buffer_lectura_socket_a
         int inicio=1;
 	int items=MAX_BREAKPOINTS_CONDITIONS;
 
-		remote_parse_commands_argvc(parametros);
+		remote_parse_commands_argvc(parametros,&remote_command_argc,remote_command_argv);
                 if (remote_command_argc>0) {
 			inicio=parse_string_to_number(remote_command_argv[0]);
 			if (inicio<1 || inicio>MAX_BREAKPOINTS_CONDITIONS) {
@@ -4287,7 +4295,7 @@ void interpreta_comando(char *comando,int misocket,char *buffer_lectura_socket_a
 
   else if (!strcmp(comando_sin_parametros,"get-crc32")) {
 
-    remote_parse_commands_argvc(parametros);
+    remote_parse_commands_argvc(parametros,&remote_command_argc,remote_command_argv);
 
     if (remote_command_argc<2) {
       escribir_socket(misocket,"ERROR. Needs two parameters");
@@ -4373,7 +4381,7 @@ void interpreta_comando(char *comando,int misocket,char *buffer_lectura_socket_a
 
 	else if (!strcmp(comando_sin_parametros,"get-memory-pages") || !strcmp(comando_sin_parametros,"gmp")) {
 
-                remote_parse_commands_argvc(parametros);
+                remote_parse_commands_argvc(parametros,&remote_command_argc,remote_command_argv);
 
                 debug_memory_segment segmentos[MAX_DEBUG_MEMORY_SEGMENTS];
                 int total_segmentos=debug_get_memory_pages_extended(segmentos);
@@ -4411,7 +4419,7 @@ void interpreta_comando(char *comando,int misocket,char *buffer_lectura_socket_a
         int inicio=0;
         int items=65536;
 
-                remote_parse_commands_argvc(parametros);
+                remote_parse_commands_argvc(parametros,&remote_command_argc,remote_command_argv);
                 if (remote_command_argc>0) {
                         inicio=parse_string_to_number(remote_command_argv[0]);
                         if (inicio<0 || inicio>65535) {
@@ -4486,7 +4494,7 @@ void interpreta_comando(char *comando,int misocket,char *buffer_lectura_socket_a
 
     int items=5;
 
-    remote_parse_commands_argvc(parametros);
+    remote_parse_commands_argvc(parametros,&remote_command_argc,remote_command_argv);
     if (remote_command_argc>0) {
       items=parse_string_to_number(remote_command_argv[0]);
       if (items<1) {
@@ -4558,7 +4566,7 @@ void interpreta_comando(char *comando,int misocket,char *buffer_lectura_socket_a
 	else if (!strcmp(comando_sin_parametros,"get-visualmem-written-dump") || !strcmp(comando_sin_parametros,"gvmwd") ) {
 
 		int salida_compacta=0;
-		remote_parse_commands_argvc(parametros);
+		remote_parse_commands_argvc(parametros,&remote_command_argc,remote_command_argv);
 		if (remote_command_argc>0) {
 			if (!strcmp(remote_command_argv[0],"compact")) salida_compacta=1;
 		}
@@ -4585,7 +4593,7 @@ void interpreta_comando(char *comando,int misocket,char *buffer_lectura_socket_a
 	else if (!strcmp(comando_sin_parametros,"get-visualmem-read-dump") || !strcmp(comando_sin_parametros,"gvmrd")) {
 
 		int salida_compacta=0;
-		remote_parse_commands_argvc(parametros);
+		remote_parse_commands_argvc(parametros,&remote_command_argc,remote_command_argv);
 		if (remote_command_argc>0) {
 			if (!strcmp(remote_command_argv[0],"compact")) salida_compacta=1;
 		}
@@ -4612,7 +4620,7 @@ void interpreta_comando(char *comando,int misocket,char *buffer_lectura_socket_a
 	else if (!strcmp(comando_sin_parametros,"get-visualmem-opcode-dump") || !strcmp(comando_sin_parametros,"gvmod")) {
 
 		int salida_compacta=0;
-		remote_parse_commands_argvc(parametros);
+		remote_parse_commands_argvc(parametros,&remote_command_argc,remote_command_argv);
 		if (remote_command_argc>0) {
 			if (!strcmp(remote_command_argv[0],"compact")) salida_compacta=1;
 		}
@@ -4648,7 +4656,7 @@ void interpreta_comando(char *comando,int misocket,char *buffer_lectura_socket_a
 
 
 	else if (!strcmp(comando_sin_parametros,"hexdump") || !strcmp(comando_sin_parametros,"h")) {
-		remote_parse_commands_argvc(parametros);
+		remote_parse_commands_argvc(parametros,&remote_command_argc,remote_command_argv);
 
 		if (remote_command_argc!=2) {
 			escribir_socket(misocket,"ERROR. Needs two parameters");
@@ -4670,7 +4678,7 @@ void interpreta_comando(char *comando,int misocket,char *buffer_lectura_socket_a
 	}
 
 	else if (!strcmp(comando_sin_parametros,"hexdump-internal")) {
-		remote_parse_commands_argvc(parametros);
+		remote_parse_commands_argvc(parametros,&remote_command_argc,remote_command_argv);
 
 		if (remote_command_argc<2) {
 			escribir_socket(misocket,"ERROR. Needs two parameters minimum");
@@ -4710,7 +4718,7 @@ void interpreta_comando(char *comando,int misocket,char *buffer_lectura_socket_a
 
 
 	else if (!strcmp(comando_sin_parametros,"load-binary")) {
-                remote_parse_commands_argvc(parametros);
+                remote_parse_commands_argvc(parametros,&remote_command_argc,remote_command_argv);
 
 
 
@@ -4883,7 +4891,7 @@ void interpreta_comando(char *comando,int misocket,char *buffer_lectura_socket_a
 
     else if (!strcmp(comando_sin_parametros,"realtape-open")) {
 
-        remote_parse_commands_argvc(parametros);
+        remote_parse_commands_argvc(parametros,&remote_command_argc,remote_command_argv);
         if (remote_command_argc<1) {
             escribir_socket(misocket,"ERROR. No parameter set");
             return;
@@ -4934,7 +4942,7 @@ void interpreta_comando(char *comando,int misocket,char *buffer_lectura_socket_a
 		int datosvuelve=1;
 		int update_immediately=0;
 
-    remote_parse_commands_argvc(parametros);
+    remote_parse_commands_argvc(parametros,&remote_command_argc,remote_command_argv);
 
     //ver cada parametro. pueden venir en diferente orden
     for (par=0;par<remote_command_argc;par++) {
@@ -4957,7 +4965,7 @@ void interpreta_comando(char *comando,int misocket,char *buffer_lectura_socket_a
 
 
 	else if (!strcmp(comando_sin_parametros,"save-binary")) {
-		remote_parse_commands_argvc(parametros);
+		remote_parse_commands_argvc(parametros,&remote_command_argc,remote_command_argv);
 
 
 		if (remote_command_argc<3) {
@@ -4982,7 +4990,7 @@ void interpreta_comando(char *comando,int misocket,char *buffer_lectura_socket_a
 
 
 	else if (!strcmp(comando_sin_parametros,"save-binary-internal")) {
-		remote_parse_commands_argvc(parametros);
+		remote_parse_commands_argvc(parametros,&remote_command_argc,remote_command_argv);
 
 		if (remote_command_argc<3) {
 			escribir_socket(misocket,"ERROR. Needs three parameters minimum");
@@ -5036,7 +5044,7 @@ void interpreta_comando(char *comando,int misocket,char *buffer_lectura_socket_a
 
 	else if (!strcmp(comando_sin_parametros,"save-screen") ) {
 
-		remote_parse_commands_argvc(parametros);
+		remote_parse_commands_argvc(parametros,&remote_command_argc,remote_command_argv);
 		if (remote_command_argc<1) {
 			escribir_socket(misocket,"ERROR. No parameter set");
 			return;
@@ -5050,7 +5058,7 @@ void interpreta_comando(char *comando,int misocket,char *buffer_lectura_socket_a
 
 	else if (!strcmp(comando_sin_parametros,"send-keys-event")) {
 
-		remote_parse_commands_argvc(parametros);
+		remote_parse_commands_argvc(parametros,&remote_command_argc,remote_command_argv);
 
 		if (remote_command_argc<2) {
 			escribir_socket(misocket,"ERROR. Needs two parameters minimum");
@@ -5093,7 +5101,7 @@ void interpreta_comando(char *comando,int misocket,char *buffer_lectura_socket_a
 
 
 	else if (!strcmp(comando_sin_parametros,"send-keys-string")) {
-		//remote_parse_commands_argvc(parametros);
+		//remote_parse_commands_argvc(parametros,&remote_command_argc,remote_command_argv);
 
 		/*if (remote_command_argc<2) {
 			escribir_socket(misocket,"ERROR. Needs two parameters minimum");
@@ -5123,7 +5131,7 @@ void interpreta_comando(char *comando,int misocket,char *buffer_lectura_socket_a
 	}
 
 	else if (!strcmp(comando_sin_parametros,"send-keys-ascii")) {
-		remote_parse_commands_argvc(parametros);
+		remote_parse_commands_argvc(parametros,&remote_command_argc,remote_command_argv);
 
 		if (remote_command_argc<2) {
 			escribir_socket(misocket,"ERROR. Needs two parameters minimum");
@@ -5263,7 +5271,7 @@ else if (!strcmp(comando_sin_parametros,"set-membreakpoint") ) {
   if (debug_breakpoints_enabled.v==0) escribir_socket (misocket,"Error. You must enable breakpoints first");
   else {
 
-                                remote_parse_commands_argvc(parametros);
+                                remote_parse_commands_argvc(parametros,&remote_command_argc,remote_command_argv);
 
                                 if (remote_command_argc<2) {
                                         escribir_socket(misocket,"ERROR. Needs two parameters minimum");
@@ -5386,7 +5394,7 @@ else if (!strcmp(comando_sin_parametros,"set-memory-zone") || !strcmp(comando_si
 
 else if (!strcmp(comando_sin_parametros,"smartload") || !strcmp(comando_sin_parametros,"sl")) {
 
-	remote_parse_commands_argvc(parametros);
+	remote_parse_commands_argvc(parametros,&remote_command_argc,remote_command_argv);
 	if (remote_command_argc<1) {
 		escribir_socket(misocket,"ERROR. No parameter set");
 		return;
@@ -5429,7 +5437,7 @@ else if (!strcmp(comando_sin_parametros,"smartload") || !strcmp(comando_sin_para
     else if (!strcmp(comando_sin_parametros,"snapshot-inram-get-index") ) {
         //Retorna el indice al elemento N, donde 0 es el mas antiguo
 
-        remote_parse_commands_argvc(parametros);
+        remote_parse_commands_argvc(parametros,&remote_command_argc,remote_command_argv);
 
         if (remote_command_argc<1) {
                 escribir_socket(misocket,"ERROR. Needs one parameter");
@@ -5446,7 +5454,7 @@ else if (!strcmp(comando_sin_parametros,"smartload") || !strcmp(comando_sin_para
     else if (!strcmp(comando_sin_parametros,"snapshot-inram-load") ) {
         //Carga el snapshot N de memoria, donde 0 es el mas antiguo
 
-        remote_parse_commands_argvc(parametros);
+        remote_parse_commands_argvc(parametros,&remote_command_argc,remote_command_argv);
 
         if (remote_command_argc<1) {
             escribir_socket(misocket,"ERROR. Needs one parameter");
@@ -5509,7 +5517,7 @@ else if (!strcmp(comando_sin_parametros,"smartload") || !strcmp(comando_sin_para
 
     if (!MACHINE_IS_TBBLUE) escribir_socket(misocket,"ERROR. Machine is not TBBlue");
     else {
-      remote_parse_commands_argvc(parametros);
+      remote_parse_commands_argvc(parametros,&remote_command_argc,remote_command_argv);
       if (remote_command_argc<1) {
         escribir_socket(misocket,"ERROR. Needs one parameter");
         return;
@@ -5539,7 +5547,7 @@ else if (!strcmp(comando_sin_parametros,"smartload") || !strcmp(comando_sin_para
 
     if (!MACHINE_IS_TBBLUE) escribir_socket(misocket,"ERROR. Machine is not TBBlue");
     else {
-      remote_parse_commands_argvc(parametros);
+      remote_parse_commands_argvc(parametros,&remote_command_argc,remote_command_argv);
       if (remote_command_argc<5) {
         escribir_socket(misocket,"ERROR. Needs five parameters");
         return;
@@ -5568,7 +5576,7 @@ else if (!strcmp(comando_sin_parametros,"smartload") || !strcmp(comando_sin_para
 
 		if (!MACHINE_IS_TBBLUE) escribir_socket(misocket,"ERROR. Machine is not TBBlue");
 		else {
-			remote_parse_commands_argvc(parametros);
+			remote_parse_commands_argvc(parametros,&remote_command_argc,remote_command_argv);
 			if (remote_command_argc<3) {
 				escribir_socket(misocket,"ERROR. Needs three parameter minimum");
 				return;
@@ -5603,7 +5611,7 @@ else if (!strcmp(comando_sin_parametros,"smartload") || !strcmp(comando_sin_para
 			if (!MACHINE_IS_TBBLUE) escribir_socket(misocket,"ERROR. Machine is not TBBlue");
 			else {
 
-				remote_parse_commands_argvc(parametros);
+				remote_parse_commands_argvc(parametros,&remote_command_argc,remote_command_argv);
 
 				if (remote_command_argc<2) {
 						escribir_socket(misocket,"ERROR. Needs two parameters minimum");
@@ -5689,7 +5697,7 @@ else if (!strcmp(comando_sin_parametros,"smartload") || !strcmp(comando_sin_para
 					if (!MACHINE_IS_TBBLUE) escribir_socket(misocket,"ERROR. Machine is not TBBlue");
 					else {
 
-							remote_parse_commands_argvc(parametros);
+							remote_parse_commands_argvc(parametros,&remote_command_argc,remote_command_argv);
 
 							if (remote_command_argc<1) {
 											escribir_socket(misocket,"ERROR. Needs one parameter minimum");
@@ -5816,7 +5824,7 @@ else if (!strcmp(comando_sin_parametros,"smartload") || !strcmp(comando_sin_para
           if (!MACHINE_IS_TBBLUE) escribir_socket(misocket,"ERROR. Machine is not TBBlue");
           else {
 
-              remote_parse_commands_argvc(parametros);
+              remote_parse_commands_argvc(parametros,&remote_command_argc,remote_command_argv);
 
               if (remote_command_argc<2) {
                       escribir_socket(misocket,"ERROR. Needs two parameters");
@@ -5901,7 +5909,7 @@ else if (!strcmp(comando_sin_parametros,"smartload") || !strcmp(comando_sin_para
 			  	if (!MACHINE_IS_TSCONF) escribir_socket(misocket,"ERROR. Machine is not TSConf");
 					else {
 
-              remote_parse_commands_argvc(parametros);
+              remote_parse_commands_argvc(parametros,&remote_command_argc,remote_command_argv);
 
               if (remote_command_argc<2) {
                       escribir_socket(misocket,"ERROR. Needs two parameters");
@@ -6031,7 +6039,7 @@ else if (!strcmp(comando_sin_parametros,"write-port") ) {
 	if (!CPU_IS_Z80) escribir_socket(misocket,"ERROR. CPU is not Z80");
 	else {
 
-              remote_parse_commands_argvc(parametros);
+              remote_parse_commands_argvc(parametros,&remote_command_argc,remote_command_argv);
 
               if (remote_command_argc<2) {
                       escribir_socket(misocket,"ERROR. Needs two parameters");
@@ -6055,7 +6063,7 @@ else if (!strcmp(comando_sin_parametros,"write-port") ) {
 	}
 
 	else if (!strcmp(comando_sin_parametros,"zeng-online") || !strcmp(comando_sin_parametros,"zo")) {
-        remote_parse_commands_argvc(parametros);
+        remote_parse_commands_argvc(parametros,&remote_command_argc,remote_command_argv);
         zeng_online_parse_command(misocket,remote_command_argc,remote_command_argv);
 
 	}
