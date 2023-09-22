@@ -513,7 +513,7 @@ Ese uuid siempre está? Aunque no se guarde configuración y/o no se envíen est
 Por tanto, para que no haya desventaja al jugar dos personas, lo ideal es que hubiera un master, que no participase,
 y luego dos slaves que fueran los que estuvieran compitiendo
 
-
+-quiza las veces que se queda congelado el emulador cuando no esta en el foco, es cuando se usa driver audio null
 ---Fin Mejoras---
 
 
@@ -526,11 +526,11 @@ La parte de menus , el "frontend" estara contenida en menu_zeng_online.c
 
 -En join comprobar que no se haya llegado al máximo de usuarios
 
--Implementar retornar ID en get-snapshot para saber si el que nos llega es el mismo que el anterior
--put-snapshot se acaba ralentizando por alguna razon que desconozco: puede que se lean datos de otro socket por alguna razon que desconozco:
-se trata de estas dos variables globales en remote.c que hay que hacerlas dependiendo de thread:
+-Get snapshot id para saber si hay uno diferente al último recibido
+Da igual que cuando lo consultemos y cuando hagamos un get snapshot haya cambiado el id, porque si lo pedimos es porque sabremos que es uno distinto al que tenemos y entonces al obtener puede ser que entre ese o otro posterior, ya nos vale
+Pausas entre get id y get snap , cuando no hay uno nuevo, muy cortas, para que nos entre lo antes posible.
 
-char *remote_command_argv[REMOTE_MAX_PARAMETERS_COMMAND];
-int remote_command_argc;
+-comando para denegar mas join en una room. solo para creator
+-comando para bajar numero de max players en una room. solo para creator
 
 ---------------
