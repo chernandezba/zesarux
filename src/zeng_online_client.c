@@ -79,7 +79,7 @@ int zoc_pending_send_snapshot=0;
 //Si esta conectado
 z80_bit zeng_online_connected={0};
 
-char zeng_online_server[NETWORK_MAX_URL+1]="localhost";
+char zeng_online_server[NETWORK_MAX_URL+1]="51.83.33.13";
 int zeng_online_server_port=10000;
 
 //Buffer donde guardar listado de rooms remotas
@@ -825,6 +825,8 @@ int zoc_send_keys(int indice_socket,zeng_key_presses *elemento)
     return escritos;
 }
 
+int zoc_send_keys_avisado_final_frame=0;
+
 void *zoc_keys_sending_function(void *nada GCC_UNUSED)
 {
 
@@ -865,23 +867,31 @@ int error_desconectar=0;
 
     while (1) {
 
-		//Si hay tecla pendiente de enviar
-		zeng_key_presses elemento;
-		while (!zeng_fifo_read_element(&elemento) && !error_desconectar) {
-			debug_printf (VERBOSE_DEBUG,"ZENG: Read event from zeng fifo and sending it to remote: key %d pressrelease %d",elemento.tecla,elemento.pressrelease);
+		//Si hay tecla pendiente de enviar. Enviarlas a final de frame
+        if (zoc_send_keys_avisado_final_frame) {
+            zeng_key_presses elemento;
+            while (!zeng_fifo_read_element(&elemento) && !error_desconectar) {
+                debug_printf (VERBOSE_DEBUG,"ZENG: Read event from zeng fifo and sending it to remote: key %d pressrelease %d",elemento.tecla,elemento.pressrelease);
 
-            printf ("ZENG: Read event from zeng fifo and sending it to remote: key %d pressrelease %d\n",elemento.tecla,elemento.pressrelease);
+                printf ("ZENG: Read event from zeng fifo and sending it to remote: key %d pressrelease %d\n",elemento.tecla,elemento.pressrelease);
 
-            debug_printf (VERBOSE_DEBUG,"Info joystick: fire: %d up: %d down: %d left: %d right: %d",
-                UTIL_KEY_JOY_FIRE,UTIL_KEY_JOY_UP,UTIL_KEY_JOY_DOWN,UTIL_KEY_JOY_LEFT,UTIL_KEY_JOY_RIGHT);
+                debug_printf (VERBOSE_DEBUG,"Info joystick: fire: %d up: %d down: %d left: %d right: %d",
+                    UTIL_KEY_JOY_FIRE,UTIL_KEY_JOY_UP,UTIL_KEY_JOY_DOWN,UTIL_KEY_JOY_LEFT,UTIL_KEY_JOY_RIGHT);
 
-			//command> help send-keys-event
-			//Syntax: send-keys-event key event
-				int error=zoc_send_keys(indice_socket,&elemento);
+                //command> help send-keys-event
+                //Syntax: send-keys-event key event
+                    int error=zoc_send_keys(indice_socket,&elemento);
 
-				if (error<0) error_desconectar=1;
+                    if (error<0) error_desconectar=1;
 
-		}
+            }
+
+            zoc_send_keys_avisado_final_frame=0;
+
+        }
+        else {
+        }
+
 
         //Esperar algo. 10 ms, suficiente porque es un mitad de frame
         usleep(10000); //dormir 10 ms
@@ -889,6 +899,11 @@ int error_desconectar=0;
 
 	return 0;
 
+}
+
+void zeng_online_client_tell_send_keys_end_frame(void)
+{
+    zoc_send_keys_avisado_final_frame=1;
 }
 
 void *zoc_keys_receiving_function(void *nada GCC_UNUSED)
@@ -977,7 +992,7 @@ int error_desconectar=0;
     while (1) {
 
         //Ir leyendo cada linea
-
+        //buffer suficientemente grande por si llegan varios eventos de golpe
         char buffer[1024];
 
         //Leer hasta prompt

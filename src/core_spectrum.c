@@ -1086,6 +1086,7 @@ void cpu_core_loop_spectrum(void)
 
         zeng_online_client_prepare_snapshot_if_needed();
         zeng_online_client_apply_pending_received_snapshot();
+        zeng_online_client_tell_send_keys_end_frame();
     }
 
 
