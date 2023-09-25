@@ -1463,13 +1463,13 @@ remote.o: remote.c remote.h cpu.h start.h debug.h utils.h compileoptions.h netwo
 network.o: network.c network.h cpu.h debug.h utils.h compileoptions.h chardevice.h atomic.h
 	\$(CC) \$(CFLAGS) -c network.c
 
-zeng.o: zeng.c zeng.h cpu.h debug.h utils.h network.h compileoptions.h remote.h snap_zsf.h autoselectoptions.h
+zeng.o: zeng.c zeng.h cpu.h debug.h utils.h network.h compileoptions.h remote.h snap_zsf.h autoselectoptions.h zeng_online_client.h
 	\$(CC) \$(CFLAGS) -c zeng.c
 
 zeng_online.o: zeng_online.c zeng_online.h cpu.h debug.h utils.h network.h compileoptions.h remote.h snap_zsf.h autoselectoptions.h ay38912.h atomic.h stats.h
 	\$(CC) \$(CFLAGS) -c zeng_online.c
 
-zeng_online_client.o: zeng_online_client.c zeng_online_client.h cpu.h debug.h utils.h network.h compileoptions.h remote.h snap_zsf.h zeng_online.h
+zeng_online_client.o: zeng_online_client.c zeng_online_client.h cpu.h debug.h utils.h network.h compileoptions.h remote.h snap_zsf.h zeng_online.h zeng.h
 	\$(CC) \$(CFLAGS) -c zeng_online_client.c
 
 zvfs.o: zvfs.c zvfs.h cpu.h debug.h utils.h ff.h compileoptions.h

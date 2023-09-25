@@ -36,6 +36,7 @@ Network Play (not using a central server) related code
 #include "network.h"
 #include "compileoptions.h"
 #include "zeng.h"
+#include "zeng_online_client.h"
 #include "remote.h"
 #include "snap_zsf.h"
 #include "autoselectoptions.h"
@@ -192,10 +193,21 @@ void zeng_empty_fifo(void)
 
 void zeng_send_key_event(enum util_teclas tecla,int pressrelease)
 {
-	if (zeng_enabled.v==0) return;
-
-	//Si esta menu abierto en origen, tampoco enviar
+	//Si esta menu abierto en origen, no enviar
 	if (menu_abierto) return;
+
+    int enviar=0;
+
+    //Si hay zeng online, enviar
+    if (zeng_online_connected.v) enviar=1;
+
+
+    //Si no hay zeng (no el online, sino el directo a host) no enviar
+	if (zeng_enabled.v) enviar=1;
+
+    if (!enviar) return;
+
+
 
 	//teclas F no enviar
 	switch (tecla) {

@@ -41,6 +41,7 @@ Functions starting with zoc_ means: zeng online client
 #include "compileoptions.h"
 #include "zeng_online.h"
 #include "zeng_online_client.h"
+#include "zeng.h"
 #include "remote.h"
 #include "snap_zsf.h"
 
@@ -57,6 +58,7 @@ pthread_t thread_zeng_online_client_create_room;
 pthread_t thread_zeng_online_client_join_room;
 pthread_t thread_zoc_snapshot_sending;
 pthread_t thread_zoc_snapshot_receiving;
+pthread_t thread_zoc_keys_sending;
 
 
 #endif
@@ -769,6 +771,78 @@ void *zoc_snapshot_sending_function(void *nada GCC_UNUSED)
 
 }
 
+int zoc_send_keys(zeng_key_presses *elemento)
+{
+
+    return 1;
+}
+
+void *zoc_keys_sending_function(void *nada GCC_UNUSED)
+{
+
+    //conectar a remoto
+
+
+    int indice_socket=z_sock_open_connection(zeng_online_server,zeng_online_server_port,0,"");
+
+    if (indice_socket<0) {
+        debug_printf(VERBOSE_ERR,"Error connecting to %s:%d. %s",
+            zeng_online_server,zeng_online_server_port,
+            z_sock_get_error(indice_socket));
+        return 0;
+    }
+
+        int posicion_command;
+
+#define ZENG_BUFFER_INITIAL_CONNECT 199
+
+    //Leer algo
+    char buffer[ZENG_BUFFER_INITIAL_CONNECT+1];
+
+    //int leidos=z_sock_read(indice_socket,buffer,199);
+    int leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)buffer,ZENG_BUFFER_INITIAL_CONNECT,&posicion_command);
+    if (leidos>0) {
+        buffer[leidos]=0; //fin de texto
+        //printf("Received text (length: %d):\n[\n%s\n]\n",leidos,buffer);
+    }
+
+    if (leidos<0) {
+        debug_printf(VERBOSE_ERR,"ERROR. Can't read remote prompt: %s",z_sock_get_error(leidos));
+        return 0;
+    }
+
+    //bucle continuo de enviar teclas a remoto
+    //TODO: ver posible manera de salir de aqui??
+int error_desconectar=0;
+
+    while (1) {
+
+		//Si hay tecla pendiente de enviar
+		zeng_key_presses elemento;
+		while (!zeng_fifo_read_element(&elemento) && !error_desconectar) {
+			debug_printf (VERBOSE_DEBUG,"ZENG: Read event from zeng fifo and sending it to remote: key %d pressrelease %d",elemento.tecla,elemento.pressrelease);
+
+            printf ("ZENG: Read event from zeng fifo and sending it to remote: key %d pressrelease %d\n",elemento.tecla,elemento.pressrelease);
+
+            debug_printf (VERBOSE_DEBUG,"Info joystick: fire: %d up: %d down: %d left: %d right: %d",
+                UTIL_KEY_JOY_FIRE,UTIL_KEY_JOY_UP,UTIL_KEY_JOY_DOWN,UTIL_KEY_JOY_LEFT,UTIL_KEY_JOY_RIGHT);
+
+			//command> help send-keys-event
+			//Syntax: send-keys-event key event
+				int error=zoc_send_keys(&elemento);
+
+				if (error<0) error_desconectar=1;
+
+		}
+
+        //Esperar algo. 10 ms, suficiente porque es un mitad de frame
+        usleep(10000); //dormir 10 ms
+    }
+
+	return 0;
+
+}
+
 char *zoc_get_snapshot_mem_hexa=NULL;
 z80_byte *zoc_get_snapshot_mem_binary=NULL;
 int zoc_get_snapshot_mem_binary_longitud=0;
@@ -1070,6 +1144,18 @@ void zoc_start_snapshot_sending(void)
 
 	//y pthread en estado detached asi liberara su memoria asociada a thread al finalizar, sin tener que hacer un pthread_join
 	pthread_detach(thread_zoc_snapshot_sending);
+}
+
+//Inicio del thread que va enviando teclas a servidor zeng online
+void zoc_start_keys_sending(void)
+{
+	if (pthread_create( &thread_zoc_keys_sending, NULL, &zoc_keys_sending_function, NULL) ) {
+		debug_printf(VERBOSE_ERR,"Can not create zeng online send keys pthread");
+		return;
+	}
+
+	//y pthread en estado detached asi liberara su memoria asociada a thread al finalizar, sin tener que hacer un pthread_join
+	pthread_detach(thread_zoc_keys_sending);
 }
 
 //Inicio del thread que como slave va recibiendo snapshot de servidor zeng online
