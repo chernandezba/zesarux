@@ -60,6 +60,7 @@ pthread_t thread_zeng_online_client_join_room;
 pthread_t thread_zoc_snapshot_sending;
 pthread_t thread_zoc_snapshot_receiving;
 pthread_t thread_zoc_keys_sending;
+pthread_t thread_zoc_keys_receiving;
 
 
 #endif
@@ -890,6 +891,121 @@ int error_desconectar=0;
 
 }
 
+void *zoc_keys_receiving_function(void *nada GCC_UNUSED)
+{
+
+    //conectar a remoto
+
+
+    int indice_socket=z_sock_open_connection(zeng_online_server,zeng_online_server_port,0,"");
+
+    if (indice_socket<0) {
+        debug_printf(VERBOSE_ERR,"Error connecting to %s:%d. %s",
+            zeng_online_server,zeng_online_server_port,
+            z_sock_get_error(indice_socket));
+        return 0;
+    }
+
+        int posicion_command;
+
+#define ZENG_BUFFER_INITIAL_CONNECT 199
+
+    //Leer algo
+    char buffer[ZENG_BUFFER_INITIAL_CONNECT+1];
+
+    //int leidos=z_sock_read(indice_socket,buffer,199);
+    int leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)buffer,ZENG_BUFFER_INITIAL_CONNECT,&posicion_command);
+    if (leidos>0) {
+        buffer[leidos]=0; //fin de texto
+        //printf("Received text (length: %d):\n[\n%s\n]\n",leidos,buffer);
+    }
+
+    if (leidos<0) {
+        debug_printf(VERBOSE_ERR,"ERROR. Can't read remote prompt: %s",z_sock_get_error(leidos));
+        return 0;
+    }
+
+    //bucle continuo de leer teclas de remoto
+    //TODO: ver posible manera de salir de aqui??
+int error_desconectar=0;
+
+
+
+   char buffer_comando[256];
+
+
+
+    ////command> zo get-keys OCAAYKWGYA 0
+
+    sprintf(buffer_comando,"zeng-online get-keys %s %d\n",
+        created_room_user_password,zeng_online_joined_to_room_number);
+
+
+    int escritos=z_sock_write_string(indice_socket,buffer_comando);
+
+
+
+   //Si ha habido error al escribir en socket
+    if (escritos<0) {
+        //TODO return escritos;
+    }
+
+
+    else {
+
+
+
+        //printf ("antes de leer hasta command prompt\n");
+        int leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)buffer,ZENG_BUFFER_INITIAL_CONNECT,&posicion_command);
+
+        if (leidos>0) {
+            buffer[leidos]=0; //fin de texto
+            printf("Received text after get-keys: (length: %d):\n[\n%s\n]\n",leidos,buffer);
+        }
+
+        if (leidos<0) {
+            debug_printf(VERBOSE_ERR,"ERROR. Can't read remote prompt: %s",z_sock_get_error(leidos));
+            //TODO return -1;
+        }
+
+
+    }
+
+
+
+
+    while (1) {
+
+        //Ir leyendo cada linea
+
+        //Leer hasta prompt
+        int posicion_command;
+
+        //printf ("antes de leer hasta command prompt\n");
+        int leidos=zsock_read_all_until_newline(indice_socket,(z80_byte *)buffer,ZENG_BUFFER_INITIAL_CONNECT,&posicion_command);
+
+        if (leidos>0) {
+            buffer[leidos]=0; //fin de texto
+            printf("Received text after get-keys: (length: %d):\n[\n%s\n]\n",leidos,buffer);
+        }
+
+        if (leidos<0) {
+            debug_printf(VERBOSE_ERR,"ERROR. Can't read remote prompt: %s",z_sock_get_error(leidos));
+            //TODO return -1;
+        }
+
+
+
+
+
+        //Esperar algo. 10 ms, suficiente porque es un mitad de frame
+        usleep(10000); //dormir 10 ms
+    }
+
+	return 0;
+
+}
+
 char *zoc_get_snapshot_mem_hexa=NULL;
 z80_byte *zoc_get_snapshot_mem_binary=NULL;
 int zoc_get_snapshot_mem_binary_longitud=0;
@@ -1203,6 +1319,18 @@ void zoc_start_keys_sending(void)
 
 	//y pthread en estado detached asi liberara su memoria asociada a thread al finalizar, sin tener que hacer un pthread_join
 	pthread_detach(thread_zoc_keys_sending);
+}
+
+//Inicio del thread que va leyendo teclas del servidor zeng online
+void zoc_start_keys_receiving(void)
+{
+	if (pthread_create( &thread_zoc_keys_receiving, NULL, &zoc_keys_receiving_function, NULL) ) {
+		debug_printf(VERBOSE_ERR,"Can not create zeng online receive keys pthread");
+		return;
+	}
+
+	//y pthread en estado detached asi liberara su memoria asociada a thread al finalizar, sin tener que hacer un pthread_join
+	pthread_detach(thread_zoc_keys_receiving);
 }
 
 //Inicio del thread que como slave va recibiendo snapshot de servidor zeng online

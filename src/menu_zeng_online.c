@@ -314,10 +314,13 @@ void menu_zeng_online_create_room(MENU_ITEM_PARAMETERS)
         zeng_online_connected.v=1;
 
         //inicio thread de envio de snapshot, cada x milisegundos
-        //TEMPP zoc_start_snapshot_sending();
+        zoc_start_snapshot_sending();
 
         //inicio thread de envio de teclas, cada x milisegundos
         zoc_start_keys_sending();
+
+        //inicio thread de recepcion de teclas, cada x milisegundos
+        zoc_start_keys_receiving();
 
         //TODO: inicio thread de envio de eventos al pulsar teclas (igual en master que slave)
         //TODO: en menu no debe dejar crear room o join
@@ -363,6 +366,9 @@ void menu_zeng_online_join_room(MENU_ITEM_PARAMETERS)
 
         //inicio thread de envio de teclas, cada x milisegundos
         zoc_start_keys_sending();
+
+        //inicio thread de recepcion de teclas, cada x milisegundos
+        zoc_start_keys_receiving();
 
         //TODO: inicio thread de envio de eventos al pulsar teclas (igual en master que slave)
 
