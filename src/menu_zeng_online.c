@@ -362,10 +362,10 @@ void menu_zeng_online_join_room(MENU_ITEM_PARAMETERS)
         //TODO: en menu no debe dejar crear room o join
 
         //inicio thread de recepcion de snapshot, cada x milisegundos
-        //TEMP zoc_start_snapshot_receiving();
+        zoc_start_snapshot_receiving();
 
         //inicio thread de envio de teclas, cada x milisegundos
-        //TEMP zoc_start_keys_sending();
+        zoc_start_keys_sending();
 
         //inicio thread de recepcion de teclas, cada x milisegundos
         zoc_start_keys_receiving();
