@@ -994,7 +994,96 @@ int error_desconectar=0;
             //TODO return -1;
         }
 
+        //Ir leyendo a cada final de linea
+        int i;
+        int inicio_linea=0;
 
+        for (i=0;buffer[i];i++) {
+            if (buffer[i]=='\n') {
+                //Lo cambiamos a fin de cadena con 0
+                buffer[i]=0;
+                printf("procesar linea: [%s]\n",&buffer[inicio_linea]);
+                ////Returned format is: uuid key event nomenu"
+
+                char received_uuid[STATS_UUID_MAX_LENGTH+1];
+                char received_key[10];
+                char received_event[10];
+                char received_nomenu[10];
+                //ir procesando segun espacios
+                int campos_leidos=0;
+
+                int j;
+                int inicio_campo=inicio_linea;
+                for (j=inicio_linea;buffer[j] && campos_leidos<4;j++) {
+                    if (buffer[j]==' ') {
+                        buffer[j]=0;
+                        printf("read field: [%s]\n",&buffer[inicio_campo]);
+
+                        switch(campos_leidos) {
+                            case 0:
+                                strcpy(received_uuid,&buffer[inicio_campo]);
+                            break;
+
+                            case 1:
+                                strcpy(received_key,&buffer[inicio_campo]);
+                            break;
+
+                            case 2:
+                                strcpy(received_event,&buffer[inicio_campo]);
+                            break;
+                        }
+
+                        campos_leidos++;
+                        inicio_campo=j+1;
+                    }
+                }
+
+                //campo final?
+                if (campos_leidos==3) {
+                    printf("read last field: [%s]\n",&buffer[inicio_campo]);
+                    strcpy(received_nomenu,&buffer[inicio_campo]);
+
+                    printf("Received event: uuid: [%s] key: [%s] event: [%s] nomenu: [%s]\n",
+                        received_uuid,received_key,received_event,received_nomenu);
+
+                    //Si uuid yo soy mismo, no procesarlo
+                    if (!strcmp(received_uuid,stats_uuid)) {
+                        printf("The event is mine. Do not process it\n");
+                    }
+                    else {
+                        int numero_key=parse_string_to_number(received_key);
+                        int numero_event=parse_string_to_number(received_event);
+                        int numero_nomenu=parse_string_to_number(received_nomenu);
+
+                        int enviar=1;
+                        if (numero_nomenu && menu_abierto) enviar=0;
+
+
+                        //Enviar la tecla pero que no vuelva a entrar por zeng
+                        if (enviar) {
+                            debug_printf (VERBOSE_DEBUG,"Processing from ZRCP command send-keys-event: key %d event %d",numero_key,numero_event);
+                            printf ("Processing from ZRCP command send-keys-event: key %d event %d\n",numero_key,numero_event);
+
+                            debug_printf (VERBOSE_DEBUG,"Info joystick: fire: %d up: %d down: %d left: %d right: %d",
+                                UTIL_KEY_JOY_FIRE,UTIL_KEY_JOY_UP,UTIL_KEY_JOY_DOWN,UTIL_KEY_JOY_LEFT,UTIL_KEY_JOY_RIGHT);
+
+                            //Si tecla especial de reset todas teclas. usado en driver curses
+                            if (numero_key==UTIL_KEY_RESET_ALL) {
+                                //printf("Reset todas teclas\n");
+                                reset_keyboard_ports();
+                            }
+
+                            else {
+                                util_set_reset_key_continue_after_zeng(numero_key,numero_event);
+                            }
+                        }
+                    }
+                }
+
+
+                inicio_linea=i+1;
+            }
+        }
 
 
 
