@@ -911,12 +911,12 @@ void *zoc_keys_receiving_function(void *nada GCC_UNUSED)
 #define ZENG_BUFFER_INITIAL_CONNECT 199
 
     //Leer algo
-    char buffer[ZENG_BUFFER_INITIAL_CONNECT+1];
+    char buffer_initial[ZENG_BUFFER_INITIAL_CONNECT+1];
 
     //int leidos=z_sock_read(indice_socket,buffer,199);
-    int leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)buffer,ZENG_BUFFER_INITIAL_CONNECT,&posicion_command);
+    int leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)buffer_initial,ZENG_BUFFER_INITIAL_CONNECT,&posicion_command);
     if (leidos>0) {
-        buffer[leidos]=0; //fin de texto
+        buffer_initial[leidos]=0; //fin de texto
         //printf("Received text (length: %d):\n[\n%s\n]\n",leidos,buffer);
     }
 
@@ -956,11 +956,11 @@ int error_desconectar=0;
 
 
         //printf ("antes de leer hasta command prompt\n");
-        int leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)buffer,ZENG_BUFFER_INITIAL_CONNECT,&posicion_command);
+        int leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)buffer_initial,ZENG_BUFFER_INITIAL_CONNECT,&posicion_command);
 
         if (leidos>0) {
-            buffer[leidos]=0; //fin de texto
-            printf("Received text after get-keys: (length: %d):\n[\n%s\n]\n",leidos,buffer);
+            buffer_initial[leidos]=0; //fin de texto
+            printf("Received text after get-keys: (length: %d):\n[\n%s\n]\n",leidos,buffer_initial);
         }
 
         if (leidos<0) {
@@ -978,11 +978,13 @@ int error_desconectar=0;
 
         //Ir leyendo cada linea
 
+        char buffer[1024];
+
         //Leer hasta prompt
         int posicion_command;
 
         //printf ("antes de leer hasta command prompt\n");
-        int leidos=zsock_read_all_until_newline(indice_socket,(z80_byte *)buffer,ZENG_BUFFER_INITIAL_CONNECT,&posicion_command);
+        int leidos=zsock_read_all_until_newline(indice_socket,(z80_byte *)buffer,1023,&posicion_command);
 
         if (leidos>0) {
             buffer[leidos]=0; //fin de texto
@@ -1005,6 +1007,8 @@ int error_desconectar=0;
                 printf("procesar linea: [%s]\n",&buffer[inicio_linea]);
                 ////Returned format is: uuid key event nomenu"
 
+                char campo_inicio[10];
+                char campo_final[10];
                 char received_uuid[STATS_UUID_MAX_LENGTH+1];
                 char received_key[10];
                 char received_event[10];
@@ -1014,22 +1018,30 @@ int error_desconectar=0;
 
                 int j;
                 int inicio_campo=inicio_linea;
-                for (j=inicio_linea;buffer[j] && campos_leidos<4;j++) {
+                for (j=inicio_linea;buffer[j] && campos_leidos<6;j++) {
                     if (buffer[j]==' ') {
                         buffer[j]=0;
                         printf("read field: [%s]\n",&buffer[inicio_campo]);
 
                         switch(campos_leidos) {
                             case 0:
-                                strcpy(received_uuid,&buffer[inicio_campo]);
+                                strcpy(campo_inicio,&buffer[inicio_campo]);
                             break;
 
                             case 1:
-                                strcpy(received_key,&buffer[inicio_campo]);
+                                strcpy(received_uuid,&buffer[inicio_campo]);
                             break;
 
                             case 2:
+                                strcpy(received_key,&buffer[inicio_campo]);
+                            break;
+
+                            case 3:
                                 strcpy(received_event,&buffer[inicio_campo]);
+                            break;
+
+                            case 4:
+                                strcpy(received_nomenu,&buffer[inicio_campo]);
                             break;
                         }
 
@@ -1039,45 +1051,58 @@ int error_desconectar=0;
                 }
 
                 //campo final?
-                if (campos_leidos==3) {
+                if (campos_leidos==5) {
                     printf("read last field: [%s]\n",&buffer[inicio_campo]);
-                    strcpy(received_nomenu,&buffer[inicio_campo]);
+                    strcpy(campo_final,&buffer[inicio_campo]);
 
                     printf("Received event: uuid: [%s] key: [%s] event: [%s] nomenu: [%s]\n",
                         received_uuid,received_key,received_event,received_nomenu);
 
-                    //Si uuid yo soy mismo, no procesarlo
-                    if (!strcmp(received_uuid,stats_uuid)) {
-                        printf("The event is mine. Do not process it\n");
-                    }
+                    //Validar que empiece y acabe con "#"
+                    int valido=0;
+
+                    if (!strcmp(campo_inicio,"#") && !strcmp(campo_final,"#")) valido=1;
+
+                    if (!valido) printf("linea no valida\n");
                     else {
-                        int numero_key=parse_string_to_number(received_key);
-                        int numero_event=parse_string_to_number(received_event);
-                        int numero_nomenu=parse_string_to_number(received_nomenu);
 
-                        int enviar=1;
-                        if (numero_nomenu && menu_abierto) enviar=0;
+                        //Si uuid yo soy mismo, no procesarlo
+                        if (!strcmp(received_uuid,stats_uuid)) {
+                            printf("The event is mine. Do not process it\n");
+                        }
+                        else {
+                            int numero_key=parse_string_to_number(received_key);
+                            int numero_event=parse_string_to_number(received_event);
+                            int numero_nomenu=parse_string_to_number(received_nomenu);
+
+                            int enviar=1;
+                            if (numero_nomenu && menu_abierto) enviar=0;
 
 
-                        //Enviar la tecla pero que no vuelva a entrar por zeng
-                        if (enviar) {
-                            debug_printf (VERBOSE_DEBUG,"Processing from ZRCP command send-keys-event: key %d event %d",numero_key,numero_event);
-                            printf ("Processing from ZRCP command send-keys-event: key %d event %d\n",numero_key,numero_event);
+                            //Enviar la tecla pero que no vuelva a entrar por zeng
+                            if (enviar) {
+                                debug_printf (VERBOSE_DEBUG,"Processing from ZRCP command send-keys-event: key %d event %d",numero_key,numero_event);
+                                printf ("Processing from ZRCP command send-keys-event: key %d event %d\n",numero_key,numero_event);
 
-                            debug_printf (VERBOSE_DEBUG,"Info joystick: fire: %d up: %d down: %d left: %d right: %d",
-                                UTIL_KEY_JOY_FIRE,UTIL_KEY_JOY_UP,UTIL_KEY_JOY_DOWN,UTIL_KEY_JOY_LEFT,UTIL_KEY_JOY_RIGHT);
+                                debug_printf (VERBOSE_DEBUG,"Info joystick: fire: %d up: %d down: %d left: %d right: %d",
+                                    UTIL_KEY_JOY_FIRE,UTIL_KEY_JOY_UP,UTIL_KEY_JOY_DOWN,UTIL_KEY_JOY_LEFT,UTIL_KEY_JOY_RIGHT);
 
-                            //Si tecla especial de reset todas teclas. usado en driver curses
-                            if (numero_key==UTIL_KEY_RESET_ALL) {
-                                //printf("Reset todas teclas\n");
-                                reset_keyboard_ports();
-                            }
+                                //Si tecla especial de reset todas teclas. usado en driver curses
+                                if (numero_key==UTIL_KEY_RESET_ALL) {
+                                    //printf("Reset todas teclas\n");
+                                    reset_keyboard_ports();
+                                }
 
-                            else {
-                                util_set_reset_key_continue_after_zeng(numero_key,numero_event);
+                                else {
+                                    util_set_reset_key_continue_after_zeng(numero_key,numero_event);
+                                }
                             }
                         }
                     }
+                }
+
+                else {
+                    printf("Incorrect answer received\n");
                 }
 
 

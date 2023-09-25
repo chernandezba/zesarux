@@ -583,8 +583,15 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
             }
             else {
                 //Retornar evento de la lista
-                //Returned format is: uuid key event nomenu"
-                int escritos=escribir_socket_format(misocket,"%s %d %d %d\n",
+                //Returned format is: # uuid key event nomenu #". Los # inicial y final es para validar que se recibe bien
+                int escritos=escribir_socket_format(misocket,"# %s %d %d %d #\n",
+                    zeng_online_rooms_list[room_number].events[indice_lectura].uuid,
+                    zeng_online_rooms_list[room_number].events[indice_lectura].tecla,
+                    zeng_online_rooms_list[room_number].events[indice_lectura].pressrelease,
+                    zeng_online_rooms_list[room_number].events[indice_lectura].nomenu
+                );
+
+                printf("Retorno key-keys: %s %d %d %d\n",
                     zeng_online_rooms_list[room_number].events[indice_lectura].uuid,
                     zeng_online_rooms_list[room_number].events[indice_lectura].tecla,
                     zeng_online_rooms_list[room_number].events[indice_lectura].pressrelease,
