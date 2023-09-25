@@ -774,49 +774,56 @@ z80_byte *zoc_get_snapshot_mem_binary=NULL;
 int zoc_get_snapshot_mem_binary_longitud=0;
 int zoc_pending_apply_received_snapshot=0;
 
+int zoc_receive_snapshot_last_id=0;
+
 int zoc_receive_snapshot(int indice_socket)
 {
 	//Enviar snapshot cada 20*250=5000 ms->5 segundos
-		debug_printf (VERBOSE_DEBUG,"ZENG: Receiving snapshot");
+    debug_printf (VERBOSE_DEBUG,"ZENG: Receiving snapshot");
 
-		int posicion_command;
-		int escritos,leidos;
+    int posicion_command;
+    int escritos,leidos;
 
 
-        char buffer_comando[200];
+    char buffer_comando[200];
 
-        while (1) {
+    while (1) {
 
             if (!zoc_pending_apply_received_snapshot) {
 
-        //get-snapshot user_pass n
-        sprintf(buffer_comando,"zeng-online get-snapshot %s %d\n",created_room_user_password,zeng_online_joined_to_room_number);
-        escritos=z_sock_write_string(indice_socket,buffer_comando);
-        //printf("after z_sock_write_string 1\n");
-        if (escritos<0) return escritos;
+                #define ZENG_BUFFER_INITIAL_CONNECT 199
 
-	    //int sock=get_socket_number(indice_socket);
+                //Leer algo
+                char buffer[ZENG_BUFFER_INITIAL_CONNECT+1];
 
+                //Ver si el id de snapshot ha cambiado
 
-
-
-
-
-        //Ver si hay datos disponibles y no esta pendiente aplicar ultimo snapshot
-
-                if (zoc_get_snapshot_mem_hexa==NULL) {
-                    zoc_get_snapshot_mem_hexa=util_malloc(ZRCP_GET_PUT_SNAPSHOT_MEM*2,"Can not allocate memory for getting snapshot"); //16 MB es mas que suficiente
-                }
+                sprintf(buffer_comando,"zeng-online get-snapshot-id %s %d\n",created_room_user_password,zeng_online_joined_to_room_number);
+                escritos=z_sock_write_string(indice_socket,buffer_comando);
+                //printf("after z_sock_write_string 1\n");
+                if (escritos<0) return escritos;
 
                 //Leer hasta prompt
                 //printf("before zsock_read_all_until_command\n");
-                leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)zoc_get_snapshot_mem_hexa,ZRCP_GET_PUT_SNAPSHOT_MEM*2,&posicion_command);
+                leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)buffer,ZENG_BUFFER_INITIAL_CONNECT,&posicion_command);
+
+                if (leidos>0) {
+                    buffer[leidos]=0; //fin de texto
+                    debug_printf(VERBOSE_DEBUG,"ZENG: Received text for get-snapshot-id (length %d): \n[\n%s\n]",leidos,buffer);
+                }
+
+                if (leidos<0) {
+                    debug_printf(VERBOSE_ERR,"ERROR. Can't receive get-snapshot-id: %s",z_sock_get_error(leidos));
+                    return 0;
+                }
+
+
                 //printf("after zsock_read_all_until_command\n");
-                printf("Recibido respuesta despues de get-snapshot: [%s]\n",zoc_get_snapshot_mem_hexa);
+                printf("Recibido respuesta despues de get-snapshot-id: [%s]\n",buffer);
 
                 //1 mas para eliminar el salto de linea anterior a "command>"
                 if (posicion_command>=1) {
-                    zoc_get_snapshot_mem_hexa[posicion_command-1]=0;
+                    buffer[posicion_command-1]=0;
                     //debug_printf(VERBOSE_DEBUG,"ZENG: Received text: %s",zoc_get_snapshot_mem_hexa);
                 }
                 else {
@@ -824,65 +831,139 @@ int zoc_receive_snapshot(int indice_socket)
                     return 0;
                 }
 
-                printf("Recibido respuesta despues de truncar: [%s]\n",zoc_get_snapshot_mem_hexa);
+                printf("Recibido respuesta despues de truncar: [%s]\n",buffer);
 
-                //Nos quedamos con la respuesta hasta el ultimo
-                //Es decir, si en get-snapshot el server remoto nos ha dejado en cola 2, 3 o mas snapshots, estamos pillando el ultimo
-                //Recordemos que lo envia de manera continua con saltos de linea despues de cada uno de ellos
-                //TODO: esto esta MAL. Hay que escoger el que tiene el ultimo salto de linea
-                int i;
+                int leer_snap=0;
 
-                /*int inicio_datos_snapshot=0;
-                //int leidos_saltos_linea=0;
-
-                for (i=0;i<leidos;i++) {
-                    if (zoc_get_snapshot_mem_hexa[i]=='\n') {
-                        //Y quitar ese salto de linea, si es el final no queremos que se procese
-                        zoc_get_snapshot_mem_hexa[i]=0;
-
-                        //Si hay algo mas despues del salto de linea
-                        if (i!=leidos-1) inicio_datos_snapshot=i+1;
+                //Detectar si error
+                if (strstr(buffer,"ERROR")!=NULL) {
+                    printf("Error getting snapshot-id\n");
+                }
+                else {
+                    //Ver si id diferente
+                    int nuevo_id=parse_string_to_number(buffer);
+                    if (nuevo_id!=zoc_receive_snapshot_last_id) {
+                        zoc_receive_snapshot_last_id=nuevo_id;
+                        leer_snap=1;
+                    }
+                    else {
+                        printf("Snapshot es el mismo que el anterior\n");
                     }
                 }
-                */
 
-                //printf("Buffer despues de truncar: [%s]\n",&zoc_get_snapshot_mem_hexa[inicio_datos_snapshot]);
 
-                //TODO: detectar texto ERROR en respuesta
-                //return leidos;
 
-                //Convertir hexa a memoria
-                if (zoc_get_snapshot_mem_binary==NULL) {
-                    zoc_get_snapshot_mem_binary=util_malloc(ZRCP_GET_PUT_SNAPSHOT_MEM*2,"Can not allocate memory for apply snapshot");
+                if (leer_snap) {
+
+                    printf("antes enviar get-snaps\n");
+                    //get-snapshot user_pass n
+                    sprintf(buffer_comando,"zeng-online get-snapshot %s %d\n",created_room_user_password,zeng_online_joined_to_room_number);
+                    escritos=z_sock_write_string(indice_socket,buffer_comando);
+                    //printf("after z_sock_write_string 1\n");
+                    if (escritos<0) return escritos;
+
+                    //int sock=get_socket_number(indice_socket);
+
+
+                    printf("despues enviar get-snaps\n");
+
+
+
+            //Ver si hay datos disponibles y no esta pendiente aplicar ultimo snapshot
+
+                    if (zoc_get_snapshot_mem_hexa==NULL) {
+                        zoc_get_snapshot_mem_hexa=util_malloc(ZRCP_GET_PUT_SNAPSHOT_MEM*2,"Can not allocate memory for getting snapshot"); //16 MB es mas que suficiente
+                    }
+
+                    //Leer hasta prompt
+                    //printf("before zsock_read_all_until_command\n");
+                    leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)zoc_get_snapshot_mem_hexa,ZRCP_GET_PUT_SNAPSHOT_MEM*2,&posicion_command);
+
+                    if (leidos>0) {
+                        zoc_get_snapshot_mem_hexa[leidos]=0; //fin de texto
+                        debug_printf(VERBOSE_DEBUG,"ZENG: Received text for get-snapshot (length %d): \n[\n%s\n]",leidos,zoc_get_snapshot_mem_hexa);
+                    }
+
+                    if (leidos<0) {
+                        debug_printf(VERBOSE_ERR,"ERROR. Can't receive get-snapshot: %s",z_sock_get_error(leidos));
+                        return 0;
+                    }
+
+
+                    //printf("after zsock_read_all_until_command\n");
+                    printf("Recibido respuesta despues de get-snapshot: [%s]\n",zoc_get_snapshot_mem_hexa);
+
+                    //1 mas para eliminar el salto de linea anterior a "command>"
+                    if (posicion_command>=1) {
+                        zoc_get_snapshot_mem_hexa[posicion_command-1]=0;
+                        //debug_printf(VERBOSE_DEBUG,"ZENG: Received text: %s",zoc_get_snapshot_mem_hexa);
+                    }
+                    else {
+                        debug_printf (VERBOSE_ERR,"Error receiving ZEsarUX zeng-online create-room");
+                        return 0;
+                    }
+
+                    printf("Recibido respuesta despues de truncar: [%s]\n",zoc_get_snapshot_mem_hexa);
+
+                    //Nos quedamos con la respuesta hasta el ultimo
+                    //Es decir, si en get-snapshot el server remoto nos ha dejado en cola 2, 3 o mas snapshots, estamos pillando el ultimo
+                    //Recordemos que lo envia de manera continua con saltos de linea despues de cada uno de ellos
+                    //TODO: esto esta MAL. Hay que escoger el que tiene el ultimo salto de linea
+                    int i;
+
+                    /*int inicio_datos_snapshot=0;
+                    //int leidos_saltos_linea=0;
+
+                    for (i=0;i<leidos;i++) {
+                        if (zoc_get_snapshot_mem_hexa[i]=='\n') {
+                            //Y quitar ese salto de linea, si es el final no queremos que se procese
+                            zoc_get_snapshot_mem_hexa[i]=0;
+
+                            //Si hay algo mas despues del salto de linea
+                            if (i!=leidos-1) inicio_datos_snapshot=i+1;
+                        }
+                    }
+                    */
+
+                    //printf("Buffer despues de truncar: [%s]\n",&zoc_get_snapshot_mem_hexa[inicio_datos_snapshot]);
+
+                    //TODO: detectar texto ERROR en respuesta
+                    //return leidos;
+
+                    //Convertir hexa a memoria
+                    if (zoc_get_snapshot_mem_binary==NULL) {
+                        zoc_get_snapshot_mem_binary=util_malloc(ZRCP_GET_PUT_SNAPSHOT_MEM*2,"Can not allocate memory for apply snapshot");
+                    }
+
+
+                    char *s=zoc_get_snapshot_mem_hexa;
+                    int parametros_recibidos=0;
+                    z80_byte valor;
+
+
+                    while (*s) {
+                        char buffer_valor[4];
+                        buffer_valor[0]=s[0];
+                        buffer_valor[1]=s[1];
+                        buffer_valor[2]='H';
+                        buffer_valor[3]=0;
+                        //printf ("%s\n",buffer_valor);
+                        valor=parse_string_to_number(buffer_valor);
+                        //printf ("valor: %d\n",valor);
+
+                        zoc_get_snapshot_mem_binary[parametros_recibidos++]=valor;
+                        //menu_debug_write_mapped_byte(direccion++,valor);
+
+                        s++;
+                        if (*s) s++;
+                    }
+
+
+                    zoc_get_snapshot_mem_binary_longitud=parametros_recibidos;
+
+                    zoc_pending_apply_received_snapshot=1;
+
                 }
-
-
-                char *s=zoc_get_snapshot_mem_hexa;
-                int parametros_recibidos=0;
-                z80_byte valor;
-
-
-                while (*s) {
-                    char buffer_valor[4];
-                    buffer_valor[0]=s[0];
-                    buffer_valor[1]=s[1];
-                    buffer_valor[2]='H';
-                    buffer_valor[3]=0;
-                    //printf ("%s\n",buffer_valor);
-                    valor=parse_string_to_number(buffer_valor);
-                    //printf ("valor: %d\n",valor);
-
-                    zoc_get_snapshot_mem_binary[parametros_recibidos++]=valor;
-                    //menu_debug_write_mapped_byte(direccion++,valor);
-
-                    s++;
-                    if (*s) s++;
-                }
-
-
-			    zoc_get_snapshot_mem_binary_longitud=parametros_recibidos;
-
-                zoc_pending_apply_received_snapshot=1;
 
         }
         else {

@@ -662,6 +662,50 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
 
     }
 
+    else if (!strcmp(comando_argv[0],"get-snapshot-id")) {
+        if (!zeng_online_enabled) {
+            escribir_socket(misocket,"ERROR. ZENG Online is not enabled");
+            return;
+        }
+
+        if (comando_argc<2) {
+            escribir_socket(misocket,"ERROR. Needs two parameters");
+            return;
+        }
+
+        int room_number=parse_string_to_number(comando_argv[2]);
+
+        if (room_number<0 || room_number>=zeng_online_current_max_rooms) {
+            escribir_socket_format(misocket,"ERROR. Room number beyond limit");
+            return;
+        }
+
+        if (!zeng_online_rooms_list[room_number].created) {
+            escribir_socket(misocket,"ERROR. Room is not created");
+            return;
+        }
+
+        //validar user_pass. comando_argv[1]
+        if (strcmp(comando_argv[1],zeng_online_rooms_list[room_number].user_password)) {
+            escribir_socket(misocket,"ERROR. Invalid user password for that room");
+            return;
+        }
+
+        if (!zeng_online_rooms_list[room_number].snapshot_size) {
+            escribir_socket(misocket,"ERROR. There is no snapshot on this room");
+            return;
+        }
+
+
+
+        escribir_socket_format(misocket,"%d",zeng_online_rooms_list[room_number].snapshot_id);
+
+
+
+
+
+    }
+
     //"put-snapshot creator_pass n data
     else if (!strcmp(comando_argv[0],"put-snapshot")) {
         if (!zeng_online_enabled) {
