@@ -784,7 +784,7 @@ int zoc_send_keys(int indice_socket,zeng_key_presses *elemento)
     //"send-keys user_pass n uuid key event nomenu
     //el 1 del final indica que no se envia la tecla si el menu en remoto esta abierto
 
-    sprintf(buffer_comando,"send-keys-event %s %d %s %d %d 1\n",
+    sprintf(buffer_comando,"zeng-online send-keys %s %d %s %d %d 1\n",
         created_room_user_password,zeng_online_joined_to_room_number,stats_uuid,
     tecla,pressrelease);
 
@@ -807,12 +807,17 @@ int zoc_send_keys(int indice_socket,zeng_key_presses *elemento)
         //printf ("antes de leer hasta command prompt\n");
         int leidos=zsock_read_all_until_command(indice_socket,buffer,199,&posicion_command);
 
-        //printf ("despues de leer hasta command prompt\n");
+        if (leidos>0) {
+            buffer[leidos]=0; //fin de texto
+            printf("Received text after send-keys: (length: %d):\n[\n%s\n]\n",leidos,buffer);
+        }
 
-        //Si ha habido error al leer de socket
         if (leidos<0) {
+            debug_printf(VERBOSE_ERR,"ERROR. Can't read remote prompt: %s",z_sock_get_error(leidos));
             return -1;
         }
+
+
     }
 
 

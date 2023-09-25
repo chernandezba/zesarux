@@ -314,7 +314,7 @@ void menu_zeng_online_create_room(MENU_ITEM_PARAMETERS)
         zeng_online_connected.v=1;
 
         //inicio thread de envio de snapshot, cada x milisegundos
-        zoc_start_snapshot_sending();
+        //TEMPP zoc_start_snapshot_sending();
 
         //inicio thread de envio de teclas, cada x milisegundos
         zoc_start_keys_sending();
