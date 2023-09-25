@@ -44,6 +44,7 @@ Functions starting with zoc_ means: zeng online client
 #include "zeng.h"
 #include "remote.h"
 #include "snap_zsf.h"
+#include "stats.h"
 
 
 
@@ -771,10 +772,51 @@ void *zoc_snapshot_sending_function(void *nada GCC_UNUSED)
 
 }
 
-int zoc_send_keys(zeng_key_presses *elemento)
+int zoc_send_keys(int indice_socket,zeng_key_presses *elemento)
 {
 
-    return 1;
+
+    char buffer_comando[256];
+
+    int tecla=elemento->tecla;
+    int pressrelease=elemento->pressrelease;
+
+    //"send-keys user_pass n uuid key event nomenu
+    //el 1 del final indica que no se envia la tecla si el menu en remoto esta abierto
+
+    sprintf(buffer_comando,"send-keys-event %s %d %s %d %d 1\n",
+        created_room_user_password,zeng_online_joined_to_room_number,stats_uuid,
+    tecla,pressrelease);
+
+
+    int escritos=z_sock_write_string(indice_socket,buffer_comando);
+
+   //Si ha habido error al escribir en socket
+    if (escritos<0) {
+        return escritos;
+    }
+
+
+    else {
+
+        z80_byte buffer[200];
+
+        //Leer hasta prompt
+        int posicion_command;
+
+        //printf ("antes de leer hasta command prompt\n");
+        int leidos=zsock_read_all_until_command(indice_socket,buffer,199,&posicion_command);
+
+        //printf ("despues de leer hasta command prompt\n");
+
+        //Si ha habido error al leer de socket
+        if (leidos<0) {
+            return -1;
+        }
+    }
+
+
+    return escritos;
 }
 
 void *zoc_keys_sending_function(void *nada GCC_UNUSED)
@@ -829,7 +871,7 @@ int error_desconectar=0;
 
 			//command> help send-keys-event
 			//Syntax: send-keys-event key event
-				int error=zoc_send_keys(&elemento);
+				int error=zoc_send_keys(indice_socket,&elemento);
 
 				if (error<0) error_desconectar=1;
 
