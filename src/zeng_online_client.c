@@ -1090,7 +1090,7 @@ int temppppp;
                 esperar_por_envio_alguna_tecla--;
             }
 
-            if (!esperar_por_envio_alguna_tecla) {
+            //if (!esperar_por_envio_alguna_tecla) {
                 //temppppp++;
                 //if ((temppppp%50)==0) {
                     printf("llamando a zoc_receive_snapshot\n");
@@ -1101,11 +1101,12 @@ int temppppp;
                         printf("Error getting snapshot from zeng online server\n");
                         usleep(10000); //dormir 10 ms
                     }
+
                 //}
-            }
+            //}
         }
 
-        usleep(10000); //dormir 10 ms
+        usleep(5000); //dormir 5 ms (1/4 de frame de video)
 
     }
 

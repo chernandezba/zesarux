@@ -544,5 +544,8 @@ o bien simplemente me guardo contador parpadeo antes de aplicar snapshot y lo re
 -quiza envio de teclas hay que indicar un tiempo de referencia entre cada tecla porque por ejemplo si se envia un press y release y se recibe al mismo tiempo, en destino no va a hacer nada, dado que activa y desactiva tecla al mismo momento
 habria que saber cuanto tiempo va pasando entre cada tecla
 para eso, se tendria que enviar cada tecla por ejemplo a final de cada scanline, y tener un contador que diga cuantos scanlines han pasado de una tecla a la otra, y aplicarlos al final de cada scanline
+Quiza el tiempo de referencia debe ir desde el ultimo snapshot:
+-en master , cuando envia ese snapshot al server
+-en slave, en cuanto recibe ese snapshot del server y lo aplica
 
 ---------------
