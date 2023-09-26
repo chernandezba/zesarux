@@ -537,4 +537,12 @@ ok -el envio de keys y snapshot deberia hacerse al mismo momento desde el mismo 
 ok -la recepcion de keys y snapshot deberia hacerse al mismo momento desde el mismo thread
 -eliminar todas funciones variables etc de cuando se creaban desde join/create threads indpendientes
 
+-no conviene enviar parpadeo en zeng online (aunque en zeng normal quiza si). porque como hay retraso, se recibe mas tarde y desincroniza
+quiza alguna variable al crear snapshot (o al aplicarlo) que no lo tenga en cuenta cuando sea zeng online
+o bien simplemente me guardo contador parpadeo antes de aplicar snapshot y lo restauro despues
+
+-quiza envio de teclas hay que indicar un tiempo de referencia entre cada tecla porque por ejemplo si se envia un press y release y se recibe al mismo tiempo, en destino no va a hacer nada, dado que activa y desactiva tecla al mismo momento
+habria que saber cuanto tiempo va pasando entre cada tecla
+para eso, se tendria que enviar cada tecla por ejemplo a final de cada scanline, y tener un contador que diga cuantos scanlines han pasado de una tecla a la otra, y aplicarlos al final de cada scanline
+
 ---------------
