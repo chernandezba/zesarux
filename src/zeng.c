@@ -245,6 +245,9 @@ void zeng_send_key_event(enum util_teclas tecla,int pressrelease)
 		return;
 	}
 
+    //temp
+    //temp_esperar_por_envio_alguna_tecla();
+
 }
 
 //Devuelve 0 si no conectado

@@ -1014,7 +1014,12 @@ void *zoc_master_thread_function(void *nada GCC_UNUSED)
 
 }
 
-
+//Pruebas
+int esperar_por_envio_alguna_tecla=0;
+/*void temp_esperar_por_envio_alguna_tecla(void)
+{
+    esperar_por_envio_alguna_tecla=50;
+}*/
 void *zoc_slave_thread_function(void *nada GCC_UNUSED)
 {
 
@@ -1056,7 +1061,7 @@ void *zoc_slave_thread_function(void *nada GCC_UNUSED)
     //TODO: ver posible manera de salir de aqui??
 int temppppp;
 
-    int esperar_por_envio_alguna_tecla=0;
+
 
     while (1) {
         if (zeng_online_client_end_frame_reached) {
@@ -1626,9 +1631,8 @@ int zoc_receive_snapshot_last_id=0;
 int zoc_receive_snapshot(int indice_socket)
 {
     printf("Inicio zoc_receive_snapshot llamado desde:\n");
-    debug_exec_show_backtrace();
+    //debug_exec_show_backtrace();
 
-	//Enviar snapshot cada 20*250=5000 ms->5 segundos
     debug_printf (VERBOSE_DEBUG,"ZENG: Receiving snapshot");
 
     int posicion_command;
