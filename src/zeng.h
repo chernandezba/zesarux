@@ -29,6 +29,8 @@
 struct s_zeng_key_presses {
 	enum util_teclas tecla;
 	int pressrelease;
+    //Este contador solo se usa por zeng online, y no por zeng normal
+    unsigned int contador_scanline;
 };
 
 typedef struct s_zeng_key_presses zeng_key_presses;

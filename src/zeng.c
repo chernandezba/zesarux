@@ -145,6 +145,7 @@ int zeng_fifo_add_element(zeng_key_presses *elemento)
 	//Escribir en la posicion actual
 	zeng_key_presses_array[zeng_fifo_write_position].tecla=elemento->tecla;
 	zeng_key_presses_array[zeng_fifo_write_position].pressrelease=elemento->pressrelease;
+    zeng_key_presses_array[zeng_fifo_write_position].contador_scanline=elemento->contador_scanline;
 
 	//Y poner siguiente posicion
 	zeng_fifo_write_position=zeng_next_position(zeng_fifo_write_position);
@@ -167,6 +168,7 @@ int zeng_fifo_read_element(zeng_key_presses *elemento)
 	//Leer de la posicion actual
 	elemento->tecla=zeng_key_presses_array[zeng_fifo_read_position].tecla;
 	elemento->pressrelease=zeng_key_presses_array[zeng_fifo_read_position].pressrelease;
+    elemento->contador_scanline=zeng_key_presses_array[zeng_fifo_read_position].contador_scanline;
 
 	//Y poner siguiente posicion
 	zeng_fifo_read_position=zeng_next_position(zeng_fifo_read_position);
@@ -237,6 +239,7 @@ void zeng_send_key_event(enum util_teclas tecla,int pressrelease)
 
 	elemento.tecla=tecla;
 	elemento.pressrelease=pressrelease;
+    elemento.contador_scanline=zeng_online_scanline_counter;
 
 	//printf ("Adding zeng key event to fifo\n");
 
@@ -247,6 +250,7 @@ void zeng_send_key_event(enum util_teclas tecla,int pressrelease)
 
     //temp
     //temp_esperar_por_envio_alguna_tecla();
+    printf("agregar tecla en contador scanline: %d\n",zeng_online_scanline_counter);
 
 }
 
