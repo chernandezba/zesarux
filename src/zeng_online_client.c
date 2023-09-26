@@ -61,6 +61,8 @@ pthread_t thread_zoc_snapshot_sending;
 pthread_t thread_zoc_snapshot_receiving;
 pthread_t thread_zoc_keys_sending;
 pthread_t thread_zoc_keys_receiving;
+pthread_t thread_zoc_master_thread;
+pthread_t thread_zoc_slave_thread;
 
 
 #endif
@@ -79,7 +81,7 @@ int zoc_pending_send_snapshot=0;
 //Si esta conectado
 z80_bit zeng_online_connected={0};
 
-char zeng_online_server[NETWORK_MAX_URL+1]="localhost";
+char zeng_online_server[NETWORK_MAX_URL+1]="51.83.33.13";
 int zeng_online_server_port=10000;
 
 //Buffer donde guardar listado de rooms remotas
@@ -767,6 +769,339 @@ void *zoc_snapshot_sending_function(void *nada GCC_UNUSED)
             zoc_pending_send_snapshot=0;
             printf("Snapshot sent\n");
         }
+
+        //Enviar teclas
+        //TODO gestionar error_desconectar
+        int enviada_alguna_tecla;
+        int error_desconectar=zoc_keys_send_pending(indice_socket,&enviada_alguna_tecla);
+    }
+
+	return 0;
+
+}
+
+void zoc_get_keys(int indice_socket)
+{
+
+    //Ver si hay datos disponibles en el socket
+	int sock_number=get_socket_number(indice_socket);
+
+	if (sock_number<0) {
+		return;
+	}
+
+    if (!zsock_available_data(sock_number)) return;
+
+
+
+        //Ir leyendo cada linea
+        //buffer suficientemente grande por si llegan varios eventos de golpe
+        char buffer[1024];
+
+        //Leer hasta prompt
+        int posicion_command;
+
+        //printf ("antes de leer hasta command prompt\n");
+        int leidos=zsock_read_all_until_newline(indice_socket,(z80_byte *)buffer,1023,&posicion_command);
+
+        if (leidos>0) {
+            buffer[leidos]=0; //fin de texto
+            printf("Received text after get-keys: (length: %d):\n[\n%s\n]\n",leidos,buffer);
+        }
+
+        if (leidos<0) {
+            debug_printf(VERBOSE_ERR,"ERROR. Can't read remote prompt: %s",z_sock_get_error(leidos));
+            //TODO return -1;
+        }
+
+        //Ir leyendo a cada final de linea
+        int i;
+        int inicio_linea=0;
+
+        for (i=0;buffer[i];i++) {
+            if (buffer[i]=='\n') {
+                //Lo cambiamos a fin de cadena con 0
+                buffer[i]=0;
+                printf("procesar linea: [%s]\n",&buffer[inicio_linea]);
+                ////Returned format is: uuid key event nomenu"
+
+                char campo_inicio[10];
+                char campo_final[10];
+                char received_uuid[STATS_UUID_MAX_LENGTH+1];
+                char received_key[10];
+                char received_event[10];
+                char received_nomenu[10];
+                //ir procesando segun espacios
+                int campos_leidos=0;
+
+                int j;
+                int inicio_campo=inicio_linea;
+                for (j=inicio_linea;buffer[j] && campos_leidos<6;j++) {
+                    if (buffer[j]==' ') {
+                        buffer[j]=0;
+                        printf("read field: [%s]\n",&buffer[inicio_campo]);
+
+                        switch(campos_leidos) {
+                            case 0:
+                                strcpy(campo_inicio,&buffer[inicio_campo]);
+                            break;
+
+                            case 1:
+                                strcpy(received_uuid,&buffer[inicio_campo]);
+                            break;
+
+                            case 2:
+                                strcpy(received_key,&buffer[inicio_campo]);
+                            break;
+
+                            case 3:
+                                strcpy(received_event,&buffer[inicio_campo]);
+                            break;
+
+                            case 4:
+                                strcpy(received_nomenu,&buffer[inicio_campo]);
+                            break;
+                        }
+
+                        campos_leidos++;
+                        inicio_campo=j+1;
+                    }
+                }
+
+                //campo final?
+                if (campos_leidos==5) {
+                    printf("read last field: [%s]\n",&buffer[inicio_campo]);
+                    strcpy(campo_final,&buffer[inicio_campo]);
+
+                    printf("Received event: uuid: [%s] key: [%s] event: [%s] nomenu: [%s]\n",
+                        received_uuid,received_key,received_event,received_nomenu);
+
+                    //Validar que empiece y acabe con "#"
+                    int valido=0;
+
+                    if (!strcmp(campo_inicio,"#") && !strcmp(campo_final,"#")) valido=1;
+
+                    if (!valido) printf("linea no valida\n");
+                    else {
+
+                        //Si uuid yo soy mismo, no procesarlo
+                        if (!strcmp(received_uuid,stats_uuid)) {
+                            printf("The event is mine. Do not process it\n");
+                        }
+                        else {
+                            int numero_key=parse_string_to_number(received_key);
+                            int numero_event=parse_string_to_number(received_event);
+                            int numero_nomenu=parse_string_to_number(received_nomenu);
+
+                            int enviar=1;
+                            if (numero_nomenu && menu_abierto) enviar=0;
+
+
+                            //Enviar la tecla pero que no vuelva a entrar por zeng
+                            if (enviar) {
+                                debug_printf (VERBOSE_DEBUG,"Processing from ZRCP command send-keys-event: key %d event %d",numero_key,numero_event);
+                                printf ("Processing from ZRCP command send-keys-event: key %d event %d\n",numero_key,numero_event);
+
+                                debug_printf (VERBOSE_DEBUG,"Info joystick: fire: %d up: %d down: %d left: %d right: %d",
+                                    UTIL_KEY_JOY_FIRE,UTIL_KEY_JOY_UP,UTIL_KEY_JOY_DOWN,UTIL_KEY_JOY_LEFT,UTIL_KEY_JOY_RIGHT);
+
+                                //Si tecla especial de reset todas teclas. usado en driver curses
+                                if (numero_key==UTIL_KEY_RESET_ALL) {
+                                    //printf("Reset todas teclas\n");
+                                    reset_keyboard_ports();
+                                }
+
+                                else {
+                                    util_set_reset_key_continue_after_zeng(numero_key,numero_event);
+                                }
+                            }
+                        }
+                    }
+                }
+
+                else {
+                    printf("Incorrect answer received\n");
+                }
+
+
+                inicio_linea=i+1;
+            }
+        }
+
+}
+
+int zeng_online_client_end_frame_reached=0;
+
+void zeng_online_client_tell_end_frame(void)
+{
+    zeng_online_client_end_frame_reached=1;
+}
+
+void *zoc_master_thread_function(void *nada GCC_UNUSED)
+{
+
+    //conectar a remoto
+
+    //zeng_remote_list_rooms_buffer[0]=0;
+
+    int indice_socket=z_sock_open_connection(zeng_online_server,zeng_online_server_port,0,"");
+
+    if (indice_socket<0) {
+        debug_printf(VERBOSE_ERR,"Error connecting to %s:%d. %s",
+            zeng_online_server,zeng_online_server_port,
+            z_sock_get_error(indice_socket));
+        return 0;
+    }
+
+        int posicion_command;
+
+#define ZENG_BUFFER_INITIAL_CONNECT 199
+
+    //Leer algo
+    char buffer[ZENG_BUFFER_INITIAL_CONNECT+1];
+
+    //int leidos=z_sock_read(indice_socket,buffer,199);
+    int leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)buffer,ZENG_BUFFER_INITIAL_CONNECT,&posicion_command);
+    if (leidos>0) {
+        buffer[leidos]=0; //fin de texto
+        //printf("Received text (length: %d):\n[\n%s\n]\n",leidos,buffer);
+    }
+
+    if (leidos<0) {
+        debug_printf(VERBOSE_ERR,"ERROR. Can't read remote prompt: %s",z_sock_get_error(leidos));
+        return 0;
+    }
+
+    int indice_socket_get_keys=zoc_start_connection_get_keys();
+
+    //bucle continuo de si hay snapshot de final de frame, enviarlo a remoto
+    //TODO: ver posible manera de salir de aqui??
+    while (1) {
+
+        if (zeng_online_client_end_frame_reached) {
+            zeng_online_client_end_frame_reached=0;
+            if (!zoc_pending_send_snapshot) {
+                //Esperar algo. 10 ms, suficiente porque es un mitad de frame
+                //usleep(10000); //dormir 10 ms
+            }
+            else {
+                int error=zoc_send_snapshot(indice_socket);
+
+                if (error<0) {
+                    //TODO
+                    printf("Error sending snapshot to zeng online server\n");
+                }
+
+                //Enviado. Avisar no pendiente
+                zoc_pending_send_snapshot=0;
+                printf("Snapshot sent\n");
+            }
+
+            //Enviar teclas
+            //TODO gestionar error_desconectar
+            int enviada_alguna_tecla;
+            int error_desconectar=zoc_keys_send_pending(indice_socket,&enviada_alguna_tecla);
+
+            //recepcion teclas
+            zoc_get_keys(indice_socket_get_keys);
+        }
+
+            usleep(10000); //dormir 10 ms
+
+    }
+
+	return 0;
+
+}
+
+
+void *zoc_slave_thread_function(void *nada GCC_UNUSED)
+{
+
+    //conectar a remoto
+
+    //zeng_remote_list_rooms_buffer[0]=0;
+
+    int indice_socket=z_sock_open_connection(zeng_online_server,zeng_online_server_port,0,"");
+
+    if (indice_socket<0) {
+        debug_printf(VERBOSE_ERR,"Error connecting to %s:%d. %s",
+            zeng_online_server,zeng_online_server_port,
+            z_sock_get_error(indice_socket));
+        return 0;
+    }
+
+        int posicion_command;
+
+#define ZENG_BUFFER_INITIAL_CONNECT 199
+
+    //Leer algo
+    char buffer[ZENG_BUFFER_INITIAL_CONNECT+1];
+
+    //int leidos=z_sock_read(indice_socket,buffer,199);
+    int leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)buffer,ZENG_BUFFER_INITIAL_CONNECT,&posicion_command);
+    if (leidos>0) {
+        buffer[leidos]=0; //fin de texto
+        //printf("Received text (length: %d):\n[\n%s\n]\n",leidos,buffer);
+    }
+
+    if (leidos<0) {
+        debug_printf(VERBOSE_ERR,"ERROR. Can't read remote prompt: %s",z_sock_get_error(leidos));
+        return 0;
+    }
+
+    int indice_socket_get_keys=zoc_start_connection_get_keys();
+
+    //bucle continuo de recepcion snapshot
+    //TODO: ver posible manera de salir de aqui??
+int temppppp;
+
+    int esperar_por_envio_alguna_tecla=0;
+
+    while (1) {
+        if (zeng_online_client_end_frame_reached) {
+            zeng_online_client_end_frame_reached=0;
+
+
+
+            //recepcion teclas
+            //TODO gestionar error
+            zoc_get_keys(indice_socket_get_keys);
+
+
+            //Enviar teclas
+            //TODO gestionar error_desconectar
+            int enviada_alguna_tecla;
+            int error_desconectar=zoc_keys_send_pending(indice_socket,&enviada_alguna_tecla);
+
+            if (enviada_alguna_tecla) {
+                //esperar 1 segundo
+                esperar_por_envio_alguna_tecla=50;
+            }
+
+            //Recibir snapshot
+            //Siempre que no acabemos de enviar teclas. En ese caso dejar pasar unos segundos??
+            if (esperar_por_envio_alguna_tecla>0) {
+                esperar_por_envio_alguna_tecla--;
+            }
+
+            if (!esperar_por_envio_alguna_tecla) {
+                //temppppp++;
+                //if ((temppppp%50)==0) {
+                    printf("llamando a zoc_receive_snapshot\n");
+                    int error=zoc_receive_snapshot(indice_socket);
+                    //TODO gestionar bien este error
+                    if (error<0) {
+                        //TODO
+                        printf("Error getting snapshot from zeng online server\n");
+                        usleep(10000); //dormir 10 ms
+                    }
+                //}
+            }
+        }
+
+        usleep(10000); //dormir 10 ms
+
     }
 
 	return 0;
@@ -827,6 +1162,33 @@ int zoc_send_keys(int indice_socket,zeng_key_presses *elemento)
 
 int zoc_send_keys_avisado_final_frame=0;
 
+int zoc_keys_send_pending(int indice_socket,int *enviada_alguna_tecla)
+{
+
+    *enviada_alguna_tecla=0;
+
+    int error_desconectar=0;
+    zeng_key_presses elemento;
+    while (!zeng_fifo_read_element(&elemento) && !error_desconectar) {
+        *enviada_alguna_tecla=1;
+        debug_printf (VERBOSE_DEBUG,"ZENG: Read event from zeng fifo and sending it to remote: key %d pressrelease %d",elemento.tecla,elemento.pressrelease);
+
+        printf ("ZENG: Read event from zeng fifo and sending it to remote: key %d pressrelease %d\n",elemento.tecla,elemento.pressrelease);
+
+        debug_printf (VERBOSE_DEBUG,"Info joystick: fire: %d up: %d down: %d left: %d right: %d",
+            UTIL_KEY_JOY_FIRE,UTIL_KEY_JOY_UP,UTIL_KEY_JOY_DOWN,UTIL_KEY_JOY_LEFT,UTIL_KEY_JOY_RIGHT);
+
+        //command> help send-keys-event
+        //Syntax: send-keys-event key event
+            int error=zoc_send_keys(indice_socket,&elemento);
+
+            if (error<0) error_desconectar=1;
+
+    }
+
+    return error_desconectar;
+}
+
 void *zoc_keys_sending_function(void *nada GCC_UNUSED)
 {
 
@@ -869,22 +1231,9 @@ int error_desconectar=0;
 
 		//Si hay tecla pendiente de enviar. Enviarlas a final de frame
         if (zoc_send_keys_avisado_final_frame) {
-            zeng_key_presses elemento;
-            while (!zeng_fifo_read_element(&elemento) && !error_desconectar) {
-                debug_printf (VERBOSE_DEBUG,"ZENG: Read event from zeng fifo and sending it to remote: key %d pressrelease %d",elemento.tecla,elemento.pressrelease);
+            int enviada_alguna_tecla;
+            error_desconectar=zoc_keys_send_pending(indice_socket,&enviada_alguna_tecla);
 
-                printf ("ZENG: Read event from zeng fifo and sending it to remote: key %d pressrelease %d\n",elemento.tecla,elemento.pressrelease);
-
-                debug_printf (VERBOSE_DEBUG,"Info joystick: fire: %d up: %d down: %d left: %d right: %d",
-                    UTIL_KEY_JOY_FIRE,UTIL_KEY_JOY_UP,UTIL_KEY_JOY_DOWN,UTIL_KEY_JOY_LEFT,UTIL_KEY_JOY_RIGHT);
-
-                //command> help send-keys-event
-                //Syntax: send-keys-event key event
-                    int error=zoc_send_keys(indice_socket,&elemento);
-
-                    if (error<0) error_desconectar=1;
-
-            }
 
             zoc_send_keys_avisado_final_frame=0;
 
@@ -904,6 +1253,126 @@ int error_desconectar=0;
 void zeng_online_client_tell_send_keys_end_frame(void)
 {
     zoc_send_keys_avisado_final_frame=1;
+}
+
+int zoc_start_connection_get_snapshot(void)
+{
+    //conectar a remoto
+
+    //zeng_remote_list_rooms_buffer[0]=0;
+
+    int indice_socket=z_sock_open_connection(zeng_online_server,zeng_online_server_port,0,"");
+
+    if (indice_socket<0) {
+        debug_printf(VERBOSE_ERR,"Error connecting to %s:%d. %s",
+            zeng_online_server,zeng_online_server_port,
+            z_sock_get_error(indice_socket));
+        return -1;
+    }
+
+        int posicion_command;
+
+#define ZENG_BUFFER_INITIAL_CONNECT 199
+
+    //Leer algo
+    char buffer[ZENG_BUFFER_INITIAL_CONNECT+1];
+
+    //int leidos=z_sock_read(indice_socket,buffer,199);
+    int leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)buffer,ZENG_BUFFER_INITIAL_CONNECT,&posicion_command);
+    if (leidos>0) {
+        buffer[leidos]=0; //fin de texto
+        //printf("Received text (length: %d):\n[\n%s\n]\n",leidos,buffer);
+    }
+
+    if (leidos<0) {
+        debug_printf(VERBOSE_ERR,"ERROR. Can't read remote prompt: %s",z_sock_get_error(leidos));
+        return -1;
+    }
+
+    return indice_socket;
+}
+
+int zoc_start_connection_get_keys(void)
+{
+    //conectar a remoto
+
+
+    int indice_socket=z_sock_open_connection(zeng_online_server,zeng_online_server_port,0,"");
+
+    if (indice_socket<0) {
+        debug_printf(VERBOSE_ERR,"Error connecting to %s:%d. %s",
+            zeng_online_server,zeng_online_server_port,
+            z_sock_get_error(indice_socket));
+        return 0;
+    }
+
+        int posicion_command;
+
+#define ZENG_BUFFER_INITIAL_CONNECT 199
+
+    //Leer algo
+    char buffer_initial[ZENG_BUFFER_INITIAL_CONNECT+1];
+
+    //int leidos=z_sock_read(indice_socket,buffer,199);
+    int leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)buffer_initial,ZENG_BUFFER_INITIAL_CONNECT,&posicion_command);
+    if (leidos>0) {
+        buffer_initial[leidos]=0; //fin de texto
+        //printf("Received text (length: %d):\n[\n%s\n]\n",leidos,buffer);
+    }
+
+    if (leidos<0) {
+        debug_printf(VERBOSE_ERR,"ERROR. Can't read remote prompt: %s",z_sock_get_error(leidos));
+        return 0;
+    }
+
+    //bucle continuo de leer teclas de remoto
+    //TODO: ver posible manera de salir de aqui??
+int error_desconectar=0;
+
+
+
+   char buffer_comando[256];
+
+
+
+    ////command> zo get-keys OCAAYKWGYA 0
+
+    sprintf(buffer_comando,"zeng-online get-keys %s %d\n",
+        created_room_user_password,zeng_online_joined_to_room_number);
+
+
+    int escritos=z_sock_write_string(indice_socket,buffer_comando);
+
+
+
+   //Si ha habido error al escribir en socket
+    if (escritos<0) {
+        //TODO return escritos;
+    }
+
+
+    else {
+
+
+
+        //printf ("antes de leer hasta command prompt\n");
+        int leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)buffer_initial,ZENG_BUFFER_INITIAL_CONNECT,&posicion_command);
+
+        if (leidos>0) {
+            buffer_initial[leidos]=0; //fin de texto
+            printf("Received text after get-keys: (length: %d):\n[\n%s\n]\n",leidos,buffer_initial);
+        }
+
+        if (leidos<0) {
+            debug_printf(VERBOSE_ERR,"ERROR. Can't read remote prompt: %s",z_sock_get_error(leidos));
+            //TODO return -1;
+        }
+
+
+    }
+
+    return indice_socket;
+
 }
 
 void *zoc_keys_receiving_function(void *nada GCC_UNUSED)
@@ -987,9 +1456,21 @@ int error_desconectar=0;
     }
 
 
-
+    int indice_socket_receive_snapshot=zoc_start_connection_get_snapshot();
+    //TODO. si error indice_socket_receive_snapshot<0
 
     while (1) {
+
+        //Leer snapshot
+        if (zeng_online_i_am_master.v==0) {
+            int error=zoc_receive_snapshot(indice_socket_receive_snapshot);
+            //TODO gestionar bien este error
+            if (error<0) {
+                //TODO
+                printf("Error getting snapshot from zeng online server\n");
+                usleep(10000); //dormir 10 ms
+            }
+        }
 
         //Ir leyendo cada linea
         //buffer suficientemente grande por si llegan varios eventos de golpe
@@ -1144,6 +1625,9 @@ int zoc_receive_snapshot_last_id=0;
 
 int zoc_receive_snapshot(int indice_socket)
 {
+    printf("Inicio zoc_receive_snapshot llamado desde:\n");
+    debug_exec_show_backtrace();
+
 	//Enviar snapshot cada 20*250=5000 ms->5 segundos
     debug_printf (VERBOSE_DEBUG,"ZENG: Receiving snapshot");
 
@@ -1153,7 +1637,7 @@ int zoc_receive_snapshot(int indice_socket)
 
     char buffer_comando[200];
 
-    while (1) {
+    //while (1) {
 
             if (!zoc_pending_apply_received_snapshot) {
 
@@ -1193,7 +1677,7 @@ int zoc_receive_snapshot(int indice_socket)
                     //debug_printf(VERBOSE_DEBUG,"ZENG: Received text: %s",zoc_get_snapshot_mem_hexa);
                 }
                 else {
-                    debug_printf (VERBOSE_ERR,"Error receiving ZEsarUX zeng-online create-room");
+                    debug_printf (VERBOSE_ERR,"Error receiving ZEsarUX get-snapshot-id");
                     return 0;
                 }
 
@@ -1220,6 +1704,8 @@ int zoc_receive_snapshot(int indice_socket)
 
 
                 if (leer_snap) {
+
+                    printf("Obteniendo snapshot\n");
 
                     printf("antes enviar get-snaps\n");
                     //get-snapshot user_pass n
@@ -1257,7 +1743,7 @@ int zoc_receive_snapshot(int indice_socket)
 
 
                     //printf("after zsock_read_all_until_command\n");
-                    printf("Recibido respuesta despues de get-snapshot: [%s]\n",zoc_get_snapshot_mem_hexa);
+                   // printf("Recibido respuesta despues de get-snapshot: [%s]\n",zoc_get_snapshot_mem_hexa);
 
                     //1 mas para eliminar el salto de linea anterior a "command>"
                     if (posicion_command>=1) {
@@ -1269,7 +1755,7 @@ int zoc_receive_snapshot(int indice_socket)
                         return 0;
                     }
 
-                    printf("Recibido respuesta despues de truncar: [%s]\n",zoc_get_snapshot_mem_hexa);
+                    //printf("Recibido respuesta despues de truncar: [%s]\n",zoc_get_snapshot_mem_hexa);
 
                     //Nos quedamos con la respuesta hasta el ultimo
                     //Es decir, si en get-snapshot el server remoto nos ha dejado en cola 2, 3 o mas snapshots, estamos pillando el ultimo
@@ -1338,9 +1824,10 @@ int zoc_receive_snapshot(int indice_socket)
         }
 
         //Esperar algo. 10 ms, suficiente porque es un mitad de frame
-        usleep(10000); //dormir 10 ms
+        //usleep(10000); //dormir 10 ms
 
-    }
+    //}
+    return 1;
 
 
 }
@@ -1436,6 +1923,31 @@ void zoc_start_snapshot_sending(void)
 
 	//y pthread en estado detached asi liberara su memoria asociada a thread al finalizar, sin tener que hacer un pthread_join
 	pthread_detach(thread_zoc_snapshot_sending);
+}
+
+
+//Inicio del thread de master
+void zoc_start_master_thread(void)
+{
+	if (pthread_create( &thread_zoc_master_thread, NULL, &zoc_master_thread_function, NULL) ) {
+		debug_printf(VERBOSE_ERR,"Can not create zeng online send snapshot pthread");
+		return;
+	}
+
+	//y pthread en estado detached asi liberara su memoria asociada a thread al finalizar, sin tener que hacer un pthread_join
+	pthread_detach(thread_zoc_master_thread);
+}
+
+//Inicio del thread de slave
+void zoc_start_slave_thread(void)
+{
+	if (pthread_create( &thread_zoc_slave_thread, NULL, &zoc_slave_thread_function, NULL) ) {
+		debug_printf(VERBOSE_ERR,"Can not create zeng online send snapshot pthread");
+		return;
+	}
+
+	//y pthread en estado detached asi liberara su memoria asociada a thread al finalizar, sin tener que hacer un pthread_join
+	pthread_detach(thread_zoc_slave_thread);
 }
 
 //Inicio del thread que va enviando teclas a servidor zeng online

@@ -533,7 +533,8 @@ Pausas entre get id y get snap , cuando no hay uno nuevo, muy cortas, para que n
 -comando para denegar mas join en una room. solo para creator
 -comando para bajar numero de max players en una room. solo para creator
 
--el envio de keys y snapshot deberia hacerse al mismo momento desde el mismo thread
--la recepcion de keys y snapshot deberia hacerse al mismo momento desde el mismo thread
+ok -el envio de keys y snapshot deberia hacerse al mismo momento desde el mismo thread
+ok -la recepcion de keys y snapshot deberia hacerse al mismo momento desde el mismo thread
+-eliminar todas funciones variables etc de cuando se creaban desde join/create threads indpendientes
 
 ---------------
