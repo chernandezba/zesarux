@@ -591,12 +591,12 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
                     zeng_online_rooms_list[room_number].events[indice_lectura].nomenu
                 );
 
-                printf("Retorno key-keys: %s %d %d %d\n",
+                /*printf("Retorno key-keys: %s %d %d %d\n",
                     zeng_online_rooms_list[room_number].events[indice_lectura].uuid,
                     zeng_online_rooms_list[room_number].events[indice_lectura].tecla,
                     zeng_online_rooms_list[room_number].events[indice_lectura].pressrelease,
                     zeng_online_rooms_list[room_number].events[indice_lectura].nomenu
-                );
+                );*/
 
                 indice_lectura++;
                 if (indice_lectura>=ZENG_ONLINE_MAX_EVENTS) {
