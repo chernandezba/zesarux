@@ -88,6 +88,7 @@
 #include "chrome.h"
 #include "sam.h"
 #include "pcw.h"
+#include "zeng_online_client.h"
 
 
 #include "autoselectoptions.h"
@@ -3648,12 +3649,17 @@ void save_zsf_snapshot_file_mem(char *filename,z80_byte *destination_memory,int 
     zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, ulablock,ZSF_ULA, 1);
 
 
-    z80_byte flashstateblock[2];
+    //No guardar estado flash cuando hay zeng online. esto solo es util con zeng normal
+    //TODO: logicamente si guardamos un snapshot zsf mientras esta conectado a zeng online, no se guardara estado flash
+    //aunque eso no es un gran problema...
+    if (zeng_online_connected.v==0) {
+        z80_byte flashstateblock[2];
 
-    flashstateblock[0]=contador_parpadeo;
-    flashstateblock[1]=estado_parpadeo.v;
+        flashstateblock[0]=contador_parpadeo;
+        flashstateblock[1]=estado_parpadeo.v;
 
-    zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, flashstateblock,ZSF_FLASH_STATE, 2);
+        zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, flashstateblock,ZSF_FLASH_STATE, 2);
+    }
 
 
 

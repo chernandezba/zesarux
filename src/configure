@@ -1469,7 +1469,7 @@ zeng.o: zeng.c zeng.h cpu.h debug.h utils.h network.h compileoptions.h remote.h 
 zeng_online.o: zeng_online.c zeng_online.h cpu.h debug.h utils.h network.h compileoptions.h remote.h snap_zsf.h autoselectoptions.h ay38912.h atomic.h stats.h
 	\$(CC) \$(CFLAGS) -c zeng_online.c
 
-zeng_online_client.o: zeng_online_client.c zeng_online_client.h cpu.h debug.h utils.h network.h compileoptions.h remote.h snap_zsf.h zeng_online.h zeng.h stats.h
+zeng_online_client.o: zeng_online_client.c zeng_online_client.h cpu.h debug.h utils.h network.h compileoptions.h remote.h snap_zsf.h zeng_online.h zeng.h stats.h screen.h
 	\$(CC) \$(CFLAGS) -c zeng_online_client.c
 
 zvfs.o: zvfs.c zvfs.h cpu.h debug.h utils.h ff.h compileoptions.h
@@ -1571,7 +1571,7 @@ m68kopnz.o: m68kopnz.c
 snap.o: snap.c snap.h cpu.h debug.h operaciones.h zx8081.h mem128.h ay38912.h compileoptions.h autoselectoptions.h ay38912.h tape_smp.h audio.h screen.h zxvision.h tape.h snap_z81.h snap_zx8081.h snap_rzx.h utils.h ula.h joystick.h realjoystick.h z88.h chardetect.h jupiterace.h cpc.h timex.h zxuno.h ulaplus.h chloe.h prism.h diviface.h snap_rzx.h chrome.h zxevo.h tsconf.h baseconf.h snap_spg.h settings.h tbblue.h esxdos_handler.h
 	\$(CC) \$(CFLAGS) -c snap.c
 
-snap_zsf.o: snap_zsf.c snap_zsf.h cpu.h debug.h operaciones.h zx8081.h mem128.h ay38912.h compileoptions.h autoselectoptions.h ay38912.h tape_smp.h audio.h screen.h zxvision.h tape.h snap_z81.h snap_zx8081.h snap_rzx.h utils.h ula.h joystick.h realjoystick.h z88.h chardetect.h jupiterace.h cpc.h timex.h zxuno.h ulaplus.h chloe.h prism.h diviface.h snap_rzx.h chrome.h zxevo.h tsconf.h baseconf.h divmmc.h divide.h tbblue.h msx.h vdp_9918a.h coleco.h sg1000.h sms.h sn76489an.h m68k.h ql_zx8302.h ql_i8049.h vdp_9918a_sms.h settings.h scmp.h mk14.h chrome.h sam.h pcw.h
+snap_zsf.o: snap_zsf.c snap_zsf.h cpu.h debug.h operaciones.h zx8081.h mem128.h ay38912.h compileoptions.h autoselectoptions.h ay38912.h tape_smp.h audio.h screen.h zxvision.h tape.h snap_z81.h snap_zx8081.h snap_rzx.h utils.h ula.h joystick.h realjoystick.h z88.h chardetect.h jupiterace.h cpc.h timex.h zxuno.h ulaplus.h chloe.h prism.h diviface.h snap_rzx.h chrome.h zxevo.h tsconf.h baseconf.h divmmc.h divide.h tbblue.h msx.h vdp_9918a.h coleco.h sg1000.h sms.h sn76489an.h m68k.h ql_zx8302.h ql_i8049.h vdp_9918a_sms.h settings.h scmp.h mk14.h chrome.h sam.h pcw.h zeng_online_client.h
 	\$(CC) \$(CFLAGS) -c snap_zsf.c
 
 snap_ram.o: snap_ram.c snap_ram.h cpu.h debug.h operaciones.h snap_zsf.h zxvision.h autoselectoptions.h

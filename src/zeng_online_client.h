@@ -43,5 +43,7 @@ extern int zeng_online_scanline_counter;
 
 extern void zoc_start_master_thread(void);
 extern void zoc_start_slave_thread(void);
+extern void zeng_online_client_end_frame_from_core_functions(void);
+extern int zoc_last_snapshot_received_counter;
 
 #endif

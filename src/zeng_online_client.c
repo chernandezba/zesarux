@@ -45,6 +45,7 @@ Functions starting with zoc_ means: zeng online client
 #include "remote.h"
 #include "snap_zsf.h"
 #include "stats.h"
+#include "screen.h"
 
 
 
@@ -82,6 +83,10 @@ int zeng_online_server_port=10000;
 
 //Buffer donde guardar listado de rooms remotas
 char *zeng_remote_list_rooms_buffer=NULL;
+
+
+//Contador que se activa al recibir un snapshot. Mientras no sea 0, no se procesan pulsaciones de teclas locales en slave
+int zoc_last_snapshot_received_counter=0;
 
 #ifdef USE_PTHREADS
 
@@ -1545,6 +1550,13 @@ void zeng_online_client_apply_pending_received_snapshot(void)
 
     zoc_pending_apply_received_snapshot=0;
 
+    if (zoc_last_snapshot_received_counter==0) {
+        generic_footertext_print_operating("ONLINE");
+    }
+
+    //5 segundos de timeout, para aceptar teclas slave si no hay snapshot
+    zoc_last_snapshot_received_counter=250;
+
     //zeng_online_client_reset_scanline_counter();
 
 }
@@ -1669,9 +1681,24 @@ void zeng_online_client_prepare_snapshot_if_needed(void)
 void zeng_online_client_end_frame_from_core_functions(void)
 {
 
+    if (zeng_online_connected.v==0) return;
+
     zeng_online_client_tell_end_frame();
     zeng_online_client_prepare_snapshot_if_needed();
     zeng_online_client_apply_pending_received_snapshot();
+
+
+    if (zeng_online_i_am_master.v==0) {
+        if (zoc_last_snapshot_received_counter>0) {
+            zoc_last_snapshot_received_counter--;
+
+            if (zoc_last_snapshot_received_counter==0) {
+                printf("Timeout receiving snapshots from master. Allowing local key press\n");
+                generic_footertext_print_operating("OFFLIN");
+            }
+
+        }
+    }
 
 }
 

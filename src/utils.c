@@ -7519,7 +7519,7 @@ z80_byte antes_puerto_32766=puerto_32766;
   util_set_reset_key_continue_after_zeng(tecla,pressrelease);
 
 
-  if (zeng_online_connected.v && zeng_online_i_am_master.v==0 && !menu_abierto) {
+  if (zeng_online_connected.v && zeng_online_i_am_master.v==0 && !menu_abierto && zoc_last_snapshot_received_counter>0) {
     //printf("Antes Puerto puerto_61438: %d\n",puerto_61438);
     puerto_65278=antes_puerto_65278;
     puerto_65022=antes_puerto_65022;
