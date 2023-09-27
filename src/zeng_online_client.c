@@ -79,8 +79,8 @@ int zoc_pending_send_snapshot=0;
 //Si esta conectado
 z80_bit zeng_online_connected={0};
 
-char zeng_online_server[NETWORK_MAX_URL+1]="localhost";
-int zeng_online_server_port=10000;
+char hidden_zeng_online_server[NETWORK_MAX_URL+1]="localhost";
+int hidden_zeng_online_server_port=10000;
 
 //Buffer donde guardar listado de rooms remotas
 char *zeng_remote_list_rooms_buffer=NULL;
@@ -91,6 +91,27 @@ int zoc_last_snapshot_received_counter=0;
 
 //Tiempo que ha tardado en conectar a un list rooms
 long zeng_online_last_list_rooms_latency=0;
+
+//Retornar puerto y hostname del server
+int zeng_online_get_server_and_port(char *buffer_hostname)
+{
+
+    strcpy(buffer_hostname,hidden_zeng_online_server);
+    int puerto=hidden_zeng_online_server_port;
+
+    //Ver si se indica puerto con ":"
+    char *existe_puerto=strstr(buffer_hostname,":");
+
+    if (existe_puerto!=NULL) {
+        *existe_puerto=0; //fijar fin de caracter
+
+        //Y leer puerto
+        existe_puerto++;
+        puerto=parse_string_to_number(existe_puerto);
+    }
+
+    return puerto;
+}
 
 long zeng_online_get_last_list_rooms_latency(void)
 {
@@ -161,16 +182,18 @@ int zeng_online_client_list_rooms_connect(void)
 
 	    timer_stats_current_time(&list_rooms_time_antes);
 
+        char server[NETWORK_MAX_URL+1];
+        int puerto;
+        puerto=zeng_online_get_server_and_port(server);
 
-
-		int indice_socket=z_sock_open_connection(zeng_online_server,zeng_online_server_port,0,"");
+		int indice_socket=z_sock_open_connection(server,puerto,0,"");
 
 
         zeng_online_last_list_rooms_latency=timer_stats_diference_time(&list_rooms_time_antes,&list_rooms_time_despues);
 
 		if (indice_socket<0) {
 			debug_printf(VERBOSE_ERR,"Error connecting to %s:%d. %s",
-                zeng_online_server,zeng_online_server_port,
+                server,puerto,
                 z_sock_get_error(indice_socket));
 			return 0;
 		}
@@ -394,11 +417,15 @@ int zeng_online_client_join_room_connect(void)
 
         zeng_remote_list_rooms_buffer[0]=0;
 
-		int indice_socket=z_sock_open_connection(zeng_online_server,zeng_online_server_port,0,"");
+        char server[NETWORK_MAX_URL+1];
+        int puerto;
+        puerto=zeng_online_get_server_and_port(server);
+
+		int indice_socket=z_sock_open_connection(server,puerto,0,"");
 
 		if (indice_socket<0) {
 			debug_printf(VERBOSE_ERR,"Error connecting to %s:%d. %s",
-                zeng_online_server,zeng_online_server_port,
+                server,puerto,
                 z_sock_get_error(indice_socket));
 			return 0;
 		}
@@ -547,11 +574,15 @@ int zeng_online_client_create_room_connect(void)
 
         //zeng_remote_list_rooms_buffer[0]=0;
 
-		int indice_socket=z_sock_open_connection(zeng_online_server,zeng_online_server_port,0,"");
+        char server[NETWORK_MAX_URL+1];
+        int puerto;
+        puerto=zeng_online_get_server_and_port(server);
+
+		int indice_socket=z_sock_open_connection(server,puerto,0,"");
 
 		if (indice_socket<0) {
 			debug_printf(VERBOSE_ERR,"Error connecting to %s:%d. %s",
-                zeng_online_server,zeng_online_server_port,
+                server,puerto,
                 z_sock_get_error(indice_socket));
 			return 0;
 		}
@@ -925,12 +956,14 @@ int zoc_start_connection_get_keys(void)
 {
     //conectar a remoto
 
-
-    int indice_socket=z_sock_open_connection(zeng_online_server,zeng_online_server_port,0,"");
+    char server[NETWORK_MAX_URL+1];
+    int puerto;
+    puerto=zeng_online_get_server_and_port(server);
+    int indice_socket=z_sock_open_connection(server,puerto,0,"");
 
     if (indice_socket<0) {
         debug_printf(VERBOSE_ERR,"Error connecting to %s:%d. %s",
-            zeng_online_server,zeng_online_server_port,
+            server,puerto,
             z_sock_get_error(indice_socket));
         return 0;
     }
@@ -1090,11 +1123,15 @@ void *zoc_master_thread_function(void *nada GCC_UNUSED)
 
     //zeng_remote_list_rooms_buffer[0]=0;
 
-    int indice_socket=z_sock_open_connection(zeng_online_server,zeng_online_server_port,0,"");
+    char server[NETWORK_MAX_URL+1];
+    int puerto;
+    puerto=zeng_online_get_server_and_port(server);
+
+    int indice_socket=z_sock_open_connection(server,puerto,0,"");
 
     if (indice_socket<0) {
         debug_printf(VERBOSE_ERR,"Error connecting to %s:%d. %s",
-            zeng_online_server,zeng_online_server_port,
+            server,puerto,
             z_sock_get_error(indice_socket));
         return 0;
     }
@@ -1401,11 +1438,15 @@ void *zoc_slave_thread_function(void *nada GCC_UNUSED)
 
     //zeng_remote_list_rooms_buffer[0]=0;
 
-    int indice_socket=z_sock_open_connection(zeng_online_server,zeng_online_server_port,0,"");
+    char server[NETWORK_MAX_URL+1];
+    int puerto;
+    puerto=zeng_online_get_server_and_port(server);
+
+    int indice_socket=z_sock_open_connection(server,puerto,0,"");
 
     if (indice_socket<0) {
         debug_printf(VERBOSE_ERR,"Error connecting to %s:%d. %s",
-            zeng_online_server,zeng_online_server_port,
+            server,puerto,
             z_sock_get_error(indice_socket));
         return 0;
     }
@@ -1519,11 +1560,15 @@ int zoc_start_connection_get_snapshot(void)
 
     //zeng_remote_list_rooms_buffer[0]=0;
 
-    int indice_socket=z_sock_open_connection(zeng_online_server,zeng_online_server_port,0,"");
+    char server[NETWORK_MAX_URL+1];
+    int puerto;
+    puerto=zeng_online_get_server_and_port(server);
+
+    int indice_socket=z_sock_open_connection(server,puerto,0,"");
 
     if (indice_socket<0) {
         debug_printf(VERBOSE_ERR,"Error connecting to %s:%d. %s",
-            zeng_online_server,zeng_online_server_port,
+            server,puerto,
             z_sock_get_error(indice_socket));
         return -1;
     }

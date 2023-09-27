@@ -69,19 +69,16 @@ int zeng_online_opcion_seleccionada=0;
 
 void menu_zeng_online_server(MENU_ITEM_PARAMETERS)
 {
-    menu_ventana_scanf("Server",zeng_online_server,NETWORK_MAX_URL+1);
+    menu_ventana_scanf("Server",hidden_zeng_online_server,NETWORK_MAX_URL+1);
 
 }
 
-void menu_zeng_online_server_port(MENU_ITEM_PARAMETERS)
-{
-    //TODO
-}
+
 
 void menu_zeng_online_join_room_print(zxvision_window *w)
 {
     char buf_temp[NETWORK_MAX_URL+256];
-    sprintf(buf_temp,"Connecting to %s",zeng_online_server);
+    sprintf(buf_temp,"Connecting to %s",hidden_zeng_online_server);
 
     menu_common_connect_print(w,buf_temp);
 }
@@ -118,7 +115,7 @@ void menu_zeng_join_room_aux(int room_number)
 void menu_zeng_online_list_rooms_print(zxvision_window *w)
 {
     char buf_temp[NETWORK_MAX_URL+256];
-    sprintf(buf_temp,"Connecting to %s",zeng_online_server);
+    sprintf(buf_temp,"Connecting to %s",hidden_zeng_online_server);
 
     menu_common_connect_print(w,buf_temp);
 }
@@ -406,14 +403,10 @@ void menu_zeng_online(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_en_es_ca_inicial(&array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_server,NULL,
             "~~Server","~~Servidor","~~Servidor");
         char string_zeng_online_server[16];
-        menu_tape_settings_trunc_name(zeng_online_server,string_zeng_online_server,16);
+        menu_tape_settings_trunc_name(hidden_zeng_online_server,string_zeng_online_server,16);
         menu_add_item_menu_prefijo_format(array_menu_common,"[%s] ",string_zeng_online_server);
         menu_add_item_menu_shortcut(array_menu_common,'s');
 
-        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_server_port,NULL,
-            "~~Port","~~Puerto","~~Port");
-        menu_add_item_menu_prefijo_format(array_menu_common," [%d] ",zeng_online_server_port);
-        menu_add_item_menu_shortcut(array_menu_common,'p');
 
         //Create room + join / destroy room
         if (zeng_online_i_am_joined.v==0) {
