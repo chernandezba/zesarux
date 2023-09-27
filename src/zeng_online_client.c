@@ -57,7 +57,6 @@ Functions starting with zoc_ means: zeng online client
 pthread_t thread_zeng_online_client_list_rooms;
 pthread_t thread_zeng_online_client_create_room;
 pthread_t thread_zeng_online_client_join_room;
-pthread_t thread_zoc_snapshot_sending;
 pthread_t thread_zoc_master_thread;
 pthread_t thread_zoc_slave_thread;
 
@@ -712,70 +711,6 @@ int zoc_send_snapshot(int indice_socket)
 
 
 
-void *zoc_snapshot_sending_function(void *nada GCC_UNUSED)
-{
-
-    //conectar a remoto
-
-    //zeng_remote_list_rooms_buffer[0]=0;
-
-    int indice_socket=z_sock_open_connection(zeng_online_server,zeng_online_server_port,0,"");
-
-    if (indice_socket<0) {
-        debug_printf(VERBOSE_ERR,"Error connecting to %s:%d. %s",
-            zeng_online_server,zeng_online_server_port,
-            z_sock_get_error(indice_socket));
-        return 0;
-    }
-
-        int posicion_command;
-
-#define ZENG_BUFFER_INITIAL_CONNECT 199
-
-    //Leer algo
-    char buffer[ZENG_BUFFER_INITIAL_CONNECT+1];
-
-    //int leidos=z_sock_read(indice_socket,buffer,199);
-    int leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)buffer,ZENG_BUFFER_INITIAL_CONNECT,&posicion_command);
-    if (leidos>0) {
-        buffer[leidos]=0; //fin de texto
-        //printf("Received text (length: %d):\n[\n%s\n]\n",leidos,buffer);
-    }
-
-    if (leidos<0) {
-        debug_printf(VERBOSE_ERR,"ERROR. Can't read remote prompt: %s",z_sock_get_error(leidos));
-        return 0;
-    }
-
-    //bucle continuo de si hay snapshot de final de frame, enviarlo a remoto
-    //TODO: ver posible manera de salir de aqui??
-    while (1) {
-        if (!zoc_pending_send_snapshot) {
-            //Esperar algo. 10 ms, suficiente porque es un mitad de frame
-            usleep(10000); //dormir 10 ms
-        }
-        else {
-            int error=zoc_send_snapshot(indice_socket);
-
-            if (error<0) {
-                //TODO
-                printf("Error sending snapshot to zeng online server\n");
-            }
-
-            //Enviado. Avisar no pendiente
-            zoc_pending_send_snapshot=0;
-            printf("Snapshot sent\n");
-        }
-
-        //Enviar teclas
-        //TODO gestionar error_desconectar
-        int enviada_alguna_tecla;
-        int error_desconectar=zoc_keys_send_pending(indice_socket,&enviada_alguna_tecla);
-    }
-
-	return 0;
-
-}
 
 void zoc_get_keys(int indice_socket)
 {
@@ -1605,17 +1540,6 @@ void zeng_online_client_apply_pending_received_snapshot(void)
 
 
 
-//Inicio del thread que como master va enviando snapshot a servidor zeng online
-void zoc_start_snapshot_sending(void)
-{
-	if (pthread_create( &thread_zoc_snapshot_sending, NULL, &zoc_snapshot_sending_function, NULL) ) {
-		debug_printf(VERBOSE_ERR,"Can not create zeng online send snapshot pthread");
-		return;
-	}
-
-	//y pthread en estado detached asi liberara su memoria asociada a thread al finalizar, sin tener que hacer un pthread_join
-	pthread_detach(thread_zoc_snapshot_sending);
-}
 
 
 //Inicio del thread de master
@@ -1744,8 +1668,14 @@ void zeng_online_client_create_room(int room_number,char *room_name)
 {
 }
 
-void zoc_start_snapshot_sending(void)
+void zoc_start_master_thread(void)
 {
 }
+
+//Inicio del thread de slave
+void zoc_start_slave_thread(void)
+{
+}
+
 
 #endif
