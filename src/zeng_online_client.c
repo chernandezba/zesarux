@@ -1104,11 +1104,9 @@ void *zoc_master_thread_function(void *nada GCC_UNUSED)
 
         if (zeng_online_client_end_frame_reached) {
             zeng_online_client_end_frame_reached=0;
-            if (!zoc_pending_send_snapshot) {
-                //Esperar algo. 10 ms, suficiente porque es un mitad de frame
-                //usleep(10000); //dormir 10 ms
-            }
-            else {
+
+
+            if (zoc_pending_send_snapshot) {
                 int error=zoc_send_snapshot(indice_socket);
 
                 if (error<0) {
