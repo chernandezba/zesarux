@@ -151,6 +151,20 @@ int menu_zeng_online_list_rooms(int *room_number,int *created,int *current_playe
     if (zeng_remote_list_rooms_buffer[0]!=0) {
         //menu_generic_message("Rooms",zeng_remote_list_rooms_buffer);
 
+        //Mostrar latencia
+        long latencia=zeng_online_get_last_list_rooms_latency();
+
+        char buffer_latencia[30];
+        //Es en microsegundos. Si es >1000, mostrar en ms
+        if (latencia>=1000) {
+            sprintf(buffer_latencia,"%ld ms",latencia/1000);
+        }
+        else {
+            sprintf(buffer_latencia,"%ld us",latencia);
+        }
+
+        menu_generic_message_format("ZENG online latency","Latency is: %s",buffer_latencia );
+
 
         generic_message_tooltip_return retorno_ventana;
         zxvision_generic_message_tooltip("Rooms", 0,0, 0, 1, &retorno_ventana, 1, "%s", zeng_remote_list_rooms_buffer);

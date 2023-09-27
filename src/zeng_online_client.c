@@ -46,6 +46,7 @@ Functions starting with zoc_ means: zeng online client
 #include "snap_zsf.h"
 #include "stats.h"
 #include "screen.h"
+#include "timer.h"
 
 
 
@@ -78,7 +79,7 @@ int zoc_pending_send_snapshot=0;
 //Si esta conectado
 z80_bit zeng_online_connected={0};
 
-char zeng_online_server[NETWORK_MAX_URL+1]="51.83.33.13";
+char zeng_online_server[NETWORK_MAX_URL+1]="localhost";
 int zeng_online_server_port=10000;
 
 //Buffer donde guardar listado de rooms remotas
@@ -87,6 +88,14 @@ char *zeng_remote_list_rooms_buffer=NULL;
 
 //Contador que se activa al recibir un snapshot. Mientras no sea 0, no se procesan pulsaciones de teclas locales en slave
 int zoc_last_snapshot_received_counter=0;
+
+//Tiempo que ha tardado en conectar a un list rooms
+long zeng_online_last_list_rooms_latency=0;
+
+long zeng_online_get_last_list_rooms_latency(void)
+{
+    return zeng_online_last_list_rooms_latency;
+}
 
 #ifdef USE_PTHREADS
 
@@ -144,7 +153,20 @@ int zeng_online_client_list_rooms_connect(void)
         }
         zeng_remote_list_rooms_buffer[0]=0;
 
+        //Empezar a contar latencia
+
+        struct timeval list_rooms_time_antes,list_rooms_time_despues;
+
+        //calcular tiempo que tarda en dibujarse
+
+	    timer_stats_current_time(&list_rooms_time_antes);
+
+
+
 		int indice_socket=z_sock_open_connection(zeng_online_server,zeng_online_server_port,0,"");
+
+
+        zeng_online_last_list_rooms_latency=timer_stats_diference_time(&list_rooms_time_antes,&list_rooms_time_despues);
 
 		if (indice_socket<0) {
 			debug_printf(VERBOSE_ERR,"Error connecting to %s:%d. %s",

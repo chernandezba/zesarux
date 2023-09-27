@@ -45,5 +45,6 @@ extern void zoc_start_master_thread(void);
 extern void zoc_start_slave_thread(void);
 extern void zeng_online_client_end_frame_from_core_functions(void);
 extern int zoc_last_snapshot_received_counter;
+extern long zeng_online_get_last_list_rooms_latency(void);
 
 #endif
