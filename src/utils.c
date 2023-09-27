@@ -155,6 +155,8 @@
 #include "plus3dos_handler.h"
 #include "pcw.h"
 #include "menu_bitmaps.h"
+#include "zeng_online.h"
+#include "zeng_online_client.h"
 
 //Archivo usado para entrada de teclas
 FILE *ptr_input_file_keyboard;
@@ -4472,6 +4474,8 @@ int util_write_configfile(void)
                                                 ADD_STRING_CONFIG,"--remoteprotocol-port %d",remote_protocol_port);
                                                 ADD_STRING_CONFIG,"--remoteprotocol-prompt \"%s\"",remote_prompt_command_string);
 
+  if (zeng_online_enabled)                      ADD_STRING_CONFIG,"--enable-zeng-online-server");
+
 
   if (realjoystick_disabled.v==1)              ADD_STRING_CONFIG,"--disablerealjoystick");
 
@@ -7495,7 +7499,40 @@ void util_set_reset_key_continue(enum util_teclas tecla,int pressrelease)
         zeng_send_key_event(tecla,pressrelease);
   }
 
+//Si esta zeng online y somos slave, no enviamos teclas locales nuestras
+//ya nos llegara el cambio debido al snapshot y de la recepcion de teclas
+//TODO: habria que hacer esto tambien para otros puertos:
+//puerto joystick / kempston etc
+//puertos sam coupe
+//puertos cpc
+//puertos todas maquinas...
+z80_byte antes_puerto_65278=puerto_65278;
+z80_byte antes_puerto_65022=puerto_65022;
+z80_byte antes_puerto_64510=puerto_64510;
+z80_byte antes_puerto_63486=puerto_63486;
+z80_byte antes_puerto_61438=puerto_61438;
+z80_byte antes_puerto_57342=puerto_57342;
+z80_byte antes_puerto_49150=puerto_49150;
+z80_byte antes_puerto_32766=puerto_32766;
+
+
   util_set_reset_key_continue_after_zeng(tecla,pressrelease);
+
+
+  if (zeng_online_connected.v && zeng_online_i_am_master.v==0 && !menu_abierto) {
+    //printf("Antes Puerto puerto_61438: %d\n",puerto_61438);
+    puerto_65278=antes_puerto_65278;
+    puerto_65022=antes_puerto_65022;
+    puerto_64510=antes_puerto_64510;
+    puerto_63486=antes_puerto_63486;
+    puerto_61438=antes_puerto_61438;
+    puerto_57342=antes_puerto_57342;
+    puerto_49150=antes_puerto_49150;
+    puerto_32766=antes_puerto_32766;
+    //printf("Despues Puerto puerto_61438: %d\n",puerto_61438);
+
+    //zoc_decir_pulsada_alguna_tecla_local();
+  }
 }
 
 void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrelease)

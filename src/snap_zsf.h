@@ -86,6 +86,7 @@
 #define ZSF_COMMON_ROMBLOCK 59
 #define ZSF_CREATOR 60
 #define ZSF_FLASH_STATE 61
+#define ZSF_KEY_PORTS_SPECTRUM_STATE 62
 //Importante NO alterar los ID existentes o se rompera compatibilidad hacia atras del formato ZSF
 //Siempre agregar, nunca modificar ni borrar
 

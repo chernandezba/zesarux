@@ -757,6 +757,18 @@ Byte fields:
 1: Flash state (0 or 1)
 
 
+-Block ID 62: ZSF_KEY_PORTS_SPECTRUM_STATE
+Tell keyboard ports value in spectrum
+Byte fields:
+0: z80_byte puerto_65278
+1: z80_byte puerto_65022
+2: z80_byte puerto_64510
+3: z80_byte puerto_63486
+4: z80_byte puerto_61438
+5: z80_byte puerto_57342
+6: z80_byte puerto_49150
+7: z80_byte puerto_32766
+
 -Como codificar bloques de memoria para Spectrum 128k, zxuno, tbblue, tsconf, etc?
 Con un numero de bloque (0...255) pero... que tamaño de bloque? tbblue usa paginas de 8kb, tsconf usa paginas de 16kb
 Quizá numero de bloque y parametro que diga tamaño, para tener un block id comun para todos ellos
@@ -769,7 +781,7 @@ Por otra parte, tener bloques diferentes ayuda a saber mejor qué tipos de bloqu
 #define MAX_ZSF_BLOCK_ID_NAMELENGTH 30
 
 //Id maximo de nombres sin contar el unknown final
-#define MAX_ZSF_BLOCK_ID_NAMES 61
+#define MAX_ZSF_BLOCK_ID_NAMES 62
 char *zsf_block_id_names[]={
  //123456789012345678901234567890
   "ZSF_NOOP",                 //0
@@ -834,6 +846,7 @@ char *zsf_block_id_names[]={
   "ZSF_COMMON_ROMBLOCK",
   "ZSF_CREATOR",     //60
   "ZSF_FLASH_STATE",
+  "ZSF_KEY_PORTS_SPECTRUM_STATE",
 
   "Unknown"  //Este siempre al final
 };
@@ -2011,6 +2024,23 @@ void load_ZSF_FLASH_STATE(z80_byte *header)
 
     //Por si acaso, valor no es 0 nunca
     if (!contador_parpadeo) contador_parpadeo=1;
+
+}
+
+void load_zsf_key_ports_spectrum_state(z80_byte *header)
+{
+//Si menu abierto, no hacerlo
+
+if (menu_abierto) return;
+
+    puerto_65278=header[0];
+    puerto_65022=header[1];
+    puerto_64510=header[2];
+    puerto_63486=header[3];
+    puerto_61438=header[4];
+    puerto_57342=header[5];
+    puerto_49150=header[6];
+    puerto_32766=header[7];
 
 }
 
@@ -3284,6 +3314,10 @@ void load_zsf_snapshot_file_mem(char *filename,z80_byte *origin_memory,int longi
         load_ZSF_FLASH_STATE(block_data);
       break;
 
+      case ZSF_KEY_PORTS_SPECTRUM_STATE:
+        load_zsf_key_ports_spectrum_state(block_data);
+    break;
+
       default:
         debug_printf(VERBOSE_ERR,"Unknown ZSF Block ID: %u. Continue anyway",block_id);
       break;
@@ -3620,6 +3654,26 @@ void save_zsf_snapshot_file_mem(char *filename,z80_byte *destination_memory,int 
     flashstateblock[1]=estado_parpadeo.v;
 
     zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, flashstateblock,ZSF_FLASH_STATE, 2);
+
+
+
+    //Estado puertos
+    //TODO: esto solo si somos en zeng online master
+    //-Block ID 62: ZSF_KEY_PORTS_SPECTRUM_STATE
+
+
+    z80_byte keyportsblock[8];
+
+    keyportsblock[0]=puerto_65278;
+    keyportsblock[1]=puerto_65022;
+    keyportsblock[2]=puerto_64510;
+    keyportsblock[3]=puerto_63486;
+    keyportsblock[4]=puerto_61438;
+    keyportsblock[5]=puerto_57342;
+    keyportsblock[6]=puerto_49150;
+    keyportsblock[7]=puerto_32766;
+
+    zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, keyportsblock,ZSF_KEY_PORTS_SPECTRUM_STATE, 8);
 
 
     z80_byte timexblock[2];

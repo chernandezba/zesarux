@@ -324,6 +324,9 @@ z80_bit command_line_esxdos_local_dir={0};
 int command_line_chardetect_printchar_enabled=-1;
 
 z80_bit command_line_ayplayer_start_playlist={0};
+
+z80_bit command_line_start_zeng_online_server={0};
+
 //Fin command_line flags
 
 //Para Windows con pthreads. En todos los sistemas, se permite main loop en pthread, excepto en Windows
@@ -892,6 +895,7 @@ printf (
 		"--enable-remoteprotocol             Enable ZRCP remote protocol\n"
 		"--remoteprotocol-port n             Set remote protocol port (default: 10000)\n"
         "--remoteprotocol-prompt p           Change the command prompt shown on remote protocol\n"
+        "--enable-zeng-online-server         Enable ZENG Online server. Requires ZRCP\n"
 #endif
 
 		"--showfiredbreakpoint n             Tells to show the breakpoint condition when it is fired. Possible values: \n"
@@ -5495,6 +5499,10 @@ int parse_cmdline_options(int desde_commandline) {
             strcpy(remote_prompt_command_string,argv[puntero_parametro]);
 		 }
 
+         else if (!strcmp(argv[puntero_parametro],"--enable-zeng-online-server")) {
+            command_line_start_zeng_online_server.v=1;
+         }
+
 
 		 else if (!strcmp(argv[puntero_parametro],"--showfiredbreakpoint")) {
 			 siguiente_parametro_argumento();
@@ -7273,6 +7281,14 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
 
 	//Iniciar ZRCP
 	init_remote_protocol();
+
+    //Habilitar zeng online si conviene
+    if (command_line_start_zeng_online_server.v) {
+        if (remote_protocol_enabled.v) {
+            printf("Iniciando zeng online server\n");
+            enable_zeng_online();
+        }
+    }
 
 
     generate_stats_uuid();

@@ -806,7 +806,7 @@ void zoc_get_keys(int indice_socket)
 
         if (leidos>0) {
             buffer[leidos]=0; //fin de texto
-            printf("Received text after get-keys: (length: %d):\n[\n%s\n]\n",leidos,buffer);
+            //printf("Received text after get-keys: (length: %d):\n[\n%s\n]\n",leidos,buffer);
         }
 
         if (leidos<0) {
@@ -822,7 +822,7 @@ void zoc_get_keys(int indice_socket)
             if (buffer[i]=='\n') {
                 //Lo cambiamos a fin de cadena con 0
                 buffer[i]=0;
-                printf("procesar linea: [%s]\n",&buffer[inicio_linea]);
+                //printf("procesar linea: [%s]\n",&buffer[inicio_linea]);
                 ////Returned format is: uuid key event nomenu"
 
                 char campo_inicio[10];
@@ -839,7 +839,7 @@ void zoc_get_keys(int indice_socket)
                 for (j=inicio_linea;buffer[j] && campos_leidos<6;j++) {
                     if (buffer[j]==' ') {
                         buffer[j]=0;
-                        printf("read field: [%s]\n",&buffer[inicio_campo]);
+                        //printf("read field: [%s]\n",&buffer[inicio_campo]);
 
                         switch(campos_leidos) {
                             case 0:
@@ -870,11 +870,11 @@ void zoc_get_keys(int indice_socket)
 
                 //campo final?
                 if (campos_leidos==5) {
-                    printf("read last field: [%s]\n",&buffer[inicio_campo]);
+                    //printf("read last field: [%s]\n",&buffer[inicio_campo]);
                     strcpy(campo_final,&buffer[inicio_campo]);
 
-                    printf("Received event: uuid: [%s] key: [%s] event: [%s] nomenu: [%s]\n",
-                        received_uuid,received_key,received_event,received_nomenu);
+                    //printf("Received event: uuid: [%s] key: [%s] event: [%s] nomenu: [%s]\n",
+                      //  received_uuid,received_key,received_event,received_nomenu);
 
                     //Validar que empiece y acabe con "#"
                     int valido=0;
@@ -886,7 +886,7 @@ void zoc_get_keys(int indice_socket)
 
                         //Si uuid yo soy mismo, no procesarlo
                         if (!strcmp(received_uuid,stats_uuid)) {
-                            printf("The event is mine. Do not process it\n");
+                            //printf("The event is mine. Do not process it\n");
                         }
                         else {
                             int numero_key=parse_string_to_number(received_key);
@@ -900,7 +900,7 @@ void zoc_get_keys(int indice_socket)
                             //Enviar la tecla pero que no vuelva a entrar por zeng
                             if (enviar) {
                                 debug_printf (VERBOSE_DEBUG,"Processing from ZRCP command send-keys-event: key %d event %d",numero_key,numero_event);
-                                printf ("Processing from ZRCP command send-keys-event: key %d event %d\n",numero_key,numero_event);
+                                //printf ("Processing from ZRCP command send-keys-event: key %d event %d\n",numero_key,numero_event);
 
                                 debug_printf (VERBOSE_DEBUG,"Info joystick: fire: %d up: %d down: %d left: %d right: %d",
                                     UTIL_KEY_JOY_FIRE,UTIL_KEY_JOY_UP,UTIL_KEY_JOY_DOWN,UTIL_KEY_JOY_LEFT,UTIL_KEY_JOY_RIGHT);
@@ -912,7 +912,9 @@ void zoc_get_keys(int indice_socket)
                                 }
 
                                 else {
+                                    printf("Recibida tecla desde zeng online. Antes Puerto puerto_61438: %d\n",puerto_61438);
                                     util_set_reset_key_continue_after_zeng(numero_key,numero_event);
+                                    printf("Recibida tecla desde zeng online. Despues Puerto puerto_61438: %d\n",puerto_61438);
                                 }
                             }
                         }
@@ -920,7 +922,7 @@ void zoc_get_keys(int indice_socket)
                 }
 
                 else {
-                    printf("Incorrect answer received\n");
+                    //printf("Incorrect answer received\n");
                 }
 
 
@@ -1040,6 +1042,14 @@ int esperar_por_envio_alguna_tecla=0;
 {
     esperar_por_envio_alguna_tecla=50;
 }*/
+
+//int zoc_client_pulsada_alguna_tecla_local=0;
+
+/*void zoc_decir_pulsada_alguna_tecla_local(void)
+{
+    zoc_client_pulsada_alguna_tecla_local=1;
+}*/
+
 void *zoc_slave_thread_function(void *nada GCC_UNUSED)
 {
 
@@ -1079,7 +1089,7 @@ void *zoc_slave_thread_function(void *nada GCC_UNUSED)
 
     //bucle continuo de recepcion snapshot
     //TODO: ver posible manera de salir de aqui??
-int temppppp;
+    //int temppppp;
 
 
 
@@ -1091,6 +1101,9 @@ int temppppp;
 
             //recepcion teclas
             //TODO gestionar error
+            //Tecnicamente no haria falta esto, pues las teclas ya nos llegan
+            //por el volcado de puertos que tiene el snapshot
+            //PERO esto permite que lleguen mas rapido antes que el snapshot
             zoc_get_keys(indice_socket_get_keys);
 
 
@@ -1099,21 +1112,29 @@ int temppppp;
             int enviada_alguna_tecla;
             int error_desconectar=zoc_keys_send_pending(indice_socket,&enviada_alguna_tecla);
 
-            if (enviada_alguna_tecla) {
+            /*if (zoc_client_pulsada_alguna_tecla_local) {
+                zoc_client_pulsada_alguna_tecla_local=0;
                 //esperar 1 segundo
-                esperar_por_envio_alguna_tecla=50;
-            }
+
+                //siempre que no este ya antes en espera
+                if (!esperar_por_envio_alguna_tecla) {
+                    //esperar_por_envio_alguna_tecla=50;
+
+                    //Saltarse el siguiente snapshot
+                    esperar_por_envio_alguna_tecla=2;
+                }
+            }*/
 
             //Recibir snapshot
             //Siempre que no acabemos de enviar teclas. En ese caso dejar pasar unos segundos??
-            if (esperar_por_envio_alguna_tecla>0) {
+            /*if (esperar_por_envio_alguna_tecla>0) {
                 esperar_por_envio_alguna_tecla--;
-            }
+            }*/
 
             //if (!esperar_por_envio_alguna_tecla) {
                 //temppppp++;
                 //if ((temppppp%50)==0) {
-                    printf("llamando a zoc_receive_snapshot\n");
+                    //printf("llamando a zoc_receive_snapshot\n");
                     int error=zoc_receive_snapshot(indice_socket);
                     //TODO gestionar bien este error
                     if (error<0) {
@@ -1125,7 +1146,7 @@ int temppppp;
                 //}
             //}
 
-            printf("Contador scanline: %d\n",zeng_online_scanline_counter);
+            //printf("Contador scanline: %d\n",zeng_online_scanline_counter);
         }
 
         usleep(5000); //dormir 5 ms (1/4 de frame de video)
@@ -1173,7 +1194,7 @@ int zoc_send_keys(int indice_socket,zeng_key_presses *elemento)
 
         if (leidos>0) {
             buffer[leidos]=0; //fin de texto
-            printf("Received text after send-keys: (length: %d):\n[\n%s\n]\n",leidos,buffer);
+            //printf("Received text after send-keys: (length: %d):\n[\n%s\n]\n",leidos,buffer);
         }
 
         if (leidos<0) {
@@ -1201,7 +1222,7 @@ int zoc_keys_send_pending(int indice_socket,int *enviada_alguna_tecla)
         *enviada_alguna_tecla=1;
         debug_printf (VERBOSE_DEBUG,"ZENG: Read event from zeng fifo and sending it to remote: key %d pressrelease %d",elemento.tecla,elemento.pressrelease);
 
-        printf ("ZENG: Read event from zeng fifo and sending it to remote: key %d pressrelease %d\n",elemento.tecla,elemento.pressrelease);
+        //printf ("ZENG: Read event from zeng fifo and sending it to remote: key %d pressrelease %d\n",elemento.tecla,elemento.pressrelease);
 
         debug_printf (VERBOSE_DEBUG,"Info joystick: fire: %d up: %d down: %d left: %d right: %d",
             UTIL_KEY_JOY_FIRE,UTIL_KEY_JOY_UP,UTIL_KEY_JOY_DOWN,UTIL_KEY_JOY_LEFT,UTIL_KEY_JOY_RIGHT);
@@ -1653,7 +1674,7 @@ int zoc_receive_snapshot_last_id=0;
 
 int zoc_receive_snapshot(int indice_socket)
 {
-    printf("Inicio zoc_receive_snapshot llamado desde:\n");
+    //printf("Inicio zoc_receive_snapshot llamado desde:\n");
     //debug_exec_show_backtrace();
 
     debug_printf (VERBOSE_DEBUG,"ZENG: Receiving snapshot");
@@ -1696,7 +1717,7 @@ int zoc_receive_snapshot(int indice_socket)
 
 
                 //printf("after zsock_read_all_until_command\n");
-                printf("Recibido respuesta despues de get-snapshot-id: [%s]\n",buffer);
+                //printf("Recibido respuesta despues de get-snapshot-id: [%s]\n",buffer);
 
                 //1 mas para eliminar el salto de linea anterior a "command>"
                 if (posicion_command>=1) {
@@ -1708,7 +1729,7 @@ int zoc_receive_snapshot(int indice_socket)
                     return 0;
                 }
 
-                printf("Recibido respuesta despues de truncar: [%s]\n",buffer);
+                //printf("Recibido respuesta despues de truncar: [%s]\n",buffer);
 
                 int leer_snap=0;
 
@@ -1724,7 +1745,7 @@ int zoc_receive_snapshot(int indice_socket)
                         leer_snap=1;
                     }
                     else {
-                        printf("Snapshot es el mismo que el anterior\n");
+                        //printf("Snapshot es el mismo que el anterior\n");
                     }
                 }
 
@@ -1732,9 +1753,9 @@ int zoc_receive_snapshot(int indice_socket)
 
                 if (leer_snap) {
 
-                    printf("Obteniendo snapshot\n");
+                    //printf("Obteniendo snapshot\n");
 
-                    printf("antes enviar get-snaps\n");
+                    //printf("antes enviar get-snaps\n");
                     //get-snapshot user_pass n
                     sprintf(buffer_comando,"zeng-online get-snapshot %s %d\n",created_room_user_password,zeng_online_joined_to_room_number);
                     escritos=z_sock_write_string(indice_socket,buffer_comando);
@@ -1744,7 +1765,7 @@ int zoc_receive_snapshot(int indice_socket)
                     //int sock=get_socket_number(indice_socket);
 
 
-                    printf("despues enviar get-snaps\n");
+                    //printf("despues enviar get-snaps\n");
 
 
 
@@ -1846,7 +1867,7 @@ int zoc_receive_snapshot(int indice_socket)
 
         }
         else {
-            printf("get-snapshot no disponible. esperar\n");
+            //printf("get-snapshot no disponible. esperar\n");
 
         }
 
@@ -1868,7 +1889,7 @@ void zeng_online_client_apply_pending_received_snapshot(void)
     if (!zoc_pending_apply_received_snapshot) return;
 
 
-    printf("Putting snapshot coming from ZRCP: %p %d\n",zoc_get_snapshot_mem_binary,zoc_get_snapshot_mem_binary_longitud);
+    //printf("Putting snapshot coming from ZRCP: %p %d\n",zoc_get_snapshot_mem_binary,zoc_get_snapshot_mem_binary_longitud);
 
     load_zsf_snapshot_file_mem(NULL,zoc_get_snapshot_mem_binary,zoc_get_snapshot_mem_binary_longitud,1);
 

@@ -250,7 +250,7 @@ void zeng_send_key_event(enum util_teclas tecla,int pressrelease)
 
     //temp
     //temp_esperar_por_envio_alguna_tecla();
-    printf("agregar tecla en contador scanline: %d\n",zeng_online_scanline_counter);
+    //printf("agregar tecla en contador scanline: %d\n",zeng_online_scanline_counter);
 
 }
 

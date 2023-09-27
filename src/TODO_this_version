@@ -548,4 +548,15 @@ Quiza el tiempo de referencia debe ir desde el ultimo snapshot:
 
 elemento.contador_scanline=zeng_online_scanline_counter; lo usaremos??
 
+
+ok-nuevo campo en ZSF para envio valores puertos, que solo lo haga cuando sea ZENG.
+ok-slave quiza ya no necesita recibir teclas? dado que le llega por snapshot
+
+-join debe requerir autorizacion del creador, a no ser que se ponga un autojoin?
+quiza la autorizacion le viene por el footer, y luego abre el menu y estan alli
+
+
+-para cada maquina que queramos que soporte ZENG ONLINE
+Agregar puertos a ZSF_KEY_PORTS_SPECTRUM_STATE. quiza un tag nuevo para tener retrocompatibilidad
+en util_set_reset_key_continue, agregar antes_puerto_ y restaurar valor para cada maquina que se quiera
 ---------------
