@@ -35,8 +35,7 @@ extern z80_bit zeng_online_i_am_joined;
 extern int zeng_online_joined_to_room_number;
 extern z80_bit zeng_online_connected;
 
-extern char hidden_zeng_online_server[];
-extern int hidden_zeng_online_server_port;
+extern char zeng_online_server[];
 
 extern char *zeng_remote_list_rooms_buffer;
 

@@ -79,8 +79,8 @@ int zoc_pending_send_snapshot=0;
 //Si esta conectado
 z80_bit zeng_online_connected={0};
 
-char hidden_zeng_online_server[NETWORK_MAX_URL+1]="localhost";
-int hidden_zeng_online_server_port=10000;
+char zeng_online_server[NETWORK_MAX_URL+1]="localhost";
+int zeng_online_server_port=10000;
 
 //Buffer donde guardar listado de rooms remotas
 char *zeng_remote_list_rooms_buffer=NULL;
@@ -96,8 +96,8 @@ long zeng_online_last_list_rooms_latency=0;
 int zeng_online_get_server_and_port(char *buffer_hostname)
 {
 
-    strcpy(buffer_hostname,hidden_zeng_online_server);
-    int puerto=hidden_zeng_online_server_port;
+    strcpy(buffer_hostname,zeng_online_server);
+    int puerto=zeng_online_server_port;
 
     //Ver si se indica puerto con ":"
     char *existe_puerto=strstr(buffer_hostname,":");
