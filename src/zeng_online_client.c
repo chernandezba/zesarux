@@ -933,8 +933,9 @@ void zoc_get_keys(int indice_socket)
 }
 
 //Contador desde el ultimo snapshot enviado/recibido, se incrementa con cada scanline
-int zeng_online_scanline_counter=0;
+//int zeng_online_scanline_counter=0;
 
+/*
 void zeng_online_client_reset_scanline_counter(void)
 {
     zeng_online_scanline_counter=0;
@@ -948,6 +949,7 @@ void zeng_online_client_increment_scanline_counter(void)
 
     zeng_online_scanline_counter++;
 }
+*/
 
 int zeng_online_client_end_frame_reached=0;
 
@@ -1013,7 +1015,7 @@ void *zoc_master_thread_function(void *nada GCC_UNUSED)
 
                 //Enviado. Avisar no pendiente
                 zoc_pending_send_snapshot=0;
-                zeng_online_client_reset_scanline_counter();
+                //zeng_online_client_reset_scanline_counter();
                 printf("Snapshot sent\n");
             }
 
@@ -1025,7 +1027,7 @@ void *zoc_master_thread_function(void *nada GCC_UNUSED)
             //recepcion teclas
             zoc_get_keys(indice_socket_get_keys);
 
-            printf("Contador scanline: %d\n",zeng_online_scanline_counter);
+            //printf("Contador scanline: %d\n",zeng_online_scanline_counter);
         }
 
         usleep(10000); //dormir 10 ms
@@ -1898,7 +1900,7 @@ void zeng_online_client_apply_pending_received_snapshot(void)
 
     zoc_pending_apply_received_snapshot=0;
 
-    zeng_online_client_reset_scanline_counter();
+    //zeng_online_client_reset_scanline_counter();
 
 }
 

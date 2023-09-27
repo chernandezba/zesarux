@@ -560,7 +560,7 @@ void core_spectrum_fin_scanline(void)
     t_scanline_next_line();
     TIMESENSOR_ENTRY_POST(TIMESENSOR_ID_core_spectrum_t_scanline_next_line);
 
-    zeng_online_client_increment_scanline_counter();
+    //zeng_online_client_increment_scanline_counter();
 
 
     //se supone que hemos ejecutado todas las instrucciones posibles de toda la pantalla. refrescar pantalla y
