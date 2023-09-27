@@ -69,7 +69,8 @@ int zeng_online_opcion_seleccionada=0;
 
 void menu_zeng_online_server(MENU_ITEM_PARAMETERS)
 {
-    //TODO
+    menu_ventana_scanf("Server",zeng_online_server,NETWORK_MAX_URL+1);
+
 }
 
 void menu_zeng_online_server_port(MENU_ITEM_PARAMETERS)

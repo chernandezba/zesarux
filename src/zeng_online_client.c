@@ -79,7 +79,7 @@ int zoc_pending_send_snapshot=0;
 //Si esta conectado
 z80_bit zeng_online_connected={0};
 
-char zeng_online_server[NETWORK_MAX_URL+1]="localhost";
+char zeng_online_server[NETWORK_MAX_URL+1]="51.83.33.13";
 int zeng_online_server_port=10000;
 
 //Buffer donde guardar listado de rooms remotas
