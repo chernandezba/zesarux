@@ -578,8 +578,9 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
         //TODO: ver posible manera de salir de aqui??
         while (1) {
             if (zeng_online_rooms_list[room_number].index_event==indice_lectura) {
-                //Esperar algo. 10 ms, suficiente porque es un mitad de frame
-                usleep(10000); //dormir 10 ms
+                //Esperar algo.
+                //TODO: parametro configurable
+                usleep(1000); // (20 ms es un frame entero)
             }
             else {
                 //Retornar evento de la lista

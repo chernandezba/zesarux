@@ -672,7 +672,9 @@ int zoc_send_snapshot(int indice_socket)
         //printf ("Sending put-snapshot\n");
         //put-snapshot creator_pass n data
         sprintf(buffer_comando,"zeng-online put-snapshot %s %d ",created_room_creator_password,zeng_online_joined_to_room_number);
-        printf("Sending command: [%s]\n",buffer_comando);
+
+        //printf("Sending command: [%s]\n",buffer_comando);
+
         escritos=z_sock_write_string(indice_socket,buffer_comando);
         //printf("after z_sock_write_string 1\n");
         if (escritos<0) return escritos;
@@ -680,9 +682,10 @@ int zoc_send_snapshot(int indice_socket)
 
         //TODO esto es ineficiente y que tiene que calcular la longitud. hacer otra z_sock_write sin tener que calcular
         //printf("before z_sock_write_string 2\n");
-        printf("Sending snapshot data length: %lu\n",strlen(zoc_send_snapshot_mem_hexa));
-        printf("First bytes of snapshot: %c%c%c%c\n",
-            zoc_send_snapshot_mem_hexa[0],zoc_send_snapshot_mem_hexa[1],zoc_send_snapshot_mem_hexa[2],zoc_send_snapshot_mem_hexa[3]);
+        //printf("Sending snapshot data length: %lu\n",strlen(zoc_send_snapshot_mem_hexa));
+        //printf("First bytes of snapshot: %c%c%c%c\n",
+          //  zoc_send_snapshot_mem_hexa[0],zoc_send_snapshot_mem_hexa[1],zoc_send_snapshot_mem_hexa[2],zoc_send_snapshot_mem_hexa[3]);
+
         escritos=z_sock_write_string(indice_socket,zoc_send_snapshot_mem_hexa);
         //printf("after z_sock_write_string 2\n");
 
@@ -704,7 +707,7 @@ int zoc_send_snapshot(int indice_socket)
                     //debug_printf(VERBOSE_DEBUG,"ZENG: Received text: %s",zoc_get_snapshot_mem_hexa);
                 }
 
-        printf("Recibido respuesta despues de put-snapshot: [%s]\n",buffer);
+        //printf("Recibido respuesta despues de put-snapshot: [%s]\n",buffer);
         return leidos;
 
 
@@ -845,9 +848,9 @@ void zoc_get_keys(int indice_socket)
                                 }
 
                                 else {
-                                    printf("Recibida tecla desde zeng online. Antes Puerto puerto_61438: %d\n",puerto_61438);
+                                    //printf("Recibida tecla desde zeng online. Antes Puerto puerto_61438: %d\n",puerto_61438);
                                     util_set_reset_key_continue_after_zeng(numero_key,numero_event);
-                                    printf("Recibida tecla desde zeng online. Despues Puerto puerto_61438: %d\n",puerto_61438);
+                                    //printf("Recibida tecla desde zeng online. Despues Puerto puerto_61438: %d\n",puerto_61438);
                                 }
                             }
                         }
@@ -1111,7 +1114,7 @@ void *zoc_master_thread_function(void *nada GCC_UNUSED)
                 //Enviado. Avisar no pendiente
                 zoc_pending_send_snapshot=0;
                 //zeng_online_client_reset_scanline_counter();
-                printf("Snapshot sent\n");
+                //printf("Snapshot sent\n");
             }
 
             //Enviar teclas
@@ -1125,7 +1128,8 @@ void *zoc_master_thread_function(void *nada GCC_UNUSED)
             //printf("Contador scanline: %d\n",zeng_online_scanline_counter);
         }
 
-        usleep(10000); //dormir 10 ms
+        //TODO: parametro configurable
+        usleep(1000); //1 ms (20 ms es un frame de video)
 
     }
 
@@ -1464,7 +1468,8 @@ void *zoc_slave_thread_function(void *nada GCC_UNUSED)
             //printf("Contador scanline: %d\n",zeng_online_scanline_counter);
         }
 
-        usleep(5000); //dormir 5 ms (1/4 de frame de video)
+        //TODO este parametro configurable
+        usleep(1000); //1 ms (20 ms es un frame de video)
 
     }
 
@@ -1645,7 +1650,7 @@ void zeng_online_client_prepare_snapshot_if_needed(void)
 
 					debug_printf (VERBOSE_DEBUG,"ZENG Online: Queuing snapshot to send, length: %d",longitud);
 
-                    printf ("ZENG Online: Queuing snapshot to send, length: %d\n",longitud);
+                    //printf ("ZENG Online: Queuing snapshot to send, length: %d\n",longitud);
 
 
 					//Liberar memoria que ya no se usa
