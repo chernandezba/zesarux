@@ -547,9 +547,12 @@ ok-slave quiza ya no necesita recibir teclas? dado que le llega por snapshot
 
 -join debe requerir autorizacion del creador, a no ser que se ponga un autojoin?
 quiza la autorizacion le viene por el footer, y luego abre el menu y estan alli
+Cada cliente requiere un nickname que se mostrara al master cuando intente conectar
 
 -buffer recepcion de teclas en get-key parece que facilmente desborda si hay muchas
 probar por ejemplo enviando ctrl-z a una instancia, en la otra enviar muchas teclas, y recuperar la instancia
+
+-si estamos en menu, no enviar teclas al server
 
 
 -para cada maquina que queramos que soporte ZENG ONLINE
