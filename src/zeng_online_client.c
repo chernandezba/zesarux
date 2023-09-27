@@ -653,6 +653,7 @@ void zeng_online_client_create_room(int room_number,char *room_name)
 	pthread_detach(thread_zeng_online_client_create_room);
 }
 
+//Cada cuanto enviar frames de video. TODO parametro configurable, aunque deberia ser un valor muy bajo siempre
 int zoc_frames_video_cada_snapshot=1;
 int zoc_contador_envio_snapshot=0;
 int zoc_snapshots_not_sent=0;
@@ -1143,7 +1144,7 @@ int zoc_send_keys(int indice_socket,zeng_key_presses *elemento)
     return escritos;
 }
 
-int zoc_send_keys_avisado_final_frame=0;
+
 
 int zoc_keys_send_pending(int indice_socket,int *enviada_alguna_tecla)
 {
@@ -1174,10 +1175,6 @@ int zoc_keys_send_pending(int indice_socket,int *enviada_alguna_tecla)
 
 
 
-void zeng_online_client_tell_send_keys_end_frame(void)
-{
-    zoc_send_keys_avisado_final_frame=1;
-}
 
 int zoc_start_connection_get_snapshot(void)
 {
@@ -1655,6 +1652,15 @@ void zeng_online_client_prepare_snapshot_if_needed(void)
 }
 
 
+void zeng_online_client_end_frame_from_core_functions(void)
+{
+
+    zeng_online_client_tell_end_frame();
+    zeng_online_client_prepare_snapshot_if_needed();
+    zeng_online_client_apply_pending_received_snapshot();
+
+}
+
 #else
 
 //Funciones sin pthreads. ZENG no se llama nunca cuando no hay pthreads, pero hay que crear estas funciones vacias
@@ -1674,6 +1680,10 @@ void zoc_start_master_thread(void)
 
 //Inicio del thread de slave
 void zoc_start_slave_thread(void)
+{
+}
+
+void zeng_online_client_end_frame_from_core_functions(void)
 {
 }
 
