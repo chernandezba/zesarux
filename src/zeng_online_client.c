@@ -1420,6 +1420,29 @@ void *zoc_slave_thread_function(void *nada GCC_UNUSED)
             zeng_online_client_end_frame_reached=0;
 
 
+            //Recibir snapshot
+            //Siempre que no acabemos de enviar teclas. En ese caso dejar pasar unos segundos??
+            /*if (esperar_por_envio_alguna_tecla>0) {
+                esperar_por_envio_alguna_tecla--;
+            }*/
+
+            //if (!esperar_por_envio_alguna_tecla) {
+                //temppppp++;
+                //if ((temppppp%50)==0) {
+                    //printf("llamando a zoc_receive_snapshot\n");
+                    int error=zoc_receive_snapshot(indice_socket);
+                    //TODO gestionar bien este error
+                    if (error<0) {
+                        //TODO
+                        printf("Error getting snapshot from zeng online server\n");
+                        usleep(10000); //dormir 10 ms
+                    }
+
+                //}
+            //}
+
+            //printf("Contador scanline: %d\n",zeng_online_scanline_counter);
+
 
             //recepcion teclas
             //TODO gestionar error
@@ -1447,28 +1470,7 @@ void *zoc_slave_thread_function(void *nada GCC_UNUSED)
                 }
             }*/
 
-            //Recibir snapshot
-            //Siempre que no acabemos de enviar teclas. En ese caso dejar pasar unos segundos??
-            /*if (esperar_por_envio_alguna_tecla>0) {
-                esperar_por_envio_alguna_tecla--;
-            }*/
 
-            //if (!esperar_por_envio_alguna_tecla) {
-                //temppppp++;
-                //if ((temppppp%50)==0) {
-                    //printf("llamando a zoc_receive_snapshot\n");
-                    int error=zoc_receive_snapshot(indice_socket);
-                    //TODO gestionar bien este error
-                    if (error<0) {
-                        //TODO
-                        printf("Error getting snapshot from zeng online server\n");
-                        usleep(10000); //dormir 10 ms
-                    }
-
-                //}
-            //}
-
-            //printf("Contador scanline: %d\n",zeng_online_scanline_counter);
         }
 
         //TODO este parametro configurable
