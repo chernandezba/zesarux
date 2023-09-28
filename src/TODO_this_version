@@ -553,4 +553,6 @@ ya que no abren el menu
 -para cada maquina que queramos que soporte ZENG ONLINE
 Agregar puertos a ZSF_KEY_PORTS_SPECTRUM_STATE. quiza un tag nuevo para tener retrocompatibilidad
 en util_set_reset_key_continue, agregar antes_puerto_ y restaurar valor para cada maquina que se quiera
+
+-consume un 5% aprox de cpu por cada usuario zeng online en mi server
 ---------------
