@@ -81,6 +81,7 @@ char *buffer_lectura_socket=malloc(MAX_LENGTH_PROTOCOL_COMMAND);
 #include "ay38912.h"
 #include "atomic.h"
 #include "stats.h"
+#include "textspeech.h"
 
 
 
@@ -349,7 +350,8 @@ void zeng_online_create_room(int misocket,int room_number,char *room_name)
     zeng_online_set_room_name(room_number,room_name);
     zeng_online_assign_room_passwords(room_number);
 
-    zeng_online_rooms_list[room_number].max_players=ZENG_ONLINE_MAX_PLAYERS_PER_ROOM;
+    //zeng_online_rooms_list[room_number].max_players=ZENG_ONLINE_MAX_PLAYERS_PER_ROOM;
+
     zeng_online_rooms_list[room_number].current_players=0;
     zeng_online_rooms_list[room_number].snapshot_memory=NULL;
 

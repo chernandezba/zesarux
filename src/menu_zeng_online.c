@@ -341,7 +341,7 @@ void menu_zeng_online_create_room(MENU_ITEM_PARAMETERS)
         //flag que indique a nivel global que somos master, no slave
         zeng_online_i_am_master.v=1;
 
-        zeng_online_connected.v=1;
+        //zeng_online_connected.v=1;
 
         //inicio thread de envio de snapshot, cada x milisegundos
         //zoc_start_snapshot_sending();
@@ -397,7 +397,7 @@ void menu_zeng_online_join_room(MENU_ITEM_PARAMETERS)
 
         //flag que indique a nivel global que somos slave , no master
         zeng_online_i_am_master.v=0;
-        zeng_online_connected.v=1;
+        //zeng_online_connected.v=1;
 
         //TODO: en menu no debe dejar crear room o join
 
@@ -439,7 +439,7 @@ void menu_zeng_online(MENU_ITEM_PARAMETERS)
 
 
         //Create room + join / destroy room
-        if (zeng_online_i_am_joined.v==0) {
+        if (zeng_online_connected.v==0) {
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_create_room,NULL,
             "~~Create room","~~Crear habitación","~~Crear habitació");
             menu_add_item_menu_shortcut(array_menu_common,'c');

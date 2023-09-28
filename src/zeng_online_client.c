@@ -71,7 +71,7 @@ int zeng_online_client_create_room_thread_running=0;
 int zeng_online_client_join_room_thread_running=0;
 
 z80_bit zeng_online_i_am_master={0};
-z80_bit zeng_online_i_am_joined={0};
+//z80_bit zeng_online_i_am_joined={0};
 int zeng_online_joined_to_room_number=0;
 
 int zoc_pending_send_snapshot=0;
@@ -501,7 +501,7 @@ int zeng_online_client_join_room_connect(void)
 		//finalizar conexion
         z_sock_close_connection(indice_socket);
 
-        zeng_online_i_am_joined.v=1;
+        zeng_online_connected.v=1;
 
         zeng_online_joined_to_room_number=param_join_room_number;
 
