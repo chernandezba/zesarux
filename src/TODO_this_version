@@ -524,7 +524,7 @@ La parte de menus , el "frontend" estara contenida en menu_zeng_online.c
 
 
 
--Get snapshot id para saber si hay uno diferente al último recibido
+ok-Get snapshot id para saber si hay uno diferente al último recibido
 Da igual que cuando lo consultemos y cuando hagamos un get snapshot haya cambiado el id, porque si lo pedimos es porque sabremos que es uno distinto al que tenemos y entonces al obtener puede ser que entre ese o otro posterior, ya nos vale
 Pausas entre get id y get snap , cuando no hay uno nuevo, muy cortas, para que nos entre lo antes posible.
 
@@ -540,7 +540,8 @@ ok -la recepcion de keys y snapshot deberia hacerse al mismo momento desde el mi
 
 -join debe requerir autorizacion del creador, a no ser que se ponga un autojoin?
 quiza la autorizacion le viene por el footer, y luego abre el menu y estan alli
-Cada cliente requiere un nickname que se mostrara al master cuando intente conectar
+Y luego se le dice si tiene permisos solo de visor o tambien de envio de teclas
+quiza con ventana tipo como la de first aid, que se puede marcar un check
 
 -buffer recepcion de teclas en get-key parece que facilmente desborda si hay muchas
 probar por ejemplo enviando ctrl-z a una instancia, en la otra enviar muchas teclas, y recuperar la instancia
@@ -553,6 +554,9 @@ ya que no abren el menu
 -para cada maquina que queramos que soporte ZENG ONLINE
 Agregar puertos a ZSF_KEY_PORTS_SPECTRUM_STATE. quiza un tag nuevo para tener retrocompatibilidad
 en util_set_reset_key_continue, agregar antes_puerto_ y restaurar valor para cada maquina que se quiera
+-Implementar puertos joystick kempson, tanto en snapshot como en hacer que no se envie en la maquina local si es slave
+
+-quiza manera de cargar un snapshot de manera mas rapida
 
 -consume un 5% aprox de cpu por cada usuario zeng online en mi server
 ---------------
