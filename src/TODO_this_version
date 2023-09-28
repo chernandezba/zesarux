@@ -537,13 +537,8 @@ ok -el envio de keys y snapshot deberia hacerse al mismo momento desde el mismo 
 ok -la recepcion de keys y snapshot deberia hacerse al mismo momento desde el mismo thread
 -eliminar todas funciones variables etc de cuando se creaban desde join/create threads indpendientes
 
--no conviene enviar parpadeo en zeng online (aunque en zeng normal quiza si). porque como hay retraso, se recibe mas tarde y desincroniza
-quiza alguna variable al crear snapshot (o al aplicarlo) que no lo tenga en cuenta cuando sea zeng online
-o bien simplemente me guardo contador parpadeo antes de aplicar snapshot y lo restauro despues
 
 
-ok-nuevo campo en ZSF para envio valores puertos, que solo lo haga cuando sea ZENG.
-ok-slave quiza ya no necesita recibir teclas? dado que le llega por snapshot
 
 -join debe requerir autorizacion del creador, a no ser que se ponga un autojoin?
 quiza la autorizacion le viene por el footer, y luego abre el menu y estan alli
@@ -552,13 +547,6 @@ Cada cliente requiere un nickname que se mostrara al master cuando intente conec
 -buffer recepcion de teclas en get-key parece que facilmente desborda si hay muchas
 probar por ejemplo enviando ctrl-z a una instancia, en la otra enviar muchas teclas, y recuperar la instancia
 
--si estamos en menu, no enviar teclas al server
-
--en curses y stdout la funcion:
-reset_keyboard_ports
-es imcompatible con el uso de zeng online como master, pues necesitamos mantener pulsaciones de teclas
-permitir de alguna manera poder mantener pulsaciones y que funcione apertura y movimiento en menu por ejemplo
-->de momento el truco ahora es usar driver simpletext que no resetea eso
 
 -permitir smartload de zrcp sin que haya que abrir y cerrar el menu, para poderlo usar con driver simpletext o null por ejemplo,
 ya que no abren el menu

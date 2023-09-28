@@ -3664,22 +3664,24 @@ void save_zsf_snapshot_file_mem(char *filename,z80_byte *destination_memory,int 
 
 
     //Estado puertos
-    //TODO: esto solo si somos en zeng online master
+    //esto solo si somos en zeng online master y menu no esta abierto
     //-Block ID 62: ZSF_KEY_PORTS_SPECTRUM_STATE
+    if (zeng_online_connected.v && zeng_online_i_am_master.v && !menu_abierto) {
 
+        z80_byte keyportsblock[8];
 
-    z80_byte keyportsblock[8];
+        keyportsblock[0]=puerto_65278;
+        keyportsblock[1]=puerto_65022;
+        keyportsblock[2]=puerto_64510;
+        keyportsblock[3]=puerto_63486;
+        keyportsblock[4]=puerto_61438;
+        keyportsblock[5]=puerto_57342;
+        keyportsblock[6]=puerto_49150;
+        keyportsblock[7]=puerto_32766;
 
-    keyportsblock[0]=puerto_65278;
-    keyportsblock[1]=puerto_65022;
-    keyportsblock[2]=puerto_64510;
-    keyportsblock[3]=puerto_63486;
-    keyportsblock[4]=puerto_61438;
-    keyportsblock[5]=puerto_57342;
-    keyportsblock[6]=puerto_49150;
-    keyportsblock[7]=puerto_32766;
+        zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, keyportsblock,ZSF_KEY_PORTS_SPECTRUM_STATE, 8);
 
-    zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, keyportsblock,ZSF_KEY_PORTS_SPECTRUM_STATE, 8);
+    }
 
 
     z80_byte timexblock[2];
