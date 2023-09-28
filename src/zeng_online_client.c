@@ -32,6 +32,9 @@ Functions starting with zoc_ means: zeng online client
 #include <string.h>
 #include <fcntl.h>
 
+//Para usar timeval
+#include <sys/time.h>
+
 
 
 #include "cpu.h"
