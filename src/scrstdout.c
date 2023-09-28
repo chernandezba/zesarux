@@ -58,6 +58,7 @@
 #include "sg1000.h"
 #include "sms.h"
 #include "svi.h"
+#include "zeng_online_client.h"
 
 void scrstdout_establece_tablas_teclado(int c);
 void scrstdout_reset_teclas(void);
@@ -525,7 +526,17 @@ void scrstdout_messages_debug(char *s)
 void scrstdout_reset_teclas(void)
 {
 	//inicializar todas las teclas a nada - 255
-	reset_keyboard_ports();
+    int reset_keys=1;
+
+    //Si esta usando zeng online, no limpiar teclas excepto en menu
+    //para permitir recibir pulsaciones de teclas en juegos
+    if (zeng_online_connected.v) {
+        reset_keys=0;
+
+        if (menu_abierto) reset_keys=1;
+    }
+
+	if (reset_keys) reset_keyboard_ports();
 
 }
 

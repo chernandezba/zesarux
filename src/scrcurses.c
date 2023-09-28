@@ -53,6 +53,7 @@
 #include "sms.h"
 #include "svi.h"
 #include "zeng.h"
+#include "zeng_online_client.h"
 
 #ifdef COMPILE_CURSESW
 	#include "cursesw_ext.h"
@@ -1909,7 +1910,17 @@ void scrcurses_actualiza_tablas_teclado(void)
     //printf ("Tecla: %d  \r",c);
 
     //inicializar todas las teclas a nada - 255
-	reset_keyboard_ports();
+    int reset_keys=1;
+
+    //Si esta usando zeng online, no limpiar teclas excepto en menu
+    //para permitir recibir pulsaciones de teclas en juegos
+    if (zeng_online_connected.v) {
+        reset_keys=0;
+
+        if (menu_abierto) reset_keys=1;
+    }
+
+	if (reset_keys) reset_keyboard_ports();
 
     //soporte zeng. liberamos la ultima tecla pulsada
     //TODO: no llevamos control de otras teclas, como backspace o cursores, que acaban llamando a util_set_reset_key y este a zeng

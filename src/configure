@@ -2050,7 +2050,7 @@ fi
 if [ "$OPTIONOBJSTDOUT" != "" ]; then
 
 cat >> Makefile << _EOF
-scrstdout.o: scrstdout.c scrstdout.h debug.h screen.h mem128.h zx8081.h operaciones.h cpu.h utils.h zxvision.h joystick.h ula.h disassemble.h z88.h timer.h chardetect.h textspeech.h tsconf.h baseconf.h settings.h msx.h svi.h coleco.h sg1000.h sms.h
+scrstdout.o: scrstdout.c scrstdout.h debug.h screen.h mem128.h zx8081.h operaciones.h cpu.h utils.h zxvision.h joystick.h ula.h disassemble.h z88.h timer.h chardetect.h textspeech.h tsconf.h baseconf.h settings.h msx.h svi.h coleco.h sg1000.h sms.h zeng_online_client.h
 	\$(CC) \$(CFLAGS) -c scrstdout.c
 
 _EOF
@@ -2072,7 +2072,7 @@ fi
 if [ "$OPTIONOBJCURSES" != "" ]; then
 
 cat >> Makefile << _EOF
-scrcurses.o: scrcurses.c cpu.h scrcurses.h compileoptions.h operaciones.h mem128.h charset.h debug.h zx8081.h screen.h audio.h zxvision.h utils.h joystick.h ula.h z88.h sam.h charset.h tsconf.h baseconf.h settings.h chloe.h timex.h msx.h svi.h coleco.h sg1000.h sms.h zeng.h zeng_online.h
+scrcurses.o: scrcurses.c cpu.h scrcurses.h compileoptions.h operaciones.h mem128.h charset.h debug.h zx8081.h screen.h audio.h zxvision.h utils.h joystick.h ula.h z88.h sam.h charset.h tsconf.h baseconf.h settings.h chloe.h timex.h msx.h svi.h coleco.h sg1000.h sms.h zeng.h zeng_online.h zeng_online_client.h
 	\$(CC) \$(CFLAGS) -c scrcurses.c
 
 _EOF
