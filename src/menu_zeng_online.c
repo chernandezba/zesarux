@@ -73,7 +73,10 @@ void menu_zeng_online_server(MENU_ITEM_PARAMETERS)
 
 }
 
-
+void menu_zeng_online_nickname(MENU_ITEM_PARAMETERS)
+{
+    menu_ventana_scanf("Nickname",zeng_online_nickname,ZOC_MAX_NICKNAME_LENGTH+1);
+}
 
 void menu_zeng_online_join_room_print(zxvision_window *w)
 {
@@ -297,6 +300,11 @@ int menu_zeng_online_create_room_cond(zxvision_window *w GCC_UNUSED)
 
 void menu_zeng_online_create_room(MENU_ITEM_PARAMETERS)
 {
+    if (zeng_online_nickname[0]==0) {
+        debug_printf(VERBOSE_ERR,"You must set your nickname");
+        return;
+    }
+
     char texto_linea[MAX_ANCHO_LINEAS_GENERIC_MESSAGE];
 
 
@@ -361,6 +369,13 @@ void menu_zeng_online_destroy_room(MENU_ITEM_PARAMETERS)
 
 void menu_zeng_online_join_room(MENU_ITEM_PARAMETERS)
 {
+
+    if (zeng_online_nickname[0]==0) {
+        debug_printf(VERBOSE_ERR,"You must set your nickname");
+        return;
+    }
+
+
     char texto_linea[MAX_ANCHO_LINEAS_GENERIC_MESSAGE];
 
 
@@ -416,6 +431,11 @@ void menu_zeng_online(MENU_ITEM_PARAMETERS)
         menu_tape_settings_trunc_name(zeng_online_server,string_zeng_online_server,16);
         menu_add_item_menu_prefijo_format(array_menu_common,"[%s] ",string_zeng_online_server);
         menu_add_item_menu_shortcut(array_menu_common,'s');
+
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_nickname,NULL,
+            "~~Nickname","~~Nickname","~~Nickname");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%s] ",zeng_online_nickname);
+        menu_add_item_menu_shortcut(array_menu_common,'n');
 
 
         //Create room + join / destroy room

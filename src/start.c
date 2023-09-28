@@ -152,6 +152,7 @@
 #include "plus3dos_handler.h"
 #include "pcw.h"
 #include "zeng_online.h"
+#include "zeng_online_client.h"
 
 
 #ifdef COMPILE_STDOUT
@@ -896,6 +897,7 @@ printf (
 		"--remoteprotocol-port n             Set remote protocol port (default: 10000)\n"
         "--remoteprotocol-prompt p           Change the command prompt shown on remote protocol\n"
         "--enable-zeng-online-server         Enable ZENG Online server. Requires ZRCP\n"
+        "--zeng-online-nickname s            Sets nickname for ZENG Online\n"
 #endif
 
 		"--showfiredbreakpoint n             Tells to show the breakpoint condition when it is fired. Possible values: \n"
@@ -5501,6 +5503,17 @@ int parse_cmdline_options(int desde_commandline) {
 
          else if (!strcmp(argv[puntero_parametro],"--enable-zeng-online-server")) {
             command_line_start_zeng_online_server.v=1;
+         }
+
+
+         else if (!strcmp(argv[puntero_parametro],"--zeng-online-nickname")) {
+            siguiente_parametro_argumento();
+            if (strlen(argv[puntero_parametro])>ZOC_MAX_NICKNAME_LENGTH) {
+                printf("Nickname too long. Maximum: %d characters\n",ZOC_MAX_NICKNAME_LENGTH);
+                exit(1);
+            }
+
+            strcpy(zeng_online_nickname,argv[puntero_parametro]);
          }
 
 
