@@ -264,6 +264,16 @@ int menu_zeng_online_list_rooms(int *room_number,int *created,int *current_playe
         *created=valores[1];
         *current_players=valores[2];
         *max_players=valores[3];
+
+        //Truncar nombre ventana hasta espacio final
+        int inicio_nombre=strlen(retorno_ventana.texto_seleccionado)-1;
+        for (i=inicio_nombre;i>=indice_string;i--) {
+            if (retorno_ventana.texto_seleccionado[i]!=' ') {
+                retorno_ventana.texto_seleccionado[i+1]=0;
+                break;
+            }
+        }
+
         strcpy(room_name,&retorno_ventana.texto_seleccionado[indice_string]);
 
         return 0;
