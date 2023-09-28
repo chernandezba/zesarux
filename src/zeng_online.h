@@ -27,6 +27,9 @@
 //Y en cabecera de list-rooms
 #define ZENG_ONLINE_MAX_ROOM_NAME 30
 
+//Maximo nickname
+#define ZOC_MAX_NICKNAME_LENGTH 10
+
 //Maximo total de habitaciones que se pueden crear. Valor hardcoded, no se puede fijar mas que este limite (pero si marcar un limite inferior)
 #define ZENG_ONLINE_MAX_ROOMS 40
 

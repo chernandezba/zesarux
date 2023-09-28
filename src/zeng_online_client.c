@@ -82,6 +82,8 @@ z80_bit zeng_online_connected={0};
 char zeng_online_server[NETWORK_MAX_URL+1]="localhost";
 int zeng_online_server_port=10000;
 
+char zeng_online_nickname[ZOC_MAX_NICKNAME_LENGTH+1]="";
+
 //Buffer donde guardar listado de rooms remotas
 char *zeng_remote_list_rooms_buffer=NULL;
 
@@ -454,7 +456,7 @@ int zeng_online_client_join_room_connect(void)
 		debug_printf(VERBOSE_DEBUG,"ZENG: Sending join-room");
 
         char buffer_enviar[1024];
-        sprintf(buffer_enviar,"zeng-online join %d\n",param_join_room_number);
+        sprintf(buffer_enviar,"zeng-online join %d \"%s\"\n",param_join_room_number,zeng_online_nickname);
 
 		int escritos=z_sock_write_string(indice_socket,buffer_enviar);
 

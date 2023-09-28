@@ -916,7 +916,7 @@ struct s_items_ayuda items_ayuda[]={
     "get-snapshot user_pass n          This command returns the last snapshot from room n, returns ERROR if no snapshot there. Requires user_pass\n"
     "get-snapshot-id user_pass n       This command returns the last snapshot id from room n, returns ERROR if no snapshot there. Requires user_pass\n"
     "is-enabled                        Returns enabled status\n"
-    "join n                            Joins to room n. Returns the user_password\n"
+    "join n nickname                   Joins to room n. Returns the user_password\n"
     "list-rooms                        Returns rooms list\n"
     "put-snapshot creator_pass n data  Put a snapshot on room n, requieres creator_pass for that room. Data must be hexadecimal characters without spaces\n"
     "send-keys user_pass n uuid key event nomenu   Simulates sending key press/release to room n.\n"

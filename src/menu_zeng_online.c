@@ -434,9 +434,13 @@ void menu_zeng_online(MENU_ITEM_PARAMETERS)
             "Joined to room: ","Unido a habitación: ","Unit a habitació: ");
             menu_add_item_menu_sufijo_format(array_menu_common,"%d",zeng_online_joined_to_room_number);
 
-            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_destroy_room,NULL,
-            "~~Destroy room","~~Destruir habitación","~~Destruir habitació");
-            menu_add_item_menu_shortcut(array_menu_common,'d');
+            if (zeng_online_i_am_master.v) {
+
+                menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_destroy_room,NULL,
+                "~~Destroy room","~~Destruir habitación","~~Destruir habitació");
+                menu_add_item_menu_shortcut(array_menu_common,'d');
+
+            }
         }
 
         //TODO: desconectar con zeng_online_connected.v=0;
