@@ -382,3 +382,11 @@ z80_bit keyboard_swap_enter_return={0};
 //
 
 z80_bit accessibility_enable_gui_sounds={0};
+
+
+//
+// ZENG Online Settings
+//
+
+//Dice que permite crear habitaciones desde cualquier ip, no solo localhost
+z80_bit zeng_online_allow_room_creation_from_any_ip={0};

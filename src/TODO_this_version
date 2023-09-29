@@ -559,4 +559,11 @@ en util_set_reset_key_continue, agregar antes_puerto_ y restaurar valor para cad
 -quiza manera de cargar un snapshot de manera mas rapida
 
 -consume un 5% aprox de cpu por cada usuario zeng online en mi server
+
+
+-ok Opción para que solo pueda crearse rooms si la ip es localhost : --zeng-online-server-allow-create
+
+-implementar que cuando hay zeng online habilitado, no funcionen el resto de comandos ZRCP (la mayoria no deberian ir, quit y poco mas)
+
+- Opciones de Zeng online server en menu, en algún sitio…
 ---------------

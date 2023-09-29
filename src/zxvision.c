@@ -23862,11 +23862,52 @@ void menu_inicio_reset_emulated_keys(void)
     //printf("menu_inicio_reset_emulated_keys despues menu_espera_no_tecla\n");
 }
 
+void handle_menu_open_cpu_step(void)
+{
+                //printf("Entrando step en menu\n");
+            //Entrada
+            //menu_espera_no_tecla();
+            osd_kb_no_mostrar_desde_menu=0; //Volver a permitir aparecer teclado osd
+
+            remote_ack_enter_cpu_step.v=1; //Avisar que nos hemos enterado
+            //Mientras no se salga del modo step to step del remote protocol
+            while (menu_event_remote_protocol_enterstep.v) {
+                timer_sleep(100);
+
+                //printf("En menu en cpu step\n");
+
+    #ifdef MINGW
+                int antes_menu_abierto=menu_abierto;
+                menu_abierto=0; //Para que no aparezca en gris al refrescar
+                    scr_refresca_pantalla();
+                menu_abierto=antes_menu_abierto;
+
+    #endif
+                //Si se pulsa ESC, salir de cpu-step
+                scr_actualiza_tablas_teclado();
+
+
+                if ((puerto_especial1&1)==0 && zrcp_easter_egg_running.v==0) {
+                    debug_printf(VERBOSE_DEBUG,"Exiting cpu-step by pressing ESC");
+#ifndef NETWORKING_DISABLED
+                    remote_cpu_exit_step_continue_restore_multitask();
+#endif
+                }
+
+            }
+
+            debug_printf (VERBOSE_DEBUG,"Exiting remote enter step from menu");
+
+            //Salida
+            cls_menu_overlay();
+
+}
+
 //menu principal
 void menu_inicio(void)
 {
 
-	//printf ("inicio menu_inicio\n");
+	//printf ("inicio menu_inicio. menu_event_remote_protocol_enterstep.v=%d\n",menu_event_remote_protocol_enterstep.v);
     pulsado_alguna_ventana_con_menu_cerrado=0;
 
     int indice_abrir_ventana_sin_multitarea=-1;
@@ -24271,8 +24312,22 @@ void menu_inicio(void)
         }
 
 	//simpletext no soporta menu
-        if (!strcmp(scr_new_driver_name,"simpletext")) {
-		printf ("Can not open menu: simpletext video driver does not support menu.\n");
+    //null no soporta menu
+        if (
+            !strcmp(scr_new_driver_name,"simpletext") ||
+            !strcmp(scr_new_driver_name,"null")
+
+        ) {
+
+
+        //Soportar cpu step
+        if (menu_event_remote_protocol_enterstep.v) {
+            handle_menu_open_cpu_step();
+        }
+        else {
+            printf ("Can not open menu: this video driver does not support menu.\n");
+        }
+
 		menu_inicio_pre_retorno();
 		return;
         }
@@ -24514,43 +24569,9 @@ void menu_inicio(void)
 
         }
         */
-
+    //printf("antes si enterstep. menu_event_remote_protocol_enterstep.v=%d\n",menu_event_remote_protocol_enterstep.v);
         if (menu_event_remote_protocol_enterstep.v) {
-            //Entrada
-            //menu_espera_no_tecla();
-            osd_kb_no_mostrar_desde_menu=0; //Volver a permitir aparecer teclado osd
-
-            remote_ack_enter_cpu_step.v=1; //Avisar que nos hemos enterado
-            //Mientras no se salga del modo step to step del remote protocol
-            while (menu_event_remote_protocol_enterstep.v) {
-                timer_sleep(100);
-
-                //printf("En menu en cpu step\n");
-
-    #ifdef MINGW
-                int antes_menu_abierto=menu_abierto;
-                menu_abierto=0; //Para que no aparezca en gris al refrescar
-                    scr_refresca_pantalla();
-                menu_abierto=antes_menu_abierto;
-
-    #endif
-                //Si se pulsa ESC, salir de cpu-step
-                scr_actualiza_tablas_teclado();
-
-
-                if ((puerto_especial1&1)==0 && zrcp_easter_egg_running.v==0) {
-                    debug_printf(VERBOSE_DEBUG,"Exiting cpu-step by pressing ESC");
-#ifndef NETWORKING_DISABLED
-                    remote_cpu_exit_step_continue_restore_multitask();
-#endif
-                }
-
-            }
-
-            debug_printf (VERBOSE_DEBUG,"Exiting remote enter step from menu");
-
-            //Salida
-            cls_menu_overlay();
+            handle_menu_open_cpu_step();
         }
 
         if (menu_button_f_function.v) {

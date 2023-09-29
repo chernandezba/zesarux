@@ -898,6 +898,7 @@ printf (
         "--remoteprotocol-prompt p           Change the command prompt shown on remote protocol\n"
         "--enable-zeng-online-server         Enable ZENG Online server. Requires ZRCP\n"
         "--zeng-online-nickname s            Sets nickname for ZENG Online\n"
+        "--zeng-online-server-allow-create   Allows this ZENG Online server to allow create rooms from any ip address. By default, only creation from localhost is allowed\n"
 #endif
 
 		"--showfiredbreakpoint n             Tells to show the breakpoint condition when it is fired. Possible values: \n"
@@ -5515,6 +5516,11 @@ int parse_cmdline_options(int desde_commandline) {
 
             strcpy(zeng_online_nickname,argv[puntero_parametro]);
          }
+
+         else if (!strcmp(argv[puntero_parametro],"--zeng-online-server-allow-create")) {
+            zeng_online_allow_room_creation_from_any_ip.v=1;
+         }
+
 
 
 		 else if (!strcmp(argv[puntero_parametro],"--showfiredbreakpoint")) {

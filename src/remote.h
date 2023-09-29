@@ -50,6 +50,8 @@ extern int zrcp_command_close_all_menus;
   //Con el valor de MAX_LENGTH_PROTOCOL_COMMAND, podemos usar hasta 128kb de put-snapshot
   //de momento es poco pero probaremos asi
 
+//Para almacenar hasta ipv6
+#define MAX_IP_SOURCE_ADDRESS_LENGTH 39
 
 
 #endif

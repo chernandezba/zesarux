@@ -769,6 +769,8 @@ struct s_items_ayuda items_ayuda[]={
 	{"ls",NULL,NULL,"Minimal command list"},
     {"mmc-reload",NULL,NULL,"Reload MMC file"},
 	{"noop",NULL,NULL,"This command does nothing"},
+    {"open-menu",NULL,NULL,"Triggers action to open menu (like F5)"},
+    {"print-error",NULL,"message","Prints a error message exactly the same way as debug_printf(VERBOSE_ERR,..."},
 	{"print-footer",NULL,"message","Prints message on footer"},
 	{"put-snapshot",NULL,NULL,"Puts a zsf snapshot from console. Contents must be hexadecimal characters without spaces"},
 {"qdos-get-open-files","|qlgof",NULL,"Gets a list of open files and directories on the QL QDOS handler"},
@@ -1942,10 +1944,26 @@ void remote_cpu_enter_step(int misocket)
   remote_ack_enter_cpu_step.v=0;
 
 
+    //En caso de drivers stdout y null, no cerrar menu, que es un lio. si esta abierto, dara error
+    if (
+        !strcmp(scr_new_driver_name,"stdout") ||
+        !strcmp(scr_new_driver_name,"simpletext") ||
+        !strcmp(scr_new_driver_name,"null")
+    ) {
+        if (menu_abierto) {
+            escribir_socket(misocket,"Error. Can not enter cpu step mode. You can try closing the menu");
+            return;
+        }
+    }
+
+    else {
+
   //Abrir menu si no estaba ya abierto
   remote_disable_multitask_enter_menu();
   //Cerrar menu
   remote_send_esc_close_menu();
+
+    }
 
   //Pausa de 0.1 segundo. Esperamos a que se haya cerrado el menu
   usleep(100000);
@@ -3681,7 +3699,7 @@ void remote_visualmem_generic_compact(int misocket, z80_byte *buffer, int final_
 
 //char *parametros;
 
-void interpreta_comando(char *comando,int misocket,char *buffer_lectura_socket_anterior,int *remote_salir_conexion_cliente)
+void interpreta_comando(char *comando,int misocket,char *buffer_lectura_socket_anterior,int *remote_salir_conexion_cliente,char *ip_source_address)
 {
 
 	char buffer_retorno[2048];
@@ -4777,6 +4795,22 @@ void interpreta_comando(char *comando,int misocket,char *buffer_lectura_socket_a
 		//No hacer absolutamente nada
 	}
 
+	else if (!strcmp(comando_sin_parametros,"open-menu")) {
+		menu_fire_event_open_menu();
+	}
+
+	else if (!strcmp(comando_sin_parametros,"print-error") ) {
+
+        remote_parse_commands_argvc(parametros,&remote_command_argc,remote_command_argv);
+
+        if (remote_command_argc<1) {
+                escribir_socket(misocket,"ERROR. No message set");
+                return;
+        }
+
+		debug_printf(VERBOSE_ERR,"%s",remote_command_argv[0]);
+
+	}
 
 	else if (!strcmp(comando_sin_parametros,"print-footer") ) {
 
@@ -5413,8 +5447,8 @@ else if (!strcmp(comando_sin_parametros,"smartload") || !strcmp(comando_sin_para
 		if (antes_menu_event_remote_protocol_enterstep.v==0) {
     		//Asegurarnos que congelamos el emulador: abrir menu con mutitarea desactivada
     		//Entramos en el mismo modo que cpu-step para poder congelar la emulacion
-    		remote_cpu_enter_step(misocket);
-    		if (menu_event_remote_protocol_enterstep.v==0) return;
+            remote_cpu_enter_step(misocket);
+            if (menu_event_remote_protocol_enterstep.v==0) return;
 		}
 
 
@@ -5430,7 +5464,7 @@ else if (!strcmp(comando_sin_parametros,"smartload") || !strcmp(comando_sin_para
     }
 
 	if (antes_menu_event_remote_protocol_enterstep.v==0) {
-    	remote_cpu_exit_step(misocket);
+        remote_cpu_exit_step(misocket);
 	}
 
   }
@@ -6065,7 +6099,7 @@ else if (!strcmp(comando_sin_parametros,"write-port") ) {
 
 	else if (!strcmp(comando_sin_parametros,"zeng-online") || !strcmp(comando_sin_parametros,"zo")) {
         remote_parse_commands_argvc(parametros,&remote_command_argc,remote_command_argv);
-        zeng_online_parse_command(misocket,remote_command_argc,remote_command_argv);
+        zeng_online_parse_command(misocket,remote_command_argc,remote_command_argv,ip_source_address);
 
 	}
 
@@ -6141,8 +6175,12 @@ int remote_initialize_port(void)
   return 0;
 }
 
-void remote_show_client_ip(int elsocket)
+void remote_get_client_ip(int elsocket,char *ipsource)
 {
+
+
+    //Inicialmente vacia
+    ipsource[0]=0;
 
 //Estructura del socket client, obtinguda per saber el nom del client
 struct sockaddr_in sockaddr_client;
@@ -6171,8 +6209,8 @@ struct sockaddr_in sockaddr_client;
 	}
 
 
-	debug_printf (VERBOSE_DEBUG,"ZRCP: Client IP: %s",direccio_client);
 
+    strcpy(ipsource,direccio_client);
 
 
 
@@ -6219,8 +6257,12 @@ void *zrcp_handle_new_connection(void *entrada)
 
     debug_printf (VERBOSE_DEBUG,"Received remote command connection petition");
 
-    //debugar direccion ip origen
-    remote_show_client_ip(sock_connected_client);
+    //obtener direccion ip origen
+    char ip_source_address[MAX_IP_SOURCE_ADDRESS_LENGTH+1];
+    remote_get_client_ip(sock_connected_client,ip_source_address);
+
+    debug_printf (VERBOSE_DEBUG,"ZRCP: Client IP: %s",ip_source_address);
+    //printf("ZRCP: Client IP: %s\n",ip_source_address);
 
     //Enviamos mensaje bienvenida
     escribir_socket(sock_connected_client,"Welcome to ZEsarUX remote command protocol (ZRCP)\nWrite help for available commands\n");
@@ -6297,7 +6339,7 @@ void *zrcp_handle_new_connection(void *entrada)
                 }
 
                 interpreta_comando(buffer_lectura_socket,sock_connected_client,
-					buffer_lectura_socket_anterior,&remote_salir_conexion_cliente);
+					buffer_lectura_socket_anterior,&remote_salir_conexion_cliente,ip_source_address);
 
                 //Liberar lock
                 z_atomic_reset(&zrcp_command_semaforo);

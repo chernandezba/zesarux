@@ -82,6 +82,7 @@ char *buffer_lectura_socket=malloc(MAX_LENGTH_PROTOCOL_COMMAND);
 #include "atomic.h"
 #include "stats.h"
 #include "textspeech.h"
+#include "settings.h"
 
 
 
@@ -362,7 +363,7 @@ void zeng_online_create_room(int misocket,int room_number,char *room_name)
 
 }
 
-void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv)
+void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv,char *ip_source_address)
 {
     //TODO: si el parse para un comando largo, como put-snapshot, fuese lento, habria que procesarlo diferente:
     //ir hasta el primer espacio, y no procesar los dos parametros
@@ -431,6 +432,15 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
         if (comando_argc<2) {
             escribir_socket(misocket,"ERROR. Needs two parameters");
             return;
+        }
+
+        if (zeng_online_allow_room_creation_from_any_ip.v==0) {
+            if (strcmp(ip_source_address,"127.0.0.1")) {
+                //Realmente el mensaje seria: This server only allows localhost room creation
+                //pero no queremos dar muchas pistas a un posible atacante
+                escribir_socket(misocket,"ERROR. This server does not allow room creation");
+                return;
+            }
         }
 
         int room_number=parse_string_to_number(comando_argv[1]);
