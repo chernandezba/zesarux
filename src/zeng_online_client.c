@@ -410,6 +410,8 @@ int zeng_online_client_authorize_join_connect(void)
 
             printf("Authorizing by: %s\n",buffer_envio_comando);
 
+            printf("Ppermisos: %d\n",parm_zeng_online_client_authorize_join_permissions);
+
 
 		int escritos=z_sock_write_string(indice_socket,buffer_envio_comando);
 
@@ -687,7 +689,7 @@ void zeng_online_client_authorize_join(int permissions)
 {
 
 	//Inicializar thread
-    int parm_zeng_online_client_authorize_join_permissions=permissions;
+    parm_zeng_online_client_authorize_join_permissions=permissions;
 
 	if (pthread_create( &thread_zeng_online_client_authorize_join, NULL, &zeng_online_client_authorize_join_function, NULL) ) {
 		debug_printf(VERBOSE_ERR,"Can not create zeng online authorize join pthread");

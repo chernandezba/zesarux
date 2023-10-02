@@ -340,6 +340,7 @@ void menu_zeng_online_join_list(MENU_ITEM_PARAMETERS)
         strcpy(buffer_perm,"0");
         menu_ventana_scanf("Permissions?",buffer_perm,4);
         permisos=parse_string_to_number(buffer_perm);
+        printf("Permisos: %d\n",permisos);
 
         //TODO Enviar comando de autorizacion con esos permisos
         zeng_online_client_authorize_join(permisos);
