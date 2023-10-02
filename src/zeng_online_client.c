@@ -408,6 +408,8 @@ int zeng_online_client_authorize_join_connect(void)
         sprintf(buffer_envio_comando,"zeng-online authorize-join %s %d %d\n",
             created_room_creator_password,zeng_online_joined_to_room_number,parm_zeng_online_client_authorize_join_permissions);
 
+            printf("Authorizing by: %s\n",buffer_envio_comando);
+
 
 		int escritos=z_sock_write_string(indice_socket,buffer_envio_comando);
 
