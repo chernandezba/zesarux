@@ -565,5 +565,20 @@ en util_set_reset_key_continue, agregar antes_puerto_ y restaurar valor para cad
 
 -implementar que cuando hay zeng online habilitado, no funcionen el resto de comandos ZRCP (la mayoria no deberian ir, quit y poco mas)
 
+-el list rooms habría que usar mejor menú ítems para cada línea, pues ese diálogo no es apto para driver stdout
+-quitar el truncado de espacios en menu_zeng_online_list_rooms en cuanto se seleccione la lista de rooms mediante items de menu
+
+-Gestión autorizaciones para join
+-cliente intenta join a server.
+ok - Si es el máster join, enviará creator password y este no necesita autorizar
+-ese join se queda en espera de respuesta. Su petición va a una fifo, con un id y nickname (o un array circular mejor)
+-desde el máster, cada segundo se invoca un comando para ver si hay autorizaciones pendientes. Si hay alguna, se enviara otro comando que retorna id de autorización y nickname, se retorna una linea cada vez en cada peticion del comando, mostrando la mas antigua siempre.
+Si hay alguna pendiente, se abre menú y se pide autorizar
+-por cada una, se muestra nick. Hay que decir si es solo visor o también permite enviar teclas. Y si se autoriza claro
+Se envía un comando con el resultado de cada autorización: id, permisos, y si autoriza o no
+-el id es necesario? dado que siempre responderemos sobre la mas antigua, en principio sabemos su id. a no ser que el array haya dado la vuelta, por lo que entonces se sobreescribe.
+Que hacer si se llena el array circular? Quiza dejar la petición de join bloqueada hasta que haya espacio libre en el array
+
+
 - Opciones de Zeng online server en menu, en algún sitio…
 ---------------

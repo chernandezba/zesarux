@@ -106,6 +106,15 @@ struct s_zeng_online_eventkeys {
     int nomenu; //nomenu if set to non 0, tells the key is not sent when menu is open
 };
 
+//Maximo de peticiones de join que se pueden quedar en espera
+#define ZOC_MAX_JOIN_WAITING 30
+
+//Estructura de una peticion de join en espera
+struct s_zoc_join_waiting_request {
+    char nickname[ZOC_MAX_NICKNAME_LENGTH+1];
+    int permissions; //TODO: esto hace falta tenerlo aqui o directamente ira hacia el cliente?
+};
+
 //Estructura de una habitacion de zeng online
 struct zeng_online_room {
     int created;
@@ -136,6 +145,11 @@ struct zeng_online_room {
     struct s_zeng_online_eventkeys events[ZENG_ONLINE_MAX_EVENTS];
     int index_event;
 
+
+    //Peticiones de join en espera
+    int index_waiting_join_first; //donde empieza el primer elemento en espera
+    int total_waiting_join; //total de join en espera
+    struct s_zoc_join_waiting_request join_waiting_list[ZOC_MAX_JOIN_WAITING];
 
 };
 
@@ -251,12 +265,13 @@ void init_zeng_online_rooms(void)
         zeng_online_rooms_list[i].created=0;
         zeng_online_rooms_list[i].max_players=ZENG_ONLINE_MAX_PLAYERS_PER_ROOM;
         zeng_online_rooms_list[i].current_players=0;
-        strcpy(zeng_online_rooms_list[i].name,"<free>                        ");
+        strcpy(zeng_online_rooms_list[i].name,"<free>");
         zeng_online_rooms_list[i].snapshot_memory=NULL;
         zeng_online_rooms_list[i].snapshot_size=0;
         zeng_online_rooms_list[i].snapshot_id=0;
         zeng_online_rooms_list[i].reading_snapshot_count=0;
         zeng_online_rooms_list[i].index_event=0;
+        zeng_online_rooms_list[i].index_waiting_join_first=0;
 
         z_atomic_reset(&zeng_online_rooms_list[i].mutex_reading_snapshot);
         z_atomic_reset(&zeng_online_rooms_list[i].semaphore_writing_snapshot);
@@ -281,23 +296,19 @@ void disable_zeng_online(void)
 
 void zeng_online_set_room_name(int room,char *room_name)
 {
-    //primero rellenar con espacios, asi queda siempre alineado
+
     int i;
 
-    for (i=0;i<ZENG_ONLINE_MAX_ROOM_NAME;i++) {
-        zeng_online_rooms_list[room].name[i]=' ';
-    }
-
-    //Y el 0 del final
-    zeng_online_rooms_list[room].name[i]=0;
-
-    //Y ahora el nombre, excluyendo el 0 del final, y filtrando caracteres raros
+    //El nombre, excluyendo el 0 del final, y filtrando caracteres raros
     for (i=0;room_name[i] && i<ZENG_ONLINE_MAX_ROOM_NAME;i++) {
         z80_byte caracter=room_name[i];
         if (caracter<32 || caracter>126) caracter='?';
 
         zeng_online_rooms_list[room].name[i]=caracter;
     }
+
+    //Y el 0 del final
+    zeng_online_rooms_list[room].name[i]=0;
 
 }
 
@@ -809,7 +820,7 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
         }
 
         if (comando_argc<2) {
-            escribir_socket(misocket,"ERROR. Needs two parameters");
+            escribir_socket(misocket,"ERROR. Needs two parameters at least");
             return;
         }
 
@@ -830,21 +841,36 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
             return;
         }
 
+        //Si tiene 3 parámetros, el tercero es creator_pass para no necesitar autorización del master
+        if (comando_argc>2) {
+            if (strcmp(comando_argv[3],zeng_online_rooms_list[room_number].creator_password)) {
+                escribir_socket(misocket,"ERROR. Invalid creator password for that room");
+                return;
+            }
+        }
+
+        else {
+            //Esperar hasta recibir autorización del master
+            //TODO
+            printf("Waiting to receive authorization from master\n");
+            sleep(120);
+        }
+
         //TODO: seguro que hay que hacer mas cosas en el join...
+        //TODO: esto se deberia incrementar usando semaforos. Quiza tal cual este current_players es una variable atomica
         zeng_online_rooms_list[room_number].current_players++;
 
         //Y retornamos el user_password
         escribir_socket(misocket,zeng_online_rooms_list[room_number].user_password);
+
 
         //Y lo mostramos en el footer
         char mensaje[AUTOSELECTOPTIONS_MAX_FOOTER_LENGTH+ZOC_MAX_NICKNAME_LENGTH+1];
 
         sprintf(mensaje,"Joined %s to room %d (%s)",comando_argv[2],room_number,zeng_online_rooms_list[room_number].name);
 
-
         //Por si acaso truncar al maximo que permite el footer
         mensaje[AUTOSELECTOPTIONS_MAX_FOOTER_LENGTH]=0;
-
 
         put_footer_first_message(mensaje);
 
@@ -858,9 +884,6 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
     //delete-room: para una room concreta, requiere creator_password.
     //leave: para una room concreta, requiere que este creada, requiere user_password. hay que asegurarse que el leave
     //       es de esta conexion, y no de una nueva. como controlar eso??? el leave decrementara el numero de jugadores conectados, logicamente
-    //put-snapshot: para una room concreta, requiere creator_password.
-    //get-snapshot: para una room concreta, requiere user_password.
-    //send-keys-event: para una room concreta, requiere user_password.
 
     else {
         escribir_socket(misocket,"ERROR. Invalid command for zeng-online");

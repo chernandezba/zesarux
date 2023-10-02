@@ -412,6 +412,7 @@ char created_room_creator_password[ZENG_ROOM_PASSWORD_LENGTH+1]; //+1 para el 0 
 char created_room_user_password[ZENG_ROOM_PASSWORD_LENGTH+1];
 
 int param_join_room_number;
+char param_join_room_creator_password[ZENG_ROOM_PASSWORD_LENGTH+1];
 
 //Devuelve 0 si no conectado
 int zeng_online_client_join_room_connect(void)
@@ -459,7 +460,14 @@ int zeng_online_client_join_room_connect(void)
 		debug_printf(VERBOSE_DEBUG,"ZENG: Sending join-room");
 
         char buffer_enviar[1024];
-        sprintf(buffer_enviar,"zeng-online join %d \"%s\"\n",param_join_room_number,zeng_online_nickname);
+
+        //Join desde el master le envia el creator password
+        if (param_join_room_creator_password[0]!=0) {
+            sprintf(buffer_enviar,"zeng-online join %d \"%s\" %s\n",param_join_room_number,zeng_online_nickname,param_join_room_creator_password);
+        }
+        else {
+            sprintf(buffer_enviar,"zeng-online join %d \"%s\"\n",param_join_room_number,zeng_online_nickname);
+        }
 
 		int escritos=z_sock_write_string(indice_socket,buffer_enviar);
 
@@ -548,12 +556,14 @@ void *zeng_online_client_join_room_function(void *nada GCC_UNUSED)
 
 }
 
-void zeng_online_client_join_room(int room_number)
+void zeng_online_client_join_room(int room_number,char *creator_password)
 {
 
 	//Inicializar thread
     //Paso de parametro mediante variable estatica
+    //TODO: esto es horrible porque como entren dos o mas join a la vez, el parametro esta compartido
     param_join_room_number=room_number;
+    strcpy(param_join_room_creator_password,creator_password);
 
 	if (pthread_create( &thread_zeng_online_client_join_room, NULL, &zeng_online_client_join_room_function, NULL) ) {
 		debug_printf(VERBOSE_ERR,"Can not create zeng online join room pthread");

@@ -93,12 +93,12 @@ int menu_zeng_online_join_room_cond(zxvision_window *w GCC_UNUSED)
 	return !zeng_online_client_join_room_thread_running;
 }
 
-void menu_zeng_join_room_aux(int room_number)
+void menu_zeng_join_room_aux(int room_number,char *creator_password)
 {
 
 
     //Lanzar el thread de join room
-    zeng_online_client_join_room(room_number);
+    zeng_online_client_join_room(room_number,creator_password);
 
     contador_menu_zeng_connect_print=0;
 
@@ -337,7 +337,7 @@ void menu_zeng_online_create_room(MENU_ITEM_PARAMETERS)
         zxvision_simple_progress_window("ZENG Online Create Room", menu_zeng_online_create_room_cond,menu_zeng_online_create_room_print );
 
         //join room
-        menu_zeng_join_room_aux(room_number);
+        menu_zeng_join_room_aux(room_number,created_room_creator_password);
         //flag que indique a nivel global que somos master, no slave
         zeng_online_i_am_master.v=1;
 
@@ -393,7 +393,7 @@ void menu_zeng_online_join_room(MENU_ITEM_PARAMETERS)
         }
 
         //join room
-        menu_zeng_join_room_aux(room_number);
+        menu_zeng_join_room_aux(room_number,"");
 
         //flag que indique a nivel global que somos slave , no master
         zeng_online_i_am_master.v=0;
