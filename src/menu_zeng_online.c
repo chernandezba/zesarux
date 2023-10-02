@@ -132,6 +132,14 @@ void menu_zeng_online_join_list_print(zxvision_window *w)
     menu_common_connect_print(w,buf_temp);
 }
 
+void menu_zeng_online_authorize_join_print(zxvision_window *w)
+{
+    char buf_temp[NETWORK_MAX_URL+256];
+    sprintf(buf_temp,"Connecting to %s",zeng_online_server);
+
+    menu_common_connect_print(w,buf_temp);
+}
+
 int menu_zeng_online_list_rooms_cond(zxvision_window *w GCC_UNUSED)
 {
 	return !zeng_online_client_list_rooms_thread_running;
@@ -140,6 +148,12 @@ int menu_zeng_online_list_rooms_cond(zxvision_window *w GCC_UNUSED)
 int menu_zeng_online_join_list_cond(zxvision_window *w GCC_UNUSED)
 {
 	return !zeng_online_client_join_list_thread_running;
+}
+
+
+int menu_zeng_online_authorize_join_cond(zxvision_window *w GCC_UNUSED)
+{
+	return !zeng_online_client_authorize_join_thread_running;
 }
 
 int menu_zeng_online_list_rooms(int *room_number,int *created,int *current_players,int *max_players,char *room_name)
@@ -328,6 +342,7 @@ void menu_zeng_online_join_list(MENU_ITEM_PARAMETERS)
         permisos=parse_string_to_number(buffer_perm);
 
         //TODO Enviar comando de autorizacion con esos permisos
+        zeng_online_client_authorize_join(permisos);
     }
 
 }

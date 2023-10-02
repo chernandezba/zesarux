@@ -26,6 +26,7 @@ extern int zeng_online_client_list_rooms_thread_running;
 extern int zeng_online_client_create_room_thread_running;
 extern int zeng_online_client_join_room_thread_running;
 extern int zeng_online_client_join_list_thread_running;
+extern int zeng_online_client_authorize_join_thread_running;
 extern void zeng_online_client_list_rooms(void);
 extern void zeng_online_client_create_room(int room_number,char *room_name);
 extern void zeng_online_client_join_room(int room_number,char *creator_password);
