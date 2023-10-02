@@ -909,6 +909,8 @@ struct s_items_ayuda items_ayuda[]={
 
 
   {"zeng-online","|zo","command parameter","Related ZENG Online actions. Command can be:\n"
+    "authorize-join creator_pass n perm Authorize/deny permissions to first client join to room n. id is authorization id. perm are permissions, can be:\n"
+    "                                    0: deny, 1: allow_send_keys, 2: allow_get_snapshot. Sum values for combinations\n"
     "create-room n name                  Creates a room n. It must be in non-created state. Returns the creator_password\n"
     "disable                             Disables ZENG Online\n"
 	"enable                              Enables ZENG Online\n"
@@ -916,10 +918,11 @@ struct s_items_ayuda items_ayuda[]={
     "                                    If there is not any key to get, it will block until one is generated\n"
     "                                    Returned format is: uuid key event nomenu\n"
     "get-join-queue-size creator_pass n  Returns the number of clients waiting for join on room n\n"
+    "get-join-first-element-queue creator_pass n  Gets the first element in join waiting queue on room n\n"
     "get-snapshot user_pass n            This command returns the last snapshot from room n, returns ERROR if no snapshot there. Requires user_pass\n"
     "get-snapshot-id user_pass n         This command returns the last snapshot id from room n, returns ERROR if no snapshot there. Requires user_pass\n"
     "is-enabled                          Returns enabled status\n"
-    "join n nickname [creator_pass]      Joins to room n. Returns the user_password. If parameter creator_pass is not set, it will need authorization from the master\n"
+    "join n nickname [creator_pass]      Joins to room n. Returns the user_password and the permissions. If parameter creator_pass is not set, it will need authorization from the master\n"
     "list-rooms                          Returns rooms list\n"
     "put-snapshot creator_pass n data    Put a snapshot on room n, requieres creator_pass for that room. Data must be hexadecimal characters without spaces\n"
     "send-keys user_pass n uuid key event nomenu   Simulates sending key press/release to room n.\n"

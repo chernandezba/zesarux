@@ -411,6 +411,9 @@ char created_room_creator_password[ZENG_ROOM_PASSWORD_LENGTH+1]; //+1 para el 0 
 //El user password de una room que nos hemos unido
 char created_room_user_password[ZENG_ROOM_PASSWORD_LENGTH+1];
 
+//Los permisos de una room que nos hemos unido
+int created_room_user_permissions;
+
 int param_join_room_number;
 char param_join_room_creator_password[ZENG_ROOM_PASSWORD_LENGTH+1];
 
@@ -505,9 +508,28 @@ int zeng_online_client_join_room_connect(void)
             debug_printf(VERBOSE_ERR,"Error joining room: %s",buffer);
             return 0;
         }
+
+        //Dividir el user_password y los permisos
+        int i;
+        for (i=0;buffer[i] && buffer[i]!=' ';i++);
+
+        if (buffer[i]==0) {
+            //llegado al final sin que haya espacios. error
+            debug_printf(VERBOSE_ERR,"Error joining room, no permissions detected: %s",buffer);
+            return 0;
+        }
+
+        //truncar de momento hasta aqui
+        buffer[i]=0;
         strcpy(created_room_user_password,buffer);
 
+        //Y seguir hasta buscar los permisos
+        i++;
+        created_room_user_permissions=parse_string_to_number(&buffer[i]);
+
         printf("User password: [%s]\n",created_room_user_password);
+        printf("User permissions: [%d]\n",created_room_user_permissions);
+
 
 		//finalizar conexion
         z_sock_close_connection(indice_socket);

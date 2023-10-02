@@ -168,6 +168,19 @@ int join_list_return_last_element(int room_number)
     return indice_final;
 }
 
+void join_delete_first_element(int room_number)
+{
+    //TODO meter esto en bloqueo semaforo
+    int indice_inicial=zeng_online_rooms_list[room_number].index_waiting_join_first;
+    indice_inicial++;
+
+    indice_inicial %=ZOC_MAX_JOIN_WAITING; //dar la vuelta al contador
+
+    zeng_online_rooms_list[room_number].index_waiting_join_first=indice_inicial;
+    zeng_online_rooms_list[room_number].total_waiting_join--;
+
+}
+
 //Agregar elemento join a lista
 int join_list_add_element(int room_number,char *nickname)
 {
@@ -184,6 +197,7 @@ int join_list_add_element(int room_number,char *nickname)
     //Obtener indice del siguiente
     int indice_final=join_list_return_last_element(room_number);
     zeng_online_rooms_list[room_number].join_waiting_list[indice_final].waiting=1;
+    strcpy(zeng_online_rooms_list[room_number].join_waiting_list[indice_final].nickname,nickname);
 
     zeng_online_rooms_list[room_number].total_waiting_join++;
 
@@ -524,7 +538,7 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
 
 
 
-    //get-join-queue-size n creator_pass
+    //get-join-queue-size creator_pass n
     else if (!strcmp(comando_argv[0],"get-join-queue-size")) {
         if (!zeng_online_enabled) {
             escribir_socket(misocket,"ERROR. ZENG Online is not enabled");
@@ -548,7 +562,7 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
             return;
         }
 
-        //validar user_pass. comando_argv[1]
+        //validar creator_pass. comando_argv[1]
         if (strcmp(comando_argv[1],zeng_online_rooms_list[room_number].creator_password)) {
             escribir_socket(misocket,"ERROR. Invalid creator password for that room");
             return;
@@ -558,6 +572,92 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
         escribir_socket_format(misocket,"%d",zeng_online_rooms_list[room_number].total_waiting_join);
 
     }
+
+    //"get-join-first-element-queue creator_pass n  Gets the first element in join waiting queue on room n\n"
+    else if (!strcmp(comando_argv[0],"get-join-first-element-queue")) {
+        if (!zeng_online_enabled) {
+            escribir_socket(misocket,"ERROR. ZENG Online is not enabled");
+            return;
+        }
+
+        if (comando_argc<2) {
+            escribir_socket(misocket,"ERROR. Needs two parameters");
+            return;
+        }
+
+        int room_number=parse_string_to_number(comando_argv[2]);
+
+        if (room_number<0 || room_number>=zeng_online_current_max_rooms) {
+            escribir_socket_format(misocket,"ERROR. Room number beyond limit");
+            return;
+        }
+
+        if (!zeng_online_rooms_list[room_number].created) {
+            escribir_socket(misocket,"ERROR. Room is not created");
+            return;
+        }
+
+        //validar creator_pass. comando_argv[1]
+        if (strcmp(comando_argv[1],zeng_online_rooms_list[room_number].creator_password)) {
+            escribir_socket(misocket,"ERROR. Invalid creator password for that room");
+            return;
+        }
+
+        //TODO bloqueo de esto
+        int indice_primero=zeng_online_rooms_list[room_number].index_waiting_join_first;
+        escribir_socket_format(misocket,"%s",zeng_online_rooms_list[room_number].join_waiting_list[indice_primero].nickname);
+        //fin bloqueo
+
+    }
+
+    //"authorize-join creator_pass n perm Authorize/deny permissions to client join to room n. perm are permissions, can be:\n"
+    else if (!strcmp(comando_argv[0],"authorize-join")) {
+        if (!zeng_online_enabled) {
+            escribir_socket(misocket,"ERROR. ZENG Online is not enabled");
+            return;
+        }
+
+        if (comando_argc<3) {
+            escribir_socket(misocket,"ERROR. Needs three parameters");
+            return;
+        }
+
+        int room_number=parse_string_to_number(comando_argv[2]);
+
+        if (room_number<0 || room_number>=zeng_online_current_max_rooms) {
+            escribir_socket_format(misocket,"ERROR. Room number beyond limit");
+            return;
+        }
+
+        if (!zeng_online_rooms_list[room_number].created) {
+            escribir_socket(misocket,"ERROR. Room is not created");
+            return;
+        }
+
+        //validar creator_pass. comando_argv[1]
+        if (strcmp(comando_argv[1],zeng_online_rooms_list[room_number].creator_password)) {
+            escribir_socket(misocket,"ERROR. Invalid creator password for that room");
+            return;
+        }
+
+        int id_authorization=zeng_online_rooms_list[room_number].index_waiting_join_first;
+        int permissions_client=parse_string_to_number(comando_argv[3]);
+
+        if (zeng_online_rooms_list[room_number].total_waiting_join==0) {
+            escribir_socket(misocket,"ERROR. There's not any pending join authorization");
+            return;
+        }
+
+        //TODO bloqueo desde aqui
+        zeng_online_rooms_list[room_number].join_waiting_list[id_authorization].permissions=permissions_client;
+        zeng_online_rooms_list[room_number].join_waiting_list[id_authorization].waiting=0;
+
+
+        join_delete_first_element(room_number);
+        //hasta aqui
+
+    }
+
 
     //set-max-players user_pass n m  Define max-players (m) for room (n). Requires user_pass of that room\n"
     else if (!strcmp(comando_argv[0],"set-max-players")) {
@@ -918,12 +1018,16 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
             return;
         }
 
+        int permissions;
+
         //Si tiene 3 parámetros, el tercero es creator_pass para no necesitar autorización del master
         if (comando_argc>2) {
             if (strcmp(comando_argv[3],zeng_online_rooms_list[room_number].creator_password)) {
                 escribir_socket(misocket,"ERROR. Invalid creator password for that room");
                 return;
             }
+            //Damos todos permisos al master, aunque probablemente el master no haga caso de esto, pero por si acaso
+            permissions=255;
         }
 
         else {
@@ -942,8 +1046,22 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
                 return;
             }
 
+            permissions=zeng_online_rooms_list[room_number].join_waiting_list[id_authorization].permissions;
 
-            //TODO gestionar tipo autorizacion
+            printf("Permissions for this join: %d\n",permissions);
+            //Si permisos 0 , denegado join
+            if (permissions==0) {
+                escribir_socket(misocket,"ERROR. You are not authorized to join");
+                return;
+            }
+
+
+            //estos permisos ya es reponsabilidad de ZEsarUX hacerle caso desde las funciones cliente
+            //el servidor no va a comprobar dichos permisos, seria demasiado lio (y logicamente esto es un pequeño problema de seguridad)
+            //ZEsarUX desde el menu hace el join, obtiene los permisos que le retorna el servidor, y tiene que ser
+            //fiel en recibir o no snapshot, en enviar o no teclas, etc
+
+
         }
 
         //TODO: seguro que hay que hacer mas cosas en el join...
@@ -951,7 +1069,7 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
         zeng_online_rooms_list[room_number].current_players++;
 
         //Y retornamos el user_password
-        escribir_socket(misocket,zeng_online_rooms_list[room_number].user_password);
+        escribir_socket_format(misocket,"%s %d",zeng_online_rooms_list[room_number].user_password,permissions);
 
 
         //Y lo mostramos en el footer
