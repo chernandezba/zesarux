@@ -479,18 +479,29 @@ int zeng_online_client_join_room_connect(void)
 			return 0;
 		}
 
+        //Esperar la autorizacion, hasta numero reintentos
+        //TODO: ajustar esto hasta 1 o 2 minutos por ejemplo. dependera de los reintentos y sleeps de zsock_read_all_until_command
+        int reintentos=30;
 
 		//reintentar
-		leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)buffer,ZENG_BUFFER_INITIAL_CONNECT,&posicion_command);
-		if (leidos>0) {
-			buffer[leidos]=0; //fin de texto
-			debug_printf(VERBOSE_DEBUG,"ZENG: Received text for zeng-online join (length %d): \n[\n%s\n]",leidos,buffer);
-		}
+        do {
+            leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)buffer,ZENG_BUFFER_INITIAL_CONNECT,&posicion_command);
+            if (leidos>0) {
+                buffer[leidos]=0; //fin de texto
+                debug_printf(VERBOSE_DEBUG,"ZENG: Received text for zeng-online join (length %d): \n[\n%s\n]",leidos,buffer);
+            }
 
-		if (leidos<0) {
-			debug_printf(VERBOSE_ERR,"ERROR. Can't receive zeng-online join: %s",z_sock_get_error(leidos));
-			return 0;
-		}
+            if (leidos<0) {
+                debug_printf(VERBOSE_ERR,"ERROR. Can't receive zeng-online join: %s",z_sock_get_error(leidos));
+                return 0;
+            }
+
+            if (leidos==0) {
+                printf("no leida respuesta aun de join\n");
+            }
+
+            reintentos--;
+        } while (leidos==0 && reintentos>0);
 
 		//1 mas para eliminar el salto de linea anterior a "command>"
 		if (posicion_command>=1) {

@@ -50,5 +50,6 @@ extern int zoc_last_snapshot_received_counter;
 extern long zeng_online_get_last_list_rooms_latency(void);
 
 extern char created_room_creator_password[];
+extern int created_room_user_permissions;
 
 #endif
