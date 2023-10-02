@@ -50,6 +50,8 @@ Functions starting with zoc_ means: zeng online client
 #include "stats.h"
 #include "screen.h"
 #include "timer.h"
+#include "autoselectoptions.h"
+#include "textspeech.h"
 
 
 
@@ -1177,6 +1179,8 @@ void *zoc_master_thread_function(void *nada GCC_UNUSED)
 
     int indice_socket=z_sock_open_connection(server,puerto,0,"");
 
+    int contador_obtener_autorizaciones=0;
+
     if (indice_socket<0) {
         debug_printf(VERBOSE_ERR,"Error connecting to %s:%d. %s",
             server,puerto,
@@ -1236,6 +1240,14 @@ void *zoc_master_thread_function(void *nada GCC_UNUSED)
             zoc_get_keys(indice_socket_get_keys);
 
             //printf("Contador scanline: %d\n",zeng_online_scanline_counter);
+
+
+            //Tambien a final de cada frame, y cada 50 veces (o sea 1 segundo), ver si hay pendientes autorizaciones
+            contador_obtener_autorizaciones++;
+
+            if ((contador_obtener_autorizaciones % 50)==0) {
+                zoc_get_pending_authorization_size(indice_socket);
+            }
         }
 
         //TODO: parametro configurable
@@ -1477,6 +1489,110 @@ int zoc_receive_snapshot(int indice_socket)
 
 
 }
+
+int zoc_get_pending_authorization_size_last_queue_size=0;
+
+int zoc_get_pending_authorization_size(int indice_socket)
+{
+    //printf("Inicio zoc_receive_snapshot llamado desde:\n");
+    //debug_exec_show_backtrace();
+
+
+    int posicion_command;
+    int escritos,leidos;
+
+
+    char buffer_comando[200];
+
+
+
+                #define ZENG_BUFFER_INITIAL_CONNECT 199
+
+                //Leer algo
+                char buffer[ZENG_BUFFER_INITIAL_CONNECT+1];
+
+                //zo get-join-queue-size LPBPPHZPXV 0
+
+                sprintf(buffer_comando,"zeng-online get-join-queue-size %s %d\n",created_room_creator_password,zeng_online_joined_to_room_number);
+                escritos=z_sock_write_string(indice_socket,buffer_comando);
+                //printf("after z_sock_write_string 1\n");
+                if (escritos<0) return escritos;
+
+                //Leer hasta prompt
+                //printf("before zsock_read_all_until_command\n");
+                leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)buffer,ZENG_BUFFER_INITIAL_CONNECT,&posicion_command);
+
+                if (leidos>0) {
+                    buffer[leidos]=0; //fin de texto
+                    debug_printf(VERBOSE_DEBUG,"ZENG: Received text for get-join-queue-size (length %d): \n[\n%s\n]",leidos,buffer);
+                }
+
+                if (leidos<0) {
+                    debug_printf(VERBOSE_ERR,"ERROR. Can't receive get-join-queue-size: %s",z_sock_get_error(leidos));
+                    return 0;
+                }
+
+
+                //printf("after zsock_read_all_until_command\n");
+                //printf("Recibido respuesta despues de get-snapshot-id: [%s]\n",buffer);
+
+                //1 mas para eliminar el salto de linea anterior a "command>"
+                if (posicion_command>=1) {
+                    buffer[posicion_command-1]=0;
+                    //debug_printf(VERBOSE_DEBUG,"ZENG: Received text: %s",zoc_get_snapshot_mem_hexa);
+                }
+                else {
+                    debug_printf (VERBOSE_ERR,"Error receiving ZEsarUX get-join-queue-size");
+                    return 0;
+                }
+
+                //printf("Recibido respuesta despues de truncar: [%s]\n",buffer);
+
+                int leer_snap=0;
+
+                //Detectar si error
+                if (strstr(buffer,"ERROR")!=NULL) {
+                    printf("Error getting get-join-queue-size\n");
+                }
+                else {
+                    //Ver si id diferente
+                    int queue_size=parse_string_to_number(buffer);
+                    printf("Waiting room queue size: %d\n",queue_size);
+
+                    if (queue_size) {
+
+                        if (queue_size!=zoc_get_pending_authorization_size_last_queue_size) {
+                            //Escribir en footer solo cuando valor anterior cambia
+                            //TODO quiza habria que usar algun tipo de bloqueo para esto
+
+
+                            zoc_get_pending_authorization_size_last_queue_size=queue_size;
+
+                            //Y lo mostramos en el footer
+                            char mensaje[AUTOSELECTOPTIONS_MAX_FOOTER_LENGTH+ZOC_MAX_NICKNAME_LENGTH+1];
+
+                            sprintf(mensaje,"ZOC clients waiting on room %d",zeng_online_joined_to_room_number);
+
+                            //Por si acaso truncar al maximo que permite el footer
+                            mensaje[AUTOSELECTOPTIONS_MAX_FOOTER_LENGTH]=0;
+
+                            put_footer_first_message(mensaje);
+
+                            //Y enviarlo a speech
+                            textspeech_print_speech(mensaje);
+
+                        }
+
+
+                    }
+                }
+
+
+    return 1;
+
+
+}
+
 
 
 void *zoc_slave_thread_function(void *nada GCC_UNUSED)
