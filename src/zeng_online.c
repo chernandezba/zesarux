@@ -112,6 +112,7 @@ struct s_zeng_online_eventkeys {
 //Estructura de una peticion de join en espera
 struct s_zoc_join_waiting_request {
     char nickname[ZOC_MAX_NICKNAME_LENGTH+1];
+    int waiting;
     int permissions; //TODO: esto hace falta tenerlo aqui o directamente ira hacia el cliente?
 };
 
@@ -155,6 +156,44 @@ struct zeng_online_room {
 
 //Array de habitaciones en zeng online
 struct zeng_online_room zeng_online_rooms_list[ZENG_ONLINE_MAX_ROOMS];
+
+int join_list_return_last_element(int room_number)
+{
+    //TODO meter esto en bloqueo semaforo
+    int indice_inicial=zeng_online_rooms_list[room_number].index_waiting_join_first;
+    int indice_final=indice_inicial+zeng_online_rooms_list[room_number].total_waiting_join;
+
+    indice_final %=ZOC_MAX_JOIN_WAITING; //dar la vuelta al contador
+
+    return indice_final;
+}
+
+//Agregar elemento join a lista
+int join_list_add_element(int room_number,char *nickname)
+{
+    //Si llena la lista, esperar
+    while (zeng_online_rooms_list[room_number].total_waiting_join==ZOC_MAX_JOIN_WAITING) {
+        printf("Waiting queue is full. let's wait\n");
+        sleep(1);
+    }
+
+    //TODO meter esto en bloqueo semaforo
+
+
+
+    //Obtener indice del siguiente
+    int indice_final=join_list_return_last_element(room_number);
+    zeng_online_rooms_list[room_number].join_waiting_list[indice_final].waiting=1;
+
+    zeng_online_rooms_list[room_number].total_waiting_join++;
+
+    //bloqueo hasta aqui
+
+    return indice_final;
+
+
+
+}
 
 //Agregar evento de tecla/joystick
 void zengonline_add_event(int room_number,char *uuid,int tecla,int event_type,int nomenu)
@@ -272,6 +311,7 @@ void init_zeng_online_rooms(void)
         zeng_online_rooms_list[i].reading_snapshot_count=0;
         zeng_online_rooms_list[i].index_event=0;
         zeng_online_rooms_list[i].index_waiting_join_first=0;
+        zeng_online_rooms_list[i].total_waiting_join=0;
 
         z_atomic_reset(&zeng_online_rooms_list[i].mutex_reading_snapshot);
         z_atomic_reset(&zeng_online_rooms_list[i].semaphore_writing_snapshot);
@@ -481,6 +521,43 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
         escribir_socket_format(misocket,"%s",zeng_online_rooms_list[room_number].user_password);
     }
     */
+
+
+
+    //get-join-queue-size n creator_pass
+    else if (!strcmp(comando_argv[0],"get-join-queue-size")) {
+        if (!zeng_online_enabled) {
+            escribir_socket(misocket,"ERROR. ZENG Online is not enabled");
+            return;
+        }
+
+        if (comando_argc<2) {
+            escribir_socket(misocket,"ERROR. Needs two parameters");
+            return;
+        }
+
+        int room_number=parse_string_to_number(comando_argv[2]);
+
+        if (room_number<0 || room_number>=zeng_online_current_max_rooms) {
+            escribir_socket_format(misocket,"ERROR. Room number beyond limit");
+            return;
+        }
+
+        if (!zeng_online_rooms_list[room_number].created) {
+            escribir_socket(misocket,"ERROR. Room is not created");
+            return;
+        }
+
+        //validar user_pass. comando_argv[1]
+        if (strcmp(comando_argv[1],zeng_online_rooms_list[room_number].creator_password)) {
+            escribir_socket(misocket,"ERROR. Invalid creator password for that room");
+            return;
+        }
+
+
+        escribir_socket_format(misocket,"%d",zeng_online_rooms_list[room_number].total_waiting_join);
+
+    }
 
     //set-max-players user_pass n m  Define max-players (m) for room (n). Requires user_pass of that room\n"
     else if (!strcmp(comando_argv[0],"set-max-players")) {
@@ -853,7 +930,20 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
             //Esperar hasta recibir autorización del master
             //TODO
             printf("Waiting to receive authorization from master\n");
-            sleep(120);
+            int id_authorization=join_list_add_element(room_number,comando_argv[2]); //nickname agregado a la lista
+
+            int timeout=60;
+            while (zeng_online_rooms_list[room_number].join_waiting_list[id_authorization].waiting && timeout) {
+                printf("Waiting authorization...\n");
+                sleep(1);
+            }
+            if (zeng_online_rooms_list[room_number].join_waiting_list[id_authorization].waiting) {
+                escribir_socket(misocket,"ERROR. Timeout waiting for client join authorization");
+                return;
+            }
+
+
+            //TODO gestionar tipo autorizacion
         }
 
         //TODO: seguro que hay que hacer mas cosas en el join...
