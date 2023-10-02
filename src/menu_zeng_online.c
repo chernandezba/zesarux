@@ -319,6 +319,16 @@ void menu_zeng_online_join_list(MENU_ITEM_PARAMETERS)
 
     menu_generic_message_format("ZENG join list","%s",zeng_remote_join_list_buffer);
 
+    //Si no vacio
+    if (strcmp(zeng_remote_join_list_buffer,"<empty>")) {
+        int permisos;
+        char buffer_perm[4];
+        strcpy(buffer_perm,"0");
+        menu_ventana_scanf("Permissions?",buffer_perm,4);
+        permisos=parse_string_to_number(buffer_perm);
+
+        //TODO Enviar comando de autorizacion con esos permisos
+    }
 
 }
 
