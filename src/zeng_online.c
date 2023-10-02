@@ -603,6 +603,12 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
             return;
         }
 
+        //si vacio, retornar "empty"
+        if (zeng_online_rooms_list[room_number].total_waiting_join==0) {
+            escribir_socket(misocket,"<empty>");
+            return;
+        }
+
         //TODO bloqueo de esto
         int indice_primero=zeng_online_rooms_list[room_number].index_waiting_join_first;
         escribir_socket_format(misocket,"%s",zeng_online_rooms_list[room_number].join_waiting_list[indice_primero].nickname);

@@ -124,13 +124,23 @@ void menu_zeng_online_list_rooms_print(zxvision_window *w)
 }
 
 
+void menu_zeng_online_join_list_print(zxvision_window *w)
+{
+    char buf_temp[NETWORK_MAX_URL+256];
+    sprintf(buf_temp,"Connecting to %s",zeng_online_server);
+
+    menu_common_connect_print(w,buf_temp);
+}
 
 int menu_zeng_online_list_rooms_cond(zxvision_window *w GCC_UNUSED)
 {
 	return !zeng_online_client_list_rooms_thread_running;
 }
 
-
+int menu_zeng_online_join_list_cond(zxvision_window *w GCC_UNUSED)
+{
+	return !zeng_online_client_join_list_thread_running;
+}
 
 int menu_zeng_online_list_rooms(int *room_number,int *created,int *current_players,int *max_players,char *room_name)
 {
@@ -286,6 +296,34 @@ int menu_zeng_online_list_rooms(int *room_number,int *created,int *current_playe
 
 }
 
+
+void menu_zeng_online_join_list(MENU_ITEM_PARAMETERS)
+{
+
+
+    //Lanzar el thread de obtener ultimo join pendiente
+    zeng_online_client_join_list();
+
+    //return;
+    //pendiente con zeng_online_client_join_list_thread_running
+    //buffer de zeng_remote_join_list_buffer
+
+    contador_menu_zeng_connect_print=0;
+
+
+    zxvision_simple_progress_window("ZENG Online connection", menu_zeng_online_join_list_cond,menu_zeng_online_join_list_print );
+
+    if (zeng_online_client_join_list_thread_running) {
+        menu_warn_message("Connection has not finished yet");
+    }
+
+    menu_generic_message_format("ZENG join list","%s",zeng_remote_join_list_buffer);
+
+
+}
+
+
+
 void menu_zeng_online_create_room_print(zxvision_window *w)
 {
 
@@ -366,6 +404,7 @@ void menu_zeng_online_destroy_room(MENU_ITEM_PARAMETERS)
 {
     //TODO
 }
+
 
 void menu_zeng_online_join_room(MENU_ITEM_PARAMETERS)
 {
@@ -459,6 +498,8 @@ void menu_zeng_online(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_sufijo_format(array_menu_common,"%d",created_room_user_permissions);
 
             if (zeng_online_i_am_master.v) {
+                menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_join_list,NULL,
+                "Join List","Lista join","Llista join");
 
                 menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_destroy_room,NULL,
                 "~~Destroy room","~~Destruir habitación","~~Destruir habitació");
