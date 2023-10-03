@@ -993,6 +993,51 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
 
     }
 
+    //leave n nickname
+    else if (!strcmp(comando_argv[0],"leave")) {
+        if (!zeng_online_enabled) {
+            escribir_socket(misocket,"ERROR. ZENG Online is not enabled");
+            return;
+        }
+
+        if (comando_argc<2) {
+            escribir_socket(misocket,"ERROR. Needs two parameters");
+            return;
+        }
+
+        int room_number=parse_string_to_number(comando_argv[1]);
+
+        if (room_number<0 || room_number>=zeng_online_current_max_rooms) {
+            escribir_socket_format(misocket,"ERROR. Room number beyond limit");
+            return;
+        }
+
+        if (!zeng_online_rooms_list[room_number].created) {
+            escribir_socket(misocket,"ERROR. Room is not created");
+            return;
+        }
+
+
+        //TODO: seguro que hay que hacer mas cosas en el leave...
+        //TODO: esto se deberia decrementar usando semaforos. Quiza tal cual este current_players es una variable atomica
+        zeng_online_rooms_list[room_number].current_players--;
+
+
+        //Y lo mostramos en el footer
+        char mensaje[AUTOSELECTOPTIONS_MAX_FOOTER_LENGTH+ZOC_MAX_NICKNAME_LENGTH+1];
+
+        sprintf(mensaje,"Left %s from room %d (%s)",comando_argv[2],room_number,zeng_online_rooms_list[room_number].name);
+
+        //Por si acaso truncar al maximo que permite el footer
+        mensaje[AUTOSELECTOPTIONS_MAX_FOOTER_LENGTH]=0;
+
+        put_footer_first_message(mensaje);
+
+        //Y enviarlo a speech
+        textspeech_print_speech(mensaje);
+
+    }
+
 
     //join n. Aunque el master requiere join tambien, no necesita el user_password que le retorna, pero debe leerlo
     //para quitar esa respuesta del socket
