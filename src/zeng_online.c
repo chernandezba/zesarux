@@ -993,15 +993,15 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
 
     }
 
-    //leave n nickname
+    //leave n user_pass nickname
     else if (!strcmp(comando_argv[0],"leave")) {
         if (!zeng_online_enabled) {
             escribir_socket(misocket,"ERROR. ZENG Online is not enabled");
             return;
         }
 
-        if (comando_argc<2) {
-            escribir_socket(misocket,"ERROR. Needs two parameters");
+        if (comando_argc<3) {
+            escribir_socket(misocket,"ERROR. Needs three parameters");
             return;
         }
 
@@ -1017,6 +1017,12 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
             return;
         }
 
+        //validar user_pass.
+        if (strcmp(comando_argv[2],zeng_online_rooms_list[room_number].user_password)) {
+            escribir_socket(misocket,"ERROR. Invalid user password for that room");
+            return;
+        }
+
 
         //TODO: seguro que hay que hacer mas cosas en el leave...
         //TODO: esto se deberia decrementar usando semaforos. Quiza tal cual este current_players es una variable atomica
@@ -1026,7 +1032,7 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
         //Y lo mostramos en el footer
         char mensaje[AUTOSELECTOPTIONS_MAX_FOOTER_LENGTH+ZOC_MAX_NICKNAME_LENGTH+1];
 
-        sprintf(mensaje,"Left %s from room %d (%s)",comando_argv[2],room_number,zeng_online_rooms_list[room_number].name);
+        sprintf(mensaje,"Left %s from room %d (%s)",comando_argv[3],room_number,zeng_online_rooms_list[room_number].name);
 
         //Por si acaso truncar al maximo que permite el footer
         mensaje[AUTOSELECTOPTIONS_MAX_FOOTER_LENGTH]=0;
