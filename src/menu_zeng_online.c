@@ -734,6 +734,18 @@ void menu_zeng_online_create_room(MENU_ITEM_PARAMETERS)
     }
 }
 
+
+void menu_zeng_online_list_rooms_menu_item(MENU_ITEM_PARAMETERS)
+{
+
+    int room_number,created,current_players,max_players;
+    char room_name[ZENG_ONLINE_MAX_ROOM_NAME+1];
+
+    int retorno=menu_zeng_online_list_rooms(&room_number,&created,&current_players,&max_players,room_name);
+
+
+}
+
 void menu_zeng_online_leave_room_master_aux(void)
 {
 
@@ -866,6 +878,9 @@ void menu_zeng_online(MENU_ITEM_PARAMETERS)
             "~~Nickname","~~Nickname","~~Nickname");
         menu_add_item_menu_prefijo_format(array_menu_common,"[%s] ",zeng_online_nickname);
         menu_add_item_menu_shortcut(array_menu_common,'n');
+
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_list_rooms_menu_item,NULL,
+            "List rooms","Listar habitaciones","Llistar habitacions");
 
 
         //Create room + join / destroy room
