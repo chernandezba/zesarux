@@ -579,5 +579,8 @@ Que hacer si se llena el array circular? Quiza dejar la petición de join bloque
 
 ok-comando zeng online para leave room. esto decrementara el contador de jugadores en la room
 
+-permitir dos masters? o algo asi como un master que no envia snapshots, pero gestiona autorizaciones, creaciones, etc
+esto permitiria tener un server remoto, que envia snapshots a el mismo, pero gestionar autorizaciones desde remoto
+
 - Opciones de Zeng online server en menu, en algún sitio…
 ---------------
