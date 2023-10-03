@@ -428,6 +428,35 @@ void zeng_online_create_room(int misocket,int room_number,char *room_name)
 
 }
 
+void zeng_online_destroy_room(int misocket,int room_number)
+{
+    //comprobaciones
+    if (room_number<0 || room_number>=zeng_online_current_max_rooms) {
+        escribir_socket_format(misocket,"ERROR. Room number beyond limit");
+        return;
+    }
+
+    //Ver si esta libre
+    if (zeng_online_rooms_list[room_number].created==0) {
+        escribir_socket_format(misocket,"ERROR. Room is not created");
+        return;
+    }
+
+    zeng_online_rooms_list[room_number].max_players=ZENG_ONLINE_MAX_PLAYERS_PER_ROOM;
+
+    zeng_online_rooms_list[room_number].current_players=0;
+
+    strcpy(zeng_online_rooms_list[room_number].name,"<free>");
+
+    if (zeng_online_rooms_list[room_number].snapshot_memory!=NULL) {
+        free(zeng_online_rooms_list[room_number].snapshot_memory);
+    }
+
+    zeng_online_rooms_list[room_number].created=0;
+
+
+}
+
 void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv,char *ip_source_address)
 {
     //TODO: si el parse para un comando largo, como put-snapshot, fuese lento, habria que procesarlo diferente:
@@ -918,6 +947,39 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
 
 
 
+    }
+
+    //"destroy-room creator_pass n         Destroys room n\n"
+    else if (!strcmp(comando_argv[0],"destroy-room")) {
+        if (!zeng_online_enabled) {
+            escribir_socket(misocket,"ERROR. ZENG Online is not enabled");
+            return;
+        }
+
+        if (comando_argc<2) {
+            escribir_socket(misocket,"ERROR. Needs two parameters");
+            return;
+        }
+
+        int room_number=parse_string_to_number(comando_argv[2]);
+
+        if (room_number<0 || room_number>=zeng_online_current_max_rooms) {
+            escribir_socket_format(misocket,"ERROR. Room number beyond limit");
+            return;
+        }
+
+        if (!zeng_online_rooms_list[room_number].created) {
+            escribir_socket(misocket,"ERROR. Room is not created");
+            return;
+        }
+
+        //validar user_pass. comando_argv[1]
+        if (strcmp(comando_argv[1],zeng_online_rooms_list[room_number].creator_password)) {
+            escribir_socket(misocket,"ERROR. Invalid creator password for that room");
+            return;
+        }
+
+        zeng_online_destroy_room(misocket,room_number);
     }
 
     //"put-snapshot creator_pass n data

@@ -676,6 +676,8 @@ void menu_zeng_online_create_room(MENU_ITEM_PARAMETERS)
             return;
         }
 
+        strcpy(room_name,"<used>");
+
         if (menu_ventana_scanf("Room name?",room_name,ZENG_ONLINE_MAX_ROOM_NAME+1)<0) {
             return;
         }

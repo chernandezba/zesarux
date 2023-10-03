@@ -912,6 +912,7 @@ struct s_items_ayuda items_ayuda[]={
     "authorize-join creator_pass n perm Authorize/deny permissions to first client join to room n. id is authorization id. perm are permissions, can be:\n"
     "                                    0: deny, 1: allow_send_keys, 2: allow_get_snapshot. Sum values for combinations\n"
     "create-room n name                  Creates a room n. It must be in non-created state. Returns the creator_password\n"
+    "destroy-room creator_pass n         Destroys room n\n"
     "disable                             Disables ZENG Online\n"
 	"enable                              Enables ZENG Online\n"
     "get-keys user_pass n                This command returns continuously (never ends) keys from room n, every one separated by NL character.\n"
