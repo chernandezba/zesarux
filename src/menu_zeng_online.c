@@ -517,12 +517,35 @@ void menu_zeng_online_join_list(MENU_ITEM_PARAMETERS)
     if (strcmp(zeng_remote_join_list_buffer,"<empty>")) {
         int permisos;
         char buffer_perm[4];
-        strcpy(buffer_perm,"0");
-        menu_ventana_scanf("Permissions?",buffer_perm,4);
-        permisos=parse_string_to_number(buffer_perm);
+        int opcion=menu_simple_four_choices("Permissions","Kind","None","All","Read only","Custom");
+
+        switch (opcion) {
+            case 0: //ESC es 0 y por tanto ESC es lo mismo que no dar permisos
+            case 1:
+                permisos=0;
+            break;
+
+            case 2:
+                permisos=255; //Todo, preparado para posibles bits adicionales
+            break;
+
+            case 3:
+                permisos=ZENG_ONLINE_PERMISSIONS_GET_SNAPSHOT | ZENG_ONLINE_PERMISSIONS_GET_KEYS;
+            break;
+
+            case 4:
+
+
+                strcpy(buffer_perm,"0");
+                menu_ventana_scanf("Permissions?",buffer_perm,4);
+                permisos=parse_string_to_number(buffer_perm);
+
+            break;
+        }
+
         printf("Permisos: %d\n",permisos);
 
-        //TODO Enviar comando de autorizacion con esos permisos
+        //Enviar comando de autorizacion con esos permisos
         zeng_online_client_authorize_join(permisos);
     }
 

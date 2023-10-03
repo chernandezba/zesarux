@@ -2090,7 +2090,8 @@ void *zoc_slave_thread_function(void *nada GCC_UNUSED)
         if (zeng_online_client_end_frame_reached) {
             zeng_online_client_end_frame_reached=0;
 
-
+            //Como se puede ver es el cliente quien gestiona los permisos en base a lo que el join le retornó el server
+            //Pero luego el server no valida que el cliente tenga los permisos que está usando
             if (created_room_user_permissions & ZENG_ONLINE_PERMISSIONS_GET_SNAPSHOT) {
 
                 //Recibir snapshot
