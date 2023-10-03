@@ -490,6 +490,93 @@ int old_delete_menu_zeng_online_list_rooms(int *room_number,int *created,int *cu
 
 }
 
+int menu_zeng_online_ask_custom_permissions_value=0;
+int menu_zeng_online_ask_custom_permissions_set_apply=0;
+
+void menu_zeng_online_ask_custom_permissions_get_snapshot(MENU_ITEM_PARAMETERS)
+{
+    menu_zeng_online_ask_custom_permissions_value ^= ZENG_ONLINE_PERMISSIONS_GET_SNAPSHOT;
+}
+
+void menu_zeng_online_ask_custom_permissions_get_keys(MENU_ITEM_PARAMETERS)
+{
+    menu_zeng_online_ask_custom_permissions_value ^= ZENG_ONLINE_PERMISSIONS_GET_KEYS;
+}
+
+
+void menu_zeng_online_ask_custom_permissions_send_keys(MENU_ITEM_PARAMETERS)
+{
+    menu_zeng_online_ask_custom_permissions_value ^= ZENG_ONLINE_PERMISSIONS_SEND_KEYS;
+}
+
+void menu_zeng_online_ask_custom_permissions_apply(MENU_ITEM_PARAMETERS)
+{
+    menu_zeng_online_ask_custom_permissions_set_apply=1;
+}
+
+int menu_zeng_online_ask_custom_permissions(void)
+{
+    menu_item *array_menu_common;
+    menu_item item_seleccionado;
+    int retorno_menu;
+    int opcion_seleccionada=0;
+
+    //Inicializar siempre permisos a 0
+    menu_zeng_online_ask_custom_permissions_value=0;
+
+    menu_zeng_online_ask_custom_permissions_set_apply=0;
+
+    do {
+
+        menu_add_item_menu_inicial(&array_menu_common,"",MENU_OPCION_UNASSIGNED,menu_zeng_online_ask_custom_permissions_get_snapshot,NULL);
+
+        menu_add_item_menu_en_es_ca_inicial(&array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_ask_custom_permissions_get_snapshot,NULL,
+            "Read Snapshot","Leer Snapshot","Llegir Snapshot");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",
+            (menu_zeng_online_ask_custom_permissions_value & ZENG_ONLINE_PERMISSIONS_GET_SNAPSHOT ? 'X' : ' ')
+        );
+
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_ask_custom_permissions_get_keys,NULL,
+            "Read Keys","Leer Teclas","Llegir Tecles");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",
+            (menu_zeng_online_ask_custom_permissions_value & ZENG_ONLINE_PERMISSIONS_GET_KEYS ? 'X' : ' ')
+        );
+
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_ask_custom_permissions_send_keys,NULL,
+            "Write Keys","Escribir Teclas","Escriure Tecles");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",
+            (menu_zeng_online_ask_custom_permissions_value & ZENG_ONLINE_PERMISSIONS_SEND_KEYS ? 'X' : ' ')
+        );
+        menu_add_item_menu_separator(array_menu_common);
+
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_ask_custom_permissions_apply,NULL,
+            "Apply","Aplicar","Aplicar");
+
+        menu_add_item_menu_separator(array_menu_common);
+
+        menu_add_ESC_item(array_menu_common);
+
+        retorno_menu=menu_dibuja_menu(&opcion_seleccionada,&item_seleccionado,array_menu_common,"Custom Permissions");
+
+
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+                //llamamos por valor de funcion
+                if (item_seleccionado.menu_funcion!=NULL) {
+                        //printf ("actuamos por funcion\n");
+                        item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+
+                }
+        }
+
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus
+                && !menu_zeng_online_ask_custom_permissions_set_apply);
+
+    if (menu_zeng_online_ask_custom_permissions_set_apply) return menu_zeng_online_ask_custom_permissions_value;
+
+    //Salir con ESC
+    return -1;
+}
+
 
 void menu_zeng_online_join_list(MENU_ITEM_PARAMETERS)
 {
@@ -515,34 +602,33 @@ void menu_zeng_online_join_list(MENU_ITEM_PARAMETERS)
 
     //Si no vacio
     if (strcmp(zeng_remote_join_list_buffer,"<empty>")) {
-        int permisos;
-        char buffer_perm[4];
-        int opcion=menu_simple_four_choices("Permissions","Kind","None","Read only","All","Custom");
+        int permisos=-1;
+        while (permisos==-1) {
+            int opcion=menu_simple_four_choices("Permissions","Kind","None","Read only","All","Custom");
 
-        switch (opcion) {
-            case 0: //ESC es 0 y por tanto ESC es lo mismo que no dar permisos
-            case 1:
-                permisos=0;
-            break;
+            switch (opcion) {
+                case 0: //ESC es 0 y por tanto ESC es lo mismo que no dar permisos
+                case 1:
+                    permisos=0;
+                break;
 
-            case 2:
-                permisos=ZENG_ONLINE_PERMISSIONS_GET_SNAPSHOT | ZENG_ONLINE_PERMISSIONS_GET_KEYS;
-            break;
+                case 2:
+                    permisos=ZENG_ONLINE_PERMISSIONS_GET_SNAPSHOT | ZENG_ONLINE_PERMISSIONS_GET_KEYS;
+                break;
 
-            case 3:
-                permisos=255; //Todo, preparado para posibles bits adicionales
-            break;
-
-
-
-            case 4:
+                case 3:
+                    permisos=255; //Todo, preparado para posibles bits adicionales
+                break;
 
 
-                strcpy(buffer_perm,"0");
-                menu_ventana_scanf("Permissions?",buffer_perm,4);
-                permisos=parse_string_to_number(buffer_perm);
+                case 4:
 
-            break;
+                    //Devuelve -1 si salido con ESC
+                    permisos=menu_zeng_online_ask_custom_permissions();
+
+
+                break;
+            }
         }
 
         printf("Permisos: %d\n",permisos);
