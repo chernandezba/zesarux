@@ -422,7 +422,7 @@ int zeng_online_client_destroy_room_connect(void)
         char buffer_enviar[1024];
 
 
-        sprintf(buffer_enviar,"zeng-online destroy %s %d\n",created_room_creator_password,zeng_online_joined_to_room_number);
+        sprintf(buffer_enviar,"zeng-online destroy-room %s %d\n",created_room_creator_password,zeng_online_joined_to_room_number);
 
 
 		int escritos=z_sock_write_string(indice_socket,buffer_enviar);

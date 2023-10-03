@@ -236,15 +236,17 @@ int menu_zeng_online_list_rooms(int *room_number,int *created,int *current_playe
         }
     }
 
-    //Y el del final
-    menu_add_item_menu(array_menu_common,&zeng_remote_list_rooms_buffer[inicio_linea],MENU_OPCION_NORMAL,NULL,NULL);
+    //Y el del final. Siempre que no sea texto en blanco
+    if (zeng_remote_list_rooms_buffer[inicio_linea] && zeng_remote_list_rooms_buffer[inicio_linea]!='\n') {
+        menu_add_item_menu(array_menu_common,&zeng_remote_list_rooms_buffer[inicio_linea],MENU_OPCION_NORMAL,NULL,NULL);
+    }
 
 
         //menu_add_item_menu_separator(array_menu_common);
 
         //menu_add_ESC_item(array_menu_common);
 
-        retorno_menu=menu_dibuja_menu(&opcion_seleccionada,&item_seleccionado,array_menu_common,"ZENG Online");
+        retorno_menu=menu_dibuja_menu(&opcion_seleccionada,&item_seleccionado,array_menu_common,"Rooms");
 
         //Si no seleccionada linea valida
         if (!((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0)) {
