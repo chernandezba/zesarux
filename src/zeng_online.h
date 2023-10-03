@@ -43,6 +43,11 @@
 //Aunque no asumo que todos los usuarios (100??) de una sala vayan a pulsar las teclas a la vez
 #define ZENG_ONLINE_MAX_EVENTS 30
 
+#define ZENG_ONLINE_PERMISSIONS_GET_SNAPSHOT 1
+#define ZENG_ONLINE_PERMISSIONS_GET_KEYS 2
+#define ZENG_ONLINE_PERMISSIONS_SEND_KEYS 4
+
+
 extern void init_zeng_online_rooms(void);
 extern void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv,char *ipsource);
 

@@ -739,7 +739,18 @@ void menu_zeng_online(MENU_ITEM_PARAMETERS)
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,
             "Room permissions: ","Permisos habitación: ","Permisos habitació: ");
-            menu_add_item_menu_sufijo_format(array_menu_common,"%d",created_room_user_permissions);
+
+            //RS: Read snapshot
+            //RK: Read keys
+            //WK: Write keys
+
+            menu_add_item_menu_sufijo_format(array_menu_common,"%s-%s-%s",
+                (created_room_user_permissions & ZENG_ONLINE_PERMISSIONS_GET_SNAPSHOT ? "RS" : "  "),
+                (created_room_user_permissions & ZENG_ONLINE_PERMISSIONS_GET_KEYS ? "RK" : "  "),
+                (created_room_user_permissions & ZENG_ONLINE_PERMISSIONS_SEND_KEYS ? "WK" : "  ")
+            );
+
+
 
             if (zeng_online_i_am_master.v) {
                 menu_add_item_menu_separator(array_menu_common);
