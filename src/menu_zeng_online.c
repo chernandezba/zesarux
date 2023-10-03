@@ -140,6 +140,19 @@ void menu_zeng_online_authorize_join_print(zxvision_window *w)
     menu_common_connect_print(w,buf_temp);
 }
 
+void menu_zeng_online_leave_room_print(zxvision_window *w)
+{
+    char buf_temp[NETWORK_MAX_URL+256];
+    sprintf(buf_temp,"Connecting to %s",zeng_online_server);
+
+    menu_common_connect_print(w,buf_temp);
+}
+
+int menu_zeng_online_leave_room_cond(zxvision_window *w GCC_UNUSED)
+{
+	return !zeng_online_client_leave_room_thread_running;
+}
+
 int menu_zeng_online_list_rooms_cond(zxvision_window *w GCC_UNUSED)
 {
 	return !zeng_online_client_list_rooms_thread_running;
@@ -605,11 +618,14 @@ void menu_zeng_online_leave_room_slave(MENU_ITEM_PARAMETERS)
         //Detener el thread de slave
         zoc_stop_slave_thread();
 
+
+        zeng_online_client_leave_room();
+
+        zxvision_simple_progress_window("Leave room", menu_zeng_online_leave_room_cond,menu_zeng_online_leave_room_print );
+
         menu_generic_message_splash("Leave room","Left room");
 
-        //TODO enviar comando para leave room
-        //mover esto al final de leave:
-        zeng_online_connected.v=0;
+
     }
 }
 
@@ -621,11 +637,11 @@ void menu_zeng_online_leave_room_master(MENU_ITEM_PARAMETERS)
         //Detener el thread de slave
         zoc_stop_master_thread();
 
-        menu_generic_message_splash("Leave room","Left room");
+        zeng_online_client_leave_room();
 
-        //TODO enviar comando para leave room
-        //mover esto al final de leave:
-        zeng_online_connected.v=0;
+        zxvision_simple_progress_window("Leave room", menu_zeng_online_leave_room_cond,menu_zeng_online_leave_room_print );
+
+        menu_generic_message_splash("Leave room","Left room");
 
     }
 }

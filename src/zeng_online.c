@@ -994,6 +994,7 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
     }
 
     //leave n user_pass nickname
+    //TODO: no hacemos nada con el nickname, solo mostrarlo en footer
     else if (!strcmp(comando_argv[0],"leave")) {
         if (!zeng_online_enabled) {
             escribir_socket(misocket,"ERROR. ZENG Online is not enabled");
