@@ -148,9 +148,22 @@ void menu_zeng_online_leave_room_print(zxvision_window *w)
     menu_common_connect_print(w,buf_temp);
 }
 
+
+void menu_zeng_online_destroy_room_print(zxvision_window *w)
+{
+    char buf_temp[NETWORK_MAX_URL+256];
+    sprintf(buf_temp,"Connecting to %s",zeng_online_server);
+
+    menu_common_connect_print(w,buf_temp);
+}
 int menu_zeng_online_leave_room_cond(zxvision_window *w GCC_UNUSED)
 {
 	return !zeng_online_client_leave_room_thread_running;
+}
+
+int menu_zeng_online_destroy_room_cond(zxvision_window *w GCC_UNUSED)
+{
+	return !zeng_online_client_destroy_room_thread_running;
 }
 
 int menu_zeng_online_list_rooms_cond(zxvision_window *w GCC_UNUSED)
@@ -719,9 +732,37 @@ void menu_zeng_online_create_room(MENU_ITEM_PARAMETERS)
     }
 }
 
+void menu_zeng_online_leave_room_master_aux(void)
+{
+
+
+
+        //Detener el thread de slave
+        zoc_stop_master_thread();
+
+        zeng_online_client_leave_room();
+
+        zxvision_simple_progress_window("Leave room", menu_zeng_online_leave_room_cond,menu_zeng_online_leave_room_print );
+
+
+}
+
 void menu_zeng_online_destroy_room(MENU_ITEM_PARAMETERS)
 {
-    //TODO
+    if (menu_confirm_yesno("Destroy room?")) {
+
+        //Leave room
+        menu_zeng_online_leave_room_master_aux();
+
+        //Destroy room
+
+        zeng_online_client_destroy_room();
+
+        zxvision_simple_progress_window("Destroy room", menu_zeng_online_destroy_room_cond,menu_zeng_online_destroy_room_print );
+
+        menu_generic_message_splash("Destroy room","Room destroyed");
+
+    }
 }
 
 void menu_zeng_online_leave_room_slave(MENU_ITEM_PARAMETERS)
@@ -747,12 +788,7 @@ void menu_zeng_online_leave_room_master(MENU_ITEM_PARAMETERS)
 
     if (menu_confirm_yesno("Leave room?")) {
 
-        //Detener el thread de slave
-        zoc_stop_master_thread();
-
-        zeng_online_client_leave_room();
-
-        zxvision_simple_progress_window("Leave room", menu_zeng_online_leave_room_cond,menu_zeng_online_leave_room_print );
+        menu_zeng_online_leave_room_master_aux();
 
         menu_generic_message_splash("Leave room","Left room");
 

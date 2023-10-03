@@ -69,6 +69,7 @@ pthread_t thread_zoc_slave_thread;
 pthread_t thread_zeng_online_client_join_list;
 pthread_t thread_zeng_online_client_authorize_join;
 pthread_t thread_zeng_online_client_leave_room;
+pthread_t thread_zeng_online_client_destroy_room;
 
 
 #endif
@@ -80,6 +81,7 @@ int zeng_online_client_join_room_thread_running=0;
 int zeng_online_client_join_list_thread_running=0;
 int zeng_online_client_authorize_join_thread_running=0;
 int zeng_online_client_leave_room_thread_running=0;
+int zeng_online_client_destroy_room_thread_running=0;
 
 z80_bit zeng_online_i_am_master={0};
 //z80_bit zeng_online_i_am_joined={0};
@@ -377,6 +379,105 @@ int zeng_online_client_list_rooms_connect(void)
 	return 1;
 }
 
+int zeng_online_client_destroy_room_connect(void)
+{
+
+
+        char server[NETWORK_MAX_URL+1];
+        int puerto;
+        puerto=zeng_online_get_server_and_port(server);
+
+		int indice_socket=z_sock_open_connection(server,puerto,0,"");
+
+		if (indice_socket<0) {
+			debug_printf(VERBOSE_ERR,"Error connecting to %s:%d. %s",
+                server,puerto,
+                z_sock_get_error(indice_socket));
+			return 0;
+		}
+
+		 int posicion_command;
+
+#define ZENG_BUFFER_INITIAL_CONNECT 199
+
+		//Leer algo
+		char buffer[ZENG_BUFFER_INITIAL_CONNECT+1];
+
+		//int leidos=z_sock_read(indice_socket,buffer,199);
+		int leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)buffer,ZENG_BUFFER_INITIAL_CONNECT,&posicion_command);
+		if (leidos>0) {
+			buffer[leidos]=0; //fin de texto
+			//printf("Received text (length: %d):\n[\n%s\n]\n",leidos,buffer);
+		}
+
+		if (leidos<0) {
+			debug_printf(VERBOSE_ERR,"ERROR. Can't read remote prompt: %s",z_sock_get_error(leidos));
+			return 0;
+		}
+
+		//zsock_wait_until_command_prompt(indice_socket);
+
+		debug_printf(VERBOSE_DEBUG,"ZENG: Sending destroy-room");
+
+        char buffer_enviar[1024];
+
+
+        sprintf(buffer_enviar,"zeng-online destroy %s %d\n",created_room_creator_password,zeng_online_joined_to_room_number);
+
+
+		int escritos=z_sock_write_string(indice_socket,buffer_enviar);
+
+		if (escritos<0) {
+			debug_printf(VERBOSE_ERR,"ERROR. Can't send zeng-online destroy: %s",z_sock_get_error(escritos));
+			return 0;
+		}
+
+
+            leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)buffer,ZENG_BUFFER_INITIAL_CONNECT,&posicion_command);
+            if (leidos>0) {
+                buffer[leidos]=0; //fin de texto
+                debug_printf(VERBOSE_DEBUG,"ZENG: Received text for zeng-online destroy (length %d): \n[\n%s\n]",leidos,buffer);
+            }
+
+            if (leidos<0) {
+                debug_printf(VERBOSE_ERR,"ERROR. Can't receive zeng-online destroy: %s",z_sock_get_error(leidos));
+                return 0;
+            }
+
+
+
+
+		//1 mas para eliminar el salto de linea anterior a "command>"
+		if (posicion_command>=1) {
+			buffer[posicion_command-1]=0;
+			debug_printf(VERBOSE_DEBUG,"ZENG: Received text: %s",buffer);
+		}
+		else {
+			debug_printf (VERBOSE_ERR,"Error receiving ZEsarUX zeng-online destroy");
+			return 0;
+		}
+
+        printf("Retorno destroy-room: [%s]\n",buffer);
+        //Si hay ERROR
+        if (strstr(buffer,"ERROR")!=NULL) {
+            debug_printf(VERBOSE_ERR,"Error leaving room: %s",buffer);
+            return 0;
+        }
+
+
+		//finalizar conexion
+        z_sock_close_connection(indice_socket);
+
+
+        zeng_online_connected.v=0;
+
+
+
+	//zeng_remote_socket=indice_socket;
+
+	return 1;
+}
+
 //Devuelve 0 si no conectado
 int zeng_online_client_leave_room_connect(void)
 {
@@ -441,10 +542,6 @@ int zeng_online_client_leave_room_connect(void)
             if (leidos<0) {
                 debug_printf(VERBOSE_ERR,"ERROR. Can't receive zeng-online leave: %s",z_sock_get_error(leidos));
                 return 0;
-            }
-
-            if (leidos==0) {
-                printf("no leida respuesta aun de join\n");
             }
 
 
@@ -695,6 +792,31 @@ void *zeng_online_client_leave_room_function(void *nada GCC_UNUSED)
 
 }
 
+void *zeng_online_client_destroy_room_function(void *nada GCC_UNUSED)
+{
+    zeng_online_client_destroy_room_thread_running=1;
+
+	//Conectar a remoto
+
+	if (!zeng_online_client_destroy_room_connect()) {
+		//Desconectar solo si el socket estaba conectado
+
+        //Desconectar los que esten conectados
+        //TODO zeng_disconnect_remote();
+
+		zeng_online_client_destroy_room_thread_running=0;
+		return 0;
+	}
+
+
+
+
+	zeng_online_client_destroy_room_thread_running=0;
+
+	return 0;
+
+}
+
 void *zeng_online_client_list_rooms_function(void *nada GCC_UNUSED)
 {
 
@@ -818,12 +940,28 @@ void zeng_online_client_leave_room(void)
 	//Inicializar thread
 
 	if (pthread_create( &thread_zeng_online_client_leave_room, NULL, &zeng_online_client_leave_room_function, NULL) ) {
-		debug_printf(VERBOSE_ERR,"Can not create zeng online list rooms pthread");
+		debug_printf(VERBOSE_ERR,"Can not create zeng online leave room pthread");
 		return;
 	}
 
 	//y pthread en estado detached asi liberara su memoria asociada a thread al finalizar, sin tener que hacer un pthread_join
 	pthread_detach(thread_zeng_online_client_leave_room);
+
+
+}
+
+void zeng_online_client_destroy_room(void)
+{
+
+	//Inicializar thread
+
+	if (pthread_create( &thread_zeng_online_client_destroy_room, NULL, &zeng_online_client_destroy_room_function, NULL) ) {
+		debug_printf(VERBOSE_ERR,"Can not create zeng online destroy room pthread");
+		return;
+	}
+
+	//y pthread en estado detached asi liberara su memoria asociada a thread al finalizar, sin tener que hacer un pthread_join
+	pthread_detach(thread_zeng_online_client_destroy_room);
 
 
 }
