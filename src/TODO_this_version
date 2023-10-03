@@ -566,7 +566,7 @@ en util_set_reset_key_continue, agregar antes_puerto_ y restaurar valor para cad
 
 
 
--Gestión autorizaciones para join
+ok-Gestión autorizaciones para join
 -cliente intenta join a server.
 ok - Si es el máster join, enviará creator password y este no necesita autorizar
 ok-ese join se queda en espera de respuesta. Su petición va a una fifo, con un id y nickname (o un array circular mejor)
@@ -577,7 +577,7 @@ Se envía un comando con el resultado de cada autorización: id, permisos, y si 
 ok-el id es necesario? dado que siempre responderemos sobre la mas antigua, en principio sabemos su id. a no ser que el array haya dado la vuelta, por lo que entonces se sobreescribe.
 Que hacer si se llena el array circular? Quiza dejar la petición de join bloqueada hasta que haya espacio libre en el array
 
--comando zeng online para leave room. esto decrementara el contador de jugadores en la room
+ok-comando zeng online para leave room. esto decrementara el contador de jugadores en la room
 
 - Opciones de Zeng online server en menu, en algún sitio…
 ---------------
