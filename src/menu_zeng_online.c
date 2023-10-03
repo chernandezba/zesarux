@@ -882,7 +882,6 @@ void menu_zeng_online(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_list_rooms_menu_item,NULL,
             "List rooms","Listar habitaciones","Llistar habitacions");
 
-
         //Create room + join / destroy room
         if (zeng_online_connected.v==0) {
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_create_room,NULL,

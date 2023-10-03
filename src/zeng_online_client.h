@@ -33,6 +33,14 @@ extern int zeng_online_client_destroy_room_thread_running;
 extern void zeng_online_client_list_rooms(void);
 extern void zeng_online_client_create_room(int room_number,char *room_name);
 extern void zeng_online_client_join_room(int room_number,char *creator_password);
+extern void zeng_online_client_leave_room(void);
+extern void zeng_online_client_authorize_join(int permissions);
+extern void zeng_online_client_join_list(void);
+extern void zeng_online_client_destroy_room(void);
+
+extern void zoc_stop_master_thread(void);
+extern void zoc_stop_slave_thread(void);
+
 //extern void zoc_start_snapshot_sending(void);
 
 extern char zeng_remote_join_list_buffer[];
