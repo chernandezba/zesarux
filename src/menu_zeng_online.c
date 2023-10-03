@@ -191,6 +191,188 @@ int menu_zeng_online_list_rooms(int *room_number,int *created,int *current_playe
         menu_generic_message_format("ZENG online latency","Latency is: %s",buffer_latencia );
 
 
+    menu_item *array_menu_common;
+    menu_item item_seleccionado;
+    int retorno_menu;
+    int opcion_seleccionada=0;
+
+    menu_add_item_menu_inicial(&array_menu_common,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
+
+    //Ir agregando lineas hasta final
+    int i;
+    int inicio_linea=0;
+
+    for (i=0;zeng_remote_list_rooms_buffer[i];i++) {
+        if (zeng_remote_list_rooms_buffer[i]=='\n') {
+            zeng_remote_list_rooms_buffer[i]=0;
+            menu_add_item_menu(array_menu_common,&zeng_remote_list_rooms_buffer[inicio_linea],MENU_OPCION_NORMAL,NULL,NULL);
+            inicio_linea=i+1;
+        }
+    }
+
+    //Y el del final
+    menu_add_item_menu(array_menu_common,&zeng_remote_list_rooms_buffer[inicio_linea],MENU_OPCION_NORMAL,NULL,NULL);
+
+
+        //menu_add_item_menu_separator(array_menu_common);
+
+        //menu_add_ESC_item(array_menu_common);
+
+        retorno_menu=menu_dibuja_menu(&opcion_seleccionada,&item_seleccionado,array_menu_common,"ZENG Online");
+
+        //Si no seleccionada linea valida
+        if (!((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0)) {
+            return -1;
+
+            /*
+                //llamamos por valor de funcion
+                if (item_seleccionado.menu_funcion!=NULL) {
+                        //printf ("actuamos por funcion\n");
+                        item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+
+                }
+            */
+        }
+
+    //} while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+
+//printf(item_seleccionado.texto_opcion);
+        //generic_message_tooltip_return retorno_ventana;
+        //zxvision_generic_message_tooltip("Rooms", 0,0, 0, 1, &retorno_ventana, 1, "%s", zeng_remote_list_rooms_buffer);
+
+
+        //printf("Despues ventana rooms\n");
+        //Si se sale con ESC
+        //if (retorno_ventana.estado_retorno==0) return -1;
+
+        //Linea seleccionada es 1? quiere decir que se selecciona texto "--- edition"
+    /*
+        Por defecto, linea seleccionada es 0, incluso aunque no se haya habilitado linea de cursor, por ejemplo
+        al buscar texto con f y n
+        Como la que buscamos es la 1, no hay problema de falso positivo
+    */
+        //int linea=retorno_ventana.linea_seleccionada;
+
+        //printf("linea: %d\n",linea);
+        printf("Texto seleccionado: [%s]\n",item_seleccionado.texto_opcion);
+
+
+
+        //Si linea cabecera
+        if (strstr(item_seleccionado.texto_opcion,"Created Players")!=NULL) {
+            printf("Seleccionada cabecera. no hacer nada\n");
+            return -1;
+
+        }
+
+        if (item_seleccionado.texto_opcion[0]==0) {
+            printf("Seleccionada linea vacia. No hacer nada\n");
+            return -1;
+        }
+
+        //TODO: si ventana poco ancho, puede seleccionar linea entre medio solo con espacios
+
+        //Vamos a parsear 4 valores y luego una string
+        int valores[4];
+        int total_valores=0;
+
+        int indice_string=0;
+
+        int empezado_numero=-1;
+
+        int salir=0;
+
+        while (item_seleccionado.texto_opcion[indice_string]!=0 && !salir) {
+            //Movernos al espacio siguiente
+
+            //No ha empezado a leer un numero
+            if (empezado_numero==-1) {
+                if (item_seleccionado.texto_opcion[indice_string]!=' ') {
+                    if (total_valores==4) salir=1;
+                    else empezado_numero=indice_string;
+                }
+            }
+
+            //Estaba leyendo un numero
+            else {
+                if (item_seleccionado.texto_opcion[indice_string]==' ') {
+                    //fin numero
+                    valores[total_valores]=atoi(&item_seleccionado.texto_opcion[empezado_numero]);
+                    total_valores++;
+                    empezado_numero=-1;
+                }
+            }
+
+            if (!salir) indice_string++;
+        }
+
+        printf("Fin escaneo\n");
+
+        for (i=0;i<4;i++) {
+            printf("%d: %d\n",i,valores[i]);
+        }
+
+        printf("4: [%s]\n",&item_seleccionado.texto_opcion[indice_string]);
+
+
+        *room_number=valores[0];
+        *created=valores[1];
+        *current_players=valores[2];
+        *max_players=valores[3];
+
+        //Truncar nombre ventana hasta espacio final
+        int inicio_nombre=strlen(item_seleccionado.texto_opcion)-1;
+        for (i=inicio_nombre;i>=indice_string;i--) {
+            if (item_seleccionado.texto_opcion[i]!=' ') {
+                item_seleccionado.texto_opcion[i+1]=0;
+                break;
+            }
+        }
+
+        strcpy(room_name,&item_seleccionado.texto_opcion[indice_string]);
+
+        return 0;
+    }
+
+    return -1;
+
+}
+
+int old_delete_menu_zeng_online_list_rooms(int *room_number,int *created,int *current_players,int *max_players,char *room_name)
+{
+
+    room_name[0]=0;
+
+    //Lanzar el thread de listar rooms
+    zeng_online_client_list_rooms();
+
+    contador_menu_zeng_connect_print=0;
+
+
+    zxvision_simple_progress_window("ZENG Online connection", menu_zeng_online_list_rooms_cond,menu_zeng_online_list_rooms_print );
+
+    if (zeng_online_client_list_rooms_thread_running) {
+        menu_warn_message("Connection has not finished yet");
+    }
+
+    if (zeng_remote_list_rooms_buffer[0]!=0) {
+        //menu_generic_message("Rooms",zeng_remote_list_rooms_buffer);
+
+        //Mostrar latencia
+        long latencia=zeng_online_get_last_list_rooms_latency();
+
+        char buffer_latencia[30];
+        //Es en microsegundos. Si es >1000, mostrar en ms
+        if (latencia>=1000) {
+            sprintf(buffer_latencia,"%ld ms",latencia/1000);
+        }
+        else {
+            sprintf(buffer_latencia,"%ld us",latencia);
+        }
+
+        menu_generic_message_format("ZENG online latency","Latency is: %s",buffer_latencia );
+
+
         generic_message_tooltip_return retorno_ventana;
         zxvision_generic_message_tooltip("Rooms", 0,0, 0, 1, &retorno_ventana, 1, "%s", zeng_remote_list_rooms_buffer);
 
@@ -214,21 +396,6 @@ int menu_zeng_online_list_rooms(int *room_number,int *created,int *current_playe
         printf("Texto seleccionado: [%s]\n",retorno_ventana.texto_seleccionado);
 
 
-        //Parsear valoes
-        /*
-
-                escribir_socket(misocket,"N.  Created Players Max Name                           \n");
-
-        for (i=0;i<zeng_online_current_max_rooms;i++) {
-            escribir_socket_format(misocket,"%3d %d     %3d       %3d %s\n",
-                i,
-                zeng_online_rooms_list[i].created,
-                zeng_online_rooms_list[i].current_players,
-                zeng_online_rooms_list[i].max_players,
-                zeng_online_rooms_list[i].name
-            );
-        }
-        */
 
         //Si linea cabecera
         if (strstr(retorno_ventana.texto_seleccionado,"Created Players")!=NULL) {
@@ -431,6 +598,37 @@ void menu_zeng_online_destroy_room(MENU_ITEM_PARAMETERS)
     //TODO
 }
 
+void menu_zeng_online_leave_room_slave(MENU_ITEM_PARAMETERS)
+{
+
+    if (menu_confirm_yesno("Leave room?")) {
+        //Detener el thread de slave
+        zoc_stop_slave_thread();
+
+        menu_generic_message_splash("Leave room","Left room");
+
+        //TODO enviar comando para leave room
+        //mover esto al final de leave:
+        zeng_online_connected.v=0;
+    }
+}
+
+void menu_zeng_online_leave_room_master(MENU_ITEM_PARAMETERS)
+{
+
+    if (menu_confirm_yesno("Leave room?")) {
+
+        //Detener el thread de slave
+        zoc_stop_master_thread();
+
+        menu_generic_message_splash("Leave room","Left room");
+
+        //TODO enviar comando para leave room
+        //mover esto al final de leave:
+        zeng_online_connected.v=0;
+
+    }
+}
 
 void menu_zeng_online_join_room(MENU_ITEM_PARAMETERS)
 {
@@ -515,6 +713,10 @@ void menu_zeng_online(MENU_ITEM_PARAMETERS)
 
         }
         else {
+
+            menu_add_item_menu_separator(array_menu_common);
+
+
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,
             "Joined to room: ","Unido a habitación: ","Unit a habitació: ");
             menu_add_item_menu_sufijo_format(array_menu_common,"%d",zeng_online_joined_to_room_number);
@@ -524,13 +726,25 @@ void menu_zeng_online(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_sufijo_format(array_menu_common,"%d",created_room_user_permissions);
 
             if (zeng_online_i_am_master.v) {
+                menu_add_item_menu_separator(array_menu_common);
+
                 menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_join_list,NULL,
                 "Join List","Lista join","Llista join");
+
+                menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_leave_room_master,NULL,
+                "Leave room","Abandonar habitación","Abandonar habitació");
 
                 menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_destroy_room,NULL,
                 "~~Destroy room","~~Destruir habitación","~~Destruir habitació");
                 menu_add_item_menu_shortcut(array_menu_common,'d');
 
+            }
+
+            else {
+                menu_add_item_menu_separator(array_menu_common);
+
+                menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_leave_room_slave,NULL,
+                "Leave room","Abandonar habitación","Abandonar habitació");
             }
         }
 

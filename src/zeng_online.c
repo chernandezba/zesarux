@@ -474,7 +474,7 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
 
         int i;
 
-        escribir_socket(misocket,"N.  Created Players Max Name                           \n");
+        escribir_socket(misocket,"N.  Created Players Max Name\n");
 
         for (i=0;i<zeng_online_current_max_rooms;i++) {
             escribir_socket_format(misocket,"%3d %d     %3d       %3d %s\n",

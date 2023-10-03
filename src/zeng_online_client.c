@@ -2115,7 +2115,17 @@ void zoc_start_slave_thread(void)
 	pthread_detach(thread_zoc_slave_thread);
 }
 
+void zoc_stop_master_thread(void)
+{
+    pthread_cancel(thread_zoc_master_thread);
+}
 
+void zoc_stop_slave_thread(void)
+{
+    pthread_cancel(thread_zoc_slave_thread);
+    sleep(1);
+    zoc_pending_apply_received_snapshot=0;
+}
 
 
 
@@ -2255,6 +2265,14 @@ void zoc_start_master_thread(void)
 
 //Inicio del thread de slave
 void zoc_start_slave_thread(void)
+{
+}
+
+void zoc_stop_slave_thread(void)
+{
+}
+
+void zoc_stop_master_thread(void)
 {
 }
 
