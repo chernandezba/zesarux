@@ -2010,7 +2010,7 @@ int zoc_get_pending_authorization_size(int indice_socket)
                             //TODO quiza habria que usar algun tipo de bloqueo para esto
 
 
-                            zoc_get_pending_authorization_size_last_queue_size=queue_size;
+                            zoc_get_pending_authorization_size_last_queue_size=queue_size-1;
 
                             //Y lo mostramos en el footer
                             char mensaje[AUTOSELECTOPTIONS_MAX_FOOTER_LENGTH+ZOC_MAX_NICKNAME_LENGTH+1];
