@@ -794,6 +794,63 @@ void *zeng_online_client_leave_room_function(void *nada GCC_UNUSED)
 
 }
 
+//Funcion comun para enviar un comando. Retorna 0 si error
+int zoc_common_send_command_and_close(int indice_socket,char *buffer_enviar)
+{
+
+    #define ZENG_BUFFER_INITIAL_CONNECT 199
+
+    //Leer algo
+    char buffer[ZENG_BUFFER_INITIAL_CONNECT+1];
+    int posicion_command;
+
+    int escritos=z_sock_write_string(indice_socket,buffer_enviar);
+
+
+    if (escritos<0) {
+        debug_printf(VERBOSE_ERR,"ERROR. Can't send zeng-online set-autojoin: %s",z_sock_get_error(escritos));
+        return 0;
+    }
+
+
+    int leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)buffer,ZENG_BUFFER_INITIAL_CONNECT,&posicion_command);
+    if (leidos>0) {
+        buffer[leidos]=0; //fin de texto
+        debug_printf(VERBOSE_DEBUG,"ZENG: Received text for zeng-online set-autojoin (length %d): \n[\n%s\n]",leidos,buffer);
+    }
+
+    if (leidos<0) {
+        debug_printf(VERBOSE_ERR,"ERROR. Can't receive zeng-online set-autojoin: %s",z_sock_get_error(leidos));
+        return 0;
+    }
+
+
+
+    //1 mas para eliminar el salto de linea anterior a "command>"
+    if (posicion_command>=1) {
+        buffer[posicion_command-1]=0;
+        debug_printf(VERBOSE_DEBUG,"ZENG: Received text: %s",buffer);
+    }
+    else {
+        debug_printf (VERBOSE_ERR,"Error receiving ZEsarUX zeng-online set-autojoin");
+        return 0;
+    }
+
+    printf("Retorno set-autojoin: [%s]\n",buffer);
+    //Si hay ERROR
+    if (strstr(buffer,"ERROR")!=NULL) {
+        debug_printf(VERBOSE_ERR,"Error set-autojoin room: %s",buffer);
+        return 0;
+    }
+
+
+    //finalizar conexion
+    z_sock_close_connection(indice_socket);
+
+    return 1;
+
+}
+
 int param_zeng_online_client_autojoin_room_permisos=0;
 
 //Devuelve 0 si no conectado
@@ -822,6 +879,7 @@ int zeng_online_client_autojoin_room_connect(void)
 		char buffer[ZENG_BUFFER_INITIAL_CONNECT+1];
 
 		//int leidos=z_sock_read(indice_socket,buffer,199);
+
 		int leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)buffer,ZENG_BUFFER_INITIAL_CONNECT,&posicion_command);
 		if (leidos>0) {
 			buffer[leidos]=0; //fin de texto
@@ -843,57 +901,14 @@ int zeng_online_client_autojoin_room_connect(void)
         sprintf(buffer_enviar,"zeng-online set-autojoin %s %d %d\n",
             created_room_creator_password,zeng_online_joined_to_room_number,param_zeng_online_client_autojoin_room_permisos);
 
+//Begin common code
+        int return_value=zoc_common_send_command_and_close(indice_socket,buffer_enviar);
 
-		int escritos=z_sock_write_string(indice_socket,buffer_enviar);
-
-		if (escritos<0) {
-			debug_printf(VERBOSE_ERR,"ERROR. Can't send zeng-online set-autojoin: %s",z_sock_get_error(escritos));
-			return 0;
-		}
-
-
-            leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)buffer,ZENG_BUFFER_INITIAL_CONNECT,&posicion_command);
-            if (leidos>0) {
-                buffer[leidos]=0; //fin de texto
-                debug_printf(VERBOSE_DEBUG,"ZENG: Received text for zeng-online set-autojoin (length %d): \n[\n%s\n]",leidos,buffer);
-            }
-
-            if (leidos<0) {
-                debug_printf(VERBOSE_ERR,"ERROR. Can't receive zeng-online set-autojoin: %s",z_sock_get_error(leidos));
-                return 0;
-            }
+//End common code
 
 
 
-		//1 mas para eliminar el salto de linea anterior a "command>"
-		if (posicion_command>=1) {
-			buffer[posicion_command-1]=0;
-			debug_printf(VERBOSE_DEBUG,"ZENG: Received text: %s",buffer);
-		}
-		else {
-			debug_printf (VERBOSE_ERR,"Error receiving ZEsarUX zeng-online set-autojoin");
-			return 0;
-		}
-
-        printf("Retorno set-autojoin: [%s]\n",buffer);
-        //Si hay ERROR
-        if (strstr(buffer,"ERROR")!=NULL) {
-            debug_printf(VERBOSE_ERR,"Error set-autojoin room: %s",buffer);
-            return 0;
-        }
-
-
-		//finalizar conexion
-        z_sock_close_connection(indice_socket);
-
-
-
-
-
-
-	//zeng_remote_socket=indice_socket;
-
-	return 1;
+	return return_value;
 }
 
 void *zeng_online_client_autojoin_room_function(void *nada GCC_UNUSED)
