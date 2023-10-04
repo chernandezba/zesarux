@@ -795,7 +795,7 @@ void *zeng_online_client_leave_room_function(void *nada GCC_UNUSED)
 }
 
 //Funcion comun para enviar un comando. Retorna 0 si error
-int zoc_common_send_command_and_close(int indice_socket,char *buffer_enviar)
+int zoc_common_send_command_and_close(int indice_socket,char *buffer_enviar,char *command_name_for_info)
 {
 
     #define ZENG_BUFFER_INITIAL_CONNECT 199
@@ -808,7 +808,7 @@ int zoc_common_send_command_and_close(int indice_socket,char *buffer_enviar)
 
 
     if (escritos<0) {
-        debug_printf(VERBOSE_ERR,"ERROR. Can't send zeng-online set-autojoin: %s",z_sock_get_error(escritos));
+        debug_printf(VERBOSE_ERR,"ERROR. Can't send zeng-online %s: %s",command_name_for_info,z_sock_get_error(escritos));
         return 0;
     }
 
@@ -816,11 +816,11 @@ int zoc_common_send_command_and_close(int indice_socket,char *buffer_enviar)
     int leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)buffer,ZENG_BUFFER_INITIAL_CONNECT,&posicion_command);
     if (leidos>0) {
         buffer[leidos]=0; //fin de texto
-        debug_printf(VERBOSE_DEBUG,"ZENG: Received text for zeng-online set-autojoin (length %d): \n[\n%s\n]",leidos,buffer);
+        debug_printf(VERBOSE_DEBUG,"ZENG: Received text for zeng-online %s (length %d): \n[\n%s\n]",command_name_for_info,leidos,buffer);
     }
 
     if (leidos<0) {
-        debug_printf(VERBOSE_ERR,"ERROR. Can't receive zeng-online set-autojoin: %s",z_sock_get_error(leidos));
+        debug_printf(VERBOSE_ERR,"ERROR. Can't receive zeng-online %s: %s",command_name_for_info,z_sock_get_error(leidos));
         return 0;
     }
 
@@ -832,14 +832,14 @@ int zoc_common_send_command_and_close(int indice_socket,char *buffer_enviar)
         debug_printf(VERBOSE_DEBUG,"ZENG: Received text: %s",buffer);
     }
     else {
-        debug_printf (VERBOSE_ERR,"Error receiving ZEsarUX zeng-online set-autojoin");
+        debug_printf (VERBOSE_ERR,"Error receiving ZEsarUX zeng-online %s",command_name_for_info);
         return 0;
     }
 
-    printf("Retorno set-autojoin: [%s]\n",buffer);
+    printf("Retorno %s: [%s]\n",command_name_for_info,buffer);
     //Si hay ERROR
     if (strstr(buffer,"ERROR")!=NULL) {
-        debug_printf(VERBOSE_ERR,"Error set-autojoin room: %s",buffer);
+        debug_printf(VERBOSE_ERR,"Error %s room: %s",command_name_for_info,buffer);
         return 0;
     }
 
@@ -891,7 +891,7 @@ int zeng_online_client_autojoin_room_connect(void)
 			return 0;
 		}
 
-		//zsock_wait_until_command_prompt(indice_socket);
+
 
 		debug_printf(VERBOSE_DEBUG,"ZENG: Sending set-autojoin room");
 
@@ -902,7 +902,7 @@ int zeng_online_client_autojoin_room_connect(void)
             created_room_creator_password,zeng_online_joined_to_room_number,param_zeng_online_client_autojoin_room_permisos);
 
 //Begin common code
-        int return_value=zoc_common_send_command_and_close(indice_socket,buffer_enviar);
+        int return_value=zoc_common_send_command_and_close(indice_socket,buffer_enviar,"set-autojoin");
 
 //End common code
 
