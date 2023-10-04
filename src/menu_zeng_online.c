@@ -182,7 +182,7 @@ int menu_zeng_online_authorize_join_cond(zxvision_window *w GCC_UNUSED)
 	return !zeng_online_client_authorize_join_thread_running;
 }
 
-int menu_zeng_online_list_rooms(int *room_number,int *created,int *current_players,int *max_players,char *room_name)
+int menu_zeng_online_list_rooms(int *room_number,int *created,int *autojoin,int *current_players,int *max_players,char *room_name)
 {
 
     room_name[0]=0;
@@ -315,7 +315,8 @@ int menu_zeng_online_list_rooms(int *room_number,int *created,int *current_playe
         //TODO: si ventana poco ancho, puede seleccionar linea entre medio solo con espacios
 
         //Vamos a parsear 4 valores y luego una string
-        int valores[4];
+        #define ROOM_LIST_CAMPOS_LEER 5
+        int valores[ROOM_LIST_CAMPOS_LEER];
         int total_valores=0;
 
         int indice_string=0;
@@ -330,7 +331,7 @@ int menu_zeng_online_list_rooms(int *room_number,int *created,int *current_playe
             //No ha empezado a leer un numero
             if (empezado_numero==-1) {
                 if (item_seleccionado.texto_opcion[indice_string]!=' ') {
-                    if (total_valores==4) salir=1;
+                    if (total_valores==ROOM_LIST_CAMPOS_LEER) salir=1;
                     else empezado_numero=indice_string;
                 }
             }
@@ -350,17 +351,18 @@ int menu_zeng_online_list_rooms(int *room_number,int *created,int *current_playe
 
         printf("Fin escaneo\n");
 
-        for (i=0;i<4;i++) {
+        for (i=0;i<ROOM_LIST_CAMPOS_LEER;i++) {
             printf("%d: %d\n",i,valores[i]);
         }
 
-        printf("4: [%s]\n",&item_seleccionado.texto_opcion[indice_string]);
+        printf("%d: [%s]\n",i,&item_seleccionado.texto_opcion[indice_string]);
 
 
         *room_number=valores[0];
         *created=valores[1];
-        *current_players=valores[2];
-        *max_players=valores[3];
+        *autojoin=valores[2];
+        *current_players=valores[3];
+        *max_players=valores[4];
 
         //Truncar nombre ventana hasta espacio final
         int inicio_nombre=strlen(item_seleccionado.texto_opcion)-1;
@@ -380,144 +382,7 @@ int menu_zeng_online_list_rooms(int *room_number,int *created,int *current_playe
 
 }
 
-int old_delete_menu_zeng_online_list_rooms(int *room_number,int *created,int *current_players,int *max_players,char *room_name)
-{
 
-    room_name[0]=0;
-
-    //Lanzar el thread de listar rooms
-    zeng_online_client_list_rooms();
-
-    contador_menu_zeng_connect_print=0;
-
-
-    zxvision_simple_progress_window("ZENG Online connection", menu_zeng_online_list_rooms_cond,menu_zeng_online_list_rooms_print );
-
-    if (zeng_online_client_list_rooms_thread_running) {
-        menu_warn_message("Connection has not finished yet");
-    }
-
-    if (zeng_remote_list_rooms_buffer[0]!=0) {
-        //menu_generic_message("Rooms",zeng_remote_list_rooms_buffer);
-
-        //Mostrar latencia
-        long latencia=zeng_online_get_last_list_rooms_latency();
-
-        char buffer_latencia[30];
-        //Es en microsegundos. Si es >1000, mostrar en ms
-        if (latencia>=1000) {
-            sprintf(buffer_latencia,"%ld ms",latencia/1000);
-        }
-        else {
-            sprintf(buffer_latencia,"%ld us",latencia);
-        }
-
-        menu_generic_message_format("ZENG online latency","Latency is: %s",buffer_latencia );
-
-
-        generic_message_tooltip_return retorno_ventana;
-        zxvision_generic_message_tooltip("Rooms", 0,0, 0, 1, &retorno_ventana, 1, "%s", zeng_remote_list_rooms_buffer);
-
-        //zxvision_generic_message_tooltip("About" , 0 ,0,0,0,&retorno_ventana,0,mensaje_about);
-        //void zxvision_generic_message_tooltip(char *titulo, int return_after_print_text,int volver_timeout, int tooltip_enabled, int mostrar_cursor, generic_message_tooltip_return *retorno, int resizable, const char * texto_format , ...)
-        //zxvision_generic_message_tooltip("Tape viewer" , 0 , 0, 0, 1, NULL, 1, "%s", texto_browser)
-
-        //printf("Despues ventana rooms\n");
-        //Si se sale con ESC
-        if (retorno_ventana.estado_retorno==0) return -1;
-
-        //Linea seleccionada es 1? quiere decir que se selecciona texto "--- edition"
-    /*
-        Por defecto, linea seleccionada es 0, incluso aunque no se haya habilitado linea de cursor, por ejemplo
-        al buscar texto con f y n
-        Como la que buscamos es la 1, no hay problema de falso positivo
-    */
-        int linea=retorno_ventana.linea_seleccionada;
-
-        //printf("linea: %d\n",linea);
-        printf("Texto seleccionado: [%s]\n",retorno_ventana.texto_seleccionado);
-
-
-
-        //Si linea cabecera
-        if (strstr(retorno_ventana.texto_seleccionado,"Created Players")!=NULL) {
-            printf("Seleccionada cabecera. no hacer nada\n");
-            return -1;
-
-        }
-
-        if (retorno_ventana.texto_seleccionado[0]==0) {
-            printf("Seleccionada linea vacia. No hacer nada\n");
-            return -1;
-        }
-
-        //TODO: si ventana poco ancho, puede seleccionar linea entre medio solo con espacios
-
-        //Vamos a parsear 4 valores y luego una string
-        int valores[4];
-        int total_valores=0;
-
-        int indice_string=0;
-
-        int empezado_numero=-1;
-
-        int salir=0;
-
-        while (retorno_ventana.texto_seleccionado[indice_string]!=0 && !salir) {
-            //Movernos al espacio siguiente
-
-            //No ha empezado a leer un numero
-            if (empezado_numero==-1) {
-                if (retorno_ventana.texto_seleccionado[indice_string]!=' ') {
-                    if (total_valores==4) salir=1;
-                    else empezado_numero=indice_string;
-                }
-            }
-
-            //Estaba leyendo un numero
-            else {
-                if (retorno_ventana.texto_seleccionado[indice_string]==' ') {
-                    //fin numero
-                    valores[total_valores]=atoi(&retorno_ventana.texto_seleccionado[empezado_numero]);
-                    total_valores++;
-                    empezado_numero=-1;
-                }
-            }
-
-            if (!salir) indice_string++;
-        }
-
-        printf("Fin escaneo\n");
-        int i;
-        for (i=0;i<4;i++) {
-            printf("%d: %d\n",i,valores[i]);
-        }
-
-        printf("4: [%s]\n",&retorno_ventana.texto_seleccionado[indice_string]);
-
-
-        *room_number=valores[0];
-        *created=valores[1];
-        *current_players=valores[2];
-        *max_players=valores[3];
-
-        //Truncar nombre ventana hasta espacio final
-        int inicio_nombre=strlen(retorno_ventana.texto_seleccionado)-1;
-        for (i=inicio_nombre;i>=indice_string;i--) {
-            if (retorno_ventana.texto_seleccionado[i]!=' ') {
-                retorno_ventana.texto_seleccionado[i+1]=0;
-                break;
-            }
-        }
-
-        strcpy(room_name,&retorno_ventana.texto_seleccionado[indice_string]);
-
-        return 0;
-    }
-
-    return -1;
-
-}
 
 int menu_zeng_online_ask_custom_permissions_value=0;
 int menu_zeng_online_ask_custom_permissions_set_apply=0;
@@ -700,10 +565,10 @@ void menu_zeng_online_create_room(MENU_ITEM_PARAMETERS)
     }
 
 
-    int room_number,created,current_players,max_players;
+    int room_number,created,autojoin,current_players,max_players;
     char room_name[ZENG_ONLINE_MAX_ROOM_NAME+1];
 
-    int retorno=menu_zeng_online_list_rooms(&room_number,&created,&current_players,&max_players,room_name);
+    int retorno=menu_zeng_online_list_rooms(&room_number,&created,&autojoin,&current_players,&max_players,room_name);
 
     if (retorno>=0) {
 
@@ -713,7 +578,7 @@ void menu_zeng_online_create_room(MENU_ITEM_PARAMETERS)
             return;
         }
 
-        strcpy(room_name,"<used>");
+        //TEMP strcpy(room_name,"<used>");
 
         if (menu_ventana_scanf("Room name?",room_name,ZENG_ONLINE_MAX_ROOM_NAME+1)<0) {
             return;
@@ -744,10 +609,10 @@ void menu_zeng_online_rejoin_master(MENU_ITEM_PARAMETERS)
     }
 
 
-    int room_number,created,current_players,max_players;
+    int room_number,created,autojoin,current_players,max_players;
     char room_name[ZENG_ONLINE_MAX_ROOM_NAME+1];
 
-    int retorno=menu_zeng_online_list_rooms(&room_number,&created,&current_players,&max_players,room_name);
+    int retorno=menu_zeng_online_list_rooms(&room_number,&created,&autojoin,&current_players,&max_players,room_name);
 
     if (retorno>=0) {
 
@@ -777,10 +642,10 @@ void menu_zeng_online_rejoin_master(MENU_ITEM_PARAMETERS)
 void menu_zeng_online_list_rooms_menu_item(MENU_ITEM_PARAMETERS)
 {
 
-    int room_number,created,current_players,max_players;
+    int room_number,created,autojoin,current_players,max_players;
     char room_name[ZENG_ONLINE_MAX_ROOM_NAME+1];
 
-    int retorno=menu_zeng_online_list_rooms(&room_number,&created,&current_players,&max_players,room_name);
+    int retorno=menu_zeng_online_list_rooms(&room_number,&created,&autojoin,&current_players,&max_players,room_name);
 
 
 }
@@ -860,10 +725,10 @@ void menu_zeng_online_join_room(MENU_ITEM_PARAMETERS)
     char texto_linea[MAX_ANCHO_LINEAS_GENERIC_MESSAGE];
 
 
-    int room_number,created,current_players,max_players;
+    int room_number,created,autojoin,current_players,max_players;
     char room_name[ZENG_ONLINE_MAX_ROOM_NAME+1];
 
-    int retorno=menu_zeng_online_list_rooms(&room_number,&created,&current_players,&max_players,room_name);
+    int retorno=menu_zeng_online_list_rooms(&room_number,&created,&autojoin,&current_players,&max_players,room_name);
 
     if (retorno>=0) {
 
