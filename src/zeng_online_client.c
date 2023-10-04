@@ -471,7 +471,7 @@ int zeng_online_client_destroy_room_connect(void)
         z_sock_close_connection(indice_socket);
 
 
-        zeng_online_connected.v=0;
+
 
 
 
@@ -878,7 +878,7 @@ int zeng_online_client_autojoin_room_connect(void)
         printf("Retorno set-autojoin: [%s]\n",buffer);
         //Si hay ERROR
         if (strstr(buffer,"ERROR")!=NULL) {
-            debug_printf(VERBOSE_ERR,"Error leaving room: %s",buffer);
+            debug_printf(VERBOSE_ERR,"Error set-autojoin room: %s",buffer);
             return 0;
         }
 
@@ -887,7 +887,7 @@ int zeng_online_client_autojoin_room_connect(void)
         z_sock_close_connection(indice_socket);
 
 
-        zeng_online_connected.v=0;
+
 
 
 
