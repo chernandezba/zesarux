@@ -490,7 +490,7 @@ void menu_zeng_online_join_list(MENU_ITEM_PARAMETERS)
                 break;
 
                 case 3:
-                    permisos=255; //Todo, preparado para posibles bits adicionales
+                    permisos=ZENG_ONLINE_PERMISSIONS_ALL_SLAVE;
                 break;
 
 
@@ -844,7 +844,7 @@ void menu_zeng_online(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_es_avanzado(array_menu_common);
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_rejoin_manager_master,NULL,
-            "Rejoin as Manager Master","Reunir como manager master","Reunir com manager master");
+            "Rejoin as Manager","Reunir como manager","Reunir com manager");
             menu_add_item_menu_es_avanzado(array_menu_common);
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_join_room,NULL,

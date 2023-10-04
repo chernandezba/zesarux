@@ -2640,7 +2640,7 @@ void zeng_online_client_apply_pending_received_snapshot(void)
     }
 
     //O si somos un master con permisos de get snapshot (o sea un master manager)
-    else if (created_room_user_permissions & ZENG_ONLINE_PERMISSIONS_GET_SNAPSHOT) {
+    else if (zeng_online_i_am_master.v && (created_room_user_permissions & ZENG_ONLINE_PERMISSIONS_GET_SNAPSHOT)) {
         printf("Permitir aplicar snapshot porque somos solo manager\n");
     }
 

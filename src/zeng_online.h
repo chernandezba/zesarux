@@ -48,6 +48,9 @@
 #define ZENG_ONLINE_PERMISSIONS_GET_KEYS 4
 #define ZENG_ONLINE_PERMISSIONS_SEND_KEYS 8
 
+//Usado por ejemplo cuando hay un join y queremos indicar todos permisos para un slave
+#define ZENG_ONLINE_PERMISSIONS_ALL_SLAVE (ZENG_ONLINE_PERMISSIONS_GET_SNAPSHOT|ZENG_ONLINE_PERMISSIONS_GET_KEYS|ZENG_ONLINE_PERMISSIONS_SEND_KEYS)
+
 
 extern void init_zeng_online_rooms(void);
 extern void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv,char *ipsource);
