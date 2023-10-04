@@ -2160,6 +2160,20 @@ void *zoc_master_thread_function(void *nada GCC_UNUSED)
                 }
             }
 
+            //Un master de solo gestion, sin envio de snapshots, recibe snapshots
+            if (created_room_user_permissions & ZENG_ONLINE_PERMISSIONS_GET_SNAPSHOT) {
+
+                printf("Recibiendo snapshot porque somos master manager. contador_segundo=%d\n",contador_segundo);
+                int error=zoc_receive_snapshot(indice_socket);
+                //TODO gestionar bien este error
+                if (error<0) {
+                    //TODO
+                    printf("Error getting snapshot from zeng online server\n");
+                    usleep(10000); //dormir 10 ms
+                }
+
+            }
+
             //Si estabamos reentrando como master, obtener el snapshot que habia
             if (zoc_rejoining_as_master) {
                 printf("Receiving first snapshot as we are rejoining as master\n");
@@ -2623,6 +2637,11 @@ void zeng_online_client_apply_pending_received_snapshot(void)
     if (zoc_pending_apply_received_snapshot_as_rejoin_as_master) {
         printf("Permitir primer snapshot recibido con rejoin\n");
         zoc_pending_apply_received_snapshot_as_rejoin_as_master=0;
+    }
+
+    //O si somos un master con permisos de get snapshot (o sea un master manager)
+    else if (created_room_user_permissions & ZENG_ONLINE_PERMISSIONS_GET_SNAPSHOT) {
+        printf("Permitir aplicar snapshot porque somos solo manager\n");
     }
 
     else {

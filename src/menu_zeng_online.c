@@ -618,6 +618,54 @@ void menu_zeng_online_rejoin_master(MENU_ITEM_PARAMETERS)
     }
 }
 
+//Unirse como un tipo de "manager" pero que no envia snapshots
+void menu_zeng_online_rejoin_manager_master(MENU_ITEM_PARAMETERS)
+{
+    if (zeng_online_nickname[0]==0) {
+        debug_printf(VERBOSE_ERR,"You must set your nickname");
+        return;
+    }
+
+
+    int room_number,created,autojoin,current_players,max_players;
+    char room_name[ZENG_ONLINE_MAX_ROOM_NAME+1];
+
+    int retorno=menu_zeng_online_list_rooms(&room_number,&created,&autojoin,&current_players,&max_players,room_name);
+
+    if (retorno>=0) {
+
+
+        if (created==0) {
+            debug_printf(VERBOSE_ERR,"Room is not created");
+            return;
+        }
+
+
+        if (menu_ventana_scanf("Creator password?",created_room_creator_password,ZENG_ROOM_PASSWORD_LENGTH+1)<0) {
+            return;
+        }
+
+        if (created_room_creator_password[0]==0) {
+            menu_error_message("Password can not be blank");
+            return;
+        }
+
+        zoc_rejoining_as_master=1;
+
+        //join room
+        menu_zeng_join_room_aux(room_number,created_room_creator_password);
+        //flag que indique a nivel global que somos master, no slave
+        zeng_online_i_am_master.v=1;
+
+        //Y me asigno permisos solo de recibir snapshot pero no de envio de snapshot, ni de envio ni recepcion de teclas
+        created_room_user_permissions=ZENG_ONLINE_PERMISSIONS_GET_SNAPSHOT;
+
+        zoc_start_master_thread();
+
+
+    }
+}
+
 void menu_zeng_online_list_rooms_menu_item(MENU_ITEM_PARAMETERS)
 {
 
@@ -795,6 +843,9 @@ void menu_zeng_online(MENU_ITEM_PARAMETERS)
             "Rejoin as Master","Reunir como master","Reunir com master");
             menu_add_item_menu_es_avanzado(array_menu_common);
 
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_rejoin_manager_master,NULL,
+            "Rejoin as Manager Master","Reunir como manager master","Reunir com manager master");
+            menu_add_item_menu_es_avanzado(array_menu_common);
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_join_room,NULL,
             "Jo~~in to room","Un~~irse a habitación","Un~~ir-se a habitació");

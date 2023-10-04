@@ -1221,8 +1221,9 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
                 escribir_socket(misocket,"ERROR. Invalid creator password for that room");
                 return;
             }
-            //Damos todos permisos al master, aunque probablemente el master no haga caso de esto, pero por si acaso
-            permissions=255;
+            //Damos casi todos permisos al master, excepto read snapshot
+            permissions=ZENG_ONLINE_PERMISSIONS_PUT_SNAPSHOT | ZENG_ONLINE_PERMISSIONS_GET_KEYS | ZENG_ONLINE_PERMISSIONS_SEND_KEYS;
+
         }
 
         else {
