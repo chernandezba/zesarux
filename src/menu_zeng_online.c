@@ -148,6 +148,13 @@ void menu_zeng_online_leave_room_print(zxvision_window *w)
     menu_common_connect_print(w,buf_temp);
 }
 
+void menu_zeng_online_autojoin_room_print(zxvision_window *w)
+{
+    char buf_temp[NETWORK_MAX_URL+256];
+    sprintf(buf_temp,"Connecting to %s",zeng_online_server);
+
+    menu_common_connect_print(w,buf_temp);
+}
 
 void menu_zeng_online_destroy_room_print(zxvision_window *w)
 {
@@ -156,9 +163,15 @@ void menu_zeng_online_destroy_room_print(zxvision_window *w)
 
     menu_common_connect_print(w,buf_temp);
 }
+
 int menu_zeng_online_leave_room_cond(zxvision_window *w GCC_UNUSED)
 {
 	return !zeng_online_client_leave_room_thread_running;
+}
+
+int menu_zeng_online_autojoin_room_cond(zxvision_window *w GCC_UNUSED)
+{
+	return !zeng_online_client_autojoin_room_thread_running;
 }
 
 int menu_zeng_online_destroy_room_cond(zxvision_window *w GCC_UNUSED)
@@ -713,6 +726,18 @@ void menu_zeng_online_leave_room_master(MENU_ITEM_PARAMETERS)
     }
 }
 
+void menu_zeng_online_autojoin_room(MENU_ITEM_PARAMETERS)
+{
+
+    int permisos=menu_zeng_online_ask_custom_permissions();;
+
+    zeng_online_client_autojoin_room(permisos);
+
+    zxvision_simple_progress_window("Autojoin room", menu_zeng_online_autojoin_room_cond,menu_zeng_online_autojoin_room_print );
+
+
+}
+
 void menu_zeng_online_join_room(MENU_ITEM_PARAMETERS)
 {
 
@@ -838,6 +863,9 @@ void menu_zeng_online(MENU_ITEM_PARAMETERS)
 
                 menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_join_list,NULL,
                 "Join List","Lista join","Llista join");
+
+                menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_autojoin_room,NULL,
+                "Set autojoin","Activar autounir","Activar autounir");
 
                 menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_leave_room_master,NULL,
                 "Leave room","Abandonar habitación","Abandonar habitació");
