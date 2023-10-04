@@ -112,10 +112,9 @@ void menu_zeng_join_room_aux(int room_number,char *creator_password)
 
 }
 
-//int contador_menu_zeng_online_list_rooms_print=0;
 
 
-void menu_zeng_online_list_rooms_print(zxvision_window *w)
+void menu_zeng_online_connecting_common_print(zxvision_window *w)
 {
     char buf_temp[NETWORK_MAX_URL+256];
     sprintf(buf_temp,"Connecting to %s",zeng_online_server);
@@ -124,45 +123,7 @@ void menu_zeng_online_list_rooms_print(zxvision_window *w)
 }
 
 
-void menu_zeng_online_join_list_print(zxvision_window *w)
-{
-    char buf_temp[NETWORK_MAX_URL+256];
-    sprintf(buf_temp,"Connecting to %s",zeng_online_server);
 
-    menu_common_connect_print(w,buf_temp);
-}
-
-void menu_zeng_online_authorize_join_print(zxvision_window *w)
-{
-    char buf_temp[NETWORK_MAX_URL+256];
-    sprintf(buf_temp,"Connecting to %s",zeng_online_server);
-
-    menu_common_connect_print(w,buf_temp);
-}
-
-void menu_zeng_online_leave_room_print(zxvision_window *w)
-{
-    char buf_temp[NETWORK_MAX_URL+256];
-    sprintf(buf_temp,"Connecting to %s",zeng_online_server);
-
-    menu_common_connect_print(w,buf_temp);
-}
-
-void menu_zeng_online_autojoin_room_print(zxvision_window *w)
-{
-    char buf_temp[NETWORK_MAX_URL+256];
-    sprintf(buf_temp,"Connecting to %s",zeng_online_server);
-
-    menu_common_connect_print(w,buf_temp);
-}
-
-void menu_zeng_online_destroy_room_print(zxvision_window *w)
-{
-    char buf_temp[NETWORK_MAX_URL+256];
-    sprintf(buf_temp,"Connecting to %s",zeng_online_server);
-
-    menu_common_connect_print(w,buf_temp);
-}
 
 int menu_zeng_online_leave_room_cond(zxvision_window *w GCC_UNUSED)
 {
@@ -206,7 +167,7 @@ int menu_zeng_online_list_rooms(int *room_number,int *created,int *autojoin,int 
     contador_menu_zeng_connect_print=0;
 
 
-    zxvision_simple_progress_window("ZENG Online connection", menu_zeng_online_list_rooms_cond,menu_zeng_online_list_rooms_print );
+    zxvision_simple_progress_window("ZENG Online connection", menu_zeng_online_list_rooms_cond,menu_zeng_online_connecting_common_print );
 
     if (zeng_online_client_list_rooms_thread_running) {
         menu_warn_message("Connection has not finished yet");
@@ -499,7 +460,7 @@ void menu_zeng_online_join_list(MENU_ITEM_PARAMETERS)
     contador_menu_zeng_connect_print=0;
 
 
-    zxvision_simple_progress_window("ZENG Online connection", menu_zeng_online_join_list_cond,menu_zeng_online_join_list_print );
+    zxvision_simple_progress_window("ZENG Online connection", menu_zeng_online_join_list_cond,menu_zeng_online_connecting_common_print );
 
     if (zeng_online_client_join_list_thread_running) {
         menu_warn_message("Connection has not finished yet");
@@ -606,7 +567,7 @@ void menu_zeng_online_create_room(MENU_ITEM_PARAMETERS)
         contador_menu_zeng_connect_print=0;
 
 
-        zxvision_simple_progress_window("ZENG Online Create Room", menu_zeng_online_create_room_cond,menu_zeng_online_create_room_print );
+        zxvision_simple_progress_window("ZENG Online Create Room", menu_zeng_online_create_room_cond,menu_zeng_online_connecting_common_print );
 
         menu_zoc_join_master_aux(room_number);
 
@@ -673,7 +634,7 @@ void menu_zeng_online_leave_room_master_aux(void)
 
         zeng_online_client_leave_room();
 
-        zxvision_simple_progress_window("Leave room", menu_zeng_online_leave_room_cond,menu_zeng_online_leave_room_print );
+        zxvision_simple_progress_window("Leave room", menu_zeng_online_leave_room_cond,menu_zeng_online_connecting_common_print );
 
 
 }
@@ -689,7 +650,7 @@ void menu_zeng_online_destroy_room(MENU_ITEM_PARAMETERS)
 
         zeng_online_client_destroy_room();
 
-        zxvision_simple_progress_window("Destroy room", menu_zeng_online_destroy_room_cond,menu_zeng_online_destroy_room_print );
+        zxvision_simple_progress_window("Destroy room", menu_zeng_online_destroy_room_cond,menu_zeng_online_connecting_common_print );
 
         menu_generic_message_splash("Destroy room","Room destroyed");
 
@@ -706,7 +667,7 @@ void menu_zeng_online_leave_room_slave(MENU_ITEM_PARAMETERS)
 
         zeng_online_client_leave_room();
 
-        zxvision_simple_progress_window("Leave room", menu_zeng_online_leave_room_cond,menu_zeng_online_leave_room_print );
+        zxvision_simple_progress_window("Leave room", menu_zeng_online_leave_room_cond,menu_zeng_online_connecting_common_print );
 
         menu_generic_message_splash("Leave room","Left room");
 
@@ -729,11 +690,11 @@ void menu_zeng_online_leave_room_master(MENU_ITEM_PARAMETERS)
 void menu_zeng_online_autojoin_room(MENU_ITEM_PARAMETERS)
 {
 
-    int permisos=menu_zeng_online_ask_custom_permissions();;
+    int permisos=menu_zeng_online_ask_custom_permissions();
 
     zeng_online_client_autojoin_room(permisos);
 
-    zxvision_simple_progress_window("Autojoin room", menu_zeng_online_autojoin_room_cond,menu_zeng_online_autojoin_room_print );
+    zxvision_simple_progress_window("Autojoin room", menu_zeng_online_autojoin_room_cond,menu_zeng_online_connecting_common_print );
 
 
 }

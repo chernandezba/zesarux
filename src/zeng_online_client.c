@@ -937,8 +937,6 @@ void *zeng_online_client_autojoin_room_function(void *nada GCC_UNUSED)
 	}
 
 
-
-
 	zeng_online_client_autojoin_room_thread_running=0;
 
 	return 0;
