@@ -578,7 +578,7 @@ void menu_zeng_online_create_room(MENU_ITEM_PARAMETERS)
             return;
         }
 
-        //TEMP strcpy(room_name,"<used>");
+        strcpy(room_name,"<used>");
 
         if (menu_ventana_scanf("Room name?",room_name,ZENG_ONLINE_MAX_ROOM_NAME+1)<0) {
             return;
@@ -794,6 +794,7 @@ void menu_zeng_online(MENU_ITEM_PARAMETERS)
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_rejoin_master,NULL,
             "Rejoin as Master","Reunir como master","Reunir com master");
+            menu_add_item_menu_es_avanzado(array_menu_common);
 
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_join_room,NULL,
@@ -814,6 +815,7 @@ void menu_zeng_online(MENU_ITEM_PARAMETERS)
                 menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,
                 "Creator password: ","Password creador: ","Password creador: ");
                 menu_add_item_menu_sufijo_format(array_menu_common,"[%s]",created_room_creator_password);
+                menu_add_item_menu_es_avanzado(array_menu_common);
             }
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,
