@@ -2137,19 +2137,27 @@ void *zoc_master_thread_function(void *nada GCC_UNUSED)
         if (zeng_online_client_end_frame_reached) {
             zeng_online_client_end_frame_reached=0;
 
+            //Nota: un master normal deberia tener todos permisos, sin necesidad de comprobarlos
+            //PERO si queremos un master que solo gestione autorizaciones, cambios de parametros en room, etc,
+            //sin que envie snapshots o reciba teclas o envie teclas, se le pueden quitar dichos permisos,
+            //y podremos gestionar el resto
 
-            if (zoc_pending_send_snapshot) {
-                int error=zoc_send_snapshot(indice_socket);
+            if (created_room_user_permissions & ZENG_ONLINE_PERMISSIONS_PUT_SNAPSHOT) {
 
-                if (error<0) {
-                    //TODO
-                    printf("Error sending snapshot to zeng online server\n");
+
+                if (zoc_pending_send_snapshot) {
+                    int error=zoc_send_snapshot(indice_socket);
+
+                    if (error<0) {
+                        //TODO
+                        printf("Error sending snapshot to zeng online server\n");
+                    }
+
+                    //Enviado. Avisar no pendiente
+                    zoc_pending_send_snapshot=0;
+                    //zeng_online_client_reset_scanline_counter();
+                    //printf("Snapshot sent\n");
                 }
-
-                //Enviado. Avisar no pendiente
-                zoc_pending_send_snapshot=0;
-                //zeng_online_client_reset_scanline_counter();
-                //printf("Snapshot sent\n");
             }
 
             //Si estabamos reentrando como master, obtener el snapshot que habia
@@ -2163,13 +2171,19 @@ void *zoc_master_thread_function(void *nada GCC_UNUSED)
 
             //Enviar teclas
             //TODO gestionar error_desconectar
-            int enviada_alguna_tecla;
-            int error_desconectar=zoc_keys_send_pending(indice_socket,&enviada_alguna_tecla);
+            if (created_room_user_permissions & ZENG_ONLINE_PERMISSIONS_SEND_KEYS) {
+                int enviada_alguna_tecla;
+                int error_desconectar=zoc_keys_send_pending(indice_socket,&enviada_alguna_tecla);
+            }
 
-            //recepcion teclas
-            zoc_get_keys(indice_socket_get_keys);
+            if (created_room_user_permissions & ZENG_ONLINE_PERMISSIONS_GET_KEYS) {
+                //recepcion teclas
+                zoc_get_keys(indice_socket_get_keys);
+            }
 
             //printf("Contador scanline: %d\n",zeng_online_scanline_counter);
+
+
 
 
             //Tambien a final de cada frame, y cada 50 veces (o sea 1 segundo), ver si hay pendientes autorizaciones

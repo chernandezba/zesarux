@@ -659,14 +659,5 @@ ok-comando zeng online para leave room. esto decrementara el contador de jugador
 -permitir dos masters? o algo asi como un master que no envia snapshots, pero gestiona autorizaciones, creaciones, etc
 esto permitiria tener un server remoto, que envia snapshots a el mismo, pero gestionar autorizaciones desde remoto
 
--opcion definir una habitacion con autojoin con permisos concretos por defecto (read only, etc)
-
-ok-opcion en menu zeng online para "promocionar" a master de una room: indicando la contraseña de creación de una habitacion,
-que tengamos guardada, poder volver a actuar como master
-Se trataria de hacer lo mismo que al crear room excepto crear la room, todo lo demas se haria igual
-Para eso, cuando hay un create room, la master password se debe mostrar en menu para que la podamos recordar posteriormente
-
-ok-en rejoin como master, que cuando entre obtenga el snapshot que habia
-
 - Opciones de Zeng online server en menu, en algún sitio. que se puedan ver tambien los master passwords de las habitaciones creadas
 ---------------
