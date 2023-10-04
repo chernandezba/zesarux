@@ -71,6 +71,7 @@ pthread_t thread_zeng_online_client_authorize_join;
 pthread_t thread_zeng_online_client_leave_room;
 pthread_t thread_zeng_online_client_destroy_room;
 pthread_t thread_zeng_online_client_autojoin_room;
+pthread_t thread_zeng_online_client_disable_autojoin_room;
 
 
 #endif
@@ -84,6 +85,7 @@ int zeng_online_client_authorize_join_thread_running=0;
 int zeng_online_client_leave_room_thread_running=0;
 int zeng_online_client_destroy_room_thread_running=0;
 int zeng_online_client_autojoin_room_thread_running=0;
+int zeng_online_client_disable_autojoin_room_thread_running=0;
 
 z80_bit zeng_online_i_am_master={0};
 //z80_bit zeng_online_i_am_joined={0};
@@ -920,6 +922,30 @@ int zeng_online_client_autojoin_room_connect(void)
 	return return_value;
 }
 
+//Devuelve 0 si no conectado
+int zeng_online_client_disable_autojoin_room_connect(void)
+{
+
+    int indice_socket=zoc_common_open();
+    if (indice_socket<0) {
+        return 0;
+    }
+
+
+    debug_printf(VERBOSE_DEBUG,"ZENG: Sending reset-autojoin room");
+
+    char buffer_enviar[1024];
+
+    //"reset-autojoin creator_pass n
+    sprintf(buffer_enviar,"zeng-online reset-autojoin %s %d\n",
+        created_room_creator_password,zeng_online_joined_to_room_number);
+
+    int return_value=zoc_common_send_command_and_close(indice_socket,buffer_enviar,"reset-autojoin");
+
+
+	return return_value;
+}
+
 void *zeng_online_client_autojoin_room_function(void *nada GCC_UNUSED)
 {
     zeng_online_client_autojoin_room_thread_running=1;
@@ -938,6 +964,29 @@ void *zeng_online_client_autojoin_room_function(void *nada GCC_UNUSED)
 
 
 	zeng_online_client_autojoin_room_thread_running=0;
+
+	return 0;
+
+}
+
+void *zeng_online_client_disable_autojoin_room_function(void *nada GCC_UNUSED)
+{
+    zeng_online_client_disable_autojoin_room_thread_running=1;
+
+	//Conectar a remoto
+
+	if (!zeng_online_client_disable_autojoin_room_connect()) {
+		//Desconectar solo si el socket estaba conectado
+
+        //Desconectar los que esten conectados
+        //TODO zeng_disconnect_remote();
+
+		zeng_online_client_disable_autojoin_room_thread_running=0;
+		return 0;
+	}
+
+
+	zeng_online_client_disable_autojoin_room_thread_running=0;
 
 	return 0;
 
@@ -1108,12 +1157,28 @@ void zeng_online_client_autojoin_room(int permisos)
 	//Inicializar thread
 
 	if (pthread_create( &thread_zeng_online_client_autojoin_room, NULL, &zeng_online_client_autojoin_room_function, NULL) ) {
-		debug_printf(VERBOSE_ERR,"Can not create zeng online leave room pthread");
+		debug_printf(VERBOSE_ERR,"Can not create zeng online autojoin pthread");
 		return;
 	}
 
 	//y pthread en estado detached asi liberara su memoria asociada a thread al finalizar, sin tener que hacer un pthread_join
 	pthread_detach(thread_zeng_online_client_autojoin_room);
+
+
+}
+
+void zeng_online_client_disable_autojoin_room(void)
+{
+
+	//Inicializar thread
+
+	if (pthread_create( &thread_zeng_online_client_disable_autojoin_room, NULL, &zeng_online_client_disable_autojoin_room_function, NULL) ) {
+		debug_printf(VERBOSE_ERR,"Can not create zeng online disable autojoin pthread");
+		return;
+	}
+
+	//y pthread en estado detached asi liberara su memoria asociada a thread al finalizar, sin tener que hacer un pthread_join
+	pthread_detach(thread_zeng_online_client_disable_autojoin_room);
 
 
 }
@@ -2780,6 +2845,10 @@ void zeng_online_client_end_frame_from_core_functions(void)
 }
 
 void zeng_online_client_autojoin_room(int permisos)
+{
+}
+
+void zeng_online_client_disable_autojoin_room(void)
 {
 }
 
