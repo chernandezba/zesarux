@@ -762,6 +762,11 @@ void menu_zeng_online_rejoin_master(MENU_ITEM_PARAMETERS)
             return;
         }
 
+        if (created_room_creator_password[0]==0) {
+            menu_error_message("Password can not be blank");
+            return;
+        }
+
         zoc_rejoining_as_master=1;
         menu_zoc_join_master_aux(room_number);
 

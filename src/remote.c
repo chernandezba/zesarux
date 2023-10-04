@@ -927,13 +927,14 @@ struct s_items_ayuda items_ayuda[]={
     "leave n user_pass nickname          Leaves room n.\n"
     "list-rooms                          Returns rooms list\n"
     "put-snapshot creator_pass n data    Put a snapshot on room n, requieres creator_pass for that room. Data must be hexadecimal characters without spaces\n"
+    "reset-autojoin creator_pass n       Disables autojoin on room (n)\n"
     "send-keys user_pass n uuid key event nomenu   Simulates sending key press/release to room n.\n"
     "                                    uuid is a unique identifier for the client, usually can be the same as Statistics uuid\n"
     "                                    See file utils.h, enum util_teclas for key values\n"
     "                                    Event must be 0 for release, or different to 0 for press\n"
 	"                                    nomenu if set to non 0, tells the key is not sent when menu is open\n"
-
-    "set-max-players creator_pass n m  Define max-players (m) for room (n). Requires creator_pass of that room\n"
+    "set-autojoin creator_pass n p       Define permissions (p) for autojoin on room (n), this enables autojoin. Requires creator_pass of that room\n"
+    "set-max-players creator_pass n m    Define max-players (m) for room (n). Requires creator_pass of that room\n"
 
 },
 
