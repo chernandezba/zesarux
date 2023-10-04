@@ -56,6 +56,8 @@ extern char zeng_online_server[];
 
 extern char zeng_online_nickname[];
 
+extern int zoc_rejoining_as_master;
+
 extern char *zeng_remote_list_rooms_buffer;
 
 extern int zeng_online_scanline_counter;

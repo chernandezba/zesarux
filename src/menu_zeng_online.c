@@ -228,11 +228,25 @@ int menu_zeng_online_list_rooms(int *room_number,int *created,int *current_playe
     int i;
     int inicio_linea=0;
 
+    int linea=0;
+
     for (i=0;zeng_remote_list_rooms_buffer[i];i++) {
         if (zeng_remote_list_rooms_buffer[i]=='\n') {
             zeng_remote_list_rooms_buffer[i]=0;
-            menu_add_item_menu(array_menu_common,&zeng_remote_list_rooms_buffer[inicio_linea],MENU_OPCION_NORMAL,NULL,NULL);
+            //El primero es cabecera y lo metemos como tipo separador
+            if (linea==0) {
+                printf("Primer item\n");
+                menu_add_item_menu(array_menu_common,&zeng_remote_list_rooms_buffer[inicio_linea],MENU_OPCION_SEPARADOR,NULL,NULL);
+            }
+            else {
+                menu_add_item_menu(array_menu_common,&zeng_remote_list_rooms_buffer[inicio_linea],MENU_OPCION_NORMAL,NULL,NULL);
+                //Al menos hay dos items de menu, por tanto opcion inicial es la segunda
+                opcion_seleccionada=1;
+            }
+
             inicio_linea=i+1;
+
+            linea++;
         }
     }
 
@@ -667,6 +681,16 @@ int menu_zeng_online_create_room_cond(zxvision_window *w GCC_UNUSED)
 	return !zeng_online_client_create_room_thread_running;
 }
 
+void menu_zoc_join_master_aux(int room_number)
+{
+    //join room
+    menu_zeng_join_room_aux(room_number,created_room_creator_password);
+    //flag que indique a nivel global que somos master, no slave
+    zeng_online_i_am_master.v=1;
+
+
+    zoc_start_master_thread();
+}
 
 void menu_zeng_online_create_room(MENU_ITEM_PARAMETERS)
 {
@@ -674,8 +698,6 @@ void menu_zeng_online_create_room(MENU_ITEM_PARAMETERS)
         debug_printf(VERBOSE_ERR,"You must set your nickname");
         return;
     }
-
-    char texto_linea[MAX_ANCHO_LINEAS_GENERIC_MESSAGE];
 
 
     int room_number,created,current_players,max_players;
@@ -708,32 +730,44 @@ void menu_zeng_online_create_room(MENU_ITEM_PARAMETERS)
 
         zxvision_simple_progress_window("ZENG Online Create Room", menu_zeng_online_create_room_cond,menu_zeng_online_create_room_print );
 
-        //join room
-        menu_zeng_join_room_aux(room_number,created_room_creator_password);
-        //flag que indique a nivel global que somos master, no slave
-        zeng_online_i_am_master.v=1;
-
-        //zeng_online_connected.v=1;
-
-        //inicio thread de envio de snapshot, cada x milisegundos
-        //zoc_start_snapshot_sending();
-
-        //inicio thread de envio de teclas, cada x milisegundos
-        //en principio esto lo enviamos desde envio de snapshot zoc_start_snapshot_sending
-        //zoc_start_keys_sending();
-
-        //inicio thread de recepcion de teclas, cada x milisegundos
-        //zoc_start_keys_receiving();
-
-        zoc_start_master_thread();
-
-        //TODO: inicio thread de envio de eventos al pulsar teclas (igual en master que slave)
-        //TODO: en menu no debe dejar crear room o join
+        menu_zoc_join_master_aux(room_number);
 
 
     }
 }
 
+void menu_zeng_online_rejoin_master(MENU_ITEM_PARAMETERS)
+{
+    if (zeng_online_nickname[0]==0) {
+        debug_printf(VERBOSE_ERR,"You must set your nickname");
+        return;
+    }
+
+
+    int room_number,created,current_players,max_players;
+    char room_name[ZENG_ONLINE_MAX_ROOM_NAME+1];
+
+    int retorno=menu_zeng_online_list_rooms(&room_number,&created,&current_players,&max_players,room_name);
+
+    if (retorno>=0) {
+
+
+        if (created==0) {
+            debug_printf(VERBOSE_ERR,"Room is not created");
+            return;
+        }
+
+
+        if (menu_ventana_scanf("Creator password?",created_room_creator_password,ZENG_ROOM_PASSWORD_LENGTH+1)<0) {
+            return;
+        }
+
+        zoc_rejoining_as_master=1;
+        menu_zoc_join_master_aux(room_number);
+
+
+    }
+}
 
 void menu_zeng_online_list_rooms_menu_item(MENU_ITEM_PARAMETERS)
 {
@@ -885,8 +919,12 @@ void menu_zeng_online(MENU_ITEM_PARAMETERS)
         //Create room + join / destroy room
         if (zeng_online_connected.v==0) {
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_create_room,NULL,
-            "~~Create room","~~Crear habitación","~~Crear habitació");
+            "~~Create room & Join as Master","~~Crear habitación & Unir como master","~~Crear habitació & Unir com master");
             menu_add_item_menu_shortcut(array_menu_common,'c');
+
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_rejoin_master,NULL,
+            "Rejoin as Master","Reunir como master","Reunir com master");
+
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_join_room,NULL,
             "Jo~~in to room","Un~~irse a habitación","Un~~ir-se a habitació");
@@ -901,6 +939,12 @@ void menu_zeng_online(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,
             "Joined to room: ","Unido a habitación: ","Unit a habitació: ");
             menu_add_item_menu_sufijo_format(array_menu_common,"%d",zeng_online_joined_to_room_number);
+
+            if (zeng_online_i_am_master.v) {
+                menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,
+                "Creator password: ","Password creador: ","Password creador: ");
+                menu_add_item_menu_sufijo_format(array_menu_common,"[%s]",created_room_creator_password);
+            }
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,
             "Room permissions: ","Permisos habitación: ","Permisos habitació: ");

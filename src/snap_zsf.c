@@ -769,6 +769,20 @@ Byte fields:
 5: z80_byte puerto_57342
 6: z80_byte puerto_49150
 7: z80_byte puerto_32766
+8: z80_byte joystick_port: the joystick state port, could be kempston, sinclair, whatever joystick you have set in settings-hardware-joystick type
+
+
+
+-Block ID 63: ZSF_ZOC_ETC
+This block type is only used on ZENG online snapshots, so they are not seen on a ZSF file
+Fields can be changed in future as ZENG online requieres all ZEsarUX instances use the same version,
+so no retro-compatibility problem here
+Several variables I need to sync between ZEsarUX instances
+
+Byte fields:
+0: z80_byte joystick_emulation: current joystick type so this is sync on all ZEsarUX ZOC clients
+
+
 
 -Como codificar bloques de memoria para Spectrum 128k, zxuno, tbblue, tsconf, etc?
 Con un numero de bloque (0...255) pero... que tamaño de bloque? tbblue usa paginas de 8kb, tsconf usa paginas de 16kb
@@ -782,7 +796,7 @@ Por otra parte, tener bloques diferentes ayuda a saber mejor qué tipos de bloqu
 #define MAX_ZSF_BLOCK_ID_NAMELENGTH 30
 
 //Id maximo de nombres sin contar el unknown final
-#define MAX_ZSF_BLOCK_ID_NAMES 62
+#define MAX_ZSF_BLOCK_ID_NAMES 63
 char *zsf_block_id_names[]={
  //123456789012345678901234567890
   "ZSF_NOOP",                 //0
@@ -848,6 +862,7 @@ char *zsf_block_id_names[]={
   "ZSF_CREATOR",     //60
   "ZSF_FLASH_STATE",
   "ZSF_KEY_PORTS_SPECTRUM_STATE",
+  "ZSF_ZOC_ETC",
 
   "Unknown"  //Este siempre al final
 };
@@ -2042,9 +2057,18 @@ if (menu_abierto) return;
     puerto_57342=header[5];
     puerto_49150=header[6];
     puerto_32766=header[7];
+    puerto_especial_joystick=header[8];
 
 }
 
+
+void load_zsf_zoc_etc(z80_byte *header)
+{
+
+    joystick_emulation=header[0];
+
+
+}
 
 void load_zsf_timex(z80_byte *header)
 {
@@ -2915,7 +2939,8 @@ int load_zsf_eof(FILE *ptr_zsf_file,int longitud_memoria)
 //Si leer de archivo, filename contiene nombre y no se usa origin_memory ni longitud_memoria
 //Si leer en memoria, filename es NULL y origin_memory contiene puntero origen memoria y longitud_memoria contiene longitud bloque memoria
 //Si modo rapido, no resetea maquina al cargar snapshot
-void load_zsf_snapshot_file_mem(char *filename,z80_byte *origin_memory,int longitud_memoria,int load_fast_mode)
+//from_zeng_online indica que estamos cargando un snapshot desde zeng online
+void load_zsf_snapshot_file_mem(char *filename,z80_byte *origin_memory,int longitud_memoria,int load_fast_mode,int from_zeng_online)
 {
 
   FILE *ptr_zsf_file;
@@ -3319,6 +3344,10 @@ void load_zsf_snapshot_file_mem(char *filename,z80_byte *origin_memory,int longi
         load_zsf_key_ports_spectrum_state(block_data);
     break;
 
+      case ZSF_ZOC_ETC:
+        load_zsf_zoc_etc(block_data);
+    break;
+
       default:
         debug_printf(VERBOSE_ERR,"Unknown ZSF Block ID: %u. Continue anyway",block_id);
       break;
@@ -3344,7 +3373,7 @@ void load_zsf_snapshot_file_mem(char *filename,z80_byte *origin_memory,int longi
 
 void load_zsf_snapshot(char *filename)
 {
-  load_zsf_snapshot_file_mem(filename,NULL,0,0);
+  load_zsf_snapshot_file_mem(filename,NULL,0,0,0);
 }
 
 
@@ -3559,7 +3588,8 @@ Byte fields:
 //Guarda snapshot en disco on en memoria destino:
 //Si guardar en archivo, filename contiene nombre y no se usa destination_memory
 //Si guardar en memoria, filename es NULL y destination_memory contiene puntero destino memoria
-void save_zsf_snapshot_file_mem(char *filename,z80_byte *destination_memory,int *longitud_total)
+//from_zeng_online indica que estamos generando un snapshot desde zeng online
+void save_zsf_snapshot_file_mem(char *filename,z80_byte *destination_memory,int *longitud_total,int from_zeng_online)
 {
 
   FILE *ptr_zsf_file;
@@ -3652,7 +3682,7 @@ void save_zsf_snapshot_file_mem(char *filename,z80_byte *destination_memory,int 
     //No guardar estado flash cuando hay zeng online. esto solo es util con zeng normal
     //TODO: logicamente si guardamos un snapshot zsf mientras esta conectado a zeng online, no se guardara estado flash
     //aunque eso no es un gran problema...
-    if (zeng_online_connected.v==0) {
+    if (!from_zeng_online) {
         z80_byte flashstateblock[2];
 
         flashstateblock[0]=contador_parpadeo;
@@ -3666,9 +3696,9 @@ void save_zsf_snapshot_file_mem(char *filename,z80_byte *destination_memory,int 
     //Estado puertos
     //esto solo si somos en zeng online master y menu no esta abierto
     //-Block ID 62: ZSF_KEY_PORTS_SPECTRUM_STATE
-    if (zeng_online_connected.v && zeng_online_i_am_master.v && !menu_abierto) {
+    if (from_zeng_online && zeng_online_i_am_master.v && !menu_abierto) {
 
-        z80_byte keyportsblock[8];
+        z80_byte keyportsblock[9];
 
         keyportsblock[0]=puerto_65278;
         keyportsblock[1]=puerto_65022;
@@ -3678,8 +3708,18 @@ void save_zsf_snapshot_file_mem(char *filename,z80_byte *destination_memory,int 
         keyportsblock[5]=puerto_57342;
         keyportsblock[6]=puerto_49150;
         keyportsblock[7]=puerto_32766;
+        keyportsblock[8]=puerto_especial_joystick;
 
-        zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, keyportsblock,ZSF_KEY_PORTS_SPECTRUM_STATE, 8);
+        zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, keyportsblock,ZSF_KEY_PORTS_SPECTRUM_STATE, 9);
+
+
+
+        z80_byte zoc_etc_block[1];
+
+        zoc_etc_block[0]=joystick_emulation;
+
+        zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, zoc_etc_block,ZSF_ZOC_ETC, 1);
+
 
     }
 
@@ -6067,7 +6107,7 @@ void save_zsf_snapshot(char *filename)
   int longitud;
   //Realmente el NULL del puntero a memoria no seria necesario, ya que como el filename no es NULL, se usa el archivo y no se usa el puntero a memoria
   //Y la longitud no la usamos
-  save_zsf_snapshot_file_mem(filename,NULL,&longitud);
+  save_zsf_snapshot_file_mem(filename,NULL,&longitud,0);
 }
 
 z80_byte *pending_zrcp_put_snapshot_buffer_destino=NULL;
@@ -6080,7 +6120,7 @@ void check_pending_zrcp_put_snapshot(void)
   if (pending_zrcp_put_snapshot_buffer_destino!=NULL) {
     debug_printf (VERBOSE_DEBUG,"Putting snapshot coming from ZRCP");
 
-    load_zsf_snapshot_file_mem(NULL,pending_zrcp_put_snapshot_buffer_destino,pending_zrcp_put_snapshot_longitud,1);
+    load_zsf_snapshot_file_mem(NULL,pending_zrcp_put_snapshot_buffer_destino,pending_zrcp_put_snapshot_longitud,1,0);
 
     free(pending_zrcp_put_snapshot_buffer_destino);
     pending_zrcp_put_snapshot_buffer_destino=NULL;

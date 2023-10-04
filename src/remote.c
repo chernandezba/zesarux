@@ -4503,7 +4503,7 @@ void interpreta_comando(char *comando,int misocket,char *buffer_lectura_socket_a
 		z80_byte *puntero=buffer_temp;
 		int longitud;
 
-  		save_zsf_snapshot_file_mem(NULL,puntero,&longitud);
+  		save_zsf_snapshot_file_mem(NULL,puntero,&longitud,0);
 
 		//printf ("longitud: %d\n",longitud);
 

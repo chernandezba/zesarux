@@ -87,6 +87,7 @@
 #define ZSF_CREATOR 60
 #define ZSF_FLASH_STATE 61
 #define ZSF_KEY_PORTS_SPECTRUM_STATE 62
+#define ZSF_ZOC_ETC 63
 //Importante NO alterar los ID existentes o se rompera compatibilidad hacia atras del formato ZSF
 //Siempre agregar, nunca modificar ni borrar
 
@@ -109,8 +110,8 @@ extern char zsf_magic_header[];
 
 extern int zsf_force_uncompressed;
 
-extern void save_zsf_snapshot_file_mem(char *filename,z80_byte *destination_memory,int *longitud_total);
-extern void load_zsf_snapshot_file_mem(char *filename,z80_byte *origin_memory,int longitud_memoria,int load_fast_mode);
+extern void save_zsf_snapshot_file_mem(char *filename,z80_byte *destination_memory,int *longitud_total,int from_zeng_online);
+extern void load_zsf_snapshot_file_mem(char *filename,z80_byte *origin_memory,int longitud_memoria,int load_fast_mode,int from_zeng_online);
 
 extern void load_zsf_snapshot_block_data_addr(z80_byte *block_data,z80_byte *destino,int block_lenght, int longitud_original,int si_comprimido);
 

@@ -110,7 +110,7 @@ z80_byte *save_zsf_snapshot_to_ram(int *p_longitud)
     z80_byte *puntero=buffer_temp;
     int longitud;
 
-    save_zsf_snapshot_file_mem(NULL,puntero,&longitud);
+    save_zsf_snapshot_file_mem(NULL,puntero,&longitud,0);
 
     debug_printf (VERBOSE_INFO,"Saving snapshot to ram. Length: %d",longitud);
 
@@ -282,7 +282,7 @@ int snapshot_in_ram_load(int posicion)
 
     debug_printf(VERBOSE_INFO,"Loading snapshot from RAM length: %d",longitud);
 
-    load_zsf_snapshot_file_mem(NULL,puntero_memoria,longitud,0);
+    load_zsf_snapshot_file_mem(NULL,puntero_memoria,longitud,0,0);
 
                     //z80_byte *temp_puntero;
                     //int temp_temp_longitud;

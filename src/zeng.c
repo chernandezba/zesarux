@@ -968,7 +968,7 @@ void zeng_send_snapshot_if_needed(void)
 
 					int longitud;
 
-  					save_zsf_snapshot_file_mem(NULL,buffer_temp,&longitud);
+  					save_zsf_snapshot_file_mem(NULL,buffer_temp,&longitud,0);
 
 
                     //temp_memoria_asignada++;

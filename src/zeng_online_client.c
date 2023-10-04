@@ -1851,6 +1851,9 @@ int zoc_get_pending_authorization_size(int indice_socket)
 
 }
 
+//En el rejoin como master se aplicara el primer snapshot recibido del server
+int zoc_pending_apply_received_snapshot_as_rejoin_as_master=0;
+
 void *zoc_master_thread_function(void *nada GCC_UNUSED)
 {
 
@@ -1914,6 +1917,15 @@ void *zoc_master_thread_function(void *nada GCC_UNUSED)
                 zoc_pending_send_snapshot=0;
                 //zeng_online_client_reset_scanline_counter();
                 //printf("Snapshot sent\n");
+            }
+
+            //Si estabamos reentrando como master, obtener el snapshot que habia
+            if (zoc_rejoining_as_master) {
+                printf("Receiving first snapshot as we are rejoining as master\n");
+                zoc_rejoining_as_master=0;
+                zoc_pending_apply_received_snapshot_as_rejoin_as_master=1;
+
+                zoc_receive_snapshot(indice_socket);
             }
 
             //Enviar teclas
@@ -2048,7 +2060,7 @@ int zoc_receive_snapshot(int indice_socket)
 
                 if (leer_snap) {
 
-                    //printf("Obteniendo snapshot\n");
+                    printf("Obteniendo snapshot\n");
 
                     //printf("antes enviar get-snaps\n");
                     //get-snapshot user_pass n
@@ -2358,14 +2370,22 @@ void zeng_online_client_apply_pending_received_snapshot(void)
 {
     if (zeng_online_connected.v==0) return;
 
-    if (zeng_online_i_am_master.v) return;
-
     if (!zoc_pending_apply_received_snapshot) return;
+
+    //Permitir aplicar el primer snapshot que hemos recibido al hacer rejoin as master
+    if (zoc_pending_apply_received_snapshot_as_rejoin_as_master) {
+        printf("Permitir primer snapshot recibido con rejoin\n");
+        zoc_pending_apply_received_snapshot_as_rejoin_as_master=0;
+    }
+
+    else {
+        if (zeng_online_i_am_master.v) return;
+    }
 
 
     //printf("Putting snapshot coming from ZRCP: %p %d\n",zoc_get_snapshot_mem_binary,zoc_get_snapshot_mem_binary_longitud);
 
-    load_zsf_snapshot_file_mem(NULL,zoc_get_snapshot_mem_binary,zoc_get_snapshot_mem_binary_longitud,1);
+    load_zsf_snapshot_file_mem(NULL,zoc_get_snapshot_mem_binary,zoc_get_snapshot_mem_binary_longitud,1,1);
 
     free(zoc_get_snapshot_mem_binary);
     zoc_get_snapshot_mem_binary=NULL;
@@ -2424,7 +2444,8 @@ void zoc_stop_slave_thread(void)
 
 
 
-
+//Se indicara que queremos obtener el snapshot que habia ya que estamos reentrando como master
+int zoc_rejoining_as_master=0;
 
 
 void zeng_online_client_prepare_snapshot_if_needed(void)
@@ -2435,7 +2456,9 @@ void zeng_online_client_prepare_snapshot_if_needed(void)
 	if (zeng_online_i_am_master.v) {
 		zoc_contador_envio_snapshot++;
 		//printf ("%d %d\n",contador_envio_snapshot,(contador_envio_snapshot % (50*zeng_segundos_cada_snapshot) ));
-		if (zoc_contador_envio_snapshot>=zoc_frames_video_cada_snapshot) {
+
+
+		if (zoc_contador_envio_snapshot>=zoc_frames_video_cada_snapshot && !zoc_rejoining_as_master) {
                 zoc_contador_envio_snapshot=0;
 				//Si esta el anterior snapshot aun pendiente de enviar
 				if (zoc_pending_send_snapshot) {
@@ -2472,7 +2495,7 @@ void zeng_online_client_prepare_snapshot_if_needed(void)
 
 					int longitud;
 
-  					save_zsf_snapshot_file_mem(NULL,buffer_temp,&longitud);
+  					save_zsf_snapshot_file_mem(NULL,buffer_temp,&longitud,1);
 
 
                     //temp_memoria_asignada++;
@@ -2515,8 +2538,13 @@ void zeng_online_client_end_frame_from_core_functions(void)
     if (zeng_online_connected.v==0) return;
 
     zeng_online_client_tell_end_frame();
-    zeng_online_client_prepare_snapshot_if_needed();
+
+    //El orden en el caso de rejoin as master es importante,
+    //primero aplicaremos el snapshot recibido al entrar como master,
+    //luego ya iremos enviando los siguientes como master normal
     zeng_online_client_apply_pending_received_snapshot();
+    zeng_online_client_prepare_snapshot_if_needed();
+
 
 
     if (zeng_online_i_am_master.v==0) {
