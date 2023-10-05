@@ -920,6 +920,8 @@ struct s_items_ayuda items_ayuda[]={
     "                                    Returned format is: uuid key event nomenu\n"
     "get-join-queue-size creator_pass n  Returns the number of clients waiting for join on room n\n"
     "get-join-first-element-queue creator_pass n  Gets the first element in join waiting queue on room n\n"
+    "get-message user_pass n             Gets the broadcast message from room\n"
+    "get-message-id user_pass n          Gets the broadcast message id from room\n"
     "get-snapshot user_pass n            This command returns the last snapshot from room n, returns ERROR if no snapshot there. Requires user_pass\n"
     "get-snapshot-id user_pass n         This command returns the last snapshot id from room n, returns ERROR if no snapshot there. Requires user_pass\n"
     "is-enabled                          Returns enabled status\n"
@@ -933,6 +935,7 @@ struct s_items_ayuda items_ayuda[]={
     "                                    See file utils.h, enum util_teclas for key values\n"
     "                                    Event must be 0 for release, or different to 0 for press\n"
 	"                                    nomenu if set to non 0, tells the key is not sent when menu is open\n"
+    "send-message user_pass n message    Sends broadcast message to room\n"
     "set-autojoin creator_pass n p       Define permissions (p) for autojoin on room (n), this enables autojoin. Requires creator_pass of that room\n"
     "set-max-players creator_pass n m    Define max-players (m) for room (n). Requires creator_pass of that room\n"
 

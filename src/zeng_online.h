@@ -38,6 +38,8 @@
 
 #define ZENG_ROOM_PASSWORD_LENGTH 10
 
+#define ZENG_ONLINE_MAX_BROADCAST_MESSAGE_LENGTH 64
+
 //Maximo de eventos (tecla, joystick) que se mantiene en cola de una habitacion
 //TODO: cual es el mejor valor para esto? Consideramos algo multiplicado por ZENG_ONLINE_MAX_PLAYERS_PER_ROOM?
 //Aunque no asumo que todos los usuarios (100??) de una sala vayan a pulsar las teclas a la vez

@@ -146,6 +146,9 @@ struct zeng_online_room {
     struct s_zeng_online_eventkeys events[ZENG_ONLINE_MAX_EVENTS];
     int index_event;
 
+    //Mensajes de broadcast
+    int broadcast_message_id;
+    char broadcast_message[ZENG_ONLINE_MAX_BROADCAST_MESSAGE_LENGTH+1];
 
     //Peticiones de join en espera
     int index_waiting_join_first; //donde empieza el primer elemento en espera
@@ -424,6 +427,9 @@ void zeng_online_create_room(int misocket,int room_number,char *room_name)
     zeng_online_rooms_list[room_number].snapshot_memory=NULL;
 
     zeng_online_rooms_list[room_number].autojoin_enabled=0;
+
+    zeng_online_rooms_list[room_number].broadcast_message_id=0;
+    zeng_online_rooms_list[room_number].broadcast_message[0]=0;
 
     zeng_online_rooms_list[room_number].created=1;
 
@@ -776,6 +782,108 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
 
         zeng_online_rooms_list[room_number].autojoin_enabled=1;
         zeng_online_rooms_list[room_number].autojoin_permissions=permissions;
+
+    }
+
+       //send-message user_pass n message
+    else if (!strcmp(comando_argv[0],"send-message")) {
+        if (!zeng_online_enabled) {
+            escribir_socket(misocket,"ERROR. ZENG Online is not enabled");
+            return;
+        }
+
+        if (comando_argc<3) {
+            escribir_socket(misocket,"ERROR. Needs three parameters");
+            return;
+        }
+
+        int room_number=parse_string_to_number(comando_argv[2]);
+
+        if (room_number<0 || room_number>=zeng_online_current_max_rooms) {
+            escribir_socket_format(misocket,"ERROR. Room number beyond limit");
+            return;
+        }
+
+        if (!zeng_online_rooms_list[room_number].created) {
+            escribir_socket(misocket,"ERROR. Room is not created");
+            return;
+        }
+
+        //validar user_pass. comando_argv[1]
+        if (strcmp(comando_argv[1],zeng_online_rooms_list[room_number].user_password)) {
+            escribir_socket(misocket,"ERROR. Invalid user password for that room");
+            return;
+        }
+
+        strcpy(zeng_online_rooms_list[room_number].broadcast_message,comando_argv[3]);
+        zeng_online_rooms_list[room_number].broadcast_message_id++;
+
+    }
+
+    //"get-message-id user_pass n          Gets the broadcast message id from room\n"
+    else if (!strcmp(comando_argv[0],"get-message-id")) {
+        if (!zeng_online_enabled) {
+            escribir_socket(misocket,"ERROR. ZENG Online is not enabled");
+            return;
+        }
+
+        if (comando_argc<2) {
+            escribir_socket(misocket,"ERROR. Needs two parameters");
+            return;
+        }
+
+        int room_number=parse_string_to_number(comando_argv[2]);
+
+        if (room_number<0 || room_number>=zeng_online_current_max_rooms) {
+            escribir_socket_format(misocket,"ERROR. Room number beyond limit");
+            return;
+        }
+
+        if (!zeng_online_rooms_list[room_number].created) {
+            escribir_socket(misocket,"ERROR. Room is not created");
+            return;
+        }
+
+        //validar user_pass. comando_argv[1]
+        if (strcmp(comando_argv[1],zeng_online_rooms_list[room_number].user_password)) {
+            escribir_socket(misocket,"ERROR. Invalid user password for that room");
+            return;
+        }
+
+        escribir_socket_format(misocket,"%d",zeng_online_rooms_list[room_number].broadcast_message_id);
+
+    }
+    //"get-message user_pass n             Gets the broadcast message from room\n"
+    else if (!strcmp(comando_argv[0],"get-message")) {
+        if (!zeng_online_enabled) {
+            escribir_socket(misocket,"ERROR. ZENG Online is not enabled");
+            return;
+        }
+
+        if (comando_argc<2) {
+            escribir_socket(misocket,"ERROR. Needs two parameters");
+            return;
+        }
+
+        int room_number=parse_string_to_number(comando_argv[2]);
+
+        if (room_number<0 || room_number>=zeng_online_current_max_rooms) {
+            escribir_socket_format(misocket,"ERROR. Room number beyond limit");
+            return;
+        }
+
+        if (!zeng_online_rooms_list[room_number].created) {
+            escribir_socket(misocket,"ERROR. Room is not created");
+            return;
+        }
+
+        //validar user_pass. comando_argv[1]
+        if (strcmp(comando_argv[1],zeng_online_rooms_list[room_number].user_password)) {
+            escribir_socket(misocket,"ERROR. Invalid user password for that room");
+            return;
+        }
+
+        escribir_socket(misocket,zeng_online_rooms_list[room_number].broadcast_message);
 
     }
 
