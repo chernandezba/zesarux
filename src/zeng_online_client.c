@@ -2226,6 +2226,7 @@ void *zoc_master_thread_function(void *nada GCC_UNUSED)
 
     //Leer id de mensaje de broadcast para saber cuando llega uno nuevo
     zoc_last_message_id=zoc_get_message_id(indice_socket);
+    printf("Initial message id: %d\n",zoc_last_message_id);
 
     int indice_socket_get_keys=zoc_start_connection_get_keys();
 
@@ -2423,7 +2424,7 @@ int zoc_receive_snapshot(int indice_socket)
 
                 if (leer_snap) {
 
-                    printf("Obteniendo snapshot\n");
+                    //printf("Obteniendo snapshot\n");
 
                     //printf("antes enviar get-snaps\n");
                     //get-snapshot user_pass n
@@ -2592,6 +2593,11 @@ void *zoc_slave_thread_function(void *nada GCC_UNUSED)
         debug_printf(VERBOSE_ERR,"ERROR. Can't read remote prompt: %s",z_sock_get_error(leidos));
         return 0;
     }
+
+    //Leer id de mensaje de broadcast para saber cuando llega uno nuevo
+    zoc_last_message_id=zoc_get_message_id(indice_socket);
+    printf("Initial message id: %d\n",zoc_last_message_id);
+
 
     int indice_socket_get_keys=zoc_start_connection_get_keys();
 

@@ -932,13 +932,9 @@ void menu_zeng_online(MENU_ITEM_PARAMETERS)
                 menu_add_item_menu_es_avanzado(array_menu_common);
             }
 
+
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,
             "My room permissions: ","Mis permisos habitación: ","Meus permisos habitació: ");
-
-            //RS: Read snapshot
-            //RK: Read keys
-            //WK: Write keys
-
             menu_add_item_menu_sufijo_format(array_menu_common,"%s-%s-%s-%s-%s",
                 (created_room_user_permissions & ZENG_ONLINE_PERMISSIONS_GET_SNAPSHOT ? "RS" : "  "),
                 (created_room_user_permissions & ZENG_ONLINE_PERMISSIONS_PUT_SNAPSHOT ? "WS" : "  "),
@@ -946,6 +942,8 @@ void menu_zeng_online(MENU_ITEM_PARAMETERS)
                 (created_room_user_permissions & ZENG_ONLINE_PERMISSIONS_SEND_KEYS ? "WK" : "  "),
                 (created_room_user_permissions & ZENG_ONLINE_PERMISSIONS_SEND_MESSAGE ? "WM" : "  ")
             );
+            menu_add_item_menu_es_avanzado(array_menu_common);
+
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_write_message_room,NULL,
                 "Broadcast message","Mensaje difusión","Missatge difusió");
