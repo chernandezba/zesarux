@@ -140,6 +140,11 @@ int menu_zeng_online_disable_autojoin_room_cond(zxvision_window *w GCC_UNUSED)
 	return !zeng_online_client_disable_autojoin_room_thread_running;
 }
 
+int menu_zeng_online_write_message_room_cond(zxvision_window *w GCC_UNUSED)
+{
+	return !zeng_online_client_write_message_room_thread_running;
+}
+
 int menu_zeng_online_destroy_room_cond(zxvision_window *w GCC_UNUSED)
 {
 	return !zeng_online_client_destroy_room_thread_running;
@@ -775,6 +780,27 @@ void menu_zeng_online_disable_autojoin_room(MENU_ITEM_PARAMETERS)
 
 }
 
+void menu_zeng_online_write_message_room(MENU_ITEM_PARAMETERS)
+{
+
+    if (!(created_room_user_permissions & ZENG_ONLINE_PERMISSIONS_SEND_MESSAGE)) {
+        menu_error_message("You don't have permissions to send messages");
+        return;
+    }
+
+    char message[ZENG_ONLINE_MAX_BROADCAST_MESSAGE_LENGTH+1];
+    message[0]=0;
+
+    if (menu_ventana_scanf("Message?",message,ZENG_ONLINE_MAX_BROADCAST_MESSAGE_LENGTH+1)<0) {
+        return;
+    }
+
+    zeng_online_client_write_message_room(message);
+
+    zxvision_simple_progress_window("Write message room", menu_zeng_online_write_message_room_cond,menu_zeng_online_connecting_common_print );
+
+}
+
 void menu_zeng_online_join_room(MENU_ITEM_PARAMETERS)
 {
 
@@ -898,7 +924,8 @@ void menu_zeng_online(MENU_ITEM_PARAMETERS)
                 (created_room_user_permissions & ZENG_ONLINE_PERMISSIONS_SEND_MESSAGE ? "WM" : "  ")
             );
 
-
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_write_message_room,NULL,
+                "Broadcast message","Mensaje difusión","Missatge difusió");
 
             if (zeng_online_i_am_master.v) {
                 menu_add_item_menu_separator(array_menu_common);
