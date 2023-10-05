@@ -2616,30 +2616,17 @@ void *zoc_slave_thread_function(void *nada GCC_UNUSED)
             if (created_room_user_permissions & ZENG_ONLINE_PERMISSIONS_GET_SNAPSHOT) {
 
                 //Recibir snapshot
-                //Siempre que no acabemos de enviar teclas. En ese caso dejar pasar unos segundos??
-                /*if (esperar_por_envio_alguna_tecla>0) {
-                    esperar_por_envio_alguna_tecla--;
-                }*/
-
-                //if (!esperar_por_envio_alguna_tecla) {
-                    //temppppp++;
-                    //if ((temppppp%50)==0) {
-                        //printf("llamando a zoc_receive_snapshot\n");
 
 
-                        int error=zoc_receive_snapshot(indice_socket);
-                        //TODO gestionar bien este error
-                        if (error<0) {
-                            //TODO
-                            printf("Error getting snapshot from zeng online server\n");
-                            usleep(10000); //dormir 10 ms
-                        }
+                int error=zoc_receive_snapshot(indice_socket);
+                //TODO gestionar bien este error
+                if (error<0) {
+                    //TODO
+                    printf("Error getting snapshot from zeng online server\n");
+                    usleep(10000); //dormir 10 ms
+                }
 
 
-                    //}
-                //}
-
-                //printf("Contador scanline: %d\n",zeng_online_scanline_counter);
             }
 
             if (created_room_user_permissions & ZENG_ONLINE_PERMISSIONS_GET_KEYS) {
@@ -2658,18 +2645,7 @@ void *zoc_slave_thread_function(void *nada GCC_UNUSED)
                 int enviada_alguna_tecla;
                 int error_desconectar=zoc_keys_send_pending(indice_socket,&enviada_alguna_tecla);
 
-                /*if (zoc_client_pulsada_alguna_tecla_local) {
-                    zoc_client_pulsada_alguna_tecla_local=0;
-                    //esperar 1 segundo
 
-                    //siempre que no este ya antes en espera
-                    if (!esperar_por_envio_alguna_tecla) {
-                        //esperar_por_envio_alguna_tecla=50;
-
-                        //Saltarse el siguiente snapshot
-                        esperar_por_envio_alguna_tecla=2;
-                    }
-                }*/
             }
 
             zoc_common_get_messages_slave_master(indice_socket);
