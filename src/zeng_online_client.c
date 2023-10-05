@@ -430,13 +430,14 @@ int zoc_common_open(void)
 
 
 //Funcion comun para enviar un comando con una conexion abierta. Retorna 0 si error
-int zoc_common_send_command(int indice_socket,char *buffer_enviar,char *command_name_for_info)
+//Guarda resultado en buffer
+int zoc_common_send_command_buffer(int indice_socket,char *buffer_enviar,char *command_name_for_info,char *buffer,int max_buffer)
 {
 
-    #define ZENG_BUFFER_INITIAL_CONNECT 199
+    //#define ZENG_BUFFER_INITIAL_CONNECT 199
 
     //Leer algo
-    char buffer[ZENG_BUFFER_INITIAL_CONNECT+1];
+    //char buffer[ZENG_BUFFER_INITIAL_CONNECT+1];
     int posicion_command;
 
     int escritos=z_sock_write_string(indice_socket,buffer_enviar);
@@ -448,7 +449,7 @@ int zoc_common_send_command(int indice_socket,char *buffer_enviar,char *command_
     }
 
 
-    int leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)buffer,ZENG_BUFFER_INITIAL_CONNECT,&posicion_command);
+    int leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)buffer,max_buffer,&posicion_command);
     if (leidos>0) {
         buffer[leidos]=0; //fin de texto
         debug_printf(VERBOSE_DEBUG,"ZENG: Received text for zeng-online %s (length %d): \n[\n%s\n]",command_name_for_info,leidos,buffer);
@@ -479,10 +480,22 @@ int zoc_common_send_command(int indice_socket,char *buffer_enviar,char *command_
     }
 
 
-    //finalizar conexion
-    z_sock_close_connection(indice_socket);
 
     return 1;
+
+}
+
+//Funcion comun para enviar un comando con una conexion abierta. Retorna 0 si error
+int zoc_common_send_command(int indice_socket,char *buffer_enviar,char *command_name_for_info)
+{
+
+    #define ZENG_BUFFER_INITIAL_CONNECT 199
+
+    //buffer retorno
+    char buffer[ZENG_BUFFER_INITIAL_CONNECT+1];
+
+    return zoc_common_send_command_buffer(indice_socket,buffer_enviar,command_name_for_info,buffer,ZENG_BUFFER_INITIAL_CONNECT);
+
 
 }
 
