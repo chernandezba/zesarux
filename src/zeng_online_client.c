@@ -877,9 +877,12 @@ int zeng_online_client_write_message_room_connect(void)
 
     char buffer_enviar[1024];
 
-    //"send-message user_pass n message    Sends broadcast message to room\n"
-    sprintf(buffer_enviar,"zeng-online send-message %s %d \"%s\"\n",
-        created_room_user_password,zeng_online_joined_to_room_number,param_zeng_online_client_write_message_room_message);
+    //"send-message user_pass n nickname message    Sends broadcast message to room\n"
+    sprintf(buffer_enviar,"zeng-online send-message %s %d %s \"%s\"\n",
+        created_room_user_password,
+        zeng_online_joined_to_room_number,
+        zeng_online_nickname,
+        param_zeng_online_client_write_message_room_message);
 
     return zoc_open_command_close(buffer_enviar,"send-message");
 

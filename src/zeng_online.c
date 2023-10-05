@@ -859,15 +859,15 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
 
     }
 
-       //send-message user_pass n message
+       //send-message user_pass n nickname message
     else if (!strcmp(comando_argv[0],"send-message")) {
         if (!zeng_online_enabled) {
             escribir_socket(misocket,"ERROR. ZENG Online is not enabled");
             return;
         }
 
-        if (comando_argc<3) {
-            escribir_socket(misocket,"ERROR. Needs three parameters");
+        if (comando_argc<4) {
+            escribir_socket(misocket,"ERROR. Needs four parameters");
             return;
         }
 
@@ -897,8 +897,9 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
         sprintf(zeng_online_rooms_list[room_number].broadcast_message,
             "Message from room %d user %s: %s",
             room_number,
-            "prueba",
-            comando_argv[3]);
+            comando_argv[3],
+            comando_argv[4]);
+
         zeng_online_rooms_list[room_number].broadcast_message_id++;
 
     }
