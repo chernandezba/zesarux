@@ -2604,7 +2604,7 @@ void *zoc_slave_thread_function(void *nada GCC_UNUSED)
     //bucle continuo de recepcion snapshot
     //TODO: ver posible manera de salir de aqui??
 
-
+    int temppppp=0;
 
     while (1) {
 

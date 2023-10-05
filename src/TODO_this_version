@@ -668,4 +668,6 @@ esto permitiria tener un server remoto, que envia snapshots a el mismo, pero ges
 -si se une sin permisos, retorna error al cliente? contara como usuario logueado?
 
 -parece que el bucle de slave no esta saltando cada 20ms, porque? si quito recepcion de snapshot ya si que lo hace bien
+
+-si pongo verbose 3 peta con zeng slave
 ---------------
