@@ -20531,7 +20531,7 @@ void menu_add_item_menu_inicial_format(menu_item **p,int tipo_opcion,t_menu_func
 
 }
 
-char *string_esc_go_back="ESC always goes back to the previous menu, or return back to the emulated machine if you are in main menu";
+char *string_esc_closes_menus="ESC closes all menus";
 
 //Agrega item de ESC normalmente.  En caso de aalib y consola es con tecla TAB
 void menu_add_ESC_item(menu_item *array_menu_item)
@@ -20556,8 +20556,8 @@ void menu_add_ESC_item(menu_item *array_menu_item)
         else sprintf (mensaje_esc,"%s %s",esc_key_message,action_esc);
 
         menu_add_item_menu(array_menu_item,mensaje_esc,MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
-		menu_add_item_menu_tooltip(array_menu_item,string_esc_go_back);
-		menu_add_item_menu_ayuda(array_menu_item,string_esc_go_back);
+		menu_add_item_menu_tooltip(array_menu_item,string_esc_closes_menus);
+		menu_add_item_menu_ayuda(array_menu_item,string_esc_closes_menus);
 
 }
 

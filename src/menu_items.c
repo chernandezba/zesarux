@@ -39052,8 +39052,8 @@ void menu_inicio_bucle_main(void)
             menu_add_item_menu_en_es_ca(array_menu_principal,MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL,
                 "Close menu","Cerrar menu","Tancar menu");
             menu_add_item_menu_prefijo_format(array_menu_principal,"%s ",esc_key_message);
-            menu_add_item_menu_tooltip(array_menu_principal,string_esc_go_back);
-            menu_add_item_menu_ayuda(array_menu_principal,string_esc_go_back);
+            menu_add_item_menu_tooltip(array_menu_principal,string_esc_closes_menus);
+            menu_add_item_menu_ayuda(array_menu_principal,string_esc_closes_menus);
 
             menu_add_item_menu_en_es_ca(array_menu_principal,MENU_OPCION_NORMAL,menu_principal_salir_emulador,NULL,
                 "Exit ZEsarUX","Salir de ZEsarUX","Sortir de ZEsarUX");

@@ -659,5 +659,11 @@ ok-comando zeng online para leave room. esto decrementara el contador de jugador
 -permitir dos masters? o algo asi como un master que no envia snapshots, pero gestiona autorizaciones, creaciones, etc
 esto permitiria tener un server remoto, que envia snapshots a el mismo, pero gestionar autorizaciones desde remoto
 
+-Poder enviar mensajes broadcast
+
+-Ayuda ZENG, ZENG Online. Y también explicar a nivel técnico como funciona
+
 - Opciones de Zeng online server en menu, en algún sitio. que se puedan ver tambien los master passwords de las habitaciones creadas
+
+-si se une sin permisos, retorna error al cliente? contara como usuario logueado?
 ---------------

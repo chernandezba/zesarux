@@ -383,107 +383,145 @@ int zeng_online_client_list_rooms_connect(void)
 	return 1;
 }
 
-int zeng_online_client_destroy_room_connect(void)
+
+//Retorna -1 si error.
+//Si no error, retorna indice_socket
+int zoc_common_open(void)
 {
 
+    char server[NETWORK_MAX_URL+1];
+    int puerto;
+    puerto=zeng_online_get_server_and_port(server);
 
-        char server[NETWORK_MAX_URL+1];
-        int puerto;
-        puerto=zeng_online_get_server_and_port(server);
+    int indice_socket=z_sock_open_connection(server,puerto,0,"");
 
-		int indice_socket=z_sock_open_connection(server,puerto,0,"");
+    if (indice_socket<0) {
+        debug_printf(VERBOSE_ERR,"Error connecting to %s:%d. %s",
+            server,puerto,
+            z_sock_get_error(indice_socket));
+        return -1;
+    }
 
-		if (indice_socket<0) {
-			debug_printf(VERBOSE_ERR,"Error connecting to %s:%d. %s",
-                server,puerto,
-                z_sock_get_error(indice_socket));
-			return 0;
-		}
-
-		 int posicion_command;
+        int posicion_command;
 
 #define ZENG_BUFFER_INITIAL_CONNECT 199
 
-		//Leer algo
-		char buffer[ZENG_BUFFER_INITIAL_CONNECT+1];
+    //Leer algo
+    char buffer[ZENG_BUFFER_INITIAL_CONNECT+1];
 
-		//int leidos=z_sock_read(indice_socket,buffer,199);
-		int leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)buffer,ZENG_BUFFER_INITIAL_CONNECT,&posicion_command);
-		if (leidos>0) {
-			buffer[leidos]=0; //fin de texto
-			//printf("Received text (length: %d):\n[\n%s\n]\n",leidos,buffer);
-		}
+    //int leidos=z_sock_read(indice_socket,buffer,199);
 
-		if (leidos<0) {
-			debug_printf(VERBOSE_ERR,"ERROR. Can't read remote prompt: %s",z_sock_get_error(leidos));
-			return 0;
-		}
+    int leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)buffer,ZENG_BUFFER_INITIAL_CONNECT,&posicion_command);
+    if (leidos>0) {
+        buffer[leidos]=0; //fin de texto
+        //printf("Received text (length: %d):\n[\n%s\n]\n",leidos,buffer);
+    }
 
-		//zsock_wait_until_command_prompt(indice_socket);
+    if (leidos<0) {
+        debug_printf(VERBOSE_ERR,"ERROR. Can't read remote prompt: %s",z_sock_get_error(leidos));
+        return -1;
+    }
 
-		debug_printf(VERBOSE_DEBUG,"ZENG: Sending destroy-room");
+    return indice_socket;
 
-        char buffer_enviar[1024];
-
-
-        sprintf(buffer_enviar,"zeng-online destroy-room %s %d\n",created_room_creator_password,zeng_online_joined_to_room_number);
+}
 
 
-		int escritos=z_sock_write_string(indice_socket,buffer_enviar);
+//Funcion comun para enviar un comando. Retorna 0 si error
+int zoc_common_send_command_and_close(int indice_socket,char *buffer_enviar,char *command_name_for_info)
+{
 
-		if (escritos<0) {
-			debug_printf(VERBOSE_ERR,"ERROR. Can't send zeng-online destroy: %s",z_sock_get_error(escritos));
-			return 0;
-		}
+    #define ZENG_BUFFER_INITIAL_CONNECT 199
 
+    //Leer algo
+    char buffer[ZENG_BUFFER_INITIAL_CONNECT+1];
+    int posicion_command;
 
-            leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)buffer,ZENG_BUFFER_INITIAL_CONNECT,&posicion_command);
-            if (leidos>0) {
-                buffer[leidos]=0; //fin de texto
-                debug_printf(VERBOSE_DEBUG,"ZENG: Received text for zeng-online destroy (length %d): \n[\n%s\n]",leidos,buffer);
-            }
-
-            if (leidos<0) {
-                debug_printf(VERBOSE_ERR,"ERROR. Can't receive zeng-online destroy: %s",z_sock_get_error(leidos));
-                return 0;
-            }
+    int escritos=z_sock_write_string(indice_socket,buffer_enviar);
 
 
+    if (escritos<0) {
+        debug_printf(VERBOSE_ERR,"ERROR. Can't send zeng-online %s: %s",command_name_for_info,z_sock_get_error(escritos));
+        return 0;
+    }
 
 
-		//1 mas para eliminar el salto de linea anterior a "command>"
-		if (posicion_command>=1) {
-			buffer[posicion_command-1]=0;
-			debug_printf(VERBOSE_DEBUG,"ZENG: Received text: %s",buffer);
-		}
-		else {
-			debug_printf (VERBOSE_ERR,"Error receiving ZEsarUX zeng-online destroy");
-			return 0;
-		}
+    int leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)buffer,ZENG_BUFFER_INITIAL_CONNECT,&posicion_command);
+    if (leidos>0) {
+        buffer[leidos]=0; //fin de texto
+        debug_printf(VERBOSE_DEBUG,"ZENG: Received text for zeng-online %s (length %d): \n[\n%s\n]",command_name_for_info,leidos,buffer);
+    }
 
-        printf("Retorno destroy-room: [%s]\n",buffer);
-        //Si hay ERROR
-        if (strstr(buffer,"ERROR")!=NULL) {
-            debug_printf(VERBOSE_ERR,"Error leaving room: %s",buffer);
-            return 0;
-        }
-
-
-		//finalizar conexion
-        z_sock_close_connection(indice_socket);
+    if (leidos<0) {
+        debug_printf(VERBOSE_ERR,"ERROR. Can't receive zeng-online %s: %s",command_name_for_info,z_sock_get_error(leidos));
+        return 0;
+    }
 
 
 
+    //1 mas para eliminar el salto de linea anterior a "command>"
+    if (posicion_command>=1) {
+        buffer[posicion_command-1]=0;
+        debug_printf(VERBOSE_DEBUG,"ZENG: Received text: %s",buffer);
+    }
+    else {
+        debug_printf (VERBOSE_ERR,"Error receiving ZEsarUX zeng-online %s",command_name_for_info);
+        return 0;
+    }
+
+    printf("Retorno %s: [%s]\n",command_name_for_info,buffer);
+    //Si hay ERROR
+    if (strstr(buffer,"ERROR")!=NULL) {
+        debug_printf(VERBOSE_ERR,"Error %s room: %s",command_name_for_info,buffer);
+        return 0;
+    }
+
+
+    //finalizar conexion
+    z_sock_close_connection(indice_socket);
+
+    return 1;
+
+}
 
 
 
-	//zeng_remote_socket=indice_socket;
+//Funcion comun para abrir conexion, enviar comando y cerrar conexion
+//Retorna 0 si error
+int zoc_open_command_close(char *buffer_enviar,char *command_name_for_info)
+{
+    int indice_socket=zoc_common_open();
+    if (indice_socket<0) {
+        return 0;
+    }
 
-	return 1;
+    debug_printf(VERBOSE_DEBUG,"ZENG: Sending set-autojoin room");
+
+
+    return zoc_common_send_command_and_close(indice_socket,buffer_enviar,command_name_for_info);
+
+}
+
+int zeng_online_client_leave_room_connect(void)
+{
+
+    char buffer_enviar[1024];
+
+    sprintf(buffer_enviar,"zeng-online leave %d %s \"%s\"\n",param_join_room_number,created_room_user_password,zeng_online_nickname);
+
+    int return_value=zoc_open_command_close(buffer_enviar,"leave");
+
+    //Desconectar solo si no ha habido error
+    if (return_value) {
+        printf("Desconexion ok\n");
+        zeng_online_connected.v=0;
+    }
+
+    return return_value;
 }
 
 //Devuelve 0 si no conectado
-int zeng_online_client_leave_room_connect(void)
+int old_zeng_online_client_leave_room_connect(void)
 {
 
 
@@ -797,142 +835,39 @@ void *zeng_online_client_leave_room_function(void *nada GCC_UNUSED)
 }
 
 
-//Retorna -1 si error.
-//Si no error, retorna indice_socket
-int zoc_common_open(void)
-{
-
-    char server[NETWORK_MAX_URL+1];
-    int puerto;
-    puerto=zeng_online_get_server_and_port(server);
-
-    int indice_socket=z_sock_open_connection(server,puerto,0,"");
-
-    if (indice_socket<0) {
-        debug_printf(VERBOSE_ERR,"Error connecting to %s:%d. %s",
-            server,puerto,
-            z_sock_get_error(indice_socket));
-        return -1;
-    }
-
-        int posicion_command;
-
-#define ZENG_BUFFER_INITIAL_CONNECT 199
-
-    //Leer algo
-    char buffer[ZENG_BUFFER_INITIAL_CONNECT+1];
-
-    //int leidos=z_sock_read(indice_socket,buffer,199);
-
-    int leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)buffer,ZENG_BUFFER_INITIAL_CONNECT,&posicion_command);
-    if (leidos>0) {
-        buffer[leidos]=0; //fin de texto
-        //printf("Received text (length: %d):\n[\n%s\n]\n",leidos,buffer);
-    }
-
-    if (leidos<0) {
-        debug_printf(VERBOSE_ERR,"ERROR. Can't read remote prompt: %s",z_sock_get_error(leidos));
-        return -1;
-    }
-
-    return indice_socket;
-
-}
-
-//Funcion comun para enviar un comando. Retorna 0 si error
-int zoc_common_send_command_and_close(int indice_socket,char *buffer_enviar,char *command_name_for_info)
-{
-
-    #define ZENG_BUFFER_INITIAL_CONNECT 199
-
-    //Leer algo
-    char buffer[ZENG_BUFFER_INITIAL_CONNECT+1];
-    int posicion_command;
-
-    int escritos=z_sock_write_string(indice_socket,buffer_enviar);
 
 
-    if (escritos<0) {
-        debug_printf(VERBOSE_ERR,"ERROR. Can't send zeng-online %s: %s",command_name_for_info,z_sock_get_error(escritos));
-        return 0;
-    }
-
-
-    int leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)buffer,ZENG_BUFFER_INITIAL_CONNECT,&posicion_command);
-    if (leidos>0) {
-        buffer[leidos]=0; //fin de texto
-        debug_printf(VERBOSE_DEBUG,"ZENG: Received text for zeng-online %s (length %d): \n[\n%s\n]",command_name_for_info,leidos,buffer);
-    }
-
-    if (leidos<0) {
-        debug_printf(VERBOSE_ERR,"ERROR. Can't receive zeng-online %s: %s",command_name_for_info,z_sock_get_error(leidos));
-        return 0;
-    }
-
-
-
-    //1 mas para eliminar el salto de linea anterior a "command>"
-    if (posicion_command>=1) {
-        buffer[posicion_command-1]=0;
-        debug_printf(VERBOSE_DEBUG,"ZENG: Received text: %s",buffer);
-    }
-    else {
-        debug_printf (VERBOSE_ERR,"Error receiving ZEsarUX zeng-online %s",command_name_for_info);
-        return 0;
-    }
-
-    printf("Retorno %s: [%s]\n",command_name_for_info,buffer);
-    //Si hay ERROR
-    if (strstr(buffer,"ERROR")!=NULL) {
-        debug_printf(VERBOSE_ERR,"Error %s room: %s",command_name_for_info,buffer);
-        return 0;
-    }
-
-
-    //finalizar conexion
-    z_sock_close_connection(indice_socket);
-
-    return 1;
-
-}
 
 int param_zeng_online_client_autojoin_room_permisos=0;
 
 //Devuelve 0 si no conectado
 int zeng_online_client_autojoin_room_connect(void)
 {
-
-    int indice_socket=zoc_common_open();
-    if (indice_socket<0) {
-        return 0;
-    }
-
-
-    debug_printf(VERBOSE_DEBUG,"ZENG: Sending set-autojoin room");
-
     char buffer_enviar[1024];
 
     //"set-autojoin creator_pass n p       Define permissions (p) for autojoin on room (n),
     sprintf(buffer_enviar,"zeng-online set-autojoin %s %d %d\n",
         created_room_creator_password,zeng_online_joined_to_room_number,param_zeng_online_client_autojoin_room_permisos);
 
-    int return_value=zoc_common_send_command_and_close(indice_socket,buffer_enviar,"set-autojoin");
+    return zoc_open_command_close(buffer_enviar,"set-autojoin");
 
-
-	return return_value;
 }
+
+int zeng_online_client_destroy_room_connect(void)
+{
+    char buffer_enviar[1024];
+
+    sprintf(buffer_enviar,"zeng-online destroy-room %s %d\n",created_room_creator_password,zeng_online_joined_to_room_number);
+
+    return zoc_open_command_close(buffer_enviar,"destroy-room");
+
+}
+
+
 
 //Devuelve 0 si no conectado
 int zeng_online_client_disable_autojoin_room_connect(void)
 {
-
-    int indice_socket=zoc_common_open();
-    if (indice_socket<0) {
-        return 0;
-    }
-
-
-    debug_printf(VERBOSE_DEBUG,"ZENG: Sending reset-autojoin room");
 
     char buffer_enviar[1024];
 
@@ -940,10 +875,8 @@ int zeng_online_client_disable_autojoin_room_connect(void)
     sprintf(buffer_enviar,"zeng-online reset-autojoin %s %d\n",
         created_room_creator_password,zeng_online_joined_to_room_number);
 
-    int return_value=zoc_common_send_command_and_close(indice_socket,buffer_enviar,"reset-autojoin");
+    return zoc_open_command_close(buffer_enviar,"reset-autojoin");
 
-
-	return return_value;
 }
 
 void *zeng_online_client_autojoin_room_function(void *nada GCC_UNUSED)

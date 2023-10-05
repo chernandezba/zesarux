@@ -287,7 +287,7 @@ extern void menu_espera_tecla_timeout_window_splash(void);
 extern void menu_espera_tecla_o_wheel(void);
 
 extern int f_functions;
-extern char *string_esc_go_back;
+extern char *string_esc_closes_menus;
 
 #define MENU_CPU_CORE_LOOP_SLEEP_NO_MULTITASK 500
 
