@@ -2080,12 +2080,12 @@ void zoc_common_get_messages_slave_master(int indice_socket)
         int id_actual=zoc_get_message_id(indice_socket);
         if (id_actual!=zoc_last_message_id) {
             printf("Hay nuevo mensaje\n");
-            char buffer_mensaje[ZENG_ONLINE_MAX_BROADCAST_MESSAGE_LENGTH+1];
+            char buffer_mensaje[ZENG_ONLINE_MAX_BROADCAST_MESSAGE_SHOWN_LENGTH+1];
             zoc_get_message(indice_socket,buffer_mensaje);
             if (buffer_mensaje[0]) {
 
                 //Y lo mostramos en el footer
-                char mensaje[AUTOSELECTOPTIONS_MAX_FOOTER_LENGTH+ZOC_MAX_NICKNAME_LENGTH+1];
+                char mensaje[AUTOSELECTOPTIONS_MAX_FOOTER_LENGTH+ZENG_ONLINE_MAX_BROADCAST_MESSAGE_SHOWN_LENGTH+1];
 
                 sprintf(mensaje,"%s",buffer_mensaje);
 

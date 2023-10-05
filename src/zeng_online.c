@@ -148,7 +148,11 @@ struct zeng_online_room {
 
     //Mensajes de broadcast
     int broadcast_message_id;
-    char broadcast_message[ZENG_ONLINE_MAX_BROADCAST_MESSAGE_LENGTH+1];
+
+    //En el mensaje se le agrega:
+    //Message from room XX user XX
+    //Mas que suficiente el margen de ZOC_MAX_NICKNAME_LENGTH+100
+    char broadcast_message[ZENG_ONLINE_MAX_BROADCAST_MESSAGE_SHOWN_LENGTH];
     int broadcast_messages_allowed;
 
     //Peticiones de join en espera
@@ -890,7 +894,11 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
             return;
         }
 
-        strcpy(zeng_online_rooms_list[room_number].broadcast_message,comando_argv[3]);
+        sprintf(zeng_online_rooms_list[room_number].broadcast_message,
+            "Message from room %d user %s: %s",
+            room_number,
+            "prueba",
+            comando_argv[3]);
         zeng_online_rooms_list[room_number].broadcast_message_id++;
 
     }

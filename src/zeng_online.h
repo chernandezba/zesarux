@@ -40,6 +40,11 @@
 
 #define ZENG_ONLINE_MAX_BROADCAST_MESSAGE_LENGTH 64
 
+//En el mensaje se le agrega:
+//Message from room XX user XX
+//Mas que suficiente el margen de ZOC_MAX_NICKNAME_LENGTH+100
+#define ZENG_ONLINE_MAX_BROADCAST_MESSAGE_SHOWN_LENGTH (ZENG_ONLINE_MAX_BROADCAST_MESSAGE_LENGTH+ZOC_MAX_NICKNAME_LENGTH+100+1)
+
 //Maximo de eventos (tecla, joystick) que se mantiene en cola de una habitacion
 //TODO: cual es el mejor valor para esto? Consideramos algo multiplicado por ZENG_ONLINE_MAX_PLAYERS_PER_ROOM?
 //Aunque no asumo que todos los usuarios (100??) de una sala vayan a pulsar las teclas a la vez
