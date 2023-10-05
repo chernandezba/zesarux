@@ -2603,11 +2603,11 @@ void *zoc_slave_thread_function(void *nada GCC_UNUSED)
 
     //bucle continuo de recepcion snapshot
     //TODO: ver posible manera de salir de aqui??
-    //int temppppp;
 
 
 
     while (1) {
+
         if (zeng_online_client_end_frame_reached) {
             zeng_online_client_end_frame_reached=0;
 
@@ -2625,6 +2625,8 @@ void *zoc_slave_thread_function(void *nada GCC_UNUSED)
                     //temppppp++;
                     //if ((temppppp%50)==0) {
                         //printf("llamando a zoc_receive_snapshot\n");
+
+
                         int error=zoc_receive_snapshot(indice_socket);
                         //TODO gestionar bien este error
                         if (error<0) {
@@ -2632,6 +2634,7 @@ void *zoc_slave_thread_function(void *nada GCC_UNUSED)
                             printf("Error getting snapshot from zeng online server\n");
                             usleep(10000); //dormir 10 ms
                         }
+
 
                     //}
                 //}
@@ -2670,6 +2673,8 @@ void *zoc_slave_thread_function(void *nada GCC_UNUSED)
             }
 
             zoc_common_get_messages_slave_master(indice_socket);
+
+            //printf("siguiente segundo. contador_segundo=%d. temppppp=%d\n",contador_segundo,temppppp++);
 
 
         }

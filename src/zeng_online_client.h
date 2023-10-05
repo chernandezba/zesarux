@@ -44,6 +44,7 @@ extern void zeng_online_client_destroy_room(void);
 extern void zeng_online_client_autojoin_room(int permisos);
 extern void zeng_online_client_disable_autojoin_room(void);
 extern void zeng_online_client_write_message_room(char *message);
+extern void zeng_online_client_allow_message_room(int allow_disallow);
 
 extern void zoc_stop_master_thread(void);
 extern void zoc_stop_slave_thread(void);
