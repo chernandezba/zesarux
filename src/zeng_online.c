@@ -1405,7 +1405,7 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
                 return;
             }
             //Damos casi todos permisos al master, excepto read snapshot
-            permissions=ZENG_ONLINE_PERMISSIONS_PUT_SNAPSHOT | ZENG_ONLINE_PERMISSIONS_GET_KEYS | ZENG_ONLINE_PERMISSIONS_SEND_KEYS;
+            permissions=ZENG_ONLINE_PERMISSIONS_ALL_MASTER;
 
         }
 

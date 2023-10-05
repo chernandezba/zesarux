@@ -382,6 +382,11 @@ void menu_zeng_online_ask_custom_permissions_send_keys(MENU_ITEM_PARAMETERS)
     menu_zeng_online_ask_custom_permissions_value ^= ZENG_ONLINE_PERMISSIONS_SEND_KEYS;
 }
 
+void menu_zeng_online_ask_custom_permissions_send_message(MENU_ITEM_PARAMETERS)
+{
+    menu_zeng_online_ask_custom_permissions_value ^= ZENG_ONLINE_PERMISSIONS_SEND_MESSAGE;
+}
+
 void menu_zeng_online_ask_custom_permissions_apply(MENU_ITEM_PARAMETERS)
 {
     menu_zeng_online_ask_custom_permissions_set_apply=1;
@@ -420,7 +425,17 @@ int menu_zeng_online_ask_custom_permissions(void)
         menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",
             (menu_zeng_online_ask_custom_permissions_value & ZENG_ONLINE_PERMISSIONS_SEND_KEYS ? 'X' : ' ')
         );
+
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_ask_custom_permissions_send_message,NULL,
+            "Write Message","Escribir Mensaje","Escriure Missatge");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",
+            (menu_zeng_online_ask_custom_permissions_value & ZENG_ONLINE_PERMISSIONS_SEND_MESSAGE ? 'X' : ' ')
+        );
+
+
+
         menu_add_item_menu_separator(array_menu_common);
+
 
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_ask_custom_permissions_apply,NULL,
             "Apply","Aplicar","Aplicar");
@@ -875,11 +890,12 @@ void menu_zeng_online(MENU_ITEM_PARAMETERS)
             //RK: Read keys
             //WK: Write keys
 
-            menu_add_item_menu_sufijo_format(array_menu_common,"%s-%s-%s-%s",
+            menu_add_item_menu_sufijo_format(array_menu_common,"%s-%s-%s-%s-%s",
                 (created_room_user_permissions & ZENG_ONLINE_PERMISSIONS_GET_SNAPSHOT ? "RS" : "  "),
                 (created_room_user_permissions & ZENG_ONLINE_PERMISSIONS_PUT_SNAPSHOT ? "WS" : "  "),
                 (created_room_user_permissions & ZENG_ONLINE_PERMISSIONS_GET_KEYS ? "RK" : "  "),
-                (created_room_user_permissions & ZENG_ONLINE_PERMISSIONS_SEND_KEYS ? "WK" : "  ")
+                (created_room_user_permissions & ZENG_ONLINE_PERMISSIONS_SEND_KEYS ? "WK" : "  "),
+                (created_room_user_permissions & ZENG_ONLINE_PERMISSIONS_SEND_MESSAGE ? "WM" : "  ")
             );
 
 
