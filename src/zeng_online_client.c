@@ -73,6 +73,7 @@ pthread_t thread_zeng_online_client_destroy_room;
 pthread_t thread_zeng_online_client_autojoin_room;
 pthread_t thread_zeng_online_client_disable_autojoin_room;
 pthread_t thread_zeng_online_client_write_message_room;
+pthread_t thread_zeng_online_client_allow_message_room;
 
 
 #endif
@@ -88,6 +89,7 @@ int zeng_online_client_destroy_room_thread_running=0;
 int zeng_online_client_autojoin_room_thread_running=0;
 int zeng_online_client_disable_autojoin_room_thread_running=0;
 int zeng_online_client_write_message_room_thread_running=0;
+int zeng_online_client_allow_message_room_thread_running=0;
 
 z80_bit zeng_online_i_am_master={0};
 //z80_bit zeng_online_i_am_joined={0};
@@ -888,6 +890,34 @@ int zeng_online_client_write_message_room_connect(void)
 
 }
 
+int param_zeng_online_client_allow_message_room_allow_disallow;
+
+//Devuelve 0 si no conectado
+int zeng_online_client_allow_message_room_connect(void)
+{
+
+    char buffer_enviar[1024];
+
+    if (param_zeng_online_client_allow_message_room_allow_disallow) {
+
+        //"set-allow-messages creator_pass n
+        sprintf(buffer_enviar,"zeng-online set-allow-messages %s %d\n",
+            created_room_creator_password,
+            zeng_online_joined_to_room_number);
+
+    }
+
+    else {
+        //"reset-allow-messages creator_pass n
+        sprintf(buffer_enviar,"zeng-online reset-allow-messages %s %d\n",
+            created_room_creator_password,
+            zeng_online_joined_to_room_number);
+    }
+
+    return zoc_open_command_close(buffer_enviar,"set-allow-messages");
+
+}
+
 void *zeng_online_client_autojoin_room_function(void *nada GCC_UNUSED)
 {
     zeng_online_client_autojoin_room_thread_running=1;
@@ -952,6 +982,29 @@ void *zeng_online_client_write_message_room_function(void *nada GCC_UNUSED)
 
 
 	zeng_online_client_write_message_room_thread_running=0;
+
+	return 0;
+
+}
+
+void *zeng_online_client_allow_message_room_function(void *nada GCC_UNUSED)
+{
+    zeng_online_client_allow_message_room_thread_running=1;
+
+	//Conectar a remoto
+
+	if (!zeng_online_client_allow_message_room_connect()) {
+		//Desconectar solo si el socket estaba conectado
+
+        //Desconectar los que esten conectados
+        //TODO zeng_disconnect_remote();
+
+		zeng_online_client_allow_message_room_thread_running=0;
+		return 0;
+	}
+
+
+	zeng_online_client_allow_message_room_thread_running=0;
 
 	return 0;
 
@@ -1163,6 +1216,27 @@ void zeng_online_client_write_message_room(char *message)
 
 	//y pthread en estado detached asi liberara su memoria asociada a thread al finalizar, sin tener que hacer un pthread_join
 	pthread_detach(thread_zeng_online_client_write_message_room);
+
+
+}
+
+
+
+//Parametro allow_disallow : 1: allow, 0: disallow
+void zeng_online_client_allow_message_room(int allow_disallow)
+{
+
+    param_zeng_online_client_allow_message_room_allow_disallow=allow_disallow;
+
+
+
+	if (pthread_create( &thread_zeng_online_client_allow_message_room, NULL, &zeng_online_client_allow_message_room_function, NULL) ) {
+		debug_printf(VERBOSE_ERR,"Can not create zeng online allow/disallow message pthread");
+		return;
+	}
+
+	//y pthread en estado detached asi liberara su memoria asociada a thread al finalizar, sin tener que hacer un pthread_join
+	pthread_detach(thread_zeng_online_client_allow_message_room);
 
 
 }
@@ -2916,6 +2990,10 @@ void zeng_online_client_disable_autojoin_room(void)
 }
 
 void zeng_online_client_write_message_room(char *message)
+{
+}
+
+void zeng_online_client_allow_message_room(int allow_disallow)
 {
 }
 

@@ -32,6 +32,7 @@ extern int zeng_online_client_destroy_room_thread_running;
 extern int zeng_online_client_autojoin_room_thread_running;
 extern int zeng_online_client_disable_autojoin_room_thread_running;
 extern int zeng_online_client_write_message_room_thread_running;
+extern int zeng_online_client_allow_message_room_thread_running;
 
 extern void zeng_online_client_list_rooms(void);
 extern void zeng_online_client_create_room(int room_number,char *room_name);

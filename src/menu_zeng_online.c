@@ -145,6 +145,11 @@ int menu_zeng_online_write_message_room_cond(zxvision_window *w GCC_UNUSED)
 	return !zeng_online_client_write_message_room_thread_running;
 }
 
+int menu_zeng_online_allow_message_room_cond(zxvision_window *w GCC_UNUSED)
+{
+	return !zeng_online_client_allow_message_room_thread_running;
+}
+
 int menu_zeng_online_destroy_room_cond(zxvision_window *w GCC_UNUSED)
 {
 	return !zeng_online_client_destroy_room_thread_running;
@@ -801,6 +806,24 @@ void menu_zeng_online_write_message_room(MENU_ITEM_PARAMETERS)
 
 }
 
+void menu_zeng_online_disallow_message_room(MENU_ITEM_PARAMETERS)
+{
+
+    zeng_online_client_allow_message_room(0);
+
+    zxvision_simple_progress_window("Disallow messages", menu_zeng_online_allow_message_room_cond,menu_zeng_online_connecting_common_print );
+
+}
+
+void menu_zeng_online_allow_message_room(MENU_ITEM_PARAMETERS)
+{
+
+    zeng_online_client_allow_message_room(1);
+
+    zxvision_simple_progress_window("Allow messages", menu_zeng_online_allow_message_room_cond,menu_zeng_online_connecting_common_print );
+
+}
+
 void menu_zeng_online_join_room(MENU_ITEM_PARAMETERS)
 {
 
@@ -933,11 +956,22 @@ void menu_zeng_online(MENU_ITEM_PARAMETERS)
                 menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_join_list,NULL,
                 "Join List","Lista join","Llista join");
 
+
                 menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_autojoin_room,NULL,
                 "Set autojoin","Activar autounir","Activar autounir");
+                menu_add_item_menu_es_avanzado(array_menu_common);
 
                 menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_disable_autojoin_room,NULL,
                 "Reset autojoin","Desactivar autounir","Desactivar autounir");
+                menu_add_item_menu_es_avanzado(array_menu_common);
+
+                menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_allow_message_room,NULL,
+                "Allow broadcast messages","Permitir mensajes difusión","Permetre missatges difusió");
+                menu_add_item_menu_es_avanzado(array_menu_common);
+
+                menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_disallow_message_room,NULL,
+                "Disallow broadcast messages","No permitir mensajes difusión","No permetre missatges difusió");
+                menu_add_item_menu_es_avanzado(array_menu_common);
 
 
                 menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_leave_room_master,NULL,
