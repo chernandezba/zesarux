@@ -429,8 +429,8 @@ int zoc_common_open(void)
 }
 
 
-//Funcion comun para enviar un comando. Retorna 0 si error
-int zoc_common_send_command_and_close(int indice_socket,char *buffer_enviar,char *command_name_for_info)
+//Funcion comun para enviar un comando con una conexion abierta. Retorna 0 si error
+int zoc_common_send_command(int indice_socket,char *buffer_enviar,char *command_name_for_info)
 {
 
     #define ZENG_BUFFER_INITIAL_CONNECT 199
@@ -486,7 +486,22 @@ int zoc_common_send_command_and_close(int indice_socket,char *buffer_enviar,char
 
 }
 
+//Funcion comun para enviar un comando con una conexion abierta y cerrar conexion. Retorna 0 si error
+int zoc_common_send_command_and_close(int indice_socket,char *buffer_enviar,char *command_name_for_info)
+{
 
+    int return_value=zoc_common_send_command(indice_socket,buffer_enviar,command_name_for_info);
+
+
+    if (!return_value) return 0;
+
+
+    //finalizar conexion
+    z_sock_close_connection(indice_socket);
+
+    return 1;
+
+}
 
 //Funcion comun para abrir conexion, enviar comando y cerrar conexion
 //Retorna 0 si error
@@ -497,7 +512,7 @@ int zoc_open_command_close(char *buffer_enviar,char *command_name_for_info)
         return 0;
     }
 
-    debug_printf(VERBOSE_DEBUG,"ZENG: Sending set-autojoin room");
+    debug_printf(VERBOSE_DEBUG,"ZENG Online: Sending %s",command_name_for_info);
 
 
     return zoc_common_send_command_and_close(indice_socket,buffer_enviar,command_name_for_info);
@@ -772,6 +787,20 @@ int zeng_online_client_destroy_room_connect(void)
 
 //Devuelve 0 si no conectado
 int zeng_online_client_disable_autojoin_room_connect(void)
+{
+
+    char buffer_enviar[1024];
+
+    //"reset-autojoin creator_pass n
+    sprintf(buffer_enviar,"zeng-online reset-autojoin %s %d\n",
+        created_room_creator_password,zeng_online_joined_to_room_number);
+
+    return zoc_open_command_close(buffer_enviar,"reset-autojoin");
+
+}
+
+//Devuelve 0 si no conectado
+int zoc_get_message_id(int indice_socket)
 {
 
     char buffer_enviar[1024];
@@ -1980,6 +2009,8 @@ int zoc_get_pending_authorization_size(int indice_socket)
 
 }
 
+int zoc_last_message_id=0;
+
 //En el rejoin como master se aplicara el primer snapshot recibido del server
 int zoc_pending_apply_received_snapshot_as_rejoin_as_master=0;
 
@@ -2023,6 +2054,10 @@ void *zoc_master_thread_function(void *nada GCC_UNUSED)
         debug_printf(VERBOSE_ERR,"ERROR. Can't read remote prompt: %s",z_sock_get_error(leidos));
         return 0;
     }
+
+
+    //Leer id de mensaje de broadcast para saber cuando llega uno nuevo
+    zoc_last_message_id=zoc_get_message_id(indice_socket);
 
     int indice_socket_get_keys=zoc_start_connection_get_keys();
 
