@@ -812,17 +812,60 @@ int zeng_online_client_disable_autojoin_room_connect(void)
 
 }
 
-//Devuelve 0 si no conectado
+//Devuelve -1 si error
 int zoc_get_message_id(int indice_socket)
 {
 
     char buffer_enviar[1024];
 
-    //"reset-autojoin creator_pass n
-    sprintf(buffer_enviar,"zeng-online reset-autojoin %s %d\n",
-        created_room_creator_password,zeng_online_joined_to_room_number);
+    //get-message-id user_pass n
+    sprintf(buffer_enviar,"zeng-online get-message-id %s %d\n",
+        created_room_user_password,zeng_online_joined_to_room_number);
 
-    return zoc_open_command_close(buffer_enviar,"reset-autojoin");
+    #define ZENG_BUFFER_INITIAL_CONNECT 199
+
+    //buffer retorno
+    char buffer[ZENG_BUFFER_INITIAL_CONNECT+1];
+
+    int return_value=zoc_common_send_command_buffer(indice_socket,buffer_enviar,"get-message-id",buffer,ZENG_BUFFER_INITIAL_CONNECT);
+
+    printf("get_message_id: [%s]\n",buffer);
+
+    if (!return_value) {
+        return -1;
+    }
+
+    return parse_string_to_number(buffer);
+
+}
+
+//Devuelve -1 si error
+int zoc_get_message(int indice_socket,char *mensaje)
+{
+    mensaje[0]=0;
+
+    char buffer_enviar[1024];
+
+    //get-message user_pass n
+    sprintf(buffer_enviar,"zeng-online get-message %s %d\n",
+        created_room_user_password,zeng_online_joined_to_room_number);
+
+    #define ZENG_BUFFER_INITIAL_CONNECT 199
+
+    //buffer retorno
+    char buffer[ZENG_BUFFER_INITIAL_CONNECT+1];
+
+    int return_value=zoc_common_send_command_buffer(indice_socket,buffer_enviar,"get-message-id",buffer,ZENG_BUFFER_INITIAL_CONNECT);
+
+    printf("get_message: [%s]\n",buffer);
+
+    if (!return_value) {
+        return -1;
+    }
+
+    strcpy(mensaje,buffer);
+
+    return 0;
 
 }
 
@@ -2021,11 +2064,46 @@ int zoc_get_pending_authorization_size(int indice_socket)
 
 
 }
-
+int contador_obtener_mensajes=0;
 int zoc_last_message_id=0;
 
 //En el rejoin como master se aplicara el primer snapshot recibido del server
 int zoc_pending_apply_received_snapshot_as_rejoin_as_master=0;
+
+void zoc_common_get_messages_slave_master(int indice_socket)
+{
+
+    //Tambien a final de cada frame, y cada 50 veces (o sea 1 segundo), ver si hay pendientes mensajes
+    contador_obtener_mensajes++;
+
+    if ((contador_obtener_mensajes % 50)==0) {
+        int id_actual=zoc_get_message_id(indice_socket);
+        if (id_actual!=zoc_last_message_id) {
+            printf("Hay nuevo mensaje\n");
+            char buffer_mensaje[ZENG_ONLINE_MAX_BROADCAST_MESSAGE_LENGTH+1];
+            zoc_get_message(indice_socket,buffer_mensaje);
+            if (buffer_mensaje[0]) {
+
+                //Y lo mostramos en el footer
+                char mensaje[AUTOSELECTOPTIONS_MAX_FOOTER_LENGTH+ZOC_MAX_NICKNAME_LENGTH+1];
+
+                sprintf(mensaje,"%s",buffer_mensaje);
+
+                //Por si acaso truncar al maximo que permite el footer
+                mensaje[AUTOSELECTOPTIONS_MAX_FOOTER_LENGTH]=0;
+
+                put_footer_first_message(mensaje);
+
+                //Y enviarlo a speech
+                textspeech_print_speech(mensaje);
+
+            }
+
+
+            zoc_last_message_id=id_actual;
+        }
+    }
+}
 
 void *zoc_master_thread_function(void *nada GCC_UNUSED)
 {
@@ -2150,6 +2228,9 @@ void *zoc_master_thread_function(void *nada GCC_UNUSED)
             if ((contador_obtener_autorizaciones % 50)==0) {
                 zoc_get_pending_authorization_size(indice_socket);
             }
+
+            zoc_common_get_messages_slave_master(indice_socket);
+
         }
 
         //TODO: parametro configurable
@@ -2504,6 +2585,8 @@ void *zoc_slave_thread_function(void *nada GCC_UNUSED)
                     }
                 }*/
             }
+
+            zoc_common_get_messages_slave_master(indice_socket);
 
 
         }
