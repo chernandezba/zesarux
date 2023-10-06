@@ -130,6 +130,10 @@ int created_room_user_permissions;
 int param_join_room_number;
 char param_join_room_creator_password[ZENG_ROOM_PASSWORD_LENGTH+1];
 
+//Se indicara que queremos obtener el snapshot que habia ya que estamos reentrando como master
+int zoc_rejoining_as_master=0;
+
+
 //Retornar puerto y hostname del server
 int zeng_online_get_server_and_port(char *buffer_hostname)
 {
@@ -2260,7 +2264,8 @@ void *zoc_master_thread_function(void *nada GCC_UNUSED)
                 }
             }
 
-            //Un master de solo gestion, sin envio de snapshots, recibe snapshots
+            //Un master que recibe snapshots
+            //Esto ya no se usa, era inicialmente un manager que recibia snapshots
             if (created_room_user_permissions & ZENG_ONLINE_PERMISSIONS_GET_SNAPSHOT) {
 
                 printf("Recibiendo snapshot porque somos master manager. contador_segundo=%d\n",contador_segundo);
@@ -2730,7 +2735,9 @@ void zeng_online_client_apply_pending_received_snapshot(void)
         zoc_pending_apply_received_snapshot_as_rejoin_as_master=0;
     }
 
-    //O si somos un master con permisos de get snapshot (o sea un master manager)
+    //O si somos un master con permisos de get snapshot
+    //o sea lo que era inicialmente un manager master, que recibia snapshots
+    //Esto ya no se usa, un manager no recibe snapshots
     else if (zeng_online_i_am_master.v && (created_room_user_permissions & ZENG_ONLINE_PERMISSIONS_GET_SNAPSHOT)) {
         printf("Permitir aplicar snapshot porque somos solo manager\n");
     }
@@ -2801,8 +2808,7 @@ void zoc_stop_slave_thread(void)
 
 
 
-//Se indicara que queremos obtener el snapshot que habia ya que estamos reentrando como master
-int zoc_rejoining_as_master=0;
+
 
 
 void zeng_online_client_prepare_snapshot_if_needed(void)
@@ -2981,6 +2987,10 @@ void zeng_online_client_write_message_room(char *message)
 }
 
 void zeng_online_client_allow_message_room(int allow_disallow)
+{
+}
+
+void zeng_online_client_join_room(int room_number,char *creator_password)
 {
 }
 

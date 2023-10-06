@@ -14466,6 +14466,34 @@ void menu_zeng_do_not_send_input_events(MENU_ITEM_PARAMETERS)
     zeng_do_not_send_input_events ^=1;
 }
 
+char menu_zeng_manual_sync_snapshot_remote_hostname[MAX_ZENG_HOSTNAME]="";
+
+void menu_zeng_manual_sync_snapshot_print(zxvision_window *w)
+{
+    char buf_temp[MAX_ZENG_HOSTNAME+256];
+    sprintf(buf_temp,"Connecting to %s",menu_zeng_manual_sync_snapshot_remote_hostname);
+
+    menu_common_connect_print(w,buf_temp);
+}
+
+int menu_zeng_manual_sync_snapshot_cond(zxvision_window *w GCC_UNUSED)
+{
+	return !zeng_utils_sync_local_to_remote_thread_running;
+}
+
+void menu_zeng_manual_sync_snapshot(MENU_ITEM_PARAMETERS)
+{
+
+
+    if (menu_ventana_scanf("Remote host?",menu_zeng_manual_sync_snapshot_remote_hostname,MAX_ZENG_HOSTNAME)<0) {
+        return;
+    }
+
+    zeng_utils_sync_local_to_remote(menu_zeng_manual_sync_snapshot_remote_hostname);
+
+    zxvision_simple_progress_window("Syncing snapshot", menu_zeng_manual_sync_snapshot_cond,menu_zeng_manual_sync_snapshot_print );
+}
+
 void menu_zeng(MENU_ITEM_PARAMETERS)
 {
         //Dado que es una variable local, siempre podemos usar este nombre array_menu_common
@@ -14519,6 +14547,10 @@ void menu_zeng(MENU_ITEM_PARAMETERS)
 			if (zeng_enabled.v) {
 				menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_send_message,menu_zeng_send_message_cond,"Broadcast message");
 			}
+
+            menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_manual_sync_snapshot,NULL,"Sync snapshot to remote");
 
 
 			menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);

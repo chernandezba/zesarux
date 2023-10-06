@@ -675,15 +675,19 @@ void menu_zeng_online_rejoin_manager_master(MENU_ITEM_PARAMETERS)
             return;
         }
 
-        zoc_rejoining_as_master=1;
+        //Esta variable indica que hay que recibir snapshot inicial (si esta a 1)
+        //como somos un manager, no queremos snapshot inicial
+        //zoc_rejoining_as_master=0;
 
         //join room
         menu_zeng_join_room_aux(room_number,created_room_creator_password);
         //flag que indique a nivel global que somos master, no slave
         zeng_online_i_am_master.v=1;
 
-        //Y me asigno permisos solo de recibir snapshot pero no de envio de snapshot, ni de envio ni recepcion de teclas
-        created_room_user_permissions=ZENG_ONLINE_PERMISSIONS_GET_SNAPSHOT;
+        //Y me asigno permisos de nada, ni recibir snapshot ni envio de snapshot, ni de envio ni recepcion de teclas
+        //solo manager, eso va implicito en el thread de master
+        //created_room_user_permissions=ZENG_ONLINE_PERMISSIONS_GET_SNAPSHOT;
+        created_room_user_permissions=ZENG_ONLINE_PERMISSIONS_SEND_MESSAGE;
 
         zoc_start_master_thread();
 

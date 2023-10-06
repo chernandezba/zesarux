@@ -1260,8 +1260,6 @@ void codetests_messages_debug(char *s)
 }
 
 
-
-
 #ifdef USE_PTHREADS
 
 pthread_t thread_codetests;
@@ -1513,6 +1511,13 @@ void codetests_open_sockets_infinite(void)
 			return;
 		}
 	}
+}
+
+
+#else
+//Funcion vacia para compilacion en entornos sin threads
+void codetests_zengonline_putget_snapshot(void)
+{
 }
 
 

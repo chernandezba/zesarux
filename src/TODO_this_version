@@ -670,4 +670,29 @@ esto permitiria tener un server remoto, que envia snapshots a el mismo, pero ges
 -parece que el bucle de slave no esta saltando cada 20ms, porque? si quito recepcion de snapshot ya si que lo hace bien
 
 -si pongo verbose 3 peta con zeng slave
+
+-perfiles:
+*master: todo
+*slave: casi todo menos enviar snapshots ni administrar
+*manager: solo administrar. no recibe snapshots
+
+-idea para obtener snapshots diferenciales:
+*con una idea similar a visualmem, tener una tabla que indique posiciones modificadas por poke_byte,
+luego se envia un snapshot con solo esas direcciones
+
+Luego al recibir el snapshot desde un slave:
+-obtenemos snapshot id (como ahora)
+-obtener snapshot diferencial. En la primera linea indica el id. si el id es justo el anterior que tenemos+1, aplicar ese diferencial
+Si no, hay que traerse un snapshot completo
+
+
+
+--problema: si se carga un snapshot (con snapshot load) eso no pasa por poke_byte y habria que asignar esa tabla a "todo modificado"
+--problema: el master genera dos snapshot: el mismo que ahora y el diferencial
+--problema: manteniendo misma estructura de bloques de memoria en snapshot, donde ahora hay 1 byte para cada posicion,
+el diferencial tendrá: 2 bytes con la dirección que indica, 1 byte con ese valor de direccion modificado
+Por tanto, un snapshot de mas de 16kb de direcciones modificadas, probablemente no sea factible. Aunque 16kb modificado
+en un frame de video (que es cada cuanto se envia el snapshot?) es mucha modificacion
+-problema: quiza entre cada recepcion de snapshot pasa mas de 1 snapshot de master, por tanto el diferencial casi nunca se aplicara
+
 ---------------

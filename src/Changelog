@@ -10,6 +10,7 @@ Add function to shift bits on Hex Editor
 ZX Vision: improve window title background when not all buttons are visible
 Added GUI Style TempleOS
 Fixed bug on ZRCP when handling simultaneous connections
+Added menu function to sync local snapshot to remote (only needs ZRCP enabled on remote)-> REESCRIBIR ESTE TEXTO!!
 
 Allow to use cpu-step-mode from ZRCP on drivers stdout and simpletext
 

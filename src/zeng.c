@@ -52,6 +52,8 @@ Network Play (not using a central server) related code
 pthread_t thread_zeng;
 pthread_t zeng_thread_connect;
 
+pthread_t thread_zeng_utils_sync_local_to_remote;
+
 #endif
 
 //Si el thread se ha inicializado correctamente
@@ -122,6 +124,8 @@ int return_zeng_send_snapshot_uno_concreto;
 
 int zeng_enable_thread_running=0;
 
+
+int zeng_utils_sync_local_to_remote_thread_running=0;
 
 #ifdef USE_PTHREADS
 
@@ -1163,6 +1167,210 @@ void zeng_add_pending_send_message_footer(char *mensaje)
 
 }
 
+
+char param_zeng_utils_sync_local_to_remote_hostname[MAX_ZENG_HOSTNAME];
+
+//Retornar puerto y hostname del server
+int zeng_utils_sync_local_to_remote_connect_get_server_and_port(char *buffer_hostname)
+{
+
+    strcpy(buffer_hostname,param_zeng_utils_sync_local_to_remote_hostname);
+    int puerto=10000;
+
+    //Ver si se indica puerto con ":"
+    char *existe_puerto=strstr(buffer_hostname,":");
+
+    if (existe_puerto!=NULL) {
+        *existe_puerto=0; //fijar fin de caracter
+
+        //Y leer puerto
+        existe_puerto++;
+        puerto=parse_string_to_number(existe_puerto);
+    }
+
+    return puerto;
+}
+
+char *zeng_utils_sync_local_to_remote_get_snap(void)
+{
+    //Obtener snapshot en memoria
+
+    //zona de memoria donde se guarda el snapshot pero sin pasar a hexa
+    z80_byte *buffer_temp;
+    buffer_temp=malloc(ZRCP_GET_PUT_SNAPSHOT_MEM); //16 MB es mas que suficiente
+
+    if (buffer_temp==NULL) cpu_panic("Can not allocate memory for sending snapshot");
+
+    int longitud;
+
+    save_zsf_snapshot_file_mem(NULL,buffer_temp,&longitud,1);
+
+
+    //temp_memoria_asignada++;
+    //printf("Asignada: %d liberada: %d\n",temp_memoria_asignada,temp_memoria_liberada);
+
+    char *snapshot_mem_hexa=util_malloc(ZRCP_GET_PUT_SNAPSHOT_MEM*2,"Cannot allocate memory for sending snapshot"); //16 MB es mas que suficiente
+
+    int char_destino=0;
+
+    int i;
+
+    for (i=0;i<longitud;i++,char_destino +=2) {
+        sprintf (&snapshot_mem_hexa[char_destino],"%02X",buffer_temp[i]);
+    }
+
+    //metemos salto de linea y 0 al final
+    strcpy (&snapshot_mem_hexa[char_destino],"\n");
+
+
+    printf ("snapshot to send, length: %d\n",longitud);
+
+
+    //Liberar memoria que ya no se usa
+    free(buffer_temp);
+
+    return snapshot_mem_hexa;
+
+}
+
+char *zeng_utils_sync_local_to_remote_connect_mem_hexa;
+
+int zeng_utils_sync_local_to_remote_connect(void)
+{
+
+
+
+    //Enviar snapshot a remoto
+
+    char server[NETWORK_MAX_URL+1];
+    int puerto;
+    puerto=zeng_utils_sync_local_to_remote_connect_get_server_and_port(server);
+
+    int indice_socket=z_sock_open_connection(server,puerto,0,"");
+
+    int contador_obtener_autorizaciones=0;
+
+    if (indice_socket<0) {
+        debug_printf(VERBOSE_ERR,"Error connecting to %s:%d. %s",
+            server,puerto,
+            z_sock_get_error(indice_socket));
+        return 0;
+    }
+
+        int posicion_command;
+
+#define ZENG_BUFFER_INITIAL_CONNECT 199
+
+    //Leer algo
+    char buffer[ZENG_BUFFER_INITIAL_CONNECT+1];
+
+    //int leidos=z_sock_read(indice_socket,buffer,199);
+    int leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)buffer,ZENG_BUFFER_INITIAL_CONNECT,&posicion_command);
+    if (leidos>0) {
+        buffer[leidos]=0; //fin de texto
+        //printf("Received text (length: %d):\n[\n%s\n]\n",leidos,buffer);
+    }
+
+    if (leidos<0) {
+        debug_printf(VERBOSE_ERR,"ERROR. Can't read remote prompt: %s",z_sock_get_error(leidos));
+        return 0;
+    }
+
+        char buffer_comando[200];
+        //printf ("Sending put-snapshot\n");
+        //put-snapshot creator_pass n data
+        //sprintf(buffer_comando,"put-snapshot ");
+
+        //printf("Sending command: [%s]\n",buffer_comando);
+
+        int escritos=z_sock_write_string(indice_socket,"put-snapshot ");
+        //printf("after z_sock_write_string 1\n");
+        if (escritos<0) return escritos;
+
+
+        //TODO esto es ineficiente y que tiene que calcular la longitud. hacer otra z_sock_write sin tener que calcular
+        //printf("before z_sock_write_string 2\n");
+        //printf("Sending snapshot data length: %lu\n",strlen(zoc_send_snapshot_mem_hexa));
+        //printf("First bytes of snapshot: %c%c%c%c\n",
+          //  zoc_send_snapshot_mem_hexa[0],zoc_send_snapshot_mem_hexa[1],zoc_send_snapshot_mem_hexa[2],zoc_send_snapshot_mem_hexa[3]);
+
+        escritos=z_sock_write_string(indice_socket,zeng_utils_sync_local_to_remote_connect_mem_hexa);
+        //printf("after z_sock_write_string 2\n");
+
+        free(zeng_utils_sync_local_to_remote_connect_mem_hexa);
+
+        if (escritos<0) return escritos;
+
+
+
+
+        //buffer[0]=0; //temp para tener buffer limpio
+        //Leer hasta prompt
+        //printf("before zsock_read_all_until_command\n");
+        leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)buffer,ZENG_BUFFER_INITIAL_CONNECT,&posicion_command);
+        //printf("after zsock_read_all_until_command\n");
+
+                if (posicion_command>=1) {
+                    buffer[posicion_command-1]=0;
+                    //debug_printf(VERBOSE_DEBUG,"ZENG: Received text: %s",zoc_get_snapshot_mem_hexa);
+                }
+
+        //TODO gestionar posibles errores
+
+		//finalizar conexion
+        z_sock_close_connection(indice_socket);
+
+    return 1;
+}
+
+void *zeng_utils_sync_local_to_remote_function(void *nada GCC_UNUSED)
+{
+    zeng_utils_sync_local_to_remote_thread_running=1;
+
+	//Conectar a remoto
+
+	if (!zeng_utils_sync_local_to_remote_connect()) {
+		//Desconectar solo si el socket estaba conectado
+
+        //Desconectar los que esten conectados
+        //TODO zeng_disconnect_remote();
+
+		zeng_utils_sync_local_to_remote_thread_running=0;
+		return 0;
+	}
+
+
+	zeng_utils_sync_local_to_remote_thread_running=0;
+
+	return 0;
+
+}
+
+//Utilidad para manualmente sincronizar el estado local to remoto. Esto no es estrictamente ZENG,
+//es ZRCP haciendo uso del comando put-snapshot
+void zeng_utils_sync_local_to_remote(char *hostname)
+{
+
+    strcpy(param_zeng_utils_sync_local_to_remote_hostname,hostname);
+
+
+    //Obtener snapshot en memoria
+    //Esto primero sin thread, pues queremos que la ejecucion se detenga para tener un snapshot estable
+    zeng_utils_sync_local_to_remote_connect_mem_hexa=zeng_utils_sync_local_to_remote_get_snap();
+
+
+
+	if (pthread_create( &thread_zeng_utils_sync_local_to_remote, NULL, &zeng_utils_sync_local_to_remote_function, NULL) ) {
+		debug_printf(VERBOSE_ERR,"Can not create sync snapshot pthread");
+		return;
+	}
+
+	//y pthread en estado detached asi liberara su memoria asociada a thread al finalizar, sin tener que hacer un pthread_join
+	pthread_detach(thread_zeng_utils_sync_local_to_remote);
+
+}
+
+
 #else
 
 //Funciones sin pthreads. ZENG no se llama nunca cuando no hay pthreads, pero hay que crear estas funciones vacias
@@ -1201,6 +1409,10 @@ int zeng_fifo_add_element(zeng_key_presses *elemento)
 int zeng_fifo_read_element(zeng_key_presses *elemento)
 {
     return 1;
+}
+
+void zeng_utils_sync_local_to_remote(char *hostname)
+{
 }
 
 #endif
