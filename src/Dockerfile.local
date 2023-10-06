@@ -3,7 +3,7 @@ FROM debian:bullseye
 RUN apt-get update && apt-get -y install git gcc make libncurses-dev libssl-dev xorg-dev
 RUN apt-get -y install procps vim less tcpdump htop telnet valgrind
 
-COPY *.c *.m *.h *.tpl DEVELOPMENT CHECKLIST configure *.sh *.rom /zesarux/src/
+COPY *.c *.m *.h *.tpl DEVELOPMENT CHECKLIST configure *.sh *.rom *.zsf /zesarux/src/
 COPY my_soft /zesarux/src/my_soft
 COPY tests /zesarux/src/tests
 COPY zxuno.flash /zesarux/src/
