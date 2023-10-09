@@ -3,7 +3,7 @@ Version XI - xxxx edition. 25 September 2023
 Allow to not save configuration when exiting ZEsarUX
 Allow to select normal ZEsarUX logo or X Anniversary logo
 Menus can no longer be minimized (that had no sense)
-Added support for ZENG on curses driver
+Added ZENG support on curses driver
 Allow to save screen to .txt file
 Allow to seng ZENG snapshots more frequently (even every 20 ms)
 Add function to shift bits on Hex Editor
@@ -15,7 +15,8 @@ Added menu function to sync local snapshot to remote (only needs ZRCP enabled on
 Allow to use cpu-step-mode from ZRCP on drivers stdout and simpletext
 
 Added ZRCP commands: open-menu, print-error
-----
+
+----------------------------------------
 
 
 Version X - 10th Anniversary edition. 24 September 2023

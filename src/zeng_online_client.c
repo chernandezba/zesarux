@@ -2920,8 +2920,17 @@ void zeng_online_client_prepare_snapshot_if_needed(void)
 
 					int i;
 
+                    z80_byte *origen=buffer_temp;
+                    char *destino=zoc_send_snapshot_mem_hexa;
+                    z80_byte byte_leido;
+
 					for (i=0;i<longitud;i++,char_destino +=2) {
-						sprintf (&zoc_send_snapshot_mem_hexa[char_destino],"%02X",buffer_temp[i]);
+                        //En vez de sprintf, que es poco optimo, usar alternativa
+						//sprintf (&zoc_send_snapshot_mem_hexa[char_destino],"%02X",buffer_temp[i]);
+                        byte_leido=*origen++;
+                        *destino++=util_byte_to_hex_nibble(byte_leido>>4);
+                        *destino++=util_byte_to_hex_nibble(byte_leido);
+
 					}
 
 					//metemos salto de linea y 0 al final

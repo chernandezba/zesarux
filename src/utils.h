@@ -993,6 +993,7 @@ extern int util_parity(z80_byte value);
 
 extern void util_get_emulator_version_number(char *buffer);
 
+extern char util_byte_to_hex_nibble(z80_byte valor);
 
 //Contando el NULL del final
 #define UTIL_SCANF_HISTORY_MAX_LINES 11

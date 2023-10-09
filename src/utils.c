@@ -21779,3 +21779,12 @@ void util_get_emulator_version_number(char *buffer)
 {
     strcpy (buffer,EMULATOR_NUMBER_VERSION);
 }
+
+char *string_util_byte_to_hex_nibble_characters="0123456789ABCDEF";
+
+//convierte los 4 bits bajos en caracter hexadecimal
+//funcion rapida mejor que hacer sprintf o similar (en teoria mas rapida)
+char util_byte_to_hex_nibble(z80_byte valor)
+{
+    return string_util_byte_to_hex_nibble_characters[valor&15];
+}
