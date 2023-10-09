@@ -21788,3 +21788,12 @@ char util_byte_to_hex_nibble(z80_byte valor)
 {
     return string_util_byte_to_hex_nibble_characters[valor&15];
 }
+
+//convierte una letra hexadecimal en su valor
+//es la funcion inversa de util_byte_to_hex_nibble
+//letras en mayusculas tienen que estar
+z80_byte util_hex_nibble_to_byte(char letra)
+{
+    if (letra>='A') return 10+(letra-'A');
+    else return (letra-'0');
+}

@@ -1309,7 +1309,12 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
         z80_byte valor;
 
 
-        while (*s) {
+        //Se usa un bucle mucho mas rapido que si se usase parse_string_to_number
+        //tiempo mas bajo usando version "lenta" del bucle: 52 microsec
+        //usando version rapida: 7 microsec
+
+
+        /*while (*s) {
             char buffer_valor[4];
             buffer_valor[0]=s[0];
             buffer_valor[1]=s[1];
@@ -1322,6 +1327,15 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
 
             buffer_destino[parametros_recibidos++]=valor;
             //menu_debug_write_mapped_byte(direccion++,valor);
+
+            s++;
+            if (*s) s++;
+        }*/
+
+        z80_byte *destino=buffer_destino;
+        while (*s) {
+            *destino=(util_hex_nibble_to_byte(*s)<<4) | util_hex_nibble_to_byte(*(s+1));
+            destino++;
 
             s++;
             if (*s) s++;
