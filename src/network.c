@@ -992,7 +992,8 @@ void zsock_debug_dump_ascii(char *buffer,int total_leidos)
 }
 
 //devuelve en posicion_command donde empieza el "command>", si es >=0
-int zsock_read_all_until_command(int indice_tabla,z80_byte *buffer,int max_buffer,int *posicion_command)
+//permite establecer maximo reintentos
+int zsock_read_all_until_command_max_reintentos(int indice_tabla,z80_byte *buffer,int max_buffer,int *posicion_command,int max_reintentos)
 {
 
 	//printf ("inicio zsock_read_all_until_command\n");
@@ -1062,12 +1063,23 @@ int zsock_read_all_until_command(int indice_tabla,z80_byte *buffer,int max_buffe
 
 		reintentos++;
 
-		//TODO controlar maximo reintentos
-	} while (!leido_command_prompt && reintentos<500);
-	//5 segundos de reintentos
+
+	} while (!leido_command_prompt && reintentos<max_reintentos);
+
 
 	//TODO: si se llega aqui sin haber recibido command prompt. Se gestionara en retorno mediante posicion_command
 	return total_leidos;
+
+}
+
+//devuelve en posicion_command donde empieza el "command>", si es >=0
+int zsock_read_all_until_command(int indice_tabla,z80_byte *buffer,int max_buffer,int *posicion_command)
+{
+
+    //5 segundos de reintentos
+    return zsock_read_all_until_command_max_reintentos(indice_tabla,buffer,max_buffer,posicion_command,500);
+
+
 
 }
 

@@ -3778,8 +3778,8 @@ Byte fields:
 
   }
 
-
-if (zsf_snap_save_rom.v && MACHINE_IS_SPECTRUM_16_48_128_P2_P2A_P3) {
+//con snapshots de zeng online no enviamos rom
+if (zsf_snap_save_rom.v && MACHINE_IS_SPECTRUM_16_48_128_P2_P2A_P3 && !from_zeng_online) {
 
 
   //Paginas de memoria

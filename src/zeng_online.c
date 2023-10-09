@@ -145,6 +145,7 @@ struct zeng_online_room {
     //Esto es parecido a la compresión de video: se van enviando deltas de diferencias y cada cierto tiempo se envia una imagen entera
     struct s_zeng_online_eventkeys events[ZENG_ONLINE_MAX_EVENTS];
     int index_event;
+    z_atomic_semaphore semaphore_events;
 
     //Mensajes de broadcast
     int broadcast_message_id;
@@ -222,7 +223,12 @@ int join_list_add_element(int room_number,char *nickname)
 //Agregar evento de tecla/joystick
 void zengonline_add_event(int room_number,char *uuid,int tecla,int event_type,int nomenu)
 {
-    //No hace falta semaforos. Escribimos el dato y luego
+    //Para evitar escribir dos a la vez
+	while(z_atomic_test_and_set(&zeng_online_rooms_list[room_number].semaphore_events)) {
+		//printf("Esperando a liberar lock en zengonline_add_event\n");
+	}
+
+
     int index_event=zeng_online_rooms_list[room_number].index_event;
     zeng_online_rooms_list[room_number].events[index_event].tecla=tecla;
     zeng_online_rooms_list[room_number].events[index_event].pressrelease=event_type;
@@ -234,6 +240,11 @@ void zengonline_add_event(int room_number,char *uuid,int tecla,int event_type,in
     if (index_event>=ZENG_ONLINE_MAX_EVENTS) index_event=0;
 
     zeng_online_rooms_list[room_number].index_event=index_event;
+
+
+
+	//Liberar lock
+	z_atomic_reset(&zeng_online_rooms_list[room_number].semaphore_events);
 }
 
 //Obtiene el snapshot de una habitacion y mirando que no haya nadie escribiendo (o sea un put snapshot en curso)
@@ -339,6 +350,7 @@ void init_zeng_online_rooms(void)
 
         z_atomic_reset(&zeng_online_rooms_list[i].mutex_reading_snapshot);
         z_atomic_reset(&zeng_online_rooms_list[i].semaphore_writing_snapshot);
+        z_atomic_reset(&zeng_online_rooms_list[i].semaphore_events);
 
 
     }

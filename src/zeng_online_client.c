@@ -478,7 +478,7 @@ int zoc_common_send_command_buffer(int indice_socket,char *buffer_enviar,char *c
         return 0;
     }
 
-    printf("Retorno %s: [%s]\n",command_name_for_info,buffer);
+    //printf("Retorno %s: [%s]\n",command_name_for_info,buffer);
     //Si hay ERROR
     if (strstr(buffer,"ERROR")!=NULL) {
         debug_printf(VERBOSE_ERR,"Error %s room: %s",command_name_for_info,buffer);
@@ -835,7 +835,7 @@ int zoc_get_message_id(int indice_socket)
 
     int return_value=zoc_common_send_command_buffer(indice_socket,buffer_enviar,"get-message-id",buffer,ZENG_BUFFER_INITIAL_CONNECT);
 
-    printf("get_message_id: [%s]\n",buffer);
+    //printf("get_message_id: [%s]\n",buffer);
 
     if (!return_value) {
         return -1;
@@ -1711,7 +1711,12 @@ void zoc_get_keys(int indice_socket)
 		return;
 	}
 
-    if (!zsock_available_data(sock_number)) return;
+    //printf("see if data available on zoc_get_keys\n");
+
+    if (!zsock_available_data(sock_number)) {
+        //printf("no data available on zoc_get_keys\n");
+        return;
+    }
 
 
 
@@ -1724,6 +1729,7 @@ void zoc_get_keys(int indice_socket)
 
         //printf ("antes de leer hasta command prompt\n");
         int leidos=zsock_read_all_until_newline(indice_socket,(z80_byte *)buffer,1023,&posicion_command);
+        //printf("leidos on zoc_get_keys: %d\n",leidos);
 
         if (leidos>0) {
             buffer[leidos]=0; //fin de texto
@@ -1746,12 +1752,19 @@ void zoc_get_keys(int indice_socket)
                 //printf("procesar linea: [%s]\n",&buffer[inicio_linea]);
                 ////Returned format is: uuid key event nomenu"
 
-                char campo_inicio[10];
-                char campo_final[10];
+                //campo_inicio y final almacenan el caracter "#"
+
+                //La longitud de los campos casi ninguno deberia exceder mas de 4 o 5 caracteres,
+                //pero que dado que podemos haber recibido una respuesta parcial (si la anterior llamada a zsock_read_all_until_newline
+                //no era completa) los campos pueden haber llegado en mal orden y por tanto tendremos que considerar el maximo
+                //ancho de todos los campos, que es STATS_UUID_MAX_LENGTH
+                char campo_inicio[STATS_UUID_MAX_LENGTH+1];
+                char campo_final[STATS_UUID_MAX_LENGTH+1];
+
                 char received_uuid[STATS_UUID_MAX_LENGTH+1];
-                char received_key[10];
-                char received_event[10];
-                char received_nomenu[10];
+                char received_key[STATS_UUID_MAX_LENGTH+1];
+                char received_event[STATS_UUID_MAX_LENGTH+1];
+                char received_nomenu[STATS_UUID_MAX_LENGTH+1];
                 //ir procesando segun espacios
                 int campos_leidos=0;
 
@@ -1760,6 +1773,7 @@ void zoc_get_keys(int indice_socket)
                 for (j=inicio_linea;buffer[j] && campos_leidos<6;j++) {
                     if (buffer[j]==' ') {
                         buffer[j]=0;
+                        //printf("read field: campos_leidos: %d\n",campos_leidos);
                         //printf("read field: [%s]\n",&buffer[inicio_campo]);
 
                         switch(campos_leidos) {
@@ -1843,7 +1857,7 @@ void zoc_get_keys(int indice_socket)
                 }
 
                 else {
-                    //printf("Incorrect answer received\n");
+                    printf("Recibida respuesta incorrecta con diferentes campos de los esperados\n");
                 }
 
 
@@ -1904,9 +1918,10 @@ int zoc_start_connection_get_keys(void)
 
     //int leidos=z_sock_read(indice_socket,buffer,199);
     int leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)buffer_initial,ZENG_BUFFER_INITIAL_CONNECT,&posicion_command);
+    printf("leidos on zoc_start_connection_get_keys: %d\n",leidos);
     if (leidos>0) {
         buffer_initial[leidos]=0; //fin de texto
-        //printf("Received text (length: %d):\n[\n%s\n]\n",leidos,buffer);
+        printf("Received text on zoc_start_connection_get_keys (length: %d):\n[\n%s\n]\n",leidos,buffer_initial);
     }
 
     if (leidos<0) {
@@ -1944,8 +1959,11 @@ int error_desconectar=0;
 
 
 
-        //printf ("antes de leer hasta command prompt\n");
-        int leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)buffer_initial,ZENG_BUFFER_INITIAL_CONNECT,&posicion_command);
+        printf ("before read command sending get-keys on zoc_start_connection_get_keys\n");
+        //1 segundo maximo de reintentos
+        //sobretodo util en la primera conexion, dado que el buffer vendra vacio, siempre esperara 1 segundo
+        int leidos=zsock_read_all_until_command_max_reintentos(indice_socket,(z80_byte *)buffer_initial,ZENG_BUFFER_INITIAL_CONNECT,&posicion_command,100);
+        printf ("after read command sending get-keys on zoc_start_connection_get_keys. leidos=%d\n",leidos);
 
         if (leidos>0) {
             buffer_initial[leidos]=0; //fin de texto
@@ -2246,6 +2264,8 @@ void *zoc_master_thread_function(void *nada GCC_UNUSED)
             //sin que envie snapshots o reciba teclas o envie teclas, se le pueden quitar dichos permisos,
             //y podremos gestionar el resto
 
+            //printf("before get snapshot\n");
+
             if (created_room_user_permissions & ZENG_ONLINE_PERMISSIONS_PUT_SNAPSHOT) {
 
 
@@ -2455,6 +2475,9 @@ int zoc_receive_snapshot(int indice_socket)
                     //printf("before zsock_read_all_until_command\n");
                     leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)zoc_get_snapshot_mem_hexa,ZRCP_GET_PUT_SNAPSHOT_MEM*2,&posicion_command);
 
+                    //printf("leidos despues de get-snapshot: %d\n",leidos);
+
+
                     if (leidos>0) {
                         zoc_get_snapshot_mem_hexa[leidos]=0; //fin de texto
                         debug_printf(VERBOSE_DEBUG,"ZENG: Received text for get-snapshot (length %d): \n[\n%s\n]",leidos,zoc_get_snapshot_mem_hexa);
@@ -2475,7 +2498,7 @@ int zoc_receive_snapshot(int indice_socket)
                         //debug_printf(VERBOSE_DEBUG,"ZENG: Received text: %s",zoc_get_snapshot_mem_hexa);
                     }
                     else {
-                        debug_printf (VERBOSE_ERR,"Error receiving ZEsarUX zeng-online create-room");
+                        debug_printf (VERBOSE_ERR,"Error receiving ZEsarUX zeng-online get-snapshot");
                         return 0;
                     }
 

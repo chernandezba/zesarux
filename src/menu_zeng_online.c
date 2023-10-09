@@ -878,6 +878,11 @@ void menu_zeng_online_join_room(MENU_ITEM_PARAMETERS)
     }
 }
 
+int menu_zeng_online_not_connected_cond(void)
+{
+    return !zeng_online_connected.v;
+}
+
 void menu_zeng_online(MENU_ITEM_PARAMETERS)
 {
     menu_item *array_menu_common;
@@ -886,17 +891,25 @@ void menu_zeng_online(MENU_ITEM_PARAMETERS)
     do {
 
 
-        menu_add_item_menu_en_es_ca_inicial(&array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_server,NULL,
+        menu_add_item_menu_en_es_ca_inicial(&array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_server,menu_zeng_online_not_connected_cond,
             "~~Server","~~Servidor","~~Servidor");
         char string_zeng_online_server[16];
         menu_tape_settings_trunc_name(zeng_online_server,string_zeng_online_server,16);
         menu_add_item_menu_prefijo_format(array_menu_common,"[%s] ",string_zeng_online_server);
         menu_add_item_menu_shortcut(array_menu_common,'s');
 
-        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_nickname,NULL,
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_nickname,menu_zeng_online_not_connected_cond,
             "~~Nickname","~~Nickname","~~Nickname");
         menu_add_item_menu_prefijo_format(array_menu_common,"[%s] ",zeng_online_nickname);
         menu_add_item_menu_shortcut(array_menu_common,'n');
+
+        if (zeng_online_connected.v) {
+            //Texto de connected con parpadeo
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,
+                "^^Connected^^ to server","^^Conectado^^ al servidor","^^Connectat^^ al servidor");
+        }
+
+        menu_add_item_menu_separator(array_menu_common);
 
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_list_rooms_menu_item,NULL,
             "List rooms","Listar habitaciones","Llistar habitacions");

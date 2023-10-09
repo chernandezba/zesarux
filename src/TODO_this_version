@@ -695,4 +695,10 @@ Por tanto, un snapshot de mas de 16kb de direcciones modificadas, probablemente 
 en un frame de video (que es cada cuanto se envia el snapshot?) es mucha modificacion
 -problema: quiza entre cada recepcion de snapshot pasa mas de 1 snapshot de master, por tanto el diferencial casi nunca se aplicara
 
+
+-semaforo cuando se agrega elemento en fifo, o puede coincidir que se pulsa tecla cuando se está enviando al servidor
+Esto implicara semaforo en zeng_fifo_add_element, zeng_fifo_read_element y en todos sitios que usen esto, o sea,
+zeng online y zeng no-online
+
+
 ---------------
