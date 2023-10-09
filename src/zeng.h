@@ -77,6 +77,8 @@ extern z80_bit zeng_force_reconnect_failed_retries;
 
 extern int zeng_utils_sync_local_to_remote_thread_running;
 
+extern void zeng_utils_sync_local_to_remote(char *hostname);
+
 #define MAX_ZENG_HOSTNAME 256
 
 #endif

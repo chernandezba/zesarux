@@ -80,6 +80,7 @@ extern long zeng_online_get_last_list_rooms_latency(void);
 
 extern char created_room_creator_password[];
 extern int created_room_user_permissions;
+extern void zoc_show_bottom_line_footer_connected(void);
 
 
 //5 segundos de timeout, para aceptar teclas slave si no hay snapshot

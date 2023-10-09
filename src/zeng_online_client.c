@@ -184,7 +184,7 @@ void zoc_show_bottom_line_footer_connected(void)
 #ifdef USE_PTHREADS
 
 //Funciones que usan pthreads
-
+int zoc_receive_snapshot(int indice_socket);
 
 
 //Devuelve 0 si no conectado
