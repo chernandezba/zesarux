@@ -2916,7 +2916,7 @@ void zeng_online_client_prepare_snapshot_if_needed(void)
 
 					if (zoc_send_snapshot_mem_hexa==NULL) zoc_send_snapshot_mem_hexa=malloc(ZRCP_GET_PUT_SNAPSHOT_MEM*2); //16 MB es mas que suficiente
 
-					int char_destino=0;
+					//int char_destino=0;
 
 					int i;
 
@@ -2924,19 +2924,25 @@ void zeng_online_client_prepare_snapshot_if_needed(void)
                     char *destino=zoc_send_snapshot_mem_hexa;
                     z80_byte byte_leido;
 
-					for (i=0;i<longitud;i++,char_destino +=2) {
+					for (i=0;i<longitud;i++/*,char_destino +=2*/) {
                         //En vez de sprintf, que es poco optimo, usar alternativa
+                        //Comparativa: con un snapshot con un di y un jp 16384, tarda
+                        //con sprintf: 116 microsegundos el tiempo mas bajo
+                        //con util_byte_to_hex_nibble: 5 microsegundos el tiempo mas bajo
 						//sprintf (&zoc_send_snapshot_mem_hexa[char_destino],"%02X",buffer_temp[i]);
                         byte_leido=*origen++;
                         *destino++=util_byte_to_hex_nibble(byte_leido>>4);
                         *destino++=util_byte_to_hex_nibble(byte_leido);
-
 					}
 
-					//metemos salto de linea y 0 al final
-					strcpy (&zoc_send_snapshot_mem_hexa[char_destino],"\n");
 
-					debug_printf (VERBOSE_DEBUG,"ZENG Online: Queuing snapshot to send, length: %d",longitud);
+
+					//metemos salto de linea y 0 al final
+					//strcpy (&zoc_send_snapshot_mem_hexa[char_destino],"\n");
+                    *destino++ ='\n';
+                    *destino++ =0;
+
+
 
                     //printf ("ZENG Online: Queuing snapshot to send, length: %d\n",longitud);
 
@@ -2946,6 +2952,8 @@ void zeng_online_client_prepare_snapshot_if_needed(void)
 
 
 					zoc_pending_send_snapshot=1;
+
+                    debug_printf (VERBOSE_DEBUG,"ZENG Online: Queuing snapshot to send, length: %d",longitud);
 
 
 				}
