@@ -46,6 +46,8 @@ extern void zeng_online_client_disable_autojoin_room(void);
 extern void zeng_online_client_write_message_room(char *message);
 extern void zeng_online_client_allow_message_room(int allow_disallow);
 
+extern char *zoc_return_connected_status(void);
+
 extern void zoc_stop_master_thread(void);
 extern void zoc_stop_slave_thread(void);
 
@@ -78,5 +80,9 @@ extern long zeng_online_get_last_list_rooms_latency(void);
 
 extern char created_room_creator_password[];
 extern int created_room_user_permissions;
+
+
+//5 segundos de timeout, para aceptar teclas slave si no hay snapshot
+#define ZOC_TIMEOUT_NO_SNAPSHOT 250
 
 #endif

@@ -160,6 +160,21 @@ long zeng_online_get_last_list_rooms_latency(void)
     return zeng_online_last_list_rooms_latency;
 }
 
+
+
+char *string_zoc_return_connected_status_offline="OFFLINE";
+char *string_zoc_return_connected_status_online="ONLINE";
+
+//Retorna estado de conexion de zeng, asumiendo que está conectado:
+//Si no ha habido timeout recibiendo snapshots, "ONLINE"
+//Si ha habido timeout recibiendo snapshots y por tanto ahora permitimos teclas, "OFFLINE"
+char *zoc_return_connected_status(void)
+{
+    if (zoc_last_snapshot_received_counter==0) return string_zoc_return_connected_status_offline;
+    else return string_zoc_return_connected_status_online;
+}
+
+
 #ifdef USE_PTHREADS
 
 //Funciones que usan pthreads
@@ -2208,6 +2223,8 @@ void *zoc_master_thread_function(void *nada GCC_UNUSED)
 {
 
     //conectar a remoto
+    //Inicializar timeout para no recibir tempranos mensajes de "OFFLINE"
+    zoc_last_snapshot_received_counter=ZOC_TIMEOUT_NO_SNAPSHOT;
 
     //zeng_remote_list_rooms_buffer[0]=0;
 
@@ -2587,6 +2604,8 @@ void *zoc_slave_thread_function(void *nada GCC_UNUSED)
 {
 
     //conectar a remoto
+    //Inicializar timeout para no recibir tempranos mensajes de "OFFLINE"
+    zoc_last_snapshot_received_counter=ZOC_TIMEOUT_NO_SNAPSHOT;
 
     //zeng_remote_list_rooms_buffer[0]=0;
 
@@ -2779,12 +2798,13 @@ void zeng_online_client_apply_pending_received_snapshot(void)
 
     zoc_pending_apply_received_snapshot=0;
 
+    //Si estaba offline, reactualizamos
     if (zoc_last_snapshot_received_counter==0) {
         generic_footertext_print_operating("ONLINE");
     }
 
     //5 segundos de timeout, para aceptar teclas slave si no hay snapshot
-    zoc_last_snapshot_received_counter=250;
+    zoc_last_snapshot_received_counter=ZOC_TIMEOUT_NO_SNAPSHOT;
 
     //zeng_online_client_reset_scanline_counter();
 
@@ -2939,6 +2959,7 @@ void zeng_online_client_end_frame_from_core_functions(void)
 
             if (zoc_last_snapshot_received_counter==0) {
                 printf("Timeout receiving snapshots from master. Allowing local key press\n");
+                menu_footer_bottom_line();
                 generic_footertext_print_operating("OFFLIN");
             }
 
