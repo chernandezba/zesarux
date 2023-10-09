@@ -2800,6 +2800,7 @@ void zeng_online_client_apply_pending_received_snapshot(void)
 
     //Si estaba offline, reactualizamos
     if (zoc_last_snapshot_received_counter==0) {
+        menu_footer_bottom_line(); //Para actualizar la linea de abajo del todo con texto ZEsarUX version bla bla - ONLINE
         generic_footertext_print_operating("ONLINE");
     }
 
@@ -2959,7 +2960,7 @@ void zeng_online_client_end_frame_from_core_functions(void)
 
             if (zoc_last_snapshot_received_counter==0) {
                 printf("Timeout receiving snapshots from master. Allowing local key press\n");
-                menu_footer_bottom_line();
+                menu_footer_bottom_line(); //Para actualizar la linea de abajo del todo con texto ZEsarUX version bla bla - OFFLINE
                 generic_footertext_print_operating("OFFLIN");
             }
 
