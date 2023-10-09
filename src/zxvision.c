@@ -83,6 +83,7 @@
 #include "pcw.h"
 #include "pd765.h"
 #include "dsk.h"
+#include "zeng_online_client.h"
 
 #if defined(__APPLE__)
 	#include <sys/syslimits.h>
@@ -3912,10 +3913,10 @@ void menu_footer_z88(void)
 int menu_si_mostrar_footer_f5_menu(void)
 {
 	if (!MACHINE_IS_Z88)  {
-					//Y si no hay texto por encima de cinta autodetectada
-					if (tape_options_set_first_message_counter==0 && tape_options_set_second_message_counter==0) {
-							return 1;
-					}
+        //Y si no hay texto por encima de cinta autodetectada
+        if (tape_options_set_first_message_counter==0 && tape_options_set_second_message_counter==0) {
+            return 1;
+        }
 	}
 
 	return 0;
@@ -3924,18 +3925,18 @@ int menu_si_mostrar_footer_f5_menu(void)
 void menu_footer_f5_menu(void)
 {
 
-        //Decir F5 menu en linea de tarjetas de memoria de z88
-        //Y si es la primera vez
-        if (menu_si_mostrar_footer_f5_menu() ) {
-												//Borrar antes con espacios si hay algo               //01234567890123456789012345678901
-												//Sucede que al cargar emulador con un tap, se pone abajo primero el nombre de emulador y version,
-												//y cuando se quita el splash, se pone este texto. Si no pongo espacios, se mezcla parte del texto de F5 menu etc con la version del emulador
+    //Decir F5 menu en linea de tarjetas de memoria de z88
+    //Y si es la primera vez
+    if (menu_si_mostrar_footer_f5_menu() ) {
+        //Borrar antes con espacios si hay algo               //01234567890123456789012345678901
+        //Sucede que al cargar emulador con un tap, se pone abajo primero el nombre de emulador y version,
+        //y cuando se quita el splash, se pone este texto. Si no pongo espacios, se mezcla parte del texto de F5 menu etc con la version del emulador
 
-												menu_putstring_footer(0,WINDOW_FOOTER_ELEMENT_Y_F5MENU,"                                ",WINDOW_FOOTER_INK,WINDOW_FOOTER_PAPER);
-                        char texto_f_menu[32];
-                        sprintf(texto_f_menu,"%s Menu",openmenu_key_message);
-                        menu_putstring_footer(0,WINDOW_FOOTER_ELEMENT_Y_F5MENU,texto_f_menu,WINDOW_FOOTER_INK,WINDOW_FOOTER_PAPER);
-				}
+        menu_putstring_footer(0,WINDOW_FOOTER_ELEMENT_Y_F5MENU,"                                ",WINDOW_FOOTER_INK,WINDOW_FOOTER_PAPER);
+        char texto_f_menu[32];
+        sprintf(texto_f_menu,"%s Menu",openmenu_key_message);
+        menu_putstring_footer(0,WINDOW_FOOTER_ELEMENT_Y_F5MENU,texto_f_menu,WINDOW_FOOTER_INK,WINDOW_FOOTER_PAPER);
+    }
 
 
 }
@@ -3945,7 +3946,25 @@ void menu_footer_zesarux_emulator(void)
 
 	if (menu_si_mostrar_footer_f5_menu() ) {
 		debug_printf (VERBOSE_DEBUG,"Showing ZEsarUX footer message");
-		menu_putstring_footer(0,WINDOW_FOOTER_ELEMENT_Y_ZESARUX_EMULATOR,"ZEsarUX emulator v."EMULATOR_VERSION,WINDOW_FOOTER_INK,WINDOW_FOOTER_PAPER);
+
+        //Si esta zeng online conectado, alterar algo el mensaje
+
+        //01234567890123456789012345678901
+        //ZEsarUX emulator v.11 - ONLINE
+        //ZEsarUX emulator v.11-RC3 - ONLINE
+        //Aunque ocupe algo mas, por alguna version beta, no deberia pasar nada pues el putchar en el footer controla margenes
+        char buffer_footer[100];
+
+        if (zeng_online_connected.v) {
+            sprintf(buffer_footer,"ZEsarUX emulator v."EMULATOR_VERSION " - ONLINE");
+        }
+
+        else {
+            sprintf(buffer_footer,"ZEsarUX emulator v."EMULATOR_VERSION);
+        }
+
+		menu_putstring_footer(0,WINDOW_FOOTER_ELEMENT_Y_ZESARUX_EMULATOR,buffer_footer,WINDOW_FOOTER_INK,WINDOW_FOOTER_PAPER);
+
 	}
 
 }

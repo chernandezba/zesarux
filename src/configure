@@ -1592,7 +1592,7 @@ snap_zx8081.o: snap_zx8081.c snap_zx8081.h cpu.h debug.h operaciones.h zx8081.h 
 snap_rzx.o: snap_rzx.c snap_rzx.h snap.h cpu.h debug.h operaciones.h utils.h zxvision.h screen.h
 	\$(CC) \$(CFLAGS) -c snap_rzx.c
 
-zxvision.o: zxvision.c zxvision.h menu_items.h menu_items_settings.h menu_bitmaps.h menu_debug_cpu.h menu_file_viewer_browser.h screen.h cpu.h start.h debug.h ay38912.h tape.h audio.h timer.h operaciones.h utils.h joystick.h ula.h realjoystick.h scrstdout.h autoselectoptions.h charset.h chardetect.h textspeech.h prism.h cpc.h sam.h tbblue.h remote.h tsconf.h settings.h stats.h network.h ql.h zvfs.h menu_filesel.h pd765.h dsk.h
+zxvision.o: zxvision.c zxvision.h menu_items.h menu_items_settings.h menu_bitmaps.h menu_debug_cpu.h menu_file_viewer_browser.h screen.h cpu.h start.h debug.h ay38912.h tape.h audio.h timer.h operaciones.h utils.h joystick.h ula.h realjoystick.h scrstdout.h autoselectoptions.h charset.h chardetect.h textspeech.h prism.h cpc.h sam.h tbblue.h remote.h tsconf.h settings.h stats.h network.h ql.h zvfs.h menu_filesel.h pd765.h dsk.h zeng_online_client.h
 	\$(CC) \$(CFLAGS) -c zxvision.c
 
 menu_filesel.o: menu_filesel.c menu_filesel.h zxvision.h menu_file_viewer_browser.h screen.h cpu.h debug.h timer.h utils.h compileoptions.h ff.h diskio.h zvfs.h snap.h joystick.h textspeech.h network.h ula.h

@@ -685,8 +685,6 @@ Luego al recibir el snapshot desde un slave:
 -obtener snapshot diferencial. En la primera linea indica el id. si el id es justo el anterior que tenemos+1, aplicar ese diferencial
 Si no, hay que traerse un snapshot completo
 
-
-
 --problema: si se carga un snapshot (con snapshot load) eso no pasa por poke_byte y habria que asignar esa tabla a "todo modificado"
 --problema: el master genera dos snapshot: el mismo que ahora y el diferencial
 --problema: manteniendo misma estructura de bloques de memoria en snapshot, donde ahora hay 1 byte para cada posicion,
