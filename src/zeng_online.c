@@ -908,7 +908,7 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
 
         //No hace falta indicar room number dado que solo se mostraran mensajes de nuestro room
         sprintf(zeng_online_rooms_list[room_number].broadcast_message,
-            "Message from user %s: %s",
+            "Message from %s: %s",
             comando_argv[3],
             comando_argv[4]);
 

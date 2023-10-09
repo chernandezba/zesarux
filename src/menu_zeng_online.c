@@ -808,6 +808,9 @@ void menu_zeng_online_write_message_room(MENU_ITEM_PARAMETERS)
 
     zxvision_simple_progress_window("Write message room", menu_zeng_online_write_message_room_cond,menu_zeng_online_connecting_common_print );
 
+    //Cerrar menus. es una accion tipica que escribes un mensaje y quieres volver al momento al juego
+    salir_todos_menus=1;
+
 }
 
 void menu_zeng_online_disallow_message_room(MENU_ITEM_PARAMETERS)
