@@ -601,6 +601,10 @@ void menu_zeng_online_create_room(MENU_ITEM_PARAMETERS)
 
         menu_zoc_join_master_aux(room_number);
 
+        menu_generic_message_splash("Create room","Created room and joined as master");
+
+        zoc_show_bottom_line_footer_connected();
+
 
     }
 }
@@ -638,6 +642,10 @@ void menu_zeng_online_rejoin_master(MENU_ITEM_PARAMETERS)
 
         zoc_rejoining_as_master=1;
         menu_zoc_join_master_aux(room_number);
+
+        menu_generic_message_splash("Rejoin as master","Rejoined as master");
+
+        zoc_show_bottom_line_footer_connected();
 
 
     }
@@ -753,6 +761,10 @@ void menu_zeng_online_leave_room_slave(MENU_ITEM_PARAMETERS)
 
         menu_generic_message_splash("Leave room","Left room");
 
+        printf("Estado conexion: %d\n",zeng_online_connected.v);
+
+        zoc_show_bottom_line_footer_connected();
+
 
     }
 }
@@ -765,6 +777,8 @@ void menu_zeng_online_leave_room_master(MENU_ITEM_PARAMETERS)
         menu_zeng_online_leave_room_master_aux();
 
         menu_generic_message_splash("Leave room","Left room");
+
+        zoc_show_bottom_line_footer_connected(); //Para actualizar la linea de abajo del todo con texto ZEsarUX version bla bla
 
     }
 }
@@ -876,6 +890,11 @@ void menu_zeng_online_join_room(MENU_ITEM_PARAMETERS)
         //zoc_start_keys_receiving();
 
         zoc_start_slave_thread();
+
+        menu_generic_message_splash("Join room","Room joined");
+
+
+        zoc_show_bottom_line_footer_connected();
 
 
     }
