@@ -160,6 +160,11 @@ int menu_zeng_online_list_rooms_cond(zxvision_window *w GCC_UNUSED)
 	return !zeng_online_client_list_rooms_thread_running;
 }
 
+int menu_zeng_online_list_users_cond(zxvision_window *w GCC_UNUSED)
+{
+	return !zeng_online_client_list_users_thread_running;
+}
+
 int menu_zeng_online_join_list_cond(zxvision_window *w GCC_UNUSED)
 {
 	return !zeng_online_client_join_list_thread_running;
@@ -714,6 +719,28 @@ void menu_zeng_online_list_rooms_menu_item(MENU_ITEM_PARAMETERS)
 
 }
 
+void menu_zeng_online_list_users(MENU_ITEM_PARAMETERS)
+{
+
+
+    //Lanzar el thread de listar users
+    zeng_online_client_list_users();
+
+    contador_menu_zeng_connect_print=0;
+
+
+    zxvision_simple_progress_window("ZENG Online connection", menu_zeng_online_list_users_cond,menu_zeng_online_connecting_common_print );
+
+    if (zeng_online_client_list_users_thread_running) {
+        menu_warn_message("Connection has not finished yet");
+    }
+
+    if (zeng_remote_list_users_buffer[0]!=0) {
+        menu_generic_message("Joined users",zeng_remote_list_users_buffer);
+    }
+
+}
+
 void menu_zeng_online_leave_room_master_aux(void)
 {
 
@@ -985,6 +1012,10 @@ void menu_zeng_online(MENU_ITEM_PARAMETERS)
             );
             menu_add_item_menu_es_avanzado(array_menu_common);
 
+
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_list_users,NULL,
+            "List users","Listar usuarios","Llistar usuaris");
+            menu_add_item_menu_es_avanzado(array_menu_common);
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_write_message_room,NULL,
                 "Broadcast message","Mensaje difusión","Missatge difusió");

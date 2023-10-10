@@ -74,6 +74,7 @@ pthread_t thread_zeng_online_client_autojoin_room;
 pthread_t thread_zeng_online_client_disable_autojoin_room;
 pthread_t thread_zeng_online_client_write_message_room;
 pthread_t thread_zeng_online_client_allow_message_room;
+pthread_t thread_zeng_online_client_list_users;
 
 
 #endif
@@ -90,6 +91,7 @@ int zeng_online_client_autojoin_room_thread_running=0;
 int zeng_online_client_disable_autojoin_room_thread_running=0;
 int zeng_online_client_write_message_room_thread_running=0;
 int zeng_online_client_allow_message_room_thread_running=0;
+int zeng_online_client_list_users_thread_running=0;
 
 z80_bit zeng_online_i_am_master={0};
 //z80_bit zeng_online_i_am_joined={0};
@@ -412,6 +414,106 @@ int zeng_online_client_list_rooms_connect(void)
 	return 1;
 }
 
+char *zeng_remote_list_users_buffer=NULL;
+
+//Devuelve 0 si no conectado
+int zeng_online_client_list_users_connect(void)
+{
+
+
+
+        //Calculo aproximado de memoria necesaria para listado de usuarios
+        int espacio_necesario=ZENG_ONLINE_MAX_PLAYERS_PER_ROOM*(ZOC_MAX_NICKNAME_LENGTH+STATS_UUID_MAX_LENGTH+30); //+30 mas que suficiente margen
+
+
+
+		debug_printf(VERBOSE_DEBUG,"ZENG Online: Getting zeng-online users");
+        if (zeng_remote_list_users_buffer==NULL) {
+
+            zeng_remote_list_users_buffer=util_malloc(espacio_necesario,"Can not allocate memory for getting list-users");
+
+        }
+        zeng_remote_list_users_buffer[0]=0;
+
+
+
+        char server[NETWORK_MAX_URL+1];
+        int puerto;
+        puerto=zeng_online_get_server_and_port(server);
+
+		int indice_socket=z_sock_open_connection(server,puerto,0,"");
+
+
+
+
+		if (indice_socket<0) {
+			debug_printf(VERBOSE_ERR,"Error connecting to %s:%d. %s",
+                server,puerto,
+                z_sock_get_error(indice_socket));
+			return 0;
+		}
+
+		 int posicion_command;
+
+#define ZENG_BUFFER_INITIAL_CONNECT 199
+
+		//Leer algo
+		char buffer[ZENG_BUFFER_INITIAL_CONNECT+1];
+
+		//int leidos=z_sock_read(indice_socket,buffer,199);
+		int leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)buffer,ZENG_BUFFER_INITIAL_CONNECT,&posicion_command);
+		if (leidos>0) {
+			buffer[leidos]=0; //fin de texto
+			//printf("Received text (length: %d):\n[\n%s\n]\n",leidos,buffer);
+		}
+
+		if (leidos<0) {
+			debug_printf(VERBOSE_ERR,"ERROR. Can't read remote prompt: %s",z_sock_get_error(leidos));
+			return 0;
+		}
+
+        char buffer_comando[200];
+        sprintf(buffer_comando,"zeng-online list-users %s %d\n",created_room_user_password,zeng_online_joined_to_room_number);
+
+		int escritos=z_sock_write_string(indice_socket,buffer_comando);
+
+		if (escritos<0) {
+			debug_printf(VERBOSE_ERR,"ERROR. Can't send zeng-online list-users: %s",z_sock_get_error(escritos));
+			return 0;
+		}
+
+		leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)zeng_remote_list_users_buffer,espacio_necesario,&posicion_command);
+		if (leidos>0) {
+			buffer[leidos]=0; //fin de texto
+			debug_printf(VERBOSE_DEBUG,"ZENG: Received text for zeng-online list-users (length %d): \n[\n%s\n]",leidos,zeng_remote_list_users_buffer);
+		}
+
+		if (leidos<0) {
+			debug_printf(VERBOSE_ERR,"ERROR. Can't receive zeng-online list-users: %s %s",zeng_remote_list_users_buffer,z_sock_get_error(leidos));
+			return 0;
+		}
+
+		//1 mas para eliminar el salto de linea anterior a "command>"
+		if (posicion_command>=1) {
+			zeng_remote_list_users_buffer[posicion_command-1]=0;
+			debug_printf(VERBOSE_DEBUG,"ZENG: Received zeng-online list-users: %s",zeng_remote_list_users_buffer);
+		}
+		else {
+			debug_printf (VERBOSE_ERR,"Error receiving ZEsarUX zeng-online list-users");
+			return 0;
+		}
+
+        printf("usuarios: %s\n",zeng_remote_list_users_buffer);
+
+		//finalizar conexion
+        z_sock_close_connection(indice_socket);
+
+
+
+	//zeng_remote_socket=indice_socket;
+
+	return 1;
+}
 
 //Retorna -1 si error.
 //Si no error, retorna indice_socket
@@ -1097,6 +1199,39 @@ void *zeng_online_client_list_rooms_function(void *nada GCC_UNUSED)
 }
 
 
+void *zeng_online_client_list_users_function(void *nada GCC_UNUSED)
+{
+
+	zeng_online_client_list_users_thread_running=1;
+
+
+
+	//Conectar a remoto
+
+	if (!zeng_online_client_list_users_connect()) {
+		//Desconectar solo si el socket estaba conectado
+
+        //Desconectar los que esten conectados
+        //TODO zeng_disconnect_remote();
+
+		zeng_online_client_list_users_thread_running=0;
+		return 0;
+	}
+
+
+
+
+
+
+	//zeng_enabled.v=1;
+
+
+	zeng_online_client_list_users_thread_running=0;
+
+	return 0;
+
+}
+
 void *zeng_online_client_join_list_function(void *nada GCC_UNUSED)
 {
 
@@ -1176,6 +1311,22 @@ void zeng_online_client_list_rooms(void)
 
 	//y pthread en estado detached asi liberara su memoria asociada a thread al finalizar, sin tener que hacer un pthread_join
 	pthread_detach(thread_zeng_online_client_list_rooms);
+
+
+}
+
+void zeng_online_client_list_users(void)
+{
+
+	//Inicializar thread
+
+	if (pthread_create( &thread_zeng_online_client_list_users, NULL, &zeng_online_client_list_users_function, NULL) ) {
+		debug_printf(VERBOSE_ERR,"Can not create zeng online list users pthread");
+		return;
+	}
+
+	//y pthread en estado detached asi liberara su memoria asociada a thread al finalizar, sin tener que hacer un pthread_join
+	pthread_detach(thread_zeng_online_client_list_users);
 
 
 }
@@ -1327,7 +1478,7 @@ int zeng_online_client_join_room_connect(void)
 
 
 
-        zeng_remote_list_rooms_buffer[0]=0;
+        //zeng_remote_list_rooms_buffer[0]=0;
 
         char server[NETWORK_MAX_URL+1];
         int puerto;
@@ -3062,6 +3213,10 @@ void zeng_online_client_allow_message_room(int allow_disallow)
 }
 
 void zeng_online_client_join_room(int room_number,char *creator_password)
+{
+}
+
+void zeng_online_client_list_users(void)
 {
 }
 
