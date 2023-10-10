@@ -983,9 +983,8 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
         int i;
         for (i=0;i<zeng_online_rooms_list[room_number].max_players;i++) {
             if (zeng_online_rooms_list[room_number].joined_users[i][0]) {
-                escribir_socket_format(misocket,"%s %s\n",
-                    zeng_online_rooms_list[room_number].joined_users[i],
-                    zeng_online_rooms_list[room_number].joined_users_uuid[i]);
+                escribir_socket_format(misocket,"%s\n",
+                    zeng_online_rooms_list[room_number].joined_users[i]);
             }
         }
 
