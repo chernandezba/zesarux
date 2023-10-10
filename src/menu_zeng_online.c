@@ -891,10 +891,12 @@ void menu_zeng_online_join_room(MENU_ITEM_PARAMETERS)
 
         zoc_start_slave_thread();
 
-        menu_generic_message_splash("Join room","Room joined");
 
+        if (zeng_online_connected.v) {
+            menu_generic_message_splash("Join room","Room joined");
+            zoc_show_bottom_line_footer_connected();
+        }
 
-        zoc_show_bottom_line_footer_connected();
 
 
     }

@@ -568,11 +568,14 @@ int zeng_online_client_leave_room_connect(void)
 
     int return_value=zoc_open_command_close(buffer_enviar,"leave");
 
-    //Desconectar solo si no ha habido error
+    //Desconectar aunque haya habido error
     if (return_value) {
         printf("Desconexion ok\n");
-        zeng_online_connected.v=0;
     }
+
+
+    zeng_online_connected.v=0;
+
 
     return return_value;
 }
