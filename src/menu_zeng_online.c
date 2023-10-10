@@ -967,6 +967,10 @@ void menu_zeng_online(MENU_ITEM_PARAMETERS)
 
         //Create room + join / destroy room
         if (zeng_online_connected.v==0) {
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_join_room,NULL,
+            "Jo~~in to room","Un~~irse a habitación","Un~~ir-se a habitació");
+            menu_add_item_menu_shortcut(array_menu_common,'i');
+
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_create_room,NULL,
             "~~Create room & Join as Master","~~Crear habitación & Unir como master","~~Crear habitació & Unir com master");
             menu_add_item_menu_shortcut(array_menu_common,'c');
@@ -979,15 +983,14 @@ void menu_zeng_online(MENU_ITEM_PARAMETERS)
             "Rejoin as Manager","Reunir como manager","Reunir com manager");
             menu_add_item_menu_es_avanzado(array_menu_common);
 
-            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_join_room,NULL,
-            "Jo~~in to room","Un~~irse a habitación","Un~~ir-se a habitació");
-            menu_add_item_menu_shortcut(array_menu_common,'i');
 
         }
         else {
 
             menu_add_item_menu_separator(array_menu_common);
 
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,
+            "--Info--","--Info--","--Info--");
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,
             "Joined to room: ","Unido a habitación: ","Unit a habitació: ");
@@ -1027,7 +1030,7 @@ void menu_zeng_online(MENU_ITEM_PARAMETERS)
                 menu_add_item_menu_separator(array_menu_common);
 
                 menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_join_list,NULL,
-                "Join List","Lista join","Llista join");
+                "Join Waiting List","Lista de espera unirse","Llista d'espera unir-se");
 
 
                 menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_autojoin_room,NULL,

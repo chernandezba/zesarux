@@ -2317,7 +2317,7 @@ int zoc_get_pending_authorization_size(int indice_socket)
                             //Y lo mostramos en el footer
                             char mensaje[AUTOSELECTOPTIONS_MAX_FOOTER_LENGTH+ZOC_MAX_NICKNAME_LENGTH+1];
 
-                            sprintf(mensaje,"ZOC clients waiting on room %d",zeng_online_joined_to_room_number);
+                            sprintf(mensaje,"ZOC clients waiting on room");
 
                             //Por si acaso truncar al maximo que permite el footer
                             mensaje[AUTOSELECTOPTIONS_MAX_FOOTER_LENGTH]=0;
