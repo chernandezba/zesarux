@@ -156,6 +156,10 @@ struct zeng_online_room {
     char broadcast_message[ZENG_ONLINE_MAX_BROADCAST_MESSAGE_SHOWN_LENGTH];
     int broadcast_messages_allowed;
 
+    //Usuarios logueados
+    //Si "", indica que no hay user en esa posicion
+    char joined_users[ZENG_ONLINE_MAX_PLAYERS_PER_ROOM][ZOC_MAX_NICKNAME_LENGTH+1];
+
     //Peticiones de join en espera
     int index_waiting_join_first; //donde empieza el primer elemento en espera
     int total_waiting_join; //total de join en espera
@@ -167,6 +171,27 @@ struct zeng_online_room {
 
 //Array de habitaciones en zeng online
 struct zeng_online_room zeng_online_rooms_list[ZENG_ONLINE_MAX_ROOMS];
+
+//Agregar usuario a la lista de joined_users
+void zoc_add_user_to_joined_users(int room_number,char *nickname)
+{
+    //TODO: haria falta un semaforo para esto
+
+    int i;
+
+    for (i=0;i<zeng_online_rooms_list[room_number].max_players;i++) {
+        if (zeng_online_rooms_list[room_number].joined_users[i][0]==0) {
+            strcpy(zeng_online_rooms_list[room_number].joined_users[i],nickname);
+            return;
+        }
+    }
+
+    //Y si llega al final sin haber agregado usuario, es un error aunque no lo reportaremos
+    debug_printf(VERBOSE_DEBUG,"Reached maximum users on join_list names");
+
+}
+
+
 
 int join_list_return_last_element(int room_number)
 {
@@ -450,6 +475,12 @@ void zeng_online_create_room(int misocket,int room_number,char *room_name)
     zeng_online_rooms_list[room_number].broadcast_messages_allowed=1;
 
     zeng_online_rooms_list[room_number].created=1;
+
+    //Inicializar lista de usuarios vacia
+    int i;
+    for (i=0;i<ZENG_ONLINE_MAX_PLAYERS_PER_ROOM;i++) {
+        zeng_online_rooms_list[room_number].joined_users[i][0]=0;
+    }
 
     //Retornar el creator password
     escribir_socket(misocket,zeng_online_rooms_list[room_number].creator_password);
@@ -913,6 +944,46 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
             comando_argv[4]);
 
         zeng_online_rooms_list[room_number].broadcast_message_id++;
+
+    }
+
+    //"get-users user_pass n               Gets the list of joined users on room n\n"
+    else if (!strcmp(comando_argv[0],"get-users")) {
+        if (!zeng_online_enabled) {
+            escribir_socket(misocket,"ERROR. ZENG Online is not enabled");
+            return;
+        }
+
+        if (comando_argc<2) {
+            escribir_socket(misocket,"ERROR. Needs two parameters");
+            return;
+        }
+
+        int room_number=parse_string_to_number(comando_argv[2]);
+
+        if (room_number<0 || room_number>=zeng_online_current_max_rooms) {
+            escribir_socket_format(misocket,"ERROR. Room number beyond limit");
+            return;
+        }
+
+        if (!zeng_online_rooms_list[room_number].created) {
+            escribir_socket(misocket,"ERROR. Room is not created");
+            return;
+        }
+
+        //validar user_pass. comando_argv[1]
+        if (strcmp(comando_argv[1],zeng_online_rooms_list[room_number].user_password)) {
+            escribir_socket(misocket,"ERROR. Invalid user password for that room");
+            return;
+        }
+
+        int i;
+        for (i=0;i<zeng_online_rooms_list[room_number].max_players;i++) {
+            if (zeng_online_rooms_list[room_number].joined_users[i][0]) {
+                escribir_socket_format(misocket,"%s\n",(zeng_online_rooms_list[room_number].joined_users[i]));
+            }
+        }
+
 
     }
 
@@ -1492,6 +1563,8 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
         //TODO: seguro que hay que hacer mas cosas en el join...
         //TODO: esto se deberia incrementar usando semaforos. Quiza tal cual este current_players es una variable atomica
         zeng_online_rooms_list[room_number].current_players++;
+
+        zoc_add_user_to_joined_users(room_number,comando_argv[2]);
 
         //Y retornamos el user_password
         escribir_socket_format(misocket,"%s %d",zeng_online_rooms_list[room_number].user_password,permissions);

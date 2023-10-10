@@ -661,7 +661,7 @@ int zeng_online_client_authorize_join_connect(void)
 			return 0;
 		}
 
-        printf("return authorize-join llist: %s\n",buffer);
+        printf("return authorize-join list: %s\n",buffer);
 
 		//finalizar conexion
         z_sock_close_connection(indice_socket);
