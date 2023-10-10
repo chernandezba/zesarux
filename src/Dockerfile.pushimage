@@ -1,0 +1,16 @@
+FROM debian:bullseye
+
+RUN apt-get update && apt-get -y install git gcc make libncurses-dev libssl-dev xorg-dev
+
+COPY *.c *.m *.h *.tpl DEVELOPMENT CHECKLIST configure *.sh *.rom /zesarux/src/
+COPY my_soft /zesarux/src/my_soft
+COPY tests /zesarux/src/tests
+COPY zxuno.flash /zesarux/src/
+
+RUN cd zesarux/src && ./configure --enable-memptr --enable-visualmem --enable-cpustats --enable-ssl && make -j2
+
+WORKDIR /zesarux/src
+
+ENTRYPOINT [ "./zesarux" ]
+
+CMD [ "--vo" , "curses", "--ao" , "null" ]

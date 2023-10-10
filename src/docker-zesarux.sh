@@ -70,6 +70,7 @@ help() {
 	echo "-----------------"
 	echo "build-version:                Builds a release version"
 	echo "build-version-and-get-binary: Same as build-version + running several tests (codetests, program tests, etc) + get the tar.gz binary package"
+	echo "push:                         Builds and push a version to DockerHub"
 	echo "Note: build-version and build-version-and-get-binary require a parameter, one of: [debian|fedora|ubuntu]"
 	echo
 	echo "Misc:"
@@ -124,6 +125,13 @@ case $1 in
 	run-xorg)
 		docker-build
 		docker run --name run-zesarux-xorg -it -e DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --user="$(id --user):$(id --group)" zesarux --disableshm --ao null
+	;;
+
+	push)
+		docker build -f Dockerfile.pushimage .  --progress plain --tag=zesarux.local
+
+  		docker tag zesarux.local chernandezba/zesarux:x
+		docker push chernandezba/zesarux:x
 	;;
 
 	run-mac-xorg)
