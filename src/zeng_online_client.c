@@ -1369,10 +1369,10 @@ int zeng_online_client_join_room_connect(void)
 
         //Join desde el master le envia el creator password
         if (param_join_room_creator_password[0]!=0) {
-            sprintf(buffer_enviar,"zeng-online join %d \"%s\" %s\n",param_join_room_number,zeng_online_nickname,param_join_room_creator_password);
+            sprintf(buffer_enviar,"zeng-online join %d \"%s\" %s %s\n",param_join_room_number,zeng_online_nickname,stats_uuid,param_join_room_creator_password);
         }
         else {
-            sprintf(buffer_enviar,"zeng-online join %d \"%s\"\n",param_join_room_number,zeng_online_nickname);
+            sprintf(buffer_enviar,"zeng-online join %d \"%s\" %s\n",param_join_room_number,zeng_online_nickname,stats_uuid);
         }
 
 		int escritos=z_sock_write_string(indice_socket,buffer_enviar);
