@@ -1610,18 +1610,7 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
         escribir_socket_format(misocket,"%s %d",zeng_online_rooms_list[room_number].user_password,permissions);
 
 
-        //Y lo mostramos en el footer
-        char mensaje[AUTOSELECTOPTIONS_MAX_FOOTER_LENGTH+ZOC_MAX_NICKNAME_LENGTH+1];
 
-        sprintf(mensaje,"Joined %s to room %d (%s)",comando_argv[2],room_number,zeng_online_rooms_list[room_number].name);
-
-        //Por si acaso truncar al maximo que permite el footer
-        mensaje[AUTOSELECTOPTIONS_MAX_FOOTER_LENGTH]=0;
-
-        put_footer_first_message(mensaje);
-
-        //Y enviarlo a speech
-        textspeech_print_speech(mensaje);
 
     }
 

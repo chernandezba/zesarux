@@ -63,7 +63,8 @@ y tiene que escoger una que este vacia. Esto hace un create-room (nos guardamos 
 
 int zeng_online_opcion_seleccionada=0;
 
-
+//Puede ser: Master, Manager o Slave
+char zeng_online_joined_as_text[30]="";
 
 
 
@@ -564,6 +565,8 @@ void menu_zoc_join_master_aux(int room_number)
 
 
     zoc_start_master_thread();
+
+    strcpy(zeng_online_joined_as_text,"Master");
 }
 
 void menu_zeng_online_create_room(MENU_ITEM_PARAMETERS)
@@ -703,6 +706,8 @@ void menu_zeng_online_rejoin_manager_master(MENU_ITEM_PARAMETERS)
         created_room_user_permissions=ZENG_ONLINE_PERMISSIONS_SEND_MESSAGE;
 
         zoc_start_master_thread();
+
+        strcpy(zeng_online_joined_as_text,"Manager");
 
 
     }
@@ -926,6 +931,7 @@ void menu_zeng_online_join_room(MENU_ITEM_PARAMETERS)
         if (zeng_online_connected.v) {
             menu_generic_message_splash("Join room","Room joined");
             zoc_show_bottom_line_footer_connected();
+            strcpy(zeng_online_joined_as_text,"Slave");
         }
 
 
@@ -999,6 +1005,11 @@ void menu_zeng_online(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,
             "Joined to room: ","Unido a habitación: ","Unit a habitació: ");
             menu_add_item_menu_sufijo_format(array_menu_common,"%d",zeng_online_joined_to_room_number);
+
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,
+            "Joined as: ","Unido como: ","Unit com: ");
+            menu_add_item_menu_sufijo_format(array_menu_common,"%s",zeng_online_joined_as_text);
+            menu_add_item_menu_es_avanzado(array_menu_common);
 
             if (zeng_online_i_am_master.v) {
                 menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,

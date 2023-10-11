@@ -3958,7 +3958,7 @@ void menu_footer_zesarux_emulator(void)
 
         if (zeng_online_connected.v) {
             //printf("Mostrando footer con estado conexion ZENG online\n");
-            sprintf(buffer_footer,"ZEsarUX emulator v."EMULATOR_VERSION " - %s",zoc_return_connected_status() );
+            sprintf(buffer_footer,"ZEsarUX emulator v."EMULATOR_VERSION " %s",zoc_return_connected_status() );
         }
 
         else {
