@@ -927,7 +927,7 @@ struct s_items_ayuda items_ayuda[]={
     "is-enabled                          Returns enabled status\n"
     "join n nickname uuid [creator_pass] Joins to room n. Returns the user_password and the permissions. If parameter creator_pass is not set, it will need authorization from the master\n"
     "                                    uuid is a unique identifier for the client, usually can be the same as Statistics uuid\n"
-    "leave n user_pass nickname          Leaves room n.\n"
+    "leave n user_pass uuid              Leaves room n.\n"
     "list-rooms                          Returns rooms list\n"
     "list-users user_pass n              Gets the list of joined users on room n\n"
     "put-snapshot creator_pass n data    Put a snapshot on room n, requieres creator_pass for that room. Data must be hexadecimal characters without spaces\n"

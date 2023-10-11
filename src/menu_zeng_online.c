@@ -833,6 +833,9 @@ void menu_zeng_online_disable_autojoin_room(MENU_ITEM_PARAMETERS)
 void menu_zeng_online_write_message_room(MENU_ITEM_PARAMETERS)
 {
 
+    //Porque aqui se puede llegar desde un boton F/icono
+    if (!zeng_online_connected.v) return;
+
     if (!(created_room_user_permissions & ZENG_ONLINE_PERMISSIONS_SEND_MESSAGE)) {
         menu_error_message("You don't have permissions to send messages");
         return;

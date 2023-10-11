@@ -193,6 +193,25 @@ void zoc_add_user_to_joined_users(int room_number,char *nickname,char *uuid)
 
 }
 
+//Quita usuario de la lista de joined_users
+void zoc_del_user_to_joined_users(int room_number,char *uuid)
+{
+    //TODO: haria falta un semaforo para esto
+
+    int i;
+
+    for (i=0;i<zeng_online_rooms_list[room_number].max_players;i++) {
+        if (!strcmp(zeng_online_rooms_list[room_number].joined_users_uuid[i],uuid)) {
+            zeng_online_rooms_list[room_number].joined_users[i][0]=0;
+            zeng_online_rooms_list[room_number].joined_users_uuid[i][0]=0;
+            return;
+        }
+    }
+
+    //Y si llega al final sin haber encontrado usuario, es un error aunque no lo reportaremos
+    debug_printf(VERBOSE_DEBUG,"Can not find user with uuid %s to delete from join list",uuid);
+
+}
 
 
 int join_list_return_last_element(int room_number)
@@ -1423,7 +1442,7 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
 
     }
 
-    //leave n user_pass nickname
+    //leave n user_pass uuid
     //TODO: no hacemos nada con el nickname, solo mostrarlo en footer
     else if (!strcmp(comando_argv[0],"leave")) {
         if (!zeng_online_enabled) {
@@ -1459,19 +1478,11 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
         //TODO: esto se deberia decrementar usando semaforos. Quiza tal cual este current_players es una variable atomica
         zeng_online_rooms_list[room_number].current_players--;
 
+        //comando_argv[3] contiene el uuid
+        zoc_del_user_to_joined_users(room_number,comando_argv[3]);
 
-        //Y lo mostramos en el footer
-        char mensaje[AUTOSELECTOPTIONS_MAX_FOOTER_LENGTH+ZOC_MAX_NICKNAME_LENGTH+1];
 
-        sprintf(mensaje,"Left %s from room %d (%s)",comando_argv[3],room_number,zeng_online_rooms_list[room_number].name);
 
-        //Por si acaso truncar al maximo que permite el footer
-        mensaje[AUTOSELECTOPTIONS_MAX_FOOTER_LENGTH]=0;
-
-        put_footer_first_message(mensaje);
-
-        //Y enviarlo a speech
-        textspeech_print_speech(mensaje);
 
     }
 

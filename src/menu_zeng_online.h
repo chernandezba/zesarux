@@ -24,5 +24,6 @@
 
 extern void menu_zeng_online(MENU_ITEM_PARAMETERS);
 
+extern void menu_zeng_online_write_message_room(MENU_ITEM_PARAMETERS);
 
 #endif

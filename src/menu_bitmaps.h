@@ -99,6 +99,7 @@ extern char *bitmap_button_ext_desktop_nmi[];
 extern char *bitmap_button_ext_desktop_zxunoprismswitch[];
 extern char *bitmap_button_ext_desktop_nothing[];
 extern char *bitmap_button_ext_desktop_zengmessage[];
+extern char *bitmap_button_ext_desktop_zengonlinemessage[];
 extern char *bitmap_button_ext_desktop_rewindtape[];
 extern char *bitmap_button_ext_desktop_ffwdtape[];
 extern char *bitmap_button_ext_desktop_joyleftright[];

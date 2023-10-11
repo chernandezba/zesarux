@@ -666,7 +666,7 @@ int zeng_online_client_leave_room_connect(void)
 
     char buffer_enviar[1024];
 
-    sprintf(buffer_enviar,"zeng-online leave %d %s \"%s\"\n",param_join_room_number,created_room_user_password,zeng_online_nickname);
+    sprintf(buffer_enviar,"zeng-online leave %d %s \"%s\"\n",param_join_room_number,created_room_user_password,stats_uuid);
 
     int return_value=zoc_open_command_close(buffer_enviar,"leave");
 

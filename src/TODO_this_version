@@ -514,6 +514,8 @@ Por tanto, para que no haya desventaja al jugar dos personas, lo ideal es que hu
 y luego dos slaves que fueran los que estuvieran compitiendo
 
 -quiza las veces que se queda congelado el emulador cuando no esta en el foco, es cuando se usa driver audio null
+
+-desde process switcher al pulsar en una ventana que esta minimizada, desminimizarla
 ---Fin Mejoras---
 
 
@@ -534,7 +536,6 @@ Pausas entre get id y get snap , cuando no hay uno nuevo, muy cortas, para que n
 ok -el envio de keys y snapshot deberia hacerse al mismo momento desde el mismo thread
 ok -la recepcion de keys y snapshot deberia hacerse al mismo momento desde el mismo thread
 -eliminar todas funciones variables etc de cuando se creaban desde join/create threads indpendientes
-
 
 
 
@@ -687,7 +688,7 @@ zeng online y zeng no-online
 
 -si hay un error de red temporal, luego ya no se vuelve a recuperar
 
--tecla F/icono para broadcast message zeng online
-
--list-users creo que no deberia mostrar el uuid
+-leave user:
+ok *comando deberia usar el uuid o el nickname? leave n user_pass nickname
+ok *creo que nickname. y luego en leave quitar el usuario de la lista de logueados
 ---------------

@@ -592,7 +592,7 @@ extern void menu_first_aid_init(void);
 extern void menu_first_aid_random_startup(void);
 extern int menu_first_aid_title(char *key_setting,char *title);
 
-#define MAX_F_FUNCTIONS 61
+#define MAX_F_FUNCTIONS 62
 
 enum defined_f_function_ids {
 	//reset, hard-reset, nmi, open menu, ocr, smartload, osd keyboard, exitemulator.
@@ -625,6 +625,7 @@ enum defined_f_function_ids {
     F_FUNCION_ONLINE_SPECCY,
     F_FUNCION_ONLINE_ZX81,
 	F_FUNCION_ZENG_SENDMESSAGE,
+    F_FUNCION_ZENG_ONLINE_SENDMESSAGE,
 	F_FUNCION_OSDKEYBOARD,
 	F_FUNCION_OSDTEXTKEYBOARD,
     F_FUNCION_SWITCHBORDER,

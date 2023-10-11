@@ -223,6 +223,7 @@ defined_f_function defined_direct_functions_array[MAX_F_FUNCTIONS]={
 
     //Misc
     {"ZengMessage",F_FUNCION_ZENG_SENDMESSAGE,bitmap_button_ext_desktop_zengmessage,""},
+    {"ZengOnlineMessage",F_FUNCION_ZENG_ONLINE_SENDMESSAGE,bitmap_button_ext_desktop_zengonlinemessage,""},
     {"SpeccyOnline",F_FUNCION_ONLINE_SPECCY,bitmap_button_ext_desktop_speccy_online,""},
     {"ZX81Online",F_FUNCION_ONLINE_ZX81,bitmap_button_ext_desktop_zx81_online,""},
     {"OCR",F_FUNCION_OCR,bitmap_button_ext_desktop_ocr,""},
