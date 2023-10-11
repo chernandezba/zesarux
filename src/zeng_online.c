@@ -1420,13 +1420,13 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
         }
 
         char *s=comando_argv[3];
-        int parametros_recibidos=0;
+        //int parametros_recibidos=0;
 
         z80_byte *buffer_destino;
         buffer_destino=malloc(longitud_snapshot);
         if (buffer_destino==NULL) cpu_panic("Can not allocate memory for put-snapshot");
 
-        z80_byte valor;
+        //z80_byte valor;
 
 
         //Se usa un bucle mucho mas rapido que si se usase parse_string_to_number

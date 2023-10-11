@@ -6378,7 +6378,8 @@ void *zrcp_handle_new_connection(void *entrada)
 	//WSACleanup();
 #else
 	//printf("Closing socket %d\n",sock_connected_client);
-    int retorno=close(sock_connected_client);
+    //int retorno=
+    close(sock_connected_client);
     //printf("Retorno close: %d\n",retorno);
 #endif
 

@@ -714,7 +714,8 @@ void menu_zeng_online_list_rooms_menu_item(MENU_ITEM_PARAMETERS)
     int room_number,created,autojoin,current_players,max_players;
     char room_name[ZENG_ONLINE_MAX_ROOM_NAME+1];
 
-    int retorno=menu_zeng_online_list_rooms(&room_number,&created,&autojoin,&current_players,&max_players,room_name);
+    //int retorno=
+    menu_zeng_online_list_rooms(&room_number,&created,&autojoin,&current_players,&max_players,room_name);
 
 
 }
@@ -884,7 +885,7 @@ void menu_zeng_online_join_room(MENU_ITEM_PARAMETERS)
     }
 
 
-    char texto_linea[MAX_ANCHO_LINEAS_GENERIC_MESSAGE];
+    //char texto_linea[MAX_ANCHO_LINEAS_GENERIC_MESSAGE];
 
 
     int room_number,created,autojoin,current_players,max_players;

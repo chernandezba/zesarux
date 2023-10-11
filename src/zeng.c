@@ -1248,7 +1248,7 @@ int zeng_utils_sync_local_to_remote_connect(void)
 
     int indice_socket=z_sock_open_connection(server,puerto,0,"");
 
-    int contador_obtener_autorizaciones=0;
+    //int contador_obtener_autorizaciones=0;
 
     if (indice_socket<0) {
         debug_printf(VERBOSE_ERR,"Error connecting to %s:%d. %s",
@@ -1276,7 +1276,7 @@ int zeng_utils_sync_local_to_remote_connect(void)
         return 0;
     }
 
-        char buffer_comando[200];
+        //char buffer_comando[200];
         //printf ("Sending put-snapshot\n");
         //put-snapshot creator_pass n data
         //sprintf(buffer_comando,"put-snapshot ");

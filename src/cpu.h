@@ -25,13 +25,11 @@
 #include "compileoptions.h"
 
 
-
-
-//#define EMULATOR_VERSION "10.10-SN"
-//#define EMULATOR_VERSION "10.10-B1"
-//#define EMULATOR_VERSION "10.10-RC"
-#define EMULATOR_VERSION "X"
-//#define SNAPSHOT_VERSION
+//#define EMULATOR_VERSION "11.0-SN"
+//#define EMULATOR_VERSION "11.0-B1"
+//#define EMULATOR_VERSION "11.0-RC"
+#define EMULATOR_VERSION "11.0-SN"
+#define SNAPSHOT_VERSION
 
 /*
 EMULATOR_NUMBER_VERSION format:
@@ -49,16 +47,16 @@ Examples
 6.2-RC3: Means major version 6, minor version 2, beta version: RC3
 
 */
-//EMULATOR_VERSION siempre tiene que ser un numero
-//Normalmente esto coincide con EMULATOR_VERSION, pero por si queremos sacar otra edición especial (como la X):
+//EMULATOR_VERSION siempre tiene que ser un numero (y opcionalmente -SN o -RC)
+//Normalmente EMULATOR_NUMBER_VERSION=EMULATOR_VERSION, pero por si queremos sacar otra edición especial (como la X):
 //EMULATOR_VERSION podria ser "XII"
-//Y EMULATOR_NUMBER_VERSION como siempre es un numero, podria ser "12.0"
+//Y EMULATOR_NUMBER_VERSION como siempre es un numero (y opcionalmente -SN o -RC), podria ser "12.0"
 //Para obtener EMULATOR_NUMBER_VERSION se deberia usar siempre util_get_emulator_version_number
-#define EMULATOR_NUMBER_VERSION "10.10"
+#define EMULATOR_NUMBER_VERSION EMULATOR_VERSION
 
-#define EMULATOR_DATE "24 September 2023"
-#define EMULATOR_SHORT_DATE "24/09/2023"
-#define EMULATOR_GAME_EDITION "10th Anniversary"
+#define EMULATOR_DATE "12 October 2023"
+#define EMULATOR_SHORT_DATE "12/10/2023"
+#define EMULATOR_GAME_EDITION "unknown"
 #define EMULATOR_EDITION_NAME EMULATOR_GAME_EDITION " edition"
 #define ZESARUX_EXTRAS_HOST "github.com"
 

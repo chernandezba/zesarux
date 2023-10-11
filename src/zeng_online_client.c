@@ -2106,7 +2106,7 @@ int zoc_start_connection_get_keys(void)
 
     //bucle continuo de leer teclas de remoto
     //TODO: ver posible manera de salir de aqui??
-int error_desconectar=0;
+    //int error_desconectar=0;
 
 
 
@@ -2294,7 +2294,7 @@ int zoc_get_pending_authorization_size(int indice_socket)
 
                 //printf("Recibido respuesta despues de truncar: [%s]\n",buffer);
 
-                int leer_snap=0;
+                //int leer_snap=0;
 
                 //Detectar si error
                 if (strstr(buffer,"ERROR")!=NULL) {
@@ -2489,7 +2489,8 @@ void *zoc_master_thread_function(void *nada GCC_UNUSED)
             //TODO gestionar error_desconectar
             if (created_room_user_permissions & ZENG_ONLINE_PERMISSIONS_SEND_KEYS) {
                 int enviada_alguna_tecla;
-                int error_desconectar=zoc_keys_send_pending(indice_socket,&enviada_alguna_tecla);
+                //int error_desconectar=
+                zoc_keys_send_pending(indice_socket,&enviada_alguna_tecla);
             }
 
             if (created_room_user_permissions & ZENG_ONLINE_PERMISSIONS_GET_KEYS) {
@@ -2685,7 +2686,7 @@ int zoc_receive_snapshot(int indice_socket)
                     //Es decir, si en get-snapshot el server remoto nos ha dejado en cola 2, 3 o mas snapshots, estamos pillando el ultimo
                     //Recordemos que lo envia de manera continua con saltos de linea despues de cada uno de ellos
                     //TODO: esto esta MAL. Hay que escoger el que tiene el ultimo salto de linea
-                    int i;
+                    //int i;
 
                     /*int inicio_datos_snapshot=0;
                     //int leidos_saltos_linea=0;
@@ -2811,7 +2812,7 @@ void *zoc_slave_thread_function(void *nada GCC_UNUSED)
     //bucle continuo de recepcion snapshot
     //TODO: ver posible manera de salir de aqui??
 
-    int temppppp=0;
+    //int temppppp=0;
 
     while (1) {
 
@@ -2850,7 +2851,8 @@ void *zoc_slave_thread_function(void *nada GCC_UNUSED)
                 //Enviar teclas
                 //TODO gestionar error_desconectar
                 int enviada_alguna_tecla;
-                int error_desconectar=zoc_keys_send_pending(indice_socket,&enviada_alguna_tecla);
+                //int error_desconectar=
+                zoc_keys_send_pending(indice_socket,&enviada_alguna_tecla);
 
 
             }
