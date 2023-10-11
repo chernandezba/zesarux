@@ -158,6 +158,7 @@ struct zeng_online_room {
 
     //Usuarios logueados
     //Si "", indica que no hay user en esa posicion
+    z_atomic_semaphore semaphore_joined_users;
     char joined_users[ZENG_ONLINE_MAX_PLAYERS_PER_ROOM][ZOC_MAX_NICKNAME_LENGTH+1];
     char joined_users_uuid[ZENG_ONLINE_MAX_PLAYERS_PER_ROOM][STATS_UUID_MAX_LENGTH+1];
 
@@ -176,40 +177,64 @@ struct zeng_online_room zeng_online_rooms_list[ZENG_ONLINE_MAX_ROOMS];
 //Agregar usuario a la lista de joined_users
 void zoc_add_user_to_joined_users(int room_number,char *nickname,char *uuid)
 {
-    //TODO: haria falta un semaforo para esto
+    //Para evitar escribir dos a la vez
+	while(z_atomic_test_and_set(&zeng_online_rooms_list[room_number].semaphore_joined_users)) {
+		//printf("Esperando a liberar lock en zoc_add_user_to_joined_users\n");
+	}
 
     int i;
+    int agregado=0;
 
     for (i=0;i<zeng_online_rooms_list[room_number].max_players;i++) {
         if (zeng_online_rooms_list[room_number].joined_users_uuid[i][0]==0) {
             strcpy(zeng_online_rooms_list[room_number].joined_users[i],nickname);
             strcpy(zeng_online_rooms_list[room_number].joined_users_uuid[i],uuid);
-            return;
+            agregado=1;
+            break; //para salir del bucle y liberar lock
         }
     }
 
+    zeng_online_rooms_list[room_number].current_players++;
+
+
     //Y si llega al final sin haber agregado usuario, es un error aunque no lo reportaremos
-    debug_printf(VERBOSE_DEBUG,"Reached maximum users on join_list names");
+    if (!agregado) debug_printf(VERBOSE_DEBUG,"Reached maximum users on join_list names");
+
+	//Liberar lock
+	z_atomic_reset(&zeng_online_rooms_list[room_number].semaphore_joined_users);
 
 }
 
 //Quita usuario de la lista de joined_users
 void zoc_del_user_to_joined_users(int room_number,char *uuid)
 {
-    //TODO: haria falta un semaforo para esto
+
+    //Para evitar escribir dos a la vez
+	while(z_atomic_test_and_set(&zeng_online_rooms_list[room_number].semaphore_joined_users)) {
+		//printf("Esperando a liberar lock en zoc_del_user_to_joined_users\n");
+	}
 
     int i;
+    int borrado=0;
 
     for (i=0;i<zeng_online_rooms_list[room_number].max_players;i++) {
         if (!strcmp(zeng_online_rooms_list[room_number].joined_users_uuid[i],uuid)) {
             zeng_online_rooms_list[room_number].joined_users[i][0]=0;
             zeng_online_rooms_list[room_number].joined_users_uuid[i][0]=0;
-            return;
+            break; //para salir del bucle y liberar lock
         }
     }
 
+    //Aunque nunca deberia ser <0, pero por si acaso
+    if (zeng_online_rooms_list[room_number].current_players>0) {
+        zeng_online_rooms_list[room_number].current_players--;
+    }
+
     //Y si llega al final sin haber encontrado usuario, es un error aunque no lo reportaremos
-    debug_printf(VERBOSE_DEBUG,"Can not find user with uuid %s to delete from join list",uuid);
+    if (!borrado) debug_printf(VERBOSE_DEBUG,"Can not find user with uuid %s to delete from join list",uuid);
+
+	//Liberar lock
+	z_atomic_reset(&zeng_online_rooms_list[room_number].semaphore_joined_users);
 
 }
 
@@ -397,6 +422,7 @@ void init_zeng_online_rooms(void)
         z_atomic_reset(&zeng_online_rooms_list[i].mutex_reading_snapshot);
         z_atomic_reset(&zeng_online_rooms_list[i].semaphore_writing_snapshot);
         z_atomic_reset(&zeng_online_rooms_list[i].semaphore_events);
+        z_atomic_reset(&zeng_online_rooms_list[i].semaphore_joined_users);
 
 
     }
@@ -1475,8 +1501,7 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
 
 
         //TODO: seguro que hay que hacer mas cosas en el leave...
-        //TODO: esto se deberia decrementar usando semaforos. Quiza tal cual este current_players es una variable atomica
-        zeng_online_rooms_list[room_number].current_players--;
+
 
         //comando_argv[3] contiene el uuid
         zoc_del_user_to_joined_users(room_number,comando_argv[3]);
@@ -1577,8 +1602,7 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
         }
 
         //TODO: seguro que hay que hacer mas cosas en el join...
-        //TODO: esto se deberia incrementar usando semaforos. Quiza tal cual este current_players es una variable atomica
-        zeng_online_rooms_list[room_number].current_players++;
+
 
         zoc_add_user_to_joined_users(room_number,comando_argv[2],comando_argv[3]);
 
