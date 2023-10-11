@@ -688,7 +688,5 @@ zeng online y zeng no-online
 
 -si hay un error de red temporal, luego ya no se vuelve a recuperar
 
--leave user:
-ok *comando deberia usar el uuid o el nickname? leave n user_pass nickname
-ok *creo que nickname. y luego en leave quitar el usuario de la lista de logueados
+
 ---------------
