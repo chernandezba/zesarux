@@ -67,10 +67,7 @@ int zeng_online_opcion_seleccionada=0;
 //Puede ser: Master, Manager o Slave
 char zeng_online_joined_as_text[30]="";
 
-//Perfiles de teclas que se han cargado del servidor como master/manager para la habitacion actual
-int allowed_keys[ZOC_MAX_KEYS_PROFILES][ZOC_MAX_KEYS_ITEMS];
-//Perfiles asignados a cada uuid. Si es "", no esta asignado
-char allowed_keys_assigned[ZOC_MAX_KEYS_PROFILES][STATS_UUID_MAX_LENGTH+1];
+
 
 
 void menu_zeng_online_server(MENU_ITEM_PARAMETERS)

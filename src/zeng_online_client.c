@@ -137,6 +137,11 @@ char param_join_room_creator_password[ZENG_ROOM_PASSWORD_LENGTH+1];
 //Se indicara que queremos obtener el snapshot que habia ya que estamos reentrando como master
 int zoc_rejoining_as_master=0;
 
+//Perfiles de teclas que se han cargado del servidor como master/manager para la habitacion actual
+int allowed_keys[ZOC_MAX_KEYS_PROFILES][ZOC_MAX_KEYS_ITEMS];
+//Perfiles asignados a cada uuid. Si es "", no esta asignado
+char allowed_keys_assigned[ZOC_MAX_KEYS_PROFILES][STATS_UUID_MAX_LENGTH+1];
+
 
 //Retornar puerto y hostname del server
 int zeng_online_get_server_and_port(char *buffer_hostname)
@@ -1193,6 +1198,36 @@ int zeng_online_client_get_profile_keys_connect(void)
 
         printf("buffer recibido para get-key-profile perfil %d: %s\n",i,buffer);
 
+        //Parsear cada valor
+        int indice=0;
+        int inicio_numero=0;
+        int indice_tecla=0;
+
+
+        while (buffer[indice]) {
+            if (buffer[indice]==' ' || buffer[indice+1]==0) {
+                if (buffer[indice]==' ') buffer[indice]=0;
+                printf("add tecla %s\n",&buffer[inicio_numero]);
+                int valor=parse_string_to_number(&buffer[inicio_numero]);
+                allowed_keys[i][indice_tecla++]=valor;
+                inicio_numero=indice+1;
+
+            }
+
+
+            indice++;
+        }
+
+        //0 del final si conviene
+        if (indice_tecla<ZOC_MAX_KEYS_ITEMS) allowed_keys[i][indice_tecla]=0;
+
+        //mostrarlos
+        int j;
+        for (j=0;j<ZOC_MAX_KEYS_ITEMS && allowed_keys[i][j];j++) {
+            printf("Tecla escaneada %d\n",allowed_keys[i][j]);
+        }
+
+
         //get-key-profile-assign creator_pass n p
         sprintf(buffer_enviar,"zeng-online get-key-profile-assign %s %d %d\n",
             created_room_creator_password,
@@ -1207,6 +1242,9 @@ int zeng_online_client_get_profile_keys_connect(void)
         if (!return_value) return 0;
 
         printf("buffer recibido para get-key-profile-assign perfil %d: %s\n",i,buffer);
+
+        //Esto tal cual a variable
+        strcpy(allowed_keys_assigned[i],buffer);
 
 
     }
