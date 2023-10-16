@@ -169,6 +169,13 @@ struct zeng_online_room {
     int autojoin_enabled;
     int autojoin_permissions;
 
+    //Perfiles de teclas permitidas en usuarios
+    //Primer indice [] apunta al id de perfil.
+    //Segundo indice [] apunta a la tecla; si vale 0, indica final de perfil. Final de perfil tambien indicado por el ultimo item al llenarse el array
+    int allowed_keys[ZOC_MAX_KEYS_PROFILES][ZOC_MAX_KEYS_ITEMS];
+    //Perfiles asignados a cada uuid. Si es "", no esta asignado
+    char allowed_keys_assigned[ZOC_MAX_KEYS_PROFILES][STATS_UUID_MAX_LENGTH+1];
+
 };
 
 //Array de habitaciones en zeng online
@@ -289,6 +296,42 @@ int join_list_add_element(int room_number,char *nickname)
 
 
 
+}
+
+//Ver si el evento es valido, que no tenga restriccion de teclas para ese uuid
+int zengonline_valid_event(int room_number,char *uuid,int tecla)
+{
+    /*
+    //Perfiles de teclas permitidas en usuarios
+    //Primer indice [] apunta al id de perfil.
+    //Segundo indice [] apunta a la tecla; si vale 0, indica final de perfil. Final de perfil tambien indicado por el ultimo item al llenarse el array
+    int allowed_keys[ZOC_MAX_KEYS_PROFILES][ZOC_MAX_KEYS_ITEMS];
+    //Perfiles asignados a cada uuid. Si es "", no esta asignado
+    char allowed_keys_assigned[ZOC_MAX_KEYS_PROFILES][STATS_UUID_MAX_LENGTH+1];
+    */
+
+    int i;
+
+    for (i=0;i<ZOC_MAX_KEYS_PROFILES;i++) {
+        //buscar primero el que corresponde al uuid. Solo valido 1 perfil máximo por uuid
+        if (strcmp(uuid,zeng_online_rooms_list[room_number].allowed_keys_assigned[i])) {
+            //Ver si esa tecla esta en la lista. Lista finaliza con el ultimo item o cuando item es 0
+            int j;
+            for (j=0;j<ZOC_MAX_KEYS_ITEMS && zeng_online_rooms_list[room_number].allowed_keys[i][j];j++) {
+                if (zeng_online_rooms_list[room_number].allowed_keys[i][j]==tecla) {
+                    printf("Tecla %d es valida para el uuid %s\n",tecla,uuid);
+                    return 1;
+                }
+            }
+
+            //no tecla valida
+            printf("Tecla %d NO es valida para el uuid %s\n",tecla,uuid);
+            return 0;
+        }
+    }
+
+    printf("No hay restricción de tecla para ese uuid\n");
+    return 1;
 }
 
 //Agregar evento de tecla/joystick
@@ -528,6 +571,12 @@ void zeng_online_create_room(int misocket,int room_number,char *room_name)
     for (i=0;i<ZENG_ONLINE_MAX_PLAYERS_PER_ROOM;i++) {
         zeng_online_rooms_list[room_number].joined_users[i][0]=0;
         zeng_online_rooms_list[room_number].joined_users_uuid[i][0]=0;
+    }
+
+    //Inicializar perfiles de teclas
+    for (i=0;i<ZOC_MAX_KEYS_PROFILES;i++) {
+        zeng_online_rooms_list[room_number].allowed_keys[i][0]=0; //0 teclas
+        zeng_online_rooms_list[room_number].allowed_keys_assigned[i][0]=0; //Asignado a nadie
     }
 
     //Retornar el creator password
@@ -1139,7 +1188,10 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
 		int tecla=parse_string_to_number(comando_argv[4]);
 		int event_type=parse_string_to_number(comando_argv[5]);
 		int nomenu=parse_string_to_number(comando_argv[6]);
-        zengonline_add_event(room_number,comando_argv[3],tecla,event_type,nomenu);
+
+        if (zengonline_valid_event(room_number,comando_argv[3],tecla)) {
+            zengonline_add_event(room_number,comando_argv[3],tecla,event_type,nomenu);
+        }
 
 
     }

@@ -50,6 +50,11 @@
 //Aunque no asumo que todos los usuarios (100??) de una sala vayan a pulsar las teclas a la vez
 #define ZENG_ONLINE_MAX_EVENTS 30
 
+//Maximo de perfiles de teclas permitidos por cada habitacion
+#define ZOC_MAX_KEYS_PROFILES 4
+//Maximo de teclas permitidas por cada perfil
+#define ZOC_MAX_KEYS_ITEMS 10
+
 #define ZENG_ONLINE_PERMISSIONS_GET_SNAPSHOT 1
 #define ZENG_ONLINE_PERMISSIONS_PUT_SNAPSHOT 2
 #define ZENG_ONLINE_PERMISSIONS_GET_KEYS 4
