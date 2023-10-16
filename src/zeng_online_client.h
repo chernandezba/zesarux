@@ -22,6 +22,9 @@
 #ifndef ZENG_ONLINE_CLIENT_H
 #define ZENG_ONLINE_CLIENT_H
 
+#include "zeng_online.h"
+#include "stats.h"
+
 extern int zeng_online_client_list_rooms_thread_running;
 extern int zeng_online_client_create_room_thread_running;
 extern int zeng_online_client_join_room_thread_running;
@@ -35,6 +38,7 @@ extern int zeng_online_client_write_message_room_thread_running;
 extern int zeng_online_client_allow_message_room_thread_running;
 extern int zeng_online_client_list_users_thread_running;
 extern int zeng_online_client_get_profile_keys_thread_running;
+extern int zeng_online_client_send_profile_keys_thread_running;
 
 extern void zeng_online_client_list_rooms(void);
 extern void zeng_online_client_create_room(int room_number,char *room_name);
@@ -49,6 +53,12 @@ extern void zeng_online_client_write_message_room(char *message);
 extern void zeng_online_client_allow_message_room(int allow_disallow);
 extern void zeng_online_client_list_users(void);
 extern void zeng_online_client_get_profile_keys(void);
+extern void zeng_online_client_send_profile_keys(void);
+
+
+
+extern int allowed_keys[ZOC_MAX_KEYS_PROFILES][ZOC_MAX_KEYS_ITEMS];
+extern char allowed_keys_assigned[ZOC_MAX_KEYS_PROFILES][STATS_UUID_MAX_LENGTH+1];
 
 extern char *zoc_return_connected_status(void);
 

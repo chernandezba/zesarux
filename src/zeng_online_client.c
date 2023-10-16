@@ -76,6 +76,7 @@ pthread_t thread_zeng_online_client_write_message_room;
 pthread_t thread_zeng_online_client_allow_message_room;
 pthread_t thread_zeng_online_client_list_users;
 pthread_t thread_zeng_online_client_get_profile_keys;
+pthread_t thread_zeng_online_client_send_profile_keys;
 
 
 #endif
@@ -94,6 +95,7 @@ int zeng_online_client_write_message_room_thread_running=0;
 int zeng_online_client_allow_message_room_thread_running=0;
 int zeng_online_client_list_users_thread_running=0;
 int zeng_online_client_get_profile_keys_thread_running=0;
+int zeng_online_client_send_profile_keys_thread_running=0;
 
 z80_bit zeng_online_i_am_master={0};
 //z80_bit zeng_online_i_am_joined={0};
@@ -1257,6 +1259,115 @@ int zeng_online_client_get_profile_keys_connect(void)
 
 }
 
+
+//Devuelve 0 si no conectado
+int zeng_online_client_send_profile_keys_connect(void)
+{
+
+    char buffer_enviar[1024];
+
+
+
+
+
+    //return zoc_open_command_close(buffer_enviar,"set-allow-messages");
+
+
+    int indice_socket=zoc_common_open();
+    if (indice_socket<0) {
+        return 0;
+    }
+
+    //debug_printf(VERBOSE_DEBUG,"ZENG Online: Sending %s",command_name_for_info);
+
+
+    //return zoc_common_send_command_and_close(indice_socket,buffer_enviar,command_name_for_info);
+
+
+    //int return_value=zoc_common_send_command(indice_socket,buffer_enviar,command_name_for_info);
+
+    #define ZENG_BUFFER_INITIAL_CONNECT 199
+
+    //buffer retorno
+    //char buffer[ZENG_BUFFER_INITIAL_CONNECT+1];
+
+    //Obtener los perfiles asignados a cada uuid y las teclas
+    int i;
+
+    for (i=0;i<ZOC_MAX_KEYS_PROFILES;i++) {
+        char buffer_teclas[ZOC_MAX_KEYS_ITEMS*4]; //3 bytes mas espacio para cada tecla
+        buffer_teclas[0]=0;
+        int j;
+        int total_teclas=0;
+        for (j=0;j<ZOC_MAX_KEYS_ITEMS && allowed_keys[i][j];j++) {
+            printf("Tecla escaneada %d\n",allowed_keys[i][j]);
+            char buf_tecla[4];
+            sprintf(buf_tecla,"%d ",allowed_keys[i][j]);
+            util_concat_string(buffer_teclas,buf_tecla,ZOC_MAX_KEYS_ITEMS*4);
+            total_teclas++;
+        }
+
+
+
+
+        if (total_teclas) {
+            //quitar espacio del final
+            int longitud=strlen(buffer_teclas);
+            if (longitud>0) {
+                if (buffer_teclas[longitud-1]==' ') buffer_teclas[longitud-1]=0;
+            }
+
+            sprintf(buffer_enviar,"zeng-online set-key-profile %s %d %d %s\n",
+                created_room_creator_password,
+                zeng_online_joined_to_room_number,
+                i,
+                buffer_teclas
+            );
+        }
+
+        //No hay teclas. enviar lista vacia
+        else {
+            sprintf(buffer_enviar,"zeng-online set-key-profile %s %d %d\n",
+                created_room_creator_password,
+                zeng_online_joined_to_room_number,
+                i
+            );
+        }
+
+        int return_value=zoc_common_send_command(indice_socket,buffer_enviar,"set-key-profile");
+
+
+        if (!return_value) return 0;
+
+
+
+
+        //get-key-profile-assign creator_pass n p
+        sprintf(buffer_enviar,"zeng-online set-key-profile-assign %s %d %d %s\n",
+            created_room_creator_password,
+            zeng_online_joined_to_room_number,
+            i,
+            allowed_keys_assigned[i]
+        );
+
+
+        return_value=zoc_common_send_command(indice_socket,buffer_enviar,"set-key-profile-assign");
+
+
+        if (!return_value) return 0;
+
+
+
+    }
+
+
+    //finalizar conexion
+    z_sock_close_connection(indice_socket);
+
+    return 1;
+
+}
+
 void *zeng_online_client_get_profile_keys_function(void *nada GCC_UNUSED)
 {
     zeng_online_client_get_profile_keys_thread_running=1;
@@ -1275,6 +1386,29 @@ void *zeng_online_client_get_profile_keys_function(void *nada GCC_UNUSED)
 
 
 	zeng_online_client_get_profile_keys_thread_running=0;
+
+	return 0;
+
+}
+
+void *zeng_online_client_send_profile_keys_function(void *nada GCC_UNUSED)
+{
+    zeng_online_client_send_profile_keys_thread_running=1;
+
+	//Conectar a remoto
+
+	if (!zeng_online_client_send_profile_keys_connect()) {
+		//Desconectar solo si el socket estaba conectado
+
+        //Desconectar los que esten conectados
+        //TODO zeng_disconnect_remote();
+
+		zeng_online_client_send_profile_keys_thread_running=0;
+		return 0;
+	}
+
+
+	zeng_online_client_send_profile_keys_thread_running=0;
 
 	return 0;
 
@@ -1571,6 +1705,21 @@ void zeng_online_client_get_profile_keys(void)
 
 	//y pthread en estado detached asi liberara su memoria asociada a thread al finalizar, sin tener que hacer un pthread_join
 	pthread_detach(thread_zeng_online_client_get_profile_keys);
+
+
+}
+
+void zeng_online_client_send_profile_keys(void)
+{
+
+
+	if (pthread_create( &thread_zeng_online_client_send_profile_keys, NULL, &zeng_online_client_send_profile_keys_function, NULL) ) {
+		debug_printf(VERBOSE_ERR,"Can not create zeng online send profile keys pthread");
+		return;
+	}
+
+	//y pthread en estado detached asi liberara su memoria asociada a thread al finalizar, sin tener que hacer un pthread_join
+	pthread_detach(thread_zeng_online_client_send_profile_keys);
 
 
 }
@@ -3378,6 +3527,10 @@ void zeng_online_client_list_users(void)
 }
 
 void zeng_online_client_get_profile_keys(void)
+{
+}
+
+void zeng_online_client_send_profile_keys(void)
 {
 }
 

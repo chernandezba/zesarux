@@ -158,6 +158,11 @@ int menu_zeng_online_get_profile_keys_cond(zxvision_window *w GCC_UNUSED)
 	return !zeng_online_client_get_profile_keys_thread_running;
 }
 
+int menu_zeng_online_send_profile_keys_cond(zxvision_window *w GCC_UNUSED)
+{
+	return !zeng_online_client_send_profile_keys_thread_running;
+}
+
 int menu_zeng_online_destroy_room_cond(zxvision_window *w GCC_UNUSED)
 {
 	return !zeng_online_client_destroy_room_thread_running;
@@ -948,9 +953,21 @@ void menu_zeng_online_join_room(MENU_ITEM_PARAMETERS)
 
 void menu_zeng_online_restricted_keys(MENU_ITEM_PARAMETERS)
 {
+    //Obtener
     zeng_online_client_get_profile_keys();
 
     zxvision_simple_progress_window("Get keys", menu_zeng_online_get_profile_keys_cond,menu_zeng_online_connecting_common_print );
+
+
+    //prueba
+    //strcpy(allowed_keys_assigned[0],"paco.123");
+    //allowed_keys[0][0]=33;
+    //allowed_keys[0][1]=34;
+
+    //Enviar
+    zeng_online_client_send_profile_keys();
+
+    zxvision_simple_progress_window("Send keys", menu_zeng_online_send_profile_keys_cond,menu_zeng_online_connecting_common_print );
 }
 
 int menu_zeng_online_not_connected_cond(void)
