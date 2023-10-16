@@ -63,6 +63,7 @@ y tiene que escoger una que este vacia. Esto hace un create-room (nos guardamos 
 */
 
 int zeng_online_opcion_seleccionada=0;
+int zeng_online_restricted_keys_opcion_seleccionada=0;
 
 //Puede ser: Master, Manager o Slave
 char zeng_online_joined_as_text[30]="";
@@ -951,8 +952,20 @@ void menu_zeng_online_join_room(MENU_ITEM_PARAMETERS)
     }
 }
 
+void menu_zeng_online_restricted_keys_assign_to(MENU_ITEM_PARAMETERS)
+{
+    //TODO: pedir esto desde la lista de usuarios, mas comodo
+    menu_ventana_scanf("UUID",allowed_keys_assigned[valor_opcion],STATS_UUID_MAX_LENGTH+1);
+}
+
 void menu_zeng_online_restricted_keys(MENU_ITEM_PARAMETERS)
 {
+
+    if (zeng_online_client_send_profile_keys_thread_running) {
+        menu_error_message("Send thread has not finished yet");
+        return;
+    }
+
     //Obtener
     zeng_online_client_get_profile_keys();
 
@@ -964,10 +977,59 @@ void menu_zeng_online_restricted_keys(MENU_ITEM_PARAMETERS)
     //allowed_keys[0][0]=33;
     //allowed_keys[0][1]=34;
 
-    //Enviar
+
+
+
+    menu_item *array_menu_common;
+    menu_item item_seleccionado;
+    int retorno_menu;
+    do {
+
+        menu_add_item_menu_inicial(&array_menu_common,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
+
+        int i;
+
+        for (i=0;i<ZOC_MAX_KEYS_PROFILES;i++) {
+
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,
+                "---Profile","---Perfil","---Perfil");
+            menu_add_item_menu_sufijo_format(array_menu_common," %d--- ",i+1);
+
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_restricted_keys_assign_to,NULL,
+                "Assigned to: ","Asignado a: ","Assignat a: ");
+            menu_add_item_menu_sufijo_format(array_menu_common,"%s",allowed_keys_assigned[i]);
+            menu_add_item_menu_valor_opcion(array_menu_common,i);
+
+            menu_add_item_menu_separator(array_menu_common);
+
+        }
+
+
+
+        menu_add_ESC_item(array_menu_common);
+
+        retorno_menu=menu_dibuja_menu(&zeng_online_restricted_keys_opcion_seleccionada,&item_seleccionado,array_menu_common,"Restricted keys");
+
+
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+                //llamamos por valor de funcion
+                if (item_seleccionado.menu_funcion!=NULL) {
+                        //printf ("actuamos por funcion\n");
+                        item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+
+                }
+        }
+
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+
+
+
+
+    //Enviar teclas al salir del menu
     zeng_online_client_send_profile_keys();
 
-    zxvision_simple_progress_window("Send keys", menu_zeng_online_send_profile_keys_cond,menu_zeng_online_connecting_common_print );
+    //Lo enviamos en background sin molestar al usuario
+    //zxvision_simple_progress_window("Send keys", menu_zeng_online_send_profile_keys_cond,menu_zeng_online_connecting_common_print );
 }
 
 int menu_zeng_online_not_connected_cond(void)

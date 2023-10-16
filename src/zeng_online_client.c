@@ -1712,6 +1712,7 @@ void zeng_online_client_get_profile_keys(void)
 void zeng_online_client_send_profile_keys(void)
 {
 
+    printf("Sending restricted keys to server\n");
 
 	if (pthread_create( &thread_zeng_online_client_send_profile_keys, NULL, &zeng_online_client_send_profile_keys_function, NULL) ) {
 		debug_printf(VERBOSE_ERR,"Can not create zeng online send profile keys pthread");
