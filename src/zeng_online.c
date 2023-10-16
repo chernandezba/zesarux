@@ -579,6 +579,12 @@ void zeng_online_create_room(int misocket,int room_number,char *room_name)
         zeng_online_rooms_list[room_number].allowed_keys_assigned[i][0]=0; //Asignado a nadie
     }
 
+    //Prueba un perfil de usuario con teclas restringidas
+    //strcpy(zeng_online_rooms_list[room_number].allowed_keys_assigned[0],"1697471703.603752");
+    //zeng_online_rooms_list[room_number].allowed_keys[0][0]='a';
+    //zeng_online_rooms_list[room_number].allowed_keys[0][1]='b';
+    //zeng_online_rooms_list[room_number].allowed_keys[0][2]=0; //fin de lista de teclas
+
     //Retornar el creator password
     escribir_socket(misocket,zeng_online_rooms_list[room_number].creator_password);
 
@@ -890,6 +896,119 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
         }
 
         zeng_online_rooms_list[room_number].max_players=max_players;
+
+    }
+
+    //set-key-profile creator_pass n p k1 k2 k3 ...  Defines profile (p) keys for room n.\n"
+    else if (!strcmp(comando_argv[0],"set-key-profile")) {
+        if (!zeng_online_enabled) {
+            escribir_socket(misocket,"ERROR. ZENG Online is not enabled");
+            return;
+        }
+
+        if (comando_argc<3) {
+            escribir_socket(misocket,"ERROR. Needs at least three parameters");
+            return;
+        }
+
+        int room_number=parse_string_to_number(comando_argv[2]);
+
+        if (room_number<0 || room_number>=zeng_online_current_max_rooms) {
+            escribir_socket_format(misocket,"ERROR. Room number beyond limit");
+            return;
+        }
+
+        if (!zeng_online_rooms_list[room_number].created) {
+            escribir_socket(misocket,"ERROR. Room is not created");
+            return;
+        }
+
+        //validar user_pass. comando_argv[1]
+        if (strcmp(comando_argv[1],zeng_online_rooms_list[room_number].creator_password)) {
+            escribir_socket(misocket,"ERROR. Invalid creator password for that room");
+            return;
+        }
+
+
+        int profile_index=parse_string_to_number(comando_argv[3]);
+
+        if (profile_index<0 || profile_index>=ZOC_MAX_KEYS_PROFILES) {
+            escribir_socket(misocket,"ERROR. Profile index beyond limit");
+            return;
+        }
+
+        int restantes_teclas=comando_argc-3;
+
+        if (restantes_teclas>ZOC_MAX_KEYS_ITEMS) {
+            escribir_socket(misocket,"ERROR. Too many keys for profile");
+            return;
+        }
+
+        //zeng_online_rooms_list[room_number].max_players=max_players;
+        int indice_tecla=4;
+
+
+        int teclas_agregadas=0;
+
+        //TODO: semaforo para esto
+
+        for (;restantes_teclas>0;restantes_teclas--,teclas_agregadas++,indice_tecla++) {
+            zeng_online_rooms_list[room_number].allowed_keys[profile_index][teclas_agregadas]=parse_string_to_number(comando_argv[indice_tecla]);
+            printf("Agregando %s a perfil tecla %d\n",comando_argv[indice_tecla],profile_index);
+        }
+
+        //meter el 0 del final si el array no esta lleno
+        if (teclas_agregadas<ZOC_MAX_KEYS_ITEMS) {
+            zeng_online_rooms_list[room_number].allowed_keys[profile_index][teclas_agregadas]=0;
+        }
+
+
+    }
+
+    //get-key-profile creator_pass n p Gets profile (p) keys for room n.\n"
+    else if (!strcmp(comando_argv[0],"get-key-profile")) {
+        if (!zeng_online_enabled) {
+            escribir_socket(misocket,"ERROR. ZENG Online is not enabled");
+            return;
+        }
+
+        if (comando_argc<3) {
+            escribir_socket(misocket,"ERROR. Needs three parameters");
+            return;
+        }
+
+        int room_number=parse_string_to_number(comando_argv[2]);
+
+        if (room_number<0 || room_number>=zeng_online_current_max_rooms) {
+            escribir_socket_format(misocket,"ERROR. Room number beyond limit");
+            return;
+        }
+
+        if (!zeng_online_rooms_list[room_number].created) {
+            escribir_socket(misocket,"ERROR. Room is not created");
+            return;
+        }
+
+        //validar user_pass. comando_argv[1]
+        if (strcmp(comando_argv[1],zeng_online_rooms_list[room_number].creator_password)) {
+            escribir_socket(misocket,"ERROR. Invalid creator password for that room");
+            return;
+        }
+
+
+        int profile_index=parse_string_to_number(comando_argv[3]);
+
+        if (profile_index<0 || profile_index>=ZOC_MAX_KEYS_PROFILES) {
+            escribir_socket(misocket,"ERROR. Profile index beyond limit");
+            return;
+        }
+
+        int i;
+
+        for (i=0;i<ZOC_MAX_KEYS_ITEMS && zeng_online_rooms_list[room_number].allowed_keys[profile_index][i];i++) {
+            escribir_socket_format(misocket,"%d ",zeng_online_rooms_list[room_number].allowed_keys[profile_index][i]);
+        }
+
 
     }
 

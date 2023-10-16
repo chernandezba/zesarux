@@ -920,6 +920,7 @@ struct s_items_ayuda items_ayuda[]={
     "                                    Returned format is: uuid key event nomenu\n"
     "get-join-queue-size creator_pass n  Returns the number of clients waiting for join on room n\n"
     "get-join-first-element-queue creator_pass n  Gets the first element in join waiting queue on room n\n"
+    "get-key-profile creator_pass n p    Gets profile (p) keys for room n.\n"
     "get-message user_pass n             Gets the broadcast message from room\n"
     "get-message-id user_pass n          Gets the broadcast message id from room\n"
     "get-snapshot user_pass n            This command returns the last snapshot from room n, returns ERROR if no snapshot there. Requires user_pass\n"
@@ -941,6 +942,7 @@ struct s_items_ayuda items_ayuda[]={
     "send-message user_pass n nickname message    Sends broadcast message to room\n"
     "set-autojoin creator_pass n p       Define permissions (p) for autojoin on room (n), this enables autojoin. Requires creator_pass of that room\n"
     "set-allow-messages creator_pass n   Allows sending messages (allowed by default)\n"
+    "set-key-profile creator_pass n p k1 k2 k3 ...  Defines profile (p) keys for room n.\n"
     "set-max-players creator_pass n m    Define max-players (m) for room (n). Requires creator_pass of that room\n"
 
 },
@@ -3111,7 +3113,7 @@ void remote_cerrar_conexion(void)
 
 
 //Parseo de parametros de comando.
-#define REMOTE_MAX_PARAMETERS_COMMAND 10
+#define REMOTE_MAX_PARAMETERS_COMMAND 20
 //array de punteros a comando y sus argumentos
 //char *remote_command_argv[REMOTE_MAX_PARAMETERS_COMMAND];
 //int remote_command_argc;
