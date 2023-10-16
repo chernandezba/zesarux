@@ -314,7 +314,7 @@ int zengonline_valid_event(int room_number,char *uuid,int tecla)
 
     for (i=0;i<ZOC_MAX_KEYS_PROFILES;i++) {
         //buscar primero el que corresponde al uuid. Solo valido 1 perfil máximo por uuid
-        if (strcmp(uuid,zeng_online_rooms_list[room_number].allowed_keys_assigned[i])) {
+        if (!strcmp(uuid,zeng_online_rooms_list[room_number].allowed_keys_assigned[i])) {
             //Ver si esa tecla esta en la lista. Lista finaliza con el ultimo item o cuando item es 0
             int j;
             for (j=0;j<ZOC_MAX_KEYS_ITEMS && zeng_online_rooms_list[room_number].allowed_keys[i][j];j++) {
@@ -330,7 +330,7 @@ int zengonline_valid_event(int room_number,char *uuid,int tecla)
         }
     }
 
-    printf("No hay restricción de tecla para ese uuid\n");
+    printf("No hay restricción de tecla para el uuid %s\n",uuid);
     return 1;
 }
 
