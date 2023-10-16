@@ -42,6 +42,7 @@
 #include "zeng_online_client.h"
 #include "zeng_online.h"
 #include "network.h"
+#include "stats.h"
 
 
 /*
@@ -66,6 +67,10 @@ int zeng_online_opcion_seleccionada=0;
 //Puede ser: Master, Manager o Slave
 char zeng_online_joined_as_text[30]="";
 
+//Perfiles de teclas que se han cargado del servidor como master/manager para la habitacion actual
+int allowed_keys[ZOC_MAX_KEYS_PROFILES][ZOC_MAX_KEYS_ITEMS];
+//Perfiles asignados a cada uuid. Si es "", no esta asignado
+char allowed_keys_assigned[ZOC_MAX_KEYS_PROFILES][STATS_UUID_MAX_LENGTH+1];
 
 
 void menu_zeng_online_server(MENU_ITEM_PARAMETERS)
@@ -149,6 +154,11 @@ int menu_zeng_online_write_message_room_cond(zxvision_window *w GCC_UNUSED)
 int menu_zeng_online_allow_message_room_cond(zxvision_window *w GCC_UNUSED)
 {
 	return !zeng_online_client_allow_message_room_thread_running;
+}
+
+int menu_zeng_online_get_profile_keys_cond(zxvision_window *w GCC_UNUSED)
+{
+	return !zeng_online_client_get_profile_keys_thread_running;
 }
 
 int menu_zeng_online_destroy_room_cond(zxvision_window *w GCC_UNUSED)
@@ -939,6 +949,13 @@ void menu_zeng_online_join_room(MENU_ITEM_PARAMETERS)
     }
 }
 
+void menu_zeng_online_restricted_keys(MENU_ITEM_PARAMETERS)
+{
+    zeng_online_client_get_profile_keys();
+
+    zxvision_simple_progress_window("Get keys", menu_zeng_online_get_profile_keys_cond,menu_zeng_online_connecting_common_print );
+}
+
 int menu_zeng_online_not_connected_cond(void)
 {
     return !zeng_online_connected.v;
@@ -1063,6 +1080,9 @@ void menu_zeng_online(MENU_ITEM_PARAMETERS)
                 menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_disallow_message_room,NULL,
                 "Disallow broadcast messages","No permitir mensajes difusión","No permetre missatges difusió");
                 menu_add_item_menu_es_avanzado(array_menu_common);
+
+                menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_restricted_keys,NULL,
+                "Restricted keys","Teclas restringidas","Tecles restringides");
 
 
                 menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_leave_room_master,NULL,

@@ -75,6 +75,7 @@ pthread_t thread_zeng_online_client_disable_autojoin_room;
 pthread_t thread_zeng_online_client_write_message_room;
 pthread_t thread_zeng_online_client_allow_message_room;
 pthread_t thread_zeng_online_client_list_users;
+pthread_t thread_zeng_online_client_get_profile_keys;
 
 
 #endif
@@ -92,6 +93,7 @@ int zeng_online_client_disable_autojoin_room_thread_running=0;
 int zeng_online_client_write_message_room_thread_running=0;
 int zeng_online_client_allow_message_room_thread_running=0;
 int zeng_online_client_list_users_thread_running=0;
+int zeng_online_client_get_profile_keys_thread_running=0;
 
 z80_bit zeng_online_i_am_master={0};
 //z80_bit zeng_online_i_am_joined={0};
@@ -1140,6 +1142,106 @@ void *zeng_online_client_allow_message_room_function(void *nada GCC_UNUSED)
 
 }
 
+//Devuelve 0 si no conectado
+int zeng_online_client_get_profile_keys_connect(void)
+{
+
+    char buffer_enviar[1024];
+
+
+
+
+
+    //return zoc_open_command_close(buffer_enviar,"set-allow-messages");
+
+
+    int indice_socket=zoc_common_open();
+    if (indice_socket<0) {
+        return 0;
+    }
+
+    //debug_printf(VERBOSE_DEBUG,"ZENG Online: Sending %s",command_name_for_info);
+
+
+    //return zoc_common_send_command_and_close(indice_socket,buffer_enviar,command_name_for_info);
+
+
+    //int return_value=zoc_common_send_command(indice_socket,buffer_enviar,command_name_for_info);
+
+    #define ZENG_BUFFER_INITIAL_CONNECT 199
+
+    //buffer retorno
+    char buffer[ZENG_BUFFER_INITIAL_CONNECT+1];
+
+    //Obtener los perfiles asignados a cada uuid y las teclas
+    int i;
+
+    for (i=0;i<ZOC_MAX_KEYS_PROFILES;i++) {
+
+        //get-key-profile creator_pass n p
+        sprintf(buffer_enviar,"zeng-online get-key-profile %s %d %d\n",
+            created_room_creator_password,
+            zeng_online_joined_to_room_number,
+            i
+        );
+
+
+        int return_value=zoc_common_send_command_buffer(indice_socket,buffer_enviar,"get-key-profile",buffer,ZENG_BUFFER_INITIAL_CONNECT);
+
+
+        if (!return_value) return 0;
+
+        printf("buffer recibido para get-key-profile perfil %d: %s\n",i,buffer);
+
+        //get-key-profile-assign creator_pass n p
+        sprintf(buffer_enviar,"zeng-online get-key-profile-assign %s %d %d\n",
+            created_room_creator_password,
+            zeng_online_joined_to_room_number,
+            i
+        );
+
+
+        return_value=zoc_common_send_command_buffer(indice_socket,buffer_enviar,"get-key-profile-assign",buffer,ZENG_BUFFER_INITIAL_CONNECT);
+
+
+        if (!return_value) return 0;
+
+        printf("buffer recibido para get-key-profile-assign perfil %d: %s\n",i,buffer);
+
+
+    }
+
+
+    //finalizar conexion
+    z_sock_close_connection(indice_socket);
+
+    return 1;
+
+}
+
+void *zeng_online_client_get_profile_keys_function(void *nada GCC_UNUSED)
+{
+    zeng_online_client_get_profile_keys_thread_running=1;
+
+	//Conectar a remoto
+
+	if (!zeng_online_client_get_profile_keys_connect()) {
+		//Desconectar solo si el socket estaba conectado
+
+        //Desconectar los que esten conectados
+        //TODO zeng_disconnect_remote();
+
+		zeng_online_client_get_profile_keys_thread_running=0;
+		return 0;
+	}
+
+
+	zeng_online_client_get_profile_keys_thread_running=0;
+
+	return 0;
+
+}
+
 void *zeng_online_client_destroy_room_function(void *nada GCC_UNUSED)
 {
     zeng_online_client_destroy_room_thread_running=1;
@@ -1416,6 +1518,21 @@ void zeng_online_client_allow_message_room(int allow_disallow)
 
 	//y pthread en estado detached asi liberara su memoria asociada a thread al finalizar, sin tener que hacer un pthread_join
 	pthread_detach(thread_zeng_online_client_allow_message_room);
+
+
+}
+
+void zeng_online_client_get_profile_keys(void)
+{
+
+
+	if (pthread_create( &thread_zeng_online_client_get_profile_keys, NULL, &zeng_online_client_get_profile_keys_function, NULL) ) {
+		debug_printf(VERBOSE_ERR,"Can not create zeng online get profile keys pthread");
+		return;
+	}
+
+	//y pthread en estado detached asi liberara su memoria asociada a thread al finalizar, sin tener que hacer un pthread_join
+	pthread_detach(thread_zeng_online_client_get_profile_keys);
 
 
 }
@@ -3219,6 +3336,10 @@ void zeng_online_client_join_room(int room_number,char *creator_password)
 }
 
 void zeng_online_client_list_users(void)
+{
+}
+
+void zeng_online_client_get_profile_keys(void)
 {
 }
 

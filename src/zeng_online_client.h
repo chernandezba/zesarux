@@ -34,6 +34,7 @@ extern int zeng_online_client_disable_autojoin_room_thread_running;
 extern int zeng_online_client_write_message_room_thread_running;
 extern int zeng_online_client_allow_message_room_thread_running;
 extern int zeng_online_client_list_users_thread_running;
+extern int zeng_online_client_get_profile_keys_thread_running;
 
 extern void zeng_online_client_list_rooms(void);
 extern void zeng_online_client_create_room(int room_number,char *room_name);
@@ -47,6 +48,7 @@ extern void zeng_online_client_disable_autojoin_room(void);
 extern void zeng_online_client_write_message_room(char *message);
 extern void zeng_online_client_allow_message_room(int allow_disallow);
 extern void zeng_online_client_list_users(void);
+extern void zeng_online_client_get_profile_keys(void);
 
 extern char *zoc_return_connected_status(void);
 

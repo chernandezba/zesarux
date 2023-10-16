@@ -944,7 +944,7 @@ struct s_items_ayuda items_ayuda[]={
     "set-autojoin creator_pass n p                   Define permissions (p) for autojoin on room (n), this enables autojoin. Requires creator_pass of that room\n"
     "set-allow-messages creator_pass n               Allows sending messages (allowed by default)\n"
     "set-key-profile creator_pass n p k1 k2 k3 ...   Defines profile (p) keys for room n.\n"
-    "set-key-profile-assign creator_pass n p [uuid]  Assigns profile (p) keys for room n to user uuid. Set uuid to blank or left undefined to deassign.\n"
+    "set-key-profile-assign creator_pass n p [uuid]  Assigns profile (p) keys for room n to user uuid. Set uuid to blank \"\" or leave undefined to deassign.\n"
     "set-max-players creator_pass n m                Define max-players (m) for room (n). Requires creator_pass of that room\n"
 
 },
