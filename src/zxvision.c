@@ -20209,7 +20209,7 @@ void menu_add_item_menu_tiene_submenu(menu_item *m)
         m->tiene_submenu=1;
 }
 
-//Decirle que todos los menus se cerraran al disparar esta accion
+//Decirle que todos los menus se cerraran cuando se cierre el menu que dispara esta accion
 void menu_add_item_menu_se_cerrara(menu_item *m)
 {
        //busca el ultimo item i le añade el indicado
