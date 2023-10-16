@@ -921,6 +921,7 @@ struct s_items_ayuda items_ayuda[]={
     "get-join-queue-size creator_pass n  Returns the number of clients waiting for join on room n\n"
     "get-join-first-element-queue creator_pass n  Gets the first element in join waiting queue on room n\n"
     "get-key-profile creator_pass n p    Gets profile (p) keys for room n.\n"
+    "get-key-profile-assign creator_pass n p   Gets assigned profile (p) keys for room n to user uuid.\n"
     "get-message user_pass n             Gets the broadcast message from room\n"
     "get-message-id user_pass n          Gets the broadcast message id from room\n"
     "get-snapshot user_pass n            This command returns the last snapshot from room n, returns ERROR if no snapshot there. Requires user_pass\n"
@@ -943,6 +944,7 @@ struct s_items_ayuda items_ayuda[]={
     "set-autojoin creator_pass n p       Define permissions (p) for autojoin on room (n), this enables autojoin. Requires creator_pass of that room\n"
     "set-allow-messages creator_pass n   Allows sending messages (allowed by default)\n"
     "set-key-profile creator_pass n p k1 k2 k3 ...  Defines profile (p) keys for room n.\n"
+    "set-key-profile-assign creator_pass n p [uuid]  Assigns profile (p) keys for room n to user uuid. Set uuid to blank or left undefined to deassign.\n"
     "set-max-players creator_pass n m    Define max-players (m) for room (n). Requires creator_pass of that room\n"
 
 },
