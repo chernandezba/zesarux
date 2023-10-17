@@ -1017,6 +1017,7 @@ struct s_menu_zoc_keys_restricted menu_zoc_keys_restricted[]={
     {0, 4+14,1,"8",'8'},
     {0, 4+16,1,"9",'9'},
     {0, 4+18,1,"0",'0'},
+    {0, 4+20,1,"BCK",UTIL_KEY_BACKSPACE},
 
     {0, 0,2,"TAB",UTIL_KEY_TAB},
     {0, 4,2,"Q",'q'},
@@ -1040,6 +1041,7 @@ struct s_menu_zoc_keys_restricted menu_zoc_keys_restricted[]={
     {0, 4+12,3,"J",'j'},
     {0, 4+14,3,"K",'k'},
     {0, 4+16,3,"L",'l'},
+    {0, 4+18,3,"ENT",UTIL_KEY_ENTER},
 
     {0, 0,4,"SH",UTIL_KEY_SHIFT_L},
     {0, 4,4,"Z",'z'},
@@ -1049,10 +1051,19 @@ struct s_menu_zoc_keys_restricted menu_zoc_keys_restricted[]={
     {0, 4+8,4,"B",'b'},
     {0, 4+10,4,"N",'n'},
     {0, 4+12,4,"M",'m'},
+    {0, 4+14,4,"SH",UTIL_KEY_SHIFT_R},
 
     {0, 0,5,"CTR",UTIL_KEY_CONTROL_L},
     {0, 4,5,"ALT",UTIL_KEY_ALT_L},
     {0, 4+4,5,"SPC",UTIL_KEY_SPACE},
+    {0, 4+8,5,"ALT",UTIL_KEY_ALT_R},
+    {0, 4+12,5,"CTR",UTIL_KEY_CONTROL_R},
+
+    {0, 10,7,"JOY UP",UTIL_KEY_JOY_UP},
+    {0, 3,8,"JOY LF",UTIL_KEY_JOY_LEFT},
+    {0, 11,8,"FIRE",UTIL_KEY_JOY_FIRE},
+    {0, 17,8,"JOY RG",UTIL_KEY_JOY_RIGHT},
+    {0, 10,9,"JOY DN",UTIL_KEY_JOY_DOWN},
 
 
     //la del final, texto ""
@@ -1227,7 +1238,7 @@ void menu_zeng_online_restricted_keys_edit_keyboard(MENU_ITEM_PARAMETERS)
 
 
             menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_restricted_keys_click,NULL,menu_zoc_keys_restricted[i].texto);
-            menu_add_item_menu_tabulado(array_menu_common,menu_zoc_keys_restricted[i].x,menu_zoc_keys_restricted[i].y);
+            menu_add_item_menu_tabulado(array_menu_common,menu_zoc_keys_restricted[i].x+1,menu_zoc_keys_restricted[i].y);
             menu_add_item_menu_marcar_opcion(array_menu_common,menu_zoc_keys_restricted[i].tecla_marcada);
             menu_add_item_menu_valor_opcion(array_menu_common,i);
 
