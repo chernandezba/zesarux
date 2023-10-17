@@ -1191,7 +1191,7 @@ void menu_zeng_online_restricted_keys_click(MENU_ITEM_PARAMETERS)
 #define MENU_ZOC_PROFILE_KEYBOARD_X 0
 #define MENU_ZOC_PROFILE_KEYBOARD_Y 0
 #define MENU_ZOC_PROFILE_KEYBOARD_ANCHO 30
-#define MENU_ZOC_PROFILE_KEYBOARD_ALTO 22
+#define MENU_ZOC_PROFILE_KEYBOARD_ALTO 14
 
 void menu_zeng_online_restricted_keys_edit_keyboard(MENU_ITEM_PARAMETERS)
 {
@@ -1216,10 +1216,13 @@ void menu_zeng_online_restricted_keys_edit_keyboard(MENU_ITEM_PARAMETERS)
 
     zxvision_window ventana;
 
-    zxvision_new_window(&ventana,MENU_ZOC_PROFILE_KEYBOARD_X,MENU_ZOC_PROFILE_KEYBOARD_Y,
-                MENU_ZOC_PROFILE_KEYBOARD_ANCHO,MENU_ZOC_PROFILE_KEYBOARD_ALTO,
-                MENU_ZOC_PROFILE_KEYBOARD_ANCHO-1,MENU_ZOC_PROFILE_KEYBOARD_ALTO-2,
-                "Profile Keys");
+    int ancho_ventana=MENU_ZOC_PROFILE_KEYBOARD_ANCHO;
+    int alto_ventana=MENU_ZOC_PROFILE_KEYBOARD_ALTO;
+
+    int x=menu_center_x()-ancho_ventana/2;
+    int y=menu_center_y()-alto_ventana/2;
+
+    zxvision_new_window(&ventana,x,y,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"Allowed Keys");
     zxvision_draw_window(&ventana);
 
     menu_item *array_menu_common;
@@ -1549,6 +1552,9 @@ void menu_zeng_online(MENU_ITEM_PARAMETERS)
                 "Reset autojoin","Desactivar autounir","Desactivar autounir");
                 menu_add_item_menu_es_avanzado(array_menu_common);
 
+                menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_restricted_keys,NULL,
+                "Restricted keys","Teclas restringidas","Tecles restringides");
+
                 menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_allow_message_room,NULL,
                 "Allow broadcast messages","Permitir mensajes difusión","Permetre missatges difusió");
                 menu_add_item_menu_es_avanzado(array_menu_common);
@@ -1557,8 +1563,7 @@ void menu_zeng_online(MENU_ITEM_PARAMETERS)
                 "Disallow broadcast messages","No permitir mensajes difusión","No permetre missatges difusió");
                 menu_add_item_menu_es_avanzado(array_menu_common);
 
-                menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_restricted_keys,NULL,
-                "Restricted keys","Teclas restringidas","Tecles restringides");
+                menu_add_item_menu_separator(array_menu_common);
 
 
                 menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_leave_room_master,NULL,
