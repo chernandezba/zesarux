@@ -1327,18 +1327,7 @@ void menu_zeng_online_restricted_keys(MENU_ITEM_PARAMETERS)
     //allowed_keys[0][1]=34;
 
 
-    //Para poder hacer la conversion de uuid a nickname, obtener listado de usuarios
-    //Lanzar el thread de listar users
-    zeng_online_client_list_users();
 
-    contador_menu_zeng_connect_print=0;
-
-
-    zxvision_simple_progress_window("ZENG Online connection", menu_zeng_online_list_users_cond,menu_zeng_online_connecting_common_print );
-
-    if (zeng_online_client_list_users_thread_running) {
-        menu_warn_message("Connection has not finished yet");
-    }
 
 
 
@@ -1347,6 +1336,19 @@ void menu_zeng_online_restricted_keys(MENU_ITEM_PARAMETERS)
     menu_item item_seleccionado;
     int retorno_menu;
     do {
+
+        //Para poder hacer la conversion de uuid a nickname, obtener listado de usuarios
+        //Lanzar el thread de listar users
+        zeng_online_client_list_users();
+
+        contador_menu_zeng_connect_print=0;
+
+
+        zxvision_simple_progress_window("ZENG Online connection", menu_zeng_online_list_users_cond,menu_zeng_online_connecting_common_print );
+
+        if (zeng_online_client_list_users_thread_running) {
+            menu_warn_message("Connection has not finished yet");
+        }
 
         menu_add_item_menu_inicial(&array_menu_common,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
 
