@@ -1301,7 +1301,7 @@ int zeng_online_client_send_profile_keys_connect(void)
         int total_teclas=0;
         for (j=0;j<ZOC_MAX_KEYS_ITEMS && allowed_keys[i][j];j++) {
             printf("Tecla escaneada %d\n",allowed_keys[i][j]);
-            char buf_tecla[4];
+            char buf_tecla[10];
             sprintf(buf_tecla,"%d ",allowed_keys[i][j]);
             util_concat_string(buffer_teclas,buf_tecla,ZOC_MAX_KEYS_ITEMS*4);
             total_teclas++;
@@ -1323,6 +1323,7 @@ int zeng_online_client_send_profile_keys_connect(void)
                 i,
                 buffer_teclas
             );
+            //printf("Enviando %s\n",buffer_enviar);
         }
 
         //No hay teclas. enviar lista vacia
@@ -1332,6 +1333,7 @@ int zeng_online_client_send_profile_keys_connect(void)
                 zeng_online_joined_to_room_number,
                 i
             );
+            //printf("Enviando %s\n",buffer_enviar);
         }
 
         int return_value=zoc_common_send_command(indice_socket,buffer_enviar,"set-key-profile");

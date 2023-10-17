@@ -1018,6 +1018,7 @@ void menu_zeng_online_restricted_keys_edit_keyboard(MENU_ITEM_PARAMETERS)
         menu_zoc_keys_restricted[i].tecla_marcada=0;
     }
 
+    //buscar cada tecla recibida del servidor en nuestro teclado visual
     for (i=0;i<ZOC_MAX_KEYS_ITEMS && allowed_keys[perfil_teclado][i];i++) {
         int tecla=allowed_keys[perfil_teclado][i];
         int indice_en_teclado=menu_zeng_online_buscar_tecla(tecla);
@@ -1085,6 +1086,20 @@ void menu_zeng_online_restricted_keys_edit_keyboard(MENU_ITEM_PARAMETERS)
 
     //cerrar esta ventana y no queremos que cierre todos los submenus
     salir_todos_menus=0;
+
+
+    //Actualizar array de teclas que se le enviara al servidor con lo que hay marcado en nuestro teclado en pantalla
+    int indice_destino=0;
+
+
+    for (i=0;menu_zoc_keys_restricted[i].texto[0];i++) {
+        if (menu_zoc_keys_restricted[i].tecla_marcada) {
+            allowed_keys[perfil_teclado][indice_destino++]=menu_zoc_keys_restricted[i].valor_tecla;
+        }
+    }
+
+    //0 del final si aun hay sitio
+    if (indice_destino<ZOC_MAX_KEYS_ITEMS) allowed_keys[perfil_teclado][indice_destino++]=0;
 
 }
 
