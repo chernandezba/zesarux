@@ -1006,12 +1006,53 @@ struct s_menu_zoc_keys_restricted {
 
 struct s_menu_zoc_keys_restricted menu_zoc_keys_restricted[]={
     {0, 0,0,"ESC",UTIL_KEY_ESC},
+
     {0, 4,1,"1",'1'},
-    {0, 4+2,1,"2",'1'},
+    {0, 4+2,1,"2",'2'},
+    {0, 4+4,1,"3",'3'},
+    {0, 4+6,1,"4",'4'},
+    {0, 4+8,1,"5",'5'},
+    {0, 4+10,1,"6",'6'},
+    {0, 4+12,1,"7",'7'},
+    {0, 4+14,1,"8",'8'},
+    {0, 4+16,1,"9",'9'},
+    {0, 4+18,1,"0",'0'},
 
     {0, 0,2,"TAB",UTIL_KEY_TAB},
     {0, 4,2,"Q",'q'},
     {0, 4+2,2,"W",'w'},
+    {0, 4+4,2,"E",'e'},
+    {0, 4+6,2,"R",'r'},
+    {0, 4+8,2,"T",'t'},
+    {0, 4+10,2,"Y",'y'},
+    {0, 4+12,2,"U",'u'},
+    {0, 4+14,2,"I",'i'},
+    {0, 4+16,2,"O",'o'},
+    {0, 4+18,2,"P",'p'},
+
+    {0, 0,3,"CS",UTIL_KEY_CAPS_LOCK},
+    {0, 4,3,"A",'a'},
+    {0, 4+2,3,"S",'s'},
+    {0, 4+4,3,"D",'d'},
+    {0, 4+6,3,"F",'f'},
+    {0, 4+8,3,"G",'g'},
+    {0, 4+10,3,"H",'h'},
+    {0, 4+12,3,"J",'j'},
+    {0, 4+14,3,"K",'k'},
+    {0, 4+16,3,"L",'l'},
+
+    {0, 0,4,"SH",UTIL_KEY_SHIFT_L},
+    {0, 4,4,"Z",'z'},
+    {0, 4+2,4,"X",'x'},
+    {0, 4+4,4,"C",'c'},
+    {0, 4+6,4,"V",'v'},
+    {0, 4+8,4,"B",'b'},
+    {0, 4+10,4,"N",'n'},
+    {0, 4+12,4,"M",'m'},
+
+    {0, 0,5,"CTR",UTIL_KEY_CONTROL_L},
+    {0, 4,5,"ALT",UTIL_KEY_ALT_L},
+    {0, 4+4,5,"SPC",UTIL_KEY_SPACE},
 
 
     //la del final, texto ""
@@ -1030,6 +1071,18 @@ int menu_zeng_online_buscar_tecla(int tecla_buscar)
     }
 
     return -1;
+}
+
+int menu_zoc_keys_restricted_get_marcadas(void)
+{
+    int i;
+    int marcadas=0;
+
+    for (i=0;menu_zoc_keys_restricted[i].texto[0];i++) {
+        if (menu_zoc_keys_restricted[i].tecla_marcada) marcadas++;
+    }
+
+    return marcadas;
 }
 
 
@@ -1106,7 +1159,16 @@ void menu_zeng_online_restricted_keys_assign_to(MENU_ITEM_PARAMETERS)
 
 void menu_zeng_online_restricted_keys_click(MENU_ITEM_PARAMETERS)
 {
-    //TODO: validar que no se marca mas de un maximo de ZOC_MAX_KEYS_ITEMS
+    //validar que no se marca mas de un maximo de ZOC_MAX_KEYS_ITEMS
+    if (menu_zoc_keys_restricted[valor_opcion].tecla_marcada==0) {
+        int total_marcadas=menu_zoc_keys_restricted_get_marcadas();
+        if (total_marcadas>=ZOC_MAX_KEYS_ITEMS) {
+            menu_error_message("Too many selected keys");
+            return;
+        }
+    }
+
+
     menu_zoc_keys_restricted[valor_opcion].tecla_marcada ^=1;
 }
 
