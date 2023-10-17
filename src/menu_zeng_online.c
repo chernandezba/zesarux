@@ -1146,6 +1146,11 @@ void menu_zeng_online_restricted_keys_assign_to(MENU_ITEM_PARAMETERS)
             }
 
 
+            //Para poder desasignar
+            menu_add_item_menu(array_menu_common,"None",MENU_OPCION_NORMAL,NULL,NULL);
+            menu_add_item_menu_misc(array_menu_common,"");
+
+
             retorno_menu=menu_dibuja_menu(&opcion_seleccionada,&item_seleccionado,array_menu_common,"Users");
 
 
