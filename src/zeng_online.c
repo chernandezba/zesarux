@@ -1294,6 +1294,8 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
             if (zeng_online_rooms_list[room_number].joined_users[i][0]) {
                 escribir_socket_format(misocket,"%s\n",
                     zeng_online_rooms_list[room_number].joined_users[i]);
+                escribir_socket_format(misocket,"%s\n",
+                    zeng_online_rooms_list[room_number].joined_users_uuid[i]);
             }
         }
 

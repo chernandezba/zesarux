@@ -755,7 +755,51 @@ void menu_zeng_online_list_users(MENU_ITEM_PARAMETERS)
     }
 
     if (zeng_remote_list_users_buffer[0]!=0) {
-        menu_generic_message("Joined users",zeng_remote_list_users_buffer);
+        //menu_generic_message("Joined users",zeng_remote_list_users_buffer);
+
+        //Cada linea:
+        //nickname
+        //uuid
+        //nickname
+        //uuid
+        //Por tanto saltamos la linea del uuid porque al usuario no le interesa
+
+        menu_item *array_menu_common;
+        menu_item item_seleccionado;
+        int retorno_menu;
+        int opcion_seleccionada=0;
+        //do {
+
+            menu_add_item_menu_inicial(&array_menu_common,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
+
+            int i=0;
+            int linea=0;
+            int inicio_linea=0;
+
+            while (zeng_remote_list_users_buffer[i]) {
+                if (zeng_remote_list_users_buffer[i]=='\n') {
+                    zeng_remote_list_users_buffer[i]=0;
+
+                    //Solo agregar en linea par (evitamos uuid)
+                    if ((linea%2)==0) {
+                        menu_add_item_menu(array_menu_common,&zeng_remote_list_users_buffer[inicio_linea],MENU_OPCION_NORMAL,NULL,NULL);
+                    }
+
+                    inicio_linea=i+1;
+                    linea++;
+                }
+                i++;
+            }
+
+
+            retorno_menu=menu_dibuja_menu(&opcion_seleccionada,&item_seleccionado,array_menu_common,"Users");
+
+
+        //No es un menu como tal. Pulsar enter y sale
+        //Ademas, hemos modificado zeng_remote_list_users_buffer metiendo caracteres 0 por tanto se ha alterado
+        //y ya no volvera a salir el menu a no ser que volvamos a recargar lista de usuarios
+
+
     }
 
 }
