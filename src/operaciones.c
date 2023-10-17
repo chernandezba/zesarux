@@ -4143,9 +4143,25 @@ void poke_byte_desp(z80_int dir,z80_byte desp,z80_byte valor)
 
 
 
+//Esto no es macro porque se usa en sitios como cp(hl) donde se hace cp_reg(peek_byte(hl)) y provocaria error de timing
+void cp_reg(z80_byte value)
+{
 
+        z80_byte result,antes;
 
+        set_undocumented_flags_bits(value);
 
+        result=reg_a;
+        antes=reg_a;
+
+        result -=value;
+
+        set_flags_zero_sign(result);
+        set_flags_carry_resta(antes,result);
+        set_flags_overflow_resta(antes,result);
+        Z80_FLAGS |=FLAG_N;
+
+}
 
 
 

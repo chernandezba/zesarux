@@ -14,7 +14,7 @@ sleep 4
 ./zesarux --noconfigfile ./extras/media/spectrum/tests/fusetest.tap
 ./zesarux --noconfigfile --machine 128k ./extras/media/spectrum/tests/fusetest.tap
 
-echo "Timing_Tests-48k_v1.0.sna. errores normalmente en test 4 add etc, test 25 add etc, test 36 in a etc, test 37 in a etc"
+echo "Timing_Tests-48k_v1.0.sna. errores normalmente en test 36 in a etc, test 37 in a etc"
 sleep 4
 ./zesarux --noconfigfile ./extras/media/spectrum/tests/Timing_Tests-48k_v1.0.sna
 

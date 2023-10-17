@@ -401,7 +401,7 @@ extern z80_int add_16bit(z80_int reg, z80_int value);
 	Z80_FLAGS |= ( (reg)==127 ? FLAG_PV : 0 ) | sz53_table[reg]; \
 } \
 
-
+extern void cp_reg(z80_byte value);
 
 extern z80_int sbc_16bit(z80_int reg, z80_int value);
 extern z80_byte sub_value(z80_byte value);
@@ -432,24 +432,7 @@ extern void push_valor_default(z80_int valor,z80_byte tipo) ;
 extern z80_int pop_valor();
 
 
-#define cp_reg(value) \
-{ \
- \
-        z80_byte result,antes; \
- \
-        set_undocumented_flags_bits(value); \
- \
-        result=reg_a; \
-        antes=reg_a; \
- \
-        result -=value; \
- \
-        set_flags_zero_sign(result); \
-        set_flags_carry_resta(antes,result); \
-        set_flags_overflow_resta(antes,result); \
-        Z80_FLAGS |=FLAG_N; \
- \
-} \
+
 
 #define and_reg(value) \
 { \

@@ -16,6 +16,8 @@ Allow to use cpu-step-mode from ZRCP on drivers stdout and simpletext
 
 Added ZRCP commands: open-menu, print-error
 
+Fixed timings of opcodes CP(HL), CP(IX+d), CP(IY+d)
+
 ----------------------------------------
 
 
