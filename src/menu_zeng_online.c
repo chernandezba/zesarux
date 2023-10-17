@@ -1279,6 +1279,34 @@ void menu_zeng_online_restricted_keys_edit_keyboard(MENU_ITEM_PARAMETERS)
 
 }
 
+char *menu_zeng_online_get_nickname_uuid(char *uuid)
+{
+    char *encontrado=strstr(zeng_remote_list_users_buffer,uuid);
+
+    if (encontrado==NULL) return NULL;
+
+    //Formato es
+    //nickname
+    //uuid
+    //..
+
+    //Por tanto retornar la linea anterior
+    //Y no irnos mas alla del principio
+    encontrado-=2; //Nos ponemos en la linea anterior (saltamos caracter actual y el \n de la linea anterior).
+
+    //Vamos al inicio de la linea
+    while (encontrado>=zeng_remote_list_users_buffer) {
+        if (*encontrado=='\n') return encontrado+1;
+
+        //si hemos llegado al principio
+        if (encontrado==zeng_remote_list_users_buffer) return encontrado;
+
+        encontrado--;
+    }
+
+    return NULL;
+}
+
 void menu_zeng_online_restricted_keys(MENU_ITEM_PARAMETERS)
 {
 
@@ -1297,6 +1325,20 @@ void menu_zeng_online_restricted_keys(MENU_ITEM_PARAMETERS)
     //strcpy(allowed_keys_assigned[0],"paco.123");
     //allowed_keys[0][0]=33;
     //allowed_keys[0][1]=34;
+
+
+    //Para poder hacer la conversion de uuid a nickname, obtener listado de usuarios
+    //Lanzar el thread de listar users
+    zeng_online_client_list_users();
+
+    contador_menu_zeng_connect_print=0;
+
+
+    zxvision_simple_progress_window("ZENG Online connection", menu_zeng_online_list_users_cond,menu_zeng_online_connecting_common_print );
+
+    if (zeng_online_client_list_users_thread_running) {
+        menu_warn_message("Connection has not finished yet");
+    }
 
 
 
@@ -1323,7 +1365,26 @@ void menu_zeng_online_restricted_keys(MENU_ITEM_PARAMETERS)
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_restricted_keys_assign_to,NULL,
                 "Assigned to: ","Asignado a: ","Assignat a: ");
-            menu_add_item_menu_sufijo_format(array_menu_common,"%s",allowed_keys_assigned[i]);
+
+            //Obtener a que nickname corresponde ese uuid
+            char *nickname=menu_zeng_online_get_nickname_uuid(allowed_keys_assigned[i]);
+            if (nickname==NULL) {
+                //agregarlo tal cual como uuid
+                menu_add_item_menu_sufijo_format(array_menu_common,"%s",allowed_keys_assigned[i]);
+            }
+            else {
+                //Agregar como nickname
+                char buff_nickname[ZOC_MAX_NICKNAME_LENGTH+1];
+                int j=0;
+                while (*nickname!=0 && *nickname!='\n') {
+                    buff_nickname[j++]=*nickname;
+
+                    nickname++;
+                }
+                buff_nickname[j++]=0;
+                menu_add_item_menu_sufijo_format(array_menu_common,"%s",buff_nickname);
+            }
+
             menu_add_item_menu_valor_opcion(array_menu_common,i);
 
             menu_add_item_menu_separator(array_menu_common);
