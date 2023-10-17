@@ -952,10 +952,140 @@ void menu_zeng_online_join_room(MENU_ITEM_PARAMETERS)
     }
 }
 
+//Estructura para las teclas mostradas en el teclado de restricted keys
+struct s_menu_zoc_keys_restricted {
+    int tecla_marcada;
+    int x,y; //posición de la tecla en el menu tabulado
+    char texto[10]; //texto de la tecla
+    enum util_teclas valor_tecla; //valor correspondiente de la tecla
+};
+
+struct s_menu_zoc_keys_restricted menu_zoc_keys_restricted[]={
+    {0, 0,0,"ESC",UTIL_KEY_ESC},
+    {0, 4,1,"1",'1'},
+    {0, 4+2,1,"2",'1'},
+
+    {0, 0,2,"TAB",UTIL_KEY_TAB},
+    {0, 4,2,"Q",'q'},
+    {0, 4+2,2,"W",'w'},
+
+
+    //la del final, texto ""
+    {0, 0,0,"",0}
+};
+
+//busca un id de tecla dentro de menu_zoc_keys_restricted
+//retorna -1 si no encontrado
+int menu_zeng_online_buscar_tecla(int tecla_buscar)
+{
+    int i;
+
+    for (i=0;menu_zoc_keys_restricted[i].texto[0];i++) {
+        int valor_tecla=menu_zoc_keys_restricted[i].valor_tecla;
+        if (valor_tecla==tecla_buscar) return i;
+    }
+
+    return -1;
+}
+
+
 void menu_zeng_online_restricted_keys_assign_to(MENU_ITEM_PARAMETERS)
 {
     //TODO: pedir esto desde la lista de usuarios, mas comodo
     menu_ventana_scanf("UUID",allowed_keys_assigned[valor_opcion],STATS_UUID_MAX_LENGTH+1);
+}
+
+void menu_zeng_online_restricted_keys_click(MENU_ITEM_PARAMETERS)
+{
+    //TODO: validar que no se marca mas de un maximo de ZOC_MAX_KEYS_ITEMS
+    menu_zoc_keys_restricted[valor_opcion].tecla_marcada ^=1;
+}
+
+#define MENU_ZOC_PROFILE_KEYBOARD_X 0
+#define MENU_ZOC_PROFILE_KEYBOARD_Y 0
+#define MENU_ZOC_PROFILE_KEYBOARD_ANCHO 30
+#define MENU_ZOC_PROFILE_KEYBOARD_ALTO 22
+
+void menu_zeng_online_restricted_keys_edit_keyboard(MENU_ITEM_PARAMETERS)
+{
+
+    //rellenar el teclado con los valores de int allowed_keys[ZOC_MAX_KEYS_PROFILES][ZOC_MAX_KEYS_ITEMS];
+    int perfil_teclado=valor_opcion;
+
+    int i;
+    //primero inicializar todo a teclas no marcadas
+    for (i=0;menu_zoc_keys_restricted[i].texto[0];i++) {
+        menu_zoc_keys_restricted[i].tecla_marcada=0;
+    }
+
+    for (i=0;i<ZOC_MAX_KEYS_ITEMS && allowed_keys[perfil_teclado][i];i++) {
+        int tecla=allowed_keys[perfil_teclado][i];
+        int indice_en_teclado=menu_zeng_online_buscar_tecla(tecla);
+        if (indice_en_teclado>=0) {
+            menu_zoc_keys_restricted[indice_en_teclado].tecla_marcada=1;
+        }
+    }
+
+    zxvision_window ventana;
+
+    zxvision_new_window(&ventana,MENU_ZOC_PROFILE_KEYBOARD_X,MENU_ZOC_PROFILE_KEYBOARD_Y,
+                MENU_ZOC_PROFILE_KEYBOARD_ANCHO,MENU_ZOC_PROFILE_KEYBOARD_ALTO,
+                MENU_ZOC_PROFILE_KEYBOARD_ANCHO-1,MENU_ZOC_PROFILE_KEYBOARD_ALTO-2,
+                "Profile Keys");
+    zxvision_draw_window(&ventana);
+
+    menu_item *array_menu_common;
+    menu_item item_seleccionado;
+    int retorno_menu;
+    int opcion_seleccionada=0;
+    do {
+
+
+        //Como no sabemos cual sera el item inicial, metemos este sin asignar, que se sobreescribe en el siguiente menu_add_item_menu
+        menu_add_item_menu_inicial(&array_menu_common,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
+
+
+
+        for (i=0;menu_zoc_keys_restricted[i].texto[0];i++) {
+
+
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_restricted_keys_click,NULL,menu_zoc_keys_restricted[i].texto);
+            menu_add_item_menu_tabulado(array_menu_common,menu_zoc_keys_restricted[i].x,menu_zoc_keys_restricted[i].y);
+            menu_add_item_menu_marcar_opcion(array_menu_common,menu_zoc_keys_restricted[i].tecla_marcada);
+            menu_add_item_menu_valor_opcion(array_menu_common,i);
+
+
+        }
+
+		//Nombre de ventana solo aparece en el caso de stdout
+        retorno_menu=menu_dibuja_menu(&opcion_seleccionada,&item_seleccionado,array_menu_common,"OSD Adventure KB" );
+
+
+	//En caso de menus tabulados, es responsabilidad de este de borrar la ventana
+
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+            //llamamos por valor de funcion
+            if (item_seleccionado.menu_funcion!=NULL) {
+                //printf ("Item seleccionado: %d\n",item_seleccionado.valor_opcion);
+                //printf ("actuamos por funcion\n");
+
+
+                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+
+
+            }
+        }
+
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+
+
+
+    //printf ("en final de funcion\n");
+    zxvision_destroy_window(&ventana);
+
+    //cerrar esta ventana y no queremos que cierre todos los submenus
+    salir_todos_menus=0;
+
 }
 
 void menu_zeng_online_restricted_keys(MENU_ITEM_PARAMETERS)
@@ -991,9 +1121,14 @@ void menu_zeng_online_restricted_keys(MENU_ITEM_PARAMETERS)
 
         for (i=0;i<ZOC_MAX_KEYS_PROFILES;i++) {
 
-            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,
                 "---Profile","---Perfil","---Perfil");
             menu_add_item_menu_sufijo_format(array_menu_common," %d--- ",i+1);
+
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_restricted_keys_edit_keyboard,NULL,
+                "Edit keys","Editar teclas","Editar tecles");
+            menu_add_item_menu_valor_opcion(array_menu_common,i);
+
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_restricted_keys_assign_to,NULL,
                 "Assigned to: ","Asignado a: ","Assignat a: ");

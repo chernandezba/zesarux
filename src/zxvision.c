@@ -8311,18 +8311,20 @@ void menu_textspeech_send_text(char *texto_orig)
 
 }
 
-void menu_retorna_colores_linea_opcion(int indice,int opcion_actual,int opcion_activada,int *papel_orig,int *tinta_orig)
+void menu_retorna_colores_linea_opcion(int indice,int opcion_actual,int opcion_activada,int *papel_orig,int *tinta_orig,int opcion_marcada)
 {
 	int papel,tinta;
 
 	/*
-	4 combinaciones:
+	5 combinaciones:
 	opcion seleccionada, disponible (activada)
 	opcion seleccionada, no disponible
 	opcion no seleccionada, disponible
+    opcion no seleccionada, disponible, marcada
 	opcion no seleccionada, no disponible
 	*/
 
+        //Opcion seleccionada
         if (opcion_actual==indice) {
                 if (opcion_activada==1) {
                         papel=ESTILO_GUI_PAPEL_SELECCIONADO;
@@ -8334,10 +8336,17 @@ void menu_retorna_colores_linea_opcion(int indice,int opcion_actual,int opcion_a
                 }
         }
 
+        //Opcion no seleccionada
         else {
                 if (opcion_activada==1) {
+                    if (opcion_marcada) {
+                        papel=ESTILO_GUI_PAPEL_OPCION_MARCADA;
+                        tinta=ESTILO_GUI_TINTA_OPCION_MARCADA;
+                    }
+                    else {
                         papel=ESTILO_GUI_PAPEL_NORMAL;
                         tinta=ESTILO_GUI_TINTA_NORMAL;
+                    }
                 }
                 else {
                         papel=ESTILO_GUI_PAPEL_NO_DISPONIBLE;
@@ -8356,7 +8365,8 @@ void menu_retorna_colores_linea_opcion(int indice,int opcion_actual,int opcion_a
 //coordenadas "indice" relativa al interior de la ventana (0=inicio)
 //opcion_actual indica que numero de linea es la seleccionada
 //opcion activada indica a 1 que esa opcion es seleccionable
-void menu_escribe_linea_opcion_zxvision(zxvision_window *ventana,int indice,int opcion_actual,int opcion_activada,char *texto_entrada,int tiene_submenu)
+void menu_escribe_linea_opcion_zxvision(zxvision_window *ventana,int indice,int opcion_actual,int opcion_activada,char *texto_entrada,
+    int tiene_submenu,int opcion_marcada)
 {
 
 	char texto[MAX_ESCR_LINEA_OPCION_ZXVISION_LENGTH+1];
@@ -8376,12 +8386,12 @@ void menu_escribe_linea_opcion_zxvision(zxvision_window *ventana,int indice,int 
 	//tinta=0;
 
 
-	menu_retorna_colores_linea_opcion(indice,opcion_actual,opcion_activada,&papel,&tinta);
+	menu_retorna_colores_linea_opcion(indice,opcion_actual,opcion_activada,&papel,&tinta,opcion_marcada);
 
 
 	//Obtenemos colores de una opcion sin seleccion y activada, para poder tener texto en ventana con linea en dos colores
 	int papel_normal,tinta_normal;
-	menu_retorna_colores_linea_opcion(0,-1,1,&papel_normal,&tinta_normal);
+	menu_retorna_colores_linea_opcion(0,-1,1,&papel_normal,&tinta_normal,0);
 
 	//Buscamos a ver si en el texto hay el caracter "||" y en ese caso lo eliminamos del texto final
 	int encontrado=-1;
@@ -8520,7 +8530,8 @@ void menu_escribe_linea_opcion(int indice,int opcion_actual,int opcion_activada,
 //coordenadas "indice" relativa al interior de la ventana (0=inicio)
 //opcion_actual indica que numero de linea es la seleccionada
 //opcion activada indica a 1 que esa opcion es seleccionable
-void menu_escribe_linea_opcion_tabulado_zxvision(zxvision_window *ventana,int indice,int opcion_actual,int opcion_activada,char *texto,int x,int y)
+void menu_escribe_linea_opcion_tabulado_zxvision(zxvision_window *ventana,int indice,int opcion_actual,int opcion_activada,char *texto,
+    int x,int y,int opcion_marcada)
 {
 
         if (!strcmp(scr_new_driver_name,"stdout")) {
@@ -8533,7 +8544,7 @@ void menu_escribe_linea_opcion_tabulado_zxvision(zxvision_window *ventana,int in
         int papel,tinta;
 
 
-        menu_retorna_colores_linea_opcion(indice,opcion_actual,opcion_activada,&papel,&tinta);
+        menu_retorna_colores_linea_opcion(indice,opcion_actual,opcion_activada,&papel,&tinta,opcion_marcada);
 
 
 		zxvision_print_string(ventana,x,y,tinta,papel,0,texto);
@@ -18419,7 +18430,20 @@ void menu_dibuja_menu_stdout_texto_sin_atajo(char *origen, char *destino)
 }
 
 
+void menu_dibuja_menu_stdout_print_numero_opcion(int max_opciones,int opcion_marcada)
+{
+    printf ("%2d)",max_opciones);
+    //Si es opcion marcada
+    //TODO: quiza otros caracteres distintos para indicar que es una opcion marcada
+    if (opcion_marcada) printf("__");
 
+    char buf[10];
+    sprintf (buf,"%d",max_opciones);
+    if (!menu_speech_tecla_pulsada) {
+        scrstdout_menu_print_speech_macro(buf);
+    }
+
+}
 
 int menu_dibuja_menu_stdout(int *opcion_inicial,menu_item *item_seleccionado,menu_item *m,char *titulo)
 {
@@ -18430,75 +18454,71 @@ int menu_dibuja_menu_stdout(int *opcion_inicial,menu_item *item_seleccionado,men
 
 	//Titulo
 	printf ("\n");
-        printf ("%s\n",titulo);
+    printf ("%s\n",titulo);
 	printf ("------------------------\n\n");
 	scrstdout_menu_print_speech_macro(titulo);
 
 	aux=m;
 
-        int max_opciones=0;
+    int max_opciones=0;
 
 	int tecla=13;
 
 	//para speech stdout. asumir no tecla pulsada. si se pulsa tecla, para leer menu
 	menu_speech_tecla_pulsada=0;
 
-        do {
-            if (menu_item_retornar_avanzados(aux)) {
-		//scrstdout_menu_kbhit_macro();
-                max_opciones++;
+    do {
+        if (menu_item_retornar_avanzados(aux)) {
+		    //scrstdout_menu_kbhit_macro();
+            max_opciones++;
 
-		if (aux->tipo_opcion!=MENU_OPCION_SEPARADOR) {
+		    if (aux->tipo_opcion!=MENU_OPCION_SEPARADOR) {
 
-			//Ver si esta activa
-                        t_menu_funcion_activo menu_funcion_activo;
+                //Ver si esta activa
+                t_menu_funcion_activo menu_funcion_activo;
 
-                        menu_funcion_activo=aux->menu_funcion_activo;
+                menu_funcion_activo=aux->menu_funcion_activo;
 
-                        if ( menu_funcion_activo!=NULL) {
-				if (menu_funcion_activo()!=0) {
-					printf ("%2d)",max_opciones);
-					char buf[10];
-					sprintf (buf,"%d",max_opciones);
-					if (!menu_speech_tecla_pulsada) {
-						scrstdout_menu_print_speech_macro(buf);
-					}
-				}
+                int opcion_activada=1;
 
-				else {
-					printf ("x  ");
-					if (!menu_speech_tecla_pulsada) {
-						scrstdout_menu_print_speech_macro("Unavailable option: ");
-					}
-				}
-			}
+                //Si tiene condicion de activa
+                if ( menu_funcion_activo!=NULL) {
+                    if (!menu_funcion_activo()) {
+                        opcion_activada=0;
+                    }
 
-			else {
-				printf ("%2d)",max_opciones);
-					char buf[10];
-					sprintf (buf,"%d",max_opciones);
-					if (!menu_speech_tecla_pulsada) {
-						scrstdout_menu_print_speech_macro(buf);
-					}
-			}
-
-			//Imprimir linea menu pero descartando los ~~ de los atajo de teclado o ^^
-			menu_dibuja_menu_stdout_texto_sin_atajo(menu_retorna_item_language(aux),texto_linea_sin_shortcut);
+                }
 
 
-			printf ( "%s",texto_linea_sin_shortcut);
-			if (!menu_speech_tecla_pulsada) {
-				scrstdout_menu_print_speech_macro (texto_linea_sin_shortcut);
-			}
 
-		}
+                if (opcion_activada) {
+                    menu_dibuja_menu_stdout_print_numero_opcion(max_opciones,aux->opcion_marcada);
+                }
+
+                else {
+                    printf ("x  ");
+                    if (!menu_speech_tecla_pulsada) {
+                        scrstdout_menu_print_speech_macro("Unavailable option: ");
+                    }
+                }
+
+                //Imprimir linea menu pero descartando los ~~ de los atajo de teclado o ^^
+                menu_dibuja_menu_stdout_texto_sin_atajo(menu_retorna_item_language(aux),texto_linea_sin_shortcut);
 
 
-		printf ("\n");
+                printf ( "%s",texto_linea_sin_shortcut);
+                if (!menu_speech_tecla_pulsada) {
+                    scrstdout_menu_print_speech_macro (texto_linea_sin_shortcut);
+                }
+
+		    }
+
+
+		    printf ("\n");
         }
 
-                aux=aux->siguiente_item;
-        } while (aux!=NULL);
+        aux=aux->siguiente_item;
+    } while (aux!=NULL);
 
 	printf ("\n");
 
@@ -18525,35 +18545,36 @@ int menu_dibuja_menu_stdout(int *opcion_inicial,menu_item *item_seleccionado,men
 		}
 
 		else if (texto_opcion[0]=='h' || texto_opcion[0]=='t') {
-				salir_opcion=0;
-                                char *texto_ayuda;
-				linea_seleccionada=atoi(&texto_opcion[1]);
-				linea_seleccionada--;
-				if (linea_seleccionada>=0 && linea_seleccionada<max_opciones) {
+            salir_opcion=0;
+            char *texto_ayuda;
+            linea_seleccionada=atoi(&texto_opcion[1]);
+            linea_seleccionada--;
+            if (linea_seleccionada>=0 && linea_seleccionada<max_opciones) {
 
-					char *titulo_texto;
+                char *titulo_texto;
 
-					if (texto_opcion[0]=='h') {
-		                                texto_ayuda=menu_retorna_item(m,linea_seleccionada)->texto_ayuda;
-						titulo_texto="Help";
-					}
+                if (texto_opcion[0]=='h') {
+                    texto_ayuda=menu_retorna_item(m,linea_seleccionada)->texto_ayuda;
+                    titulo_texto="Help";
+                }
 
-					else {
-						texto_ayuda=menu_retorna_item(m,linea_seleccionada)->texto_tooltip;
-						titulo_texto="Tooltip";
-					}
+                else {
+                    texto_ayuda=menu_retorna_item(m,linea_seleccionada)->texto_tooltip;
+                    titulo_texto="Tooltip";
+                }
 
 
-        	                        if (texto_ayuda!=NULL) {
-                	                        menu_generic_message(titulo_texto,texto_ayuda);
-					}
-					else {
-						printf ("Item has no %s\n",titulo_texto);
-					}
-                                }
-				else {
-					printf ("Invalid option number\n");
-				}
+                if (texto_ayuda!=NULL) {
+                    menu_generic_message(titulo_texto,texto_ayuda);
+                }
+                else {
+                    printf ("Item has no %s\n",titulo_texto);
+                }
+            }
+
+            else {
+                printf ("Invalid option number\n");
+            }
 		}
 
 		else {
@@ -18579,49 +18600,45 @@ int menu_dibuja_menu_stdout(int *opcion_inicial,menu_item *item_seleccionado,men
 
 				else {
 
-
 					//Ver si item esta activo
-        	                	t_menu_funcion_activo menu_funcion_activo;
-	        	                menu_funcion_activo=item_seleccionado->menu_funcion_activo;
+                    t_menu_funcion_activo menu_funcion_activo;
+                    menu_funcion_activo=item_seleccionado->menu_funcion_activo;
 
-	                	        if ( menu_funcion_activo!=NULL) {
+                    if ( menu_funcion_activo!=NULL) {
 
-        	                	        if (menu_funcion_activo()==0) {
+                        if (menu_funcion_activo()==0) {
 							//opcion inactiva
 							salir_opcion=0;
 							printf ("Item is disabled\n");
 						}
 					}
 				}
-                        }
-
-
-
+            }
 		}
 
 	} while (salir_opcion==0);
 
-        menu_item *menu_sel;
-        menu_sel=menu_retorna_item(m,linea_seleccionada);
+    menu_item *menu_sel;
+    menu_sel=menu_retorna_item(m,linea_seleccionada);
 
-        item_seleccionado->menu_funcion=menu_sel->menu_funcion;
-        item_seleccionado->tipo_opcion=menu_sel->tipo_opcion;
-	item_seleccionado->valor_opcion=menu_sel->valor_opcion;
+    item_seleccionado->menu_funcion=menu_sel->menu_funcion;
+    item_seleccionado->tipo_opcion=menu_sel->tipo_opcion;
+    item_seleccionado->valor_opcion=menu_sel->valor_opcion;
 
-		strcpy(item_seleccionado->texto_opcion,menu_retorna_item_language(menu_sel));
-		strcpy(item_seleccionado->texto_misc,menu_sel->texto_misc);
+    strcpy(item_seleccionado->texto_opcion,menu_retorna_item_language(menu_sel));
+    strcpy(item_seleccionado->texto_misc,menu_sel->texto_misc);
 
 
-        //Liberar memoria del menu
-        aux=m;
-        menu_item *nextfree;
+    //Liberar memoria del menu
+    aux=m;
+    menu_item *nextfree;
 
-        do {
-                //printf ("Liberando %x\n",aux);
-                nextfree=aux->siguiente_item;
-                free(aux);
-                aux=nextfree;
-        } while (aux!=NULL);
+    do {
+        //printf ("Liberando %x\n",aux);
+        nextfree=aux->siguiente_item;
+        free(aux);
+        aux=nextfree;
+    } while (aux!=NULL);
 
 	*opcion_inicial=linea_seleccionada;
 
@@ -18710,6 +18727,8 @@ void menu_escribe_opciones_zxvision(zxvision_window *ventana,menu_item *aux,int 
                 //Al listar opciones de menu, decir si la opcion está desabilitada
                 if (!opcion_activada) menu_textspeech_send_text("Unavailable option: ");
 
+                int opcion_marcada=aux->opcion_marcada;
+
                 //Cuando haya opcion_activa, nos la apuntamos para decirla al final en speech.
                 //Y si es la primera vez en ese menu, dice "Selected item". Sino, solo dice el nombre de la opcion
                 if (linea_seleccionada==i) {
@@ -18726,7 +18745,8 @@ void menu_escribe_opciones_zxvision(zxvision_window *ventana,menu_item *aux,int 
                 }
 
                 if (menu_tabulado) {
-                    menu_escribe_linea_opcion_tabulado_zxvision(ventana,i,linea_seleccionada,opcion_activada,menu_retorna_item_language(aux),aux->menu_tabulado_x,aux->menu_tabulado_y);
+                    menu_escribe_linea_opcion_tabulado_zxvision(ventana,i,linea_seleccionada,
+                        opcion_activada,menu_retorna_item_language(aux),aux->menu_tabulado_x,aux->menu_tabulado_y,opcion_marcada);
                 }
 
 
@@ -18736,7 +18756,8 @@ void menu_escribe_opciones_zxvision(zxvision_window *ventana,menu_item *aux,int 
 
                     if (y_destino>=0) {
 
-                            menu_escribe_linea_opcion_zxvision(ventana,y_destino,linea_seleccionada_destino,opcion_activada,menu_retorna_item_language(aux),aux->tiene_submenu);
+                            menu_escribe_linea_opcion_zxvision(ventana,y_destino,linea_seleccionada_destino,
+                                opcion_activada,menu_retorna_item_language(aux),aux->tiene_submenu,opcion_marcada);
                             //menu_escribe_linea_opcion_zxvision(ventana,y_destino,linea_seleccionada_destino,opcion_activada,aux->texto_opcion,aux->tiene_submenu);
 
                     }
@@ -20059,6 +20080,7 @@ void menu_add_item_menu_common_defaults(menu_item *m,int tipo_opcion,t_menu_func
     m->atajo_tecla=0;
     m->tiene_submenu=0;
     m->item_avanzado=0;
+    m->opcion_marcada=0;
     m->menu_se_cerrara=0;
 
     m->menu_funcion_espacio=NULL;
@@ -20232,6 +20254,18 @@ void menu_add_item_menu_es_avanzado(menu_item *m)
     }
 
     m->item_avanzado=1;
+}
+
+void menu_add_item_menu_marcar_opcion(menu_item *m,int valor)
+{
+    //busca el ultimo item i le añade el indicado
+
+    while (m->siguiente_item!=NULL)
+    {
+            m=m->siguiente_item;
+    }
+
+    m->opcion_marcada=valor;
 }
 
 //Agregar decirle que es un item avanzado al ultimo item de menu

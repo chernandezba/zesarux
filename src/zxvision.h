@@ -419,7 +419,8 @@ extern zxvision_window *zxvision_find_first_window_below_this(zxvision_window *w
 
 #define MAX_ESCR_LINEA_OPCION_ZXVISION_LENGTH 128
 
-extern void menu_escribe_linea_opcion_zxvision(zxvision_window *ventana,int indice,int opcion_actual,int opcion_activada,char *texto_entrada,int tiene_submenu);
+extern void menu_escribe_linea_opcion_zxvision(zxvision_window *ventana,int indice,int opcion_actual,int opcion_activada,char *texto_entrada,
+    int tiene_submenu,int opcion_marcada);
 
 extern void zxvision_set_ventana_tipo_activa(void);
 extern void zxvision_reset_ventana_tipo_activa(void);
@@ -915,6 +916,10 @@ struct s_menu_item {
 	//funcion a la que debe saltar al pulsar espacio
 	t_menu_funcion menu_funcion_espacio;
 
+    //Opcion está marcada, simplemente mostrar en otro color
+    //Usado por ejemplo en teclados de perfil de teclas de ZENG Online
+    int opcion_marcada;
+
 	//siguiente item
 	struct s_menu_item *siguiente_item;
 
@@ -958,6 +963,7 @@ extern void menu_add_item_menu_espacio(menu_item *m,t_menu_funcion menu_funcion_
 extern void menu_add_item_menu_misc(menu_item *m,char *texto_misc);
 extern void menu_add_item_menu_tiene_submenu(menu_item *m);
 extern void menu_add_item_menu_es_avanzado(menu_item *m);
+extern void menu_add_item_menu_marcar_opcion(menu_item *m,int valor);
 extern void menu_add_item_menu_separator(menu_item *m);
 extern void menu_add_item_menu_seleccionado(menu_item *m,void (*menu_funcion_seleccionada)(struct s_menu_item *));
 extern void menu_add_item_menu_se_cerrara(menu_item *m);

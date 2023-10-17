@@ -2838,7 +2838,7 @@ int menu_debug_registers_subview_type=0;
 					//De los pocos usos de menu_escribe_linea_opcion_zxvision,
 					//solo se usa en menus y aqui: para poder mostrar linea activada o en rojo
 
-					menu_escribe_linea_opcion_zxvision(w,linea,opcion_actual,opcion_activada,buffer_linea,0);
+					menu_escribe_linea_opcion_zxvision(w,linea,opcion_actual,opcion_activada,buffer_linea,0,0);
 
                     menu_debug_registros_colorea_columnas_modificadas(w,linea,columna_registros,columnas_modificadas);
 
@@ -2883,7 +2883,7 @@ int menu_debug_registers_subview_type=0;
 					//De los pocos usos de menu_escribe_linea_opcion_zxvision,
 					//solo se usa en menus y dos veces en esta funcion
 					//en este caso, es para poder procesar los caracteres "||"
-					menu_escribe_linea_opcion_zxvision(w,linea,-1,1,buffer_linea,0);
+					menu_escribe_linea_opcion_zxvision(w,linea,-1,1,buffer_linea,0,0);
 
 
 				}
