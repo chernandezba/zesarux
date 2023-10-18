@@ -151,6 +151,7 @@
 #include "dsk.h"
 #include "plus3dos_handler.h"
 #include "pcw.h"
+#include "zeng_online.h"
 
 #ifdef COMPILE_ALSA
 #include "audioalsa.h"
@@ -277,6 +278,7 @@ int menu_display_window_list_opcion_seleccionada=0;
 int toys_opcion_seleccionada=0;
 int zxlife_opcion_seleccionada=0;
 int text_adventure_tools_opcion_seleccionada=0;
+int zeng_online_server_opcion_seleccionada=0;
 
 //Fin opciones seleccionadas para cada menu
 
@@ -15862,6 +15864,62 @@ void menu_network_http_request(MENU_ITEM_PARAMETERS)
 	if (mem!=NULL) free (mem);
 }
 
+void menu_zeng_online_server_enable_disable(MENU_ITEM_PARAMETERS)
+{
+
+    if (zeng_online_enabled) {
+        disable_zeng_online();
+    }
+
+    else {
+        //Si no esta ZRCP, activar tambien
+        if (remote_protocol_enabled.v==0) {
+            enable_and_init_remote_protocol();
+        }
+
+        enable_zeng_online();
+
+    }
+
+
+}
+
+void menu_zeng_online_server(MENU_ITEM_PARAMETERS)
+{
+
+    menu_item *array_menu_common;
+    menu_item item_seleccionado;
+    int retorno_menu;
+    do {
+
+
+        menu_add_item_menu_en_es_ca_inicial(&array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_server_enable_disable,NULL,
+            "Enable ~~Server","Activar ~~Servidor","Activar ~~Servidor");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(zeng_online_enabled ? 'X' : ' ' ));
+        menu_add_item_menu_shortcut(array_menu_common,'s');
+
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,
+            "~~Nickname","~~Nickname","~~Nickname");
+
+        menu_add_item_menu_separator(array_menu_common);
+
+        menu_add_ESC_item(array_menu_common);
+
+        retorno_menu=menu_dibuja_menu(&zeng_online_server_opcion_seleccionada,&item_seleccionado,array_menu_common,"ZENG Online Server");
+
+
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+                //llamamos por valor de funcion
+                if (item_seleccionado.menu_funcion!=NULL) {
+                        //printf ("actuamos por funcion\n");
+                        item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+
+                }
+        }
+
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+}
+
 
 void menu_online_download_extras(MENU_ITEM_PARAMETERS)
 {
@@ -15992,7 +16050,7 @@ void menu_network(MENU_ITEM_PARAMETERS)
 
 			menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online,NULL,"ZENG ~~Online");
 			menu_add_item_menu_shortcut(array_menu_common,'o');
-			menu_add_item_menu_tooltip(array_menu_common,"Setup ZEsarUX Network Gaming Online");
+			menu_add_item_menu_tooltip(array_menu_common,"Connect to a ZEsarUX Network Gaming Online server");
 			menu_add_item_menu_ayuda(array_menu_common,"ZEsarUX Network Gaming protocol Online (ZENG Online) allows you to play to any emulated game, using two or more ZEsarUX instances, "
 			  "located each one on any part of the world or in a local network.\n"
               "It's similar to ZENG but uses a central online server\n"
@@ -16042,6 +16100,15 @@ void menu_network(MENU_ITEM_PARAMETERS)
                 "Test Http request","Test peticion Http","Test peticio Http");
             menu_add_item_menu_se_cerrara(array_menu_common);
             menu_add_item_menu_es_avanzado(array_menu_common);
+
+            menu_add_item_menu_separator(array_menu_common);
+			menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_server,NULL,"ZENG Online Server");
+			menu_add_item_menu_tooltip(array_menu_common,"Setup ZEsarUX Network Gaming Online server");
+			menu_add_item_menu_ayuda(array_menu_common,"ZEsarUX Network Gaming protocol Online (ZENG Online) allows you to play to any emulated game, using two or more ZEsarUX instances, "
+			  "located each one on any part of the world or in a local network.\n"
+              "It's similar to ZENG but uses a central online server\n"
+			);
+            menu_add_item_menu_tiene_submenu(array_menu_common);
 
 //Fin de condicion si hay pthreads
 #endif

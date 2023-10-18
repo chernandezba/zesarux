@@ -71,7 +71,7 @@ char zeng_online_joined_as_text[30]="";
 
 
 
-void menu_zeng_online_server(MENU_ITEM_PARAMETERS)
+void menu_zeng_online_set_server(MENU_ITEM_PARAMETERS)
 {
     menu_ventana_scanf("Server",zeng_online_server,NETWORK_MAX_URL+1);
 
@@ -1463,7 +1463,7 @@ void menu_zeng_online(MENU_ITEM_PARAMETERS)
     do {
 
 
-        menu_add_item_menu_en_es_ca_inicial(&array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_server,menu_zeng_online_not_connected_cond,
+        menu_add_item_menu_en_es_ca_inicial(&array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_set_server,menu_zeng_online_not_connected_cond,
             "~~Server","~~Servidor","~~Servidor");
         char string_zeng_online_server[16];
         menu_tape_settings_trunc_name(zeng_online_server,string_zeng_online_server,16);
