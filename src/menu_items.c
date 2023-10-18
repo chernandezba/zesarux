@@ -16111,6 +16111,8 @@ void menu_network_traffic_overlay(void)
         zxvision_print_string_defaults_fillspc_format(menu_network_traffic_window,1,0,
             "Traffic: %8u kbyte/s read - %8u kbyte/s write",diferencia_read/1000,diferencia_write/1000);
 
+        printf("Traffic: %8u kbyte/s read - %8u kbyte/s write\n",diferencia_read/1000,diferencia_write/1000);
+
         menu_network_traffic_antes_counter_read=network_traffic_counter_read;
         menu_network_traffic_antes_counter_write=network_traffic_counter_write;
 
