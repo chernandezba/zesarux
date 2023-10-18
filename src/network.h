@@ -87,6 +87,9 @@ extern char *z_sock_get_error(int error);
 extern int z_sock_assign_socket(void);
 extern void omplir_adr_internet_semaforo_init(void);
 
+extern unsigned int network_traffic_counter_read;
+extern unsigned int network_traffic_counter_write;
+
 //el -1 es un error generico
 #define Z_ERR_NUM_TCP_SOCK -2
 #define Z_ERR_NUM_HOST_NOT_FOUND -3

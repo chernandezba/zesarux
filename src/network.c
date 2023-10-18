@@ -156,6 +156,9 @@ char *z_sock_get_error(int error)
 	}
 }
 
+void z_sock_increment_traffic_counter_read(int total_read);
+void z_sock_increment_traffic_counter_write(int total_write);
+
 
 //Inicio funciones SSL
 #ifdef COMPILE_SSL
@@ -407,6 +410,8 @@ int escribir_socket(int socket, char *buffer)
 			 return Z_ERR_NUM_WRITE_SOCKET;
 	 }
 	 if (efectivo_enviar_cr) send(socket,&cr,1,0);
+
+     z_sock_increment_traffic_counter_write(smsg);
 	 return smsg;
 
 #else
@@ -416,6 +421,8 @@ int escribir_socket(int socket, char *buffer)
     //printf("after write\n");
 
 	if (efectivo_enviar_cr) write(socket,&cr,1);
+
+    z_sock_increment_traffic_counter_write(escrito);
 
 	return escrito;
 
@@ -434,12 +441,15 @@ int leidos=recv(s,buffer,longitud,0);
  if(leidos==SOCKET_ERROR){
 		return Z_ERR_NUM_READ_SOCKET;
  }
+
+ z_sock_increment_traffic_counter_read(leidos);
  return leidos;
 
 #else
 	//int leidos=read(s, buffer, longitud);
 	int leidos=recv(s,buffer,longitud,0);
 	//printf ("leidos en leer_socket: %d\n",leidos);
+    z_sock_increment_traffic_counter_read(leidos);
 	return leidos;
 
 #endif
@@ -640,6 +650,11 @@ int escribir_socket_format(int misocket, const char * format , ...)
 
 z_atomic_semaphore network_semaforo;
 
+//Semaforo y contadores para llevar el total de trafico leido/escrito
+z_atomic_semaphore network_traffic_counter_semaforo;
+unsigned int network_traffic_counter_read=0;
+unsigned int network_traffic_counter_write=0;
+
 void init_network_tables(void)
 {
 	int i;
@@ -656,10 +671,46 @@ void init_network_tables(void)
 	}
 
 	z_atomic_reset(&network_semaforo);
+    z_atomic_reset(&network_traffic_counter_semaforo);
 
 #ifdef COMPILE_SSL
 	z_init_ssl();
 #endif
+
+}
+
+void z_sock_increment_traffic_counter_read(int total_read)
+{
+    //Si <0 sera algun error al leer/escribir
+    if (total_read<=0) return;
+
+	//Adquirir lock
+	while(z_atomic_test_and_set(&network_traffic_counter_semaforo)) {
+		//printf("Esperando a liberar lock en network_traffic_counter_semaforo en z_sock_increment_traffic_counter_read\n");
+	}
+
+	network_traffic_counter_read +=total_read;
+
+	//Liberar lock
+	z_atomic_reset(&network_traffic_counter_semaforo);
+
+}
+
+void z_sock_increment_traffic_counter_write(int total_write)
+{
+
+    //Si <0 sera algun error al leer/escribir
+    if (total_write<=0) return;
+
+	//Adquirir lock
+	while(z_atomic_test_and_set(&network_traffic_counter_semaforo)) {
+		//printf("Esperando a liberar lock en network_traffic_counter_semaforo en z_sock_increment_traffic_counter_write\n");
+	}
+
+	network_traffic_counter_write +=total_write;
+
+	//Liberar lock
+	z_atomic_reset(&network_traffic_counter_semaforo);
 
 }
 
@@ -869,6 +920,7 @@ int z_sock_read(int indice_tabla, z80_byte *buffer, int longitud)
 
 #ifdef COMPILE_SSL
 		//int SSL_read(SSL *ssl, void *buf, int num);
+        z_sock_increment_traffic_counter_read(longitud);
 		return SSL_read(sockets_list[indice_tabla].ssl_conn,buffer,longitud);
 #else
 		//printf ("SSL requested but ssl libraries unavailable\n");
@@ -896,6 +948,7 @@ int z_sock_write_string(int indice_tabla, char *buffer)
 #ifdef COMPILE_SSL
 		//int SSL_write(SSL *ssl, const void *buf, int num);
 		int longitud=strlen(buffer);
+        z_sock_increment_traffic_counter_write(longitud);
 		return SSL_write(sockets_list[indice_tabla].ssl_conn,buffer,longitud);
 #else
 		//printf ("SSL requested but ssl libraries unavailable\n");
