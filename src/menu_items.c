@@ -15884,6 +15884,53 @@ void menu_zeng_online_server_enable_disable(MENU_ITEM_PARAMETERS)
 
 }
 
+void menu_zeng_online_server_view_creator_passwords(MENU_ITEM_PARAMETERS)
+{
+
+    menu_item *array_menu_common;
+    menu_item item_seleccionado;
+    int retorno_menu;
+    int opcion_seleccionada=0;
+    do {
+
+        menu_add_item_menu_inicial(&array_menu_common,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
+
+        int i;
+
+        int total_passwords=0;
+
+        for (i=0;i<zeng_online_current_max_rooms;i++) {
+            if (zeng_online_rooms_list[i].created) {
+                menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Room %d Pass: %s",
+                    i,zeng_online_rooms_list[i].creator_password);
+                total_passwords++;
+
+            }
+        }
+
+        if (!total_passwords) {
+            menu_add_item_menu(array_menu_common,"No created rooms",MENU_OPCION_NORMAL,NULL,NULL);
+        }
+
+        menu_add_item_menu_separator(array_menu_common);
+
+        menu_add_ESC_item(array_menu_common);
+
+        retorno_menu=menu_dibuja_menu(&opcion_seleccionada,&item_seleccionado,array_menu_common,"Creator room passwords");
+
+
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+                //llamamos por valor de funcion
+                if (item_seleccionado.menu_funcion!=NULL) {
+                        //printf ("actuamos por funcion\n");
+                        item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+
+                }
+        }
+
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+}
+
 void menu_zeng_online_server(MENU_ITEM_PARAMETERS)
 {
 
@@ -15898,8 +15945,9 @@ void menu_zeng_online_server(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(zeng_online_enabled ? 'X' : ' ' ));
         menu_add_item_menu_shortcut(array_menu_common,'s');
 
-        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,
-            "~~Nickname","~~Nickname","~~Nickname");
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_server_view_creator_passwords,NULL,
+            "View creator room ~~passwords","Ver ~~passwords creación habitaciones","Veure ~~passwords creació habitacions");
+        menu_add_item_menu_shortcut(array_menu_common,'p');
 
         menu_add_item_menu_separator(array_menu_common);
 

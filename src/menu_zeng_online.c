@@ -435,7 +435,7 @@ int menu_zeng_online_ask_custom_permissions(void)
 
     do {
 
-        menu_add_item_menu_inicial(&array_menu_common,"",MENU_OPCION_UNASSIGNED,menu_zeng_online_ask_custom_permissions_get_snapshot,NULL);
+        menu_add_item_menu_inicial(&array_menu_common,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
 
         menu_add_item_menu_en_es_ca_inicial(&array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_ask_custom_permissions_get_snapshot,NULL,
             "Read Snapshot","Leer Snapshot","Llegir Snapshot");
