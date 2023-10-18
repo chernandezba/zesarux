@@ -2610,7 +2610,7 @@ int zoc_get_pending_authorization_size(int indice_socket)
                 else {
                     //Ver si id diferente
                     int queue_size=parse_string_to_number(buffer);
-                    printf("Waiting room queue size: %d\n",queue_size);
+                    //printf("Waiting room queue size: %d\n",queue_size);
 
                     if (queue_size) {
 
