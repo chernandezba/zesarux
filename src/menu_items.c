@@ -40436,7 +40436,7 @@ void menu_template_window_can_be_backgrounded_overlay(void)
     //Tambien contar si se escribe siempre o se tiene en cuenta contador_segundo...
 
 
-    //Mostrar colores
+    //Mostrar contenido
     zxvision_draw_window_contents(menu_template_window_can_be_backgrounded_window);
 
 }
