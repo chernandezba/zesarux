@@ -2654,8 +2654,8 @@ int zoc_pending_apply_received_snapshot_as_rejoin_as_master=0;
 //contiene el valor anterior de contador_segundo_infinito de la anterior consulta de mensajes
 int contador_mensajes_anteriorsegundos=0;
 
-unsigned int antes_network_traffic_counter_read=0;
-unsigned int antes_network_traffic_counter_write=0;
+//unsigned int antes_network_traffic_counter_read=0;
+//unsigned int antes_network_traffic_counter_write=0;
 
 void zoc_common_get_messages_slave_master(int indice_socket)
 {
@@ -2669,13 +2669,13 @@ void zoc_common_get_messages_slave_master(int indice_socket)
         //printf("contador_segundo_infinito: %d\n",contador_segundo_infinito);
 
         //prueba mostrar trafico
-        unsigned int diferencia_read=network_traffic_counter_read-antes_network_traffic_counter_read;
+        /*unsigned int diferencia_read=network_traffic_counter_read-antes_network_traffic_counter_read;
         unsigned int diferencia_write=network_traffic_counter_write-antes_network_traffic_counter_write;
         //ha pasado 1 segundo tal cual, por tanto no hay que dividir
         printf("Traffic: %8u kbyte/s read - %8u kbyte/s write\n",diferencia_read/1000,diferencia_write/1000);
 
         antes_network_traffic_counter_read=network_traffic_counter_read;
-        antes_network_traffic_counter_write=network_traffic_counter_write;
+        antes_network_traffic_counter_write=network_traffic_counter_write;*/
         //fin prueba mostrar trafico
 
         int id_actual=zoc_get_message_id(indice_socket);
