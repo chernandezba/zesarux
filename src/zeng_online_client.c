@@ -2645,19 +2645,26 @@ int zoc_get_pending_authorization_size(int indice_socket)
 
 
 }
-int contador_obtener_mensajes=0;
+//int contador_obtener_mensajes=0;
 int zoc_last_message_id=0;
 
 //En el rejoin como master se aplicara el primer snapshot recibido del server
 int zoc_pending_apply_received_snapshot_as_rejoin_as_master=0;
 
+//contiene el valor anterior de contador_segundo_infinito de la anterior consulta de mensajes
+int contador_mensajes_anteriorsegundos=0;
+
 void zoc_common_get_messages_slave_master(int indice_socket)
 {
 
-    //Tambien a final de cada frame, y cada 50 veces (o sea 1 segundo), ver si hay pendientes mensajes
-    contador_obtener_mensajes++;
+    //Cada segundo ver si hay pendientes mensajes
+    int diferencia_tiempo=contador_segundo_infinito-contador_mensajes_anteriorsegundos;
 
-    if ((contador_obtener_mensajes % 50)==0) {
+    if (diferencia_tiempo>50*20) {
+        contador_mensajes_anteriorsegundos=contador_segundo_infinito;
+
+        printf("contador_segundo_infinito: %d\n",contador_segundo_infinito);
+
         int id_actual=zoc_get_message_id(indice_socket);
         if (id_actual!=zoc_last_message_id) {
             printf("Hay nuevo mensaje\n");

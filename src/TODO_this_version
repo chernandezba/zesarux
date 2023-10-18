@@ -654,7 +654,7 @@ ok-comando zeng online para leave room. esto decrementara el contador de jugador
 -si se une sin permisos, retorna error al cliente? contara como usuario logueado?
 
 -parece que el bucle de slave no esta saltando cada 20ms, porque? si quito recepcion de snapshot ya si que lo hace bien
-broadcast message en windows tarda mucho en llegar, seguramente por esto
+
 
 -si pongo verbose 3 peta con zeng slave
 
