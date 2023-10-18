@@ -16079,7 +16079,7 @@ void menu_network_traffic_overlay(void)
 
     //En microsegundos
     long transcurrido=timer_stats_diference_time(&menu_network_traffic_time_antes,&menu_network_traffic_time_despues);
-    //En cuanto pase 1 segundo
+    //En cuanto pase 1 segundo. TODO esto luego lo hare con contador_segundo como siempre
     if (transcurrido>1000000) {
         int transcurrido_ms=transcurrido/1000;
         timer_stats_current_time(&menu_network_traffic_time_antes);
