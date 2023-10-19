@@ -16202,14 +16202,32 @@ void menu_network_traffic_overlay(void)
 
             for (x=ancho_pixeles_grafica;x>=0;x--) {
                 //escalar al alto
-                unsigned int valor=network_traffic_history_values_read[indice++];
+
+                unsigned int valor;
+
+                //Si el indice se ha ido de sitio, devolver 0
+                if (indice>=NETWORK_TRAFFIC_MAX_VALUES) valor=0;
+                else valor=network_traffic_history_values_read[indice++];
+
+
                 int alto=(valor*alto_pixeles_grafica)/maximo_valor;
 
                 //Y linea vertical hasta el alto
-                y=alto_pixeles_grafica-1;
-                for (;alto>=0;alto--,y--) {
-                    zxvision_putpixel(menu_network_traffic_window,x,y,0);
+                //y=alto_pixeles_grafica-1;
+
+
+
+                for (y=0;alto>=0;alto--,y++) {
+                    zxvision_putpixel(menu_network_traffic_window,x,alto_pixeles_grafica-1-y,ESTILO_GUI_COLOR_WAVEFORM);
                 }
+
+                for (;y<alto_pixeles_grafica;y++) {
+                    zxvision_putpixel(menu_network_traffic_window,x,alto_pixeles_grafica-1-y,ESTILO_GUI_PAPEL_NORMAL);
+                }
+                //Y borrar el resto con color de fondo
+                /*for (;alto_pixeles_grafica>=0;y--,alto_pixeles_grafica--) {
+                    zxvision_putpixel(menu_network_traffic_window,x,y,ESTILO_GUI_PAPEL_NORMAL);
+                }*/
             }
 
         }
