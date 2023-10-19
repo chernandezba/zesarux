@@ -16064,6 +16064,11 @@ unsigned int menu_network_traffic_antes_counter_read=0;
 unsigned int menu_network_traffic_antes_counter_write=0;
 
 
+//Para refrescar 1 por segundo
+int contador_network_traffic_overlay_anteriorsegundos=0;
+
+
+
 void menu_network_traffic_overlay(void)
 {
 
@@ -16074,51 +16079,57 @@ void menu_network_traffic_overlay(void)
 
 
     //Print....
-    //Tambien contar si se escribe siempre o se tiene en cuenta contador_segundo...
 
 
-    //En microsegundos
-    long transcurrido=timer_stats_diference_time(&menu_network_traffic_time_antes,&menu_network_traffic_time_despues);
-    //En cuanto pase 1 segundo. TODO esto luego lo hare con contador_segundo como siempre
-    if (transcurrido>1000000) {
-        int transcurrido_ms=transcurrido/1000;
-        timer_stats_current_time(&menu_network_traffic_time_antes);
+    //Cada segundo
+    int diferencia_tiempo=contador_segundo_infinito-contador_network_traffic_overlay_anteriorsegundos;
 
-        unsigned int diferencia_read;
-        unsigned int diferencia_write;
+    if (diferencia_tiempo>50*20) {
+        contador_network_traffic_overlay_anteriorsegundos=contador_segundo_infinito;
 
-        //Si contador ha dado la vuelta
-        if (network_traffic_counter_read<menu_network_traffic_antes_counter_read) diferencia_read=0;
-        else diferencia_read=network_traffic_counter_read-menu_network_traffic_antes_counter_read;
+        //En microsegundos
+        long transcurrido=timer_stats_diference_time(&menu_network_traffic_time_antes,&menu_network_traffic_time_despues);
+        //En cuanto pase 1 segundo. TODO esto luego lo hare con contador_segundo como siempre
+        if (transcurrido>1000000) {
+            int transcurrido_ms=transcurrido/1000;
+            timer_stats_current_time(&menu_network_traffic_time_antes);
 
-        if (network_traffic_counter_write<menu_network_traffic_antes_counter_write) diferencia_write=0;
-        else diferencia_write=network_traffic_counter_write-menu_network_traffic_antes_counter_write;
+            unsigned int diferencia_read;
+            unsigned int diferencia_write;
 
-        //Sacar justo el trafico en 1 s (1000 ms)
+            //Si contador ha dado la vuelta
+            if (network_traffic_counter_read<menu_network_traffic_antes_counter_read) diferencia_read=0;
+            else diferencia_read=network_traffic_counter_read-menu_network_traffic_antes_counter_read;
 
-        //cuidado con dividir por 0
-        if (transcurrido_ms==0) {
-            diferencia_read=0;
-            diferencia_write=0;
+            if (network_traffic_counter_write<menu_network_traffic_antes_counter_write) diferencia_write=0;
+            else diferencia_write=network_traffic_counter_write-menu_network_traffic_antes_counter_write;
+
+            //Sacar justo el trafico en 1 s (1000 ms)
+
+            //cuidado con dividir por 0
+            if (transcurrido_ms==0) {
+                diferencia_read=0;
+                diferencia_write=0;
+            }
+            else {
+                diferencia_read=(diferencia_read*1000)/transcurrido_ms;
+                diferencia_write=(diferencia_write*1000)/transcurrido_ms;
+            }
+
+
+
+            zxvision_print_string_defaults_fillspc_format(menu_network_traffic_window,1,0,
+                "Traffic: %8u kbyte/s read - %8u kbyte/s write",diferencia_read/1000,diferencia_write/1000);
+
+            printf("Traffic: %8u kbyte/s read - %8u kbyte/s write\n",diferencia_read/1000,diferencia_write/1000);
+
+            menu_network_traffic_antes_counter_read=network_traffic_counter_read;
+            menu_network_traffic_antes_counter_write=network_traffic_counter_write;
+
         }
-        else {
-            diferencia_read=(diferencia_read*1000)/transcurrido_ms;
-            diferencia_write=(diferencia_write*1000)/transcurrido_ms;
-        }
-
-
-
-        zxvision_print_string_defaults_fillspc_format(menu_network_traffic_window,1,0,
-            "Traffic: %8u kbyte/s read - %8u kbyte/s write",diferencia_read/1000,diferencia_write/1000);
-
-        printf("Traffic: %8u kbyte/s read - %8u kbyte/s write\n",diferencia_read/1000,diferencia_write/1000);
-
-        menu_network_traffic_antes_counter_read=network_traffic_counter_read;
-        menu_network_traffic_antes_counter_write=network_traffic_counter_write;
-
     }
 
-    //Mostrar colores
+    //Refrescar
     zxvision_draw_window_contents(menu_network_traffic_window);
 
 }
