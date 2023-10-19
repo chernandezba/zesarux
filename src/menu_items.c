@@ -16080,6 +16080,9 @@ int network_traffic_history_values_inicializado=0;
 unsigned int network_traffic_history_values_read[NETWORK_TRAFFIC_MAX_VALUES];
 unsigned int network_traffic_history_values_write[NETWORK_TRAFFIC_MAX_VALUES];
 
+//Los que hay en el array realmente, desde 0 hasta NETWORK_TRAFFIC_MAX_VALUES
+int network_traffic_history_total_valores_insertados=0;
+
 void menu_network_traffic_scroll(unsigned int *valores)
 {
     int i;
@@ -16108,10 +16111,14 @@ void menu_network_traffic_draw_graph(zxvision_window *w,unsigned int *lista_valo
     int indice=0;
     int i;
 
+    int total_insertados=network_traffic_history_total_valores_insertados;
+
+    if (total_insertados<0) total_insertados=1; //para evitar posibles divisiones por 0
+
     //Obtener el maximo valor para escalar la grafica segun eso
     unsigned int maximo_valor=1; //partimos de 1 para evitar dividir por 0
 
-    for (i=0;i<NETWORK_TRAFFIC_MAX_VALUES;i++) {
+    for (i=0;i<total_insertados;i++) {
         unsigned int valor=lista_valores[i];
         if (valor>maximo_valor) maximo_valor=valor;
     }
@@ -16121,7 +16128,7 @@ void menu_network_traffic_draw_graph(zxvision_window *w,unsigned int *lista_valo
     //Obtener el minimo valor. Partimos del maximo
     unsigned int minimo_valor=maximo_valor;
 
-    for (i=0;i<NETWORK_TRAFFIC_MAX_VALUES;i++) {
+    for (i=0;i<total_insertados;i++) {
         unsigned int valor=lista_valores[i];
         if (valor<minimo_valor) minimo_valor=valor;
     }
@@ -16132,11 +16139,11 @@ void menu_network_traffic_draw_graph(zxvision_window *w,unsigned int *lista_valo
     //Sacar valor medio
     z80_64bit suma=0;
 
-    for (i=0;i<NETWORK_TRAFFIC_MAX_VALUES;i++) {
+    for (i=0;i<total_insertados;i++) {
         suma +=lista_valores[i];
     }
 
-    suma /=NETWORK_TRAFFIC_MAX_VALUES;
+    suma /=total_insertados;
     *p_medio_valor=suma;
 
     for (x=ancho_pixeles_grafica;x>=0;x--) {
@@ -16216,6 +16223,11 @@ void menu_network_traffic_overlay(void)
                 diferencia_write=(diferencia_write*1000)/transcurrido_ms;
             }
 
+
+            if (network_traffic_history_total_valores_insertados<NETWORK_TRAFFIC_MAX_VALUES) {
+                network_traffic_history_total_valores_insertados++;
+            }
+
             menu_network_traffic_insert_read(diferencia_read);
             menu_network_traffic_insert_write(diferencia_write);
 
@@ -16263,9 +16275,9 @@ void menu_network_traffic_overlay(void)
 
             if (alto_pixeles_grafica<8) alto_pixeles_grafica=8;
 
-            //borrar la primera linea de texto
-            zxvision_print_string_defaults_fillspc(menu_network_traffic_window,1,0,
-                "");
+            //borrar las primera lineas de texto
+            zxvision_print_string_defaults_fillspc(menu_network_traffic_window,1,0,"");
+            zxvision_print_string_defaults_fillspc(menu_network_traffic_window,1,1,"");
 
             int p_maximo_valor,p_minimo_valor,p_medio_valor;
 
