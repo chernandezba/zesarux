@@ -754,65 +754,11 @@ void menu_zeng_online_list_users(MENU_ITEM_PARAMETERS)
 {
 
 
-    //Lanzar el thread de listar users
-    zeng_online_client_list_users();
+    char buffer_uuid[STATS_UUID_MAX_LENGTH+1];
 
-    contador_menu_zeng_connect_print=0;
+    //no hacemos nada con el uuid en este caso
+    menu_zeng_online_ask_user_get_uuid(buffer_uuid,0,0);
 
-
-    zxvision_simple_progress_window("Get users list", menu_zeng_online_list_users_cond,menu_zeng_online_connecting_common_print );
-
-    if (zeng_online_client_list_users_thread_running) {
-        menu_warn_message("Connection has not finished yet");
-    }
-
-    if (zeng_remote_list_users_buffer[0]!=0) {
-        //menu_generic_message("Joined users",zeng_remote_list_users_buffer);
-
-        //Cada linea:
-        //nickname
-        //uuid
-        //nickname
-        //uuid
-        //Por tanto saltamos la linea del uuid porque al usuario no le interesa
-
-        menu_item *array_menu_common;
-        menu_item item_seleccionado;
-        int retorno_menu;
-        int opcion_seleccionada=0;
-        //do {
-
-            menu_add_item_menu_inicial(&array_menu_common,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
-
-            int i=0;
-            int linea=0;
-            int inicio_linea=0;
-
-            while (zeng_remote_list_users_buffer[i]) {
-                if (zeng_remote_list_users_buffer[i]=='\n') {
-                    zeng_remote_list_users_buffer[i]=0;
-
-                    //Solo agregar en linea par (evitamos uuid)
-                    if ((linea%2)==0) {
-                        menu_add_item_menu(array_menu_common,&zeng_remote_list_users_buffer[inicio_linea],MENU_OPCION_NORMAL,NULL,NULL);
-                    }
-
-                    inicio_linea=i+1;
-                    linea++;
-                }
-                i++;
-            }
-
-
-            retorno_menu=menu_dibuja_menu(&opcion_seleccionada,&item_seleccionado,array_menu_common,"Users");
-
-
-        //No es un menu como tal. Pulsar enter y sale
-        //Ademas, hemos modificado zeng_remote_list_users_buffer metiendo caracteres 0 por tanto se ha alterado
-        //y ya no volvera a salir el menu a no ser que volvamos a recargar lista de usuarios
-
-
-    }
 
 }
 
@@ -1112,8 +1058,9 @@ int menu_zoc_keys_restricted_get_marcadas(void)
 
 //menu comun para pedir usuario y retornar un uuid
 //ocultar_master vale 1 si no quieremos que aparezca el usuario que es el master
+//agregar_none indica si quieremos agregar el None al final
 //retorna 0 si sale con esc
-int menu_zeng_online_ask_user_get_uuid(char *uuid,int ocultar_master)
+int menu_zeng_online_ask_user_get_uuid(char *uuid,int ocultar_master,int agregar_none)
 {
     //TODO: pedir esto desde la lista de usuarios, mas comodo
     //menu_ventana_scanf("UUID",allowed_keys_assigned[valor_opcion],STATS_UUID_MAX_LENGTH+1);
@@ -1187,8 +1134,10 @@ int menu_zeng_online_ask_user_get_uuid(char *uuid,int ocultar_master)
 
 
         //Para poder desasignar
-        menu_add_item_menu(array_menu_common,"None",MENU_OPCION_NORMAL,NULL,NULL);
-        menu_add_item_menu_misc(array_menu_common,"");
+        if (agregar_none) {
+            menu_add_item_menu(array_menu_common,"None",MENU_OPCION_NORMAL,NULL,NULL);
+            menu_add_item_menu_misc(array_menu_common,"");
+        }
 
 
         retorno_menu=menu_dibuja_menu(&opcion_seleccionada,&item_seleccionado,array_menu_common,"Users");
@@ -1214,7 +1163,7 @@ void menu_zeng_online_restricted_keys_assign_to(MENU_ITEM_PARAMETERS)
 
     char buffer_uuid[STATS_UUID_MAX_LENGTH+1];
 
-    if (menu_zeng_online_ask_user_get_uuid(buffer_uuid,0)) {
+    if (menu_zeng_online_ask_user_get_uuid(buffer_uuid,0,1)) {
         strcpy(allowed_keys_assigned[valor_opcion],buffer_uuid);
     }
 
@@ -1225,7 +1174,7 @@ void menu_zeng_online_kick_user(MENU_ITEM_PARAMETERS)
 
     char buffer_uuid[STATS_UUID_MAX_LENGTH+1];
 
-    if (menu_zeng_online_ask_user_get_uuid(buffer_uuid,1)) {
+    if (menu_zeng_online_ask_user_get_uuid(buffer_uuid,1,1)) {
         zeng_online_client_kick_user(buffer_uuid);
         zxvision_simple_progress_window("Kick user", menu_zeng_online_kick_user_cond,menu_zeng_online_connecting_common_print );
     }
