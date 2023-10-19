@@ -1111,8 +1111,9 @@ int menu_zoc_keys_restricted_get_marcadas(void)
 }
 
 //menu comun para pedir usuario y retornar un uuid
+//ocultar_master vale 1 si no quieremos que aparezca el usuario que es el master
 //retorna 0 si sale con esc
-int menu_zeng_online_ask_user_get_uuid(char *uuid)
+int menu_zeng_online_ask_user_get_uuid(char *uuid,int ocultar_master)
 {
     //TODO: pedir esto desde la lista de usuarios, mas comodo
     //menu_ventana_scanf("UUID",allowed_keys_assigned[valor_opcion],STATS_UUID_MAX_LENGTH+1);
@@ -1161,13 +1162,21 @@ int menu_zeng_online_ask_user_get_uuid(char *uuid)
             if (zeng_remote_list_users_buffer[i]=='\n') {
                 zeng_remote_list_users_buffer[i]=0;
 
-                //Solo agregar en linea par (evitamos uuid)
-                if ((linea%2)==0) {
-                    menu_add_item_menu(array_menu_common,&zeng_remote_list_users_buffer[inicio_linea],MENU_OPCION_NORMAL,NULL,NULL);
-                }
-                else {
-                    //uuid lo metemos como texto misc en opcion
-                    menu_add_item_menu_misc(array_menu_common,&zeng_remote_list_users_buffer[inicio_linea]);
+                int agregar=1;
+
+                //Las dos primeras lineas es el nickname del master y su uuid
+                if (ocultar_master && linea<2) agregar=0;
+
+                if (agregar) {
+                    //agregar en linea par el nickname
+                    if ((linea%2)==0) {
+                        menu_add_item_menu(array_menu_common,&zeng_remote_list_users_buffer[inicio_linea],MENU_OPCION_NORMAL,NULL,NULL);
+                    }
+                    else {
+                        //uuid lo metemos como texto misc en opcion
+                        menu_add_item_menu_misc(array_menu_common,&zeng_remote_list_users_buffer[inicio_linea]);
+                    }
+
                 }
 
                 inicio_linea=i+1;
@@ -1205,7 +1214,7 @@ void menu_zeng_online_restricted_keys_assign_to(MENU_ITEM_PARAMETERS)
 
     char buffer_uuid[STATS_UUID_MAX_LENGTH+1];
 
-    if (menu_zeng_online_ask_user_get_uuid(buffer_uuid)) {
+    if (menu_zeng_online_ask_user_get_uuid(buffer_uuid,0)) {
         strcpy(allowed_keys_assigned[valor_opcion],buffer_uuid);
     }
 
@@ -1216,7 +1225,7 @@ void menu_zeng_online_kick_user(MENU_ITEM_PARAMETERS)
 
     char buffer_uuid[STATS_UUID_MAX_LENGTH+1];
 
-    if (menu_zeng_online_ask_user_get_uuid(buffer_uuid)) {
+    if (menu_zeng_online_ask_user_get_uuid(buffer_uuid,1)) {
         zeng_online_client_kick_user(buffer_uuid);
         zxvision_simple_progress_window("Kick user", menu_zeng_online_kick_user_cond,menu_zeng_online_connecting_common_print );
     }
