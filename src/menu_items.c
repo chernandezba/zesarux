@@ -16157,19 +16157,28 @@ void menu_network_traffic_draw_graph(zxvision_window *w,unsigned int *lista_valo
 
 
         int alto=(valor*alto_pixeles_grafica)/maximo_valor;
+        //quitarle 1 pixel porque si no quedan "restos" por arriba
+        alto--;
 
         //Y linea vertical hasta el alto
         //y=alto_pixeles_grafica-1;
 
 
 
+
+
+        //linea de color. Desde abajo hasta arriba
         for (y=0;alto>=0;alto--,y++) {
             zxvision_putpixel(w,offset_x+x,offset_y+alto_pixeles_grafica-1-y,ESTILO_GUI_COLOR_WAVEFORM);
         }
 
+        //Y resto con fondo
         for (;y<alto_pixeles_grafica;y++) {
             zxvision_putpixel(w,offset_x+x,offset_y+alto_pixeles_grafica-1-y,ESTILO_GUI_PAPEL_NORMAL);
         }
+
+        //Linea abajo del todo para indicar el 0
+        zxvision_putpixel(w,offset_x+x,offset_y+alto_pixeles_grafica-1,ESTILO_GUI_COLOR_WAVEFORM);
 
     }
 
