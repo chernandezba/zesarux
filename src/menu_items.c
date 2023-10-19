@@ -16101,6 +16101,51 @@ void menu_network_traffic_insert_write(unsigned int valor)
     network_traffic_history_values_write[0]=valor;
 }
 
+void menu_network_traffic_draw_graph(zxvision_window *w,unsigned int *lista_valores,int ancho_pixeles_grafica,int alto_pixeles_grafica,
+    int offset_x)
+{
+    int x,y;
+    int indice=0;
+    int i;
+
+    //Obtener el maximo valor para escalar la grafica segun eso
+    unsigned int maximo_valor=1; //partimos de 1 para evitar dividir por 0
+
+    for (i=0;i<NETWORK_TRAFFIC_MAX_VALUES;i++) {
+        unsigned int valor=lista_valores[i];
+        if (valor>maximo_valor) maximo_valor=valor;
+    }
+
+
+    for (x=ancho_pixeles_grafica;x>=0;x--) {
+        //escalar al alto
+
+        unsigned int valor;
+
+        //Si el indice se ha ido de sitio, devolver 0
+        if (indice>=NETWORK_TRAFFIC_MAX_VALUES) valor=0;
+        else valor=lista_valores[indice++];
+
+
+        int alto=(valor*alto_pixeles_grafica)/maximo_valor;
+
+        //Y linea vertical hasta el alto
+        //y=alto_pixeles_grafica-1;
+
+
+
+        for (y=0;alto>=0;alto--,y++) {
+            zxvision_putpixel(w,offset_x+x,alto_pixeles_grafica-1-y,ESTILO_GUI_COLOR_WAVEFORM);
+        }
+
+        for (;y<alto_pixeles_grafica;y++) {
+            zxvision_putpixel(w,offset_x+x,alto_pixeles_grafica-1-y,ESTILO_GUI_PAPEL_NORMAL);
+        }
+
+    }
+
+}
+
 void menu_network_traffic_overlay(void)
 {
 
@@ -16187,48 +16232,13 @@ void menu_network_traffic_overlay(void)
 
             if (alto_pixeles_grafica<8) alto_pixeles_grafica=8;
 
-            int x,y;
-            int indice=0;
+            menu_network_traffic_draw_graph(menu_network_traffic_window,network_traffic_history_values_read,
+                ancho_pixeles_grafica,alto_pixeles_grafica,0);
 
-            //Obtener el maximo valor para escalar la grafica segun eso
-            //TODO de momento fijo
-            unsigned int maximo_valor=1; //partimos de 1 para evitar dividir por 0
-
-            for (i=0;i<NETWORK_TRAFFIC_MAX_VALUES;i++) {
-                unsigned int valor=network_traffic_history_values_read[i];
-                if (valor>maximo_valor) maximo_valor=valor;
-            }
+            menu_network_traffic_draw_graph(menu_network_traffic_window,network_traffic_history_values_write,
+                ancho_pixeles_grafica,alto_pixeles_grafica,ancho_pixeles_grafica+10);
 
 
-            for (x=ancho_pixeles_grafica;x>=0;x--) {
-                //escalar al alto
-
-                unsigned int valor;
-
-                //Si el indice se ha ido de sitio, devolver 0
-                if (indice>=NETWORK_TRAFFIC_MAX_VALUES) valor=0;
-                else valor=network_traffic_history_values_read[indice++];
-
-
-                int alto=(valor*alto_pixeles_grafica)/maximo_valor;
-
-                //Y linea vertical hasta el alto
-                //y=alto_pixeles_grafica-1;
-
-
-
-                for (y=0;alto>=0;alto--,y++) {
-                    zxvision_putpixel(menu_network_traffic_window,x,alto_pixeles_grafica-1-y,ESTILO_GUI_COLOR_WAVEFORM);
-                }
-
-                for (;y<alto_pixeles_grafica;y++) {
-                    zxvision_putpixel(menu_network_traffic_window,x,alto_pixeles_grafica-1-y,ESTILO_GUI_PAPEL_NORMAL);
-                }
-                //Y borrar el resto con color de fondo
-                /*for (;alto_pixeles_grafica>=0;y--,alto_pixeles_grafica--) {
-                    zxvision_putpixel(menu_network_traffic_window,x,y,ESTILO_GUI_PAPEL_NORMAL);
-                }*/
-            }
 
         }
     }
