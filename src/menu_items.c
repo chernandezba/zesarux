@@ -16067,7 +16067,39 @@ unsigned int menu_network_traffic_antes_counter_write=0;
 //Para refrescar 1 por segundo
 int contador_network_traffic_overlay_anteriorsegundos=0;
 
+#define NETWORK_TRAFFIC_MAX_VALUES  100
 
+
+//Para almacenar los valores ultimos
+//En pantalla el mas a la derecha es el mas reciente
+//En el array la primera posicion es la mas reciente, por tanto cuando se agrega un valor siempre
+//al principio y haciendo scroll del resto
+
+//la primera vez al entrar vaciar el historial
+int network_traffic_history_values_inicializado=0;
+unsigned int network_traffic_history_values_read[NETWORK_TRAFFIC_MAX_VALUES];
+unsigned int network_traffic_history_values_write[NETWORK_TRAFFIC_MAX_VALUES];
+
+void menu_network_traffic_scroll(unsigned int *valores)
+{
+    int i;
+
+    for (i=NETWORK_TRAFFIC_MAX_VALUES-1;i>0;i--) {
+        valores[i]=valores[i-1];
+    }
+}
+
+void menu_network_traffic_insert_read(unsigned int valor)
+{
+    menu_network_traffic_scroll(network_traffic_history_values_read);
+    network_traffic_history_values_read[0]=valor;
+}
+
+void menu_network_traffic_insert_write(unsigned int valor)
+{
+    menu_network_traffic_scroll(network_traffic_history_values_write);
+    network_traffic_history_values_write[0]=valor;
+}
 
 void menu_network_traffic_overlay(void)
 {
@@ -16078,7 +16110,8 @@ void menu_network_traffic_overlay(void)
     if (menu_network_traffic_window->is_minimized) return;
 
 
-    //Print....
+    //TODO: agregar gestion dirty, o sea refrescar cuando se haya movido, redimensionado, etc,
+    //o quiza ni eso , puede que no haga falta
 
 
     //Cada segundo
@@ -16116,6 +16149,8 @@ void menu_network_traffic_overlay(void)
                 diferencia_write=(diferencia_write*1000)/transcurrido_ms;
             }
 
+            menu_network_traffic_insert_read(diferencia_read);
+            menu_network_traffic_insert_write(diferencia_write);
 
 
             zxvision_print_string_defaults_fillspc_format(menu_network_traffic_window,1,0,
@@ -16125,6 +16160,57 @@ void menu_network_traffic_overlay(void)
 
             menu_network_traffic_antes_counter_read=network_traffic_counter_read;
             menu_network_traffic_antes_counter_write=network_traffic_counter_write;
+
+
+            //temp mostrar
+            int i;
+            printf("Read\n");
+            for (i=0;i<10;i++) {
+                printf("%u\n",network_traffic_history_values_read[i]);
+            }
+
+            printf("Write\n");
+            for (i=0;i<10;i++) {
+                printf("%u\n",network_traffic_history_values_write[i]);
+            }
+
+
+
+            //TODO esto se tiene que ajustar segun el tamaño de ventana
+            int ancho_pixeles_grafica=300;
+            int alto_pixeles_grafica=200;
+
+
+
+            if (ancho_pixeles_grafica>NETWORK_TRAFFIC_MAX_VALUES) ancho_pixeles_grafica=NETWORK_TRAFFIC_MAX_VALUES;
+            if (ancho_pixeles_grafica<8) ancho_pixeles_grafica=8;
+
+            if (alto_pixeles_grafica<8) alto_pixeles_grafica=8;
+
+            int x,y;
+            int indice=0;
+
+            //Obtener el maximo valor para escalar la grafica segun eso
+            //TODO de momento fijo
+            unsigned int maximo_valor=1; //partimos de 1 para evitar dividir por 0
+
+            for (i=0;i<NETWORK_TRAFFIC_MAX_VALUES;i++) {
+                unsigned int valor=network_traffic_history_values_read[i];
+                if (valor>maximo_valor) maximo_valor=valor;
+            }
+
+
+            for (x=ancho_pixeles_grafica;x>=0;x--) {
+                //escalar al alto
+                unsigned int valor=network_traffic_history_values_read[indice++];
+                int alto=(valor*alto_pixeles_grafica)/maximo_valor;
+
+                //Y linea vertical hasta el alto
+                y=alto_pixeles_grafica-1;
+                for (;alto>=0;alto--,y--) {
+                    zxvision_putpixel(menu_network_traffic_window,x,y,0);
+                }
+            }
 
         }
     }
@@ -16153,6 +16239,18 @@ void menu_network_traffic(MENU_ITEM_PARAMETERS)
     timer_stats_current_time(&menu_network_traffic_time_antes);
     menu_network_traffic_antes_counter_read=network_traffic_counter_read;
     menu_network_traffic_antes_counter_write=network_traffic_counter_write;
+
+    //Vaciar el historial si conviene
+    //la primera vez al entrar vaciar el historial
+    if (!network_traffic_history_values_inicializado) {
+        network_traffic_history_values_inicializado=1;
+
+        int i;
+        for (i=0;i<NETWORK_TRAFFIC_MAX_VALUES;i++) {
+            network_traffic_history_values_read[i]=0;
+            network_traffic_history_values_write[i]=0;
+        }
+    }
 
     zxvision_window *ventana;
     ventana=&zxvision_window_network_traffic;
