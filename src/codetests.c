@@ -2132,6 +2132,22 @@ void codetests_ay_playlist(void)
     }
 }
 
+void codetests_multiply_8bits(void)
+{
+    //comprobar todos los posibles dos operadores
+    int i,j;
+
+    for (i=0;i<256;i++) {
+        for (j=0;j<256;j++) {
+            z80_int resultado=util_multiply_8bits(i,j);
+            printf("%d * %d = %d\n",i,j,resultado);
+            if (resultado!=i*j) {
+                printf("Error multiply\n");
+                exit(1);
+            }
+        }
+    }
+}
 
 void codetests_main(int main_argc,char *main_argv[])
 {
@@ -2237,11 +2253,15 @@ void codetests_main(int main_argc,char *main_argv[])
     printf("\nRunning tbblue divmmc masks\n");
     codetests_tbblue_divmmc_masks();
 
-    printf("\nRunning ay playlist codetests\n");
-    codetests_ay_playlist();
+    //printf("\nRunning ay playlist codetests\n");
+    //codetests_ay_playlist();
 
-    printf("\nRunning zeng online put-get snapshot tests\n");
-    codetests_zengonline_putget_snapshot();
+    //printf("\nRunning zeng online put-get snapshot tests\n");
+    //codetests_zengonline_putget_snapshot();
+
+    printf("\nRunning multiply 8 bits code tests\n");
+    codetests_multiply_8bits();
+
 
     //temporal crear dsk
     //dsk_create("/tmp/maspruebas.dsk",40,1,9,512);

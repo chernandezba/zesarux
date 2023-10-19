@@ -486,7 +486,7 @@ void zeng_online_create_room(int misocket,int room_number,char *room_name)
     zeng_online_rooms_list[room_number].broadcast_message[0]=0;
     zeng_online_rooms_list[room_number].broadcast_messages_allowed=1;
 
-    zeng_online_rooms_list[room_number].created=1;
+    zeng_online_rooms_list[room_number].kicked_user[0]=0;
 
     //Inicializar lista de usuarios vacia
     int i;
@@ -506,6 +506,9 @@ void zeng_online_create_room(int misocket,int room_number,char *room_name)
     //zeng_online_rooms_list[room_number].allowed_keys[0][0]='a';
     //zeng_online_rooms_list[room_number].allowed_keys[0][1]='b';
     //zeng_online_rooms_list[room_number].allowed_keys[0][2]=0; //fin de lista de teclas
+
+
+    zeng_online_rooms_list[room_number].created=1;
 
     //Retornar el creator password
     escribir_socket(misocket,zeng_online_rooms_list[room_number].creator_password);
@@ -1136,6 +1139,41 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
 
     }
 
+    //kick creator_pass n uuid                        Kick user identified by uuid\n"
+    //TODO semaforo para esto
+    else if (!strcmp(comando_argv[0],"kick")) {
+        if (!zeng_online_enabled) {
+            escribir_socket(misocket,"ERROR. ZENG Online is not enabled");
+            return;
+        }
+
+        if (comando_argc<3) {
+            escribir_socket(misocket,"ERROR. Needs three parameters");
+            return;
+        }
+
+        int room_number=parse_string_to_number(comando_argv[2]);
+
+        if (room_number<0 || room_number>=zeng_online_current_max_rooms) {
+            escribir_socket_format(misocket,"ERROR. Room number beyond limit");
+            return;
+        }
+
+        if (!zeng_online_rooms_list[room_number].created) {
+            escribir_socket(misocket,"ERROR. Room is not created");
+            return;
+        }
+
+        if (strcmp(comando_argv[1],zeng_online_rooms_list[room_number].creator_password)) {
+            escribir_socket(misocket,"ERROR. Invalid creator password for that room");
+            return;
+        }
+
+
+        strcpy(zeng_online_rooms_list[room_number].kicked_user,comando_argv[3]);
+
+    }
+
        //send-message user_pass n nickname message
     else if (!strcmp(comando_argv[0],"send-message")) {
         if (!zeng_online_enabled) {
@@ -1221,6 +1259,41 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
             }
         }
 
+
+    }
+
+    //get-kicked-user user_pass n                     This command returns the last kicked user, returning its uuid\n"
+    else if (!strcmp(comando_argv[0],"get-kicked-user")) {
+        if (!zeng_online_enabled) {
+            escribir_socket(misocket,"ERROR. ZENG Online is not enabled");
+            return;
+        }
+
+        if (comando_argc<2) {
+            escribir_socket(misocket,"ERROR. Needs two parameters");
+            return;
+        }
+
+        int room_number=parse_string_to_number(comando_argv[2]);
+
+        if (room_number<0 || room_number>=zeng_online_current_max_rooms) {
+            escribir_socket_format(misocket,"ERROR. Room number beyond limit");
+            return;
+        }
+
+        if (!zeng_online_rooms_list[room_number].created) {
+            escribir_socket(misocket,"ERROR. Room is not created");
+            return;
+        }
+
+        //validar user_pass. comando_argv[1]
+        if (strcmp(comando_argv[1],zeng_online_rooms_list[room_number].user_password)) {
+            escribir_socket(misocket,"ERROR. Invalid user password for that room");
+            return;
+        }
+
+
+        escribir_socket_format(misocket,"%s",zeng_online_rooms_list[room_number].kicked_user);
 
     }
 

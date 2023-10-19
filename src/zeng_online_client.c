@@ -77,6 +77,7 @@ pthread_t thread_zeng_online_client_allow_message_room;
 pthread_t thread_zeng_online_client_list_users;
 pthread_t thread_zeng_online_client_get_profile_keys;
 pthread_t thread_zeng_online_client_send_profile_keys;
+pthread_t thread_zeng_online_client_kick_user;
 
 
 #endif
@@ -96,6 +97,7 @@ int zeng_online_client_allow_message_room_thread_running=0;
 int zeng_online_client_list_users_thread_running=0;
 int zeng_online_client_get_profile_keys_thread_running=0;
 int zeng_online_client_send_profile_keys_thread_running=0;
+int zeng_online_client_kick_user_thread_running=0;
 
 z80_bit zeng_online_i_am_master={0};
 //z80_bit zeng_online_i_am_joined={0};
@@ -981,6 +983,35 @@ int zoc_get_message_id(int indice_socket)
 }
 
 //Devuelve -1 si error
+int zoc_get_kicked_user(int indice_socket,char *buffer_destino)
+{
+
+    char buffer_enviar[1024];
+
+    //get-message-id user_pass n
+    sprintf(buffer_enviar,"zeng-online get-kicked-user %s %d\n",
+        created_room_user_password,zeng_online_joined_to_room_number);
+
+    #define ZENG_BUFFER_INITIAL_CONNECT 199
+
+    //buffer retorno
+    char buffer[ZENG_BUFFER_INITIAL_CONNECT+1];
+
+    int return_value=zoc_common_send_command_buffer(indice_socket,buffer_enviar,"get-kicked-user",buffer,ZENG_BUFFER_INITIAL_CONNECT);
+
+    //printf("get_message_id: [%s]\n",buffer);
+
+    if (!return_value) {
+        return -1;
+    }
+
+    strcpy(buffer_destino,buffer);
+
+    return 0;
+
+}
+
+//Devuelve -1 si error
 int zoc_get_message(int indice_socket,char *mensaje)
 {
     mensaje[0]=0;
@@ -1028,6 +1059,25 @@ int zeng_online_client_write_message_room_connect(void)
     return zoc_open_command_close(buffer_enviar,"send-message");
 
 }
+
+char param_zeng_online_client_kick_user_uuid[STATS_UUID_MAX_LENGTH+1];
+
+//Devuelve 0 si no conectado
+int zeng_online_client_kick_user_connect(void)
+{
+
+    char buffer_enviar[1024];
+
+    //kick creator_pass n uuid                        Kick user identified by uuid\n"
+    sprintf(buffer_enviar,"zeng-online kick %s %d \"%s\"\n",
+        created_room_creator_password,
+        zeng_online_joined_to_room_number,
+        param_zeng_online_client_kick_user_uuid);
+
+    return zoc_open_command_close(buffer_enviar,"kick");
+
+}
+
 
 int param_zeng_online_client_allow_message_room_allow_disallow;
 
@@ -1121,6 +1171,29 @@ void *zeng_online_client_write_message_room_function(void *nada GCC_UNUSED)
 
 
 	zeng_online_client_write_message_room_thread_running=0;
+
+	return 0;
+
+}
+
+void *zeng_online_client_kick_user_function(void *nada GCC_UNUSED)
+{
+    zeng_online_client_kick_user_thread_running=1;
+
+	//Conectar a remoto
+
+	if (!zeng_online_client_kick_user_connect()) {
+		//Desconectar solo si el socket estaba conectado
+
+        //Desconectar los que esten conectados
+        //TODO zeng_disconnect_remote();
+
+		zeng_online_client_kick_user_thread_running=0;
+		return 0;
+	}
+
+
+	zeng_online_client_kick_user_thread_running=0;
 
 	return 0;
 
@@ -1675,6 +1748,24 @@ void zeng_online_client_write_message_room(char *message)
 
 }
 
+
+
+void zeng_online_client_kick_user(char *uuid)
+{
+
+	//Inicializar thread
+    strcpy(param_zeng_online_client_kick_user_uuid,uuid);
+
+	if (pthread_create( &thread_zeng_online_client_kick_user, NULL, &zeng_online_client_kick_user_function, NULL) ) {
+		debug_printf(VERBOSE_ERR,"Can not create zeng online write message pthread");
+		return;
+	}
+
+	//y pthread en estado detached asi liberara su memoria asociada a thread al finalizar, sin tener que hacer un pthread_join
+	pthread_detach(thread_zeng_online_client_kick_user);
+
+
+}
 
 
 //Parametro allow_disallow : 1: allow, 0: disallow
@@ -2940,6 +3031,8 @@ int zoc_receive_snapshot(int indice_socket)
                 }
                 else {
                     //Ver si id diferente
+                    printf("snapshot id: %s\n",buffer);
+
                     int nuevo_id=parse_string_to_number(buffer);
                     if (nuevo_id!=zoc_receive_snapshot_last_id) {
                         zoc_receive_snapshot_last_id=nuevo_id;
@@ -3185,6 +3278,24 @@ void *zoc_slave_thread_function(void *nada GCC_UNUSED)
             }
 
             zoc_common_get_messages_slave_master(indice_socket);
+
+
+            //Ver si nos han hecho kick
+            //TODO esto hacerlo cada 1 segundo o asi
+            char buffer_kick_user[STATS_UUID_MAX_LENGTH+1];
+            int retorno=zoc_get_kicked_user(indice_socket,buffer_kick_user);
+            if (retorno>=0) {
+                printf("Kicked user: [%s]\n",buffer_kick_user);
+                if (!strcmp(buffer_kick_user,stats_uuid)) {
+                    printf("I have been kicked\n");
+                    put_footer_first_message("I have been kicked");
+                    zeng_online_client_leave_room();
+                    debug_printf(VERBOSE_ERR,"I have been kicked from the ZENG Online room");
+                    return NULL;
+                }
+            }
+
+
 
             //printf("siguiente segundo. contador_segundo=%d. temppppp=%d\n",contador_segundo,temppppp++);
 
@@ -3534,6 +3645,10 @@ void zeng_online_client_disable_autojoin_room(void)
 }
 
 void zeng_online_client_write_message_room(char *message)
+{
+}
+
+void zeng_online_client_kick_user(char *message)
 {
 }
 

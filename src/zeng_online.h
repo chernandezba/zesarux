@@ -163,6 +163,9 @@ struct zeng_online_room {
     //Perfiles asignados a cada uuid. Si es "", no esta asignado
     char allowed_keys_assigned[ZOC_MAX_KEYS_PROFILES][STATS_UUID_MAX_LENGTH+1];
 
+    //Ultimo usuario que se le ha hecho "kick"
+    char kicked_user[STATS_UUID_MAX_LENGTH+1];
+
 };
 
 extern struct zeng_online_room zeng_online_rooms_list[];

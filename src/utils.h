@@ -1004,6 +1004,6 @@ extern int util_scanf_history_get_total_lines(char **textos_historial);
 
 extern void util_get_operating_system_release(char *destino,int maximo);
 
-
+extern z80_int util_multiply_8bits(z80_byte a,z80_byte b);
 
 #endif

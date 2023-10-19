@@ -21797,3 +21797,29 @@ z80_byte util_hex_nibble_to_byte(char letra)
     if (letra>='A') return 10+(letra-'A');
     else return (letra-'0');
 }
+
+
+//Funcion solo por diversion. Multiplica dos valores de 8 bits
+//usando un algoritmo de multiplicacion de bits tal cual se haria "a mano"
+//El primer operador se va desplazando a la izquierda (multiplicando por 2) y sumando al resultado
+//si el bit observado del segundo operador es 1
+z80_int util_multiply_8bits(z80_byte a,z80_byte b)
+{
+    z80_int resultado=0;
+
+    //para irlo rotando a la izquierda necesito que sea de 16 bits
+    z80_int operador_a=a;
+
+    int i;
+
+    for (i=0;i<8;i++) {
+        if (b&1) resultado +=operador_a;
+
+        b=b>>1;
+        operador_a=operador_a<<1;
+
+    }
+
+    return resultado;
+
+}
