@@ -3177,8 +3177,39 @@ int zoc_receive_snapshot(int indice_socket)
 
 }
 
+//contiene el valor anterior de contador_segundo_infinito de la anterior consulta de kick
+int contador_kick_anteriorsegundos=0;
 
 
+//comprueba si nos han echado de la habitacion
+int zoc_check_if_kicked(int indice_socket)
+{
+    //Ver si nos han hecho kick
+
+
+    //Cada segundo ver
+    int diferencia_tiempo=contador_segundo_infinito-contador_kick_anteriorsegundos;
+
+    if (diferencia_tiempo>50*20) {
+        contador_kick_anteriorsegundos=contador_segundo_infinito;
+
+        char buffer_kick_user[STATS_UUID_MAX_LENGTH+1];
+        int retorno=zoc_get_kicked_user(indice_socket,buffer_kick_user);
+        if (retorno>=0) {
+            printf("Kicked user: [%s]\n",buffer_kick_user);
+            if (!strcmp(buffer_kick_user,stats_uuid)) {
+                printf("I have been kicked\n");
+                put_footer_first_message("I have been kicked");
+                zeng_online_client_leave_room();
+                debug_printf(VERBOSE_ERR,"I have been kicked from the ZENG Online room");
+                return 1;
+            }
+        }
+
+    }
+
+    return 0;
+}
 
 
 void *zoc_slave_thread_function(void *nada GCC_UNUSED)
@@ -3280,19 +3311,8 @@ void *zoc_slave_thread_function(void *nada GCC_UNUSED)
             zoc_common_get_messages_slave_master(indice_socket);
 
 
-            //Ver si nos han hecho kick
-            //TODO esto hacerlo cada 1 segundo o asi
-            char buffer_kick_user[STATS_UUID_MAX_LENGTH+1];
-            int retorno=zoc_get_kicked_user(indice_socket,buffer_kick_user);
-            if (retorno>=0) {
-                printf("Kicked user: [%s]\n",buffer_kick_user);
-                if (!strcmp(buffer_kick_user,stats_uuid)) {
-                    printf("I have been kicked\n");
-                    put_footer_first_message("I have been kicked");
-                    zeng_online_client_leave_room();
-                    debug_printf(VERBOSE_ERR,"I have been kicked from the ZENG Online room");
-                    return NULL;
-                }
+            if (zoc_check_if_kicked(indice_socket)) {
+                return NULL;
             }
 
 
