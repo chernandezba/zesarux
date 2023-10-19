@@ -16129,6 +16129,16 @@ void menu_network_traffic_draw_graph(zxvision_window *w,unsigned int *lista_valo
     *p_minimo_valor=minimo_valor;
 
 
+    //Sacar valor medio
+    z80_64bit suma=0;
+
+    for (i=0;i<NETWORK_TRAFFIC_MAX_VALUES;i++) {
+        suma +=lista_valores[i];
+    }
+
+    suma /=NETWORK_TRAFFIC_MAX_VALUES;
+    *p_medio_valor=suma;
+
     for (x=ancho_pixeles_grafica;x>=0;x--) {
         //escalar al alto
 
@@ -16246,7 +16256,7 @@ void menu_network_traffic_overlay(void)
             ancho_pixeles_grafica-=menu_char_width*3;
 
             alto_pixeles_grafica=(menu_network_traffic_window->visible_height)*menu_char_height;
-            alto_pixeles_grafica -=menu_char_height*3;
+            alto_pixeles_grafica -=menu_char_height*4;
 
             if (ancho_pixeles_grafica>NETWORK_TRAFFIC_MAX_VALUES) ancho_pixeles_grafica=NETWORK_TRAFFIC_MAX_VALUES;
             if (ancho_pixeles_grafica<8) ancho_pixeles_grafica=8;
@@ -16260,19 +16270,24 @@ void menu_network_traffic_overlay(void)
             int p_maximo_valor,p_minimo_valor,p_medio_valor;
 
             menu_network_traffic_draw_graph(menu_network_traffic_window,network_traffic_history_values_read,
-                ancho_pixeles_grafica,alto_pixeles_grafica,menu_char_width,menu_char_height,
+                ancho_pixeles_grafica,alto_pixeles_grafica,menu_char_width,menu_char_height*2,
                 &p_maximo_valor,&p_minimo_valor,&p_medio_valor);
 
             zxvision_print_string_defaults_format(menu_network_traffic_window,1,0,
-                "Read Max %d Min %d",p_maximo_valor/1000,p_minimo_valor/1000);
+                "Read Average %d Kbps",(p_medio_valor*8)/1000);
+            zxvision_print_string_defaults_format(menu_network_traffic_window,1,1,
+                "Max %d Kbps Min %d Kbps",(p_maximo_valor*8)/1000,(p_minimo_valor*8)/1000);
 
             menu_network_traffic_draw_graph(menu_network_traffic_window,network_traffic_history_values_write,
-                ancho_pixeles_grafica,alto_pixeles_grafica,menu_char_width+ancho_pixeles_grafica+menu_char_width,menu_char_height,
+                ancho_pixeles_grafica,alto_pixeles_grafica,menu_char_width+ancho_pixeles_grafica+menu_char_width,menu_char_height*2,
                 &p_maximo_valor,&p_minimo_valor,&p_medio_valor);
 
             int pos_x=(menu_network_traffic_window->visible_width)/2;
+
             zxvision_print_string_defaults_format(menu_network_traffic_window,pos_x-1,0,
-                "Write Max %d Min %d",p_maximo_valor/1000,p_minimo_valor/1000);
+                "Write Average %d Kbps",(p_medio_valor*8)/1000);
+            zxvision_print_string_defaults_format(menu_network_traffic_window,pos_x-1,1,
+                "Max %d Kbps Min %d Kbps",(p_maximo_valor*8)/1000,(p_minimo_valor*8)/1000);
 
         }
     }
