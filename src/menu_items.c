@@ -16102,7 +16102,7 @@ void menu_network_traffic_insert_write(unsigned int valor)
 }
 
 void menu_network_traffic_draw_graph(zxvision_window *w,unsigned int *lista_valores,int ancho_pixeles_grafica,int alto_pixeles_grafica,
-    int offset_x,int offset_y)
+    int offset_x,int offset_y,int *p_maximo_valor,int *p_minimo_valor,int *p_medio_valor)
 {
     int x,y;
     int indice=0;
@@ -16115,6 +16115,18 @@ void menu_network_traffic_draw_graph(zxvision_window *w,unsigned int *lista_valo
         unsigned int valor=lista_valores[i];
         if (valor>maximo_valor) maximo_valor=valor;
     }
+
+    *p_maximo_valor=maximo_valor;
+
+    //Obtener el minimo valor. Partimos del maximo
+    unsigned int minimo_valor=maximo_valor;
+
+    for (i=0;i<NETWORK_TRAFFIC_MAX_VALUES;i++) {
+        unsigned int valor=lista_valores[i];
+        if (valor<minimo_valor) minimo_valor=valor;
+    }
+
+    *p_minimo_valor=minimo_valor;
 
 
     for (x=ancho_pixeles_grafica;x>=0;x--) {
@@ -16198,17 +16210,19 @@ void menu_network_traffic_overlay(void)
             menu_network_traffic_insert_write(diferencia_write);
 
 
-            zxvision_print_string_defaults_fillspc_format(menu_network_traffic_window,1,0,
-                "Traffic: %8u kbyte/s read - %8u kbyte/s write",diferencia_read/1000,diferencia_write/1000);
+            //zxvision_print_string_defaults_fillspc_format(menu_network_traffic_window,1,0,
+            //    "Traffic: %8u kbyte/s read - %8u kbyte/s write",diferencia_read/1000,diferencia_write/1000);
 
             printf("Traffic: %8u kbyte/s read - %8u kbyte/s write\n",diferencia_read/1000,diferencia_write/1000);
 
             menu_network_traffic_antes_counter_read=network_traffic_counter_read;
             menu_network_traffic_antes_counter_write=network_traffic_counter_write;
 
+            //int i;
 
             //temp mostrar
-            int i;
+
+            /*
             printf("Read\n");
             for (i=0;i<10;i++) {
                 printf("%u\n",network_traffic_history_values_read[i]);
@@ -16217,7 +16231,7 @@ void menu_network_traffic_overlay(void)
             printf("Write\n");
             for (i=0;i<10;i++) {
                 printf("%u\n",network_traffic_history_values_write[i]);
-            }
+            }*/
 
 
 
@@ -16239,13 +16253,26 @@ void menu_network_traffic_overlay(void)
 
             if (alto_pixeles_grafica<8) alto_pixeles_grafica=8;
 
+            //borrar la primera linea de texto
+            zxvision_print_string_defaults_fillspc(menu_network_traffic_window,1,0,
+                "");
+
+            int p_maximo_valor,p_minimo_valor,p_medio_valor;
+
             menu_network_traffic_draw_graph(menu_network_traffic_window,network_traffic_history_values_read,
-                ancho_pixeles_grafica,alto_pixeles_grafica,menu_char_width,menu_char_height);
+                ancho_pixeles_grafica,alto_pixeles_grafica,menu_char_width,menu_char_height,
+                &p_maximo_valor,&p_minimo_valor,&p_medio_valor);
+
+            zxvision_print_string_defaults_format(menu_network_traffic_window,1,0,
+                "Read Max %d Min %d",p_maximo_valor/1000,p_minimo_valor/1000);
 
             menu_network_traffic_draw_graph(menu_network_traffic_window,network_traffic_history_values_write,
-                ancho_pixeles_grafica,alto_pixeles_grafica,menu_char_width+ancho_pixeles_grafica+menu_char_width,menu_char_height);
+                ancho_pixeles_grafica,alto_pixeles_grafica,menu_char_width+ancho_pixeles_grafica+menu_char_width,menu_char_height,
+                &p_maximo_valor,&p_minimo_valor,&p_medio_valor);
 
-
+            int pos_x=(menu_network_traffic_window->visible_width)/2;
+            zxvision_print_string_defaults_format(menu_network_traffic_window,pos_x-1,0,
+                "Write Max %d Min %d",p_maximo_valor/1000,p_minimo_valor/1000);
 
         }
     }
