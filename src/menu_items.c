@@ -16067,7 +16067,7 @@ unsigned int menu_network_traffic_antes_counter_write=0;
 //Para refrescar 1 por segundo
 int contador_network_traffic_overlay_anteriorsegundos=0;
 
-#define NETWORK_TRAFFIC_MAX_VALUES  100
+#define NETWORK_TRAFFIC_MAX_VALUES 300
 
 
 //Para almacenar los valores ultimos
@@ -16102,7 +16102,7 @@ void menu_network_traffic_insert_write(unsigned int valor)
 }
 
 void menu_network_traffic_draw_graph(zxvision_window *w,unsigned int *lista_valores,int ancho_pixeles_grafica,int alto_pixeles_grafica,
-    int offset_x)
+    int offset_x,int offset_y)
 {
     int x,y;
     int indice=0;
@@ -16135,11 +16135,11 @@ void menu_network_traffic_draw_graph(zxvision_window *w,unsigned int *lista_valo
 
 
         for (y=0;alto>=0;alto--,y++) {
-            zxvision_putpixel(w,offset_x+x,alto_pixeles_grafica-1-y,ESTILO_GUI_COLOR_WAVEFORM);
+            zxvision_putpixel(w,offset_x+x,offset_y+alto_pixeles_grafica-1-y,ESTILO_GUI_COLOR_WAVEFORM);
         }
 
         for (;y<alto_pixeles_grafica;y++) {
-            zxvision_putpixel(w,offset_x+x,alto_pixeles_grafica-1-y,ESTILO_GUI_PAPEL_NORMAL);
+            zxvision_putpixel(w,offset_x+x,offset_y+alto_pixeles_grafica-1-y,ESTILO_GUI_PAPEL_NORMAL);
         }
 
     }
@@ -16221,11 +16221,18 @@ void menu_network_traffic_overlay(void)
 
 
 
-            //TODO esto se tiene que ajustar segun el tamaño de ventana
-            int ancho_pixeles_grafica=300;
-            int alto_pixeles_grafica=200;
+            //esto se tiene que ajustar segun el tamaño de ventana
+            int ancho_pixeles_grafica;
+            int alto_pixeles_grafica;
 
 
+            //Ubicacion de las graficas:
+            //Margen izquierdo (char width) - Grafica read - Margen central (char width) - Grafica write
+            ancho_pixeles_grafica=((menu_network_traffic_window->visible_width)*menu_char_width)/2;
+            ancho_pixeles_grafica-=menu_char_width*3;
+
+            alto_pixeles_grafica=(menu_network_traffic_window->visible_height)*menu_char_height;
+            alto_pixeles_grafica -=menu_char_height*3;
 
             if (ancho_pixeles_grafica>NETWORK_TRAFFIC_MAX_VALUES) ancho_pixeles_grafica=NETWORK_TRAFFIC_MAX_VALUES;
             if (ancho_pixeles_grafica<8) ancho_pixeles_grafica=8;
@@ -16233,10 +16240,10 @@ void menu_network_traffic_overlay(void)
             if (alto_pixeles_grafica<8) alto_pixeles_grafica=8;
 
             menu_network_traffic_draw_graph(menu_network_traffic_window,network_traffic_history_values_read,
-                ancho_pixeles_grafica,alto_pixeles_grafica,0);
+                ancho_pixeles_grafica,alto_pixeles_grafica,menu_char_width,menu_char_height);
 
             menu_network_traffic_draw_graph(menu_network_traffic_window,network_traffic_history_values_write,
-                ancho_pixeles_grafica,alto_pixeles_grafica,ancho_pixeles_grafica+10);
+                ancho_pixeles_grafica,alto_pixeles_grafica,menu_char_width+ancho_pixeles_grafica+menu_char_width,menu_char_height);
 
 
 
