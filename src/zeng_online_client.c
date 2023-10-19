@@ -3312,6 +3312,10 @@ void *zoc_slave_thread_function(void *nada GCC_UNUSED)
 
 
             if (zoc_check_if_kicked(indice_socket)) {
+                //Logicamente el usuario puede intentar entrar de nuevo pero
+                //mientras no se haga kick de otro usuario diferente, este primero quedara en la lista de kick
+                //y siempre se le echara
+                //Ademas como va relacionado por el uuid, aunque cambie su nick, el kick seguirá siendo efectivo
                 return NULL;
             }
 
