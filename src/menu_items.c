@@ -16280,7 +16280,7 @@ void menu_network_traffic_overlay(void)
             ancho_pixeles_grafica-=menu_char_width*3;
 
             alto_pixeles_grafica=(menu_network_traffic_window->visible_height)*menu_char_height;
-            alto_pixeles_grafica -=menu_char_height*5;
+            alto_pixeles_grafica -=menu_char_height*6;
 
             if (ancho_pixeles_grafica>NETWORK_TRAFFIC_MAX_VALUES) ancho_pixeles_grafica=NETWORK_TRAFFIC_MAX_VALUES;
             if (ancho_pixeles_grafica<8) ancho_pixeles_grafica=8;
@@ -16291,12 +16291,13 @@ void menu_network_traffic_overlay(void)
             zxvision_print_string_defaults_fillspc(menu_network_traffic_window,1,0,"");
             zxvision_print_string_defaults_fillspc(menu_network_traffic_window,1,1,"");
             zxvision_print_string_defaults_fillspc(menu_network_traffic_window,1,2,"");
+            zxvision_print_string_defaults_fillspc(menu_network_traffic_window,1,3,"");
 
             int p_maximo_valor_read,p_minimo_valor_read,p_medio_valor_read,p_ultimo_valor_read;
             int p_maximo_valor_write,p_minimo_valor_write,p_medio_valor_write,p_ultimo_valor_write;
 
             menu_network_traffic_draw_graph(menu_network_traffic_window,network_traffic_history_values_read,
-                ancho_pixeles_grafica,alto_pixeles_grafica,menu_char_width,menu_char_height*3,
+                ancho_pixeles_grafica,alto_pixeles_grafica,menu_char_width,menu_char_height*4,
                 &p_maximo_valor_read,&p_minimo_valor_read,&p_medio_valor_read,&p_ultimo_valor_read);
 
 
@@ -16304,7 +16305,7 @@ void menu_network_traffic_overlay(void)
 
 
             menu_network_traffic_draw_graph(menu_network_traffic_window,network_traffic_history_values_write,
-                ancho_pixeles_grafica,alto_pixeles_grafica,pos_x_medio*menu_char_width,menu_char_height*3,
+                ancho_pixeles_grafica,alto_pixeles_grafica,pos_x_medio*menu_char_width,menu_char_height*4,
                 &p_maximo_valor_write,&p_minimo_valor_write,&p_medio_valor_write,&p_ultimo_valor_write);
 
 
@@ -16327,20 +16328,24 @@ void menu_network_traffic_overlay(void)
             get_size_bps_human_friendly(p_minimo_valor_write,buffer_min_write);
             get_size_bps_human_friendly(p_ultimo_valor_write,buffer_last_write);
 
-            if (menu_network_traffic_window->visible_width < 30 ) {
+            if (menu_network_traffic_window->visible_width < 39 ) {
                 zxvision_print_string_defaults_format(menu_network_traffic_window,1,0,
                     "%s",buffer_average_read);
                 zxvision_print_string_defaults_format(menu_network_traffic_window,1,1,
                     "%s",buffer_last_read);
                 zxvision_print_string_defaults_format(menu_network_traffic_window,1,2,
-                    "%s,%s",buffer_max_read,buffer_min_read);
+                    "%s",buffer_max_read);
+                zxvision_print_string_defaults_format(menu_network_traffic_window,1,3,
+                    "%s",buffer_min_read);
 
                 zxvision_print_string_defaults_format(menu_network_traffic_window,pos_x_medio,0,
                     "%s",buffer_average_write);
                 zxvision_print_string_defaults_format(menu_network_traffic_window,pos_x_medio,1,
                     "%s",buffer_last_write);
                 zxvision_print_string_defaults_format(menu_network_traffic_window,pos_x_medio,2,
-                    "%s, %s",buffer_max_write,buffer_min_write);
+                    "%s",buffer_max_write);
+                zxvision_print_string_defaults_format(menu_network_traffic_window,pos_x_medio,3,
+                    "%s",buffer_min_write);
             }
 
             else {
@@ -16350,14 +16355,18 @@ void menu_network_traffic_overlay(void)
                 zxvision_print_string_defaults_format(menu_network_traffic_window,1,1,
                     "Last %s",buffer_last_read);
                 zxvision_print_string_defaults_format(menu_network_traffic_window,1,2,
-                    "Max %s Min %s",buffer_max_read,buffer_min_read);
+                    "Max %s",buffer_max_read);
+                zxvision_print_string_defaults_format(menu_network_traffic_window,1,3,
+                    "Min %s",buffer_min_read);
 
                 zxvision_print_string_defaults_format(menu_network_traffic_window,pos_x_medio,0,
                     "Write. Avg %s",buffer_average_write);
                 zxvision_print_string_defaults_format(menu_network_traffic_window,pos_x_medio,1,
                     "Last %s",buffer_last_write);
                 zxvision_print_string_defaults_format(menu_network_traffic_window,pos_x_medio,2,
-                    "Max %s Min %s",buffer_max_write,buffer_min_write);
+                    "Max %s",buffer_max_write);
+                zxvision_print_string_defaults_format(menu_network_traffic_window,pos_x_medio,3,
+                    "Min %s",buffer_min_write);
             }
 
 
