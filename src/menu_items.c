@@ -16313,6 +16313,7 @@ void menu_network_traffic_overlay(void)
             char buffer_max_read[100];
             char buffer_min_read[100];
             char buffer_last_read[100];
+
             char buffer_average_write[100];
             char buffer_max_write[100];
             char buffer_min_write[100];
@@ -16328,7 +16329,12 @@ void menu_network_traffic_overlay(void)
             get_size_bps_human_friendly(p_minimo_valor_write,buffer_min_write);
             get_size_bps_human_friendly(p_ultimo_valor_write,buffer_last_write);
 
-            if (menu_network_traffic_window->visible_width < 39 ) {
+            //La primera linea es la que determina si usamos el formato corto
+            char buffer_primera_linea_read[100];
+            sprintf(buffer_primera_linea_read,"Read. Avg %s",buffer_average_read);
+            int longitud_linea_read=strlen(buffer_primera_linea_read);
+
+            if (longitud_linea_read>=pos_x_medio ) {
                 zxvision_print_string_defaults_format(menu_network_traffic_window,1,0,
                     "%s",buffer_average_read);
                 zxvision_print_string_defaults_format(menu_network_traffic_window,1,1,
@@ -16351,7 +16357,7 @@ void menu_network_traffic_overlay(void)
             else {
 
                 zxvision_print_string_defaults_format(menu_network_traffic_window,1,0,
-                    "Read. Avg %s",buffer_average_read);
+                    "%s",buffer_primera_linea_read);
                 zxvision_print_string_defaults_format(menu_network_traffic_window,1,1,
                     "Last %s",buffer_last_read);
                 zxvision_print_string_defaults_format(menu_network_traffic_window,1,2,
@@ -16368,11 +16374,6 @@ void menu_network_traffic_overlay(void)
                 zxvision_print_string_defaults_format(menu_network_traffic_window,pos_x_medio,3,
                     "Min %s",buffer_min_write);
             }
-
-
-
-
-
 
 
         }
