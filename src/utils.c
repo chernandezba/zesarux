@@ -5994,6 +5994,42 @@ long long int get_size_human_friendly(long long int tamanyo,char *sufijo)
     return tamanyo;
 }
 
+
+//Retorna valor, sufijo y unidades para un tamaño de bits per second
+//bps esta con espacios para quede alineado con el resto
+void get_size_bps_human_friendly(long long int tamanyo,char *texto)
+{
+
+    char sufijo[10];
+
+    tamanyo *=8;
+
+    strcpy(sufijo,"bps ");
+
+    if (tamanyo >= 1000) {
+        tamanyo /= 1000;
+        strcpy(sufijo,"Kbps");
+    }
+
+    if (tamanyo >= 1000) {
+        tamanyo /= 1000;
+        strcpy(sufijo,"Mbps");
+    }
+
+    if (tamanyo >= 1000) {
+        tamanyo /= 1000;
+        strcpy(sufijo,"Gbps");
+    }
+
+    if (tamanyo >= 1000) {
+        tamanyo /= 1000;
+        strcpy(sufijo,"Tbps");
+    }
+
+    sprintf(texto,"%lld %s",tamanyo,sufijo);
+
+}
+
 //Retorna tamanyo archivo
 long long int get_file_size(char *nombre)
 {

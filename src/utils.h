@@ -231,6 +231,7 @@ extern int si_existe_archivo(char *nombre);
 extern long long int get_file_size(char *nombre);
 
 extern long long int get_size_human_friendly(long long int tamanyo,char *sufijo);
+extern void get_size_bps_human_friendly(long long int tamanyo,char *texto);
 
 extern int lee_archivo(char *nombre,char *buffer,int max_longitud);
 

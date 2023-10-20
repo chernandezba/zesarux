@@ -16035,6 +16035,35 @@ void zxvision_handle_mouse_events(zxvision_window *w)
 
 			}
 
+            //Ver si no se ha pulsado shift, con lo que cerraremos las ventanas, siempre que no se haya pulsado en botones
+            //El comportamiento es muy parecido al otro else if de abajo , donde se
+            //entra cuando se pulsan botones del desktop: cerrar menus (y en el caso de pulsar botones, avisar pulsar botones)
+            //Se podria haber incluido esta condicion de no shift en el else if de abajo de pulsar botones, pero creo que queda
+            //el codigo mas claro asi
+
+            else if ((puerto_65278&1)==1 && !zxvision_if_mouse_in_zlogo_or_buttons_desktop()) {
+                //printf("No pulsado shift. Cerramos ventanas\n");
+                salir_todos_menus=1;
+
+				if (!menu_allow_background_windows) {
+						mouse_pressed_close_window=1;
+				}
+
+				else {
+					//Si la ventana activa permite ir a background, mandarla a background
+					if (zxvision_current_window->can_be_backgrounded) {
+							mouse_pressed_background_window=1;
+					}
+
+					//Si la ventana activa no permite ir a background, cerrarla
+					else {
+							mouse_pressed_close_window=1;
+					}
+				}
+            }
+
+
+
 			//Ver si hemos pulsado por la zona del logo en el ext desktop
 			else if (zxvision_if_mouse_in_zlogo_or_buttons_desktop()) {
                 //printf("pulsado en un boton desde handle mouse events. menu_abierto %d\n",menu_abierto);

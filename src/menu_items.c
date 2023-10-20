@@ -16067,7 +16067,8 @@ unsigned int menu_network_traffic_antes_counter_write=0;
 //Para refrescar 1 por segundo
 int contador_network_traffic_overlay_anteriorsegundos=0;
 
-#define NETWORK_TRAFFIC_MAX_VALUES 300
+//Para 5 minutos de historial
+#define NETWORK_TRAFFIC_MAX_VALUES (60*5)
 
 
 //Para almacenar los valores ultimos
@@ -16105,11 +16106,13 @@ void menu_network_traffic_insert_write(unsigned int valor)
 }
 
 void menu_network_traffic_draw_graph(zxvision_window *w,unsigned int *lista_valores,int ancho_pixeles_grafica,int alto_pixeles_grafica,
-    int offset_x,int offset_y,int *p_maximo_valor,int *p_minimo_valor,int *p_medio_valor)
+    int offset_x,int offset_y,int *p_maximo_valor,int *p_minimo_valor,int *p_medio_valor,int *p_ultimo_valor)
 {
     int x,y;
     int indice=0;
     int i;
+
+    *p_ultimo_valor=lista_valores[0];
 
     int total_insertados=network_traffic_history_total_valores_insertados;
 
@@ -16244,7 +16247,7 @@ void menu_network_traffic_overlay(void)
             //zxvision_print_string_defaults_fillspc_format(menu_network_traffic_window,1,0,
             //    "Traffic: %8u kbyte/s read - %8u kbyte/s write",diferencia_read/1000,diferencia_write/1000);
 
-            printf("Traffic: %8u kbyte/s read - %8u kbyte/s write\n",diferencia_read/1000,diferencia_write/1000);
+            //printf("Traffic: %8u kbyte/s read - %8u kbyte/s write\n",diferencia_read/1000,diferencia_write/1000);
 
             menu_network_traffic_antes_counter_read=network_traffic_counter_read;
             menu_network_traffic_antes_counter_write=network_traffic_counter_write;
@@ -16277,7 +16280,7 @@ void menu_network_traffic_overlay(void)
             ancho_pixeles_grafica-=menu_char_width*3;
 
             alto_pixeles_grafica=(menu_network_traffic_window->visible_height)*menu_char_height;
-            alto_pixeles_grafica -=menu_char_height*4;
+            alto_pixeles_grafica -=menu_char_height*5;
 
             if (ancho_pixeles_grafica>NETWORK_TRAFFIC_MAX_VALUES) ancho_pixeles_grafica=NETWORK_TRAFFIC_MAX_VALUES;
             if (ancho_pixeles_grafica<8) ancho_pixeles_grafica=8;
@@ -16287,28 +16290,55 @@ void menu_network_traffic_overlay(void)
             //borrar las primera lineas de texto
             zxvision_print_string_defaults_fillspc(menu_network_traffic_window,1,0,"");
             zxvision_print_string_defaults_fillspc(menu_network_traffic_window,1,1,"");
+            zxvision_print_string_defaults_fillspc(menu_network_traffic_window,1,2,"");
 
-            int p_maximo_valor,p_minimo_valor,p_medio_valor;
+            int p_maximo_valor,p_minimo_valor,p_medio_valor,p_ultimo_valor;
 
             menu_network_traffic_draw_graph(menu_network_traffic_window,network_traffic_history_values_read,
-                ancho_pixeles_grafica,alto_pixeles_grafica,menu_char_width,menu_char_height*2,
-                &p_maximo_valor,&p_minimo_valor,&p_medio_valor);
+                ancho_pixeles_grafica,alto_pixeles_grafica,menu_char_width,menu_char_height*3,
+                &p_maximo_valor,&p_minimo_valor,&p_medio_valor,&p_ultimo_valor);
+
+
+            char buffer_average[100];
+            char buffer_max[100];
+            char buffer_min[100];
+            char buffer_last[100];
+
+            get_size_bps_human_friendly(p_medio_valor,buffer_average);
+            get_size_bps_human_friendly(p_maximo_valor,buffer_max);
+            get_size_bps_human_friendly(p_minimo_valor,buffer_min);
+            get_size_bps_human_friendly(p_ultimo_valor,buffer_last);
+
 
             zxvision_print_string_defaults_format(menu_network_traffic_window,1,0,
-                "Read Average %d Kbps",(p_medio_valor*8)/1000);
+                "Read Traffic");
             zxvision_print_string_defaults_format(menu_network_traffic_window,1,1,
-                "Max %d Kbps Min %d Kbps",(p_maximo_valor*8)/1000,(p_minimo_valor*8)/1000);
+                "Av %s Last %s",buffer_average,buffer_last);
+            zxvision_print_string_defaults_format(menu_network_traffic_window,1,2,
+                "Max %s Min %s",buffer_max,buffer_min);
+
+
+
+            int pos_x_medio=(menu_network_traffic_window->visible_width)/2;
+
 
             menu_network_traffic_draw_graph(menu_network_traffic_window,network_traffic_history_values_write,
-                ancho_pixeles_grafica,alto_pixeles_grafica,menu_char_width+ancho_pixeles_grafica+menu_char_width,menu_char_height*2,
-                &p_maximo_valor,&p_minimo_valor,&p_medio_valor);
+                ancho_pixeles_grafica,alto_pixeles_grafica,pos_x_medio*menu_char_width,menu_char_height*3,
+                &p_maximo_valor,&p_minimo_valor,&p_medio_valor,&p_ultimo_valor);
 
-            int pos_x=(menu_network_traffic_window->visible_width)/2;
 
-            zxvision_print_string_defaults_format(menu_network_traffic_window,pos_x-1,0,
-                "Write Average %d Kbps",(p_medio_valor*8)/1000);
-            zxvision_print_string_defaults_format(menu_network_traffic_window,pos_x-1,1,
-                "Max %d Kbps Min %d Kbps",(p_maximo_valor*8)/1000,(p_minimo_valor*8)/1000);
+            get_size_bps_human_friendly(p_medio_valor,buffer_average);
+            get_size_bps_human_friendly(p_maximo_valor,buffer_max);
+            get_size_bps_human_friendly(p_minimo_valor,buffer_min);
+            get_size_bps_human_friendly(p_ultimo_valor,buffer_last);
+
+
+            zxvision_print_string_defaults_format(menu_network_traffic_window,pos_x_medio,0,
+                "Write Traffic");
+            zxvision_print_string_defaults_format(menu_network_traffic_window,pos_x_medio,1,
+                "Av %s Last %s",buffer_average,buffer_last);
+            zxvision_print_string_defaults_format(menu_network_traffic_window,pos_x_medio,2,
+                "Max %s Min %s",buffer_max,buffer_min);
 
         }
     }
@@ -16363,7 +16393,7 @@ void menu_network_traffic(MENU_ITEM_PARAMETERS)
         int xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
         if (!util_find_window_geometry("networktraffic",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
-            ancho_ventana=30;
+            ancho_ventana=54;
             alto_ventana=20;
 
             xventana=menu_center_x()-ancho_ventana/2;
@@ -26682,7 +26712,8 @@ void menu_about_help(MENU_ITEM_PARAMETERS)
             "- Click on the minimize button (-) to minimize the window\n"
 			"- Click on the maximize button (+) or double click on the title bar to maximize the window\n"
             "- Click on the recover button (=) to recover previous size after a minimize or maximize action\n"
-			"- Click out of the window to put the focus on the emulated machine and send there keyboard presses\n"
+            "- Click out of the window to close all menus\n"
+			"- Click out of the window and press shift key to put the focus on the emulated machine and send there keyboard presses\n"
 			"- Can also be moved with the keyboard: Shift+QAOP\n"
 			"- Can also be resized with the keyboard: Shift+WSKL\n"
 
@@ -26761,7 +26792,7 @@ void menu_help_background_windows(MENU_ITEM_PARAMETERS)
 
 			"Pressing window close button, ESC or right click on the mouse it always closes the current window (same behaviour with background windows disabled). \n"
 			"\n"
-			"When menu is open, pressing on the emulated machine section (usually on the left), the keyboard focus is lost from the menu "
+			"When menu is open, pressing on the emulated machine section (usually on the left) and shift key, the keyboard focus is lost from the menu "
 			"and goes to the emulated machine. To return the keyboard focus to the menu, press on any of the background windows, "
 			"or in the ZEsarUX logo, or press F5. \n"
 			"\n"
