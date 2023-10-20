@@ -5996,7 +5996,6 @@ long long int get_size_human_friendly(long long int tamanyo,char *sufijo)
 
 
 //Retorna valor, sufijo y unidades para un tamaño de bits per second
-//bps esta con espacios para quede alineado con el resto
 void get_size_bps_human_friendly(long long int tamanyo,char *texto)
 {
 
@@ -6004,7 +6003,7 @@ void get_size_bps_human_friendly(long long int tamanyo,char *texto)
 
     tamanyo *=8;
 
-    strcpy(sufijo,"bps ");
+    strcpy(sufijo,"bps");
 
     if (tamanyo >= 1000) {
         tamanyo /= 1000;
