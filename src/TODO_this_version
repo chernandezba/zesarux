@@ -679,6 +679,22 @@ el diferencial tendrá: 2 bytes con la dirección que indica, 1 byte con ese val
 Por tanto, un snapshot de mas de 16kb de direcciones modificadas, probablemente no sea factible. Aunque 16kb modificado
 en un frame de video (que es cada cuanto se envia el snapshot?) es mucha modificacion
 -problema: quiza entre cada recepcion de snapshot pasa mas de 1 snapshot de master, por tanto el diferencial casi nunca se aplicara
+
+En Xeno por ejemplo:
+Escrituras a final de frame: 2699
+Escrituras a final de frame: 3546
+Escrituras a final de frame: 1980
+Escrituras a final de frame: 1526
+Escrituras a final de frame: 2699
+Escrituras a final de frame: 3546
+Escrituras a final de frame: 1985
+
+iMac-de-Cesar:src cesarhernandez$ ls -lha zesarux_autosave.zsf
+-rw-r--r--  1 cesarhernandez  staff    51K 23 oct 18:36 zesarux_autosave.zsf
+iMac-de-Cesar:src cesarhernandez$ gzip zesarux_autosave.zsf
+iMac-de-Cesar:src cesarhernandez$ ls -lha zesarux_autosave.zsf.gz
+-rw-r--r--  1 cesarhernandez  staff    32K 23 oct 18:36 zesarux_autosave.zsf.gz
+
 ---FIN idea para obtener snapshots diferenciales
 
 

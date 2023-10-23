@@ -83,6 +83,7 @@ char *buffer_lectura_socket=malloc(MAX_LENGTH_PROTOCOL_COMMAND);
 #include "stats.h"
 #include "textspeech.h"
 #include "settings.h"
+#include "zip.h"
 
 
 
@@ -363,6 +364,19 @@ void zengonline_put_snapshot(int room,z80_byte *origen,int longitud)
 
 	//Liberar lock
 	z_atomic_reset(&zeng_online_rooms_list[room].semaphore_writing_snapshot);
+
+    //prueba
+    /*
+    int longitud_comprimido;
+    z80_byte *comprimido=util_compress_memory_zip(destino_snapshot,longitud,&longitud_comprimido,"snapshot.zsf");
+
+    printf("Snapshot uncompressed: %d compressed: %d\n",longitud,longitud_comprimido);
+
+    int longitud_descomprimido;
+    z80_byte *descomprimido=util_uncompress_memory_zip(comprimido,longitud_comprimido,&longitud_descomprimido,"snapshot.zsf");
+
+    printf("Snapshot compressed: %d uncompressed: %d\n",longitud_comprimido,longitud_descomprimido);
+    */
 
 }
 

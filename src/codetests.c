@@ -324,10 +324,116 @@ extern int util_uncompress_data_repetitions(z80_byte *origen,z80_byte *destino,i
 
 }
 
+void coretests_compress_uncompress_repetitions_zip_aux(char *filename)
+{
+	z80_byte *memoria_file_orig;
+	z80_byte *memoria_file_compressed;
+	z80_byte *memoria_file_uncompressed;
+
+	long long int tamanyo=get_file_size(filename);
+
+	//Memoria para lectura, comprimir y descomprimir
+	//tamanyo, tamanyo*2, tamanyo*2
+
+	memoria_file_orig=malloc(tamanyo);
+	if (memoria_file_orig==NULL) {
+		printf("Error allocating memory\n");
+		exit(1);
+	}
+
+        /*memoria_file_compressed=malloc(tamanyo*2);
+        if (memoria_file_compressed==NULL) {
+                printf("Error allocating memory\n");
+                exit(1);
+        }
+
+        memoria_file_uncompressed=malloc(tamanyo*2);
+        if (memoria_file_uncompressed==NULL) {
+                printf("Error allocating memory\n");
+                exit(1);
+        }*/
+
+	coretests_read_file_memory(filename,memoria_file_orig);
+
+/*
+extern int util_compress_data_repetitions(z80_byte *origen,z80_byte *destino,int longitud,z80_byte magic_byte);
+
+extern int util_uncompress_data_repetitions(z80_byte *origen,z80_byte *destino,int longitud,z80_byte magic_byte);
+*/
+
+	//z80_byte magic_byte=0xDD;
+
+	printf ("Original size: %lld\n",tamanyo);
+
+	//int longitud_comprimido=util_compress_data_repetitions(memoria_file_orig,memoria_file_compressed,tamanyo,magic_byte);
+
+
+    int longitud_comprimido;
+    memoria_file_compressed=util_compress_memory_zip(memoria_file_orig,tamanyo,&longitud_comprimido,"prueba.raw");
+
+    //printf("Snapshot uncompressed: %d compressed: %d\n",tamanyo,longitud_comprimido);
+
+
+
+	int porcentaje;
+	if (tamanyo==0) porcentaje=100;
+	else porcentaje=(longitud_comprimido*100)/tamanyo;
+	printf ("Compressed size: %d (%d%%)\n",longitud_comprimido,porcentaje);
+
+	//int longitud_descomprido=util_uncompress_data_repetitions(memoria_file_compressed,memoria_file_uncompressed,longitud_comprimido,magic_byte);
+
+    int longitud_descomprimido;
+    memoria_file_uncompressed=util_uncompress_memory_zip(memoria_file_compressed,longitud_comprimido,&longitud_descomprimido,"prueba.raw");
+
+	printf ("Uncompressed size: %d\n",longitud_descomprimido);
+
+
+	int error=0;
+
+	//Primera comprobacion de tamanyo
+	if (tamanyo!=longitud_descomprimido) {
+		printf ("Original size and uncompressed size doesnt match\n");
+		error=1;
+	}
+
+	//Y luego comparar byte a byte
+	int i;
+	for (i=0;i<tamanyo;i++) {
+		z80_byte byte_orig,byte_uncompress;
+		byte_orig=memoria_file_orig[i];
+		byte_uncompress=memoria_file_uncompressed[i];
+		if (byte_orig!=byte_uncompress) {
+			printf("Difference in offset %XH. Original byte: %02XH Uncompressed byte: %02XH\n",i,byte_orig,byte_uncompress);
+			error++;
+		}
+
+		if (error>=10) {
+			printf ("And more errors.... showing only first 10\n");
+			exit(1);
+		}
+	}
+
+
+	if (error) {
+		exit(1);
+	}
+
+	else {
+		printf ("Compress/Uncompress ok\n");
+	}
+
+}
+
 void coretests_compress_uncompress_repetitions(char *archivo)
 {
 	printf ("Testing compression routine with file %s\n",archivo);
 	coretests_compress_uncompress_repetitions_aux(archivo);
+}
+
+void coretests_compress_uncompress_repetitions_zip(char *archivo)
+{
+	printf ("Testing zip compression routine with file %s\n",archivo);
+	coretests_compress_uncompress_repetitions_zip_aux(archivo);
 }
 
 void codetests_tbblue_get_horizontal_raster(void)
@@ -2155,6 +2261,7 @@ void codetests_main(int main_argc,char *main_argv[])
 	if (main_argc>2) {
 		printf ("\nRunning compress/uncompress repetitions code\n");
 		coretests_compress_uncompress_repetitions(main_argv[2]);
+        coretests_compress_uncompress_repetitions_zip(main_argv[2]);
 		exit(0);
 	}
 

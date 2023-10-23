@@ -19908,6 +19908,56 @@ int util_extract_zip(char *zipname, char *dest_dir)
         return 0;
 }
 
+//Retorna puntero a memoria comprimida
+z80_byte *util_compress_memory_zip(z80_byte *memoria_input,int longitud,int *longitud_comprimido,char *nombre_archivo_interno)
+{
+    char *outbuf = NULL;
+    size_t outbufsize = 0;
+
+    //const char *inbuf = "Append some data here...\0";
+    struct zip_t *zip = zip_stream_open(NULL, 0, ZIP_DEFAULT_COMPRESSION_LEVEL, 'w');
+    {
+        zip_entry_open(zip, nombre_archivo_interno);
+        {
+            zip_entry_write(zip, memoria_input, longitud);
+        }
+        zip_entry_close(zip);
+
+        /* copy compressed stream into outbuf */
+        zip_stream_copy(zip, (void **)&outbuf, &outbufsize);
+    }
+    zip_stream_close(zip);
+
+    *longitud_comprimido=outbufsize;
+
+    //free(outbuf);
+    return (z80_byte *)outbuf;
+}
+
+z80_byte *util_uncompress_memory_zip(z80_byte *memoria_input,int longitud,int *longitud_descomprimido,char *nombre_archivo_interno)
+{
+
+    char *buf = NULL;
+    size_t bufsize = 0;
+
+    struct zip_t *zip = zip_stream_open((char *)memoria_input, longitud, 0, 'r');
+    {
+        zip_entry_open(zip, nombre_archivo_interno);
+        {
+            zip_entry_read(zip, (void **)&buf, &bufsize);
+        }
+        zip_entry_close(zip);
+    }
+    zip_stream_close(zip);
+
+    //free(buf);
+
+    *longitud_descomprimido=bufsize;
+
+    return (z80_byte *)buf;
+
+}
+
 int util_url_is_https(char *url)
 {
 

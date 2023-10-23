@@ -898,6 +898,9 @@ extern void util_normalize_query_http(char *orig,char *dest);
 extern int util_extract_scl(char *sclname, char *dest_dir);
 extern int util_extract_zip(char *zipname, char *dest_dir);
 
+extern z80_byte *util_compress_memory_zip(z80_byte *memoria_input,int longitud,int *longitud_comprimido,char *nombre_archivo_interno);
+extern z80_byte *util_uncompress_memory_zip(z80_byte *memoria_input,int longitud,int *longitud_descomprimido,char *nombre_archivo_interno);
+
 extern void util_realtape_browser(char *filename, char *texto_browser,int maxima_longitud_texto,char *tap_output,
                                     long *array_block_positions,int max_array_block_positions,int *codigo_retorno);
 
