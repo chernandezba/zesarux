@@ -135,7 +135,8 @@ void zoc_add_user_to_joined_users(int room_number,char *nickname,char *uuid)
 }
 
 //Quita usuario de la lista de joined_users
-void zoc_del_user_to_joined_users(int room_number,char *uuid)
+//Retorna en nickname el nickname del usuario que se ha ido
+void zoc_del_user_to_joined_users(int room_number,char *uuid,char *nickname)
 {
 
     //Para evitar escribir dos a la vez
@@ -148,6 +149,7 @@ void zoc_del_user_to_joined_users(int room_number,char *uuid)
 
     for (i=0;i<zeng_online_rooms_list[room_number].max_players;i++) {
         if (!strcmp(zeng_online_rooms_list[room_number].joined_users_uuid[i],uuid)) {
+            strcpy(nickname,zeng_online_rooms_list[room_number].joined_users[i]);
             zeng_online_rooms_list[room_number].joined_users[i][0]=0;
             zeng_online_rooms_list[room_number].joined_users_uuid[i][0]=0;
             break; //para salir del bucle y liberar lock
@@ -361,6 +363,15 @@ void zengonline_put_snapshot(int room,z80_byte *origen,int longitud)
 
 	//Liberar lock
 	z_atomic_reset(&zeng_online_rooms_list[room].semaphore_writing_snapshot);
+
+}
+
+void zoc_send_broadcast_message(int room_number,char *message)
+{
+    //No hace falta indicar room number dado que solo se mostraran mensajes de nuestro room
+    strcpy(zeng_online_rooms_list[room_number].broadcast_message,message);
+
+    zeng_online_rooms_list[room_number].broadcast_message_id++;
 
 }
 
@@ -1209,13 +1220,15 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
             return;
         }
 
+        char broadcast_message[ZENG_ONLINE_MAX_BROADCAST_MESSAGE_SHOWN_LENGTH];
+
         //No hace falta indicar room number dado que solo se mostraran mensajes de nuestro room
-        sprintf(zeng_online_rooms_list[room_number].broadcast_message,
+        sprintf(broadcast_message,
             "Message from %s: %s",
             comando_argv[3],
             comando_argv[4]);
+        zoc_send_broadcast_message(room_number,broadcast_message);
 
-        zeng_online_rooms_list[room_number].broadcast_message_id++;
 
     }
 
@@ -1768,9 +1781,14 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
 
 
         //comando_argv[3] contiene el uuid
-        zoc_del_user_to_joined_users(room_number,comando_argv[3]);
+        char nickname_left[ZOC_MAX_NICKNAME_LENGTH+1];
+        zoc_del_user_to_joined_users(room_number,comando_argv[3],nickname_left);
 
 
+        //Y notificarlo con un broadcast message
+        char broadcast_message[ZENG_ONLINE_MAX_BROADCAST_MESSAGE_SHOWN_LENGTH];
+        sprintf(broadcast_message,"Left %s",nickname_left);
+        zoc_send_broadcast_message(room_number,broadcast_message);
 
 
     }
@@ -1874,6 +1892,10 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
         escribir_socket_format(misocket,"%s %d",zeng_online_rooms_list[room_number].user_password,permissions);
 
 
+        //Y notificarlo con un broadcast message
+        char broadcast_message[ZENG_ONLINE_MAX_BROADCAST_MESSAGE_SHOWN_LENGTH];
+        sprintf(broadcast_message,"Joined %s",comando_argv[2]);
+        zoc_send_broadcast_message(room_number,broadcast_message);
 
 
     }
