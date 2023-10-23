@@ -57,7 +57,7 @@ extern void zeng_online_client_get_profile_keys(void);
 extern void zeng_online_client_send_profile_keys(void);
 extern void zeng_online_client_kick_user(char *message);
 
-
+//#define ZENG_ONLINE_USE_ZIP_SNAPSHOT
 
 extern int allowed_keys[ZOC_MAX_KEYS_PROFILES][ZOC_MAX_KEYS_ITEMS];
 extern char allowed_keys_assigned[ZOC_MAX_KEYS_PROFILES][STATS_UUID_MAX_LENGTH+1];

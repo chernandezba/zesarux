@@ -3161,9 +3161,14 @@ int zoc_receive_snapshot(int indice_socket)
 
                     int zoc_get_snapshot_mem_binary_longitud_comprimido=parametros_recibidos;
 
+#ifdef ZENG_ONLINE_USE_ZIP_SNAPSHOT
                     //Descomprimir zip
                     zoc_get_snapshot_mem_binary=util_uncompress_memory_zip(zoc_get_snapshot_mem_binary_comprimido,
                         zoc_get_snapshot_mem_binary_longitud_comprimido,&zoc_get_snapshot_mem_binary_longitud,"snapshot.zsf");
+#else
+                    zoc_get_snapshot_mem_binary=zoc_get_snapshot_mem_binary_comprimido;
+                    zoc_get_snapshot_mem_binary_longitud=zoc_get_snapshot_mem_binary_longitud_comprimido;
+#endif
 
                     printf("Apply snapshot. Compressed %d Uncompressed %d\n",zoc_get_snapshot_mem_binary_longitud_comprimido,zoc_get_snapshot_mem_binary_longitud);
 
@@ -3429,6 +3434,11 @@ void zeng_online_client_apply_pending_received_snapshot(void)
     free(zoc_get_snapshot_mem_binary);
     zoc_get_snapshot_mem_binary=NULL;
 
+#ifdef ZENG_ONLINE_USE_ZIP_SNAPSHOT
+    free(zoc_get_snapshot_mem_binary_comprimido);
+#endif
+    zoc_get_snapshot_mem_binary_comprimido=NULL;
+
     zoc_pending_apply_received_snapshot=0;
 
     //Si estaba offline, reactualizamos
@@ -3537,10 +3547,17 @@ void zeng_online_client_prepare_snapshot_if_needed(void)
 
   					save_zsf_snapshot_file_mem(NULL,buffer_temp_sin_comprimir,&longitud_sin_comprimir,1);
 
-                    //Comprimir a zip
                     int longitud;
-                    z80_byte *buffer_temp=util_compress_memory_zip(buffer_temp_sin_comprimir,longitud_sin_comprimir,
+                    z80_byte *buffer_temp;
+
+#ifdef ZENG_ONLINE_USE_ZIP_SNAPSHOT
+                    //Comprimir a zip
+                    buffer_temp=util_compress_memory_zip(buffer_temp_sin_comprimir,longitud_sin_comprimir,
                                         &longitud,"snapshot.zsf");
+#else
+                    buffer_temp=buffer_temp_sin_comprimir;
+                    longitud=longitud_sin_comprimir;
+#endif
 
 
                     //temp_memoria_asignada++;
@@ -3581,7 +3598,9 @@ void zeng_online_client_prepare_snapshot_if_needed(void)
 
 
 					//Liberar memoria que ya no se usa
+#ifdef ZENG_ONLINE_USE_ZIP_SNAPSHOT
 					free(buffer_temp);
+#endif
                     free(buffer_temp_sin_comprimir);
 
 
