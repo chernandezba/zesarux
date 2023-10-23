@@ -2961,6 +2961,7 @@ char *zoc_get_snapshot_mem_hexa=NULL;
 z80_byte *zoc_get_snapshot_mem_binary=NULL;
 int zoc_get_snapshot_mem_binary_longitud=0;
 int zoc_pending_apply_received_snapshot=0;
+z80_byte *zoc_get_snapshot_mem_binary_comprimido=NULL;
 
 int zoc_receive_snapshot_last_id=0;
 
@@ -3128,8 +3129,8 @@ int zoc_receive_snapshot(int indice_socket)
                     //return leidos;
 
                     //Convertir hexa a memoria
-                    if (zoc_get_snapshot_mem_binary==NULL) {
-                        zoc_get_snapshot_mem_binary=util_malloc(ZRCP_GET_PUT_SNAPSHOT_MEM*2,"Can not allocate memory for apply snapshot");
+                    if (zoc_get_snapshot_mem_binary_comprimido==NULL) {
+                        zoc_get_snapshot_mem_binary_comprimido=util_malloc(ZRCP_GET_PUT_SNAPSHOT_MEM*2,"Can not allocate memory for apply snapshot");
                     }
 
 
@@ -3148,7 +3149,7 @@ int zoc_receive_snapshot(int indice_socket)
                         valor=parse_string_to_number(buffer_valor);
                         //printf ("valor: %d\n",valor);
 
-                        zoc_get_snapshot_mem_binary[parametros_recibidos++]=valor;
+                        zoc_get_snapshot_mem_binary_comprimido[parametros_recibidos++]=valor;
                         //menu_debug_write_mapped_byte(direccion++,valor);
 
                         s++;
@@ -3156,7 +3157,15 @@ int zoc_receive_snapshot(int indice_socket)
                     }
 
 
-                    zoc_get_snapshot_mem_binary_longitud=parametros_recibidos;
+
+
+                    int zoc_get_snapshot_mem_binary_longitud_comprimido=parametros_recibidos;
+
+                    //Descomprimir zip
+                    zoc_get_snapshot_mem_binary=util_uncompress_memory_zip(zoc_get_snapshot_mem_binary_comprimido,
+                        zoc_get_snapshot_mem_binary_longitud_comprimido,&zoc_get_snapshot_mem_binary_longitud,"snapshot.zsf");
+
+                    printf("Apply snapshot. Compressed %d Uncompressed %d\n",zoc_get_snapshot_mem_binary_longitud_comprimido,zoc_get_snapshot_mem_binary_longitud);
 
                     zoc_pending_apply_received_snapshot=1;
 
@@ -3518,19 +3527,25 @@ void zeng_online_client_prepare_snapshot_if_needed(void)
 				else {
                     zoc_snapshots_not_sent=0;
 
-					//zona de memoria donde se guarda el snapshot pero sin pasar a hexa
-					z80_byte *buffer_temp;
-					buffer_temp=malloc(ZRCP_GET_PUT_SNAPSHOT_MEM); //16 MB es mas que suficiente
+					//zona de memoria donde se guarda el snapshot pero sin pasar a hexa. y sin comprimir zip
+					z80_byte *buffer_temp_sin_comprimir;
+					buffer_temp_sin_comprimir=malloc(ZRCP_GET_PUT_SNAPSHOT_MEM); //16 MB es mas que suficiente
 
-					if (buffer_temp==NULL) cpu_panic("Can not allocate memory for sending snapshot");
+					if (buffer_temp_sin_comprimir==NULL) cpu_panic("Can not allocate memory for sending snapshot");
 
-					int longitud;
+					int longitud_sin_comprimir;
 
-  					save_zsf_snapshot_file_mem(NULL,buffer_temp,&longitud,1);
+  					save_zsf_snapshot_file_mem(NULL,buffer_temp_sin_comprimir,&longitud_sin_comprimir,1);
+
+                    //Comprimir a zip
+                    int longitud;
+                    z80_byte *buffer_temp=util_compress_memory_zip(buffer_temp_sin_comprimir,longitud_sin_comprimir,
+                                        &longitud,"snapshot.zsf");
 
 
                     //temp_memoria_asignada++;
                     //printf("Asignada: %d liberada: %d\n",temp_memoria_asignada,temp_memoria_liberada);
+                    printf("Created snapshot original size %d compressed size %d\n",longitud_sin_comprimir,longitud);
 
 					if (zoc_send_snapshot_mem_hexa==NULL) zoc_send_snapshot_mem_hexa=malloc(ZRCP_GET_PUT_SNAPSHOT_MEM*2); //16 MB es mas que suficiente
 
@@ -3567,6 +3582,7 @@ void zeng_online_client_prepare_snapshot_if_needed(void)
 
 					//Liberar memoria que ya no se usa
 					free(buffer_temp);
+                    free(buffer_temp_sin_comprimir);
 
 
 					zoc_pending_send_snapshot=1;
