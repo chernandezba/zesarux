@@ -3161,14 +3161,41 @@ int zoc_receive_snapshot(int indice_socket)
 
                     int zoc_get_snapshot_mem_binary_longitud_comprimido=parametros_recibidos;
 
-#ifdef ZENG_ONLINE_USE_ZIP_SNAPSHOT
-                    //Descomprimir zip
-                    zoc_get_snapshot_mem_binary=util_uncompress_memory_zip(zoc_get_snapshot_mem_binary_comprimido,
-                        zoc_get_snapshot_mem_binary_longitud_comprimido,&zoc_get_snapshot_mem_binary_longitud,"snapshot.zsf");
-#else
-                    zoc_get_snapshot_mem_binary=zoc_get_snapshot_mem_binary_comprimido;
-                    zoc_get_snapshot_mem_binary_longitud=zoc_get_snapshot_mem_binary_longitud_comprimido;
-#endif
+                    //"PK" = 50 4b
+                    //printf("Firma ZIP: %02XH %02XH\n",zoc_get_snapshot_mem_binary_comprimido[0],zoc_get_snapshot_mem_binary_comprimido[1]);
+
+                    int formato_zip=0;
+
+                    if (zoc_get_snapshot_mem_binary_longitud_comprimido>1) {
+                        if (zoc_get_snapshot_mem_binary_comprimido[0]==0x50 &&
+                            zoc_get_snapshot_mem_binary_comprimido[1]==0x4b) {
+                            formato_zip=1;
+                        }
+                    }
+
+
+                    if (formato_zip) {
+                        //Descomprimir zip
+                        printf("Es snapshot comprimido\n");
+                        zoc_get_snapshot_mem_binary=util_uncompress_memory_zip(zoc_get_snapshot_mem_binary_comprimido,
+                            zoc_get_snapshot_mem_binary_longitud_comprimido,&zoc_get_snapshot_mem_binary_longitud,"snapshot.zsf");
+
+                        //solo liberamos en este caso que hay el espacio comprimido
+                        free(zoc_get_snapshot_mem_binary_comprimido);
+                    }
+
+                    else {
+                        printf("No es snapshot comprimido\n");
+                        //aqui no haremos free dado que no existe compresion y entonces
+                        //zoc_get_snapshot_mem_binary y zoc_get_snapshot_mem_binary_comprimido apuntan al mismo sitio
+                        //ya se liberara desde zoc_get_snapshot_mem_binary_comprimido al aplicar el snapshot
+                        zoc_get_snapshot_mem_binary=zoc_get_snapshot_mem_binary_comprimido;
+                        zoc_get_snapshot_mem_binary_longitud=zoc_get_snapshot_mem_binary_longitud_comprimido;
+
+                    }
+
+
+                    zoc_get_snapshot_mem_binary_comprimido=NULL;
 
                     printf("Apply snapshot. Compressed %d Uncompressed %d\n",zoc_get_snapshot_mem_binary_longitud_comprimido,zoc_get_snapshot_mem_binary_longitud);
 
@@ -3434,10 +3461,12 @@ void zeng_online_client_apply_pending_received_snapshot(void)
     free(zoc_get_snapshot_mem_binary);
     zoc_get_snapshot_mem_binary=NULL;
 
+/*
 #ifdef ZENG_ONLINE_USE_ZIP_SNAPSHOT
     free(zoc_get_snapshot_mem_binary_comprimido);
 #endif
     zoc_get_snapshot_mem_binary_comprimido=NULL;
+*/
 
     zoc_pending_apply_received_snapshot=0;
 
