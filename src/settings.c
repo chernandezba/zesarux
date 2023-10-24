@@ -393,3 +393,6 @@ z80_bit zeng_online_allow_room_creation_from_any_ip={0};
 
 //Decir que se comprimen en zip los snapshots de zeng online
 z80_bit zeng_online_zip_compress_snapshots={1};
+
+//Decir que se muestra indicador de lag en el footer
+z80_bit zeng_online_show_footer_lag_indicator={1};

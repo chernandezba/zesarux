@@ -3045,11 +3045,18 @@ int zoc_receive_snapshot(int indice_socket)
                         int alertar_diferencia=10;
 
                         //si no es zip lo habitual es que haya mayor diferencia
+                        //aunque bueno... 10 snapshots de retraso es mucho,
+                        //aunque no sea zip, pero para no alertar continuamente cuando no es zip,
+                        //porque es lo habitual, que sea mas de 10 para no zip y conexion contra servidor remoto
+                        //Lo normal es que el master esté enviando siempre con compresión zip, a no ser que alguien
+                        //lo quiera desactivar por alguna razón que no se me ocurre ahora...
                         if (!zoc_ultimo_snapshot_recibido_es_zip) alertar_diferencia=20;
 
                         //Si han pasado mas de 10 snapshots, avisar con "algo" el el footer
                         if (diferencia>alertar_diferencia) {
-                            generic_footertext_print_operating("LAG");
+                            if (zeng_online_show_footer_lag_indicator.v) {
+                                generic_footertext_print_operating("LAG");
+                            }
                         }
 
                         zoc_receive_snapshot_last_id=nuevo_id;

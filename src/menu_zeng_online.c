@@ -1454,6 +1454,12 @@ void menu_zeng_online_zip_snapshot(MENU_ITEM_PARAMETERS)
     zeng_online_zip_compress_snapshots.v ^=1;
 }
 
+
+void menu_zeng_online_lag_indicator(MENU_ITEM_PARAMETERS)
+{
+    zeng_online_show_footer_lag_indicator.v ^=1;
+}
+
 void menu_zeng_online(MENU_ITEM_PARAMETERS)
 {
     menu_item *array_menu_common;
@@ -1613,6 +1619,19 @@ void menu_zeng_online(MENU_ITEM_PARAMETERS)
 
                 menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_leave_room_slave,NULL,
                 "Leave room","Abandonar habitación","Abandonar habitació");
+
+                if (created_room_user_permissions & ZENG_ONLINE_PERMISSIONS_GET_SNAPSHOT) {
+                    menu_add_item_menu_separator(array_menu_common);
+                    menu_add_item_menu_es_avanzado(array_menu_common);
+                    menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_lag_indicator,NULL,
+                    "Footer lag indicator","Indicador lag en footer","Indicador lag al footer");
+                    menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",
+                        (zeng_online_show_footer_lag_indicator.v ? 'X' : ' '));
+                    menu_add_item_menu_es_avanzado(array_menu_common);
+
+                }
+
+
             }
         }
 
