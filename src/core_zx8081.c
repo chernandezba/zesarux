@@ -50,6 +50,7 @@
 #include "snap_zsf.h"
 #include "zeng.h"
 #include "snap_ram.h"
+#include "zeng_online_client.h"
 
 
 void init_zx8081_scanline_y_x(int y,int x,int ancho)
@@ -545,6 +546,8 @@ void cpu_core_loop_zx8081(void)
 		core_end_frame_check_zrcp_zeng_snap.v=0;
 		check_pending_zrcp_put_snapshot();
 		zeng_send_snapshot_if_needed();
+
+        zeng_online_client_end_frame_from_core_functions();
 	}
 
     debug_get_t_stados_parcial_post();

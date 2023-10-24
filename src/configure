@@ -1322,7 +1322,7 @@ core_reduced_spectrum.o: core_reduced_spectrum.c core_reduced_spectrum.h core_sp
 core_spectrum.o: core_spectrum.c core_spectrum.h cpu.h debug.h tape.h audio.h screen.h ay38912.h operaciones.h snap.h timer.h zxvision.h chardetect.h compileoptions.h contend.h ula.h utils.h realjoystick.h divmmc.h divide.h diviface.h timex.h zxuno.h prism.h snap_rzx.h superupgrade.h pd765.h zxevo.h tsconf.h baseconf.h tbblue.h settings.h datagear.h snap_zsf.h zeng.h zeng_online.h ds1307.h gs.h snap_ram.h codsinpr.h menu_items.h plus3dos_handler.h pd765.h zeng_online_client.h
 	\$(CC) \$(CFLAGS) -c core_spectrum.c 
 
-core_zx8081.o: core_zx8081.c core_zx8081.h cpu.h debug.h tape.h audio.h screen.h ay38912.h operaciones.h snap.h zx8081.h timer.h zxvision.h chardetect.h compileoptions.h contend.h snap_zx8081.h utils.h realjoystick.h ula.h settings.h snap_zsf.h zeng.h zeng_online.h snap_ram.h
+core_zx8081.o: core_zx8081.c core_zx8081.h cpu.h debug.h tape.h audio.h screen.h ay38912.h operaciones.h snap.h zx8081.h timer.h zxvision.h chardetect.h compileoptions.h contend.h snap_zx8081.h utils.h realjoystick.h ula.h settings.h snap_zsf.h zeng.h zeng_online.h snap_ram.h zeng_online_client.h
 	\$(CC) \$(CFLAGS) -c core_zx8081.c
 
 core_ace.o: core_ace.c core_ace.h cpu.h debug.h tape.h audio.h screen.h ay38912.h operaciones.h snap.h jupiterace.h timer.h zxvision.h chardetect.h compileoptions.h contend.h snap_zx8081.h utils.h realjoystick.h ula.h settings.h zeng.h zeng_online.h snap_zsf.h
