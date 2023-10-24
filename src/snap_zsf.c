@@ -3693,35 +3693,7 @@ void save_zsf_snapshot_file_mem(char *filename,z80_byte *destination_memory,int 
 
 
 
-    //Estado puertos
-    //esto solo si somos en zeng online master y menu no esta abierto
-    //-Block ID 62: ZSF_KEY_PORTS_SPECTRUM_STATE
-    if (from_zeng_online && zeng_online_i_am_master.v && !menu_abierto) {
 
-        z80_byte keyportsblock[9];
-
-        keyportsblock[0]=puerto_65278;
-        keyportsblock[1]=puerto_65022;
-        keyportsblock[2]=puerto_64510;
-        keyportsblock[3]=puerto_63486;
-        keyportsblock[4]=puerto_61438;
-        keyportsblock[5]=puerto_57342;
-        keyportsblock[6]=puerto_49150;
-        keyportsblock[7]=puerto_32766;
-        keyportsblock[8]=puerto_especial_joystick;
-
-        zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, keyportsblock,ZSF_KEY_PORTS_SPECTRUM_STATE, 9);
-
-
-
-        z80_byte zoc_etc_block[1];
-
-        zoc_etc_block[0]=joystick_emulation;
-
-        zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, zoc_etc_block,ZSF_ZOC_ETC, 1);
-
-
-    }
 
 
     z80_byte timexblock[2];
@@ -3734,6 +3706,39 @@ void save_zsf_snapshot_file_mem(char *filename,z80_byte *destination_memory,int 
 
   }
 
+
+
+    //Estado puertos
+    //esto solo si somos en zeng online master y menu no esta abierto
+    //-Block ID 62: ZSF_KEY_PORTS_SPECTRUM_STATE
+    if (MACHINE_IS_SPECTRUM || MACHINE_IS_ZX8081) {
+        if (from_zeng_online && zeng_online_i_am_master.v && !menu_abierto) {
+
+            z80_byte keyportsblock[9];
+
+            keyportsblock[0]=puerto_65278;
+            keyportsblock[1]=puerto_65022;
+            keyportsblock[2]=puerto_64510;
+            keyportsblock[3]=puerto_63486;
+            keyportsblock[4]=puerto_61438;
+            keyportsblock[5]=puerto_57342;
+            keyportsblock[6]=puerto_49150;
+            keyportsblock[7]=puerto_32766;
+            keyportsblock[8]=puerto_especial_joystick;
+
+            zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, keyportsblock,ZSF_KEY_PORTS_SPECTRUM_STATE, 9);
+
+
+
+            z80_byte zoc_etc_block[1];
+
+            zoc_etc_block[0]=joystick_emulation;
+
+            zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, zoc_etc_block,ZSF_ZOC_ETC, 1);
+
+
+        }
+    }
 
 
   //ULAPlus block. Mejor que este esto hacia el principio, asi si por ejemplo se carga zxuno y esta un modo ulaplus extendido,
