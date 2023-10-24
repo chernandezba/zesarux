@@ -52,6 +52,7 @@ Functions starting with zoc_ means: zeng online client
 #include "timer.h"
 #include "autoselectoptions.h"
 #include "textspeech.h"
+#include "settings.h"
 
 
 
@@ -3579,14 +3580,21 @@ void zeng_online_client_prepare_snapshot_if_needed(void)
                     int longitud;
                     z80_byte *buffer_temp;
 
-#ifdef ZENG_ONLINE_USE_ZIP_SNAPSHOT
-                    //Comprimir a zip
-                    buffer_temp=util_compress_memory_zip(buffer_temp_sin_comprimir,longitud_sin_comprimir,
+                    //Obtener copia de la variable por si se modifica el setting (cosa muy improbable) antes de la segunda vez de usar el setting
+                    int comprimir_zip=zeng_online_zip_compress_snapshots.v;
+
+                    if (comprimir_zip) {
+
+                        //Comprimir a zip
+                        buffer_temp=util_compress_memory_zip(buffer_temp_sin_comprimir,longitud_sin_comprimir,
                                         &longitud,"snapshot.zsf");
-#else
-                    buffer_temp=buffer_temp_sin_comprimir;
-                    longitud=longitud_sin_comprimir;
-#endif
+                    }
+
+                    else {
+                        buffer_temp=buffer_temp_sin_comprimir;
+                        longitud=longitud_sin_comprimir;
+                    }
+
 
 
                     //temp_memoria_asignada++;
@@ -3627,9 +3635,9 @@ void zeng_online_client_prepare_snapshot_if_needed(void)
 
 
 					//Liberar memoria que ya no se usa
-#ifdef ZENG_ONLINE_USE_ZIP_SNAPSHOT
-					free(buffer_temp);
-#endif
+                    if (comprimir_zip) {
+					    free(buffer_temp);
+                    }
                     free(buffer_temp_sin_comprimir);
 
 

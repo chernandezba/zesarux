@@ -4311,7 +4311,7 @@ void putchar_footer_array(int x,int y,z80_byte caracter,int tinta,int papel,int 
 	//int xfinal=((x*menu_char_width)+menu_char_width-1)/8;
 
 	//Controlar limite
-	if (x<0 || y<0 || x>WINDOW_FOOTER_COLUMNS || y>WINDOW_FOOTER_LINES) {
+	if (x<0 || y<0 || x>=WINDOW_FOOTER_COLUMNS || y>=WINDOW_FOOTER_LINES) {
 		//printf ("Out of range. X: %d Y: %d Character: %c\n",x,y,caracter);
 		return;
 	}

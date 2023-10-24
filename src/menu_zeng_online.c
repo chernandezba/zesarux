@@ -43,6 +43,7 @@
 #include "zeng_online.h"
 #include "network.h"
 #include "stats.h"
+#include "settings.h"
 
 
 /*
@@ -1448,6 +1449,11 @@ int menu_zeng_online_not_connected_cond(void)
     return !zeng_online_connected.v;
 }
 
+void menu_zeng_online_zip_snapshot(MENU_ITEM_PARAMETERS)
+{
+    zeng_online_zip_compress_snapshots.v ^=1;
+}
+
 void menu_zeng_online(MENU_ITEM_PARAMETERS)
 {
     menu_item *array_menu_common;
@@ -1587,6 +1593,18 @@ void menu_zeng_online(MENU_ITEM_PARAMETERS)
                 menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_destroy_room,NULL,
                 "~~Destroy room","~~Destruir habitación","~~Destruir habitació");
                 menu_add_item_menu_shortcut(array_menu_common,'d');
+
+
+                if (created_room_user_permissions & ZENG_ONLINE_PERMISSIONS_PUT_SNAPSHOT) {
+                    menu_add_item_menu_separator(array_menu_common);
+                    menu_add_item_menu_es_avanzado(array_menu_common);
+                    menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_zip_snapshot,NULL,
+                    "Zip compress snapshot","Comprimir snapshot zip","Comprimir snapshot zip");
+                    menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",
+                        (zeng_online_zip_compress_snapshots.v ? 'X' : ' '));
+                    menu_add_item_menu_es_avanzado(array_menu_common);
+
+                }
 
             }
 

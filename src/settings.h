@@ -152,5 +152,7 @@ extern z80_bit accessibility_enable_gui_sounds;
 
 extern z80_bit zeng_online_allow_room_creation_from_any_ip;
 
+extern z80_bit zeng_online_zip_compress_snapshots;
+
 #endif
 

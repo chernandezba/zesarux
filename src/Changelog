@@ -26,6 +26,7 @@ Improved ZX Vision:
 
 Fixed timings of opcodes CP (HL), CP (IX+d), CP (IY+d)
 Fixed bug on ZRCP when handling simultaneous connections
+Fixed bug when printing on footer and column was out of bounds (exactly at column 32)
 
 ----------------------------------------
 
