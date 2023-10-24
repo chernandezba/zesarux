@@ -3200,8 +3200,23 @@ int zoc_receive_snapshot(int indice_socket)
                     if (zoc_ultimo_snapshot_recibido_es_zip) {
                         //Descomprimir zip
                         //printf("Es snapshot comprimido\n");
+                        //calcular el tiempo en descomprimirlo
+
+
+                        //calcular tiempo que tarda en descomprimir
+
+                        timer_stats_current_time(&zeng_online_uncompress_time_antes);
+
+
                         zoc_get_snapshot_mem_binary=util_uncompress_memory_zip(zoc_get_snapshot_mem_binary_comprimido,
                             zoc_get_snapshot_mem_binary_longitud_comprimido,&zoc_get_snapshot_mem_binary_longitud,"snapshot.zsf");
+
+                        zeng_online_uncompress_difftime=timer_stats_diference_time(&zeng_online_uncompress_time_antes,&zeng_online_uncompress_time_despues);
+
+                        //media de tiempo.
+                        zeng_online_uncompress_media=(zeng_online_uncompress_media+zeng_online_uncompress_difftime)/2;
+
+                        printf("Tiempo en descomprimir: %ld us\n",zeng_online_uncompress_difftime);
 
                         //solo liberamos en este caso que hay el espacio comprimido
                         free(zoc_get_snapshot_mem_binary_comprimido);

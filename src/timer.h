@@ -78,6 +78,11 @@ extern struct timeval core_render_menu_overlay_despues;
 extern long core_render_menu_overlay_difftime;
 extern long core_render_menu_overlay_media;
 
+extern struct timeval zeng_online_uncompress_time_antes;
+extern struct timeval zeng_online_uncompress_time_despues;
+extern long zeng_online_uncompress_difftime;
+extern long zeng_online_uncompress_media;
+
 
 extern int timer_on_screen_key;
 extern int timer_on_screen_adv_key;

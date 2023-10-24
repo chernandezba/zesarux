@@ -126,19 +126,31 @@ int sensor_last_emulated_display_render(int id GCC_UNUSED)
     return resultado;
 }
 
-int sensor_last_menu_overlay_render_get_value(int id GCC_UNUSED)
-{
-    return core_render_menu_overlay_difftime;
-}
-
 int sensor_last_normal_text_overlay_get_value(int id GCC_UNUSED)
 {
     return normal_overlay_time_total_drawing_overlay;
 }
 
+int sensor_last_menu_overlay_render_get_value(int id GCC_UNUSED)
+{
+    return core_render_menu_overlay_difftime;
+}
+
+
 int sensor_avg_menu_overlay_render_get_value(int id GCC_UNUSED)
 {
     return core_render_menu_overlay_media;
+}
+
+int sensor_last_zeng_online_uncompress_get_value(int id GCC_UNUSED)
+{
+    return zeng_online_uncompress_difftime;
+}
+
+
+int sensor_avg_zeng_online_uncompress_get_value(int id GCC_UNUSED)
+{
+    return zeng_online_uncompress_media;
 }
 
 int sensor_dropped_frames_get_value(int id GCC_UNUSED)
@@ -405,6 +417,23 @@ pues de una octava a la otra es el doble de valor
     85,15,
     9999,-9999,
     sensor_audio_buffer_get_value,0
+    },
+
+   {
+    "last_zoc_uncompress","Last ZENG Online uncompress","ZOCUnzip",
+    0,20000,
+    9999,-9999,
+    10000,-9999,
+    sensor_last_zeng_online_uncompress_get_value,0
+    },
+
+    //En este el tiempo maximo y los porcentajes no tienen mucho sentido
+   {
+    "avg_zoc_uncompress","Average ZENG Online uncompress","AZOCUnzip",
+    0,20000,
+    9999,-9999,
+    10000,-9999,
+    sensor_avg_zeng_online_uncompress_get_value,0
     },
 
 };

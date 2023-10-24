@@ -168,6 +168,13 @@ long core_render_menu_overlay_difftime;
 //Media de todos los intervalos
 long core_render_menu_overlay_media=0;
 
+//Tiempo en descomprimir un snapshot zip de ZENG Online. En microsegundos
+struct timeval zeng_online_uncompress_time_antes,zeng_online_uncompress_time_despues;
+//Ultimo intervalo de tiempo
+long zeng_online_uncompress_difftime;
+//Media de todos los intervalos
+long zeng_online_uncompress_media=0;
+
 
 void timer_stats_current_time(struct timeval *tiempo)
 {
