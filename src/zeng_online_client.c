@@ -2966,6 +2966,8 @@ z80_byte *zoc_get_snapshot_mem_binary_comprimido=NULL;
 
 int zoc_receive_snapshot_last_id=0;
 
+int zoc_ultimo_snapshot_recibido_es_zip=0;
+
 int zoc_receive_snapshot(int indice_socket)
 {
     //printf("Inicio zoc_receive_snapshot llamado desde:\n");
@@ -3037,7 +3039,19 @@ int zoc_receive_snapshot(int indice_socket)
 
                     int nuevo_id=parse_string_to_number(buffer);
                     if (nuevo_id!=zoc_receive_snapshot_last_id) {
-                        printf("Diferencia ultimo snapshot id: %d\n",nuevo_id-zoc_receive_snapshot_last_id);
+                        int diferencia=nuevo_id-zoc_receive_snapshot_last_id;
+                        printf("Diferencia ultimo snapshot id: %d\n",diferencia);
+
+                        int alertar_diferencia=10;
+
+                        //si no es zip lo habitual es que haya mayor diferencia
+                        if (!zoc_ultimo_snapshot_recibido_es_zip) alertar_diferencia=20;
+
+                        //Si han pasado mas de 10 snapshots, avisar con "algo" el el footer
+                        if (diferencia>alertar_diferencia) {
+                            generic_footertext_print_operating("LAG");
+                        }
+
                         zoc_receive_snapshot_last_id=nuevo_id;
                         leer_snap=1;
                     }
@@ -3166,17 +3180,17 @@ int zoc_receive_snapshot(int indice_socket)
                     //"PK" = 50 4b
                     //printf("Firma ZIP: %02XH %02XH\n",zoc_get_snapshot_mem_binary_comprimido[0],zoc_get_snapshot_mem_binary_comprimido[1]);
 
-                    int formato_zip=0;
+                    zoc_ultimo_snapshot_recibido_es_zip=0;
 
                     if (zoc_get_snapshot_mem_binary_longitud_comprimido>1) {
                         if (zoc_get_snapshot_mem_binary_comprimido[0]==0x50 &&
                             zoc_get_snapshot_mem_binary_comprimido[1]==0x4b) {
-                            formato_zip=1;
+                            zoc_ultimo_snapshot_recibido_es_zip=1;
                         }
                     }
 
 
-                    if (formato_zip) {
+                    if (zoc_ultimo_snapshot_recibido_es_zip) {
                         //Descomprimir zip
                         //printf("Es snapshot comprimido\n");
                         zoc_get_snapshot_mem_binary=util_uncompress_memory_zip(zoc_get_snapshot_mem_binary_comprimido,
