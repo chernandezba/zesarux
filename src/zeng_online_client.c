@@ -3216,7 +3216,7 @@ int zoc_receive_snapshot(int indice_socket)
                         //media de tiempo.
                         zeng_online_uncompress_media=(zeng_online_uncompress_media+zeng_online_uncompress_difftime)/2;
 
-                        printf("Tiempo en descomprimir: %ld us\n",zeng_online_uncompress_difftime);
+                        //printf("Tiempo en descomprimir: %ld us\n",zeng_online_uncompress_difftime);
 
                         //solo liberamos en este caso que hay el espacio comprimido
                         free(zoc_get_snapshot_mem_binary_comprimido);

@@ -421,7 +421,7 @@ pues de una octava a la otra es el doble de valor
 
    {
     "last_zoc_uncompress","Last ZENG Online uncompress","ZOCUnzip",
-    0,20000,
+    0,1000, //1ms. Por ejemplo con el target renegade de 48kb tarda 300 microsec en mi Mac, por tanto 1000 microsec (1ms) ya me parece mucho
     9999,-9999,
     10000,-9999,
     sensor_last_zeng_online_uncompress_get_value,0
@@ -430,7 +430,7 @@ pues de una octava a la otra es el doble de valor
     //En este el tiempo maximo y los porcentajes no tienen mucho sentido
    {
     "avg_zoc_uncompress","Average ZENG Online uncompress","AZOCUnzip",
-    0,20000,
+    0,1000, //1ms
     9999,-9999,
     10000,-9999,
     sensor_avg_zeng_online_uncompress_get_value,0
