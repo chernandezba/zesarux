@@ -3033,10 +3033,11 @@ int zoc_receive_snapshot(int indice_socket)
                 }
                 else {
                     //Ver si id diferente
-                    printf("snapshot id: %s\n",buffer);
+                    //printf("snapshot id: %s\n",buffer);
 
                     int nuevo_id=parse_string_to_number(buffer);
                     if (nuevo_id!=zoc_receive_snapshot_last_id) {
+                        printf("Diferencia ultimo snapshot id: %d\n",nuevo_id-zoc_receive_snapshot_last_id);
                         zoc_receive_snapshot_last_id=nuevo_id;
                         leer_snap=1;
                     }
@@ -3177,7 +3178,7 @@ int zoc_receive_snapshot(int indice_socket)
 
                     if (formato_zip) {
                         //Descomprimir zip
-                        printf("Es snapshot comprimido\n");
+                        //printf("Es snapshot comprimido\n");
                         zoc_get_snapshot_mem_binary=util_uncompress_memory_zip(zoc_get_snapshot_mem_binary_comprimido,
                             zoc_get_snapshot_mem_binary_longitud_comprimido,&zoc_get_snapshot_mem_binary_longitud,"snapshot.zsf");
 
@@ -3186,7 +3187,7 @@ int zoc_receive_snapshot(int indice_socket)
                     }
 
                     else {
-                        printf("No es snapshot comprimido\n");
+                        //printf("No es snapshot comprimido\n");
                         //aqui no haremos free dado que no existe compresion y entonces
                         //zoc_get_snapshot_mem_binary y zoc_get_snapshot_mem_binary_comprimido apuntan al mismo sitio
                         //ya se liberara desde zoc_get_snapshot_mem_binary_comprimido al aplicar el snapshot
@@ -3198,7 +3199,7 @@ int zoc_receive_snapshot(int indice_socket)
 
                     zoc_get_snapshot_mem_binary_comprimido=NULL;
 
-                    printf("Apply snapshot. Compressed %d Uncompressed %d\n",zoc_get_snapshot_mem_binary_longitud_comprimido,zoc_get_snapshot_mem_binary_longitud);
+                    //printf("Apply snapshot. Compressed %d Uncompressed %d\n",zoc_get_snapshot_mem_binary_longitud_comprimido,zoc_get_snapshot_mem_binary_longitud);
 
                     zoc_pending_apply_received_snapshot=1;
 
@@ -3238,7 +3239,7 @@ int zoc_check_if_kicked(int indice_socket)
         char buffer_kick_user[STATS_UUID_MAX_LENGTH+1];
         int retorno=zoc_get_kicked_user(indice_socket,buffer_kick_user);
         if (retorno>=0) {
-            printf("Kicked user: [%s]\n",buffer_kick_user);
+            //printf("Kicked user: [%s]\n",buffer_kick_user);
             if (!strcmp(buffer_kick_user,stats_uuid)) {
                 printf("I have been kicked\n");
                 put_footer_first_message("I have been kicked");
