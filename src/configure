@@ -1499,7 +1499,7 @@ ffunicode.o: ffunicode.c ffconf.h ff.h
 stats.o: stats.c stats.h cpu.h zxvision.h compileoptions.h debug.h network.h screen.h timer.h
 	\$(CC) \$(CFLAGS) -c stats.c
 
-sensors.o: sensors.c sensors.h cpu.h debug.h ay38912.h screen.h zxvision.h timer.h stats.h audio.h sn76489an.h
+sensors.o: sensors.c sensors.h cpu.h debug.h ay38912.h screen.h zxvision.h timer.h stats.h audio.h sn76489an.h zeng_online_client.h
 	\$(CC) \$(CFLAGS) -c sensors.c
 
 esxdos_handler.o: esxdos_handler.c esxdos_handler.h cpu.h operaciones.h debug.h utils.h diviface.h screen.h menu_filesel.h

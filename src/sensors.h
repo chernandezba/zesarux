@@ -22,7 +22,7 @@
 #ifndef SENSORS_H
 #define SENSORS_H
 
-#define TOTAL_SENSORS 27
+#define TOTAL_SENSORS 29
 
 #define SENSORS_MAX_SHORT_NAME 32
 
@@ -40,7 +40,7 @@ struct s_sensor_item {
     int min_value;
     int max_value;
 
-    //Umbrales de aviso de porcentaje (si excede o si menor que)
+    //Umbrales de aviso de porcentaje (si excede o si menor que). Para el porcentaje se tiene en cuenta el rango entre min_value y max_value
     int upper_warning_perc;
     int lower_warning_perc;
 

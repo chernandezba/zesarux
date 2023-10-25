@@ -2968,6 +2968,10 @@ int zoc_receive_snapshot_last_id=0;
 
 int zoc_ultimo_snapshot_recibido_es_zip=0;
 
+int zeng_online_snapshot_diff=0;
+
+int zeng_online_snapshot_diff_media=0;
+
 int zoc_receive_snapshot(int indice_socket)
 {
     //printf("Inicio zoc_receive_snapshot llamado desde:\n");
@@ -3039,8 +3043,10 @@ int zoc_receive_snapshot(int indice_socket)
 
                     int nuevo_id=parse_string_to_number(buffer);
                     if (nuevo_id!=zoc_receive_snapshot_last_id) {
-                        int diferencia=nuevo_id-zoc_receive_snapshot_last_id;
-                        printf("Diferencia ultimo snapshot id: %d\n",diferencia);
+                        zeng_online_snapshot_diff=nuevo_id-zoc_receive_snapshot_last_id;
+                        printf("Diferencia ultimo snapshot id: %d\n",zeng_online_snapshot_diff);
+
+                        zeng_online_snapshot_diff_media=(zeng_online_snapshot_diff+zeng_online_snapshot_diff_media)/2;
 
                         int alertar_diferencia=10;
 
@@ -3053,7 +3059,7 @@ int zoc_receive_snapshot(int indice_socket)
                         if (!zoc_ultimo_snapshot_recibido_es_zip) alertar_diferencia=20;
 
                         //Si han pasado mas de 10 snapshots, avisar con "algo" el el footer
-                        if (diferencia>alertar_diferencia) {
+                        if (zeng_online_snapshot_diff>alertar_diferencia) {
                             if (zeng_online_show_footer_lag_indicator.v) {
                                 generic_footertext_print_operating("LAG");
                             }
