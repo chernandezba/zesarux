@@ -3711,7 +3711,7 @@ void save_zsf_snapshot_file_mem(char *filename,z80_byte *destination_memory,int 
     //Estado puertos
     //esto solo si somos en zeng online master y menu no esta abierto
     //-Block ID 62: ZSF_KEY_PORTS_SPECTRUM_STATE
-    if (MACHINE_IS_SPECTRUM || MACHINE_IS_ZX8081) {
+    if (MACHINE_IS_SPECTRUM || MACHINE_IS_ZX8081ACE) {
         if (from_zeng_online && zeng_online_i_am_master.v && !menu_abierto) {
 
             z80_byte keyportsblock[9];
