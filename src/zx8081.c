@@ -664,7 +664,7 @@ z80_byte fetch_opcode_zx81_graphics(void)
 
                 //Otros interfaces que tambien hacen 128 caracteres aunque no siguen la norma del registro I,
                 //como el SD81 Booster de Alejandro Valero
-                if (force_zx81_chr_128.v) {
+                if (caracter_inverse.v && force_zx81_chr_128.v) {
                     caracter=caracter | 64;
                 }
 
