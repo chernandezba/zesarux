@@ -1508,7 +1508,7 @@ esxdos_handler.o: esxdos_handler.c esxdos_handler.h cpu.h operaciones.h debug.h 
 tbblue.o: tbblue.c tbblue.h cpu.h mem128.h debug.h contend.h utils.h zxvision.h divmmc.h diviface.h screen.h timex.h audio.h datagear.h ay38912.h multiface.h uartbridge.h settings.h joystick.h
 	\$(CC) \$(CFLAGS) -c tbblue.c
 
-zx8081.o: zx8081.c zx8081.h cpu.h screen.h debug.h audio.h core_zx8081.h operaciones.h zxvision.h ula.h
+zx8081.o: zx8081.c zx8081.h cpu.h screen.h debug.h audio.h core_zx8081.h operaciones.h zxvision.h ula.h zxpand.h
 	\$(CC) \$(CFLAGS) -c zx8081.c
 
 jupiterace.o: jupiterace.c jupiterace.h cpu.h screen.h debug.h audio.h core_ace.h operaciones.h zxvision.h

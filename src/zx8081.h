@@ -40,7 +40,7 @@ extern z80_byte video_fast_mode_next_frame_black;
 
 extern z80_bit simulate_lost_vsync;
 
-
+extern z80_byte fetch_opcode_zx81_graphics(void);
 
 extern z80_int ramtop_zx8081;
 
