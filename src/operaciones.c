@@ -1190,11 +1190,11 @@ z80_byte fetch_opcode_svi(void)
 z80_byte fetch_opcode_zx81(void)
 {
 #ifdef EMULATE_VISUALMEM
-        set_visualmemopcodebuffer(reg_pc);
+    set_visualmemopcodebuffer(reg_pc);
 #endif
 	z80_byte op;
 
-        op=peek_byte_zx80_no_time(reg_pc&0x7fff);
+    op=peek_byte_zx80_no_time(reg_pc&0x7fff);
 
 	if( (reg_pc&0x8000) ) {
 
@@ -1228,159 +1228,159 @@ z80_byte fetch_opcode_zx81(void)
 			int t_estados_en_linea=t_estados % screen_testados_linea;
 
 
-	        	        //poner caracter en pantalla de video highmem
-		                z80_bit caracter_inverse;
-		                z80_int direccion_sprite;
+            //poner caracter en pantalla de video highmem
+            z80_bit caracter_inverse;
+            z80_int direccion_sprite;
 
 
-        		        if (caracter&128) {
-		                        caracter_inverse.v=1;
-		                        caracter=caracter&127;
-	        	        }
-		                else caracter_inverse.v=0;
+            if (caracter&128) {
+                    caracter_inverse.v=1;
+                    caracter=caracter&127;
+            }
+            else caracter_inverse.v=0;
 
-				//printf ("fetch caracter: %d\n",caracter);
-				int y=t_scanline_draw;
+            //printf ("fetch caracter: %d\n",caracter);
+            int y=t_scanline_draw;
 
-                                //TODO
-                                y -=ZX8081_LINEAS_SUP_NO_USABLES;
-                                //para evitar las lineas superiores
-                                //TODO. cuadrar esto con valores de borde invisible superior
+            //TODO
+            y -=ZX8081_LINEAS_SUP_NO_USABLES;
+            //para evitar las lineas superiores
+            //TODO. cuadrar esto con valores de borde invisible superior
 
-				//Posible modo wrx, y excluir valores de I usados en chr$128 y udg
-				if (reg_i>=33 && reg_i!=0x31 && reg_i!=0x30 && wrx_present.v==0 && autodetect_wrx.v) {
-					//posible modo wrx
-					debug_printf(VERBOSE_INFO,"Autoenabling wrx so the program seems to need it (I register>32). Also enable 8K RAM in 2000H");
-					enable_wrx();
+            //Posible modo wrx, y excluir valores de I usados en chr$128 y udg
+            if (reg_i>=33 && reg_i!=0x31 && reg_i!=0x30 && wrx_present.v==0 && autodetect_wrx.v) {
+                //posible modo wrx
+                debug_printf(VERBOSE_INFO,"Autoenabling wrx so the program seems to need it (I register>32). Also enable 8K RAM in 2000H");
+                enable_wrx();
 
-					//algunos juegos requieren que este ram pack este presente antes de activar wrx... sino no funcionara
-					//pero igualmente, por si acaso, lo activamos aqui
-					ram_in_8192.v=1;
+                //algunos juegos requieren que este ram pack este presente antes de activar wrx... sino no funcionara
+                //pero igualmente, por si acaso, lo activamos aqui
+                ram_in_8192.v=1;
 
-				}
-
-
-				//Modos WRX
-				if (wrx_present.v==1 && reg_i>=32 ) {
-
-					//printf ("reg_i en zona WRX\n");
-
-                			direccion_sprite=(reg_i<<8) | (reg_r_bit7 & 128) | ((reg_r) & 127);
-
-					if (video_zx8081_estabilizador_imagen.v==0) {
-						x=(t_estados_en_linea)*2;
-					}
-					else {
-						//Estabilizador de imagen, para que no "tiemble"
-						x=(video_zx8081_caracter_en_linea_actual+6)*8; //+offset_zx8081_t_coordx;
-					}
-
-					//printf ("direccion_sprite: %d\n",direccion_sprite);
-                                        sprite=memoria_spectrum[direccion_sprite];
-
-                                        if (caracter_inverse.v) sprite=sprite^255;
-
-        			}
+            }
 
 
-				else {
+            //Modos WRX
+            if (wrx_present.v==1 && reg_i>=32 ) {
 
-					//chr$128
-                                        if (reg_i==0x31) {
-                                           if (caracter_inverse.v) {
-                                             //El bit de inverse es para acceder a los 64 caracteres siguientes
-                                             caracter=caracter | 64;
-                                             //Pero sigue indicando inverse
-                                             //caracter_inverse.v=0;
+                //printf ("reg_i en zona WRX\n");
 
-                                           }
-                                        }
+                direccion_sprite=(reg_i<<8) | (reg_r_bit7 & 128) | ((reg_r) & 127);
 
+                if (video_zx8081_estabilizador_imagen.v==0) {
+                    x=(t_estados_en_linea)*2;
+                }
+                else {
+                    //Estabilizador de imagen, para que no "tiemble"
+                    x=(video_zx8081_caracter_en_linea_actual+6)*8; //+offset_zx8081_t_coordx;
+                }
 
-					//TODO. Parche. Ajustar linea y linecntr. Para que no "salte"
-        		                //z80_byte cdflag=memoria_spectrum[0x403B];
+                //printf ("direccion_sprite: %d\n",direccion_sprite);
+                sprite=memoria_spectrum[direccion_sprite];
 
-					//Quiza se deberia hacer esto solo cuando reg_i apunta a zona de ROM
-					//pero resulta que Manic miner y otros usan reg_i apuntando a ROM.. y por tanto aplicaria
-					//el ajuste para slow y se ve mal
-		                        //if ( machine_type==21 && (cdflag & 128) && video_zx8081_slow_adjust.v==1 && reg_i == 0x1e) {
-		                        //if ( machine_type==21 && (cdflag & 128) && video_zx8081_slow_adjust.v==1) {
+                if (caracter_inverse.v) sprite=sprite^255;
 
-		                        if ( video_zx8081_lnctr_adjust.v==1) {
-						direccion_sprite=((reg_i&254)*256)+caracter*8+( (video_zx8081_linecntr-1) & 7);
-					}
-
-					else {
-						direccion_sprite=((reg_i&254)*256)+caracter*8+(video_zx8081_linecntr & 7);
-					}
+            }
 
 
+            else {
 
-					if (video_zx8081_estabilizador_imagen.v==0) {
-                                                x=t_estados_en_linea*2-24;
-					}
+                //chr$128
+                if (reg_i==0x31) {
+                    if (caracter_inverse.v) {
+                        //El bit de inverse es para acceder a los 64 caracteres siguientes
+                        caracter=caracter | 64;
+                        //Pero sigue indicando inverse
+                        //caracter_inverse.v=0;
 
-					else {
-						//Estabilizador de imagen, para que no "tiemble"
-                                        	x=(video_zx8081_caracter_en_linea_actual+6)*8; //+offset_zx8081_t_coordx;
-					}
+                    }
+                }
 
 
-											//Obtener tipo de letra de rom original, haciendo shadow de los 4kb primeros a los segundos
-												//if (zxpand_enabled.v && MACHINE_IS_ZX80 && direccion_sprite<8192) sprite=memoria_spectrum[direccion_sprite&4095];
+                //TODO. Parche. Ajustar linea y linecntr. Para que no "salte"
+                //z80_byte cdflag=memoria_spectrum[0x403B];
 
-												//Obteniendo tipo de letra de rom de zxpand en el caso del zx80
-												if (zxpand_enabled.v && MACHINE_IS_ZX80_TYPE && direccion_sprite<8192) sprite=zxpand_memory_pointer[direccion_sprite];
+                //Quiza se deberia hacer esto solo cuando reg_i apunta a zona de ROM
+                //pero resulta que Manic miner y otros usan reg_i apuntando a ROM.. y por tanto aplicaria
+                //el ajuste para slow y se ve mal
+                //if ( machine_type==21 && (cdflag & 128) && video_zx8081_slow_adjust.v==1 && reg_i == 0x1e) {
+                //if ( machine_type==21 && (cdflag & 128) && video_zx8081_slow_adjust.v==1) {
 
-					//printf ("direccion_sprite: %d\n",direccion_sprite);
-                            else      sprite=memoria_spectrum[direccion_sprite];
-					//aunque este en modo zxpand, la tabla de caracteres siempre sale de la rom principal
-					//por eso hacemos sprite=memoria_spectrum[direccion_sprite]; y zxpand rom esta en otro puntero de memoria
-					//sprite=peek_byte_zx80_no_time(direccion_sprite);
+                if ( video_zx8081_lnctr_adjust.v==1) {
+                    direccion_sprite=((reg_i&254)*256)+caracter*8+( (video_zx8081_linecntr-1) & 7);
+                }
 
-                                        if (caracter_inverse.v) sprite=sprite^255;
-
-				}
-
-                                //ajustar para determinados juegos
-                                x=x+offset_zx8081_t_coordx;
+                else {
+                    direccion_sprite=((reg_i&254)*256)+caracter*8+(video_zx8081_linecntr & 7);
+                }
 
 
 
-				if (border_enabled.v==0) {
-					y=y-screen_borde_superior;
-					x=x-screen_total_borde_izquierdo;
-				}
+                if (video_zx8081_estabilizador_imagen.v==0) {
+                    x=t_estados_en_linea*2-24;
+                }
+
+                else {
+                    //Estabilizador de imagen, para que no "tiemble"
+                    x=(video_zx8081_caracter_en_linea_actual+6)*8; //+offset_zx8081_t_coordx;
+                }
 
 
-				//printf ("fetch y: %d x: %d\n",y,video_zx8081_caracter_en_linea_actual);
-				int totalancho=get_total_ancho_rainbow();
+                //Obtener tipo de letra de rom original, haciendo shadow de los 4kb primeros a los segundos
+                //if (zxpand_enabled.v && MACHINE_IS_ZX80 && direccion_sprite<8192) sprite=memoria_spectrum[direccion_sprite&4095];
 
-                                //valores negativos vienen por la derecha
-                                if (x<0) {
-                                   x=totalancho-screen_total_borde_derecho-screen_total_borde_izquierdo+x;
-                                }
+                //Obteniendo tipo de letra de rom de zxpand en el caso del zx80
+                if (zxpand_enabled.v && MACHINE_IS_ZX80_TYPE && direccion_sprite<8192) sprite=zxpand_memory_pointer[direccion_sprite];
 
-                                //valores mayores por la derecha
-                                if (x>=totalancho ) {
-                                      //x=x-totalancho+screen_total_borde_derecho+screen_total_borde_izquierdo-video_zx8081_decremento_x_cuando_mayor;
-                                      x=x-totalancho+screen_total_borde_derecho+screen_total_borde_izquierdo;
-                                 }
+                //printf ("direccion_sprite: %d\n",direccion_sprite);
+                else      sprite=memoria_spectrum[direccion_sprite];
+                //aunque este en modo zxpand, la tabla de caracteres siempre sale de la rom principal
+                //por eso hacemos sprite=memoria_spectrum[direccion_sprite]; y zxpand rom esta en otro puntero de memoria
+                //sprite=peek_byte_zx80_no_time(direccion_sprite);
 
+                if (caracter_inverse.v) sprite=sprite^255;
 
-				if (y>=0 && y<get_total_alto_rainbow() ) {
+            }
 
-						if (x>=0 && x<totalancho )  {
-
-						        //si linea no coincide con entrelazado, volvemos
-							if (if_store_scanline_interlace(y) ) {
-								screen_store_scanline_char_zx8081(x,y,sprite,caracter,caracter_inverse.v);
-							}
+            //ajustar para determinados juegos
+            x=x+offset_zx8081_t_coordx;
 
 
-						 }
 
-				}
+            if (border_enabled.v==0) {
+                y=y-screen_borde_superior;
+                x=x-screen_total_borde_izquierdo;
+            }
+
+
+            //printf ("fetch y: %d x: %d\n",y,video_zx8081_caracter_en_linea_actual);
+            int totalancho=get_total_ancho_rainbow();
+
+            //valores negativos vienen por la derecha
+            if (x<0) {
+                x=totalancho-screen_total_borde_derecho-screen_total_borde_izquierdo+x;
+            }
+
+            //valores mayores por la derecha
+            if (x>=totalancho ) {
+                //x=x-totalancho+screen_total_borde_derecho+screen_total_borde_izquierdo-video_zx8081_decremento_x_cuando_mayor;
+                x=x-totalancho+screen_total_borde_derecho+screen_total_borde_izquierdo;
+            }
+
+
+            if (y>=0 && y<get_total_alto_rainbow() ) {
+
+                if (x>=0 && x<totalancho )  {
+
+                    //si linea no coincide con entrelazado, volvemos
+                    if (if_store_scanline_interlace(y) ) {
+                        screen_store_scanline_char_zx8081(x,y,sprite,caracter,caracter_inverse.v);
+                    }
+
+
+                }
+
+            }
 
 
 			video_zx8081_caracter_en_linea_actual++;
