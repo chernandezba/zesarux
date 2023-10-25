@@ -3618,7 +3618,13 @@ void zeng_online_client_prepare_snapshot_if_needed(void)
 
 					int longitud_sin_comprimir;
 
+                    //La compresion nativa del zsf (repeticiones de bytes) la forzamos siempre activa
+                    int antes_zsf_force_uncompressed=zsf_force_uncompressed;
+                    zsf_force_uncompressed=0;
+
   					save_zsf_snapshot_file_mem(NULL,buffer_temp_sin_comprimir,&longitud_sin_comprimir,1);
+
+                    zsf_force_uncompressed=antes_zsf_force_uncompressed;
 
                     int longitud;
                     z80_byte *buffer_temp;
