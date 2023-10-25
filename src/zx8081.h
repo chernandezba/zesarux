@@ -48,6 +48,7 @@ extern z80_bit zx8081_vsync_sound;
 
 extern int timeout_linea_vsync;
 
+extern z80_bit force_zx81_chr_128;
 
 
 extern z80_bit zx8081_detect_vsync_sound;

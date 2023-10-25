@@ -6750,6 +6750,11 @@ void menu_display_pcw_video_mode(MENU_ITEM_PARAMETERS)
     if (pcw_video_mode==3) pcw_video_mode=0;
 }
 
+void menu_display_force_zx81_chr_128(MENU_ITEM_PARAMETERS)
+{
+    force_zx81_chr_128.v ^=1;
+}
+
 //menu display settings
 void menu_settings_display(MENU_ITEM_PARAMETERS)
 {
@@ -7087,6 +7092,11 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
 		}
 
 		if (MACHINE_IS_ZX8081) {
+
+
+			menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_force_zx81_chr_128,NULL,"[%c] Force CHR$ 128",(force_zx81_chr_128.v ? 'X' : ' '));
+			menu_add_item_menu_tooltip(array_menu_settings_display,"When CHR$ mode used, force 128 characters, is the autodetection doesn't work");
+			menu_add_item_menu_ayuda(array_menu_settings_display,"When CHR$ mode used, force 128 characters, is the autodetection doesn't work");
 
 			menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_autodetect_chroma81,NULL,"[%c] Autodetect Chroma81",(autodetect_chroma81.v ? 'X' : ' '));
 			menu_add_item_menu_tooltip(array_menu_settings_display,"Autodetect Chroma81");

@@ -173,7 +173,7 @@ z80_bit zx8081_detect_vsync_sound={0};
 //maximo valor de esto: ZX8081_DETECT_VSYNC_SOUND_COUNTER_MAX
 int zx8081_detect_vsync_sound_counter=ZX8081_DETECT_VSYNC_SOUND_COUNTER_MAX;
 
-
+z80_bit force_zx81_chr_128={0};
 
 
 z80_bit autodetect_wrx;
@@ -660,6 +660,12 @@ z80_byte fetch_opcode_zx81_graphics(void)
                         //caracter_inverse.v=0;
 
                     }
+                }
+
+                //Otros interfaces que tambien hacen 128 caracteres aunque no siguen la norma del registro I,
+                //como el SD81 Booster de Alejandro Valero
+                if (force_zx81_chr_128.v) {
+                    caracter=caracter | 64;
                 }
 
 

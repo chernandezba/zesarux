@@ -16572,6 +16572,9 @@ void menu_network(MENU_ITEM_PARAMETERS)
 
 
 #ifndef NETWORKING_DISABLED
+
+            menu_add_item_menu_separator(array_menu_common);
+
 			menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_zeng,NULL,"Z~~ENG");
 			menu_add_item_menu_shortcut(array_menu_common,'e');
 			menu_add_item_menu_tooltip(array_menu_common,"Setup ZEsarUX Network Gaming");
@@ -16600,6 +16603,8 @@ void menu_network(MENU_ITEM_PARAMETERS)
               "It's similar to ZENG but uses a central online server\n"
 			);
             menu_add_item_menu_tiene_submenu(array_menu_common);
+
+            menu_add_item_menu_separator(array_menu_common);
 
             menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_online_browse_zx81,NULL,"~~ZX81 online browser");
             menu_add_item_menu_spanish(array_menu_common,"Navegador online ~~ZX81");

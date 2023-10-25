@@ -704,7 +704,6 @@ zeng online y zeng no-online
 
 -si hay un error de red temporal, luego ya no se vuelve a recuperar
 
--snapshot de zeng online que siempre aplique la compresion DD aunque el setting no esté
 
 -icono para network traffic
 
