@@ -270,7 +270,6 @@ Debe indicar que se puede dejar ventanas en background pero que también pueden 
 -process management: no muestra uso tiempo de ventana zxlife si la ventana actual es zxlife
 
 
--Pulsar en ventana emulación desde menú que quizá cierre menú. Depende de settings background. O de setting expresamente para esto
 
 -En visor de disco (dsk) con archivos, que indique User number (UU) de cada archivo? Ver https://www.seasip.info/Cpm/format22.html
 -O incluso mejor un browser/viewer de formato CP/M, que indique:
@@ -707,5 +706,5 @@ zeng online y zeng no-online
 
 -icono para network traffic
 
--agregar sensor con diferencia snapshot id
+
 ---------------
