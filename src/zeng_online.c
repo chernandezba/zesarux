@@ -199,6 +199,24 @@ void zeng_online_set_alive_user(int room_number,char *uuid)
 
 }
 
+void zeng_online_destroy_room_aux(int room_number)
+{
+
+    zeng_online_rooms_list[room_number].max_players=ZENG_ONLINE_MAX_PLAYERS_PER_ROOM;
+
+    zeng_online_rooms_list[room_number].current_players=0;
+
+    strcpy(zeng_online_rooms_list[room_number].name,"<free>");
+
+    if (zeng_online_rooms_list[room_number].snapshot_memory!=NULL) {
+        free(zeng_online_rooms_list[room_number].snapshot_memory);
+    }
+
+    zeng_online_rooms_list[room_number].created=0;
+
+
+}
+
 
 void zeng_online_expire_non_alive_users(void)
 {
@@ -246,9 +264,38 @@ void zeng_online_expire_non_alive_users(void)
 
 }
 
-int contador_timer_zeng_online_expire_non_alive_users=0;
+void zeng_online_destroy_empty_rooms(void)
+{
+    int room_number;
+
+
+
+    int i;
+
+    for (room_number=0;room_number<zeng_online_current_max_rooms;room_number++) {
+        if (zeng_online_rooms_list[room_number].created) {
+            printf("Looking at room %d\n",room_number);
+
+
+            int hay_jugadores_en_room=0;
+            for (i=0;i<zeng_online_rooms_list[room_number].max_players && !hay_jugadores_en_room;i++) {
+                if (zeng_online_rooms_list[room_number].joined_users[i][0]) hay_jugadores_en_room++;
+
+            }
+
+            if (!hay_jugadores_en_room) {
+                printf("No hay jugadores en room %d. Destruyendo\n",room_number);
+                zeng_online_destroy_room_aux(room_number);
+            }
+        }
+
+    }
+
+}
+
+int contador_timer_zeng_online_server=0;
 //Aqui se llama desde el timer cada 1 segundo
-void timer_zeng_online_expire_non_alive_users(void)
+void timer_zeng_online_server(void)
 {
     if (remote_protocol_enabled.v==0) return;
 
@@ -258,11 +305,15 @@ void timer_zeng_online_expire_non_alive_users(void)
 
 
     //Cada 60 segundos
-    contador_timer_zeng_online_expire_non_alive_users++;
+    contador_timer_zeng_online_server++;
 
-    if ((contador_timer_zeng_online_expire_non_alive_users % 60)!=0) return;
+    if ((contador_timer_zeng_online_server % 60)!=0) return;
 
+    //Expirar usuarios que no existan
     zeng_online_expire_non_alive_users();
+
+    //Destruir rooms que no tengan usuarios
+    zeng_online_destroy_empty_rooms();
 
 }
 
@@ -650,17 +701,7 @@ void zeng_online_destroy_room(int misocket,int room_number)
         return;
     }
 
-    zeng_online_rooms_list[room_number].max_players=ZENG_ONLINE_MAX_PLAYERS_PER_ROOM;
-
-    zeng_online_rooms_list[room_number].current_players=0;
-
-    strcpy(zeng_online_rooms_list[room_number].name,"<free>");
-
-    if (zeng_online_rooms_list[room_number].snapshot_memory!=NULL) {
-        free(zeng_online_rooms_list[room_number].snapshot_memory);
-    }
-
-    zeng_online_rooms_list[room_number].created=0;
+    zeng_online_destroy_room_aux(room_number);
 
 
 }
