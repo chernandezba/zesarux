@@ -192,7 +192,70 @@ void zeng_online_set_alive_user(int room_number,char *uuid)
     //Y si llega al final sin haber encontrado usuario, es un error aunque no lo reportaremos
     if (!encontrado) debug_printf(VERBOSE_DEBUG,"Can not find user with uuid %s to set alive time",uuid);
 
+}
 
+
+void zeng_online_expire_non_alive_users(void)
+{
+
+    int room_number;
+
+    struct timeval tiempo_ahora;
+    timer_stats_current_time(&tiempo_ahora);
+
+    long difftime;
+
+    int i;
+
+    for (room_number=0;room_number<zeng_online_current_max_rooms;room_number++) {
+        if (zeng_online_rooms_list[room_number].created) {
+            printf("Looking at room %d\n",room_number);
+
+
+            for (i=0;i<zeng_online_rooms_list[room_number].max_players;i++) {
+                if (zeng_online_rooms_list[room_number].joined_users[i][0]) {
+
+                    printf("Looking at user %s\n",zeng_online_rooms_list[room_number].joined_users_uuid[i]);
+
+                    difftime=timer_stats_diference_time(&zeng_online_rooms_list[room_number].joined_users_last_alive_time[i],&tiempo_ahora);
+                    //en microsegundos
+                    difftime /=1000000;
+
+                    //ahora en segundos
+                    if (difftime>ZOC_TIMEOUT_ALIVE_USER) {
+                        printf("Expiring user uuid %s\n",zeng_online_rooms_list[room_number].joined_users_uuid[i]);
+                        char nickname_left[ZOC_MAX_NICKNAME_LENGTH+1];
+                        //Por si acaso no lo encuentra
+                        nickname_left[0]=0;
+                        zoc_del_user_to_joined_users(room_number,zeng_online_rooms_list[room_number].joined_users_uuid[i],nickname_left);
+                        printf("Expired user nickname %s\n",nickname_left);
+                    }
+                }
+            }
+        }
+
+    }
+
+
+
+}
+
+int contador_timer_zeng_online_expire_non_alive_users=0;
+//Aqui se llama desde el timer cada 1 segundo
+void timer_zeng_online_expire_non_alive_users(void)
+{
+    if (remote_protocol_enabled.v==0) return;
+
+    if (!zeng_online_enabled) return;
+
+    printf("timer_zeng_online_expire_non_alive_users\n");
+
+    //Cada 60 segundos
+    contador_timer_zeng_online_expire_non_alive_users++;
+
+    if ((contador_timer_zeng_online_expire_non_alive_users % 60)!=0) return;
+
+    zeng_online_expire_non_alive_users();
 
 }
 
@@ -1822,6 +1885,8 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
 
         //comando_argv[3] contiene el uuid
         char nickname_left[ZOC_MAX_NICKNAME_LENGTH+1];
+        //Por si acaso no lo encuentra
+        nickname_left[0]=0;
         zoc_del_user_to_joined_users(room_number,comando_argv[3],nickname_left);
 
 

@@ -85,6 +85,9 @@ extern int zeng_online_enabled;
 extern void enable_zeng_online(void);
 extern void disable_zeng_online(void);
 
+//5 minutos sin recibir un alive user, se declara muerto
+#define ZOC_TIMEOUT_ALIVE_USER (60*5)
+
 //Estructura de un evento: Tecla, press/release, y uuid del cliente que lo envia
 struct s_zeng_online_eventkeys {
     int tecla;
@@ -172,5 +175,7 @@ struct zeng_online_room {
 extern struct zeng_online_room zeng_online_rooms_list[];
 
 extern int zeng_online_current_max_rooms;
+
+extern void zeng_online_expire_non_alive_users(void);
 
 #endif

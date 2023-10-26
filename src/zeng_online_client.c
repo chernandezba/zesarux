@@ -3681,7 +3681,7 @@ void zeng_online_client_prepare_snapshot_if_needed(void)
 
                     //temp_memoria_asignada++;
                     //printf("Asignada: %d liberada: %d\n",temp_memoria_asignada,temp_memoria_liberada);
-                    printf("Created snapshot original size %d compressed size %d\n",longitud_sin_comprimir,longitud);
+                    //printf("Created snapshot original size %d compressed size %d\n",longitud_sin_comprimir,longitud);
 
 					if (zoc_send_snapshot_mem_hexa==NULL) zoc_send_snapshot_mem_hexa=malloc(ZRCP_GET_PUT_SNAPSHOT_MEM*2); //16 MB es mas que suficiente
 

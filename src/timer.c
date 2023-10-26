@@ -846,6 +846,8 @@ void timer_check_interrupt(void)
 
             if (MACHINE_IS_PCW) pcw_boot_timer_handle();
 
+            timer_zeng_online_expire_non_alive_users();
+
 
             //escritura de contenido de flash de superupgrade a disco
             superupgrade_flush_flash_to_disk();
