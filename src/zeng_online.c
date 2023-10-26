@@ -221,6 +221,9 @@ void zeng_online_destroy_room_aux(int room_number)
 void zeng_online_expire_non_alive_users(void)
 {
 
+    printf("Expire non alive users\n");
+
+
     int room_number;
 
     struct timeval tiempo_ahora;
@@ -243,7 +246,10 @@ void zeng_online_expire_non_alive_users(void)
                     //en microsegundos
                     difftime /=1000000;
 
-                    printf("Looking at user %s. difftime=%ld\n",zeng_online_rooms_list[room_number].joined_users_uuid[i],difftime);
+                    printf("Looking at user %s - %s. difftime=%ld\n",
+                        zeng_online_rooms_list[room_number].joined_users_uuid[i],
+                        zeng_online_rooms_list[room_number].joined_users[i],
+                        difftime);
 
                     //ahora en segundos
                     if (difftime>ZOC_TIMEOUT_ALIVE_USER) {
@@ -268,7 +274,7 @@ void zeng_online_destroy_empty_rooms(void)
 {
     int room_number;
 
-
+    printf("Expire non alive rooms\n");
 
     int i;
 
@@ -301,7 +307,7 @@ void timer_zeng_online_server(void)
 
     if (!zeng_online_enabled) return;
 
-    printf("timer_zeng_online_expire_non_alive_users\n");
+    //printf("timer_zeng_online_expire_non_alive_users\n");
 
 
     //Cada 60 segundos
