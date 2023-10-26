@@ -148,6 +148,7 @@ struct zeng_online_room {
     z_atomic_semaphore semaphore_joined_users;
     char joined_users[ZENG_ONLINE_MAX_PLAYERS_PER_ROOM][ZOC_MAX_NICKNAME_LENGTH+1];
     char joined_users_uuid[ZENG_ONLINE_MAX_PLAYERS_PER_ROOM][STATS_UUID_MAX_LENGTH+1];
+    struct timeval joined_users_last_alive_time[ZENG_ONLINE_MAX_PLAYERS_PER_ROOM];
 
     //Peticiones de join en espera
     int index_waiting_join_first; //donde empieza el primer elemento en espera

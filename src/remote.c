@@ -909,6 +909,7 @@ struct s_items_ayuda items_ayuda[]={
 
 
   {"zeng-online","|zo","command parameter","Related ZENG Online actions. Command can be:\n"
+    "alive user_pass n uuid                          Tells the user is alive\n"
     "authorize-join creator_pass n perm              Authorize/deny permissions to first client join to room n. id is authorization id. perm are permissions, can be:\n"
     "                                                0: deny, 1: allow_send_keys, 2: allow_get_snapshot. Sum values for combinations\n"
     "create-room n name                              Creates a room n. It must be in non-created state. Returns the creator_password\n"

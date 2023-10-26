@@ -2746,8 +2746,37 @@ int zoc_pending_apply_received_snapshot_as_rejoin_as_master=0;
 //contiene el valor anterior de contador_segundo_infinito de la anterior consulta de mensajes
 int contador_mensajes_anteriorsegundos=0;
 
+
+int contador_alive_anteriorsegundos=0;
 //unsigned int antes_network_traffic_counter_read=0;
 //unsigned int antes_network_traffic_counter_write=0;
+
+void zoc_common_alive_user(int indice_socket)
+{
+
+    //Cada 10 segundos enviar comando alive
+    int diferencia_tiempo=contador_segundo_infinito-contador_alive_anteriorsegundos;
+
+    if (diferencia_tiempo>50*20*10) {
+        contador_alive_anteriorsegundos=contador_segundo_infinito;
+
+        char buffer_enviar[1024];
+            //alive user_pass n uuid
+            sprintf(buffer_enviar,"zeng-online alive %s %d %s\n",
+                created_room_user_password,
+                zeng_online_joined_to_room_number,
+                stats_uuid
+            );
+            //printf("Enviando %s\n",buffer_enviar);
+
+
+        int return_value=zoc_common_send_command(indice_socket,buffer_enviar,"alive");
+
+
+        //if (!return_value) return 0;
+
+    }
+}
 
 void zoc_common_get_messages_slave_master(int indice_socket)
 {
@@ -2930,6 +2959,8 @@ void *zoc_master_thread_function(void *nada GCC_UNUSED)
             }
 
             zoc_common_get_messages_slave_master(indice_socket);
+
+            zoc_common_alive_user(indice_socket);
 
         }
 
@@ -3394,6 +3425,8 @@ void *zoc_slave_thread_function(void *nada GCC_UNUSED)
             }
 
             zoc_common_get_messages_slave_master(indice_socket);
+
+            zoc_common_alive_user(indice_socket);
 
 
             if (zoc_check_if_kicked(indice_socket)) {

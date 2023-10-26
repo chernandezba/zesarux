@@ -84,6 +84,7 @@ char *buffer_lectura_socket=malloc(MAX_LENGTH_PROTOCOL_COMMAND);
 #include "textspeech.h"
 #include "settings.h"
 #include "zip.h"
+#include "timer.h"
 
 
 
@@ -153,6 +154,7 @@ void zoc_del_user_to_joined_users(int room_number,char *uuid,char *nickname)
             strcpy(nickname,zeng_online_rooms_list[room_number].joined_users[i]);
             zeng_online_rooms_list[room_number].joined_users[i][0]=0;
             zeng_online_rooms_list[room_number].joined_users_uuid[i][0]=0;
+            borrado=1;
             break; //para salir del bucle y liberar lock
         }
     }
@@ -167,6 +169,30 @@ void zoc_del_user_to_joined_users(int room_number,char *uuid,char *nickname)
 
 	//Liberar lock
 	z_atomic_reset(&zeng_online_rooms_list[room_number].semaphore_joined_users);
+
+}
+
+void zeng_online_set_alive_user(int room_number,char *uuid)
+{
+
+
+    int i;
+    int encontrado=0;
+
+    for (i=0;i<zeng_online_rooms_list[room_number].max_players;i++) {
+        if (!strcmp(zeng_online_rooms_list[room_number].joined_users_uuid[i],uuid)) {
+            timer_stats_current_time(&zeng_online_rooms_list[room_number].joined_users_last_alive_time[i]);
+            encontrado=1;
+            printf("Set alive time for user %s\n",uuid);
+            break; //para salir del bucle y liberar lock
+        }
+    }
+
+
+    //Y si llega al final sin haber encontrado usuario, es un error aunque no lo reportaremos
+    if (!encontrado) debug_printf(VERBOSE_DEBUG,"Can not find user with uuid %s to set alive time",uuid);
+
+
 
 }
 
@@ -1807,6 +1833,43 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
 
     }
 
+    //alive user_pass n uuid
+    else if (!strcmp(comando_argv[0],"alive")) {
+        if (!zeng_online_enabled) {
+            escribir_socket(misocket,"ERROR. ZENG Online is not enabled");
+            return;
+        }
+
+        if (comando_argc<3) {
+            escribir_socket(misocket,"ERROR. Needs three parameters");
+            return;
+        }
+
+        int room_number=parse_string_to_number(comando_argv[2]);
+
+        if (room_number<0 || room_number>=zeng_online_current_max_rooms) {
+            escribir_socket_format(misocket,"ERROR. Room number beyond limit");
+            return;
+        }
+
+        if (!zeng_online_rooms_list[room_number].created) {
+            escribir_socket(misocket,"ERROR. Room is not created");
+            return;
+        }
+
+        //validar user_pass.
+        if (strcmp(comando_argv[1],zeng_online_rooms_list[room_number].user_password)) {
+            escribir_socket(misocket,"ERROR. Invalid user password for that room");
+            return;
+        }
+
+
+
+        //comando_argv[3] contiene el uuid
+        zeng_online_set_alive_user(room_number,comando_argv[3]);
+
+
+    }
 
     //join n. Aunque el master requiere join tambien, no necesita el user_password que le retorna, pero debe leerlo
     //para quitar esa respuesta del socket
