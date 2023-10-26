@@ -118,6 +118,11 @@ void zoc_add_user_to_joined_users(int room_number,char *nickname,char *uuid)
 
     for (i=0;i<zeng_online_rooms_list[room_number].max_players;i++) {
         if (zeng_online_rooms_list[room_number].joined_users_uuid[i][0]==0) {
+
+            //Activar el ultimo tiempo de alive antes de agregarlo para que no expire al momento,
+            //pues inicialmente el campo de tiempo es indefinido
+            timer_stats_current_time(&zeng_online_rooms_list[room_number].joined_users_last_alive_time[i]);
+
             strcpy(zeng_online_rooms_list[room_number].joined_users[i],nickname);
             strcpy(zeng_online_rooms_list[room_number].joined_users_uuid[i],uuid);
             agregado=1;
@@ -215,11 +220,12 @@ void zeng_online_expire_non_alive_users(void)
             for (i=0;i<zeng_online_rooms_list[room_number].max_players;i++) {
                 if (zeng_online_rooms_list[room_number].joined_users[i][0]) {
 
-                    printf("Looking at user %s\n",zeng_online_rooms_list[room_number].joined_users_uuid[i]);
 
                     difftime=timer_stats_diference_time(&zeng_online_rooms_list[room_number].joined_users_last_alive_time[i],&tiempo_ahora);
                     //en microsegundos
                     difftime /=1000000;
+
+                    printf("Looking at user %s. difftime=%ld\n",zeng_online_rooms_list[room_number].joined_users_uuid[i],difftime);
 
                     //ahora en segundos
                     if (difftime>ZOC_TIMEOUT_ALIVE_USER) {
@@ -249,6 +255,7 @@ void timer_zeng_online_expire_non_alive_users(void)
     if (!zeng_online_enabled) return;
 
     printf("timer_zeng_online_expire_non_alive_users\n");
+
 
     //Cada 60 segundos
     contador_timer_zeng_online_expire_non_alive_users++;
