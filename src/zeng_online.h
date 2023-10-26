@@ -25,6 +25,14 @@
 #include "atomic.h"
 #include "stats.h"
 
+//Esto para poder usar timeval aqui
+#include "compileoptions.h"
+#include <time.h>
+#include <sys/time.h>
+#ifndef MINGW
+        #include <unistd.h>
+#endif
+
 //Maximo nombre para una habitacion
 //Si se cambia esto, ajustar nombre con espacios en init_zeng_online_rooms, para que quede 30 de longitud,
 //Y en cabecera de list-rooms

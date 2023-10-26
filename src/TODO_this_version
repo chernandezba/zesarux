@@ -707,7 +707,7 @@ zeng online y zeng no-online
 -icono para network traffic
 
 
--Autoexpirar usuarios con comando “alive” y ver quien no ha dado señales de vida en 5 minutos. Listado de usuarios con timestamp de último alive
+ok -Autoexpirar usuarios con comando “alive” y ver quien no ha dado señales de vida en 5 minutos. Listado de usuarios con timestamp de último alive
 Auto expirar salas cuando máster no ha dado señales de vida en 1 día? Se sabe que es máster si no ha enviado snapshots
 
 Quizá tarea en el timer tal cual para todo eso
