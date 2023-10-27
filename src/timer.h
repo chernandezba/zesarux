@@ -83,6 +83,10 @@ extern struct timeval zeng_online_uncompress_time_despues;
 extern long zeng_online_uncompress_difftime;
 extern long zeng_online_uncompress_media;
 
+extern struct timeval zeng_online_compress_time_antes;
+extern struct timeval zeng_online_compress_time_despues;
+extern long zeng_online_compress_difftime;
+extern long zeng_online_compress_media;
 
 extern int timer_on_screen_key;
 extern int timer_on_screen_adv_key;

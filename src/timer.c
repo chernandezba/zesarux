@@ -68,6 +68,7 @@
 #include "menu_items.h"
 #include "pcw.h"
 #include "utils_text_adventure.h"
+#include "zeng_online.h"
 
 #include "autoselectoptions.h"
 
@@ -174,6 +175,13 @@ struct timeval zeng_online_uncompress_time_antes,zeng_online_uncompress_time_des
 long zeng_online_uncompress_difftime;
 //Media de todos los intervalos
 long zeng_online_uncompress_media=0;
+
+//Tiempo en comprimir un snapshot zip de ZENG Online. En microsegundos
+struct timeval zeng_online_compress_time_antes,zeng_online_compress_time_despues;
+//Ultimo intervalo de tiempo
+long zeng_online_compress_difftime;
+//Media de todos los intervalos
+long zeng_online_compress_media=0;
 
 
 void timer_stats_current_time(struct timeval *tiempo)

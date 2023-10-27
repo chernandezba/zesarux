@@ -154,6 +154,17 @@ int sensor_avg_zeng_online_uncompress_get_value(int id GCC_UNUSED)
     return zeng_online_uncompress_media;
 }
 
+int sensor_last_zeng_online_compress_get_value(int id GCC_UNUSED)
+{
+    return zeng_online_compress_difftime;
+}
+
+
+int sensor_avg_zeng_online_compress_get_value(int id GCC_UNUSED)
+{
+    return zeng_online_compress_media;
+}
+
 int sensor_last_zeng_online_snapshot_diff_get_value(int id GCC_UNUSED)
 {
     return zeng_online_snapshot_diff;
@@ -433,9 +444,12 @@ pues de una octava a la otra es el doble de valor
 
    {
     "last_zoc_uncompress","Last ZENG Online uncompress","ZOCUnzip",
-    0,1000, //1ms. Por ejemplo con el target renegade de 48kb tarda 300 microsec en mi Mac, por tanto 1000 microsec (1ms) ya me parece mucho
+    //Por ejemplo con el target renegade de 48kb tarda 300 microsec en mi Mac, por tanto 1000 microsec (1ms) ya me parece mucho
+    //abadia del crimen (128k) tarda 800 microsec
+    //target renegade (128kb) tarda 900 microsec
+    0,1000, //1 ms
     85,-9999,
-    8500,-9999,
+    850,-9999,
     sensor_last_zeng_online_uncompress_get_value,0
     },
 
@@ -446,6 +460,26 @@ pues de una octava a la otra es el doble de valor
     85,-9999,
     850,-9999,
     sensor_avg_zeng_online_uncompress_get_value,0
+    },
+
+   {
+    "last_zoc_compress","Last ZENG Online compress","ZOCZip",
+    //Por ejemplo con el xeno tarda 1500 microsec en mi Mac, por tanto 3000 microsec (3ms) ya me parece mucho
+    //Abadia del crimen (128k) tarda 3.5 ms
+    //Target renegade (128k) tarda 5 ms
+    0,5000, //5 ms
+    85,-9999,
+    4500,-9999,
+    sensor_last_zeng_online_compress_get_value,0
+    },
+
+    //En este el tiempo maximo y los porcentajes no tienen mucho sentido
+   {
+    "avg_zoc_compress","Average ZENG Online compress","AZOCZip",
+    0,5000, //5ms
+    85,-9999,
+    4500,-9999,
+    sensor_avg_zeng_online_compress_get_value,0
     },
 
    {

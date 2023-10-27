@@ -3667,9 +3667,17 @@ void zeng_online_client_prepare_snapshot_if_needed(void)
 
                     if (comprimir_zip) {
 
+                        timer_stats_current_time(&zeng_online_compress_time_antes);
+
                         //Comprimir a zip
                         buffer_temp=util_compress_memory_zip(buffer_temp_sin_comprimir,longitud_sin_comprimir,
                                         &longitud,"snapshot.zsf");
+
+                        zeng_online_compress_difftime=timer_stats_diference_time(&zeng_online_compress_time_antes,&zeng_online_compress_time_despues);
+
+                        //media de tiempo.
+                        zeng_online_compress_media=(zeng_online_compress_media+zeng_online_compress_difftime)/2;
+
                     }
 
                     else {

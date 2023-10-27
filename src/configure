@@ -1369,7 +1369,7 @@ scmp.o: scmp.c scmp.h cpu.h operaciones.h
 	\$(CC) \$(CFLAGS) -c scmp.c
 
 
-timer.o: timer.c timer.h cpu.h start.h audio.h debug.h zxvision.h tape.h screen.h compileoptions.h zx8081.h joystick.h utils.h printers.h z88.h autoselectoptions.h zxuno.h textspeech.h mmc.h ide.h zxpand.h superupgrade.h snap.h snap_rzx.h ql.h esxdos_handler.h betadisk.h pd765.h settings.h ql_i8049.h cpc.h snap_ram.h hilow_datadrive.h dsk.h menu_items.h pcw.h
+timer.o: timer.c timer.h cpu.h start.h audio.h debug.h zxvision.h tape.h screen.h compileoptions.h zx8081.h joystick.h utils.h printers.h z88.h autoselectoptions.h zxuno.h textspeech.h mmc.h ide.h zxpand.h superupgrade.h snap.h snap_rzx.h ql.h esxdos_handler.h betadisk.h pd765.h settings.h ql_i8049.h cpc.h snap_ram.h hilow_datadrive.h dsk.h menu_items.h pcw.h zeng_online.h
 	\$(CC) \$(CFLAGS) -c timer.c
 
 

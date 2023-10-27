@@ -80,7 +80,20 @@ void menu_zeng_online_set_server(MENU_ITEM_PARAMETERS)
 
 void menu_zeng_online_nickname(MENU_ITEM_PARAMETERS)
 {
-    menu_ventana_scanf("Nickname",zeng_online_nickname,ZOC_MAX_NICKNAME_LENGTH+1);
+    char buf_nickname[ZOC_MAX_NICKNAME_LENGTH+1];
+    strcpy(buf_nickname,zeng_online_nickname);
+
+    menu_ventana_scanf("Nickname",buf_nickname,ZOC_MAX_NICKNAME_LENGTH+1);
+
+    //No permitir nickname con la palabra “error” en el nombre, porque
+    //puede hacer que respuestas que respuestas que retornen su nombre, se interpreten como un error
+
+    if (strcasestr(buf_nickname,"ERROR")!=NULL) {
+        menu_error_message("Nickname not allowed");
+        return;
+    }
+
+    strcpy(zeng_online_nickname,buf_nickname);
 }
 
 void menu_zeng_online_join_room_print(zxvision_window *w)
