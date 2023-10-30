@@ -717,9 +717,4 @@ Temporizadores comunes de ver kick y ver mensajes
 -First aid de advanced menu items
 
 
--Tiene sentido mantener habitaciones un tiempo sin usuarios?
-Si alguien entra, no será funcional porque al no haber el máster, el snapshot siempre será el mismo y el estado estará congelado. Aunque no se si en ese caso lo declara offline
-Quizá un setting en Zeng online server que diga si elimina salas sin jugadores
-
-
 ---------------
