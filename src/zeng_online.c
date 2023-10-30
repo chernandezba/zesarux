@@ -321,7 +321,7 @@ void timer_zeng_online_server(void)
     zeng_online_expire_non_alive_users();
 
     //Destruir rooms que no tengan usuarios
-    zeng_online_destroy_empty_rooms();
+    if (zeng_online_destroy_rooms_without_players.v) zeng_online_destroy_empty_rooms();
 
 }
 

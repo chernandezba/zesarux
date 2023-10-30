@@ -15931,6 +15931,15 @@ void menu_zeng_online_server_view_creator_passwords(MENU_ITEM_PARAMETERS)
     } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
 }
 
+void menu_zeng_online_server_expire_rooms_without_players(MENU_ITEM_PARAMETERS)
+{
+    zeng_online_destroy_rooms_without_players.v ^=1;
+}
+
+void menu_zeng_online_server_allow_room_creation_from_any_ip(MENU_ITEM_PARAMETERS)
+{
+    zeng_online_allow_room_creation_from_any_ip.v ^=1;
+}
 void menu_zeng_online_server(MENU_ITEM_PARAMETERS)
 {
 
@@ -15948,6 +15957,19 @@ void menu_zeng_online_server(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_server_view_creator_passwords,NULL,
             "View creator room ~~passwords","Ver ~~passwords creación habitaciones","Veure ~~passwords creació habitacions");
         menu_add_item_menu_shortcut(array_menu_common,'p');
+
+        menu_add_item_menu_separator(array_menu_common);
+
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_server_expire_rooms_without_players,NULL,
+            "Destroy rooms without players","Destruir habitaciones sin jugadores","Destruir habitacions sense jugadors");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(zeng_online_destroy_rooms_without_players.v ? 'X' : ' ' ));
+
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_server_allow_room_creation_from_any_ip,NULL,
+            "Allow room creation from any ip","Permitir crear habitaciones desde cualquier ip","Permetre crear habitacions desde qualsevol ip");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(zeng_online_allow_room_creation_from_any_ip.v ? 'X' : ' ' ));
+        menu_add_item_menu_tooltip(array_menu_common,"If room creation is allowed from any source ip");
+        menu_add_item_menu_ayuda(array_menu_common,"If room creation is allowed from any source ip. Creation from localhost is always allowed");
+
 
         menu_add_item_menu_separator(array_menu_common);
 

@@ -385,11 +385,20 @@ z80_bit accessibility_enable_gui_sounds={0};
 
 
 //
-// ZENG Online Settings
+// ZENG Online Server Settings
 //
 
 //Dice que permite crear habitaciones desde cualquier ip, no solo localhost
 z80_bit zeng_online_allow_room_creation_from_any_ip={0};
+
+//Dice que se expiran habitaciones sin jugadores
+z80_bit zeng_online_destroy_rooms_without_players={0};
+
+//
+// ZENG Online Settings
+//
+
+
 
 //Decir que se comprimen en zip los snapshots de zeng online
 z80_bit zeng_online_zip_compress_snapshots={1};
