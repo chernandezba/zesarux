@@ -2055,6 +2055,7 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
                 while (zeng_online_rooms_list[room_number].join_waiting_list[id_authorization].waiting && timeout) {
                     printf("Waiting authorization...\n");
                     sleep(1);
+                    timeout--;
                 }
                 if (zeng_online_rooms_list[room_number].join_waiting_list[id_authorization].waiting) {
                     escribir_socket(misocket,"ERROR. Timeout waiting for client join authorization");
