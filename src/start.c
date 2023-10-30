@@ -896,9 +896,11 @@ printf (
 		"--enable-remoteprotocol             Enable ZRCP remote protocol\n"
 		"--remoteprotocol-port n             Set remote protocol port (default: 10000)\n"
         "--remoteprotocol-prompt p           Change the command prompt shown on remote protocol\n"
-        "--enable-zeng-online-server                     Enable ZENG Online server. Requires ZRCP\n"
+
         "--zeng-online-nickname s                        Sets nickname for ZENG Online\n"
         "--zeng-online-no-zip-snapshots                  Do not compress snapshots with zip format\n"
+        "--zeng-online-no-footer-lag-indicator           Show lag indicator on footer when snapshots are coming late\n"
+        "--enable-zeng-online-server                     Enable ZENG Online server. Requires ZRCP\n"
         "--zeng-online-server-allow-create               Allows this ZENG Online server to allow create rooms from any ip address. By default, only creation from localhost is allowed\n"
         "--zeng-online-server-destroy-rooms-no-players   This ZENG Online server destroys rooms without players\n"
 #endif
@@ -5529,6 +5531,10 @@ int parse_cmdline_options(int desde_commandline) {
 
         else if (!strcmp(argv[puntero_parametro],"--zeng-online-no-zip-snapshots")) {
             zeng_online_zip_compress_snapshots.v=0;
+        }
+
+        else if (!strcmp(argv[puntero_parametro],"--zeng-online-no-footer-lag-indicator")) {
+            zeng_online_show_footer_lag_indicator.v=0;
         }
 
 
