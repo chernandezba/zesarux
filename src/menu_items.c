@@ -19244,20 +19244,21 @@ void menu_video_output_overlay(void)
     if (menu_video_output_window->is_minimized) return;
 
 
-    //Print....
-    //Tambien contar si se escribe siempre o se tiene en cuenta contador_segundo...
+    if (rainbow_enabled.v) {
 
-    int x,y,xmax,ymax;
-    xmax=get_total_ancho_rainbow();
-    ymax=get_total_alto_rainbow();
-    z80_int *puntero;
-    puntero=rainbow_buffer;
+        int x,y,xmax,ymax;
+        xmax=get_total_ancho_rainbow();
+        ymax=get_total_alto_rainbow();
+        z80_int *puntero;
+        puntero=rainbow_buffer;
 
-    for (y=0;y<ymax;y++) {
-        for (x=0;x<xmax;x++) {
-            zxvision_putpixel(menu_video_output_window,x,y,*puntero);
-            puntero++;
+        for (y=0;y<ymax;y++) {
+            for (x=0;x<xmax;x++) {
+                zxvision_putpixel(menu_video_output_window,x,y,*puntero);
+                puntero++;
+            }
         }
+
     }
 
 
@@ -19337,6 +19338,14 @@ void menu_video_output(MENU_ITEM_PARAMETERS)
             return;
     }
 
+    if (rainbow_enabled.v==0) {
+        zxvision_print_string_defaults_fillspc(ventana,1,0,"Real video not enabled");
+        zxvision_print_string_defaults_fillspc(ventana,1,1,"Enable it on Setttings->Display");
+    }
+    else {
+        zxvision_cls(ventana);
+    }
+
     do {
 
 
@@ -19344,13 +19353,6 @@ void menu_video_output(MENU_ITEM_PARAMETERS)
 
 
         switch (tecla) {
-
-            case 11:
-                //arriba
-                //blablabla
-            break;
-
-
 
             //Salir con ESC
             case 2:
