@@ -705,6 +705,7 @@ zeng online y zeng no-online
 
 
 -icono para network traffic
+-icono para video output
 
 
 ok -Autoexpirar usuarios con comando “alive” y ver quien no ha dado señales de vida en 5 minutos. Listado de usuarios con timestamp de último alive
@@ -714,9 +715,6 @@ Quizá tarea en el timer tal cual para todo eso
 
 Temporizadores comunes de ver kick y ver mensajes
 
-ok-snapshot de ql: incluir parametros del chip de sonido. desde ql_audio_pitch1 hasta ql_audio_playing probablemente
-
-ok -ql: soporte zeng online.
 
 
 -First aid de advanced menu items

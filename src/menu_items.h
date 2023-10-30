@@ -110,6 +110,7 @@ extern int contador_menu_zeng_connect_print;
 
 extern void menu_zeng_send_message(MENU_ITEM_PARAMETERS);
 extern void menu_network_traffic(MENU_ITEM_PARAMETERS);
+extern void menu_video_output(MENU_ITEM_PARAMETERS);
 
 extern void menu_mmc_divmmc(MENU_ITEM_PARAMETERS);
 extern void menu_storage_diviface_eprom_write_jumper(MENU_ITEM_PARAMETERS);

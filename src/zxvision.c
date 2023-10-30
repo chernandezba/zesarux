@@ -9400,6 +9400,7 @@ zxvision_known_window_names zxvision_known_window_names_array[]={
     {"textadvlocimage",menu_textadv_loc_image,bitmap_button_ext_desktop_textadvlocimage},
     {"asciitable",menu_ascii_table,bitmap_button_ext_desktop_asciitable},
     {"networktraffic",menu_network_traffic,bitmap_button_ext_desktop_userdefined},
+    {"videooutput",menu_video_output,bitmap_button_ext_desktop_userdefined},
 
 	{"",NULL,bitmap_button_ext_desktop_userdefined} //NO BORRAR ESTA!!
 };
