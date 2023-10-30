@@ -646,11 +646,18 @@ void menu_zeng_online_create_room(MENU_ITEM_PARAMETERS)
 
         zxvision_simple_progress_window("ZENG Online Create Room", menu_zeng_online_create_room_cond,menu_zeng_online_connecting_common_print );
 
-        menu_zoc_join_master_aux(room_number);
+        //detectar que realmente se haya creado y no hacer join ni nada mas si no se ha creado
+        if (zeng_online_room_was_created.v) {
 
-        menu_generic_message_splash("Create room","Created room and joined as master");
+            menu_zoc_join_master_aux(room_number);
 
-        zoc_show_bottom_line_footer_connected();
+            if (zeng_online_connected.v) {
+                menu_generic_message_splash("Create room","Created room and joined as master");
+
+                zoc_show_bottom_line_footer_connected();
+            }
+
+        }
 
 
     }

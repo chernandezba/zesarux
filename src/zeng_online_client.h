@@ -63,6 +63,8 @@ extern int zeng_online_snapshot_diff_media;
 
 //#define ZENG_ONLINE_USE_ZIP_SNAPSHOT
 
+extern z80_bit zeng_online_room_was_created;
+
 extern int allowed_keys[ZOC_MAX_KEYS_PROFILES][ZOC_MAX_KEYS_ITEMS];
 extern char allowed_keys_assigned[ZOC_MAX_KEYS_PROFILES][STATS_UUID_MAX_LENGTH+1];
 

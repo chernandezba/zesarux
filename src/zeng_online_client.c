@@ -109,6 +109,9 @@ int zoc_pending_send_snapshot=0;
 //Si esta conectado
 z80_bit zeng_online_connected={0};
 
+//Si la ultima habitacion se ha creado.
+z80_bit zeng_online_room_was_created={0};
+
 char zeng_online_server[NETWORK_MAX_URL+1]="localhost";
 int zeng_online_server_port=10000;
 
@@ -2157,7 +2160,7 @@ int zeng_online_client_create_room_connect(void)
 		//finalizar conexion
         z_sock_close_connection(indice_socket);
 
-
+    zeng_online_room_was_created.v=1;
 
 	//zeng_remote_socket=indice_socket;
 
@@ -2197,6 +2200,9 @@ void *zeng_online_client_create_room_function(void *nada GCC_UNUSED)
 
 void zeng_online_client_create_room(int room_number,char *room_name)
 {
+
+    zeng_online_room_was_created.v=0;
+
 	//Inicializar thread
     //Parametros, dado que tienen que ser estaticos, ni me preocupo en crear una estructura, se asignan a dos variables
     //estaticas y listo

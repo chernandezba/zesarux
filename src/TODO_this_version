@@ -708,9 +708,6 @@ zeng online y zeng no-online
 -icono para video output
 
 
-ok -Autoexpirar usuarios con comando “alive” y ver quien no ha dado señales de vida en 5 minutos. Listado de usuarios con timestamp de último alive
-Auto expirar salas cuando máster no ha dado señales de vida en 1 día? Se sabe que es máster si no ha enviado snapshots
-
 Quizá tarea en el timer tal cual para todo eso
 
 Temporizadores comunes de ver kick y ver mensajes
@@ -725,5 +722,4 @@ Si alguien entra, no será funcional porque al no haber el máster, el snapshot 
 Quizá un setting en Zeng online server que diga si elimina salas sin jugadores
 
 
--si da error al crear room (por ejemplo porque servidor no permita crear desde ips externas) acaba diciendo que ha creado room, y ademas crea la master thread
 ---------------
