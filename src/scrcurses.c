@@ -2058,6 +2058,16 @@ void scrcurses_actualiza_tablas_teclado(void)
                     util_set_reset_key(UTIL_KEY_TAB,1);
             break;
 
+            //Tecla '.' es un tanto especial en ZX80/81, no usar ascii_to_keyboard_port
+            case '.':
+                util_set_reset_key(UTIL_KEY_PERIOD,1);
+            break;
+
+            //Tecla ',' es un tanto especial en ZX80/81, no usar ascii_to_keyboard_port
+            case ',':
+                util_set_reset_key(UTIL_KEY_COMMA,1);
+            break;
+
             //PgUp
             case 339:
 

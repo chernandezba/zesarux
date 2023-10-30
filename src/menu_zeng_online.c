@@ -1473,6 +1473,11 @@ void menu_zeng_online_lag_indicator(MENU_ITEM_PARAMETERS)
     zeng_online_show_footer_lag_indicator.v ^=1;
 }
 
+void menu_zeng_online_allow_instant_keys(MENU_ITEM_PARAMETERS)
+{
+    zeng_online_allow_instant_keys.v ^=1;
+}
+
 void menu_zeng_online(MENU_ITEM_PARAMETERS)
 {
     menu_item *array_menu_common;
@@ -1636,10 +1641,28 @@ void menu_zeng_online(MENU_ITEM_PARAMETERS)
                 if (created_room_user_permissions & ZENG_ONLINE_PERMISSIONS_GET_SNAPSHOT) {
                     menu_add_item_menu_separator(array_menu_common);
                     menu_add_item_menu_es_avanzado(array_menu_common);
+
                     menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_lag_indicator,NULL,
                     "Footer lag indicator","Indicador lag en footer","Indicador lag al footer");
                     menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",
                         (zeng_online_show_footer_lag_indicator.v ? 'X' : ' '));
+                    menu_add_item_menu_es_avanzado(array_menu_common);
+
+                }
+
+                if (created_room_user_permissions & ZENG_ONLINE_PERMISSIONS_SEND_KEYS) {
+                    menu_add_item_menu_separator(array_menu_common);
+                    menu_add_item_menu_es_avanzado(array_menu_common);
+
+                    menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_allow_instant_keys,NULL,
+                    "Allow instant keys","Permitir teclas instantáneas","Permetre tecles instantànies");
+                    menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",
+                        (zeng_online_allow_instant_keys.v ? 'X' : ' '));
+                    menu_add_item_menu_tooltip(array_menu_common,"Key presses are sent instantly to the emulated machine, "
+                        "instead of waiting for the event to go to the server and come back ");
+                    menu_add_item_menu_tooltip(array_menu_common,"Key presses are sent instantly to the emulated machine, "
+                        "instead of waiting for the event to go to the server and come back. This can be useful in some cases");
+
                     menu_add_item_menu_es_avanzado(array_menu_common);
 
                 }

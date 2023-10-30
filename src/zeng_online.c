@@ -212,6 +212,8 @@ void zeng_online_destroy_room_aux(int room_number)
         free(zeng_online_rooms_list[room_number].snapshot_memory);
     }
 
+    zeng_online_rooms_list[room_number].autojoin_enabled=0;
+
     zeng_online_rooms_list[room_number].created=0;
 
 

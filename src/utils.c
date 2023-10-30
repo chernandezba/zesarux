@@ -7553,10 +7553,17 @@ z80_byte antes_puerto_32766=puerto_32766;
 z80_byte antes_puerto_especial_joystick=puerto_especial_joystick;
 
 
+    unsigned char antes_ql_keyboard_table[8];
+    int i;
+    if (MACHINE_IS_QL) {
+        for (i=0;i<8;i++) antes_ql_keyboard_table[i]=ql_keyboard_table[i];
+    }
+
+
   util_set_reset_key_continue_after_zeng(tecla,pressrelease);
 
 
-  if (zeng_online_connected.v && zeng_online_i_am_master.v==0 && !menu_abierto && zoc_last_snapshot_received_counter>0) {
+  if (zeng_online_connected.v && zeng_online_i_am_master.v==0 && !menu_abierto && zoc_last_snapshot_received_counter>0 && zeng_online_allow_instant_keys.v==0) {
     //printf("Antes Puerto puerto_61438: %d\n",puerto_61438);
     puerto_65278=antes_puerto_65278;
     puerto_65022=antes_puerto_65022;
@@ -7568,6 +7575,10 @@ z80_byte antes_puerto_especial_joystick=puerto_especial_joystick;
     puerto_32766=antes_puerto_32766;
     puerto_especial_joystick=antes_puerto_especial_joystick;
     //printf("Despues Puerto puerto_61438: %d\n",puerto_61438);
+
+    if (MACHINE_IS_QL) {
+        for (i=0;i<8;i++) ql_keyboard_table[i]=antes_ql_keyboard_table[i];
+    }
 
     //zoc_decir_pulsada_alguna_tecla_local();
   }
@@ -8292,10 +8303,19 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                         case UTIL_KEY_COMMA:
                         case ',':
                                 util_press_menu_symshift(pressrelease);
-                                //Nota: para tanto , como . hay un problema en zx80/81 con la tecla en el menu,
-                                //pues no genera sym +m y n como cabria esperar
-                                //en ese caso, hay que pulsar ctrl/alt + m o n
-				if (MACHINE_IS_ZX8081) {
+
+                                int actuar_como_zx8081=0;
+
+                                if (MACHINE_IS_ZX8081) {
+                                    actuar_como_zx8081=1;
+
+                                    //Con menu abierto, se genera tecla sym+n como en spectrum
+                                    if (menu_abierto && zxvision_keys_event_not_send_to_machine) {
+                                        actuar_como_zx8081=0;
+                                    }
+                                }
+
+				if (actuar_como_zx8081) {
 					if (pressrelease) {
 						puerto_32766 &=255-2;
 						puerto_65278 &=255-1;
@@ -8348,10 +8368,21 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                 }
                                 else {
                                     util_press_menu_symshift(pressrelease);
-                                    //Nota: para tanto , como . hay un problema en zx80/81 con la tecla en el menu,
-                                    //pues no genera sym +m y n como cabria esperar
-                                    //en ese caso, hay que pulsar ctrl/alt + m o n
+
+                                    int actuar_como_zx8081=0;
+
                                     if (MACHINE_IS_ZX8081) {
+                                        actuar_como_zx8081=1;
+
+                                        //Con menu abierto, se genera tecla sym+m como en spectrum
+                                        if (menu_abierto && zxvision_keys_event_not_send_to_machine) {
+                                            actuar_como_zx8081=0;
+                                        }
+                                    }
+
+
+                                    if (actuar_como_zx8081) {
+
                                             //para zx80/81
                                                     if (pressrelease) puerto_32766  &=255-2;
                                             else  puerto_32766 |=2;

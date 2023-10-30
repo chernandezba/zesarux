@@ -1328,7 +1328,7 @@ core_zx8081.o: core_zx8081.c core_zx8081.h cpu.h debug.h tape.h audio.h screen.h
 core_ace.o: core_ace.c core_ace.h cpu.h debug.h tape.h audio.h screen.h ay38912.h operaciones.h snap.h jupiterace.h timer.h zxvision.h chardetect.h compileoptions.h contend.h snap_zx8081.h utils.h realjoystick.h ula.h settings.h zeng.h zeng_online.h snap_zsf.h zeng_online_client.h
 	\$(CC) \$(CFLAGS) -c core_ace.c
 
-core_ql.o: core_ql.c core_ql.h cpu.h debug.h tape.h audio.h screen.h ay38912.h operaciones.h snap.h timer.h zxvision.h chardetect.h compileoptions.h contend.h snap_zx8081.h utils.h realjoystick.h ula.h settings.h ql_i8049.h ql_qdos_handler.h ql_zx8302.h zeng.h zeng_online.h snap_zsf.h snap_ram.h
+core_ql.o: core_ql.c core_ql.h cpu.h debug.h tape.h audio.h screen.h ay38912.h operaciones.h snap.h timer.h zxvision.h chardetect.h compileoptions.h contend.h snap_zx8081.h utils.h realjoystick.h ula.h settings.h ql_i8049.h ql_qdos_handler.h ql_zx8302.h zeng.h zeng_online.h snap_zsf.h snap_ram.h zeng_online_client.h
 	\$(CC) \$(CFLAGS) -c core_ql.c
 
 core_mk14.o: core_mk14.c core_mk14.h scmp.h cpu.h debug.h tape.h audio.h screen.h ay38912.h operaciones.h snap.h timer.h zxvision.h chardetect.h compileoptions.h contend.h snap_zx8081.h utils.h realjoystick.h ula.h settings.h

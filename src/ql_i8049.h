@@ -52,6 +52,11 @@ extern int i8049_chip_present;
 
 extern int ql_audio_playing;
 
+extern int ql_audio_output_bit;
+
+extern moto_int ql_audio_pitch_counter_initial;
+extern moto_int ql_audio_pitch_counter_current;
+
 extern const int ql_i8049_sound_chip_frequency;
 
 extern int ql_ipc_get_frecuency_sound_value(int pitch);
@@ -67,6 +72,15 @@ extern unsigned char ql_audio_grad_y;
 extern unsigned char ql_audio_wrap;
 extern unsigned char ql_audio_randomness_of_step;
 extern unsigned char ql_audio_fuziness;
+
+
+
+extern moto_byte ql_audio_switch_pitch_current_index;
+extern moto_byte ql_audio_switch_pitch_array[];
+extern moto_byte ql_audio_switch_pitch_current_pitch;
+extern moto_int ql_audio_next_cycle_counter;
+extern int signed_ql_audio_grad_y;
+extern int ql_audio_wrap_counter;
 
 
 extern int ql_sound_feature_pitch2_enabled;

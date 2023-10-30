@@ -783,6 +783,16 @@ Byte fields:
 0: z80_byte joystick_emulation: current joystick type so this is sync on all ZEsarUX ZOC clients
 
 
+-Block ID 64: ZSF_I8049_AUDIO
+I8049 audio chip registers
+
+0: Some flags:
+bit 0: ql_audio_playing
+bit 1: ql_audio_output_bit
+
+1: unsigned char ql_audio_pitch1;
+etc....
+
 
 -Como codificar bloques de memoria para Spectrum 128k, zxuno, tbblue, tsconf, etc?
 Con un numero de bloque (0...255) pero... que tamaño de bloque? tbblue usa paginas de 8kb, tsconf usa paginas de 16kb
@@ -796,7 +806,7 @@ Por otra parte, tener bloques diferentes ayuda a saber mejor qué tipos de bloqu
 #define MAX_ZSF_BLOCK_ID_NAMELENGTH 30
 
 //Id maximo de nombres sin contar el unknown final
-#define MAX_ZSF_BLOCK_ID_NAMES 63
+#define MAX_ZSF_BLOCK_ID_NAMES 64
 char *zsf_block_id_names[]={
  //123456789012345678901234567890
   "ZSF_NOOP",                 //0
@@ -863,6 +873,7 @@ char *zsf_block_id_names[]={
   "ZSF_FLASH_STATE",
   "ZSF_KEY_PORTS_SPECTRUM_STATE",
   "ZSF_ZOC_ETC",
+  "ZSF_I8049_AUDIO",
 
   "Unknown"  //Este siempre al final
 };
@@ -2921,6 +2932,40 @@ Byte fields:
 
 }
 
+void load_zsf_i8049_audio(z80_byte *header)
+{
+
+    ql_audio_playing=header[0] & 1;
+    ql_audio_output_bit=(header[0]>>1) &1;
+
+
+    ql_audio_pitch1=header[1];
+    ql_audio_pitch2=header[2];
+    ql_audio_wrap=header[3];
+    ql_audio_randomness_of_step=header[4];
+    ql_audio_fuziness=header[5];
+    ql_audio_grad_y=header[6];
+
+    ql_audio_grad_x=value_8_to_16(header[8],header[7]);
+    ql_audio_duration=value_8_to_16(header[10],header[9]);
+    ql_audio_pitch_counter_initial=value_8_to_16(header[12],header[11]);
+    ql_audio_pitch_counter_current=value_8_to_16(header[14],header[13]);
+    ql_current_sound_duration=value_8_to_16(header[16],header[15]);
+
+
+    ql_audio_switch_pitch_current_index=header[17];
+    ql_audio_switch_pitch_array[0]=header[18];
+    ql_audio_switch_pitch_array[1]=header[19];
+    ql_audio_switch_pitch_current_pitch=header[20];
+
+    ql_audio_next_cycle_counter=value_8_to_16(header[22],header[21]);
+    signed_ql_audio_grad_y=(char) header[23];
+    ql_audio_wrap_counter=header[24];
+
+    //printf("signed_ql_audio_grad_y: [%02XH] %d\n",header[23],signed_ql_audio_grad_y);
+
+}
+
 
 int load_zsf_eof(FILE *ptr_zsf_file,int longitud_memoria)
 {
@@ -3242,6 +3287,10 @@ void load_zsf_snapshot_file_mem(char *filename,z80_byte *origin_memory,int longi
 
       case ZSF_QL_CONF:
         load_zsf_ql_conf(block_data);
+      break;
+
+      case ZSF_I8049_AUDIO:
+        load_zsf_i8049_audio(block_data);
       break;
 
       case ZSF_SMS_ROMBLOCK:
@@ -6089,6 +6138,56 @@ Byte Fields:
 
   free(compressed_ramblock);
 
+  }
+
+  if (i8049_chip_present) {
+   z80_byte i8049_block[25];
+
+/*
+-Block ID 64: ZSF_I8049_AUDIO
+I8049 audio chip registers
+
+0: Some flags:
+bit 0: ql_audio_playing
+bit 1: ql_audio_output_bit
+
+1: unsigned char ql_audio_pitch1;
+
+*/
+    i8049_block[0]=ql_audio_playing | (ql_audio_output_bit<<1);
+    i8049_block[1]=ql_audio_pitch1;
+    i8049_block[2]=ql_audio_pitch2;
+    i8049_block[3]=ql_audio_wrap;
+    i8049_block[4]=ql_audio_randomness_of_step;
+    i8049_block[5]=ql_audio_fuziness;
+    i8049_block[6]=ql_audio_grad_y;
+    i8049_block[7]=value_16_to_8l(ql_audio_grad_x);
+    i8049_block[8]=value_16_to_8h(ql_audio_grad_x);
+    i8049_block[9]=value_16_to_8l(ql_audio_duration);
+    i8049_block[10]=value_16_to_8h(ql_audio_duration);
+    i8049_block[11]=value_16_to_8l(ql_audio_pitch_counter_initial);
+    i8049_block[12]=value_16_to_8h(ql_audio_pitch_counter_initial);
+    i8049_block[13]=value_16_to_8l(ql_audio_pitch_counter_current);
+    i8049_block[14]=value_16_to_8h(ql_audio_pitch_counter_current);
+    i8049_block[15]=value_16_to_8l(ql_current_sound_duration);
+    i8049_block[16]=value_16_to_8h(ql_current_sound_duration);
+
+    i8049_block[17]=ql_audio_switch_pitch_current_index;
+    i8049_block[18]=ql_audio_switch_pitch_array[0];
+    i8049_block[19]=ql_audio_switch_pitch_array[1];
+    i8049_block[20]=ql_audio_switch_pitch_current_pitch;
+
+    i8049_block[21]=value_16_to_8l(ql_audio_next_cycle_counter);
+    i8049_block[22]=value_16_to_8h(ql_audio_next_cycle_counter);
+
+    //esto va con signo
+    i8049_block[23]=signed_ql_audio_grad_y;
+
+    i8049_block[24]=ql_audio_wrap_counter;
+
+
+
+    zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, i8049_block,ZSF_I8049_AUDIO, 25);
   }
 
 

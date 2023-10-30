@@ -396,3 +396,6 @@ z80_bit zeng_online_zip_compress_snapshots={1};
 
 //Decir que se muestra indicador de lag en el footer
 z80_bit zeng_online_show_footer_lag_indicator={1};
+
+//Decir que pulsaciones locales de teclas en slave se envian a la maquina al momento, y no se eliminan para esperar que vengan como eventos
+z80_bit zeng_online_allow_instant_keys={0};

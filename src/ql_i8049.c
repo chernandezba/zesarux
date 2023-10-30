@@ -115,25 +115,44 @@ Para aproximar, cada "duration" es un scanline
 
 unsigned char ql_audio_pitch1;
 unsigned char ql_audio_pitch2;
-moto_int ql_audio_grad_x;
-moto_int ql_audio_duration;
-unsigned char ql_audio_grad_y;
 unsigned char ql_audio_wrap;
 unsigned char ql_audio_randomness_of_step;
 unsigned char ql_audio_fuziness;
-
+unsigned char ql_audio_grad_y;
+moto_int ql_audio_grad_x;
+moto_int ql_audio_duration;
 
 //Estos dos modificados para usar como contadores de la frecuencia
 moto_int ql_audio_pitch_counter_initial=0;
 moto_int ql_audio_pitch_counter_current=0;
 
-//Bit 0/1 del sonido en ejecucion
-int ql_audio_output_bit=0;
-
 
 //Duracion actual del sonido, se va decrementando
 moto_int ql_current_sound_duration=0;
 
+
+moto_byte ql_audio_switch_pitch_current_index=0;
+
+//0=high pitch, 1=low pitch
+moto_byte ql_audio_switch_pitch_array[2];
+
+//Current pitch
+moto_byte ql_audio_switch_pitch_current_pitch;
+
+//Veces llamadas a ql_audio_next_cycle
+moto_int ql_audio_next_cycle_counter=0;
+
+//incremento entre notas
+int signed_ql_audio_grad_y;
+
+//Conteo de cuantas veces ha hecho "wrap"
+int ql_audio_wrap_counter=0;
+
+
+
+
+//Bit 0/1 del sonido en ejecucion
+int ql_audio_output_bit=0;
 
 //Si hay sonido produciendose
 int ql_audio_playing=0;
@@ -923,22 +942,7 @@ moto_int ql_get_counter_from_pitch(moto_byte pitch)
     }
 }
 
-int ql_audio_switch_pitch_current_index=0;
 
-//0=high pitch, 1=low pitch
-moto_byte ql_audio_switch_pitch_array[2];
-
-//Current pitch
-moto_byte ql_audio_switch_pitch_current_pitch;
-
-//Veces llamadas a ql_audio_next_cycle
-int ql_audio_next_cycle_counter=0;
-
-//incremento entre notas
-int signed_ql_audio_grad_y;
-
-//Conteo de cuantas veces ha hecho "wrap"
-int ql_audio_wrap_counter=0;
 
 
 //Settings para activar/desactivar features de sonido desde menu

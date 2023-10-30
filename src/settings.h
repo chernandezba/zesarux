@@ -156,5 +156,7 @@ extern z80_bit zeng_online_zip_compress_snapshots;
 
 extern z80_bit zeng_online_show_footer_lag_indicator;
 
+extern z80_bit zeng_online_allow_instant_keys;
+
 #endif
 

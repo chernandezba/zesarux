@@ -75,11 +75,14 @@ Examples
 
 //8 bits
 typedef unsigned char z80_byte;
+
 //16 bits
 typedef unsigned short z80_int;
+
 //32 bits
 typedef unsigned int z80_long_int;
 typedef unsigned int z80_32bit;
+
 //64 bits
 typedef long long int z80_64bit;
 
