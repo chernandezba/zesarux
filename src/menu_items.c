@@ -15940,6 +15940,14 @@ void menu_zeng_online_server_allow_room_creation_from_any_ip(MENU_ITEM_PARAMETER
 {
     zeng_online_allow_room_creation_from_any_ip.v ^=1;
 }
+
+void menu_zeng_online_server_max_rooms(MENU_ITEM_PARAMETERS)
+{
+    //zeng_online_current_max_rooms
+
+    menu_ventana_scanf_numero_enhanced("Max rooms",&zeng_online_current_max_rooms,5,+1,1,ZENG_ONLINE_MAX_ROOMS,0);
+}
+
 void menu_zeng_online_server(MENU_ITEM_PARAMETERS)
 {
 
@@ -15969,6 +15977,11 @@ void menu_zeng_online_server(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(zeng_online_allow_room_creation_from_any_ip.v ? 'X' : ' ' ));
         menu_add_item_menu_tooltip(array_menu_common,"If room creation is allowed from any source ip");
         menu_add_item_menu_ayuda(array_menu_common,"If room creation is allowed from any source ip. Creation from localhost is always allowed");
+
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_server_max_rooms,NULL,
+            "Maximum rooms","Máximo habitaciones","Màxim habitacions");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%d] ",zeng_online_current_max_rooms);
+
 
 
         menu_add_item_menu_separator(array_menu_common);
