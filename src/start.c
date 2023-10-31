@@ -902,6 +902,7 @@ printf (
         "--zeng-online-no-footer-lag-indicator           Show lag indicator on footer when snapshots are coming late\n"
         "--enable-zeng-online-server                     Enable ZENG Online server. Requires ZRCP\n"
         "--zeng-online-server-allow-create               Allows this ZENG Online server to allow create rooms from any ip address. By default, only creation from localhost is allowed\n"
+        "--zeng-online-server-max-rooms n                Set maximum rooms for this ZENG Online server\n"
         "--zeng-online-server-destroy-rooms-no-players   This ZENG Online server destroys rooms without players\n"
 #endif
 
@@ -5523,6 +5524,16 @@ int parse_cmdline_options(int desde_commandline) {
 
          else if (!strcmp(argv[puntero_parametro],"--zeng-online-server-allow-create")) {
             zeng_online_allow_room_creation_from_any_ip.v=1;
+         }
+
+         else if (!strcmp(argv[puntero_parametro],"--zeng-online-server-max-rooms")) {
+            siguiente_parametro_argumento();
+            int valor=parse_string_to_number(argv[puntero_parametro]);
+			if (valor<1 || valor>ZENG_ONLINE_MAX_ROOMS) {
+                printf ("Invalid max rooms value\n");
+				 exit (1);
+			 }
+            zeng_online_current_max_rooms=valor;
          }
 
         else if (!strcmp(argv[puntero_parametro],"--zeng-online-server-destroy-rooms-no-players")) {
