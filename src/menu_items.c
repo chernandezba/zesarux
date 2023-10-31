@@ -15944,8 +15944,19 @@ void menu_zeng_online_server_allow_room_creation_from_any_ip(MENU_ITEM_PARAMETER
 void menu_zeng_online_server_max_rooms(MENU_ITEM_PARAMETERS)
 {
     //zeng_online_current_max_rooms
+    int last_room=zeng_online_get_last_used_room();
+    last_room++;
 
-    menu_ventana_scanf_numero_enhanced("Max rooms",&zeng_online_current_max_rooms,5,+1,1,ZENG_ONLINE_MAX_ROOMS,0);
+    int valor=zeng_online_current_max_rooms;
+
+    menu_ventana_scanf_numero_enhanced("Max rooms",&valor,5,+1,1,ZENG_ONLINE_MAX_ROOMS,0);
+
+    if (valor<last_room) {
+        menu_error_message("Limit can't be less than the highest created room");
+        return;
+    }
+
+    zeng_online_current_max_rooms=valor;
 }
 
 void menu_zeng_online_server(MENU_ITEM_PARAMETERS)

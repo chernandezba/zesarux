@@ -605,6 +605,22 @@ void zeng_online_set_room_name(int room,char *room_name)
 
 }
 
+
+int zeng_online_get_last_used_room(void)
+{
+
+    int i;
+
+
+    for (i=zeng_online_current_max_rooms;i>=0;i--) {
+        if (zeng_online_rooms_list[i].created) return i;
+    }
+
+    return -1;
+
+
+}
+
 void zeng_online_assign_room_passwords(int room)
 {
 
