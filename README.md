@@ -1,6 +1,6 @@
 ZEsarUX - ZX Second-Emulator And Released for UniX 
 
-Created by Cesar Hernandez Bano
+Created by Cesar Hernandez Baño
 
 https://github.com/chernandezba/zesarux
 

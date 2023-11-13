@@ -694,6 +694,12 @@ iMac-de-Cesar:src cesarhernandez$ gzip zesarux_autosave.zsf
 iMac-de-Cesar:src cesarhernandez$ ls -lha zesarux_autosave.zsf.gz
 -rw-r--r--  1 cesarhernandez  staff    32K 23 oct 18:36 zesarux_autosave.zsf.gz
 
+-Calcular cuantas direcciones de memoria se alteran entre cada snapshot
+
+Además para snapshots diferenciales se podrían almacenar 2 bytes por cada dirección modificada:
+1 byte que diga el offset de dirección. Respecto al anterior. Y si es más de 255, que indique primer byte a 0, siguiente bytes con el offset 16 bits
+1 byte con el valor que obtiene
+
 ---FIN idea para obtener snapshots diferenciales
 
 
@@ -717,4 +723,54 @@ Temporizadores comunes de ver kick y ver mensajes
 -First aid de advanced menu items
 
 
+Limitar comandos ZRCP cuando Zeng habilitado
+Quizá setting para limitar o no
+
+
+
+Poder definir , máximo habitaciones. Solo setting menu? O también comando ZRCP?
+Mejor setting. Que no sea algo que pueda hacer un máster, no tendría sentido
+
+Máximo usuairios de habitación quizá si es cosa del máster de esa habitación
+
+
+
+Poder definir Max players por defecto en el Zeng online server
+Luego el máster puede bajar (pero no subir?) ese límite. Hay comando para eso?
+
+Snapshot agregar puertos del QL y además evitar pulsaciones de teclas seguidas
+
+probar en linux si hay memory leak con snapshots
+soportar traer snapshot no zip . ver cabecera
+
+
+agregar marcas de grafica red en vertical
+
+Network traffic en ascii también
+
+-Menú se cerrará parámetro, indicar que se suele poner en ítems que abren ventana y que queremos que cierren todos los submenus al cerrar la ventana
+
+-Si el leave o el destroy fallan, igualmente tiene que matar el thread y dejarlo como desconectado
+
+
+-Posible driver nuevo u opción en curses en que el menú siga siendo estándar pero el output de la máquina emulada sea el mismo que stdout
+
+ZSF_KEY_PORTS_SPECTRUM_STATE solo agregarlo cuando está activo Zeng online
+
+-app Calculadora que permita escribir expresiones
+
+-En text adventure map, contador Máximo de tiempo que puede estar recorriendo habitaciones   Para evitar cuelgues. Como el que pasa cargando las vajillas
+
+-Nuevo tema qnx
+
+-Quizá en Mac se congela a veces con driver audio null?
+
+-Sufijo hexadecimal permitir h minúscula
+
+-Debug console quizá ancho debería considerar siempre el Máximo al calcular posición siguiente línea, esto en print y scroll
+Asi se podría redimensionar siempre sin que se descuadren los textos anteriores . hecho?
+
+
+-Debug printf solo hacer bloqueo cuando mensajes van a consola de ZX Desktop
+Prueba con redimensionar ventana con driver audio sdl con callback y printf donde avisa de underrun de buffer y en Windows
 ---------------
