@@ -168,6 +168,11 @@ int menu_zeng_online_kick_user_cond(zxvision_window *w GCC_UNUSED)
 	return !zeng_online_client_kick_user_thread_running;
 }
 
+int menu_zeng_online_max_players_room_cond(zxvision_window *w GCC_UNUSED)
+{
+	return !zeng_online_client_max_players_room_thread_running;
+}
+
 int menu_zeng_online_allow_message_room_cond(zxvision_window *w GCC_UNUSED)
 {
 	return !zeng_online_client_allow_message_room_thread_running;
@@ -1204,6 +1209,20 @@ void menu_zeng_online_kick_user(MENU_ITEM_PARAMETERS)
 
 }
 
+void menu_zeng_online_max_players_room(MENU_ITEM_PARAMETERS)
+{
+
+    //El valor actual no lo sabemos. Indicamos 10 por ejemplo
+    int valor=10;
+
+    menu_ventana_scanf_numero_enhanced("Max players",&valor,3,+1,1,ZENG_ONLINE_MAX_PLAYERS_PER_ROOM,0);
+
+    zeng_online_client_max_players_room(valor);
+    zxvision_simple_progress_window("Max players", menu_zeng_online_max_players_room_cond,menu_zeng_online_connecting_common_print);
+
+
+}
+
 void menu_zeng_online_restricted_keys_click(MENU_ITEM_PARAMETERS)
 {
     //validar que no se marca mas de un maximo de ZOC_MAX_KEYS_ITEMS
@@ -1603,6 +1622,9 @@ void menu_zeng_online(MENU_ITEM_PARAMETERS)
 
                 menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_kick_user,NULL,
                 "Kick user","Expulsar usuario","Expulsar usuari");
+
+                menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_max_players_room,NULL,
+                "Set max players per room","Definir max jugadores por hab.","Definir max jugadors per hab.");
 
                 menu_add_item_menu_separator(array_menu_common);
 

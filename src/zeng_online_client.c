@@ -79,6 +79,7 @@ pthread_t thread_zeng_online_client_list_users;
 pthread_t thread_zeng_online_client_get_profile_keys;
 pthread_t thread_zeng_online_client_send_profile_keys;
 pthread_t thread_zeng_online_client_kick_user;
+pthread_t thread_zeng_online_client_max_players_room;
 
 
 #endif
@@ -99,6 +100,7 @@ int zeng_online_client_list_users_thread_running=0;
 int zeng_online_client_get_profile_keys_thread_running=0;
 int zeng_online_client_send_profile_keys_thread_running=0;
 int zeng_online_client_kick_user_thread_running=0;
+int zeng_online_client_max_players_room_thread_running=0;
 
 z80_bit zeng_online_i_am_master={0};
 //z80_bit zeng_online_i_am_joined={0};
@@ -1083,6 +1085,24 @@ int zeng_online_client_kick_user_connect(void)
 }
 
 
+int param_zeng_online_client_max_players_room;
+
+//Devuelve 0 si no conectado
+int zeng_online_client_max_players_room_connect(void)
+{
+
+    char buffer_enviar[1024];
+
+    //set-max-players creator_pass n m   Define max-players (m) for room (n). Requires creator_pass of that room\n"
+    sprintf(buffer_enviar,"zeng-online set-max-players %s %d %d\n",
+        created_room_creator_password,
+        zeng_online_joined_to_room_number,
+        param_zeng_online_client_max_players_room);
+
+    return zoc_open_command_close(buffer_enviar,"set-max-players");
+
+}
+
 int param_zeng_online_client_allow_message_room_allow_disallow;
 
 //Devuelve 0 si no conectado
@@ -1198,6 +1218,29 @@ void *zeng_online_client_kick_user_function(void *nada GCC_UNUSED)
 
 
 	zeng_online_client_kick_user_thread_running=0;
+
+	return 0;
+
+}
+
+void *zeng_online_client_max_players_room_function(void *nada GCC_UNUSED)
+{
+    zeng_online_client_max_players_room_thread_running=1;
+
+	//Conectar a remoto
+
+	if (!zeng_online_client_max_players_room_connect()) {
+		//Desconectar solo si el socket estaba conectado
+
+        //Desconectar los que esten conectados
+        //TODO zeng_disconnect_remote();
+
+		zeng_online_client_max_players_room_thread_running=0;
+		return 0;
+	}
+
+
+	zeng_online_client_max_players_room_thread_running=0;
 
 	return 0;
 
@@ -1761,12 +1804,32 @@ void zeng_online_client_kick_user(char *uuid)
     strcpy(param_zeng_online_client_kick_user_uuid,uuid);
 
 	if (pthread_create( &thread_zeng_online_client_kick_user, NULL, &zeng_online_client_kick_user_function, NULL) ) {
-		debug_printf(VERBOSE_ERR,"Can not create zeng online write message pthread");
+		debug_printf(VERBOSE_ERR,"Can not create zeng online kick user pthread");
 		return;
 	}
 
 	//y pthread en estado detached asi liberara su memoria asociada a thread al finalizar, sin tener que hacer un pthread_join
 	pthread_detach(thread_zeng_online_client_kick_user);
+
+
+}
+
+
+
+void zeng_online_client_max_players_room(int valor)
+{
+
+	//Inicializar thread
+    param_zeng_online_client_max_players_room=valor;
+
+
+	if (pthread_create( &thread_zeng_online_client_max_players_room, NULL, &zeng_online_client_max_players_room_function, NULL) ) {
+		debug_printf(VERBOSE_ERR,"Can not create zeng online set max players room pthread");
+		return;
+	}
+
+	//y pthread en estado detached asi liberara su memoria asociada a thread al finalizar, sin tener que hacer un pthread_join
+	pthread_detach(thread_zeng_online_client_max_players_room);
 
 
 }
@@ -3841,6 +3904,10 @@ void zeng_online_client_write_message_room(char *message)
 }
 
 void zeng_online_client_kick_user(char *message)
+{
+}
+
+void zeng_online_client_max_players_room(int valor)
 {
 }
 

@@ -971,7 +971,7 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
     }
 
 
-    //set-max-players user_pass n m  Define max-players (m) for room (n). Requires user_pass of that room\n"
+    //set-max-players creator_pass n m   Define max-players (m) for room (n). Requires creator_pass of that room\n"
     else if (!strcmp(comando_argv[0],"set-max-players")) {
         if (!zeng_online_enabled) {
             escribir_socket(misocket,"ERROR. ZENG Online is not enabled");
