@@ -15959,6 +15959,13 @@ void menu_zeng_online_server_max_rooms(MENU_ITEM_PARAMETERS)
     zeng_online_current_max_rooms=valor;
 }
 
+void menu_zeng_online_server_max_players_per_room(MENU_ITEM_PARAMETERS)
+{
+
+    menu_ventana_scanf_numero_enhanced("Max players per room",&zeng_online_current_max_players_per_room,4,+1,1,ZENG_ONLINE_MAX_PLAYERS_PER_ROOM,0);
+
+}
+
 void menu_zeng_online_server(MENU_ITEM_PARAMETERS)
 {
 
@@ -15994,6 +16001,9 @@ void menu_zeng_online_server(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_prefijo_format(array_menu_common,"[%d] ",zeng_online_current_max_rooms);
 
 
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_server_max_players_per_room,NULL,
+            "Default max players per room","Max jugadores por hab. defecto","Max jugadors per hab. defecte");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%d] ",zeng_online_current_max_players_per_room);
 
         menu_add_item_menu_separator(array_menu_common);
 
