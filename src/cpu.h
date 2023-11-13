@@ -56,7 +56,7 @@ Examples
 
 #define EMULATOR_DATE "12 October 2023"
 #define EMULATOR_SHORT_DATE "12/10/2023"
-#define EMULATOR_GAME_EDITION "unknown"
+#define EMULATOR_GAME_EDITION "David"
 #define EMULATOR_EDITION_NAME EMULATOR_GAME_EDITION " edition"
 #define ZESARUX_EXTRAS_HOST "github.com"
 
