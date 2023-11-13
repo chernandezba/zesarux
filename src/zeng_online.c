@@ -98,6 +98,9 @@ char *buffer_lectura_socket=malloc(MAX_LENGTH_PROTOCOL_COMMAND);
 int zeng_online_current_max_rooms=10;
 
 
+//Maximo jugadores por habitacion por defecto
+int zeng_online_current_max_players_per_room=ZENG_ONLINE_MAX_PLAYERS_PER_ROOM;
+
 int zeng_online_enabled=0;
 
 
@@ -202,7 +205,7 @@ void zeng_online_set_alive_user(int room_number,char *uuid)
 void zeng_online_destroy_room_aux(int room_number)
 {
 
-    zeng_online_rooms_list[room_number].max_players=ZENG_ONLINE_MAX_PLAYERS_PER_ROOM;
+    zeng_online_rooms_list[room_number].max_players=zeng_online_current_max_players_per_room;
 
     zeng_online_rooms_list[room_number].current_players=0;
 
@@ -553,7 +556,7 @@ void init_zeng_online_rooms(void)
 
     for (i=0;i<ZENG_ONLINE_MAX_ROOMS;i++) {
         zeng_online_rooms_list[i].created=0;
-        zeng_online_rooms_list[i].max_players=ZENG_ONLINE_MAX_PLAYERS_PER_ROOM;
+        zeng_online_rooms_list[i].max_players=zeng_online_current_max_players_per_room;
         zeng_online_rooms_list[i].current_players=0;
         strcpy(zeng_online_rooms_list[i].name,"<free>");
         zeng_online_rooms_list[i].snapshot_memory=NULL;
@@ -671,7 +674,7 @@ void zeng_online_create_room(int misocket,int room_number,char *room_name)
     zeng_online_set_room_name(room_number,room_name);
     zeng_online_assign_room_passwords(room_number);
 
-    //zeng_online_rooms_list[room_number].max_players=ZENG_ONLINE_MAX_PLAYERS_PER_ROOM;
+    //zeng_online_rooms_list[room_number].max_players=zeng_online_current_max_players_per_room;
 
     zeng_online_rooms_list[room_number].current_players=0;
     zeng_online_rooms_list[room_number].snapshot_memory=NULL;
@@ -1001,7 +1004,7 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
 
         int max_players=parse_string_to_number(comando_argv[3]);
 
-        if (max_players<1 || max_players>ZENG_ONLINE_MAX_PLAYERS_PER_ROOM) {
+        if (max_players<1 || max_players>zeng_online_current_max_players_per_room) {
             escribir_socket(misocket,"ERROR. Max players beyond limit");
             return;
         }

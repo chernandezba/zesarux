@@ -185,6 +185,8 @@ extern struct zeng_online_room zeng_online_rooms_list[];
 
 extern int zeng_online_current_max_rooms;
 
+extern int zeng_online_current_max_players_per_room;
+
 extern void zeng_online_expire_non_alive_users(void);
 
 extern void timer_zeng_online_server(void);

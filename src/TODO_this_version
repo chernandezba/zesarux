@@ -486,7 +486,9 @@ de que un slave enviaria su evento, y luego al leerlo le llegaria ese mismo, con
 pero es un gasto de ancho de banda....
 
 
--Quitar bloqueos de comandos simultáneos ZRCP cuando son Zeng online
+ok-Quitar bloqueos de comandos simultáneos ZRCP cuando son Zeng online
+bueno lo que hace es que no hay bloqueos de ningun comando ZRCP cuando esta zeng online habilitado
+Esto NO es lo ideal!!
 
 Activar bloqueo de un semáforo al crear una habitación , para evitar crear la misma desde dos sitios. O el semaforo es tal cual la variable que dice que esta creado. lanzar un z_atomic_test_and_set, si devuelve 1 , es que estaba creada ya antes
 
@@ -726,12 +728,6 @@ Temporizadores comunes de ver kick y ver mensajes
 Limitar comandos ZRCP cuando Zeng habilitado
 Quizá setting para limitar o no
 
-
-
-Poder definir , máximo habitaciones. Solo setting menu? O también comando ZRCP?
-Mejor setting. Que no sea algo que pueda hacer un máster, no tendría sentido
-
-Máximo usuairios de habitación quizá si es cosa del máster de esa habitación
 
 
 
