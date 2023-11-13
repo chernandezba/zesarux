@@ -4482,6 +4482,7 @@ int util_write_configfile(void)
   if (zeng_online_allow_room_creation_from_any_ip.v)    ADD_STRING_CONFIG,"--zeng-online-server-allow-create");
   if (zeng_online_destroy_rooms_without_players.v)      ADD_STRING_CONFIG,"--zeng-online-server-destroy-rooms-no-players");
                                                 ADD_STRING_CONFIG,"--zeng-online-server-max-rooms %d",zeng_online_current_max_rooms);
+                                                ADD_STRING_CONFIG,"--zeng-online-server-max-players-room %d",zeng_online_current_max_players_per_room);
 
   if (realjoystick_disabled.v==1)              ADD_STRING_CONFIG,"--disablerealjoystick");
 
