@@ -38553,6 +38553,12 @@ void menu_process_switcher_handle_click(zxvision_window *ventana)
 
             //Decir que hay que salir de aqui yendo a background, pero sin tener que dejar flag de background para la siguiente ventana
             menu_process_switcher_conmutar_ventana=1;
+
+            //desminimizar ventana si estaba minimizada
+            if (ventana_pulsada->is_minimized) {
+                //printf("desminimizar ventana\n");
+                zxvision_toggle_minimize_window(ventana_pulsada);
+            }
         }
     }
 }

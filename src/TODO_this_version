@@ -516,7 +516,7 @@ y luego dos slaves que fueran los que estuvieran compitiendo
 
 -quiza las veces que se queda congelado el emulador cuando no esta en el foco, es cuando se usa driver audio null
 
--desde process switcher al pulsar en una ventana que esta minimizada, desminimizarla
+
 ---Fin Mejoras---
 
 
@@ -733,7 +733,6 @@ Quizá setting para limitar o no
 Snapshot agregar puertos del QL y además evitar pulsaciones de teclas seguidas
 
 probar en linux si hay memory leak con snapshots
-soportar traer snapshot no zip . ver cabecera
 
 
 agregar marcas de grafica red en vertical

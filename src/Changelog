@@ -22,6 +22,7 @@ Improved ZX Vision:
   If you need to keep menu open and set focus on emulated machine, just left click and also press shift key.
 - Improve window title background when not all buttons are visible
 - Menus can no longer be minimized (that had no sense)
+- Process switcher: unminimize windows when they are minimized and selecting them
 
 * Fixes:
 
