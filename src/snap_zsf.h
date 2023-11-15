@@ -89,6 +89,7 @@
 #define ZSF_KEY_PORTS_SPECTRUM_STATE 62
 #define ZSF_ZOC_ETC 63
 #define ZSF_I8049_AUDIO 64
+#define ZSF_KEY_PORTS_QL_STATE 65
 //Importante NO alterar los ID existentes o se rompera compatibilidad hacia atras del formato ZSF
 //Siempre agregar, nunca modificar ni borrar
 

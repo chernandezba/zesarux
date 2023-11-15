@@ -746,7 +746,6 @@ Network traffic en ascii también
 
 -Posible driver nuevo u opción en curses en que el menú siga siendo estándar pero el output de la máquina emulada sea el mismo que stdout
 
-ZSF_KEY_PORTS_SPECTRUM_STATE solo agregarlo cuando está activo Zeng online
 
 -app Calculadora que permita escribir expresiones
 
@@ -764,4 +763,6 @@ Asi se podría redimensionar siempre sin que se descuadren los textos anteriores
 
 -Debug printf solo hacer bloqueo cuando mensajes van a consola de ZX Desktop
 Prueba con redimensionar ventana con driver audio sdl con callback y printf donde avisa de underrun de buffer y en Windows
+
+-ql no envia F1 o F2 si es zeng slave...
 ---------------

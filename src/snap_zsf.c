@@ -793,6 +793,19 @@ bit 1: ql_audio_output_bit
 1: unsigned char ql_audio_pitch1;
 etc....
 
+-Block ID 65: ZSF_KEY_PORTS_QL_STATE
+Tell keyboard ports value in ql
+Byte fields:
+0: z80_byte ql_keyboard_table[0]
+1: z80_byte ql_keyboard_table[1]
+2: z80_byte ql_keyboard_table[2]
+3: z80_byte ql_keyboard_table[3]
+4: z80_byte ql_keyboard_table[4]
+5: z80_byte ql_keyboard_table[5]
+6: z80_byte ql_keyboard_table[6]
+7: z80_byte ql_keyboard_table[7]
+
+
 
 -Como codificar bloques de memoria para Spectrum 128k, zxuno, tbblue, tsconf, etc?
 Con un numero de bloque (0...255) pero... que tamaño de bloque? tbblue usa paginas de 8kb, tsconf usa paginas de 16kb
@@ -806,7 +819,7 @@ Por otra parte, tener bloques diferentes ayuda a saber mejor qué tipos de bloqu
 #define MAX_ZSF_BLOCK_ID_NAMELENGTH 30
 
 //Id maximo de nombres sin contar el unknown final
-#define MAX_ZSF_BLOCK_ID_NAMES 64
+#define MAX_ZSF_BLOCK_ID_NAMES 65
 char *zsf_block_id_names[]={
  //123456789012345678901234567890
   "ZSF_NOOP",                 //0
@@ -874,6 +887,7 @@ char *zsf_block_id_names[]={
   "ZSF_KEY_PORTS_SPECTRUM_STATE",
   "ZSF_ZOC_ETC",
   "ZSF_I8049_AUDIO",
+  "ZSF_KEY_PORTS_QL_STATE",
 
   "Unknown"  //Este siempre al final
 };
@@ -2069,6 +2083,23 @@ if (menu_abierto) return;
     puerto_49150=header[6];
     puerto_32766=header[7];
     puerto_especial_joystick=header[8];
+
+}
+
+void load_zsf_key_ports_ql_state(z80_byte *header)
+{
+//Si menu abierto, no hacerlo
+
+if (menu_abierto) return;
+
+    ql_keyboard_table[0]=header[0];
+    ql_keyboard_table[1]=header[1];
+    ql_keyboard_table[2]=header[2];
+    ql_keyboard_table[3]=header[3];
+    ql_keyboard_table[4]=header[4];
+    ql_keyboard_table[5]=header[5];
+    ql_keyboard_table[6]=header[6];
+    ql_keyboard_table[7]=header[7];
 
 }
 
@@ -3393,6 +3424,10 @@ void load_zsf_snapshot_file_mem(char *filename,z80_byte *origin_memory,int longi
         load_zsf_key_ports_spectrum_state(block_data);
     break;
 
+      case ZSF_KEY_PORTS_QL_STATE:
+        load_zsf_key_ports_ql_state(block_data);
+    break;
+
       case ZSF_ZOC_ETC:
         load_zsf_zoc_etc(block_data);
     break;
@@ -3759,9 +3794,10 @@ void save_zsf_snapshot_file_mem(char *filename,z80_byte *destination_memory,int 
 
     //Estado puertos
     //esto solo si somos en zeng online master y menu no esta abierto
-    //-Block ID 62: ZSF_KEY_PORTS_SPECTRUM_STATE
-    if (MACHINE_IS_SPECTRUM || MACHINE_IS_ZX8081ACE) {
-        if (from_zeng_online && zeng_online_i_am_master.v && !menu_abierto) {
+    if (from_zeng_online && zeng_online_i_am_master.v && !menu_abierto) {
+        //-Block ID 62: ZSF_KEY_PORTS_SPECTRUM_STATE
+        if (MACHINE_IS_SPECTRUM || MACHINE_IS_ZX8081ACE) {
+
 
             z80_byte keyportsblock[9];
 
@@ -3778,15 +3814,30 @@ void save_zsf_snapshot_file_mem(char *filename,z80_byte *destination_memory,int 
             zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, keyportsblock,ZSF_KEY_PORTS_SPECTRUM_STATE, 9);
 
 
-
-            z80_byte zoc_etc_block[1];
-
-            zoc_etc_block[0]=joystick_emulation;
-
-            zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, zoc_etc_block,ZSF_ZOC_ETC, 1);
-
-
         }
+
+        if (MACHINE_IS_QL) {
+
+            z80_byte keyportsblock[8];
+
+            keyportsblock[0]=ql_keyboard_table[0];
+            keyportsblock[1]=ql_keyboard_table[1];
+            keyportsblock[2]=ql_keyboard_table[2];
+            keyportsblock[3]=ql_keyboard_table[3];
+            keyportsblock[4]=ql_keyboard_table[4];
+            keyportsblock[5]=ql_keyboard_table[5];
+            keyportsblock[6]=ql_keyboard_table[6];
+            keyportsblock[7]=ql_keyboard_table[7];
+
+            zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, keyportsblock,ZSF_KEY_PORTS_QL_STATE, 8);
+        }
+
+
+        z80_byte zoc_etc_block[1];
+
+        zoc_etc_block[0]=joystick_emulation;
+
+        zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, zoc_etc_block,ZSF_ZOC_ETC, 1);
     }
 
 
