@@ -402,8 +402,6 @@ complementario: quizá en todos los overlay que no necesiten redibujar siempre, 
 Una de ellas es el "About" pero ya esta usando dirty_user_must_draw_contents
 
 
--poder hacer save pantalla a .txt, usando ocr y pixeles a caracteres, como hace curses:
-se puede usar ocr_get_text, aunque este no hace caracteres artisticos
 
 
 -con speech en menu habilitado
@@ -454,8 +452,7 @@ Por tanto , probablemente, cualquier ventana que use funcion de menu_dibuja_menu
 
 -en menu con curses, no se puede escribir el punto "." ? probado con ZENG host por ejemplo
 
--botones superiores redefinidos que puedan tener parametros asociados, por ejemplo set-machine y parametro "48k"
-en ese de set-machine el icono deberia ser la de la maquina a cambiar+flecha
+
 
 -si se desactivan botones inferiores y superiores, el limite al mover iconos sigue siendo la zona de esos botones, aunque ya no existan
 Lo mismo pasa con un reorder
@@ -520,6 +517,7 @@ y luego dos slaves que fueran los que estuvieran compitiendo
 
 
 
+---- ZENG ONLINE ----
 
 Toda esta parte cliente de "backend" estara contenida en zeng_online_client.c
 La parte de menus , el "frontend" estara contenida en menu_zeng_online.c
@@ -540,8 +538,6 @@ ok -la recepcion de keys y snapshot deberia hacerse al mismo momento desde el mi
 
 
 
--permitir smartload de zrcp sin que haya que abrir y cerrar el menu, para poderlo usar con driver simpletext o null por ejemplo,
-ya que no abren el menu
 
 
 -para cada maquina que queramos que soporte ZENG ONLINE
@@ -620,10 +616,6 @@ index 9cb0937..80d1a4c 100644
 
 
 
-
-
--quiza manera de cargar un snapshot de manera mas rapida
-
 -consume un 5% aprox de cpu por cada usuario zeng online en mi server
 
 
@@ -700,6 +692,7 @@ iMac-de-Cesar:src cesarhernandez$ ls -lha zesarux_autosave.zsf.gz
 Además para snapshots diferenciales se podrían almacenar 2 bytes por cada dirección modificada:
 1 byte que diga el offset de dirección. Respecto al anterior. Y si es más de 255, que indique primer byte a 0, siguiente bytes con el offset 16 bits
 1 byte con el valor que obtiene
+Y los primeros 2 bytes de todo indica donde empieza
 
 ---FIN idea para obtener snapshots diferenciales
 
@@ -712,7 +705,7 @@ zeng online y zeng no-online
 
 
 -icono para network traffic
--icono para video output
+
 
 
 Quizá tarea en el timer tal cual para todo eso
@@ -730,6 +723,7 @@ Quizá setting para limitar o no
 
 
 Snapshot agregar puertos del QL y además evitar pulsaciones de teclas seguidas
+-puertos QL ok. que es lo de las repeticiones??
 
 probar en linux si hay memory leak con snapshots
 
@@ -743,11 +737,12 @@ Network traffic en ascii también
 -Si el leave o el destroy fallan, igualmente tiene que matar el thread y dejarlo como desconectado
 
 
--Posible driver nuevo u opción en curses en que el menú siga siendo estándar pero el output de la máquina emulada sea el mismo que stdout
 
 
--app Calculadora que permita escribir expresiones
+-----Fin ZENG ONLINE -----
 
+
+-icono para video output
 
 -Nuevo tema qnx
 
@@ -761,5 +756,14 @@ Asi se podría redimensionar siempre sin que se descuadren los textos anteriores
 -Debug printf solo hacer bloqueo cuando mensajes van a consola de ZX Desktop
 Prueba con redimensionar ventana con driver audio sdl con callback y printf donde avisa de underrun de buffer y en Windows
 
--ql no envia F1 o F2 si es zeng slave...
----------------
+-botones superiores redefinidos que puedan tener parametros asociados, por ejemplo set-machine y parametro "48k"
+en ese de set-machine el icono deberia ser la de la maquina a cambiar+flecha
+
+-Posible driver nuevo u opción en curses en que el menú siga siendo estándar pero el output de la máquina emulada sea el mismo que stdout
+
+
+-app Calculadora que permita escribir expresiones
+
+
+-permitir smartload de zrcp sin que haya que abrir y cerrar el menu, para poderlo usar con driver simpletext o null por ejemplo,
+ya que no abren el menu
