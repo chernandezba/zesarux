@@ -753,7 +753,6 @@ Network traffic en ascii también
 
 -Quizá en Mac se congela a veces con driver audio null?
 
--Sufijo hexadecimal permitir h minúscula
 
 -Debug console quizá ancho debería considerar siempre el Máximo al calcular posición siguiente línea, esto en print y scroll
 Asi se podría redimensionar siempre sin que se descuadren los textos anteriores . hecho?

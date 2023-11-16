@@ -215,12 +215,24 @@ void zeng_send_key_event(enum util_teclas tecla,int pressrelease)
 
 
 
-	//teclas F no enviar
+	//teclas F no enviar habitualmente. aunque permitir para QL
 	switch (tecla) {
 		case UTIL_KEY_F1:
+			if (!MACHINE_IS_QL) return;
+		break;
+
 		case UTIL_KEY_F2:
+			if (!MACHINE_IS_QL) return;
+		break;
+
 		case UTIL_KEY_F3:
+			if (!MACHINE_IS_QL) return;
+		break;
+
 		case UTIL_KEY_F4:
+			if (!MACHINE_IS_QL) return;
+		break;
+
 		case UTIL_KEY_F5:
 		case UTIL_KEY_F6:
 		case UTIL_KEY_F7:
