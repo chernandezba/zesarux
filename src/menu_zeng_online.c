@@ -88,7 +88,7 @@ void menu_zeng_online_nickname(MENU_ITEM_PARAMETERS)
     //No permitir nickname con la palabra “error” en el nombre, porque
     //puede hacer que respuestas que respuestas que retornen su nombre, se interpreten como un error
 
-    if (strcasestr(buf_nickname,"ERROR")!=NULL) {
+    if (util_strcasestr(buf_nickname,"ERROR")!=NULL) {
         menu_error_message("Nickname not allowed");
         return;
     }

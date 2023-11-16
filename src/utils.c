@@ -12821,6 +12821,7 @@ char *util_strcasestr(char *string, char *string_a_buscar)
 
         //Debe coincidir desde el principio de string
 #ifdef MINGW
+        //En Windows no esta la funcion strcasestr
         char *coincide=mingw_strcasestr(string,string_a_buscar);
 #else
         char *coincide=strcasestr(string,string_a_buscar);
