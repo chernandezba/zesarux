@@ -2915,6 +2915,10 @@ int util_gac_get_index_location_by_id(int location_id)
     for (i=0;peek_word_no_time(table_dir)!=location_id && table_dir>16383;i++) {
         z80_int longitud=peek_word_no_time(table_dir+2);
         //printf("tabla: %d longitud: %d\n",table_dir,longitud);
+        if (longitud==0) {
+            //Tabla corrupta. no saldria nunca
+            return -1;
+        }
         table_dir +=longitud;
     }
 

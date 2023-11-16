@@ -428,8 +428,7 @@ En estos casos de momento lo que he hecho es que al final de cada menu se haga u
 
 -tiene sentido items de "ESC back/close"?
 
--cargando La Guerra De Las Vajillas - Side A.tzx, con real tape y adventure map abierto, se acaba colgando cuando lleva 68% de cinta leida
-probablemente entre en un bucle de habitaciones
+
 
 
 -Process management: Render emulated display incluye tiempo de todas las ventanas? Si abro el text adventure map, que consume 6 ms con la guerra
@@ -749,7 +748,6 @@ Network traffic en ascii también
 
 -app Calculadora que permita escribir expresiones
 
--En text adventure map, contador Máximo de tiempo que puede estar recorriendo habitaciones   Para evitar cuelgues. Como el que pasa cargando las vajillas
 
 -Nuevo tema qnx
 
