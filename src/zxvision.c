@@ -1825,6 +1825,33 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         0 //caracter franja normal
     },
 
+	{1,"QNX",QNX_COLOUR_GRAY,0,
+		0,1,0,0, 		//No mostrar cursor,mostrar recuadro,no mostrar rainbow
+		QNX_COLOUR_BLUE,7+8, 		//Colores para opcion seleccionada
+		QNX_COLOUR_GRAY,QNX_COLOUR_GRAY_INACTIVE,QNX_COLOUR_BLUE,QNX_COLOUR_GRAY_INACTIVE, 	//Colores para opcion no disponible
+
+		QNX_COLOUR_GREEN,0,        	//Colores para el titulo ventana
+        QNX_COLOUR_GRAY_INACTIVE,              //Color recuadro
+		QNX_COLOUR_GRAY_INACTIVE,0,        	//Colores para el titulo ventana inactiva
+
+		QNX_COLOUR_BLUE,		//Color waveform
+		QNX_COLOUR_GRAY_INACTIVE,		//Color para zona no usada en visualmem
+        QNX_COLOUR_GRAY_INACTIVE,      //color block visualtape
+		2,7+8,		//Color para opcion marcada
+		140, //caracter de cerrar ventana
+        150, //caracter de minimizar ventana
+        152, //caracter de maximizar ventana
+        151, //caracter de restaurar ventana
+        149, //caracter de background ventana
+        ' ', //caracter de fondo de titulo
+		2, //color de aviso
+		colores_franja_speccy_brillo,colores_franja_speccy_oscuro,
+        -1, //si texto inverso solo cambia color tinta
+        0, //rellenar titulo
+        char_set_beos,
+        0 //caracter franja normal
+    },
+
 	{1,"RetroMac",RETROMAC_COLOUR_paper,0,
 		0,1,0,0, 		//No mostrar cursor,mostrar recuadro,mostrar rainbow
 		RETROMAC_COLOUR_selected_paper,7+8, 		//Colores para opcion seleccionada

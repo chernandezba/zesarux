@@ -744,7 +744,7 @@ Network traffic en ascii también
 
 -icono para video output
 
--Nuevo tema qnx
+
 
 -Quizá en Mac se congela a veces con driver audio null?
 
@@ -767,3 +767,5 @@ en ese de set-machine el icono deberia ser la de la maquina a cambiar+flecha
 
 -permitir smartload de zrcp sin que haya que abrir y cerrar el menu, para poderlo usar con driver simpletext o null por ejemplo,
 ya que no abren el menu
+
+-seguir tema qnx: botones ventana, revisar colores

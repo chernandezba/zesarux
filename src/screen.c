@@ -547,6 +547,14 @@ const int riscos_colortable_original[RISCOS_TOTAL_PALETTE_COLOURS]={
     0xfe0000  //Titulo ventana activa
 };
 
+
+const int qnx_colortable_original[QNX_TOTAL_PALETTE_COLOURS]={
+    0x007b6b,  //Verde titulo ventana papel
+    0x0000a5, //Azul opcion seleccionada
+    0xc6c6c6, //gris de papel
+    0x8c8c8c //titulo ventana inactiva papel
+};
+
 //Tabla con los colores extra del Spectra.
 //Valores para intensidades de color:
 /*
@@ -9301,6 +9309,10 @@ Bit 6 GRN1 most  significant bit of green.
         screen_set_colour_normal(PCW_INDEX_FIRST_COLOR+i,pcw_rgb_table[i]);
     }
 
+    //Colores QNX
+    for (i=0;i<QNX_TOTAL_PALETTE_COLOURS;i++) {
+        screen_set_colour_normal(QNX_INDEX_FIRST_COLOR+i,qnx_colortable_original[i]);
+    }
 
 		//}
 
