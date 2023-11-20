@@ -1069,6 +1069,12 @@ unsigned char char_set_spectrum[TOTAL_ASCII_CHARSET_ELEMENTS]={		0
 
 //Á A mayúscula acento cerrado - 168
 0x08,0x10,0x3C,0x42,0x42,0x7E,0x42,0x00,
+
+//Caracter boton minimizar QNX - 169
+0,0,0,0,0,0,126,0,
+
+//Caracter boton cierre QNX - 170
+0,66,36,24,24,36,66,0,
 };
 
 
@@ -1250,7 +1256,13 @@ unsigned char char_set_cpc[TOTAL_ASCII_CHARSET_ELEMENTS]={
 0x28,0x00,0x38,0x18,0x18,0x18,0x3c,0x00,
 
 //Á A mayúscula acento cerrado - 168
-0x08,0x10,0x18,0x3c,0x66,0x7e,0x66,0x00
+0x08,0x10,0x18,0x3c,0x66,0x7e,0x66,0x00,
+
+//Caracter boton minimizar QNX - 169
+0,0,0,0,0,0,126,0,
+
+//Caracter boton cierre QNX - 170
+0,66,36,24,24,36,66,0,
 };
 
 
@@ -1485,6 +1497,12 @@ unsigned char char_set_z88[TOTAL_ASCII_CHARSET_ELEMENTS]={
 
 //Á A mayúscula acento cerrado - 168
 0x02,0x04,0x0e,0x1b,0x1b,0x1f,0x1b,0x00,
+
+//Caracter boton minimizar QNX - 169
+0,0,0,0,0,0,126,0,
+
+//Caracter boton cierre QNX - 170
+0,66,36,24,24,36,66,0,
 };
 
 
@@ -1718,6 +1736,12 @@ unsigned char char_set_sam[TOTAL_ASCII_CHARSET_ELEMENTS]={
 
 //Á A mayúscula acento cerrado - 168
 0x04,0x08,0x1c,0x22,0x22,0x3e,0x22,0x00,
+
+//Caracter boton minimizar QNX - 169
+0,0,0,0,0,0,126,0,
+
+//Caracter boton cierre QNX - 170
+0,66,36,24,24,36,66,0,
 };
 
 
@@ -1905,7 +1929,13 @@ unsigned char char_set_mansoftware[TOTAL_ASCII_CHARSET_ELEMENTS]={
 0x00,0x28,0x00,0x10,0x10,0x10,0x10,0x10,
 
 //Á A mayúscula acento cerrado - 168
-0x04,0x08,0x3c,0x7e,0x66,0x7e,0x7e,0x66
+0x04,0x08,0x3c,0x7e,0x66,0x7e,0x7e,0x66,
+
+//Caracter boton minimizar QNX - 169
+0,0,0,0,0,0,126,0,
+
+//Caracter boton cierre QNX - 170
+0,66,36,24,24,36,66,0,
 };
 
 
@@ -2140,6 +2170,12 @@ unsigned char char_set_ql[TOTAL_ASCII_CHARSET_ELEMENTS]={
 
 //Á A mayúscula acento cerrado - 168
 0x08,0x10,0x38,0x44,0x44,0x7c,0x44,0x00,
+
+//Caracter boton minimizar QNX - 169
+0,0,0,0,0,0,126,0,
+
+//Caracter boton cierre QNX - 170
+0,66,36,24,24,36,66,0,
 };
 
 
@@ -2372,6 +2408,12 @@ unsigned char char_set_retromac[TOTAL_ASCII_CHARSET_ELEMENTS]={
 
 //Á A mayúscula acento cerrado - 168
 0x08,0x10,0x38,0x6C,0x6C,0x7C,0x6C,0x00,
+
+//Caracter boton minimizar QNX - 169
+0,0,0,0,0,0,126,0,
+
+//Caracter boton cierre QNX - 170
+0,66,36,24,24,36,66,0,
 };
 
 //Tipo de letra "topaz" de amiga500, workbench version 1.3
@@ -2607,6 +2649,12 @@ unsigned char char_set_amigaos[TOTAL_ASCII_CHARSET_ELEMENTS]={
 
 //Á A mayúscula acento cerrado - 168
 0x04,0x08,0x3C,0x3C,0x66,0x7E,0xC3,0x00,
+
+//Caracter boton minimizar QNX - 169
+0,0,0,0,0,0,126,0,
+
+//Caracter boton cierre QNX - 170
+0,66,36,24,24,36,66,0,
 };
 
 
@@ -2839,6 +2887,12 @@ unsigned char char_set_ataritos[TOTAL_ASCII_CHARSET_ELEMENTS]={
 
 //Á A mayúscula acento cerrado - 168
 0x04,0x08,0x18,0x3C,0x66,0x7E,0x66,0x00,
+
+//Caracter boton minimizar QNX - 169
+0,0,0,0,0,0,126,0,
+
+//Caracter boton cierre QNX - 170
+0,66,36,24,24,36,66,0,
 };
 
 
@@ -3072,6 +3126,12 @@ unsigned char char_set_msx[TOTAL_ASCII_CHARSET_ELEMENTS]={
 
 //Á A mayúscula acento cerrado - 168
 0x04,0x08,0x20,0x50,0x88,0xF8,0x88,0x00,
+
+//Caracter boton minimizar QNX - 169
+0,0,0,0,0,0,126,0,
+
+//Caracter boton cierre QNX - 170
+0,66,36,24,24,36,66,0,
 };
 
 
@@ -3303,6 +3363,12 @@ unsigned char char_set_beos[TOTAL_ASCII_CHARSET_ELEMENTS]={
 
 //Á A mayúscula acento cerrado - 168
 0x02, 0x04, 0x10, 0x28, 0x44, 0x44, 0x7C, 0x44,
+
+//Caracter boton minimizar QNX - 169
+0,0,0,0,0,0,126,0,
+
+//Caracter boton cierre QNX - 170
+0,66,36,24,24,36,66,0,
 };
 
 //DOS 8x8 bitmap by Neil Roy
@@ -3541,6 +3607,12 @@ unsigned char char_set_dos[TOTAL_ASCII_CHARSET_ELEMENTS]={
 
 //Á A mayúscula acento cerrado - 168
 0x04,0x08,0x30,0x78,0xcc,0xfc,0xcc,0x00,
+
+//Caracter boton minimizar QNX - 169
+0,0,0,0,0,0,126,0,
+
+//Caracter boton cierre QNX - 170
+0,66,36,24,24,36,66,0,
 };
 
 //Basado en Z88 con variaciones
@@ -3775,6 +3847,12 @@ unsigned char char_set_templeos[TOTAL_ASCII_CHARSET_ELEMENTS]={
 
 //Á A mayúscula acento cerrado - 168
 0x02,0x04,0x0e,0x1b,0x1b,0x1f,0x1b,0x00,
+
+//Caracter boton minimizar QNX - 169
+0,0,0,0,0,0,126,0,
+
+//Caracter boton cierre QNX - 170
+0,66,36,24,24,36,66,0,
 };
 
 

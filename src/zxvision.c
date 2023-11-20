@@ -1838,10 +1838,10 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
 		QNX_COLOUR_GRAY_INACTIVE,		//Color para zona no usada en visualmem
         QNX_COLOUR_GRAY_INACTIVE,      //color block visualtape
 		2,7+8,		//Color para opcion marcada
-		140, //caracter de cerrar ventana
-        150, //caracter de minimizar ventana
-        152, //caracter de maximizar ventana
-        151, //caracter de restaurar ventana
+		170, //caracter de cerrar ventana
+        169, //caracter de minimizar ventana
+        139, //caracter de maximizar ventana
+        152, //caracter de restaurar ventana
         149, //caracter de background ventana
         ' ', //caracter de fondo de titulo
 		2, //color de aviso
