@@ -4813,9 +4813,11 @@ void menu_draw_ext_desktop_one_lower_icon_background(int contador_boton,int puls
 }
 
 
-char **menu_get_extdesktop_button_bitmap(int numero_boton)
+char **menu_get_extdesktop_button_bitmap(int numero_boton,int *es_set_machine)
 {
     char **puntero_bitmap;
+
+    *es_set_machine=0;
 
     //por defecto
     puntero_bitmap=zxdesktop_buttons_bitmaps[numero_boton];
@@ -4843,6 +4845,26 @@ char **menu_get_extdesktop_button_bitmap(int numero_boton)
                 geometry_name=defined_buttons_functions_array_parameters[boton_id];
                 char **possible_bitmap=zxvision_find_icon_for_known_window(geometry_name);
                 if (possible_bitmap!=NULL) puntero_bitmap=possible_bitmap;
+            }
+
+
+
+            //Si icono es F_FUNCION_SET_MACHINE y tiene parametro de set machine, dibujamos el icono de la maquina y luego la "flechita"
+            //De tal manera que estamos dibujando un icono sobre el otro. Este es el unico caso de momento que hago eso
+            if (accion==F_FUNCION_SET_MACHINE) {
+
+
+                char *machine_name;
+                machine_name=defined_buttons_functions_array_parameters[boton_id];
+
+                if (machine_name[0]) {
+
+                    //Obtener bitmap en base al parametro
+                    puntero_bitmap=get_machine_icon_by_name(machine_name);
+
+                    *es_set_machine=1;
+                }
+
             }
 
 
@@ -4957,14 +4979,23 @@ char *zesarux_ascii_logo[ZESARUX_ASCII_LOGO_ALTO]={
 
 		char **puntero_bitmap;
 
+        int es_set_machine;
 
-        puntero_bitmap=menu_get_extdesktop_button_bitmap(numero_boton);
+        puntero_bitmap=menu_get_extdesktop_button_bitmap(numero_boton,&es_set_machine);
 
 
 		if (pulsado) {
 			destino_x+=2;
 			destino_y+=2;
 		}
+
+        if (es_set_machine) {
+            screen_put_asciibitmap_generic(puntero_bitmap,NULL,destino_x,destino_y,ZESARUX_ASCII_LOGO_ANCHO,ZESARUX_ASCII_LOGO_ALTO, 0,menu_draw_ext_desktop_putpixel_bitmap,nivel_zoom,0);
+
+            //Y continuamos hacia abajo diciendo que dibuje la flecha
+            puntero_bitmap=bitmap_button_ext_desktop_set_machine_only_arrow;
+
+        }
 
 		screen_put_asciibitmap_generic(puntero_bitmap,NULL,destino_x,destino_y,ZESARUX_ASCII_LOGO_ANCHO,ZESARUX_ASCII_LOGO_ALTO, 0,menu_draw_ext_desktop_putpixel_bitmap,nivel_zoom,0);
 	}

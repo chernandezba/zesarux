@@ -717,7 +717,7 @@ extern zxdesktop_configurable_icon zxdesktop_configurable_icons_list[];
 extern int zxdesktop_configurable_icons_current_executing;
 
 
-extern char **menu_get_extdesktop_button_bitmap(int numero_boton);
+extern char **menu_get_extdesktop_button_bitmap(int numero_boton,int *es_set_machine);
 extern char **get_direct_function_icon_bitmap_final(int id_accion);
 
 //Maximo de teclas F posibles a mapear
