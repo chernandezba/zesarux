@@ -306,6 +306,22 @@ int defined_buttons_functions_array[MAX_USERDEF_BUTTONS]={
 };
 
 
+//Extra info de los botones a acciones mapeadas
+char defined_buttons_functions_array_parameters[MAX_USERDEF_BUTTONS][PATH_MAX]={
+	"",
+	"",
+	"",
+	"",
+	"",
+	"",
+	"",
+	"",
+	"",
+	"",
+	""
+};
+
+
 //Retorna el indice a la tabla para una accion concreta
 int zxvision_get_id_direct_funcion_index(enum defined_f_function_ids id_funcion)
 {
