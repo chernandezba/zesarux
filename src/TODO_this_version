@@ -57,7 +57,7 @@ lecturas de plus3dos headers no van bien: Real length file SCREEN  .    read fro
 ->con noconfigfile, si que muestra splash. aunque se ve el texto por debajo de otras ventanas abiertas
 
 
--quiza seek beyond limit no deberia saltar error (solo verbose), caso de tauceti pcw
+-quiza seek beyond limit en floppy no deberia saltar error (solo verbose), caso de tauceti pcw
 
 -rutinas speech y kill speech se llaman aunque no haya nada pendiente. desde timer, llama a scrtextspeech_filter_run_pending
 
@@ -143,7 +143,6 @@ esta pensado solo para print char y mostrarlo en consola. deberia haber una func
 ejemplo: poner el process switcher siempre visible, y pasar otra ventana por encima, los clicks de raton no van al process switcher
 
 
--setting autorebobinado de cintas real tape?
 
 -zxvision_window: buffer para pixeles, con doble buffer para saber si no ha cambiado un pixel, no refrescarlo
 Hacer uso de parametro dirty, usado igual en draw_window_contents, para saber _si hay que redibujar capa de pixel o no
@@ -694,6 +693,21 @@ Además para snapshots diferenciales se podrían almacenar 2 bytes por cada dire
 1 byte con el valor que obtiene
 Y los primeros 2 bytes de todo indica donde empieza
 
+
+*generacion de snapshot diferencial por el master
+-primero un snapshot completo. se inicializa tabla de diferencias a vacio
+-por cada escritura a ram, ver si el byte a escribir es diferente de lo que hay en ram. si es diferente, meterlo en la tabla
+-al enviar snapshot diferencial:
+  -formato comentado anteriormente: primeros 2 bytes indican el offset. a partir de ahi , repetitivo con:
+    - offset direccion respecto al anterior. si valor es mas de 255, indica offset de 16 bits, se pillara offset de los 2 bytes siguientes. y valor a escribir
+
+*lectura de snapshot diferencial del slave
+-leer primero snapshot completo. recordar estado de la ram y almacenarla en memoria aparte
+-ir leyendo diferencial. PROBLEMA: el master va enviando diferenciales, solo se guarda uno en el servidor. en cuanto el slave deja de leer un diferencial, el estado se desincroniza!! habria que tener varios diferenciales, o que el server vaya almacenando ram en varios estados
+y sea capaz de generar un diferencial segun el snapshot id que pida el slave. PROBLEMA2: quiero que el server no tenga nada de ese procesamiento,
+solo almacena datos que le envia el master, pero no deberia hacer procesamiento
+
+
 ---FIN idea para obtener snapshots diferenciales
 
 
@@ -714,7 +728,7 @@ Temporizadores comunes de ver kick y ver mensajes
 
 
 
--First aid de advanced menu items
+
 
 
 Limitar comandos ZRCP cuando Zeng habilitado
@@ -728,8 +742,8 @@ Snapshot agregar puertos del QL y además evitar pulsaciones de teclas seguidas
 probar en linux si hay memory leak con snapshots
 
 
+-network traffic:
 agregar marcas de grafica red en vertical
-
 Network traffic en ascii también
 
 -Menú se cerrará parámetro, indicar que se suele poner en ítems que abren ventana y que queremos que cierren todos los submenus al cerrar la ventana
@@ -744,7 +758,7 @@ Network traffic en ascii también
 
 -icono para video output
 
-
+-First aid de advanced menu items
 
 -Quizá en Mac se congela a veces con driver audio null?
 
@@ -768,4 +782,3 @@ en ese de set-machine el icono deberia ser la de la maquina a cambiar+flecha
 -permitir smartload de zrcp sin que haya que abrir y cerrar el menu, para poderlo usar con driver simpletext o null por ejemplo,
 ya que no abren el menu
 
--seguir tema qnx: botones ventana, revisar colores

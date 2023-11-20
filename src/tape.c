@@ -104,7 +104,7 @@ int autoload_spectrum_loadpp_mode;
 //Si hay que acelerar rutinas de cargadores
 z80_bit accelerate_loaders={0};
 
-//Si hay que autorebobinar cinta standard
+//Si hay que autorebobinar cinta
 z80_bit tape_auto_rewind={0};
 
 int (*tape_block_open)(void);
@@ -1988,8 +1988,18 @@ void realtape_get_byte_rwa(void)
 
 
 	if (feof(ptr_realtape)) {
-		realtape_eject();
-        return;
+        //printf("Fin de cinta\n");
+
+        //Si autorewind
+        if (tape_auto_rewind.v) {
+            realtape_rewind_begin();
+        }
+
+        else {
+            realtape_eject();
+            return;
+
+        }
     }
 
 

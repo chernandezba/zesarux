@@ -1605,7 +1605,7 @@ void menu_zeng_online(MENU_ITEM_PARAMETERS)
                 menu_add_item_menu_separator(array_menu_common);
 
                 menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_join_list,NULL,
-                "Join Waiting List","Lista de espera unirse","Llista d'espera unir-se");
+                "Entry Waiting List","Lista de espera entrada","Llista d'espera d'entrada");
 
 
                 menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_autojoin_room,NULL,

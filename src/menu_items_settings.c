@@ -9736,13 +9736,7 @@ void menu_settings_tape(MENU_ITEM_PARAMETERS)
 		menu_add_item_menu_ayuda(array_menu_settings_tape,"Enables tape load routine to load without knowing block flag. You must enable it on Tape Copy programs and also on Rocman game");
         menu_add_item_menu_es_avanzado(array_menu_settings_tape);
 
-		menu_add_item_menu_en_es_ca(array_menu_settings_tape,MENU_OPCION_NORMAL,menu_tape_autorewind,NULL,
-            "Autorew~~ind","Autorebob~~inar","Autorebob~~inar");
-        menu_add_item_menu_prefijo_format(array_menu_settings_tape,"[%c] ", (tape_auto_rewind.v ? 'X' : ' '));
-		menu_add_item_menu_shortcut(array_menu_settings_tape,'i');
-		menu_add_item_menu_tooltip(array_menu_settings_tape,"Autorewind standard tape when reaching end of tape");
-        menu_add_item_menu_ayuda(array_menu_settings_tape,"Autorewind standard tape when reaching end of tape");
-        menu_add_item_menu_es_avanzado(array_menu_settings_tape);
+
 
 
         menu_add_item_menu_en_es_ca(array_menu_settings_tape,MENU_OPCION_NORMAL,menu_tape_simulate_real_load,NULL,
@@ -9846,6 +9840,17 @@ void menu_settings_tape(MENU_ITEM_PARAMETERS)
 			menu_add_item_menu_ayuda(array_menu_settings_tape,"Set top speed setting when loading a real tape");
             menu_add_item_menu_es_avanzado(array_menu_settings_tape);
 		}
+
+
+        menu_add_item_menu(array_menu_settings_tape,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+
+		menu_add_item_menu_en_es_ca(array_menu_settings_tape,MENU_OPCION_NORMAL,menu_tape_autorewind,NULL,
+            "Autorew~~ind","Autorebob~~inar","Autorebob~~inar");
+        menu_add_item_menu_prefijo_format(array_menu_settings_tape,"[%c] ", (tape_auto_rewind.v ? 'X' : ' '));
+		menu_add_item_menu_shortcut(array_menu_settings_tape,'i');
+		menu_add_item_menu_tooltip(array_menu_settings_tape,"Autorewind tape when reaching end of tape");
+        menu_add_item_menu_ayuda(array_menu_settings_tape,"Autorewind tape when reaching end of tape");
+        menu_add_item_menu_es_avanzado(array_menu_settings_tape);
 
 
         menu_add_item_menu(array_menu_settings_tape,"",MENU_OPCION_SEPARADOR,NULL,NULL);
