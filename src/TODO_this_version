@@ -782,3 +782,31 @@ en ese de set-machine el icono deberia ser la de la maquina a cambiar+flecha
 -permitir smartload de zrcp sin que haya que abrir y cerrar el menu, para poderlo usar con driver simpletext o null por ejemplo,
 ya que no abren el menu
 
+
+
+-
+
+En menu_get_extdesktop_button_bitmap,
+dibujo de icono set machine con flechita
+
+        //Si icono es F_FUNCION_SET_MACHINE y tiene parametro de set machine, dibujamos el icono de la maquina y luego la "flechita"
+        //De tal manera que estamos dibujando un icono sobre el otro. Este es el unico caso de momento que hago eso
+        if (accion==F_FUNCION_SET_MACHINE) {
+
+
+            char *machine_name;
+            machine_name=defined_buttons_functions_array_parameters[boton_id];;
+
+            if (machine_name[0]) {
+
+                //Obtener bitmap en base al parametro
+                //TODO
+                //bitmap=get_machine_icon_by_name(machine_name);
+
+                //menu_draw_ext_desktop_one_icon(x,y,bitmap);
+
+                //Y continuamos hacia abajo diciendo que dibuje la flecha
+                puntero_bitmap=bitmap_button_ext_desktop_set_machine_only_arrow;
+            }
+
+        }

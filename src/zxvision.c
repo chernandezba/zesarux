@@ -4834,11 +4834,23 @@ char **menu_get_extdesktop_button_bitmap(int numero_boton)
 
         if (accion!=F_FUNCION_DEFAULT) {
             puntero_bitmap=get_direct_function_icon_bitmap_final(indice_tabla);
+
+
+            //Si icono es OPEN_WINDOW, adoptar icono de la ventana que se va a abrir
+            //printf("Accion open window\n");
+            if (accion==F_FUNCION_OPEN_WINDOW) {
+                char *geometry_name;
+                geometry_name=defined_buttons_functions_array_parameters[boton_id];
+                char **possible_bitmap=zxvision_find_icon_for_known_window(geometry_name);
+                if (possible_bitmap!=NULL) puntero_bitmap=possible_bitmap;
+            }
+
+
         }
 
+
+
     }
-
-
 
 
     return puntero_bitmap;
