@@ -1614,6 +1614,8 @@ printf("\n"
 
         printf("\n"
 
+        "--def-button-function-parameters button extra-info  Define extra info associated to an action of a button\n"
+
 
 		"\n"
 		"\n"
@@ -3746,6 +3748,23 @@ int parse_cmdline_options(int desde_commandline) {
 					printf ("Invalid button action: %s\n",argv[puntero_parametro]);
 					exit(1);
 				}
+
+
+			}
+
+			else if (!strcmp(argv[puntero_parametro],"--def-button-function-parameters")) {
+				siguiente_parametro_argumento();
+
+				int valor=atoi(argv[puntero_parametro]);
+
+				if (valor<0 || valor>=MAX_USERDEF_BUTTONS) {
+					printf ("Invalid button\n");
+					exit(1);
+				}
+
+				siguiente_parametro_argumento();
+
+                strcpy(defined_buttons_functions_array_parameters[valor],argv[puntero_parametro]);
 
 
 			}

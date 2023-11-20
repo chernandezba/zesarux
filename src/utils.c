@@ -4455,6 +4455,12 @@ int util_write_configfile(void)
     }
   }
 
+  for (i=0;i<MAX_USERDEF_BUTTONS;i++) {
+    if (defined_buttons_functions_array_parameters[i][0]!=0) {
+                                              ADD_STRING_CONFIG,"--def-button-function-parameters %d \"%s\"",i,defined_buttons_functions_array_parameters[i]);
+    }
+  }
+
 
   if (input_file_keyboard_name!=NULL && input_file_keyboard_inserted.v)         ADD_STRING_CONFIG,"--keyboardspoolfile \"%s\"",input_file_keyboard_name);
 
