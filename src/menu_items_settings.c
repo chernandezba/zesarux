@@ -10071,6 +10071,31 @@ void menu_zxdesktop_set_userdef_buttons_functions(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_valor_opcion(array_menu_zxdesktop_set_userdef_buttons_functions,i);
 
 
+
+            //Algunas acciones que permiten extra info
+            if (
+                defined_direct_functions_array[indice_tabla].id_funcion==F_FUNCION_OPEN_WINDOW ||
+                defined_direct_functions_array[indice_tabla].id_funcion==F_FUNCION_SET_MACHINE ||
+                defined_direct_functions_array[indice_tabla].id_funcion==F_FUNCION_DESKTOP_SNAPSHOT ||
+                defined_direct_functions_array[indice_tabla].id_funcion==F_FUNCION_DESKTOP_TAPE ||
+                defined_direct_functions_array[indice_tabla].id_funcion==F_FUNCION_DESKTOP_GENERIC_SMARTLOAD
+            ) {
+                char string_extra_info[16];
+                menu_tape_settings_trunc_name(defined_buttons_functions_array_parameters[i],string_extra_info,16);
+
+                menu_add_item_menu_en_es_ca(array_menu_zxdesktop_set_userdef_buttons_functions,MENU_OPCION_NORMAL,NULL,NULL,
+                    " Parameters"," Parámetros"," Paràmetres");
+                menu_add_item_menu_sufijo_format(array_menu_zxdesktop_set_userdef_buttons_functions,": %s",string_extra_info);
+                menu_add_item_menu_tooltip(array_menu_zxdesktop_set_userdef_buttons_functions,"Parameters for some actions, like window name for OpenWindow action");
+                menu_add_item_menu_ayuda(array_menu_zxdesktop_set_userdef_buttons_functions,"Parameters for some actions, like window name for OpenWindow action");
+
+                //Esto es un poco chapuza... para indicar que es Parameters, la opcion tiene bit 8 alzado
+                menu_add_item_menu_valor_opcion(array_menu_zxdesktop_set_userdef_buttons_functions,i | 256);
+            }
+
+
+
+
         }
 
 
@@ -10087,15 +10112,30 @@ void menu_zxdesktop_set_userdef_buttons_functions(MENU_ITEM_PARAMETERS)
         if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
             //llamamos por valor de funcion. Se llama a la funcion de elegir accion siempre
 
-            //printf ("actuamos por funcion\n");
+            //Se llama a la funcion de elegir accion o establecer extra info
+            if (item_seleccionado.valor_opcion>=256) {
+                //Establecer extra info
+                //char defined_f_functions_keys_array_parameters[MAX_F_FUNCTIONS_KEYS][PATH_MAX]={
 
-            int accion_seleccionada=defined_buttons_functions_array[item_seleccionado.valor_opcion];
+                int indice=item_seleccionado.valor_opcion & 0xFF;
 
-            int indice_retorno=menu_zxdesktop_set_userdef_button_func_action(accion_seleccionada);
+                menu_ventana_scanf("Extra info",defined_buttons_functions_array_parameters[indice],PATH_MAX);
 
-            if (indice_retorno>=0) {
-                //printf("definimos boton. boton %d accion %d\n",item_seleccionado.valor_opcion,indice_retorno);
-                defined_buttons_functions_array[item_seleccionado.valor_opcion]=indice_retorno;
+            }
+
+            else {
+
+                //printf ("actuamos por funcion\n");
+
+                int accion_seleccionada=defined_buttons_functions_array[item_seleccionado.valor_opcion];
+
+                int indice_retorno=menu_zxdesktop_set_userdef_button_func_action(accion_seleccionada);
+
+                if (indice_retorno>=0) {
+                    //printf("definimos boton. boton %d accion %d\n",item_seleccionado.valor_opcion,indice_retorno);
+                    defined_buttons_functions_array[item_seleccionado.valor_opcion]=indice_retorno;
+                }
+
             }
 
 

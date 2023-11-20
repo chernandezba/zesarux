@@ -1368,7 +1368,7 @@ void menu_file_dsk_browser_show(char *filename);
 
 
 
-void menu_process_f_functions_by_action_index(int accion,int si_pulsado_boton_redefinido);
+void menu_process_f_functions_by_action_index(int accion,int si_pulsado_boton_redefinido,int boton);
 
 z80_byte menu_retorna_caracter_background(void);
 
@@ -23476,7 +23476,7 @@ void menu_inicio_handle_configurable_icon_presses(void)
 
         zxdesktop_configurable_icons_current_executing=pulsado_boton;
 
-        menu_process_f_functions_by_action_name(id_funcion,1,-1,0);
+        menu_process_f_functions_by_action_name(id_funcion,1,-1,0,0);
         //printf("Despues procesar funcion\n");
     }
 
@@ -23500,9 +23500,10 @@ int menu_inicio_handle_button_presses_userdef(int boton)
     int indice_tabla=defined_buttons_functions_array[boton];
     accion=menu_da_accion_direct_functions_indice(indice_tabla);
 
+    //printf("Pulsado boton: %d\n",boton);
 
     if (accion!=F_FUNCION_DEFAULT) {
-        menu_process_f_functions_by_action_index(indice_tabla,1); //Indicar que viene de boton redefinido por el usuario
+        menu_process_f_functions_by_action_index(indice_tabla,1,boton); //Indicar que viene de boton redefinido por el usuario
         return 1;
     }
 
@@ -23936,14 +23937,14 @@ menu_init_footer hace falta pues el layer de menu se borra y se queda negro en l
 
 }
 
-void menu_process_f_functions_by_action_index(int indice,int si_pulsado_boton_redefinido)
+void menu_process_f_functions_by_action_index(int indice,int si_pulsado_boton_redefinido,int boton)
 {
 
-    //printf("id indice: %d\n",indice);
+    //printf("numero boton: %d\n",boton);
 
     int id_funcion=menu_da_accion_direct_functions_indice(indice);
 
-    menu_process_f_functions_by_action_name(id_funcion,0,menu_button_f_function_index,si_pulsado_boton_redefinido);
+    menu_process_f_functions_by_action_name(id_funcion,0,menu_button_f_function_index,si_pulsado_boton_redefinido,boton);
 }
 
 void menu_process_f_functions(void)
@@ -23957,7 +23958,7 @@ void menu_process_f_functions(void)
 
 	//printf ("Menu process Tecla: F%d Accion: %s\n",indice+1,defined_direct_functions_array[indice_tabla].texto_funcion);
 
-	menu_process_f_functions_by_action_index(indice_tabla,0);
+	menu_process_f_functions_by_action_index(indice_tabla,0,0);
 
 }
 
@@ -24721,7 +24722,7 @@ void menu_inicio(void)
             if (menu_button_f_function_action==0) menu_process_f_functions();
             else {
                 //O procesar cuando se envia una accion concreta, normalmente viene de evento de joystick
-                menu_process_f_functions_by_action_name(menu_button_f_function_action,0,-1,0);
+                menu_process_f_functions_by_action_name(menu_button_f_function_action,0,-1,0,0);
                 menu_button_f_function_action=0;
             }
 

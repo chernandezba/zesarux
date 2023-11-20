@@ -40068,7 +40068,7 @@ void menu_process_f_function_topspeed(void)
 //Procesar accion tecla F, o pulsado de boton superior reconfigurado, o pulsado de icono en ZX Desktop
 //si_pulsado_icono_zxdesktop=1 en caso de iconos de ZX Desktop
 //si_pulsado_icono_zxdesktop=0 en caso de teclas F o botones superior reconfigurado, y para distinguirlos, se usa si_pulsado_boton_redefinido
-void menu_process_f_functions_by_action_name(int id_funcion,int si_pulsado_icono_zxdesktop,int id_tecla_f_pulsada,int si_pulsado_boton_redefinido)
+void menu_process_f_functions_by_action_name(int id_funcion,int si_pulsado_icono_zxdesktop,int id_tecla_f_pulsada,int si_pulsado_boton_redefinido,int numero_boton_redefinido)
 {
 
     //printf("enum: %d\n",id_funcion);
@@ -40138,7 +40138,15 @@ void menu_process_f_functions_by_action_name(int id_funcion,int si_pulsado_icono
             //Viene de pulsar tecla F o boton ZX Desktop redefinido
             else {
                 if (si_pulsado_boton_redefinido) {
-                    debug_printf(VERBOSE_ERR,"This action can only be fired from a ZX Desktop icon or F-key");
+                    //debug_printf(VERBOSE_ERR,"This action can only be fired from a ZX Desktop icon or F-key");
+                    //printf("Numero boton pulsado: %d\n",numero_boton_redefinido);
+                    if (numero_boton_redefinido<0 || numero_boton_redefinido>=MAX_USERDEF_BUTTONS) {
+                        debug_printf(VERBOSE_ERR,"Error getting Button parameters");
+                    }
+                    else {
+                        char *nombre=defined_buttons_functions_array_parameters[numero_boton_redefinido];
+                        zxvision_open_window_by_name(nombre);
+                    }
                 }
                 else {
                     if (id_tecla_f_pulsada<0) debug_printf(VERBOSE_ERR,"Error getting F-Key info");
@@ -40190,9 +40198,30 @@ void menu_process_f_functions_by_action_name(int id_funcion,int si_pulsado_icono
             //Viene de pulsar tecla F o boton ZX Desktop redefinido
             else {
                 if (si_pulsado_boton_redefinido) {
+                    if (numero_boton_redefinido<0 || numero_boton_redefinido>=MAX_USERDEF_BUTTONS) {
+                        debug_printf(VERBOSE_ERR,"Error getting Button parameters");
+                    }
+                    else {
+                        char *nombre=defined_buttons_functions_array_parameters[numero_boton_redefinido];
+
+                        strcpy(quickload_file,nombre);
+
+                        quickfile=quickload_file;
+
+                        //Ver si es un zip que viene de una descarga online por ejemplo
+                        if (!util_compare_file_extension(nombre,"zip")) {
+                            menu_smartload(0);
+                        }
+
+                        else {
+                            quickload(quickload_file);
+                        }
+                    }
+
+
                     //No hay parametros. Abrir smartload tal cual
                     //printf("Pulsado boton redefinido\n");
-                    menu_smartload(0);
+                    //menu_smartload(0);
                 }
                 else {
                     if (id_tecla_f_pulsada<0) debug_printf(VERBOSE_ERR,"Error getting F-Key info");
@@ -40312,7 +40341,24 @@ void menu_process_f_functions_by_action_name(int id_funcion,int si_pulsado_icono
             else {
                 if (si_pulsado_boton_redefinido) {
                     //printf("Pulsado boton redefinido\n");
-                    menu_machine_selection(0);
+
+                    if (numero_boton_redefinido<0 || numero_boton_redefinido>=MAX_USERDEF_BUTTONS) {
+                        debug_printf(VERBOSE_ERR,"Error getting Button parameters");
+                    }
+                    else {
+                        char *nombre=defined_buttons_functions_array_parameters[numero_boton_redefinido];
+                        if (nombre[0]==0) {
+                            menu_machine_selection(0);
+                        }
+                        else {
+                            int maquina=get_machine_id_by_name(nombre);
+                            if (maquina==-1) return;
+
+                            menu_machine_set_machine_by_id(maquina);
+                        }
+                    }
+
+
                 }
 
                 else {

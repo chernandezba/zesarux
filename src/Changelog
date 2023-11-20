@@ -26,6 +26,9 @@ Improved ZX Vision:
 - Menus can no longer be minimized (that had no sense)
 - Process switcher: unminimize windows when they are minimized and selecting them
 
+Improved ZX Desktop:
+- Allow to set parameters when redefining upper buttons, for some actions like openwindow or set machine
+
 * Fixes:
 
 Fixed blockage when drawing Text Adventure Map and corrupted GAC adventure
