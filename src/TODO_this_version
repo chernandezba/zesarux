@@ -249,7 +249,7 @@ ejemplo badlands.dsk y rutina en la 2114h que esta en los traps
 
 -conviene ocultar Wall y Wextra en version estable? puede salir algun warning util solo en version estable? no deberia, son warnings muy especificos
 
--Botón derecho botones acciones: editar botón superior. Y en dispositivos? Quizá settings de ese dispositivo?
+
 
 -Quiza registro DE al volver de rutina de trap load, deberia ser DE -=bytes_leidos
 
@@ -784,29 +784,6 @@ ya que no abren el menu
 
 
 
--
-
-En menu_get_extdesktop_button_bitmap,
-dibujo de icono set machine con flechita
-
-        //Si icono es F_FUNCION_SET_MACHINE y tiene parametro de set machine, dibujamos el icono de la maquina y luego la "flechita"
-        //De tal manera que estamos dibujando un icono sobre el otro. Este es el unico caso de momento que hago eso
-        if (accion==F_FUNCION_SET_MACHINE) {
-
-
-            char *machine_name;
-            machine_name=defined_buttons_functions_array_parameters[boton_id];;
-
-            if (machine_name[0]) {
-
-                //Obtener bitmap en base al parametro
-                //TODO
-                //bitmap=get_machine_icon_by_name(machine_name);
-
-                //menu_draw_ext_desktop_one_icon(x,y,bitmap);
-
-                //Y continuamos hacia abajo diciendo que dibuje la flecha
-                puntero_bitmap=bitmap_button_ext_desktop_set_machine_only_arrow;
-            }
-
-        }
+-Botón derecho botones acciones:
+-ok editar botón superior.
+-Y en dispositivos? Quizá settings de ese dispositivo?

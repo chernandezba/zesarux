@@ -1291,6 +1291,8 @@ z80_bit menu_pressed_close_all_menus={0};
 
 //En que boton se ha pulsado del menu
 int menu_pressed_zxdesktop_button_which=-1;
+//Que se ha pulsado con boton derecho
+int menu_pressed_zxdesktop_cbutton_which_right_button=0;
 //En que lower icon se ha pulsado del menu
 int menu_pressed_zxdesktop_lower_icon_which=-1;
 //En que icono configurable se ha pulsado del menu
@@ -15440,6 +15442,8 @@ int zxvision_if_mouse_in_zlogo_or_buttons_desktop_right_button(void)
 	//Ver si estamos por la zona del logo en el ext desktop o de los botones
 	if (screen_ext_desktop_enabled && scr_driver_can_ext_desktop() ) {
 
+        //printf("Boton derecho en ext desktop\n");
+
 		int mouse_pixel_x,mouse_pixel_y;
 		menu_calculate_mouse_xy_absolute_interface_pixel(&mouse_pixel_x,&mouse_pixel_y);
 
@@ -15525,6 +15529,8 @@ int zxvision_if_mouse_in_zlogo_or_buttons_desktop_right_button(void)
                 }
 
             }
+
+            //printf("Pulsado en cualquier otro sitio\n");
 
 
 
@@ -16767,17 +16773,42 @@ void zxvision_handle_mouse_events(zxvision_window *w)
             //printf("mouse pixel x,y desde handle mouse events: %d,%d\n",mouse_pixel_x,mouse_pixel_y);
 
 
+            int mouse_pixel_x,mouse_pixel_y;
+            menu_calculate_mouse_xy_absolute_interface_pixel(&mouse_pixel_x,&mouse_pixel_y);
+
+            //multiplicamos por zoom
+            mouse_pixel_x *=zoom_x;
+            mouse_pixel_y *=zoom_y;
+
+
+            //Si esta en zona botones de zx desktop. Y si estan habilitados
+            //Si pulsado boton derecho sobre iconos superiores
+
+            if (menu_zxdesktop_buttons_enabled.v) {
+                int ancho_boton,alto_boton,total_botones,xinicio_botones,xfinal_botones;
+                menu_ext_desktop_buttons_get_geometry(&ancho_boton,&alto_boton,&total_botones,&xinicio_botones,&xfinal_botones);
+
+                if (mouse_pixel_x>=xinicio_botones && mouse_pixel_x<xfinal_botones &&
+                    mouse_pixel_y>=0 && mouse_pixel_y<alto_boton
+                ) {
+                    //printf ("Pulsado boton derecho en zona botones del ext desktop\n");
+
+                    //en que boton?
+                    int numero_boton=(mouse_pixel_x-xinicio_botones)/ancho_boton;
+                    //printf("boton pulsado: %d\n",numero_boton);
+                    menu_pressed_zxdesktop_button_which=numero_boton;
+
+
+                    menu_pressed_zxdesktop_cbutton_which_right_button=1;
+
+                    //return 1;
+                }
+            }
+
             //Asumimos pulsado en fondo desktop
             if (zxdesktop_configurable_icons_enabled_and_visible()) {
 
                 //Si pulsado en algun icono
-                int mouse_pixel_x,mouse_pixel_y;
-                menu_calculate_mouse_xy_absolute_interface_pixel(&mouse_pixel_x,&mouse_pixel_y);
-
-                //multiplicamos por zoom
-                mouse_pixel_x *=zoom_x;
-                mouse_pixel_y *=zoom_y;
-
 
                 int icono_pulsado=if_position_in_desktop_icons(mouse_pixel_x,mouse_pixel_y);
 
@@ -23595,6 +23626,15 @@ void menu_inicio_handle_button_presses(void)
 	//Para que no vuelva a saltar
 	menu_pressed_zxdesktop_button_which=-1;
 
+    //Si pulsado con boton derecho, configurar botones
+    if (menu_pressed_zxdesktop_cbutton_which_right_button) {
+        menu_pressed_zxdesktop_cbutton_which_right_button=0;
+        //printf("Pulsado con boton derecho sobre boton %d\n",pulsado_boton);
+        menu_zxdesktop_set_userdef_buttons_functions(0);
+    }
+
+    else {
+
     if (menu_inicio_handle_button_presses_userdef(pulsado_boton)==0) {
 
         switch (pulsado_boton) {
@@ -23658,6 +23698,8 @@ void menu_inicio_handle_button_presses(void)
                 menu_principal_salir_emulador(0);
             break;
         }
+
+    }
 
     }
 
