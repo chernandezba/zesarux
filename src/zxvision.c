@@ -16778,7 +16778,7 @@ void zxvision_handle_mouse_events(zxvision_window *w)
 
     if (zxvision_pressed_right_mouse_button()) {
         //acciones con boton derecho, con menu abierto
-        printf("Pulsado boton derecho\n");
+        //printf("Pulsado boton derecho\n");
 
 
         //Si se pulsa boton derecho en alguna ventana
@@ -23615,6 +23615,17 @@ void menu_inicio_handle_button_presses(void)
     if (menu_pressed_zxdesktop_button_which_right_button) {
         menu_pressed_zxdesktop_button_which_right_button=0;
         //printf("Pulsado con boton derecho sobre boton %d\n",pulsado_boton);
+
+        //printf("salir_todos_menus %d menu_pressed_open_menu_while_in_menu.v %d "
+        //        "mouse_pressed_background_window %d mouse_pressed_close_window %d\n",
+        //        salir_todos_menus,menu_pressed_open_menu_while_in_menu.v,mouse_pressed_background_window,mouse_pressed_close_window);
+
+        //Resetear ciertas variables para que no se cierre de nuevo el menu que vamos a abrir
+        //salir_todos_menus=0;
+        //menu_pressed_open_menu_while_in_menu.v=0;
+        mouse_pressed_background_window=0;
+        mouse_pressed_close_window=0;
+
         menu_zxdesktop_set_userdef_buttons_functions(0);
     }
 
