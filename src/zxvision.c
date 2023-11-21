@@ -1292,7 +1292,7 @@ z80_bit menu_pressed_close_all_menus={0};
 //En que boton se ha pulsado del menu
 int menu_pressed_zxdesktop_button_which=-1;
 //Que se ha pulsado con boton derecho
-int menu_pressed_zxdesktop_cbutton_which_right_button=0;
+int menu_pressed_zxdesktop_button_which_right_button=0;
 //En que lower icon se ha pulsado del menu
 int menu_pressed_zxdesktop_lower_icon_which=-1;
 //En que icono configurable se ha pulsado del menu
@@ -16826,7 +16826,7 @@ void zxvision_handle_mouse_events(zxvision_window *w)
                     menu_pressed_zxdesktop_button_which=numero_boton;
 
 
-                    menu_pressed_zxdesktop_cbutton_which_right_button=1;
+                    menu_pressed_zxdesktop_button_which_right_button=1;
 
                     zxvision_handle_mouse_events_aux_open_menu_while_in_menu();
 
@@ -23612,8 +23612,8 @@ void menu_inicio_handle_button_presses(void)
 	menu_pressed_zxdesktop_button_which=-1;
 
     //Si pulsado con boton derecho, configurar botones
-    if (menu_pressed_zxdesktop_cbutton_which_right_button) {
-        menu_pressed_zxdesktop_cbutton_which_right_button=0;
+    if (menu_pressed_zxdesktop_button_which_right_button) {
+        menu_pressed_zxdesktop_button_which_right_button=0;
         //printf("Pulsado con boton derecho sobre boton %d\n",pulsado_boton);
         menu_zxdesktop_set_userdef_buttons_functions(0);
     }
