@@ -23635,71 +23635,71 @@ void menu_inicio_handle_button_presses(void)
 
     else {
 
-    if (menu_inicio_handle_button_presses_userdef(pulsado_boton)==0) {
+        if (menu_inicio_handle_button_presses_userdef(pulsado_boton)==0) {
 
-        switch (pulsado_boton) {
-            case 0:
-                //Nada. Solo abrir el menu
-            break;
+            switch (pulsado_boton) {
+                case 0:
+                    //Nada. Solo abrir el menu
+                break;
 
-            case 1:
-                //printf("antes smartload\n");
-                menu_smartload(0);
-                //printf("despues smartload\n");
-            break;
+                case 1:
+                    //printf("antes smartload\n");
+                    menu_smartload(0);
+                    //printf("despues smartload\n");
+                break;
 
-            case 2:
-                menu_snapshot(0);
-            break;
+                case 2:
+                    menu_snapshot(0);
+                break;
 
-            case 3:
-                menu_machine_selection(0);
-            break;
+                case 3:
+                    menu_machine_selection(0);
+                break;
 
-            case 4:
-                menu_audio(0);
-            break;
+                case 4:
+                    menu_audio(0);
+                break;
 
-            case 5:
-                menu_display_settings(0);
-            break;
+                case 5:
+                    menu_display_settings(0);
+                break;
 
-            case 6:
-                menu_storage(0);
-            break;
+                case 6:
+                    menu_storage(0);
+                break;
 
-            case 7:
-                menu_debug_main(0);
-            break;
+                case 7:
+                    menu_debug_main(0);
+                break;
 
-            case 8:
-                menu_network(0);
-            break;
+                case 8:
+                    menu_network(0);
+                break;
 
-            case 9:
-                menu_windows(0);
-            break;
+                case 9:
+                    menu_windows(0);
+                break;
 
-            case 10:
-                menu_settings(0);
-            break;
+                case 10:
+                    menu_settings(0);
+                break;
 
-            case 11:
-                menu_help(0);
-            break;
+                case 11:
+                    menu_help(0);
+                break;
 
-            case 12:
-                //printf("pulsado en boton de cerrar todos menus\n");
-                menu_pressed_close_all_menus.v=1;
-                menu_pressed_open_menu_while_in_menu.v=1;
-            break;
+                case 12:
+                    //printf("pulsado en boton de cerrar todos menus\n");
+                    menu_pressed_close_all_menus.v=1;
+                    menu_pressed_open_menu_while_in_menu.v=1;
+                break;
 
-            case 13:
-                menu_principal_salir_emulador(0);
-            break;
+                case 13:
+                    menu_principal_salir_emulador(0);
+                break;
+            }
+
         }
-
-    }
 
     }
 
