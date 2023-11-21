@@ -550,7 +550,8 @@ const int riscos_colortable_original[RISCOS_TOTAL_PALETTE_COLOURS]={
 
 const int qnx_colortable_original[QNX_TOTAL_PALETTE_COLOURS]={
     0x007b6b,  //Verde titulo ventana papel
-    0x0000a5, //Azul opcion seleccionada
+    //0x0000a5, //Azul opcion seleccionada
+    0x1100fa, //Azul opcion seleccionada
     0xc6c6c6, //gris de papel
     0x8c8c8c //titulo ventana inactiva papel
 };

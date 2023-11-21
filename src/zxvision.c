@@ -1864,7 +1864,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         ' ', //caracter de fondo de titulo
 		2, //color de aviso
 		colores_franja_speccy_brillo,colores_franja_speccy_oscuro,
-        -1, //si texto inverso solo cambia color tinta
+        QNX_COLOUR_GREEN, //si texto inverso solo cambia color tinta
         0, //rellenar titulo
         char_set_beos,
         0 //caracter franja normal

@@ -503,7 +503,7 @@ Quizá se puede enviar con un id único de cliente y al leer evento diga de que 
 El id también podría ser el uuid que todos ZEsarUX tienen, en teoría únicos. Así no hay que obtenerlo del servidor
 Ese uuid siempre está? Aunque no se guarde configuración y/o no se envíen estadísticas? Pues debería estar siempre. Si no se guarda en config, que se genere de nuevo cada vez
 
--menus en Beos se ven con un hueco en la barra de titulo donde estaria el boton de minimizar
+
 
 -para juego en red, el master siempre tiene ventaja, pues el no recibe snapshots y su instancia siempre está sincronizada
 Por tanto, para que no haya desventaja al jugar dos personas, lo ideal es que hubiera un master, que no participase,
@@ -727,10 +727,6 @@ Quizá tarea en el timer tal cual para todo eso
 Temporizadores comunes de ver kick y ver mensajes
 
 
-
-
-
-
 Limitar comandos ZRCP cuando Zeng habilitado
 Quizá setting para limitar o no
 
@@ -770,8 +766,6 @@ Asi se podría redimensionar siempre sin que se descuadren los textos anteriores
 -Debug printf solo hacer bloqueo cuando mensajes van a consola de ZX Desktop
 Prueba con redimensionar ventana con driver audio sdl con callback y printf donde avisa de underrun de buffer y en Windows
 
--botones superiores redefinidos que puedan tener parametros asociados, por ejemplo set-machine y parametro "48k"
-en ese de set-machine el icono deberia ser la de la maquina a cambiar+flecha
 
 -Posible driver nuevo u opción en curses en que el menú siga siendo estándar pero el output de la máquina emulada sea el mismo que stdout
 
@@ -787,3 +781,10 @@ ya que no abren el menu
 -Botón derecho botones acciones:
 -ok editar botón superior.
 -Y en dispositivos? Quizá settings de ese dispositivo?
+
+
+-menus en Beos se ven con un hueco en la barra de titulo donde estaria el boton de minimizar
+
+-ventanas titulo en Beos:
+*las que estan en el fondo, le desaparecen bien los botones
+*pero al ir a menu F5-setting, esa ventana de fondo le aparecen los botones y con color activo
