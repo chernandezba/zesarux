@@ -15935,6 +15935,33 @@ int zxvision_pressed_right_mouse_button(void)
     else return 0;
 }
 
+void zxvision_handle_mouse_events_aux_open_menu_while_in_menu(void)
+{
+    menu_pressed_open_menu_while_in_menu.v=1;
+    salir_todos_menus=1;
+
+    /*
+    Estas decisiones son parecidas en casos:
+    pulsar tecla menu cuando menu activo (menu_if_pressed_menu_button en menu_get_pressed_key_no_modifier), conmutar ventana, pulsar logo ZEsarUX en ext desktop
+    */
+
+    if (!menu_allow_background_windows) {
+            mouse_pressed_close_window=1;
+    }
+
+    else {
+        //Si la ventana activa permite ir a background, mandarla a background
+        if (zxvision_current_window->can_be_backgrounded) {
+                mouse_pressed_background_window=1;
+        }
+
+        //Si la ventana activa no permite ir a background, cerrarla
+        else {
+                mouse_pressed_close_window=1;
+        }
+    }
+}
+
 //TODO: tiene sentido pasarle el parametro de ventana w, si siempre que llamamos aqui es con el mismo parametro? (zxvision_current_window)
 void zxvision_handle_mouse_events(zxvision_window *w)
 {
@@ -16751,7 +16778,7 @@ void zxvision_handle_mouse_events(zxvision_window *w)
 
     if (zxvision_pressed_right_mouse_button()) {
         //acciones con boton derecho, con menu abierto
-        //printf("Pulsado boton derecho\n");
+        printf("Pulsado boton derecho\n");
 
 
         //Si se pulsa boton derecho en alguna ventana
@@ -16801,7 +16828,8 @@ void zxvision_handle_mouse_events(zxvision_window *w)
 
                     menu_pressed_zxdesktop_cbutton_which_right_button=1;
 
-                    //return 1;
+                    zxvision_handle_mouse_events_aux_open_menu_while_in_menu();
+
                 }
             }
 
@@ -16826,29 +16854,8 @@ void zxvision_handle_mouse_events(zxvision_window *w)
             //printf("pulsado en un boton desde handle mouse events. menu_abierto %d\n",menu_abierto);
                         //menu_draw_ext_desktop_dibujar_boton_or_lower_icon_pulsado();
 
-                    menu_pressed_open_menu_while_in_menu.v=1;
-                    salir_todos_menus=1;
+                    zxvision_handle_mouse_events_aux_open_menu_while_in_menu();
 
-                    /*
-                    Estas decisiones son parecidas en casos:
-                    pulsar tecla menu cuando menu activo (menu_if_pressed_menu_button en menu_get_pressed_key_no_modifier), conmutar ventana, pulsar logo ZEsarUX en ext desktop
-                    */
-
-                    if (!menu_allow_background_windows) {
-                            mouse_pressed_close_window=1;
-                    }
-
-                    else {
-                        //Si la ventana activa permite ir a background, mandarla a background
-                        if (zxvision_current_window->can_be_backgrounded) {
-                                mouse_pressed_background_window=1;
-                        }
-
-                        //Si la ventana activa no permite ir a background, cerrarla
-                        else {
-                                mouse_pressed_close_window=1;
-                        }
-                    }
                 }
 
                 else {
@@ -16863,30 +16870,8 @@ void zxvision_handle_mouse_events(zxvision_window *w)
                         //de momento no altero posicion menu si se pulsa en background
                         //zxvision_set_next_menu_position(absolute_mouse_x,absolute_mouse_y);
 
-                        menu_pressed_open_menu_while_in_menu.v=1;
-                        salir_todos_menus=1;
+                        zxvision_handle_mouse_events_aux_open_menu_while_in_menu();
 
-                        /*
-                        Estas decisiones son parecidas en casos:
-                        pulsar tecla menu cuando menu activo (menu_if_pressed_menu_button en menu_get_pressed_key_no_modifier), conmutar ventana, pulsar logo ZEsarUX en ext desktop
-                        */
-
-                        if (!menu_allow_background_windows) {
-                                mouse_pressed_close_window=1;
-                        }
-
-                        else {
-                            //Si la ventana activa permite ir a background, mandarla a background
-                            if (zxvision_current_window->can_be_backgrounded) {
-                                    mouse_pressed_background_window=1;
-                            }
-
-                            //Si la ventana activa no permite ir a background, cerrarla
-                            else {
-                                    mouse_pressed_close_window=1;
-                            }
-
-                        }
 
                     }
 
