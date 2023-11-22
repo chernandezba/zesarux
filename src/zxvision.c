@@ -9360,33 +9360,33 @@ void menu_dibuja_ventana(int x,int y,int ancho,int alto,char *titulo_original)
     //si ventana es background o no es ventana activa, caracter fondo titulo es siempre espacio
     if (ventana_es_background || !ventana_tipo_activa) caracter_espacio_titulo=' ';
 
-        //titulo
-        //primero franja toda negra normalmente en estilo ZEsarUX
-        if (!ESTILO_GUI_NO_RELLENAR_TITULO) {
-            for (i=0;i<ancho;i++) {
-			    putchar_menu_overlay(x+i,y,caracter_espacio_titulo,color_tinta_titulo,color_papel_titulo);
-		    }
+    //titulo
+    //primero franja toda negra normalmente en estilo ZEsarUX
+    if (!ESTILO_GUI_NO_RELLENAR_TITULO) {
+        for (i=0;i<ancho;i++) {
+            putchar_menu_overlay(x+i,y,caracter_espacio_titulo,color_tinta_titulo,color_papel_titulo);
         }
+    }
 
 
-		int ancho_mostrar_titulo=menu_dibuja_ventana_ret_ancho_titulo(ancho,titulo);
+    int ancho_mostrar_titulo=menu_dibuja_ventana_ret_ancho_titulo(ancho,titulo);
 
-		char titulo_mostrar[ZXVISION_MAX_WINDOW_TITLE];
-		z80_byte caracter_cerrar=menu_retorna_caracter_cerrar();
-
-
-
-		if (menu_hide_close_button.v || ventana_es_background || !ventana_tipo_activa) {
-            //strcpy(titulo_mostrar,titulo);
-            //Ancho del titulo sera igual, aun sin el boton de cerrar
-            sprintf (titulo_mostrar,"%c%c%s",caracter_espacio_titulo,caracter_espacio_titulo,titulo);
-        }
-		else {
-            sprintf (titulo_mostrar,"%c%c%s",caracter_cerrar,caracter_espacio_titulo,titulo);
-        }
+    char titulo_mostrar[ZXVISION_MAX_WINDOW_TITLE];
+    z80_byte caracter_cerrar=menu_retorna_caracter_cerrar();
 
 
-        //y luego el texto. titulo mostrar solo lo que cabe de ancho
+
+    if (menu_hide_close_button.v || ventana_es_background || !ventana_tipo_activa) {
+        //strcpy(titulo_mostrar,titulo);
+        //Ancho del titulo sera igual, aun sin el boton de cerrar
+        sprintf (titulo_mostrar,"%c%c%s",caracter_espacio_titulo,caracter_espacio_titulo,titulo);
+    }
+    else {
+        sprintf (titulo_mostrar,"%c%c%s",caracter_cerrar,caracter_espacio_titulo,titulo);
+    }
+
+
+    //y luego el texto. titulo mostrar solo lo que cabe de ancho
 
 
 	//Boton de cerrado
