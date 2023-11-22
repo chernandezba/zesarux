@@ -449,6 +449,16 @@ esa manera si que se podría aumentar el límite sin perjudicar dichas operacion
 
 
 
+---Fin Mejoras---
+
+
+
+---- ZENG ONLINE ----
+
+
+
+
+
 -problema con zeng-online y envio de eventos:
 *del master a los slaves hay que enviar eventos, si no enviasemos eventos, si el tiempo de snapshot es algo lento (por ejemplo medio minuto)
 veremos cosas como que jugando al chase hq, el coche acelera y decelera continuamente
@@ -491,11 +501,6 @@ y luego dos slaves que fueran los que estuvieran compitiendo
 -quiza las veces que se queda congelado el emulador cuando no esta en el foco, es cuando se usa driver audio null
 
 
----Fin Mejoras---
-
-
-
----- ZENG ONLINE ----
 
 Toda esta parte cliente de "backend" estara contenida en zeng_online_client.c
 La parte de menus , el "frontend" estara contenida en menu_zeng_online.c

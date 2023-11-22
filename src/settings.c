@@ -331,6 +331,9 @@ z80_bit setting_process_switcher_immutable={0};
 //En version X (10.10) estaba habilitado por defecto
 z80_bit xanniversary_logo={0};
 
+
+z80_bit do_no_show_david_in_memoriam={0};
+
 //
 // ZX Desktop Settings
 //

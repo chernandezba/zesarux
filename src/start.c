@@ -270,6 +270,9 @@ char **argv;
 int puntero_parametro;
 
 
+//Si activado el homenaje para David
+z80_bit activated_in_memoriam_david={0};
+
 //Inicio command_line flags
 z80_bit command_line_zx8081_vsync_sound={0};
 z80_bit command_line_wrx={0};
@@ -1720,6 +1723,7 @@ printf (
 		"--last-version s                         String which identifies last build version run. Usually doesnt need to change it, used to show the start popup of the new version changes\n"
         "--last-version-text s                    String which identifies last version run. Usually doesnt need to change it, used to show the start popup of the new version changes\n"
 		"--no-show-changelog                      Do not show changelog when updating version\n"
+        "--no-show-david-in-memoriam              Do not show David in memoriam message\n"
 		"--machinelist                            Get machines list names whitespace separated, and exit\n"
 		"--disablebetawarning text                Do not pause beta warning message on boot for version named as that parameter text\n"
 		"--tbblue-autoconfigure-sd-already-asked  Do not ask to autoconfigure tbblue initial SD image\n"
@@ -6032,6 +6036,10 @@ int parse_cmdline_options(int desde_commandline) {
 				do_no_show_changelog_when_update.v=1;
 			}
 
+            else if (!strcmp(argv[puntero_parametro],"--no-show-david-in-memoriam")) {
+                do_no_show_david_in_memoriam.v=1;
+            }
+
 			else if (!strcmp(argv[puntero_parametro],"--disablebetawarning")) {
 				siguiente_parametro_argumento();
 				strcpy(parameter_disablebetawarning,argv[puntero_parametro]);
@@ -7286,8 +7294,26 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
         ay_player_start_playing_all_items();
     }
 
+    //Texto recordatorio de David, solo la primera vez
+	//solo si el autoguardado de config esta activado
+    //Al salir, se activara la opcion de no mostrar de nuevo el recordatorio
+	if (save_configuration_file_on_exit.v && do_no_show_david_in_memoriam.v==0) {
+
+        if (!strcmp(EMULATOR_GAME_EDITION,"David")) {
+
+			//Y si driver permite menu normal
+			if (si_normal_menu_video_driver()) {
+                activated_in_memoriam_david.v=1;
+			}
+
+            //Solo mostrarlo una vez, a la siguiente ya no se vera
+            do_no_show_david_in_memoriam.v=1;
+		}
+	}
+
 	//Si la version actual es mas nueva que la anterior, eso solo si el autoguardado de config esta activado
-	if (save_configuration_file_on_exit.v && do_no_show_changelog_when_update.v==0) {
+    //Y no hacer saltar esto cuando sale el In Memoriam de David
+	if (save_configuration_file_on_exit.v && do_no_show_changelog_when_update.v==0 && activated_in_memoriam_david.v==0) {
 		//if (strcmp(last_version_string,EMULATOR_VERSION)) {  //Si son diferentes
 		if (strcmp(last_version_string,BUILDNUMBER) && last_version_string[0]!=0) {  //Si son diferentes y last_version_string no es nula
 			//Y si driver permite menu normal
@@ -7301,6 +7327,8 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
 			}
 		}
 	}
+
+
 
     //Si la version actual es mas vieja, aviso del downgrade
     if (zesarux_has_been_downgraded.v) {

@@ -160,5 +160,7 @@ extern z80_bit zeng_online_show_footer_lag_indicator;
 
 extern z80_bit zeng_online_allow_instant_keys;
 
+extern z80_bit do_no_show_david_in_memoriam;
+
 #endif
 
