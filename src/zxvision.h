@@ -1046,6 +1046,7 @@ extern void menu_debug_registers_show_scan_position(void);
 
 extern void putchar_menu_overlay(int x,int y,z80_byte caracter,int tinta,int papel);
 extern void putchar_menu_overlay_parpadeo(int x,int y,z80_byte caracter,int tinta,int papel,int parpadeo);
+extern void deletechar_menu_overlay(int x,int y);
 
 extern void new_menu_putchar_footer(int x,int y,z80_byte caracter,int tinta,int papel);
 extern void menu_putstring_footer(int x,int y,char *texto,int tinta,int papel);

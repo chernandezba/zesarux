@@ -3544,7 +3544,11 @@ void putchar_menu_overlay(int x,int y,z80_byte caracter,int tinta,int papel)
 	putchar_menu_overlay_parpadeo(x,y,caracter,tinta,papel,0); //sin parpadeo
 }
 
-
+//Funcion para borrar caracter del buffer de overlay
+void deletechar_menu_overlay(int x,int y)
+{
+	putchar_menu_overlay_parpadeo(x,y,0,0,0,0);
+}
 
 
 
@@ -9364,8 +9368,13 @@ void menu_dibuja_ventana(int x,int y,int ancho,int alto,char *titulo_original)
 
     //titulo
     //primero franja toda negra normalmente en estilo ZEsarUX
-    if (!ESTILO_GUI_NO_RELLENAR_TITULO) {
-        for (i=0;i<ancho;i++) {
+    for (i=0;i<ancho;i++) {
+        if (ESTILO_GUI_NO_RELLENAR_TITULO) {
+            //Caso del estilo BeOS, si estan los botones de antes, al irse la ventana a background,
+            //hay que borrar botones
+            deletechar_menu_overlay(x+i,y);
+        }
+        else {
             putchar_menu_overlay(x+i,y,caracter_espacio_titulo,color_tinta_titulo,color_papel_titulo);
         }
     }
