@@ -2768,6 +2768,8 @@ las condiciones de "ventana activa se puede enviar a background o no" son comune
 
 		else {
             if (zxvision_current_window!=NULL) {
+
+                //printf("menu_get_pressed_key_no_modifier. Retorno tecla 3 con zxvision current window no es null\n");
 			                                //Si la ventana activa permite ir a background, mandarla a background
                                 if (zxvision_current_window->can_be_backgrounded) {
                                         return 3; //Tecla background F6
@@ -3100,7 +3102,7 @@ z80_byte menu_get_pressed_key(void)
 		}
 	}
 
-
+    //printf("menu_get_pressed_key. Retorno 2 tecla: %d\n",tecla);
 	return tecla;
 
 }
@@ -10867,6 +10869,8 @@ z80_byte zxvision_read_keyboard(void)
 		zxvision_speech_read_current_window();
 	}
 
+    //printf("zxvision_read_keyboard. Retorno tecla: %d\n",tecla);
+
 	return tecla;
 }
 
@@ -17079,6 +17083,8 @@ z80_byte zxvision_common_getkey_refresh(void)
 			//printf ("Esperamos no tecla\n");
 			menu_espera_no_tecla_con_repeticion();
 		}
+
+    //printf("zxvision_common_getkey_refresh. tecla=%d\n",tecla);
 
 	return tecla;
 }
@@ -23923,7 +23929,7 @@ void menu_inicio_bucle(void)
 		if (menu_pressed_open_menu_while_in_menu.v) {
 			menu_pressed_open_menu_while_in_menu.v=0;
 			reopen_menu=1;
-			//printf ("Reabrimos menu\n");
+			//printf ("menu_inicio_bucle. Reabrimos menu\n");
 		}
 
         //printf("antes zxvision_simple_window_manager\n");
@@ -23935,7 +23941,32 @@ void menu_inicio_bucle(void)
 
 
 		//Si hay que reabrirlo, resetear estado de salida de todos
-		if (reopen_menu) salir_todos_menus=0;
+		if (reopen_menu) {
+            salir_todos_menus=0;
+            //printf("menu_inicio_bucle. reopen_menu despues zxvision_simple_window_manager\n");
+
+            /*
+            este cls_menu_overlay solo parece ser necesario para una cosa:
+            en estilo BeOS, el titulo de ventana activa tiene los botones de minimizar, maximizar, etc.
+            al ser estilo BeOS, la franja del titulo no llega a la derecha del todo
+            Una ventana en segundo plano no tiene esos botones, la franja del titulo solo contiene el titulo y es algo
+            mas corta al no contener los botones
+            Cuando se esta en una ventana, al pulsar F5, esa ventana se ira a background,
+            aunque al llegar aqui aun no esta en background, y le sigue apareciendo el titulo con botones
+            Al abrir el menu, ese titulo de ventana se refresca, la parte de la derecha no se altera,
+            y aunque sale como tipo inactiva, los botones de antes se ven, cosa que no deberia
+            Por tanto, hacemos aqui un cls_menu_overlay, para limpiar toda la pantalla (incluido, claro esta, los titulos y los botones),
+            y que sea el siguiente
+            refresco, al abrir el menu, el que dibuje las ventanas. Al ser ahora ya esa ventana una en background,
+            no tiene botones visibles
+
+            Nota: si en algun momento este cls_menu_overlay provoca algun efecto inesperado, como pantalla en blanco al abrir el menu
+            y cosas asi, pues quito este cls_menu_overlay. Total solo es un "glitch" que afecta al estilo BeOS,
+            al pulsar F5 cuando esta una ventana activa
+            */
+            cls_menu_overlay();
+
+        }
 
 
         //Pero si se ha pulsado tecla que cierra todos menus, salor
@@ -23948,6 +23979,8 @@ void menu_inicio_bucle(void)
 
 
 	} while (reopen_menu);
+
+    //printf("menu_inicio_bucle. despues while reopen_menu\n");
 
     //Ya no se deberia mostrar boton de cerrar todos menus
     //menu_mostrar_boton_close_all_menus.v=0;

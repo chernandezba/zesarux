@@ -40097,7 +40097,10 @@ void menu_process_f_functions_by_action_name(int id_funcion,int si_pulsado_icono
 		break;
 
 		case F_FUNCION_OPENMENU:
-			if (util_if_open_just_menu() ) menu_inicio_bucle();
+			if (util_if_open_just_menu() ) {
+                menu_inicio_bucle();
+                //printf("menu_process_f_functions_by_action_name. despues menu_inicio_bucle\n");
+            }
 		break;
 
 		case F_FUNCION_OCR:

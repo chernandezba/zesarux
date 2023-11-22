@@ -37,6 +37,7 @@ Fixed timings of opcodes CP (HL), CP (IX+d), CP (IY+d)
 Fixed bug on ZRCP when handling simultaneous connections
 Fixed bug when printing on footer and column was out of bounds (exactly at column 32)
 Fixed pressing keys '.' and ',' on menu when machine is ZX80 or ZX81
+Fixed glitch on ZX Vision BeOS style, when pressing F5, window buttons didn't disappear
 
 ----------------------------------------
 
