@@ -216,18 +216,6 @@ Se probaron cambios presentes en carpeta tbblue_cambios_pruebas_ultimo_cambio_al
 -lectura de audio de casette? SDL1 parece que no permite hacerlo
 
 
--pcw: soporte puerto FF para cambiar modo video, poder definir una zona en pantalla donde aplicar modo color o modo normal.
-https://github.com/MiSTer-devel/Amstrad-PCW_MiSTer
-
--pcw modo color. knight lore por ejemplo. Implementado modos 0-2
-
-https://www.habisoft.com/irmia/comentarios.asp?id=358
-
-Modo 0 (720x256x2), el nativo del PCW: negro y verde, o Negro y blanco, a elegir vía puente.
-Modo 1 (360x256x4): los colores de la paleta 1 con intensidad del modo de 4 colores de la CGA.
-Modo 2 (180x256x16): los colores de la paleta de la CGA (los 16 clásicos que trae por defecto la EGA).
-Modo 3 (360x256x16): los mismos colores que el modo 2. Aquí tenemos píxeles cuadrados, como el modo 1 pero con los colores del modo 2. ¿La trampa? Es un modo de atributos: no podemos tener más de dos colores distintos en una celda 1x8. Facilita mucho portar cosas de Spectrum, MSX, Thomson, … Y si mantenemos los colores tenemos la mitad de memoria de vídeo, con lo que es más rápido el volcado, movimiento de sprites, etc.
-
 
 -custom rom
 *manera de seleccionar maquina +2e, que es +2a40 con rom "alternaterom_plus3e_mmcen3eE.rom"
@@ -372,7 +360,7 @@ menu_zsock_http
 menu_download_file
 
 
--Visor de variables de sistema de programa en ejecución. Con nombre y descripción. Para spectrum, zx80 y 81
+-Visor de variables de sistema de programa en ejecución. Con nombre y descripción. ok Para spectrum, zx80 y 81
 -Poder ver variables de una cinta .P, .O e incluso basic de spectrum (desde el bloque de basic de un .tap?)
 
 
@@ -427,20 +415,11 @@ En estos casos de momento lo que he hecho es que al final de cada menu se haga u
 
 
 
-
 -Process management: Render emulated display incluye tiempo de todas las ventanas? Si abro el text adventure map, que consume 6 ms con la guerra
 de las vajillas, el tiempo de render dice 8 ms. si cierro text adventure map, el render baja a 3 ms
 
 -tooltips en botones superiores y en dispositivos inferiores, y en botones de ventanas
 
--quizá: si con el menu abierto un usuario pulsa en la ventana de emulacion, se queda abierto el menu pero el foco se va a la ventana de emulacion
-posibles:
-*que al pulsar ventana de emulacion, se cierre el menu. quiza no siempre , en algunos casos interesa tener menu abierto aun con el foco en ventana emulacion
-*que cuando lleve un rato el foco en ventana de emulacion (30 segundos quizá?) se cierre el menu
-
-
-
--boton derecho en botones superiores, o en dispositivos inferiores, deberia llevar a algun sitio?
 
 -ahora menus no tabulados ya no tienen boton minimizar. Hay alguna ventana, que no sea realmente un menu,
 y que tenga sentido boton de minimizar?
@@ -468,7 +447,7 @@ esa manera si que se podría aumentar el límite sin perjudicar dichas operacion
 *zx desktop activado (junto con background windows)
 *etc...
 
--zeng-online se llamara la variante que usa servidor para juego en red
+
 
 -problema con zeng-online y envio de eventos:
 *del master a los slaves hay que enviar eventos, si no enviasemos eventos, si el tiempo de snapshot es algo lento (por ejemplo medio minuto)
@@ -783,5 +762,9 @@ ya que no abren el menu
 -Y en dispositivos? Quizá settings de ese dispositivo?
 
 
--menus en Beos se ven con un hueco en la barra de titulo donde estaria el boton de minimizar
+-menus en Beos se ven con un hueco en la barra de titulo donde estaria el boton de minimizar:
+ya no, porque los menus ya no se pueden minimizar
 
+-Beos:
+estoy en process management. pulso F5. botones de maximizar etc de process management desaparecen, hasta aqui ok
+pulso i (de settings). reaparecen botones de mazimizar etc de process management. Error!
