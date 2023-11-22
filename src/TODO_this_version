@@ -761,10 +761,3 @@ ya que no abren el menu
 -ok editar botón superior.
 -Y en dispositivos? Quizá settings de ese dispositivo?
 
-
--menus en Beos se ven con un hueco en la barra de titulo donde estaria el boton de minimizar:
-ya no, porque los menus ya no se pueden minimizar
-
--Beos:
-estoy en process management. pulso F5. botones de maximizar etc de process management desaparecen, hasta aqui ok
-pulso i (de settings). reaparecen botones de mazimizar etc de process management. Error!
