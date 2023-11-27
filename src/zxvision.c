@@ -24654,6 +24654,14 @@ void menu_inicio(void)
 
     }
 
+    if (activated_in_memoriam_david.v) {
+        osd_kb_no_mostrar_desde_menu=0; //Volver a permitir aparecer teclado osd
+        activated_in_memoriam_david.v=0;
+        menu_in_memoriam_david(0);
+
+        cls_menu_overlay();
+    }
+
 //printf ("4inicio menu_inicio. salir_todos_menus=%d\n",salir_todos_menus);
 
 	//Si first aid al inicio
@@ -24853,13 +24861,7 @@ void menu_inicio(void)
             cls_menu_overlay();
         }
 
-        if (activated_in_memoriam_david.v) {
-            osd_kb_no_mostrar_desde_menu=0; //Volver a permitir aparecer teclado osd
-            activated_in_memoriam_david.v=0;
-            menu_in_memoriam_david(0);
 
-            cls_menu_overlay();
-        }
 
         if (menu_event_new_version_show_changes.v) {
             osd_kb_no_mostrar_desde_menu=0; //Volver a permitir aparecer teclado osd

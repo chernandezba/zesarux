@@ -27216,6 +27216,7 @@ void menu_help(MENU_ITEM_PARAMETERS)
 			menu_add_item_menu_shortcut(array_menu_common,'a');
             menu_add_item_menu_se_cerrara(array_menu_common);
 
+            //Esto en principio solo aparecerá en una versión concreta
             if (!strcmp(EMULATOR_GAME_EDITION,"David")) {
                 menu_add_item_menu(array_menu_common,"In Memoriam",MENU_OPCION_NORMAL,menu_in_memoriam_david,NULL);
             }
