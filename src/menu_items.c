@@ -27216,6 +27216,10 @@ void menu_help(MENU_ITEM_PARAMETERS)
 			menu_add_item_menu_shortcut(array_menu_common,'a');
             menu_add_item_menu_se_cerrara(array_menu_common);
 
+            if (!strcmp(EMULATOR_GAME_EDITION,"David")) {
+                menu_add_item_menu(array_menu_common,"In Memoriam",MENU_OPCION_NORMAL,menu_in_memoriam_david,NULL);
+            }
+
 			menu_add_item_menu(array_menu_common,"~~Help",MENU_OPCION_NORMAL,menu_about_help,NULL);
 			menu_add_item_menu_shortcut(array_menu_common,'h');
              menu_add_item_menu_se_cerrara(array_menu_common);
@@ -34579,6 +34583,18 @@ void menu_hilow(MENU_ITEM_PARAMETERS)
 
 
 
+}
+
+
+void menu_in_memoriam_david(MENU_ITEM_PARAMETERS)
+{
+    menu_generic_message_format("In Memoriam",
+        "David Hernández Bañó\n"
+        "21/04/1975 - 03/11/2023\n"
+        "\n"
+        "David falleció a la temprana edad de 48 años, después de estar 2 años luchando contra el cáncer\n"
+
+    );
 }
 
 

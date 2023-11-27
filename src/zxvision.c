@@ -24856,13 +24856,7 @@ void menu_inicio(void)
         if (activated_in_memoriam_david.v) {
             osd_kb_no_mostrar_desde_menu=0; //Volver a permitir aparecer teclado osd
             activated_in_memoriam_david.v=0;
-            menu_generic_message_format("In Memoriam",
-                "David Hernández Bañó\n"
-                "21/04/1975 - 03/11/2023\n"
-                "\n"
-                "David falleció a la temprana edad de 48 años, después de estar 2 años luchando contra el cáncer\n"
-
-            );
+            menu_in_memoriam_david(0);
 
             cls_menu_overlay();
         }
