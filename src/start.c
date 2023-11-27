@@ -7142,6 +7142,23 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
     //Si modo navidad
     check_christmas_mode();
 
+    //Texto recordatorio de David, solo la primera vez
+	//solo si el autoguardado de config esta activado
+    //Al salir, se activara la opcion de no mostrar de nuevo el recordatorio
+	if (save_configuration_file_on_exit.v && do_no_show_david_in_memoriam.v==0) {
+
+        if (!strcmp(EMULATOR_GAME_EDITION,"David")) {
+
+			//Y si driver permite menu normal
+			if (si_normal_menu_video_driver()) {
+                activated_in_memoriam_david.v=1;
+			}
+
+            //Solo mostrarlo una vez, a la siguiente ya no se vera
+            do_no_show_david_in_memoriam.v=1;
+		}
+	}
+
 
 	if (opcion_no_welcome_message.v==0) {
 		set_welcome_message();
@@ -7152,6 +7169,12 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
         //y luego a show_all_windows_startup
 		menu_draw_ext_desktop();
         show_all_windows_startup();
+
+
+        //no hay splash, si hay In Memoriam David, forzar aparecer menu
+        if (activated_in_memoriam_david.v) {
+             menu_set_menu_abierto(1);
+        }
 	}
 
 
@@ -7295,24 +7318,10 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
         ay_player_start_playing_all_items();
     }
 
-    //Texto recordatorio de David, solo la primera vez
-	//solo si el autoguardado de config esta activado
-    //Al salir, se activara la opcion de no mostrar de nuevo el recordatorio
-	if (save_configuration_file_on_exit.v && do_no_show_david_in_memoriam.v==0) {
 
-        if (!strcmp(EMULATOR_GAME_EDITION,"David")) {
 
-			//Y si driver permite menu normal
-			if (si_normal_menu_video_driver()) {
-                activated_in_memoriam_david.v=1;
-			}
-
-            //Solo mostrarlo una vez, a la siguiente ya no se vera
-            do_no_show_david_in_memoriam.v=1;
-		}
-	}
-
-	//Si la version actual es mas nueva que la anterior, eso solo si el autoguardado de config esta activado
+	//Si la version actual es mas nueva que la anterior mostrar changelog
+    //eso solo si el autoguardado de config esta activado
     //Y no hacer saltar esto cuando sale el In Memoriam de David
 	if (save_configuration_file_on_exit.v && do_no_show_changelog_when_update.v==0 && activated_in_memoriam_david.v==0) {
 		//if (strcmp(last_version_string,EMULATOR_VERSION)) {  //Si son diferentes
