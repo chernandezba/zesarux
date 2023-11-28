@@ -21599,21 +21599,21 @@ void reset_splash_zesarux_logo(void)
 void screen_print_splash_text(int y,int tinta,int papel,char *texto)
 {
 
-        //Si no hay driver video
-        if (scr_putpixel==NULL || scr_putpixel_zoom==NULL) return;
+    //Si no hay driver video
+    if (scr_putpixel==NULL || scr_putpixel_zoom==NULL) return;
 
 
-  if (menu_abierto==0 && screen_show_splash_texts.v==1) {
-                cls_menu_overlay();
+    if (menu_abierto==0 && screen_show_splash_texts.v==1) {
+        cls_menu_overlay();
 
-                int x;
+        int x;
 
-#define MAX_LINEAS_SPLASH 24
+        #define MAX_LINEAS_SPLASH 24
         const int max_ancho_texto=31;
-	//al trocear, si hay un espacio despues, se agrega, y por tanto puede haber linea de 31+1=32 caracteres
+        //al trocear, si hay un espacio despues, se agrega, y por tanto puede haber linea de 31+1=32 caracteres
 
         //texto que contiene cada linea con ajuste de palabra. Al trocear las lineas aumentan
-	//33 es ancho total linea(32)+1
+        //33 es ancho total linea(32)+1
         char buffer_lineas[MAX_LINEAS_SPLASH][33];
 
 
@@ -21627,59 +21627,59 @@ void screen_print_splash_text(int y,int tinta,int papel,char *texto)
 
 
         do {
-                indice_texto+=max_ancho_texto;
+            indice_texto+=max_ancho_texto;
 
-                //Controlar final de texto
-                if (indice_texto>=longitud) indice_texto=longitud;
+            //Controlar final de texto
+            if (indice_texto>=longitud) indice_texto=longitud;
 
-                //Si no, miramos si hay que separar por espacios
-                else indice_texto=menu_generic_message_aux_wordwrap(texto,ultimo_indice_texto,indice_texto);
+            //Si no, miramos si hay que separar por espacios
+            else indice_texto=menu_generic_message_aux_wordwrap(texto,ultimo_indice_texto,indice_texto);
 
-                //Separamos por salto de linea, filtramos caracteres extranyos
-                indice_texto=menu_generic_message_aux_filter(texto,ultimo_indice_texto,indice_texto);
+            //Separamos por salto de linea, filtramos caracteres extranyos
+            indice_texto=menu_generic_message_aux_filter(texto,ultimo_indice_texto,indice_texto);
 
-                //copiar texto
-                int longitud_texto=indice_texto-ultimo_indice_texto;
-
-
-
-                menu_generic_message_aux_copia(&texto[ultimo_indice_texto],buffer_lineas[indice_linea],longitud_texto);
-                buffer_lineas[indice_linea++][longitud_texto]=0;
-                //printf ("copiado %d caracteres desde %d hasta %d: %s\n",longitud_texto,ultimo_indice_texto,indice_texto,buffer_lineas[indice_linea-1]);
+            //copiar texto
+            int longitud_texto=indice_texto-ultimo_indice_texto;
 
 
-        //printf ("texto indice: %d : longitud: %d: -%s-\n",indice_linea-1,longitud_texto,buffer_lineas[indice_linea-1]);
-		//printf ("indice_linea: %d indice_linea+y: %d MAX: %d\n",indice_linea,indice_linea+y,MAX_LINEAS_SPLASH);
 
-                if (indice_linea==MAX_LINEAS_SPLASH) {
-                        //cpu_panic("Max lines on menu_generic_message reached");
-                        debug_printf(VERBOSE_INFO,"Max lines on screen_print_splash_text reached (%d)",MAX_LINEAS_SPLASH);
-                        //finalizamos bucle
-                        indice_texto=longitud;
-                }
+            menu_generic_message_aux_copia(&texto[ultimo_indice_texto],buffer_lineas[indice_linea],longitud_texto);
+            buffer_lineas[indice_linea++][longitud_texto]=0;
+            //printf ("copiado %d caracteres desde %d hasta %d: %s\n",longitud_texto,ultimo_indice_texto,indice_texto,buffer_lineas[indice_linea-1]);
 
-                ultimo_indice_texto=indice_texto;
-                //printf ("ultimo indice: %d %c\n",ultimo_indice_texto,texto[ultimo_indice_texto]);
+
+            //printf ("texto indice: %d : longitud: %d: -%s-\n",indice_linea-1,longitud_texto,buffer_lineas[indice_linea-1]);
+            //printf ("indice_linea: %d indice_linea+y: %d MAX: %d\n",indice_linea,indice_linea+y,MAX_LINEAS_SPLASH);
+
+            if (indice_linea==MAX_LINEAS_SPLASH) {
+                    //cpu_panic("Max lines on menu_generic_message reached");
+                    debug_printf(VERBOSE_INFO,"Max lines on screen_print_splash_text reached (%d)",MAX_LINEAS_SPLASH);
+                    //finalizamos bucle
+                    indice_texto=longitud;
+            }
+
+            ultimo_indice_texto=indice_texto;
+            //printf ("ultimo indice: %d %c\n",ultimo_indice_texto,texto[ultimo_indice_texto]);
 
         } while (indice_texto<longitud);
 
-	int i;
-	for (i=0;i<indice_linea && y<scr_get_menu_height();i++) {
-        int longitud_linea=strlen(buffer_lineas[i]);
-		debug_printf (VERBOSE_DEBUG,"line %d y: %d length: %d contents: -%s-",i,y,longitud_linea,buffer_lineas[i]);
-		x=menu_center_x()-strlen(buffer_lineas[i])/2;
-		if (x<0) x=0;
-		menu_escribe_texto(x,y,tinta,papel,buffer_lineas[i]);
-		y++;
-	}
+        int i;
+        for (i=0;i<indice_linea && y<scr_get_menu_height();i++) {
+            int longitud_linea=strlen(buffer_lineas[i]);
+            debug_printf (VERBOSE_DEBUG,"line %d y: %d length: %d contents: -%s-",i,y,longitud_linea,buffer_lineas[i]);
+            x=menu_center_x()-strlen(buffer_lineas[i])/2;
+            if (x<0) x=0;
+            menu_escribe_texto(x,y,tinta,papel,buffer_lineas[i]);
+            y++;
+        }
 
 
         set_menu_overlay_function(normal_overlay_texto_menu);
         menu_splash_text_active.v=1;
         menu_splash_segundos=5;
 
-				//no queremos que reaparezca el logo, por si no había llegado al final de splash. Improbable? Si. Pero mejor ser precavidos
-				reset_splash_zesarux_logo();
+        //no queremos que reaparezca el logo, por si no había llegado al final de splash. Improbable? Si. Pero mejor ser precavidos
+        reset_splash_zesarux_logo();
    }
 
 }
