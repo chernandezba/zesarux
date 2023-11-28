@@ -2,6 +2,7 @@ Version 11 - David edition. 12 October 2023
 
 * New things added:
 
+Added ZENG Online feature. TODO: improve this description
 Added ZENG support on curses driver
 Added save screen to .txt file
 Added function to shift bits on Hex Editor
@@ -25,6 +26,7 @@ Improved ZX Vision:
 - Improve window title background when not all buttons are visible
 - Menus can no longer be minimized (that had no sense)
 - Process switcher: unminimize windows when they are minimized and selecting them
+- Fixed splash texts when y coord>24
 
 Improved ZX Desktop:
 - Allow to set parameters when redefining upper buttons, for some actions like openwindow or set machine
