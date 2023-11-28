@@ -10140,6 +10140,8 @@ void zxvision_cls(zxvision_window *w)
 
 void zxvision_alloc_memory(zxvision_window *w,int total_width,int total_height)
 {
+    //printf("zxvision_alloc_memory. width: %d height: %d\n",total_width,total_height);
+
 	int buffer_size=total_width*total_height;
 	w->memory=malloc(buffer_size*sizeof(overlay_screen));
 
@@ -21595,6 +21597,77 @@ void reset_splash_zesarux_logo(void)
 
 
 
+
+//Almacenar la estructura de ventana aqui para que se pueda referenciar desde otros sitios
+zxvision_window zxvision_window_splash_text;
+
+void screen_print_splash_text_by_window(int lineas)
+{
+
+
+    zxvision_window *ventana;
+    ventana=&zxvision_window_splash_text;
+
+
+    //Si ya existe, cerrarla esa ventana
+    if (zxvision_if_window_already_exists(ventana)) {
+        debug_printf(VERBOSE_INFO,"Splash window already exists. Closing it and generating a new one");
+        zxvision_destroy_window(ventana);
+    }
+
+
+
+    int xventana,yventana,ancho_ventana,alto_ventana;
+
+
+    //printf("lineas: %d\n",lineas);
+
+    ancho_ventana=33;
+    alto_ventana=lineas+2;
+
+    xventana=menu_center_x()-ancho_ventana/2;
+    yventana=menu_center_y()-alto_ventana/2;
+
+    int is_minimized=0;
+    int is_maximized=0;
+    int ancho_antes_minimize=ancho_ventana;
+    int alto_antes_minimize=alto_ventana;
+
+
+    zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"Splash",
+        "splashwindow",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
+
+
+	zxvision_draw_window(ventana);
+
+
+
+
+    //Toda ventana que este listada en zxvision_known_window_names_array debe permitir poder salir desde aqui
+    //Se sale despues de haber inicializado overlay y de cualquier otra variable que necesite el overlay
+    if (zxvision_currently_restoring_windows_on_start) {
+            //printf ("Saliendo de ventana ya que la estamos restaurando en startup\n");
+            return;
+    }
+
+
+
+
+	/*util_add_window_geometry_compact(ventana);
+
+	if (tecla==3) {
+		zxvision_message_put_window_background();
+	}
+
+	else {
+
+		zxvision_destroy_window(ventana);
+	}*/
+
+
+}
+
+
 //Esta rutina estaba originalmente en screen.c pero dado que se ha modificado para usar rutinas auxiliares de aqui, mejor que este aqui
 void screen_print_splash_text(int y,int tinta,int papel,char *texto)
 {
@@ -21604,7 +21677,13 @@ void screen_print_splash_text(int y,int tinta,int papel,char *texto)
 
 
     if (menu_abierto==0 && screen_show_splash_texts.v==1) {
-        cls_menu_overlay();
+
+        //Si background windows y even when menu closed
+        //Temporalmente siempre lo hacemos asi
+        int mostrar_splash_con_ventana=0;
+
+        if (menu_allow_background_windows && menu_multitarea && always_force_overlay_visible_when_menu_closed) mostrar_splash_con_ventana=1;
+
 
         int x;
 
@@ -21663,18 +21742,44 @@ void screen_print_splash_text(int y,int tinta,int papel,char *texto)
 
         } while (indice_texto<longitud);
 
+        if (mostrar_splash_con_ventana) {
+            screen_print_splash_text_by_window(indice_linea);
+        }
+
+        else {
+
+            cls_menu_overlay();
+
+        }
+
         int i;
         for (i=0;i<indice_linea && y<scr_get_menu_height();i++) {
             int longitud_linea=strlen(buffer_lineas[i]);
             debug_printf (VERBOSE_DEBUG,"line %d y: %d length: %d contents: -%s-",i,y,longitud_linea,buffer_lineas[i]);
-            x=menu_center_x()-strlen(buffer_lineas[i])/2;
-            if (x<0) x=0;
-            menu_escribe_texto(x,y,tinta,papel,buffer_lineas[i]);
+
+
+            if (mostrar_splash_con_ventana) {
+                x=(zxvision_window_splash_text.total_width)/2-strlen(buffer_lineas[i])/2;
+                if (x<1) x=1;
+                //printf("ZXvision print %d,%d : %s\n",x,i,buffer_lineas[i]);
+                zxvision_print_string_defaults_fillspc(&zxvision_window_splash_text,x,i,buffer_lineas[i]);
+            }
+            else {
+                x=menu_center_x()-strlen(buffer_lineas[i])/2;
+                if (x<0) x=0;
+                menu_escribe_texto(x,y,tinta,papel,buffer_lineas[i]);
+            }
             y++;
         }
 
+        if (mostrar_splash_con_ventana) {
+            zxvision_draw_window_contents(&zxvision_window_splash_text);
+        }
+        else {
+            set_menu_overlay_function(normal_overlay_texto_menu);
+        }
 
-        set_menu_overlay_function(normal_overlay_texto_menu);
+
         menu_splash_text_active.v=1;
         menu_splash_segundos=5;
 
@@ -25588,6 +25693,21 @@ void reset_welcome_message(void)
 		if (menu_splash_segundos==0) {
 			reset_splash_zesarux_logo();
 			menu_splash_text_active.v=0;
+
+
+            //Si hay ventana de splash, cerrarla
+            zxvision_window *ventana;
+
+            //ventana=zxvision_return_n_window_from_top(valor_opcion);
+
+            ventana=zxvision_find_window_in_background("splashwindow");
+
+            if (ventana!=NULL) {
+                debug_printf(VERBOSE_INFO,"Closing splash window");
+                zxvision_destroy_window(ventana);
+            }
+
+
 			cls_menu_overlay();
 			reset_menu_overlay_function();
 			debug_printf (VERBOSE_DEBUG,"End splash text");

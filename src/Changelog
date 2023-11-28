@@ -39,6 +39,7 @@ Fixed ZX Vision:
 - Fixed pressing keys '.' and ',' on menu when machine is ZX80 or ZX81
 - Fixed glitch on ZX Vision BeOS style, when pressing F5, window buttons didn't disappear or reappear
 - Fixed refresh windows after pressing F8 On Screen Keyboard
+- Fixed splash messages when background windows are enabled
 
 Fixed blockage when drawing Text Adventure Map and corrupted GAC adventure
 Fixed timings of opcodes CP (HL), CP (IX+d), CP (IY+d)

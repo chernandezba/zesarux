@@ -770,7 +770,3 @@ ok *hacer que salga aunque se haya desactivado welcome logo
 ok *que salga antes de cualquier first aid
 
 
-
--revisar mensajes splash (por ejemplo de cambio modo video) que aparezcan correctamente cuando hay ventanas en background
-->parece que con config actual, no se ve el mensaje splash aunque borra decoraciones ventanas
-->con noconfigfile, si que muestra splash. aunque se ve el texto por debajo de otras ventanas abiertas
