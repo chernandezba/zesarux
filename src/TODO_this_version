@@ -408,7 +408,7 @@ En estos casos de momento lo que he hecho es que al final de cada menu se haga u
 
 -hexadecimal editor deberia refrescar continuamente al estar dentro de la ventana?
 
--si pulsado OSD keyboard (F8) desde una ventana, al volver con ESC quedan mal redibujadas las ventanas
+
 
 
 -tiene sentido items de "ESC back/close"?
@@ -738,7 +738,7 @@ Network traffic en ascii también
 
 -icono para video output
 
--First aid de advanced menu items
+-First aid de advanced menu items: que diga que hay settings que están ocultos por defecto
 
 -Quizá en Mac se congela a veces con driver audio null?
 
@@ -770,3 +770,6 @@ ya que no abren el menu
 *completar texto
 ok *hacer que salga aunque se haya desactivado welcome logo
 ok *que salga antes de cualquier first aid
+
+
+-si pulsado OSD keyboard (F8) desde una ventana, al volver con ESC quedan mal redibujadas las ventanas

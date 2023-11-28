@@ -3272,6 +3272,9 @@ void menu_call_onscreen_keyboard_from_menu(void)
 
 	menu_refresca_pantalla();
 
+    //printf("Redraw todo\n");
+    zxvision_redraw_all_windows();
+
 
 
 }
