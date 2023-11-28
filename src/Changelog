@@ -30,6 +30,7 @@ Improved ZX Vision:
 Improved ZX Desktop:
 - Allow to set parameters when redefining upper buttons, for some actions like openwindow or set machine
 - Allow to reconfigure upper buttons by right clicking over them
+- When defining upper buttons or f-functions to SetMachine, machine name parameter is set to current machine
 
 * Fixes:
 

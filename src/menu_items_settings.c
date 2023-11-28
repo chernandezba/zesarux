@@ -10134,6 +10134,18 @@ void menu_zxdesktop_set_userdef_buttons_functions(MENU_ITEM_PARAMETERS)
                 if (indice_retorno>=0) {
                     //printf("definimos boton. boton %d accion %d\n",item_seleccionado.valor_opcion,indice_retorno);
                     defined_buttons_functions_array[item_seleccionado.valor_opcion]=indice_retorno;
+
+                    //Si es funcion de machine selection, indicarle como parametro la maquina actual
+                    enum defined_f_function_ids accion=menu_da_accion_direct_functions_indice(indice_retorno);
+
+                    if (accion==F_FUNCION_SET_MACHINE) {
+                        char buffer_maquina[100];
+
+                        get_machine_config_name_by_number(buffer_maquina,current_machine_type);
+                        if (buffer_maquina[0]!=0) {
+                            strcpy(defined_buttons_functions_array_parameters[item_seleccionado.valor_opcion],buffer_maquina);
+                        }
+                    }
                 }
 
             }
@@ -10235,6 +10247,18 @@ void menu_hardware_set_f_functions(MENU_ITEM_PARAMETERS)
                 if (indice_retorno>=0) {
                     //printf("definimos fkey. tecla f %d accion %d\n",item_seleccionado.valor_opcion,indice_retorno);
                     defined_f_functions_keys_array[item_seleccionado.valor_opcion]=indice_retorno;
+
+                    //Si es funcion de machine selection, indicarle como parametro la maquina actual
+                    enum defined_f_function_ids accion=menu_da_accion_direct_functions_indice(indice_retorno);
+
+                    if (accion==F_FUNCION_SET_MACHINE) {
+                        char buffer_maquina[100];
+
+                        get_machine_config_name_by_number(buffer_maquina,current_machine_type);
+                        if (buffer_maquina[0]!=0) {
+                            strcpy(defined_f_functions_keys_array_parameters[item_seleccionado.valor_opcion],buffer_maquina);
+                        }
+                    }
                 }
             }
 
