@@ -21634,35 +21634,14 @@ void screen_print_splash_text_by_window(int lineas)
     int alto_antes_minimize=alto_ventana;
 
 
+    menu_speech_tecla_pulsada=1; //no anunciar por speech la creacion de esta ventana
+
     zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"Splash",
         "splashwindow",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
 
 
 	zxvision_draw_window(ventana);
 
-
-
-
-    //Toda ventana que este listada en zxvision_known_window_names_array debe permitir poder salir desde aqui
-    //Se sale despues de haber inicializado overlay y de cualquier otra variable que necesite el overlay
-    if (zxvision_currently_restoring_windows_on_start) {
-            //printf ("Saliendo de ventana ya que la estamos restaurando en startup\n");
-            return;
-    }
-
-
-
-
-	/*util_add_window_geometry_compact(ventana);
-
-	if (tecla==3) {
-		zxvision_message_put_window_background();
-	}
-
-	else {
-
-		zxvision_destroy_window(ventana);
-	}*/
 
 
 }
@@ -21773,6 +21752,8 @@ void screen_print_splash_text(int y,int tinta,int papel,char *texto)
         }
 
         if (mostrar_splash_con_ventana) {
+            menu_speech_tecla_pulsada=1; //Si no, envia continuamente todo ese texto a speech
+
             zxvision_draw_window_contents(&zxvision_window_splash_text);
         }
         else {
