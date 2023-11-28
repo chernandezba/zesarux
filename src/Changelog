@@ -25,8 +25,7 @@ Improved ZX Vision:
   If you need to keep menu open and set focus on emulated machine, just left click and also press shift key.
 - Improve window title background when not all buttons are visible
 - Menus can no longer be minimized (that had no sense)
-- Process switcher: unminimize windows when they are minimized and selecting them
-- Fixed splash texts when y coord>24
+- Process switcher: unminimize windows when selecting them and they were minimized
 
 Improved ZX Desktop:
 - Allow to set parameters when redefining upper buttons, for some actions like openwindow or set machine
@@ -34,13 +33,16 @@ Improved ZX Desktop:
 
 * Fixes:
 
+Fixed ZX Vision:
+- Fixed bug when printing on footer and column was out of bounds (exactly at column 32)
+- Fixed splash texts when row > 23
+- Fixed pressing keys '.' and ',' on menu when machine is ZX80 or ZX81
+- Fixed glitch on ZX Vision BeOS style, when pressing F5, window buttons didn't disappear or reappear
+- Fixed refresh windows after pressing F8 On Screen Keyboard
+
 Fixed blockage when drawing Text Adventure Map and corrupted GAC adventure
 Fixed timings of opcodes CP (HL), CP (IX+d), CP (IY+d)
 Fixed bug on ZRCP when handling simultaneous connections
-Fixed bug when printing on footer and column was out of bounds (exactly at column 32)
-Fixed pressing keys '.' and ',' on menu when machine is ZX80 or ZX81
-Fixed glitch on ZX Vision BeOS style, when pressing F5, window buttons didn't disappear or reappear
-Fixed refresh windows after pressing F8 On Screen Keyboard
 
 ----------------------------------------
 
