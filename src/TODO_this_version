@@ -52,9 +52,7 @@ lecturas de plus3dos headers no van bien: Real length file SCREEN  .    read fro
 
 
 
--revisar mensajes splash (por ejemplo de cambio modo video) que aparezcan correctamente cuando hay ventanas en background
-->parece que con config actual, no se ve el mensaje splash aunque borra decoraciones ventanas
-->con noconfigfile, si que muestra splash. aunque se ve el texto por debajo de otras ventanas abiertas
+
 
 
 -quiza seek beyond limit en floppy no deberia saltar error (solo verbose), caso de tauceti pcw
@@ -324,7 +322,7 @@ Seria: error message: igual que hay ahora. Y luego clases: 0001 out of memory. 0
 -F función cualquiera Tecla F por joystick
 
 -Teclado en pantalla en gpi borra el input de debajo
--on screen keyboard, si se activa desde menu, luego no refresca adecuadamente las ventanas
+
 
 
 -Smartload path tiene setting en command line? si Y en menú? es el del ultimo archivo cargado con smartload
@@ -772,4 +770,7 @@ ok *hacer que salga aunque se haya desactivado welcome logo
 ok *que salga antes de cualquier first aid
 
 
--si pulsado OSD keyboard (F8) desde una ventana, al volver con ESC quedan mal redibujadas las ventanas
+
+-revisar mensajes splash (por ejemplo de cambio modo video) que aparezcan correctamente cuando hay ventanas en background
+->parece que con config actual, no se ve el mensaje splash aunque borra decoraciones ventanas
+->con noconfigfile, si que muestra splash. aunque se ve el texto por debajo de otras ventanas abiertas

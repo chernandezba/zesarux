@@ -21664,8 +21664,9 @@ void screen_print_splash_text(int y,int tinta,int papel,char *texto)
         } while (indice_texto<longitud);
 
 	int i;
-	for (i=0;i<indice_linea && y<24;i++) {
-		debug_printf (VERBOSE_DEBUG,"line %d y: %d length: %d contents: -%s-",i,y,strlen(buffer_lineas[i]),buffer_lineas[i]);
+	for (i=0;i<indice_linea && y<scr_get_menu_height();i++) {
+        int longitud_linea=strlen(buffer_lineas[i]);
+		debug_printf (VERBOSE_DEBUG,"line %d y: %d length: %d contents: -%s-",i,y,longitud_linea,buffer_lineas[i]);
 		x=menu_center_x()-strlen(buffer_lineas[i])/2;
 		if (x<0) x=0;
 		menu_escribe_texto(x,y,tinta,papel,buffer_lineas[i]);
