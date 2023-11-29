@@ -858,7 +858,6 @@ printf (
 		"------------\n"
 		"\n"
 
-		"--cpuspeed n                Set CPU speed in percentage\n"
 		"--denyturbozxunoboot        Deny setting turbo mode on ZX-Uno boot\n"
 		"--denyturbotbbluerom        Limit setting turbo mode on TBBlue ROM (default setting denied)\n"
         "--allowturbotbbluerom       Do not limit setting turbo mode on TBBlue ROM\n"
@@ -1178,6 +1177,7 @@ printf("\n"
 		"-----------------\n"
 		"\n"
 
+        "--emulatorspeed n           Set Emulator speed in percentage\n"
 		"--printerbitmapfile f   Sends printer output to image file. Supported formats: pbm, txt\n"
 		"--printertextfile f     Sends printer output to text file using OCR method. Printer output is saved to a text file using OCR method to guess text.\n"
 		"--redefinekey src dest  Redefine key scr to be key dest. You can write maximum 10 redefined keys\n"
@@ -2963,7 +2963,7 @@ int parse_cmdline_options(int desde_commandline) {
 			*/
 
 
-
+                        //Mantenida por compatibilidad hacia atras (ZEsarUX versiones anterior a 11)
                         else if (!strcmp(argv[puntero_parametro],"--cpuspeed")) {
                                 siguiente_parametro_argumento();
                                 porcentaje_velocidad_emulador=atoi(argv[puntero_parametro]);
@@ -2972,6 +2972,16 @@ int parse_cmdline_options(int desde_commandline) {
                                         exit(1);
                                 }
                         }
+
+
+            else if (!strcmp(argv[puntero_parametro],"--emulatorspeed")) {
+                    siguiente_parametro_argumento();
+                    porcentaje_velocidad_emulador=atoi(argv[puntero_parametro]);
+                    if (porcentaje_velocidad_emulador<1 || porcentaje_velocidad_emulador>9999) {
+                            printf ("Invalid Emulator speed\n");
+                            exit(1);
+                    }
+            }
 
 			else if (!strcmp(argv[puntero_parametro],"--denyturbozxunoboot")) {
 					zxuno_deny_turbo_bios_boot.v=1;

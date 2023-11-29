@@ -3696,7 +3696,7 @@ int util_write_configfile(void)
 
   if (debug_always_show_messages_in_console.v) ADD_STRING_CONFIG,"--verbose-always-console");
   if (windows_no_disable_console.v)           ADD_STRING_CONFIG,"--nodisableconsole");
-  if (porcentaje_velocidad_emulador!=100)     ADD_STRING_CONFIG,"--cpuspeed %d",porcentaje_velocidad_emulador);
+  if (porcentaje_velocidad_emulador!=100)     ADD_STRING_CONFIG,"--emulatorspeed %d",porcentaje_velocidad_emulador);
   if (zxuno_deny_turbo_bios_boot.v)           ADD_STRING_CONFIG,"--denyturbozxunoboot");
 
   if (tbblue_deny_turbo_rom.v) {
