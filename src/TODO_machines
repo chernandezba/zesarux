@@ -797,7 +797,7 @@ http://velesoft.speccy.cz/sam_zx128.htm
 
 --- CPC ---
 
--dandanator no va bien en cpc 664,6128. ejemplo bruce lee carga pantalla y luego se cuelga. rambo II también falla
+-dandanator no va bien en cpc 664, 6128. ejemplo bruce lee carga pantalla y luego se cuelga. rambo II también falla
 Probado en sitios que hace:
 
 if (MACHINE_IS_CPC_HAS_FLOPPY) {

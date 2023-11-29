@@ -87,8 +87,6 @@ Esto no es un TO-DO como tal , solo un comentario del nuevo funcionamiento
 
 -Si hay submenu, quizá gestionar desde propia función de menú. Y/o no cerrar menú anterior
 
--Quizá conversión de cinta a visual tape que lo haga en thread aparte (si hay threads). Eso evitará las pausas largas después de hacer insert en real tape
-
 -Audio chip sheet en modo texto. Que salgan en 3 líneas de texto por cada canal y las notas y hagan scroll igual
 
 -select machine by name hace scroll horizontal la ventana de menu. por que? porque se activa scroll vertical y se pierde 1 caracter de ancho
@@ -125,8 +123,6 @@ if (must_return) return;
 
 -Activar multitarea ventanas por defecto ? Si no hay configuración anterior?
 
--idea Para enviar sonido desde menú: Buffer aparte desde donde se lee de los cores y se mezcla con la salida emulada
-
 -menu arriba del todo al estilo de Mac. En pruebas, ver función menu_topbarmenu
 
 -Considerar mejorar dibujar el fondo de zxdesktop: al mover ventanas se ralentiza mucho por tener que dibujar el zxdesktop
@@ -147,11 +143,6 @@ util en el mapa de aventura de texto cuando la leyenda siempre se ve arriba aunq
 
 -que en menu de opciones si raton pulsa en ventana pero en zona que no hay opciones, no envie enter
 
-
-
--Quizá versión en un futuro en que al pulsar escape cierra todos los menús.
-Aunque lo que son ventanas no de menú debería cerrar la actual y no todas? Además tendria que haber una tecla para solo cerrar la ventana en curso
-(quizá con flecha izquierda)
 
 -cuando una tecla F no esta como default, no la envia a maquina emulada: ejemplo MSX F2, QL F5
 
@@ -224,8 +215,6 @@ Y cierra menus pero no sale
 -menu about: sin zx desktop, sale muy ancho pues ancho por defecto en zxvision_generic_message_tooltip es ahora 40
 -quiza se deberia hacer mas uso de menu_center_x_from_width, en ventanas que ya no caben con ancho 32 con zxdesktop ancho 256 y abrir ventanas en zxdesktop
 
--Splash messages en overlay no deberían borrar las ventanas cuando opción de background windows even with menú closed
-
 
 -a veces al cambiar numero chips en settings-audio-ay chips se cuelga
 
@@ -277,11 +266,6 @@ frecuencias muy altas.
 
 - Tape Improved algorithm quizá renombrar a “alternate” algorithm
 
-- Al salir cualquier mensaje splash luego no deberían desaparecer las ventanas: parece que desaparece la decoracion de ventanas
-momentaneamente pero al irse el splash, se recargan
-
-
-
 -ula settings visible en otras maquinas no-spectrum?
 
 
@@ -327,8 +311,6 @@ https://github.com/lavoiesl/osx-cpu-temp
 y no vuelve a abrir el menu, y parece que tampoco envia teclado a maquina emulada
 
 -filtro AY se sigue escuchando cosas aun desactivando los 3 canales->tienen que ver envolventes y speech
-
-
 
 
 -para comprobar coordenada y footer, calcular desde abajo de alto ventana. Y usar funcion comun en screen.c
@@ -406,8 +388,6 @@ Info de tamaño ventana. Y tamaño ventana sin zoom
 -mejorar deteccion frecuencia sonido en audio wave form
 
 
-
-
 -poder hacer hotswap de una maquina a zx-uno
 
 -insistir en el tema de hotswap entre zx80-zx81
@@ -428,8 +408,6 @@ no-thread no funcionara tampoco
 ->esto ya queda solventado con el setting de stop emulation on menu->multitarea sigue funcionando aunque la cpu esta pausada, y funciona repetición de teclas
 
 -Mostrar consumo de cpu solo del proceso del emulador?
-
-
 
 
 -descomprimir rar,gz, etc con espacio en nombres a veces falla. el comando system le envia las "" pero el propio comando

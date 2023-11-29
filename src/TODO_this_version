@@ -769,3 +769,7 @@ ya que no abren el menu
 ok *hacer que salga aunque se haya desactivado welcome logo
 ok *que salga antes de cualquier first aid
 
+-Si se crea ventana de alto negativo, acaba haciendo panic al asignar memoria. Quizá controlar esto?
+
+
+-Incorporar bittransfe como manera de generar snapshot en .tap. Agregar parámetro de estado interrupciones, registro i. Otros registros que falten? R?

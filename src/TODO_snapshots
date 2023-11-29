@@ -4,8 +4,8 @@
 
 -Incluir campo para numero de versión?
 ZSF: con zxuno y divmmc, al cargar snapshot, esxdos no está presente. Si activo y desactivo setting de divmmc paging, ya aparece:
-porque no habilita el nested_function de divmmc. Sera tan facil como guardar el setting de diviface-paged-enabled y si es asi, 
-activar ese nested (por defecto tenerlo desactivado). En caso de zxuno, divmmc en zsf no debe guardar/grabar su memoria ram ya que es 
+porque no habilita el nested_function de divmmc. Sera tan facil como guardar el setting de diviface-paged-enabled y si es asi,
+activar ese nested (por defecto tenerlo desactivado). En caso de zxuno, divmmc en zsf no debe guardar/grabar su memoria ram ya que es
 la propia memoria de zxuno quien lo tiene, lo mismo para tbblue, y prism
 -seguir formato zsf:
 -Opción para poder cargar snapshot pero sin cambiar la rom actual... útil por si grabamos un snapshot por ejemplo en máquina 128kb pero la rom era la del opense
@@ -17,10 +17,10 @@ la propia memoria de zxuno quien lo tiene, lo mismo para tbblue, y prism
   //if (divmmc_enabled.v) divmmc_disable();
   //if (divide_enabled.v) divide_disable();
   if (diviface_enabled.v) diviface_disable();
-Igual deberia desactivar tambien setting divmmc_enabled y divide_enabled.v, porque sino, desactiva el setting diviface pero los otros 
+Igual deberia desactivar tambien setting divmmc_enabled y divide_enabled.v, porque sino, desactiva el setting diviface pero los otros
 pueden quedarse activos. Esto en load snapshot zsf de zxuno lo hace aparte
 
- 
+
 
 
 
@@ -44,7 +44,7 @@ Quiza habria que parsear algunos parametros del .config tambien despues de carga
 
 
 -En snapshot poder guardar notas. Visibles desde menú snapshot. Se pierden al cargar otro snapshot
-Esto es un nuevo tipo de campo en ZSF. Como se pide? Al guardar un snapshot o desde menú snapshot? 
+Esto es un nuevo tipo de campo en ZSF. Como se pide? Al guardar un snapshot o desde menú snapshot?
 Quizá desde menú y con un first aid que lo explique
 
 --ZSF tbblue: * estado dma (esto no solo afecta a tbblue sino a todos. tener en cuenta grabar tambien valor datagear_dma_tbblue_prescaler)
@@ -71,7 +71,6 @@ algo que descuadra la lectura de puertos (alguna de mas o de menos) y ya por eso
 
 -comentar que formato esta pensado para little endian. Valores de 16/24/32 bits como se guardan? Tal cual? O los fuerzo a grabar de 8 en 8 bits y por tanto siempre little endian?
 
--Incorporar bittransfe como manera de generar snapshot en .tap. Agregar parámetro de estado interrupciones, registro i. Otros registros que falten? R?
 
 -Si en 48k modo del 128 acaba grabando snap .zx de 48... Quizá no hacerlo así
 

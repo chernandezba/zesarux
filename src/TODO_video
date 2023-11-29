@@ -1,5 +1,4 @@
 
-Otros TODO menos prioritarios, de aqui hasta el final del archivo:
 
 *** Video ***
 
@@ -11,7 +10,7 @@ Otros TODO menos prioritarios, de aqui hasta el final del archivo:
 
 -setting para desactivar realvideo cuando se haga reset
 
--poder hacer 50 FPS en carga top speed: problema, que al hacer top speed, ya no llevamos la cuenta de cuanto son 50 fps, pues no hay sleep de 
+-poder hacer 50 FPS en carga top speed: problema, que al hacer top speed, ya no llevamos la cuenta de cuanto son 50 fps, pues no hay sleep de
 final de frame. Y al no haberlo , si metemos un refresco de pantalla al final de cada supuesto frame, se estara lanzando muchos mas de 50 veces por segundo
 el refresco de pantalla y por tanto, se ralentiza todo y acaba yendo mas o menos a velocidad normal en vez de top speed
 
@@ -20,7 +19,7 @@ el refresco de pantalla y por tanto, se ralentiza todo y acaba yendo mas o menos
 -watermark sin realvideo no hace zoom. importante???
 
 Opcion desactivar colores que solo va en realvideo off:
--Quitar atributos que se pueda aunque esté modo rainbow 
+-Quitar atributos que se pueda aunque esté modo rainbow
 -Quizá simplemente una paleta grayscale y cuando haga render final, que convierta valores rgb a gris
 
 -Joystick SDL: Soporte joystick SDL2
@@ -34,7 +33,7 @@ Opcion desactivar colores que solo va en realvideo off:
 
 -Soportar azerty en Sdl, en Cocoa, fbdev
 
--OCR con colores y codigos ansi? para F4 y ZRCP 
+-OCR con colores y codigos ansi? para F4 y ZRCP
 
 -Clashbasher
 
@@ -63,10 +62,7 @@ upara lightgun la mayoria de puertos son teclado o kempston, en que ya se contro
 
 -Para acelerar fbdev, al refrescar pantalla, no calcular cada vez el offset en pantalla multiplicando sino que ir incrementando
 
--eliminar parpadeos en fbdev usando doble buffer?
-
 -scr_lee_puerto en cada driver de video creo que ya no se usa para nada. borrar
-
 
 -Si modo interlaced activo, al redimensionar ventana con raton y hacerla zoom=1, se deberia desactivar opcion interlaced (y scanlines)
 
@@ -80,7 +76,7 @@ upara lightgun la mayoria de puertos son teclado o kempston, en que ya se contro
 
 -funcion screen_print_splash_text que se pueda mostrar texto con menu abierto. Ideal por ejemplo para open flap del z88
 
--Posibilidad de desactivar puntero raton para el resto de drivers: curses, 
+-Posibilidad de desactivar puntero raton para el resto de drivers: curses,
 
 -Salida de texto en simpletext y otros drivers texto: carácter 127 no es imprimible
 
@@ -130,7 +126,7 @@ ahora sale por consola del sistema operativo, quiza se podria tener una ventana 
 
 -fbdev: al salir de ZEsarUX la consola no responde. Se puede volver matando el proceso bash desde ssh. Es algo que sucede al finalizar, porque si vuelve a consola desde un segfault no falla. Parece que tiene algo que ver al finalizar end_remote_protocol
 
--Doble buffer fbdev copia más ancho del que realmente ocupa. Considerar totalspectrumancho x bits pixel? 
+-Doble buffer fbdev copia más ancho del que realmente ocupa. Considerar totalspectrumancho x bits pixel?
 
 -hacer zoom a traves de xwindows con extensiones de... xvideo? opengl? libxv-dev?. Esto serviria para todo excepto para modo scanlines
 
@@ -152,11 +148,11 @@ Por drivers:
 --curses--
 
 
--En overscan con curses salen colores con ??? a la derecha fuera de pantalla 
+-En overscan con curses salen colores con ??? a la derecha fuera de pantalla
 
 -Con ventana ay piano en background, al ir a Smartload se mezcla texto de ventana ay piano en Smartload
 
--En menú no aparece carácter “.” (Punto)
+-En menú no aparece carácter "." (Punto)
 
 -Permitir ZX desktop en curses? Cuidado porque igual intenta usar putpixel para dibujar las franjas de colores por defecto del fondo de ZX desktop
 
