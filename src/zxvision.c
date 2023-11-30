@@ -25932,7 +25932,7 @@ char *first_aid_string_multitask="The multitask setting (enabled by default) tel
 	"Sometimes, if you cpu is not fast enough, the emulation can be stopped or drop FPS when you open the menu. You can disable it on Settings->GUI";
 
 int first_aid_no_zxvision_clickout=0;
-char *first_aid_string_zxvision_clickout="If you have multitask enabled, with menu open, and you click out of a window menu (inside ZEsarUX window), "
+char *first_aid_string_zxvision_clickout="If you have multitask enabled, with menu open, and you press left shift+left mouse button out of a window menu (inside ZEsarUX window), "
 	"that menu window loses focus and the emulated machine gets the focus, so you can use the keyboard on the emulated machine and the menu window "
 	"is still alive";
 
