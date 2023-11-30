@@ -3,8 +3,8 @@ In my_soft/ folder you can find some software for the emulated machines.
 They are programs and games made by myself or my family. Many of them are simple programs written in basic, that I made when I was a child, and some other are more complex programs, like the SPED compiler, RealDebug debugger, or Cursor Draw drawing program. Some of these programs have documentation found on file my_soft/info_my_soft.odt. 
 
 Some of these programs made by me are published as brand "Man Software". 
-Software made by my father and my oldest brother are published as "Micro bit" or "Micro Byt". 
-Software made by my middle brother are published as "Bit Soft"
+Software made by my father Diego and my oldest brother Oscar are published as "Micro bit" or "Micro Byt". 
+Software made by my middle brother David are published as "Bit Soft"
 
 Note: some of my simple games, made in basic, have kempston joystick support. They were programmed on Inves Spectrum + and kempston joystick reading only works on Inves and not on other Spectrum machines.
 
@@ -21,4 +21,4 @@ I included them for different reasons:
 
 - They make some hi-res and special effects, like Overscan on Spectrum or Manic miner on ZX81
 
-- They are programs to test the behaviour on the emulator
+- They are programs to test the behaviour of the emulator
