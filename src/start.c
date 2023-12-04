@@ -1651,6 +1651,7 @@ printf("\n"
 		"--invert-menu-mouse-scroll               Inverts mouse scroll movement\n"
         "--right-mouse-esc                        Right button mouse simulates ESC key and not secondary actions\n"
         "--process-switcher-immutable             Massive actions on menu Windows, like minimize all, cascade, etc, don't affect the Process switcher window\n"
+        "--process-switcher-always-visible        Process switcher is always visible (on top of all windows)\n"
 		"--allow-background-windows               Allow putting windows in background\n"
         "--allow-background-windows-closed-menu   Allow these background windows even when menu closed\n"
 		);
@@ -4890,6 +4891,10 @@ int parse_cmdline_options(int desde_commandline) {
 
             else if (!strcmp(argv[puntero_parametro],"--process-switcher-immutable")) {
                 setting_process_switcher_immutable.v=1;
+            }
+
+            else if (!strcmp(argv[puntero_parametro],"--process-switcher-always-visible")) {
+                setting_process_switcher_always_visible.v=1;
             }
 
 			else if (!strcmp(argv[puntero_parametro],"--allow-background-windows")) {

@@ -326,6 +326,8 @@ z80_bit menu_show_advanced_items={0};
 //Si process switcher no se le altera tamaño o posición por acciones del menu Windows (minimize all, cascade, etc)
 z80_bit setting_process_switcher_immutable={0};
 
+//Si process switcher siempre esta visible
+z80_bit setting_process_switcher_always_visible={0};
 
 //Logo de decimo aniversario.
 //En version X (10.10) estaba habilitado por defecto

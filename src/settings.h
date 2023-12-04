@@ -148,6 +148,8 @@ extern z80_bit xanniversary_logo;
 
 extern z80_bit setting_process_switcher_immutable;
 
+extern z80_bit setting_process_switcher_always_visible;
+
 extern z80_bit accessibility_enable_gui_sounds;
 
 extern z80_bit zeng_online_allow_room_creation_from_any_ip;

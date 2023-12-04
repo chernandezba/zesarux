@@ -38892,6 +38892,18 @@ void process_switcher_sync_immutable_setting(void)
     //else printf("NO Encontrada ventana process switcher\n");
 }
 
+void process_switcher_sync_always_visible_setting(void)
+{
+    //Si la ventana esta ya abierta, ponemos o quitamos setting de immutable
+    zxvision_window *ventana=zxvision_find_window_in_background("processswitcher");
+
+    if (ventana!=NULL) {
+        debug_printf(VERBOSE_DEBUG,"Found process switcher window, so syncing always visible setting");
+        if (setting_process_switcher_always_visible.v) ventana->always_visible=1;
+        else ventana->always_visible=0;
+    }
+    //else printf("NO Encontrada ventana process switcher\n");
+}
 
 //Almacenar la estructura de ventana aqui para que se pueda referenciar desde otros sitios
 zxvision_window zxvision_window_process_switcher;
@@ -38944,6 +38956,8 @@ void menu_process_switcher(MENU_ITEM_PARAMETERS)
     }
 
     process_switcher_sync_immutable_setting();
+
+    process_switcher_sync_always_visible_setting();
 
 	zxvision_draw_window(ventana);
 

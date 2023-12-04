@@ -1904,6 +1904,15 @@ void menu_interface_process_switcher_immutable(MENU_ITEM_PARAMETERS)
 }
 
 
+
+void menu_interface_process_switcher_always_visible(MENU_ITEM_PARAMETERS)
+{
+    setting_process_switcher_always_visible.v ^=1;
+
+    process_switcher_sync_always_visible_setting();
+}
+
+
 void menu_interface_charset_customfile(MENU_ITEM_PARAMETERS)
 {
     char *filtros[3];
@@ -2242,6 +2251,16 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_tooltip(array_menu_common,"Massive actions on menu Windows, like minimize all, cascade, etc, don't affect the Process switcher window");
         menu_add_item_menu_ayuda(array_menu_common,"Massive actions on menu Windows, like minimize all, cascade, etc, don't affect the Process switcher window");
         menu_add_item_menu_es_avanzado(array_menu_common);
+
+
+        //TODO: este setting tendria que estar quiza en otro sitio
+		menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_process_switcher_always_visible,NULL,
+            "Process switcher always visible","Process switcher siempre visible","Process switcher sempre visible");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(setting_process_switcher_always_visible.v ? 'X' : ' ') );
+        menu_add_item_menu_tooltip(array_menu_common,"Process switcher is always visible (on top of all windows)");
+        menu_add_item_menu_ayuda(array_menu_common,"Process switcher is always visible (on top of all windows)");
+        menu_add_item_menu_es_avanzado(array_menu_common);
+
 
         menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 

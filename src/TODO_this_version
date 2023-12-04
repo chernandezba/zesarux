@@ -53,9 +53,7 @@ lecturas de plus3dos headers no van bien: Real length file SCREEN  .    read fro
 
 
 
-
-
--quiza seek beyond limit en floppy no deberia saltar error (solo verbose), caso de tauceti pcw
+-quiza seek beyond limit en floppy no deberia saltar error (solo verbose), caso de tauceti pcw. no consigo sacar ese error? otro juego que salga?
 
 -rutinas speech y kill speech se llaman aunque no haya nada pendiente. desde timer, llama a scrtextspeech_filter_run_pending
 
@@ -119,7 +117,6 @@ ok-eventos: error, mover cursor, cerrar ventana (ventana no de menu)
 -dall-e. text aventure location image
 *esperar a waitpid?
 *en hobbit las descripciones salen antes de borrar la pantalla
-*faq de dall-e: comprar creditos en openai (no en dall-e), export variable KEY en windows y  Linux/mac
 *en linux: cierro ventana imagen, borro output imagen, abro y segfault
 
 
@@ -135,7 +132,6 @@ esta pensado solo para print char y mostrarlo en consola. deberia haber una func
 
 -Browser cintas standard que permita alterar la posición de la cinta
 
--parametro de setting para process switcher para estar siempre encima de todas las ventanas
 
 -setting de "siempre visible" en ventanas, que tambien el foco funcione al pulsar encima y/o pasar el raton, aunque haya otra ventana por encima
 ejemplo: poner el process switcher siempre visible, y pasar otra ventana por encima, los clicks de raton no van al process switcher
@@ -773,3 +769,9 @@ ok *que salga antes de cualquier first aid
 
 
 -Incorporar bittransfe como manera de generar snapshot en .tap. Agregar parámetro de estado interrupciones, registro i. Otros registros que falten? R?
+
+
+
+-mejorar setting de ventana de always visible:
+*decoracion ventana este por arriba
+*al pulsar en esa ventana, detecte bien que es la de arriba
