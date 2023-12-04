@@ -13409,12 +13409,17 @@ zxvision_window *zxvision_coords_in_below_windows(zxvision_window *w,int x,int y
 
 		lower_window=w->previous_window;
 
-        //Si hay ventana por debajo y no hemos escogido una ya
 		if (lower_window!=NULL) {
 
-            if (final_lower_window==NULL) {
+            //Si hay ventana por debajo y no hemos escogido una ya
+            //O si esta ventana tiene switch de always visible
+            //Nota: en caso que haya varias ventanas con always visible, tendra precedencia, en este caso, la de mas abajo
+            if (final_lower_window==NULL || lower_window->always_visible) {
 
-			    if (zxvision_coords_in_window(lower_window,x,y)) final_lower_window=lower_window;
+			    if (zxvision_coords_in_window(lower_window,x,y)) {
+                    //printf("Elegida como final ventana: %s\n",lower_window->window_title);
+                    final_lower_window=lower_window;
+                }
 
             }
 

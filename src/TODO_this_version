@@ -774,4 +774,12 @@ ok *que salga antes de cualquier first aid
 
 -mejorar setting de ventana de always visible:
 *decoracion ventana este por arriba
-*al pulsar en esa ventana, detecte bien que es la de arriba
+*al pulsar en esa ventana, detecte bien que es la de arriba. no lo hace bien del todo, pues en una de las llamadas a
+zxvision_coords_in_below_windows,
+(por debajo de 			//Si se pulsa fuera de ventana
+			debug_printf (VERBOSE_DEBUG,"Clicked outside window. Events are sent to emulated machine. X=%d Y=%d",menu_mouse_x,menu_mouse_y);
+
+)
+
+solo llama ahi cuando se pulsa fuera de la ventana activa,
+y si la ventana activa esta en la zona de una ventana siempre visible, no conmutara a una ventana siempre visible
