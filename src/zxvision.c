@@ -13410,9 +13410,13 @@ zxvision_window *zxvision_coords_in_below_windows(zxvision_window *w,int x,int y
 		lower_window=w->previous_window;
 
         //Si hay ventana por debajo y no hemos escogido una ya
-		if (lower_window!=NULL && final_lower_window==NULL) {
+		if (lower_window!=NULL) {
 
-			if (zxvision_coords_in_window(lower_window,x,y)) final_lower_window=lower_window;
+            if (final_lower_window==NULL) {
+
+			    if (zxvision_coords_in_window(lower_window,x,y)) final_lower_window=lower_window;
+
+            }
 
 		}
 
