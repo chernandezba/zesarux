@@ -13401,14 +13401,18 @@ zxvision_window *zxvision_coords_in_below_windows(zxvision_window *w,int x,int y
 
 	//Empezamos de arriba hacia abajo
 
+    //La primera que encontramos y que contiene las coordenadas indicadas
+    zxvision_window *final_lower_window=NULL;
+
 	do {
 		zxvision_window *lower_window;
 
 		lower_window=w->previous_window;
 
-		if (lower_window!=NULL) {
+        //Si hay ventana por debajo y no hemos escogido una ya
+		if (lower_window!=NULL && final_lower_window==NULL) {
 
-			if (zxvision_coords_in_window(lower_window,x,y)) return lower_window;
+			if (zxvision_coords_in_window(lower_window,x,y)) final_lower_window=lower_window;
 
 		}
 
@@ -13417,7 +13421,9 @@ zxvision_window *zxvision_coords_in_below_windows(zxvision_window *w,int x,int y
 
 	} while (w!=NULL);
 
-	return NULL;
+    return final_lower_window;
+
+	//return NULL;
 
 }
 
