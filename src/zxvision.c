@@ -12744,6 +12744,8 @@ void zxvision_draw_below_windows(zxvision_window *w)
 
 	//printf ("\nStart loop redrawing below windows\n");
 
+    zxvision_window *always_visible_window=NULL;
+
 	//no mostrar mensajes de error pendientes
 	//si eso se hiciera, aparece en medio de la lista de ventanas una que apunta a null y de ahi la condicion pointer_window!=NULL
 	//asi entonces dicha condicion pointer_window!=NULL ya no seria necesaria pero la dejamos por si acaso...
@@ -12759,9 +12761,19 @@ void zxvision_draw_below_windows(zxvision_window *w)
 		zxvision_draw_window(pointer_window);
 	    zxvision_draw_window_contents(pointer_window);
 
+        if (pointer_window->always_visible) always_visible_window=pointer_window;
+
 
 		pointer_window=pointer_window->next_window;
 	}
+
+
+    //Si hay alguna que tiene always visible, redibujarla encima solo la ventana (el contenido ya se habra mostrado en teoria)
+    //Nota: en este caso se dibujaria la visible que esta mas arriba de todas
+    if (always_visible_window!=NULL) {
+        //printf("Redibujando arriba del todo ventana %s\n",always_visible_window->window_title);
+        zxvision_draw_window(always_visible_window);
+    }
 
 
 	no_dibuja_ventana_muestra_pending_error_message=antes_no_dibuja_ventana_muestra_pending_error_message;

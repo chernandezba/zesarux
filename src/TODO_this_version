@@ -773,7 +773,10 @@ ok *que salga antes de cualquier first aid
 
 
 -mejorar setting de ventana de always visible:
-*decoracion ventana este por arriba
+*decoracion ventana este por arriba -> esto lo hace siempre que no estemos manipulando la ventana actual
+las de debajo, si que tiene consideracion de always_visible, pero en la de ayuda no
+porque las de debajo se redibujan llamando a zxvision_draw_below_windows, pero la de arriba no
+
 *al pulsar en esa ventana, detecte bien que es la de arriba. no lo hace bien del todo, pues en una de las llamadas a
 zxvision_coords_in_below_windows,
 (por debajo de 			//Si se pulsa fuera de ventana

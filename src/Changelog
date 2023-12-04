@@ -24,7 +24,7 @@ Improved ZX Vision:
 - Changed left click mouse behaviour: when pressing left button mouse out of a window, it will close all menus.
   If you need to keep menu open and set focus on emulated machine, just left click and also press shift key.
 - Improve window title background when not all buttons are visible
-- Improve clicking on an always visible window
+- Improve clicking and drawing an always visible window
 - Menus can no longer be minimized (that had no sense)
 - Process switcher: unminimize windows when selecting them and they were minimized
 - Process switcher: now it can be set to be always visible
