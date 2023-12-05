@@ -788,3 +788,5 @@ solo llama ahi cuando se pulsa fuera de la ventana activa,
 y si la ventana activa esta en la zona de una ventana siempre visible, no conmutara a una ventana siempre visible
 *quiza tambien seria mejor que una ventana always_visible, vaya siempre arriba del todo cuando se crean ventanas o se mueven?
 pero en ese caso si van arriba del todo quizá tendrian siempre el foco y NO es lo que se espera...
+
+-desactivar colores en modo real video, que lo haga tambien en border

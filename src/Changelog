@@ -19,6 +19,7 @@ Allow to select normal ZEsarUX logo or X Anniversary logo
 Allow to seng ZENG snapshots more frequently (even every 20 ms)
 Allow to use cpu-step-mode from ZRCP on drivers stdout and simpletext
 Allow autorewind setting for real tape too
+Allow to disable Spectrum colours on real video mode too
 
 Improved ZX Vision:
 - Changed left click mouse behaviour: when pressing left button mouse out of a window, it will close all menus.
