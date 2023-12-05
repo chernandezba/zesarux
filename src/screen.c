@@ -5909,6 +5909,9 @@ void screen_store_scanline_rainbow_border_comun(z80_int *puntero_buf_rainbow,int
 					int jj;
                     z80_int color_final_border=color_border;
 
+
+                    if (scr_refresca_sin_colores.v) color_final_border=7;
+
                     if (core_spectrum_executed_halt_in_this_scanline) color_final_border ^=7;
 
 					for (jj=0;jj<t_estados_por_pixel;jj++) {
