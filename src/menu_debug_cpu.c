@@ -3255,10 +3255,13 @@ void menu_debug_registers_zxvision_ventana(zxvision_window *ventana)
         //zxvision_new_window_nocheck_staticsize en vez de zxvision_new_window_gn_cim
 
         if (!util_find_window_geometry("debugcpu",&xorigin,&yorigin,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
-            xorigin=menu_origin_x();
-            yorigin=0;
+            //xorigin=menu_origin_x();
+            //yorigin=0;
             ancho_ventana=32;
             alto_ventana=24;
+
+            xorigin=menu_center_x()-ancho_ventana/2;
+            yorigin=menu_center_y()-alto_ventana/2;
         }
 
 
@@ -3488,11 +3491,14 @@ void menu_watches(MENU_ITEM_PARAMETERS)
 
         if (!util_find_window_geometry("watches",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
 
-            xventana=menu_origin_x();
-            yventana=1;
+            //xventana=menu_origin_x();
+            //yventana=1;
 
             ancho_ventana=32;
             alto_ventana=22;
+
+            xventana=menu_center_x()-ancho_ventana/2;
+            yventana=menu_center_y()-alto_ventana/2;
         }
 
 

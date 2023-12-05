@@ -133,11 +133,6 @@ esta pensado solo para print char y mostrarlo en consola. deberia haber una func
 -Browser cintas standard que permita alterar la posición de la cinta
 
 
--setting de "siempre visible" en ventanas, que tambien el foco funcione al pulsar encima y/o pasar el raton, aunque haya otra ventana por encima
-ejemplo: poner el process switcher siempre visible, y pasar otra ventana por encima, los clicks de raton no van al process switcher
-
-
-
 -zxvision_window: buffer para pixeles, con doble buffer para saber si no ha cambiado un pixel, no refrescarlo
 Hacer uso de parametro dirty, usado igual en draw_window_contents, para saber _si hay que redibujar capa de pixel o no
 ventanas escriben aqui con otra funcion, por ejemplo llamada zxvision_putpixel_buffer, o quiza, renombrar
@@ -240,7 +235,6 @@ ejemplo badlands.dsk y rutina en la 2114h que esta en los traps
 Debe indicar que se puede dejar ventanas en background pero que también pueden haber múltiples ventanas a la vez
 
 
--al abrir ventanas por primera vez, la coordenada y debe ser por debajo de los botones superiores
 
 
 
@@ -789,4 +783,3 @@ y si la ventana activa esta en la zona de una ventana siempre visible, no conmut
 *quiza tambien seria mejor que una ventana always_visible, vaya siempre arriba del todo cuando se crean ventanas o se mueven?
 pero en ese caso si van arriba del todo quizá tendrian siempre el foco y NO es lo que se espera...
 
--desactivar colores en modo real video, que lo haga tambien en border

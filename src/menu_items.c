@@ -1031,10 +1031,13 @@ void menu_debug_cpu_resumen_stats(MENU_ITEM_PARAMETERS)
         int x,y,ancho,alto,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
         if (!util_find_window_geometry("cpucompactstatistics",&x,&y,&ancho,&alto,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
-            x=menu_origin_x();
-            y=1;
+            //x=menu_origin_x();
+            //y=1;
             ancho=32;
             alto=18;
+
+            x=menu_center_x()-ancho/2;
+            y=menu_center_y()-alto/2;
         }
 
         //int originx=menu_origin_x();
@@ -2455,13 +2458,13 @@ void menu_ay_registers(MENU_ITEM_PARAMETERS)
         if (!util_find_window_geometry("ayregisters",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
 
             if (total_chips==1) {
-                yventana=5;
+                //yventana=5;
             }
             else {
-                yventana=0;
+                //yventana=0;
             }
 
-            xventana=menu_origin_x()+1;
+            //xventana=menu_origin_x()+1;
             ancho_ventana=30;
 
             //El alto lo cambiamos segun el numero de chips
@@ -2471,6 +2474,9 @@ void menu_ay_registers(MENU_ITEM_PARAMETERS)
             else {
                     alto_ventana=24;
             }
+
+            xventana=menu_center_x()-ancho_ventana/2;
+            yventana=menu_center_y()-alto_ventana/2;
 
         }
 
@@ -4302,8 +4308,8 @@ void menu_debug_tsconf_tbblue_msx_tilenav(MENU_ITEM_PARAMETERS)
 
 
 
-#define SOUND_WAVE_X (menu_origin_x()+1)
-#define SOUND_WAVE_Y 3
+//#define SOUND_WAVE_X (menu_origin_x()+1)
+//#define SOUND_WAVE_Y 3
 #define SOUND_WAVE_ANCHO 30
 #define SOUND_WAVE_ALTO 15
 
@@ -4815,10 +4821,13 @@ void menu_audio_new_waveform(MENU_ITEM_PARAMETERS)
         int x,y,ancho,alto,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
         if (!util_find_window_geometry("waveform",&x,&y,&ancho,&alto,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
-            x=SOUND_WAVE_X;
-            y=SOUND_WAVE_Y-2;
+            //x=SOUND_WAVE_X;
+            //y=SOUND_WAVE_Y-2;
             ancho=SOUND_WAVE_ANCHO;
             alto=SOUND_WAVE_ALTO+4;
+
+            x=menu_center_x()-ancho/2;
+            y=menu_center_y()-alto/2;
         }
 
 
@@ -5518,10 +5527,13 @@ void menu_debug_new_visualmem(MENU_ITEM_PARAMETERS)
 
 
         if (!util_find_window_geometry("visualmem",&x,&y,&ancho,&alto,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
-            x=VISUALMEM_DEFAULT_X;
-            y=visualmem_y_variable;
+            //x=VISUALMEM_DEFAULT_X;
+            //y=visualmem_y_variable;
             ancho=VISUALMEM_DEFAULT_WINDOW_ANCHO;
             alto=VISUALMEM_DEFAULT_WINDOW_ALTO;
+
+            x=menu_center_x()-ancho/2;
+            y=menu_center_y()-alto/2;
         }
 
         //Crear nueva ventana, asignando ademas geometry name y gestionando si se crea minimizada
@@ -6600,8 +6612,8 @@ void menu_audio_new_ayplayer(MENU_ITEM_PARAMETERS)
 
 
 
-#define DEBUG_HEXDUMP_WINDOW_X (menu_origin_x() )
-#define DEBUG_HEXDUMP_WINDOW_Y 1
+//#define DEBUG_HEXDUMP_WINDOW_X (menu_origin_x() )
+//#define DEBUG_HEXDUMP_WINDOW_Y 1
 #define DEBUG_HEXDUMP_WINDOW_ANCHO 32
 #define DEBUG_HEXDUMP_WINDOW_ALTO 23
 
@@ -7280,10 +7292,12 @@ void menu_debug_hexdump(MENU_ITEM_PARAMETERS)
 
 
         if (!util_find_window_geometry("hexeditor",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
-            xventana=DEBUG_HEXDUMP_WINDOW_X;
-            yventana=DEBUG_HEXDUMP_WINDOW_Y;
+            //xventana=DEBUG_HEXDUMP_WINDOW_X;
+            //yventana=DEBUG_HEXDUMP_WINDOW_Y;
             ancho_ventana=DEBUG_HEXDUMP_WINDOW_ANCHO;
             alto_ventana=DEBUG_HEXDUMP_WINDOW_ALTO;
+            xventana=menu_center_x()-ancho_ventana/2;
+            yventana=menu_center_y()-alto_ventana/2;
         }
 
         //guardar tamanyo inicial para cuando se recrea la ventana indicarlo como tamanyo de antes minimizado
@@ -9104,8 +9118,8 @@ void menu_tsconf_layer_settings(MENU_ITEM_PARAMETERS)
 
 
 
-#define TOTAL_PALETTE_WINDOW_X (menu_origin_x() )
-#define TOTAL_PALETTE_WINDOW_Y 0
+//#define TOTAL_PALETTE_WINDOW_X (menu_origin_x() )
+//#define TOTAL_PALETTE_WINDOW_Y 0
 #define TOTAL_PALETTE_WINDOW_ANCHO 32
 #define TOTAL_PALETTE_WINDOW_ALTO 24
 //#define TOTAL_PALETTE_COLORS_PER_WINDOW 16
@@ -9177,7 +9191,7 @@ int menu_display_total_palette_lista_colores(int linea,int si_barras)
 			int i;
 			for (i=0;i<menu_display_total_palette_total_colores_por_ventana;i++) {
 				zxvision_print_string_defaults_fillspc(menu_display_total_palette_draw_barras_window,
-					0,TOTAL_PALETTE_WINDOW_Y+3+i,"");
+					0,3+i,"");
 			}
 		}
 
@@ -9239,8 +9253,7 @@ int menu_display_total_palette_lista_colores(int linea,int si_barras)
 
 					int longitud_texto=strlen(dumpmemoria);
 
-					//int posicion_barra_color_x=TOTAL_PALETTE_WINDOW_X+longitud_texto+2;
-					//int posicion_barra_color_y=TOTAL_PALETTE_WINDOW_Y+3+linea_color;
+
 					int posicion_barra_color_x=longitud_texto+2;
 					int posicion_barra_color_y=3+linea_color;
 
@@ -9292,7 +9305,7 @@ void menu_display_total_palette_draw_barras(void)
     //si ventana minimizada, no ejecutar todo el codigo de overlay
     if (!menu_display_total_palette_draw_barras_window->is_minimized) {
         //printf("Overlay display palettes0 %d\n",contador_segundo);
-        menu_display_total_palette_lista_colores(TOTAL_PALETTE_WINDOW_Y+3,0);
+        menu_display_total_palette_lista_colores(3,0);
     }
 
     //Esto tiene que estar despues de escribir la lista de colores, para que se refresque y se vea
@@ -9373,10 +9386,13 @@ void menu_display_total_palette(MENU_ITEM_PARAMETERS)
         int xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
         if (!util_find_window_geometry("displaypalettes",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
-            xventana=TOTAL_PALETTE_WINDOW_X;
-            yventana=TOTAL_PALETTE_WINDOW_Y;
+            //xventana=TOTAL_PALETTE_WINDOW_X;
+            //yventana=TOTAL_PALETTE_WINDOW_Y;
             ancho_ventana=TOTAL_PALETTE_WINDOW_ANCHO;
             alto_ventana=TOTAL_PALETTE_WINDOW_ALTO;
+
+            xventana=menu_center_x()-ancho_ventana/2;
+            yventana=menu_center_y()-alto_ventana/2;
         }
 
         //guardar tamanyo inicial para cuando se recrea la ventana indicarlo como tamanyo de antes minimizado
@@ -9492,7 +9508,7 @@ void menu_display_total_palette(MENU_ITEM_PARAMETERS)
 			char buffer_linea[40];
 
 			//Nos situamos justo despues de la lista de colores
-			linea=TOTAL_PALETTE_WINDOW_Y+total_colores_por_ventana+3;
+			linea=total_colores_por_ventana+3;
 
 			//Y meter una linea en blanco
 			zxvision_print_string_defaults(ventana,1,linea++,"");
@@ -10269,8 +10285,8 @@ void menu_cpu_transaction_log(MENU_ITEM_PARAMETERS)
 
 
 
-#define SPRITES_X ( menu_origin_x() )
-#define SPRITES_Y 0
+//#define SPRITES_X ( menu_origin_x() )
+//#define SPRITES_Y 0
 #define SPRITES_ANCHO 32
 #define SPRITES_ALTO 14
 //#define SPRITES_ALTO_VENTANA (SPRITES_ALTO+10)
@@ -11850,10 +11866,13 @@ void menu_debug_view_sprites(MENU_ITEM_PARAMETERS)
 
 
         if (!util_find_window_geometry("sprites",&x,&y,&ancho,&alto,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
-            x=SPRITES_X;
-            y=SPRITES_Y;
+            //x=SPRITES_X;
+            //y=SPRITES_Y;
             ancho=SPRITES_ANCHO;
             alto=SPRITES_ALTO_VENTANA;
+
+            x=menu_center_x()-ancho/2;
+            y=menu_center_y()-alto/2;
         }
 
 
@@ -12327,8 +12346,8 @@ char *pentagrama_sost[PENTAGRAMA_SOST_ALTO]={
 
 //Clave de sol. 56 pixeles alto aprox
 
-#define PIANO_PARTITURA_GRAPHIC_BASE_X (menu_origin_x() )
-#define PIANO_PARTITURA_GRAPHIC_BASE_Y 0
+//#define PIANO_PARTITURA_GRAPHIC_BASE_X (menu_origin_x() )
+//#define PIANO_PARTITURA_GRAPHIC_BASE_Y 0
 
 
 
@@ -13036,10 +13055,13 @@ void menu_ay_partitura(MENU_ITEM_PARAMETERS)
 
         if (!util_find_window_geometry("aysheet",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
 
-            xventana=PIANO_PARTITURA_GRAPHIC_BASE_X;
-            yventana=PIANO_PARTITURA_GRAPHIC_BASE_Y;
+            //xventana=PIANO_PARTITURA_GRAPHIC_BASE_X;
+            //yventana=PIANO_PARTITURA_GRAPHIC_BASE_Y;
             ancho_ventana=PIANO_PARTITURA_ANCHO_VENTANA;
             alto_ventana=PIANO_PARTITURA_ALTO_VENTANA;
+
+            xventana=menu_center_x()-ancho_ventana/2;
+            yventana=menu_center_y()-alto_ventana/2;
 
             int ancho_titulo=menu_da_ancho_titulo(titulo_ventana);
 
@@ -21946,10 +21968,13 @@ void menu_debug_unnamed_console(MENU_ITEM_PARAMETERS)
         int x,y,ancho,alto,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
         if (!util_find_window_geometry("debugconsole",&x,&y,&ancho,&alto,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
-            x=menu_origin_x();
-            y=0;
+            //x=menu_origin_x();
+            //y=0;
             ancho=DEBUG_UNNAMED_CONSOLE_VISIBLE_INITIAL_WIDTH; //32;
             alto=18;
+
+            x=menu_center_x()-ancho/2;
+            y=menu_center_y()-alto/2;
         }
 
         //DEBUG_UNNAMED_CONSOLE_HEIGHT+2 porque hay dos lineas de leyenda superior
@@ -22343,10 +22368,13 @@ void menu_audio_general_sound(MENU_ITEM_PARAMETERS)
         int x,y,ancho,alto,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
         if (!util_find_window_geometry("audiogensound",&x,&y,&ancho,&alto,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
-            x=menu_origin_x();
-            y=1;
+            //x=menu_origin_x();
+            //y=1;
             ancho=33;
             alto=22;
+
+            x=menu_center_x()-ancho/2;
+            y=menu_center_y()-alto/2;
         }
 
 
@@ -22547,10 +22575,13 @@ void menu_debug_ioports(MENU_ITEM_PARAMETERS)
         int x,y,ancho,alto,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
         if (!util_find_window_geometry("debugioports",&x,&y,&ancho,&alto,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
-            x=menu_origin_x();
-            y=1;
+            //x=menu_origin_x();
+            //y=1;
             ancho=33;
             alto=22;
+
+            x=menu_center_x()-ancho/2;
+            y=menu_center_y()-alto/2;
         }
 
 
@@ -24559,8 +24590,8 @@ void menu_debug_view_sensors(MENU_ITEM_PARAMETERS)
 
 
 
-#define VISUALREALTAPE_X (menu_origin_x())
-#define VISUALREALTAPE_Y 2
+//#define VISUALREALTAPE_X (menu_origin_x())
+//#define VISUALREALTAPE_Y 4
 #define VISUALREALTAPE_ANCHO 32
 #define VISUALREALTAPE_ALTO 20
 
@@ -25052,10 +25083,12 @@ void menu_visual_realtape(MENU_ITEM_PARAMETERS)
         int x,y,ancho,alto,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
         if (!util_find_window_geometry("visualrealtape",&x,&y,&ancho,&alto,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
-            x=VISUALREALTAPE_X;
-            y=VISUALREALTAPE_Y-2;
+            //x=VISUALREALTAPE_X;
+            //y=VISUALREALTAPE_Y;
             ancho=VISUALREALTAPE_ANCHO;
             alto=VISUALREALTAPE_ALTO+4;
+            x=menu_center_x()-ancho/2;
+            y=menu_center_y()-alto/2;
         }
 
 
@@ -28041,7 +28074,8 @@ void menu_debug_set_pc_zero(MENU_ITEM_PARAMETERS)
 #define SHORTCUTS_HELPER_X (menu_center_x()-SHORTCUTS_HELPER_ANCHO/2)
 
 //ponerlo arriba para que inicialmente sea el sitio mejor para verse
-#define SHORTCUTS_HELPER_Y 0
+//pero por debajo de los botones aproximadamente
+#define SHORTCUTS_HELPER_Y 4
 
 
 //Usado dentro del overlay de menu_shortcuts_helper_overlay, para mostrar dos veces por segundo el texto que average, etc
