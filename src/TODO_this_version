@@ -783,3 +783,7 @@ y si la ventana activa esta en la zona de una ventana siempre visible, no conmut
 *quiza tambien seria mejor que una ventana always_visible, vaya siempre arriba del todo cuando se crean ventanas o se mueven?
 pero en ese caso si van arriba del todo quizá tendrian siempre el foco y NO es lo que se espera...
 
+
+
+-Buscador opciones de menú que se construya solo a medida que se van abriendo? Y luego donde se guarda?
+O que se abran los menús de manera recursiva automático y genere el diccionario?
