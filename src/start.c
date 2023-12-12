@@ -6788,6 +6788,8 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
 
     init_zxdesktop_configurable_icons();
 
+    zxvision_index_menu_init();
+
     ay_player_playlist_init();
 
 	//estos dos se inicializan para que al hacer set_emulator_speed, que se ejecuta antes de init audio,

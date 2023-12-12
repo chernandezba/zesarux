@@ -19383,6 +19383,10 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 
 
 
+    //Para el indice de opciones de menu
+    zxvision_index_add_replace_menu(titulo);
+
+
 //printf ("despues menu_dibuja_ventana_ret_ancho_titulo\n");
 
 
@@ -26436,6 +26440,74 @@ void zxvision_helper_menu_shortcut_delete_last(void)
 void zxvision_helper_menu_shortcut_init(void)
 {
     strcpy(zxvision_helper_shorcuts_accumulated,shortcut_helper_initial_text);
+}
+
+index_menu *first_index_menu;
+
+//Inicializar el indice de menu
+void zxvision_index_menu_init(void)
+{
+    first_index_menu=NULL;
+}
+
+//Buscar indice de menu. NULL si no encontrado
+index_menu *zxvision_index_search_menu(char *nombre)
+{
+    index_menu *menu=first_index_menu;
+
+    while (menu!=NULL) {
+        if (!strcasecmp(nombre,menu->titulo_menu)) return menu;
+
+        menu=menu->next_menu;
+    }
+
+    return NULL;
+}
+
+//Agregar indice de menu
+index_menu *zxvision_index_add_menu(char *titulo_menu)
+{
+
+    //Ir hasta el ultimo
+    index_menu *antes=first_index_menu;
+
+    if (antes!=NULL) {
+
+        while (antes->next_menu!=NULL) {
+            antes=antes->next_menu;
+        }
+    }
+
+    //Asignar memoria
+    index_menu *nuevo_menu=util_malloc(sizeof(index_menu),"Can not allocate memory for index menu");
+
+    strcpy(nuevo_menu->titulo_menu,titulo_menu);
+
+    //primer item
+    if (antes==NULL) first_index_menu=nuevo_menu;
+    else antes->next_menu=nuevo_menu;
+
+
+
+    return NULL;
+}
+
+//Agregar o reemplazar indice de menu
+index_menu *zxvision_index_add_replace_menu(char *titulo_menu)
+{
+
+    //ver si ya existe
+    index_menu *menu=zxvision_index_search_menu(titulo_menu);
+
+    if (menu==NULL) {
+        printf("Menu %s no existe. Crear\n",titulo_menu);
+        return zxvision_index_add_menu(titulo_menu);
+    }
+    else {
+        //TODO: si reemplaza, borrar items de menu
+        printf("Menu %s ya existe. Reemplazar\n",titulo_menu);
+        return menu;
+    }
 }
 
 //Ajusta estilo del driver de video si este no es driver completo y el seleccionado necesita un driver completo

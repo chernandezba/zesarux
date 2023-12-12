@@ -941,15 +941,17 @@ struct s_menu_item {
 
 typedef struct s_menu_item menu_item;
 
+
+
 //Para el indice de opciones de menu. Cada item de un menu
-struct s_index_menu_item {
+struct s_index_menu_linea {
     char texto_opcion[MAX_TEXTO_OPCION];
 
     //siguiente item menu. NULL si no hay mas
-    struct s_index_menu_item *siguiente_item_menu;
+    struct s_index_menu_linea *next_item_menu;
 };
 
-typedef struct s_index_menu_item index_menu_item;
+typedef struct s_index_menu_linea index_menu_linea;
 
 //Para el indice de opciones de menu
 struct s_index_menu {
@@ -958,16 +960,18 @@ struct s_index_menu {
     char titulo_menu[MAX_TEXTO_OPCION*10];
 
     //Puntero a siguiente menu. NULL si no hay mas
-    struct s_index_menu *siguiente_menu;
+    struct s_index_menu *next_menu;
 
     //Puntero al primer item de menu
-    index_menu_item *primer_item_menu;
+    index_menu_linea *first_item_menu;
 
 
 };
 
 typedef struct s_index_menu index_menu;
 
+
+extern index_menu *zxvision_index_add_replace_menu(char *titulo_menu);
 
 
 extern int menu_ventana_scanf(char *titulo,char *texto,int max_length);
