@@ -941,6 +941,33 @@ struct s_menu_item {
 
 typedef struct s_menu_item menu_item;
 
+//Para el indice de opciones de menu. Cada item de un menu
+struct s_index_menu_item {
+    char texto_opcion[MAX_TEXTO_OPCION];
+
+    //siguiente item menu. NULL si no hay mas
+    struct s_index_menu_item *siguiente_item_menu;
+};
+
+typedef struct s_index_menu_item index_menu_item;
+
+//Para el indice de opciones de menu
+struct s_index_menu {
+    //Nombre menu : Que indique rama, por ejemplo: settings-> display settings
+    //Cabe hasta 10 veces (10 submenus) considerando como maximo texto titulo el maximo longitud de un item
+    char titulo_menu[MAX_TEXTO_OPCION*10];
+
+    //Puntero a siguiente menu. NULL si no hay mas
+    struct s_index_menu *siguiente_menu;
+
+    //Puntero al primer item de menu
+    index_menu_item *primer_item_menu;
+
+
+};
+
+typedef struct s_index_menu index_menu;
+
 
 
 extern int menu_ventana_scanf(char *titulo,char *texto,int max_length);
