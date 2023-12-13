@@ -19335,6 +19335,28 @@ void zxvision_index_delete_last_submenu_path(void)
 
 }
 
+//Obtener ultimo submenu del path entero
+void zxvision_index_get_last_submenu(char *destino)
+{
+    int indice=strlen(nombre_menu_con_submenu_para_indice);
+
+    //Buscar cadena "-> "
+
+    //hasta 2, porque miramos siempre tres caracteres hacia atras
+    for (;indice>=2;indice--) {
+        if (nombre_menu_con_submenu_para_indice[indice-1]==' ' && nombre_menu_con_submenu_para_indice[indice-2]=='>'
+
+        && nombre_menu_con_submenu_para_indice[indice-3]=='-')
+         {
+            strcpy(destino,&nombre_menu_con_submenu_para_indice[indice]);
+
+            return;
+        }
+    }
+
+    strcpy(destino,nombre_menu_con_submenu_para_indice);
+}
+
 int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item *m,char *titulo)
 {
 
@@ -19430,21 +19452,19 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
     printf("Menu previo [%s]\n",buf_index_submenu);
 
 
-    /*
+
     //Evitar que se agregue de nuevo el submenu, por ejemplo si entramos a storage->kartusho, y salimos de ahi,
     //la ruta que teniamos era menu->storage, y se agregaria storage de nuevo, por tanto menu->storage->storage
     //TODO: creo que este metodo puede dar lugar a error, pero bueno
-    char submenu_agregar[MAX_LENGTH_FULL_PATH_SUBMENU];
-    submenu_agregar[0]=0;
-    util_concat_string(submenu_agregar,buf_index_submenu,MAX_LENGTH_FULL_PATH_SUBMENU);
+    char last_submenu[MAX_LENGTH_FULL_PATH_SUBMENU];
+    zxvision_index_get_last_submenu(last_submenu);
+    printf("ultimo submenu en el path entero: [%s]. a comparar con: [%s]\n",last_submenu,titulo);
 
-    index_menu *menu_buscar=zxvision_index_search_menu(submenu_agregar);
+    //Si no es el mismo en el que estamos ahora
+    if (strcmp(last_submenu,titulo)) {
+        util_concat_string(nombre_menu_con_submenu_para_indice,buf_index_submenu,MAX_LENGTH_FULL_PATH_SUBMENU);
+    }
 
-
-    if (menu_buscar==NULL)
-    */
-
-    util_concat_string(nombre_menu_con_submenu_para_indice,buf_index_submenu,MAX_LENGTH_FULL_PATH_SUBMENU);
     printf("Menu [%s]\n",nombre_menu_con_submenu_para_indice);
     index_menu *indice_menu_actual=zxvision_index_add_replace_menu(nombre_menu_con_submenu_para_indice);
 
