@@ -39808,6 +39808,33 @@ void menu_principal_salir_emulador(MENU_ITEM_PARAMETERS)
 	menu_exit_emulator(0);
 }
 
+char menu_search_campo_busqueda[MAX_TEXTO_OPCION]="";
+
+void menu_search(MENU_ITEM_PARAMETERS)
+{
+    menu_ventana_scanf("Query",menu_search_campo_busqueda,MAX_TEXTO_OPCION);
+
+    //Buscar en todos los indices
+
+    index_menu *menu=first_index_menu;
+
+    while (menu!=NULL) {
+        //Y ahora buscar en cada linea de menu
+        index_menu_linea *linea_menu=menu->first_item_menu;
+
+        while (linea_menu!=NULL) {
+            char *encontrado=util_strcasestr(linea_menu->texto_opcion,menu_search_campo_busqueda);
+            if (encontrado!=NULL) {
+                printf("Encontrado texto [%s] en linea [%s] de menu [%s]\n",
+                    menu_search_campo_busqueda,linea_menu->texto_opcion,menu->titulo_menu);
+            }
+
+            linea_menu=linea_menu->next_item_menu;
+        }
+
+        menu=menu->next_menu;
+    }
+}
 
 void menu_inicio_bucle_main(void)
 {
@@ -39977,6 +40004,12 @@ void menu_inicio_bucle_main(void)
             menu_add_item_menu_tooltip(array_menu_principal,"General Settings");
             menu_add_item_menu_ayuda(array_menu_principal,"General Settings");
             menu_add_item_menu_tiene_submenu(array_menu_principal);
+
+            menu_add_item_menu_en_es_ca(array_menu_principal,MENU_OPCION_NORMAL,menu_search,NULL,
+                "Sea~~rch","Busca~~r","Busca~~r");
+            menu_add_item_menu_shortcut(array_menu_principal,'r');
+            menu_add_item_menu_tooltip(array_menu_principal,"Search menu");
+            menu_add_item_menu_ayuda(array_menu_principal,"Search menu");
 
             menu_add_item_menu_en_es_ca(array_menu_principal,MENU_OPCION_NORMAL,menu_toys,NULL,
                 "~~Procrastinate","~~Procrastinar","~~Procrastinar");

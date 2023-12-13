@@ -971,6 +971,7 @@ struct s_index_menu {
 typedef struct s_index_menu index_menu;
 
 
+extern index_menu *first_index_menu;
 extern index_menu *zxvision_index_add_replace_menu(char *titulo_menu);
 extern void zxvision_index_add_menu_linea(index_menu *indice_menu,char *nombre_linea);
 
