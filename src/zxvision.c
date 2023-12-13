@@ -19304,6 +19304,28 @@ z80_int menu_mouse_frame_counter_anterior=0;
 
 char nombre_menu_con_submenu_para_indice[MAX_LENGTH_FULL_PATH_SUBMENU]="";
 
+void zxvision_index_search_init_menu_path(void)
+{
+    nombre_menu_con_submenu_para_indice[0]=0;
+}
+
+//Borra, de la cadena nombre_menu_con_submenu_para_indice, el ultimo texto de submenu, pues hemos ido hacia atras
+void zxvision_index_delete_last_submenu_path(void)
+{
+    int indice=strlen(nombre_menu_con_submenu_para_indice);
+
+    //Buscar cadena "->"
+
+    //hasta 1, porque miramos siempre dos caracteres hacia atras
+    for (;indice>=1;indice--) {
+        if (nombre_menu_con_submenu_para_indice[indice]=='>' && nombre_menu_con_submenu_para_indice[indice-1]=='-') {
+            nombre_menu_con_submenu_para_indice[indice-1]=0;
+            return;
+        }
+    }
+
+}
+
 int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item *m,char *titulo)
 {
 
@@ -20181,6 +20203,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
     //Parecido a ESC, pero no cerramos todos menus
     if (salir_con_flecha_izquierda) {
         zxvision_helper_menu_shortcut_delete_last();
+        zxvision_index_delete_last_submenu_path();
         return MENU_RETORNO_ESC;
     }
 
@@ -20208,6 +20231,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
         else {
             //Comportamiento antiguo. ESC nos lleva hacia atras
             zxvision_helper_menu_shortcut_delete_last();
+            zxvision_index_delete_last_submenu_path();
             ya_borrado_helper_atras=1;
 
             //no indicar helper
@@ -20227,7 +20251,10 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
         else {
             //Aqui podria suceder que pulsamos ESC en la propia opcion de ESC
             //Solo borrar en total una letra
-           if (!ya_borrado_helper_atras) zxvision_helper_menu_shortcut_delete_last();
+           if (!ya_borrado_helper_atras) {
+            zxvision_helper_menu_shortcut_delete_last();
+            zxvision_index_delete_last_submenu_path();
+           }
         }
 
         return MENU_RETORNO_ESC;
