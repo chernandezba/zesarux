@@ -953,11 +953,14 @@ struct s_index_menu_linea {
 
 typedef struct s_index_menu_linea index_menu_linea;
 
+//Que indique rama, por ejemplo: settings-> display settings
+#define MAX_LENGTH_FULL_PATH_SUBMENU ((MAX_TEXTO_OPCION*10)+10*3)
+
 //Para el indice de opciones de menu
 struct s_index_menu {
     //Nombre menu : Que indique rama, por ejemplo: settings-> display settings
     //Cabe hasta 10 veces (10 submenus) considerando como maximo texto titulo el maximo longitud de un item
-    char titulo_menu[MAX_TEXTO_OPCION*10];
+    char titulo_menu[MAX_LENGTH_FULL_PATH_SUBMENU];
 
     //Puntero a siguiente menu. NULL si no hay mas
     struct s_index_menu *next_menu;

@@ -19302,6 +19302,7 @@ z80_int menu_mouse_frame_counter_anterior=0;
 //asigna en item_seleccionado valores de: tipo_opcion, menu_funcion (debe ser una estructura ya asignada)
 
 
+char nombre_menu_con_submenu_para_indice[MAX_LENGTH_FULL_PATH_SUBMENU]="";
 
 int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item *m,char *titulo)
 {
@@ -19384,7 +19385,16 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 
 
     //Para el indice de opciones de menu
-    index_menu *indice_menu_actual=zxvision_index_add_replace_menu(titulo);
+    char buf_index_submenu[MAX_LENGTH_FULL_PATH_SUBMENU];
+
+    if (nombre_menu_con_submenu_para_indice[0]==0) sprintf(buf_index_submenu,"%s",titulo);
+    else sprintf(buf_index_submenu,"-> %s",titulo);
+
+    printf("Menu previo [%s]\n",buf_index_submenu);
+
+    util_concat_string(nombre_menu_con_submenu_para_indice,buf_index_submenu,MAX_LENGTH_FULL_PATH_SUBMENU);
+    printf("Menu [%s]\n",nombre_menu_con_submenu_para_indice);
+    index_menu *indice_menu_actual=zxvision_index_add_replace_menu(nombre_menu_con_submenu_para_indice);
 
 
 //printf ("despues menu_dibuja_ventana_ret_ancho_titulo\n");
