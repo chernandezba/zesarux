@@ -19384,7 +19384,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 
 
     //Para el indice de opciones de menu
-    zxvision_index_add_replace_menu(titulo);
+    index_menu *indice_menu_actual=zxvision_index_add_replace_menu(titulo);
 
 
 //printf ("despues menu_dibuja_ventana_ret_ancho_titulo\n");
@@ -19401,6 +19401,9 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 		    if (ancho_calculado>ancho) ancho=ancho_calculado;
 		    //printf ("%s\n",aux->texto);
             max_opciones++;
+
+            //Para el indice de opciones de menu
+            zxvision_index_add_menu_linea(indice_menu_actual,menu_retorna_item_language(aux));
 
         }
 
@@ -26481,15 +26484,53 @@ index_menu *zxvision_index_add_menu(char *titulo_menu)
     //Asignar memoria
     index_menu *nuevo_menu=util_malloc(sizeof(index_menu),"Can not allocate memory for index menu");
 
+    //Asignar titulo
     strcpy(nuevo_menu->titulo_menu,titulo_menu);
 
-    //primer item
+    //Siguiente menu a NULL
+    nuevo_menu->next_menu=NULL;
+
+    //Primer item de ese menu a null tambien
+    nuevo_menu->first_item_menu=NULL;
+
+    //Y decirle al menu anterior que el siguiente es este (o si no hay, este es el primero)
     if (antes==NULL) first_index_menu=nuevo_menu;
     else antes->next_menu=nuevo_menu;
 
+    return nuevo_menu;
+}
+
+//Agregar una linea de menu a un indice de menu existente
+void zxvision_index_add_menu_linea(index_menu *indice_menu,char *nombre_linea)
+{
+
+    printf("Agregando linea %s a menu %s\n",nombre_linea,indice_menu->titulo_menu);
 
 
-    return NULL;
+    //Ir hasta la ultima linea
+    index_menu_linea *antes=indice_menu->first_item_menu;
+
+    if (antes!=NULL) {
+
+        while (antes->next_item_menu!=NULL) {
+            antes=antes->next_item_menu;
+        }
+    }
+
+    index_menu_linea *nueva_linea=util_malloc(sizeof(index_menu_linea),"Can not allocate memory for index menu line");
+
+    //Asignar texto linea
+    strcpy(nueva_linea->texto_opcion,nombre_linea);
+
+
+
+    //Siguiente linea a null
+    nueva_linea->next_item_menu=NULL;
+
+    //Y decirle a la linea anterior que el siguiente es este (o si no hay, este es el primero)
+    if (antes==NULL) indice_menu->first_item_menu=nueva_linea;
+    else antes->next_item_menu=nueva_linea;
+
 }
 
 //Agregar o reemplazar indice de menu
