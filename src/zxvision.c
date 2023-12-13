@@ -19326,9 +19326,12 @@ void zxvision_index_delete_last_submenu_path(void)
     for (;indice>=1;indice--) {
         if (nombre_menu_con_submenu_para_indice[indice]=='>' && nombre_menu_con_submenu_para_indice[indice-1]=='-') {
             nombre_menu_con_submenu_para_indice[indice-1]=0;
+            printf("Borrar ultimo indice path. Resultante: [%s]\n",nombre_menu_con_submenu_para_indice);
             return;
         }
     }
+
+    printf("Borrar ultimo indice path. No encontrada flecha\n");
 
 }
 
@@ -19425,6 +19428,21 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
     else sprintf(buf_index_submenu,"-> %s",titulo_menu_final);
 
     printf("Menu previo [%s]\n",buf_index_submenu);
+
+
+    /*
+    //Evitar que se agregue de nuevo el submenu, por ejemplo si entramos a storage->kartusho, y salimos de ahi,
+    //la ruta que teniamos era menu->storage, y se agregaria storage de nuevo, por tanto menu->storage->storage
+    //TODO: creo que este metodo puede dar lugar a error, pero bueno
+    char submenu_agregar[MAX_LENGTH_FULL_PATH_SUBMENU];
+    submenu_agregar[0]=0;
+    util_concat_string(submenu_agregar,buf_index_submenu,MAX_LENGTH_FULL_PATH_SUBMENU);
+
+    index_menu *menu_buscar=zxvision_index_search_menu(submenu_agregar);
+
+
+    if (menu_buscar==NULL)
+    */
 
     util_concat_string(nombre_menu_con_submenu_para_indice,buf_index_submenu,MAX_LENGTH_FULL_PATH_SUBMENU);
     printf("Menu [%s]\n",nombre_menu_con_submenu_para_indice);
@@ -26556,7 +26574,7 @@ index_menu *zxvision_index_add_menu(char *titulo_menu)
 void zxvision_index_add_menu_linea(index_menu *indice_menu,char *nombre_linea)
 {
 
-    printf("Agregando linea %s a menu %s\n",nombre_linea,indice_menu->titulo_menu);
+    //printf("Agregando linea %s a menu %s\n",nombre_linea,indice_menu->titulo_menu);
 
 
     //Ir hasta la ultima linea
@@ -26588,7 +26606,7 @@ void zxvision_index_add_menu_linea(index_menu *indice_menu,char *nombre_linea)
     //Asignar texto linea
     strcpy(nueva_linea->texto_opcion,texto_opcion);
 
-    printf("Agregando linea despues procesado %s a menu %s\n",texto_opcion,indice_menu->titulo_menu);
+    //printf("Agregando linea despues procesado %s a menu %s\n",texto_opcion,indice_menu->titulo_menu);
 
     //Siguiente linea a null
     nueva_linea->next_item_menu=NULL;

@@ -785,5 +785,6 @@ pero en ese caso si van arriba del todo quizá tendrian siempre el foco y NO es 
 
 
 
--Buscador opciones de menú que se construya solo a medida que se van abriendo? Y luego donde se guarda?
-O que se abran los menús de manera recursiva automático y genere el diccionario?
+-Buscador opciones de menú
+--que guarde diccionario en disco
+--que sea capaz de evitar si hay una ruta de submenu muy grande que no exceda limite de array
