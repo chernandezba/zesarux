@@ -39814,6 +39814,11 @@ void menu_search(MENU_ITEM_PARAMETERS)
 {
     menu_ventana_scanf("Query",menu_search_campo_busqueda,MAX_TEXTO_OPCION);
 
+    if (menu_search_campo_busqueda[0]==0) {
+        menu_error_message("Write at least one character");
+        return;
+    }
+
     char *text_buffer=util_malloc_max_texto_generic_message("Can not allocate memory for search");
     //Empezar con cadena vacia para poder concatenar
     text_buffer[0]=0;
@@ -39835,7 +39840,7 @@ void menu_search(MENU_ITEM_PARAMETERS)
                 //Tiene que caber nombre menu (con ->) y nombre linea
                 char buf_linea[MAX_TEXTO_OPCION*10+MAX_TEXTO_OPCION+30];
 
-                sprintf(buf_linea,"[%s] on menu [%s]\n\n",linea_menu->texto_opcion,menu->titulo_menu);
+                sprintf(buf_linea,"{%s} on menu:\n{%s}\n\n",linea_menu->texto_opcion,menu->titulo_menu);
 
                 util_concat_string(text_buffer,buf_linea,MAX_TEXTO_GENERIC_MESSAGE);
             }
