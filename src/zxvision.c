@@ -26533,6 +26533,22 @@ void zxvision_index_add_menu_linea(index_menu *indice_menu,char *nombre_linea)
 
 }
 
+//Quitar todas las lineas de menu de un menu
+void zxvision_index_erase_all_menu_lines(index_menu *menu)
+{
+    index_menu_linea *linea_menu=menu->first_item_menu;
+
+    while (linea_menu!=NULL) {
+        //Guardarlo antes de liberar memoria
+        index_menu_linea *siguiente_linea=linea_menu->next_item_menu;
+        free(linea_menu);
+
+        linea_menu=siguiente_linea;
+    }
+
+    menu->first_item_menu=NULL;
+}
+
 //Agregar o reemplazar indice de menu
 index_menu *zxvision_index_add_replace_menu(char *titulo_menu)
 {
@@ -26545,7 +26561,8 @@ index_menu *zxvision_index_add_replace_menu(char *titulo_menu)
         return zxvision_index_add_menu(titulo_menu);
     }
     else {
-        //TODO: si reemplaza, borrar items de menu
+        //reemplaza, borrar items de menu
+        zxvision_index_erase_all_menu_lines(menu);
         printf("Menu %s ya existe. Reemplazar\n",titulo_menu);
         return menu;
     }
