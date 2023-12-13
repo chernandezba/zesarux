@@ -11,6 +11,7 @@ Added QNX GUI Style
 Added menu function to sync local snapshot to remote (only needs ZRCP enabled on remote)-> REESCRIBIR ESTE TEXTO!!
 Added ZRCP commands: open-menu, print-error
 Added setting to force CHR$ 128 mode on ZX81
+Added search function to search menu entries
 
 * Improvements:
 

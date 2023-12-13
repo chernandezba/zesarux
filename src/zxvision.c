@@ -26556,10 +26556,24 @@ void zxvision_index_add_menu_linea(index_menu *indice_menu,char *nombre_linea)
 
     index_menu_linea *nueva_linea=util_malloc(sizeof(index_menu_linea),"Can not allocate memory for index menu line");
 
+    //Quitar de la linea caracteres hotkey ~~
+    char texto_opcion[MAX_TEXTO_OPCION];
+    int origen=0;
+    int destino=0;
+
+    for (;nombre_linea[origen];origen++,destino++) {
+        //Saltar dos ~~ seguidos
+        if (nombre_linea[origen]=='~' && nombre_linea[origen+1]=='~') origen+=2;
+
+        texto_opcion[destino]=nombre_linea[origen];
+    }
+
+    texto_opcion[destino]=0;
+
     //Asignar texto linea
-    strcpy(nueva_linea->texto_opcion,nombre_linea);
+    strcpy(nueva_linea->texto_opcion,texto_opcion);
 
-
+    printf("Agregando linea despues procesad %s a menu %s\n",texto_opcion,indice_menu->titulo_menu);
 
     //Siguiente linea a null
     nueva_linea->next_item_menu=NULL;
