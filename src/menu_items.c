@@ -39846,6 +39846,8 @@ void menu_search(MENU_ITEM_PARAMETERS)
         menu=menu->next_menu;
     }
 
+    if (text_buffer[0]==0) strcpy(text_buffer,"(Nothing)");
+
     menu_generic_message("Search results",text_buffer);
 
     free(text_buffer);

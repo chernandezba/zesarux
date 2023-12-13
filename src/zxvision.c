@@ -19309,6 +19309,12 @@ void zxvision_index_search_init_menu_path(void)
     nombre_menu_con_submenu_para_indice[0]=0;
 }
 
+void zxvision_index_search_init_menu_path_main_menu(void)
+{
+    //Para botones directos a submenus
+    strcpy(nombre_menu_con_submenu_para_indice,"Main menu");
+}
+
 //Borra, de la cadena nombre_menu_con_submenu_para_indice, el ultimo texto de submenu, pues hemos ido hacia atras
 void zxvision_index_delete_last_submenu_path(void)
 {
@@ -19409,8 +19415,14 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
     //Para el indice de opciones de menu
     char buf_index_submenu[MAX_LENGTH_FULL_PATH_SUBMENU];
 
-    if (nombre_menu_con_submenu_para_indice[0]==0) sprintf(buf_index_submenu,"%s",titulo);
-    else sprintf(buf_index_submenu,"-> %s",titulo);
+    char titulo_menu_final[MAX_LENGTH_FULL_PATH_SUBMENU];
+
+    //Si es menu principal, poner "Main Menu"
+    if (!strcmp("ZEsarUX v." EMULATOR_VERSION,titulo)) strcpy(titulo_menu_final,"Main Menu");
+    else strcpy(titulo_menu_final,titulo);
+
+    if (nombre_menu_con_submenu_para_indice[0]==0) sprintf(buf_index_submenu,"%s",titulo_menu_final);
+    else sprintf(buf_index_submenu,"-> %s",titulo_menu_final);
 
     printf("Menu previo [%s]\n",buf_index_submenu);
 
@@ -23809,6 +23821,9 @@ void menu_inicio_handle_button_presses(void)
 
         if (menu_inicio_handle_button_presses_userdef(pulsado_boton)==0) {
 
+            //Inicializar indice search, indicar ruta vacia
+            zxvision_index_search_init_menu_path_main_menu();
+
             switch (pulsado_boton) {
                 case 0:
                     //Nada. Solo abrir el menu
@@ -26573,7 +26588,7 @@ void zxvision_index_add_menu_linea(index_menu *indice_menu,char *nombre_linea)
     //Asignar texto linea
     strcpy(nueva_linea->texto_opcion,texto_opcion);
 
-    printf("Agregando linea despues procesad %s a menu %s\n",texto_opcion,indice_menu->titulo_menu);
+    printf("Agregando linea despues procesado %s a menu %s\n",texto_opcion,indice_menu->titulo_menu);
 
     //Siguiente linea a null
     nueva_linea->next_item_menu=NULL;
