@@ -6789,6 +6789,7 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
     init_zxdesktop_configurable_icons();
 
     zxvision_index_menu_init();
+    zxvision_index_load_from_disk();
 
     ay_player_playlist_init();
 

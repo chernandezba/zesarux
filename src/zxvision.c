@@ -26750,6 +26750,50 @@ void zxvision_index_save_to_disk(void)
 
 }
 
+int zxvision_index_load_from_disk_read_line(z80_byte *origen,z80_byte *destino)
+{
+
+    int leidos=0;
+
+    while (*origen!='\n') {
+        *destino=*origen;
+
+        destino++;
+        origen++;
+        leidos++;
+    }
+
+    *destino=0;
+    return leidos+1; //agregar el salto linea como leido
+}
+
+void zxvision_index_load_from_disk(void)
+{
+    if (!si_existe_archivo(ZESARUX_INDEX_MENU_FILE)) return;
+
+    long long int longitud=get_file_size(ZESARUX_INDEX_MENU_FILE);
+
+    z80_byte *buffer_index=util_malloc(longitud,"Can not allocate memory to read index search file");
+
+    int total_leidos=util_load_file_bytes(buffer_index,ZESARUX_INDEX_MENU_FILE,longitud);
+
+    if (!total_leidos) return;
+
+    z80_byte *puntero=buffer_index;
+
+    while (total_leidos) {
+        //leer titulo menu
+        char titulo_menu[MAX_LENGTH_FULL_PATH_SUBMENU];
+        int leidos=zxvision_index_load_from_disk_read_line(puntero,titulo_menu);
+        printf("Titulo: %s\n",titulo_menu);
+
+        total_leidos-=leidos;
+        puntero +=leidos;
+    }
+
+    free(buffer_index);
+}
+
 //Ajusta estilo del driver de video si este no es driver completo y el seleccionado necesita un driver completo
 void menu_adjust_gui_style_to_driver(void)
 {

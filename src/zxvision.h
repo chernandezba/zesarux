@@ -985,6 +985,7 @@ extern index_menu *zxvision_index_entrada_menu(char *titulo);
 extern void zxvision_index_search_init_menu_path(void);
 extern void zxvision_index_menu_init(void);
 extern void zxvision_index_save_to_disk(void);
+extern void zxvision_index_load_from_disk(void);
 
 
 extern int menu_ventana_scanf(char *titulo,char *texto,int max_length);
