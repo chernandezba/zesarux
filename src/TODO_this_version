@@ -786,7 +786,7 @@ pero en ese caso si van arriba del todo quizá tendrian siempre el foco y NO es 
 
 
 -Buscador opciones de menú
---que guarde diccionario en disco
+ok --que guarde diccionario en disco
 --que sea capaz de evitar si hay una ruta de submenu muy grande que no exceda limite de array
 ok --solventar     //Evitar que se agregue de nuevo el submenu, por ejemplo si entramos a storage->kartusho, y salimos de ahi,
     //la ruta que teniamos era menu->storage, y se agregaria storage de nuevo, por tanto menu->storage->storage
