@@ -26511,6 +26511,15 @@ index_menu *zxvision_index_add_menu(char *titulo_menu)
 void zxvision_index_add_menu_linea(index_menu *indice_menu,char *nombre_linea)
 {
 
+    //Si linea en blanco, no hacer nada
+    if (nombre_linea[0]==0) return;
+
+    if (nombre_linea[0]==' ' && nombre_linea[1]==0) return;
+
+    //printf("%02X %02X %02X\n",nombre_linea[0],nombre_linea[1],nombre_linea[2]);
+
+    //if (nombre_linea[0]=='\n' && nombre_linea[1]==0) return;
+
     //printf("Agregando linea %s a menu %s\n",nombre_linea,indice_menu->titulo_menu);
 
 
@@ -26573,6 +26582,9 @@ void zxvision_index_erase_all_menu_lines(index_menu *menu)
 //Agregar o reemplazar indice de menu
 index_menu *zxvision_index_add_replace_menu(char *titulo_menu)
 {
+
+    //Si menu en blanco, no hacer nada. Esto no deberia suceder, pero por si acaso
+    //if (titulo_menu[0]==0) return;
 
     //ver si ya existe
     index_menu *menu=zxvision_index_search_menu(titulo_menu);
@@ -26679,6 +26691,63 @@ index_menu *zxvision_index_entrada_menu(char *titulo)
     index_menu *indice_menu_actual=zxvision_index_add_replace_menu(nombre_menu_con_submenu_para_indice);
 
     return indice_menu_actual;
+}
+
+void zxvision_index_save_to_disk(void)
+{
+    FILE *ptr_configfile;
+
+    ptr_configfile=fopen(ZESARUX_INDEX_MENU_FILE,"w+");
+    if (!ptr_configfile) {
+        debug_printf(VERBOSE_DEBUG,"Cannot write index menu file %s",ZESARUX_INDEX_MENU_FILE);
+        return;
+    }
+
+    //fwrite(config_settings, 1, strlen(config_settings), ptr_configfile);
+
+    index_menu *menu=first_index_menu;
+
+    /*
+    Formato:
+
+    Menu1
+    linea menu1
+    linea menu2
+    linea menu3
+    (linea en blanco)
+    Menu2
+    linea menu1
+    linea menu2
+    (linea en blanco)
+    Menu3
+    linea menu1
+    linea menu2
+    (linea en blanco)
+    _EOF
+    */
+
+    while (menu!=NULL) {
+        //Y ahora buscar en cada linea de menu
+        index_menu_linea *linea_menu=menu->first_item_menu;
+
+        fwrite(menu->titulo_menu, 1, strlen(menu->titulo_menu), ptr_configfile);
+        fwrite("\n", 1, 1, ptr_configfile);
+
+        while (linea_menu!=NULL) {
+            fwrite(linea_menu->texto_opcion, 1, strlen(linea_menu->texto_opcion), ptr_configfile);
+            fwrite("\n", 1, 1, ptr_configfile);
+
+            linea_menu=linea_menu->next_item_menu;
+        }
+
+
+        fwrite("\n", 1, 1, ptr_configfile);
+        menu=menu->next_menu;
+    }
+
+
+    fclose(ptr_configfile);
+
 }
 
 //Ajusta estilo del driver de video si este no es driver completo y el seleccionado necesita un driver completo

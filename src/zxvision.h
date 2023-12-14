@@ -973,6 +973,7 @@ struct s_index_menu {
 
 typedef struct s_index_menu index_menu;
 
+#define ZESARUX_INDEX_MENU_FILE "zesarux_index_menu.txt"
 
 extern index_menu *first_index_menu;
 extern index_menu *zxvision_index_add_replace_menu(char *titulo_menu);
@@ -983,6 +984,7 @@ extern void zxvision_index_delete_last_submenu_path(void);
 extern index_menu *zxvision_index_entrada_menu(char *titulo);
 extern void zxvision_index_search_init_menu_path(void);
 extern void zxvision_index_menu_init(void);
+extern void zxvision_index_save_to_disk(void);
 
 
 extern int menu_ventana_scanf(char *titulo,char *texto,int max_length);
