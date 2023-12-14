@@ -19302,60 +19302,6 @@ z80_int menu_mouse_frame_counter_anterior=0;
 //asigna en item_seleccionado valores de: tipo_opcion, menu_funcion (debe ser una estructura ya asignada)
 
 
-char nombre_menu_con_submenu_para_indice[MAX_LENGTH_FULL_PATH_SUBMENU]="";
-
-void zxvision_index_search_init_menu_path(void)
-{
-    nombre_menu_con_submenu_para_indice[0]=0;
-}
-
-void zxvision_index_search_init_menu_path_main_menu(void)
-{
-    //Para botones directos a submenus
-    strcpy(nombre_menu_con_submenu_para_indice,"Main menu");
-}
-
-//Borra, de la cadena nombre_menu_con_submenu_para_indice, el ultimo texto de submenu, pues hemos ido hacia atras
-void zxvision_index_delete_last_submenu_path(void)
-{
-    int indice=strlen(nombre_menu_con_submenu_para_indice);
-
-    //Buscar cadena "->"
-
-    //hasta 1, porque miramos siempre dos caracteres hacia atras
-    for (;indice>=1;indice--) {
-        if (nombre_menu_con_submenu_para_indice[indice]=='>' && nombre_menu_con_submenu_para_indice[indice-1]=='-') {
-            nombre_menu_con_submenu_para_indice[indice-1]=0;
-            printf("Borrar ultimo indice path. Resultante: [%s]\n",nombre_menu_con_submenu_para_indice);
-            return;
-        }
-    }
-
-    printf("Borrar ultimo indice path. No encontrada flecha\n");
-
-}
-
-//Obtener ultimo submenu del path entero
-void zxvision_index_get_last_submenu(char *destino)
-{
-    int indice=strlen(nombre_menu_con_submenu_para_indice);
-
-    //Buscar cadena "-> "
-
-    //hasta 2, porque miramos siempre tres caracteres hacia atras
-    for (;indice>=2;indice--) {
-        if (nombre_menu_con_submenu_para_indice[indice-1]==' ' && nombre_menu_con_submenu_para_indice[indice-2]=='>'
-
-        && nombre_menu_con_submenu_para_indice[indice-3]=='-')
-         {
-            strcpy(destino,&nombre_menu_con_submenu_para_indice[indice]);
-
-            return;
-        }
-    }
-
-    strcpy(destino,nombre_menu_con_submenu_para_indice);
-}
 
 int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item *m,char *titulo)
 {
@@ -19435,38 +19381,9 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 
 	ancho=menu_dibuja_ventana_ret_ancho_titulo(ZXVISION_MAX_ANCHO_VENTANA,titulo);
 
+    index_menu *indice_menu_actual=zxvision_index_entrada_menu(titulo);
 
 
-    //Para el indice de opciones de menu
-    char buf_index_submenu[MAX_LENGTH_FULL_PATH_SUBMENU];
-
-    char titulo_menu_final[MAX_LENGTH_FULL_PATH_SUBMENU];
-
-    //Si es menu principal, poner "Main Menu"
-    if (!strcmp("ZEsarUX v." EMULATOR_VERSION,titulo)) strcpy(titulo_menu_final,"Main Menu");
-    else strcpy(titulo_menu_final,titulo);
-
-    if (nombre_menu_con_submenu_para_indice[0]==0) sprintf(buf_index_submenu,"%s",titulo_menu_final);
-    else sprintf(buf_index_submenu,"-> %s",titulo_menu_final);
-
-    printf("Menu previo [%s]\n",buf_index_submenu);
-
-
-
-    //Evitar que se agregue de nuevo el submenu, por ejemplo si entramos a storage->kartusho, y salimos de ahi,
-    //la ruta que teniamos era menu->storage, y se agregaria storage de nuevo, por tanto menu->storage->storage
-    //TODO: creo que este metodo puede dar lugar a error, pero bueno
-    char last_submenu[MAX_LENGTH_FULL_PATH_SUBMENU];
-    zxvision_index_get_last_submenu(last_submenu);
-    printf("ultimo submenu en el path entero: [%s]. a comparar con: [%s]\n",last_submenu,titulo);
-
-    //Si no es el mismo en el que estamos ahora
-    if (strcmp(last_submenu,titulo)) {
-        util_concat_string(nombre_menu_con_submenu_para_indice,buf_index_submenu,MAX_LENGTH_FULL_PATH_SUBMENU);
-    }
-
-    printf("Menu [%s]\n",nombre_menu_con_submenu_para_indice);
-    index_menu *indice_menu_actual=zxvision_index_add_replace_menu(nombre_menu_con_submenu_para_indice);
 
 
 //printf ("despues menu_dibuja_ventana_ret_ancho_titulo\n");
@@ -26670,6 +26587,98 @@ index_menu *zxvision_index_add_replace_menu(char *titulo_menu)
         printf("Menu %s ya existe. Reemplazar\n",titulo_menu);
         return menu;
     }
+}
+
+
+char nombre_menu_con_submenu_para_indice[MAX_LENGTH_FULL_PATH_SUBMENU]="";
+
+void zxvision_index_search_init_menu_path(void)
+{
+    nombre_menu_con_submenu_para_indice[0]=0;
+}
+
+void zxvision_index_search_init_menu_path_main_menu(void)
+{
+    //Para botones directos a submenus
+    strcpy(nombre_menu_con_submenu_para_indice,"Main menu");
+}
+
+//Borra, de la cadena nombre_menu_con_submenu_para_indice, el ultimo texto de submenu, pues hemos ido hacia atras
+void zxvision_index_delete_last_submenu_path(void)
+{
+    int indice=strlen(nombre_menu_con_submenu_para_indice);
+
+    //Buscar cadena "->"
+
+    //hasta 1, porque miramos siempre dos caracteres hacia atras
+    for (;indice>=1;indice--) {
+        if (nombre_menu_con_submenu_para_indice[indice]=='>' && nombre_menu_con_submenu_para_indice[indice-1]=='-') {
+            nombre_menu_con_submenu_para_indice[indice-1]=0;
+            printf("Borrar ultimo indice path. Resultante: [%s]\n",nombre_menu_con_submenu_para_indice);
+            return;
+        }
+    }
+
+    printf("Borrar ultimo indice path. No encontrada flecha\n");
+
+}
+
+//Obtener ultimo submenu del path entero
+void zxvision_index_get_last_submenu(char *destino)
+{
+    int indice=strlen(nombre_menu_con_submenu_para_indice);
+
+    //Buscar cadena "-> "
+
+    //hasta 2, porque miramos siempre tres caracteres hacia atras
+    for (;indice>=2;indice--) {
+        if (nombre_menu_con_submenu_para_indice[indice-1]==' ' && nombre_menu_con_submenu_para_indice[indice-2]=='>'
+
+        && nombre_menu_con_submenu_para_indice[indice-3]=='-')
+         {
+            strcpy(destino,&nombre_menu_con_submenu_para_indice[indice]);
+
+            return;
+        }
+    }
+
+    strcpy(destino,nombre_menu_con_submenu_para_indice);
+}
+
+index_menu *zxvision_index_entrada_menu(char *titulo)
+{
+    //Para el indice de opciones de menu
+    char buf_index_submenu[MAX_LENGTH_FULL_PATH_SUBMENU];
+
+    char titulo_menu_final[MAX_LENGTH_FULL_PATH_SUBMENU];
+
+    //Si es menu principal, poner "Main Menu"
+    if (!strcmp("ZEsarUX v." EMULATOR_VERSION,titulo)) strcpy(titulo_menu_final,"Main Menu");
+    else strcpy(titulo_menu_final,titulo);
+
+    if (nombre_menu_con_submenu_para_indice[0]==0) sprintf(buf_index_submenu,"%s",titulo_menu_final);
+    else sprintf(buf_index_submenu,"-> %s",titulo_menu_final);
+
+    printf("Menu previo [%s]\n",buf_index_submenu);
+
+
+
+    //Evitar que se agregue de nuevo el submenu, por ejemplo si entramos a storage->kartusho, y salimos de ahi,
+    //la ruta que teniamos era menu->storage, y se agregaria storage de nuevo, por tanto menu->storage->storage
+    //TODO: creo que este metodo puede dar lugar a error, pero bueno
+    char last_submenu[MAX_LENGTH_FULL_PATH_SUBMENU];
+    zxvision_index_get_last_submenu(last_submenu);
+    printf("ultimo submenu en el path entero: [%s]. a comparar con: [%s]\n",last_submenu,titulo);
+
+    //Si no es el mismo en el que estamos ahora
+    if (strcmp(last_submenu,titulo)) {
+        util_concat_string(nombre_menu_con_submenu_para_indice,buf_index_submenu,MAX_LENGTH_FULL_PATH_SUBMENU);
+    }
+
+    printf("Menu [%s]\n",nombre_menu_con_submenu_para_indice);
+    index_menu *indice_menu_actual=zxvision_index_add_replace_menu(nombre_menu_con_submenu_para_indice);
+
+    return indice_menu_actual;
 }
 
 //Ajusta estilo del driver de video si este no es driver completo y el seleccionado necesita un driver completo

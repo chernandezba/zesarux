@@ -978,6 +978,11 @@ extern index_menu *first_index_menu;
 extern index_menu *zxvision_index_add_replace_menu(char *titulo_menu);
 extern void zxvision_index_add_menu_linea(index_menu *indice_menu,char *nombre_linea);
 extern index_menu *zxvision_index_search_menu(char *nombre);
+extern void zxvision_index_search_init_menu_path_main_menu(void);
+extern void zxvision_index_delete_last_submenu_path(void);
+extern index_menu *zxvision_index_entrada_menu(char *titulo);
+extern void zxvision_index_search_init_menu_path(void);
+extern void zxvision_index_menu_init(void);
 
 
 extern int menu_ventana_scanf(char *titulo,char *texto,int max_length);
