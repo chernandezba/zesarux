@@ -26773,6 +26773,9 @@ void zxvision_index_load_from_disk(void)
 
     long long int longitud=get_file_size(ZESARUX_INDEX_MENU_FILE);
 
+    //Si longitud 0 (cosa extraña) volver sin mas
+    if (!longitud) return;
+
     z80_byte *buffer_index=util_malloc(longitud,"Can not allocate memory to read index search file");
 
     int total_leidos=util_load_file_bytes(buffer_index,ZESARUX_INDEX_MENU_FILE,longitud);

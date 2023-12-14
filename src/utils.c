@@ -14780,7 +14780,7 @@ int util_load_file_bytes(z80_byte *taperead,char *filename,int total_leer)
 
 
 	if (leidos==0) {
-        debug_printf(VERBOSE_ERR,"Error reading tape");
+        debug_printf(VERBOSE_ERR,"Error reading data");
         return 0;
     }
 

@@ -790,3 +790,7 @@ ok --que guarde diccionario en disco
 --que sea capaz de evitar si hay una ruta de submenu muy grande que no exceda limite de array
 ok --solventar     //Evitar que se agregue de nuevo el submenu, por ejemplo si entramos a storage->kartusho, y salimos de ahi,
     //la ruta que teniamos era menu->storage, y se agregaria storage de nuevo, por tanto menu->storage->storage
+-al pulsar F5 desde submenu creo que se agrega ruta submenu al anterior entera.
+ejemplo en Main Menu-> Settings-> General Settings-> Reset search index
+En general creo que sucede en cualquier caso en que vaya menu hacia atras sin haber pulsado ESC o flecha atras
+otro ejemplo: Main Menu-> Settings-> ZX Vision Settings-> Restore windows geometry

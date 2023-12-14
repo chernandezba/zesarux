@@ -1087,6 +1087,18 @@ void menu_interface_logo_type(MENU_ITEM_PARAMETERS)
 	menu_init_footer();
 }
 
+void menu_reset_index_search(MENU_ITEM_PARAMETERS)
+{
+
+    if (!menu_confirm_yesno("Reset search index")) return;
+
+    //Nota: realmente habria que liberar toda la memoria del indice actual,
+    //pero como esto se lanza puntualmente, da un poco igual, se creara indice desde cero apuntando a otra memoria,
+    //y el anterior indice se quedara ocupando espacio
+    zxvision_index_menu_init();
+
+    menu_generic_message_splash("Reset search index","OK. Index reset");
+}
 
 void menu_general_settings(MENU_ITEM_PARAMETERS)
 {
@@ -1346,6 +1358,13 @@ void menu_general_settings(MENU_ITEM_PARAMETERS)
                 "Change Video Driver","Cambiar Driver Video","Canviar Driver Video");
             menu_add_item_menu_es_avanzado(array_menu_window_settings);
 		}
+
+        menu_add_item_menu_separator(array_menu_window_settings);
+
+        menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_reset_index_search,NULL,
+        "Reset search index","Reset índice búsqueda","Reset índex recerca");
+        menu_add_item_menu_tooltip(array_menu_window_settings,"Reset index of the search feature");
+        menu_add_item_menu_ayuda(array_menu_window_settings,"Reset index of the search feature");
 
 
 
