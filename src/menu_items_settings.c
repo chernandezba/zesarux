@@ -4493,6 +4493,10 @@ void menu_hardware_joystick(MENU_ITEM_PARAMETERS)
     if (retorno_menu==MENU_RETORNO_NORMAL && (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0) {
         joystick_emulation=opcion_seleccionada;
         joystick_cycle_next_type_autofire();
+        //Al volver de esta manera, hay que indicar al index_search que se "va atras" un menu
+        //Esto ya se llama por defecto en gestion de menu, cuando se pulsa ESC o flecha atras,
+        //pero en este caso, se sale con la aceptacion de la opcion, y no es ni ESC ni flecha atras
+        zxvision_index_delete_last_submenu_path();
     }
 
 }
