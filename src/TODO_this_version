@@ -820,3 +820,6 @@ Track 00 Side 0
  Gap length:  78 Filler: E5H
  Datarate: Unk. Record mode: Unk
  ....
+Creo que la solucion seria que los menus como tal, se indicasen con alguna opcion
+Y menus tabulados, u otras ventanas, como Track list, que usan funcion de menus, pero realmente no son menus, deberian indicarse que no son menus
+Asi solo indexaria realmente lo que sean menus

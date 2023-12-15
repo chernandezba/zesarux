@@ -19383,7 +19383,9 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 
     index_menu *indice_menu_actual;
 
-    if (m->no_indexar_busqueda==0) {
+    //Indexar siempre que no diga que no hay que indexarlo, ni tampoco menus tabulados,
+    //pues menus tabulados son mas bien para ventanas, como visual memory, y no menus de opciones
+    if (m->no_indexar_busqueda==0 && m->es_menu_tabulado==0) {
         indice_menu_actual=zxvision_index_entrada_menu(titulo);
     }
 
@@ -19406,7 +19408,9 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
             max_opciones++;
 
             //Para el indice de opciones de menu
-            if (m->no_indexar_busqueda==0) {
+            //Indexar siempre que no diga que no hay que indexarlo, ni tampoco menus tabulados,
+            //pues menus tabulados son mas bien para ventanas, como visual memory, y no menus de opciones
+            if (m->no_indexar_busqueda==0 && m->es_menu_tabulado==0) {
                 zxvision_index_add_menu_linea(indice_menu_actual,menu_retorna_item_language(aux));
             }
 
@@ -20176,7 +20180,9 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
     //Parecido a ESC, pero no cerramos todos menus
     if (salir_con_flecha_izquierda) {
         zxvision_helper_menu_shortcut_delete_last();
-        if (m->no_indexar_busqueda==0) {
+        //Indexar siempre que no diga que no hay que indexarlo, ni tampoco menus tabulados,
+        //pues menus tabulados son mas bien para ventanas, como visual memory, y no menus de opciones
+        if (m->no_indexar_busqueda==0 && m->es_menu_tabulado==0) {
             zxvision_index_delete_last_submenu_path();
         }
         return MENU_RETORNO_ESC;
@@ -20206,7 +20212,9 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
         else {
             //Comportamiento antiguo. ESC nos lleva hacia atras
             zxvision_helper_menu_shortcut_delete_last();
-            if (m->no_indexar_busqueda==0) {
+            //Indexar siempre que no diga que no hay que indexarlo, ni tampoco menus tabulados,
+            //pues menus tabulados son mas bien para ventanas, como visual memory, y no menus de opciones
+            if (m->no_indexar_busqueda==0 && m->es_menu_tabulado==0) {
                 zxvision_index_delete_last_submenu_path();
             }
             ya_borrado_helper_atras=1;
@@ -20230,7 +20238,9 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
             //Solo borrar en total una letra
            if (!ya_borrado_helper_atras) {
             zxvision_helper_menu_shortcut_delete_last();
-            if (m->no_indexar_busqueda==0) {
+            //Indexar siempre que no diga que no hay que indexarlo, ni tampoco menus tabulados,
+            //pues menus tabulados son mas bien para ventanas, como visual memory, y no menus de opciones
+            if (m->no_indexar_busqueda==0 && m->es_menu_tabulado==0) {
                 zxvision_index_delete_last_submenu_path();
             }
            }
