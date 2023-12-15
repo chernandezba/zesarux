@@ -784,6 +784,8 @@ y si la ventana activa esta en la zona de una ventana siempre visible, no conmut
 pero en ese caso si van arriba del todo quizá tendrian siempre el foco y NO es lo que se espera...
 
 
+-DSK 3": disk viewer y disk info tienen información duplicada: signature, creator...
+
 
 -Buscador opciones de menú
 ok --que guarde diccionario en disco
@@ -801,3 +803,20 @@ zxvision_index_delete_last_submenu_path();
 ok todos los menus de *choices* Ejemplo en menus de 3, 4 etc opciones
 ok first aid. otra: First aid cualquiera que salga en menu, por ejemplo la de descarga imagenes mmc desde web externa
 pendiente otra: Main Menu-> Settings-> General Settings-> Window Zoom
+
+-otro: esto creo que sucede al conmutar ventana con shift-cursor:
+Main menu-> Windows-> Visual floppy-> Watches-> Visual memory-> Wave Piano-> AY Player-> Audio Chip Piano-> Waveform
+
+-otro: cambio de tipo joystick:
+Main Menu-> Settings-> Hardware Settings-> Joystick-> Hardware Settings
+
+Creo que tiene que ver con "En todos los sitios donde se cierre un menu pero no se haya salido con ESC o flecha atras"
+
+-otro: sitios donde se muestra info usando menus, pero no interesa indexarlos, ejemplo:
+
+Main Menu-> Storage-> 3" CF2 Floppy-> Disk Info-> Tracks list
+Track 00 Side 0
+ Sector size:  512 Sectors: 9
+ Gap length:  78 Filler: E5H
+ Datarate: Unk. Record mode: Unk
+ ....
