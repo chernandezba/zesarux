@@ -3554,6 +3554,8 @@ char *menu_filesel_recent_files_folders(int *tipo)
         hay_alguno=0;
 
         menu_add_item_menu_inicial(&array_menu_recent_files,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
+        //no quiero indexarlo en la busqueda
+        menu_add_item_menu_no_indexar_busqueda(array_menu_recent_files);
 
         #define MAX_RECENT_FILE_CHAR_LENGHT MAX_TEXTO_OPCION
         //char string_last_file_shown[MAX_RECENT_FILE_CHAR_LENGHT];
