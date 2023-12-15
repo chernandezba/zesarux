@@ -29860,6 +29860,7 @@ void menu_plusthreedisk_info_tracks_list(MENU_ITEM_PARAMETERS)
 
 
         menu_add_item_menu_inicial(&array_menu_common,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
+        menu_add_item_menu_no_indexar_busqueda(array_menu_common);
 
         int pista;
         int cara;

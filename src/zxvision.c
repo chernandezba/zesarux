@@ -19381,7 +19381,11 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 
 	ancho=menu_dibuja_ventana_ret_ancho_titulo(ZXVISION_MAX_ANCHO_VENTANA,titulo);
 
-    index_menu *indice_menu_actual=zxvision_index_entrada_menu(titulo);
+    index_menu *indice_menu_actual;
+
+    if (m->no_indexar_busqueda==0) {
+        indice_menu_actual=zxvision_index_entrada_menu(titulo);
+    }
 
 
 
@@ -19402,7 +19406,9 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
             max_opciones++;
 
             //Para el indice de opciones de menu
-            zxvision_index_add_menu_linea(indice_menu_actual,menu_retorna_item_language(aux));
+            if (m->no_indexar_busqueda==0) {
+                zxvision_index_add_menu_linea(indice_menu_actual,menu_retorna_item_language(aux));
+            }
 
         }
 
@@ -20170,7 +20176,9 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
     //Parecido a ESC, pero no cerramos todos menus
     if (salir_con_flecha_izquierda) {
         zxvision_helper_menu_shortcut_delete_last();
-        zxvision_index_delete_last_submenu_path();
+        if (m->no_indexar_busqueda==0) {
+            zxvision_index_delete_last_submenu_path();
+        }
         return MENU_RETORNO_ESC;
     }
 
@@ -20198,7 +20206,9 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
         else {
             //Comportamiento antiguo. ESC nos lleva hacia atras
             zxvision_helper_menu_shortcut_delete_last();
-            zxvision_index_delete_last_submenu_path();
+            if (m->no_indexar_busqueda==0) {
+                zxvision_index_delete_last_submenu_path();
+            }
             ya_borrado_helper_atras=1;
 
             //no indicar helper
@@ -20220,7 +20230,9 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
             //Solo borrar en total una letra
            if (!ya_borrado_helper_atras) {
             zxvision_helper_menu_shortcut_delete_last();
-            zxvision_index_delete_last_submenu_path();
+            if (m->no_indexar_busqueda==0) {
+                zxvision_index_delete_last_submenu_path();
+            }
            }
         }
 
@@ -20271,6 +20283,7 @@ void menu_add_item_menu_common_defaults(menu_item *m,int tipo_opcion,t_menu_func
     m->atajo_tecla=0;
     m->tiene_submenu=0;
     m->item_avanzado=0;
+    m->no_indexar_busqueda=0;
     m->opcion_marcada=0;
     m->menu_se_cerrara=0;
 
@@ -20327,10 +20340,12 @@ void menu_add_item_menu(menu_item *m,char *texto,int tipo_opcion,t_menu_funcion 
 
 	menu_item *next;
 
+    int era_un_assigned_no_indexar_busqueda=0;
 
 	if (m->tipo_opcion==MENU_OPCION_UNASSIGNED) {
 		debug_printf (VERBOSE_DEBUG,"Overwrite last item menu because it was MENU_OPCION_UNASSIGNED");
 		next=m;
+        era_un_assigned_no_indexar_busqueda=m->no_indexar_busqueda;
 	}
 
 	else {
@@ -20362,6 +20377,7 @@ void menu_add_item_menu(menu_item *m,char *texto,int tipo_opcion,t_menu_funcion 
     ////
 
     next->es_menu_tabulado=es_menu_tabulado;
+    if (era_un_assigned_no_indexar_busqueda) next->no_indexar_busqueda=era_un_assigned_no_indexar_busqueda;
 }
 
 //Agregar un item separador
@@ -20445,6 +20461,19 @@ void menu_add_item_menu_es_avanzado(menu_item *m)
     }
 
     m->item_avanzado=1;
+}
+
+//Indicar que ese menu no se debe indexar la busqueda. Indicarlo en el primer item siempre
+void menu_add_item_menu_no_indexar_busqueda(menu_item *m)
+{
+    //busca el ultimo item i le añade el indicado
+
+    while (m->siguiente_item!=NULL)
+    {
+            m=m->siguiente_item;
+    }
+
+    m->no_indexar_busqueda=1;
 }
 
 void menu_add_item_menu_marcar_opcion(menu_item *m,int valor)
@@ -23140,6 +23169,8 @@ int menu_ventana_scanf_numero(char *titulo,char *texto,int max_length,int increm
 
 		menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"-");
 		menu_add_item_menu_tabulado(array_menu_common,x_boton_menos,0);
+        //no indexar esta busqueda
+        menu_add_item_menu_no_indexar_busqueda(array_menu_common);
 
 		menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,texto);
 		menu_add_item_menu_tabulado(array_menu_common,x_texto_input,0);

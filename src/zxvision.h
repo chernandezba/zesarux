@@ -937,6 +937,9 @@ struct s_menu_item {
     //porque los menus avanzados se usan en items de menu normales,
     //pero en cambio los items tabulados suelen ser para opciones de ventanas
     int item_avanzado;
+
+    //Si no queremos indexar la busqueda en este menu. Por ejemplo Disk Info-> Tracks list
+    int no_indexar_busqueda;
 };
 
 typedef struct s_menu_item menu_item;
