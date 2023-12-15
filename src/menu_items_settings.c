@@ -10856,6 +10856,8 @@ void menu_zxdesktop_set_configurable_icons(MENU_ITEM_PARAMETERS)
     do {
 
         menu_add_item_menu_inicial(&array_menu_common,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
+        //no quiero indexar esto
+        menu_add_item_menu_no_indexar_busqueda(array_menu_common);
 
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_zxdesktop_add_configurable_icons,NULL,"Add next");
 
