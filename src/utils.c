@@ -15070,7 +15070,10 @@ int util_concat_string(char *original,char *string_to_add,int limite)
 
         int longitud_final=longitud_original+longitud_to_add+1; //el +1 del byte 0 final
 
-        if (longitud_final>limite) return 1;
+        if (longitud_final>limite) {
+            //printf("!!!!!!!!!!Overflow util_concat_string: limit %d, asked %d\n",limite,longitud_final);
+            return 1;
+        }
 
         char *offset_add;
         offset_add=&original[longitud_original];

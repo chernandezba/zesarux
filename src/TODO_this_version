@@ -789,7 +789,7 @@ pero en ese caso si van arriba del todo quizá tendrian siempre el foco y NO es 
 
 -Buscador opciones de menú
 ok --que guarde diccionario en disco
---que sea capaz de evitar si hay una ruta de submenu muy grande que no exceda limite de array
+ok --que sea capaz de evitar si hay una ruta de submenu muy grande que no exceda limite de array
 ok --solventar     //Evitar que se agregue de nuevo el submenu, por ejemplo si entramos a storage->kartusho, y salimos de ahi,
     //la ruta que teniamos era menu->storage, y se agregaria storage de nuevo, por tanto menu->storage->storage
 -al pulsar F5 desde submenu creo que se agrega ruta submenu al anterior entera.
@@ -807,7 +807,7 @@ ok Main Menu-> Settings-> General Settings-> Window Zoom
 -otro: esto creo que sucede al conmutar ventana con shift-cursor:
 Main menu-> Windows-> Visual floppy-> Watches-> Visual memory-> Wave Piano-> AY Player-> Audio Chip Piano-> Waveform
 
--otro: cambio de tipo joystick:
+ok -otro: cambio de tipo joystick:
 Main Menu-> Settings-> Hardware Settings-> Joystick-> Hardware Settings
 
 Creo que tiene que ver con "En todos los sitios donde se cierre un menu pero no se haya salido con ESC o flecha atras"
