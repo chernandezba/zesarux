@@ -8177,8 +8177,13 @@ void menu_accessibility_menu(MENU_ITEM_PARAMETERS)
 		menu_add_item_menu_tooltip(array_menu_common,"Set Gray Palette");
 		menu_add_item_menu_ayuda(array_menu_common,"Set Gray Palette to all the colours used on the emulator, including menu");
 
-		menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_interface_flash,NULL,"[%c] Flash enabled",(disable_change_flash.v==0 ? 'X' : ' '));
-        menu_add_item_menu_spanish_format(array_menu_common,"[%c] Parpadeo activado",(disable_change_flash.v==0 ? 'X' : ' '));
+		//menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_interface_flash,NULL,"[%c] Flash enabled",(disable_change_flash.v==0 ? 'X' : ' '));
+        //menu_add_item_menu_spanish_format(array_menu_common,"[%c] Parpadeo activado",(disable_change_flash.v==0 ? 'X' : ' '));
+
+
+		menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_flash,NULL,
+            "Flash enabled","Parpadeo activado","Parpelleig activat");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(disable_change_flash.v==0 ? 'X' : ' '));
         menu_add_item_menu_tooltip(array_menu_common,"Disables flash for emulated machines and also for menu interface");
         menu_add_item_menu_ayuda(array_menu_common,"Disables flash for emulated machines and also for menu interface");
 
