@@ -14728,6 +14728,8 @@ void menu_online_browse_zx81_create_menu(char *mem, char *mem_after_headers,int 
     int retorno_menu;
 
 	menu_add_item_menu_inicial(&array_menu_common,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
+    //no queremos indexar esto
+    menu_add_item_menu_no_indexar_busqueda(array_menu_common);
 
 	//temp limite
 	char texto_final[30000];

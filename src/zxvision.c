@@ -26873,7 +26873,7 @@ void zxvision_index_load_from_disk(void)
     while (total_leidos>0) {
         //leer titulo menu
         char titulo_menu[MAX_LENGTH_FULL_PATH_SUBMENU];
-        int leidos=zxvision_index_load_from_disk_read_line(puntero,titulo_menu);
+        int leidos=zxvision_index_load_from_disk_read_line(puntero,(z80_byte *)titulo_menu);
         printf("Titulo: %s\n",titulo_menu);
 
         total_leidos-=leidos;
@@ -26888,7 +26888,7 @@ void zxvision_index_load_from_disk(void)
             while (!salir) {
 
                 char linea_menu[MAX_TEXTO_OPCION];
-                int leidos=zxvision_index_load_from_disk_read_line(puntero,linea_menu);
+                int leidos=zxvision_index_load_from_disk_read_line(puntero,(z80_byte *)linea_menu);
 
                 if (linea_menu[0]==0) salir=1;
                 else {

@@ -788,31 +788,14 @@ pero en ese caso si van arriba del todo quizá tendrian siempre el foco y NO es 
 
 
 -Buscador opciones de menú
-ok --que guarde diccionario en disco
-ok --que sea capaz de evitar si hay una ruta de submenu muy grande que no exceda limite de array
-ok --solventar     //Evitar que se agregue de nuevo el submenu, por ejemplo si entramos a storage->kartusho, y salimos de ahi,
-    //la ruta que teniamos era menu->storage, y se agregaria storage de nuevo, por tanto menu->storage->storage
--al pulsar F5 desde submenu creo que se agrega ruta submenu al anterior entera.
-ejemplo en Main Menu-> Settings-> General Settings-> Reset search index
-En general creo que sucede en cualquier caso en que vaya menu hacia atras sin haber pulsado ESC o flecha atras
-otro ejemplo: Main Menu-> Settings-> ZX Vision Settings-> Restore windows geometry
-_
+
 En todos los sitios donde se cierre un menu pero no se haya salido con ESC o flecha atras, hay que llamar a:
 zxvision_index_delete_last_submenu_path();
 
-ok todos los menus de *choices* Ejemplo en menus de 3, 4 etc opciones
-ok first aid. otra: First aid cualquiera que salga en menu, por ejemplo la de descarga imagenes mmc desde web externa
-ok Main Menu-> Settings-> General Settings-> Window Zoom
-
--otro: esto creo que sucede al conmutar ventana con shift-cursor:
-Main menu-> Windows-> Visual floppy-> Watches-> Visual memory-> Wave Piano-> AY Player-> Audio Chip Piano-> Waveform
-
-ok -otro: cambio de tipo joystick:
-Main Menu-> Settings-> Hardware Settings-> Joystick-> Hardware Settings
 
 Creo que tiene que ver con "En todos los sitios donde se cierre un menu pero no se haya salido con ESC o flecha atras"
 
--otro: sitios donde se muestra info usando menus, pero no interesa indexarlos, ejemplo:
+Sitios donde se muestra info usando menus, pero no interesa indexarlos, ejemplo:
 
 ok este Main Menu-> Storage-> 3" CF2 Floppy-> Disk Info-> Tracks list
 Track 00 Side 0
@@ -820,6 +803,9 @@ Track 00 Side 0
  Gap length:  78 Filler: E5H
  Datarate: Unk. Record mode: Unk
  ....
+Usar parametro no_indexar_busqueda de menus
+
+
 Creo que la solucion seria que los menus como tal, se indicasen con alguna opcion
 Y menus tabulados, u otras ventanas, como Track list, que usan funcion de menus, pero realmente no son menus, deberian indicarse que no son menus
 Asi solo indexaria realmente lo que sean menus
