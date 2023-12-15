@@ -794,3 +794,10 @@ ok --solventar     //Evitar que se agregue de nuevo el submenu, por ejemplo si e
 ejemplo en Main Menu-> Settings-> General Settings-> Reset search index
 En general creo que sucede en cualquier caso en que vaya menu hacia atras sin haber pulsado ESC o flecha atras
 otro ejemplo: Main Menu-> Settings-> ZX Vision Settings-> Restore windows geometry
+_
+En todos los sitios donde se cierre un menu pero no se haya salido con ESC o flecha atras, hay que llamar a:
+zxvision_index_delete_last_submenu_path();
+
+ok todos los menus de *choices* Ejemplo en menus de 3, 4 etc opciones
+ok first aid. otra: First aid cualquiera que salga en menu, por ejemplo la de descarga imagenes mmc desde web externa
+pendiente otra: Main Menu-> Settings-> General Settings-> Window Zoom
