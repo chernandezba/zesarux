@@ -2101,6 +2101,7 @@ void menu_file_dsk_browser_show(char *filename)
                         menu_file_dsk_browser_show_click_file,NULL,buffer_texto);
                     //Le indicamos el numero de bloque como opcion
                     menu_add_item_menu_valor_opcion(array_menu_common,i);
+                    menu_add_item_menu_tiene_submenu(array_menu_common);
 
                 }
             }

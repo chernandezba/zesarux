@@ -390,7 +390,7 @@ void pd765_signal_se_function_triggered(void)
         ///Si lo mostrase siempre, en PCW resulta que intenta hacer seek sin disco insertado y por tanto
         //saltaria el error cuando se inicia PCW sin disco (y con parametro --dsk-pcw-no-failback-cpm-when-no-boot)
         if (dskplusthree_emulation.v) {
-            debug_printf(VERBOSE_ERR,"PD765: seek BEYOND limit: %d",pd765_pcn);
+            debug_printf(VERBOSE_DEBUG,"PD765: seek BEYOND limit: %d",pd765_pcn);
         }
 
     }
