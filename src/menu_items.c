@@ -30153,19 +30153,23 @@ void menu_plusthreedisk(MENU_ITEM_PARAMETERS)
         }
 
 
-        menu_add_item_menu_format(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_storage_dskplusthree_browser,
-            menu_storage_dskplusthree_emulation_cond,"Disk ~~Viewer");
-        menu_add_item_menu_shortcut(array_menu_plusthreedisk,'v');
-        menu_add_item_menu_tooltip(array_menu_plusthreedisk,"Disk Viewer");
-        menu_add_item_menu_ayuda(array_menu_plusthreedisk,"Disk Viewer");
 
+        menu_add_item_menu_en_es_ca(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_plusthreedisk_info,menu_storage_dskplusthree_info_cond,
+            "Disk Info","Disk Info","Disk Info");
+
+
+        menu_add_item_menu_format(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_storage_dskplusthree_browser,
+            menu_storage_dskplusthree_emulation_cond,"Disk Format ~~Viewer");
+        menu_add_item_menu_shortcut(array_menu_plusthreedisk,'v');
+        menu_add_item_menu_tooltip(array_menu_plusthreedisk,"Disk Format Viewer");
+        menu_add_item_menu_ayuda(array_menu_plusthreedisk,"Disk Format Viewer");
+
+        menu_add_item_menu_separator(array_menu_plusthreedisk);
 
         menu_add_item_menu_en_es_ca(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_visual_floppy,NULL,
             "Visual Floppy","Visual Floppy","Visual Floppy");
         menu_add_item_menu_se_cerrara(array_menu_plusthreedisk);
 
-        menu_add_item_menu_en_es_ca(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_plusthreedisk_info,menu_storage_dskplusthree_info_cond,
-            "Disk Info","Disk Info","Disk Info");
         //menu_add_item_menu_tiene_submenu(array_menu_plusthreedisk);
 
 
