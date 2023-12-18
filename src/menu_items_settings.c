@@ -5224,7 +5224,8 @@ void menu_hardware_redefine_keys(MENU_ITEM_PARAMETERS)
                 //menu_add_item_menu(array_menu_hardware_redefine_keys,"ESC Back",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
                 menu_add_ESC_item(array_menu_hardware_redefine_keys);
 
-                retorno_menu=menu_dibuja_menu(&hardware_redefine_keys_opcion_seleccionada,&item_seleccionado,array_menu_hardware_redefine_keys,"Redefine keys" );
+                //no quiero indexarlo en la busqueda
+                retorno_menu=menu_dibuja_menu_no_indexado(&hardware_redefine_keys_opcion_seleccionada,&item_seleccionado,array_menu_hardware_redefine_keys,"Redefine keys" );
 
 
 
@@ -10861,8 +10862,6 @@ void menu_zxdesktop_set_configurable_icons(MENU_ITEM_PARAMETERS)
     do {
 
         menu_add_item_menu_inicial(&array_menu_common,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
-        //no quiero indexar esto
-        menu_add_item_menu_no_indexar_busqueda(array_menu_common);
 
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_zxdesktop_add_configurable_icons,NULL,"Add next");
 
@@ -10903,12 +10902,12 @@ void menu_zxdesktop_set_configurable_icons(MENU_ITEM_PARAMETERS)
         }
 
 
-
         menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
         menu_add_ESC_item(array_menu_common);
 
-        retorno_menu=menu_dibuja_menu(&zxdesktop_set_configurable_icons_opcion_seleccionada,&item_seleccionado,array_menu_common,"Set Icons" );
+        //no quiero indexarlo en la busqueda
+        retorno_menu=menu_dibuja_menu_no_indexado(&zxdesktop_set_configurable_icons_opcion_seleccionada,&item_seleccionado,array_menu_common,"Set Icons" );
 
 
 

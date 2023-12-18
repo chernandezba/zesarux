@@ -3554,8 +3554,7 @@ char *menu_filesel_recent_files_folders(int *tipo)
         hay_alguno=0;
 
         menu_add_item_menu_inicial(&array_menu_recent_files,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
-        //no quiero indexarlo en la busqueda
-        menu_add_item_menu_no_indexar_busqueda(array_menu_recent_files);
+
 
         #define MAX_RECENT_FILE_CHAR_LENGHT MAX_TEXTO_OPCION
         //char string_last_file_shown[MAX_RECENT_FILE_CHAR_LENGHT];
@@ -3609,7 +3608,8 @@ char *menu_filesel_recent_files_folders(int *tipo)
             strcpy(nombre_ventana,"Recent folders (SPC switch)");
         }
 
-        retorno_menu=menu_dibuja_menu(&menu_recent_files_opcion_seleccionada,&item_seleccionado,array_menu_recent_files,nombre_ventana);
+        //no quiero indexarlo en la busqueda
+        retorno_menu=menu_dibuja_menu_no_indexado(&menu_recent_files_opcion_seleccionada,&item_seleccionado,array_menu_recent_files,nombre_ventana);
 
 
         if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {

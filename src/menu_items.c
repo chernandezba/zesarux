@@ -14728,8 +14728,6 @@ void menu_online_browse_zx81_create_menu(char *mem, char *mem_after_headers,int 
     int retorno_menu;
 
 	menu_add_item_menu_inicial(&array_menu_common,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
-    //no queremos indexar esto
-    menu_add_item_menu_no_indexar_busqueda(array_menu_common);
 
 	//temp limite
 	char texto_final[30000];
@@ -14800,7 +14798,8 @@ void menu_online_browse_zx81_create_menu(char *mem, char *mem_after_headers,int 
 
 			if (total_items) {
 				//Si hay resultados con esa letra, normalmente si..
-            	retorno_menu=menu_dibuja_menu(&zx81_online_browser_opcion_seleccionada,&item_seleccionado,array_menu_common,"ZX81 Games" );
+                //no quiero indexarlo en la busqueda
+            	retorno_menu=menu_dibuja_menu_no_indexado(&zx81_online_browser_opcion_seleccionada,&item_seleccionado,array_menu_common,"ZX81 Games" );
 
 
             	if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
@@ -29835,6 +29834,7 @@ void menu_plusthreedisk_info_sectors_list(MENU_ITEM_PARAMETERS)
 
         menu_add_ESC_item(array_menu_common);
 
+        //no quiero indexarlo en la busqueda
         retorno_menu=menu_dibuja_menu_no_indexado(&menu_plusthreedisk_info_sectors_list_opcion_seleccionada,&item_seleccionado,array_menu_common,menu_titulo);
 
 
@@ -29952,6 +29952,7 @@ void menu_plusthreedisk_info_tracks_list(MENU_ITEM_PARAMETERS)
 
         menu_add_ESC_item(array_menu_common);
 
+        //no quiero indexarlo en la busqueda
         retorno_menu=menu_dibuja_menu_no_indexado(&menu_plusthreedisk_info_tracks_list_opcion_seleccionada,&item_seleccionado,array_menu_common,"Tracks list");
 
 
