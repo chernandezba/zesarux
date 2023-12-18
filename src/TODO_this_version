@@ -809,3 +809,10 @@ Usar parametro no_indexar_busqueda de menus
 Creo que la solucion seria que los menus como tal, se indicasen con alguna opcion
 Y menus tabulados, u otras ventanas, como Track list, que usan funcion de menus, pero realmente no son menus, deberian indicarse que no son menus
 Asi solo indexaria realmente lo que sean menus
+
+
+-Documentar funciones de menu:
+
+menu_dibuja_menu: la normal
+
+menu_dibuja_menu_no_indexado: para usar ventanas con opciones pero no queremos que este indexado, como por ejemplo Tracks List

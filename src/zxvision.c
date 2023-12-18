@@ -20264,6 +20264,16 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 }
 
 
+//Igual que menu_dibuja_menu pero cuando no queremos que este indexado, por ejemplo para ventana de Tracks List
+//TODO: quiza cambiar el nombre de esta funcion a algo que diga que aun usando funcion de menu, no es un menu como tal,
+//sino que nos beneficiamos de la funcion de menu para mostrar una ventana con opciones en lineas
+int menu_dibuja_menu_no_indexado(int *opcion_inicial,menu_item *item_seleccionado,menu_item *m,char *titulo)
+{
+    m->no_indexar_busqueda=1;
+
+    return menu_dibuja_menu(opcion_inicial,item_seleccionado,m,titulo);
+}
+
 
 void menu_add_item_menu_common_defaults(menu_item *m,int tipo_opcion,t_menu_funcion menu_funcion,t_menu_funcion_activo menu_funcion_activo)
 {

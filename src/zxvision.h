@@ -1056,6 +1056,7 @@ extern void menu_generic_message_tooltip(char *titulo, int volver_timeout, int t
 
 extern void menu_add_ESC_item(menu_item *array_menu_item);
 extern int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item *m,char *titulo);
+extern int menu_dibuja_menu_no_indexado(int *opcion_inicial,menu_item *item_seleccionado,menu_item *m,char *titulo);
 extern void menu_tape_settings_trunc_name(char *orig,char *dest,int max);
 
 extern int menu_confirm_yesno(char *texto_ventana);

@@ -29835,7 +29835,7 @@ void menu_plusthreedisk_info_sectors_list(MENU_ITEM_PARAMETERS)
 
         menu_add_ESC_item(array_menu_common);
 
-        retorno_menu=menu_dibuja_menu(&menu_plusthreedisk_info_sectors_list_opcion_seleccionada,&item_seleccionado,array_menu_common,menu_titulo);
+        retorno_menu=menu_dibuja_menu_no_indexado(&menu_plusthreedisk_info_sectors_list_opcion_seleccionada,&item_seleccionado,array_menu_common,menu_titulo);
 
 
         if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
@@ -29862,7 +29862,6 @@ void menu_plusthreedisk_info_tracks_list(MENU_ITEM_PARAMETERS)
 
 
         menu_add_item_menu_inicial(&array_menu_common,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
-        menu_add_item_menu_no_indexar_busqueda(array_menu_common);
 
         int pista;
         int cara;
@@ -29953,7 +29952,7 @@ void menu_plusthreedisk_info_tracks_list(MENU_ITEM_PARAMETERS)
 
         menu_add_ESC_item(array_menu_common);
 
-        retorno_menu=menu_dibuja_menu(&menu_plusthreedisk_info_tracks_list_opcion_seleccionada,&item_seleccionado,array_menu_common,"Tracks list");
+        retorno_menu=menu_dibuja_menu_no_indexado(&menu_plusthreedisk_info_tracks_list_opcion_seleccionada,&item_seleccionado,array_menu_common,"Tracks list");
 
 
         if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
