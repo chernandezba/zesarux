@@ -785,6 +785,7 @@ pero en ese caso si van arriba del todo quizá tendrian siempre el foco y NO es 
 
 
 
+
 -Buscador opciones de menú
 
 En todos los sitios donde se cierre un menu pero no se haya salido con ESC o flecha atras, hay que llamar a:

@@ -30064,36 +30064,44 @@ void menu_plusthreedisk(MENU_ITEM_PARAMETERS)
 
 
         menu_tape_settings_trunc_name(dskplusthree_file_name,string_dskplusthree_file_shown,17);
-        menu_add_item_menu_inicial_format(&array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_storage_dskplusthree_file,NULL,"~~DSK File: [%s]",string_dskplusthree_file_shown);
+        //menu_add_item_menu_inicial_format(&array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_storage_dskplusthree_file,NULL,
+        //    "~~DSK File: [%s]",string_dskplusthree_file_shown);
+        menu_add_item_menu_en_es_ca_inicial(&array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_storage_dskplusthree_file,NULL,
+            "~~DSK File","Archivo ~~DSK","Arxiu ~~DSK");
+        menu_add_item_menu_sufijo_format(array_menu_plusthreedisk," [%s]",string_dskplusthree_file_shown);
         menu_add_item_menu_shortcut(array_menu_plusthreedisk,'d');
         menu_add_item_menu_tooltip(array_menu_plusthreedisk,"DSK Emulation file");
         menu_add_item_menu_ayuda(array_menu_plusthreedisk,"DSK Emulation file");
 
 
-        menu_add_item_menu_format(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_storage_dskplusthree_emulation,
-        menu_storage_dskplusthree_emulation_cond,"[%c] DSK ~~Emulation", (dskplusthree_emulation.v ? 'X' : ' '));
+        menu_add_item_menu_en_es_ca(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_storage_dskplusthree_emulation,
+            menu_storage_dskplusthree_emulation_cond,"DSK ~~Emulation","~~Emulación DSK","~~Emulació DSK");
+        menu_add_item_menu_prefijo_format(array_menu_plusthreedisk,"[%c] ", (dskplusthree_emulation.v ? 'X' : ' '));
         menu_add_item_menu_shortcut(array_menu_plusthreedisk,'e');
         menu_add_item_menu_tooltip(array_menu_plusthreedisk,"DSK Emulation");
         menu_add_item_menu_ayuda(array_menu_plusthreedisk,"DSK Emulation");
 
 
 
-        menu_add_item_menu_format(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_storage_dsk_write_protect,NULL,
-            "[%c] ~~Write protect", (dskplusthree_write_protection.v ? 'X' : ' '));
-        menu_add_item_menu_shortcut(array_menu_plusthreedisk,'w');
+        menu_add_item_menu_en_es_ca(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_storage_dsk_write_protect,NULL,
+            "Write protect","Protección escritura","Protecció escriptura");
+        menu_add_item_menu_prefijo_format(array_menu_plusthreedisk,"[%c] ", (dskplusthree_write_protection.v ? 'X' : ' '));
+        //menu_add_item_menu_shortcut(array_menu_plusthreedisk,'w');
         menu_add_item_menu_tooltip(array_menu_plusthreedisk,"If DSK disk is write protected");
         menu_add_item_menu_ayuda(array_menu_plusthreedisk,"If DSK disk is write protected");
 
         if (dskplusthree_write_protection.v) {
-            menu_add_item_menu_format(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_storage_dsk_pd765_silent_write_protection,NULL,
-                "[%c] ~~Silent protection", (pd765_silent_write_protection.v ? 'X' : ' '));
+            menu_add_item_menu_en_es_ca(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_storage_dsk_pd765_silent_write_protection,NULL,
+                "~~Silent protection","Protección ~~silenciosa","Protecció ~~silenciosa");
+            menu_add_item_menu_prefijo_format(array_menu_plusthreedisk,"[%c] ", (pd765_silent_write_protection.v ? 'X' : ' '));
             menu_add_item_menu_shortcut(array_menu_plusthreedisk,'s');
             menu_add_item_menu_tooltip(array_menu_plusthreedisk,"When write protect is enabled, do not notify the cpu, so behave as it is not write protected (but the data is not written)");
             menu_add_item_menu_ayuda(array_menu_plusthreedisk,"When write protect is enabled, do not notify the cpu, so behave as it is not write protected (but the data is not written)");
         }
 
-        menu_add_item_menu_format(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_storage_dskplusthree_persistent_writes,NULL,
-            "[%c] Persistent Writes",(dskplusthree_persistent_writes.v ? 'X' : ' ') );
+        menu_add_item_menu_en_es_ca(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_storage_dskplusthree_persistent_writes,NULL,
+            "Persistent Writes","Escrituras Persistentes","Escriptures Persistents");
+        menu_add_item_menu_prefijo_format(array_menu_plusthreedisk,"[%c] ",(dskplusthree_persistent_writes.v ? 'X' : ' ') );
         menu_add_item_menu_tooltip(array_menu_plusthreedisk,"Tells if DSK writes are saved to disk");
         menu_add_item_menu_ayuda(array_menu_plusthreedisk,"Tells if DSK writes are saved to disk. "
             "Note: all writing operations to DSK are always saved to internal memory (unless you disable write permission), but this setting "
@@ -30105,23 +30113,25 @@ void menu_plusthreedisk(MENU_ITEM_PARAMETERS)
         menu_add_item_menu(array_menu_plusthreedisk,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
         if (MACHINE_IS_PCW) {
-            menu_add_item_menu_format(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_pcw_boot_cpm,
-                NULL,"    Boot CP/M now");
+            menu_add_item_menu_en_es_ca(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_pcw_boot_cpm,
+                NULL,"    Boot CP/M now","    Boot CP/M ahora","    Boot CP/M ara");
 			menu_add_item_menu_tooltip(array_menu_plusthreedisk,"Boot CP/M");
 			menu_add_item_menu_ayuda(array_menu_plusthreedisk,"Boot CP/M");
 
-            menu_add_item_menu_format(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_pcw_boot_cpm_reinsert_previous,NULL,
-            "[%c] Reinsert previous dsk after boot",(pcw_boot_reinsert_previous_dsk.v ? 'X' : ' ') );
+            menu_add_item_menu_en_es_ca(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_pcw_boot_cpm_reinsert_previous,NULL,
+            "Reinsert previous dsk after boot","Reinsertar previo dsk después boot","Reinsertar previ dsk després boot");
+            menu_add_item_menu_prefijo_format(array_menu_plusthreedisk,"[%c] ",(pcw_boot_reinsert_previous_dsk.v ? 'X' : ' ') );
 			menu_add_item_menu_tooltip(array_menu_plusthreedisk,"Reinsert previous dsk after booting CP/M");
 			menu_add_item_menu_ayuda(array_menu_plusthreedisk,"Reinsert previous dsk after booting CP/M");
 
-            menu_add_item_menu_format(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_pcw_failback_cpm_when_no_boot,NULL,
-            "[%c] Failback to CP/M if no boot",(pcw_failback_cpm_when_no_boot.v ? 'X' : ' ') );
+            menu_add_item_menu_en_es_ca(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_pcw_failback_cpm_when_no_boot,NULL,
+            "Failback to CP/M if no boot","Failback a CP/M si no boot","Failback a CP/M si no boot");
+            menu_add_item_menu_prefijo_format(array_menu_plusthreedisk,"[%c] ",(pcw_failback_cpm_when_no_boot.v ? 'X' : ' ') );
 			menu_add_item_menu_tooltip(array_menu_plusthreedisk,"Insert CP/M disk if selected disk is not bootable");
 			menu_add_item_menu_ayuda(array_menu_plusthreedisk,"Insert CP/M disk if selected disk is not bootable");
 
-            menu_add_item_menu_format(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_pcw_boot_locoscript,
-                NULL,"    Boot LocoScript now");
+            menu_add_item_menu_en_es_ca(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_pcw_boot_locoscript,NULL,
+                "    Boot LocoScript now","    Boot LocoScript ahora","    Boot LocoScript ara");
 			menu_add_item_menu_tooltip(array_menu_plusthreedisk,"Boot LocoScript");
 			menu_add_item_menu_ayuda(array_menu_plusthreedisk,"Boot LocoScript");
 
@@ -30132,8 +30142,9 @@ void menu_plusthreedisk(MENU_ITEM_PARAMETERS)
 
 
 
-        menu_add_item_menu_format(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_plusthreedisk_pd765,NULL,
-            "[%c] ~~PD765 enabled",(pd765_enabled.v ? 'X' : ' ') );
+        menu_add_item_menu_en_es_ca(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_plusthreedisk_pd765,NULL,
+            "~~PD765 enabled","~~PD765 activado","~~PD765 activat");
+        menu_add_item_menu_prefijo_format(array_menu_plusthreedisk,"[%c] ",(pd765_enabled.v ? 'X' : ' ') );
         menu_add_item_menu_shortcut(array_menu_plusthreedisk,'p');
         menu_add_item_menu_tooltip(array_menu_plusthreedisk,"Enable PD765 Disk controller used on +3, CPC and PCW machines");
         menu_add_item_menu_ayuda(array_menu_plusthreedisk,"Enable PD765 Disk controller used on +3, CPC and PCW machines");
@@ -30144,8 +30155,9 @@ void menu_plusthreedisk(MENU_ITEM_PARAMETERS)
 
         //Esto que no aparezca en cpc ni en pcw
         if (MACHINE_IS_SPECTRUM) {
-            menu_add_item_menu_format(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_storage_plusthreedisk_traps,NULL,
-                "[%c] +3DOS ~~Traps", (plus3dos_traps.v ? 'X' : ' '));
+            menu_add_item_menu_en_es_ca(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_storage_plusthreedisk_traps,NULL,
+                "+3DOS ~~Traps","+3DOS ~~Traps","+3DOS ~~Traps");
+            menu_add_item_menu_prefijo_format(array_menu_plusthreedisk,"[%c] ", (plus3dos_traps.v ? 'X' : ' '));
             menu_add_item_menu_shortcut(array_menu_plusthreedisk,'t');
             menu_add_item_menu_tooltip(array_menu_plusthreedisk,"Enable +3DOS Traps. This is EXPERIMENTAL");
             menu_add_item_menu_ayuda(array_menu_plusthreedisk,"Enable +3DOS Traps. This is EXPERIMENTAL");
@@ -30163,8 +30175,8 @@ void menu_plusthreedisk(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_shortcut(array_menu_plusthreedisk,'l');
 
 
-        menu_add_item_menu_format(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_storage_dskplusthree_browser,
-            menu_storage_dskplusthree_emulation_cond,"Disk ~~Format Viewer");
+        menu_add_item_menu_en_es_ca(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_storage_dskplusthree_browser,
+            menu_storage_dskplusthree_emulation_cond,"Disk ~~Format Viewer","Visor ~~Formato Disco","Visor ~~Format Disc");
         menu_add_item_menu_shortcut(array_menu_plusthreedisk,'f');
         menu_add_item_menu_tooltip(array_menu_plusthreedisk,"Disk Format Viewer");
         menu_add_item_menu_ayuda(array_menu_plusthreedisk,"Disk Format Viewer");
