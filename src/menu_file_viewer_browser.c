@@ -1807,7 +1807,7 @@ void menu_file_dsk_browser_show_click_file(MENU_ITEM_PARAMETERS)
 
         menu_add_ESC_item(array_menu_common);
 
-        retorno_menu=menu_dibuja_menu(&opcion_seleccionada,&item_seleccionado,array_menu_common,"Blocks");
+        retorno_menu=menu_dibuja_menu_no_indexado(&opcion_seleccionada,&item_seleccionado,array_menu_common,"Blocks");
 
         if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
             //llamamos por valor de funcion
