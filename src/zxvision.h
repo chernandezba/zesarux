@@ -940,6 +940,11 @@ struct s_menu_item {
 
     //Si no queremos indexar la busqueda en este menu. Por ejemplo Disk Info-> Tracks list
     int no_indexar_busqueda;
+
+    //este menu se selecciona enter una vez o escape una vez, pero la funcion que la llamada no vuelve
+    //a dibujar el menu, por tanto a nivel de path de indexacion de busqueda, se pierde el ultimo path de submenu
+    //Ejemplo de esto: menu_simple_ten_choices
+    int one_time;
 };
 
 typedef struct s_menu_item menu_item;

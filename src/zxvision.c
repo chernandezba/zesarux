@@ -20147,7 +20147,9 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 	//guardamos antes si el tipo es tabulado antes de
 	//liberar el item de menu
 	int es_tabulado=m->es_menu_tabulado;
-
+    int es_no_indexar_busqueda=m->no_indexar_busqueda;
+    int es_menu_tabulado=m->es_menu_tabulado;
+    int es_one_time=m->one_time;
 
 	//Liberar memoria del menu
         aux=m;
@@ -20182,7 +20184,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
         zxvision_helper_menu_shortcut_delete_last();
         //Indexar siempre que no diga que no hay que indexarlo, ni tampoco menus tabulados,
         //pues menus tabulados son mas bien para ventanas, como visual memory, y no menus de opciones
-        if (m->no_indexar_busqueda==0 && m->es_menu_tabulado==0) {
+        if (es_no_indexar_busqueda==0 && es_menu_tabulado==0) {
             zxvision_index_delete_last_submenu_path();
         }
         return MENU_RETORNO_ESC;
@@ -20214,7 +20216,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
             zxvision_helper_menu_shortcut_delete_last();
             //Indexar siempre que no diga que no hay que indexarlo, ni tampoco menus tabulados,
             //pues menus tabulados son mas bien para ventanas, como visual memory, y no menus de opciones
-            if (m->no_indexar_busqueda==0 && m->es_menu_tabulado==0) {
+            if (es_no_indexar_busqueda==0 && es_menu_tabulado==0) {
                 zxvision_index_delete_last_submenu_path();
             }
             ya_borrado_helper_atras=1;
@@ -20240,7 +20242,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
             zxvision_helper_menu_shortcut_delete_last();
             //Indexar siempre que no diga que no hay que indexarlo, ni tampoco menus tabulados,
             //pues menus tabulados son mas bien para ventanas, como visual memory, y no menus de opciones
-            if (m->no_indexar_busqueda==0 && m->es_menu_tabulado==0) {
+            if (es_no_indexar_busqueda==0 && es_menu_tabulado==0) {
                 zxvision_index_delete_last_submenu_path();
             }
            }
@@ -20258,6 +20260,8 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 
         if (tecla_atajo) zxvision_helper_menu_shortcut_print(tecla_atajo);
 
+        if (es_one_time) zxvision_index_delete_last_submenu_path();
+
         return MENU_RETORNO_NORMAL;
     }
 
@@ -20274,6 +20278,15 @@ int menu_dibuja_menu_no_indexado(int *opcion_inicial,menu_item *item_seleccionad
     return menu_dibuja_menu(opcion_inicial,item_seleccionado,m,titulo);
 }
 
+//Igual que menu_dibuja_menu pero este menu se selecciona enter una vez o escape una vez, pero la funcion que la llamada no vuelve
+//a dibujar el menu, por tanto a nivel de path de indexacion de busqueda, se pierde el ultimo path de submenu
+//Ejemplo de esto: menu_simple_ten_choices
+int menu_dibuja_menu_one_time(int *opcion_inicial,menu_item *item_seleccionado,menu_item *m,char *titulo)
+{
+    m->one_time=1;
+
+    return menu_dibuja_menu(opcion_inicial,item_seleccionado,m,titulo);
+}
 
 void menu_add_item_menu_common_defaults(menu_item *m,int tipo_opcion,t_menu_funcion menu_funcion,t_menu_funcion_activo menu_funcion_activo)
 {
@@ -20304,6 +20317,7 @@ void menu_add_item_menu_common_defaults(menu_item *m,int tipo_opcion,t_menu_func
     m->tiene_submenu=0;
     m->item_avanzado=0;
     m->no_indexar_busqueda=0;
+    m->one_time=0;
     m->opcion_marcada=0;
     m->menu_se_cerrara=0;
 
@@ -22002,16 +22016,11 @@ int menu_simple_two_choices(char *texto_ventana,char *texto_interior,char *opcio
 
 
 
-            retorno_menu=menu_dibuja_menu(&simple_two_choices_opcion_seleccionada,&item_seleccionado,array_menu_simple_two_choices,texto_ventana);
+            retorno_menu=menu_dibuja_menu_one_time(&simple_two_choices_opcion_seleccionada,&item_seleccionado,array_menu_simple_two_choices,texto_ventana);
 
 
 
             if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
-                    //llamamos por valor de funcion
-                    //Al volver de esta manera, hay que indicar al index_search que se "va atras" un menu
-                    //Esto ya se llama por defecto en gestion de menu, cuando se pulsa ESC o flecha atras,
-                    //pero en este caso, se sale con la aceptacion de la opcion, y no es ni ESC ni flecha atras
-                    zxvision_index_delete_last_submenu_path();
                     return simple_two_choices_opcion_seleccionada;
             }
 
@@ -22056,16 +22065,12 @@ int menu_simple_three_choices(char *texto_ventana,char *texto_interior,char *opc
 
 
 
-            retorno_menu=menu_dibuja_menu(&simple_three_choices_opcion_seleccionada,&item_seleccionado,array_menu_simple_three_choices,texto_ventana);
+            retorno_menu=menu_dibuja_menu_one_time(&simple_three_choices_opcion_seleccionada,&item_seleccionado,array_menu_simple_three_choices,texto_ventana);
 
 
 
             if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
                     //llamamos por valor de funcion
-                    //Al volver de esta manera, hay que indicar al index_search que se "va atras" un menu
-                    //Esto ya se llama por defecto en gestion de menu, cuando se pulsa ESC o flecha atras,
-                    //pero en este caso, se sale con la aceptacion de la opcion, y no es ni ESC ni flecha atras
-                    zxvision_index_delete_last_submenu_path();
                     return simple_three_choices_opcion_seleccionada;
             }
 
@@ -22113,16 +22118,12 @@ int menu_simple_four_choices(char *texto_ventana,char *texto_interior,char *opci
 
 
 
-            retorno_menu=menu_dibuja_menu(&simple_four_choices_opcion_seleccionada,&item_seleccionado,array_menu_simple_four_choices,texto_ventana);
+            retorno_menu=menu_dibuja_menu_one_time(&simple_four_choices_opcion_seleccionada,&item_seleccionado,array_menu_simple_four_choices,texto_ventana);
 
 
 
             if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
                     //llamamos por valor de funcion
-                    //Al volver de esta manera, hay que indicar al index_search que se "va atras" un menu
-                    //Esto ya se llama por defecto en gestion de menu, cuando se pulsa ESC o flecha atras,
-                    //pero en este caso, se sale con la aceptacion de la opcion, y no es ni ESC ni flecha atras
-                    zxvision_index_delete_last_submenu_path();
                     return simple_four_choices_opcion_seleccionada;
             }
 
@@ -22172,16 +22173,12 @@ int menu_simple_five_choices(char *texto_ventana,char *texto_interior,char *opci
 
 
 
-            retorno_menu=menu_dibuja_menu(&simple_five_choices_opcion_seleccionada,&item_seleccionado,array_menu_simple_five_choices,texto_ventana);
+            retorno_menu=menu_dibuja_menu_one_time(&simple_five_choices_opcion_seleccionada,&item_seleccionado,array_menu_simple_five_choices,texto_ventana);
 
 
 
             if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
                     //llamamos por valor de funcion
-                    //Al volver de esta manera, hay que indicar al index_search que se "va atras" un menu
-                    //Esto ya se llama por defecto en gestion de menu, cuando se pulsa ESC o flecha atras,
-                    //pero en este caso, se sale con la aceptacion de la opcion, y no es ni ESC ni flecha atras
-                    zxvision_index_delete_last_submenu_path();
                     return simple_five_choices_opcion_seleccionada;
             }
 
@@ -22235,16 +22232,12 @@ int menu_simple_six_choices(char *texto_ventana,char *texto_interior,char *opcio
 
 
 
-            retorno_menu=menu_dibuja_menu(&simple_six_choices_opcion_seleccionada,&item_seleccionado,array_menu_simple_six_choices,texto_ventana);
+            retorno_menu=menu_dibuja_menu_one_time(&simple_six_choices_opcion_seleccionada,&item_seleccionado,array_menu_simple_six_choices,texto_ventana);
 
 
 
             if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
                     //llamamos por valor de funcion
-                    //Al volver de esta manera, hay que indicar al index_search que se "va atras" un menu
-                    //Esto ya se llama por defecto en gestion de menu, cuando se pulsa ESC o flecha atras,
-                    //pero en este caso, se sale con la aceptacion de la opcion, y no es ni ESC ni flecha atras
-                    zxvision_index_delete_last_submenu_path();
                     return simple_six_choices_opcion_seleccionada;
             }
 
@@ -22300,16 +22293,12 @@ int menu_simple_seven_choices(char *texto_ventana,char *texto_interior,char *opc
 
 
 
-            retorno_menu=menu_dibuja_menu(&simple_seven_choices_opcion_seleccionada,&item_seleccionado,array_menu_simple_seven_choices,texto_ventana);
+            retorno_menu=menu_dibuja_menu_one_time(&simple_seven_choices_opcion_seleccionada,&item_seleccionado,array_menu_simple_seven_choices,texto_ventana);
 
 
 
             if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
                     //llamamos por valor de funcion
-                    //Al volver de esta manera, hay que indicar al index_search que se "va atras" un menu
-                    //Esto ya se llama por defecto en gestion de menu, cuando se pulsa ESC o flecha atras,
-                    //pero en este caso, se sale con la aceptacion de la opcion, y no es ni ESC ni flecha atras
-                    zxvision_index_delete_last_submenu_path();
                     return simple_seven_choices_opcion_seleccionada;
             }
 
@@ -22369,16 +22358,12 @@ int menu_simple_eight_choices(char *texto_ventana,char *texto_interior,char *opc
 
 
 
-            retorno_menu=menu_dibuja_menu(&simple_eight_choices_opcion_seleccionada,&item_seleccionado,array_menu_simple_eight_choices,texto_ventana);
+            retorno_menu=menu_dibuja_menu_one_time(&simple_eight_choices_opcion_seleccionada,&item_seleccionado,array_menu_simple_eight_choices,texto_ventana);
 
 
 
             if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
                     //llamamos por valor de funcion
-                    //Al volver de esta manera, hay que indicar al index_search que se "va atras" un menu
-                    //Esto ya se llama por defecto en gestion de menu, cuando se pulsa ESC o flecha atras,
-                    //pero en este caso, se sale con la aceptacion de la opcion, y no es ni ESC ni flecha atras
-                    zxvision_index_delete_last_submenu_path();
                     return simple_eight_choices_opcion_seleccionada;
             }
 
@@ -22440,16 +22425,12 @@ int menu_simple_nine_choices(char *texto_ventana,char *texto_interior,char *opci
 
 
 
-            retorno_menu=menu_dibuja_menu(&simple_nine_choices_opcion_seleccionada,&item_seleccionado,array_menu_simple_nine_choices,texto_ventana);
+            retorno_menu=menu_dibuja_menu_one_time(&simple_nine_choices_opcion_seleccionada,&item_seleccionado,array_menu_simple_nine_choices,texto_ventana);
 
 
 
             if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
                     //llamamos por valor de funcion
-                    //Al volver de esta manera, hay que indicar al index_search que se "va atras" un menu
-                    //Esto ya se llama por defecto en gestion de menu, cuando se pulsa ESC o flecha atras,
-                    //pero en este caso, se sale con la aceptacion de la opcion, y no es ni ESC ni flecha atras
-                    zxvision_index_delete_last_submenu_path();
                     return simple_nine_choices_opcion_seleccionada;
             }
 
@@ -22515,16 +22496,11 @@ int menu_simple_ten_choices(char *texto_ventana,char *texto_interior,char *opcio
 
 
 
-            retorno_menu=menu_dibuja_menu(&simple_nine_choices_opcion_seleccionada,&item_seleccionado,array_menu_simple_nine_choices,texto_ventana);
-
+            retorno_menu=menu_dibuja_menu_one_time(&simple_nine_choices_opcion_seleccionada,&item_seleccionado,array_menu_simple_nine_choices,texto_ventana);
 
 
             if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
                     //llamamos por valor de funcion
-                    //Al volver de esta manera, hay que indicar al index_search que se "va atras" un menu
-                    //Esto ya se llama por defecto en gestion de menu, cuando se pulsa ESC o flecha atras,
-                    //pero en este caso, se sale con la aceptacion de la opcion, y no es ni ESC ni flecha atras
-                    zxvision_index_delete_last_submenu_path();
                     return simple_nine_choices_opcion_seleccionada;
             }
 

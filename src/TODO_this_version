@@ -816,3 +816,6 @@ Asi solo indexaria realmente lo que sean menus
 menu_dibuja_menu: la normal
 
 menu_dibuja_menu_no_indexado: para usar ventanas con opciones pero no queremos que este indexado, como por ejemplo Tracks List
+
+menu_dibuja_menu_one_time: para opciones de menu en que se pulsa enter o esc y se sale siempre del menu, no se vuelve a dibujar ese menu,
+y por tanto a nivel de path de indexacion de busqueda, se pierde el ultimo path de submenu. Ejemplo de esto: menu_simple_ten_choices
