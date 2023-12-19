@@ -63,6 +63,9 @@ extern int zeng_online_snapshot_diff;
 
 extern int zeng_online_snapshot_diff_media;
 
+//Para poder hacer debug_printf con la clase adecuada
+#define DBG_PRINT_ZENG_ONLINE_CLIENT debug_printf(VERBOSE_CLASS_ZENG_ONLINE_CLIENT|
+
 //#define ZENG_ONLINE_USE_ZIP_SNAPSHOT
 
 extern z80_bit zeng_online_room_was_created;

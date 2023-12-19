@@ -93,6 +93,10 @@ extern int zeng_online_enabled;
 extern void enable_zeng_online(void);
 extern void disable_zeng_online(void);
 
+
+//Para poder hacer debug_printf con la clase adecuada
+#define DBG_PRINT_ZENG_ONLINE debug_printf(VERBOSE_CLASS_ZENG_ONLINE|
+
 //5 minutos sin recibir un alive user, se declara muerto
 #define ZOC_TIMEOUT_ALIVE_USER (60*5)
 
