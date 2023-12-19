@@ -26662,13 +26662,13 @@ index_menu *zxvision_index_add_replace_menu(char *titulo_menu)
     index_menu *menu=zxvision_index_search_menu(titulo_menu);
 
     if (menu==NULL) {
-        printf("Menu %s no existe. Crear\n",titulo_menu);
+        //printf("Menu %s no existe. Crear\n",titulo_menu);
         return zxvision_index_add_menu(titulo_menu);
     }
     else {
         //reemplaza, borrar items de menu
         zxvision_index_erase_all_menu_lines(menu);
-        printf("Menu %s ya existe. Reemplazar\n",titulo_menu);
+        //printf("Menu %s ya existe. Reemplazar\n",titulo_menu);
         return menu;
     }
 }
@@ -26698,12 +26698,12 @@ void zxvision_index_delete_last_submenu_path(void)
     for (;indice>=1;indice--) {
         if (nombre_menu_con_submenu_para_indice[indice]=='>' && nombre_menu_con_submenu_para_indice[indice-1]=='-') {
             nombre_menu_con_submenu_para_indice[indice-1]=0;
-            printf("Borrar ultimo indice path. Resultante: [%s]\n",nombre_menu_con_submenu_para_indice);
+            //printf("Borrar ultimo indice path. Resultante: [%s]\n",nombre_menu_con_submenu_para_indice);
             return;
         }
     }
 
-    printf("Borrar ultimo indice path. No encontrada flecha\n");
+    //printf("Borrar ultimo indice path. No encontrada flecha\n");
 
 }
 
@@ -26743,7 +26743,7 @@ index_menu *zxvision_index_entrada_menu(char *titulo)
     if (nombre_menu_con_submenu_para_indice[0]==0) sprintf(buf_index_submenu,"%s",titulo_menu_final);
     else sprintf(buf_index_submenu,"-> %s",titulo_menu_final);
 
-    printf("Menu previo [%s]\n",buf_index_submenu);
+    //printf("Menu previo [%s]\n",buf_index_submenu);
 
 
 
@@ -26752,14 +26752,14 @@ index_menu *zxvision_index_entrada_menu(char *titulo)
     //TODO: creo que este metodo puede dar lugar a error, pero bueno
     char last_submenu[MAX_LENGTH_FULL_PATH_SUBMENU];
     zxvision_index_get_last_submenu(last_submenu);
-    printf("ultimo submenu en el path entero: [%s]. a comparar con: [%s]\n",last_submenu,titulo);
+    //printf("ultimo submenu en el path entero: [%s]. a comparar con: [%s]\n",last_submenu,titulo);
 
     //Si no es el mismo en el que estamos ahora
     if (strcmp(last_submenu,titulo)) {
         util_concat_string(nombre_menu_con_submenu_para_indice,buf_index_submenu,MAX_LENGTH_FULL_PATH_SUBMENU);
     }
 
-    printf("Menu [%s]\n",nombre_menu_con_submenu_para_indice);
+    //printf("Menu [%s]\n",nombre_menu_con_submenu_para_indice);
     index_menu *indice_menu_actual=zxvision_index_add_replace_menu(nombre_menu_con_submenu_para_indice);
 
     return indice_menu_actual;
@@ -26860,7 +26860,7 @@ void zxvision_index_load_from_disk(void)
         //leer titulo menu
         char titulo_menu[MAX_LENGTH_FULL_PATH_SUBMENU];
         int leidos=zxvision_index_load_from_disk_read_line(puntero,(z80_byte *)titulo_menu);
-        printf("Titulo: %s\n",titulo_menu);
+        //printf("Titulo: %s\n",titulo_menu);
 
         total_leidos-=leidos;
         puntero +=leidos;
@@ -26878,7 +26878,7 @@ void zxvision_index_load_from_disk(void)
 
                 if (linea_menu[0]==0) salir=1;
                 else {
-                    printf("Linea menu: %s\n",linea_menu);
+                    //printf("Linea menu: %s\n",linea_menu);
                     zxvision_index_add_menu_linea(indice_menu_actual,linea_menu);
                 }
 

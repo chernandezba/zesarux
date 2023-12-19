@@ -39859,8 +39859,8 @@ void menu_search(MENU_ITEM_PARAMETERS)
         while (linea_menu!=NULL) {
             char *encontrado=util_strcasestr(linea_menu->texto_opcion,menu_search_campo_busqueda);
             if (encontrado!=NULL) {
-                printf("Encontrado texto [%s] en linea [%s] de menu [%s]\n",
-                    menu_search_campo_busqueda,linea_menu->texto_opcion,menu->titulo_menu);
+                //printf("Encontrado texto [%s] en linea [%s] de menu [%s]\n",
+                //    menu_search_campo_busqueda,linea_menu->texto_opcion,menu->titulo_menu);
 
                 //Tiene que caber nombre menu (con ->) y nombre linea
                 char buf_linea[MAX_TEXTO_OPCION*10+MAX_TEXTO_OPCION+30];
