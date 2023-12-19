@@ -292,7 +292,7 @@ int menu_zeng_online_list_rooms(int *room_number,int *created,int *autojoin,int 
 
         //menu_add_ESC_item(array_menu_common);
 
-        retorno_menu=menu_dibuja_menu(&opcion_seleccionada,&item_seleccionado,array_menu_common,"Rooms");
+        retorno_menu=menu_dibuja_menu_no_indexado(&opcion_seleccionada,&item_seleccionado,array_menu_common,"Rooms");
 
         //Si no seleccionada linea valida
         if (!((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0)) {
