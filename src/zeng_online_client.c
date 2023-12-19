@@ -361,7 +361,7 @@ int zeng_online_client_list_rooms_connect(void)
 		leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)buffer,ZENG_BUFFER_INITIAL_CONNECT,&posicion_command);
 		if (leidos>0) {
 			buffer[leidos]=0; //fin de texto
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG: Received text for zeng-online is-enabled (length %d): \n[\n%s\n]",leidos,buffer);
+			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"ZENG: Received text for zeng-online is-enabled (length %d): \n[\n%s\n]",leidos,buffer);
 		}
 
 		if (leidos<0) {
@@ -401,7 +401,7 @@ int zeng_online_client_list_rooms_connect(void)
 		leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)zeng_remote_list_rooms_buffer,total_listado_rooms_memoria,&posicion_command);
 		if (leidos>0) {
 			buffer[leidos]=0; //fin de texto
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG: Received text for zeng-online list-rooms (length %d): \n[\n%s\n]",leidos,zeng_remote_list_rooms_buffer);
+			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"ZENG: Received text for zeng-online list-rooms (length %d): \n[\n%s\n]",leidos,zeng_remote_list_rooms_buffer);
 		}
 
 		if (leidos<0) {
@@ -502,7 +502,7 @@ int zeng_online_client_list_users_connect(void)
 		leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)zeng_remote_list_users_buffer,espacio_necesario,&posicion_command);
 		if (leidos>0) {
 			buffer[leidos]=0; //fin de texto
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG: Received text for zeng-online list-users (length %d): \n[\n%s\n]",leidos,zeng_remote_list_users_buffer);
+			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"ZENG: Received text for zeng-online list-users (length %d): \n[\n%s\n]",leidos,zeng_remote_list_users_buffer);
 		}
 
 		if (leidos<0) {
@@ -598,7 +598,7 @@ int zoc_common_send_command_buffer(int indice_socket,char *buffer_enviar,char *c
     int leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)buffer,max_buffer,&posicion_command);
     if (leidos>0) {
         buffer[leidos]=0; //fin de texto
-        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG: Received text for zeng-online %s (length %d): \n[\n%s\n]",command_name_for_info,leidos,buffer);
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"ZENG: Received text for zeng-online %s (length %d): \n[\n%s\n]",command_name_for_info,leidos,buffer);
     }
 
     if (leidos<0) {
@@ -611,7 +611,7 @@ int zoc_common_send_command_buffer(int indice_socket,char *buffer_enviar,char *c
     //1 mas para eliminar el salto de linea anterior a "command>"
     if (posicion_command>=1) {
         buffer[posicion_command-1]=0;
-        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG: Received text: %s",buffer);
+        //DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG: Received text: %s",buffer);
     }
     else {
         DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"Error receiving ZEsarUX zeng-online %s",command_name_for_info);
@@ -762,7 +762,7 @@ int zeng_online_client_authorize_join_connect(void)
 		leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)buffer,ZENG_BUFFER_INITIAL_CONNECT,&posicion_command);
 		if (leidos>0) {
 			buffer[leidos]=0; //fin de texto
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG: Received text for zeng-online authorize-join (length %d): \n[\n%s\n]",leidos,buffer);
+			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"ZENG: Received text for zeng-online authorize-join (length %d): \n[\n%s\n]",leidos,buffer);
 		}
 
 		if (leidos<0) {
@@ -861,7 +861,7 @@ int zeng_online_client_join_list_connect(void)
 		leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)zeng_remote_join_list_buffer,1023,&posicion_command);
 		if (leidos>0) {
 			zeng_remote_join_list_buffer[leidos]=0; //fin de texto
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG: Received text for zeng-online list-rooms (length %d): \n[\n%s\n]",leidos,zeng_remote_join_list_buffer);
+			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"ZENG: Received text for zeng-online list-rooms (length %d): \n[\n%s\n]",leidos,zeng_remote_join_list_buffer);
 		}
 
 		if (leidos<0) {
@@ -2007,7 +2007,7 @@ int zeng_online_client_join_room_connect(void)
             leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)buffer,ZENG_BUFFER_INITIAL_CONNECT,&posicion_command);
             if (leidos>0) {
                 buffer[leidos]=0; //fin de texto
-                DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG: Received text for zeng-online join (length %d): \n[\n%s\n]",leidos,buffer);
+                DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"ZENG: Received text for zeng-online join (length %d): \n[\n%s\n]",leidos,buffer);
             }
 
             if (leidos<0) {
@@ -2025,7 +2025,7 @@ int zeng_online_client_join_room_connect(void)
 		//1 mas para eliminar el salto de linea anterior a "command>"
 		if (posicion_command>=1) {
 			buffer[posicion_command-1]=0;
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG: Received text: %s",buffer);
+			//DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG: Received text: %s",buffer);
 		}
 		else {
 			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"Error receiving ZEsarUX zeng-online join");
@@ -2192,7 +2192,7 @@ int zeng_online_client_create_room_connect(void)
 		leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)buffer,ZENG_BUFFER_INITIAL_CONNECT,&posicion_command);
 		if (leidos>0) {
 			buffer[leidos]=0; //fin de texto
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG: Received text for zeng-online create-room (length %d): \n[\n%s\n]",leidos,buffer);
+			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"ZENG: Received text for zeng-online create-room (length %d): \n[\n%s\n]",leidos,buffer);
 		}
 
 		if (leidos<0) {
@@ -2203,7 +2203,7 @@ int zeng_online_client_create_room_connect(void)
 		//1 mas para eliminar el salto de linea anterior a "command>"
 		if (posicion_command>=1) {
 			buffer[posicion_command-1]=0;
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG: Received text: %s",buffer);
+			//DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG: Received text: %s",buffer);
 		}
 		else {
 			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"Error receiving ZEsarUX zeng-online create-room");
@@ -3079,7 +3079,7 @@ int zoc_receive_snapshot(int indice_socket)
     //printf("Inicio zoc_receive_snapshot llamado desde:\n");
     //debug_exec_show_backtrace();
 
-    DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG: Receiving snapshot");
+    DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"ZENG: Receiving snapshot");
 
     int posicion_command;
     int escritos,leidos;
@@ -3146,7 +3146,7 @@ int zoc_receive_snapshot(int indice_socket)
                     int nuevo_id=parse_string_to_number(buffer);
                     if (nuevo_id!=zoc_receive_snapshot_last_id) {
                         zeng_online_snapshot_diff=nuevo_id-zoc_receive_snapshot_last_id;
-                        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"Snapshot id difference from last snapshot: %d",zeng_online_snapshot_diff);
+                        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"Snapshot id difference from last snapshot: %d",zeng_online_snapshot_diff);
 
                         zeng_online_snapshot_diff_media=(zeng_online_snapshot_diff+zeng_online_snapshot_diff_media)/2;
 
@@ -3210,7 +3210,7 @@ int zoc_receive_snapshot(int indice_socket)
 
                     if (leidos>0) {
                         zoc_get_snapshot_mem_hexa[leidos]=0; //fin de texto
-                        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG: Received text for get-snapshot (length %d): \n[\n%s\n]",leidos,zoc_get_snapshot_mem_hexa);
+                        //DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG: Received text for get-snapshot (length %d): \n[\n%s\n]",leidos,zoc_get_snapshot_mem_hexa);
                     }
 
                     if (leidos<0) {
