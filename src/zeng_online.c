@@ -111,13 +111,25 @@ struct zeng_online_room zeng_online_rooms_list[ZENG_ONLINE_MAX_ROOMS];
 void zoc_begin_lock_joined_users(int room_number)
 {
 	while(z_atomic_test_and_set(&zeng_online_rooms_list[room_number].semaphore_joined_users)) {
-		//printf("Esperando a liberar lock en zoc_add_user_to_joined_users\n");
+		//printf("Esperando a liberar lock en zoc_begin_lock_joined_users\n");
 	}
 }
 
 void zoc_end_lock_joined_users(int room_number)
 {
     z_atomic_reset(&zeng_online_rooms_list[room_number].semaphore_joined_users);
+}
+
+void zoc_begin_lock_allowed_keys(int room_number)
+{
+	while(z_atomic_test_and_set(&zeng_online_rooms_list[room_number].semaphore_allowed_keys)) {
+		//printf("Esperando a liberar lock en zoc_begin_lock_joined_users\n");
+	}
+}
+
+void zoc_end_lock_allowed_keys(int room_number)
+{
+    z_atomic_reset(&zeng_online_rooms_list[room_number].semaphore_allowed_keys);
 }
 
 //Agregar usuario a la lista de joined_users
@@ -581,6 +593,7 @@ void init_zeng_online_rooms(void)
         z_atomic_reset(&zeng_online_rooms_list[i].semaphore_writing_snapshot);
         z_atomic_reset(&zeng_online_rooms_list[i].semaphore_events);
         z_atomic_reset(&zeng_online_rooms_list[i].semaphore_joined_users);
+        z_atomic_reset(&zeng_online_rooms_list[i].semaphore_allowed_keys);
 
 
     }
@@ -1077,7 +1090,7 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
 
         int teclas_agregadas=0;
 
-        //TODO: semaforo para esto
+        zoc_begin_lock_allowed_keys(room_number);
 
         for (;restantes_teclas>0;restantes_teclas--,teclas_agregadas++,indice_tecla++) {
             zeng_online_rooms_list[room_number].allowed_keys[profile_index][teclas_agregadas]=parse_string_to_number(comando_argv[indice_tecla]);
@@ -1089,6 +1102,7 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
             zeng_online_rooms_list[room_number].allowed_keys[profile_index][teclas_agregadas]=0;
         }
 
+        zoc_end_lock_allowed_keys(room_number);
 
     }
 
@@ -1130,7 +1144,7 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
             return;
         }
 
-        //TODO: semaforo para esto
+        zoc_begin_lock_allowed_keys(room_number);
 
         if (comando_argc==3) {
             //desasignar. uuid es cadena vacia
@@ -1140,6 +1154,8 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
         else {
             strcpy(zeng_online_rooms_list[room_number].allowed_keys_assigned[profile_index],comando_argv[4]);
         }
+
+        zoc_end_lock_allowed_keys(room_number);
 
 
     }

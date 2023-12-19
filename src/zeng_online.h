@@ -170,6 +170,7 @@ struct zeng_online_room {
     int autojoin_permissions;
 
     //Perfiles de teclas permitidas en usuarios
+    z_atomic_semaphore semaphore_allowed_keys;
     //Primer indice [] apunta al id de perfil.
     //Segundo indice [] apunta a la tecla; si vale 0, indica final de perfil. Final de perfil tambien indicado por el ultimo item al llenarse el array
     int allowed_keys[ZOC_MAX_KEYS_PROFILES][ZOC_MAX_KEYS_ITEMS];
