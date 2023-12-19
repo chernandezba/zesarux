@@ -108,13 +108,23 @@ int zeng_online_enabled=0;
 //Array de habitaciones en zeng online
 struct zeng_online_room zeng_online_rooms_list[ZENG_ONLINE_MAX_ROOMS];
 
+void zoc_begin_lock_joined_users(int room_number)
+{
+	while(z_atomic_test_and_set(&zeng_online_rooms_list[room_number].semaphore_joined_users)) {
+		//printf("Esperando a liberar lock en zoc_add_user_to_joined_users\n");
+	}
+}
+
+void zoc_end_lock_joined_users(int room_number)
+{
+    z_atomic_reset(&zeng_online_rooms_list[room_number].semaphore_joined_users);
+}
+
 //Agregar usuario a la lista de joined_users
 void zoc_add_user_to_joined_users(int room_number,char *nickname,char *uuid)
 {
     //Para evitar escribir dos a la vez
-	while(z_atomic_test_and_set(&zeng_online_rooms_list[room_number].semaphore_joined_users)) {
-		//printf("Esperando a liberar lock en zoc_add_user_to_joined_users\n");
-	}
+	zoc_begin_lock_joined_users(room_number);
 
     int i;
     int agregado=0;
@@ -140,7 +150,7 @@ void zoc_add_user_to_joined_users(int room_number,char *nickname,char *uuid)
     if (!agregado) debug_printf(VERBOSE_DEBUG,"Reached maximum users on join_list names");
 
 	//Liberar lock
-	z_atomic_reset(&zeng_online_rooms_list[room_number].semaphore_joined_users);
+	zoc_end_lock_joined_users(room_number);
 
 }
 
@@ -150,9 +160,7 @@ void zoc_del_user_to_joined_users(int room_number,char *uuid,char *nickname)
 {
 
     //Para evitar escribir dos a la vez
-	while(z_atomic_test_and_set(&zeng_online_rooms_list[room_number].semaphore_joined_users)) {
-		//printf("Esperando a liberar lock en zoc_del_user_to_joined_users\n");
-	}
+	zoc_begin_lock_joined_users(room_number);
 
     int i;
     int borrado=0;
@@ -176,7 +184,7 @@ void zoc_del_user_to_joined_users(int room_number,char *uuid,char *nickname)
     if (!borrado) debug_printf(VERBOSE_DEBUG,"Can not find user with uuid %s to delete from join list",uuid);
 
 	//Liberar lock
-	z_atomic_reset(&zeng_online_rooms_list[room_number].semaphore_joined_users);
+	zoc_end_lock_joined_users(room_number);
 
 }
 
