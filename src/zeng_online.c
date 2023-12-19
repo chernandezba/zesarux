@@ -339,7 +339,7 @@ void timer_zeng_online_server(void)
 
 int join_list_return_last_element(int room_number)
 {
-    //TODO meter esto en bloqueo semaforo
+
     int indice_inicial=zeng_online_rooms_list[room_number].index_waiting_join_first;
     int indice_final=indice_inicial+zeng_online_rooms_list[room_number].total_waiting_join;
 
@@ -350,7 +350,7 @@ int join_list_return_last_element(int room_number)
 
 void join_delete_first_element(int room_number)
 {
-    //TODO meter esto en bloqueo semaforo
+
     int indice_inicial=zeng_online_rooms_list[room_number].index_waiting_join_first;
     indice_inicial++;
 
@@ -370,7 +370,8 @@ int join_list_add_element(int room_number,char *nickname)
         sleep(1);
     }
 
-    //TODO meter esto en bloqueo semaforo
+    //bloqueo de usuarios en lista desde aqui
+    zoc_begin_lock_joined_users(room_number);
 
 
 
@@ -382,6 +383,7 @@ int join_list_add_element(int room_number,char *nickname)
     zeng_online_rooms_list[room_number].total_waiting_join++;
 
     //bloqueo hasta aqui
+    zoc_end_lock_joined_users(room_number);
 
     return indice_final;
 
@@ -923,10 +925,12 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
             return;
         }
 
-        //TODO bloqueo de esto
+        //bloqueo de esto
+        zoc_begin_lock_joined_users(room_number);
         int indice_primero=zeng_online_rooms_list[room_number].index_waiting_join_first;
         escribir_socket_format(misocket,"%s",zeng_online_rooms_list[room_number].join_waiting_list[indice_primero].nickname);
         //fin bloqueo
+        zoc_end_lock_joined_users(room_number);
 
     }
 
@@ -968,13 +972,14 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
             return;
         }
 
-        //TODO bloqueo desde aqui
+        //bloqueo desde aqui
+        zoc_begin_lock_joined_users(room_number);
         zeng_online_rooms_list[room_number].join_waiting_list[id_authorization].permissions=permissions_client;
         zeng_online_rooms_list[room_number].join_waiting_list[id_authorization].waiting=0;
 
 
         join_delete_first_element(room_number);
-        //hasta aqui
+        zoc_end_lock_joined_users(room_number);
 
     }
 
@@ -1337,7 +1342,6 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
     }
 
     //kick creator_pass n uuid                        Kick user identified by uuid\n"
-    //TODO semaforo para esto
     else if (!strcmp(comando_argv[0],"kick")) {
         if (!zeng_online_enabled) {
             escribir_socket(misocket,"ERROR. ZENG Online is not enabled");
