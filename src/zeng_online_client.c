@@ -689,7 +689,7 @@ int zeng_online_client_leave_room_connect(void)
 
     //Desconectar aunque haya habido error
     if (return_value) {
-        printf("Desconexion ok\n");
+        //printf("Desconexion ok\n");
     }
 
 
@@ -747,9 +747,9 @@ int zeng_online_client_authorize_join_connect(void)
         sprintf(buffer_envio_comando,"zeng-online authorize-join %s %d %d\n",
             created_room_creator_password,zeng_online_joined_to_room_number,parm_zeng_online_client_authorize_join_permissions);
 
-            printf("Authorizing by: %s\n",buffer_envio_comando);
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"Authorizing by: %s",buffer_envio_comando);
 
-            printf("Permisos: %d\n",parm_zeng_online_client_authorize_join_permissions);
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"Permissions: %d",parm_zeng_online_client_authorize_join_permissions);
 
 
 		int escritos=z_sock_write_string(indice_socket,buffer_envio_comando);
@@ -780,7 +780,7 @@ int zeng_online_client_authorize_join_connect(void)
 			return 0;
 		}
 
-        printf("return authorize-join list: %s\n",buffer);
+        //printf("return authorize-join list: %s\n",buffer);
 
 		//finalizar conexion
         z_sock_close_connection(indice_socket);
@@ -879,7 +879,7 @@ int zeng_online_client_join_list_connect(void)
 			return 0;
 		}
 
-        printf("join llist: %s\n",zeng_remote_join_list_buffer);
+        //printf("join llist: %s\n",zeng_remote_join_list_buffer);
 
 		//finalizar conexion
         z_sock_close_connection(indice_socket);
@@ -1035,7 +1035,7 @@ int zoc_get_message(int indice_socket,char *mensaje)
 
     int return_value=zoc_common_send_command_buffer(indice_socket,buffer_enviar,"get-message-id",buffer,ZENG_BUFFER_INITIAL_CONNECT);
 
-    printf("get_message: [%s]\n",buffer);
+    //printf("get_message: [%s]\n",buffer);
 
     if (!return_value) {
         return -1;
@@ -1318,7 +1318,7 @@ int zeng_online_client_get_profile_keys_connect(void)
 
         if (!return_value) return 0;
 
-        printf("buffer recibido para get-key-profile perfil %d: %s\n",i,buffer);
+        //printf("buffer recibido para get-key-profile perfil %d: %s\n",i,buffer);
 
         //Parsear cada valor
         int indice=0;
@@ -1329,7 +1329,7 @@ int zeng_online_client_get_profile_keys_connect(void)
         while (buffer[indice]) {
             if (buffer[indice]==' ' || buffer[indice+1]==0) {
                 if (buffer[indice]==' ') buffer[indice]=0;
-                printf("add tecla %s\n",&buffer[inicio_numero]);
+                //printf("add tecla %s\n",&buffer[inicio_numero]);
                 int valor=parse_string_to_number(&buffer[inicio_numero]);
                 allowed_keys[i][indice_tecla++]=valor;
                 inicio_numero=indice+1;
@@ -1346,7 +1346,7 @@ int zeng_online_client_get_profile_keys_connect(void)
         //mostrarlos
         int j;
         for (j=0;j<ZOC_MAX_KEYS_ITEMS && allowed_keys[i][j];j++) {
-            printf("Tecla escaneada %d\n",allowed_keys[i][j]);
+            DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_INFO,"Allowed key on profile: %d",allowed_keys[i][j]);
         }
 
 
@@ -1363,7 +1363,7 @@ int zeng_online_client_get_profile_keys_connect(void)
 
         if (!return_value) return 0;
 
-        printf("buffer recibido para get-key-profile-assign perfil %d: %s\n",i,buffer);
+        //printf("buffer recibido para get-key-profile-assign perfil %d: %s\n",i,buffer);
 
         //Esto tal cual a variable
         strcpy(allowed_keys_assigned[i],buffer);
@@ -1420,7 +1420,7 @@ int zeng_online_client_send_profile_keys_connect(void)
         int j;
         int total_teclas=0;
         for (j=0;j<ZOC_MAX_KEYS_ITEMS && allowed_keys[i][j];j++) {
-            printf("Tecla escaneada %d\n",allowed_keys[i][j]);
+            //printf("Tecla escaneada %d\n",allowed_keys[i][j]);
             char buf_tecla[10];
             sprintf(buf_tecla,"%d ",allowed_keys[i][j]);
             util_concat_string(buffer_teclas,buf_tecla,ZOC_MAX_KEYS_ITEMS*4);
@@ -1872,7 +1872,7 @@ void zeng_online_client_get_profile_keys(void)
 void zeng_online_client_send_profile_keys(void)
 {
 
-    printf("Sending restricted keys to server\n");
+    DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_INFO,"Sending restricted keys to server");
 
 	if (pthread_create( &thread_zeng_online_client_send_profile_keys, NULL, &zeng_online_client_send_profile_keys_function, NULL) ) {
 		DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"Can not create zeng online send profile keys pthread");
@@ -2016,7 +2016,7 @@ int zeng_online_client_join_room_connect(void)
             }
 
             if (leidos==0) {
-                printf("no leida respuesta aun de join\n");
+                DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"No response read from join yet");
             }
 
             reintentos--;
@@ -2032,7 +2032,7 @@ int zeng_online_client_join_room_connect(void)
 			return 0;
 		}
 
-        printf("Retorno join-room: [%s]\n",buffer);
+        //printf("Retorno join-room: [%s]\n",buffer);
         //Si hay ERROR
         if (strstr(buffer,"ERROR")!=NULL) {
             DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"Error joining room: %s",buffer);
@@ -2057,8 +2057,8 @@ int zeng_online_client_join_room_connect(void)
         i++;
         created_room_user_permissions=parse_string_to_number(&buffer[i]);
 
-        printf("User password: [%s]\n",created_room_user_password);
-        printf("User permissions: [%d]\n",created_room_user_permissions);
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"User password: [%s]",created_room_user_password);
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"User permissions: [%d]",created_room_user_permissions);
 
 
 		//finalizar conexion
@@ -2210,7 +2210,7 @@ int zeng_online_client_create_room_connect(void)
 			return 0;
 		}
 
-        printf("Retorno crear-room: [%s]\n",buffer);
+        //printf("Retorno crear-room: [%s]\n",buffer);
         //Si hay ERROR
         if (strstr(buffer,"ERROR")!=NULL) {
             DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"Error creating room: %s",buffer);
@@ -2218,7 +2218,7 @@ int zeng_online_client_create_room_connect(void)
         }
         strcpy(created_room_creator_password,buffer);
 
-        printf("Creator password: [%s]\n",created_room_creator_password);
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"Creator password: [%s]",created_room_creator_password);
 
 		//finalizar conexion
         z_sock_close_connection(indice_socket);
@@ -2459,7 +2459,9 @@ void zoc_get_keys(int indice_socket)
 
                     if (!strcmp(campo_inicio,"#") && !strcmp(campo_final,"#")) valido=1;
 
-                    if (!valido) printf("linea no valida\n");
+                    if (!valido) {
+                        //printf("linea no valida\n");
+                    }
                     else {
 
                         //Si uuid yo soy mismo, no procesarlo
@@ -2500,7 +2502,7 @@ void zoc_get_keys(int indice_socket)
                 }
 
                 else {
-                    printf("Recibida respuesta incorrecta con diferentes campos de los esperados\n");
+                    DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"Received answer for get_keys with invalid number of fields");
                 }
 
 
@@ -2561,10 +2563,10 @@ int zoc_start_connection_get_keys(void)
 
     //int leidos=z_sock_read(indice_socket,buffer,199);
     int leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)buffer_initial,ZENG_BUFFER_INITIAL_CONNECT,&posicion_command);
-    printf("leidos on zoc_start_connection_get_keys: %d\n",leidos);
+    //printf("leidos on zoc_start_connection_get_keys: %d\n",leidos);
     if (leidos>0) {
         buffer_initial[leidos]=0; //fin de texto
-        printf("Received text on zoc_start_connection_get_keys (length: %d):\n[\n%s\n]\n",leidos,buffer_initial);
+        //printf("Received text on zoc_start_connection_get_keys (length: %d):\n[\n%s\n]\n",leidos,buffer_initial);
     }
 
     if (leidos<0) {
@@ -2602,15 +2604,15 @@ int zoc_start_connection_get_keys(void)
 
 
 
-        printf ("before read command sending get-keys on zoc_start_connection_get_keys\n");
+        //printf ("before read command sending get-keys on zoc_start_connection_get_keys\n");
         //1 segundo maximo de reintentos
         //sobretodo util en la primera conexion, dado que el buffer vendra vacio, siempre esperara 1 segundo
         int leidos=zsock_read_all_until_command_max_reintentos(indice_socket,(z80_byte *)buffer_initial,ZENG_BUFFER_INITIAL_CONNECT,&posicion_command,100);
-        printf ("after read command sending get-keys on zoc_start_connection_get_keys. leidos=%d\n",leidos);
+        //printf ("after read command sending get-keys on zoc_start_connection_get_keys. leidos=%d\n",leidos);
 
         if (leidos>0) {
             buffer_initial[leidos]=0; //fin de texto
-            printf("Received text after get-keys: (length: %d):\n[\n%s\n]\n",leidos,buffer_initial);
+            //printf("Received text after get-keys: (length: %d):\n[\n%s\n]\n",leidos,buffer_initial);
         }
 
         if (leidos<0) {
@@ -2766,7 +2768,7 @@ int zoc_get_pending_authorization_size(int indice_socket)
 
                 //Detectar si error
                 if (strstr(buffer,"ERROR")!=NULL) {
-                    printf("Error getting get-join-queue-size\n");
+                    DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"Error getting get-join-queue-size");
                 }
                 else {
                     //Ver si id diferente
@@ -2870,7 +2872,7 @@ void zoc_common_get_messages_slave_master(int indice_socket)
 
         int id_actual=zoc_get_message_id(indice_socket);
         if (id_actual!=zoc_last_message_id) {
-            printf("Hay nuevo mensaje\n");
+            DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"There is a new message");
             char buffer_mensaje[ZENG_ONLINE_MAX_BROADCAST_MESSAGE_SHOWN_LENGTH+1];
             zoc_get_message(indice_socket,buffer_mensaje);
             if (buffer_mensaje[0]) {
@@ -2942,7 +2944,7 @@ void *zoc_master_thread_function(void *nada GCC_UNUSED)
 
     //Leer id de mensaje de broadcast para saber cuando llega uno nuevo
     zoc_last_message_id=zoc_get_message_id(indice_socket);
-    printf("Initial message id: %d\n",zoc_last_message_id);
+    //printf("Initial message id: %d\n",zoc_last_message_id);
 
     int indice_socket_get_keys=zoc_start_connection_get_keys();
 
@@ -2968,7 +2970,7 @@ void *zoc_master_thread_function(void *nada GCC_UNUSED)
 
                     if (error<0) {
                         //TODO
-                        printf("Error sending snapshot to zeng online server\n");
+                        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"Error sending snapshot to zeng online server");
                     }
 
                     //Enviado. Avisar no pendiente
@@ -2982,12 +2984,12 @@ void *zoc_master_thread_function(void *nada GCC_UNUSED)
             //Esto ya no se usa, era inicialmente un manager que recibia snapshots
             if (created_room_user_permissions & ZENG_ONLINE_PERMISSIONS_GET_SNAPSHOT) {
 
-                printf("Recibiendo snapshot porque somos master manager. contador_segundo=%d\n",contador_segundo);
+                //printf("Recibiendo snapshot porque somos master manager. contador_segundo=%d\n",contador_segundo);
                 int error=zoc_receive_snapshot(indice_socket);
                 //TODO gestionar bien este error
                 if (error<0) {
                     //TODO
-                    printf("Error getting snapshot from zeng online server\n");
+                    DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"Error getting snapshot from zeng online server");
                     usleep(10000); //dormir 10 ms
                 }
 
@@ -2995,7 +2997,7 @@ void *zoc_master_thread_function(void *nada GCC_UNUSED)
 
             //Si estabamos reentrando como master, obtener el snapshot que habia
             if (zoc_rejoining_as_master) {
-                printf("Receiving first snapshot as we are rejoining as master\n");
+                DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_INFO,"Receiving first snapshot as we are rejoining as master");
                 zoc_rejoining_as_master=0;
                 zoc_pending_apply_received_snapshot_as_rejoin_as_master=1;
 
@@ -3135,7 +3137,7 @@ int zoc_receive_snapshot(int indice_socket)
 
                 //Detectar si error
                 if (strstr(buffer,"ERROR")!=NULL) {
-                    printf("Error getting snapshot-id\n");
+                    DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"Error getting snapshot-id");
                 }
                 else {
                     //Ver si id diferente
@@ -3383,7 +3385,7 @@ int zoc_check_if_kicked(int indice_socket)
         if (retorno>=0) {
             //printf("Kicked user: [%s]\n",buffer_kick_user);
             if (!strcmp(buffer_kick_user,stats_uuid)) {
-                printf("I have been kicked\n");
+                //DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_INFO,"I have been kicked");
                 put_footer_first_message("I have been kicked");
                 zeng_online_client_leave_room();
                 DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"I have been kicked from the ZENG Online room");
@@ -3440,7 +3442,7 @@ void *zoc_slave_thread_function(void *nada GCC_UNUSED)
 
     //Leer id de mensaje de broadcast para saber cuando llega uno nuevo
     zoc_last_message_id=zoc_get_message_id(indice_socket);
-    printf("Initial message id: %d\n",zoc_last_message_id);
+    //printf("Initial message id: %d\n",zoc_last_message_id);
 
 
     int indice_socket_get_keys=zoc_start_connection_get_keys();
@@ -3466,7 +3468,7 @@ void *zoc_slave_thread_function(void *nada GCC_UNUSED)
                 //TODO gestionar bien este error
                 if (error<0) {
                     //TODO
-                    printf("Error getting snapshot from zeng online server\n");
+                    DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"Error getting snapshot from zeng online server");
                     usleep(10000); //dormir 10 ms
                 }
 
@@ -3584,7 +3586,7 @@ void zeng_online_client_apply_pending_received_snapshot(void)
 
     //Permitir aplicar el primer snapshot que hemos recibido al hacer rejoin as master
     if (zoc_pending_apply_received_snapshot_as_rejoin_as_master) {
-        printf("Permitir primer snapshot recibido con rejoin\n");
+        //printf("Permitir primer snapshot recibido con rejoin\n");
         zoc_pending_apply_received_snapshot_as_rejoin_as_master=0;
     }
 
@@ -3592,7 +3594,7 @@ void zeng_online_client_apply_pending_received_snapshot(void)
     //o sea lo que era inicialmente un manager master, que recibia snapshots
     //Esto ya no se usa, un manager no recibe snapshots
     else if (zeng_online_i_am_master.v && (created_room_user_permissions & ZENG_ONLINE_PERMISSIONS_GET_SNAPSHOT)) {
-        printf("Permitir aplicar snapshot porque somos solo manager\n");
+        //printf("Permitir aplicar snapshot porque somos solo manager\n");
     }
 
     else {
@@ -3831,7 +3833,7 @@ void zeng_online_client_end_frame_from_core_functions(void)
             zoc_last_snapshot_received_counter--;
 
             if (zoc_last_snapshot_received_counter==0) {
-                printf("Timeout receiving snapshots from master. Allowing local key press\n");
+                DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_INFO,"Timeout receiving snapshots from master. Allowing local key press");
                 zoc_show_bottom_line_footer_connected(); //Para actualizar la linea de abajo del todo con texto ZEsarUX version bla bla - OFFLINE
                 generic_footertext_print_operating("OFFLIN");
             }
