@@ -235,7 +235,7 @@ int zeng_online_client_list_rooms_connect(void)
         int total_listado_rooms_memoria=espacio_por_room*ZENG_ONLINE_MAX_ROOMS;
 
 
-		DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"Getting zeng-online rooms");
+		DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Getting zeng-online rooms");
         if (zeng_remote_list_rooms_buffer==NULL) {
 
             zeng_remote_list_rooms_buffer=util_malloc(total_listado_rooms_memoria,"Can not allocate memory for getting list-rooms");
@@ -274,7 +274,7 @@ int zeng_online_client_list_rooms_connect(void)
         zeng_online_last_list_rooms_latency=timer_stats_diference_time(&list_rooms_time_antes,&list_rooms_time_despues);
 
 		if (indice_socket<0) {
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"Error connecting to %s:%d. %s",
+			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Error connecting to %s:%d. %s",
                 server,puerto,
                 z_sock_get_error(indice_socket));
 			return 0;
@@ -295,19 +295,19 @@ int zeng_online_client_list_rooms_connect(void)
 		}
 
 		if (leidos<0) {
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ERROR. Can't read remote prompt: %s",z_sock_get_error(leidos));
+			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't read remote prompt: %s",z_sock_get_error(leidos));
 			return 0;
 		}
 
 		//zsock_wait_until_command_prompt(indice_socket);
 
-		DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG: Sending get-version");
+		DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Sending get-version");
 
 		//Enviar un get-version
 		int escritos=z_sock_write_string(indice_socket,"get-version\n");
 
 		if (escritos<0) {
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ERROR. Can't send get-version: %s",z_sock_get_error(escritos));
+			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't send get-version: %s",z_sock_get_error(escritos));
 			return 0;
 		}
 
@@ -316,21 +316,21 @@ int zeng_online_client_list_rooms_connect(void)
 		leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)buffer,ZENG_BUFFER_INITIAL_CONNECT,&posicion_command);
 		if (leidos>0) {
 			buffer[leidos]=0; //fin de texto
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG: Received text for get-version (length %d): \n[\n%s\n]",leidos,buffer);
+			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Received text for get-version (length %d): \n[\n%s\n]",leidos,buffer);
 		}
 
 		if (leidos<0) {
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ERROR. Can't receive version: %s",z_sock_get_error(leidos));
+			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't receive version: %s",z_sock_get_error(leidos));
 			return 0;
 		}
 
 		//1 mas para eliminar el salto de linea anterior a "command>"
 		if (posicion_command>=1) {
 			buffer[posicion_command-1]=0;
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG: Received version: %s",buffer);
+			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Received version: %s",buffer);
 		}
 		else {
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"Error receiving ZEsarUX remote version");
+			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Error receiving ZEsarUX remote version");
 			return 0;
 		}
 
@@ -338,7 +338,7 @@ int zeng_online_client_list_rooms_connect(void)
         char myversion[30];
         util_get_emulator_version_number(myversion);
         if (strcasecmp(myversion,buffer)) {
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"Local and remote ZEsarUX versions do not match");
+			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Local and remote ZEsarUX versions do not match");
             //printf("Local %s remote %s\n",myversion,buffer);
 			return 0;
 		}
@@ -349,40 +349,40 @@ int zeng_online_client_list_rooms_connect(void)
 
 
         //ver si zeng online enabled
-		DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online: Getting zeng-online status");
+		DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: ZENG Online: Getting zeng-online status");
 
 		escritos=z_sock_write_string(indice_socket,"zeng-online is-enabled\n");
 
 		if (escritos<0) {
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ERROR. Can't send zeng-online is-enabled: %s",z_sock_get_error(escritos));
+			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't send zeng-online is-enabled: %s",z_sock_get_error(escritos));
 			return 0;
 		}
 
 		leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)buffer,ZENG_BUFFER_INITIAL_CONNECT,&posicion_command);
 		if (leidos>0) {
 			buffer[leidos]=0; //fin de texto
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"ZENG: Received text for zeng-online is-enabled (length %d): \n[\n%s\n]",leidos,buffer);
+			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"ZENG Online Client: Received text for zeng-online is-enabled (length %d): \n[\n%s\n]",leidos,buffer);
 		}
 
 		if (leidos<0) {
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ERROR. Can't receive zeng-online is-enabled: %s",z_sock_get_error(leidos));
+			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't receive zeng-online is-enabled: %s",z_sock_get_error(leidos));
 			return 0;
 		}
 
 		//1 mas para eliminar el salto de linea anterior a "command>"
 		if (posicion_command>=1) {
 			buffer[posicion_command-1]=0;
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG: Received zeng-online is-enabled: %s",buffer);
+			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Received zeng-online is-enabled: %s",buffer);
 		}
 		else {
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"Error receiving ZEsarUX zeng-online is-enabled");
+			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Error receiving ZEsarUX zeng-online is-enabled");
 			return 0;
 		}
 
         //Si somos master, que el remoto no lo sea tambien
         int esta_activado=parse_string_to_number(buffer);
         if (!esta_activado) {
-            DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online is not enabled on remote server");
+            DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ZENG Online is not enabled on remote server");
             return 0;
         }
 
@@ -394,29 +394,29 @@ int zeng_online_client_list_rooms_connect(void)
 		escritos=z_sock_write_string(indice_socket,"zeng-online list-rooms\n");
 
 		if (escritos<0) {
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ERROR. Can't send zeng-online list-rooms: %s",z_sock_get_error(escritos));
+			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't send zeng-online list-rooms: %s",z_sock_get_error(escritos));
 			return 0;
 		}
 
 		leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)zeng_remote_list_rooms_buffer,total_listado_rooms_memoria,&posicion_command);
 		if (leidos>0) {
 			buffer[leidos]=0; //fin de texto
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"ZENG: Received text for zeng-online list-rooms (length %d): \n[\n%s\n]",leidos,zeng_remote_list_rooms_buffer);
+			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"ZENG Online Client: Received text for zeng-online list-rooms (length %d): \n[\n%s\n]",leidos,zeng_remote_list_rooms_buffer);
 		}
 
 		if (leidos<0) {
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ERROR. Can't receive zeng-online list-rooms: %s %s",zeng_remote_list_rooms_buffer,z_sock_get_error(leidos));
+			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't receive zeng-online list-rooms: %s %s",zeng_remote_list_rooms_buffer,z_sock_get_error(leidos));
 			return 0;
 		}
 
 		//1 mas para eliminar el salto de linea anterior a "command>"
 		if (posicion_command>=1) {
 			zeng_remote_list_rooms_buffer[posicion_command-1]=0;
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG: Received zeng-online list-rooms",zeng_remote_list_rooms_buffer);
+			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Received zeng-online list-rooms",zeng_remote_list_rooms_buffer);
             //printf("ZENG: Received zeng-online list-rooms: %s\n",zeng_remote_list_rooms_buffer);
 		}
 		else {
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"Error receiving ZEsarUX zeng-online list-rooms");
+			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Error receiving ZEsarUX zeng-online list-rooms");
 			return 0;
 		}
 
@@ -445,7 +445,7 @@ int zeng_online_client_list_users_connect(void)
 
 
 
-		DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online: Getting zeng-online users");
+		DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: ZENG Online: Getting zeng-online users");
         if (zeng_remote_list_users_buffer==NULL) {
 
             zeng_remote_list_users_buffer=util_malloc(espacio_necesario,"Can not allocate memory for getting list-users");
@@ -465,7 +465,7 @@ int zeng_online_client_list_users_connect(void)
 
 
 		if (indice_socket<0) {
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"Error connecting to %s:%d. %s",
+			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Error connecting to %s:%d. %s",
                 server,puerto,
                 z_sock_get_error(indice_socket));
 			return 0;
@@ -486,7 +486,7 @@ int zeng_online_client_list_users_connect(void)
 		}
 
 		if (leidos<0) {
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ERROR. Can't read remote prompt: %s",z_sock_get_error(leidos));
+			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't read remote prompt: %s",z_sock_get_error(leidos));
 			return 0;
 		}
 
@@ -496,28 +496,28 @@ int zeng_online_client_list_users_connect(void)
 		int escritos=z_sock_write_string(indice_socket,buffer_comando);
 
 		if (escritos<0) {
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ERROR. Can't send zeng-online list-users: %s",z_sock_get_error(escritos));
+			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't send zeng-online list-users: %s",z_sock_get_error(escritos));
 			return 0;
 		}
 
 		leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)zeng_remote_list_users_buffer,espacio_necesario,&posicion_command);
 		if (leidos>0) {
 			buffer[leidos]=0; //fin de texto
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"ZENG: Received text for zeng-online list-users (length %d): \n[\n%s\n]",leidos,zeng_remote_list_users_buffer);
+			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"ZENG Online Client: Received text for zeng-online list-users (length %d): \n[\n%s\n]",leidos,zeng_remote_list_users_buffer);
 		}
 
 		if (leidos<0) {
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ERROR. Can't receive zeng-online list-users: %s %s",zeng_remote_list_users_buffer,z_sock_get_error(leidos));
+			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't receive zeng-online list-users: %s %s",zeng_remote_list_users_buffer,z_sock_get_error(leidos));
 			return 0;
 		}
 
 		//1 mas para eliminar el salto de linea anterior a "command>"
 		if (posicion_command>=1) {
 			zeng_remote_list_users_buffer[posicion_command-1]=0;
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG: Received zeng-online list-users: %s",zeng_remote_list_users_buffer);
+			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Received zeng-online list-users: %s",zeng_remote_list_users_buffer);
 		}
 		else {
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"Error receiving ZEsarUX zeng-online list-users");
+			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Error receiving ZEsarUX zeng-online list-users");
 			return 0;
 		}
 
@@ -545,7 +545,7 @@ int zoc_common_open(void)
     int indice_socket=z_sock_open_connection(server,puerto,0,"");
 
     if (indice_socket<0) {
-        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"Error connecting to %s:%d. %s",
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Error connecting to %s:%d. %s",
             server,puerto,
             z_sock_get_error(indice_socket));
         return -1;
@@ -567,7 +567,7 @@ int zoc_common_open(void)
     }
 
     if (leidos<0) {
-        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ERROR. Can't read remote prompt: %s",z_sock_get_error(leidos));
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't read remote prompt: %s",z_sock_get_error(leidos));
         return -1;
     }
 
@@ -591,7 +591,7 @@ int zoc_common_send_command_buffer(int indice_socket,char *buffer_enviar,char *c
 
 
     if (escritos<0) {
-        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ERROR. Can't send zeng-online %s: %s",command_name_for_info,z_sock_get_error(escritos));
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't send zeng-online %s: %s",command_name_for_info,z_sock_get_error(escritos));
         return 0;
     }
 
@@ -599,11 +599,11 @@ int zoc_common_send_command_buffer(int indice_socket,char *buffer_enviar,char *c
     int leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)buffer,max_buffer,&posicion_command);
     if (leidos>0) {
         buffer[leidos]=0; //fin de texto
-        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"ZENG: Received text for zeng-online %s (length %d): \n[\n%s\n]",command_name_for_info,leidos,buffer);
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"ZENG Online Client: Received text for zeng-online %s (length %d): \n[\n%s\n]",command_name_for_info,leidos,buffer);
     }
 
     if (leidos<0) {
-        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ERROR. Can't receive zeng-online %s: %s",command_name_for_info,z_sock_get_error(leidos));
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't receive zeng-online %s: %s",command_name_for_info,z_sock_get_error(leidos));
         return 0;
     }
 
@@ -612,17 +612,17 @@ int zoc_common_send_command_buffer(int indice_socket,char *buffer_enviar,char *c
     //1 mas para eliminar el salto de linea anterior a "command>"
     if (posicion_command>=1) {
         buffer[posicion_command-1]=0;
-        //DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG: Received text: %s",buffer);
+        //DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Received text: %s",buffer);
     }
     else {
-        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"Error receiving ZEsarUX zeng-online %s",command_name_for_info);
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Error receiving ZEsarUX zeng-online %s",command_name_for_info);
         return 0;
     }
 
     //printf("Retorno %s: [%s]\n",command_name_for_info,buffer);
     //Si hay ERROR
     if (strstr(buffer,"ERROR")!=NULL) {
-        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"Error %s room: %s",command_name_for_info,buffer);
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Error %s room: %s",command_name_for_info,buffer);
         return 0;
     }
 
@@ -672,7 +672,7 @@ int zoc_open_command_close(char *buffer_enviar,char *command_name_for_info)
         return 0;
     }
 
-    DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online: Sending %s",command_name_for_info);
+    DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: ZENG Online: Sending %s",command_name_for_info);
 
 
     return zoc_common_send_command_and_close(indice_socket,buffer_enviar,command_name_for_info);
@@ -716,7 +716,7 @@ int zeng_online_client_authorize_join_connect(void)
 
 
 		if (indice_socket<0) {
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"Error connecting to %s:%d. %s",
+			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Error connecting to %s:%d. %s",
                 server,puerto,
                 z_sock_get_error(indice_socket));
 			return 0;
@@ -737,7 +737,7 @@ int zeng_online_client_authorize_join_connect(void)
 		}
 
 		if (leidos<0) {
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ERROR. Can't read remote prompt: %s",z_sock_get_error(leidos));
+			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't read remote prompt: %s",z_sock_get_error(leidos));
 			return 0;
 		}
 
@@ -748,37 +748,37 @@ int zeng_online_client_authorize_join_connect(void)
         sprintf(buffer_envio_comando,"zeng-online authorize-join %s %d %d\n",
             created_room_creator_password,zeng_online_joined_to_room_number,parm_zeng_online_client_authorize_join_permissions);
 
-        //DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"Authorizing by: %s",buffer_envio_comando);
-        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"Authorizing user");
+        //DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Authorizing by: %s",buffer_envio_comando);
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Authorizing user");
 
-        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"Permissions: %d",parm_zeng_online_client_authorize_join_permissions);
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Permissions: %d",parm_zeng_online_client_authorize_join_permissions);
 
 
 		int escritos=z_sock_write_string(indice_socket,buffer_envio_comando);
 
 		if (escritos<0) {
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ERROR. Can't send zeng-online authorize-join: %s",z_sock_get_error(escritos));
+			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't send zeng-online authorize-join: %s",z_sock_get_error(escritos));
 			return 0;
 		}
 
 		leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)buffer,ZENG_BUFFER_INITIAL_CONNECT,&posicion_command);
 		if (leidos>0) {
 			buffer[leidos]=0; //fin de texto
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"ZENG: Received text for zeng-online authorize-join (length %d): \n[\n%s\n]",leidos,buffer);
+			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"ZENG Online Client: Received text for zeng-online authorize-join (length %d): \n[\n%s\n]",leidos,buffer);
 		}
 
 		if (leidos<0) {
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ERROR. Can't receive zeng-online authorize-join: %s %s",buffer,z_sock_get_error(leidos));
+			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't receive zeng-online authorize-join: %s %s",buffer,z_sock_get_error(leidos));
 			return 0;
 		}
 
 		//1 mas para eliminar el salto de linea anterior a "command>"
 		if (posicion_command>=1) {
 			buffer[posicion_command-1]=0;
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG: Received zeng-online authorize-join: %s",buffer);
+			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Received zeng-online authorize-join: %s",buffer);
 		}
 		else {
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"Error receiving ZEsarUX zeng-online authorize-join");
+			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Error receiving ZEsarUX zeng-online authorize-join");
 			return 0;
 		}
 
@@ -817,7 +817,7 @@ int zeng_online_client_join_list_connect(void)
 
 
 		if (indice_socket<0) {
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"Error connecting to %s:%d. %s",
+			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Error connecting to %s:%d. %s",
                 server,puerto,
                 z_sock_get_error(indice_socket));
 			return 0;
@@ -838,7 +838,7 @@ int zeng_online_client_join_list_connect(void)
 		}
 
 		if (leidos<0) {
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ERROR. Can't read remote prompt: %s",z_sock_get_error(leidos));
+			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't read remote prompt: %s",z_sock_get_error(leidos));
 			return 0;
 		}
 
@@ -856,29 +856,29 @@ int zeng_online_client_join_list_connect(void)
 		int escritos=z_sock_write_string(indice_socket,buffer_envio_comando);
 
 		if (escritos<0) {
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ERROR. Can't send zeng-online list-rooms: %s",z_sock_get_error(escritos));
+			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't send zeng-online list-rooms: %s",z_sock_get_error(escritos));
 			return 0;
 		}
 
 		leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)zeng_remote_join_list_buffer,1023,&posicion_command);
 		if (leidos>0) {
 			zeng_remote_join_list_buffer[leidos]=0; //fin de texto
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"ZENG: Received text for zeng-online list-rooms (length %d): \n[\n%s\n]",leidos,zeng_remote_join_list_buffer);
+			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"ZENG Online Client: Received text for zeng-online list-rooms (length %d): \n[\n%s\n]",leidos,zeng_remote_join_list_buffer);
 		}
 
 		if (leidos<0) {
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ERROR. Can't receive zeng-online list-rooms: %s %s",zeng_remote_join_list_buffer,z_sock_get_error(leidos));
+			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't receive zeng-online list-rooms: %s %s",zeng_remote_join_list_buffer,z_sock_get_error(leidos));
 			return 0;
 		}
 
 		//1 mas para eliminar el salto de linea anterior a "command>"
 		if (posicion_command>=1) {
 			zeng_remote_join_list_buffer[posicion_command-1]=0;
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG: Received zeng-online list-rooms");
+			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Received zeng-online list-rooms");
             //printf("ZENG: Received zeng-online list-rooms: %s\n",zeng_remote_join_list_buffer);
 		}
 		else {
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"Error receiving ZEsarUX zeng-online list-rooms");
+			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Error receiving ZEsarUX zeng-online list-rooms");
 			return 0;
 		}
 
@@ -1290,7 +1290,7 @@ int zeng_online_client_get_profile_keys_connect(void)
         return 0;
     }
 
-    //DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online: Sending %s",command_name_for_info);
+    //DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: ZENG Online: Sending %s",command_name_for_info);
 
 
     //return zoc_common_send_command_and_close(indice_socket,buffer_enviar,command_name_for_info);
@@ -1349,7 +1349,7 @@ int zeng_online_client_get_profile_keys_connect(void)
         //mostrarlos
         int j;
         for (j=0;j<ZOC_MAX_KEYS_ITEMS && allowed_keys[i][j];j++) {
-            DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_INFO,"Allowed key on profile: %d",allowed_keys[i][j]);
+            DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_INFO,"ZENG Online Client: Allowed key on profile: %d",allowed_keys[i][j]);
         }
 
 
@@ -1401,7 +1401,7 @@ int zeng_online_client_send_profile_keys_connect(void)
         return 0;
     }
 
-    //DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online: Sending %s",command_name_for_info);
+    //DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: ZENG Online: Sending %s",command_name_for_info);
 
 
     //return zoc_common_send_command_and_close(indice_socket,buffer_enviar,command_name_for_info);
@@ -1704,7 +1704,7 @@ void zeng_online_client_list_rooms(void)
 	//Inicializar thread
 
 	if (pthread_create( &thread_zeng_online_client_list_rooms, NULL, &zeng_online_client_list_rooms_function, NULL) ) {
-		DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"Can not create zeng online list rooms pthread");
+		DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Can not create zeng online list rooms pthread");
 		return;
 	}
 
@@ -1720,7 +1720,7 @@ void zeng_online_client_list_users(void)
 	//Inicializar thread
 
 	if (pthread_create( &thread_zeng_online_client_list_users, NULL, &zeng_online_client_list_users_function, NULL) ) {
-		DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"Can not create zeng online list users pthread");
+		DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Can not create zeng online list users pthread");
 		return;
 	}
 
@@ -1736,7 +1736,7 @@ void zeng_online_client_leave_room(void)
 	//Inicializar thread
 
 	if (pthread_create( &thread_zeng_online_client_leave_room, NULL, &zeng_online_client_leave_room_function, NULL) ) {
-		DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"Can not create zeng online leave room pthread");
+		DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Can not create zeng online leave room pthread");
 		return;
 	}
 
@@ -1753,7 +1753,7 @@ void zeng_online_client_autojoin_room(int permisos)
 	//Inicializar thread
 
 	if (pthread_create( &thread_zeng_online_client_autojoin_room, NULL, &zeng_online_client_autojoin_room_function, NULL) ) {
-		DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"Can not create zeng online autojoin pthread");
+		DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Can not create zeng online autojoin pthread");
 		return;
 	}
 
@@ -1769,7 +1769,7 @@ void zeng_online_client_disable_autojoin_room(void)
 	//Inicializar thread
 
 	if (pthread_create( &thread_zeng_online_client_disable_autojoin_room, NULL, &zeng_online_client_disable_autojoin_room_function, NULL) ) {
-		DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"Can not create zeng online disable autojoin pthread");
+		DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Can not create zeng online disable autojoin pthread");
 		return;
 	}
 
@@ -1788,7 +1788,7 @@ void zeng_online_client_write_message_room(char *message)
     strcpy(param_zeng_online_client_write_message_room_message,message);
 
 	if (pthread_create( &thread_zeng_online_client_write_message_room, NULL, &zeng_online_client_write_message_room_function, NULL) ) {
-		DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"Can not create zeng online write message pthread");
+		DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Can not create zeng online write message pthread");
 		return;
 	}
 
@@ -1807,7 +1807,7 @@ void zeng_online_client_kick_user(char *uuid)
     strcpy(param_zeng_online_client_kick_user_uuid,uuid);
 
 	if (pthread_create( &thread_zeng_online_client_kick_user, NULL, &zeng_online_client_kick_user_function, NULL) ) {
-		DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"Can not create zeng online kick user pthread");
+		DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Can not create zeng online kick user pthread");
 		return;
 	}
 
@@ -1827,7 +1827,7 @@ void zeng_online_client_max_players_room(int valor)
 
 
 	if (pthread_create( &thread_zeng_online_client_max_players_room, NULL, &zeng_online_client_max_players_room_function, NULL) ) {
-		DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"Can not create zeng online set max players room pthread");
+		DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Can not create zeng online set max players room pthread");
 		return;
 	}
 
@@ -1847,7 +1847,7 @@ void zeng_online_client_allow_message_room(int allow_disallow)
 
 
 	if (pthread_create( &thread_zeng_online_client_allow_message_room, NULL, &zeng_online_client_allow_message_room_function, NULL) ) {
-		DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"Can not create zeng online allow/disallow message pthread");
+		DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Can not create zeng online allow/disallow message pthread");
 		return;
 	}
 
@@ -1862,7 +1862,7 @@ void zeng_online_client_get_profile_keys(void)
 
 
 	if (pthread_create( &thread_zeng_online_client_get_profile_keys, NULL, &zeng_online_client_get_profile_keys_function, NULL) ) {
-		DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"Can not create zeng online get profile keys pthread");
+		DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Can not create zeng online get profile keys pthread");
 		return;
 	}
 
@@ -1875,10 +1875,10 @@ void zeng_online_client_get_profile_keys(void)
 void zeng_online_client_send_profile_keys(void)
 {
 
-    DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_INFO,"Sending restricted keys to server");
+    DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_INFO,"ZENG Online Client: Sending restricted keys to server");
 
 	if (pthread_create( &thread_zeng_online_client_send_profile_keys, NULL, &zeng_online_client_send_profile_keys_function, NULL) ) {
-		DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"Can not create zeng online send profile keys pthread");
+		DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Can not create zeng online send profile keys pthread");
 		return;
 	}
 
@@ -1894,7 +1894,7 @@ void zeng_online_client_destroy_room(void)
 	//Inicializar thread
 
 	if (pthread_create( &thread_zeng_online_client_destroy_room, NULL, &zeng_online_client_destroy_room_function, NULL) ) {
-		DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"Can not create zeng online destroy room pthread");
+		DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Can not create zeng online destroy room pthread");
 		return;
 	}
 
@@ -1910,7 +1910,7 @@ void zeng_online_client_join_list(void)
 	//Inicializar thread
 
 	if (pthread_create( &thread_zeng_online_client_join_list, NULL, &zeng_online_client_join_list_function, NULL) ) {
-		DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"Can not create zeng online join list pthread");
+		DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Can not create zeng online join list pthread");
 		return;
 	}
 
@@ -1927,7 +1927,7 @@ void zeng_online_client_authorize_join(int permissions)
     parm_zeng_online_client_authorize_join_permissions=permissions;
 
 	if (pthread_create( &thread_zeng_online_client_authorize_join, NULL, &zeng_online_client_authorize_join_function, NULL) ) {
-		DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"Can not create zeng online authorize join pthread");
+		DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Can not create zeng online authorize join pthread");
 		return;
 	}
 
@@ -1955,7 +1955,7 @@ int zeng_online_client_join_room_connect(void)
 		int indice_socket=z_sock_open_connection(server,puerto,0,"");
 
 		if (indice_socket<0) {
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"Error connecting to %s:%d. %s",
+			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Error connecting to %s:%d. %s",
                 server,puerto,
                 z_sock_get_error(indice_socket));
 			return 0;
@@ -1976,13 +1976,13 @@ int zeng_online_client_join_room_connect(void)
 		}
 
 		if (leidos<0) {
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ERROR. Can't read remote prompt: %s",z_sock_get_error(leidos));
+			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't read remote prompt: %s",z_sock_get_error(leidos));
 			return 0;
 		}
 
 		//zsock_wait_until_command_prompt(indice_socket);
 
-		DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG: Sending join-room");
+		DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Sending join-room");
 
         char buffer_enviar[1024];
 
@@ -1997,7 +1997,7 @@ int zeng_online_client_join_room_connect(void)
 		int escritos=z_sock_write_string(indice_socket,buffer_enviar);
 
 		if (escritos<0) {
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ERROR. Can't send zeng-online join: %s",z_sock_get_error(escritos));
+			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't send zeng-online join: %s",z_sock_get_error(escritos));
 			return 0;
 		}
 
@@ -2010,16 +2010,16 @@ int zeng_online_client_join_room_connect(void)
             leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)buffer,ZENG_BUFFER_INITIAL_CONNECT,&posicion_command);
             if (leidos>0) {
                 buffer[leidos]=0; //fin de texto
-                DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"ZENG: Received text for zeng-online join (length %d): \n[\n%s\n]",leidos,buffer);
+                DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"ZENG Online Client: Received text for zeng-online join (length %d): \n[\n%s\n]",leidos,buffer);
             }
 
             if (leidos<0) {
-                DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ERROR. Can't receive zeng-online join: %s",z_sock_get_error(leidos));
+                DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't receive zeng-online join: %s",z_sock_get_error(leidos));
                 return 0;
             }
 
             if (leidos==0) {
-                DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"No response read from join yet");
+                DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: No response read from join yet");
             }
 
             reintentos--;
@@ -2028,17 +2028,17 @@ int zeng_online_client_join_room_connect(void)
 		//1 mas para eliminar el salto de linea anterior a "command>"
 		if (posicion_command>=1) {
 			buffer[posicion_command-1]=0;
-			//DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG: Received text: %s",buffer);
+			//DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Received text: %s",buffer);
 		}
 		else {
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"Error receiving ZEsarUX zeng-online join");
+			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Error receiving ZEsarUX zeng-online join");
 			return 0;
 		}
 
         //printf("Retorno join-room: [%s]\n",buffer);
         //Si hay ERROR
         if (strstr(buffer,"ERROR")!=NULL) {
-            DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"Error joining room: %s",buffer);
+            DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Error joining room: %s",buffer);
             return 0;
         }
 
@@ -2048,7 +2048,7 @@ int zeng_online_client_join_room_connect(void)
 
         if (buffer[i]==0) {
             //llegado al final sin que haya espacios. error
-            DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"Error joining room, no permissions detected: %s",buffer);
+            DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Error joining room, no permissions detected: %s",buffer);
             return 0;
         }
 
@@ -2060,8 +2060,8 @@ int zeng_online_client_join_room_connect(void)
         i++;
         created_room_user_permissions=parse_string_to_number(&buffer[i]);
 
-        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"User password: [%s]",created_room_user_password);
-        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"User permissions: [%d]",created_room_user_permissions);
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: User password: [%s]",created_room_user_password);
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: User permissions: [%d]",created_room_user_permissions);
 
 
 		//finalizar conexion
@@ -2121,7 +2121,7 @@ void zeng_online_client_join_room(int room_number,char *creator_password)
     strcpy(param_join_room_creator_password,creator_password);
 
 	if (pthread_create( &thread_zeng_online_client_join_room, NULL, &zeng_online_client_join_room_function, NULL) ) {
-		DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"Can not create zeng online join room pthread");
+		DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Can not create zeng online join room pthread");
 		return;
 	}
 
@@ -2151,7 +2151,7 @@ int zeng_online_client_create_room_connect(void)
 		int indice_socket=z_sock_open_connection(server,puerto,0,"");
 
 		if (indice_socket<0) {
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"Error connecting to %s:%d. %s",
+			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Error connecting to %s:%d. %s",
                 server,puerto,
                 z_sock_get_error(indice_socket));
 			return 0;
@@ -2172,13 +2172,13 @@ int zeng_online_client_create_room_connect(void)
 		}
 
 		if (leidos<0) {
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ERROR. Can't read remote prompt: %s",z_sock_get_error(leidos));
+			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't read remote prompt: %s",z_sock_get_error(leidos));
 			return 0;
 		}
 
 		//zsock_wait_until_command_prompt(indice_socket);
 
-		DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG: Sending create-room");
+		DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Sending create-room");
 
         char buffer_enviar[1024];
         sprintf(buffer_enviar,"zeng-online create-room %d \"%s\"\n",param_create_room_number,param_create_room_name);
@@ -2186,7 +2186,7 @@ int zeng_online_client_create_room_connect(void)
 		int escritos=z_sock_write_string(indice_socket,buffer_enviar);
 
 		if (escritos<0) {
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ERROR. Can't send zeng-online create-room: %s",z_sock_get_error(escritos));
+			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't send zeng-online create-room: %s",z_sock_get_error(escritos));
 			return 0;
 		}
 
@@ -2195,33 +2195,33 @@ int zeng_online_client_create_room_connect(void)
 		leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)buffer,ZENG_BUFFER_INITIAL_CONNECT,&posicion_command);
 		if (leidos>0) {
 			buffer[leidos]=0; //fin de texto
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"ZENG: Received text for zeng-online create-room (length %d): \n[\n%s\n]",leidos,buffer);
+			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"ZENG Online Client: Received text for zeng-online create-room (length %d): \n[\n%s\n]",leidos,buffer);
 		}
 
 		if (leidos<0) {
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ERROR. Can't receive zeng-online create-room: %s",z_sock_get_error(leidos));
+			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't receive zeng-online create-room: %s",z_sock_get_error(leidos));
 			return 0;
 		}
 
 		//1 mas para eliminar el salto de linea anterior a "command>"
 		if (posicion_command>=1) {
 			buffer[posicion_command-1]=0;
-			//DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG: Received text: %s",buffer);
+			//DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Received text: %s",buffer);
 		}
 		else {
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"Error receiving ZEsarUX zeng-online create-room");
+			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Error receiving ZEsarUX zeng-online create-room");
 			return 0;
 		}
 
         //printf("Retorno crear-room: [%s]\n",buffer);
         //Si hay ERROR
         if (strstr(buffer,"ERROR")!=NULL) {
-            DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"Error creating room: %s",buffer);
+            DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Error creating room: %s",buffer);
             return 0;
         }
         strcpy(created_room_creator_password,buffer);
 
-        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"Creator password: [%s]",created_room_creator_password);
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Creator password: [%s]",created_room_creator_password);
 
 		//finalizar conexion
         z_sock_close_connection(indice_socket);
@@ -2276,7 +2276,7 @@ void zeng_online_client_create_room(int room_number,char *room_name)
     strcpy(param_create_room_name,room_name);
 
 	if (pthread_create( &thread_zeng_online_client_create_room, NULL, &zeng_online_client_create_room_function, NULL) ) {
-		DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"Can not create zeng online create room pthread");
+		DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Can not create zeng online create room pthread");
 		return;
 	}
 
@@ -2293,7 +2293,7 @@ char *zoc_send_snapshot_mem_hexa=NULL;
 int zoc_send_snapshot(int indice_socket)
 {
 	//Enviar snapshot cada 20*250=5000 ms->5 segundos
-		DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"ZENG: Sending snapshot");
+		DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"ZENG Online Client: Sending snapshot");
 
 		int posicion_command;
 		int escritos,leidos;
@@ -2335,7 +2335,7 @@ int zoc_send_snapshot(int indice_socket)
 
                 if (posicion_command>=1) {
                     buffer[posicion_command-1]=0;
-                    //DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG: Received text: %s",zoc_get_snapshot_mem_hexa);
+                    //DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Received text: %s",zoc_get_snapshot_mem_hexa);
                 }
 
         //printf("Recibido respuesta despues de put-snapshot: [%s]\n",buffer);
@@ -2383,7 +2383,7 @@ void zoc_get_keys(int indice_socket)
         }
 
         if (leidos<0) {
-            DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ERROR. Can't read remote prompt: %s",z_sock_get_error(leidos));
+            DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't read remote prompt: %s",z_sock_get_error(leidos));
             //TODO return -1;
         }
 
@@ -2482,10 +2482,10 @@ void zoc_get_keys(int indice_socket)
 
                             //Enviar la tecla pero que no vuelva a entrar por zeng
                             if (enviar) {
-                                DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"Processing from ZRCP command send-keys-event: key %d event %d",numero_key,numero_event);
+                                DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Processing from ZRCP command send-keys-event: key %d event %d",numero_key,numero_event);
                                 //printf ("Processing from ZRCP command send-keys-event: key %d event %d\n",numero_key,numero_event);
 
-                                DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"Info joystick: fire: %d up: %d down: %d left: %d right: %d",
+                                DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Info joystick: fire: %d up: %d down: %d left: %d right: %d",
                                     UTIL_KEY_JOY_FIRE,UTIL_KEY_JOY_UP,UTIL_KEY_JOY_DOWN,UTIL_KEY_JOY_LEFT,UTIL_KEY_JOY_RIGHT);
 
                                 //Si tecla especial de reset todas teclas. usado en driver curses
@@ -2505,7 +2505,7 @@ void zoc_get_keys(int indice_socket)
                 }
 
                 else {
-                    DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"Received answer for get_keys with invalid number of fields");
+                    DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Received answer for get_keys with invalid number of fields");
                 }
 
 
@@ -2551,7 +2551,7 @@ int zoc_start_connection_get_keys(void)
     int indice_socket=z_sock_open_connection(server,puerto,0,"");
 
     if (indice_socket<0) {
-        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"Error connecting to %s:%d. %s",
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Error connecting to %s:%d. %s",
             server,puerto,
             z_sock_get_error(indice_socket));
         return 0;
@@ -2573,7 +2573,7 @@ int zoc_start_connection_get_keys(void)
     }
 
     if (leidos<0) {
-        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ERROR. Can't read remote prompt: %s",z_sock_get_error(leidos));
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't read remote prompt: %s",z_sock_get_error(leidos));
         return 0;
     }
 
@@ -2619,7 +2619,7 @@ int zoc_start_connection_get_keys(void)
         }
 
         if (leidos<0) {
-            DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ERROR. Can't read remote prompt: %s",z_sock_get_error(leidos));
+            DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't read remote prompt: %s",z_sock_get_error(leidos));
             //TODO return -1;
         }
 
@@ -2671,7 +2671,7 @@ int zoc_send_keys(int indice_socket,zeng_key_presses *elemento)
         }
 
         if (leidos<0) {
-            DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ERROR. Can't read remote prompt: %s",z_sock_get_error(leidos));
+            DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't read remote prompt: %s",z_sock_get_error(leidos));
             return -1;
         }
 
@@ -2691,11 +2691,11 @@ int zoc_keys_send_pending(int indice_socket,int *enviada_alguna_tecla)
     zeng_key_presses elemento;
     while (!zeng_fifo_read_element(&elemento) && !error_desconectar) {
         *enviada_alguna_tecla=1;
-        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG: Read event from zeng fifo and sending it to remote: key %d pressrelease %d",elemento.tecla,elemento.pressrelease);
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Read event from zeng fifo and sending it to remote: key %d pressrelease %d",elemento.tecla,elemento.pressrelease);
 
         //printf ("ZENG: Read event from zeng fifo and sending it to remote: key %d pressrelease %d\n",elemento.tecla,elemento.pressrelease);
 
-        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"Info joystick: fire: %d up: %d down: %d left: %d right: %d",
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Info joystick: fire: %d up: %d down: %d left: %d right: %d",
             UTIL_KEY_JOY_FIRE,UTIL_KEY_JOY_UP,UTIL_KEY_JOY_DOWN,UTIL_KEY_JOY_LEFT,UTIL_KEY_JOY_RIGHT);
 
         //command> help send-keys-event
@@ -2743,12 +2743,12 @@ int zoc_get_pending_authorization_size(int indice_socket)
 
                 if (leidos>0) {
                     buffer[leidos]=0; //fin de texto
-                    DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"ZENG: Received text for get-join-queue-size (length %d)",leidos);
+                    DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"ZENG Online Client: Received text for get-join-queue-size (length %d)",leidos);
                     //printf("ZENG: Received text for get-join-queue-size (length %d): \n[\n%s\n]\n",leidos,buffer);
                 }
 
                 if (leidos<0) {
-                    DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ERROR. Can't receive get-join-queue-size: %s",z_sock_get_error(leidos));
+                    DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't receive get-join-queue-size: %s",z_sock_get_error(leidos));
                     return 0;
                 }
 
@@ -2759,10 +2759,10 @@ int zoc_get_pending_authorization_size(int indice_socket)
                 //1 mas para eliminar el salto de linea anterior a "command>"
                 if (posicion_command>=1) {
                     buffer[posicion_command-1]=0;
-                    //DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG: Received text: %s",zoc_get_snapshot_mem_hexa);
+                    //DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Received text: %s",zoc_get_snapshot_mem_hexa);
                 }
                 else {
-                    DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"Error receiving ZEsarUX get-join-queue-size");
+                    DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Error receiving ZEsarUX get-join-queue-size");
                     return 0;
                 }
 
@@ -2772,7 +2772,7 @@ int zoc_get_pending_authorization_size(int indice_socket)
 
                 //Detectar si error
                 if (strstr(buffer,"ERROR")!=NULL) {
-                    DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"Error getting get-join-queue-size");
+                    DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Error getting get-join-queue-size");
                 }
                 else {
                     //Ver si id diferente
@@ -2876,7 +2876,7 @@ void zoc_common_get_messages_slave_master(int indice_socket)
 
         int id_actual=zoc_get_message_id(indice_socket);
         if (id_actual!=zoc_last_message_id) {
-            DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"There is a new message");
+            DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: There is a new message");
             char buffer_mensaje[ZENG_ONLINE_MAX_BROADCAST_MESSAGE_SHOWN_LENGTH+1];
             zoc_get_message(indice_socket,buffer_mensaje);
             if (buffer_mensaje[0]) {
@@ -2920,7 +2920,7 @@ void *zoc_master_thread_function(void *nada GCC_UNUSED)
     int contador_obtener_autorizaciones=0;
 
     if (indice_socket<0) {
-        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"Error connecting to %s:%d. %s",
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Error connecting to %s:%d. %s",
             server,puerto,
             z_sock_get_error(indice_socket));
         return 0;
@@ -2941,7 +2941,7 @@ void *zoc_master_thread_function(void *nada GCC_UNUSED)
     }
 
     if (leidos<0) {
-        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ERROR. Can't read remote prompt: %s",z_sock_get_error(leidos));
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't read remote prompt: %s",z_sock_get_error(leidos));
         return 0;
     }
 
@@ -2974,7 +2974,7 @@ void *zoc_master_thread_function(void *nada GCC_UNUSED)
 
                     if (error<0) {
                         //TODO
-                        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"Error sending snapshot to zeng online server");
+                        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Error sending snapshot to zeng online server");
                     }
 
                     //Enviado. Avisar no pendiente
@@ -2993,7 +2993,7 @@ void *zoc_master_thread_function(void *nada GCC_UNUSED)
                 //TODO gestionar bien este error
                 if (error<0) {
                     //TODO
-                    DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"Error getting snapshot from zeng online server");
+                    DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Error getting snapshot from zeng online server");
                     usleep(10000); //dormir 10 ms
                 }
 
@@ -3001,7 +3001,7 @@ void *zoc_master_thread_function(void *nada GCC_UNUSED)
 
             //Si estabamos reentrando como master, obtener el snapshot que habia
             if (zoc_rejoining_as_master) {
-                DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_INFO,"Receiving first snapshot as we are rejoining as master");
+                DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_INFO,"ZENG Online Client: Receiving first snapshot as we are rejoining as master");
                 zoc_rejoining_as_master=0;
                 zoc_pending_apply_received_snapshot_as_rejoin_as_master=1;
 
@@ -3083,7 +3083,7 @@ int zoc_receive_snapshot(int indice_socket)
     //printf("Inicio zoc_receive_snapshot llamado desde:\n");
     //debug_exec_show_backtrace();
 
-    DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"ZENG: Receiving snapshot");
+    DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"ZENG Online Client: Receiving snapshot");
 
     int posicion_command;
     int escritos,leidos;
@@ -3113,11 +3113,11 @@ int zoc_receive_snapshot(int indice_socket)
 
                 if (leidos>0) {
                     buffer[leidos]=0; //fin de texto
-                    //DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG: Received text for get-snapshot-id (length %d): \n[\n%s\n]",leidos,buffer);
+                    //DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Received text for get-snapshot-id (length %d): \n[\n%s\n]",leidos,buffer);
                 }
 
                 if (leidos<0) {
-                    DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ERROR. Can't receive get-snapshot-id: %s",z_sock_get_error(leidos));
+                    DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't receive get-snapshot-id: %s",z_sock_get_error(leidos));
                     return 0;
                 }
 
@@ -3128,10 +3128,10 @@ int zoc_receive_snapshot(int indice_socket)
                 //1 mas para eliminar el salto de linea anterior a "command>"
                 if (posicion_command>=1) {
                     buffer[posicion_command-1]=0;
-                    //DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG: Received text: %s",zoc_get_snapshot_mem_hexa);
+                    //DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Received text: %s",zoc_get_snapshot_mem_hexa);
                 }
                 else {
-                    DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"Error receiving ZEsarUX get-snapshot-id");
+                    DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Error receiving ZEsarUX get-snapshot-id");
                     return 0;
                 }
 
@@ -3141,7 +3141,7 @@ int zoc_receive_snapshot(int indice_socket)
 
                 //Detectar si error
                 if (strstr(buffer,"ERROR")!=NULL) {
-                    DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"Error getting snapshot-id");
+                    DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Error getting snapshot-id");
                 }
                 else {
                     //Ver si id diferente
@@ -3150,7 +3150,7 @@ int zoc_receive_snapshot(int indice_socket)
                     int nuevo_id=parse_string_to_number(buffer);
                     if (nuevo_id!=zoc_receive_snapshot_last_id) {
                         zeng_online_snapshot_diff=nuevo_id-zoc_receive_snapshot_last_id;
-                        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"Snapshot id difference from last snapshot: %d",zeng_online_snapshot_diff);
+                        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"ZENG Online Client: Snapshot id difference from last snapshot: %d",zeng_online_snapshot_diff);
 
                         zeng_online_snapshot_diff_media=(zeng_online_snapshot_diff+zeng_online_snapshot_diff_media)/2;
 
@@ -3214,11 +3214,11 @@ int zoc_receive_snapshot(int indice_socket)
 
                     if (leidos>0) {
                         zoc_get_snapshot_mem_hexa[leidos]=0; //fin de texto
-                        //DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG: Received text for get-snapshot (length %d): \n[\n%s\n]",leidos,zoc_get_snapshot_mem_hexa);
+                        //DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Received text for get-snapshot (length %d): \n[\n%s\n]",leidos,zoc_get_snapshot_mem_hexa);
                     }
 
                     if (leidos<0) {
-                        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ERROR. Can't receive get-snapshot: %s",z_sock_get_error(leidos));
+                        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't receive get-snapshot: %s",z_sock_get_error(leidos));
                         return 0;
                     }
 
@@ -3229,10 +3229,10 @@ int zoc_receive_snapshot(int indice_socket)
                     //1 mas para eliminar el salto de linea anterior a "command>"
                     if (posicion_command>=1) {
                         zoc_get_snapshot_mem_hexa[posicion_command-1]=0;
-                        //DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG: Received text: %s",zoc_get_snapshot_mem_hexa);
+                        //DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Received text: %s",zoc_get_snapshot_mem_hexa);
                     }
                     else {
-                        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"Error receiving ZEsarUX zeng-online get-snapshot");
+                        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Error receiving ZEsarUX zeng-online get-snapshot");
                         return 0;
                     }
 
@@ -3389,10 +3389,10 @@ int zoc_check_if_kicked(int indice_socket)
         if (retorno>=0) {
             //printf("Kicked user: [%s]\n",buffer_kick_user);
             if (!strcmp(buffer_kick_user,stats_uuid)) {
-                //DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_INFO,"I have been kicked");
+                //DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_INFO,"ZENG Online Client: I have been kicked");
                 put_footer_first_message("I have been kicked");
                 zeng_online_client_leave_room();
-                DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"I have been kicked from the ZENG Online room");
+                DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: I have been kicked from the ZENG Online room");
                 return 1;
             }
         }
@@ -3419,7 +3419,7 @@ void *zoc_slave_thread_function(void *nada GCC_UNUSED)
     int indice_socket=z_sock_open_connection(server,puerto,0,"");
 
     if (indice_socket<0) {
-        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"Error connecting to %s:%d. %s",
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Error connecting to %s:%d. %s",
             server,puerto,
             z_sock_get_error(indice_socket));
         return 0;
@@ -3440,7 +3440,7 @@ void *zoc_slave_thread_function(void *nada GCC_UNUSED)
     }
 
     if (leidos<0) {
-        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ERROR. Can't read remote prompt: %s",z_sock_get_error(leidos));
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't read remote prompt: %s",z_sock_get_error(leidos));
         return 0;
     }
 
@@ -3472,7 +3472,7 @@ void *zoc_slave_thread_function(void *nada GCC_UNUSED)
                 //TODO gestionar bien este error
                 if (error<0) {
                     //TODO
-                    DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"Error getting snapshot from zeng online server");
+                    DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Error getting snapshot from zeng online server");
                     usleep(10000); //dormir 10 ms
                 }
 
@@ -3550,7 +3550,7 @@ int zoc_start_connection_get_snapshot(void)
     int indice_socket=z_sock_open_connection(server,puerto,0,"");
 
     if (indice_socket<0) {
-        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"Error connecting to %s:%d. %s",
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Error connecting to %s:%d. %s",
             server,puerto,
             z_sock_get_error(indice_socket));
         return -1;
@@ -3571,7 +3571,7 @@ int zoc_start_connection_get_snapshot(void)
     }
 
     if (leidos<0) {
-        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ERROR. Can't read remote prompt: %s",z_sock_get_error(leidos));
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't read remote prompt: %s",z_sock_get_error(leidos));
         return -1;
     }
 
@@ -3643,7 +3643,7 @@ void zeng_online_client_apply_pending_received_snapshot(void)
 void zoc_start_master_thread(void)
 {
 	if (pthread_create( &thread_zoc_master_thread, NULL, &zoc_master_thread_function, NULL) ) {
-		DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"Can not create zeng online send snapshot pthread");
+		DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Can not create zeng online send snapshot pthread");
 		return;
 	}
 
@@ -3655,7 +3655,7 @@ void zoc_start_master_thread(void)
 void zoc_start_slave_thread(void)
 {
 	if (pthread_create( &thread_zoc_slave_thread, NULL, &zoc_slave_thread_function, NULL) ) {
-		DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"Can not create zeng online send snapshot pthread");
+		DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Can not create zeng online send snapshot pthread");
 		return;
 	}
 
@@ -3694,7 +3694,7 @@ void zeng_online_client_prepare_snapshot_if_needed(void)
 				//Si esta el anterior snapshot aun pendiente de enviar
 				if (zoc_pending_send_snapshot) {
                     zoc_snapshots_not_sent++;
-					DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"ZENG: Last snapshot has not been sent yet. Total unsent: %d",zoc_snapshots_not_sent);
+					DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"ZENG Online Client: Last snapshot has not been sent yet. Total unsent: %d",zoc_snapshots_not_sent);
 
                     //Si llegado a un limite, reconectar. Suele suceder con ZENG en slave windows
                     //Sucede que se queda la operacion de send a socket que no acaba
@@ -3707,7 +3707,7 @@ void zeng_online_client_prepare_snapshot_if_needed(void)
                    /*
                     if (zeng_force_reconnect_failed_retries.v) {
                         if (zoc_snapshots_not_sent>=3*50) { //Si pasan mas de 3 segundos y no ha enviado aun el ultimo snapshot
-                            DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_INFO,"ZENG: Forcing reconnect");
+                            DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_INFO,"ZENG Online Client: ZENG: Forcing reconnect");
                             //printf("Before forcing ZENG reconnect\n");
                             zeng_force_reconnect();
                             //printf("After forcing ZENG reconnect\n");
@@ -3808,7 +3808,7 @@ void zeng_online_client_prepare_snapshot_if_needed(void)
 
 					zoc_pending_send_snapshot=1;
 
-                    DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"ZENG Online: Queuing snapshot to send, length: %d",longitud);
+                    DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"ZENG Online Client: Queuing snapshot to send, length: %d",longitud);
 
 
 				}
@@ -3837,7 +3837,7 @@ void zeng_online_client_end_frame_from_core_functions(void)
             zoc_last_snapshot_received_counter--;
 
             if (zoc_last_snapshot_received_counter==0) {
-                DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_INFO,"Timeout receiving snapshots from master. Allowing local key press");
+                DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_INFO,"ZENG Online Client: Timeout receiving snapshots from master. Allowing local key press");
                 zoc_show_bottom_line_footer_connected(); //Para actualizar la linea de abajo del todo con texto ZEsarUX version bla bla - OFFLINE
                 generic_footertext_print_operating("OFFLIN");
             }
