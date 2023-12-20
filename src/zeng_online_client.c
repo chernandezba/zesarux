@@ -748,7 +748,8 @@ int zeng_online_client_authorize_join_connect(void)
         sprintf(buffer_envio_comando,"zeng-online authorize-join %s %d %d\n",
             created_room_creator_password,zeng_online_joined_to_room_number,parm_zeng_online_client_authorize_join_permissions);
 
-        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"Authorizing by: %s",buffer_envio_comando);
+        //DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"Authorizing by: %s",buffer_envio_comando);
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"Authorizing user");
 
         DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"Permissions: %d",parm_zeng_online_client_authorize_join_permissions);
 
@@ -2742,7 +2743,7 @@ int zoc_get_pending_authorization_size(int indice_socket)
 
                 if (leidos>0) {
                     buffer[leidos]=0; //fin de texto
-                    DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG: Received text for get-join-queue-size (length %d)",leidos);
+                    DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"ZENG: Received text for get-join-queue-size (length %d)",leidos);
                     //printf("ZENG: Received text for get-join-queue-size (length %d): \n[\n%s\n]\n",leidos,buffer);
                 }
 
