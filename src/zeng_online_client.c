@@ -2691,11 +2691,11 @@ int zoc_keys_send_pending(int indice_socket,int *enviada_alguna_tecla)
     zeng_key_presses elemento;
     while (!zeng_fifo_read_element(&elemento) && !error_desconectar) {
         *enviada_alguna_tecla=1;
-        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Read event from zeng fifo and sending it to remote: key %d pressrelease %d",elemento.tecla,elemento.pressrelease);
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"ZENG Online Client: Read event from zeng fifo and sending it to remote: key %d pressrelease %d",elemento.tecla,elemento.pressrelease);
 
         //printf ("ZENG: Read event from zeng fifo and sending it to remote: key %d pressrelease %d\n",elemento.tecla,elemento.pressrelease);
 
-        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Info joystick: fire: %d up: %d down: %d left: %d right: %d",
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"ZENG Online Client: Info joystick: fire: %d up: %d down: %d left: %d right: %d",
             UTIL_KEY_JOY_FIRE,UTIL_KEY_JOY_UP,UTIL_KEY_JOY_DOWN,UTIL_KEY_JOY_LEFT,UTIL_KEY_JOY_RIGHT);
 
         //command> help send-keys-event
