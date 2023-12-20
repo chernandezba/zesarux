@@ -6789,7 +6789,6 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
     init_zxdesktop_configurable_icons();
 
     zxvision_index_menu_init();
-    zxvision_index_load_from_disk();
 
     ay_player_playlist_init();
 
@@ -7195,7 +7194,7 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
         }
 	}
 
-
+    zxvision_index_load_from_disk();
 
 	//Algun parametro que se resetea con reset_cpu y/o set_machine y se puede haber especificado por linea de comandos
 	if (command_line_wrx.v) enable_wrx();

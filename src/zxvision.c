@@ -26822,17 +26822,19 @@ void zxvision_index_save_to_disk(void)
 
 }
 
-int zxvision_index_load_from_disk_read_line(z80_byte *origen,z80_byte *destino)
+int zxvision_index_load_from_disk_read_line(z80_byte *origen,z80_byte *destino,int restante)
 {
 
     int leidos=0;
 
-    while (*origen!='\n') {
+    while (*origen!='\n' && restante) {
         *destino=*origen;
 
         destino++;
         origen++;
         leidos++;
+
+        restante--;
     }
 
     *destino=0;
@@ -26859,8 +26861,8 @@ void zxvision_index_load_from_disk(void)
     while (total_leidos>0) {
         //leer titulo menu
         char titulo_menu[MAX_LENGTH_FULL_PATH_SUBMENU];
-        int leidos=zxvision_index_load_from_disk_read_line(puntero,(z80_byte *)titulo_menu);
-        //printf("Titulo: %s\n",titulo_menu);
+        int leidos=zxvision_index_load_from_disk_read_line(puntero,(z80_byte *)titulo_menu,total_leidos);
+        debug_printf(VERBOSE_DEBUG,"Loading help search index. Menu title: [%s]",titulo_menu);
 
         total_leidos-=leidos;
         puntero +=leidos;
@@ -26874,11 +26876,11 @@ void zxvision_index_load_from_disk(void)
             while (!salir) {
 
                 char linea_menu[MAX_TEXTO_OPCION];
-                int leidos=zxvision_index_load_from_disk_read_line(puntero,(z80_byte *)linea_menu);
+                int leidos=zxvision_index_load_from_disk_read_line(puntero,(z80_byte *)linea_menu,total_leidos);
 
                 if (linea_menu[0]==0) salir=1;
                 else {
-                    //printf("Linea menu: %s\n",linea_menu);
+                    debug_printf(VERBOSE_DEBUG,"Loading help search index. Menu entry: [%s]",linea_menu);
                     zxvision_index_add_menu_linea(indice_menu_actual,linea_menu);
                 }
 
