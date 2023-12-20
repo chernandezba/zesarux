@@ -157,12 +157,14 @@ void zoc_add_user_to_joined_users(int room_number,char *nickname,char *uuid)
 
     zeng_online_rooms_list[room_number].current_players++;
 
+	//Liberar lock
+	zoc_end_lock_joined_users(room_number);
+
 
     //Y si llega al final sin haber agregado usuario, es un error aunque no lo reportaremos
     if (!agregado) DBG_PRINT_ZENG_ONLINE VERBOSE_DEBUG,"ZENG Online: Reached maximum users on join_list names");
 
-	//Liberar lock
-	zoc_end_lock_joined_users(room_number);
+
 
 }
 
@@ -192,11 +194,13 @@ void zoc_del_user_to_joined_users(int room_number,char *uuid,char *nickname)
         zeng_online_rooms_list[room_number].current_players--;
     }
 
+	//Liberar lock
+	zoc_end_lock_joined_users(room_number);
+
     //Y si llega al final sin haber encontrado usuario, es un error aunque no lo reportaremos
     if (!borrado) DBG_PRINT_ZENG_ONLINE VERBOSE_DEBUG,"ZENG Online: Can not find user with uuid %s to delete from join list",uuid);
 
-	//Liberar lock
-	zoc_end_lock_joined_users(room_number);
+
 
 }
 
@@ -943,9 +947,15 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
         //bloqueo de esto
         zoc_begin_lock_joined_users(room_number);
         int indice_primero=zeng_online_rooms_list[room_number].index_waiting_join_first;
-        escribir_socket_format(misocket,"%s",zeng_online_rooms_list[room_number].join_waiting_list[indice_primero].nickname);
+        char nickname[ZOC_MAX_NICKNAME_LENGTH+1];
+        strcpy(nickname,zeng_online_rooms_list[room_number].join_waiting_list[indice_primero].nickname);
+        //escribir_socket_format(misocket,"%s",zeng_online_rooms_list[room_number].join_waiting_list[indice_primero].nickname);
+
         //fin bloqueo
         zoc_end_lock_joined_users(room_number);
+
+        escribir_socket_format(misocket,"%s",nickname);
+
 
     }
 
