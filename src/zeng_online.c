@@ -159,7 +159,7 @@ void zoc_add_user_to_joined_users(int room_number,char *nickname,char *uuid)
 
 
     //Y si llega al final sin haber agregado usuario, es un error aunque no lo reportaremos
-    if (!agregado) DBG_PRINT_ZENG_ONLINE VERBOSE_DEBUG,"Reached maximum users on join_list names");
+    if (!agregado) DBG_PRINT_ZENG_ONLINE VERBOSE_DEBUG,"ZENG Online: Reached maximum users on join_list names");
 
 	//Liberar lock
 	zoc_end_lock_joined_users(room_number);
@@ -193,7 +193,7 @@ void zoc_del_user_to_joined_users(int room_number,char *uuid,char *nickname)
     }
 
     //Y si llega al final sin haber encontrado usuario, es un error aunque no lo reportaremos
-    if (!borrado) DBG_PRINT_ZENG_ONLINE VERBOSE_DEBUG,"Can not find user with uuid %s to delete from join list",uuid);
+    if (!borrado) DBG_PRINT_ZENG_ONLINE VERBOSE_DEBUG,"ZENG Online: Can not find user with uuid %s to delete from join list",uuid);
 
 	//Liberar lock
 	zoc_end_lock_joined_users(room_number);
@@ -211,14 +211,14 @@ void zeng_online_set_alive_user(int room_number,char *uuid)
         if (!strcmp(zeng_online_rooms_list[room_number].joined_users_uuid[i],uuid)) {
             timer_stats_current_time(&zeng_online_rooms_list[room_number].joined_users_last_alive_time[i]);
             encontrado=1;
-            DBG_PRINT_ZENG_ONLINE VERBOSE_DEBUG,"Set alive time for user %s",uuid);
+            DBG_PRINT_ZENG_ONLINE VERBOSE_DEBUG,"ZENG Online: Set alive time for user %s",uuid);
             break; //para salir del bucle y liberar lock
         }
     }
 
 
     //Y si llega al final sin haber encontrado usuario, es un error aunque no lo reportaremos
-    if (!encontrado) DBG_PRINT_ZENG_ONLINE VERBOSE_DEBUG,"Can not find user with uuid %s to set alive time",uuid);
+    if (!encontrado) DBG_PRINT_ZENG_ONLINE VERBOSE_DEBUG,"ZENG Online: Can not find user with uuid %s to set alive time",uuid);
 
 }
 
@@ -246,7 +246,7 @@ void zeng_online_destroy_room_aux(int room_number)
 void zeng_online_expire_non_alive_users(void)
 {
 
-    DBG_PRINT_ZENG_ONLINE VERBOSE_INFO,"Expire non alive user");
+    DBG_PRINT_ZENG_ONLINE VERBOSE_INFO,"ZENG Online: Expire non alive user");
 
 
     int room_number;
@@ -260,7 +260,7 @@ void zeng_online_expire_non_alive_users(void)
 
     for (room_number=0;room_number<zeng_online_current_max_rooms;room_number++) {
         if (zeng_online_rooms_list[room_number].created) {
-            DBG_PRINT_ZENG_ONLINE VERBOSE_DEBUG,"Looking at room %d",room_number);
+            DBG_PRINT_ZENG_ONLINE VERBOSE_DEBUG,"ZENG Online: Looking at room %d",room_number);
 
 
             for (i=0;i<zeng_online_rooms_list[room_number].max_players;i++) {
@@ -271,14 +271,14 @@ void zeng_online_expire_non_alive_users(void)
                     //en microsegundos
                     difftime /=1000000;
 
-                    DBG_PRINT_ZENG_ONLINE VERBOSE_DEBUG,"Looking at user %s - %s. difftime=%ld",
+                    DBG_PRINT_ZENG_ONLINE VERBOSE_DEBUG,"ZENG Online: Looking at user %s - %s. difftime=%ld",
                         zeng_online_rooms_list[room_number].joined_users_uuid[i],
                         zeng_online_rooms_list[room_number].joined_users[i],
                         difftime);
 
                     //ahora en segundos
                     if (difftime>ZOC_TIMEOUT_ALIVE_USER) {
-                        DBG_PRINT_ZENG_ONLINE VERBOSE_INFO,"Expiring user uuid %s",zeng_online_rooms_list[room_number].joined_users_uuid[i]);
+                        DBG_PRINT_ZENG_ONLINE VERBOSE_INFO,"ZENG Online: Expiring user uuid %s",zeng_online_rooms_list[room_number].joined_users_uuid[i]);
                         char nickname_left[ZOC_MAX_NICKNAME_LENGTH+1];
                         //Por si acaso no lo encuentra
                         nickname_left[0]=0;
@@ -299,13 +299,13 @@ void zeng_online_destroy_empty_rooms(void)
 {
     int room_number;
 
-    DBG_PRINT_ZENG_ONLINE VERBOSE_INFO,"Expire non alive rooms");
+    DBG_PRINT_ZENG_ONLINE VERBOSE_INFO,"ZENG Online: Expire non alive rooms");
 
     int i;
 
     for (room_number=0;room_number<zeng_online_current_max_rooms;room_number++) {
         if (zeng_online_rooms_list[room_number].created) {
-            DBG_PRINT_ZENG_ONLINE VERBOSE_DEBUG,"Looking at room %d",room_number);
+            DBG_PRINT_ZENG_ONLINE VERBOSE_DEBUG,"ZENG Online: Looking at room %d",room_number);
 
 
             int hay_jugadores_en_room=0;
@@ -315,7 +315,7 @@ void zeng_online_destroy_empty_rooms(void)
             }
 
             if (!hay_jugadores_en_room) {
-                DBG_PRINT_ZENG_ONLINE VERBOSE_INFO,"There are no players on room %d. Destroying it",room_number);
+                DBG_PRINT_ZENG_ONLINE VERBOSE_INFO,"ZENG Online: There are no players on room %d. Destroying it",room_number);
                 zeng_online_destroy_room_aux(room_number);
             }
         }
@@ -378,7 +378,7 @@ int join_list_add_element(int room_number,char *nickname)
 {
     //Si llena la lista, esperar
     while (zeng_online_rooms_list[room_number].total_waiting_join==ZOC_MAX_JOIN_WAITING) {
-        DBG_PRINT_ZENG_ONLINE VERBOSE_DEBUG,"Waiting queue is full. let's wait");
+        DBG_PRINT_ZENG_ONLINE VERBOSE_DEBUG,"ZENG Online: Waiting queue is full. let's wait");
         sleep(1);
     }
 
@@ -572,7 +572,7 @@ void zoc_send_broadcast_message(int room_number,char *message)
 void init_zeng_online_rooms(void)
 {
 
-    DBG_PRINT_ZENG_ONLINE VERBOSE_INFO,"Initializing ZENG Online rooms");
+    DBG_PRINT_ZENG_ONLINE VERBOSE_INFO,"ZENG Online: Initializing ZENG Online rooms");
 
     int i;
 
@@ -603,14 +603,14 @@ void init_zeng_online_rooms(void)
 
 void enable_zeng_online(void)
 {
-    DBG_PRINT_ZENG_ONLINE VERBOSE_INFO,"Starting ZENG Online Server");
+    DBG_PRINT_ZENG_ONLINE VERBOSE_INFO,"ZENG Online: Starting ZENG Online Server");
     zeng_online_enabled=1;
     //TODO: acciones adicionales al activarlo
 }
 
 void disable_zeng_online(void)
 {
-    DBG_PRINT_ZENG_ONLINE VERBOSE_INFO,"Stopping ZENG Online Server");
+    DBG_PRINT_ZENG_ONLINE VERBOSE_INFO,"ZENG Online: Stopping ZENG Online Server");
     zeng_online_enabled=0;
     //TODO: acciones adicionales al desactivarlo
 }
@@ -1096,7 +1096,7 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
 
         for (;restantes_teclas>0;restantes_teclas--,teclas_agregadas++,indice_tecla++) {
             zeng_online_rooms_list[room_number].allowed_keys[profile_index][teclas_agregadas]=parse_string_to_number(comando_argv[indice_tecla]);
-            DBG_PRINT_ZENG_ONLINE VERBOSE_INFO,"Adding %s to profile key %d",comando_argv[indice_tecla],profile_index);
+            DBG_PRINT_ZENG_ONLINE VERBOSE_INFO,"ZENG Online: Adding %s to profile key %d",comando_argv[indice_tecla],profile_index);
         }
 
         //meter el 0 del final si el array no esta lleno
@@ -1693,7 +1693,7 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
 
                 //printf("Escritos socket: %d\n",escritos);
                 if (escritos<0) {
-                    DBG_PRINT_ZENG_ONLINE VERBOSE_DEBUG,"Error returning zeng-online get-keys. Client connection may be closed");
+                    DBG_PRINT_ZENG_ONLINE VERBOSE_DEBUG,"ZENG Online: Error returning zeng-online get-keys. Client connection may be closed");
                     return;
                 }
 
@@ -2089,7 +2089,7 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
             //Esperar hasta recibir autorización del master
             //Ver si hay autojoin
             if (zeng_online_rooms_list[room_number].autojoin_enabled) {
-                DBG_PRINT_ZENG_ONLINE VERBOSE_DEBUG,"Autojoin for room %d is enabled with permissions %d",room_number,
+                DBG_PRINT_ZENG_ONLINE VERBOSE_DEBUG,"ZENG Online: Autojoin for room %d is enabled with permissions %d",room_number,
                 zeng_online_rooms_list[room_number].autojoin_permissions);
                 permissions=zeng_online_rooms_list[room_number].autojoin_permissions;
 
@@ -2097,12 +2097,12 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
 
             else {
 
-                DBG_PRINT_ZENG_ONLINE VERBOSE_DEBUG,"Waiting to receive authorization from master");
+                DBG_PRINT_ZENG_ONLINE VERBOSE_DEBUG,"ZENG Online: Waiting to receive authorization from master");
                 int id_authorization=join_list_add_element(room_number,comando_argv[2]); //nickname agregado a la lista
 
                 int timeout=60;
                 while (zeng_online_rooms_list[room_number].join_waiting_list[id_authorization].waiting && timeout) {
-                    DBG_PRINT_ZENG_ONLINE VERBOSE_DEBUG,"Waiting authorization...");
+                    DBG_PRINT_ZENG_ONLINE VERBOSE_DEBUG,"ZENG Online: Waiting authorization...");
                     sleep(1);
                     timeout--;
                 }
@@ -2115,7 +2115,7 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
 
             }
 
-            DBG_PRINT_ZENG_ONLINE VERBOSE_DEBUG,"Permissions for this join: %d",permissions);
+            DBG_PRINT_ZENG_ONLINE VERBOSE_DEBUG,"ZENG Online: Permissions for this join: %d",permissions);
             //Si permisos 0 , denegado join
             if (permissions==0) {
                 escribir_socket(misocket,"ERROR. You are not authorized to join");
