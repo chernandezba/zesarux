@@ -7418,7 +7418,6 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
     //Habilitar zeng online si conviene
     if (command_line_start_zeng_online_server.v) {
         if (remote_protocol_enabled.v) {
-            printf("Iniciando zeng online server\n");
             enable_zeng_online();
         }
     }

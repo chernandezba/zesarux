@@ -412,7 +412,8 @@ int zeng_online_client_list_rooms_connect(void)
 		//1 mas para eliminar el salto de linea anterior a "command>"
 		if (posicion_command>=1) {
 			zeng_remote_list_rooms_buffer[posicion_command-1]=0;
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG: Received zeng-online list-rooms: %s",zeng_remote_list_rooms_buffer);
+			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG: Received zeng-online list-rooms",zeng_remote_list_rooms_buffer);
+            //printf("ZENG: Received zeng-online list-rooms: %s\n",zeng_remote_list_rooms_buffer);
 		}
 		else {
 			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"Error receiving ZEsarUX zeng-online list-rooms");
@@ -872,7 +873,8 @@ int zeng_online_client_join_list_connect(void)
 		//1 mas para eliminar el salto de linea anterior a "command>"
 		if (posicion_command>=1) {
 			zeng_remote_join_list_buffer[posicion_command-1]=0;
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG: Received zeng-online list-rooms: %s",zeng_remote_join_list_buffer);
+			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG: Received zeng-online list-rooms");
+            //printf("ZENG: Received zeng-online list-rooms: %s\n",zeng_remote_join_list_buffer);
 		}
 		else {
 			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"Error receiving ZEsarUX zeng-online list-rooms");
@@ -2740,7 +2742,8 @@ int zoc_get_pending_authorization_size(int indice_socket)
 
                 if (leidos>0) {
                     buffer[leidos]=0; //fin de texto
-                    DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG: Received text for get-join-queue-size (length %d): \n[\n%s\n]",leidos,buffer);
+                    DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG: Received text for get-join-queue-size (length %d)",leidos);
+                    //printf("ZENG: Received text for get-join-queue-size (length %d): \n[\n%s\n]\n",leidos,buffer);
                 }
 
                 if (leidos<0) {
@@ -3690,7 +3693,7 @@ void zeng_online_client_prepare_snapshot_if_needed(void)
 				//Si esta el anterior snapshot aun pendiente de enviar
 				if (zoc_pending_send_snapshot) {
                     zoc_snapshots_not_sent++;
-					DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG: Last snapshot has not been sent yet. Total unsent: %d",zoc_snapshots_not_sent);
+					DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"ZENG: Last snapshot has not been sent yet. Total unsent: %d",zoc_snapshots_not_sent);
 
                     //Si llegado a un limite, reconectar. Suele suceder con ZENG en slave windows
                     //Sucede que se queda la operacion de send a socket que no acaba

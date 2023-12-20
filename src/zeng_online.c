@@ -603,12 +603,14 @@ void init_zeng_online_rooms(void)
 
 void enable_zeng_online(void)
 {
+    DBG_PRINT_ZENG_ONLINE VERBOSE_INFO,"Starting ZENG Online Server");
     zeng_online_enabled=1;
     //TODO: acciones adicionales al activarlo
 }
 
 void disable_zeng_online(void)
 {
+    DBG_PRINT_ZENG_ONLINE VERBOSE_INFO,"Stopping ZENG Online Server");
     zeng_online_enabled=0;
     //TODO: acciones adicionales al desactivarlo
 }

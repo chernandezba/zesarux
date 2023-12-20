@@ -267,7 +267,7 @@ int menu_zeng_online_list_rooms(int *room_number,int *created,int *autojoin,int 
             zeng_remote_list_rooms_buffer[i]=0;
             //El primero es cabecera y lo metemos como tipo separador
             if (linea==0) {
-                printf("Primer item\n");
+                //printf("Primer item\n");
                 menu_add_item_menu(array_menu_common,&zeng_remote_list_rooms_buffer[inicio_linea],MENU_OPCION_SEPARADOR,NULL,NULL);
             }
             else {
@@ -328,19 +328,19 @@ int menu_zeng_online_list_rooms(int *room_number,int *created,int *autojoin,int 
         //int linea=retorno_ventana.linea_seleccionada;
 
         //printf("linea: %d\n",linea);
-        printf("Texto seleccionado: [%s]\n",item_seleccionado.texto_opcion);
+        //printf("Texto seleccionado: [%s]\n",item_seleccionado.texto_opcion);
 
 
 
         //Si linea cabecera
         if (strstr(item_seleccionado.texto_opcion,"Created Players")!=NULL) {
-            printf("Seleccionada cabecera. no hacer nada\n");
+            //printf("Seleccionada cabecera. no hacer nada\n");
             return -1;
 
         }
 
         if (item_seleccionado.texto_opcion[0]==0) {
-            printf("Seleccionada linea vacia. No hacer nada\n");
+            //printf("Seleccionada linea vacia. No hacer nada\n");
             return -1;
         }
 
@@ -381,13 +381,13 @@ int menu_zeng_online_list_rooms(int *room_number,int *created,int *autojoin,int 
             if (!salir) indice_string++;
         }
 
-        printf("Fin escaneo\n");
+        //printf("Fin escaneo\n");
 
-        for (i=0;i<ROOM_LIST_CAMPOS_LEER;i++) {
+        /*for (i=0;i<ROOM_LIST_CAMPOS_LEER;i++) {
             printf("%d: %d\n",i,valores[i]);
-        }
+        }*/
 
-        printf("%d: [%s]\n",i,&item_seleccionado.texto_opcion[indice_string]);
+        //printf("%d: [%s]\n",i,&item_seleccionado.texto_opcion[indice_string]);
 
 
         *room_number=valores[0];
@@ -579,7 +579,7 @@ void menu_zeng_online_join_list(MENU_ITEM_PARAMETERS)
         int permisos=menu_zeng_online_ask_permissions();
 
 
-        printf("Permisos: %d\n",permisos);
+        //printf("Permisos: %d\n",permisos);
 
         //Enviar comando de autorizacion con esos permisos
         zeng_online_client_authorize_join(permisos);
@@ -865,7 +865,7 @@ int menu_zeng_online_ask_user_get_uuid(char *uuid,int ocultar_master,int agregar
     //No quedarnos en bucle como un menu. Al seleccionar usuario, se establece el uuid, y siempre que no se salga con ESC
     if ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus) {
 
-        printf("Usuario %s UUID %s\n",item_seleccionado.texto_opcion,item_seleccionado.texto_misc);
+        //printf("Usuario %s UUID %s\n",item_seleccionado.texto_opcion,item_seleccionado.texto_misc);
 
         strcpy(uuid,item_seleccionado.texto_misc);
         return 1;
@@ -936,7 +936,7 @@ void menu_zeng_online_leave_room_slave(MENU_ITEM_PARAMETERS)
 
         menu_generic_message_splash("Leave room","Left room");
 
-        printf("Estado conexion: %d\n",zeng_online_connected.v);
+        //printf("Estado conexion: %d\n",zeng_online_connected.v);
 
         zoc_show_bottom_line_footer_connected();
 
