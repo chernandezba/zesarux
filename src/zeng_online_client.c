@@ -2482,10 +2482,10 @@ void zoc_get_keys(int indice_socket)
 
                             //Enviar la tecla pero que no vuelva a entrar por zeng
                             if (enviar) {
-                                DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Processing from ZRCP command send-keys-event: key %d event %d",numero_key,numero_event);
+                                DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"ZENG Online Client: Processing from ZRCP command send-keys-event: key %d event %d",numero_key,numero_event);
                                 //printf ("Processing from ZRCP command send-keys-event: key %d event %d\n",numero_key,numero_event);
 
-                                DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Info joystick: fire: %d up: %d down: %d left: %d right: %d",
+                                DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"ZENG Online Client: Info joystick: fire: %d up: %d down: %d left: %d right: %d",
                                     UTIL_KEY_JOY_FIRE,UTIL_KEY_JOY_UP,UTIL_KEY_JOY_DOWN,UTIL_KEY_JOY_LEFT,UTIL_KEY_JOY_RIGHT);
 
                                 //Si tecla especial de reset todas teclas. usado en driver curses
