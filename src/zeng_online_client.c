@@ -3808,7 +3808,7 @@ void zeng_online_client_prepare_snapshot_if_needed(void)
 
 					zoc_pending_send_snapshot=1;
 
-                    DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"ZENG Online Client: Queuing snapshot to send, length: %d",longitud);
+                    DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"ZENG Online Client: Queuing snapshot to send, length: %d bytes",longitud);
 
 
 				}
