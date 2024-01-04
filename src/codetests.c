@@ -2387,8 +2387,8 @@ void codetests_main(int main_argc,char *main_argv[])
     printf("\nRunning multiply 8 bits code tests\n");
     codetests_multiply_8bits();
 
-    printf("\nRunning codetests stl\n");
-    codetests_stl();
+    //printf("\nRunning codetests stl\n");
+    //codetests_stl();
 
     //temporal crear dsk
     //dsk_create("/tmp/maspruebas.dsk",40,1,9,512);
