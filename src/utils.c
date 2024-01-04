@@ -21979,3 +21979,232 @@ void util_stl_print_vertex(char *buffer_linea,int x,int y,int z,int exponente,in
         y,signo,exponente,
         z,signo_z,exponente_z);
 }
+
+void util_stl_print_facet(char *buffer_linea,int x,int y,int z)
+{
+
+
+    //            vertex  0.000000e+00  0.000000e+00  1.000000e+00
+    sprintf(buffer_linea,"    facet normal  %d.000000e+00  %d.000000e+00  %d.000000e+00",
+        x,
+        y,
+        z);
+}
+
+
+void util_stl_triangle(FILE *ptr_archivo,int vx,int vy,int vz,int x1,int y1,int z1,int x2,int y2,int z2,int x3,int y3,int z3,int exponente,int exponente_z)
+{
+    char buffer_linea[256];
+    /*
+    facet normal  0.000000e+00  0.000000e+00  1.000000e+00
+        outer loop
+            vertex  0.000000e+00  0.000000e+00  1.000000e+00
+            vertex  1.000000e+00  0.000000e+00  1.000000e+00
+            vertex  0.000000e+00  1.000000e+00  1.000000e+00
+        endloop
+    endfacet
+    */
+    util_stl_print_facet(buffer_linea,vx,vy,vz);
+    fwrite(buffer_linea,1,strlen(buffer_linea),ptr_archivo);
+    fwrite("\n",1,1,ptr_archivo);
+
+    strcpy(buffer_linea,"        outer loop\n");
+    fwrite(buffer_linea,1,strlen(buffer_linea),ptr_archivo);
+
+
+    util_stl_print_vertex(buffer_linea,x1,y1,z1,exponente,exponente_z);
+    fwrite(buffer_linea,1,strlen(buffer_linea),ptr_archivo);
+    fwrite("\n",1,1,ptr_archivo);
+    util_stl_print_vertex(buffer_linea,x2,y2,z2,exponente,exponente_z);
+    fwrite(buffer_linea,1,strlen(buffer_linea),ptr_archivo);
+    fwrite("\n",1,1,ptr_archivo);
+    util_stl_print_vertex(buffer_linea,x3,y3,z3,exponente,exponente_z);
+    fwrite(buffer_linea,1,strlen(buffer_linea),ptr_archivo);
+    fwrite("\n",1,1,ptr_archivo);
+
+
+    strcpy(buffer_linea,"        endloop\n");
+    fwrite(buffer_linea,1,strlen(buffer_linea),ptr_archivo);
+
+    strcpy(buffer_linea,"    endfacet\n");
+    fwrite(buffer_linea,1,strlen(buffer_linea),ptr_archivo);
+
+}
+
+
+void util_stl_cube(FILE *ptr_archivo,int x,int y,int z,int exponente,int exponente_z)
+{
+    util_stl_triangle(ptr_archivo,
+        0,0,1,
+        x+0,y+0,z+1,
+        x+1,y+0,z+1,
+        x+0,y+1,z+1,
+        exponente,exponente_z);
+
+    util_stl_triangle(ptr_archivo,
+        0,0,1,
+        x+1,y+1,z+1,
+        x+0,y+1,z+1,
+        x+1,y+0,z+1,
+        exponente,exponente_z);
+
+    util_stl_triangle(ptr_archivo,
+        1,0,0,
+        x+1,y+0,z+1,
+        x+1,y+0,z+0,
+        x+1,y+1,z+1,
+        exponente,exponente_z);
+
+    util_stl_triangle(ptr_archivo,
+        1,0,0,
+        x+1,y+1,z+0,
+        x+1,y+1,z+1,
+        x+1,y+0,z+0,
+        exponente,exponente_z);
+
+    util_stl_triangle(ptr_archivo,
+        0,0,-1,
+        x+1,y+0,z+0,
+        x+0,y+0,z+0,
+        x+1,y+1,z+0,
+        exponente,exponente_z);
+
+    util_stl_triangle(ptr_archivo,
+        0,0,-1,
+        x+0,y+1,z+0,
+        x+1,y+1,z+0,
+        x+0,y+0,z+0,
+        exponente,exponente_z);
+
+    util_stl_triangle(ptr_archivo,
+        -1,0,0,
+        x+0,y+0,z+0,
+        x+0,y+0,z+1,
+        x+0,y+1,z+0,
+        exponente,exponente_z);
+
+    util_stl_triangle(ptr_archivo,
+        -1,0,0,
+        x+0,y+1,z+1,
+        x+0,y+1,z+0,
+        x+0,y+0,z+1,
+        exponente,exponente_z);
+
+    util_stl_triangle(ptr_archivo,
+        0,1,0,
+        x+0,y+1,z+1,
+        x+1,y+1,z+1,
+        x+0,y+1,z+0,
+        exponente,exponente_z);
+
+    util_stl_triangle(ptr_archivo,
+        0,1,0,
+        x+1,y+1,z+0,
+        x+0,y+1,z+0,
+        x+1,y+1,z+1,
+        exponente,exponente_z);
+
+    util_stl_triangle(ptr_archivo,
+        0,-1,0,
+        x+1,y+0,z+1,
+        x+0,y+0,z+1,
+        x+1,y+0,z+0,
+        exponente,exponente_z);
+
+    util_stl_triangle(ptr_archivo,
+        0,-1,0,
+        x+0,y+0,z+0,
+        x+1,y+0,z+0,
+        x+0,y+0,z+1,
+        exponente,exponente_z);
+    /*
+
+solid cube-ascii-1mm
+    facet normal  0.000000e+00  0.000000e+00  1.000000e+00
+        outer loop
+            vertex  0.000000e+00  0.000000e+00  1.000000e+00
+            vertex  1.000000e+00  0.000000e+00  1.000000e+00
+            vertex  0.000000e+00  1.000000e+00  1.000000e+00
+        endloop
+    endfacet
+    facet normal  0.000000e+00  0.000000e+00  1.000000e+00
+        outer loop
+            vertex  1.000000e+00  1.000000e+00  1.000000e+00
+            vertex  0.000000e+00  1.000000e+00  1.000000e+00
+            vertex  1.000000e+00  0.000000e+00  1.000000e+00
+        endloop
+    endfacet
+    facet normal  1.000000e+00  0.000000e+00  0.000000e+00
+        outer loop
+            vertex  1.000000e+00  0.000000e+00  1.000000e+00
+            vertex  1.000000e+00  0.000000e+00  0.000000e+00
+            vertex  1.000000e+00  1.000000e+00  1.000000e+00
+        endloop
+    endfacet
+    facet normal  1.000000e+00  0.000000e+00  0.000000e+00
+        outer loop
+            vertex  1.000000e+00  1.000000e+00  0.000000e+00
+            vertex  1.000000e+00  1.000000e+00  1.000000e+00
+            vertex  1.000000e+00  0.000000e+00  0.000000e+00
+        endloop
+    endfacet
+    facet normal  0.000000e+00  0.000000e+00 -1.000000e+00
+        outer loop
+            vertex  1.000000e+00  0.000000e+00  0.000000e+00
+            vertex  0.000000e+00  0.000000e+00  0.000000e+00
+            vertex  1.000000e+00  1.000000e+00  0.000000e+00
+        endloop
+    endfacet
+    facet normal  0.000000e+00  0.000000e+00 -1.000000e+00
+        outer loop
+            vertex  0.000000e+00  1.000000e+00  0.000000e+00
+            vertex  1.000000e+00  1.000000e+00  0.000000e+00
+            vertex  0.000000e+00  0.000000e+00  0.000000e+00
+        endloop
+    endfacet
+    facet normal -1.000000e+00  0.000000e+00  0.000000e+00
+        outer loop
+            vertex  0.000000e+00  0.000000e+00  0.000000e+00
+            vertex  0.000000e+00  0.000000e+00  1.000000e+00
+            vertex  0.000000e+00  1.000000e+00  0.000000e+00
+        endloop
+    endfacet
+    facet normal -1.000000e+00  0.000000e+00  0.000000e+00
+        outer loop
+            vertex  0.000000e+00  1.000000e+00  1.000000e+00
+            vertex  0.000000e+00  1.000000e+00  0.000000e+00
+            vertex  0.000000e+00  0.000000e+00  1.000000e+00
+        endloop
+    endfacet
+    facet normal  0.000000e+00  1.000000e+00  0.000000e+00
+        outer loop
+            vertex  0.000000e+00  1.000000e+00  1.000000e+00
+            vertex  1.000000e+00  1.000000e+00  1.000000e+00
+            vertex  0.000000e+00  1.000000e+00  0.000000e+00
+        endloop
+    endfacet
+    facet normal  0.000000e+00  1.000000e+00  0.000000e+00
+        outer loop
+            vertex  1.000000e+00  1.000000e+00  0.000000e+00
+            vertex  0.000000e+00  1.000000e+00  0.000000e+00
+            vertex  1.000000e+00  1.000000e+00  1.000000e+00
+        endloop
+    endfacet
+    facet normal  0.000000e+00 -1.000000e+00  0.000000e+00
+        outer loop
+            vertex  1.000000e+00  0.000000e+00  1.000000e+00
+            vertex  0.000000e+00  0.000000e+00  1.000000e+00
+            vertex  1.000000e+00  0.000000e+00  0.000000e+00
+        endloop
+    endfacet
+    facet normal  0.000000e+00 -1.000000e+00  0.000000e+00
+        outer loop
+            vertex  0.000000e+00  0.000000e+00  0.000000e+00
+            vertex  1.000000e+00  0.000000e+00  0.000000e+00
+            vertex  0.000000e+00  0.000000e+00  1.000000e+00
+        endloop
+    endfacet
+endsolid
+
+    */
+}

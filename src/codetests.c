@@ -2262,6 +2262,15 @@ void codetests_stl(void)
     util_stl_print_vertex(buffer_linea,3,4,5,0,10);
 
     printf("%s\n",buffer_linea);
+
+
+    FILE *ptr_stl=fopen("prueba.stl","wb");
+    if (!ptr_stl) {
+            printf("Unable to create sample stl file\n");
+            exit(1);
+    }
+
+    util_stl_cube(ptr_stl,10,20,0,0,1);
 }
 
 void codetests_main(int main_argc,char *main_argv[])
