@@ -5480,6 +5480,11 @@ void save_screen(char *screen_save_file)
             menu_ventana_scanf_numero_enhanced("Base height (mm)",&alto_base,3,+1,1,99,0);
         }
 
+        int alto_solido=10;
+
+        menu_ventana_scanf_numero_enhanced("Pixel height",&alto_solido,3,+1,1,99,0);
+
+
         opcion=menu_simple_two_choices("Export size","Scale?","1 pixel=1 mm","1 pixel=0.1 mm");
 
         int exponente=0; //Escala: 1 pixel=1 mm
@@ -5498,7 +5503,7 @@ void save_screen(char *screen_save_file)
 		origen=get_base_mem_pantalla();
 		util_convert_scr_sprite(origen,buf_temp);
 
-		util_write_stl_file(screen_save_file,256,192,buf_temp,incluir_base,alto_base,exponente);
+		util_write_stl_file(screen_save_file,256,192,buf_temp,incluir_base,alto_base,exponente,alto_solido);
 
 		free(buf_temp);
 

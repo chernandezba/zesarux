@@ -12999,7 +12999,7 @@ int util_write_pbm_file(char *archivo, int ancho, int alto, int ppb, z80_byte *s
   return 0;
 }
 
-int util_write_stl_file(char *archivo, int ancho, int alto, z80_byte *source,int incluir_base,int alto_base,int exponente)
+int util_write_stl_file(char *archivo, int ancho, int alto, z80_byte *source,int incluir_base,int alto_base,int exponente,int alto_solido)
 {
 
   FILE *ptr_destino;
@@ -13026,7 +13026,7 @@ int util_write_stl_file(char *archivo, int ancho, int alto, z80_byte *source,int
     //int alto_base=1;
     if (incluir_base) z+=alto_base;
 
-    int alto_solido=10; //Cuanto de altura z, esta valor multiplicado *10 exponente
+    //int alto_solido=10; //Cuanto de altura z, esta valor multiplicado *10 exponente
 
     //para determinar recuadro
     int max_y=0;
