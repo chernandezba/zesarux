@@ -5,6 +5,7 @@ Version 11 - David edition. 12 October 2023
 Added ZENG Online feature. TODO: improve this description
 Added ZENG support on curses driver
 Added save screen to .txt file
+Added save screen to .stl file, useful to print on 3D Printer
 Added function to shift bits on Hex Editor
 Added TempleOS GUI Style
 Added QNX GUI Style

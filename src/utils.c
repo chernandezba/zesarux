@@ -13018,20 +13018,25 @@ int util_write_stl_file(char *archivo, int ancho, int alto, z80_byte *source)
 
   	fwrite(stl_header,1,strlen(stl_header),ptr_destino);
 
-    int incluir_base=0;
+    int incluir_base=1;
 
     int exponente=0; //Escala: 1 pixel=1 mm
     int exponente_z=0;
 
     int z=0; //empezar en
-    if (incluir_base) z++; //1 mm de base
+    int alto_base=1;
+    if (incluir_base) z+=alto_base; //1 mm de base
 
     int alto_solido=10; //Cuanto de altura z, esta valor multiplicado *10 exponente
 
-
+    //para determinar recuadro
+    int max_y=0;
+    int min_y=191;
+    int max_x=0;
+    int min_x=255;
 
   int x,y,bit;
-  for (y=0;y<alto;y++) {
+  for (y=alto-1;y>0;y--) {
     for (x=0;x<ancho;x+=8) {
         z80_byte byte_leido=*source;
         for (bit=0;bit<8;bit++) {
@@ -13039,7 +13044,13 @@ int util_write_stl_file(char *archivo, int ancho, int alto, z80_byte *source)
             //if (incluir_base) util_stl_cube(ptr_destino,x+bit,alto-1-y,0,exponente,exponente_z,1);
 
             if (byte_leido&128) {
-                util_stl_cube(ptr_destino,x+bit,alto-1-y,z,exponente,exponente_z,alto_solido);
+                util_stl_cube(ptr_destino,x+bit,y,z,exponente,exponente_z,1,1,alto_solido);
+
+                if (x+bit>max_x) max_x=x+bit;
+                if (y>max_y) max_y=y;
+
+                if (x+bit<min_x) min_x=x+bit;
+                if (y<min_y) min_y=y;
             }
             byte_leido=byte_leido<<1;
         }
@@ -13047,8 +13058,11 @@ int util_write_stl_file(char *archivo, int ancho, int alto, z80_byte *source)
     }
   }
 
-    //TODO: generar la base si conviene
+    //generar la base si conviene
     if (incluir_base) {
+        util_stl_cube(ptr_destino,min_x,min_y,0,
+        exponente,0,
+        max_x+1-min_x,max_y+1-min_y,alto_base);
     }
 
     //Escribir fin stl
@@ -22093,90 +22107,90 @@ void util_stl_triangle(FILE *ptr_archivo,int vx,int vy,int vz,int x1,int y1,int 
 }
 
 
-void util_stl_cube(FILE *ptr_archivo,int x,int y,int z,int exponente,int exponente_z,int alto_z)
+void util_stl_cube(FILE *ptr_archivo,int x,int y,int z,int exponente,int exponente_z,int inc_x,int inc_y,int alto_z)
 {
     util_stl_triangle(ptr_archivo,
         0,0,1,
-        x+0,y+0,z+alto_z,
-        x+1,y+0,z+alto_z,
-        x+0,y+1,z+alto_z,
+        x+0,    y+0,z+alto_z,
+        x+inc_x,y+0,z+alto_z,
+        x+0,    y+inc_y,z+alto_z,
         exponente,exponente_z);
 
     util_stl_triangle(ptr_archivo,
         0,0,1,
-        x+1,y+1,z+alto_z,
-        x+0,y+1,z+alto_z,
-        x+1,y+0,z+alto_z,
+        x+inc_x,y+inc_y,z+alto_z,
+        x+0,    y+inc_y,z+alto_z,
+        x+inc_x,y+0,z+alto_z,
         exponente,exponente_z);
 
     util_stl_triangle(ptr_archivo,
         1,0,0,
-        x+1,y+0,z+alto_z,
-        x+1,y+0,z+0,
-        x+1,y+1,z+alto_z,
+        x+inc_x,y+0,z+alto_z,
+        x+inc_x,y+0,z+0,
+        x+inc_x,y+inc_y,z+alto_z,
         exponente,exponente_z);
 
     util_stl_triangle(ptr_archivo,
         1,0,0,
-        x+1,y+1,z+0,
-        x+1,y+1,z+alto_z,
-        x+1,y+0,z+0,
+        x+inc_x,y+inc_y,z+0,
+        x+inc_x,y+inc_y,z+alto_z,
+        x+inc_x,y+0,z+0,
         exponente,exponente_z);
 
     util_stl_triangle(ptr_archivo,
         0,0,-1,
-        x+1,y+0,z+0,
-        x+0,y+0,z+0,
-        x+1,y+1,z+0,
+        x+inc_x,y+0,z+0,
+        x+0,    y+0,z+0,
+        x+inc_x,y+inc_y,z+0,
         exponente,exponente_z);
 
     util_stl_triangle(ptr_archivo,
         0,0,-1,
-        x+0,y+1,z+0,
-        x+1,y+1,z+0,
-        x+0,y+0,z+0,
+        x+0,    y+inc_y,z+0,
+        x+inc_x,y+inc_y,z+0,
+        x+0,    y+0,z+0,
         exponente,exponente_z);
 
     util_stl_triangle(ptr_archivo,
         -1,0,0,
-        x+0,y+0,z+0,
-        x+0,y+0,z+alto_z,
-        x+0,y+1,z+0,
+        x+0,    y+0,z+0,
+        x+0,    y+0,z+alto_z,
+        x+0,    y+inc_y,z+0,
         exponente,exponente_z);
 
     util_stl_triangle(ptr_archivo,
         -1,0,0,
-        x+0,y+1,z+alto_z,
-        x+0,y+1,z+0,
-        x+0,y+0,z+alto_z,
+        x+0,    y+inc_y,z+alto_z,
+        x+0,    y+inc_y,z+0,
+        x+0,    y+0,z+alto_z,
         exponente,exponente_z);
 
     util_stl_triangle(ptr_archivo,
         0,1,0,
-        x+0,y+1,z+alto_z,
-        x+1,y+1,z+alto_z,
-        x+0,y+1,z+0,
+        x+0,    y+inc_y,z+alto_z,
+        x+inc_x,y+inc_y,z+alto_z,
+        x+0,    y+inc_y,z+0,
         exponente,exponente_z);
 
     util_stl_triangle(ptr_archivo,
         0,1,0,
-        x+1,y+1,z+0,
-        x+0,y+1,z+0,
-        x+1,y+1,z+alto_z,
+        x+inc_x,y+inc_y,z+0,
+        x+0,    y+inc_y,z+0,
+        x+inc_x,y+inc_y,z+alto_z,
         exponente,exponente_z);
 
     util_stl_triangle(ptr_archivo,
         0,-1,0,
-        x+1,y+0,z+alto_z,
-        x+0,y+0,z+alto_z,
-        x+1,y+0,z+0,
+        x+inc_x,y+0,z+alto_z,
+        x+0,    y+0,z+alto_z,
+        x+inc_x,y+0,z+0,
         exponente,exponente_z);
 
     util_stl_triangle(ptr_archivo,
         0,-1,0,
-        x+0,y+0,z+0,
-        x+1,y+0,z+0,
-        x+0,y+0,z+alto_z,
+        x+0,    y+0,z+0,
+        x+inc_x,y+0,z+0,
+        x+0,    y+0,z+alto_z,
         exponente,exponente_z);
     /*
 

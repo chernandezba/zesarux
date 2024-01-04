@@ -2270,7 +2270,7 @@ void codetests_stl(void)
             exit(1);
     }
 
-    util_stl_cube(ptr_stl,10,20,0,0,1,1);
+    util_stl_cube(ptr_stl,10,20,0,0,1,1,1,1);
 }
 
 void codetests_main(int main_argc,char *main_argv[])
