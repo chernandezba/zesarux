@@ -13018,15 +13018,28 @@ int util_write_stl_file(char *archivo, int ancho, int alto, z80_byte *source)
 
   	fwrite(stl_header,1,strlen(stl_header),ptr_destino);
 
-    int z=1;
+    int incluir_base=0;
+
+    int exponente=0; //Escala: 1 pixel=1 mm
+    int exponente_z=0;
+
+    int z=0; //empezar en
+    if (incluir_base) z++; //1 mm de base
+
+    int alto_solido=10; //Cuanto de altura z, esta valor multiplicado *10 exponente
+
+
 
   int x,y,bit;
   for (y=0;y<alto;y++) {
-    for (x=0;x<ancho/8;x++) {
+    for (x=0;x<ancho;x+=8) {
         z80_byte byte_leido=*source;
         for (bit=0;bit<8;bit++) {
+
+            //if (incluir_base) util_stl_cube(ptr_destino,x+bit,alto-1-y,0,exponente,exponente_z,1);
+
             if (byte_leido&128) {
-                util_stl_cube(ptr_destino,x+bit,y,z,0,1);
+                util_stl_cube(ptr_destino,x+bit,alto-1-y,z,exponente,exponente_z,alto_solido);
             }
             byte_leido=byte_leido<<1;
         }
@@ -13034,6 +13047,9 @@ int util_write_stl_file(char *archivo, int ancho, int alto, z80_byte *source)
     }
   }
 
+    //TODO: generar la base si conviene
+    if (incluir_base) {
+    }
 
     //Escribir fin stl
   	sprintf (stl_header,"endsolid\n");
@@ -22077,33 +22093,33 @@ void util_stl_triangle(FILE *ptr_archivo,int vx,int vy,int vz,int x1,int y1,int 
 }
 
 
-void util_stl_cube(FILE *ptr_archivo,int x,int y,int z,int exponente,int exponente_z)
+void util_stl_cube(FILE *ptr_archivo,int x,int y,int z,int exponente,int exponente_z,int alto_z)
 {
     util_stl_triangle(ptr_archivo,
         0,0,1,
-        x+0,y+0,z+1,
-        x+1,y+0,z+1,
-        x+0,y+1,z+1,
+        x+0,y+0,z+alto_z,
+        x+1,y+0,z+alto_z,
+        x+0,y+1,z+alto_z,
         exponente,exponente_z);
 
     util_stl_triangle(ptr_archivo,
         0,0,1,
-        x+1,y+1,z+1,
-        x+0,y+1,z+1,
-        x+1,y+0,z+1,
+        x+1,y+1,z+alto_z,
+        x+0,y+1,z+alto_z,
+        x+1,y+0,z+alto_z,
         exponente,exponente_z);
 
     util_stl_triangle(ptr_archivo,
         1,0,0,
-        x+1,y+0,z+1,
+        x+1,y+0,z+alto_z,
         x+1,y+0,z+0,
-        x+1,y+1,z+1,
+        x+1,y+1,z+alto_z,
         exponente,exponente_z);
 
     util_stl_triangle(ptr_archivo,
         1,0,0,
         x+1,y+1,z+0,
-        x+1,y+1,z+1,
+        x+1,y+1,z+alto_z,
         x+1,y+0,z+0,
         exponente,exponente_z);
 
@@ -22124,21 +22140,21 @@ void util_stl_cube(FILE *ptr_archivo,int x,int y,int z,int exponente,int exponen
     util_stl_triangle(ptr_archivo,
         -1,0,0,
         x+0,y+0,z+0,
-        x+0,y+0,z+1,
+        x+0,y+0,z+alto_z,
         x+0,y+1,z+0,
         exponente,exponente_z);
 
     util_stl_triangle(ptr_archivo,
         -1,0,0,
-        x+0,y+1,z+1,
+        x+0,y+1,z+alto_z,
         x+0,y+1,z+0,
-        x+0,y+0,z+1,
+        x+0,y+0,z+alto_z,
         exponente,exponente_z);
 
     util_stl_triangle(ptr_archivo,
         0,1,0,
-        x+0,y+1,z+1,
-        x+1,y+1,z+1,
+        x+0,y+1,z+alto_z,
+        x+1,y+1,z+alto_z,
         x+0,y+1,z+0,
         exponente,exponente_z);
 
@@ -22146,13 +22162,13 @@ void util_stl_cube(FILE *ptr_archivo,int x,int y,int z,int exponente,int exponen
         0,1,0,
         x+1,y+1,z+0,
         x+0,y+1,z+0,
-        x+1,y+1,z+1,
+        x+1,y+1,z+alto_z,
         exponente,exponente_z);
 
     util_stl_triangle(ptr_archivo,
         0,-1,0,
-        x+1,y+0,z+1,
-        x+0,y+0,z+1,
+        x+1,y+0,z+alto_z,
+        x+0,y+0,z+alto_z,
         x+1,y+0,z+0,
         exponente,exponente_z);
 
@@ -22160,7 +22176,7 @@ void util_stl_cube(FILE *ptr_archivo,int x,int y,int z,int exponente,int exponen
         0,-1,0,
         x+0,y+0,z+0,
         x+1,y+0,z+0,
-        x+0,y+0,z+1,
+        x+0,y+0,z+alto_z,
         exponente,exponente_z);
     /*
 
