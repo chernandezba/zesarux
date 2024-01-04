@@ -12999,7 +12999,7 @@ int util_write_pbm_file(char *archivo, int ancho, int alto, int ppb, z80_byte *s
   return 0;
 }
 
-int util_write_stl_file(char *archivo, int ancho, int alto, z80_byte *source)
+int util_write_stl_file(char *archivo, int ancho, int alto, z80_byte *source,int incluir_base,int alto_base)
 {
 
   FILE *ptr_destino;
@@ -13018,13 +13018,12 @@ int util_write_stl_file(char *archivo, int ancho, int alto, z80_byte *source)
 
   	fwrite(stl_header,1,strlen(stl_header),ptr_destino);
 
-    int incluir_base=1;
 
     int exponente=0; //Escala: 1 pixel=1 mm
     int exponente_z=0;
 
     int z=0; //empezar en
-    int alto_base=1;
+    //int alto_base=1;
     if (incluir_base) z+=alto_base; //1 mm de base
 
     int alto_solido=10; //Cuanto de altura z, esta valor multiplicado *10 exponente

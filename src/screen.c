@@ -5468,6 +5468,20 @@ void save_screen(char *screen_save_file)
 			return;
         }
 
+
+        int opcion=menu_simple_two_choices("Solid base","Include base?","Yes","No");
+
+        int incluir_base=(opcion==1 ? 1 : 0);
+
+
+        int alto_base=1;
+
+        if (incluir_base) {
+            menu_ventana_scanf_numero_enhanced("Base height (mm)",&alto_base,3,+1,1,99,0);
+        }
+
+
+
 		//Asignar buffer temporal
 		int longitud=6144;
 		z80_byte *buf_temp=malloc(longitud);
@@ -5480,7 +5494,7 @@ void save_screen(char *screen_save_file)
 		origen=get_base_mem_pantalla();
 		util_convert_scr_sprite(origen,buf_temp);
 
-		util_write_stl_file(screen_save_file,256,192,buf_temp);
+		util_write_stl_file(screen_save_file,256,192,buf_temp,incluir_base,alto_base);
 
 		free(buf_temp);
 
