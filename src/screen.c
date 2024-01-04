@@ -5461,6 +5461,32 @@ void save_screen(char *screen_save_file)
 
 	}
 
+	else if (!util_compare_file_extension(screen_save_file,"stl")) {
+
+		if (!MACHINE_IS_SPECTRUM) {
+			debug_printf (VERBOSE_ERR,"Screen .stl saving only allowed on Spectrum models");
+			return;
+        }
+
+		//Asignar buffer temporal
+		int longitud=6144;
+		z80_byte *buf_temp=malloc(longitud);
+		if (buf_temp==NULL) {
+				debug_printf(VERBOSE_ERR,"Error allocating temporary buffer");
+		}
+
+		//Convertir pantalla a sprite ahi
+		z80_byte *origen;
+		origen=get_base_mem_pantalla();
+		util_convert_scr_sprite(origen,buf_temp);
+
+		util_write_stl_file(screen_save_file,256,192,buf_temp);
+
+		free(buf_temp);
+
+
+	}
+
 	else if (!util_compare_file_extension(screen_save_file,"bmp")) {
 
 		util_write_screen_bmp(screen_save_file);

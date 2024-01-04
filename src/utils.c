@@ -12999,6 +12999,51 @@ int util_write_pbm_file(char *archivo, int ancho, int alto, int ppb, z80_byte *s
   return 0;
 }
 
+int util_write_stl_file(char *archivo, int ancho, int alto, z80_byte *source)
+{
+
+  FILE *ptr_destino;
+  ptr_destino=fopen(archivo,"wb");
+
+  if (ptr_destino==NULL) {
+    debug_printf (VERBOSE_ERR,"Error writing pbm file");
+    return 1;
+  }
+
+
+    //Escribir cabecera stl
+  	char stl_header[256]; //Suficiente
+
+  	sprintf (stl_header,"solid ZEsarUX\n");
+
+  	fwrite(stl_header,1,strlen(stl_header),ptr_destino);
+
+    int z=1;
+
+  int x,y,bit;
+  for (y=0;y<alto;y++) {
+    for (x=0;x<ancho/8;x++) {
+        z80_byte byte_leido=*source;
+        for (bit=0;bit<8;bit++) {
+            if (byte_leido&128) {
+                util_stl_cube(ptr_destino,x+bit,y,z,0,1);
+            }
+            byte_leido=byte_leido<<1;
+        }
+      source++;
+    }
+  }
+
+
+    //Escribir fin stl
+  	sprintf (stl_header,"endsolid\n");
+
+  	fwrite(stl_header,1,strlen(stl_header),ptr_destino);
+
+  fclose(ptr_destino);
+
+  return 0;
+}
 
 //Retorna 0 si ok. No 0 si error. Ancho expresado en pixeles. Alto expresado en pixeles
 //Source es en crudo bytes monocromos. ppb sera 8 siempre
