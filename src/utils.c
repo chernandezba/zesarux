@@ -21958,3 +21958,24 @@ z80_int util_multiply_8bits(z80_byte a,z80_byte b)
     return resultado;
 
 }
+
+void util_stl_print_vertex(char *buffer_linea,int x,int y,int z,int exponente,int exponente_z)
+{
+    char signo='+';
+    if (exponente<0) {
+        signo='-';
+        exponente=-exponente;
+    }
+
+    char signo_z='+';
+    if (exponente_z<0) {
+        signo_z='-';
+        exponente_z=-exponente_z;
+    }
+
+    //            vertex  0.000000e+00  0.000000e+00  1.000000e+00
+    sprintf(buffer_linea,"            vertex  %d.000000e%c%d  %d.000000e%c%d  %d.000000e%c%d",
+        x,signo,exponente,
+        y,signo,exponente,
+        z,signo_z,exponente_z);
+}

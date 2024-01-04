@@ -2255,6 +2255,15 @@ void codetests_multiply_8bits(void)
     }
 }
 
+void codetests_stl(void)
+{
+    char buffer_linea[256];
+
+    util_stl_print_vertex(buffer_linea,3,4,5,0,10);
+
+    printf("%s\n",buffer_linea);
+}
+
 void codetests_main(int main_argc,char *main_argv[])
 {
 
@@ -2369,6 +2378,8 @@ void codetests_main(int main_argc,char *main_argv[])
     printf("\nRunning multiply 8 bits code tests\n");
     codetests_multiply_8bits();
 
+    printf("\nRunning codetests stl\n");
+    codetests_stl();
 
     //temporal crear dsk
     //dsk_create("/tmp/maspruebas.dsk",40,1,9,512);

@@ -1010,4 +1010,6 @@ extern void util_get_operating_system_release(char *destino,int maximo);
 
 extern z80_int util_multiply_8bits(z80_byte a,z80_byte b);
 
+extern void util_stl_print_vertex(char *buffer_linea,int x,int y,int z,int exponente,int exponente_z);
+
 #endif
