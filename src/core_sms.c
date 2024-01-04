@@ -63,6 +63,7 @@
 #include "vdp_9918a_sms.h"
 #include "snap_ram.h"
 #include "codsinpr.h"
+#include "zeng_online_client.h"
 
 
 z80_byte byte_leido_core_sms;

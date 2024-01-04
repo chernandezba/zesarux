@@ -80,7 +80,7 @@ extern char *zeng_remote_list_users_buffer;
 extern void zoc_stop_master_thread(void);
 extern void zoc_stop_slave_thread(void);
 
-extern void zeng_online_client_end_frame_from_core_functions(void);
+
 
 //extern void zoc_start_snapshot_sending(void);
 

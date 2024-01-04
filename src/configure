@@ -1343,10 +1343,10 @@ core_svi.o: core_svi.c core_svi.h cpu.h debug.h tape.h audio.h screen.h ay38912.
 core_coleco.o: core_coleco.c core_coleco.h cpu.h debug.h tape.h audio.h screen.h ay38912.h operaciones.h snap.h timer.h zxvision.h chardetect.h compileoptions.h contend.h snap_zx8081.h utils.h realjoystick.h  settings.h coleco.h vdp_9918a.h sn76489an.h vdp_9918a_sms.h snap_ram.h codsinpr.h
 	\$(CC) \$(CFLAGS) -c core_coleco.c
 
-core_sg1000.o: core_sg1000.c core_sg1000.h cpu.h debug.h tape.h audio.h screen.h ay38912.h operaciones.h snap.h timer.h zxvision.h chardetect.h compileoptions.h contend.h snap_zx8081.h utils.h realjoystick.h  settings.h sg1000.h vdp_9918a.h sn76489an.h vdp_9918a_sms.h snap_ram.h codsinpr.h
+core_sg1000.o: core_sg1000.c core_sg1000.h cpu.h debug.h tape.h audio.h screen.h ay38912.h operaciones.h snap.h timer.h zxvision.h chardetect.h compileoptions.h contend.h snap_zx8081.h utils.h realjoystick.h  settings.h sg1000.h vdp_9918a.h sn76489an.h vdp_9918a_sms.h snap_ram.h codsinpr.h zeng_online_client.h
 	\$(CC) \$(CFLAGS) -c core_sg1000.c
 
-core_sms.o: core_sms.c core_sms.h cpu.h debug.h tape.h audio.h screen.h ay38912.h operaciones.h snap.h timer.h zxvision.h chardetect.h compileoptions.h contend.h snap_zx8081.h utils.h realjoystick.h  settings.h sms.h vdp_9918a.h sn76489an.h vdp_9918a_sms.h snap_ram.h codsinpr.h
+core_sms.o: core_sms.c core_sms.h cpu.h debug.h tape.h audio.h screen.h ay38912.h operaciones.h snap.h timer.h zxvision.h chardetect.h compileoptions.h contend.h snap_zx8081.h utils.h realjoystick.h  settings.h sms.h vdp_9918a.h sn76489an.h vdp_9918a_sms.h snap_ram.h codsinpr.h zeng_online_client.h
 	\$(CC) \$(CFLAGS) -c core_sms.c
 
 mk14.o: mk14.c mk14.h cpu.h debug.h scmp.h utils.h zxvision.h
