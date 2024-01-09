@@ -31,6 +31,7 @@ Improved ZX Vision:
 - Menus can no longer be minimized (that had no sense)
 - Process switcher: unminimize windows when selecting them and they were minimized
 - Process switcher: now it can be set to be always visible
+- Menu titles are translated to selected language (not everything yet, please be patient)
 
 Improved ZX Desktop:
 - Allow to set parameters when redefining upper buttons, for some actions like openwindow or set machine

@@ -29450,7 +29450,7 @@ void menu_snapshot(MENU_ITEM_PARAMETERS)
         menu_add_item_menu(array_menu_snapshot,"",MENU_OPCION_SEPARADOR,NULL,NULL);
         menu_add_ESC_item(array_menu_snapshot);
 
-        retorno_menu=menu_dibuja_menu(&snapshot_opcion_seleccionada,&item_seleccionado,array_menu_snapshot,"Snapshot" );
+        retorno_menu=menu_dibuja_menu_lang(&snapshot_opcion_seleccionada,&item_seleccionado,array_menu_snapshot,"Snapshot","Instantánea","Instantània");
 
 
 

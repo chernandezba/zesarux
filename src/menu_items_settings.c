@@ -759,6 +759,10 @@ void menu_interface_language(MENU_ITEM_PARAMETERS)
     if (gui_language>GUI_LANGUAGE_CATALAN) gui_language=0;
 
     menu_first_aid("language");
+
+    //Reiniciar indice busqueda dado que ya no tiene sentido el idioma anterior
+    //TODO: si se cambia el lenguaje por linea de comandos, el archivo de indice contendrá entradas con el idioma anterior
+    zxvision_index_menu_init();
 }
 
 void menu_interface_zoom(MENU_ITEM_PARAMETERS)

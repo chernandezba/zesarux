@@ -20609,6 +20609,9 @@ int util_convert_utf_charset(char *origen,z80_byte *final,int longitud_texto)
 
         }
 
+        //Caracter 0 del final
+        *final=0;
+
 
         return longitud_final;
 }

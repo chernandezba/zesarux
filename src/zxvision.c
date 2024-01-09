@@ -9292,7 +9292,7 @@ z80_byte menu_retorna_caracter_background(void)
 //contenido blanco
 //recuadro de lineas
 //Entrada: x,y posicion inicial. ancho, alto. Todo coordenadas en caracteres 0..31 y 0..23
-void menu_dibuja_ventana(int x,int y,int ancho,int alto,char *titulo_original)
+void menu_dibuja_ventana(int x,int y,int ancho,int alto,char *titulo_original_utf)
 {
 
 	//Para draw below windows, no mostrar error pendiente cuando esta dibujando ventanas de debajo
@@ -9302,13 +9302,18 @@ void menu_dibuja_ventana(int x,int y,int ancho,int alto,char *titulo_original)
 
 	//En el caso de stdout, solo escribimos el texto
         if (!strcmp(scr_new_driver_name,"stdout")) {
-                printf ("%s\n",titulo_original);
-		scrstdout_menu_print_speech_macro(titulo_original);
+                printf ("%s\n",titulo_original_utf);
+		scrstdout_menu_print_speech_macro(titulo_original_utf);
 		printf ("------------------------\n\n");
 		//paso de curses a stdout deja stdout que no hace flush nunca. forzar
 		fflush(stdout);
                 return;
         }
+
+    //Convertir de cadena utf con posibles acentos a caracteres internos
+    char titulo_original[ZXVISION_MAX_WINDOW_TITLE];
+    util_convert_utf_charset(titulo_original_utf,(z80_byte *)titulo_original,strlen(titulo_original_utf));
+
 
     //Pasar titulo a string temporal. Agregamos un espacio al final en estilos que no rellenan toda la barra de titulo (como BeOS)
     char titulo[ZXVISION_MAX_WINDOW_TITLE];
