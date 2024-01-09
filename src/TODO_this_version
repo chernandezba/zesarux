@@ -812,6 +812,7 @@ y por tanto a nivel de path de indexacion de busqueda, se pierde el ultimo path 
 -buscar opciones de menu deberia considerar el titulo del menu con traduccion de idioma
 Para ello la funcion de dibujar menu debe admitir 3 titulos en vez de uno: uno para cada idioma
 Esto significaria tambien que al cambiar de idioma habria que resetear el indice de busqueda
+->ok. agregar mas titulos localizados
 
 -Ayuda tema gui añadir templeos y otros
 

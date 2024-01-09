@@ -497,7 +497,7 @@ int menu_zeng_online_ask_custom_permissions(void)
 
         menu_add_ESC_item(array_menu_common);
 
-        retorno_menu=menu_dibuja_menu(&opcion_seleccionada,&item_seleccionado,array_menu_common,"Custom Permissions");
+        retorno_menu=menu_dibuja_menu_no_title_lang(&opcion_seleccionada,&item_seleccionado,array_menu_common,"Custom Permissions");
 
 
         if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
@@ -860,7 +860,7 @@ int menu_zeng_online_ask_user_get_uuid(char *uuid,int ocultar_master,int agregar
         }
 
 
-        retorno_menu=menu_dibuja_menu(&opcion_seleccionada,&item_seleccionado,array_menu_common,"Users");
+        retorno_menu=menu_dibuja_menu_no_title_lang(&opcion_seleccionada,&item_seleccionado,array_menu_common,"Users");
 
     //No quedarnos en bucle como un menu. Al seleccionar usuario, se establece el uuid, y siempre que no se salga con ESC
     if ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus) {
@@ -1299,7 +1299,7 @@ void menu_zeng_online_restricted_keys_edit_keyboard(MENU_ITEM_PARAMETERS)
         }
 
 		//Nombre de ventana solo aparece en el caso de stdout
-        retorno_menu=menu_dibuja_menu(&opcion_seleccionada,&item_seleccionado,array_menu_common,"OSD Adventure KB" );
+        retorno_menu=menu_dibuja_menu_no_title_lang(&opcion_seleccionada,&item_seleccionado,array_menu_common,"OSD Adventure KB" );
 
 
 	//En caso de menus tabulados, es responsabilidad de este de borrar la ventana
@@ -1460,7 +1460,7 @@ void menu_zeng_online_restricted_keys(MENU_ITEM_PARAMETERS)
 
         menu_add_ESC_item(array_menu_common);
 
-        retorno_menu=menu_dibuja_menu(&zeng_online_restricted_keys_opcion_seleccionada,&item_seleccionado,array_menu_common,"Restricted keys");
+        retorno_menu=menu_dibuja_menu_no_title_lang(&zeng_online_restricted_keys_opcion_seleccionada,&item_seleccionado,array_menu_common,"Restricted keys");
 
 
         if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
@@ -1706,7 +1706,7 @@ void menu_zeng_online(MENU_ITEM_PARAMETERS)
 
         menu_add_ESC_item(array_menu_common);
 
-        retorno_menu=menu_dibuja_menu(&zeng_online_opcion_seleccionada,&item_seleccionado,array_menu_common,"ZENG Online");
+        retorno_menu=menu_dibuja_menu_no_title_lang(&zeng_online_opcion_seleccionada,&item_seleccionado,array_menu_common,"ZENG Online");
 
 
         if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {

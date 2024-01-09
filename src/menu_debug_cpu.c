@@ -391,7 +391,7 @@ int menu_change_memory_zone_list_title(char *titulo)
 
                 menu_add_ESC_item(array_menu_memory_zones);
 
-                retorno_menu=menu_dibuja_menu(&menu_change_memory_zone_list_opcion_seleccionada,&item_seleccionado,array_menu_memory_zones,titulo );
+                retorno_menu=menu_dibuja_menu_no_title_lang(&menu_change_memory_zone_list_opcion_seleccionada,&item_seleccionado,array_menu_memory_zones,titulo );
 
 
                 //no queremos que al pulsar ESC aqui se cierren todos los menus anteriores
@@ -675,7 +675,7 @@ void menu_mem_breakpoints(MENU_ITEM_PARAMETERS)
 
                 menu_add_item_menu(array_menu_mem_breakpoints,"",MENU_OPCION_SEPARADOR,NULL,NULL);
                 menu_add_ESC_item(array_menu_mem_breakpoints);
-                retorno_menu=menu_dibuja_menu(&mem_breakpoints_opcion_seleccionada,&item_seleccionado,array_menu_mem_breakpoints,"Memory Breakpoints" );
+                retorno_menu=menu_dibuja_menu_no_title_lang(&mem_breakpoints_opcion_seleccionada,&item_seleccionado,array_menu_mem_breakpoints,"Memory Breakpoints" );
 
         //no queremos que al pulsar ESC aqui se cierren todos los menus anteriores
         salir_todos_menus=0;
@@ -927,7 +927,7 @@ void menu_breakpoints(MENU_ITEM_PARAMETERS)
 
         menu_add_item_menu(array_menu_breakpoints,"",MENU_OPCION_SEPARADOR,NULL,NULL);
         menu_add_ESC_item(array_menu_breakpoints);
-        retorno_menu=menu_dibuja_menu(&breakpoints_opcion_seleccionada,&item_seleccionado,array_menu_breakpoints,"Breakpoints" );
+        retorno_menu=menu_dibuja_menu_no_title_lang(&breakpoints_opcion_seleccionada,&item_seleccionado,array_menu_breakpoints,"Breakpoints" );
 
 
 
@@ -3588,7 +3588,7 @@ void menu_watches(MENU_ITEM_PARAMETERS)
 
 
 
-    retorno_menu=menu_dibuja_menu(&menu_watches_opcion_seleccionada,&item_seleccionado,array_menu_watches_settings,"Watches" );
+    retorno_menu=menu_dibuja_menu_no_title_lang(&menu_watches_opcion_seleccionada,&item_seleccionado,array_menu_watches_settings,"Watches" );
 
 	if (retorno_menu!=MENU_RETORNO_BACKGROUND) {
 
@@ -5006,7 +5006,7 @@ void menu_debug_gac_view_messages_ask(void)
         menu_add_item_menu(array_menu_daad_tipo_mensaje,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 		menu_add_ESC_item(array_menu_daad_tipo_mensaje);
 
-        retorno_menu=menu_dibuja_menu(&daad_tipo_mensaje_opcion_seleccionada,&item_seleccionado,array_menu_daad_tipo_mensaje,"Message type" );
+        retorno_menu=menu_dibuja_menu_no_title_lang(&daad_tipo_mensaje_opcion_seleccionada,&item_seleccionado,array_menu_daad_tipo_mensaje,"Message type" );
 
 
         //no queremos que al pulsar ESC aqui se cierren todos los menus anteriores
@@ -5075,7 +5075,7 @@ void menu_debug_daad_view_messages_ask(void)
         menu_add_item_menu(array_menu_daad_tipo_mensaje,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 		menu_add_ESC_item(array_menu_daad_tipo_mensaje);
 
-        retorno_menu=menu_dibuja_menu(&daad_tipo_mensaje_opcion_seleccionada,&item_seleccionado,array_menu_daad_tipo_mensaje,"Message type" );
+        retorno_menu=menu_dibuja_menu_no_title_lang(&daad_tipo_mensaje_opcion_seleccionada,&item_seleccionado,array_menu_daad_tipo_mensaje,"Message type" );
 
 
         //no queremos que al pulsar ESC aqui se cierren todos los menus anteriores
@@ -6982,7 +6982,7 @@ void menu_debug_daad_view_graphics(void)
         menu_add_item_menu_shortcut(array_menu_common,'r');
 
 
-		retorno_menu=menu_dibuja_menu(&comun_opcion_seleccionada,&item_seleccionado,array_menu_common,"PAWS Graphics Render");
+		retorno_menu=menu_dibuja_menu_no_title_lang(&comun_opcion_seleccionada,&item_seleccionado,array_menu_common,"PAWS Graphics Render");
 
 
         //no queremos que al pulsar ESC aqui se cierren todos los menus anteriores
@@ -7432,7 +7432,7 @@ void menu_debug_cpu_history(void)
 
         menu_add_ESC_item(array_menu_common);
 
-        retorno_menu=menu_dibuja_menu(&menu_debug_cpu_history_opcion_seleccionada,&item_seleccionado,array_menu_common,"CPU History");
+        retorno_menu=menu_dibuja_menu_no_title_lang(&menu_debug_cpu_history_opcion_seleccionada,&item_seleccionado,array_menu_common,"CPU History");
 
         //no queremos que al pulsar ESC aqui se cierren todos los menus anteriores
         salir_todos_menus=0;
@@ -7838,7 +7838,7 @@ void menu_debug_cpu_view_stack(void)
 
         menu_add_ESC_item(array_menu_common);
 
-        retorno_menu=menu_dibuja_menu(&menu_debug_cpu_view_stack_opcion_seleccionada,&item_seleccionado,array_menu_common,"View Stack");
+        retorno_menu=menu_dibuja_menu_no_title_lang(&menu_debug_cpu_view_stack_opcion_seleccionada,&item_seleccionado,array_menu_common,"View Stack");
 
         //no queremos que al pulsar ESC aqui se cierren todos los menus anteriores
         salir_todos_menus=0;

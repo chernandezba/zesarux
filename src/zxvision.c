@@ -20279,7 +20279,7 @@ int menu_dibuja_menu_lang(int *opcion_inicial,menu_item *item_seleccionado,menu_
 }
 
 //Para dibujar menu con titulo de menu igual en los 3 idiomas
-int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item *m,char *titulo)
+int menu_dibuja_menu_no_title_lang(int *opcion_inicial,menu_item *item_seleccionado,menu_item *m,char *titulo)
 {
     return menu_dibuja_menu_lang(opcion_inicial,item_seleccionado,m,titulo,titulo,titulo);
 }
@@ -20291,7 +20291,7 @@ int menu_dibuja_menu_no_indexado(int *opcion_inicial,menu_item *item_seleccionad
 {
     m->no_indexar_busqueda=1;
 
-    return menu_dibuja_menu(opcion_inicial,item_seleccionado,m,titulo);
+    return menu_dibuja_menu_no_title_lang(opcion_inicial,item_seleccionado,m,titulo);
 }
 
 //Igual que menu_dibuja_menu pero este menu se selecciona enter una vez o escape una vez, pero la funcion que la llamada no vuelve
@@ -20301,7 +20301,7 @@ int menu_dibuja_menu_one_time(int *opcion_inicial,menu_item *item_seleccionado,m
 {
     m->one_time=1;
 
-    return menu_dibuja_menu(opcion_inicial,item_seleccionado,m,titulo);
+    return menu_dibuja_menu_no_title_lang(opcion_inicial,item_seleccionado,m,titulo);
 }
 
 void menu_add_item_menu_common_defaults(menu_item *m,int tipo_opcion,t_menu_funcion menu_funcion,t_menu_funcion_activo menu_funcion_activo)
@@ -21963,7 +21963,7 @@ int menu_confirm_yesno_texto_additional_item(char *texto_ventana,char *texto_int
         }
 
 
-        retorno_menu=menu_dibuja_menu(&confirm_yes_no_opcion_seleccionada,&item_seleccionado,array_menu_confirm_yes_no,texto_ventana);
+        retorno_menu=menu_dibuja_menu_no_title_lang(&confirm_yes_no_opcion_seleccionada,&item_seleccionado,array_menu_confirm_yes_no,texto_ventana);
 
 
 
@@ -22562,7 +22562,7 @@ int menu_ask_list_texto(char *texto_ventana,char *texto_interior,char *entradas_
 
 
 
-                retorno_menu=menu_dibuja_menu(&ask_list_texto_opcion_seleccionada,&item_seleccionado,array_menu_ask_list,texto_ventana);
+                retorno_menu=menu_dibuja_menu_no_title_lang(&ask_list_texto_opcion_seleccionada,&item_seleccionado,array_menu_ask_list,texto_ventana);
 
 
 
@@ -22678,7 +22678,7 @@ void zxvision_menu_generic_message_setting(char *titulo, const char *texto, char
 
 
 		//Nombre de ventana solo aparece en el caso de stdout
-    	retorno_menu=menu_dibuja_menu(&array_menu_generic_message_setting_opcion_seleccionada,&item_seleccionado,array_menu_generic_message_setting,titulo);
+    	retorno_menu=menu_dibuja_menu_no_title_lang(&array_menu_generic_message_setting_opcion_seleccionada,&item_seleccionado,array_menu_generic_message_setting,titulo);
 
 
         if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
@@ -23213,7 +23213,7 @@ int menu_ventana_scanf_numero(char *titulo,char *texto,int max_length,int increm
 			}
 		}
 
-		retorno_menu=menu_dibuja_menu(&comun_opcion_seleccionada,&item_seleccionado,array_menu_common,titulo);
+		retorno_menu=menu_dibuja_menu_no_title_lang(&comun_opcion_seleccionada,&item_seleccionado,array_menu_common,titulo);
 
 
 			if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
