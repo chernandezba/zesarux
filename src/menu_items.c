@@ -36558,7 +36558,7 @@ void menu_storage(MENU_ITEM_PARAMETERS)
         //menu_add_item_menu(array_menu_storage,"ESC Back",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
         menu_add_ESC_item(array_menu_storage);
 
-        retorno_menu=menu_dibuja_menu(&storage_opcion_seleccionada,&item_seleccionado,array_menu_storage,"Storage" );
+        retorno_menu=menu_dibuja_menu_lang(&storage_opcion_seleccionada,&item_seleccionado,array_menu_storage,"Storage","Almacenamiento","Emmagatzematge" );
 
 
         if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {

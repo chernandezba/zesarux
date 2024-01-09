@@ -19303,8 +19303,14 @@ z80_int menu_mouse_frame_counter_anterior=0;
 
 
 
-int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item *m,char *titulo)
+int menu_dibuja_menu_lang(int *opcion_inicial,menu_item *item_seleccionado,menu_item *m,char *titulo_en,char *titulo_es,char *titulo_ca)
 {
+
+    char *titulo;
+
+    if (gui_language==GUI_LANGUAGE_SPANISH) titulo=titulo_es;
+    else if (gui_language==GUI_LANGUAGE_CATALAN) titulo=titulo_ca;
+    else titulo=titulo_en;
 
     //Nota: la variable de opción seleccionada (*opcion_inicial) se manipula con el puntero para poderse leer desde otros sitios
     //(ejemplo del overlay al elegir botones a acciones en ZX Desktop)
@@ -20267,6 +20273,11 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 
 }
 
+//Para dibujar menu con titulo de menu igual en los 3 idiomas
+int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item *m,char *titulo)
+{
+    return menu_dibuja_menu_lang(opcion_inicial,item_seleccionado,m,titulo,titulo,titulo);
+}
 
 //Igual que menu_dibuja_menu pero cuando no queremos que este indexado, por ejemplo para ventana de Tracks List
 //TODO: quiza cambiar el nombre de esta funcion a algo que diga que aun usando funcion de menu, no es un menu como tal,
