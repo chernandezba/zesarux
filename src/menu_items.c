@@ -29450,7 +29450,7 @@ void menu_snapshot(MENU_ITEM_PARAMETERS)
         menu_add_item_menu(array_menu_snapshot,"",MENU_OPCION_SEPARADOR,NULL,NULL);
         menu_add_ESC_item(array_menu_snapshot);
 
-        retorno_menu=menu_dibuja_menu_lang(&snapshot_opcion_seleccionada,&item_seleccionado,array_menu_snapshot,"Snapshot","Instantánea","Instantània");
+        retorno_menu=menu_dibuja_menu(&snapshot_opcion_seleccionada,&item_seleccionado,array_menu_snapshot,"Snapshot","Instantánea","Instantània");
 
 
 
@@ -36558,7 +36558,7 @@ void menu_storage(MENU_ITEM_PARAMETERS)
         //menu_add_item_menu(array_menu_storage,"ESC Back",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
         menu_add_ESC_item(array_menu_storage);
 
-        retorno_menu=menu_dibuja_menu_lang(&storage_opcion_seleccionada,&item_seleccionado,array_menu_storage,"Storage","Almacenamiento","Emmagatzematge" );
+        retorno_menu=menu_dibuja_menu(&storage_opcion_seleccionada,&item_seleccionado,array_menu_storage,"Storage","Almacenamiento","Emmagatzematge" );
 
 
         if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
@@ -37689,7 +37689,7 @@ void menu_toys(MENU_ITEM_PARAMETERS)
                 //menu_add_item_menu(array_menu_toys,"ESC Back",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
 		menu_add_ESC_item(array_menu_toys);
 
-        retorno_menu=menu_dibuja_menu_lang(&toys_opcion_seleccionada,&item_seleccionado,array_menu_toys,"Procrastinate","Procrastinar","Procrastinar");
+        retorno_menu=menu_dibuja_menu(&toys_opcion_seleccionada,&item_seleccionado,array_menu_toys,"Procrastinate","Procrastinar","Procrastinar");
 
 
 

@@ -8453,7 +8453,7 @@ void menu_settings(MENU_ITEM_PARAMETERS)
                 //menu_add_item_menu(array_menu_settings,"ESC Back",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
 		menu_add_ESC_item(array_menu_settings);
 
-                retorno_menu=menu_dibuja_menu_lang(&settings_opcion_seleccionada,&item_seleccionado,array_menu_settings,
+                retorno_menu=menu_dibuja_menu(&settings_opcion_seleccionada,&item_seleccionado,array_menu_settings,
                     "Settings","Opciones","Opcions");
 
 

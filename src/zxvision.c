@@ -19308,7 +19308,7 @@ z80_int menu_mouse_frame_counter_anterior=0;
 
 
 
-int menu_dibuja_menu_lang(int *opcion_inicial,menu_item *item_seleccionado,menu_item *m,char *titulo_en,char *titulo_es,char *titulo_ca)
+int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item *m,char *titulo_en,char *titulo_es,char *titulo_ca)
 {
 
     char *titulo;
@@ -20281,7 +20281,7 @@ int menu_dibuja_menu_lang(int *opcion_inicial,menu_item *item_seleccionado,menu_
 //Para dibujar menu con titulo de menu igual en los 3 idiomas
 int menu_dibuja_menu_no_title_lang(int *opcion_inicial,menu_item *item_seleccionado,menu_item *m,char *titulo)
 {
-    return menu_dibuja_menu_lang(opcion_inicial,item_seleccionado,m,titulo,titulo,titulo);
+    return menu_dibuja_menu(opcion_inicial,item_seleccionado,m,titulo,titulo,titulo);
 }
 
 //Igual que menu_dibuja_menu pero cuando no queremos que este indexado, por ejemplo para ventana de Tracks List
