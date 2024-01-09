@@ -808,3 +808,18 @@ y por tanto a nivel de path de indexacion de busqueda, se pierde el ultimo path 
 
 
 -incluir en features exportar a stl
+-funciones stl documentar, indicar que es un cubo con 12 triangulos, etc
+
+
+-buscar opciones de menu deberia considerar el titulo del menu con traduccion de idioma
+Para ello la funcion de dibujar menu debe admitir 3 titulos en vez de uno: uno para cada idioma
+Esto significaria tambien que al cambiar de idioma habria que resetear el indice de busqueda
+
+-Ayuda tema gui añadir templeos y otros
+
+-Nuevos campos para zx visión Windows:
+-hora / fecha inicio ventana. Y que se mantenga en sucesivos arranques?
+
+-Tetris en app procrastinate ?
+
+-soporte libretro?

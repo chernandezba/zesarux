@@ -279,6 +279,7 @@ int toys_opcion_seleccionada=0;
 int zxlife_opcion_seleccionada=0;
 int text_adventure_tools_opcion_seleccionada=0;
 int zeng_online_server_opcion_seleccionada=0;
+int in_memoriam_opcion_seleccionada=0;
 
 //Fin opciones seleccionadas para cada menu
 
@@ -27240,6 +27241,86 @@ void menu_about_about_which(MENU_ITEM_PARAMETERS)
 }
 
 
+void menu_in_memoriam_david(MENU_ITEM_PARAMETERS)
+{
+
+    if (gui_language==GUI_LANGUAGE_SPANISH || gui_language==GUI_LANGUAGE_CATALAN) {
+        menu_about_read_file("In Memoriam David","IN_MEMORIAM_DAVID_es",1);
+    }
+    else menu_about_read_file("In Memoriam David","IN_MEMORIAM_DAVID",1);
+}
+
+void menu_in_memoriam_diego(MENU_ITEM_PARAMETERS)
+{
+
+    if (gui_language==GUI_LANGUAGE_SPANISH || gui_language==GUI_LANGUAGE_CATALAN) {
+        menu_about_read_file("In Memoriam Diego","IN_MEMORIAM_DIEGO_es",1);
+    }
+    else menu_about_read_file("In Memoriam Diego","IN_MEMORIAM_DIEGO",1);
+}
+
+
+
+void menu_in_memoriam_about(MENU_ITEM_PARAMETERS)
+{
+    if (gui_language==GUI_LANGUAGE_SPANISH || gui_language==GUI_LANGUAGE_CATALAN) {
+        menu_generic_message_format("About In Memoriam",
+            "Te estarás preguntando... que es esto? Pues es una manera de homenajear a los que ya no están con nosotros, "
+            "a personas que han sido importantes en mi vida y han tenido relación con ZEsarUX.\n"
+            "Puede parecerte algo extraño que un programa contenga esta sección (o no?) pero es una manera que tengo de homenajearlos.\n"
+            "Espero que esta sección no aumente con los años, cosa que sería buena señal."
+
+        );
+    }
+
+    else {
+        menu_generic_message_format("About In Memoriam",
+            "You might be wondering... what is this? Well, it's a way to honor those who are no longer with us, "
+             "to people who have been important in my life and have had a relationship with ZEsarUX.\n"
+             "It may seem strange to you that a program contains this section (or not?) but it is a way I have to honor them.\n"
+             "I hope this section does not increase over the years, which would be a good sign."
+        );
+    }
+}
+
+void menu_in_memoriam(MENU_ITEM_PARAMETERS)
+{
+    menu_item *array_menu_common;
+    menu_item item_seleccionado;
+    int retorno_menu;
+
+
+    do {
+
+        menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_in_memoriam_about,NULL,"~~About In Memoriam");
+        menu_add_item_menu_shortcut(array_menu_common,'a');
+
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_in_memoriam_diego,NULL,"~~Diego");
+        menu_add_item_menu_shortcut(array_menu_common,'d');
+
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_in_memoriam_david,NULL,"D~~avid");
+        menu_add_item_menu_shortcut(array_menu_common,'a');
+
+        menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+
+        menu_add_ESC_item(array_menu_common);
+
+        retorno_menu=menu_dibuja_menu(&in_memoriam_opcion_seleccionada,&item_seleccionado,array_menu_common,"In Memoriam");
+
+
+
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+            //llamamos por valor de funcion
+            if (item_seleccionado.menu_funcion!=NULL) {
+                //printf ("actuamos por funcion\n");
+                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+
+            }
+        }
+
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+}
+
 void menu_help(MENU_ITEM_PARAMETERS)
 {
         menu_item *array_menu_common;
@@ -27251,11 +27332,8 @@ void menu_help(MENU_ITEM_PARAMETERS)
 			menu_add_item_menu_shortcut(array_menu_common,'a');
             menu_add_item_menu_se_cerrara(array_menu_common);
 
-            //Esto en principio solo aparecerá en una versión concreta
-            if (!strcmp(EMULATOR_GAME_EDITION,"David")) {
-                menu_add_item_menu(array_menu_common,"In Memoriam",MENU_OPCION_NORMAL,menu_in_memoriam_david,NULL);
-                menu_add_item_menu_se_cerrara(array_menu_common);
-            }
+            menu_add_item_menu(array_menu_common,"In Memoriam",MENU_OPCION_NORMAL,menu_in_memoriam,NULL);
+            menu_add_item_menu_se_cerrara(array_menu_common);
 
 			menu_add_item_menu(array_menu_common,"~~Help",MENU_OPCION_NORMAL,menu_about_help,NULL);
 			menu_add_item_menu_shortcut(array_menu_common,'h');
@@ -34648,17 +34726,6 @@ void menu_hilow(MENU_ITEM_PARAMETERS)
 }
 
 
-void menu_in_memoriam_david(MENU_ITEM_PARAMETERS)
-{
-    menu_generic_message_format("In Memoriam",
-        "David Hernández Bañó\n"
-        "21/04/1975 - 03/11/2023\n"
-        "\n"
-        "David falleció a la temprana edad de 48 años, después de estar 2 años luchando contra el cáncer\n"
-
-    );
-}
-
 
 void menu_storage_betadisk_emulation(MENU_ITEM_PARAMETERS)
 {
@@ -40055,7 +40122,7 @@ void menu_inicio_bucle_main(void)
             menu_add_item_menu_tiene_submenu(array_menu_principal);
 
             menu_add_item_menu_en_es_ca(array_menu_principal,MENU_OPCION_NORMAL,menu_search,NULL,
-                "Sea~~rch","Busca~~r","Busca~~r");
+                "Sea~~rch menu","Busca~~r menú","Busca~~r menú");
             menu_add_item_menu_shortcut(array_menu_principal,'r');
             menu_add_item_menu_tooltip(array_menu_principal,"Search menu");
             menu_add_item_menu_ayuda(array_menu_principal,"Search menu");
