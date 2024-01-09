@@ -466,7 +466,8 @@ void menu_settings_config_file(MENU_ITEM_PARAMETERS)
 
 		menu_add_ESC_item(array_menu_settings_config_file);
 
-                retorno_menu=menu_dibuja_menu_no_title_lang(&settings_config_file_opcion_seleccionada,&item_seleccionado,array_menu_settings_config_file,"Configuration file" );
+                retorno_menu=menu_dibuja_menu(&settings_config_file_opcion_seleccionada,&item_seleccionado,array_menu_settings_config_file,
+                    "Configuration file","Archivo configuración","Arxiu configuració");
 
 
 
@@ -2602,7 +2603,9 @@ void menu_external_tools_config(MENU_ITEM_PARAMETERS)
         //menu_add_item_menu(array_menu_external_tools_config,"ESC Back",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
         menu_add_ESC_item(array_menu_external_tools_config);
 
-        retorno_menu=menu_dibuja_menu_no_title_lang(&external_tools_config_opcion_seleccionada,&item_seleccionado,array_menu_external_tools_config,"External tools paths" );
+        retorno_menu=menu_dibuja_menu(&external_tools_config_opcion_seleccionada,&item_seleccionado,array_menu_external_tools_config,
+            "External tools paths","Rutas utilidades externas","Rutes utilitats externes" );
+
 
 
         if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
@@ -3131,7 +3134,8 @@ void menu_settings_debug(MENU_ITEM_PARAMETERS)
         //menu_add_item_menu(array_menu_settings_debug,"ESC Back",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
 		menu_add_ESC_item(array_menu_settings_debug);
 
-        retorno_menu=menu_dibuja_menu_no_title_lang(&settings_debug_opcion_seleccionada,&item_seleccionado,array_menu_settings_debug,"Debug Settings" );
+        retorno_menu=menu_dibuja_menu(&settings_debug_opcion_seleccionada,&item_seleccionado,array_menu_settings_debug,
+            "Debug Settings","Opciones Debug","Opcions Debug" );
 
 
 
@@ -3954,7 +3958,8 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
 
 		menu_add_ESC_item(array_menu_settings_audio);
 
-        retorno_menu=menu_dibuja_menu_no_title_lang(&settings_audio_opcion_seleccionada,&item_seleccionado,array_menu_settings_audio,"Audio Settings" );
+        retorno_menu=menu_dibuja_menu(&settings_audio_opcion_seleccionada,&item_seleccionado,array_menu_settings_audio,
+            "Audio Settings","Opciones Audio","Opcions Audio");
 
 
 
@@ -7365,7 +7370,8 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
 		//menu_add_item_menu(array_menu_settings_display,"ESC Back",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
 		menu_add_ESC_item(array_menu_settings_display);
 
-		retorno_menu=menu_dibuja_menu_no_title_lang(&settings_display_opcion_seleccionada,&item_seleccionado,array_menu_settings_display,"Display Settings" );
+		retorno_menu=menu_dibuja_menu(&settings_display_opcion_seleccionada,&item_seleccionado,array_menu_settings_display,
+            "Display Settings","Opciones Display","Opcions Display" );
 
 
 
@@ -8265,7 +8271,9 @@ void menu_accessibility_settings(MENU_ITEM_PARAMETERS)
         //menu_add_item_menu(array_menu_accessibility_settings,"ESC Back",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
         menu_add_ESC_item(array_menu_accessibility_settings);
 
-        retorno_menu=menu_dibuja_menu_no_title_lang(&accessibility_settings_opcion_seleccionada,&item_seleccionado,array_menu_accessibility_settings,"Accessibility Settings");
+        retorno_menu=menu_dibuja_menu(&accessibility_settings_opcion_seleccionada,&item_seleccionado,array_menu_accessibility_settings,
+            "Accessibility Settings","Opciones Accesibilidad","Opcions Accessibilitat");
+
 
 
 
@@ -11435,7 +11443,8 @@ void menu_cpu_settings(MENU_ITEM_PARAMETERS)
 
         menu_add_ESC_item(array_menu_cpu_settings);
 
-        retorno_menu=menu_dibuja_menu_no_title_lang(&cpu_settings_opcion_seleccionada,&item_seleccionado,array_menu_cpu_settings,"CPU Settings" );
+        retorno_menu=menu_dibuja_menu(&cpu_settings_opcion_seleccionada,&item_seleccionado,array_menu_cpu_settings,
+            "CPU Settings","Opciones CPU","Opcions CPU" );
 
 
         if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
