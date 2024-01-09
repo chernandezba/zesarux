@@ -27332,9 +27332,6 @@ void menu_help(MENU_ITEM_PARAMETERS)
 			menu_add_item_menu_shortcut(array_menu_common,'a');
             menu_add_item_menu_se_cerrara(array_menu_common);
 
-            menu_add_item_menu(array_menu_common,"In Memoriam",MENU_OPCION_NORMAL,menu_in_memoriam,NULL);
-            menu_add_item_menu_se_cerrara(array_menu_common);
-
 			menu_add_item_menu(array_menu_common,"~~Help",MENU_OPCION_NORMAL,menu_about_help,NULL);
 			menu_add_item_menu_shortcut(array_menu_common,'h');
              menu_add_item_menu_se_cerrara(array_menu_common);
@@ -27364,6 +27361,10 @@ void menu_help(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_spanish(array_menu_common,"H~~istoria");
 			menu_add_item_menu_shortcut(array_menu_common,'i');
              menu_add_item_menu_se_cerrara(array_menu_common);
+
+
+            menu_add_item_menu(array_menu_common,"In Memoriam",MENU_OPCION_NORMAL,menu_in_memoriam,NULL);
+            menu_add_item_menu_se_cerrara(array_menu_common);
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_about_acknowledgements,NULL,
                 "A~~cknowledgements","Agrade~~cimientos","Re~~coneixements");

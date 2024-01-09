@@ -13002,21 +13002,21 @@ int util_write_pbm_file(char *archivo, int ancho, int alto, int ppb, z80_byte *s
 int util_write_stl_file(char *archivo, int ancho, int alto, z80_byte *source,int incluir_base,int alto_base,int exponente,int alto_solido)
 {
 
-  FILE *ptr_destino;
-  ptr_destino=fopen(archivo,"wb");
+    FILE *ptr_destino;
+    ptr_destino=fopen(archivo,"wb");
 
-  if (ptr_destino==NULL) {
-    debug_printf (VERBOSE_ERR,"Error writing pbm file");
-    return 1;
-  }
+    if (ptr_destino==NULL) {
+        debug_printf (VERBOSE_ERR,"Error writing pbm file");
+        return 1;
+    }
 
 
     //Escribir cabecera stl
-  	char stl_header[256]; //Suficiente
+    char stl_header[256]; //Suficiente
 
-  	sprintf (stl_header,"solid ZEsarUX\n");
+    sprintf (stl_header,"solid ZEsarUX\n");
 
-  	fwrite(stl_header,1,strlen(stl_header),ptr_destino);
+    fwrite(stl_header,1,strlen(stl_header),ptr_destino);
 
 
     //int exponente=0; //Escala: 1 pixel=1 mm
@@ -13034,28 +13034,28 @@ int util_write_stl_file(char *archivo, int ancho, int alto, z80_byte *source,int
     int max_x=0;
     int min_x=255;
 
-  int x,y,bit;
-  for (y=alto-1;y>0;y--) {
-    for (x=0;x<ancho;x+=8) {
-        z80_byte byte_leido=*source;
-        for (bit=0;bit<8;bit++) {
+    int x,y,bit;
+        for (y=alto-1;y>0;y--) {
+            for (x=0;x<ancho;x+=8) {
+            z80_byte byte_leido=*source;
+            for (bit=0;bit<8;bit++) {
 
-            //if (incluir_base) util_stl_cube(ptr_destino,x+bit,alto-1-y,0,exponente,exponente_z,1);
+                //if (incluir_base) util_stl_cube(ptr_destino,x+bit,alto-1-y,0,exponente,exponente_z,1);
 
-            if (byte_leido&128) {
-                util_stl_cube(ptr_destino,x+bit,y,z,exponente,exponente_z,1,1,alto_solido);
+                if (byte_leido&128) {
+                    util_stl_cube(ptr_destino,x+bit,y,z,exponente,exponente_z,1,1,alto_solido);
 
-                if (x+bit>max_x) max_x=x+bit;
-                if (y>max_y) max_y=y;
+                    if (x+bit>max_x) max_x=x+bit;
+                    if (y>max_y) max_y=y;
 
-                if (x+bit<min_x) min_x=x+bit;
-                if (y<min_y) min_y=y;
+                    if (x+bit<min_x) min_x=x+bit;
+                    if (y<min_y) min_y=y;
+                }
+                byte_leido=byte_leido<<1;
             }
-            byte_leido=byte_leido<<1;
+            source++;
         }
-      source++;
     }
-  }
 
     //generar la base si conviene
     if (incluir_base) {
@@ -13069,9 +13069,9 @@ int util_write_stl_file(char *archivo, int ancho, int alto, z80_byte *source,int
 
   	fwrite(stl_header,1,strlen(stl_header),ptr_destino);
 
-  fclose(ptr_destino);
+    fclose(ptr_destino);
 
-  return 0;
+    return 0;
 }
 
 //Retorna 0 si ok. No 0 si error. Ancho expresado en pixeles. Alto expresado en pixeles
@@ -22033,6 +22033,9 @@ z80_int util_multiply_8bits(z80_byte a,z80_byte b)
 
 }
 
+/*
+Escribir un vertice en formato STL
+*/
 void util_stl_print_vertex(char *buffer_linea,int x,int y,int z,int exponente,int exponente_z)
 {
     char signo='+';
@@ -22054,6 +22057,9 @@ void util_stl_print_vertex(char *buffer_linea,int x,int y,int z,int exponente,in
         z,signo_z,exponente_z);
 }
 
+/*
+Escribir el vector en formato STL
+*/
 void util_stl_print_facet(char *buffer_linea,int x,int y,int z)
 {
 
@@ -22066,6 +22072,17 @@ void util_stl_print_facet(char *buffer_linea,int x,int y,int z)
 }
 
 
+/*
+Definir un triangulo en formato STL
+Parametros:
+vx,vy,vz: vectores del triangulo
+x1,y1,z1: primera coordenada del triangulo
+x2,y2,z2: segunda coordenada del triangulo
+x3,y3,z3: tercera coordenada del triangulo
+
+exponente: valor N para 10eN, o sea, cuantos ceros tienen los valores de dimensiones x,y
+exponente_z: parecido a exponente pero para dimension z
+*/
 void util_stl_triangle(FILE *ptr_archivo,int vx,int vy,int vz,int x1,int y1,int z1,int x2,int y2,int z2,int x3,int y3,int z3,int exponente,int exponente_z)
 {
     char buffer_linea[256];
@@ -22105,93 +22122,109 @@ void util_stl_triangle(FILE *ptr_archivo,int vx,int vy,int vz,int x1,int y1,int 
 
 }
 
+/*
+Generar un cubo (aunque con posibles 3 dimensiones diferentes) consistentes en 12 triangulos, o sea,
+2 triangulos por cada cara
+Parametros:
+x,y,z: coordenadas
+exponente: valor N para 10eN, o sea, cuantos ceros tienen los valores de dimensiones x,y
+exponente_z: parecido a exponente pero para dimension z
+tamanyo_x, tamanyo_y, tamanyo_z: dimensiones x,y,z del cubo
+El tamaño real del cubo es:
 
-void util_stl_cube(FILE *ptr_archivo,int x,int y,int z,int exponente,int exponente_z,int inc_x,int inc_y,int alto_z)
+en X: tamanyo_x * 10 elevado exponente
+en Y: tamanyo_y * 10 elevado exponente
+en Z: tamanyo_z * 10 elevado exponente_z
+*/
+void util_stl_cube(FILE *ptr_archivo,int x,int y,int z,int exponente,int exponente_z,int tamanyo_x,int tamanyo_y,int tamanyo_z)
 {
     util_stl_triangle(ptr_archivo,
         0,0,1,
-        x+0,    y+0,z+alto_z,
-        x+inc_x,y+0,z+alto_z,
-        x+0,    y+inc_y,z+alto_z,
+        x+0,    y+0,z+tamanyo_z,
+        x+tamanyo_x,y+0,z+tamanyo_z,
+        x+0,    y+tamanyo_y,z+tamanyo_z,
         exponente,exponente_z);
 
     util_stl_triangle(ptr_archivo,
         0,0,1,
-        x+inc_x,y+inc_y,z+alto_z,
-        x+0,    y+inc_y,z+alto_z,
-        x+inc_x,y+0,z+alto_z,
+        x+tamanyo_x,y+tamanyo_y,z+tamanyo_z,
+        x+0,    y+tamanyo_y,z+tamanyo_z,
+        x+tamanyo_x,y+0,z+tamanyo_z,
         exponente,exponente_z);
 
     util_stl_triangle(ptr_archivo,
         1,0,0,
-        x+inc_x,y+0,z+alto_z,
-        x+inc_x,y+0,z+0,
-        x+inc_x,y+inc_y,z+alto_z,
+        x+tamanyo_x,y+0,z+tamanyo_z,
+        x+tamanyo_x,y+0,z+0,
+        x+tamanyo_x,y+tamanyo_y,z+tamanyo_z,
         exponente,exponente_z);
 
     util_stl_triangle(ptr_archivo,
         1,0,0,
-        x+inc_x,y+inc_y,z+0,
-        x+inc_x,y+inc_y,z+alto_z,
-        x+inc_x,y+0,z+0,
+        x+tamanyo_x,y+tamanyo_y,z+0,
+        x+tamanyo_x,y+tamanyo_y,z+tamanyo_z,
+        x+tamanyo_x,y+0,z+0,
         exponente,exponente_z);
 
     util_stl_triangle(ptr_archivo,
         0,0,-1,
-        x+inc_x,y+0,z+0,
+        x+tamanyo_x,y+0,z+0,
         x+0,    y+0,z+0,
-        x+inc_x,y+inc_y,z+0,
+        x+tamanyo_x,y+tamanyo_y,z+0,
         exponente,exponente_z);
 
     util_stl_triangle(ptr_archivo,
         0,0,-1,
-        x+0,    y+inc_y,z+0,
-        x+inc_x,y+inc_y,z+0,
+        x+0,    y+tamanyo_y,z+0,
+        x+tamanyo_x,y+tamanyo_y,z+0,
         x+0,    y+0,z+0,
         exponente,exponente_z);
 
     util_stl_triangle(ptr_archivo,
         -1,0,0,
         x+0,    y+0,z+0,
-        x+0,    y+0,z+alto_z,
-        x+0,    y+inc_y,z+0,
+        x+0,    y+0,z+tamanyo_z,
+        x+0,    y+tamanyo_y,z+0,
         exponente,exponente_z);
 
     util_stl_triangle(ptr_archivo,
         -1,0,0,
-        x+0,    y+inc_y,z+alto_z,
-        x+0,    y+inc_y,z+0,
-        x+0,    y+0,z+alto_z,
+        x+0,    y+tamanyo_y,z+tamanyo_z,
+        x+0,    y+tamanyo_y,z+0,
+        x+0,    y+0,z+tamanyo_z,
         exponente,exponente_z);
 
     util_stl_triangle(ptr_archivo,
         0,1,0,
-        x+0,    y+inc_y,z+alto_z,
-        x+inc_x,y+inc_y,z+alto_z,
-        x+0,    y+inc_y,z+0,
+        x+0,    y+tamanyo_y,z+tamanyo_z,
+        x+tamanyo_x,y+tamanyo_y,z+tamanyo_z,
+        x+0,    y+tamanyo_y,z+0,
         exponente,exponente_z);
 
     util_stl_triangle(ptr_archivo,
         0,1,0,
-        x+inc_x,y+inc_y,z+0,
-        x+0,    y+inc_y,z+0,
-        x+inc_x,y+inc_y,z+alto_z,
+        x+tamanyo_x,y+tamanyo_y,z+0,
+        x+0,    y+tamanyo_y,z+0,
+        x+tamanyo_x,y+tamanyo_y,z+tamanyo_z,
         exponente,exponente_z);
 
     util_stl_triangle(ptr_archivo,
         0,-1,0,
-        x+inc_x,y+0,z+alto_z,
-        x+0,    y+0,z+alto_z,
-        x+inc_x,y+0,z+0,
+        x+tamanyo_x,y+0,z+tamanyo_z,
+        x+0,    y+0,z+tamanyo_z,
+        x+tamanyo_x,y+0,z+0,
         exponente,exponente_z);
 
     util_stl_triangle(ptr_archivo,
         0,-1,0,
         x+0,    y+0,z+0,
-        x+inc_x,y+0,z+0,
-        x+0,    y+0,z+alto_z,
+        x+tamanyo_x,y+0,z+0,
+        x+0,    y+0,z+tamanyo_z,
         exponente,exponente_z);
     /*
+
+    Lo de arriba genera lo siguiente, sustutuyendo logicamente x,y,z, dimensiones, exponentes:
+    (y solid y facet lo genero en otro sitio)
 
 solid cube-ascii-1mm
     facet normal  0.000000e+00  0.000000e+00  1.000000e+00
