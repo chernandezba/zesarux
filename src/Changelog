@@ -52,7 +52,7 @@ Fixed ZX Vision:
 Fixed blockage when drawing Text Adventure Map and corrupted GAC adventure
 Fixed timings of opcodes CP (HL), CP (IX+d), CP (IY+d)
 Fixed bug on ZRCP when handling simultaneous connections
-Fixed betadisk sector rollover reading/writing (thanks Mak7ym)
+Fixed betadisk sector rollover reading/writing (thanks Mak7ym). Fixed loading for example of: BR_DEA7H, HOMER, PARADISE
 
 ----------------------------------------
 
