@@ -25,7 +25,7 @@
 #include <string.h>
 
 #if defined(__APPLE__)
-        #include <sys/syslimits.h>
+    #include <sys/syslimits.h>
 #endif
 
 
@@ -134,8 +134,8 @@ z80_byte betadisk_peek_byte_no_time(z80_int dir,z80_byte value GCC_UNUSED)
 	z80_byte valor_leido=debug_nested_peek_byte_no_time_call_previous(betadisk_nested_id_peek_byte_no_time,dir);
 
 	if (betadisk_check_if_rom_area(dir)) {
-                return betadisk_read_byte(dir);
-        }
+            return betadisk_read_byte(dir);
+    }
 
 	//else return debug_nested_peek_byte_no_time_call_previous(betadisk_nested_id_peek_byte_no_time,dir);
 	return valor_leido;
@@ -146,7 +146,7 @@ z80_byte betadisk_peek_byte_no_time(z80_int dir,z80_byte value GCC_UNUSED)
 //Establecer rutinas propias
 void betadisk_set_peek_poke_functions(void)
 {
-                debug_printf (VERBOSE_DEBUG,"Setting betadisk poke / peek functions");
+    debug_printf (VERBOSE_DEBUG,"Setting betadisk poke / peek functions");
 
 	//Asignar mediante funciones de core anidados
 	betadisk_nested_id_peek_byte=debug_nested_peek_byte_add(betadisk_peek_byte,"Betadisk peek_byte");
@@ -157,7 +157,7 @@ void betadisk_set_peek_poke_functions(void)
 //Restaurar rutinas de betadisk
 void betadisk_restore_peek_poke_functions(void)
 {
-                debug_printf (VERBOSE_DEBUG,"Restoring original poke / peek functions before betadisk");
+    debug_printf (VERBOSE_DEBUG,"Restoring original poke / peek functions before betadisk");
 
 
 	debug_nested_peek_byte_del(betadisk_nested_id_peek_byte);
@@ -364,7 +364,7 @@ void betadisk_set_core_function(void)
 
 void betadisk_restore_core_function(void)
 {
-        debug_printf (VERBOSE_DEBUG,"Restoring original betadisk core");
+    debug_printf (VERBOSE_DEBUG,"Restoring original betadisk core");
 	debug_nested_core_del(betadisk_nested_id_core);
 }
 
@@ -372,14 +372,14 @@ void betadisk_restore_core_function(void)
 
 void betadisk_alloc_memory(void)
 {
-        int size=BETADISK_SIZE;
+    int size=BETADISK_SIZE;
 
-        debug_printf (VERBOSE_DEBUG,"Allocating %d kb of memory for betadisk emulation",size/1024);
+    debug_printf (VERBOSE_DEBUG,"Allocating %d kb of memory for betadisk emulation",size/1024);
 
-        betadisk_memory_pointer=malloc(size);
-        if (betadisk_memory_pointer==NULL) {
-                cpu_panic ("No enough memory for betadisk emulation");
-        }
+    betadisk_memory_pointer=malloc(size);
+    if (betadisk_memory_pointer==NULL) {
+            cpu_panic ("No enough memory for betadisk emulation");
+    }
 
 
 }
@@ -389,33 +389,33 @@ int betadisk_load_rom(void)
 	//si es tsconf, tiene rom propia
 	if (MACHINE_IS_TSCONF) return 0;
 
-        FILE *ptr_betadisk_romfile;
-        int leidos=0;
+    FILE *ptr_betadisk_romfile;
+    int leidos=0;
 
-        debug_printf (VERBOSE_INFO,"Loading betadisk rom %s",BETADISK_ROM_FILENAME);
+    debug_printf (VERBOSE_INFO,"Loading betadisk rom %s",BETADISK_ROM_FILENAME);
 
-        open_sharedfile(BETADISK_ROM_FILENAME,&ptr_betadisk_romfile);
+    open_sharedfile(BETADISK_ROM_FILENAME,&ptr_betadisk_romfile);
 
-  			//ptr_betadisk_romfile=fopen(betadisk_rom_file_name,"rb");
-        if (!ptr_betadisk_romfile) {
-                        debug_printf (VERBOSE_ERR,"Unable to open ROM file");
-        }
+        //ptr_betadisk_romfile=fopen(betadisk_rom_file_name,"rb");
+    if (!ptr_betadisk_romfile) {
+        debug_printf (VERBOSE_ERR,"Unable to open ROM file");
+    }
 
-        if (ptr_betadisk_romfile!=NULL) {
+    if (ptr_betadisk_romfile!=NULL) {
 
-                leidos=fread(betadisk_memory_pointer,1,BETADISK_SIZE,ptr_betadisk_romfile);
-                fclose(ptr_betadisk_romfile);
+        leidos=fread(betadisk_memory_pointer,1,BETADISK_SIZE,ptr_betadisk_romfile);
+        fclose(ptr_betadisk_romfile);
 
-        }
+    }
 
 
 
-        if (leidos!=BETADISK_SIZE || ptr_betadisk_romfile==NULL) {
-                debug_printf (VERBOSE_ERR,"Error reading betadisk rom");
-                return 1;
-        }
+    if (leidos!=BETADISK_SIZE || ptr_betadisk_romfile==NULL) {
+            debug_printf (VERBOSE_ERR,"Error reading betadisk rom");
+            return 1;
+    }
 
-        return 0;
+    return 0;
 
 
 }
@@ -430,32 +430,32 @@ int betadisk_sectores_por_pista=16;
 void trd_insert(void)
 {
 
-        //Si existe
-        if (!si_existe_archivo(trd_file_name)) {
-                debug_printf (VERBOSE_ERR,"File %s does not exist",trd_file_name);
-                trd_disable();
-                return;
-        }
+    //Si existe
+    if (!si_existe_archivo(trd_file_name)) {
+            debug_printf (VERBOSE_ERR,"File %s does not exist",trd_file_name);
+            trd_disable();
+            return;
+    }
 
 
 	trd_memory_pointer=malloc(TRD_FILE_SIZE);
 
 
-        if (trd_memory_pointer==NULL) {
-                cpu_panic ("No enough memory for TRD emulation");
-        }
+    if (trd_memory_pointer==NULL) {
+            cpu_panic ("No enough memory for TRD emulation");
+    }
 
-        FILE *ptr_trdfile;
+    FILE *ptr_trdfile;
 	debug_printf (VERBOSE_INFO,"Opening TRD File %s",trd_file_name);
 	ptr_trdfile=fopen(trd_file_name,"rb");
 
-        if (!ptr_trdfile) {
-                debug_printf (VERBOSE_ERR,"Unable to open trd file");
-                trd_disable();
-                return;
-        }
+    if (!ptr_trdfile) {
+            debug_printf (VERBOSE_ERR,"Unable to open trd file");
+            trd_disable();
+            return;
+    }
 
-        int leidos=fread(trd_memory_pointer,1,TRD_FILE_SIZE,ptr_trdfile);
+    int leidos=fread(trd_memory_pointer,1,TRD_FILE_SIZE,ptr_trdfile);
 
 	//TODO gestion de tamanyos validos
 	/*
@@ -469,7 +469,7 @@ void trd_insert(void)
 		trd_disable();
 	}
 
-        fclose(ptr_trdfile);
+    fclose(ptr_trdfile);
 
 
 
@@ -478,14 +478,14 @@ void trd_insert(void)
 //Retorna -1 si error
 int betadisk_get_offset_tracksectorbyte(int pista, int sector, int byte_en_sector)
 {
-        int bytes_por_pista=betadisk_sectores_por_pista*betadisk_bytes_por_sector;
-        int offset=pista*bytes_por_pista+sector*betadisk_bytes_por_sector+byte_en_sector;
+    int bytes_por_pista=betadisk_sectores_por_pista*betadisk_bytes_por_sector;
+    int offset=pista*bytes_por_pista+sector*betadisk_bytes_por_sector+byte_en_sector;
 
-        if (offset>=TRD_FILE_SIZE) {
-                debug_printf (VERBOSE_ERR,"Error. Trying to access beyond trd. Size: %ld Asked: %u. Disabling TRD",TRD_FILE_SIZE,offset);
-                trd_disable();
-                return -1;
-        }
+    if (offset>=TRD_FILE_SIZE) {
+            debug_printf (VERBOSE_ERR,"Error. Trying to access beyond trd. Size: %ld Asked: %u. Disabling TRD",TRD_FILE_SIZE,offset);
+            trd_disable();
+            return -1;
+    }
 
 	return offset;
 }
@@ -507,9 +507,9 @@ void betadisk_put_byte_disk(int pista, int sector, int byte_en_sector,z80_byte b
 
 
 	int offset=betadisk_get_offset_tracksectorbyte(pista,sector,byte_en_sector);
-        if (offset<0) return;
+    if (offset<0) return;
 
-        if (trd_write_protection.v) return;
+    if (trd_write_protection.v) return;
 
 	trd_memory_pointer[offset]=byte_a_escribir;
 	trd_must_flush_to_disk=1;
