@@ -610,6 +610,11 @@ A=0 read, A=255 write
 			leidos++;
 		}
 		sector++;
+        if (sector>=betadisk_sectores_por_pista) {
+            //printf("Sector %d\n",sector);
+            sector=0;
+            pista++;
+        }
 	}
 
 	//printf ("\ntotal leidos: %d\n",leidos);
