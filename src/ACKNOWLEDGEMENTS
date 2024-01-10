@@ -1,6 +1,6 @@
 I want to thank the help and the collaboration of the following people (date sorted list):
-     
--To my parents and brothers. I remember very fondly the advices of my father to my first programs. Rest in peace
+
+-To my parents and brothers. I remember very fondly the advices of my father to my first programs, rest in peace. My brother David (Rest in peace too) helped me learning ZX Spectrum and also discovering Inves issues. My brother Oscar also helps me improving and testing ZEsarUX, also helped me a lot with the ZX Spectrum.
 -To Auro and Gui, for their patience and suggestions
 -Ivan Daunis Llobet, for the PCGPE and the INTERVUE, which were very useful on creating my first emulator, ZXSpectr
 -Ruben Parra Martinez, for the Spectrum +2A
@@ -45,19 +45,19 @@ I want to thank the help and the collaboration of the following people (date sor
 -Daniel Leon for information about his ZX Dandanator! Mini interface and bug reporting
 -Alejandro Valero for information about his Superupgrade interface, 8-bit simple ide interface, and PD765 emulation (+3 disk drive)
 -Miguel Angel Gomez (haplo) for lots of bug reporting
--Karl Stenerud, for granting permission to include his Musashi Motorola 680x0 emulator 
+-Karl Stenerud, for granting permission to include his Musashi Motorola 680x0 emulator
 -Javier R. Santurde (tolkien), for the MorhOS patch
 -Rich Mellor, helping me with QL emulation
 -Yerzmyey, for granting permission to include his Astral Combat demo. http://yerzmyey.i-demo.pl/ . http://hooyprogram.republika.pl/
 -JSJ, helping me with pthreads on Windows version
--Miodrag Milanovic, for granting permission to include his National Semiconductor SC/MP CPU Emulator 
+-Miodrag Milanovic, for granting permission to include his National Semiconductor SC/MP CPU Emulator
 -Tim Gilberts, for bug reporting and the Sped translation to English
 -Gary Lancaster, for bug reporting
 -Mark Hutchings, for bug reporting, proposing new features and code contribution
 -g0blinish/Krapivin Dmitry, for granting permission to include some demos and games for TSConf
 -"El mundo del Spectrum" podcast/website team, for the interview in his book "El mundo del Spectrum+"
 -Bernhard aka Luzie for the Recreated ZX Spectrum keyboard
--Till Harbaum, helping me with QL emulation and mdvtool 
+-Till Harbaum, helping me with QL emulation and mdvtool
 -Simone Voltolini, for recovering my old QL Microdrives
 -Richard Atkinson, for the real Speccy 16/48/+ colour palette
 -Jordi Bayo Montiel (again) for the first Windows compilations and the additional and beautiful ZEsarUX logos
@@ -77,7 +77,7 @@ I want to thank the help and the collaboration of the following people (date sor
 -Thomas Kolbeck, adapting the zxinfo api for the ZEsarUX speccy game browser
 -Cesar Wagener, for Windows bug reporting
 -Alone Coder, for granting permission to add Pang and Ball Quest 16C color mode games, and for information about ATM computer
--Шарихин Александр Сергеевич, for granting permission to add his "Touhou Zero. Lost Donation Box Incident" game, for help and suggestions 
+-Шарихин Александр Сергеевич, for granting permission to add his "Touhou Zero. Lost Donation Box Incident" game, for help and suggestions
 -Stefan Bylund, helping me with tbblue layer2 extended modes
 -Kio, for granting permission to add his beautiful keyboard images from his zxsp emulator
 -Rafa (aka Spirax), for reporting the CPC CRTC interrupts bug
