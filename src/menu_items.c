@@ -22687,20 +22687,23 @@ zxvision_window *menu_new_about_window_overlay_window;
 
 int new_about_window_ancho_mostrar=0;
 
-//Dice si esta activa la 0 o la 1
-//Por defecto la nueva
-int cual_salamanquesa=1;
+//Dice si esta activa la 0 o la 1 o la 2
+//Por defecto la 1 (aunque en version 11 es la 2, la de David)
+int cual_salamanquesa=2;
 
 unsigned char *retorna_bitmap_salamanquesa(void)
 {
-    if (!cual_salamanquesa) return bitmap_salamanquesa;
-    else return bitmap_salamanquesa_otra_mas;
+    if (cual_salamanquesa==1) return bitmap_salamanquesa_otra_mas;
+    else if (cual_salamanquesa==2) return david_pequenyo_64pix_transparent;
+    else return bitmap_salamanquesa;
 }
 
 int retorna_color_transparente_salamanquesa(void)
 {
-    if (!cual_salamanquesa) return 255;
-    else return 0xfe;
+
+    if (cual_salamanquesa==1) return 0xfe;
+    else if (cual_salamanquesa==2) return 255;
+    else return 255;
 
 }
 
@@ -22757,6 +22760,10 @@ void menu_new_about_window_overlay(void)
 }
 
 
+void menu_about_load_bmp_palette(void)
+{
+    util_bmp_load_palette(retorna_bitmap_salamanquesa(),BMP_INDEX_FIRST_COLOR);
+}
 
 
 zxvision_window menu_about_new_ventana;
@@ -22915,7 +22922,7 @@ void menu_about_new(MENU_ITEM_PARAMETERS)
 */
 
     //La salamanquesa no se carga de disco sino que esta incrustada en el codigo. Es un BMP
-    util_bmp_load_palette(retorna_bitmap_salamanquesa(),BMP_INDEX_FIRST_COLOR);
+    menu_about_load_bmp_palette();
 
     //Metemos todo el contenido de la ventana con caracter transparente, para que no haya parpadeo
     //en caso de drivers xwindows por ejemplo, pues continuamente redibuja el texto (espacios) y encima el overlay
@@ -23012,7 +23019,10 @@ void menu_about_new(MENU_ITEM_PARAMETERS)
                             if (contador_segundo_infinito-tiempo_pulsando_inicial>1000) {
                                 //printf("Switch logo\n");
                                 //click normal. cambiar a la otra salamanquesa
-                                cual_salamanquesa ^=1;
+                                cual_salamanquesa++;
+                                if (cual_salamanquesa>2) cual_salamanquesa=0;
+                                menu_about_load_bmp_palette();
+
                                 tiempo_pulsando_inicial=0;
 
                                 //Y forzar redibujado del overlay
