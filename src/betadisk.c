@@ -596,13 +596,13 @@ A=0 read, A=255 write
             betadisk_simulated_motor=3;
 
 			if (reg_a==0) {
-			z80_byte byte_leido=betadisk_get_byte_disk(pista,sector,byte_en_sector);
-			poke_byte_no_time(destino,byte_leido);
+                z80_byte byte_leido=betadisk_get_byte_disk(pista,sector,byte_en_sector);
+                poke_byte_no_time(destino,byte_leido);
 			}
 
 			if (reg_a==255) {
-			z80_byte byte_leido=peek_byte_no_time(destino);
-			betadisk_put_byte_disk(pista,sector,byte_en_sector,byte_leido);
+                z80_byte byte_leido=peek_byte_no_time(destino);
+                betadisk_put_byte_disk(pista,sector,byte_en_sector,byte_leido);
 			}
 
 			destino++;
@@ -657,40 +657,40 @@ A=0 read, A=255 write
 void betadisk_enable(void)
 {
 
-  if (!MACHINE_IS_SPECTRUM) {
-    debug_printf(VERBOSE_INFO,"Can not enable betadisk on non Spectrum machine");
-    return;
-  }
+    if (!MACHINE_IS_SPECTRUM) {
+        debug_printf(VERBOSE_INFO,"Can not enable betadisk on non Spectrum machine");
+        return;
+    }
 
-	if (betadisk_enabled.v) return;
-
-
-	betadisk_alloc_memory();
-	if (betadisk_load_rom()) return;
-
-	betadisk_set_peek_poke_functions();
-
-	betadisk_set_core_function();
-
-	betadisk_active.v=0;
+    if (betadisk_enabled.v) return;
 
 
-	betadisk_enabled.v=1;
+    betadisk_alloc_memory();
+    if (betadisk_load_rom()) return;
+
+    betadisk_set_peek_poke_functions();
+
+    betadisk_set_core_function();
+
+    betadisk_active.v=0;
+
+
+    betadisk_enabled.v=1;
 
 
 }
 
 void betadisk_disable(void)
 {
-	if (betadisk_enabled.v==0) return;
+    if (betadisk_enabled.v==0) return;
 
-	betadisk_restore_peek_poke_functions();
+    betadisk_restore_peek_poke_functions();
 
-	free(betadisk_memory_pointer);
+    free(betadisk_memory_pointer);
 
-	betadisk_restore_core_function();
+    betadisk_restore_core_function();
 
-	betadisk_enabled.v=0;
+    betadisk_enabled.v=0;
 }
 
 
@@ -703,10 +703,10 @@ void trd_enable(void)
 
 	if (trd_enabled.v) return;
 
-        debug_printf (VERBOSE_INFO,"Enabling trd");
-        trd_enabled.v=1;
+    debug_printf (VERBOSE_INFO,"Enabling trd");
+    trd_enabled.v=1;
 
-        trd_insert();
+    trd_insert();
 
 
 }
@@ -716,9 +716,9 @@ void trd_disable(void)
 	if (trd_enabled.v==0) return;
 
 
-        debug_printf (VERBOSE_INFO,"Disabling trd");
-        trd_enabled.v=0;
-	free(trd_memory_pointer);
+    debug_printf (VERBOSE_INFO,"Disabling trd");
+    trd_enabled.v=0;
+    free(trd_memory_pointer);
 
 
 }
@@ -778,8 +778,8 @@ void trd_flush_contents_to_disk(void)
         //printf ("escritos: %d\n",escritos);
 
         if (escritos!=size || ptr_trdfile==NULL) {
-                debug_printf (VERBOSE_ERR,"Error writing to TRD file. Disabling write file operations");
-                trd_persistent_writes.v=0;
+            debug_printf (VERBOSE_ERR,"Error writing to TRD file. Disabling write file operations");
+            trd_persistent_writes.v=0;
         }
 
 }
