@@ -54,6 +54,11 @@ ZX Desktop, running multitask windows, on Solarized Dark GUI Style, running ZX S
 ![alt text](${URLIMAGES_BASE}/screenshots/screenshot_zxdesktop_multitask.png "ZX Desktop")
 
 
+ZEsarUX 11.0, running multitask windows, ZEsarUX Plus GUI Style, running Sound Tracker 20th anniversary demo, some Multitask windows
+
+![alt text](${URLIMAGES_BASE}/screenshots/screenshot_zesarux_11_0.png "ZEsarUX 11.0")
+
+
 Default clean ZX Desktop starting from ZEsarUX version 10.2
 
 ![alt text](${URLIMAGES_BASE}/screenshots/screenshot_zxdesktop_default.png "ZX Desktop default")
