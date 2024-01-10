@@ -1575,7 +1575,7 @@ void menu_interface_change_gui_style(MENU_ITEM_PARAMETERS)
 
         menu_add_ESC_item(array_menu_common);
 
-        retorno_menu=menu_dibuja_menu_no_title_lang(&common_opcion_seleccionada,&item_seleccionado,array_menu_common,"Style" );
+        retorno_menu=menu_dibuja_menu(&common_opcion_seleccionada,&item_seleccionado,array_menu_common,"Style","Estilo","Estil" );
 
         if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
             //llamamos por valor de funcion
@@ -1897,7 +1897,8 @@ void menu_special_fx_settings(MENU_ITEM_PARAMETERS)
 
         menu_add_ESC_item(array_menu_special_fx_settings);
 
-        retorno_menu=menu_dibuja_menu_no_title_lang(&special_fx_settings_opcion_seleccionada,&item_seleccionado,array_menu_special_fx_settings,"Special FX Settings" );
+        retorno_menu=menu_dibuja_menu(&special_fx_settings_opcion_seleccionada,&item_seleccionado,array_menu_special_fx_settings,
+            "Special FX Settings","Opciones Efectos Especiales","Opcions Efectes Especials" );
 
 
 

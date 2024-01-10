@@ -747,6 +747,7 @@ Prueba con redimensionar ventana con driver audio sdl con callback y printf dond
 
 -app Calculadora que permita escribir expresiones
 
+-Tetris en app procrastinate ?
 
 -permitir smartload de zrcp sin que haya que abrir y cerrar el menu, para poderlo usar con driver simpletext o null por ejemplo,
 ya que no abren el menu
@@ -759,8 +760,7 @@ ya que no abren el menu
 
 -In memoriam:
 *completar texto
-ok *hacer que salga aunque se haya desactivado welcome logo
-ok *que salga antes de cualquier first aid
+
 
 -Si se crea ventana de alto negativo, acaba haciendo panic al asignar memoria. Quizá controlar esto?
 
@@ -814,11 +814,9 @@ Para ello la funcion de dibujar menu debe admitir 3 titulos en vez de uno: uno p
 Esto significaria tambien que al cambiar de idioma habria que resetear el indice de busqueda
 ->ok. agregar mas titulos localizados
 
--Ayuda tema gui añadir templeos y otros
 
 -Nuevos campos para zx visión Windows:
 -hora / fecha inicio ventana. Y que se mantenga en sucesivos arranques?
 
--Tetris en app procrastinate ?
 
 -soporte libretro?
