@@ -442,12 +442,8 @@ int timer_check_interrupt_no_thread(void)
 	return 0;
 }
 
-
-//Ver si hay que generar interrupcion 1/50
-//bucle principal de ejecucion de la cpu de spectrum
-void timer_check_interrupt(void)
+int get_timer_check_interrupt(void)
 {
-
 	int si_saltado_interrupcion;
 
 #ifdef USE_PTHREADS
@@ -456,6 +452,18 @@ void timer_check_interrupt(void)
 
 	si_saltado_interrupcion=timer_check_interrupt_no_thread();
 #endif
+
+    return si_saltado_interrupcion;
+
+}
+
+//Ver si hay que generar interrupcion 1/50
+//bucle principal de ejecucion de la cpu de spectrum
+void timer_check_interrupt(void)
+{
+
+	int si_saltado_interrupcion=get_timer_check_interrupt();
+
 
 	if (timer_condicion_top_speed() ) {
 		interrupcion_timer_generada.v=1;
