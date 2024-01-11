@@ -315,6 +315,8 @@ struct AQRecorderState {
 
 int saltado_interrupcion_audiocoreaudio=0;
 
+char buffer_input_stereo[AUDIO_BUFFER_SIZE*2];
+
 void audiocoreaudio_start_recording_oneshoot(void);
 
 void HandleInputBuffer (
@@ -500,7 +502,7 @@ if( get_default_output_device(&device) ) return 1;
 
 
 
-char buffer_input_stereo[AUDIO_BUFFER_SIZE*2];
+
 
 void encolar_sonido_output_coreaudio(char *buffer_send_frame)
 {
@@ -509,6 +511,7 @@ void encolar_sonido_output_coreaudio(char *buffer_send_frame)
     if (!audiocoreaudio_esta_grabando) {
         printf("Aun no estan asignados los buffers de input\n");
         audiocoreaudio_start_recording_oneshoot();
+        //sleep(1);
     }
 
     else {
@@ -527,8 +530,8 @@ void encolar_sonido_output_coreaudio(char *buffer_send_frame)
 
             //invento feo para alterar el buffer de origen y poder "ver" el sonido en ventana view waveform
             //QUITAR ESTO DE LA VERSION FINAL!!!
-            buffer_send_frame[i*2]=buffer_in[i];
-            buffer_send_frame[i*2+1]=buffer_in[i];
+            buffer_send_frame[i*2]=buffer_input_stereo[i*2];
+            buffer_send_frame[i*2+1]=buffer_input_stereo[i*2+1];
         }
 
         audiocoreaudio_fifo_write(buffer_input_stereo,AUDIO_BUFFER_SIZE);
@@ -583,10 +586,10 @@ buffer_actual=buffer;
     audio_output_started = 1;
   }
 
-audiocoreaudio_fifo_write(buffer,AUDIO_BUFFER_SIZE);
+//audiocoreaudio_fifo_write(buffer,AUDIO_BUFFER_SIZE);
 
     //Pruebas a escuchar sonido por line in. Comentar el audiocoreaudio_fifo_write anterior para que funcione
-    //encolar_sonido_output_coreaudio(buffer);
+    encolar_sonido_output_coreaudio(buffer);
 
 }
 
