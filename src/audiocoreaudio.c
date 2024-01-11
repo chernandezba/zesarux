@@ -329,6 +329,7 @@ void HandleInputBuffer (
     //    return;
 
     AudioQueueEnqueueBuffer(pAqData->mQueue, inBuffer, 0, NULL);
+    printf("End input\n");
 }
 
 /*void envia_sonido(char *buffer,int longitud)
@@ -444,12 +445,12 @@ if( get_default_output_device(&device) ) return 1;
 
     r = AudioQueueStart(S.mQueue, NULL);
     int tiempo_sleep=1000000/(15600/S.bufferByteSize);
-    printf("tiempo_sleep: %d\n",tiempo_sleep);
+    //printf("tiempo_sleep: %d\n",tiempo_sleep);
 
     audiocoreaudio_esta_grabando=1;
     //usleep(tiempo_sleep);
 
-    printf("After reading\n");
+    //printf("After reading\n");
     //PRINT_R;
 
     //r = AudioQueueStop(S.mQueue, true);
@@ -467,7 +468,7 @@ if( get_default_output_device(&device) ) return 1;
     //envia_sonido(buffer,S.bufferByteSize);
 
 
-    printf("\n");
+    //printf("\n");
 }
 
 
