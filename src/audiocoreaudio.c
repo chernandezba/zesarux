@@ -291,7 +291,9 @@ void sound_lowlevel_frame( char *data, int len );
 //https://developer.apple.com/library/archive/documentation/MusicAudio/Conceptual/AudioQueueProgrammingGuide/AQRecord/RecordingAudio.html
 
 
-static const int kNumberBuffers = 1;
+static const int kNumberBuffers = 2;
+
+int recording_num_buffer=0;
 
 struct AQRecorderState {
     AudioStreamBasicDescription  mDataFormat;                   // 2
@@ -432,13 +434,13 @@ if( get_default_output_device(&device) ) return 1;
     S.bufferByteSize = AUDIO_BUFFER_SIZE;
 
     int i;
-    for (i = 0; i < kNumberBuffers; ++i) {
-        r = AudioQueueAllocateBuffer(S.mQueue, S.bufferByteSize, &S.mBuffers[i]);
+    //for (i = 0; i < kNumberBuffers; ++i) {
+        r = AudioQueueAllocateBuffer(S.mQueue, S.bufferByteSize, &S.mBuffers[recording_num_buffer]);
         //PRINT_R;
 
-        r = AudioQueueEnqueueBuffer(S.mQueue, S.mBuffers[i], 0, NULL);
+        r = AudioQueueEnqueueBuffer(S.mQueue, S.mBuffers[recording_num_buffer], 0, NULL);
         //PRINT_R;
-    }
+    //}
 
     S.mCurrentPacket = 0;
     S.mIsRunning = true;
@@ -469,6 +471,8 @@ if( get_default_output_device(&device) ) return 1;
 
 
     //printf("\n");
+
+    recording_num_buffer ^=1;
 }
 
 
@@ -486,7 +490,9 @@ void encolar_sonido_output_coreaudio(char *buffer_send_frame)
 
     else {
 
-        char *buffer_in=S.mBuffers[0]->mAudioData;
+        int buffer_lectura=recording_num_buffer^1;
+
+        char *buffer_in=S.mBuffers[buffer_lectura]->mAudioData;
 
         //convertir a stereo
         int i;
