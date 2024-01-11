@@ -442,6 +442,8 @@ int timer_check_interrupt_no_thread(void)
 	return 0;
 }
 
+
+//extern int audiocoreaudio_check_interrupt(void);
 int get_timer_check_interrupt(void)
 {
 	int si_saltado_interrupcion;
@@ -452,6 +454,10 @@ int get_timer_check_interrupt(void)
 
 	si_saltado_interrupcion=timer_check_interrupt_no_thread();
 #endif
+
+
+//temp
+    //si_saltado_interrupcion=audiocoreaudio_check_interrupt();
 
     return si_saltado_interrupcion;
 

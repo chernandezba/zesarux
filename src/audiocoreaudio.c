@@ -312,6 +312,9 @@ struct AQRecorderState {
   uint8_t* out = ioData->mBuffers[0].mData;
 */
 
+int saltado_interrupcion_audiocoreaudio=0;
+
+
 void HandleInputBuffer (
                                void                                *aqData,
                                AudioQueueRef                       inAQ,
@@ -331,6 +334,7 @@ void HandleInputBuffer (
     //    return;
 
     AudioQueueEnqueueBuffer(pAqData->mQueue, inBuffer, 0, NULL);
+    saltado_interrupcion_audiocoreaudio=1;
     printf("End input\n");
 }
 
@@ -515,6 +519,18 @@ void encolar_sonido_output_coreaudio(char *buffer_send_frame)
     audiocoreaudio_start_recording_oneshoot();
 }
 
+int audiocoreaudio_check_interrupt(void)
+{
+    if (!audiocoreaudio_esta_grabando) return 1;
+
+    if (saltado_interrupcion_audiocoreaudio)
+    {
+        saltado_interrupcion_audiocoreaudio=0;
+        return 1;
+    }
+printf("no timer\n");
+    return 0;
+}
 
 //
 //FIN funciones de lectura de sonido por fuente externa
