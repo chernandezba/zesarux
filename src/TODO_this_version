@@ -820,3 +820,14 @@ Esto significaria tambien que al cambiar de idioma habria que resetear el indice
 
 
 -soporte libretro?
+
+-captura de sonido desde fuente externa (para poder cargar de cinta directamente)
+Info para Mac OS X:
+https://developer.apple.com/forums/thread/70916
+https://developer.apple.com/library/archive/documentation/MusicAudio/Conceptual/AudioQueueProgrammingGuide/AQRecord/RecordingAudio.html
+
+La idea en ZEsarUX es:
+-capturar audio en trozos de 20ms. Al final de cada trozo, avisar con un flag de finalizado. Usar dos bufferes, uno donde se escribe y el otro de donde lee el audio ZEsarUX
+-timer de ZEsarUX no usara el normal sino basado en ese flag de finalizado de captura de audio. Así siempre ira sincronizado con la lectura de sonido.
+-en ZEsarUX cuando lee el siguiente byte (sample) de sonido tiene que ir siempre sincronizado con el flag de finalizado de captura de audio.
+Si llega al final del buffer de lectura y aun no ha grabado el siguiente buffer, la lectura de ese siguiente byte (sample) de sonido tiene que esperarse
