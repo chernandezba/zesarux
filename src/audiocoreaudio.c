@@ -291,7 +291,7 @@ void sound_lowlevel_frame( char *data, int len );
 //https://developer.apple.com/library/archive/documentation/MusicAudio/Conceptual/AudioQueueProgrammingGuide/AQRecord/RecordingAudio.html
 
 
-static const int kNumberBuffers = 2;
+static const int kNumberBuffers = 1;
 
 int recording_num_buffer=0;
 int recording_num_buffer_lectura=0;
@@ -315,9 +315,11 @@ struct AQRecorderState {
 
 int saltado_interrupcion_audiocoreaudio=0;
 
-char buffer_input_stereo[AUDIO_BUFFER_SIZE*2];
+char buffer_input_stereo[2][AUDIO_BUFFER_SIZE*2];
 
 void audiocoreaudio_start_recording_oneshoot(void);
+
+struct AQRecorderState S;
 
 void HandleInputBuffer (
                                void                                *aqData,
@@ -345,6 +347,15 @@ void HandleInputBuffer (
 
     //Y vuelta a reproducir
     //audiocoreaudio_start_recording_oneshoot();
+
+        //convertir a stereo
+        char *buffer_in=S.mBuffers[0]->mAudioData;
+        int i;
+        for (i=0;i<AUDIO_BUFFER_SIZE;i++) {
+            buffer_input_stereo[recording_num_buffer_lectura][i*2]=buffer_in[i];
+            buffer_input_stereo[recording_num_buffer_lectura][i*2+1]=buffer_in[i];
+
+        }
 }
 
 /*void envia_sonido(char *buffer,int longitud)
@@ -362,7 +373,7 @@ void HandleInputBuffer (
     }
 }*/
 
-struct AQRecorderState S;
+
 
 int audiocoreaudio_esta_grabando=0;
 
@@ -403,7 +414,7 @@ OSStatus r = 0;
 
     //printf("\n");
 
-    recording_num_buffer ^=1;
+    //recording_num_buffer ^=1;
 
 }
 
@@ -518,24 +529,23 @@ void encolar_sonido_output_coreaudio(char *buffer_send_frame)
 
         int buffer_lectura=recording_num_buffer ^1; //_lectura;
 
-        recording_num_buffer_lectura ^=1;
+
 
         char *buffer_in=S.mBuffers[buffer_lectura]->mAudioData;
 
         //convertir a stereo
         int i;
         for (i=0;i<AUDIO_BUFFER_SIZE;i++) {
-            buffer_input_stereo[i*2]=buffer_in[i];
-            buffer_input_stereo[i*2+1]=buffer_in[i];
-
             //invento feo para alterar el buffer de origen y poder "ver" el sonido en ventana view waveform
             //QUITAR ESTO DE LA VERSION FINAL!!!
-            buffer_send_frame[i*2]=buffer_input_stereo[i*2];
-            buffer_send_frame[i*2+1]=buffer_input_stereo[i*2+1];
+            buffer_send_frame[i*2]=buffer_input_stereo[recording_num_buffer_lectura][i*2];
+            buffer_send_frame[i*2+1]=buffer_input_stereo[recording_num_buffer_lectura][i*2+1];
         }
 
-        audiocoreaudio_fifo_write(buffer_input_stereo,AUDIO_BUFFER_SIZE);
+        audiocoreaudio_fifo_write(buffer_input_stereo[recording_num_buffer_lectura],AUDIO_BUFFER_SIZE);
         //envia_sonido(buffer_in,S.bufferByteSize);
+
+        recording_num_buffer_lectura ^=1;
         audiocoreaudio_start_recording_oneshoot();
     }
 
@@ -586,10 +596,10 @@ buffer_actual=buffer;
     audio_output_started = 1;
   }
 
-//audiocoreaudio_fifo_write(buffer,AUDIO_BUFFER_SIZE);
+audiocoreaudio_fifo_write(buffer,AUDIO_BUFFER_SIZE);
 
     //Pruebas a escuchar sonido por line in. Comentar el audiocoreaudio_fifo_write anterior para que funcione
-    encolar_sonido_output_coreaudio(buffer);
+    //encolar_sonido_output_coreaudio(buffer);
 
 }
 
