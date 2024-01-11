@@ -27,6 +27,8 @@
 
 #include <CoreMIDI/CoreMIDI.h>
 
+//Para funciones de lectura de sonido por fuente externa
+#include <AudioToolbox/AudioToolbox.h>
 
 
 #include "audio.h"
@@ -278,6 +280,240 @@ stereoptr=&pepe;
 
 void sound_lowlevel_frame( char *data, int len );
 
+
+//
+//Inicio funciones de lectura de sonido por fuente externa
+//
+
+
+
+//https://developer.apple.com/forums/thread/70916
+//https://developer.apple.com/library/archive/documentation/MusicAudio/Conceptual/AudioQueueProgrammingGuide/AQRecord/RecordingAudio.html
+
+
+static const int kNumberBuffers = 1;
+
+struct AQRecorderState {
+    AudioStreamBasicDescription  mDataFormat;                   // 2
+    AudioQueueRef                mQueue;                        // 3
+    AudioQueueBufferRef          mBuffers[kNumberBuffers];      // 4
+    AudioFileID                  mAudioFile;                    // 5
+    UInt32                       bufferByteSize;                // 6
+    SInt64                       mCurrentPacket;                // 7
+    bool                         mIsRunning;                    // 8
+};
+
+/*
+                         AudioBufferList *ioData )
+{
+  int len = deviceFormat.mBytesPerFrame * inNumberFrames;
+  uint8_t* out = ioData->mBuffers[0].mData;
+*/
+
+void HandleInputBuffer (
+                               void                                *aqData,
+                               AudioQueueRef                       inAQ,
+                               AudioQueueBufferRef                 inBuffer,
+                               const AudioTimeStamp                *inStartTime,
+                               UInt32                              inNumPackets,
+                               const AudioStreamPacketDescription  *inPacketDesc
+) {
+
+    struct AQRecorderState *pAqData = (struct AQRecorderState *) aqData;
+
+    if (inNumPackets == 0 && pAqData->mDataFormat.mBytesPerPacket != 0) {
+        inNumPackets = inBuffer->mAudioDataByteSize / pAqData->mDataFormat.mBytesPerPacket;
+    }
+    //printf("%d\n", *(char*)inBuffer->mAudioData);
+    //if (pAqData->mIsRunning == 0)
+    //    return;
+
+    AudioQueueEnqueueBuffer(pAqData->mQueue, inBuffer, 0, NULL);
+}
+
+/*void envia_sonido(char *buffer,int longitud)
+{
+    int i;
+        for (i=0;i<longitud ;i++) {
+        printf("%d ",buffer[i]);
+
+        int indice_destino=i*2;
+
+        if (indice_destino<AUDIO_BUFFER_SIZE*2-2) {
+            audio_buffer[indice_destino]=buffer[i];
+            audio_buffer[indice_destino+1]=buffer[i];
+        }
+    }
+}*/
+
+struct AQRecorderState S;
+
+int audiocoreaudio_esta_grabando=0;
+
+void audiocoreaudio_start_recording_oneshoot(void)
+{
+
+
+#define PRINT_R do{\
+printf("%d: r = %d\n",__LINE__, r);\
+}while(0)
+
+    AudioStreamBasicDescription *fmt = &S.mDataFormat;
+
+    fmt->mFormatID         = kAudioFormatLinearPCM;
+    fmt->mSampleRate       = 15600;
+    fmt->mChannelsPerFrame = 1;
+    fmt->mBitsPerChannel   = 8;
+    fmt->mBytesPerFrame    = fmt->mChannelsPerFrame * sizeof (char);
+    fmt->mFramesPerPacket  = 1;
+    fmt->mBytesPerPacket   = fmt->mBytesPerFrame * fmt->mFramesPerPacket;
+    fmt->mFormatFlags      = kLinearPCMFormatFlagIsSignedInteger;
+
+
+
+/*
+if( get_default_output_device(&device) ) return 1;
+  if( get_default_sample_rate( device, &deviceFormat.mSampleRate ) ) return 1;
+
+  *freqptr = deviceFormat.mSampleRate;
+
+  deviceFormat.mFormatID =  kAudioFormatLinearPCM;
+  deviceFormat.mFormatFlags =  kLinearPCMFormatFlagIsSignedInteger
+#ifdef WORDS_BIGENDIAN
+                    | kLinearPCMFormatFlagIsBigEndian
+
+                    | kLinearPCMFormatFlagIsPacked;
+
+//inDe
+
+*stereoptr=0x0;
+
+  deviceFormat.mBytesPerPacket = *stereoptr ? 4 : 2;
+  deviceFormat.mBytesPerPacket=2;  //1=mono, 2=stereo
+
+  deviceFormat.mFramesPerPacket = 1;
+
+  deviceFormat.mBytesPerFrame = *stereoptr ? 4 : 2;
+  deviceFormat.mBytesPerFrame = 2; //1=mono, 2=stereo
+
+  //deviceFormat.mBitsPerChannel = 16;
+  deviceFormat.mBitsPerChannel = 8;
+
+  deviceFormat.mChannelsPerFrame = *stereoptr ? 2 : 1;
+  deviceFormat.mChannelsPerFrame = 2; //1=mono, 2=stereo
+
+  AudioComponentDescription desc;
+  desc.componentType = kAudioUnitType_Output;
+  desc.componentSubType = kAudioUnitSubType_DefaultOutput;
+  desc.componentManufacturer = kAudioUnitManufacturer_Apple;
+  desc.componentFlags = 0;
+  desc.componentFlagsMask = 0;
+
+*/
+
+
+
+    OSStatus r = 0;
+
+    r = AudioQueueNewInput(&S.mDataFormat, HandleInputBuffer, &S, NULL, kCFRunLoopCommonModes, 0, &S.mQueue);
+
+    //PRINT_R;
+
+    UInt32 dataFormatSize = sizeof (S.mDataFormat);
+
+    r = AudioQueueGetProperty (
+                           S.mQueue,
+                           kAudioConverterCurrentInputStreamDescription,
+                           &S.mDataFormat,
+                           &dataFormatSize
+                           );
+
+    S.bufferByteSize = AUDIO_BUFFER_SIZE;
+
+    int i;
+    for (i = 0; i < kNumberBuffers; ++i) {
+        r = AudioQueueAllocateBuffer(S.mQueue, S.bufferByteSize, &S.mBuffers[i]);
+        //PRINT_R;
+
+        r = AudioQueueEnqueueBuffer(S.mQueue, S.mBuffers[i], 0, NULL);
+        //PRINT_R;
+    }
+
+    S.mCurrentPacket = 0;
+    S.mIsRunning = true;
+
+    r = AudioQueueStart(S.mQueue, NULL);
+    int tiempo_sleep=1000000/(15600/S.bufferByteSize);
+    printf("tiempo_sleep: %d\n",tiempo_sleep);
+
+    audiocoreaudio_esta_grabando=1;
+    //usleep(tiempo_sleep);
+
+    printf("After reading\n");
+    //PRINT_R;
+
+    //r = AudioQueueStop(S.mQueue, true);
+    //S.mIsRunning = false;
+
+    //PRINT_R;
+
+    //r = AudioQueueDispose(S.mQueue, true);
+    //AudioQueueBuffer *buffer=&S.mQueue;
+    //AudioQueueBuffer *buffer=S.mBuffers[0];
+
+    //char *buffer=S.mBuffers[0]->mAudioData;
+
+
+    //envia_sonido(buffer,S.bufferByteSize);
+
+
+    printf("\n");
+}
+
+
+
+
+char buffer_input_stereo[AUDIO_BUFFER_SIZE*2];
+
+void encolar_sonido_output_coreaudio(char *buffer_send_frame)
+{
+
+    //hasta que no haya grabado una vez, y por tanto los buffers de input esten asignados, no lanzar
+    if (!audiocoreaudio_esta_grabando) {
+        printf("Aun no estan asignados los buffers de input\n");
+    }
+
+    else {
+
+        char *buffer_in=S.mBuffers[0]->mAudioData;
+
+        //convertir a stereo
+        int i;
+        for (i=0;i<AUDIO_BUFFER_SIZE;i++) {
+            buffer_input_stereo[i*2]=buffer_in[i];
+            buffer_input_stereo[i*2+1]=buffer_in[i];
+
+            //invento feo para alterar el buffer de origen y poder "ver" el sonido en ventana view waveform
+            //QUITAR ESTO DE LA VERSION FINAL!!!
+            buffer_send_frame[i*2]=buffer_in[i];
+            buffer_send_frame[i*2+1]=buffer_in[i];
+        }
+
+        audiocoreaudio_fifo_write(buffer_input_stereo,AUDIO_BUFFER_SIZE);
+        //envia_sonido(buffer_in,S.bufferByteSize);
+    }
+
+
+    //Y volver a capturar sonido
+    audiocoreaudio_start_recording_oneshoot();
+}
+
+
+//
+//FIN funciones de lectura de sonido por fuente externa
+//
+
+
 void audiocoreaudio_send_frame(char *buffer)
 {
 
@@ -304,6 +540,8 @@ buffer_actual=buffer;
 
 audiocoreaudio_fifo_write(buffer,AUDIO_BUFFER_SIZE);
 
+    //Pruebas a escuchar sonido por line in. Comentar el audiocoreaudio_fifo_write anterior para que funcione
+    //encolar_sonido_output_coreaudio(buffer);
 
 }
 
@@ -928,4 +1166,3 @@ OSStatus Information:
 
 
 */
-

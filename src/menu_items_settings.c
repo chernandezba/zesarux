@@ -3623,6 +3623,11 @@ void menu_audiosdl_callback_type(MENU_ITEM_PARAMETERS)
     audiosdl_use_new_callback.v ^=1;
 }
 
+void menu_audio_settings_start_reading_audio(MENU_ITEM_PARAMETERS)
+{
+
+}
+
 void menu_settings_audio(MENU_ITEM_PARAMETERS)
 {
         menu_item *array_menu_settings_audio;
@@ -3958,6 +3963,11 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
             }
 
 
+        //Pruebas leer sonido externo
+#ifdef COMPILE_COREAUDIO
+                    menu_add_item_menu_en_es_ca(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_audio_settings_start_reading_audio,NULL,
+                        "Start reading audio input","Inicio leer audio input","Inici llegir audio input");
+#endif
 
 
 
