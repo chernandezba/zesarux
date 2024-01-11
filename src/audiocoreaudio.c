@@ -294,6 +294,7 @@ void sound_lowlevel_frame( char *data, int len );
 static const int kNumberBuffers = 2;
 
 int recording_num_buffer=0;
+int recording_num_buffer_lectura=0;
 
 struct AQRecorderState {
     AudioStreamBasicDescription  mDataFormat;                   // 2
@@ -314,6 +315,7 @@ struct AQRecorderState {
 
 int saltado_interrupcion_audiocoreaudio=0;
 
+void audiocoreaudio_start_recording_oneshoot(void);
 
 void HandleInputBuffer (
                                void                                *aqData,
@@ -336,6 +338,11 @@ void HandleInputBuffer (
     AudioQueueEnqueueBuffer(pAqData->mQueue, inBuffer, 0, NULL);
     saltado_interrupcion_audiocoreaudio=1;
     printf("End input\n");
+
+    //recording_num_buffer ^=1;
+
+    //Y vuelta a reproducir
+    //audiocoreaudio_start_recording_oneshoot();
 }
 
 /*void envia_sonido(char *buffer,int longitud)
@@ -356,6 +363,47 @@ void HandleInputBuffer (
 struct AQRecorderState S;
 
 int audiocoreaudio_esta_grabando=0;
+
+void audiocoreaudio_start_recording_oneshoot_continue(void)
+{
+
+OSStatus r = 0;
+
+
+
+    S.mCurrentPacket = 0;
+    S.mIsRunning = true;
+
+    r = AudioQueueStart(S.mQueue, NULL);
+    int tiempo_sleep=1000000/(15600/S.bufferByteSize);
+    //printf("tiempo_sleep: %d\n",tiempo_sleep);
+
+    audiocoreaudio_esta_grabando=1;
+    //usleep(tiempo_sleep);
+
+    //printf("After reading\n");
+    //PRINT_R;
+
+    //r = AudioQueueStop(S.mQueue, true);
+    //S.mIsRunning = false;
+
+    //PRINT_R;
+
+    //r = AudioQueueDispose(S.mQueue, true);
+    //AudioQueueBuffer *buffer=&S.mQueue;
+    //AudioQueueBuffer *buffer=S.mBuffers[0];
+
+    //char *buffer=S.mBuffers[0]->mAudioData;
+
+
+    //envia_sonido(buffer,S.bufferByteSize);
+
+
+    //printf("\n");
+
+    recording_num_buffer ^=1;
+
+}
 
 void audiocoreaudio_start_recording_oneshoot(void)
 {
@@ -441,42 +489,12 @@ if( get_default_output_device(&device) ) return 1;
     //for (i = 0; i < kNumberBuffers; ++i) {
         r = AudioQueueAllocateBuffer(S.mQueue, S.bufferByteSize, &S.mBuffers[recording_num_buffer]);
         //PRINT_R;
-
         r = AudioQueueEnqueueBuffer(S.mQueue, S.mBuffers[recording_num_buffer], 0, NULL);
         //PRINT_R;
     //}
 
-    S.mCurrentPacket = 0;
-    S.mIsRunning = true;
+    audiocoreaudio_start_recording_oneshoot_continue();
 
-    r = AudioQueueStart(S.mQueue, NULL);
-    int tiempo_sleep=1000000/(15600/S.bufferByteSize);
-    //printf("tiempo_sleep: %d\n",tiempo_sleep);
-
-    audiocoreaudio_esta_grabando=1;
-    //usleep(tiempo_sleep);
-
-    //printf("After reading\n");
-    //PRINT_R;
-
-    //r = AudioQueueStop(S.mQueue, true);
-    //S.mIsRunning = false;
-
-    //PRINT_R;
-
-    //r = AudioQueueDispose(S.mQueue, true);
-    //AudioQueueBuffer *buffer=&S.mQueue;
-    //AudioQueueBuffer *buffer=S.mBuffers[0];
-
-    //char *buffer=S.mBuffers[0]->mAudioData;
-
-
-    //envia_sonido(buffer,S.bufferByteSize);
-
-
-    //printf("\n");
-
-    recording_num_buffer ^=1;
 }
 
 
@@ -490,11 +508,14 @@ void encolar_sonido_output_coreaudio(char *buffer_send_frame)
     //hasta que no haya grabado una vez, y por tanto los buffers de input esten asignados, no lanzar
     if (!audiocoreaudio_esta_grabando) {
         printf("Aun no estan asignados los buffers de input\n");
+        audiocoreaudio_start_recording_oneshoot();
     }
 
     else {
 
-        int buffer_lectura=recording_num_buffer^1;
+        int buffer_lectura=recording_num_buffer ^1; //_lectura;
+
+        recording_num_buffer_lectura ^=1;
 
         char *buffer_in=S.mBuffers[buffer_lectura]->mAudioData;
 
@@ -512,11 +533,12 @@ void encolar_sonido_output_coreaudio(char *buffer_send_frame)
 
         audiocoreaudio_fifo_write(buffer_input_stereo,AUDIO_BUFFER_SIZE);
         //envia_sonido(buffer_in,S.bufferByteSize);
+        audiocoreaudio_start_recording_oneshoot();
     }
 
 
     //Y volver a capturar sonido
-    audiocoreaudio_start_recording_oneshoot();
+    //audiocoreaudio_start_recording_oneshoot();
 }
 
 int audiocoreaudio_check_interrupt(void)
