@@ -833,3 +833,5 @@ La idea en ZEsarUX es:
 Si llega al final del buffer de lectura y aun no ha grabado el siguiente buffer, la lectura de ese siguiente byte (sample) de sonido tiene que esperarse
 
 -en lectura de sonido parece que el callback solo recibe 1024 bytes y los 536 restantes vienen vacios. por que?
+
+-numero de version que corresponda con el año de antigüedad de ZEsarUX? V11 : 2024, V12: 2025, V13: 2026?

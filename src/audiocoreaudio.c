@@ -332,12 +332,16 @@ void HandleInputBuffer (
 
     struct AQRecorderState *pAqData = (struct AQRecorderState *) aqData;
 
+    printf("End input. %d\n",inNumPackets);
+
     if (inNumPackets == 0 && pAqData->mDataFormat.mBytesPerPacket != 0) {
         inNumPackets = inBuffer->mAudioDataByteSize / pAqData->mDataFormat.mBytesPerPacket;
     }
     //printf("%d\n", *(char*)inBuffer->mAudioData);
     //if (pAqData->mIsRunning == 0)
     //    return;
+
+     pAqData->mCurrentPacket += inNumPackets;
 
     AudioQueueEnqueueBuffer(pAqData->mQueue, inBuffer, 0, NULL);
     saltado_interrupcion_audiocoreaudio=1;
@@ -352,12 +356,26 @@ void HandleInputBuffer (
         char *buffer_in=S.mBuffers[0]->mAudioData;
         int i;
         for (i=0;i<AUDIO_BUFFER_SIZE;i++) {
-            printf("%d ",buffer_in[i]);
+            //printf("%d ",buffer_in[i]);
             buffer_input_stereo[recording_num_buffer_lectura][i*2]=buffer_in[i];
             buffer_input_stereo[recording_num_buffer_lectura][i*2+1]=buffer_in[i];
 
         }
-        printf("\n");
+
+        //Parche feo para completar ultima seccion
+        //int offset=1024;
+        /*int longitud=AUDIO_BUFFER_SIZE-1024;
+
+        printf("--\n");
+
+        for (i=0;i<longitud;i++) {
+            printf("%d ",buffer_in[i]);
+            int destino=1024*2;
+            buffer_input_stereo[recording_num_buffer_lectura][destino]=buffer_in[i];
+            buffer_input_stereo[recording_num_buffer_lectura][destino+1]=buffer_in[i];
+
+        }*/
+        printf("--\n");
 }
 
 /*void envia_sonido(char *buffer,int longitud)
@@ -383,8 +401,9 @@ void audiocoreaudio_start_recording_oneshoot_continue(void)
 {
 
 OSStatus r = 0;
-
-
+r = AudioQueueStop(S.mQueue, true);
+        r = AudioQueueEnqueueBuffer(S.mQueue, S.mBuffers[recording_num_buffer], 0, NULL);
+        //PRINT_R;
 
     S.mCurrentPacket = 0;
     S.mIsRunning = true;
@@ -504,7 +523,7 @@ if( get_default_output_device(&device) ) return 1;
     //for (i = 0; i < kNumberBuffers; ++i) {
         r = AudioQueueAllocateBuffer(S.mQueue, S.bufferByteSize, &S.mBuffers[recording_num_buffer]);
         //PRINT_R;
-        r = AudioQueueEnqueueBuffer(S.mQueue, S.mBuffers[recording_num_buffer], 0, NULL);
+        //r = AudioQueueEnqueueBuffer(S.mQueue, S.mBuffers[recording_num_buffer], 0, NULL);
         //PRINT_R;
     //}
 
@@ -548,7 +567,7 @@ void encolar_sonido_output_coreaudio(char *buffer_send_frame)
         //envia_sonido(buffer_in,S.bufferByteSize);
 
         recording_num_buffer_lectura ^=1;
-        audiocoreaudio_start_recording_oneshoot();
+        audiocoreaudio_start_recording_oneshoot_continue();
     }
 
 
