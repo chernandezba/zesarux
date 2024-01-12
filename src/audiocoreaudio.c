@@ -341,7 +341,7 @@ void HandleInputBuffer (
 
     AudioQueueEnqueueBuffer(pAqData->mQueue, inBuffer, 0, NULL);
     saltado_interrupcion_audiocoreaudio=1;
-    printf("End input\n");
+    printf("End input. %d\n",inNumPackets);
 
     //recording_num_buffer ^=1;
 
@@ -352,10 +352,12 @@ void HandleInputBuffer (
         char *buffer_in=S.mBuffers[0]->mAudioData;
         int i;
         for (i=0;i<AUDIO_BUFFER_SIZE;i++) {
+            printf("%d ",buffer_in[i]);
             buffer_input_stereo[recording_num_buffer_lectura][i*2]=buffer_in[i];
             buffer_input_stereo[recording_num_buffer_lectura][i*2+1]=buffer_in[i];
 
         }
+        printf("\n");
 }
 
 /*void envia_sonido(char *buffer,int longitud)
