@@ -341,7 +341,7 @@ void HandleInputBuffer (
 
     struct AQRecorderState *pAqData = (struct AQRecorderState *) aqData;
 
-    printf("End input. %d\n",inNumPackets);
+    //printf("End input. %d\n",inNumPackets);
 
     if (inNumPackets == 0 && pAqData->mDataFormat.mBytesPerPacket != 0) {
         inNumPackets = inBuffer->mAudioDataByteSize / pAqData->mDataFormat.mBytesPerPacket;
@@ -356,8 +356,9 @@ void HandleInputBuffer (
 
     acumulados_paquetes_recorded +=inNumPackets;
     if (acumulados_paquetes_recorded>=AUDIO_RECORD_BUFFER_SIZE) {
-        printf("Un buffer entero leido. generar interrupcion (antes %d). acumulados_paquetes_recorded=%d\n",
-            saltado_interrupcion_audiocoreaudio,acumulados_paquetes_recorded);
+        //printf("Un buffer entero leido. generar interrupcion (antes %d). acumulados_paquetes_recorded=%d\n",
+        //    saltado_interrupcion_audiocoreaudio,acumulados_paquetes_recorded);
+
         saltado_interrupcion_audiocoreaudio++;
         acumulados_paquetes_recorded -=AUDIO_RECORD_BUFFER_SIZE;
 
@@ -487,7 +488,7 @@ int audiocoreaudio_check_interrupt(void)
 
     if (saltado_interrupcion_audiocoreaudio) {
         saltado_interrupcion_audiocoreaudio--;
-        printf("TIMER\n");
+        //printf("TIMER\n");
         //sleep(1);
         return 1;
     }
