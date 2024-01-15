@@ -102,7 +102,7 @@ int (*audio_record_input_check_interrupt) (void);
 int audio_is_recording_input=0;
 
 //Indica que el thread de timer solo dara como valida ese sync de timer cuando tambien haya llegado la interrupcion del callback de lectura audio
-int timer_thread_syncs_with_audio_input_interrupt=1;
+int timer_thread_syncs_with_audio_input_interrupt=0;
 
 //Tamanyo de fifo. Es un multiplicador de AUDIO_BUFFER_SIZE
 //int audiorecord_input_fifo_buffer_size_multiplier=2;

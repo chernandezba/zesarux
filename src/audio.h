@@ -99,10 +99,10 @@ extern char *audio_buffer;
 extern char *audio_buffer_playback;
 
 //Buffer de lectura sugerido para el driver de audio de un frame de video
-#define AUDIO_RECORD_BUFFER_SIZE 312
+#define AUDIO_RECORD_BUFFER_SIZE (312*10)
 #define AUDIO_RECORD_FREQUENCY 15600
-//Fifo utilizada para buffer de lectura de audio input
-#define AUDIO_RECORD_BUFFER_FIFO_SIZE (AUDIO_RECORD_BUFFER_SIZE*50*5)
+//Fifo utilizada para buffer de lectura de audio input. para 5 segundos
+#define AUDIO_RECORD_BUFFER_FIFO_SIZE (AUDIO_RECORD_BUFFER_SIZE*5*5)
 
 extern int audio_is_recording_input;
 extern char audio_last_record_input_sample;
