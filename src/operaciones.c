@@ -6619,11 +6619,11 @@ z80_byte lee_puerto_spectrum_ula(z80_byte puerto_h)
 
                 if (realtape_inserted.v && realtape_playing.v) leer_cinta_real=1;
 
-                /*if (audio_can_record_input()) {
+                if (audio_can_record_input()) {
                     if (audio_is_recording_input) {
                         leer_cinta_real=1;
                     }
-                }*/
+                }
 
 
                 if (leer_cinta_real) {
@@ -6639,12 +6639,12 @@ z80_byte lee_puerto_spectrum_ula(z80_byte puerto_h)
 
 
                 //Lectura de cinta desde cable
-                if (audio_can_record_input()) {
+                /*if (audio_can_record_input()) {
                     if (audio_is_recording_input) {
                         if (audio_last_record_input_sample>0) valor=valor|64;
                         else valor=(valor & (255-64));
                     }
-                }
+                }*/
 
 		//Si esta cinta insertada en realtape, acelerar
 		if (accelerate_loaders.v && realtape_inserted.v && realtape_playing.v) {

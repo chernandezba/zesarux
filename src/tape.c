@@ -2186,13 +2186,13 @@ void realtape_delete_footer(void)
 void realtape_get_byte(void)
 {
 
-    /*if (audio_can_record_input()) {
+    if (audio_can_record_input()) {
         if (audio_is_recording_input) {
             audio_read_sample_audio_input();
             realtape_last_value=audio_last_record_input_sample;
             return;
         }
-    }*/
+    }
 
 
 	realtape_get_byte_cont();
