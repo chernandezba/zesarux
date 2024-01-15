@@ -258,7 +258,7 @@ void start_timer_thread(void)
 #endif
 }
 
-//Pruebas top speed
+
 z80_bit top_speed_timer={0};
 int top_speed_real_frames=0;
 
@@ -269,6 +269,18 @@ int timer_condicion_top_speed(void)
         if (menu_abierto==1) return 0;
         if (top_speed_timer.v) return 1;
         return 0;
+}
+
+
+
+int timer_wait_record_input_interrupt(void)
+{
+    if (audio_can_record_input()) {
+        if (audio_is_recording_input && timer_thread_syncs_with_audio_input_interrupt) {
+            return audiocoreaudio_check_interrupt();
+        }
+    }
+    return 1;
 }
 
 
@@ -357,21 +369,6 @@ int timer_check_interrupt_no_thread(void)
 
 	int timer_warn_high_interrupt_time,timer_warn_low_interrupt_time,timer_interrupt_time;
 
-	/*
-	if (MACHINE_IS_Z88) {
-	timer_interrupt_time=20000/4;
-	timer_warn_high_interrupt_time=timer_interrupt_time+5000/4;
-	timer_warn_low_interrupt_time=timer_interrupt_time-5000/4;
-	}
-
-
-	else {
-	timer_interrupt_time=20000;
-	timer_warn_high_interrupt_time=timer_interrupt_time+5000;
-	timer_warn_low_interrupt_time=timer_interrupt_time-5000;
-	}
-	*/
-
 
 	timer_interrupt_time=timer_sleep_machine;
 	timer_warn_low_interrupt_time=timer_interrupt_time-timer_interrupt_time/2;
@@ -400,6 +397,8 @@ int timer_check_interrupt_no_thread(void)
 
 
 		if (z80_timer_difftime>=timer_interrupt_time)  {
+            //Ver que tambien el timer de lectura de record input haya llegado
+            if (timer_wait_record_input_interrupt() ) {
 
 			top_speed_real_frames++;
 
@@ -439,14 +438,17 @@ int timer_check_interrupt_no_thread(void)
 
 			return 1;
 		}
+
+        }
 	return 0;
 }
 
+struct timeval antes, ahora;
 
-//extern int audiocoreaudio_check_interrupt(void);
+
 int get_timer_check_interrupt(void)
 {
-	int si_saltado_interrupcion;
+    int si_saltado_interrupcion;
 
 #ifdef USE_PTHREADS
 	si_saltado_interrupcion=timer_check_interrupt_thread();
@@ -456,8 +458,6 @@ int get_timer_check_interrupt(void)
 #endif
 
 
-//temp
-    //si_saltado_interrupcion=audiocoreaudio_check_interrupt();
 
     return si_saltado_interrupcion;
 
@@ -467,7 +467,7 @@ int get_timer_check_interrupt(void)
 //bucle principal de ejecucion de la cpu de spectrum
 void timer_check_interrupt(void)
 {
-
+    //printf("timer_check_interrupt\n");
 	int si_saltado_interrupcion=get_timer_check_interrupt();
 
 

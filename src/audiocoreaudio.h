@@ -30,6 +30,11 @@ extern void audiocoreaudio_send_frame(char *buffer);
 extern void audiocoreaudio_end(void);
 
 extern void audiocoreaudio_get_buffer_info (int *buffer_size,int *current_buffer_position);
+extern int audiocoreaudio_can_record_input(void);
+extern void audiocoreaudio_start_record_input(void);
+extern void audiocoreaudio_stop_record_input(void);
+extern int audiocoreaudio_check_interrupt(void);
+
 extern void coreaudio_mid_raw_send(z80_byte value);
 extern void coreaudio_midi_output_reset(void);
 

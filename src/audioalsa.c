@@ -1270,3 +1270,9 @@ void alsa_midi_output_flush_output(void)
 	if (audio_midi_raw_mode) alsa_midi_output_flush_output_raw();
 	else alsa_midi_output_flush_output_noraw();
 }
+
+
+int audioalsa_can_record_input(void)
+{
+    return 0;
+}

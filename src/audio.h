@@ -58,6 +58,8 @@
 
 //#define FRECUENCIA_SONIDO AUDIO_BUFFER_SIZE*50
 
+
+
 //Frecuencia normal constante sin tener en cuenta velocidad cpu. Se usa en chip AY como referencia y en pocos sitios mas
 #define FRECUENCIA_CONSTANTE_NORMAL_SONIDO (312*50)
 
@@ -89,8 +91,22 @@ extern int (*audio_thread_finish) (void);
 extern void (*audio_end) (void);
 extern void (*audio_send_frame) (char *buffer);
 extern void (*audio_get_buffer_info) (int *buffer_size,int *current_size);
+extern int (*audio_can_record_input) (void);
+extern void (*audio_start_record_input) (void);
+extern void (*audio_stop_record_input) (void);
+extern int (*audio_record_input_check_interrupt) (void);
 extern char *audio_buffer;
 extern char *audio_buffer_playback;
+
+//Buffer de lectura sugerido para el driver de audio de un frame de video
+#define AUDIO_RECORD_BUFFER_SIZE 312
+#define AUDIO_RECORD_FREQUENCY 15600
+//Fifo utilizada para buffer de lectura de audio input
+#define AUDIO_RECORD_BUFFER_FIFO_SIZE (AUDIO_RECORD_BUFFER_SIZE*50*5)
+
+extern int audio_is_recording_input;
+extern char audio_last_record_input_sample;
+extern int timer_thread_syncs_with_audio_input_interrupt;
 
 extern z80_bit audio_noreset_audiobuffer_full;
 

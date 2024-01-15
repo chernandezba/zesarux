@@ -32,6 +32,7 @@ extern void audiopulse_send_frame(char *buffer);
 extern int fifo_pulse_buffer_size;
 extern int pulse_periodsize;
 extern void audiopulse_get_buffer_info (int *buffer_size,int *current_buffer_position);
+extern int audiopulse_can_record_input(void);
 
 
 #endif

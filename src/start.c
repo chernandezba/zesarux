@@ -2202,6 +2202,8 @@ int set_audiodriver_dsp(void)
     audio_thread_finish=audiodsp_thread_finish;
     audio_end=audiodsp_end;
     audio_get_buffer_info=audiodsp_get_buffer_info;
+    audio_can_record_input=audiodsp_can_record_input;
+
     return 0;
 
 }
@@ -2216,6 +2218,8 @@ int set_audiodriver_onebitspeaker(void)
     audio_thread_finish=audioonebitspeaker_thread_finish;
     audio_end=audioonebitspeaker_end;
     audio_get_buffer_info=audioonebitspeaker_get_buffer_info;
+    audio_can_record_input=audioonebitspeaker_can_record_input;
+
     return 0;
 
 }
@@ -2231,6 +2235,8 @@ int set_audiodriver_sdl(void)
     audio_thread_finish=audiosdl_thread_finish;
     audio_end=audiosdl_end;
     audio_get_buffer_info=audiosdl_get_buffer_info;
+    audio_can_record_input=audiosdl_can_record_input;
+
     return 0;
 
 }
@@ -2245,6 +2251,7 @@ int set_audiodriver_alsa(void)
     audio_thread_finish=audioalsa_thread_finish;
     audio_end=audioalsa_end;
     audio_get_buffer_info=audioalsa_get_buffer_info;
+    audio_can_record_input=audioalsa_can_record_input;
     return 0;
 
 }
@@ -2258,6 +2265,8 @@ int set_audiodriver_pulse(void)
     audio_thread_finish=audiopulse_thread_finish;
     audio_end=audiopulse_end;
     audio_get_buffer_info=audiopulse_get_buffer_info;
+    audio_can_record_input=audiopulse_can_record_input;
+
     return 0;
 
 }
@@ -2272,6 +2281,10 @@ int set_audiodriver_coreaudio(void)
     audio_thread_finish=audiocoreaudio_thread_finish;
     audio_end=audiocoreaudio_end;
     audio_get_buffer_info=audiocoreaudio_get_buffer_info;
+    audio_can_record_input=audiocoreaudio_can_record_input;
+    audio_start_record_input=audiocoreaudio_start_record_input;
+    audio_stop_record_input=audiocoreaudio_stop_record_input;
+    audio_record_input_check_interrupt=audiocoreaudio_check_interrupt;
     return 0;
 
 }

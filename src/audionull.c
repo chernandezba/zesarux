@@ -72,3 +72,9 @@ void audionull_get_buffer_info (int *buffer_size,int *current_size)
   *buffer_size=0;
   *current_size=0;
 }
+
+
+int audionull_can_record_input(void)
+{
+    return 0;
+}

@@ -835,3 +835,5 @@ Si llega al final del buffer de lectura y aun no ha grabado el siguiente buffer,
 -en lectura de sonido parece que el callback solo recibe 1024 bytes y los 536 restantes vienen vacios. por que?
 
 -numero de version que corresponda con el año de antigüedad de ZEsarUX? V11 : 2024, V12: 2025, V13: 2026?
+
+-opcion config para timer_thread_syncs_with_audio_input_interrupt

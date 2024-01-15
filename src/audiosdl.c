@@ -355,3 +355,8 @@ viendo código de otros emuladores que usan sdl vi varias maneras de gestionar e
 Esto lo vi en el emulador Xpeccy, archivo Xpeccy/src/xcore/sound.cpp
 */
 
+
+int audiosdl_can_record_input(void)
+{
+    return 0;
+}

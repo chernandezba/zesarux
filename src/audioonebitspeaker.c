@@ -439,3 +439,7 @@ void audioonebitspeaker_get_buffer_info (int *buffer_size,int *current_size)
   *current_size=AUDIO_BUFFER_SIZE*2;
 }
 
+int audioonebitspeaker_can_record_input(void)
+{
+    return 0;
+}

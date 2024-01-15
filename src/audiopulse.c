@@ -447,3 +447,9 @@ void audiopulse_send_frame(char *buffer)
 
 
 #endif
+
+
+int audiopulse_can_record_input(void)
+{
+    return 0;
+}

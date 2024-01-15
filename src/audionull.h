@@ -29,5 +29,6 @@ extern void audionull_end(void);
 extern int audionull_thread_finish(void);
 extern void audionull_send_frame(char *buffer);
 extern void audionull_get_buffer_info (int *buffer_size,int *current_buffer_position);
+extern int audionull_can_record_input(void);
 
 #endif

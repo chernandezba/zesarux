@@ -471,8 +471,17 @@ void core_spectrum_fin_scanline(void)
             gs_mix_dac_channels();
         }
 
+        int leer_cinta_real=0;
 
-        if (realtape_inserted.v && realtape_playing.v) {
+        if (realtape_inserted.v && realtape_playing.v) leer_cinta_real=1;
+
+        /*if (audio_can_record_input()) {
+            if (audio_is_recording_input) {
+                leer_cinta_real=1;
+            }
+        }*/
+
+        if (leer_cinta_real) {
             realtape_get_byte();
             if (realtape_loading_sound.v) {
                 audio_valor_enviar_sonido_izquierdo /=2;
@@ -496,6 +505,21 @@ void core_spectrum_fin_scanline(void)
         }
 
         //if (audio_valor_enviar_sonido>127 || audio_valor_enviar_sonido<-128) printf ("Error audio value: %d\n",audio_valor_enviar_sonido);
+
+        //Lectura de cinta desde cable
+        //TODO: integrar esto con real tape reading de mas arriba, porque no parece funcionar
+        //tambien la llamada en operaciones.c, y en realtape_get_byte de tape.c
+        if (audio_can_record_input()) {
+            if (audio_is_recording_input) {
+                    audio_read_sample_audio_input();
+
+                    audio_valor_enviar_sonido_izquierdo /=2;
+                    audio_valor_enviar_sonido_izquierdo += audio_last_record_input_sample/2;
+
+                    audio_valor_enviar_sonido_derecho /=2;
+                    audio_valor_enviar_sonido_derecho += audio_last_record_input_sample/2;
+            }
+        }
 
 
         //Enviar sample de sonido

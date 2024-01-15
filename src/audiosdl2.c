@@ -366,3 +366,9 @@ void audiosdl_callback(void *udata, Uint8 *stream, int len)
 
 
 }
+
+
+int audiosdl_can_record_input(void)
+{
+    return 0;
+}

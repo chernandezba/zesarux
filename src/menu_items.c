@@ -32042,7 +32042,15 @@ void menu_reinsert_real_tape(void)
 	realtape_insert();
 }
 
-
+void menu_realtape_record_input(MENU_ITEM_PARAMETERS)
+{
+    if (!audio_is_recording_input) {
+        audio_start_record_input();
+    }
+    else {
+        audio_stop_record_input();
+    }
+}
 
 //menu storage tape
 void menu_storage_tape(MENU_ITEM_PARAMETERS)
@@ -32115,6 +32123,14 @@ void menu_storage_tape(MENU_ITEM_PARAMETERS)
 					"select tapes with different loading methods instead of the ROM: turbo loading, alkatraz, etc...\n"
 					"When inserted real tape, realvideo is enabled, only to show real loading stripes on screen, but it is "
 					"not necessary, you may disable realvideo if you want");
+
+
+        if (audio_can_record_input() ) {
+            menu_add_item_menu_en_es_ca(array_menu_tape_settings,MENU_OPCION_NORMAL,menu_realtape_record_input,NULL,
+            "Read Line In","Leer Cable Entrada","Llegir Cable Entrada");
+            menu_add_item_menu_prefijo_format(array_menu_tape_settings,"[%c] ", (audio_is_recording_input ? 'X' : ' '));
+        }
+
 
 
         menu_tape_settings_trunc_name(realtape_name,string_realtape_shown,23);

@@ -94,6 +94,125 @@ int (*audio_thread_finish) (void);
 void (*audio_end) (void);
 void (*audio_send_frame) (char *buffer);
 void (*audio_get_buffer_info) (int *buffer_size,int *current_size);
+int (*audio_can_record_input) (void);
+void (*audio_start_record_input) (void);
+void (*audio_stop_record_input) (void);
+int (*audio_record_input_check_interrupt) (void);
+
+int audio_is_recording_input=0;
+
+//Indica que el thread de timer solo dara como valida ese sync de timer cuando tambien haya llegado la interrupcion del callback de lectura audio
+int timer_thread_syncs_with_audio_input_interrupt=1;
+
+//Tamanyo de fifo. Es un multiplicador de AUDIO_BUFFER_SIZE
+//int audiorecord_input_fifo_buffer_size_multiplier=2;
+int audiorecord_input_return_fifo_buffer_size(void)
+{
+  return AUDIO_RECORD_BUFFER_FIFO_SIZE;
+}
+
+
+//nuestra FIFO de lectura de audio por input buffer. Para guardar 5 segundos
+char audiorecord_input_fifo_buffer[AUDIO_RECORD_BUFFER_FIFO_SIZE];
+
+
+int audiorecord_input_fifo_write_position=0;
+int audiorecord_input_fifo_read_position=0;
+
+void audiorecord_input_empty_buffer(void)
+{
+  debug_printf(VERBOSE_DEBUG,"Emptying audio buffer");
+  audiorecord_input_fifo_write_position=0;
+}
+
+
+
+//retorna numero de elementos en la fifo
+int audiorecord_input_fifo_return_size(void)
+{
+	//si write es mayor o igual (caso normal)
+	if (audiorecord_input_fifo_write_position>=audiorecord_input_fifo_read_position) return audiorecord_input_fifo_write_position-audiorecord_input_fifo_read_position;
+
+	else {
+		//write es menor, cosa que quiere decir que hemos dado la vuelta
+		return (audiorecord_input_return_fifo_buffer_size()-audiorecord_input_fifo_read_position)+audiorecord_input_fifo_write_position;
+	}
+}
+
+void audiorecord_input_get_buffer_info (int *buffer_size,int *current_size)
+{
+  *buffer_size=audiorecord_input_return_fifo_buffer_size();
+  *current_size=audiorecord_input_fifo_return_size();
+}
+
+//retornar siguiente valor para indice. normalmente +1 a no ser que se de la vuelta
+int audiorecord_input_fifo_next_index(int v)
+{
+	v=v+1;
+	if (v==audiorecord_input_return_fifo_buffer_size()) v=0;
+
+	return v;
+}
+
+//escribir datos en la fifo
+void audiorecord_input_fifo_write(char *origen,int longitud)
+{
+	for (;longitud>0;longitud--) {
+
+		//ver si la escritura alcanza la lectura. en ese caso, error
+		if (audiorecord_input_fifo_next_index(audiorecord_input_fifo_write_position)==audiorecord_input_fifo_read_position) {
+			debug_printf (VERBOSE_DEBUG,"audiorecord_input FIFO full");
+            //printf ("audiorecord_input FIFO full\n");
+      //Si se llena fifo, resetearla a 0 para corregir latencia
+      if (audio_noreset_audiobuffer_full.v==0) audiorecord_input_empty_buffer();
+			return;
+		}
+
+		audiorecord_input_fifo_buffer[audiorecord_input_fifo_write_position]=*origen++;
+		audiorecord_input_fifo_write_position=audiorecord_input_fifo_next_index(audiorecord_input_fifo_write_position);
+
+	}
+}
+
+
+//leer datos de la fifo
+//void audiorecord_input_fifo_read(char *destino,int longitud)
+void audiorecord_input_fifo_read(char *destino,int longitud)
+{
+	for (;longitud>0;longitud--) {
+
+
+
+                if (audiorecord_input_fifo_return_size()==0) {
+                        debug_printf (VERBOSE_INFO,"audiorecord_input FIFO empty");
+                        //printf ("audiorecord_input FIFO empty\n");
+                        return;
+                }
+
+
+                //ver si la lectura alcanza la escritura. en ese caso, error
+                //if (audiorecord_input_fifo_next_index(audiorecord_input_fifo_read_position)==audiorecord_input_fifo_write_position) {
+                //        debug_printf (VERBOSE_DEBUG,"FIFO vacia");
+                //        return;
+                //}
+
+
+                *destino++=audiorecord_input_fifo_buffer[audiorecord_input_fifo_read_position];
+                audiorecord_input_fifo_read_position=audiorecord_input_fifo_next_index(audiorecord_input_fifo_read_position);
+
+        }
+}
+
+char audio_last_record_input_sample=0;
+
+void audio_read_sample_audio_input(void) {
+    if (audio_can_record_input()) {
+        if (audio_is_recording_input) {
+            //char audioinput_value;
+            audiorecord_input_fifo_read(&audio_last_record_input_sample,1);
+        }
+    }
+}
 
 //en porcentaje
 int audiovolume=100;
@@ -1411,6 +1530,7 @@ int set_audiodriver_null(void) {
                         audio_thread_finish=audionull_thread_finish;
                         audio_end=audionull_end;
 			audio_get_buffer_info=audionull_get_buffer_info;
+                        audio_can_record_input=audionull_can_record_input;
                         return 0;
 
                 }

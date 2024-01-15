@@ -29,6 +29,6 @@ extern void audiodsp_end(void);
 extern int audiodsp_thread_finish(void);
 extern void audiodsp_send_frame(char *buffer);
 extern void audiodsp_get_buffer_info (int *buffer_size,int *current_buffer_position);
-
+extern int audiodsp_can_record_input(void);
 
 #endif

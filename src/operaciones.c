@@ -6615,7 +6615,18 @@ z80_byte lee_puerto_spectrum_ula(z80_byte puerto_h)
                 //Dinamic SD1
                 if (dinamic_sd1.v) valor=valor & (255-32);
 
-                if (realtape_inserted.v && realtape_playing.v) {
+                int leer_cinta_real=0;
+
+                if (realtape_inserted.v && realtape_playing.v) leer_cinta_real=1;
+
+                /*if (audio_can_record_input()) {
+                    if (audio_is_recording_input) {
+                        leer_cinta_real=1;
+                    }
+                }*/
+
+
+                if (leer_cinta_real) {
                         if (realtape_get_current_bit_playing()) {
                                 valor=valor|64;
                                 //printf ("1 ");
@@ -6624,6 +6635,15 @@ z80_byte lee_puerto_spectrum_ula(z80_byte puerto_h)
                                 valor=(valor & (255-64));
                                 //printf ("0 ");
                         }
+                }
+
+
+                //Lectura de cinta desde cable
+                if (audio_can_record_input()) {
+                    if (audio_is_recording_input) {
+                        if (audio_last_record_input_sample>0) valor=valor|64;
+                        else valor=(valor & (255-64));
+                    }
                 }
 
 		//Si esta cinta insertada en realtape, acelerar
