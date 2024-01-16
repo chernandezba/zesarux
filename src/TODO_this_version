@@ -827,10 +827,4 @@ Esto significaria tambien que al cambiar de idioma habria que resetear el indice
 -agregar a features: exportar a stl. lectura de audio desde fuente externa
 
 -captura de sonido desde fuente externa (para poder cargar de cinta directamente)
-Info para Mac OS X:
-https://developer.apple.com/forums/thread/70916
-https://developer.apple.com/library/archive/documentation/MusicAudio/Conceptual/AudioQueueProgrammingGuide/AQRecord/RecordingAudio.html
-
--opcion config para timer_thread_syncs_with_audio_input_interrupt??
--que hacer si se llena la fifo en audiorecord_input_fifo_write?
--lectura de audio de casette. SDL1 parece que no permite hacerlo
+*SDL1 parece que no permite hacerlo

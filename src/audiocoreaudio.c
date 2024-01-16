@@ -315,7 +315,7 @@ struct AQRecorderState S;
 
 //int acumulados_paquetes_recorded=0;
 
-
+int avisado_fifo_llena=0;
 
 //struct timeval callback_antes, callback_ahora;
 
@@ -367,7 +367,13 @@ void HandleInputBuffer (
 
 
     //audiorecord_input_fifo_write(S.mBuffers[0]->mAudioData,inNumPackets);
-    audiorecord_input_fifo_write(inBuffer->mAudioData,inNumPackets);
+    if (audiorecord_input_fifo_write(inBuffer->mAudioData,inNumPackets) && !avisado_fifo_llena) {
+        int miliseconds_lost=(1000*inNumPackets)/AUDIO_RECORD_FREQUENCY;
+        debug_printf(VERBOSE_ERR,"Input buffer is full, a section of %d ms has been lost. "
+            "I recommend you to disable and enable reading input in order to empty the input buffer",
+            miliseconds_lost);
+        avisado_fifo_llena=1;
+    }
 
 
 /*

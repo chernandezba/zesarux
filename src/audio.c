@@ -155,23 +155,23 @@ int audiorecord_input_fifo_next_index(int v)
 }
 
 //escribir datos en la fifo
-void audiorecord_input_fifo_write(char *origen,int longitud)
+//Retorna no 0 si fifo llena
+int audiorecord_input_fifo_write(char *origen,int longitud)
 {
 	for (;longitud>0;longitud--) {
 
 		//ver si la escritura alcanza la lectura. en ese caso, error
 		if (audiorecord_input_fifo_next_index(audiorecord_input_fifo_write_position)==audiorecord_input_fifo_read_position) {
 			debug_printf (VERBOSE_DEBUG,"audiorecord_input FIFO full");
-            //printf ("audiorecord_input FIFO full\n");
-            //TODO Si se llena fifo, que hacer?
 
-			return;
+			return 1;
 		}
 
 		audiorecord_input_fifo_buffer[audiorecord_input_fifo_write_position]=*origen++;
 		audiorecord_input_fifo_write_position=audiorecord_input_fifo_next_index(audiorecord_input_fifo_write_position);
 
 	}
+    return 0;
 }
 
 
