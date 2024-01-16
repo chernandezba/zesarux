@@ -291,16 +291,17 @@ void sound_lowlevel_frame( char *data, int len );
 //https://developer.apple.com/library/archive/documentation/MusicAudio/Conceptual/AudioQueueProgrammingGuide/AQRecord/RecordingAudio.html
 
 //Total de buffers utilizado por las funciones de Mac OS X
-static const int kNumberBuffers = 3;
+static const int coreaudio_record_buffers = 3;
 
-//Estructura Obtenida de los ejemplos
+//Estructura para almacenar el estado de la grabacion
+//Estructura Obtenida de los ejemplos, modificada con las cosas que uso realmente
 struct AQRecorderState {
     AudioStreamBasicDescription  mDataFormat;                   // 2
     AudioQueueRef                mQueue;                        // 3
-    AudioQueueBufferRef          mBuffers[kNumberBuffers];      // 4
-    AudioFileID                  mAudioFile;                    // 5
+    AudioQueueBufferRef          mBuffers[coreaudio_record_buffers];      // 4
+    //AudioFileID                  mAudioFile;                    // 5
     UInt32                       bufferByteSize;                // 6
-    SInt64                       mCurrentPacket;                // 7
+    //SInt64                       mCurrentPacket;                // 7
     //bool                         mIsRunning;                    // 8
 };
 
@@ -349,7 +350,7 @@ void HandleInputBuffer (
 
     //audiorecord_input_fifo_write(inBuffer->mAudioData,inNumPackets);
 
-    pAqData->mCurrentPacket += inNumPackets;
+    //pAqData->mCurrentPacket += inNumPackets;
 
     AudioQueueEnqueueBuffer(pAqData->mQueue, inBuffer, 0, NULL);
 
@@ -364,23 +365,7 @@ void HandleInputBuffer (
     }
 
 
-/*
-//int timer_warn_high_interrupt_time,timer_warn_low_interrupt_time;
 
-long difftime, seconds, useconds;
-
-
-gettimeofday(&callback_ahora, NULL);
-
-seconds  = callback_ahora.tv_sec  - callback_antes.tv_sec;
-useconds = callback_ahora.tv_usec - callback_antes.tv_usec;
-
-difftime = ((seconds) * 1000000 + useconds);
-
-printf("callback: transcurrido desde anterior interrupt: %ld\n",difftime);
-
-gettimeofday(&callback_antes, NULL);
-*/
 
 }
 
@@ -436,7 +421,7 @@ void audiocoreaudio_start_record_input(void)
     Stado_grabacion.bufferByteSize = AUDIO_RECORD_BUFFER_SIZE;
 
     int i;
-    for (i = 0; i < kNumberBuffers; ++i) {
+    for (i = 0; i < coreaudio_record_buffers; ++i) {
         r = AudioQueueAllocateBuffer(Stado_grabacion.mQueue, Stado_grabacion.bufferByteSize, &Stado_grabacion.mBuffers[i]);
         //PRINT_R;
         r = AudioQueueEnqueueBuffer(Stado_grabacion.mQueue, Stado_grabacion.mBuffers[i], 0, NULL);
@@ -445,7 +430,7 @@ void audiocoreaudio_start_record_input(void)
 
 
 
-    Stado_grabacion.mCurrentPacket = 0;
+    //Stado_grabacion.mCurrentPacket = 0;
 
 
     r = AudioQueueStart(Stado_grabacion.mQueue, NULL);
