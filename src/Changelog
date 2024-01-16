@@ -2,7 +2,7 @@ Version 11 - David edition. 10 January 2024
 
 * New things added:
 
-Added loading audio from external tape (Mac OS X only yet)
+Added loading audio from external audio source, like a tape player (currently only on Mac OS X)
 Added ZENG Online feature. TODO: improve this description
 Added ZENG support on curses driver
 Added save screen to .txt file

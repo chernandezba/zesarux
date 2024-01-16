@@ -123,6 +123,8 @@ void audiorecord_input_empty_buffer(void)
 {
   debug_printf(VERBOSE_DEBUG,"Emptying External Audio Source FIFO buffer");
   audiorecord_input_fifo_write_position=0;
+  audiorecord_input_fifo_read_position=0;
+
 }
 
 
