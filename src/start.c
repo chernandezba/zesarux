@@ -2284,7 +2284,6 @@ int set_audiodriver_coreaudio(void)
     audio_can_record_input=audiocoreaudio_can_record_input;
     audio_start_record_input=audiocoreaudio_start_record_input;
     audio_stop_record_input=audiocoreaudio_stop_record_input;
-    audio_record_input_check_interrupt=audiocoreaudio_check_interrupt;
     return 0;
 
 }

@@ -273,15 +273,7 @@ int timer_condicion_top_speed(void)
 
 
 
-int timer_wait_record_input_interrupt(void)
-{
-    if (audio_can_record_input()) {
-        if (audio_is_recording_input && timer_thread_syncs_with_audio_input_interrupt) {
-            return audiocoreaudio_check_interrupt();
-        }
-    }
-    return 1;
-}
+
 
 
 void timer_pause_waiting_end_frame(void)
@@ -398,7 +390,7 @@ int timer_check_interrupt_no_thread(void)
 
 		if (z80_timer_difftime>=timer_interrupt_time)  {
             //Ver que tambien el timer de lectura de record input haya llegado
-            if (timer_wait_record_input_interrupt() ) {
+            //if (timer_wait_record_input_interrupt() ) {
 
 			top_speed_real_frames++;
 
@@ -437,7 +429,7 @@ int timer_check_interrupt_no_thread(void)
 			}
 
 			return 1;
-		}
+		//}
 
         }
 	return 0;

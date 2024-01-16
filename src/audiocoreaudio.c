@@ -291,7 +291,7 @@ void sound_lowlevel_frame( char *data, int len );
 //https://developer.apple.com/library/archive/documentation/MusicAudio/Conceptual/AudioQueueProgrammingGuide/AQRecord/RecordingAudio.html
 
 
-static const int kNumberBuffers = 1;
+static const int kNumberBuffers = 3;
 
 int recording_num_buffer=0;
 int recording_num_buffer_lectura=0;
@@ -307,14 +307,13 @@ struct AQRecorderState {
 };
 
 
-int saltado_interrupcion_audiocoreaudio=0;
 
 
 void audiocoreaudio_start_recording_oneshoot(void);
 
 struct AQRecorderState S;
 
-int acumulados_paquetes_recorded=0;
+//int acumulados_paquetes_recorded=0;
 
 
 
@@ -332,11 +331,11 @@ pero no son a intervalos fijos, y eso por tanto implica que no se puede usar com
 */
 void HandleInputBuffer (
                                void                                *aqData,
-                               AudioQueueRef                       inAQ,
+                               AudioQueueRef                       inAQ GCC_UNUSED,
                                AudioQueueBufferRef                 inBuffer,
-                               const AudioTimeStamp                *inStartTime,
+                               const AudioTimeStamp                *inStartTime GCC_UNUSED,
                                UInt32                              inNumPackets,
-                               const AudioStreamPacketDescription  *inPacketDesc
+                               const AudioStreamPacketDescription  *inPacketDesc GCC_UNUSED
 ) {
 
     struct AQRecorderState *pAqData = (struct AQRecorderState *) aqData;
@@ -350,22 +349,25 @@ void HandleInputBuffer (
     //if (pAqData->mIsRunning == 0)
     //    return;
 
+    //audiorecord_input_fifo_write(inBuffer->mAudioData,inNumPackets);
+
     pAqData->mCurrentPacket += inNumPackets;
 
     AudioQueueEnqueueBuffer(pAqData->mQueue, inBuffer, 0, NULL);
 
-    acumulados_paquetes_recorded +=inNumPackets;
-    if (acumulados_paquetes_recorded>=AUDIO_RECORD_BUFFER_SIZE) {
+    //acumulados_paquetes_recorded +=inNumPackets;
+    /*if (acumulados_paquetes_recorded>=AUDIO_RECORD_BUFFER_SIZE) {
         //printf("Un buffer entero leido. generar interrupcion (antes %d). acumulados_paquetes_recorded=%d\n",
         //    saltado_interrupcion_audiocoreaudio,acumulados_paquetes_recorded);
 
-        saltado_interrupcion_audiocoreaudio++;
+        //saltado_interrupcion_audiocoreaudio++;
         acumulados_paquetes_recorded -=AUDIO_RECORD_BUFFER_SIZE;
 
-    }
+    }*/
 
 
-    audiorecord_input_fifo_write(S.mBuffers[0]->mAudioData,inNumPackets);
+    //audiorecord_input_fifo_write(S.mBuffers[0]->mAudioData,inNumPackets);
+    audiorecord_input_fifo_write(inBuffer->mAudioData,inNumPackets);
 
 
 /*
@@ -397,27 +399,7 @@ int audiocoreaudio_esta_grabando=0;
 void audiocoreaudio_start_recording_oneshoot_continue(void)
 {
 
-OSStatus r = 0;
-r = AudioQueueStop(S.mQueue, true);
-        r = AudioQueueEnqueueBuffer(S.mQueue, S.mBuffers[recording_num_buffer], 0, NULL);
-        //PRINT_R;
 
-    S.mCurrentPacket = 0;
-    //S.mIsRunning = true;
-
-    r = AudioQueueStart(S.mQueue, NULL);
-    //int tiempo_sleep=1000000/(AUDIO_RECORD_FREQUENCY/S.bufferByteSize);
-    //printf("tiempo_sleep: %d\n",tiempo_sleep);
-
-    audiocoreaudio_esta_grabando=1;
-
-
-    //r = AudioQueueStop(S.mQueue, true);
-    //S.mIsRunning = false;
-
-    //PRINT_R;
-
-    //r = AudioQueueDispose(S.mQueue, true);
 
 
 }
@@ -459,14 +441,34 @@ void audiocoreaudio_start_record_input(void)
     S.bufferByteSize = AUDIO_RECORD_BUFFER_SIZE;
 
     int i;
-    //for (i = 0; i < kNumberBuffers; ++i) {
-        r = AudioQueueAllocateBuffer(S.mQueue, S.bufferByteSize, &S.mBuffers[recording_num_buffer]);
+    for (i = 0; i < kNumberBuffers; ++i) {
+        r = AudioQueueAllocateBuffer(S.mQueue, S.bufferByteSize, &S.mBuffers[i]);
         //PRINT_R;
+        r = AudioQueueEnqueueBuffer(S.mQueue, S.mBuffers[i], 0, NULL);
+        //PRINT_R;
+    }
+
+
+//r = AudioQueueStop(S.mQueue, true);
         //r = AudioQueueEnqueueBuffer(S.mQueue, S.mBuffers[recording_num_buffer], 0, NULL);
         //PRINT_R;
-    //}
 
-    audiocoreaudio_start_recording_oneshoot_continue();
+    S.mCurrentPacket = 0;
+    //S.mIsRunning = true;
+
+    r = AudioQueueStart(S.mQueue, NULL);
+    //int tiempo_sleep=1000000/(AUDIO_RECORD_FREQUENCY/S.bufferByteSize);
+    //printf("tiempo_sleep: %d\n",tiempo_sleep);
+
+    audiocoreaudio_esta_grabando=1;
+
+
+    //r = AudioQueueStop(S.mQueue, true);
+    //S.mIsRunning = false;
+
+    //PRINT_R;
+
+    //r = AudioQueueDispose(S.mQueue, true);
 
     audio_is_recording_input=1;
 
@@ -481,23 +483,7 @@ void audiocoreaudio_stop_record_input(void)
 
 
 
-int audiocoreaudio_check_interrupt(void)
-{
-    //if (!audiocoreaudio_esta_grabando) return 1;
-    //printf("check timer\n");
 
-    if (saltado_interrupcion_audiocoreaudio) {
-        saltado_interrupcion_audiocoreaudio--;
-        //printf("TIMER\n");
-        //sleep(1);
-        return 1;
-    }
-    else {
-        //printf("no timer\n");
-
-        return 0;
-    }
-}
 
 int audiocoreaudio_can_record_input(void)
 {

@@ -94,19 +94,25 @@ extern void (*audio_get_buffer_info) (int *buffer_size,int *current_size);
 extern int (*audio_can_record_input) (void);
 extern void (*audio_start_record_input) (void);
 extern void (*audio_stop_record_input) (void);
-extern int (*audio_record_input_check_interrupt) (void);
 extern char *audio_buffer;
 extern char *audio_buffer_playback;
 
-//Buffer de lectura sugerido para el driver de audio de un frame de video
+//Tamanyo del buffer de lectura sugerido para el driver de audio de un frame de video, aunque cada driver de audio puede usar los valores
+//que crea mas convenientes
 #define AUDIO_RECORD_BUFFER_SIZE (312*10)
+
 #define AUDIO_RECORD_FREQUENCY 15600
 //Fifo utilizada para buffer de lectura de audio input. para 5 segundos
 #define AUDIO_RECORD_BUFFER_FIFO_SIZE (AUDIO_RECORD_BUFFER_SIZE*5*5)
 
 extern int audio_is_recording_input;
 extern char audio_last_record_input_sample;
-extern int timer_thread_syncs_with_audio_input_interrupt;
+
+
+extern int audiorecord_input_return_fifo_buffer_size(void);
+extern int audiorecord_input_fifo_return_size(void);
+extern void audiorecord_input_fifo_write(char *origen,int longitud);
+extern void audio_read_sample_audio_input(void);
 
 extern z80_bit audio_noreset_audiobuffer_full;
 

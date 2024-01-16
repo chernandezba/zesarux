@@ -97,12 +97,12 @@ void (*audio_get_buffer_info) (int *buffer_size,int *current_size);
 int (*audio_can_record_input) (void);
 void (*audio_start_record_input) (void);
 void (*audio_stop_record_input) (void);
-int (*audio_record_input_check_interrupt) (void);
+
 
 int audio_is_recording_input=0;
 
 //Indica que el thread de timer solo dara como valida ese sync de timer cuando tambien haya llegado la interrupcion del callback de lectura audio
-int timer_thread_syncs_with_audio_input_interrupt=0;
+//int timer_thread_syncs_with_audio_input_interrupt=0;
 
 //Tamanyo de fifo. Es un multiplicador de AUDIO_BUFFER_SIZE
 //int audiorecord_input_fifo_buffer_size_multiplier=2;
@@ -163,8 +163,8 @@ void audiorecord_input_fifo_write(char *origen,int longitud)
 		if (audiorecord_input_fifo_next_index(audiorecord_input_fifo_write_position)==audiorecord_input_fifo_read_position) {
 			debug_printf (VERBOSE_DEBUG,"audiorecord_input FIFO full");
             //printf ("audiorecord_input FIFO full\n");
-      //Si se llena fifo, resetearla a 0 para corregir latencia
-      if (audio_noreset_audiobuffer_full.v==0) audiorecord_input_empty_buffer();
+            //TODO Si se llena fifo, que hacer?
+
 			return;
 		}
 
@@ -205,7 +205,8 @@ void audiorecord_input_fifo_read(char *destino,int longitud)
 
 char audio_last_record_input_sample=0;
 
-void audio_read_sample_audio_input(void) {
+void audio_read_sample_audio_input(void)
+{
     if (audio_can_record_input()) {
         if (audio_is_recording_input) {
             //char audioinput_value;

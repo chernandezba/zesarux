@@ -1522,6 +1522,8 @@ int menu_core_statistics_contador_segundo_anterior;
 
 int core_statistics_previo_audio_buffer=0;
 
+int core_statistics_previo_audio_record_buffer=0;
+
 int core_statistics_previo_cpu=0;
 
 int core_statistics_last_perc_audio=0;
@@ -1673,6 +1675,8 @@ Calculando ese tiempo: 12% cpu
 
         int media_cpu=sensor_get_percentaje_value("instant_avg_cpu");
 
+
+        //Playback audio buffer
         int tamanyo_buffer_audio,posicion_buffer_audio;
 		audio_get_buffer_info(&tamanyo_buffer_audio,&posicion_buffer_audio);
 
@@ -1709,6 +1713,43 @@ Calculando ese tiempo: 12% cpu
         zxvision_print_string_defaults_fillspc(ventana,1,linea++,texto_buffer);
 
 
+        //Record audio buffer
+        //int tamanyo_buffer_audio,posicion_buffer_audio;
+		//audio_get_buffer_info(&tamanyo_buffer_audio,&posicion_buffer_audio);
+        tamanyo_buffer_audio=audiorecord_input_return_fifo_buffer_size();
+        posicion_buffer_audio=audiorecord_input_fifo_return_size();
+
+        //int perc_audio;
+        //mostrar una barra de llenado del buffer
+        //usa las mismas funciones de volumen de AY chip donde el maximo es 15
+        //int barra_volumen;
+
+        if (tamanyo_buffer_audio==0) {
+            perc_audio=0;
+            //barra_volumen=15;
+        }
+
+        else {
+            perc_audio=(posicion_buffer_audio*100)/tamanyo_buffer_audio;
+            //barra_volumen=(posicion_buffer_audio*15)/tamanyo_buffer_audio;
+        }
+
+        //char buf_volumen_canal[32];
+        //menu_string_volumen(buf_volumen_canal,barra_volumen,core_statistics_previo_audio_buffer);
+
+        //core_statistics_previo_audio_buffer=barra_volumen;
+
+        core_statistics_previo_audio_record_buffer=menu_string_volumen_maxmin(buf_volumen_canal,posicion_buffer_audio,
+                                                    core_statistics_previo_audio_record_buffer,tamanyo_buffer_audio);
+
+
+        sprintf (texto_buffer,"Record Buffer%s: %d/%d (%3d%%) [%s]",
+                    (!audio_is_recording_input ? " (Not Recording)" : ""),
+                    posicion_buffer_audio,tamanyo_buffer_audio,perc_audio,buf_volumen_canal);
+
+        //core_statistics_last_perc_audio=perc_audio;
+
+        zxvision_print_string_defaults_fillspc(ventana,1,linea++,texto_buffer);
 
 		//Uso cpu no se ve en windows
 #ifndef MINGW
