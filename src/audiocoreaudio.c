@@ -290,10 +290,10 @@ void sound_lowlevel_frame( char *data, int len );
 //https://developer.apple.com/forums/thread/70916
 //https://developer.apple.com/library/archive/documentation/MusicAudio/Conceptual/AudioQueueProgrammingGuide/AQRecord/RecordingAudio.html
 
-
+//Total de buffers utilizado por las funciones de Mac OS X
 static const int kNumberBuffers = 3;
 
-
+//Estructura Obtenida de los ejemplos
 struct AQRecorderState {
     AudioStreamBasicDescription  mDataFormat;                   // 2
     AudioQueueRef                mQueue;                        // 3
@@ -309,7 +309,7 @@ struct AQRecorderState {
 
 void audiocoreaudio_start_recording_oneshoot(void);
 
-struct AQRecorderState S;
+struct AQRecorderState Stado_grabacion;
 
 //int acumulados_paquetes_recorded=0;
 
@@ -353,18 +353,8 @@ void HandleInputBuffer (
 
     AudioQueueEnqueueBuffer(pAqData->mQueue, inBuffer, 0, NULL);
 
-    //acumulados_paquetes_recorded +=inNumPackets;
-    /*if (acumulados_paquetes_recorded>=AUDIO_RECORD_BUFFER_SIZE) {
-        //printf("Un buffer entero leido. generar interrupcion (antes %d). acumulados_paquetes_recorded=%d\n",
-        //    saltado_interrupcion_audiocoreaudio,acumulados_paquetes_recorded);
-
-        //saltado_interrupcion_audiocoreaudio++;
-        acumulados_paquetes_recorded -=AUDIO_RECORD_BUFFER_SIZE;
-
-    }*/
 
 
-    //audiorecord_input_fifo_write(S.mBuffers[0]->mAudioData,inNumPackets);
     if (audiorecord_input_fifo_write(inBuffer->mAudioData,inNumPackets) && !avisado_fifo_llena) {
         int miliseconds_lost=(1000*inNumPackets)/AUDIO_RECORD_FREQUENCY;
         debug_printf(VERBOSE_ERR,"External Audio Source buffer is full, a section of %d ms has been lost. "
@@ -414,7 +404,7 @@ void audiocoreaudio_start_record_input(void)
     //Primero vaciar la FIFO por si hemos desactivado y activado
     audiorecord_input_empty_buffer();
 
-    AudioStreamBasicDescription *fmt = &S.mDataFormat;
+    AudioStreamBasicDescription *fmt = &Stado_grabacion.mDataFormat;
 
     fmt->mFormatID         = kAudioFormatLinearPCM;
     fmt->mSampleRate       = AUDIO_RECORD_FREQUENCY;
@@ -430,46 +420,40 @@ void audiocoreaudio_start_record_input(void)
 
     OSStatus r = 0;
 
-    r = AudioQueueNewInput(&S.mDataFormat, HandleInputBuffer, &S, NULL, kCFRunLoopCommonModes, 0, &S.mQueue);
+    r = AudioQueueNewInput(&Stado_grabacion.mDataFormat, HandleInputBuffer, &Stado_grabacion, NULL, kCFRunLoopCommonModes, 0, &Stado_grabacion.mQueue);
 
     //PRINT_R;
 
-    UInt32 dataFormatSize = sizeof (S.mDataFormat);
+    UInt32 dataFormatSize = sizeof (Stado_grabacion.mDataFormat);
 
     r = AudioQueueGetProperty (
-                           S.mQueue,
+                           Stado_grabacion.mQueue,
                            kAudioConverterCurrentInputStreamDescription,
-                           &S.mDataFormat,
+                           &Stado_grabacion.mDataFormat,
                            &dataFormatSize
                            );
 
-    S.bufferByteSize = AUDIO_RECORD_BUFFER_SIZE;
+    Stado_grabacion.bufferByteSize = AUDIO_RECORD_BUFFER_SIZE;
 
     int i;
     for (i = 0; i < kNumberBuffers; ++i) {
-        r = AudioQueueAllocateBuffer(S.mQueue, S.bufferByteSize, &S.mBuffers[i]);
+        r = AudioQueueAllocateBuffer(Stado_grabacion.mQueue, Stado_grabacion.bufferByteSize, &Stado_grabacion.mBuffers[i]);
         //PRINT_R;
-        r = AudioQueueEnqueueBuffer(S.mQueue, S.mBuffers[i], 0, NULL);
+        r = AudioQueueEnqueueBuffer(Stado_grabacion.mQueue, Stado_grabacion.mBuffers[i], 0, NULL);
         //PRINT_R;
     }
 
 
 
-    S.mCurrentPacket = 0;
-    //S.mIsRunning = true;
+    Stado_grabacion.mCurrentPacket = 0;
 
-    r = AudioQueueStart(S.mQueue, NULL);
+
+    r = AudioQueueStart(Stado_grabacion.mQueue, NULL);
 
 
     audiocoreaudio_esta_grabando=1;
 
 
-    //r = AudioQueueStop(S.mQueue, true);
-    //S.mIsRunning = false;
-
-    //PRINT_R;
-
-    //r = AudioQueueDispose(S.mQueue, true);
 
     audio_is_recording_input=1;
 
@@ -480,12 +464,10 @@ void audiocoreaudio_start_record_input(void)
 void audiocoreaudio_stop_record_input(void)
 {
     OSStatus r = 0;
-    r = AudioQueueStop(S.mQueue, true);
-    //S.mIsRunning = false;
+    r = AudioQueueStop(Stado_grabacion.mQueue, true);
 
-    //PRINT_R;
 
-    r = AudioQueueDispose(S.mQueue, true);
+    r = AudioQueueDispose(Stado_grabacion.mQueue, true);
 
     audio_is_recording_input=0;
 }
