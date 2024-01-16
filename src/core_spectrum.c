@@ -88,6 +88,8 @@ int pentagon_inicio_interrupt=160;
 
 int testados_desde_inicio_pulso_interrupcion=0;
 
+int core_spectrum_medio_scanline=0;
+
 int si_siguiente_sonido(void)
 {
 
@@ -1040,11 +1042,29 @@ void cpu_core_loop_spectrum(void)
     }
 
 
+    //A mitad de scanline
+    if (!core_spectrum_medio_scanline) {
+        int estados_en_linea=t_estados % screen_testados_linea;
+        if (estados_en_linea>screen_testados_linea/2) {
+            //printf("mitad scanline. %5d %5d\n",estados_en_linea,t_estados);
+            core_spectrum_medio_scanline=1;
+            if (audio_can_record_input()) {
+                if (audio_is_recording_input) {
+                    audio_read_sample_audio_input();
+                    realtape_last_value=audio_last_record_input_sample;
+                    return;
+                }
+            }
+        }
+    }
+
+
     //A final de cada scanline
     if ( (t_estados/screen_testados_linea)>t_scanline  ) {
         TIMESENSOR_ENTRY_PRE(TIMESENSOR_ID_core_spectrum_fin_scanline);
         core_spectrum_fin_scanline();
         TIMESENSOR_ENTRY_POST(TIMESENSOR_ID_core_spectrum_fin_scanline);
+        core_spectrum_medio_scanline=0;
     }
 
 
