@@ -293,8 +293,6 @@ void sound_lowlevel_frame( char *data, int len );
 
 static const int kNumberBuffers = 3;
 
-int recording_num_buffer=0;
-int recording_num_buffer_lectura=0;
 
 struct AQRecorderState {
     AudioStreamBasicDescription  mDataFormat;                   // 2
@@ -369,8 +367,8 @@ void HandleInputBuffer (
     //audiorecord_input_fifo_write(S.mBuffers[0]->mAudioData,inNumPackets);
     if (audiorecord_input_fifo_write(inBuffer->mAudioData,inNumPackets) && !avisado_fifo_llena) {
         int miliseconds_lost=(1000*inNumPackets)/AUDIO_RECORD_FREQUENCY;
-        debug_printf(VERBOSE_ERR,"Input buffer is full, a section of %d ms has been lost. "
-            "I recommend you to disable and enable reading input in order to empty the input buffer",
+        debug_printf(VERBOSE_ERR,"External Audio Source buffer is full, a section of %d ms has been lost. "
+            "I recommend you to disable and enable External Audio Source in order to empty the input buffer",
             miliseconds_lost);
         avisado_fifo_llena=1;
     }
@@ -413,7 +411,8 @@ void audiocoreaudio_start_recording_oneshoot_continue(void)
 void audiocoreaudio_start_record_input(void)
 {
 
-
+    //Primero vaciar la FIFO por si hemos desactivado y activado
+    audiorecord_input_empty_buffer();
 
     AudioStreamBasicDescription *fmt = &S.mDataFormat;
 
@@ -455,16 +454,12 @@ void audiocoreaudio_start_record_input(void)
     }
 
 
-//r = AudioQueueStop(S.mQueue, true);
-        //r = AudioQueueEnqueueBuffer(S.mQueue, S.mBuffers[recording_num_buffer], 0, NULL);
-        //PRINT_R;
 
     S.mCurrentPacket = 0;
     //S.mIsRunning = true;
 
     r = AudioQueueStart(S.mQueue, NULL);
-    //int tiempo_sleep=1000000/(AUDIO_RECORD_FREQUENCY/S.bufferByteSize);
-    //printf("tiempo_sleep: %d\n",tiempo_sleep);
+
 
     audiocoreaudio_esta_grabando=1;
 
@@ -484,7 +479,15 @@ void audiocoreaudio_start_record_input(void)
 
 void audiocoreaudio_stop_record_input(void)
 {
-    //TODO
+    OSStatus r = 0;
+    r = AudioQueueStop(S.mQueue, true);
+    //S.mIsRunning = false;
+
+    //PRINT_R;
+
+    r = AudioQueueDispose(S.mQueue, true);
+
+    audio_is_recording_input=0;
 }
 
 

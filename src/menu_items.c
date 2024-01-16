@@ -32168,11 +32168,19 @@ void menu_storage_tape(MENU_ITEM_PARAMETERS)
 
         if (audio_can_record_input() ) {
             menu_add_item_menu_en_es_ca(array_menu_tape_settings,MENU_OPCION_NORMAL,menu_realtape_record_input,NULL,
-            "Read Line In","Leer Cable Entrada","Llegir Cable Entrada");
+                "External Audio Source","Fuente de sonido externa","Font de so externa");
             menu_add_item_menu_prefijo_format(array_menu_tape_settings,"[%c] ", (audio_is_recording_input ? 'X' : ' '));
+            menu_add_item_menu_tooltip(array_menu_tape_settings,"Allows you to load audio from external audio source, like tape player, "
+                "a mp3 player or your phone");
+            menu_add_item_menu_ayuda(array_menu_tape_settings,"Allows you to load audio from external audio source, like tape player, "
+                "a mp3 player or your phone");
         }
 
+        //Ocultar opciones de Real Tape de archivo cuando se activa External Audio Source
+        int ocultar_real_tape_archivo=0;
+        if (audio_can_record_input() && audio_is_recording_input) ocultar_real_tape_archivo=1;
 
+        if (!ocultar_real_tape_archivo) {
 
         menu_tape_settings_trunc_name(realtape_name,string_realtape_shown,23);
         menu_add_item_menu_en_es_ca(array_menu_tape_settings,MENU_OPCION_NORMAL,menu_realtape_open,NULL,
@@ -32209,6 +32217,8 @@ void menu_storage_tape(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_se_cerrara(array_menu_tape_settings);
         menu_add_item_menu_tooltip(array_menu_tape_settings,"See an audio render of your tape, see tape blocks and rewind or move forward the cassette player");
         menu_add_item_menu_ayuda(array_menu_tape_settings,"See an audio render of your tape, see tape blocks and rewind or move forward the cassette player");
+
+        }
 
         menu_add_item_menu(array_menu_tape_settings,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 

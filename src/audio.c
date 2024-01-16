@@ -121,7 +121,7 @@ int audiorecord_input_fifo_read_position=0;
 
 void audiorecord_input_empty_buffer(void)
 {
-  debug_printf(VERBOSE_DEBUG,"Emptying audio buffer");
+  debug_printf(VERBOSE_DEBUG,"Emptying External Audio Source FIFO buffer");
   audiorecord_input_fifo_write_position=0;
 }
 
@@ -162,7 +162,7 @@ int audiorecord_input_fifo_write(char *origen,int longitud)
 
 		//ver si la escritura alcanza la lectura. en ese caso, error
 		if (audiorecord_input_fifo_next_index(audiorecord_input_fifo_write_position)==audiorecord_input_fifo_read_position) {
-			debug_printf (VERBOSE_DEBUG,"audiorecord_input FIFO full");
+			debug_printf (VERBOSE_DEBUG,"External Audio Source FIFO buffer full");
 
 			return 1;
 		}
