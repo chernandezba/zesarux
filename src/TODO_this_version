@@ -828,3 +828,4 @@ Esto significaria tambien que al cambiar de idioma habria que resetear el indice
 
 -captura de sonido desde fuente externa (para poder cargar de cinta directamente)
 *SDL1 parece que no permite hacerlo
+*footer que cambien cuando input source
