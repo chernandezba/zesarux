@@ -296,27 +296,18 @@ static const int coreaudio_record_buffers = 3;
 //Estructura para almacenar el estado de la grabacion
 //Estructura Obtenida de los ejemplos, modificada con las cosas que uso realmente
 struct AQRecorderState {
-    AudioStreamBasicDescription  mDataFormat;                   // 2
-    AudioQueueRef                mQueue;                        // 3
-    AudioQueueBufferRef          mBuffers[coreaudio_record_buffers];      // 4
-    //AudioFileID                  mAudioFile;                    // 5
-    UInt32                       bufferByteSize;                // 6
-    //SInt64                       mCurrentPacket;                // 7
-    //bool                         mIsRunning;                    // 8
+    AudioStreamBasicDescription  mDataFormat;
+    AudioQueueRef                mQueue;
+    AudioQueueBufferRef          mBuffers[coreaudio_record_buffers];
+    UInt32                       bufferByteSize;
 };
 
+struct AQRecorderState coreaudio_record_state;
 
 
+int coreaudio_avisado_fifo_llena=0;
 
-void audiocoreaudio_start_recording_oneshoot(void);
 
-struct AQRecorderState Stado_grabacion;
-
-//int acumulados_paquetes_recorded=0;
-
-int avisado_fifo_llena=0;
-
-//struct timeval callback_antes, callback_ahora;
 
 //Funcion callback
 /*
@@ -328,7 +319,7 @@ esto no sucede asi. Lo que acaba sucediendo es que de cada 3 llamadas:
 Esos tiempos son valores aproximados. El tema es que las llamadas retornan la cantidad de datos que se piden (312 samples)
 pero no son a intervalos fijos, y eso por tanto implica que no se puede usar como fuente del timer
 */
-void HandleInputBuffer (
+void coreaudio_handleinputbuffer (
                                void                                *aqData,
                                AudioQueueRef                       inAQ GCC_UNUSED,
                                AudioQueueBufferRef                 inBuffer,
@@ -339,49 +330,21 @@ void HandleInputBuffer (
 
     struct AQRecorderState *pAqData = (struct AQRecorderState *) aqData;
 
-    //printf("End input. %d\n",inNumPackets);
-
-    if (inNumPackets == 0 && pAqData->mDataFormat.mBytesPerPacket != 0) {
-        inNumPackets = inBuffer->mAudioDataByteSize / pAqData->mDataFormat.mBytesPerPacket;
-    }
-    //printf("%d\n", *(char*)inBuffer->mAudioData);
-    //if (pAqData->mIsRunning == 0)
-    //    return;
-
-    //audiorecord_input_fifo_write(inBuffer->mAudioData,inNumPackets);
-
-    //pAqData->mCurrentPacket += inNumPackets;
 
     AudioQueueEnqueueBuffer(pAqData->mQueue, inBuffer, 0, NULL);
 
 
-
-    if (audiorecord_input_fifo_write(inBuffer->mAudioData,inNumPackets) && !avisado_fifo_llena) {
+    if (audiorecord_input_fifo_write(inBuffer->mAudioData,inNumPackets) && !coreaudio_avisado_fifo_llena) {
         int miliseconds_lost=(1000*inNumPackets)/AUDIO_RECORD_FREQUENCY;
         debug_printf(VERBOSE_ERR,"External Audio Source buffer is full, a section of %d ms has been lost. "
             "I recommend you to disable and enable External Audio Source in order to empty the input buffer",
             miliseconds_lost);
-        avisado_fifo_llena=1;
+        coreaudio_avisado_fifo_llena=1;
     }
 
 
-
-
 }
 
-
-
-
-
-int audiocoreaudio_esta_grabando=0;
-
-void audiocoreaudio_start_recording_oneshoot_continue(void)
-{
-
-
-
-
-}
 
 void audiocoreaudio_start_record_input(void)
 {
@@ -389,7 +352,7 @@ void audiocoreaudio_start_record_input(void)
     //Primero vaciar la FIFO por si hemos desactivado y activado
     audiorecord_input_empty_buffer();
 
-    AudioStreamBasicDescription *fmt = &Stado_grabacion.mDataFormat;
+    AudioStreamBasicDescription *fmt = &coreaudio_record_state.mDataFormat;
 
     fmt->mFormatID         = kAudioFormatLinearPCM;
     fmt->mSampleRate       = AUDIO_RECORD_FREQUENCY;
@@ -401,44 +364,31 @@ void audiocoreaudio_start_record_input(void)
     fmt->mFormatFlags      = kLinearPCMFormatFlagIsSignedInteger;
 
 
-
-
     OSStatus r = 0;
 
-    r = AudioQueueNewInput(&Stado_grabacion.mDataFormat, HandleInputBuffer, &Stado_grabacion, NULL, kCFRunLoopCommonModes, 0, &Stado_grabacion.mQueue);
+    r = AudioQueueNewInput(&coreaudio_record_state.mDataFormat, coreaudio_handleinputbuffer, &coreaudio_record_state,
+        NULL, kCFRunLoopCommonModes, 0, &coreaudio_record_state.mQueue);
 
-    //PRINT_R;
 
-    UInt32 dataFormatSize = sizeof (Stado_grabacion.mDataFormat);
+    UInt32 dataFormatSize = sizeof (coreaudio_record_state.mDataFormat);
 
     r = AudioQueueGetProperty (
-                           Stado_grabacion.mQueue,
+                           coreaudio_record_state.mQueue,
                            kAudioConverterCurrentInputStreamDescription,
-                           &Stado_grabacion.mDataFormat,
+                           &coreaudio_record_state.mDataFormat,
                            &dataFormatSize
                            );
 
-    Stado_grabacion.bufferByteSize = AUDIO_RECORD_BUFFER_SIZE;
+    coreaudio_record_state.bufferByteSize = AUDIO_RECORD_BUFFER_SIZE;
 
     int i;
     for (i = 0; i < coreaudio_record_buffers; ++i) {
-        r = AudioQueueAllocateBuffer(Stado_grabacion.mQueue, Stado_grabacion.bufferByteSize, &Stado_grabacion.mBuffers[i]);
-        //PRINT_R;
-        r = AudioQueueEnqueueBuffer(Stado_grabacion.mQueue, Stado_grabacion.mBuffers[i], 0, NULL);
-        //PRINT_R;
+        r = AudioQueueAllocateBuffer(coreaudio_record_state.mQueue, coreaudio_record_state.bufferByteSize, &coreaudio_record_state.mBuffers[i]);
+
+        r = AudioQueueEnqueueBuffer(coreaudio_record_state.mQueue, coreaudio_record_state.mBuffers[i], 0, NULL);
     }
 
-
-
-    //Stado_grabacion.mCurrentPacket = 0;
-
-
-    r = AudioQueueStart(Stado_grabacion.mQueue, NULL);
-
-
-    audiocoreaudio_esta_grabando=1;
-
-
+    r = AudioQueueStart(coreaudio_record_state.mQueue, NULL);
 
     audio_is_recording_input=1;
 
@@ -449,10 +399,10 @@ void audiocoreaudio_start_record_input(void)
 void audiocoreaudio_stop_record_input(void)
 {
     OSStatus r = 0;
-    r = AudioQueueStop(Stado_grabacion.mQueue, true);
+    r = AudioQueueStop(coreaudio_record_state.mQueue, true);
 
 
-    r = AudioQueueDispose(Stado_grabacion.mQueue, true);
+    r = AudioQueueDispose(coreaudio_record_state.mQueue, true);
 
     audio_is_recording_input=0;
 }
