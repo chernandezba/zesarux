@@ -5252,9 +5252,18 @@ z80_byte lee_puerto_zx80_no_time(z80_byte puerto_h,z80_byte puerto_l)
 
 		//printf ("valor: %d\n",valor);
 
+            int leer_cinta_real=0;
 
-                if (realtape_inserted.v && realtape_playing.v) {
-			if (realtape_get_current_bit_playing()) {
+            if (realtape_inserted.v && realtape_playing.v) leer_cinta_real=1;
+
+            if (audio_can_record_input()) {
+                if (audio_is_recording_input) {
+                    leer_cinta_real=1;
+                }
+            }
+
+            if (leer_cinta_real) {
+			    if (realtape_get_current_bit_playing()) {
                                 valor=valor|128;
                                 //printf ("1 ");
                         }
@@ -5262,7 +5271,7 @@ z80_byte lee_puerto_zx80_no_time(z80_byte puerto_h,z80_byte puerto_l)
                                 valor=(valor & (255-128));
                                 //printf ("0 ");
                         }
-                }
+            }
 
 
 		return valor;

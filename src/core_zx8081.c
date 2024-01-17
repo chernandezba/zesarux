@@ -133,6 +133,7 @@ init_zx8081_scanline_y(y);
 
 z80_byte byte_leido_core_zx8081;
 
+int core_zx8081_medio_scanline=0;
 
 //bucle principal de ejecucion de la cpu de zx80/81
 void cpu_core_loop_zx8081(void)
@@ -246,11 +247,36 @@ void cpu_core_loop_zx8081(void)
                 }
 
 
+    //A mitad de scanline
+    //Hacemos cosas como leer sample de audio de cable externo, pues leemos a 31200 hz (el doble de lo que seria cada scanline)
+    if (!core_zx8081_medio_scanline) {
+        int estados_en_linea=t_estados % screen_testados_linea;
+        if (estados_en_linea>screen_testados_linea/2) {
+            //printf("mitad scanline. %5d %5d\n",estados_en_linea,t_estados);
+            //Indicamos que ya hemos pasado el medio scanline
+            core_zx8081_medio_scanline=1;
+            if (audio_can_record_input()) {
+                if (audio_is_recording_input) {
+                    //En este caso simplemente leemos el valor que luego el core lo interpreta en el puerto EAR
+                    //En cambio no alimentamos con ese valor el buffer de sonido que permite escuchar el sonido de cable externo,
+                    //no hace falta complicarse tanto
+                    //digamos que de esos 31200 hz, 1 de cada dos samples no lo escuchamos, aunque por el puerto EAR se interpretan los dos
+                    audio_read_sample_audio_input();
+                    realtape_last_value=audio_last_record_input_sample;
+                    //return;
+                }
+            }
+        }
+    }
+
 
 		//Esto representa final de scanline
 
 		//normalmente
 		if ( (t_estados/screen_testados_linea)>t_scanline  ) {
+
+            //Indicamos que no hemos pasado el medio scanline
+            core_zx8081_medio_scanline=0;
 
 			t_scanline++;
 
@@ -285,7 +311,18 @@ void cpu_core_loop_zx8081(void)
 			}
 
 
-                        if (realtape_inserted.v && realtape_playing.v) {
+            int leer_cinta_real=0;
+
+            if (realtape_inserted.v && realtape_playing.v) leer_cinta_real=1;
+
+            if (audio_can_record_input()) {
+                if (audio_is_recording_input) {
+                    leer_cinta_real=1;
+                }
+            }
+
+
+            if (leer_cinta_real) {
                                 realtape_get_byte();
                                 //audio_valor_enviar_sonido += realtape_last_value;
 				if (realtape_loading_sound.v) {
@@ -294,7 +331,7 @@ void cpu_core_loop_zx8081(void)
                                 //Sonido alterado cuando top speed
                                 if (timer_condicion_top_speed() ) audio_valor_enviar_sonido=audio_change_top_speed_sound(audio_valor_enviar_sonido);
 				}
-                        }
+            }
 
                         //Ajustar volumen
                         if (audiovolume!=100) {

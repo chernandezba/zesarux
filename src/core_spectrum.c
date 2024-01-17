@@ -1058,7 +1058,7 @@ void cpu_core_loop_spectrum(void)
                     //digamos que de esos 31200 hz, 1 de cada dos samples no lo escuchamos, aunque por el puerto EAR se interpretan los dos
                     audio_read_sample_audio_input();
                     realtape_last_value=audio_last_record_input_sample;
-                    return;
+                    //return;
                 }
             }
         }
