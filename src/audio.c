@@ -229,25 +229,16 @@ void audiorecord_input_fifo_read(char *destino,int longitud)
 {
 	for (;longitud>0;longitud--) {
 
-
-
-                if (audiorecord_input_fifo_return_size()==0) {
-                        //debug_printf (VERBOSE_INFO,"audiorecord_input FIFO empty");
-                        return;
-                }
-
-
-                //ver si la lectura alcanza la escritura. en ese caso, error
-                //if (audiorecord_input_fifo_next_index(audiorecord_input_fifo_read_position)==audiorecord_input_fifo_write_position) {
-                //        debug_printf (VERBOSE_DEBUG,"FIFO vacia");
-                //        return;
-                //}
-
-
-                *destino++=audiorecord_input_fifo_buffer[audiorecord_input_fifo_read_position];
-                audiorecord_input_fifo_read_position=audiorecord_input_fifo_next_index(audiorecord_input_fifo_read_position);
-
+        if (audiorecord_input_fifo_return_size()==0) {
+                //debug_printf (VERBOSE_INFO,"audiorecord_input FIFO empty");
+                return;
         }
+
+
+        *destino++=audiorecord_input_fifo_buffer[audiorecord_input_fifo_read_position];
+        audiorecord_input_fifo_read_position=audiorecord_input_fifo_next_index(audiorecord_input_fifo_read_position);
+
+    }
 }
 
 char audio_last_record_input_sample=0;
@@ -256,7 +247,6 @@ void audio_read_sample_audio_input(void)
 {
     if (audio_can_record_input()) {
         if (audio_is_recording_input) {
-            //char audioinput_value;
             audiorecord_input_fifo_read(&audio_last_record_input_sample,1);
         }
     }

@@ -1043,13 +1043,19 @@ void cpu_core_loop_spectrum(void)
 
 
     //A mitad de scanline
+    //Hacemos cosas como leer sample de audio de cable externo, pues leemos a 31200 hz (el doble de lo que seria cada scanline)
     if (!core_spectrum_medio_scanline) {
         int estados_en_linea=t_estados % screen_testados_linea;
         if (estados_en_linea>screen_testados_linea/2) {
             //printf("mitad scanline. %5d %5d\n",estados_en_linea,t_estados);
+            //Indicamos que ya hemos pasado el medio scanline
             core_spectrum_medio_scanline=1;
             if (audio_can_record_input()) {
                 if (audio_is_recording_input) {
+                    //En este caso simplemente leemos el valor que luego el core lo interpreta en el puerto EAR
+                    //En cambio no alimentamos con ese valor el buffer de sonido que permite escuchar el sonido de cable externo,
+                    //no hace falta complicarse tanto
+                    //digamos que de esos 31200 hz, 1 de cada dos samples no lo escuchamos, aunque por el puerto EAR se interpretan los dos
                     audio_read_sample_audio_input();
                     realtape_last_value=audio_last_record_input_sample;
                     return;
@@ -1064,6 +1070,7 @@ void cpu_core_loop_spectrum(void)
         TIMESENSOR_ENTRY_PRE(TIMESENSOR_ID_core_spectrum_fin_scanline);
         core_spectrum_fin_scanline();
         TIMESENSOR_ENTRY_POST(TIMESENSOR_ID_core_spectrum_fin_scanline);
+        //Indicamos que no hemos pasado el medio scanline
         core_spectrum_medio_scanline=0;
     }
 
