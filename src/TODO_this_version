@@ -830,4 +830,6 @@ Esto significaria tambien que al cambiar de idioma habria que resetear el indice
 *SDL1 parece que no permite hacerlo
 *footer que cambien cuando input source
 *que no afecte el silencio detection cuando se esté leyendo audio
-*semaforo al usar la fifo de audiorecord
+
+
+-quiza audiocoreaudio y otros drivers de audio necesitan fifos con semaforos para evitar interferencias en el sonid....

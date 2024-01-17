@@ -174,7 +174,7 @@ void audiodriver_record_obtain_lock(void)
 {
     //Obtener lock
 	while(z_atomic_test_and_set(&semaphore_audiorecord_fifo)) {
-	    printf("Esperando a liberar lock en audiorecord_input_fifo_read/write\n");
+	    //printf("Esperando a liberar lock en audiorecord_input_fifo_read/write\n");
 	}
 }
 
