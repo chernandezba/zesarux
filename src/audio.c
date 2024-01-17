@@ -202,21 +202,49 @@ void audiorecord_empty_fifo_if_silence(void)
     audiorecord_input_empty_buffer();
 }
 
+z_atomic_semaphore semaphore_audiorecord_fifo;
+
+void audiorecord_semaphore_init(void)
+{
+    z_atomic_reset(&semaphore_audiorecord_fifo);
+}
+
+void audiodriver_start_record_input(void)
+{
+    audiorecord_semaphore_init();
+    audio_start_record_input();
+}
+
+void audiodriver_record_obtain_lock(void)
+{
+    //Obtener lock
+	while(z_atomic_test_and_set(&semaphore_audiorecord_fifo)) {
+	    printf("Esperando a liberar lock en audiorecord_input_fifo_read/write\n");
+	}
+}
+
+void audiodriver_record_free_lock(void)
+{
+    z_atomic_reset(&semaphore_audiorecord_fifo);
+}
+
 int audiorecord_input_fifo_write_one_byte(char dato)
 {
 
+    audiodriver_record_obtain_lock();
 
 		//ver si la escritura alcanza la lectura. en ese caso, error
 		if (audiorecord_input_fifo_next_index(audiorecord_input_fifo_write_position)==audiorecord_input_fifo_read_position) {
 			debug_printf (VERBOSE_DEBUG,"External Audio Source FIFO buffer full");
             printf ("External Audio Source FIFO buffer full\n");
-
+            audiodriver_record_free_lock();
 			return 1;
 		}
 
 		audiorecord_input_fifo_buffer[audiorecord_input_fifo_write_position]=dato;
 		audiorecord_input_fifo_write_position=audiorecord_input_fifo_next_index(audiorecord_input_fifo_write_position);
 
+    audiodriver_record_free_lock();
     return 0;
 }
 
@@ -245,31 +273,7 @@ int audiorecord_input_fifo_write(char *origen,int longitud)
     return 0;
 }
 
-z_atomic_semaphore semaphore_audiorecord_fifo;
 
-void audiorecord_semaphore_init(void)
-{
-    z_atomic_reset(&semaphore_audiorecord_fifo);
-}
-
-void audiodriver_start_record_input(void)
-{
-    audiorecord_semaphore_init();
-    audio_start_record_input();
-}
-
-void audiodriver_record_obtain_lock(void)
-{
-    //Obtener lock
-	while(z_atomic_test_and_set(&semaphore_audiorecord_fifo)) {
-	    printf("Esperando a liberar lock en audiorecord_input_fifo_read/write\n");
-	}
-}
-
-void audiodriver_record_free_lock(void)
-{
-    z_atomic_reset(&semaphore_audiorecord_fifo);
-}
 
 /*int audiorecord_input_fifo_write(char *origen,int longitud)
 {
@@ -285,6 +289,26 @@ void audiodriver_record_free_lock(void)
 }*/
 
 
+char audiorecord_input_fifo_read_one_byte(void)
+{
+    audiodriver_record_obtain_lock();
+
+        if (audiorecord_input_fifo_return_size()==0) {
+                //debug_printf (VERBOSE_INFO,"audiorecord_input FIFO empty");
+                //printf ("audiorecord_input FIFO empty\n");
+                audiodriver_record_free_lock();
+                return 0;
+        }
+
+        char valor_leido=audiorecord_input_fifo_buffer[audiorecord_input_fifo_read_position];
+
+        //*destino++=audiorecord_input_fifo_buffer[audiorecord_input_fifo_read_position];
+        audiorecord_input_fifo_read_position=audiorecord_input_fifo_next_index(audiorecord_input_fifo_read_position);
+
+        audiodriver_record_free_lock();
+        return valor_leido;
+
+}
 
 //leer datos de la fifo
 //void audiorecord_input_fifo_read(char *destino,int longitud)
@@ -292,15 +316,16 @@ void audiorecord_input_fifo_read(char *destino,int longitud)
 {
 	for (;longitud>0;longitud--) {
 
-        if (audiorecord_input_fifo_return_size()==0) {
+        /*if (audiorecord_input_fifo_return_size()==0) {
                 //debug_printf (VERBOSE_INFO,"audiorecord_input FIFO empty");
                 //printf ("audiorecord_input FIFO empty\n");
                 return;
-        }
+        }*/
 
+        *destino++=audiorecord_input_fifo_read_one_byte();
 
-        *destino++=audiorecord_input_fifo_buffer[audiorecord_input_fifo_read_position];
-        audiorecord_input_fifo_read_position=audiorecord_input_fifo_next_index(audiorecord_input_fifo_read_position);
+        //*destino++=audiorecord_input_fifo_buffer[audiorecord_input_fifo_read_position];
+        //audiorecord_input_fifo_read_position=audiorecord_input_fifo_next_index(audiorecord_input_fifo_read_position);
 
     }
 }
