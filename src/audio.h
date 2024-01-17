@@ -99,9 +99,12 @@ extern char *audio_buffer_playback;
 
 //Tamanyo del buffer de lectura sugerido para el driver de audio de un frame de video, aunque cada driver de audio puede usar los valores
 //que crea mas convenientes
-//Para leer 2 samples cada medio scanline
-#define AUDIO_RECORD_BUFFER_SIZE (312*2*10)
+//2* para leer 2 samples cada medio scanline
+//*312 porque es la cantidad de scanlines en un frame de video
+//*10 para meter en buffer el tiempo de 10 frames de video (200 ms)
+#define AUDIO_RECORD_BUFFER_SIZE (2*312*10)
 
+//Recordemos que 15600 es 312*50
 #define AUDIO_RECORD_FREQUENCY (15600*2)
 //Fifo utilizada para buffer de lectura de audio input. para 5 segundos
 #define AUDIO_RECORD_BUFFER_FIFO_SIZE (AUDIO_RECORD_BUFFER_SIZE*5*5)
