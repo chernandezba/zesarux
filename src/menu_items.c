@@ -1716,7 +1716,7 @@ Calculando ese tiempo: 12% cpu
         //Record audio buffer
         //int tamanyo_buffer_audio,posicion_buffer_audio;
 		//audio_get_buffer_info(&tamanyo_buffer_audio,&posicion_buffer_audio);
-        tamanyo_buffer_audio=audiorecord_input_return_fifo_buffer_size();
+        tamanyo_buffer_audio=audiorecord_input_return_fifo_total_size();
         posicion_buffer_audio=audiorecord_input_fifo_return_size();
 
         //int perc_audio;

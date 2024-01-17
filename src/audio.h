@@ -107,13 +107,15 @@ extern char *audio_buffer_playback;
 //Recordemos que 15600 es 312*50
 #define AUDIO_RECORD_FREQUENCY (15600*2)
 //Fifo utilizada para buffer de lectura de audio input. para 5 segundos
+//*5 para hacer los 50 frames
+//El otro *5 para hacer 5 segundos
 #define AUDIO_RECORD_BUFFER_FIFO_SIZE (AUDIO_RECORD_BUFFER_SIZE*5*5)
 
 extern int audio_is_recording_input;
 extern char audio_last_record_input_sample;
 
 
-extern int audiorecord_input_return_fifo_buffer_size(void);
+extern int audiorecord_input_return_fifo_total_size(void);
 extern int audiorecord_input_fifo_return_size(void);
 extern int audiorecord_input_fifo_write(char *origen,int longitud);
 extern void audio_read_sample_audio_input(void);
