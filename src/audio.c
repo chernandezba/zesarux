@@ -157,51 +157,6 @@ int audiorecord_input_fifo_next_index(int v)
 	return v;
 }
 
-//Funcion para variar el buffer si es posible
-//Si buffer esta a mas del 75% la mitad y tiene silencio (mismo valor), vaciarlo
-//Si el buffer tiene un valor fijo en todo buffer, no tiene sentido a nivel de lectura, al menos desde el spectrum para cargar de cinta,
-//eso significaria seguramente que la cinta esta parada o esta en una zona de silencio o el volumen es muy bajo
-
-//Esto sucede cuando el ritmo de lectura de datos es mas rapido que como se lee (se lee del core emulado),
-//y esto puede pasar porque el timer del core no sea del todo preciso, o por ejemplo al abrir el menu
-//hay unos instantes en que la cpu no está emulando y por tanto el buffer se llena algo mas
-
-//Nota: Si en cambio el bufer siempre estuviera vacio significaria que la emulacion va mas rapida de lo normal y por tanto
-//mas rapida que como se lee sonido en el buffer; en ese caso quiza se podria corregir reduciendo la velocidad de emulacion
-//en settings->hardware->emulator speed
-void audiorecord_empty_fifo_if_silence(void)
-{
-    int total_size=audiorecord_input_return_fifo_total_size();
-    int longitud_actual=audiorecord_input_fifo_return_size();
-
-    //Ejecutar esto si hay mas del 75% en el buffer
-    if (longitud_actual<(total_size*3)/4) return;
-
-    debug_printf (VERBOSE_DEBUG,"Checking if we can empty the External Audio Source buffer if contains empty data");
-
-    int posicion_lectura=audiorecord_input_fifo_read_position;
-
-    char valor_inicial_leido;
-
-    valor_inicial_leido=audiorecord_input_fifo_buffer[posicion_lectura];
-
-
-
-	for (;longitud_actual>0;longitud_actual--) {
-
-        if (audiorecord_input_fifo_buffer[posicion_lectura]!=valor_inicial_leido) {
-            //printf("audio buffer has different data\n");
-            return;
-        }
-
-        posicion_lectura=audiorecord_input_fifo_next_index(posicion_lectura);
-
-    }
-
-    debug_printf (VERBOSE_DEBUG,"Empying the the External Audio Source buffer because if contains empty data");
-    audiorecord_input_empty_buffer();
-}
-
 z_atomic_semaphore semaphore_audiorecord_fifo;
 
 void audiorecord_semaphore_init(void)
@@ -227,6 +182,57 @@ void audiodriver_record_free_lock(void)
 {
     z_atomic_reset(&semaphore_audiorecord_fifo);
 }
+
+//Funcion para variar el buffer si es posible
+//Si buffer esta a mas del 75% la mitad y tiene silencio (mismo valor), vaciarlo
+//Si el buffer tiene un valor fijo en todo buffer, no tiene sentido a nivel de lectura, al menos desde el spectrum para cargar de cinta,
+//eso significaria seguramente que la cinta esta parada o esta en una zona de silencio o el volumen es muy bajo
+
+//Esto sucede cuando el ritmo de lectura de datos es mas rapido que como se lee (se lee del core emulado),
+//y esto puede pasar porque el timer del core no sea del todo preciso, o por ejemplo al abrir el menu
+//hay unos instantes en que la cpu no está emulando y por tanto el buffer se llena algo mas
+
+//Nota: Si en cambio el bufer siempre estuviera vacio significaria que la emulacion va mas rapida de lo normal y por tanto
+//mas rapida que como se lee sonido en el buffer; en ese caso quiza se podria corregir reduciendo la velocidad de emulacion
+//en settings->hardware->emulator speed
+void audiorecord_empty_fifo_if_silence(void)
+{
+    int total_size=audiorecord_input_return_fifo_total_size();
+    int longitud_actual=audiorecord_input_fifo_return_size();
+
+    //Ejecutar esto si hay mas del 75% en el buffer
+    if (longitud_actual<(total_size*3)/4) return;
+
+    debug_printf (VERBOSE_DEBUG,"Checking if we can empty the External Audio Source buffer if contains empty data");
+
+    audiodriver_record_obtain_lock();
+
+    int posicion_lectura=audiorecord_input_fifo_read_position;
+
+    char valor_inicial_leido;
+
+    valor_inicial_leido=audiorecord_input_fifo_buffer[posicion_lectura];
+
+
+
+	for (;longitud_actual>0;longitud_actual--) {
+
+        if (audiorecord_input_fifo_buffer[posicion_lectura]!=valor_inicial_leido) {
+            //printf("audio buffer has different data\n");
+            audiodriver_record_free_lock();
+            return;
+        }
+
+        posicion_lectura=audiorecord_input_fifo_next_index(posicion_lectura);
+
+    }
+
+    debug_printf (VERBOSE_DEBUG,"Empying the the External Audio Source buffer because if contains empty data");
+    audiorecord_input_empty_buffer();
+    audiodriver_record_free_lock();
+}
+
+
 
 int audiorecord_input_fifo_write_one_byte(char dato)
 {
