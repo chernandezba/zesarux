@@ -97,6 +97,8 @@ extern void (*audio_stop_record_input) (void);
 extern char *audio_buffer;
 extern char *audio_buffer_playback;
 
+extern void audiodriver_start_record_input(void);
+
 //Tamanyo del buffer de lectura sugerido para el driver de audio de un frame de video, aunque cada driver de audio puede usar los valores
 //que crea mas convenientes
 //2* para leer 2 samples cada medio scanline

@@ -32086,7 +32086,7 @@ void menu_reinsert_real_tape(void)
 void menu_realtape_record_input(MENU_ITEM_PARAMETERS)
 {
     if (!audio_is_recording_input) {
-        audio_start_record_input();
+        audiodriver_start_record_input();
     }
     else {
         audio_stop_record_input();

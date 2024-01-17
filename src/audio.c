@@ -45,6 +45,7 @@
 #include "compileoptions.h"
 #include "zvfs.h"
 #include "menu_filesel.h"
+#include "atomic.h"
 
 #include "audionull.h"
 
@@ -201,26 +202,88 @@ void audiorecord_empty_fifo_if_silence(void)
     audiorecord_input_empty_buffer();
 }
 
+int audiorecord_input_fifo_write_one_byte(char dato)
+{
+
+
+		//ver si la escritura alcanza la lectura. en ese caso, error
+		if (audiorecord_input_fifo_next_index(audiorecord_input_fifo_write_position)==audiorecord_input_fifo_read_position) {
+			debug_printf (VERBOSE_DEBUG,"External Audio Source FIFO buffer full");
+            printf ("External Audio Source FIFO buffer full\n");
+
+			return 1;
+		}
+
+		audiorecord_input_fifo_buffer[audiorecord_input_fifo_write_position]=dato;
+		audiorecord_input_fifo_write_position=audiorecord_input_fifo_next_index(audiorecord_input_fifo_write_position);
+
+    return 0;
+}
+
 //escribir datos en la fifo
 //Retorna no 0 si fifo llena
 int audiorecord_input_fifo_write(char *origen,int longitud)
 {
 	for (;longitud>0;longitud--) {
 
+        if (audiorecord_input_fifo_write_one_byte(*origen)) return 1;
+
 		//ver si la escritura alcanza la lectura. en ese caso, error
-		if (audiorecord_input_fifo_next_index(audiorecord_input_fifo_write_position)==audiorecord_input_fifo_read_position) {
+		/*if (audiorecord_input_fifo_next_index(audiorecord_input_fifo_write_position)==audiorecord_input_fifo_read_position) {
 			debug_printf (VERBOSE_DEBUG,"External Audio Source FIFO buffer full");
 
 			return 1;
-		}
+		}*/
 
-		audiorecord_input_fifo_buffer[audiorecord_input_fifo_write_position]=*origen++;
-		audiorecord_input_fifo_write_position=audiorecord_input_fifo_next_index(audiorecord_input_fifo_write_position);
+		//audiorecord_input_fifo_buffer[audiorecord_input_fifo_write_position]=*origen++;
+		//audiorecord_input_fifo_write_position=audiorecord_input_fifo_next_index(audiorecord_input_fifo_write_position);
+
+        origen++;
 
 	}
     audiorecord_empty_fifo_if_silence();
     return 0;
 }
+
+z_atomic_semaphore semaphore_audiorecord_fifo;
+
+void audiorecord_semaphore_init(void)
+{
+    z_atomic_reset(&semaphore_audiorecord_fifo);
+}
+
+void audiodriver_start_record_input(void)
+{
+    audiorecord_semaphore_init();
+    audio_start_record_input();
+}
+
+void audiodriver_record_obtain_lock(void)
+{
+    //Obtener lock
+	while(z_atomic_test_and_set(&semaphore_audiorecord_fifo)) {
+	    printf("Esperando a liberar lock en audiorecord_input_fifo_read/write\n");
+	}
+}
+
+void audiodriver_record_free_lock(void)
+{
+    z_atomic_reset(&semaphore_audiorecord_fifo);
+}
+
+/*int audiorecord_input_fifo_write(char *origen,int longitud)
+{
+    //Obtener lock
+	audiodriver_record_obtain_lock();
+
+    int retorno=audiorecord_input_fifo_write_nolock(origen,longitud);
+
+    //Liberar lock
+    audiodriver_record_free_lock();
+    return retorno;
+
+}*/
+
 
 
 //leer datos de la fifo
@@ -231,6 +294,7 @@ void audiorecord_input_fifo_read(char *destino,int longitud)
 
         if (audiorecord_input_fifo_return_size()==0) {
                 //debug_printf (VERBOSE_INFO,"audiorecord_input FIFO empty");
+                //printf ("audiorecord_input FIFO empty\n");
                 return;
         }
 
@@ -240,6 +304,17 @@ void audiorecord_input_fifo_read(char *destino,int longitud)
 
     }
 }
+
+/*void audiorecord_input_fifo_read(char *destino,int longitud)
+{
+    //Obtener lock
+	audiodriver_record_obtain_lock();
+
+    audiorecord_input_fifo_read_nolock(destino,longitud);
+
+    //Liberar lock
+    audiodriver_record_free_lock();
+}*/
 
 char audio_last_record_input_sample=0;
 

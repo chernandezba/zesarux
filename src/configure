@@ -1391,7 +1391,7 @@ tape_tzx.o: tape_tzx.c tape_tzx.h tape.h cpu.h operaciones.h debug.h utils.h zvf
 tape_pzx.o: tape_pzx.c tape_pzx.h tape.h cpu.h operaciones.h debug.h utils.h zvfs.h settings.h snap.h
 	\$(CC) \$(CFLAGS) -c tape_pzx.c
 
-audio.o: audio.c audio.h cpu.h start.h debug.h screen.h utils.h zx8081.h audionull.h jupiterace.h autoselectoptions.h operaciones.h cpc.h settings.h audio_sine_table.h msx.h svi.h coleco.h sg1000.h sms.h sn76489an.h ql_i8049.h compileoptions.h zvfs.h menu_filesel.h
+audio.o: audio.c audio.h cpu.h start.h debug.h screen.h utils.h zx8081.h audionull.h jupiterace.h autoselectoptions.h operaciones.h cpc.h settings.h audio_sine_table.h msx.h svi.h coleco.h sg1000.h sms.h sn76489an.h ql_i8049.h compileoptions.h zvfs.h menu_filesel.h atomic.h
 	\$(CC) \$(CFLAGS) -c audio.c
 
 audio_sine_table.o: audio_sine_table.c audio_sine_table.h audio.h
