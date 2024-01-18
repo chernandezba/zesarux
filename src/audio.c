@@ -258,9 +258,16 @@ int audiorecord_input_fifo_write_one_byte(char dato)
 //Retorna no 0 si fifo llena
 int audiorecord_input_fifo_write(char *origen,int longitud)
 {
+
+    //prueba obtener volumen maximo y minimo
+    int max_volumen=0;
+    int min_volumen=0;
+
 	for (;longitud>0;longitud--) {
 
-        if (audiorecord_input_fifo_write_one_byte(*origen)) return 1;
+        char valor_escribir=*origen;
+
+        if (audiorecord_input_fifo_write_one_byte(valor_escribir)) return 1;
 
 		//ver si la escritura alcanza la lectura. en ese caso, error
 		/*if (audiorecord_input_fifo_next_index(audiorecord_input_fifo_write_position)==audiorecord_input_fifo_read_position) {
@@ -272,9 +279,15 @@ int audiorecord_input_fifo_write(char *origen,int longitud)
 		//audiorecord_input_fifo_buffer[audiorecord_input_fifo_write_position]=*origen++;
 		//audiorecord_input_fifo_write_position=audiorecord_input_fifo_next_index(audiorecord_input_fifo_write_position);
 
+        if (valor_escribir>max_volumen) max_volumen=valor_escribir;
+        if (valor_escribir<min_volumen) min_volumen=valor_escribir;
+
         origen++;
 
 	}
+
+    printf("Volume max: %d min: %d\n",max_volumen,min_volumen);
+
     audiorecord_empty_fifo_if_silence();
     return 0;
 }
