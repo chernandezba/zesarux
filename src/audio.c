@@ -263,6 +263,17 @@ int audiorecord_input_fifo_write(char *origen,int longitud)
     int max_volumen=0;
     int min_volumen=0;
 
+    int flancos_positivos=0;
+    int flancos_negativos=0;
+    int valor_anterior=0;
+    int longitud_original=longitud;
+
+    int temp_longitud=20;
+
+    //Bit a 1: 1000 Hz
+    //Bit a 0: 2000 Hz
+    //Tono guia: 800 Hz
+
 	for (;longitud>0;longitud--) {
 
         char valor_escribir=*origen;
@@ -282,11 +293,44 @@ int audiorecord_input_fifo_write(char *origen,int longitud)
         if (valor_escribir>max_volumen) max_volumen=valor_escribir;
         if (valor_escribir<min_volumen) min_volumen=valor_escribir;
 
+        if (valor_escribir>0) {
+            if (valor_anterior<=0) flancos_positivos++;
+        }
+
+        if (valor_escribir<0) {
+            if (valor_anterior>=0) flancos_negativos++;
+        }
+
+        valor_anterior=valor_escribir;
+
+        if (temp_longitud>0) {
+            printf("%d + %d - %d\n",valor_escribir,flancos_positivos,flancos_negativos);
+            temp_longitud--;
+        }
+
         origen++;
 
 	}
 
-    printf("Volume max: %d min: %d\n",max_volumen,min_volumen);
+
+       //Calculo frecuencia aproximada
+
+        //int frecuencia=((AUDIO_RECORD_FREQUENCY/longitud_original)*cambiossigno)/2;
+        int total_flancos=flancos_positivos+flancos_negativos;
+
+        int frecuencia=((AUDIO_RECORD_FREQUENCY*total_flancos)/longitud_original)/2;
+        //int frecuencia=((longitud_original*cambiossigno)/AUDIO_RECORD_FREQUENCY)/2;
+
+    printf("Volume max: %d min: %d Freq: %d Hz flancos positivos: %d flancos negativos %d longitud: %d\n",
+        max_volumen,min_volumen,frecuencia,flancos_positivos,flancos_negativos,longitud_original);
+
+        //deducciones
+        if (util_abs(frecuencia-800)<100) printf("Deducimos Tono guia\n");
+        if (util_abs(frecuencia-1000)<100) printf("Mayoria unos\n");
+        if (util_abs(frecuencia-2000)<100) printf("Mayoria ceros\n");
+
+
+        if (frecuencia>900 && frecuencia<2100) printf("Deducimos 0/1 de spectrum\n");
 
     audiorecord_empty_fifo_if_silence();
     return 0;
@@ -2861,8 +2905,8 @@ void audiodac_mix(void)
 
 
 
-//Obtener valores medio, maximo, minimo etc del buffer de audio
 
+//Obtener valores medio, maximo, minimo etc del buffer de audio de salida
 void audio_get_audiobuffer_stats(audiobuffer_stats *audiostats)
 {
         //Obtenemos antes valor medio total y tambien maximo y minimo
