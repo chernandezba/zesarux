@@ -32310,6 +32310,31 @@ void menu_realtape_record_input_draw_waveform(zxvision_window *w,int x_orig,int 
 
 int menu_realtape_record_input_overlay_last_fifo_pos_x=0;
 
+void menu_realtape_record_input_show_fifo_pos(zxvision_window *w,int x,int y,int ancho,int alto)
+{
+    //Mostrar con linea por donde esta leyendo la fifo. Si fifo=0%, esta a la derecha. Si fifo=100%, a la izquierda
+    //perc_audio=(posicion_buffer_audio*100)/tamanyo_buffer_audio;
+    int tamanyo_buffer_audio=audiorecord_input_return_fifo_total_size();
+    int posicion_buffer_audio=audiorecord_input_fifo_return_size();
+    int ancho_relativo_fifo;
+
+    //tamanyo_buffer_audio=100;
+    //posicion_buffer_audio=0;
+
+    if (tamanyo_buffer_audio==0) ancho_relativo_fifo=0;
+    else ancho_relativo_fifo=(ancho*posicion_buffer_audio)/tamanyo_buffer_audio;
+
+    int fifo_pos_x=x+ancho-ancho_relativo_fifo-1;
+
+    zxvision_draw_line(w,
+        fifo_pos_x,y,
+        fifo_pos_x,y+alto-1,ESTILO_GUI_COLOR_AVISO,
+        menu_realtape_record_input_draw_waveform_putpixel);
+
+    menu_realtape_record_input_overlay_last_fifo_pos_x=fifo_pos_x;
+
+}
+
 void menu_realtape_record_input_overlay(void)
 {
 
@@ -32342,26 +32367,10 @@ void menu_realtape_record_input_overlay(void)
     menu_realtape_record_input_draw_waveform(menu_realtape_record_input_window,
         x,y,ancho,alto);
 
-    //Mostrar con linea por donde esta leyendo la fifo. Si fifo=0%, esta a la derecha. Si fifo=100%, a la izquierda
-    //perc_audio=(posicion_buffer_audio*100)/tamanyo_buffer_audio;
-    int tamanyo_buffer_audio=audiorecord_input_return_fifo_total_size();
-    int posicion_buffer_audio=audiorecord_input_fifo_return_size();
-    int ancho_relativo_fifo;
+    //Mostrar con linea por donde esta leyendo la fifo
+    menu_realtape_record_input_show_fifo_pos(menu_realtape_record_input_window,x,y,ancho,alto);
 
-    //tamanyo_buffer_audio=100;
-    //posicion_buffer_audio=0;
 
-    if (tamanyo_buffer_audio==0) ancho_relativo_fifo=0;
-    else ancho_relativo_fifo=(ancho*posicion_buffer_audio)/tamanyo_buffer_audio;
-
-    int fifo_pos_x=x+ancho-ancho_relativo_fifo-1;
-
-    zxvision_draw_line(menu_realtape_record_input_window,
-        fifo_pos_x,y,
-        fifo_pos_x,y+alto-1,ESTILO_GUI_COLOR_AVISO,
-        menu_realtape_record_input_draw_waveform_putpixel);
-
-    menu_realtape_record_input_overlay_last_fifo_pos_x=fifo_pos_x;
 
     //Mostrar contenido
     zxvision_draw_window_contents(menu_realtape_record_input_window);
