@@ -32188,7 +32188,7 @@ void menu_realtape_record_input_analize_buffer(zxvision_window *w)
         max_volumen,min_volumen,frecuencia,flancos_positivos,flancos_negativos,MENU_REALTAPE_RECORD_INPUT_BUFFER_SIZE);
 
         zxvision_print_string_defaults_format(w,1,0,
-            "Volume max: %d min: %d Freq: %d Hz flancos positivos: %d flancos negativos %d longitud: %d",
+            "Volume max: %3d min: %3d Freq: %d Hz flancos positivos: %d flancos negativos %d longitud: %d",
         max_volumen,min_volumen,frecuencia,flancos_positivos,flancos_negativos,MENU_REALTAPE_RECORD_INPUT_BUFFER_SIZE);
 
         //deducciones
@@ -32343,6 +32343,50 @@ void menu_realtape_record_input_show_fifo_pos(zxvision_window *w,int x,int y,int
 }
 */
 
+int menu_realtape_record_input_show_previo_value=0;
+
+void menu_realtape_record_input_show_info(zxvision_window *w)
+{
+        //Record audio buffer
+        int tamanyo_buffer_audio,posicion_buffer_audio;
+		//audio_get_buffer_info(&tamanyo_buffer_audio,&posicion_buffer_audio);
+        tamanyo_buffer_audio=audiorecord_input_return_fifo_total_size();
+        posicion_buffer_audio=audiorecord_input_fifo_return_size();
+
+        int perc_audio;
+        //mostrar una barra de llenado del buffer
+        //usa las mismas funciones de volumen de AY chip donde el maximo es 15
+        //int barra_volumen;
+
+        if (tamanyo_buffer_audio==0) {
+            perc_audio=0;
+            //barra_volumen=15;
+        }
+
+        else {
+            perc_audio=(posicion_buffer_audio*100)/tamanyo_buffer_audio;
+            //barra_volumen=(posicion_buffer_audio*15)/tamanyo_buffer_audio;
+        }
+
+        char buf_volumen_canal[32];
+        char texto_buffer[100];
+        //menu_string_volumen(buf_volumen_canal,barra_volumen,core_statistics_previo_audio_buffer);
+
+        //core_statistics_previo_audio_buffer=barra_volumen;
+
+        menu_realtape_record_input_show_previo_value=menu_string_volumen_maxmin(buf_volumen_canal,posicion_buffer_audio,
+                                                    menu_realtape_record_input_show_previo_value,tamanyo_buffer_audio);
+
+
+        sprintf (texto_buffer,"Record Buffer%s: %d/%d (%3d%%) [%s]",
+                    (!audio_is_recording_input ? " (Not Recording)" : ""),
+                    posicion_buffer_audio,tamanyo_buffer_audio,perc_audio,buf_volumen_canal);
+
+        //core_statistics_last_perc_audio=perc_audio;
+
+        zxvision_print_string_defaults_fillspc(w,1,1,texto_buffer);
+}
+
 void menu_realtape_record_input_overlay(void)
 {
 
@@ -32354,6 +32398,7 @@ void menu_realtape_record_input_overlay(void)
 
 
     menu_realtape_record_input_analize_buffer(menu_realtape_record_input_window);
+    menu_realtape_record_input_show_info(menu_realtape_record_input_window);
     //Print....
     //Tambien contar si se escribe siempre o se tiene en cuenta contador_segundo...
 
