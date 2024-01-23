@@ -32214,6 +32214,12 @@ int menu_realtape_record_input_old_min=1000;
 
 //int temp_color;
 
+int menu_realtape_record_input_antes_y_arriba=0;
+int menu_realtape_record_input_antes_y_abajo=0;
+
+//0=linea continua, 1=relleno, 2=solo puntos
+int menu_realtape_record_input_tipo_onda=0;
+
 void menu_realtape_record_input_draw_waveform(zxvision_window *w,int x_orig,int y_orig,int ancho,int alto)
 {
 
@@ -32254,6 +32260,8 @@ void menu_realtape_record_input_draw_waveform(zxvision_window *w,int x_orig,int 
 
     y_orig=y_orig+alto/2;
 
+    menu_realtape_record_input_antes_y_arriba=menu_realtape_record_input_antes_y_abajo=y_orig;
+
     for (i=0;i<MENU_REALTAPE_RECORD_INPUT_BUFFER_SIZE;i++) {
         int pos=menu_realtape_record_input_get_read(i);
         char valor_leido=menu_realtape_record_input_audio_buffer[pos];
@@ -32283,21 +32291,60 @@ void menu_realtape_record_input_draw_waveform(zxvision_window *w,int x_orig,int 
 
             //zxvision_putpixel(w,x_orig+x,pos_y,ESTILO_GUI_COLOR_WAVEFORM);
 
+
+            //Valor de arriba
             //valor_max /=trozos_horiz;
             valor_max=(valor_max*alto_medio)/128;
             pos_y=y_orig-valor_max; //positivo hacia arriba
 
             //zxvision_putpixel(w,x_orig+x,pos_y,ESTILO_GUI_COLOR_WAVEFORM);
             if (pos_y<menu_realtape_record_input_old_min) menu_realtape_record_input_old_min=pos_y;
-            zxvision_draw_line(w,x_orig+x,y_orig,x_orig+x,pos_y,ESTILO_GUI_COLOR_WAVEFORM,menu_realtape_record_input_draw_waveform_putpixel);
 
+            //0=linea continua, 1=relleno, 2=solo puntos
+            //int menu_realtape_record_input_tipo_onda=0;
 
+            //solo punto
+            if (menu_realtape_record_input_tipo_onda==2) zxvision_putpixel(w,x_orig+x,pos_y,ESTILO_GUI_COLOR_WAVEFORM);
+
+            //linea continuada
+            if (menu_realtape_record_input_tipo_onda==0) {
+                if (x>0) {
+                    zxvision_draw_line(w,x_orig+x-1,menu_realtape_record_input_antes_y_arriba,x_orig+x,pos_y,
+                    ESTILO_GUI_COLOR_WAVEFORM,menu_realtape_record_input_draw_waveform_putpixel);
+
+                    menu_realtape_record_input_antes_y_arriba=pos_y;
+                }
+            }
+
+            //linea rellena
+            if (menu_realtape_record_input_tipo_onda==1) {
+                zxvision_draw_line(w,x_orig+x,y_orig,x_orig+x,pos_y,ESTILO_GUI_COLOR_WAVEFORM,menu_realtape_record_input_draw_waveform_putpixel);
+            }
+
+            //Valor de abajo
             //valor_min /=trozos_horiz;
             valor_min=(valor_min*alto_medio)/128;
             pos_y=y_orig-valor_min; //negativo hacia abajo
             //zxvision_putpixel(w,x_orig+x,pos_y,ESTILO_GUI_COLOR_WAVEFORM);
             if (pos_y>menu_realtape_record_input_old_max) menu_realtape_record_input_old_max=pos_y;
-            zxvision_draw_line(w,x_orig+x,y_orig,x_orig+x,pos_y,ESTILO_GUI_COLOR_WAVEFORM,menu_realtape_record_input_draw_waveform_putpixel);
+
+            //solo punto
+            if (menu_realtape_record_input_tipo_onda==2) zxvision_putpixel(w,x_orig+x,pos_y,ESTILO_GUI_COLOR_WAVEFORM);
+
+            //linea continuada
+            if (menu_realtape_record_input_tipo_onda==0) {
+                if (x>0) {
+                    zxvision_draw_line(w,x_orig+x-1,menu_realtape_record_input_antes_y_abajo,x_orig+x,pos_y,
+                    ESTILO_GUI_COLOR_WAVEFORM,menu_realtape_record_input_draw_waveform_putpixel);
+
+                    menu_realtape_record_input_antes_y_abajo=pos_y;
+                }
+            }
+
+            //linea rellena
+            if (menu_realtape_record_input_tipo_onda==1) {
+                zxvision_draw_line(w,x_orig+x,y_orig,x_orig+x,pos_y,ESTILO_GUI_COLOR_WAVEFORM,menu_realtape_record_input_draw_waveform_putpixel);
+            }
 
             //Indicar y=0
             zxvision_putpixel(w,x_orig+x,y_orig,ESTILO_GUI_TINTA_NORMAL);
@@ -32515,9 +32562,9 @@ void menu_realtape_record_input(MENU_ITEM_PARAMETERS)
 
         switch (tecla) {
 
-            case 11:
-                //arriba
-                //blablabla
+            case 't':
+                menu_realtape_record_input_tipo_onda++;
+                if (menu_realtape_record_input_tipo_onda>2) menu_realtape_record_input_tipo_onda=0;
             break;
 
 
