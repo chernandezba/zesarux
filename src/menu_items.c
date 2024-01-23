@@ -32314,6 +32314,7 @@ void menu_realtape_record_input_draw_waveform(zxvision_window *w,int x_orig,int 
 
 }
 
+/*
 int menu_realtape_record_input_overlay_last_fifo_pos_x=0;
 
 void menu_realtape_record_input_show_fifo_pos(zxvision_window *w,int x,int y,int ancho,int alto)
@@ -32340,6 +32341,7 @@ void menu_realtape_record_input_show_fifo_pos(zxvision_window *w,int x,int y,int
     menu_realtape_record_input_overlay_last_fifo_pos_x=fifo_pos_x;
 
 }
+*/
 
 void menu_realtape_record_input_overlay(void)
 {
@@ -32370,16 +32372,16 @@ void menu_realtape_record_input_overlay(void)
 
 
     //borrar anterior cursor de fifo
-    zxvision_draw_line(menu_realtape_record_input_window,
+    /*zxvision_draw_line(menu_realtape_record_input_window,
         menu_realtape_record_input_overlay_last_fifo_pos_x,y,
         menu_realtape_record_input_overlay_last_fifo_pos_x,y+alto-1,ESTILO_GUI_PAPEL_NORMAL,
-        menu_realtape_record_input_draw_waveform_putpixel);
+        menu_realtape_record_input_draw_waveform_putpixel);*/
 
     menu_realtape_record_input_draw_waveform(menu_realtape_record_input_window,
         x,y,ancho,alto);
 
     //Mostrar con linea por donde esta leyendo la fifo
-    menu_realtape_record_input_show_fifo_pos(menu_realtape_record_input_window,x,y,ancho,alto);
+    //menu_realtape_record_input_show_fifo_pos(menu_realtape_record_input_window,x,y,ancho,alto);
 
 
 
