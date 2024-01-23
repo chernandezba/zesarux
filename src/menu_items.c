@@ -32099,13 +32099,28 @@ zxvision_window *menu_realtape_record_input_window;
 
 //buffer circular para analisis en esta ventana
 char menu_realtape_record_input_audio_buffer[AUDIO_RECORD_BUFFER_FIFO_SIZE];
-int menu_realtape_record_input_pos_buffer=0;
+int menu_realtape_record_input_pos_buffer_write=0;
+int menu_realtape_record_input_pos_buffer_initial=0;
 
 void menu_realtape_record_input_write_byte(char valor)
 {
-    menu_realtape_record_input_audio_buffer[menu_realtape_record_input_pos_buffer++]=valor;
+    menu_realtape_record_input_audio_buffer[menu_realtape_record_input_pos_buffer_write++]=valor;
 
-    if (menu_realtape_record_input_pos_buffer>=AUDIO_RECORD_BUFFER_FIFO_SIZE) menu_realtape_record_input_pos_buffer=0;
+    if (menu_realtape_record_input_pos_buffer_write>=AUDIO_RECORD_BUFFER_FIFO_SIZE) menu_realtape_record_input_pos_buffer_write=0;
+
+    if (menu_realtape_record_input_pos_buffer_write==menu_realtape_record_input_pos_buffer_initial) {
+        menu_realtape_record_input_pos_buffer_initial++;
+        if (menu_realtape_record_input_pos_buffer_initial>=AUDIO_RECORD_BUFFER_FIFO_SIZE) menu_realtape_record_input_pos_buffer_initial=0;
+    }
+}
+
+int menu_realtape_record_input_get_read(int offset)
+{
+    int pos=menu_realtape_record_input_pos_buffer_initial+offset;
+    if (pos>=AUDIO_RECORD_BUFFER_FIFO_SIZE) {
+        pos -=AUDIO_RECORD_BUFFER_FIFO_SIZE;
+    }
+    return pos;
 }
 
 
@@ -32181,6 +32196,77 @@ void menu_realtape_record_input_analize_buffer(void)
 
 }
 
+void menu_realtape_record_input_draw_waveform(zxvision_window *w,int x_orig,int y_orig,int ancho,int alto)
+{
+
+    //primero limpiar zona
+    zxvision_draw_filled_rectangle(w,x_orig,y_orig,ancho,alto,ESTILO_GUI_PAPEL_NORMAL);
+
+    printf("ancho %d alto %d\n",ancho,alto);
+
+    int i;
+    int trozos_horiz=AUDIO_RECORD_BUFFER_FIFO_SIZE/ancho;
+
+    if (trozos_horiz<1) trozos_horiz=1;
+
+    int pos_en_trozo=0;
+    int valor_medio=0;
+
+    int alto_medio=alto/2;
+    int valor_max=0;
+    int valor_min=0;
+
+    int x=0;
+
+    y_orig=y_orig+alto/2;
+
+    for (i=0;i<AUDIO_RECORD_BUFFER_FIFO_SIZE;i++) {
+        int pos=menu_realtape_record_input_get_read(i);
+        char valor_leido=menu_realtape_record_input_audio_buffer[pos];
+
+        if (valor_leido>valor_max) valor_max=valor_leido;
+        if (valor_leido<valor_min) valor_min=valor_leido;
+
+
+
+        valor_medio +=valor_leido;
+
+        //printf("%d\n",valor_medio);
+
+        pos_en_trozo++;
+        if (pos_en_trozo==trozos_horiz) {
+            //printf("valor_medio antes %d trozos %d\n",valor_medio,trozos_horiz);
+            valor_medio /=trozos_horiz;
+
+            valor_medio=(valor_medio*alto_medio)/128;
+            //printf("valor_medio despues %d\n",valor_medio);
+            int pos_y=y_orig-valor_medio; //positivo hacia arriba
+
+            //zxvision_putpixel(w,x_orig+x,pos_y,ESTILO_GUI_COLOR_WAVEFORM);
+
+            //valor_max /=trozos_horiz;
+            valor_max=(valor_max*alto_medio)/128;
+            pos_y=y_orig-valor_max; //positivo hacia arriba
+            zxvision_putpixel(w,x_orig+x,pos_y,ESTILO_GUI_COLOR_WAVEFORM);
+
+
+            //valor_min /=trozos_horiz;
+            valor_min=(valor_min*alto_medio)/128;
+            pos_y=y_orig-valor_min; //positivo hacia arriba
+            zxvision_putpixel(w,x_orig+x,pos_y,ESTILO_GUI_COLOR_WAVEFORM);
+
+            pos_en_trozo=0;
+            valor_medio=0;
+
+            valor_max=valor_min=0;
+
+
+            x++;
+        }
+    }
+
+}
+
 void menu_realtape_record_input_overlay(void)
 {
 
@@ -32194,6 +32280,12 @@ void menu_realtape_record_input_overlay(void)
     menu_realtape_record_input_analize_buffer();
     //Print....
     //Tambien contar si se escribe siempre o se tiene en cuenta contador_segundo...
+
+    int alto=(menu_realtape_record_input_window->visible_height)*menu_char_height;
+    int ancho=(menu_realtape_record_input_window->visible_width)*menu_char_width;
+
+    menu_realtape_record_input_draw_waveform(menu_realtape_record_input_window,
+        menu_char_width,menu_char_height,ancho,alto);
 
 
     //Mostrar contenido

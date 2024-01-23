@@ -259,21 +259,6 @@ int audiorecord_input_fifo_write_one_byte(char dato)
 int audiorecord_input_fifo_write(char *origen,int longitud)
 {
 
-    //prueba obtener volumen maximo y minimo
-    int max_volumen=0;
-    int min_volumen=0;
-
-    int flancos_positivos=0;
-    int flancos_negativos=0;
-    int valor_anterior=0;
-    int longitud_original=longitud;
-
-    int temp_longitud=20;
-
-    //Bit a 1: 1000 Hz
-    //Bit a 0: 2000 Hz
-    //Tono guia: 800 Hz
-
 	for (;longitud>0;longitud--) {
 
         char valor_escribir=*origen;
