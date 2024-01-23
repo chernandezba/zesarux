@@ -280,6 +280,8 @@ int audiorecord_input_fifo_write(char *origen,int longitud)
 
         if (audiorecord_input_fifo_write_one_byte(valor_escribir)) return 1;
 
+        menu_realtape_record_input_write_byte(valor_escribir);
+
 		//ver si la escritura alcanza la lectura. en ese caso, error
 		/*if (audiorecord_input_fifo_next_index(audiorecord_input_fifo_write_position)==audiorecord_input_fifo_read_position) {
 			debug_printf (VERBOSE_DEBUG,"External Audio Source FIFO buffer full");
@@ -287,50 +289,11 @@ int audiorecord_input_fifo_write(char *origen,int longitud)
 			return 1;
 		}*/
 
-		//audiorecord_input_fifo_buffer[audiorecord_input_fifo_write_position]=*origen++;
-		//audiorecord_input_fifo_write_position=audiorecord_input_fifo_next_index(audiorecord_input_fifo_write_position);
 
-        if (valor_escribir>max_volumen) max_volumen=valor_escribir;
-        if (valor_escribir<min_volumen) min_volumen=valor_escribir;
-
-        if (valor_escribir>0) {
-            if (valor_anterior<=0) flancos_positivos++;
-        }
-
-        if (valor_escribir<0) {
-            if (valor_anterior>=0) flancos_negativos++;
-        }
-
-        valor_anterior=valor_escribir;
-
-        if (temp_longitud>0) {
-            printf("%d + %d - %d\n",valor_escribir,flancos_positivos,flancos_negativos);
-            temp_longitud--;
-        }
 
         origen++;
 
 	}
-
-
-       //Calculo frecuencia aproximada
-
-        //int frecuencia=((AUDIO_RECORD_FREQUENCY/longitud_original)*cambiossigno)/2;
-        int total_flancos=flancos_positivos+flancos_negativos;
-
-        int frecuencia=((AUDIO_RECORD_FREQUENCY*total_flancos)/longitud_original)/2;
-        //int frecuencia=((longitud_original*cambiossigno)/AUDIO_RECORD_FREQUENCY)/2;
-
-    printf("Volume max: %d min: %d Freq: %d Hz flancos positivos: %d flancos negativos %d longitud: %d\n",
-        max_volumen,min_volumen,frecuencia,flancos_positivos,flancos_negativos,longitud_original);
-
-        //deducciones
-        if (util_abs(frecuencia-800)<100) printf("Deducimos Tono guia\n");
-        if (util_abs(frecuencia-1000)<100) printf("Mayoria unos\n");
-        if (util_abs(frecuencia-2000)<100) printf("Mayoria ceros\n");
-
-
-        if (frecuencia>900 && frecuencia<2100) printf("Deducimos 0/1 de spectrum\n");
 
     audiorecord_empty_fifo_if_silence();
     return 0;

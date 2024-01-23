@@ -84,6 +84,9 @@ extern void menu_cpu_transaction_log(MENU_ITEM_PARAMETERS);
 
 extern void menu_debug_view_sprites(MENU_ITEM_PARAMETERS);
 
+extern void menu_realtape_record_input(MENU_ITEM_PARAMETERS);
+extern void menu_realtape_record_input_write_byte(char valor);
+
 extern char *menu_debug_sprites_change_ptr_historial[];
 
 

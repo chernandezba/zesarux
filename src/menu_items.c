@@ -32083,7 +32083,7 @@ void menu_reinsert_real_tape(void)
 	realtape_insert();
 }
 
-void menu_realtape_record_input(MENU_ITEM_PARAMETERS)
+void menu_realtape_record_input_enable(MENU_ITEM_PARAMETERS)
 {
     if (!audio_is_recording_input) {
         audiodriver_start_record_input();
@@ -32092,6 +32092,232 @@ void menu_realtape_record_input(MENU_ITEM_PARAMETERS)
         audio_stop_record_input();
     }
 }
+
+
+
+zxvision_window *menu_realtape_record_input_window;
+
+//buffer circular para analisis en esta ventana
+char menu_realtape_record_input_audio_buffer[AUDIO_RECORD_BUFFER_FIFO_SIZE];
+int menu_realtape_record_input_pos_buffer=0;
+
+void menu_realtape_record_input_write_byte(char valor)
+{
+    menu_realtape_record_input_audio_buffer[menu_realtape_record_input_pos_buffer++]=valor;
+
+    if (menu_realtape_record_input_pos_buffer>=AUDIO_RECORD_BUFFER_FIFO_SIZE) menu_realtape_record_input_pos_buffer=0;
+}
+
+
+void menu_realtape_record_input_analize_buffer(void)
+{
+
+    //prueba obtener volumen maximo y minimo
+    int max_volumen=0;
+    int min_volumen=0;
+
+    int flancos_positivos=0;
+    int flancos_negativos=0;
+    int valor_anterior=0;
+
+    int longitud=AUDIO_RECORD_BUFFER_FIFO_SIZE;
+
+    //int longitud_original=longitud;
+
+    int temp_longitud=20;
+
+    //Bit a 1: 1000 Hz
+    //Bit a 0: 2000 Hz
+    //Tono guia: 800 Hz
+
+    char *origen=menu_realtape_record_input_audio_buffer;
+
+	for (;longitud>0;longitud--) {
+
+        char valor_escribir=*origen;
+
+        if (valor_escribir>max_volumen) max_volumen=valor_escribir;
+        if (valor_escribir<min_volumen) min_volumen=valor_escribir;
+
+        if (valor_escribir>0) {
+            if (valor_anterior<=0) flancos_positivos++;
+        }
+
+        if (valor_escribir<0) {
+            if (valor_anterior>=0) flancos_negativos++;
+        }
+
+        valor_anterior=valor_escribir;
+
+        if (temp_longitud>0) {
+            printf("%d + %d - %d\n",valor_escribir,flancos_positivos,flancos_negativos);
+            temp_longitud--;
+        }
+
+        origen++;
+
+	}
+
+
+       //Calculo frecuencia aproximada
+
+        //int frecuencia=((AUDIO_RECORD_FREQUENCY/longitud_original)*cambiossigno)/2;
+        int total_flancos=flancos_positivos+flancos_negativos;
+
+        int frecuencia=((AUDIO_RECORD_FREQUENCY*total_flancos)/AUDIO_RECORD_BUFFER_FIFO_SIZE)/2;
+        //int frecuencia=((longitud_original*cambiossigno)/AUDIO_RECORD_FREQUENCY)/2;
+
+    printf("Volume max: %d min: %d Freq: %d Hz flancos positivos: %d flancos negativos %d longitud: %d\n",
+        max_volumen,min_volumen,frecuencia,flancos_positivos,flancos_negativos,AUDIO_RECORD_BUFFER_FIFO_SIZE);
+
+        //deducciones
+        if (util_abs(frecuencia-800)<100) printf("Deducimos Tono guia\n");
+        if (util_abs(frecuencia-1000)<100) printf("Mayoria unos\n");
+        if (util_abs(frecuencia-2000)<100) printf("Mayoria ceros\n");
+
+
+        if (frecuencia>900 && frecuencia<2100) printf("Deducimos 0/1 de spectrum\n");
+
+
+}
+
+void menu_realtape_record_input_overlay(void)
+{
+
+    menu_speech_tecla_pulsada=1; //Si no, envia continuamente todo ese texto a speech
+
+    //si ventana minimizada, no ejecutar todo el codigo de overlay
+    if (menu_realtape_record_input_window->is_minimized) return;
+
+
+
+    menu_realtape_record_input_analize_buffer();
+    //Print....
+    //Tambien contar si se escribe siempre o se tiene en cuenta contador_segundo...
+
+
+    //Mostrar contenido
+    zxvision_draw_window_contents(menu_realtape_record_input_window);
+
+}
+
+
+
+
+//Almacenar la estructura de ventana aqui para que se pueda referenciar desde otros sitios
+zxvision_window zxvision_window_realtape_record_input;
+
+
+
+void menu_realtape_record_input(MENU_ITEM_PARAMETERS)
+{
+	menu_espera_no_tecla();
+
+    if (!menu_multitarea) {
+        menu_warn_message("This window needs multitask enabled");
+        return;
+    }
+
+    zxvision_window *ventana;
+    ventana=&zxvision_window_realtape_record_input;
+
+	//IMPORTANTE! no crear ventana si ya existe. Esto hay que hacerlo en todas las ventanas que permiten background.
+	//si no se hiciera, se crearia la misma ventana, y en la lista de ventanas activas , al redibujarse,
+	//la primera ventana repetida apuntaria a la segunda, que es el mismo puntero, y redibujaria la misma, y se quedaria en bucle colgado
+	//zxvision_delete_window_if_exists(ventana);
+
+    //Crear ventana si no existe
+    if (!zxvision_if_window_already_exists(ventana)) {
+        int xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
+
+        if (!util_find_window_geometry("realtaperecordinput",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
+            ancho_ventana=32;
+            alto_ventana=20;
+
+            xventana=menu_center_x()-ancho_ventana/2;
+            yventana=menu_center_y()-alto_ventana/2;
+        }
+
+
+        zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"External Audio Source",
+            "realtaperecordinput",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
+
+        ventana->can_be_backgrounded=1;
+
+    }
+
+    //Si ya existe, activar esta ventana
+    else {
+        zxvision_activate_this_window(ventana);
+    }
+
+	zxvision_draw_window(ventana);
+
+	z80_byte tecla;
+
+
+	int salir=0;
+
+
+    menu_realtape_record_input_window=ventana; //Decimos que el overlay lo hace sobre la ventana que tenemos aqui
+
+
+    //cambio overlay
+    zxvision_set_window_overlay(ventana,menu_realtape_record_input_overlay);
+
+
+    //Toda ventana que este listada en zxvision_known_window_names_array debe permitir poder salir desde aqui
+    //Se sale despues de haber inicializado overlay y de cualquier otra variable que necesite el overlay
+    if (zxvision_currently_restoring_windows_on_start) {
+            //printf ("Saliendo de ventana ya que la estamos restaurando en startup\n");
+            return;
+    }
+
+    do {
+
+
+		tecla=zxvision_common_getkey_refresh();
+
+
+        switch (tecla) {
+
+            case 11:
+                //arriba
+                //blablabla
+            break;
+
+
+
+            //Salir con ESC
+            case 2:
+                salir=1;
+            break;
+
+            //O tecla background
+            case 3:
+                salir=1;
+            break;
+        }
+
+
+    } while (salir==0);
+
+
+	util_add_window_geometry_compact(ventana);
+
+	if (tecla==3) {
+		zxvision_message_put_window_background();
+	}
+
+	else {
+
+		zxvision_destroy_window(ventana);
+	}
+
+
+}
+
+
 
 //menu storage tape
 void menu_storage_tape(MENU_ITEM_PARAMETERS)
@@ -32167,13 +32393,19 @@ void menu_storage_tape(MENU_ITEM_PARAMETERS)
 
 
         if (audio_can_record_input() ) {
-            menu_add_item_menu_en_es_ca(array_menu_tape_settings,MENU_OPCION_NORMAL,menu_realtape_record_input,NULL,
-                "External Audio Source","Fuente de sonido externa","Font de so externa");
+            menu_add_item_menu_en_es_ca(array_menu_tape_settings,MENU_OPCION_NORMAL,menu_realtape_record_input_enable,NULL,
+                "Enable External Audio Source","Activar fuente de sonido externa","Activar font de so externa");
             menu_add_item_menu_prefijo_format(array_menu_tape_settings,"[%c] ", (audio_is_recording_input ? 'X' : ' '));
             menu_add_item_menu_tooltip(array_menu_tape_settings,"Allows you to load audio from external audio source, like tape player, "
                 "a mp3 player or your phone");
             menu_add_item_menu_ayuda(array_menu_tape_settings,"Allows you to load audio from external audio source, like tape player, "
                 "a mp3 player or your phone");
+
+            if (audio_is_recording_input) {
+                menu_add_item_menu_en_es_ca(array_menu_tape_settings,MENU_OPCION_NORMAL,menu_realtape_record_input,NULL,
+                    "External Audio Source Window","Ventana fuente de sonido externa","Finestra font de so externa");
+                menu_add_item_menu_se_cerrara(array_menu_tape_settings);
+            }
         }
 
         //Ocultar opciones de Real Tape de archivo cuando se activa External Audio Source
