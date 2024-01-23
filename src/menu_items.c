@@ -32124,7 +32124,7 @@ int menu_realtape_record_input_get_read(int offset)
 }
 
 
-void menu_realtape_record_input_analize_buffer(void)
+void menu_realtape_record_input_analize_buffer(zxvision_window *w)
 {
 
     //prueba obtener volumen maximo y minimo
@@ -32183,6 +32183,10 @@ void menu_realtape_record_input_analize_buffer(void)
         //int frecuencia=((longitud_original*cambiossigno)/AUDIO_RECORD_FREQUENCY)/2;
 
     printf("Volume max: %d min: %d Freq: %d Hz flancos positivos: %d flancos negativos %d longitud: %d\n",
+        max_volumen,min_volumen,frecuencia,flancos_positivos,flancos_negativos,AUDIO_RECORD_BUFFER_FIFO_SIZE);
+
+        zxvision_print_string_defaults_format(w,1,0,
+            "Volume max: %d min: %d Freq: %d Hz flancos positivos: %d flancos negativos %d longitud: %d",
         max_volumen,min_volumen,frecuencia,flancos_positivos,flancos_negativos,AUDIO_RECORD_BUFFER_FIFO_SIZE);
 
         //deducciones
@@ -32345,7 +32349,7 @@ void menu_realtape_record_input_overlay(void)
 
 
 
-    menu_realtape_record_input_analize_buffer();
+    menu_realtape_record_input_analize_buffer(menu_realtape_record_input_window);
     //Print....
     //Tambien contar si se escribe siempre o se tiene en cuenta contador_segundo...
 
@@ -32357,6 +32361,11 @@ void menu_realtape_record_input_overlay(void)
 
     int x=1*menu_char_width;
     int y=0;
+
+    //1 linea de estado
+    y+=menu_char_width;
+    alto-=menu_char_height;
+
 
     //borrar anterior cursor de fifo
     zxvision_draw_line(menu_realtape_record_input_window,
