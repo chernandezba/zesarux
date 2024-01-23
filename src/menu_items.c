@@ -32098,7 +32098,9 @@ void menu_realtape_record_input_enable(MENU_ITEM_PARAMETERS)
 zxvision_window *menu_realtape_record_input_window;
 
 //buffer circular para analisis en esta ventana
-char menu_realtape_record_input_audio_buffer[AUDIO_RECORD_BUFFER_FIFO_SIZE];
+//para un frame de video
+#define MENU_REALTAPE_RECORD_INPUT_BUFFER_SIZE (312*2)
+char menu_realtape_record_input_audio_buffer[MENU_REALTAPE_RECORD_INPUT_BUFFER_SIZE];
 int menu_realtape_record_input_pos_buffer_write=0;
 int menu_realtape_record_input_pos_buffer_initial=0;
 
@@ -32106,19 +32108,19 @@ void menu_realtape_record_input_write_byte(char valor)
 {
     menu_realtape_record_input_audio_buffer[menu_realtape_record_input_pos_buffer_write++]=valor;
 
-    if (menu_realtape_record_input_pos_buffer_write>=AUDIO_RECORD_BUFFER_FIFO_SIZE) menu_realtape_record_input_pos_buffer_write=0;
+    if (menu_realtape_record_input_pos_buffer_write>=MENU_REALTAPE_RECORD_INPUT_BUFFER_SIZE) menu_realtape_record_input_pos_buffer_write=0;
 
     if (menu_realtape_record_input_pos_buffer_write==menu_realtape_record_input_pos_buffer_initial) {
         menu_realtape_record_input_pos_buffer_initial++;
-        if (menu_realtape_record_input_pos_buffer_initial>=AUDIO_RECORD_BUFFER_FIFO_SIZE) menu_realtape_record_input_pos_buffer_initial=0;
+        if (menu_realtape_record_input_pos_buffer_initial>=MENU_REALTAPE_RECORD_INPUT_BUFFER_SIZE) menu_realtape_record_input_pos_buffer_initial=0;
     }
 }
 
 int menu_realtape_record_input_get_read(int offset)
 {
     int pos=menu_realtape_record_input_pos_buffer_initial+offset;
-    if (pos>=AUDIO_RECORD_BUFFER_FIFO_SIZE) {
-        pos -=AUDIO_RECORD_BUFFER_FIFO_SIZE;
+    if (pos>=MENU_REALTAPE_RECORD_INPUT_BUFFER_SIZE) {
+        pos -=MENU_REALTAPE_RECORD_INPUT_BUFFER_SIZE;
     }
     return pos;
 }
@@ -32135,7 +32137,7 @@ void menu_realtape_record_input_analize_buffer(zxvision_window *w)
     int flancos_negativos=0;
     int valor_anterior=0;
 
-    int longitud=AUDIO_RECORD_BUFFER_FIFO_SIZE;
+    int longitud=MENU_REALTAPE_RECORD_INPUT_BUFFER_SIZE;
 
     //int longitud_original=longitud;
 
@@ -32179,15 +32181,15 @@ void menu_realtape_record_input_analize_buffer(zxvision_window *w)
         //int frecuencia=((AUDIO_RECORD_FREQUENCY/longitud_original)*cambiossigno)/2;
         int total_flancos=flancos_positivos+flancos_negativos;
 
-        int frecuencia=((AUDIO_RECORD_FREQUENCY*total_flancos)/AUDIO_RECORD_BUFFER_FIFO_SIZE)/2;
+        int frecuencia=((AUDIO_RECORD_FREQUENCY*total_flancos)/MENU_REALTAPE_RECORD_INPUT_BUFFER_SIZE)/2;
         //int frecuencia=((longitud_original*cambiossigno)/AUDIO_RECORD_FREQUENCY)/2;
 
     printf("Volume max: %d min: %d Freq: %d Hz flancos positivos: %d flancos negativos %d longitud: %d\n",
-        max_volumen,min_volumen,frecuencia,flancos_positivos,flancos_negativos,AUDIO_RECORD_BUFFER_FIFO_SIZE);
+        max_volumen,min_volumen,frecuencia,flancos_positivos,flancos_negativos,MENU_REALTAPE_RECORD_INPUT_BUFFER_SIZE);
 
         zxvision_print_string_defaults_format(w,1,0,
             "Volume max: %d min: %d Freq: %d Hz flancos positivos: %d flancos negativos %d longitud: %d",
-        max_volumen,min_volumen,frecuencia,flancos_positivos,flancos_negativos,AUDIO_RECORD_BUFFER_FIFO_SIZE);
+        max_volumen,min_volumen,frecuencia,flancos_positivos,flancos_negativos,MENU_REALTAPE_RECORD_INPUT_BUFFER_SIZE);
 
         //deducciones
         if (util_abs(frecuencia-800)<100) printf("Deducimos Tono guia\n");
@@ -32237,7 +32239,7 @@ void menu_realtape_record_input_draw_waveform(zxvision_window *w,int x_orig,int 
     printf("ancho %d alto %d\n",ancho,alto);
 
     int i;
-    int trozos_horiz=AUDIO_RECORD_BUFFER_FIFO_SIZE/ancho;
+    int trozos_horiz=MENU_REALTAPE_RECORD_INPUT_BUFFER_SIZE/ancho;
 
     if (trozos_horiz<1) trozos_horiz=1;
 
@@ -32252,7 +32254,7 @@ void menu_realtape_record_input_draw_waveform(zxvision_window *w,int x_orig,int 
 
     y_orig=y_orig+alto/2;
 
-    for (i=0;i<AUDIO_RECORD_BUFFER_FIFO_SIZE;i++) {
+    for (i=0;i<MENU_REALTAPE_RECORD_INPUT_BUFFER_SIZE;i++) {
         int pos=menu_realtape_record_input_get_read(i);
         char valor_leido=menu_realtape_record_input_audio_buffer[pos];
 
