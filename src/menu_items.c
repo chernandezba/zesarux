@@ -32211,6 +32211,12 @@ int menu_realtape_record_input_old_min=1000;
 void menu_realtape_record_input_draw_waveform(zxvision_window *w,int x_orig,int y_orig,int ancho,int alto)
 {
 
+    //Mostrar limites
+    //zxvision_putpixel(w,x_orig,y_orig,ESTILO_GUI_TINTA_NORMAL);
+    //zxvision_putpixel(w,x_orig+ancho-1,y_orig,ESTILO_GUI_TINTA_NORMAL);
+    //zxvision_putpixel(w,x_orig,y_orig+alto-1,ESTILO_GUI_TINTA_NORMAL);
+    //zxvision_putpixel(w,x_orig+ancho-1,y_orig+alto-1,ESTILO_GUI_TINTA_NORMAL);
+
     //primero limpiar zona
     if (menu_realtape_record_input_inicial_limpieza) zxvision_draw_filled_rectangle(w,x_orig,y_orig,ancho,alto,ESTILO_GUI_PAPEL_NORMAL);
     else {
@@ -32302,6 +32308,8 @@ void menu_realtape_record_input_draw_waveform(zxvision_window *w,int x_orig,int 
 
 }
 
+int menu_realtape_record_input_overlay_last_fifo_pos_x=0;
+
 void menu_realtape_record_input_overlay(void)
 {
 
@@ -32316,12 +32324,44 @@ void menu_realtape_record_input_overlay(void)
     //Print....
     //Tambien contar si se escribe siempre o se tiene en cuenta contador_segundo...
 
+
+
+
     int alto=(menu_realtape_record_input_window->visible_height-2)*menu_char_height;
-    int ancho=(menu_realtape_record_input_window->visible_width)*menu_char_width;
+    int ancho=(menu_realtape_record_input_window->visible_width-2)*menu_char_width;
+
+    int x=1*menu_char_width;
+    int y=0;
+
+    //borrar anterior cursor de fifo
+    zxvision_draw_line(menu_realtape_record_input_window,
+        menu_realtape_record_input_overlay_last_fifo_pos_x,y,
+        menu_realtape_record_input_overlay_last_fifo_pos_x,y+alto-1,ESTILO_GUI_PAPEL_NORMAL,
+        menu_realtape_record_input_draw_waveform_putpixel);
 
     menu_realtape_record_input_draw_waveform(menu_realtape_record_input_window,
-        1,0,ancho,alto-4);
+        x,y,ancho,alto);
 
+    //Mostrar con linea por donde esta leyendo la fifo. Si fifo=0%, esta a la derecha. Si fifo=100%, a la izquierda
+    //perc_audio=(posicion_buffer_audio*100)/tamanyo_buffer_audio;
+    int tamanyo_buffer_audio=audiorecord_input_return_fifo_total_size();
+    int posicion_buffer_audio=audiorecord_input_fifo_return_size();
+    int ancho_relativo_fifo;
+
+    //tamanyo_buffer_audio=100;
+    //posicion_buffer_audio=0;
+
+    if (tamanyo_buffer_audio==0) ancho_relativo_fifo=0;
+    else ancho_relativo_fifo=(ancho*posicion_buffer_audio)/tamanyo_buffer_audio;
+
+    int fifo_pos_x=x+ancho-ancho_relativo_fifo-1;
+
+    zxvision_draw_line(menu_realtape_record_input_window,
+        fifo_pos_x,y,
+        fifo_pos_x,y+alto-1,ESTILO_GUI_COLOR_AVISO,
+        menu_realtape_record_input_draw_waveform_putpixel);
+
+    menu_realtape_record_input_overlay_last_fifo_pos_x=fifo_pos_x;
 
     //Mostrar contenido
     zxvision_draw_window_contents(menu_realtape_record_input_window);
