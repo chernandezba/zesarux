@@ -32196,11 +32196,33 @@ void menu_realtape_record_input_analize_buffer(void)
 
 }
 
+void menu_realtape_record_input_draw_waveform_putpixel(zxvision_window *w,int x,int y,int color)
+{
+    zxvision_putpixel(w,x,y,color);
+}
+
+//para limpiar solo sobre los maximos que haya habido
+int menu_realtape_record_input_inicial_limpieza=1;
+int menu_realtape_record_input_old_max=0;
+int menu_realtape_record_input_old_min=1000;
+
+//int temp_color;
+
 void menu_realtape_record_input_draw_waveform(zxvision_window *w,int x_orig,int y_orig,int ancho,int alto)
 {
 
     //primero limpiar zona
-    zxvision_draw_filled_rectangle(w,x_orig,y_orig,ancho,alto,ESTILO_GUI_PAPEL_NORMAL);
+    if (menu_realtape_record_input_inicial_limpieza) zxvision_draw_filled_rectangle(w,x_orig,y_orig,ancho,alto,ESTILO_GUI_PAPEL_NORMAL);
+    else {
+        int alto_borrar=menu_realtape_record_input_old_max-menu_realtape_record_input_old_min+1;
+        zxvision_draw_filled_rectangle(w,x_orig,menu_realtape_record_input_old_min,ancho,alto_borrar,ESTILO_GUI_PAPEL_NORMAL);
+        //if (temp_color==16) temp_color=0;
+
+        menu_realtape_record_input_old_max=0;
+        menu_realtape_record_input_old_min=1000;
+    }
+
+    menu_realtape_record_input_inicial_limpieza=0;
 
     printf("ancho %d alto %d\n",ancho,alto);
 
@@ -32227,7 +32249,9 @@ void menu_realtape_record_input_draw_waveform(zxvision_window *w,int x_orig,int 
         if (valor_leido>valor_max) valor_max=valor_leido;
         if (valor_leido<valor_min) valor_min=valor_leido;
 
-
+        //temp
+        //valor_max=127;
+        //valor_min=-128;
 
         valor_medio +=valor_leido;
 
@@ -32235,6 +32259,9 @@ void menu_realtape_record_input_draw_waveform(zxvision_window *w,int x_orig,int 
 
         pos_en_trozo++;
         if (pos_en_trozo==trozos_horiz) {
+
+
+
             //printf("valor_medio antes %d trozos %d\n",valor_medio,trozos_horiz);
             valor_medio /=trozos_horiz;
 
@@ -32247,13 +32274,21 @@ void menu_realtape_record_input_draw_waveform(zxvision_window *w,int x_orig,int 
             //valor_max /=trozos_horiz;
             valor_max=(valor_max*alto_medio)/128;
             pos_y=y_orig-valor_max; //positivo hacia arriba
-            zxvision_putpixel(w,x_orig+x,pos_y,ESTILO_GUI_COLOR_WAVEFORM);
+
+            //zxvision_putpixel(w,x_orig+x,pos_y,ESTILO_GUI_COLOR_WAVEFORM);
+            if (pos_y<menu_realtape_record_input_old_min) menu_realtape_record_input_old_min=pos_y;
+            zxvision_draw_line(w,x_orig+x,y_orig,x_orig+x,pos_y,ESTILO_GUI_COLOR_WAVEFORM,menu_realtape_record_input_draw_waveform_putpixel);
 
 
             //valor_min /=trozos_horiz;
             valor_min=(valor_min*alto_medio)/128;
-            pos_y=y_orig-valor_min; //positivo hacia arriba
-            zxvision_putpixel(w,x_orig+x,pos_y,ESTILO_GUI_COLOR_WAVEFORM);
+            pos_y=y_orig-valor_min; //negativo hacia abajo
+            //zxvision_putpixel(w,x_orig+x,pos_y,ESTILO_GUI_COLOR_WAVEFORM);
+            if (pos_y>menu_realtape_record_input_old_max) menu_realtape_record_input_old_max=pos_y;
+            zxvision_draw_line(w,x_orig+x,y_orig,x_orig+x,pos_y,ESTILO_GUI_COLOR_WAVEFORM,menu_realtape_record_input_draw_waveform_putpixel);
+
+            //Indicar y=0
+            zxvision_putpixel(w,x_orig+x,y_orig,ESTILO_GUI_TINTA_NORMAL);
 
             pos_en_trozo=0;
             valor_medio=0;
@@ -32281,11 +32316,11 @@ void menu_realtape_record_input_overlay(void)
     //Print....
     //Tambien contar si se escribe siempre o se tiene en cuenta contador_segundo...
 
-    int alto=(menu_realtape_record_input_window->visible_height)*menu_char_height;
+    int alto=(menu_realtape_record_input_window->visible_height-2)*menu_char_height;
     int ancho=(menu_realtape_record_input_window->visible_width)*menu_char_width;
 
     menu_realtape_record_input_draw_waveform(menu_realtape_record_input_window,
-        menu_char_width,menu_char_height,ancho,alto);
+        1,0,ancho,alto-4);
 
 
     //Mostrar contenido
