@@ -32168,6 +32168,7 @@ void menu_realtape_record_input_analize_buffer(zxvision_window *w)
     //Bit a 0: 2000 Hz
     //Tono guia: 800 Hz
 
+
     char *origen=menu_realtape_record_input_audio_buffer;
 
 	for (;longitud>0;longitud--) {
@@ -32219,6 +32220,126 @@ void menu_realtape_record_input_analize_buffer(zxvision_window *w)
 
 
         if (frecuencia>900 && frecuencia<2100) printf("Deducimos 0/1 de spectrum\n");
+
+
+}
+
+
+void menu_realtape_record_input_analize_azimuth(zxvision_window *w)
+{
+
+    int longitud=MENU_REALTAPE_RECORD_INPUT_BUFFER_SIZE;
+
+    //int longitud_original=longitud;
+
+    int longitud_temp=40;
+
+    /*
+    Mal azimuth:
+    diferencias de amplitud entre 0 y 1
+    onda no centrada
+
+    Buen azimuth:
+    0 y 1 misma amplitud
+    onda centrada
+    */
+
+   //estado:
+   //0: desconocido
+   //1: leyendo valores<0
+   //2: leyendo valores>0
+    //Bit a 1: 1000 Hz
+    //Bit a 0: 2000 Hz
+    //Tono guia: 800 Hz (length 2168 T-states. = 619 microsec)
+    /*
+    A '0' bit is encoded as 2 pulses of 855 T-states each. = 488 microsec
+
+    A '1' bit is encoded as 2 pulses of 1710 T-states each (ie. twice the length of a '0') = 977 microsec
+    */
+   int estado_onda=0;
+   char valor_anterior=0;
+   int contador_pulso=0;
+   int contador_pulso_abajo=0;
+   int contador_pulso_arriba=0;
+
+    char *origen=menu_realtape_record_input_audio_buffer;
+
+	for (;longitud>0;longitud--) {
+
+        char valor_leido=*origen;
+        origen++;
+
+        if (longitud_temp>0) {
+            //printf("Estado %d Leido %d anterior %d\n",estado_onda,valor_leido,valor_anterior);
+            longitud_temp--;
+        }
+
+        switch(estado_onda) {
+            case 0:
+                if (valor_leido<0) {
+                    if (longitud_temp>0) printf("cambiamos a pulso debajo\n");
+                    estado_onda=1;
+                    contador_pulso=0;
+                }
+
+                /*if (valor_leido>0) {
+                    if (longitud_temp>0) printf("cambiamos a pulso arriba\n");
+                    estado_onda=2;
+                    contador_pulso=0;
+                }*/
+            break;
+
+            case 1:
+                if (valor_leido>0) {
+                    if (longitud_temp>0) printf("Fin pulso abajo\n");
+                    estado_onda=2;
+                    contador_pulso_abajo=contador_pulso;
+
+                    contador_pulso=0;
+
+                    //Tiempo de arriba, abajo indica fin de bit
+                    if (longitud_temp>0) {
+                        printf("Fin onda. arriba %d abajo %d\n",contador_pulso_arriba,contador_pulso_abajo);
+                        //Calcular microsegundos
+                        //AUDIO_RECORD_FREQUENCY
+                        int longitud_una_lectura=1000000/AUDIO_RECORD_FREQUENCY;
+
+                        //int microsec_onda=(contador_pulso_abajo+contador_pulso_arriba)*longitud_una_lectura;
+
+                        int microsec_onda=(contador_pulso_abajo+contador_pulso_arriba)*1000000/AUDIO_RECORD_FREQUENCY;
+
+                        printf("Onda tarda (%d %d) %d microsec (0=488, 1=977, guia=619)\n",contador_pulso_abajo,contador_pulso_arriba,microsec_onda);
+
+                        if (microsec_onda>488-50 && microsec_onda<488+50) printf("es un 0\n");
+                        if (microsec_onda>977-50 && microsec_onda<977+50) printf("es un 1\n");
+                        if (microsec_onda>619-50 && microsec_onda<619+50) printf("es tono guia\n");
+                    }
+                }
+            break;
+
+            case 2:
+                if (valor_leido<0) {
+                    if (longitud_temp>0) printf("Fin pulso arriba\n");
+                    estado_onda=1;
+
+                    contador_pulso_arriba=contador_pulso;
+
+                    contador_pulso=0;
+                }
+            break;
+
+
+
+        }
+
+        contador_pulso++;
+
+
+        valor_anterior=valor_leido;
+
+	}
+
+
 
 
 }
@@ -32479,8 +32600,9 @@ void menu_realtape_record_input_overlay(void)
 
 
 
-    menu_realtape_record_input_analize_buffer(menu_realtape_record_input_window);
+    //menu_realtape_record_input_analize_buffer(menu_realtape_record_input_window);
     menu_realtape_record_input_show_info(menu_realtape_record_input_window);
+    menu_realtape_record_input_analize_azimuth(menu_realtape_record_input_window);
     //Print....
     //Tambien contar si se escribe siempre o se tiene en cuenta contador_segundo...
 
