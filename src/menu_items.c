@@ -32232,7 +32232,7 @@ void menu_realtape_record_input_analize_azimuth(zxvision_window *w)
 
     //int longitud_original=longitud;
 
-    int longitud_temp=40;
+    int longitud_temp=100;
 
     /*
     Mal azimuth:
@@ -32250,7 +32250,7 @@ void menu_realtape_record_input_analize_azimuth(zxvision_window *w)
    //2: leyendo valores>0
     //Bit a 1: 1000 Hz
     //Bit a 0: 2000 Hz
-    //Tono guia: 800 Hz (length 2168 T-states. = 619 microsec)
+    //Tono guia: 800 Hz (length 2168 T-states. = 1238 microsec)
     /*
     A '0' bit is encoded as 2 pulses of 855 T-states each. = 488 microsec
 
@@ -32276,22 +32276,22 @@ void menu_realtape_record_input_analize_azimuth(zxvision_window *w)
 
         switch(estado_onda) {
             case 0:
-                if (valor_leido<0) {
+                /*if (valor_leido<0) {
                     if (longitud_temp>0) printf("cambiamos a pulso debajo\n");
                     estado_onda=1;
                     contador_pulso=0;
-                }
+                }*/
 
-                /*if (valor_leido>0) {
-                    if (longitud_temp>0) printf("cambiamos a pulso arriba\n");
+                if (valor_leido>0) {
+                    //if (longitud_temp>0) printf("cambiamos a pulso arriba\n");
                     estado_onda=2;
                     contador_pulso=0;
-                }*/
+                }
             break;
 
             case 1:
                 if (valor_leido>0) {
-                    if (longitud_temp>0) printf("Fin pulso abajo\n");
+                    //if (longitud_temp>0) printf("Fin pulso abajo\n");
                     estado_onda=2;
                     contador_pulso_abajo=contador_pulso;
 
@@ -32308,11 +32308,11 @@ void menu_realtape_record_input_analize_azimuth(zxvision_window *w)
 
                         int microsec_onda=(contador_pulso_abajo+contador_pulso_arriba)*1000000/AUDIO_RECORD_FREQUENCY;
 
-                        printf("Onda tarda (%d %d) %d microsec (0=488, 1=977, guia=619)\n",contador_pulso_abajo,contador_pulso_arriba,microsec_onda);
+                        printf("Onda tarda (%d %d) %d microsec (0=488, 1=977, guia=1238)\n",contador_pulso_abajo,contador_pulso_arriba,microsec_onda);
 
-                        if (microsec_onda>488-50 && microsec_onda<488+50) printf("es un 0\n");
-                        if (microsec_onda>977-50 && microsec_onda<977+50) printf("es un 1\n");
-                        if (microsec_onda>619-50 && microsec_onda<619+50) printf("es tono guia\n");
+                        if (microsec_onda>488-100 && microsec_onda<488+100) printf("es un 0\n");
+                        if (microsec_onda>977-100 && microsec_onda<977+100) printf("es un 1\n");
+                        if (microsec_onda>1238-100 && microsec_onda<1238+100) printf("es tono guia\n");
                     }
                 }
             break;
