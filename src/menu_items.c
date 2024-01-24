@@ -32262,6 +32262,11 @@ void menu_realtape_record_input_analize_azimuth(zxvision_window *w)
    int contador_pulso_abajo=0;
    int contador_pulso_arriba=0;
 
+   int cuantos_ceros=0;
+   int cuantos_unos=0;
+   int cuantos_guias=0;
+   int cuantos_desconocidos=0;
+
     char *origen=menu_realtape_record_input_audio_buffer;
 
 	for (;longitud>0;longitud--) {
@@ -32298,8 +32303,8 @@ void menu_realtape_record_input_analize_azimuth(zxvision_window *w)
                     contador_pulso=0;
 
                     //Tiempo de arriba, abajo indica fin de bit
-                    if (longitud_temp>0) {
-                        printf("Fin onda. arriba %d abajo %d\n",contador_pulso_arriba,contador_pulso_abajo);
+                    //if (longitud_temp>0) {
+                        if (longitud_temp>0) printf("Fin onda. arriba %d abajo %d\n",contador_pulso_arriba,contador_pulso_abajo);
                         //Calcular microsegundos
                         //AUDIO_RECORD_FREQUENCY
                         int longitud_una_lectura=1000000/AUDIO_RECORD_FREQUENCY;
@@ -32308,12 +32313,24 @@ void menu_realtape_record_input_analize_azimuth(zxvision_window *w)
 
                         int microsec_onda=(contador_pulso_abajo+contador_pulso_arriba)*1000000/AUDIO_RECORD_FREQUENCY;
 
-                        printf("Onda tarda (%d %d) %d microsec (0=488, 1=977, guia=1238)\n",contador_pulso_abajo,contador_pulso_arriba,microsec_onda);
+                        if (longitud_temp>0) printf("Onda tarda (%d %d) %d microsec (0=488, 1=977, guia=1238)\n",contador_pulso_abajo,contador_pulso_arriba,microsec_onda);
 
-                        if (microsec_onda>488-100 && microsec_onda<488+100) printf("es un 0\n");
-                        if (microsec_onda>977-100 && microsec_onda<977+100) printf("es un 1\n");
-                        if (microsec_onda>1238-100 && microsec_onda<1238+100) printf("es tono guia\n");
-                    }
+                        if (microsec_onda>488-100 && microsec_onda<488+100) {
+                            if (longitud_temp>0) printf("es un 0\n");
+                            cuantos_ceros++;
+                        }
+                        else if (microsec_onda>977-100 && microsec_onda<977+100) {
+                            if (longitud_temp>0) printf("es un 1\n");
+                            cuantos_unos++;
+                        }
+                        else if (microsec_onda>1238-100 && microsec_onda<1238+100) {
+                            if (longitud_temp>0) printf("es tono guia\n");
+                            cuantos_guias++;
+                        }
+                        else {
+                            cuantos_desconocidos++;
+                        }
+                    //}
                 }
             break;
 
@@ -32339,7 +32356,8 @@ void menu_realtape_record_input_analize_azimuth(zxvision_window *w)
 
 	}
 
-
+    printf("Total ceros: %d Total unos: %d Tonos guias: %d Desconocidos: %d\n",
+        cuantos_ceros,cuantos_unos,cuantos_guias,cuantos_desconocidos);
 
 
 }
