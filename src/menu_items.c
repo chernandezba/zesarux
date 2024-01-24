@@ -32267,6 +32267,12 @@ void menu_realtape_record_input_analize_azimuth(zxvision_window *w)
    int cuantos_guias=0;
    int cuantos_desconocidos=0;
 
+   int valor_max=0;
+   int valor_min=0;
+
+   int amplitud_media_ceros=0;
+   int amplitud_media_unos=0;
+
     char *origen=menu_realtape_record_input_audio_buffer;
 
 	for (;longitud>0;longitud--) {
@@ -32291,6 +32297,7 @@ void menu_realtape_record_input_analize_azimuth(zxvision_window *w)
                     //if (longitud_temp>0) printf("cambiamos a pulso arriba\n");
                     estado_onda=2;
                     contador_pulso=0;
+                    valor_max=valor_min=0;
                 }
             break;
 
@@ -32316,11 +32323,15 @@ void menu_realtape_record_input_analize_azimuth(zxvision_window *w)
                         if (longitud_temp>0) printf("Onda tarda (%d %d) %d microsec (0=488, 1=977, guia=1238)\n",contador_pulso_abajo,contador_pulso_arriba,microsec_onda);
 
                         if (microsec_onda>488-100 && microsec_onda<488+100) {
-                            if (longitud_temp>0) printf("es un 0\n");
+                            int amplitud=valor_max-valor_min;
+                            if (longitud_temp>0) printf("es un 0. amplitud %d\n",amplitud);
+                            amplitud_media_ceros+=amplitud;
                             cuantos_ceros++;
                         }
                         else if (microsec_onda>977-100 && microsec_onda<977+100) {
-                            if (longitud_temp>0) printf("es un 1\n");
+                            int amplitud=valor_max-valor_min;
+                            if (longitud_temp>0) printf("es un 1. amplitud %d\n",amplitud);
+                            amplitud_media_unos+=amplitud;
                             cuantos_unos++;
                         }
                         else if (microsec_onda>1238-100 && microsec_onda<1238+100) {
@@ -32332,6 +32343,9 @@ void menu_realtape_record_input_analize_azimuth(zxvision_window *w)
                         }
                     //}
                 }
+                else {
+                    if (valor_leido<valor_min) valor_min=valor_leido;
+                }
             break;
 
             case 2:
@@ -32342,6 +32356,9 @@ void menu_realtape_record_input_analize_azimuth(zxvision_window *w)
                     contador_pulso_arriba=contador_pulso;
 
                     contador_pulso=0;
+                }
+                else {
+                    if (valor_leido>valor_max) valor_max=valor_leido;
                 }
             break;
 
@@ -32356,8 +32373,15 @@ void menu_realtape_record_input_analize_azimuth(zxvision_window *w)
 
 	}
 
-    printf("Total ceros: %d Total unos: %d Tonos guias: %d Desconocidos: %d\n",
-        cuantos_ceros,cuantos_unos,cuantos_guias,cuantos_desconocidos);
+    if (cuantos_ceros==0) amplitud_media_ceros=0;
+    else amplitud_media_ceros /=cuantos_ceros;
+
+    if (cuantos_unos==0) amplitud_media_unos=0;
+    else amplitud_media_unos /=cuantos_unos;
+
+
+    printf("Total ceros: %d Total unos: %d Tonos guias: %d Desconocidos: %d amplitud ceros %d amplitud unos %d\n",
+        cuantos_ceros,cuantos_unos,cuantos_guias,cuantos_desconocidos,amplitud_media_ceros,amplitud_media_unos);
 
 
 }
