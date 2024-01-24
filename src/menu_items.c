@@ -32101,7 +32101,10 @@ zxvision_window *menu_realtape_record_input_window;
 //para un frame de video
 //#define MENU_REALTAPE_RECORD_INPUT_BUFFER_SIZE (312*2)
 
-#define MENU_REALTAPE_RECORD_INPUT_BUFFER_SIZE (AUDIO_RECORD_BUFFER_FIFO_SIZE)
+//#define MENU_REALTAPE_RECORD_INPUT_BUFFER_SIZE (AUDIO_RECORD_BUFFER_FIFO_SIZE)
+
+//10 frames * 5 = 1 segundo
+#define MENU_REALTAPE_RECORD_INPUT_BUFFER_SIZE (AUDIO_RECORD_BUFFER_SIZE*5)
 
 char menu_realtape_record_input_audio_buffer[MENU_REALTAPE_RECORD_INPUT_BUFFER_SIZE];
 int menu_realtape_record_input_pos_buffer_write=0;
@@ -32341,6 +32344,8 @@ void menu_realtape_record_input_analize_azimuth(zxvision_window *w)
                         else {
                             cuantos_desconocidos++;
                         }
+
+                        valor_max=valor_min=0;
                     //}
                 }
                 else {
@@ -32382,6 +32387,14 @@ void menu_realtape_record_input_analize_azimuth(zxvision_window *w)
 
     printf("Total ceros: %d Total unos: %d Tonos guias: %d Desconocidos: %d amplitud ceros %d amplitud unos %d\n",
         cuantos_ceros,cuantos_unos,cuantos_guias,cuantos_desconocidos,amplitud_media_ceros,amplitud_media_unos);
+
+    //Solo analizar amplitud cuando hay cantidad suficiente
+    if (cuantos_unos>100 && cuantos_ceros>100) {
+        int porcentaje_amplitud=(amplitud_media_unos*100)/amplitud_media_ceros;
+
+        //Si es mas del 150% los unos que los ceros
+        if (porcentaje_amplitud>150) printf("Ajustar AZIMUTH!!\n");
+    }
 
 
 }
@@ -32667,8 +32680,8 @@ void menu_realtape_record_input_overlay(void)
     int x=2*menu_char_width;
     int y=0;
 
-    //2 lineas de estado
-    int restar_lineas=2*menu_char_width;
+    //3 lineas de estado
+    int restar_lineas=3*menu_char_width;
     y+=restar_lineas;
     alto-=restar_lineas;
 
