@@ -32099,7 +32099,10 @@ zxvision_window *menu_realtape_record_input_window;
 
 //buffer circular para analisis en esta ventana
 //para un frame de video
-#define MENU_REALTAPE_RECORD_INPUT_BUFFER_SIZE (312*2)
+//#define MENU_REALTAPE_RECORD_INPUT_BUFFER_SIZE (312*2)
+
+#define MENU_REALTAPE_RECORD_INPUT_BUFFER_SIZE (AUDIO_RECORD_BUFFER_FIFO_SIZE)
+
 char menu_realtape_record_input_audio_buffer[MENU_REALTAPE_RECORD_INPUT_BUFFER_SIZE];
 int menu_realtape_record_input_pos_buffer_write=0;
 int menu_realtape_record_input_pos_buffer_initial=0;
@@ -32116,15 +32119,29 @@ void menu_realtape_record_input_write_byte(char valor)
     }
 }
 
-int menu_realtape_record_input_get_read(int offset)
+/*int menu_realtape_record_input_get_read(int offset)
 {
     int pos=menu_realtape_record_input_pos_buffer_initial+offset;
     if (pos>=MENU_REALTAPE_RECORD_INPUT_BUFFER_SIZE) {
         pos -=MENU_REALTAPE_RECORD_INPUT_BUFFER_SIZE;
     }
     return pos;
-}
+}*/
 
+
+char menu_realtape_record_input_read_byte(void)
+{
+    if (menu_realtape_record_input_pos_buffer_initial==menu_realtape_record_input_pos_buffer_write) {
+        //vacio
+        return 0;
+    }
+
+    char valor_retorno=menu_realtape_record_input_audio_buffer[menu_realtape_record_input_pos_buffer_initial++];
+
+    if (menu_realtape_record_input_pos_buffer_initial>=MENU_REALTAPE_RECORD_INPUT_BUFFER_SIZE) menu_realtape_record_input_pos_buffer_initial=0;
+
+    return valor_retorno;
+}
 
 void menu_realtape_record_input_analize_buffer(zxvision_window *w)
 {
@@ -32244,8 +32261,11 @@ void menu_realtape_record_input_draw_waveform(zxvision_window *w,int x_orig,int 
 
     printf("ancho %d alto %d\n",ancho,alto);
 
+    //Solo leer el trozo que significa un frame de video
+    int longitud_dibujar=312*2;
+
     int i;
-    int trozos_horiz=MENU_REALTAPE_RECORD_INPUT_BUFFER_SIZE/ancho;
+    int trozos_horiz=longitud_dibujar/ancho;
 
     if (trozos_horiz<1) trozos_horiz=1;
 
@@ -32262,9 +32282,11 @@ void menu_realtape_record_input_draw_waveform(zxvision_window *w,int x_orig,int 
 
     menu_realtape_record_input_antes_y_arriba=menu_realtape_record_input_antes_y_abajo=y_orig;
 
-    for (i=0;i<MENU_REALTAPE_RECORD_INPUT_BUFFER_SIZE;i++) {
-        int pos=menu_realtape_record_input_get_read(i);
-        char valor_leido=menu_realtape_record_input_audio_buffer[pos];
+    for (i=0;i<longitud_dibujar;i++) {
+        //int pos=menu_realtape_record_input_get_read(i);
+        //char valor_leido=menu_realtape_record_input_audio_buffer[pos];
+
+        char valor_leido=menu_realtape_record_input_read_byte();
 
         if (valor_leido>valor_max) valor_max=valor_leido;
         if (valor_leido<valor_min) valor_min=valor_leido;
@@ -32346,8 +32368,7 @@ void menu_realtape_record_input_draw_waveform(zxvision_window *w,int x_orig,int 
                 zxvision_draw_line(w,x_orig+x,y_orig,x_orig+x,pos_y,ESTILO_GUI_COLOR_WAVEFORM,menu_realtape_record_input_draw_waveform_putpixel);
             }
 
-            //Indicar y=0
-            zxvision_putpixel(w,x_orig+x,y_orig,ESTILO_GUI_TINTA_NORMAL);
+
 
             pos_en_trozo=0;
             valor_medio=0;
@@ -32358,6 +32379,10 @@ void menu_realtape_record_input_draw_waveform(zxvision_window *w,int x_orig,int 
             x++;
         }
     }
+
+        //Indicar y=0
+        //zxvision_putpixel(w,x_orig+x,y_orig,ESTILO_GUI_TINTA_NORMAL);
+        zxvision_draw_line(w,x_orig,y_orig,x_orig+ancho-1,y_orig,ESTILO_GUI_TINTA_NORMAL,menu_realtape_record_input_draw_waveform_putpixel);
 
 }
 
@@ -32458,9 +32483,10 @@ void menu_realtape_record_input_overlay(void)
     int x=1*menu_char_width;
     int y=0;
 
-    //1 linea de estado
-    y+=menu_char_width;
-    alto-=menu_char_height;
+    //2 lineas de estado
+    int restar_lineas=2*menu_char_width;
+    y+=restar_lineas;
+    alto-=restar_lineas;
 
 
     //borrar anterior cursor de fifo
