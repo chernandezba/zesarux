@@ -32106,9 +32106,13 @@ zxvision_window *menu_realtape_record_input_window;
 char menu_realtape_record_input_audio_buffer[MENU_REALTAPE_RECORD_INPUT_BUFFER_SIZE];
 int menu_realtape_record_input_pos_buffer_write=0;
 int menu_realtape_record_input_pos_buffer_initial=0;
+int menu_realtape_record_input_onda_onda_congelada=0;
 
 void menu_realtape_record_input_write_byte(char valor)
 {
+
+    if (menu_realtape_record_input_onda_onda_congelada) return;
+
     menu_realtape_record_input_audio_buffer[menu_realtape_record_input_pos_buffer_write++]=valor;
 
     if (menu_realtape_record_input_pos_buffer_write>=MENU_REALTAPE_RECORD_INPUT_BUFFER_SIZE) menu_realtape_record_input_pos_buffer_write=0;
@@ -32237,6 +32241,8 @@ int menu_realtape_record_input_antes_y_abajo=0;
 //0=linea continua, 1=relleno, 2=solo puntos
 int menu_realtape_record_input_tipo_onda=0;
 
+
+
 void menu_realtape_record_input_draw_waveform(zxvision_window *w,int x_orig,int y_orig,int ancho,int alto)
 {
 
@@ -32282,11 +32288,15 @@ void menu_realtape_record_input_draw_waveform(zxvision_window *w,int x_orig,int 
 
     menu_realtape_record_input_antes_y_arriba=menu_realtape_record_input_antes_y_abajo=y_orig;
 
+    //si onda congelada, posicion lectura inicial siempre la misma
+
     for (i=0;i<longitud_dibujar;i++) {
         //int pos=menu_realtape_record_input_get_read(i);
         //char valor_leido=menu_realtape_record_input_audio_buffer[pos];
 
         char valor_leido=menu_realtape_record_input_read_byte();
+
+        if (menu_realtape_record_input_onda_onda_congelada) valor_leido=menu_realtape_record_input_audio_buffer[i];
 
         if (valor_leido>valor_max) valor_max=valor_leido;
         if (valor_leido<valor_min) valor_min=valor_leido;
@@ -32475,12 +32485,22 @@ void menu_realtape_record_input_overlay(void)
     //Tambien contar si se escribe siempre o se tiene en cuenta contador_segundo...
 
 
+    //menu_realtape_record_input_tipo_onda
+    //0=linea continua, 1=relleno, 2=solo puntos
+    char tipo_onda[32];
+    if (menu_realtape_record_input_tipo_onda==1) strcpy(tipo_onda,"Fill");
+    else if (menu_realtape_record_input_tipo_onda==2) strcpy(tipo_onda,"Dots");
+    else strcpy(tipo_onda,"Line");
 
+
+    //menu_realtape_record_input_onda_onda_congelada
+    zxvision_print_string_defaults_fillspc_format(menu_realtape_record_input_window,1,2,"t wave type: %s. [%c] f: freeze",
+        tipo_onda,(menu_realtape_record_input_onda_onda_congelada ? 'X' : ' '));
 
     int alto=(menu_realtape_record_input_window->visible_height-2)*menu_char_height;
     int ancho=(menu_realtape_record_input_window->visible_width-2)*menu_char_width;
 
-    int x=1*menu_char_width;
+    int x=2*menu_char_width;
     int y=0;
 
     //2 lineas de estado
@@ -32593,6 +32613,10 @@ void menu_realtape_record_input(MENU_ITEM_PARAMETERS)
                 if (menu_realtape_record_input_tipo_onda>2) menu_realtape_record_input_tipo_onda=0;
             break;
 
+
+            case 'f':
+                menu_realtape_record_input_onda_onda_congelada ^=1;
+            break;
 
 
             //Salir con ESC
