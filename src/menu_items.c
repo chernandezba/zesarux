@@ -32254,6 +32254,8 @@ int menu_realtape_record_input_analize_volumen_escalado=0;
 int menu_realtape_record_input_porcentaje_azimuth=100;
 int menu_realtape_record_input_porcentaje_azimuth_antes=0;
 
+int menu_realtape_record_input_aviso_azimuth=0;
+
 //En que linea se indica la info del contenido de la cinta y por tanto aqui se alinea el dibujo del cabezal
 #define DRAW_TAPE_MOSTRAR_CONTENIDO_CINTA_LINEA 10
 
@@ -32528,6 +32530,9 @@ int menu_realtape_record_input_analize_azimuth(zxvision_window *w,int linea)
 
             zxvision_print_string_defaults_fillspc_format(w,1,linea,"Azimuth Accuracy %3d %% %s",porcentaje_amplitud,
                 (porcentaje_amplitud<75 ? "Adjust AZIMUTH!!" : "OK"));
+
+            if (porcentaje_amplitud<75) menu_realtape_record_input_aviso_azimuth=1;
+            else menu_realtape_record_input_aviso_azimuth=0;
 
             menu_realtape_record_input_porcentaje_azimuth_antes=menu_realtape_record_input_porcentaje_azimuth;
 
@@ -32827,7 +32832,7 @@ int temp_angulo=0;
 
 
 //yactual es la parte de arriba del tornillo
-void menu_realtape_record_input_draw_tape_tornillo(zxvision_window *w,int xactual,int yactual,int alto_tornillo)
+void menu_realtape_record_input_draw_tape_tornillo(zxvision_window *w,int xactual,int yactual,int alto_tornillo,int color)
 {
     //int ancho_tornillo=DRAW_TAPE_ANCHO_TORNILLO;
     //int alto_tornillo=DRAW_TAPE_ALTO_TORNILLO;
@@ -32836,10 +32841,10 @@ void menu_realtape_record_input_draw_tape_tornillo(zxvision_window *w,int xactua
 
 
     //ancho del tornillo
-    zxvision_draw_filled_rectangle(w,xactual,yactual,DRAW_TAPE_ANCHO_TORNILLO,alto_tornillo,ESTILO_GUI_TINTA_NORMAL);
+    zxvision_draw_filled_rectangle(w,xactual,yactual,DRAW_TAPE_ANCHO_TORNILLO,alto_tornillo,color);
     //cabeza del tornillo
     xactual -=(DRAW_TAPE_ANCHO_CABEZA_TORNILLO-DRAW_TAPE_ANCHO_TORNILLO)/2;
-    zxvision_draw_line(w,xactual,yactual,xactual+DRAW_TAPE_ANCHO_CABEZA_TORNILLO,yactual,ESTILO_GUI_TINTA_NORMAL,menu_realtape_record_input_draw_waveform_putpixel);
+    zxvision_draw_line(w,xactual,yactual,xactual+DRAW_TAPE_ANCHO_CABEZA_TORNILLO,yactual,color,menu_realtape_record_input_draw_waveform_putpixel);
 
 }
 
@@ -32975,14 +32980,17 @@ void menu_realtape_record_input_draw_tape_aux(zxvision_window *w,int angulo_rota
     //Tornillo de la derecha
     xactual=origen_x-DRAW_TAPE_ANCHO_TORNILLO*2;
     yactual=origen_y-DRAW_TAPE_ALTO_TORNILLO;
-    menu_realtape_record_input_draw_tape_tornillo(w,xactual,yactual,DRAW_TAPE_ALTO_TORNILLO);
+    menu_realtape_record_input_draw_tape_tornillo(w,xactual,yactual,DRAW_TAPE_ALTO_TORNILLO,ESTILO_GUI_TINTA_NORMAL);
 
     //Tornillo de la izquierda. la y viene de donde esta la base
     xactual=origen_x-ancho_base+(DRAW_TAPE_ANCHO_TORNILLO);//-DRAW_TAPE_ANCHO_TORNILLO*2;
     yactual=yfinalbase-DRAW_TAPE_ALTO_TORNILLO;
 
     int alto_tornillo=origen_y-yactual;
-    menu_realtape_record_input_draw_tape_tornillo(w,xactual,yactual,alto_tornillo);
+
+    int color_tornillo_izq=ESTILO_GUI_TINTA_NORMAL;
+    if (menu_realtape_record_input_aviso_azimuth) color_tornillo_izq=ESTILO_GUI_COLOR_AVISO;
+    menu_realtape_record_input_draw_tape_tornillo(w,xactual,yactual,alto_tornillo,color_tornillo_izq);
 
 
     //Dibujar la linea de cinta
