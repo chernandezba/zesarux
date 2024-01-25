@@ -32255,7 +32255,7 @@ int menu_realtape_record_input_porcentaje_azimuth=100;
 int menu_realtape_record_input_porcentaje_azimuth_antes=0;
 
 //En que linea se indica la info del contenido de la cinta y por tanto aqui se alinea el dibujo del cabezal
-#define DRAW_TAPE_MOSTRAR_CONTENIDO_CINTA_LINEA 8
+#define DRAW_TAPE_MOSTRAR_CONTENIDO_CINTA_LINEA 10
 
 int menu_realtape_record_input_analize_azimuth(zxvision_window *w,int linea)
 {
@@ -32959,7 +32959,7 @@ void menu_realtape_record_input_draw_tape_aux(zxvision_window *w,int angulo_rota
 
     //Dibujar la linea de cinta
     //Situarnos en la izquierda
-    int ancho_cinta=200;
+    int ancho_cinta=270;
     int origen_x_cinta=origen_x-ancho_base/2; //en el medio
     origen_x_cinta -= ancho_cinta/2;
 
