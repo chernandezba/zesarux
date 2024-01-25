@@ -32802,6 +32802,29 @@ int menu_realtape_record_input_overlay_segundo_anterior=0;
 
 int temp_angulo=0;
 
+#define DRAW_TAPE_ANCHO_CABEZAL 40
+#define DRAW_TAPE_ALTO_CABEZAL 30
+#define DRAW_TAPE_ANCHO_TORNILLO (DRAW_TAPE_ANCHO_CABEZAL/10)
+#define DRAW_TAPE_ALTO_TORNILLO (DRAW_TAPE_ALTO_CABEZAL/3)
+#define DRAW_TAPE_ANCHO_CABEZA_TORNILLO (DRAW_TAPE_ANCHO_TORNILLO*2)
+
+void menu_realtape_record_input_draw_tape_tornillo(zxvision_window *w,int xactual,int yactual)
+{
+    //int ancho_tornillo=DRAW_TAPE_ANCHO_TORNILLO;
+    //int alto_tornillo=DRAW_TAPE_ALTO_TORNILLO;
+
+    //int ancho_cabeza_tornillo=DRAW_TAPE_ANCHO_CABEZA_TORNILLO;
+
+
+
+    //ancho del tornillo
+    zxvision_draw_filled_rectangle(w,xactual,yactual,DRAW_TAPE_ANCHO_TORNILLO,DRAW_TAPE_ALTO_TORNILLO,ESTILO_GUI_TINTA_NORMAL);
+    //cabeza del tornillo
+    xactual -=(DRAW_TAPE_ANCHO_CABEZA_TORNILLO-DRAW_TAPE_ANCHO_TORNILLO)/2;
+    zxvision_draw_line(w,xactual,yactual,xactual+DRAW_TAPE_ANCHO_CABEZA_TORNILLO,yactual,ESTILO_GUI_TINTA_NORMAL,menu_realtape_record_input_draw_waveform_putpixel);
+
+}
+
 void menu_realtape_record_input_draw_tape_aux(zxvision_window *w,int angulo_rotacion)
 {
 
@@ -32810,8 +32833,8 @@ void menu_realtape_record_input_draw_tape_aux(zxvision_window *w,int angulo_rota
 
     int ancho_base=80;
 
-    int ancho_cabezal=40;
-    int alto_cabezal=30;
+    int ancho_cabezal=DRAW_TAPE_ANCHO_CABEZAL;
+    int alto_cabezal=DRAW_TAPE_ALTO_CABEZAL;
 
     int xactual=origen_x;
     int yactual=origen_y;
@@ -32895,6 +32918,30 @@ void menu_realtape_record_input_draw_tape_aux(zxvision_window *w,int angulo_rota
     zxvision_draw_line(w,xactual,yactual,xfinal,yfinal,ESTILO_GUI_TINTA_NORMAL,menu_realtape_record_input_draw_waveform_putpixel);
     xactual=xfinal;
     yactual=yfinal;
+
+    //Tornillo de la derecha
+
+
+    xactual=origen_x-DRAW_TAPE_ANCHO_TORNILLO*2;
+    yactual=origen_y-DRAW_TAPE_ALTO_TORNILLO;
+
+    menu_realtape_record_input_draw_tape_tornillo(w,xactual,yactual);
+
+    /*
+
+
+    int ancho_tornillo=ancho_cabezal/10;
+    int alto_tornillo=alto_cabezal/3;
+
+    int ancho_cabeza_tornillo=ancho_tornillo*2;
+
+    //ancho del tornillo
+    zxvision_draw_filled_rectangle(w,xactual,yactual,ancho_tornillo,alto_tornillo,ESTILO_GUI_TINTA_NORMAL);
+    //cabeza del tornillo
+    xactual -=(ancho_cabeza_tornillo-ancho_tornillo)/2;
+    zxvision_draw_line(w,xactual,yactual,xactual+ancho_cabeza_tornillo,yactual,ESTILO_GUI_TINTA_NORMAL,menu_realtape_record_input_draw_waveform_putpixel);
+
+    */
 }
 
 void menu_realtape_record_input_draw_tape(zxvision_window *w)
