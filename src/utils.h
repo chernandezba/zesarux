@@ -1014,5 +1014,6 @@ extern void util_stl_print_vertex(char *buffer_linea,int x,int y,int z,int expon
 extern void util_stl_print_facet(char *buffer_linea,int x,int y,int z);
 extern void util_stl_cube(FILE *ptr_archivo,int x,int y,int z,int exponente,int exponente_z,int tamanyo_x,int tamanyo_y,int tamanyo_z);
 extern int util_write_stl_file(char *archivo, int ancho, int alto, z80_byte *source,int incluir_base,int alto_base,int exponente,int alto_solido);
+extern void util_move_turtle(int xorig,int yorig,int grados,int longitud,int *xfinal,int *yfinal);
 
 #endif

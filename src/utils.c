@@ -22318,3 +22318,12 @@ endsolid
 
     */
 }
+
+/*
+Para graficos de Tortuga tipo Logo
+*/
+void util_move_turtle(int xorig,int yorig,int grados,int longitud,int *xfinal,int *yfinal)
+{
+    *xfinal=xorig+((longitud*util_get_cosine(grados))/10000);
+    *yfinal=yorig-((longitud*util_get_sine(grados))/10000);
+}

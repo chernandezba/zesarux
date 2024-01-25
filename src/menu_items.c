@@ -32251,6 +32251,9 @@ void menu_realtape_record_input_analize_azimuth_scroll_string(char *texto)
 int menu_realtape_record_input_analize_previo_volumen=0;
 int menu_realtape_record_input_analize_volumen_escalado=0;
 
+int menu_realtape_record_input_porcentaje_azimuth=100;
+int menu_realtape_record_input_porcentaje_azimuth_antes=0;
+
 int menu_realtape_record_input_analize_azimuth(zxvision_window *w,int linea)
 {
 
@@ -32509,6 +32512,9 @@ int menu_realtape_record_input_analize_azimuth(zxvision_window *w,int linea)
 
             zxvision_print_string_defaults_fillspc_format(w,1,linea,"Azimuth Accuracy %3d %% %s",porcentaje_amplitud,
                 (porcentaje_amplitud<75 ? "Adjust AZIMUTH!!" : "OK"));
+
+            menu_realtape_record_input_porcentaje_azimuth_antes=menu_realtape_record_input_porcentaje_azimuth;
+            menu_realtape_record_input_porcentaje_azimuth=porcentaje_amplitud;
 
         }
 
@@ -32788,6 +32794,77 @@ int menu_realtape_record_input_show_info(zxvision_window *w,int linea)
 
 int menu_realtape_record_input_overlay_segundo_anterior=0;
 
+int temp_angulo=0;
+
+void menu_realtape_record_input_draw_tape_aux(zxvision_window *w,int angulo_rotacion)
+{
+
+    int origen_x=200;
+    int origen_y=100;
+
+    int ancho_base=80;
+
+    int ancho_cabezal=40;
+    int alto_cabezal=30;
+
+    int xactual=origen_x;
+    int yactual=origen_y;
+
+    int xfinal,yfinal;
+
+    //base
+    util_move_turtle(xactual,yactual,180-angulo_rotacion,ancho_base,&xfinal,&yfinal);
+    zxvision_draw_line(w,xactual,yactual,xfinal,yfinal,ESTILO_GUI_TINTA_NORMAL,menu_realtape_record_input_draw_waveform_putpixel);
+    xactual=xfinal;
+    yactual=yfinal;
+
+    //movernos hasta donde empieza el cabezal
+    util_move_turtle(origen_x,origen_y,180-angulo_rotacion,(ancho_base-ancho_cabezal)/2,&xfinal,&yfinal);
+    xactual=xfinal;
+    yactual=yfinal;
+
+    //cabezal derecha vertical
+    util_move_turtle(xactual,yactual,90-angulo_rotacion,alto_cabezal,&xfinal,&yfinal);
+    zxvision_draw_line(w,xactual,yactual,xfinal,yfinal,ESTILO_GUI_TINTA_NORMAL,menu_realtape_record_input_draw_waveform_putpixel);
+    xactual=xfinal;
+    yactual=yfinal;
+
+    //cabezal arriba horizontal
+    util_move_turtle(xactual,yactual,180-angulo_rotacion,ancho_cabezal,&xfinal,&yfinal);
+    zxvision_draw_line(w,xactual,yactual,xfinal,yfinal,ESTILO_GUI_TINTA_NORMAL,menu_realtape_record_input_draw_waveform_putpixel);
+    xactual=xfinal;
+    yactual=yfinal;
+
+    //cabezal derecha vertical
+    util_move_turtle(xactual,yactual,270-angulo_rotacion,alto_cabezal,&xfinal,&yfinal);
+    zxvision_draw_line(w,xactual,yactual,xfinal,yfinal,ESTILO_GUI_TINTA_NORMAL,menu_realtape_record_input_draw_waveform_putpixel);
+    xactual=xfinal;
+    yactual=yfinal;
+
+}
+
+void menu_realtape_record_input_draw_tape(zxvision_window *w)
+{
+
+
+
+    int angulo_rotacion=temp_angulo;
+
+    //Ajuste angulo segun porcentaje exactitud azimuth
+    //Si 100% correcto, angulo (realmente desplazamiento angulo) es 0
+    //Para facilitar los calculos, tendremos maximo 45 grados de angulo
+    if (menu_realtape_record_input_porcentaje_azimuth>=100) angulo_rotacion=0;
+    else {
+
+        angulo_rotacion=(100-menu_realtape_record_input_porcentaje_azimuth)/2;
+        if (angulo_rotacion>30) angulo_rotacion=30;
+    }
+
+
+    menu_realtape_record_input_draw_tape_aux(w,angulo_rotacion);
+
+}
+
 void menu_realtape_record_input_overlay(void)
 {
 
@@ -32851,6 +32928,8 @@ void menu_realtape_record_input_overlay(void)
         menu_realtape_record_input_analize_previo_volumen=menu_decae_dec_valor_volumen(menu_realtape_record_input_analize_previo_volumen,menu_realtape_record_input_analize_volumen_escalado);
 
     }
+
+    menu_realtape_record_input_draw_tape(menu_realtape_record_input_window);
 
 
     //Mostrar contenido
@@ -32941,6 +33020,9 @@ void menu_realtape_record_input(MENU_ITEM_PARAMETERS)
             case 't':
                 menu_realtape_record_input_tipo_onda++;
                 if (menu_realtape_record_input_tipo_onda>2) menu_realtape_record_input_tipo_onda=0;
+
+                //temp
+                temp_angulo++;
             break;
 
 
