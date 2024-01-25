@@ -32254,6 +32254,9 @@ int menu_realtape_record_input_analize_volumen_escalado=0;
 int menu_realtape_record_input_porcentaje_azimuth=100;
 int menu_realtape_record_input_porcentaje_azimuth_antes=0;
 
+//En que linea se indica la info del contenido de la cinta y por tanto aqui se alinea el dibujo del cabezal
+#define DRAW_TAPE_MOSTRAR_CONTENIDO_CINTA_LINEA 8
+
 int menu_realtape_record_input_analize_azimuth(zxvision_window *w,int linea)
 {
 
@@ -32473,20 +32476,34 @@ int menu_realtape_record_input_analize_azimuth(zxvision_window *w,int linea)
 
         zxvision_print_string_defaults_fillspc(w,1,linea++,"Guessed ZX Spectrum loading tone");
 
+        char buffer_signal_type[50];
+        buffer_signal_type[0]=0;
+
         //Analisis del tipo de onda
         //Si mayoria tono guia
         if (cuantos_guias>cuantos_unos && cuantos_guias>cuantos_ceros) {
-            zxvision_print_string_defaults_fillspc_format(w,1,linea,"Signal type: %s",animacion_string_pilot_tone);
+            //zxvision_print_string_defaults_fillspc_format(w,1,linea,"Signal type: %s",animacion_string_pilot_tone);
+            strcpy(buffer_signal_type,animacion_string_pilot_tone);
         }
         else if (cuantos_guias<minimo_ondas && cuantos_unos<minimo_ondas) {
-            zxvision_print_string_defaults_fillspc_format(w,1,linea,"Signal type: %s",animacion_string_zeros);
+            //zxvision_print_string_defaults_fillspc_format(w,1,linea,"Signal type: %s",animacion_string_zeros);
+            strcpy(buffer_signal_type,animacion_string_zeros);
         }
 
         else if (cuantos_guias<minimo_ondas && cuantos_ceros<minimo_ondas) {
-            zxvision_print_string_defaults_fillspc_format(w,1,linea,"Signal type: %s",animacion_string_unos);
+            //zxvision_print_string_defaults_fillspc_format(w,1,linea,"Signal type: %s",animacion_string_unos);
+            strcpy(buffer_signal_type,animacion_string_unos);
         }
 
-        else zxvision_print_string_defaults_fillspc_format(w,1,linea,"Signal type: %s",animacion_string_unos_zeros);
+        else {
+            //zxvision_print_string_defaults_fillspc_format(w,1,linea,"Signal type: %s",animacion_string_unos_zeros);
+            strcpy(buffer_signal_type,animacion_string_unos_zeros);
+        }
+
+        zxvision_print_string_defaults_fillspc_format(w,1,linea,"Signal type: %s",buffer_signal_type);
+
+        //temp
+        zxvision_print_string_defaults_fillspc(w,1,DRAW_TAPE_MOSTRAR_CONTENIDO_CINTA_LINEA,buffer_signal_type);
 
         linea++;
 
@@ -32807,6 +32824,7 @@ int temp_angulo=0;
 #define DRAW_TAPE_ANCHO_TORNILLO (DRAW_TAPE_ANCHO_CABEZAL/10)
 #define DRAW_TAPE_ALTO_TORNILLO (DRAW_TAPE_ALTO_CABEZAL/3)
 #define DRAW_TAPE_ANCHO_CABEZA_TORNILLO (DRAW_TAPE_ANCHO_TORNILLO*2)
+#define DRAW_TAPE_SEPARACION_CABEZAL_CINTA_Y (DRAW_TAPE_ALTO_CABEZAL/5)
 
 
 //yactual es la parte de arriba del tornillo
@@ -32826,13 +32844,13 @@ void menu_realtape_record_input_draw_tape_tornillo(zxvision_window *w,int xactua
 
 }
 
-void menu_realtape_record_input_draw_tape_aux(zxvision_window *w,int angulo_rotacion)
+void menu_realtape_record_input_draw_tape_aux(zxvision_window *w,int angulo_rotacion,int origen_x,int origen_y)
 {
 
     //coordenada x donde esta la derecha de la base del cabezal
-    int origen_x=200;
+    //int origen_x=200;
     //coordenada y donde esta la derecha de la base del cabezal
-    int origen_y=100;
+    //int origen_y=100;
 
     int ancho_base=80;
 
@@ -32953,7 +32971,7 @@ void menu_realtape_record_input_draw_tape_aux(zxvision_window *w,int angulo_rota
     zxvision_draw_line(w,origen_x_cinta,origen_y_cinta,origen_x_cinta+ancho_cinta,origen_y_cinta,ESTILO_GUI_TINTA_NORMAL,menu_realtape_record_input_draw_waveform_putpixel);
 
 
-    origen_y_cinta=origen_y-DRAW_TAPE_ALTO_CABEZAL+separacion_cabezal_cinta_y;
+    origen_y_cinta=origen_y-DRAW_TAPE_ALTO_CABEZAL+DRAW_TAPE_SEPARACION_CABEZAL_CINTA_Y;
 
     //La de arriba
     zxvision_draw_line(w,origen_x_cinta,origen_y_cinta,origen_x_cinta+ancho_cinta,origen_y_cinta,ESTILO_GUI_TINTA_NORMAL,menu_realtape_record_input_draw_waveform_putpixel);
@@ -32978,8 +32996,19 @@ void menu_realtape_record_input_draw_tape(zxvision_window *w)
         if (angulo_rotacion>20) angulo_rotacion=20;
     }
 
+    int linea_mostrar_contenido_cinta=DRAW_TAPE_MOSTRAR_CONTENIDO_CINTA_LINEA;
 
-    menu_realtape_record_input_draw_tape_aux(w,angulo_rotacion);
+
+    //coordenada x donde esta la derecha de la base del cabezal
+    int origen_x=200;
+    //coordenada y donde esta la derecha de la base del cabezal
+    //int origen_y=100;
+
+    int origen_y=(linea_mostrar_contenido_cinta+1)*menu_char_height;
+
+    origen_y+=DRAW_TAPE_SEPARACION_CABEZAL_CINTA_Y;
+
+    menu_realtape_record_input_draw_tape_aux(w,angulo_rotacion,origen_x,origen_y);
 
 }
 
