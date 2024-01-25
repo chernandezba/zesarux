@@ -32259,6 +32259,8 @@ int menu_realtape_record_input_aviso_azimuth=0;
 //En que linea se indica la info del contenido de la cinta y por tanto aqui se alinea el dibujo del cabezal
 #define DRAW_TAPE_MOSTRAR_CONTENIDO_CINTA_LINEA 10
 
+
+
 int menu_realtape_record_input_analize_azimuth(zxvision_window *w,int linea)
 {
 
@@ -32525,6 +32527,7 @@ int menu_realtape_record_input_analize_azimuth(zxvision_window *w,int linea)
 
             //Los unos tienen que ocupar mas siempre. Por tanto porcentaje de  > 100% no deberia tener sentido
             if (porcentaje_amplitud>100) porcentaje_amplitud=100;
+
 
             //Si es menos del 75%
 
@@ -32821,7 +32824,7 @@ int menu_realtape_record_input_show_info(zxvision_window *w,int linea)
 
 int menu_realtape_record_input_overlay_segundo_anterior=0;
 
-int temp_angulo=0;
+
 
 #define DRAW_TAPE_ANCHO_CABEZAL 40
 #define DRAW_TAPE_ALTO_CABEZAL 30
@@ -33030,7 +33033,8 @@ void menu_realtape_record_input_draw_tape(zxvision_window *w)
 
 
 
-    int angulo_rotacion=temp_angulo;
+    int angulo_rotacion;
+
 
     //Ajuste angulo segun porcentaje exactitud azimuth
     //Si 100% correcto, angulo (realmente desplazamiento angulo) es 0
@@ -33122,7 +33126,7 @@ void menu_realtape_record_input_overlay(void)
 
     }
 
-    menu_realtape_record_input_frame_puntitos++;
+    if (audio_is_recording_input) menu_realtape_record_input_frame_puntitos++;
 
     menu_realtape_record_input_draw_tape(menu_realtape_record_input_window);
 
@@ -33216,8 +33220,6 @@ void menu_realtape_record_input(MENU_ITEM_PARAMETERS)
                 menu_realtape_record_input_tipo_onda++;
                 if (menu_realtape_record_input_tipo_onda>2) menu_realtape_record_input_tipo_onda=0;
 
-                //temp
-                temp_angulo++;
             break;
 
 
