@@ -32843,6 +32843,23 @@ void menu_realtape_record_input_draw_tape_tornillo(zxvision_window *w,int xactua
 
 }
 
+
+//para la animacion de los puntitos que se mueven en la derecha de la cinta
+int menu_realtape_record_input_frame_puntitos=0;
+
+void menu_realtape_record_input_draw_tape_puntitos(zxvision_window *w,int frame,int color,int x,int y)
+{
+    frame %=20;
+
+    zxvision_putpixel(w,x-frame,y,color);
+
+    zxvision_putpixel(w,x+10-frame,y+5,color);
+
+    zxvision_putpixel(w,x+15-frame,y-3,color);
+
+    zxvision_putpixel(w,x+24-frame,y-7,color);
+}
+
 void menu_realtape_record_input_draw_tape_aux(zxvision_window *w,int angulo_rotacion,int origen_x,int origen_y)
 {
 
@@ -32975,6 +32992,15 @@ void menu_realtape_record_input_draw_tape_aux(zxvision_window *w,int angulo_rota
     //La de arriba
     zxvision_draw_line(w,origen_x_cinta,origen_y_cinta,origen_x_cinta+ancho_cinta,origen_y_cinta,ESTILO_GUI_TINTA_NORMAL,menu_realtape_record_input_draw_waveform_putpixel);
 
+    //puntitos
+    int xpuntitos=origen_x_cinta+(ancho_cinta/4)*3;
+    int ypuntitos=origen_y_cinta+DRAW_TAPE_SEPARACION_CABEZAL_CINTA_Y+5;
+
+    //borrar el anterior
+    if (menu_realtape_record_input_frame_puntitos>0) {
+        menu_realtape_record_input_draw_tape_puntitos(w,menu_realtape_record_input_frame_puntitos-1,ESTILO_GUI_PAPEL_NORMAL,xpuntitos,ypuntitos);
+    }
+    menu_realtape_record_input_draw_tape_puntitos(w,menu_realtape_record_input_frame_puntitos,ESTILO_GUI_TINTA_NORMAL,xpuntitos,ypuntitos);
 
 }
 
@@ -33074,6 +33100,8 @@ void menu_realtape_record_input_overlay(void)
         menu_realtape_record_input_analize_previo_volumen=menu_decae_dec_valor_volumen(menu_realtape_record_input_analize_previo_volumen,menu_realtape_record_input_analize_volumen_escalado);
 
     }
+
+    menu_realtape_record_input_frame_puntitos++;
 
     menu_realtape_record_input_draw_tape(menu_realtape_record_input_window);
 
