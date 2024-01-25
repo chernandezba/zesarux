@@ -32808,7 +32808,9 @@ int temp_angulo=0;
 #define DRAW_TAPE_ALTO_TORNILLO (DRAW_TAPE_ALTO_CABEZAL/3)
 #define DRAW_TAPE_ANCHO_CABEZA_TORNILLO (DRAW_TAPE_ANCHO_TORNILLO*2)
 
-void menu_realtape_record_input_draw_tape_tornillo(zxvision_window *w,int xactual,int yactual)
+
+//yactual es la parte de arriba del tornillo
+void menu_realtape_record_input_draw_tape_tornillo(zxvision_window *w,int xactual,int yactual,int alto_tornillo)
 {
     //int ancho_tornillo=DRAW_TAPE_ANCHO_TORNILLO;
     //int alto_tornillo=DRAW_TAPE_ALTO_TORNILLO;
@@ -32816,9 +32818,8 @@ void menu_realtape_record_input_draw_tape_tornillo(zxvision_window *w,int xactua
     //int ancho_cabeza_tornillo=DRAW_TAPE_ANCHO_CABEZA_TORNILLO;
 
 
-
     //ancho del tornillo
-    zxvision_draw_filled_rectangle(w,xactual,yactual,DRAW_TAPE_ANCHO_TORNILLO,DRAW_TAPE_ALTO_TORNILLO,ESTILO_GUI_TINTA_NORMAL);
+    zxvision_draw_filled_rectangle(w,xactual,yactual,DRAW_TAPE_ANCHO_TORNILLO,alto_tornillo,ESTILO_GUI_TINTA_NORMAL);
     //cabeza del tornillo
     xactual -=(DRAW_TAPE_ANCHO_CABEZA_TORNILLO-DRAW_TAPE_ANCHO_TORNILLO)/2;
     zxvision_draw_line(w,xactual,yactual,xactual+DRAW_TAPE_ANCHO_CABEZA_TORNILLO,yactual,ESTILO_GUI_TINTA_NORMAL,menu_realtape_record_input_draw_waveform_putpixel);
@@ -32841,11 +32842,15 @@ void menu_realtape_record_input_draw_tape_aux(zxvision_window *w,int angulo_rota
 
     int xfinal,yfinal;
 
+    int yfinalbase;
+
     //base
     util_move_turtle(xactual,yactual,180-angulo_rotacion,ancho_base,&xfinal,&yfinal);
     zxvision_draw_line(w,xactual,yactual,xfinal,yfinal,ESTILO_GUI_TINTA_NORMAL,menu_realtape_record_input_draw_waveform_putpixel);
-    xactual=xfinal;
-    yactual=yfinal;
+    //xactual=xfinal;
+    //yactual=yfinal;
+    //Guardar posicion Y para luego dibujar tornillo izquierda
+    yfinalbase=yfinal;
 
     //movernos hasta donde empieza el cabezal
     util_move_turtle(origen_x,origen_y,180-angulo_rotacion,(ancho_base-ancho_cabezal)/2,&xfinal,&yfinal);
@@ -32920,28 +32925,16 @@ void menu_realtape_record_input_draw_tape_aux(zxvision_window *w,int angulo_rota
     yactual=yfinal;
 
     //Tornillo de la derecha
-
-
     xactual=origen_x-DRAW_TAPE_ANCHO_TORNILLO*2;
     yactual=origen_y-DRAW_TAPE_ALTO_TORNILLO;
+    menu_realtape_record_input_draw_tape_tornillo(w,xactual,yactual,DRAW_TAPE_ALTO_TORNILLO);
 
-    menu_realtape_record_input_draw_tape_tornillo(w,xactual,yactual);
+    //Tornillo de la izquierda. la y viene de donde esta la base
+    xactual=origen_x-ancho_base+(DRAW_TAPE_ANCHO_TORNILLO);//-DRAW_TAPE_ANCHO_TORNILLO*2;
+    yactual=yfinalbase-DRAW_TAPE_ALTO_TORNILLO;
 
-    /*
-
-
-    int ancho_tornillo=ancho_cabezal/10;
-    int alto_tornillo=alto_cabezal/3;
-
-    int ancho_cabeza_tornillo=ancho_tornillo*2;
-
-    //ancho del tornillo
-    zxvision_draw_filled_rectangle(w,xactual,yactual,ancho_tornillo,alto_tornillo,ESTILO_GUI_TINTA_NORMAL);
-    //cabeza del tornillo
-    xactual -=(ancho_cabeza_tornillo-ancho_tornillo)/2;
-    zxvision_draw_line(w,xactual,yactual,xactual+ancho_cabeza_tornillo,yactual,ESTILO_GUI_TINTA_NORMAL,menu_realtape_record_input_draw_waveform_putpixel);
-
-    */
+    int alto_tornillo=origen_y-yactual;
+    menu_realtape_record_input_draw_tape_tornillo(w,xactual,yactual,alto_tornillo);
 }
 
 void menu_realtape_record_input_draw_tape(zxvision_window *w)
