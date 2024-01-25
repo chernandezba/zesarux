@@ -1743,7 +1743,7 @@ Calculando ese tiempo: 12% cpu
                                                     core_statistics_previo_audio_record_buffer,tamanyo_buffer_audio);
 
 
-        sprintf (texto_buffer,"Record Buffer%s: %d/%d (%3d%%) [%s]",
+        sprintf (texto_buffer,"Record Buffer%s: %6d/%6d (%3d%%) [%s]",
                     (!audio_is_recording_input ? " (Not Recording)" : ""),
                     posicion_buffer_audio,tamanyo_buffer_audio,perc_audio,buf_volumen_canal);
 
@@ -32150,6 +32150,8 @@ char menu_realtape_record_input_read_byte(void)
     return valor_retorno;
 }
 
+
+//Esta función no la estoy usando ya
 void menu_realtape_record_input_analize_buffer(zxvision_window *w)
 {
 
@@ -32227,8 +32229,29 @@ void menu_realtape_record_input_analize_buffer(zxvision_window *w)
 
 }
 
+int menu_realtape_record_input_analize_azimuth_frame_animacion=0;
+char animacion_string_pilot_tone[]="Pilot tone  ";
+char animacion_string_zeros[]=     "0  0  0  0  ";
+char animacion_string_unos[]=      "1  1  1  1  ";
+char animacion_string_unos_zeros[]="1  0  1  0  ";
 
-void menu_realtape_record_input_analize_azimuth(zxvision_window *w)
+void menu_realtape_record_input_analize_azimuth_scroll_string(char *texto)
+{
+    int longitud=strlen(texto);
+    int final=longitud-1;
+
+    int i;
+    char inicial=texto[0];
+    for (i=0;i<longitud-1;i++) {
+        texto[i]=texto[i+1];
+    }
+    texto[final]=inicial;
+}
+
+int menu_realtape_record_input_analize_previo_volumen=0;
+int menu_realtape_record_input_analize_volumen_escalado=0;
+
+int menu_realtape_record_input_analize_azimuth(zxvision_window *w,int linea)
 {
 
     int longitud=MENU_REALTAPE_RECORD_INPUT_BUFFER_SIZE;
@@ -32276,12 +32299,18 @@ void menu_realtape_record_input_analize_azimuth(zxvision_window *w)
    int amplitud_media_ceros=0;
    int amplitud_media_unos=0;
 
+   int max_absoluto=0;
+   int min_absoluto=0;
+
     char *origen=menu_realtape_record_input_audio_buffer;
 
 	for (;longitud>0;longitud--) {
 
         char valor_leido=*origen;
         origen++;
+
+        if (valor_leido>max_absoluto) max_absoluto=valor_leido;
+        if (valor_leido<min_absoluto) min_absoluto=valor_leido;
 
         if (longitud_temp>0) {
             //printf("Estado %d Leido %d anterior %d\n",estado_onda,valor_leido,valor_anterior);
@@ -32388,21 +32417,123 @@ void menu_realtape_record_input_analize_azimuth(zxvision_window *w)
     printf("Total ceros: %d Total unos: %d Tonos guias: %d Desconocidos: %d amplitud ceros %d amplitud unos %d\n",
         cuantos_ceros,cuantos_unos,cuantos_guias,cuantos_desconocidos,amplitud_media_ceros,amplitud_media_unos);
 
-    //Solo analizar amplitud cuando hay cantidad suficiente
-    if (cuantos_unos>100 && cuantos_ceros>100) {
-        int porcentaje_amplitud=(amplitud_media_ceros*100)/amplitud_media_unos;
+    //solo mostrar info cuando señal sea de Spectrum
 
-        //Si es menos del 75%
-        if (porcentaje_amplitud<75) {
-            printf("Ajustar AZIMUTH!!\n");
-            zxvision_print_string_defaults_fillspc_format(w,1,3,"Adjust Azimuth bad %3d %%",porcentaje_amplitud);
+    //borrar primero esas lineas
+    zxvision_print_string_defaults_fillspc(w,1,linea,"");
+    zxvision_print_string_defaults_fillspc(w,1,linea+1,"");
+    zxvision_print_string_defaults_fillspc(w,1,linea+2,"");
+    zxvision_print_string_defaults_fillspc(w,1,linea+3,"");
+
+
+    min_absoluto=util_get_absolute(min_absoluto);
+
+    int volumen_absoluto=max_absoluto;
+    if (min_absoluto>max_absoluto) volumen_absoluto=min_absoluto;
+
+    menu_realtape_record_input_analize_volumen_escalado=volumen_absoluto;
+
+    //Ahora tenemos valor entre 0 y 128. Pasar a entre 0 y 15
+    //esto se hace para el vu-meter
+    //int valor_escalado=(mayor*16)/128;
+    menu_realtape_record_input_analize_volumen_escalado=(menu_realtape_record_input_analize_volumen_escalado*16)/128;
+
+    //Vigilar que no pase de 15
+    if (menu_realtape_record_input_analize_volumen_escalado>15) menu_realtape_record_input_analize_volumen_escalado=15;
+
+
+
+	menu_realtape_record_input_analize_previo_volumen=menu_decae_ajusta_valor_volumen(menu_realtape_record_input_analize_previo_volumen,
+        menu_realtape_record_input_analize_volumen_escalado);
+
+	char texto_volumen[32];
+    menu_string_volumen(texto_volumen,menu_realtape_record_input_analize_volumen_escalado,menu_realtape_record_input_analize_previo_volumen);
+                                                                //"Volume C: %s"
+
+
+	//zxvision_print_string_defaults_fillspc(menu_audio_draw_sound_wave_window,1,2,buffer_texto_medio);
+
+
+
+    zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Max %3d Min %3d Volume %3d %s",
+        max_absoluto,min_absoluto,volumen_absoluto,texto_volumen);
+
+
+    //Minimo valor a partir del cual se considera que es un tipo de onda u otra
+    int minimo_ondas=100;
+
+    if (
+        (cuantos_desconocidos<cuantos_unos || cuantos_desconocidos<cuantos_ceros || cuantos_desconocidos<cuantos_guias) &&
+        (cuantos_unos>minimo_ondas || cuantos_ceros>minimo_ondas || cuantos_guias>minimo_ondas)
+
+        ) {
+
+        zxvision_print_string_defaults_fillspc(w,1,linea++,"Guessed ZX Spectrum loading tone");
+
+        //Analisis del tipo de onda
+        //Si mayoria tono guia
+        if (cuantos_guias>cuantos_unos && cuantos_guias>cuantos_ceros) {
+            zxvision_print_string_defaults_fillspc_format(w,1,linea,"Signal type: %s",animacion_string_pilot_tone);
         }
-        else {
-            zxvision_print_string_defaults_fillspc_format(w,1,3,"Azimuth Accuracy ok %3d %%",porcentaje_amplitud);
+        else if (cuantos_guias<minimo_ondas && cuantos_unos<minimo_ondas) {
+            zxvision_print_string_defaults_fillspc_format(w,1,linea,"Signal type: %s",animacion_string_zeros);
         }
+
+        else if (cuantos_guias<minimo_ondas && cuantos_ceros<minimo_ondas) {
+            zxvision_print_string_defaults_fillspc_format(w,1,linea,"Signal type: %s",animacion_string_unos);
+        }
+
+        else zxvision_print_string_defaults_fillspc_format(w,1,linea,"Signal type: %s",animacion_string_unos_zeros);
+
+        linea++;
+
+        //Analisis de Azimuth
+        //Solo analizar amplitud cuando hay cantidad suficiente de ceros y unos y amplitud mayor que un minimo
+        /*
+        Por lo que lei, el ajuste de azimuth correcto, el que esta justo perpendicular a la lectura de la cinta,
+        proporciona mejor nivel en treble (agudos?) cosa que tiene sentido en Spectrum:
+        Al calibrar bien el azimuth en una carga de Spectrum, se oye mas agudo, y esto tiene mas lógica aun porque
+        los bits de 0 tienen mayor amplitud (que son los bits mas cortos, con mas frecuencia y por tanto mas agudos)
+        Si el azimuth esta mal, los bits de 0 tiene menor amplitud, y por tanto se oye mas grave
+        */
+        if (cuantos_unos>minimo_ondas && cuantos_ceros>minimo_ondas && amplitud_media_unos>2 && amplitud_media_ceros>2) {
+            int porcentaje_amplitud;
+
+            if (amplitud_media_unos==0) porcentaje_amplitud=0;
+            else porcentaje_amplitud=(amplitud_media_ceros*100)/amplitud_media_unos;
+
+            //Los unos tienen que ocupar mas siempre. Por tanto porcentaje de  > 100% no deberia tener sentido
+            if (porcentaje_amplitud>100) porcentaje_amplitud=100;
+
+            //Si es menos del 75%
+
+            zxvision_print_string_defaults_fillspc_format(w,1,linea,"Azimuth Accuracy %3d %% %s",porcentaje_amplitud,
+                (porcentaje_amplitud<75 ? "Adjust AZIMUTH!!" : "OK"));
+
+        }
+
+        linea++;
+
+
+
     }
 
-    else zxvision_print_string_defaults_fillspc_format(w,1,3,"");
+    else {
+        linea+=3;
+    }
+
+
+
+    menu_realtape_record_input_analize_azimuth_frame_animacion++;
+    if (menu_realtape_record_input_analize_azimuth_frame_animacion % 10==0) {
+
+        menu_realtape_record_input_analize_azimuth_scroll_string(animacion_string_pilot_tone);
+        menu_realtape_record_input_analize_azimuth_scroll_string(animacion_string_zeros);
+        menu_realtape_record_input_analize_azimuth_scroll_string(animacion_string_unos);
+        menu_realtape_record_input_analize_azimuth_scroll_string(animacion_string_unos_zeros);
+    }
+
+    return linea;
 
 
 }
@@ -32611,7 +32742,7 @@ void menu_realtape_record_input_show_fifo_pos(zxvision_window *w,int x,int y,int
 
 int menu_realtape_record_input_show_previo_value=0;
 
-void menu_realtape_record_input_show_info(zxvision_window *w)
+int menu_realtape_record_input_show_info(zxvision_window *w,int linea)
 {
         //Record audio buffer
         int tamanyo_buffer_audio,posicion_buffer_audio;
@@ -32644,14 +32775,18 @@ void menu_realtape_record_input_show_info(zxvision_window *w)
                                                     menu_realtape_record_input_show_previo_value,tamanyo_buffer_audio);
 
 
-        sprintf (texto_buffer,"Record Buffer%s: %d/%d (%3d%%) [%s]",
+        sprintf (texto_buffer,"Record Buffer%s: %6d/%6d (%3d%%) [%s]",
                     (!audio_is_recording_input ? " (Not Recording)" : ""),
                     posicion_buffer_audio,tamanyo_buffer_audio,perc_audio,buf_volumen_canal);
 
         //core_statistics_last_perc_audio=perc_audio;
 
-        zxvision_print_string_defaults_fillspc(w,1,1,texto_buffer);
+        zxvision_print_string_defaults_fillspc(w,1,linea++,texto_buffer);
+
+        return linea;
 }
+
+int menu_realtape_record_input_overlay_segundo_anterior=0;
 
 void menu_realtape_record_input_overlay(void)
 {
@@ -32662,10 +32797,10 @@ void menu_realtape_record_input_overlay(void)
     if (menu_realtape_record_input_window->is_minimized) return;
 
 
-
+    int linea=0;
     //menu_realtape_record_input_analize_buffer(menu_realtape_record_input_window);
-    menu_realtape_record_input_show_info(menu_realtape_record_input_window);
-    menu_realtape_record_input_analize_azimuth(menu_realtape_record_input_window);
+    linea=menu_realtape_record_input_show_info(menu_realtape_record_input_window,linea);
+    linea=menu_realtape_record_input_analize_azimuth(menu_realtape_record_input_window,linea);
     //Print....
     //Tambien contar si se escribe siempre o se tiene en cuenta contador_segundo...
 
@@ -32679,7 +32814,7 @@ void menu_realtape_record_input_overlay(void)
 
 
     //menu_realtape_record_input_onda_onda_congelada
-    zxvision_print_string_defaults_fillspc_format(menu_realtape_record_input_window,1,2,"t wave type: %s. [%c] f: freeze",
+    zxvision_print_string_defaults_fillspc_format(menu_realtape_record_input_window,1,linea++,"t wave type: %s. [%c] f: freeze",
         tipo_onda,(menu_realtape_record_input_onda_onda_congelada ? 'X' : ' '));
 
     int alto=(menu_realtape_record_input_window->visible_height-2)*menu_char_height;
@@ -32688,8 +32823,8 @@ void menu_realtape_record_input_overlay(void)
     int x=1*menu_char_width;
     int y=0;
 
-    //4 lineas de estado
-    int restar_lineas=4*menu_char_width;
+    //6 lineas de estado
+    int restar_lineas=6*menu_char_height;
     y+=restar_lineas;
     alto-=restar_lineas;
 
@@ -32706,6 +32841,16 @@ void menu_realtape_record_input_overlay(void)
     //Mostrar con linea por donde esta leyendo la fifo
     //menu_realtape_record_input_show_fifo_pos(menu_realtape_record_input_window,x,y,ancho,alto);
 
+
+	//esto hara ejecutar esto 2 veces por segundo
+	if ( ((contador_segundo%500) == 0 && menu_realtape_record_input_overlay_segundo_anterior!=contador_segundo) || menu_multitarea==0) {
+
+		menu_realtape_record_input_overlay_segundo_anterior=contador_segundo;
+
+        //Hacer decaer indicador de volumen
+        menu_realtape_record_input_analize_previo_volumen=menu_decae_dec_valor_volumen(menu_realtape_record_input_analize_previo_volumen,menu_realtape_record_input_analize_volumen_escalado);
+
+    }
 
 
     //Mostrar contenido
