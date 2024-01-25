@@ -32846,18 +32846,30 @@ void menu_realtape_record_input_draw_tape_tornillo(zxvision_window *w,int xactua
 
 //para la animacion de los puntitos que se mueven en la derecha de la cinta
 int menu_realtape_record_input_frame_puntitos=0;
+#define MAX_FRAMES_PUNTITOS 90
 
 void menu_realtape_record_input_draw_tape_puntitos(zxvision_window *w,int frame,int color,int x,int y)
 {
-    frame %=20;
 
-    zxvision_putpixel(w,x-frame,y,color);
+    x +=MAX_FRAMES_PUNTITOS-20;
 
-    zxvision_putpixel(w,x+10-frame,y+5,color);
+    //zxvision_putpixel(w,x,y,color);
 
-    zxvision_putpixel(w,x+15-frame,y-3,color);
+    zxvision_putpixel(w,x-(frame % MAX_FRAMES_PUNTITOS),y,color);
 
-    zxvision_putpixel(w,x+24-frame,y-7,color);
+    zxvision_putpixel(w,x-((frame+5) % MAX_FRAMES_PUNTITOS),y+5,color);
+
+    zxvision_putpixel(w,x-((frame+15) % MAX_FRAMES_PUNTITOS),y-3,color);
+
+    zxvision_putpixel(w,x-((frame+24) % MAX_FRAMES_PUNTITOS),y-7,color);
+
+    zxvision_putpixel(w,x-((frame+30) % MAX_FRAMES_PUNTITOS),y-7,color);
+
+    zxvision_putpixel(w,x-((frame+60) % MAX_FRAMES_PUNTITOS),y+2,color);
+
+    //zxvision_putpixel(w,x+15-frame,y-3,color);
+
+    //zxvision_putpixel(w,x+24-frame,y-7,color);
 }
 
 void menu_realtape_record_input_draw_tape_aux(zxvision_window *w,int angulo_rotacion,int origen_x,int origen_y)
@@ -32994,6 +33006,7 @@ void menu_realtape_record_input_draw_tape_aux(zxvision_window *w,int angulo_rota
 
     //puntitos
     int xpuntitos=origen_x_cinta+(ancho_cinta/4)*3;
+    //int xpuntitos=origen_x_cinta+ancho_cinta;
     int ypuntitos=origen_y_cinta+DRAW_TAPE_SEPARACION_CABEZAL_CINTA_Y+5;
 
     //borrar el anterior
