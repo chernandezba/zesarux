@@ -32482,27 +32482,26 @@ int menu_realtape_record_input_analize_azimuth(zxvision_window *w,int linea)
         //Analisis del tipo de onda
         //Si mayoria tono guia
         if (cuantos_guias>cuantos_unos && cuantos_guias>cuantos_ceros) {
-            //zxvision_print_string_defaults_fillspc_format(w,1,linea,"Signal type: %s",animacion_string_pilot_tone);
+            zxvision_print_string_defaults_fillspc(w,1,linea,"Signal type: Pilot tone");
             strcpy(buffer_signal_type,animacion_string_pilot_tone);
         }
         else if (cuantos_guias<minimo_ondas && cuantos_unos<minimo_ondas) {
-            //zxvision_print_string_defaults_fillspc_format(w,1,linea,"Signal type: %s",animacion_string_zeros);
+            zxvision_print_string_defaults_fillspc(w,1,linea,"Signal type: Most zeroes");
             strcpy(buffer_signal_type,animacion_string_zeros);
         }
 
         else if (cuantos_guias<minimo_ondas && cuantos_ceros<minimo_ondas) {
-            //zxvision_print_string_defaults_fillspc_format(w,1,linea,"Signal type: %s",animacion_string_unos);
+            zxvision_print_string_defaults_fillspc(w,1,linea,"Signal type: Most ones");
             strcpy(buffer_signal_type,animacion_string_unos);
         }
 
         else {
-            //zxvision_print_string_defaults_fillspc_format(w,1,linea,"Signal type: %s",animacion_string_unos_zeros);
+            zxvision_print_string_defaults_fillspc(w,1,linea,"Signal type: Mixed zeros and ones");
             strcpy(buffer_signal_type,animacion_string_unos_zeros);
         }
 
-        zxvision_print_string_defaults_fillspc_format(w,1,linea,"Signal type: %s",buffer_signal_type);
+        //zxvision_print_string_defaults_fillspc_format(w,1,linea,"Signal type: %s",buffer_signal_type);
 
-        //temp
         zxvision_print_string_defaults_fillspc(w,1,DRAW_TAPE_MOSTRAR_CONTENIDO_CINTA_LINEA,buffer_signal_type);
 
         linea++;
