@@ -32514,7 +32514,13 @@ int menu_realtape_record_input_analize_azimuth(zxvision_window *w,int linea)
                 (porcentaje_amplitud<75 ? "Adjust AZIMUTH!!" : "OK"));
 
             menu_realtape_record_input_porcentaje_azimuth_antes=menu_realtape_record_input_porcentaje_azimuth;
+
             menu_realtape_record_input_porcentaje_azimuth=porcentaje_amplitud;
+
+            //Si ha cambiado valor azimuth, avisar para refrescar toda pantalla
+            if (menu_realtape_record_input_porcentaje_azimuth_antes!=menu_realtape_record_input_porcentaje_azimuth) {
+                w->must_clear_cache_on_draw_once=1;
+            }
 
         }
 
