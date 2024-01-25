@@ -32829,7 +32829,9 @@ void menu_realtape_record_input_draw_tape_tornillo(zxvision_window *w,int xactua
 void menu_realtape_record_input_draw_tape_aux(zxvision_window *w,int angulo_rotacion)
 {
 
+    //coordenada x donde esta la derecha de la base del cabezal
     int origen_x=200;
+    //coordenada y donde esta la derecha de la base del cabezal
     int origen_y=100;
 
     int ancho_base=80;
@@ -32935,6 +32937,28 @@ void menu_realtape_record_input_draw_tape_aux(zxvision_window *w,int angulo_rota
 
     int alto_tornillo=origen_y-yactual;
     menu_realtape_record_input_draw_tape_tornillo(w,xactual,yactual,alto_tornillo);
+
+
+    //Dibujar la linea de cinta
+    //Situarnos en la izquierda
+    int ancho_cinta=200;
+    int origen_x_cinta=origen_x-ancho_base/2; //en el medio
+    origen_x_cinta -= ancho_cinta/2;
+
+
+    int separacion_cabezal_cinta_y=DRAW_TAPE_ALTO_CABEZAL/5;
+    int origen_y_cinta=origen_y-separacion_cabezal_cinta_y;
+
+    //La de abajo
+    zxvision_draw_line(w,origen_x_cinta,origen_y_cinta,origen_x_cinta+ancho_cinta,origen_y_cinta,ESTILO_GUI_TINTA_NORMAL,menu_realtape_record_input_draw_waveform_putpixel);
+
+
+    origen_y_cinta=origen_y-DRAW_TAPE_ALTO_CABEZAL+separacion_cabezal_cinta_y;
+
+    //La de arriba
+    zxvision_draw_line(w,origen_x_cinta,origen_y_cinta,origen_x_cinta+ancho_cinta,origen_y_cinta,ESTILO_GUI_TINTA_NORMAL,menu_realtape_record_input_draw_waveform_putpixel);
+
+
 }
 
 void menu_realtape_record_input_draw_tape(zxvision_window *w)
