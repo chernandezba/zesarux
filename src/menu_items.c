@@ -32847,6 +32847,54 @@ void menu_realtape_record_input_draw_tape_aux(zxvision_window *w,int angulo_rota
     xactual=xfinal;
     yactual=yfinal;
 
+
+    //Dibujar trozo de linea de lectura dentro de cabezal
+    //ancho sera la mitad de ancho del cabezal
+    //y alto seran 3 lineas
+    int ancho_lectura_cabezal=ancho_cabezal/2;
+
+    //movernos hasta donde empieza el cabezal, en X
+    util_move_turtle(origen_x,origen_y,180-angulo_rotacion,(ancho_base-ancho_cabezal)/2,&xfinal,&yfinal);
+    xactual=xfinal;
+    yactual=yfinal;
+    //y un poco mas hasta donde empieza el trozo de lectura, por la derecha
+    util_move_turtle(xactual,yactual,180-angulo_rotacion,(ancho_cabezal-ancho_lectura_cabezal)/2,&xfinal,&yfinal);
+    xactual=xfinal;
+    yactual=yfinal;
+
+    //Y subir el trozo
+    int subir_trozo=(alto_cabezal/4)*3;
+    util_move_turtle(xactual,yactual,90-angulo_rotacion,subir_trozo,&xfinal,&yfinal);
+    xactual=xfinal;
+    yactual=yfinal;
+
+    //Dibujar 3 lineas, hacia la izquierda
+    util_move_turtle(xactual,yactual,180-angulo_rotacion,ancho_lectura_cabezal,&xfinal,&yfinal);
+    zxvision_draw_line(w,xactual,yactual,xfinal,yfinal,ESTILO_GUI_TINTA_NORMAL,menu_realtape_record_input_draw_waveform_putpixel);
+    xactual=xfinal;
+    yactual=yfinal;
+
+    //bajo 1
+    //util_move_turtle(xactual,yactual,270-angulo_rotacion,1,&xfinal,&yfinal);
+    //zxvision_draw_line(w,xactual,yactual,xfinal,yfinal,ESTILO_GUI_TINTA_NORMAL,menu_realtape_record_input_draw_waveform_putpixel);
+    yactual++;
+
+    //A la derecha, aprovechando donde estabamos, como si fuera una impresora matricial
+    util_move_turtle(xactual,yactual,-angulo_rotacion,ancho_lectura_cabezal,&xfinal,&yfinal);
+    zxvision_draw_line(w,xactual,yactual,xfinal,yfinal,ESTILO_GUI_TINTA_NORMAL,menu_realtape_record_input_draw_waveform_putpixel);
+    xactual=xfinal;
+    yactual=yfinal;
+
+    //bajo 1
+    //util_move_turtle(xactual,yactual,270-angulo_rotacion,1,&xfinal,&yfinal);
+    //zxvision_draw_line(w,xactual,yactual,xfinal,yfinal,ESTILO_GUI_TINTA_NORMAL,menu_realtape_record_input_draw_waveform_putpixel);
+    yactual++;
+
+    //A la izquierda, aprovechando donde estabamos, como si fuera una impresora matricial
+    util_move_turtle(xactual,yactual,180-angulo_rotacion,ancho_lectura_cabezal,&xfinal,&yfinal);
+    zxvision_draw_line(w,xactual,yactual,xfinal,yfinal,ESTILO_GUI_TINTA_NORMAL,menu_realtape_record_input_draw_waveform_putpixel);
+    xactual=xfinal;
+    yactual=yfinal;
 }
 
 void menu_realtape_record_input_draw_tape(zxvision_window *w)
@@ -32862,8 +32910,8 @@ void menu_realtape_record_input_draw_tape(zxvision_window *w)
     if (menu_realtape_record_input_porcentaje_azimuth>=100) angulo_rotacion=0;
     else {
 
-        angulo_rotacion=(100-menu_realtape_record_input_porcentaje_azimuth)/2;
-        if (angulo_rotacion>30) angulo_rotacion=30;
+        angulo_rotacion=(100-menu_realtape_record_input_porcentaje_azimuth)/3;
+        if (angulo_rotacion>20) angulo_rotacion=20;
     }
 
 
