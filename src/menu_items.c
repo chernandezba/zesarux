@@ -32244,7 +32244,7 @@ void menu_realtape_record_input_analize_azimuth(zxvision_window *w)
 
     Buen azimuth:
     0 y 1 misma amplitud
-    onda centrada
+    onda centrada. no siempre?
     */
 
    //estado:
@@ -32390,11 +32390,19 @@ void menu_realtape_record_input_analize_azimuth(zxvision_window *w)
 
     //Solo analizar amplitud cuando hay cantidad suficiente
     if (cuantos_unos>100 && cuantos_ceros>100) {
-        int porcentaje_amplitud=(amplitud_media_unos*100)/amplitud_media_ceros;
+        int porcentaje_amplitud=(amplitud_media_ceros*100)/amplitud_media_unos;
 
-        //Si es mas del 150% los unos que los ceros
-        if (porcentaje_amplitud>150) printf("Ajustar AZIMUTH!!\n");
+        //Si es menos del 75%
+        if (porcentaje_amplitud<75) {
+            printf("Ajustar AZIMUTH!!\n");
+            zxvision_print_string_defaults_fillspc_format(w,1,3,"Adjust Azimuth bad %3d %%",porcentaje_amplitud);
+        }
+        else {
+            zxvision_print_string_defaults_fillspc_format(w,1,3,"Azimuth Accuracy ok %3d %%",porcentaje_amplitud);
+        }
     }
+
+    else zxvision_print_string_defaults_fillspc_format(w,1,3,"");
 
 
 }
@@ -32677,11 +32685,11 @@ void menu_realtape_record_input_overlay(void)
     int alto=(menu_realtape_record_input_window->visible_height-2)*menu_char_height;
     int ancho=(menu_realtape_record_input_window->visible_width-2)*menu_char_width;
 
-    int x=2*menu_char_width;
+    int x=1*menu_char_width;
     int y=0;
 
-    //3 lineas de estado
-    int restar_lineas=3*menu_char_width;
+    //4 lineas de estado
+    int restar_lineas=4*menu_char_width;
     y+=restar_lineas;
     alto-=restar_lineas;
 
