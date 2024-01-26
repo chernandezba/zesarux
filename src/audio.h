@@ -122,6 +122,7 @@ extern int audiorecord_input_fifo_return_size(void);
 extern int audiorecord_input_fifo_write(char *origen,int longitud);
 extern void audio_read_sample_audio_input(void);
 extern void audiorecord_input_empty_buffer(void);
+extern void audiorecord_input_empty_buffer_with_lock(void);
 
 extern z80_bit audio_noreset_audiobuffer_full;
 

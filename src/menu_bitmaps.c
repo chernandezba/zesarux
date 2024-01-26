@@ -2792,6 +2792,36 @@ char *bitmap_button_ext_desktop_wavepiano[EXT_DESKTOP_BUTTONS_ANCHO]={
 };
 
 
+char *bitmap_button_ext_desktop_record_input[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+	"                          ",
+	"                          ",
+	"           xxxxxxxxxxxx   ",
+	" xxxxxxxxxxxxxxxxxxxxxxx  ",
+	"xWWxWWxWWWxxxxxxxxxxxxxxx ",
+	" xxxxxxxxxxxxxxxxxxxxxxx x",
+	"           xxxxxxxxxxxx  x",
+	"                         x",
+	"                         x",
+    "                        x ",
+	"                   xxxxx  ",
+	"                          ",
+	"            bb            ",
+	"           b  b           ",
+	"           b  b           ",
+	"          b   b    b      ",
+	"   b      b   b   b b     ",
+	"  b b     b   b   b  b    ",
+	" b   b    b   b   b  b    ",
+	" b    b   b   b   b  b  b ",
+	"      b   b    b  b  b b  ",
+	"      b   b    b  b   b   ",
+	"       b b     b  b       ",
+	"        b      b b        ",
+	"               b b        ",
+	"                b         "
+};
+
 char *bitmap_button_ext_desktop_visualrealtape[EXT_DESKTOP_BUTTONS_ANCHO]={
    //01234567890123456789012345
 	"  xxxxxxxxxxxxxxxxxxxxxx  ",

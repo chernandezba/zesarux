@@ -120,6 +120,7 @@ extern char *bitmap_button_ext_desktop_processswitcher[];
 extern char *bitmap_button_ext_desktop_videoinfo[];
 extern char *bitmap_button_ext_desktop_textadvlocimage[];
 extern char *bitmap_button_ext_desktop_asciitable[];
+extern char *bitmap_button_ext_desktop_record_input[];
 
 extern char **zxdesktop_buttons_bitmaps[];
 

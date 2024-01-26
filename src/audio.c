@@ -120,6 +120,26 @@ char audiorecord_input_fifo_buffer[AUDIO_RECORD_BUFFER_FIFO_SIZE];
 int audiorecord_input_fifo_write_position=0;
 int audiorecord_input_fifo_read_position=0;
 
+z_atomic_semaphore semaphore_audiorecord_fifo;
+
+void audiorecord_semaphore_init(void)
+{
+    z_atomic_reset(&semaphore_audiorecord_fifo);
+}
+
+void audiodriver_record_obtain_lock(void)
+{
+    //Obtener lock
+	while(z_atomic_test_and_set(&semaphore_audiorecord_fifo)) {
+	    //printf("Esperando a liberar lock en audiorecord_input_fifo_read/write\n");
+	}
+}
+
+void audiodriver_record_free_lock(void)
+{
+    z_atomic_reset(&semaphore_audiorecord_fifo);
+}
+
 void audiorecord_input_empty_buffer(void)
 {
   debug_printf(VERBOSE_DEBUG,"Emptying External Audio Source FIFO buffer");
@@ -128,6 +148,16 @@ void audiorecord_input_empty_buffer(void)
 
 }
 
+void audiorecord_input_empty_buffer_with_lock(void)
+{
+
+    audiodriver_record_obtain_lock();
+
+    audiorecord_input_empty_buffer();
+
+    audiodriver_record_free_lock();
+
+}
 
 
 //retorna numero de elementos en la fifo
@@ -157,12 +187,7 @@ int audiorecord_input_fifo_next_index(int v)
 	return v;
 }
 
-z_atomic_semaphore semaphore_audiorecord_fifo;
 
-void audiorecord_semaphore_init(void)
-{
-    z_atomic_reset(&semaphore_audiorecord_fifo);
-}
 
 void audiodriver_start_record_input(void)
 {
@@ -170,18 +195,7 @@ void audiodriver_start_record_input(void)
     audio_start_record_input();
 }
 
-void audiodriver_record_obtain_lock(void)
-{
-    //Obtener lock
-	while(z_atomic_test_and_set(&semaphore_audiorecord_fifo)) {
-	    //printf("Esperando a liberar lock en audiorecord_input_fifo_read/write\n");
-	}
-}
 
-void audiodriver_record_free_lock(void)
-{
-    z_atomic_reset(&semaphore_audiorecord_fifo);
-}
 
 //Funcion para variar el buffer si es posible
 //Si buffer esta a mas del 75% la mitad y tiene silencio (mismo valor), vaciarlo

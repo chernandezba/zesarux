@@ -32111,6 +32111,11 @@ int menu_realtape_record_input_pos_buffer_write=0;
 int menu_realtape_record_input_pos_buffer_initial=0;
 int menu_realtape_record_input_onda_onda_congelada=0;
 
+void menu_realtape_record_input_empty_visual_buffer(void)
+{
+    menu_realtape_record_input_pos_buffer_initial=menu_realtape_record_input_pos_buffer_write=0;
+}
+
 void menu_realtape_record_input_write_byte(char valor)
 {
 
@@ -32845,9 +32850,14 @@ void menu_realtape_record_input_draw_tape_tornillo(zxvision_window *w,int xactua
 
     //ancho del tornillo
     zxvision_draw_filled_rectangle(w,xactual,yactual,DRAW_TAPE_ANCHO_TORNILLO,alto_tornillo,color);
+
     //cabeza del tornillo
-    xactual -=(DRAW_TAPE_ANCHO_CABEZA_TORNILLO-DRAW_TAPE_ANCHO_TORNILLO)/2;
-    zxvision_draw_line(w,xactual,yactual,xactual+DRAW_TAPE_ANCHO_CABEZA_TORNILLO,yactual,color,menu_realtape_record_input_draw_waveform_putpixel);
+    int desplazamiento_cabeza=(DRAW_TAPE_ANCHO_CABEZA_TORNILLO-DRAW_TAPE_ANCHO_TORNILLO)/2;
+
+    xactual -=desplazamiento_cabeza;
+    //printf("%d %d---\n",DRAW_TAPE_ANCHO_CABEZA_TORNILLO,DRAW_TAPE_ANCHO_TORNILLO);
+    zxvision_draw_line(w,xactual,yactual,xactual+DRAW_TAPE_ANCHO_CABEZA_TORNILLO-1,yactual,color,menu_realtape_record_input_draw_waveform_putpixel);
+    zxvision_draw_line(w,xactual+1,yactual-1,xactual+DRAW_TAPE_ANCHO_CABEZA_TORNILLO-2,yactual-1,color,menu_realtape_record_input_draw_waveform_putpixel);
 
 }
 
@@ -33088,7 +33098,7 @@ void menu_realtape_record_input_overlay(void)
 
 
     //menu_realtape_record_input_onda_onda_congelada
-    zxvision_print_string_defaults_fillspc_format(menu_realtape_record_input_window,1,linea++,"t wave type: %s. [%c] f: freeze",
+    zxvision_print_string_defaults_fillspc_format(menu_realtape_record_input_window,1,linea++,"t wave type: %s. [%c] f: freeze e: empty buffer",
         tipo_onda,(menu_realtape_record_input_onda_onda_congelada ? 'X' : ' '));
 
     int alto=(menu_realtape_record_input_window->visible_height-2)*menu_char_height;
@@ -33165,7 +33175,7 @@ void menu_realtape_record_input(MENU_ITEM_PARAMETERS)
     if (!zxvision_if_window_already_exists(ventana)) {
         int xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
-        if (!util_find_window_geometry("realtaperecordinput",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
+        if (!util_find_window_geometry("externalaudiosource",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
             ancho_ventana=32;
             alto_ventana=20;
 
@@ -33175,7 +33185,7 @@ void menu_realtape_record_input(MENU_ITEM_PARAMETERS)
 
 
         zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"External Audio Source",
-            "realtaperecordinput",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
+            "externalaudiosource",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
 
         ventana->can_be_backgrounded=1;
 
@@ -33225,6 +33235,14 @@ void menu_realtape_record_input(MENU_ITEM_PARAMETERS)
 
             case 'f':
                 menu_realtape_record_input_onda_onda_congelada ^=1;
+            break;
+
+            case 'e':
+                //La fifo de entrada
+                audiorecord_input_empty_buffer_with_lock();
+
+                //Y tambien este buffer visual
+                menu_realtape_record_input_empty_visual_buffer();
             break;
 
 
