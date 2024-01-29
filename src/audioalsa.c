@@ -1284,14 +1284,14 @@ int audioalsa_can_record_input(void)
 
 pthread_t thread_alsa_capture;
 
-  int capture_buffer_frames = 128;
+  int capture_buffer_frames = AUDIO_RECORD_BUFFER_SIZE; //128;
   snd_pcm_t *capture_handle;
   char *capture_buffer;
 
   int alsa_avisado_fifo_llena=0;
 
 //TEMPORAL
-char temppp_buffer[1000];
+char temppp_buffer[AUDIO_RECORD_BUFFER_SIZE*2*2]; //stereo y 16 bits
 
 void *audioalsa_capture_thread_function(void *nada)
 {
@@ -1309,7 +1309,7 @@ int err;
     }
 
     else {
-        fprintf(stdout, "read  done\n");
+        //fprintf(stdout, "read  done\n");
 
         //Convertir a signed 8, y a mno
         int i;
