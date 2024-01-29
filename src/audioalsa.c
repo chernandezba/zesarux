@@ -1290,8 +1290,12 @@ pthread_t thread_alsa_capture;
 
   int alsa_avisado_fifo_llena=0;
 
+
+//stereo y 16 bits
+#define ALSA_CAPTURE_BUFFER (AUDIO_RECORD_BUFFER_SIZE*2*2)
+
 //TEMPORAL
-char temppp_buffer[AUDIO_RECORD_BUFFER_SIZE*2*2]; //stereo y 16 bits
+char temppp_buffer[AUDIO_RECORD_BUFFER_SIZE];
 
 void *audioalsa_capture_thread_function(void *nada)
 {
@@ -1483,7 +1487,10 @@ fprintf(stdout, "audio interface opened\n");
 
   fprintf(stdout, "audio interface prepared\n");
 
-  capture_buffer = malloc(128 * snd_pcm_format_width(format) / 8 *2);
+  //capture_buffer = malloc(capture_buffer_frames * snd_pcm_format_width(format) / 8 *2);
+
+//16 bits, stereo
+  capture_buffer = util_malloc(ALSA_CAPTURE_BUFFER,"Cannot allocate memory for audio capture");
 
   fprintf(stdout, "buffer allocated\n");
 
@@ -1502,4 +1509,10 @@ fprintf(stdout, "audio interface opened\n");
 
 void audioalsa_stop_record_input(void)
 {
+//TODO cancel pthread
+
+    free(capture_buffer);
+    audio_is_recording_input=0;
+
+
 }
