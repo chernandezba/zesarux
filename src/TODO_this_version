@@ -835,6 +835,8 @@ Esto significaria tambien que al cambiar de idioma habria que resetear el indice
 *alsa:
 **poder hacer stop record.
 **parece que al hacer record, se detiene el playback
+**buffer se llena en pc. probar con timer sin pthreads?
+**poder escoger que tarjeta alsa (tanto input como output)
 
 
 -quiza audiocoreaudio y otros drivers de audio necesitan fifos con semaforos para evitar interferencias en el sonido....
