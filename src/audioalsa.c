@@ -1272,14 +1272,107 @@ void alsa_midi_output_flush_output(void)
 }
 
 
+#ifdef USE_PTHREADS
+
 int audioalsa_can_record_input(void)
 {
-#ifdef USE_PTHREADS
+
     return 1;
-#else
-    return 0;
-#endif
+
 }
+
+
+pthread_t thread_alsa_capture;
+
+  int capture_buffer_frames = 128;
+  snd_pcm_t *capture_handle;
+  char *capture_buffer;
+
+  int alsa_avisado_fifo_llena=0;
+
+//TEMPORAL
+char temppp_buffer[1000];
+
+void *audioalsa_capture_thread_function(void *nada)
+{
+
+int err;
+
+	while (1) {
+
+
+    if ((err = snd_pcm_readi (capture_handle, capture_buffer, capture_buffer_frames)) != capture_buffer_frames) {
+      fprintf (stderr, "read from audio interface failed (%s)\n",
+               err, snd_strerror (err));
+                        //1 ms
+                        usleep(1000);
+    }
+
+    else {
+        fprintf(stdout, "read  done\n");
+
+        //Convertir a signed 8, y a mno
+        int i;
+        for (i=0;i<capture_buffer_frames;i++) {
+            int offset=i*4;
+            int canal_izquierdo=capture_buffer[offset]+256*capture_buffer[offset+1];
+            int canal_derecho=capture_buffer[offset+2]+256*capture_buffer[offset+3];
+
+            int sumado=(canal_izquierdo+canal_derecho)/2;
+            //pasar a 8 bits
+            sumado /=256;
+            char final=sumado;
+            temppp_buffer[i]=final;
+        }
+
+        int valores_escribir=capture_buffer_frames;
+
+        if (audiorecord_input_fifo_write(temppp_buffer,capture_buffer_frames) && !alsa_avisado_fifo_llena) {
+            int miliseconds_lost=(1000*capture_buffer_frames)/AUDIO_RECORD_FREQUENCY;
+            debug_printf(VERBOSE_ERR,"External Audio Source buffer is full, a section of %d ms has been lost. "
+                "I recommend you to disable and enable External Audio Source in order to empty the input buffer",
+                miliseconds_lost);
+            alsa_avisado_fifo_llena=1;
+        }
+    }
+
+
+
+
+
+	}
+
+	//para que no se queje el compilador de variable no usada
+	nada=0;
+	nada++;
+
+
+}
+
+
+void audioalsa_start_record_input_create_thread(void)
+{
+    if (pthread_create( &thread_alsa_capture, NULL, &audioalsa_capture_thread_function, NULL) ) {
+        cpu_panic("Can not create audioalsa pthread");
+    }
+
+}
+
+#else
+
+int audioalsa_can_record_input(void)
+{
+    return 0;
+
+}
+
+
+void audioalsa_start_record_input_create_thread(void)
+{
+    //Nada
+}
+
+#endif
 
 void audioalsa_start_record_input(void)
 {
@@ -1288,7 +1381,7 @@ void audioalsa_start_record_input(void)
 
   int i;
   int err;
-  char *buffer;
+
 
 /*
   int buffer_frames = 128;
@@ -1297,9 +1390,11 @@ void audioalsa_start_record_input(void)
   snd_pcm_hw_params_t *hw_params;
 	snd_pcm_format_t format = SND_PCM_FORMAT_S8;*/
 
-      int buffer_frames = 128;
+
   unsigned int rate = AUDIO_RECORD_FREQUENCY;
-  snd_pcm_t *capture_handle;
+
+
+
   snd_pcm_hw_params_t *hw_params;
 
   //Deberia ser signed 8 bits (SND_PCM_FORMAT_S8) pero no parece gustarle
@@ -1388,18 +1483,14 @@ fprintf(stdout, "audio interface opened\n");
 
   fprintf(stdout, "audio interface prepared\n");
 
-  buffer = malloc(128 * snd_pcm_format_width(format) / 8 *2);
+  capture_buffer = malloc(128 * snd_pcm_format_width(format) / 8 *2);
 
   fprintf(stdout, "buffer allocated\n");
 
-  for (i = 0; i < 10; ++i) {
-    if ((err = snd_pcm_readi (capture_handle, buffer, buffer_frames)) != buffer_frames) {
-      fprintf (stderr, "read from audio interface failed (%s)\n",
-               err, snd_strerror (err));
-      return;
-    }
-    fprintf(stdout, "read %d done\n", i);
-  }
+
+  audioalsa_start_record_input_create_thread();
+
+
 
 
 
