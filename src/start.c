@@ -2252,6 +2252,8 @@ int set_audiodriver_alsa(void)
     audio_end=audioalsa_end;
     audio_get_buffer_info=audioalsa_get_buffer_info;
     audio_can_record_input=audioalsa_can_record_input;
+    audio_start_record_input=audioalsa_start_record_input;
+    audio_stop_record_input=audioalsa_stop_record_input;
     return 0;
 
 }
