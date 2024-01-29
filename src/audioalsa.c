@@ -38,6 +38,7 @@
 #include "debug.h"
 #include "settings.h"
 #include "ay38912.h"
+#include "utils.h"
 
 
 
