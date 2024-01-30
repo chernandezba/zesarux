@@ -3744,6 +3744,8 @@ int util_write_configfile(void)
                                               ADD_STRING_CONFIG,"--onebitspeaker-type %d",audioonebitspeaker_tipo_altavoz);
 
 
+                                              ADD_STRING_CONFIG,"--alsacapturedevice %s",alsa_capture_device);
+
   if (border_enabled.v==0)                    ADD_STRING_CONFIG,"--disableborder");
   if (mouse_pointer_shown.v==0)               ADD_STRING_CONFIG,"--hidemousepointer");
   if (mouse_menu_disabled.v)                  ADD_STRING_CONFIG,"--disablemenumouse");

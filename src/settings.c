@@ -230,6 +230,9 @@ z80_bit audiosdl_use_new_callback={1};
 z80_bit audiosdl_use_new_callback={0};
 #endif
 
+//Este solo de alsa
+char alsa_capture_device[100]="hw:0";
+
 //
 // Hardware Settings
 //

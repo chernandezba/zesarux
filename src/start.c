@@ -810,6 +810,7 @@ printf (
 
 
 #ifdef COMPILE_ALSA
+        "--alsacapturedevice s       Define alsa capture device for audio input (default: hw0)\n"
 		"--alsaperiodsize n          Alsa audio periodsize multiplier (2 or 4). Default 2. Lower values reduce latency but can increase cpu usage\n"
 
 
@@ -5265,7 +5266,13 @@ int parse_cmdline_options(int desde_commandline) {
                 audioonebitspeaker_tipo_altavoz=valor;
             }
 
+            //Este es solo de alsa pero por simplificar se parsea si se encuentra
+            else if (!strcmp(argv[puntero_parametro],"--alsacapturedevice")) {
+                siguiente_parametro_argumento();
 
+                strcpy(alsa_capture_device,argv[puntero_parametro]);
+
+            }
 
 #ifdef COMPILE_ALSA
 			else if (!strcmp(argv[puntero_parametro],"--alsaperiodsize")) {

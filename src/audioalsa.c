@@ -1461,11 +1461,11 @@ void audioalsa_start_record_input(void)
     snd_pcm_format_t format = SND_PCM_FORMAT_S16_LE;
 
 
-    char *capture_device="hw:0";
+    //char *capture_device="hw:0";
 
 
-    if ((err = snd_pcm_open (&capture_handle, capture_device, SND_PCM_STREAM_CAPTURE, 0)) < 0) {
-        debug_printf(VERBOSE_ERR,"Alsa: cannot open audio device %s (%s)",capture_device,snd_strerror (err));
+    if ((err = snd_pcm_open (&capture_handle, alsa_capture_device, SND_PCM_STREAM_CAPTURE, 0)) < 0) {
+        debug_printf(VERBOSE_ERR,"Alsa: cannot open audio device %s (%s)",alsa_capture_device,snd_strerror (err));
         return;
     }
 
