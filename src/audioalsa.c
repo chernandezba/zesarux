@@ -40,7 +40,8 @@
 #include "ay38912.h"
 #include "utils.h"
 
-
+//temp
+#include "timer.h"
 
 
 #ifdef USE_PTHREADS
@@ -1298,6 +1299,15 @@ pthread_t thread_alsa_capture;
 //TEMPORAL
 char temppp_buffer[AUDIO_RECORD_BUFFER_SIZE];
 
+
+
+struct timeval alsa_tiempo_antes,alsa_tiempo_despues;
+
+long alsa_tiempo_difftime;
+
+
+
+
 void *audioalsa_capture_thread_function(void *nada)
 {
 
@@ -1305,16 +1315,23 @@ int err;
 
 	while (1) {
 
+        timer_stats_current_time(&alsa_tiempo_antes);
 
-    if ((err = snd_pcm_readi (capture_handle, capture_buffer, capture_buffer_frames)) != capture_buffer_frames) {
-      fprintf (stderr, "read from audio interface failed (%s)\n",
+        printf("antes readi\n");
+        err = snd_pcm_readi (capture_handle, capture_buffer, capture_buffer_frames);
+        printf("despues readi\n");
+
+    if (err != capture_buffer_frames) {
+        printf("err: %d\n",err);
+
+      fprintf (stderr, "read from audio interface failed. err: %d (%s)\n",
                err, snd_strerror (err));
                         //1 ms
                         usleep(1000);
     }
 
     else {
-        //fprintf(stdout, "read  done\n");
+
 
         //Convertir a signed 8, y a mno
         int i;
@@ -1338,6 +1355,22 @@ int err;
                 "I recommend you to disable and enable External Audio Source in order to empty the input buffer",
                 miliseconds_lost);
             alsa_avisado_fifo_llena=1;
+        }
+
+        alsa_tiempo_difftime=timer_stats_diference_time(&alsa_tiempo_antes,&alsa_tiempo_despues);
+        //fprintf(stdout, "read  done\n");
+
+        long esperado_microseconds=(1000000L*capture_buffer_frames)/AUDIO_RECORD_FREQUENCY;
+
+        printf("tiempo: %ld esperado: %ld frames: %d leidos: %d  (%d %d %d)\n",alsa_tiempo_difftime,esperado_microseconds,
+            capture_buffer_frames,err,1000000,capture_buffer_frames,AUDIO_RECORD_FREQUENCY);
+        printf("%ld\n",esperado_microseconds);
+        //printf("long %d long long %d\n",sizeof(long),sizeof(long long));
+
+        long diferencia_a_final=esperado_microseconds-alsa_tiempo_difftime;
+        if (diferencia_a_final>0) {
+            printf("Falta %ld microsegundos\n",diferencia_a_final);
+            //usleep(diferencia_a_final);
         }
     }
 
@@ -1406,8 +1439,8 @@ void audioalsa_start_record_input(void)
 	snd_pcm_format_t format = SND_PCM_FORMAT_S16_LE;
 
 
-    //TODO: de momento temporalmente a la segunda tarjeta hw:1,0
-    char *capture_device="hw:0";
+    //TODO: de momento temporalmente a la cuarta tarjeta hw:1,0
+    char *capture_device="hw:3";
 
 
   if ((err = snd_pcm_open (&capture_handle, capture_device, SND_PCM_STREAM_CAPTURE, 0)) < 0) {
