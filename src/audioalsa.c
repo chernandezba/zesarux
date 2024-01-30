@@ -1419,6 +1419,7 @@ int leidos;
         //printf("long %d long long %d\n",sizeof(long),sizeof(long long));
 
         long diferencia_a_final=esperado_microseconds-alsa_tiempo_difftime;
+        printf("Diferencia %ld microsegundos\n",diferencia_a_final);
         if (diferencia_a_final>0) {
             printf("Falta %ld microsegundos\n",diferencia_a_final);
             //usleep(diferencia_a_final/2);
