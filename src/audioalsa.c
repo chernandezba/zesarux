@@ -1397,7 +1397,7 @@ int leidos;
         int valores_escribir=leidos;
 
         if (audiorecord_input_fifo_write(temppp_buffer,escritos) && !alsa_avisado_fifo_llena) {
-            int miliseconds_lost=(1000*leidos)/AUDIO_RECORD_FREQUENCY;
+            int miliseconds_lost=(1000*leidos)/actual_rate;
             debug_printf(VERBOSE_ERR,"External Audio Source buffer is full, a section of %d ms has been lost. "
                 "I recommend you to disable and enable External Audio Source in order to empty the input buffer",
                 miliseconds_lost);
@@ -1411,10 +1411,10 @@ int leidos;
         alsa_tiempo_difftime=timer_stats_diference_time(&alsa_tiempo_antes,&alsa_tiempo_despues);
         //fprintf(stdout, "read  done\n");
 
-        long esperado_microseconds=(1000000L*capture_buffer_frames)/AUDIO_RECORD_FREQUENCY;
+        long esperado_microseconds=(1000000L*capture_buffer_frames)/actual_rate;
 
         printf("tiempo: %ld esperado: %ld frames: %d leidos: %d  (%d %d %d)\n",alsa_tiempo_difftime,esperado_microseconds,
-            leidos,leidos,1000000,leidos,AUDIO_RECORD_FREQUENCY);
+            leidos,leidos,1000000,leidos,actual_rate);
         printf("%ld\n",esperado_microseconds);
         //printf("long %d long long %d\n",sizeof(long),sizeof(long long));
 
