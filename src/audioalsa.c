@@ -1311,31 +1311,32 @@ long alsa_tiempo_difftime;
 void *audioalsa_capture_thread_function(void *nada)
 {
 
-int err;
+//int err;
+int leidos;
 
 	while (1) {
 
         timer_stats_current_time(&alsa_tiempo_antes);
 
         printf("antes readi\n");
-        err = snd_pcm_readi (capture_handle, capture_buffer, capture_buffer_frames);
-        printf("despues readi\n");
+        leidos = snd_pcm_readi (capture_handle, capture_buffer, capture_buffer_frames);
+        printf("despues readi. %d\n",leidos);
 
-    if (err != capture_buffer_frames) {
-        printf("err: %d\n",err);
+        if (leidos <0) {
+            printf("err: %d\n",leidos);
 
-      fprintf (stderr, "read from audio interface failed. err: %d (%s)\n",
-               err, snd_strerror (err));
-                        //1 ms
-                        usleep(1000);
-    }
+        fprintf (stderr, "read from audio interface failed. err: %d (%s)\n",
+                leidos, snd_strerror (leidos));
+
+                           leidos=0;
+        }
 
     else {
 
 
         //Convertir a signed 8, y a mno
         int i;
-        for (i=0;i<capture_buffer_frames;i++) {
+        for (i=0;i<leidos;i++) {
             int offset=i*4;
             int canal_izquierdo=capture_buffer[offset]+256*capture_buffer[offset+1];
             int canal_derecho=capture_buffer[offset+2]+256*capture_buffer[offset+3];
@@ -1347,15 +1348,19 @@ int err;
             temppp_buffer[i]=final;
         }
 
-        int valores_escribir=capture_buffer_frames;
+        int valores_escribir=leidos;
 
-        if (audiorecord_input_fifo_write(temppp_buffer,capture_buffer_frames) && !alsa_avisado_fifo_llena) {
-            int miliseconds_lost=(1000*capture_buffer_frames)/AUDIO_RECORD_FREQUENCY;
+        if (audiorecord_input_fifo_write(temppp_buffer,leidos) && !alsa_avisado_fifo_llena) {
+            int miliseconds_lost=(1000*leidos)/AUDIO_RECORD_FREQUENCY;
             debug_printf(VERBOSE_ERR,"External Audio Source buffer is full, a section of %d ms has been lost. "
                 "I recommend you to disable and enable External Audio Source in order to empty the input buffer",
                 miliseconds_lost);
             alsa_avisado_fifo_llena=1;
         }
+
+
+    }
+
 
         alsa_tiempo_difftime=timer_stats_diference_time(&alsa_tiempo_antes,&alsa_tiempo_despues);
         //fprintf(stdout, "read  done\n");
@@ -1363,18 +1368,15 @@ int err;
         long esperado_microseconds=(1000000L*capture_buffer_frames)/AUDIO_RECORD_FREQUENCY;
 
         printf("tiempo: %ld esperado: %ld frames: %d leidos: %d  (%d %d %d)\n",alsa_tiempo_difftime,esperado_microseconds,
-            capture_buffer_frames,err,1000000,capture_buffer_frames,AUDIO_RECORD_FREQUENCY);
+            leidos,leidos,1000000,leidos,AUDIO_RECORD_FREQUENCY);
         printf("%ld\n",esperado_microseconds);
         //printf("long %d long long %d\n",sizeof(long),sizeof(long long));
 
         long diferencia_a_final=esperado_microseconds-alsa_tiempo_difftime;
         if (diferencia_a_final>0) {
             printf("Falta %ld microsegundos\n",diferencia_a_final);
-            //usleep(diferencia_a_final);
+            usleep(diferencia_a_final/2);
         }
-    }
-
-
 
 
 
@@ -1443,7 +1445,7 @@ void audioalsa_start_record_input(void)
     char *capture_device="hw:3";
 
 
-  if ((err = snd_pcm_open (&capture_handle, capture_device, SND_PCM_STREAM_CAPTURE, 0)) < 0) {
+  if ((err = snd_pcm_open (&capture_handle, capture_device, SND_PCM_STREAM_CAPTURE, SND_PCM_NONBLOCK)) < 0) {
     fprintf (stderr, "cannot open audio device %s (%s)\n",
              capture_device,
              snd_strerror (err));
