@@ -1329,6 +1329,7 @@ int leidos;
                 leidos, snd_strerror (leidos));
 
                            leidos=0;
+                           usleep(1000);
         }
 
     else {
@@ -1404,7 +1405,7 @@ int leidos;
         long diferencia_a_final=esperado_microseconds-alsa_tiempo_difftime;
         if (diferencia_a_final>0) {
             printf("Falta %ld microsegundos\n",diferencia_a_final);
-            usleep(diferencia_a_final/2);
+            //usleep(diferencia_a_final/2);
         }
 
 
@@ -1474,7 +1475,7 @@ void audioalsa_start_record_input(void)
     char *capture_device="hw:3";
 
 
-  if ((err = snd_pcm_open (&capture_handle, capture_device, SND_PCM_STREAM_CAPTURE, SND_PCM_NONBLOCK)) < 0) {
+  if ((err = snd_pcm_open (&capture_handle, capture_device, SND_PCM_STREAM_CAPTURE, 0)) < 0) {
     fprintf (stderr, "cannot open audio device %s (%s)\n",
              capture_device,
              snd_strerror (err));
