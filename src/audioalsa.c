@@ -1343,7 +1343,7 @@ int leidos;
 
         int contador_rate=0;
 
-        for (i=0;i<leidos;i++) {
+        for (i=0;i<leidos;) {
             int offset=i*4;
             int canal_izquierdo=capture_buffer[offset]+256*capture_buffer[offset+1];
             int canal_derecho=capture_buffer[offset+2]+256*capture_buffer[offset+3];
@@ -1467,7 +1467,6 @@ void audioalsa_start_record_input(void)
     int err;
 
     unsigned int rate = AUDIO_RECORD_FREQUENCY;
-
 
 
     snd_pcm_hw_params_t *hw_params;
