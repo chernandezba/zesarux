@@ -1518,7 +1518,7 @@ void audioalsa_start_record_input(void)
     }
 
     if (rate != actual_rate) {
-        debug_printf(VERBOSE_WARN,"Alsa: the rate %d Hz is not supported by your hardware. Using %d Hz instead and software resample",
+        debug_printf(VERBOSE_WARN,"Alsa: the rate %d Hz is not supported by your hardware. Using %d Hz instead and ugly software resample",
             rate, actual_rate);
     }
 
