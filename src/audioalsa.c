@@ -1306,7 +1306,7 @@ struct timeval alsa_tiempo_antes,alsa_tiempo_despues;
 long alsa_tiempo_difftime;
 
 
-
+unsigned int actual_rate;
 
 void *audioalsa_capture_thread_function(void *nada)
 {
@@ -1336,6 +1336,11 @@ int leidos;
 
         //Convertir a signed 8, y a mno
         int i;
+        //int destino=0;
+        int escritos=0;
+
+        int contador_rate=0;
+
         for (i=0;i<leidos;i++) {
             int offset=i*4;
             int canal_izquierdo=capture_buffer[offset]+256*capture_buffer[offset+1];
@@ -1345,12 +1350,36 @@ int leidos;
             //pasar a 8 bits
             sumado /=256;
             char final=sumado;
-            temppp_buffer[i]=final;
+            temppp_buffer[escritos]=final;
+
+            //Cutre resample
+            //En PC la frecuencia que me retorna no es la deseada, hago un resample
+            //descartando valores, suponiendo que frecuencia de sampleado que me da es mayor a la que pido
+            //TODO: gestionar si frecuencia de sampleado dada es menor a la pedida
+            if (actual_rate>AUDIO_RECORD_FREQUENCY) {
+                contador_rate +=AUDIO_RECORD_FREQUENCY;
+                if (contador_rate>=actual_rate) {
+                    contador_rate -=actual_rate;
+                    escritos++;
+                    //printf("incrementar\n");
+                }
+                else {
+                    //printf("no incrementar\n");
+                }
+            }
+
+            else {
+                escritos++;
+            }
+
+
+
+
         }
 
         int valores_escribir=leidos;
 
-        if (audiorecord_input_fifo_write(temppp_buffer,leidos) && !alsa_avisado_fifo_llena) {
+        if (audiorecord_input_fifo_write(temppp_buffer,escritos) && !alsa_avisado_fifo_llena) {
             int miliseconds_lost=(1000*leidos)/AUDIO_RECORD_FREQUENCY;
             debug_printf(VERBOSE_ERR,"External Audio Source buffer is full, a section of %d ms has been lost. "
                 "I recommend you to disable and enable External Audio Source in order to empty the input buffer",
@@ -1486,11 +1515,20 @@ fprintf(stdout, "audio interface opened\n");
 
   fprintf(stdout, "hw_params format setted\n");
 
-  if ((err = snd_pcm_hw_params_set_rate_near (capture_handle, hw_params, &rate, 0)) < 0) {
+
+
+    actual_rate = rate;
+
+
+  if ((err = snd_pcm_hw_params_set_rate_near (capture_handle, hw_params, &actual_rate, 0)) < 0) {
     fprintf (stderr, "cannot set sample rate (%s)\n",
              snd_strerror (err));
     return;
   }
+
+    if (rate != actual_rate) {
+      fprintf(stdout, "The rate %d Hz is not supported by your hardware. ==> Using %d Hz instead.", rate, actual_rate);
+    }
 
   fprintf(stdout, "hw_params rate setted\n");
 
