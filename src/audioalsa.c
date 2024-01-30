@@ -1319,6 +1319,7 @@ int leidos;
         timer_stats_current_time(&alsa_tiempo_antes);
 
         printf("antes readi\n");
+        //Esta funcion es bloqueante y se espera a que acabe
         leidos = snd_pcm_readi (capture_handle, capture_buffer, capture_buffer_frames);
         printf("despues readi. %d\n",leidos);
 
@@ -1447,130 +1448,97 @@ void audioalsa_start_record_input_create_thread(void)
 void audioalsa_start_record_input(void)
 {
 
+    int i;
+    int err;
 
-
-  int i;
-  int err;
-
-
-/*
-  int buffer_frames = 128;
-  unsigned int rate = AUDIO_RECORD_FREQUENCY;
-  snd_pcm_t *capture_handle;
-  snd_pcm_hw_params_t *hw_params;
-	snd_pcm_format_t format = SND_PCM_FORMAT_S8;*/
-
-
-  unsigned int rate = AUDIO_RECORD_FREQUENCY;
+    unsigned int rate = AUDIO_RECORD_FREQUENCY;
 
 
 
-  snd_pcm_hw_params_t *hw_params;
+    snd_pcm_hw_params_t *hw_params;
 
-  //Deberia ser signed 8 bits (SND_PCM_FORMAT_S8) pero no parece gustarle
-	snd_pcm_format_t format = SND_PCM_FORMAT_S16_LE;
-
-
-    //TODO: de momento temporalmente a la cuarta tarjeta hw:1,0
-    char *capture_device="hw:3";
+    //Deberia ser signed 8 bits (SND_PCM_FORMAT_S8) pero no parece gustarle
+    snd_pcm_format_t format = SND_PCM_FORMAT_S16_LE;
 
 
-  if ((err = snd_pcm_open (&capture_handle, capture_device, SND_PCM_STREAM_CAPTURE, 0)) < 0) {
-    fprintf (stderr, "cannot open audio device %s (%s)\n",
-             capture_device,
-             snd_strerror (err));
-    return;
-  }
+    char *capture_device="hw:0";
 
-fprintf(stdout, "audio interface opened\n");
 
-  if ((err = snd_pcm_hw_params_malloc (&hw_params)) < 0) {
-    fprintf (stderr, "cannot allocate hardware parameter structure (%s)\n",
-             snd_strerror (err));
-    exit (1);
-  }
+    if ((err = snd_pcm_open (&capture_handle, capture_device, SND_PCM_STREAM_CAPTURE, 0)) < 0) {
+        debug_printf(VERBOSE_ERR,"Alsa: cannot open audio device %s (%s)",capture_device,snd_strerror (err));
+        return;
+    }
 
-  fprintf(stdout, "hw_params allocated\n");
 
-  if ((err = snd_pcm_hw_params_any (capture_handle, hw_params)) < 0) {
-    fprintf (stderr, "cannot initialize hardware parameter structure (%s)\n",
-             snd_strerror (err));
-    return;
-  }
+    if ((err = snd_pcm_hw_params_malloc (&hw_params)) < 0) {
+        debug_printf(VERBOSE_ERR,"Alsa: cannot allocate hardware parameter structure (%s)",snd_strerror (err));
+        return;
+    }
 
-  fprintf(stdout, "hw_params initialized\n");
 
-  if ((err = snd_pcm_hw_params_set_access (capture_handle, hw_params, SND_PCM_ACCESS_RW_INTERLEAVED)) < 0) {
-    fprintf (stderr, "cannot set access type (%s)\n",
-             snd_strerror (err));
-    return;
-  }
+    if ((err = snd_pcm_hw_params_any (capture_handle, hw_params)) < 0) {
+        debug_printf(VERBOSE_ERR,"Alsa: cannot initialize hardware parameter structure (%s)",snd_strerror (err));
+        return;
+    }
 
-  fprintf(stdout, "hw_params access setted\n");
 
-  if ((err = snd_pcm_hw_params_set_format (capture_handle, hw_params, format)) < 0) {
-    fprintf (stderr, "cannot set sample format (%s)\n",
-             snd_strerror (err));
-    return;
-  }
+    if ((err = snd_pcm_hw_params_set_access (capture_handle, hw_params, SND_PCM_ACCESS_RW_INTERLEAVED)) < 0) {
+        debug_printf(VERBOSE_ERR,"Alsa: cannot set access type (%s)",snd_strerror (err));
+        return;
+    }
 
-  fprintf(stdout, "hw_params format setted\n");
 
+    if ((err = snd_pcm_hw_params_set_format (capture_handle, hw_params, format)) < 0) {
+        debug_printf(VERBOSE_ERR,"Alsa: cannot set sample format (%s)",snd_strerror (err));
+        return;
+    }
 
 
     actual_rate = rate;
 
 
-  if ((err = snd_pcm_hw_params_set_rate_near (capture_handle, hw_params, &actual_rate, 0)) < 0) {
-    fprintf (stderr, "cannot set sample rate (%s)\n",
-             snd_strerror (err));
-    return;
-  }
-
-    if (rate != actual_rate) {
-      fprintf(stdout, "The rate %d Hz is not supported by your hardware. ==> Using %d Hz instead.", rate, actual_rate);
+    if ((err = snd_pcm_hw_params_set_rate_near (capture_handle, hw_params, &actual_rate, 0)) < 0) {
+        debug_printf(VERBOSE_ERR,"Alsa: cannot set sample rate (%s)",snd_strerror (err));
+        return;
     }
 
-  fprintf(stdout, "hw_params rate setted\n");
+    if (rate != actual_rate) {
+        debug_printf(VERBOSE_WARN,"Alsa: the rate %d Hz is not supported by your hardware. Using %d Hz instead and software resample",
+            rate, actual_rate);
+    }
+
 
     //Deberia ser 1 canal pero tampoco le gusta
-  if ((err = snd_pcm_hw_params_set_channels (capture_handle, hw_params, 2)) < 0) {
-    fprintf (stderr, "cannot set channel count (%s)\n",
-             snd_strerror (err));
-    return;
-  }
-
-  fprintf(stdout, "hw_params channels setted\n");
-
-  if ((err = snd_pcm_hw_params (capture_handle, hw_params)) < 0) {
-    fprintf (stderr, "cannot set parameters (%s)\n",
-             snd_strerror (err));
-    return;
-  }
-
-  fprintf(stdout, "hw_params setted\n");
-
-  snd_pcm_hw_params_free (hw_params);
-
-  fprintf(stdout, "hw_params freed\n");
-
-  if ((err = snd_pcm_prepare (capture_handle)) < 0) {
-    fprintf (stderr, "cannot prepare audio interface for use (%s)\n",
-             snd_strerror (err));
-    return;
-  }
-
-  fprintf(stdout, "audio interface prepared\n");
-
-  //capture_buffer = malloc(capture_buffer_frames * snd_pcm_format_width(format) / 8 *2);
-
-//16 bits, stereo
-  capture_buffer = util_malloc(ALSA_CAPTURE_BUFFER,"Cannot allocate memory for audio capture");
-
-  fprintf(stdout, "buffer allocated\n");
+    if ((err = snd_pcm_hw_params_set_channels (capture_handle, hw_params, 2)) < 0) {
+        debug_printf(VERBOSE_ERR,"Alsa: cannot set channel count (%s)\n",snd_strerror (err));
+        return;
+    }
 
 
-  audioalsa_start_record_input_create_thread();
+    if ((err = snd_pcm_hw_params (capture_handle, hw_params)) < 0) {
+        debug_printf(VERBOSE_ERR,"Alsa: cannot set parameters (%s)",snd_strerror (err));
+        return;
+    }
+
+
+    snd_pcm_hw_params_free (hw_params);
+
+
+    if ((err = snd_pcm_prepare (capture_handle)) < 0) {
+        debug_printf(VERBOSE_ERR,"Alsa: cannot prepare audio interface for use (%s)\n",snd_strerror (err));
+        return;
+    }
+
+
+    //capture_buffer = malloc(capture_buffer_frames * snd_pcm_format_width(format) / 8 *2);
+
+    //16 bits, stereo
+    capture_buffer = util_malloc(ALSA_CAPTURE_BUFFER,"Cannot allocate memory for audio capture");
+
+    fprintf(stdout, "buffer allocated\n");
+
+
+    audioalsa_start_record_input_create_thread();
 
 
 
