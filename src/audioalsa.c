@@ -1357,7 +1357,7 @@ int leidos;
             //Cutre resample
             //En PC la frecuencia que me retorna no es la deseada, hago un resample
             //descartando valores, suponiendo que frecuencia de sampleado que me da es mayor a la que pido
-            //TODO: gestionar si frecuencia de sampleado dada es menor a la pedida
+
             if (actual_rate>AUDIO_RECORD_FREQUENCY) {
                 contador_rate +=AUDIO_RECORD_FREQUENCY;
                 if (contador_rate>=actual_rate) {
@@ -1368,10 +1368,25 @@ int leidos;
                 else {
                     //printf("no incrementar\n");
                 }
+                i++;
+            }
+
+            else if (AUDIO_RECORD_FREQUENCY>actual_rate) {
+                contador_rate +=actual_rate;
+                if (contador_rate>=AUDIO_RECORD_FREQUENCY) {
+                    contador_rate -=AUDIO_RECORD_FREQUENCY;
+                    i++;
+                    //printf("incrementar\n");
+                }
+                else {
+                    //printf("no incrementar\n");
+                }
+                escritos++;
             }
 
             else {
                 escritos++;
+                i++;
             }
 
 
