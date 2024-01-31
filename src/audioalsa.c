@@ -1579,11 +1579,6 @@ int audioalsa_can_record_input(void)
 
 }
 
-void audioalsa_start_record_input_create_thread(void)
-{
-    //Nada
-}
-
 void audioalsa_start_record_input(void)
 {
     //Nada
