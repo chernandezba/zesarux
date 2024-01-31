@@ -547,7 +547,7 @@ printf("antes pa_simple_read\n");
         }
 
 
-        if (audiorecord_input_fifo_write(buffer_audiopulse_captura_temporal,leidos) && !pulse_avisado_fifo_llena) {
+        if (audiorecord_input_fifo_write(buffer_audiopulse_captura_temporal,AUDIO_RECORD_BUFFER_SIZE) && !pulse_avisado_fifo_llena) {
             int miliseconds_lost=(1000*leidos)/AUDIO_RECORD_FREQUENCY;
             debug_printf(VERBOSE_ERR,"External Audio Source buffer is full, a section of %d ms has been lost. "
                 "I recommend you to disable and enable External Audio Source in order to empty the input buffer",
