@@ -510,29 +510,23 @@ char buffer_audiopulse_captura_temporal[AUDIO_RECORD_BUFFER_SIZE];
 void *audiopulse_capture_thread_function(void *nada)
 {
 
-//int err;
-int leidos;
+int err;
 
 	while (1) {
 
         timer_stats_current_time(&pulse_tiempo_antes);
 
-printf("antes pa_simple_read\n");
+        printf("antes pa_simple_read\n");
+
+
         //Esta funcion es bloqueante y se espera a que acabe
-        leidos=pa_simple_read (audiopulse_record_s,buffer_audiopulse_captura_temporal,AUDIO_RECORD_BUFFER_SIZE,NULL);
+        if (pa_simple_read (audiopulse_record_s,buffer_audiopulse_captura_temporal,AUDIO_RECORD_BUFFER_SIZE,&err) <0) {
 
-
-
-
-        printf("despues pa_simple_read. %d\n",leidos);
-
-        if (leidos <0) {
-            printf("err: %d\n",leidos);
 
             fprintf (stderr, "read from audio interface failed. err: %d\n",
-                leidos);
+                err);
 
-                    leidos=0;
+
                     usleep(1000);
         }
 
@@ -548,7 +542,7 @@ printf("antes pa_simple_read\n");
 
 
         if (audiorecord_input_fifo_write(buffer_audiopulse_captura_temporal,AUDIO_RECORD_BUFFER_SIZE) && !pulse_avisado_fifo_llena) {
-            int miliseconds_lost=(1000*leidos)/AUDIO_RECORD_FREQUENCY;
+            int miliseconds_lost=(1000*AUDIO_RECORD_BUFFER_SIZE)/AUDIO_RECORD_FREQUENCY;
             debug_printf(VERBOSE_ERR,"External Audio Source buffer is full, a section of %d ms has been lost. "
                 "I recommend you to disable and enable External Audio Source in order to empty the input buffer",
                 miliseconds_lost);
@@ -564,9 +558,8 @@ printf("antes pa_simple_read\n");
 
         long esperado_microseconds=(1000000L*AUDIO_RECORD_BUFFER_SIZE)/AUDIO_RECORD_FREQUENCY;
 
-        printf("tiempo: %ld esperado: %ld frames: %d leidos: %d  (%d %d %d)\n",pulse_tiempo_difftime,esperado_microseconds,
-            leidos,leidos,1000000,leidos,AUDIO_RECORD_FREQUENCY);
-        printf("%ld\n",esperado_microseconds);
+        printf("tiempo: %ld esperado: %ld\n",pulse_tiempo_difftime,esperado_microseconds);
+
         //printf("long %d long long %d\n",sizeof(long),sizeof(long long));
 
         long diferencia_a_final=esperado_microseconds-pulse_tiempo_difftime;
