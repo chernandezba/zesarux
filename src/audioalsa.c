@@ -1471,6 +1471,9 @@ void audioalsa_start_record_input_create_thread(void)
 void audioalsa_start_record_input(void)
 {
 
+    //Vaciar posible sonido que haya antes del buffer, por si el usuario ha desactivado y activado varias veces
+    audiorecord_input_empty_buffer_with_lock();
+
     int i;
     int err;
 
