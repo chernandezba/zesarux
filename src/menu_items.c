@@ -32086,6 +32086,8 @@ void menu_reinsert_real_tape(void)
 void menu_realtape_record_input_enable(MENU_ITEM_PARAMETERS)
 {
     if (!audio_is_recording_input) {
+        //Vaciar posible sonido que haya antes del buffer, por si el usuario ha desactivado y activado varias veces
+        audiorecord_input_empty_buffer_with_lock();
         audiodriver_start_record_input();
     }
     else {

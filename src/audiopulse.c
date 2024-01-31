@@ -505,6 +505,8 @@ long pulse_tiempo_difftime;
 pa_simple *audiopulse_record_s;
 pa_sample_spec audiopulse_record_ss;
 
+int audiopulse_record_must_finish=0;
+
 char buffer_audiopulse_captura_temporal[AUDIO_RECORD_BUFFER_SIZE];
 
 void *audiopulse_capture_thread_function(void *nada)
@@ -512,7 +514,7 @@ void *audiopulse_capture_thread_function(void *nada)
 
 int err;
 
-	while (1) {
+	while (!audiopulse_record_must_finish) {
 
         timer_stats_current_time(&pulse_tiempo_antes);
 
@@ -577,12 +579,20 @@ int err;
 	nada=0;
 	nada++;
 
+    printf("finished audio pulse record\n");
+
+
+    return NULL;
+
 
 }
 
 
 void audiopulse_start_record_input_create_thread(void)
 {
+
+    audiopulse_record_must_finish=0;
+
     if (pthread_create( &thread_pulse_capture, NULL, &audiopulse_capture_thread_function, NULL) ) {
         cpu_panic("Can not create audiopulse pthread");
     }
@@ -601,7 +611,10 @@ printf("Start audiopulse record\n");
         audiopulse_record_ss.rate = AUDIO_RECORD_FREQUENCY;
 
         audiopulse_record_attributes.maxlength=-1;
-        audiopulse_record_attributes.fragsize=-1;
+        //Si dejasemos esto por defecto, enviaria los datos a rafagas de 2s, cosa que funcionaria,
+        //pero por ejemplo en la ventana de external audio source, la forma de onda va y viene
+        //mejor bajarlo al trozo que queremos realmente leer
+        audiopulse_record_attributes.fragsize=AUDIO_RECORD_BUFFER_SIZE;
 
 
         audiopulse_record_s = pa_simple_new(NULL, // Use the default server.
@@ -629,18 +642,18 @@ printf("Start audiopulse record\n");
 
     audio_is_recording_input=1;
 
-    printf("Finish Start audiopulse record\n");
+    printf("Finish initializing audiopulse record\n");
 
 }
 
 
 void audiopulse_stop_record_input(void)
 {
-//TODO cancel pthread
 
-
+    //Ponemos esto aqui para que el usuario cuando lo desactive desde menu automaticamente se vea como desactivado
     audio_is_recording_input=0;
 
+    audiopulse_record_must_finish=1;
 
 }
 
