@@ -2204,7 +2204,7 @@ fi
 if [ "$OPTIONOBJPULSE" != "" ]; then
 
 cat >> Makefile << _EOF
-audiopulse.o: audiopulse.c audiopulse.h cpu.h audio.h compileoptions.h debug.h utils.h settings.h
+audiopulse.o: audiopulse.c audiopulse.h cpu.h audio.h compileoptions.h debug.h utils.h settings.h timer.h
 	\$(CC) \$(CFLAGS) -c audiopulse.c
 
 _EOF

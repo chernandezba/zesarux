@@ -32,8 +32,6 @@
 #include "compileoptions.h"
 #include "utils.h"
 #include "settings.h"
-
-//temp
 #include "timer.h"
 
 #ifdef USE_PTHREADS
@@ -364,6 +362,8 @@ int audiopulse_thread_finish(void)
 void audiopulse_end(void)
 {
         debug_printf (VERBOSE_INFO,"Ending pulse audio driver");
+        audiopulse_stop_record_input();
+
         audiopulse_thread_finish();
 	audio_playing.v=0;
 
@@ -656,16 +656,18 @@ printf("Start audiopulse record\n");
 void audiopulse_stop_record_input(void)
 {
 
-    audiopulse_record_must_finish=1;
+    if (audio_is_recording_input) {
+        audiopulse_record_must_finish=1;
 
 
-    while (audio_capture_thread_running) {
-        timer_sleep(100);
+        while (audio_capture_thread_running) {
+            timer_sleep(100);
+        }
+
+        audio_is_recording_input=0;
+
+        pa_simple_free(audiopulse_record_s);
     }
-
-    audio_is_recording_input=0;
-
-    pa_simple_free(audiopulse_record_s);
 
 
 }

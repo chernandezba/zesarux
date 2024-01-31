@@ -831,11 +831,12 @@ Esto significaria tambien que al cambiar de idioma habria que resetear el indice
 *footer que cambien cuando input source
 *que no afecte el silencio detection cuando se esté leyendo audio
 
-*coreaudio: segfault al hacer error stop record input
+*coreaudio: segfault al hacer error stop record input. finalizar captura al finalizar driver
 *alsa:
 **poder hacer stop record.
 **poder escoger que tarjeta alsa (tanto input como output). ok input
-*pulse: https://acassis.wordpress.com/2012/10/04/reading-microphone-audio-using-pulseaudio-simple/
+**finalizar captura al finalizar driver
+*pulse: ok?
 
 
 -quiza audiocoreaudio y otros drivers de audio necesitan fifos con semaforos para evitar interferencias en el sonido....
