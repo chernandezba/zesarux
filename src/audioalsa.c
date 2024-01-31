@@ -454,6 +454,7 @@ return 0;
 void audioalsa_end(void)
 {
         debug_printf (VERBOSE_INFO,"Ending alsa audio driver");
+        audioalsa_stop_record_input();
         audioalsa_thread_finish();
 	audio_playing.v=0;
 	snd_pcm_close( pcm_handle );

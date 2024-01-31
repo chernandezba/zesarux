@@ -832,10 +832,10 @@ Esto significaria tambien que al cambiar de idioma habria que resetear el indice
 *que no afecte el silencio detection cuando se esté leyendo audio
 
 *coreaudio: segfault al hacer error stop record input. finalizar captura al finalizar driver
+
 *alsa:
-**poder hacer stop record.
 **poder escoger que tarjeta alsa (tanto input como output). ok input
-**finalizar captura al finalizar driver
+
 *pulse: ok?
 
 
