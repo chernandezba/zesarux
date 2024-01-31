@@ -79,7 +79,7 @@ int audiopulse_init(void)
                 "ZEsarUX", // Our application's name.
                 PA_STREAM_PLAYBACK,
                 NULL, // Use the default device.
-                "Music", // Description of our stream.
+                "Emulation sound", // Description of our stream.
                 &audiopulse_ss, // Our sample format.
                 NULL, // Use default channel map
                 NULL, // Use default buffering attributes.
@@ -589,7 +589,7 @@ void audiopulse_start_record_input_create_thread(void)
 
 }
 
-
+pa_buffer_attr audiopulse_record_attributes;
 
 void audiopulse_start_record_input(void)
 {
@@ -600,6 +600,9 @@ printf("Start audiopulse record\n");
         audiopulse_record_ss.channels = 1;
         audiopulse_record_ss.rate = AUDIO_RECORD_FREQUENCY;
 
+        audiopulse_record_attributes.maxlength=-1;
+        audiopulse_record_attributes.fragsize=-1;
+
 
         audiopulse_record_s = pa_simple_new(NULL, // Use the default server.
                 "ZEsarUX", // Our application's name.
@@ -608,7 +611,7 @@ printf("Start audiopulse record\n");
                 "Record", // Description of our stream.
                 &audiopulse_record_ss, // Our sample format.
                 NULL, // Use default channel map
-                NULL, // Use default buffering attributes.
+                &audiopulse_record_attributes,
                 NULL // Ignore error code.
         );
 
