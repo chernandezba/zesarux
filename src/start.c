@@ -2269,7 +2269,8 @@ int set_audiodriver_pulse(void)
     audio_end=audiopulse_end;
     audio_get_buffer_info=audiopulse_get_buffer_info;
     audio_can_record_input=audiopulse_can_record_input;
-
+    audio_start_record_input=audiopulse_start_record_input;
+    audio_stop_record_input=audiopulse_stop_record_input;
     return 0;
 
 }

@@ -33,6 +33,9 @@
 #include "utils.h"
 #include "settings.h"
 
+//temp
+#include "timer.h"
+
 #ifdef USE_PTHREADS
 #include <pthread.h>
 
@@ -47,7 +50,11 @@ unsigned char unsigned_audio_buffer[AUDIO_BUFFER_SIZE*2]; //*2 porque es estereo
 
 #ifndef USE_PTHREADS
 
-//Rutinas sin pthreads
+//
+//
+//Inicio Rutinas sin pthreads
+//
+//
 
 pa_simple *audiopulse_s;
 pa_sample_spec audiopulse_ss;
@@ -138,9 +145,36 @@ void audiopulse_get_buffer_info (int *buffer_size,int *current_size)
 
 
 
+int audiopulse_can_record_input(void)
+{
+    return 0;
+
+}
+
+
+void audiopulse_start_record_input(void)
+{
+
+    //Nada
+
+}
+
+
+void audiopulse_stop_record_input(void)
+{
+
+    //Nada
+
+}
+
+
 #else
 
-//Rutinas con pthreads
+//
+//
+//Inicio Rutinas con pthreads
+//
+//
 
 pa_simple *audiopulse_s;
 pa_sample_spec audiopulse_ss;
@@ -446,10 +480,178 @@ void audiopulse_send_frame(char *buffer)
 
 
 
-#endif
 
+
+
+
+pthread_t thread_pulse_capture;
+
+
+  int pulse_avisado_fifo_llena=0;
+
+
+//stereo y 16 bits
+#define PULSE_CAPTURE_BUFFER (AUDIO_RECORD_BUFFER_SIZE*2*2)
+
+
+
+
+
+struct timeval pulse_tiempo_antes,pulse_tiempo_despues;
+
+long pulse_tiempo_difftime;
+
+
+pa_simple *audiopulse_record_s;
+pa_sample_spec audiopulse_record_ss;
+
+char buffer_audiopulse_captura_temporal[AUDIO_RECORD_BUFFER_SIZE];
+
+void *audiopulse_capture_thread_function(void *nada)
+{
+
+//int err;
+int leidos;
+
+	while (1) {
+
+        timer_stats_current_time(&pulse_tiempo_antes);
+
+printf("antes pa_simple_read\n");
+        //Esta funcion es bloqueante y se espera a que acabe
+        leidos=pa_simple_read (audiopulse_record_s,buffer_audiopulse_captura_temporal,AUDIO_RECORD_BUFFER_SIZE,NULL);
+
+
+
+
+        printf("despues pa_simple_read. %d\n",leidos);
+
+        if (leidos <0) {
+            printf("err: %d\n",leidos);
+
+            fprintf (stderr, "read from audio interface failed. err: %d\n",
+                leidos);
+
+                    leidos=0;
+                    usleep(1000);
+        }
+
+    else {
+
+        //Convertir unsigned en signed
+        int i;
+        for (i=0;i<AUDIO_RECORD_BUFFER_SIZE;i++) {
+            z80_byte valor=(z80_byte) buffer_audiopulse_captura_temporal[i];
+            int valor_signo=valor-128;
+            buffer_audiopulse_captura_temporal[i]=valor_signo;
+        }
+
+
+        if (audiorecord_input_fifo_write(buffer_audiopulse_captura_temporal,leidos) && !pulse_avisado_fifo_llena) {
+            int miliseconds_lost=(1000*leidos)/AUDIO_RECORD_FREQUENCY;
+            debug_printf(VERBOSE_ERR,"External Audio Source buffer is full, a section of %d ms has been lost. "
+                "I recommend you to disable and enable External Audio Source in order to empty the input buffer",
+                miliseconds_lost);
+            pulse_avisado_fifo_llena=1;
+        }
+
+
+    }
+
+
+        pulse_tiempo_difftime=timer_stats_diference_time(&pulse_tiempo_antes,&pulse_tiempo_despues);
+        //fprintf(stdout, "read  done\n");
+
+        long esperado_microseconds=(1000000L*AUDIO_RECORD_BUFFER_SIZE)/AUDIO_RECORD_FREQUENCY;
+
+        printf("tiempo: %ld esperado: %ld frames: %d leidos: %d  (%d %d %d)\n",pulse_tiempo_difftime,esperado_microseconds,
+            leidos,leidos,1000000,leidos,AUDIO_RECORD_FREQUENCY);
+        printf("%ld\n",esperado_microseconds);
+        //printf("long %d long long %d\n",sizeof(long),sizeof(long long));
+
+        long diferencia_a_final=esperado_microseconds-pulse_tiempo_difftime;
+        printf("Diferencia %ld microsegundos\n",diferencia_a_final);
+        if (diferencia_a_final>0) {
+            printf("Falta %ld microsegundos\n",diferencia_a_final);
+            //usleep(diferencia_a_final/2);
+        }
+
+
+
+	}
+
+	//para que no se queje el compilador de variable no usada
+	nada=0;
+	nada++;
+
+
+}
+
+
+void audiopulse_start_record_input_create_thread(void)
+{
+    if (pthread_create( &thread_pulse_capture, NULL, &audiopulse_capture_thread_function, NULL) ) {
+        cpu_panic("Can not create audiopulse pthread");
+    }
+
+}
+
+
+
+void audiopulse_start_record_input(void)
+{
+
+printf("Start audiopulse record\n");
+
+        audiopulse_record_ss.format = PA_SAMPLE_U8;
+        audiopulse_record_ss.channels = 1;
+        audiopulse_record_ss.rate = AUDIO_RECORD_FREQUENCY;
+
+
+        audiopulse_record_s = pa_simple_new(NULL, // Use the default server.
+                "ZEsarUX", // Our application's name.
+                PA_STREAM_RECORD,
+                NULL, // Use the default device.
+                "Record", // Description of our stream.
+                &audiopulse_record_ss, // Our sample format.
+                NULL, // Use default channel map
+                NULL, // Use default buffering attributes.
+                NULL // Ignore error code.
+        );
+
+        if (audiopulse_record_s==NULL) {
+                debug_printf (VERBOSE_ERR,"Error initializing Pulse Audio Recording");
+                return;
+        }
+
+    audiopulse_start_record_input_create_thread();
+
+
+
+
+
+
+    audio_is_recording_input=1;
+
+    printf("Finish Start audiopulse record\n");
+
+}
+
+
+void audiopulse_stop_record_input(void)
+{
+//TODO cancel pthread
+
+
+    audio_is_recording_input=0;
+
+
+}
 
 int audiopulse_can_record_input(void)
 {
-    return 0;
+    return 1;
+
 }
+
+#endif
