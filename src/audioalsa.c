@@ -1317,13 +1317,18 @@ long alsa_tiempo_difftime;
 
 unsigned int actual_rate;
 
+int audioalsa_record_must_finish=0;
+
+int audioalsa_capture_thread_running=0;
+
 void *audioalsa_capture_thread_function(void *nada)
 {
 
+    audioalsa_capture_thread_running=1;
 //int err;
 int leidos;
 
-	while (1) {
+	while (!audioalsa_record_must_finish) {
 
         timer_stats_current_time(&alsa_tiempo_antes);
 
@@ -1444,12 +1449,16 @@ int leidos;
 	nada=0;
 	nada++;
 
+    audioalsa_capture_thread_running=0;
+
 
 }
 
 
 void audioalsa_start_record_input_create_thread(void)
 {
+    audioalsa_record_must_finish=0;
+
     if (pthread_create( &thread_alsa_capture, NULL, &audioalsa_capture_thread_function, NULL) ) {
         cpu_panic("Can not create audioalsa pthread");
     }
@@ -1562,10 +1571,22 @@ void audioalsa_start_record_input(void)
 
 void audioalsa_stop_record_input(void)
 {
-//TODO cancel pthread
 
-    free(capture_buffer);
-    audio_is_recording_input=0;
+
+
+    if (audio_is_recording_input) {
+        audioalsa_record_must_finish=1;
+
+
+        while (audioalsa_capture_thread_running) {
+            timer_sleep(100);
+        }
+
+        audio_is_recording_input=0;
+
+        free(capture_buffer);
+    }
+
 
 
 }

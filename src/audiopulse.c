@@ -509,12 +509,12 @@ int audiopulse_record_must_finish=0;
 
 char buffer_audiopulse_captura_temporal[AUDIO_RECORD_BUFFER_SIZE];
 
-int audio_capture_thread_running=0;
+int audiopulse_capture_thread_running=0;
 
 void *audiopulse_capture_thread_function(void *nada)
 {
 
-    audio_capture_thread_running=1;
+    audiopulse_capture_thread_running=1;
 
     int err;
 
@@ -584,7 +584,7 @@ void *audiopulse_capture_thread_function(void *nada)
     printf("finished audio pulse record\n");
 
 
-    audio_capture_thread_running=0;
+    audiopulse_capture_thread_running=0;
 
 
     return NULL;
@@ -660,7 +660,7 @@ void audiopulse_stop_record_input(void)
         audiopulse_record_must_finish=1;
 
 
-        while (audio_capture_thread_running) {
+        while (audiopulse_capture_thread_running) {
             timer_sleep(100);
         }
 
