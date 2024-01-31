@@ -509,10 +509,14 @@ int audiopulse_record_must_finish=0;
 
 char buffer_audiopulse_captura_temporal[AUDIO_RECORD_BUFFER_SIZE];
 
+int audio_capture_thread_running=0;
+
 void *audiopulse_capture_thread_function(void *nada)
 {
 
-int err;
+    audio_capture_thread_running=1;
+
+    int err;
 
 	while (!audiopulse_record_must_finish) {
 
@@ -532,27 +536,27 @@ int err;
                     usleep(1000);
         }
 
-    else {
+        else {
 
-        //Convertir unsigned en signed
-        int i;
-        for (i=0;i<AUDIO_RECORD_BUFFER_SIZE;i++) {
-            z80_byte valor=(z80_byte) buffer_audiopulse_captura_temporal[i];
-            int valor_signo=valor-128;
-            buffer_audiopulse_captura_temporal[i]=valor_signo;
+            //Convertir unsigned en signed
+            int i;
+            for (i=0;i<AUDIO_RECORD_BUFFER_SIZE;i++) {
+                z80_byte valor=(z80_byte) buffer_audiopulse_captura_temporal[i];
+                int valor_signo=valor-128;
+                buffer_audiopulse_captura_temporal[i]=valor_signo;
+            }
+
+
+            if (audiorecord_input_fifo_write(buffer_audiopulse_captura_temporal,AUDIO_RECORD_BUFFER_SIZE) && !pulse_avisado_fifo_llena) {
+                int miliseconds_lost=(1000*AUDIO_RECORD_BUFFER_SIZE)/AUDIO_RECORD_FREQUENCY;
+                debug_printf(VERBOSE_ERR,"External Audio Source buffer is full, a section of %d ms has been lost. "
+                    "I recommend you to disable and enable External Audio Source in order to empty the input buffer",
+                    miliseconds_lost);
+                pulse_avisado_fifo_llena=1;
+            }
+
+
         }
-
-
-        if (audiorecord_input_fifo_write(buffer_audiopulse_captura_temporal,AUDIO_RECORD_BUFFER_SIZE) && !pulse_avisado_fifo_llena) {
-            int miliseconds_lost=(1000*AUDIO_RECORD_BUFFER_SIZE)/AUDIO_RECORD_FREQUENCY;
-            debug_printf(VERBOSE_ERR,"External Audio Source buffer is full, a section of %d ms has been lost. "
-                "I recommend you to disable and enable External Audio Source in order to empty the input buffer",
-                miliseconds_lost);
-            pulse_avisado_fifo_llena=1;
-        }
-
-
-    }
 
 
         pulse_tiempo_difftime=timer_stats_diference_time(&pulse_tiempo_antes,&pulse_tiempo_despues);
@@ -571,8 +575,6 @@ int err;
             //usleep(diferencia_a_final/2);
         }
 
-
-
 	}
 
 	//para que no se queje el compilador de variable no usada
@@ -580,6 +582,9 @@ int err;
 	nada++;
 
     printf("finished audio pulse record\n");
+
+
+    audio_capture_thread_running=0;
 
 
     return NULL;
@@ -651,10 +656,17 @@ printf("Start audiopulse record\n");
 void audiopulse_stop_record_input(void)
 {
 
-    //Ponemos esto aqui para que el usuario cuando lo desactive desde menu automaticamente se vea como desactivado
+    audiopulse_record_must_finish=1;
+
+
+    while (audio_capture_thread_running) {
+        timer_sleep(100);
+    }
+
     audio_is_recording_input=0;
 
-    audiopulse_record_must_finish=1;
+    pa_simple_free(audiopulse_record_s);
+
 
 }
 
