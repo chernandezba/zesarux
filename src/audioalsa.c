@@ -1451,6 +1451,8 @@ int leidos;
 
     audioalsa_capture_thread_running=0;
 
+    return NULL;
+
 
 }
 
@@ -1585,6 +1587,8 @@ void audioalsa_stop_record_input(void)
         audio_is_recording_input=0;
 
         free(capture_buffer);
+
+        snd_pcm_close(capture_handle);
     }
 
 
