@@ -1296,8 +1296,17 @@ pthread_t thread_alsa_capture;
 //stereo y 16 bits
 #define ALSA_CAPTURE_BUFFER (AUDIO_RECORD_BUFFER_SIZE*2*2)
 
-//TEMPORAL
-char temppp_buffer[AUDIO_RECORD_BUFFER_SIZE];
+//Para hacer los resamples:
+//de 16 bits a 8 y de stereo a mono
+//Y si es necesario, el resample de la frecuencia
+//Si frecuencia final es la deseada, se usa AUDIO_RECORD_BUFFER_SIZE
+//Si frecuencia final es mayor que la deseada, se usa menos de AUDIO_RECORD_BUFFER_SIZE
+//Si frecuencia final es menor que la deseada, se usa mas de AUDIO_RECORD_BUFFER_SIZE.
+//Soportamos hasta el caso de que frecuencia final es 4 veces menor que la deseada,
+//si fuese aun menor, se llegaria mas alla del buffer y generando posible segfault,
+//si es tu caso... estarias con una tarjeta de sonido que ni puede samplear a 31200/4=7800 Hz,
+//y eso es impensable (creo) en los tiempos que corren
+char buffer_audio_captura_temporal[AUDIO_RECORD_BUFFER_SIZE*4];
 
 
 
@@ -1352,7 +1361,7 @@ int leidos;
             //pasar a 8 bits
             sumado /=256;
             char final=sumado;
-            temppp_buffer[escritos]=final;
+            buffer_audio_captura_temporal[escritos]=final;
 
             //Cutre resample
             //En PC la frecuencia que me retorna no es la deseada, hago un resample
@@ -1371,6 +1380,8 @@ int leidos;
                 i++;
             }
 
+            //Caso en que frecuencia de sampleado es menor a la que pido
+            //No esta probado, supuestamente deberia funcionar pero...
             else if (AUDIO_RECORD_FREQUENCY>actual_rate) {
                 contador_rate +=actual_rate;
                 if (contador_rate>=AUDIO_RECORD_FREQUENCY) {
@@ -1396,7 +1407,7 @@ int leidos;
 
         int valores_escribir=leidos;
 
-        if (audiorecord_input_fifo_write(temppp_buffer,escritos) && !alsa_avisado_fifo_llena) {
+        if (audiorecord_input_fifo_write(buffer_audio_captura_temporal,escritos) && !alsa_avisado_fifo_llena) {
             int miliseconds_lost=(1000*leidos)/actual_rate;
             debug_printf(VERBOSE_ERR,"External Audio Source buffer is full, a section of %d ms has been lost. "
                 "I recommend you to disable and enable External Audio Source in order to empty the input buffer",
