@@ -1456,22 +1456,6 @@ void audioalsa_start_record_input_create_thread(void)
 
 }
 
-#else
-
-int audioalsa_can_record_input(void)
-{
-    return 0;
-
-}
-
-
-void audioalsa_start_record_input_create_thread(void)
-{
-    //Nada
-}
-
-#endif
-
 void audioalsa_start_record_input(void)
 {
 
@@ -1585,3 +1569,30 @@ void audioalsa_stop_record_input(void)
 
 
 }
+
+#else
+
+
+int audioalsa_can_record_input(void)
+{
+    return 0;
+
+}
+
+void audioalsa_start_record_input_create_thread(void)
+{
+    //Nada
+}
+
+void audioalsa_start_record_input(void)
+{
+    //Nada
+}
+
+void audioalsa_stop_record_input(void)
+{
+    //Nada
+}
+
+#endif
+
