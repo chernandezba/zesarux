@@ -603,7 +603,8 @@ pa_buffer_attr audiopulse_record_attributes;
 
 void audiopulse_start_record_input(void)
 {
-
+        //Vaciar posible sonido que haya antes del buffer, por si el usuario ha desactivado y activado varias veces
+        audiorecord_input_empty_buffer_with_lock();
 printf("Start audiopulse record\n");
 
         audiopulse_record_ss.format = PA_SAMPLE_U8;
