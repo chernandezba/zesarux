@@ -425,7 +425,7 @@ void *audiowindows_capture_thread_function(void *nada)
 
         timer_stats_current_time(&windows_tiempo_antes);
 
-        printf("antes pa_simple_read\n");
+        //printf("antes pa_simple_read\n");
 
 
  // Commence sampling input
