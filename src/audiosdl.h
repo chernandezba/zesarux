@@ -35,6 +35,9 @@ extern int audiosdl_samples;
 extern void audiosdl_get_buffer_info (int *buffer_size,int *current_buffer_position);
 extern int audiosdl_can_record_input(void);
 
+extern void audiosdl_start_record_input(void);
+extern void audiosdl_stop_record_input(void);
+
 #define MAX_AUDIOSDL_FIFO_MULTIPLIER 10
 #define MIN_AUDIOSDL_FIFO_MULTIPLIER 2
 

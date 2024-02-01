@@ -835,6 +835,7 @@ Esto significaria tambien que al cambiar de idioma habria que resetear el indice
 
 *alsa:
 **poder escoger que tarjeta alsa (tanto input como output). ok input
+**si al capturar obtiene 16 bits, al sumar canales solo hace falta tener en cuenta bytes altos, porque luego ya dividimos/256
 
 *pulse: ok?
 

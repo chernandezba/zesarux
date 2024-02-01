@@ -19,6 +19,11 @@
 
 */
 
+#ifdef MINGW
+    #include <windows.h>
+    #include <mmsystem.h>
+#endif
+
 #include <string.h>
 #include <stdio.h>
 #if defined(__APPLE__)
@@ -29,6 +34,7 @@
 
 
 
+#include "compileoptions.h"
 #include "common_sdl.h"
 #include "audiosdl.h"
 #include "audio.h"
@@ -356,7 +362,265 @@ Esto lo vi en el emulador Xpeccy, archivo Xpeccy/src/xcore/sound.cpp
 */
 
 
+#ifdef MINGW
+
+//Realmente esto no es SDL, es windows, temporalmente lo pongo aqui y ya lo movere...
+
+int audiosdl_can_record_input(void)
+{
+    return 1;
+}
+
+
+
+
+
+pthread_t thread_windows_capture;
+
+
+  int windows_avisado_fifo_llena=0;
+
+
+//stereo y 16 bits
+#define WINDOWS_CAPTURE_BUFFER (AUDIO_RECORD_BUFFER_SIZE*2*2)
+
+
+
+
+
+struct timeval windows_tiempo_antes,windows_tiempo_despues;
+
+long windows_tiempo_difftime;
+
+
+
+int audiowindows_record_must_finish=0;
+
+char buffer_audiowindows_captura_temporal[AUDIO_RECORD_BUFFER_SIZE];
+
+int audiowindows_capture_thread_running=0;
+
+
+ const int NUMPTS = AUDIO_RECORD_BUFFER_SIZE; //44100 *1 ; // 10;   // 10 seconds
+ int sampleRate = AUDIO_RECORD_FREQUENCY;
+                             // for 8-bit capture, you'd use 'unsigned char' or 'BYTE' 8-bit types
+
+ short int waveIn[AUDIO_RECORD_BUFFER_SIZE];   // 'short int' is a 16-bit type; I request 16-bit samples below
+ HWAVEIN      hWaveIn;
+ WAVEHDR      WaveInHdr;
+ MMRESULT result;
+
+void *audiowindows_capture_thread_function(void *nada)
+{
+
+    audiowindows_capture_thread_running=1;
+
+    int err;
+
+	while (!audiowindows_record_must_finish) {
+
+        timer_stats_current_time(&windows_tiempo_antes);
+
+        printf("antes pa_simple_read\n");
+
+
+ // Commence sampling input
+ result = waveInStart(hWaveIn);
+ if (result)
+ {
+  printf("Failed to start recording\n");
+  return;
+ }
+
+
+ // Wait until finished recording
+ do {} while (waveInUnprepareHeader(hWaveIn, &WaveInHdr, sizeof(WAVEHDR))==WAVERR_STILLPLAYING);
+
+
+
+        //Esta funcion es bloqueante y se espera a que acabe
+        if (0) {
+        //if (pa_simple_read (audiowindows_record_s,buffer_audiowindows_captura_temporal,AUDIO_RECORD_BUFFER_SIZE,&err) <0) {
+
+
+            fprintf (stderr, "read from audio interface failed. err: %d\n",
+                err);
+
+
+                    usleep(1000);
+        }
+
+        else {
+
+            //Convertir unsigned en signed
+            int i;
+            for (i=0;i<AUDIO_RECORD_BUFFER_SIZE;i++) {
+                z80_byte valor=(z80_byte) waveIn[i]; //buffer_audiowindows_captura_temporal[i];
+                int valor_signo=valor; //-128;
+                buffer_audiowindows_captura_temporal[i]=valor_signo;
+            }
+
+
+            if (audiorecord_input_fifo_write(buffer_audiowindows_captura_temporal,AUDIO_RECORD_BUFFER_SIZE) && !windows_avisado_fifo_llena) {
+                int miliseconds_lost=(1000*AUDIO_RECORD_BUFFER_SIZE)/AUDIO_RECORD_FREQUENCY;
+                debug_printf(VERBOSE_ERR,"External Audio Source buffer is full, a section of %d ms has been lost. "
+                    "I recommend you to disable and enable External Audio Source in order to empty the input buffer",
+                    miliseconds_lost);
+                windows_avisado_fifo_llena=1;
+            }
+
+
+        }
+
+
+        windows_tiempo_difftime=timer_stats_diference_time(&windows_tiempo_antes,&windows_tiempo_despues);
+        //fprintf(stdout, "read  done\n");
+
+        long esperado_microseconds=(1000000L*AUDIO_RECORD_BUFFER_SIZE)/AUDIO_RECORD_FREQUENCY;
+
+        printf("tiempo: %ld esperado: %ld\n",windows_tiempo_difftime,esperado_microseconds);
+
+        //printf("long %d long long %d\n",sizeof(long),sizeof(long long));
+
+        long diferencia_a_final=esperado_microseconds-windows_tiempo_difftime;
+        printf("Diferencia %ld microsegundos\n",diferencia_a_final);
+        if (diferencia_a_final>0) {
+            printf("Falta %ld microsegundos\n",diferencia_a_final);
+            //usleep(diferencia_a_final/2);
+        }
+
+	}
+
+	//para que no se queje el compilador de variable no usada
+	nada=0;
+	nada++;
+
+    printf("finished audio windows record\n");
+
+
+    audiowindows_capture_thread_running=0;
+
+
+    return NULL;
+
+
+}
+
+
+void audiowindows_start_record_input_create_thread(void)
+{
+
+    audiowindows_record_must_finish=0;
+
+    if (pthread_create( &thread_windows_capture, NULL, &audiowindows_capture_thread_function, NULL) ) {
+        cpu_panic("Can not create audiowindows pthread");
+    }
+
+}
+
+pa_buffer_attr audiowindows_record_attributes;
+
+void audiosdl_start_record_input(void)
+{
+        //Vaciar posible sonido que haya antes del buffer, por si el usuario ha desactivado y activado varias veces
+        audiorecord_input_empty_buffer_with_lock();
+printf("Start audiowindows record\n");
+
+         // Specify recording parameters
+ WAVEFORMATEX pFormat;
+ pFormat.wFormatTag=WAVE_FORMAT_PCM;     // simple, uncompressed format
+ pFormat.nChannels=1;                    //  1=mono, 2=stereo
+ pFormat.nSamplesPerSec=sampleRate;      // 44100
+ pFormat.nAvgBytesPerSec=sampleRate*2;   // = nSamplesPerSec * n.Channels * wBitsPerSample/8
+ pFormat.nBlockAlign=2;                  // = n.Channels * wBitsPerSample/8
+ pFormat.wBitsPerSample=16;              //  16 for high quality, 8 for telephone-grade
+ pFormat.cbSize=0;
+
+ result = waveInOpen(&hWaveIn, WAVE_MAPPER,&pFormat,
+            0L, 0L, WAVE_FORMAT_DIRECT);
+ if (result)
+ {
+  char fault[256];
+  waveInGetErrorText(result, fault, 256);
+  printf("Failed to open waveform input device\n");
+  return;
+ }
+
+ // Set up and prepare header for input
+ WaveInHdr.lpData = (LPSTR)waveIn;
+ WaveInHdr.dwBufferLength = NUMPTS*2;
+ WaveInHdr.dwBytesRecorded=0;
+ WaveInHdr.dwUser = 0L;
+ WaveInHdr.dwFlags = 0L;
+ WaveInHdr.dwLoops = 0L;
+ waveInPrepareHeader(hWaveIn, &WaveInHdr, sizeof(WAVEHDR));
+
+ // Insert a wave input buffer
+ result = waveInAddBuffer(hWaveIn, &WaveInHdr, sizeof(WAVEHDR));
+ if (result)
+ {
+  printf("Failed to read block from device\n");
+  return;
+ }
+
+    audiowindows_start_record_input_create_thread();
+
+
+
+
+
+
+    audio_is_recording_input=1;
+
+    printf("Finish initializing audiowindows record\n");
+
+}
+
+
+void audiosdl_stop_record_input(void)
+{
+
+    if (audio_is_recording_input) {
+        audiowindows_record_must_finish=1;
+
+
+        while (audiowindows_capture_thread_running) {
+            timer_sleep(100);
+        }
+
+        audio_is_recording_input=0;
+
+         waveInClose(hWaveIn);
+    }
+
+
+}
+
+
+
+#else
+
+
+
 int audiosdl_can_record_input(void)
 {
     return 0;
 }
+
+
+void audiosdl_start_record_input(void)
+{
+
+    //Nada
+
+}
+
+
+void audiosdl_stop_record_input(void)
+{
+
+    //Nada
+
+}
+
+#endif
