@@ -32582,6 +32582,9 @@ void analizador_espectro_muestra_resultados(zxvision_window *w,int linea)
                 //No deberia ser mayor, pero por si acaso
                 if (ancho_barra>255) ancho_barra=255;
 
+                //Incrementamos porcentaje para tener barras mas grandes
+                porcentaje*=2;
+
                 ancho_barra=(ancho_barra*porcentaje)/100;
 
 
