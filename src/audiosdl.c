@@ -428,7 +428,15 @@ void *audiowindows_capture_thread_function(void *nada)
 
         //printf("antes pa_simple_read\n");
 
-
+    // Specify recording parameters
+ WAVEFORMATEX pFormat;
+ pFormat.wFormatTag=WAVE_FORMAT_PCM;     // simple, uncompressed format
+ pFormat.nChannels=1;                    //  1=mono, 2=stereo
+ pFormat.nSamplesPerSec=sampleRate;      // 44100
+ pFormat.nAvgBytesPerSec=sampleRate*2;   // = nSamplesPerSec * n.Channels * wBitsPerSample/8
+ pFormat.nBlockAlign=2;                  // = n.Channels * wBitsPerSample/8
+ pFormat.wBitsPerSample=16;              //  16 for high quality, 8 for telephone-grade
+ pFormat.cbSize=0;
 
 
 printf("Antes waveinopen\n");
@@ -566,7 +574,7 @@ void audiosdl_start_record_input(void)
         //Vaciar posible sonido que haya antes del buffer, por si el usuario ha desactivado y activado varias veces
         audiorecord_input_empty_buffer_with_lock();
 
-
+/*
          // Specify recording parameters
  WAVEFORMATEX pFormat;
  pFormat.wFormatTag=WAVE_FORMAT_PCM;     // simple, uncompressed format
@@ -577,7 +585,7 @@ void audiosdl_start_record_input(void)
  pFormat.wBitsPerSample=16;              //  16 for high quality, 8 for telephone-grade
  pFormat.cbSize=0;
 
-/*
+
 printf("Antes waveinopen\n");
  result = waveInOpen(&hWaveIn, WAVE_MAPPER,&pFormat,
             0L, 0L, WAVE_FORMAT_DIRECT);
