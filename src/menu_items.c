@@ -32264,10 +32264,404 @@ int menu_realtape_record_input_aviso_azimuth=0;
 //En que linea se indica la info del contenido de la cinta y por tanto aqui se alinea el dibujo del cabezal
 #define DRAW_TAPE_MOSTRAR_CONTENIDO_CINTA_LINEA 10
 
+//Analizador de espectro de la señal.Tenemos rangos de frecuencias donde indicamos si hay una señal de ese tipo
+#define ANALIZADOR_ESPECTRO_RANGOS 33
+//31
 
+//Dado que sampleamos a AUDIO_RECORD_FREQUENCY, el maximo de frecuencia sera eso /2
+#define ANALIZADOR_ESPECTRO_MAX_FRECUENCIA (AUDIO_RECORD_FREQUENCY/2)
+
+//Cuenta cuantas ondas en ese rango de frecuencia se encuentran
+int analizador_espectro_resultados[ANALIZADOR_ESPECTRO_RANGOS];
+
+//Cuenta el volumen en ese rango de frecuencia se encuentran
+int analizador_espectro_resultados[ANALIZADOR_ESPECTRO_RANGOS];
+
+//La suma de todas las amplitudes en cada rango
+//Luego se sacara una media
+long long int analizador_espectro_resultados_amplitudes[ANALIZADOR_ESPECTRO_RANGOS];
+
+
+
+void analizador_espectro_reset(void)
+{
+    int i;
+
+    for (i=0;i<ANALIZADOR_ESPECTRO_RANGOS;i++) {
+        analizador_espectro_resultados[i]=0;
+        analizador_espectro_resultados_amplitudes[i]=0;
+    }
+}
+
+//Retorna que cantidad de rango de frecuencias recoge cada resultado
+
+/*
+int analizador_espectro_retorna_tamanyo_resultado(void)
+{
+    //lo he ajustado con 31 trozos que eso da 503 de tamanyo con frecuencia de 31200 hz. lo apaño para que sea 500
+    //return ANALIZADOR_ESPECTRO_MAX_FRECUENCIA/ANALIZADOR_ESPECTRO_RANGOS;
+    return 500;
+}
+*/
+
+int analizador_espectro_retorna_indice(int frecuencia)
+{
+
+
+   /*
+    int indice=frecuencia/analizador_espectro_retorna_tamanyo_resultado();
+    if (indice>=ANALIZADOR_ESPECTRO_RANGOS) indice=ANALIZADOR_ESPECTRO_RANGOS-1;
+
+    return indice;*/
+
+    /*
+    Hasta 2000 Hz: 20 trozos
+    Desde 2000 en adelante: 13 trozos
+    */
+
+    if (frecuencia<2000) return frecuencia/100;
+    else {
+        frecuencia-=2000;
+        frecuencia /=1000;
+        int indice=frecuencia;
+        indice +=20;
+        if (indice>=ANALIZADOR_ESPECTRO_RANGOS) indice=ANALIZADOR_ESPECTRO_RANGOS-1;
+        return indice;
+    }
+}
+
+//la inversa del anterior, dado un indice dice que rango de frecuencia es
+int analizador_espectro_retorna_frec_desde_indice(int indice)
+{
+    if (indice<20) {
+        return indice*100;
+    }
+    else {
+        indice-=20;
+        return 2000+indice*1000;
+    }
+}
+
+
+void analizador_espectro_registra_frecuencia(int frecuencia,int amplitud)
+{
+    int indice=analizador_espectro_retorna_indice(frecuencia);
+    analizador_espectro_resultados[indice]++;
+    analizador_espectro_resultados_amplitudes[indice] +=amplitud;
+}
+
+//mostrar resultados en consola
+//usando trozos continuos
+/*
+void old_analizador_espectro_muestra_resultados(zxvision_window *w)
+{
+    int i;
+
+    int rango_min=0;
+    int rango_max;
+    int tamanyo_trozo=analizador_espectro_retorna_tamanyo_resultado();
+
+    //resultados tal cual
+    for (i=0;i<ANALIZADOR_ESPECTRO_RANGOS;i++) {
+        rango_max=rango_min+tamanyo_trozo-1;
+        printf("Range %d Hz - %d Hz : %d\n",rango_min,rango_max,analizador_espectro_resultados[i]);
+        rango_min +=tamanyo_trozo;
+    }
+
+    //Y ahora mediante porcentajes/barras
+    //Obtener primero la suma de todos para sacar proporciones
+    int suma=0;
+
+
+    for (i=0;i<ANALIZADOR_ESPECTRO_RANGOS;i++) {
+        suma +=analizador_espectro_resultados[i];
+    }
+
+    rango_min=0;
+    //Y ahora mostrar los trocitos
+    for (i=0;i<ANALIZADOR_ESPECTRO_RANGOS;i++) {
+        rango_max=rango_min+tamanyo_trozo-1;
+        int valor_en_rango=analizador_espectro_resultados[i];
+
+        //sacar porcentaje
+        int porcentaje;
+
+        if (suma==0) porcentaje=0;
+        else porcentaje=(valor_en_rango*100)/suma;
+
+        //Y mostrarlo
+        char buffer_linea[200];
+        sprintf(buffer_linea,"Range %5d Hz - %5d Hz : (%3d %%)",rango_min,rango_max,porcentaje);
+
+        int indice_string=strlen(buffer_linea);
+
+        //Maximo 50 de ancho
+        int ancho_barra=porcentaje/2;
+        int j;
+        for (j=0;j<ancho_barra;j++) {
+            //printf("=");
+            buffer_linea[indice_string++]='=';
+        }
+        buffer_linea[indice_string]=0;
+        printf("%s\n",buffer_linea);
+
+        zxvision_print_string_defaults_fillspc(w,1,i,buffer_linea);
+
+
+        rango_min +=tamanyo_trozo;
+    }
+
+    //Ahora mediante amplitudes de cada trozo
+    rango_min=0;
+    //Y ahora mostrar los trocitos
+    for (i=0;i<ANALIZADOR_ESPECTRO_RANGOS;i++) {
+        rango_max=rango_min+tamanyo_trozo-1;
+        long long int amplitud_en_rango=analizador_espectro_resultados_amplitudes[i];
+        int total_valores=analizador_espectro_resultados[i];
+
+        if (total_valores==0) amplitud_en_rango=0;
+        else amplitud_en_rango /=total_valores;
+
+        int volumen=amplitud_en_rango;
+
+
+
+        //Y mostrarlo
+        char buffer_linea[200];
+        sprintf(buffer_linea,"Range %5d Hz - %5d Hz : (%3d vol)",rango_min,rango_max,volumen);
+
+        int indice_string=strlen(buffer_linea);
+
+        //Maximo 256/4 de ancho
+        int ancho_barra=volumen/4;
+        int j;
+        for (j=0;j<ancho_barra;j++) {
+            //printf("=");
+            buffer_linea[indice_string++]='=';
+        }
+        buffer_linea[indice_string]=0;
+        printf("%s\n",buffer_linea);
+
+        zxvision_print_string_defaults_fillspc(w,1,i,buffer_linea);
+
+
+        rango_min +=tamanyo_trozo;
+    }
+
+}
+*/
+
+//0=barras segun amplitud
+//1=barras segun porcentaje de cada trozo
+//2=segun amplitud y porcentaje
+int analizador_spectro_tipo=1;
+
+void analizador_espectro_muestra_resultados(zxvision_window *w,int linea)
+{
+    int i;
+
+    //int rango_min=0;
+    //int rango_max;
+    //int tamanyo_trozo=analizador_espectro_retorna_tamanyo_resultado();
+
+    //resultados tal cual
+    for (i=0;i<ANALIZADOR_ESPECTRO_RANGOS;i++) {
+
+        printf("Range %d Hz - %d Hz : %d\n",
+            analizador_espectro_retorna_frec_desde_indice(i),
+            analizador_espectro_retorna_frec_desde_indice(i+1),
+            analizador_espectro_resultados[i]);
+
+    }
+
+    //if (analizador_spectro_tipo==1) {
+
+        //Y ahora mediante porcentajes/barras
+        //Obtener primero la suma de todos para sacar proporciones
+        int suma=0;
+
+
+        for (i=0;i<ANALIZADOR_ESPECTRO_RANGOS;i++) {
+            suma +=analizador_espectro_resultados[i];
+        }
+
+
+        //Y ahora mostrar los trocitos
+        for (i=0;i<ANALIZADOR_ESPECTRO_RANGOS;i++) {
+
+            //Para porcentajes
+            int valor_en_rango=analizador_espectro_resultados[i];
+
+            int porcentaje;
+
+            if (suma==0) porcentaje=0;
+            else porcentaje=(valor_en_rango*100)/suma;
+
+            //Para amplitudes
+            long long int amplitud_en_rango=analizador_espectro_resultados_amplitudes[i];
+            int total_valores=analizador_espectro_resultados[i];
+
+            if (total_valores==0) amplitud_en_rango=0;
+            else amplitud_en_rango /=total_valores;
+
+            int volumen=amplitud_en_rango;
+
+
+            //Y mostrarlo
+            char buffer_linea[200];
+
+            //Tipo porcentaje
+            if (analizador_spectro_tipo==1) {
+                if (porcentaje==0 && valor_en_rango>0) {
+                    sprintf(buffer_linea,"%5d Hz ( <1 %%)",
+                        analizador_espectro_retorna_frec_desde_indice(i));
+                }
+
+                else {
+                    sprintf(buffer_linea,"%5d Hz (%3d %%)",
+                        analizador_espectro_retorna_frec_desde_indice(i),porcentaje);
+                }
+
+                int indice_string=strlen(buffer_linea);
+
+                //Maximo 50 de ancho
+                int ancho_barra=porcentaje/2;
+                int j;
+                for (j=0;j<ancho_barra;j++) {
+                    //printf("=");
+                    buffer_linea[indice_string++]='=';
+                }
+                buffer_linea[indice_string]=0;
+                printf("%s\n",buffer_linea);
+
+                zxvision_print_string_defaults_fillspc(w,1,linea+i,buffer_linea);
+            }
+
+            //Tipo amplitud
+            if (analizador_spectro_tipo==0) {
+                sprintf(buffer_linea,"%5d Hz ",
+                    analizador_espectro_retorna_frec_desde_indice(i));
+
+                int indice_string=strlen(buffer_linea);
+
+
+                int ancho_barra=volumen;
+
+
+
+                //No deberia ser mayor, pero por si acaso
+                if (ancho_barra>255) ancho_barra=255;
+
+
+
+                //Si excede de 50. //Maximo 255/4 de ancho
+                if (ancho_barra>50) ancho_barra/=4;
+                int j;
+                for (j=0;j<ancho_barra;j++) {
+                    //printf("=");
+                    buffer_linea[indice_string++]='=';
+                }
+                buffer_linea[indice_string]=0;
+                printf("%s\n",buffer_linea);
+
+                zxvision_print_string_defaults_fillspc(w,1,linea+i,buffer_linea);
+            }
+
+            //Tipo amplitud+porcentaje
+            if (analizador_spectro_tipo==2) {
+                sprintf(buffer_linea,"%5d Hz %3d ",
+                    analizador_espectro_retorna_frec_desde_indice(i),porcentaje);
+
+                int indice_string=strlen(buffer_linea);
+
+
+                int ancho_barra=volumen;
+
+
+
+                //No deberia ser mayor, pero por si acaso
+                if (ancho_barra>255) ancho_barra=255;
+
+                ancho_barra=(ancho_barra*porcentaje)/100;
+
+
+
+                //Si excede de 50. //Maximo 255/4 de ancho
+                if (ancho_barra>50) ancho_barra/=4;
+                int j;
+                for (j=0;j<ancho_barra;j++) {
+                    //printf("=");
+                    buffer_linea[indice_string++]='=';
+                }
+                buffer_linea[indice_string]=0;
+                printf("%s\n",buffer_linea);
+
+                zxvision_print_string_defaults_fillspc(w,1,linea+i,buffer_linea);
+            }
+
+
+        }
+
+    //}
+
+    /* para amplitud
+    else {
+
+        //Ahora mediante amplitudes de cada trozo
+
+        //Y ahora mostrar los trocitos
+        for (i=0;i<ANALIZADOR_ESPECTRO_RANGOS;i++) {
+
+            long long int amplitud_en_rango=analizador_espectro_resultados_amplitudes[i];
+            int total_valores=analizador_espectro_resultados[i];
+
+            if (total_valores==0) amplitud_en_rango=0;
+            else amplitud_en_rango /=total_valores;
+
+            int volumen=amplitud_en_rango;
+
+
+
+            //Y mostrarlo
+            char buffer_linea[200];
+
+            sprintf(buffer_linea,"%5d Hz ",
+                analizador_espectro_retorna_frec_desde_indice(i));
+
+            int indice_string=strlen(buffer_linea);
+
+
+            int ancho_barra=volumen;
+
+
+
+            //No deberia ser mayor, pero por si acaso
+            if (volumen>255) volumen=255;
+
+            //Si excede de 50. //Maximo 255/4 de ancho
+            if (volumen>50) volumen/=4;
+            int j;
+            for (j=0;j<ancho_barra;j++) {
+                //printf("=");
+                buffer_linea[indice_string++]='=';
+            }
+            buffer_linea[indice_string]=0;
+            printf("%s\n",buffer_linea);
+
+            zxvision_print_string_defaults_fillspc(w,1,linea+i,buffer_linea);
+
+
+
+        }
+
+    }*/
+
+}
 
 int menu_realtape_record_input_analize_azimuth(zxvision_window *w,int linea)
 {
+
+    analizador_espectro_reset();
 
     int longitud=MENU_REALTAPE_RECORD_INPUT_BUFFER_SIZE;
 
@@ -32365,18 +32759,31 @@ int menu_realtape_record_input_analize_azimuth(zxvision_window *w,int linea)
 
                         //int microsec_onda=(contador_pulso_abajo+contador_pulso_arriba)*longitud_una_lectura;
 
+
                         int microsec_onda=(contador_pulso_abajo+contador_pulso_arriba)*1000000/AUDIO_RECORD_FREQUENCY;
 
                         if (longitud_temp>0) printf("Onda tarda (%d %d) %d microsec (0=488, 1=977, guia=1238)\n",contador_pulso_abajo,contador_pulso_arriba,microsec_onda);
 
+                        int frecuencia;
+
+                        if (microsec_onda==0) frecuencia=0;
+                        else frecuencia=1000000/microsec_onda;
+
+                        if (longitud_temp>0) printf("Frecuencia de ese trozo de onda: %d Hz\n",frecuencia);
+
+
+                        int amplitud=valor_max-valor_min;
+
+                        analizador_espectro_registra_frecuencia(frecuencia,amplitud);
+
                         if (microsec_onda>488-100 && microsec_onda<488+100) {
-                            int amplitud=valor_max-valor_min;
+                            //int amplitud=valor_max-valor_min;
                             if (longitud_temp>0) printf("es un 0. amplitud %d\n",amplitud);
                             amplitud_media_ceros+=amplitud;
                             cuantos_ceros++;
                         }
                         else if (microsec_onda>977-100 && microsec_onda<977+100) {
-                            int amplitud=valor_max-valor_min;
+                            //int amplitud=valor_max-valor_min;
                             if (longitud_temp>0) printf("es un 1. amplitud %d\n",amplitud);
                             amplitud_media_unos+=amplitud;
                             cuantos_unos++;
@@ -33277,6 +33684,171 @@ void menu_realtape_record_input(MENU_ITEM_PARAMETERS)
 
 
 
+
+
+
+zxvision_window *menu_input_spectrum_analyzer_window;
+
+
+void menu_input_spectrum_analyzer_overlay(void)
+{
+
+    menu_speech_tecla_pulsada=1; //Si no, envia continuamente todo ese texto a speech
+
+    //si ventana minimizada, no ejecutar todo el codigo de overlay
+    if (menu_input_spectrum_analyzer_window->is_minimized) return;
+
+    zxvision_window *w=menu_input_spectrum_analyzer_window;
+
+
+    //Print....
+    //Tambien contar si se escribe siempre o se tiene en cuenta contador_segundo...
+
+    zxvision_window *ventana_buscar=zxvision_find_window_in_background("externalaudiosource");
+
+    if (ventana_buscar==NULL) {
+        zxvision_cls(w);
+        zxvision_print_string_defaults(w,1,0,"You need to have External Audio Source Window open");
+        zxvision_print_string_defaults(w,1,1,"in order to have Spectrum Analyzer working");
+    }
+
+    else {
+        int linea=0;
+        char buffer_tipo[30];
+        if (analizador_spectro_tipo == 1) strcpy(buffer_tipo,"Percentage");
+        else if (analizador_spectro_tipo == 0) strcpy(buffer_tipo,"Volume");
+        else strcpy(buffer_tipo,"Volume+Percentage");
+        zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Type: [%s]",buffer_tipo);
+        analizador_espectro_muestra_resultados(menu_input_spectrum_analyzer_window,linea);
+    }
+
+
+    //Mostrar contenido
+    zxvision_draw_window_contents(menu_input_spectrum_analyzer_window);
+
+}
+
+
+
+
+//Almacenar la estructura de ventana aqui para que se pueda referenciar desde otros sitios
+zxvision_window zxvision_window_input_spectrum_analyzer;
+
+
+void menu_input_spectrum_analyzer(MENU_ITEM_PARAMETERS)
+{
+	menu_espera_no_tecla();
+
+    if (!menu_multitarea) {
+        menu_warn_message("This window needs multitask enabled");
+        return;
+    }
+
+    zxvision_window *ventana;
+    ventana=&zxvision_window_input_spectrum_analyzer;
+
+	//IMPORTANTE! no crear ventana si ya existe. Esto hay que hacerlo en todas las ventanas que permiten background.
+	//si no se hiciera, se crearia la misma ventana, y en la lista de ventanas activas , al redibujarse,
+	//la primera ventana repetida apuntaria a la segunda, que es el mismo puntero, y redibujaria la misma, y se quedaria en bucle colgado
+	//zxvision_delete_window_if_exists(ventana);
+
+    //Crear ventana si no existe
+    if (!zxvision_if_window_already_exists(ventana)) {
+        int xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
+
+        if (!util_find_window_geometry("inspectrumanalyzer",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
+            ancho_ventana=30;
+            alto_ventana=20;
+
+            xventana=menu_center_x()-ancho_ventana/2;
+            yventana=menu_center_y()-alto_ventana/2;
+        }
+
+
+        zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"Input Spectrum Analyzer",
+            "inspectrumanalyzer",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
+
+        ventana->can_be_backgrounded=1;
+
+    }
+
+    //Si ya existe, activar esta ventana
+    else {
+        zxvision_activate_this_window(ventana);
+    }
+
+	zxvision_draw_window(ventana);
+
+	z80_byte tecla;
+
+
+	int salir=0;
+
+
+    menu_input_spectrum_analyzer_window=ventana; //Decimos que el overlay lo hace sobre la ventana que tenemos aqui
+
+
+    //cambio overlay
+    zxvision_set_window_overlay(ventana,menu_input_spectrum_analyzer_overlay);
+
+
+    //Toda ventana que este listada en zxvision_known_window_names_array debe permitir poder salir desde aqui
+    //Se sale despues de haber inicializado overlay y de cualquier otra variable que necesite el overlay
+    if (zxvision_currently_restoring_windows_on_start) {
+            //printf ("Saliendo de ventana ya que la estamos restaurando en startup\n");
+            return;
+    }
+
+    do {
+
+
+		tecla=zxvision_common_getkey_refresh();
+
+
+        switch (tecla) {
+
+
+            case 't':
+                analizador_spectro_tipo++;
+                if (analizador_spectro_tipo>2) analizador_spectro_tipo=0;
+            break;
+
+
+            //Salir con ESC
+            case 2:
+                salir=1;
+            break;
+
+            //O tecla background
+            case 3:
+                salir=1;
+            break;
+        }
+
+
+    } while (salir==0);
+
+
+	util_add_window_geometry_compact(ventana);
+
+	if (tecla==3) {
+		zxvision_message_put_window_background();
+	}
+
+	else {
+
+		zxvision_destroy_window(ventana);
+	}
+
+
+}
+
+
+
+
+
+
+
 //menu storage tape
 void menu_storage_tape(MENU_ITEM_PARAMETERS)
 {
@@ -33363,6 +33935,11 @@ void menu_storage_tape(MENU_ITEM_PARAMETERS)
                 menu_add_item_menu_en_es_ca(array_menu_tape_settings,MENU_OPCION_NORMAL,menu_realtape_record_input,NULL,
                     "External Audio Source Window","Ventana fuente de sonido externa","Finestra font de so externa");
                 menu_add_item_menu_se_cerrara(array_menu_tape_settings);
+
+                menu_add_item_menu_en_es_ca(array_menu_tape_settings,MENU_OPCION_NORMAL,menu_input_spectrum_analyzer,NULL,
+                    "Spectrum Analyzer","Analizador de Espectro","Anàlisis d'espectre");
+                menu_add_item_menu_se_cerrara(array_menu_tape_settings);
+
             }
         }
 

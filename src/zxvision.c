@@ -9509,6 +9509,7 @@ zxvision_known_window_names zxvision_known_window_names_array[]={
     {"networktraffic",menu_network_traffic,bitmap_button_ext_desktop_userdefined},
     {"videooutput",menu_video_output,bitmap_button_ext_desktop_userdefined},
     {"externalaudiosource",menu_realtape_record_input,bitmap_button_ext_desktop_record_input},
+    {"inspectrumanalyzer",menu_input_spectrum_analyzer,bitmap_button_ext_desktop_userdefined},
 
 	{"",NULL,bitmap_button_ext_desktop_userdefined} //NO BORRAR ESTA!!
 };
