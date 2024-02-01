@@ -256,7 +256,7 @@ int audiorecord_input_fifo_write_one_byte(char dato)
 		//ver si la escritura alcanza la lectura. en ese caso, error
 		if (audiorecord_input_fifo_next_index(audiorecord_input_fifo_write_position)==audiorecord_input_fifo_read_position) {
 			debug_printf (VERBOSE_DEBUG,"External Audio Source FIFO buffer full");
-            printf ("External Audio Source FIFO buffer full\n");
+            //printf ("External Audio Source FIFO buffer full\n");
             audiodriver_record_free_lock();
 			return 1;
 		}
