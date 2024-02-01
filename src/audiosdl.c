@@ -404,8 +404,8 @@ char buffer_audiowindows_captura_temporal[AUDIO_RECORD_BUFFER_SIZE];
 int audiowindows_capture_thread_running=0;
 
 
- const int NUMPTS = AUDIO_RECORD_BUFFER_SIZE; //44100 *1 ; // 10;   // 10 seconds
- int sampleRate = AUDIO_RECORD_FREQUENCY;
+ const int NUMPTS = 44100; //AUDIO_RECORD_BUFFER_SIZE; //44100 *1 ; // 10;   // 10 seconds
+ int sampleRate = 44100;// AUDIO_RECORD_FREQUENCY;
                              // for 8-bit capture, you'd use 'unsigned char' or 'BYTE' 8-bit types
 
  short int waveIn[AUDIO_RECORD_BUFFER_SIZE];   // 'short int' is a 16-bit type; I request 16-bit samples below
