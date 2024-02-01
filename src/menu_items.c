@@ -32454,7 +32454,7 @@ void old_analizador_espectro_muestra_resultados(zxvision_window *w)
 //0=barras segun amplitud
 //1=barras segun porcentaje de cada trozo
 //2=segun amplitud y porcentaje
-int analizador_spectro_tipo=1;
+int analizador_spectro_tipo=2;
 
 void analizador_espectro_muestra_resultados(zxvision_window *w,int linea)
 {
@@ -32569,8 +32569,8 @@ void analizador_espectro_muestra_resultados(zxvision_window *w,int linea)
 
             //Tipo amplitud+porcentaje
             if (analizador_spectro_tipo==2) {
-                sprintf(buffer_linea,"%5d Hz %3d ",
-                    analizador_espectro_retorna_frec_desde_indice(i),porcentaje);
+                sprintf(buffer_linea,"%5d Hz ",
+                    analizador_espectro_retorna_frec_desde_indice(i));
 
                 int indice_string=strlen(buffer_linea);
 
@@ -33720,7 +33720,7 @@ void menu_input_spectrum_analyzer_overlay(void)
         char buffer_tipo[30];
         if (analizador_spectro_tipo == 1) strcpy(buffer_tipo,"Percentage");
         else if (analizador_spectro_tipo == 0) strcpy(buffer_tipo,"Volume");
-        else strcpy(buffer_tipo,"Volume+Percentage");
+        else strcpy(buffer_tipo,"Volume*Percentage");
         zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Type: [%s]",buffer_tipo);
         analizador_espectro_muestra_resultados(menu_input_spectrum_analyzer_window,linea);
     }

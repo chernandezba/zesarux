@@ -838,6 +838,8 @@ Esto significaria tambien que al cambiar de idioma habria que resetear el indice
 
 *pulse: ok?
 
+*forma onda que se ajuste el alto al volumen maximo, para que se autoamplie
+
 -icono para spectrum analyzer
 
 -quiza audiocoreaudio y otros drivers de audio necesitan fifos con semaforos para evitar interferencias en el sonido....
