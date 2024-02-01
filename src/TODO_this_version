@@ -839,6 +839,8 @@ Esto significaria tambien que al cambiar de idioma habria que resetear el indice
 
 *pulse: ok?
 
+*windows: soportar compilacion sin pthreads
+
 *forma onda que se ajuste el alto al volumen maximo, para que se autoamplie
 *forma onda y dibujo cabezal ajustar a tamaño ventana disponible
 

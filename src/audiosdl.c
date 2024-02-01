@@ -43,6 +43,9 @@
 #include "settings.h"
 #include "timer.h"
 
+#ifdef USE_PTHREADS
+#include <pthread.h>
+#endif
 
 //char *buffer_actual;
 
