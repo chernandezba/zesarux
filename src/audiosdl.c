@@ -512,6 +512,7 @@ waveInClose(hWaveIn);
 
                 if (destino<20) printf("valor leido: %d\n",valor);
 
+
                 int valor_signed=valor-128;
                 buffer_audiowindows_captura_temporal[destino]=valor;
 
