@@ -433,7 +433,7 @@ void *audiowindows_capture_thread_function(void *nada)
  pFormat.wFormatTag=WAVE_FORMAT_PCM;     // simple, uncompressed format
  pFormat.nChannels=1;                    //  1=mono, 2=stereo
  pFormat.nSamplesPerSec=sampleRate;      // 44100
- pFormat.nAvgBytesPerSec=sampleRate*1;   // = nSamplesPerSec * n.Channels * wBitsPerSample/8
+ pFormat.nAvgBytesPerSec=sampleRate;   // = nSamplesPerSec * n.Channels * wBitsPerSample/8
  pFormat.nBlockAlign=1;                  // = n.Channels * wBitsPerSample/8
  pFormat.wBitsPerSample=8;              //  16 for high quality, 8 for telephone-grade
  pFormat.cbSize=0;
@@ -454,7 +454,7 @@ printf("Despues waveinopen\n");
 
  // Set up and prepare header for input
  WaveInHdr.lpData = (LPSTR)waveIn;
- WaveInHdr.dwBufferLength = NUMPTS*1;
+ WaveInHdr.dwBufferLength = NUMPTS/10;
  WaveInHdr.dwBytesRecorded=0;
  WaveInHdr.dwUser = 0L;
  WaveInHdr.dwFlags = 0L;
@@ -506,7 +506,7 @@ waveInClose(hWaveIn);
             int destino=0;
             int i;
             int contador=0;
-            for (i=0;i<44100;i++) {
+            for (i=0;i<44100/10;i++) {
                 //z80_byte valor=(z80_byte) waveIn[i]; //buffer_audiowindows_captura_temporal[i];
                 z80_byte valor=(z80_byte) waveIn[i];
 
@@ -524,7 +524,7 @@ waveInClose(hWaveIn);
             }
 
 
-            if (audiorecord_input_fifo_write(buffer_audiowindows_captura_temporal,AUDIO_RECORD_FREQUENCY) && !windows_avisado_fifo_llena) {
+            if (audiorecord_input_fifo_write(buffer_audiowindows_captura_temporal,AUDIO_RECORD_FREQUENCY/10) && !windows_avisado_fifo_llena) {
                 int miliseconds_lost=(1000*AUDIO_RECORD_BUFFER_SIZE)/AUDIO_RECORD_FREQUENCY;
                 debug_printf(VERBOSE_ERR,"External Audio Source buffer is full, a section of %d ms has been lost. "
                     "I recommend you to disable and enable External Audio Source in order to empty the input buffer",
