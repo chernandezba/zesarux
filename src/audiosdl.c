@@ -429,6 +429,40 @@ void *audiowindows_capture_thread_function(void *nada)
         //printf("antes pa_simple_read\n");
 
 
+
+
+printf("Antes waveinopen\n");
+ result = waveInOpen(&hWaveIn, WAVE_MAPPER,&pFormat,
+            0L, 0L, WAVE_FORMAT_DIRECT);
+ if (result)
+ {
+  char fault[256];
+  waveInGetErrorText(result, fault, 256);
+  printf("Failed to open waveform input device\n");
+  return;
+ }
+
+printf("Despues waveinopen\n");
+
+ // Set up and prepare header for input
+ WaveInHdr.lpData = (LPSTR)waveIn;
+ WaveInHdr.dwBufferLength = NUMPTS*2;
+ WaveInHdr.dwBytesRecorded=0;
+ WaveInHdr.dwUser = 0L;
+ WaveInHdr.dwFlags = 0L;
+ WaveInHdr.dwLoops = 0L;
+ waveInPrepareHeader(hWaveIn, &WaveInHdr, sizeof(WAVEHDR));
+
+ // Insert a wave input buffer
+ result = waveInAddBuffer(hWaveIn, &WaveInHdr, sizeof(WAVEHDR));
+ if (result)
+ {
+  printf("Failed to read block from device\n");
+  return;
+ }
+
+printf("Despues waveinaddbuffer\n");
+
  // Commence sampling input
  result = waveInStart(hWaveIn);
  if (result)
@@ -442,7 +476,7 @@ void *audiowindows_capture_thread_function(void *nada)
  // Wait until finished recording
  do {} while (waveInUnprepareHeader(hWaveIn, &WaveInHdr, sizeof(WAVEHDR))==WAVERR_STILLPLAYING);
 
-
+waveInClose(hWaveIn);
 
         //Esta funcion es bloqueante y se espera a que acabe
         if (0) {
@@ -543,6 +577,7 @@ void audiosdl_start_record_input(void)
  pFormat.wBitsPerSample=16;              //  16 for high quality, 8 for telephone-grade
  pFormat.cbSize=0;
 
+/*
 printf("Antes waveinopen\n");
  result = waveInOpen(&hWaveIn, WAVE_MAPPER,&pFormat,
             0L, 0L, WAVE_FORMAT_DIRECT);
@@ -574,6 +609,9 @@ printf("Despues waveinopen\n");
  }
 
 printf("Despues waveinaddbuffer\n");
+
+
+*/
     audiowindows_start_record_input_create_thread();
 
 
