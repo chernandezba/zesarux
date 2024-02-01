@@ -504,7 +504,7 @@ waveInClose(hWaveIn);
             int destino=0;
             int i;
             int contador=0;
-            for (i=0;i<AUDIO_RECORD_BUFFER_SIZE;i++) {
+            for (i=0;i<44100;i++) {
                 //z80_byte valor=(z80_byte) waveIn[i]; //buffer_audiowindows_captura_temporal[i];
                 char valor=waveIn[i];
 
