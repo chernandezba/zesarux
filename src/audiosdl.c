@@ -447,7 +447,7 @@ printf("Antes waveinopen\n");
   char fault[256];
   waveInGetErrorText(result, fault, 256);
   printf("Failed to open waveform input device\n");
-  return;
+  usleep(1000);
  }
 
 printf("Despues waveinopen\n");
@@ -466,7 +466,7 @@ printf("Despues waveinopen\n");
  if (result)
  {
   printf("Failed to read block from device\n");
-  return;
+  usleep(1000);
  }
 
 printf("Despues waveinaddbuffer\n");
@@ -482,7 +482,9 @@ printf("Despues waveinaddbuffer\n");
 
 
  // Wait until finished recording
- do {} while (waveInUnprepareHeader(hWaveIn, &WaveInHdr, sizeof(WAVEHDR))==WAVERR_STILLPLAYING);
+ do {
+    usleep(1000);
+ } while (waveInUnprepareHeader(hWaveIn, &WaveInHdr, sizeof(WAVEHDR))==WAVERR_STILLPLAYING);
 
 waveInClose(hWaveIn);
 
