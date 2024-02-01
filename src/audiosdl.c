@@ -518,7 +518,7 @@ void audiowindows_start_record_input_create_thread(void)
 
 }
 
-pa_buffer_attr audiowindows_record_attributes;
+
 
 void audiosdl_start_record_input(void)
 {
