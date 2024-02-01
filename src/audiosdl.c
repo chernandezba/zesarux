@@ -514,7 +514,7 @@ waveInClose(hWaveIn);
 
 
                 int valor_signed=valor-128;
-                buffer_audiowindows_captura_temporal[destino]=valor;
+                buffer_audiowindows_captura_temporal[destino]=valor_signed;
 
                 contador +=AUDIO_RECORD_FREQUENCY;
                 if (contador>=44100) {
