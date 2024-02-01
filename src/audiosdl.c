@@ -508,8 +508,9 @@ waveInClose(hWaveIn);
             int contador=0;
             for (i=0;i<44100;i++) {
                 //z80_byte valor=(z80_byte) waveIn[i]; //buffer_audiowindows_captura_temporal[i];
-                char valor=waveIn[i];
+                z80_byte valor=(z80_byte) waveIn[i];
 
+                int valor_signed=valor-128;
                 buffer_audiowindows_captura_temporal[destino]=valor;
 
                 contador +=AUDIO_RECORD_FREQUENCY;
