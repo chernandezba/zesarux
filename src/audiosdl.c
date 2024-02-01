@@ -404,11 +404,11 @@ char buffer_audiowindows_captura_temporal[AUDIO_RECORD_BUFFER_SIZE];
 int audiowindows_capture_thread_running=0;
 
 
- const int NUMPTS =AUDIO_RECORD_BUFFER_SIZE;// 44100*10; //AUDIO_RECORD_BUFFER_SIZE; //44100 *1 ; // 10;   // 10 seconds
- int sampleRate = AUDIO_RECORD_BUFFER_SIZE; //44100;// AUDIO_RECORD_FREQUENCY;
+ const int NUMPTS =44100; //AUDIO_RECORD_BUFFER_SIZE;// 44100*10; //AUDIO_RECORD_BUFFER_SIZE; //44100 *1 ; // 10;   // 10 seconds
+ int sampleRate = 44100; //AUDIO_RECORD_BUFFER_SIZE; //44100;// AUDIO_RECORD_FREQUENCY;
                              // for 8-bit capture, you'd use 'unsigned char' or 'BYTE' 8-bit types
 
-short int waveIn[44100*10];
+char waveIn[44100*10];
  //short int waveIn[AUDIO_RECORD_BUFFER_SIZE];   // 'short int' is a 16-bit type; I request 16-bit samples below
  HWAVEIN      hWaveIn;
  WAVEHDR      WaveInHdr;
@@ -433,9 +433,9 @@ void *audiowindows_capture_thread_function(void *nada)
  pFormat.wFormatTag=WAVE_FORMAT_PCM;     // simple, uncompressed format
  pFormat.nChannels=1;                    //  1=mono, 2=stereo
  pFormat.nSamplesPerSec=sampleRate;      // 44100
- pFormat.nAvgBytesPerSec=sampleRate*2;   // = nSamplesPerSec * n.Channels * wBitsPerSample/8
- pFormat.nBlockAlign=2;                  // = n.Channels * wBitsPerSample/8
- pFormat.wBitsPerSample=16;              //  16 for high quality, 8 for telephone-grade
+ pFormat.nAvgBytesPerSec=sampleRate*1;   // = nSamplesPerSec * n.Channels * wBitsPerSample/8
+ pFormat.nBlockAlign=1;                  // = n.Channels * wBitsPerSample/8
+ pFormat.wBitsPerSample=8;              //  16 for high quality, 8 for telephone-grade
  pFormat.cbSize=0;
 
 
@@ -454,7 +454,7 @@ printf("Despues waveinopen\n");
 
  // Set up and prepare header for input
  WaveInHdr.lpData = (LPSTR)waveIn;
- WaveInHdr.dwBufferLength = NUMPTS*2;
+ WaveInHdr.dwBufferLength = NUMPTS*1;
  WaveInHdr.dwBytesRecorded=0;
  WaveInHdr.dwUser = 0L;
  WaveInHdr.dwFlags = 0L;
@@ -500,13 +500,21 @@ waveInClose(hWaveIn);
 
         else {
 
-            //Convertir unsigned en signed
+            //Convertir frecuencia
+            int destino=0;
             int i;
+            int contador=0;
             for (i=0;i<AUDIO_RECORD_BUFFER_SIZE;i++) {
                 //z80_byte valor=(z80_byte) waveIn[i]; //buffer_audiowindows_captura_temporal[i];
-                int valor=waveIn[i];
-                int valor_signo=valor; //-128;
-                buffer_audiowindows_captura_temporal[i]=valor_signo/256;
+                char valor=waveIn[i];
+
+                buffer_audiowindows_captura_temporal[destino]=valor;
+
+                contador +=AUDIO_RECORD_FREQUENCY;
+                if (contador>=44100) {
+                    contador-=44100;
+                    destino++;
+                }
             }
 
 
