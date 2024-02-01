@@ -518,7 +518,7 @@ waveInClose(hWaveIn);
             }
 
 
-            if (audiorecord_input_fifo_write(buffer_audiowindows_captura_temporal,AUDIO_RECORD_BUFFER_SIZE) && !windows_avisado_fifo_llena) {
+            if (audiorecord_input_fifo_write(buffer_audiowindows_captura_temporal,AUDIO_RECORD_FREQUENCY) && !windows_avisado_fifo_llena) {
                 int miliseconds_lost=(1000*AUDIO_RECORD_BUFFER_SIZE)/AUDIO_RECORD_FREQUENCY;
                 debug_printf(VERBOSE_ERR,"External Audio Source buffer is full, a section of %d ms has been lost. "
                     "I recommend you to disable and enable External Audio Source in order to empty the input buffer",
