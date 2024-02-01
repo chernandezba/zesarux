@@ -503,9 +503,10 @@ waveInClose(hWaveIn);
             //Convertir unsigned en signed
             int i;
             for (i=0;i<AUDIO_RECORD_BUFFER_SIZE;i++) {
-                z80_byte valor=(z80_byte) waveIn[i]; //buffer_audiowindows_captura_temporal[i];
+                //z80_byte valor=(z80_byte) waveIn[i]; //buffer_audiowindows_captura_temporal[i];
+                int valor=waveIn[i];
                 int valor_signo=valor; //-128;
-                buffer_audiowindows_captura_temporal[i]=valor_signo;
+                buffer_audiowindows_captura_temporal[i]=valor_signo/256;
             }
 
 
