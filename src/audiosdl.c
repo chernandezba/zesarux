@@ -510,6 +510,8 @@ waveInClose(hWaveIn);
                 //z80_byte valor=(z80_byte) waveIn[i]; //buffer_audiowindows_captura_temporal[i];
                 z80_byte valor=(z80_byte) waveIn[i];
 
+                if (destino<20) printf("valor leido: %d\n",valor);
+
                 int valor_signed=valor-128;
                 buffer_audiowindows_captura_temporal[destino]=valor;
 
