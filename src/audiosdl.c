@@ -416,6 +416,7 @@ int audiowindows_capture_thread_running=0;
 void *audiowindows_capture_thread_function(void *nada)
 {
 
+    printf("Inicio pthread\n");
     audiowindows_capture_thread_running=1;
 
     int err;
@@ -525,9 +526,10 @@ void audiowindows_start_record_input_create_thread(void)
 
 void audiosdl_start_record_input(void)
 {
+    printf("Start audiowindows record\n");
         //Vaciar posible sonido que haya antes del buffer, por si el usuario ha desactivado y activado varias veces
         audiorecord_input_empty_buffer_with_lock();
-printf("Start audiowindows record\n");
+
 
          // Specify recording parameters
  WAVEFORMATEX pFormat;
@@ -539,6 +541,7 @@ printf("Start audiowindows record\n");
  pFormat.wBitsPerSample=16;              //  16 for high quality, 8 for telephone-grade
  pFormat.cbSize=0;
 
+printf("Antes waveinopen\n");
  result = waveInOpen(&hWaveIn, WAVE_MAPPER,&pFormat,
             0L, 0L, WAVE_FORMAT_DIRECT);
  if (result)
@@ -548,6 +551,8 @@ printf("Start audiowindows record\n");
   printf("Failed to open waveform input device\n");
   return;
  }
+
+printf("Despues waveinopen\n");
 
  // Set up and prepare header for input
  WaveInHdr.lpData = (LPSTR)waveIn;
@@ -566,10 +571,11 @@ printf("Start audiowindows record\n");
   return;
  }
 
+printf("Despues waveinaddbuffer\n");
     audiowindows_start_record_input_create_thread();
 
 
-
+printf("Despues crear thread\n");
 
 
 

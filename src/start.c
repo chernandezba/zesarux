@@ -2237,6 +2237,8 @@ int set_audiodriver_sdl(void)
     audio_end=audiosdl_end;
     audio_get_buffer_info=audiosdl_get_buffer_info;
     audio_can_record_input=audiosdl_can_record_input;
+    audio_start_record_input=audioalsa_start_record_input;
+    audio_stop_record_input=audioalsa_stop_record_input;
 
     return 0;
 

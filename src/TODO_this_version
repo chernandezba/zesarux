@@ -839,7 +839,7 @@ Esto significaria tambien que al cambiar de idioma habria que resetear el indice
 
 *pulse: ok?
 
-*windows: soportar compilacion sin pthreads
+*windows: soportar compilacion sin pthreads. soporte compilacion sdl2 para que no pete al compilar porque no hay funciones de captura
 
 *forma onda que se ajuste el alto al volumen maximo, para que se autoamplie
 *forma onda y dibujo cabezal ajustar a tamaño ventana disponible
