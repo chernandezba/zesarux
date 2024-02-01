@@ -399,7 +399,7 @@ long windows_tiempo_difftime;
 
 int audiowindows_record_must_finish=0;
 
-char buffer_audiowindows_captura_temporal[AUDIO_RECORD_BUFFER_SIZE];
+char buffer_audiowindows_captura_temporal[AUDIO_RECORD_FREQUENCY];
 
 int audiowindows_capture_thread_running=0;
 
