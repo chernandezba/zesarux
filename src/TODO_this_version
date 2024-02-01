@@ -831,7 +831,7 @@ Esto significaria tambien que al cambiar de idioma habria que resetear el indice
 *footer que cambien cuando input source
 *que no afecte el silencio detection cuando se esté leyendo audio
 
-*coreaudio: segfault al hacer error stop record input. finalizar captura al finalizar driver
+*coreaudio: segfault al hacer error stop record input.ok ?
 
 *alsa:
 **poder escoger que tarjeta alsa (tanto input como output). ok input
@@ -839,6 +839,7 @@ Esto significaria tambien que al cambiar de idioma habria que resetear el indice
 *pulse: ok?
 
 *forma onda que se ajuste el alto al volumen maximo, para que se autoamplie
+*forma onda y dibujo cabezal ajustar a tamaño ventana disponible
 
 -icono para spectrum analyzer
 

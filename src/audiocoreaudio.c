@@ -398,13 +398,15 @@ void audiocoreaudio_start_record_input(void)
 
 void audiocoreaudio_stop_record_input(void)
 {
-    OSStatus r = 0;
-    r = AudioQueueStop(coreaudio_record_state.mQueue, true);
+    if (audio_is_recording_input) {
+        OSStatus r = 0;
+        r = AudioQueueStop(coreaudio_record_state.mQueue, true);
 
 
-    r = AudioQueueDispose(coreaudio_record_state.mQueue, true);
+        r = AudioQueueDispose(coreaudio_record_state.mQueue, true);
 
-    audio_is_recording_input=0;
+        audio_is_recording_input=0;
+    }
 }
 
 
@@ -459,6 +461,9 @@ return 0;
 void audiocoreaudio_end(void)
 {
         debug_printf (VERBOSE_INFO,"Ending coreaudio audio driver");
+
+    audiocoreaudio_stop_record_input();
+
 	audiocoreaudio_thread_finish();
 
 
