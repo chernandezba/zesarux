@@ -414,6 +414,8 @@ char waveIn[44100*10];
  WAVEHDR      WaveInHdr;
  MMRESULT result;
 
+int iniciado=0;
+
 void *audiowindows_capture_thread_function(void *nada)
 {
 
@@ -428,6 +430,8 @@ void *audiowindows_capture_thread_function(void *nada)
 
         //printf("antes pa_simple_read\n");
 
+if (!iniciado) {
+    iniciado=1;
     // Specify recording parameters
  WAVEFORMATEX pFormat;
  pFormat.wFormatTag=WAVE_FORMAT_PCM;     // simple, uncompressed format
@@ -451,6 +455,8 @@ printf("Antes waveinopen\n");
  }
 
 printf("Despues waveinopen\n");
+
+}
 
  // Set up and prepare header for input
  WaveInHdr.lpData = (LPSTR)waveIn;
@@ -486,7 +492,7 @@ printf("Despues waveinaddbuffer\n");
     usleep(1000);
  } while (waveInUnprepareHeader(hWaveIn, &WaveInHdr, sizeof(WAVEHDR))==WAVERR_STILLPLAYING);
 
-waveInClose(hWaveIn);
+//waveInClose(hWaveIn);
 
         //Esta funcion es bloqueante y se espera a que acabe
         if (0) {
