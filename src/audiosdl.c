@@ -124,6 +124,7 @@ int audiosdl_thread_finish(void)
 void audiosdl_end(void)
 {
         debug_printf (VERBOSE_INFO,"Ending SDL audio driver");
+        audiosdl_stop_record_input();
 	audiosdl_thread_finish();
 
 	SDL_CloseAudio();
@@ -404,17 +405,17 @@ char buffer_audiowindows_captura_temporal[AUDIO_RECORD_FREQUENCY];
 int audiowindows_capture_thread_running=0;
 
 
- const int NUMPTS =44100; //AUDIO_RECORD_BUFFER_SIZE;// 44100*10; //AUDIO_RECORD_BUFFER_SIZE; //44100 *1 ; // 10;   // 10 seconds
- int sampleRate = 44100; //AUDIO_RECORD_BUFFER_SIZE; //44100;// AUDIO_RECORD_FREQUENCY;
-                             // for 8-bit capture, you'd use 'unsigned char' or 'BYTE' 8-bit types
+const int NUMPTS =44100; //AUDIO_RECORD_BUFFER_SIZE;// 44100*10; //AUDIO_RECORD_BUFFER_SIZE; //44100 *1 ; // 10;   // 10 seconds
+int sampleRate = 44100; //AUDIO_RECORD_BUFFER_SIZE; //44100;// AUDIO_RECORD_FREQUENCY;
+                            // for 8-bit capture, you'd use 'unsigned char' or 'BYTE' 8-bit types
 
-char waveIn[44100*10];
- //short int waveIn[AUDIO_RECORD_BUFFER_SIZE];   // 'short int' is a 16-bit type; I request 16-bit samples below
- HWAVEIN      hWaveIn;
- WAVEHDR      WaveInHdr;
- MMRESULT result;
+char waveIn[44100]; //*10];
+//short int waveIn[AUDIO_RECORD_BUFFER_SIZE];   // 'short int' is a 16-bit type; I request 16-bit samples below
+HWAVEIN      hWaveIn;
+WAVEHDR      WaveInHdr;
+MMRESULT result;
 
-int iniciado=0;
+
 
 void *audiowindows_capture_thread_function(void *nada)
 {
@@ -424,122 +425,111 @@ void *audiowindows_capture_thread_function(void *nada)
 
     int err;
 
-	while (!audiowindows_record_must_finish) {
+
+    // Specify recording parameters
+    WAVEFORMATEX pFormat;
+    pFormat.wFormatTag=WAVE_FORMAT_PCM;     // simple, uncompressed format
+    pFormat.nChannels=1;                    //  1=mono, 2=stereo
+    pFormat.nSamplesPerSec=sampleRate;      // 44100
+    pFormat.nAvgBytesPerSec=sampleRate;   // = nSamplesPerSec * n.Channels * wBitsPerSample/8
+    pFormat.nBlockAlign=1;                  // = n.Channels * wBitsPerSample/8
+    pFormat.wBitsPerSample=8;              //  16 for high quality, 8 for telephone-grade
+    pFormat.cbSize=0;
+
+
+    //printf("Antes waveinopen\n");
+    result = waveInOpen(&hWaveIn, WAVE_MAPPER,&pFormat,
+        0L, 0L, WAVE_FORMAT_DIRECT);
+    if (result)
+    {
+        char fault[256];
+        waveInGetErrorText(result, fault, 256);
+        printf("Failed to open waveform input device\n");
+        usleep(1000);
+    }
+
+    //printf("Despues waveinopen\n");
+
+
+
+    while (!audiowindows_record_must_finish) {
 
         timer_stats_current_time(&windows_tiempo_antes);
 
         //printf("antes pa_simple_read\n");
 
-if (!iniciado) {
-    iniciado=1;
-    // Specify recording parameters
- WAVEFORMATEX pFormat;
- pFormat.wFormatTag=WAVE_FORMAT_PCM;     // simple, uncompressed format
- pFormat.nChannels=1;                    //  1=mono, 2=stereo
- pFormat.nSamplesPerSec=sampleRate;      // 44100
- pFormat.nAvgBytesPerSec=sampleRate;   // = nSamplesPerSec * n.Channels * wBitsPerSample/8
- pFormat.nBlockAlign=1;                  // = n.Channels * wBitsPerSample/8
- pFormat.wBitsPerSample=8;              //  16 for high quality, 8 for telephone-grade
- pFormat.cbSize=0;
 
 
-printf("Antes waveinopen\n");
- result = waveInOpen(&hWaveIn, WAVE_MAPPER,&pFormat,
-            0L, 0L, WAVE_FORMAT_DIRECT);
- if (result)
- {
-  char fault[256];
-  waveInGetErrorText(result, fault, 256);
-  printf("Failed to open waveform input device\n");
-  usleep(1000);
- }
+        // Set up and prepare header for input
+        WaveInHdr.lpData = (LPSTR)waveIn;
+        WaveInHdr.dwBufferLength = NUMPTS;
+        WaveInHdr.dwBytesRecorded=0;
+        WaveInHdr.dwUser = 0L;
+        WaveInHdr.dwFlags = 0L;
+        WaveInHdr.dwLoops = 0L;
+        waveInPrepareHeader(hWaveIn, &WaveInHdr, sizeof(WAVEHDR));
 
-printf("Despues waveinopen\n");
+        // Insert a wave input buffer
+        result = waveInAddBuffer(hWaveIn, &WaveInHdr, sizeof(WAVEHDR));
+        if (result)
+        {
+            printf("Failed to read block from device\n");
+            usleep(1000);
+        }
 
-}
+        //printf("Despues waveinaddbuffer\n");
 
- // Set up and prepare header for input
- WaveInHdr.lpData = (LPSTR)waveIn;
- WaveInHdr.dwBufferLength = NUMPTS;
- WaveInHdr.dwBytesRecorded=0;
- WaveInHdr.dwUser = 0L;
- WaveInHdr.dwFlags = 0L;
- WaveInHdr.dwLoops = 0L;
- waveInPrepareHeader(hWaveIn, &WaveInHdr, sizeof(WAVEHDR));
-
- // Insert a wave input buffer
- result = waveInAddBuffer(hWaveIn, &WaveInHdr, sizeof(WAVEHDR));
- if (result)
- {
-  printf("Failed to read block from device\n");
-  usleep(1000);
- }
-
-printf("Despues waveinaddbuffer\n");
-
- // Commence sampling input
- result = waveInStart(hWaveIn);
- if (result)
- {
-  printf("Failed to start recording\n");
-  usleep(1000);
-  //return;
- }
+        // Commence sampling input
+        result = waveInStart(hWaveIn);
+        if (result)
+        {
+            printf("Failed to start recording\n");
+            usleep(1000);
+            //return;
+        }
 
 
- // Wait until finished recording
- do {
-    usleep(1000);
- } while (waveInUnprepareHeader(hWaveIn, &WaveInHdr, sizeof(WAVEHDR))==WAVERR_STILLPLAYING);
+        // Wait until finished recording
+        do {
+            usleep(1000); //1 ms
+        } while (waveInUnprepareHeader(hWaveIn, &WaveInHdr, sizeof(WAVEHDR))==WAVERR_STILLPLAYING);
 
 //waveInClose(hWaveIn);
 
-        //Esta funcion es bloqueante y se espera a que acabe
-        if (0) {
-        //if (pa_simple_read (audiowindows_record_s,buffer_audiowindows_captura_temporal,AUDIO_RECORD_BUFFER_SIZE,&err) <0) {
 
 
-            fprintf (stderr, "read from audio interface failed. err: %d\n",
-                err);
+        //Convertir frecuencia
+        int destino=0;
+        int i;
+        int contador=0;
+        for (i=0;i<44100;i++) {
+            //z80_byte valor=(z80_byte) waveIn[i]; //buffer_audiowindows_captura_temporal[i];
+            z80_byte valor=(z80_byte) waveIn[i];
+
+            //if (destino<20) printf("valor leido: %d\n",valor);
 
 
-                    usleep(1000);
+            int valor_signed=valor-128;
+            buffer_audiowindows_captura_temporal[destino]=valor_signed;
+
+            contador +=AUDIO_RECORD_FREQUENCY;
+            if (contador>=44100) {
+                contador-=44100;
+                destino++;
+            }
         }
 
-        else {
 
-            //Convertir frecuencia
-            int destino=0;
-            int i;
-            int contador=0;
-            for (i=0;i<44100;i++) {
-                //z80_byte valor=(z80_byte) waveIn[i]; //buffer_audiowindows_captura_temporal[i];
-                z80_byte valor=(z80_byte) waveIn[i];
-
-                if (destino<20) printf("valor leido: %d\n",valor);
-
-
-                int valor_signed=valor-128;
-                buffer_audiowindows_captura_temporal[destino]=valor_signed;
-
-                contador +=AUDIO_RECORD_FREQUENCY;
-                if (contador>=44100) {
-                    contador-=44100;
-                    destino++;
-                }
-            }
-
-
-            if (audiorecord_input_fifo_write(buffer_audiowindows_captura_temporal,AUDIO_RECORD_FREQUENCY) && !windows_avisado_fifo_llena) {
-                int miliseconds_lost=(1000*AUDIO_RECORD_BUFFER_SIZE)/AUDIO_RECORD_FREQUENCY;
-                debug_printf(VERBOSE_ERR,"External Audio Source buffer is full, a section of %d ms has been lost. "
-                    "I recommend you to disable and enable External Audio Source in order to empty the input buffer",
-                    miliseconds_lost);
-                windows_avisado_fifo_llena=1;
-            }
-
-
+        if (audiorecord_input_fifo_write(buffer_audiowindows_captura_temporal,AUDIO_RECORD_FREQUENCY) && !windows_avisado_fifo_llena) {
+            int miliseconds_lost=(1000*AUDIO_RECORD_BUFFER_SIZE)/AUDIO_RECORD_FREQUENCY;
+            debug_printf(VERBOSE_ERR,"External Audio Source buffer is full, a section of %d ms has been lost. "
+                "I recommend you to disable and enable External Audio Source in order to empty the input buffer",
+                miliseconds_lost);
+            windows_avisado_fifo_llena=1;
         }
+
+
+
 
 
         windows_tiempo_difftime=timer_stats_diference_time(&windows_tiempo_antes,&windows_tiempo_despues);
