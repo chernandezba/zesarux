@@ -32687,27 +32687,8 @@ void analizador_espectro_muestra_resultados(zxvision_window *w,int linea)
 
 }
 
-int menu_realtape_record_input_analize_azimuth(zxvision_window *w,int linea)
-{
-
-    analizador_espectro_reset();
-
-    int longitud=MENU_REALTAPE_RECORD_INPUT_BUFFER_SIZE;
-
-    //int longitud_original=longitud;
-
-    int longitud_temp=100;
-
-    /*
-    Mal azimuth:
-    diferencias de amplitud entre 0 y 1
-    onda no centrada
-
-    Buen azimuth:
-    0 y 1 misma amplitud
-    onda centrada. no siempre?
-    */
-
+//Estructura para almacenar el analisis de una onda que viene desde fuente externa de sonido (cable, micro, etc)
+struct s_input_analize_input_wave {
    //estado:
    //0: desconocido
    //1: leyendo valores<0
@@ -32720,8 +32701,73 @@ int menu_realtape_record_input_analize_azimuth(zxvision_window *w,int linea)
 
     A '1' bit is encoded as 2 pulses of 1710 T-states each (ie. twice the length of a '0') = 977 microsec
     */
+    int estado_onda;
+
+
+   //char valor_anterior=0;
+   int contador_pulso;
+   int contador_pulso_abajo;
+   int contador_pulso_arriba;
+
+   int cuantos_ceros;
+   int cuantos_unos;
+   int cuantos_guias;
+   int cuantos_desconocidos;
+
+   int valor_max;
+   int valor_min;
+
+   int amplitud_media_ceros;
+   int amplitud_media_unos;
+
+   int max_absoluto;
+   int min_absoluto;
+};
+
+struct s_input_analize_input_wave input_analize_input_wave;
+
+void menu_realtape_record_input_analize_azimuth_init(void)
+{
+    input_analize_input_wave.estado_onda=0;
+
+
+    //char valor_anterior=0;
+    input_analize_input_wave.contador_pulso=0;
+    input_analize_input_wave.contador_pulso_abajo=0;
+    input_analize_input_wave.contador_pulso_arriba=0;
+
+    input_analize_input_wave.cuantos_ceros=0;
+    input_analize_input_wave.cuantos_unos=0;
+    input_analize_input_wave.cuantos_guias=0;
+    input_analize_input_wave.cuantos_desconocidos=0;
+
+    input_analize_input_wave.valor_max=0;
+    input_analize_input_wave.valor_min=0;
+
+    input_analize_input_wave.amplitud_media_ceros=0;
+    input_analize_input_wave.amplitud_media_unos=0;
+
+    input_analize_input_wave.max_absoluto=0;
+    input_analize_input_wave.min_absoluto=0;
+}
+
+int menu_realtape_record_input_analize_azimuth(zxvision_window *w,int linea)
+{
+
+    analizador_espectro_reset();
+
+    int longitud=MENU_REALTAPE_RECORD_INPUT_BUFFER_SIZE;
+
+    //int longitud_original=longitud;
+
+    int longitud_temp=100;
+
+
+/*
    int estado_onda=0;
-   char valor_anterior=0;
+
+
+   //char valor_anterior=0;
    int contador_pulso=0;
    int contador_pulso_abajo=0;
    int contador_pulso_arriba=0;
@@ -32739,6 +32785,7 @@ int menu_realtape_record_input_analize_azimuth(zxvision_window *w,int linea)
 
    int max_absoluto=0;
    int min_absoluto=0;
+   */
 
     char *origen=menu_realtape_record_input_audio_buffer;
 
@@ -32747,15 +32794,15 @@ int menu_realtape_record_input_analize_azimuth(zxvision_window *w,int linea)
         char valor_leido=*origen;
         origen++;
 
-        if (valor_leido>max_absoluto) max_absoluto=valor_leido;
-        if (valor_leido<min_absoluto) min_absoluto=valor_leido;
+        if (valor_leido>input_analize_input_wave.max_absoluto) input_analize_input_wave.max_absoluto=valor_leido;
+        if (valor_leido<input_analize_input_wave.min_absoluto) input_analize_input_wave.min_absoluto=valor_leido;
 
         if (longitud_temp>0) {
             //printf("Estado %d Leido %d anterior %d\n",estado_onda,valor_leido,valor_anterior);
             longitud_temp--;
         }
 
-        switch(estado_onda) {
+        switch(input_analize_input_wave.estado_onda) {
             case 0:
                 /*if (valor_leido<0) {
                     if (longitud_temp>0) printf("cambiamos a pulso debajo\n");
@@ -32765,23 +32812,24 @@ int menu_realtape_record_input_analize_azimuth(zxvision_window *w,int linea)
 
                 if (valor_leido>0) {
                     //if (longitud_temp>0) printf("cambiamos a pulso arriba\n");
-                    estado_onda=2;
-                    contador_pulso=0;
-                    valor_max=valor_min=0;
+                    input_analize_input_wave.estado_onda=2;
+                    input_analize_input_wave.contador_pulso=0;
+                    input_analize_input_wave.valor_max=input_analize_input_wave.valor_min=0;
                 }
             break;
 
             case 1:
                 if (valor_leido>0) {
                     //if (longitud_temp>0) printf("Fin pulso abajo\n");
-                    estado_onda=2;
-                    contador_pulso_abajo=contador_pulso;
+                    input_analize_input_wave.estado_onda=2;
+                    input_analize_input_wave.contador_pulso_abajo=input_analize_input_wave.contador_pulso;
 
-                    contador_pulso=0;
+                    input_analize_input_wave.contador_pulso=0;
 
                     //Tiempo de arriba, abajo indica fin de bit
                     //if (longitud_temp>0) {
-                        if (longitud_temp>0) printf("Fin onda. arriba %d abajo %d\n",contador_pulso_arriba,contador_pulso_abajo);
+                        if (longitud_temp>0) printf("Fin onda. arriba %d abajo %d\n",
+                            input_analize_input_wave.contador_pulso_arriba,input_analize_input_wave.contador_pulso_abajo);
                         //Calcular microsegundos
                         //AUDIO_RECORD_FREQUENCY
                         int longitud_una_lectura=1000000/AUDIO_RECORD_FREQUENCY;
@@ -32789,9 +32837,10 @@ int menu_realtape_record_input_analize_azimuth(zxvision_window *w,int linea)
                         //int microsec_onda=(contador_pulso_abajo+contador_pulso_arriba)*longitud_una_lectura;
 
 
-                        int microsec_onda=(contador_pulso_abajo+contador_pulso_arriba)*1000000/AUDIO_RECORD_FREQUENCY;
+                        int microsec_onda=(input_analize_input_wave.contador_pulso_abajo+input_analize_input_wave.contador_pulso_arriba)*1000000/AUDIO_RECORD_FREQUENCY;
 
-                        if (longitud_temp>0) printf("Onda tarda (%d %d) %d microsec (0=488, 1=977, guia=1238)\n",contador_pulso_abajo,contador_pulso_arriba,microsec_onda);
+                        if (longitud_temp>0) printf("Onda tarda (%d %d) %d microsec (0=488, 1=977, guia=1238)\n",
+                            input_analize_input_wave.contador_pulso_abajo,input_analize_input_wave.contador_pulso_arriba,microsec_onda);
 
                         int frecuencia;
 
@@ -32801,49 +32850,49 @@ int menu_realtape_record_input_analize_azimuth(zxvision_window *w,int linea)
                         if (longitud_temp>0) printf("Frecuencia de ese trozo de onda: %d Hz\n",frecuencia);
 
 
-                        int amplitud=valor_max-valor_min;
+                        int amplitud=input_analize_input_wave.valor_max-input_analize_input_wave.valor_min;
 
                         analizador_espectro_registra_frecuencia(frecuencia,amplitud);
 
                         if (microsec_onda>488-100 && microsec_onda<488+100) {
                             //int amplitud=valor_max-valor_min;
                             if (longitud_temp>0) printf("es un 0. amplitud %d\n",amplitud);
-                            amplitud_media_ceros+=amplitud;
-                            cuantos_ceros++;
+                            input_analize_input_wave.amplitud_media_ceros+=amplitud;
+                            input_analize_input_wave.cuantos_ceros++;
                         }
                         else if (microsec_onda>977-100 && microsec_onda<977+100) {
                             //int amplitud=valor_max-valor_min;
                             if (longitud_temp>0) printf("es un 1. amplitud %d\n",amplitud);
-                            amplitud_media_unos+=amplitud;
-                            cuantos_unos++;
+                            input_analize_input_wave.amplitud_media_unos+=amplitud;
+                            input_analize_input_wave.cuantos_unos++;
                         }
                         else if (microsec_onda>1238-100 && microsec_onda<1238+100) {
                             if (longitud_temp>0) printf("es tono guia\n");
-                            cuantos_guias++;
+                            input_analize_input_wave.cuantos_guias++;
                         }
                         else {
-                            cuantos_desconocidos++;
+                            input_analize_input_wave.cuantos_desconocidos++;
                         }
 
-                        valor_max=valor_min=0;
+                        input_analize_input_wave.valor_max=input_analize_input_wave.valor_min=0;
                     //}
                 }
                 else {
-                    if (valor_leido<valor_min) valor_min=valor_leido;
+                    if (valor_leido<input_analize_input_wave.valor_min) input_analize_input_wave.valor_min=valor_leido;
                 }
             break;
 
             case 2:
                 if (valor_leido<0) {
                     if (longitud_temp>0) printf("Fin pulso arriba\n");
-                    estado_onda=1;
+                    input_analize_input_wave.estado_onda=1;
 
-                    contador_pulso_arriba=contador_pulso;
+                    input_analize_input_wave.contador_pulso_arriba=input_analize_input_wave.contador_pulso;
 
-                    contador_pulso=0;
+                    input_analize_input_wave.contador_pulso=0;
                 }
                 else {
-                    if (valor_leido>valor_max) valor_max=valor_leido;
+                    if (valor_leido>input_analize_input_wave.valor_max) input_analize_input_wave.valor_max=valor_leido;
                 }
             break;
 
@@ -32851,22 +32900,24 @@ int menu_realtape_record_input_analize_azimuth(zxvision_window *w,int linea)
 
         }
 
-        contador_pulso++;
+        input_analize_input_wave.contador_pulso++;
 
 
-        valor_anterior=valor_leido;
+        //valor_anterior=valor_leido;
 
 	}
 
-    if (cuantos_ceros==0) amplitud_media_ceros=0;
-    else amplitud_media_ceros /=cuantos_ceros;
+    if (input_analize_input_wave.cuantos_ceros==0) input_analize_input_wave.amplitud_media_ceros=0;
+    else input_analize_input_wave.amplitud_media_ceros /=input_analize_input_wave.cuantos_ceros;
 
-    if (cuantos_unos==0) amplitud_media_unos=0;
-    else amplitud_media_unos /=cuantos_unos;
+    if (input_analize_input_wave.cuantos_unos==0) input_analize_input_wave.amplitud_media_unos=0;
+    else input_analize_input_wave.amplitud_media_unos /=input_analize_input_wave.cuantos_unos;
 
 
     printf("Total ceros: %d Total unos: %d Tonos guias: %d Desconocidos: %d amplitud ceros %d amplitud unos %d\n",
-        cuantos_ceros,cuantos_unos,cuantos_guias,cuantos_desconocidos,amplitud_media_ceros,amplitud_media_unos);
+        input_analize_input_wave.cuantos_ceros,input_analize_input_wave.cuantos_unos,
+        input_analize_input_wave.cuantos_guias,input_analize_input_wave.cuantos_desconocidos,
+        input_analize_input_wave.amplitud_media_ceros,input_analize_input_wave.amplitud_media_unos);
 
     //solo mostrar info cuando señal sea de Spectrum
 
@@ -32877,10 +32928,10 @@ int menu_realtape_record_input_analize_azimuth(zxvision_window *w,int linea)
     zxvision_print_string_defaults_fillspc(w,1,linea+3,"");
 
 
-    min_absoluto=util_get_absolute(min_absoluto);
+    input_analize_input_wave.min_absoluto=util_get_absolute(input_analize_input_wave.min_absoluto);
 
-    int volumen_absoluto=max_absoluto;
-    if (min_absoluto>max_absoluto) volumen_absoluto=min_absoluto;
+    int volumen_absoluto=input_analize_input_wave.max_absoluto;
+    if (input_analize_input_wave.min_absoluto>input_analize_input_wave.max_absoluto) volumen_absoluto=input_analize_input_wave.min_absoluto;
 
     menu_realtape_record_input_analize_volumen_escalado=volumen_absoluto;
 
@@ -32907,15 +32958,26 @@ int menu_realtape_record_input_analize_azimuth(zxvision_window *w,int linea)
 
 
     zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Max %3d Min %3d Volume %3d %s",
-        max_absoluto,min_absoluto,volumen_absoluto,texto_volumen);
+        input_analize_input_wave.max_absoluto,input_analize_input_wave.min_absoluto,volumen_absoluto,texto_volumen);
 
 
     //Minimo valor a partir del cual se considera que es un tipo de onda u otra
     int minimo_ondas=100;
 
     if (
-        (cuantos_desconocidos<cuantos_unos || cuantos_desconocidos<cuantos_ceros || cuantos_desconocidos<cuantos_guias) &&
-        (cuantos_unos>minimo_ondas || cuantos_ceros>minimo_ondas || cuantos_guias>minimo_ondas)
+        (
+            input_analize_input_wave.cuantos_desconocidos<input_analize_input_wave.cuantos_unos ||
+            input_analize_input_wave.cuantos_desconocidos<input_analize_input_wave.cuantos_ceros ||
+            input_analize_input_wave.cuantos_desconocidos<input_analize_input_wave.cuantos_guias
+        )
+
+        &&
+
+        (
+            input_analize_input_wave.cuantos_unos>minimo_ondas ||
+            input_analize_input_wave.cuantos_ceros>minimo_ondas ||
+            input_analize_input_wave.cuantos_guias>minimo_ondas
+        )
 
         ) {
 
@@ -32926,16 +32988,19 @@ int menu_realtape_record_input_analize_azimuth(zxvision_window *w,int linea)
 
         //Analisis del tipo de onda
         //Si mayoria tono guia
-        if (cuantos_guias>cuantos_unos && cuantos_guias>cuantos_ceros) {
+        if (input_analize_input_wave.cuantos_guias>input_analize_input_wave.cuantos_unos &&
+             input_analize_input_wave.cuantos_guias>input_analize_input_wave.cuantos_ceros) {
             zxvision_print_string_defaults_fillspc(w,1,linea,"Signal type: Pilot tone");
             strcpy(buffer_signal_type,animacion_string_pilot_tone);
         }
-        else if (cuantos_guias<minimo_ondas && cuantos_unos<minimo_ondas) {
+        else if (input_analize_input_wave.cuantos_guias<minimo_ondas &&
+        input_analize_input_wave.cuantos_unos<minimo_ondas) {
             zxvision_print_string_defaults_fillspc(w,1,linea,"Signal type: Most zeroes");
             strcpy(buffer_signal_type,animacion_string_zeros);
         }
 
-        else if (cuantos_guias<minimo_ondas && cuantos_ceros<minimo_ondas) {
+        else if (input_analize_input_wave.cuantos_guias<minimo_ondas &&
+            input_analize_input_wave.cuantos_ceros<minimo_ondas) {
             zxvision_print_string_defaults_fillspc(w,1,linea,"Signal type: Most ones");
             strcpy(buffer_signal_type,animacion_string_unos);
         }
@@ -32960,11 +33025,14 @@ int menu_realtape_record_input_analize_azimuth(zxvision_window *w,int linea)
         los bits de 0 tienen mayor amplitud (que son los bits mas cortos, con mas frecuencia y por tanto mas agudos)
         Si el azimuth esta mal, los bits de 0 tiene menor amplitud, y por tanto se oye mas grave
         */
-        if (cuantos_unos>minimo_ondas && cuantos_ceros>minimo_ondas && amplitud_media_unos>2 && amplitud_media_ceros>2) {
+        if (input_analize_input_wave.cuantos_unos>minimo_ondas &&
+            input_analize_input_wave.cuantos_ceros>minimo_ondas &&
+            input_analize_input_wave.amplitud_media_unos>2 &&
+            input_analize_input_wave.amplitud_media_ceros>2) {
             int porcentaje_amplitud;
 
-            if (amplitud_media_unos==0) porcentaje_amplitud=0;
-            else porcentaje_amplitud=(amplitud_media_ceros*100)/amplitud_media_unos;
+            if (input_analize_input_wave.amplitud_media_unos==0) porcentaje_amplitud=0;
+            else porcentaje_amplitud=(input_analize_input_wave.amplitud_media_ceros*100)/input_analize_input_wave.amplitud_media_unos;
 
             //Los unos tienen que ocupar mas siempre. Por tanto porcentaje de  > 100% no deberia tener sentido
             if (porcentaje_amplitud>100) porcentaje_amplitud=100;
@@ -33520,6 +33588,8 @@ void menu_realtape_record_input_overlay(void)
     int linea=0;
     //menu_realtape_record_input_analize_buffer(menu_realtape_record_input_window);
     linea=menu_realtape_record_input_show_info(menu_realtape_record_input_window,linea);
+
+    menu_realtape_record_input_analize_azimuth_init();
     linea=menu_realtape_record_input_analize_azimuth(menu_realtape_record_input_window,linea);
     //Print....
     //Tambien contar si se escribe siempre o se tiene en cuenta contador_segundo...
