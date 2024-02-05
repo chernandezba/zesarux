@@ -32491,7 +32491,7 @@ void analizador_espectro_muestra_resultados(zxvision_window *w,int linea)
     //int tamanyo_trozo=analizador_espectro_retorna_tamanyo_resultado();
 
     //resultados tal cual
-    for (i=0;i<ANALIZADOR_ESPECTRO_RANGOS;i++) {
+    /*for (i=0;i<ANALIZADOR_ESPECTRO_RANGOS;i++) {
 
         printf("Range %d Hz - %d Hz : %d\n",
             analizador_espectro_retorna_frec_desde_indice(i),
@@ -32499,6 +32499,7 @@ void analizador_espectro_muestra_resultados(zxvision_window *w,int linea)
             analizador_espectro_resultados[i]);
 
     }
+    */
 
     //if (analizador_spectro_tipo==1) {
 
@@ -32558,7 +32559,7 @@ void analizador_espectro_muestra_resultados(zxvision_window *w,int linea)
                     buffer_linea[indice_string++]='=';
                 }
                 buffer_linea[indice_string]=0;
-                printf("%s\n",buffer_linea);
+                //printf("%s\n",buffer_linea);
 
                 zxvision_print_string_defaults_fillspc(w,1,linea+i,buffer_linea);
             }
@@ -32588,7 +32589,7 @@ void analizador_espectro_muestra_resultados(zxvision_window *w,int linea)
                     buffer_linea[indice_string++]='=';
                 }
                 buffer_linea[indice_string]=0;
-                printf("%s\n",buffer_linea);
+                //printf("%s\n",buffer_linea);
 
                 zxvision_print_string_defaults_fillspc(w,1,linea+i,buffer_linea);
             }
@@ -32623,7 +32624,7 @@ void analizador_espectro_muestra_resultados(zxvision_window *w,int linea)
                     buffer_linea[indice_string++]='=';
                 }
                 buffer_linea[indice_string]=0;
-                printf("%s\n",buffer_linea);
+                //printf("%s\n",buffer_linea);
 
                 zxvision_print_string_defaults_fillspc(w,1,linea+i,buffer_linea);
             }
@@ -32892,8 +32893,7 @@ void menu_realtape_record_input_analize_azimuth(char valor_leido)
                             input_analize_input_wave.cuantos_guias++;
                         }
                         else {
-                            printf("Es desconocido. microsec_onda: %d amplitud: %d\n",
-                                microsec_onda,amplitud);
+                            //printf("Es desconocido. microsec_onda: %d amplitud: %d\n",microsec_onda,amplitud);
                             input_analize_input_wave.cuantos_desconocidos++;
                         }
 

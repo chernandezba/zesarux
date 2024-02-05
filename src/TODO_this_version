@@ -863,8 +863,6 @@ Quizá ver si entre cada lectura de buffer ha pasado el tiempo que debe pasar re
 
 -al activar external audio source avisar first aid de que la fuente de sonido la tiene que cambiar el usuario
 
--analisis de frecuencias : quiza analizar los ultimos 20ms (que es como lo hace cuando dibuja la forma de onda), se deberia enlazar la lectura de cada valor de forma de onda y enviarla a analisis de frecuencias
-
 -Aviso de nueva versión y entonces no sale menoriam
 
 -icono para spectrum analyzer
