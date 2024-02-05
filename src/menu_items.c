@@ -32914,8 +32914,9 @@ void menu_realtape_record_input_analize_azimuth(char valor_leido)
 	//}
 }
 
+int menu_realtape_record_input_analize_azimuth_end_conta_segundo=0;
 
-int menu_realtape_record_input_analize_azimuth_end(zxvision_window *w,int linea)
+void menu_realtape_record_input_analize_azimuth_end(zxvision_window *w,int linea)
 {
 
     if (input_analize_input_wave.cuantos_ceros==0) input_analize_input_wave.amplitud_media_ceros=0;
@@ -32933,10 +32934,14 @@ int menu_realtape_record_input_analize_azimuth_end(zxvision_window *w,int linea)
     //solo mostrar info cuando señal sea de Spectrum
 
     //borrar primero esas lineas
+    //Max min
+    //Guessed
+    //Signal type
+    //Azimuth
     zxvision_print_string_defaults_fillspc(w,1,linea,"");
     zxvision_print_string_defaults_fillspc(w,1,linea+1,"");
     zxvision_print_string_defaults_fillspc(w,1,linea+2,"");
-    zxvision_print_string_defaults_fillspc(w,1,linea+3,"");
+    //zxvision_print_string_defaults_fillspc(w,1,linea+3,"");
 
 
     input_analize_input_wave.min_absoluto=util_get_absolute(input_analize_input_wave.min_absoluto);
@@ -33068,15 +33073,21 @@ int menu_realtape_record_input_analize_azimuth_end(zxvision_window *w,int linea)
 
         }
 
-        linea++;
+        else {
+            //Borrar linea deteccion azimuth si ha pasado 2 segundos al menos
+            if (menu_realtape_record_input_analize_azimuth_end_conta_segundo-contador_segundo>50*2) {
+                zxvision_print_string_defaults_fillspc_format(w,1,linea,"");
+            }
+        }
+
 
 
 
     }
 
-    else {
-        linea+=3;
-    }
+    menu_realtape_record_input_analize_azimuth_end_conta_segundo=contador_segundo;
+
+
 
 
 
@@ -33089,7 +33100,6 @@ int menu_realtape_record_input_analize_azimuth_end(zxvision_window *w,int linea)
         menu_realtape_record_input_analize_azimuth_scroll_string(animacion_string_unos_zeros);
     }
 
-    return linea;
 
 
 }
