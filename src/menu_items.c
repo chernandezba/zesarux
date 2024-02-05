@@ -32865,8 +32865,14 @@ void menu_realtape_record_input_analize_azimuth(char valor_leido)
 
                         /*
                         Tono guia entre 358 y <618 (centro en 488)
-                        Unos entre 847 y <1107 (centro en 977)
+                        Unos entre 847 y <1107 (centro en 977). aunque le damos mayor tolerancia
                         Ceros entre 1108 y <1368 (centro en 1238)
+
+                        Nota: aun en una carga normal de spectrum pueden haber desconocidos pues estamos analizando un trozo
+                        de buffer que puede empezar y acabar en media onda, o sea, la logica dice que si la carga es spectrum,
+                        maximo podemos encontrar dos ondas desconocidas, el resto tienen que ser de spectrum
+                        Nota2: no estoy considerando la onda de sincronismo que viene justo despues del tono guia y antes de los datos,
+                        por tanto eso también se puede considerar como desconocido
                         */
 
                         if (microsec_onda>=358 && microsec_onda<618) {
@@ -32875,7 +32881,7 @@ void menu_realtape_record_input_analize_azimuth(char valor_leido)
                             input_analize_input_wave.amplitud_media_ceros+=amplitud;
                             input_analize_input_wave.cuantos_ceros++;
                         }
-                        else if (microsec_onda>=847 && microsec_onda<1107) {
+                        else if (microsec_onda>=618 && microsec_onda<1107) {
                             //int amplitud=valor_max-valor_min;
                             if (longitud_temp>0) printf("es un 1. amplitud %d\n",amplitud);
                             input_analize_input_wave.amplitud_media_unos+=amplitud;
@@ -32886,6 +32892,8 @@ void menu_realtape_record_input_analize_azimuth(char valor_leido)
                             input_analize_input_wave.cuantos_guias++;
                         }
                         else {
+                            printf("Es desconocido. microsec_onda: %d amplitud: %d\n",
+                                microsec_onda,amplitud);
                             input_analize_input_wave.cuantos_desconocidos++;
                         }
 
