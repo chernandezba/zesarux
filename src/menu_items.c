@@ -32757,12 +32757,12 @@ void menu_realtape_record_input_analize_azimuth_init(void)
     longitud_temp=100;
 }
 
-void menu_realtape_record_input_analize_azimuth(void)
+void menu_realtape_record_input_analize_azimuth(char valor_leido)
 {
 
-    analizador_espectro_reset();
 
-    int longitud=MENU_REALTAPE_RECORD_INPUT_BUFFER_SIZE;
+
+   // int longitud=MENU_REALTAPE_RECORD_INPUT_BUFFER_SIZE;
 
     //int longitud_original=longitud;
 
@@ -32793,12 +32793,12 @@ void menu_realtape_record_input_analize_azimuth(void)
    int min_absoluto=0;
    */
 
-    char *origen=menu_realtape_record_input_audio_buffer;
+    //char *origen=menu_realtape_record_input_audio_buffer;
 
-	for (;longitud>0;longitud--) {
+	//for (;longitud>0;longitud--) {
 
-        char valor_leido=*origen;
-        origen++;
+        //char valor_leido=*origen;
+        //origen++;
 
         if (valor_leido>input_analize_input_wave.max_absoluto) input_analize_input_wave.max_absoluto=valor_leido;
         if (valor_leido<input_analize_input_wave.min_absoluto) input_analize_input_wave.min_absoluto=valor_leido;
@@ -32911,7 +32911,7 @@ void menu_realtape_record_input_analize_azimuth(void)
 
         //valor_anterior=valor_leido;
 
-	}
+	//}
 }
 
 
@@ -32973,7 +32973,7 @@ int menu_realtape_record_input_analize_azimuth_end(zxvision_window *w,int linea)
 
 
     //Minimo valor a partir del cual se considera que es un tipo de onda u otra
-    int minimo_ondas=100;
+    int minimo_ondas=3;
 
     if (
         (
@@ -33166,6 +33166,8 @@ void menu_realtape_record_input_draw_waveform(zxvision_window *w,int x_orig,int 
         //char valor_leido=menu_realtape_record_input_audio_buffer[pos];
 
         char valor_leido=menu_realtape_record_input_read_byte();
+
+        menu_realtape_record_input_analize_azimuth(valor_leido);
 
         if (menu_realtape_record_input_onda_onda_congelada) valor_leido=menu_realtape_record_input_audio_buffer[i];
 
@@ -33601,8 +33603,15 @@ void menu_realtape_record_input_overlay(void)
     linea=menu_realtape_record_input_show_info(menu_realtape_record_input_window,linea);
 
     menu_realtape_record_input_analize_azimuth_init();
-    menu_realtape_record_input_analize_azimuth();
-    linea=menu_realtape_record_input_analize_azimuth_end(menu_realtape_record_input_window,linea);
+    analizador_espectro_reset();
+
+    //menu_realtape_record_input_analize_azimuth();
+
+    int linea_info_azimuth=linea;
+
+
+    linea+=4;
+
     //Print....
     //Tambien contar si se escribe siempre o se tiene en cuenta contador_segundo...
 
@@ -33639,6 +33648,8 @@ void menu_realtape_record_input_overlay(void)
 
     menu_realtape_record_input_draw_waveform(menu_realtape_record_input_window,
         x,y,ancho,alto);
+
+    menu_realtape_record_input_analize_azimuth_end(menu_realtape_record_input_window,linea_info_azimuth);
 
     //Mostrar con linea por donde esta leyendo la fifo
     //menu_realtape_record_input_show_fifo_pos(menu_realtape_record_input_window,x,y,ancho,alto);
