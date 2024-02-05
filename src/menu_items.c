@@ -32726,6 +32726,8 @@ struct s_input_analize_input_wave {
 
 struct s_input_analize_input_wave input_analize_input_wave;
 
+int longitud_temp=100;
+
 void menu_realtape_record_input_analize_azimuth_init(void)
 {
     input_analize_input_wave.estado_onda=0;
@@ -32749,6 +32751,10 @@ void menu_realtape_record_input_analize_azimuth_init(void)
 
     input_analize_input_wave.max_absoluto=0;
     input_analize_input_wave.min_absoluto=0;
+
+
+    //temp
+    longitud_temp=100;
 }
 
 void menu_realtape_record_input_analize_azimuth(void)
@@ -32760,7 +32766,7 @@ void menu_realtape_record_input_analize_azimuth(void)
 
     //int longitud_original=longitud;
 
-    int longitud_temp=100;
+
 
 
 /*
