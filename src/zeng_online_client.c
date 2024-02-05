@@ -152,6 +152,22 @@ int allowed_keys[ZOC_MAX_KEYS_PROFILES][ZOC_MAX_KEYS_ITEMS];
 //Perfiles asignados a cada uuid. Si es "", no esta asignado
 char allowed_keys_assigned[ZOC_MAX_KEYS_PROFILES][STATS_UUID_MAX_LENGTH+1];
 
+char *zeng_remote_list_users_buffer=NULL;
+
+
+char *zoc_get_snapshot_mem_hexa=NULL;
+z80_byte *zoc_get_snapshot_mem_binary=NULL;
+int zoc_get_snapshot_mem_binary_longitud=0;
+int zoc_pending_apply_received_snapshot=0;
+z80_byte *zoc_get_snapshot_mem_binary_comprimido=NULL;
+
+int zoc_receive_snapshot_last_id=0;
+
+int zoc_ultimo_snapshot_recibido_es_zip=0;
+
+int zeng_online_snapshot_diff=0;
+
+int zeng_online_snapshot_diff_media=0;
 
 //Retornar puerto y hostname del server
 int zeng_online_get_server_and_port(char *buffer_hostname)
@@ -432,7 +448,7 @@ int zeng_online_client_list_rooms_connect(void)
 	return 1;
 }
 
-char *zeng_remote_list_users_buffer=NULL;
+
 
 //Devuelve 0 si no conectado
 int zeng_online_client_list_users_connect(void)
@@ -3064,19 +3080,6 @@ void *zoc_master_thread_function(void *nada GCC_UNUSED)
 
 
 
-char *zoc_get_snapshot_mem_hexa=NULL;
-z80_byte *zoc_get_snapshot_mem_binary=NULL;
-int zoc_get_snapshot_mem_binary_longitud=0;
-int zoc_pending_apply_received_snapshot=0;
-z80_byte *zoc_get_snapshot_mem_binary_comprimido=NULL;
-
-int zoc_receive_snapshot_last_id=0;
-
-int zoc_ultimo_snapshot_recibido_es_zip=0;
-
-int zeng_online_snapshot_diff=0;
-
-int zeng_online_snapshot_diff_media=0;
 
 int zoc_receive_snapshot(int indice_socket)
 {

@@ -372,3 +372,18 @@ int audiosdl_can_record_input(void)
 {
     return 0;
 }
+
+void audiosdl_start_record_input(void)
+{
+
+    //Nada
+
+}
+
+
+void audiosdl_stop_record_input(void)
+{
+
+    //Nada
+
+}

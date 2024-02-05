@@ -27671,6 +27671,15 @@ void menu_debug_input_file_keyboard(MENU_ITEM_PARAMETERS)
 
 
 
+void menu_audio_record_input_enable(MENU_ITEM_PARAMETERS)
+{
+    if (!audio_is_recording_input) {
+        audiodriver_start_record_input();
+    }
+    else {
+        audio_stop_record_input();
+    }
+}
 
 
 //menu audio
@@ -27763,6 +27772,32 @@ void menu_audio(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_ayuda(array_menu_audio,"Saves music from the AY Chip to a .mid file");
         menu_add_item_menu_shortcut(array_menu_audio,'m');
         menu_add_item_menu_tiene_submenu(array_menu_audio);
+
+        if (audio_can_record_input() ) {
+            menu_add_item_menu_separator(array_menu_audio);
+
+            menu_add_item_menu_en_es_ca(array_menu_audio,MENU_OPCION_NORMAL,NULL,NULL,
+                "--External Audio Source--","--Fuente de sonido externa--","--Font de so externa--");
+
+            menu_add_item_menu_en_es_ca(array_menu_audio,MENU_OPCION_NORMAL,menu_audio_record_input_enable,NULL,
+                "Enable External Audio Source","Activar fuente de sonido externa","Activar font de so externa");
+            menu_add_item_menu_prefijo_format(array_menu_audio,"[%c] ", (audio_is_recording_input ? 'X' : ' '));
+            menu_add_item_menu_tooltip(array_menu_audio,"Allows you to load audio from external audio source, like tape player, "
+                "a mp3 player or your phone");
+            menu_add_item_menu_ayuda(array_menu_audio,"Allows you to load audio from external audio source, like tape player, "
+                "a mp3 player or your phone");
+
+            if (audio_is_recording_input) {
+                menu_add_item_menu_en_es_ca(array_menu_audio,MENU_OPCION_NORMAL,menu_realtape_record_input,NULL,
+                    "External Audio Source Window","Ventana fuente de sonido externa","Finestra font de so externa");
+                menu_add_item_menu_se_cerrara(array_menu_audio);
+
+                menu_add_item_menu_en_es_ca(array_menu_audio,MENU_OPCION_NORMAL,menu_input_spectrum_analyzer,NULL,
+                    "Spectrum Analyzer","Analizador de Espectro","Anàlisis d'espectre");
+                menu_add_item_menu_se_cerrara(array_menu_audio);
+
+            }
+        }
 
 
 
@@ -32083,15 +32118,6 @@ void menu_reinsert_real_tape(void)
 	realtape_insert();
 }
 
-void menu_realtape_record_input_enable(MENU_ITEM_PARAMETERS)
-{
-    if (!audio_is_recording_input) {
-        audiodriver_start_record_input();
-    }
-    else {
-        audio_stop_record_input();
-    }
-}
 
 
 
@@ -33925,26 +33951,7 @@ void menu_storage_tape(MENU_ITEM_PARAMETERS)
 					"not necessary, you may disable realvideo if you want");
 
 
-        if (audio_can_record_input() ) {
-            menu_add_item_menu_en_es_ca(array_menu_tape_settings,MENU_OPCION_NORMAL,menu_realtape_record_input_enable,NULL,
-                "Enable External Audio Source","Activar fuente de sonido externa","Activar font de so externa");
-            menu_add_item_menu_prefijo_format(array_menu_tape_settings,"[%c] ", (audio_is_recording_input ? 'X' : ' '));
-            menu_add_item_menu_tooltip(array_menu_tape_settings,"Allows you to load audio from external audio source, like tape player, "
-                "a mp3 player or your phone");
-            menu_add_item_menu_ayuda(array_menu_tape_settings,"Allows you to load audio from external audio source, like tape player, "
-                "a mp3 player or your phone");
 
-            if (audio_is_recording_input) {
-                menu_add_item_menu_en_es_ca(array_menu_tape_settings,MENU_OPCION_NORMAL,menu_realtape_record_input,NULL,
-                    "External Audio Source Window","Ventana fuente de sonido externa","Finestra font de so externa");
-                menu_add_item_menu_se_cerrara(array_menu_tape_settings);
-
-                menu_add_item_menu_en_es_ca(array_menu_tape_settings,MENU_OPCION_NORMAL,menu_input_spectrum_analyzer,NULL,
-                    "Spectrum Analyzer","Analizador de Espectro","Anàlisis d'espectre");
-                menu_add_item_menu_se_cerrara(array_menu_tape_settings);
-
-            }
-        }
 
         //Ocultar opciones de Real Tape de archivo cuando se activa External Audio Source
         int ocultar_real_tape_archivo=0;

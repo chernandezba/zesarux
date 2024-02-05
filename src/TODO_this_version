@@ -721,7 +721,9 @@ Network traffic en ascii también
 
 -Si el leave o el destroy fallan, igualmente tiene que matar el thread y dejarlo como desconectado
 
-
+-Dejar partida mazogs en online
+Poder aplicar restricción de teclas para auto join? Para que no puedan hacer break por ejemplo. O para una primera asignación restringida y luego otra menos
+Mismo perfil de teclas puede ir a más de un jugador?
 
 
 -----Fin ZENG ONLINE -----
@@ -826,6 +828,15 @@ Esto significaria tambien que al cambiar de idioma habria que resetear el indice
 
 -agregar a features: exportar a stl. lectura de audio desde fuente externa
 
+-Pantalla completa en Next sale cortada
+
+-interrupt_finish_sound no sirve para nada?
+
+-Activar hotkeys para el osd keyboard
+
+-Búsqueda opciones menú deberia ignorar acentos-> indexarlo sin acentos, sin eñes... con todos los caracteres alternativos que se usan en curses,
+incluidos los cirilicos
+
 -captura de sonido desde fuente externa (para poder cargar de cinta directamente)
 *SDL1 parece que no permite hacerlo
 *footer que cambien cuando input source
@@ -843,7 +854,29 @@ Esto significaria tambien que al cambiar de idioma habria que resetear el indice
 
 *forma onda que se ajuste el alto al volumen maximo, para que se autoamplie
 *forma onda y dibujo cabezal ajustar a tamaño ventana disponible
+*En división diferencia amplitud hacerlo siempre que sea mayor que 0. Y quizá 3 o 4 mayor para tener margen
+
+* Audioalsa: Mirar cuando lee sonido si es que ha leído menos bytes
+Quizá ver si entre cada lectura de buffer ha pasado el tiempo que debe pasar realmente
+
+-Ventana de capturar audio detecte si hay error (para mostrar buffer lleno). Porque no lo detecta?
+
+-al activar external audio source avisar first aid de que la fuente de sonido la tiene que cambiar el usuario
+
+-analisis de frecuencias : quiza analizar los ultimos 20ms (que es como lo hace cuando dibuja la forma de onda), se deberia enlazar la lectura de cada valor de forma de onda y enviarla a analisis de frecuencias
+
+-Aviso de nueva versión y entonces no sale menoriam
 
 -icono para spectrum analyzer
 
 -quiza audiocoreaudio y otros drivers de audio necesitan fifos con semaforos para evitar interferencias en el sonido....
+
+
+
+-Opción alsa captura device solo debería salir en ayuda si alsa compilado
+Y en utils solo grabar esos settings de alsa si esta alsa compilado
+
+-Documentar cómo van los archivos txt de update
+
+
+-Ventanas que tengan nombre de icono corto para mostrar en iconos y process switcher
