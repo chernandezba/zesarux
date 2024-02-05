@@ -32751,7 +32751,7 @@ void menu_realtape_record_input_analize_azimuth_init(void)
     input_analize_input_wave.min_absoluto=0;
 }
 
-int menu_realtape_record_input_analize_azimuth(zxvision_window *w,int linea)
+void menu_realtape_record_input_analize_azimuth(void)
 {
 
     analizador_espectro_reset();
@@ -32906,6 +32906,11 @@ int menu_realtape_record_input_analize_azimuth(zxvision_window *w,int linea)
         //valor_anterior=valor_leido;
 
 	}
+}
+
+
+int menu_realtape_record_input_analize_azimuth_end(zxvision_window *w,int linea)
+{
 
     if (input_analize_input_wave.cuantos_ceros==0) input_analize_input_wave.amplitud_media_ceros=0;
     else input_analize_input_wave.amplitud_media_ceros /=input_analize_input_wave.cuantos_ceros;
@@ -33590,7 +33595,8 @@ void menu_realtape_record_input_overlay(void)
     linea=menu_realtape_record_input_show_info(menu_realtape_record_input_window,linea);
 
     menu_realtape_record_input_analize_azimuth_init();
-    linea=menu_realtape_record_input_analize_azimuth(menu_realtape_record_input_window,linea);
+    menu_realtape_record_input_analize_azimuth();
+    linea=menu_realtape_record_input_analize_azimuth_end(menu_realtape_record_input_window,linea);
     //Print....
     //Tambien contar si se escribe siempre o se tiene en cuenta contador_segundo...
 
