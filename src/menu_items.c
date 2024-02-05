@@ -32754,7 +32754,7 @@ void menu_realtape_record_input_analize_azimuth_init(void)
 
 
     //temp
-    longitud_temp=100;
+    //longitud_temp=100;
 }
 
 void menu_realtape_record_input_analize_azimuth(char valor_leido)
@@ -32860,19 +32860,28 @@ void menu_realtape_record_input_analize_azimuth(char valor_leido)
 
                         analizador_espectro_registra_frecuencia(frecuencia,amplitud);
 
-                        if (microsec_onda>488-100 && microsec_onda<488+100) {
+                        //la tolerancia entre senyales
+                        //int rango_arriba_abajo=130;
+
+                        /*
+                        Tono guia entre 358 y <618 (centro en 488)
+                        Unos entre 847 y <1107 (centro en 977)
+                        Ceros entre 1108 y <1368 (centro en 1238)
+                        */
+
+                        if (microsec_onda>=358 && microsec_onda<618) {
                             //int amplitud=valor_max-valor_min;
                             if (longitud_temp>0) printf("es un 0. amplitud %d\n",amplitud);
                             input_analize_input_wave.amplitud_media_ceros+=amplitud;
                             input_analize_input_wave.cuantos_ceros++;
                         }
-                        else if (microsec_onda>977-100 && microsec_onda<977+100) {
+                        else if (microsec_onda>=847 && microsec_onda<1107) {
                             //int amplitud=valor_max-valor_min;
                             if (longitud_temp>0) printf("es un 1. amplitud %d\n",amplitud);
                             input_analize_input_wave.amplitud_media_unos+=amplitud;
                             input_analize_input_wave.cuantos_unos++;
                         }
-                        else if (microsec_onda>1238-100 && microsec_onda<1238+100) {
+                        else if (microsec_onda>=1107 && microsec_onda<1368) {
                             if (longitud_temp>0) printf("es tono guia\n");
                             input_analize_input_wave.cuantos_guias++;
                         }
@@ -33085,6 +33094,10 @@ void menu_realtape_record_input_analize_azimuth_end(zxvision_window *w,int linea
 
     }
 
+    else {
+        printf("No detectada senyal spectrum\n");
+    }
+
     menu_realtape_record_input_analize_azimuth_end_conta_segundo=contador_segundo;
 
 
@@ -33146,7 +33159,7 @@ void menu_realtape_record_input_draw_waveform(zxvision_window *w,int x_orig,int 
 
     menu_realtape_record_input_inicial_limpieza=0;
 
-    printf("ancho %d alto %d\n",ancho,alto);
+    //printf("ancho %d alto %d\n",ancho,alto);
 
     //Solo leer el trozo que significa un frame de video
     int longitud_dibujar=312*2;
