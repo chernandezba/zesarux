@@ -32486,175 +32486,71 @@ void analizador_espectro_muestra_resultados(zxvision_window *w,int linea)
 {
     int i;
 
-    //int rango_min=0;
-    //int rango_max;
-    //int tamanyo_trozo=analizador_espectro_retorna_tamanyo_resultado();
 
-    //resultados tal cual
-    /*for (i=0;i<ANALIZADOR_ESPECTRO_RANGOS;i++) {
 
-        printf("Range %d Hz - %d Hz : %d\n",
-            analizador_espectro_retorna_frec_desde_indice(i),
-            analizador_espectro_retorna_frec_desde_indice(i+1),
-            analizador_espectro_resultados[i]);
 
+    //Obtener primero la suma de todos para sacar proporciones
+    int suma=0;
+
+
+    for (i=0;i<ANALIZADOR_ESPECTRO_RANGOS;i++) {
+        suma +=analizador_espectro_resultados[i];
     }
-    */
-
-    //if (analizador_spectro_tipo==1) {
-
-        //Y ahora mediante porcentajes/barras
-        //Obtener primero la suma de todos para sacar proporciones
-        int suma=0;
 
 
-        for (i=0;i<ANALIZADOR_ESPECTRO_RANGOS;i++) {
-            suma +=analizador_espectro_resultados[i];
+    //Y ahora mostrar los trocitos
+    for (i=0;i<ANALIZADOR_ESPECTRO_RANGOS;i++) {
+
+        //Para porcentajes
+        int valor_en_rango=analizador_espectro_resultados[i];
+
+        int porcentaje;
+
+        if (suma==0) porcentaje=0;
+        else porcentaje=(valor_en_rango*100)/suma;
+
+        //Para amplitudes
+        long long int amplitud_en_rango=analizador_espectro_resultados_amplitudes[i];
+        int total_valores=analizador_espectro_resultados[i];
+
+        if (total_valores==0) amplitud_en_rango=0;
+        else amplitud_en_rango /=total_valores;
+
+        int volumen=amplitud_en_rango;
+
+
+        //Y mostrarlo
+        char buffer_linea[200];
+
+        //Tipo porcentaje
+        if (analizador_spectro_tipo==1) {
+            if (porcentaje==0 && valor_en_rango>0) {
+                sprintf(buffer_linea,"%5d Hz ( <1 %%)",
+                    analizador_espectro_retorna_frec_desde_indice(i));
+            }
+
+            else {
+                sprintf(buffer_linea,"%5d Hz (%3d %%)",
+                    analizador_espectro_retorna_frec_desde_indice(i),porcentaje);
+            }
+
+            int indice_string=strlen(buffer_linea);
+
+            //Maximo 50 de ancho
+            int ancho_barra=porcentaje/2;
+            int j;
+            for (j=0;j<ancho_barra;j++) {
+                //printf("=");
+                buffer_linea[indice_string++]='=';
+            }
+            buffer_linea[indice_string]=0;
+            //printf("%s\n",buffer_linea);
+
+            zxvision_print_string_defaults_fillspc(w,1,linea+i,buffer_linea);
         }
 
-
-        //Y ahora mostrar los trocitos
-        for (i=0;i<ANALIZADOR_ESPECTRO_RANGOS;i++) {
-
-            //Para porcentajes
-            int valor_en_rango=analizador_espectro_resultados[i];
-
-            int porcentaje;
-
-            if (suma==0) porcentaje=0;
-            else porcentaje=(valor_en_rango*100)/suma;
-
-            //Para amplitudes
-            long long int amplitud_en_rango=analizador_espectro_resultados_amplitudes[i];
-            int total_valores=analizador_espectro_resultados[i];
-
-            if (total_valores==0) amplitud_en_rango=0;
-            else amplitud_en_rango /=total_valores;
-
-            int volumen=amplitud_en_rango;
-
-
-            //Y mostrarlo
-            char buffer_linea[200];
-
-            //Tipo porcentaje
-            if (analizador_spectro_tipo==1) {
-                if (porcentaje==0 && valor_en_rango>0) {
-                    sprintf(buffer_linea,"%5d Hz ( <1 %%)",
-                        analizador_espectro_retorna_frec_desde_indice(i));
-                }
-
-                else {
-                    sprintf(buffer_linea,"%5d Hz (%3d %%)",
-                        analizador_espectro_retorna_frec_desde_indice(i),porcentaje);
-                }
-
-                int indice_string=strlen(buffer_linea);
-
-                //Maximo 50 de ancho
-                int ancho_barra=porcentaje/2;
-                int j;
-                for (j=0;j<ancho_barra;j++) {
-                    //printf("=");
-                    buffer_linea[indice_string++]='=';
-                }
-                buffer_linea[indice_string]=0;
-                //printf("%s\n",buffer_linea);
-
-                zxvision_print_string_defaults_fillspc(w,1,linea+i,buffer_linea);
-            }
-
-            //Tipo amplitud
-            if (analizador_spectro_tipo==0) {
-                sprintf(buffer_linea,"%5d Hz ",
-                    analizador_espectro_retorna_frec_desde_indice(i));
-
-                int indice_string=strlen(buffer_linea);
-
-
-                int ancho_barra=volumen;
-
-
-
-                //No deberia ser mayor, pero por si acaso
-                if (ancho_barra>255) ancho_barra=255;
-
-
-
-                //Si excede de 50. //Maximo 255/4 de ancho
-                if (ancho_barra>50) ancho_barra/=4;
-                int j;
-                for (j=0;j<ancho_barra;j++) {
-                    //printf("=");
-                    buffer_linea[indice_string++]='=';
-                }
-                buffer_linea[indice_string]=0;
-                //printf("%s\n",buffer_linea);
-
-                zxvision_print_string_defaults_fillspc(w,1,linea+i,buffer_linea);
-            }
-
-            //Tipo amplitud+porcentaje
-            if (analizador_spectro_tipo==2) {
-                sprintf(buffer_linea,"%5d Hz ",
-                    analizador_espectro_retorna_frec_desde_indice(i));
-
-                int indice_string=strlen(buffer_linea);
-
-
-                int ancho_barra=volumen;
-
-
-
-                //No deberia ser mayor, pero por si acaso
-                if (ancho_barra>255) ancho_barra=255;
-
-                //Incrementamos porcentaje para tener barras mas grandes
-                porcentaje*=2;
-
-                ancho_barra=(ancho_barra*porcentaje)/100;
-
-
-
-                //Si excede de 50. //Maximo 255/4 de ancho
-                if (ancho_barra>50) ancho_barra/=4;
-                int j;
-                for (j=0;j<ancho_barra;j++) {
-                    //printf("=");
-                    buffer_linea[indice_string++]='=';
-                }
-                buffer_linea[indice_string]=0;
-                //printf("%s\n",buffer_linea);
-
-                zxvision_print_string_defaults_fillspc(w,1,linea+i,buffer_linea);
-            }
-
-
-        }
-
-    //}
-
-    /* para amplitud
-    else {
-
-        //Ahora mediante amplitudes de cada trozo
-
-        //Y ahora mostrar los trocitos
-        for (i=0;i<ANALIZADOR_ESPECTRO_RANGOS;i++) {
-
-            long long int amplitud_en_rango=analizador_espectro_resultados_amplitudes[i];
-            int total_valores=analizador_espectro_resultados[i];
-
-            if (total_valores==0) amplitud_en_rango=0;
-            else amplitud_en_rango /=total_valores;
-
-            int volumen=amplitud_en_rango;
-
-
-
-            //Y mostrarlo
-            char buffer_linea[200];
-
+        //Tipo amplitud
+        if (analizador_spectro_tipo==0) {
             sprintf(buffer_linea,"%5d Hz ",
                 analizador_espectro_retorna_frec_desde_indice(i));
 
@@ -32666,25 +32562,64 @@ void analizador_espectro_muestra_resultados(zxvision_window *w,int linea)
 
 
             //No deberia ser mayor, pero por si acaso
-            if (volumen>255) volumen=255;
+            if (ancho_barra>255) ancho_barra=255;
+
+
 
             //Si excede de 50. //Maximo 255/4 de ancho
-            if (volumen>50) volumen/=4;
+            if (ancho_barra>50) ancho_barra/=4;
             int j;
             for (j=0;j<ancho_barra;j++) {
                 //printf("=");
                 buffer_linea[indice_string++]='=';
             }
             buffer_linea[indice_string]=0;
-            printf("%s\n",buffer_linea);
+            //printf("%s\n",buffer_linea);
 
             zxvision_print_string_defaults_fillspc(w,1,linea+i,buffer_linea);
-
-
-
         }
 
-    }*/
+        //Tipo amplitud+porcentaje
+        if (analizador_spectro_tipo==2) {
+            sprintf(buffer_linea,"%5d Hz ",
+                analizador_espectro_retorna_frec_desde_indice(i));
+
+            int indice_string=strlen(buffer_linea);
+
+
+            int ancho_barra=volumen;
+
+
+
+            //No deberia ser mayor, pero por si acaso
+            if (ancho_barra>255) ancho_barra=255;
+
+            //Incrementamos porcentaje para tener barras mas grandes
+            porcentaje*=2;
+
+            ancho_barra=(ancho_barra*porcentaje)/100;
+
+
+
+            //Si excede de 50. //Maximo 255/4 de ancho
+            if (ancho_barra>50) ancho_barra/=4;
+            int j;
+            for (j=0;j<ancho_barra;j++) {
+                //printf("=");
+                buffer_linea[indice_string++]='=';
+            }
+            buffer_linea[indice_string]=0;
+            //printf("%s\n",buffer_linea);
+
+            zxvision_print_string_defaults_fillspc(w,1,linea+i,buffer_linea);
+        }
+
+
+    }
+
+
+
+
 
 }
 
@@ -32949,7 +32884,7 @@ void menu_realtape_record_input_analize_azimuth_end(zxvision_window *w,int linea
 
 
 
-    zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Max %3d Min %3d Volume %3d %s",
+    zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Volume: Max %3d Min %3d Current %3d %s",
         input_analize_input_wave.max_absoluto,input_analize_input_wave.min_absoluto,volumen_absoluto,texto_volumen);
 
 
