@@ -9467,9 +9467,9 @@ int total_restore_window_array_elements=0;
 //La ultima siempre finaliza con funcion NULL
 zxvision_known_window_names zxvision_known_window_names_array[]={
 	{"waveform",    "waveform",menu_audio_new_waveform,bitmap_button_ext_desktop_waveform},
-	{"ayregisters", "ay regs",menu_ay_registers,bitmap_button_ext_desktop_audioregisters},
-	{"aypiano",     "ay piano",menu_ay_pianokeyboard,bitmap_button_ext_desktop_audiopiano},
-	{"aysheet",     "ay sheet",menu_ay_partitura,bitmap_button_ext_desktop_audiosheet},
+	{"ayregisters", "audio regs",menu_ay_registers,bitmap_button_ext_desktop_audioregisters},
+	{"aypiano",     "audiopiano",menu_ay_pianokeyboard,bitmap_button_ext_desktop_audiopiano},
+	{"aysheet",     "audiosheet",menu_ay_partitura,bitmap_button_ext_desktop_audiosheet},
 	{"ayplayer",    "ay player",menu_audio_new_ayplayer,bitmap_button_ext_desktop_ayplayer},
 	{"wavepiano",   "wave piano",menu_beeper_pianokeyboard,bitmap_button_ext_desktop_wavepiano},
 
