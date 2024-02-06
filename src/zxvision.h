@@ -482,6 +482,8 @@ extern void zxvision_window_save_size(zxvision_window *ventana,int *ventana_anch
 extern int zxvision_window_get_pixel_x_position(zxvision_window *ventana);
 extern int zxvision_window_get_pixel_y_position(zxvision_window *ventana);
 
+#define MAX_LENGTH_TEXT_ICON 100
+
 //Maximo de ventanas que se pueden restaurar
 #define MAX_RESTORE_WINDOWS_START 50
 
@@ -494,7 +496,10 @@ extern void zxvision_add_all_windows_to_restore(void);
 
 struct s_zxvision_known_window_names {
 //Ventanas conocidas y sus funciones que las inicializan. Usado al restaurar ventanas al inicio
+    //nombre usado de geometria
 	char nombre[MAX_NAME_WINDOW_GEOMETRY];
+    //nombre usado en process switcher, algo mas descriptivo
+    char nombre_corto[MAX_LENGTH_TEXT_ICON];
 	void (*start)(MENU_ITEM_PARAMETERS);
     char **bitmap_button;
 };
@@ -502,7 +507,11 @@ struct s_zxvision_known_window_names {
 //#define MAX_KNOWN_WINDOWS 100
 typedef struct s_zxvision_known_window_names zxvision_known_window_names;
 
+extern zxvision_known_window_names zxvision_known_window_names_array[];
+
 extern char **zxvision_find_icon_for_known_window(char *nombre);
+
+extern int zxvision_find_known_window(char *nombre);
 
 extern int total_restore_window_array_elements;
 
@@ -688,7 +697,7 @@ enum zxdesktop_custom_icon_status_ids {
     ZXDESKTOP_CUSTOM_ICON_DELETED
 };
 
-#define MAX_LENGTH_TEXT_ICON 100
+
 
 //Identifica a un icono del escritorio
 struct s_zxdesktop_configurable_icon {

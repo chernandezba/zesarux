@@ -40728,7 +40728,13 @@ void menu_process_switcher_draw_icon(zxvision_window *ventana,char *geometry_nam
     //quitar 1 caracter para que no quede pegado
     max_texto--;
 
-    menu_process_switcher_draw_icon_text(offset_x,offset_y+ZESARUX_ASCII_LOGO_ALTO,geometry_name,max_texto);
+    //Buscar el nombre corto descriptivo
+    char *short_name;
+    int id_ventana=zxvision_find_known_window(geometry_name);
+    if (id_ventana>=0) short_name=zxvision_known_window_names_array[id_ventana].nombre_corto;
+    else short_name=geometry_name;
+
+    menu_process_switcher_draw_icon_text(offset_x,offset_y+ZESARUX_ASCII_LOGO_ALTO,short_name,max_texto);
 
 }
 

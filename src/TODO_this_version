@@ -855,8 +855,6 @@ incluidos los cirilicos
 
 *windows: soportar compilacion sin pthreads.
 
-*forma onda que se ajuste el alto al volumen maximo, para que se autoamplie
-*forma onda y dibujo cabezal ajustar a tamaño ventana disponible
 *En división diferencia amplitud hacerlo siempre que sea mayor que 0. Y quizá 3 o 4 mayor para tener margen
 
 * Audioalsa: Mirar cuando lee sonido si es que ha leído menos bytes
@@ -884,7 +882,7 @@ Y en utils solo grabar esos settings de alsa si esta alsa compilado
 -Documentar cómo van los archivos txt de update
 
 
--Ventanas que tengan nombre de icono corto para mostrar en iconos y process switcher
+-Ventanas que tengan nombre de icono corto para mostrar en process switcher
 
 -LEC memory extension https://ia600604.us.archive.org/view_archive.php?archive=/1/items/World_of_Spectrum_June_2017_Mirror/World%20of%20Spectrum%20June%202017%20Mirror.zip&file=World%20of%20Spectrum%20June%202017%20Mirror/sinclair/hardware-info/l/LECMemoryExtension.pdf
 -CPM para LEC: https://spectrumcomputing.co.uk/index.php?cat=96&id=23809
