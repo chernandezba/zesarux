@@ -33108,10 +33108,18 @@ void menu_realtape_record_input_draw_waveform(zxvision_window *w,int x_orig,int 
 {
 
     //Mostrar limites
-    //zxvision_putpixel(w,x_orig,y_orig,ESTILO_GUI_TINTA_NORMAL);
-    //zxvision_putpixel(w,x_orig+ancho-1,y_orig,ESTILO_GUI_TINTA_NORMAL);
-    //zxvision_putpixel(w,x_orig,y_orig+alto-1,ESTILO_GUI_TINTA_NORMAL);
-    //zxvision_putpixel(w,x_orig+ancho-1,y_orig+alto-1,ESTILO_GUI_TINTA_NORMAL);
+    /*
+    zxvision_putpixel(w,x_orig,y_orig,ESTILO_GUI_COLOR_AVISO);
+    zxvision_putpixel(w,x_orig+ancho-1,y_orig,ESTILO_GUI_COLOR_AVISO);
+    zxvision_putpixel(w,x_orig,y_orig+alto-1,ESTILO_GUI_COLOR_AVISO);
+    zxvision_putpixel(w,x_orig+ancho-1,y_orig+alto-1,ESTILO_GUI_COLOR_AVISO);
+
+    zxvision_draw_line(w,x_orig,y_orig,x_orig+ancho-1,y_orig,
+        ESTILO_GUI_COLOR_AVISO,menu_realtape_record_input_draw_waveform_putpixel);
+
+    zxvision_draw_line(w,x_orig,y_orig+alto-1,x_orig+ancho-1,y_orig+alto-1,
+        ESTILO_GUI_COLOR_AVISO,menu_realtape_record_input_draw_waveform_putpixel);
+    */
 
     //primero limpiar zona
     if (menu_realtape_record_input_inicial_limpieza) zxvision_draw_filled_rectangle(w,x_orig,y_orig,ancho,alto,ESTILO_GUI_PAPEL_NORMAL);
@@ -33294,11 +33302,14 @@ int menu_realtape_record_input_show_info(zxvision_window *w,int linea)
 
         menu_realtape_record_input_show_previo_value=menu_string_volumen_maxmin(buf_volumen_canal,posicion_buffer_audio,
                                                     menu_realtape_record_input_show_previo_value,tamanyo_buffer_audio);
+        if (!audio_is_recording_input) {
+            strcpy (texto_buffer,"Record Buffer: (Not Recording)");
+        }
 
-
-        sprintf (texto_buffer,"Record Buffer%s: %6d/%6d (%3d%%) [%s]",
-                    (!audio_is_recording_input ? " (Not Recording)" : ""),
-                    posicion_buffer_audio,tamanyo_buffer_audio,perc_audio,buf_volumen_canal);
+        else {
+            sprintf (texto_buffer,"Record Buffer: %6d/%6d (%3d%%) [%s]",
+                posicion_buffer_audio,tamanyo_buffer_audio,perc_audio,buf_volumen_canal);
+        }
 
         //core_statistics_last_perc_audio=perc_audio;
 
@@ -33570,6 +33581,11 @@ void menu_realtape_record_input_overlay(void)
     //Tambien contar si se escribe siempre o se tiene en cuenta contador_segundo...
 
 
+    //Forzar a mostrar atajos
+    z80_bit antes_menu_writing_inverse_color;
+    antes_menu_writing_inverse_color.v=menu_writing_inverse_color.v;
+    menu_writing_inverse_color.v=1;
+
     //menu_realtape_record_input_tipo_onda
     //0=linea continua, 1=relleno, 2=solo puntos
     char tipo_onda[32];
@@ -33578,8 +33594,12 @@ void menu_realtape_record_input_overlay(void)
     else strcpy(tipo_onda,"Line");
 
 
-    zxvision_print_string_defaults_fillspc_format(menu_realtape_record_input_window,1,linea++,"t wave type: %s. [%c] f: freeze e: empty buffer",
+    zxvision_print_string_defaults_fillspc_format(menu_realtape_record_input_window,1,linea++,"[%s] Wave ~~type [%c] ~~freeze ~~empty buffer",
         tipo_onda,(menu_realtape_record_input_onda_onda_congelada ? 'X' : ' '));
+
+
+    //Restaurar comportamiento atajos
+    menu_writing_inverse_color.v=antes_menu_writing_inverse_color.v;
 
     int alto=(menu_realtape_record_input_window->visible_height-2)*menu_char_height;
     int ancho=(menu_realtape_record_input_window->visible_width-2)*menu_char_width;
@@ -33587,15 +33607,19 @@ void menu_realtape_record_input_overlay(void)
     int x=1*menu_char_width;
     int y=0;
 
-    //6 lineas de estado
-    int restar_lineas=6*menu_char_height;
+    //6 lineas de estado y el trozo del dibujo de la cinta
+    //int restar_lineas=6*menu_char_height;
+
+    int restar_lineas=(DRAW_TAPE_MOSTRAR_CONTENIDO_CINTA_LINEA+2)*menu_char_height;
+
+
     y+=restar_lineas;
     alto-=restar_lineas;
 
 
-
-    menu_realtape_record_input_draw_waveform(menu_realtape_record_input_window,
-        x,y,ancho,alto);
+    if (alto>0) {
+        menu_realtape_record_input_draw_waveform(menu_realtape_record_input_window,x,y,ancho,alto);
+    }
 
     menu_realtape_record_input_analize_azimuth_end(menu_realtape_record_input_window,linea_info_azimuth);
 
@@ -33651,8 +33675,8 @@ void menu_realtape_record_input(MENU_ITEM_PARAMETERS)
         int xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
         if (!util_find_window_geometry("externalaudiosource",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
-            ancho_ventana=32;
-            alto_ventana=20;
+            ancho_ventana=55;
+            alto_ventana=26;
 
             xventana=menu_center_x()-ancho_ventana/2;
             yventana=menu_center_y()-alto_ventana/2;
