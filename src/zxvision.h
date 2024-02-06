@@ -496,9 +496,9 @@ extern void zxvision_add_all_windows_to_restore(void);
 
 struct s_zxvision_known_window_names {
 //Ventanas conocidas y sus funciones que las inicializan. Usado al restaurar ventanas al inicio
-    //nombre usado de geometria
+    //nombre usado de geometria, es un nombre unico que identifica la ventana
 	char nombre[MAX_NAME_WINDOW_GEOMETRY];
-    //nombre usado en process switcher, algo mas descriptivo
+    //nombre usado en process switcher, algo mas descriptivo, en principio no se usa en otro sitio
     char nombre_corto[MAX_LENGTH_TEXT_ICON];
 	void (*start)(MENU_ITEM_PARAMETERS);
     char **bitmap_button;
