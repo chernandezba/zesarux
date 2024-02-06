@@ -837,8 +837,11 @@ Esto significaria tambien que al cambiar de idioma habria que resetear el indice
 -Búsqueda opciones menú deberia ignorar acentos-> indexarlo sin acentos, sin eñes... con todos los caracteres alternativos que se usan en curses,
 incluidos los cirilicos
 
--captura de sonido desde fuente externa (para poder cargar de cinta directamente)
-*SDL1 parece que no permite hacerlo
+---
+--Inicio captura de sonido desde fuente externa (para poder cargar de cinta directamente)
+---
+*SDL1 parece que no permite hacerlo. En windows se resuelve con funciones de windows tal cual
+*pendiente SDL2
 *footer que cambien cuando input source
 *que no afecte el silencio detection cuando se esté leyendo audio
 
@@ -850,7 +853,7 @@ incluidos los cirilicos
 
 *pulse: ok?
 
-*windows: soportar compilacion sin pthreads. soporte compilacion sdl2 para que no pete al compilar porque no hay funciones de captura
+*windows: soportar compilacion sin pthreads.
 
 *forma onda que se ajuste el alto al volumen maximo, para que se autoamplie
 *forma onda y dibujo cabezal ajustar a tamaño ventana disponible
@@ -862,6 +865,10 @@ Quizá ver si entre cada lectura de buffer ha pasado el tiempo que debe pasar re
 -Ventana de capturar audio detecte si hay error (para mostrar buffer lleno). Porque no lo detecta?
 
 -al activar external audio source avisar first aid de que la fuente de sonido la tiene que cambiar el usuario
+
+---
+--Fin captura de sonido
+---
 
 -Aviso de nueva versión y entonces no sale menoriam
 
@@ -878,3 +885,8 @@ Y en utils solo grabar esos settings de alsa si esta alsa compilado
 
 
 -Ventanas que tengan nombre de icono corto para mostrar en iconos y process switcher
+
+-LEC memory extension https://ia600604.us.archive.org/view_archive.php?archive=/1/items/World_of_Spectrum_June_2017_Mirror/World%20of%20Spectrum%20June%202017%20Mirror.zip&file=World%20of%20Spectrum%20June%202017%20Mirror/sinclair/hardware-info/l/LECMemoryExtension.pdf
+-CPM para LEC: https://spectrumcomputing.co.uk/index.php?cat=96&id=23809
+https://trastero.speccy.org/cosas/FLeon/todo_sobre_la_ram_y_rom_lec.txt
+https://trastero.speccy.org/cosas/FLeon/Fleon.htm

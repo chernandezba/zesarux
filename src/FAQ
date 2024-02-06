@@ -132,7 +132,15 @@ A: They are both the same, both are dumps of mmc or ide cards/hard disks. I use 
 Besides using esxdos or other divide/divmmc firmware, you can browse inside these images (and any other disk image formated on FAT filesystem) from the Debug-> File utilites menu. Then select the file and choose the action "moUnt" (Shift+u)
 
 You can also access those file image cards using utilities for your operating system:
--GNU/Linux: you can use command "mount" with option -o loop to mount these images. It file image has a partition, you must first use losetup utility
+-GNU/Linux: you can use command "mount" with option -o loop to mount these images. It file image has a partition, you must first use losetup utility. Example: with the tbblue.mmc image:
+-- su root (or sudo su)
+-- fdisk -l tbblue.mmc
+-- Keep a look at value sector size (512) and the partition start (2048), you will use the values on the mount command
+-- mkdir /mnt/temporary
+-- mount -o offset=$((512*2048)) tbblue.mmc /mnt/temporary
+-- Then the contents of the tbblue.mmc are on /mnt/temporary
+-- Umount when finish using the card: umount /mnt/temporary
+
 -Mac OS X: change extension to .img and you can mount it using Finder. 
 to list it in File Selector
 -Windows: Windows doesn't have native support for mounting file images. You may use ImDisk:
