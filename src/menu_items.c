@@ -32763,172 +32763,131 @@ void menu_realtape_record_input_analize_azimuth(char valor_leido)
 
 
 
-   // int longitud=MENU_REALTAPE_RECORD_INPUT_BUFFER_SIZE;
+    if (valor_leido>input_analize_input_wave.max_absoluto) input_analize_input_wave.max_absoluto=valor_leido;
+    if (valor_leido<input_analize_input_wave.min_absoluto) input_analize_input_wave.min_absoluto=valor_leido;
 
-    //int longitud_original=longitud;
+    if (longitud_temp>0) {
+        //printf("Estado %d Leido %d anterior %d\n",estado_onda,valor_leido,valor_anterior);
+        longitud_temp--;
+    }
+
+    switch(input_analize_input_wave.estado_onda) {
+        case 0:
+            /*if (valor_leido<0) {
+                if (longitud_temp>0) printf("cambiamos a pulso debajo\n");
+                estado_onda=1;
+                contador_pulso=0;
+            }*/
+
+            if (valor_leido>0) {
+                //if (longitud_temp>0) printf("cambiamos a pulso arriba\n");
+                input_analize_input_wave.estado_onda=2;
+                input_analize_input_wave.contador_pulso=0;
+                input_analize_input_wave.valor_max=input_analize_input_wave.valor_min=0;
+            }
+        break;
+
+        case 1:
+            if (valor_leido>0) {
+                //if (longitud_temp>0) printf("Fin pulso abajo\n");
+                input_analize_input_wave.estado_onda=2;
+                input_analize_input_wave.contador_pulso_abajo=input_analize_input_wave.contador_pulso;
+
+                input_analize_input_wave.contador_pulso=0;
+
+                //Tiempo de arriba, abajo indica fin de bit
+                //if (longitud_temp>0) {
+                    if (longitud_temp>0) printf("Fin onda. arriba %d abajo %d\n",
+                        input_analize_input_wave.contador_pulso_arriba,input_analize_input_wave.contador_pulso_abajo);
+                    //Calcular microsegundos
+                    //AUDIO_RECORD_FREQUENCY
+                    int longitud_una_lectura=1000000/AUDIO_RECORD_FREQUENCY;
+
+                    //int microsec_onda=(contador_pulso_abajo+contador_pulso_arriba)*longitud_una_lectura;
 
 
+                    int microsec_onda=(input_analize_input_wave.contador_pulso_abajo+input_analize_input_wave.contador_pulso_arriba)*1000000/AUDIO_RECORD_FREQUENCY;
+
+                    if (longitud_temp>0) printf("Onda tarda (%d %d) %d microsec (0=488, 1=977, guia=1238)\n",
+                        input_analize_input_wave.contador_pulso_abajo,input_analize_input_wave.contador_pulso_arriba,microsec_onda);
+
+                    int frecuencia;
+
+                    if (microsec_onda==0) frecuencia=0;
+                    else frecuencia=1000000/microsec_onda;
+
+                    if (longitud_temp>0) printf("Frecuencia de ese trozo de onda: %d Hz\n",frecuencia);
 
 
-/*
-   int estado_onda=0;
+                    int amplitud=input_analize_input_wave.valor_max-input_analize_input_wave.valor_min;
 
+                    analizador_espectro_registra_frecuencia(frecuencia,amplitud);
 
-   //char valor_anterior=0;
-   int contador_pulso=0;
-   int contador_pulso_abajo=0;
-   int contador_pulso_arriba=0;
+                    //la tolerancia entre senyales
+                    //int rango_arriba_abajo=130;
 
-   int cuantos_ceros=0;
-   int cuantos_unos=0;
-   int cuantos_guias=0;
-   int cuantos_desconocidos=0;
+                    /*
+                    Tono guia entre 358 y <618 (centro en 488)
+                    Unos entre 847 y <1107 (centro en 977). aunque le damos mayor tolerancia
+                    Ceros entre 1108 y <1368 (centro en 1238)
 
-   int valor_max=0;
-   int valor_min=0;
+                    Nota: aun en una carga normal de spectrum pueden haber desconocidos pues estamos analizando un trozo
+                    de buffer que puede empezar y acabar en media onda, o sea, la logica dice que si la carga es spectrum,
+                    maximo podemos encontrar dos ondas desconocidas, el resto tienen que ser de spectrum
+                    Nota2: no estoy considerando la onda de sincronismo que viene justo despues del tono guia y antes de los datos,
+                    por tanto eso también se puede considerar como desconocido
+                    */
 
-   int amplitud_media_ceros=0;
-   int amplitud_media_unos=0;
+                    if (microsec_onda>=358 && microsec_onda<618) {
+                        //int amplitud=valor_max-valor_min;
+                        if (longitud_temp>0) printf("es un 0. amplitud %d\n",amplitud);
+                        input_analize_input_wave.amplitud_media_ceros+=amplitud;
+                        input_analize_input_wave.cuantos_ceros++;
+                    }
+                    else if (microsec_onda>=618 && microsec_onda<1107) {
+                        //int amplitud=valor_max-valor_min;
+                        if (longitud_temp>0) printf("es un 1. amplitud %d\n",amplitud);
+                        input_analize_input_wave.amplitud_media_unos+=amplitud;
+                        input_analize_input_wave.cuantos_unos++;
+                    }
+                    else if (microsec_onda>=1107 && microsec_onda<1368) {
+                        if (longitud_temp>0) printf("es tono guia\n");
+                        input_analize_input_wave.cuantos_guias++;
+                    }
+                    else {
+                        //printf("Es desconocido. microsec_onda: %d amplitud: %d\n",microsec_onda,amplitud);
+                        input_analize_input_wave.cuantos_desconocidos++;
+                    }
 
-   int max_absoluto=0;
-   int min_absoluto=0;
-   */
-
-    //char *origen=menu_realtape_record_input_audio_buffer;
-
-	//for (;longitud>0;longitud--) {
-
-        //char valor_leido=*origen;
-        //origen++;
-
-        if (valor_leido>input_analize_input_wave.max_absoluto) input_analize_input_wave.max_absoluto=valor_leido;
-        if (valor_leido<input_analize_input_wave.min_absoluto) input_analize_input_wave.min_absoluto=valor_leido;
-
-        if (longitud_temp>0) {
-            //printf("Estado %d Leido %d anterior %d\n",estado_onda,valor_leido,valor_anterior);
-            longitud_temp--;
-        }
-
-        switch(input_analize_input_wave.estado_onda) {
-            case 0:
-                /*if (valor_leido<0) {
-                    if (longitud_temp>0) printf("cambiamos a pulso debajo\n");
-                    estado_onda=1;
-                    contador_pulso=0;
-                }*/
-
-                if (valor_leido>0) {
-                    //if (longitud_temp>0) printf("cambiamos a pulso arriba\n");
-                    input_analize_input_wave.estado_onda=2;
-                    input_analize_input_wave.contador_pulso=0;
                     input_analize_input_wave.valor_max=input_analize_input_wave.valor_min=0;
-                }
-            break;
+                //}
+            }
+            else {
+                if (valor_leido<input_analize_input_wave.valor_min) input_analize_input_wave.valor_min=valor_leido;
+            }
+        break;
 
-            case 1:
-                if (valor_leido>0) {
-                    //if (longitud_temp>0) printf("Fin pulso abajo\n");
-                    input_analize_input_wave.estado_onda=2;
-                    input_analize_input_wave.contador_pulso_abajo=input_analize_input_wave.contador_pulso;
+        case 2:
+            if (valor_leido<0) {
+                if (longitud_temp>0) printf("Fin pulso arriba\n");
+                input_analize_input_wave.estado_onda=1;
 
-                    input_analize_input_wave.contador_pulso=0;
+                input_analize_input_wave.contador_pulso_arriba=input_analize_input_wave.contador_pulso;
 
-                    //Tiempo de arriba, abajo indica fin de bit
-                    //if (longitud_temp>0) {
-                        if (longitud_temp>0) printf("Fin onda. arriba %d abajo %d\n",
-                            input_analize_input_wave.contador_pulso_arriba,input_analize_input_wave.contador_pulso_abajo);
-                        //Calcular microsegundos
-                        //AUDIO_RECORD_FREQUENCY
-                        int longitud_una_lectura=1000000/AUDIO_RECORD_FREQUENCY;
-
-                        //int microsec_onda=(contador_pulso_abajo+contador_pulso_arriba)*longitud_una_lectura;
-
-
-                        int microsec_onda=(input_analize_input_wave.contador_pulso_abajo+input_analize_input_wave.contador_pulso_arriba)*1000000/AUDIO_RECORD_FREQUENCY;
-
-                        if (longitud_temp>0) printf("Onda tarda (%d %d) %d microsec (0=488, 1=977, guia=1238)\n",
-                            input_analize_input_wave.contador_pulso_abajo,input_analize_input_wave.contador_pulso_arriba,microsec_onda);
-
-                        int frecuencia;
-
-                        if (microsec_onda==0) frecuencia=0;
-                        else frecuencia=1000000/microsec_onda;
-
-                        if (longitud_temp>0) printf("Frecuencia de ese trozo de onda: %d Hz\n",frecuencia);
-
-
-                        int amplitud=input_analize_input_wave.valor_max-input_analize_input_wave.valor_min;
-
-                        analizador_espectro_registra_frecuencia(frecuencia,amplitud);
-
-                        //la tolerancia entre senyales
-                        //int rango_arriba_abajo=130;
-
-                        /*
-                        Tono guia entre 358 y <618 (centro en 488)
-                        Unos entre 847 y <1107 (centro en 977). aunque le damos mayor tolerancia
-                        Ceros entre 1108 y <1368 (centro en 1238)
-
-                        Nota: aun en una carga normal de spectrum pueden haber desconocidos pues estamos analizando un trozo
-                        de buffer que puede empezar y acabar en media onda, o sea, la logica dice que si la carga es spectrum,
-                        maximo podemos encontrar dos ondas desconocidas, el resto tienen que ser de spectrum
-                        Nota2: no estoy considerando la onda de sincronismo que viene justo despues del tono guia y antes de los datos,
-                        por tanto eso también se puede considerar como desconocido
-                        */
-
-                        if (microsec_onda>=358 && microsec_onda<618) {
-                            //int amplitud=valor_max-valor_min;
-                            if (longitud_temp>0) printf("es un 0. amplitud %d\n",amplitud);
-                            input_analize_input_wave.amplitud_media_ceros+=amplitud;
-                            input_analize_input_wave.cuantos_ceros++;
-                        }
-                        else if (microsec_onda>=618 && microsec_onda<1107) {
-                            //int amplitud=valor_max-valor_min;
-                            if (longitud_temp>0) printf("es un 1. amplitud %d\n",amplitud);
-                            input_analize_input_wave.amplitud_media_unos+=amplitud;
-                            input_analize_input_wave.cuantos_unos++;
-                        }
-                        else if (microsec_onda>=1107 && microsec_onda<1368) {
-                            if (longitud_temp>0) printf("es tono guia\n");
-                            input_analize_input_wave.cuantos_guias++;
-                        }
-                        else {
-                            //printf("Es desconocido. microsec_onda: %d amplitud: %d\n",microsec_onda,amplitud);
-                            input_analize_input_wave.cuantos_desconocidos++;
-                        }
-
-                        input_analize_input_wave.valor_max=input_analize_input_wave.valor_min=0;
-                    //}
-                }
-                else {
-                    if (valor_leido<input_analize_input_wave.valor_min) input_analize_input_wave.valor_min=valor_leido;
-                }
-            break;
-
-            case 2:
-                if (valor_leido<0) {
-                    if (longitud_temp>0) printf("Fin pulso arriba\n");
-                    input_analize_input_wave.estado_onda=1;
-
-                    input_analize_input_wave.contador_pulso_arriba=input_analize_input_wave.contador_pulso;
-
-                    input_analize_input_wave.contador_pulso=0;
-                }
-                else {
-                    if (valor_leido>input_analize_input_wave.valor_max) input_analize_input_wave.valor_max=valor_leido;
-                }
-            break;
+                input_analize_input_wave.contador_pulso=0;
+            }
+            else {
+                if (valor_leido>input_analize_input_wave.valor_max) input_analize_input_wave.valor_max=valor_leido;
+            }
+        break;
 
 
 
-        }
+    }
 
-        input_analize_input_wave.contador_pulso++;
+    input_analize_input_wave.contador_pulso++;
 
 
-        //valor_anterior=valor_leido;
-
-	//}
 }
 
 int menu_realtape_record_input_analize_azimuth_end_conta_segundo=0;
@@ -33300,34 +33259,7 @@ void menu_realtape_record_input_draw_waveform(zxvision_window *w,int x_orig,int 
 
 }
 
-/*
-int menu_realtape_record_input_overlay_last_fifo_pos_x=0;
 
-void menu_realtape_record_input_show_fifo_pos(zxvision_window *w,int x,int y,int ancho,int alto)
-{
-    //Mostrar con linea por donde esta leyendo la fifo. Si fifo=0%, esta a la derecha. Si fifo=100%, a la izquierda
-    //perc_audio=(posicion_buffer_audio*100)/tamanyo_buffer_audio;
-    int tamanyo_buffer_audio=audiorecord_input_return_fifo_total_size();
-    int posicion_buffer_audio=audiorecord_input_fifo_return_size();
-    int ancho_relativo_fifo;
-
-    //tamanyo_buffer_audio=100;
-    //posicion_buffer_audio=0;
-
-    if (tamanyo_buffer_audio==0) ancho_relativo_fifo=0;
-    else ancho_relativo_fifo=(ancho*posicion_buffer_audio)/tamanyo_buffer_audio;
-
-    int fifo_pos_x=x+ancho-ancho_relativo_fifo-1;
-
-    zxvision_draw_line(w,
-        fifo_pos_x,y,
-        fifo_pos_x,y+alto-1,ESTILO_GUI_COLOR_AVISO,
-        menu_realtape_record_input_draw_waveform_putpixel);
-
-    menu_realtape_record_input_overlay_last_fifo_pos_x=fifo_pos_x;
-
-}
-*/
 
 int menu_realtape_record_input_show_previo_value=0;
 
@@ -33390,10 +33322,7 @@ int menu_realtape_record_input_overlay_segundo_anterior=0;
 //yactual es la parte de arriba del tornillo
 void menu_realtape_record_input_draw_tape_tornillo(zxvision_window *w,int xactual,int yactual,int alto_tornillo,int color)
 {
-    //int ancho_tornillo=DRAW_TAPE_ANCHO_TORNILLO;
-    //int alto_tornillo=DRAW_TAPE_ALTO_TORNILLO;
 
-    //int ancho_cabeza_tornillo=DRAW_TAPE_ANCHO_CABEZA_TORNILLO;
 
 
     //ancho del tornillo
@@ -33419,7 +33348,7 @@ void menu_realtape_record_input_draw_tape_puntitos(zxvision_window *w,int frame,
 
     x +=MAX_FRAMES_PUNTITOS-20;
 
-    //zxvision_putpixel(w,x,y,color);
+
 
     zxvision_putpixel(w,x-(frame % MAX_FRAMES_PUNTITOS),y,color);
 
@@ -33433,9 +33362,7 @@ void menu_realtape_record_input_draw_tape_puntitos(zxvision_window *w,int frame,
 
     zxvision_putpixel(w,x-((frame+60) % MAX_FRAMES_PUNTITOS),y+2,color);
 
-    //zxvision_putpixel(w,x+15-frame,y-3,color);
 
-    //zxvision_putpixel(w,x+24-frame,y-7,color);
 }
 
 void menu_realtape_record_input_draw_tape_aux(zxvision_window *w,int angulo_rotacion,int origen_x,int origen_y)
@@ -33589,8 +33516,6 @@ void menu_realtape_record_input_draw_tape_aux(zxvision_window *w,int angulo_rota
 void menu_realtape_record_input_draw_tape(zxvision_window *w)
 {
 
-
-
     int angulo_rotacion;
 
 
@@ -33610,7 +33535,6 @@ void menu_realtape_record_input_draw_tape(zxvision_window *w)
     //coordenada x donde esta la derecha de la base del cabezal
     int origen_x=200;
     //coordenada y donde esta la derecha de la base del cabezal
-    //int origen_y=100;
 
     int origen_y=(linea_mostrar_contenido_cinta+1)*menu_char_height;
 
@@ -33636,7 +33560,6 @@ void menu_realtape_record_input_overlay(void)
     menu_realtape_record_input_analize_azimuth_init();
     analizador_espectro_reset();
 
-    //menu_realtape_record_input_analize_azimuth();
 
     int linea_info_azimuth=linea;
 
@@ -33655,7 +33578,6 @@ void menu_realtape_record_input_overlay(void)
     else strcpy(tipo_onda,"Line");
 
 
-    //menu_realtape_record_input_onda_onda_congelada
     zxvision_print_string_defaults_fillspc_format(menu_realtape_record_input_window,1,linea++,"t wave type: %s. [%c] f: freeze e: empty buffer",
         tipo_onda,(menu_realtape_record_input_onda_onda_congelada ? 'X' : ' '));
 
@@ -33671,19 +33593,12 @@ void menu_realtape_record_input_overlay(void)
     alto-=restar_lineas;
 
 
-    //borrar anterior cursor de fifo
-    /*zxvision_draw_line(menu_realtape_record_input_window,
-        menu_realtape_record_input_overlay_last_fifo_pos_x,y,
-        menu_realtape_record_input_overlay_last_fifo_pos_x,y+alto-1,ESTILO_GUI_PAPEL_NORMAL,
-        menu_realtape_record_input_draw_waveform_putpixel);*/
 
     menu_realtape_record_input_draw_waveform(menu_realtape_record_input_window,
         x,y,ancho,alto);
 
     menu_realtape_record_input_analize_azimuth_end(menu_realtape_record_input_window,linea_info_azimuth);
 
-    //Mostrar con linea por donde esta leyendo la fifo
-    //menu_realtape_record_input_show_fifo_pos(menu_realtape_record_input_window,x,y,ancho,alto);
 
 
 	//esto hara ejecutar esto 2 veces por segundo
