@@ -46,6 +46,7 @@
 #include "zvfs.h"
 #include "menu_filesel.h"
 #include "atomic.h"
+#include "menu_items.h"
 
 #include "audionull.h"
 
@@ -268,6 +269,8 @@ int audiorecord_input_fifo_write_one_byte(char dato)
     return 0;
 }
 
+int audiorecord_avisado_fifo_llena=0;
+
 //escribir datos en la fifo
 //Retorna no 0 si fifo llena
 int audiorecord_input_fifo_write(char *origen,int longitud)
@@ -277,7 +280,18 @@ int audiorecord_input_fifo_write(char *origen,int longitud)
 
         char valor_escribir=*origen;
 
-        if (audiorecord_input_fifo_write_one_byte(valor_escribir)) return 1;
+
+        if (audiorecord_input_fifo_write_one_byte(valor_escribir)) {
+            if (!audiorecord_avisado_fifo_llena) {
+                audiorecord_avisado_fifo_llena=1;
+                int miliseconds_lost=(1000*longitud)/AUDIO_RECORD_FREQUENCY;
+                debug_printf(VERBOSE_ERR,"EExternal Audio Source buffer is full, a fragment of %d ms has been lost. "
+                    "I recommend you to disable and enable External Audio Source in order to empty the input buffer",
+                    miliseconds_lost);
+            }
+
+            return 1;
+        }
 
         menu_realtape_record_input_write_byte(valor_escribir);
 

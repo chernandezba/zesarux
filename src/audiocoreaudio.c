@@ -335,11 +335,11 @@ void coreaudio_handleinputbuffer (
 
 
     if (audiorecord_input_fifo_write(inBuffer->mAudioData,inNumPackets) && !coreaudio_avisado_fifo_llena) {
-        int miliseconds_lost=(1000*inNumPackets)/AUDIO_RECORD_FREQUENCY;
+        /*int miliseconds_lost=(1000*inNumPackets)/AUDIO_RECORD_FREQUENCY;
         debug_printf(VERBOSE_ERR,"External Audio Source buffer is full, a section of %d ms has been lost. "
             "I recommend you to disable and enable External Audio Source in order to empty the input buffer",
             miliseconds_lost);
-        coreaudio_avisado_fifo_llena=1;
+        coreaudio_avisado_fifo_llena=1;*/
     }
 
 

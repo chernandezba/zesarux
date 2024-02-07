@@ -33662,7 +33662,7 @@ void menu_realtape_record_input(MENU_ITEM_PARAMETERS)
 
 
 		tecla=zxvision_common_getkey_refresh();
-
+        //menu_muestra_pending_error_message
 
         switch (tecla) {
 
