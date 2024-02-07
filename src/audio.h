@@ -124,6 +124,8 @@ extern void audio_read_sample_audio_input(void);
 extern void audiorecord_input_empty_buffer(void);
 extern void audiorecord_input_empty_buffer_with_lock(void);
 
+extern int audiorecord_last_write_full;
+
 extern z80_bit audio_noreset_audiobuffer_full;
 
 extern char audio_new_driver_name[];

@@ -47,6 +47,7 @@
 #include "menu_filesel.h"
 #include "atomic.h"
 #include "menu_items.h"
+#include "timer.h"
 
 #include "audionull.h"
 
@@ -269,7 +270,11 @@ int audiorecord_input_fifo_write_one_byte(char dato)
     return 0;
 }
 
+//Dice si ya hemos alertado al usuario con una ventana de error, decirle solo 1 vez
 int audiorecord_avisado_fifo_llena=0;
+
+//Flag que se activa siempre que este llena, este flag solo lo resetea en principio desde la ventana de external audio source
+int audiorecord_last_write_full=0;
 
 //escribir datos en la fifo
 //Retorna no 0 si fifo llena
@@ -282,10 +287,14 @@ int audiorecord_input_fifo_write(char *origen,int longitud)
 
 
         if (audiorecord_input_fifo_write_one_byte(valor_escribir)) {
+
+            //Le pone el contador de segundos para saber la ventana de external audio source cuando ha avisado
+            //y resetear el flag si conviene
+            audiorecord_last_write_full=contador_segundo_infinito;
             if (!audiorecord_avisado_fifo_llena) {
                 audiorecord_avisado_fifo_llena=1;
                 int miliseconds_lost=(1000*longitud)/AUDIO_RECORD_FREQUENCY;
-                debug_printf(VERBOSE_ERR,"EExternal Audio Source buffer is full, a fragment of %d ms has been lost. "
+                debug_printf(VERBOSE_ERR,"External Audio Source buffer is full, a fragment of %d ms has been lost. "
                     "I recommend you to disable and enable External Audio Source in order to empty the input buffer",
                     miliseconds_lost);
             }

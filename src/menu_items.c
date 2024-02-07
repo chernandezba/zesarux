@@ -33248,8 +33248,13 @@ int menu_realtape_record_input_show_info(zxvision_window *w,int linea)
         }
 
         else {
-            sprintf (texto_buffer,"Record Buffer: %6d/%6d (%3d%%) [%s]",
-                posicion_buffer_audio,tamanyo_buffer_audio,perc_audio,buf_volumen_canal);
+            if (audiorecord_last_write_full) sprintf (texto_buffer,"Record Buffer: FULL!");
+
+            else {
+
+                sprintf (texto_buffer,"Record Buffer: %6d/%6d (%3d%%) [%s]",
+                    posicion_buffer_audio,tamanyo_buffer_audio,perc_audio,buf_volumen_canal);
+            }
         }
 
         //core_statistics_last_perc_audio=perc_audio;
@@ -33579,6 +33584,15 @@ void menu_realtape_record_input_overlay(void)
     if (audio_is_recording_input) menu_realtape_record_input_frame_puntitos++;
 
     menu_realtape_record_input_draw_tape(menu_realtape_record_input_window);
+
+
+    //Resetear el aviso de lleno si ha pasado un par de segundos
+    if (audiorecord_last_write_full) {
+        if (contador_segundo_infinito-audiorecord_last_write_full>2*50) {
+            printf("Resetear . contador segundo %d last %d\n",contador_segundo_infinito,audiorecord_last_write_full);
+            audiorecord_last_write_full=0;
+        }
+    }
 
 
     //Mostrar contenido
