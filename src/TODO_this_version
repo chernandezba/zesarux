@@ -854,7 +854,6 @@ incluidos los cirilicos
 
 *windows: soportar compilacion sin pthreads.
 
-*En división diferencia amplitud hacerlo siempre que sea mayor que 0. Y quizá 3 o 4 mayor para tener margen
 
 * Audioalsa: Mirar cuando lee sonido si es que ha leído menos bytes
 Quizá ver si entre cada lectura de buffer ha pasado el tiempo que debe pasar realmente

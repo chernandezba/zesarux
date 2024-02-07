@@ -32662,7 +32662,7 @@ struct s_input_analize_input_wave {
 
 struct s_input_analize_input_wave input_analize_input_wave;
 
-int longitud_temp=100;
+//int longitud_temp=100;
 
 void menu_realtape_record_input_analize_azimuth_init(void)
 {
@@ -32693,6 +32693,7 @@ void menu_realtape_record_input_analize_azimuth_init(void)
     //longitud_temp=100;
 }
 
+//Se analiza tipos de datos, si es tono guia, si es azimuth... no solo se analiza el azimuth, pese a que el nombre de la funcion es ese
 void menu_realtape_record_input_analize_azimuth(char valor_leido)
 {
 
@@ -32701,10 +32702,10 @@ void menu_realtape_record_input_analize_azimuth(char valor_leido)
     if (valor_leido>input_analize_input_wave.max_absoluto) input_analize_input_wave.max_absoluto=valor_leido;
     if (valor_leido<input_analize_input_wave.min_absoluto) input_analize_input_wave.min_absoluto=valor_leido;
 
-    if (longitud_temp>0) {
+    /*if (longitud_temp>0) {
         //printf("Estado %d Leido %d anterior %d\n",estado_onda,valor_leido,valor_anterior);
         longitud_temp--;
-    }
+    }*/
 
     switch(input_analize_input_wave.estado_onda) {
         case 0:
@@ -32732,26 +32733,27 @@ void menu_realtape_record_input_analize_azimuth(char valor_leido)
 
                 //Tiempo de arriba, abajo indica fin de bit
                 //if (longitud_temp>0) {
-                    if (longitud_temp>0) printf("Fin onda. arriba %d abajo %d\n",
-                        input_analize_input_wave.contador_pulso_arriba,input_analize_input_wave.contador_pulso_abajo);
+                    /*if (longitud_temp>0) printf("Fin onda. arriba %d abajo %d\n",
+                        input_analize_input_wave.contador_pulso_arriba,input_analize_input_wave.contador_pulso_abajo);*/
+
                     //Calcular microsegundos
                     //AUDIO_RECORD_FREQUENCY
-                    int longitud_una_lectura=1000000/AUDIO_RECORD_FREQUENCY;
+                    //int longitud_una_lectura=1000000/AUDIO_RECORD_FREQUENCY;
 
                     //int microsec_onda=(contador_pulso_abajo+contador_pulso_arriba)*longitud_una_lectura;
 
 
                     int microsec_onda=(input_analize_input_wave.contador_pulso_abajo+input_analize_input_wave.contador_pulso_arriba)*1000000/AUDIO_RECORD_FREQUENCY;
 
-                    if (longitud_temp>0) printf("Onda tarda (%d %d) %d microsec (0=488, 1=977, guia=1238)\n",
-                        input_analize_input_wave.contador_pulso_abajo,input_analize_input_wave.contador_pulso_arriba,microsec_onda);
+                    /*if (longitud_temp>0) printf("Onda tarda (%d %d) %d microsec (0=488, 1=977, guia=1238)\n",
+                        input_analize_input_wave.contador_pulso_abajo,input_analize_input_wave.contador_pulso_arriba,microsec_onda);*/
 
                     int frecuencia;
 
                     if (microsec_onda==0) frecuencia=0;
                     else frecuencia=1000000/microsec_onda;
 
-                    if (longitud_temp>0) printf("Frecuencia de ese trozo de onda: %d Hz\n",frecuencia);
+                    //if (longitud_temp>0) printf("Frecuencia de ese trozo de onda: %d Hz\n",frecuencia);
 
 
                     int amplitud=input_analize_input_wave.valor_max-input_analize_input_wave.valor_min;
@@ -32775,18 +32777,18 @@ void menu_realtape_record_input_analize_azimuth(char valor_leido)
 
                     if (microsec_onda>=358 && microsec_onda<618) {
                         //int amplitud=valor_max-valor_min;
-                        if (longitud_temp>0) printf("es un 0. amplitud %d\n",amplitud);
+                        //if (longitud_temp>0) printf("es un 0. amplitud %d\n",amplitud);
                         input_analize_input_wave.amplitud_media_ceros+=amplitud;
                         input_analize_input_wave.cuantos_ceros++;
                     }
                     else if (microsec_onda>=618 && microsec_onda<1107) {
                         //int amplitud=valor_max-valor_min;
-                        if (longitud_temp>0) printf("es un 1. amplitud %d\n",amplitud);
+                        //if (longitud_temp>0) printf("es un 1. amplitud %d\n",amplitud);
                         input_analize_input_wave.amplitud_media_unos+=amplitud;
                         input_analize_input_wave.cuantos_unos++;
                     }
                     else if (microsec_onda>=1107 && microsec_onda<1368) {
-                        if (longitud_temp>0) printf("es tono guia\n");
+                        //if (longitud_temp>0) printf("es tono guia\n");
                         input_analize_input_wave.cuantos_guias++;
                     }
                     else {
@@ -32804,7 +32806,7 @@ void menu_realtape_record_input_analize_azimuth(char valor_leido)
 
         case 2:
             if (valor_leido<0) {
-                if (longitud_temp>0) printf("Fin pulso arriba\n");
+                //if (longitud_temp>0) printf("Fin pulso arriba\n");
                 input_analize_input_wave.estado_onda=1;
 
                 input_analize_input_wave.contador_pulso_arriba=input_analize_input_wave.contador_pulso;
@@ -32953,6 +32955,8 @@ void menu_realtape_record_input_analize_azimuth_end(zxvision_window *w,int linea
         Al calibrar bien el azimuth en una carga de Spectrum, se oye mas agudo, y esto tiene mas lógica aun porque
         los bits de 0 tienen mayor amplitud (que son los bits mas cortos, con mas frecuencia y por tanto mas agudos)
         Si el azimuth esta mal, los bits de 0 tiene menor amplitud, y por tanto se oye mas grave
+
+        //Solo analizo azimuth cuando amplitudes > 2, con menos amplitud no tiene sentido
         */
         if (input_analize_input_wave.cuantos_unos>minimo_ondas &&
             input_analize_input_wave.cuantos_ceros>minimo_ondas &&
@@ -33786,8 +33790,8 @@ void menu_input_spectrum_analyzer(MENU_ITEM_PARAMETERS)
         int xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
         if (!util_find_window_geometry("inspectrumanalyzer",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
-            ancho_ventana=30;
-            alto_ventana=20;
+            ancho_ventana=38;
+            alto_ventana=36;
 
             xventana=menu_center_x()-ancho_ventana/2;
             yventana=menu_center_y()-alto_ventana/2;
