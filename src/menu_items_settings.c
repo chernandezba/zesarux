@@ -10119,6 +10119,193 @@ int menu_zxdesktop_set_userdef_button_func_action(int accion_inicial_seleccionad
 }
 
 
+#define ZXDESKTOP_GET_WINDOW_ANCHO_VENTANA 23
+#define ZXDESKTOP_GET_WINDOW_ALTO_VENTANA 20
+
+//Ubicar el boton hacia la derecha de la ventana
+#define ZXDESKTOP_GET_WINDOW_OFFSET_BUTTON (ZXDESKTOP_GET_WINDOW_ANCHO_VENTANA-(ZESARUX_ASCII_LOGO_ANCHO/menu_char_width)-2)
+
+
+
+
+zxvision_window menu_zxdesktop_get_window_list_ventana;
+
+int menu_zxdesktop_get_window_list_opcion_seleccionada=0;
+
+//Para hacer un preview del boton
+void menu_zxdesktop_get_window_list_putpixel(z80_int *destino GCC_UNUSED,int x,int y,int ancho GCC_UNUSED,int color)
+{
+	//scr_putpixel(x,y,color);
+    //zxvision_window *ventana;
+    //ventana=&menu_zxdesktop_set_userdef_button_func_action_ventana;
+
+
+    zxvision_putpixel(&menu_zxdesktop_get_window_list_ventana,x,y,color);
+}
+
+void menu_zxdesktop_get_window_list_overlay(void)
+{
+
+
+    zxvision_window *ventana;
+    ventana=&menu_zxdesktop_get_window_list_ventana;
+
+
+
+
+    menu_speech_tecla_pulsada=1; //Si no, envia continuamente todo ese texto a speech
+
+    //si ventana minimizada, no ejecutar todo el codigo de overlay
+    if (ventana->is_minimized) return;
+
+
+    char **puntero_bitmap;
+
+    int numero_boton=menu_zxdesktop_get_window_list_opcion_seleccionada;
+
+    //printf("numero boton: %d %s %p\n",
+      //  numero_boton,zxvision_known_window_names_array[numero_boton].nombre,zxvision_known_window_names_array[numero_boton].start);
+
+    //Que el número del botón esté dentro del rango total, por si acaso
+    int i;
+    int salir=0;
+
+    for (i=0;i<=numero_boton && !salir;i++) {
+        //printf("%d %p\n",i,zxvision_known_window_names_array[i].start);
+        if (zxvision_known_window_names_array[i].start==NULL) {
+            //printf("indice %d invalido\n",numero_boton);
+            salir=1;
+        }
+    }
+
+    if (!salir) {
+
+        puntero_bitmap=zxvision_known_window_names_array[numero_boton].bitmap_button;
+
+        int offset_x=ZXDESKTOP_GET_WINDOW_OFFSET_BUTTON*menu_char_width;
+        int offset_y=ventana->offset_y;
+
+        //Desplazar putpixel segun el offset de scroll
+        offset_y *=menu_char_height;
+
+        //Primero poner todo el fondo del botón en color blanco
+        int x,y;
+
+        for (x=0;x<ZESARUX_ASCII_LOGO_ANCHO;x++) {
+            for (y=0;y<ZESARUX_ASCII_LOGO_ALTO;y++) {
+                zxvision_putpixel(ventana,offset_x+x,offset_y+y,7);
+            }
+        }
+
+        //Y dibujar dicho botón
+        int nivel_zoom=1;
+        screen_put_asciibitmap_generic(puntero_bitmap,NULL,offset_x,offset_y,ZESARUX_ASCII_LOGO_ANCHO,ZESARUX_ASCII_LOGO_ALTO,
+            0,menu_zxdesktop_get_window_list_putpixel,nivel_zoom,0);
+
+    }
+
+
+    //Siempre hará el dibujado de contenido para evitar que cuando esta en background, otra ventana por debajo escriba algo,
+    //y entonces como esta no redibuja siempre, al no escribir encima, se sobreescribe este contenido con el de otra ventana
+    //En ventanas que no escriben siempre su contenido, siempre deberia estar zxvision_draw_window_contents que lo haga siempre
+    zxvision_draw_window_contents(ventana);
+}
+
+
+//Ventana con lista de ventanas posibles
+int menu_zxdesktop_get_window_list(void)
+{
+
+    int alto_ventana=ZXDESKTOP_GET_WINDOW_ALTO_VENTANA;
+    int ancho_ventana=ZXDESKTOP_GET_WINDOW_ANCHO_VENTANA;
+
+    int x_ventana=menu_center_x()-ancho_ventana/2;
+    int y_ventana=menu_center_y()-alto_ventana/2;
+
+
+    //En este caso creamos un menu tabulado porque necesitamos crear nosotros la ventana antes para
+    //poderla hacer mas ancha para ubicar el dibujo del boton seleccionado
+	zxvision_window *ventana;
+
+    ventana=&menu_zxdesktop_get_window_list_ventana;
+
+    //Maximo de listado de 100 ventanas
+	zxvision_new_window(ventana,x_ventana,y_ventana,ancho_ventana,alto_ventana,
+							ancho_ventana-1,100,"Select Window");
+
+    //Decir que siempre hay que borrar cache al refrescar, especial en el caso de accion por defecto y que no tiene dibujo
+    ventana->must_clear_cache_on_draw=1;
+	zxvision_draw_window(ventana);
+
+
+    //cambio overlay
+    zxvision_set_window_overlay(ventana,menu_zxdesktop_get_window_list_overlay);
+
+    menu_item *array_menu_common;
+    menu_item item_seleccionado;
+    int retorno_menu;
+
+
+    char buffer_texto[40];
+
+    menu_zxdesktop_get_window_list_opcion_seleccionada=0;
+
+    int i=0;
+    int salir=0;
+    while (!salir) {
+
+        if (zxvision_known_window_names_array[i].start==NULL) salir=1;
+        else {
+
+            //enum defined_f_function_ids accion=defined_buttons_functions_array[i];
+
+            sprintf (buffer_texto,"%s",zxvision_known_window_names_array[i].nombre_corto);
+
+
+            if (i==0) menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,buffer_texto);
+            else menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,buffer_texto);
+
+            menu_add_item_menu_tabulado(array_menu_common,1,i);
+
+            i++;
+        }
+
+    }
+
+    //Reasignar total alto al total de ventanas real, y para que quepa opcion ESC
+    int total_alto=i+2;
+    zxvision_set_total_height(ventana,total_alto);
+
+
+    menu_add_ESC_item(array_menu_common);
+    menu_add_item_menu_tabulado(array_menu_common,1,i+1);
+
+    retorno_menu=menu_dibuja_menu_no_title_lang(&menu_zxdesktop_get_window_list_opcion_seleccionada,&item_seleccionado,array_menu_common,"Select Window" );
+
+    //restauramos modo normal de texto de menu
+
+
+    //En caso de menus tabulados, suele ser necesario esto. Si no, la ventana se quedaria visible
+
+
+    //Asumimos que se pulsa ESC
+    int indice_retorno=-1;
+
+
+    if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+        //Si se pulsa Enter
+        indice_retorno=menu_zxdesktop_get_window_list_opcion_seleccionada;
+    }
+
+
+    //En caso de menus tabulados, es responsabilidad de este de liberar ventana
+    zxvision_destroy_window(ventana);
+
+    return indice_retorno;
+
+}
+
+
 //Definir boton de zx desktop a accion
 void menu_zxdesktop_set_userdef_buttons_functions(MENU_ITEM_PARAMETERS)
 {
@@ -10698,6 +10885,23 @@ void menu_zxdesktop_add_configurable_icons(MENU_ITEM_PARAMETERS)
 
                     //Cambiar nombre icono con la maquina en cuestión
                     sprintf(zxdesktop_configurable_icons_list[indice_icono].text_icon,"Set %s",get_machine_name(current_machine_type));
+
+                }
+            }
+
+            //Si es open window, mostrar lista de posibles ventanas
+            if (accion==F_FUNCION_OPEN_WINDOW) {
+                int elemento=menu_zxdesktop_get_window_list();
+                if (elemento>=0) {
+
+                    if (zxvision_known_window_is_valid_by_index(elemento)>=0) {
+                        strcpy(zxdesktop_configurable_icons_list[indice_icono].extra_info,
+                            zxvision_known_window_names_array[elemento].nombre);
+
+                        strcpy(zxdesktop_configurable_icons_list[indice_icono].text_icon,
+                            zxvision_known_window_names_array[elemento].nombre_corto);
+                    }
+
 
                 }
             }

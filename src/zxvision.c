@@ -9465,51 +9465,49 @@ int total_restore_window_array_elements=0;
 //Ventanas conocidas y sus funciones que las inicializan y sus iconos. Usado al restaurar ventanas al inicio
 //Y tambien al reabrir todas ventanas en el cambio de estilo de GUI style
 //La ultima siempre finaliza con funcion NULL
+//Conviene tener la lista ordenada alfabeticamente por el nombre corto asi al listarlo desde new icon->open window,saldra ordenado
 zxvision_known_window_names zxvision_known_window_names_array[]={
-	{"waveform",    "waveform",menu_audio_new_waveform,bitmap_button_ext_desktop_waveform},
-	{"ayregisters", "audio regs",menu_ay_registers,bitmap_button_ext_desktop_audioregisters},
-	{"aypiano",     "audiopiano",menu_ay_pianokeyboard,bitmap_button_ext_desktop_audiopiano},
-	{"aysheet",     "audiosheet",menu_ay_partitura,bitmap_button_ext_desktop_audiosheet},
-	{"ayplayer",    "ay player",menu_audio_new_ayplayer,bitmap_button_ext_desktop_ayplayer},
-	{"wavepiano",   "wave piano",menu_beeper_pianokeyboard,bitmap_button_ext_desktop_wavepiano},
-
-#ifdef EMULATE_VISUALMEM
-	{"visualmem","visualmem",menu_debug_new_visualmem,bitmap_button_ext_desktop_visualmem},
-#endif
-
+    {"textadvlocimage",     "adv locimg",   menu_textadv_loc_image,bitmap_button_ext_desktop_textadvlocimage},
+    {"asciitable",          "asciitable",   menu_ascii_table,bitmap_button_ext_desktop_asciitable},
+    {"aypiano",             "audiopiano",menu_ay_pianokeyboard,bitmap_button_ext_desktop_audiopiano},
+	{"ayregisters",         "audio regs",menu_ay_registers,bitmap_button_ext_desktop_audioregisters},
+	{"aysheet",             "audiosheet",menu_ay_partitura,bitmap_button_ext_desktop_audiosheet},
+	{"ayplayer",            "ay player",menu_audio_new_ayplayer,bitmap_button_ext_desktop_ayplayer},
+    {"corestatistics",      "core stats",   menu_about_core_statistics,bitmap_button_ext_desktop_corestatistics},
 #ifdef EMULATE_CPU_STATS
 	{"cpucompactstatistics","cpucmpstat",menu_debug_cpu_resumen_stats,bitmap_button_ext_desktop_cpustatistics},
 #endif
-
-	{"sprites","sprites",menu_debug_view_sprites,bitmap_button_ext_desktop_viewsprites},
-	{"watches","watches",menu_watches,bitmap_button_ext_desktop_watches},
-	{"displaypalettes",     "dis palett",menu_display_total_palette,bitmap_button_ext_desktop_colour_palettes},
-	{"videoinfo",           "videoinfo",menu_debug_tsconf_tbblue_msx_videoregisters,bitmap_button_ext_desktop_videoinfo},
-	{"tsconftbbluespritenav","sprite nav",menu_debug_tsconf_tbblue_msx_spritenav,bitmap_button_ext_desktop_tsconftbbluespritenav},
-	{"tsconftbbluetilenav", "tile nav",menu_debug_tsconf_tbblue_msx_tilenav,bitmap_button_ext_desktop_tsconftbbluetilenav},
-	{"debugcpu",            "debug cpu",menu_debug_registers,bitmap_button_ext_desktop_debugcpu},
-	{"helpshowkeyboard",    "helpkeybrd",   menu_help_show_keyboard,bitmap_button_ext_desktop_helpkeyboard},
     {"debugconsole",        "debug cons",   menu_debug_unnamed_console,bitmap_button_ext_desktop_debugconsole},
-    {"audiogensound",       "gen sound",    menu_audio_general_sound,bitmap_button_ext_desktop_geneneralsoundregisters},
+	{"debugcpu",            "debug cpu",menu_debug_registers,bitmap_button_ext_desktop_debugcpu},
     {"debugioports",        "debug i/o",    menu_debug_ioports,bitmap_button_ext_desktop_ioports},
-    {"hexeditor",           "hex editor",   menu_debug_hexdump,bitmap_button_ext_desktop_hexeditor},
-    {"corestatistics",      "core stats",   menu_about_core_statistics,bitmap_button_ext_desktop_corestatistics},
-    {"viewsensors",         "sensors",      menu_debug_view_sensors,bitmap_button_ext_desktop_view_sensors},
-    {"visualrealtape",      "vsrealtape",   menu_visual_realtape,bitmap_button_ext_desktop_visualrealtape},
-    {"textadvmap",          "textadvmap",   menu_debug_textadventure_map_connections,bitmap_button_ext_desktop_text_adventure_map},
-    {"shortcutshelper",     "shrtcuthlp",   menu_shortcuts_window,bitmap_button_ext_desktop_shortcutshelper},
-    {"processmanagement",   "prc mngmnt",   menu_display_window_list,bitmap_button_ext_desktop_processmanagement},
-    {"hilowconvertaudio",   "hlw cnv au",   menu_hilow_convert_audio,bitmap_lowericon_ext_desktop_hilow_convert},
-    {"visualfloppy",        "visual flp",   menu_visual_floppy,bitmap_button_ext_desktop_visualfloppy},
-    {"toyzxeyes",           "zx eyes",      menu_toy_follow_mouse,bitmap_button_ext_desktop_zxeyes},
-    {"processswitcher",     "proc swtch",   menu_process_switcher,bitmap_button_ext_desktop_processswitcher},
-    {"zxlife",              "zx life",      menu_toys_zxlife,bitmap_button_ext_desktop_zxlife},
-    {"textadvlocimage",     "adv locimg",   menu_textadv_loc_image,bitmap_button_ext_desktop_textadvlocimage},
-    {"asciitable",          "asciitable",   menu_ascii_table,bitmap_button_ext_desktop_asciitable},
-    {"networktraffic",      "nettraffic",   menu_network_traffic,bitmap_button_ext_desktop_userdefined},
-    {"videooutput",         "video outp",   menu_video_output,bitmap_button_ext_desktop_userdefined},
+    {"displaypalettes",     "dis palett",menu_display_total_palette,bitmap_button_ext_desktop_colour_palettes},
     {"externalaudiosource", "ext audio",    menu_realtape_record_input,bitmap_button_ext_desktop_record_input},
+    {"audiogensound",       "gen sound",    menu_audio_general_sound,bitmap_button_ext_desktop_geneneralsoundregisters},
+    {"helpshowkeyboard",    "helpkeybrd",   menu_help_show_keyboard,bitmap_button_ext_desktop_helpkeyboard},
+    {"hexeditor",           "hex editor",   menu_debug_hexdump,bitmap_button_ext_desktop_hexeditor},
+    {"hilowconvertaudio",   "hlw cnv au",   menu_hilow_convert_audio,bitmap_lowericon_ext_desktop_hilow_convert},
+    {"networktraffic",      "nettraffic",   menu_network_traffic,bitmap_button_ext_desktop_userdefined},
+    {"processmanagement",   "prc mngmnt",   menu_display_window_list,bitmap_button_ext_desktop_processmanagement},
+    {"processswitcher",     "proc swtch",   menu_process_switcher,bitmap_button_ext_desktop_processswitcher},
+    {"viewsensors",         "sensors",      menu_debug_view_sensors,bitmap_button_ext_desktop_view_sensors},
+    {"shortcutshelper",     "shrtcuthlp",   menu_shortcuts_window,bitmap_button_ext_desktop_shortcutshelper},
     {"inspectrumanalyzer",  "spec anlys",   menu_input_spectrum_analyzer,bitmap_button_ext_desktop_userdefined},
+	{"sprites",             "sprites",menu_debug_view_sprites,bitmap_button_ext_desktop_viewsprites},
+	{"tsconftbbluespritenav","sprite nav",menu_debug_tsconf_tbblue_msx_spritenav,bitmap_button_ext_desktop_tsconftbbluespritenav},
+    {"textadvmap",          "textadvmap",   menu_debug_textadventure_map_connections,bitmap_button_ext_desktop_text_adventure_map},
+    {"tsconftbbluetilenav", "tile nav",menu_debug_tsconf_tbblue_msx_tilenav,bitmap_button_ext_desktop_tsconftbbluetilenav},
+	{"videoinfo",           "videoinfo",menu_debug_tsconf_tbblue_msx_videoregisters,bitmap_button_ext_desktop_videoinfo},
+    {"videooutput",         "video outp",   menu_video_output,bitmap_button_ext_desktop_userdefined},
+    {"visualfloppy",        "visual flp",   menu_visual_floppy,bitmap_button_ext_desktop_visualfloppy},
+#ifdef EMULATE_VISUALMEM
+	{"visualmem",           "visualmem",menu_debug_new_visualmem,bitmap_button_ext_desktop_visualmem},
+#endif
+    {"visualrealtape",      "vsrealtape",   menu_visual_realtape,bitmap_button_ext_desktop_visualrealtape},
+    {"watches",             "watches",menu_watches,bitmap_button_ext_desktop_watches},
+    {"waveform",            "waveform",menu_audio_new_waveform,bitmap_button_ext_desktop_waveform},
+    {"wavepiano",           "wave piano",menu_beeper_pianokeyboard,bitmap_button_ext_desktop_wavepiano},
+    {"toyzxeyes",           "zx eyes",      menu_toy_follow_mouse,bitmap_button_ext_desktop_zxeyes},
+    {"zxlife",              "zx life",      menu_toys_zxlife,bitmap_button_ext_desktop_zxlife},
 
 	{"","",NULL,bitmap_button_ext_desktop_userdefined} //NO BORRAR ESTA!!
 };
@@ -9534,6 +9532,22 @@ int zxvision_find_known_window(char *nombre)
 		 if (!strcasecmp(zxvision_known_window_names_array[i].nombre,nombre)) return i;
 
 	}
+	return -1;
+}
+
+//Retorna posicion a indice de zxvision_known_window_names_array si es valido
+int zxvision_known_window_is_valid_by_index(int indice)
+{
+	int i;
+
+    //Nos posicionamos en el indicado
+    for (i=0;i<indice && zxvision_known_window_names_array[i].start!=NULL;i++) {
+    }
+
+    if (zxvision_known_window_names_array[i].start!=NULL) {
+        return i;
+    }
+
 	return -1;
 }
 
@@ -14530,6 +14544,58 @@ void zxvision_widgets_draw_particles_3d_convert(int x,int y,int z,int *xfinal,in
 
 }
 
+
+//Conversion de coordenadas 3D a 2D. Simple sin calculo coseno, da mejor perspectiva que el anterior que usa coseno y seno
+void zxvision_widgets_draw_particles_3d_convert_simple(int x,int y,int z,int *xfinal,int *yfinal)
+{
+
+
+
+    /*
+
+        Pasar de:
+                +z
+
+                ^
+                |
+                |
+                |
+                |
+            0,0 |
+                \
+               / \
+              /   \
+             /     \
+            /       \
+           y         x
+
+
+        A:
+                +y
+
+                ^
+                |
+                |
+                |
+                |
+                |
+                ----------------->  +x
+            0,0
+
+
+    */
+    //*xfinal=x-y/2;
+    //*yfinal=z-y/2;
+
+    *xfinal=x+ y;
+    *yfinal=z+ y/2-x/2;
+
+
+    //*yfinal=z+ ((y *util_get_sine  (45))/10000) - ((x *util_get_cosine(45))/10000);
+
+
+}
+
 void zxvision_widgets_draw_particles(zxvision_window *ventana,int xinicio_widget,int ycentro_widget,int percentaje,int color,int longitud_linea)
 {
 
@@ -14540,6 +14606,9 @@ void zxvision_widgets_draw_particles(zxvision_window *ventana,int xinicio_widget
 
 
     int x_centro_widget=xinicio_widget+radio_total;
+
+    //con el uso de perspectiva simple, hay que desplazar algo mas a la derecha
+    x_centro_widget +=radio_total/3;
 
     //radio total * 100 para poder usar "decimales"
 
@@ -14562,7 +14631,9 @@ void zxvision_widgets_draw_particles(zxvision_window *ventana,int xinicio_widget
             int ydestino=((radio_total/100)*util_get_sine(grados))/10000;
 
             int xplano,yplano;
-            zxvision_widgets_draw_particles_3d_convert(xdestino,ydestino,z/100,&xplano,&yplano);
+            //zxvision_widgets_draw_particles_3d_convert(xdestino,ydestino,z/100,&xplano,&yplano);
+
+            zxvision_widgets_draw_particles_3d_convert_simple(xdestino,ydestino,z/100,&xplano,&yplano);
             //if (yplano<0) printf("%d %d\n",xplano,yplano);
             zxvision_putpixel(ventana,x_centro_widget+xplano,ycentro_widget-yplano,color); //es -yplano porque si y es positiva, restamos (hacia arriba, pues el 0 de la y esta arriba del todo)
 

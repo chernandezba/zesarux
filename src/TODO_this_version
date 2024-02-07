@@ -843,7 +843,7 @@ incluidos los cirilicos
 *SDL1 parece que no permite hacerlo. En windows se resuelve con funciones de windows tal cual
 *pendiente SDL2
 *footer que cambien cuando input source
-*que no afecte el silencio detection cuando se esté leyendo audio
+*que no afecte el silencio detection cuando se esté leyendo audio (solo si loading sound está habilitado?)
 
 *coreaudio: segfault al hacer error stop record input.ok ?
 
@@ -882,7 +882,8 @@ Y en utils solo grabar esos settings de alsa si esta alsa compilado
 -Documentar cómo van los archivos txt de update
 
 
--Ventanas que tengan nombre de icono corto para mostrar en process switcher
+-Al crear icono de tipo open window, que salga lista de ventanas y sus nombres de geometría para seleccionar
+->ordenar lista alfabeticamente por el nombre corto de known windows
 
 -LEC memory extension https://ia600604.us.archive.org/view_archive.php?archive=/1/items/World_of_Spectrum_June_2017_Mirror/World%20of%20Spectrum%20June%202017%20Mirror.zip&file=World%20of%20Spectrum%20June%202017%20Mirror/sinclair/hardware-info/l/LECMemoryExtension.pdf
 -CPM para LEC: https://spectrumcomputing.co.uk/index.php?cat=96&id=23809
