@@ -1,0 +1,159 @@
+;Programa PROGRAMS5 comentado
+
+;t$ 3 y 4 , 1 y 2 guarda un numero de 16 bits, parece asociado a un numero de ficha de juego
+;parece un arbol binario de antes-despues
+;se actualiza al insertar y borrar
+dim t$(900,4)
+indica en 1 y 2 a que ficha vas para un nombre de programa "menor" alfabeticamente hablando
+indica en 3 y 4 a que ficha vas para un nombre de programa "mayor" alfabeticamente hablando
+Si contiene valor 32 en subindice 2 o 4 indica que no hay mayor o menor
+
+;t$ empieza con un solo elemento y una ficha
+;en cuanto se inserta ficha nueva , se actualiza t$(1) indicando si izquierda/derecha apunta a esa ficha nueva
+
+;z$ indica ultima cinta usada
+
+;nota: la visualizacion siempre sera por orden de insercion, y no por orden alfabetico
+;por tanto la ficha 1 contiene el primer registro insertado, la ficha 2 el segundo registro, etc
+;Pero la busqueda logicamente usa ese arbol binario en t$ para buscar muy rapidamente
+;Porque en este programs5 las fichas estan ordenadas? Porque en programs4 (el anterior) no se tenia
+;este arbol binario y habia una funcion que ordena moviendo elementos de a$ (ordenando lentamente) y luego
+;al mostrarlos se ven ordenadamente
+;la busqueda en ese programs4 te pide hacerla de manera secuencial (desde 1,2, 3) u ordenada
+(usando algoritmo del punto medio, suponiendo que las fichas estan ordenadas)
+
+;nota2: se supone que se pasó de los datos de programs4 a programs5, por tanto en programs5 no habia arbol binario,
+;aunque si que estaban todos los datos. Se debió ejecutar un proceso (que ya no existe) para generar ese arbol binario
+;en base a los datos ya existentes
+
+;TODO: aqui habria una mejora y seria ordenar las fichas en pantalla tal cual
+;para eso, se usaria la funcion de ordenar del programs4 y luego generar el arbol binario que fuera lo mas optimo posible. como seria ese arbol?
+;Pues usando la misma logica del buscador ordenado del programs4, con el algoritmo del punto medio
+
+;linea 1: rutina para buscar en el arbol binario. devuelve n con el indice, devuelve d=1 si buscado es menor, d=3 si buscado es mayor
+;retorna hasta encontrado o hasta programa mas parecido alfabeticamente hablando
+
+
+   1 LET n=1
+
+   2 LET d=3: IF p$<a$(n) THEN LET d=1
+
+   3 IF t$(n,d+1)=" " THEN RETURN
+
+   4 LET n= CODE t$(n,d)+256* CODE t$(n,d+1): GO TO 2
+
+   5 REM ESTE PROGRAMA ES UNA MEJORA SOBRE PROGRAMS5 INCLUYENDO RUTINA DE PROGRAMS4 DE ORDENACION
+
+  10 CLS : PRINT AT 0,0;"PROGRAMAS DE LAS CINTAS DE      CESAR HERNANDEZ BA\O"
+
+  20 PRINT AT 5,0; INVERSE 1;"PROGRAMA"''"CINTA"; INVERSE 0; AT 14,0;"MOVER CON CURSORES"'"B:BUSQUEDA"
+
+  30 PRINT "G:IR A FICHA NUM."'"O:BORRAR"'"I:INSERTAR"'"R:ORDENAR"'"S:SALVAR"
+
+ 100 LET d=1
+
+ 110 PRINT #0; AT 0,0; INVERSE 1;" (C) MAN SOFTWARE (17/01/2024)",: POKE 23658,8: GO SUB 120: GO TO 130
+
+ 120 PRINT AT 6,0;a$(d,1 TO 32)''a$(d,33 TO ); AT 1,25;d;"/";datos,: RETURN
+
+ 130 LET d$= INKEY$
+
+ 140 IF d$= CHR$ 8 AND d>1 THEN LET d=d-1: GO TO 110
+
+ 150 IF d$= CHR$ 9 AND d<datos THEN LET d=d+1: GO TO 110
+
+ 160 IF d$="I" THEN GO TO 1000
+
+ 170 IF d$="O" THEN GO TO 1200
+
+ 180 IF d$="R" THEN GO TO 4000
+
+ 190 IF d$="B" THEN GO TO 1300
+
+ 200 IF d$="G" THEN GO TO 2000
+
+ 210 IF d$="S" THEN SAVE "PROGRAMS5" LINE 10: GO TO 110
+
+ 999 GO TO 130
+
+;insertar
+1000 INPUT AT 0,0;"PROGRAMA"' LINE p$
+
+1010 IF p$="" THEN GO TO 110
+
+1020 INPUT AT 0,0;"CINTA ("+z$;")"' LINE c$: IF c$="" THEN LET c$=z$
+
+1025 LET datos=datos+1: GO SUB 1
+
+1026 LET t=datos: GO SUB 1030
+
+1027 LET a$(t,1 TO 32)=p$: LET a$(t,33 TO )=c$
+
+1028 LET z$=c$: LET d=datos: GO TO 1000
+
+;subrutina para guardar en t$(n,d) y t$(n,d+1) valor de 16 bits que viene en t
+1030 RANDOMIZE t: LET t$(n,d)= CHR$ PEEK 23670: LET t$(n,d+1)= CHR$ PEEK 23671: RETURN
+
+;borrar
+1200 PRINT #0; AT 0,0;"] SEGURO ? (S/N)",: GO SUB 3000: IF d$ <> "S" THEN INPUT ;: GO TO 110
+
+1210 LET p$=a$(d)
+
+1220 LET d1=d: GO SUB 1500
+
+1225 IF d <> d1 THEN BEEP .5,-30: GO TO 110
+
+1226 LET a$(d)="BORRADO"
+
+1230 LET t$(t,izq+1)=" "
+
+1235 IF t$(d,2)=" " THEN GO TO 1237
+
+1236 LET t= CODE t$(d,1)+256* CODE t$(d,2): LET p$=a$(t): GO SUB 1: GO SUB 1030
+
+1237 IF t$(d1,4)=" " THEN GO TO 1239
+
+1238 LET t= CODE t$(d1,3)+256* CODE t$(d1,4): LET p$=a$(t): GO SUB 1: GO SUB 1030
+
+
+1239 LET t$(d1)="    ": GO TO 110
+
+;busqueda
+1300 INPUT AT 0,0;"PROGRAMA"' LINE p$: IF p$="" THEN GO TO 110
+
+1320 GO SUB 1500: GO TO 110
+
+;usado en buscar y borrar
+;buscar juego contenido en p$
+1500 LET long= LEN p$: LET d=1
+
+1501 LET izq=n: LET n=3: IF p$<a$(d) THEN LET n=1
+
+1502 IF p$=a$(d,1 TO long) THEN RETURN
+
+1503 IF t$(d,n+1)=" " THEN RETURN
+
+1504 LET t=d: LET d= CODE t$(d,n)+256* CODE t$(d,n+1): GO TO 1501
+
+;ir a ficha
+2000 INPUT AT 0,0;"Ficha:";d1: IF d1>datos OR d1<1 THEN LET d1=d
+
+2010 LET d=d1: GO TO 110
+
+3000 LET d$= INKEY$ : IF d$="" THEN GO TO 3000
+
+3001 RETURN
+
+
+8999 STOP
+
+9000 REM inicializa
+
+9010 DIM a$(900,35): REM 32 para nombre,3 para letra cinta
+
+9020 LET datos=1: LET a$(1)="PROGRAMAS                       CW"
+
+9200 DIM y$(1): REM RESIDUAL
+
+;aqui faltaria un DIM t$(900,4) para inicializar tambien el arbol binario
+;ese y$ no se usa que yo sepa
