@@ -369,6 +369,7 @@ void cpu_core_loop_ace(void)
             //audio_valor_enviar_sonido += realtape_last_value;
 
             if (realtape_loading_sound.v) {
+                reset_silence_detection_counter();
 				audio_valor_enviar_sonido /=2;
                 audio_valor_enviar_sonido += realtape_last_value/2;
 				//Sonido alterado cuando top speed

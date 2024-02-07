@@ -9466,6 +9466,9 @@ int total_restore_window_array_elements=0;
 //Y tambien al reabrir todas ventanas en el cambio de estilo de GUI style
 //La ultima siempre finaliza con funcion NULL
 //Conviene tener la lista ordenada alfabeticamente por el nombre corto asi al listarlo desde new icon->open window,saldra ordenado
+//El nombre largo ("nombre") no conviene cambiarlo porque si en la config hay guardada geometria de esa ventana y/o restaurar esa ventana,
+//no la reconocera con el nombre anterior
+//El nombre corto ("nombre_corto") se puede cambiar sin afectar a nada
 zxvision_known_window_names zxvision_known_window_names_array[]={
     {"textadvlocimage",     "adv locimg",   menu_textadv_loc_image,bitmap_button_ext_desktop_textadvlocimage},
     {"asciitable",          "asciitable",   menu_ascii_table,bitmap_button_ext_desktop_asciitable},

@@ -1000,6 +1000,11 @@ int si_audio_silenced(void)
 	else return 0;
 }
 
+void reset_silence_detection_counter(void)
+{
+    silence_detection_counter=0;
+}
+
 
 void envio_audio(void)
 {

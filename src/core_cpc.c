@@ -163,6 +163,7 @@ void core_cpc_end_scanline_stuff(void)
     if (realtape_inserted.v && realtape_playing.v) {
         realtape_get_byte();
         if (realtape_loading_sound.v) {
+            reset_silence_detection_counter();
             audio_valor_enviar_sonido_izquierdo /=2;
             audio_valor_enviar_sonido_izquierdo += realtape_last_value/2;
 

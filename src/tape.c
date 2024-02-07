@@ -2003,7 +2003,7 @@ void realtape_get_byte_rwa(void)
     }
 
 
-    silence_detection_counter=0;
+    //silence_detection_counter=0;
     //beeper_silence_detection_counter=0;
 	unsigned char valor_leido_audio;
 

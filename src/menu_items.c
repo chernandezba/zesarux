@@ -32837,10 +32837,12 @@ void menu_realtape_record_input_analize_azimuth_end(zxvision_window *w,int linea
     else input_analize_input_wave.amplitud_media_unos /=input_analize_input_wave.cuantos_unos;
 
 
+    /*
     printf("Total ceros: %d Total unos: %d Tonos guias: %d Desconocidos: %d amplitud ceros %d amplitud unos %d\n",
         input_analize_input_wave.cuantos_ceros,input_analize_input_wave.cuantos_unos,
         input_analize_input_wave.cuantos_guias,input_analize_input_wave.cuantos_desconocidos,
         input_analize_input_wave.amplitud_media_ceros,input_analize_input_wave.amplitud_media_unos);
+    */
 
     //solo mostrar info cuando señal sea de Spectrum
 
@@ -32997,7 +32999,7 @@ void menu_realtape_record_input_analize_azimuth_end(zxvision_window *w,int linea
     }
 
     else {
-        printf("No detectada senyal spectrum\n");
+        //printf("No detectada senyal spectrum\n");
     }
 
     menu_realtape_record_input_analize_azimuth_end_conta_segundo=contador_segundo;

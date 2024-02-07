@@ -359,6 +359,8 @@ extern int audio_using_sdl2;
 
 extern z80_bit silence_detector_setting;
 
+extern void reset_silence_detection_counter(void);
+
 extern void audiodac_print_types(void);
 
 extern int audiodac_set_type(char *texto);
