@@ -487,7 +487,7 @@ void audiopulse_send_frame(char *buffer)
 pthread_t thread_pulse_capture;
 
 
-  int pulse_avisado_fifo_llena=0;
+
 
 
 //stereo y 16 bits
@@ -547,13 +547,9 @@ void *audiopulse_capture_thread_function(void *nada)
             }
 
 
-            if (audiorecord_input_fifo_write(buffer_audiopulse_captura_temporal,AUDIO_RECORD_BUFFER_SIZE) && !pulse_avisado_fifo_llena) {
-                int miliseconds_lost=(1000*AUDIO_RECORD_BUFFER_SIZE)/AUDIO_RECORD_FREQUENCY;
-                debug_printf(VERBOSE_ERR,"External Audio Source buffer is full, a section of %d ms has been lost. "
-                    "I recommend you to disable and enable External Audio Source in order to empty the input buffer",
-                    miliseconds_lost);
-                pulse_avisado_fifo_llena=1;
-            }
+            audiorecord_input_fifo_write(buffer_audiopulse_captura_temporal,AUDIO_RECORD_BUFFER_SIZE);
+
+
 
 
         }

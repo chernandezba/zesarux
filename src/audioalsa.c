@@ -1291,7 +1291,7 @@ pthread_t thread_alsa_capture;
   snd_pcm_t *capture_handle;
   char *capture_buffer;
 
-  int alsa_avisado_fifo_llena=0;
+
 
 
 //stereo y 16 bits
@@ -1413,13 +1413,7 @@ int leidos;
 
         int valores_escribir=leidos;
 
-        if (audiorecord_input_fifo_write(buffer_audio_captura_temporal,escritos) && !alsa_avisado_fifo_llena) {
-            int miliseconds_lost=(1000*leidos)/actual_rate;
-            debug_printf(VERBOSE_ERR,"External Audio Source buffer is full, a section of %d ms has been lost. "
-                "I recommend you to disable and enable External Audio Source in order to empty the input buffer",
-                miliseconds_lost);
-            alsa_avisado_fifo_llena=1;
-        }
+        audiorecord_input_fifo_write(buffer_audio_captura_temporal,escritos);
 
 
     }
