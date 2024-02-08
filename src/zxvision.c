@@ -9500,7 +9500,7 @@ zxvision_known_window_names zxvision_known_window_names_array[]={
     {"textadvmap",          "textadvmap",   menu_debug_textadventure_map_connections,bitmap_button_ext_desktop_text_adventure_map},
     {"tsconftbbluetilenav", "tile nav",menu_debug_tsconf_tbblue_msx_tilenav,bitmap_button_ext_desktop_tsconftbbluetilenav},
 	{"videoinfo",           "videoinfo",menu_debug_tsconf_tbblue_msx_videoregisters,bitmap_button_ext_desktop_videoinfo},
-    {"videooutput",         "video outp",   menu_video_output,bitmap_button_ext_desktop_userdefined},
+    {"videooutput",         "video outp",   menu_video_output,bitmap_button_ext_desktop_videooutput},
     {"visualfloppy",        "visual flp",   menu_visual_floppy,bitmap_button_ext_desktop_visualfloppy},
 #ifdef EMULATE_VISUALMEM
 	{"visualmem",           "visualmem",menu_debug_new_visualmem,bitmap_button_ext_desktop_visualmem},
