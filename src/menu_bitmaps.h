@@ -122,6 +122,7 @@ extern char *bitmap_button_ext_desktop_textadvlocimage[];
 extern char *bitmap_button_ext_desktop_asciitable[];
 extern char *bitmap_button_ext_desktop_record_input[];
 extern char *bitmap_button_ext_desktop_inspectrumanalyzer[];
+extern char *bitmap_button_ext_desktop_networktrafiic[];
 
 extern char **zxdesktop_buttons_bitmaps[];
 

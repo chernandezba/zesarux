@@ -9489,7 +9489,7 @@ zxvision_known_window_names zxvision_known_window_names_array[]={
     {"helpshowkeyboard",    "helpkeybrd",   menu_help_show_keyboard,bitmap_button_ext_desktop_helpkeyboard},
     {"hexeditor",           "hex editor",   menu_debug_hexdump,bitmap_button_ext_desktop_hexeditor},
     {"hilowconvertaudio",   "hlw cnv au",   menu_hilow_convert_audio,bitmap_lowericon_ext_desktop_hilow_convert},
-    {"networktraffic",      "nettraffic",   menu_network_traffic,bitmap_button_ext_desktop_userdefined},
+    {"networktraffic",      "nettraffic",   menu_network_traffic,bitmap_button_ext_desktop_networktrafiic},
     {"processmanagement",   "prc mngmnt",   menu_display_window_list,bitmap_button_ext_desktop_processmanagement},
     {"processswitcher",     "proc swtch",   menu_process_switcher,bitmap_button_ext_desktop_processswitcher},
     {"viewsensors",         "sensors",      menu_debug_view_sensors,bitmap_button_ext_desktop_view_sensors},

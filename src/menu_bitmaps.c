@@ -2852,6 +2852,37 @@ char *bitmap_button_ext_desktop_inspectrumanalyzer[EXT_DESKTOP_BUTTONS_ANCHO]={
 	"                          " 	 //25
 };
 
+
+char *bitmap_button_ext_desktop_networktrafiic[EXT_DESKTOP_BUTTONS_ANCHO]={
+   //01234567890123456789012345
+	"bbbbbbbbbbbbbbbbbbbbbbbbbb",	//0
+	"bbbbbbgbbbbbbbbbbbbbbbbbbb",
+	"bbbbbbgbbbbbbbbbbbbbbbbbbb",
+	"bbbbbbgbbbbbbbbbbbbbbbbbbb",
+	"bbbbbbgbgbbbbbbbbbbbbbbbbb",
+	"bbbbbbgbgbbbbbbbbbbbbbbbbb",
+	"bbbbbbgbgbbbbbbbbbbbbbbbbb",
+	"bbbbbbgbgbbbbbbbbbbbbbbbbb",
+	"bbbbbbgbgbbbbbbbbbbbbbbbbb",
+	"bbbbbbgbgbbbbbbbbbbbbbbbbb",
+	"bbbbbbgbgbgbbbbbbbbbbbbbbb",	//10
+	"bbbbbbgbgbgbbbbbbbbbbbbbbb",
+	"bbbbbbgbgbgbbbbbbbbbbbbbbb",
+	"bbbbbbgbgbgbbbbbbbbbbbbbbb",
+	"bbbbbbgbgbgbbbbbbbbbbbbbbb",
+	"bbbbgbgbgbgbbbbbbbbgbgbbbb",
+	"bbbbgbgbgbgbbbbbbbbgbgbbbb",
+	"bbbbgbgbgbgbbbbbbbbgbgbbbb",
+	"bbbbgbgbgbgbbbbbbbbgbgbbbb",
+	"bbbbgbgbgbgbbbbgbgbgbgbbbb",
+	"bbgbgbgbgbgbbbbgbgbgbgbbbb",	//20
+	"bbgbgbgbgbgbbbbgbgbgbgbgbb",
+	"bbgbgbgbgbgbbbbgbgbgbgbgbb",
+	"byyyyyyyyyyybbyyyyyyyyyyyb",
+	"byyyyyyyyyyybbyyyyyyyyyyyb",
+	"bbbbbbbbbbbbbbbbbbbbbbbbbb"	//25
+};
+
 char *bitmap_button_ext_desktop_visualrealtape[EXT_DESKTOP_BUTTONS_ANCHO]={
    //01234567890123456789012345
 	"  xxxxxxxxxxxxxxxxxxxxxx  ",
