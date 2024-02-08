@@ -27674,6 +27674,7 @@ void menu_debug_input_file_keyboard(MENU_ITEM_PARAMETERS)
 void menu_audio_record_input_enable(MENU_ITEM_PARAMETERS)
 {
     if (!audio_is_recording_input) {
+        menu_first_aid("ext_audio_source");
         audiodriver_start_record_input();
     }
     else {

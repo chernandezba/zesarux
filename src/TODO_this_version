@@ -857,9 +857,6 @@ incluidos los cirilicos
 * Audioalsa: Mirar cuando lee sonido si es que ha leído menos bytes
 Quizá ver si entre cada lectura de buffer ha pasado el tiempo que debe pasar realmente
 
--Ventana de capturar audio detecte si hay error (para mostrar buffer lleno). Porque no lo detecta?
-
--al activar external audio source avisar first aid de que la fuente de sonido la tiene que cambiar el usuario
 
 ---
 --Fin captura de sonido

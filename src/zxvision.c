@@ -26185,6 +26185,9 @@ int first_aid_no_advanced_menu=0;
 char *first_aid_string_advanced_menu="The menu interface has many items which are hidden by default. You can show them by "
     "enabling Settings-> Advanced menu items";
 
+int first_aid_no_ext_audio_source=0;
+char *first_aid_string_ext_audio_source="Audio is read from the current recording device and input on your computer, you must use the "
+    "operating system settings to switch to your desired device and input (probably Line In)";
 
 void menu_first_aid_init(void)
 {
@@ -26209,7 +26212,7 @@ void menu_first_aid_init(void)
     menu_first_aid_add("snapshot_save_zsf",&first_aid_no_snapshot_save_zsf,first_aid_string_snapshot_save_zsf,0);
     menu_first_aid_add("hilow_format",&first_aid_no_hilow_format,first_aid_string_hilow_format,0);
     menu_first_aid_add("hilow_convert_bside",&first_aid_no_hilow_convert_bside,first_aid_string_hilow_convert_bside,0);
-
+    menu_first_aid_add("ext_audio_source",&first_aid_no_ext_audio_source,first_aid_string_ext_audio_source,0);
 
 
 	//Items que se disparan en startup
