@@ -2822,6 +2822,36 @@ char *bitmap_button_ext_desktop_record_input[EXT_DESKTOP_BUTTONS_ANCHO]={
 	"                b         "
 };
 
+char *bitmap_button_ext_desktop_inspectrumanalyzer[EXT_DESKTOP_BUTTONS_ANCHO]={
+   //01234567890123456789012345
+    "                          ",     //0
+  	" ggggggggggg              ",
+	" ggggggggggg              ",
+	"                          ",
+  	" ggggggggggggggYYYYYY     ",
+	" ggggggggggggggYYYYYY     ",
+	"                          ",
+  	" gggggggg                 ",
+	" gggggggg                 ",
+	"                          ",
+  	" ggggggggggggggYYYYYYRRRR ", //10
+	" ggggggggggggggYYYYYYRRRR ",
+	"                          ",
+  	" ggggggggggggggYYYYYYRRRR ",
+	" ggggggggggggggYYYYYYRRRR ",
+	"                          ",
+  	" ggggggggggggggYYY        ",
+	" ggggggggggggggYYY        ",
+	"                          ",
+  	" gggggg                   ",
+	" gggggg                   ",    //20
+	"                          ",
+  	" gg                       ",
+	" gg                       ",
+	"                          ",
+	"                          " 	 //25
+};
+
 char *bitmap_button_ext_desktop_visualrealtape[EXT_DESKTOP_BUTTONS_ANCHO]={
    //01234567890123456789012345
 	"  xxxxxxxxxxxxxxxxxxxxxx  ",

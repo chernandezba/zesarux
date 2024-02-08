@@ -868,7 +868,7 @@ Quizá ver si entre cada lectura de buffer ha pasado el tiempo que debe pasar re
 
 -Aviso de nueva versión y entonces no sale menoriam
 
--icono para spectrum analyzer
+
 
 -quiza audiocoreaudio y otros drivers de audio necesitan fifos con semaforos para evitar interferencias en el sonido....
 
