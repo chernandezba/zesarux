@@ -32830,6 +32830,8 @@ void menu_realtape_record_input_analize_azimuth(char valor_leido)
 
 int menu_realtape_record_input_analize_azimuth_end_conta_segundo=0;
 
+int menu_realtape_record_input_analize_azimuth_tiempo_deteccion_spectrum=0;
+
 void menu_realtape_record_input_analize_azimuth_end(zxvision_window *w,int linea)
 {
 
@@ -32917,82 +32919,96 @@ void menu_realtape_record_input_analize_azimuth_end(zxvision_window *w,int linea
 
         ) {
 
-        zxvision_print_string_defaults_fillspc(w,1,linea++,"Guessed ZX Spectrum loading tone");
-
-        char buffer_signal_type[50];
-        buffer_signal_type[0]=0;
-
-        //Analisis del tipo de onda
-        //Si mayoria tono guia
-        if (input_analize_input_wave.cuantos_guias>input_analize_input_wave.cuantos_unos &&
-             input_analize_input_wave.cuantos_guias>input_analize_input_wave.cuantos_ceros) {
-            zxvision_print_string_defaults_fillspc(w,1,linea,"Signal type: Pilot tone");
-            strcpy(buffer_signal_type,animacion_string_pilot_tone);
-        }
-        else if (input_analize_input_wave.cuantos_guias<minimo_ondas &&
-        input_analize_input_wave.cuantos_unos<minimo_ondas) {
-            zxvision_print_string_defaults_fillspc(w,1,linea,"Signal type: Most zeroes");
-            strcpy(buffer_signal_type,animacion_string_zeros);
+        //Si es el primer fragmento que se ha detectado spectrum
+        if (menu_realtape_record_input_analize_azimuth_tiempo_deteccion_spectrum==0) {
+            menu_realtape_record_input_analize_azimuth_tiempo_deteccion_spectrum=contador_segundo_infinito;
         }
 
-        else if (input_analize_input_wave.cuantos_guias<minimo_ondas &&
-            input_analize_input_wave.cuantos_ceros<minimo_ondas) {
-            zxvision_print_string_defaults_fillspc(w,1,linea,"Signal type: Most ones");
-            strcpy(buffer_signal_type,animacion_string_unos);
-        }
+        //Si ha pasado medio segundo detectando spectrum, indicarlo al usuario
+        //Si mostrasemos al instante el tipo de carga, sin esperar este medio segundo,
+        //puede detectar fragmentos cortos (el del sample examinado aqui, 20 ms) donde haya sonidos con frecuencias
+        //en el rango de spectrum , y luego otros fragmentos que no, por tanto el texto de que es Spectrum va apareciendo
+        //y desapareciendo y para el usuario es confuso. Mejor que al menos haya medio segundo seguido de todas las frecuencias
+        //en el rango esperado
+        if (contador_segundo_infinito-menu_realtape_record_input_analize_azimuth_tiempo_deteccion_spectrum>500) {
 
-        else {
-            zxvision_print_string_defaults_fillspc(w,1,linea,"Signal type: Mixed zeros and ones");
-            strcpy(buffer_signal_type,animacion_string_unos_zeros);
-        }
+            zxvision_print_string_defaults_fillspc(w,1,linea++,"Guessed ZX Spectrum loading tone");
 
-        //zxvision_print_string_defaults_fillspc_format(w,1,linea,"Signal type: %s",buffer_signal_type);
+            char buffer_signal_type[50];
+            buffer_signal_type[0]=0;
 
-        zxvision_print_string_defaults_fillspc(w,1,DRAW_TAPE_MOSTRAR_CONTENIDO_CINTA_LINEA,buffer_signal_type);
-
-        linea++;
-
-        //Analisis de Azimuth
-        //Solo analizar amplitud cuando hay cantidad suficiente de ceros y unos y amplitud mayor que un minimo
-        /*
-        Por lo que lei, el ajuste de azimuth correcto, el que esta justo perpendicular a la lectura de la cinta,
-        proporciona mejor nivel en treble (agudos?) cosa que tiene sentido en Spectrum:
-        Al calibrar bien el azimuth en una carga de Spectrum, se oye mas agudo, y esto tiene mas lógica aun porque
-        los bits de 0 tienen mayor amplitud (que son los bits mas cortos, con mas frecuencia y por tanto mas agudos)
-        Si el azimuth esta mal, los bits de 0 tiene menor amplitud, y por tanto se oye mas grave
-
-        //Solo analizo azimuth cuando amplitudes > 2, con menos amplitud no tiene sentido
-        */
-        if (input_analize_input_wave.cuantos_unos>minimo_ondas &&
-            input_analize_input_wave.cuantos_ceros>minimo_ondas &&
-            input_analize_input_wave.amplitud_media_unos>2 &&
-            input_analize_input_wave.amplitud_media_ceros>2) {
-            int porcentaje_amplitud;
-
-            if (input_analize_input_wave.amplitud_media_unos==0) porcentaje_amplitud=0;
-            else porcentaje_amplitud=(input_analize_input_wave.amplitud_media_ceros*100)/input_analize_input_wave.amplitud_media_unos;
-
-            //Los unos tienen que ocupar mas siempre. Por tanto porcentaje de  > 100% no deberia tener sentido
-            if (porcentaje_amplitud>100) porcentaje_amplitud=100;
-
-
-            //Si es menos del 75%
-
-            zxvision_print_string_defaults_fillspc_format(w,1,linea,"Azimuth Accuracy %3d %% %s",porcentaje_amplitud,
-                (porcentaje_amplitud<75 ? "Adjust AZIMUTH!!" : "OK"));
-
-            if (porcentaje_amplitud<75) menu_realtape_record_input_aviso_azimuth=1;
-            else menu_realtape_record_input_aviso_azimuth=0;
-
-            menu_realtape_record_input_porcentaje_azimuth_antes=menu_realtape_record_input_porcentaje_azimuth;
-
-            menu_realtape_record_input_porcentaje_azimuth=porcentaje_amplitud;
-
-            //Si ha cambiado valor azimuth, avisar para refrescar toda pantalla
-            if (menu_realtape_record_input_porcentaje_azimuth_antes!=menu_realtape_record_input_porcentaje_azimuth) {
-                w->must_clear_cache_on_draw_once=1;
+            //Analisis del tipo de onda
+            //Si mayoria tono guia
+            if (input_analize_input_wave.cuantos_guias>input_analize_input_wave.cuantos_unos &&
+                input_analize_input_wave.cuantos_guias>input_analize_input_wave.cuantos_ceros) {
+                zxvision_print_string_defaults_fillspc(w,1,linea,"Signal type: Pilot tone");
+                strcpy(buffer_signal_type,animacion_string_pilot_tone);
+            }
+            else if (input_analize_input_wave.cuantos_guias<minimo_ondas &&
+            input_analize_input_wave.cuantos_unos<minimo_ondas) {
+                zxvision_print_string_defaults_fillspc(w,1,linea,"Signal type: Most zeroes");
+                strcpy(buffer_signal_type,animacion_string_zeros);
             }
 
+            else if (input_analize_input_wave.cuantos_guias<minimo_ondas &&
+                input_analize_input_wave.cuantos_ceros<minimo_ondas) {
+                zxvision_print_string_defaults_fillspc(w,1,linea,"Signal type: Most ones");
+                strcpy(buffer_signal_type,animacion_string_unos);
+            }
+
+            else {
+                zxvision_print_string_defaults_fillspc(w,1,linea,"Signal type: Mixed zeros and ones");
+                strcpy(buffer_signal_type,animacion_string_unos_zeros);
+            }
+
+            //zxvision_print_string_defaults_fillspc_format(w,1,linea,"Signal type: %s",buffer_signal_type);
+
+            zxvision_print_string_defaults_fillspc(w,1,DRAW_TAPE_MOSTRAR_CONTENIDO_CINTA_LINEA,buffer_signal_type);
+
+            linea++;
+
+            //Analisis de Azimuth
+            //Solo analizar amplitud cuando hay cantidad suficiente de ceros y unos y amplitud mayor que un minimo
+            /*
+            Por lo que lei, el ajuste de azimuth correcto, el que esta justo perpendicular a la lectura de la cinta,
+            proporciona mejor nivel en treble (agudos?) cosa que tiene sentido en Spectrum:
+            Al calibrar bien el azimuth en una carga de Spectrum, se oye mas agudo, y esto tiene mas lógica aun porque
+            los bits de 0 tienen mayor amplitud (que son los bits mas cortos, con mas frecuencia y por tanto mas agudos)
+            Si el azimuth esta mal, los bits de 0 tiene menor amplitud, y por tanto se oye mas grave
+
+            //Solo analizo azimuth cuando amplitudes > 2, con menos amplitud no tiene sentido
+            */
+            if (input_analize_input_wave.cuantos_unos>minimo_ondas &&
+                input_analize_input_wave.cuantos_ceros>minimo_ondas &&
+                input_analize_input_wave.amplitud_media_unos>2 &&
+                input_analize_input_wave.amplitud_media_ceros>2) {
+                int porcentaje_amplitud;
+
+                if (input_analize_input_wave.amplitud_media_unos==0) porcentaje_amplitud=0;
+                else porcentaje_amplitud=(input_analize_input_wave.amplitud_media_ceros*100)/input_analize_input_wave.amplitud_media_unos;
+
+                //Los unos tienen que ocupar mas siempre. Por tanto porcentaje de  > 100% no deberia tener sentido
+                if (porcentaje_amplitud>100) porcentaje_amplitud=100;
+
+
+                //Si es menos del 75%
+
+                zxvision_print_string_defaults_fillspc_format(w,1,linea,"Azimuth Accuracy %3d %% %s",porcentaje_amplitud,
+                    (porcentaje_amplitud<75 ? "Adjust AZIMUTH!!" : "OK"));
+
+                if (porcentaje_amplitud<75) menu_realtape_record_input_aviso_azimuth=1;
+                else menu_realtape_record_input_aviso_azimuth=0;
+
+                menu_realtape_record_input_porcentaje_azimuth_antes=menu_realtape_record_input_porcentaje_azimuth;
+
+                menu_realtape_record_input_porcentaje_azimuth=porcentaje_amplitud;
+
+                //Si ha cambiado valor azimuth, avisar para refrescar toda pantalla
+                if (menu_realtape_record_input_porcentaje_azimuth_antes!=menu_realtape_record_input_porcentaje_azimuth) {
+                    w->must_clear_cache_on_draw_once=1;
+                }
+
+            }
         }
 
         else {
@@ -33008,7 +33024,9 @@ void menu_realtape_record_input_analize_azimuth_end(zxvision_window *w,int linea
     }
 
     else {
-        //printf("No detectada senyal spectrum\n");
+        //Resetear contador de tiempo de deteccion
+        //printf("No detectada senyal spectrum. %d\n",contador_segundo_infinito);
+        menu_realtape_record_input_analize_azimuth_tiempo_deteccion_spectrum=0;
     }
 
     menu_realtape_record_input_analize_azimuth_end_conta_segundo=contador_segundo;
@@ -33774,7 +33792,18 @@ void menu_input_spectrum_analyzer_overlay(void)
         if (analizador_spectro_tipo == 1) strcpy(buffer_tipo,"Percentage");
         else if (analizador_spectro_tipo == 0) strcpy(buffer_tipo,"Volume");
         else strcpy(buffer_tipo,"Volume*Percentage");
-        zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Type: [%s]",buffer_tipo);
+
+        //Forzar a mostrar atajos
+        z80_bit antes_menu_writing_inverse_color;
+        antes_menu_writing_inverse_color.v=menu_writing_inverse_color.v;
+        menu_writing_inverse_color.v=1;
+
+        zxvision_print_string_defaults_fillspc_format(w,1,linea++,"[%s] View ~~type",buffer_tipo);
+
+        //Restaurar comportamiento atajos
+        menu_writing_inverse_color.v=antes_menu_writing_inverse_color.v;
+
+
         analizador_espectro_muestra_resultados(menu_input_spectrum_analyzer_window,linea);
     }
 
