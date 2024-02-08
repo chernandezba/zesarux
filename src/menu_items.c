@@ -32777,18 +32777,18 @@ void menu_realtape_record_input_analize_azimuth(char valor_leido)
 
                     if (microsec_onda>=358 && microsec_onda<618) {
                         //int amplitud=valor_max-valor_min;
-                        //if (longitud_temp>0) printf("es un 0. amplitud %d\n",amplitud);
+                        //printf("es un 0. amplitud %d microsec: %d\n",amplitud,microsec_onda);
                         input_analize_input_wave.amplitud_media_ceros+=amplitud;
                         input_analize_input_wave.cuantos_ceros++;
                     }
                     else if (microsec_onda>=618 && microsec_onda<1107) {
                         //int amplitud=valor_max-valor_min;
-                        //if (longitud_temp>0) printf("es un 1. amplitud %d\n",amplitud);
+                        //printf("es un 1. amplitud %d microsec: %d\n",amplitud,microsec_onda);
                         input_analize_input_wave.amplitud_media_unos+=amplitud;
                         input_analize_input_wave.cuantos_unos++;
                     }
                     else if (microsec_onda>=1107 && microsec_onda<1368) {
-                        //if (longitud_temp>0) printf("es tono guia\n");
+                        //printf("es tono guia\n");
                         input_analize_input_wave.cuantos_guias++;
                     }
                     else {
@@ -32894,6 +32894,10 @@ void menu_realtape_record_input_analize_azimuth_end(zxvision_window *w,int linea
 
     //Minimo valor a partir del cual se considera que es un tipo de onda u otra
     int minimo_ondas=3;
+
+    //La mayoria de veces habrá una onda desconocida al principio, dado que empezamos a leer el buffer
+    //en una posicion indeterminada. Por tanto, descarto ese primer desconocido
+    //if (input_analize_input_wave.cuantos_desconocidos>0) input_analize_input_wave.cuantos_desconocidos--;
 
     if (
         (
