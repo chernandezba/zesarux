@@ -522,7 +522,7 @@ void *audiopulse_capture_thread_function(void *nada)
 
         timer_stats_current_time(&pulse_tiempo_antes);
 
-        printf("antes pa_simple_read\n");
+        //printf("antes pa_simple_read\n");
 
 
         //Esta funcion es bloqueante y se espera a que acabe
@@ -560,14 +560,14 @@ void *audiopulse_capture_thread_function(void *nada)
 
         long esperado_microseconds=(1000000L*AUDIO_RECORD_BUFFER_SIZE)/AUDIO_RECORD_FREQUENCY;
 
-        printf("tiempo: %ld esperado: %ld\n",pulse_tiempo_difftime,esperado_microseconds);
+        //printf("tiempo: %ld esperado: %ld\n",pulse_tiempo_difftime,esperado_microseconds);
 
         //printf("long %d long long %d\n",sizeof(long),sizeof(long long));
 
         long diferencia_a_final=esperado_microseconds-pulse_tiempo_difftime;
-        printf("Diferencia %ld microsegundos\n",diferencia_a_final);
+        //printf("Diferencia %ld microsegundos\n",diferencia_a_final);
         if (diferencia_a_final>0) {
-            printf("Falta %ld microsegundos\n",diferencia_a_final);
+            //printf("Falta %ld microsegundos\n",diferencia_a_final);
             //usleep(diferencia_a_final/2);
         }
 
@@ -577,7 +577,7 @@ void *audiopulse_capture_thread_function(void *nada)
 	nada=0;
 	nada++;
 
-    printf("finished audio pulse record\n");
+    //printf("finished audio pulse record\n");
 
 
     audiopulse_capture_thread_running=0;
