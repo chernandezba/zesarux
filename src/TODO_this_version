@@ -871,9 +871,6 @@ Quizá ver si entre cada lectura de buffer ha pasado el tiempo que debe pasar re
 
 
 
--Opción alsa captura device solo debería salir en ayuda si alsa compilado
-Y en utils solo grabar esos settings de alsa si esta alsa compilado
-
 -Documentar cómo van los archivos txt de update
 
 

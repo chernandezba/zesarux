@@ -25,7 +25,7 @@ Allow autorewind setting for real tape too
 Allow to disable Spectrum colours on real video mode too
 
 Improved ZX Vision:
-- Changed left click mouse behaviour: when pressing left button mouse out of a window, it will close all menus.
+- Changed left click mouse behaviour: when pressing left mouse button out of a window, it will close all menus.
   If you need to keep menu open and set focus on emulated machine, just left click and also press shift key.
 - Improve window title background when not all buttons are visible
 - Improve clicking and drawing an always visible window
@@ -34,7 +34,7 @@ Improved ZX Vision:
 - Process switcher: now it can be set to be always visible
 - Process switcher: icon names are more descriptive
 - Menu titles are translated to selected language (not everything yet, please be patient)
-- Improve perspective for widget 3D Particles on View Sensors
+- Improve perspective for 3D Particles widget on View Sensors
 
 Improved ZX Desktop:
 - Allow to set parameters when redefining upper buttons, for some actions like openwindow or set machine

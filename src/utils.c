@@ -3743,8 +3743,9 @@ int util_write_configfile(void)
                                               ADD_STRING_CONFIG,"--onebitspeaker-hifreq-filter-divider %d",audioonebitspeaker_agudo_filtro_limite);
                                               ADD_STRING_CONFIG,"--onebitspeaker-type %d",audioonebitspeaker_tipo_altavoz);
 
-
+#ifdef COMPILE_ALSA
                                               ADD_STRING_CONFIG,"--alsacapturedevice %s",alsa_capture_device);
+#endif
 
   if (border_enabled.v==0)                    ADD_STRING_CONFIG,"--disableborder");
   if (mouse_pointer_shown.v==0)               ADD_STRING_CONFIG,"--hidemousepointer");
