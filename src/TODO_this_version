@@ -864,7 +864,8 @@ Quizá ver si entre cada lectura de buffer ha pasado el tiempo que debe pasar re
 
 -Aviso de nueva versión y entonces no sale menoriam
 
-
+-al cambiar de idioma, deja el indexado de busqueda raro en el submenu que esta dicha opcion (en cambio a català por ejemplo):
+Main Menu-> Settings-> General Settings-> Opciones Generales-> Opcions Generals
 
 -quiza audiocoreaudio y otros drivers de audio necesitan fifos con semaforos para evitar interferencias en el sonido....
 
