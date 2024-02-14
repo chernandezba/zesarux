@@ -481,25 +481,13 @@ void audiopulse_send_frame(char *buffer)
 
 
 
-
+//
+// Inicio funciones de captura de sonido
+//
 
 
 pthread_t thread_pulse_capture;
 
-
-
-
-
-//stereo y 16 bits
-#define PULSE_CAPTURE_BUFFER (AUDIO_RECORD_BUFFER_SIZE*2*2)
-
-
-
-
-
-struct timeval pulse_tiempo_antes,pulse_tiempo_despues;
-
-long pulse_tiempo_difftime;
 
 
 pa_simple *audiopulse_record_s;
@@ -520,7 +508,6 @@ void *audiopulse_capture_thread_function(void *nada)
 
 	while (!audiopulse_record_must_finish) {
 
-        timer_stats_current_time(&pulse_tiempo_antes);
 
         //printf("antes pa_simple_read\n");
 
@@ -529,8 +516,7 @@ void *audiopulse_capture_thread_function(void *nada)
         if (pa_simple_read (audiopulse_record_s,buffer_audiopulse_captura_temporal,AUDIO_RECORD_BUFFER_SIZE,&err) <0) {
 
 
-            fprintf (stderr, "read from audio interface failed. err: %d\n",
-                err);
+            debug_printf(VERBOSE_DEBUG,"Audio pulse: read from audio interface failed. err: %d",err);
 
 
                     usleep(1000);
@@ -555,21 +541,6 @@ void *audiopulse_capture_thread_function(void *nada)
         }
 
 
-        pulse_tiempo_difftime=timer_stats_diference_time(&pulse_tiempo_antes,&pulse_tiempo_despues);
-        //fprintf(stdout, "read  done\n");
-
-        long esperado_microseconds=(1000000L*AUDIO_RECORD_BUFFER_SIZE)/AUDIO_RECORD_FREQUENCY;
-
-        //printf("tiempo: %ld esperado: %ld\n",pulse_tiempo_difftime,esperado_microseconds);
-
-        //printf("long %d long long %d\n",sizeof(long),sizeof(long long));
-
-        long diferencia_a_final=esperado_microseconds-pulse_tiempo_difftime;
-        //printf("Diferencia %ld microsegundos\n",diferencia_a_final);
-        if (diferencia_a_final>0) {
-            //printf("Falta %ld microsegundos\n",diferencia_a_final);
-            //usleep(diferencia_a_final/2);
-        }
 
 	}
 
@@ -606,7 +577,7 @@ void audiopulse_start_record_input(void)
 {
         //Vaciar posible sonido que haya antes del buffer, por si el usuario ha desactivado y activado varias veces
         audiorecord_input_empty_buffer_with_lock();
-printf("Start audiopulse record\n");
+        debug_printf(VERBOSE_INFO,"Starting recording audio from audio pulse driver");
 
         audiopulse_record_ss.format = PA_SAMPLE_U8;
         audiopulse_record_ss.channels = 1;
@@ -639,12 +610,9 @@ printf("Start audiopulse record\n");
 
 
 
-
-
-
     audio_is_recording_input=1;
 
-    printf("Finish initializing audiopulse record\n");
+    //printf("Finish initializing audiopulse record\n");
 
 }
 
@@ -653,6 +621,9 @@ void audiopulse_stop_record_input(void)
 {
 
     if (audio_is_recording_input) {
+
+        debug_printf(VERBOSE_INFO,"Stopping recording audio from audio pulse driver");
+
         audiopulse_record_must_finish=1;
 
 
@@ -673,5 +644,11 @@ int audiopulse_can_record_input(void)
     return 1;
 
 }
+
+
+//
+// Fin funciones de captura de sonido
+//
+
 
 #endif
