@@ -200,7 +200,7 @@ void audiodriver_start_record_input(void)
 
 
 //Funcion para variar el buffer si es posible
-//Si buffer esta a mas del 75% la mitad y tiene silencio (mismo valor), vaciarlo
+//Si buffer esta a mas de la mitad y tiene silencio (mismo valor), vaciarlo
 //Si el buffer tiene un valor fijo en todo buffer, no tiene sentido a nivel de lectura, al menos desde el spectrum para cargar de cinta,
 //eso significaria seguramente que la cinta esta parada o esta en una zona de silencio o el volumen es muy bajo
 
@@ -216,8 +216,8 @@ void audiorecord_empty_fifo_if_silence(void)
     int total_size=audiorecord_input_return_fifo_total_size();
     int longitud_actual=audiorecord_input_fifo_return_size();
 
-    //Ejecutar esto si hay mas del 75% en el buffer
-    if (longitud_actual<(total_size*3)/4) return;
+    //Ejecutar esto si hay mas del 50% en el buffer
+    if (longitud_actual<total_size/2) return;
 
     debug_printf (VERBOSE_DEBUG,"Checking if we can empty the External Audio Source buffer if contains empty data");
 
@@ -243,7 +243,7 @@ void audiorecord_empty_fifo_if_silence(void)
 
     }
 
-    debug_printf (VERBOSE_DEBUG,"Empying the the External Audio Source buffer because if contains empty data");
+    debug_printf (VERBOSE_DEBUG,"Emptying the the External Audio Source buffer because if contains empty data");
     audiorecord_input_empty_buffer();
     audiodriver_record_free_lock();
 }
