@@ -833,7 +833,7 @@ Esto significaria tambien que al cambiar de idioma habria que resetear el indice
 
 -Activar hotkeys para el osd keyboard
 
--Búsqueda opciones menú deberia ignorar acentos-> indexarlo sin acentos, sin eñes... con todos los caracteres alternativos que se usan en curses,
+ok -Búsqueda opciones menú deberia ignorar acentos-> indexarlo sin acentos, sin eñes... con todos los caracteres alternativos que se usan en curses,
 incluidos los cirilicos
 
 ---

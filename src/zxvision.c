@@ -7775,6 +7775,17 @@ int menu_es_prefijo_utf(z80_byte caracter)
 	else return 0;
 }
 
+//Si decimos que no queremos mostrar caracteres extendidos para parseo de utf
+//si no muestra, por ejemplo una a acentuada se mostrara como a
+int forzar_no_mostrar_caracteres_extendidos=0;
+
+int si_menu_muestra_caracteres_extendidos(void)
+{
+    if (forzar_no_mostrar_caracteres_extendidos) return 0;
+
+    else return si_complete_video_driver();
+}
+
 unsigned char menu_escribe_texto_convert_utf(unsigned char prefijo_utf,unsigned char caracter)
 {
 
@@ -7798,7 +7809,7 @@ unsigned char menu_escribe_texto_convert_utf(unsigned char prefijo_utf,unsigned 
 
 		if (caracter==0x81) {
 			//Á Acentuada mayuscula
-			if (si_complete_video_driver()) {
+			if (si_menu_muestra_caracteres_extendidos()) {
                 return 168;
             }
             else {
@@ -7808,7 +7819,7 @@ unsigned char menu_escribe_texto_convert_utf(unsigned char prefijo_utf,unsigned 
 
 		if (caracter==0x91) {
 			//Eñe mayuscula
-			if (si_complete_video_driver()) {
+			if (si_menu_muestra_caracteres_extendidos()) {
                 return 147; //Eñe mayuscula
             }
             else {
@@ -7818,7 +7829,7 @@ unsigned char menu_escribe_texto_convert_utf(unsigned char prefijo_utf,unsigned 
 
 		if (caracter==0xB1) {
 			//Eñe
-			if (si_complete_video_driver()) {
+			if (si_menu_muestra_caracteres_extendidos()) {
                 return 129; //Eñe
             }
             else {
@@ -7829,7 +7840,7 @@ unsigned char menu_escribe_texto_convert_utf(unsigned char prefijo_utf,unsigned 
 
 		if (caracter==0xA0) {
 			//à a acentuada abierta
-			if (si_complete_video_driver()) {
+			if (si_menu_muestra_caracteres_extendidos()) {
                 return 159;
             }
             else {
@@ -7839,7 +7850,7 @@ unsigned char menu_escribe_texto_convert_utf(unsigned char prefijo_utf,unsigned 
 
 		if (caracter==0xA1) {
 			//á a acentuada
-			if (si_complete_video_driver()) {
+			if (si_menu_muestra_caracteres_extendidos()) {
                 return 142;
             }
             else {
@@ -7849,7 +7860,7 @@ unsigned char menu_escribe_texto_convert_utf(unsigned char prefijo_utf,unsigned 
 
 		if (caracter==0xA7) {
 			//ç cedilla
-			if (si_complete_video_driver()) {
+			if (si_menu_muestra_caracteres_extendidos()) {
                 return 158;
             }
             else {
@@ -7859,7 +7870,7 @@ unsigned char menu_escribe_texto_convert_utf(unsigned char prefijo_utf,unsigned 
 
 		if (caracter==0xA8) {
 			//è e acentuada abierta
-			if (si_complete_video_driver()) {
+			if (si_menu_muestra_caracteres_extendidos()) {
                 return 160;
             }
             else {
@@ -7869,7 +7880,7 @@ unsigned char menu_escribe_texto_convert_utf(unsigned char prefijo_utf,unsigned 
 
 		if (caracter==0xA9) {
 			//é e acentuada
-			if (si_complete_video_driver()) {
+			if (si_menu_muestra_caracteres_extendidos()) {
                 return 143;
             }
             else {
@@ -7879,7 +7890,7 @@ unsigned char menu_escribe_texto_convert_utf(unsigned char prefijo_utf,unsigned 
 
 		if (caracter==0xAD) {
 			//í i acentuada
-			if (si_complete_video_driver()) {
+			if (si_menu_muestra_caracteres_extendidos()) {
                 return 144;
             }
             else {
@@ -7889,7 +7900,7 @@ unsigned char menu_escribe_texto_convert_utf(unsigned char prefijo_utf,unsigned 
 
 		if (caracter==0xAF) {
 			//ï i con dieresis
-			if (si_complete_video_driver()) {
+			if (si_menu_muestra_caracteres_extendidos()) {
                 return 167;
             }
             else {
@@ -7899,7 +7910,7 @@ unsigned char menu_escribe_texto_convert_utf(unsigned char prefijo_utf,unsigned 
 
 		if (caracter==0xB2) {
 			//ò o acentuada abierta
-			if (si_complete_video_driver()) {
+			if (si_menu_muestra_caracteres_extendidos()) {
                 return 161;
             }
             else {
@@ -7909,7 +7920,7 @@ unsigned char menu_escribe_texto_convert_utf(unsigned char prefijo_utf,unsigned 
 
 		if (caracter==0xB3) {
 			//ó o acentuada
-			if (si_complete_video_driver()) {
+			if (si_menu_muestra_caracteres_extendidos()) {
                 return 145;
             }
             else {
@@ -7919,7 +7930,7 @@ unsigned char menu_escribe_texto_convert_utf(unsigned char prefijo_utf,unsigned 
 
 		if (caracter==0xBA) {
 			//ú u acentuada
-			if (si_complete_video_driver()) {
+			if (si_menu_muestra_caracteres_extendidos()) {
                 return 146;
             }
             else {
@@ -7929,7 +7940,7 @@ unsigned char menu_escribe_texto_convert_utf(unsigned char prefijo_utf,unsigned 
 
 		if (caracter==0xBC) {
 			//ü u con dieresis
-			if (si_complete_video_driver()) {
+			if (si_menu_muestra_caracteres_extendidos()) {
                 return 162;
             }
             else {
@@ -7942,7 +7953,7 @@ unsigned char menu_escribe_texto_convert_utf(unsigned char prefijo_utf,unsigned 
 	if (prefijo_utf==0xC9) {
 		if (caracter==0xBE) {
 			//r minuscula con anzuelo. Sale en el FAQ, en la pronunciacion de ZEsarUX
-			if (si_complete_video_driver()) {
+			if (si_menu_muestra_caracteres_extendidos()) {
                                 return 137;
                         }
                         else {
@@ -7955,7 +7966,7 @@ unsigned char menu_escribe_texto_convert_utf(unsigned char prefijo_utf,unsigned 
 	if (prefijo_utf==0xCE) {
 		if (caracter==0xB8) {
 			//Greek Small Letter Theta θ - 138. Sale en el FAQ, en la pronunciacion de ZEsarUX
-			if (si_complete_video_driver()) {
+			if (si_menu_muestra_caracteres_extendidos()) {
                                 return 138;
                         }
                         else {
@@ -7971,7 +7982,7 @@ unsigned char menu_escribe_texto_convert_utf(unsigned char prefijo_utf,unsigned 
 		if (caracter==0x9C) return 'M'; //cyrillic capital letter em (U+041C)
 		if (caracter==0xA1) return 'C';
 		if (caracter==0xA8) { //Ш
-			if (si_complete_video_driver()) {
+			if (si_menu_muestra_caracteres_extendidos()) {
 				return 131;
 			}
 			else {
@@ -7984,7 +7995,7 @@ unsigned char menu_escribe_texto_convert_utf(unsigned char prefijo_utf,unsigned 
 
 
 		if (caracter==0xB3) {
-			if (si_complete_video_driver()) {
+			if (si_menu_muestra_caracteres_extendidos()) {
 				return 133; //г
 			}
 			else {
@@ -7993,7 +8004,7 @@ unsigned char menu_escribe_texto_convert_utf(unsigned char prefijo_utf,unsigned 
 		}
 
 		if (caracter==0xB4) {
-			if (si_complete_video_driver()) {
+			if (si_menu_muestra_caracteres_extendidos()) {
 				return 135; //д
 			}
 			else {
@@ -8003,7 +8014,7 @@ unsigned char menu_escribe_texto_convert_utf(unsigned char prefijo_utf,unsigned 
 
 		if (caracter==0xB5) return 'e';
 		if (caracter==0xB8) {
-			if (si_complete_video_driver()) {
+			if (si_menu_muestra_caracteres_extendidos()) {
 				return 130; //CYRILLIC SMALL LETTER I и
 			}
 			else {
@@ -8012,7 +8023,7 @@ unsigned char menu_escribe_texto_convert_utf(unsigned char prefijo_utf,unsigned 
 		}
 		if (caracter==0xBA) return 'k';
 		if (caracter==0xBB) { //л
-			if (si_complete_video_driver()) {
+			if (si_menu_muestra_caracteres_extendidos()) {
 				return 132;
 			}
 			else {
@@ -8034,7 +8045,7 @@ unsigned char menu_escribe_texto_convert_utf(unsigned char prefijo_utf,unsigned 
 
 
 				if (caracter==0x87) {
-					if (si_complete_video_driver()) {
+					if (si_menu_muestra_caracteres_extendidos()) {
 						return 134; //ч
 					}
 					else {
@@ -8044,7 +8055,7 @@ unsigned char menu_escribe_texto_convert_utf(unsigned char prefijo_utf,unsigned 
 
 				//я
 				if (caracter==0x8F) {
-					if (si_complete_video_driver()) {
+					if (si_menu_muestra_caracteres_extendidos()) {
 						return 136; //я
 					}
 					else {
@@ -8057,7 +8068,7 @@ unsigned char menu_escribe_texto_convert_utf(unsigned char prefijo_utf,unsigned 
 	return '?';
 
 
-	//Nota: caracteres que generan texto fuera de la tabla normal, considerar si es un driver de texto o grafico, con if (si_complete_video_driver() ) {
+	//Nota: caracteres que generan texto fuera de la tabla normal, considerar si es un driver de texto o grafico, con if (si_menu_muestra_caracteres_extendidos() ) {
 }
 
 
@@ -26642,8 +26653,13 @@ index_menu *zxvision_index_search_menu(char *nombre)
 }
 
 //Agregar indice de menu
-index_menu *zxvision_index_add_menu(char *titulo_menu)
+index_menu *zxvision_index_add_menu(char *titulo_menu_orig)
 {
+
+    //Convertir a string sin acentos etc
+    char titulo_menu[MAX_LENGTH_FULL_PATH_SUBMENU];
+
+    util_convert_utf_no_utf(titulo_menu_orig,titulo_menu,strlen(titulo_menu_orig));
 
     //Ir hasta el ultimo
     index_menu *antes=first_index_menu;
@@ -26675,13 +26691,18 @@ index_menu *zxvision_index_add_menu(char *titulo_menu)
 }
 
 //Agregar una linea de menu a un indice de menu existente
-void zxvision_index_add_menu_linea(index_menu *indice_menu,char *nombre_linea)
+void zxvision_index_add_menu_linea(index_menu *indice_menu,char *nombre_linea_orig)
 {
 
     //Si linea en blanco, no hacer nada
-    if (nombre_linea[0]==0) return;
+    if (nombre_linea_orig[0]==0) return;
 
-    if (nombre_linea[0]==' ' && nombre_linea[1]==0) return;
+    if (nombre_linea_orig[0]==' ' && nombre_linea_orig[1]==0) return;
+
+    //Convertir a string sin acentos etc
+    char nombre_linea[MAX_TEXTO_OPCION];
+
+    util_convert_utf_no_utf(nombre_linea_orig,nombre_linea,strlen(nombre_linea_orig));
 
     //printf("%02X %02X %02X\n",nombre_linea[0],nombre_linea[1],nombre_linea[2]);
 

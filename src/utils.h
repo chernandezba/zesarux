@@ -940,6 +940,7 @@ extern z80_byte *util_load_bmp_file(char *archivo,int id_paleta);
 extern void util_rotate_file(char *filename,int archivos);
 
 extern int util_convert_utf_charset(char *origen,z80_byte *final,int longitud_texto);
+extern int util_convert_utf_no_utf(char *origen,char *final,int longitud_texto);
 
 extern const char *spectrum_colour_names[];
 

@@ -20552,9 +20552,18 @@ void util_rotate_file(char *filename,int archivos)
 
 
 
-//Convertir una string de origen a caracteres charset, sustituyendo graficos en cirilicos
-int util_convert_utf_charset(char *origen,z80_byte *final,int longitud_texto)
+//Funcion comun que puede indicar si queremos convertir utf a caracteres en pantalla, o bien,
+//convertir caracteres con acentos etc a caracteres sin acentos
+int util_convert_utf_charset_common(char *origen,z80_byte *final,int longitud_texto,int forzar_no_mostrar_utf)
 {
+
+    //Esto es un poco chapuza porque alteramos temporalmente el comportamiento de la funcion que convierte utf
+    //Esto daria problemas si se accediera a dicha funcion desde varios threads a la vez, cosa que no deberia pasar
+    int antes_forzar_no_mostrar_caracteres_extendidos=forzar_no_mostrar_caracteres_extendidos;
+
+    if (forzar_no_mostrar_utf) forzar_no_mostrar_caracteres_extendidos=1;
+
+
         int longitud_final=0;
 
         int era_utf=0;
@@ -20616,7 +20625,22 @@ int util_convert_utf_charset(char *origen,z80_byte *final,int longitud_texto)
         *final=0;
 
 
+    if (forzar_no_mostrar_utf) forzar_no_mostrar_caracteres_extendidos=antes_forzar_no_mostrar_caracteres_extendidos;
+
         return longitud_final;
+}
+
+
+//Convertir una string de origen a caracteres charset, sustituyendo graficos en cirilicos
+int util_convert_utf_charset(char *origen,z80_byte *final,int longitud_texto)
+{
+    return util_convert_utf_charset_common(origen,final,longitud_texto,0);
+}
+
+//Convertir una string de origen a caracteres sin acentos etc
+int util_convert_utf_no_utf(char *origen,char *final,int longitud_texto)
+{
+    return util_convert_utf_charset_common(origen,(z80_byte *)final,longitud_texto,1);
 }
 
 const char *spectrum_colour_names[16]={

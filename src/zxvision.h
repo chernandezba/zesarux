@@ -272,6 +272,8 @@ extern int mouse_is_double_clicking;
 extern int menu_mouse_x;
 extern int menu_mouse_y;
 
+extern int forzar_no_mostrar_caracteres_extendidos;
+
 extern unsigned char menu_escribe_texto_convert_utf(unsigned char prefijo_utf,unsigned char caracter);
 extern int menu_es_prefijo_utf(z80_byte caracter);
 
