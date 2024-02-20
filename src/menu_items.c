@@ -32630,13 +32630,12 @@ struct s_input_analize_input_wave {
    //0: desconocido
    //1: leyendo valores<0
    //2: leyendo valores>0
-    //Bit a 1: 1000 Hz
-    //Bit a 0: 2000 Hz
-    //Tono guia: 800 Hz (length 2168 T-states. = 1238 microsec)
-    /*
-    A '0' bit is encoded as 2 pulses of 855 T-states each. = 488 microsec
 
-    A '1' bit is encoded as 2 pulses of 1710 T-states each (ie. twice the length of a '0') = 977 microsec
+    //Tono guia: length 2168 T-states. = 1238 microsec. Aprox 800 Hz
+    /*
+    A '0' bit is encoded as 2 pulses of 855 T-states each. = 488 microsec. Aprox 2000 Hz
+
+    A '1' bit is encoded as 2 pulses of 1710 T-states each (ie. twice the length of a '0') = 977 microsec. Aprox 1000 Hz
     */
     int estado_onda;
 
