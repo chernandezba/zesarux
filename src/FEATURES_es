@@ -83,6 +83,8 @@
 
 * Premite grabar pantalla a formatos: SCR, PBM, BMP, TXT, STL (Modelo 3D)
 
+* Permite cargar desde cinta real (cualquier fuente externa de sonido, como lector de casette, reproductor mp3, etc)
+
 * Soporta carga de cinta real mediante formatos de archivos: RWA, SMP, WAV, TZX, PZX, CDT, TAP, P, O. Soporta carga turbo de cintas o cualquier otro tipo de carga de cintas para rutinas de carga estándar/no estándar
 
 * Soporta archivos de cinta de formato binario (TAP, TZX, O, P, CDT, CAS) en rutinas de ROM estándar para ZX Spectrum, ZX80, ZX81, Amstrad CPC, Jupiter Ace, MSX, Spectravideo
