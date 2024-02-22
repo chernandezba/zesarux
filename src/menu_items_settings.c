@@ -10408,6 +10408,24 @@ void menu_zxdesktop_set_userdef_buttons_functions(MENU_ITEM_PARAMETERS)
                             strcpy(defined_buttons_functions_array_parameters[item_seleccionado.valor_opcion],buffer_maquina);
                         }
                     }
+
+                    //Si es open window, mostrar lista de posibles ventanas
+                    if (accion==F_FUNCION_OPEN_WINDOW) {
+                        int elemento=menu_zxdesktop_get_window_list();
+                        if (elemento>=0) {
+
+                            if (zxvision_known_window_is_valid_by_index(elemento)>=0) {
+                                strcpy(defined_buttons_functions_array_parameters[item_seleccionado.valor_opcion],
+                                    zxvision_known_window_names_array[elemento].nombre);
+
+                                //strcpy(zxdesktop_configurable_icons_list[indice_icono].text_icon,
+                                //    zxvision_known_window_names_array[elemento].nombre_corto);
+                            }
+
+
+                        }
+                    }
+
                 }
 
             }
@@ -10518,6 +10536,23 @@ void menu_hardware_set_f_functions(MENU_ITEM_PARAMETERS)
                         get_machine_config_name_by_number(buffer_maquina,current_machine_type);
                         if (buffer_maquina[0]!=0) {
                             strcpy(defined_f_functions_keys_array_parameters[item_seleccionado.valor_opcion],buffer_maquina);
+                        }
+                    }
+
+                    //Si es open window, mostrar lista de posibles ventanas
+                    if (accion==F_FUNCION_OPEN_WINDOW) {
+                        int elemento=menu_zxdesktop_get_window_list();
+                        if (elemento>=0) {
+
+                            if (zxvision_known_window_is_valid_by_index(elemento)>=0) {
+                                strcpy(defined_f_functions_keys_array_parameters[item_seleccionado.valor_opcion],
+                                    zxvision_known_window_names_array[elemento].nombre);
+
+                                //strcpy(zxdesktop_configurable_icons_list[indice_icono].text_icon,
+                                //    zxvision_known_window_names_array[elemento].nombre_corto);
+                            }
+
+
                         }
                     }
                 }
