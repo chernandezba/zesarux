@@ -831,10 +831,7 @@ Esto significaria tambien que al cambiar de idioma habria que resetear el indice
 
 -interrupt_finish_sound no sirve para nada?
 
--Activar hotkeys para el osd keyboard
 
-ok -Búsqueda opciones menú deberia ignorar acentos-> indexarlo sin acentos, sin eñes... con todos los caracteres alternativos que se usan en curses,
-incluidos los cirilicos
 
 ---
 --Inicio captura de sonido desde fuente externa (para poder cargar de cinta directamente)
@@ -862,7 +859,7 @@ Quizá ver si entre cada lectura de buffer ha pasado el tiempo que debe pasar re
 --Fin captura de sonido
 ---
 
--Aviso de nueva versión y entonces no sale menoriam
+ok -Aviso de nueva versión y entonces no sale memoriam
 
 -al cambiar de idioma, deja el indexado de busqueda raro en el submenu que esta dicha opcion (en cambio a català por ejemplo):
 Main Menu-> Settings-> General Settings-> Opciones Generales-> Opcions Generals

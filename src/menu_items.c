@@ -41699,6 +41699,33 @@ void menu_onscreen_keyboard(MENU_ITEM_PARAMETERS)
 			break;
 		}
 
+        //Si pulsado letras o numeros
+        if (
+            (tecla>='a' && tecla<='z') ||
+            (tecla>='0' && tecla<='9') ||
+            (tecla==' ')
+        ) {
+            //printf("Pulsada tecla %c\n",tecla);
+            char buffer_tecla[10];
+            buffer_tecla[0]=tecla;
+            buffer_tecla[1]=0;
+
+            if (tecla==' ') strcpy(buffer_tecla,"SP");
+
+            int i;
+            for (i=0;i<40;i++) {
+
+                if (!strcasecmp(buffer_tecla,teclas_osd[i].tecla)) {
+                    //printf("pulsada sobre tecla: %s\n",teclas_osd[i].tecla);
+                    osd_keyboard_cursor_y=i / 10;
+                    osd_keyboard_cursor_x=i % 10;
+                    tecla=13;
+                    salir=menu_onscreen_send_enter_check_exit(tecla);
+                }
+
+            }
+        }
+
 	} while (salir==0);
 
 	menu_espera_no_tecla();
