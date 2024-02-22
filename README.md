@@ -178,6 +178,8 @@ __FEATURES__
 
 * Supports dumping audio & video to file
 
+* Allows to save screen to formats: SCR, PBM, BMP, TXT, STL
+
 * Supports real tape loading of file formats: RWA, SMP, WAV, TZX, PZX, CDT, TAP, P, O. It handles loading of turbo load tapes or any type of tape loading for standard/non standard loading routines
 
 * Handles binary tape format files (TAP, TZX, PZX, O, P, CDT, CAS) on standard ROM routines for ZX Spectrum, ZX80, ZX81, Amstrad CPC, Jupiter Ace, MSX, Spectravideo
