@@ -4489,7 +4489,11 @@ int util_write_configfile(void)
 
   if (zeng_online_enabled)                      ADD_STRING_CONFIG,"--enable-zeng-online-server");
 
+
+                                                ADD_STRING_CONFIG,"--zeng-online-hostname \"%s\"",zeng_online_server);
   if (zeng_online_nickname[0])                  ADD_STRING_CONFIG,"--zeng-online-nickname \"%s\"",zeng_online_nickname);
+
+
   if (zeng_online_zip_compress_snapshots.v==0)  ADD_STRING_CONFIG,"--zeng-online-no-zip-snapshots");
   if (zeng_online_show_footer_lag_indicator.v==0)   ADD_STRING_CONFIG,"--zeng-online-no-footer-lag-indicator");
   if (zeng_online_allow_room_creation_from_any_ip.v)    ADD_STRING_CONFIG,"--zeng-online-server-allow-create");

@@ -901,6 +901,7 @@ printf (
 		"--remoteprotocol-port n             Set remote protocol port (default: 10000)\n"
         "--remoteprotocol-prompt p           Change the command prompt shown on remote protocol\n"
 
+        "--zeng-online-hostname s                        Sets ZENG Online hostname to connect to\n"
         "--zeng-online-nickname s                        Sets nickname for ZENG Online\n"
         "--zeng-online-no-zip-snapshots                  Do not compress snapshots with zip format\n"
         "--zeng-online-no-footer-lag-indicator           Show lag indicator on footer when snapshots are coming late\n"
@@ -5575,6 +5576,11 @@ int parse_cmdline_options(int desde_commandline) {
             command_line_start_zeng_online_server.v=1;
          }
 
+         else if (!strcmp(argv[puntero_parametro],"--zeng-online-hostname")) {
+            siguiente_parametro_argumento();
+
+            strcpy(zeng_online_server,argv[puntero_parametro]);
+         }
 
          else if (!strcmp(argv[puntero_parametro],"--zeng-online-nickname")) {
             siguiente_parametro_argumento();

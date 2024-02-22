@@ -722,6 +722,7 @@ Network traffic en ascii también
 Poder aplicar restricción de teclas para auto join? Para que no puedan hacer break por ejemplo. O para una primera asignación restringida y luego otra menos
 Mismo perfil de teclas puede ir a más de un jugador?
 
+-opcion de servidor zeng para config
 
 -----Fin ZENG ONLINE -----
 
@@ -760,13 +761,14 @@ ya que no abren el menu
 -Y en dispositivos? Quizá settings de ese dispositivo?
 
 -In memoriam:
-*completar texto
+*completar texto Diego
 
 
 -Si se crea ventana de alto negativo, acaba haciendo panic al asignar memoria. Quizá controlar esto?
 
 
 -Incorporar bittransfe como manera de generar snapshot en .tap. Agregar parámetro de estado interrupciones, registro i. Otros registros que falten? R?
+-Incorporar copiones software
 
 
 
