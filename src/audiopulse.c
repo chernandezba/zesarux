@@ -404,7 +404,7 @@ void audiopulse_enviar_audio_envio(void)
 			//para ello, lo que hacemos, es llamar a init en send_frame
 
 
-			interrupt_finish_sound.v=1;
+
 
 		}
 

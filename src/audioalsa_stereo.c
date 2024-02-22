@@ -511,8 +511,7 @@ void new_audioalsa_enviar_audio_envio(void)
 
 			else {
 
-                	//no esperamos , enviamos siguiente sonido avisando de interrupcion a cpu
-	                interrupt_finish_sound.v=1;
+
 
 			}
 

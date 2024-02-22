@@ -590,8 +590,6 @@ z80_bit audio_resample_1bit={0};
 //Similar a silence_detection_counter pero solo para operaciones del beeper
 int beeper_silence_detection_counter=0;
 
-//generada interrupcion debido a fin de sonido
-z80_bit interrupt_finish_sound;
 
 //decir que el thread de sonido debe enviar audio o no
 z80_bit audio_playing;

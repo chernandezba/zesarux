@@ -150,7 +150,7 @@ extern z80_bit bit_salida_sonido_zx8081;
 extern char value_beeper;
 
 
-extern z80_bit interrupt_finish_sound;
+
 
 //5 segundos hasta detectar silencio
 #define SILENCE_DETECTION_MAX 50*5

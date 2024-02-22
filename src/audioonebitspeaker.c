@@ -285,8 +285,7 @@ void *audioonebitspeaker_enviar_audio(void *nada)
 		//Establecer el buffer de reproduccion
 		buffer_playback_onebitspeaker=audio_buffer_playback;
 
-		//enviamos siguiente sonido avisando de interrupcion a cpu
-		//interrupt_finish_sound.v=1;
+
 
 
 

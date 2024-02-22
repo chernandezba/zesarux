@@ -225,8 +225,7 @@ void *audiodsp_enviar_audio(void *nada)
 		//Establecer el buffer de reproduccion
 		buffer_playback_dsp=audio_buffer_playback;
 
-                //enviamos siguiente sonido avisando de interrupcion a cpu
-                interrupt_finish_sound.v=1;
+
 
 		//printf ("Tiempo pasado: %ld Tiempo minimo: %d\n",tiempo_pasado,AUDIO_MS_DURACION);
 

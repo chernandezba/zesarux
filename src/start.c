@@ -2410,7 +2410,7 @@ void main_init_audio(void)
                 audio_init=NULL;
                 audio_buffer_switch.v=0;
 
-                interrupt_finish_sound.v=0;
+
                 audio_playing.v=1;
 
                 audio_buffer_one=audio_buffer_one_assigned;

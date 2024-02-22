@@ -411,7 +411,7 @@ int timer_check_interrupt_no_thread(void)
 
 
 			if (z80_timer_difftime>timer_warn_high_interrupt_time) {
-				debug_printf(VERBOSE_INFO,"z80 interrupt (%s) time more than %d micros : %d",(interrupt_finish_sound.v ? "sound" : "timer" ),timer_warn_high_interrupt_time,z80_timer_difftime);
+				debug_printf(VERBOSE_INFO,"z80 interrupt (timer) time more than %d micros : %d",timer_warn_high_interrupt_time,z80_timer_difftime);
 
 				//parar temporalmente el thread de sonido para que se vuelva a resincronizar todo
                                 audio_playing.v=0;
@@ -473,7 +473,7 @@ void timer_check_interrupt(void)
         //printf ("despues timer_check_interrupt_thread. framedrop_total %d\n",framedrop_total);
 
 
-        interrupt_finish_sound.v=0;
+
         interrupcion_timer_generada.v=1;
         interrupcion_fifty_generada.v=1;
 
