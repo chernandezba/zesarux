@@ -22358,3 +22358,19 @@ void util_move_turtle(int xorig,int yorig,int grados,int longitud,int *xfinal,in
     *xfinal=xorig+((longitud*util_get_cosine(grados))/10000);
     *yfinal=yorig-((longitud*util_get_sine(grados))/10000);
 }
+
+
+int util_string_starts_with(char *texto, char *prefijo)
+{
+    while (*prefijo) {
+        if ( (*prefijo) != (*texto) ) {
+            return 0;
+        }
+
+        texto++;
+        prefijo++;
+
+    }
+
+    return 1;
+}

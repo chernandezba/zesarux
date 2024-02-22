@@ -144,67 +144,6 @@ Ideal para help keyboard por ejemplo
 En draw window contents solo renderiza si se ha modificado o bien la capa de texto o de la de píxeles. Y en ese caso renderiza las dos capas
 
 
------tbblue:
-Se probaron cambios presentes en carpeta tbblue_cambios_pruebas_ultimo_cambio_alt_rom_ZEsarUX_10_10/
-
-* carga nex falla. aunque tileeditor.nex funciona, tambien show512.nex
-* carga z80 falla
-* carga tap falla
-* carga sna falla
-* guide desde el menu principal falla
-* tape loaded desde menu principal falla
-* saltar a 48kb basic desde el menu principal funciona
-* saltar a 128kb basic desde el menu principal falla
-* tape loader desde menu no carga
-
-* carga Bas FUNCIONA
-* juegos zx81 FUNCIONA
-* juegos zx80 FUNCIONA
-* juegos zmachine FUNCIONA
-* dizzy.dsk FUNCIONA
-* .aky songs FUNCIONA
-* dot commands desde cli FUNCIONA. ejemplo .cowsay. PERO .mem peta
-
-
-*registro C0. lo pone a 8 en el boot
-
-0xC0 (192) => Interrupt Control
-(R/W) (soft reset = 0)
-  bits 7:5 = Programmable portion of im2 vector*
-  bit 4 = Reserved must be 0
-  bit 3 = Enable stackless nmi response**
-  bits 2:1 = Reserved must be 0
-  bit 0 = Maskable interrupt mode: pulse (0) or im2 (1)
-* In im2 mode the interrupt vector generated is:
-  bits 7:5 = nextreg 0xC0 bits 7:5
-  bits 4:1 = 0  line interrupt (highest priority)
-    = 1  uart0 Rx
-    = 2  uart1 Rx
-    = 3-10  ctc channels 0-7
-    = 11 ula
-    = 12 uart0 Tx
-    = 13 uart1 Tx (lowest priority)
-  bit 0 = 0
-* In im2 mode the expansion bus is the lowest priority interrupter
-  and if no vector is supplied externally then 0xFF is generated.
-** The return address pushed during an nmi acknowledge cycle will
-  be written to nextreg instead of memory (the stack pointer will
-  be decremented) and the first RETN after the acknowledge will
-  take its return address from nextreg instead of memory (the stack
-  pointer will be incremented).  If bit 3 = 0 and in other
-  circumstances, RETN functions normally.
-
-
--registros que se resetean con soft reset. tanto al escribir registro 2 como cpu reset de menu
--quiza soft reset no esté activando trap de divmmc (si es que se cumplen las condiciones)
-
--revisar altrompointer en poke_byte
----- fin tbblue
-
-
-
-
-
 
 -custom rom
 *manera de seleccionar maquina +2e, que es +2a40 con rom "alternaterom_plus3e_mmcen3eE.rom"
@@ -215,11 +154,9 @@ find_sharedfile(CUSTOM_MACHINE_2E_MMC_ROM_FILE,custom_romfile);
 -plus3doshandler: se necesita muchas revisiones para que funcione correctamente, algunas llamadas al leer sector que se va a leer puertos,
 ejemplo badlands.dsk y rutina en la 2114h que esta en los traps
 
----ZRCP
+-ZRCP:
 *array para guardar los threads que se van lanzando?
 -completar remote_cerrar_conexion para que cierre todas las conexiones de cliente que puedan haber
-
-
 
 
 -algun tipo de build que no sea ni linux ni mac ni windows, sino simplemente UNIX_GENERIC o algo similar
@@ -233,8 +170,6 @@ ejemplo badlands.dsk y rutina en la 2114h que esta en los traps
 
 -Renombrar setting de background windows por multitask windows? O algo así
 Debe indicar que se puede dejar ventanas en background pero que también pueden haber múltiples ventanas a la vez
-
-
 
 
 
@@ -253,7 +188,7 @@ Debe indicar que se puede dejar ventanas en background pero que también pueden 
 *etc
 
 
--registro EPC para tbblue, zxuno, ....
+-registro debug ficticio EPC soporte para tbblue, zxuno, ....
 
 
 -Si se cambia el prompt de ZRCP, esperar también ese prompt en ZENG
@@ -291,9 +226,6 @@ Seria: error message: igual que hay ahora. Y luego clases: 0001 out of memory. 0
 -combinacion de tecla especial que haga un "reinicio" del menu, por si se ha colgado en algun sitio
 
 -footer que tambien amplie tamaño segun menu_gui_zoom
-
--Por determinar visibilidad de processswitcher. siempre visible si o no?
-
 
 
 -quiza obtener mas info en descargas speccy online: autor, tamaño archivo, etc
@@ -348,7 +280,7 @@ menu_zsock_http
 menu_download_file
 
 
--Visor de variables de sistema de programa en ejecución. Con nombre y descripción. ok Para spectrum, zx80 y 81
+
 -Poder ver variables de una cinta .P, .O e incluso basic de spectrum (desde el bloque de basic de un .tap?)
 
 
@@ -397,8 +329,6 @@ En estos casos de momento lo que he hecho es que al final de cada menu se haga u
 -hexadecimal editor deberia refrescar continuamente al estar dentro de la ventana?
 
 
-
-
 -tiene sentido items de "ESC back/close"?
 
 
@@ -442,8 +372,6 @@ esa manera si que se podría aumentar el límite sin perjudicar dichas operacion
 
 
 ---- ZENG ONLINE ----
-
-
 
 
 
@@ -509,9 +437,7 @@ ok -la recepcion de keys y snapshot deberia hacerse al mismo momento desde el mi
 
 
 
-
-
--para cada maquina que queramos que soporte ZENG ONLINE
+-Para cada maquina que queramos que soporte ZENG ONLINE
 Agregar puertos a ZSF_KEY_PORTS_SPECTRUM_STATE en snap_zsf.c. quiza un tag nuevo para tener retrocompatibilidad
 en util_set_reset_key_continue, agregar antes_puerto_ y restaurar valor para cada maquina que se quiera
 O sea, estos cambios de ejemplo:
@@ -592,8 +518,6 @@ index 9cb0937..80d1a4c 100644
 
 
 
--implementar que cuando hay zeng online habilitado, no funcionen el resto de comandos ZRCP (la mayoria no deberian ir, quit y poco mas)
-
 
 
 ok-Gestión autorizaciones para join
@@ -606,8 +530,6 @@ Si hay alguna pendiente, se abre menú y se pide autorizar
 Se envía un comando con el resultado de cada autorización: id, permisos, y si autoriza o no
 ok-el id es necesario? dado que siempre responderemos sobre la mas antigua, en principio sabemos su id. a no ser que el array haya dado la vuelta, por lo que entonces se sobreescribe.
 Que hacer si se llena el array circular? Quiza dejar la petición de join bloqueada hasta que haya espacio libre en el array
-
-ok-comando zeng online para leave room. esto decrementara el contador de jugadores en la room
 
 
 
@@ -627,7 +549,7 @@ ok-comando zeng online para leave room. esto decrementara el contador de jugador
 *manager: solo administrar. no recibe snapshots
 
 
----idea para obtener snapshots diferenciales:
+---Idea para obtener snapshots diferenciales:
 *con una idea similar a visualmem, tener una tabla que indique posiciones modificadas por poke_byte,
 luego se envia un snapshot con solo esas direcciones
 
@@ -699,8 +621,7 @@ Quizá tarea en el timer tal cual para todo eso
 Temporizadores comunes de ver kick y ver mensajes
 
 
-Limitar comandos ZRCP cuando Zeng habilitado
-Quizá setting para limitar o no
+
 
 
 
@@ -722,9 +643,10 @@ Network traffic en ascii también
 Poder aplicar restricción de teclas para auto join? Para que no puedan hacer break por ejemplo. O para una primera asignación restringida y luego otra menos
 Mismo perfil de teclas puede ir a más de un jugador?
 
--opcion de servidor zeng para config
+
 
 -----Fin ZENG ONLINE -----
+
 
 
 -mejorar icono para video output
@@ -870,6 +792,12 @@ Main Menu-> Settings-> General Settings-> Opciones Generales-> Opcions Generals
 
 
 -Documentar cómo van los archivos txt de update
+
+
+-Limitar comandos ZRCP cuando Zeng online server habilitado
+Quizá setting para limitar o no
+->revisar que realmente el cliente no use ningun otro comando
+->agregar parametro config y grabado config
 
 
 -LEC memory extension https://ia600604.us.archive.org/view_archive.php?archive=/1/items/World_of_Spectrum_June_2017_Mirror/World%20of%20Spectrum%20June%202017%20Mirror.zip&file=World%20of%20Spectrum%20June%202017%20Mirror/sinclair/hardware-info/l/LECMemoryExtension.pdf

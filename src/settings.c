@@ -402,6 +402,9 @@ z80_bit zeng_online_allow_room_creation_from_any_ip={0};
 //Dice que se expiran habitaciones sin jugadores
 z80_bit zeng_online_destroy_rooms_without_players={0};
 
+//Solo permitir comandos ZENG Online en ZRCP cuando se habilita ZENG Online server
+z80_bit zeng_online_server_allow_zrcp_only_zeng_online={1};
+
 
 //
 // ZENG Online Settings

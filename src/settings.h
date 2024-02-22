@@ -156,6 +156,8 @@ extern z80_bit zeng_online_allow_room_creation_from_any_ip;
 
 extern z80_bit zeng_online_destroy_rooms_without_players;
 
+extern z80_bit zeng_online_server_allow_zrcp_only_zeng_online;
+
 extern z80_bit zeng_online_zip_compress_snapshots;
 
 extern z80_bit zeng_online_show_footer_lag_indicator;

@@ -3844,7 +3844,23 @@ void interpreta_comando(char *comando,int misocket,char *buffer_lectura_socket_a
 		return;
 	}
 
+    //Si limitados comandos a zeng online cuando zeng online server activado
+    if (zeng_online_enabled && zeng_online_server_allow_zrcp_only_zeng_online.v) {
+        //Permitir help, about, zeng-online y poco mas
+        if (!
+            (
+                !strcmp(comando_sin_parametros,"help") ||
+                !strcmp(comando_sin_parametros,"?") ||
+                !strcmp(comando_sin_parametros,"about") ||
+                util_string_starts_with(comando_sin_parametros,"zeng-online")
+            )
+            )
 
+        {
+		    escribir_socket (misocket,"Unknown or not allowed command");
+            return;
+	    }
+    }
 
 	//Ver cada comando
 	if (!strcmp(comando_sin_parametros,"help") || !strcmp(comando_sin_parametros,"?")) {

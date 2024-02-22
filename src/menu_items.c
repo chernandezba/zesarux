@@ -16031,6 +16031,11 @@ void menu_zeng_online_server_max_players_per_room(MENU_ITEM_PARAMETERS)
 
 }
 
+void menu_zeng_online_server_allow_zrcp_only_zeng_online(MENU_ITEM_PARAMETERS)
+{
+    zeng_online_server_allow_zrcp_only_zeng_online.v ^=1;
+}
+
 void menu_zeng_online_server(MENU_ITEM_PARAMETERS)
 {
 
@@ -16069,6 +16074,10 @@ void menu_zeng_online_server(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_server_max_players_per_room,NULL,
             "Default max players per room","Max jugadores por hab. defecto","Max jugadors per hab. defecte");
         menu_add_item_menu_prefijo_format(array_menu_common,"[%d] ",zeng_online_current_max_players_per_room);
+
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_server_allow_zrcp_only_zeng_online,NULL,
+            "Allow only ZRCP ZENG Online commands","Solo permitir comandos ZRCP de ZENG Online","Només permetre comandes ZRCP de ZENG Online");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(zeng_online_server_allow_zrcp_only_zeng_online.v ? 'X' : ' ' ));
 
         menu_add_item_menu_separator(array_menu_common);
 
