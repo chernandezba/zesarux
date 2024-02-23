@@ -10305,6 +10305,49 @@ int menu_zxdesktop_get_window_list(void)
 
 }
 
+//Función auxiliar para asignar parametros adicionales a iconos, botones a acciones, o f funciones,
+//Dependiendo del tipo de accion, si es por ejemplo SET_MACHINE, indicar parametro de maquina actual,
+//si es OPEN_WINDOW, pedir al usuario de la lista de ventanas y ademas asignar el nombre del icono como el nombre_corto de la ventana
+//nombre_icono vale NULL si no aplica a ese elemento (o sea ni para botones ni para f-funciones)
+void zxdesktop_add_extra_parameters_element_action(enum defined_f_function_ids accion, char *parametros, char *nombre_icono)
+{
+    if (accion==F_FUNCION_SET_MACHINE) {
+        char buffer_maquina[100];
+
+        get_machine_config_name_by_number(buffer_maquina,current_machine_type);
+        if (buffer_maquina[0]!=0) {
+            strcpy(parametros,buffer_maquina);
+
+            if (nombre_icono!=NULL) {
+                //Cambiar nombre icono con la maquina en cuestión
+                sprintf(nombre_icono,"Set %s",get_machine_name(current_machine_type));
+            }
+
+        }
+    }
+
+    //Si es open window, mostrar lista de posibles ventanas
+    if (accion==F_FUNCION_OPEN_WINDOW) {
+        int elemento=menu_zxdesktop_get_window_list();
+        if (elemento>=0) {
+
+            if (zxvision_known_window_is_valid_by_index(elemento)>=0) {
+                strcpy(parametros,
+                    zxvision_known_window_names_array[elemento].nombre);
+
+
+                if (nombre_icono!=NULL) {
+                    //Asignar nombre para icono
+                    strcpy(nombre_icono,
+                        zxvision_known_window_names_array[elemento].nombre_corto);
+                }
+            }
+
+
+        }
+    }
+}
+
 
 //Definir boton de zx desktop a accion
 void menu_zxdesktop_set_userdef_buttons_functions(MENU_ITEM_PARAMETERS)
@@ -10397,34 +10440,12 @@ void menu_zxdesktop_set_userdef_buttons_functions(MENU_ITEM_PARAMETERS)
                     //printf("definimos boton. boton %d accion %d\n",item_seleccionado.valor_opcion,indice_retorno);
                     defined_buttons_functions_array[item_seleccionado.valor_opcion]=indice_retorno;
 
-                    //Si es funcion de machine selection, indicarle como parametro la maquina actual
+                    //Asignar parametros extra segun el tipo de accion
                     enum defined_f_function_ids accion=menu_da_accion_direct_functions_indice(indice_retorno);
 
-                    if (accion==F_FUNCION_SET_MACHINE) {
-                        char buffer_maquina[100];
+                    zxdesktop_add_extra_parameters_element_action(accion,
+                        defined_buttons_functions_array_parameters[item_seleccionado.valor_opcion],NULL);
 
-                        get_machine_config_name_by_number(buffer_maquina,current_machine_type);
-                        if (buffer_maquina[0]!=0) {
-                            strcpy(defined_buttons_functions_array_parameters[item_seleccionado.valor_opcion],buffer_maquina);
-                        }
-                    }
-
-                    //Si es open window, mostrar lista de posibles ventanas
-                    if (accion==F_FUNCION_OPEN_WINDOW) {
-                        int elemento=menu_zxdesktop_get_window_list();
-                        if (elemento>=0) {
-
-                            if (zxvision_known_window_is_valid_by_index(elemento)>=0) {
-                                strcpy(defined_buttons_functions_array_parameters[item_seleccionado.valor_opcion],
-                                    zxvision_known_window_names_array[elemento].nombre);
-
-                                //strcpy(zxdesktop_configurable_icons_list[indice_icono].text_icon,
-                                //    zxvision_known_window_names_array[elemento].nombre_corto);
-                            }
-
-
-                        }
-                    }
 
                 }
 
@@ -10527,34 +10548,12 @@ void menu_hardware_set_f_functions(MENU_ITEM_PARAMETERS)
                     //printf("definimos fkey. tecla f %d accion %d\n",item_seleccionado.valor_opcion,indice_retorno);
                     defined_f_functions_keys_array[item_seleccionado.valor_opcion]=indice_retorno;
 
-                    //Si es funcion de machine selection, indicarle como parametro la maquina actual
+                    //Asignar parametros extra segun el tipo de accion
                     enum defined_f_function_ids accion=menu_da_accion_direct_functions_indice(indice_retorno);
 
-                    if (accion==F_FUNCION_SET_MACHINE) {
-                        char buffer_maquina[100];
+                    zxdesktop_add_extra_parameters_element_action(accion,
+                        defined_f_functions_keys_array_parameters[item_seleccionado.valor_opcion], NULL);
 
-                        get_machine_config_name_by_number(buffer_maquina,current_machine_type);
-                        if (buffer_maquina[0]!=0) {
-                            strcpy(defined_f_functions_keys_array_parameters[item_seleccionado.valor_opcion],buffer_maquina);
-                        }
-                    }
-
-                    //Si es open window, mostrar lista de posibles ventanas
-                    if (accion==F_FUNCION_OPEN_WINDOW) {
-                        int elemento=menu_zxdesktop_get_window_list();
-                        if (elemento>=0) {
-
-                            if (zxvision_known_window_is_valid_by_index(elemento)>=0) {
-                                strcpy(defined_f_functions_keys_array_parameters[item_seleccionado.valor_opcion],
-                                    zxvision_known_window_names_array[elemento].nombre);
-
-                                //strcpy(zxdesktop_configurable_icons_list[indice_icono].text_icon,
-                                //    zxvision_known_window_names_array[elemento].nombre_corto);
-                            }
-
-
-                        }
-                    }
                 }
             }
 
@@ -10908,38 +10907,13 @@ void menu_zxdesktop_add_configurable_icons(MENU_ITEM_PARAMETERS)
 
 
         if (indice_icono>=0) {
-            //Si es icono de machine selection, indicarle como parametro la maquina actual
+            //Asignar parametros extra segun el tipo de accion
             enum defined_f_function_ids accion=menu_da_accion_direct_functions_indice(indice_retorno);
 
-            if (accion==F_FUNCION_SET_MACHINE) {
-                char buffer_maquina[100];
+            zxdesktop_add_extra_parameters_element_action(accion,
+                zxdesktop_configurable_icons_list[indice_icono].extra_info,
+                zxdesktop_configurable_icons_list[indice_icono].text_icon);
 
-                get_machine_config_name_by_number(buffer_maquina,current_machine_type);
-                if (buffer_maquina[0]!=0) {
-                    strcpy(zxdesktop_configurable_icons_list[indice_icono].extra_info,buffer_maquina);
-
-                    //Cambiar nombre icono con la maquina en cuestión
-                    sprintf(zxdesktop_configurable_icons_list[indice_icono].text_icon,"Set %s",get_machine_name(current_machine_type));
-
-                }
-            }
-
-            //Si es open window, mostrar lista de posibles ventanas
-            if (accion==F_FUNCION_OPEN_WINDOW) {
-                int elemento=menu_zxdesktop_get_window_list();
-                if (elemento>=0) {
-
-                    if (zxvision_known_window_is_valid_by_index(elemento)>=0) {
-                        strcpy(zxdesktop_configurable_icons_list[indice_icono].extra_info,
-                            zxvision_known_window_names_array[elemento].nombre);
-
-                        strcpy(zxdesktop_configurable_icons_list[indice_icono].text_icon,
-                            zxvision_known_window_names_array[elemento].nombre_corto);
-                    }
-
-
-                }
-            }
         }
     }
 }
