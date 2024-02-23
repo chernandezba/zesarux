@@ -4351,7 +4351,10 @@ void menu_ula_settings(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_prefijo_format(array_menu_ula_settings,"[%c] ",(ula_disabled_ram_paging.v==0 ? 'X' : ' '));
 		}
 
-        if (CPU_IS_Z80) {
+        //Para Jupiter Ace siempre retorno valor fijo 20H
+        //Por cierto que este menu ULA no es visible en Jupiter Ace a dia de hoy, pero
+        //por si acaso en un futuro es visible
+        if (CPU_IS_Z80 && !MACHINE_IS_ACE) {
             menu_add_item_menu_en_es_ca(array_menu_ula_settings,MENU_OPCION_NORMAL,menu_ula_databus_value,NULL,
                 "~~ULA Databus value","Valor ~~ULA Databus","Valor ~~ULA Databus");
             menu_add_item_menu_prefijo_format(array_menu_ula_settings,"[%d] ",ula_databus_value);

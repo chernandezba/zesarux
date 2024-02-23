@@ -5400,6 +5400,12 @@ void debug_get_ioports(char *stats_buffer)
 
           index_buffer=0;
 
+    if (CPU_IS_Z80) {
+        sprintf (buf_linea,"ULA Data Bus value: %02XH\n",get_ula_databus_value() );
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+    }
+
+
   	if (MACHINE_IS_SPECTRUM) {
   		sprintf (buf_linea,"Spectrum FE port: %02X\n",out_254_original_value);
   		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);

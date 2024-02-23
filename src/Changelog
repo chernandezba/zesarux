@@ -54,6 +54,7 @@ Fixed ZX Vision:
 - Fixed splash messages when background windows are enabled
 - Fixed initial position for many windows
 
+Fixed invalid Data Bus value on Jupiter Ace (it's 20H instead of FFH)
 Fixed blockage when drawing Text Adventure Map and corrupted GAC adventure
 Fixed timings of opcodes CP (HL), CP (IX+d), CP (IY+d)
 Fixed bug on ZRCP when handling simultaneous connections

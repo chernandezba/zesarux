@@ -841,6 +841,19 @@ BREAK SPACE        %^
 z80_byte get_ula_databus_value(void)
 {
 
+    //En un Jupiter ACE, es 20H
+    //TODO: estamos fijando siempre el valor a 20H y no hace caso del valor ula_databus_value que es configurable por el usuario;
+    //algun usuario va a querer fijar un valor diferente a 20H en Jupiter Ace?
+    //Ojo si se quisiera corregir esto, del estilo:
+    //set_machine:
+    //  Si ejecutando maquina no-Ace, cambiar a valor 255
+    //  Si ejecutando maquina Ace, cambiar a valor 20h
+    //Esto machacaria el valor de ula_databus_value que el usuario hubiera escrito
+    //Creo que lo mejor es como está ahora:
+    //Para Jupiter Ace, siempre retorna 20H (y el valor ula_databus_value no es configurable en el menu, no hay opciones ULA en Jupiter Ace)
+    //Para el resto, retorna el valor de ula_databus_value, y si es editable desde el menu
+    if (MACHINE_IS_ACE) return 0x20;
+
     z80_byte valor=ula_databus_value;
 
     //Para funciones que leen directamente con esta funcion y no idle_bus_port_atribute,
