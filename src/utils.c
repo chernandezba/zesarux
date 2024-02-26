@@ -5233,6 +5233,8 @@ int quickload_valid_extension(char *nombre) {
     || !util_compare_file_extension(nombre,"bin")
     || !util_compare_file_extension(nombre,"sc")
     || !util_compare_file_extension(nombre,"cas")
+
+    || !util_compare_file_extension(nombre,"zmenu")
 	) {
 		return 1;
 	}
@@ -5880,6 +5882,25 @@ int quickload_continue(char *nombre) {
     }
 
 
+	//Archivos de menus
+    else if (
+                   !util_compare_file_extension(nombre,"zmenu")
+
+        ) {
+
+        strcpy(menu_open_zmenu_file_path,nombre);
+
+        if (menu_abierto) {
+            menu_event_pending_zmenu_file_menu_open.v=1;
+        }
+
+        menu_event_open_zmenu_file.v=1;
+
+        menu_set_menu_abierto(1);
+
+
+        return 0;
+    }
 
 
     //Error. no reconocido

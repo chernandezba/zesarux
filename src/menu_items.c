@@ -41109,7 +41109,7 @@ void menu_smartload(MENU_ITEM_PARAMETERS)
 
 	menu_first_aid("smartload");
 
-        char *filtros[39];
+        char *filtros[40];
 
         filtros[0]="zx";
         filtros[1]="sp";
@@ -41174,7 +41174,9 @@ void menu_smartload(MENU_ITEM_PARAMETERS)
 
 	filtros[37]="pok";
 
-    filtros[38]=0;
+    filtros[38]="zmenu";
+
+    filtros[39]=0;
 
 
         //guardamos directorio actual

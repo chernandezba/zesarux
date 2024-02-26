@@ -1252,6 +1252,11 @@ z80_bit menu_button_exit_emulator={0};
 
 z80_bit menu_event_drag_drop={0};
 
+z80_bit menu_event_pending_zmenu_file_menu_open={0};
+z80_bit menu_event_open_zmenu_file={0};
+//Ruta al archivo de menu que se va a cargar
+char menu_open_zmenu_file_path[PATH_MAX]="";
+
 z80_bit menu_event_pending_drag_drop_menu_open={0};
 
 z80_bit menu_event_new_version_show_changes={0};
@@ -23418,6 +23423,7 @@ void menu_inicio_pre_retorno_reset_flags(void)
     menu_button_osd_adv_keyboard_openmenu.v=0;
     menu_button_exit_emulator.v=0;
     menu_event_drag_drop.v=0;
+    menu_event_open_zmenu_file.v=0;
     menu_breakpoint_exception.v=0;
     menu_event_remote_protocol_enterstep.v=0;
     menu_button_f_function.v=0;
@@ -25063,6 +25069,11 @@ void menu_inicio(void)
                     cls_menu_overlay();
             }
 
+            //Abrir menu lanzador de juegos
+            if (menu_event_open_zmenu_file.v) {
+                menu_warn_message("Pruebas");
+            }
+
 
         //ha saltado un breakpoint
         //esto ahora se gestiona diferente, abriendo la ventana directamente por el gestor multitarea
@@ -25282,6 +25293,13 @@ void menu_inicio(void)
     if (menu_event_pending_drag_drop_menu_open.v) {
         menu_event_pending_drag_drop_menu_open.v=0;
         menu_event_drag_drop.v=1;
+        menu_abierto=1;
+    }
+
+    //Si se ha cargado un archivo zmenu con el menu abierto, decir de abrir de nuevo el menu para gestionar zmenu
+    if (menu_event_pending_zmenu_file_menu_open.v) {
+        menu_event_pending_zmenu_file_menu_open.v=0;
+        menu_event_open_zmenu_file.v=1;
         menu_abierto=1;
     }
 
