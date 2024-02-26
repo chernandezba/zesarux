@@ -1,0 +1,8 @@
+--set-launcher "Programas David"
+--add-launcher-entry "Bit Transfer" "my_soft/spectrum/vintage/bitsoft/bittransfe.tap"
+--add-launcher-entry "Dibuja 4" "my_soft/spectrum/vintage/bitsoft/dibuja4.tzx"
+--add-launcher-entry "El Autobus" "my_soft/spectrum/vintage/bitsoft/elautobus.tzx"
+--add-launcher-entry "Gusano" "my_soft/spectrum/vintage/bitsoft/gusano.tap"
+
+;autocadql/       david.mdv        david2.mdv       monopoly_folder/
+;ls my_soft/ql/bitsoft/
