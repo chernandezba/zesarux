@@ -25071,7 +25071,7 @@ void menu_inicio(void)
 
             //Abrir menu lanzador de juegos
             if (menu_event_open_zmenu_file.v) {
-                menu_warn_message("Pruebas");
+                zmenu_parse_file(menu_open_zmenu_file_path);
             }
 
 
@@ -27126,4 +27126,128 @@ void set_menu_gui_zoom(void)
 	//}
 
 	debug_printf (VERBOSE_INFO,"Setting GUI menu zoom to %d",menu_gui_zoom);
+}
+
+#define MAX_PARAMETERS_ZMENU_FILE 1000
+
+char *zmenufile_argv[MAX_PARAMETERS_ZMENU_FILE];
+int zmenufile_argc=0;
+
+#define MAX_SIZE_ZMENU_FILE 131072
+
+char *zmenu_parse_file_mem_pointer=NULL;
+
+void parse_zmenufile_options(void)
+{
+
+
+
+    while (!siguiente_parametro()) {
+
+		debug_printf (VERBOSE_DEBUG,"Parsing setting %s",argv[puntero_parametro]);
+
+                if (!strcmp(argv[puntero_parametro],"--realvideo")) {
+                                enable_rainbow();
+                }
+
+		else if (!strcmp(argv[puntero_parametro],"--snoweffect")) {
+                                snow_effect_enabled.v=1;
+		}
+
+
+
+
+		//
+		//Opcion no reconocida. Error
+		//
+                else {
+                        debug_printf (VERBOSE_ERR,"Setting %s not allowed on zmenu file",argv[puntero_parametro]);
+                        return;
+                }
+        }
+
+
+
+}
+
+//1 si ok
+//0 si error
+int zmenufile_read_aux(char *configfile,char *mem)
+{
+
+        //Avisar si tamanyo grande
+        if (get_file_size(configfile) > (long long int)MAX_SIZE_ZMENU_FILE) cpu_panic("Configuration file is larger than maximum size allowed");
+
+	FILE *ptr_configfile;
+        ptr_configfile=fopen(configfile,"rb");
+
+
+        if (!ptr_configfile) {
+                printf("Unable to open configuration file %s\n",configfile);
+                return 0;
+        }
+
+        int leidos=fread(mem,1,MAX_SIZE_ZMENU_FILE,ptr_configfile);
+
+        //Poner un codigo 0 al final
+        mem[leidos]=0;
+
+
+        fclose(ptr_configfile);
+
+        return 1;
+
+}
+
+
+//Parsear archivo indicado de zmenu
+void zmenu_parse_file_aux(char *archivo)
+{
+
+	//Ver si hay que asignar memoria
+	//Debe quedar esta memoria asignada al salir de este procedimiento, pues lo usa en parse_customfile_options
+	if (zmenu_parse_file_mem_pointer==NULL) {
+		debug_printf (VERBOSE_DEBUG,"Allocating memory to read zmenu file");
+		zmenu_parse_file_mem_pointer=malloc(MAX_SIZE_ZMENU_FILE+1);
+	}
+
+	else {
+		debug_printf (VERBOSE_DEBUG,"No need to allocate memory to read zmenu file, we allocated it before");
+	}
+
+
+        if (zmenu_parse_file_mem_pointer==NULL) {
+                cpu_panic("Unable to allocate memory for configuration file");
+        }
+
+
+	//Valor inicial
+	zmenufile_argc=0;
+
+
+        if (zmenufile_read_aux(archivo,zmenu_parse_file_mem_pointer)==0) {
+                //No hay archivo de configuracion. Parametros vacios
+                zmenufile_argv[0]="";
+                zmenufile_argc=1;
+
+                return;
+        }
+
+
+        configfile_parse_lines(zmenu_parse_file_mem_pointer,&zmenufile_argv[0],&zmenufile_argc);
+
+
+}
+
+
+//Parsear archivo de zmenu
+void zmenu_parse_file(char *archivo)
+{
+
+	zmenu_parse_file_aux(archivo);
+	argc=zmenufile_argc;
+	argv=zmenufile_argv;
+	puntero_parametro=0;
+
+	parse_zmenufile_options();
 }

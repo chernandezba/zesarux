@@ -1212,6 +1212,8 @@ extern z80_bit menu_event_new_update;
 
 extern char menu_open_zmenu_file_path[];
 
+extern void zmenu_parse_file(char *archivo);
+
 
 //extern char menu_event_drag_drop_file[PATH_MAX];
 extern z80_bit menu_event_remote_protocol_enterstep;

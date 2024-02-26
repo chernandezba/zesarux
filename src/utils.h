@@ -132,6 +132,8 @@ extern void configfile_parse(void);
 extern char *configfile_argv[];
 extern int configfile_argc;
 
+extern void configfile_parse_lines(char *mem,char *p_argv[],int *p_argc);
+
 extern z80_bit debug_parse_config_file;
 
 //valores teclas en modo raw
