@@ -1,3 +1,70 @@
+
+Versión 11.0-Beta1 - Edición David. 26 Febrero 2024
+
+* Cosas nuevas agregadas:
+
+Se agregó carga de audio desde una fuente de audio externa, como un reproductor de cintas.
+Se agregó la función ZENG Online, que permite ejecutar juegos multijugador en línea usando un servidor central.
+Se agregó soporte ZENG en el controlador de curses.
+Se agregó soporte para guardar pantalla en archivo .txt.
+Se agregó soporte para guardar pantalla en archivo .stl, útil para imprimir en una impresora 3D.
+Función agregada para cambiar bits en el editor hexadecimal.
+Estilo GUI de TempleOS agregado
+Estilo de GUI QNX agregado
+Se agregó una función de menú para sincronizar la instantánea local con la remota usando ZRCP
+Comandos ZRCP agregados: open-menu, print-error
+Agregada Configuración para forzar el modo CHR$ 128 en ZX81
+Agregada función de búsqueda para buscar entradas del menú.
+
+* Mejoras:
+
+Permitir no guardar la configuración al salir de ZEsarUX
+Permitir seleccionar el logotipo normal de ZEsarUX o el logotipo del X Aniversario
+Permitir enviar instantáneas ZENG con mayor frecuencia (incluso cada 20 ms)
+Permitir usar cpu-step-mode de ZRCP en controladores stdout y simpletext
+Permitir la configuración de rebobinado automático también para cintas reales
+Permitir deshabilitar los colores de Spectrum también en el modo de video real
+Permitir presionar teclas de acceso rápido en el teclado en pantalla
+
+Mejorado ZX Vision:
+- Se modificó el comportamiento del clic izquierdo del mouse: al presionar el botón izquierdo del mouse fuera de una ventana, se cerrarán todos los menús.
+  Si necesita mantener el menú abierto y centrarse en la máquina emulada, simplemente haga clic izquierdo y presione la tecla Mayús.
+- Mejorado el fondo del título de la ventana cuando no todos los botones están visibles
+- Mejorado hacer clic y dibujar una ventana siempre visible
+- Ya no se pueden minimizar los menús (eso no tenía sentido)
+- Selector de procesos: desminimiza ventanas al seleccionarlas y quedan minimizadas
+- Conmutador de procesos: ahora se puede configurar para que esté siempre visible
+- Conmutador de procesos: los nombres de los iconos son más descriptivos
+- Los títulos del menú se traducen al idioma seleccionado (aún no todo, tenga paciencia)
+- Mejora de la perspectiva del widget de partículas 3D en sensores de visualización.
+
+Mejorado ZX Desktop:
+- Permitir establecer parámetros al redefinir los botones superiores, para algunas acciones como abrir ventana o configurar máquina
+- Permitir reconfigurar los botones superiores haciendo clic derecho sobre ellos
+- Al definir los botones superiores o las funciones f en SetMachine, el parámetro del nombre de la máquina se establece en la máquina actual
+- Al crear un nuevo icono, botones superiores o funciones f de tipo OpenWindow, se muestra una lista de ventanas para seleccionar
+
+* Correcciones:
+
+Correcciones ZX Vision:
+- Se corrigió el error cuando la impresión en el pie de página y la columna estaba fuera de los límites (exactamente en la columna 32)
+- Se corrigieron los textos de bienvenida cuando la fila> 23
+- Se corrigió la pulsación de las teclas '.' y ',' en el menú cuando la máquina es ZX80 o ZX81
+- Se corrigió un error en el estilo ZX Vision BeOS, al presionar F5, los botones de la ventana no desaparecían ni reaparecían.
+- Se corrigieron las ventanas de actualización después de presionar F8 en el teclado en pantalla.
+- Se corrigieron los mensajes de bienvenida cuando las ventanas de fondo están habilitadas.
+- Corrección posicion inicial para muchas ventanas.
+
+Se corrigió un valor de bus de datos no válido en Jupiter Ace (son 20H en lugar de FFH)
+Se corrigió el bloqueo al dibujar el mapa de aventuras de texto y una aventura GAC corrupta.
+Se corrigieron los tiempos de los códigos de operación CP (HL), CP (IX+d), CP (IY+d)
+Se corrigió un error en ZRCP al manejar conexiones simultáneas.
+Se corrigió la lectura/escritura al hacer rollover en Betadisk (gracias Mak7ym). Carga fija por ejemplo de: BR_DEA7H, HOMER, PARADISE
+
+
+----------------------------------------
+
+
 Version X - Edición décimo aniversario. 24 Septiembre 2023
 
 Esta es una edición especial para celebrar los 10 años de ZEsarUX. La versión se llama "X" (en realidad es versión 10.10)
