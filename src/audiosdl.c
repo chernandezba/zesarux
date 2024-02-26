@@ -420,7 +420,7 @@ MMRESULT result;
 void *audiowindows_capture_thread_function(void *nada)
 {
 
-    printf("Inicio pthread\n");
+    //printf("Inicio pthread\n");
     audiowindows_capture_thread_running=1;
 
     int err;
@@ -444,7 +444,7 @@ void *audiowindows_capture_thread_function(void *nada)
     {
         char fault[256];
         waveInGetErrorText(result, fault, 256);
-        printf("Failed to open waveform input device\n");
+        debug_printf(VERBOSE_DEBUG,"Failed to open waveform input device");
         usleep(1000);
     }
 
@@ -473,7 +473,7 @@ void *audiowindows_capture_thread_function(void *nada)
         result = waveInAddBuffer(hWaveIn, &WaveInHdr, sizeof(WAVEHDR));
         if (result)
         {
-            printf("Failed to read block from device\n");
+            debug_printf(VERBOSE_DEBUG,"Failed to read audio block from device");
             usleep(1000);
         }
 
@@ -483,7 +483,7 @@ void *audiowindows_capture_thread_function(void *nada)
         result = waveInStart(hWaveIn);
         if (result)
         {
-            printf("Failed to start recording\n");
+            debug_printf(VERBOSE_DEBUG,"Failed to start recording");
             usleep(1000);
             //return;
         }
@@ -548,7 +548,7 @@ void *audiowindows_capture_thread_function(void *nada)
 	nada=0;
 	nada++;
 
-    printf("finished audio windows record\n");
+    //printf("finished audio windows record\n");
 
 
     audiowindows_capture_thread_running=0;
@@ -575,9 +575,11 @@ void audiowindows_start_record_input_create_thread(void)
 
 void audiosdl_start_record_input(void)
 {
-    printf("Start audiowindows record\n");
+
         //Vaciar posible sonido que haya antes del buffer, por si el usuario ha desactivado y activado varias veces
         audiorecord_input_empty_buffer_with_lock();
+
+    debug_printf(VERBOSE_INFO,"Starting recording audio from audio windows driver");
 
 /*
          // Specify recording parameters
@@ -591,18 +593,18 @@ void audiosdl_start_record_input(void)
  pFormat.cbSize=0;
 
 
-printf("Antes waveinopen\n");
+
  result = waveInOpen(&hWaveIn, WAVE_MAPPER,&pFormat,
             0L, 0L, WAVE_FORMAT_DIRECT);
  if (result)
  {
   char fault[256];
   waveInGetErrorText(result, fault, 256);
-  printf("Failed to open waveform input device\n");
+
   return;
  }
 
-printf("Despues waveinopen\n");
+
 
  // Set up and prepare header for input
  WaveInHdr.lpData = (LPSTR)waveIn;
@@ -617,24 +619,24 @@ printf("Despues waveinopen\n");
  result = waveInAddBuffer(hWaveIn, &WaveInHdr, sizeof(WAVEHDR));
  if (result)
  {
-  printf("Failed to read block from device\n");
+
   return;
  }
 
-printf("Despues waveinaddbuffer\n");
+
 
 
 */
     audiowindows_start_record_input_create_thread();
 
 
-printf("Despues crear thread\n");
+//printf("Despues crear thread\n");
 
 
 
     audio_is_recording_input=1;
 
-    printf("Finish initializing audiowindows record\n");
+    //printf("Finish initializing audiowindows record\n");
 
 }
 

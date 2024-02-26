@@ -39,8 +39,6 @@
 #include "settings.h"
 #include "ay38912.h"
 #include "utils.h"
-
-//temp
 #include "timer.h"
 
 
@@ -1311,9 +1309,6 @@ char buffer_audio_captura_temporal[AUDIO_RECORD_BUFFER_SIZE*4];
 
 
 
-struct timeval alsa_tiempo_antes,alsa_tiempo_despues;
-
-long alsa_tiempo_difftime;
 
 
 unsigned int actual_rate;
@@ -1331,12 +1326,10 @@ int leidos;
 
 	while (!audioalsa_record_must_finish) {
 
-        timer_stats_current_time(&alsa_tiempo_antes);
 
-        printf("antes readi\n");
         //Esta funcion es bloqueante y se espera a que acabe
         leidos = snd_pcm_readi (capture_handle, capture_buffer, capture_buffer_frames);
-        printf("despues readi. %d\n",leidos);
+
 
         if (leidos <0) {
             printf("err: %d\n",leidos);
@@ -1419,22 +1412,7 @@ int leidos;
     }
 
 
-        alsa_tiempo_difftime=timer_stats_diference_time(&alsa_tiempo_antes,&alsa_tiempo_despues);
-        //fprintf(stdout, "read  done\n");
 
-        long esperado_microseconds=(1000000L*capture_buffer_frames)/actual_rate;
-
-        printf("tiempo: %ld esperado: %ld frames: %d leidos: %d  (%d %d %d)\n",alsa_tiempo_difftime,esperado_microseconds,
-            leidos,leidos,1000000,leidos,actual_rate);
-        printf("%ld\n",esperado_microseconds);
-        //printf("long %d long long %d\n",sizeof(long),sizeof(long long));
-
-        long diferencia_a_final=esperado_microseconds-alsa_tiempo_difftime;
-        printf("Diferencia %ld microsegundos\n",diferencia_a_final);
-        if (diferencia_a_final>0) {
-            printf("Falta %ld microsegundos\n",diferencia_a_final);
-            //usleep(diferencia_a_final/2);
-        }
 
 
 
