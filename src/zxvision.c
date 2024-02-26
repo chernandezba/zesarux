@@ -27137,34 +27137,111 @@ int zmenufile_argc=0;
 
 char *zmenu_parse_file_mem_pointer=NULL;
 
+char zmenu_launcher_title[256];
+
 void parse_zmenufile_options(void)
 {
 
+    //opciones para diferentes acciones dentro de un zmenu. Solo permitir una a la vez
+    int es_un_lanzador_juegos=0;
+
+
+    menu_item *array_menu_common;
+    menu_item item_seleccionado;
+    int retorno_menu;
+    int opcion_seleccionada=0;
 
 
     while (!siguiente_parametro()) {
 
-		debug_printf (VERBOSE_DEBUG,"Parsing setting %s",argv[puntero_parametro]);
+        debug_printf (VERBOSE_DEBUG,"Parsing setting %s",argv[puntero_parametro]);
 
-                if (!strcmp(argv[puntero_parametro],"--realvideo")) {
-                                enable_rainbow();
-                }
+        if (!strcmp(argv[puntero_parametro],"--set-launcher")) {
+            es_un_lanzador_juegos=1;
+            siguiente_parametro_argumento();
 
-		else if (!strcmp(argv[puntero_parametro],"--snoweffect")) {
-                                snow_effect_enabled.v=1;
-		}
+            strcpy(zmenu_launcher_title,argv[puntero_parametro]);
 
-
+            menu_add_item_menu_inicial(&array_menu_common,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
 
 
-		//
-		//Opcion no reconocida. Error
-		//
-                else {
-                        debug_printf (VERBOSE_ERR,"Setting %s not allowed on zmenu file",argv[puntero_parametro]);
-                        return;
-                }
         }
+
+        else if (!strcmp(argv[puntero_parametro],"--add-launcher-entry")) {
+            if (!es_un_lanzador_juegos) {
+                debug_printf (VERBOSE_ERR,"You must set launcher before adding entries");
+                return;
+            }
+
+            siguiente_parametro_argumento();
+
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,argv[puntero_parametro]);
+
+
+            siguiente_parametro_argumento();
+
+            menu_add_item_menu_misc(array_menu_common,argv[puntero_parametro]);
+
+
+        }
+
+
+        //
+        //Opcion no reconocida. Error
+        //
+        else {
+            debug_printf (VERBOSE_ERR,"Setting %s not allowed on zmenu file",argv[puntero_parametro]);
+            return;
+        }
+    }
+
+    if (es_un_lanzador_juegos) {
+        menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+
+        menu_add_ESC_item(array_menu_common);
+
+        retorno_menu=menu_dibuja_menu_no_title_lang(&opcion_seleccionada,&item_seleccionado,array_menu_common,zmenu_launcher_title);
+
+
+
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+            //llamamos por valor de funcion
+            /*if (item_seleccionado.menu_funcion!=NULL) {
+                //printf ("actuamos por funcion\n");
+                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+
+            }*/
+            //printf("Cargando %s\n",item_seleccionado.texto_misc);
+
+            //localizarlo
+            char buffer_nombre[PATH_MAX];
+
+            int existe=find_sharedfile(item_seleccionado.texto_misc,buffer_nombre);
+            if (!existe)  {
+                    debug_printf(VERBOSE_ERR,"Unable to find file %s",item_seleccionado.texto_misc);
+                    return;
+            }
+
+            strcpy(quickload_file,buffer_nombre);
+            quickfile=quickload_file;
+            //Forzar autoload
+            z80_bit pre_noautoload;
+            pre_noautoload.v=noautoload.v;
+            noautoload.v=0;
+            quickload(quickload_file);
+
+            noautoload.v=pre_noautoload.v;
+
+        }
+
+        //} while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+
+
+    }
+    else {
+        debug_printf (VERBOSE_ERR,"You haven't defined a menu type");
+        return;
+    }
 
 
 

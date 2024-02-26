@@ -14,6 +14,7 @@ Added menu function to sync local snapshot to remote using ZRCP
 Added ZRCP commands: open-menu, print-error
 Added setting to force CHR$ 128 mode on ZX81
 Added search function to locate menu entries
+Added .zmenu type files to generate launcher menus
 
 * Improvements:
 

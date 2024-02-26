@@ -70,7 +70,7 @@ Examples
 //final
 #define ZESARUX_EXTRAS_URL "/chernandezba/zesarux/releases/download/ZEsarUX-" EMULATOR_VERSION "/ZEsarUX_extras-" EMULATOR_VERSION ".zip"
 
-#define EDITION_NAME_GAME "editionnamegame.dsk"
+#define EDITION_NAME_GAME "editionnamegame.zmenu"
 
 
 //8 bits
