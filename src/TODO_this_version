@@ -801,6 +801,9 @@ Quizá setting para limitar o no
 
 
 -zmenu: en ayuda (--helpzmenu) crear
+-manera de poder asignar ql microdrive path y reset. tener en cuenta que tiene que buscar la ruta a la carpeta
+en las shared carpetas...
+-si se hace drag & drop de zmenu acaba abriendo el menu dos veces
 
 
 -LEC memory extension https://ia600604.us.archive.org/view_archive.php?archive=/1/items/World_of_Spectrum_June_2017_Mirror/World%20of%20Spectrum%20June%202017%20Mirror.zip&file=World%20of%20Spectrum%20June%202017%20Mirror/sinclair/hardware-info/l/LECMemoryExtension.pdf
