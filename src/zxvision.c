@@ -27278,7 +27278,8 @@ int zmenufile_read_aux(char *configfile,char *mem)
 
 
 //Parsear archivo indicado de zmenu
-void zmenu_parse_file_aux(char *archivo)
+//Retorna 0 si ok
+int zmenu_parse_file_aux(char *archivo)
 {
 
 	//Ver si hay que asignar memoria
@@ -27307,11 +27308,13 @@ void zmenu_parse_file_aux(char *archivo)
                 zmenufile_argv[0]="";
                 zmenufile_argc=1;
 
-                return;
+                return 1;
         }
 
 
         configfile_parse_lines(zmenu_parse_file_mem_pointer,&zmenufile_argv[0],&zmenufile_argc);
+
+        return 0;
 
 
 }
@@ -27321,10 +27324,12 @@ void zmenu_parse_file_aux(char *archivo)
 void zmenu_parse_file(char *archivo)
 {
 
-	zmenu_parse_file_aux(archivo);
-	argc=zmenufile_argc;
-	argv=zmenufile_argv;
-	puntero_parametro=0;
+	int retorno=zmenu_parse_file_aux(archivo);
+    if (!retorno) {
+        argc=zmenufile_argc;
+        argv=zmenufile_argv;
+        puntero_parametro=0;
 
-	parse_zmenufile_options();
+        parse_zmenufile_options();
+    }
 }
