@@ -1404,7 +1404,7 @@ int leidos;
 
         }
 
-        int valores_escribir=leidos;
+        //int valores_escribir=leidos;
 
         audiorecord_input_fifo_write(buffer_audio_captura_temporal,escritos);
 
@@ -1446,7 +1446,7 @@ void audioalsa_start_record_input(void)
     //Vaciar posible sonido que haya antes del buffer, por si el usuario ha desactivado y activado varias veces
     audiorecord_input_empty_buffer_with_lock();
 
-    int i;
+    //int i;
     int err;
 
     unsigned int rate = AUDIO_RECORD_FREQUENCY;
