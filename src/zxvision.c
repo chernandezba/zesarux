@@ -27167,7 +27167,7 @@ void parse_zmenufile_options(void)
 
         }
 
-        else if (!strcmp(argv[puntero_parametro],"--add-launcher-entry")) {
+        else if (!strcmp(argv[puntero_parametro],"--add-launcher-entry-smartload")) {
             if (!es_un_lanzador_juegos) {
                 debug_printf (VERBOSE_ERR,"You must set launcher before adding entries");
                 return;
