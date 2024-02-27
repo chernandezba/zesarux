@@ -335,7 +335,12 @@ unsigned char get_ql_keyboard_table_si_autoload(int fila)
     if (ql_initial_autoload_counter!=0 && fila==0) {
         printf("Obtener fila de F1\n");
         valor_puerto &= (255-2);
+        return valor_puerto;
     }
+
+    if (zxvision_key_not_sent_emulated_mach() )  valor_puerto=255;
+
+    return valor_puerto;
 
 }
 
@@ -587,7 +592,7 @@ void ql_ipc_write_ipc_read_keyrow(int row)
 	*/
 
     //Si menu abierto, no tecla pulsada
-	if (zxvision_key_not_sent_emulated_mach() )  resultado_row=0;
+	//if (zxvision_key_not_sent_emulated_mach() )  resultado_row=0;
 
 	debug_printf (VERBOSE_PARANOID,"i8049: Reading ipc command 9: read keyrow. row %d returning %02XH",row,resultado_row);
 
@@ -671,10 +676,10 @@ unsigned char ql_read_ipc(void)
 int ql_pulsado_tecla(void)
 {
 
-	if (zxvision_key_not_sent_emulated_mach() ) return 0;
+	//if (zxvision_key_not_sent_emulated_mach() ) return 0;
 
 	//Si backspace
-	if (ql_pressed_backspace) return 1;
+	if (ql_pressed_backspace && !zxvision_key_not_sent_emulated_mach() ) return 1;
 
 	unsigned char acumulado;
 

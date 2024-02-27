@@ -2134,6 +2134,8 @@ void ql_rom_traps(void)
             if (contador_segundo_infinito-ql_initial_autoload_counter>1000) {
                 debug_printf(VERBOSE_INFO,"Release F1 after 1 second");
 
+                printf("Release F1 after 1 second\n");
+
                 //ql_keyboard_table[0] |= 2;
                 ql_initial_autoload_counter=0;
                 ql_initial_autoload=0;

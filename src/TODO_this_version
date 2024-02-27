@@ -810,3 +810,6 @@ en las shared carpetas...
 -CPM para LEC: https://spectrumcomputing.co.uk/index.php?cat=96&id=23809
 https://trastero.speccy.org/cosas/FLeon/todo_sobre_la_ram_y_rom_lec.txt
 https://trastero.speccy.org/cosas/FLeon/Fleon.htm
+
+-autoloadql: que si simulado F1 lo envie aun con menu abierto. que pasa con get_ql_keyboard_table_si_autoload?
+no considera menu abierto?
