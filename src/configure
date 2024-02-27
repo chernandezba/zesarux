@@ -1538,7 +1538,7 @@ zxuno.o: zxuno.c zxuno.h cpu.h debug.h contend.h mem128.h utils.h ula.h screen.h
 ql.o: ql.c ql.h debug.h m68k.h utils.h zxvision.h operaciones.h settings.h ql_i8049.h ql_zx8302.h compileoptions.h
 	\$(CC) \$(CFLAGS) -c ql.c
 
-ql_qdos_handler.o: ql_qdos_handler.c ql_qdos_handler.h ql.h debug.h m68k.h utils.h zxvision.h operaciones.h settings.h ql_i8049.h ql_zx8302.h menu_items.h
+ql_qdos_handler.o: ql_qdos_handler.c ql_qdos_handler.h ql.h debug.h m68k.h utils.h zxvision.h operaciones.h settings.h ql_i8049.h ql_zx8302.h menu_items.h timer.h
 	\$(CC) \$(CFLAGS) -c ql_qdos_handler.c
 
 ql_i8049.o: ql_i8049.c ql_i8049.h debug.h utils.h ql.h audio.h
