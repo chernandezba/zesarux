@@ -90,4 +90,8 @@ extern int ql_sound_feature_wrap_enabled;
 extern int ql_sound_feature_fuzzy_enabled;
 extern int ql_sound_feature_random_enabled;
 
+extern int ql_initial_autoload_counter;
+
+extern int ql_initial_autoload;
+
 #endif

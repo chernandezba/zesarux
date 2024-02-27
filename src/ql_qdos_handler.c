@@ -74,9 +74,7 @@ z80_byte ql_last_trap=0;
 int ql_previous_trap_was_4=0;
 
 
-int ql_initial_autoload_counter=0;
 
-z80_bit ql_initial_autoload={0};
 
 void ql_footer_mdflp_operating(void)
 {
@@ -967,7 +965,7 @@ void ql_insert_mdv_flp(enum ql_qdos_unidades unidad,char *dir_to_mount)
     if (noautoload.v==0) {
         debug_printf (VERBOSE_INFO,"Restarting autoload");
 
-        ql_initial_autoload.v=1;
+        ql_initial_autoload=1;
         ql_initial_autoload_counter=0;
         //initial_tap_load.v=1;
         //initial_tap_sequence=0;
@@ -2116,17 +2114,19 @@ int ql_qdos_check_device_readonly(char *device)
 
 void ql_rom_traps(void)
 {
-    if (ql_initial_autoload.v) {
+    if (ql_initial_autoload) {
 
         if (get_pc_register()==0x4af6) {
 
 
             debug_printf(VERBOSE_INFO,"QL Trap ROM: Read F1 or F2 when initial autoload. Simulate press F1");
 
+            printf("QL Trap ROM: Read F1 or F2 when initial autoload. Simulate press F1\n");
+
             ql_initial_autoload_counter=contador_segundo_infinito;
 
             //F1
-            ql_keyboard_table[0] &= (255-2);
+            //ql_keyboard_table[0] &= (255-2);
 
         }
 
@@ -2134,9 +2134,9 @@ void ql_rom_traps(void)
             if (contador_segundo_infinito-ql_initial_autoload_counter>1000) {
                 debug_printf(VERBOSE_INFO,"Release F1 after 1 second");
 
-                ql_keyboard_table[0] |= 2;
+                //ql_keyboard_table[0] |= 2;
                 ql_initial_autoload_counter=0;
-                ql_initial_autoload.v=0;
+                ql_initial_autoload=0;
             }
         }
 

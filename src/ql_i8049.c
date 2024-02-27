@@ -92,7 +92,9 @@ int ql_ipc_last_nibble_to_read_length=1;
 int i8049_chip_present=0;
 
 
+int ql_initial_autoload_counter=0;
 
+int ql_initial_autoload={0};
 
 /*
 Formato del mensaje ipc de enviar sonido:
@@ -323,6 +325,21 @@ unsigned char ql_keyboard_table[8]={
 //Se excluye shift, ctrl y alt de la respuesta
 //Retorna fila -1 y columna -1 si ninguna tecla pulsada
 
+unsigned char get_ql_keyboard_table_si_autoload(int fila)
+{
+    unsigned char valor_puerto;
+
+    valor_puerto=ql_keyboard_table[fila];
+
+    //si autoload
+    if (ql_initial_autoload_counter!=0 && fila==0) {
+        printf("Obtener fila de F1\n");
+        valor_puerto &= (255-2);
+    }
+
+}
+
+
 void ql_return_columna_fila_puertos(int *columna,int *fila)
 {
 
@@ -336,7 +353,8 @@ void ql_return_columna_fila_puertos(int *columna,int *fila)
 	unsigned char valor_puerto;
 	int salir=0;
 	for (i=0;i<8 && salir==0;i++){
-		valor_puerto=ql_keyboard_table[i];
+		//valor_puerto=ql_keyboard_table[i];
+        valor_puerto=get_ql_keyboard_table_si_autoload(i);
 		//Si shift ctrl y alt quitarlos
 		if (i==7) valor_puerto |=1+2+4;
 
@@ -548,6 +566,9 @@ void ql_ipc_write_ipc_read_keyrow(int row)
 	unsigned char resultado_row;
 
 	resultado_row=ql_keyboard_table[row&7] ^ 255;
+
+    resultado_row=get_ql_keyboard_table_si_autoload(row&7) ^ 255;
+
 	//Bit a 1 para cada tecla pulsada
 	//row numerando de 0 a 7
 	/*
@@ -660,7 +681,7 @@ int ql_pulsado_tecla(void)
 	acumulado=255;
 
 	int i;
-	for (i=0;i<8;i++) acumulado &=ql_keyboard_table[i];
+	for (i=0;i<8;i++) acumulado &=get_ql_keyboard_table_si_autoload(i);
 
 	if (acumulado==255) return 0;
 	return 1;
