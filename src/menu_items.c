@@ -21651,42 +21651,42 @@ void menu_ql_microdrive_floppy(MENU_ITEM_PARAMETERS)
 int menu_storage_ql_mdv_flp(char *string_root_dir,enum ql_qdos_unidades unidad)
 {
 
-        char *filtros[2];
+    char *filtros[2];
 
-        filtros[0]="";
-        filtros[1]=0;
-
-
-        //guardamos directorio actual
-        char directorio_actual[PATH_MAX];
-        getcwd(directorio_actual,PATH_MAX);
-
-        int ret;
+    filtros[0]="";
+    filtros[1]=0;
 
 
-	char nada[PATH_MAX];
+    //guardamos directorio actual
+    char directorio_actual[PATH_MAX];
+    getcwd(directorio_actual,PATH_MAX);
 
-        //Obtenemos ultimo directorio visitado
-	zvfs_chdir(string_root_dir);
-
-
-        ret=menu_filesel("Enter dir & press ESC",filtros,nada);
+    int ret;
 
 
-	//Si sale con ESC
-	if (ret==0) {
+    char nada[PATH_MAX];
+
+    //Obtenemos ultimo directorio visitado
+    zvfs_chdir(string_root_dir);
+
+
+    ret=menu_filesel("Enter dir & press ESC",filtros,nada);
+
+
+    //Si sale con ESC
+    if (ret==0) {
 
         debug_printf (VERBOSE_DEBUG,"Selected directory: %s",menu_filesel_last_directory_seen);
 
         ql_insert_mdv_flp(unidad,menu_filesel_last_directory_seen);
 
 
-	}
+    }
 
     //volvemos a directorio inicial
     zvfs_chdir(directorio_actual);
 
-	return ret;
+    return ret;
 
 
 }
