@@ -35,6 +35,7 @@
 #include "audio.h"
 #include "operaciones.h"
 #include "joystick.h"
+#include "settings.h"
 
 
 // Info, soft etc:

@@ -87,7 +87,7 @@ char *tapefile;
 char *tape_out_file;
 //FILE *ptr_mycinta;
 void *buffer_tap_read=NULL;
-z80_bit noautoload;
+
 z80_bit tape_any_flag_loading;
 
 //indica que el autoload es con load "". sino es con enter

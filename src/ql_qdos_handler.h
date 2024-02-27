@@ -140,4 +140,12 @@ struct s_qltraps_fopen {
 
 extern struct s_qltraps_fopen qltraps_fopen_files[];
 
+enum ql_qdos_unidades {
+    QL_QDOS_UNIT_MDV1,
+    QL_QDOS_UNIT_MDV2,
+    QL_QDOS_UNIT_FLP1
+};
+
+extern void ql_insert_mdv_flp(enum ql_qdos_unidades unidad,char *dir_to_mount);
+
 #endif

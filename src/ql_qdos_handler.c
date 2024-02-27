@@ -934,6 +934,55 @@ int ql_return_full_path(char *device, char *file, char *fullpath)
   return 0;
 }
 
+void ql_insert_mdv_flp(enum ql_qdos_unidades unidad,char *dir_to_mount)
+{
+
+    //char *string_root_dir;
+
+    switch (unidad) {
+
+        case QL_QDOS_UNIT_MDV2:
+            sprintf (ql_mdv2_root_dir,"%s",dir_to_mount);
+        break;
+
+        case QL_QDOS_UNIT_FLP1:
+            sprintf (ql_flp1_root_dir,"%s",dir_to_mount);
+        break;
+
+        case QL_QDOS_UNIT_MDV1:
+        default:
+            sprintf (ql_mdv1_root_dir,"%s",dir_to_mount);
+
+            //Si se copia misma ruta de mdv1 a flp1
+            if (ql_flp1_follow_mdv1.v) strcpy(ql_flp1_root_dir,dir_to_mount);
+        break;
+    }
+
+
+    if (noautoload.v==0) {
+        debug_printf (VERBOSE_INFO,"Restarting autoload");
+        //initial_tap_load.v=1;
+        //initial_tap_sequence=0;
+
+        debug_printf (VERBOSE_INFO,"Reset cpu due to autoload");
+        reset_cpu();
+
+        //Activamos top speed si conviene
+        /*if (fast_autoload.v && !MACHINE_IS_MSX && !MACHINE_IS_ACE) {
+            debug_printf (VERBOSE_INFO,"Set top speed from TAP open");
+            top_speed_timer.v=1;
+        }*/
+
+    }
+
+    else {
+        //initial_tap_load.v=0;
+    }
+
+
+
+}
+
 
 //Dice si la ruta que se le ha pasado corresponde a un mdv1_, o mdv2_, o flp1_
 int ql_si_ruta_parametro(char *texto,char *ruta)

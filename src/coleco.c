@@ -30,11 +30,11 @@
 #include "cpu.h"
 #include "debug.h"
 //#include "ay38912.h"
-#include "tape.h"
 #include "screen.h"
 #include "audio.h"
 #include "sn76489an.h"
 #include "joystick.h"
+#include "settings.h"
 
 z80_byte *coleco_vram_memory=NULL;
 

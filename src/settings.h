@@ -168,5 +168,7 @@ extern z80_bit do_no_show_david_in_memoriam;
 
 extern char alsa_capture_device[];
 
+extern z80_bit noautoload;
+
 #endif
 

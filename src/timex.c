@@ -34,6 +34,7 @@
 #include "prism.h"
 #include "zxuno.h"
 #include "tbblue.h"
+#include "settings.h"
 
 
 

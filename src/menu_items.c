@@ -21648,7 +21648,7 @@ void menu_ql_microdrive_floppy(MENU_ITEM_PARAMETERS)
 
 
 
-int menu_storage_ql_mdv_flp(char *string_root_dir)
+int menu_storage_ql_mdv_flp(char *string_root_dir,enum ql_qdos_unidades unidad)
 {
 
         char *filtros[2];
@@ -21676,32 +21676,10 @@ int menu_storage_ql_mdv_flp(char *string_root_dir)
 	//Si sale con ESC
 	if (ret==0) {
 
+        debug_printf (VERBOSE_DEBUG,"Selected directory: %s",menu_filesel_last_directory_seen);
 
-        if (noautoload.v==0) {
-            debug_printf (VERBOSE_INFO,"Restarting autoload");
-            //initial_tap_load.v=1;
-            //initial_tap_sequence=0;
+        ql_insert_mdv_flp(unidad,menu_filesel_last_directory_seen);
 
-            debug_printf (VERBOSE_INFO,"Reset cpu due to autoload");
-            reset_cpu();
-
-            //Activamos top speed si conviene
-            /*if (fast_autoload.v && !MACHINE_IS_MSX && !MACHINE_IS_ACE) {
-                debug_printf (VERBOSE_INFO,"Set top speed from TAP open");
-                top_speed_timer.v=1;
-            }*/
-
-        }
-
-        else {
-            //initial_tap_load.v=0;
-        }
-
-		//Directorio root
-		sprintf (string_root_dir,"%s",menu_filesel_last_directory_seen);
-
-
-		debug_printf (VERBOSE_DEBUG,"Selected directory: %s",string_root_dir);
 
 	}
 
@@ -21716,20 +21694,18 @@ int menu_storage_ql_mdv_flp(char *string_root_dir)
 
 void menu_ql_mdv1(MENU_ITEM_PARAMETERS)
 {
-	menu_storage_ql_mdv_flp(ql_mdv1_root_dir);
+	menu_storage_ql_mdv_flp(ql_mdv1_root_dir,QL_QDOS_UNIT_MDV1);
 
-	//Copiar misma ruta a flp1
-	if (ql_flp1_follow_mdv1.v) strcpy(ql_flp1_root_dir,ql_mdv1_root_dir);
 }
 
 void menu_ql_mdv2(MENU_ITEM_PARAMETERS)
 {
-	menu_storage_ql_mdv_flp(ql_mdv2_root_dir);
+	menu_storage_ql_mdv_flp(ql_mdv2_root_dir,QL_QDOS_UNIT_MDV2);
 }
 
 void menu_ql_flp1(MENU_ITEM_PARAMETERS)
 {
-	menu_storage_ql_mdv_flp(ql_flp1_root_dir);
+	menu_storage_ql_mdv_flp(ql_flp1_root_dir,QL_QDOS_UNIT_FLP1);
 }
 
 

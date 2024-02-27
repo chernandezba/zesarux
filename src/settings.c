@@ -201,6 +201,8 @@ z80_bit tzx_suppress_pause={0};
 //Nuevo algoritmo de carga real tape
 z80_bit realtape_algorithm_new={0};
 
+z80_bit noautoload;
+
 
 //
 // PD765 Settings

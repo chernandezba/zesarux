@@ -38,8 +38,8 @@
 #include "mem128.h"
 #include "screen.h"
 #include "tsconf.h"
-#include "tape.h"
 #include "menu_items.h"
+#include "settings.h"
 
 
 z80_bit betadisk_enabled={0};

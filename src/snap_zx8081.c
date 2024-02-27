@@ -45,6 +45,7 @@
 #include "zxvision.h"
 #include "snap.h"
 #include "utils.h"
+#include "settings.h"
 
 FILE *ptr_zx8081file;
 

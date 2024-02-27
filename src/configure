@@ -1415,16 +1415,16 @@ vdp_9918a_sms.o: vdp_9918a_sms.c vdp_9918a_sms.h vdp_9918a.h cpu.h debug.h scree
 msx.o: msx.c msx.h cpu.h debug.h vdp_9918a.h tape.h screen.h audio.h operaciones.h joystick.h settings.h
 	\$(CC) \$(CFLAGS) -c msx.c
 
-svi.o: svi.c svi.h cpu.h debug.h vdp_9918a.h tape.h screen.h audio.h operaciones.h joystick.h 
+svi.o: svi.c svi.h cpu.h debug.h vdp_9918a.h tape.h screen.h audio.h operaciones.h joystick.h settings.h
 	\$(CC) \$(CFLAGS) -c svi.c  
 
-coleco.o: coleco.c coleco.h cpu.h debug.h vdp_9918a.h tape.h screen.h audio.h sn76489an.h joystick.h vdp_9918a_sms.h
+coleco.o: coleco.c coleco.h cpu.h debug.h vdp_9918a.h screen.h audio.h sn76489an.h joystick.h vdp_9918a_sms.h settings.h
 	\$(CC) \$(CFLAGS) -c coleco.c
 
-sg1000.o: sg1000.c sg1000.h cpu.h debug.h vdp_9918a.h tape.h screen.h audio.h sn76489an.h joystick.h vdp_9918a_sms.h
+sg1000.o: sg1000.c sg1000.h cpu.h debug.h vdp_9918a.h screen.h audio.h sn76489an.h joystick.h vdp_9918a_sms.h settings.h
 	\$(CC) \$(CFLAGS) -c sg1000.c
 
-sms.o: sms.c sms.h cpu.h debug.h vdp_9918a.h tape.h screen.h audio.h sn76489an.h joystick.h vdp_9918a_sms.h
+sms.o: sms.c sms.h cpu.h debug.h vdp_9918a.h screen.h audio.h sn76489an.h joystick.h vdp_9918a_sms.h settings.h
 	\$(CC) \$(CFLAGS) -c sms.c
 
 saa_simul.o: saa_simul.c saa_simul.h ay38912.h cpu.h audio.h debug.h
@@ -1436,7 +1436,7 @@ screen.o: screen.c screen.h cpu.h debug.h mem128.h chloe.h prism.h timex.h cpc.h
 mem128.o: mem128.c cpu.h mem128.h debug.h contend.h zxuno.h chloe.h prism.h timex.h sam.h ula.h tbblue.h superupgrade.h chrome.h zxevo.h tsconf.h baseconf.h msx.h coleco.h sg1000.h sms.h svi.h
 	\$(CC) \$(CFLAGS) -c mem128.c
 
-timex.o: timex.c timex.h cpu.h debug.h contend.h tape.h mem128.h zxvision.h chloe.h prism.h zxuno.h tbblue.h
+timex.o: timex.c timex.h cpu.h debug.h contend.h tape.h mem128.h zxvision.h chloe.h prism.h zxuno.h tbblue.h settings.h
 	\$(CC) \$(CFLAGS) -c timex.c
 
 chloe.o: chloe.c chloe.h cpu.h timex.h mem128.h debug.h contend.h zxuno.h timex.h prism.h 
@@ -1520,7 +1520,7 @@ z88.o: z88.c z88.h cpu.h screen.h debug.h core_z88.h contend.h joystick.h zxvisi
 cpc.o: cpc.c cpc.h cpu.h screen.h debug.h core_cpc.h contend.h joystick.h zxvision.h operaciones.h utils.h ay38912.h tape.h dsk.h pd765.h
 	\$(CC) \$(CFLAGS) -c cpc.c
 
-pcw.o: pcw.c pcw.h cpu.h screen.h debug.h core_pcw.h contend.h joystick.h zxvision.h operaciones.h utils.h audio.h dsk.h pd765.h ula.h tape.h ay38912.h
+pcw.o: pcw.c pcw.h cpu.h screen.h debug.h core_pcw.h contend.h joystick.h zxvision.h operaciones.h utils.h audio.h dsk.h pd765.h ula.h ay38912.h settings.h
 	\$(CC) \$(CFLAGS) -c pcw.c
 
 sam.o: sam.c sam.h cpu.h screen.h debug.h core_sam.h contend.h joystick.h zxvision.h operaciones.h utils.h
@@ -1586,7 +1586,7 @@ snap_spg.o: snap_spg.c snap_spg.h cpu.h debug.h operaciones.h snap.h mem128.h ts
 spg_depack.o: spg_depack.c
 	\$(CC) \$(CFLAGS) -c spg_depack.c
 
-snap_zx8081.o: snap_zx8081.c snap_zx8081.h cpu.h debug.h operaciones.h zx8081.h audio.h screen.h tape.h tape_smp.h snap_z81.h zxvision.h snap.h utils.h
+snap_zx8081.o: snap_zx8081.c snap_zx8081.h cpu.h debug.h operaciones.h zx8081.h audio.h screen.h tape.h tape_smp.h snap_z81.h zxvision.h snap.h utils.h settings.h
 	\$(CC) \$(CFLAGS) -c snap_zx8081.c
 
 snap_rzx.o: snap_rzx.c snap_rzx.h snap.h cpu.h debug.h operaciones.h utils.h zxvision.h screen.h
@@ -1670,7 +1670,7 @@ dandanator.o: dandanator.c dandanator.h cpu.h debug.h utils.h operaciones.h ula.
 gs.o: gs.c gs.h cpu.h debug.h utils.h operaciones.h contend.h audio.h
 	\$(CC) \$(CFLAGS) -c gs.c
 
-betadisk.o: betadisk.c betadisk.h cpu.h debug.h utils.h operaciones.h ula.h mem128.h screen.h tsconf.h tape.h menu_items.h
+betadisk.o: betadisk.c betadisk.h cpu.h debug.h utils.h operaciones.h ula.h mem128.h screen.h tsconf.h menu_items.h settings.h
 	\$(CC) \$(CFLAGS) -c betadisk.c
 
 codetests.o: codetests.c codetests.h cpu.h debug.h utils.h operaciones.h ula.h mem128.h screen.h tbblue.h assemble.h expression_parser.h audio.h zeng.h zeng_online.h network.h settings.h atomic.h

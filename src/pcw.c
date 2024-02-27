@@ -36,8 +36,8 @@
 #include "dsk.h"
 #include "pd765.h"
 #include "ula.h"
-#include "tape.h"
 #include "ay38912.h"
+#include "settings.h"
 
 /*
 

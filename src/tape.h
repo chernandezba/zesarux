@@ -37,7 +37,7 @@ extern char *tapefile;
 extern char *tape_out_file;
 extern z80_bit initial_tap_load;
 extern int initial_tap_sequence;
-extern z80_bit noautoload;
+
 extern z80_bit tape_any_flag_loading;
 
 extern int is_tape_inserted(void);
