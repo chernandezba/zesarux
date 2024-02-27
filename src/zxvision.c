@@ -84,6 +84,7 @@
 #include "pd765.h"
 #include "dsk.h"
 #include "zeng_online_client.h"
+#include "ql_qdos_handler.h"
 
 #if defined(__APPLE__)
 	#include <sys/syslimits.h>
@@ -27139,6 +27140,57 @@ char *zmenu_parse_file_mem_pointer=NULL;
 
 char zmenu_launcher_title[256];
 
+void parse_zmenu_launch_entry(menu_item *item_seleccionado)
+{
+    //llamamos por valor de funcion
+    /*if (item_seleccionado.menu_funcion!=NULL) {
+        //printf ("actuamos por funcion\n");
+        item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+
+    }*/
+    //printf("Cargando %s\n",item_seleccionado.texto_misc);
+
+    if (item_seleccionado->valor_opcion==1) {
+        //Ruta mdv1 QL
+
+        if (!MACHINE_IS_QL) {
+            current_machine_type=MACHINE_ID_QL_STANDARD;
+            set_machine(NULL);
+
+            //establecer parametros por defecto. Incluido quitar slots de memoria
+            set_machine_params();
+
+            reset_cpu();
+        }
+
+        ql_insert_mdv_flp(QL_QDOS_UNIT_MDV1,item_seleccionado->texto_misc);
+
+    }
+
+    //smartload
+    else {
+
+        //localizarlo
+        char buffer_nombre[PATH_MAX];
+
+        int existe=find_sharedfile(item_seleccionado->texto_misc,buffer_nombre);
+        if (!existe)  {
+            debug_printf(VERBOSE_ERR,"Unable to find file %s",item_seleccionado->texto_misc);
+            return;
+        }
+
+        strcpy(quickload_file,buffer_nombre);
+        quickfile=quickload_file;
+        //Forzar autoload
+        z80_bit pre_noautoload;
+        pre_noautoload.v=noautoload.v;
+        noautoload.v=0;
+        quickload(quickload_file);
+
+        noautoload.v=pre_noautoload.v;
+    }
+}
+
 void parse_zmenufile_options(void)
 {
 
@@ -27167,10 +27219,20 @@ void parse_zmenufile_options(void)
 
         }
 
-        else if (!strcmp(argv[puntero_parametro],"--add-launcher-entry-smartload")) {
+        else if (!strcmp(argv[puntero_parametro],"--add-launcher-entry-smartload")
+                || !strcmp(argv[puntero_parametro],"--add-launcher-entry-ql-mdv")
+            ) {
             if (!es_un_lanzador_juegos) {
                 debug_printf (VERBOSE_ERR,"You must set launcher before adding entries");
                 return;
+            }
+
+            //Por defecto, es smartload
+            int valor_opcion=0;
+
+            //Si es Path ql
+            if (!strcmp(argv[puntero_parametro],"--add-launcher-entry-ql-mdv")) {
+                valor_opcion=1;
             }
 
             siguiente_parametro_argumento();
@@ -27181,6 +27243,9 @@ void parse_zmenufile_options(void)
             siguiente_parametro_argumento();
 
             menu_add_item_menu_misc(array_menu_common,argv[puntero_parametro]);
+
+
+            menu_add_item_menu_valor_opcion(array_menu_common,valor_opcion);
 
 
         }
@@ -27205,32 +27270,9 @@ void parse_zmenufile_options(void)
 
 
         if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
-            //llamamos por valor de funcion
-            /*if (item_seleccionado.menu_funcion!=NULL) {
-                //printf ("actuamos por funcion\n");
-                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
 
-            }*/
-            //printf("Cargando %s\n",item_seleccionado.texto_misc);
+            parse_zmenu_launch_entry(&item_seleccionado);
 
-            //localizarlo
-            char buffer_nombre[PATH_MAX];
-
-            int existe=find_sharedfile(item_seleccionado.texto_misc,buffer_nombre);
-            if (!existe)  {
-                    debug_printf(VERBOSE_ERR,"Unable to find file %s",item_seleccionado.texto_misc);
-                    return;
-            }
-
-            strcpy(quickload_file,buffer_nombre);
-            quickfile=quickload_file;
-            //Forzar autoload
-            z80_bit pre_noautoload;
-            pre_noautoload.v=noautoload.v;
-            noautoload.v=0;
-            quickload(quickload_file);
-
-            noautoload.v=pre_noautoload.v;
 
         }
 
