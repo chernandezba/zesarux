@@ -27145,14 +27145,6 @@ char last_zmenu_loaded_file[PATH_MAX]="";
 
 void parse_zmenu_launch_entry(menu_item *item_seleccionado)
 {
-    //llamamos por valor de funcion
-    /*if (item_seleccionado.menu_funcion!=NULL) {
-        //printf ("actuamos por funcion\n");
-        item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
-
-    }*/
-    //printf("Cargando %s\n",item_seleccionado.texto_misc);
-
     //Montar ruta considerando path actual para uso posterior
     char directorio[PATH_MAX];
     util_get_dir(last_zmenu_loaded_file,directorio);
@@ -27178,6 +27170,12 @@ void parse_zmenu_launch_entry(menu_item *item_seleccionado)
         }
     }
 
+    z80_bit pre_noautoload;
+
+    //Forzar autoload
+    pre_noautoload.v=noautoload.v;
+    noautoload.v=0;
+
     if (item_seleccionado->valor_opcion==1) {
         //Ruta mdv1 QL
 
@@ -27191,35 +27189,21 @@ void parse_zmenu_launch_entry(menu_item *item_seleccionado)
             reset_cpu();
         }
 
-        //Forzar autoload
-        z80_bit pre_noautoload;
-        pre_noautoload.v=noautoload.v;
-        noautoload.v=0;
-
         ql_microdrive_floppy_emulation=1;
-
         ql_insert_mdv_flp(QL_QDOS_UNIT_MDV1,buffer_nombre);
-
-        noautoload.v=pre_noautoload.v;
-
-
     }
 
     //smartload
     else {
-
-
         strcpy(quickload_file,buffer_nombre);
         quickfile=quickload_file;
 
-        //Forzar autoload
-        z80_bit pre_noautoload;
-        pre_noautoload.v=noautoload.v;
-        noautoload.v=0;
         quickload(quickload_file);
-
-        noautoload.v=pre_noautoload.v;
     }
+
+    //Restaurar setting autoload
+    noautoload.v=pre_noautoload.v;
+
 }
 
 void parse_zmenufile_options(void)
