@@ -27160,28 +27160,26 @@ void parse_zmenu_launch_entry(menu_item *item_seleccionado)
     char ruta_desde_path_zmenu[PATH_MAX];
     sprintf(ruta_desde_path_zmenu,"%s/%s",directorio,item_seleccionado->texto_misc);
 
+
+    //localizar archivo o carpeta
+    char buffer_nombre[PATH_MAX];
+
+    //primero ver si existe en ruta donde esta el archivo zmenu
+    if (si_existe_archivo(ruta_desde_path_zmenu)) {
+        strcpy(buffer_nombre,ruta_desde_path_zmenu);
+    }
+
+    //Y si no, buscar en path actual y luego rutas comunes
+    else {
+        int existe=find_sharedfile(item_seleccionado->texto_misc,buffer_nombre);
+        if (!existe)  {
+            debug_printf(VERBOSE_ERR,"Unable to find %s",item_seleccionado->texto_misc);
+            return;
+        }
+    }
+
     if (item_seleccionado->valor_opcion==1) {
         //Ruta mdv1 QL
-
-
-
-        //localizarlo
-        char buffer_nombre[PATH_MAX];
-
-        //primero ver si existe en ruta donde esta el archivo zmenu
-        if (si_existe_archivo(ruta_desde_path_zmenu)) {
-            strcpy(buffer_nombre,ruta_desde_path_zmenu);
-        }
-
-        //Y si no, buscar en path actual y luego rutas comunes
-        else {
-
-            int existe=find_sharedfile(item_seleccionado->texto_misc,buffer_nombre);
-            if (!existe)  {
-                debug_printf(VERBOSE_ERR,"Unable to find %s",item_seleccionado->texto_misc);
-                return;
-            }
-        }
 
         if (!MACHINE_IS_QL) {
             current_machine_type=MACHINE_ID_QL_STANDARD;
@@ -27210,26 +27208,10 @@ void parse_zmenu_launch_entry(menu_item *item_seleccionado)
     //smartload
     else {
 
-        //localizarlo
-        char buffer_nombre[PATH_MAX];
-
-        //primero ver si existe en ruta donde esta el archivo zmenu
-        if (si_existe_archivo(ruta_desde_path_zmenu)) {
-            strcpy(buffer_nombre,ruta_desde_path_zmenu);
-        }
-
-        //Y si no, buscar en path actual y luego rutas comunes
-        else {
-            int existe=find_sharedfile(item_seleccionado->texto_misc,buffer_nombre);
-            if (!existe)  {
-                debug_printf(VERBOSE_ERR,"Unable to find %s",item_seleccionado->texto_misc);
-                return;
-            }
-
-        }
 
         strcpy(quickload_file,buffer_nombre);
         quickfile=quickload_file;
+
         //Forzar autoload
         z80_bit pre_noautoload;
         pre_noautoload.v=noautoload.v;
