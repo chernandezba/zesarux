@@ -3,6 +3,6 @@
 --add-launcher-entry-smartload "Dibuja 4" "my_soft/spectrum/vintage/bitsoft/dibuja4.tzx"
 --add-launcher-entry-smartload "El Autobus" "my_soft/spectrum/vintage/bitsoft/elautobus.tzx"
 --add-launcher-entry-smartload "Gusano" "my_soft/spectrum/vintage/bitsoft/gusano.tap"
---add-launcher-entry-ql-mdv "Monopoly" "my_soft/ql/bitsoft/monopoly_folder"
 --add-launcher-entry-ql-mdv "AutoCadQL" "my_soft/ql/bitsoft/autocadql"
+--add-launcher-entry-ql-mdv "Monopoly" "my_soft/ql/bitsoft/monopoly_folder"
 
