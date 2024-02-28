@@ -38,7 +38,7 @@ apt-get -y install git gcc make libncurses-dev libssl-dev xorg-dev libpulse-dev 
 export CFLAGS="-O3"
 export LDFLAGS="-O3"
 
-./configure --enable-memptr --enable-visualmem --enable-cpustats --enable-ssl --disable-caca --disable-aa --disable-cursesw --prefix /usr && make -j2
+./configure --enable-memptr --enable-visualmem --enable-cpustats --enable-ssl --disable-caca --disable-aa --disable-cursesw --prefix /usr && make clean && make -j2
 
 
 You can run it by just executing: ./zesarux
