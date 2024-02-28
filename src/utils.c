@@ -1284,7 +1284,7 @@ void old_open_sharedfile(char *archivo,FILE **f)
 }
 
 
-//Busca un archivo buscandolo en las rutas:
+//Busca un archivo o carpeta buscandolo en las rutas:
 //1) ruta actual
 //2) ../Resources/
 //3) INSTALLPREFIX/

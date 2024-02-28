@@ -2121,7 +2121,7 @@ void ql_rom_traps(void)
 
             debug_printf(VERBOSE_INFO,"QL Trap ROM: Read F1 or F2 when initial autoload. Simulate press F1");
 
-            printf("QL Trap ROM: Read F1 or F2 when initial autoload. Simulate press F1\n");
+            //printf("QL Trap ROM: Read F1 or F2 when initial autoload. Simulate press F1\n");
 
             ql_initial_autoload_counter=contador_segundo_infinito;
 

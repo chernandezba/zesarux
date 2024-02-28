@@ -799,9 +799,9 @@ Quizá setting para limitar o no
 ->revisar que realmente el cliente no use ningun otro comando
 ->agregar parametro config y grabado config
 
+-.zmenu que al buscar rutas de entradas launcher, primero busque en ruta donde está el zmenu
 
 -zmenu: en ayuda (--helpzmenu) crear
--que busque en rutas comunes en caso de ql
 -si se hace drag & drop de zmenu acaba abriendo el menu dos veces
 
 -3 iconos de 2 mdv y un floppy para ql, con el consiguiente indicador de actividad correspondiente
@@ -811,5 +811,4 @@ Quizá setting para limitar o no
 https://trastero.speccy.org/cosas/FLeon/todo_sobre_la_ram_y_rom_lec.txt
 https://trastero.speccy.org/cosas/FLeon/Fleon.htm
 
--autoloadql: que si simulado F1 lo envie aun con menu abierto. que pasa con get_ql_keyboard_table_si_autoload?
-no considera menu abierto?
+-Incorporar menú de juegos david más visible en esta edición. Quizá en menú In Memoriam?

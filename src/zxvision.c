@@ -27140,6 +27140,9 @@ char *zmenu_parse_file_mem_pointer=NULL;
 
 char zmenu_launcher_title[256];
 
+//Ultimo archivo cargado de zmenu
+char last_zmenu_loaded_file[PATH_MAX]="";
+
 void parse_zmenu_launch_entry(menu_item *item_seleccionado)
 {
     //llamamos por valor de funcion
@@ -27149,6 +27152,13 @@ void parse_zmenu_launch_entry(menu_item *item_seleccionado)
 
     }*/
     //printf("Cargando %s\n",item_seleccionado.texto_misc);
+
+    //Montar ruta considerando path actual para uso posterior
+    char directorio[PATH_MAX];
+    util_get_dir(last_zmenu_loaded_file,directorio);
+
+    char ruta_desde_path_zmenu[PATH_MAX];
+    sprintf(ruta_desde_path_zmenu,"%s/%s",directorio,item_seleccionado->texto_misc);
 
     if (item_seleccionado->valor_opcion==1) {
         //Ruta mdv1 QL
@@ -27166,10 +27176,19 @@ void parse_zmenu_launch_entry(menu_item *item_seleccionado)
         //localizarlo
         char buffer_nombre[PATH_MAX];
 
-        int existe=find_sharedfile(item_seleccionado->texto_misc,buffer_nombre);
-        if (!existe)  {
-            debug_printf(VERBOSE_ERR,"Unable to find %s",item_seleccionado->texto_misc);
-            return;
+        //primero ver si existe en ruta donde esta el archivo zmenu
+        if (si_existe_archivo(ruta_desde_path_zmenu)) {
+            strcpy(buffer_nombre,ruta_desde_path_zmenu);
+        }
+
+        //Y si no, buscar en path actual y luego rutas comunes
+        else {
+
+            int existe=find_sharedfile(item_seleccionado->texto_misc,buffer_nombre);
+            if (!existe)  {
+                debug_printf(VERBOSE_ERR,"Unable to find %s",item_seleccionado->texto_misc);
+                return;
+            }
         }
 
         //Forzar autoload
@@ -27192,10 +27211,19 @@ void parse_zmenu_launch_entry(menu_item *item_seleccionado)
         //localizarlo
         char buffer_nombre[PATH_MAX];
 
-        int existe=find_sharedfile(item_seleccionado->texto_misc,buffer_nombre);
-        if (!existe)  {
-            debug_printf(VERBOSE_ERR,"Unable to find file %s",item_seleccionado->texto_misc);
-            return;
+        //primero ver si existe en ruta donde esta el archivo zmenu
+        if (si_existe_archivo(ruta_desde_path_zmenu)) {
+            strcpy(buffer_nombre,ruta_desde_path_zmenu);
+        }
+
+        //Y si no, buscar en path actual y luego rutas comunes
+        else {
+            int existe=find_sharedfile(item_seleccionado->texto_misc,buffer_nombre);
+            if (!existe)  {
+                debug_printf(VERBOSE_ERR,"Unable to find %s",item_seleccionado->texto_misc);
+                return;
+            }
+
         }
 
         strcpy(quickload_file,buffer_nombre);
@@ -27384,6 +27412,9 @@ int zmenu_parse_file_aux(char *archivo)
 //Parsear archivo de zmenu
 void zmenu_parse_file(char *archivo)
 {
+
+    //Guardar ruta al archivo para uso posterior
+    strcpy(last_zmenu_loaded_file,archivo);
 
 	int retorno=zmenu_parse_file_aux(archivo);
     if (!retorno) {
