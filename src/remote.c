@@ -3852,8 +3852,11 @@ void interpreta_comando(char *comando,int misocket,char *buffer_lectura_socket_a
                 !strcmp(comando_sin_parametros,"help") ||
                 !strcmp(comando_sin_parametros,"?") ||
                 !strcmp(comando_sin_parametros,"about") ||
-                util_string_starts_with(comando_sin_parametros,"zeng-online") ||
-                util_string_starts_with(comando_sin_parametros,"get-version")
+                !strcmp(comando_sin_parametros,"quit") ||
+                !strcmp(comando_sin_parametros,"get-version") ||
+                !strcmp(comando_sin_parametros,"zeng-online") ||
+                !strcmp(comando_sin_parametros,"zo")
+                //util_string_starts_with(comando_sin_parametros,"zeng-online")
             )
             )
 
