@@ -27172,12 +27172,12 @@ void parse_zmenu_launch_entry(menu_item *item_seleccionado)
             return;
         }
 
-        strcpy(quickload_file,buffer_nombre);
-        quickfile=quickload_file;
         //Forzar autoload
         z80_bit pre_noautoload;
         pre_noautoload.v=noautoload.v;
         noautoload.v=0;
+
+        ql_microdrive_floppy_emulation=1;
 
         ql_insert_mdv_flp(QL_QDOS_UNIT_MDV1,buffer_nombre);
 
