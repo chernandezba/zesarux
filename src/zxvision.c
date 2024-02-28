@@ -27163,7 +27163,26 @@ void parse_zmenu_launch_entry(menu_item *item_seleccionado)
             reset_cpu();
         }
 
-        ql_insert_mdv_flp(QL_QDOS_UNIT_MDV1,item_seleccionado->texto_misc);
+        //localizarlo
+        char buffer_nombre[PATH_MAX];
+
+        int existe=find_sharedfile(item_seleccionado->texto_misc,buffer_nombre);
+        if (!existe)  {
+            debug_printf(VERBOSE_ERR,"Unable to find %s",item_seleccionado->texto_misc);
+            return;
+        }
+
+        strcpy(quickload_file,buffer_nombre);
+        quickfile=quickload_file;
+        //Forzar autoload
+        z80_bit pre_noautoload;
+        pre_noautoload.v=noautoload.v;
+        noautoload.v=0;
+
+        ql_insert_mdv_flp(QL_QDOS_UNIT_MDV1,buffer_nombre);
+
+        noautoload.v=pre_noautoload.v;
+
 
     }
 

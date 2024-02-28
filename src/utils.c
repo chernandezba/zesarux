@@ -5968,7 +5968,7 @@ int quickload(char *nombre) {
 }
 
 
-//Retorna 1 si existe archivo
+//Retorna 1 si existe archivo o directorio
 //0 si no
 int si_existe_archivo(char *nombre)
 {
