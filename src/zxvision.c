@@ -27163,15 +27163,7 @@ void parse_zmenu_launch_entry(menu_item *item_seleccionado)
     if (item_seleccionado->valor_opcion==1) {
         //Ruta mdv1 QL
 
-        if (!MACHINE_IS_QL) {
-            current_machine_type=MACHINE_ID_QL_STANDARD;
-            set_machine(NULL);
 
-            //establecer parametros por defecto. Incluido quitar slots de memoria
-            set_machine_params();
-
-            reset_cpu();
-        }
 
         //localizarlo
         char buffer_nombre[PATH_MAX];
@@ -27189,6 +27181,16 @@ void parse_zmenu_launch_entry(menu_item *item_seleccionado)
                 debug_printf(VERBOSE_ERR,"Unable to find %s",item_seleccionado->texto_misc);
                 return;
             }
+        }
+
+        if (!MACHINE_IS_QL) {
+            current_machine_type=MACHINE_ID_QL_STANDARD;
+            set_machine(NULL);
+
+            //establecer parametros por defecto. Incluido quitar slots de memoria
+            set_machine_params();
+
+            reset_cpu();
         }
 
         //Forzar autoload
