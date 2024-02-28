@@ -304,6 +304,24 @@ unsigned char ql_keyboard_table[8]={
 };
 
 
+unsigned char get_ql_keyboard_table_si_autoload(int fila)
+{
+    unsigned char valor_puerto;
+
+    valor_puerto=ql_keyboard_table[fila];
+
+    //si autoload
+    if (ql_initial_autoload_counter!=0 && fila==0) {
+        //printf("Obtener fila de F1\n");
+        valor_puerto &= (255-2);
+        return valor_puerto;
+    }
+
+    if (zxvision_key_not_sent_emulated_mach() )  valor_puerto=255;
+
+    return valor_puerto;
+
+}
 
 //Nota: esta matrix de teclas y su numeracion de cada fila está documentada erroneamente en la info del QL de manera ascendente (de 0 a 7),
 //mientras que lo correcto, cuando se habla de filas en resultado de comandos ipc, es descendente, tal y como está a continuación:
@@ -324,26 +342,6 @@ unsigned char ql_keyboard_table[8]={
 //Retorna fila y columna para una tecla pulsada mirando ql_keyboard_table. No se puede retornar por ahora mas de una tecla a la vez
 //Se excluye shift, ctrl y alt de la respuesta
 //Retorna fila -1 y columna -1 si ninguna tecla pulsada
-
-unsigned char get_ql_keyboard_table_si_autoload(int fila)
-{
-    unsigned char valor_puerto;
-
-    valor_puerto=ql_keyboard_table[fila];
-
-    //si autoload
-    if (ql_initial_autoload_counter!=0 && fila==0) {
-        printf("Obtener fila de F1\n");
-        valor_puerto &= (255-2);
-        return valor_puerto;
-    }
-
-    if (zxvision_key_not_sent_emulated_mach() )  valor_puerto=255;
-
-    return valor_puerto;
-
-}
-
 
 void ql_return_columna_fila_puertos(int *columna,int *fila)
 {
