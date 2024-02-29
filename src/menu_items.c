@@ -43082,7 +43082,9 @@ int zxdesktop_icon_plus3_inverse=0;
 int zxdesktop_icon_betadisk_inverse=0;
 int zxdesktop_icon_ide_inverse=0;
 int zxdesktop_icon_zxpand_inverse=0;
-int zxdesktop_icon_mdv_flp_inverse=0;
+int zxdesktop_icon_mdv1_inverse=0;
+int zxdesktop_icon_mdv2_inverse=0;
+int zxdesktop_icon_flp1_inverse=0;
 int zxdesktop_icon_dandanator_inverse=0;
 int zxdesktop_icon_zxunoflash_inverse=0;
 int zxdesktop_icon_hilow_inverse=0;
@@ -43139,7 +43141,13 @@ struct s_zxdesktop_lowericons_info zdesktop_lowericons_array[TOTAL_ZXDESKTOP_MAX
 
 	//MDV/Floppy QL.
 	{ zxdesktop_lowericon_mdv_flp_is_visible, zxdesktop_lowericon_mdv_flp_is_active, zxdesktop_lowericon_mdv_flp_accion,
-		bitmap_lowericon_ext_desktop_mdv_active,bitmap_lowericon_ext_desktop_mdv_inactive,&zxdesktop_icon_mdv_flp_inverse},
+		bitmap_lowericon_ext_desktop_mdv_active,bitmap_lowericon_ext_desktop_mdv_inactive,&zxdesktop_icon_mdv1_inverse},
+
+	{ zxdesktop_lowericon_mdv_flp_is_visible, zxdesktop_lowericon_mdv_flp_is_active, zxdesktop_lowericon_mdv_flp_accion,
+		bitmap_lowericon_ext_desktop_mdv_active,bitmap_lowericon_ext_desktop_mdv_inactive,&zxdesktop_icon_mdv2_inverse},
+
+	{ zxdesktop_lowericon_mdv_flp_is_visible, zxdesktop_lowericon_mdv_flp_is_active, zxdesktop_lowericon_mdv_flp_accion,
+		bitmap_lowericon_ext_desktop_mdv_active,bitmap_lowericon_ext_desktop_mdv_inactive,&zxdesktop_icon_flp1_inverse},
 
 	//3 Cartuchos de Z88.
 	{ zxdesktop_lowericon_z88_cart_is_visible, zxdesktop_lowericon_z88_cart_1_is_active, zxdesktop_lowericon_z88_cart_1_accion,

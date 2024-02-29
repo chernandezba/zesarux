@@ -73,18 +73,45 @@ z80_byte ql_last_trap=0;
 
 int ql_previous_trap_was_4=0;
 
-
+//0: mdv1
+//1: mdv2
+//2: flp1
+int ql_qdos_last_unit_used=0;
 
 
 void ql_footer_mdflp_operating(void)
 {
 	generic_footertext_print_operating("MDVFLP");
 
-	//Y poner icono en inverso
-	if (!zxdesktop_icon_mdv_flp_inverse) {
-			zxdesktop_icon_mdv_flp_inverse=1;
-			menu_draw_ext_desktop();
-	}
+    if (ql_qdos_last_unit_used==0) {
+
+        //Y poner icono en inverso
+        if (!zxdesktop_icon_mdv1_inverse) {
+                zxdesktop_icon_mdv1_inverse=1;
+                menu_draw_ext_desktop();
+        }
+
+    }
+
+    if (ql_qdos_last_unit_used==1) {
+
+        //Y poner icono en inverso
+        if (!zxdesktop_icon_mdv2_inverse) {
+                zxdesktop_icon_mdv2_inverse=1;
+                menu_draw_ext_desktop();
+        }
+
+    }
+
+    if (ql_qdos_last_unit_used==2) {
+
+        //Y poner icono en inverso
+        if (!zxdesktop_icon_flp1_inverse) {
+                zxdesktop_icon_flp1_inverse=1;
+                menu_draw_ext_desktop();
+        }
+
+    }
 }
 
 
@@ -921,20 +948,30 @@ void ql_split_path_device_name(char *ql_path, char *ql_device, char *ql_file,int
 
 //Dado un device y un nombre de archivo, retorna ruta a archivo en filesystem final
 //Retorna 1 si error
+//Tambien asigna ultima unidad usada para visualizarlo en el icono y el footer
 int ql_return_full_path(char *device, char *file, char *fullpath)
 {
-  char *sourcepath;
+    char *sourcepath;
 
-  if (!strcasecmp(device,"mdv1")) sourcepath=ql_mdv1_root_dir;
-  else if (!strcasecmp(device,"mdv2")) sourcepath=ql_mdv2_root_dir;
-  else if (!strcasecmp(device,"flp1")) sourcepath=ql_flp1_root_dir;
-  else return 1;
+    if (!strcasecmp(device,"mdv1")) {
+        sourcepath=ql_mdv1_root_dir;
+        ql_qdos_last_unit_used=0;
+    }
+    else if (!strcasecmp(device,"mdv2")) {
+        sourcepath=ql_mdv2_root_dir;
+        ql_qdos_last_unit_used=1;
+    }
+    else if (!strcasecmp(device,"flp1")) {
+        sourcepath=ql_flp1_root_dir;
+        ql_qdos_last_unit_used=2;
+    }
+    else return 1;
 
-  if (sourcepath[0])  sprintf(fullpath,"%s/%s",sourcepath,file);
-  else sprintf(fullpath,"%s",file); //Ruta definida como vacia
+    if (sourcepath[0])  sprintf(fullpath,"%s/%s",sourcepath,file);
+    else sprintf(fullpath,"%s",file); //Ruta definida como vacia
 
 
-  return 0;
+    return 0;
 }
 
 void ql_insert_mdv_flp(enum ql_qdos_unidades unidad,char *dir_to_mount)
