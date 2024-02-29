@@ -3,7 +3,10 @@ Versión 11.0-Beta1 - Edición David. 26 Febrero 2024
 
 * Cosas nuevas agregadas:
 
-Se agregó carga de audio desde una fuente de audio externa, como un reproductor de cintas.
+Se agregó carga de audio desde una fuente de audio externa, como un reproductor de cintas. Esto también incluye:
+- Ventana de fuente de audio externa: puede ver la onda de audio, el tipo de señal, y un asistente de azimuth que te avisa cuando tienes que usar el destornillador ;)
+- Analizador de espectro: puede ver el rango de frecuencia completo de la onda de audio
+
 Se agregó la función ZENG Online, que permite ejecutar juegos multijugador en línea usando un servidor central.
 Se agregó soporte ZENG en el controlador de curses.
 Se agregó soporte para guardar pantalla en archivo .txt.

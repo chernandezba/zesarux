@@ -2,7 +2,10 @@ Version 11.0-Beta1 - David edition. 26 February 2024
 
 * New things added:
 
-Added loading audio from external audio source, like a tape player
+Added loading audio from external audio source, like a tape player. This also includes:
+- External Audio Source Window: you may see the audio wave, the signal type, and an azimuth assistant which tells you when you have to use the screwdriver ;)
+- Spectrum Analyzer (Audio Spectrum I mean): you may see full frequency range of the audio wave
+
 Added ZENG Online feature, which allows to run multiplayer online game using a central server
 Added ZENG support on curses driver
 Added save screen to .txt file

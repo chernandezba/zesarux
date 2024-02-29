@@ -19,11 +19,13 @@
 <key>CFBundleIconFile</key>
 <string>zesarux.icns</string>
 <key>NSDesktopFolderUsageDescription</key>
-<string>To be able to load user files from Desktop folder</string>
+<string>ZEsarUX needs access to load files from Desktop folder</string>
 <key>NSDocumentsFolderUsageDescription</key>
-<string>To be able to load user files from Documents folder but also load and save configuration</string>
+<string>ZEsarUX needs access to load files from Documents folder but also load and save configuration</string>
 <key>NSDownloadsFolderUsageDescription</key>
-<string>To be able to load user files from Downloads folder</string>
+<string>ZEsarUX needs access to load files from Downloads folder</string>
+<key>NSMicrophoneUsageDescription</key>
+<string>ZEsarUX needs access to the microphones or audio inputs to load from tape</string>
 </dict>
 </plist>
 
