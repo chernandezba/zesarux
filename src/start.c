@@ -673,6 +673,7 @@ void zesarux_cmdline_help(void)
 		"--configfile f          Use the specified config file. This parameter must be the first and it's ignored if written on config file\n"
 		"--experthelp            Show expert options\n"
         "--helpcustomconfig      Show help for autoconfig files\n"
+        "--helpzmenufiles        Show help for zmenu files\n"
 		"\n"
 		"Any command line setting shown here or on experthelp can be written on a configuration file,\n"
 		"this configuration file is on your home directory with name: " DEFAULT_ZESARUX_CONFIG_FILE "\n"
@@ -2520,6 +2521,11 @@ int parse_cmdline_options(int desde_commandline) {
 
 			if (!strcmp(argv[puntero_parametro],"--helpcustomconfig")) {
 				customconfig_help();
+				exit(1);
+			}
+
+			if (!strcmp(argv[puntero_parametro],"--helpzmenufiles")) {
+				zmenufiles_help();
 				exit(1);
 			}
 

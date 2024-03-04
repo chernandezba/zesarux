@@ -11378,6 +11378,25 @@ void parse_customfile_options(void)
 
 }
 
+void zmenufiles_help(void)
+{
+	printf ("zmenu files help:\n"
+		"\n"
+		"zmenu files are configuration files to open a menu inside ZEsarUX.\n"
+		"The idea for that files is to have a launcher for different programs, they are opened by the Smartloard or just writing them as a ZEsarUX parameter.\n"
+		"zmenu files are text files and have extension .zmenu.\n"
+		"\n"
+		"The following are the allowed parameters on a zmenu file:\n"
+		"\n"
+
+        "--set-launcher text                                 Set the name of the launcher window\n"
+        "--add-launcher-entry-smartload name path_to_file    Defines a program to by run like a smartload entry. Path is searched on the current directory, and also on the common installed path\n"
+        "--add-launcher-entry-ql-mdv    name path_to_folder  Defines a directory to by mounted on QL as a mdv1 path. Path is searched on the current directory, and also on the common installed path\n"
+
+        "\n"
+	);
+}
+
 void customconfig_help(void)
 {
 	printf ("Custom config help:\n"
