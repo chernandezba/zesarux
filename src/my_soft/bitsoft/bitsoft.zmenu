@@ -1,0 +1,8 @@
+--set-launcher "Programas David"
+--add-launcher-entry-smartload "Bit Transfer" "spectrum/bittransfe.tap"
+--add-launcher-entry-smartload "Dibuja 4" "spectrum/dibuja4.tzx"
+--add-launcher-entry-smartload "El Autobus" "spectrum/elautobus.tzx"
+--add-launcher-entry-smartload "Gusano" "spectrum/gusano.tap"
+--add-launcher-entry-ql-mdv "AutoCadQL" "ql/autocadql"
+--add-launcher-entry-ql-mdv "Monopoly" "ql/monopoly_folder"
+
