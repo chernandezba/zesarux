@@ -799,12 +799,9 @@ Quizá setting para limitar o no
 ->revisar que realmente el cliente no use ningun otro comando
 ->agregar parametro config y grabado config
 
--.zmenu que al buscar rutas de entradas launcher, primero busque en ruta donde está el zmenu
 
 -zmenu: en ayuda (--helpzmenu) crear
--si se hace drag & drop de zmenu acaba abriendo el menu dos veces
 
--3 iconos de 2 mdv y un floppy para ql, con el consiguiente indicador de actividad correspondiente
 
 -LEC memory extension https://ia600604.us.archive.org/view_archive.php?archive=/1/items/World_of_Spectrum_June_2017_Mirror/World%20of%20Spectrum%20June%202017%20Mirror.zip&file=World%20of%20Spectrum%20June%202017%20Mirror/sinclair/hardware-info/l/LECMemoryExtension.pdf
 -CPM para LEC: https://spectrumcomputing.co.uk/index.php?cat=96&id=23809
@@ -812,3 +809,8 @@ https://trastero.speccy.org/cosas/FLeon/todo_sobre_la_ram_y_rom_lec.txt
 https://trastero.speccy.org/cosas/FLeon/Fleon.htm
 
 -Incorporar menú de juegos david más visible en esta edición. Quizá en menú In Memoriam?
+
+-smartload de un .nex que monte carpeta con esxdos handler donde esté ubicado.
+Setting para que haga eso (por defecto activado)
+Aunque se supone que en la cabecera del .nex ya hay un parámetro para eso... o creo que quiza era para dejar
+un file handle abierto apuntando al archivo .nex

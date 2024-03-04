@@ -25049,6 +25049,15 @@ void menu_inicio(void)
             cls_menu_overlay();
         }
 
+
+            //Abrir menu lanzador de juegos
+            //Esto antes de la gestion de drag & drop, porque si no, si estuviera despues,
+            //al hacer drag & drop entraria dos veces aqui (o se podria corregir aqui haciendo menu_event_pending_zmenu_file_menu_open.v=0;
+            if (menu_event_open_zmenu_file.v) {
+                zmenu_parse_file(menu_open_zmenu_file_path);
+            }
+
+
             if (menu_event_drag_drop.v) {
                                 debug_printf(VERBOSE_INFO,"Received drag and drop event with file %s",quickload_file);
             //Entrado drag-drop de archivo
@@ -25070,10 +25079,6 @@ void menu_inicio(void)
                     cls_menu_overlay();
             }
 
-            //Abrir menu lanzador de juegos
-            if (menu_event_open_zmenu_file.v) {
-                zmenu_parse_file(menu_open_zmenu_file_path);
-            }
 
 
         //ha saltado un breakpoint
@@ -25295,6 +25300,7 @@ void menu_inicio(void)
         menu_event_pending_drag_drop_menu_open.v=0;
         menu_event_drag_drop.v=1;
         menu_abierto=1;
+        //printf("Reabrir menu para gestionar drag & drop\n");
     }
 
     //Si se ha cargado un archivo zmenu con el menu abierto, decir de abrir de nuevo el menu para gestionar zmenu
@@ -25302,6 +25308,7 @@ void menu_inicio(void)
         menu_event_pending_zmenu_file_menu_open.v=0;
         menu_event_open_zmenu_file.v=1;
         menu_abierto=1;
+        //printf("Reabrir menu para gestionar zmenu\n");
     }
 
 }
