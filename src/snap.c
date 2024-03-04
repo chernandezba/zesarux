@@ -2251,7 +2251,7 @@ void load_nex_snapshot_change_to_next(void)
 		tbblue_fast_boot_mode.v=1;
 
         set_machine(NULL);
-        reset_cpu();
+        hard_reset_cpu();
 
 		tbblue_fast_boot_mode.v=antes_tbblue_fast_boot_mode.v;
 	//}
