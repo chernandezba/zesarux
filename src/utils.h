@@ -464,6 +464,8 @@ extern int scandir_mingw(const char *dir, struct dirent ***namelist,
 
 extern void customconfig_help(void);
 
+extern void zmenufiles_help(void);
+
 extern char letra_mayuscula(char c);
 
 extern char letra_minuscula(char c);

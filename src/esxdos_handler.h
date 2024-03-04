@@ -226,5 +226,6 @@ extern struct s_esxdos_fopen esxdos_fopen_files[];
 extern int esxdos_find_free_fopen(void);
 extern void esxdos_handler_pre_fileopen(char *nombre_inicial,char *fullpath);
 extern void esxdos_handler_call_f_open_post(int handle,char *nombre_archivo,char *fullpath);
+extern z80_bit esxdos_umount_on_reset;
 
 #endif

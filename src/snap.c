@@ -2238,10 +2238,29 @@ If RAM bank 5 is paged in, the snapshot is made up of banks 5, 2 and 5 again, fo
 }
 
 
+
+
+void load_nex_snapshot_if_mount_exdos_folder(char *archivo)
+{
+    if (automount_esxdos_nex.v==0) return;
+
+
+    if (esxdos_handler_enabled.v==0) {
+        esxdos_handler_enable();
+    }
+
+    util_get_dir(archivo,esxdos_handler_root_dir);
+
+    //Y decir que al hacer reset, se quitara
+    esxdos_umount_on_reset.v=1;
+}
+
 void load_snx_snapshot(char *archivo)
 {
     load_sna_snapshot(archivo);
 
+
+    load_nex_snapshot_if_mount_exdos_folder(archivo);
 
 /*
 ".snx is a Spectrum snapshot file, more suitable as emulator compatibility than a real format.
@@ -5490,7 +5509,7 @@ int load_nex_snapshot_open_esxdos(char *nombre_archivo,int forzar_filehandle_cer
 	if (nombre_archivo[0]=='/' || nombre_archivo[0]=='\\') strcpy (fullpath,nombre_archivo);
 	else sprintf (fullpath,"%s/%s",directorio_actual,nombre_archivo);
 
-	printf ("ESXDOS handler: fullpath file: %s\n",fullpath);
+	debug_printf (VERBOSE_INFO,"ESXDOS handler: fullpath file: %s",fullpath);
 
 
 
@@ -5500,7 +5519,7 @@ int load_nex_snapshot_open_esxdos(char *nombre_archivo,int forzar_filehandle_cer
 
 	if (esxdos_fopen_files[free_handle].esxdos_last_open_file_handler_unix==NULL) {
 		//esxdos_handler_error_carry(ESXDOS_ERROR_ENOENT);
-		printf ("ESXDOS handler: Error from esxdos_handler_call_f_open file: %s\n",fullpath);
+		debug_printf (VERBOSE_INFO,"ESXDOS handler: Error from esxdos_handler_call_f_open file: %s",fullpath);
 		//esxdos_handler_old_return_call();
 		return -1;
 	}
@@ -5510,11 +5529,11 @@ int load_nex_snapshot_open_esxdos(char *nombre_archivo,int forzar_filehandle_cer
 
 		//reg_a=free_handle;
 		//esxdos_handler_no_error_uncarry();
-		printf ("ESXDOS handler: Successfully esxdos_handler_call_f_open file: %s\n",fullpath);
+		debug_printf (VERBOSE_INFO,"ESXDOS handler: Successfully esxdos_handler_call_f_open file: %s",fullpath);
 
 
 		if (stat(fullpath, &esxdos_fopen_files[free_handle].last_file_buf_stat)!=0) {
-						printf ("ESXDOS handler: Unable to get status of file %s\n",fullpath);
+						debug_printf (VERBOSE_INFO,"ESXDOS handler: Unable to get status of file %s",fullpath);
 		}
 
 
@@ -5536,6 +5555,8 @@ void load_nex_snapshot(char *archivo)
 
 	debug_printf(VERBOSE_DEBUG,"Loading .nex snapshot %s",archivo);
 
+
+    load_nex_snapshot_if_mount_exdos_folder(archivo);
 
 
 	//buffer para la cabecera

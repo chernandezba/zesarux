@@ -70,6 +70,11 @@ struct s_esxdos_fopen esxdos_fopen_files[ESXDOS_MAX_OPEN_FILES];
 
 z80_bit esxdos_handler_enabled={0};
 
+//Indica que al hacer reset, esxdos se quitara
+//Esto sucede por ejemplo al hacer smartload de un archivo .nex, donde monta la carpeta donde esta ubicado el .nex,
+//para poder soportar cargas de archivos de recursos o cualquier cosa que necesite el juego
+z80_bit esxdos_umount_on_reset={0};
+
 //Retorna contador a array de estructura de archivo vacio. Retorna -1 si no hay
 int esxdos_find_free_fopen(void)
 {

@@ -170,5 +170,7 @@ extern char alsa_capture_device[];
 
 extern z80_bit noautoload;
 
+extern z80_bit automount_esxdos_nex;
+
 #endif
 

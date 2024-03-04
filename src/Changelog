@@ -21,6 +21,7 @@ Added .zmenu type files to generate launcher menus
 
 * Improvements:
 
+Allow to load Next .nex/.snx snapshots with additional files without having to copy them on the mmc file (it mounts the esxdos handler)
 Allow to not save configuration when exiting ZEsarUX
 Allow to select normal ZEsarUX logo or X Anniversary logo
 Allow to seng ZENG snapshots more frequently (even every 20 ms)

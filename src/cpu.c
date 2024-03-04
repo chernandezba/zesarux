@@ -979,6 +979,11 @@ void reset_cpu(void)
 
 	debug_printf (VERBOSE_INFO,"Reset cpu");
 
+    if (esxdos_umount_on_reset.v) {
+        if (esxdos_handler_enabled.v) esxdos_handler_disable();
+        esxdos_umount_on_reset.v=0;
+    }
+
 	if (rzx_reproduciendo) {
 		eject_rzx_file();
 	}

@@ -8590,6 +8590,11 @@ void menu_snapshot_settings_rom_zsf(MENU_ITEM_PARAMETERS)
     zsf_snap_save_rom.v ^=1;
 }
 
+void menu_snapshot_automount_esxdos_nex(MENU_ITEM_PARAMETERS)
+{
+    automount_esxdos_nex.v ^=1;
+}
+
 void menu_settings_snapshot(MENU_ITEM_PARAMETERS)
 {
 
@@ -8652,6 +8657,17 @@ void menu_settings_snapshot(MENU_ITEM_PARAMETERS)
             "If current machine is not a Spectrum, loading a .sna snapshot will always switch to 48k/128k.\n"
             "This setting only applies to .sna snapshots, but not to .z80, .zx, or any other snapshot type."
         );
+
+        if (MACHINE_IS_TBBLUE) {
+            menu_add_item_menu_en_es_ca(array_menu_settings_snapshot,MENU_OPCION_NORMAL,menu_snapshot_automount_esxdos_nex,NULL,
+                "Automount esxdos path on load .nex","Automontar ruta esxdos al cargar .nex","Automuntar ruta esxdos al carregar .nex");
+            menu_add_item_menu_prefijo_format(array_menu_settings_snapshot,"[%c] ",(automount_esxdos_nex.v ? 'X' : ' '));
+            menu_add_item_menu_tooltip(array_menu_settings_snapshot,"When opening .nex/.snx files, mount esxdos folder");
+            menu_add_item_menu_ayuda(array_menu_settings_snapshot,"When opening .nex/.snx files, mount esxdos folder"
+                "This allows to load Next snapshots without having to write them on the tbblue.mmc file, because "
+                "all the files where the snapshot is located will be accessible to the NextOS operating system"
+            );
+        }
 
         menu_add_item_menu_en_es_ca(array_menu_settings_snapshot,MENU_OPCION_NORMAL,menu_snapshot_close_menu_after_smartload,NULL,
             "Close menu after smartload","Cerrar menú después smartload","Tancar menú després smartload");

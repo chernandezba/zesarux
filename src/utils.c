@@ -3878,6 +3878,9 @@ int util_write_configfile(void)
 
   if (sna_setting_no_change_machine.v)          ADD_STRING_CONFIG,"--snap-no-change-machine");
 
+  if (automount_esxdos_nex.v==0)                ADD_STRING_CONFIG,"--nex-no-automount-esxdos");
+
+
   if (zsf_snap_save_rom.v)                      ADD_STRING_CONFIG,"--zsf-save-rom");
 
   if (no_close_menu_after_smartload.v)          ADD_STRING_CONFIG,"--no-close-after-smartload");
@@ -3994,7 +3997,8 @@ int util_write_configfile(void)
   if (zxpand_enabled.v)                       ADD_STRING_CONFIG,"--enable-zxpand");
   if (zxpand_root_dir[0]!=0)                  ADD_STRING_CONFIG,"--zxpand-root-dir \"%s\"",zxpand_root_dir);
 
-  if (esxdos_handler_enabled.v)               ADD_STRING_CONFIG,"--enable-esxdos-handler");
+  //no decir que esta habilitado si se va a desactivar al resetear
+  if (esxdos_handler_enabled.v && esxdos_umount_on_reset.v==0)               ADD_STRING_CONFIG,"--enable-esxdos-handler");
   if (esxdos_handler_root_dir[0]!=0)          ADD_STRING_CONFIG,"--esxdos-root-dir \"%s\"",esxdos_handler_root_dir);
 
   if (esxdos_handler_enabled.v && esxdos_handler_cwd[0]!=0)  ADD_STRING_CONFIG,"--esxdos-local-dir \"%s\"",esxdos_handler_cwd);
