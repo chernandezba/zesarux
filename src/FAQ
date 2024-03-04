@@ -645,6 +645,9 @@ A: Yes. You can use the tbblue-fast-boot-mode setting and it will go directly to
 You can also load a .nex file with a similar command line:
 ./zesarux --noconfigfile --zoom 1  --machine tbblue --realvideo --enabletimexvideo --tbblue-fast-boot-mode --enable-esxdos-handler --esxdos-root-dir /Users/cesarhernandez/Downloads/Warhawk/ /Users/cesarhernandez/Downloads/Warhawk/Warhawk.nex
 
+Also, starting from ZEsarUX 11, when you load a .nex/.snx file, the folder where the snapshot is located, is automatically enabled on esxdos handler, so you can avoid the esxdos settings:
+./zesarux --noconfigfile --zoom 1  --machine tbblue --realvideo --enabletimexvideo --tbblue-fast-boot-mode /Users/cesarhernandez/Documents/soft_retro/spectrum/next/BattleTanks/BattleTanks.nex
+
 Q: Trying the breakout demo, it gives me the error: Nonsense in basic at line 10
 A: That is an old version which uses previous NextOS basic. Change line 10 to:
 10 LOAD "breakout.SPR" BANK 10 

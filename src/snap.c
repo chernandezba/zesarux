@@ -2238,7 +2238,24 @@ If RAM bank 5 is paged in, the snapshot is made up of banks 5, 2 and 5 again, fo
 }
 
 
+void load_nex_snapshot_change_to_next(void)
+{
+	//cambio a maquina tbblue, siempre
+	//if (!MACHINE_IS_TBBLUE) {
 
+        current_machine_type=MACHINE_ID_TBBLUE;
+
+		//temporalmente ponemos tbblue fast boot mode y luego restauramos valor anterior
+		z80_bit antes_tbblue_fast_boot_mode;
+		antes_tbblue_fast_boot_mode.v=tbblue_fast_boot_mode.v;
+		tbblue_fast_boot_mode.v=1;
+
+        set_machine(NULL);
+        reset_cpu();
+
+		tbblue_fast_boot_mode.v=antes_tbblue_fast_boot_mode.v;
+	//}
+}
 
 void load_nex_snapshot_if_mount_exdos_folder(char *archivo)
 {
@@ -2257,7 +2274,18 @@ void load_nex_snapshot_if_mount_exdos_folder(char *archivo)
 
 void load_snx_snapshot(char *archivo)
 {
+    int antes_sna_setting_no_change_machine=sna_setting_no_change_machine.v;
+
+    //Decimos que no cambiamos a maquina spectrum, ya que forzaremos siempre next
+    sna_setting_no_change_machine.v=1;
+
+
+    load_nex_snapshot_change_to_next();
+
     load_sna_snapshot(archivo);
+
+
+    sna_setting_no_change_machine.v=antes_sna_setting_no_change_machine;
 
 
     load_nex_snapshot_if_mount_exdos_folder(archivo);
@@ -5556,7 +5584,7 @@ void load_nex_snapshot(char *archivo)
 	debug_printf(VERBOSE_DEBUG,"Loading .nex snapshot %s",archivo);
 
 
-    load_nex_snapshot_if_mount_exdos_folder(archivo);
+
 
 
 	//buffer para la cabecera
@@ -5590,21 +5618,10 @@ void load_nex_snapshot(char *archivo)
 
 
 	//cambio a maquina tbblue, siempre
-	//if (!MACHINE_IS_TBBLUE) {
+	load_nex_snapshot_change_to_next();
 
-        current_machine_type=MACHINE_ID_TBBLUE;
 
-		//temporalmente ponemos tbblue fast boot mode y luego restauramos valor anterior
-		z80_bit antes_tbblue_fast_boot_mode;
-		antes_tbblue_fast_boot_mode.v=tbblue_fast_boot_mode.v;
-		tbblue_fast_boot_mode.v=1;
-
-        set_machine(NULL);
-        reset_cpu();
-
-		tbblue_fast_boot_mode.v=antes_tbblue_fast_boot_mode.v;
-	//}
-
+    load_nex_snapshot_if_mount_exdos_folder(archivo);
 
 	//Al cargar .nex lo pone en turbo x 4
 	debug_printf(VERBOSE_DEBUG,"Setting turbo x 4 because it's the usual speed when loading .nex files from NextOS");
