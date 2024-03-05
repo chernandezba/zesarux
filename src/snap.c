@@ -104,6 +104,8 @@ int snapshot_autosave_interval_current_counter=0;
 
 z80_bit sna_setting_no_change_machine={0};
 
+void load_sna_snapshot_common(char *archivo);
+
 void set_snap_file_options(char *filename)
 {
 	set_snaptape_fileoptions(filename);
@@ -2025,7 +2027,7 @@ int load_sna_snapshot_must_change_machine(void)
 }
 
 //Cargar snapshot sna
-void load_sna_snapshot(char *archivo)
+void load_sna_snapshot_common(char *archivo)
 {
 
 
@@ -2276,13 +2278,13 @@ void load_snx_snapshot(char *archivo)
 {
     int antes_sna_setting_no_change_machine=sna_setting_no_change_machine.v;
 
-    //Decimos que no cambiamos a maquina spectrum, ya que forzaremos siempre next
-    sna_setting_no_change_machine.v=1;
-
 
     load_nex_snapshot_change_to_next();
 
-    load_sna_snapshot(archivo);
+    //Decimos que no cambiamos a maquina spectrum, ya que forzaremos siempre next
+    sna_setting_no_change_machine.v=1;
+
+    load_sna_snapshot_common(archivo);
 
 
     sna_setting_no_change_machine.v=antes_sna_setting_no_change_machine;
@@ -2306,6 +2308,29 @@ They are not supported by esxDOS."
 
 
 
+}
+
+void load_sna_snapshot(char *archivo)
+{
+    //Si estamos en maquina Next se comporta parecido a un snx
+    if (MACHINE_IS_TBBLUE) {
+        load_nex_snapshot_change_to_next();
+
+        //Decimos que no cambiamos a maquina spectrum, ya que forzaremos siempre next
+        int antes_sna_setting_no_change_machine=sna_setting_no_change_machine.v;
+
+        sna_setting_no_change_machine.v=1;
+
+        load_sna_snapshot_common(archivo);
+
+
+        sna_setting_no_change_machine.v=antes_sna_setting_no_change_machine;
+
+
+        load_nex_snapshot_if_mount_exdos_folder(archivo);
+    }
+
+    else load_sna_snapshot_common(archivo);
 }
 
 //Escribe bytes de repeticion, si conviene, o bytes aislados
