@@ -809,15 +809,6 @@ https://trastero.speccy.org/cosas/FLeon/Fleon.htm
 -Incorporar menú de juegos david más visible en esta edición. Quizá en menú In Memoriam?
 
 
--zeng online: si se desconecta del server va saltando errores continuos en el cliente de:
-
-Error:    ZENG Online Client: ERROR. Can't send zeng-online get-message-id: Network error
-Error:    ZENG Online Client: ERROR. Can't send zeng-online alive: Network error
-Error:    ZENG Online Client: ERROR. Can't send zeng-online get-kicked-user: Network error
-Error:    ZENG Online Client: ERROR. Can't send zeng-online get-message-id: Network error
-Error:    ZENG Online Client: ERROR. Can't send zeng-online get-kicked-user: Network error
-
-quiza no deberian salir cuando se determina que esta en modo offline
 
 
 -soportar snapshots .nex con cabecera "NEXT" como exploding fist
