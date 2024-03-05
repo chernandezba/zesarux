@@ -107,6 +107,12 @@ z80_bit tbblue_deny_turbo_rom={1};
 int tbblue_deny_turbo_rom_max_allowed=2;
 
 
+//Por defecto no denegado
+z80_bit tbblue_deny_turbo_everywhere={0};
+
+//Maximo turbo permitido al habilitar tbblue_deny_turbo_everywhere. Por defecto maximo 4X
+int tbblue_deny_turbo_everywhere_max_allowed=4;
+
 //
 //Inicio Variables, memoria etc de estado de la máquina. Se suelen guardar/cargar en snapshot ZSF
 //
@@ -3523,11 +3529,16 @@ void tbblue_set_emulator_setting_turbo(void)
 	else if (t==2) cpu_turbo_speed=4;
 	else if (t==3) cpu_turbo_speed=8;
 
+    //Control de turbo en la rom
 	if (tbblue_deny_turbo_rom.v && reg_pc<16384) {
 		//Ver el maximo permitido
 		if (cpu_turbo_speed>tbblue_deny_turbo_rom_max_allowed) cpu_turbo_speed=tbblue_deny_turbo_rom_max_allowed;
 	}
 
+    //Control de turbo en general
+    if (tbblue_deny_turbo_everywhere.v) {
+        if (cpu_turbo_speed>tbblue_deny_turbo_everywhere_max_allowed) cpu_turbo_speed=tbblue_deny_turbo_everywhere_max_allowed;
+    }
 
 	cpu_set_turbo_speed();
 }

@@ -11527,11 +11527,7 @@ void menu_spectrum_core_reduced(MENU_ITEM_PARAMETERS)
 
 
 
-void menu_tbblue_deny_turbo_rom(MENU_ITEM_PARAMETERS)
-{
 
-	tbblue_deny_turbo_rom.v ^=1;
-}
 
 void menu_hardware_top_speed(MENU_ITEM_PARAMETERS)
 {
@@ -11563,6 +11559,12 @@ void menu_cpu_ldir_hack(MENU_ITEM_PARAMETERS)
 	cpu_ldir_lddr_hack_optimized.v ^=1;
 }
 
+void menu_tbblue_deny_turbo_rom(MENU_ITEM_PARAMETERS)
+{
+
+	tbblue_deny_turbo_rom.v ^=1;
+}
+
 
 void menu_tbblue_deny_turbo_rom_max_allowed(MENU_ITEM_PARAMETERS)
 {
@@ -11572,7 +11574,19 @@ void menu_tbblue_deny_turbo_rom_max_allowed(MENU_ITEM_PARAMETERS)
 }
 
 
+void menu_tbblue_deny_turbo_everywhere(MENU_ITEM_PARAMETERS)
+{
 
+	tbblue_deny_turbo_everywhere.v ^=1;
+}
+
+
+void menu_tbblue_deny_turbo_everywhere_max_allowed(MENU_ITEM_PARAMETERS)
+{
+	tbblue_deny_turbo_everywhere_max_allowed *=2;
+
+	if (tbblue_deny_turbo_everywhere_max_allowed>8) tbblue_deny_turbo_everywhere_max_allowed=1;
+}
 
 
 //menu cpu settings
@@ -11625,7 +11639,7 @@ void menu_cpu_settings(MENU_ITEM_PARAMETERS)
 	  }
 
 		if (MACHINE_IS_TBBLUE) {
-            //menu_add_item_menu(array_menu_cpu_settings,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+
             menu_add_item_menu_en_es_ca(array_menu_cpu_settings,MENU_OPCION_NORMAL,menu_tbblue_deny_turbo_rom,NULL,
                 "Limit turbo on ROM","Limitar turbo en la ROM","Limitar turbo a la ROM");
             menu_add_item_menu_prefijo_format(array_menu_cpu_settings,"[%c] ",(tbblue_deny_turbo_rom.v ? 'X' : ' ') );
@@ -11640,6 +11654,23 @@ void menu_cpu_settings(MENU_ITEM_PARAMETERS)
                 menu_add_item_menu_prefijo_format(array_menu_cpu_settings,"[%d] ",tbblue_deny_turbo_rom_max_allowed);
                 menu_add_item_menu_tooltip(array_menu_cpu_settings,"Max turbo value allowed on Next ROM.");
                 menu_add_item_menu_ayuda(array_menu_cpu_settings,"Max turbo value allowed on Next ROM.");
+            }
+
+
+            menu_add_item_menu_en_es_ca(array_menu_cpu_settings,MENU_OPCION_NORMAL,menu_tbblue_deny_turbo_everywhere,NULL,
+                "Limit turbo on everywhere","Limitar turbo en la everywhere","Limitar turbo a la everywhere");
+            menu_add_item_menu_prefijo_format(array_menu_cpu_settings,"[%c] ",(tbblue_deny_turbo_everywhere.v ? 'X' : ' ') );
+
+            //menu_add_item_menu_shortcut(array_menu_cpu_settings,'d');
+            menu_add_item_menu_tooltip(array_menu_cpu_settings,"Limit changing turbo mode on Next everywhere. Useful on slow machines. Can make the boot process to fail");
+            menu_add_item_menu_ayuda(array_menu_cpu_settings,"Limit changing turbo mode on Next everywhere. Useful on slow machines. Can make the boot process to fail");
+
+            if (tbblue_deny_turbo_everywhere.v) {
+                menu_add_item_menu_en_es_ca(array_menu_cpu_settings,MENU_OPCION_NORMAL,menu_tbblue_deny_turbo_everywhere_max_allowed,NULL,
+                    "Max turbo allowed everywhere","Max turbo permitido en general","Max turbo permès en general");
+                menu_add_item_menu_prefijo_format(array_menu_cpu_settings,"[%d] ",tbblue_deny_turbo_everywhere_max_allowed);
+                menu_add_item_menu_tooltip(array_menu_cpu_settings,"Max turbo value allowed on Next everywhere.");
+                menu_add_item_menu_ayuda(array_menu_cpu_settings,"Max turbo value allowed on Next everywhere.");
             }
 	  }
 

@@ -1,4 +1,3 @@
-
 Versión 11.0-Beta1 - Edición David. 26 Febrero 2024
 
 * Cosas nuevas agregadas:
@@ -22,6 +21,8 @@ Agregado tipo de archivos .zmenu para lanzar archivos
 
 * Mejoras:
 
+Permitir cargar Next .nex/.snx/.sna snapshots con archivos adicionales sin tener que copiarlos en el archivo mmc (monta automaticamente el esxdos handler)
+Permitir limitar max cpu turbo en Next
 Permitir no guardar la configuración al salir de ZEsarUX
 Permitir seleccionar el logotipo normal de ZEsarUX o el logotipo del X Aniversario
 Permitir enviar instantáneas ZENG con mayor frecuencia (incluso cada 20 ms)
@@ -29,6 +30,8 @@ Permitir usar cpu-step-mode de ZRCP en controladores stdout y simpletext
 Permitir la configuración de rebobinado automático también para cintas reales
 Permitir deshabilitar los colores de Spectrum también en el modo de video real
 Permitir presionar teclas de acceso rápido en el teclado en pantalla
+Permitir autocarga al insertar mdv/flp en QL
+Mostrar 2 iconos de microdrive y 1 floppy en QL, en vez de mostrar solo un icono
 
 Mejorado ZX Vision:
 - Se modificó el comportamiento del clic izquierdo del mouse: al presionar el botón izquierdo del mouse fuera de una ventana, se cerrarán todos los menús.

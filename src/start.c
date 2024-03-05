@@ -864,6 +864,10 @@ printf (
 		"--denyturbotbbluerom        Limit setting turbo mode on TBBlue ROM (default setting denied)\n"
         "--allowturbotbbluerom       Do not limit setting turbo mode on TBBlue ROM\n"
 		"--tbblue-max-turbo-rom n    Max allowed turbo speed mode on TBBlue ROM when enabling --denyturbotbbluerom (default value: 2)\n"
+
+		"--denyturbotbblueeverywhere Limit setting turbo mode on TBBlue everywhere (default setting allowed)\n"
+		"--tbblue-max-turbo-everywhere n    Max allowed turbo speed mode on TBBlue everywhere when enabling --denyturbotbblueeverywhere (default value: 4)\n"
+
 		"--tbblue-fast-boot-mode     Boots tbblue directly to a 48 rom but with all the Next features enabled (except divmmc)\n"
 		//no uso esto de momento "--tbblue-123b-port n        Sets the initial value for port 123b on hard reset, for tbblue-fast-boot-mode\n"
 		"--random-r-register         Generate random value for R register on every cold start, instead of the normal 0 value. Useful to avoid same R register in the start of games, when they use that register as a random value\n"
@@ -3034,6 +3038,23 @@ int parse_cmdline_options(int desde_commandline) {
 						exit(1);
 				}
 				tbblue_deny_turbo_rom_max_allowed=valor;
+			}
+
+
+			else if (!strcmp(argv[puntero_parametro],"--denyturbotbblueeverywhere")) {
+					tbblue_deny_turbo_everywhere.v=1;
+			}
+
+			else if (!strcmp(argv[puntero_parametro],"--tbblue-max-turbo-everywhere")) {
+
+				siguiente_parametro_argumento();
+				int valor=parse_string_to_number(argv[puntero_parametro]);
+
+				if (valor<1 || valor>8) {
+						printf ("Invalid value for tbblue-max-turbo-everywhere\n");
+						exit(1);
+				}
+				tbblue_deny_turbo_everywhere_max_allowed=valor;
 			}
 
 			else if (!strcmp(argv[puntero_parametro],"--tbblue-fast-boot-mode")) {
