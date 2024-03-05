@@ -808,10 +808,6 @@ https://trastero.speccy.org/cosas/FLeon/Fleon.htm
 
 -Incorporar menú de juegos david más visible en esta edición. Quizá en menú In Memoriam?
 
--smartload de un .nex que monte carpeta con esxdos handler donde esté ubicado.
-Setting para que haga eso (por defecto activado)
-Aunque se supone que en la cabecera del .nex ya hay un parámetro para eso... o creo que quiza era para dejar
-un file handle abierto apuntando al archivo .nex
 
 -zeng online: si se desconecta del server va saltando errores continuos en el cliente de:
 
