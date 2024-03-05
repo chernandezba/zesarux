@@ -607,7 +607,8 @@ int zoc_common_send_command_buffer(int indice_socket,char *buffer_enviar,char *c
 
 
     if (escritos<0) {
-        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't send zeng-online %s: %s",command_name_for_info,z_sock_get_error(escritos));
+        //Solo mostrar ese mensaje cuando aun no se ha declarado desconectado
+        if (zoc_last_snapshot_received_counter) DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't send zeng-online %s: %s",command_name_for_info,z_sock_get_error(escritos));
         return 0;
     }
 
