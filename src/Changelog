@@ -35,6 +35,7 @@ Show 2 microdrive and 1 floppy icon on QL, instead of just one icon
 Improve file selector:
 - scrolling the current directory field if it does not fit on the window
 - can change extension filter
+- when saving files, cursor is located at the file field
 
 Improved ZX Vision:
 - Changed left click mouse behaviour: when pressing left mouse button out of a window, it will close all menus.

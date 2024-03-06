@@ -17901,7 +17901,7 @@ void menu_display_save_screen(MENU_ITEM_PARAMETERS)
 	}
 
 
-	if (menu_filesel("Select Screen File",filtros,screen_save_file)==1) {
+	if (menu_filesel_if_save("Select Screen File",filtros,screen_save_file,1)==1) {
 
 		//Ver si archivo existe y preguntar
 		struct stat buf_stat;

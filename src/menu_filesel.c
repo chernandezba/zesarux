@@ -1439,7 +1439,14 @@ void menu_filesel_select_filters(void)
         int i=0;
 
         while (filesel_filtros_iniciales[i]!=0) {
-            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_filesel_select_filters_independientes,NULL,"*.%s",filesel_filtros_iniciales[i]);
+            //Si filtro es "", es "*.*"
+            if (filesel_filtros_iniciales[i][0]==0) {
+                menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_filesel_select_filters_independientes,NULL,"*.*");
+            }
+            else {
+                menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_filesel_select_filters_independientes,NULL,"*.%s",filesel_filtros_iniciales[i]);
+            }
+
             menu_add_item_menu_valor_opcion(array_menu_common,i);
 
             i++;
@@ -5274,7 +5281,8 @@ void menu_filesel_set_overlay(zxvision_window *ventana)
 //Retorna 1 si seleccionado archivo. Retorna 0 si sale con ESC
 //Si seleccionado archivo, lo guarda en variable *archivo
 //Si sale con ESC, devuelve en menu_filesel_last_directory_seen ultimo directorio
-int menu_filesel(char *titulo,char *filtros[],char *archivo)
+//si_save indica a 1 que es operacion de grabar y facilitamos al usuario poniendo el cursor en el campo de nombre de archivo
+int menu_filesel_if_save(char *titulo,char *filtros[],char *archivo,int si_save)
 {
 
 	//En el caso de stdout es mucho mas simple
@@ -5285,6 +5293,9 @@ int menu_filesel(char *titulo,char *filtros[],char *archivo)
 		return 1;
     }
 
+    //quitar preview del anterior archivo
+    menu_filesel_overlay_last_preview_width=0;
+    menu_filesel_overlay_last_preview_height=0;
 
 	menu_reset_counters_tecla_repeticion();
 
@@ -5292,8 +5303,18 @@ int menu_filesel(char *titulo,char *filtros[],char *archivo)
 
 	int tecla;
 
+    menu_filesel_select_filters_opcion_seleccionada=0;
 
-	filesel_zona_pantalla=1;
+    int primera_vez_input_file_blanco=0;
+
+    if (si_save) {
+        filesel_zona_pantalla=0;
+        primera_vez_input_file_blanco=1;
+    }
+
+	else {
+        filesel_zona_pantalla=1;
+    }
 
 	getcwd(filesel_directorio_inicial,PATH_MAX);
 
@@ -5457,6 +5478,15 @@ int menu_filesel(char *titulo,char *filtros[],char *archivo)
 				//zona superior de nombre de archivo
 				zxvision_reset_visible_cursor(ventana);
 		                zxvision_menu_print_dir(filesel_archivo_seleccionado,ventana);
+
+                if (primera_vez_input_file_blanco) {
+                    filesel_nombre_archivo_seleccionado[0]=0;
+
+
+
+                    primera_vez_input_file_blanco=0;
+                }
+
 				zxvision_draw_window_contents(ventana);
                 		//para que haga lectura del edit box
 		                menu_speech_tecla_pulsada=0;
@@ -6202,7 +6232,11 @@ int menu_filesel(char *titulo,char *filtros[],char *archivo)
 
 }
 
-
+int menu_filesel(char *titulo,char *filtros[],char *archivo)
+{
+    //dialogo comun no de grabar
+    return menu_filesel_if_save(titulo,filtros,archivo,0);
+}
 
 //Inicializar vacio
 void last_filesused_clear(void)

@@ -35,6 +35,7 @@ Mostrar 2 iconos de microdrive y 1 floppy en QL, en vez de mostrar solo un icono
 Mejorar selector de archivos:
 - desplazando el campo de directorio actual si no cabe en la ventana
 - puede cambiar filtro de extensiones
+- al grabar archivos, cursor se ubica en el campo de archivo
 
 Mejorado ZX Vision:
 - Se modificó el comportamiento del clic izquierdo del mouse: al presionar el botón izquierdo del mouse fuera de una ventana, se cerrarán todos los menús.

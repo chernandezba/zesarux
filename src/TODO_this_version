@@ -819,5 +819,17 @@ cd /Users/cesarhernandez/Downloads/libretro-super
 cd "/Users/cesarhernandez/Library/Application Support/RetroArch/cores"
 cp /Users/cesarhernandez/Downloads/libretro-super/dist/osx-x86_64/skeleton_libretro.dylib .
 
+
 -filesel despues de cambiar filtros, cambiar a zona normal de seleccion
--esperar a liberar tecla/raton despues de pulsar en zona filtros
+Al grabar añadir extensión si se ha seleccionado una en filesel
+- En grabar quizá zona por defecto la de arriba del todo: nombre archivo: ok revisar todos (de momento solo save screen)
+Quizá campos pulsables que se vean distintos?
+Preview archivos txt: renderizarlos como pantalla con tipo de letra del spectrum
+
+
+-Acción joystick menú tab
+
+
+-zeng online:
+Md5 de los snapshots Zeng? Para evitar cargar snapshots incompletos
+Si versión Zeng online no coincide, da error?
