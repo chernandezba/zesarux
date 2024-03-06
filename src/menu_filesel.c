@@ -1385,6 +1385,82 @@ void menu_filesel_switch_filters(void)
 
 }
 
+int menu_filesel_select_filters_opcion_seleccionada=0;
+
+void menu_filesel_select_filters_initial(MENU_ITEM_PARAMETERS)
+{
+    filesel_filtros=filesel_filtros_iniciales;
+}
+
+void menu_filesel_select_filters_all(MENU_ITEM_PARAMETERS)
+{
+    filesel_filtros=filtros_todos_archivos;
+}
+
+
+char *filtros_independientes[2];
+char filtros_independientes_primero[100];
+
+void menu_filesel_select_filters_independientes(MENU_ITEM_PARAMETERS)
+{
+
+    int filtro=valor_opcion;
+
+    strcpy(filtros_independientes_primero,filesel_filtros_iniciales[filtro]);
+
+    filtros_independientes[0]=filtros_independientes_primero;
+    filtros_independientes[1]=0;
+
+    filesel_filtros=filtros_independientes;
+
+}
+
+void menu_filesel_select_filters(void)
+{
+    menu_item *array_menu_common;
+    menu_item item_seleccionado;
+    int retorno_menu;
+    do {
+
+        menu_add_item_menu_en_es_ca_inicial(&array_menu_common,MENU_OPCION_NORMAL,menu_filesel_select_filters_initial,NULL,
+            "Supported files","Archivos Soportados","Arxius Suportats");
+
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_filesel_select_filters_all,NULL,
+            "All files","Todos archivos","Tots arxius");
+
+
+        int i=0;
+
+        while (filesel_filtros_iniciales[i]!=0) {
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_filesel_select_filters_independientes,NULL,"*.%s",filesel_filtros_iniciales[i]);
+            menu_add_item_menu_valor_opcion(array_menu_common,i);
+
+            i++;
+        }
+
+
+        menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+
+        menu_add_ESC_item(array_menu_common);
+
+        retorno_menu=menu_dibuja_menu(&menu_filesel_select_filters_opcion_seleccionada,&item_seleccionado,array_menu_common,"Filters","Filtros","Filtres");
+
+
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+            //llamamos por valor de funcion
+                if (item_seleccionado.menu_funcion!=NULL) {
+                //printf ("actuamos por funcion\n");
+                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+
+                //Y salir
+                return;
+
+            }
+        }
+
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+
+}
 
 
 /*char menu_minus_letra(char letra)
@@ -6093,7 +6169,7 @@ int menu_filesel(char *titulo,char *filtros[],char *archivo)
 					if (tecla==13 || (tecla==0 && mouse_left)) {
 
 						//conmutar filtros
-						menu_filesel_switch_filters();
+						menu_filesel_select_filters();
 
 					        zxvision_menu_filesel_print_filters(ventana,filesel_filtros);
 						releer_directorio=1;
