@@ -1376,7 +1376,7 @@ void zxvision_menu_filesel_print_file(zxvision_window *ventana,char *s,unsigned 
 
 
 
-
+/*
 void menu_filesel_switch_filters(void)
 {
 
@@ -1387,7 +1387,7 @@ void menu_filesel_switch_filters(void)
 	//si filtro *.* , ponemos el filtro inicial
 	else filesel_filtros=filesel_filtros_iniciales;
 
-}
+}*/
 
 int menu_filesel_select_filters_opcion_seleccionada=0;
 
@@ -1421,6 +1421,9 @@ void menu_filesel_select_filters_independientes(MENU_ITEM_PARAMETERS)
 
 void menu_filesel_select_filters(void)
 {
+
+    menu_espera_no_tecla();
+
     menu_item *array_menu_common;
     menu_item item_seleccionado;
     int retorno_menu;
@@ -6172,11 +6175,14 @@ int menu_filesel(char *titulo,char *filtros[],char *archivo)
 					//printf ("conmutar filtros\n");
 					if (tecla==13 || (tecla==0 && mouse_left)) {
 
-						//conmutar filtros
+						//cambiar filtros
 						menu_filesel_select_filters();
 
 					        zxvision_menu_filesel_print_filters(ventana,filesel_filtros);
 						releer_directorio=1;
+
+                        //cambiar zona pantalla
+                        filesel_zona_pantalla=1;
 
 						menu_espera_no_tecla();
 					}
