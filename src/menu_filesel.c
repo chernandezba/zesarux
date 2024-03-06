@@ -281,6 +281,10 @@ int menu_file_filter(const char *name,char *filtros[])
 	//Hay algunos que se pueden expandir y directamente los excluyo (como .P o .O) por ser su uso muy limitado
 	//(solo generan .baszx80 y .baszx81 en este caso)
 
+    //Solo agregar esos otros si estamos en "todos los archivos" o los filtros iniciales
+    //si hay filtro de una sola extensión en particular, no mostrarlos
+    if (filesel_filtros!=filesel_filtros_iniciales && filesel_filtros!=filtros_todos_archivos) return 0;
+
 	if (!strcasecmp(extension,"zip")) return 1;
 
 	if (!strcasecmp(extension,"gz")) return 1;
