@@ -6090,7 +6090,7 @@ int menu_filesel(char *titulo,char *filtros[],char *archivo)
 				else {
 
 					//printf ("conmutar filtros\n");
-					if (tecla || (tecla==0 && mouse_left)) {
+					if (tecla==13 || (tecla==0 && mouse_left)) {
 
 						//conmutar filtros
 						menu_filesel_switch_filters();
