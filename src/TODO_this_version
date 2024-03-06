@@ -818,3 +818,6 @@ cd /Users/cesarhernandez/Downloads/libretro-super
 
 cd "/Users/cesarhernandez/Library/Application Support/RetroArch/cores"
 cp /Users/cesarhernandez/Downloads/libretro-super/dist/osx-x86_64/skeleton_libretro.dylib .
+
+-filesel despues de cambiar filtros, cambiar a zona normal de seleccion
+-esperar a liberar tecla/raton despues de pulsar en zona filtros
