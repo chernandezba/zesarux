@@ -32,6 +32,7 @@ Allow to disable Spectrum colours on real video mode too
 Allow to press hotkeys at On Screen Keyboard
 Allow autoload when inserting QL mdv/flp
 Show 2 microdrive and 1 floppy icon on QL, instead of just one icon
+Improve file selector by scrolling the current directory field if it does not fit on the window
 
 Improved ZX Vision:
 - Changed left click mouse behaviour: when pressing left mouse button out of a window, it will close all menus.

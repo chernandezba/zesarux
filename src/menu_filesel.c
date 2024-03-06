@@ -3178,6 +3178,20 @@ void menu_filesel_change_to_tmp(char *tmpdir)
                                                                         menu_filesel_free_mem();
 }
 
+void zxvision_filesel_show_current_dir(zxvision_window *ventana)
+{
+	char current_dir[PATH_MAX];
+	char buffer_dir[OVERLAY_SCREEN_MAX_WIDTH+1];
+	char buffer3[OVERLAY_SCREEN_MAX_WIDTH+1+32];
+
+	//getcwd(current_dir,PATH_MAX);
+    zvfs_getcwd(current_dir,PATH_MAX);
+
+	menu_tape_settings_trunc_name(current_dir,buffer_dir,ventana->visible_width-14); //14 es lo que ocupa el texto "Current dir: "
+	sprintf (buffer3,"Current dir: %s",buffer_dir);
+	//menu_escribe_texto_ventana(1,0,ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,buffer3);
+	zxvision_print_string_defaults_fillspc(ventana,1,0,buffer3);
+}
 
 void zxvision_menu_print_dir(int inicial,zxvision_window *ventana)
 {
@@ -3284,7 +3298,9 @@ void zxvision_menu_print_dir(int inicial,zxvision_window *ventana)
 
     //menu_escribe_texto_ventana(14,0,ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,"               ");
 
+    if (!menu_multitarea) zxvision_filesel_show_current_dir(ventana);
 
+/*
 	char current_dir[PATH_MAX];
 	char buffer_dir[OVERLAY_SCREEN_MAX_WIDTH+1];
 	char buffer3[OVERLAY_SCREEN_MAX_WIDTH+1+32];
@@ -3296,7 +3312,7 @@ void zxvision_menu_print_dir(int inicial,zxvision_window *ventana)
 	sprintf (buffer3,"Current dir: %s",buffer_dir);
 	//menu_escribe_texto_ventana(1,0,ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,buffer3);
 	zxvision_print_string_defaults_fillspc(ventana,1,0,buffer3);
-
+*/
 
     if (texto_opcion_activa[0]!=0) {
 
@@ -5071,6 +5087,60 @@ void old_menu_filesel_overlay_render_preview_in_memory(void)
 
 */
 
+//Indica el indice a la posicion del string, para rotarlo en pantalla
+//Si es <0, es periodo de pausa
+//Si es > que un margen en pantalla, tambien indica pausa
+int contador_scroll_current_dir=0;
+
+void menu_filesel_overlay_show_current_dir_init_scroll(void)
+{
+    contador_scroll_current_dir=-10;
+}
+
+void menu_filesel_overlay_show_current_dir(zxvision_window *ventana)
+{
+	char current_dir[PATH_MAX];
+    char current_dir_rotado[PATH_MAX];
+	//char buffer_dir[OVERLAY_SCREEN_MAX_WIDTH+1];
+	char buffer3[PATH_MAX+20];
+
+	//getcwd(current_dir,PATH_MAX);
+    zvfs_getcwd(current_dir,PATH_MAX);
+
+    char *current_dir_mensaje="Current dir: ";
+    int longitud_current_dir_mensaje=strlen(current_dir_mensaje);
+
+    int longitud=strlen(current_dir);
+
+
+    int ancho_visible_dir=(ventana->visible_width-longitud_current_dir_mensaje-2);
+
+    int max_rotacion_mensaje_indice=longitud-ancho_visible_dir;
+
+
+    int contador_scroll_current_dir_efectivo=contador_scroll_current_dir;
+
+
+
+    if (contador_scroll_current_dir_efectivo>max_rotacion_mensaje_indice) contador_scroll_current_dir_efectivo=max_rotacion_mensaje_indice;
+
+    if (contador_scroll_current_dir_efectivo<0) contador_scroll_current_dir_efectivo=0;
+
+    strcpy(current_dir_rotado,&current_dir[contador_scroll_current_dir_efectivo]);
+
+
+
+	sprintf (buffer3,"%s%s",current_dir_mensaje,current_dir_rotado);
+
+	zxvision_print_string_defaults_fillspc(ventana,1,0,buffer3);
+
+    contador_scroll_current_dir++;
+
+    //10 posiciones de mas y de menos para pausa
+    if (contador_scroll_current_dir>max_rotacion_mensaje_indice+10) menu_filesel_overlay_show_current_dir_init_scroll();
+}
+
+
 //Overlay para mostrar los previews
 void menu_filesel_overlay(void)
 {
@@ -5080,15 +5150,16 @@ void menu_filesel_overlay(void)
 		menu_filesel_overlay_valor_contador_segundo_anterior=contador_segundo;
 
 		//renderizar preview en memoria si conviene
+		if (si_complete_video_driver() && menu_filesel_show_previews.v) menu_filesel_overlay_render_preview_in_memory();
 
-		menu_filesel_overlay_render_preview_in_memory();
+        if (menu_multitarea) menu_filesel_overlay_show_current_dir(menu_filesel_overlay_window);
 
 	}
 
 
 
-	//El overlay de la pantalla siempre
-    menu_filesel_overlay_draw_preview();
+	//El overlay de la pantalla
+    if (si_complete_video_driver() && menu_filesel_show_previews.v) menu_filesel_overlay_draw_preview();
 
     //Realmente no tiene contenido de texto este overlay, pero dado que estamos
     //dibujando un preview, necesitamos que cuando no haya preview, este zxvision_draw_window_contents limpie
@@ -5109,17 +5180,12 @@ void menu_filesel_preexit(zxvision_window *ventana)
 
 void menu_filesel_set_overlay(zxvision_window *ventana)
 {
-    //Overlay para los previews. Siempre que tengamos video driver completo
-    if (si_complete_video_driver() ) {
 
-        if (menu_filesel_show_previews.v) {
             menu_filesel_overlay_window=ventana;
 
             //cambio overlay
             zxvision_set_window_overlay(ventana,menu_filesel_overlay);
-        }
 
-    }
 }
 
 //Retorna 1 si seleccionado archivo. Retorna 0 si sale con ESC
@@ -5138,6 +5204,8 @@ int menu_filesel(char *titulo,char *filtros[],char *archivo)
 
 
 	menu_reset_counters_tecla_repeticion();
+
+    menu_filesel_overlay_show_current_dir_init_scroll();
 
 	int tecla;
 
@@ -6038,6 +6106,8 @@ int menu_filesel(char *titulo,char *filtros[],char *archivo)
 			}
 
 		} while (releer_directorio==0);
+
+        menu_filesel_overlay_show_current_dir_init_scroll();
 	} while (1);
 
 
