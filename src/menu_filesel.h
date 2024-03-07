@@ -49,6 +49,7 @@ extern z80_bit menu_filesel_show_utils;
 
 extern int menu_filesel(char *titulo,char *filtros[],char *archivo);
 extern int menu_filesel_if_save(char *titulo,char *filtros[],char *archivo,int si_save);
+extern int menu_filesel_save(char *titulo,char *filtros[],char *archivo);
 extern int menu_filesel_mkdir(char *directory);
 extern int file_utils_mount_mmc_image(char *fullpath);
 extern void file_utils_umount_mmc_image(void);

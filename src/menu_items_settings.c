@@ -3411,7 +3411,7 @@ void menu_aofile(MENU_ITEM_PARAMETERS)
 #endif
 
 
-        if (menu_filesel("Select Audio File",filtros,aofilename_file)==1) {
+        if (menu_filesel_save("Select Audio File",filtros,aofilename_file)==1) {
 
        	        if (si_existe_archivo(aofilename_file)) {
 

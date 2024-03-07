@@ -11485,7 +11485,7 @@ int menu_debug_view_sprites_save(menu_z80_moto_int direccion,int ancho, int alto
 
 		int ret;
 
-		 ret=menu_filesel("Select PBM/C File",filtros,file_save);
+		 ret=menu_filesel_save("Select PBM/C File",filtros,file_save);
 
 		 if (ret==1) {
 
@@ -13315,7 +13315,7 @@ void menu_record_mid_save(MENU_ITEM_PARAMETERS)
 
     int ret;
 
-        ret=menu_filesel("Mid file",filtros,file_save);
+        ret=menu_filesel_save("Mid file",filtros,file_save);
 
         //volvemos a directorio inicial
         zvfs_chdir(directorio_actual);
@@ -17901,7 +17901,7 @@ void menu_display_save_screen(MENU_ITEM_PARAMETERS)
 	}
 
 
-	if (menu_filesel_if_save("Select Screen File",filtros,screen_save_file,1)==1) {
+	if (menu_filesel_save("Select Screen File",filtros,screen_save_file)==1) {
 
 		//Ver si archivo existe y preguntar
 		struct stat buf_stat;
@@ -28078,7 +28078,7 @@ void menu_debug_save_binary(MENU_ITEM_PARAMETERS)
 		}
 	}
 
-	ret=menu_filesel_if_save("Select File to Save",filtros,binary_file_save,1);
+	ret=menu_filesel_save("Select File to Save",filtros,binary_file_save);
 
 	//volvemos a directorio inicial
 	zvfs_chdir(directorio_actual);
@@ -29232,7 +29232,7 @@ void menu_snapshot_save(MENU_ITEM_PARAMETERS)
 
 		int ret;
 
-		ret=menu_filesel("Snapshot file",filtros,snapshot_save_file);
+		ret=menu_filesel_save("Snapshot file",filtros,snapshot_save_file);
         //volvemos a directorio inicial
         zvfs_chdir(directorio_actual);
 
@@ -31903,7 +31903,7 @@ void menu_tape_out_open(MENU_ITEM_PARAMETERS)
 	}
 
 
-	if (menu_filesel_if_save("Select Output Tape",filtros,tape_out_open_file,1)==1) {
+	if (menu_filesel_save("Select Output Tape",filtros,tape_out_open_file)==1) {
 
 		//Ver si archivo existe y preguntar
 		struct stat buf_stat;

@@ -6266,6 +6266,12 @@ int menu_filesel(char *titulo,char *filtros[],char *archivo)
     return menu_filesel_if_save(titulo,filtros,archivo,0);
 }
 
+int menu_filesel_save(char *titulo,char *filtros[],char *archivo)
+{
+    //dialogo comun no de grabar
+    return menu_filesel_if_save(titulo,filtros,archivo,1);
+}
+
 //Inicializar vacio
 void last_filesused_clear(void)
 {
