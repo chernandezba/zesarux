@@ -822,10 +822,9 @@ cp /Users/cesarhernandez/Downloads/libretro-super/dist/osx-x86_64/skeleton_libre
 
 ok-filesel despues de cambiar filtros, cambiar a zona normal de seleccion
 ok-Al grabar añadir extensión si se ha seleccionado una en filesel
-- En grabar quizá zona por defecto la de arriba del todo: nombre archivo: ok revisar todos (de momento solo save screen)
+ok - En grabar quizá zona por defecto la de arriba del todo: nombre archivo: ok revisar todos (de momento solo save screen)
 Quizá campos pulsables que se vean distintos?
 Preview archivos txt: renderizarlos como pantalla con tipo de letra del spectrum
-al sugerir un nombre de archivo al grabar, cursor situarlo justo entre el nombre y la extensión
 
 
 -Acción joystick menú tab
