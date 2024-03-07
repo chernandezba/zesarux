@@ -135,6 +135,9 @@ char **filesel_filtros_iniciales;
 char *filtros_todos_archivos[2];
 
 
+char *filesel_todos_archivos_primero="";
+char *filesel_todos_archivos_segundo=0;
+
 //Ultimo directorio al salir con ESC desde fileselector
 char menu_filesel_last_directory_seen[PATH_MAX];
 
@@ -1371,7 +1374,10 @@ void zxvision_menu_filesel_print_file(zxvision_window *ventana,char *s,unsigned 
         menu_filesel_print_file_get(buffer, s, max_length_shown);
 
 
-	zxvision_print_string_defaults_fillspc(ventana,1,y+ZXVISION_FILESEL_INITIAL_MARGIN,buffer);
+	//zxvision_print_string_defaults_fillspc(ventana,1,y+ZXVISION_FILESEL_INITIAL_MARGIN,buffer);
+
+    zxvision_print_string_fillspc(ventana,1,y+ZXVISION_FILESEL_INITIAL_MARGIN,
+        ESTILO_GUI_TINTA_FILESELECTOR_FILES,ESTILO_GUI_PAPEL_FILESELECTOR_FILES,0,buffer);
 }
 
 
@@ -1457,7 +1463,8 @@ void menu_filesel_select_filters(void)
 
         menu_add_ESC_item(array_menu_common);
 
-        retorno_menu=menu_dibuja_menu(&menu_filesel_select_filters_opcion_seleccionada,&item_seleccionado,array_menu_common,"Filters","Filtros","Filtres");
+        //no quiero indexarlo en la busqueda
+        retorno_menu=menu_dibuja_menu_no_indexado(&menu_filesel_select_filters_opcion_seleccionada,&item_seleccionado,array_menu_common,"Filters");
 
 
         if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
@@ -5337,10 +5344,8 @@ int menu_filesel_if_save(char *titulo,char *filtros[],char *archivo,int si_save)
 	//guardamos filtros originales
 	filesel_filtros_iniciales=filtros;
 
-
-
-    filtros_todos_archivos[0]="";
-    filtros_todos_archivos[1]=0;
+    filtros_todos_archivos[0]=filesel_todos_archivos_primero;
+    filtros_todos_archivos[1]=filesel_todos_archivos_segundo;
 
 	filesel_filtros=filtros;
 
@@ -5425,6 +5430,7 @@ int menu_filesel_if_save(char *titulo,char *filtros[],char *archivo,int si_save)
 	    ventana->upper_margin=4;
 	    ventana->lower_margin=4;
 		zxvision_set_visible_cursor(ventana);
+        ventana->acortar_cursor=1;
 		strcpy(ventana->geometry_name,"filesel");
 
 		if (menu_filesel_show_utils.v) {
@@ -5479,8 +5485,30 @@ int menu_filesel_if_save(char *titulo,char *filtros[],char *archivo,int si_save)
 				zxvision_reset_visible_cursor(ventana);
 		                zxvision_menu_print_dir(filesel_archivo_seleccionado,ventana);
 
-                if (primera_vez_input_file_blanco) {
-                    filesel_nombre_archivo_seleccionado[0]=0;
+                int forzar_cursor=0;
+
+                //La primera vez al entrar al fileselector en modo grabar, o si archivo es ".."
+                if (primera_vez_input_file_blanco ||
+                    (si_save && !strcmp(filesel_nombre_archivo_seleccionado,".."))
+                    ) {
+
+                    int asignar_extension=0;
+
+                    //Si no es nulo
+                    if (filesel_filtros[0]!=0) {
+                        //Ni es cadena en blanco
+                        if (filesel_filtros[0][0]!=0) {
+                            asignar_extension=1;
+                        }
+                    }
+
+                    if (asignar_extension) {
+                        sprintf(filesel_nombre_archivo_seleccionado,"noname.%s",filesel_filtros[0]);
+
+                        //Posicionar el cursor justo entre nombre y extension
+                        forzar_cursor=strlen(filesel_nombre_archivo_seleccionado)-strlen(filesel_filtros[0])-1;
+                    }
+                    else strcpy(filesel_nombre_archivo_seleccionado,"noname");
 
 
 
@@ -5504,7 +5532,7 @@ int menu_filesel_if_save(char *titulo,char *filtros[],char *archivo,int si_save)
 				else {
 
 
-				tecla=zxvision_scanf(ventana,filesel_nombre_archivo_seleccionado,PATH_MAX,ancho_mostrado,7,1,0,0);
+				tecla=zxvision_scanf(ventana,filesel_nombre_archivo_seleccionado,PATH_MAX,ancho_mostrado,7,1,0,0,forzar_cursor);
 				//); //6 ocupa el texto "File: "
 
 				if (tecla==15) {

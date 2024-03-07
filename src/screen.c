@@ -537,7 +537,8 @@ const int osdos_colortable_original[OSDOS_TOTAL_PALETTE_COLOURS]={
 };
 
 const int zesarux_plus_colortable_original[ZESARUX_PLUS_TOTAL_PALETTE_COLOURS]={
-    0xE0E0E0  //Blanco menos brillante que el blanco con brillo de Spectrum
+    0xE0E0E0,  //Blanco menos brillante que el blanco con brillo de Spectrum
+    0xb8cae7, //Selector de archivos
 };
 
 const int riscos_colortable_original[RISCOS_TOTAL_PALETTE_COLOURS]={

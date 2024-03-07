@@ -28078,7 +28078,7 @@ void menu_debug_save_binary(MENU_ITEM_PARAMETERS)
 		}
 	}
 
-	ret=menu_filesel("Select File to Save",filtros,binary_file_save);
+	ret=menu_filesel_if_save("Select File to Save",filtros,binary_file_save,1);
 
 	//volvemos a directorio inicial
 	zvfs_chdir(directorio_actual);
@@ -31895,15 +31895,15 @@ void menu_tape_out_open(MENU_ITEM_PARAMETERS)
 	}
 
 	else {
-		filtros[0]="tzx";
-		filtros[1]="tap";
+        filtros[0]="tap";
+		filtros[1]="tzx";
 		filtros[2]="pzx";
 		filtros[3]=0;
 		strcpy(mensaje_existe,"Append?");
 	}
 
 
-	if (menu_filesel("Select Output Tape",filtros,tape_out_open_file)==1) {
+	if (menu_filesel_if_save("Select Output Tape",filtros,tape_out_open_file,1)==1) {
 
 		//Ver si archivo existe y preguntar
 		struct stat buf_stat;
@@ -41118,74 +41118,13 @@ void menu_smartload(MENU_ITEM_PARAMETERS)
 
 	menu_first_aid("smartload");
 
-        char *filtros[40];
-
-        filtros[0]="zx";
-        filtros[1]="sp";
-        filtros[2]="z80";
-        filtros[3]="sna";
-
-        filtros[4]="o";
-        filtros[5]="p";
-        filtros[6]="80";
-        filtros[7]="81";
-	filtros[8]="z81";
-
-        filtros[9]="tzx";
-        filtros[10]="tap";
-
-	filtros[11]="rwa";
-	filtros[12]="smp";
-	filtros[13]="wav";
-
-	filtros[14]="epr";
-	filtros[15]="63";
-	filtros[16]="eprom";
-	filtros[17]="flash";
-
-	filtros[18]="ace";
-
-	filtros[19]="dck";
-
-	filtros[20]="cdt";
-
-	filtros[21]="ay";
-
-	filtros[22]="scr";
-
-	filtros[23]="rzx";
-
-	filtros[24]="zsf";
-
-	filtros[25]="spg";
-
-	filtros[26]="trd";
-
-	filtros[27]="nex";
-
-	filtros[28]="dsk";
-
-	filtros[29]="pzx";
-
-	filtros[30]="rom";
-
-	filtros[31]="col";
-
-	filtros[32]="sg";
-
-	filtros[33]="cas";
-
-    filtros[34]="snx";
-
-    filtros[35]="sms";
-
-    filtros[36]="bin";
-
-	filtros[37]="pok";
-
-    filtros[38]="zmenu";
-
-    filtros[39]=0;
+    char *filtros[40]={
+        "63", "80", "81", "ace","ay",   "bin",  "cas","cdt",
+        "col","dck","dsk","epr","eprom","flash","nex","o",
+        "p",  "pok","pzx","rom","rwa",  "rzx",  "scr","sg",
+        "smp","sms","sna","snx","sp",   "spg",  "tap","trd",
+        "tzx","wav","z80","z81","zmenu","zsf",  "zx", 0
+    };
 
 
         //guardamos directorio actual

@@ -198,6 +198,8 @@ struct s_zxvision_window {
 	//Posicion del cursor y si esta visible
 	int visible_cursor;
 	int cursor_line;
+    //Acortar el cursor en ancho en X caracteres a ambos lados
+    int acortar_cursor;
 
     //tiempo total transcurrido, en microsegundos, dibujando overlay
     long last_spent_time_overlay;
@@ -393,7 +395,7 @@ extern int zxvision_window_can_be_backgrounded(zxvision_window *w);
 extern void zxvision_message_put_window_background(void);
 extern void zxvision_window_delete_all_windows(void);
 extern void zxvision_window_delete_all_windows_and_clear_geometry(void);
-extern int zxvision_scanf(zxvision_window *ventana,char *string,unsigned int max_length,int max_length_shown,int x,int y,int volver_si_fuera_foco,int volver_si_flecha_abajo);
+extern int zxvision_scanf(zxvision_window *ventana,char *string,unsigned int max_length,int max_length_shown,int x,int y,int volver_si_fuera_foco,int volver_si_flecha_abajo,int forzar_cursor);
 extern int zxvision_scanf_history(char *titulo,char *texto,int max_length,char **textos_historial);
 //extern void zxvision_scanf_history_insert(char **textos_historial,char *texto);
 
@@ -1310,6 +1312,9 @@ struct s_estilos_gui {
 	int papel_opcion_marcada; //Color para opcion marcada, de momento solo usado en osd keyboard
 	int tinta_opcion_marcada;
 
+    int papel_fileselector_files; //Color para fileselector la zona de seleccion de archivos
+    int tinta_fileselector_files;
+
 	z80_byte boton_cerrar; //caracter de cerrado de ventana
 
     z80_byte boton_minimizar; //caracter de minimizado de ventana
@@ -1430,6 +1435,9 @@ extern int pulsado_alguna_ventana_con_menu_cerrado;
 
 #define ESTILO_GUI_PAPEL_OPCION_MARCADA (definiciones_estilos_gui[estilo_gui_activo].papel_opcion_marcada)
 #define ESTILO_GUI_TINTA_OPCION_MARCADA (definiciones_estilos_gui[estilo_gui_activo].tinta_opcion_marcada)
+
+#define ESTILO_GUI_PAPEL_FILESELECTOR_FILES (definiciones_estilos_gui[estilo_gui_activo].papel_fileselector_files)
+#define ESTILO_GUI_TINTA_FILESELECTOR_FILES (definiciones_estilos_gui[estilo_gui_activo].tinta_fileselector_files)
 
 #define ESTILO_GUI_PAPEL_TITULO (definiciones_estilos_gui[estilo_gui_activo].papel_titulo)
 #define ESTILO_GUI_TINTA_TITULO (definiciones_estilos_gui[estilo_gui_activo].tinta_titulo)

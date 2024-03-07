@@ -1417,7 +1417,7 @@ void menu_interface_change_gui_style_test(MENU_ITEM_PARAMETERS)
 
 
     int ancho=32;
-    int alto=24;
+    int alto=25;
     int x=menu_center_x()-ancho/2;
     int y=menu_center_y()-alto/2;
 
@@ -1483,6 +1483,7 @@ void menu_interface_change_gui_style_test(MENU_ITEM_PARAMETERS)
 
     //En visual tape se deben poder distinguir ESTILO_GUI_COLOR_WAVEFORM de ESTILO_GUI_COLOR_BLOCK_VISUALTAPE
     zxvision_print_string(&ventana,1,linea++,ESTILO_GUI_COLOR_WAVEFORM,ESTILO_GUI_COLOR_BLOCK_VISUALTAPE,0,"Visual tape block (this paper)");
+    zxvision_print_string(&ventana,1,linea++,ESTILO_GUI_TINTA_FILESELECTOR_FILES,ESTILO_GUI_PAPEL_FILESELECTOR_FILES,0,"Fileselector files section");
 
     zxvision_print_string(&ventana,1,linea++,ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,0,"Ascii table:");
     zxvision_print_string(&ventana,1,linea++,ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,0,"!\"#$%&\'()*+,-./0123456789:;<=>");

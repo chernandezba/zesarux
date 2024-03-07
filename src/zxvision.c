@@ -1449,6 +1449,9 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
 		7,		//Color para zona no usada en visualmem
         7,      //color block visualtape
 		2,ZESARUX_PLUS_COLOUR_WHITE,		//Color para opcion marcada
+
+        ZESARUX_PLUS_COLOUR_FILESELECTOR,0, //Colores fileselector, zona seleccion archivos
+
 		154, //caracter de cerrar ventana
         150, //caracter de minimizar ventana
         152, //caracter de maximizar ventana
@@ -1477,6 +1480,9 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
 		7,		//Color para zona no usada en visualmem
         7,      //color block visualtape
 		2,7+8,		//Color para opcion marcada
+
+        7,0, //Colores fileselector, zona seleccion archivos
+
 		'*',
         '-', //caracter de minimizar ventana
         '+', //caracter de maximizar ventana
@@ -1505,6 +1511,9 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
 		4,		//Color para zona no usada en visualmem
         4,      //color block visualtape
 		2,7,		//Color para opcion marcada
+
+        7,0, //Colores fileselector, zona seleccion archivos
+
 		'*',
         '-', //caracter de minimizar ventana
         '+', //caracter de maximizar ventana
@@ -1535,6 +1544,9 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
 		7,               //Color para zona no usada en visualmem
         7,      //color block visualtape
 		2,7+8,		//Color para opcion marcada
+
+        7,0, //Colores fileselector, zona seleccion archivos
+
 		'*',
         '-', //caracter de minimizar ventana
         '+', //caracter de maximizar ventana
@@ -1562,6 +1574,9 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         7,		//Color para zona no usada en visualmem
         7,      //color block visualtape
         3,7+8,		//Color para opcion marcada
+
+        7,0, //Colores fileselector, zona seleccion archivos
+
         '#',
         '-', //caracter de minimizar ventana
         '+', //caracter de maximizar ventana
@@ -1590,6 +1605,9 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         7,               //Color para zona no usada en visualmem
         7,      //color block visualtape
         2,7+8,		//Color para opcion marcada
+
+        7,0, //Colores fileselector, zona seleccion archivos
+
 		'*',
         '-', //caracter de minimizar ventana
         '+', //caracter de maximizar ventana
@@ -1618,6 +1636,9 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         7,               //Color para zona no usada en visualmem
         7,      //color block visualtape
         VDP_9918_INDEX_FIRST_COLOR+6,VDP_9918_INDEX_FIRST_COLOR+15,		//Color para opcion marcada
+
+        7,0, //Colores fileselector, zona seleccion archivos
+
         '.',
         '-', //caracter de minimizar ventana
         '+', //caracter de maximizar ventana
@@ -1645,6 +1666,9 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         7,		//Color para zona no usada en visualmem
         7,      //color block visualtape
         2,7+8,		//Color para opcion marcada
+
+        7,0, //Colores fileselector, zona seleccion archivos
+
         '*',
         '-', //caracter de minimizar ventana
         '+', //caracter de maximizar ventana
@@ -1672,6 +1696,9 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         7,               //Color para zona no usada en visualmem
         7,      //color block visualtape
         2,7+8,		//Color para opcion marcada
+
+        7,0, //Colores fileselector, zona seleccion archivos
+
 		'#',
         '-', //caracter de minimizar ventana
         '+', //caracter de maximizar ventana
@@ -1699,6 +1726,9 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         4,               //Color para zona no usada en visualmem
         6,      //color block visualtape
         2,7+8,		//Color para opcion marcada
+
+        7,0, //Colores fileselector, zona seleccion archivos
+
         '*',
         '-', //caracter de minimizar ventana
         '+', //caracter de maximizar ventana
@@ -1726,6 +1756,9 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         7,               //Color para zona no usada en visualmem
         7,      //color block visualtape
         7,0,		//Color para opcion marcada
+
+        7,0, //Colores fileselector, zona seleccion archivos
+
 		'.',
         '-', //caracter de minimizar ventana
         '+', //caracter de maximizar ventana
@@ -1753,6 +1786,9 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
 		7,		//Color para zona no usada en visualmem
         7,      //color block visualtape
 		AMIGAOS_COLOUR_red,7+8,		//Color para opcion marcada
+
+        7,0, //Colores fileselector, zona seleccion archivos
+
 		141, //boton cerrar
         150, //caracter de minimizar ventana
         152, //caracter de maximizar ventana
@@ -1780,6 +1816,9 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
 		ATARITOS_COLOUR_green,		//Color para zona no usada en visualmem
         7,      //color block visualtape
 		2,ATARITOS_COLOUR_white,		//Color para opcion marcada
+
+        7,0, //Colores fileselector, zona seleccion archivos
+
 		140, //boton cerrar
         '-', //caracter de minimizar ventana
         '+', //caracter de maximizar ventana
@@ -1807,6 +1846,9 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
 		7,		//Color para zona no usada en visualmem
         7,      //color block visualtape
 		2,7+8,		//Color para opcion marcada
+
+        7,0, //Colores fileselector, zona seleccion archivos
+
 		139, //boton cerrar especial
         150, //caracter de minimizar ventana
         152, //caracter de maximizar ventana
@@ -1835,6 +1877,9 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
 		OSDOS_COLOUR_GRAY_INACTIVE,		//Color para zona no usada en visualmem
         OSDOS_COLOUR_GRAY_INACTIVE,      //color block visualtape
 		2,7+8,		//Color para opcion marcada
+
+        7,0, //Colores fileselector, zona seleccion archivos
+
 		140, //caracter de cerrar ventana
         150, //caracter de minimizar ventana
         152, //caracter de maximizar ventana
@@ -1862,6 +1907,9 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
 		QNX_COLOUR_GRAY_INACTIVE,		//Color para zona no usada en visualmem
         QNX_COLOUR_GRAY_INACTIVE,      //color block visualtape
 		2,7+8,		//Color para opcion marcada
+
+        7,0, //Colores fileselector, zona seleccion archivos
+
 		170, //caracter de cerrar ventana
         169, //caracter de minimizar ventana
         139, //caracter de maximizar ventana
@@ -1889,6 +1937,9 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
 		5,		//Color para zona no usada en visualmem
         5+8,      //color block visualtape
 		2,7,		//Color para opcion marcada
+
+        7,0, //Colores fileselector, zona seleccion archivos
+
 		141, //boton cerrar
         150, //caracter de minimizar ventana
         152, //caracter de maximizar ventana
@@ -1917,6 +1968,9 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
 		7,		//Color para zona no usada en visualmem
         7,      //color block visualtape
 		RISCOS_COLOUR_RED,7+8,		//Color para opcion marcada
+
+        7,0, //Colores fileselector, zona seleccion archivos
+
 		155, //caracter de cerrar ventana
         '-', //caracter de minimizar ventana
 
@@ -1948,6 +2002,9 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
 		7,		//Color para zona no usada en visualmem
         7,      //color block visualtape
 		2,7+8,		//Color para opcion marcada
+
+        7,0, //Colores fileselector, zona seleccion archivos
+
 		'X',
         '-', //caracter de minimizar ventana
         '+', //caracter de maximizar ventana
@@ -1975,6 +2032,9 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
 		7,		//Color para zona no usada en visualmem
         7,      //color block visualtape
 		2,7+8,		//Color para opcion marcada
+
+        7,0, //Colores fileselector, zona seleccion archivos
+
 		'*',
         '-', //caracter de minimizar ventana
         '+', //caracter de maximizar ventana
@@ -2002,6 +2062,9 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
 		TURBOVISION_COLOUR_cyan,		//Color para zona no usada en visualmem
         TURBOVISION_COLOUR_cyan,       //color block visualtape
 		TURBOVISION_COLOUR_red,TURBOVISION_COLOUR_lightwhite,		//Color para opcion marcada
+
+        7,0, //Colores fileselector, zona seleccion archivos
+
 		141,
         '-', //caracter de minimizar ventana
         '+', //caracter de maximizar ventana
@@ -2029,6 +2092,9 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
 		7,		//Color para zona no usada en visualmem
         7,      //color block visualtape
 		2,7+8,		//Color para opcion marcada
+
+        7,0, //Colores fileselector, zona seleccion archivos
+
 		'*',
         '-', //caracter de minimizar ventana
         '+', //caracter de maximizar ventana
@@ -2056,6 +2122,9 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
 		7,		//Color para zona no usada en visualmem
         7,      //color block visualtape
 		4,7+8,		//Color para opcion marcada
+
+        7,0, //Colores fileselector, zona seleccion archivos
+
 		'*',
         '-', //caracter de minimizar ventana
         '+', //caracter de maximizar ventana
@@ -2083,6 +2152,9 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
 		7,		//Color para zona no usada en visualmem
         7,      //color block visualtape
 		1,7+8,		//Color para opcion marcada
+
+        7,0, //Colores fileselector, zona seleccion archivos
+
 		'*',
         '-', //caracter de minimizar ventana
         '+', //caracter de maximizar ventana
@@ -2110,6 +2182,9 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
 		7,		//Color para zona no usada en visualmem
         7,      //color block visualtape
 		3,7+8,		//Color para opcion marcada
+
+        7,0, //Colores fileselector, zona seleccion archivos
+
 		'*',
         '-', //caracter de minimizar ventana
         '+', //caracter de maximizar ventana
@@ -2137,6 +2212,9 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
 		7,		//Color para zona no usada en visualmem
         7,      //color block visualtape
 		5,7+8,		//Color para opcion marcada
+
+        7,0, //Colores fileselector, zona seleccion archivos
+
 		'*',
         '-', //caracter de minimizar ventana
         '+', //caracter de maximizar ventana
@@ -2164,6 +2242,9 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
 		5,		//Color para zona no usada en visualmem
         5,      //color block visualtape
 		6,7+8,		//Color para opcion marcada
+
+        7,0, //Colores fileselector, zona seleccion archivos
+
 		'*',
         '-', //caracter de minimizar ventana
         '+', //caracter de maximizar ventana
@@ -2191,6 +2272,9 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         7+8,               //Color para zona no usada en visualmem
         7+8,      //color block visualtape
         7+8,0,		//Color para opcion marcada
+
+        7,0, //Colores fileselector, zona seleccion archivos
+
 		'X',
         '-', //caracter de minimizar ventana
         '+', //caracter de maximizar ventana
@@ -2218,6 +2302,9 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         7,               //Color para zona no usada en visualmem
         7,      //color block visualtape
         0,7+8,		//Color para opcion marcada
+
+        0,7, //Colores fileselector, zona seleccion archivos
+
 		'X',
         '-', //caracter de minimizar ventana
         '+', //caracter de maximizar ventana
@@ -2247,6 +2334,9 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
 		7,		//Color para zona no usada en visualmem
         7,      //color block visualtape
 		2,7+8,		//Color para opcion marcada
+
+        7,0, //Colores fileselector, zona seleccion archivos
+
 		'*',
         '-', //caracter de minimizar ventana
         '+', //caracter de maximizar ventana
@@ -2276,6 +2366,9 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
 		7,		//Color para zona no usada en visualmem
         7,      //color block visualtape
 		2,7+8,		//Color para opcion marcada
+
+        7,0, //Colores fileselector, zona seleccion archivos
+
 		'*',
         '-', //caracter de minimizar ventana
         '+', //caracter de maximizar ventana
@@ -10405,6 +10498,7 @@ void zxvision_new_window_no_check_range(zxvision_window *w,int x,int y,int visib
 
 	w->visible_cursor=0;
 	w->cursor_line=0;
+    w->acortar_cursor=0;
 
 	w->upper_margin=0;
 	w->lower_margin=0;
@@ -11035,7 +11129,8 @@ void menu_scanf_cursor_derecha(char *texto,int *pos_cursor_x,int *offset_string,
 //max_length contando caracter 0 del final, es decir, para un texto de 4 caracteres, debemos especificar max_length=5
 //ejemplo, si el array es de 50, se le debe pasar max_length a 50
 //volver_si_fuera_foco dice si vuelve al pulsar en linea de edicion pero mas a la izquierda o derecha de esa zona
-int zxvision_scanf(zxvision_window *ventana,char *string,unsigned int max_length,int max_length_shown,int x,int y,int volver_si_fuera_foco,int volver_si_flecha_abajo)
+int zxvision_scanf(zxvision_window *ventana,char *string,unsigned int max_length,int max_length_shown,int x,int y,
+    int volver_si_fuera_foco,int volver_si_flecha_abajo,int forzar_cursor)
 {
 
 
@@ -11066,6 +11161,8 @@ int zxvision_scanf(zxvision_window *ventana,char *string,unsigned int max_length
 	int pos_cursor_x; //Donde esta el cursor
 
 	pos_cursor_x=j;
+
+    if (forzar_cursor) pos_cursor_x=forzar_cursor;
 
     //printf("pos_cursor_x before %d\n",pos_cursor_x);
 
@@ -13655,7 +13752,7 @@ void zxvision_draw_window_contents(zxvision_window *w)
 				//tener en cuenta desplazamiento de margenes superior e inferior
 				linea_cursor +=w->lower_margin;
 				linea_cursor +=w->upper_margin;
-				if (w->visible_cursor && linea_cursor==offset_y_final) {
+				if (w->visible_cursor && linea_cursor==offset_y_final && x>=w->acortar_cursor && x<width-w->acortar_cursor) {
                     //printf("cursor en linea %d\n",linea_cursor);
 					tinta=ESTILO_GUI_TINTA_SELECCIONADO;
 					papel=ESTILO_GUI_PAPEL_SELECCIONADO;
@@ -14099,16 +14196,7 @@ void zxvision_fill_width_spaces(zxvision_window *w,int y)
 void zxvision_print_string_defaults_fillspc(zxvision_window *w,int x,int y,char *texto)
 {
 
-	/*overlay_screen caracter_aux;
-	caracter_aux.caracter=' ';
-	caracter_aux.tinta=ESTILO_GUI_TINTA_NORMAL;
-	caracter_aux.papel=ESTILO_GUI_PAPEL_NORMAL;
-	caracter_aux.parpadeo=0;
 
-	int i;
-	for (i=0;i<w->total_width;i++) {
-		zxvision_print_char(w,i,y,&caracter_aux);
-	}*/
 	zxvision_fill_width_spaces(w,y);
 
 	zxvision_print_string(w,x,y,ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,0,texto);
@@ -22873,7 +22961,7 @@ int menu_ventana_scanf(char *titulo,char *texto,int max_length)
 	zxvision_draw_window(&ventana);
 
 
-	int tecla=zxvision_scanf(&ventana,texto,max_length,scanf_ancho-2,1,0,0,0);
+	int tecla=zxvision_scanf(&ventana,texto,max_length,scanf_ancho-2,1,0,0,0,0);
 
 	//menu_scanf(texto,max_length,scanf_ancho-2,scanf_x+1,scanf_y+1);
 	//int menu_scanf(char *string,unsigned int max_length,int max_length_shown,int x,int y)
@@ -22959,7 +23047,7 @@ int zxvision_scanf_history(char *titulo,char *texto,int max_length,char **textos
         //En primera linea, input de texto
         if (ventana.cursor_line==0) {
 
-            tecla=zxvision_scanf(&ventana,texto,max_length,scanf_ancho-2,1,0,1,1);
+            tecla=zxvision_scanf(&ventana,texto,max_length,scanf_ancho-2,1,0,1,1,0);
 
             //flecha abajo
             if (tecla==10 && lineas_historial>0) {
@@ -23133,7 +23221,7 @@ void menu_ventana_scanf_number_aux(zxvision_window *ventana,char *texto,int max_
 {
 	//En entrada de texto no validamos el maximo y minimo. Eso lo tiene que seguir haciendo la funcion que llama a menu_ventana_scanf_numero
 	//Si que se controla al pulsar botones de + y -
-	zxvision_scanf(ventana,texto,max_length,max_length,x_texto_input,0,1,0);
+	zxvision_scanf(ventana,texto,max_length,max_length,x_texto_input,0,1,0,0);
 }
 
 void menu_ventana_scanf_number_print_buttons(zxvision_window *ventana,char *texto,int x_boton_menos,int x_boton_mas,int x_texto_input,int x_boton_ok,int x_boton_cancel)

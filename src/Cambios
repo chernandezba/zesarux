@@ -32,10 +32,11 @@ Permitir deshabilitar los colores de Spectrum también en el modo de video real
 Permitir presionar teclas de acceso rápido en el teclado en pantalla
 Permitir autocarga al insertar mdv/flp en QL
 Mostrar 2 iconos de microdrive y 1 floppy en QL, en vez de mostrar solo un icono
-Mejorar selector de archivos:
+Mejorado selector de archivos:
 - desplazando el campo de directorio actual si no cabe en la ventana
 - puede cambiar filtro de extensiones
-- al grabar archivos, cursor se ubica en el campo de archivo
+- al grabar archivos, cursor se ubica en el campo de archivo, y se sugiere un nombre de archivo
+- zona de selección de archivos en otro color
 
 Mejorado ZX Vision:
 - Se modificó el comportamiento del clic izquierdo del mouse: al presionar el botón izquierdo del mouse fuera de una ventana, se cerrarán todos los menús.
