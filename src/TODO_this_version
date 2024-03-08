@@ -812,7 +812,17 @@ https://trastero.speccy.org/cosas/FLeon/Fleon.htm
 -soportar snapshots .nex con cabecera "NEXT" como exploding fist
 
 
--libretro: https://docs.libretro.com/development/cores/developing-cores/#skeletor-sample-core
+-libretro:
+compilacion minima con 3 cores:
+
+git clone https://github.com/libretro/libretro-super.git libretro-super
+cd libretro-super
+./libretro-fetch.sh fuse smsplus sameboy
+./libretro-build.sh fuse smsplus sameboy
+
+
+Copiar un core a retroarch, uno de ejemplo
+ https://docs.libretro.com/development/cores/developing-cores/#skeletor-sample-core
 cd /Users/cesarhernandez/Downloads/libretro-super
 ./libretro-build.sh skeleton
 
