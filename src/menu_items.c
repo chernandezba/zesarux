@@ -31902,8 +31902,33 @@ void menu_tape_out_open(MENU_ITEM_PARAMETERS)
 		strcpy(mensaje_existe,"Append?");
 	}
 
+	//guardamos directorio actual
+	char directorio_actual[PATH_MAX];
+	getcwd(directorio_actual,PATH_MAX);
 
-	if (menu_filesel_save("Select Output Tape",filtros,tape_out_open_file)==1) {
+	//Obtenemos directorio de cinta
+
+	if (tape_out_file!=NULL) {
+	        char directorio[PATH_MAX];
+	        util_get_dir(tape_out_file,directorio);
+	        //printf ("strlen directorio: %d directorio: %s\n",strlen(directorio),directorio);
+
+		//cambiamos a ese directorio, siempre que no sea nulo
+		if (directorio[0]!=0) {
+			debug_printf (VERBOSE_INFO,"Changing to last directory: %s",directorio);
+			zvfs_chdir(directorio);
+		}
+	}
+
+
+        int ret;
+
+        ret=menu_filesel_save("Select Output Tape",filtros,tape_out_open_file);
+        //volvemos a directorio inicial
+        zvfs_chdir(directorio_actual);
+
+
+	if (ret==1) {
 
 		//Ver si archivo existe y preguntar
 		struct stat buf_stat;
