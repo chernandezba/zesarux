@@ -835,7 +835,8 @@ ok-Al grabar añadir extensión si se ha seleccionado una en filesel
 ok - En grabar quizá zona por defecto la de arriba del todo: nombre archivo: ok revisar todos (de momento solo save screen)
 Quizá campos pulsables que se vean distintos?
 Preview archivos txt: renderizarlos como pantalla con tipo de letra del spectrum
-
+lineas de archivos no usados, rellenar con color de fileselector. para eso donde crea la ventana hay que darle mas height, sino lo limita
+a la cantidad de archivos (int alto_total=filesel_total_items+ZXVISION_FILESEL_INITIAL_MARGIN;)
 
 -Acción joystick menú tab
 
