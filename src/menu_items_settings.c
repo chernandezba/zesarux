@@ -444,6 +444,7 @@ void menu_settings_config_file(MENU_ITEM_PARAMETERS)
 		menu_add_item_menu_tooltip(array_menu_settings_config_file,"View configuration file");
 		menu_add_item_menu_ayuda(array_menu_settings_config_file,"View configuration file");
         menu_add_item_menu_es_avanzado(array_menu_settings_config_file);
+        menu_add_item_menu_genera_ventana(array_menu_settings_config_file);
 
 		menu_add_item_menu_en_es_ca(array_menu_settings_config_file,MENU_OPCION_NORMAL,menu_settings_config_file_show_location,NULL,
             "    Show config file ~~path","    Ver ~~path archivo configuración","    Veure ~~path arxiu configuració");
@@ -451,6 +452,7 @@ void menu_settings_config_file(MENU_ITEM_PARAMETERS)
 		menu_add_item_menu_tooltip(array_menu_settings_config_file,"Show config file location");
 		menu_add_item_menu_ayuda(array_menu_settings_config_file,"Show config file location");
         menu_add_item_menu_es_avanzado(array_menu_settings_config_file);
+        menu_add_item_menu_genera_ventana(array_menu_settings_config_file);
 
 
 		menu_add_item_menu_en_es_ca(array_menu_settings_config_file,MENU_OPCION_NORMAL,menu_settings_config_file_reset,NULL,
@@ -6191,7 +6193,7 @@ void menu_vofile(MENU_ITEM_PARAMETERS)
         filtros[1]=0;
 
 
-        if (menu_filesel("Select Video File",filtros,vofilename_file)==1) {
+        if (menu_filesel_save("Select Video File",filtros,vofilename_file)==1) {
 
                  //Ver si archivo existe y preguntar
                 struct stat buf_stat;
@@ -11225,27 +11227,33 @@ void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(screen_ext_desktop_enabled ? 'X' : ' ' ) );
 
 		if (screen_ext_desktop_enabled) {
-			menu_add_item_menu_format(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_width,menu_ext_desktop_cond,"~~Width");
+			menu_add_item_menu_format(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_width,
+                menu_ext_desktop_cond,"~~Width");
             menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%4d] ",zxdesktop_width);
             menu_add_item_menu_shortcut(array_menu_ext_desktop_settings,'w');
 			menu_add_item_menu_tooltip(array_menu_ext_desktop_settings,"Tells the width of the ZX Desktop space");
 			menu_add_item_menu_ayuda(array_menu_ext_desktop_settings,"Final width is this value in pixels X current horizontal zoom");
             menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
 
-			menu_add_item_menu_format(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_custom_width,menu_ext_desktop_cond,"~~Custom Width");
+			menu_add_item_menu_format(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_custom_width,
+                menu_ext_desktop_cond,"~~Custom Width");
             menu_add_item_menu_shortcut(array_menu_ext_desktop_settings,'c');
             menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
+            menu_add_item_menu_genera_ventana(array_menu_ext_desktop_settings);
 
-			menu_add_item_menu_format(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_height,menu_ext_desktop_cond,"~~Height");
+			menu_add_item_menu_format(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_height,
+                menu_ext_desktop_cond,"~~Height");
             menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%4d] ",zxdesktop_height);
             menu_add_item_menu_shortcut(array_menu_ext_desktop_settings,'h');
 			menu_add_item_menu_tooltip(array_menu_ext_desktop_settings,"Tells the height of the ZX Desktop space");
 			menu_add_item_menu_ayuda(array_menu_ext_desktop_settings,"Final height is this value in pixels X current vertical zoom");
             menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
 
-			menu_add_item_menu_format(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_custom_height,menu_ext_desktop_cond,"C~~ustom Height");
+			menu_add_item_menu_format(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_custom_height,
+                menu_ext_desktop_cond,"C~~ustom Height");
             menu_add_item_menu_shortcut(array_menu_ext_desktop_settings,'u');
             menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
+            menu_add_item_menu_genera_ventana(array_menu_ext_desktop_settings);
 
             menu_add_item_menu_separator(array_menu_ext_desktop_settings);
             menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
@@ -11301,6 +11309,7 @@ void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
                 menu_add_item_menu_shortcut(array_menu_ext_desktop_settings,'b');
                 menu_add_item_menu_tiene_submenu(array_menu_ext_desktop_settings);
                 menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
+                menu_add_item_menu_genera_ventana(array_menu_ext_desktop_settings);
 
                 menu_add_item_menu_separator(array_menu_ext_desktop_settings);
                 menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
@@ -11355,6 +11364,7 @@ void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
                     "    Modify icons","    Modificar iconos","    Modificar icones");
                 menu_add_item_menu_tiene_submenu(array_menu_ext_desktop_settings);
                 menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
+                menu_add_item_menu_genera_ventana(array_menu_ext_desktop_settings);
 
             }
 
