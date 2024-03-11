@@ -860,3 +860,5 @@ Si versión Zeng online no coincide, da error?
 este parametro. Por ejemplo "reset cpu" (y un dialogo de confirmacion yes/no no cuenta como "ventana")
 * si disparar la accion, se cerraran todos los menus, agregarle menu_add_item_menu_se_cerrara
 * si solo visible con items avanzados, agregarle menu_add_item_menu_es_avanzado
+
+-agregar a changelog comando zrcp get-text-overlay

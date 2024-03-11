@@ -738,6 +738,7 @@ struct s_items_ayuda items_ayuda[]={
   {"get-registers","|gr",NULL,"Get CPU registers"},
 	{"get-snapshot",NULL,NULL,"Gets a zsf snapshot on console. Contents are shown as hexadecimal characters"},
 	{"get-stack-backtrace",NULL,"[items]","Get last 16-bit values from the stack. If no items parameter, it shows 5 by default"},
+    {"get-text-overlay",NULL,NULL,"Get text from overlay (menu, windows)"},
 	{"get-tstates",NULL,NULL,"Get the t-states counter"},
 	{"get-tstates-partial",NULL,NULL,"Get the t-states partial counter. Shows text OVERFLOW if value overflows"},
 	{"get-ui-io-ports",NULL,NULL,"Gets user interacton io ports values for 8 rows of keyboard and joystick. Format of the values received is the same as command set-ui-io-ports"},
@@ -4576,6 +4577,27 @@ void interpreta_comando(char *comando,int misocket,char *buffer_lectura_socket_a
 			}
 		}
 	}
+
+    else if (!strcmp(comando_sin_parametros,"get-text-overlay")) {
+        int x,y;
+
+        int ancho=scr_get_menu_width();
+        int alto=scr_get_menu_height();
+
+        for (y=0;y<alto;y++) {
+            for (x=0;x<ancho;x++) {
+                z80_byte caracter=overlay_screen_array[y*ancho+x].caracter;
+                if (caracter<32) caracter=' ';
+                if (caracter>126) caracter='?';
+
+                escribir_socket_format(misocket,"%c",caracter);
+            }
+
+            escribir_socket(misocket,"\n");
+
+        }
+
+    }
 
 	else if (!strcmp(comando_sin_parametros,"get-tstates")) {
 		escribir_socket_format (misocket,"%d",t_estados);
