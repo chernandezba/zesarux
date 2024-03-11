@@ -161,6 +161,11 @@ int zeng_fifo_add_element(zeng_key_presses *elemento)
 
 }
 
+int zeng_fifo_get_current_size(void)
+{
+    return zeng_fifo_current_size;
+}
+
 //Leer elemento de la fifo
 //Retorna 1 si esta vacia
 int zeng_fifo_read_element(zeng_key_presses *elemento)
@@ -179,6 +184,25 @@ int zeng_fifo_read_element(zeng_key_presses *elemento)
 
 	//Y restar total elementos
 	zeng_fifo_current_size--;
+
+	return 0;
+
+}
+
+
+//Leer elemento de la fifo sin eliminarlo de la fifo
+//Retorna 1 si esta vacia
+int zeng_fifo_peek_element(zeng_key_presses *elemento)
+{
+	//TODO: semaforo
+
+	if (zeng_fifo_current_size==0) return 1;
+
+	//Leer de la posicion actual
+	elemento->tecla=zeng_key_presses_array[zeng_fifo_read_position].tecla;
+	elemento->pressrelease=zeng_key_presses_array[zeng_fifo_read_position].pressrelease;
+    //elemento->contador_scanline=zeng_key_presses_array[zeng_fifo_read_position].contador_scanline;
+
 
 	return 0;
 

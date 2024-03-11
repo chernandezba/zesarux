@@ -46,6 +46,10 @@ extern int zeng_fifo_add_element(zeng_key_presses *elemento);
 
 extern int zeng_fifo_read_element(zeng_key_presses *elemento);
 
+extern int zeng_fifo_peek_element(zeng_key_presses *elemento);
+
+extern int zeng_fifo_get_current_size(void);
+
 extern void zeng_send_key_event(enum util_teclas tecla,int pressrelease);
 
 extern void zeng_empty_fifo(void);

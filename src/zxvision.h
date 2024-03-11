@@ -424,7 +424,7 @@ extern zxvision_window *zxvision_find_first_window_below_this(zxvision_window *w
 #define MAX_ESCR_LINEA_OPCION_ZXVISION_LENGTH 128
 
 extern void menu_escribe_linea_opcion_zxvision(zxvision_window *ventana,int indice,int opcion_actual,int opcion_activada,char *texto_entrada,
-    int tiene_submenu,int opcion_marcada);
+    int tiene_submenu,int opcion_marcada,int genera_ventana);
 
 extern void zxvision_set_ventana_tipo_activa(void);
 extern void zxvision_reset_ventana_tipo_activa(void);
@@ -948,6 +948,9 @@ struct s_menu_item {
     //si este item de menu desplega otro menu
     int tiene_submenu;
 
+    //si este item de menu despliega una ventana y por tanto agregamos puntos suspensivos
+    int genera_ventana;
+
     //Si es un item avanzado
     //TODO: Quiza en menus tipo tabulado se ha probado poco
     //en caso que se usase, hacerle mas pruebas. Esto es poco probable,
@@ -1033,6 +1036,7 @@ extern void menu_add_item_menu_tabulado(menu_item *m,int x,int y);
 extern void menu_add_item_menu_espacio(menu_item *m,t_menu_funcion menu_funcion_espacio);
 extern void menu_add_item_menu_misc(menu_item *m,char *texto_misc);
 extern void menu_add_item_menu_tiene_submenu(menu_item *m);
+extern void menu_add_item_menu_genera_ventana(menu_item *m);
 extern void menu_add_item_menu_es_avanzado(menu_item *m);
 extern void menu_add_item_menu_marcar_opcion(menu_item *m,int valor);
 extern void menu_add_item_menu_separator(menu_item *m);

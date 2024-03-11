@@ -8573,7 +8573,7 @@ void menu_retorna_colores_linea_opcion(int indice,int opcion_actual,int opcion_a
 //opcion_actual indica que numero de linea es la seleccionada
 //opcion activada indica a 1 que esa opcion es seleccionable
 void menu_escribe_linea_opcion_zxvision(zxvision_window *ventana,int indice,int opcion_actual,int opcion_activada,char *texto_entrada,
-    int tiene_submenu,int opcion_marcada)
+    int tiene_submenu,int opcion_marcada,int genera_ventana)
 {
 
 	char texto[MAX_ESCR_LINEA_OPCION_ZXVISION_LENGTH+1];
@@ -8612,6 +8612,13 @@ void menu_escribe_linea_opcion_zxvision(zxvision_window *ventana,int indice,int 
 			texto[destino++]=texto_entrada[i];
 		}
 	}
+
+    //Si genera ventana mostrar ...
+    if (genera_ventana) {
+        texto[destino++]='.';
+        texto[destino++]='.';
+        texto[destino++]='.';
+    }
 
 	texto[destino]=0;
 
@@ -19123,7 +19130,7 @@ void menu_escribe_opciones_zxvision(zxvision_window *ventana,menu_item *aux,int 
                     if (y_destino>=0) {
 
                             menu_escribe_linea_opcion_zxvision(ventana,y_destino,linea_seleccionada_destino,
-                                opcion_activada,menu_retorna_item_language(aux),aux->tiene_submenu,opcion_marcada);
+                                opcion_activada,menu_retorna_item_language(aux),aux->tiene_submenu,opcion_marcada,aux->genera_ventana);
                             //menu_escribe_linea_opcion_zxvision(ventana,y_destino,linea_seleccionada_destino,opcion_activada,aux->texto_opcion,aux->tiene_submenu);
 
                     }
@@ -19593,6 +19600,9 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
         if (menu_item_retornar_avanzados(aux)) {
 
 		    ancho_calculado=menu_calcular_ancho_string_item(menu_retorna_item_language(aux))+2; //+2 espacios
+
+            //Espacio para los ...
+            if (aux->genera_ventana) ancho_calculado+=3;
 
 
 		    if (ancho_calculado>ancho) ancho=ancho_calculado;
@@ -20512,6 +20522,7 @@ void menu_add_item_menu_common_defaults(menu_item *m,int tipo_opcion,t_menu_func
 
     m->atajo_tecla=0;
     m->tiene_submenu=0;
+    m->genera_ventana=0;
     m->item_avanzado=0;
     m->no_indexar_busqueda=0;
     m->one_time=0;
@@ -20667,6 +20678,20 @@ void menu_add_item_menu_tiene_submenu(menu_item *m)
         }
 
         m->tiene_submenu=1;
+}
+
+
+//Agregar decirle que tiene genera ventana al ultimo item de menu
+void menu_add_item_menu_genera_ventana(menu_item *m)
+{
+       //busca el ultimo item i le añade el indicado
+
+        while (m->siguiente_item!=NULL)
+        {
+                m=m->siguiente_item;
+        }
+
+        m->genera_ventana=1;
 }
 
 //Decirle que todos los menus se cerraran cuando se cierre el menu que dispara esta accion

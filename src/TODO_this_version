@@ -846,3 +846,16 @@ Md5 de los snapshots Zeng? Para evitar cargar snapshots incompletos
 Si versión Zeng online no coincide, da error?
 
 -llamada de menu no indexado (menu_dibuja_menu_no_indexado) que permita titulo en los 3 idiomas
+
+-zeng online a veces deja tecla pulsada...
+
+-ancho en ... sin contar shortcuts
+
+-x11: poder implementar X11_KeyRepeat de SDL1.2 para eliminar lectura de teclas repetidas
+
+
+-documentar items de menus:
+* si tiene submenus, agregarle menu_add_item_menu_tiene_submenu
+* si genera ventana, agregarle menu_add_item_menu_genera_ventana
+* si disparar la accion, se cerraran todos los menus, agregarle menu_add_item_menu_se_cerrara
+* si solo visible con items avanzados, agregarle menu_add_item_menu_es_avanzado

@@ -1785,7 +1785,7 @@ void scrxwindows_actualiza_tablas_teclado(void)
 
 		case KeyRelease:
 	//		printf ("release key ");
-		    deal_with_keys(&event,0);
+                   deal_with_keys(&event,0);
 		break;
 
 		case ConfigureNotify:

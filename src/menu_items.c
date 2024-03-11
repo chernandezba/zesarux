@@ -28730,6 +28730,7 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
 
 		menu_add_item_menu(array_menu_debug,"~~Debug CPU",MENU_OPCION_NORMAL,menu_debug_registers,NULL);
 		menu_add_item_menu_shortcut(array_menu_debug,'d');
+        menu_add_item_menu_genera_ventana(array_menu_debug);
         //No activamos salir_todos_menus o se saldria de debug cpu, porque se detecta dicha variable
         //menu_add_item_menu_se_cerrara(array_menu_debug);
 		menu_add_item_menu_tooltip(array_menu_debug,"Open debug window");
@@ -28752,11 +28753,13 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
 
 		        menu_add_item_menu_tooltip(array_menu_debug,"Open debug window on the adventure view (view number 8)");
                 menu_add_item_menu_ayuda(array_menu_debug,"Open debug window on the adventure view (view number 8)");
+                menu_add_item_menu_genera_ventana(array_menu_debug);
             }
         }
 
         menu_add_item_menu_en_es_ca(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_machine_info,NULL,
             "Machine Info","Información Máquina","Informació màquina");
+        menu_add_item_menu_genera_ventana(array_menu_debug);
         menu_add_item_menu_se_cerrara(array_menu_debug);
 
 
@@ -28766,6 +28769,7 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_en_es_ca(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_load_source_code,NULL,
             "Load Source Code","Cargar Código Fuente","Carregar Codi Font");
         menu_add_item_menu_se_cerrara(array_menu_debug);
+        menu_add_item_menu_genera_ventana(array_menu_debug);
         menu_add_item_menu_tooltip(array_menu_debug,"Load source code");
         menu_add_item_menu_ayuda(array_menu_debug,"Load source code. It is shown on the Debug CPU window. "
             "Source code must have labels in format LXXXX or XXXX where XXXX is an address in hexadecimal. \n"
@@ -28788,6 +28792,7 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
 			menu_add_item_menu_format(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_dma_tsconf_zxuno,NULL,"Debug D~~MA");
 			menu_add_item_menu_shortcut(array_menu_debug,'m');
             menu_add_item_menu_se_cerrara(array_menu_debug);
+            menu_add_item_menu_genera_ventana(array_menu_debug);
             menu_add_item_menu_es_avanzado(array_menu_debug);
 		}
 
@@ -28795,6 +28800,7 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
 			menu_add_item_menu_format(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_ioports,NULL,"Debug ~~I/O Ports");
 			menu_add_item_menu_shortcut(array_menu_debug,'i');
             menu_add_item_menu_se_cerrara(array_menu_debug);
+            menu_add_item_menu_genera_ventana(array_menu_debug);
             menu_add_item_menu_es_avanzado(array_menu_debug);
 
 			menu_add_item_menu_en_es_ca(array_menu_debug,MENU_OPCION_NORMAL,menu_cpu_transaction_log,NULL,
@@ -28808,6 +28814,7 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
 			menu_add_item_menu_format(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_ioports,NULL,"Debug ~~I/O Addresses");
 			menu_add_item_menu_shortcut(array_menu_debug,'i');
             menu_add_item_menu_se_cerrara(array_menu_debug);
+            menu_add_item_menu_genera_ventana(array_menu_debug);
             menu_add_item_menu_es_avanzado(array_menu_debug);
         }
 
@@ -28866,6 +28873,7 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_en_es_ca(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_unnamed_console,NULL,
             "Debug console","Consola Depuración","Consola Depuració");
         menu_add_item_menu_se_cerrara(array_menu_debug);
+        menu_add_item_menu_genera_ventana(array_menu_debug);
         menu_add_item_menu_es_avanzado(array_menu_debug);
 
         menu_add_item_menu(array_menu_debug,"",MENU_OPCION_SEPARADOR,NULL,NULL);
@@ -28877,17 +28885,20 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_spanish(array_menu_debug,"Editor He~~xadecimal");
 		menu_add_item_menu_shortcut(array_menu_debug,'x');
         menu_add_item_menu_se_cerrara(array_menu_debug);
+        menu_add_item_menu_genera_ventana(array_menu_debug);
 
 		menu_add_item_menu_en_es_ca(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_view_basic,menu_debug_view_basic_cond,
             "View ~~Basic","Ver ~~Basic","Veure ~~Basic");
 		menu_add_item_menu_shortcut(array_menu_debug,'b');
         menu_add_item_menu_se_cerrara(array_menu_debug);
+        menu_add_item_menu_genera_ventana(array_menu_debug);
 
         if (MACHINE_IS_SPECTRUM || MACHINE_IS_ZX8081) {
 		    menu_add_item_menu_en_es_ca(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_view_basic_variables,NULL,
                 "View Basic variab~~les","Ver variab~~les Basic","Veure variab~~les Basic");
             menu_add_item_menu_shortcut(array_menu_debug,'l');
             menu_add_item_menu_se_cerrara(array_menu_debug);
+            menu_add_item_menu_genera_ventana(array_menu_debug);
         }
 
 #ifdef EMULATE_CPU_STATS
@@ -28904,12 +28915,14 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
             "View Sensors","Ver Sensores","Veure Sensors");
         menu_add_item_menu_es_avanzado(array_menu_debug);
         menu_add_item_menu_se_cerrara(array_menu_debug);
+        menu_add_item_menu_genera_ventana(array_menu_debug);
 
 		if (si_complete_video_driver() ) {
 			menu_add_item_menu_en_es_ca(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_view_sprites,NULL,
                 "View ~~Sprites","Ver ~~Sprites","Veure ~~Sprites");
 			menu_add_item_menu_shortcut(array_menu_debug,'s');
             menu_add_item_menu_se_cerrara(array_menu_debug);
+            menu_add_item_menu_genera_ventana(array_menu_debug);
 		}
 
 
@@ -28924,6 +28937,7 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_spanish(array_menu_debug,"Memoria ~~Visual");
 			menu_add_item_menu_shortcut(array_menu_debug,'v');
             menu_add_item_menu_se_cerrara(array_menu_debug);
+            menu_add_item_menu_genera_ventana(array_menu_debug);
 	                menu_add_item_menu_tooltip(array_menu_debug,"Show which memory zones are changed or which memory address with opcodes have been executed");
 	                menu_add_item_menu_ayuda(array_menu_debug,"Show which memory zones are changed or which memory address with opcodes have been executed");
 			//}
@@ -28965,11 +28979,13 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
             "L~~oad binary block","Cargar bl~~oque binario","Carregar bl~~oc binari");
 		menu_add_item_menu_shortcut(array_menu_debug,'o');
         menu_add_item_menu_se_cerrara(array_menu_debug);
+        menu_add_item_menu_genera_ventana(array_menu_debug);
 
 		menu_add_item_menu_en_es_ca(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_save_binary,NULL,
             "S~~ave binary block","S~~alvar bloque binario","S~~alvar bloc binari");
 		menu_add_item_menu_shortcut(array_menu_debug,'a');
         menu_add_item_menu_se_cerrara(array_menu_debug);
+        menu_add_item_menu_genera_ventana(array_menu_debug);
 
 
 		if (menu_desactivado_file_utilities.v==0) {
@@ -28978,6 +28994,7 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
                 "File ~~utilities","~~Utilidades de archivos","~~Utilitats d'arxius");
 			menu_add_item_menu_shortcut(array_menu_debug,'u');
             menu_add_item_menu_se_cerrara(array_menu_debug);
+            menu_add_item_menu_genera_ventana(array_menu_debug);
 			menu_add_item_menu_tooltip(array_menu_debug,"Some file utilities. NOTE: Shortcuts must be chosen pressing Shift+Key");
 			menu_add_item_menu_ayuda(array_menu_debug,"Some file utilities.\nNOTE: Shortcuts in file utilities must be chosen by pressing Shift+Key, "
 								"I mean, shortcuts are in capital letters to differentiate from quick selecting a file, so for example, "
@@ -29011,6 +29028,7 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
 		menu_add_item_menu_en_es_ca(array_menu_debug,MENU_OPCION_NORMAL,menu_write_message,NULL,
             "Write message","Escribir mensaje","Escriure missatge");
         menu_add_item_menu_se_cerrara(array_menu_debug);
+        menu_add_item_menu_genera_ventana(array_menu_debug);
 		menu_add_item_menu_tooltip(array_menu_debug,"Just lets you write text in a window, useful if you want to record the display and you want to say something");
 		menu_add_item_menu_ayuda(array_menu_debug,"Just lets you write text in a window, useful if you want to record the display and you want to say something");
         menu_add_item_menu_es_avanzado(array_menu_debug);
@@ -29018,6 +29036,7 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
 		menu_add_item_menu_en_es_ca(array_menu_debug,MENU_OPCION_NORMAL,menu_shortcuts_window,NULL,
             "Shortcuts helper","Ayudante de atajos","Ajudant de dreceres");
         menu_add_item_menu_se_cerrara(array_menu_debug);
+        menu_add_item_menu_genera_ventana(array_menu_debug);
 		menu_add_item_menu_tooltip(array_menu_debug,"Window to see all shortcuts (hotkeys) pressed");
         menu_add_item_menu_ayuda(array_menu_debug,"Window to see all shortcuts (hotkeys) pressed");
         menu_add_item_menu_es_avanzado(array_menu_debug);
@@ -29025,6 +29044,7 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
 		menu_add_item_menu_en_es_ca(array_menu_debug,MENU_OPCION_NORMAL,menu_ascii_table,NULL,
             "Ascii Table","Tabla Ascii","Taula Ascii");
         menu_add_item_menu_se_cerrara(array_menu_debug);
+        menu_add_item_menu_genera_ventana(array_menu_debug);
 
 
 
@@ -29037,6 +29057,7 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
 		if (timesensors_started) {
 			menu_add_item_menu_format(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_timesensors,NULL,"    List Timesensors");
             menu_add_item_menu_se_cerrara(array_menu_debug);
+            menu_add_item_menu_genera_ventana(array_menu_debug);
 
 			menu_add_item_menu_format(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_timesensors_init,NULL,"    Init Timesensors");
             menu_add_item_menu_se_cerrara(array_menu_debug);

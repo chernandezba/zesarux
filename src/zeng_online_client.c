@@ -2699,6 +2699,32 @@ int zoc_send_keys(int indice_socket,zeng_key_presses *elemento)
     return escritos;
 }
 
+int zoc_keys_tecla_repetida(zeng_key_presses *elemento)
+{
+
+    if (!zeng_fifo_get_current_size()) return 0;
+
+    if (elemento->pressrelease!=0) return 0;
+
+    //Lo de ahora es un release. Lo siguiente es un press de la misma tecla?
+    zeng_key_presses elemento_siguiente;
+
+    zeng_fifo_peek_element(&elemento_siguiente);
+
+    if (elemento_siguiente.pressrelease && elemento_siguiente.tecla==elemento->tecla) {
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Removing repeated toggle key %d, possible due to X11",elemento_siguiente.tecla);
+        //quitar el siguiente elemento
+        zeng_fifo_read_element(&elemento_siguiente);
+        return 1;
+    }
+
+    return 0;
+
+}
+
+
+
+
 int zoc_keys_send_pending(int indice_socket,int *enviada_alguna_tecla)
 {
 
@@ -2706,7 +2732,13 @@ int zoc_keys_send_pending(int indice_socket,int *enviada_alguna_tecla)
 
     int error_desconectar=0;
     zeng_key_presses elemento;
-    while (!zeng_fifo_read_element(&elemento) && !error_desconectar) {
+
+    //No quedarse toda la vida en este bucle. Puede suceder que mientras estamos dentro, se agreguen mas teclas,
+    //y no saldriamos nunca de aqui
+    //Como maximo enviar la cantidad de teclas que habia en la fifo al entrar
+    int tamanyo_cola=zeng_fifo_get_current_size();
+
+    while (!zeng_fifo_read_element(&elemento) && !error_desconectar && tamanyo_cola>0) {
         *enviada_alguna_tecla=1;
         DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"ZENG Online Client: Read event from zeng fifo and sending it to remote: key %d pressrelease %d",elemento.tecla,elemento.pressrelease);
 
@@ -2715,11 +2747,17 @@ int zoc_keys_send_pending(int indice_socket,int *enviada_alguna_tecla)
         DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"ZENG Online Client: Info joystick: fire: %d up: %d down: %d left: %d right: %d",
             UTIL_KEY_JOY_FIRE,UTIL_KEY_JOY_UP,UTIL_KEY_JOY_DOWN,UTIL_KEY_JOY_LEFT,UTIL_KEY_JOY_RIGHT);
 
-        //command> help send-keys-event
-        //Syntax: send-keys-event key event
-            int error=zoc_send_keys(indice_socket,&elemento);
+            if (!zoc_keys_tecla_repetida(&elemento)) {
 
-            if (error<0) error_desconectar=1;
+            //command> help send-keys-event
+            //Syntax: send-keys-event key event
+                int error=zoc_send_keys(indice_socket,&elemento);
+                if (error<0) error_desconectar=1;
+            }
+
+
+
+        tamanyo_cola--;
 
     }
 
@@ -3275,6 +3313,8 @@ int zoc_receive_snapshot(int indice_socket)
 
                     char *s=zoc_get_snapshot_mem_hexa;
                     int parametros_recibidos=0;
+
+                    /*
                     z80_byte valor;
 
 
@@ -3293,9 +3333,20 @@ int zoc_receive_snapshot(int indice_socket)
 
                         s++;
                         if (*s) s++;
+                    }*/
+
+                    z80_byte *destino;
+                    destino=zoc_get_snapshot_mem_binary_comprimido;
+
+                    while (*s) {
+                        *destino=(util_hex_nibble_to_byte(*s)<<4) | util_hex_nibble_to_byte(*(s+1));
+                        destino++;
+
+                        parametros_recibidos++;
+
+                        s++;
+                        if (*s) s++;
                     }
-
-
 
 
                     int zoc_get_snapshot_mem_binary_longitud_comprimido=parametros_recibidos;
@@ -3367,6 +3418,8 @@ int zoc_receive_snapshot(int indice_socket)
         //usleep(10000); //dormir 10 ms
 
     //}
+
+    DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"ZENG Online Client: End Receiving snapshot");
     return 1;
 
 
