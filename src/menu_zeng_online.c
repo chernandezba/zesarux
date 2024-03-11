@@ -1534,24 +1534,29 @@ void menu_zeng_online(MENU_ITEM_PARAMETERS)
 
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_list_rooms_menu_item,NULL,
             "List rooms","Listar habitaciones","Llistar habitacions");
+        menu_add_item_menu_genera_ventana(array_menu_common);
 
         //Create room + join / destroy room
         if (zeng_online_connected.v==0) {
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_join_room,NULL,
             "Jo~~in to room","Un~~irse a habitación","Un~~ir-se a habitació");
             menu_add_item_menu_shortcut(array_menu_common,'i');
+            menu_add_item_menu_genera_ventana(array_menu_common);
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_create_room,NULL,
             "~~Create room & Join as Master","~~Crear habitación & Unir como master","~~Crear habitació & Unir com master");
             menu_add_item_menu_shortcut(array_menu_common,'c');
+            menu_add_item_menu_genera_ventana(array_menu_common);
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_rejoin_master,NULL,
             "Rejoin as Master","Reunir como master","Reunir com master");
             menu_add_item_menu_es_avanzado(array_menu_common);
+            menu_add_item_menu_genera_ventana(array_menu_common);
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_rejoin_manager_master,NULL,
             "Rejoin as Manager","Reunir como manager","Reunir com manager");
             menu_add_item_menu_es_avanzado(array_menu_common);
+            menu_add_item_menu_genera_ventana(array_menu_common);
 
 
         }
@@ -1596,21 +1601,25 @@ void menu_zeng_online(MENU_ITEM_PARAMETERS)
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_list_users,NULL,
             "List users","Listar usuarios","Llistar usuaris");
+            menu_add_item_menu_genera_ventana(array_menu_common);
             menu_add_item_menu_es_avanzado(array_menu_common);
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_write_message_room,NULL,
                 "Broadcast message","Mensaje difusión","Missatge difusió");
+            menu_add_item_menu_genera_ventana(array_menu_common);
 
             if (zeng_online_i_am_master.v) {
                 menu_add_item_menu_separator(array_menu_common);
 
                 menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_join_list,NULL,
                 "Entry Waiting List","Lista de espera entrada","Llista d'espera d'entrada");
+                menu_add_item_menu_genera_ventana(array_menu_common);
 
 
                 menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_autojoin_room,NULL,
                 "Set autojoin","Activar autounir","Activar autounir");
                 menu_add_item_menu_es_avanzado(array_menu_common);
+                menu_add_item_menu_genera_ventana(array_menu_common);
 
                 menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_disable_autojoin_room,NULL,
                 "Reset autojoin","Desactivar autounir","Desactivar autounir");
@@ -1619,12 +1628,15 @@ void menu_zeng_online(MENU_ITEM_PARAMETERS)
                 menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_restricted_keys,NULL,
                 "Restricted keys","Teclas restringidas","Tecles restringides");
                 menu_add_item_menu_tiene_submenu(array_menu_common);
+                menu_add_item_menu_genera_ventana(array_menu_common);
 
                 menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_kick_user,NULL,
                 "Kick user","Expulsar usuario","Expulsar usuari");
+                menu_add_item_menu_genera_ventana(array_menu_common);
 
                 menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_max_players_room,NULL,
                 "Set max players per room","Definir max jugadores por hab.","Definir max jugadors per hab.");
+                menu_add_item_menu_genera_ventana(array_menu_common);
 
                 menu_add_item_menu_separator(array_menu_common);
 

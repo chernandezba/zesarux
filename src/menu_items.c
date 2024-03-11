@@ -16053,6 +16053,7 @@ void menu_zeng_online_server(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_server_view_creator_passwords,NULL,
             "View creator room ~~passwords","Ver ~~passwords creación habitaciones","Veure ~~passwords creació habitacions");
         menu_add_item_menu_shortcut(array_menu_common,'p');
+        menu_add_item_menu_genera_ventana(array_menu_common);
 
         menu_add_item_menu_separator(array_menu_common);
 

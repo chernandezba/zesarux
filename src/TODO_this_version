@@ -849,13 +849,14 @@ Si versión Zeng online no coincide, da error?
 
 -zeng online a veces deja tecla pulsada...
 
--ancho en ... sin contar shortcuts
 
 -x11: poder implementar X11_KeyRepeat de SDL1.2 para eliminar lectura de teclas repetidas
 
+-revisar si hay mas items que necesiten "..."
 
 -documentar items de menus:
 * si tiene submenus, agregarle menu_add_item_menu_tiene_submenu
-* si genera ventana, agregarle menu_add_item_menu_genera_ventana
+* si genera ventana, agregarle menu_add_item_menu_genera_ventana. o sea, lo que son acciones o submenus, no generan ventana y por tanto no tienen
+este parametro. Por ejemplo "reset cpu" (y un dialogo de confirmacion yes/no no cuenta como "ventana")
 * si disparar la accion, se cerraran todos los menus, agregarle menu_add_item_menu_se_cerrara
 * si solo visible con items avanzados, agregarle menu_add_item_menu_es_avanzado
