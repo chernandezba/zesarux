@@ -16698,7 +16698,6 @@ void menu_network(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_uartbridge,menu_network_uartbridge_cond,"~~UART Bridge emulation");
             menu_add_item_menu_spanish_catalan(array_menu_common,"Emulacion Puente ~~UART","Emulacio Pont ~~UART");
 			menu_add_item_menu_shortcut(array_menu_common,'u');
-
 			menu_add_item_menu_tooltip(array_menu_common,"Bridge from emulated machine uart ports to a local serial uart device");
 			menu_add_item_menu_ayuda(array_menu_common,"Bridge from emulated machine uart ports to a local serial uart device\n"
 				"It does NOT emulate a full uart device, just links from the emulated machine ports to a physical local device\n"
@@ -16745,6 +16744,7 @@ void menu_network(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_spanish(array_menu_common,"Navegador online ~~ZX81");
 			menu_add_item_menu_shortcut(array_menu_common,'z');
             menu_add_item_menu_se_cerrara(array_menu_common);
+            menu_add_item_menu_genera_ventana(array_menu_common);
             menu_add_item_menu_tooltip(array_menu_common,"Connects to the www.zx81.nl site to download ZX81 games. Many thanks to ZXwebmaster for allowing it");
             menu_add_item_menu_ayuda(array_menu_common,"Connects to the www.zx81.nl site to download ZX81 games. Many thanks to ZXwebmaster for allowing it");
 
@@ -16756,8 +16756,7 @@ void menu_network(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_spanish(array_menu_common,"Navegador online ~~Speccy");
 			menu_add_item_menu_shortcut(array_menu_common,'s');
             menu_add_item_menu_se_cerrara(array_menu_common);
-
-
+            menu_add_item_menu_genera_ventana(array_menu_common);
 			//Versión con SSL usa zxinfo, spectrum computing y mirror archive.org
 			menu_add_item_menu_tooltip(array_menu_common,"It uses zxinfo, spectrum computing and archive.org to download the software. Thanks to Thomas Heckmann and Peter Jones for allowing it");
 			menu_add_item_menu_ayuda(array_menu_common,  "It uses zxinfo, spectrum computing and archive.org to download the software. Thanks to Thomas Heckmann and Peter Jones for allowing it");
@@ -16774,6 +16773,7 @@ void menu_network(MENU_ITEM_PARAMETERS)
                 "Download ZEsarUX e~~xtras","Descargar e~~xtras ZEsarUX","Descarregar e~~xtres ZEsarUX");
 			menu_add_item_menu_shortcut(array_menu_common,'x');
             menu_add_item_menu_se_cerrara(array_menu_common);
+            menu_add_item_menu_genera_ventana(array_menu_common);
 			menu_add_item_menu_tooltip(array_menu_common,"Download ZEsarUX extras package");
 			menu_add_item_menu_ayuda(array_menu_common,"ZEsarUX extras package contains lots of documentation, sample games, demos, etc");
 
@@ -16783,9 +16783,11 @@ void menu_network(MENU_ITEM_PARAMETERS)
 			menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_network_http_request,NULL,
                 "Test Http request","Test peticion Http","Test peticio Http");
             menu_add_item_menu_se_cerrara(array_menu_common);
+            menu_add_item_menu_genera_ventana(array_menu_common);
             menu_add_item_menu_es_avanzado(array_menu_common);
 
             menu_add_item_menu_separator(array_menu_common);
+
 			menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_server,NULL,"ZENG Online Server");
 			menu_add_item_menu_tooltip(array_menu_common,"Setup ZEsarUX Network Gaming Online server");
 			menu_add_item_menu_ayuda(array_menu_common,"ZEsarUX Network Gaming protocol Online (ZENG Online) allows you to play to any emulated game, using two or more ZEsarUX instances, "
@@ -16799,6 +16801,7 @@ void menu_network(MENU_ITEM_PARAMETERS)
 
 			menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_network_traffic,NULL,"Network traffic");
             menu_add_item_menu_se_cerrara(array_menu_common);
+            menu_add_item_menu_genera_ventana(array_menu_common);
 
 
 //Fin de condicion si hay pthreads
@@ -18737,12 +18740,14 @@ void menu_windows(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_display_window_list,NULL,"Process management");
         menu_add_item_menu_spanish_catalan(array_menu_common,"Gestión procesos","Gestió processos");
         menu_add_item_menu_se_cerrara(array_menu_common);
+        menu_add_item_menu_genera_ventana(array_menu_common);
         menu_add_item_menu_tooltip(array_menu_common,"Get information about processes and manage them");
         menu_add_item_menu_ayuda(array_menu_common,"Get information about processes and manage them");
 
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_process_switcher,NULL,
             "Process switcher","Process switcher","Process switcher");
         menu_add_item_menu_se_cerrara(array_menu_common);
+        menu_add_item_menu_genera_ventana(array_menu_common);
         menu_add_item_menu_tooltip(array_menu_common,"Process switcher");
         menu_add_item_menu_ayuda(array_menu_common,"Process switcher");
 
@@ -18750,6 +18755,7 @@ void menu_windows(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zxdesktop_trash,NULL,
                 "Trash Can","Papelera","Paperera");
             menu_add_item_menu_se_cerrara(array_menu_common);
+            menu_add_item_menu_genera_ventana(array_menu_common);
         }
 
         menu_add_item_menu_separator(array_menu_common);
@@ -19539,6 +19545,7 @@ void menu_display_settings(MENU_ITEM_PARAMETERS)
                 "~~Load Screen","~~Load Pantalla","~~Load Pantalla");
 			menu_add_item_menu_shortcut(array_menu_display_settings,'l');
             menu_add_item_menu_se_cerrara(array_menu_display_settings);
+            menu_add_item_menu_genera_ventana(array_menu_display_settings);
 		}
 
 		if (MACHINE_IS_SPECTRUM || MACHINE_IS_ZX8081 || MACHINE_IS_CPC) {
@@ -19546,6 +19553,7 @@ void menu_display_settings(MENU_ITEM_PARAMETERS)
             "~~Save Screen","~~Salvar Pantalla","~~Salvar Pantalla");
 		menu_add_item_menu_shortcut(array_menu_display_settings,'s');
         menu_add_item_menu_se_cerrara(array_menu_display_settings);
+        menu_add_item_menu_genera_ventana(array_menu_display_settings);
 		menu_add_item_menu_tooltip(array_menu_display_settings,"Save screen to disk. BMP format requires to enable real video first");
 		menu_add_item_menu_ayuda(array_menu_display_settings,"Save screen to disk. BMP format requires to enable real video first");
 		}
@@ -19563,12 +19571,14 @@ void menu_display_settings(MENU_ITEM_PARAMETERS)
         //cuando real video esta activado
 		menu_add_item_menu_en_es_ca(array_menu_display_settings,MENU_OPCION_NORMAL,menu_video_output,NULL,
             "Video Output","Salida de Video","Sortida de Video");
+        menu_add_item_menu_genera_ventana(array_menu_display_settings);
 
 
         menu_add_item_menu_en_es_ca(array_menu_display_settings,MENU_OPCION_NORMAL,menu_display_total_palette,NULL,
             "View ~~Colour Palettes","Ver Paletas de ~~Colores","Veure Paletes de ~~Colors");
         menu_add_item_menu_shortcut(array_menu_display_settings,'c');
         menu_add_item_menu_se_cerrara(array_menu_display_settings);
+        menu_add_item_menu_genera_ventana(array_menu_display_settings);
         menu_add_item_menu_tooltip(array_menu_display_settings,"View full palettes or mapped palettes");
         menu_add_item_menu_ayuda(array_menu_display_settings,"You can see in this menu full colour palettes or mapped colour palettes. \n"
                                             "Full colour palettes means all the colours available for a mode, for example 256 colours on ULAPlus.\n"
@@ -19583,6 +19593,7 @@ void menu_display_settings(MENU_ITEM_PARAMETERS)
                 "On Screen ~~Keyboard","Te~~klado en pantalla","Te~~klat a pantalla");
             menu_add_item_menu_shortcut(array_menu_display_settings,'k');
             menu_add_item_menu_se_cerrara(array_menu_display_settings);
+            menu_add_item_menu_genera_ventana(array_menu_display_settings);
             menu_add_item_menu_tooltip(array_menu_display_settings,"Open on screen keyboard");
             menu_add_item_menu_ayuda(array_menu_display_settings,"You can also get this pressing F8, only for Spectrum and ZX80/81 machines");
         }
@@ -27721,6 +27732,7 @@ void menu_audio(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_spanish_catalan(array_menu_audio,"~~Registros del Chip de Audio","~~Registres del Xip d'Audio");
         menu_add_item_menu_shortcut(array_menu_audio,'r');
         menu_add_item_menu_se_cerrara(array_menu_audio);
+        menu_add_item_menu_genera_ventana(array_menu_audio);
 
 
         menu_add_item_menu_en_es_ca(array_menu_audio,MENU_OPCION_NORMAL,menu_ay_pianokeyboard,menu_cond_ay_or_sn_chip,
@@ -27729,6 +27741,7 @@ void menu_audio(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_tooltip(array_menu_audio,"Shows a piano keyboard with the notes being played on the AY Chip");
         menu_add_item_menu_ayuda(array_menu_audio,"Shows a piano keyboard with the notes being played on the AY Chip");
         menu_add_item_menu_se_cerrara(array_menu_audio);
+        menu_add_item_menu_genera_ventana(array_menu_audio);
 
 
 		if (si_complete_video_driver() ) {
@@ -27736,16 +27749,19 @@ void menu_audio(MENU_ITEM_PARAMETERS)
                     "Audio Chip ~~Sheet","Partitura~~s del Chip de Audio","Partiture~~s del Xip d'Audio");
                 menu_add_item_menu_shortcut(array_menu_audio,'s');
                 menu_add_item_menu_se_cerrara(array_menu_audio);
+                menu_add_item_menu_genera_ventana(array_menu_audio);
 		}
 
         menu_add_item_menu_en_es_ca(array_menu_audio,MENU_OPCION_NORMAL,menu_audio_chip_info,menu_cond_ay_or_sn_chip,
             "Audio Chip Info","Info del Chip de Audio","Info del Xip d'Audio");
         menu_add_item_menu_se_cerrara(array_menu_audio);
+        menu_add_item_menu_genera_ventana(array_menu_audio);
 
         if (MACHINE_IS_SPECTRUM && gs_enabled.v) {
             menu_add_item_menu_en_es_ca(array_menu_audio,MENU_OPCION_NORMAL,menu_audio_general_sound,NULL,
                 "General Sound Info","General Sound Info","General Sound Info");
             menu_add_item_menu_se_cerrara(array_menu_audio);
+            menu_add_item_menu_genera_ventana(array_menu_audio);
         }
 
 
@@ -27755,6 +27771,7 @@ void menu_audio(MENU_ITEM_PARAMETERS)
             "W~~ave Piano","Pi~~ano de onda","Pi~~ano d'ona");
         menu_add_item_menu_shortcut(array_menu_audio,'a');
         menu_add_item_menu_se_cerrara(array_menu_audio);
+        menu_add_item_menu_genera_ventana(array_menu_audio);
         menu_add_item_menu_tooltip(array_menu_audio,"Shows a piano keyboard with the note being played through the output speakers");
         menu_add_item_menu_ayuda(array_menu_audio,"Shows a piano keyboard with the note being played through the output speakers. "
             "In case you don't have AY sound or DAC audio, that note is the one that is played through the beeper. "
@@ -27769,6 +27786,7 @@ void menu_audio(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_ayuda(array_menu_audio,"Shows the waveform being played through the output speakers");
         menu_add_item_menu_shortcut(array_menu_audio,'w');
         menu_add_item_menu_se_cerrara(array_menu_audio);
+        menu_add_item_menu_genera_ventana(array_menu_audio);
 
 
         menu_add_item_menu(array_menu_audio,"",MENU_OPCION_SEPARADOR,NULL,NULL);
@@ -27788,6 +27806,7 @@ void menu_audio(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_ayuda(array_menu_audio,"Opens the .ay file player menu");
         menu_add_item_menu_shortcut(array_menu_audio,'p');
         menu_add_item_menu_se_cerrara(array_menu_audio);
+        menu_add_item_menu_genera_ventana(array_menu_audio);
 
 
         menu_add_item_menu_en_es_ca(array_menu_audio,MENU_OPCION_NORMAL,menu_record_mid,menu_cond_ay_or_sn_chip,
@@ -27815,10 +27834,12 @@ void menu_audio(MENU_ITEM_PARAMETERS)
                 menu_add_item_menu_en_es_ca(array_menu_audio,MENU_OPCION_NORMAL,menu_realtape_record_input,NULL,
                     "External Audio Source Window","Ventana fuente de sonido externa","Finestra font de so externa");
                 menu_add_item_menu_se_cerrara(array_menu_audio);
+                menu_add_item_menu_genera_ventana(array_menu_audio);
 
                 menu_add_item_menu_en_es_ca(array_menu_audio,MENU_OPCION_NORMAL,menu_input_spectrum_analyzer,NULL,
                     "Spectrum Analyzer","Analizador de Espectro","Anàlisis d'espectre");
                 menu_add_item_menu_se_cerrara(array_menu_audio);
+                menu_add_item_menu_genera_ventana(array_menu_audio);
 
             }
         }
@@ -29518,7 +29539,7 @@ void menu_snapshot(MENU_ITEM_PARAMETERS)
 
         menu_add_item_menu_inicial(&array_menu_snapshot,"~~Load snapshot",MENU_OPCION_NORMAL,menu_snapshot_load,NULL);
         menu_add_item_menu_spanish_catalan(array_menu_snapshot,"~~Load instantanea","~~Load instantania");
-
+        menu_add_item_menu_genera_ventana(array_menu_snapshot);
         menu_add_item_menu_shortcut(array_menu_snapshot,'l');
         menu_add_item_menu_tooltip(array_menu_snapshot,"Load snapshot");
         menu_add_item_menu_ayuda(array_menu_snapshot,"Supported snapshot formats on load:\n"
@@ -29527,6 +29548,7 @@ void menu_snapshot(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_en_es_ca(array_menu_snapshot,MENU_OPCION_NORMAL,menu_snapshot_save,NULL,
             "~~Save snapshot","~~Salvar instantanea","~~Salvar instantania");
         menu_add_item_menu_shortcut(array_menu_snapshot,'s');
+        menu_add_item_menu_genera_ventana(array_menu_snapshot);
         menu_add_item_menu_tooltip(array_menu_snapshot,"Save snapshot of the current machine state");
         menu_add_item_menu_ayuda(array_menu_snapshot,"Supported snapshot formats on save:\n"
                 "Z80, ZX, SP, P, O\n"
@@ -29544,6 +29566,7 @@ void menu_snapshot(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_en_es_ca(array_menu_snapshot,MENU_OPCION_NORMAL,menu_snapshot_quickload,NULL,
             "Quickl~~oad","L~~oad rapido","L~~oad rapid");
         menu_add_item_menu_shortcut(array_menu_snapshot,'o');
+        menu_add_item_menu_genera_ventana(array_menu_snapshot);
         menu_add_item_menu_tooltip(array_menu_snapshot,"Load a snapshot quickly");
         menu_add_item_menu_ayuda(array_menu_snapshot,"Browses on the quicksave directory");
 
@@ -29574,6 +29597,7 @@ void menu_snapshot(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_ayuda(array_menu_snapshot,"Generate .config file with common settings. Used to define custom settings for games, "
             "by default it asks to generate a .config file for the last smartloaded game");
         menu_add_item_menu_es_avanzado(array_menu_snapshot);
+        menu_add_item_menu_genera_ventana(array_menu_snapshot);
 
 
 
@@ -41992,6 +42016,7 @@ void menu_inicio_bucle_main(void)
                 "~~Smart load","Carga ingenio~~sa","Càrrega enginyo~~sa");
             menu_add_item_menu_shortcut(array_menu_principal,'s');
             menu_add_item_menu_se_cerrara(array_menu_principal);
+            menu_add_item_menu_genera_ventana(array_menu_principal);
             menu_add_item_menu_tooltip(array_menu_principal,"Smart load tapes, snapshots, floppies, memory cards, cartridges...");
             menu_add_item_menu_ayuda(array_menu_principal,"This option loads the file depending on its type: \n"
                 "-Binary tapes are inserted as standard tapes and loaded quickly\n"
@@ -42079,6 +42104,7 @@ void menu_inicio_bucle_main(void)
             menu_add_item_menu_shortcut(array_menu_principal,'r');
             menu_add_item_menu_tooltip(array_menu_principal,"Search menu");
             menu_add_item_menu_ayuda(array_menu_principal,"Search menu");
+            menu_add_item_menu_genera_ventana(array_menu_principal);
 
             menu_add_item_menu_en_es_ca(array_menu_principal,MENU_OPCION_NORMAL,menu_toys,NULL,
                 "~~Procrastinate","~~Procrastinar","~~Procrastinar");
