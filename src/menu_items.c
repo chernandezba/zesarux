@@ -21495,6 +21495,45 @@ void menu_help_keyboard_show_speccy_pressed_keys(zxvision_window *ventana,int ke
     }
 }
 
+
+void menu_help_keyboard_locate_speccy_pressed_keys(int keyboard_map_coords[],z80_byte *key_map_ports[],
+    int x,int y,z80_byte **p_puerto,z80_byte *p_mascara)
+{
+
+    *p_puerto=NULL;
+
+    int fila_tecla;
+    int columna_tecla;
+
+
+
+    for (fila_tecla=0;fila_tecla<8;fila_tecla++) {
+        z80_byte *puerto=key_map_ports[fila_tecla];
+        int mascara=1;
+        for (columna_tecla=0;columna_tecla<5;columna_tecla++) {
+
+                int offset=fila_tecla*5+columna_tecla; //Indice a tecla
+
+                //indice a coordenada
+                offset *=4;
+
+                int x1=keyboard_map_coords[offset];
+                int y1=keyboard_map_coords[offset+1];
+                int x2=keyboard_map_coords[offset+2];
+                int y2=keyboard_map_coords[offset+3];
+            if (x>=x1 && x<=x2 && y>=y1 && y<=y2) {
+                *p_puerto=puerto;
+                *p_mascara=mascara;
+                return;
+            }
+
+
+            mascara=mascara<<1;
+        }
+
+    }
+}
+
 int help_keyboard_valor_contador_segundo_anterior;
 
 zxvision_window *menu_help_keyboard_overlay_window;
@@ -21705,39 +21744,43 @@ void menu_help_show_keyboard(MENU_ITEM_PARAMETERS)
 
                 printf("%d,%d,",pulsado_x,pulsado_y);
 
-                //prueba enviar tecla a
-                /*
-                zxvision_keys_event_not_send_to_machine=0;
-                puerto_65022=254;
+                //localizar puerto
+
+                int *keyboard_map_table=keyboard_help_return_map_table();
+
+                z80_byte *puerto;
+                z80_byte mascara;
+
+                menu_help_keyboard_locate_speccy_pressed_keys(keyboard_map_table,keyboard_map_ports_table_speccy,pulsado_x,pulsado_y,&puerto,&mascara);
+                if (puerto!=NULL) {
+
+                    *puerto=255-mascara;
 
 
-        //Esperar a liberar teclas. No ejecutar ni una instruccion cpu si la tecla esta liberada
-	//con eso evitamos que cuando salte un breakpoint, que llama aqui, no se ejecute una instruccion y el registro PC apunte a la siguiente instruccion
-        z80_byte acumulado;
-	int salir=0;
+                    int salir=0;
 
-        do {
-		acumulado=menu_da_todas_teclas();
-		if ( !mouse_left) {
-			salir=1;
-		}
-
-		else {
-			menu_cpu_core_loop();
-		}
-
-	//printf ("menu_espera_no_tecla acumulado: %d\n",acumulado);
-
-	} while (!salir);
+                    do {
 
 
-                //prueba liberar tecla a
-                puerto_65022=255;
-                zxvision_keys_event_not_send_to_machine=1;
+		                if ( !mouse_left) {
+                            salir=1;
+                        }
 
-                */
+                        else {
+                            zxvision_keys_event_not_send_to_machine=0;
+                            menu_cpu_core_loop();
+                        }
 
-                menu_espera_no_tecla();
+                    } while (!salir);
+
+
+                    //liberar tecla
+                    *puerto=255;
+                    zxvision_keys_event_not_send_to_machine=1;
+
+
+
+                }
             }
 
             if (mouse_right && si_menu_mouse_en_ventana() ) {
