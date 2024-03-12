@@ -21732,8 +21732,8 @@ void menu_help_show_keyboard(MENU_ITEM_PARAMETERS)
 
 
                 //prueba liberar tecla a
-                //puerto_65022=255;
-                //zxvision_keys_event_not_send_to_machine=1;
+                puerto_65022=255;
+                zxvision_keys_event_not_send_to_machine=1;
 
                 */
 
