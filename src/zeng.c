@@ -217,7 +217,7 @@ int zeng_fifo_read_element(zeng_key_presses *elemento)
 	//Y restar total elementos
 	zeng_fifo_current_size--;
     //printf("restamos zeng_fifo_current_size despues read. actual=%d\n",zeng_fifo_current_size);
-    debug_exec_show_backtrace();
+    //debug_exec_show_backtrace();
 
     zeng_fifo_end_lock();
 
