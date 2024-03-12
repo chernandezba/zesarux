@@ -21705,7 +21705,15 @@ void menu_help_show_keyboard(MENU_ITEM_PARAMETERS)
 
                 printf("%d,%d,",pulsado_x,pulsado_y);
 
+                //prueba enviar tecla a
+                //zxvision_keys_event_not_send_to_machine=0;
+                //puerto_65022=254;
+
                 menu_espera_no_tecla();
+
+                //prueba liberar tecla a
+                //puerto_65022=255;
+                //zxvision_keys_event_not_send_to_machine=1;
             }
 
             if (mouse_right && si_menu_mouse_en_ventana() ) {

@@ -865,3 +865,5 @@ este parametro. Por ejemplo "reset cpu" (y un dialogo de confirmacion yes/no no 
 
 -ventana de estado teclado. Para debugar zeng online. Quiza usando el mismo help keyboard,
 una tabla donde este cada tecla: puerto y mascara que altera, tamanyo y posicion tecla
+
+-si keyboard help con el foco no refresca cambios en teclas (que vengan de zeng por ejemplo)
