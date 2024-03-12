@@ -21430,16 +21430,16 @@ void menu_help_keyboard_show_speccy_pressed_keys(zxvision_window *ventana,int ke
 
 
     for (fila_tecla=0;fila_tecla<8;fila_tecla++) {
+        z80_byte *puerto=key_map_ports[fila_tecla];
         int mascara=1;
         for (columna_tecla=0;columna_tecla<5;columna_tecla++) {
-            z80_byte *puerto=key_map_ports[fila_tecla];
             z80_byte valor=*puerto;
             valor &=mascara;
             if (!valor) {
                 //printf("forzar dibujar\n");
                 menu_help_keyboard_overlay_force_draw=1;
 
-                int offset=fila_tecla*8+columna_tecla; //Indice a tecla
+                int offset=fila_tecla*5+columna_tecla; //Indice a tecla
 
                 //indice a coordenada
                 offset *=4;
