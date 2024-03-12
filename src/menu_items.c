@@ -21406,6 +21406,17 @@ int keyboard_map_table_coords_48p[40*4]={
 200,164,378,198,4,162,40,198,370,124,408,158,330,124,368,160,290,124,330,162,
 };
 
+int keyboard_map_table_coords_p2[40*4]={
+2,124,88,160,134,124,170,160,174,124,210,158,210,122,252,158,252,124,288,156,
+112,84,150,120,152,82,186,120,192,84,230,120,232,82,270,118,272,82,308,114,
+102,44,138,80,140,42,182,80,182,42,220,78,220,44,262,78,260,42,300,80,
+82,2,120,40,122,2,162,40,162,2,200,38,202,2,240,40,242,2,280,40,
+442,2,480,40,402,2,438,40,362,2,400,40,322,2,360,40,282,2,318,38,
+462,44,498,78,420,44,458,78,382,42,420,78,340,44,378,78,300,44,340,78,
+472,82,536,118,430,84,468,118,392,84,428,118,350,84,390,120,312,84,348,120,
+200,164,378,198,4,164,38,198,372,124,408,158,332,124,368,158,292,124,330,160,
+};
+
 //tabla para puertos
 z80_byte *keyboard_map_ports_table_speccy[8]={
     &puerto_65278,&puerto_65022,&puerto_64510,&puerto_63486,
@@ -21535,8 +21546,13 @@ void menu_help_keyboard_overlay(void)
 
     //prueba dibujar todos recuadros de teclas
     //menu_help_keyboard_show_all_keys(ventana,keyboard_map_table_coords_48,5);
-    if (MACHINE_IS_SPECTRUM_48_PLUS_SPA || MACHINE_IS_SPECTRUM_48_PLUS_ENG) {
+    if (MACHINE_IS_SPECTRUM_48_PLUS_SPA || MACHINE_IS_SPECTRUM_48_PLUS_ENG ||
+        MACHINE_IS_INVES || MACHINE_IS_SPECTRUM_128 || MACHINE_IS_SPECTRUM_128_SPA) {
         menu_help_keyboard_show_speccy_pressed_keys(ventana,keyboard_map_table_coords_48p,keyboard_map_ports_table_speccy);
+    }
+
+    else if (MACHINE_IS_SPECTRUM_P2 || MACHINE_IS_SPECTRUM_P2A_P3) {
+        menu_help_keyboard_show_speccy_pressed_keys(ventana,keyboard_map_table_coords_p2,keyboard_map_ports_table_speccy);
     }
 
     else menu_help_keyboard_show_speccy_pressed_keys(ventana,keyboard_map_table_coords_48,keyboard_map_ports_table_speccy);
