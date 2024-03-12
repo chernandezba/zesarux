@@ -21395,6 +21395,17 @@ int keyboard_map_table_coords_48[40*4]={
 468,166,530,192,420,166,454,190,370,168,404,192,322,168,354,190,270,166,304,192,
 };
 
+int keyboard_map_table_coords_48p[40*4]={
+3,122,90,160,130,124,170,162,170,124,210,160,210,124,250,160,252,124,290,160,
+108,82,150,120,150,84,190,120,192,84,230,120,230,84,270,120,272,84,310,120,
+100,42,140,80,140,44,180,82,180,44,220,80,222,44,260,78,258,44,300,78,
+80,2,120,40,120,2,160,42,160,2,200,40,200,2,240,40,242,2,280,38,
+440,2,480,38,400,2,438,38,360,2,400,38,322,2,358,38,280,2,320,38,
+460,44,498,80,420,44,458,80,380,42,416,80,340,44,380,80,302,42,340,80,
+472,82,538,120,432,84,468,120,392,82,430,120,352,82,388,120,312,84,350,120,
+200,164,378,198,4,162,40,198,370,124,408,158,330,124,368,160,290,124,330,162,
+};
+
 //tabla para puertos
 z80_byte *keyboard_map_ports_table_speccy[8]={
     &puerto_65278,&puerto_65022,&puerto_64510,&puerto_63486,
@@ -21451,6 +21462,7 @@ void menu_help_keyboard_show_speccy_pressed_keys(zxvision_window *ventana,int ke
 
                 zxvision_draw_rectangle_function(ventana,x1,y1,ancho,alto,3,zxvision_putpixel_no_zoom);
                 zxvision_draw_rectangle_function(ventana,x1-1,y1-1,ancho+2,alto+2,3,zxvision_putpixel_no_zoom);
+                zxvision_draw_rectangle_function(ventana,x1-2,y1-2,ancho+4,alto+4,3,zxvision_putpixel_no_zoom);
             }
             mascara=mascara<<1;
         }
@@ -21523,9 +21535,11 @@ void menu_help_keyboard_overlay(void)
 
     //prueba dibujar todos recuadros de teclas
     //menu_help_keyboard_show_all_keys(ventana,keyboard_map_table_coords_48,5);
+    if (MACHINE_IS_SPECTRUM_48_PLUS_SPA || MACHINE_IS_SPECTRUM_48_PLUS_ENG) {
+        menu_help_keyboard_show_speccy_pressed_keys(ventana,keyboard_map_table_coords_48p,keyboard_map_ports_table_speccy);
+    }
 
-
-    menu_help_keyboard_show_speccy_pressed_keys(ventana,keyboard_map_table_coords_48,keyboard_map_ports_table_speccy);
+    else menu_help_keyboard_show_speccy_pressed_keys(ventana,keyboard_map_table_coords_48,keyboard_map_ports_table_speccy);
 
     //Siempre hará el dibujado de contenido para evitar que cuando esta en background, otra ventana por debajo escriba algo,
     //y entonces como esta no redibuja siempre, al no escribir encima, se sobreescribe este contenido con el de otra ventana
