@@ -21417,6 +21417,20 @@ int keyboard_map_table_coords_p2[40*4]={
 200,164,378,198,4,164,38,198,372,124,408,158,332,124,368,158,292,124,330,160,
 };
 
+int *keyboard_help_return_map_table(void)
+{
+    if (MACHINE_IS_SPECTRUM_48_PLUS_SPA || MACHINE_IS_SPECTRUM_48_PLUS_ENG ||
+        MACHINE_IS_INVES || MACHINE_IS_SPECTRUM_128 || MACHINE_IS_SPECTRUM_128_SPA) {
+        return keyboard_map_table_coords_48p;
+    }
+
+    else if (MACHINE_IS_SPECTRUM_P2 || MACHINE_IS_SPECTRUM_P2A_P3) {
+        return keyboard_map_table_coords_p2;
+    }
+
+    else return keyboard_map_table_coords_48;
+}
+
 //tabla para puertos
 z80_byte *keyboard_map_ports_table_speccy[8]={
     &puerto_65278,&puerto_65022,&puerto_64510,&puerto_63486,
@@ -21546,16 +21560,10 @@ void menu_help_keyboard_overlay(void)
 
     //prueba dibujar todos recuadros de teclas
     //menu_help_keyboard_show_all_keys(ventana,keyboard_map_table_coords_48,5);
-    if (MACHINE_IS_SPECTRUM_48_PLUS_SPA || MACHINE_IS_SPECTRUM_48_PLUS_ENG ||
-        MACHINE_IS_INVES || MACHINE_IS_SPECTRUM_128 || MACHINE_IS_SPECTRUM_128_SPA) {
-        menu_help_keyboard_show_speccy_pressed_keys(ventana,keyboard_map_table_coords_48p,keyboard_map_ports_table_speccy);
-    }
 
-    else if (MACHINE_IS_SPECTRUM_P2 || MACHINE_IS_SPECTRUM_P2A_P3) {
-        menu_help_keyboard_show_speccy_pressed_keys(ventana,keyboard_map_table_coords_p2,keyboard_map_ports_table_speccy);
-    }
+    int *keyboard_map_table=keyboard_help_return_map_table();
 
-    else menu_help_keyboard_show_speccy_pressed_keys(ventana,keyboard_map_table_coords_48,keyboard_map_ports_table_speccy);
+    menu_help_keyboard_show_speccy_pressed_keys(ventana,keyboard_map_table,keyboard_map_ports_table_speccy);
 
     //Siempre hará el dibujado de contenido para evitar que cuando esta en background, otra ventana por debajo escriba algo,
     //y entonces como esta no redibuja siempre, al no escribir encima, se sobreescribe este contenido con el de otra ventana
