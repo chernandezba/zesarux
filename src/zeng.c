@@ -40,6 +40,7 @@ Network Play (not using a central server) related code
 #include "remote.h"
 #include "snap_zsf.h"
 #include "autoselectoptions.h"
+#include "atomic.h"
 
 
 
@@ -129,6 +130,28 @@ int zeng_utils_sync_local_to_remote_thread_running=0;
 
 #ifdef USE_PTHREADS
 
+z_atomic_semaphore semaphore_zeng_fifo;
+
+
+void zeng_fifo_semaphore_init(void)
+{
+    z_atomic_reset(&semaphore_zeng_fifo);
+}
+
+
+void zeng_fifo_begin_lock(void)
+{
+	while(z_atomic_test_and_set(&semaphore_zeng_fifo)) {
+		//printf("Esperando a liberar lock en zoc_begin_lock_joined_users\n");
+	}
+}
+
+void zeng_fifo_end_lock(void)
+{
+    z_atomic_reset(&semaphore_zeng_fifo);
+}
+
+
 int zeng_next_position(int pos)
 {
 	pos++;
@@ -142,9 +165,13 @@ int zeng_fifo_add_element(zeng_key_presses *elemento)
 {
 	//Si esta llena, no hacer nada
 	//TODO: esperar a flush
-	//TODO: semaforo
 
-	if (zeng_fifo_current_size==ZENG_FIFO_SIZE) return 1;
+	if (zeng_fifo_current_size==ZENG_FIFO_SIZE) {
+        //printf("fifo llena\n");
+        return 1;
+    }
+
+    zeng_fifo_begin_lock();
 
 	//Escribir en la posicion actual
 	zeng_key_presses_array[zeng_fifo_write_position].tecla=elemento->tecla;
@@ -156,6 +183,10 @@ int zeng_fifo_add_element(zeng_key_presses *elemento)
 
 	//Y sumar total elementos
 	zeng_fifo_current_size++;
+
+    //printf("agregado a fifo tecla %3d pressrelease %d. tamanyo=%d\n",elemento->tecla,elemento->pressrelease,zeng_fifo_current_size);
+
+    zeng_fifo_end_lock();
 
 	return 0;
 
@@ -170,9 +201,10 @@ int zeng_fifo_get_current_size(void)
 //Retorna 1 si esta vacia
 int zeng_fifo_read_element(zeng_key_presses *elemento)
 {
-	//TODO: semaforo
 
 	if (zeng_fifo_current_size==0) return 1;
+
+    zeng_fifo_begin_lock();
 
 	//Leer de la posicion actual
 	elemento->tecla=zeng_key_presses_array[zeng_fifo_read_position].tecla;
@@ -184,6 +216,11 @@ int zeng_fifo_read_element(zeng_key_presses *elemento)
 
 	//Y restar total elementos
 	zeng_fifo_current_size--;
+    //printf("restamos zeng_fifo_current_size despues read. actual=%d\n",zeng_fifo_current_size);
+    debug_exec_show_backtrace();
+
+    zeng_fifo_end_lock();
+
 
 	return 0;
 
@@ -194,14 +231,18 @@ int zeng_fifo_read_element(zeng_key_presses *elemento)
 //Retorna 1 si esta vacia
 int zeng_fifo_peek_element(zeng_key_presses *elemento)
 {
-	//TODO: semaforo
+
 
 	if (zeng_fifo_current_size==0) return 1;
+
+    zeng_fifo_begin_lock();
 
 	//Leer de la posicion actual
 	elemento->tecla=zeng_key_presses_array[zeng_fifo_read_position].tecla;
 	elemento->pressrelease=zeng_key_presses_array[zeng_fifo_read_position].pressrelease;
     //elemento->contador_scanline=zeng_key_presses_array[zeng_fifo_read_position].contador_scanline;
+
+    zeng_fifo_end_lock();
 
 
 	return 0;
@@ -210,6 +251,8 @@ int zeng_fifo_peek_element(zeng_key_presses *elemento)
 
 void zeng_empty_fifo(void)
 {
+    //printf("llamado a zeng_empty_fifo\n");
+
 	//Tamanyo de la fifo
 	zeng_fifo_current_size=0;
 
@@ -281,10 +324,11 @@ void zeng_send_key_event(enum util_teclas tecla,int pressrelease)
 	elemento.pressrelease=pressrelease;
     //elemento.contador_scanline=zeng_online_scanline_counter;
 
-	//printf ("Adding zeng key event to fifo\n");
+	//printf ("Adding zeng key tecla %3d pressrelease %d to fifo\n",elemento.tecla,elemento.pressrelease);
 
 	if (zeng_fifo_add_element(&elemento)) {
 		debug_printf (VERBOSE_DEBUG,"Error adding zeng key event. FIFO full");
+        //printf ("Error adding zeng key event. FIFO full\n");
 		return;
 	}
 

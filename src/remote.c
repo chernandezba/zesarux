@@ -6576,6 +6576,8 @@ void init_remote_protocol(void)
 
     zrcp_sem_init();
 
+    zeng_fifo_semaphore_init();
+
 }
 
 void enable_and_init_remote_protocol(void)

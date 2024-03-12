@@ -2738,26 +2738,34 @@ int zoc_keys_send_pending(int indice_socket,int *enviada_alguna_tecla)
     //Como maximo enviar la cantidad de teclas que habia en la fifo al entrar
     int tamanyo_cola=zeng_fifo_get_current_size();
 
-    while (!zeng_fifo_read_element(&elemento) && !error_desconectar && tamanyo_cola>0) {
-        *enviada_alguna_tecla=1;
-        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"ZENG Online Client: Read event from zeng fifo and sending it to remote: key %d pressrelease %d",elemento.tecla,elemento.pressrelease);
 
-        //printf ("ZENG: Read event from zeng fifo and sending it to remote: key %d pressrelease %d\n",elemento.tecla,elemento.pressrelease);
+        //if (tamanyo_cola) {
+            //printf("Tamanyo fifo antes enviar a remote: %d\n",tamanyo_cola);
+        //}
 
-        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"ZENG Online Client: Info joystick: fire: %d up: %d down: %d left: %d right: %d",
-            UTIL_KEY_JOY_FIRE,UTIL_KEY_JOY_UP,UTIL_KEY_JOY_DOWN,UTIL_KEY_JOY_LEFT,UTIL_KEY_JOY_RIGHT);
+    while (tamanyo_cola>0 && !error_desconectar) {
+        if (!zeng_fifo_read_element(&elemento)) {
+            *enviada_alguna_tecla=1;
+            DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Read event from zeng fifo and sending it to remote: key %d pressrelease %d",elemento.tecla,elemento.pressrelease);
 
-            if (!zoc_keys_tecla_repetida(&elemento)) {
+            //printf ("ZENG: Read event from zeng fifo and sending it to remote: key %d pressrelease %d\n",elemento.tecla,elemento.pressrelease);
 
-            //command> help send-keys-event
-            //Syntax: send-keys-event key event
-                int error=zoc_send_keys(indice_socket,&elemento);
-                if (error<0) error_desconectar=1;
-            }
+            DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"ZENG Online Client: Info joystick: fire: %d up: %d down: %d left: %d right: %d",
+                UTIL_KEY_JOY_FIRE,UTIL_KEY_JOY_UP,UTIL_KEY_JOY_DOWN,UTIL_KEY_JOY_LEFT,UTIL_KEY_JOY_RIGHT);
 
+                if (!zoc_keys_tecla_repetida(&elemento)) {
+
+                //command> help send-keys-event
+                //Syntax: send-keys-event key event
+                    int error=zoc_send_keys(indice_socket,&elemento);
+                    if (error<0) error_desconectar=1;
+                }
+        }
 
 
         tamanyo_cola--;
+
+        //printf("tamanyo fifo despues send remote: %d\n",zeng_fifo_get_current_size());
 
     }
 
