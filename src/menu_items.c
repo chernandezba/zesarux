@@ -21708,12 +21708,33 @@ void menu_help_show_keyboard(MENU_ITEM_PARAMETERS)
                 //prueba enviar tecla a
                 //zxvision_keys_event_not_send_to_machine=0;
                 //puerto_65022=254;
+                /*
 
-                menu_espera_no_tecla();
+        //Esperar a liberar teclas. No ejecutar ni una instruccion cpu si la tecla esta liberada
+	//con eso evitamos que cuando salte un breakpoint, que llama aqui, no se ejecute una instruccion y el registro PC apunte a la siguiente instruccion
+        z80_byte acumulado;
+	int salir=0;
+
+        do {
+		acumulado=menu_da_todas_teclas();
+		if ( !mouse_left) {
+			salir=1;
+		}
+
+		else {
+			menu_cpu_core_loop();
+		}
+
+	//printf ("menu_espera_no_tecla acumulado: %d\n",acumulado);
+
+	} while (!salir);*/
+
 
                 //prueba liberar tecla a
                 //puerto_65022=255;
                 //zxvision_keys_event_not_send_to_machine=1;
+
+                menu_espera_no_tecla();
             }
 
             if (mouse_right && si_menu_mouse_en_ventana() ) {
