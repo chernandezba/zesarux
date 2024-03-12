@@ -14498,6 +14498,31 @@ void zxvision_widgets_draw_speedometer_common(zxvision_window *ventana,int xcent
 }
 
 
+
+void zxvision_draw_rectangle_function(zxvision_window *ventana,int x1,int y1,int ancho,int alto,int color,
+    void (*fun_putpixel) (zxvision_window *w,int x,int y,int color)  )
+{
+
+    int x2=x1+ancho-1;
+    int y2=y1+alto-1;
+
+    //arriba
+    zxvision_draw_line(ventana,x1,y1,x2,y1,color,fun_putpixel);
+    //abajo
+    zxvision_draw_line(ventana,x1,y2,x2,y2,color,fun_putpixel);
+    //izquierda
+    zxvision_draw_line(ventana,x1,y1,x1,y2,color,fun_putpixel);
+    //derecha
+    zxvision_draw_line(ventana,x2,y1,x2,y2,color,fun_putpixel);
+
+}
+
+void zxvision_draw_rectangle(zxvision_window *ventana,int x1,int y1,int ancho,int alto,int color)
+{
+    zxvision_draw_rectangle_function(ventana,x1,y1,ancho,alto,color,zxvision_putpixel);
+}
+
+
 void zxvision_draw_filled_rectangle(zxvision_window *ventana,int xinicio,int yinicio,int ancho,int alto,int color)
 {
 

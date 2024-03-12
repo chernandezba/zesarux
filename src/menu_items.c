@@ -21361,10 +21361,107 @@ void menu_help_keyboard_load_bmp(void)
 
 }
 
+int menu_help_keyboard_overlay_force_draw=0;
+
+/*
+z80_byte puerto_65278=255; //    db    255            ; V    C    X    Z    Sh    ;0
+z80_byte puerto_65022=255; //    db    255            ; G    F    D    S    A     ;1
+z80_byte puerto_64510=255; //    db              255  ; T    R    E    W    Q     ;2
+z80_byte puerto_63486=255; //    db              255  ; 5    4    3    2    1     ;3
+z80_byte puerto_61438=255; //    db              255  ; 6    7    8    9    0     ;4
+z80_byte puerto_57342=255; //    db              255  ; Y    U    I    O    P     ;5
+z80_byte puerto_49150=255; //    db              255  ; H                J         K      L    Enter ;6
+z80_byte puerto_32766=255; //    db              255  ; B    N    M    Simb Space ;7
+*/
+
+//orden de teclas de derecha a izquierda:
+/*
+Shift z x c v
+a s d f g
+...
+space sym m n b
+*/
+
+//para keyboard_48.bmp
+//4 valores de cada tecla: x,y inicial, x,y final
+int keyboard_map_table_coords_48[40*4]={
+8,166,54,190,72,166,106,190,120,168,158,192,172,166,206,192,220,168,256,190,
+46,116,80,140,94,118,130,142,146,120,180,140,196,120,232,142,248,120,280,140,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+};
+
+//tabla para puertos
+z80_byte *keyboard_map_ports_table_speccy[8]={
+    &puerto_65278,&puerto_65022,&puerto_64510,&puerto_63486,
+    &puerto_61438,&puerto_57342,&puerto_49150,&puerto_32766
+};
+
+
+    //prueba dibujar recuadro
+    //zxvision_draw_rectangle(ventana,10,10,50,20,3);
+
+    //prueba dibujar todos recuadros de teclas
+void menu_help_keyboard_show_all_keys(zxvision_window *ventana,int keyboard_map_coords[],int total_keys)
+{
+    int i;
+
+    for (i=0;i<total_keys;i++) {
+        int offset=4*i;
+        int x1=keyboard_map_coords[offset];
+        int y1=keyboard_map_coords[offset+1];
+        int ancho=keyboard_map_coords[offset+2]-x1+1;
+        int alto=keyboard_map_coords[offset+3]-y1+1;
+
+        zxvision_draw_rectangle_function(ventana,x1,y1,ancho,alto,3,zxvision_putpixel_no_zoom);
+        zxvision_draw_rectangle_function(ventana,x1-1,y1-1,ancho+2,alto+2,3,zxvision_putpixel_no_zoom);
+    }
+}
+
+//Para un spectrum de 40 teclas
+void menu_help_keyboard_show_speccy_pressed_keys(zxvision_window *ventana,int keyboard_map_coords[],z80_byte *key_map_ports[])
+{
+    int fila_tecla;
+    int columna_tecla;
+
+
+    for (fila_tecla=0;fila_tecla<8;fila_tecla++) {
+        int mascara=1;
+        for (columna_tecla=0;columna_tecla<5;columna_tecla++) {
+            z80_byte *puerto=key_map_ports[fila_tecla];
+            z80_byte valor=*puerto;
+            valor &=mascara;
+            if (!valor) {
+                //printf("forzar dibujar\n");
+                menu_help_keyboard_overlay_force_draw=1;
+
+                int offset=fila_tecla*8+columna_tecla; //Indice a tecla
+
+                //indice a coordenada
+                offset *=4;
+
+                int x1=keyboard_map_coords[offset];
+                int y1=keyboard_map_coords[offset+1];
+                int ancho=keyboard_map_coords[offset+2]-x1+1;
+                int alto=keyboard_map_coords[offset+3]-y1+1;
+
+                zxvision_draw_rectangle_function(ventana,x1,y1,ancho,alto,3,zxvision_putpixel_no_zoom);
+                zxvision_draw_rectangle_function(ventana,x1-1,y1-1,ancho+2,alto+2,3,zxvision_putpixel_no_zoom);
+            }
+            mascara=mascara<<1;
+        }
+
+    }
+}
 
 int help_keyboard_valor_contador_segundo_anterior;
 
 zxvision_window *menu_help_keyboard_overlay_window;
+
 
 
 void menu_help_keyboard_overlay(void)
@@ -21398,10 +21495,16 @@ void menu_help_keyboard_overlay(void)
 	ventana=menu_help_keyboard_overlay_window;
 
     //Solo redibujar cuando se ha refrescado el fondo de texto
-    if (ventana->has_been_drawn_contents) {
+    if (ventana->has_been_drawn_contents || menu_help_keyboard_overlay_force_draw) {
+
+
 
         //esto hara ejecutar esto 5 veces por segundo (lo habitual en muchos de estos que no actualizan siempre es 2 veces por segundo)
-        if ( ((contador_segundo%200) == 0 && help_keyboard_valor_contador_segundo_anterior!=contador_segundo) || menu_multitarea==0) {
+        if ( ((contador_segundo%200) == 0 && help_keyboard_valor_contador_segundo_anterior!=contador_segundo) ||
+             menu_multitarea==0 || menu_help_keyboard_overlay_force_draw) {
+
+            menu_help_keyboard_overlay_force_draw=0;
+
                                         help_keyboard_valor_contador_segundo_anterior=contador_segundo;
             //printf ("Refrescando keyboard help. contador_segundo=%d\n",contador_segundo);
 
@@ -21414,6 +21517,15 @@ void menu_help_keyboard_overlay(void)
         }
 
     }
+
+    //prueba dibujar recuadro
+    //zxvision_draw_rectangle(ventana,10,10,50,20,3);
+
+    //prueba dibujar todos recuadros de teclas
+    //menu_help_keyboard_show_all_keys(ventana,keyboard_map_table_coords_48,5);
+
+
+    menu_help_keyboard_show_speccy_pressed_keys(ventana,keyboard_map_table_coords_48,keyboard_map_ports_table_speccy);
 
     //Siempre hará el dibujado de contenido para evitar que cuando esta en background, otra ventana por debajo escriba algo,
     //y entonces como esta no redibuja siempre, al no escribir encima, se sobreescribe este contenido con el de otra ventana
@@ -21534,10 +21646,40 @@ void menu_help_show_keyboard(MENU_ITEM_PARAMETERS)
 
 	z80_byte tecla;
 
+    //para habilitar mostrar coordenadas al pulsar, para meterlo en mapa de teclas
+    //clic izquierdo: muestra posicion
+    //clic derecho: salto linea
+    int keyboard_debug_mouse=1;
+
 	do {
         tecla=zxvision_common_getkey_refresh();
         zxvision_handle_cursors_pgupdn(ventana,tecla);
         //printf ("tecla: %d\n",tecla);
+
+        if (keyboard_debug_mouse) {
+
+            if (mouse_left && si_menu_mouse_en_ventana() ) {
+                int pulsado_x,pulsado_y;
+                zxvision_get_mouse_in_window(ventana,&pulsado_x,&pulsado_y);
+
+                pulsado_x *=zoom_x;
+                pulsado_y *=zoom_y;
+
+                printf("%d,%d,",pulsado_x,pulsado_y);
+
+                menu_espera_no_tecla();
+            }
+
+            if (mouse_right && si_menu_mouse_en_ventana() ) {
+
+
+                printf("\n");
+
+                menu_espera_no_tecla();
+            }
+
+        }
+
 
 		if (ventana->visible_height!=alto_anterior || ventana->visible_width!=ancho_anterior) {
 

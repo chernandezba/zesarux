@@ -568,6 +568,9 @@ extern void zxvision_widgets_draw_speedometer_common(zxvision_window *ventana,in
 extern void zxvision_widgets_draw_metter_common_by_shortname(zxvision_window *ventana,int columna_texto,int fila_texto,char *short_name,int tipo,int valor_en_vez_de_perc,int tinta_texto_descripcion,int papel_texto_descripcion,int escribir_espacios);
 extern void zxvision_widgets_erase_speedometer(zxvision_window *ventana,int xcentro_widget,int ycentro_widget);
 extern void zxvision_draw_filled_rectangle(zxvision_window *ventana,int xinicio,int yinicio,int ancho,int alto,int color);
+extern void zxvision_draw_rectangle(zxvision_window *ventana,int x1,int y1,int ancho,int alto,int color);
+extern void zxvision_draw_rectangle_function(zxvision_window *ventana,int x1,int y1,int ancho,int alto,int color,
+    void (*fun_putpixel) (zxvision_window *w,int x,int y,int color)  );
 extern void zxvision_widgets_draw_particles_3d_convert(int x,int y,int z,int *xfinal,int *yfinal);
 
 extern z80_byte zxvision_read_keyboard(void);
