@@ -21402,7 +21402,7 @@ int keyboard_map_table_coords_48p[40*4]={
 80,2,120,40,120,2,160,42,160,2,200,40,200,2,240,40,242,2,280,38,
 440,2,480,38,400,2,438,38,360,2,400,38,322,2,358,38,280,2,320,38,
 460,44,498,80,420,44,458,80,380,42,416,80,340,44,380,80,302,42,340,80,
-472,82,538,120,432,84,468,120,392,82,430,120,352,82,388,120,312,84,350,120,
+472,82,537,120,432,84,468,120,392,82,430,120,352,82,388,120,312,84,350,120,
 200,164,378,198,4,162,40,198,370,124,408,158,330,124,368,160,290,124,330,162,
 };
 
@@ -21417,6 +21417,33 @@ int keyboard_map_table_coords_p2[40*4]={
 200,164,378,198,4,164,38,198,372,124,408,158,332,124,368,158,292,124,330,160,
 };
 
+//Estructura para teclas que genera doble pulsacion, como "extended mode" (shift+symbol)
+//Adicionalmente tambien se usa para teclas repetidas, como symbol en un spectrum+. en ese caso puerto2 vale NULL;
+struct s_keyboard_help_double_key {
+    int x1,y1,x2,y2; //coordenadas de la tecla
+
+    z80_byte *puerto1;
+    z80_byte mascara1;
+
+    z80_byte *puerto2;
+    z80_byte mascara2;
+};
+
+typedef struct s_keyboard_help_double_key keyboard_help_double_key;
+
+//tecla extend mode spectrum+
+//82,2, 120,60
+//tecla delete
+//2,44, 58,80
+
+//Teclas adicionales spectrum+
+keyboard_help_double_key keyboard_map_additional_48p[]={
+    { 82,2, 120,60, &puerto_65278,1, &puerto_32766,2 },
+    { 2,44, 58,80,  &puerto_65278,1, &puerto_61438,1 },
+    { 0,0,0,0,NULL,0,NULL,0 }
+};
+
+//Retorna tabla de coordenadas de teclas
 int *keyboard_help_return_map_table(void)
 {
     if (MACHINE_IS_SPECTRUM_48_PLUS_SPA || MACHINE_IS_SPECTRUM_48_PLUS_ENG ||
@@ -21485,9 +21512,14 @@ void menu_help_keyboard_show_speccy_pressed_keys(zxvision_window *ventana,int ke
                 int ancho=keyboard_map_coords[offset+2]-x1+1;
                 int alto=keyboard_map_coords[offset+3]-y1+1;
 
-                zxvision_draw_rectangle_function(ventana,x1,y1,ancho,alto,3,zxvision_putpixel_no_zoom);
-                zxvision_draw_rectangle_function(ventana,x1-1,y1-1,ancho+2,alto+2,3,zxvision_putpixel_no_zoom);
-                zxvision_draw_rectangle_function(ventana,x1-2,y1-2,ancho+4,alto+4,3,zxvision_putpixel_no_zoom);
+                int color=3;
+
+                //Recuadro del tamanyo y algo mas grande
+                zxvision_draw_rectangle_function(ventana,x1,y1,ancho,alto,color,zxvision_putpixel_no_zoom);
+                zxvision_draw_rectangle_function(ventana,x1-1,y1-1,ancho+2,alto+2,color,zxvision_putpixel_no_zoom);
+                zxvision_draw_rectangle_function(ventana,x1-2,y1-2,ancho+4,alto+4,color,zxvision_putpixel_no_zoom);
+                //Y algo mas pequenyo
+                zxvision_draw_rectangle_function(ventana,x1+1,y1+1,ancho-2,alto-2,color,zxvision_putpixel_no_zoom);
             }
             mascara=mascara<<1;
         }
@@ -21512,15 +21544,15 @@ void menu_help_keyboard_locate_speccy_pressed_keys(int keyboard_map_coords[],z80
         int mascara=1;
         for (columna_tecla=0;columna_tecla<5;columna_tecla++) {
 
-                int offset=fila_tecla*5+columna_tecla; //Indice a tecla
+            int offset=fila_tecla*5+columna_tecla; //Indice a tecla
 
-                //indice a coordenada
-                offset *=4;
+            //indice a coordenada
+            offset *=4;
 
-                int x1=keyboard_map_coords[offset];
-                int y1=keyboard_map_coords[offset+1];
-                int x2=keyboard_map_coords[offset+2];
-                int y2=keyboard_map_coords[offset+3];
+            int x1=keyboard_map_coords[offset];
+            int y1=keyboard_map_coords[offset+1];
+            int x2=keyboard_map_coords[offset+2];
+            int y2=keyboard_map_coords[offset+3];
             if (x>=x1 && x<=x2 && y>=y1 && y<=y2) {
                 *p_puerto=puerto;
                 *p_mascara=mascara;
@@ -21734,20 +21766,23 @@ void menu_help_show_keyboard(MENU_ITEM_PARAMETERS)
 	do {
         tecla=zxvision_common_getkey_refresh_noesperanotec();
         zxvision_handle_cursors_pgupdn(ventana,tecla);
-        printf ("tecla: %d\n",tecla);
+        //printf ("tecla: %d\n",tecla);
 
         if (tecla && !mouse_left) {
             printf("generar tecla %d puerto: %d\n",tecla,puerto_65022);
             z80_byte acumulado;
             int salir=0;
 
-                do {
+            //Bucle variante de espera_no_tecla
+            do {
                 acumulado=menu_da_todas_teclas();
                 if ( (acumulado & MENU_PUERTO_TECLADO_NINGUNA) == MENU_PUERTO_TECLADO_NINGUNA) {
                     salir=1;
                 }
 
                 else {
+                    //Indicar a la cpu emulada que si se leen las teclas aun con el menu abierto
+                    //esta variable se vuelve a cambiar en algun punto del core, por tanto la tengo que cambiar cada vez
                     zxvision_keys_event_not_send_to_machine=0;
                     menu_cpu_core_loop();
                 }
@@ -21760,7 +21795,7 @@ void menu_help_show_keyboard(MENU_ITEM_PARAMETERS)
 
         }
 
-        if (mouse_left && si_menu_mouse_en_ventana() ) {
+        if (mouse_left && si_menu_mouse_en_ventana() && !mouse_is_dragging) {
             int pulsado_x,pulsado_y;
             zxvision_get_mouse_in_window(ventana,&pulsado_x,&pulsado_y);
 
@@ -21784,14 +21819,16 @@ void menu_help_show_keyboard(MENU_ITEM_PARAMETERS)
 
                 int salir=0;
 
+                //Bucle variante de espera_no_tecla
                 do {
-
 
                     if ( !mouse_left) {
                         salir=1;
                     }
 
                     else {
+                        //Indicar a la cpu emulada que si se leen las teclas aun con el menu abierto
+                        //esta variable se vuelve a cambiar en algun punto del core, por tanto la tengo que cambiar cada vez
                         zxvision_keys_event_not_send_to_machine=0;
                         menu_cpu_core_loop();
                     }
@@ -21803,19 +21840,16 @@ void menu_help_show_keyboard(MENU_ITEM_PARAMETERS)
                 *puerto=255;
                 zxvision_keys_event_not_send_to_machine=1;
 
-
-
             }
 
+        }
 
-            if (mouse_right && si_menu_mouse_en_ventana() ) {
+        if (mouse_right && si_menu_mouse_en_ventana() ) {
 
 
-                printf("\n");
+            printf("\n");
 
-                menu_espera_no_tecla();
-            }
-
+            menu_espera_no_tecla();
         }
 
 
