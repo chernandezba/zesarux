@@ -21459,6 +21459,21 @@ int *keyboard_help_return_map_table(void)
     else return keyboard_map_table_coords_48;
 }
 
+
+keyboard_help_double_key *keyboard_help_return_double_keys(void)
+{
+
+    keyboard_help_double_key *teclas_dobles=NULL;
+
+    if (MACHINE_IS_SPECTRUM_48_PLUS_SPA || MACHINE_IS_SPECTRUM_48_PLUS_ENG ||
+        MACHINE_IS_INVES || MACHINE_IS_SPECTRUM_128 || MACHINE_IS_SPECTRUM_128_SPA) {
+            teclas_dobles=keyboard_map_additional_48p;
+    }
+
+    return teclas_dobles;
+
+}
+
 //tabla para puertos
 z80_byte *keyboard_map_ports_table_speccy[8]={
     &puerto_65278,&puerto_65022,&puerto_64510,&puerto_63486,
@@ -21681,12 +21696,8 @@ void menu_help_keyboard_overlay(void)
 
     int *keyboard_map_table=keyboard_help_return_map_table();
 
-    keyboard_help_double_key *teclas_dobles=NULL;
+    keyboard_help_double_key *teclas_dobles=keyboard_help_return_double_keys();
 
-    if (MACHINE_IS_SPECTRUM_48_PLUS_SPA || MACHINE_IS_SPECTRUM_48_PLUS_ENG ||
-        MACHINE_IS_INVES || MACHINE_IS_SPECTRUM_128 || MACHINE_IS_SPECTRUM_128_SPA) {
-            teclas_dobles=keyboard_map_additional_48p;
-    }
 
     menu_help_keyboard_show_speccy_pressed_keys(ventana,keyboard_map_table,keyboard_map_ports_table_speccy,teclas_dobles);
 
