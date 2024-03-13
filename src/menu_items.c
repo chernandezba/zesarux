@@ -21604,6 +21604,9 @@ void menu_help_keyboard_overlay(void)
 
     menu_help_keyboard_show_speccy_pressed_keys(ventana,keyboard_map_table,keyboard_map_ports_table_speccy);
 
+
+    //printf("overlay puerto: %d\n",puerto_65022);
+
     //Siempre hará el dibujado de contenido para evitar que cuando esta en background, otra ventana por debajo escriba algo,
     //y entonces como esta no redibuja siempre, al no escribir encima, se sobreescribe este contenido con el de otra ventana
     //En ventanas que no escriben siempre su contenido, siempre deberia estar zxvision_draw_window_contents que lo haga siempre
@@ -21726,14 +21729,36 @@ void menu_help_show_keyboard(MENU_ITEM_PARAMETERS)
     //para habilitar mostrar coordenadas al pulsar, para meterlo en mapa de teclas
     //clic izquierdo: muestra posicion
     //clic derecho: salto linea
-    int keyboard_debug_mouse=1;
+    //int keyboard_debug_mouse=1;
 
 	do {
-        tecla=zxvision_common_getkey_refresh();
+        tecla=zxvision_common_getkey_refresh_noesperanotec();
         zxvision_handle_cursors_pgupdn(ventana,tecla);
-        //printf ("tecla: %d\n",tecla);
+        printf ("tecla: %d\n",tecla);
 
-        if (keyboard_debug_mouse) {
+        if (tecla && !mouse_left) {
+            printf("generar tecla %d puerto: %d\n",tecla,puerto_65022);
+            z80_byte acumulado;
+            int salir=0;
+
+                do {
+                acumulado=menu_da_todas_teclas();
+                if ( (acumulado & MENU_PUERTO_TECLADO_NINGUNA) == MENU_PUERTO_TECLADO_NINGUNA) {
+                    salir=1;
+                }
+
+                else {
+                    zxvision_keys_event_not_send_to_machine=0;
+                    menu_cpu_core_loop();
+                }
+
+            //printf ("menu_espera_no_tecla acumulado: %d\n",acumulado);
+
+            } while (!salir);
+            zxvision_keys_event_not_send_to_machine=1;
+            printf("fin generar tecla\n");
+
+        }
 
             if (mouse_left && si_menu_mouse_en_ventana() ) {
                 int pulsado_x,pulsado_y;
@@ -21781,7 +21806,7 @@ void menu_help_show_keyboard(MENU_ITEM_PARAMETERS)
 
 
                 }
-            }
+
 
             if (mouse_right && si_menu_mouse_en_ventana() ) {
 
