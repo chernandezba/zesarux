@@ -21436,13 +21436,40 @@ typedef struct s_keyboard_help_double_key keyboard_help_double_key;
 //tecla delete
 //2,44, 58,80
 
+#define KEY_PORT_VALUE_SHIFT &puerto_65278,1
+#define KEY_PORT_VALUE_SYMBOL &puerto_32766,2
+
+/*
+z80_byte puerto_65278=255; //    db    255            ; V    C    X    Z    Sh    ;0
+z80_byte puerto_65022=255; //    db    255            ; G    F    D    S    A     ;1
+z80_byte puerto_64510=255; //    db              255  ; T    R    E    W    Q     ;2
+z80_byte puerto_63486=255; //    db              255  ; 5    4    3    2    1     ;3
+z80_byte puerto_61438=255; //    db              255  ; 6    7    8    9    0     ;4
+z80_byte puerto_57342=255; //    db              255  ; Y    U    I    O    P     ;5
+z80_byte puerto_49150=255; //    db              255  ; H                J         K      L    Enter ;6
+z80_byte puerto_32766=255; //    db              255  ; B    N    M    Simb Space ;7
+*/
+
 //Teclas adicionales spectrum+
 keyboard_help_double_key keyboard_map_additional_48p[]={
-    { 500,162, 537,198, &puerto_32766,2, NULL, 0},  //symbol derecha
-    { 2,82, 60, 120, &puerto_65278,1, &puerto_32766,2 }, //extend mode
+    { 500,162, 537,198, KEY_PORT_VALUE_SYMBOL, NULL, 0},  //symbol derecha
+    { 452,124,536,158, KEY_PORT_VALUE_SHIFT, NULL, 0}, //caps shift derecha
+    { 2,82, 60, 120, KEY_PORT_VALUE_SHIFT, KEY_PORT_VALUE_SYMBOL }, //extend mode
     { 2,44, 58,80,  &puerto_65278,1, &puerto_61438,1 },  //delete
-    { 2,2,38,36, &puerto_63486,4, &puerto_65278,1 }, //true video
-    { 44,2,76,36, &puerto_63486,8, &puerto_65278,1 }, //inverse video
+    { 2,2,38,36, &puerto_63486,4, KEY_PORT_VALUE_SHIFT }, //true video
+    { 44,2,76,36, &puerto_63486,8, KEY_PORT_VALUE_SHIFT }, //inverse video
+    { 62,44,98,80, &puerto_61438,2, KEY_PORT_VALUE_SHIFT },//graph
+    { 60,82,108,118, &puerto_63486,1,  KEY_PORT_VALUE_SHIFT },//edit
+    { 90,124,128,158, &puerto_63486,2, KEY_PORT_VALUE_SHIFT }, //caps lock
+    { 42,164,78,198, &puerto_57342,2, KEY_PORT_VALUE_SYMBOL }, // ;
+    { 82,164,116,198, &puerto_57342,1, KEY_PORT_VALUE_SYMBOL }, // "
+    { 122,164,158,198, &puerto_63486,16, KEY_PORT_VALUE_SHIFT }, // flecha izq
+    { 162,164,196,198, &puerto_61438,4, KEY_PORT_VALUE_SHIFT }, // flecha der
+    { 382,164,418,198, &puerto_61438,8, KEY_PORT_VALUE_SHIFT }, // flecha arr
+    { 422,164,458,198, &puerto_61438,16, KEY_PORT_VALUE_SHIFT }, // flecha abaj
+    { 460,162,496,198, &puerto_32766,8, KEY_PORT_VALUE_SYMBOL }, // ,
+    { 412,124,448,160, &puerto_32766,4, KEY_PORT_VALUE_SYMBOL }, // .
+    { 482,2,538,38, &puerto_32766,1, KEY_PORT_VALUE_SHIFT }, // break
 
     { 0,0,0,0,NULL,0,NULL,0 }
 };
