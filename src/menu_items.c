@@ -21977,7 +21977,7 @@ void menu_help_show_keyboard(MENU_ITEM_PARAMETERS)
             menu_help_keyboard_generate_key_mouse(pulsado_x,pulsado_y);
 
             //temp
-            menu_espera_no_tecla();
+            //menu_espera_no_tecla();
 
 
         }
