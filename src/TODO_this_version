@@ -863,7 +863,6 @@ este parametro. Por ejemplo "reset cpu" (y un dialogo de confirmacion yes/no no 
 
 -agregar a changelog comando zrcp get-text-overlay
 
--ventana de estado teclado. Para debugar zeng online. Quiza usando el mismo help keyboard,
-una tabla donde este cada tecla: puerto y mascara que altera, tamanyo y posicion tecla
 
 -si keyboard help con el foco no refresca cambios en teclas (que vengan de zeng por ejemplo)
+-poder hacer stick de teclas en keyboard help
