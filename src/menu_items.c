@@ -21591,10 +21591,12 @@ void menu_help_keyboard_show_speccy_pressed_keys(zxvision_window *ventana,int ke
 
 
 void menu_help_keyboard_locate_speccy_pressed_keys(int keyboard_map_coords[],z80_byte *key_map_ports[],
-    int x,int y,z80_byte **p_puerto1,z80_byte *p_mascara1,keyboard_help_double_key *teclas_dobles)
+    int x,int y,z80_byte **p_puerto1,z80_byte *p_mascara1,z80_byte **p_puerto2,z80_byte *p_mascara2,
+    keyboard_help_double_key *teclas_dobles)
 {
 
     *p_puerto1=NULL;
+    *p_puerto2=NULL;
 
     int fila_tecla;
     int columna_tecla;
@@ -21626,6 +21628,28 @@ void menu_help_keyboard_locate_speccy_pressed_keys(int keyboard_map_coords[],z80
         }
 
     }
+
+    if (teclas_dobles!=NULL) {
+        int i=0;
+        while(teclas_dobles[i].puerto1!=NULL) {
+
+            int x1=teclas_dobles[i].x1;
+            int y1=teclas_dobles[i].y1;
+            int x2=teclas_dobles[i].x2;
+            int y2=teclas_dobles[i].y2;
+
+            if (x>=x1 && x<=x2 && y>=y1 && y<=y2) {
+                *p_puerto1=teclas_dobles[i].puerto1;
+                *p_mascara1=teclas_dobles[i].mascara1;
+                *p_puerto2=teclas_dobles[i].puerto2;
+                *p_mascara2=teclas_dobles[i].mascara2;
+                return;
+            }
+
+            i++;
+        }
+    }
+
 }
 
 int help_keyboard_valor_contador_segundo_anterior;
@@ -21738,16 +21762,21 @@ void menu_help_keyboard_generate_key_mouse(int pulsado_x,int pulsado_y)
 
     int *keyboard_map_table=keyboard_help_return_map_table();
 
-    z80_byte *puerto;
-    z80_byte mascara;
+    z80_byte *puerto1;
+    z80_byte mascara1;
+
+    z80_byte *puerto2;
+    z80_byte mascara2;
 
     keyboard_help_double_key *teclas_dobles=keyboard_help_return_double_keys();
 
     menu_help_keyboard_locate_speccy_pressed_keys(keyboard_map_table,keyboard_map_ports_table_speccy,
-        pulsado_x,pulsado_y,&puerto,&mascara,teclas_dobles);
-    if (puerto!=NULL) {
+        pulsado_x,pulsado_y,&puerto1,&mascara1,&puerto2,&mascara2,teclas_dobles);
+    if (puerto1!=NULL) {
 
-        *puerto=255-mascara;
+        *puerto1=255-mascara1;
+
+        if (puerto2!=NULL) *puerto2=255-mascara2;
 
 
         int salir=0;
@@ -21770,7 +21799,10 @@ void menu_help_keyboard_generate_key_mouse(int pulsado_x,int pulsado_y)
 
 
         //liberar tecla
-        *puerto=255;
+        *puerto1=255;
+
+        if (puerto2!=NULL) *puerto2=255;
+
         zxvision_keys_event_not_send_to_machine=1;
 
     }
