@@ -21438,8 +21438,9 @@ typedef struct s_keyboard_help_double_key keyboard_help_double_key;
 
 //Teclas adicionales spectrum+
 keyboard_help_double_key keyboard_map_additional_48p[]={
-    { 82,2, 120,60, &puerto_65278,1, &puerto_32766,2 },
-    { 2,44, 58,80,  &puerto_65278,1, &puerto_61438,1 },
+    { 500,162, 537,198, &puerto_32766,2, NULL, 0},  //symbol derecha
+    { 2,82, 60, 120, &puerto_65278,1, &puerto_32766,2 }, //extend mode
+    { 2,44, 58,80,  &puerto_65278,1, &puerto_61438,1 },  //delete
     { 0,0,0,0,NULL,0,NULL,0 }
 };
 
@@ -21485,8 +21486,19 @@ void menu_help_keyboard_show_all_keys(zxvision_window *ventana,int keyboard_map_
     }
 }
 
+void menu_help_draw_rectangle_key(zxvision_window *ventana,int x1,int y1,int ancho,int alto,int color)
+{
+    //Recuadro del tamanyo y algo mas grande
+    zxvision_draw_rectangle_function(ventana,x1,y1,ancho,alto,color,zxvision_putpixel_no_zoom);
+    zxvision_draw_rectangle_function(ventana,x1-1,y1-1,ancho+2,alto+2,color,zxvision_putpixel_no_zoom);
+    zxvision_draw_rectangle_function(ventana,x1-2,y1-2,ancho+4,alto+4,color,zxvision_putpixel_no_zoom);
+    //Y algo mas pequenyo
+    zxvision_draw_rectangle_function(ventana,x1+1,y1+1,ancho-2,alto-2,color,zxvision_putpixel_no_zoom);
+}
+
 //Para un spectrum de 40 teclas
-void menu_help_keyboard_show_speccy_pressed_keys(zxvision_window *ventana,int keyboard_map_coords[],z80_byte *key_map_ports[])
+void menu_help_keyboard_show_speccy_pressed_keys(zxvision_window *ventana,int keyboard_map_coords[],
+    z80_byte *key_map_ports[],keyboard_help_double_key *teclas_dobles)
 {
     int fila_tecla;
     int columna_tecla;
@@ -21514,16 +21526,51 @@ void menu_help_keyboard_show_speccy_pressed_keys(zxvision_window *ventana,int ke
 
                 int color=3;
 
-                //Recuadro del tamanyo y algo mas grande
-                zxvision_draw_rectangle_function(ventana,x1,y1,ancho,alto,color,zxvision_putpixel_no_zoom);
-                zxvision_draw_rectangle_function(ventana,x1-1,y1-1,ancho+2,alto+2,color,zxvision_putpixel_no_zoom);
-                zxvision_draw_rectangle_function(ventana,x1-2,y1-2,ancho+4,alto+4,color,zxvision_putpixel_no_zoom);
-                //Y algo mas pequenyo
-                zxvision_draw_rectangle_function(ventana,x1+1,y1+1,ancho-2,alto-2,color,zxvision_putpixel_no_zoom);
+                menu_help_draw_rectangle_key(ventana,x1,y1,ancho,alto,color);
             }
             mascara=mascara<<1;
         }
 
+    }
+
+    if (teclas_dobles!=NULL) {
+        int i=0;
+        while(teclas_dobles[i].puerto1!=NULL) {
+            z80_byte *puerto1=teclas_dobles[i].puerto1;
+            z80_byte *puerto2=teclas_dobles[i].puerto2;
+
+            z80_byte mascara1=teclas_dobles[i].mascara1;
+            z80_byte valor1=(*puerto1) & mascara1;
+
+            z80_byte mascara2=teclas_dobles[i].mascara2;
+            z80_byte valor2=(*puerto2) & mascara2;
+
+            int tecla_encontrada=0;
+
+            //Si realmente no es tecla doble sino adicional (como symbol derecha)
+            if (puerto2==NULL) {
+
+                if (valor1==0) tecla_encontrada=1;
+            }
+
+            else {
+                if (valor1==0 && valor2==0) tecla_encontrada=1;
+            }
+
+            if (tecla_encontrada) {
+
+                int x1=teclas_dobles[i].x1;
+                int y1=teclas_dobles[i].y1;
+                int ancho=teclas_dobles[i].x2-x1+1;
+                int alto=teclas_dobles[i].y2-y1+1;
+
+                int color=3;
+
+                menu_help_draw_rectangle_key(ventana,x1,y1,ancho,alto,color);
+            }
+
+            i++;
+        }
     }
 }
 
@@ -21634,7 +21681,14 @@ void menu_help_keyboard_overlay(void)
 
     int *keyboard_map_table=keyboard_help_return_map_table();
 
-    menu_help_keyboard_show_speccy_pressed_keys(ventana,keyboard_map_table,keyboard_map_ports_table_speccy);
+    keyboard_help_double_key *teclas_dobles=NULL;
+
+    if (MACHINE_IS_SPECTRUM_48_PLUS_SPA || MACHINE_IS_SPECTRUM_48_PLUS_ENG ||
+        MACHINE_IS_INVES || MACHINE_IS_SPECTRUM_128 || MACHINE_IS_SPECTRUM_128_SPA) {
+            teclas_dobles=keyboard_map_additional_48p;
+    }
+
+    menu_help_keyboard_show_speccy_pressed_keys(ventana,keyboard_map_table,keyboard_map_ports_table_speccy,teclas_dobles);
 
 
     //printf("overlay puerto: %d\n",puerto_65022);
