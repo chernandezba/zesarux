@@ -21591,10 +21591,10 @@ void menu_help_keyboard_show_speccy_pressed_keys(zxvision_window *ventana,int ke
 
 
 void menu_help_keyboard_locate_speccy_pressed_keys(int keyboard_map_coords[],z80_byte *key_map_ports[],
-    int x,int y,z80_byte **p_puerto,z80_byte *p_mascara)
+    int x,int y,z80_byte **p_puerto1,z80_byte *p_mascara1,keyboard_help_double_key *teclas_dobles)
 {
 
-    *p_puerto=NULL;
+    *p_puerto1=NULL;
 
     int fila_tecla;
     int columna_tecla;
@@ -21616,8 +21616,8 @@ void menu_help_keyboard_locate_speccy_pressed_keys(int keyboard_map_coords[],z80
             int x2=keyboard_map_coords[offset+2];
             int y2=keyboard_map_coords[offset+3];
             if (x>=x1 && x<=x2 && y>=y1 && y<=y2) {
-                *p_puerto=puerto;
-                *p_mascara=mascara;
+                *p_puerto1=puerto;
+                *p_mascara1=mascara;
                 return;
             }
 
@@ -21734,43 +21734,46 @@ void menu_help_keyboard_create_window(zxvision_window *ventana,int x,int y,int a
 void menu_help_keyboard_generate_key_mouse(int pulsado_x,int pulsado_y)
 {
 
-            //localizar puerto
+    //localizar puerto
 
-            int *keyboard_map_table=keyboard_help_return_map_table();
+    int *keyboard_map_table=keyboard_help_return_map_table();
 
-            z80_byte *puerto;
-            z80_byte mascara;
+    z80_byte *puerto;
+    z80_byte mascara;
 
-            menu_help_keyboard_locate_speccy_pressed_keys(keyboard_map_table,keyboard_map_ports_table_speccy,pulsado_x,pulsado_y,&puerto,&mascara);
-            if (puerto!=NULL) {
+    keyboard_help_double_key *teclas_dobles=keyboard_help_return_double_keys();
 
-                *puerto=255-mascara;
+    menu_help_keyboard_locate_speccy_pressed_keys(keyboard_map_table,keyboard_map_ports_table_speccy,
+        pulsado_x,pulsado_y,&puerto,&mascara,teclas_dobles);
+    if (puerto!=NULL) {
 
-
-                int salir=0;
-
-                //Bucle variante de espera_no_tecla
-                do {
-
-                    if ( !mouse_left) {
-                        salir=1;
-                    }
-
-                    else {
-                        //Indicar a la cpu emulada que si se leen las teclas aun con el menu abierto
-                        //esta variable se vuelve a cambiar en algun punto del core, por tanto la tengo que cambiar cada vez
-                        zxvision_keys_event_not_send_to_machine=0;
-                        menu_cpu_core_loop();
-                    }
-
-                } while (!salir);
+        *puerto=255-mascara;
 
 
-                //liberar tecla
-                *puerto=255;
-                zxvision_keys_event_not_send_to_machine=1;
+        int salir=0;
 
+        //Bucle variante de espera_no_tecla
+        do {
+
+            if ( !mouse_left) {
+                salir=1;
             }
+
+            else {
+                //Indicar a la cpu emulada que si se leen las teclas aun con el menu abierto
+                //esta variable se vuelve a cambiar en algun punto del core, por tanto la tengo que cambiar cada vez
+                zxvision_keys_event_not_send_to_machine=0;
+                menu_cpu_core_loop();
+            }
+
+        } while (!salir);
+
+
+        //liberar tecla
+        *puerto=255;
+        zxvision_keys_event_not_send_to_machine=1;
+
+    }
 }
 
 zxvision_window menu_help_show_keyboard_ventana;
