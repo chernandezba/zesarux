@@ -21731,7 +21731,47 @@ void menu_help_keyboard_create_window(zxvision_window *ventana,int x,int y,int a
 
 }
 
+void menu_help_keyboard_generate_key_mouse(int pulsado_x,int pulsado_y)
+{
 
+            //localizar puerto
+
+            int *keyboard_map_table=keyboard_help_return_map_table();
+
+            z80_byte *puerto;
+            z80_byte mascara;
+
+            menu_help_keyboard_locate_speccy_pressed_keys(keyboard_map_table,keyboard_map_ports_table_speccy,pulsado_x,pulsado_y,&puerto,&mascara);
+            if (puerto!=NULL) {
+
+                *puerto=255-mascara;
+
+
+                int salir=0;
+
+                //Bucle variante de espera_no_tecla
+                do {
+
+                    if ( !mouse_left) {
+                        salir=1;
+                    }
+
+                    else {
+                        //Indicar a la cpu emulada que si se leen las teclas aun con el menu abierto
+                        //esta variable se vuelve a cambiar en algun punto del core, por tanto la tengo que cambiar cada vez
+                        zxvision_keys_event_not_send_to_machine=0;
+                        menu_cpu_core_loop();
+                    }
+
+                } while (!salir);
+
+
+                //liberar tecla
+                *puerto=255;
+                zxvision_keys_event_not_send_to_machine=1;
+
+            }
+}
 
 zxvision_window menu_help_show_keyboard_ventana;
 
@@ -21869,43 +21909,8 @@ void menu_help_show_keyboard(MENU_ITEM_PARAMETERS)
 
             printf("%d,%d,",pulsado_x,pulsado_y);
 
-            //localizar puerto
+            menu_help_keyboard_generate_key_mouse(pulsado_x,pulsado_y);
 
-            int *keyboard_map_table=keyboard_help_return_map_table();
-
-            z80_byte *puerto;
-            z80_byte mascara;
-
-            menu_help_keyboard_locate_speccy_pressed_keys(keyboard_map_table,keyboard_map_ports_table_speccy,pulsado_x,pulsado_y,&puerto,&mascara);
-            if (puerto!=NULL) {
-
-                *puerto=255-mascara;
-
-
-                int salir=0;
-
-                //Bucle variante de espera_no_tecla
-                do {
-
-                    if ( !mouse_left) {
-                        salir=1;
-                    }
-
-                    else {
-                        //Indicar a la cpu emulada que si se leen las teclas aun con el menu abierto
-                        //esta variable se vuelve a cambiar en algun punto del core, por tanto la tengo que cambiar cada vez
-                        zxvision_keys_event_not_send_to_machine=0;
-                        menu_cpu_core_loop();
-                    }
-
-                } while (!salir);
-
-
-                //liberar tecla
-                *puerto=255;
-                zxvision_keys_event_not_send_to_machine=1;
-
-            }
 
         }
 
