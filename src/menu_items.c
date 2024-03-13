@@ -21760,52 +21760,52 @@ void menu_help_show_keyboard(MENU_ITEM_PARAMETERS)
 
         }
 
-            if (mouse_left && si_menu_mouse_en_ventana() ) {
-                int pulsado_x,pulsado_y;
-                zxvision_get_mouse_in_window(ventana,&pulsado_x,&pulsado_y);
+        if (mouse_left && si_menu_mouse_en_ventana() ) {
+            int pulsado_x,pulsado_y;
+            zxvision_get_mouse_in_window(ventana,&pulsado_x,&pulsado_y);
 
-                pulsado_x *=zoom_x;
-                pulsado_y *=zoom_y;
+            pulsado_x *=zoom_x;
+            pulsado_y *=zoom_y;
 
-                printf("%d,%d,",pulsado_x,pulsado_y);
+            printf("%d,%d,",pulsado_x,pulsado_y);
 
-                //localizar puerto
+            //localizar puerto
 
-                int *keyboard_map_table=keyboard_help_return_map_table();
+            int *keyboard_map_table=keyboard_help_return_map_table();
 
-                z80_byte *puerto;
-                z80_byte mascara;
+            z80_byte *puerto;
+            z80_byte mascara;
 
-                menu_help_keyboard_locate_speccy_pressed_keys(keyboard_map_table,keyboard_map_ports_table_speccy,pulsado_x,pulsado_y,&puerto,&mascara);
-                if (puerto!=NULL) {
+            menu_help_keyboard_locate_speccy_pressed_keys(keyboard_map_table,keyboard_map_ports_table_speccy,pulsado_x,pulsado_y,&puerto,&mascara);
+            if (puerto!=NULL) {
 
-                    *puerto=255-mascara;
-
-
-                    int salir=0;
-
-                    do {
+                *puerto=255-mascara;
 
 
-		                if ( !mouse_left) {
-                            salir=1;
-                        }
+                int salir=0;
 
-                        else {
-                            zxvision_keys_event_not_send_to_machine=0;
-                            menu_cpu_core_loop();
-                        }
-
-                    } while (!salir);
+                do {
 
 
-                    //liberar tecla
-                    *puerto=255;
-                    zxvision_keys_event_not_send_to_machine=1;
+                    if ( !mouse_left) {
+                        salir=1;
+                    }
+
+                    else {
+                        zxvision_keys_event_not_send_to_machine=0;
+                        menu_cpu_core_loop();
+                    }
+
+                } while (!salir);
+
+
+                //liberar tecla
+                *puerto=255;
+                zxvision_keys_event_not_send_to_machine=1;
 
 
 
-                }
+            }
 
 
             if (mouse_right && si_menu_mouse_en_ventana() ) {
