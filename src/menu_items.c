@@ -21491,6 +21491,7 @@ keyboard_help_double_key keyboard_map_additional_48p[]={
 keyboard_help_double_key keyboard_map_additional_p2[]={
     { 500,162, 537,198,     KEY_PORT_VALUE_SYMBOL,  NULL, 0},  //symbol derecha
     { 452,124,536,158,      KEY_PORT_VALUE_SHIFT,   NULL, 0}, //caps shift derecha
+    { 504,42,537,118,       &puerto_49150,1,   NULL, 0}, //trozo del enter parte de arriba
     { 2,82, 68, 120,        KEY_PORT_VALUE_SHIFT,   KEY_PORT_VALUE_SYMBOL }, //extend mode
     { 2,44, 58,80,          &puerto_65278,1,        &puerto_61438,1 },  //delete
     { 2,2,38,36,            &puerto_63486,4,        KEY_PORT_VALUE_SHIFT }, //true video
