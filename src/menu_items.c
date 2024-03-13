@@ -21441,6 +21441,9 @@ keyboard_help_double_key keyboard_map_additional_48p[]={
     { 500,162, 537,198, &puerto_32766,2, NULL, 0},  //symbol derecha
     { 2,82, 60, 120, &puerto_65278,1, &puerto_32766,2 }, //extend mode
     { 2,44, 58,80,  &puerto_65278,1, &puerto_61438,1 },  //delete
+    { 2,2,38,36, &puerto_63486,4, &puerto_65278,1 }, //true video
+    { 44,2,76,36, &puerto_63486,8, &puerto_65278,1 }, //inverse video
+
     { 0,0,0,0,NULL,0,NULL,0 }
 };
 
@@ -21945,6 +21948,9 @@ void menu_help_show_keyboard(MENU_ITEM_PARAMETERS)
             printf("%d,%d,",pulsado_x,pulsado_y);
 
             menu_help_keyboard_generate_key_mouse(pulsado_x,pulsado_y);
+
+            //temp
+            menu_espera_no_tecla();
 
 
         }
