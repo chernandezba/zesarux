@@ -847,12 +847,11 @@ Si versión Zeng online no coincide, da error?
 
 -llamada de menu no indexado (menu_dibuja_menu_no_indexado) que permita titulo en los 3 idiomas
 
--zeng online a veces deja tecla pulsada...
 
 
 -x11: poder implementar X11_KeyRepeat de SDL1.2 para eliminar lectura de teclas repetidas
 
--revisar si hay mas items que necesiten "..."
+-revisar si hay mas items de menu que necesiten "..." porque abren ventanas
 
 -documentar items de menus:
 * si tiene submenus, agregarle menu_add_item_menu_tiene_submenu
