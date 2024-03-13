@@ -21832,9 +21832,9 @@ void menu_help_keyboard_generate_key_mouse(int pulsado_x,int pulsado_y)
         pulsado_x,pulsado_y,&puerto1,&mascara1,&puerto2,&mascara2,teclas_dobles);
     if (puerto1!=NULL) {
 
-        *puerto1=255-mascara1;
+        *puerto1 &=(255-mascara1);
 
-        if (puerto2!=NULL) *puerto2=255-mascara2;
+        if (puerto2!=NULL) *puerto2 &=(255-mascara2);
 
 
         int salir=0;
@@ -21857,9 +21857,9 @@ void menu_help_keyboard_generate_key_mouse(int pulsado_x,int pulsado_y)
 
 
         //liberar tecla
-        *puerto1=255;
+        *puerto1 |=mascara1;
 
-        if (puerto2!=NULL) *puerto2=255;
+        if (puerto2!=NULL) *puerto2 |=mascara2;
 
         zxvision_keys_event_not_send_to_machine=1;
 
