@@ -21382,6 +21382,17 @@ a s d f g
 space sym m n b
 */
 
+int keyboard_map_table_coords_zx8081[40*4]={
+30,162, 68,186, 78,160, 116,186, 126,162, 162,186, 174,162, 212,186, 222,162, 260,186,
+52,114, 92,142, 98,114, 140,142, 148,112, 188,140, 198,116, 236,142, 244,116, 284,142,
+42,68, 80,96, 90,68, 128,96, 138,68, 178,96, 186,70, 224,96, 232,68, 272,96,
+16,22, 56,48, 66,22, 104,50, 114,22, 152,48, 160,24, 202,50, 210,24, 248,50,
+448,22, 486,48, 400,22, 438,48, 354,24, 390,50, 306,22, 344,48, 256,24, 296,50,
+472,70, 512,96, 426,70, 464,94, 378,68, 414,94, 328,68, 368,94, 280,68, 318,92,
+486,114, 524,140, 436,116, 474,140, 388,114, 428,142, 340,114, 380,142, 292,114, 334,142,
+460,160, 500,188, 412,160, 452,188, 364,162, 402,186, 316,160, 354,186, 270,162, 306,186,
+};
+
 //para keyboard_48.bmp
 //4 valores de cada tecla: x,y inicial, x,y final
 int keyboard_map_table_coords_48[40*4]={
@@ -21395,6 +21406,7 @@ int keyboard_map_table_coords_48[40*4]={
 468,166,530,192,420,166,454,190,370,168,404,192,322,168,354,190,270,166,304,192,
 };
 
+//modelos +
 int keyboard_map_table_coords_48p[40*4]={
 3,122,90,160,130,124,170,162,170,124,210,160,210,124,250,160,252,124,290,160,
 108,82,150,120,150,84,190,120,192,84,230,120,230,84,270,120,272,84,310,120,
@@ -21508,6 +21520,10 @@ int *keyboard_help_return_map_table(void)
 
     else if (MACHINE_IS_SPECTRUM_P2 || MACHINE_IS_SPECTRUM_P2A_P3) {
         return keyboard_map_table_coords_p2;
+    }
+
+    else if (MACHINE_IS_ZX8081) {
+        return keyboard_map_table_coords_zx8081;
     }
 
     else return keyboard_map_table_coords_48;
@@ -22004,7 +22020,7 @@ void menu_help_show_keyboard(MENU_ITEM_PARAMETERS)
 
             menu_help_keyboard_generate_key_mouse(pulsado_x,pulsado_y);
 
-            //temp
+            //temp para poder debugar coordenadas al pulsar. no llamar a menu_espera_no_tecla en version final
             //menu_espera_no_tecla();
 
 
