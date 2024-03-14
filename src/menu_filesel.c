@@ -3377,6 +3377,20 @@ void zxvision_menu_print_dir(int inicial,zxvision_window *ventana)
 
     }
 
+    //mostrar lo que falte por rellenar de ventana con texto de fondo
+    int rellenar_fin_selector=(ventana->visible_height)-10;
+    while (rellenar_fin_selector>0) {
+        //zxvision_print_string_fillspc(ventana,1,i+ZXVISION_FILESEL_INITIAL_MARGIN,
+        //    ESTILO_GUI_TINTA_FILESELECTOR_FILES,ESTILO_GUI_PAPEL_FILESELECTOR_FILES,0,"X");
+
+        //zxvision_fill_width_spaces_paper(ventana,i+ZXVISION_FILESEL_INITIAL_MARGIN,ESTILO_GUI_PAPEL_FILESELECTOR_FILES);
+
+        zxvision_fill_width_spaces_paper_width(ventana,i+ZXVISION_FILESEL_INITIAL_MARGIN,
+            ESTILO_GUI_PAPEL_FILESELECTOR_FILES,1,ventana->total_width-1);
+
+        i++;
+        rellenar_fin_selector--;
+    }
 
 
 	//int texto_no_cabe=0;
@@ -5425,7 +5439,9 @@ int menu_filesel_if_save(char *titulo,char *filtros[],char *archivo,int si_save)
 
 		//zxvision_new_window_check_range(&last_filesel_ventana_x,&last_filesel_ventana_y,&last_filesel_ventana_visible_ancho,&last_filesel_ventana_visible_alto);
 		//zxvision_new_window_no_check_range(ventana,last_filesel_ventana_x,last_filesel_ventana_y,last_filesel_ventana_visible_ancho,last_filesel_ventana_visible_alto,last_filesel_ventana_visible_ancho-1,alto_total,titulo);
-		zxvision_new_window_nocheck_staticsize(ventana,last_filesel_ventana_x,last_filesel_ventana_y,last_filesel_ventana_visible_ancho,last_filesel_ventana_visible_alto,last_filesel_ventana_visible_ancho-1,alto_total,titulo);
+
+        //le damos mas de alto para rellenar zona no usada de debajo
+		zxvision_new_window_nocheck_staticsize(ventana,last_filesel_ventana_x,last_filesel_ventana_y,last_filesel_ventana_visible_ancho,last_filesel_ventana_visible_alto,last_filesel_ventana_visible_ancho-1,alto_total+last_filesel_ventana_visible_alto,titulo);
 
 	    ventana->upper_margin=4;
 	    ventana->lower_margin=4;

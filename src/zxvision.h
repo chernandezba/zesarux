@@ -589,6 +589,7 @@ extern int zxvision_key_not_sent_emulated_mach(void);
 //extern void menu_linea_zxvision(zxvision_window *ventana,int x,int y1,int y2,int color);
 extern void zxvision_fill_width_spaces(zxvision_window *w,int y);
 extern void zxvision_fill_width_spaces_paper(zxvision_window *w,int y,int papel);
+extern void zxvision_fill_width_spaces_paper_width(zxvision_window *w,int y,int papel,int start_x,int after_end_x);
 
 struct s_first_aid_list
 {

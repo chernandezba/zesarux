@@ -14180,7 +14180,7 @@ void zxvision_print_char_defaults(zxvision_window *w,int x,int y,char c)
     zxvision_print_string_defaults(w,x,y,buffer);
 }
 
-void zxvision_fill_width_spaces_paper(zxvision_window *w,int y,int papel)
+void zxvision_fill_width_spaces_paper_width(zxvision_window *w,int y,int papel,int start_x,int after_end_x)
 {
 	overlay_screen caracter_aux;
 	caracter_aux.caracter=' ';
@@ -14189,9 +14189,14 @@ void zxvision_fill_width_spaces_paper(zxvision_window *w,int y,int papel)
 	caracter_aux.parpadeo=0;
 
 	int i;
-	for (i=0;i<w->total_width;i++) {
+	for (i=start_x;i<after_end_x;i++) {
 		zxvision_print_char(w,i,y,&caracter_aux);
 	}
+}
+
+void zxvision_fill_width_spaces_paper(zxvision_window *w,int y,int papel)
+{
+    zxvision_fill_width_spaces_paper_width(w,y,papel,0,w->total_width);
 }
 
 void zxvision_fill_width_spaces(zxvision_window *w,int y)
