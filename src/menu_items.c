@@ -21538,6 +21538,12 @@ int keyboard_map_table_coords_ql[64*4]={
     46,102,118,130,44,137,100,165,471,134,525,165,155,101,184,129,221,101,251,129,421,101,452,129,288,101,318,130,355,102,385,129,
 };
 
+//Teclas adicionales QL
+keyboard_help_double_key keyboard_map_additional_ql[]={
+    { 455,102,524,129,     &ql_keyboard_table[7],1,  NULL, 0},  //shift derecha
+    { 0,0,0,0,NULL,0,NULL,0 }
+};
+
 //Retorna tabla de coordenadas de teclas
 int *keyboard_help_return_map_table(void)
 {
@@ -21574,6 +21580,10 @@ keyboard_help_double_key *keyboard_help_return_double_keys(void)
 
     else if (MACHINE_IS_SPECTRUM_P2 || MACHINE_IS_SPECTRUM_P2A_P3) {
         return keyboard_map_additional_p2;
+    }
+
+    else if (MACHINE_IS_QL) {
+        return keyboard_map_additional_ql;
     }
 
     return teclas_dobles;
