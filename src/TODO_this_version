@@ -868,3 +868,6 @@ este parametro. Por ejemplo "reset cpu" (y un dialogo de confirmacion yes/no no 
 -help keyboard completar otras maquinas
 
 -dockerfiles rutas de carpetas al copiar codigo fuente y compilar
+
+-error indexado:
+Main Menu-> Settings-> Hardware Settings-> Next machine id-> Hardware Settings-> Next machine id-> Hardware Settings-> Next machine id-> Hardware Settings

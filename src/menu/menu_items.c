@@ -15531,7 +15531,8 @@ Pueden salir antes id o antes title. En bucle leer los dos y cuando estén los d
 
 			if (total_items) {
 
-				retorno_menu=menu_dibuja_menu_no_title_lang(&zxinfo_wos_opcion_seleccionada,&item_seleccionado,array_menu_common,windowtitle );
+				retorno_menu=menu_dibuja_menu_no_indexado(&zxinfo_wos_opcion_seleccionada,&item_seleccionado,array_menu_common,
+                    windowtitle );
 
 
 				if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
