@@ -21681,7 +21681,7 @@ void menu_help_keyboard_show_speccy_pressed_keys(zxvision_window *ventana,int ke
             z80_byte valor1=(*puerto1) & mascara1;
 
             z80_byte mascara2=teclas_dobles[i].mascara2;
-            z80_byte valor2=(*puerto2) & mascara2;
+
 
             int tecla_encontrada=0;
 
@@ -21692,6 +21692,7 @@ void menu_help_keyboard_show_speccy_pressed_keys(zxvision_window *ventana,int ke
             }
 
             else {
+                z80_byte valor2=(*puerto2) & mascara2;
                 if (valor1==0 && valor2==0) tecla_encontrada=1;
             }
 
