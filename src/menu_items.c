@@ -21512,6 +21512,32 @@ keyboard_help_double_key keyboard_map_additional_p2[]={
     { 0,0,0,0,NULL,0,NULL,0 }
 };
 
+//teclas QL
+// ================================== matrix ============================
+//        0      1      2      3      4      5      6      7
+//  +-------------------------------------------------------
+// 7|    F4     F1      5     F2     F3     F5      4      7     ql_keyboard_table[0]
+// 6|   Ret   Left     Up    Esc  Right      \  Space   Down     ql_keyboard_table[1]
+// 5|     ]      z      .      c      b  Pound      m      '     ql_keyboard_table[2]
+// 4|     [   Caps      k      s      f      =      g      ;     ql_keyboard_table[3]
+// 3|     l      3      h      1      a      p      d      j     ql_keyboard_table[4]
+// 2|     9      w      i    Tab      r      -      y      o     ql_keyboard_table[5]
+// 1|     8      2      6      q      e      0      t      u     ql_keyboard_table[6]
+// 0| Shift   Ctrl    Alt      x      v      /      n      ,     ql_keyboard_table[7]
+
+
+
+int keyboard_map_table_coords_ql[64*4]={
+    2,102,30,130,2,2,31,30,216,2,244,30,2,35,31,64,2,69,31,97,2,136,29,166,182,2,211,32,281,2,310,32, //primera fila: F4,F1, 5, F2...
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+};
+
 //Retorna tabla de coordenadas de teclas
 int *keyboard_help_return_map_table(void)
 {
@@ -21526,6 +21552,10 @@ int *keyboard_help_return_map_table(void)
 
     else if (MACHINE_IS_ZX8081) {
         return keyboard_map_table_coords_zx8081;
+    }
+
+    else if (MACHINE_IS_QL) {
+        return keyboard_map_table_coords_ql;
     }
 
     else return keyboard_map_table_coords_48;
@@ -21554,6 +21584,11 @@ keyboard_help_double_key *keyboard_help_return_double_keys(void)
 z80_byte *keyboard_map_ports_table_speccy[8]={
     &puerto_65278,&puerto_65022,&puerto_64510,&puerto_63486,
     &puerto_61438,&puerto_57342,&puerto_49150,&puerto_32766
+};
+
+z80_byte *keyboard_map_ports_table_ql[8]={
+    &ql_keyboard_table[0],&ql_keyboard_table[1],&ql_keyboard_table[2],&ql_keyboard_table[3],
+    &ql_keyboard_table[4],&ql_keyboard_table[5],&ql_keyboard_table[6],&ql_keyboard_table[7]
 };
 
 
@@ -21588,24 +21623,26 @@ void menu_help_draw_rectangle_key(zxvision_window *ventana,int x1,int y1,int anc
 }
 
 //Para un spectrum de 40 teclas
-void menu_help_keyboard_show_speccy_pressed_keys(zxvision_window *ventana,int keyboard_map_coords[],
+void menu_help_keyboard_show_speccy_pressed_keys(zxvision_window *ventana,int keyboard_map_coords[],int total_columnas,
     z80_byte *key_map_ports[],keyboard_help_double_key *teclas_dobles)
 {
     int fila_tecla;
     int columna_tecla;
 
+    //int total_columnas=5;
+
 
     for (fila_tecla=0;fila_tecla<8;fila_tecla++) {
         z80_byte *puerto=key_map_ports[fila_tecla];
         int mascara=1;
-        for (columna_tecla=0;columna_tecla<5;columna_tecla++) {
+        for (columna_tecla=0;columna_tecla<total_columnas;columna_tecla++) {
             z80_byte valor=*puerto;
             valor &=mascara;
             if (!valor) {
                 //printf("forzar dibujar\n");
                 menu_help_keyboard_overlay_force_draw=1;
 
-                int offset=fila_tecla*5+columna_tecla; //Indice a tecla
+                int offset=fila_tecla*total_columnas+columna_tecla; //Indice a tecla
 
                 //indice a coordenada
                 offset *=4;
@@ -21666,7 +21703,7 @@ void menu_help_keyboard_show_speccy_pressed_keys(zxvision_window *ventana,int ke
 }
 
 
-void menu_help_keyboard_locate_speccy_pressed_keys(int keyboard_map_coords[],z80_byte *key_map_ports[],
+void menu_help_keyboard_locate_speccy_pressed_keys(int keyboard_map_coords[],z80_byte *key_map_ports[],int total_columnas,
     int x,int y,z80_byte **p_puerto1,z80_byte *p_mascara1,z80_byte **p_puerto2,z80_byte *p_mascara2,
     keyboard_help_double_key *teclas_dobles)
 {
@@ -21682,9 +21719,9 @@ void menu_help_keyboard_locate_speccy_pressed_keys(int keyboard_map_coords[],z80
     for (fila_tecla=0;fila_tecla<8;fila_tecla++) {
         z80_byte *puerto=key_map_ports[fila_tecla];
         int mascara=1;
-        for (columna_tecla=0;columna_tecla<5;columna_tecla++) {
+        for (columna_tecla=0;columna_tecla<total_columnas;columna_tecla++) {
 
-            int offset=fila_tecla*5+columna_tecla; //Indice a tecla
+            int offset=fila_tecla*total_columnas+columna_tecla; //Indice a tecla
 
             //indice a coordenada
             offset *=4;
@@ -21733,6 +21770,16 @@ int help_keyboard_valor_contador_segundo_anterior;
 zxvision_window *menu_help_keyboard_overlay_window;
 
 
+z80_byte **get_keyboard_map_ports_table(int *total_columnas)
+{
+    *total_columnas=5;
+
+    if (MACHINE_IS_QL) {
+        *total_columnas=8;
+        return keyboard_map_ports_table_ql;
+    }
+    else return keyboard_map_ports_table_speccy;
+}
 
 void menu_help_keyboard_overlay(void)
 {
@@ -21798,8 +21845,10 @@ void menu_help_keyboard_overlay(void)
 
     keyboard_help_double_key *teclas_dobles=keyboard_help_return_double_keys();
 
+    int total_columnas;
+    z80_byte **ports_table=get_keyboard_map_ports_table(&total_columnas);
 
-    menu_help_keyboard_show_speccy_pressed_keys(ventana,keyboard_map_table,keyboard_map_ports_table_speccy,teclas_dobles);
+    menu_help_keyboard_show_speccy_pressed_keys(ventana,keyboard_map_table,total_columnas,ports_table,teclas_dobles);
 
 
     //printf("overlay puerto: %d\n",puerto_65022);
@@ -21846,7 +21895,10 @@ void menu_help_keyboard_generate_key_mouse(int pulsado_x,int pulsado_y)
 
     keyboard_help_double_key *teclas_dobles=keyboard_help_return_double_keys();
 
-    menu_help_keyboard_locate_speccy_pressed_keys(keyboard_map_table,keyboard_map_ports_table_speccy,
+    int total_columnas;
+    z80_byte **ports_table=get_keyboard_map_ports_table(&total_columnas);
+
+    menu_help_keyboard_locate_speccy_pressed_keys(keyboard_map_table,ports_table,total_columnas,
         pulsado_x,pulsado_y,&puerto1,&mascara1,&puerto2,&mascara2,teclas_dobles);
     if (puerto1!=NULL) {
 
@@ -21979,6 +22031,9 @@ void menu_help_show_keyboard(MENU_ITEM_PARAMETERS)
     //clic derecho: salto linea
     //int keyboard_debug_mouse=1;
 
+    int debug_ultimo_click_x=0;
+    int debug_ultimo_click_y=0;
+
 	do {
         tecla=zxvision_common_getkey_refresh_noesperanotec();
         zxvision_handle_cursors_pgupdn(ventana,tecla);
@@ -22018,7 +22073,11 @@ void menu_help_show_keyboard(MENU_ITEM_PARAMETERS)
             pulsado_x *=zoom_x;
             pulsado_y *=zoom_y;
 
-            printf("%d,%d, ",pulsado_x,pulsado_y);
+            if (debug_ultimo_click_x!=pulsado_x && debug_ultimo_click_y!=pulsado_y) {
+                printf("%d,%d,",pulsado_x,pulsado_y);
+                debug_ultimo_click_x=pulsado_x;
+                debug_ultimo_click_y=pulsado_y;
+            }
 
             menu_help_keyboard_generate_key_mouse(pulsado_x,pulsado_y);
 

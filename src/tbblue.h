@@ -333,6 +333,8 @@ extern void screen_tbblue_refresca_rainbow(void);
 
 extern z80_byte tbblue_machine_id;
 
+extern z80_byte tbblue_board_id;
+
 struct s_tbblue_machine_id_definition {
     z80_byte id;
     char nombre[32];

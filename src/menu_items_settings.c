@@ -5438,6 +5438,29 @@ void menu_hardware_dinamic_sd1(MENU_ITEM_PARAMETERS)
     dinamic_sd1.v ^=1;
 }
 
+void menu_tbblue_board_id(MENU_ITEM_PARAMETERS)
+{
+    int opcion=menu_simple_three_choices("Board ID","Select one",
+        "ZXN Issue 2, XC6SLX16-2FTG256","ZXN Issue 3, XC6SLX16-2FTG256","ZXN Issue 4, XC7A15T-1CSG324");
+
+    switch (opcion) {
+
+
+        case 1:
+            tbblue_board_id=0;
+        break;
+
+        case 2:
+            tbblue_board_id=1;
+        break;
+
+        case 3:
+            tbblue_board_id=2;
+        break;
+
+    }
+}
+
 
 void menu_tbblue_machine_id(MENU_ITEM_PARAMETERS)
 {
@@ -5633,6 +5656,9 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
 
 			menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_tbblue_machine_id,NULL,"[%02X] Next machine id",tbblue_machine_id);
+            menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
+
+			menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_tbblue_board_id,NULL,"[%02X] Next board id",tbblue_board_id);
             menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
 
 			//menu_hardware_tbblue_core_version
