@@ -1297,70 +1297,70 @@ zesarux: $OPTIONWINDOWSRESOURCE charset.o $OPTIONOBJSTDOUT $OPTIONOBJSIMPLETEXT 
 charset.o: charset.c charset.h zxvision.h
 	\$(CC) \$(CFLAGS) -c charset.c
 
-scrnull.o: video/scrnull.c video/scrnull.h debug.h screen.h cpu.h settings.h
+scrnull.o: video/scrnull.c video/scrnull.h debug.h video/screen.h cpu.h settings.h
 	\$(CC) \$(CFLAGS) -c video/scrnull.c
 
 codprddfd.o: codprddfd.c cpu.h operaciones.h debug.h contend.h utils.h compileoptions.h settings.h
 	\$(CC) \$(CFLAGS) -c codprddfd.c
 
-codpred.o: codpred.c cpu.h operaciones.h debug.h contend.h machines/zxuno.h machines/tbblue.h screen.h settings.h samram.h
+codpred.o: codpred.c cpu.h operaciones.h debug.h contend.h machines/zxuno.h machines/tbblue.h video/screen.h settings.h samram.h
 	\$(CC) \$(CFLAGS) -c codpred.c
 
 codsinpr.o: codsinpr.c cpu.h operaciones.h debug.h contend.h utils.h compileoptions.h machines/z88.h snap/snap_rzx.h esxdos_handler.h settings.h
 	\$(CC) \$(CFLAGS) -c codsinpr.c
 
-operaciones.o: operaciones.c cpu.h operaciones.h debug.h audio/audio.h tape.h ay38912.h mem128.h machines/chloe.h machines/prism.h machines/tbblue.h machines/timex.h machines/zx8081.h zxvision.h screen.h compileoptions.h contend.h joystick.h ula.h utils.h printers.h disassemble.h machines/z88.h ulaplus.h machines/zxuno.h chardetect.h mmc.h ide.h divmmc.h divide.h diviface.h zxpand.h spectra.h spritechip.h machines/jupiterace.h machines/cpc.h machines/sam.h if1.h timer.h pd765.h superupgrade.h snap/snap_rzx.h copy_interfaces/multiface.h machines/chrome.h machines/zxevo.h machines/tsconf.h machines/baseconf.h ds1307.h machines/mk14.h settings.h saa_simul.h datagear.h hilow_datadrive.h machines/msx.h machines/coleco.h machines/sg1000.h machines/sms.h machines/svi.h vdp_9918a.h gs.h samram.h vdp_9918a_sms.h hilow_barbanegra.h copy_interfaces/transtape.h copy_interfaces/phoenix.h copy_interfaces/defcon.h copy_interfaces/ramjet.h plus3dos_handler.h machines/pcw.h dsk.h utils_text_adventure.h
+operaciones.o: operaciones.c cpu.h operaciones.h debug.h audio/audio.h tape.h ay38912.h mem128.h machines/chloe.h machines/prism.h machines/tbblue.h machines/timex.h machines/zx8081.h zxvision.h video/screen.h compileoptions.h contend.h joystick.h ula.h utils.h printers.h disassemble.h machines/z88.h ulaplus.h machines/zxuno.h chardetect.h mmc.h ide.h divmmc.h divide.h diviface.h zxpand.h spectra.h spritechip.h machines/jupiterace.h machines/cpc.h machines/sam.h if1.h timer.h pd765.h superupgrade.h snap/snap_rzx.h copy_interfaces/multiface.h machines/chrome.h machines/zxevo.h machines/tsconf.h machines/baseconf.h ds1307.h machines/mk14.h settings.h saa_simul.h datagear.h hilow_datadrive.h machines/msx.h machines/coleco.h machines/sg1000.h machines/sms.h machines/svi.h vdp_9918a.h gs.h samram.h vdp_9918a_sms.h hilow_barbanegra.h copy_interfaces/transtape.h copy_interfaces/phoenix.h copy_interfaces/defcon.h copy_interfaces/ramjet.h plus3dos_handler.h machines/pcw.h dsk.h utils_text_adventure.h
 	\$(CC) \$(CFLAGS) -c operaciones.c
 
-cpu.o: cpu.c cpu.h start.h video/scrnull.h scrstdout.h scrsimpletext.h operaciones.h debug.h compileoptions.h tape.h tape_tap.h tape_tzx.h audio/audio.h screen.h ay38912.h machines/chloe.h machines/prism.h machines/tbblue.h mem128.h machines/timex.h scrcurses.h scraa.h scrxwindows.h scrsdl.h scrfbdev.h audio/audiodsp.h audio/audioonebitspeaker.h audio/audiosdl.h audio/audionull.h audio/audioalsa.h audio/audiopulse.h machines/zx8081.h snap/snap.h zxvision.h cores/core_spectrum.h cores/core_zx8081.h cores/core_z88.h tape_smp.h contend.h utils.h utils_text_adventure.h ula.h printers.h joystick.h realjoystick.h machines/z88.h ulaplus.h autoselectoptions.h machines/zxuno.h chardetect.h textspeech.h mmc.h ide.h divmmc.h divide.h diviface.h zxpand.h spectra.h spritechip.h machines/jupiterace.h machines/cpc.h machines/sam.h if1.h atomlite.h dandanator.h kartusho.h ifrom.h spritefinder.h superupgrade.h machines/ql.h remote.h snap/snap_rzx.h copy_interfaces/multiface.h machines/chrome.h machines/zxevo.h machines/tsconf.h machines/baseconf.h scmp.h machines/mk14.h esxdos_handler.h betadisk.h pd765.h settings.h datagear.h network.h stats.h hilow_datadrive.h machines/msx.h machines/svi.h machines/coleco.h sn76489an.h machines/sg1000.h machines/sms.h machines/ql_qdos_handler.h machines/ql_i8049.h snap/snap_ram.h menu/menu_items.h charset.h menu/menu_filesel.h menu/menu_debug_cpu.h hilow_barbanegra.h copy_interfaces/transtape.h copy_interfaces/mhpokeador.h copy_interfaces/specmate.h copy_interfaces/phoenix.h copy_interfaces/defcon.h copy_interfaces/ramjet.h copy_interfaces/interface007.h copy_interfaces/dinamid3.h dsk.h plus3dos_handler.h machines/pcw.h
+cpu.o: cpu.c cpu.h start.h video/scrnull.h video/scrstdout.h video/scrsimpletext.h operaciones.h debug.h compileoptions.h tape.h tape_tap.h tape_tzx.h audio/audio.h video/screen.h ay38912.h machines/chloe.h machines/prism.h machines/tbblue.h mem128.h machines/timex.h video/scrcurses.h video/scraa.h video/scrxwindows.h video/scrsdl.h video/scrfbdev.h audio/audiodsp.h audio/audioonebitspeaker.h audio/audiosdl.h audio/audionull.h audio/audioalsa.h audio/audiopulse.h machines/zx8081.h snap/snap.h zxvision.h cores/core_spectrum.h cores/core_zx8081.h cores/core_z88.h tape_smp.h contend.h utils.h utils_text_adventure.h ula.h printers.h joystick.h realjoystick.h machines/z88.h ulaplus.h autoselectoptions.h machines/zxuno.h chardetect.h textspeech.h mmc.h ide.h divmmc.h divide.h diviface.h zxpand.h spectra.h spritechip.h machines/jupiterace.h machines/cpc.h machines/sam.h if1.h atomlite.h dandanator.h kartusho.h ifrom.h spritefinder.h superupgrade.h machines/ql.h remote.h snap/snap_rzx.h copy_interfaces/multiface.h machines/chrome.h machines/zxevo.h machines/tsconf.h machines/baseconf.h scmp.h machines/mk14.h esxdos_handler.h betadisk.h pd765.h settings.h datagear.h network.h stats.h hilow_datadrive.h machines/msx.h machines/svi.h machines/coleco.h sn76489an.h machines/sg1000.h machines/sms.h machines/ql_qdos_handler.h machines/ql_i8049.h snap/snap_ram.h menu/menu_items.h charset.h menu/menu_filesel.h menu/menu_debug_cpu.h hilow_barbanegra.h copy_interfaces/transtape.h copy_interfaces/mhpokeador.h copy_interfaces/specmate.h copy_interfaces/phoenix.h copy_interfaces/defcon.h copy_interfaces/ramjet.h copy_interfaces/interface007.h copy_interfaces/dinamid3.h dsk.h plus3dos_handler.h machines/pcw.h
 	\$(CC) \$(CFLAGS) -c cpu.c
 
-start.o: start.c start.h cpu.h video/scrnull.h scrstdout.h scrsimpletext.h operaciones.h debug.h compileoptions.h tape.h tape_tap.h tape_tzx.h audio/audio.h screen.h ay38912.h machines/chloe.h machines/prism.h machines/tbblue.h mem128.h machines/timex.h scrcurses.h scraa.h scrxwindows.h scrsdl.h scrfbdev.h audio/audiodsp.h audio/audioonebitspeaker.h audio/audiosdl.h audio/audionull.h audio/audioalsa.h audio/audiopulse.h machines/zx8081.h snap/snap.h zxvision.h cores/core_spectrum.h cores/core_zx8081.h cores/core_z88.h tape_smp.h contend.h utils.h utils_text_adventure.h ula.h printers.h joystick.h realjoystick.h machines/z88.h ulaplus.h autoselectoptions.h machines/zxuno.h chardetect.h textspeech.h mmc.h ide.h divmmc.h divide.h diviface.h zxpand.h spectra.h spritechip.h machines/jupiterace.h machines/cpc.h machines/sam.h if1.h atomlite.h dandanator.h kartusho.h ifrom.h spritefinder.h superupgrade.h machines/ql.h remote.h snap/snap_rzx.h copy_interfaces/multiface.h machines/chrome.h machines/zxevo.h machines/tsconf.h machines/baseconf.h scmp.h machines/mk14.h esxdos_handler.h betadisk.h codetests.h pd765.h settings.h datagear.h network.h stats.h hilow_datadrive.h machines/msx.h machines/svi.h machines/coleco.h sn76489an.h machines/sg1000.h machines/sms.h machines/ql_qdos_handler.h machines/ql_i8049.h snap/snap_ram.h menu/menu_items.h charset.h menu/menu_filesel.h menu/menu_debug_cpu.h hilow_barbanegra.h copy_interfaces/transtape.h copy_interfaces/mhpokeador.h copy_interfaces/specmate.h copy_interfaces/phoenix.h copy_interfaces/defcon.h copy_interfaces/ramjet.h copy_interfaces/interface007.h copy_interfaces/dinamid3.h dsk.h plus3dos_handler.h machines/pcw.h zeng_online.h zeng_online_client.h
+start.o: start.c start.h cpu.h video/scrnull.h video/scrstdout.h video/scrsimpletext.h operaciones.h debug.h compileoptions.h tape.h tape_tap.h tape_tzx.h audio/audio.h video/screen.h ay38912.h machines/chloe.h machines/prism.h machines/tbblue.h mem128.h machines/timex.h video/scrcurses.h video/scraa.h video/scrxwindows.h video/scrsdl.h video/scrfbdev.h audio/audiodsp.h audio/audioonebitspeaker.h audio/audiosdl.h audio/audionull.h audio/audioalsa.h audio/audiopulse.h machines/zx8081.h snap/snap.h zxvision.h cores/core_spectrum.h cores/core_zx8081.h cores/core_z88.h tape_smp.h contend.h utils.h utils_text_adventure.h ula.h printers.h joystick.h realjoystick.h machines/z88.h ulaplus.h autoselectoptions.h machines/zxuno.h chardetect.h textspeech.h mmc.h ide.h divmmc.h divide.h diviface.h zxpand.h spectra.h spritechip.h machines/jupiterace.h machines/cpc.h machines/sam.h if1.h atomlite.h dandanator.h kartusho.h ifrom.h spritefinder.h superupgrade.h machines/ql.h remote.h snap/snap_rzx.h copy_interfaces/multiface.h machines/chrome.h machines/zxevo.h machines/tsconf.h machines/baseconf.h scmp.h machines/mk14.h esxdos_handler.h betadisk.h codetests.h pd765.h settings.h datagear.h network.h stats.h hilow_datadrive.h machines/msx.h machines/svi.h machines/coleco.h sn76489an.h machines/sg1000.h machines/sms.h machines/ql_qdos_handler.h machines/ql_i8049.h snap/snap_ram.h menu/menu_items.h charset.h menu/menu_filesel.h menu/menu_debug_cpu.h hilow_barbanegra.h copy_interfaces/transtape.h copy_interfaces/mhpokeador.h copy_interfaces/specmate.h copy_interfaces/phoenix.h copy_interfaces/defcon.h copy_interfaces/ramjet.h copy_interfaces/interface007.h copy_interfaces/dinamid3.h dsk.h plus3dos_handler.h machines/pcw.h zeng_online.h zeng_online_client.h
 	\$(CC) \$(CFLAGS) -c start.c
 
-core_reduced_spectrum.o: cores/core_reduced_spectrum.c cores/core_reduced_spectrum.h cores/core_spectrum.h cpu.h debug.h tape.h audio/audio.h screen.h ay38912.h operaciones.h snap/snap.h timer.h zxvision.h chardetect.h compileoptions.h contend.h ula.h utils.h realjoystick.h divmmc.h divide.h diviface.h machines/timex.h machines/zxuno.h machines/prism.h snap/snap_rzx.h superupgrade.h pd765.h machines/zxevo.h machines/tsconf.h machines/baseconf.h settings.h snap/snap_zsf.h zeng.h zeng_online.h snap/snap_ram.h pd765.h
+core_reduced_spectrum.o: cores/core_reduced_spectrum.c cores/core_reduced_spectrum.h cores/core_spectrum.h cpu.h debug.h tape.h audio/audio.h video/screen.h ay38912.h operaciones.h snap/snap.h timer.h zxvision.h chardetect.h compileoptions.h contend.h ula.h utils.h realjoystick.h divmmc.h divide.h diviface.h machines/timex.h machines/zxuno.h machines/prism.h snap/snap_rzx.h superupgrade.h pd765.h machines/zxevo.h machines/tsconf.h machines/baseconf.h settings.h snap/snap_zsf.h zeng.h zeng_online.h snap/snap_ram.h pd765.h
 	\$(CC) \$(CFLAGS) -c cores/core_reduced_spectrum.c
 
-core_spectrum.o: cores/core_spectrum.c cores/core_spectrum.h cpu.h debug.h tape.h audio/audio.h screen.h ay38912.h operaciones.h snap/snap.h timer.h zxvision.h chardetect.h compileoptions.h contend.h ula.h utils.h realjoystick.h divmmc.h divide.h diviface.h machines/timex.h machines/zxuno.h machines/prism.h snap/snap_rzx.h superupgrade.h pd765.h machines/zxevo.h machines/tsconf.h machines/baseconf.h machines/tbblue.h settings.h datagear.h snap/snap_zsf.h zeng.h zeng_online.h ds1307.h gs.h snap/snap_ram.h codsinpr.h menu/menu_items.h plus3dos_handler.h pd765.h zeng_online_client.h
+core_spectrum.o: cores/core_spectrum.c cores/core_spectrum.h cpu.h debug.h tape.h audio/audio.h video/screen.h ay38912.h operaciones.h snap/snap.h timer.h zxvision.h chardetect.h compileoptions.h contend.h ula.h utils.h realjoystick.h divmmc.h divide.h diviface.h machines/timex.h machines/zxuno.h machines/prism.h snap/snap_rzx.h superupgrade.h pd765.h machines/zxevo.h machines/tsconf.h machines/baseconf.h machines/tbblue.h settings.h datagear.h snap/snap_zsf.h zeng.h zeng_online.h ds1307.h gs.h snap/snap_ram.h codsinpr.h menu/menu_items.h plus3dos_handler.h pd765.h zeng_online_client.h
 	\$(CC) \$(CFLAGS) -c cores/core_spectrum.c
 
-core_zx8081.o: cores/core_zx8081.c cores/core_zx8081.h cpu.h debug.h tape.h audio/audio.h screen.h ay38912.h operaciones.h snap/snap.h machines/zx8081.h timer.h zxvision.h chardetect.h compileoptions.h contend.h snap/snap_zx8081.h utils.h realjoystick.h ula.h settings.h snap/snap_zsf.h zeng.h zeng_online.h snap/snap_ram.h zeng_online_client.h
+core_zx8081.o: cores/core_zx8081.c cores/core_zx8081.h cpu.h debug.h tape.h audio/audio.h video/screen.h ay38912.h operaciones.h snap/snap.h machines/zx8081.h timer.h zxvision.h chardetect.h compileoptions.h contend.h snap/snap_zx8081.h utils.h realjoystick.h ula.h settings.h snap/snap_zsf.h zeng.h zeng_online.h snap/snap_ram.h zeng_online_client.h
 	\$(CC) \$(CFLAGS) -c cores/core_zx8081.c
 
-core_ace.o: cores/core_ace.c cores/core_ace.h cpu.h debug.h tape.h audio/audio.h screen.h ay38912.h operaciones.h snap/snap.h machines/jupiterace.h timer.h zxvision.h chardetect.h compileoptions.h contend.h snap/snap_zx8081.h utils.h realjoystick.h ula.h settings.h zeng.h zeng_online.h snap/snap_zsf.h zeng_online_client.h
+core_ace.o: cores/core_ace.c cores/core_ace.h cpu.h debug.h tape.h audio/audio.h video/screen.h ay38912.h operaciones.h snap/snap.h machines/jupiterace.h timer.h zxvision.h chardetect.h compileoptions.h contend.h snap/snap_zx8081.h utils.h realjoystick.h ula.h settings.h zeng.h zeng_online.h snap/snap_zsf.h zeng_online_client.h
 	\$(CC) \$(CFLAGS) -c cores/core_ace.c
 
-core_ql.o: cores/core_ql.c cores/core_ql.h cpu.h debug.h tape.h audio/audio.h screen.h ay38912.h operaciones.h snap/snap.h timer.h zxvision.h chardetect.h compileoptions.h contend.h snap/snap_zx8081.h utils.h realjoystick.h ula.h settings.h machines/ql_i8049.h machines/ql_qdos_handler.h machines/ql_zx8302.h zeng.h zeng_online.h snap/snap_zsf.h snap/snap_ram.h zeng_online_client.h
+core_ql.o: cores/core_ql.c cores/core_ql.h cpu.h debug.h tape.h audio/audio.h video/screen.h ay38912.h operaciones.h snap/snap.h timer.h zxvision.h chardetect.h compileoptions.h contend.h snap/snap_zx8081.h utils.h realjoystick.h ula.h settings.h machines/ql_i8049.h machines/ql_qdos_handler.h machines/ql_zx8302.h zeng.h zeng_online.h snap/snap_zsf.h snap/snap_ram.h zeng_online_client.h
 	\$(CC) \$(CFLAGS) -c cores/core_ql.c
 
-core_mk14.o: cores/core_mk14.c cores/core_mk14.h scmp.h cpu.h debug.h tape.h audio/audio.h screen.h ay38912.h operaciones.h snap/snap.h timer.h zxvision.h chardetect.h compileoptions.h contend.h snap/snap_zx8081.h utils.h realjoystick.h ula.h settings.h
+core_mk14.o: cores/core_mk14.c cores/core_mk14.h scmp.h cpu.h debug.h tape.h audio/audio.h video/screen.h ay38912.h operaciones.h snap/snap.h timer.h zxvision.h chardetect.h compileoptions.h contend.h snap/snap_zx8081.h utils.h realjoystick.h ula.h settings.h
 	\$(CC) \$(CFLAGS) -c cores/core_mk14.c
 
-core_msx.o: cores/core_msx.c cores/core_msx.h cpu.h debug.h tape.h audio/audio.h screen.h ay38912.h operaciones.h snap/snap.h timer.h zxvision.h chardetect.h compileoptions.h contend.h snap/snap_zx8081.h utils.h realjoystick.h  settings.h machines/msx.h snap/snap_ram.h codsinpr.h
+core_msx.o: cores/core_msx.c cores/core_msx.h cpu.h debug.h tape.h audio/audio.h video/screen.h ay38912.h operaciones.h snap/snap.h timer.h zxvision.h chardetect.h compileoptions.h contend.h snap/snap_zx8081.h utils.h realjoystick.h  settings.h machines/msx.h snap/snap_ram.h codsinpr.h
 	\$(CC) \$(CFLAGS) -c cores/core_msx.c
 
-core_svi.o: cores/core_svi.c cores/core_svi.h cpu.h debug.h tape.h audio/audio.h screen.h ay38912.h operaciones.h snap/snap.h timer.h zxvision.h chardetect.h compileoptions.h contend.h snap/snap_zx8081.h utils.h realjoystick.h  settings.h machines/svi.h snap/snap_ram.h codsinpr.h
+core_svi.o: cores/core_svi.c cores/core_svi.h cpu.h debug.h tape.h audio/audio.h video/screen.h ay38912.h operaciones.h snap/snap.h timer.h zxvision.h chardetect.h compileoptions.h contend.h snap/snap_zx8081.h utils.h realjoystick.h  settings.h machines/svi.h snap/snap_ram.h codsinpr.h
 	\$(CC) \$(CFLAGS) -c cores/core_svi.c
 
-core_coleco.o: cores/core_coleco.c cores/core_coleco.h cpu.h debug.h tape.h audio/audio.h screen.h ay38912.h operaciones.h snap/snap.h timer.h zxvision.h chardetect.h compileoptions.h contend.h snap/snap_zx8081.h utils.h realjoystick.h  settings.h machines/coleco.h vdp_9918a.h sn76489an.h vdp_9918a_sms.h snap/snap_ram.h codsinpr.h
+core_coleco.o: cores/core_coleco.c cores/core_coleco.h cpu.h debug.h tape.h audio/audio.h video/screen.h ay38912.h operaciones.h snap/snap.h timer.h zxvision.h chardetect.h compileoptions.h contend.h snap/snap_zx8081.h utils.h realjoystick.h  settings.h machines/coleco.h vdp_9918a.h sn76489an.h vdp_9918a_sms.h snap/snap_ram.h codsinpr.h
 	\$(CC) \$(CFLAGS) -c cores/core_coleco.c
 
-core_sg1000.o: cores/core_sg1000.c cores/core_sg1000.h cpu.h debug.h tape.h audio/audio.h screen.h ay38912.h operaciones.h snap/snap.h timer.h zxvision.h chardetect.h compileoptions.h contend.h snap/snap_zx8081.h utils.h realjoystick.h  settings.h machines/sg1000.h vdp_9918a.h sn76489an.h vdp_9918a_sms.h snap/snap_ram.h codsinpr.h zeng_online_client.h
+core_sg1000.o: cores/core_sg1000.c cores/core_sg1000.h cpu.h debug.h tape.h audio/audio.h video/screen.h ay38912.h operaciones.h snap/snap.h timer.h zxvision.h chardetect.h compileoptions.h contend.h snap/snap_zx8081.h utils.h realjoystick.h  settings.h machines/sg1000.h vdp_9918a.h sn76489an.h vdp_9918a_sms.h snap/snap_ram.h codsinpr.h zeng_online_client.h
 	\$(CC) \$(CFLAGS) -c cores/core_sg1000.c
 
-core_sms.o: cores/core_sms.c cores/core_sms.h cpu.h debug.h tape.h audio/audio.h screen.h ay38912.h operaciones.h snap/snap.h timer.h zxvision.h chardetect.h compileoptions.h contend.h snap/snap_zx8081.h utils.h realjoystick.h  settings.h machines/sms.h vdp_9918a.h sn76489an.h vdp_9918a_sms.h snap/snap_ram.h codsinpr.h zeng_online_client.h
+core_sms.o: cores/core_sms.c cores/core_sms.h cpu.h debug.h tape.h audio/audio.h video/screen.h ay38912.h operaciones.h snap/snap.h timer.h zxvision.h chardetect.h compileoptions.h contend.h snap/snap_zx8081.h utils.h realjoystick.h  settings.h machines/sms.h vdp_9918a.h sn76489an.h vdp_9918a_sms.h snap/snap_ram.h codsinpr.h zeng_online_client.h
 	\$(CC) \$(CFLAGS) -c cores/core_sms.c
 
-core_z88.o: cores/core_z88.c cores/core_z88.h cpu.h debug.h tape.h audio/audio.h screen.h operaciones.h snap/snap.h timer.h zxvision.h chardetect.h compileoptions.h contend.h ula.h utils.h machines/z88.h audio/audio.h utils.h settings.h
+core_z88.o: cores/core_z88.c cores/core_z88.h cpu.h debug.h tape.h audio/audio.h video/screen.h operaciones.h snap/snap.h timer.h zxvision.h chardetect.h compileoptions.h contend.h ula.h utils.h machines/z88.h audio/audio.h utils.h settings.h
 	\$(CC) \$(CFLAGS) -c cores/core_z88.c
 
-core_cpc.o: cores/core_cpc.c cores/core_cpc.h cpu.h debug.h tape.h audio/audio.h screen.h operaciones.h snap/snap.h timer.h zxvision.h chardetect.h compileoptions.h contend.h ula.h utils.h audio/audio.h utils.h tape.h machines/cpc.h realjoystick.h settings.h snap/snap_zsf.h zeng.h zeng_online.h snap/snap_ram.h pd765.h
+core_cpc.o: cores/core_cpc.c cores/core_cpc.h cpu.h debug.h tape.h audio/audio.h video/screen.h operaciones.h snap/snap.h timer.h zxvision.h chardetect.h compileoptions.h contend.h ula.h utils.h audio/audio.h utils.h tape.h machines/cpc.h realjoystick.h settings.h snap/snap_zsf.h zeng.h zeng_online.h snap/snap_ram.h pd765.h
 	\$(CC) \$(CFLAGS) -c cores/core_cpc.c
 
-core_pcw.o: cores/core_pcw.c cores/core_pcw.h cpu.h debug.h tape.h audio/audio.h screen.h operaciones.h snap/snap.h timer.h zxvision.h chardetect.h compileoptions.h contend.h ula.h utils.h audio/audio.h utils.h tape.h machines/pcw.h realjoystick.h settings.h snap/snap_zsf.h zeng.h zeng_online.h snap/snap_ram.h pd765.h
+core_pcw.o: cores/core_pcw.c cores/core_pcw.h cpu.h debug.h tape.h audio/audio.h video/screen.h operaciones.h snap/snap.h timer.h zxvision.h chardetect.h compileoptions.h contend.h ula.h utils.h audio/audio.h utils.h tape.h machines/pcw.h realjoystick.h settings.h snap/snap_zsf.h zeng.h zeng_online.h snap/snap_ram.h pd765.h
 	\$(CC) \$(CFLAGS) -c cores/core_pcw.c
 
-core_sam.o: cores/core_sam.c cores/core_sam.h cpu.h debug.h tape.h audio/audio.h screen.h operaciones.h snap/snap.h timer.h zxvision.h chardetect.h compileoptions.h contend.h ula.h utils.h audio/audio.h utils.h tape.h machines/cpc.h realjoystick.h settings.h ay38912.h
+core_sam.o: cores/core_sam.c cores/core_sam.h cpu.h debug.h tape.h audio/audio.h video/screen.h operaciones.h snap/snap.h timer.h zxvision.h chardetect.h compileoptions.h contend.h ula.h utils.h audio/audio.h utils.h tape.h machines/cpc.h realjoystick.h settings.h ay38912.h
 	\$(CC) \$(CFLAGS) -c cores/core_sam.c
 
 mk14.o: machines/mk14.c machines/mk14.h cpu.h debug.h scmp.h utils.h zxvision.h
@@ -1370,14 +1370,14 @@ scmp.o: scmp.c scmp.h cpu.h operaciones.h
 	\$(CC) \$(CFLAGS) -c scmp.c
 
 
-timer.o: timer.c timer.h cpu.h start.h audio/audio.h debug.h zxvision.h tape.h screen.h compileoptions.h machines/zx8081.h joystick.h utils.h printers.h machines/z88.h autoselectoptions.h machines/zxuno.h textspeech.h mmc.h ide.h zxpand.h superupgrade.h snap/snap.h snap/snap_rzx.h machines/ql.h esxdos_handler.h betadisk.h pd765.h settings.h machines/ql_i8049.h machines/cpc.h snap/snap_ram.h hilow_datadrive.h dsk.h menu/menu_items.h machines/pcw.h zeng_online.h
+timer.o: timer.c timer.h cpu.h start.h audio/audio.h debug.h zxvision.h tape.h video/screen.h compileoptions.h machines/zx8081.h joystick.h utils.h printers.h machines/z88.h autoselectoptions.h machines/zxuno.h textspeech.h mmc.h ide.h zxpand.h superupgrade.h snap/snap.h snap/snap_rzx.h machines/ql.h esxdos_handler.h betadisk.h pd765.h settings.h machines/ql_i8049.h machines/cpc.h snap/snap_ram.h hilow_datadrive.h dsk.h menu/menu_items.h machines/pcw.h zeng_online.h
 	\$(CC) \$(CFLAGS) -c timer.c
 
 
-debug.o: debug.c cpu.h debug.h mem128.h machines/timex.h screen.h zxvision.h machines/zx8081.h operaciones.h cores/core_spectrum.h cores/core_reduced_spectrum.h cores/core_zx8081.h cores/core_z88.h cores/core_ace.h cores/core_cpc.h cores/core_pcw.h cores/core_msx.h cores/core_svi.h cores/core_coleco.h cores/core_sg1000.h cores/core_sms.h cores/core_ql.h cores/core_sam.h cores/core_mk14.h disassemble.h utils.h machines/prism.h  spectra.h machines/tbblue.h machines/zxuno.h ulaplus.h machines/timex.h ay38912.h ula.h machines/ql.h m68k.h superupgrade.h scmp.h dandanator.h kartusho.h ifrom.h spritefinder.h copy_interfaces/multiface.h machines/chloe.h machines/cpc.h machines/sam.h snap/snap.h diviface.h betadisk.h machines/zxevo.h machines/tsconf.h machines/baseconf.h remote.h charset.h settings.h datagear.h expression_parser.h atomic.h machines/msx.h machines/coleco.h sn76489an.h machines/svi.h vdp_9918a.h machines/ql_zx8302.h ide.h mmc.h esxdos_handler.h vdp_9918a_sms.h menu/menu_debug_cpu.h copy_interfaces/transtape.h hilow_barbanegra.h pd765.h machines/pcw.h
+debug.o: debug.c cpu.h debug.h mem128.h machines/timex.h video/screen.h zxvision.h machines/zx8081.h operaciones.h cores/core_spectrum.h cores/core_reduced_spectrum.h cores/core_zx8081.h cores/core_z88.h cores/core_ace.h cores/core_cpc.h cores/core_pcw.h cores/core_msx.h cores/core_svi.h cores/core_coleco.h cores/core_sg1000.h cores/core_sms.h cores/core_ql.h cores/core_sam.h cores/core_mk14.h disassemble.h utils.h machines/prism.h  spectra.h machines/tbblue.h machines/zxuno.h ulaplus.h machines/timex.h ay38912.h ula.h machines/ql.h m68k.h superupgrade.h scmp.h dandanator.h kartusho.h ifrom.h spritefinder.h copy_interfaces/multiface.h machines/chloe.h machines/cpc.h machines/sam.h snap/snap.h diviface.h betadisk.h machines/zxevo.h machines/tsconf.h machines/baseconf.h remote.h charset.h settings.h datagear.h expression_parser.h atomic.h machines/msx.h machines/coleco.h sn76489an.h machines/svi.h vdp_9918a.h machines/ql_zx8302.h ide.h mmc.h esxdos_handler.h vdp_9918a_sms.h menu/menu_debug_cpu.h copy_interfaces/transtape.h hilow_barbanegra.h pd765.h machines/pcw.h
 	\$(CC) \$(CFLAGS) -c debug.c
 
-tape.o: tape.c tape.h cpu.h operaciones.h debug.h tape_tap.h tape_tzx.h tape_pzx.h tape_smp.h machines/chloe.h machines/prism.h mem128.h machines/timex.h snap/snap.h compileoptions.h screen.h machines/zx8081.h zxvision.h snap/snap_z81.h utils.h audio/audio.h screen.h autoselectoptions.h machines/zxuno.h timer.h superupgrade.h copy_interfaces/multiface.h machines/chrome.h machines/zxevo.h machines/tsconf.h machines/baseconf.h snap/snap_spg.h machines/tbblue.h settings.h machines/msx.h samram.h menu/menu_items.h zvfs.h hilow_barbanegra.h copy_interfaces/transtape.h dsk.h
+tape.o: tape.c tape.h cpu.h operaciones.h debug.h tape_tap.h tape_tzx.h tape_pzx.h tape_smp.h machines/chloe.h machines/prism.h mem128.h machines/timex.h snap/snap.h compileoptions.h video/screen.h machines/zx8081.h zxvision.h snap/snap_z81.h utils.h audio/audio.h video/screen.h autoselectoptions.h machines/zxuno.h timer.h superupgrade.h copy_interfaces/multiface.h machines/chrome.h machines/zxevo.h machines/tsconf.h machines/baseconf.h snap/snap_spg.h machines/tbblue.h settings.h machines/msx.h samram.h menu/menu_items.h zvfs.h hilow_barbanegra.h copy_interfaces/transtape.h dsk.h
 	\$(CC) \$(CFLAGS) -c tape.c
 
 tape_tap.o: tape_tap.c tape_tap.h tape.h cpu.h operaciones.h debug.h
@@ -1392,7 +1392,7 @@ tape_tzx.o: tape_tzx.c tape_tzx.h tape.h cpu.h operaciones.h debug.h utils.h zvf
 tape_pzx.o: tape_pzx.c tape_pzx.h tape.h cpu.h operaciones.h debug.h utils.h zvfs.h settings.h snap/snap.h
 	\$(CC) \$(CFLAGS) -c tape_pzx.c
 
-audio.o: audio/audio.c audio/audio.h cpu.h start.h debug.h screen.h utils.h machines/zx8081.h audio/audionull.h machines/jupiterace.h autoselectoptions.h operaciones.h machines/cpc.h settings.h audio/audio_sine_table.h machines/msx.h machines/svi.h machines/coleco.h machines/sg1000.h machines/sms.h sn76489an.h machines/ql_i8049.h compileoptions.h zvfs.h menu/menu_filesel.h atomic.h menu/menu_items.h timer.h
+audio.o: audio/audio.c audio/audio.h cpu.h start.h debug.h video/screen.h utils.h machines/zx8081.h audio/audionull.h machines/jupiterace.h autoselectoptions.h operaciones.h machines/cpc.h settings.h audio/audio_sine_table.h machines/msx.h machines/svi.h machines/coleco.h machines/sg1000.h machines/sms.h sn76489an.h machines/ql_i8049.h compileoptions.h zvfs.h menu/menu_filesel.h atomic.h menu/menu_items.h timer.h
 	\$(CC) \$(CFLAGS) -c audio/audio.c
 
 audio_sine_table.o: audio/audio_sine_table.c audio/audio_sine_table.h audio/audio.h
@@ -1407,32 +1407,32 @@ ay38912.o: ay38912.c ay38912.h cpu.h audio/audio.h joystick.h debug.h
 sn76489an.o: sn76489an.c sn76489an.h cpu.h audio/audio.h joystick.h debug.h
 	\$(CC) \$(CFLAGS) -c sn76489an.c
 
-vdp_9918a.o: vdp_9918a.c vdp_9918a.h cpu.h debug.h screen.h settings.h vdp_9918a_sms.h
+vdp_9918a.o: vdp_9918a.c vdp_9918a.h cpu.h debug.h video/screen.h settings.h vdp_9918a_sms.h
 	\$(CC) \$(CFLAGS) -c vdp_9918a.c
 
-vdp_9918a_sms.o: vdp_9918a_sms.c vdp_9918a_sms.h vdp_9918a.h cpu.h debug.h screen.h settings.h
+vdp_9918a_sms.o: vdp_9918a_sms.c vdp_9918a_sms.h vdp_9918a.h cpu.h debug.h video/screen.h settings.h
 	\$(CC) \$(CFLAGS) -c vdp_9918a_sms.c
 
-msx.o: machines/msx.c machines/msx.h cpu.h debug.h vdp_9918a.h tape.h screen.h audio/audio.h operaciones.h joystick.h settings.h
+msx.o: machines/msx.c machines/msx.h cpu.h debug.h vdp_9918a.h tape.h video/screen.h audio/audio.h operaciones.h joystick.h settings.h
 	\$(CC) \$(CFLAGS) -c machines/msx.c
 
-svi.o: machines/svi.c machines/svi.h cpu.h debug.h vdp_9918a.h tape.h screen.h audio/audio.h operaciones.h joystick.h settings.h
+svi.o: machines/svi.c machines/svi.h cpu.h debug.h vdp_9918a.h tape.h video/screen.h audio/audio.h operaciones.h joystick.h settings.h
 	\$(CC) \$(CFLAGS) -c machines/svi.c
 
-coleco.o: machines/coleco.c machines/coleco.h cpu.h debug.h vdp_9918a.h screen.h audio/audio.h sn76489an.h joystick.h vdp_9918a_sms.h settings.h
+coleco.o: machines/coleco.c machines/coleco.h cpu.h debug.h vdp_9918a.h video/screen.h audio/audio.h sn76489an.h joystick.h vdp_9918a_sms.h settings.h
 	\$(CC) \$(CFLAGS) -c machines/coleco.c
 
-sg1000.o: machines/sg1000.c machines/sg1000.h cpu.h debug.h vdp_9918a.h screen.h audio/audio.h sn76489an.h joystick.h vdp_9918a_sms.h settings.h
+sg1000.o: machines/sg1000.c machines/sg1000.h cpu.h debug.h vdp_9918a.h video/screen.h audio/audio.h sn76489an.h joystick.h vdp_9918a_sms.h settings.h
 	\$(CC) \$(CFLAGS) -c machines/sg1000.c
 
-sms.o: machines/sms.c machines/sms.h cpu.h debug.h vdp_9918a.h screen.h audio/audio.h sn76489an.h joystick.h vdp_9918a_sms.h settings.h
+sms.o: machines/sms.c machines/sms.h cpu.h debug.h vdp_9918a.h video/screen.h audio/audio.h sn76489an.h joystick.h vdp_9918a_sms.h settings.h
 	\$(CC) \$(CFLAGS) -c machines/sms.c
 
 saa_simul.o: saa_simul.c saa_simul.h ay38912.h cpu.h audio/audio.h debug.h
 	\$(CC) \$(CFLAGS) -c saa_simul.c
 
-screen.o: screen.c screen.h cpu.h debug.h mem128.h machines/chloe.h machines/prism.h machines/timex.h machines/cpc.h machines/prism.h operaciones.h machines/zx8081.h charset.h zxvision.h menu/menu_bitmaps.h audio/audio.h contend.h ula.h tape_smp.h machines/z88.h ulaplus.h machines/zxuno.h spectra.h spritechip.h timer.h machines/sam.h machines/ql.h machines/chrome.h machines/zxevo.h machines/tsconf.h machines/baseconf.h machines/mk14.h vdp_9918a.h machines/msx.h machines/coleco.h machines/ql_zx8302.h stats.h vdp_9918a_sms.h menu/menu_items.h chardetect.h machines/pcw.h textspeech.h
-	\$(CC) \$(CFLAGS) -c screen.c
+screen.o: video/screen.c video/screen.h cpu.h debug.h mem128.h machines/chloe.h machines/prism.h machines/timex.h machines/cpc.h machines/prism.h operaciones.h machines/zx8081.h charset.h zxvision.h menu/menu_bitmaps.h audio/audio.h contend.h ula.h tape_smp.h machines/z88.h ulaplus.h machines/zxuno.h spectra.h spritechip.h timer.h machines/sam.h machines/ql.h machines/chrome.h machines/zxevo.h machines/tsconf.h machines/baseconf.h machines/mk14.h vdp_9918a.h machines/msx.h machines/coleco.h machines/ql_zx8302.h stats.h vdp_9918a_sms.h menu/menu_items.h chardetect.h machines/pcw.h textspeech.h
+	\$(CC) \$(CFLAGS) -c video/screen.c
 
 mem128.o: mem128.c cpu.h mem128.h debug.h contend.h machines/zxuno.h machines/chloe.h machines/prism.h machines/timex.h machines/sam.h ula.h machines/tbblue.h superupgrade.h machines/chrome.h machines/zxevo.h machines/tsconf.h machines/baseconf.h machines/msx.h machines/coleco.h machines/sg1000.h machines/sms.h machines/svi.h
 	\$(CC) \$(CFLAGS) -c mem128.c
@@ -1446,19 +1446,19 @@ chloe.o: machines/chloe.c machines/chloe.h cpu.h machines/timex.h mem128.h debug
 chrome.o: machines/chrome.c machines/chrome.h cpu.h mem128.h debug.h contend.h
 	\$(CC) \$(CFLAGS) -c machines/chrome.c
 
-zxevo.o: machines/zxevo.c machines/zxevo.h cpu.h mem128.h debug.h contend.h zxvision.h screen.h ula.h operaciones.h
+zxevo.o: machines/zxevo.c machines/zxevo.h cpu.h mem128.h debug.h contend.h zxvision.h video/screen.h ula.h operaciones.h
 	\$(CC) \$(CFLAGS) -c machines/zxevo.c
 
-tsconf.o: machines/tsconf.c machines/tsconf.h cpu.h mem128.h debug.h contend.h zxvision.h screen.h ula.h operaciones.h machines/zxevo.h chardevice.h uartbridge.h
+tsconf.o: machines/tsconf.c machines/tsconf.h cpu.h mem128.h debug.h contend.h zxvision.h video/screen.h ula.h operaciones.h machines/zxevo.h chardevice.h uartbridge.h
 	\$(CC) \$(CFLAGS) -c machines/tsconf.c
 
-baseconf.o: machines/baseconf.c machines/baseconf.h cpu.h mem128.h debug.h contend.h zxvision.h screen.h ula.h operaciones.h machines/zxevo.h
+baseconf.o: machines/baseconf.c machines/baseconf.h cpu.h mem128.h debug.h contend.h zxvision.h video/screen.h ula.h operaciones.h machines/zxevo.h
 	\$(CC) \$(CFLAGS) -c machines/baseconf.c
 
 prism.o: machines/prism.c machines/prism.h cpu.h machines/timex.h mem128.h debug.h contend.h machines/zxuno.h machines/timex.h utils.h zxvision.h
 	\$(CC) \$(CFLAGS) -c machines/prism.c
 
-remote.o: remote.c remote.h cpu.h start.h debug.h utils.h compileoptions.h network.h machines/ql.h disassemble.h zxvision.h menu/menu_items.h audio/audio.h timer.h screen.h ay38912.h charset.h diviface.h ula.h superupgrade.h machines/tbblue.h machines/zxevo.h machines/tsconf.h machines/baseconf.h operaciones.h snap/snap.h kartusho.h ifrom.h settings.h datagear.h esxdos_handler.h assemble.h expression_parser.h joystick.h snap/snap_zsf.h autoselectoptions.h zeng.h zeng_online.h machines/ql_qdos_handler.h tape.h snap/snap_ram.h mmc.h menu/menu_debug_cpu.h atomic.h
+remote.o: remote.c remote.h cpu.h start.h debug.h utils.h compileoptions.h network.h machines/ql.h disassemble.h zxvision.h menu/menu_items.h audio/audio.h timer.h video/screen.h ay38912.h charset.h diviface.h ula.h superupgrade.h machines/tbblue.h machines/zxevo.h machines/tsconf.h machines/baseconf.h operaciones.h snap/snap.h kartusho.h ifrom.h settings.h datagear.h esxdos_handler.h assemble.h expression_parser.h joystick.h snap/snap_zsf.h autoselectoptions.h zeng.h zeng_online.h machines/ql_qdos_handler.h tape.h snap/snap_ram.h mmc.h menu/menu_debug_cpu.h atomic.h
 	\$(CC) \$(CFLAGS) -c remote.c
 
 network.o: network.c network.h cpu.h debug.h utils.h compileoptions.h chardevice.h atomic.h
@@ -1470,7 +1470,7 @@ zeng.o: zeng.c zeng.h cpu.h debug.h utils.h network.h compileoptions.h remote.h 
 zeng_online.o: zeng_online.c zeng_online.h cpu.h debug.h utils.h network.h compileoptions.h remote.h snap/snap_zsf.h autoselectoptions.h ay38912.h atomic.h stats.h textspeech.h settings.h timer.h
 	\$(CC) \$(CFLAGS) -c zeng_online.c
 
-zeng_online_client.o: zeng_online_client.c zeng_online_client.h cpu.h debug.h utils.h network.h compileoptions.h remote.h snap/snap_zsf.h zeng_online.h zeng.h stats.h screen.h timer.h autoselectoptions.h textspeech.h settings.h
+zeng_online_client.o: zeng_online_client.c zeng_online_client.h cpu.h debug.h utils.h network.h compileoptions.h remote.h snap/snap_zsf.h zeng_online.h zeng.h stats.h video/screen.h timer.h autoselectoptions.h textspeech.h settings.h
 	\$(CC) \$(CFLAGS) -c zeng_online_client.c
 
 zvfs.o: zvfs.c zvfs.h cpu.h debug.h utils.h ff.h compileoptions.h
@@ -1497,40 +1497,40 @@ ffsystem.o: ffsystem.c ffconf.h ff.h
 ffunicode.o: ffunicode.c ffconf.h ff.h
 	\$(CC) \$(CFLAGS) -c ffunicode.c
 
-stats.o: stats.c stats.h cpu.h zxvision.h compileoptions.h debug.h network.h screen.h timer.h
+stats.o: stats.c stats.h cpu.h zxvision.h compileoptions.h debug.h network.h video/screen.h timer.h
 	\$(CC) \$(CFLAGS) -c stats.c
 
-sensors.o: sensors.c sensors.h cpu.h debug.h ay38912.h screen.h zxvision.h timer.h stats.h audio/audio.h sn76489an.h zeng_online_client.h
+sensors.o: sensors.c sensors.h cpu.h debug.h ay38912.h video/screen.h zxvision.h timer.h stats.h audio/audio.h sn76489an.h zeng_online_client.h
 	\$(CC) \$(CFLAGS) -c sensors.c
 
-esxdos_handler.o: esxdos_handler.c esxdos_handler.h cpu.h operaciones.h debug.h utils.h diviface.h screen.h menu/menu_filesel.h
+esxdos_handler.o: esxdos_handler.c esxdos_handler.h cpu.h operaciones.h debug.h utils.h diviface.h video/screen.h menu/menu_filesel.h
 	\$(CC) \$(CFLAGS) -c esxdos_handler.c
 
-tbblue.o: machines/tbblue.c machines/tbblue.h cpu.h mem128.h debug.h contend.h utils.h zxvision.h divmmc.h diviface.h screen.h machines/timex.h audio/audio.h datagear.h ay38912.h copy_interfaces/multiface.h uartbridge.h settings.h joystick.h
+tbblue.o: machines/tbblue.c machines/tbblue.h cpu.h mem128.h debug.h contend.h utils.h zxvision.h divmmc.h diviface.h video/screen.h machines/timex.h audio/audio.h datagear.h ay38912.h copy_interfaces/multiface.h uartbridge.h settings.h joystick.h
 	\$(CC) \$(CFLAGS) -c machines/tbblue.c
 
-zx8081.o: machines/zx8081.c machines/zx8081.h cpu.h screen.h debug.h audio/audio.h cores/core_zx8081.h operaciones.h zxvision.h ula.h zxpand.h
+zx8081.o: machines/zx8081.c machines/zx8081.h cpu.h video/screen.h debug.h audio/audio.h cores/core_zx8081.h operaciones.h zxvision.h ula.h zxpand.h
 	\$(CC) \$(CFLAGS) -c machines/zx8081.c
 
-jupiterace.o: machines/jupiterace.c machines/jupiterace.h cpu.h screen.h debug.h audio/audio.h cores/core_ace.h operaciones.h zxvision.h
+jupiterace.o: machines/jupiterace.c machines/jupiterace.h cpu.h video/screen.h debug.h audio/audio.h cores/core_ace.h operaciones.h zxvision.h
 	\$(CC) \$(CFLAGS) -c machines/jupiterace.c
 
-z88.o: machines/z88.c machines/z88.h cpu.h screen.h debug.h cores/core_z88.h contend.h joystick.h zxvision.h operaciones.h utils.h timer.h compileoptions.h
+z88.o: machines/z88.c machines/z88.h cpu.h video/screen.h debug.h cores/core_z88.h contend.h joystick.h zxvision.h operaciones.h utils.h timer.h compileoptions.h
 	\$(CC) \$(CFLAGS) -c machines/z88.c
 
-cpc.o: machines/cpc.c machines/cpc.h cpu.h screen.h debug.h cores/core_cpc.h contend.h joystick.h zxvision.h operaciones.h utils.h ay38912.h tape.h dsk.h pd765.h
+cpc.o: machines/cpc.c machines/cpc.h cpu.h video/screen.h debug.h cores/core_cpc.h contend.h joystick.h zxvision.h operaciones.h utils.h ay38912.h tape.h dsk.h pd765.h
 	\$(CC) \$(CFLAGS) -c machines/cpc.c
 
-pcw.o: machines/pcw.c machines/pcw.h cpu.h screen.h debug.h cores/core_pcw.h contend.h joystick.h zxvision.h operaciones.h utils.h audio/audio.h dsk.h pd765.h ula.h ay38912.h settings.h
+pcw.o: machines/pcw.c machines/pcw.h cpu.h video/screen.h debug.h cores/core_pcw.h contend.h joystick.h zxvision.h operaciones.h utils.h audio/audio.h dsk.h pd765.h ula.h ay38912.h settings.h
 	\$(CC) \$(CFLAGS) -c machines/pcw.c
 
-sam.o: machines/sam.c machines/sam.h cpu.h screen.h debug.h cores/core_sam.h contend.h joystick.h zxvision.h operaciones.h utils.h
+sam.o: machines/sam.c machines/sam.h cpu.h video/screen.h debug.h cores/core_sam.h contend.h joystick.h zxvision.h operaciones.h utils.h
 	\$(CC) \$(CFLAGS) -c machines/sam.c
 
-atomlite.o: atomlite.c atomlite.h cpu.h screen.h debug.h zxvision.h operaciones.h utils.h ide.h
+atomlite.o: atomlite.c atomlite.h cpu.h video/screen.h debug.h zxvision.h operaciones.h utils.h ide.h
 	\$(CC) \$(CFLAGS) -c atomlite.c
 
-zxuno.o: machines/zxuno.c machines/zxuno.h cpu.h debug.h contend.h mem128.h utils.h ula.h screen.h zxvision.h divmmc.h diviface.h ay38912.h ulaplus.h operaciones.h machines/chloe.h chardevice.h uartbridge.h menu/menu_items.h
+zxuno.o: machines/zxuno.c machines/zxuno.h cpu.h debug.h contend.h mem128.h utils.h ula.h video/screen.h zxvision.h divmmc.h diviface.h ay38912.h ulaplus.h operaciones.h machines/chloe.h chardevice.h uartbridge.h menu/menu_items.h
 	\$(CC) \$(CFLAGS) -c machines/zxuno.c
 
 #ql.o: 68000.c 68000_debug.c op68kadd.c op68karith.c op68ksub.c op68klogop.c op68kmisc.c op68kmove.c op68kshift.c 68000_additional.c machines/ql.c
@@ -1569,10 +1569,10 @@ m68kopnz.o: m68kopnz.c
 
 
 
-snap.o: snap/snap.c snap/snap.h cpu.h debug.h operaciones.h machines/zx8081.h mem128.h ay38912.h compileoptions.h autoselectoptions.h ay38912.h tape_smp.h audio/audio.h screen.h zxvision.h tape.h snap/snap_z81.h snap/snap_zx8081.h snap/snap_rzx.h utils.h ula.h joystick.h realjoystick.h machines/z88.h chardetect.h machines/jupiterace.h machines/cpc.h machines/timex.h machines/zxuno.h ulaplus.h machines/chloe.h machines/prism.h diviface.h snap/snap_rzx.h machines/chrome.h machines/zxevo.h machines/tsconf.h machines/baseconf.h snap/snap_spg.h settings.h machines/tbblue.h esxdos_handler.h
+snap.o: snap/snap.c snap/snap.h cpu.h debug.h operaciones.h machines/zx8081.h mem128.h ay38912.h compileoptions.h autoselectoptions.h ay38912.h tape_smp.h audio/audio.h video/screen.h zxvision.h tape.h snap/snap_z81.h snap/snap_zx8081.h snap/snap_rzx.h utils.h ula.h joystick.h realjoystick.h machines/z88.h chardetect.h machines/jupiterace.h machines/cpc.h machines/timex.h machines/zxuno.h ulaplus.h machines/chloe.h machines/prism.h diviface.h snap/snap_rzx.h machines/chrome.h machines/zxevo.h machines/tsconf.h machines/baseconf.h snap/snap_spg.h settings.h machines/tbblue.h esxdos_handler.h
 	\$(CC) \$(CFLAGS) -c snap/snap.c
 
-snap_zsf.o: snap/snap_zsf.c snap/snap_zsf.h cpu.h debug.h operaciones.h machines/zx8081.h mem128.h ay38912.h compileoptions.h autoselectoptions.h ay38912.h tape_smp.h audio/audio.h screen.h zxvision.h tape.h snap/snap_z81.h snap/snap_zx8081.h snap/snap_rzx.h utils.h ula.h joystick.h realjoystick.h machines/z88.h chardetect.h machines/jupiterace.h machines/cpc.h machines/timex.h machines/zxuno.h ulaplus.h machines/chloe.h machines/prism.h diviface.h snap/snap_rzx.h machines/chrome.h machines/zxevo.h machines/tsconf.h machines/baseconf.h divmmc.h divide.h machines/tbblue.h machines/msx.h vdp_9918a.h machines/coleco.h machines/sg1000.h machines/sms.h sn76489an.h m68k.h machines/ql_zx8302.h machines/ql_i8049.h vdp_9918a_sms.h settings.h scmp.h machines/mk14.h machines/chrome.h machines/sam.h machines/pcw.h zeng_online_client.h
+snap_zsf.o: snap/snap_zsf.c snap/snap_zsf.h cpu.h debug.h operaciones.h machines/zx8081.h mem128.h ay38912.h compileoptions.h autoselectoptions.h ay38912.h tape_smp.h audio/audio.h video/screen.h zxvision.h tape.h snap/snap_z81.h snap/snap_zx8081.h snap/snap_rzx.h utils.h ula.h joystick.h realjoystick.h machines/z88.h chardetect.h machines/jupiterace.h machines/cpc.h machines/timex.h machines/zxuno.h ulaplus.h machines/chloe.h machines/prism.h diviface.h snap/snap_rzx.h machines/chrome.h machines/zxevo.h machines/tsconf.h machines/baseconf.h divmmc.h divide.h machines/tbblue.h machines/msx.h vdp_9918a.h machines/coleco.h machines/sg1000.h machines/sms.h sn76489an.h m68k.h machines/ql_zx8302.h machines/ql_i8049.h vdp_9918a_sms.h settings.h scmp.h machines/mk14.h machines/chrome.h machines/sam.h machines/pcw.h zeng_online_client.h
 	\$(CC) \$(CFLAGS) -c snap/snap_zsf.c
 
 snap_ram.o: snap/snap_ram.c snap/snap_ram.h cpu.h debug.h operaciones.h snap/snap_zsf.h zxvision.h autoselectoptions.h
@@ -1587,31 +1587,31 @@ snap_spg.o: snap/snap_spg.c snap/snap_spg.h cpu.h debug.h operaciones.h snap/sna
 spg_depack.o: snap/spg_depack.c
 	\$(CC) \$(CFLAGS) -c snap/spg_depack.c
 
-snap_zx8081.o: snap/snap_zx8081.c snap/snap_zx8081.h cpu.h debug.h operaciones.h machines/zx8081.h audio/audio.h screen.h tape.h tape_smp.h snap/snap_z81.h zxvision.h snap/snap.h utils.h settings.h
+snap_zx8081.o: snap/snap_zx8081.c snap/snap_zx8081.h cpu.h debug.h operaciones.h machines/zx8081.h audio/audio.h video/screen.h tape.h tape_smp.h snap/snap_z81.h zxvision.h snap/snap.h utils.h settings.h
 	\$(CC) \$(CFLAGS) -c snap/snap_zx8081.c
 
-snap_rzx.o: snap/snap_rzx.c snap/snap_rzx.h snap/snap.h cpu.h debug.h operaciones.h utils.h zxvision.h screen.h
+snap_rzx.o: snap/snap_rzx.c snap/snap_rzx.h snap/snap.h cpu.h debug.h operaciones.h utils.h zxvision.h video/screen.h
 	\$(CC) \$(CFLAGS) -c snap/snap_rzx.c
 
-zxvision.o: zxvision.c zxvision.h menu/menu_items.h menu/menu_items_settings.h menu/menu_bitmaps.h menu/menu_debug_cpu.h menu/menu_file_viewer_browser.h screen.h cpu.h start.h debug.h ay38912.h tape.h audio/audio.h timer.h operaciones.h utils.h joystick.h ula.h realjoystick.h scrstdout.h autoselectoptions.h charset.h chardetect.h textspeech.h machines/prism.h machines/cpc.h machines/sam.h machines/tbblue.h remote.h machines/tsconf.h settings.h stats.h network.h machines/ql.h zvfs.h menu/menu_filesel.h pd765.h dsk.h zeng_online_client.h machines/ql_qdos_handler.h
+zxvision.o: zxvision.c zxvision.h menu/menu_items.h menu/menu_items_settings.h menu/menu_bitmaps.h menu/menu_debug_cpu.h menu/menu_file_viewer_browser.h video/screen.h cpu.h start.h debug.h ay38912.h tape.h audio/audio.h timer.h operaciones.h utils.h joystick.h ula.h realjoystick.h video/scrstdout.h autoselectoptions.h charset.h chardetect.h textspeech.h machines/prism.h machines/cpc.h machines/sam.h machines/tbblue.h remote.h machines/tsconf.h settings.h stats.h network.h machines/ql.h zvfs.h menu/menu_filesel.h pd765.h dsk.h zeng_online_client.h machines/ql_qdos_handler.h
 	\$(CC) \$(CFLAGS) -c zxvision.c
 
-menu_filesel.o: menu/menu_filesel.c menu/menu_filesel.h zxvision.h menu/menu_file_viewer_browser.h screen.h cpu.h debug.h timer.h utils.h compileoptions.h ff.h diskio.h zvfs.h snap/snap.h joystick.h textspeech.h network.h ula.h
+menu_filesel.o: menu/menu_filesel.c menu/menu_filesel.h zxvision.h menu/menu_file_viewer_browser.h video/screen.h cpu.h debug.h timer.h utils.h compileoptions.h ff.h diskio.h zvfs.h snap/snap.h joystick.h textspeech.h network.h ula.h
 	\$(CC) \$(CFLAGS) -c menu/menu_filesel.c
 
-menu_items.o: menu/menu_items.c menu/menu_items.h zxvision.h menu/menu_items_settings.h menu/menu_debug_cpu.h menu/menu_zeng_online.h menu/menu_file_viewer_browser.h screen.h cpu.h start.h debug.h machines/zx8081.h ay38912.h compileoptions.h tape.h audio/audio.h timer.h snap/snap.h operaciones.h disassemble.h utils.h contend.h joystick.h ula.h printers.h realjoystick.h scrstdout.h machines/z88.h ulaplus.h autoselectoptions.h machines/zxuno.h charset.h chardetect.h textspeech.h  mmc.h ide.h divmmc.h divide.h diviface.h zxpand.h spectra.h spritechip.h machines/jupiterace.h machines/timex.h machines/chloe.h machines/cpc.h machines/prism.h machines/sam.h if1.h pd765.h atomlite.h machines/tbblue.h dandanator.h kartusho.h ifrom.h spritefinder.h copy_interfaces/multiface.h superupgrade.h m68k.h remote.h snap/snap_rzx.h copy_interfaces/multiface.h scmp.h esxdos_handler.h machines/zxevo.h machines/tsconf.h machines/baseconf.h snap/snap_spg.h betadisk.h tape_tzx.h snap/snap_zsf.h settings.h datagear.h assemble.h expression_parser.h uartbridge.h zeng.h zeng_online.h network.h stats.h vdp_9918a.h machines/msx.h machines/coleco.h machines/sg1000.h machines/sms.h machines/svi.h sn76489an.h machines/ql_qdos_handler.h machines/ql_i8049.h gs.h zvfs.h vdp_9918a_sms.h snap/snap_ram.h sensors.h samram.h hilow_datadrive.h menu/menu_filesel.h menu/menu_bitmaps.h utils_text_adventure.h salamanquesa.h hilow_datadrive_audio.h hilow_barbanegra.h copy_interfaces/transtape.h copy_interfaces/mhpokeador.h copy_interfaces/specmate.h copy_interfaces/phoenix.h copy_interfaces/defcon.h copy_interfaces/ramjet.h copy_interfaces/interface007.h copy_interfaces/dinamid3.h dsk.h plus3dos_handler.h machines/pcw.h zeng_online.h
+menu_items.o: menu/menu_items.c menu/menu_items.h zxvision.h menu/menu_items_settings.h menu/menu_debug_cpu.h menu/menu_zeng_online.h menu/menu_file_viewer_browser.h video/screen.h cpu.h start.h debug.h machines/zx8081.h ay38912.h compileoptions.h tape.h audio/audio.h timer.h snap/snap.h operaciones.h disassemble.h utils.h contend.h joystick.h ula.h printers.h realjoystick.h video/scrstdout.h machines/z88.h ulaplus.h autoselectoptions.h machines/zxuno.h charset.h chardetect.h textspeech.h  mmc.h ide.h divmmc.h divide.h diviface.h zxpand.h spectra.h spritechip.h machines/jupiterace.h machines/timex.h machines/chloe.h machines/cpc.h machines/prism.h machines/sam.h if1.h pd765.h atomlite.h machines/tbblue.h dandanator.h kartusho.h ifrom.h spritefinder.h copy_interfaces/multiface.h superupgrade.h m68k.h remote.h snap/snap_rzx.h copy_interfaces/multiface.h scmp.h esxdos_handler.h machines/zxevo.h machines/tsconf.h machines/baseconf.h snap/snap_spg.h betadisk.h tape_tzx.h snap/snap_zsf.h settings.h datagear.h assemble.h expression_parser.h uartbridge.h zeng.h zeng_online.h network.h stats.h vdp_9918a.h machines/msx.h machines/coleco.h machines/sg1000.h machines/sms.h machines/svi.h sn76489an.h machines/ql_qdos_handler.h machines/ql_i8049.h gs.h zvfs.h vdp_9918a_sms.h snap/snap_ram.h sensors.h samram.h hilow_datadrive.h menu/menu_filesel.h menu/menu_bitmaps.h utils_text_adventure.h salamanquesa.h hilow_datadrive_audio.h hilow_barbanegra.h copy_interfaces/transtape.h copy_interfaces/mhpokeador.h copy_interfaces/specmate.h copy_interfaces/phoenix.h copy_interfaces/defcon.h copy_interfaces/ramjet.h copy_interfaces/interface007.h copy_interfaces/dinamid3.h dsk.h plus3dos_handler.h machines/pcw.h zeng_online.h
 	\$(CC) \$(CFLAGS) -c menu/menu_items.c
 
-menu_file_viewer_browser.o: menu/menu_file_viewer_browser.c zxvision.h compileoptions.h screen.h cpu.h debug.h settings.h zvfs.h snap/snap.h tape_tzx.h machines/msx.h snap/snap_spg.h snap/snap_zsf.h hilow_datadrive.h menu/menu_items.h
+menu_file_viewer_browser.o: menu/menu_file_viewer_browser.c zxvision.h compileoptions.h video/screen.h cpu.h debug.h settings.h zvfs.h snap/snap.h tape_tzx.h machines/msx.h snap/snap_spg.h snap/snap_zsf.h hilow_datadrive.h menu/menu_items.h
 	\$(CC) \$(CFLAGS) -c menu/menu_file_viewer_browser.c
 
-menu_zeng_online.o: menu/menu_zeng_online.c zxvision.h menu/menu_items.h compileoptions.h screen.h cpu.h debug.h network.h zeng_online_client.h zeng_online.h stats.h settings.h
+menu_zeng_online.o: menu/menu_zeng_online.c zxvision.h menu/menu_items.h compileoptions.h video/screen.h cpu.h debug.h network.h zeng_online_client.h zeng_online.h stats.h settings.h
 	\$(CC) \$(CFLAGS) -c menu/menu_zeng_online.c
 
-menu_items_settings.o: menu/menu_items_settings.c menu/menu_items_settings.h zxvision.h menu/menu_file_viewer_browser.h screen.h cpu.h start.h debug.h machines/zx8081.h ay38912.h compileoptions.h tape.h audio/audio.h timer.h snap/snap.h operaciones.h disassemble.h utils.h contend.h joystick.h ula.h printers.h realjoystick.h scrstdout.h machines/z88.h ulaplus.h autoselectoptions.h machines/zxuno.h charset.h chardetect.h textspeech.h  mmc.h ide.h divmmc.h divide.h diviface.h zxpand.h spectra.h spritechip.h machines/jupiterace.h machines/timex.h machines/chloe.h machines/cpc.h machines/prism.h machines/sam.h if1.h pd765.h atomlite.h machines/tbblue.h dandanator.h kartusho.h ifrom.h spritefinder.h superupgrade.h m68k.h remote.h snap/snap_rzx.h copy_interfaces/multiface.h scmp.h esxdos_handler.h machines/zxevo.h machines/tsconf.h machines/baseconf.h snap/snap_spg.h betadisk.h tape_tzx.h snap/snap_zsf.h settings.h datagear.h assemble.h expression_parser.h uartbridge.h zeng.h zeng_online.h network.h stats.h vdp_9918a.h machines/msx.h machines/coleco.h machines/sg1000.h machines/sms.h machines/svi.h sn76489an.h machines/ql_qdos_handler.h machines/ql_i8049.h gs.h zvfs.h vdp_9918a_sms.h snap/snap_ram.h sensors.h samram.h snap/snap_zx8081.h menu/menu_bitmaps.h menu/menu_filesel.h menu/menu_debug_cpu.h machines/pcw.h utils_text_adventure.h
+menu_items_settings.o: menu/menu_items_settings.c menu/menu_items_settings.h zxvision.h menu/menu_file_viewer_browser.h video/screen.h cpu.h start.h debug.h machines/zx8081.h ay38912.h compileoptions.h tape.h audio/audio.h timer.h snap/snap.h operaciones.h disassemble.h utils.h contend.h joystick.h ula.h printers.h realjoystick.h video/scrstdout.h machines/z88.h ulaplus.h autoselectoptions.h machines/zxuno.h charset.h chardetect.h textspeech.h  mmc.h ide.h divmmc.h divide.h diviface.h zxpand.h spectra.h spritechip.h machines/jupiterace.h machines/timex.h machines/chloe.h machines/cpc.h machines/prism.h machines/sam.h if1.h pd765.h atomlite.h machines/tbblue.h dandanator.h kartusho.h ifrom.h spritefinder.h superupgrade.h m68k.h remote.h snap/snap_rzx.h copy_interfaces/multiface.h scmp.h esxdos_handler.h machines/zxevo.h machines/tsconf.h machines/baseconf.h snap/snap_spg.h betadisk.h tape_tzx.h snap/snap_zsf.h settings.h datagear.h assemble.h expression_parser.h uartbridge.h zeng.h zeng_online.h network.h stats.h vdp_9918a.h machines/msx.h machines/coleco.h machines/sg1000.h machines/sms.h machines/svi.h sn76489an.h machines/ql_qdos_handler.h machines/ql_i8049.h gs.h zvfs.h vdp_9918a_sms.h snap/snap_ram.h sensors.h samram.h snap/snap_zx8081.h menu/menu_bitmaps.h menu/menu_filesel.h menu/menu_debug_cpu.h machines/pcw.h utils_text_adventure.h
 	\$(CC) \$(CFLAGS) -c menu/menu_items_settings.c
 
-menu_debug_cpu.o: menu/menu_debug_cpu.c menu/menu_debug_cpu.h zxvision.h cpu.h debug.h scmp.h m68k.h machines/zx8081.h machines/z88.h settings.h operaciones.h screen.h joystick.h machines/tbblue.h ula.h timer.h audio/audio.h machines/prism.h menu/menu_items.h menu/menu_filesel.h disassemble.h ay38912.h realjoystick.h utils_text_adventure.h
+menu_debug_cpu.o: menu/menu_debug_cpu.c menu/menu_debug_cpu.h zxvision.h cpu.h debug.h scmp.h m68k.h machines/zx8081.h machines/z88.h settings.h operaciones.h video/screen.h joystick.h machines/tbblue.h ula.h timer.h audio/audio.h machines/prism.h menu/menu_items.h menu/menu_filesel.h disassemble.h ay38912.h realjoystick.h utils_text_adventure.h
 	\$(CC) \$(CFLAGS) -c menu/menu_debug_cpu.c
 
 menu_bitmaps.o: menu/menu_bitmaps.c menu/menu_bitmaps.h settings.h
@@ -1620,16 +1620,16 @@ menu_bitmaps.o: menu/menu_bitmaps.c menu/menu_bitmaps.h settings.h
 salamanquesa.o: salamanquesa.c salamanquesa.h
 	\$(CC) \$(CFLAGS) -c salamanquesa.c
 
-settings.o: settings.c settings.h menu/menu_items.h zxvision.h screen.h cpu.h debug.h machines/zx8081.h ay38912.h compileoptions.h tape.h audio/audio.h timer.h snap/snap.h operaciones.h disassemble.h utils.h contend.h joystick.h ula.h printers.h realjoystick.h scrstdout.h machines/z88.h ulaplus.h autoselectoptions.h machines/zxuno.h charset.h chardetect.h textspeech.h  mmc.h ide.h divmmc.h divide.h diviface.h zxpand.h spectra.h spritechip.h machines/jupiterace.h machines/timex.h machines/chloe.h machines/cpc.h machines/prism.h machines/sam.h if1.h pd765.h atomlite.h machines/tbblue.h dandanator.h kartusho.h ifrom.h spritefinder.h copy_interfaces/multiface.h superupgrade.h m68k.h remote.h snap/snap_rzx.h copy_interfaces/multiface.h scmp.h esxdos_handler.h machines/zxevo.h machines/tsconf.h machines/baseconf.h snap/snap_spg.h betadisk.h tape_tzx.h snap/snap_zsf.h datagear.h
+settings.o: settings.c settings.h menu/menu_items.h zxvision.h video/screen.h cpu.h debug.h machines/zx8081.h ay38912.h compileoptions.h tape.h audio/audio.h timer.h snap/snap.h operaciones.h disassemble.h utils.h contend.h joystick.h ula.h printers.h realjoystick.h video/scrstdout.h machines/z88.h ulaplus.h autoselectoptions.h machines/zxuno.h charset.h chardetect.h textspeech.h  mmc.h ide.h divmmc.h divide.h diviface.h zxpand.h spectra.h spritechip.h machines/jupiterace.h machines/timex.h machines/chloe.h machines/cpc.h machines/prism.h machines/sam.h if1.h pd765.h atomlite.h machines/tbblue.h dandanator.h kartusho.h ifrom.h spritefinder.h copy_interfaces/multiface.h superupgrade.h m68k.h remote.h snap/snap_rzx.h copy_interfaces/multiface.h scmp.h esxdos_handler.h machines/zxevo.h machines/tsconf.h machines/baseconf.h snap/snap_spg.h betadisk.h tape_tzx.h snap/snap_zsf.h datagear.h
 	\$(CC) \$(CFLAGS) -c settings.c
 
 disassemble.o: disassemble.c disassemble.h cpu.h operaciones.h debug.h machines/ql.h utils.h scmp.h zxvision.h machines/tbblue.h utils_text_adventure.h menu/menu_debug_cpu.h
 	\$(CC) \$(CFLAGS) -c disassemble.c
 
-utils.o: utils.c utils.h cpu.h start.h debug.h joystick.h compileoptions.h tape.h snap/snap.h screen.h realjoystick.h zxvision.h machines/z88.h playtzx.h tape_tzx.h tape_pzx.h operaciones.h machines/zx8081.h autoselectoptions.h ulaplus.h ay38912.h textspeech.h spectra.h machines/zxuno.h spritechip.h machines/timex.h machines/cpc.h machines/sam.h divmmc.h divide.h superupgrade.h chardetect.h machines/zx8081.h machines/jupiterace.h mmc.h ide.h zxpand.h diviface.h divmmc.h divide.h dandanator.h kartusho.h ifrom.h spritefinder.h machines/ql.h m68k.h remote.h ula.h snap/snap_rzx.h scmp.h machines/mk14.h esxdos_handler.h machines/tbblue.h machines/zxevo.h machines/tsconf.h machines/baseconf.h mdvtool.h betadisk.h pd765.h settings.h datagear.h zeng.h zeng_online.h network.h stats.h scl2trd.h zip.h machines/msx.h machines/coleco.h machines/sg1000.h machines/sms.h machines/svi.h charset.h snap/snap_zsf.h machines/ql_qdos_handler.h machines/ql_i8049.h samram.h ff.h diskio.h ffconf.h zvfs.h snap/snap_ram.h menu/menu_items.h tape_smp.h menu/menu_file_viewer_browser.h menu/menu_filesel.h utils_text_adventure.h menu/menu_debug_cpu.h hilow_datadrive.h hilow_datadrive_audio.h copy_interfaces/transtape.h copy_interfaces/mhpokeador.h copy_interfaces/specmate.h copy_interfaces/phoenix.h copy_interfaces/defcon.h copy_interfaces/ramjet.h copy_interfaces/interface007.h copy_interfaces/dinamid3.h dsk.h plus3dos_handler.h machines/pcw.h menu/menu_bitmaps.h zeng_online_client.h zeng_online.h
+utils.o: utils.c utils.h cpu.h start.h debug.h joystick.h compileoptions.h tape.h snap/snap.h video/screen.h realjoystick.h zxvision.h machines/z88.h playtzx.h tape_tzx.h tape_pzx.h operaciones.h machines/zx8081.h autoselectoptions.h ulaplus.h ay38912.h textspeech.h spectra.h machines/zxuno.h spritechip.h machines/timex.h machines/cpc.h machines/sam.h divmmc.h divide.h superupgrade.h chardetect.h machines/zx8081.h machines/jupiterace.h mmc.h ide.h zxpand.h diviface.h divmmc.h divide.h dandanator.h kartusho.h ifrom.h spritefinder.h machines/ql.h m68k.h remote.h ula.h snap/snap_rzx.h scmp.h machines/mk14.h esxdos_handler.h machines/tbblue.h machines/zxevo.h machines/tsconf.h machines/baseconf.h mdvtool.h betadisk.h pd765.h settings.h datagear.h zeng.h zeng_online.h network.h stats.h scl2trd.h zip.h machines/msx.h machines/coleco.h machines/sg1000.h machines/sms.h machines/svi.h charset.h snap/snap_zsf.h machines/ql_qdos_handler.h machines/ql_i8049.h samram.h ff.h diskio.h ffconf.h zvfs.h snap/snap_ram.h menu/menu_items.h tape_smp.h menu/menu_file_viewer_browser.h menu/menu_filesel.h utils_text_adventure.h menu/menu_debug_cpu.h hilow_datadrive.h hilow_datadrive_audio.h copy_interfaces/transtape.h copy_interfaces/mhpokeador.h copy_interfaces/specmate.h copy_interfaces/phoenix.h copy_interfaces/defcon.h copy_interfaces/ramjet.h copy_interfaces/interface007.h copy_interfaces/dinamid3.h dsk.h plus3dos_handler.h machines/pcw.h menu/menu_bitmaps.h zeng_online_client.h zeng_online.h
 	\$(CC) \$(CFLAGS) -c utils.c
 
-utils_text_adventure.o: utils_text_adventure.c utils_text_adventure.h utils.h cpu.h debug.h compileoptions.h operaciones.h machines/cpc.h screen.h menu/menu_items.h
+utils_text_adventure.o: utils_text_adventure.c utils_text_adventure.h utils.h cpu.h debug.h compileoptions.h operaciones.h machines/cpc.h video/screen.h menu/menu_items.h
 	\$(CC) \$(CFLAGS) -c utils_text_adventure.c
 
 playtzx.o: playtzx.c playtzx.h debug.h audio/audio.h utils.h
@@ -1638,43 +1638,43 @@ playtzx.o: playtzx.c playtzx.h debug.h audio/audio.h utils.h
 mdvtool.o: mdvtool.c mdvtool.h debug.h utils.h ay38912.h
 	\$(CC) \$(CFLAGS) -c mdvtool.c
 
-contend.o: contend.c contend.h cpu.h debug.h screen.h compileoptions.h ulaplus.h machines/zxuno.h ula.h machines/tbblue.h
+contend.o: contend.c contend.h cpu.h debug.h video/screen.h compileoptions.h ulaplus.h machines/zxuno.h ula.h machines/tbblue.h
 	\$(CC) \$(CFLAGS) -c contend.c
 
-joystick.o: joystick.c joystick.h cpu.h debug.h screen.h zxvision.h zeng.h zeng_online.h
+joystick.o: joystick.c joystick.h cpu.h debug.h video/screen.h zxvision.h zeng.h zeng_online.h
 	\$(CC) \$(CFLAGS) -c joystick.c
 
-ula.o: ula.c ula.h cpu.h start.h debug.h screen.h contend.h zxvision.h copy_interfaces/multiface.h betadisk.h settings.h divmmc.c hilow_datadrive.h samram.h hilow_barbanegra.h copy_interfaces/transtape.h copy_interfaces/mhpokeador.h copy_interfaces/specmate.h copy_interfaces/phoenix.h copy_interfaces/defcon.h copy_interfaces/ramjet.h copy_interfaces/interface007.h copy_interfaces/dinamid3.h
+ula.o: ula.c ula.h cpu.h start.h debug.h video/screen.h contend.h zxvision.h copy_interfaces/multiface.h betadisk.h settings.h divmmc.c hilow_datadrive.h samram.h hilow_barbanegra.h copy_interfaces/transtape.h copy_interfaces/mhpokeador.h copy_interfaces/specmate.h copy_interfaces/phoenix.h copy_interfaces/defcon.h copy_interfaces/ramjet.h copy_interfaces/interface007.h copy_interfaces/dinamid3.h
 	\$(CC) \$(CFLAGS) -c ula.c
 
-mmc.o: mmc.c mmc.h cpu.h debug.h utils.h zxvision.h screen.h divmmc.h compileoptions.h operaciones.h menu/menu_items.h
+mmc.o: mmc.c mmc.h cpu.h debug.h utils.h zxvision.h video/screen.h divmmc.h compileoptions.h operaciones.h menu/menu_items.h
 	\$(CC) \$(CFLAGS) -c mmc.c
 
-ide.o: ide.c ide.h cpu.h debug.h utils.h zxvision.h screen.h divide.h menu/menu_items.h
+ide.o: ide.c ide.h cpu.h debug.h utils.h zxvision.h video/screen.h divide.h menu/menu_items.h
 	\$(CC) \$(CFLAGS) -c ide.c
 
-pd765.o: pd765.c pd765.h cpu.h debug.h utils.h dsk.h menu/menu_items.h screen.h settings.h machines/pcw.h
+pd765.o: pd765.c pd765.h cpu.h debug.h utils.h dsk.h menu/menu_items.h video/screen.h settings.h machines/pcw.h
 	\$(CC) \$(CFLAGS) -c pd765.c
 
-dsk.o: dsk.c dsk.h cpu.h debug.h utils.h tape.h menu/menu_items.h screen.h pd765.h settings.h timer.h
+dsk.o: dsk.c dsk.h cpu.h debug.h utils.h tape.h menu/menu_items.h video/screen.h pd765.h settings.h timer.h
 	\$(CC) \$(CFLAGS) -c dsk.c
 
 plus3dos_handler.o: plus3dos_handler.c plus3dos_handler.h cpu.h debug.h utils.h operaciones.h mem128.h dsk.h
 	\$(CC) \$(CFLAGS) -c plus3dos_handler.c
 
-zxpand.o: zxpand.c zxpand.h mmc.h cpu.h debug.h utils.h zxvision.h screen.h machines/zx8081.h joystick.h menu/menu_items.h
+zxpand.o: zxpand.c zxpand.h mmc.h cpu.h debug.h utils.h zxvision.h video/screen.h machines/zx8081.h joystick.h menu/menu_items.h
 	\$(CC) \$(CFLAGS) -c zxpand.c
 
-dandanator.o: dandanator.c dandanator.h cpu.h debug.h utils.h operaciones.h ula.h audio/audio.h screen.h menu/menu_items.h
+dandanator.o: dandanator.c dandanator.h cpu.h debug.h utils.h operaciones.h ula.h audio/audio.h video/screen.h menu/menu_items.h
 	\$(CC) \$(CFLAGS) -c dandanator.c
 
 gs.o: gs.c gs.h cpu.h debug.h utils.h operaciones.h contend.h audio/audio.h
 	\$(CC) \$(CFLAGS) -c gs.c
 
-betadisk.o: betadisk.c betadisk.h cpu.h debug.h utils.h operaciones.h ula.h mem128.h screen.h machines/tsconf.h menu/menu_items.h settings.h
+betadisk.o: betadisk.c betadisk.h cpu.h debug.h utils.h operaciones.h ula.h mem128.h video/screen.h machines/tsconf.h menu/menu_items.h settings.h
 	\$(CC) \$(CFLAGS) -c betadisk.c
 
-codetests.o: codetests.c codetests.h cpu.h debug.h utils.h operaciones.h ula.h mem128.h screen.h machines/tbblue.h assemble.h expression_parser.h audio/audio.h zeng.h zeng_online.h network.h settings.h atomic.h
+codetests.o: codetests.c codetests.h cpu.h debug.h utils.h operaciones.h ula.h mem128.h video/screen.h machines/tbblue.h assemble.h expression_parser.h audio/audio.h zeng.h zeng_online.h network.h settings.h atomic.h
 	\$(CC) \$(CFLAGS) -c codetests.c
 
 assemble.o: assemble.c assemble.h cpu.h debug.h utils.h
@@ -1683,10 +1683,10 @@ assemble.o: assemble.c assemble.h cpu.h debug.h utils.h
 chardevice.o: chardevice.c chardevice.h cpu.h debug.h
 	\$(CC) \$(CFLAGS) -c chardevice.c
 
-uartbridge.o: uartbridge.c uartbridge.h cpu.h debug.h utils.h chardevice.h screen.h
+uartbridge.o: uartbridge.c uartbridge.h cpu.h debug.h utils.h chardevice.h video/screen.h
 	\$(CC) \$(CFLAGS) -c uartbridge.c
 
-expression_parser.o: expression_parser.c expression_parser.h cpu.h debug.h utils.h operaciones.h screen.h mem128.h scmp.h m68k.h machines/prism.h machines/tbblue.h hilow_datadrive.h pd765.h superupgrade.h
+expression_parser.o: expression_parser.c expression_parser.h cpu.h debug.h utils.h operaciones.h video/screen.h mem128.h scmp.h m68k.h machines/prism.h machines/tbblue.h hilow_datadrive.h pd765.h superupgrade.h
 	\$(CC) \$(CFLAGS) -c expression_parser.c
 
 kartusho.o: kartusho.c kartusho.h cpu.h debug.h utils.h operaciones.h ula.h
@@ -1698,7 +1698,7 @@ samram.o: samram.c samram.h cpu.h debug.h utils.h operaciones.h ula.h joystick.h
 ifrom.o: ifrom.c ifrom.h cpu.h debug.h utils.h operaciones.h ula.h
 	\$(CC) \$(CFLAGS) -c ifrom.c
 
-hilow_datadrive.o: hilow_datadrive.c hilow_datadrive.h cpu.h debug.h utils.h operaciones.h ula.h screen.h menu/menu_items.h mem128.h compileoptions.h
+hilow_datadrive.o: hilow_datadrive.c hilow_datadrive.h cpu.h debug.h utils.h operaciones.h ula.h video/screen.h menu/menu_items.h mem128.h compileoptions.h
 	\$(CC) \$(CFLAGS) -c hilow_datadrive.c
 
 hilow_barbanegra.o: hilow_barbanegra.c hilow_barbanegra.h cpu.h debug.h utils.h operaciones.h mem128.h
@@ -1731,19 +1731,19 @@ ramjet.o: copy_interfaces/ramjet.c copy_interfaces/ramjet.h cpu.h debug.h utils.
 datagear.o: datagear.c datagear.h cpu.h debug.h utils.h operaciones.h ula.h
 	\$(CC) \$(CFLAGS) -c datagear.c
 
-spritefinder.o: spritefinder.c spritefinder.h cpu.h debug.h utils.h operaciones.h ula.h screen.h
+spritefinder.o: spritefinder.c spritefinder.h cpu.h debug.h utils.h operaciones.h ula.h video/screen.h
 	\$(CC) \$(CFLAGS) -c spritefinder.c
 
 multiface.o: copy_interfaces/multiface.c copy_interfaces/multiface.h cpu.h debug.h utils.h operaciones.h
 	\$(CC) \$(CFLAGS) -c copy_interfaces/multiface.c
 
-superupgrade.o: superupgrade.c superupgrade.h cpu.h debug.h utils.h operaciones.h mem128.h zxvision.h screen.h
+superupgrade.o: superupgrade.c superupgrade.h cpu.h debug.h utils.h operaciones.h mem128.h zxvision.h video/screen.h
 	\$(CC) \$(CFLAGS) -c superupgrade.c
 
-spectra.o: spectra.c spectra.h cpu.h debug.h utils.h zxvision.h screen.h operaciones.h mem128.h ulaplus.h
+spectra.o: spectra.c spectra.h cpu.h debug.h utils.h zxvision.h video/screen.h operaciones.h mem128.h ulaplus.h
 	\$(CC) \$(CFLAGS) -c spectra.c
 
-spritechip.o: spritechip.c spritechip.h cpu.h debug.h utils.h screen.h ula.h ulaplus.h mem128.h
+spritechip.o: spritechip.c spritechip.h cpu.h debug.h utils.h video/screen.h ula.h ulaplus.h mem128.h
 	\$(CC) \$(CFLAGS) -c spritechip.c
 
 divmmc.o: divmmc.c divmmc.h divide.h diviface.h cpu.h debug.h utils.h
@@ -1752,7 +1752,7 @@ divmmc.o: divmmc.c divmmc.h divide.h diviface.h cpu.h debug.h utils.h
 divide.o: divide.c divide.h divmmc.h diviface.h cpu.h debug.h utils.h
 	\$(CC) \$(CFLAGS) -c divide.c
 
-diviface.o: diviface.c diviface.h cpu.h debug.h utils.h zxvision.h screen.h operaciones.h machines/zxuno.h contend.h machines/prism.h machines/tbblue.h machines/tsconf.h
+diviface.o: diviface.c diviface.h cpu.h debug.h utils.h zxvision.h video/screen.h operaciones.h machines/zxuno.h contend.h machines/prism.h machines/tbblue.h machines/tsconf.h
 	\$(CC) \$(CFLAGS) -c diviface.c
 
 if1.o: if1.c if1.h cpu.h debug.h utils.h operaciones.h zxvision.h
@@ -1761,22 +1761,22 @@ if1.o: if1.c if1.h cpu.h debug.h utils.h operaciones.h zxvision.h
 ds1307.o: ds1307.c ds1307.h cpu.h debug.h utils.h operaciones.h zxvision.h
 	\$(CC) \$(CFLAGS) -c ds1307.c
 
-printers.o: printers.c printers.h cpu.h debug.h utils.h screen.h zxvision.h
+printers.o: printers.c printers.h cpu.h debug.h utils.h video/screen.h zxvision.h
 	\$(CC) \$(CFLAGS) -c printers.c
 
-realjoystick.o: realjoystick.c realjoystick.h cpu.h debug.h joystick.h zxvision.h utils.h  screen.h compileoptions.h snap/snap_ram.h
+realjoystick.o: realjoystick.c realjoystick.h cpu.h debug.h joystick.h zxvision.h utils.h  video/screen.h compileoptions.h snap/snap_ram.h
 	\$(CC) \$(CFLAGS) -c realjoystick.c
 
-ulaplus.o: ulaplus.c ulaplus.h cpu.h debug.h screen.h spectra.h zxvision.h
+ulaplus.o: ulaplus.c ulaplus.h cpu.h debug.h video/screen.h spectra.h zxvision.h
 	\$(CC) \$(CFLAGS) -c ulaplus.c
 
-autoselectoptions.o: autoselectoptions.c autoselectoptions.h debug.h machines/zx8081.h cpu.h screen.h joystick.h tape.h realjoystick.h ulaplus.h zxvision.h utils.h chardetect.h
+autoselectoptions.o: autoselectoptions.c autoselectoptions.h debug.h machines/zx8081.h cpu.h video/screen.h joystick.h tape.h realjoystick.h ulaplus.h zxvision.h utils.h chardetect.h
 	\$(CC) \$(CFLAGS) -c autoselectoptions.c
 
-chardetect.o: chardetect.c chardetect.h cpu.h operaciones.h debug.h screen.h textspeech.h disassemble.h zxvision.h settings.h utils_text_adventure.h
+chardetect.o: chardetect.c chardetect.h cpu.h operaciones.h debug.h video/screen.h textspeech.h disassemble.h zxvision.h settings.h utils_text_adventure.h
 	\$(CC) \$(CFLAGS) -c chardetect.c
 
-textspeech.o: textspeech.c textspeech.h cpu.h operaciones.h debug.h screen.h chardetect.h zxvision.h utils.h machines/sam.h
+textspeech.o: textspeech.c textspeech.h cpu.h operaciones.h debug.h video/screen.h chardetect.h zxvision.h utils.h machines/sam.h
 	\$(CC) \$(CFLAGS) -c textspeech.c
 
 
@@ -2039,8 +2039,8 @@ fi
 
 if [ "$MAINSOURCE" == "scrcocoa" ]; then
 cat >> Makefile << _EOF
-scrcocoa.o: scrcocoa.m joystick.h compileoptions.h cpu.h start.h screen.h charset.h debug.h utils.h timer.h zxvision.h machines/cpc.h machines/prism.h machines/sam.h machines/ql.h settings.h machines/msx.h machines/svi.h machines/coleco.h machines/sg1000.h machines/sms.h realjoystick.h machines/pcw.h
-	clang -I. -Iaudio -Ivideo -Icores -Imenu -Isnap -Icopy_interfaces -Imachines scrcocoa.m -c -o scrcocoa.o
+scrcocoa.o: video/scrcocoa.m joystick.h compileoptions.h cpu.h start.h video/screen.h charset.h debug.h utils.h timer.h zxvision.h machines/cpc.h machines/prism.h machines/sam.h machines/ql.h settings.h machines/msx.h machines/svi.h machines/coleco.h machines/sg1000.h machines/sms.h realjoystick.h machines/pcw.h
+	clang -I. -Iaudio -Ivideo -Icores -Imenu -Isnap -Icopy_interfaces -Imachines video/scrcocoa.m -c -o scrcocoa.o
 
 _EOF
 
@@ -2051,8 +2051,8 @@ fi
 if [ "$OPTIONOBJSTDOUT" != "" ]; then
 
 cat >> Makefile << _EOF
-scrstdout.o: scrstdout.c scrstdout.h debug.h screen.h mem128.h machines/zx8081.h operaciones.h cpu.h utils.h zxvision.h joystick.h ula.h disassemble.h machines/z88.h timer.h chardetect.h textspeech.h machines/tsconf.h machines/baseconf.h settings.h machines/msx.h machines/svi.h machines/coleco.h machines/sg1000.h machines/sms.h zeng_online_client.h
-	\$(CC) \$(CFLAGS) -c scrstdout.c
+scrstdout.o: video/scrstdout.c video/scrstdout.h debug.h video/screen.h mem128.h machines/zx8081.h operaciones.h cpu.h utils.h zxvision.h joystick.h ula.h disassemble.h machines/z88.h timer.h chardetect.h textspeech.h machines/tsconf.h machines/baseconf.h settings.h machines/msx.h machines/svi.h machines/coleco.h machines/sg1000.h machines/sms.h zeng_online_client.h
+	\$(CC) \$(CFLAGS) -c video/scrstdout.c
 
 _EOF
 
@@ -2061,8 +2061,8 @@ fi
 if [ "$OPTIONOBJSIMPLETEXT" != "" ]; then
 
 cat >> Makefile << _EOF
-scrsimpletext.o: scrsimpletext.c scrsimpletext.h debug.h screen.h mem128.h machines/zx8081.h operaciones.h cpu.h utils.h zxvision.h joystick.h ula.h disassemble.h machines/z88.h timer.h machines/tsconf.h machines/baseconf.h settings.h textspeech.h machines/msx.h machines/svi.h machines/coleco.h machines/sg1000.h machines/sms.h
-	\$(CC) \$(CFLAGS) -c scrsimpletext.c
+scrsimpletext.o: video/scrsimpletext.c video/scrsimpletext.h debug.h video/screen.h mem128.h machines/zx8081.h operaciones.h cpu.h utils.h zxvision.h joystick.h ula.h disassemble.h machines/z88.h timer.h machines/tsconf.h machines/baseconf.h settings.h textspeech.h machines/msx.h machines/svi.h machines/coleco.h machines/sg1000.h machines/sms.h
+	\$(CC) \$(CFLAGS) -c video/scrsimpletext.c
 
 _EOF
 
@@ -2073,8 +2073,8 @@ fi
 if [ "$OPTIONOBJCURSES" != "" ]; then
 
 cat >> Makefile << _EOF
-scrcurses.o: scrcurses.c cpu.h scrcurses.h compileoptions.h operaciones.h mem128.h charset.h debug.h machines/zx8081.h screen.h audio/audio.h zxvision.h utils.h joystick.h ula.h machines/z88.h machines/sam.h charset.h machines/tsconf.h machines/baseconf.h settings.h machines/chloe.h machines/timex.h machines/msx.h machines/svi.h machines/coleco.h machines/sg1000.h machines/sms.h zeng.h zeng_online.h zeng_online_client.h
-	\$(CC) \$(CFLAGS) -c scrcurses.c
+scrcurses.o: video/scrcurses.c cpu.h video/scrcurses.h compileoptions.h operaciones.h mem128.h charset.h debug.h machines/zx8081.h video/screen.h audio/audio.h zxvision.h utils.h joystick.h ula.h machines/z88.h machines/sam.h charset.h machines/tsconf.h machines/baseconf.h settings.h machines/chloe.h machines/timex.h machines/msx.h machines/svi.h machines/coleco.h machines/sg1000.h machines/sms.h zeng.h zeng_online.h zeng_online_client.h
+	\$(CC) \$(CFLAGS) -c video/scrcurses.c
 
 _EOF
 
@@ -2093,8 +2093,8 @@ fi
 if [ "$OPTIONOBJFBDEV" != "" ]; then
 
 cat >> Makefile << _EOF
-scrfbdev.o: scrfbdev.c cpu.h scrfbdev.h operaciones.h mem128.h charset.h debug.h machines/zx8081.h screen.h audio/audio.h zxvision.h utils.h joystick.h ula.h machines/z88.h machines/cpc.h machines/prism.h machines/sam.h machines/ql.h settings.h machines/msx.h machines/svi.h machines/coleco.h machines/sg1000.h machines/sms.h machines/pcw.h
-	\$(CC) \$(CFLAGS) -c scrfbdev.c
+scrfbdev.o: video/scrfbdev.c cpu.h video/scrfbdev.h operaciones.h mem128.h charset.h debug.h machines/zx8081.h video/screen.h audio/audio.h zxvision.h utils.h joystick.h ula.h machines/z88.h machines/cpc.h machines/prism.h machines/sam.h machines/ql.h settings.h machines/msx.h machines/svi.h machines/coleco.h machines/sg1000.h machines/sms.h machines/pcw.h
+	\$(CC) \$(CFLAGS) -c video/scrfbdev.c
 
 _EOF
 
@@ -2104,8 +2104,8 @@ fi
 if [ "$OPTIONOBJAA" != "" ]; then
 
 cat >> Makefile << _EOF
-scraa.o: scraa.c cpu.h scraa.h operaciones.h mem128.h charset.h debug.h machines/zx8081.h audio/audio.h zxvision.h screen.h utils.h joystick.h ula.h machines/z88.h textspeech.h settings.h machines/msx.h machines/svi.h machines/coleco.h machines/sg1000.h machines/sms.h machines/pcw.h
-	\$(CC) \$(CFLAGS) -c scraa.c
+scraa.o: video/scraa.c cpu.h video/scraa.h operaciones.h mem128.h charset.h debug.h machines/zx8081.h audio/audio.h zxvision.h video/screen.h utils.h joystick.h ula.h machines/z88.h textspeech.h settings.h machines/msx.h machines/svi.h machines/coleco.h machines/sg1000.h machines/sms.h machines/pcw.h
+	\$(CC) \$(CFLAGS) -c video/scraa.c
 
 _EOF
 
@@ -2114,8 +2114,8 @@ fi
 if [ "$OPTIONOBJCACA" != "" ]; then
 
 cat >> Makefile << _EOF
-scrcaca.o: scrcaca.c cpu.h scrcaca.h operaciones.h mem128.h charset.h debug.h machines/zx8081.h audio/audio.h zxvision.h screen.h utils.h joystick.h machines/z88.h settings.h machines/msx.h machines/svi.h machines/coleco.h machines/sg1000.h machines/sms.h machines/pcw.h
-	\$(CC) \$(CFLAGS) -c scrcaca.c
+scrcaca.o: video/scrcaca.c cpu.h video/scrcaca.h operaciones.h mem128.h charset.h debug.h machines/zx8081.h audio/audio.h zxvision.h video/screen.h utils.h joystick.h machines/z88.h settings.h machines/msx.h machines/svi.h machines/coleco.h machines/sg1000.h machines/sms.h machines/pcw.h
+	\$(CC) \$(CFLAGS) -c video/scrcaca.c
 
 _EOF
 
@@ -2127,8 +2127,8 @@ fi
 if [ "$OPTIONOBJXWINDOWS" != "" ]; then
 
 cat >> Makefile << _EOF
-scrxwindows.o: scrxwindows.c cpu.h scrxwindows.h debug.h screen.h mem128.h compileoptions.h machines/zx8081.h audio/audio.h charset.h zxvision.h timer.h utils.h joystick.h machines/cpc.h machines/prism.h machines/z88.h machines/sam.h machines/ql.h settings.h machines/msx.h machines/svi.h machines/coleco.h machines/sg1000.h machines/sms.h machines/pcw.h
-	\$(CC) \$(CFLAGS) -I/usr/X11R6/include -I/opt/X11/include -c scrxwindows.c
+scrxwindows.o: video/scrxwindows.c cpu.h video/scrxwindows.h debug.h video/screen.h mem128.h compileoptions.h machines/zx8081.h audio/audio.h charset.h zxvision.h timer.h utils.h joystick.h machines/cpc.h machines/prism.h machines/z88.h machines/sam.h machines/ql.h settings.h machines/msx.h machines/svi.h machines/coleco.h machines/sg1000.h machines/sms.h machines/pcw.h
+	\$(CC) \$(CFLAGS) -I/usr/X11R6/include -I/opt/X11/include -c video/scrxwindows.c
 
 _EOF
 
@@ -2138,8 +2138,8 @@ fi
 if [ "$OPTIONOBJSDL" != "" ] && [ "$LIBSDL" == "SDL" ]; then
 
 cat >> Makefile << _EOF
-scrsdl.o: scrsdl.c cpu.h scrsdl.h debug.h screen.h mem128.h compileoptions.h machines/zx8081.h audio/audio.h charset.h zxvision.h timer.h utils.h joystick.h common_sdl.h machines/cpc.h machines/prism.h machines/sam.h machines/ql.h settings.h machines/msx.h machines/svi.h machines/coleco.h machines/sg1000.h machines/sms.h machines/pcw.h
-	\$(CC) \$(CFLAGS) -c scrsdl.c
+scrsdl.o: video/scrsdl.c cpu.h video/scrsdl.h debug.h video/screen.h mem128.h compileoptions.h machines/zx8081.h audio/audio.h charset.h zxvision.h timer.h utils.h joystick.h common_sdl.h machines/cpc.h machines/prism.h machines/sam.h machines/ql.h settings.h machines/msx.h machines/svi.h machines/coleco.h machines/sg1000.h machines/sms.h machines/pcw.h
+	\$(CC) \$(CFLAGS) -c video/scrsdl.c
 
 audiosdl.o: audio/audiosdl.c audio/audiosdl.h cpu.h audio/audio.h compileoptions.h debug.h common_sdl.h settings.h timer.h
 	\$(CC) \$(CFLAGS) -c audio/audiosdl.c
@@ -2154,8 +2154,8 @@ fi
 if [ "$OPTIONOBJSDL" != "" ] && [ "$LIBSDL" == "SDL2" ]; then
 
 cat >> Makefile << _EOF
-scrsdl2.o: scrsdl2.c cpu.h scrsdl2.h debug.h screen.h mem128.h compileoptions.h machines/zx8081.h audio/audio.h charset.h zxvision.h timer.h utils.h joystick.h common_sdl2.h machines/cpc.h machines/prism.h machines/sam.h machines/ql.h settings.h machines/msx.h machines/svi.h machines/coleco.h machines/sg1000.h machines/sms.h machines/pcw.h
-	\$(CC) \$(CFLAGS) -c scrsdl2.c
+scrsdl2.o: video/scrsdl2.c cpu.h video/scrsdl2.h debug.h video/screen.h mem128.h compileoptions.h machines/zx8081.h audio/audio.h charset.h zxvision.h timer.h utils.h joystick.h common_sdl2.h machines/cpc.h machines/prism.h machines/sam.h machines/ql.h settings.h machines/msx.h machines/svi.h machines/coleco.h machines/sg1000.h machines/sms.h machines/pcw.h
+	\$(CC) \$(CFLAGS) -c video/scrsdl2.c
 
 audiosdl2.o: audio/audiosdl2.c audio/audiosdl2.h cpu.h audio/audio.h compileoptions.h debug.h common_sdl2.h utils.h settings.h timer.h
 	\$(CC) \$(CFLAGS) -c audio/audiosdl2.c
