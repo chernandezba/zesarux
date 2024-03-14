@@ -1798,7 +1798,7 @@ clean:
 
 COMMONFILES=ACKNOWLEDGEMENTS LICENSE LICENSES_info Changelog Cambios TODO* README HISTORY FEATURES FEATURES_es EXCLUSIVEFEATURES INSTALL INSTALLWINDOWS IN_MEMORIAM* ALTERNATEROMS INCLUDEDTAPES DONATE DONORS FAQ *.odt mantransfev3.bin *.rom zxuno.flash tbblue.mmc pcw_8x_boot*dsk zesarux.mp3 zesarux.xcf editionnamegame.* bin_sprite_to_c.sh keyboard_*.bmp z88_shortcuts.bmp zesarux.pdf docs licenses my_soft speech_filters text_image_filters
 
-ONLYSOURCEFILES=icons_buttons macos patches tests *.c *.m *.h audio video cores snap menu copy_interfaces machines *.tpl DEVELOPMENT CHECKLIST configure *.sh *.asm benchmark_*.txt current_checklist.txt prism_change_boot.txt Dockerfile*
+ONLYSOURCEFILES=icons_buttons macos patches tests *.c *.h audio video cores snap menu copy_interfaces machines *.tpl DEVELOPMENT CHECKLIST configure *.sh *.asm benchmark_*.txt current_checklist.txt prism_change_boot.txt Dockerfile*
 
 
 
@@ -2519,7 +2519,7 @@ fi
 export LANG=C
 
 #Estadisticas
-FILES_FOR_STATS="*.c *.m *.h audio/* video/* cores/* menu/* snap/* copy_interfaces/* machines/*"
+FILES_FOR_STATS="*.c *.h audio/* video/* cores/* menu/* snap/* copy_interfaces/* machines/*"
 #Lineas codigo fuente
 #Descartando lineas vacias
 LINES_SOURCE=`cat $FILES_FOR_STATS|grep -v "^$"|wc -l|tail -1|awk '{printf $1}'`
