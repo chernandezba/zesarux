@@ -20460,7 +20460,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 
     //Se pulsa tecla ESC
 	if (tecla==MENU_RETORNO_ESC) {
-
+        //printf("tecla ESC\n");
         //Cerrar todos menus
         if (menu_old_behaviour_close_menus.v==0) {
             salir_todos_menus=1;
@@ -20489,7 +20489,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 	else if (tecla==MENU_RETORNO_BACKGROUND) return MENU_RETORNO_BACKGROUND;
 
 	else {
-
+        //printf("ultimo else\n");
         if (tecla_atajo) zxvision_helper_menu_shortcut_print(tecla_atajo);
 
         if (es_one_time) zxvision_index_delete_last_submenu_path();
@@ -26357,8 +26357,8 @@ char *first_aid_string_zxdesktop_custombuttons="You can customize upper ZX Deskt
 
 int first_aid_no_snapshot_save_zsf=0;
 char *first_aid_string_snapshot_save_zsf="When saving snapshots, the recommended extension is ZSF, as this is the native "
-    "ZEsarUX snapshot format. If you want to save a new snapshot, press TAB twice on the file selector to write the snapshot file name, "
-    "with a .zsf extension. But if you want to overwrite a snapshot that already exists, just select it";
+    "ZEsarUX snapshot format. If you want to save a different format snapshot, just change the extension. If you want to overwrite "
+    "a existing snapshot, just select it";
 
 
 int first_aid_no_advanced_menu=0;

@@ -161,6 +161,7 @@ int menu_recent_files_opcion_seleccionada=0;
 
 
 void menu_filesel_set_overlay(zxvision_window *ventana);
+void menu_filesel_overlay_show_current_dir(zxvision_window *ventana,int rotar);
 
 
 filesel_item *menu_get_filesel_item(int index);
@@ -3409,7 +3410,11 @@ void zxvision_menu_print_dir(int inicial,zxvision_window *ventana)
 
     //menu_escribe_texto_ventana(14,0,ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,"               ");
 
+    //sin multitarea, usar el que muestra directorio cortado
     if (!menu_multitarea) zxvision_filesel_show_current_dir(ventana);
+    //con multitarea, tenemos overlay. lo dibujamos aqui la primera vez para evitar esperas hasta que se lanza el primer overlay
+    //en el caso de uso de cpu alto
+    else menu_filesel_overlay_show_current_dir(ventana,0);
 
 /*
 	char current_dir[PATH_MAX];
@@ -5208,7 +5213,7 @@ void menu_filesel_overlay_show_current_dir_init_scroll(void)
     contador_scroll_current_dir=-10;
 }
 
-void menu_filesel_overlay_show_current_dir(zxvision_window *ventana)
+void menu_filesel_overlay_show_current_dir(zxvision_window *ventana,int rotar)
 {
 	char current_dir[PATH_MAX];
     char current_dir_rotado[PATH_MAX];
@@ -5245,11 +5250,15 @@ void menu_filesel_overlay_show_current_dir(zxvision_window *ventana)
 
 	zxvision_print_string_defaults_fillspc(ventana,1,0,buffer3);
 
-    contador_scroll_current_dir++;
+    if (rotar) {
+        contador_scroll_current_dir++;
 
-    //10 posiciones de mas y de menos para pausa
-    if (contador_scroll_current_dir>max_rotacion_mensaje_indice+10) menu_filesel_overlay_show_current_dir_init_scroll();
+        //10 posiciones de mas y de menos para pausa
+        if (contador_scroll_current_dir>max_rotacion_mensaje_indice+10) menu_filesel_overlay_show_current_dir_init_scroll();
+    }
 }
+
+
 
 
 //Overlay para mostrar los previews
@@ -5263,7 +5272,7 @@ void menu_filesel_overlay(void)
 		//renderizar preview en memoria si conviene
 		if (si_complete_video_driver() && menu_filesel_show_previews.v) menu_filesel_overlay_render_preview_in_memory();
 
-        if (menu_multitarea) menu_filesel_overlay_show_current_dir(menu_filesel_overlay_window);
+        if (menu_multitarea) menu_filesel_overlay_show_current_dir(menu_filesel_overlay_window,1);
 
 	}
 
@@ -5296,6 +5305,39 @@ void menu_filesel_set_overlay(zxvision_window *ventana)
 
             //cambio overlay
             zxvision_set_window_overlay(ventana,menu_filesel_overlay);
+
+}
+
+void menu_filesel_chdir(char *directorio)
+{
+        char *directorio_a_cambiar;
+
+    //suponemos esto:
+    directorio_a_cambiar=directorio;
+    char last_directory[PATH_MAX];
+
+    //si es "..", ver si directorio actual contiene archivo que indica ultimo directorio
+    //en caso de descompresiones
+    if (!strcmp(directorio,"..")) {
+        debug_printf (VERBOSE_DEBUG,"Is directory ..");
+        if (si_existe_archivo(MENU_LAST_DIR_FILE_NAME)) {
+            debug_printf (VERBOSE_DEBUG,"Directory has file " MENU_LAST_DIR_FILE_NAME " Changing "
+                    "to previous directory");
+
+            if (menu_filesel_read_file_last_dir(last_directory)==0) {
+                debug_printf (VERBOSE_DEBUG,"Previous directory was: %s",last_directory);
+
+                directorio_a_cambiar=last_directory;
+            }
+
+        }
+    }
+
+    debug_printf (VERBOSE_DEBUG,"Changing to directory %s",directorio_a_cambiar);
+
+    //printf("cambiando a directorio %s desde filesel\n",directorio_a_cambiar);
+
+    zvfs_chdir(directorio_a_cambiar);
 
 }
 
@@ -5440,8 +5482,13 @@ int menu_filesel_if_save(char *titulo,char *filtros[],char *archivo,int si_save)
 		//zxvision_new_window_check_range(&last_filesel_ventana_x,&last_filesel_ventana_y,&last_filesel_ventana_visible_ancho,&last_filesel_ventana_visible_alto);
 		//zxvision_new_window_no_check_range(ventana,last_filesel_ventana_x,last_filesel_ventana_y,last_filesel_ventana_visible_ancho,last_filesel_ventana_visible_alto,last_filesel_ventana_visible_ancho-1,alto_total,titulo);
 
-        //le damos mas de alto para rellenar zona no usada de debajo
-		zxvision_new_window_nocheck_staticsize(ventana,last_filesel_ventana_x,last_filesel_ventana_y,last_filesel_ventana_visible_ancho,last_filesel_ventana_visible_alto,last_filesel_ventana_visible_ancho-1,alto_total+last_filesel_ventana_visible_alto,titulo);
+        //Desactivado: le damos mas de alto para rellenar zona no usada de debajo (el +last_filesel_ventana_visible_alto)
+		zxvision_new_window_nocheck_staticsize(ventana,last_filesel_ventana_x,last_filesel_ventana_y,
+            last_filesel_ventana_visible_ancho,last_filesel_ventana_visible_alto,
+            last_filesel_ventana_visible_ancho-1,alto_total/*+last_filesel_ventana_visible_alto*/,
+            titulo);
+
+        //printf("alto: %d\n",ventana->total_height);
 
 	    ventana->upper_margin=4;
 	    ventana->lower_margin=4;
@@ -5751,6 +5798,20 @@ int menu_filesel_if_save(char *titulo,char *filtros[],char *archivo,int si_save)
                         zxvision_sound_event_cursor_movement();
 					break;
 
+                    //izquierda. igual que "cd .."
+                    case 8:
+                        menu_filesel_chdir("..");
+
+                        menu_filesel_free_mem();
+                        releer_directorio=1;
+
+                        //Decir directorio activo
+                        //Esperar a liberar tecla si no la tecla invalida el speech
+                        menu_espera_no_tecla();
+                        menu_textspeech_say_current_directory();
+
+                    break;
+
 					//PgDn
 					case 25:
 						for (aux_pgdnup=0;aux_pgdnup<zxvision_get_filesel_alto_dir(ventana);aux_pgdnup++)
@@ -5860,34 +5921,7 @@ int menu_filesel_if_save(char *titulo,char *filtros[],char *archivo,int si_save)
 
 						if (get_file_type(item_seleccionado->d_name)==2) {
 							debug_printf (VERBOSE_DEBUG,"Is a directory. Change");
-							char *directorio_a_cambiar;
-
-							//suponemos esto:
-							directorio_a_cambiar=item_seleccionado->d_name;
-							char last_directory[PATH_MAX];
-
-							//si es "..", ver si directorio actual contiene archivo que indica ultimo directorio
-							//en caso de descompresiones
-							if (!strcmp(item_seleccionado->d_name,"..")) {
-								debug_printf (VERBOSE_DEBUG,"Is directory ..");
-								if (si_existe_archivo(MENU_LAST_DIR_FILE_NAME)) {
-									debug_printf (VERBOSE_DEBUG,"Directory has file " MENU_LAST_DIR_FILE_NAME " Changing "
-											"to previous directory");
-
-									if (menu_filesel_read_file_last_dir(last_directory)==0) {
-										debug_printf (VERBOSE_DEBUG,"Previous directory was: %s",last_directory);
-
-										directorio_a_cambiar=last_directory;
-									}
-
-								}
-							}
-
-							debug_printf (VERBOSE_DEBUG,"Changing to directory %s",directorio_a_cambiar);
-
-                            //printf("cambiando a directorio %s desde filesel\n",directorio_a_cambiar);
-
-							zvfs_chdir(directorio_a_cambiar);
+                            menu_filesel_chdir(item_seleccionado->d_name);
 
 
 							menu_filesel_free_mem();

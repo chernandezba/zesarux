@@ -35,11 +35,13 @@ Allow to press hotkeys at On Screen Keyboard
 Allow autoload when inserting QL mdv/flp
 Show 2 microdrive and 1 floppy icon on QL, instead of just one icon
 Remember last path used on output tape
+
 Improved file selector:
 - scrolling the current directory field if it does not fit on the window
 - can change extension filter
 - when saving files, cursor is located at the file field, and a file name is suggested
 - file selection zone has a different color
+- go up one directory when pressing left cursor key
 
 Improved ZX Vision:
 - Changed left click mouse behaviour: when pressing left mouse button out of a window, it will close all menus.

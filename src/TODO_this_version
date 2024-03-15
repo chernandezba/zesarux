@@ -871,3 +871,27 @@ este parametro. Por ejemplo "reset cpu" (y un dialogo de confirmacion yes/no no 
 
 -error indexado:
 Main Menu-> Settings-> Hardware Settings-> Next machine id-> Hardware Settings-> Next machine id-> Hardware Settings-> Next machine id-> Hardware Settings
+
+-filesel: al pulsar una tecla, el cursor siempre se posiciona arriba del todo, esto
+es desde que hemos puesto color de fondo. intentar hacer comportamiento anterior... quiza poniendo un flag en la ventana,
+esto puede que pase porque la ventana ahora tiene mas alto total
+-otra cosa es que al hacer scroll hace scroll mas alla de lo permitido..., se ve zona sin archivos y lo peor es que hace segfault
+-de momento quito el sumar alto de mas hasta que no consiga una solucion fiable de mostrar todo el filesel de otro color. quiza
+una opcion especial de una ventana que diga que hay que hacer un recuadro de tal color, con unas coordenadas x,y,ancho,alto y color
+(y que no le afecte el scroll para que siempre se vea en mismo sitio, tendria que estar en funcion draw_window_contents creo)
+primer dibujar ese recuadro si existe (comprobando que no se salga de limites de ventana) y luego ya el dibujado normal de ventana.
+cuidado con las cache (si es que aplican).
+quiza demasiado "custom" para este caso y no se vaya a usar en otros? igual se puede usar en otras ventanas que se necesita limpiar
+siempre parte del contenido, asi lo haria automaticamente la funcion de draw_window_contents
+Seria como tener dos capas de texto (aunque esta del recuadro es fija, sin scroll, y rellena con caracter espacio)
+
+
+-ay player: al agregar un directorio, queda algo confuso porque no indica como hacer play
+quiza si hay una playlist cargada, deberia indicar de eso en la ventana principal y además un boton para hacer play del primero
+ay player: boton de pausa. quizá que salte el registro PC a un bucle cerrado  (y quizá parando el chip ay?)
+
+-opcion para minimizar ventanas a la parte baja de la ventana (o comportamiento como ahora, las minimiza donde estaban)
+
+-nuevo sensor: bits ear, mic puerto feh
+
+-parece que el archivo de indice a veces lo escribe en otras rutas
