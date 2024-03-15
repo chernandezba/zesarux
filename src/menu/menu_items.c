@@ -21342,9 +21342,12 @@ void menu_help_keyboard_load_bmp(void)
     //localizarlo
     char buffer_nombre[PATH_MAX];
 
-    int existe=find_sharedfile(nombrebmp,buffer_nombre);
+    char nombrebmp_final[PATH_MAX];
+    sprintf(nombrebmp_final,"keyboards/%s",nombrebmp);
+
+    int existe=find_sharedfile(nombrebmp_final,buffer_nombre);
     if (!existe)  {
-            debug_printf(VERBOSE_ERR,"Unable to find bmp file %s",nombrebmp);
+            debug_printf(VERBOSE_ERR,"Unable to find bmp file %s",nombrebmp_final);
             return;
     }
 
