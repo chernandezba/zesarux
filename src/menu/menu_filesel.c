@@ -5488,6 +5488,13 @@ int menu_filesel_if_save(char *titulo,char *filtros[],char *archivo,int si_save)
             last_filesel_ventana_visible_ancho-1,alto_total/*+last_filesel_ventana_visible_alto*/,
             titulo);
 
+        //zona de color mas alla del scroll
+        ventana->beyond_x=1;
+        ventana->beyond_y=4;
+        ventana->beyond_width=last_filesel_ventana_visible_ancho-3;
+        ventana->beyond_height=last_filesel_ventana_visible_alto-11;
+        ventana->beyond_color=ESTILO_GUI_PAPEL_FILESELECTOR_FILES;
+
         //printf("alto: %d\n",ventana->total_height);
 
 	    ventana->upper_margin=4;

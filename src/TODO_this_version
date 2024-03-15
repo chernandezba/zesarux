@@ -895,3 +895,6 @@ ay player: boton de pausa. quizá que salte el registro PC a un bucle cerrado  (
 -nuevo sensor: bits ear, mic puerto feh
 
 -parece que el archivo de indice a veces lo escribe en otras rutas
+
+-en filesel ajustar estos valores numericos, creo que todos pueden venir de variables definidas
+//zona de color mas alla del scroll

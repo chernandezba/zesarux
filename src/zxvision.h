@@ -162,6 +162,8 @@ struct s_zxvision_window {
 	int x_before_max_min_imize;
 	int y_before_max_min_imize;
 
+    //zona de coloreado cuando se va de limite de tamanyo
+    int beyond_x,beyond_y,beyond_width,beyond_height,beyond_color;
 
 	int can_use_all_width; //Si tenemos usable también la ultima columna derecha
 

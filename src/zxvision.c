@@ -10482,6 +10482,12 @@ void zxvision_new_window_no_check_range(zxvision_window *w,int x,int y,int visib
 	w->x_before_max_min_imize=x;
 	w->y_before_max_min_imize=y;
 
+    w->beyond_x=0;
+    w->beyond_y=0;
+    w->beyond_width=0;
+    w->beyond_height=0;
+    w->beyond_color=0;
+
 	w->can_use_all_width=0;
 	//w->applied_can_use_all_width=0;
 
@@ -13791,8 +13797,19 @@ void zxvision_draw_window_contents(zxvision_window *w)
 			else {
 				//printf ("fuera de rango\n");
 				if (!ventana_encima) {
+                    int color_beyond=w->default_paper;
+
+                    if (w->beyond_height>0 && w->beyond_width>0) {
+                        if (x>=w->beyond_x && x<w->beyond_x+w->beyond_width &&
+                            y>=w->beyond_y && y<=w->beyond_y+w->beyond_height) {
+
+                            color_beyond=w->beyond_color;
+                        }
+                    }
+
+
 				putchar_menu_overlay_parpadeo_cache_or_not(xdestination,ydestination,
-				' ',ESTILO_GUI_TINTA_NORMAL,w->default_paper/*ESTILO_GUI_PAPEL_NORMAL*/,0,use_cache);
+				' ',ESTILO_GUI_TINTA_NORMAL,color_beyond/*ESTILO_GUI_PAPEL_NORMAL*/,0,use_cache);
 				}
 			}
 			//printf ("sonda 3\n");
