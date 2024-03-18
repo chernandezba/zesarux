@@ -878,15 +878,14 @@ Main Menu-> Settings-> Hardware Settings-> Next machine id-> Hardware Settings->
 
 -ay player: al agregar un directorio, queda algo confuso porque no indica como hacer play
 quiza si hay una playlist cargada, deberia indicar de eso en la ventana principal y además un boton para hacer play del primero
--ay player: boton de pausa. quizá que salte el registro PC a un bucle cerrado  (y quizá parando el chip ay?)
 
 -opcion para minimizar ventanas a la parte baja de la ventana (o comportamiento como ahora, las minimiza donde estaban)
 
 -nuevo sensor: bits ear, mic puerto feh
 
 -parece que el archivo de indice a veces lo escribe en otras rutas
--archivo txt de indice de búsqueda: revisar que si excede ancho de linea, no peta al arrancar. hacerlo mas seguro para que nunca pete al iniciar
--opcion desactivar indice de busqueda
+ok -archivo txt de indice de búsqueda: revisar que si excede ancho de linea, no peta al arrancar. hacerlo mas seguro para que nunca pete al iniciar
+ok -opcion desactivar indice de busqueda
 
 
 -keyboard help: pulsar shift+symbol no cambia a tecla extendida, con ventana help keyboard en el foco:

@@ -24,6 +24,7 @@ Agregado mas antiguos programas/juegos mios de Spectrum
 
 Permitir cargar Next .nex/.snx/.sna snapshots con archivos adicionales sin tener que copiarlos en el archivo mmc (monta automaticamente el esxdos handler)
 Permitir limitar max cpu turbo en Next
+Permitir pausar en AY Player
 Mejorado Ayuda de Teclado: ahora puedes activar teclas pulsando con el ratón
 Permitir no guardar la configuración al salir de ZEsarUX
 Permitir seleccionar el logotipo normal de ZEsarUX o el logotipo del X Aniversario

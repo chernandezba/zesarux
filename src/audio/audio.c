@@ -1862,7 +1862,8 @@ z80_bit ay_player_silence_detection={1};
 
 int ay_player_silence_detection_counter=0;
 
-
+//Si pausado
+z80_bit ay_player_paused={0};
 
 
 //Retorna valor de 16 bit apuntado como big endian
@@ -2148,6 +2149,7 @@ int audio_ay_player_play_song(z80_byte song)
 
 	ay_song_length_counter=0;
 	ay_player_playing.v=1;
+    ay_player_paused.v=0;
 
 	//Cargar registros
 	/*
@@ -2316,7 +2318,12 @@ int audio_ay_player_play_song(z80_byte song)
         player[8]=24;
         player[9]=256-6;
 
-        ay_player_copy_to_rom(player,0,10);
+        //Hueco para llegar a posicion 13
+        player[10]=201;
+
+        player[11]=201;
+        player[12]=201;
+
     }
     else {
 
@@ -2340,9 +2347,25 @@ int audio_ay_player_play_song(z80_byte song)
         player[11]=24;
         player[12]=256-9;
 
-        ay_player_copy_to_rom(player,0,13);
+
 
     }
+
+    //Para poder hacer la pausa
+    //DI.
+    //LOOP: JR LOOP
+    player[13]=243;
+    player[14]=24;
+    player[15]=256-2;
+
+    //Para despausarlo
+    //EI
+    //RET
+    player[16]=251;
+    player[17]=201;
+
+    ay_player_copy_to_rom(player,0,18);
+
 	//	h) Load all blocks for this song
 	//		m) Load to PC ZERO value
 	reg_pc=0;
@@ -2407,6 +2430,52 @@ int audio_ay_player_play_song(z80_byte song)
 }
 
 char ay_player_filename_playing[PATH_MAX]="";
+
+z80_byte ayplayer_antes_pausa_ay_3_8912_reg_mixer[MAX_AY_CHIPS];
+
+
+void ay_player_pause(void)
+{
+
+    int i;
+    for (i=0;i<MAX_AY_CHIPS;i++) {
+        ayplayer_antes_pausa_ay_3_8912_reg_mixer[i]=ay_3_8912_registros[i][7];
+        ay_3_8912_registros[i][7]=255; //Silenciar canales
+    }
+
+    //call_address(13);
+
+    push_valor(reg_pc,PUSH_VALUE_TYPE_CALL);
+    reg_pc=13;
+
+
+}
+
+void ay_player_unpause(void)
+{
+    //Restaurar canales
+    int i;
+    for (i=0;i<MAX_AY_CHIPS;i++) {
+        ay_3_8912_registros[i][7]=ayplayer_antes_pausa_ay_3_8912_reg_mixer[i];
+    }
+
+    //jp 16
+    reg_pc=16;
+}
+
+
+
+void ay_player_pause_unpause(void)
+{
+    if (ay_player_paused.v==0) {
+        ay_player_pause();
+        ay_player_paused.v=1;
+    }
+    else {
+        ay_player_unpause();
+        ay_player_paused.v=0;
+    }
+}
 
 void ay_player_load_and_play(char *filename)
 {
@@ -2692,6 +2761,7 @@ void ay_player_playing_timer(void)
 {
 	if (audio_ay_player_mem==NULL) return;
 	if (ay_player_playing.v==0) return;
+    if (ay_player_paused.v) return;
 
 
 	ay_song_length_counter++;

@@ -24,6 +24,7 @@ Added more vintage Spectrum programs/games from me
 
 Allow to load Next .nex/.snx/.sna snapshots with additional files without having to copy them on the mmc file (it mounts automatically the esxdos handler)
 Allow to limit max cpu turbo on Next
+Allow to pause playing on AY Player
 Improved Keyboard Help: now you can press keys by clicking mouse
 Allow to not save configuration when exiting ZEsarUX
 Allow to select normal ZEsarUX logo or X Anniversary logo

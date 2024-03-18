@@ -6382,6 +6382,11 @@ void menu_ayplayer_edit_playlist(MENU_ITEM_PARAMETERS)
     } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
 }
 
+void menu_audio_new_ayplayer_pause(MENU_ITEM_PARAMETERS)
+{
+    ay_player_pause_unpause();
+}
+
 zxvision_window zxvision_window_ayplayer;
 
 void menu_audio_new_ayplayer(MENU_ITEM_PARAMETERS)
@@ -6543,10 +6548,16 @@ void menu_audio_new_ayplayer(MENU_ITEM_PARAMETERS)
 				menu_add_item_menu_ayuda(array_menu_audio_new_ayplayer,"Stop song");
 				menu_add_item_menu_tabulado(array_menu_audio_new_ayplayer,13,linea);
 
+
+				menu_add_item_menu_format(array_menu_audio_new_ayplayer,MENU_OPCION_NORMAL,menu_audio_new_ayplayer_pause,NULL,"Pa~~use");
+				menu_add_item_menu_shortcut(array_menu_audio_new_ayplayer,'u');
+				menu_add_item_menu_ayuda(array_menu_audio_new_ayplayer,"Pause song");
+				menu_add_item_menu_tabulado(array_menu_audio_new_ayplayer,18,linea);
+
 				menu_add_item_menu_format(array_menu_audio_new_ayplayer,MENU_OPCION_NORMAL,menu_audio_new_ayplayer_next,NULL,"~~Next");
 				menu_add_item_menu_shortcut(array_menu_audio_new_ayplayer,'n');
 				menu_add_item_menu_ayuda(array_menu_audio_new_ayplayer,"Next song");
-				menu_add_item_menu_tabulado(array_menu_audio_new_ayplayer,18,linea);
+				menu_add_item_menu_tabulado(array_menu_audio_new_ayplayer,24,linea);
 
                 linea+=2;
 
