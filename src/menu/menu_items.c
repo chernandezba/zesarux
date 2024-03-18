@@ -21845,6 +21845,7 @@ void menu_help_keyboard_overlay(void)
             //printf ("Refrescando keyboard help. contador_segundo=%d\n",contador_segundo);
 
             //zoom_x de offset para evitar parpadeo con la linea del recuadro por la izquierda
+            //El teclado no sigue el zoom de ventana, pero sí que sigue el zoom de gui
             screen_render_bmpfile(help_keyboard_bmp_file_mem,BMP_SECOND_INDEX_FIRST_COLOR,ventana,zoom_x,0,0,-1,0);
 
             ventana->has_been_drawn_contents=0;
@@ -43130,6 +43131,7 @@ void menu_process_f_functions_by_action_name(int id_funcion,int si_pulsado_icono
             menu_debug_file_utils(0);
         break;
 
+        //Gestiono las dos acciones desde aqui porque son casi iguales
         case F_FUNCION_SET_MACHINE:
         case F_FUNCION_MACHINE_SELECTION:
 
@@ -43141,7 +43143,7 @@ void menu_process_f_functions_by_action_name(int id_funcion,int si_pulsado_icono
                 indice_icono=zxdesktop_configurable_icons_current_executing;
 
                 if (indice_icono!=-1) {
-                    //Si parametro icono en blanco
+                    //Si opciones en blanco
                     if (zxdesktop_configurable_icons_list[indice_icono].extra_info[0]==0) {
                         menu_machine_selection(0);
                     }
@@ -43164,6 +43166,7 @@ void menu_process_f_functions_by_action_name(int id_funcion,int si_pulsado_icono
                     }
                     else {
                         char *nombre=defined_buttons_functions_array_parameters[numero_boton_redefinido];
+                        //Si opciones en blanco
                         if (nombre[0]==0) {
                             menu_machine_selection(0);
                         }
@@ -43184,6 +43187,8 @@ void menu_process_f_functions_by_action_name(int id_funcion,int si_pulsado_icono
                     if (id_tecla_f_pulsada<0) debug_printf(VERBOSE_ERR,"Error getting F-Key info");
                     else {
                         //printf("tecla F %d\n",id_tecla_f_pulsada);
+                        //printf("Parametros: %s\n",defined_f_functions_keys_array_parameters[id_tecla_f_pulsada]);
+                        //Si opciones en blanco
                         if (defined_f_functions_keys_array_parameters[id_tecla_f_pulsada][0]==0) {
                             menu_machine_selection(0);
                         }

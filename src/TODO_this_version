@@ -872,29 +872,28 @@ este parametro. Por ejemplo "reset cpu" (y un dialogo de confirmacion yes/no no 
 -error indexado:
 Main Menu-> Settings-> Hardware Settings-> Next machine id-> Hardware Settings-> Next machine id-> Hardware Settings-> Next machine id-> Hardware Settings
 
--filesel: al pulsar una tecla, el cursor siempre se posiciona arriba del todo, esto
-es desde que hemos puesto color de fondo. intentar hacer comportamiento anterior... quiza poniendo un flag en la ventana,
-esto puede que pase porque la ventana ahora tiene mas alto total
--otra cosa es que al hacer scroll hace scroll mas alla de lo permitido..., se ve zona sin archivos y lo peor es que hace segfault
--de momento quito el sumar alto de mas hasta que no consiga una solucion fiable de mostrar todo el filesel de otro color. quiza
-una opcion especial de una ventana que diga que hay que hacer un recuadro de tal color, con unas coordenadas x,y,ancho,alto y color
-(y que no le afecte el scroll para que siempre se vea en mismo sitio, tendria que estar en funcion draw_window_contents creo)
-primer dibujar ese recuadro si existe (comprobando que no se salga de limites de ventana) y luego ya el dibujado normal de ventana.
-cuidado con las cache (si es que aplican).
-quiza demasiado "custom" para este caso y no se vaya a usar en otros? igual se puede usar en otras ventanas que se necesita limpiar
-siempre parte del contenido, asi lo haria automaticamente la funcion de draw_window_contents
-Seria como tener dos capas de texto (aunque esta del recuadro es fija, sin scroll, y rellena con caracter espacio)
+-en filesel ajustar estos valores numericos, creo que todos pueden venir de variables definidas:
+//zona de color mas alla del scroll
 
 
 -ay player: al agregar un directorio, queda algo confuso porque no indica como hacer play
 quiza si hay una playlist cargada, deberia indicar de eso en la ventana principal y además un boton para hacer play del primero
-ay player: boton de pausa. quizá que salte el registro PC a un bucle cerrado  (y quizá parando el chip ay?)
+-ay player: boton de pausa. quizá que salte el registro PC a un bucle cerrado  (y quizá parando el chip ay?)
 
 -opcion para minimizar ventanas a la parte baja de la ventana (o comportamiento como ahora, las minimiza donde estaban)
 
 -nuevo sensor: bits ear, mic puerto feh
 
 -parece que el archivo de indice a veces lo escribe en otras rutas
+-archivo txt de indice de búsqueda: revisar que si excede ancho de linea, no peta al arrancar. hacerlo mas seguro para que nunca pete al iniciar
+-opcion desactivar indice de busqueda
 
--en filesel ajustar estos valores numericos, creo que todos pueden venir de variables definidas
-//zona de color mas alla del scroll
+
+-keyboard help: pulsar shift+symbol no cambia a tecla extendida, con ventana help keyboard en el foco:
+no lee ni caps ni symbol solas desde ahi (pulsando en teclado) porque bucle esta en "esperar tecla", y symbol o shift, por si solas,
+no son teclas
+
+-modify icons, customize buttons de zx desktop settings: no deberia salir indicador de submenu, y si "...". y cerrar el menu final
+para que de apariencia de ventana y no submenu
+
+-Títulos de submenus tienen que ser igual al nombre que se ha seleccionado en el menú anterior

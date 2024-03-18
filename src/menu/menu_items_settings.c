@@ -10375,7 +10375,7 @@ void zxdesktop_add_extra_parameters_element_action(enum defined_f_function_ids a
     }
 
     //Si es open window, mostrar lista de posibles ventanas
-    if (accion==F_FUNCION_OPEN_WINDOW) {
+    else if (accion==F_FUNCION_OPEN_WINDOW) {
         int elemento=menu_zxdesktop_get_window_list();
         if (elemento>=0) {
 
@@ -10393,6 +10393,17 @@ void zxdesktop_add_extra_parameters_element_action(enum defined_f_function_ids a
 
 
         }
+    }
+
+    //Cualquier otra acción, dejar los parámetros en blanco para no arrastrar parámetros
+    //de acciones anteriores que si que tenian parámetros
+    //Esto podria haber ocasionado que si primero configuramos accion set_machine, y luego la cambiamos
+    //a machine selection, ese machine selection no pide parámetros pero como arrastramos un parámetro
+    //anterior, al disparar machine selection, como la gestión de la acción es la misma que set_machine, se le pasaría
+    //ese parámetro "heredado" y no preguntaria la maquina
+    else {
+        //printf("Limpiar parametros\n");
+        parametros[0]=0;
     }
 }
 
@@ -10968,7 +10979,7 @@ void menu_zxdesktop_add_configurable_icons(MENU_ITEM_PARAMETERS)
 
 void menu_zxdesktop_set_configurable_icons_choose(MENU_ITEM_PARAMETERS)
 {
-
+    //printf("cambiar tipo icono\n");
     int icono_seleccionado=valor_opcion;
 
     int indice_seleccionada=zxdesktop_configurable_icons_list[icono_seleccionado].indice_funcion;
@@ -10984,9 +10995,25 @@ void menu_zxdesktop_set_configurable_icons_choose(MENU_ITEM_PARAMETERS)
         //Asignar nombre accion
         strcpy(zxdesktop_configurable_icons_list[icono_seleccionado].text_icon,defined_direct_functions_array[indice_retorno].texto_funcion);
 
+        //Resetear parametros para no heredar parametros de accion anterior
+        zxdesktop_configurable_icons_list[icono_seleccionado].extra_info[0]=0;
+
         //Si ya existia, conservar posicion. Si no, poner una nueva
         if (zxdesktop_configurable_icons_list[icono_seleccionado].status==ZXDESKTOP_CUSTOM_ICON_NOT_EXISTS) {
-            zxvision_set_configurable_icon_position(icono_seleccionado,430,110);
+            //printf("no existe\n");
+
+            //Asignar posicion fija para icono
+            //zxvision_set_configurable_icon_position(icono_seleccionado,430,110);
+
+            //asignar siguiente posicion valida
+            int icon_x,icon_y;
+
+            zxvision_get_next_free_icon_position(&icon_x,&icon_y);
+
+            zxvision_set_configurable_icon_position(icono_seleccionado,icon_x,icon_y);
+
+
+
             zxdesktop_configurable_icons_list[icono_seleccionado].status=ZXDESKTOP_CUSTOM_ICON_EXISTS;
         }
     }

@@ -15411,9 +15411,11 @@ void screen_render_bmpfile_putpixel(zxvision_window *ventana,int x,int y,int col
 {
     //printf("%d %d\n",x,y);
     if (!follow_zoom) {
+        //printf("no follow zoom. %d,%d\n",zoom_x,zoom_y);
         zxvision_putpixel_no_zoom(ventana,x,y,color_final);
     }
     else {
+        //printf("follow zoom. %d,%d,%d\n",zoom_x,zoom_y,menu_gui_zoom);
         int zx,zy;
         for (zx=0;zx<zoom_x;zx++) {
             for (zy=0;zy<zoom_y;zy++) {

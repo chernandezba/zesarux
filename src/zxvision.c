@@ -26885,6 +26885,12 @@ void zxvision_index_add_menu_linea(index_menu *indice_menu,char *nombre_linea_or
 
     if (nombre_linea_orig[0]==' ' && nombre_linea_orig[1]==0) return;
 
+    //Ver si excede maximo linea
+    if (strlen(nombre_linea_orig)>MAX_TEXTO_OPCION-1) {
+        debug_printf(VERBOSE_DEBUG,"Adding menu entry to index exceeds limit: [%s]. Do not add it",nombre_linea_orig);
+        return;
+    }
+
     //Convertir a string sin acentos etc
     char nombre_linea[MAX_TEXTO_OPCION];
 
@@ -27058,7 +27064,8 @@ index_menu *zxvision_index_entrada_menu(char *titulo)
 
     //Si no es el mismo en el que estamos ahora
     if (strcmp(last_submenu,titulo)) {
-        util_concat_string(nombre_menu_con_submenu_para_indice,buf_index_submenu,MAX_LENGTH_FULL_PATH_SUBMENU);
+        int retorno=util_concat_string(nombre_menu_con_submenu_para_indice,buf_index_submenu,MAX_LENGTH_FULL_PATH_SUBMENU);
+        if (retorno) debug_printf(VERBOSE_DEBUG,"Adding menu title to index exceeds limit: [%s]. Truncating it",nombre_menu_con_submenu_para_indice);
     }
 
     //printf("Menu [%s]\n",nombre_menu_con_submenu_para_indice);
@@ -27124,21 +27131,28 @@ void zxvision_index_save_to_disk(void)
 
 }
 
-int zxvision_index_load_from_disk_read_line(z80_byte *origen,z80_byte *destino,int restante)
+int zxvision_index_load_from_disk_read_line(z80_byte *origen,z80_byte *destino,int restante,int max_leer,int *llegado_limite)
 {
+    *llegado_limite=0;
 
     int leidos=0;
 
     while (*origen!='\n' && restante) {
-        *destino=*origen;
+        if (leidos<max_leer) {
+            *destino=*origen;
+            destino++;
+        }
+        else {
+            *llegado_limite=1;
+        }
 
-        destino++;
         origen++;
         leidos++;
 
         restante--;
     }
 
+    //En el max_leer hay que tener espacio al siguiente byte del 0 final
     *destino=0;
     return leidos+1; //agregar el salto linea como leido
 }
@@ -27159,11 +27173,13 @@ void zxvision_index_load_from_disk(void)
     if (!total_leidos) return;
 
     z80_byte *puntero=buffer_index;
+    int llegado_limite_titulo;
+    int llegado_limite_item_menu;
 
     while (total_leidos>0) {
         //leer titulo menu
         char titulo_menu[MAX_LENGTH_FULL_PATH_SUBMENU];
-        int leidos=zxvision_index_load_from_disk_read_line(puntero,(z80_byte *)titulo_menu,total_leidos);
+        int leidos=zxvision_index_load_from_disk_read_line(puntero,(z80_byte *)titulo_menu,total_leidos,MAX_LENGTH_FULL_PATH_SUBMENU-1,&llegado_limite_titulo);
         debug_printf(VERBOSE_DEBUG,"Loading help search index. Menu title: [%s]",titulo_menu);
 
         total_leidos-=leidos;
@@ -27171,19 +27187,32 @@ void zxvision_index_load_from_disk(void)
 
         if (titulo_menu[0]!=0) {
 
-            index_menu *indice_menu_actual=zxvision_index_add_replace_menu(titulo_menu);
+            index_menu *indice_menu_actual=NULL;
+
+            if (!llegado_limite_titulo) {
+                indice_menu_actual=zxvision_index_add_replace_menu(titulo_menu);
+            }
+            else {
+                debug_printf(VERBOSE_DEBUG,"Do not add menu [%s] because it exceeds length limit",titulo_menu);
+            }
 
             //leer items de menu
             int salir=0;
             while (!salir) {
 
                 char linea_menu[MAX_TEXTO_OPCION];
-                int leidos=zxvision_index_load_from_disk_read_line(puntero,(z80_byte *)linea_menu,total_leidos);
+                int leidos=zxvision_index_load_from_disk_read_line(puntero,(z80_byte *)linea_menu,total_leidos,MAX_TEXTO_OPCION-1,&llegado_limite_item_menu);
 
                 if (linea_menu[0]==0) salir=1;
                 else {
                     debug_printf(VERBOSE_DEBUG,"Loading help search index. Menu entry: [%s]",linea_menu);
-                    zxvision_index_add_menu_linea(indice_menu_actual,linea_menu);
+
+                    if (indice_menu_actual!=NULL && !llegado_limite_item_menu) {
+                        zxvision_index_add_menu_linea(indice_menu_actual,linea_menu);
+                    }
+                    else {
+                        debug_printf(VERBOSE_DEBUG,"Do not add menu item [%s] because it exceeds length limit",linea_menu);
+                    }
                 }
 
                 total_leidos-=leidos;
