@@ -884,7 +884,5 @@ ok -archivo txt de indice de búsqueda: revisar que si excede ancho de linea, no
 no lee ni caps ni symbol solas desde ahi (pulsando en teclado) porque bucle esta en "esperar tecla", y symbol o shift, por si solas,
 no son teclas
 
--modify icons, customize buttons de zx desktop settings: no deberia salir indicador de submenu, y si "...". y cerrar el menu final
-para que de apariencia de ventana y no submenu
 
 -Títulos de submenus tienen que ser igual al nombre que se ha seleccionado en el menú anterior
