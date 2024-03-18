@@ -876,12 +876,9 @@ Main Menu-> Settings-> Hardware Settings-> Next machine id-> Hardware Settings->
 //zona de color mas alla del scroll
 
 
--ay player: al agregar un directorio, queda algo confuso porque no indica como hacer play
-quiza si hay una playlist cargada, deberia indicar de eso en la ventana principal y además un boton para hacer play del primero
 
 -opcion para minimizar ventanas a la parte baja de la ventana (o comportamiento como ahora, las minimiza donde estaban)
 
--nuevo sensor: bits ear, mic puerto feh
 
 -parece que el archivo de indice a veces lo escribe en otras rutas
 ok -archivo txt de indice de búsqueda: revisar que si excede ancho de linea, no peta al arrancar. hacerlo mas seguro para que nunca pete al iniciar

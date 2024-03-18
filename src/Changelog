@@ -19,6 +19,7 @@ Added setting to force CHR$ 128 mode on ZX81
 Added search function to locate menu entries
 Added .zmenu type files to generate launcher menus
 Added more vintage Spectrum programs/games from me
+Added Debug Sensors SPK & MIC Bit from port FEH
 
 * Improvements:
 

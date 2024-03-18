@@ -35,6 +35,7 @@
 #include "stats.h"
 #include "audio.h"
 #include "zeng_online_client.h"
+#include "ula.h"
 
 
 
@@ -101,6 +102,16 @@ int sensor_sn_vol_chip_funcion_get_value(int id)
 int sensor_sn_noise_chip_funcion_get_value(int id GCC_UNUSED)
 {
     return 15 - (sn_chip_registers[10] & 15);
+}
+
+int sensor_fe_bit4_funcion_get_value(int id GCC_UNUSED)
+{
+    return (out_254>>4) & 1;
+}
+
+int sensor_fe_bit3_funcion_get_value(int id GCC_UNUSED)
+{
+    return (out_254>>3) & 1;
 }
 
 int sensor_time_betw_frames_get_value(int id GCC_UNUSED)
@@ -334,6 +345,22 @@ pues de una octava a la otra es el doble de valor
     84,-9999,
     9999,-9999,
     sensor_sn_noise_chip_funcion_get_value,0
+    },
+
+    {
+    "fe_bit4","FE Port SPK ","FEBIT4",
+    0,1,
+    80,-9999,
+    9999,-9999,
+    sensor_fe_bit4_funcion_get_value,0
+    },
+
+    {
+    "fe_bit3","FE Port MIC ","FEBIT3",
+    0,1,
+    80,-9999,
+    9999,-9999,
+    sensor_fe_bit3_funcion_get_value,0
     },
 
     {

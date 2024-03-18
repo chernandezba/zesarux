@@ -1500,7 +1500,7 @@ ffunicode.o: ffunicode.c ffconf.h ff.h
 stats.o: stats.c stats.h cpu.h zxvision.h compileoptions.h debug.h network.h video/screen.h timer.h
 	\$(CC) \$(CFLAGS) -c stats.c
 
-sensors.o: sensors.c sensors.h cpu.h debug.h ay38912.h video/screen.h zxvision.h timer.h stats.h audio/audio.h sn76489an.h zeng_online_client.h
+sensors.o: sensors.c sensors.h cpu.h debug.h ay38912.h video/screen.h zxvision.h timer.h stats.h audio/audio.h sn76489an.h zeng_online_client.h ula.h
 	\$(CC) \$(CFLAGS) -c sensors.c
 
 esxdos_handler.o: storage/esxdos_handler.c storage/esxdos_handler.h cpu.h operaciones.h debug.h utils.h storage/diviface.h video/screen.h menu/menu_filesel.h
