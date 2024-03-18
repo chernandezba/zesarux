@@ -172,5 +172,7 @@ extern z80_bit noautoload;
 
 extern z80_bit automount_esxdos_nex;
 
+extern z80_bit index_menu_enabled;
+
 #endif
 

@@ -42720,12 +42720,14 @@ void menu_inicio_bucle_main(void)
             menu_add_item_menu_ayuda(array_menu_principal,"General Settings");
             menu_add_item_menu_tiene_submenu(array_menu_principal);
 
-            menu_add_item_menu_en_es_ca(array_menu_principal,MENU_OPCION_NORMAL,menu_search,NULL,
-                "Sea~~rch menu","Busca~~r menú","Busca~~r menú");
-            menu_add_item_menu_shortcut(array_menu_principal,'r');
-            menu_add_item_menu_tooltip(array_menu_principal,"Search menu");
-            menu_add_item_menu_ayuda(array_menu_principal,"Search menu");
-            menu_add_item_menu_genera_ventana(array_menu_principal);
+            if (index_menu_enabled.v) {
+                menu_add_item_menu_en_es_ca(array_menu_principal,MENU_OPCION_NORMAL,menu_search,NULL,
+                    "Sea~~rch menu","Busca~~r menú","Busca~~r menú");
+                menu_add_item_menu_shortcut(array_menu_principal,'r');
+                menu_add_item_menu_tooltip(array_menu_principal,"Search menu");
+                menu_add_item_menu_ayuda(array_menu_principal,"Search menu");
+                menu_add_item_menu_genera_ventana(array_menu_principal);
+            }
 
             menu_add_item_menu_en_es_ca(array_menu_principal,MENU_OPCION_NORMAL,menu_toys,NULL,
                 "~~Procrastinate","~~Procrastinar","~~Procrastinar");

@@ -19631,7 +19631,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 
     //Indexar siempre que no diga que no hay que indexarlo, ni tampoco menus tabulados,
     //pues menus tabulados son mas bien para ventanas, como visual memory, y no menus de opciones
-    if (m->no_indexar_busqueda==0 && m->es_menu_tabulado==0) {
+    if (m->no_indexar_busqueda==0 && m->es_menu_tabulado==0 && index_menu_enabled.v) {
         indice_menu_actual=zxvision_index_entrada_menu(titulo);
     }
 
@@ -19659,7 +19659,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
             //Para el indice de opciones de menu
             //Indexar siempre que no diga que no hay que indexarlo, ni tampoco menus tabulados,
             //pues menus tabulados son mas bien para ventanas, como visual memory, y no menus de opciones
-            if (m->no_indexar_busqueda==0 && m->es_menu_tabulado==0) {
+            if (m->no_indexar_busqueda==0 && m->es_menu_tabulado==0 && index_menu_enabled.v) {
                 zxvision_index_add_menu_linea(indice_menu_actual,menu_retorna_item_language(aux));
             }
 
@@ -20433,7 +20433,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
         zxvision_helper_menu_shortcut_delete_last();
         //Indexar siempre que no diga que no hay que indexarlo, ni tampoco menus tabulados,
         //pues menus tabulados son mas bien para ventanas, como visual memory, y no menus de opciones
-        if (es_no_indexar_busqueda==0 && es_menu_tabulado==0) {
+        if (es_no_indexar_busqueda==0 && es_menu_tabulado==0 && index_menu_enabled.v) {
             zxvision_index_delete_last_submenu_path();
         }
         return MENU_RETORNO_ESC;
@@ -20465,7 +20465,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
             zxvision_helper_menu_shortcut_delete_last();
             //Indexar siempre que no diga que no hay que indexarlo, ni tampoco menus tabulados,
             //pues menus tabulados son mas bien para ventanas, como visual memory, y no menus de opciones
-            if (es_no_indexar_busqueda==0 && es_menu_tabulado==0) {
+            if (es_no_indexar_busqueda==0 && es_menu_tabulado==0 && index_menu_enabled.v) {
                 zxvision_index_delete_last_submenu_path();
             }
             ya_borrado_helper_atras=1;
@@ -20491,7 +20491,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
             zxvision_helper_menu_shortcut_delete_last();
             //Indexar siempre que no diga que no hay que indexarlo, ni tampoco menus tabulados,
             //pues menus tabulados son mas bien para ventanas, como visual memory, y no menus de opciones
-            if (es_no_indexar_busqueda==0 && es_menu_tabulado==0) {
+            if (es_no_indexar_busqueda==0 && es_menu_tabulado==0 && index_menu_enabled.v) {
                 zxvision_index_delete_last_submenu_path();
             }
            }
@@ -26998,6 +26998,9 @@ void zxvision_index_search_init_menu_path_main_menu(void)
 //Borra, de la cadena nombre_menu_con_submenu_para_indice, el ultimo texto de submenu, pues hemos ido hacia atras
 void zxvision_index_delete_last_submenu_path(void)
 {
+
+    if (index_menu_enabled.v==0) return;
+
     int indice=strlen(nombre_menu_con_submenu_para_indice);
 
     //Buscar cadena "->"
@@ -27076,6 +27079,8 @@ index_menu *zxvision_index_entrada_menu(char *titulo)
 
 void zxvision_index_save_to_disk(void)
 {
+    if (index_menu_enabled.v==0) return;
+
     FILE *ptr_configfile;
 
     ptr_configfile=fopen(ZESARUX_INDEX_MENU_FILE,"w+");
@@ -27159,6 +27164,9 @@ int zxvision_index_load_from_disk_read_line(z80_byte *origen,z80_byte *destino,i
 
 void zxvision_index_load_from_disk(void)
 {
+
+    if (index_menu_enabled.v==0) return;
+
     if (!si_existe_archivo(ZESARUX_INDEX_MENU_FILE)) return;
 
     long long int longitud=get_file_size(ZESARUX_INDEX_MENU_FILE);

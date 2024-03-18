@@ -1107,6 +1107,11 @@ void menu_reset_index_search(MENU_ITEM_PARAMETERS)
     menu_generic_message_splash("Reset search index","OK. Index reset");
 }
 
+void menu_enable_index_search(MENU_ITEM_PARAMETERS)
+{
+    index_menu_enabled.v ^=1;
+}
+
 void menu_general_settings(MENU_ITEM_PARAMETERS)
 {
         menu_item *array_menu_window_settings;
@@ -1368,11 +1373,18 @@ void menu_general_settings(MENU_ITEM_PARAMETERS)
 
         menu_add_item_menu_separator(array_menu_window_settings);
 
-        menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_reset_index_search,NULL,
-        "Reset search index","Reset índice búsqueda","Reset índex recerca");
+        menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_enable_index_search,NULL,
+        "Search index enabled","Indice búsqueda activado","Index recerca activat");
+        menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c] ",(index_menu_enabled.v ? 'X' : ' ' ));
         menu_add_item_menu_tooltip(array_menu_window_settings,"Reset index of the search feature");
         menu_add_item_menu_ayuda(array_menu_window_settings,"Reset index of the search feature");
 
+        if (index_menu_enabled.v) {
+            menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_reset_index_search,NULL,
+            "Reset search index","Reset índice búsqueda","Reset índex recerca");
+            menu_add_item_menu_tooltip(array_menu_window_settings,"Reset index of the search feature");
+            menu_add_item_menu_ayuda(array_menu_window_settings,"Reset index of the search feature");
+        }
 
 
         menu_add_item_menu(array_menu_window_settings,"",MENU_OPCION_SEPARADOR,NULL,NULL);
