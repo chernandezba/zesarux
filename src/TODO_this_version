@@ -872,17 +872,12 @@ este parametro. Por ejemplo "reset cpu" (y un dialogo de confirmacion yes/no no 
 -error indexado:
 Main Menu-> Settings-> Hardware Settings-> Next machine id-> Hardware Settings-> Next machine id-> Hardware Settings-> Next machine id-> Hardware Settings
 
--en filesel ajustar estos valores numericos, creo que todos pueden venir de variables definidas:
-//zona de color mas alla del scroll
-
-
 
 -opcion para minimizar ventanas a la parte baja de la ventana (o comportamiento como ahora, las minimiza donde estaban)
 
 
 -parece que el archivo de indice a veces lo escribe en otras rutas
 ok -archivo txt de indice de búsqueda: revisar que si excede ancho de linea, no peta al arrancar. hacerlo mas seguro para que nunca pete al iniciar
-ok -opcion desactivar indice de busqueda
 
 
 -keyboard help: pulsar shift+symbol no cambia a tecla extendida, con ventana help keyboard en el foco:

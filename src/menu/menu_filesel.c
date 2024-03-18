@@ -1025,7 +1025,8 @@ int menu_filesel_delete_recursive(char *directorio_origen ,int simular)
 #define ZXVISION_POS_FILTER 6
 #define ZXVISION_POS_LEYENDA 7
 
-
+#define FILESEL_UPPER_MARGIN 4
+#define FILESEL_LOWER_MAGIN 4
 
 
 void zxvision_menu_filesel_print_filters(zxvision_window *ventana,char *filtros[])
@@ -5488,20 +5489,22 @@ int menu_filesel_if_save(char *titulo,char *filtros[],char *archivo,int si_save)
             last_filesel_ventana_visible_ancho-1,alto_total/*+last_filesel_ventana_visible_alto*/,
             titulo);
 
-        //zona de color mas alla del scroll
-        ventana->beyond_x=1;
-        ventana->beyond_y=4;
-        ventana->beyond_width=last_filesel_ventana_visible_ancho-3;
-        ventana->beyond_height=last_filesel_ventana_visible_alto-11;
-        ventana->beyond_color=ESTILO_GUI_PAPEL_FILESELECTOR_FILES;
+
 
         //printf("alto: %d\n",ventana->total_height);
-
-	    ventana->upper_margin=4;
-	    ventana->lower_margin=4;
+	    ventana->upper_margin=FILESEL_UPPER_MARGIN; //4;
+	    ventana->lower_margin=FILESEL_LOWER_MAGIN; //4;
 		zxvision_set_visible_cursor(ventana);
         ventana->acortar_cursor=1;
 		strcpy(ventana->geometry_name,"filesel");
+
+        //zona de color mas alla del scroll
+        //Para indicar siempre en un color la zona de fileselector
+        ventana->beyond_x=1;
+        ventana->beyond_y=FILESEL_INICIO_DIR; //4
+        ventana->beyond_width=last_filesel_ventana_visible_ancho-3;
+        ventana->beyond_height=last_filesel_ventana_visible_alto-(FILESEL_UPPER_MARGIN+FILESEL_LOWER_MAGIN+FILESEL_INICIO_DIR-1); //-11
+        ventana->beyond_color=ESTILO_GUI_PAPEL_FILESELECTOR_FILES;
 
 		if (menu_filesel_show_utils.v) {
 			//Activar los hotkeys desde raton en el caso de file utilities
