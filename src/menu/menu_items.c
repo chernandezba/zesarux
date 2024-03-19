@@ -21583,6 +21583,7 @@ int keyboard_map_table_coords_ql[64*4]={
 //Teclas adicionales QL
 keyboard_help_double_key keyboard_map_additional_ql[]={
     { 455,102,524,129,     &ql_keyboard_table[7],1,  NULL, 0},  //shift derecha
+    { 493,35,524,97, &ql_keyboard_table[1],1,NULL,0 }, //Enter en vertical
     { 0,0,0,0,NULL,0,NULL,0 }
 };
 
