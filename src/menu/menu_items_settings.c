@@ -11132,6 +11132,9 @@ void menu_zxdesktop_set_configurable_icons_modify(MENU_ITEM_PARAMETERS)
                 "S~~torage","Almacenamien~~to","Emmagatzemamen~~t");
             menu_add_item_menu_shortcut(array_menu_common,'t');
 
+            menu_add_item_menu(array_menu_common,"~~Keyboard Help",MENU_OPCION_NORMAL,menu_help_show_keyboard,NULL);
+            menu_add_item_menu_shortcut(array_menu_common,'k');
+
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_hardware_settings,NULL,
                 "~~Hardware settings","Opciones ~~Hardware","Opcions ~~Hardware");
             menu_add_item_menu_shortcut(array_menu_common,'h');
