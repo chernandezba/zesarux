@@ -380,7 +380,7 @@ int gui_language=GUI_LANGUAGE_DEFAULT;
 //Ruta de guardado de descargas juegos
 char online_download_path[PATH_MAX]="";
 
-z80_bit index_menu_enabled={1};
+z80_bit index_menu_enabled={0};
 
 //
 // Keyboard Settings

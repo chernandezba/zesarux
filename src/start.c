@@ -1177,6 +1177,7 @@ printf("\n"
         "--disable-xanniversary-logo                    Disable X Anniversary logo. It's the default behaviour, only kept here for backwards compatibility\n"
         "--disablemenufileutils                         Disable File Utilities menu\n"
         "--disable-search-menu                          Disable search menu feature\n"
+        "--enable-search-menu                           Enable search menu feature\n"
 
 
 		"\n"
@@ -5497,6 +5498,10 @@ int parse_cmdline_options(int desde_commandline) {
 
             else if (!strcmp(argv[puntero_parametro],"--disable-search-menu")) {
                 index_menu_enabled.v=0;
+            }
+
+            else if (!strcmp(argv[puntero_parametro],"--enable-search-menu")) {
+                index_menu_enabled.v=1;
             }
 
 			else if (!strcmp(argv[puntero_parametro],"--forcevisiblehotkeys")) {

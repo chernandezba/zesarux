@@ -27054,6 +27054,8 @@ index_menu *zxvision_index_entrada_menu(char *titulo)
     if (nombre_menu_con_submenu_para_indice[0]==0) sprintf(buf_index_submenu,"%s",titulo_menu_final);
     else sprintf(buf_index_submenu,"-> %s",titulo_menu_final);
 
+    //printf("Longitud titulo: %d\n",strlen(nombre_menu_con_submenu_para_indice));
+
     //printf("Menu previo [%s]\n",buf_index_submenu);
 
 
@@ -27083,7 +27085,7 @@ void zxvision_index_save_to_disk(void)
 
     FILE *ptr_configfile;
 
-    ptr_configfile=fopen(ZESARUX_INDEX_MENU_FILE,"w+");
+    ptr_configfile=fopen(ZESARUX_INDEX_MENU_FILE,"wb");
     if (!ptr_configfile) {
         debug_printf(VERBOSE_DEBUG,"Cannot write index menu file %s",ZESARUX_INDEX_MENU_FILE);
         return;

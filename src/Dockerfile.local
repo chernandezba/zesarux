@@ -3,15 +3,12 @@ FROM debian:bullseye
 RUN apt-get update && apt-get -y install git gcc make libncurses-dev libssl-dev xorg-dev
 RUN apt-get -y install procps vim less tcpdump htop telnet valgrind
 
-COPY *.c *.m *.h *.tpl DEVELOPMENT CHECKLIST configure *.sh *.rom *.zsf /zesarux/src/
-COPY my_soft /zesarux/src/my_soft
-COPY tests /zesarux/src/tests
-COPY zxuno.flash /zesarux/src/
+COPY ./ /zesarux/src/
 
 # Compilar con info de debug
 ENV CFLAGS "-g -rdynamic"
 ENV LDFLAGS "-g -rdynamic"
-RUN cd zesarux/src && ./configure --enable-memptr --enable-visualmem --enable-cpustats --enable-ssl && make -j3
+RUN cd zesarux/src && ./configure --enable-memptr --enable-visualmem --enable-cpustats --enable-ssl && make clean && make -j3
 
 WORKDIR /zesarux/src
 

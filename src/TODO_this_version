@@ -867,17 +867,31 @@ este parametro. Por ejemplo "reset cpu" (y un dialogo de confirmacion yes/no no 
 -poder hacer stick de teclas en keyboard help
 -help keyboard completar otras maquinas
 
--dockerfiles rutas de carpetas al copiar codigo fuente y compilar
+-dockerfiles rutas de carpetas al copiar codigo fuente y compilar. Pendiente Dockerfile.pushimage
+O meto todo (*) o indico carpetas solo necesarias
 
 -error indexado:
 Main Menu-> Settings-> Hardware Settings-> Next machine id-> Hardware Settings-> Next machine id-> Hardware Settings-> Next machine id-> Hardware Settings
+Sucede porque funcion de menu menu_tbblue_machine_id, sale al pulsar enter y por tanto no llama a zxvision_index_delete_last_submenu_path
+O bien digo que ese menu no esté indexado, o se complica la cosa...
+Pero habran otros muchos menus que se sale al pulsar enter
+Y puede ser un problema, porque si cada vez que creo un menu y salgo con enter me tengo que acordar de esto pues...
+De momento en settings lo dejo desactivado por defecto el indexado hasta que no consiga estabilizar esto
+Ajustar comportamiento por defecto en parametros start, en grabado de parametros en utils
+La problematica de esto es, con un ejemplo: estamos en submenu A->B->C
+Dentro de menu C, no podemos saber si al pulsar una tecla (enter, esc o lo que sea), si volvemos a cargar el mismo menu C, o si vamos a un menu
+hacia atras, porque hay gestiones diferentes en menus (como el del Next machine id, que se sale del menu con Enter)
+Por tanto segun hagamos un comportamiento u otro, podemos ir erroneamente a menu A->B->C->C, o A->B->B etc
+Quiza los menus deberian tener un identificador interno, para detectar repetidos
+O quiza, que los propios menus generasen el titulo A->B->C (o que indicasen el menu "padre"), porque la mayoria saben de donde se generan,
+pero eso puede dar problemas en caso que un submenu se llame desde dos sitios diferentes (como ZX Desktop settings,
+que sale desde settings->zx desktop pero tambien con boton derecho sobre desktop)
 
 
 -opcion para minimizar ventanas a la parte baja de la ventana (o comportamiento como ahora, las minimiza donde estaban)
 
 
 -parece que el archivo de indice a veces lo escribe en otras rutas
-ok -archivo txt de indice de búsqueda: revisar que si excede ancho de linea, no peta al arrancar. hacerlo mas seguro para que nunca pete al iniciar
 
 
 -keyboard help: pulsar shift+symbol no cambia a tecla extendida, con ventana help keyboard en el foco:

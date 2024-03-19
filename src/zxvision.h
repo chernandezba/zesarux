@@ -1007,7 +1007,7 @@ struct s_index_menu {
 
 typedef struct s_index_menu index_menu;
 
-#define ZESARUX_INDEX_MENU_FILE "zesarux_index_menu.txt"
+#define ZESARUX_INDEX_MENU_FILE "zesarux_index_menu.idx"
 
 extern index_menu *first_index_menu;
 extern index_menu *zxvision_index_add_replace_menu(char *titulo_menu);
