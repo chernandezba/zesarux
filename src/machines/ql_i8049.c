@@ -281,7 +281,7 @@ int ql_pitch_frequency_table[256]={
 int ql_mantenido_pulsada_tecla=0;
 int ql_mantenido_pulsada_tecla_timer=0;
 //adicionales
-int ql_pressed_backspace=0;
+//int ql_pressed_backspace=0;
 
 //ql_keyboard_table[0] identifica a fila 7 F4     F1      5     F2     F3     F5      4      7
 //...
@@ -488,7 +488,7 @@ void ql_ipc_write_ipc_teclado(void)
     int tecla_alt=0;
 
 
-    if ( (columna>=0 && fila>=0) || ql_pressed_backspace) {
+    if ( (columna>=0 && fila>=0) /*|| ql_pressed_backspace*/) {
 
         if (ql_mantenido_pulsada_tecla==0 || (ql_mantenido_pulsada_tecla==1 && ql_mantenido_pulsada_tecla_timer>=50) )  {
             if (ql_mantenido_pulsada_tecla==0) {
@@ -497,14 +497,14 @@ void ql_ipc_write_ipc_teclado(void)
             }
 
 
-            if (ql_pressed_backspace) {
+            /*if (ql_pressed_backspace) {
                 //CTRL + flecha izquierda
                 tecla_control=1;
                 // 6|   Ret   Left     Up    Esc  Right      \  Space   Down
                 fila=6;
                 columna=1;
 
-            }
+            }*/
 
             //printf ("------fila %d columna %d\n",fila,columna);
             unsigned char byte_tecla=((fila&7)<<3) | (columna&7);
@@ -677,7 +677,7 @@ int ql_pulsado_tecla(void)
 	//if (zxvision_key_not_sent_emulated_mach() ) return 0;
 
 	//Si backspace
-	if (ql_pressed_backspace && !zxvision_key_not_sent_emulated_mach() ) return 1;
+	//if (ql_pressed_backspace && !zxvision_key_not_sent_emulated_mach() ) return 1;
 
 	unsigned char acumulado;
 

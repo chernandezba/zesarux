@@ -8043,6 +8043,16 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                 }
 
 				else {
+
+
+// 6|   Ret   Left     Up    Esc  Right      \  Space   Down     ql_keyboard_table[1]
+// 5|     ]      z      .      c      b  Pound      m      '     ql_keyboard_table[2]
+// 4|     [   Caps      k      s      f      =      g      ;     ql_keyboard_table[3]
+// 3|     l      3      h      1      a      p      d      j     ql_keyboard_table[4]
+// 2|     9      w      i    Tab      r      -      y      o     ql_keyboard_table[5]
+// 1|     8      2      6      q      e      0      t      u     ql_keyboard_table[6]
+// 0| Shift   Ctrl    Alt      x      v      /      n      ,     ql_keyboard_table[7]
+
 	                                if (pressrelease) {
         	                                puerto_65278 &=255-1;
                 	                        puerto_61438 &=255-1;
@@ -8052,7 +8062,9 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
 						                              cpc_keyboard_table[9] &=(255-128);
                                                 msx_keyboard_table[7] &=(255-32);
                                                 svi_keyboard_table[5] &=(255-64);
-                                          ql_pressed_backspace=1;
+                                          //ql_pressed_backspace=1;
+                                          ql_keyboard_table[7] &=(255-2);
+                                          ql_keyboard_table[1] &=(255-2);
                                           pcw_keyboard_table[9] |=128;
 
 	                                }
@@ -8063,7 +8075,9 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
 						                              cpc_keyboard_table[9] |=128;
                                                 msx_keyboard_table[7] |=32;
                                                 svi_keyboard_table[5] |=64;
-                                          ql_pressed_backspace=0;
+                                          //ql_pressed_backspace=0;
+                                          ql_keyboard_table[7] |=2;
+                                          ql_keyboard_table[1] |=2;
                                           pcw_keyboard_table[9] &=(255-128);
 	                                }
 				}

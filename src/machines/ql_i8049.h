@@ -40,7 +40,7 @@ extern moto_int ql_current_sound_duration;
 extern int ql_mantenido_pulsada_tecla;
 extern int ql_mantenido_pulsada_tecla_timer;
 
-extern int ql_pressed_backspace;
+//extern int ql_pressed_backspace;
 
 extern int ql_pulsado_tecla(void);
 
