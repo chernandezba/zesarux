@@ -866,6 +866,7 @@ este parametro. Por ejemplo "reset cpu" (y un dialogo de confirmacion yes/no no 
 -si keyboard help con el foco no refresca cambios en teclas (que vengan de zeng por ejemplo)
 -poder hacer stick de teclas en keyboard help
 -help keyboard completar otras maquinas
+-z88: teclas de derecha de la L no van si ventana abierta y pulsamos con teclado
 
 -dockerfiles rutas de carpetas al copiar codigo fuente y compilar. Pendiente Dockerfile.pushimage
 O meto todo (*) o indico carpetas solo necesarias
