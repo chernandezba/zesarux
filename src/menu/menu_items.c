@@ -21575,6 +21575,36 @@ keyboard_help_double_key keyboard_map_additional_ql[]={
     { 0,0,0,0,NULL,0,NULL,0 }
 };
 
+
+/*
+Z88
+
+-------------------------------------------------------------------------
+         | D7     D6      D5      D4      D3      D2      D1      D0
+-------------------------------------------------------------------------
+A15 (#7) | RSH    SQR     ESC     INDEX   CAPS    .       /       £
+A14 (#6) | HELP   LSH     TAB     DIA     MENU    ,       ;       '
+A13 (#5) | [      SPACE   1       Q       A       Z       L       0
+A12 (#4) | ]      LFT     2       W       S       X       M       P
+A11 (#3) | -      RGT     3       E       D       C       K       9
+A10 (#2) | =      DWN     4       R       F       V       J       O
+A9  (#1) | \      UP      5       T       G       B       U       I
+A8  (#0) | DEL    ENTER   6       Y       H       N       7       8
+-------------------------------------------------------------------------
+
+*/
+
+int keyboard_map_table_coords_z88[64*4]={
+    462,70,494,100,406,106,436,138,370,106,402,136,394,140,428,170,2,142,32,168,2,2,28,26,104,144,136,168,446,106,502,136,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+};
+
 //Retorna tabla de coordenadas de teclas
 int *keyboard_help_return_map_table(void)
 {
@@ -21593,6 +21623,10 @@ int *keyboard_help_return_map_table(void)
 
     else if (MACHINE_IS_QL) {
         return keyboard_map_table_coords_ql;
+    }
+
+    else if (MACHINE_IS_Z88) {
+        return keyboard_map_table_coords_z88;
     }
 
     else return keyboard_map_table_coords_48;
@@ -21632,6 +21666,10 @@ z80_byte *keyboard_map_ports_table_ql[8]={
     &ql_keyboard_table[4],&ql_keyboard_table[5],&ql_keyboard_table[6],&ql_keyboard_table[7]
 };
 
+z80_byte *keyboard_map_ports_table_z88[8]={
+    &blink_kbd_a15,&blink_kbd_a14,&blink_kbd_a13,&blink_kbd_a12,
+    &blink_kbd_a11,&blink_kbd_a10,&blink_kbd_a9,&blink_kbd_a8
+};
 
     //prueba dibujar recuadro
     //zxvision_draw_rectangle(ventana,10,10,50,20,3);
@@ -21820,6 +21858,12 @@ z80_byte **get_keyboard_map_ports_table(int *total_columnas)
         *total_columnas=8;
         return keyboard_map_ports_table_ql;
     }
+
+    if (MACHINE_IS_Z88) {
+        *total_columnas=8;
+        return keyboard_map_ports_table_z88;
+    }
+
     else return keyboard_map_ports_table_speccy;
 }
 
