@@ -62,6 +62,7 @@ Improved ZX Desktop:
 - Allow to reconfigure upper buttons by right clicking over them
 - When defining upper buttons or f-functions to SetMachine, machine name parameter is set to current machine
 - When creating new icon, upper buttons or f-functions of type OpenWindow, a window list is displayed to select
+- Can now show keyboard help from right click on machine icon
 
 * Fixes:
 

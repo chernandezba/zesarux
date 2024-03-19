@@ -62,6 +62,7 @@ Mejorado ZX Desktop:
 - Permitir reconfigurar los botones superiores haciendo clic derecho sobre ellos
 - Al definir los botones superiores o las funciones f en SetMachine, el parámetro del nombre de la máquina se establece en la máquina actual
 - Al crear un nuevo icono, botones superiores o funciones f de tipo OpenWindow, se muestra una lista de ventanas para seleccionar
+- Ahora se puede mostrar la ayuda de teclado pulsando botón derecho en el icono de la máquina
 
 * Correcciones:
 
