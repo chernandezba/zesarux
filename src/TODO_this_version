@@ -866,11 +866,12 @@ este parametro. Por ejemplo "reset cpu" (y un dialogo de confirmacion yes/no no 
 -si keyboard help con el foco no refresca cambios en teclas (que vengan de zeng por ejemplo)
 -poder hacer stick de teclas en keyboard help
 -help keyboard completar otras maquinas
--keyboard help: pulsar shift+symbol no cambia a tecla extendida, con ventana help keyboard en el foco:
+ok-keyboard help: pulsar shift+symbol no cambia a tecla extendida, con ventana help keyboard en el foco:
 no lee ni caps ni symbol solas desde ahi (pulsando en teclado) porque bucle esta en "esperar tecla", y symbol o shift, por si solas,
 no son teclas
--z88: teclas de derecha de la L no van si ventana abierta y pulsamos con teclado. supongo que lo mismo que no va caps ni shift,
-porque no saltan del bucle de espera tecla
+-pulsar , o . en ZX81 con ventana abierta, deja apretada la N o M
+-con los cambios de lectura tecla ahora no deja mantener shift y symbol (con teclado) mas una tecla (clicando con raton)
+
 
 -dockerfiles rutas de carpetas al copiar codigo fuente y compilar. Pendiente Dockerfile.pushimage
 O meto todo (*) o indico carpetas solo necesarias
