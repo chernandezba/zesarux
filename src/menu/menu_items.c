@@ -22122,18 +22122,21 @@ void menu_help_show_keyboard(MENU_ITEM_PARAMETERS)
     int debug_ultimo_click_y=0;
 
 	do {
-        tecla=zxvision_common_getkey_refresh_noesperanotec();
+        tecla=zxvision_common_getkey_refresh_noesperanotec_todasteclas();
+        z80_byte todos_puertos_teclado_acumulado=menu_da_todas_teclas_cualquiera();
         zxvision_handle_cursors_pgupdn(ventana,tecla);
-        //printf ("tecla: %d\n",tecla);
+        //printf ("tecla: %d acumulado: %d\n",tecla,todos_puertos_teclado_acumulado);
 
-        if (tecla && !mouse_left) {
-            printf("generar tecla %d puerto: %d\n",tecla,puerto_65022);
+        //teclas como la de la derecha de L en Z88 (;:) no tiene valor asignado de "tecla" por tanto retorna 0
+        //pero la lectura de menu_da_todas_teclas_cualquiera si que indica que una tecla se ha pulsado
+        if ((tecla || todos_puertos_teclado_acumulado!=255) && !mouse_left) {
+            printf("generar tecla %d\n",tecla);
             z80_byte acumulado;
             int salir=0;
 
             //Bucle variante de espera_no_tecla
             do {
-                acumulado=menu_da_todas_teclas();
+                acumulado=menu_da_todas_teclas_cualquiera();
                 if ( (acumulado & MENU_PUERTO_TECLADO_NINGUNA) == MENU_PUERTO_TECLADO_NINGUNA) {
                     salir=1;
                 }

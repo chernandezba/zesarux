@@ -468,7 +468,7 @@ void load_spectrum_simulate_loading(z80_byte *buffer_lectura,z80_int destino,int
 			                        snap_load_spectrum_simulate_bit_guia(tono_enviar);
 		        	        }
 
-                                        tecla_pulsada=menu_da_todas_teclas_si_reset_mouse_movido(1)&31; //no tener en cuenta que se mueva mouse
+                                        tecla_pulsada=menu_da_todas_teclas_si_reset_mouse_movido(1,0)&31; //no tener en cuenta que se mueva mouse
 
 
 					//printf ("despues menu da todas teclas\n");
@@ -501,7 +501,7 @@ void load_spectrum_simulate_loading(z80_byte *buffer_lectura,z80_int destino,int
                                                 if (!se_ha_pulsado_tecla) snap_load_spectrum_simulate_byte(byte_leido);
                                         }
 
-                                        tecla_pulsada=menu_da_todas_teclas_si_reset_mouse_movido(1)&31; //no tener en cuenta que se mueva mouse
+                                        tecla_pulsada=menu_da_todas_teclas_si_reset_mouse_movido(1,0)&31; //no tener en cuenta que se mueva mouse
 
                                         //si se pulsa algo
                                         if (tecla_pulsada!=31) {

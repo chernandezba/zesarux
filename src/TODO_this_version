@@ -866,7 +866,11 @@ este parametro. Por ejemplo "reset cpu" (y un dialogo de confirmacion yes/no no 
 -si keyboard help con el foco no refresca cambios en teclas (que vengan de zeng por ejemplo)
 -poder hacer stick de teclas en keyboard help
 -help keyboard completar otras maquinas
--z88: teclas de derecha de la L no van si ventana abierta y pulsamos con teclado
+-keyboard help: pulsar shift+symbol no cambia a tecla extendida, con ventana help keyboard en el foco:
+no lee ni caps ni symbol solas desde ahi (pulsando en teclado) porque bucle esta en "esperar tecla", y symbol o shift, por si solas,
+no son teclas
+-z88: teclas de derecha de la L no van si ventana abierta y pulsamos con teclado. supongo que lo mismo que no va caps ni shift,
+porque no saltan del bucle de espera tecla
 
 -dockerfiles rutas de carpetas al copiar codigo fuente y compilar. Pendiente Dockerfile.pushimage
 O meto todo (*) o indico carpetas solo necesarias
@@ -888,16 +892,9 @@ O quiza, que los propios menus generasen el titulo A->B->C (o que indicasen el m
 pero eso puede dar problemas en caso que un submenu se llame desde dos sitios diferentes (como ZX Desktop settings,
 que sale desde settings->zx desktop pero tambien con boton derecho sobre desktop)
 
-
--opcion para minimizar ventanas a la parte baja de la ventana (o comportamiento como ahora, las minimiza donde estaban)
-
-
 -parece que el archivo de indice a veces lo escribe en otras rutas
 
 
--keyboard help: pulsar shift+symbol no cambia a tecla extendida, con ventana help keyboard en el foco:
-no lee ni caps ni symbol solas desde ahi (pulsando en teclado) porque bucle esta en "esperar tecla", y symbol o shift, por si solas,
-no son teclas
-
+-opcion para minimizar ventanas a la parte baja de la ventana (o comportamiento como ahora, las minimiza donde estaban)
 
 -Títulos de submenus tienen que ser igual al nombre que se ha seleccionado en el menú anterior

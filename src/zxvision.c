@@ -85,6 +85,7 @@
 #include "dsk.h"
 #include "zeng_online_client.h"
 #include "ql_qdos_handler.h"
+#include "ql_i8049.h"
 
 #if defined(__APPLE__)
 	#include <sys/syslimits.h>
@@ -1340,6 +1341,7 @@ void menu_util_cut_line_at_spaces(int posicion_corte, char *texto,char *linea1, 
 
 void menu_espera_tecla_timeout_tooltip(void);
 z80_byte menu_da_todas_teclas(void);
+void menu_espera_tecla_cualquiera(void);
 
 void zxvision_helper_menu_shortcut_print(int tecla);
 void zxvision_helper_menu_shortcut_delete_last(void);
@@ -17370,9 +17372,9 @@ z80_byte zxvision_common_getkey_refresh(void)
 	return tecla;
 }
 
-
 //Igual que zxvision_common_getkey_refresh pero sin esperar a no tecla
-z80_byte zxvision_common_getkey_refresh_noesperanotec(void)
+//todas_teclas dice si espera a cualquier tecla, no solo las habituales de spectrum sino tambien teclas extendidas de z88 etc
+z80_byte zxvision_common_getkey_refresh_noesperanotec_common(int todas_teclas)
 {
 	z80_byte tecla;
 
@@ -17385,7 +17387,9 @@ z80_byte zxvision_common_getkey_refresh_noesperanotec(void)
 	            menu_cpu_core_loop();
 
 
-				menu_espera_tecla();
+				if (todas_teclas) menu_espera_tecla_cualquiera();
+                else menu_espera_tecla();
+
 				tecla=zxvision_read_keyboard();
 
 				//con enter no salimos. TODO: esto se hace porque el mouse esta enviando enter al pulsar boton izquierdo, y lo hace tambien al hacer dragging
@@ -17397,6 +17401,16 @@ z80_byte zxvision_common_getkey_refresh_noesperanotec(void)
 	return tecla;
 }
 
+//Igual que zxvision_common_getkey_refresh pero sin esperar a no tecla
+z80_byte zxvision_common_getkey_refresh_noesperanotec(void)
+{
+    return zxvision_common_getkey_refresh_noesperanotec_common(0);
+}
+
+z80_byte zxvision_common_getkey_refresh_noesperanotec_todasteclas(void)
+{
+    return zxvision_common_getkey_refresh_noesperanotec_common(1);
+}
 
 //Igual que zxvision_common_getkey_refresh_noesperanotec pero puede volver con wheel
 z80_byte zxvision_common_getkey_wheel_refresh_noesperanotec(void)
@@ -18167,7 +18181,9 @@ int osd_kb_no_mostrar_desde_menu=0;
 int timer_osd_keyboard_menu=0;
 
 //reset_mouse_movido dice que el movimiento de mouse no se considera
-z80_byte menu_da_todas_teclas_si_reset_mouse_movido(int reset_mouse_movido)
+//absolutamente_todas_teclas indica si se leen todas las teclas, no solo las habituales de spectrum,
+//tambien adicionales de Z88 etc. eso se usa en help keyboard
+z80_byte menu_da_todas_teclas_si_reset_mouse_movido(int reset_mouse_movido,int absolutamente_todas_teclas)
 {
 
     //if (mouse_movido) printf("mouse movido en menu_da_todas_teclas 1: %d\n",mouse_movido);
@@ -18215,6 +18231,17 @@ z80_byte menu_da_todas_teclas_si_reset_mouse_movido(int reset_mouse_movido)
 	//symbol i shift no cuentan por separado
 	acumulado=acumulado & (puerto_65278 | 1) & puerto_65022 & puerto_64510 & puerto_63486 & puerto_61438 & puerto_57342 & puerto_49150 & (puerto_32766 |2) & puerto_especial1 & puerto_especial2 & puerto_especial3 & puerto_especial4;
 
+    if (absolutamente_todas_teclas) {
+        //Symbol y shift
+        acumulado=acumulado & puerto_65278 & puerto_32766;
+
+        //Z88
+        acumulado=acumulado & blink_kbd_a15 & blink_kbd_a14 & blink_kbd_a13 & blink_kbd_a12 & blink_kbd_a11 & blink_kbd_a10 & blink_kbd_a9 & blink_kbd_a8;
+
+        //QL
+        acumulado=acumulado &   ql_keyboard_table[0] & ql_keyboard_table[1] & ql_keyboard_table[2] & ql_keyboard_table[3] &
+                                ql_keyboard_table[4] & ql_keyboard_table[5] & ql_keyboard_table[6] & ql_keyboard_table[7];
+    }
 
     //Boton shift+cursor en ventana que no permite background, cerrarla
     if (menu_pressed_shift_cursor_window_doesnot_allow) {
@@ -18307,7 +18334,12 @@ z80_byte menu_da_todas_teclas_si_reset_mouse_movido(int reset_mouse_movido)
 
 z80_byte menu_da_todas_teclas(void)
 {
-    return menu_da_todas_teclas_si_reset_mouse_movido(0);
+    return menu_da_todas_teclas_si_reset_mouse_movido(0,0);
+}
+
+z80_byte menu_da_todas_teclas_cualquiera(void)
+{
+    return menu_da_todas_teclas_si_reset_mouse_movido(0,1);
 }
 
 int menu_si_tecla_pulsada(void)
@@ -18586,7 +18618,30 @@ void zxvision_espera_tecla_condicion_progreso(zxvision_window *w,int (*funcionco
 
 }
 
+void menu_espera_tecla_cualquiera(void)
+{
 
+        //Esperar a pulsar una tecla
+        z80_byte acumulado;
+
+	//Si al entrar aqui ya hay tecla pulsada, volver
+        acumulado=menu_da_todas_teclas_cualquiera();
+        if ( (acumulado & MENU_PUERTO_TECLADO_NINGUNA) !=MENU_PUERTO_TECLADO_NINGUNA) return;
+
+
+	do {
+		menu_cpu_core_loop();
+
+
+		acumulado=menu_da_todas_teclas_cualquiera();
+
+
+	} while ( (acumulado & MENU_PUERTO_TECLADO_NINGUNA) ==MENU_PUERTO_TECLADO_NINGUNA);
+
+	//Al salir del bucle, reseteamos contadores de repeticion
+	menu_reset_counters_tecla_repeticion();
+
+}
 
 void menu_espera_tecla(void)
 {
@@ -18728,7 +18783,7 @@ void menu_espera_no_tecla_no_mouse_movido(void)
 
         do {
             //no tener en cuenta que se mueva mouse
-		acumulado=menu_da_todas_teclas_si_reset_mouse_movido(1);
+		acumulado=menu_da_todas_teclas_si_reset_mouse_movido(1,0);
 		if ( (acumulado & MENU_PUERTO_TECLADO_NINGUNA) == MENU_PUERTO_TECLADO_NINGUNA) {
 			salir=1;
 		}

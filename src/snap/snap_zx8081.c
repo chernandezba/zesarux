@@ -621,7 +621,7 @@ void new_snap_load_zx80_zx81_simulate_loading(z80_byte *puntero_inicio,z80_byte 
                                                 if (!se_ha_pulsado_tecla) new_snap_load_zx8081_simulate_byte(byte_leido);
                                         }
 
-                                        tecla_pulsada=menu_da_todas_teclas_si_reset_mouse_movido(1)&31; //no tener en cuenta que se mueva mouse
+                                        tecla_pulsada=menu_da_todas_teclas_si_reset_mouse_movido(1,0)&31; //no tener en cuenta que se mueva mouse
 
                                         //si se pulsa algo
                                         if (tecla_pulsada!=31) {
