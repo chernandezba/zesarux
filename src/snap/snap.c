@@ -5311,8 +5311,8 @@ void snapshot_save(char *filename)
                 save_z80_snapshot(filename);
         }
 
-	else if (!util_compare_file_extension(filename,"p") ) {
-                debug_printf(VERBOSE_INFO,"Saving P snapshot %s",filename);
+	else if (!util_compare_file_extension(filename,"p") || !util_compare_file_extension(filename,"p81")) {
+                debug_printf(VERBOSE_INFO,"Saving P/P81 snapshot %s",filename);
                 new_save_zx81_p_snapshot(filename);
         }
 

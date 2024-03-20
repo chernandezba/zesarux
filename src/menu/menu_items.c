@@ -29933,11 +29933,17 @@ void menu_snapshot_save(MENU_ITEM_PARAMETERS)
   	if (MACHINE_IS_ZX8081) {
         filtros[0]="zsf";
 
-		if (MACHINE_IS_ZX80_TYPE) filtros[1]="o";
-		else filtros[1]="p";
-
-		filtros[2]="zx";
-		filtros[3]=0;
+		if (MACHINE_IS_ZX80_TYPE) {
+            filtros[1]="o";
+            filtros[2]="zx";
+		    filtros[3]=0;
+        }
+		else {
+            filtros[1]="p";
+            filtros[2]="p81";
+		    filtros[3]="zx";
+		    filtros[4]=0;
+        }
 }
 
 	else if (MACHINE_IS_Z88) {
@@ -32675,10 +32681,15 @@ void menu_tape_out_open(MENU_ITEM_PARAMETERS)
 
 	if (MACHINE_IS_ZX8081) {
 
-		if (MACHINE_IS_ZX80_TYPE) filtros[0]="o";
-		else filtros[0]="p";
-
-		filtros[1]=0;
+		if (MACHINE_IS_ZX80_TYPE) {
+            filtros[0]="o";
+            filtros[1]=0;
+        }
+		else {
+            filtros[0]="p";
+            filtros[1]="p81";
+            filtros[2]=0;
+        }
 
 		strcpy(mensaje_existe,"Overwrite?");
 	}

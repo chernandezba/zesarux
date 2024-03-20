@@ -485,6 +485,16 @@ if (tape_out_file!=0) {
                                         }
                                 }
 
+                        else if (!util_compare_file_extension(tape_out_file,"p81") ) {
+                                        debug_printf (VERBOSE_INFO,"Out .P81 file detected");
+                                        if (!(MACHINE_IS_ZX81_TYPE)) {
+                                                debug_printf (VERBOSE_ERR,"Out Tape format only supported on ZX81 models");
+                                                tape_out_file=NULL;
+                                        }
+                                        else {
+                                                tape_out_block_open=tape_out_block_p_open;
+                                        }
+                                }
 
 
                         else {

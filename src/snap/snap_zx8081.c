@@ -155,7 +155,7 @@ void new_tape_load_zx81(void)
     }
 
     else {
-        debug_printf (VERBOSE_INFO,"Assume format is .p/.81");
+        debug_printf (VERBOSE_INFO,"Assume format is .p/.81/.p81");
         //Cargamos archivo en memoria
         new_load_zx81_p_snapshot_in_mem(tapefile);
     }
@@ -286,7 +286,7 @@ void new_save_zx80_o_snapshot(char *filename)
 
 }
 
-//Funcion de grabacion de ZX81 P snapshot
+//Funcion de grabacion de ZX81 P/P81 snapshot
 void new_save_zx81_p_snapshot(char *filename)
 {
 
@@ -298,6 +298,27 @@ void new_save_zx81_p_snapshot(char *filename)
                 debug_printf (VERBOSE_ERR,"Error writing snapshot file %s",filename);
                 return;
         }
+
+        //Si formato P81, agregar nombre de archivo al inicio
+        if (!util_compare_file_extension(filename,"p81")) {
+
+            char nombre_corto[PATH_MAX];
+            util_get_file_no_directory(filename,nombre_corto);
+
+            char nombre_sin_extension[PATH_MAX];
+            util_get_file_without_extension(nombre_corto,nombre_sin_extension);
+
+            printf("Adding filename [%s] at the beginning of the p81 file\n",nombre_sin_extension);
+
+            int i;
+            int longitud_nombre=strlen(nombre_sin_extension);
+            for (i=0;i<longitud_nombre;i++) {
+                z80_byte caracter_zx81=ascii_to_zx81(nombre_sin_extension[i]);
+                if (i==longitud_nombre-1) caracter_zx81 |=128; //Indicar caracter final
+                fwrite(&caracter_zx81,1,1,ptr_pfile);
+            }
+        }
+
 
         z80_int puntero_inicio;
 
