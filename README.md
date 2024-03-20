@@ -182,15 +182,15 @@ __FEATURES__
 
 * Supports loading from real tape (any external audio source, like tape player, mp3 player, etc)
 
-* Supports real tape loading of file formats: RWA, SMP, WAV, TZX, PZX, CDT, TAP, P, O. It handles loading of turbo load tapes or any type of tape loading for standard/non standard loading routines
+* Supports real tape loading of file formats: RWA, SMP, WAV, TZX, PZX, CDT, TAP, P, P81, O. It handles loading of turbo load tapes or any type of tape loading for standard/non standard loading routines
 
-* Handles binary tape format files (TAP, TZX, PZX, O, P, CDT, CAS) on standard ROM routines for ZX Spectrum, ZX80, ZX81, Amstrad CPC, Jupiter Ace, MSX, Spectravideo
+* Handles binary tape format files (TAP, TZX, PZX, O, P, P81, CDT, CAS) on standard ROM routines for ZX Spectrum, ZX80, ZX81, Amstrad CPC, Jupiter Ace, MSX, Spectravideo
 
 * Handles real audio loading (RWA, SMP, WAV) on standard ROM routines for ZX Spectrum, ZX80, ZX81, Amstrad CPC, Jupiter Ace
 
 * Simulates real tape loading on standard ROM routines for ZX Spectrum, ZX80, ZX81
 
-* Handles snapshot formats: ZSF, ZX, Z80, SP, SPG, NEX, SNA, P, O, Z81, ACE
+* Handles snapshot formats: ZSF, ZX, Z80, SP, SPG, NEX, SNA, P, P81, O, Z81, ACE
 
 * Handles floppy disk formats: DSK
 
