@@ -25781,18 +25781,19 @@ void menu_realtape_message_reading(void)
 void menu_realtape_open(MENU_ITEM_PARAMETERS)
 {
 
-        char *filtros[10];
+        char *filtros[11];
 
         filtros[0]="smp";
         filtros[1]="rwa";
         filtros[2]="wav";
         filtros[3]="tzx";
         filtros[4]="p";
-        filtros[5]="o";
-        filtros[6]="tap";
-        filtros[7]="cdt";
-		filtros[8]="pzx";
-        filtros[9]=0;
+        filtros[5]="p81";
+        filtros[6]="o";
+        filtros[7]="tap";
+        filtros[8]="cdt";
+		filtros[9]="pzx";
+        filtros[10]=0;
 
 
         //guardamos directorio actual

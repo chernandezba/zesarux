@@ -9604,7 +9604,13 @@ Each pulse is split into a 150us High period, and 150us Low period. The duration
 
 	//Si ZX81, metemos nombre al principio.
     //En los P no hay el nombre al principio. En el audio si lo hay
-	if (si_p) {
+
+    //Pero si es un P81, el nombre ya nos viene
+    int si_p81=0;
+
+    if (!util_compare_file_extension(origen,"p81")) si_p81=1;
+
+	if (si_p && !si_p81) {
 
 
         //obtenemos nombre archivo y directorio por separado
@@ -9613,6 +9619,8 @@ Each pulse is split into a 150us High period, and 150us Low period. The duration
 
         util_get_file_no_directory(origen,nombre);
         util_get_file_without_extension(nombre,nombre_sin_ext);
+
+        debug_printf(VERBOSE_INFO,"Adding filename [%s] at the beginning of audio",nombre_sin_ext);
 
         int i;
         int longitud=strlen(nombre_sin_ext);
@@ -17283,8 +17291,8 @@ int util_convert_any_to_scr(char *filename,char *archivo_destino)
         return 0;
 	}
 
-	//Si es P
-	else if (!util_compare_file_extension(filename,"p")) {
+	//Si es P/P81
+	else if (!util_compare_file_extension(filename,"p") || !util_compare_file_extension(filename,"p81")) {
 		util_convert_p_to_scr(filename,archivo_destino);
         //No hay que buscar archivo de pantalla. ya lo extrae directo. volvemos
         return 0;
@@ -17853,6 +17861,16 @@ int util_convert_p_to_scr(char *filename,char *archivo_destino)
                 return 1;
         }
 
+        //Saltar el nombre del principio si es un .p81
+        if (!util_compare_file_extension(filename,"p81")) {
+            z80_byte byte_leido=0;
+            while (bytes_to_load>0 && (byte_leido&128)==0) {
+                //printf("saltando byte\n");
+                zvfs_fread(in_fatfs,&byte_leido,1,ptr_pfile,&fil);
+            }
+        }
+
+
         //Load File
 
         /*
@@ -17930,7 +17948,10 @@ int util_convert_p_to_scr(char *filename,char *archivo_destino)
                 //printf ("y: %d\n",y);
 
                 //Ver rango
-                if (video_pointer>=bytes_to_load) return 1;
+                if (video_pointer>=bytes_to_load) {
+                    //printf("video pointer incorrecto\n");
+                    return 1;
+                }
 
                 caracter=buffer_lectura[video_pointer++];
                 if (caracter==118) {
@@ -21952,8 +21973,8 @@ void util_extract_preview_file_simple(char *nombre,char *tmpdir,char *tmpfile_sc
 	}
 
 	//Si es P
-	else if (!util_compare_file_extension(nombre,"p")) {
-		debug_printf(VERBOSE_DEBUG,"File is a p snapshot");
+	else if (!util_compare_file_extension(nombre,"p") || !util_compare_file_extension(nombre,"p81")) {
+		debug_printf(VERBOSE_DEBUG,"File is a p/p81 snapshot");
 
 		menu_filesel_mkdir(tmpdir);
 
@@ -22007,6 +22028,7 @@ int util_get_extract_preview_type_file(char *nombre,long long int file_size)
         !util_compare_file_extension(nombre,"sp") ||
         !util_compare_file_extension(nombre,"z80") ||
         !util_compare_file_extension(nombre,"p") ||
+        !util_compare_file_extension(nombre,"p81") ||
         !util_compare_file_extension(nombre,"zsf") ||
         file_size==6912
     ) {

@@ -2040,11 +2040,11 @@ extern int convert_p_to_rwa_tmpdir(char *origen, char *destino);
                 }
         }
 
-        else if (!util_compare_file_extension(archivo,"p")) {
+        else if (!util_compare_file_extension(archivo,"p") || !util_compare_file_extension(archivo,"p81")) {
                 char *opciones[]={
-                        "P to RWA",
-			"P to WAV",
-			"P to SCR",
+                        "P/P81 to RWA",
+			"P/P81 to WAV",
+			"P/P81 to SCR",
                         NULL};
 
                 int opcion=menu_ask_list_texto("File converter","Select conversion",opciones);

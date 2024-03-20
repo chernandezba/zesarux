@@ -2514,8 +2514,8 @@ void realtape_insert(void)
                 realtape_file_size=get_file_size(realtape_name_rwa);
         }
 
-        else if (!util_compare_file_extension(realtape_name,"p")) {
-                debug_printf (VERBOSE_INFO,"Detected P file");
+        else if (!util_compare_file_extension(realtape_name,"p") || !util_compare_file_extension(realtape_name,"p81")) {
+                debug_printf (VERBOSE_INFO,"Detected P/P81 file");
                 realtape_tipo=4;
                 if (convert_p_to_rwa_tmpdir(realtape_name,realtape_name_rwa)) {
                         //debug_printf(VERBOSE_ERR,"Error converting input file");
