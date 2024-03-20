@@ -6,13 +6,14 @@ Se agregó carga de audio desde una fuente de audio externa, como un reproductor
 - Ventana de fuente de audio externa: puede ver la onda de audio, el tipo de señal, y un asistente de azimuth que te avisa cuando tienes que usar el destornillador ;)
 - Analizador de espectro: puede ver el rango de frecuencia completo de la onda de audio
 
-Se agregó la función ZENG Online, que permite ejecutar juegos multijugador en línea usando un servidor central.
-Se agregó soporte ZENG en el controlador de curses.
-Se agregó soporte para guardar pantalla en archivo .txt.
-Se agregó soporte para guardar pantalla en archivo .stl, útil para imprimir en una impresora 3D.
-Función agregada para cambiar bits en el editor hexadecimal.
-Estilo GUI de TempleOS agregado
-Estilo de GUI QNX agregado
+Agregado la función ZENG Online, que permite ejecutar juegos multijugador en línea usando un servidor central.
+Agregado soporte ZENG en el controlador de curses.
+Agregado soporte para guardar pantalla en archivo .txt.
+Agregado soporte para guardar pantalla en archivo .stl, útil para imprimir en una impresora 3D.
+Agregado soporte para archivos .P81 de ZX81
+Agregada Función para cambiar bits en el editor hexadecimal.
+Agregado estilo GUI de TempleOS
+Agregado estilo GUI de QNX
 Se agregó una función de menú para sincronizar la instantánea local con la remota usando ZRCP
 Comandos ZRCP agregados: open-menu, print-error
 Agregada Configuración para forzar el modo CHR$ 128 en ZX81

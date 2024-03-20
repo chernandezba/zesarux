@@ -10,6 +10,7 @@ Added ZENG Online feature, which allows to run multiplayer online game using a c
 Added ZENG support on curses driver
 Added save screen to .txt file
 Added save screen to .stl file, useful to print on 3D Printer
+Added support for ZX81 .P81 files
 Added function to shift bits on Hex Editor
 Added TempleOS GUI Style
 Added QNX GUI Style
