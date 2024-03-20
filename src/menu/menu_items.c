@@ -22433,6 +22433,38 @@ void menu_ql_flp1_readonly(MENU_ITEM_PARAMETERS)
     ql_device_flp1_readonly ^= 1;
 }
 
+void menu_ql_mdv1_enable(MENU_ITEM_PARAMETERS)
+{
+    ql_device_mdv1_enabled ^=1;
+}
+
+void menu_ql_mdv2_enable(MENU_ITEM_PARAMETERS)
+{
+    ql_device_mdv2_enabled ^=1;
+}
+
+void menu_ql_flp1_enable(MENU_ITEM_PARAMETERS)
+{
+    ql_device_flp1_enabled ^=1;
+}
+
+int menu_ql_mdv1_emulation_cond(void)
+{
+    if (ql_mdv1_root_dir[0]==0) return 0;
+    else return 1;
+}
+
+int menu_ql_mdv2_emulation_cond(void)
+{
+    if (ql_mdv2_root_dir[0]==0) return 0;
+    else return 1;
+}
+
+int menu_ql_flp1_emulation_cond(void)
+{
+    if (ql_flp1_root_dir[0]==0) return 0;
+    else return 1;
+}
 
 void menu_ql_mdv_flp(MENU_ITEM_PARAMETERS)
 {
@@ -22465,6 +22497,10 @@ void menu_ql_mdv_flp(MENU_ITEM_PARAMETERS)
 
                             menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_ql_mdv1,NULL,"[%s]",string_ql_mdv1_root_dir_shown);
 
+                            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_ql_mdv1_enable,menu_ql_mdv1_emulation_cond,
+                                "Enabled","Activado","Activat");
+                            menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(ql_device_mdv1_enabled ? 'X' : ' ') );
+
 
                             menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_ql_mdv1_readonly,NULL,"[%c] Read only",
                                 (ql_device_mdv1_readonly ? 'X' : ' ') );
@@ -22476,6 +22512,10 @@ void menu_ql_mdv_flp(MENU_ITEM_PARAMETERS)
 
                             menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_ql_mdv2,NULL,"[%s]",string_ql_mdv2_root_dir_shown);
 
+                            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_ql_mdv2_enable,menu_ql_mdv2_emulation_cond,
+                                "Enabled","Activado","Activat");
+                            menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(ql_device_mdv2_enabled ? 'X' : ' ') );
+
 
                             menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_ql_mdv2_readonly,NULL,"[%c] Read only",
                                 (ql_device_mdv2_readonly ? 'X' : ' ') );
@@ -22485,6 +22525,10 @@ void menu_ql_mdv_flp(MENU_ITEM_PARAMETERS)
                             menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,"Flp1 root dir:");
 
                             menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_ql_flp1,NULL,"[%s]",string_ql_flp1_root_dir_shown);
+
+                            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_ql_flp1_enable,menu_ql_flp1_emulation_cond,
+                                "Enabled","Activado","Activat");
+                            menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(ql_device_flp1_enabled ? 'X' : ' ') );
 
 
                             menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_ql_flp1_readonly,NULL,"[%c] Read only",
@@ -43734,9 +43778,21 @@ int zxdesktop_lowericon_mdv_flp_is_visible(void)
 	else return 0;
 }
 
-int zxdesktop_lowericon_mdv_flp_is_active(void)
+int zxdesktop_lowericon_mdv1_is_active(void)
 {
-	if (ql_microdrive_floppy_emulation) return 1;
+	if (ql_microdrive_floppy_emulation && ql_device_mdv1_enabled) return 1;
+	else return 0;
+}
+
+int zxdesktop_lowericon_mdv2_is_active(void)
+{
+	if (ql_microdrive_floppy_emulation && ql_device_mdv2_enabled) return 1;
+	else return 0;
+}
+
+int zxdesktop_lowericon_flp1_is_active(void)
+{
+	if (ql_microdrive_floppy_emulation && ql_device_flp1_enabled) return 1;
 	else return 0;
 }
 
@@ -43864,13 +43920,13 @@ struct s_zxdesktop_lowericons_info zdesktop_lowericons_array[TOTAL_ZXDESKTOP_MAX
 		bitmap_lowericon_ext_desktop_cart_timex_active,bitmap_lowericon_ext_desktop_cart_timex_inactive,&zxdesktop_common_icon_no_inverse},
 
 	//MDV/Floppy QL.
-	{ zxdesktop_lowericon_mdv_flp_is_visible, zxdesktop_lowericon_mdv_flp_is_active, zxdesktop_lowericon_mdv_flp_accion,
+	{ zxdesktop_lowericon_mdv_flp_is_visible, zxdesktop_lowericon_mdv1_is_active, zxdesktop_lowericon_mdv_flp_accion,
 		bitmap_lowericon_ext_desktop_mdv_active,bitmap_lowericon_ext_desktop_mdv_inactive,&zxdesktop_icon_mdv1_inverse},
 
-	{ zxdesktop_lowericon_mdv_flp_is_visible, zxdesktop_lowericon_mdv_flp_is_active, zxdesktop_lowericon_mdv_flp_accion,
+	{ zxdesktop_lowericon_mdv_flp_is_visible, zxdesktop_lowericon_mdv2_is_active, zxdesktop_lowericon_mdv_flp_accion,
 		bitmap_lowericon_ext_desktop_mdv_active,bitmap_lowericon_ext_desktop_mdv_inactive,&zxdesktop_icon_mdv2_inverse},
 
-	{ zxdesktop_lowericon_mdv_flp_is_visible, zxdesktop_lowericon_mdv_flp_is_active, zxdesktop_lowericon_mdv_flp_accion,
+	{ zxdesktop_lowericon_mdv_flp_is_visible, zxdesktop_lowericon_flp1_is_active, zxdesktop_lowericon_mdv_flp_accion,
 		bitmap_lowericon_ext_desktop_flp_active,bitmap_lowericon_ext_desktop_flp_inactive,&zxdesktop_icon_flp1_inverse},
 
 	//3 Cartuchos de Z88.

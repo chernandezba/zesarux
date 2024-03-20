@@ -1418,18 +1418,18 @@ char *bitmap_lowericon_ext_desktop_flp_active[EXT_DESKTOP_BUTTONS_ANCHO]={
 	"  wBBBBBwwwwwwwwwwBBBBBw  ",
 	"  wBBBBBBBBBBBBBBBBBBBBw  ",	//10
 	"  wBBBBBBBBBBBBBBBBBBBBw  ",
-	"  wBBBWWWWWWWWWWWWWWBBBw  ",
-	"  wBBBWWWxxWWxWWWWWWBBBw  ",
-	"  wBBBWWxWWxWxWWWWWWBBBw  ",
-	"  wBBBWWxWWxWxWWWWWWBBBw  ",
-	"  wBBBWWxWWxWxWWWWWWBBBw  ",
-	"  wBBBWWWxxWWxxxWWWWBBBw  ",
-	"  wBBBWWWWWxWWWWWWWWBBBw  ",
-	"  wBBBWWWWWWWWWWWWWWBBBw  ",
-	"  wBBBWWxxxxxxxxxxWWBBBw  ",    //20
-	"  wBBBWWWWWWWWWWWWWWBBBw  ",
-	"  wB BWWWWWWWWWWWWWWB Bw  ",
-	"  wBBBWWWWWWWWWWWWWWBBBw  ",
+	"  wBBBWWWWWWWWWWWWWWWBBw  ",
+	"  wBBBWWxxxWxWWWxxWWWBBw  ",
+	"  wBBBWWxWWWxWWWxWxWWBBw  ",
+	"  wBBBWWxxWWxWWWxxWWWBBw  ",
+	"  wBBBWWxWWWxWWWxWWWWBBw  ",
+	"  wBBBWWxWWWxxxWxWWWWBBw  ",
+	"  wBBBWWWWWWWWWWWWWWWBBw  ",
+	"  wBBBWWWWWWWWWWWWWWWBBw  ",
+	"  wBBBWWxxxxxxxxxxxWWBBw  ",    //20
+	"  wBBBWWWWWWWWWWWWWWWBBw  ",
+	"  wB BWWWWWWWWWWWWWWW Bw  ",
+	"  wBBBWWWWWWWWWWWWWWWBBw  ",
 	"  wBBBBBBBBBBBBBBBBBBBBw  ",
 	"  wwwwwwwwwwwwwwwwwwwwww  " 	 //25
 };
@@ -1448,18 +1448,18 @@ char *bitmap_lowericon_ext_desktop_flp_inactive[EXT_DESKTOP_BUTTONS_ANCHO]={
 	"  wx    xxxxxxxxxx    xw  ",
 	"  wx                  xw  ",	//10
 	"  wx                  xw  ",
-	"  wx  xxxxxxxxxxxxxx  xw  ",
-	"  wx  x  xx  x     x  xw  ",
-	"  wx  x x  x x     x  xw  ",
-	"  wx  x x  x x     x  xw  ",
-	"  wx  x x  x x     x  xw  ",
-	"  wx  x  xx  xxx   x  xw  ",
-	"  wx  x    x       x  xw  ",
-	"  wx  x            x  xw  ",
-	"  wx  x xxxxxxxxxx x  xw  ",    //20
-	"  wx  x            x  xw  ",
-	"  wx  x            x  xw  ",
-	"  wx  x            x  xw  ",
+	"  wx  xxxxxxxxxxxxxxx xw  ",
+	"  wx  x xxx x   xx  x xw  ",
+	"  wx  x x   x   x x x xw  ",
+	"  wx  x xx  x   xx  x xw  ",
+	"  wx  x x   x   x   x xw  ",
+	"  wx  x x   xxx x   x xw  ",
+	"  wx  x             x xw  ",
+	"  wx  x             x xw  ",
+	"  wx  x xxxxxxxxxxx x xw  ",    //20
+	"  wx  x             x xw  ",
+	"  wx  x             x xw  ",
+	"  wx  x             x xw  ",
 	"  wxxxxxxxxxxxxxxxxxxxxw  ",
 	"  wwwwwwwwwwwwwwwwwwwwww  " 	 //25
 };

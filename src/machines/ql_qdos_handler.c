@@ -952,6 +952,10 @@ void ql_split_path_device_name(char *ql_path, char *ql_device, char *ql_file,int
     debug_printf(VERBOSE_DEBUG,"QDOS handler: Source path: %s Device: %s File: %s",ql_path,ql_device,ql_file);
 }
 
+int ql_device_mdv1_enabled=0;
+int ql_device_mdv2_enabled=0;
+int ql_device_flp1_enabled=0;
+
 //Dado un device y un nombre de archivo, retorna ruta a archivo en filesystem final
 //Retorna 1 si error
 //Tambien asigna ultima unidad usada para visualizarlo en el icono y el footer
@@ -960,16 +964,21 @@ int ql_return_full_path(char *device, char *file, char *fullpath)
     char *sourcepath;
 
     if (!strcasecmp(device,"mdv1")) {
-        sourcepath=ql_mdv1_root_dir;
         ql_qdos_last_unit_used=0;
+        if (!ql_device_mdv1_enabled) return 1;
+        sourcepath=ql_mdv1_root_dir;
+
     }
     else if (!strcasecmp(device,"mdv2")) {
-        sourcepath=ql_mdv2_root_dir;
         ql_qdos_last_unit_used=1;
+        if (!ql_device_mdv2_enabled) return 1;
+        sourcepath=ql_mdv2_root_dir;
+
     }
     else if (!strcasecmp(device,"flp1")) {
-        sourcepath=ql_flp1_root_dir;
         ql_qdos_last_unit_used=2;
+        if (!ql_device_flp1_enabled) return 1;
+        sourcepath=ql_flp1_root_dir;
     }
     else return 1;
 
@@ -989,15 +998,18 @@ void ql_insert_mdv_flp(enum ql_qdos_unidades unidad,char *dir_to_mount)
 
         case QL_QDOS_UNIT_MDV2:
             sprintf (ql_mdv2_root_dir,"%s",dir_to_mount);
+            ql_device_mdv2_enabled=1;
         break;
 
         case QL_QDOS_UNIT_FLP1:
             sprintf (ql_flp1_root_dir,"%s",dir_to_mount);
+            ql_device_flp1_enabled=1;
         break;
 
         case QL_QDOS_UNIT_MDV1:
         default:
             sprintf (ql_mdv1_root_dir,"%s",dir_to_mount);
+            ql_device_mdv1_enabled=1;
 
             //Si se copia misma ruta de mdv1 a flp1
             if (ql_flp1_follow_mdv1.v) strcpy(ql_flp1_root_dir,dir_to_mount);
@@ -2527,6 +2539,7 @@ D3.L: code:
 
       moto_byte file_mode;
 
+    //printf("antes de hacer_trap: %d\n",hacer_trap);
 
       if (hacer_trap) {
 
@@ -2588,14 +2601,24 @@ A0: 00000D88 A1: 00000D88 A2: 00006906 A3: 00000668 A4: 00000012 A5: 00000670 A6
             }
 
 
-            //Indicar actividad en md flp
-        	ql_footer_mdflp_operating();
+
 
    	        ql_split_path_device_name(ql_nombre_archivo_load,ql_io_open_device,ql_io_open_file,0,0);
 
             //printf("device: %s\n",ql_io_open_device);
 
-        	ql_return_full_path(ql_io_open_device,ql_io_open_file,ql_nombrecompleto);
+            int error_full_path=ql_return_full_path(ql_io_open_device,ql_io_open_file,ql_nombrecompleto);
+
+            //Indicar actividad en md flp
+        	ql_footer_mdflp_operating();
+
+        	if (error_full_path) {
+                //Error dispositivo invalido o no habilitado
+                debug_printf(VERBOSE_DEBUG,"QDOS handler: Invalid device or not enabled: %s",ql_io_open_device);
+          		//Retornar Not found (NF)
+          		m68k_set_reg(M68K_REG_D0,-7);
+          		return;
+            }
 
             //Ver modo archivo
             file_mode=m68k_get_reg(NULL,M68K_REG_D3);
@@ -2682,7 +2705,18 @@ A0: 00000D88 A1: 00000D88 A2: 00006906 A3: 00000668 A4: 00000012 A5: 00000670 A6
 
             //printf("device: %s\n",ql_io_open_device);
 
-        	ql_return_full_path(ql_io_open_device,ql_io_open_file,ql_nombrecompleto);
+            int error_full_path=ql_return_full_path(ql_io_open_device,ql_io_open_file,ql_nombrecompleto);
+
+            //Indicar actividad en md flp
+        	ql_footer_mdflp_operating();
+
+        	if (error_full_path) {
+                //Error dispositivo invalido o no habilitado
+                debug_printf(VERBOSE_DEBUG,"QDOS handler: Invalid device or not enabled: %s",ql_io_open_device);
+          		//Retornar Not found (NF)
+          		m68k_set_reg(M68K_REG_D0,-7);
+          		return;
+            }
 
             //Se abre directorio
             debug_printf(VERBOSE_DEBUG,"QDOS handler: Opening directory %s",ql_nombrecompleto);

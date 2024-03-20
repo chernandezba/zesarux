@@ -68,6 +68,10 @@ extern int ql_device_flp1_readonly;
 
 extern int ql_microdrive_floppy_emulation;
 
+extern int ql_device_mdv1_enabled;
+extern int ql_device_mdv2_enabled;
+extern int ql_device_flp1_enabled;
+
 extern z80_byte ql_last_trap;
 
 extern int ql_previous_trap_was_4;

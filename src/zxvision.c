@@ -5265,6 +5265,15 @@ void menu_ext_desktop_draw_lower_icon(int numero_boton,int pulsado)
 
 	else  {
 		puntero_bitmap=zdesktop_lowericons_array[indice_array].bitmap_inactive;
+
+        //Se deben mostrar como inversos los iconos con actividad, aunque no esten habilitados?
+		int *puntero_a_inverso;
+
+		puntero_a_inverso=zdesktop_lowericons_array[indice_array].icon_is_inverse;
+		if (*puntero_a_inverso) {
+			inverso=1;
+		}
+
 	}
 
 

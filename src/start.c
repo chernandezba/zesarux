@@ -1484,8 +1484,11 @@ printf("\n"
 
 		"--enable-ql-mdv-flp             Enable QL Microdrive & Floppy emulation\n"
 		"--ql-mdv1-root-dir p            Set QL mdv1 root directory\n"
-		"--ql-mdv2-root-dir p            Set QL mdv2 root directory\n"
+        "--ql-mdv2-root-dir p            Set QL mdv2 root directory\n"
 		"--ql-flp1-root-dir p            Set QL flp1 root directory\n"
+        "--ql-mdv1-enable                Enable QL mdv1\n"
+        "--ql-mdv2-enable                Enable QL mdv2\n"
+        "--ql-flp1-enable                Enable QL flp1\n"
         "--ql-mdv1-read-only             Mark mdv1 as read only\n"
         "--ql-mdv2-read-only             Mark mdv2 as read only\n"
         "--ql-flp1-read-only             Mark flp1 as read only\n"
@@ -4557,6 +4560,17 @@ int parse_cmdline_options(int desde_commandline) {
 				}
 			}
 
+            else if (!strcmp(argv[puntero_parametro],"--ql-mdv1-enable")) {
+                ql_device_mdv1_enabled=1;
+            }
+
+            else if (!strcmp(argv[puntero_parametro],"--ql-mdv2-enable")) {
+                ql_device_mdv2_enabled=1;
+            }
+
+            else if (!strcmp(argv[puntero_parametro],"--ql-flp1-enable")) {
+                ql_device_flp1_enabled=1;
+            }
 
             else if (!strcmp(argv[puntero_parametro],"--ql-mdv1-read-only")) {
                 ql_device_mdv1_readonly=1;
