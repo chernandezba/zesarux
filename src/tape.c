@@ -358,7 +358,7 @@ void tape_init(void)
                                         tape_block_open=tape_block_p_open;
                                 }
 
-                        else if (!util_compare_file_extension(tapefile,"p") || !util_compare_file_extension(tapefile,"81") ) {
+                        else if (!util_compare_file_extension(tapefile,"p") || !util_compare_file_extension(tapefile,"81") || !util_compare_file_extension(tapefile,"p81")) {
                                         debug_printf (VERBOSE_INFO,"ZX81 Tape file detected");
                                         tape_block_open=tape_block_p_open;
                                 }

@@ -746,10 +746,33 @@ void new_load_zx81_p_snapshot_in_mem(char *archivo)
 
                         else {
 
+                            int inicio_datos=0;
 
+                            //Si archivo .p81, saltar nombre de cabecera
+                            if (!util_compare_file_extension(archivo,"p81")) {
+
+                                char buffer_nombre[256]; //En teoria maximo 128 el nombre
+
+                                int salir=0;
+
+                                while (leidos>0 && !salir && inicio_datos<255) {
+                                    z80_byte byte_leido=buffer_lectura[inicio_datos];
+                                    z80_bit inverse;
+                                    z80_byte caracter_ascii=da_codigo81_solo_letras(byte_leido,&inverse);
+                                    buffer_nombre[inicio_datos]=caracter_ascii;
+
+                                    if (byte_leido&128) salir=1;
+
+                                    leidos--;
+                                    inicio_datos++;
+                                }
+                                buffer_nombre[inicio_datos]=0;
+                                debug_printf(VERBOSE_INFO,"Program name in .p81 file: [%s]",buffer_nombre);
+
+                            }
 
                                 //copiar bytes a destino
-                                        new_snap_load_zx80_zx81_simulate_loading(puntero_inicio,buffer_lectura,leidos);
+                                        new_snap_load_zx80_zx81_simulate_loading(puntero_inicio,&buffer_lectura[inicio_datos],leidos);
 
                                 //memcpy(puntero_inicio,buffer_lectura,leidos);
                       }

@@ -29853,7 +29853,7 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
 void menu_snapshot_load(MENU_ITEM_PARAMETERS)
 {
 
-        char *filtros[16];
+        char *filtros[17];
 
         filtros[0]="zx";
         filtros[1]="sp";
@@ -29864,14 +29864,15 @@ void menu_snapshot_load(MENU_ITEM_PARAMETERS)
 
         filtros[6]="80";
         filtros[7]="81";
-        filtros[8]="z81";
-        filtros[9]="ace";
-		filtros[10]="rzx";
-		filtros[11]="zsf";
-		filtros[12]="spg";
-		filtros[13]="nex";
-        filtros[14]="snx";
-        filtros[15]=0;
+        filtros[8]="p81";
+        filtros[9]="z81";
+        filtros[10]="ace";
+		filtros[11]="rzx";
+		filtros[12]="zsf";
+		filtros[13]="spg";
+		filtros[14]="nex";
+        filtros[15]="snx";
+        filtros[16]=0;
 
 
 
@@ -30106,7 +30107,7 @@ void menu_snapshot_quickload(MENU_ITEM_PARAMETERS)
 void menu_snapshot_save_game_config(MENU_ITEM_PARAMETERS)
 {
 
-        char *filtros[29];
+        char *filtros[30];
 
         filtros[0]="zx";
         filtros[1]="sp";
@@ -30151,7 +30152,9 @@ void menu_snapshot_save_game_config(MENU_ITEM_PARAMETERS)
 
         filtros[27]="config";
 
-        filtros[28]=0;
+        filtros[28]="p81";
+
+        filtros[29]=0;
 
 	char source_file[PATH_MAX];
 	char game_config_file[PATH_MAX];
@@ -32794,7 +32797,7 @@ void menu_tape_out_open(MENU_ITEM_PARAMETERS)
 void menu_tape_open(MENU_ITEM_PARAMETERS)
 {
 
-        char *filtros[7];
+        char *filtros[8];
 
 	if (MACHINE_IS_ZX80_TYPE) {
 		filtros[0]="80";
@@ -32809,11 +32812,12 @@ void menu_tape_open(MENU_ITEM_PARAMETERS)
 	else if (MACHINE_IS_ZX81_TYPE) {
                 filtros[0]="p";
                 filtros[1]="81";
-                filtros[2]="rwa";
-                filtros[3]="smp";
-                filtros[4]="z81";
-                filtros[5]="wav";
-                filtros[6]=0;
+                filtros[2]="p81";
+                filtros[3]="rwa";
+                filtros[4]="smp";
+                filtros[5]="z81";
+                filtros[6]="wav";
+                filtros[7]=0;
         }
 
 	else if (MACHINE_IS_MSX) {
@@ -41939,12 +41943,13 @@ void menu_smartload(MENU_ITEM_PARAMETERS)
 
 	menu_first_aid("smartload");
 
-    char *filtros[40]={
+    char *filtros[41]={
         "63", "80", "81", "ace","ay",   "bin",  "cas","cdt",
         "col","dck","dsk","epr","eprom","flash","nex","o",
-        "p",  "pok","pzx","rom","rwa",  "rzx",  "scr","sg",
-        "smp","sms","sna","snx","sp",   "spg",  "tap","trd",
-        "tzx","wav","z80","z81","zmenu","zsf",  "zx", 0
+        "p",  "p81", "pok","pzx","rom","rwa",  "rzx",  "scr",
+        "sg", "smp","sms","sna","snx","sp",   "spg",  "tap",
+        "trd", "tzx","wav","z80","z81","zmenu","zsf",  "zx",
+        0
     };
 
 

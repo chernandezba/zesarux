@@ -23710,7 +23710,7 @@ void menu_zxdesktop_add_direct_smartload(void)
 {
     //Los mismos que smartload
 
-        char *filtros[38];
+        char *filtros[39];
 
         filtros[0]="zx";
         filtros[1]="sp";
@@ -23773,7 +23773,9 @@ void menu_zxdesktop_add_direct_smartload(void)
 
     filtros[36]="bin";
 
-	filtros[37]=0;
+    filtros[37]="p81";
+
+	filtros[38]=0;
 
 
     //guardamos directorio actual
@@ -23833,6 +23835,7 @@ void menu_zxdesktop_add_direct_smartload(void)
             !util_compare_file_extension(ruta_a_archivo,"o") ||
             !util_compare_file_extension(ruta_a_archivo,"80") ||
             !util_compare_file_extension(ruta_a_archivo,"81") ||
+            !util_compare_file_extension(ruta_a_archivo,"p81") ||
             !util_compare_file_extension(ruta_a_archivo,"z81") ||
             !util_compare_file_extension(ruta_a_archivo,"zsf") ||
             !util_compare_file_extension(ruta_a_archivo,"ace") ||

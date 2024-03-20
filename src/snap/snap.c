@@ -5346,7 +5346,7 @@ void snapshot_load_name(char *nombre)
 
         if (nombre!=NULL) {
                 //if (strstr(nombre,".p")!=NULL  || strstr(nombre,".P")!=NULL || strstr(nombre,".81")!=NULL ) {
-                if (!util_compare_file_extension(nombre,"p") || !util_compare_file_extension(nombre,"81") ) {
+                if (!util_compare_file_extension(nombre,"p") || !util_compare_file_extension(nombre,"81") || !util_compare_file_extension(nombre,"p81")) {
                         current_machine_type=121;
 
                         set_machine(NULL);
