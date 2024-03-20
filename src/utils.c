@@ -10622,7 +10622,7 @@ int convert_any_to_wav(char *origen, char *destino)
 	else if (!util_compare_file_extension(origen,"tzx")) result_first_convert=convert_tzx_to_rwa_tmpdir(origen,rwa_temp_file);
 	else if (!util_compare_file_extension(origen,"smp")) result_first_convert=convert_smp_to_rwa_tmpdir(origen,rwa_temp_file);
 	else if (!util_compare_file_extension(origen,"o")) result_first_convert=convert_o_to_rwa_tmpdir(origen,rwa_temp_file);
-	else if (!util_compare_file_extension(origen,"p")) result_first_convert=convert_p_to_rwa_tmpdir(origen,rwa_temp_file);
+	else if (!util_compare_file_extension(origen,"p") || !util_compare_file_extension(origen,"p81")) result_first_convert=convert_p_to_rwa_tmpdir(origen,rwa_temp_file);
         else if (!util_compare_file_extension(origen,"pzx")) result_first_convert=convert_pzx_to_rwa_tmpdir(origen,rwa_temp_file);
 	else return 1;
 
@@ -17867,6 +17867,7 @@ int util_convert_p_to_scr(char *filename,char *archivo_destino)
             while (bytes_to_load>0 && (byte_leido&128)==0) {
                 //printf("saltando byte\n");
                 zvfs_fread(in_fatfs,&byte_leido,1,ptr_pfile,&fil);
+                bytes_to_load--;
             }
         }
 
