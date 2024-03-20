@@ -53,6 +53,7 @@
 #include "snap_spg.h"
 #include "snap_zsf.h"
 #include "hilow_datadrive.h"
+#include "zx8081.h"
 
 #if defined(__APPLE__)
 	#include <sys/syslimits.h>
@@ -2599,6 +2600,27 @@ void menu_file_p_browser_show(char *filename)
 	}
     */
 
+    //Saltar el nombre del principio si es un .p81, guardando en un buffer
+    char nombre_desde_p81[256]="";
+    if (!util_compare_file_extension(filename,"p81")) {
+        //maximo 255
+        int bytes_to_load=255;
+        int i=0;
+        z80_byte byte_leido=0;
+        while (bytes_to_load>0 && (byte_leido&128)==0) {
+            //printf("saltando byte\n");
+            zvfs_fread(in_fatfs,&byte_leido,1,ptr_file_p_browser,&fil);
+
+            z80_bit inverse;
+            z80_byte caracter_ascii=da_codigo81_solo_letras(byte_leido,&inverse);
+            nombre_desde_p81[i]=caracter_ascii;
+
+            bytes_to_load--;
+            i++;
+        }
+        nombre_desde_p81[i]=0;
+    }
+
 	//Leer 128 bytes de la cabecera. Nota: archivos .P no tienen cabecera como tal
 	z80_byte p_header[128];
 
@@ -2634,6 +2656,10 @@ void menu_file_p_browser_show(char *filename)
     char nombre_sin_extension[PATH_MAX];
     util_get_file_without_extension(nombre_corto,nombre_sin_extension);
     string_a_mayusculas(nombre_sin_extension,nombre_sin_extension);
+
+    if (!util_compare_file_extension(filename,"p81")) {
+        strcpy(nombre_sin_extension,nombre_desde_p81);
+    }
 
 	sprintf(buffer_texto,"Program name: %s",nombre_sin_extension);
 	indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
@@ -3807,7 +3833,7 @@ void menu_tape_browser_show(char *filename)
 
 
     //ZX80 O, ZX81 P
-    if (!util_compare_file_extension(filename,"p")) {
+    if (!util_compare_file_extension(filename,"p") || !util_compare_file_extension(filename,"p81")) {
         menu_file_p_browser_show(filename);
         return;
     }
@@ -5391,7 +5417,7 @@ void menu_file_viewer_read_file(char *title,char *file_name)
         //z88 en caso que la deteccion automatica (que se hace aqui mas abajo) falle
         else if (!util_compare_file_extension(file_name,"basz88")) menu_file_basic_browser_show(file_name);
 
-        else if (!util_compare_file_extension(file_name,"p")) menu_file_p_browser_show(file_name);
+        else if (!util_compare_file_extension(file_name,"p") || !util_compare_file_extension(file_name,"p81")) menu_file_p_browser_show(file_name);
 
         else if (!util_compare_file_extension(file_name,"o")) menu_file_o_browser_show(file_name);
 
