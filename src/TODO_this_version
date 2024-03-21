@@ -903,9 +903,9 @@ que sale desde settings->zx desktop pero tambien con boton derecho sobre desktop
 -separar soft microbyt en carpetas de cada maquina
 
 
--ql_return_full_path: gestionar retorno valor 1
+-ql_return_full_path: gestionar retorno valor 1 en todos los casos?
 -gestionar if (hacer_trap) { aunque device no sea valido?
--ql_microdrive_floppy_emulation: misma gestion cuando mdv1 o mdv2 o flp1 no esten habilitados
+-ql_microdrive_floppy_emulation: misma gestion cuando mdv1 o mdv2 o flp1 no esten habilitados. Creo que esto ya está correcto
 
 
 -Se deben mostrar como inversos los iconos con actividad, aunque no esten habilitados?
