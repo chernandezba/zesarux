@@ -22019,23 +22019,16 @@ void menu_help_keyboard_if_highlight(int indice_tecla,int x1,int y1,int x2,int y
     }
 }
 
-void menu_help_keyboard_locate_speccy_pressed_keys_highlight(zxvision_window *ventana,int keyboard_map_coords[],z80_byte *key_map_ports[],int total_columnas,
-    int x,int y,z80_byte **p_puerto1,z80_byte *p_mascara1,z80_byte **p_puerto2,z80_byte *p_mascara2,
-    keyboard_help_double_key *teclas_dobles)
+void menu_help_keyboard_locate_speccy_pressed_keys_highlight(int keyboard_map_coords[],int total_columnas,
+    int x,int y,keyboard_help_double_key *teclas_dobles)
 {
-
-    *p_puerto1=NULL;
-    *p_puerto2=NULL;
 
     int fila_tecla;
     int columna_tecla;
 
-    int color=6;
-
 
     for (fila_tecla=0;fila_tecla<8;fila_tecla++) {
-        z80_byte *puerto=key_map_ports[fila_tecla];
-        int mascara=1;
+
         for (columna_tecla=0;columna_tecla<total_columnas;columna_tecla++) {
 
             int offset=fila_tecla*total_columnas+columna_tecla; //Indice a tecla
@@ -22048,8 +22041,6 @@ void menu_help_keyboard_locate_speccy_pressed_keys_highlight(zxvision_window *ve
             int x2=keyboard_map_coords[offset+2];
             int y2=keyboard_map_coords[offset+3];
             if (x>=x1 && x<=x2 && y>=y1 && y<=y2) {
-                *p_puerto1=puerto;
-                *p_mascara1=mascara;
 
                 //Si misma tecla que la anterior, no reiluminar
                 //Generamos un valor indexacion de tecla unico, y teniendo en cuenta si tecla doble o simple
@@ -22064,7 +22055,6 @@ void menu_help_keyboard_locate_speccy_pressed_keys_highlight(zxvision_window *ve
             }
 
 
-            mascara=mascara<<1;
         }
 
     }
@@ -22080,10 +22070,6 @@ void menu_help_keyboard_locate_speccy_pressed_keys_highlight(zxvision_window *ve
             int y2=teclas_dobles[i].y2;
 
             if (x>=x1 && x<=x2 && y>=y1 && y<=y2) {
-                *p_puerto1=teclas_dobles[i].puerto1;
-                *p_mascara1=teclas_dobles[i].mascara1;
-                *p_puerto2=teclas_dobles[i].puerto2;
-                *p_mascara2=teclas_dobles[i].mascara2;
 
                 //Si misma tecla que la anterior, no reiluminar
                 //Generamos un valor indexacion de tecla unico, y teniendo en cuenta si tecla doble o simple
@@ -22110,26 +22096,22 @@ void menu_help_keyboard_locate_speccy_pressed_keys_highlight(zxvision_window *ve
 
 }
 
-void menu_help_keyboard_highlight_key_mouse(zxvision_window *ventana,int pulsado_x,int pulsado_y)
+void menu_help_keyboard_highlight_key_mouse(int pulsado_x,int pulsado_y)
 {
 
     //localizar puerto
 
     int *keyboard_map_table=keyboard_help_return_map_table();
 
-    z80_byte *puerto1;
-    z80_byte mascara1;
 
-    z80_byte *puerto2;
-    z80_byte mascara2;
 
     keyboard_help_double_key *teclas_dobles=keyboard_help_return_double_keys();
 
     int total_columnas;
-    z80_byte **ports_table=get_keyboard_map_ports_table(&total_columnas);
+    get_keyboard_map_ports_table(&total_columnas);
 
-    menu_help_keyboard_locate_speccy_pressed_keys_highlight(ventana,keyboard_map_table,ports_table,total_columnas,
-        pulsado_x,pulsado_y,&puerto1,&mascara1,&puerto2,&mascara2,teclas_dobles);
+    menu_help_keyboard_locate_speccy_pressed_keys_highlight(keyboard_map_table,total_columnas,
+        pulsado_x,pulsado_y,teclas_dobles);
 
 
 }
@@ -22362,7 +22344,7 @@ void menu_help_show_keyboard(MENU_ITEM_PARAMETERS)
 
             pulsado_x *=zoom_x;
             pulsado_y *=zoom_y;
-            menu_help_keyboard_highlight_key_mouse(ventana,pulsado_x,pulsado_y);
+            menu_help_keyboard_highlight_key_mouse(pulsado_x,pulsado_y);
         }
 
 
