@@ -911,8 +911,12 @@ que sale desde settings->zx desktop pero tambien con boton derecho sobre desktop
 En QL tiene sentido por ejemplo, se intenta acceder a mdv1_ pero no esta activado
 funcion menu_ext_desktop_draw_lower_icon de zxvision.c
 En DSK de +3 ya se enviaba a footer
+-footer icono de cinta si se usa la cinta aunque no esté insertada? en standard tape y los traps a rom
+-mmc no se puede llegar a hacer porque no salta a lectura mmc si no esta activado zxmmc o mmc
 
 
 -keyboard help: con ventana abierta, pulsar tecla con raton y pulsar tecla en teclado, no va
 
--footer icono de cinta si se usa la cinta aunque no esté insertada? en standard tape y los traps a rom
+Acciones sobre los dos mcirodrive y el floppy separar en menús
+Y poder activar uno independientemente del otro
+Pero implicaria un menu antes solo para decir que a nivel global esta habilitado o no, demasiados submenus creo...
