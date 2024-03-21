@@ -34928,7 +34928,48 @@ void menu_input_spectrum_analyzer(MENU_ITEM_PARAMETERS)
 
 
 
+void menu_storage_tape_copier(MENU_ITEM_PARAMETERS)
+{
 
+    char copion[256]="";
+
+    int opcion=menu_simple_two_choices("Tape copier","Select one",
+        "Duplitape2    (48K)",
+        "Copiador Azul (48K)");
+
+    switch(opcion) {
+        case 1:
+            strcpy(copion,"duplitape2.zsf");
+        break;
+            ;
+        case 2:
+            strcpy(copion,"copiador.zsf")
+        break;
+
+        default:
+            return;
+        break;
+    }
+
+    char buffer_nombre[PATH_MAX];
+
+	if (find_sharedfile(copion,buffer_nombre)) {
+		debug_printf(VERBOSE_INFO,"Loading tape copier %s",buffer_nombre);
+		strcpy(quickload_file,buffer_nombre);
+		quickfile=quickload_file;
+		//Forzar autoload
+		z80_bit pre_noautoload;
+		pre_noautoload.v=noautoload.v;
+		noautoload.v=0;
+		quickload(quickload_file);
+
+		noautoload.v=pre_noautoload.v;
+        salir_todos_menus=1;
+    }
+    else {
+        debug_printf(VERBOSE_ERR,"Tape copier %s not found",copion);
+    }
+}
 
 
 
@@ -35051,6 +35092,16 @@ void menu_storage_tape(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_ayuda(array_menu_tape_settings,"See an audio render of your tape, see tape blocks and rewind or move forward the cassette player");
 
         }
+
+        menu_add_item_menu_separator(array_menu_tape_settings);
+
+        menu_add_item_menu_en_es_ca(array_menu_tape_settings,MENU_OPCION_NORMAL,menu_storage_tape_copier,NULL,
+            "Run Tape Copier","Ejecutar copión","Executar copiador");
+        //menu_add_item_menu_shortcut(array_menu_tape_settings,'v');
+        menu_add_item_menu_tiene_submenu(array_menu_tape_settings);
+        menu_add_item_menu_tooltip(array_menu_tape_settings,"Allow to run a tape copier");
+        menu_add_item_menu_ayuda(array_menu_tape_settings,"Allow to run a tape copier");
+
 
         menu_add_item_menu(array_menu_tape_settings,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
