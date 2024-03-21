@@ -34933,9 +34933,11 @@ void menu_storage_tape_copier(MENU_ITEM_PARAMETERS)
 
     char copion[256]="";
 
-    int opcion=menu_simple_two_choices("Tape copier","Select one",
-        "Duplitape2    (48K)",
-        "Copiador Azul (48K)");
+    int opcion=menu_simple_three_choices("Tape copier","Select one",
+        "Duplitape2      (48K)",
+        "Copiador Azul   (48K)",
+        "SuperTapeCopier (128K)"
+    );
 
     switch(opcion) {
         case 1:
@@ -34943,7 +34945,11 @@ void menu_storage_tape_copier(MENU_ITEM_PARAMETERS)
         break;
             ;
         case 2:
-            strcpy(copion,"copiador.zsf")
+            strcpy(copion,"copiador.zsf");
+        break;
+
+        case 3:
+            strcpy(copion,"supertapecopier.zsf");
         break;
 
         default:

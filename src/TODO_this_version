@@ -920,3 +920,5 @@ En DSK de +3 ya se enviaba a footer
 Acciones sobre los dos mcirodrive y el floppy separar en menús
 Y poder activar uno independientemente del otro
 Pero implicaria un menu antes solo para decir que a nivel global esta habilitado o no, demasiados submenus creo...
+
+-al insertar cintas parece que no se cierra menu, y antes creo que si que se hacia
