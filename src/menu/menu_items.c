@@ -21717,7 +21717,7 @@ void menu_help_draw_rectangle_key(zxvision_window *ventana,int x1,int y1,int anc
     zxvision_draw_rectangle_function(ventana,x1+1,y1+1,ancho-2,alto-2,color,zxvision_putpixel_no_zoom);
 }
 
-//Para un spectrum de 40 teclas
+
 void menu_help_keyboard_show_speccy_pressed_keys(zxvision_window *ventana,int keyboard_map_coords[],int total_columnas,
     z80_byte *key_map_ports[],keyboard_help_double_key *teclas_dobles)
 {
@@ -21789,6 +21789,8 @@ void menu_help_keyboard_show_speccy_pressed_keys(zxvision_window *ventana,int ke
                 int alto=teclas_dobles[i].y2-y1+1;
 
                 int color=3;
+
+                menu_help_keyboard_overlay_force_draw=1;
 
                 menu_help_draw_rectangle_key(ventana,x1,y1,ancho,alto,color);
             }
@@ -21883,6 +21885,15 @@ z80_byte **get_keyboard_map_ports_table(int *total_columnas)
     else return keyboard_map_ports_table_speccy;
 }
 
+int menu_help_keyboard_highlight_key=0;
+int menu_help_keyboard_highlight_key_x1=0;
+int menu_help_keyboard_highlight_key_x2=0;
+int menu_help_keyboard_highlight_key_y1=0;
+int menu_help_keyboard_highlight_key_y2=0;
+
+//Un indice unico por tecla por saber si la anterior iluminada era la misma
+int menu_help_keyboard_highlight_key_indice_anterior=-1;
+
 void menu_help_keyboard_overlay(void)
 {
 
@@ -21933,6 +21944,19 @@ void menu_help_keyboard_overlay(void)
 
             ventana->has_been_drawn_contents=0;
 
+            //Si hay que iluminar una tecla donde esta el raton
+
+            if (menu_help_keyboard_highlight_key) {
+                printf("Iluminando %d\n",contador_segundo_infinito);
+                int color=6;
+
+                int x1=menu_help_keyboard_highlight_key_x1;
+                int x2=menu_help_keyboard_highlight_key_x2;
+                int y1=menu_help_keyboard_highlight_key_y1;
+                int y2=menu_help_keyboard_highlight_key_y2;
+
+                menu_help_draw_rectangle_key(ventana,x1,y1,x2-x1+1,y2-y1+1,color);
+            }
 
         }
 
@@ -21983,6 +22007,134 @@ void menu_help_keyboard_create_window(zxvision_window *ventana,int x,int y,int a
 
 }
 
+void menu_help_keyboard_if_highlight(int indice_tecla,int x1,int y1,int x2,int y2)
+{
+    if (indice_tecla!=menu_help_keyboard_highlight_key_indice_anterior || !menu_help_keyboard_highlight_key) {
+        menu_help_keyboard_overlay_force_draw=1;
+        menu_help_keyboard_highlight_key=1;
+        menu_help_keyboard_highlight_key_x1=x1;
+        menu_help_keyboard_highlight_key_x2=x2;
+        menu_help_keyboard_highlight_key_y1=y1;
+        menu_help_keyboard_highlight_key_y2=y2;
+    }
+}
+
+void menu_help_keyboard_locate_speccy_pressed_keys_highlight(zxvision_window *ventana,int keyboard_map_coords[],z80_byte *key_map_ports[],int total_columnas,
+    int x,int y,z80_byte **p_puerto1,z80_byte *p_mascara1,z80_byte **p_puerto2,z80_byte *p_mascara2,
+    keyboard_help_double_key *teclas_dobles)
+{
+
+    *p_puerto1=NULL;
+    *p_puerto2=NULL;
+
+    int fila_tecla;
+    int columna_tecla;
+
+    int color=6;
+
+
+    for (fila_tecla=0;fila_tecla<8;fila_tecla++) {
+        z80_byte *puerto=key_map_ports[fila_tecla];
+        int mascara=1;
+        for (columna_tecla=0;columna_tecla<total_columnas;columna_tecla++) {
+
+            int offset=fila_tecla*total_columnas+columna_tecla; //Indice a tecla
+
+            //indice a coordenada
+            offset *=4;
+
+            int x1=keyboard_map_coords[offset];
+            int y1=keyboard_map_coords[offset+1];
+            int x2=keyboard_map_coords[offset+2];
+            int y2=keyboard_map_coords[offset+3];
+            if (x>=x1 && x<=x2 && y>=y1 && y<=y2) {
+                *p_puerto1=puerto;
+                *p_mascara1=mascara;
+
+                //Si misma tecla que la anterior, no reiluminar
+                //Generamos un valor indexacion de tecla unico, y teniendo en cuenta si tecla doble o simple
+                //printf("fila %d columna %d\n",fila_tecla,columna_tecla);
+                //Tambien redibujar si estabamos en una tecla concreta, no marcamos nada, y luego volvemos a misma tecla anterior
+                int indice_tecla=fila_tecla+(columna_tecla*256);
+
+                menu_help_keyboard_if_highlight(indice_tecla,x1,y1,x2,y2);
+
+                menu_help_keyboard_highlight_key_indice_anterior=indice_tecla;
+                return;
+            }
+
+
+            mascara=mascara<<1;
+        }
+
+    }
+
+    if (teclas_dobles!=NULL) {
+        int i=0;
+
+        while(teclas_dobles[i].puerto1!=NULL) {
+
+            int x1=teclas_dobles[i].x1;
+            int y1=teclas_dobles[i].y1;
+            int x2=teclas_dobles[i].x2;
+            int y2=teclas_dobles[i].y2;
+
+            if (x>=x1 && x<=x2 && y>=y1 && y<=y2) {
+                *p_puerto1=teclas_dobles[i].puerto1;
+                *p_mascara1=teclas_dobles[i].mascara1;
+                *p_puerto2=teclas_dobles[i].puerto2;
+                *p_mascara2=teclas_dobles[i].mascara2;
+
+                //Si misma tecla que la anterior, no reiluminar
+                //Generamos un valor indexacion de tecla unico, y teniendo en cuenta si tecla doble o simple
+                //65536 porque el bucle anterior jamas llegara ahi asi tenemos indices diferentes
+                //Tambien redibujar si estabamos en una tecla concreta, no marcamos nada, y luego volvemos a misma tecla anterior
+                int indice_tecla=65536+i;
+                menu_help_keyboard_if_highlight(indice_tecla,x1,y1,x2,y2);
+
+                menu_help_keyboard_highlight_key_indice_anterior=indice_tecla;
+
+                return;
+            }
+
+            i++;
+        }
+    }
+
+
+    //forzar redibujado del teclado para borrar restos
+    menu_help_keyboard_overlay_force_draw=1;
+    menu_help_keyboard_highlight_key=0;
+
+
+
+}
+
+void menu_help_keyboard_highlight_key_mouse(zxvision_window *ventana,int pulsado_x,int pulsado_y)
+{
+
+    //localizar puerto
+
+    int *keyboard_map_table=keyboard_help_return_map_table();
+
+    z80_byte *puerto1;
+    z80_byte mascara1;
+
+    z80_byte *puerto2;
+    z80_byte mascara2;
+
+    keyboard_help_double_key *teclas_dobles=keyboard_help_return_double_keys();
+
+    int total_columnas;
+    z80_byte **ports_table=get_keyboard_map_ports_table(&total_columnas);
+
+    menu_help_keyboard_locate_speccy_pressed_keys_highlight(ventana,keyboard_map_table,ports_table,total_columnas,
+        pulsado_x,pulsado_y,&puerto1,&mascara1,&puerto2,&mascara2,teclas_dobles);
+
+
+}
+
+
 void menu_help_keyboard_generate_key_mouse(int pulsado_x,int pulsado_y)
 {
 
@@ -22025,6 +22177,7 @@ void menu_help_keyboard_generate_key_mouse(int pulsado_x,int pulsado_y)
                 zxvision_keys_event_not_send_to_machine=0;
                 menu_cpu_core_loop();
             }
+            //printf("en bucle %d\n",contador_segundo_infinito);
 
         } while (!salir);
 
@@ -22138,6 +22291,7 @@ void menu_help_show_keyboard(MENU_ITEM_PARAMETERS)
     int debug_ultimo_click_y=0;
 
 	do {
+        //printf("bucle\n");
         tecla=zxvision_common_getkey_refresh_noesperanotec_todasteclas();
         z80_byte todos_puertos_teclado_acumulado=menu_da_todas_teclas_cualquiera();
         zxvision_handle_cursors_pgupdn(ventana,tecla);
@@ -22164,7 +22318,7 @@ void menu_help_show_keyboard(MENU_ITEM_PARAMETERS)
                     menu_cpu_core_loop();
                 }
 
-            //printf ("menu_espera_no_tecla acumulado: %d\n",acumulado);
+            //if (contador_segundo_infinito % 1000<100) printf ("menu_espera_no_tecla acumulado: %d\n",acumulado);
 
             } while (!salir);
             zxvision_keys_event_not_send_to_machine=1;
@@ -22186,6 +22340,7 @@ void menu_help_show_keyboard(MENU_ITEM_PARAMETERS)
             }
 
             menu_help_keyboard_generate_key_mouse(pulsado_x,pulsado_y);
+            //printf ("despues pulsar: %d\n",contador_segundo_infinito);
 
 
         }
@@ -22196,6 +22351,18 @@ void menu_help_show_keyboard(MENU_ITEM_PARAMETERS)
             printf("\n");
 
             menu_espera_no_tecla();
+        }
+
+        //Si simplemente se ha movido el raton, sin pulsar, indicar tecla
+        if (!tecla && todos_puertos_teclado_acumulado==255 && !mouse_left && !mouse_right)
+        {
+            //printf("ver si iluminar\n");
+            int pulsado_x,pulsado_y;
+            zxvision_get_mouse_in_window(ventana,&pulsado_x,&pulsado_y);
+
+            pulsado_x *=zoom_x;
+            pulsado_y *=zoom_y;
+            menu_help_keyboard_highlight_key_mouse(ventana,pulsado_x,pulsado_y);
         }
 
 

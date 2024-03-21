@@ -913,11 +913,8 @@ En QL tiene sentido por ejemplo, se intenta acceder a mdv1_ pero no esta activad
 funcion menu_ext_desktop_draw_lower_icon de zxvision.c
 En DSK de +3 ya se enviaba a footer
 
--soporte para archivos .p81 (como los .p pero con nombre de archivo al principio)
-https://k1.spdns.de/Develop/Projects/zasm/Info/O80%20and%20P81%20Format.txt#:~:text=p%22%20files%20consist%20of%20the,saving%20routine%20INCLUDING%20the%20filename.
-https://sebastien.andrivet.com/fr/posts/my-first-computer-sinclair-zx81/
-
-https://www.rwapsoftware.co.uk/zx81/zx81_software.html (kong)
-
+-si se arrastra mientras se pulsa ventana de keyboard help, no refresca (maquina QL) al usar mucha cpu
+quiza liberarse del bucle de pulsar boton si se está arrastrando raton
+-keyboard help: con ventana abierta, pulsar tecla con raton y pulsar tecla en teclado, no va
 
 -footer icono de cinta si se usa la cinta aunque no esté insertada? en standard tape y los traps a rom

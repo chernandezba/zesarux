@@ -40,7 +40,7 @@ Remember last path used on output tape
 Improved QL emulation:
 - Allow autoload when inserting QL mdv/flp
 - Show 2 microdrive and 1 floppy icon on QL, instead of just one icon
-- Permitir habilitar/deshabilitar cada unidad
+- Allow to enable/disable every drive
 
 Improved file selector:
 - scrolling the current directory field if it does not fit on the window

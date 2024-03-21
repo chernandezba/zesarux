@@ -40,7 +40,7 @@ Recordar ultima ruta utilizada en cinta de salida
 Mejorada emulación de QL:
 - Permitir autocarga al insertar mdv/flp en QL
 - Mostrar 2 iconos de microdrive y 1 floppy en QL, en vez de mostrar solo un icono
-- Allow to enable/disable every drive
+- Permitir habilitar/deshabilitar cada unidad
 
 Mejorado selector de archivos:
 - desplazando el campo de directorio actual si no cabe en la ventana

@@ -18203,7 +18203,7 @@ int util_extract_p(char *filename,char *tempdir)
 
 
 	//tapefile
-	if (util_compare_file_extension(filename,"p")!=0) {
+	if (util_compare_file_extension(filename,"p")!=0 && util_compare_file_extension(filename,"p81")!=0) {
 		debug_printf(VERBOSE_ERR,"Expander not supported for this file type");
 		return 1;
 	}
@@ -18241,6 +18241,28 @@ int util_extract_p(char *filename,char *tempdir)
 	}
         */
 
+
+    char nombre_programa[256];
+    strcpy(nombre_programa,"basic-data");
+
+    //Saltar el nombre del principio si es un .p81, guardando en un buffer
+    if (!util_compare_file_extension(filename,"p81")) {
+        z80_byte byte_leido=0;
+        int i=0;
+        while (total_mem>0 && (byte_leido&128)==0) {
+            //printf("saltando byte\n");
+            zvfs_fread(in_fatfs,&byte_leido,1,ptr_tapebrowser,&fil);
+
+            z80_bit inverse;
+            z80_byte caracter_ascii=da_codigo81_solo_letras(byte_leido,&inverse);
+            nombre_programa[i]=caracter_ascii;
+            i++;
+
+            total_mem--;
+        }
+        nombre_programa[i]=0;
+    }
+
 	taperead=malloc(total_mem);
 	if (taperead==NULL) cpu_panic("Error allocating memory for expander");
 
@@ -18262,7 +18284,7 @@ int util_extract_p(char *filename,char *tempdir)
 
 
         char buffer_temp_file[PATH_MAX];
-        sprintf (buffer_temp_file,"%s/basic-data.baszx81",tempdir);
+        sprintf (buffer_temp_file,"%s/%s.baszx81",tempdir,nombre_programa);
 
         int offset=116;
         //116 = 16509-0x4009

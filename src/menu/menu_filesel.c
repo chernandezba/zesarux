@@ -3012,7 +3012,7 @@ int menu_filesel_file_can_be_expanded(char *archivo)
     char *extensiones_validas[]={
         "hdf","tap","tzx","cdt","pzx",
         "trd","dsk","epr","eprom",
-        "flash","p","o","mdv","scl","ddh",
+        "flash","p","p81","o","mdv","scl","ddh",
         NULL
     };
 
@@ -3093,7 +3093,7 @@ int menu_filesel_expand(char *archivo,char *tmpdir)
                 return util_extract_z88_card(archivo,tmpdir);
         }
 
-        else if (!util_compare_file_extension(archivo,"p") ) {
+        else if (!util_compare_file_extension(archivo,"p") || !util_compare_file_extension(archivo,"p81")) {
                 debug_printf (VERBOSE_DEBUG,"Is a P file");
         	return util_extract_p(archivo,tmpdir);
         }
