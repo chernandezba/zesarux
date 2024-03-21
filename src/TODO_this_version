@@ -913,8 +913,7 @@ En QL tiene sentido por ejemplo, se intenta acceder a mdv1_ pero no esta activad
 funcion menu_ext_desktop_draw_lower_icon de zxvision.c
 En DSK de +3 ya se enviaba a footer
 
--si se arrastra mientras se pulsa ventana de keyboard help, no refresca (maquina QL) al usar mucha cpu
-quiza liberarse del bucle de pulsar boton si se está arrastrando raton
+
 -keyboard help: con ventana abierta, pulsar tecla con raton y pulsar tecla en teclado, no va
 
 -footer icono de cinta si se usa la cinta aunque no esté insertada? en standard tape y los traps a rom

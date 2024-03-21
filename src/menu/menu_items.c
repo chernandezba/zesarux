@@ -22326,7 +22326,7 @@ void menu_help_show_keyboard(MENU_ITEM_PARAMETERS)
 
         }
 
-        if (mouse_left && si_menu_mouse_en_ventana() && !mouse_is_dragging) {
+        if (mouse_left && si_menu_mouse_en_ventana_no_en_scrolls() && !mouse_is_dragging) {
             int pulsado_x,pulsado_y;
             zxvision_get_mouse_in_window(ventana,&pulsado_x,&pulsado_y);
 
@@ -22345,7 +22345,7 @@ void menu_help_show_keyboard(MENU_ITEM_PARAMETERS)
 
         }
 
-        if (mouse_right && si_menu_mouse_en_ventana() ) {
+        if (mouse_right && si_menu_mouse_en_ventana_no_en_scrolls() ) {
 
 
             printf("\n");
@@ -22354,7 +22354,7 @@ void menu_help_show_keyboard(MENU_ITEM_PARAMETERS)
         }
 
         //Si simplemente se ha movido el raton, sin pulsar, indicar tecla
-        if (!tecla && todos_puertos_teclado_acumulado==255 && !mouse_left && !mouse_right)
+        if (!tecla && todos_puertos_teclado_acumulado==255 && !mouse_left && !mouse_right && si_menu_mouse_en_ventana_no_en_scrolls() )
         {
             //printf("ver si iluminar\n");
             int pulsado_x,pulsado_y;
