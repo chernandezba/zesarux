@@ -34934,12 +34934,12 @@ void menu_storage_tape_copier(MENU_ITEM_PARAMETERS)
     char copion[256]="";
 
     int opcion=menu_simple_seven_choices("Tape copier","Select one",
-        "Copiador Primi 2 (48K)",
-        "Copiador Azul    (48K)",
-        "Duplitape        (48K)",
-        "Duplitape2       (48K)",
-        "Copion9          (48K)",
-        "Lao-Copy 2       (48K)",
+        "Copiador Primi 2  (48K)",
+        "Copiador Azul     (48K)",
+        "Duplitape         (48K)",
+        "Duplitape2        (48K)",
+        "Copion9           (48K)",
+        "Lao-Copy 2        (48K)",
         "SuperTapeCopier  (128K)"
     );
 
@@ -35121,14 +35121,16 @@ void menu_storage_tape(MENU_ITEM_PARAMETERS)
 
         }
 
-        menu_add_item_menu_separator(array_menu_tape_settings);
+        if (MACHINE_IS_SPECTRUM) {
+            menu_add_item_menu_separator(array_menu_tape_settings);
 
-        menu_add_item_menu_en_es_ca(array_menu_tape_settings,MENU_OPCION_NORMAL,menu_storage_tape_copier,NULL,
-            "Run Tape Copier","Ejecutar copión","Executar copiador");
-        //menu_add_item_menu_shortcut(array_menu_tape_settings,'v');
-        menu_add_item_menu_tiene_submenu(array_menu_tape_settings);
-        menu_add_item_menu_tooltip(array_menu_tape_settings,"Allow to run a tape copier");
-        menu_add_item_menu_ayuda(array_menu_tape_settings,"Allow to run a tape copier");
+            menu_add_item_menu_en_es_ca(array_menu_tape_settings,MENU_OPCION_NORMAL,menu_storage_tape_copier,NULL,
+                "Run Tape Copier","Ejecutar copión","Executar copiador");
+            //menu_add_item_menu_shortcut(array_menu_tape_settings,'v');
+            menu_add_item_menu_tiene_submenu(array_menu_tape_settings);
+            menu_add_item_menu_tooltip(array_menu_tape_settings,"Allow to run a tape copier");
+            menu_add_item_menu_ayuda(array_menu_tape_settings,"Allow to run a tape copier");
+        }
 
 
         menu_add_item_menu(array_menu_tape_settings,"",MENU_OPCION_SEPARADOR,NULL,NULL);
