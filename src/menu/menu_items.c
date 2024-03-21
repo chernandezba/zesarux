@@ -42932,7 +42932,8 @@ void menu_inicio_bucle_main(void)
             menu_add_item_menu_en_es_ca_inicial(&array_menu_principal,MENU_OPCION_NORMAL,menu_smartload,NULL,
                 "~~Smart load","Carga ingenio~~sa","Càrrega enginyo~~sa");
             menu_add_item_menu_shortcut(array_menu_principal,'s');
-            menu_add_item_menu_se_cerrara(array_menu_principal);
+            //El menu smartload hara cerrar todas las ventanas o no dependiendo de setting no_close_menu_after_smartload
+            //menu_add_item_menu_se_cerrara(array_menu_principal);
             menu_add_item_menu_genera_ventana(array_menu_principal);
             menu_add_item_menu_tooltip(array_menu_principal,"Smart load tapes, snapshots, floppies, memory cards, cartridges...");
             menu_add_item_menu_ayuda(array_menu_principal,"This option loads the file depending on its type: \n"
