@@ -931,3 +931,6 @@ eso si se hace rapido con visual real tape abierto y antes de que visual real ta
 ->creo que es porque ambos llaman a main_leezx81 y al ir a tape viewer se reabre el archivo y peta un fgetc seguramente con puntero a archivo
 invalido
 Probablemente haya que hacer que esa funcion solo se pueda llamar 1 vez simultaneamente
+
+
+ok-segfault tambien al insertar real tape orquesta_zx81.rwa (cuando no existe!) incluso con visual real tape cerrado

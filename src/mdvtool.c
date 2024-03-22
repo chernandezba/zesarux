@@ -677,7 +677,7 @@ void mdvtool_file_write(file_t *file, char *data) {
 void mdvtool_file_import(char *name) {
   FILE *in = fopen(name, "rb");
   if(!in) {
-    fprintf(stderr, "Unable to open input file %s\n", name);
+    fprintf(stderr, "Unable to open mdv input file %s\n", name);
     return;
   }
 

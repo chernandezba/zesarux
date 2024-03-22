@@ -566,7 +566,7 @@ int tape_block_cas_open(void)
 
                 if (!ptr_mycinta)
                 {
-                        debug_printf(VERBOSE_ERR,"Unable to open input file %s",tapefile);
+                        debug_printf(VERBOSE_ERR,"Unable to open cas input file %s",tapefile);
 
 
 			tapefile=0;

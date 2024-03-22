@@ -2264,7 +2264,7 @@ void realtape_load_visuals(char *filename)
 
 
     if (!ptr_visual) {
-        debug_printf(VERBOSE_ERR,"Unable to open realtape file %s",filename);
+        debug_printf(VERBOSE_ERR,"Unable to open realtape file (for Visual Real Tape): %s",filename);
         return;
     }
 
@@ -2357,12 +2357,15 @@ void *realtape_insert_detect_blocks_thread_function(void *parametros)
         //de momento no tratamos el error
     }
 
+    //printf("despues util_realtape_browser\n");
+
     if (visual_realtape_textbrowse[0]==0) {
         //printf("Intentamos conversion ZX80/81\n");
         //Intentamos con conversión ZX80/81
 
         //TODO: no autodetectara cintas de ZX80, hay que seleccionar maquina ZX80 como actual para que el conversor asuma ZX80
         convert_realtape_to_po(name_to_use, NULL, visual_realtape_textbrowse,0);
+        //printf("despues convert a po\n");
         //printf("texto: %s\n",visual_realtape_textbrowse);
         //array de posiciones con un solo bloque
         visual_realtape_array_positions[0]=0;
@@ -2391,6 +2394,7 @@ void *realtape_insert_detect_blocks_thread_function(void *parametros)
 
     else {
         //cinta spectrum
+        //printf("Asumimos cinta spectrum\n");
         realtape_visual_detected_tape_type=1;
     }
 
@@ -2458,6 +2462,7 @@ void realtape_insert(void)
         	ptr_realtape=fopen(realtape_name,"rb");
                 realtape_file_size=get_file_size(realtape_name);
 	}
+
 	else if (!util_compare_file_extension(realtape_name,"smp")) {
 		debug_printf (VERBOSE_INFO,"Detected raw file SMP");
 		realtape_tipo=1;
@@ -2476,7 +2481,7 @@ void realtape_insert(void)
                 realtape_file_size=get_file_size(realtape_name_rwa);
 	}
 
-        else if (!util_compare_file_extension(realtape_name,"wav")) {
+    else if (!util_compare_file_extension(realtape_name,"wav")) {
                 debug_printf (VERBOSE_INFO,"Detected WAV file");
                 realtape_tipo=2;
 		if (convert_wav_to_rwa_tmpdir(realtape_name,realtape_name_rwa)) {
@@ -2491,9 +2496,10 @@ void realtape_insert(void)
 		debug_printf (VERBOSE_INFO,"Opening File %s",realtape_name_rwa);
                 ptr_realtape=fopen(realtape_name_rwa,"rb");
                 realtape_file_size=get_file_size(realtape_name_rwa);
-        }
+    }
 
-        else if (!util_compare_file_extension(realtape_name,"tzx") ||
+
+    else if (!util_compare_file_extension(realtape_name,"tzx") ||
 		 !util_compare_file_extension(realtape_name,"cdt")
 
 		) {
@@ -2512,9 +2518,10 @@ void realtape_insert(void)
 		debug_printf (VERBOSE_INFO,"Opening File %s",realtape_name_rwa);
                 ptr_realtape=fopen(realtape_name_rwa,"rb");
                 realtape_file_size=get_file_size(realtape_name_rwa);
-        }
+    }
 
-        else if (!util_compare_file_extension(realtape_name,"p") || !util_compare_file_extension(realtape_name,"p81")) {
+
+    else if (!util_compare_file_extension(realtape_name,"p") || !util_compare_file_extension(realtape_name,"p81")) {
                 debug_printf (VERBOSE_INFO,"Detected P/P81 file");
                 realtape_tipo=4;
                 if (convert_p_to_rwa_tmpdir(realtape_name,realtape_name_rwa)) {
@@ -2530,9 +2537,10 @@ void realtape_insert(void)
 		debug_printf (VERBOSE_INFO,"Opening File %s",realtape_name_rwa);
                 ptr_realtape=fopen(realtape_name_rwa,"rb");
                 realtape_file_size=get_file_size(realtape_name_rwa);
-        }
+    }
 
-        else if (!util_compare_file_extension(realtape_name,"o")) {
+
+    else if (!util_compare_file_extension(realtape_name,"o")) {
                 debug_printf (VERBOSE_INFO,"Detected O file");
                 realtape_tipo=5;
                 if (convert_o_to_rwa_tmpdir(realtape_name,realtape_name_rwa)) {
@@ -2547,11 +2555,11 @@ void realtape_insert(void)
 
                 ptr_realtape=fopen(realtape_name_rwa,"rb");
                 realtape_file_size=get_file_size(realtape_name_rwa);
-        }
+    }
 
 
 
-        else if (!util_compare_file_extension(realtape_name,"tap")) {
+    else if (!util_compare_file_extension(realtape_name,"tap")) {
                 debug_printf (VERBOSE_INFO,"Detected TAP file");
                 realtape_tipo=6;
                 if (convert_tap_to_rwa_tmpdir(realtape_name,realtape_name_rwa)) {
@@ -2567,25 +2575,25 @@ void realtape_insert(void)
 		debug_printf (VERBOSE_INFO,"Opening File %s",realtape_name_rwa);
                 ptr_realtape=fopen(realtape_name_rwa,"rb");
                 realtape_file_size=get_file_size(realtape_name_rwa);
-        }
+    }
 
 
-        else if (!util_compare_file_extension(realtape_name,"pzx")) {
-                debug_printf (VERBOSE_INFO,"Detected PZX file");
-                realtape_tipo=7;
-                if (convert_pzx_to_rwa_tmpdir(realtape_name,realtape_name_rwa)) {
-                        //debug_printf(VERBOSE_ERR,"Error converting input file");
-                        return;
-                }
+    else if (!util_compare_file_extension(realtape_name,"pzx")) {
+            debug_printf (VERBOSE_INFO,"Detected PZX file");
+            realtape_tipo=7;
+            if (convert_pzx_to_rwa_tmpdir(realtape_name,realtape_name_rwa)) {
+                    //debug_printf(VERBOSE_ERR,"Error converting input file");
+                    return;
+            }
 
-                if (!si_existe_archivo(realtape_name_rwa)) {
-                        debug_printf(VERBOSE_ERR,"Error converting input file. Target file not found");
-                        return;
-                }
+            if (!si_existe_archivo(realtape_name_rwa)) {
+                    debug_printf(VERBOSE_ERR,"Error converting input file. Target file not found");
+                    return;
+            }
 
-                ptr_realtape=fopen(realtape_name_rwa,"rb");
-                realtape_file_size=get_file_size(realtape_name_rwa);
-        }
+            ptr_realtape=fopen(realtape_name_rwa,"rb");
+            realtape_file_size=get_file_size(realtape_name_rwa);
+    }
 
 
 
@@ -2596,7 +2604,10 @@ void realtape_insert(void)
         return;
     }
 
-
+    if (ptr_realtape==NULL) {
+        debug_printf(VERBOSE_ERR,"Error inserting realtape: %s",realtape_name);
+        return;
+    }
 
 	realtape_stop_playing();
 	realtape_inserted.v=1;

@@ -40,6 +40,7 @@
 #include "snap_zx8081.h"
 #include "utils.h"
 #include "settings.h"
+#include "atomic.h"
 
 FILE *ptr_mycinta_smp;
 
@@ -152,12 +153,12 @@ int tape_block_smp_open(void)
 
 		if (!ptr_mycinta_smp)
 		{
-			debug_printf(VERBOSE_ERR,"Unable to open input file %s",tapefile);
+			debug_printf(VERBOSE_ERR,"Unable to open smp input file %s",tapefile);
 			tapefile=0;
 			return 1;
 		}
 
-
+        //Nota: esta rutina puede tardar un poco si el archivo de audio es muy grande
 		main_spec_rwaatap(NULL,0,NULL,longitud_archivo_smp);
 
 
@@ -519,7 +520,7 @@ int zx8081_lee_todos_bytes(unsigned char *m)
 
 	if (!ptr_mycinta_smp)
 	{
-		debug_printf(VERBOSE_ERR,"Unable to open input file %s",tapefile);
+		debug_printf(VERBOSE_ERR,"Unable to open smp input file (on zx8081_lee_todos_bytes) %s",tapefile);
 		tapefile=0;
 		return -1;
 	}
@@ -551,6 +552,61 @@ int zx8081_lee_todos_bytes(unsigned char *m)
 
 }
 
+z_atomic_semaphore main_leezx81_semaphore;
+
+void main_leezx81_init_semaphore(void)
+{
+    //printf("Init semaforo\n");
+	z_atomic_reset(&main_leezx81_semaphore);
+}
+
+
+//temporal
+//int temp_bloqueo=0;
+
+/*
+No permitir dos ejecuciones a la vez
+Ejemplo:
+maquina zx81
+Ventana visual real tape visible
+Insertar real tape orquesta_zx81.rwa
+y rapidamente abrir tape viewer
+eso si se hace rapido con visual real tape abierto y antes de que visual real tape haya mostrado datos del programa
+*/
+int main_leezx81_inicio_bloqueo(void)
+{
+
+    //En este caso gestiono el bloqueo diferente.
+    //Si esta bloqueado, retorno aviso al usuario, no me quedo esperando a liberar el bloqueo
+
+    if (z_atomic_test_and_set(&main_leezx81_semaphore)) {
+        debug_printf(VERBOSE_ERR,"Another conversion from audio tape to ZX81 data is already running (inserted Real Tape and/or open Tape Viewer). "
+                                "Please try it again some seconds later");
+        //printf("Another conversion from audio tape to ZX81 data is already running\n");
+        return 1;
+    }
+
+    /*while(z_atomic_test_and_set(&main_leezx81_semaphore)) {
+        //Pausa de 0.05 segundo
+        usleep(50000);
+        printf("Esperando a liberar lock en zrcp_handle_new_connection\n");
+    }*/
+
+    //printf("activar bloqueo\n");
+
+    //temp_bloqueo=1;
+    return 0;
+}
+
+void main_leezx81_liberar_bloqueo(void)
+{
+    //temp_bloqueo=0;
+    //printf("liberar bloqueo\n");
+
+    //Liberar lock
+    z_atomic_reset(&main_leezx81_semaphore);
+}
+
 
 //Si archivo_destino==NULL, lo carga en memoria de la maquina
 //Si no, escribe archivo en cinta
@@ -561,6 +617,8 @@ int zx8081_lee_todos_bytes(unsigned char *m)
 int main_leezx81(char *archivo_destino, char *texto_info_output,int si_load)
 //int main_leezx81(int argc,char *argv[])
 {
+
+    if (main_leezx81_inicio_bloqueo()) return 0;
 
 	int bytes_leidos;
 	int auto_parametros=0;
@@ -629,6 +687,7 @@ int main_leezx81(char *archivo_destino, char *texto_info_output,int si_load)
 	if (auto_parametros==0) {
 		bytes_leidos=zx8081_lee_todos_bytes(buffer_memoria);
 		if (bytes_leidos==-1) {
+            main_leezx81_liberar_bloqueo();
 			//Error
 			return 0;
 		}
@@ -651,6 +710,7 @@ int main_leezx81(char *archivo_destino, char *texto_info_output,int si_load)
 			bytes_leidos=zx8081_lee_todos_bytes(buffer_memoria);
 
 			if (bytes_leidos==-1) {
+                main_leezx81_liberar_bloqueo();
 				//Error
 				return 0;
 			}
@@ -785,6 +845,7 @@ int main_leezx81(char *archivo_destino, char *texto_info_output,int si_load)
 
 	free(buffer_memoria_orig);
 
+    main_leezx81_liberar_bloqueo();
     return bytes_leidos;
 
 }

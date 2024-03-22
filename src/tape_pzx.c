@@ -110,7 +110,7 @@ int tape_block_pzx_open(void)
 
     if (!ptr_mycintanew_pzx)
     {
-        debug_printf(VERBOSE_ERR,"Unable to open input file %s",tapefile);
+        debug_printf(VERBOSE_ERR,"Unable to open pzx input file %s",tapefile);
         tapefile=0;
         return 1;
     }

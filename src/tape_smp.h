@@ -46,5 +46,6 @@ extern FILE *ptr_mycinta_smp;
 extern char *main_spec_rwaatap_pointer_print;
 extern int main_spec_rwaatap_pointer_print_max;
 
+extern void main_leezx81_init_semaphore(void);
 
 #endif

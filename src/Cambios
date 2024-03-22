@@ -79,11 +79,13 @@ Correcciones ZX Vision:
 - Se corrigieron los mensajes de bienvenida cuando las ventanas de fondo están habilitadas.
 - Corrección posicion inicial para muchas ventanas.
 
-Se corrigió un valor de bus de datos no válido en Jupiter Ace (son 20H en lugar de FFH)
-Se corrigió el bloqueo al dibujar el mapa de aventuras de texto y una aventura GAC corrupta.
-Se corrigieron los tiempos de los códigos de operación CP (HL), CP (IX+d), CP (IY+d)
-Se corrigió un error en ZRCP al manejar conexiones simultáneas.
-Se corrigió la lectura/escritura al hacer rollover en Betadisk (gracias Mak7ym). Carga fija por ejemplo de: BR_DEA7H, HOMER, PARADISE
+Corregido segfault al intentar insertar un archivo de Cinta Real que no existe
+Corregido segfault al insertar un archivo de Cinta Real de ZX81 y abrir Tape Viewer
+Corregido un valor de bus de datos no válido en Jupiter Ace (son 20H en lugar de FFH)
+Corregido el bloqueo al dibujar el mapa de aventuras de texto y una aventura GAC corrupta.
+Corregido los tiempos de los códigos de operación CP (HL), CP (IX+d), CP (IY+d)
+Corregido un error en ZRCP al manejar conexiones simultáneas.
+Corregida la lectura/escritura al hacer rollover en Betadisk (gracias Mak7ym). Carga fija por ejemplo de: BR_DEA7H, HOMER, PARADISE
 
 
 ----------------------------------------

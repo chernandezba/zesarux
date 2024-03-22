@@ -11604,7 +11604,7 @@ int menu_ask_file_to_save(char *titulo_ventana,char *filtro,char *file_save)
 
     int ret;
 
-	ret=menu_filesel(titulo_ventana,filtros,file_save);
+	ret=menu_filesel_save(titulo_ventana,filtros,file_save);
 
 	if (ret==1) {
 

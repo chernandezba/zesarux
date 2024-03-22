@@ -46,7 +46,7 @@ int tape_block_tap_open(void)
 
                 if (!ptr_mycinta)
                 {
-                        debug_printf(VERBOSE_ERR,"Unable to open input file %s",tapefile);
+                        debug_printf(VERBOSE_ERR,"Unable to open tap input file %s",tapefile);
                         //temp prueba texto largo
 			//debug_printf(VERBOSE_ERR,"This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.");
 

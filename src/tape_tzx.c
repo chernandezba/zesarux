@@ -65,7 +65,7 @@ int tape_block_tzx_open(void)
 
                 if (!ptr_mycinta_tzx)
                 {
-                        debug_printf(VERBOSE_ERR,"Unable to open input file %s",tapefile);
+                        debug_printf(VERBOSE_ERR,"Unable to open tzx input file %s",tapefile);
 			tapefile=0;
                         return 1;
                 }

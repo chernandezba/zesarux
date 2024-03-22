@@ -6872,6 +6872,8 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
 	last_filesused_clear();
 	menu_first_aid_init();
 
+    main_leezx81_init_semaphore();
+
     init_zxdesktop_configurable_icons();
 
     zxvision_index_menu_init();

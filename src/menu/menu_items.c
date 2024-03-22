@@ -35108,6 +35108,8 @@ void menu_storage_tape(MENU_ITEM_PARAMETERS)
 
 		menu_add_item_menu_format(array_menu_tape_settings,MENU_OPCION_NORMAL,menu_tape_browser_real,menu_realtape_cond,"Tape Vie~~wer");
 		menu_add_item_menu_shortcut(array_menu_tape_settings,'w');
+        menu_add_item_menu_genera_ventana(array_menu_tape_settings);
+        menu_add_item_menu_se_cerrara(array_menu_tape_settings);
 		menu_add_item_menu_tooltip(array_menu_tape_settings,"Browse Real tape");
 		menu_add_item_menu_ayuda(array_menu_tape_settings,"Browse Real tape");
 

@@ -3035,7 +3035,7 @@ int input_file_keyboard_init(void)
 	ptr_input_file_keyboard=fopen(input_file_keyboard_name,"rb");
 
 	if (!ptr_input_file_keyboard) {
-		debug_printf(VERBOSE_ERR,"Unable to open input file %s",input_file_keyboard_name);
+		debug_printf(VERBOSE_ERR,"Unable to open keyboard input file %s",input_file_keyboard_name);
 		eject_input_file_keyboard();
 		return 1;
 	}
@@ -21378,7 +21378,7 @@ void util_realtape_browser(char *filename, char *texto_browser,int maxima_longit
 
 
     if (ptr_mycinta_smp==NULL) {
-        debug_printf(VERBOSE_ERR,"Error opening file");
+        debug_printf(VERBOSE_ERR,"Error opening file (on util_realtape_browser): %s",file_to_open);
     }
 
     else {
