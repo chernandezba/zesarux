@@ -4095,6 +4095,36 @@ char *bitmap_button_ext_desktop_switchborder[EXT_DESKTOP_BUTTONS_ANCHO]={
 };
 
 
+char *bitmap_button_ext_desktop_switchfooter[EXT_DESKTOP_BUTTONS_ANCHO]={
+   //01234567890123456789012345
+    "                          ",  //0
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          ",
+    "  xxxxxxxxxxxxxxxxxx      ",
+	"  xxxxxxxxxxxxxxxxxx      ",
+	"  xx              xx      ",
+	"  xx              xx      ",
+	"  xx              xx      ", //10
+	"  xx              xx      ",
+	"  xx              xx      ",
+	"  xx              xx      ",
+	"  xx              xx      ",
+	"  xx              xx      ",
+	"  xx              xx      ",
+	"  xx              xx      ",
+	"  xx              xx      ",
+	"  xx              xx      ",
+	"  bbbbbbbbbbbbbbbbbb   x  ",    //20
+	"  bbbbbbbbbbbbbbbbbb  xxx ",
+	"  bbbbbbbbbbbbbbbbbb xxxxx",
+	"  bbbbbbbbbbbbbbbbbb   x  ",
+	"  bbbbbbbbbbbbbbbbbb   x  ",
+	"  bbbbbbbbbbbbbbbbbb   x  " 	 //25
+};
+
 char *bitmap_button_ext_desktop_topspeed[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345
     "                          ",     //0

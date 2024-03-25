@@ -51,8 +51,6 @@ lecturas de plus3dos headers no van bien: Real length file SCREEN  .    read fro
 -Linux: al hacer alt-tab para ir a otra ventana, al volver con raton por ejemplo, el alt "sigue pulsado" en ZEsarUX
 
 
-
-
 -quiza seek beyond limit en floppy no deberia saltar error (solo verbose), caso de tauceti pcw. no consigo sacar ese error? otro juego que salga?
 
 -rutinas speech y kill speech se llaman aunque no haya nada pendiente. desde timer, llama a scrtextspeech_filter_run_pending
@@ -243,7 +241,7 @@ Seria: error message: igual que hay ahora. Y luego clases: 0001 out of memory. 0
 -Función joystick conmuta full screen
 -F función cualquiera Tecla F por joystick
 
--Teclado en pantalla en gpi borra el input de debajo
+-Teclado en pantalla en rpi borra el input de debajo
 
 
 
@@ -623,8 +621,6 @@ Temporizadores comunes de ver kick y ver mensajes
 
 
 
-
-
 Snapshot agregar puertos del QL y además evitar pulsaciones de teclas seguidas
 -puertos QL ok. que es lo de las repeticiones??
 
@@ -644,6 +640,10 @@ Poder aplicar restricción de teclas para auto join? Para que no puedan hacer br
 Mismo perfil de teclas puede ir a más de un jugador?
 
 
+-zeng online:
+Md5 de los snapshots Zeng? Para evitar cargar snapshots incompletos
+Si versión Zeng online no coincide, da error?
+
 
 -----Fin ZENG ONLINE -----
 
@@ -651,7 +651,7 @@ Mismo perfil de teclas puede ir a más de un jugador?
 
 -mejorar icono para video output
 
--iconos para acciones: switch footer, backgroundwindow, showbackgroundwindows
+-iconos para acciones: backgroundwindow, showbackgroundwindows
 
 -First aid de advanced menu items: que diga que hay settings que están ocultos por defecto
 
@@ -682,15 +682,10 @@ ya que no abren el menu
 -ok editar botón superior.
 -Y en dispositivos? Quizá settings de ese dispositivo?
 
--In memoriam:
-*completar texto Diego
+
 
 
 -Si se crea ventana de alto negativo, acaba haciendo panic al asignar memoria. Quizá controlar esto?
-
-
--Incorporar bittransfe como manera de generar snapshot en .tap. Agregar parámetro de estado interrupciones, registro i. Otros registros que falten? R?
--Incorporar copiones software
 
 
 
@@ -714,14 +709,6 @@ pero en ese caso si van arriba del todo quizá tendrian siempre el foco y NO es 
 
 
 
--Buscador opciones de menú
-
-En todos los sitios donde se cierre un menu pero no se haya salido con ESC o flecha atras, hay que llamar a:
-zxvision_index_delete_last_submenu_path();
-
-
-
-
 -Documentar funciones de menu:
 
 menu_dibuja_menu: la normal
@@ -731,13 +718,6 @@ menu_dibuja_menu_no_indexado: para usar ventanas con opciones pero no queremos q
 menu_dibuja_menu_one_time: para opciones de menu en que se pulsa enter o esc y se sale siempre del menu, no se vuelve a dibujar ese menu,
 y por tanto a nivel de path de indexacion de busqueda, se pierde el ultimo path de submenu. Ejemplo de esto: menu_simple_ten_choices
 
-
-
-
--buscar opciones de menu deberia considerar el titulo del menu con traduccion de idioma
-Para ello la funcion de dibujar menu debe admitir 3 titulos en vez de uno: uno para cada idioma
-Esto significaria tambien que al cambiar de idioma habria que resetear el indice de busqueda
-->ok. agregar mas titulos localizados
 
 
 -Nuevos campos para zx visión Windows:
@@ -784,20 +764,19 @@ Quizá ver si entre cada lectura de buffer ha pasado el tiempo que debe pasar re
 
 ok -Aviso de nueva versión y entonces no sale memoriam
 
--al cambiar de idioma, deja el indexado de busqueda raro en el submenu que esta dicha opcion (en cambio a català por ejemplo):
-Main Menu-> Settings-> General Settings-> Opciones Generales-> Opcions Generals
+
 
 -quiza audiocoreaudio y otros drivers de audio necesitan fifos con semaforos para evitar interferencias en el sonido....
 
 
 
--Documentar cómo van los archivos txt de update
+-Documentar cómo van los archivos txt de update del server
 
 
 -Limitar comandos ZRCP cuando Zeng online server habilitado
 Quizá setting para limitar o no
 ->revisar que realmente el cliente no use ningun otro comando
-->agregar parametro config y grabado config
+->PENDIENTE agregar parametro config y grabado config
 
 
 
@@ -830,20 +809,12 @@ cd "/Users/cesarhernandez/Library/Application Support/RetroArch/cores"
 cp /Users/cesarhernandez/Downloads/libretro-super/dist/osx-x86_64/skeleton_libretro.dylib .
 
 
-ok-filesel despues de cambiar filtros, cambiar a zona normal de seleccion
-ok-Al grabar añadir extensión si se ha seleccionado una en filesel
-ok - En grabar quizá zona por defecto la de arriba del todo: nombre archivo: ok revisar todos (de momento solo save screen)
-Quizá campos pulsables que se vean distintos?
+-filesel: Quizá campos pulsables que se vean distintos?
 Preview archivos txt: renderizarlos como pantalla con tipo de letra del spectrum
-lineas de archivos no usados, rellenar con color de fileselector. para eso donde crea la ventana hay que darle mas height, sino lo limita
-a la cantidad de archivos (int alto_total=filesel_total_items+ZXVISION_FILESEL_INITIAL_MARGIN;)
+
 
 -Acción joystick menú tab
 
-
--zeng online:
-Md5 de los snapshots Zeng? Para evitar cargar snapshots incompletos
-Si versión Zeng online no coincide, da error?
 
 -llamada de menu no indexado (menu_dibuja_menu_no_indexado) que permita titulo en los 3 idiomas
 
@@ -876,6 +847,8 @@ no son teclas
 -dockerfiles rutas de carpetas al copiar codigo fuente y compilar. Pendiente Dockerfile.pushimage
 O meto todo (*) o indico carpetas solo necesarias
 
+
+---Indexado menu---
 -error indexado:
 Main Menu-> Settings-> Hardware Settings-> Next machine id-> Hardware Settings-> Next machine id-> Hardware Settings-> Next machine id-> Hardware Settings
 Sucede porque funcion de menu menu_tbblue_machine_id, sale al pulsar enter y por tanto no llama a zxvision_index_delete_last_submenu_path
@@ -893,7 +866,24 @@ O quiza, que los propios menus generasen el titulo A->B->C (o que indicasen el m
 pero eso puede dar problemas en caso que un submenu se llame desde dos sitios diferentes (como ZX Desktop settings,
 que sale desde settings->zx desktop pero tambien con boton derecho sobre desktop)
 
+
+-Buscador opciones de menú
+
+En todos los sitios donde se cierre un menu pero no se haya salido con ESC o flecha atras, hay que llamar a:
+zxvision_index_delete_last_submenu_path();
+
 -parece que el archivo de indice a veces lo escribe en otras rutas
+
+-al cambiar de idioma, deja el indexado de busqueda raro en el submenu que esta dicha opcion (en cambio a català por ejemplo):
+Main Menu-> Settings-> General Settings-> Opciones Generales-> Opcions Generals
+
+-buscar opciones de menu deberia considerar el titulo del menu con traduccion de idioma
+Para ello la funcion de dibujar menu debe admitir 3 titulos en vez de uno: uno para cada idioma
+Esto significaria tambien que al cambiar de idioma habria que resetear el indice de busqueda
+->ok. agregar mas titulos localizados
+
+--Fin Indexado menu---
+
 
 
 -opcion para minimizar ventanas a la parte baja de la ventana (o comportamiento como ahora, las minimiza donde estaban)
@@ -917,8 +907,15 @@ En DSK de +3 ya se enviaba a footer
 
 -keyboard help: con ventana abierta, pulsar tecla con raton y pulsar tecla en teclado, no va
 
+
 Acciones sobre los dos microdrive y el floppy separar en menús
 Y poder activar uno independientemente del otro
 Pero implicaria un menu antes solo para decir que a nivel global esta habilitado o no, demasiados submenus creo...
+O quiza que salte al menu con la linea de opcion seleccionada donde corresponde
 
 -al insertar cintas parece que no se cierra menu, y antes creo que si que se hacia
+
+-In memoriam:
+*completar texto Diego
+
+-Incorporar bittransfe como manera de generar snapshot en .tap. Agregar parámetro de estado interrupciones, registro i. Otros registros que falten? R?
