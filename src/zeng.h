@@ -54,6 +54,8 @@ extern void zeng_send_key_event(enum util_teclas tecla,int pressrelease);
 
 extern void zeng_empty_fifo(void);
 
+extern void zeng_fifo_semaphore_init(void);
+
 extern z80_bit zeng_enabled;
 extern void zeng_enable(void);
 extern void zeng_disable(void);
