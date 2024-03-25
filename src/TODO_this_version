@@ -917,20 +917,8 @@ En DSK de +3 ya se enviaba a footer
 
 -keyboard help: con ventana abierta, pulsar tecla con raton y pulsar tecla en teclado, no va
 
-Acciones sobre los dos mcirodrive y el floppy separar en menús
+Acciones sobre los dos microdrive y el floppy separar en menús
 Y poder activar uno independientemente del otro
 Pero implicaria un menu antes solo para decir que a nivel global esta habilitado o no, demasiados submenus creo...
 
 -al insertar cintas parece que no se cierra menu, y antes creo que si que se hacia
-
--segfault en:
-maquina zx81
-real tape orquesta_zx81.rwa
-tape viewer
-eso si se hace rapido con visual real tape abierto y antes de que visual real tape haya mostrado datos del programa
-->creo que es porque ambos llaman a main_leezx81 y al ir a tape viewer se reabre el archivo y peta un fgetc seguramente con puntero a archivo
-invalido
-Probablemente haya que hacer que esa funcion solo se pueda llamar 1 vez simultaneamente
-
-
-ok-segfault tambien al insertar real tape orquesta_zx81.rwa (cuando no existe!) incluso con visual real tape cerrado

@@ -21471,6 +21471,18 @@ int keyboard_map_table_coords_p2[40*4]={
 200,164,378,198,4,164,38,198,372,124,408,158,332,124,368,158,292,124,330,160,
 };
 
+
+int keyboard_map_table_coords_tk85[40*4]={
+8,166,52,188, 72,162,104,188, 122,164,156,190, 172,164,204,188, 224,162,254,188,
+46,116,80,138,96,114,128,140,146,112,180,140,196,112,232,140,246,112,282,138,
+32,64,64,88,84,66,114,86,134,66,166,88,182,62,218,88,234,66,268,88,
+8,14,40,40,58,14,90,38,108,12,140,38,158,14,192,38,210,12,242,36,
+462,14,492,36,410,14,444,36,360,12,392,40,312,12,344,38,260,12,296,36,
+486,64,518,86,434,64,468,86,384,62,418,86,336,62,368,86,284,62,318,92,
+498,112,530,136,446,112,482,138,398,114,432,138,348,112,382,136,298,112,330,140,
+472,164,532,190,422,164,452,188,372,162,402,186,324,164,354,190,272,164,304,188,
+};
+
 //Estructura para teclas que genera doble pulsacion, como "extended mode" (shift+symbol)
 //Adicionalmente tambien se usa para teclas repetidas, como symbol en un spectrum+. en ese caso puerto2 vale NULL;
 struct s_keyboard_help_double_key {
@@ -21627,6 +21639,10 @@ int *keyboard_help_return_map_table(void)
 
     else if (MACHINE_IS_SPECTRUM_P2 || MACHINE_IS_SPECTRUM_P2A_P3) {
         return keyboard_map_table_coords_p2;
+    }
+
+    else if (MACHINE_IS_MICRODIGITAL_TK85) {
+        return keyboard_map_table_coords_tk85;
     }
 
     else if (MACHINE_IS_ZX8081) {
@@ -21947,7 +21963,7 @@ void menu_help_keyboard_overlay(void)
             //Si hay que iluminar una tecla donde esta el raton
 
             if (menu_help_keyboard_highlight_key) {
-                printf("Iluminando %d\n",contador_segundo_infinito);
+                //printf("Iluminando %d\n",contador_segundo_infinito);
                 int color=6;
 
                 int x1=menu_help_keyboard_highlight_key_x1;
