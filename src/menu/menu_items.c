@@ -25768,6 +25768,8 @@ void menu_visual_realtape_overlay(void)
                 int linea=0;
                 int i;
                 indice_destino=0;
+
+                //Troceado en lineas por cada "\n" del buffer.
                 for (i=0;buf_texto_bloque[i];i++) {
 
                     buffer_linea[indice_destino]=buf_texto_bloque[i];
