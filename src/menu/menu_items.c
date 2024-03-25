@@ -21496,16 +21496,18 @@ int keyboard_map_table_coords_tk90x[40*4]={
 464,168,516,190,416,168,446,188,368,168,398,188,320,168,352,188,272,166,304,188,
 };
 
-/*
-z80_byte puerto_65278=255; //    db    255            ; V    C    X    Z    Sh    ;0
-z80_byte puerto_65022=255; //    db    255            ; G    F    D    S    A     ;1
-z80_byte puerto_64510=255; //    db              255  ; T    R    E    W    Q     ;2
-z80_byte puerto_63486=255; //    db              255  ; 5    4    3    2    1     ;3
-z80_byte puerto_61438=255; //    db              255  ; 6    7    8    9    0     ;4
-z80_byte puerto_57342=255; //    db              255  ; Y    U    I    O    P     ;5
-z80_byte puerto_49150=255; //    db              255  ; H                J         K      L    Enter ;6
-z80_byte puerto_32766=255; //    db              255  ; B    N    M    Simb Space ;7
-*/
+int keyboard_map_table_coords_tk95[40*4]={
+2,134,44,154,90,132,114,156,124,132,150,154,162,132,188,156,200,134,226,154,
+72,96,100,122,106,98,134,122,144,98,170,120,178,98,206,118,214,98,240,120,
+62,58,90,84,100,60,126,86,136,62,160,82,168,62,194,82,206,62,232,82,
+44,24,70,48,82,26,104,48,120,26,142,44,152,24,180,48,188,24,214,48,
+368,26,394,50,332,24,358,48,296,26,320,48,260,26,286,48,224,24,250,48,
+386,62,412,82,352,60,378,82,316,62,342,84,278,62,304,86,244,64,268,84,
+490,60,536,80,364,98,386,120,326,98,350,122,290,98,314,118,254,98,278,118,
+106,168,420,188,450,132,536,154,306,134,330,154,272,134,294,156,238,136,258,156,
+};
+
+
 
 //Estructura para teclas que genera doble pulsacion, como "extended mode" (shift+symbol)
 //Adicionalmente tambien se usa para teclas repetidas, como symbol en un spectrum+. en ese caso puerto2 vale NULL;
@@ -21586,6 +21588,29 @@ keyboard_help_double_key keyboard_map_additional_p2[]={
     { 460,162,496,198,      &puerto_32766,8,        KEY_PORT_VALUE_SYMBOL }, // ,
     { 412,124,448,160,      &puerto_32766,4,        KEY_PORT_VALUE_SYMBOL }, // .
     { 482,2,538,38,         &puerto_32766,1,        KEY_PORT_VALUE_SHIFT }, // break
+
+    { 0,0,0,0,NULL,0,NULL,0 }
+};
+
+
+keyboard_help_double_key keyboard_map_additional_tk95[]={
+    { 2,96,60,122,        KEY_PORT_VALUE_SHIFT,   KEY_PORT_VALUE_SYMBOL }, //extend mode
+    { 502,96,536,120,          &puerto_65278,1,        &puerto_61438,1 },  //delete
+    { 414,132,438,152,      KEY_PORT_VALUE_SHIFT,   NULL, 0}, //caps shift derecha
+    { 444,24,464,44,            &puerto_63486,4,        KEY_PORT_VALUE_SHIFT }, //true video
+    { 476,26,500,46,           &puerto_63486,8,        KEY_PORT_VALUE_SHIFT }, //inverse video
+    { 2,60,52,80,          &puerto_61438,2,        KEY_PORT_VALUE_SHIFT },//graph
+    { 2,24,36,48,        &puerto_63486,1,        KEY_PORT_VALUE_SHIFT },//edit
+    { 56,134,76,154,       &puerto_63486,2,        KEY_PORT_VALUE_SHIFT }, //caps lock
+    { 396,98,422,120,        &puerto_57342,2,        KEY_PORT_VALUE_SYMBOL }, // ;
+    { 406,24,432,48,       &puerto_57342,1,        KEY_PORT_VALUE_SYMBOL }, // "
+    { 434,96,456,118,      &puerto_63486,16,       KEY_PORT_VALUE_SHIFT }, // flecha izq
+    { 468,98,492,118,      &puerto_61438,4,        KEY_PORT_VALUE_SHIFT }, // flecha der
+    { 424,62,448,82,      &puerto_61438,8,        KEY_PORT_VALUE_SHIFT }, // flecha arr
+    { 458,60,482,80,      &puerto_61438,16,       KEY_PORT_VALUE_SHIFT }, // flecha abaj
+    { 380,134,402,156,      &puerto_32766,8,        KEY_PORT_VALUE_SYMBOL }, // ,
+    { 344,134,368,156,      &puerto_32766,4,        KEY_PORT_VALUE_SYMBOL }, // .
+    { 512,24,536,46,         &puerto_32766,1,        KEY_PORT_VALUE_SHIFT }, // break
 
     { 0,0,0,0,NULL,0,NULL,0 }
 };
@@ -21689,6 +21714,10 @@ int *keyboard_help_return_map_table(void)
         return keyboard_map_table_coords_tk90x;
     }
 
+    else if (MACHINE_IS_MICRODIGITAL_TK95 || MACHINE_IS_MICRODIGITAL_TK95_SPA) {
+        return keyboard_map_table_coords_tk95;
+    }
+
     else return keyboard_map_table_coords_48;
 }
 
@@ -21701,6 +21730,10 @@ keyboard_help_double_key *keyboard_help_return_double_keys(void)
     if (MACHINE_IS_SPECTRUM_48_PLUS_SPA || MACHINE_IS_SPECTRUM_48_PLUS_ENG ||
         MACHINE_IS_INVES || MACHINE_IS_SPECTRUM_128 || MACHINE_IS_SPECTRUM_128_SPA) {
             teclas_dobles=keyboard_map_additional_48p;
+    }
+
+    else if (MACHINE_IS_MICRODIGITAL_TK95 || MACHINE_IS_MICRODIGITAL_TK95_SPA) {
+        return keyboard_map_additional_tk95;
     }
 
     else if (MACHINE_IS_SPECTRUM_P2 || MACHINE_IS_SPECTRUM_P2A_P3) {
