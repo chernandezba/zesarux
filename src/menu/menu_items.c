@@ -21483,6 +21483,30 @@ int keyboard_map_table_coords_tk85[40*4]={
 472,164,532,190,422,164,452,188,372,162,402,186,324,164,354,190,272,164,304,188,
 };
 
+
+
+int keyboard_map_table_coords_tk90x[40*4]={
+22,166,66,190,82,166,110,188,130,168,162,188,178,166,208,190,226,166,256,188,
+58,118,90,140,108,120,134,138,154,120,184,140,202,120,234,140,248,120,280,138,
+48,72,78,94,96,70,126,94,142,72,170,92,188,70,218,92,236,70,270,92,
+22,24,54,46,72,24,102,46,118,22,148,46,164,22,196,46,214,24,242,48,
+450,22,482,46,402,24,434,46,356,24,386,46,308,24,336,46,260,22,290,46,
+474,70,504,96,426,72,458,94,378,70,410,96,332,72,362,96,282,70,314,92,
+488,120,516,140,438,120,468,142,392,120,420,142,344,120,374,144,296,118,328,142,
+464,168,516,190,416,168,446,188,368,168,398,188,320,168,352,188,272,166,304,188,
+};
+
+/*
+z80_byte puerto_65278=255; //    db    255            ; V    C    X    Z    Sh    ;0
+z80_byte puerto_65022=255; //    db    255            ; G    F    D    S    A     ;1
+z80_byte puerto_64510=255; //    db              255  ; T    R    E    W    Q     ;2
+z80_byte puerto_63486=255; //    db              255  ; 5    4    3    2    1     ;3
+z80_byte puerto_61438=255; //    db              255  ; 6    7    8    9    0     ;4
+z80_byte puerto_57342=255; //    db              255  ; Y    U    I    O    P     ;5
+z80_byte puerto_49150=255; //    db              255  ; H                J         K      L    Enter ;6
+z80_byte puerto_32766=255; //    db              255  ; B    N    M    Simb Space ;7
+*/
+
 //Estructura para teclas que genera doble pulsacion, como "extended mode" (shift+symbol)
 //Adicionalmente tambien se usa para teclas repetidas, como symbol en un spectrum+. en ese caso puerto2 vale NULL;
 struct s_keyboard_help_double_key {
@@ -21659,6 +21683,10 @@ int *keyboard_help_return_map_table(void)
 
     else if (MACHINE_IS_Z88) {
         return keyboard_map_table_coords_z88;
+    }
+
+    else if (MACHINE_IS_MICRODIGITAL_TK90X || MACHINE_IS_MICRODIGITAL_TK90X_SPA) {
+        return keyboard_map_table_coords_tk90x;
     }
 
     else return keyboard_map_table_coords_48;
