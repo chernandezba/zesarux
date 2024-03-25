@@ -21594,23 +21594,23 @@ keyboard_help_double_key keyboard_map_additional_p2[]={
 
 
 keyboard_help_double_key keyboard_map_additional_tk95[]={
-    { 2,96,60,122,        KEY_PORT_VALUE_SHIFT,   KEY_PORT_VALUE_SYMBOL }, //extend mode
-    { 502,96,536,120,          &puerto_65278,1,        &puerto_61438,1 },  //delete
-    { 414,132,438,152,      KEY_PORT_VALUE_SHIFT,   NULL, 0}, //caps shift derecha
-    { 444,24,464,44,            &puerto_63486,4,        KEY_PORT_VALUE_SHIFT }, //true video
-    { 476,26,500,46,           &puerto_63486,8,        KEY_PORT_VALUE_SHIFT }, //inverse video
-    { 2,60,52,80,          &puerto_61438,2,        KEY_PORT_VALUE_SHIFT },//graph
-    { 2,24,36,48,        &puerto_63486,1,        KEY_PORT_VALUE_SHIFT },//edit
-    { 56,134,76,154,       &puerto_63486,2,        KEY_PORT_VALUE_SHIFT }, //caps lock
-    { 396,98,422,120,        &puerto_57342,2,        KEY_PORT_VALUE_SYMBOL }, // ;
-    { 406,24,432,48,       &puerto_57342,1,        KEY_PORT_VALUE_SYMBOL }, // "
-    { 434,96,456,118,      &puerto_63486,16,       KEY_PORT_VALUE_SHIFT }, // flecha izq
-    { 468,98,492,118,      &puerto_61438,4,        KEY_PORT_VALUE_SHIFT }, // flecha der
-    { 424,62,448,82,      &puerto_61438,8,        KEY_PORT_VALUE_SHIFT }, // flecha arr
-    { 458,60,482,80,      &puerto_61438,16,       KEY_PORT_VALUE_SHIFT }, // flecha abaj
-    { 380,134,402,156,      &puerto_32766,8,        KEY_PORT_VALUE_SYMBOL }, // ,
-    { 344,134,368,156,      &puerto_32766,4,        KEY_PORT_VALUE_SYMBOL }, // .
-    { 512,24,536,46,         &puerto_32766,1,        KEY_PORT_VALUE_SHIFT }, // break
+    { 2,96,60,122,      KEY_PORT_VALUE_SHIFT,   KEY_PORT_VALUE_SYMBOL }, //extend mode
+    { 502,96,536,120,   &puerto_65278,1,        &puerto_61438,1 },  //delete
+    { 414,132,438,152,  KEY_PORT_VALUE_SHIFT,   NULL, 0},           //caps shift derecha
+    { 444,24,464,44,    &puerto_63486,4,        KEY_PORT_VALUE_SHIFT }, //true video
+    { 476,26,500,46,    &puerto_63486,8,        KEY_PORT_VALUE_SHIFT }, //inverse video
+    { 2,60,52,80,       &puerto_61438,2,        KEY_PORT_VALUE_SHIFT },//graph
+    { 2,24,36,48,       &puerto_63486,1,        KEY_PORT_VALUE_SHIFT },//edit
+    { 56,134,76,154,    &puerto_63486,2,        KEY_PORT_VALUE_SHIFT }, //caps lock
+    { 396,98,422,120,   &puerto_57342,2,        KEY_PORT_VALUE_SYMBOL }, // ;
+    { 406,24,432,48,    &puerto_57342,1,        KEY_PORT_VALUE_SYMBOL }, // "
+    { 434,96,456,118,   &puerto_63486,16,       KEY_PORT_VALUE_SHIFT }, // flecha izq
+    { 468,98,492,118,   &puerto_61438,4,        KEY_PORT_VALUE_SHIFT }, // flecha der
+    { 424,62,448,82,    &puerto_61438,8,        KEY_PORT_VALUE_SHIFT }, // flecha arr
+    { 458,60,482,80,    &puerto_61438,16,       KEY_PORT_VALUE_SHIFT }, // flecha abaj
+    { 380,134,402,156,  &puerto_32766,8,        KEY_PORT_VALUE_SYMBOL }, // ,
+    { 344,134,368,156,  &puerto_32766,4,        KEY_PORT_VALUE_SYMBOL }, // .
+    { 512,24,536,46,    &puerto_32766,1,        KEY_PORT_VALUE_SHIFT }, // break
 
     { 0,0,0,0,NULL,0,NULL,0 }
 };
