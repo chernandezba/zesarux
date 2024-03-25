@@ -1989,8 +1989,8 @@ install: all
 utilities: smpatap sp_z80 tapabin leezx81 file_to_eprom bmp_to_prism_4_planar bmp_to_sprite spedtotxt bin_sprite_to_c lee_hilow_datadrive_audio
 
 
-main_lee_hilow_datadrive_audio.o: main_lee_storage/hilow_datadrive_audio.c storage/hilow_datadrive_audio.h
-	\$(CC) \$(CFLAGS) -c main_lee_storage/hilow_datadrive_audio.c
+main_lee_hilow_datadrive_audio.o: main_lee_hilow_datadrive_audio.c storage/hilow_datadrive_audio.h
+	\$(CC) \$(CFLAGS) -c main_lee_hilow_datadrive_audio.c
 
 lee_hilow_datadrive_audio: main_lee_hilow_datadrive_audio.o hilow_datadrive_audio.o
 	\$(CC) \$(CFLAGS) main_lee_hilow_datadrive_audio.o hilow_datadrive_audio.o -o lee_hilow_datadrive_audio
