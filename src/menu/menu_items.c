@@ -21993,15 +21993,9 @@ void menu_help_keyboard_locate_speccy_pressed_keys(int keyboard_map_coords[],z80
 
 }
 
-void menu_help_keyboard_locate_mantenidas_pressed_keys(int keyboard_map_coords[],z80_byte *key_map_ports[],int total_columnas,
-    int x,int y,z80_byte **p_puerto1,z80_byte *p_mascara1,z80_byte **p_puerto2,z80_byte *p_mascara2,
-    keyboard_help_double_key *teclas_dobles,int *p_indice_a_tecla_simple,int *p_indice_a_tecla_doble)
+void menu_help_keyboard_send_mantenidas_pressed_keys(z80_byte *key_map_ports[],int total_columnas,keyboard_help_double_key *teclas_dobles)
 {
 
-    *p_puerto1=NULL;
-    *p_puerto2=NULL;
-    *p_indice_a_tecla_simple=-1;
-    *p_indice_a_tecla_doble=-1;
 
     int fila_tecla;
     int columna_tecla;
@@ -22013,21 +22007,9 @@ void menu_help_keyboard_locate_mantenidas_pressed_keys(int keyboard_map_coords[]
         int mascara=1;
         for (columna_tecla=0;columna_tecla<total_columnas;columna_tecla++,indice_a_tecla++) {
 
-            int offset=fila_tecla*total_columnas+columna_tecla; //Indice a tecla
-
-            //indice a coordenada
-            offset *=4;
-
-            int x1=keyboard_map_coords[offset];
-            int y1=keyboard_map_coords[offset+1];
-            int x2=keyboard_map_coords[offset+2];
-            int y2=keyboard_map_coords[offset+3];
-
             if (keyboard_help_teclas_mantenidas_pulsadas_simples[indice_a_tecla]) {
                 *puerto &=(255-mascara);
             }
-
-
 
             mascara=mascara<<1;
         }
@@ -22036,31 +22018,18 @@ void menu_help_keyboard_locate_mantenidas_pressed_keys(int keyboard_map_coords[]
 
     if (teclas_dobles!=NULL) {
         int i=0;
-        indice_a_tecla=0;
+
         while(teclas_dobles[i].puerto1!=NULL) {
 
-            int x1=teclas_dobles[i].x1;
-            int y1=teclas_dobles[i].y1;
-            int x2=teclas_dobles[i].x2;
-            int y2=teclas_dobles[i].y2;
 
-                *p_puerto1=teclas_dobles[i].puerto1;
-                *p_mascara1=teclas_dobles[i].mascara1;
-                *p_puerto2=teclas_dobles[i].puerto2;
-                *p_mascara2=teclas_dobles[i].mascara2;
-
-
-            if (keyboard_help_teclas_mantenidas_pulsadas_dobles[indice_a_tecla]) {
+            if (keyboard_help_teclas_mantenidas_pulsadas_dobles[i]) {
                 *teclas_dobles[i].puerto1 &=(255-teclas_dobles[i].mascara1);
 
                 if (teclas_dobles[i].puerto2!=NULL) *teclas_dobles[i].puerto2 &=(255-teclas_dobles[i].mascara2);
             }
 
-
-
-
             i++;
-            indice_a_tecla++;
+
         }
     }
 
@@ -22340,8 +22309,7 @@ void menu_help_keyboard_generate_key_mouse(int pulsado_x,int pulsado_y)
 
     int indice_a_tecla_simple,indice_a_tecla_doble;
 
-    menu_help_keyboard_locate_mantenidas_pressed_keys(keyboard_map_table,ports_table,total_columnas,
-        pulsado_x,pulsado_y,&puerto1,&mascara1,&puerto2,&mascara2,teclas_dobles,&indice_a_tecla_simple,&indice_a_tecla_doble);
+    menu_help_keyboard_send_mantenidas_pressed_keys(ports_table,total_columnas,teclas_dobles);
 
     menu_help_keyboard_locate_speccy_pressed_keys(keyboard_map_table,ports_table,total_columnas,
         pulsado_x,pulsado_y,&puerto1,&mascara1,&puerto2,&mascara2,teclas_dobles,&indice_a_tecla_simple,&indice_a_tecla_doble);
