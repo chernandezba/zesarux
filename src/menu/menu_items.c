@@ -21679,7 +21679,7 @@ int keyboard_map_table_coords_z88[64*4]={
 };
 
 //Teclas simples mantenidas pulsadas. A no 0 para que se queden pulsadas
-#define KEYBOARD_HELP_MAX_TECLAS_MANTENIDAS_PULSADAS 10
+#define KEYBOARD_HELP_MAX_TECLAS_MANTENIDAS_PULSADAS 64
 //64
 int keyboard_help_teclas_mantenidas_pulsadas_simples[KEYBOARD_HELP_MAX_TECLAS_MANTENIDAS_PULSADAS];
 int keyboard_help_teclas_mantenidas_pulsadas_dobles[KEYBOARD_HELP_MAX_TECLAS_MANTENIDAS_PULSADAS];
