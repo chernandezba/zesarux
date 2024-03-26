@@ -835,7 +835,7 @@ este parametro. Por ejemplo "reset cpu" (y un dialogo de confirmacion yes/no no 
 
 
 -si keyboard help con el foco no refresca cambios en teclas (que vengan de zeng por ejemplo)
--poder hacer stick de teclas en keyboard help
+ok boton derecho -poder hacer stick de teclas en keyboard help
 -help keyboard completar otras maquinas
 ok-keyboard help: pulsar shift+symbol no cambia a tecla extendida, con ventana help keyboard en el foco:
 no lee ni caps ni symbol solas desde ahi (pulsando en teclado) porque bucle esta en "esperar tecla", y symbol o shift, por si solas,
