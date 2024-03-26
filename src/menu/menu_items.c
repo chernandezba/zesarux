@@ -21679,9 +21679,41 @@ int keyboard_map_table_coords_z88[64*4]={
 };
 
 //Teclas simples mantenidas pulsadas. A no 0 para que se queden pulsadas
-#define KEYBOARD_HELP_MAX_TECLAS_MANTENIDAS_PULSADAS 64
+#define KEYBOARD_HELP_MAX_TECLAS_MANTENIDAS_PULSADAS 10
+//64
 int keyboard_help_teclas_mantenidas_pulsadas_simples[KEYBOARD_HELP_MAX_TECLAS_MANTENIDAS_PULSADAS];
 int keyboard_help_teclas_mantenidas_pulsadas_dobles[KEYBOARD_HELP_MAX_TECLAS_MANTENIDAS_PULSADAS];
+
+//Funciones para leer y escribir de esas teclas comprobando que no nos salgamos de los limites
+int keyboard_get_teclas_mantenidas_pulsadas_simples(int indice)
+{
+    if (indice<KEYBOARD_HELP_MAX_TECLAS_MANTENIDAS_PULSADAS) return keyboard_help_teclas_mantenidas_pulsadas_simples[indice];
+    else {
+        debug_printf(VERBOSE_DEBUG,"Trying to get kept pressed simple key when index beyond limit: %d",indice);
+        return 0;
+    }
+}
+
+int keyboard_get_teclas_mantenidas_pulsadas_dobles(int indice)
+{
+    if (indice<KEYBOARD_HELP_MAX_TECLAS_MANTENIDAS_PULSADAS) return keyboard_help_teclas_mantenidas_pulsadas_dobles[indice];
+    else {
+        debug_printf(VERBOSE_DEBUG,"Trying to get kept pressed double key when index beyond limit: %d",indice);
+        return 0;
+    }
+}
+
+void keyboard_set_teclas_mantenidas_pulsadas_simples(int indice,int valor)
+{
+    if (indice<KEYBOARD_HELP_MAX_TECLAS_MANTENIDAS_PULSADAS) keyboard_help_teclas_mantenidas_pulsadas_simples[indice]=valor;
+    else debug_printf(VERBOSE_DEBUG,"Trying to set kept pressed simple key when index beyond limit: %d",indice);
+}
+
+void keyboard_set_teclas_mantenidas_pulsadas_dobles(int indice,int valor)
+{
+    if (indice<KEYBOARD_HELP_MAX_TECLAS_MANTENIDAS_PULSADAS) keyboard_help_teclas_mantenidas_pulsadas_dobles[indice]=valor;
+    else debug_printf(VERBOSE_DEBUG,"Trying to set kept pressed double key when index beyond limit: %d",indice);
+}
 
 void keyboard_help_reset_teclas_pulsadas(void)
 {
@@ -21692,10 +21724,7 @@ void keyboard_help_reset_teclas_pulsadas(void)
         keyboard_help_teclas_mantenidas_pulsadas_dobles[i]=0;
     }
 
-    //temp
-    //keyboard_help_teclas_mantenidas_pulsadas_simples[3]=1;
 
-    //keyboard_help_teclas_mantenidas_pulsadas_dobles[3]=1;
 }
 
 //Retorna tabla de coordenadas de teclas
@@ -21833,17 +21862,19 @@ void menu_help_keyboard_show_speccy_pressed_keys(zxvision_window *ventana,int ke
             z80_byte valor=*puerto;
             valor &=mascara;
 
+            int color=3;
 
             if (!valor) tecla_encontrada=1;
 
             //Tecla pulsada mantenida
-            //No deberia exceder el indice, pero por si acaso
-            if (indice_tecla_mantenida_pulsada<KEYBOARD_HELP_MAX_TECLAS_MANTENIDAS_PULSADAS) {
-                if (keyboard_help_teclas_mantenidas_pulsadas_simples[indice_tecla_mantenida_pulsada]) {
-                    tecla_encontrada=1;
-                    printf("Encontrada pulsada simple %d\n",indice_tecla_mantenida_pulsada);
-                }
+
+
+            if (keyboard_get_teclas_mantenidas_pulsadas_simples(indice_tecla_mantenida_pulsada)) {
+                tecla_encontrada=1;
+                printf("Encontrada pulsada simple %d\n",indice_tecla_mantenida_pulsada);
+                color=1;
             }
+
 
 
             if (tecla_encontrada) {
@@ -21860,7 +21891,7 @@ void menu_help_keyboard_show_speccy_pressed_keys(zxvision_window *ventana,int ke
                 int ancho=keyboard_map_coords[offset+2]-x1+1;
                 int alto=keyboard_map_coords[offset+3]-y1+1;
 
-                int color=3;
+
 
                 menu_help_draw_rectangle_key(ventana,x1,y1,ancho,alto,color);
             }
@@ -21883,6 +21914,7 @@ void menu_help_keyboard_show_speccy_pressed_keys(zxvision_window *ventana,int ke
 
 
             int tecla_encontrada=0;
+            int color=3;
 
             //Si realmente no es tecla doble sino adicional (como symbol derecha)
             if (puerto2==NULL) {
@@ -21896,13 +21928,13 @@ void menu_help_keyboard_show_speccy_pressed_keys(zxvision_window *ventana,int ke
             }
 
             //Tecla pulsada mantenida
-            //No deberia exceder el indice, pero por si acaso
-            if (indice_tecla_mantenida_pulsada<KEYBOARD_HELP_MAX_TECLAS_MANTENIDAS_PULSADAS) {
-                if (keyboard_help_teclas_mantenidas_pulsadas_dobles[indice_tecla_mantenida_pulsada]) {
-                    tecla_encontrada=1;
-                    printf("Encontrada pulsada doble %d\n",indice_tecla_mantenida_pulsada);
-                }
+
+            if (keyboard_get_teclas_mantenidas_pulsadas_dobles(indice_tecla_mantenida_pulsada)) {
+                tecla_encontrada=1;
+                //printf("Encontrada pulsada doble %d\n",indice_tecla_mantenida_pulsada);
+                color=1;
             }
+
 
             if (tecla_encontrada) {
 
@@ -21911,7 +21943,7 @@ void menu_help_keyboard_show_speccy_pressed_keys(zxvision_window *ventana,int ke
                 int ancho=teclas_dobles[i].x2-x1+1;
                 int alto=teclas_dobles[i].y2-y1+1;
 
-                int color=3;
+
 
                 menu_help_keyboard_overlay_force_draw=1;
 
@@ -22007,7 +22039,7 @@ void menu_help_keyboard_send_mantenidas_pressed_keys(z80_byte *key_map_ports[],i
         int mascara=1;
         for (columna_tecla=0;columna_tecla<total_columnas;columna_tecla++,indice_a_tecla++) {
 
-            if (keyboard_help_teclas_mantenidas_pulsadas_simples[indice_a_tecla]) {
+            if (keyboard_get_teclas_mantenidas_pulsadas_simples(indice_a_tecla)) {
                 *puerto &=(255-mascara);
             }
 
@@ -22022,7 +22054,7 @@ void menu_help_keyboard_send_mantenidas_pressed_keys(z80_byte *key_map_ports[],i
         while(teclas_dobles[i].puerto1!=NULL) {
 
 
-            if (keyboard_help_teclas_mantenidas_pulsadas_dobles[i]) {
+            if (keyboard_get_teclas_mantenidas_pulsadas_dobles(i)) {
                 *teclas_dobles[i].puerto1 &=(255-teclas_dobles[i].mascara1);
 
                 if (teclas_dobles[i].puerto2!=NULL) *teclas_dobles[i].puerto2 &=(255-teclas_dobles[i].mascara2);
@@ -22378,13 +22410,15 @@ void menu_help_keyboard_mantener_key_mouse(int pulsado_x,int pulsado_y)
     printf("indices: %d %d\n",indice_a_tecla_simple,indice_a_tecla_doble);
 
     if (indice_a_tecla_simple>=0) {
-        printf("Marcar tecla simple %d\n",indice_a_tecla_simple);
-        keyboard_help_teclas_mantenidas_pulsadas_simples[indice_a_tecla_simple]^=1;
-        printf("Marcar tecla simple %d\n",keyboard_help_teclas_mantenidas_pulsadas_simples[indice_a_tecla_simple]);
+        int valor=keyboard_get_teclas_mantenidas_pulsadas_simples(indice_a_tecla_simple);
+        valor ^=1;
+        keyboard_set_teclas_mantenidas_pulsadas_simples(indice_a_tecla_simple,valor);
     }
 
     if (indice_a_tecla_doble>=0) {
-        keyboard_help_teclas_mantenidas_pulsadas_dobles[indice_a_tecla_doble]^=1;
+        int valor=keyboard_get_teclas_mantenidas_pulsadas_dobles(indice_a_tecla_doble);
+        valor ^=1;
+        keyboard_set_teclas_mantenidas_pulsadas_dobles(indice_a_tecla_doble,valor);
     }
 
 }
