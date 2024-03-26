@@ -919,3 +919,5 @@ O quiza que salte al menu con la linea de opcion seleccionada donde corresponde
 *completar texto Diego
 
 -Incorporar bittransfe como manera de generar snapshot en .tap. Agregar parámetro de estado interrupciones, registro i. Otros registros que falten? R?
+
+-cpu-history: soportar poder restaurar estado de cpu y estado paginacion, haciendo uso de linea MMU=
