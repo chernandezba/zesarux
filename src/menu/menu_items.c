@@ -22137,10 +22137,13 @@ void menu_help_keyboard_overlay(void)
         if ( ((contador_segundo%200) == 0 && help_keyboard_valor_contador_segundo_anterior!=contador_segundo) ||
              menu_multitarea==0 || menu_help_keyboard_overlay_force_draw) {
 
+            printf ("Refrescando keyboard help. menu_help_keyboard_overlay_force_draw=%d\n",menu_help_keyboard_overlay_force_draw);
+
             menu_help_keyboard_overlay_force_draw=0;
 
                                         help_keyboard_valor_contador_segundo_anterior=contador_segundo;
             //printf ("Refrescando keyboard help. contador_segundo=%d\n",contador_segundo);
+
 
             //zoom_x de offset para evitar parpadeo con la linea del recuadro por la izquierda
             //El teclado no sigue el zoom de ventana, pero sí que sigue el zoom de gui
@@ -22162,27 +22165,25 @@ void menu_help_keyboard_overlay(void)
                 menu_help_draw_rectangle_key(ventana,x1,y1,x2-x1+1,y2-y1+1,color);
             }
 
+            int *keyboard_map_table=keyboard_help_return_map_table();
+
+            keyboard_help_double_key *teclas_dobles=keyboard_help_return_double_keys();
+
+            int total_columnas;
+            z80_byte **ports_table=get_keyboard_map_ports_table(&total_columnas);
+
+            menu_help_keyboard_show_speccy_pressed_keys(ventana,keyboard_map_table,total_columnas,ports_table,teclas_dobles);
+
         }
 
     }
 
-    //prueba dibujar recuadro
-    //zxvision_draw_rectangle(ventana,10,10,50,20,3);
-
-    //prueba dibujar todos recuadros de teclas
-    //menu_help_keyboard_show_all_keys(ventana,keyboard_map_table_coords_48,5);
-
-    int *keyboard_map_table=keyboard_help_return_map_table();
-
-    keyboard_help_double_key *teclas_dobles=keyboard_help_return_double_keys();
-
-    int total_columnas;
-    z80_byte **ports_table=get_keyboard_map_ports_table(&total_columnas);
-
-    menu_help_keyboard_show_speccy_pressed_keys(ventana,keyboard_map_table,total_columnas,ports_table,teclas_dobles);
 
 
-    //printf("overlay puerto: %d\n",puerto_65022);
+
+
+
+
 
     //Siempre hará el dibujado de contenido para evitar que cuando esta en background, otra ventana por debajo escriba algo,
     //y entonces como esta no redibuja siempre, al no escribir encima, se sobreescribe este contenido con el de otra ventana
