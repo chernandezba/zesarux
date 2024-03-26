@@ -21864,7 +21864,10 @@ void menu_help_keyboard_show_speccy_pressed_keys(zxvision_window *ventana,int ke
 
             int color=3;
 
-            if (!valor) tecla_encontrada=1;
+            if (!valor) {
+                tecla_encontrada=1;
+                menu_help_keyboard_overlay_force_draw=1;
+            }
 
             //Tecla pulsada mantenida
 
@@ -21879,7 +21882,7 @@ void menu_help_keyboard_show_speccy_pressed_keys(zxvision_window *ventana,int ke
 
             if (tecla_encontrada) {
                 //printf("forzar dibujar\n");
-                menu_help_keyboard_overlay_force_draw=1;
+                //menu_help_keyboard_overlay_force_draw=1;
 
                 int offset=fila_tecla*total_columnas+columna_tecla; //Indice a tecla
 
@@ -21919,19 +21922,26 @@ void menu_help_keyboard_show_speccy_pressed_keys(zxvision_window *ventana,int ke
             //Si realmente no es tecla doble sino adicional (como symbol derecha)
             if (puerto2==NULL) {
 
-                if (valor1==0) tecla_encontrada=1;
+                if (valor1==0) {
+                    tecla_encontrada=1;
+                    menu_help_keyboard_overlay_force_draw=1;
+                    printf("force draw\n");
+                }
             }
 
             else {
                 z80_byte valor2=(*puerto2) & mascara2;
-                if (valor1==0 && valor2==0) tecla_encontrada=1;
+                if (valor1==0 && valor2==0) {
+                    tecla_encontrada=1;
+                    menu_help_keyboard_overlay_force_draw=1;
+                }
             }
 
             //Tecla pulsada mantenida
 
             if (keyboard_get_teclas_mantenidas_pulsadas_dobles(indice_tecla_mantenida_pulsada)) {
                 tecla_encontrada=1;
-                //printf("Encontrada pulsada doble %d\n",indice_tecla_mantenida_pulsada);
+                printf("Encontrada pulsada doble %d\n",indice_tecla_mantenida_pulsada);
                 color=1;
             }
 
@@ -21945,7 +21955,7 @@ void menu_help_keyboard_show_speccy_pressed_keys(zxvision_window *ventana,int ke
 
 
 
-                menu_help_keyboard_overlay_force_draw=1;
+                //menu_help_keyboard_overlay_force_draw=1;
 
                 menu_help_draw_rectangle_key(ventana,x1,y1,ancho,alto,color);
             }
@@ -22534,10 +22544,18 @@ void menu_help_show_keyboard(MENU_ITEM_PARAMETERS)
 
         //teclas como la de la derecha de L en Z88 (;:) no tiene valor asignado de "tecla" por tanto retorna 0
         //pero la lectura de menu_da_todas_teclas_cualquiera si que indica que una tecla se ha pulsado
+
+        //TODO: si se marcan teclas para pulsar con boton derecho,
+        //solo sirven para enviar con boton izquierdo
+        //no valen para aqui, no podemos generar teclas pulsadas con boton derecho
+        //y leer teclado, porque entonces no sabremos cuando el usuario dejara de apretar esa tecla en el teclado,
+        //porque habran todas las otras teclas que se han activado con el boton derecho y que no se liberan
+        //No seria facil saber que tecla (o teclas) ha liberado el usuario si hay todas las otras que se activaron con boton derecho
         if ((tecla || todos_puertos_teclado_acumulado!=255) && !mouse_left && !mouse_right) {
             printf("generar tecla %d\n",tecla);
             z80_byte acumulado;
             int salir=0;
+            menu_help_keyboard_overlay_force_draw=1;
 
             //Bucle variante de espera_no_tecla
             do {
@@ -22562,6 +22580,7 @@ void menu_help_show_keyboard(MENU_ITEM_PARAMETERS)
         }
 
         if (mouse_left && si_menu_mouse_en_ventana_no_en_scrolls() && !mouse_is_dragging) {
+            menu_help_keyboard_overlay_force_draw=1;
             int pulsado_x,pulsado_y;
             zxvision_get_mouse_in_window(ventana,&pulsado_x,&pulsado_y);
 
@@ -22588,11 +22607,14 @@ void menu_help_show_keyboard(MENU_ITEM_PARAMETERS)
             pulsado_x *=zoom_x;
             pulsado_y *=zoom_y;
 
+            menu_help_keyboard_overlay_force_draw=1;
+
             menu_help_keyboard_mantener_key_mouse(pulsado_x,pulsado_y);
 
             printf("\n");
 
             menu_espera_no_tecla();
+
         }
 
         //Si simplemente se ha movido el raton, sin pulsar, indicar tecla
