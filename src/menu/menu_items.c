@@ -21678,6 +21678,26 @@ int keyboard_map_table_coords_z88[64*4]={
     288,2,318,30,  252,2,282,26,  258,106,290,134, 240,72,272,100, 234,34,266,62, 214,2,246,30, 496,36,537,98, 510,2,537,28,
 };
 
+//Teclas simples mantenidas pulsadas. A no 0 para que se queden pulsadas
+#define KEYBOARD_HELP_MAX_TECLAS_MANTENIDAS_PULSADAS 64
+int keyboard_help_teclas_mantenidas_pulsadas_simples[KEYBOARD_HELP_MAX_TECLAS_MANTENIDAS_PULSADAS];
+int keyboard_help_teclas_mantenidas_pulsadas_dobles[KEYBOARD_HELP_MAX_TECLAS_MANTENIDAS_PULSADAS];
+
+void keyboard_help_reset_teclas_pulsadas(void)
+{
+    int i;
+
+    for (i=0;i<KEYBOARD_HELP_MAX_TECLAS_MANTENIDAS_PULSADAS;i++) {
+        keyboard_help_teclas_mantenidas_pulsadas_simples[i]=0;
+        keyboard_help_teclas_mantenidas_pulsadas_dobles[i]=0;
+    }
+
+    //temp
+    //keyboard_help_teclas_mantenidas_pulsadas_simples[3]=1;
+
+    //keyboard_help_teclas_mantenidas_pulsadas_dobles[3]=1;
+}
+
 //Retorna tabla de coordenadas de teclas
 int *keyboard_help_return_map_table(void)
 {
@@ -21764,10 +21784,8 @@ z80_byte *keyboard_map_ports_table_z88[8]={
     &blink_kbd_a11,&blink_kbd_a10,&blink_kbd_a9,&blink_kbd_a8
 };
 
-    //prueba dibujar recuadro
-    //zxvision_draw_rectangle(ventana,10,10,50,20,3);
 
-    //prueba dibujar todos recuadros de teclas
+/*
 void menu_help_keyboard_show_all_keys(zxvision_window *ventana,int keyboard_map_coords[],int total_keys)
 {
     int i;
@@ -21783,6 +21801,7 @@ void menu_help_keyboard_show_all_keys(zxvision_window *ventana,int keyboard_map_
         zxvision_draw_rectangle_function(ventana,x1-1,y1-1,ancho+2,alto+2,3,zxvision_putpixel_no_zoom);
     }
 }
+*/
 
 void menu_help_draw_rectangle_key(zxvision_window *ventana,int x1,int y1,int ancho,int alto,int color)
 {
@@ -21803,14 +21822,31 @@ void menu_help_keyboard_show_speccy_pressed_keys(zxvision_window *ventana,int ke
 
     //int total_columnas=5;
 
+    int indice_tecla_mantenida_pulsada=0;
 
     for (fila_tecla=0;fila_tecla<8;fila_tecla++) {
         z80_byte *puerto=key_map_ports[fila_tecla];
         int mascara=1;
-        for (columna_tecla=0;columna_tecla<total_columnas;columna_tecla++) {
+        for (columna_tecla=0;columna_tecla<total_columnas;columna_tecla++,indice_tecla_mantenida_pulsada++) {
+            //Tecla pulsada segun el puerto
+            int tecla_encontrada=0;
             z80_byte valor=*puerto;
             valor &=mascara;
-            if (!valor) {
+
+
+            if (!valor) tecla_encontrada=1;
+
+            //Tecla pulsada mantenida
+            //No deberia exceder el indice, pero por si acaso
+            if (indice_tecla_mantenida_pulsada<KEYBOARD_HELP_MAX_TECLAS_MANTENIDAS_PULSADAS) {
+                if (keyboard_help_teclas_mantenidas_pulsadas_simples[indice_tecla_mantenida_pulsada]) {
+                    tecla_encontrada=1;
+                    printf("Encontrada pulsada simple %d\n",indice_tecla_mantenida_pulsada);
+                }
+            }
+
+
+            if (tecla_encontrada) {
                 //printf("forzar dibujar\n");
                 menu_help_keyboard_overlay_force_draw=1;
 
@@ -21834,6 +21870,7 @@ void menu_help_keyboard_show_speccy_pressed_keys(zxvision_window *ventana,int ke
     }
 
     if (teclas_dobles!=NULL) {
+        int indice_tecla_mantenida_pulsada=0;
         int i=0;
         while(teclas_dobles[i].puerto1!=NULL) {
             z80_byte *puerto1=teclas_dobles[i].puerto1;
@@ -21858,6 +21895,15 @@ void menu_help_keyboard_show_speccy_pressed_keys(zxvision_window *ventana,int ke
                 if (valor1==0 && valor2==0) tecla_encontrada=1;
             }
 
+            //Tecla pulsada mantenida
+            //No deberia exceder el indice, pero por si acaso
+            if (indice_tecla_mantenida_pulsada<KEYBOARD_HELP_MAX_TECLAS_MANTENIDAS_PULSADAS) {
+                if (keyboard_help_teclas_mantenidas_pulsadas_dobles[indice_tecla_mantenida_pulsada]) {
+                    tecla_encontrada=1;
+                    printf("Encontrada pulsada doble %d\n",indice_tecla_mantenida_pulsada);
+                }
+            }
+
             if (tecla_encontrada) {
 
                 int x1=teclas_dobles[i].x1;
@@ -21873,6 +21919,7 @@ void menu_help_keyboard_show_speccy_pressed_keys(zxvision_window *ventana,int ke
             }
 
             i++;
+            indice_tecla_mantenida_pulsada++;
         }
     }
 }
@@ -21880,21 +21927,23 @@ void menu_help_keyboard_show_speccy_pressed_keys(zxvision_window *ventana,int ke
 
 void menu_help_keyboard_locate_speccy_pressed_keys(int keyboard_map_coords[],z80_byte *key_map_ports[],int total_columnas,
     int x,int y,z80_byte **p_puerto1,z80_byte *p_mascara1,z80_byte **p_puerto2,z80_byte *p_mascara2,
-    keyboard_help_double_key *teclas_dobles)
+    keyboard_help_double_key *teclas_dobles,int *p_indice_a_tecla_simple,int *p_indice_a_tecla_doble)
 {
 
     *p_puerto1=NULL;
     *p_puerto2=NULL;
+    *p_indice_a_tecla_simple=-1;
+    *p_indice_a_tecla_doble=-1;
 
     int fila_tecla;
     int columna_tecla;
 
-
+    int indice_a_tecla=0;
 
     for (fila_tecla=0;fila_tecla<8;fila_tecla++) {
         z80_byte *puerto=key_map_ports[fila_tecla];
         int mascara=1;
-        for (columna_tecla=0;columna_tecla<total_columnas;columna_tecla++) {
+        for (columna_tecla=0;columna_tecla<total_columnas;columna_tecla++,indice_a_tecla++) {
 
             int offset=fila_tecla*total_columnas+columna_tecla; //Indice a tecla
 
@@ -21908,6 +21957,7 @@ void menu_help_keyboard_locate_speccy_pressed_keys(int keyboard_map_coords[],z80
             if (x>=x1 && x<=x2 && y>=y1 && y<=y2) {
                 *p_puerto1=puerto;
                 *p_mascara1=mascara;
+                *p_indice_a_tecla_simple=indice_a_tecla;
                 return;
             }
 
@@ -21919,6 +21969,7 @@ void menu_help_keyboard_locate_speccy_pressed_keys(int keyboard_map_coords[],z80
 
     if (teclas_dobles!=NULL) {
         int i=0;
+        indice_a_tecla=0;
         while(teclas_dobles[i].puerto1!=NULL) {
 
             int x1=teclas_dobles[i].x1;
@@ -21931,10 +21982,85 @@ void menu_help_keyboard_locate_speccy_pressed_keys(int keyboard_map_coords[],z80
                 *p_mascara1=teclas_dobles[i].mascara1;
                 *p_puerto2=teclas_dobles[i].puerto2;
                 *p_mascara2=teclas_dobles[i].mascara2;
+                *p_indice_a_tecla_doble=indice_a_tecla;
                 return;
             }
 
             i++;
+            indice_a_tecla++;
+        }
+    }
+
+}
+
+void menu_help_keyboard_locate_mantenidas_pressed_keys(int keyboard_map_coords[],z80_byte *key_map_ports[],int total_columnas,
+    int x,int y,z80_byte **p_puerto1,z80_byte *p_mascara1,z80_byte **p_puerto2,z80_byte *p_mascara2,
+    keyboard_help_double_key *teclas_dobles,int *p_indice_a_tecla_simple,int *p_indice_a_tecla_doble)
+{
+
+    *p_puerto1=NULL;
+    *p_puerto2=NULL;
+    *p_indice_a_tecla_simple=-1;
+    *p_indice_a_tecla_doble=-1;
+
+    int fila_tecla;
+    int columna_tecla;
+
+    int indice_a_tecla=0;
+
+    for (fila_tecla=0;fila_tecla<8;fila_tecla++) {
+        z80_byte *puerto=key_map_ports[fila_tecla];
+        int mascara=1;
+        for (columna_tecla=0;columna_tecla<total_columnas;columna_tecla++,indice_a_tecla++) {
+
+            int offset=fila_tecla*total_columnas+columna_tecla; //Indice a tecla
+
+            //indice a coordenada
+            offset *=4;
+
+            int x1=keyboard_map_coords[offset];
+            int y1=keyboard_map_coords[offset+1];
+            int x2=keyboard_map_coords[offset+2];
+            int y2=keyboard_map_coords[offset+3];
+
+            if (keyboard_help_teclas_mantenidas_pulsadas_simples[indice_a_tecla]) {
+                *puerto &=(255-mascara);
+            }
+
+
+
+            mascara=mascara<<1;
+        }
+
+    }
+
+    if (teclas_dobles!=NULL) {
+        int i=0;
+        indice_a_tecla=0;
+        while(teclas_dobles[i].puerto1!=NULL) {
+
+            int x1=teclas_dobles[i].x1;
+            int y1=teclas_dobles[i].y1;
+            int x2=teclas_dobles[i].x2;
+            int y2=teclas_dobles[i].y2;
+
+                *p_puerto1=teclas_dobles[i].puerto1;
+                *p_mascara1=teclas_dobles[i].mascara1;
+                *p_puerto2=teclas_dobles[i].puerto2;
+                *p_mascara2=teclas_dobles[i].mascara2;
+
+
+            if (keyboard_help_teclas_mantenidas_pulsadas_dobles[indice_a_tecla]) {
+                *teclas_dobles[i].puerto1 &=(255-teclas_dobles[i].mascara1);
+
+                if (teclas_dobles[i].puerto2!=NULL) *teclas_dobles[i].puerto2 &=(255-teclas_dobles[i].mascara2);
+            }
+
+
+
+
+            i++;
+            indice_a_tecla++;
         }
     }
 
@@ -22212,8 +22338,13 @@ void menu_help_keyboard_generate_key_mouse(int pulsado_x,int pulsado_y)
     int total_columnas;
     z80_byte **ports_table=get_keyboard_map_ports_table(&total_columnas);
 
+    int indice_a_tecla_simple,indice_a_tecla_doble;
+
+    menu_help_keyboard_locate_mantenidas_pressed_keys(keyboard_map_table,ports_table,total_columnas,
+        pulsado_x,pulsado_y,&puerto1,&mascara1,&puerto2,&mascara2,teclas_dobles,&indice_a_tecla_simple,&indice_a_tecla_doble);
+
     menu_help_keyboard_locate_speccy_pressed_keys(keyboard_map_table,ports_table,total_columnas,
-        pulsado_x,pulsado_y,&puerto1,&mascara1,&puerto2,&mascara2,teclas_dobles);
+        pulsado_x,pulsado_y,&puerto1,&mascara1,&puerto2,&mascara2,teclas_dobles,&indice_a_tecla_simple,&indice_a_tecla_doble);
     if (puerto1!=NULL) {
 
         *puerto1 &=(255-mascara1);
@@ -22242,13 +22373,52 @@ void menu_help_keyboard_generate_key_mouse(int pulsado_x,int pulsado_y)
 
 
         //liberar tecla
-        *puerto1 |=mascara1;
+        //*puerto1 |=mascara1;
 
-        if (puerto2!=NULL) *puerto2 |=mascara2;
+        //if (puerto2!=NULL) *puerto2 |=mascara2;
+
+        reset_keyboard_ports();
 
         zxvision_keys_event_not_send_to_machine=1;
 
     }
+}
+
+void menu_help_keyboard_mantener_key_mouse(int pulsado_x,int pulsado_y)
+{
+
+    //localizar puerto
+
+    int *keyboard_map_table=keyboard_help_return_map_table();
+
+    z80_byte *puerto1;
+    z80_byte mascara1;
+
+    z80_byte *puerto2;
+    z80_byte mascara2;
+
+    keyboard_help_double_key *teclas_dobles=keyboard_help_return_double_keys();
+
+    int total_columnas;
+    z80_byte **ports_table=get_keyboard_map_ports_table(&total_columnas);
+
+    int indice_a_tecla_simple,indice_a_tecla_doble;
+
+    menu_help_keyboard_locate_speccy_pressed_keys(keyboard_map_table,ports_table,total_columnas,
+        pulsado_x,pulsado_y,&puerto1,&mascara1,&puerto2,&mascara2,teclas_dobles,&indice_a_tecla_simple,&indice_a_tecla_doble);
+
+    printf("indices: %d %d\n",indice_a_tecla_simple,indice_a_tecla_doble);
+
+    if (indice_a_tecla_simple>=0) {
+        printf("Marcar tecla simple %d\n",indice_a_tecla_simple);
+        keyboard_help_teclas_mantenidas_pulsadas_simples[indice_a_tecla_simple]^=1;
+        printf("Marcar tecla simple %d\n",keyboard_help_teclas_mantenidas_pulsadas_simples[indice_a_tecla_simple]);
+    }
+
+    if (indice_a_tecla_doble>=0) {
+        keyboard_help_teclas_mantenidas_pulsadas_dobles[indice_a_tecla_doble]^=1;
+    }
+
 }
 
 zxvision_window menu_help_show_keyboard_ventana;
@@ -22265,6 +22435,9 @@ void menu_help_show_keyboard(MENU_ITEM_PARAMETERS)
 			menu_warn_message("This window needs multitask enabled");
 			return;
 	}
+
+    //resetear tabla de teclas pulsadas
+    keyboard_help_reset_teclas_pulsadas();
 
 	zxvision_window *ventana;
 
@@ -22358,7 +22531,7 @@ void menu_help_show_keyboard(MENU_ITEM_PARAMETERS)
 
         //teclas como la de la derecha de L en Z88 (;:) no tiene valor asignado de "tecla" por tanto retorna 0
         //pero la lectura de menu_da_todas_teclas_cualquiera si que indica que una tecla se ha pulsado
-        if ((tecla || todos_puertos_teclado_acumulado!=255) && !mouse_left) {
+        if ((tecla || todos_puertos_teclado_acumulado!=255) && !mouse_left && !mouse_right) {
             printf("generar tecla %d\n",tecla);
             z80_byte acumulado;
             int salir=0;
@@ -22406,6 +22579,13 @@ void menu_help_show_keyboard(MENU_ITEM_PARAMETERS)
 
         if (mouse_right && si_menu_mouse_en_ventana_no_en_scrolls() ) {
 
+            int pulsado_x,pulsado_y;
+            zxvision_get_mouse_in_window(ventana,&pulsado_x,&pulsado_y);
+
+            pulsado_x *=zoom_x;
+            pulsado_y *=zoom_y;
+
+            menu_help_keyboard_mantener_key_mouse(pulsado_x,pulsado_y);
 
             printf("\n");
 
