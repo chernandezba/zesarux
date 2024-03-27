@@ -3485,7 +3485,19 @@ void cpu_history_regs_bin_restore(int indice)
   //contenido (pc) 4 bytes
   p[28],p[29],p[30],p[31],
   */
-  //contenido (sp) 2 bytes
+  //contenido (sp) 2 bytes.
+  //Creo que esto solo es necesario por ejemplo para restaurar el stack cuando ha saltado una interrupcion
+  //En este caso ahi apareceria la direccion de retorno, al saltar la interrupcion
+  //Estrictamente hablando esto no es necesario para poder ir a la direccion anterior,
+  //pues eso ya se restaura siempre con el registro PC
+  //Pero para poder dejar el stack como estaba en cada caso, si es necesario.
+  //Esto por ejemplo se puede ver con el juego Chase HQ, si no restauro esto y hago un Back Run,
+  //veremos como parte de la pantalla no se está restaurando correctamente, porque probablemente
+  //el juego utiliza el stack para dibujar la pantalla
+  //En el resto de casos de modificaciones de stack (push, call, rst etc) ya se restaura con los bytes 50-56
+  //TODO: esto no haria falta si cuando saltase una interrupcion, generasemos una entrada
+  //en el historial donde se guardase el estado de (sp-1) y (sp-2) antes de saltar la interrupcion
+  //como si fuese una instruccion CALL normal
   poke_byte_no_time(reg_sp,p[32]);
   poke_byte_no_time(reg_sp+1,p[33]);
 
