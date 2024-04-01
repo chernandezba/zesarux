@@ -21507,7 +21507,15 @@ int keyboard_map_table_coords_tk95[40*4]={
 106,168,420,188,450,132,536,154,306,134,330,154,272,134,294,156,238,136,258,156,
 };
 
+int keyboard_map_table_coords_sms[5*4]={
+66,106,86,124, 28,106,48,124, 44,124,68,146, 44,86,68,108, 130,114,154,136,
 
+};
+
+int keyboard_map_table_coords_sg1000[5*4]={
+54,70,76,88, 12,70,38,88, 34,94,56,110, 40,48,58,66, 14,46,32,68,
+
+};
 
 //Estructura para teclas que genera doble pulsacion, como "extended mode" (shift+symbol)
 //Adicionalmente tambien se usa para teclas repetidas, como symbol en un spectrum+. en ese caso puerto2 vale NULL;
@@ -21611,6 +21619,19 @@ keyboard_help_double_key keyboard_map_additional_tk95[]={
     { 380,134,402,156,  &puerto_32766,8,        KEY_PORT_VALUE_SYMBOL }, // ,
     { 344,134,368,156,  &puerto_32766,4,        KEY_PORT_VALUE_SYMBOL }, // .
     { 512,24,536,46,    &puerto_32766,1,        KEY_PORT_VALUE_SHIFT }, // break
+
+    { 0,0,0,0,NULL,0,NULL,0 }
+};
+
+
+keyboard_help_double_key keyboard_map_additional_sms[]={
+    { 164,114,188,136,      &puerto_65278,4,   NULL,0 }, //segundo boton=tecla X
+
+    { 0,0,0,0,NULL,0,NULL,0 }
+};
+
+keyboard_help_double_key keyboard_map_additional_sg1000[]={
+    { 66,46,80,68,      &puerto_65278,4,   NULL,0 }, //segundo boton=tecla X
 
     { 0,0,0,0,NULL,0,NULL,0 }
 };
@@ -21767,6 +21788,14 @@ int *keyboard_help_return_map_table(void)
         return keyboard_map_table_coords_tk95;
     }
 
+    else if (MACHINE_IS_SMS) {
+        return keyboard_map_table_coords_sms;
+    }
+
+    else if (MACHINE_IS_SG1000) {
+        return keyboard_map_table_coords_sg1000;
+    }
+
     else return keyboard_map_table_coords_48;
 }
 
@@ -21793,6 +21822,14 @@ keyboard_help_double_key *keyboard_help_return_double_keys(void)
         return keyboard_map_additional_ql;
     }
 
+    else if (MACHINE_IS_SMS) {
+        return keyboard_map_additional_sms;
+    }
+
+    else if (MACHINE_IS_SG1000) {
+        return keyboard_map_additional_sg1000;
+    }
+
     return teclas_dobles;
 
 }
@@ -21813,6 +21850,9 @@ z80_byte *keyboard_map_ports_table_z88[8]={
     &blink_kbd_a11,&blink_kbd_a10,&blink_kbd_a9,&blink_kbd_a8
 };
 
+z80_byte *keyboard_map_ports_table_joystick[1]={
+    &puerto_especial_joystick
+};
 
 /*
 void menu_help_keyboard_show_all_keys(zxvision_window *ventana,int keyboard_map_coords[],int total_keys)
@@ -21842,8 +21882,20 @@ void menu_help_draw_rectangle_key(zxvision_window *ventana,int x1,int y1,int anc
     zxvision_draw_rectangle_function(ventana,x1+1,y1+1,ancho-2,alto-2,color,zxvision_putpixel_no_zoom);
 }
 
+//Dice si bit tecla pulsada, dependiendo si es valor 0 en la mayoria de maquinas, o si no es 0 (como puertos de joystick en master system)
+int menu_help_keyboard_is_pressed_bit_key(z80_byte valor)
+{
+    if (MACHINE_IS_SMS || MACHINE_IS_SG1000) {
+        if (valor) return 1;
+        else return 0;
+    }
+    else {
+        if (!valor) return 1;
+        else return 0;
+    }
+}
 
-void menu_help_keyboard_show_speccy_pressed_keys(zxvision_window *ventana,int keyboard_map_coords[],int total_columnas,
+void menu_help_keyboard_show_speccy_pressed_keys(zxvision_window *ventana,int keyboard_map_coords[],int total_columnas,int total_filas,
     z80_byte *key_map_ports[],keyboard_help_double_key *teclas_dobles)
 {
     int fila_tecla;
@@ -21853,7 +21905,7 @@ void menu_help_keyboard_show_speccy_pressed_keys(zxvision_window *ventana,int ke
 
     int indice_tecla_mantenida_pulsada=0;
 
-    for (fila_tecla=0;fila_tecla<8;fila_tecla++) {
+    for (fila_tecla=0;fila_tecla<total_filas;fila_tecla++) {
         z80_byte *puerto=key_map_ports[fila_tecla];
         int mascara=1;
         for (columna_tecla=0;columna_tecla<total_columnas;columna_tecla++,indice_tecla_mantenida_pulsada++) {
@@ -21864,7 +21916,7 @@ void menu_help_keyboard_show_speccy_pressed_keys(zxvision_window *ventana,int ke
 
             int color=3;
 
-            if (!valor) {
+            if (menu_help_keyboard_is_pressed_bit_key(valor)) {
                 tecla_encontrada=1;
                 menu_help_keyboard_overlay_force_draw=1;
             }
@@ -21922,6 +21974,7 @@ void menu_help_keyboard_show_speccy_pressed_keys(zxvision_window *ventana,int ke
             //Si realmente no es tecla doble sino adicional (como symbol derecha)
             if (puerto2==NULL) {
 
+                //teclas dobles siempre se asume que si pulsada, bit=0
                 if (valor1==0) {
                     tecla_encontrada=1;
                     menu_help_keyboard_overlay_force_draw=1;
@@ -21931,6 +21984,7 @@ void menu_help_keyboard_show_speccy_pressed_keys(zxvision_window *ventana,int ke
 
             else {
                 z80_byte valor2=(*puerto2) & mascara2;
+                //teclas dobles siempre se asume que si pulsada, bit=0
                 if (valor1==0 && valor2==0) {
                     tecla_encontrada=1;
                     menu_help_keyboard_overlay_force_draw=1;
@@ -21967,9 +22021,9 @@ void menu_help_keyboard_show_speccy_pressed_keys(zxvision_window *ventana,int ke
 }
 
 
-void menu_help_keyboard_locate_speccy_pressed_keys(int keyboard_map_coords[],z80_byte *key_map_ports[],int total_columnas,
+void menu_help_keyboard_locate_speccy_pressed_keys(int keyboard_map_coords[],z80_byte *key_map_ports[],int total_columnas,int total_filas,
     int x,int y,z80_byte **p_puerto1,z80_byte *p_mascara1,z80_byte **p_puerto2,z80_byte *p_mascara2,
-    keyboard_help_double_key *teclas_dobles,int *p_indice_a_tecla_simple,int *p_indice_a_tecla_doble)
+    keyboard_help_double_key *teclas_dobles,int *p_indice_a_tecla_simple,int *p_indice_a_tecla_doble,int *es_tecla_doble)
 {
 
     *p_puerto1=NULL;
@@ -21977,12 +22031,14 @@ void menu_help_keyboard_locate_speccy_pressed_keys(int keyboard_map_coords[],z80
     *p_indice_a_tecla_simple=-1;
     *p_indice_a_tecla_doble=-1;
 
+    *es_tecla_doble=0;
+
     int fila_tecla;
     int columna_tecla;
 
     int indice_a_tecla=0;
 
-    for (fila_tecla=0;fila_tecla<8;fila_tecla++) {
+    for (fila_tecla=0;fila_tecla<total_filas;fila_tecla++) {
         z80_byte *puerto=key_map_ports[fila_tecla];
         int mascara=1;
         for (columna_tecla=0;columna_tecla<total_columnas;columna_tecla++,indice_a_tecla++) {
@@ -22025,6 +22081,7 @@ void menu_help_keyboard_locate_speccy_pressed_keys(int keyboard_map_coords[],z80
                 *p_puerto2=teclas_dobles[i].puerto2;
                 *p_mascara2=teclas_dobles[i].mascara2;
                 *p_indice_a_tecla_doble=indice_a_tecla;
+                *es_tecla_doble=1;
                 return;
             }
 
@@ -22035,7 +22092,17 @@ void menu_help_keyboard_locate_speccy_pressed_keys(int keyboard_map_coords[],z80
 
 }
 
-void menu_help_keyboard_send_mantenidas_pressed_keys(z80_byte *key_map_ports[],int total_columnas,keyboard_help_double_key *teclas_dobles)
+//Activar un bit de tecla segun si se pone a 0 (la mayoria de maquinas) o se pone a 1 (por ejemplo joystick en la master system)
+void menu_help_keyboard_activate_bit(z80_byte *puerto,z80_byte mascara)
+{
+    if (MACHINE_IS_SMS || MACHINE_IS_SG1000) {
+        *puerto |=mascara;
+    }
+
+    else *puerto &=(255-mascara);
+}
+
+void menu_help_keyboard_send_mantenidas_pressed_keys(z80_byte *key_map_ports[],int total_columnas,int total_filas,keyboard_help_double_key *teclas_dobles)
 {
 
 
@@ -22044,13 +22111,14 @@ void menu_help_keyboard_send_mantenidas_pressed_keys(z80_byte *key_map_ports[],i
 
     int indice_a_tecla=0;
 
-    for (fila_tecla=0;fila_tecla<8;fila_tecla++) {
+    for (fila_tecla=0;fila_tecla<total_filas;fila_tecla++) {
         z80_byte *puerto=key_map_ports[fila_tecla];
         int mascara=1;
         for (columna_tecla=0;columna_tecla<total_columnas;columna_tecla++,indice_a_tecla++) {
 
             if (keyboard_get_teclas_mantenidas_pulsadas_simples(indice_a_tecla)) {
-                *puerto &=(255-mascara);
+                menu_help_keyboard_activate_bit(puerto,mascara);
+                //*puerto &=(255-mascara);
             }
 
             mascara=mascara<<1;
@@ -22065,6 +22133,7 @@ void menu_help_keyboard_send_mantenidas_pressed_keys(z80_byte *key_map_ports[],i
 
 
             if (keyboard_get_teclas_mantenidas_pulsadas_dobles(i)) {
+                //teclas dobles siempre es tecla pulsada: bit=0
                 *teclas_dobles[i].puerto1 &=(255-teclas_dobles[i].mascara1);
 
                 if (teclas_dobles[i].puerto2!=NULL) *teclas_dobles[i].puerto2 &=(255-teclas_dobles[i].mascara2);
@@ -22082,9 +22151,10 @@ int help_keyboard_valor_contador_segundo_anterior;
 zxvision_window *menu_help_keyboard_overlay_window;
 
 
-z80_byte **get_keyboard_map_ports_table(int *total_columnas)
+z80_byte **get_keyboard_map_ports_table(int *total_columnas,int *total_filas)
 {
     *total_columnas=5;
+    *total_filas=8;
 
     if (MACHINE_IS_QL) {
         *total_columnas=8;
@@ -22096,7 +22166,13 @@ z80_byte **get_keyboard_map_ports_table(int *total_columnas)
         return keyboard_map_ports_table_z88;
     }
 
-    else return keyboard_map_ports_table_speccy;
+    if (MACHINE_IS_SMS || MACHINE_IS_SG1000) {
+        *total_columnas=5;
+        *total_filas=1;
+        return keyboard_map_ports_table_joystick;
+    }
+
+    return keyboard_map_ports_table_speccy;
 }
 
 int menu_help_keyboard_highlight_key=0;
@@ -22147,7 +22223,7 @@ void menu_help_keyboard_overlay(void)
         if ( ((contador_segundo%200) == 0 && help_keyboard_valor_contador_segundo_anterior!=contador_segundo) ||
              menu_multitarea==0 || menu_help_keyboard_overlay_force_draw) {
 
-            printf ("Refrescando keyboard help. menu_help_keyboard_overlay_force_draw=%d\n",menu_help_keyboard_overlay_force_draw);
+            //printf ("Refrescando keyboard help. menu_help_keyboard_overlay_force_draw=%d\n",menu_help_keyboard_overlay_force_draw);
 
             menu_help_keyboard_overlay_force_draw=0;
 
@@ -22180,9 +22256,10 @@ void menu_help_keyboard_overlay(void)
             keyboard_help_double_key *teclas_dobles=keyboard_help_return_double_keys();
 
             int total_columnas;
-            z80_byte **ports_table=get_keyboard_map_ports_table(&total_columnas);
+            int total_filas;
+            z80_byte **ports_table=get_keyboard_map_ports_table(&total_columnas,&total_filas);
 
-            menu_help_keyboard_show_speccy_pressed_keys(ventana,keyboard_map_table,total_columnas,ports_table,teclas_dobles);
+            menu_help_keyboard_show_speccy_pressed_keys(ventana,keyboard_map_table,total_columnas,total_filas,ports_table,teclas_dobles);
 
         }
 
@@ -22234,7 +22311,7 @@ void menu_help_keyboard_if_highlight(int indice_tecla,int x1,int y1,int x2,int y
     }
 }
 
-void menu_help_keyboard_locate_speccy_pressed_keys_highlight(int keyboard_map_coords[],int total_columnas,
+void menu_help_keyboard_locate_speccy_pressed_keys_highlight(int keyboard_map_coords[],int total_columnas,int total_filas,
     int x,int y,keyboard_help_double_key *teclas_dobles)
 {
 
@@ -22242,7 +22319,7 @@ void menu_help_keyboard_locate_speccy_pressed_keys_highlight(int keyboard_map_co
     int columna_tecla;
 
 
-    for (fila_tecla=0;fila_tecla<8;fila_tecla++) {
+    for (fila_tecla=0;fila_tecla<total_filas;fila_tecla++) {
 
         for (columna_tecla=0;columna_tecla<total_columnas;columna_tecla++) {
 
@@ -22323,9 +22400,10 @@ void menu_help_keyboard_highlight_key_mouse(int pulsado_x,int pulsado_y)
     keyboard_help_double_key *teclas_dobles=keyboard_help_return_double_keys();
 
     int total_columnas;
-    get_keyboard_map_ports_table(&total_columnas);
+    int total_filas;
+    get_keyboard_map_ports_table(&total_columnas,&total_filas);
 
-    menu_help_keyboard_locate_speccy_pressed_keys_highlight(keyboard_map_table,total_columnas,
+    menu_help_keyboard_locate_speccy_pressed_keys_highlight(keyboard_map_table,total_columnas,total_filas,
         pulsado_x,pulsado_y,teclas_dobles);
 
 
@@ -22348,19 +22426,34 @@ void menu_help_keyboard_generate_key_mouse(int pulsado_x,int pulsado_y)
     keyboard_help_double_key *teclas_dobles=keyboard_help_return_double_keys();
 
     int total_columnas;
-    z80_byte **ports_table=get_keyboard_map_ports_table(&total_columnas);
+    int total_filas;
+    z80_byte **ports_table=get_keyboard_map_ports_table(&total_columnas,&total_filas);
 
     int indice_a_tecla_simple,indice_a_tecla_doble;
+    int es_tecla_doble;
 
-    menu_help_keyboard_send_mantenidas_pressed_keys(ports_table,total_columnas,teclas_dobles);
+    menu_help_keyboard_send_mantenidas_pressed_keys(ports_table,total_columnas,total_filas,teclas_dobles);
 
-    menu_help_keyboard_locate_speccy_pressed_keys(keyboard_map_table,ports_table,total_columnas,
-        pulsado_x,pulsado_y,&puerto1,&mascara1,&puerto2,&mascara2,teclas_dobles,&indice_a_tecla_simple,&indice_a_tecla_doble);
+    menu_help_keyboard_locate_speccy_pressed_keys(keyboard_map_table,ports_table,total_columnas,total_filas,
+        pulsado_x,pulsado_y,&puerto1,&mascara1,&puerto2,&mascara2,teclas_dobles,&indice_a_tecla_simple,&indice_a_tecla_doble,&es_tecla_doble);
     if (puerto1!=NULL) {
 
-        *puerto1 &=(255-mascara1);
+        //teclas dobles siempre es tecla pulsada: bit=0
+        if (es_tecla_doble) {
 
-        if (puerto2!=NULL) *puerto2 &=(255-mascara2);
+            *puerto1 &=(255-mascara1);
+
+            if (puerto2!=NULL) {
+                *puerto2 &=(255-mascara2);
+            }
+        }
+        else {
+            menu_help_keyboard_activate_bit(puerto1,mascara1);
+
+            if (puerto2!=NULL) {
+                menu_help_keyboard_activate_bit(puerto2,mascara2);
+            }
+        }
 
 
         int salir=0;
@@ -22411,12 +22504,14 @@ void menu_help_keyboard_mantener_key_mouse(int pulsado_x,int pulsado_y)
     keyboard_help_double_key *teclas_dobles=keyboard_help_return_double_keys();
 
     int total_columnas;
-    z80_byte **ports_table=get_keyboard_map_ports_table(&total_columnas);
+    int total_filas;
+    z80_byte **ports_table=get_keyboard_map_ports_table(&total_columnas,&total_filas);
 
     int indice_a_tecla_simple,indice_a_tecla_doble;
+    int es_tecla_doble;
 
-    menu_help_keyboard_locate_speccy_pressed_keys(keyboard_map_table,ports_table,total_columnas,
-        pulsado_x,pulsado_y,&puerto1,&mascara1,&puerto2,&mascara2,teclas_dobles,&indice_a_tecla_simple,&indice_a_tecla_doble);
+    menu_help_keyboard_locate_speccy_pressed_keys(keyboard_map_table,ports_table,total_columnas,total_filas,
+        pulsado_x,pulsado_y,&puerto1,&mascara1,&puerto2,&mascara2,teclas_dobles,&indice_a_tecla_simple,&indice_a_tecla_doble,&es_tecla_doble);
 
     printf("indices: %d %d\n",indice_a_tecla_simple,indice_a_tecla_doble);
 
