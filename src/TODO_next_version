@@ -1,2 +1,39 @@
 Para versión siguiente:
 
+---Indexado menu---
+-error indexado:
+Main Menu-> Settings-> Hardware Settings-> Next machine id-> Hardware Settings-> Next machine id-> Hardware Settings-> Next machine id-> Hardware Settings
+Sucede porque funcion de menu menu_tbblue_machine_id, sale al pulsar enter y por tanto no llama a zxvision_index_delete_last_submenu_path
+O bien digo que ese menu no esté indexado, o se complica la cosa...
+Pero habran otros muchos menus que se sale al pulsar enter
+Y puede ser un problema, porque si cada vez que creo un menu y salgo con enter me tengo que acordar de esto pues...
+De momento en settings lo dejo desactivado por defecto el indexado hasta que no consiga estabilizar esto
+Ajustar comportamiento por defecto en parametros start, en grabado de parametros en utils
+La problematica de esto es, con un ejemplo: estamos en submenu A->B->C
+Dentro de menu C, no podemos saber si al pulsar una tecla (enter, esc o lo que sea), si volvemos a cargar el mismo menu C, o si vamos a un menu
+hacia atras, porque hay gestiones diferentes en menus (como el del Next machine id, que se sale del menu con Enter)
+Por tanto segun hagamos un comportamiento u otro, podemos ir erroneamente a menu A->B->C->C, o A->B->B etc
+Quiza los menus deberian tener un identificador interno, para detectar repetidos
+O quiza, que los propios menus generasen el titulo A->B->C (o que indicasen el menu "padre"), porque la mayoria saben de donde se generan,
+pero eso puede dar problemas en caso que un submenu se llame desde dos sitios diferentes (como ZX Desktop settings,
+que sale desde settings->zx desktop pero tambien con boton derecho sobre desktop)
+
+
+-Buscador opciones de menú
+
+En todos los sitios donde se cierre un menu pero no se haya salido con ESC o flecha atras, hay que llamar a:
+zxvision_index_delete_last_submenu_path();
+
+-parece que el archivo de indice a veces lo escribe en otras rutas
+
+-al cambiar de idioma, deja el indexado de busqueda raro en el submenu que esta dicha opcion (en cambio a català por ejemplo):
+Main Menu-> Settings-> General Settings-> Opciones Generales-> Opcions Generals
+
+-buscar opciones de menu deberia considerar el titulo del menu con traduccion de idioma
+Para ello la funcion de dibujar menu debe admitir 3 titulos en vez de uno: uno para cada idioma
+Esto significaria tambien que al cambiar de idioma habria que resetear el indice de busqueda
+->ok. agregar mas titulos localizados
+
+-llamada de menu no indexado (menu_dibuja_menu_no_indexado) que permita titulo en los 3 idiomas
+
+--Fin Indexado menu---
