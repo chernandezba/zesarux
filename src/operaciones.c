@@ -6653,79 +6653,73 @@ z80_byte lee_puerto_spectrum_ula(z80_byte puerto_h)
     textadv_location_desc_read_keyboard_port();
 
 
-                z80_byte valor;
-                valor=lee_puerto_teclado(puerto_h);
-                //teclado issue 2 o 3
+    z80_byte valor;
+    valor=lee_puerto_teclado(puerto_h);
 
-                //issue 3
-                //if (keyboard_issue2.v==0) valor=(valor & (255-64));
 
-                //issue 2
-                //else valor=valor|64;
+    //Dinamic SD1
+    if (dinamic_sd1.v) valor=valor & (255-32);
 
-                //Dinamic SD1
-                if (dinamic_sd1.v) valor=valor & (255-32);
-
-                valor=(valor & (255-64));
-                valor=valor | get_last_bit_6_feh();
+    valor=(valor & (255-64));
+    valor=valor | get_last_bit_6_feh();
 
 
 
-                //Lectura de cinta desde cable
-                /*if (audio_can_record_input()) {
-                    if (audio_is_recording_input) {
-                        if (audio_last_record_input_sample>0) valor=valor|64;
-                        else valor=(valor & (255-64));
-                    }
-                }*/
+    //Lectura de cinta desde cable
+    /*if (audio_can_record_input()) {
+        if (audio_is_recording_input) {
+            if (audio_last_record_input_sample>0) valor=valor|64;
+            else valor=(valor & (255-64));
+        }
+    }*/
 
-		//Si esta cinta insertada en realtape, acelerar
-		if (accelerate_loaders.v && realtape_inserted.v && realtape_playing.v) {
-			//Mirar que esta haciendo
-			tape_check_known_loaders();
+    //Si esta cinta insertada en realtape, acelerar
+    if (accelerate_loaders.v && realtape_inserted.v && realtape_playing.v) {
+        //Mirar que esta haciendo
+        tape_check_known_loaders();
 
-			  if( acceleration_mode ) {
+        if( acceleration_mode ) {
 
-				//Si no estaba modo turbo, poner turbo
-				if (top_speed_timer.v==0) {
-					debug_printf (VERBOSE_DEBUG,"Setting Top speed");
-					top_speed_timer.v=1;
-					draw_tape_text_top_speed();
-				}
-			 }
+            //Si no estaba modo turbo, poner turbo
+            if (top_speed_timer.v==0) {
+                debug_printf (VERBOSE_DEBUG,"Setting Top speed");
+                top_speed_timer.v=1;
+                draw_tape_text_top_speed();
+            }
+        }
 
-			//Si no esta en cargador, pero estabamos en turbo, detener
-			else {
-				if (top_speed_timer.v) {
-					debug_printf (VERBOSE_DEBUG,"Resetting top speed");
-					top_speed_timer.v=0;
-				}
-			}
+        //Si no esta en cargador, pero estabamos en turbo, detener
+        else {
+            if (top_speed_timer.v) {
+                debug_printf (VERBOSE_DEBUG,"Resetting top speed");
+                top_speed_timer.v=0;
+            }
+        }
 
-		}
+    }
 
-                        //Miramos si estamos en una rutina de carga de cinta
-                        //Y esta cinta standard
+    //Miramos si estamos en una rutina de carga de cinta
+    //Y esta cinta standard
 
-                        if (standard_to_real_tape_fallback.v) {
+    if (standard_to_real_tape_fallback.v) {
 
-                                //Por defecto detectar real tape
-                                int detectar=1;
+        //Por defecto detectar real tape
+        int detectar=1;
 
-                                //Si ya hay una cinta insertada y en play, no hacerlo
-                                if (realtape_inserted.v && realtape_playing.v) detectar=0;
+        //Si ya hay una cinta insertada y en play, no hacerlo
+        if (realtape_inserted.v && realtape_playing.v) detectar=0;
 
-                                //Si no hay cinta standard, no hacerlo
-                                if (tapefile==0) detectar=0;
+        //Si no hay cinta standard, no hacerlo
+        if (tapefile==0) detectar=0;
 
-                                //Si no esta cinta standard insertada, no hacerlo
-                                if ((tape_loadsave_inserted & TAPE_LOAD_INSERTED)==0) detectar=0;
+        //Si no esta cinta standard insertada, no hacerlo
+        if ((tape_loadsave_inserted & TAPE_LOAD_INSERTED)==0) detectar=0;
 
-                                if (detectar) tape_detectar_realtape();
+        if (detectar) tape_detectar_realtape();
 
-                        }
+    }
 
-                return valor;
+    return valor;
 
 
 }
@@ -8507,6 +8501,9 @@ if (MACHINE_IS_ZXUNO && zxuno_is_prism_mode_enabled() ) {
 	return color_border;
 }
 
+//Alterar el bit 6 de lectura segun los bits 3 y 4 en escritura
+//TODO: realmente ese cambio de 1 a 0 va retrasado entre 50 microsegundos y 800 microsegundos,
+//pero nosotros estamos haciendo el cambio al momento
 void out_port_spectrum_fe_issue(z80_byte value)
 {
     //Issue 2
@@ -8535,137 +8532,137 @@ void out_port_spectrum_border(z80_int puerto,z80_byte value)
 	//en el metodo de autodeteccion de border real video
 	z80_byte anterior_out_254=out_254;
 
-            modificado_border.v=1;
-                silence_detection_counter=0;
-		beeper_silence_detection_counter=0;
+    modificado_border.v=1;
+    silence_detection_counter=0;
+    beeper_silence_detection_counter=0;
 
-        //ay_player_silence_detection_counter=0;
+    //ay_player_silence_detection_counter=0;
 
-		out_254_original_value=value;
+    out_254_original_value=value;
 
-		//printf ("valor mic y ear: %d\n",value&(8+16));
-		//printf ("pc: %d\n",reg_pc);
+    //printf ("valor mic y ear: %d\n",value&(8+16));
+    //printf ("pc: %d\n",reg_pc);
 
-                if (MACHINE_IS_INVES) {
-                        //Inves
-                        //printf ("Inves");
-                        //AND con valor de la memoria RAM. Este AND en Inves solo aplica a puertos de la ULA
+    if (MACHINE_IS_INVES) {
+        //Inves
+        //printf ("Inves");
+        //AND con valor de la memoria RAM. Este AND en Inves solo aplica a puertos de la ULA
 
-			//temp
-			//if (puerto>31*256+254)
-			//	printf ("puerto: %d (%XH) valor %d (%XH)\n", puerto,puerto,value,value);
+        //temp
+        //if (puerto>31*256+254)
+        //	printf ("puerto: %d (%XH) valor %d (%XH)\n", puerto,puerto,value,value);
 
-			value=value & memoria_spectrum[puerto];
-                        out_254=value;
+        value=value & memoria_spectrum[puerto];
+        out_254=value;
 
-                        //y xor con bits 3 y 4
-                        z80_byte bit3,bit4;
-                        bit3=value & 8;
-                        bit4=value & 16;
-                        bit4=bit4 >> 1;
+        //y xor con bits 3 y 4
+        z80_byte bit3,bit4;
+        bit3=value & 8;
+        bit4=value & 16;
+        bit4=bit4 >> 1;
 
-                        bit3= (bit3 ^ bit4) & 8;
+        bit3= (bit3 ^ bit4) & 8;
 
-                        if ( (bit3 & 8) != (ultimo_altavoz & 8) ) {
-                                //valor diferente. conmutar altavoz
-                                //bit_salida_sonido.v ^=1;
-				set_value_beeper((!!(bit3 & 8) << 1));
-                        }
-                        ultimo_altavoz=bit3;
-
-
-                }
-                else {
-                        out_254=value;
-
-			if (MACHINE_IS_TSCONF) {
-				tsconf_af_ports[0xF]=(value&7)|0xF0; //Colores de border mediante puerto FEH siempre suma F0 (254)
-			}
-
-			/*
-                        if ( (value & 24) != (ultimo_altavoz & 24) ) {
-                                //valor diferente. conmutar altavoz
-                                bit_salida_sonido.v ^=1;
-                        }
-                        ultimo_altavoz=value;
-			*/
-
-			//Extracted from Fuse emulator
-			set_value_beeper( (!!(value & 0x10) << 1) + ( (!(value & 0x8))  ) );
-                }
+        if ( (bit3 & 8) != (ultimo_altavoz & 8) ) {
+            //valor diferente. conmutar altavoz
+            //bit_salida_sonido.v ^=1;
+            set_value_beeper((!!(bit3 & 8) << 1));
+        }
+        ultimo_altavoz=bit3;
 
 
-                if (rainbow_enabled.v) {
-                        //printf ("%d\n",t_estados);
-                        int i;
+    }
+    else {
+        out_254=value;
 
-			i=t_estados;
-                        //printf ("t_estados %d screen_testados_linea %d bord: %d\n",t_estados,screen_testados_linea,i);
+        if (MACHINE_IS_TSCONF) {
+            tsconf_af_ports[0xF]=(value&7)|0xF0; //Colores de border mediante puerto FEH siempre suma F0 (254)
+        }
 
-						//Con esto se ve la ukflag, la confusio y la rage se ven perfectas
-						if (pentagon_timing.v) i -=2;
+        /*
+        if ( (value & 24) != (ultimo_altavoz & 24) ) {
+        //valor diferente. conmutar altavoz
+        bit_salida_sonido.v ^=1;
+        }
+        ultimo_altavoz=value;
+        */
 
-						else {
-							//Maquinas no pentagon, pero de 128k
-							//esto hace que se vea bien la ula128 y scroll2017
-							if (MACHINE_IS_SPECTRUM_128_P2) i+=2;
-						}
+        //Extracted from Fuse emulator
+        set_value_beeper( (!!(value & 0x10) << 1) + ( (!(value & 0x8))  ) );
+    }
 
-			//Este i>=0 no haria falta en teoria
-			//pero ocurre a veces que justo al activar rainbow, t_estados_linea_actual tiene un valor descontrolado
-                        if (i>=0 && i<CURRENT_FULLBORDER_ARRAY_LENGTH) {
 
-				//Ajuste valor de indice a multiple de 4 (lo normal en la ULA)
-				//O sea, quitamos los 2 bits inferiores
-				//Excepto en pentagon
-				if (pentagon_timing.v==0) i=i&(0xFFFFFFFF-3);
+    if (rainbow_enabled.v) {
+        //printf ("%d\n",t_estados);
+        int i;
 
-				//En Inves. Snow in border
-				if (MACHINE_IS_INVES) {
-					//Enviamos color real, sin mascara a la ROM
-					fullbuffer_border[i]=out_254_original_value & 7;
+        i=t_estados;
+        //printf ("t_estados %d screen_testados_linea %d bord: %d\n",t_estados,screen_testados_linea,i);
 
-					//E inmediatamente despues, color con mascara
-					i++;
+        //Con esto se ve la ukflag, la confusio y la rage se ven perfectas
+        if (pentagon_timing.v) i -=2;
 
-					//Si nos salimos del array, volver atras y sobreescribir color real
-					if (i==CURRENT_FULLBORDER_ARRAY_LENGTH) i--;
+        else {
+            //Maquinas no pentagon, pero de 128k
+            //esto hace que se vea bien la ula128 y scroll2017
+            if (MACHINE_IS_SPECTRUM_128_P2) i+=2;
+        }
 
-					//Finalmente escribimos valor con mascara a la ROM
-					fullbuffer_border[i]=out_254 & 7;
-				}
+        //Este i>=0 no haria falta en teoria
+        //pero ocurre a veces que justo al activar rainbow, t_estados_linea_actual tiene un valor descontrolado
+        if (i>=0 && i<CURRENT_FULLBORDER_ARRAY_LENGTH) {
 
-				else {
-					int actualiza_fullbuffer_border=1;
-					//No si esta desactivado en tbblue
-					if (MACHINE_IS_TBBLUE && tbblue_store_scanlines_border.v==0) {
-						actualiza_fullbuffer_border=0;
-					}
+            //Ajuste valor de indice a multiple de 4 (lo normal en la ULA)
+            //O sea, quitamos los 2 bits inferiores
+            //Excepto en pentagon
+            if (pentagon_timing.v==0) i=i&(0xFFFFFFFF-3);
 
-					if (actualiza_fullbuffer_border) {
-						fullbuffer_border[i]=get_border_colour_from_out();
-					}
-				}
-				//printf ("cambio border i=%d color: %d\n",i,out_254 & 7);
-			}
-                        //else printf ("Valor de border scanline fuera de rango: %d\n",i);
+            //En Inves. Snow in border
+            if (MACHINE_IS_INVES) {
+                //Enviamos color real, sin mascara a la ROM
+                fullbuffer_border[i]=out_254_original_value & 7;
+
+                //E inmediatamente despues, color con mascara
+                i++;
+
+                //Si nos salimos del array, volver atras y sobreescribir color real
+                if (i==CURRENT_FULLBORDER_ARRAY_LENGTH) i--;
+
+                //Finalmente escribimos valor con mascara a la ROM
+                fullbuffer_border[i]=out_254 & 7;
+            }
+
+            else {
+                int actualiza_fullbuffer_border=1;
+                //No si esta desactivado en tbblue
+                if (MACHINE_IS_TBBLUE && tbblue_store_scanlines_border.v==0) {
+                    actualiza_fullbuffer_border=0;
                 }
 
+                if (actualiza_fullbuffer_border) {
+                    fullbuffer_border[i]=get_border_colour_from_out();
+                }
+            }
+            //printf ("cambio border i=%d color: %d\n",i,out_254 & 7);
+        }
+        //else printf ("Valor de border scanline fuera de rango: %d\n",i);
+    }
 
-		else {
-			//Realvideo desactivado. Si esta autodeteccion de realvideo, hacer lo siguiente
-			if (autodetect_rainbow.v) {
-				//if (reg_pc>=16384) {
-					//Ver si hay cambio de border
-					if ( (anterior_out_254&7) != (out_254&7) ) {
-						//printf ("cambio de border\n");
-						detect_rainbow_border_changes_in_frame++;
-					}
-				//}
-			}
-		}
 
-		set_value_beeper_on_array(value_beeper);
+    else {
+        //Realvideo desactivado. Si esta autodeteccion de realvideo, hacer lo siguiente
+        if (autodetect_rainbow.v) {
+            //if (reg_pc>=16384) {
+                //Ver si hay cambio de border
+                if ( (anterior_out_254&7) != (out_254&7) ) {
+                    //printf ("cambio de border\n");
+                    detect_rainbow_border_changes_in_frame++;
+                }
+            //}
+        }
+    }
+
+    set_value_beeper_on_array(value_beeper);
 
 }
 
