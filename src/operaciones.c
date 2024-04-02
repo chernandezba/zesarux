@@ -6604,6 +6604,35 @@ z80_byte get_kempston_value(void)
                         return acumulado;
 }
 
+z80_byte get_last_bit_6_feh(void)
+{
+
+    z80_byte valor=0;
+
+      int leer_cinta_real=0;
+
+                if (realtape_inserted.v && realtape_playing.v) leer_cinta_real=1;
+
+                if (audio_can_record_input()) {
+                    if (audio_is_recording_input) {
+                        leer_cinta_real=1;
+                    }
+                }
+
+
+                if (leer_cinta_real) {
+                        if (realtape_get_current_bit_playing()) {
+                                valor=64;
+                                //printf ("1 ");
+                        }
+                        else {
+                                valor=0;
+                                //printf ("0 ");
+                        }
+                }
+    return valor;
+}
+
 z80_byte lee_puerto_spectrum_ula(z80_byte puerto_h)
 {
 
@@ -6624,27 +6653,8 @@ z80_byte lee_puerto_spectrum_ula(z80_byte puerto_h)
                 //Dinamic SD1
                 if (dinamic_sd1.v) valor=valor & (255-32);
 
-                int leer_cinta_real=0;
+                valor=valor | get_last_bit_6_feh();
 
-                if (realtape_inserted.v && realtape_playing.v) leer_cinta_real=1;
-
-                if (audio_can_record_input()) {
-                    if (audio_is_recording_input) {
-                        leer_cinta_real=1;
-                    }
-                }
-
-
-                if (leer_cinta_real) {
-                        if (realtape_get_current_bit_playing()) {
-                                valor=valor|64;
-                                //printf ("1 ");
-                        }
-                        else {
-                                valor=(valor & (255-64));
-                                //printf ("0 ");
-                        }
-                }
 
 
                 //Lectura de cinta desde cable
