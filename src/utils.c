@@ -3859,6 +3859,7 @@ int util_write_configfile(void)
 
   if (recreated_zx_keyboard_support.v)	      ADD_STRING_CONFIG,"--recreatedzx");
 
+  if (keyboard_issue2.v)                        ADD_STRING_CONFIG,"--keyboard-issue2");
 
                                                 ADD_STRING_CONFIG,"--keymap %d",z88_cpc_keymap_type);
 

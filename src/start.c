@@ -1193,6 +1193,7 @@ printf("\n"
         "                        Key must be ascii character numbers or a character included in escaped quotes, like: 97 (for 'a') or \\'q\\'\n"
         "                        (the escaped quotes are used only in command line; on configuration file, they are normal quotes '')\n"
         "--recreatedzx           Enable support for Recreated ZX Spectrum Keyboard\n"
+        "--keyboard-issue2       Emulate ZX Spectrum Keyboard issue 2. Default issue 3\n"
 		"--keymap n              Which kind of physical keyboard you have. Default 0 (English) or 1 (Spanish)\n"
 		"--enablekempstonmouse   Enable kempston mouse emulation\n"
 		"--kempstonmouse-sens n  Set kempston mouse sensitivity (1-%d)\n",MAX_KMOUSE_SENSITIVITY);
@@ -3711,6 +3712,10 @@ int parse_cmdline_options(int desde_commandline) {
 			else if (!strcmp(argv[puntero_parametro],"--recreatedzx")) {
 				recreated_zx_keyboard_support.v=1;
 			}
+
+            else if (!strcmp(argv[puntero_parametro],"--keyboard-issue2")) {
+                keyboard_issue2.v=1;
+            }
 
 			else if (!strcmp(argv[puntero_parametro],"--keymap")) {
 				siguiente_parametro_argumento();
@@ -6734,7 +6739,6 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
 	//scr_putpixel_final=NULL;
 
 	simulate_screen_zx8081.v=0;
-	keyboard_issue2.v=0;
 	tape_any_flag_loading.v=0;
 
 	video_interlaced_mode.v=0;

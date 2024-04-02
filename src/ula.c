@@ -63,8 +63,8 @@ z80_byte out_254_original_value;
 //ultimo valor enviado al border, teniendo en cuenta mascara de inves
 z80_byte out_254;
 
-//a 1 indica teclado issue2 (bit 6 a 1). Sino, issue 3
-z80_bit keyboard_issue2;
+//a 1 indica teclado issue2 o issue 3
+z80_bit keyboard_issue2={0};
 
 //ultimo atributo leido por la ULA
 z80_byte last_ula_attribute=255;
