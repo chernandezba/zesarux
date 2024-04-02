@@ -17405,6 +17405,8 @@ int util_convert_zsf_to_scr(char *filename,char *archivo_destino)
     //La pagina habitual de pantalla
     int pagina_pantalla=5;
 
+    //Ultimo machine id leido
+    z80_byte last_machine_id_read=0;
 
     while (!zvfs_feof(in_fatfs,ptr_zsf_file,&fil) && !salir) {
         //Read header block
@@ -17467,6 +17469,11 @@ int util_convert_zsf_to_scr(char *filename,char *archivo_destino)
         int i;
 
         switch(block_id) {
+
+            case ZSF_MACHINEID:
+                last_machine_id_read=block_data[0];
+            break;
+
             case ZSF_SPEC128_MEMCONF:
                     /*
 
@@ -17531,7 +17538,15 @@ int util_convert_zsf_to_scr(char *filename,char *archivo_destino)
 
                 load_zsf_snapshot_block_data_addr(&block_data[i],buffer_memoria,block_lenght,longitud_original,block_flags&1);
 
-                util_save_file(buffer_memoria,6912,archivo_destino);
+                int offset_pantalla=0;
+
+                //printf("lenght: %d\n",block_lenght);
+
+                //Caso de Inves, saltar los primeros 16k de ram baja
+                //compruebo por si acaso que block_lenght sea suficiente
+                if (last_machine_id_read==MACHINE_ID_INVES && block_lenght>16384+6912) offset_pantalla=16384;
+
+                util_save_file(&buffer_memoria[offset_pantalla],6912,archivo_destino);
 
                 free(buffer_memoria);
 
