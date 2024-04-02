@@ -36,4 +36,9 @@ Esto significaria tambien que al cambiar de idioma habria que resetear el indice
 
 -llamada de menu no indexado (menu_dibuja_menu_no_indexado) que permita titulo en los 3 idiomas
 
+-Quizá cada funcion que abre un menu, tiene que indicar también el titulo del menu contando submenos, por ejemplo,
+en el menu de storage->tape, al abrir el menu hay que indicar el titulo entero:
+"Storage -> Tape". El problema es que hay que indicarlo además en los 3 idiomas.
+Y que pasa con menús que aún no se le indica el titulo entero? Que le pongo?
+
 --Fin Indexado menu---
