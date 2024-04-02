@@ -2299,6 +2299,7 @@ void set_machine_params(void)
 	                        screen_testados_linea=228;
         	                screen_invisible_borde_superior=7;
                 	        screen_invisible_borde_derecho=104;
+                            keyboard_issue2.v=0; //El puerto FEH de Inves se comporta como issue 3
 			}
 		}
 

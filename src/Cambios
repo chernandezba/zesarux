@@ -80,7 +80,7 @@ Correcciones ZX Vision:
 - Se corrigieron los mensajes de bienvenida cuando las ventanas de fondo están habilitadas.
 - Corrección posicion inicial para muchas ventanas.
 
-Corregido bit 6 de puerto de teclado dependiendo si Issue2/3
+Corregido bit 6 de puerto FEH dependiendo si Issue2/3
 Corregido segfault al intentar insertar un archivo de Cinta Real que no existe
 Corregido segfault al insertar un archivo de Cinta Real de ZX81 y abrir Tape Viewer
 Corregido un valor de bus de datos no válido en Jupiter Ace (son 20H en lugar de FFH)
