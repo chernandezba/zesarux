@@ -5307,7 +5307,7 @@ void menu_keyboard_settings(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_prefijo_format(array_menu_keyboard_settings,"[%c] ", (keyboard_issue2.v==1 ? '2' : '3'));
 			menu_add_item_menu_shortcut(array_menu_keyboard_settings,'i');
 			menu_add_item_menu_tooltip(array_menu_keyboard_settings,"Type of Spectrum keyboard emulated");
-			menu_add_item_menu_ayuda(array_menu_keyboard_settings,"Changes the way the Spectrum keyboard port returns its value: Issue 3 returns bit 6 off, and Issue 2 has bit 6 on");
+			menu_add_item_menu_ayuda(array_menu_keyboard_settings,"Changes the way the Spectrum keyboard port returns its bit 6");
 		}
 
 

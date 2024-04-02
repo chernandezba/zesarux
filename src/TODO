@@ -384,13 +384,10 @@ Esto seguramente es porque leo de rainbow buffer
 
 -Grabar pantalla requiere de real video y por tanto maquinas sin esto no funcionaran: QL, ...?
 
--Mejorar emulación teclado issue 2,3. Etc. Inves
-
 -Subir fotos pruebas inves reales al repo, comprimiendo imagenes?
 
 -Probar dispositivo depuración puerto ffh mad mix game
 
--Emular mejor issue 2 y 3 y bit tape cuando cinta cargando o no cargando
 
 -Método para crear hardware nuevo definible por el usuario
 

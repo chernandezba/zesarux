@@ -6641,7 +6641,7 @@ z80_byte get_last_bit_6_feh(void)
 
     last_bit_6_feh=valor;
 
-    printf("last valor: %d\n",last_bit_6_feh);
+    //printf("last valor: %d\n",last_bit_6_feh);
 
     return valor;
 }
@@ -6658,10 +6658,10 @@ z80_byte lee_puerto_spectrum_ula(z80_byte puerto_h)
                 //teclado issue 2 o 3
 
                 //issue 3
-                if (keyboard_issue2.v==0) valor=(valor & (255-64));
+                //if (keyboard_issue2.v==0) valor=(valor & (255-64));
 
                 //issue 2
-                else valor=valor|64;
+                //else valor=valor|64;
 
                 //Dinamic SD1
                 if (dinamic_sd1.v) valor=valor & (255-32);
@@ -8507,11 +8507,27 @@ if (MACHINE_IS_ZXUNO && zxuno_is_prism_mode_enabled() ) {
 	return color_border;
 }
 
+void out_port_spectrum_fe_issue(z80_byte value)
+{
+    //Issue 2
+    if (keyboard_issue2.v) {
+        if ((value&(8+16))==0) last_bit_6_feh=0;
+        else last_bit_6_feh=64;
+    }
 
+    //Issue 3
+    else {
+        if ((value&(16))==0) last_bit_6_feh=0;
+        else last_bit_6_feh=64;
+    }
+}
 
 
 void out_port_spectrum_border(z80_int puerto,z80_byte value)
 {
+
+    //Actualizar bit 6 de puerto feh segun si teclado issue 2 o 3
+    out_port_spectrum_fe_issue(value);
 
 	//printf ("out port 254 desde reg_pc=%d. puerto: %04XH value: %02XH\n",reg_pc,puerto,value);
 

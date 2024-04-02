@@ -80,6 +80,7 @@ Fixed ZX Vision:
 - Fixed splash messages when background windows are enabled
 - Fixed initial position for many windows
 
+Fixed bit 6 of keyboard port depending on Issue2/3
 Fixed segfault when trying to insert an unexistent Real Tape file
 Fixed segfault inserting a ZX81 Real Tape and opening Tape Viewer
 Fixed invalid Data Bus value on Jupiter Ace (it's 20H instead of FFH)
