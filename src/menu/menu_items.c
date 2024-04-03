@@ -21641,6 +21641,8 @@ keyboard_help_double_key keyboard_map_additional_sg1000[]={
     { 0,0,0,0,NULL,0,NULL,0 }
 };
 
+//Nota: no soportamos el boton joystick en la izquierda porque requeriria entrada en esta tecla adicional
+//pero en ese caso es una pulsacion de puesta a 1 el bit, y en teclas dobles se pone a 0 los bits
 keyboard_help_double_key keyboard_map_additional_coleco[]={
     { 16,78,29,88,      &puerto_63486, 1,   NULL,0 }, //1
     { 30,76,44,86,      &puerto_63486, 2,   NULL,0 }, //2
@@ -21956,7 +21958,7 @@ void menu_help_keyboard_show_speccy_pressed_keys(zxvision_window *ventana,int ke
 
             if (keyboard_get_teclas_mantenidas_pulsadas_simples(indice_tecla_mantenida_pulsada)) {
                 tecla_encontrada=1;
-                printf("Encontrada pulsada simple %d\n",indice_tecla_mantenida_pulsada);
+                //printf("Encontrada pulsada simple %d\n",indice_tecla_mantenida_pulsada);
                 color=1;
             }
 
@@ -35342,12 +35344,13 @@ void menu_storage_tape_copier(MENU_ITEM_PARAMETERS)
 
     char copion[256]="";
 
-    int opcion=menu_simple_seven_choices("Tape copier","Select one",
+    int opcion=menu_simple_eight_choices("Tape copier","Select one",
         "Copiador Primi 2  (48K)",
         "Copiador Azul     (48K)",
         "Duplitape         (48K)",
         "Duplitape2        (48K)",
         "Copion9           (48K)",
+        "Mancopy           (48K)",
         "Lao-Copy 2        (48K)",
         "SuperTapeCopier  (128K)"
     );
@@ -35375,10 +35378,14 @@ void menu_storage_tape_copier(MENU_ITEM_PARAMETERS)
         break;
 
         case 6:
-            strcpy(copion,"laocopy2.zsf");
+            strcpy(copion,"mancopy.zsf");
         break;
 
         case 7:
+            strcpy(copion,"laocopy2.zsf");
+        break;
+
+        case 8:
             strcpy(copion,"supertapecopier.zsf");
         break;
 
