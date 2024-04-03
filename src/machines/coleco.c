@@ -564,64 +564,55 @@ z80_byte coleco_get_keypad_a(void)
     */
 
 
-
     //Tecla 0
     //puerto_61438    db              255  ; 6    7    8    9    0     ;4
-    if ((puerto_61438 & 1)==0) valor_joystick &=0x0a;
-
+    if ((puerto_61438 & 1)==0) valor_joystick &=0x0a;   //binario 1010
 
     //Tecla 1
     //puerto_63486    db              255  ; 5    4    3    2    1     ;3
-    if ((puerto_63486 & 1)==0) valor_joystick &=0x0d;
+    if ((puerto_63486 & 1)==0) valor_joystick &=0x0d;  //binario 1101
 
     //Tecla 2
     //puerto_63486    db              255  ; 5    4    3    2    1     ;3
-    if ((puerto_63486 & 2)==0) valor_joystick &=0x07;
+    if ((puerto_63486 & 2)==0) valor_joystick &=0x07;  //binario 0111
 
     //Tecla 3
     //puerto_63486    db              255  ; 5    4    3    2    1     ;3
-    if ((puerto_63486 & 4)==0) valor_joystick &=0x0c;
+    if ((puerto_63486 & 4)==0) valor_joystick &=0x0c;  //binario 1100
 
     //Tecla 4
     //puerto_63486    db              255  ; 5    4    3    2    1     ;3
-    if ((puerto_63486 & 8)==0) valor_joystick &=0x02;
+    if ((puerto_63486 & 8)==0) valor_joystick &=0x02;  //binario 0010
 
     //Tecla 5
     //puerto_63486    db              255  ; 5    4    3    2    1     ;3
-    if ((puerto_63486 & 16)==0) valor_joystick &=0x03;
+    if ((puerto_63486 & 16)==0) valor_joystick &=0x03; //binario 0011
 
     //Tecla 6
     //puerto_61438    db              255  ; 6    7    8    9    0     ;4
-    if ((puerto_61438 & 16)==0) valor_joystick &=0x0e;
+    if ((puerto_61438 & 16)==0) valor_joystick &=0x0e; //binario 1110
 
     //Tecla 7
     //puerto_61438    db              255  ; 6    7    8    9    0     ;4
-    if ((puerto_61438 & 8)==0) valor_joystick &=0x05;
-
-
+    if ((puerto_61438 & 8)==0) valor_joystick &=0x05; //binario 0101
 
     //Tecla 8
     //puerto_61438    db              255  ; 6    7    8    9    0     ;4
-    if ((puerto_61438 & 4)==0) valor_joystick &=0x01;
+    if ((puerto_61438 & 4)==0) valor_joystick &=0x01;  //binario 0001
 
     //Tecla 9
     //puerto_61438    db              255  ; 6    7    8    9    0     ;4
-    if ((puerto_61438 & 2)==0) valor_joystick &=0x0b;
-
+    if ((puerto_61438 & 2)==0) valor_joystick &=0x0b;  //binario 1011
 
     //# -> tecla Z
     //puerto_65278   db    255  ; V    C    X    Z    Sh    ;0
-    if ((puerto_65278 & 2)==0) valor_joystick &=0x06;
-
-
-
+    if ((puerto_65278 & 2)==0) valor_joystick &=0x06;  //binario 0110
 
     //* -> tecla X
     //puerto_65278   db    255  ; V    C    X    Z    Sh    ;0
-    if ((puerto_65278 & 4)==0) valor_joystick &=0x09;
+    if ((puerto_65278 & 4)==0) valor_joystick &=0x09;  //binario 1001
 
-
-
+    //printf("valor joystick: %02X %02X\n",valor_joystick,valor_joystick^255);
 
     return valor_joystick;
 }

@@ -21517,6 +21517,11 @@ int keyboard_map_table_coords_sg1000[5*4]={
 
 };
 
+int keyboard_map_table_coords_coleco[5*4]={
+42,12,58,28, 4,12,20,28, 24,32,42,44, 24,2,42,10, 56,38,74,52
+
+};
+
 //Estructura para teclas que genera doble pulsacion, como "extended mode" (shift+symbol)
 //Adicionalmente tambien se usa para teclas repetidas, como symbol en un spectrum+. en ese caso puerto2 vale NULL;
 struct s_keyboard_help_double_key {
@@ -21632,6 +21637,23 @@ keyboard_help_double_key keyboard_map_additional_sms[]={
 
 keyboard_help_double_key keyboard_map_additional_sg1000[]={
     { 66,46,80,68,      &puerto_65278,4,   NULL,0 }, //segundo boton=tecla X
+
+    { 0,0,0,0,NULL,0,NULL,0 }
+};
+
+keyboard_help_double_key keyboard_map_additional_coleco[]={
+    { 16,78,29,88,      &puerto_63486, 1,   NULL,0 }, //1
+    { 30,76,44,86,      &puerto_63486, 2,   NULL,0 }, //2
+    { 45,74,58,84,      &puerto_63486, 4,   NULL,0 }, //3
+    {16,94,28,106,      &puerto_63486, 8,   NULL,0 }, //4
+    {32,92,44,102,      &puerto_63486,16,   NULL,0 }, //5
+    {48,90,62,100,      &puerto_61438,16,   NULL,0 }, //6
+    {16,110,28,118,     &puerto_61438, 8,   NULL,0 }, //7
+    {34,108,44,116,     &puerto_61438, 4,   NULL,0 }, //8
+    {48,106,60,114,     &puerto_61438, 2,   NULL,0 }, //9
+    {16,126,30,138,     &puerto_65278, 4,   NULL,0 }, //*
+    {32,124,46,136,     &puerto_61438, 1,   NULL,0 }, //0
+    {50,122,64,134,     &puerto_65278, 2,   NULL,0 }, //#
 
     { 0,0,0,0,NULL,0,NULL,0 }
 };
@@ -21792,6 +21814,10 @@ int *keyboard_help_return_map_table(void)
         return keyboard_map_table_coords_sms;
     }
 
+    else if (MACHINE_IS_COLECO) {
+        return keyboard_map_table_coords_coleco;
+    }
+
     else if (MACHINE_IS_SG1000) {
         return keyboard_map_table_coords_sg1000;
     }
@@ -21824,6 +21850,10 @@ keyboard_help_double_key *keyboard_help_return_double_keys(void)
 
     else if (MACHINE_IS_SMS) {
         return keyboard_map_additional_sms;
+    }
+
+    else if (MACHINE_IS_COLECO) {
+        return keyboard_map_additional_coleco;
     }
 
     else if (MACHINE_IS_SG1000) {
@@ -21885,7 +21915,7 @@ void menu_help_draw_rectangle_key(zxvision_window *ventana,int x1,int y1,int anc
 //Dice si bit tecla pulsada, dependiendo si es valor 0 en la mayoria de maquinas, o si no es 0 (como puertos de joystick en master system)
 int menu_help_keyboard_is_pressed_bit_key(z80_byte valor)
 {
-    if (MACHINE_IS_SMS || MACHINE_IS_SG1000) {
+    if (MACHINE_IS_SMS || MACHINE_IS_SG1000 || MACHINE_IS_COLECO) {
         if (valor) return 1;
         else return 0;
     }
@@ -21995,7 +22025,7 @@ void menu_help_keyboard_show_speccy_pressed_keys(zxvision_window *ventana,int ke
 
             if (keyboard_get_teclas_mantenidas_pulsadas_dobles(indice_tecla_mantenida_pulsada)) {
                 tecla_encontrada=1;
-                printf("Encontrada pulsada doble %d\n",indice_tecla_mantenida_pulsada);
+                //printf("Encontrada pulsada doble %d\n",indice_tecla_mantenida_pulsada);
                 color=1;
             }
 
@@ -22095,7 +22125,7 @@ void menu_help_keyboard_locate_speccy_pressed_keys(int keyboard_map_coords[],z80
 //Activar un bit de tecla segun si se pone a 0 (la mayoria de maquinas) o se pone a 1 (por ejemplo joystick en la master system)
 void menu_help_keyboard_activate_bit(z80_byte *puerto,z80_byte mascara)
 {
-    if (MACHINE_IS_SMS || MACHINE_IS_SG1000) {
+    if (MACHINE_IS_SMS || MACHINE_IS_SG1000 || MACHINE_IS_COLECO) {
         *puerto |=mascara;
     }
 
@@ -22166,7 +22196,7 @@ z80_byte **get_keyboard_map_ports_table(int *total_columnas,int *total_filas)
         return keyboard_map_ports_table_z88;
     }
 
-    if (MACHINE_IS_SMS || MACHINE_IS_SG1000) {
+    if (MACHINE_IS_SMS || MACHINE_IS_SG1000 || MACHINE_IS_COLECO) {
         *total_columnas=5;
         *total_filas=1;
         return keyboard_map_ports_table_joystick;

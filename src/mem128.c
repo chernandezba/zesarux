@@ -84,14 +84,15 @@ D5       Inhabilitacion de la paginacion
 D2 a DO crean un numero de tres bits que selecciona que RAM entra en el hueco compren-
 dido entre C000h y FFFFh. En BASIC normalmente esta seleccionada la pagina 0; duran-
 te la edicion y el acceso a +3DOS se usa la pagina 7 para almacenar diversos tampones
-y memorias transitorias. D3 conmuta pantallas; la pantalla 0 est en la pagina 5 de la
+y memorias transitorias.
+D3 conmuta pantallas; la pantalla 0 est en la pagina 5 de la
 RAM (que normalmente empieza en 4000h) y es la que utiliza BASIC; la pantalla 1 esta
 en la pagina 7 (a partir de COOOh) y solo puede ser usada por programas de codigo de ma-
 quina. Es perfectamente factible preparar una pantalla en la pagina 7 y despues <AB>descon-
 mutarla<BB>; de esta forma se deja los 48K libres para datos y programa. (Tengase en cuenta
 que la orden de copia de ficheros, COPY, puede crear tampones en la zona de la segunda
-pantalla, y por lo tanto destruir la imagen que hubieramos almacenado en ella.) D4 deter-
-mina, junto con el bit 2 de la puerta 1FFDh, que ROM debe ser colocada en las direcciones
+pantalla, y por lo tanto destruir la imagen que hubieramos almacenado en ella.)
+D4 determina, junto con el bit 2 de la puerta 1FFDh, que ROM debe ser colocada en las direcciones
 0000h a 3FFFh. D5 es un dispositivo de seguridad; en cuanto se pone a 1 este bit, quedan
 imposibilitadas todas las operaciones de paginacion. Este sistema es el utilizado cuando
 el ordenador adopta la configuracion del Spectrum de 48K estandar y los circuitos de pagi-
@@ -117,26 +118,26 @@ para la ROM (que elige entre ROM 0 y ROM 2, o entre ROM 1 y ROM 3). El bit 4 de
 la puerta 7FFDh es un conmutador 'horizontal' para la ROM (que elige entre ROM 0 y
 ROM 1, o entre ROM 2 y ROM 3). El siguiente diagrama ilustra las diferentes posibilidades:
 
- ----------                     Bit 4 de 7FFDh (23388)         ------------
+ ----------         Bit 4 de 7FFDh (23388)         ------------
  | ROM 0  |       variable de sistema: BANKM)    |      ROM 1    |
- |                       |                      <-     horizontal               ->        |          |
- | Editor |                                                                                                      |      Sintaxis        |
- ----------                                          ------------
+ |        |    <-     horizontal       ->        |               |
+ | Editor |                                      |  Sintaxis     |
+ ----------                                        ------------
           ^                                                ^
           |                                                |
 
 Bit 2 de 1FFDh (23399)
 (variable de sistema: BANK678)
-        vertical                                                                                                                vertical
+        vertical                                        vertical
 
-                |                                                                                                                               |
-                v                                               v
+        |                                                 |
+        v                                                 v
 
- ----------                                                                                                      ------------
- |      ROM 2    |                                                                                                       |      ROM 3      |
- |                       |                      <-              horizontal              ->        |          |
- |      DOS      |                                                                                                       |      48 BASIC |
- ----------                                      ------------
+  ----------                                         ------------
+ |  ROM 2   |                                       |    ROM 3   |
+ |          |   <-       horizontal        ->       |            |
+ |   DOS    |                                       |   48 BASIC |
+  ----------                                         ------------
 
                 Conmutacion horizontal y vertical de la ROM
 
