@@ -44,9 +44,9 @@ z80_byte mk14_keystatus[MK14_DIGITS]={
 
 /*
 Matriz teclado
- 128 64  32  16
+   128 64  32  16
 
-  0  8   -   A	mk14_keystatus[0]
+    0  8   -   A	mk14_keystatus[0]
 	1  9   -   B	mk14_keystatus[1]
 	2  -   GO  C	mk14_keystatus[2]
 	3  -   MEM D	mk14_keystatus[3]
@@ -212,7 +212,15 @@ bit
 	if (dir<8) {
 		//printf ("--Leyendo tecla indice %d\n",dir);
 		if (zxvision_key_not_sent_emulated_mach() ) return 255;
-		else return mk14_keystatus[dir];
+		else {
+            //El MK14 usa los 4 bits superiores de cada mk14_keystatus para almacenar el estado de las teclas
+            //pero yo lo almaceno en los 4 bits inferiores porque me facilita la vida tenerlo ahi en la ventana de Keyboard Help
+            z80_byte valor_retorno=mk14_keystatus[dir];
+            valor_retorno=valor_retorno<<4;
+            valor_retorno |=0x0F;
+
+            return valor_retorno;
+        }
 
 
 	}

@@ -152,6 +152,7 @@
 #include "plus3dos_handler.h"
 #include "pcw.h"
 #include "zeng_online.h"
+#include "mk14.h"
 
 #ifdef COMPILE_ALSA
 #include "audioalsa.h"
@@ -21522,6 +21523,43 @@ int keyboard_map_table_coords_coleco[5*4]={
 
 };
 
+//8 filas, 4 columnas, 4 valores por cada tecla
+            /*
+            mk14_keystatus
+
+               Matriz teclado
+               128 64  32  16
+
+                0  8   -   A	mk14_keystatus[0]
+            	1  9   -   B	mk14_keystatus[1]
+            	2  -   GO  C	mk14_keystatus[2]
+            	3  -   MEM D	mk14_keystatus[3]
+            	4  -   ABR -	mk14_keystatus[4]
+            	5  -   -   -	mk14_keystatus[5]
+            	6  -   -   E	mk14_keystatus[6]
+            	7  -   TER F	mk14_keystatus[7]
+
+            GO: mapeado a G
+            MEM: mapeado a M
+            ABR: mapeado a Z
+            TERM: mapeado a T
+
+            //El MK14 usa los 4 bits superiores de cada mk14_keystatus para almacenar el estado de las teclas
+            //pero yo lo almaceno en los 4 bits inferiores porque me facilita la vida tenerlo ahi en la ventana de Keyboard Help
+            */
+//Los 9999 son teclas no mapeadas, al ser coordenadas altas, no son usables
+int keyboard_map_table_coords_mk14[8*4*4]={
+116,28,134,42, 9999,9999,9999,9999, 48,56,68,72,50,138,68,154,
+114,54,136,70, 9999,9999,9999,9999, 82,56,102,72, 16,110,36,126,
+114,82,136,98, 16,30,40,46, 9999,9999,9999,9999, 50,108,70,124,
+116,108,136,124, 50,28,70,44, 9999,9999,9999,9999, 82,108,100,124,
+9999,9999,9999,9999, 82,28,102,44, 9999,9999,9999,9999, 16,84,36,98,
+9999,9999,9999,9999, 9999,9999,9999,9999, 9999,9999,9999,9999, 48,82,70,98,
+116,138,136,156, 9999,9999,9999,9999, 9999,9999,9999,9999, 82,80,104,100,
+82,138,100,152, 16,138,34,156, 9999,9999,9999,9999, 16,56,36,74,
+
+};
+
 //Estructura para teclas que genera doble pulsacion, como "extended mode" (shift+symbol)
 //Adicionalmente tambien se usa para teclas repetidas, como symbol en un spectrum+. en ese caso puerto2 vale NULL;
 struct s_keyboard_help_double_key {
@@ -21824,6 +21862,10 @@ int *keyboard_help_return_map_table(void)
         return keyboard_map_table_coords_sg1000;
     }
 
+    else if (MACHINE_IS_MK14) {
+        return keyboard_map_table_coords_mk14;
+    }
+
     else return keyboard_map_table_coords_48;
 }
 
@@ -21884,6 +21926,11 @@ z80_byte *keyboard_map_ports_table_z88[8]={
 
 z80_byte *keyboard_map_ports_table_joystick[1]={
     &puerto_especial_joystick
+};
+
+z80_byte *keyboard_map_ports_table_mk14[8]={
+    &mk14_keystatus[0],&mk14_keystatus[1],&mk14_keystatus[2],&mk14_keystatus[3],
+    &mk14_keystatus[4],&mk14_keystatus[5],&mk14_keystatus[6],&mk14_keystatus[7]
 };
 
 /*
@@ -22202,6 +22249,11 @@ z80_byte **get_keyboard_map_ports_table(int *total_columnas,int *total_filas)
         *total_columnas=5;
         *total_filas=1;
         return keyboard_map_ports_table_joystick;
+    }
+    if (MACHINE_IS_MK14) {
+        *total_columnas=4;
+        *total_filas=8;
+        return keyboard_map_ports_table_mk14;
     }
 
     return keyboard_map_ports_table_speccy;

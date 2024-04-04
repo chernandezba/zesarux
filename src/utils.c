@@ -552,17 +552,19 @@ struct x_tabla_teclado ql_tabla_teclado_numeros[]={
 };
 
 
+//El MK14 usa los 4 bits superiores de cada mk14_keystatus para almacenar el estado de las teclas
+//pero yo lo almaceno en los 4 bits inferiores porque me facilita la vida tenerlo ahi en la ventana de Keyboard Help
 struct x_tabla_teclado mk14_tabla_teclado_numeros[]={
-        {&mk14_keystatus[0],128}, //0
-        {&mk14_keystatus[1],128},
-        {&mk14_keystatus[2],128},
-        {&mk14_keystatus[3],128},
-        {&mk14_keystatus[4],128},
-        {&mk14_keystatus[5],128},     //5
-        {&mk14_keystatus[6],128},
-        {&mk14_keystatus[7],128},
-        {&mk14_keystatus[0],64},
-        {&mk14_keystatus[1],64}
+        {&mk14_keystatus[0],128>>4}, //0
+        {&mk14_keystatus[1],128>>4},
+        {&mk14_keystatus[2],128>>4},
+        {&mk14_keystatus[3],128>>4},
+        {&mk14_keystatus[4],128>>4},
+        {&mk14_keystatus[5],128>>4},     //5
+        {&mk14_keystatus[6],128>>4},
+        {&mk14_keystatus[7],128>>4},
+        {&mk14_keystatus[0],64>>4},
+        {&mk14_keystatus[1],64>>4}
 
 };
 
@@ -3102,6 +3104,11 @@ void reset_keyboard_ports(void)
         menu_backspace.v=0;
         menu_tab.v=0;
 
+    //De MK14
+	for (i=0;i<MK14_DIGITS;i++) {
+        mk14_keystatus[i] = 0xFF;                            // Keys not pressed
+    }
+
 
 }
 
@@ -5032,10 +5039,10 @@ void convert_numeros_letras_puerto_teclado_continue_after_recreated(z80_byte tec
             /*
             mk14_keystatus
 
-            Matriz teclado
-             128 64  32  16
+               Matriz teclado
+               128 64  32  16
 
-              0  8   -   A	mk14_keystatus[0]
+                0  8   -   A	mk14_keystatus[0]
             	1  9   -   B	mk14_keystatus[1]
             	2  -   GO  C	mk14_keystatus[2]
             	3  -   MEM D	mk14_keystatus[3]
@@ -5048,58 +5055,61 @@ void convert_numeros_letras_puerto_teclado_continue_after_recreated(z80_byte tec
             MEM: mapeado a M
             ABR: mapeado a Z
             TERM: mapeado a T
+
+            //El MK14 usa los 4 bits superiores de cada mk14_keystatus para almacenar el estado de las teclas
+            //pero yo lo almaceno en los 4 bits inferiores porque me facilita la vida tenerlo ahi en la ventana de Keyboard Help
             */
 
             mascara=255;
 
             if (tecla=='a') {
               puerto=&mk14_keystatus[0];
-              mascara=16;
+              mascara=16>>4;
             }
 
             if (tecla=='b') {
               puerto=&mk14_keystatus[1];
-              mascara=16;
+              mascara=16>>4;
             }
 
             if (tecla=='c') {
               puerto=&mk14_keystatus[2];
-              mascara=16;
+              mascara=16>>4;
             }
 
             if (tecla=='d') {
               puerto=&mk14_keystatus[3];
-              mascara=16;
+              mascara=16>>4;
             }
 
             if (tecla=='e') {
               puerto=&mk14_keystatus[6];
-              mascara=16;
+              mascara=16>>4;
             }
 
             if (tecla=='f') {
               puerto=&mk14_keystatus[7];
-              mascara=16;
+              mascara=16>>4;
             }
 
             if (tecla=='g') {
               puerto=&mk14_keystatus[2];
-              mascara=32;
+              mascara=32>>4;
             }
 
             if (tecla=='m') {
               puerto=&mk14_keystatus[3];
-              mascara=32;
+              mascara=32>>4;
             }
 
             if (tecla=='z') {
               puerto=&mk14_keystatus[4];
-              mascara=32;
+              mascara=32>>4;
             }
 
             if (tecla=='t') {
               puerto=&mk14_keystatus[7];
-              mascara=32;
+              mascara=32>>4;
             }
 
 
