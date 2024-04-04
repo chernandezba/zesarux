@@ -35034,7 +35034,7 @@ void menu_realtape_record_input_overlay(void)
     else strcpy(tipo_onda,"Line");
 
 
-    zxvision_print_string_defaults_fillspc_format(menu_realtape_record_input_window,1,linea++,"[%s] Wave ~~type [%c] ~~freeze ~~empty buffer",
+    zxvision_print_string_defaults_fillspc_format(menu_realtape_record_input_window,1,linea++,"[%s] Wave ~~type. [%c] ~~freeze. sh+e: empty buffer",
         tipo_onda,(menu_realtape_record_input_onda_onda_congelada ? 'X' : ' '));
 
 
@@ -35179,7 +35179,7 @@ void menu_realtape_record_input(MENU_ITEM_PARAMETERS)
                 menu_realtape_record_input_onda_onda_congelada ^=1;
             break;
 
-            case 'e':
+            case 'E':
                 //La fifo de entrada
                 audiorecord_input_empty_buffer_with_lock();
 
