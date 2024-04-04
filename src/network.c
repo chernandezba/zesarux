@@ -1276,7 +1276,9 @@ char *zsock_http_skip_headers(char *mem,int total_leidos,int *http_code,char *re
 					existe=strstr(buffer_linea,"Location: ");
 					existe_minus=strstr(buffer_linea,"location: ");
 
-					if (existe!=NULL || existe_minus!=NULL) {
+                    //Si existe y es principio de linea
+                    //Con esto evitamos cosas como "Onion-Location"
+					if (existe==buffer_linea || existe_minus==buffer_linea) {
 						int longitud=strlen(pref_location);
 						debug_printf (VERBOSE_DEBUG,"zsock_http_skip_headers Detected redirect %s",buffer_linea);
 						strcpy(redirect,&buffer_linea[longitud]);
