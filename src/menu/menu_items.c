@@ -35410,35 +35410,35 @@ void menu_storage_tape_copier(MENU_ITEM_PARAMETERS)
     switch(opcion) {
 
         case 1:
-            strcpy(copion,"copiers/copiadorprimi2.zsf");
+            strcpy(copion,"copiadorprimi2.zsf");
         break;
 
         case 2:
-            strcpy(copion,"copiers/copiador.zsf");
+            strcpy(copion,"copiador.zsf");
         break;
 
         case 3:
-            strcpy(copion,"copiers/duplitape.zsf");
+            strcpy(copion,"duplitape.zsf");
         break;
 
         case 4:
-            strcpy(copion,"copiers/duplitape2.zsf");
+            strcpy(copion,"duplitape2.zsf");
         break;
 
         case 5:
-            strcpy(copion,"copiers/copion9.zsf");
+            strcpy(copion,"copion9.zsf");
         break;
 
         case 6:
-            strcpy(copion,"copiers/mancopy.zsf");
+            strcpy(copion,"mancopy.zsf");
         break;
 
         case 7:
-            strcpy(copion,"copiers/laocopy2.zsf");
+            strcpy(copion,"laocopy2.zsf");
         break;
 
         case 8:
-            strcpy(copion,"copiers/supertapecopier.zsf");
+            strcpy(copion,"supertapecopier.zsf");
         break;
 
 
@@ -35447,9 +35447,11 @@ void menu_storage_tape_copier(MENU_ITEM_PARAMETERS)
         break;
     }
 
+    char copion_con_carpeta[PATH_MAX];
+    sprintf(copion_con_carpeta,"copiers/%s",copion);
     char buffer_nombre[PATH_MAX];
 
-	if (find_sharedfile(copion,buffer_nombre)) {
+	if (find_sharedfile(copion_con_carpeta,buffer_nombre)) {
 		debug_printf(VERBOSE_INFO,"Loading tape copier %s",buffer_nombre);
 		strcpy(quickload_file,buffer_nombre);
 		quickfile=quickload_file;
