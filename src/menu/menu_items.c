@@ -35410,35 +35410,35 @@ void menu_storage_tape_copier(MENU_ITEM_PARAMETERS)
     switch(opcion) {
 
         case 1:
-            strcpy(copion,"copiadorprimi2.zsf");
+            strcpy(copion,"copiers/copiadorprimi2.zsf");
         break;
 
         case 2:
-            strcpy(copion,"copiador.zsf");
+            strcpy(copion,"copiers/copiador.zsf");
         break;
 
         case 3:
-            strcpy(copion,"duplitape.zsf");
+            strcpy(copion,"copiers/duplitape.zsf");
         break;
 
         case 4:
-            strcpy(copion,"duplitape2.zsf");
+            strcpy(copion,"copiers/duplitape2.zsf");
         break;
 
         case 5:
-            strcpy(copion,"copion9.zsf");
+            strcpy(copion,"copiers/copion9.zsf");
         break;
 
         case 6:
-            strcpy(copion,"mancopy.zsf");
+            strcpy(copion,"copiers/mancopy.zsf");
         break;
 
         case 7:
-            strcpy(copion,"laocopy2.zsf");
+            strcpy(copion,"copiers/laocopy2.zsf");
         break;
 
         case 8:
-            strcpy(copion,"supertapecopier.zsf");
+            strcpy(copion,"copiers/supertapecopier.zsf");
         break;
 
 

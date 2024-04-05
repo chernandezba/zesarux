@@ -1800,7 +1800,7 @@ clean:
 	rm -f ZEsarUX_win-\$(EMULATOR_VERSION).zip
 	rm -f ZEsarUX_extras-\$(EMULATOR_VERSION).zip
 
-COMMONFILES=ACKNOWLEDGEMENTS LICENSE LICENSES_info Changelog Cambios TODO* README HISTORY FEATURES FEATURES_es EXCLUSIVEFEATURES INSTALL INSTALLWINDOWS IN_MEMORIAM* ALTERNATEROMS INCLUDEDTAPES DONATE DONORS FAQ *.odt mantransfev3.bin *.rom supertapecopier.zsf copiador.zsf duplitape.zsf duplitape2.zsf laocopy2.zsf copion9.zsf mancopy.zsf copiadorprimi2.zsf zxuno.flash tbblue.mmc pcw_8x_boot*dsk zesarux.mp3 zesarux.xcf editionnamegame.* bin_sprite_to_c.sh keyboards z88_shortcuts.bmp zesarux.pdf docs licenses my_soft speech_filters text_image_filters
+COMMONFILES=ACKNOWLEDGEMENTS LICENSE LICENSES_info Changelog Cambios TODO* README HISTORY FEATURES FEATURES_es EXCLUSIVEFEATURES INSTALL INSTALLWINDOWS IN_MEMORIAM* ALTERNATEROMS INCLUDEDTAPES DONATE DONORS FAQ *.odt mantransfev3.bin *.rom zxuno.flash tbblue.mmc pcw_8x_boot*dsk zesarux.mp3 zesarux.xcf editionnamegame.* bin_sprite_to_c.sh keyboards z88_shortcuts.bmp zesarux.pdf docs licenses my_soft copiers speech_filters text_image_filters
 
 ONLYSOURCEFILES=icons_buttons macos patches tests *.c *.h audio video cores snap menu copy_interfaces machines storage zrcp soundchips *.tpl DEVELOPMENT CHECKLIST configure *.sh *.asm benchmark_*.txt current_checklist.txt prism_change_boot.txt Dockerfile*
 
