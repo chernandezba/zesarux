@@ -21536,6 +21536,19 @@ int keyboard_map_table_coords_msx[8*9*4]={
 
 };
 
+
+
+int keyboard_map_table_coords_timex_computer[40*4]={
+20,134,64,158,78,132,110,156,122,132,154,160,166,132,200,160,210,132,242,160,
+52,94,86,118,100,96,130,118,142,94,176,118,188,94,222,118,234,96,266,118,
+42,56,74,78,88,56,120,78,134,56,166,80,180,54,210,78,222,56,252,78,
+20,16,50,40,64,16,98,40,110,18,142,40,154,16,186,38,200,16,232,40,
+424,18,458,42,378,16,412,38,334,16,368,40,290,16,322,42,246,16,276,40,
+448,54,482,78,402,54,436,80,358,54,390,80,312,54,346,80,268,56,302,80,
+458,94,526,118,412,96,446,118,368,94,400,118,324,94,356,118,278,96,312,118,
+120,172,424,196, 392,134,424,156,346,132,378,154,302,134,334,156,256,132,290,156,
+};
+
 //8 filas, 4 columnas, 4 valores por cada tecla
             /*
             mk14_keystatus
@@ -21698,6 +21711,14 @@ keyboard_help_double_key keyboard_map_additional_msx[]={
     { 0,0,0,0,NULL,0,NULL,0 }
 };
 
+keyboard_help_double_key keyboard_map_additional_timex_computer[]={
+    { 480,134,526,154,      KEY_PORT_VALUE_SHIFT,   NULL, 0}, //caps shift derecha
+
+    { 438,134,470,156,      &puerto_32766,1,        KEY_PORT_VALUE_SHIFT }, // break
+
+    { 0,0,0,0,NULL,0,NULL,0 }
+};
+
 //Nota: no soportamos el boton joystick en la izquierda porque requeriria entrada en esta tecla adicional
 //pero en ese caso es una pulsacion de puesta a 1 el bit, y en teclas dobles se pone a 0 los bits
 keyboard_help_double_key keyboard_map_additional_coleco[]={
@@ -21846,6 +21867,10 @@ int *keyboard_help_return_map_table(void)
         return keyboard_map_table_coords_tk85;
     }
 
+    else if (MACHINE_IS_TIMEX_TC2048 || MACHINE_IS_TIMEX_TC2068) {
+        return keyboard_map_table_coords_timex_computer;
+    }
+
     else if (MACHINE_IS_ZX8081) {
         return keyboard_map_table_coords_zx8081;
     }
@@ -21910,6 +21935,10 @@ keyboard_help_double_key *keyboard_help_return_double_keys(void)
 
     else if (MACHINE_IS_SPECTRUM_P2 || MACHINE_IS_SPECTRUM_P2A_P3) {
         return keyboard_map_additional_p2;
+    }
+
+    else if (MACHINE_IS_TIMEX_TC2048 || MACHINE_IS_TIMEX_TC2068) {
+        return keyboard_map_additional_timex_computer;
     }
 
     else if (MACHINE_IS_QL) {
