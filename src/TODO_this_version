@@ -735,7 +735,6 @@ y por tanto a nivel de path de indexacion de busqueda, se pierde el ultimo path 
 
 
 
-
 ---
 --Inicio captura de sonido desde fuente externa (para poder cargar de cinta directamente)
 ---
@@ -828,7 +827,6 @@ este parametro. Por ejemplo "reset cpu" (y un dialogo de confirmacion yes/no no 
 * si disparar la accion, se cerraran todos los menus, agregarle menu_add_item_menu_se_cerrara
 * si solo visible con items avanzados, agregarle menu_add_item_menu_es_avanzado
 
--agregar a changelog comando zrcp get-text-overlay
 
 
 -si keyboard help con el foco no refresca cambios en teclas (que vengan de zeng por ejemplo)
@@ -843,9 +841,6 @@ no son teclas
 
 -dockerfiles rutas de carpetas al copiar codigo fuente y compilar. Pendiente Dockerfile.pushimage
 O meto todo (*) o indico carpetas solo necesarias
-
-
-
 
 
 -opcion para minimizar ventanas a la parte baja de la ventana (o comportamiento como ahora, las minimiza donde estaban)

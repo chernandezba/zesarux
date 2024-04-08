@@ -15,7 +15,7 @@ Agregada Función para cambiar bits en el editor hexadecimal.
 Agregado estilo GUI de TempleOS
 Agregado estilo GUI de QNX
 Se agregó una función de menú para sincronizar la instantánea local con la remota usando ZRCP
-Comandos ZRCP agregados: open-menu, print-error
+Comandos ZRCP agregados: open-menu, print-error, get-text-overlay
 Agregada Configuración para forzar el modo CHR$ 128 en ZX81
 Agregada función de búsqueda para buscar entradas del menú.
 Agregado tipo de archivos .zmenu para lanzar archivos
