@@ -21549,6 +21549,19 @@ int keyboard_map_table_coords_timex_computer[40*4]={
 120,172,424,196, 392,134,424,156,346,132,378,154,302,134,334,156,256,132,290,156,
 };
 
+
+
+int keyboard_map_table_coords_timex_sinclair_1500[40*4]={
+8,162,54,188,70,162,106,188,120,160,156,188,170,162,206,186,220,162,258,188,
+44,112,80,140,96,112,132,138,146,112,180,136,196,114,230,136,246,112,280,136,
+32,62,70,88,84,62,118,86,132,60,168,88,184,60,218,86,232,62,268,88,
+6,12,44,38,58,12,92,36,108,12,144,36,156,10,192,36,208,10,244,38,
+458,10,496,38,408,10,446,38,358,10,394,38,310,12,342,36,258,10,296,38,
+484,60,518,88, 434,60,468,88, 384,60,420,86, 334,62,368,88, 282,60,320,86,
+498,112,534,140,448,110,482,136,398,110,430,134,346,110,384,138,294,110,330,134,
+472,164,532,188,424,162,458,186,370,162,406,186,322,162,356,186,272,162,304,186,
+};
+
 //8 filas, 4 columnas, 4 valores por cada tecla
             /*
             mk14_keystatus
@@ -21867,8 +21880,12 @@ int *keyboard_help_return_map_table(void)
         return keyboard_map_table_coords_tk85;
     }
 
-    else if (MACHINE_IS_TIMEX_TC2048 || MACHINE_IS_TIMEX_TC2068) {
+    else if (MACHINE_IS_TIMEX_TC2048 || MACHINE_IS_TIMEX_TC2068 || MACHINE_IS_TIMEX_TS2068) {
         return keyboard_map_table_coords_timex_computer;
+    }
+
+    else if (MACHINE_IS_TIMEX_TS1500) {
+        return keyboard_map_table_coords_timex_sinclair_1500;
     }
 
     else if (MACHINE_IS_ZX8081) {
@@ -21937,7 +21954,7 @@ keyboard_help_double_key *keyboard_help_return_double_keys(void)
         return keyboard_map_additional_p2;
     }
 
-    else if (MACHINE_IS_TIMEX_TC2048 || MACHINE_IS_TIMEX_TC2068) {
+    else if (MACHINE_IS_TIMEX_TC2048 || MACHINE_IS_TIMEX_TC2068 || MACHINE_IS_TIMEX_TS2068) {
         return keyboard_map_additional_timex_computer;
     }
 
