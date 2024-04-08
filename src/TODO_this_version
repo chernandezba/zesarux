@@ -879,4 +879,7 @@ O quiza que salte al menu con la linea de opcion seleccionada donde corresponde
 
 -comentar desensamblado copion9
 
--Soporte grabar snapshot zx81? .z81?
+ok-Soporte grabar snapshot zx81? .z81.
+agregar campo:
+[MEMORY]
+RAM_PACK 4k
