@@ -5305,6 +5305,11 @@ void snapshot_save(char *filename)
                       save_zsf_snapshot(filename);
               }
 
+        else if (!util_compare_file_extension(filename,"z81") ) {
+                      debug_printf(VERBOSE_INFO,"Saving Z81 snapshot %s",filename);
+                      save_z81_snapshot(filename);
+              }
+
 
 	else if (!util_compare_file_extension(filename,"z80") ) {
                 debug_printf(VERBOSE_INFO,"Saving Z80 snapshot %s",filename);

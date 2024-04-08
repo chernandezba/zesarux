@@ -26,5 +26,6 @@
 extern void load_z81_snapshot(char *archivo);
 extern void snap_load_zx80_zx81_load_z81_file(char *filename);
 extern void snap_load_z81(char *archivo);
+extern void save_z81_snapshot(char *filename);
 
 #endif

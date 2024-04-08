@@ -30657,8 +30657,9 @@ void menu_snapshot_save(MENU_ITEM_PARAMETERS)
 		else {
             filtros[1]="p";
             filtros[2]="p81";
-		    filtros[3]="zx";
-		    filtros[4]=0;
+            filtros[3]="z81";
+		    filtros[4]="zx";
+		    filtros[5]=0;
         }
 }
 

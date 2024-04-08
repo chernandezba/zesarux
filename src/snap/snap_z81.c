@@ -394,6 +394,71 @@ void snap_load_zx80_zx81_load_z81_file(char *filename)
 }
 
 
+//Grabar Snapshot .Z81
+void save_z81_snapshot(char *filename)
+{
+    FILE *ptr_z81_file;
+
+	//Save header
+	ptr_z81_file=fopen(filename,"wb");
+	if (!ptr_z81_file) {
+		debug_printf (VERBOSE_ERR,"Error writing snapshot file %s",filename);
+		return;
+	}
+
+    char buffer_header[4096];
+    sprintf(buffer_header,
+            "[CPU]\n"
+            "PC %04X    SP  %04X\n"
+            "HL %04X    HL_ %02X%02X\n"
+            "DE %04X    DE_ %02X%02X\n"
+            "BC %04X    BC_ %02X%02X\n"
+            "AF %02X%02X    AF_ %02X%02X\n"
+            "IX %04X    IY  %04X\n"
+            "IR %02X%02X\n"
+            "IM %02X      IF1 %02X\n"
+            "HT 00      IF2 %02X\n"
+            "\n"
+            "[ZX81]\n"
+            "NMI 01     HSYNC 01\n"
+            "ROW 000\n"
+            "\n"
+            "[MEMORY]\n",
+            reg_pc,reg_sp,
+            HL,reg_h_shadow,reg_l_shadow,
+            DE,reg_d_shadow,reg_e_shadow,
+            BC,reg_b_shadow,reg_c_shadow,
+            reg_a,Z80_FLAGS,reg_a_shadow,Z80_FLAGS_SHADOW,
+            reg_ix,reg_iy,
+            reg_i,(reg_r&128) | reg_r_bit7,
+            im_mode,iff1.v,
+            iff2.v);
+
+    int longitud=strlen(buffer_header);
+
+
+
+	fwrite(buffer_header, 1, longitud, ptr_z81_file);
+
+    int bytes_a_salvar=ramtop_zx8081-16383;
+
+    sprintf(buffer_header,"MEMRANGE 4000 %04X\n",ramtop_zx8081);
+    longitud=strlen(buffer_header);
+	fwrite(buffer_header, 1, longitud, ptr_z81_file);
+
+    int i;
+
+    for (i=0;i<bytes_a_salvar;i++) {
+        sprintf(buffer_header,"%02X ",memoria_spectrum[16384+i]);
+        fwrite(buffer_header, 1, 3, ptr_z81_file);
+    }
+    strcpy(buffer_header,"\n\n[EOF]\n");
+    longitud=strlen(buffer_header);
+	fwrite(buffer_header, 1, longitud, ptr_z81_file);
+
+	fclose(ptr_z81_file);
+}
+
 /*
 int save_snap_z81(char *filename)
 {
