@@ -408,6 +408,8 @@ void save_z81_snapshot(char *filename)
 
     char buffer_header[4096];
     sprintf(buffer_header,
+            "[MACHINE]\n"
+            "MODEL ZX8%c\n"
             "[CPU]\n"
             "PC %04X    SP  %04X\n"
             "HL %04X    HL_ %02X%02X\n"
@@ -424,6 +426,7 @@ void save_z81_snapshot(char *filename)
             "ROW 000\n"
             "\n"
             "[MEMORY]\n",
+            (MACHINE_IS_ZX81 ? '1' : '0'),
             reg_pc,reg_sp,
             HL,reg_h_shadow,reg_l_shadow,
             DE,reg_d_shadow,reg_e_shadow,

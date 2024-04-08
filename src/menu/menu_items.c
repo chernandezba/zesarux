@@ -30651,8 +30651,9 @@ void menu_snapshot_save(MENU_ITEM_PARAMETERS)
 
 		if (MACHINE_IS_ZX80_TYPE) {
             filtros[1]="o";
-            filtros[2]="zx";
-		    filtros[3]=0;
+            filtros[2]="z81";
+            filtros[3]="zx";
+		    filtros[4]=0;
         }
 		else {
             filtros[1]="p";
