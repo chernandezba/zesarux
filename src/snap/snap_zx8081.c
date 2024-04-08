@@ -308,7 +308,7 @@ void new_save_zx81_p_snapshot(char *filename)
             char nombre_sin_extension[PATH_MAX];
             util_get_file_without_extension(nombre_corto,nombre_sin_extension);
 
-            printf("Adding filename [%s] at the beginning of the p81 file\n",nombre_sin_extension);
+            debug_printf(VERBOSE_INFO,"Adding filename [%s] at the beginning of the p81 file",nombre_sin_extension);
 
             int i;
             int longitud_nombre=strlen(nombre_sin_extension);
