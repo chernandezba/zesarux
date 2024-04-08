@@ -21523,6 +21523,19 @@ int keyboard_map_table_coords_coleco[5*4]={
 
 };
 
+int keyboard_map_table_coords_msx[8*9*4]={
+290,34,310,54, 28,32,48,52, 58,34,78,54, 84,34,104,52, 114,34,134,52, 144,34,164,54, 172,34,194,54, 202,34,222,52,
+230,34,248,52, 262,34,280,54, 318,34,340,52, 348,32,372,54, 376,34,398,54, 332,62,354,82, 362,62,384,84, 310,90,332,110,
+340,90,362,110, 372,90,392,110, 266,122,290,142, 296,122,320,140, 324,120,348,140, 9999,9999,9999,9999, 48,90,70,112, 178,120,202,142,
+120,120,144,142,106,90,126,110,98,62,118,84,134,92,154,110,166,90,186,114,194,90,216,114,244,62,268,84,222,90,244,110,
+252,92,274,112,282,92,308,114,238,120,258,142,208,120,230,140,274,62,296,80,304,62,326,80,42,62,64,84,128,62,154,86,
+76,92,96,112, 156,62,182,84, 214,60,236,84, 148,120,170,140, 68,62,92,82, 92,120,110,138, 188,62,206,82, 62,120,82,142,
+4,120,54,142,4,92,40,110,92,150,112,170,64,150,84,168,358,148,380,168,2,6,34,26,44,6,78,24,84,6,122,24,
+130,6,162,24,174,6,208,26,4,34,20,54,4,62,34,82,260,6,296,28,404,32,424,50,216,6,252,24,396,62,430,110,
+120,150,350,168, 452,6,474,24, 480,4,500,26, 508,4,530,26, 452,82,474,116, 476,60,510,76, 476,118,514,136, 512,82,534,114,
+
+};
+
 //8 filas, 4 columnas, 4 valores por cada tecla
             /*
             mk14_keystatus
@@ -21858,6 +21871,10 @@ int *keyboard_help_return_map_table(void)
         return keyboard_map_table_coords_coleco;
     }
 
+    else if (MACHINE_IS_MSX) {
+        return keyboard_map_table_coords_msx;
+    }
+
     else if (MACHINE_IS_SG1000) {
         return keyboard_map_table_coords_sg1000;
     }
@@ -21932,6 +21949,13 @@ z80_byte *keyboard_map_ports_table_mk14[8]={
     &mk14_keystatus[0],&mk14_keystatus[1],&mk14_keystatus[2],&mk14_keystatus[3],
     &mk14_keystatus[4],&mk14_keystatus[5],&mk14_keystatus[6],&mk14_keystatus[7]
 };
+
+z80_byte *keyboard_map_ports_table_msx[9]={
+    &msx_keyboard_table[0],&msx_keyboard_table[1],&msx_keyboard_table[2],&msx_keyboard_table[3],
+    &msx_keyboard_table[4],&msx_keyboard_table[5],&msx_keyboard_table[6],&msx_keyboard_table[7],
+    &msx_keyboard_table[8]
+};
+
 
 /*
 void menu_help_keyboard_show_all_keys(zxvision_window *ventana,int keyboard_map_coords[],int total_keys)
@@ -22254,6 +22278,12 @@ z80_byte **get_keyboard_map_ports_table(int *total_columnas,int *total_filas)
         *total_columnas=4;
         *total_filas=8;
         return keyboard_map_ports_table_mk14;
+    }
+
+    if (MACHINE_IS_MSX) {
+        *total_columnas=8;
+        *total_filas=9;
+        return keyboard_map_ports_table_msx;
     }
 
     return keyboard_map_ports_table_speccy;
