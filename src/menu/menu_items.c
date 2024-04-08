@@ -21526,7 +21526,7 @@ int keyboard_map_table_coords_coleco[5*4]={
 int keyboard_map_table_coords_msx[8*9*4]={
 290,34,310,54, 28,32,48,52, 58,34,78,54, 84,34,104,52, 114,34,134,52, 144,34,164,54, 172,34,194,54, 202,34,222,52,
 230,34,248,52, 262,34,280,54, 318,34,340,52, 348,32,372,54, 376,34,398,54, 332,62,354,82, 362,62,384,84, 310,90,332,110,
-340,90,362,110, 372,90,392,110, 266,122,290,142, 296,122,320,140, 324,120,348,140, 9999,9999,9999,9999, 48,90,70,112, 178,120,202,142,
+340,90,362,110, 372,90,392,110, 266,122,290,142, 296,122,320,140, 324,120,348,140, 406,120,430,138, 48,90,70,112, 178,120,202,142,
 120,120,144,142,106,90,126,110,98,62,118,84,134,92,154,110,166,90,186,114,194,90,216,114,244,62,268,84,222,90,244,110,
 252,92,274,112,282,92,308,114,238,120,258,142,208,120,230,140,274,62,296,80,304,62,326,80,42,62,64,84,128,62,154,86,
 76,92,96,112, 156,62,182,84, 214,60,236,84, 148,120,170,140, 68,62,92,82, 92,120,110,138, 188,62,206,82, 62,120,82,142,
@@ -21692,6 +21692,12 @@ keyboard_help_double_key keyboard_map_additional_sg1000[]={
     { 0,0,0,0,NULL,0,NULL,0 }
 };
 
+keyboard_help_double_key keyboard_map_additional_msx[]={
+    { 356,120,398,142,  &msx_keyboard_table[6], 1,   NULL,0 }, //shift derecho
+
+    { 0,0,0,0,NULL,0,NULL,0 }
+};
+
 //Nota: no soportamos el boton joystick en la izquierda porque requeriria entrada en esta tecla adicional
 //pero en ese caso es una pulsacion de puesta a 1 el bit, y en teclas dobles se pone a 0 los bits
 keyboard_help_double_key keyboard_map_additional_coleco[]={
@@ -21775,7 +21781,8 @@ int keyboard_map_table_coords_z88[64*4]={
 };
 
 //Teclas simples mantenidas pulsadas. A no 0 para que se queden pulsadas
-#define KEYBOARD_HELP_MAX_TECLAS_MANTENIDAS_PULSADAS 64
+//9 filas * 8 columnas max (MSX el que tiene mas)
+#define KEYBOARD_HELP_MAX_TECLAS_MANTENIDAS_PULSADAS (9*8)
 //64
 int keyboard_help_teclas_mantenidas_pulsadas_simples[KEYBOARD_HELP_MAX_TECLAS_MANTENIDAS_PULSADAS];
 int keyboard_help_teclas_mantenidas_pulsadas_dobles[KEYBOARD_HELP_MAX_TECLAS_MANTENIDAS_PULSADAS];
@@ -21919,6 +21926,10 @@ keyboard_help_double_key *keyboard_help_return_double_keys(void)
 
     else if (MACHINE_IS_SG1000) {
         return keyboard_map_additional_sg1000;
+    }
+
+    else if (MACHINE_IS_MSX) {
+        return keyboard_map_additional_msx;
     }
 
     return teclas_dobles;
