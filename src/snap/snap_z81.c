@@ -417,10 +417,10 @@ void save_z81_snapshot(char *filename)
             "IX %04X    IY  %04X\n"
             "IR %02X%02X\n"
             "IM %02X      IF1 %02X\n"
-            "HT 00      IF2 %02X\n"
+            "HT %02X      IF2 %02X\n"
             "\n"
             "[ZX81]\n"
-            "NMI 01     HSYNC 01\n"
+            "NMI %02X     HSYNC 01\n"
             "ROW 000\n"
             "\n"
             "[MEMORY]\n",
@@ -432,7 +432,9 @@ void save_z81_snapshot(char *filename)
             reg_ix,reg_iy,
             reg_i,(reg_r&128) | reg_r_bit7,
             im_mode,iff1.v,
-            iff2.v);
+            z80_halt_signal.v,iff2.v,
+            nmi_generator_active.v
+            );
 
     int longitud=strlen(buffer_header);
 
