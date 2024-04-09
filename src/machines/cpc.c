@@ -162,17 +162,17 @@ int cpc_rgb_table[32]={
 
 /*Tablas teclado
 Bit:
-Line	7	6	5	4	3	2	1	0
-&40	F Dot	ENTER	F3	F6	F9	CURDOWN	CURRIGHT	CURUP
-&41	F0	F2	F1	F5	F8	F7	COPY	CURLEFT
-&42	CONTROL	\	SHIFT	F4	]	RETURN	[	CLR
-&43	.	/	 :	 ;	P	@	-	^
-&44	,	M	K	L	I	O	9	0
-&45	SPACE	N	J	H	Y	U	7	8
-&46	V	B	F	G (Joy2 fire)	T (Joy2 right)	R (Joy2 left)	5 (Joy2 down)	6 (Joy 2 up)
-&47	X	C	D	S	W	E	3	4
-&48	Z	CAPSLOCK	A	TAB	Q	ESC	2	1
-&49	DEL	    Joy 1 Fire 3 (CPC only)	     Joy 1 Fire 2	   Joy1 Fire 1	   Joy1 right	  Joy1 left	   Joy1 down	Joy1 up
+Line	7       6       5	    4	    3	    2	    1	    0
+&40	    FDot	ENTER	F3	    F6	    F9	    CURDOWN	CURRIGHT CURUP
+&41	    F0	    F2	    F1	    F5	    F8	    F7	    COPY	CURLEFT
+&42	    CONTROL	\	    SHIFT	F4	    ]	    RETURN	[	    CLR
+&43	    .   	/	     :	    ;	    P	    @	    -	    ^
+&44	    ,	    M	    K	    L	    I	    O	    9	    0
+&45	    SPACE	N	    J	    H	    Y	    U	    7	    8
+&46	    V	    B	    F	    G (Joy2 fire)	T (Joy2 right)	R (Joy2 left)	5 (Joy2 down)	6 (Joy 2 up)
+&47	    X	    C	    D	    S	    W	    E	    3	    4
+&48	    Z	    CAPSLOCK A	    TAB	    Q	    ESC	    2	    1
+&49	    DEL	    Joy 1   Fire 3 (CPC only)	     Joy 1 Fire 2	   Joy1 Fire 1	   Joy1 right	  Joy1 left	   Joy1 down	Joy1 up
 
 
 For CPC464 and CPC664 users:

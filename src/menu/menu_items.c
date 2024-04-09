@@ -21537,6 +21537,37 @@ int keyboard_map_table_coords_msx[8*9*4]={
 };
 
 
+/*Tablas teclado
+Bit:
+Line	7       6       5	    4	    3	    2	    1	    0
+----------------------------------------------------------------------
+&40	    FDot	ENTER	F3	    F6	    F9	    CURDOWN	CURRIGHT CURUP
+&41	    F0	    F2	    F1	    F5	    F8	    F7	    COPY	CURLEFT
+&42	    CONTROL	\	    SHIFT	F4	    ]	    RETURN	[	    CLR
+&43	    .   	/	     :	    ;	    P	    @	    -	    ^
+&44	    ,	    M	    K	    L	    I	    O	    9	    0
+&45	    SPACE	N	    J	    H	    Y	    U	    7	    8
+&46	    V	    B	    F	    G (Joy2 fire)	T (Joy2 right)	R (Joy2 left)	5 (Joy2 down)	6 (Joy 2 up)
+&47	    X	    C	    D	    S	    W	    E	    3	    4
+&48	    Z	    CAPSLOCK A	    TAB	    Q	    ESC	    2	    1
+&49	    DEL	    Joy 1   Fire 3 (CPC only)	     Joy 1 Fire 2	   Joy1 Fire 1	   Joy1 right	  Joy1 left	   Joy1 down	Joy1 up
+*/
+
+int keyboard_map_table_coords_cpc_464[8*10*4]={
+578,9,602,31, 612,42,635,64, 578,76,600,96, 9999,9999,9999,9999, 9999,9999,9999,9999, 9999,9999,9999,9999, 608,215,630,237, 9999,9999,9999,9999,
+544,41,566,65, 9999,9999,9999,9999, 9999,9999,9999,9999, 9999,9999,9999,9999, 9999,9999,9999,9999, 9999,9999,9999,9999, 9999,9999,9999,9999, 9999,9999,9999,9999,
+9999,9999,9999,9999, 9999,9999,9999,9999, 9999,9999,9999,9999, 9999,9999,9999,9999, 9999,9999,9999,9999, 9999,9999,9999,9999, 9999,9999,9999,9999, 9999,9999,9999,9999,
+9999,9999,9999,9999, 9999,9999,9999,9999, 9999,9999,9999,9999, 9999,9999,9999,9999, 9999,9999,9999,9999, 9999,9999,9999,9999, 9999,9999,9999,9999, 9999,9999,9999,9999,
+9999,9999,9999,9999, 9999,9999,9999,9999, 9999,9999,9999,9999, 9999,9999,9999,9999, 9999,9999,9999,9999, 9999,9999,9999,9999, 9999,9999,9999,9999, 9999,9999,9999,9999,
+9999,9999,9999,9999, 9999,9999,9999,9999, 9999,9999,9999,9999, 9999,9999,9999,9999, 9999,9999,9999,9999, 9999,9999,9999,9999, 9999,9999,9999,9999, 9999,9999,9999,9999,
+9999,9999,9999,9999, 9999,9999,9999,9999, 9999,9999,9999,9999, 9999,9999,9999,9999, 9999,9999,9999,9999, 9999,9999,9999,9999, 9999,9999,9999,9999, 9999,9999,9999,9999,
+9999,9999,9999,9999, 9999,9999,9999,9999, 9999,9999,9999,9999, 9999,9999,9999,9999, 9999,9999,9999,9999, 9999,9999,9999,9999, 9999,9999,9999,9999, 9999,9999,9999,9999,
+9999,9999,9999,9999, 9999,9999,9999,9999, 9999,9999,9999,9999, 9999,9999,9999,9999, 9999,9999,9999,9999, 9999,9999,9999,9999, 9999,9999,9999,9999, 9999,9999,9999,9999,
+9999,9999,9999,9999, 9999,9999,9999,9999, 9999,9999,9999,9999, 9999,9999,9999,9999, 9999,9999,9999,9999, 9999,9999,9999,9999, 9999,9999,9999,9999, 9999,9999,9999,9999,
+
+};
+
+
 
 int keyboard_map_table_coords_timex_computer[40*4]={
 20,134,64,158,78,132,110,156,122,132,154,160,166,132,200,160,210,132,242,160,
@@ -21744,6 +21775,12 @@ keyboard_help_double_key keyboard_map_additional_timex_computer[]={
     { 0,0,0,0,NULL,0,NULL,0 }
 };
 
+keyboard_help_double_key keyboard_map_additional_cpc_464[]={
+    //{ 356,120,398,142,  &msx_keyboard_table[6], 1,   NULL,0 }, //shift derecho
+
+    { 0,0,0,0,NULL,0,NULL,0 }
+};
+
 //Nota: no soportamos el boton joystick en la izquierda porque requeriria entrada en esta tecla adicional
 //pero en ese caso es una pulsacion de puesta a 1 el bit, y en teclas dobles se pone a 0 los bits
 keyboard_help_double_key keyboard_map_additional_coleco[]={
@@ -21827,8 +21864,8 @@ int keyboard_map_table_coords_z88[64*4]={
 };
 
 //Teclas simples mantenidas pulsadas. A no 0 para que se queden pulsadas
-//9 filas * 8 columnas max (MSX el que tiene mas)
-#define KEYBOARD_HELP_MAX_TECLAS_MANTENIDAS_PULSADAS (9*8)
+//10 filas * 8 columnas max (CPC el que tiene mas)
+#define KEYBOARD_HELP_MAX_TECLAS_MANTENIDAS_PULSADAS (10*8)
 //64
 int keyboard_help_teclas_mantenidas_pulsadas_simples[KEYBOARD_HELP_MAX_TECLAS_MANTENIDAS_PULSADAS];
 int keyboard_help_teclas_mantenidas_pulsadas_dobles[KEYBOARD_HELP_MAX_TECLAS_MANTENIDAS_PULSADAS];
@@ -21940,6 +21977,10 @@ int *keyboard_help_return_map_table(void)
         return keyboard_map_table_coords_msx;
     }
 
+    else if (MACHINE_IS_CPC_464 || MACHINE_IS_CPC_4128) {
+        return keyboard_map_table_coords_cpc_464;
+    }
+
     else if (MACHINE_IS_SG1000) {
         return keyboard_map_table_coords_sg1000;
     }
@@ -21994,6 +22035,10 @@ keyboard_help_double_key *keyboard_help_return_double_keys(void)
         return keyboard_map_additional_msx;
     }
 
+    else if (MACHINE_IS_CPC_464 || MACHINE_IS_CPC_4128) {
+        return keyboard_map_additional_cpc_464;
+    }
+
     return teclas_dobles;
 
 }
@@ -22027,6 +22072,12 @@ z80_byte *keyboard_map_ports_table_msx[9]={
     &msx_keyboard_table[0],&msx_keyboard_table[1],&msx_keyboard_table[2],&msx_keyboard_table[3],
     &msx_keyboard_table[4],&msx_keyboard_table[5],&msx_keyboard_table[6],&msx_keyboard_table[7],
     &msx_keyboard_table[8]
+};
+
+z80_byte *keyboard_map_ports_table_cpc[10]={
+    &cpc_keyboard_table[0],&cpc_keyboard_table[1],&cpc_keyboard_table[2],&cpc_keyboard_table[3],
+    &cpc_keyboard_table[4],&cpc_keyboard_table[5],&cpc_keyboard_table[6],&cpc_keyboard_table[7],
+    &cpc_keyboard_table[8],&cpc_keyboard_table[9]
 };
 
 
@@ -22357,6 +22408,12 @@ z80_byte **get_keyboard_map_ports_table(int *total_columnas,int *total_filas)
         *total_columnas=8;
         *total_filas=9;
         return keyboard_map_ports_table_msx;
+    }
+
+    if (MACHINE_IS_CPC) {
+        *total_columnas=8;
+        *total_filas=10;
+        return keyboard_map_ports_table_cpc;
     }
 
     return keyboard_map_ports_table_speccy;
