@@ -15,8 +15,6 @@ Added save support for ZX80 & ZX81 .Z81 snapshots
 Added function to shift bits on Hex Editor
 Added TempleOS GUI Style
 Added QNX GUI Style
-Added menu function to sync local snapshot to remote using ZRCP
-Added ZRCP commands: open-menu, print-error, get-text-overlay
 Added setting to force CHR$ 128 mode on ZX81
 Added search function to locate menu entries
 Added .zmenu type files to generate launcher menus
@@ -33,12 +31,16 @@ Improved Keyboard Help: now you can press keys by clicking mouse
 Allow to not save configuration when exiting ZEsarUX
 Allow to select normal ZEsarUX logo or X Anniversary logo
 Allow to send ZENG snapshots more frequently (even every 20 ms)
-Allow to use cpu-step-mode from ZRCP on drivers stdout and simpletext
 Allow autorewind setting for real tape too
 Allow to disable Spectrum colours on real video mode too
 Allow to press hotkeys at On Screen Keyboard
 Remember last path used on output tape
-Support MMU restore on ZRCP command "cpu-history restore" for Spectrum 128k/+2/+2a/+3
+
+Improved ZRCP:
+- Added menu function to sync local snapshot to remote using ZRCP
+- Added ZRCP commands: open-menu, print-error, get-text-overlay, cpu-history get extended
+- Allow to use cpu-step-mode from ZRCP on drivers stdout and simpletext
+- Support MMU restore state on ZRCP command "cpu-history restore" for Spectrum 128k/+2/+2a/+3
 
 Improved QL emulation:
 - Allow autoload when inserting QL mdv/flp

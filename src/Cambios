@@ -15,8 +15,6 @@ Agregado soporte para grabación snapshots .Z81 de ZX80 y ZX81
 Agregada Función para cambiar bits en el editor hexadecimal.
 Agregado estilo GUI de TempleOS
 Agregado estilo GUI de QNX
-Se agregó una función de menú para sincronizar la instantánea local con la remota usando ZRCP
-Comandos ZRCP agregados: open-menu, print-error, get-text-overlay
 Agregada Configuración para forzar el modo CHR$ 128 en ZX81
 Agregada función de búsqueda para buscar entradas del menú.
 Agregado tipo de archivos .zmenu para lanzar archivos
@@ -33,12 +31,16 @@ Mejorado Ayuda de Teclado: ahora puedes activar teclas pulsando con el ratón
 Permitir no guardar la configuración al salir de ZEsarUX
 Permitir seleccionar el logotipo normal de ZEsarUX o el logotipo del X Aniversario
 Permitir enviar instantáneas ZENG con mayor frecuencia (incluso cada 20 ms)
-Permitir usar cpu-step-mode de ZRCP en controladores stdout y simpletext
 Permitir la configuración de rebobinado automático también para cintas reales
 Permitir deshabilitar los colores de Spectrum también en el modo de video real
 Permitir presionar teclas de acceso rápido en el teclado en pantalla
 Recordar ultima ruta utilizada en cinta de salida
-Permitir restaurar MMU restore en comando ZRCP "cpu-history restore" en Spectrum 128k/+2/+2a/+3
+
+Mejorado ZRCP:
+- Se agregó una función de menú para sincronizar la instantánea local con la remota usando ZRCP
+- Comandos ZRCP agregados: open-menu, print-error, get-text-overlay, cpu-history get extended
+- Permitir usar cpu-step-mode de ZRCP en controladores stdout y simpletext
+- Permitir restaurar estado MMU en comando ZRCP "cpu-history restore" en Spectrum 128k/+2/+2a/+3
 
 Mejorada emulación de QL:
 - Permitir autocarga al insertar mdv/flp en QL
