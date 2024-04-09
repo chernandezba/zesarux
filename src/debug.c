@@ -2704,6 +2704,7 @@ void reset_extended_stack(void)
 
 //Dado un puntero z80_byte, con contenido de registros en binario, retorna valores registros
 //Registros 16 bits guardados en little endian
+//NOTA: este comando se mantiene solo por compatibilidad con Dezog, no ampliarlo ni modificarlo para no romper la conexión con dicho programa
 void cpu_history_regs_bin_to_string(z80_byte *p,char *destino)
 {
 
@@ -2774,7 +2775,80 @@ void cpu_history_regs_bin_to_string(z80_byte *p,char *destino)
 
 }
 
+//Dado un puntero z80_byte, con contenido de registros en binario, retorna valores registros
+//Registros 16 bits guardados en little endian
+void cpu_history_extended_regs_bin_to_string(z80_byte *p,char *destino)
+{
 
+    //para memoria modificada
+    char buffer_temp_memoria[100];
+    //por defecto vacio
+    buffer_temp_memoria[0]=0;
+
+
+    z80_int direccion1=value_8_to_16(p[52],p[51]);
+    z80_byte valor1=p[53];
+    char buffer_addr_1[32];
+    sprintf(buffer_addr_1,"(%04X)=%X",direccion1,valor1);
+
+    z80_int direccion2=value_8_to_16(p[55],p[54]);
+    z80_byte valor2=p[56];
+    char buffer_addr_2[32];
+    sprintf(buffer_addr_2,"(%04X)=%X",direccion2,valor2);
+
+
+    int flags_direcciones=p[50] & 3;
+
+    if (flags_direcciones>0) {
+        sprintf(buffer_temp_memoria,"%s %s",
+        (flags_direcciones>=1 ? buffer_addr_1 : ""),
+        (flags_direcciones>=2 ? buffer_addr_2 : "")
+        );
+    }
+
+
+	//Nota: funcion print_registers escribe antes BC que AF. Aqui ponemos AF antes, que es mas lógico
+  sprintf (destino,"PC=%02x%02x SP=%02x%02x AF=%02x%02x BC=%02x%02x HL=%02x%02x DE=%02x%02x IX=%02x%02x IY=%02x%02x "
+  				   "AF'=%02x%02x BC'=%02x%02x HL'=%02x%02x DE'=%02x%02x "
+				   "I=%02x R=%02x IM%d IFF%c%c (PC)=%02x%02x%02x%02x (SP)=%02x%02x "
+				   "MMU=%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x 3FFD=%02x 1FFD=%02x %s",
+  p[1],p[0], 	//pc
+  p[3],p[2], 	//sp
+  p[5],p[4], 	//af
+  p[7],p[6], 	//bc
+  p[9],p[8], 	//hl
+  p[11],p[10], 	//de
+  p[13],p[12], 	//ix
+  p[15],p[14], 	//iy
+  p[17],p[16], 	//af'
+  p[19],p[18], 	//bc'
+  p[21],p[20], 	//hl'
+  p[23],p[22], 	//de'
+  p[24], 		//I
+  p[25], 		//R
+  p[26], 		//IM
+  DEBUG_STRING_IFF12_PARAM(p[27]),  //IFF1,2
+  //contenido (pc) 4 bytes
+  p[28],p[29],p[30],p[31],
+  //contenido (sp) 2 bytes
+  p[33],p[32],
+  //MMU. Las paginas de debug_paginas_memoria_mapeadas, son valores de 16 bits escritas en Little Endian
+  p[35],p[34], p[37],p[36], p[39],p[38], p[41],p[40],
+  p[43],p[42], p[45],p[44], p[47],p[46], p[49],p[48],
+  p[57],p[58],
+  buffer_temp_memoria
+  );
+
+  //50: flags
+  //Bits 0-1: sobre direcciones modificadas: 0, ninguna, 1: una direccion, 2: dos direcciones
+  //51-52: primera direccion modificada
+  //53: valor antes de modificar primera direccion
+  //54-55: segunda direccion modificada
+  //56: valor antes de modificar segunda direccion
+  //57: puerto 32765
+  //58: puerto 8189
+
+}
 
 //Dado un puntero z80_byte, con contenido de registros en binario, retorna valor registro PC
 //Registros 16 bits guardados en little endian
@@ -2885,6 +2959,10 @@ void cpu_history_regs_to_bin(z80_byte *p)
 		//High byte
 		p[34+i*2+1]=value_16_to_8h(debug_paginas_memoria_mapeadas[i]);
 	}
+
+    //57,58: puertos paginacion 32765, 8189
+    p[57]=puerto_32765;
+    p[58]=puerto_8189;
 
   //50: flags
   //Bits 0-1: sobre direcciones modificadas: 0, ninguna, 1: una direccion, 2: dos direcciones
@@ -3390,6 +3468,26 @@ void cpu_history_get_registers_element(int indice,char *string_destino)
 	cpu_history_regs_bin_to_string(&cpu_history_memory_buffer[offset_memoria],string_destino);
 }
 
+void cpu_history_get_registers_extended_element(int indice,char *string_destino)
+{
+
+	if (indice<0) {
+		strcpy(string_destino,"ERROR: index out of range");
+		return;
+	}
+
+	if (indice>=cpu_history_total_elementos) {
+		sprintf(string_destino,"ERROR: index beyond total elements (%d)",cpu_history_total_elementos);
+		return;
+	}
+
+	int posicion=cpu_history_get_array_pos_element(indice);
+
+	long long int offset_memoria=cpu_history_get_offset_index(posicion);
+
+	cpu_history_extended_regs_bin_to_string(&cpu_history_memory_buffer[offset_memoria],string_destino);
+}
+
 void cpu_history_get_pc_register_element(int indice,char *string_destino)
 {
 
@@ -3506,6 +3604,50 @@ void cpu_history_regs_bin_restore(int indice)
   p[35],p[34], p[37],p[36], p[39],p[38], p[41],p[40],
   p[43],p[42], p[45],p[44], p[47],p[46], p[49],p[48]
   */
+
+  //Para 128k/+2/+2a, restaurar pagina ram del segmento C000H
+    //57,58: puertos paginacion 32765, 8189
+    //Nota: podriamos llegar a usar la linea de MMU pero es mas comodo, al menos para 128k, usar estos dos
+    z80_byte nuevo_puerto_32765=p[57];
+    z80_byte nuevo_puerto_8189=p[58];
+
+
+  if (MACHINE_IS_SPECTRUM_128_P2_P2A_P3) {
+    if (puerto_32765!=nuevo_puerto_32765) {
+        printf("Hay cambio de ram y/o rom en %04XH. puerto 32765=%02XH. indice=%d\n",reg_pc,nuevo_puerto_32765,indice);
+
+        //Quitar el bit de bloqueo de paginacion si es que hay alguno ahora mismo, o no podriamos paginar
+        puerto_32765 &= (255-32);
+
+        if (MACHINE_IS_SPECTRUM_128_P2) {
+            puerto_32765=nuevo_puerto_32765;
+
+            //asignar ram
+            mem_page_ram_128k();
+
+            //asignar rom
+            mem_page_rom_128k();
+        }
+
+        else if (MACHINE_IS_SPECTRUM_P2A_P3) {
+            //asignar ram
+            mem128_p2a_write_page_port(32765,nuevo_puerto_32765);
+        }
+    }
+  }
+
+
+
+    if (MACHINE_IS_SPECTRUM_P2A_P3) {
+        if (puerto_8189!=nuevo_puerto_8189) {
+            printf("Hay cambio de rom en %04XH. puerto 8189=%02XH. indice=%d\n",reg_pc,nuevo_puerto_8189,indice);
+
+            //asignar rom
+            mem128_p2a_write_page_port(8189,nuevo_puerto_8189);
+        }
+    }
+
+
 
   //50: flags
   //Bits 0-1: sobre direcciones modificadas: 0, ninguna, 1: una direccion, 2: dos direcciones

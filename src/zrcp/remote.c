@@ -650,7 +650,8 @@ struct s_items_ayuda items_ayuda[]={
 	{"cpu-history",NULL,"action [parameter] [parameter]","Runs cpu history actions. Action and parameters are the following:\n"
 	"clear                      Clear the cpu history\n"
 	"enabled       yes|no:      Enable or disable the cpu history\n"
-	"get           index:       Get registers at position, being 0 the most recent item\n"
+	"get           index:       Get registers at position, being 0 the most recent item. This is a legacy command in order to mantain compatibility with DeZog\n"
+    "get-extended  index:       Get registers at position, being 0 the most recent item. This command includes more features than 'get'\n"
 	"get-max-size               Return maximum allowed elements in history\n"
 	"get-pc        start items: Return PC register from position start, being 0 the most recent item, total items. Goes backwards\n"
 	"get-size                   Return total elements in history\n"
@@ -1641,6 +1642,27 @@ void remote_cpu_history(int misocket,char *parameter,char *value,char *value2)
 
 			char string_destino[1024];
 			cpu_history_get_registers_element(indice_final,string_destino);
+			escribir_socket(misocket,string_destino);
+		}
+	}
+
+	else if (!strcasecmp(parameter,"get-extended")) {
+		if (cpu_history_enabled.v==0) escribir_socket(misocket,"Error. It's not enabled\n");
+		else {
+			int indice=parse_string_to_number(value);
+			int total_elementos=cpu_history_get_total_elements();
+
+			//Al solicitarlo, el 0 es el item mas reciente. el 1 es el anterior a este
+			//en cpu_history_get_registers_element se pide como: 0 es el mas antiguo
+			//Ejemplo: 10 elementos totales. Se pide por el 3.
+			//indice_final=10-3-1=7
+			//Ejemplo: 10 elementos totales. Se pide por el 9 (que sera el mas antiguo)
+			//indice_final=10-9-1=0
+			int indice_final=total_elementos-indice-1;
+
+
+			char string_destino[1024];
+			cpu_history_get_registers_extended_element(indice_final,string_destino);
 			escribir_socket(misocket,string_destino);
 		}
 	}

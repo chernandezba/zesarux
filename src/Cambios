@@ -38,6 +38,7 @@ Permitir la configuración de rebobinado automático también para cintas reales
 Permitir deshabilitar los colores de Spectrum también en el modo de video real
 Permitir presionar teclas de acceso rápido en el teclado en pantalla
 Recordar ultima ruta utilizada en cinta de salida
+Permitir restaurar MMU restore en comando ZRCP "cpu-history restore" en Spectrum 128k/+2/+2a/+3
 
 Mejorada emulación de QL:
 - Permitir autocarga al insertar mdv/flp en QL
