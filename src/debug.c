@@ -2705,7 +2705,7 @@ void reset_extended_stack(void)
 //Dado un puntero z80_byte, con contenido de registros en binario, retorna valores registros
 //Registros 16 bits guardados en little endian
 //NOTA: este comando se mantiene solo por compatibilidad con Dezog, no ampliarlo ni modificarlo para no romper la conexión con dicho programa
-void cpu_history_regs_bin_to_string(z80_byte *p,char *destino)
+void cpu_history_legacy_regs_bin_to_string(z80_byte *p,char *destino)
 {
 
     //para memoria modificada
@@ -3448,7 +3448,8 @@ int cpu_history_get_array_pos_element(int indice)
 	}
 }
 
-void cpu_history_get_registers_element(int indice,char *string_destino)
+//Nota: este comando se mantiene solo por compabilidad con Dezog (comando cpu-history get)
+void cpu_history_legacy_get_registers_element(int indice,char *string_destino)
 {
 
 	if (indice<0) {
@@ -3465,7 +3466,7 @@ void cpu_history_get_registers_element(int indice,char *string_destino)
 
 	long long int offset_memoria=cpu_history_get_offset_index(posicion);
 
-	cpu_history_regs_bin_to_string(&cpu_history_memory_buffer[offset_memoria],string_destino);
+	cpu_history_legacy_regs_bin_to_string(&cpu_history_memory_buffer[offset_memoria],string_destino);
 }
 
 void cpu_history_get_registers_extended_element(int indice,char *string_destino)
@@ -3614,7 +3615,7 @@ void cpu_history_regs_bin_restore(int indice)
 
   if (MACHINE_IS_SPECTRUM_128_P2_P2A_P3) {
     if (puerto_32765!=nuevo_puerto_32765) {
-        printf("Hay cambio de ram y/o rom en %04XH. puerto 32765=%02XH. indice=%d\n",reg_pc,nuevo_puerto_32765,indice);
+        //printf("Hay cambio de ram y/o rom en %04XH. puerto 32765=%02XH. indice=%d\n",reg_pc,nuevo_puerto_32765,indice);
 
         //Quitar el bit de bloqueo de paginacion si es que hay alguno ahora mismo, o no podriamos paginar
         puerto_32765 &= (255-32);
@@ -3640,7 +3641,7 @@ void cpu_history_regs_bin_restore(int indice)
 
     if (MACHINE_IS_SPECTRUM_P2A_P3) {
         if (puerto_8189!=nuevo_puerto_8189) {
-            printf("Hay cambio de rom en %04XH. puerto 8189=%02XH. indice=%d\n",reg_pc,nuevo_puerto_8189,indice);
+            //printf("Hay cambio de rom en %04XH. puerto 8189=%02XH. indice=%d\n",reg_pc,nuevo_puerto_8189,indice);
 
             //asignar rom
             mem128_p2a_write_page_port(8189,nuevo_puerto_8189);
@@ -3726,7 +3727,7 @@ z80_byte cpu_core_loop_history(z80_int dir GCC_UNUSED, z80_byte value GCC_UNUSED
 		//Guardar en binario
 		cpu_history_regs_to_bin(registers_history_binary);
 		//Obtener en string
-		cpu_history_regs_bin_to_string(registers_history_binary,registros_history_string);
+		cpu_history_legacy_regs_bin_to_string(registers_history_binary,registros_history_string);
 		printf ("Newbin registers: %s\n",registros_history_string);
 		*/
 

@@ -7322,7 +7322,7 @@ void menu_debug_cpu_history_select(MENU_ITEM_PARAMETERS)
 
 
     char string_destino_registros[1024];
-    cpu_history_get_registers_element(valor_opcion,string_destino_registros);
+    cpu_history_get_registers_extended_element(valor_opcion,string_destino_registros);
 
 
     char string_destino_pc[64];

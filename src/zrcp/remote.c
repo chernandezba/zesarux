@@ -1641,7 +1641,7 @@ void remote_cpu_history(int misocket,char *parameter,char *value,char *value2)
 
 
 			char string_destino[1024];
-			cpu_history_get_registers_element(indice_final,string_destino);
+			cpu_history_legacy_get_registers_element(indice_final,string_destino);
 			escribir_socket(misocket,string_destino);
 		}
 	}

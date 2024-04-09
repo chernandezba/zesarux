@@ -529,7 +529,8 @@ extern z80_bit cpu_history_started;
 #define CPU_HISTORY_MAX_ALLOWED_ELEMENTS 10000000
 //10 millones
 
-extern void cpu_history_get_registers_element(int indice,char *string_destino);
+extern void cpu_history_legacy_get_registers_element(int indice,char *string_destino);
+extern void cpu_history_get_registers_extended_element(int indice,char *string_destino);
 extern int cpu_history_get_total_elements(void);
 extern int cpu_history_get_max_size(void);
 extern void reset_cpu_core_history(void);
