@@ -345,27 +345,9 @@ z80_byte msx_read_vram_byte(z80_int address)
     return msx_vram_memory[address & 16383];
 }
 
-
-
-void msx_insert_rom_cartridge(char *filename)
+void msx_insert_rom_cartridge_no_mapper(char *filename,long tamanyo_archivo)
 {
 
-	debug_printf(VERBOSE_INFO,"Inserting msx rom cartridge %s",filename);
-
-    //De momento quitar toda info de cartucho
-    msx_empty_romcartridge_space();
-
-    if (!si_existe_archivo(filename)) {
-        debug_printf(VERBOSE_ERR,"File %s not found",filename);
-        return;
-    }
-
-    long tamanyo_archivo=get_file_size(filename);
-
-    if (tamanyo_archivo!=8192 && tamanyo_archivo!=16384 && tamanyo_archivo!=32768 && tamanyo_archivo!=49152) {
-        debug_printf(VERBOSE_ERR,"Only 8k, 16k, 32k and 48k rom cartridges are allowed");
-        return;
-    }
 
         FILE *ptr_cartridge;
         ptr_cartridge=fopen(filename,"rb");
@@ -390,6 +372,7 @@ void msx_insert_rom_cartridge(char *filename)
 
 /*
 If you go to 48K, use the extra 16K in page 0, not in page 3.
+Ejemplo de cartucho de 48K: Trucho Demo
 */
 
     if (tamanyo_archivo==49152) {
@@ -457,6 +440,31 @@ When the system finds a header, it selects the ROM slot only on the memory page 
         }
 
     msx_cartridge_inserted.v=1;
+
+}
+
+void msx_insert_rom_cartridge(char *filename)
+{
+
+	debug_printf(VERBOSE_INFO,"Inserting msx rom cartridge %s",filename);
+
+    //De momento quitar toda info de cartucho
+    msx_empty_romcartridge_space();
+
+    if (!si_existe_archivo(filename)) {
+        debug_printf(VERBOSE_ERR,"File %s not found",filename);
+        return;
+    }
+
+    long tamanyo_archivo=get_file_size(filename);
+
+    if (tamanyo_archivo!=8192 && tamanyo_archivo!=16384 && tamanyo_archivo!=32768 && tamanyo_archivo!=49152) {
+        debug_printf(VERBOSE_ERR,"Only 8k, 16k, 32k and 48k rom cartridges are allowed");
+        return;
+    }
+
+    msx_insert_rom_cartridge_no_mapper(filename,tamanyo_archivo);
+
 
 }
 

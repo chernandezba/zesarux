@@ -877,4 +877,5 @@ O quiza que salte al menu con la linea de opcion seleccionada donde corresponde
 
 -comentar desensamblado copion9
 
--soportar cartuchos msx de 48kb (Trucho Demo)
+-soportar cartuchos msx de 64kb (Dustin por ejemplo, usa el ascii 16kb mapper)
+http://bifi.msxnet.org/msxnet/tech/megaroms#ascii16
