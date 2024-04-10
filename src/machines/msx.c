@@ -67,6 +67,17 @@ const char *msx_string_memory_type_rom="ROM";
 const char *msx_string_memory_type_ram="RAM";
 const char *msx_string_memory_type_empty="EMPTY";
 
+
+//0=no mapper
+//1=ascii 16kb mapper
+int msx_mapper_type=0;
+
+//bancos para el mapper ascii_16kb
+//para el segmento 4000h y el 8000h
+int msx_mapper_ascii_16kb_pages[2];
+
+z80_byte *msx_assigned_memory_mapper=NULL;
+
 char *msx_get_string_memory_type(int tipo)
 {
 
@@ -123,12 +134,30 @@ z80_byte *msx_return_segment_address(z80_int direccion,int *tipo)
     slot &=3;
 
 
-
     *tipo=msx_memory_slots[slot][segmento];
+
+    //if (msx_mapper_type && slot==1) printf("hay mapper. slot=%d tipo=%d\n",slot,*tipo);
 
     int offset=((slot*4)+segmento)*16384;
 
     //if (slot>0) printf ("direccion %6d segmento %d slot %d offset %d\n",direccion,segmento,slot,offset);
+
+    if (msx_mapper_type && (*tipo)==MSX_SLOT_MEMORY_TYPE_ROM) {
+        //Hay un mapper
+        //printf("hay mapper\n");
+
+        //Ascii 16kb
+        if (msx_mapper_type==1 && slot==1) {
+            if (segmento==1 || segmento==2) {
+
+                int indice=segmento-1;
+                int bloque_cartucho=msx_mapper_ascii_16kb_pages[indice];
+                //printf("Retornando dir %04XH de memory mapper de bloque %d\n",direccion,bloque_cartucho);
+                return &msx_assigned_memory_mapper[bloque_cartucho*16384+(direccion&16383)];
+            }
+        }
+    }
+
 
     return &memoria_spectrum[offset+(direccion&16383)];
 
@@ -345,9 +374,57 @@ z80_byte msx_read_vram_byte(z80_int address)
     return msx_vram_memory[address & 16383];
 }
 
+void msx_insert_rom_cartridge_mapper_ascii_16kb(char *filename,long tamanyo_archivo)
+{
+
+    printf("Loading cartridge using memory mapper ascii 16kb\n");
+   msx_mapper_type=1;
+
+        FILE *ptr_cartridge;
+        ptr_cartridge=fopen(filename,"rb");
+
+        if (!ptr_cartridge) {
+		debug_printf (VERBOSE_ERR,"Unable to open cartridge file %s",filename);
+                return;
+        }
+
+    //Vamos a asignar memoria para almacenar ese cartucho
+    if (msx_assigned_memory_mapper!=NULL) free (msx_assigned_memory_mapper);
+
+    msx_assigned_memory_mapper=util_malloc(tamanyo_archivo,"Can not assign memory for rom cartridge");
+
+	int leidos=fread(msx_assigned_memory_mapper,1,tamanyo_archivo,ptr_cartridge);
+
+
+    msx_memory_slots[1][1]=MSX_SLOT_MEMORY_TYPE_ROM;
+    msx_memory_slots[1][2]=MSX_SLOT_MEMORY_TYPE_ROM;
+
+
+    msx_mapper_ascii_16kb_pages[0]=0;
+    msx_mapper_ascii_16kb_pages[1]=1;
+
+
+
+    //int i;
+
+
+        fclose(ptr_cartridge);
+
+
+        if (noautoload.v==0) {
+                debug_printf (VERBOSE_INFO,"Reset cpu due to autoload");
+                reset_cpu();
+        }
+
+    msx_cartridge_inserted.v=1;
+
+}
+
 void msx_insert_rom_cartridge_no_mapper(char *filename,long tamanyo_archivo)
 {
 
+    printf("Loading rom cartridge with no mapper\n");
+    msx_mapper_type=0;
 
         FILE *ptr_cartridge;
         ptr_cartridge=fopen(filename,"rb");
@@ -458,6 +535,12 @@ void msx_insert_rom_cartridge(char *filename)
 
     long tamanyo_archivo=get_file_size(filename);
 
+    //si cartucho 64kb activamos automapper ascii 16kb
+    if (tamanyo_archivo==65536) {
+        msx_insert_rom_cartridge_mapper_ascii_16kb(filename,tamanyo_archivo);
+        return;
+    }
+
     if (tamanyo_archivo!=8192 && tamanyo_archivo!=16384 && tamanyo_archivo!=32768 && tamanyo_archivo!=49152) {
         debug_printf(VERBOSE_ERR,"Only 8k, 16k, 32k and 48k rom cartridges are allowed");
         return;
@@ -478,6 +561,7 @@ void msx_empty_romcartridge_space(void)
     }
 
     msx_cartridge_inserted.v=0;
+    msx_mapper_type=0;
 
 }
 

@@ -71,4 +71,8 @@ extern void msx_cas_load(void);
 extern z80_bit msx_cartridge_inserted;
 extern z80_byte msx_read_psg(void);
 
+extern int msx_mapper_type;
+
+extern int msx_mapper_ascii_16kb_pages[];
+
 #endif

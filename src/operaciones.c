@@ -1552,6 +1552,29 @@ void poke_byte_no_time_msx1(z80_int dir,z80_byte valor)
 
 	puntero_memoria=msx_return_segment_address(dir,&tipo);
 
+    //Si hay automapper...
+    if (tipo==MSX_SLOT_MEMORY_TYPE_ROM && msx_mapper_type) {
+        if (msx_mapper_type==1) {
+            //ascii 16kb
+            /*
+            And the address to change banks:
+
+	Bank 1: 6000h - 67FFh (6000h used)
+	Bank 2: 7000h - 77FFh (7000h and 77FFh used)
+            */
+           if (dir>=0x6000 && dir<=0x67ff) {
+                printf("Mapping Segment %d on Bank 1\n",valor);
+                msx_mapper_ascii_16kb_pages[0]=valor;
+           }
+
+           if (dir>=0x7000 && dir<=0x77ff) {
+                printf("Mapping Segment %d on Bank 2\n",valor);
+                msx_mapper_ascii_16kb_pages[1]=valor;
+           }
+        }
+    }
+
+
 	//Si esta vacio o es ROM, no hacer nada. O sea, si no es RAM
 	if (tipo!=MSX_SLOT_MEMORY_TYPE_RAM) return;
 

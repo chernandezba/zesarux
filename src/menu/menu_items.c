@@ -32139,6 +32139,23 @@ void menu_msxcart(MENU_ITEM_PARAMETERS)
 
                 }
 
+                if (MACHINE_IS_MSX && msx_cartridge_inserted.v) {
+
+
+                    char buf_mapper_type[33];
+
+                    //Por defecto
+                    strcpy(buf_mapper_type,"None");
+
+                    if (msx_mapper_type==1) strcpy(buf_mapper_type,"Ascii 16kb");
+
+
+                    menu_add_item_menu_format(array_menu_msxcart,MENU_OPCION_SEPARADOR,NULL,NULL,"[%s] Mapper type",buf_mapper_type);
+
+                    menu_add_item_menu(array_menu_msxcart,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+
+                }
+
                 //en SMS , solo deja eject si hay algo insertado
                 //TODO: hacerlo igual en el resto de maquinas?
                 if (MACHINE_IS_SMS) {
