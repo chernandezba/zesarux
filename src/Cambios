@@ -35,6 +35,7 @@ Permitir la configuración de rebobinado automático también para cintas reales
 Permitir deshabilitar los colores de Spectrum también en el modo de video real
 Permitir presionar teclas de acceso rápido en el teclado en pantalla
 Recordar ultima ruta utilizada en cinta de salida
+Permitir cargar cartuchos de MSX de 48kB
 
 Mejorado ZRCP:
 - Se agregó una función de menú para sincronizar la instantánea local con la remota usando ZRCP

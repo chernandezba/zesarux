@@ -352,6 +352,9 @@ void msx_insert_rom_cartridge(char *filename)
 
 	debug_printf(VERBOSE_INFO,"Inserting msx rom cartridge %s",filename);
 
+    //De momento quitar toda info de cartucho
+    msx_empty_romcartridge_space();
+
     if (!si_existe_archivo(filename)) {
         debug_printf(VERBOSE_ERR,"File %s not found",filename);
         return;
@@ -359,8 +362,8 @@ void msx_insert_rom_cartridge(char *filename)
 
     long tamanyo_archivo=get_file_size(filename);
 
-    if (tamanyo_archivo!=8192 && tamanyo_archivo!=16384 && tamanyo_archivo!=32768) {
-        debug_printf(VERBOSE_ERR,"Only 8k, 16k and 32k rom cartridges are allowed");
+    if (tamanyo_archivo!=8192 && tamanyo_archivo!=16384 && tamanyo_archivo!=32768 && tamanyo_archivo!=49152) {
+        debug_printf(VERBOSE_ERR,"Only 8k, 16k, 32k and 48k rom cartridges are allowed");
         return;
     }
 
@@ -382,7 +385,20 @@ void msx_insert_rom_cartridge(char *filename)
 
     int bloques_totales=0;
 
-	for (bloque=0;bloque<2 && !salir;bloque++) {
+
+    int bloque_inicial=1;
+
+/*
+If you go to 48K, use the extra 16K in page 0, not in page 3.
+*/
+
+    if (tamanyo_archivo==49152) {
+        bloque_inicial=0;
+    }
+
+    int offset_inicial=bloque_inicial*16384;
+
+	for (bloque=0;bloque<3 && !salir;bloque++) {
         /*
         The ROM Header
 
@@ -395,9 +411,9 @@ When the system finds a header, it selects the ROM slot only on the memory page 
 
         */
         int offset=65536+bloque*16384;
-		int leidos=fread(&memoria_spectrum[offset+16384],1,16384,ptr_cartridge);
+		int leidos=fread(&memoria_spectrum[offset+offset_inicial],1,16384,ptr_cartridge);
         if (leidos==16384) {
-            msx_memory_slots[1][1+bloque]=MSX_SLOT_MEMORY_TYPE_ROM;
+            msx_memory_slots[1][bloque_inicial+bloque]=MSX_SLOT_MEMORY_TYPE_ROM;
             debug_printf (VERBOSE_INFO,"Loaded 16kb bytes of rom at slot 1 block %d",bloque);
 
             bloques_totales++;

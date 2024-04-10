@@ -35,6 +35,7 @@ Allow autorewind setting for real tape too
 Allow to disable Spectrum colours on real video mode too
 Allow to press hotkeys at On Screen Keyboard
 Remember last path used on output tape
+Allow to load 48kB MSX cartridges
 
 Improved ZRCP:
 - Added menu function to sync local snapshot to remote using ZRCP
