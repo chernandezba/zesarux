@@ -36,7 +36,7 @@ Allow to disable Spectrum colours on real video mode too
 Allow to press hotkeys at On Screen Keyboard
 Remember last path used on output tape
 Allow to load 48kB MSX cartridges
-Allow to load 64kB MSX cartridges (memory mapper Ascii 16kb)
+Allow to load MSX cartridges with memory mapper Ascii 16kb
 
 Improved ZRCP:
 - Added menu function to sync local snapshot to remote using ZRCP
