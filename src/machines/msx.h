@@ -75,4 +75,9 @@ extern int msx_mapper_type;
 
 extern int msx_mapper_ascii_16kb_pages[];
 
+#define MSX_MAPPER_TYPE_NONE 0
+
+//Ejemplos: Dustin, Head Over Heels, Light Corridor
+#define MSX_MAPPER_TYPE_ASCII_16KB 1
+
 #endif

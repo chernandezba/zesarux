@@ -1553,8 +1553,8 @@ void poke_byte_no_time_msx1(z80_int dir,z80_byte valor)
 	puntero_memoria=msx_return_segment_address(dir,&tipo);
 
     //Si hay automapper...
-    if (tipo==MSX_SLOT_MEMORY_TYPE_ROM && msx_mapper_type) {
-        if (msx_mapper_type==1) {
+    if (tipo==MSX_SLOT_MEMORY_TYPE_ROM && msx_mapper_type!=MSX_MAPPER_TYPE_NONE) {
+        if (msx_mapper_type==MSX_MAPPER_TYPE_ASCII_16KB) {
             //ascii 16kb
             /*
             And the address to change banks:

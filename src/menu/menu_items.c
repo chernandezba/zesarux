@@ -32147,7 +32147,7 @@ void menu_msxcart(MENU_ITEM_PARAMETERS)
                     //Por defecto
                     strcpy(buf_mapper_type,"None");
 
-                    if (msx_mapper_type==1) strcpy(buf_mapper_type,"Ascii 16kb");
+                    if (msx_mapper_type==MSX_MAPPER_TYPE_ASCII_16KB) strcpy(buf_mapper_type,"Ascii 16kb");
 
 
                     menu_add_item_menu_format(array_menu_msxcart,MENU_OPCION_SEPARADOR,NULL,NULL,"[%s] Mapper type",buf_mapper_type);

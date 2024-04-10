@@ -70,7 +70,7 @@ const char *msx_string_memory_type_empty="EMPTY";
 
 //0=no mapper
 //1=ascii 16kb mapper
-int msx_mapper_type=0;
+int msx_mapper_type=MSX_MAPPER_TYPE_NONE;
 
 //bancos para el mapper ascii_16kb
 //para el segmento 4000h y el 8000h
@@ -142,12 +142,12 @@ z80_byte *msx_return_segment_address(z80_int direccion,int *tipo)
 
     //if (slot>0) printf ("direccion %6d segmento %d slot %d offset %d\n",direccion,segmento,slot,offset);
 
-    if (msx_mapper_type && (*tipo)==MSX_SLOT_MEMORY_TYPE_ROM) {
+    if (msx_mapper_type!=MSX_MAPPER_TYPE_NONE && (*tipo)==MSX_SLOT_MEMORY_TYPE_ROM) {
         //Hay un mapper
         //printf("hay mapper\n");
 
         //Ascii 16kb
-        if (msx_mapper_type==1 && slot==1) {
+        if (msx_mapper_type==MSX_MAPPER_TYPE_ASCII_16KB && slot==1) {
             if (segmento==1 || segmento==2) {
 
                 int indice=segmento-1;
@@ -378,7 +378,7 @@ void msx_insert_rom_cartridge_mapper_ascii_16kb(char *filename,long tamanyo_arch
 {
 
     printf("Loading cartridge using memory mapper ascii 16kb\n");
-   msx_mapper_type=1;
+   msx_mapper_type=MSX_MAPPER_TYPE_ASCII_16KB;
 
         FILE *ptr_cartridge;
         ptr_cartridge=fopen(filename,"rb");
@@ -424,7 +424,7 @@ void msx_insert_rom_cartridge_no_mapper(char *filename,long tamanyo_archivo)
 {
 
     printf("Loading rom cartridge with no mapper\n");
-    msx_mapper_type=0;
+    msx_mapper_type=MSX_MAPPER_TYPE_NONE;
 
         FILE *ptr_cartridge;
         ptr_cartridge=fopen(filename,"rb");
@@ -561,7 +561,7 @@ void msx_empty_romcartridge_space(void)
     }
 
     msx_cartridge_inserted.v=0;
-    msx_mapper_type=0;
+    msx_mapper_type=MSX_MAPPER_TYPE_NONE;
 
 }
 
