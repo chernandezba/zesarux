@@ -878,7 +878,8 @@ O quiza que salte al menu con la linea de opcion seleccionada donde corresponde
 -comentar desensamblado copion9
 
 -pendiente keyboard help
-cpc 6128, 664
+cpc 6128, 664,
+pcw,
 tbblue
 tsconf
 zxuno
@@ -886,3 +887,4 @@ prism
 sam coupe
 chloe
 spectravideo
+zx evolution
