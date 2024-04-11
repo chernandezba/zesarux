@@ -1564,12 +1564,71 @@ void poke_byte_no_time_msx1(z80_int dir,z80_byte valor)
             */
            if (dir>=0x6000 && dir<=0x67ff) {
                 printf("Mapping Segment %d on Bank 1\n",valor);
-                msx_mapper_ascii_16kb_pages[0]=valor;
+                msx_mapper_rom_cartridge_pages[0]=valor;
            }
 
            if (dir>=0x7000 && dir<=0x77ff) {
                 printf("Mapping Segment %d on Bank 2\n",valor);
-                msx_mapper_ascii_16kb_pages[1]=valor;
+                msx_mapper_rom_cartridge_pages[1]=valor;
+           }
+        }
+
+        if (msx_mapper_type==MSX_MAPPER_TYPE_ASCII_8KB) {
+            //ascii 8kb
+            /*
+	Bank 1: 6000h - 67FFh (6000h used)
+	Bank 2: 6800h - 6FFFh (6800h used)
+	Bank 3: 7000h - 77FFh (7000h used)
+	Bank 4: 7800h - 7FFFh (7800h used)
+            */
+           if (dir>=0x6000 && dir<=0x67ff) {
+                printf("Mapping Segment %d on Bank 1\n",valor);
+                msx_mapper_rom_cartridge_pages[0]=valor;
+           }
+
+           if (dir>=0x6800 && dir<=0x6FFF) {
+                printf("Mapping Segment %d on Bank 2\n",valor);
+                msx_mapper_rom_cartridge_pages[1]=valor;
+           }
+
+           if (dir>=0x7000 && dir<=0x77ff) {
+                printf("Mapping Segment %d on Bank 3\n",valor);
+                msx_mapper_rom_cartridge_pages[2]=valor;
+           }
+
+           if (dir>=0x7800 && dir<=0x7FFF) {
+                printf("Mapping Segment %d on Bank 4\n",valor);
+                msx_mapper_rom_cartridge_pages[3]=valor;
+           }
+        }
+
+        if (msx_mapper_type==MSX_MAPPER_TYPE_KONAMI_MEGAROM_WITHOUT_SCC) {
+            /*
+And the address to change banks:
+
+	Bank 1: <none>
+	Bank 2: 6000h - 7FFFh (6000h used)
+	Bank 3: 8000h - 9FFFh (8000h used)
+	Bank 4: A000h - BFFFh (A000h used)
+            */
+           /*if (dir>=0x6000 && dir<=0x67ff) {
+                printf("Mapping Segment %d on Bank 1\n",valor);
+                msx_mapper_rom_cartridge_pages[0]=valor;
+           }*/
+
+           if (dir>=0x6000 && dir<=0x7FFF) {
+                printf("Mapping Segment %d on Bank 2\n",valor);
+                msx_mapper_rom_cartridge_pages[1]=valor;
+           }
+
+           if (dir>=0x8000 && dir<=0x9fff) {
+                printf("Mapping Segment %d on Bank 3\n",valor);
+                msx_mapper_rom_cartridge_pages[2]=valor;
+           }
+
+           if (dir>=0xa000 && dir<=0xbFFF) {
+                printf("Mapping Segment %d on Bank 4\n",valor);
+                msx_mapper_rom_cartridge_pages[3]=valor;
            }
         }
     }

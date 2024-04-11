@@ -68,13 +68,11 @@ const char *msx_string_memory_type_ram="RAM";
 const char *msx_string_memory_type_empty="EMPTY";
 
 
-//0=no mapper
-//1=ascii 16kb mapper
 int msx_mapper_type=MSX_MAPPER_TYPE_NONE;
 
-//bancos para el mapper ascii_16kb
-//para el segmento 4000h y el 8000h
-int msx_mapper_ascii_16kb_pages[2];
+//bancos para el mapper
+//Por ejemplo posiciones 0 y 1 de ascii_16kb es para el segmento 4000h y el 8000h
+int msx_mapper_rom_cartridge_pages[4];
 
 z80_byte *msx_assigned_memory_mapper=NULL;
 int msx_mapper_cartridge_size=0;
@@ -147,20 +145,60 @@ z80_byte *msx_return_segment_address(z80_int direccion,int *tipo)
         //Hay un mapper
         //printf("hay mapper\n");
 
-        //Ascii 16kb
-        if (msx_mapper_type==MSX_MAPPER_TYPE_ASCII_16KB && slot==1) {
-            if (segmento==1 || segmento==2) {
+        if (slot==1) {
 
-                int indice=segmento-1;
-                int bloque_cartucho=msx_mapper_ascii_16kb_pages[indice];
+            //Ascii 16kb
+            if (msx_mapper_type==MSX_MAPPER_TYPE_ASCII_16KB) {
+                if (segmento==1 || segmento==2) {
 
-                //limitar
-                int max_bloque=msx_mapper_cartridge_size/16384;
-                bloque_cartucho &=(max_bloque-1);
+                    int indice_bloque_16kb=segmento-1;
+                    int bloque_cartucho_16kb=msx_mapper_rom_cartridge_pages[indice_bloque_16kb];
 
-                //printf("Retornando dir %04XH de memory mapper de bloque %d\n",direccion,bloque_cartucho);
-                return &msx_assigned_memory_mapper[bloque_cartucho*16384+(direccion&16383)];
+                    //limitar
+                    int total_bloques_cartucho=msx_mapper_cartridge_size/16384;
+                    bloque_cartucho_16kb=bloque_cartucho_16kb % total_bloques_cartucho;
+
+                    //printf("Retornando dir %04XH de memory mapper de bloque %d\n",direccion,bloque_cartucho);
+                    return &msx_assigned_memory_mapper[bloque_cartucho_16kb*16384+(direccion&16383)];
+                }
             }
+
+            //Ascii 8kb
+            if (msx_mapper_type==MSX_MAPPER_TYPE_ASCII_8KB) {
+                if (segmento==1 || segmento==2) {
+
+                    int segmento_8kb=(direccion-16384)/8192;
+
+                    int indice_bloque_8kb=segmento_8kb;
+                    int bloque_cartucho_8kb=msx_mapper_rom_cartridge_pages[indice_bloque_8kb];
+
+                    //limitar
+                    int total_bloques_cartucho=msx_mapper_cartridge_size/8192;
+                    bloque_cartucho_8kb=bloque_cartucho_8kb % total_bloques_cartucho;
+
+                    //printf("Retornando dir %04XH de memory mapper de bloque %d\n",direccion,bloque_cartucho);
+                    return &msx_assigned_memory_mapper[bloque_cartucho_8kb*8192+(direccion&8191)];
+                }
+            }
+
+            //Konami megarom without scc
+            if (msx_mapper_type==MSX_MAPPER_TYPE_KONAMI_MEGAROM_WITHOUT_SCC) {
+                if (segmento==1 || segmento==2) {
+
+                    int segmento_8kb=(direccion-16384)/8192;
+
+                    int indice_bloque_8kb=segmento_8kb;
+                    int bloque_cartucho_8kb=msx_mapper_rom_cartridge_pages[indice_bloque_8kb];
+
+                    //limitar
+                    int total_bloques_cartucho=msx_mapper_cartridge_size/8192;
+                    bloque_cartucho_8kb=bloque_cartucho_8kb % total_bloques_cartucho;
+
+                    //printf("Retornando dir %04XH de memory mapper de bloque %d\n",direccion,bloque_cartucho);
+                    return &msx_assigned_memory_mapper[bloque_cartucho_8kb*8192+(direccion&8191)];
+                }
+            }
+
         }
     }
 
@@ -212,6 +250,12 @@ void msx_reset(void)
     int i;
 
     for (i=0;i<16384;i++) msx_vram_memory[i]=0;
+
+    //Indices comunes a todos los mappers: ascii 16kb, ascii 8kb, etc
+    msx_mapper_rom_cartridge_pages[0]=0;
+    msx_mapper_rom_cartridge_pages[1]=1;
+    msx_mapper_rom_cartridge_pages[2]=2;
+    msx_mapper_rom_cartridge_pages[3]=3;
 
 }
 
@@ -380,12 +424,8 @@ z80_byte msx_read_vram_byte(z80_int address)
     return msx_vram_memory[address & 16383];
 }
 
-void msx_insert_rom_cartridge_mapper_ascii_16kb(char *filename,long tamanyo_archivo)
+void msx_insert_rom_load_mapper_common(char *filename,long tamanyo_archivo)
 {
-
-    printf("Loading cartridge using memory mapper ascii 16kb\n");
-   msx_mapper_type=MSX_MAPPER_TYPE_ASCII_16KB;
-
         FILE *ptr_cartridge;
         ptr_cartridge=fopen(filename,"rb");
 
@@ -401,22 +441,13 @@ void msx_insert_rom_cartridge_mapper_ascii_16kb(char *filename,long tamanyo_arch
 
     msx_mapper_cartridge_size=tamanyo_archivo;
 
-	int leidos=fread(msx_assigned_memory_mapper,1,tamanyo_archivo,ptr_cartridge);
+	fread(msx_assigned_memory_mapper,1,tamanyo_archivo,ptr_cartridge);
 
+    fclose(ptr_cartridge);
 
     msx_memory_slots[1][1]=MSX_SLOT_MEMORY_TYPE_ROM;
     msx_memory_slots[1][2]=MSX_SLOT_MEMORY_TYPE_ROM;
 
-
-    msx_mapper_ascii_16kb_pages[0]=0;
-    msx_mapper_ascii_16kb_pages[1]=1;
-
-
-
-    //int i;
-
-
-        fclose(ptr_cartridge);
 
 
         if (noautoload.v==0) {
@@ -427,6 +458,8 @@ void msx_insert_rom_cartridge_mapper_ascii_16kb(char *filename,long tamanyo_arch
     msx_cartridge_inserted.v=1;
 
 }
+
+
 
 void msx_insert_rom_cartridge_no_mapper(char *filename,long tamanyo_archivo)
 {
@@ -545,12 +578,17 @@ void msx_insert_rom_cartridge(char *filename)
 
     //si cartucho>= 64kb activamos automapper ascii 16kb
     if (tamanyo_archivo>=65536) {
-        msx_insert_rom_cartridge_mapper_ascii_16kb(filename,tamanyo_archivo);
+        printf("Loading cartridge using memory mapper. Assuming defaults ascii 16kb\n");
+
+        msx_insert_rom_load_mapper_common(filename,tamanyo_archivo);
+
+        //Aqui habria que hacer autodeteccion del mapper. De momento asumimos ese
+        msx_mapper_type=MSX_MAPPER_TYPE_ASCII_16KB;
         return;
     }
 
     if (tamanyo_archivo!=8192 && tamanyo_archivo!=16384 && tamanyo_archivo!=32768 && tamanyo_archivo!=49152) {
-        debug_printf(VERBOSE_ERR,"Only 8k, 16k, 32k and 48k rom cartridges are allowed");
+        debug_printf(VERBOSE_ERR,"If rom cartridge is smaller than 64kb, only 8k, 16k, 32k and 48k rom cartridges are allowed");
         return;
     }
 

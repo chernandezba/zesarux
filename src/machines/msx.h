@@ -73,11 +73,17 @@ extern z80_byte msx_read_psg(void);
 
 extern int msx_mapper_type;
 
-extern int msx_mapper_ascii_16kb_pages[];
+extern int msx_mapper_rom_cartridge_pages[];
 
 #define MSX_MAPPER_TYPE_NONE 0
 
 //Ejemplos: Dustin, Head Over Heels, Light Corridor
 #define MSX_MAPPER_TYPE_ASCII_16KB 1
+
+//Ejemplo: Abu simbel, The Fantasm Soldier Valis
+#define MSX_MAPPER_TYPE_ASCII_8KB 2
+
+//Gradius
+#define MSX_MAPPER_TYPE_KONAMI_MEGAROM_WITHOUT_SCC 3
 
 #endif

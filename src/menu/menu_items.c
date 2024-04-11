@@ -32103,6 +32103,16 @@ void menu_sms_mapper_cartridge_size(MENU_ITEM_PARAMETERS)
 
 }
 
+void menu_msx_mapper_type(MENU_ITEM_PARAMETERS)
+{
+    msx_mapper_type++;
+
+    if (msx_mapper_type>MSX_MAPPER_TYPE_KONAMI_MEGAROM_WITHOUT_SCC) msx_mapper_type=MSX_MAPPER_TYPE_NONE;
+
+    reset_cpu();
+
+}
+
 void menu_msxcart(MENU_ITEM_PARAMETERS)
 {
 
@@ -32142,15 +32152,17 @@ void menu_msxcart(MENU_ITEM_PARAMETERS)
                 if (MACHINE_IS_MSX && msx_cartridge_inserted.v) {
 
 
-                    char buf_mapper_type[33];
+                    char buf_mapper_type[100];
 
                     //Por defecto
                     strcpy(buf_mapper_type,"None");
 
                     if (msx_mapper_type==MSX_MAPPER_TYPE_ASCII_16KB) strcpy(buf_mapper_type,"Ascii 16kb");
+                    if (msx_mapper_type==MSX_MAPPER_TYPE_ASCII_8KB) strcpy(buf_mapper_type,"Ascii 8kb");
+                    if (msx_mapper_type==MSX_MAPPER_TYPE_KONAMI_MEGAROM_WITHOUT_SCC) strcpy(buf_mapper_type,"Konami without SCC");
 
 
-                    menu_add_item_menu_format(array_menu_msxcart,MENU_OPCION_SEPARADOR,NULL,NULL,"[%s] Mapper type",buf_mapper_type);
+                    menu_add_item_menu_format(array_menu_msxcart,MENU_OPCION_NORMAL,menu_msx_mapper_type,NULL,"[%s] Mapper type",buf_mapper_type);
 
                     menu_add_item_menu(array_menu_msxcart,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 

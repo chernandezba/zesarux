@@ -877,5 +877,13 @@ O quiza que salte al menu con la linea de opcion seleccionada donde corresponde
 
 -comentar desensamblado copion9
 
--soportar restaurar snapshots msx cuando hay cartuchos msx de 64kb insertados
--soportar restaurar snapshots msx cuando hay cartuchos msx de 48kb insertados. Esto ya va?
+-pendiente keyboard help
+cpc 464
+cpc 6128, 664
+tbblue
+tsconf
+zxuno
+prism
+sam coupe
+chloe
+spectravideo
