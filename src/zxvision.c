@@ -26050,6 +26050,8 @@ void set_welcome_message(void)
 	set_splash_zesarux_logo();
     menu_splash_segundos=5;
 
+    if (opcion_fast_welcome_message.v) set_fast_splash_zesarux_logo();
+
     set_splash_zesarux_logo_paso(splash_zesarux_logo_paso);
 
 

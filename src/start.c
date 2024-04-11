@@ -1173,6 +1173,7 @@ printf("\n"
 		"--no-cpu-temp                                  Do not show host CPU temperature on footer\n"
 		"--no-fps                                       Do not show FPS on footer\n"
         "--nowelcomemessage                             Disable welcome message\n"
+        "--fastwelcomemessage                           Sets fast welcome message\n"
         "--enable-xanniversary-logo                     Enable X Anniversary logo (enabled by default only on X version)\n"
         "--disable-xanniversary-logo                    Disable X Anniversary logo. It's the default behaviour, only kept here for backwards compatibility\n"
         "--disablemenufileutils                         Disable File Utilities menu\n"
@@ -4847,6 +4848,10 @@ int parse_cmdline_options(int desde_commandline) {
 			else if (!strcmp(argv[puntero_parametro],"--nowelcomemessage")) {
                                 opcion_no_welcome_message.v=1;
 			}
+
+            else if (!strcmp(argv[puntero_parametro],"--fastwelcomemessage")) {
+                opcion_fast_welcome_message.v=1;
+            }
 
             else if (!strcmp(argv[puntero_parametro],"--enable-xanniversary-logo")) {
                 xanniversary_logo.v=1;
