@@ -375,6 +375,9 @@ z80_bit zxdesktop_icon_show_app_open={1};
 // General Settings
 //
 
+//fast welcome message
+z80_bit opcion_fast_welcome_message={0};
+
 int gui_language=GUI_LANGUAGE_DEFAULT;
 
 //Ruta de guardado de descargas juegos

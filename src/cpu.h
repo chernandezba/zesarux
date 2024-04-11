@@ -670,7 +670,7 @@ extern int last_alto_ventana;
 
 extern z80_bit cambio_parametros_maquinas_lentas;
 extern z80_bit opcion_no_welcome_message;
-extern z80_bit opcion_fast_welcome_message;
+
 
 
 

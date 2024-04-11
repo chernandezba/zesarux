@@ -3970,8 +3970,7 @@ Total 20 pages=320 Kb
 //char *param_custom_romfile=NULL;
 z80_bit opcion_no_welcome_message;
 
-//fast welcome message
-z80_bit opcion_fast_welcome_message={0};
+
 
 
 //cuantos botones-joystick a teclas definidas
