@@ -669,7 +669,7 @@ extern int last_ancho_ventana;
 extern int last_alto_ventana;
 
 extern z80_bit cambio_parametros_maquinas_lentas;
-extern z80_bit opcion_no_welcome_message;
+
 
 
 

@@ -3968,7 +3968,7 @@ Total 20 pages=320 Kb
 
 
 //char *param_custom_romfile=NULL;
-z80_bit opcion_no_welcome_message;
+
 
 
 
