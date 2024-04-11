@@ -1563,12 +1563,12 @@ void poke_byte_no_time_msx1(z80_int dir,z80_byte valor)
 	Bank 2: 7000h - 77FFh (7000h and 77FFh used)
             */
            if (dir>=0x6000 && dir<=0x67ff) {
-                printf("Mapping Segment %d on Bank 1\n",valor);
+                //printf("Mapping Segment %d on Bank 1\n",valor);
                 msx_mapper_rom_cartridge_pages[0]=valor;
            }
 
            if (dir>=0x7000 && dir<=0x77ff) {
-                printf("Mapping Segment %d on Bank 2\n",valor);
+                //printf("Mapping Segment %d on Bank 2\n",valor);
                 msx_mapper_rom_cartridge_pages[1]=valor;
            }
         }
@@ -1582,22 +1582,22 @@ void poke_byte_no_time_msx1(z80_int dir,z80_byte valor)
 	Bank 4: 7800h - 7FFFh (7800h used)
             */
            if (dir>=0x6000 && dir<=0x67ff) {
-                printf("Mapping Segment %d on Bank 1\n",valor);
+                //printf("Mapping Segment %d on Bank 1\n",valor);
                 msx_mapper_rom_cartridge_pages[0]=valor;
            }
 
            if (dir>=0x6800 && dir<=0x6FFF) {
-                printf("Mapping Segment %d on Bank 2\n",valor);
+                //printf("Mapping Segment %d on Bank 2\n",valor);
                 msx_mapper_rom_cartridge_pages[1]=valor;
            }
 
            if (dir>=0x7000 && dir<=0x77ff) {
-                printf("Mapping Segment %d on Bank 3\n",valor);
+                //printf("Mapping Segment %d on Bank 3\n",valor);
                 msx_mapper_rom_cartridge_pages[2]=valor;
            }
 
            if (dir>=0x7800 && dir<=0x7FFF) {
-                printf("Mapping Segment %d on Bank 4\n",valor);
+                //printf("Mapping Segment %d on Bank 4\n",valor);
                 msx_mapper_rom_cartridge_pages[3]=valor;
            }
         }
@@ -1617,18 +1617,37 @@ And the address to change banks:
            }*/
 
            if (dir>=0x6000 && dir<=0x7FFF) {
-                printf("Mapping Segment %d on Bank 2\n",valor);
+                //printf("Mapping Segment %d on Bank 2\n",valor);
                 msx_mapper_rom_cartridge_pages[1]=valor;
            }
 
            if (dir>=0x8000 && dir<=0x9fff) {
-                printf("Mapping Segment %d on Bank 3\n",valor);
+                //printf("Mapping Segment %d on Bank 3\n",valor);
                 msx_mapper_rom_cartridge_pages[2]=valor;
            }
 
            if (dir>=0xa000 && dir<=0xbFFF) {
-                printf("Mapping Segment %d on Bank 4\n",valor);
+                //printf("Mapping Segment %d on Bank 4\n",valor);
                 msx_mapper_rom_cartridge_pages[3]=valor;
+           }
+        }
+
+        if (msx_mapper_type==MSX_MAPPER_TYPE_RTYPE) {
+
+            /*
+            And the address to change banks:
+
+	Bank 1: Fixed at 0Fh or 17h
+	Bank 2: 7000h - 7FFFh (7000h and 7800h used)
+            */
+           /*if (dir>=0x6000 && dir<=0x67ff) {
+                printf("Mapping Segment %d on Bank 1\n",valor);
+                msx_mapper_rom_cartridge_pages[0]=valor;
+           }*/
+
+           if (dir>=0x7000 && dir<=0x77ff) {
+                //printf("Mapping Segment %d on Bank 2\n",valor);
+                msx_mapper_rom_cartridge_pages[1]=valor;
            }
         }
     }

@@ -75,7 +75,7 @@ int msx_mapper_type=MSX_MAPPER_TYPE_NONE;
 int msx_mapper_rom_cartridge_pages[4];
 
 z80_byte *msx_assigned_memory_mapper=NULL;
-int msx_mapper_cartridge_size=0;
+int msx_cartridge_size=0;
 
 char *msx_get_string_memory_type(int tipo)
 {
@@ -155,7 +155,7 @@ z80_byte *msx_return_segment_address(z80_int direccion,int *tipo)
                     int bloque_cartucho_16kb=msx_mapper_rom_cartridge_pages[indice_bloque_16kb];
 
                     //limitar
-                    int total_bloques_cartucho=msx_mapper_cartridge_size/16384;
+                    int total_bloques_cartucho=msx_cartridge_size/16384;
                     bloque_cartucho_16kb=bloque_cartucho_16kb % total_bloques_cartucho;
 
                     //printf("Retornando dir %04XH de memory mapper de bloque %d\n",direccion,bloque_cartucho);
@@ -173,7 +173,7 @@ z80_byte *msx_return_segment_address(z80_int direccion,int *tipo)
                     int bloque_cartucho_8kb=msx_mapper_rom_cartridge_pages[indice_bloque_8kb];
 
                     //limitar
-                    int total_bloques_cartucho=msx_mapper_cartridge_size/8192;
+                    int total_bloques_cartucho=msx_cartridge_size/8192;
                     bloque_cartucho_8kb=bloque_cartucho_8kb % total_bloques_cartucho;
 
                     //printf("Retornando dir %04XH de memory mapper de bloque %d\n",direccion,bloque_cartucho);
@@ -191,11 +191,29 @@ z80_byte *msx_return_segment_address(z80_int direccion,int *tipo)
                     int bloque_cartucho_8kb=msx_mapper_rom_cartridge_pages[indice_bloque_8kb];
 
                     //limitar
-                    int total_bloques_cartucho=msx_mapper_cartridge_size/8192;
+                    int total_bloques_cartucho=msx_cartridge_size/8192;
                     bloque_cartucho_8kb=bloque_cartucho_8kb % total_bloques_cartucho;
 
                     //printf("Retornando dir %04XH de memory mapper de bloque %d\n",direccion,bloque_cartucho);
                     return &msx_assigned_memory_mapper[bloque_cartucho_8kb*8192+(direccion&8191)];
+                }
+            }
+
+            //R-Type
+            if (msx_mapper_type==MSX_MAPPER_TYPE_RTYPE) {
+                if (segmento==1 || segmento==2) {
+
+                    int indice_bloque_16kb=segmento-1;
+                    int bloque_cartucho_16kb=msx_mapper_rom_cartridge_pages[indice_bloque_16kb];
+
+                    if (indice_bloque_16kb==0) bloque_cartucho_16kb=0x0F;
+
+                    //limitar
+                    int total_bloques_cartucho=msx_cartridge_size/16384;
+                    bloque_cartucho_16kb=bloque_cartucho_16kb % total_bloques_cartucho;
+
+                    //printf("Retornando dir %04XH de memory mapper de bloque %d\n",direccion,bloque_cartucho);
+                    return &msx_assigned_memory_mapper[bloque_cartucho_16kb*16384+(direccion&16383)];
                 }
             }
 
@@ -439,7 +457,6 @@ void msx_insert_rom_load_mapper_common(char *filename,long tamanyo_archivo)
 
     msx_assigned_memory_mapper=util_malloc(tamanyo_archivo,"Can not assign memory for rom cartridge");
 
-    msx_mapper_cartridge_size=tamanyo_archivo;
 
 	fread(msx_assigned_memory_mapper,1,tamanyo_archivo,ptr_cartridge);
 
@@ -575,6 +592,8 @@ void msx_insert_rom_cartridge(char *filename)
     }
 
     long tamanyo_archivo=get_file_size(filename);
+
+    msx_cartridge_size=tamanyo_archivo;
 
     //si cartucho>= 64kb activamos automapper ascii 16kb
     if (tamanyo_archivo>=65536) {

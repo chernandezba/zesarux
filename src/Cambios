@@ -36,7 +36,7 @@ Permitir deshabilitar los colores de Spectrum también en el modo de video real
 Permitir presionar teclas de acceso rápido en el teclado en pantalla
 Recordar ultima ruta utilizada en cinta de salida
 Permitir cargar cartuchos de MSX de 48kB
-Permitir cargar cartuchos de MSX con memory mapper Ascii 8kb, Ascii 16kb, Konami without SCC
+Permitir cargar cartuchos de MSX con memory mapper Ascii 8kb, Ascii 16kb, Konami without SCC, R-Type
 
 Mejorado ZRCP:
 - Se agregó una función de menú para sincronizar la instantánea local con la remota usando ZRCP

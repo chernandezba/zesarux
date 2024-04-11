@@ -73,6 +73,8 @@ extern z80_byte msx_read_psg(void);
 
 extern int msx_mapper_type;
 
+extern int msx_cartridge_size;
+
 extern int msx_mapper_rom_cartridge_pages[];
 
 #define MSX_MAPPER_TYPE_NONE 0
@@ -85,5 +87,8 @@ extern int msx_mapper_rom_cartridge_pages[];
 
 //Gradius
 #define MSX_MAPPER_TYPE_KONAMI_MEGAROM_WITHOUT_SCC 3
+
+//R-Type
+#define MSX_MAPPER_TYPE_RTYPE 4
 
 #endif
