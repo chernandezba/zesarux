@@ -26006,11 +26006,17 @@ int return_color_zesarux_ascii(char c)
 	return color+brillo*8;
 }
 
+void set_fast_splash_zesarux_logo(void)
+{
+    splash_zesarux_logo_paso=4;
+    menu_splash_segundos=1;
+}
+
 void set_splash_zesarux_logo(void)
 {
 	splash_zesarux_logo_active=1;
 	splash_zesarux_logo_paso=0;
-	set_splash_zesarux_logo_paso(splash_zesarux_logo_paso);
+	//set_splash_zesarux_logo_paso(splash_zesarux_logo_paso);
 }
 
 void get_welcome_message(char *texto_welcome)
@@ -26042,6 +26048,9 @@ void set_welcome_message(void)
 	menu_escribe_texto(x,yinicial++,ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,texto_welcome);
 
 	set_splash_zesarux_logo();
+    menu_splash_segundos=5;
+
+    set_splash_zesarux_logo_paso(splash_zesarux_logo_paso);
 
 
         char texto_edition[40];
@@ -26079,7 +26088,6 @@ void set_welcome_message(void)
 
 	set_menu_overlay_function(normal_overlay_texto_menu);
 	menu_splash_text_active.v=1;
-	menu_splash_segundos=5;
 
 
 	//Enviar texto de bienvenida tambien a speech
