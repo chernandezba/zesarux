@@ -85,10 +85,13 @@ extern int msx_mapper_rom_cartridge_pages[];
 //Ejemplo: Abu simbel, The Fantasm Soldier Valis
 #define MSX_MAPPER_TYPE_ASCII_8KB 2
 
-//Gradius
+//Nemesis - Gradius
 #define MSX_MAPPER_TYPE_KONAMI_MEGAROM_WITHOUT_SCC 3
 
-//R-Type
-#define MSX_MAPPER_TYPE_RTYPE 4
+//Nemesis 2 - Gradius 2
+#define MSX_MAPPER_TYPE_KONAMI_MEGAROM_WITH_SCC 4
+
+//R-Type, Arkanoid 2, Nemesis 3, Kings Valley 2
+#define MSX_MAPPER_TYPE_RTYPE 5
 
 #endif

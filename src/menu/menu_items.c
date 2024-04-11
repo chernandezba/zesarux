@@ -32160,12 +32160,15 @@ void menu_msxcart(MENU_ITEM_PARAMETERS)
                     if (msx_mapper_type==MSX_MAPPER_TYPE_ASCII_16KB) strcpy(buf_mapper_type,"Ascii 16kb");
                     if (msx_mapper_type==MSX_MAPPER_TYPE_ASCII_8KB) strcpy(buf_mapper_type,"Ascii 8kb");
                     if (msx_mapper_type==MSX_MAPPER_TYPE_KONAMI_MEGAROM_WITHOUT_SCC) strcpy(buf_mapper_type,"Konami without SCC");
+                    if (msx_mapper_type==MSX_MAPPER_TYPE_KONAMI_MEGAROM_WITH_SCC) strcpy(buf_mapper_type,"Konami with SCC");
                     if (msx_mapper_type==MSX_MAPPER_TYPE_RTYPE) strcpy(buf_mapper_type,"R-Type");
 
 
                     menu_add_item_menu_format(array_menu_msxcart,MENU_OPCION_NORMAL,menu_msx_mapper_type,NULL,"[%s] Mapper type",buf_mapper_type);
 
-                    menu_add_item_menu_format(array_menu_msxcart,MENU_OPCION_SEPARADOR,NULL,NULL,"[%d KB] Cartridge Size",msx_cartridge_size/1024);
+                    menu_add_item_menu(array_menu_msxcart,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+                    menu_add_item_menu_format(array_menu_msxcart,MENU_OPCION_SEPARADOR,NULL,NULL,"---Info---");
+                    menu_add_item_menu_format(array_menu_msxcart,MENU_OPCION_SEPARADOR,NULL,NULL,"Cartridge Size: %d KB",msx_cartridge_size/1024);
 
                     menu_add_item_menu(array_menu_msxcart,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 

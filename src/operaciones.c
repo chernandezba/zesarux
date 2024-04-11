@@ -1632,6 +1632,36 @@ And the address to change banks:
            }
         }
 
+    if (msx_mapper_type==MSX_MAPPER_TYPE_KONAMI_MEGAROM_WITH_SCC) {
+            /*
+And the address to change banks:
+
+	Bank 1: 5000h - 57FFh (5000h used)
+	Bank 2: 7000h - 77FFh (7000h used)
+	Bank 3: 9000h - 97FFh (9000h used)
+	Bank 4: B000h - B7FFh (B000h used)
+            */
+           if (dir>=0x5000 && dir<=0x57ff) {
+                //printf("Mapping Segment %d on Bank 1\n",valor);
+                msx_mapper_rom_cartridge_pages[0]=valor;
+           }
+
+           if (dir>=0x7000 && dir<=0x77FF) {
+                //printf("Mapping Segment %d on Bank 2\n",valor);
+                msx_mapper_rom_cartridge_pages[1]=valor;
+           }
+
+           if (dir>=0x9000 && dir<=0x97ff) {
+                //printf("Mapping Segment %d on Bank 3\n",valor);
+                msx_mapper_rom_cartridge_pages[2]=valor;
+           }
+
+           if (dir>=0xb000 && dir<=0xb7FF) {
+                //printf("Mapping Segment %d on Bank 4\n",valor);
+                msx_mapper_rom_cartridge_pages[3]=valor;
+           }
+        }
+
         if (msx_mapper_type==MSX_MAPPER_TYPE_RTYPE) {
 
             /*

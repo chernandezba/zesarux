@@ -199,6 +199,24 @@ z80_byte *msx_return_segment_address(z80_int direccion,int *tipo)
                 }
             }
 
+            //Konami megarom with scc
+            if (msx_mapper_type==MSX_MAPPER_TYPE_KONAMI_MEGAROM_WITH_SCC) {
+                if (segmento==1 || segmento==2) {
+
+                    int segmento_8kb=(direccion-16384)/8192;
+
+                    int indice_bloque_8kb=segmento_8kb;
+                    int bloque_cartucho_8kb=msx_mapper_rom_cartridge_pages[indice_bloque_8kb];
+
+                    //limitar
+                    int total_bloques_cartucho=msx_cartridge_size/8192;
+                    bloque_cartucho_8kb=bloque_cartucho_8kb % total_bloques_cartucho;
+
+                    //printf("Retornando dir %04XH de memory mapper de bloque %d\n",direccion,bloque_cartucho);
+                    return &msx_assigned_memory_mapper[bloque_cartucho_8kb*8192+(direccion&8191)];
+                }
+            }
+
             //R-Type
             if (msx_mapper_type==MSX_MAPPER_TYPE_RTYPE) {
                 if (segmento==1 || segmento==2) {
