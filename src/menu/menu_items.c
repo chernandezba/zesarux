@@ -21552,6 +21552,22 @@ Line	7       6       5	    4	    3	    2	    1	    0
 &48	    Z	    CAPSLOCK A	    TAB	    Q	    ESC	    2	    1
 &49	    DEL	    Joy 1   Fire 3 (CPC only)	     Joy 1 Fire 2	   Joy1 Fire 1	   Joy1 right	  Joy1 left	   Joy1 down	Joy1 up
 */
+int keyboard_map_table_coords_cpc_664[8*10*4]={
+578,3,602,24, 612,35,635,57, 578,69,600,89, 613,98,633,117, 612,132,632,151, 613,165,633,183, 608,193,630,215, 578,197,598,214,
+544,35,566,57, 578,35,601,57, 546,98,567,117, 578,98,601,117, 579,132,600,151, 546,163,567,182, 580,164,599,181, 546,195,566,214,
+
+431,65,452,88, 413,99,433,118, 448,98,500,152, 420,132,440,151, 546,133,566,151, 8,162,71,183, 403,164,423,185, 400,196,422,215,
+398,66,416,87, 364,66,385,85, 379,98,401,117, 347,99,366,118, 387,133,408,152, 354,132,375,152, 371,166,389,184, 338,165,355,182,
+331,66,351,86, 298,67,316,85, 313,100,333,118, 280,100,301,119, 321,133,342,151, 289,133,308,152, 272,165,292,183, 303,165,322,184,
+265,67,285,85, 232,67,250,85, 249,101,267,118, 215,100,233,118, 221,133,242,151, 256,132,276,151, 237,164,259,184, 110,196,389,219,
+200,67,217,85, 166,66,186,85, 151,100,171,118, 181,100,202,118, 189,133,209,151, 159,132,179,151, 206,167,226,183, 175,164,194,181,
+134,65,156,86, 103,67,123,84, 120,99,139,117, 87,100,108,117, 94,132,115,149, 127,132,146,150, 142,164,162,183, 111,165,131,183,
+39,67,58,85, 70,67,91,85, 6,66,29,87, 56,101,75,117, 8,98,43,117, 63,133,83,151, 8,131,52,151, 80,164,99,182,
+
+9999,9999,9999,9999, 9999,9999,9999,9999, 9999,9999,9999,9999, 9999,9999,9999,9999, 9999,9999,9999,9999, 9999,9999,9999,9999, 9999,9999,9999,9999, 463,68,500,88
+
+};
+
 
 int keyboard_map_table_coords_cpc_464[8*10*4]={
 578,9,602,31, 612,42,635,64, 578,76,600,96, 613,120,633,139, 612,154,632,173,613,187,633,205, 608,215,630,237, 578,219,598,236,
@@ -21781,6 +21797,12 @@ keyboard_help_double_key keyboard_map_additional_cpc_464[]={
     { 0,0,0,0,NULL,0,NULL,0 }
 };
 
+keyboard_help_double_key keyboard_map_additional_cpc_664[]={
+    { 436,164,496,184,  &cpc_keyboard_table[2], 32,   NULL,0 }, //shift derecho
+
+    { 0,0,0,0,NULL,0,NULL,0 }
+};
+
 //Nota: no soportamos el boton joystick en la izquierda porque requeriria entrada en esta tecla adicional
 //pero en ese caso es una pulsacion de puesta a 1 el bit, y en teclas dobles se pone a 0 los bits
 keyboard_help_double_key keyboard_map_additional_coleco[]={
@@ -21981,6 +22003,10 @@ int *keyboard_help_return_map_table(void)
         return keyboard_map_table_coords_cpc_464;
     }
 
+    else if (MACHINE_IS_CPC_664) {
+        return keyboard_map_table_coords_cpc_664;
+    }
+
     else if (MACHINE_IS_SG1000) {
         return keyboard_map_table_coords_sg1000;
     }
@@ -22037,6 +22063,10 @@ keyboard_help_double_key *keyboard_help_return_double_keys(void)
 
     else if (MACHINE_IS_CPC_464 || MACHINE_IS_CPC_4128) {
         return keyboard_map_additional_cpc_464;
+    }
+
+    else if (MACHINE_IS_CPC_664) {
+        return keyboard_map_additional_cpc_664;
     }
 
     return teclas_dobles;
