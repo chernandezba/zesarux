@@ -878,7 +878,7 @@ O quiza que salte al menu con la linea de opcion seleccionada donde corresponde
 -comentar desensamblado copion9
 
 -pendiente keyboard help
-cpc 6128, 664,
+cpc 6128,
 pcw,
 tbblue
 tsconf
@@ -888,5 +888,6 @@ sam coupe
 chloe
 spectravideo
 zx evolution
+-keyboard help no hace por ejemplo en cpc 664 teclas [ ]
 
 -Opción fast splash. 1 solo segundo con logo y bienvenida
