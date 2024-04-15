@@ -499,7 +499,7 @@ void msx_insert_rom_load_mapper_common(char *filename,long tamanyo_archivo)
 void msx_insert_rom_cartridge_no_mapper(char *filename,long tamanyo_archivo)
 {
 
-    printf("Loading rom cartridge with no mapper\n");
+    debug_printf(VERBOSE_INFO,"Loading rom cartridge with no memory mapper");
     msx_mapper_type=MSX_MAPPER_TYPE_NONE;
 
         FILE *ptr_cartridge;
@@ -615,7 +615,7 @@ void msx_insert_rom_cartridge(char *filename)
 
     //si cartucho>= 64kb activamos automapper ascii 16kb
     if (tamanyo_archivo>=65536) {
-        printf("Loading cartridge using memory mapper. Assuming defaults ascii 16kb\n");
+        debug_printf(VERBOSE_INFO,"Loading cartridge using default memory mapper ascii 16kb");
 
         msx_insert_rom_load_mapper_common(filename,tamanyo_archivo);
 

@@ -1612,7 +1612,7 @@ And the address to change banks:
 	Bank 4: A000h - BFFFh (A000h used)
             */
            /*if (dir>=0x6000 && dir<=0x67ff) {
-                printf("Mapping Segment %d on Bank 1\n",valor);
+                //printf("Mapping Segment %d on Bank 1\n",valor);
                 msx_mapper_rom_cartridge_pages[0]=valor;
            }*/
 
@@ -1671,7 +1671,7 @@ And the address to change banks:
 	Bank 2: 7000h - 7FFFh (7000h and 7800h used)
             */
            /*if (dir>=0x6000 && dir<=0x67ff) {
-                printf("Mapping Segment %d on Bank 1\n",valor);
+                //printf("Mapping Segment %d on Bank 1\n",valor);
                 msx_mapper_rom_cartridge_pages[0]=valor;
            }*/
 

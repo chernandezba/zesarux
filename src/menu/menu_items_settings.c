@@ -1112,6 +1112,17 @@ void menu_enable_index_search(MENU_ITEM_PARAMETERS)
     index_menu_enabled.v ^=1;
 }
 
+void menu_interface_welcome_message(MENU_ITEM_PARAMETERS)
+{
+    opcion_no_welcome_message.v ^=1;
+}
+
+void menu_interface_fast_welcome_message(MENU_ITEM_PARAMETERS)
+{
+    opcion_fast_welcome_message.v ^=1;
+}
+
+
 void menu_general_settings(MENU_ITEM_PARAMETERS)
 {
         menu_item *array_menu_window_settings;
@@ -1336,6 +1347,8 @@ void menu_general_settings(MENU_ITEM_PARAMETERS)
 		}
 #endif
 
+        menu_add_item_menu_separator(array_menu_window_settings);
+
         char idioma[32];
         strcpy(idioma,"Default");
         if (gui_language==GUI_LANGUAGE_SPANISH) strcpy(idioma,"Español");
@@ -1349,6 +1362,17 @@ void menu_general_settings(MENU_ITEM_PARAMETERS)
        	menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_logo_type,NULL,
             "ZEsarUX logo","ZEsarUX logo","ZEsarUX logo");
         menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%s] ",(xanniversary_logo.v ? "X Anniversary" : "Normal"));
+
+       	menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_welcome_message,NULL,
+            "Show welcome logo & message","Mostrar logo bienvenida y mensaje","Mostrar logo benvinguda i missatge");
+        menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c] ",(opcion_no_welcome_message.v ? ' ' : 'X'));
+
+        if (opcion_no_welcome_message.v==0) {
+            menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_fast_welcome_message,NULL,
+                "Fast welcome logo & message","Logo bienvenida y mensaje rápido","Logo benvinguda i missatge ràpid");
+            menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c]  ",(opcion_fast_welcome_message.v ? 'X' : ' '));
+        }
+
 
 
         char string_online_download_path[16];
