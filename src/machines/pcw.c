@@ -671,7 +671,7 @@ b3-b0 low bits of vertical movement counter.
     int fila=dir & 0xF;
 
     //de momento
-    z80_byte return_value=0;
+    z80_byte return_value=255;
 
     //Teclas al pulsar activan bit
 
@@ -689,8 +689,8 @@ If no keyboard is present, all 16 bytes of the memory map are zero.
 
     //si estamos en el menu, no devolver tecla
     if (!zxvision_key_not_sent_emulated_mach() ) {
-
-        return_value=pcw_keyboard_table[fila] ^ 255;
+        //if (fila==15) printf("leyendo fila 15\n");
+        return_value=pcw_keyboard_table[fila];
 
     }
 
@@ -698,7 +698,7 @@ If no keyboard is present, all 16 bytes of the memory map are zero.
 
     //3FFDh bit 7 is 0 if LK2 is present, 1 if not.
 
-    if (fila==0xD) return_value |=128;
+    if (fila==0xD) return_value &=(255-128);
 
     //Si hay algun tipo de joystick de pcw habilitado, las teclas de cursor no retornarlas
     //Estos joysticks se pueden probar con juego Head Over Heels
@@ -707,15 +707,15 @@ If no keyboard is present, all 16 bytes of the memory map are zero.
         || joystick_emulation==JOYSTICK_PCW_DKTRONICS || joystick_emulation==JOYSTICK_OPQA_SPACE) {
         if (fila==1) {
             //left y up
-            return_value &= (255-128-64);
+            return_value |= (128+64);
         }
         if (fila==0) {
             //right
-            return_value &= (255-64);
+            return_value |= 64;
         }
         if (fila==0xA) {
             //down
-            return_value &= (255-64);
+            return_value |= 64;
         }
 
 
@@ -724,21 +724,21 @@ If no keyboard is present, all 16 bytes of the memory map are zero.
     //Soporte joystick opqa space. Muchos (la mayoria?) de opera soft
     if (joystick_emulation==JOYSTICK_OPQA_SPACE && !zxvision_key_not_sent_emulated_mach()) {
         if (fila==3) {
-            if ((puerto_especial_joystick&1)) return_value |=8;   //right. P
+            if ((puerto_especial_joystick&1)) return_value &=(255-8);   //right. P
         }
 
 
         if (fila==4) {
-            if ((puerto_especial_joystick&2)) return_value |=4;   //left. O
+            if ((puerto_especial_joystick&2)) return_value &=(255-4);   //left. O
         }
 
         if (fila==5) {
-            if ((puerto_especial_joystick&16)) return_value |=128;  //fire1. space
+            if ((puerto_especial_joystick&16)) return_value &=(255-128);  //fire1. space
         }
 
         if (fila==8) {
-            if ((puerto_especial_joystick&8)) return_value |=8;   //up. Q
-            if ((puerto_especial_joystick&4)) return_value |=32;  //down. A
+            if ((puerto_especial_joystick&8)) return_value &=(255-8);   //up. Q
+            if ((puerto_especial_joystick&4)) return_value &=(255-32);  //down. A
         }
 
 
@@ -751,7 +751,7 @@ If no keyboard is present, all 16 bytes of the memory map are zero.
 
 
 
-    return return_value;
+    return return_value ^ 255;
 }
 
 //Puerto joystick kempston
