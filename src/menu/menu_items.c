@@ -21850,7 +21850,7 @@ keyboard_help_double_key keyboard_map_additional_cpc_6128[]={
 };
 
 keyboard_help_double_key keyboard_map_additional_pcw[]={
-    //{ 9999,9999,99999,9999,  &pcw_keyboard_table[2], 32,   NULL,0 }, //shift derecho
+    //{ 445,166,490,187,  &pcw_keyboard_table[2], 32,   NULL,0 }, //shift derecho
 
     { 0,0,0,0,NULL,0,NULL,0 }
 };
