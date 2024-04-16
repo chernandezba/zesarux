@@ -402,6 +402,13 @@ if [ "$SISTEMA" == "Msys" ]; then
 	LDFLAGS="zesarux.res $LDFLAGS -lwinmm"
 fi
 
+
+if [ "$SISTEMA" == "Haiku" ]; then
+	CFLAGS="$CFLAGS -DHAIKU_OS"
+	LDFLAGS="$LDFLAGS -lnetwork"
+fi
+
+
 # Ver si aplicamos definicion para llamadas de 64 bits en 32 bits (stat por ejemplo)
 
 if [ "$SISTEMA" == "GNU/Linux" ]; then

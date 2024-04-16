@@ -236,14 +236,7 @@ The recommended way to start the emulator is using the following settings:
 Note for Haiku
 --------------
 
-You should not use the default gcc (2.97) as it should not compile.
-
-Before running configure script, please set:
-
-export CFLAGS=-DHAIKU_OS
-
-You need to run configure with setting (at least): --disable-networking
-(because it doesn't find some network functions)
+I'm using Haiku OS Beta 4 64 bits, so the following may change in different versions.
 
 If you want to compile ZEsarUX on Haiku with SDL support:
 
@@ -255,10 +248,22 @@ Before running configure, set:
 
 export LDFLAGS=-L/boot/system/develop/lib/
 
+So, you can run the following sentences as a quick start:
+
+--
+pkgman install libsdl_devel
+git clone https://github.com/chernandezba/zesarux.git
+cd zesarux/src
+export LDFLAGS="-L/boot/system/develop/lib"
+./configure
+make
+--
+
 When running ZEsarUX with SDL, you probably need to set before:
 
 export LIBRARY_PATH=/boot/system/lib/:$LIBRARY_PATH
 
+Note: If you use earlier versions of Haiku, maybe you need to use gcc-x86 instead of the default gcc and run configure with setting: --c-compiler gcc-x86
 
 Please don't ask me about Haiku help, I'm not an expert on this OS ;)
 

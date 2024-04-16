@@ -38,6 +38,7 @@ Permitir presionar teclas de acceso rápido en el teclado en pantalla
 Recordar ultima ruta utilizada en cinta de salida
 Permitir cargar cartuchos de MSX de 48kB
 Permitir cargar cartuchos de MSX con memory mapper Ascii 8kb, Ascii 16kb, Konami without SCC. Konami with SCC, R-Type
+Compilación mas fácil en Haiku OS
 
 Mejorado ZRCP:
 - Se agregó una función de menú para sincronizar la instantánea local con la remota usando ZRCP
