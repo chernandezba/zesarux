@@ -21850,7 +21850,7 @@ keyboard_help_double_key keyboard_map_additional_cpc_6128[]={
 };
 
 keyboard_help_double_key keyboard_map_additional_pcw[]={
-    //{ 445,166,490,187,  &pcw_keyboard_table[2], 32,   NULL,0 }, //shift derecho
+    { 445,166,490,187,  &pcw_keyboard_table[2], 32,   NULL,0 }, //shift derecho
 
     { 0,0,0,0,NULL,0,NULL,0 }
 };
@@ -22215,7 +22215,7 @@ void menu_help_draw_rectangle_key(zxvision_window *ventana,int x1,int y1,int anc
 //Dice si bit tecla pulsada, dependiendo si es valor 0 en la mayoria de maquinas, o si no es 0 (como puertos de joystick en master system)
 int menu_help_keyboard_is_pressed_bit_key(z80_byte valor)
 {
-    if (MACHINE_IS_SMS || MACHINE_IS_SG1000 || MACHINE_IS_COLECO || MACHINE_IS_PCW) {
+    if (MACHINE_IS_SMS || MACHINE_IS_SG1000 || MACHINE_IS_COLECO) {
         if (valor) return 1;
         else return 0;
     }
@@ -22425,7 +22425,7 @@ void menu_help_keyboard_locate_speccy_pressed_keys(int keyboard_map_coords[],z80
 //Activar un bit de tecla segun si se pone a 0 (la mayoria de maquinas) o se pone a 1 (por ejemplo joystick en la master system)
 void menu_help_keyboard_activate_bit(z80_byte *puerto,z80_byte mascara)
 {
-    if (MACHINE_IS_SMS || MACHINE_IS_SG1000 || MACHINE_IS_COLECO || MACHINE_IS_PCW) {
+    if (MACHINE_IS_SMS || MACHINE_IS_SG1000 || MACHINE_IS_COLECO) {
         *puerto |=mascara;
     }
 

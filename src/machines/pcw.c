@@ -94,8 +94,8 @@ z80_bit pcw_pending_interrupt={0};
 
 
 z80_byte pcw_keyboard_table[16]={
-    0,0,0,0,0,0,0,0,
-    0,0,0,0,0,0,0,0
+    255,255,255,255,255,255,255,255,
+    255,255,255,255,255,255,255,255
 };
 
 z80_byte pcw_interrupt_from_pd765_type=0;
@@ -634,8 +634,10 @@ void pcw_keyboard_ticker_update(void)
     //3FFFh bit 6 toggles with each update from the keyboard to the PCW.
     //3FFFh bit 7 is 1 if the keyboard is currently transmitting its state to the PCW, 0 if it is scanning its keys.
 	pcw_keyboard_table[15] &= 0x3F;
-	if (pcw_keyboard_ticker_update_counter & 1) pcw_keyboard_table[15] |= 0x80;
-	if (pcw_keyboard_ticker_update_counter & 2) pcw_keyboard_table[15] |= 0x40;
+    pcw_keyboard_table[15] |=0x40;
+    pcw_keyboard_table[15] |=0x80;
+	if (pcw_keyboard_ticker_update_counter & 1) pcw_keyboard_table[15] &= (255-0x80);
+	if (pcw_keyboard_ticker_update_counter & 2) pcw_keyboard_table[15] &= (255-0x40);
 }
 
 z80_byte pcw_read_keyboard(z80_int dir)
@@ -688,7 +690,7 @@ If no keyboard is present, all 16 bytes of the memory map are zero.
     //si estamos en el menu, no devolver tecla
     if (!zxvision_key_not_sent_emulated_mach() ) {
 
-        return_value=pcw_keyboard_table[fila];
+        return_value=pcw_keyboard_table[fila] ^ 255;
 
     }
 

@@ -1482,11 +1482,11 @@ void ascii_to_keyboard_port_set_clear(unsigned tecla,int pressrelease)
 
 					if (MACHINE_IS_PCW) {
 						if (pressrelease) {
-                            pcw_keyboard_table[2] |=32;
+                            pcw_keyboard_table[2] &=255-32;
 
 						}
 						else {
-							pcw_keyboard_table[2] &=255-32;
+                            pcw_keyboard_table[2] |=32;
 						}
 					}
 
@@ -3097,7 +3097,7 @@ void reset_keyboard_ports(void)
 	for (i=0;i<8;i++) ql_keyboard_table[i]=255;
 
     //De pcw
-    for (i=0;i<16;i++) pcw_keyboard_table[i]=0;
+    for (i=0;i<16;i++) pcw_keyboard_table[i]=255;
 
         menu_symshift.v=0;
         menu_capshift.v=0;
@@ -5007,8 +5007,8 @@ void convert_numeros_letras_puerto_teclado_continue_after_recreated(z80_byte tec
                 puerto=pcw_tabla_teclado_letras[indice].puerto;
                 mascara=pcw_tabla_teclado_letras[indice].mascara;
 
-                if (pressrelease) *puerto |=mascara;
-                else *puerto &=255-mascara;
+                if (pressrelease) *puerto &=255-mascara;
+                else *puerto |=mascara;
 
          }
 
@@ -5160,8 +5160,8 @@ void convert_numeros_letras_puerto_teclado_continue_after_recreated(z80_byte tec
                                                 puerto=pcw_tabla_teclado_numeros[indice].puerto;
                                                 mascara=pcw_tabla_teclado_numeros[indice].mascara;
 
-                                                if (pressrelease) *puerto |=mascara;
-                                                else *puerto &=255-mascara;
+                                                if (pressrelease) *puerto &=255-mascara;
+                                                else *puerto |=mascara;
 
   }
 
@@ -6500,14 +6500,14 @@ void util_set_reset_key_common_keymap(enum util_teclas_common_keymap tecla,int p
                                         msx_keyboard_table[1] &=255-4;
                                         svi_keyboard_table[2] &=255-1;
                                         //printf ("tecla minus\n");
-                                        pcw_keyboard_table[3] |=2;
+                                        pcw_keyboard_table[3] &=255-2;
                                 }
                                 else {
                                         puerto_teclado_sam_eff9 |= 32;
                                         ql_keyboard_table[5] |= 32;
                                         msx_keyboard_table[1] |=4;
                                         svi_keyboard_table[2] |=1;
-                                        pcw_keyboard_table[3] &=255-2;
+                                        pcw_keyboard_table[3] |=2;
                                 }
                         break;
 
@@ -6517,14 +6517,14 @@ void util_set_reset_key_common_keymap(enum util_teclas_common_keymap tecla,int p
                                         ql_keyboard_table[3] &= 255-32;
                                         msx_keyboard_table[1] &= 255-8;
                                         svi_keyboard_table[1] &=255-32;
-                                        pcw_keyboard_table[3] |=1;
+                                        pcw_keyboard_table[3] &=(255-1);
                                 }
                                 else {
                                         puerto_teclado_sam_eff9 |= 64;
                                         ql_keyboard_table[3] |= 32;
                                         msx_keyboard_table[1] |=8;
                                         svi_keyboard_table[1] |=32;
-                                        pcw_keyboard_table[3] &=(255-1);
+                                        pcw_keyboard_table[3] |=1;
                                 }
                         break;
 
@@ -6554,14 +6554,14 @@ void util_set_reset_key_common_keymap(enum util_teclas_common_keymap tecla,int p
                                        ql_keyboard_table[3] &=255-1;
                                        msx_keyboard_table[1] &= 255-32;
                                        svi_keyboard_table[5] &= 255-8;
-                                       pcw_keyboard_table[3] |=4;
+                                       pcw_keyboard_table[3] &=(255-4);
                                 }
                                 else {
 					                             puerto_teclado_sam_dff9 |= 32;
                                        ql_keyboard_table[3] |=1;
                                        msx_keyboard_table[1] |=32;
                                        svi_keyboard_table[5] |= 8;
-                                       pcw_keyboard_table[3] &=(255-4);
+                                       pcw_keyboard_table[3] |=4;
                                 }
                         break;
 
@@ -6573,14 +6573,14 @@ void util_set_reset_key_common_keymap(enum util_teclas_common_keymap tecla,int p
                                        ql_keyboard_table[2] &=255-1;
                                        msx_keyboard_table[1] &= 255-64;
                                        svi_keyboard_table[5] &= 255-32;
-                                       pcw_keyboard_table[2] |=2;
+                                       pcw_keyboard_table[2] &=(255-2);
                                 }
                                 else {
                                         puerto_teclado_sam_dff9 |= 64;
                                         ql_keyboard_table[2] |=1;
                                         msx_keyboard_table[1] |=64;
                                         svi_keyboard_table[5] |= 32;
-                                        pcw_keyboard_table[2] &=(255-2);
+                                        pcw_keyboard_table[2] |=2;
                                 }
                         break;
 
@@ -6590,13 +6590,13 @@ void util_set_reset_key_common_keymap(enum util_teclas_common_keymap tecla,int p
                                       ql_keyboard_table[3] &=255-128;
                                       msx_keyboard_table[1] &= 255-128;
                                       svi_keyboard_table[1] &= 255-4;
-                                      pcw_keyboard_table[3] |=32;
+                                      pcw_keyboard_table[3] &=(255-32);
                                 }
                                 else {
                                       ql_keyboard_table[3] |=128;
                                       msx_keyboard_table[1] |=128;
                                       svi_keyboard_table[1] |= 4;
-                                      pcw_keyboard_table[3] &=(255-32);
+                                      pcw_keyboard_table[3] |=32;
                                 }
                         break;
 
@@ -6607,14 +6607,14 @@ void util_set_reset_key_common_keymap(enum util_teclas_common_keymap tecla,int p
                                         ql_keyboard_table[2] &=255-128;
                                         msx_keyboard_table[2] &= 255-1;
                                         svi_keyboard_table[1] &= 255-8;
-                                        pcw_keyboard_table[3] |=16;
+                                        pcw_keyboard_table[3] &=(255-16);
                                 }
                                 else {
                                         puerto_teclado_sam_bff9 |= 32;
                                         ql_keyboard_table[2] |=128;
                                          msx_keyboard_table[2] |= 1;
                                         svi_keyboard_table[1] |= 8;
-                                        pcw_keyboard_table[3] &=(255-16);
+                                        pcw_keyboard_table[3] |=16;
                                 }
                         break;
 
@@ -6624,13 +6624,13 @@ void util_set_reset_key_common_keymap(enum util_teclas_common_keymap tecla,int p
                                         //// 5|     ]      z      .      c      b  Pound      m      '     ql_keyboard_table[2]
                                         ql_keyboard_table[2] &=255-32;
                                         msx_keyboard_table[2] &= 255-2;
-                                        pcw_keyboard_table[2] |=8;
+                                        pcw_keyboard_table[2] &=(255-8);
                                 }
                                 else {
                                         puerto_teclado_sam_bff9 |= 64;
                                         ql_keyboard_table[2] |=32;
                                         msx_keyboard_table[2] |= 2;
-                                        pcw_keyboard_table[2] &=(255-8);
+                                        pcw_keyboard_table[2] |=8;
                                 }
                         break;
 
@@ -6641,7 +6641,7 @@ void util_set_reset_key_common_keymap(enum util_teclas_common_keymap tecla,int p
                                         ql_keyboard_table[7] &=(255-128);
                                         msx_keyboard_table[2] &= 255-4;
                                         svi_keyboard_table[1] &= 255-16;
-                                        pcw_keyboard_table[4] |=128;
+                                        pcw_keyboard_table[4] &=(255-128);
 
                                 }
                                 else {
@@ -6649,7 +6649,7 @@ void util_set_reset_key_common_keymap(enum util_teclas_common_keymap tecla,int p
                                        ql_keyboard_table[7] |=128;
                                        msx_keyboard_table[2] |= 4;
                                        svi_keyboard_table[1] |= 16;
-                                       pcw_keyboard_table[4] &=(255-128);
+                                       pcw_keyboard_table[4] |=128;
                                 }
                         break;
 
@@ -6659,14 +6659,14 @@ void util_set_reset_key_common_keymap(enum util_teclas_common_keymap tecla,int p
                                         ql_keyboard_table[2] &=(255-4);
                                         msx_keyboard_table[2] &= 255-8;
                                         svi_keyboard_table[1] &= 255-64;
-                                        pcw_keyboard_table[3] |=128;
+                                        pcw_keyboard_table[3] &=(255-128);
                                  }
                                  else {
 					                              puerto_teclado_sam_7ff9 |= 64;
                                         ql_keyboard_table[2] |=4;
                                         msx_keyboard_table[2] |= 8;
                                         svi_keyboard_table[1] |= 64;
-                                        pcw_keyboard_table[3] &=(255-128);
+                                        pcw_keyboard_table[3] |=128;
                                  }
                         break;
 
@@ -6677,14 +6677,14 @@ void util_set_reset_key_common_keymap(enum util_teclas_common_keymap tecla,int p
                                         ql_keyboard_table[7] &=255-32;
                                         msx_keyboard_table[2] &= 255-16;
                                         svi_keyboard_table[1] &= 255-128;
-                                        pcw_keyboard_table[3] |=64;
+                                        pcw_keyboard_table[3] &=(255-64);
                                  }
                                  else {
 					                              puerto_teclado_sam_7ff9 |= 128;
                                         ql_keyboard_table[7] |=32;
                                         msx_keyboard_table[2] |= 16;
                                         svi_keyboard_table[1] |= 128;
-                                        pcw_keyboard_table[3] &=(255-64);
+                                        pcw_keyboard_table[3] |=64;
                                  }
                         break;
 
@@ -6692,11 +6692,11 @@ void util_set_reset_key_common_keymap(enum util_teclas_common_keymap tecla,int p
                                  if (pressrelease) {
 
                                         // tecla 1/2 cerca del shift derecho
-                                        pcw_keyboard_table[2] |=64;
+                                        pcw_keyboard_table[2] &=(255-64);
                                  }
                                  else {
 
-                                        pcw_keyboard_table[2] &=(255-64);
+                                        pcw_keyboard_table[2] |=64;
                                  }
                         break;
 
@@ -7672,7 +7672,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                     ql_keyboard_table[1] &= (255-64);
                     msx_keyboard_table[8] &= (255-1);
                     svi_keyboard_table[8] &= (255-1);
-                    pcw_keyboard_table[5] |=128;
+                    pcw_keyboard_table[5] &=(255-128);
             }
             else {
                     puerto_32766 |=1;
@@ -7681,7 +7681,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                     ql_keyboard_table[1] |= 64;
                     msx_keyboard_table[8] |= 1;
                     svi_keyboard_table[8] |= 1;
-                    pcw_keyboard_table[5] &=(255-128);
+                    pcw_keyboard_table[5] |=128;
             }
         break;
 
@@ -7696,11 +7696,11 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
 
                                         if (keyboard_swap_enter_return.v==0) {
                                             cpc_keyboard_table[2] &= (255-4);
-                                            pcw_keyboard_table[2] |=4;
+                                            pcw_keyboard_table[2] &=(255-4);
                                         }
                                         else {
                                             cpc_keyboard_table[0] &=(255-64);
-                                            pcw_keyboard_table[0xA] |=32;
+                                            pcw_keyboard_table[0xA] &=(255-32);
                                         }
 
 					//Avisar de envio enter especial para rutinas de speech, para que envien sonido
@@ -7718,11 +7718,11 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
 
                                         if (keyboard_swap_enter_return.v==0) {
                                             cpc_keyboard_table[2] |= 4;
-                                            pcw_keyboard_table[2] &=(255-4);
+                                            pcw_keyboard_table[2] |=4;
                                         }
                                         else {
                                             cpc_keyboard_table[0] |=64;
-                                            pcw_keyboard_table[0xA] &=(255-32);
+                                            pcw_keyboard_table[0xA] |=32;
                                         }
                                 }
 
@@ -7764,13 +7764,13 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                         cpc_keyboard_table[9] &=(255-128);
 
                                         //En pcw tecla borrar hacia derecha
-                                        pcw_keyboard_table[2] |=1;
+                                        pcw_keyboard_table[2] &=(255-1);
                                 }
                                 else {
                                         //del en cpc es del
                                         cpc_keyboard_table[9] |=128;
 
-                                        pcw_keyboard_table[2] &=(255-1);
+                                        pcw_keyboard_table[2] |=1;
                                 }
                                 //printf("%d\n",cpc_keyboard_table[9]);
                         break;
@@ -7789,7 +7789,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                         ql_keyboard_table[7] &= (255-1);
                                         msx_keyboard_table[6] &=(255-1);
                                         svi_keyboard_table[6] &=(255-1);
-                                        pcw_keyboard_table[2] |=32;
+                                        pcw_keyboard_table[2] &=(255-32);
                                 }
                                 else  {
                                         puerto_65278 |=1;
@@ -7798,7 +7798,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
 					cpc_keyboard_table[2] |=32;
                                         msx_keyboard_table[6] |=1;
                                         svi_keyboard_table[6] |=1;
-                                        pcw_keyboard_table[2] &=(255-32);
+                                        pcw_keyboard_table[2] |=32;
 
                                     //Si se libera left shift, reiniciamos contador de conmutacion de ventanas
                                     menu_contador_conmutar_ventanas=0;
@@ -7817,7 +7817,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                         ql_keyboard_table[7] &= (255-1);
                                         msx_keyboard_table[6] &=(255-1);
                                         svi_keyboard_table[6] &=(255-1);
-                                        pcw_keyboard_table[2] |=32;
+                                        pcw_keyboard_table[2] &=(255-32);
                                 }
                                 else  {
                                         puerto_65278 |=1;
@@ -7826,7 +7826,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                         ql_keyboard_table[7] |= 1;
                                         msx_keyboard_table[6] |=1;
                                         svi_keyboard_table[6] |=1;
-                                        pcw_keyboard_table[2] &=(255-32);
+                                        pcw_keyboard_table[2] |=32;
                                 }
                         break;
 
@@ -7858,7 +7858,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                     //ALT en MSX es stop
                     msx_keyboard_table[7] &= (255-16);
                     svi_keyboard_table[6] &= (255-32);
-                    pcw_keyboard_table[0xA] |=128;
+                    pcw_keyboard_table[0xA] &=(255-128);
                 }
 
 
@@ -7873,7 +7873,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                     //ALT en MSX es stop
                     msx_keyboard_table[7] |= 16;
                     svi_keyboard_table[6] |= 32;
-                    pcw_keyboard_table[0xA] &=(255-128);
+                    pcw_keyboard_table[0xA] |=128;
                 }
             }
         break;
@@ -7910,7 +7910,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                     //ALT en CPC es CLR
                     cpc_keyboard_table[2] &=(255-1);
                     ql_keyboard_table[7] &= (255-4);
-                    pcw_keyboard_table[1] |=2;
+                    pcw_keyboard_table[1] &=(255-2);
                     //printf("PTR\n");
                 }
 
@@ -7922,7 +7922,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                     //ALT en CPC es CLR
                     cpc_keyboard_table[2] |=1;
                     ql_keyboard_table[7] |= 4;
-                    pcw_keyboard_table[1] &=(255-2);
+                    pcw_keyboard_table[1] |=2;
                 }
             }
         break;
@@ -7960,7 +7960,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                     cpc_keyboard_table[2] &=(255-128);
                     msx_keyboard_table[6] &=(255-2);
                     ql_keyboard_table[7] &= (255-2);
-                    pcw_keyboard_table[0xA] |=2;
+                    pcw_keyboard_table[0xA] &=(255-2);
 
 
                 }
@@ -7972,7 +7972,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                     cpc_keyboard_table[2] |=128;
                     msx_keyboard_table[6] |=2;
                     ql_keyboard_table[7] |= 2;
-                    pcw_keyboard_table[0xA] &=(255-2);
+                    pcw_keyboard_table[0xA] |=2;
 
                 }
             }
@@ -8010,7 +8010,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                     cpc_keyboard_table[2] &=(255-128);
                     msx_keyboard_table[6] &=(255-2);
                     ql_keyboard_table[7] &= (255-2);
-                    pcw_keyboard_table[1] |=1;
+                    pcw_keyboard_table[1] &=(255-1);
 
 
                 }
@@ -8022,7 +8022,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                     cpc_keyboard_table[2] |=128;
                     msx_keyboard_table[6] |=2;
                     ql_keyboard_table[7] |= 2;
-                    pcw_keyboard_table[1] &=(255-1);
+                    pcw_keyboard_table[1] |=1;
 
                 }
             }
@@ -8031,10 +8031,10 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
         case UTIL_KEY_WINKEY_L:
             //printf("winkey L\n");
             if (pressrelease) {
-                pcw_keyboard_table[2] |=128;
+                pcw_keyboard_table[2] &=(255-128);
             }
             else {
-                pcw_keyboard_table[2] &=(255-128);
+                pcw_keyboard_table[2] |=128;
             }
 
         break;
@@ -8042,10 +8042,10 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
         case UTIL_KEY_WINKEY_R:
             //printf("winkey R\n");
             if (pressrelease) {
-                pcw_keyboard_table[0xA] |=8;
+                pcw_keyboard_table[0xA] &=(255-8);
             }
             else {
-                pcw_keyboard_table[0xA] &=(255-8);
+                pcw_keyboard_table[0xA] |=8;
             }
 
         break;
@@ -8084,7 +8084,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                           //ql_pressed_backspace=1;
                                           ql_keyboard_table[7] &=(255-2);
                                           ql_keyboard_table[1] &=(255-2);
-                                          pcw_keyboard_table[9] |=128;
+                                          pcw_keyboard_table[9] &=(255-128);
 
 	                                }
         	                        else {
@@ -8097,7 +8097,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                           //ql_pressed_backspace=0;
                                           ql_keyboard_table[7] |=2;
                                           ql_keyboard_table[1] |=2;
-                                          pcw_keyboard_table[9] &=(255-128);
+                                          pcw_keyboard_table[9] |=128;
 	                                }
 				}
                         break;
@@ -8128,7 +8128,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
 
           // 1|   Ret   Left     Up    Esc  Right      \  Space   Down
                                         ql_keyboard_table[1] &= (255-2);
-                                        pcw_keyboard_table[1] |=128;
+                                        pcw_keyboard_table[1] &=(255-128);
                                 }
                                 else {
                                         //puerto_65278 |=1;
@@ -8139,7 +8139,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                         msx_keyboard_table[8] |=16;
                                         svi_keyboard_table[6] |=128;
                                         ql_keyboard_table[1] |= 2;
-                                        pcw_keyboard_table[1] &=(255-128);
+                                        pcw_keyboard_table[1] |=128;
                                 }
                         break;
                         case UTIL_KEY_RIGHT:
@@ -8152,7 +8152,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                         msx_keyboard_table[8] &=(255-128);
                                         svi_keyboard_table[8] &=(255-128);
                                         ql_keyboard_table[1] &= (255-16);
-                                        pcw_keyboard_table[0] |=64;
+                                        pcw_keyboard_table[0] &=(255-64);
                                 }
                                 else {
                                         //puerto_65278 |=1;
@@ -8163,7 +8163,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                         msx_keyboard_table[8] |=128;
                                         svi_keyboard_table[8] |=128;
                                         ql_keyboard_table[1] |= 16;
-                                        pcw_keyboard_table[0] &=(255-64);
+                                        pcw_keyboard_table[0] |=64;
                                 }
                         break;
 
@@ -8178,7 +8178,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                         msx_keyboard_table[8] &=(255-64);
                                         svi_keyboard_table[7] &=(255-128);
                                         ql_keyboard_table[1] &= (255-128);
-                                        pcw_keyboard_table[0xA] |=64;
+                                        pcw_keyboard_table[0xA] &=(255-64);
 
                                 }
                                 else {
@@ -8191,7 +8191,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                         msx_keyboard_table[8] |=64;
                                         svi_keyboard_table[7] |=128;
                                         ql_keyboard_table[1] |= 128;
-                                        pcw_keyboard_table[0xA] &=(255-64);
+                                        pcw_keyboard_table[0xA] |=64;
                                 }
                         break;
 
@@ -8205,7 +8205,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                         msx_keyboard_table[8] &=(255-32);
                                         svi_keyboard_table[5] &=(255-128);
                                         ql_keyboard_table[1] &= (255-4);
-                                        pcw_keyboard_table[1] |=64;
+                                        pcw_keyboard_table[1] &=(255-64);
                                 }
                                 else {
                                         //puerto_65278 |=1;
@@ -8216,7 +8216,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                         msx_keyboard_table[8] |=32;
                                         svi_keyboard_table[5] |=128;
                                         ql_keyboard_table[1] |=4;
-                                        pcw_keyboard_table[1] &=(255-64);
+                                        pcw_keyboard_table[1] |=64;
                                 }
                         break;
 
@@ -8330,7 +8330,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                           msx_keyboard_table[7] &=(255-8);
                                           ql_keyboard_table[5] &=(255-8);
 
-                                          pcw_keyboard_table[8]|= 16;
+                                          pcw_keyboard_table[8]&= (255-16);
         	                        }
 
 
@@ -8343,7 +8343,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                         msx_keyboard_table[7] |=8;
                                           ql_keyboard_table[5] |=8;
 
-                                          pcw_keyboard_table[8]&= (255-16);
+                                          pcw_keyboard_table[8]|= 16;
 	                                }
 				}
                         break;
@@ -8365,10 +8365,10 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                                 msx_keyboard_table[6] &=(255-8);
                                                 svi_keyboard_table[8] &=(255-8);
                                                 ql_keyboard_table[3] &=(255-2);
-                                                pcw_keyboard_table[8] |=64;
+                                                pcw_keyboard_table[8] &=(255-64);
 
                                                 //Tambien el led del shift lock
-                                                pcw_keyboard_table[0xD] |=64;
+                                                pcw_keyboard_table[0xD] &=(255-64);
 
                                                 //printf("CAPS\n");
 	                                }
@@ -8380,9 +8380,9 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                                 msx_keyboard_table[6] |=8;
                                                 svi_keyboard_table[8] |=8;
                                                 ql_keyboard_table[3] |=2;
-                                                pcw_keyboard_table[8] &=(255-64);
+                                                pcw_keyboard_table[8] |=64;
 
-                                                pcw_keyboard_table[0xD] &=(255-64);
+                                                pcw_keyboard_table[0xD] |=64;
 	                                }
 				}
                         break;
@@ -8430,11 +8430,11 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
 					//Temp para CPC. Quiza hay que tener en cuenta keymap
 					if (pressrelease) {
                                                 cpc_keyboard_table[4] &=255-128;
-                                                pcw_keyboard_table[4] |=128;
+                                                pcw_keyboard_table[4] &=255-128;
                                         }
                                         else {
                                                 cpc_keyboard_table[4] |=128;
-                                                pcw_keyboard_table[4] &=255-128;
+                                                pcw_keyboard_table[4] |=128;
                                         }
 				}
                         break;
@@ -8447,10 +8447,10 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                 if (MACHINE_IS_PCW) {
                                     //printf("Period\n");
                                     if (pressrelease) {
-                                        pcw_keyboard_table[3] |=128;
+                                        pcw_keyboard_table[3] &=(255-128);
                                     }
                                     else {
-                                        pcw_keyboard_table[3] &=(255-128);
+                                        pcw_keyboard_table[3] |=128;
                                     }
                                 }
                                 else {
@@ -8499,7 +8499,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                         ql_keyboard_table[0] &= (255-2);
                                         msx_keyboard_table[6] &= (255-32);
                                         svi_keyboard_table[7] &=(255-1);
-                                        pcw_keyboard_table[0] |=4;
+                                        pcw_keyboard_table[0] &=(255-4);
 
 
                                 }
@@ -8508,7 +8508,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                         ql_keyboard_table[0] |= 2;
                                         msx_keyboard_table[6] |= 32;
                                         svi_keyboard_table[7] |=1;
-                                        pcw_keyboard_table[0] &=(255-4);
+                                        pcw_keyboard_table[0] |=4;
 
 
                                 }
@@ -8523,8 +8523,8 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                         msx_keyboard_table[6] &= (255-64);
                                         svi_keyboard_table[7] &=(255-2);
                                         //F2 es F1 + shift en pcw
-                                        pcw_keyboard_table[0] |=4;
-                                        pcw_keyboard_table[2] |=32; //shift
+                                        pcw_keyboard_table[0] &=(255-4);
+                                        pcw_keyboard_table[2] &=(255-32); //shift
 
 
                                 }
@@ -8534,8 +8534,8 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                         msx_keyboard_table[6] |= 64;
                                         svi_keyboard_table[7] |=2;
 
-                                        pcw_keyboard_table[0] &=(255-4);
-                                        pcw_keyboard_table[2] &=(255-32); //shift
+                                        pcw_keyboard_table[0] |=4;
+                                        pcw_keyboard_table[2] |=32; //shift
 
 
                                 }
@@ -8550,14 +8550,14 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                         ql_keyboard_table[0] &= (255-16);
                                         msx_keyboard_table[6] &= (255-128);
                                         svi_keyboard_table[7] &=(255-4);
-                                        pcw_keyboard_table[0] |=1;
+                                        pcw_keyboard_table[0] &=(255-1);
                                 }
                                 else {
                                         blink_kbd_a14 |= 8;
                                         ql_keyboard_table[0] |= 16;
                                         msx_keyboard_table[6] |= 128;
                                         svi_keyboard_table[7] |=4;
-                                        pcw_keyboard_table[0] &=(255-1);
+                                        pcw_keyboard_table[0] |=1;
                                 }
                         break;
 
@@ -8570,8 +8570,8 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                    msx_keyboard_table[7] &= (255-1);
                                    svi_keyboard_table[7] &=(255-8);
                                    //F4 en pcw es F3+Shift
-                                   pcw_keyboard_table[0] |=1;
-                                   pcw_keyboard_table[2] |=32; //shift
+                                   pcw_keyboard_table[0] &=(255-1);
+                                   pcw_keyboard_table[2] &=(255-32); //shift
                                  }
 
                                  else {
@@ -8579,8 +8579,8 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                    msx_keyboard_table[7] |= 1;
                                    svi_keyboard_table[7] |=8;
 
-                                   pcw_keyboard_table[0] &=(255-1);
-                                   pcw_keyboard_table[2] &=(255-32);
+                                   pcw_keyboard_table[0] |=1;
+                                   pcw_keyboard_table[2] |=32;
                                  }
 		        break;
 
@@ -8598,14 +8598,14 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                         msx_keyboard_table[7] &= (255-2);
                                         svi_keyboard_table[7] &=(255-16);
 
-                                        pcw_keyboard_table[0xA] |=1;
+                                        pcw_keyboard_table[0xA] &=(255-1);
                                 }
                                 else {
                                         ql_keyboard_table[0] |= 32;
                                         msx_keyboard_table[7] |= 2;
                                         svi_keyboard_table[7] |=16;
 
-                                        pcw_keyboard_table[0xA] &=(255-1);
+                                        pcw_keyboard_table[0xA] |=1;
                                 }
                         break;
 
@@ -8616,12 +8616,12 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
 
                                 if (pressrelease) {
                                    //F6 en pcw es F5+Shift
-                                   pcw_keyboard_table[0xA] |=1;
-                                   pcw_keyboard_table[2] |=32; //shift
-                                }
-                                else {
                                    pcw_keyboard_table[0xA] &=(255-1);
                                    pcw_keyboard_table[2] &=(255-32); //shift
+                                }
+                                else {
+                                   pcw_keyboard_table[0xA] |=1;
+                                   pcw_keyboard_table[2] |=32; //shift
                                 }
                         break;
 
@@ -8632,11 +8632,11 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
 					if (simulador_joystick) {
 						simulador_joystick_forzado=1;
 					}
-                                    pcw_keyboard_table[0xA] |=16;
+                                    pcw_keyboard_table[0xA] &=(255-16);
 
                                 }
                                 else {
-                                    pcw_keyboard_table[0xA] &=(255-16);
+                                    pcw_keyboard_table[0xA] |=16;
                                 }
                         break;
 
@@ -8647,12 +8647,12 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                             if (MACHINE_IS_PCW) {
                                 if (pressrelease) {
                                     //F8 en pcw es F7+Shift
-                                    pcw_keyboard_table[0xA] |=16;
-                                    pcw_keyboard_table[2] |=32; //shift
-                                }
-                                else {
                                     pcw_keyboard_table[0xA] &=(255-16);
                                     pcw_keyboard_table[2] &=(255-32); //shift
+                                }
+                                else {
+                                    pcw_keyboard_table[0xA] |=16;
+                                    pcw_keyboard_table[2] |=32; //shift
                                 }
                             }
 
@@ -8770,7 +8770,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                 ql_keyboard_table[1] &= (255-8);
 
                                 //En PCW su tecla STOP es nuestro ESC
-                                pcw_keyboard_table[8] |=4;
+                                pcw_keyboard_table[8] &=(255-4);
 
                                 //Vaciamos cola speech
                                 textspeech_empty_speech_fifo();
@@ -8785,7 +8785,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                 puerto_teclado_sam_f7f9 |= 32;
                                 ql_keyboard_table[1] |= 8;
 
-                                pcw_keyboard_table[8] &=(255-4);
+                                pcw_keyboard_table[8] |=4;
                             }
 
 
@@ -8821,10 +8821,10 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
 
                         case UTIL_KEY_KP_NUMLOCK:
                                 if (pressrelease) {
-                                    pcw_keyboard_table[0xA] |=4;
+                                    pcw_keyboard_table[0xA] &=(255-4);
                                 }
                                 else {
-                                    pcw_keyboard_table[0xA] &=(255-4);
+                                    pcw_keyboard_table[0xA] |=4;
                                 }
                         break;
 
@@ -8832,10 +8832,10 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                         case UTIL_KEY_KP_DIVIDE:
                                 if (MACHINE_IS_PCW) {
                                     if (pressrelease) {
-                                        pcw_keyboard_table[1] |=4;
+                                        pcw_keyboard_table[1] &=(255-4);
                                     }
                                     else {
-                                        pcw_keyboard_table[1] &=(255-4);
+                                        pcw_keyboard_table[1] |=4;
                                     }
                                 }
 
@@ -8855,10 +8855,10 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                         case UTIL_KEY_KP_MULTIPLY:
                                 if (MACHINE_IS_PCW) {
                                     if (pressrelease) {
-                                        pcw_keyboard_table[1] |=8;
+                                        pcw_keyboard_table[1] &=(255-8);
                                     }
                                     else {
-                                        pcw_keyboard_table[1] &=(255-8);
+                                        pcw_keyboard_table[1] |=8;
                                     }
                                 }
 
@@ -8877,10 +8877,10 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                         case UTIL_KEY_KP_MINUS:
                                 if (MACHINE_IS_PCW) {
                                     if (pressrelease) {
-                                        pcw_keyboard_table[0] |=8;
+                                        pcw_keyboard_table[0] &=(255-8);
                                     }
                                     else {
-                                        pcw_keyboard_table[0] &=(255-8);
+                                        pcw_keyboard_table[0] |=8;
                                     }
                                 }
 
@@ -8913,12 +8913,12 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
 				if (pressrelease) {
 					cpc_keyboard_table[1] &=(255-128);
 					puerto_teclado_sam_dff9 &=(255-128);
-                    pcw_keyboard_table[0] |=2;
+                    pcw_keyboard_table[0] &=(255-2);
 				}
 				else {
 					cpc_keyboard_table[1] |=128;
 					puerto_teclado_sam_dff9 |=128;
-                    pcw_keyboard_table[0] &=(255-2);
+                    pcw_keyboard_table[0] |=2;
 				}
 			break;
 
@@ -8926,12 +8926,12 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
 				if (pressrelease) {
 					cpc_keyboard_table[1] &=(255-32);
 					puerto_teclado_sam_fef9 &=(255-32);
-                    pcw_keyboard_table[1] |=128;
+                    pcw_keyboard_table[1] &=(255-128);
 				}
 				else {
 					cpc_keyboard_table[1] |=32;
 					puerto_teclado_sam_fef9 |=32;
-                    pcw_keyboard_table[1] &=(255-128);
+                    pcw_keyboard_table[1] |=128;
 				}
 			break;
 
@@ -8939,12 +8939,12 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
 				if (pressrelease) {
 					cpc_keyboard_table[1] &=(255-64);
 					puerto_teclado_sam_fef9 &=(255-64);
-                    pcw_keyboard_table[0] |=128;
+                    pcw_keyboard_table[0] &=(255-128);
 				}
 				else {
 					cpc_keyboard_table[1] |=64;
 					puerto_teclado_sam_fef9 |=64;
-                    pcw_keyboard_table[0] &=(255-128);
+                    pcw_keyboard_table[0] |=128;
 				}
 			break;
 
@@ -8952,12 +8952,12 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
 				if (pressrelease) {
 					cpc_keyboard_table[0] &=(255-32);
 					puerto_teclado_sam_fef9 &=(255-128);
-                    pcw_keyboard_table[0] |=64;
+                    pcw_keyboard_table[0] &=(255-64);
 				}
 				else {
 					cpc_keyboard_table[0] |=32;
 					puerto_teclado_sam_fef9 |=128;
-                    pcw_keyboard_table[0] &=(255-64);
+                    pcw_keyboard_table[0] |=64;
 				}
 			break;
 
@@ -8965,12 +8965,12 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
 				if (pressrelease) {
 					cpc_keyboard_table[2] &=(255-16);
 					puerto_teclado_sam_fdf9 &=(255-32);
-                    pcw_keyboard_table[1] |=32;
+                    pcw_keyboard_table[1] |=(255-32);
 				}
 				else {
 					cpc_keyboard_table[2] |=16;
 					puerto_teclado_sam_fdf9 |=32;
-                    pcw_keyboard_table[1] |=(255-32);
+                    pcw_keyboard_table[1] |=32;
 				}
 			break;
 
@@ -8978,12 +8978,12 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
 				if (pressrelease) {
 					cpc_keyboard_table[1] &=(255-16);
 					puerto_teclado_sam_fdf9 &=(255-64);
-                    pcw_keyboard_table[1] |=64;
+                    pcw_keyboard_table[1] &=(255-64);
 				}
 				else {
 					cpc_keyboard_table[1] |=16;
 					puerto_teclado_sam_fdf9 |=64;
-                    pcw_keyboard_table[1] &=(255-64);
+                    pcw_keyboard_table[1] |=64;
 				}
 			break;
 
@@ -8991,12 +8991,12 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
 				if (pressrelease) {
 					cpc_keyboard_table[0] &=(255-16);
 					puerto_teclado_sam_fdf9 &=(255-128);
-                    pcw_keyboard_table[0] |=32;
+                    pcw_keyboard_table[0] &=(255-32);
 				}
 				else {
 					cpc_keyboard_table[0] |=16;
 					puerto_teclado_sam_fdf9 |=128;
-                    pcw_keyboard_table[0] &=(255-32);
+                    pcw_keyboard_table[0] |=32;
 				}
 			break;
 
@@ -9004,12 +9004,12 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
 				if (pressrelease) {
 					cpc_keyboard_table[1] &=(255-4);
 					puerto_teclado_sam_fbf9 &=(255-32);
-                    pcw_keyboard_table[2] |=16;
+                    pcw_keyboard_table[2] &=(255-16);
 				}
 				else {
 					cpc_keyboard_table[1] |=4;
 					puerto_teclado_sam_fbf9 |=32;
-                    pcw_keyboard_table[2] &=(255-16);
+                    pcw_keyboard_table[2] |=16;
 				}
 			break;
 
@@ -9017,12 +9017,12 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
 				if (pressrelease) {
 					cpc_keyboard_table[1] &=(255-8);
 					puerto_teclado_sam_fbf9 &=(255-64);
-                    pcw_keyboard_table[1] |=16;
+                    pcw_keyboard_table[1] &=(255-16);
 				}
 				else {
 					cpc_keyboard_table[1] |=8;
 					puerto_teclado_sam_fbf9 |=64;
-                    pcw_keyboard_table[1] &=(255-16);
+                    pcw_keyboard_table[1] |=16;
 				}
 			break;
 
@@ -9030,23 +9030,23 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
 				if (pressrelease) {
 					cpc_keyboard_table[0] &=(255-8);
 					puerto_teclado_sam_fbf9 &=(255-128);
-                    pcw_keyboard_table[0] |=16;
+                    pcw_keyboard_table[0] &=(255-16);
 				}
 				else {
 					cpc_keyboard_table[0] |=8;
 					puerto_teclado_sam_fbf9 |=128;
-                    pcw_keyboard_table[0] &=(255-16);
+                    pcw_keyboard_table[0] |=16;
 				}
 			break;
 
 			case UTIL_KEY_KP_COMMA:
 				if (pressrelease) {
 					cpc_keyboard_table[0] &=(255-128);
-                    pcw_keyboard_table[0xA] |=64;
+                    pcw_keyboard_table[0xA] &=(255-64);
 				}
 				else {
 					cpc_keyboard_table[0] |=128;
-                    pcw_keyboard_table[0xA] &=(255-64);
+                    pcw_keyboard_table[0xA] |=64;
 				}
 			break;
 
@@ -9054,11 +9054,11 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                 if (pressrelease) {
                     if (keyboard_swap_enter_return.v==0) {
                         cpc_keyboard_table[0] &=(255-64);
-                        pcw_keyboard_table[0xA] |=32;
+                        pcw_keyboard_table[0xA] &=(255-32);
                     }
                     else {
                         cpc_keyboard_table[2] &= (255-4);
-                        pcw_keyboard_table[2] |=4;
+                        pcw_keyboard_table[2] &=(255-4);
                     }
                 }
 
@@ -9066,12 +9066,12 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                 else {
                     if (keyboard_swap_enter_return.v==0) {
                         cpc_keyboard_table[0] |=64;
-                        pcw_keyboard_table[0xA] &=(255-32);
+                        pcw_keyboard_table[0xA] |=32;
                     }
 
                     else {
                         cpc_keyboard_table[2] |= 4;
-                        pcw_keyboard_table[2] &=(255-4);
+                        pcw_keyboard_table[2] |= 4;
                     }
                 }
 			break;
