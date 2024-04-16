@@ -29048,7 +29048,6 @@ void menu_help(MENU_ITEM_PARAMETERS)
                 "Lic~~enses","Lic~~encias","Llic~~ències");
 			menu_add_item_menu_shortcut(array_menu_common,'e');
             menu_add_item_menu_tiene_submenu(array_menu_common);
-            menu_add_item_menu_genera_ventana(array_menu_common);
 
 
 
