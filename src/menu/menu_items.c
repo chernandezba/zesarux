@@ -21606,6 +21606,25 @@ int keyboard_map_table_coords_cpc_464[8*10*4]={
 
 
 
+int keyboard_map_table_coords_pcw[8*11*4]={
+503,164,524,189, 536,200,560,222, 503,199,523,223, 605,62,627,81, 605,92,627,116, 605,128,625,151, 606,163,625,186, 571,164,594,187,
+
+470,202,489,224,434,201,457,226,538,62,560,83,573,63,594,83,572,95,592,116,538,130,559,152,573,129,591,151,536,164,558,186,
+436,61,456,84,419,96,440,121,458,98,490,154,427,131,448,152,538,95,559,118,3,166,59,189,410,166,428,187,96,200,118,222,
+
+402,63,423,81,369,62,389,83,385,97,405,118,351,97,372,119,394,131,412,152,360,132,380,154,375,167,398,190,341,167,362,190,
+335,63,355,86,300,62,321,83,318,97,338,121,283,98,304,120,326,132,345,154,291,131,312,155,272,166,291,191,308,168,329,190,
+
+267,63,286,84,234,63,253,86,251,97,270,119,217,99,236,119,224,133,244,154,257,132,278,154,240,168,259,188,129,202,387,226,
+201,62,221,85,167,62,186,85,150,98,170,120,183,98,204,119,190,133,210,155,156,131,177,156,206,168,227,192,171,166,193,187,
+
+135,63,154,85,101,62,121,86,118,98,138,118,84,99,103,117,92,132,111,154,124,132,143,156,  139,167,157,188, 106,167,125,190,
+36,63,55,86,69,63,89,86,4,63,23,85,51,97,72,119,3,97,35,117,58,132,79,155,3,132,43,154,74,167,94,189,
+9999,9999,9999,9999, 9999,9999,9999,9999, 9999,9999,9999,9999, 9999,9999,9999,9999, 9999,9999,9999,9999, 9999,9999,9999,9999, 9999,9999,9999,9999, 470,62,490,83,
+502,128,522,151,47,200,84,223,504,61,523,82,400,202,419,226,505,94,523,116,605,200,626,222,570,199,592,221,2,200,34,223,
+};
+
+
 int keyboard_map_table_coords_timex_computer[40*4]={
 20,134,64,158,78,132,110,156,122,132,154,160,166,132,200,160,210,132,242,160,
 52,94,86,118,100,96,130,118,142,94,176,118,188,94,222,118,234,96,266,118,
@@ -21830,6 +21849,12 @@ keyboard_help_double_key keyboard_map_additional_cpc_6128[]={
     { 0,0,0,0,NULL,0,NULL,0 }
 };
 
+keyboard_help_double_key keyboard_map_additional_pcw[]={
+    //{ 9999,9999,99999,9999,  &pcw_keyboard_table[2], 32,   NULL,0 }, //shift derecho
+
+    { 0,0,0,0,NULL,0,NULL,0 }
+};
+
 //Nota: no soportamos el boton joystick en la izquierda porque requeriria entrada en esta tecla adicional
 //pero en ese caso es una pulsacion de puesta a 1 el bit, y en teclas dobles se pone a 0 los bits
 keyboard_help_double_key keyboard_map_additional_coleco[]={
@@ -22038,6 +22063,10 @@ int *keyboard_help_return_map_table(void)
         return keyboard_map_table_coords_cpc_6128;
     }
 
+    else if (MACHINE_IS_PCW) {
+        return keyboard_map_table_coords_pcw;
+    }
+
     else if (MACHINE_IS_SG1000) {
         return keyboard_map_table_coords_sg1000;
     }
@@ -22104,6 +22133,10 @@ keyboard_help_double_key *keyboard_help_return_double_keys(void)
         return keyboard_map_additional_cpc_6128;
     }
 
+    else if (MACHINE_IS_PCW) {
+        return keyboard_map_additional_pcw;
+    }
+
     return teclas_dobles;
 
 }
@@ -22145,6 +22178,11 @@ z80_byte *keyboard_map_ports_table_cpc[10]={
     &cpc_keyboard_table[8],&cpc_keyboard_table[9]
 };
 
+z80_byte *keyboard_map_ports_table_pcw[11]={
+    &pcw_keyboard_table[0],&pcw_keyboard_table[1],&pcw_keyboard_table[2],&pcw_keyboard_table[3],
+    &pcw_keyboard_table[4],&pcw_keyboard_table[5],&pcw_keyboard_table[6],&pcw_keyboard_table[7],
+    &pcw_keyboard_table[8],&pcw_keyboard_table[9],&pcw_keyboard_table[10]
+};
 
 /*
 void menu_help_keyboard_show_all_keys(zxvision_window *ventana,int keyboard_map_coords[],int total_keys)
@@ -22177,7 +22215,7 @@ void menu_help_draw_rectangle_key(zxvision_window *ventana,int x1,int y1,int anc
 //Dice si bit tecla pulsada, dependiendo si es valor 0 en la mayoria de maquinas, o si no es 0 (como puertos de joystick en master system)
 int menu_help_keyboard_is_pressed_bit_key(z80_byte valor)
 {
-    if (MACHINE_IS_SMS || MACHINE_IS_SG1000 || MACHINE_IS_COLECO) {
+    if (MACHINE_IS_SMS || MACHINE_IS_SG1000 || MACHINE_IS_COLECO || MACHINE_IS_PCW) {
         if (valor) return 1;
         else return 0;
     }
@@ -22387,7 +22425,7 @@ void menu_help_keyboard_locate_speccy_pressed_keys(int keyboard_map_coords[],z80
 //Activar un bit de tecla segun si se pone a 0 (la mayoria de maquinas) o se pone a 1 (por ejemplo joystick en la master system)
 void menu_help_keyboard_activate_bit(z80_byte *puerto,z80_byte mascara)
 {
-    if (MACHINE_IS_SMS || MACHINE_IS_SG1000 || MACHINE_IS_COLECO) {
+    if (MACHINE_IS_SMS || MACHINE_IS_SG1000 || MACHINE_IS_COLECO || MACHINE_IS_PCW) {
         *puerto |=mascara;
     }
 
@@ -22479,6 +22517,12 @@ z80_byte **get_keyboard_map_ports_table(int *total_columnas,int *total_filas)
         *total_columnas=8;
         *total_filas=10;
         return keyboard_map_ports_table_cpc;
+    }
+
+    if (MACHINE_IS_PCW) {
+        *total_columnas=8;
+        *total_filas=11;
+        return keyboard_map_ports_table_pcw;
     }
 
     return keyboard_map_ports_table_speccy;
