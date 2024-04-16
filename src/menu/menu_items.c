@@ -21552,6 +21552,26 @@ Line	7       6       5	    4	    3	    2	    1	    0
 &48	    Z	    CAPSLOCK A	    TAB	    Q	    ESC	    2	    1
 &49	    DEL	    Joy 1   Fire 3 (CPC only)	     Joy 1 Fire 2	   Joy1 Fire 1	   Joy1 right	  Joy1 left	   Joy1 down	Joy1 up
 */
+int keyboard_map_table_coords_cpc_6128[8*10*4]={
+574,180,595,201,610,215,632,236,574,215,597,235,608,77,629,99,607,112,630,134,608,146,631,166, 432,215,527,236, 609,179,630,200,
+
+538,214,562,236, 84,214,133,236, 537,78,559,100, 572,77,595,99, 572,111,594,133, 536,145,560,167, 574,146,596,167, 539,181,560,201,
+466,77,487,101, 449,112,470,134, 486,113,524,168, 458,146,481,168, 537,111,559,133, 7,179,72,202 ,440,180,463,204, 5,214,70,236,
+
+430,78,452,99,395,78,417,99,414,113,436,136,377,112,400,134,423,146,444,167,386,146,409,168,406,181,427,202,369,181,391,201,
+360,78,384,101,323,77,347,101,343,112,365,134,306,112,329,134,352,146,374,169,316,147,338,168,299,182,319,203,332,180,357,204,
+
+288,78,311,99,252,77,275,100,270,112,293,133,235,112,258,134,244,146,265,167,280,146,303,167,262,181,284,202,147,214,419,238,
+218,77,240,99,182,77,205,101,164,113,187,135,200,112,222,133,207,146,230,167,173,146,196,168,226,181,248,202,190,181,212,204,
+
+147,77,168,98,111,77,135,99,129,111,152,134,94,112,116,133,103,146,124,168,139,146,162,168,156,180,178,201,119,180,142,201,
+41,77,63,100, 78,77,99,100, 6,76,28,100, 58,112,81,132, 7,111,45,134, 67,145,90,167, 5,145,53,169, 86,180,109,201,
+
+9999,9999,9999,9999, 9999,9999,9999,9999, 9999,9999,9999,9999, 9999,9999,9999,9999, 9999,9999,9999,9999, 9999,9999,9999,9999, 9999,9999,9999,9999, 502,77,524,100
+
+};
+
+
 int keyboard_map_table_coords_cpc_664[8*10*4]={
 578,3,602,24, 612,35,635,57, 578,69,600,89, 613,98,633,117, 612,132,632,151, 613,165,633,183, 608,193,630,215, 578,197,598,214,
 544,35,566,57, 578,35,601,57, 546,98,567,117, 578,98,601,117, 579,132,600,151, 546,163,567,182, 580,164,599,181, 546,195,566,214,
@@ -21804,6 +21824,12 @@ keyboard_help_double_key keyboard_map_additional_cpc_664[]={
     { 0,0,0,0,NULL,0,NULL,0 }
 };
 
+keyboard_help_double_key keyboard_map_additional_cpc_6128[]={
+    { 476,181,525,202,  &cpc_keyboard_table[2], 32,   NULL,0 }, //shift derecho
+
+    { 0,0,0,0,NULL,0,NULL,0 }
+};
+
 //Nota: no soportamos el boton joystick en la izquierda porque requeriria entrada en esta tecla adicional
 //pero en ese caso es una pulsacion de puesta a 1 el bit, y en teclas dobles se pone a 0 los bits
 keyboard_help_double_key keyboard_map_additional_coleco[]={
@@ -22008,6 +22034,10 @@ int *keyboard_help_return_map_table(void)
         return keyboard_map_table_coords_cpc_664;
     }
 
+    else if (MACHINE_IS_CPC_6128) {
+        return keyboard_map_table_coords_cpc_6128;
+    }
+
     else if (MACHINE_IS_SG1000) {
         return keyboard_map_table_coords_sg1000;
     }
@@ -22068,6 +22098,10 @@ keyboard_help_double_key *keyboard_help_return_double_keys(void)
 
     else if (MACHINE_IS_CPC_664) {
         return keyboard_map_additional_cpc_664;
+    }
+
+    else if (MACHINE_IS_CPC_6128) {
+        return keyboard_map_additional_cpc_6128;
     }
 
     return teclas_dobles;
@@ -22788,7 +22822,7 @@ void menu_help_keyboard_mantener_key_mouse(int pulsado_x,int pulsado_y)
     menu_help_keyboard_locate_speccy_pressed_keys(keyboard_map_table,ports_table,total_columnas,total_filas,
         pulsado_x,pulsado_y,&puerto1,&mascara1,&puerto2,&mascara2,teclas_dobles,&indice_a_tecla_simple,&indice_a_tecla_doble,&es_tecla_doble);
 
-    printf("indices: %d %d\n",indice_a_tecla_simple,indice_a_tecla_doble);
+    //printf("indices: %d %d\n",indice_a_tecla_simple,indice_a_tecla_doble);
 
     if (indice_a_tecla_simple>=0) {
         int valor=keyboard_get_teclas_mantenidas_pulsadas_simples(indice_a_tecla_simple);
@@ -22959,6 +22993,7 @@ void menu_help_show_keyboard(MENU_ITEM_PARAMETERS)
 
             if (debug_ultimo_click_x!=pulsado_x && debug_ultimo_click_y!=pulsado_y) {
                 printf("%d,%d,",pulsado_x,pulsado_y);
+                fflush(stdout);
                 debug_ultimo_click_x=pulsado_x;
                 debug_ultimo_click_y=pulsado_y;
             }
