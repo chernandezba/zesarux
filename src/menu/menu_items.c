@@ -21393,6 +21393,8 @@ void menu_help_keyboard_load_bmp(void)
     //Para el caso de pcw 8512, usamos misma imagen que 8256, pero cargamos otro bmp adicional que contiene el texto "512k"
     //que dibujamos encima del "256k"
     //No tendria sentido tener otro bmp grande solo para la imagen del teclado del 8512
+    //Este bmp keyboard_pcw_8512_only_text.bmp utiliza la misma paleta que keyboard_pcw_8256.bmp,
+    //asi no tengo que cargar otra paleta adicional solo para eso
     if (MACHINE_IS_PCW_8512) {
         existe=find_sharedfile("keyboards/keyboard_pcw_8512_only_text.bmp",buffer_nombre);
         if (!existe)  {
