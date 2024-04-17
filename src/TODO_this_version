@@ -878,7 +878,7 @@ O quiza que salte al menu con la linea de opcion seleccionada donde corresponde
 *probado spectrum
 *Probada zx81 orquesta test
 *probado zx80 macronics
-*cpc tengo que leer sample tambien a medio frame porque va a 31200. aun asi, da memory full al cargar arkanoid
+*cpc . probar run "
 
 -zeng online agregar a mas maquinas
 
