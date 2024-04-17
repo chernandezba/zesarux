@@ -940,6 +940,7 @@ extern int util_bmp_load_palette_changed_palette_primary;
 extern int util_bmp_load_palette_changed_palette_second;
 
 extern z80_byte *util_load_bmp_file(char *archivo,int id_paleta);
+extern z80_byte *util_load_bmp_file_no_palette(char *archivo);
 
 extern void util_rotate_file(char *filename,int archivos);
 

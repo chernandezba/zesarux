@@ -20622,9 +20622,16 @@ reserved	1 byte	 	unused (=0)
     //printf("\n");
 }
 
+void util_load_bmp_file_palette(z80_byte *puntero,int id_paleta)
+{
+    //Cargar la paleta bmp.
+    int paleta_destino=(id_paleta==0 ? BMP_INDEX_FIRST_COLOR : BMP_SECOND_INDEX_FIRST_COLOR);
+    util_bmp_load_palette(puntero,paleta_destino);
+}
+
 //Cargar un archivo bmp en memoria. Retorna puntero
 //id_paleta indica si se carga en paleta de colores 0 o 1
-z80_byte *util_load_bmp_file(char *archivo,int id_paleta)
+z80_byte *util_load_bmp_file_no_palette(char *archivo)
 {
     z80_byte *puntero;
 
@@ -20647,9 +20654,18 @@ z80_byte *util_load_bmp_file(char *archivo,int id_paleta)
     fclose(ptr_bmpfile);
 
 
-    //Cargar la paleta bmp.
-    int paleta_destino=(id_paleta==0 ? BMP_INDEX_FIRST_COLOR : BMP_SECOND_INDEX_FIRST_COLOR);
-    util_bmp_load_palette(puntero,paleta_destino);
+    return puntero;
+}
+
+//Cargar un archivo bmp en memoria. Retorna puntero
+//id_paleta indica si se carga en paleta de colores 0 o 1
+z80_byte *util_load_bmp_file(char *archivo,int id_paleta)
+{
+    z80_byte *puntero=util_load_bmp_file_no_palette(archivo);
+
+    if (puntero==NULL) return NULL;
+
+    util_load_bmp_file_palette(puntero,id_paleta);
 
     return puntero;
 }

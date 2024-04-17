@@ -21312,6 +21312,8 @@ z80_byte *help_keyboard_bmp_file_mem=NULL;
 //Ultima maquina activa cuando se cargo el teclado. Si cambia maquina, cargar teclado correspondiente
 int help_keyboard_last_current_machine=-1;
 
+z80_byte *help_keyboard_text_512_pcw=NULL;
+
 void menu_help_keyboard_load_bmp(void)
 {
 
@@ -21388,7 +21390,17 @@ void menu_help_keyboard_load_bmp(void)
 
     //if (help_keyboard_bmp_file_mem==NULL) return;
 
-
+    //Para el caso de pcw 8512, usamos misma imagen que 8256, pero cargamos otro bmp adicional que contiene el texto "512k"
+    //que dibujamos encima del "256k"
+    //No tendria sentido tener otro bmp grande solo para la imagen del teclado del 8512
+    if (MACHINE_IS_PCW_8512) {
+        existe=find_sharedfile("keyboards/keyboard_pcw_8512_only_text.bmp",buffer_nombre);
+        if (!existe)  {
+            debug_printf(VERBOSE_ERR,"Unable to find bmp file %s",nombrebmp_final);
+            return;
+        }
+        help_keyboard_text_512_pcw=util_load_bmp_file_no_palette(buffer_nombre);
+    }
 
 
 }
@@ -22537,6 +22549,41 @@ int menu_help_keyboard_highlight_key_y2=0;
 //Un indice unico por tecla por saber si la anterior iluminada era la misma
 int menu_help_keyboard_highlight_key_indice_anterior=-1;
 
+
+void menu_help_keyboard_overlay_render_512k_pcw_putpixel(zxvision_window *ventana,int x,int y,int color_final,int follow_zoom)
+{
+    //printf("%d %d\n",x,y);
+    if (!follow_zoom) {
+        //printf("no follow zoom. %d,%d\n",zoom_x,zoom_y);
+
+        //El offset x=61, y=10 donde tiene que ir a parar el texto "256k"
+        zxvision_putpixel_no_zoom(ventana,x+61,y+10,color_final);
+    }
+    else {
+        //Aunque no estoy usando este caso, lo dejo por si en el futuro...
+        //printf("follow zoom. %d,%d,%d\n",zoom_x,zoom_y,menu_gui_zoom);
+        int zx,zy;
+        for (zx=0;zx<zoom_x;zx++) {
+            for (zy=0;zy<zoom_y;zy++) {
+                zxvision_putpixel_no_zoom(ventana,(x+61)*zoom_x+zx,(y+10)*zoom_y+zy,color_final);
+            }
+        }
+
+    }
+}
+
+//Variante para poder especificar un offset en la ventana
+void menu_help_keyboard_overlay_render_512k_pcw(z80_byte *mem,int indice_paleta_color,zxvision_window *ventana,int x_ignore,int follow_zoom,
+    int ancho_mostrar,int indice_color_transparente,int color_final_transparente)
+{
+
+    screen_render_bmpfile_function(mem,indice_paleta_color,ventana,x_ignore,follow_zoom,
+        ancho_mostrar,indice_color_transparente,color_final_transparente,
+        menu_help_keyboard_overlay_render_512k_pcw_putpixel);
+
+}
+
+
 void menu_help_keyboard_overlay(void)
 {
 
@@ -22587,6 +22634,13 @@ void menu_help_keyboard_overlay(void)
             //zoom_x de offset para evitar parpadeo con la linea del recuadro por la izquierda
             //El teclado no sigue el zoom de ventana, pero sí que sigue el zoom de gui
             screen_render_bmpfile(help_keyboard_bmp_file_mem,BMP_SECOND_INDEX_FIRST_COLOR,ventana,zoom_x,0,0,-1,0);
+
+            //Sobreescribimos el texto "512k" encima
+            if (MACHINE_IS_PCW_8512) {
+                if (help_keyboard_text_512_pcw!=NULL) {
+                    menu_help_keyboard_overlay_render_512k_pcw(help_keyboard_text_512_pcw,BMP_SECOND_INDEX_FIRST_COLOR,ventana,zoom_x,0,0,-1,0);
+                }
+            }
 
             ventana->has_been_drawn_contents=0;
 
