@@ -1022,12 +1022,19 @@ void menu_debug_registers_dump_ascii(char *texto,menu_z80_moto_int direccion,int
 		if (byte_leido<32 || byte_leido>126) byte_leido='.';
 		}
 
+        //zx80
 		else if (modoascii==1) {
+            //Ignorar bit inverso
+            byte_leido &=127;
 			if (byte_leido>=64) byte_leido='.';
 			else byte_leido=da_codigo_zx80_no_artistic(byte_leido);
 		}
 
+        //zx81
 		else {
+            //Ignorar bit inverso
+            byte_leido &=127;
+
 			if (byte_leido>=64) byte_leido='.';
                         else byte_leido=da_codigo_zx81_no_artistic(byte_leido);
                 }

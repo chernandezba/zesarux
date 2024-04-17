@@ -40,6 +40,7 @@ Remember last path used on output tape
 Allow to load 48kB MSX cartridges
 Allow to load MSX cartridges with memory mapper Ascii 8kb, Ascii 16kb, Konami without SCC, Konami with SCC, R-Type
 Easier compilation on Haiku OS
+Improve Hexadecimal editor on ZX80 and ZX81: show inverse characters
 
 Improved ZRCP:
 - Added menu function to sync local snapshot to remote using ZRCP

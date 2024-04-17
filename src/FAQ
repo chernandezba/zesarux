@@ -1010,6 +1010,8 @@ So, you can recompile with the "--spectrum-reduced-core" setting on the configur
 the command line setting "--spectrum-reduced-core" when running ZEsarUX, and even more, you can switch it on from the menu, Settings-> Hardware settings
 
 
+Q: What are RWA files?
+A: RWA means Raw Wave Audio file; it's an audio file without header, sampled at rate 15600 Hz, 8 bit unsigned, 1 channel. They are used widely in ZEsarUX
 
 
 Q: I have a question not listed here. What can I do?
