@@ -172,6 +172,7 @@ void core_cpc_end_scanline_stuff(void)
 
     if (leer_cinta_real) {
         realtape_get_byte();
+        //realtape_get_byte(); //temporal. si pusiera esto rompe la lectura de archivo .wav
         if (realtape_loading_sound.v) {
             reset_silence_detection_counter();
             audio_valor_enviar_sonido_izquierdo /=2;
