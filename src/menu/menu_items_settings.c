@@ -6884,6 +6884,11 @@ void menu_display_pcw_video_mode(MENU_ITEM_PARAMETERS)
     if (pcw_video_mode==3) pcw_video_mode=0;
 }
 
+void menu_display_pcw_mode1_palette(MENU_ITEM_PARAMETERS)
+{
+    pcw_mode1_palette ^=1;
+}
+
 void menu_display_force_zx81_chr_128(MENU_ITEM_PARAMETERS)
 {
     force_zx81_chr_128.v ^=1;
@@ -7131,6 +7136,13 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
                     menu_add_item_menu_en_es_ca(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_pcw_black_white,NULL,
                         "Black & White monitor","Monitor Blanco y Negro","Monitor Blanc i Negre");
                     menu_add_item_menu_prefijo_format(array_menu_settings_display,"[%c] ",(pcw_black_white_display.v ? 'X' : ' '));
+                }
+
+                if (pcw_video_mode==1) {
+
+                    menu_add_item_menu_en_es_ca(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_pcw_mode1_palette,NULL,
+                        "Palette","Paleta","Paleta");
+                    menu_add_item_menu_prefijo_format(array_menu_settings_display,"[%d]  ",pcw_mode1_palette);
                 }
 
                 menu_add_item_menu_en_es_ca(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_pcw_always_on,NULL,

@@ -116,4 +116,6 @@ extern void pcw_boot_timer_handle(void);
 extern int pcw_video_mode;
 extern char *pcw_video_mode_names[];
 
+extern int pcw_mode1_palette;
+
 #endif

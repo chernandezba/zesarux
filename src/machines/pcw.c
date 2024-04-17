@@ -104,16 +104,29 @@ z80_byte pcw_interrupt_from_pd765_type=0;
 int pcw_total_ram=256*1024;
 
 //Tabla de colores
-int pcw_rgb_table[22]={
+int pcw_rgb_table[PCW_TOTAL_PALETTE_COLOURS]={
 
     0x000000, //negro
     0x41FF00,  //verde. Tipico color de green "P1" phosphor
 
     //4 colores tipicos de CGA
+
+    //Paleta 0
+    //negro, light green, light red, yellow
+    0x000000, //negro
+    0x55FF55, //light green,
+    0xFF5555, //light red
+    0xFFFF55, //yellow
+
+    //Paleta 1
     0x000000, //negro
     0x55FFFF, //light cyan
     0xFF55FF, //light magenta
     0xFFFFFF, //white
+
+
+
+
 
     //paleta 16 colores
     0x000000,
@@ -133,6 +146,9 @@ int pcw_rgb_table[22]={
     0xFFFF55,
     0xFFFFFF
 };
+
+//Determina la paleta del mode1 (la que es como cga)
+int pcw_mode1_palette=0;
 
 //Mostrar colores en blanco y negro
 z80_bit pcw_black_white_display={0};
@@ -904,8 +920,7 @@ void pcw_refresca_putpixel_mode2(int x,int y,int color)
 
 int pcw_get_rgb_color_mode1(int i)
 {
-
-    return PCW_COLOUR_START_MODE1+i;
+    return PCW_COLOUR_START_MODE1+i+pcw_mode1_palette*4;
 }
 
 void pcw_refresca_putpixel_mode1(int x,int y,int color)
