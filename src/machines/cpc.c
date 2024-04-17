@@ -928,7 +928,17 @@ I/O address	A9	A8	Description	Read/Write status	Used Direction	Used for
 			valor &=(255-1);
 			valor |=cpc_get_vsync_bit();
 
- 			if (realtape_inserted.v && realtape_playing.v) {
+            int leer_cinta_real=0;
+
+            if (realtape_inserted.v && realtape_playing.v) leer_cinta_real=1;
+
+            if (audio_can_record_input()) {
+                if (audio_is_recording_input) {
+                    leer_cinta_real=1;
+                }
+            }
+
+            if (leer_cinta_real) {
                         	if (realtape_get_current_bit_playing()) {
                                 	valor=valor|128;
 	                                //printf ("1 ");
