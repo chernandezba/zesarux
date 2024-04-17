@@ -874,7 +874,10 @@ O quiza que salte al menu con la linea de opcion seleccionada donde corresponde
 
 -Incorporar bittransfe como manera de generar snapshot en .tap. Agregar parámetro de estado interrupciones, registro i. Otros registros que falten? R? Problema que está guardando algunos registros en parte alta de la memoria y puede interferir con el stack si no se ha cambiado el CLEAR
 
--carga cinta real en zx81 y otros. Probada zx81 orquesta test
+-carga cinta real en zx81 y otros.
+*probado spectrum
+*Probada zx81 orquesta test
+*probado zx80 macronics
 
 -zeng online agregar a mas maquinas
 
