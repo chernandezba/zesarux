@@ -111,14 +111,28 @@ int pcw_rgb_table[PCW_TOTAL_PALETTE_COLOURS]={
 
     //4 colores tipicos de CGA
 
-    //Paleta 0
+    //Paleta 0 low intensity
+    //negro, green, red, brown
+    0x000000, //negro
+    0x00AA00, //green
+    0xAA0000, //red
+    0xAA5500, //brown
+
+    //Paleta 0 high intensity
     //negro, light green, light red, yellow
     0x000000, //negro
     0x55FF55, //light green,
     0xFF5555, //light red
     0xFFFF55, //yellow
 
-    //Paleta 1
+    //Paleta 1 low intensity
+    //negro, cyan, magenta, light gray
+    0x000000, //negro
+    0x00AAAA, //cyan
+    0xAA00AA, //magenta
+    0xAAAAAA, //light gray
+
+    //Paleta 1 high intensity
     0x000000, //negro
     0x55FFFF, //light cyan
     0xFF55FF, //light magenta

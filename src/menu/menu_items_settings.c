@@ -6886,7 +6886,8 @@ void menu_display_pcw_video_mode(MENU_ITEM_PARAMETERS)
 
 void menu_display_pcw_mode1_palette(MENU_ITEM_PARAMETERS)
 {
-    pcw_mode1_palette ^=1;
+    pcw_mode1_palette++;
+    if (pcw_mode1_palette==4) pcw_mode1_palette=0;
 }
 
 void menu_display_force_zx81_chr_128(MENU_ITEM_PARAMETERS)
