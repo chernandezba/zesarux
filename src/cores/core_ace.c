@@ -54,6 +54,7 @@
 
 z80_byte byte_leido_core_ace;
 
+int core_ace_medio_scanline=0;
 
 void core_ace_handle_interrupts(void)
 {
@@ -327,7 +328,27 @@ void cpu_core_loop_ace(void)
         }
     }
 
-
+    //A mitad de scanline
+    //Hacemos cosas como leer sample de audio de cable externo, pues leemos a 31200 hz (el doble de lo que seria cada scanline)
+    if (!core_ace_medio_scanline) {
+        int estados_en_linea=t_estados % screen_testados_linea;
+        if (estados_en_linea>screen_testados_linea/2) {
+            //printf("mitad scanline. %5d %5d\n",estados_en_linea,t_estados);
+            //Indicamos que ya hemos pasado el medio scanline
+            core_ace_medio_scanline=1;
+            if (audio_can_record_input()) {
+                if (audio_is_recording_input) {
+                    //En este caso simplemente leemos el valor que luego el core lo interpreta en el puerto EAR
+                    //En cambio no alimentamos con ese valor el buffer de sonido que permite escuchar el sonido de cable externo,
+                    //no hace falta complicarse tanto
+                    //digamos que de esos 31200 hz, 1 de cada dos samples no lo escuchamos, aunque por el puerto EAR se interpretan los dos
+                    audio_read_sample_audio_input();
+                    realtape_last_value=audio_last_record_input_sample;
+                    //return;
+                }
+            }
+        }
+    }
 
     //Esto representa final de scanline
 
@@ -363,8 +384,18 @@ void cpu_core_loop_ace(void)
         //}
 
 
+        int leer_cinta_real=0;
 
-        if (realtape_inserted.v && realtape_playing.v) {
+        if (realtape_inserted.v && realtape_playing.v) leer_cinta_real=1;
+
+        if (audio_can_record_input()) {
+            if (audio_is_recording_input) {
+                leer_cinta_real=1;
+            }
+        }
+
+        if (leer_cinta_real) {
+
             realtape_get_byte();
             //audio_valor_enviar_sonido += realtape_last_value;
 
@@ -399,7 +430,7 @@ void cpu_core_loop_ace(void)
 
         }
 
-
+        core_ace_medio_scanline=0;
 
     }
 
