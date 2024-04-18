@@ -964,7 +964,19 @@ Bit	Description	Comment
 7	Cassette input signal
 			*/
 			z80_byte valor=255;
-			if (realtape_inserted.v && realtape_playing.v) {
+
+                int leer_cinta_real=0;
+
+                if (realtape_inserted.v && realtape_playing.v) leer_cinta_real=1;
+
+                if (audio_can_record_input()) {
+                    if (audio_is_recording_input) {
+                        leer_cinta_real=1;
+                    }
+                }
+
+                if (leer_cinta_real) {
+
 				//printf ("(%d) ",realtape_last_value);
 
 					//margen de ceros. Reduccion ruido
