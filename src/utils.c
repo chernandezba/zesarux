@@ -3073,6 +3073,19 @@ void reset_keyboard_ports(void)
 
         puerto_especial_joystick=0;
 
+        //De Sam coupe
+
+        puerto_65534=255;
+
+        puerto_teclado_sam_fef9=255;
+        puerto_teclado_sam_fdf9=255;
+        puerto_teclado_sam_fbf9=255;
+        puerto_teclado_sam_f7f9=255;
+        puerto_teclado_sam_eff9=255;
+        puerto_teclado_sam_dff9=255;
+        puerto_teclado_sam_bff9=255;
+        puerto_teclado_sam_7ff9=255;
+
 	//De Z88
 	blink_kbd_a15=255;
 	blink_kbd_a14=255;

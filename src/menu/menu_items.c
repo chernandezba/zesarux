@@ -21914,9 +21914,69 @@ keyboard_help_double_key keyboard_map_additional_coleco[]={
     { 0,0,0,0,NULL,0,NULL,0 }
 };
 
+
+/*
+z80_byte puerto_65534=255;
+	D4	D3	D2	D1	D0
+	RIGHT	LEFT	DOWN	UP	CTRL
+	z80_byte puerto_teclado_sam_fef9=255;
+z80_byte puerto_teclado_sam_fdf9=255;
+z80_byte puerto_teclado_sam_fbf9=255;
+z80_byte puerto_teclado_sam_f7f9=255;
+
+
+z80_byte puerto_teclado_sam_eff9=255;
+z80_byte puerto_teclado_sam_dff9=255;
+z80_byte puerto_teclado_sam_bff9=255;
+z80_byte puerto_teclado_sam_7ff9=255;
+*/
 keyboard_help_double_key keyboard_map_additional_sam[]={
 
-    { 0,0,0,0,NULL,0,NULL,0 }
+    { 66,152,105,177, &puerto_65534,1,NULL,0 },
+
+	{577,115,599,140, &puerto_65534,2,NULL,0 },
+	{578,155,599,177, &puerto_65534,4,NULL,0 },
+	{541,152,563,177, &puerto_65534,8,NULL,0 },
+	{614,154,637,176, &puerto_65534,16,NULL,0 },
+
+	{541,80,562,103, &puerto_teclado_sam_fef9,32,NULL,0},
+	{577,78,599,103, &puerto_teclado_sam_fef9,64,NULL,0},
+	{613,80,636,105, &puerto_teclado_sam_fef9,128,NULL,0},
+
+	{542,43,562,66,&puerto_teclado_sam_fdf9,32,NULL,0},
+	{578,43,600,67,&puerto_teclado_sam_fdf9,64,NULL,0},
+	{613,40,635,68,&puerto_teclado_sam_fdf9,128,NULL,0},
+
+	{543,6,563,28,&puerto_teclado_sam_fbf9,32,NULL,0},
+	{578,4,600,30,&puerto_teclado_sam_fbf9,64,NULL,0},
+	{614,3,636,30,&puerto_teclado_sam_fbf9,128,NULL,0},
+
+	{3,4,23,27, &puerto_teclado_sam_f7f9,32,NULL,0},
+	{4,41,43,64, &puerto_teclado_sam_f7f9,64,NULL,0},
+	{4,78,51,104, &puerto_teclado_sam_f7f9,128,NULL,0},
+
+	{412,4,433,26, &puerto_teclado_sam_eff9,32,NULL,0},
+	{449,2,470,26, &puerto_teclado_sam_eff9,64,NULL,0},
+	{486,4,526,25, &puerto_teclado_sam_eff9,128,NULL,0},
+
+	{430,41,454,66, &puerto_teclado_sam_dff9,32,NULL,0},
+	{468,40,490,65, &puerto_teclado_sam_dff9,64,NULL,0},
+	{541,115,565,140,&puerto_teclado_sam_dff9,128,NULL,0},
+
+	{401,78,424,103, &puerto_teclado_sam_bff9,32,NULL,0},
+	{440,78,461,102, &puerto_teclado_sam_bff9,64,NULL,0},
+	{421,154,463,177,&puerto_teclado_sam_bff9,128,NULL,0},
+
+	{345,116,366,140, &puerto_teclado_sam_7ff9,32,NULL,0},
+	{382,116,406,140, &puerto_teclado_sam_7ff9,64,NULL,0},
+	{420,116,444,141, &puerto_teclado_sam_7ff9,128,NULL,0},
+
+	//Return, shift, symbol derechos
+	{503,41,529,105, &puerto_49150,1,   NULL, 0},
+	{460,117,529,141, KEY_PORT_VALUE_SHIFT,   NULL, 0},
+	{477,155,528,177, KEY_PORT_VALUE_SYMBOL,  NULL, 0},
+
+	{ 0,0,0,0,NULL,0,NULL,0 }
 };
 
 //teclas QL
