@@ -4987,7 +4987,7 @@ void menu_hardware_zxprinter_bitmapfile(MENU_ITEM_PARAMETERS)
         filtros[2]=0;
 
 
-        if (menu_filesel("Select Bitmap File",filtros,zxprinter_bitmap_filename_buffer)==1) {
+        if (menu_filesel_save("Select Bitmap File",filtros,zxprinter_bitmap_filename_buffer)==1) {
                 //Ver si archivo existe y preguntar
                 struct stat buf_stat;
 
@@ -5021,7 +5021,7 @@ void menu_hardware_zxprinter_ocrfile(MENU_ITEM_PARAMETERS)
         filtros[1]=0;
 
 
-        if (menu_filesel("Select OCR File",filtros,zxprinter_ocr_filename_buffer)==1) {
+        if (menu_filesel_save("Select OCR File",filtros,zxprinter_ocr_filename_buffer)==1) {
                 //Ver si archivo existe y preguntar
                 struct stat buf_stat;
 
