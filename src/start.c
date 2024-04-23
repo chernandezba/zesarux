@@ -915,6 +915,7 @@ printf (
         "--zeng-online-server-max-rooms n                Set maximum rooms for this ZENG Online server\n"
         "--zeng-online-server-max-players-room n         Set maximum players per room for this ZENG Online server\n"
         "--zeng-online-server-destroy-rooms-no-players   This ZENG Online server destroys rooms without players\n"
+		"--zeng-online-server-allow-all-zrcp             Allow all ZRCP commands when enabling this ZENG Online server, not only ZENG commands\n"
 #endif
 
 		"--showfiredbreakpoint n             Tells to show the breakpoint condition when it is fired. Possible values: \n"
@@ -5687,6 +5688,10 @@ int parse_cmdline_options(int desde_commandline) {
         else if (!strcmp(argv[puntero_parametro],"--zeng-online-server-destroy-rooms-no-players")) {
             zeng_online_destroy_rooms_without_players.v=1;
         }
+
+		else if (!strcmp(argv[puntero_parametro],"--zeng-online-server-allow-all-zrcp")) {
+			zeng_online_server_allow_zrcp_only_zeng_online.v=0;
+		}
 
         else if (!strcmp(argv[puntero_parametro],"--zeng-online-no-zip-snapshots")) {
             zeng_online_zip_compress_snapshots.v=0;

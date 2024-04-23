@@ -4538,6 +4538,8 @@ int util_write_configfile(void)
                                                 ADD_STRING_CONFIG,"--zeng-online-server-max-rooms %d",zeng_online_current_max_rooms);
                                                 ADD_STRING_CONFIG,"--zeng-online-server-max-players-room %d",zeng_online_current_max_players_per_room);
 
+  if (zeng_online_server_allow_zrcp_only_zeng_online.v==0)  ADD_STRING_CONFIG,"--zeng-online-server-allow-all-zrcp");
+
   if (realjoystick_disabled.v==1)              ADD_STRING_CONFIG,"--disablerealjoystick");
 
 

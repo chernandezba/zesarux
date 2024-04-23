@@ -772,10 +772,6 @@ ok -Aviso de nueva versión y entonces no sale memoriam
 -Documentar cómo van los archivos txt de update del server
 
 
--Limitar comandos ZRCP cuando Zeng online server habilitado
-Quizá setting para limitar o no
-->revisar que realmente el cliente no use ningun otro comando
-->PENDIENTE agregar parametro config y grabado config
 
 
 
@@ -889,11 +885,17 @@ O quiza que salte al menu con la linea de opcion seleccionada donde corresponde
 -pendiente keyboard help
 tbblue
 tsconf
+baseconf
 zxuno
-prism
 chloe
 spectravideo
-zx evolution
+
 -keyboard help no hace por ejemplo en cpc 664 teclas [ ]
 
 -Incluir paquete de Haiku OS 64 bit
+
+
+-Limitar comandos ZRCP cuando Zeng online server habilitado
+Quizá setting para limitar o no
+->revisar que realmente el cliente no use ningun otro comando
+ok agregar parametro config y grabado config
