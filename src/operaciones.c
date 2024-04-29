@@ -3567,7 +3567,18 @@ z80_byte lee_puerto_sam_no_time(z80_byte puerto_h,z80_byte puerto_l)
 			//printf ("lectura teclado. puerto_h: %d valor: %d\n",puerto_h,valor&31);
 		}
 
-                if (realtape_inserted.v && realtape_playing.v) {
+                int leer_cinta_real=0;
+
+                if (realtape_inserted.v && realtape_playing.v) leer_cinta_real=1;
+
+                if (audio_can_record_input()) {
+                    if (audio_is_recording_input) {
+                        leer_cinta_real=1;
+                    }
+                }
+
+                if (leer_cinta_real) {
+
                         if (realtape_get_current_bit_playing()) {
                                 valor=valor|64;
                                 //printf ("1 ");
