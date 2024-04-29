@@ -211,6 +211,16 @@ void cpu_core_loop_sam(void)
 
 				if (beeper_enabled.v) {
 
+                    //Sam coupe no se oye bien real beeper, creo que porque el array de valores del puerto FEH tiene limite
+                    //CURRENT_BEEPER_ARRAY_LENGTH, y eso es 256 , y sam coupe tiene aproximadamente 384 estados por linea
+                    //lo cual es mayor de 256 y provoca que no se escriba todo el array
+                    //Habria que probar si aumentando CURRENT_BEEPER_ARRAY_LENGTH se oye bien
+                    //De todas maneras lo mejor es hacer que Sam Coupe de momento no use real beeper, como si no estuviera habilitado
+
+                    audio_valor_enviar_sonido += value_beeper;
+
+                    /*
+
 					if (beeper_real_enabled==0) {
 						audio_valor_enviar_sonido += value_beeper;
 					}
@@ -220,6 +230,7 @@ void cpu_core_loop_sam(void)
 						beeper_new_line();
 					}
 
+                    */
 				}
 
 				//printf ("Sonido: %d\n",audio_valor_enviar_sonido);

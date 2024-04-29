@@ -92,6 +92,7 @@ Fixed ZX Vision:
 
 Fixed http redirections when downloading using the Speccy Online Browser
 Fixed bit 6 of FEH port depending on Issue2/3
+Fixed Sam Coupe FEH sound port when enabling Real Beeper
 Fixed segfault when trying to insert an unexistent Real Tape file
 Fixed segfault inserting a ZX81 Real Tape and opening Tape Viewer
 Fixed invalid Data Bus value on Jupiter Ace (it's 20H instead of FFH)
