@@ -436,7 +436,17 @@ z80_byte svi_in_port_ppi(z80_byte puerto_l)
             //7: Cassette read data
             //TODO Bit 6
 
-		    if (realtape_inserted.v && realtape_playing.v) {
+            int leer_cinta_real=0;
+
+            if (realtape_inserted.v && realtape_playing.v) leer_cinta_real=1;
+
+            if (audio_can_record_input()) {
+                if (audio_is_recording_input) {
+                    leer_cinta_real=1;
+                }
+            }
+
+            if (leer_cinta_real) {
 
                 //marcar bit cassete ready
                 valor &=(255-64);
