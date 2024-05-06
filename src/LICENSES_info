@@ -32,8 +32,12 @@ Copyright 1998-2002 Karl Stenerud. All rights reserved. Distributed under MIT Li
 https://github.com/kstenerud/Musashi
 
 -National Semiconductor SC/MP CPU Emulator
-Copyright 2017 Miodrag Milanovic. Distributed under BSD-3 License, you may read it on the LICENSE_SCMP_CORE
+Copyright 2017 Miodrag Milanovic. Distributed under BSD-3 License, you may read it on the LICENSE_SCMP_CORE file
 https://github.com/mamedev/mame/tree/master/src/mame/drivers/mk14.cpp
+
+-PlayTZX
+Copyright Tero Turtiainen, Tomaz Kac, Philip Kendall. Distributed under freeware, you may read it on the LICENSE_playtzx file
+https://github.com/kounch/playtzx
 
 -Qemu Mac OS video driver
 Copyright Fabrice Bellard and the QEMU team. Distributed under the GNU General Public License version 2.

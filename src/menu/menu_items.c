@@ -28518,6 +28518,11 @@ void menu_about_licenses_info(MENU_ITEM_PARAMETERS)
         menu_about_read_file("Licenses information","LICENSES_info",1);
 }
 
+void menu_about_license_playtzx(MENU_ITEM_PARAMETERS)
+{
+        menu_about_read_file("PlayTZX","licenses/LICENSE_playtzx",1);
+}
+
 void menu_about_license_motorola_core(MENU_ITEM_PARAMETERS)
 {
         menu_about_read_file("Motorola Core License","licenses/LICENSE_MOTOROLA_CORE",1);
@@ -29020,6 +29025,9 @@ void menu_licenses(MENU_ITEM_PARAMETERS)
 
 			menu_add_item_menu(array_menu_common,"~~Motorola Core",MENU_OPCION_NORMAL,menu_about_license_motorola_core,NULL);
 			menu_add_item_menu_shortcut(array_menu_common,'m');
+
+			menu_add_item_menu(array_menu_common,"Pla~~yTZX",MENU_OPCION_NORMAL,menu_about_license_playtzx,NULL);
+			menu_add_item_menu_shortcut(array_menu_common,'y');
 
 			menu_add_item_menu(array_menu_common,"s~~cl2trd",MENU_OPCION_NORMAL,menu_about_license_scl2trd,NULL);
 			menu_add_item_menu_shortcut(array_menu_common,'c');
