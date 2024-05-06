@@ -884,6 +884,7 @@ chloe
 spectravideo
 
 -keyboard help no hace por ejemplo en cpc 664 teclas [ ]
+ok -keyboard help poder liberar teclas pulsadas: quiza con boton derecho en zona que no haya ninguna
 
 -carga cinta real: faltaria por sdl2
 

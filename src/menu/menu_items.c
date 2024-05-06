@@ -21562,16 +21562,16 @@ z80_byte puerto_49150=255; //    db              255  ; H                J      
 z80_byte puerto_32766=255; //    db              255  ; B    N    M    Simb Space ;7
 */
 int keyboard_map_table_coords_sam[40*4]={
-5,115,66,139, 83,115,105,139, 119,116,143,138, 156,114,177,139, 193,116,216,140, 
-65,80,86,101, 102,78,122,102, 138,77,158,103, 174,79,196,102, 212,79,234,102, 
+5,115,66,139, 83,115,105,139, 119,116,143,138, 156,114,177,139, 193,116,216,140,
+65,80,86,101, 102,78,122,102, 138,77,158,103, 174,79,196,102, 212,79,234,102,
 58,42,77,66, 92,40,113,64, 130,41,149,65, 166,41,187,66, 204,42,224,66,
-38,4,59,28,73,5,93,26,110,5,131,28,147,4,167,29,182,4,206,28, 
+38,4,59,28,73,5,93,26,110,5,131,28,147,4,167,29,182,4,206,28,
 
 375,2,396,27, 336,2,357,27, 297,2,319,28, 259,3,281,27, 221,2,243,27,
 391,41,415,65, 354,40,378,65, 316,40,338,65, 279,41,301,64, 239,39,262,65,
 477,79,529,104, 363,78,386,103, 325,77,346,102, 288,77,312,105, 249,78,271,101,
 120,152,405,177, 4,151,48,175, 306,116,330,141, 269,116,292,140, 230,116,255,140,
- 
+
 
 
 };
@@ -22158,7 +22158,7 @@ int *keyboard_help_return_map_table(void)
 
     else if (MACHINE_IS_SAM) {
         return keyboard_map_table_coords_sam;
-    }	
+    }
 
     else if (MACHINE_IS_CPC_464 || MACHINE_IS_CPC_4128) {
         return keyboard_map_table_coords_cpc_464;
@@ -22232,7 +22232,7 @@ keyboard_help_double_key *keyboard_help_return_double_keys(void)
 
     else if (MACHINE_IS_SAM) {
         return keyboard_map_additional_sam;
-    }	
+    }
 
     else if (MACHINE_IS_CPC_464 || MACHINE_IS_CPC_4128) {
         return keyboard_map_additional_cpc_464;
@@ -22996,8 +22996,10 @@ void menu_help_keyboard_generate_key_mouse(int pulsado_x,int pulsado_y)
     }
 }
 
-void menu_help_keyboard_mantener_key_mouse(int pulsado_x,int pulsado_y)
+//Retorna 1 si se ha apuntado a alguna tecla
+int menu_help_keyboard_mantener_key_mouse(int pulsado_x,int pulsado_y)
 {
+    int pulsada_alguna=0;
 
     //localizar puerto
 
@@ -23027,13 +23029,17 @@ void menu_help_keyboard_mantener_key_mouse(int pulsado_x,int pulsado_y)
         int valor=keyboard_get_teclas_mantenidas_pulsadas_simples(indice_a_tecla_simple);
         valor ^=1;
         keyboard_set_teclas_mantenidas_pulsadas_simples(indice_a_tecla_simple,valor);
+        pulsada_alguna=1;
     }
 
     if (indice_a_tecla_doble>=0) {
         int valor=keyboard_get_teclas_mantenidas_pulsadas_dobles(indice_a_tecla_doble);
         valor ^=1;
         keyboard_set_teclas_mantenidas_pulsadas_dobles(indice_a_tecla_doble,valor);
+        pulsada_alguna=1;
     }
+
+    return pulsada_alguna;
 
 }
 
@@ -23182,6 +23188,7 @@ void menu_help_show_keyboard(MENU_ITEM_PARAMETERS)
 
         }
 
+        //Boton izquierdo raton: pulsar tecla
         if (mouse_left && si_menu_mouse_en_ventana_no_en_scrolls() && !mouse_is_dragging) {
             menu_help_keyboard_overlay_force_draw=1;
             int pulsado_x,pulsado_y;
@@ -23203,6 +23210,7 @@ void menu_help_show_keyboard(MENU_ITEM_PARAMETERS)
 
         }
 
+        //Boton derecho raton: mantener pulsada tecla
         if (mouse_right && si_menu_mouse_en_ventana_no_en_scrolls() ) {
 
             int pulsado_x,pulsado_y;
@@ -23213,7 +23221,12 @@ void menu_help_show_keyboard(MENU_ITEM_PARAMETERS)
 
             menu_help_keyboard_overlay_force_draw=1;
 
-            menu_help_keyboard_mantener_key_mouse(pulsado_x,pulsado_y);
+            if (!menu_help_keyboard_mantener_key_mouse(pulsado_x,pulsado_y)) {
+
+                //Si no se ha pulsado en ninguna tecla, liberar todas
+                printf("Liberar todas teclas pulsadas\n");
+                keyboard_help_reset_teclas_pulsadas();
+            }
 
             printf("\n");
 
