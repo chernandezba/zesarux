@@ -896,3 +896,8 @@ ok -keyboard help poder liberar teclas pulsadas: quiza con boton derecho en zona
 Quizá setting para limitar o no
 ->revisar que realmente el cliente no use ningun otro comando
 ok agregar parametro config y grabado config
+
+-quiza recordar ultimo ancho de ventana en void zxvision_generic_message_tooltip(,
+util por ejemplo para leer archivos de licencia,
+aunque eso afecta a todo mensaje genérico que aparezca en pantalla
+O quizá solo hacerlo para determinadas ventanas de algunos menus, por ejemplo el de licencias
