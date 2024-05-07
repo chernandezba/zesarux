@@ -194,6 +194,14 @@
 #endif
 
 
+#ifdef COMPILE_SDL
+#ifdef COMPILE_SDL2
+
+    #include "audiosdl2.h"
+
+#endif
+#endif
+
 
 //Opciones seleccionadas para cada menu
 int debug_pok_file_opcion_seleccionada=0;
@@ -29502,6 +29510,14 @@ void menu_audio_record_input_enable(MENU_ITEM_PARAMETERS)
     }
 }
 
+#ifdef COMPILE_SDL
+#ifdef COMPILE_SDL2
+void menu_audio_record_sdl_next_device_capture(MENU_ITEM_PARAMETERS)
+{
+    audiosdl_next_device_capture();
+}
+#endif
+#endif
 
 //menu audio
 void menu_audio(MENU_ITEM_PARAMETERS)
@@ -29617,6 +29633,18 @@ void menu_audio(MENU_ITEM_PARAMETERS)
                 "a mp3 player or your phone");
 
             if (audio_is_recording_input) {
+#ifdef COMPILE_SDL
+#ifdef COMPILE_SDL2
+                char buffer_destino[SDL2_MAX_DEVICE_NAME_LENGTH];
+                audiosdl_get_device_name(buffer_destino);
+                menu_add_item_menu_en_es_ca(array_menu_audio,MENU_OPCION_NORMAL,menu_audio_record_sdl_next_device_capture,NULL,
+                    "Selected record card","Tarjeta seleccionada grabación","Tarjeta seleccionada grabació");
+                menu_add_item_menu_format(array_menu_audio,MENU_OPCION_SEPARADOR,NULL,NULL," %s",buffer_destino);
+                menu_add_item_menu_separator(array_menu_audio);
+#endif
+#endif
+
+
                 menu_add_item_menu_en_es_ca(array_menu_audio,MENU_OPCION_NORMAL,menu_realtape_record_input,NULL,
                     "External Audio Source Window","Ventana fuente de sonido externa","Finestra font de so externa");
                 menu_add_item_menu_se_cerrara(array_menu_audio);
