@@ -29638,7 +29638,7 @@ void menu_audio(MENU_ITEM_PARAMETERS)
                 char buffer_destino[SDL2_MAX_DEVICE_NAME_LENGTH];
                 audiosdl_get_device_name(buffer_destino);
                 menu_add_item_menu_en_es_ca(array_menu_audio,MENU_OPCION_NORMAL,menu_audio_record_sdl_next_device_capture,NULL,
-                    "Selected record card","Tarjeta seleccionada grabación","Tarjeta seleccionada grabació");
+                    "Selected card","Tarjeta seleccionada","Targeta seleccionada");
                 menu_add_item_menu_format(array_menu_audio,MENU_OPCION_SEPARADOR,NULL,NULL," %s",buffer_destino);
                 menu_add_item_menu_separator(array_menu_audio);
 #endif
