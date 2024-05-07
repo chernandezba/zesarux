@@ -490,6 +490,8 @@ void audiosdl_stop_record_input(void)
 
     SDL_PauseAudioDevice( recordingDeviceId, SDL_TRUE );
 
+    SDL_CloseAudioDevice(recordingDeviceId);
+
     audio_is_recording_input=0;
 
 }
