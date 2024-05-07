@@ -368,22 +368,104 @@ void audiosdl_callback(void *udata, Uint8 *stream, int len)
 }
 
 
+
+
+//
+// Inicio funciones de captura de sonido
+//
+
+int gRecordingDeviceCount = 0;
+
+SDL_AudioSpec gReceivedRecordingSpec;
+
+
+
+SDL_AudioDeviceID recordingDeviceId = 0;
+
 int audiosdl_can_record_input(void)
 {
-    return 0;
+    return 1;
+}
+
+
+
+void audioRecordingCallback(void* userdata GCC_UNUSED, Uint8* stream, int len )
+{
+
+    audiorecord_input_fifo_write((char *)stream,len);
+
 }
 
 void audiosdl_start_record_input(void)
 {
 
-    //Nada
+    //Vaciar posible sonido que haya antes del buffer, por si el usuario ha desactivado y activado varias veces
+    audiorecord_input_empty_buffer_with_lock();
+    debug_printf(VERBOSE_INFO,"Starting recording audio from audio sdl2 driver");
 
+	SDL_AudioSpec desiredRecordingSpec;
+
+	SDL_zero(desiredRecordingSpec);
+	desiredRecordingSpec.freq = AUDIO_RECORD_FREQUENCY;
+	desiredRecordingSpec.format = AUDIO_S8;
+	desiredRecordingSpec.channels = 1;
+        //Si dejasemos esto por defecto, enviaria los datos a rafagas de 2s, cosa que funcionaria,
+    //pero por ejemplo en la ventana de external audio source, la forma de onda va y viene
+    //mejor bajarlo al trozo que queremos realmente leer
+	desiredRecordingSpec.samples = AUDIO_RECORD_BUFFER_SIZE;
+	desiredRecordingSpec.callback = audioRecordingCallback;
+
+	gRecordingDeviceCount = SDL_GetNumAudioDevices(SDL_TRUE);
+
+	if(gRecordingDeviceCount < 1)
+	{
+		debug_printf(VERBOSE_ERR,"Unable to get audio capture device! SDL Error: %s", SDL_GetError() );
+		return;
+	}
+
+	int index;
+
+	for(int i = 0; i < gRecordingDeviceCount; ++i)
+	{
+		//Get capture device name
+		const char* deviceName = SDL_GetAudioDeviceName(i, SDL_TRUE);
+
+		printf("%d - %s\n", i, deviceName);
+	}
+
+	//printf("Choose audio\n");
+	//scanf("%d", &index);
+
+    index=0;
+
+    //temporal segunda tarjeta
+    //index=1;
+
+	//Open recording device
+	recordingDeviceId = SDL_OpenAudioDevice(SDL_GetAudioDeviceName(index, SDL_TRUE), SDL_TRUE, &desiredRecordingSpec, &gReceivedRecordingSpec, SDL_AUDIO_ALLOW_FORMAT_CHANGE);
+
+	// Device failed to open
+	if(recordingDeviceId == 0)
+	{
+		//Report error
+		debug_printf(VERBOSE_ERR,"Failed to open recording device! SDL Error: %s", SDL_GetError() );
+		return;
+	}
+
+    SDL_PauseAudioDevice( recordingDeviceId, SDL_FALSE );
+
+    audio_is_recording_input=1;
+
+    //printf("end function start record input\n");
 }
 
 
 void audiosdl_stop_record_input(void)
 {
 
-    //Nada
+    SDL_PauseAudioDevice( recordingDeviceId, SDL_TRUE );
+
+    audio_is_recording_input=0;
+
 
 }
