@@ -29635,12 +29635,14 @@ void menu_audio(MENU_ITEM_PARAMETERS)
             if (audio_is_recording_input) {
 #ifdef COMPILE_SDL
 #ifdef COMPILE_SDL2
-                char buffer_destino[SDL2_MAX_DEVICE_NAME_LENGTH];
-                audiosdl_get_device_name(buffer_destino);
-                menu_add_item_menu_en_es_ca(array_menu_audio,MENU_OPCION_NORMAL,menu_audio_record_sdl_next_device_capture,NULL,
-                    "Selected card","Tarjeta seleccionada","Targeta seleccionada");
-                menu_add_item_menu_format(array_menu_audio,MENU_OPCION_SEPARADOR,NULL,NULL," %s",buffer_destino);
-                menu_add_item_menu_separator(array_menu_audio);
+                if (!strcmp(audio_new_driver_name,"sdl")) {
+                    char buffer_destino[SDL2_MAX_DEVICE_NAME_LENGTH+1];
+                    audiosdl_get_device_name(buffer_destino);
+                    menu_add_item_menu_en_es_ca(array_menu_audio,MENU_OPCION_NORMAL,menu_audio_record_sdl_next_device_capture,NULL,
+                        "Selected card","Tarjeta seleccionada","Targeta seleccionada");
+                    menu_add_item_menu_format(array_menu_audio,MENU_OPCION_SEPARADOR,NULL,NULL," %s",buffer_destino);
+                    menu_add_item_menu_separator(array_menu_audio);
+                }
 #endif
 #endif
 
