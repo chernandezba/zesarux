@@ -468,7 +468,7 @@ void audiosdl_start_record_input(void)
 
 
 	//Open recording device
-	recordingDeviceId = SDL_OpenAudioDevice(SDL_GetAudioDeviceName(sdl2_record_card_index, SDL_TRUE), SDL_TRUE, &desiredRecordingSpec, &gReceivedRecordingSpec, SDL_AUDIO_ALLOW_FORMAT_CHANGE);
+	recordingDeviceId = SDL_OpenAudioDevice(SDL_GetAudioDeviceName(sdl2_record_card_index, SDL_TRUE), SDL_TRUE, &desiredRecordingSpec, &gReceivedRecordingSpec, 0 /*SDL_AUDIO_ALLOW_FORMAT_CHANGE*/);
 
 	// Device failed to open
 	if(recordingDeviceId == 0)
