@@ -22,11 +22,13 @@ The following are features exclusive to ZEsarUX and not found on any emulator of
 
 * On Screen keyboard with words, useful for playing Text Adventures. Also a tool to extract words from text adventures (Daad, Paws, Quill and Gac) and configure this on screen text keyboard
 
-* Text Adventure Map
+* Text Adventure Map for adventures made with DAAD/PAWS/Quill or GAC
+
+* DAAD/PAWS/Quill Debugger
 
 * Use artificial intelligence to get realistic images for location description on Text Adventure games
 
-* DAAD/PAWS/Quill Debugger
+* Can save screen to .stl file, useful to print on 3D Printer
 
 * Emulates Spectrum keyboard ghosting error feature
 
@@ -36,7 +38,7 @@ The following are features exclusive to ZEsarUX and not found on any emulator of
 
 * Supports ZEsarUX remote command protocol (ZRCP). You can do enhanced debugging and remote control on ZEsarUX by using a telnet client.
 
-* Supports ZEsarUX Network Gaming protocol (ZENG) which allows you to play to any emulated game, using two ZEsarUX instances
+* Supports ZEsarUX Network Gaming protocol (ZENG) which allows you to play to any emulated game on a multiplayer way, using two or more ZEsarUX instances, or with a central server (ZENG Online)
 
 * Can use a reduced Spectrum core, with some features disabled, useful on slow devices, like Raspberry Pi 1/Zero
 
