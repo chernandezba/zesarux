@@ -160,182 +160,173 @@ void core_sam_handle_interrupts(void)
 void core_sam_fin_scanline(void)
 {
 
-			//printf ("%d\n",t_estados);
-			//if (t_estados>69000) printf ("t_scanline casi final: %d\n",t_scanline);
+//printf ("%d\n",t_estados);
+//if (t_estados>69000) printf ("t_scanline casi final: %d\n",t_scanline);
 
 
 
-				//TODO. detector de sonido en beeper provoca, que cuando salta, el output de sonido es extraño,
-				//cuando se combina con chip AY. forzar a no desactivarlo nunca
-				beeper_silence_detection_counter=0;
+    //TODO. detector de sonido en beeper provoca, que cuando salta, el output de sonido es extraño,
+    //cuando se combina con chip AY. forzar a no desactivarlo nunca
+    beeper_silence_detection_counter=0;
 
-				audio_valor_enviar_sonido=0;
+    audio_valor_enviar_sonido=0;
 
 
-				audio_valor_enviar_sonido +=da_output_ay();
+    audio_valor_enviar_sonido +=da_output_ay();
 
 
 
-				if (beeper_enabled.v) {
+    if (beeper_enabled.v) {
 
-                    //Sam coupe no se oye bien real beeper, creo que porque el array de valores del puerto FEH tiene limite
-                    //CURRENT_BEEPER_ARRAY_LENGTH, y eso es 256 , y sam coupe tiene aproximadamente 384 estados por linea
-                    //lo cual es mayor de 256 y provoca que no se escriba todo el array
-                    //Habria que probar si aumentando CURRENT_BEEPER_ARRAY_LENGTH se oye bien
-                    //De todas maneras lo mejor es hacer que Sam Coupe de momento no use real beeper, como si no estuviera habilitado
+        //Sam coupe no se oye bien real beeper, creo que porque el array de valores del puerto FEH tiene limite
+        //CURRENT_BEEPER_ARRAY_LENGTH, y eso es 256 , y sam coupe tiene aproximadamente 384 estados por linea
+        //lo cual es mayor de 256 y provoca que no se escriba todo el array
+        //Habria que probar si aumentando CURRENT_BEEPER_ARRAY_LENGTH se oye bien
+        //De todas maneras lo mejor es hacer que Sam Coupe de momento no use real beeper, como si no estuviera habilitado
 
-                    audio_valor_enviar_sonido += value_beeper;
+        audio_valor_enviar_sonido += value_beeper;
 
-                    /*
+        /*
 
-					if (beeper_real_enabled==0) {
-						audio_valor_enviar_sonido += value_beeper;
-					}
+        if (beeper_real_enabled==0) {
+            audio_valor_enviar_sonido += value_beeper;
+        }
 
-					else {
-						audio_valor_enviar_sonido += get_value_beeper_sum_array();
-						beeper_new_line();
-					}
+        else {
+            audio_valor_enviar_sonido += get_value_beeper_sum_array();
+            beeper_new_line();
+        }
 
-                    */
-				}
+        */
+    }
 
-				//printf ("Sonido: %d\n",audio_valor_enviar_sonido);
+    //printf ("Sonido: %d\n",audio_valor_enviar_sonido);
 
-                int leer_cinta_real=0;
+    int leer_cinta_real=0;
 
-                if (realtape_inserted.v && realtape_playing.v) leer_cinta_real=1;
+    if (realtape_inserted.v && realtape_playing.v) leer_cinta_real=1;
 
-                if (audio_can_record_input()) {
-                    if (audio_is_recording_input) {
-                        leer_cinta_real=1;
-                    }
-                }
+    if (audio_can_record_input()) {
+        if (audio_is_recording_input) {
+            leer_cinta_real=1;
+        }
+    }
 
-                if (leer_cinta_real) {
-					realtape_get_byte();
-					if (realtape_loading_sound.v) {
-                        reset_silence_detection_counter();
-                        	        audio_valor_enviar_sonido /=2;
-                                	audio_valor_enviar_sonido += realtape_last_value/2;
-	                                //Sonido alterado cuando top speed
-        	                        if (timer_condicion_top_speed() ) audio_valor_enviar_sonido=audio_change_top_speed_sound(audio_valor_enviar_sonido);
-					}
-				}
+    if (leer_cinta_real) {
+        realtape_get_byte();
+        if (realtape_loading_sound.v) {
+            reset_silence_detection_counter();
+            audio_valor_enviar_sonido /=2;
+            audio_valor_enviar_sonido += realtape_last_value/2;
+            //Sonido alterado cuando top speed
+            if (timer_condicion_top_speed() ) audio_valor_enviar_sonido=audio_change_top_speed_sound(audio_valor_enviar_sonido);
+        }
+    }
 
-				//Ajustar volumen
-				if (audiovolume!=100) {
-					audio_valor_enviar_sonido=audio_adjust_volume(audio_valor_enviar_sonido);
-				}
+    //Ajustar volumen
+    if (audiovolume!=100) {
+        audio_valor_enviar_sonido=audio_adjust_volume(audio_valor_enviar_sonido);
+    }
 
-				audio_send_mono_sample(audio_valor_enviar_sonido);
+    audio_send_mono_sample(audio_valor_enviar_sonido);
 
-				ay_chip_siguiente_ciclo();
+    ay_chip_siguiente_ciclo();
 
 
+    //final de linea
 
 
+    //copiamos contenido linea y border a buffer rainbow
+    if (rainbow_enabled.v==1) {
+        screen_store_scanline_rainbow_solo_border();
+        screen_store_scanline_rainbow_solo_display();
 
-			//final de linea
+        //t_scanline_next_border();
 
+    }
 
-			//copiamos contenido linea y border a buffer rainbow
-			if (rainbow_enabled.v==1) {
-				screen_store_scanline_rainbow_solo_border();
-				screen_store_scanline_rainbow_solo_display();
+    t_scanline_next_line();
 
-				//t_scanline_next_border();
+    //se supone que hemos ejecutado todas las instrucciones posibles de toda la pantalla. refrescar pantalla y
+    //esperar para ver si se ha generado una interrupcion 1/50
 
-			}
+    if (t_estados>=screen_testados_total) {
 
-			t_scanline_next_line();
+        //if (rainbow_enabled.v==1) t_scanline_next_fullborder();
 
-			//se supone que hemos ejecutado todas las instrucciones posibles de toda la pantalla. refrescar pantalla y
-			//esperar para ver si se ha generado una interrupcion 1/50
+        t_scanline=0;
 
-                        if (t_estados>=screen_testados_total) {
+        timer_get_elapsed_core_frame_post();
 
-				//if (rainbow_enabled.v==1) t_scanline_next_fullborder();
+        //printf ("final scan lines. total: %d\n",screen_scanlines);
+                //printf ("reset no inves\n");
+        set_t_scanline_draw_zero();
 
-		                t_scanline=0;
 
-						timer_get_elapsed_core_frame_post();
+        //Parche para maquinas que no generan 312 lineas, porque si enviamos menos sonido se escuchara un click al final
+        //Es necesario que cada frame de pantalla contenga 312 bytes de sonido
+        //Igualmente en la rutina de envio_audio se vuelve a comprobar que todo el sonido a enviar
+        //este completo; esto es necesario para Z88
 
-		                //printf ("final scan lines. total: %d\n",screen_scanlines);
-                		        //printf ("reset no inves\n");
-					set_t_scanline_draw_zero();
 
+        int linea_estados=t_estados/screen_testados_linea;
 
+        while (linea_estados<312) {
+                audio_send_mono_sample(audio_valor_enviar_sonido);
+                linea_estados++;
+        }
 
-                                //Parche para maquinas que no generan 312 lineas, porque si enviamos menos sonido se escuchara un click al final
-                                //Es necesario que cada frame de pantalla contenga 312 bytes de sonido
-                                //Igualmente en la rutina de envio_audio se vuelve a comprobar que todo el sonido a enviar
-                                //este completo; esto es necesario para Z88
 
 
-                                int linea_estados=t_estados/screen_testados_linea;
 
-                                while (linea_estados<312) {
-										audio_send_mono_sample(audio_valor_enviar_sonido);
-                                        linea_estados++;
-                                }
+        t_estados -=screen_testados_total;
 
+        //Para paperboy, thelosttapesofalbion0 y otros que hacen letras en el border, para que no se desplacen en diagonal
+        //t_estados=0;
+        //->paperboy queda fijo. thelosttapesofalbion0 no se desplaza, sino que tiembla si no forzamos esto
 
 
+        //Final de instrucciones ejecutadas en un frame de pantalla
+        if (iff1.v==1) {
+            interrupcion_maskable_generada.v=1;
 
-                                t_estados -=screen_testados_total;
+        }
 
-				//Para paperboy, thelosttapesofalbion0 y otros que hacen letras en el border, para que no se desplacen en diagonal
-				//t_estados=0;
-				//->paperboy queda fijo. thelosttapesofalbion0 no se desplaza, sino que tiembla si no forzamos esto
 
+        cpu_loop_refresca_pantalla();
 
-				//Final de instrucciones ejecutadas en un frame de pantalla
-				if (iff1.v==1) {
-					interrupcion_maskable_generada.v=1;
+        vofile_send_frame(rainbow_buffer);
 
 
+        siguiente_frame_pantalla();
 
 
-				}
+        if (debug_registers) scr_debug_registers();
 
+        contador_parpadeo--;
+        //printf ("Parpadeo: %d estado: %d\n",contador_parpadeo,estado_parpadeo.v);
+        if (!contador_parpadeo) {
+                contador_parpadeo=16;
+                toggle_flash_state();
+        }
 
-				cpu_loop_refresca_pantalla();
 
-				vofile_send_frame(rainbow_buffer);
+        if (!interrupcion_timer_generada.v) {
+            //Llegado a final de frame pero aun no ha llegado interrupcion de timer. Esperemos...
+            //printf ("no demasiado\n");
+            esperando_tiempo_final_t_estados.v=1;
+        }
 
+        else {
+            //Llegado a final de frame y ya ha llegado interrupcion de timer. No esperamos.... Hemos tardado demasiado
+            //printf ("demasiado\n");
+            esperando_tiempo_final_t_estados.v=0;
+        }
 
-				siguiente_frame_pantalla();
+        core_end_frame_check_zrcp_zeng_snap.v=1;
 
 
-				if (debug_registers) scr_debug_registers();
-
-	  	                contador_parpadeo--;
-                        	//printf ("Parpadeo: %d estado: %d\n",contador_parpadeo,estado_parpadeo.v);
-	                        if (!contador_parpadeo) {
-        	                        contador_parpadeo=16;
-                	                toggle_flash_state();
-	                        }
-
-
-				if (!interrupcion_timer_generada.v) {
-					//Llegado a final de frame pero aun no ha llegado interrupcion de timer. Esperemos...
-					//printf ("no demasiado\n");
-					esperando_tiempo_final_t_estados.v=1;
-				}
-
-				else {
-					//Llegado a final de frame y ya ha llegado interrupcion de timer. No esperamos.... Hemos tardado demasiado
-					//printf ("demasiado\n");
-					esperando_tiempo_final_t_estados.v=0;
-				}
-
-                core_end_frame_check_zrcp_zeng_snap.v=1;
-
-
-			}
-
-
+    }
 
 
 
