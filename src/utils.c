@@ -7647,6 +7647,7 @@ z80_byte antes_puerto_especial_joystick=puerto_especial_joystick;
     z80_byte antes_svi_keyboard_table[16];
     z80_byte antes_pcw_keyboard_table[16];
     z80_byte antes_sam_keyboard_table[8];
+    z80_byte antes_z88_keyboard_table[8];
     int i;
     if (MACHINE_IS_QL) {
         for (i=0;i<8;i++) antes_ql_keyboard_table[i]=ql_keyboard_table[i];
@@ -7677,6 +7678,17 @@ z80_byte antes_puerto_especial_joystick=puerto_especial_joystick;
         antes_sam_keyboard_table[5]=puerto_teclado_sam_dff9;
         antes_sam_keyboard_table[6]=puerto_teclado_sam_bff9;
         antes_sam_keyboard_table[7]=puerto_teclado_sam_7ff9;
+    }
+
+    if (MACHINE_IS_Z88) {
+        antes_z88_keyboard_table[0]=blink_kbd_a15;
+        antes_z88_keyboard_table[1]=blink_kbd_a14;
+        antes_z88_keyboard_table[2]=blink_kbd_a13;
+        antes_z88_keyboard_table[3]=blink_kbd_a12;
+        antes_z88_keyboard_table[4]=blink_kbd_a11;
+        antes_z88_keyboard_table[5]=blink_kbd_a10;
+        antes_z88_keyboard_table[6]=blink_kbd_a9;
+        antes_z88_keyboard_table[7]=blink_kbd_a8;
     }
 
   util_set_reset_key_continue_after_zeng(tecla,pressrelease);
@@ -7724,6 +7736,17 @@ z80_byte antes_puerto_especial_joystick=puerto_especial_joystick;
         puerto_teclado_sam_dff9=antes_sam_keyboard_table[5];
         puerto_teclado_sam_bff9=antes_sam_keyboard_table[6];
         puerto_teclado_sam_7ff9=antes_sam_keyboard_table[7];
+    }
+
+    if (MACHINE_IS_Z88) {
+        blink_kbd_a15=antes_z88_keyboard_table[0];
+        blink_kbd_a14=antes_z88_keyboard_table[1];
+        blink_kbd_a13=antes_z88_keyboard_table[2];
+        blink_kbd_a12=antes_z88_keyboard_table[3];
+        blink_kbd_a11=antes_z88_keyboard_table[4];
+        blink_kbd_a10=antes_z88_keyboard_table[5];
+        blink_kbd_a9=antes_z88_keyboard_table[6];
+        blink_kbd_a8=antes_z88_keyboard_table[7];
     }
 
     //zoc_decir_pulsada_alguna_tecla_local();

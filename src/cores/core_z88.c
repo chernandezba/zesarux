@@ -48,6 +48,10 @@
 #include "scrstdout.h"
 #include "settings.h"
 
+#include "snap_zsf.h"
+#include "zeng.h"
+#include "zeng_online_client.h"
+
 z80_byte byte_leido_core_z88;
 
 int tempcontafifty=0;
@@ -499,6 +503,8 @@ void cpu_core_loop_z88(void)
 					esperando_tiempo_final_t_estados.v=0;
 				}
 
+                core_end_frame_check_zrcp_zeng_snap.v=1;
+
 
 			}
 
@@ -552,6 +558,16 @@ void cpu_core_loop_z88(void)
 			if (interrupcion_maskable_generada.v || interrupcion_non_maskable_generada.v) {
 				z88_gestionar_interrupcion();
 			}
+
+            //Aplicar snapshot pendiente de ZRCP y ZENG envio snapshots. Despues de haber gestionado interrupciones
+            if (core_end_frame_check_zrcp_zeng_snap.v) {
+                core_end_frame_check_zrcp_zeng_snap.v=0;
+                check_pending_zrcp_put_snapshot();
+                zeng_send_snapshot_if_needed();
+
+                zeng_online_client_end_frame_from_core_functions();
+
+            }
 
                         //Para calcular lo que se tarda en ejecutar todo un frame
                         timer_get_elapsed_core_frame_pre();

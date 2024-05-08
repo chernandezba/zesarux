@@ -838,6 +838,19 @@ z80_byte puerto_teclado_sam_dff9;
 z80_byte puerto_teclado_sam_bff9;
 z80_byte puerto_teclado_sam_7ff9;
 
+-Block ID 70: ZSF_KEY_PORTS_Z88_STATE
+Tell keyboard ports value in z88
+Byte fields:
+0-7:
+z80_byte blink_kbd_a15;
+z80_byte blink_kbd_a14;
+z80_byte blink_kbd_a13;
+z80_byte blink_kbd_a12;
+z80_byte blink_kbd_a11;
+z80_byte blink_kbd_a10;
+z80_byte blink_kbd_a9;
+z80_byte blink_kbd_a8;
+
 -Como codificar bloques de memoria para Spectrum 128k, zxuno, tbblue, tsconf, etc?
 Con un numero de bloque (0...255) pero... que tamaño de bloque? tbblue usa paginas de 8kb, tsconf usa paginas de 16kb
 Quizá numero de bloque y parametro que diga tamaño, para tener un block id comun para todos ellos
@@ -922,6 +935,7 @@ char *zsf_block_id_names[]={
   "ZSF_KEY_PORTS_SVI_STATE",
   "ZSF_KEY_PORTS_PCW_STATE",
   "ZSF_KEY_PORTS_SAM_STATE",
+  "ZSF_KEY_PORTS_Z88_STATE",
 
   "Unknown"  //Este siempre al final
 };
@@ -2212,6 +2226,23 @@ if (menu_abierto) return;
     puerto_teclado_sam_dff9=header[5];
     puerto_teclado_sam_bff9=header[6];
     puerto_teclado_sam_7ff9=header[7];
+
+}
+
+void load_zsf_key_ports_z88_state(z80_byte *header)
+{
+//Si menu abierto, no hacerlo
+
+if (menu_abierto) return;
+
+    blink_kbd_a15=header[0];
+    blink_kbd_a14=header[1];
+    blink_kbd_a13=header[2];
+    blink_kbd_a12=header[3];
+    blink_kbd_a11=header[4];
+    blink_kbd_a10=header[5];
+    blink_kbd_a9=header[6];
+    blink_kbd_a8=header[7];
 
 }
 
@@ -3559,6 +3590,10 @@ void load_zsf_snapshot_file_mem(char *filename,z80_byte *origin_memory,int longi
         load_zsf_key_ports_sam_state(block_data);
     break;
 
+    case ZSF_KEY_PORTS_Z88_STATE:
+        load_zsf_key_ports_z88_state(block_data);
+    break;
+
       case ZSF_ZOC_ETC:
         load_zsf_zoc_etc(block_data);
     break;
@@ -4019,6 +4054,21 @@ void save_zsf_snapshot_file_mem(char *filename,z80_byte *destination_memory,int 
             zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, keyportsblock,ZSF_KEY_PORTS_SAM_STATE, 8);
         }
 
+        if (MACHINE_IS_Z88) {
+
+            z80_byte keyportsblock[8];
+
+            keyportsblock[0]=blink_kbd_a15;
+            keyportsblock[1]=blink_kbd_a14;
+            keyportsblock[2]=blink_kbd_a13;
+            keyportsblock[3]=blink_kbd_a12;
+            keyportsblock[4]=blink_kbd_a11;
+            keyportsblock[5]=blink_kbd_a10;
+            keyportsblock[6]=blink_kbd_a9;
+            keyportsblock[7]=blink_kbd_a8;
+
+            zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, keyportsblock,ZSF_KEY_PORTS_Z88_STATE, 8);
+        }
 
         z80_byte zoc_etc_block[1];
 

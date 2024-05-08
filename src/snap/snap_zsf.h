@@ -95,9 +95,10 @@
 #define ZSF_KEY_PORTS_SVI_STATE 68
 #define ZSF_KEY_PORTS_PCW_STATE 69
 #define ZSF_KEY_PORTS_SAM_STATE 70
+#define ZSF_KEY_PORTS_Z88_STATE 71
 
 //Id maximo de nombres
-#define MAX_ZSF_BLOCK_ID_NAMES 70
+#define MAX_ZSF_BLOCK_ID_NAMES 71
 
 //Importante NO alterar los ID existentes o se rompera compatibilidad hacia atras del formato ZSF
 //Siempre agregar, nunca modificar ni borrar
