@@ -47,11 +47,118 @@
 #include "scrstdout.h"
 #include "settings.h"
 
+#include "snap_zsf.h"
+#include "zeng.h"
+#include "zeng_online_client.h"
+
 z80_byte byte_leido_core_sam;
+
 
 
 int core_sam_medio_scanline=0;
 
+void core_sam_handle_interrupts(void)
+{
+
+
+    debug_fired_interrupt=1;
+
+    z80_adjust_flags_interrupt_block_opcode();
+
+    //printf ("Generada interrupcion Z80\n");
+
+    //if (interrupcion_non_maskable_generada.v) printf ("generada nmi\n");
+
+                //if (interrupts.v==1) {   //esto ya no se mira. si se ha producido interrupcion es porque estaba en ei o es una NMI
+                //ver si esta en HALT
+                if (z80_halt_signal.v) {
+                                z80_halt_signal.v=0;
+                                //reg_pc++;
+                }
+
+    if (1==1) {
+
+            if (interrupcion_non_maskable_generada.v) {
+                debug_anota_retorno_step_nmi();
+                //printf ("generada nmi\n");
+                                        interrupcion_non_maskable_generada.v=0;
+
+
+                                        //NMI wait 14 estados
+                                        t_estados += 14;
+
+
+
+
+                                        push_valor(reg_pc,PUSH_VALUE_TYPE_NON_MASKABLE_INTERRUPT);
+
+
+                                        reg_r++;
+                                        iff1.v=0;
+                                        //printf ("Calling NMI with pc=0x%x\n",reg_pc);
+
+                                        //Otros 6 estados
+                                        t_estados += 6;
+
+                                        //Total NMI: NMI WAIT 14 estados + NMI CALL 12 estados
+                                        reg_pc= 0x66;
+
+                                        //temp
+
+                                        t_estados -=15;
+
+
+
+
+            }
+
+            if (1==1) {
+            //else {
+
+
+            //justo despues de EI no debe generar interrupcion
+            //e interrupcion nmi tiene prioridad
+                if (interrupcion_maskable_generada.v && byte_leido_core_sam!=251) {
+                debug_anota_retorno_step_maskable();
+                //Tratar interrupciones maskable
+                interrupcion_maskable_generada.v=0;
+
+
+
+                                        push_valor(reg_pc,PUSH_VALUE_TYPE_MASKABLE_INTERRUPT);
+
+                reg_r++;
+
+
+
+
+                //desactivar interrupciones al generar una
+                iff1.v=iff2.v=0;
+
+
+                if (im_mode==0 || im_mode==1) {
+                    cpu_common_jump_im01();
+                }
+                else {
+                //IM 2.
+
+                    z80_int temp_i;
+                    z80_byte dir_l,dir_h;
+                    temp_i=get_im2_interrupt_vector();
+                    dir_l=peek_byte(temp_i++);
+                    dir_h=peek_byte(temp_i);
+                    reg_pc=value_8_to_16(dir_h,dir_l);
+                    t_estados += 7;
+
+
+                }
+
+            }
+        }
+
+
+    }
+}
 
 //bucle principal de ejecucion de la cpu de sam coupe
 void cpu_core_loop_sam(void)
@@ -363,6 +470,8 @@ void cpu_core_loop_sam(void)
 					esperando_tiempo_final_t_estados.v=0;
 				}
 
+                core_end_frame_check_zrcp_zeng_snap.v=1;
+
 
 			}
 
@@ -408,116 +517,23 @@ void cpu_core_loop_sam(void)
 		//Interrupcion de cpu. gestion im0/1/2. Esto se hace al final de cada frame en spectrum o al cambio de bit6 de R en zx80/81
 		if (interrupcion_maskable_generada.v || interrupcion_non_maskable_generada.v) {
 
-			debug_fired_interrupt=1;
-
-            z80_adjust_flags_interrupt_block_opcode();
-
-			//printf ("Generada interrupcion Z80\n");
-
-			//if (interrupcion_non_maskable_generada.v) printf ("generada nmi\n");
-
-                        //if (interrupts.v==1) {   //esto ya no se mira. si se ha producido interrupcion es porque estaba en ei o es una NMI
-                        //ver si esta en HALT
-                        if (z80_halt_signal.v) {
-                                        z80_halt_signal.v=0;
-                                        //reg_pc++;
-                        }
-
-			if (1==1) {
-
-					if (interrupcion_non_maskable_generada.v) {
-						debug_anota_retorno_step_nmi();
-						//printf ("generada nmi\n");
-                                                interrupcion_non_maskable_generada.v=0;
+            core_sam_handle_interrupts();
 
 
-                                                //NMI wait 14 estados
-                                                t_estados += 14;
+        }
 
+	//Fin gestion interrupciones
 
+	//Aplicar snapshot pendiente de ZRCP y ZENG envio snapshots. Despues de haber gestionado interrupciones
+	if (core_end_frame_check_zrcp_zeng_snap.v) {
+		core_end_frame_check_zrcp_zeng_snap.v=0;
+		check_pending_zrcp_put_snapshot();
+		zeng_send_snapshot_if_needed();
 
+        zeng_online_client_end_frame_from_core_functions();
+	}
 
-												push_valor(reg_pc,PUSH_VALUE_TYPE_NON_MASKABLE_INTERRUPT);
-
-
-                                                reg_r++;
-                                                iff1.v=0;
-                                                //printf ("Calling NMI with pc=0x%x\n",reg_pc);
-
-                                                //Otros 6 estados
-                                                t_estados += 6;
-
-                                                //Total NMI: NMI WAIT 14 estados + NMI CALL 12 estados
-                                                reg_pc= 0x66;
-
-                                                //temp
-
-                                                t_estados -=15;
-
-
-
-
-					}
-
-					if (1==1) {
-					//else {
-
-
-					//justo despues de EI no debe generar interrupcion
-					//e interrupcion nmi tiene prioridad
-						if (interrupcion_maskable_generada.v && byte_leido_core_sam!=251) {
-						debug_anota_retorno_step_maskable();
-						//Tratar interrupciones maskable
-						interrupcion_maskable_generada.v=0;
-
-
-
-												push_valor(reg_pc,PUSH_VALUE_TYPE_MASKABLE_INTERRUPT);
-
-						reg_r++;
-
-						//Caso Inves. Hacer poke (I*256+R) con 255
-						if (MACHINE_IS_INVES) {
-							//z80_byte reg_r_total=(reg_r&127) | (reg_r_bit7 &128);
-
-							//Se usan solo los 7 bits bajos del registro R
-							z80_byte reg_r_total=(reg_r&127);
-
-							z80_int dir=reg_i*256+reg_r_total;
-
-							poke_byte_no_time(dir,255);
-						}
-
-
-						//desactivar interrupciones al generar una
-						iff1.v=iff2.v=0;
-						//Modelos spectrum
-
-						if (im_mode==0 || im_mode==1) {
-							cpu_common_jump_im01();
-						}
-						else {
-						//IM 2.
-
-							z80_int temp_i;
-							z80_byte dir_l,dir_h;
-							temp_i=get_im2_interrupt_vector();
-							dir_l=peek_byte(temp_i++);
-							dir_h=peek_byte(temp_i);
-							reg_pc=value_8_to_16(dir_h,dir_l);
-							t_estados += 7;
-
-
-						}
-
-					}
-				}
-
-
-			}
-
-                }
-		debug_get_t_stados_parcial_post();
+    debug_get_t_stados_parcial_post();
 
 }
 

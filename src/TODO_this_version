@@ -904,3 +904,5 @@ ok agregar parametro config y grabado config
 util por ejemplo para leer archivos de licencia,
 aunque eso afecta a todo mensaje genérico que aparezca en pantalla
 O quizá solo hacerlo para determinadas ventanas de algunos menus, por ejemplo el de licencias
+
+-zeng online se envia valor puerto joystick en maquinas pcw, etc nuevas?

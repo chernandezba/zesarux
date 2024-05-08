@@ -1371,7 +1371,7 @@ core_cpc.o: cores/core_cpc.c cores/core_cpc.h cpu.h debug.h storage/tape.h audio
 core_pcw.o: cores/core_pcw.c cores/core_pcw.h cpu.h debug.h storage/tape.h audio/audio.h video/screen.h operaciones.h snap/snap.h timer.h zxvision.h chardetect.h compileoptions.h contend.h ula.h utils.h audio/audio.h utils.h storage/tape.h machines/pcw.h realjoystick.h settings.h snap/snap_zsf.h zrcp/zeng.h zrcp/zeng_online.h snap/snap_ram.h storage/pd765.h zrcp/zeng_online_client.h
 	\$(CC) \$(CFLAGS) -c cores/core_pcw.c
 
-core_sam.o: cores/core_sam.c cores/core_sam.h cpu.h debug.h storage/tape.h audio/audio.h video/screen.h operaciones.h snap/snap.h timer.h zxvision.h chardetect.h compileoptions.h contend.h ula.h utils.h audio/audio.h utils.h storage/tape.h machines/cpc.h realjoystick.h settings.h soundchips/ay38912.h
+core_sam.o: cores/core_sam.c cores/core_sam.h cpu.h debug.h storage/tape.h audio/audio.h video/screen.h operaciones.h snap/snap.h timer.h zxvision.h chardetect.h compileoptions.h contend.h ula.h utils.h audio/audio.h utils.h storage/tape.h machines/cpc.h realjoystick.h settings.h soundchips/ay38912.h snap/snap_zsf.h zrcp/zeng.h zrcp/zeng_online_client.h
 	\$(CC) \$(CFLAGS) -c cores/core_sam.c
 
 mk14.o: machines/mk14.c machines/mk14.h cpu.h debug.h scmp.h utils.h zxvision.h

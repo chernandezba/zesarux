@@ -825,6 +825,19 @@ Tell keyboard ports value in pcw
 Byte fields:
 0-15: z80_byte pcw_keyboard_table[0-15]
 
+-Block ID 70: ZSF_KEY_PORTS_SAM_STATE
+Tell keyboard ports value in sam
+Byte fields:
+0-7:
+z80_byte puerto_teclado_sam_fef9;
+z80_byte puerto_teclado_sam_fdf9;
+z80_byte puerto_teclado_sam_fbf9;
+z80_byte puerto_teclado_sam_f7f9
+z80_byte puerto_teclado_sam_eff9;
+z80_byte puerto_teclado_sam_dff9;
+z80_byte puerto_teclado_sam_bff9;
+z80_byte puerto_teclado_sam_7ff9;
+
 -Como codificar bloques de memoria para Spectrum 128k, zxuno, tbblue, tsconf, etc?
 Con un numero de bloque (0...255) pero... que tamaño de bloque? tbblue usa paginas de 8kb, tsconf usa paginas de 16kb
 Quizá numero de bloque y parametro que diga tamaño, para tener un block id comun para todos ellos
@@ -908,6 +921,7 @@ char *zsf_block_id_names[]={
   "ZSF_KEY_PORTS_MSX_STATE",
   "ZSF_KEY_PORTS_SVI_STATE",
   "ZSF_KEY_PORTS_PCW_STATE",
+  "ZSF_KEY_PORTS_SAM_STATE",
 
   "Unknown"  //Este siempre al final
 };
@@ -2180,6 +2194,24 @@ void load_zsf_key_ports_pcw_state(z80_byte *header)
         pcw_keyboard_table[i]=header[i];
     }
 
+
+}
+
+void load_zsf_key_ports_sam_state(z80_byte *header)
+{
+//Si menu abierto, no hacerlo
+
+if (menu_abierto) return;
+
+
+    puerto_teclado_sam_fef9=header[0];
+    puerto_teclado_sam_fdf9=header[1];
+    puerto_teclado_sam_fbf9=header[2];
+    puerto_teclado_sam_f7f9=header[3];
+    puerto_teclado_sam_eff9=header[4];
+    puerto_teclado_sam_dff9=header[5];
+    puerto_teclado_sam_bff9=header[6];
+    puerto_teclado_sam_7ff9=header[7];
 
 }
 
@@ -3523,6 +3555,10 @@ void load_zsf_snapshot_file_mem(char *filename,z80_byte *origin_memory,int longi
         load_zsf_key_ports_pcw_state(block_data);
     break;
 
+    case ZSF_KEY_PORTS_SAM_STATE:
+        load_zsf_key_ports_sam_state(block_data);
+    break;
+
       case ZSF_ZOC_ETC:
         load_zsf_zoc_etc(block_data);
     break;
@@ -3891,7 +3927,7 @@ void save_zsf_snapshot_file_mem(char *filename,z80_byte *destination_memory,int 
     //esto solo si somos en zeng online master y menu no esta abierto
     if (from_zeng_online && zeng_online_i_am_master.v && !menu_abierto) {
         //-Block ID 62: ZSF_KEY_PORTS_SPECTRUM_STATE
-        if (MACHINE_IS_SPECTRUM || MACHINE_IS_ZX8081ACE || MACHINE_IS_SMS || MACHINE_IS_SG1000 || MACHINE_IS_COLECO) {
+        if (MACHINE_IS_SPECTRUM || MACHINE_IS_ZX8081ACE || MACHINE_IS_SMS || MACHINE_IS_SG1000 || MACHINE_IS_COLECO || MACHINE_IS_SAM) {
 
 
             z80_byte keyportsblock[9];
@@ -3965,6 +4001,22 @@ void save_zsf_snapshot_file_mem(char *filename,z80_byte *destination_memory,int 
             for (i=0;i<16;i++) keyportsblock[i]=pcw_keyboard_table[i];
 
             zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, keyportsblock,ZSF_KEY_PORTS_PCW_STATE, 16);
+        }
+
+        if (MACHINE_IS_SAM) {
+
+            z80_byte keyportsblock[8];
+
+            keyportsblock[0]=puerto_teclado_sam_fef9;
+            keyportsblock[1]=puerto_teclado_sam_fdf9;
+            keyportsblock[2]=puerto_teclado_sam_fbf9;
+            keyportsblock[3]=puerto_teclado_sam_f7f9;
+            keyportsblock[4]=puerto_teclado_sam_eff9;
+            keyportsblock[5]=puerto_teclado_sam_dff9;
+            keyportsblock[6]=puerto_teclado_sam_bff9;
+            keyportsblock[7]=puerto_teclado_sam_7ff9;
+
+            zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, keyportsblock,ZSF_KEY_PORTS_SAM_STATE, 8);
         }
 
 
