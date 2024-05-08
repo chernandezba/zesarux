@@ -69,95 +69,276 @@ void core_sam_handle_interrupts(void)
 
     //if (interrupcion_non_maskable_generada.v) printf ("generada nmi\n");
 
-                //if (interrupts.v==1) {   //esto ya no se mira. si se ha producido interrupcion es porque estaba en ei o es una NMI
-                //ver si esta en HALT
-                if (z80_halt_signal.v) {
-                                z80_halt_signal.v=0;
-                                //reg_pc++;
-                }
-
-    if (1==1) {
-
-            if (interrupcion_non_maskable_generada.v) {
-                debug_anota_retorno_step_nmi();
-                //printf ("generada nmi\n");
-                                        interrupcion_non_maskable_generada.v=0;
-
-
-                                        //NMI wait 14 estados
-                                        t_estados += 14;
+    //if (interrupts.v==1) {   //esto ya no se mira. si se ha producido interrupcion es porque estaba en ei o es una NMI
+    //ver si esta en HALT
+    if (z80_halt_signal.v) {
+        z80_halt_signal.v=0;
+        //reg_pc++;
+    }
 
 
 
+    if (interrupcion_non_maskable_generada.v) {
+        debug_anota_retorno_step_nmi();
+        //printf ("generada nmi\n");
+        interrupcion_non_maskable_generada.v=0;
 
-                                        push_valor(reg_pc,PUSH_VALUE_TYPE_NON_MASKABLE_INTERRUPT);
 
-
-                                        reg_r++;
-                                        iff1.v=0;
-                                        //printf ("Calling NMI with pc=0x%x\n",reg_pc);
-
-                                        //Otros 6 estados
-                                        t_estados += 6;
-
-                                        //Total NMI: NMI WAIT 14 estados + NMI CALL 12 estados
-                                        reg_pc= 0x66;
-
-                                        //temp
-
-                                        t_estados -=15;
+        //NMI wait 14 estados
+        t_estados += 14;
 
 
 
 
-            }
-
-            if (1==1) {
-            //else {
+        push_valor(reg_pc,PUSH_VALUE_TYPE_NON_MASKABLE_INTERRUPT);
 
 
-            //justo despues de EI no debe generar interrupcion
-            //e interrupcion nmi tiene prioridad
-                if (interrupcion_maskable_generada.v && byte_leido_core_sam!=251) {
-                debug_anota_retorno_step_maskable();
-                //Tratar interrupciones maskable
-                interrupcion_maskable_generada.v=0;
+        reg_r++;
+        iff1.v=0;
+        //printf ("Calling NMI with pc=0x%x\n",reg_pc);
+
+        //Otros 6 estados
+        t_estados += 6;
+
+        //Total NMI: NMI WAIT 14 estados + NMI CALL 12 estados
+        reg_pc= 0x66;
+
+        //temp
+
+        t_estados -=15;
 
 
-
-                                        push_valor(reg_pc,PUSH_VALUE_TYPE_MASKABLE_INTERRUPT);
-
-                reg_r++;
-
-
-
-
-                //desactivar interrupciones al generar una
-                iff1.v=iff2.v=0;
-
-
-                if (im_mode==0 || im_mode==1) {
-                    cpu_common_jump_im01();
-                }
-                else {
-                //IM 2.
-
-                    z80_int temp_i;
-                    z80_byte dir_l,dir_h;
-                    temp_i=get_im2_interrupt_vector();
-                    dir_l=peek_byte(temp_i++);
-                    dir_h=peek_byte(temp_i);
-                    reg_pc=value_8_to_16(dir_h,dir_l);
-                    t_estados += 7;
-
-
-                }
-
-            }
-        }
 
 
     }
+
+
+
+    //justo despues de EI no debe generar interrupcion
+    //e interrupcion nmi tiene prioridad
+    if (interrupcion_maskable_generada.v && byte_leido_core_sam!=251) {
+        debug_anota_retorno_step_maskable();
+        //Tratar interrupciones maskable
+        interrupcion_maskable_generada.v=0;
+
+
+
+        push_valor(reg_pc,PUSH_VALUE_TYPE_MASKABLE_INTERRUPT);
+
+        reg_r++;
+
+
+
+
+        //desactivar interrupciones al generar una
+        iff1.v=iff2.v=0;
+
+
+        if (im_mode==0 || im_mode==1) {
+            cpu_common_jump_im01();
+        }
+        else {
+        //IM 2.
+
+            z80_int temp_i;
+            z80_byte dir_l,dir_h;
+            temp_i=get_im2_interrupt_vector();
+            dir_l=peek_byte(temp_i++);
+            dir_h=peek_byte(temp_i);
+            reg_pc=value_8_to_16(dir_h,dir_l);
+            t_estados += 7;
+
+
+        }
+
+    }
+
+
+
+}
+
+void core_sam_fin_scanline(void)
+{
+
+			//printf ("%d\n",t_estados);
+			//if (t_estados>69000) printf ("t_scanline casi final: %d\n",t_scanline);
+
+
+
+				//TODO. detector de sonido en beeper provoca, que cuando salta, el output de sonido es extraño,
+				//cuando se combina con chip AY. forzar a no desactivarlo nunca
+				beeper_silence_detection_counter=0;
+
+				audio_valor_enviar_sonido=0;
+
+
+				audio_valor_enviar_sonido +=da_output_ay();
+
+
+
+				if (beeper_enabled.v) {
+
+                    //Sam coupe no se oye bien real beeper, creo que porque el array de valores del puerto FEH tiene limite
+                    //CURRENT_BEEPER_ARRAY_LENGTH, y eso es 256 , y sam coupe tiene aproximadamente 384 estados por linea
+                    //lo cual es mayor de 256 y provoca que no se escriba todo el array
+                    //Habria que probar si aumentando CURRENT_BEEPER_ARRAY_LENGTH se oye bien
+                    //De todas maneras lo mejor es hacer que Sam Coupe de momento no use real beeper, como si no estuviera habilitado
+
+                    audio_valor_enviar_sonido += value_beeper;
+
+                    /*
+
+					if (beeper_real_enabled==0) {
+						audio_valor_enviar_sonido += value_beeper;
+					}
+
+					else {
+						audio_valor_enviar_sonido += get_value_beeper_sum_array();
+						beeper_new_line();
+					}
+
+                    */
+				}
+
+				//printf ("Sonido: %d\n",audio_valor_enviar_sonido);
+
+                int leer_cinta_real=0;
+
+                if (realtape_inserted.v && realtape_playing.v) leer_cinta_real=1;
+
+                if (audio_can_record_input()) {
+                    if (audio_is_recording_input) {
+                        leer_cinta_real=1;
+                    }
+                }
+
+                if (leer_cinta_real) {
+					realtape_get_byte();
+					if (realtape_loading_sound.v) {
+                        reset_silence_detection_counter();
+                        	        audio_valor_enviar_sonido /=2;
+                                	audio_valor_enviar_sonido += realtape_last_value/2;
+	                                //Sonido alterado cuando top speed
+        	                        if (timer_condicion_top_speed() ) audio_valor_enviar_sonido=audio_change_top_speed_sound(audio_valor_enviar_sonido);
+					}
+				}
+
+				//Ajustar volumen
+				if (audiovolume!=100) {
+					audio_valor_enviar_sonido=audio_adjust_volume(audio_valor_enviar_sonido);
+				}
+
+				audio_send_mono_sample(audio_valor_enviar_sonido);
+
+				ay_chip_siguiente_ciclo();
+
+
+
+
+
+			//final de linea
+
+
+			//copiamos contenido linea y border a buffer rainbow
+			if (rainbow_enabled.v==1) {
+				screen_store_scanline_rainbow_solo_border();
+				screen_store_scanline_rainbow_solo_display();
+
+				//t_scanline_next_border();
+
+			}
+
+			t_scanline_next_line();
+
+			//se supone que hemos ejecutado todas las instrucciones posibles de toda la pantalla. refrescar pantalla y
+			//esperar para ver si se ha generado una interrupcion 1/50
+
+                        if (t_estados>=screen_testados_total) {
+
+				//if (rainbow_enabled.v==1) t_scanline_next_fullborder();
+
+		                t_scanline=0;
+
+						timer_get_elapsed_core_frame_post();
+
+		                //printf ("final scan lines. total: %d\n",screen_scanlines);
+                		        //printf ("reset no inves\n");
+					set_t_scanline_draw_zero();
+
+
+
+                                //Parche para maquinas que no generan 312 lineas, porque si enviamos menos sonido se escuchara un click al final
+                                //Es necesario que cada frame de pantalla contenga 312 bytes de sonido
+                                //Igualmente en la rutina de envio_audio se vuelve a comprobar que todo el sonido a enviar
+                                //este completo; esto es necesario para Z88
+
+
+                                int linea_estados=t_estados/screen_testados_linea;
+
+                                while (linea_estados<312) {
+										audio_send_mono_sample(audio_valor_enviar_sonido);
+                                        linea_estados++;
+                                }
+
+
+
+
+                                t_estados -=screen_testados_total;
+
+				//Para paperboy, thelosttapesofalbion0 y otros que hacen letras en el border, para que no se desplacen en diagonal
+				//t_estados=0;
+				//->paperboy queda fijo. thelosttapesofalbion0 no se desplaza, sino que tiembla si no forzamos esto
+
+
+				//Final de instrucciones ejecutadas en un frame de pantalla
+				if (iff1.v==1) {
+					interrupcion_maskable_generada.v=1;
+
+
+
+
+				}
+
+
+				cpu_loop_refresca_pantalla();
+
+				vofile_send_frame(rainbow_buffer);
+
+
+				siguiente_frame_pantalla();
+
+
+				if (debug_registers) scr_debug_registers();
+
+	  	                contador_parpadeo--;
+                        	//printf ("Parpadeo: %d estado: %d\n",contador_parpadeo,estado_parpadeo.v);
+	                        if (!contador_parpadeo) {
+        	                        contador_parpadeo=16;
+                	                toggle_flash_state();
+	                        }
+
+
+				if (!interrupcion_timer_generada.v) {
+					//Llegado a final de frame pero aun no ha llegado interrupcion de timer. Esperemos...
+					//printf ("no demasiado\n");
+					esperando_tiempo_final_t_estados.v=1;
+				}
+
+				else {
+					//Llegado a final de frame y ya ha llegado interrupcion de timer. No esperamos.... Hemos tardado demasiado
+					//printf ("demasiado\n");
+					esperando_tiempo_final_t_estados.v=0;
+				}
+
+                core_end_frame_check_zrcp_zeng_snap.v=1;
+
+
+			}
+
+
+
+
+
 }
 
 //bucle principal de ejecucion de la cpu de sam coupe
@@ -300,183 +481,10 @@ void cpu_core_loop_sam(void)
 
 		//A final de cada scanline
 		if ( (t_estados/screen_testados_linea)>t_scanline  ) {
-			//printf ("%d\n",t_estados);
-			//if (t_estados>69000) printf ("t_scanline casi final: %d\n",t_scanline);
+			core_sam_fin_scanline();
 
-			if (1==1) {
-
-				//TODO. detector de sonido en beeper provoca, que cuando salta, el output de sonido es extraño,
-				//cuando se combina con chip AY. forzar a no desactivarlo nunca
-				beeper_silence_detection_counter=0;
-
-				audio_valor_enviar_sonido=0;
-
-
-				audio_valor_enviar_sonido +=da_output_ay();
-
-
-
-				if (beeper_enabled.v) {
-
-                    //Sam coupe no se oye bien real beeper, creo que porque el array de valores del puerto FEH tiene limite
-                    //CURRENT_BEEPER_ARRAY_LENGTH, y eso es 256 , y sam coupe tiene aproximadamente 384 estados por linea
-                    //lo cual es mayor de 256 y provoca que no se escriba todo el array
-                    //Habria que probar si aumentando CURRENT_BEEPER_ARRAY_LENGTH se oye bien
-                    //De todas maneras lo mejor es hacer que Sam Coupe de momento no use real beeper, como si no estuviera habilitado
-
-                    audio_valor_enviar_sonido += value_beeper;
-
-                    /*
-
-					if (beeper_real_enabled==0) {
-						audio_valor_enviar_sonido += value_beeper;
-					}
-
-					else {
-						audio_valor_enviar_sonido += get_value_beeper_sum_array();
-						beeper_new_line();
-					}
-
-                    */
-				}
-
-				//printf ("Sonido: %d\n",audio_valor_enviar_sonido);
-
-                int leer_cinta_real=0;
-
-                if (realtape_inserted.v && realtape_playing.v) leer_cinta_real=1;
-
-                if (audio_can_record_input()) {
-                    if (audio_is_recording_input) {
-                        leer_cinta_real=1;
-                    }
-                }
-
-                if (leer_cinta_real) {
-					realtape_get_byte();
-					if (realtape_loading_sound.v) {
-                        reset_silence_detection_counter();
-                        	        audio_valor_enviar_sonido /=2;
-                                	audio_valor_enviar_sonido += realtape_last_value/2;
-	                                //Sonido alterado cuando top speed
-        	                        if (timer_condicion_top_speed() ) audio_valor_enviar_sonido=audio_change_top_speed_sound(audio_valor_enviar_sonido);
-					}
-				}
-
-				//Ajustar volumen
-				if (audiovolume!=100) {
-					audio_valor_enviar_sonido=audio_adjust_volume(audio_valor_enviar_sonido);
-				}
-
-				audio_send_mono_sample(audio_valor_enviar_sonido);
-
-				ay_chip_siguiente_ciclo();
-
-			}
-
-
-
-			//final de linea
-
-
-			//copiamos contenido linea y border a buffer rainbow
-			if (rainbow_enabled.v==1) {
-				screen_store_scanline_rainbow_solo_border();
-				screen_store_scanline_rainbow_solo_display();
-
-				//t_scanline_next_border();
-
-			}
-
-			t_scanline_next_line();
-
-			//se supone que hemos ejecutado todas las instrucciones posibles de toda la pantalla. refrescar pantalla y
-			//esperar para ver si se ha generado una interrupcion 1/50
-
-                        if (t_estados>=screen_testados_total) {
-
-				//if (rainbow_enabled.v==1) t_scanline_next_fullborder();
-
-		                t_scanline=0;
-
-						timer_get_elapsed_core_frame_post();
-
-		                //printf ("final scan lines. total: %d\n",screen_scanlines);
-                		        //printf ("reset no inves\n");
-					set_t_scanline_draw_zero();
-
-
-
-                                //Parche para maquinas que no generan 312 lineas, porque si enviamos menos sonido se escuchara un click al final
-                                //Es necesario que cada frame de pantalla contenga 312 bytes de sonido
-                                //Igualmente en la rutina de envio_audio se vuelve a comprobar que todo el sonido a enviar
-                                //este completo; esto es necesario para Z88
-
-
-                                int linea_estados=t_estados/screen_testados_linea;
-
-                                while (linea_estados<312) {
-										audio_send_mono_sample(audio_valor_enviar_sonido);
-                                        linea_estados++;
-                                }
-
-
-
-
-                                t_estados -=screen_testados_total;
-
-				//Para paperboy, thelosttapesofalbion0 y otros que hacen letras en el border, para que no se desplacen en diagonal
-				//t_estados=0;
-				//->paperboy queda fijo. thelosttapesofalbion0 no se desplaza, sino que tiembla si no forzamos esto
-
-
-				//Final de instrucciones ejecutadas en un frame de pantalla
-				if (iff1.v==1) {
-					interrupcion_maskable_generada.v=1;
-
-
-
-
-				}
-
-
-				cpu_loop_refresca_pantalla();
-
-				vofile_send_frame(rainbow_buffer);
-
-
-				siguiente_frame_pantalla();
-
-
-				if (debug_registers) scr_debug_registers();
-
-	  	                contador_parpadeo--;
-                        	//printf ("Parpadeo: %d estado: %d\n",contador_parpadeo,estado_parpadeo.v);
-	                        if (!contador_parpadeo) {
-        	                        contador_parpadeo=16;
-                	                toggle_flash_state();
-	                        }
-
-
-				if (!interrupcion_timer_generada.v) {
-					//Llegado a final de frame pero aun no ha llegado interrupcion de timer. Esperemos...
-					//printf ("no demasiado\n");
-					esperando_tiempo_final_t_estados.v=1;
-				}
-
-				else {
-					//Llegado a final de frame y ya ha llegado interrupcion de timer. No esperamos.... Hemos tardado demasiado
-					//printf ("demasiado\n");
-					esperando_tiempo_final_t_estados.v=0;
-				}
-
-                core_end_frame_check_zrcp_zeng_snap.v=1;
-
-
-			}
-
+            //Indicamos que no hemos pasado el medio scanline
             core_sam_medio_scanline=0;
-
 		}
 
 		if (esperando_tiempo_final_t_estados.v) {
