@@ -347,45 +347,44 @@ void core_sam_ciclo_fetch(void)
 {
 
 
-				//core_spectrum_store_rainbow_current_atributes();
+    //core_spectrum_store_rainbow_current_atributes();
 
 
 
 #ifdef DEBUG_SECOND_TRAP_STDOUT
 
-        //Para poder debugar rutina que imprima texto. Util para aventuras conversacionales
-        //hay que definir este DEBUG_SECOND_TRAP_STDOUT manualmente en compileoptions.h despues de ejecutar el configure
+    //Para poder debugar rutina que imprima texto. Util para aventuras conversacionales
+    //hay que definir este DEBUG_SECOND_TRAP_STDOUT manualmente en compileoptions.h despues de ejecutar el configure
 
 	scr_stdout_debug_print_char_routine();
 
 #endif
 
 
-        	                        contend_read( reg_pc, 4 );
-					byte_leido_core_sam=fetch_opcode();
+    contend_read( reg_pc, 4 );
+    byte_leido_core_sam=fetch_opcode();
 
 
 
 
 #ifdef EMULATE_CPU_STATS
-				util_stats_increment_counter(stats_codsinpr,byte_leido_core_sam);
+    util_stats_increment_counter(stats_codsinpr,byte_leido_core_sam);
 #endif
 
-                //Si la cpu está detenida por señal HALT, reemplazar opcode por NOP
-                if (z80_halt_signal.v) {
-                    byte_leido_core_sam=0;
-                }
-                else {
-                    reg_pc++;
-                }
+    //Si la cpu está detenida por señal HALT, reemplazar opcode por NOP
+    if (z80_halt_signal.v) {
+        byte_leido_core_sam=0;
+    }
+    else {
+        reg_pc++;
+    }
 
-				reg_r++;
+    reg_r++;
 
-                        z80_no_ejecutado_block_opcodes();
-	                	codsinpr[byte_leido_core_sam]  () ;
+            z80_no_ejecutado_block_opcodes();
+            codsinpr[byte_leido_core_sam]  () ;
 
-				//printf ("t_estados:%d\n",t_estados);
-
+    //printf ("t_estados:%d\n",t_estados);
 
 
 
