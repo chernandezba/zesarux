@@ -91,6 +91,7 @@
 #define ZSF_I8049_AUDIO 64
 #define ZSF_KEY_PORTS_QL_STATE 65
 #define ZSF_KEY_PORTS_CPC_STATE 66
+#define ZSF_KEY_PORTS_MSX_STATE 67
 //Importante NO alterar los ID existentes o se rompera compatibilidad hacia atras del formato ZSF
 //Siempre agregar, nunca modificar ni borrar
 

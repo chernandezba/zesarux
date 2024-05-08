@@ -7643,6 +7643,7 @@ z80_byte antes_puerto_especial_joystick=puerto_especial_joystick;
 
     unsigned char antes_ql_keyboard_table[8];
     z80_byte antes_cpc_keyboard_table[16];
+    z80_byte antes_msx_keyboard_table[16];
     int i;
     if (MACHINE_IS_QL) {
         for (i=0;i<8;i++) antes_ql_keyboard_table[i]=ql_keyboard_table[i];
@@ -7650,6 +7651,10 @@ z80_byte antes_puerto_especial_joystick=puerto_especial_joystick;
 
     if (MACHINE_IS_CPC) {
         for (i=0;i<16;i++) antes_cpc_keyboard_table[i]=cpc_keyboard_table[i];
+    }
+
+    if (MACHINE_IS_MSX) {
+        for (i=0;i<16;i++) antes_msx_keyboard_table[i]=msx_keyboard_table[i];
     }
 
 
@@ -7675,6 +7680,10 @@ z80_byte antes_puerto_especial_joystick=puerto_especial_joystick;
 
     if (MACHINE_IS_CPC) {
         for (i=0;i<16;i++) cpc_keyboard_table[i]=antes_cpc_keyboard_table[i];
+    }
+
+    if (MACHINE_IS_MSX) {
+        for (i=0;i<16;i++) msx_keyboard_table[i]=antes_msx_keyboard_table[i];
     }
 
     //zoc_decir_pulsada_alguna_tecla_local();
