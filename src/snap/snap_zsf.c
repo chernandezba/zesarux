@@ -769,8 +769,6 @@ Byte fields:
 5: z80_byte puerto_57342
 6: z80_byte puerto_49150
 7: z80_byte puerto_32766
-8: z80_byte joystick_port: the joystick state port, could be kempston, sinclair, whatever joystick you have set in settings-hardware-joystick type
-
 
 
 -Block ID 63: ZSF_ZOC_ETC
@@ -2140,7 +2138,6 @@ if (menu_abierto) return;
     puerto_57342=header[5];
     puerto_49150=header[6];
     puerto_32766=header[7];
-    puerto_especial_joystick=header[8];
 
 }
 
@@ -3995,7 +3992,7 @@ void save_zsf_snapshot_file_mem(char *filename,z80_byte *destination_memory,int 
         if (MACHINE_IS_SPECTRUM || MACHINE_IS_ZX8081ACE || MACHINE_IS_SMS || MACHINE_IS_SG1000 || MACHINE_IS_COLECO || MACHINE_IS_SAM) {
 
 
-            z80_byte keyportsblock[9];
+            z80_byte keyportsblock[8];
 
             keyportsblock[0]=puerto_65278;
             keyportsblock[1]=puerto_65022;
@@ -4005,9 +4002,8 @@ void save_zsf_snapshot_file_mem(char *filename,z80_byte *destination_memory,int 
             keyportsblock[5]=puerto_57342;
             keyportsblock[6]=puerto_49150;
             keyportsblock[7]=puerto_32766;
-            keyportsblock[8]=puerto_especial_joystick;
 
-            zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, keyportsblock,ZSF_KEY_PORTS_SPECTRUM_STATE, 9);
+            zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, keyportsblock,ZSF_KEY_PORTS_SPECTRUM_STATE, 8);
 
 
         }
