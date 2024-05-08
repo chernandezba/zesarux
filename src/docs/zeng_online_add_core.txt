@@ -1,0 +1,237 @@
+-----
+Para agregar un core que no usa puertos de spectrum:
+----
+
+diff --git a/src/configure b/src/configure
+index 4089abc3..ecc51d45 100755
+--- a/src/configure
++++ b/src/configure
+@@ -1365,7 +1365,7 @@ core_sms.o: cores/core_sms.c cores/core_sms.h cpu.h debug.h storage/tape.h audio
+ core_z88.o: cores/core_z88.c cores/core_z88.h cpu.h debug.h storage/tape.h audio/audio.h video/screen.h operaciones.h snap/snap.h timer.h zxvision.h chardetect.h compileoptions.h contend.h ula.h utils.h machines/z88.h audio/audio.h utils.h settings.h
+ 	\$(CC) \$(CFLAGS) -c cores/core_z88.c
+ 
+-core_cpc.o: cores/core_cpc.c cores/core_cpc.h cpu.h debug.h storage/tape.h audio/audio.h video/screen.h operaciones.h snap/snap.h timer.h zxvision.h chardetect.h compileoptions.h contend.h ula.h utils.h audio/audio.h utils.h storage/tape.h machines/cpc.h realjoystick.h settings.h snap/snap_zsf.h zrcp/zeng.h zrcp/zeng_online.h snap/snap_ram.h storage/pd765.h
++core_cpc.o: cores/core_cpc.c cores/core_cpc.h cpu.h debug.h storage/tape.h audio/audio.h video/screen.h operaciones.h snap/snap.h timer.h zxvision.h chardetect.h compileoptions.h contend.h ula.h utils.h audio/audio.h utils.h storage/tape.h machines/cpc.h realjoystick.h settings.h snap/snap_zsf.h zrcp/zeng.h zrcp/zeng_online.h snap/snap_ram.h storage/pd765.h zrcp/zeng_online_client.h
+ 	\$(CC) \$(CFLAGS) -c cores/core_cpc.c
+ 
+ core_pcw.o: cores/core_pcw.c cores/core_pcw.h cpu.h debug.h storage/tape.h audio/audio.h video/screen.h operaciones.h snap/snap.h timer.h zxvision.h chardetect.h compileoptions.h contend.h ula.h utils.h audio/audio.h utils.h storage/tape.h machines/pcw.h realjoystick.h settings.h snap/snap_zsf.h zrcp/zeng.h zrcp/zeng_online.h snap/snap_ram.h storage/pd765.h
+diff --git a/src/cores/core_cpc.c b/src/cores/core_cpc.c
+index 2f11a1c9..36e7f53f 100644
+--- a/src/cores/core_cpc.c
++++ b/src/cores/core_cpc.c
+@@ -53,6 +53,8 @@
+ #include "snap_ram.h"
+ #include "pd765.h"
+ 
++#include "zeng_online_client.h"
++
+ z80_byte byte_leido_core_cpc;
+ 
+ int core_cpc_medio_scanline=0;
+@@ -585,6 +587,8 @@ void cpu_core_loop_cpc(void)
+ 		core_end_frame_check_zrcp_zeng_snap.v=0;
+ 		check_pending_zrcp_put_snapshot();
+ 		zeng_send_snapshot_if_needed();
++
++        zeng_online_client_end_frame_from_core_functions();
+ 	}
+ 
+ 	debug_get_t_stados_parcial_post();
+diff --git a/src/snap/snap_zsf.c b/src/snap/snap_zsf.c
+index 72e17e2d..50e2be81 100644
+--- a/src/snap/snap_zsf.c
++++ b/src/snap/snap_zsf.c
+@@ -805,6 +805,11 @@ Byte fields:
+ 6: z80_byte ql_keyboard_table[6]
+ 7: z80_byte ql_keyboard_table[7]
+ 
++-Block ID 66: ZSF_KEY_PORTS_CPC_STATE
++Tell keyboard ports value in ql
++Byte fields:
++0-15: z80_byte cpc_keyboard_table[0-15]
++
+ 
+ 
+ -Como codificar bloques de memoria para Spectrum 128k, zxuno, tbblue, tsconf, etc?
+@@ -819,7 +824,7 @@ Por otra parte, tener bloques diferentes ayuda a saber mejor qué tipos de bloqu
+ #define MAX_ZSF_BLOCK_ID_NAMELENGTH 30
+ 
+ //Id maximo de nombres sin contar el unknown final
+-#define MAX_ZSF_BLOCK_ID_NAMES 65
++#define MAX_ZSF_BLOCK_ID_NAMES 66
+ char *zsf_block_id_names[]={
+  //123456789012345678901234567890
+   "ZSF_NOOP",                 //0
+@@ -888,6 +893,7 @@ char *zsf_block_id_names[]={
+   "ZSF_ZOC_ETC",
+   "ZSF_I8049_AUDIO",
+   "ZSF_KEY_PORTS_QL_STATE",
++  "ZSF_KEY_PORTS_CPC_STATE",
+ 
+   "Unknown"  //Este siempre al final
+ };
+@@ -2103,6 +2109,21 @@ if (menu_abierto) return;
+ 
+ }
+ 
++void load_zsf_key_ports_cpc_state(z80_byte *header)
++{
++    //Si menu abierto, no hacerlo
++
++    if (menu_abierto) return;
++
++    int i;
++
++    for (i=0;i<16;i++) {
++        cpc_keyboard_table[i]=header[i];
++    }
++
++
++}
++
+ 
+ void load_zsf_zoc_etc(z80_byte *header)
+ {
+@@ -3428,6 +3449,10 @@ void load_zsf_snapshot_file_mem(char *filename,z80_byte *origin_memory,int longi
+         load_zsf_key_ports_ql_state(block_data);
+     break;
+ 
++    case ZSF_KEY_PORTS_CPC_STATE:
++        load_zsf_key_ports_cpc_state(block_data);
++    break;
++
+       case ZSF_ZOC_ETC:
+         load_zsf_zoc_etc(block_data);
+     break;
+@@ -3832,6 +3857,16 @@ void save_zsf_snapshot_file_mem(char *filename,z80_byte *destination_memory,int
+             zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, keyportsblock,ZSF_KEY_PORTS_QL_STATE, 8);
+         }
+ 
++        if (MACHINE_IS_CPC) {
++
++            z80_byte keyportsblock[16];
++
++            int i;
++            for (i=0;i<16;i++) keyportsblock[i]=cpc_keyboard_table[i];
++
++            zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, keyportsblock,ZSF_KEY_PORTS_CPC_STATE, 16);
++        }
++
+ 
+         z80_byte zoc_etc_block[1];
+ 
+diff --git a/src/snap/snap_zsf.h b/src/snap/snap_zsf.h
+index 807a3d38..70e49357 100644
+--- a/src/snap/snap_zsf.h
++++ b/src/snap/snap_zsf.h
+@@ -90,6 +90,7 @@
+ #define ZSF_ZOC_ETC 63
+ #define ZSF_I8049_AUDIO 64
+ #define ZSF_KEY_PORTS_QL_STATE 65
++#define ZSF_KEY_PORTS_CPC_STATE 66
+ //Importante NO alterar los ID existentes o se rompera compatibilidad hacia atras del formato ZSF
+ //Siempre agregar, nunca modificar ni borrar
+ 
+diff --git a/src/utils.c b/src/utils.c
+index 3e13ebd4..4adee782 100644
+--- a/src/utils.c
++++ b/src/utils.c
+@@ -7642,11 +7642,16 @@ z80_byte antes_puerto_especial_joystick=puerto_especial_joystick;
+ 
+ 
+     unsigned char antes_ql_keyboard_table[8];
++    z80_byte antes_cpc_keyboard_table[16];
+     int i;
+     if (MACHINE_IS_QL) {
+         for (i=0;i<8;i++) antes_ql_keyboard_table[i]=ql_keyboard_table[i];
+     }
+ 
++    if (MACHINE_IS_CPC) {
++        for (i=0;i<16;i++) antes_cpc_keyboard_table[i]=cpc_keyboard_table[i];
++    }
++
+ 
+   util_set_reset_key_continue_after_zeng(tecla,pressrelease);
+ 
+@@ -7668,6 +7673,10 @@ z80_byte antes_puerto_especial_joystick=puerto_especial_joystick;
+         for (i=0;i<8;i++) ql_keyboard_table[i]=antes_ql_keyboard_table[i];
+     }
+ 
++    if (MACHINE_IS_CPC) {
++        for (i=0;i<16;i++) cpc_keyboard_table[i]=antes_cpc_keyboard_table[i];
++    }
++
+     //zoc_decir_pulsada_alguna_tecla_local();
+   }
+ }
+
+
+
+-----
+FIN agregar un core que no usa puertos de spectrum:
+----
+
+
+-----------
+
+
+-----
+Para agregar un core que si que usa puertos de spectrum:
+----
+
+diff --git a/src/configure b/src/configure
+index 248a8405..4089abc3 100755
+--- a/src/configure
++++ b/src/configure
+@@ -1353,7 +1353,7 @@ core_msx.o: cores/core_msx.c cores/core_msx.h cpu.h debug.h storage/tape.h audio
+ core_svi.o: cores/core_svi.c cores/core_svi.h cpu.h debug.h storage/tape.h audio/audio.h video/screen.h soundchips/ay38912.h operaciones.h snap/snap.h timer.h zxvision.h chardetect.h compileoptions.h contend.h snap/snap_zx8081.h utils.h realjoystick.h  settings.h machines/svi.h snap/snap_ram.h codsinpr.h
+ 	\$(CC) \$(CFLAGS) -c cores/core_svi.c
+ 
+-core_coleco.o: cores/core_coleco.c cores/core_coleco.h cpu.h debug.h storage/tape.h audio/audio.h video/screen.h soundchips/ay38912.h operaciones.h snap/snap.h timer.h zxvision.h chardetect.h compileoptions.h contend.h snap/snap_zx8081.h utils.h realjoystick.h  settings.h machines/coleco.h vdp_9918a.h soundchips/sn76489an.h vdp_9918a_sms.h snap/snap_ram.h codsinpr.h
++core_coleco.o: cores/core_coleco.c cores/core_coleco.h cpu.h debug.h storage/tape.h audio/audio.h video/screen.h soundchips/ay38912.h operaciones.h snap/snap.h timer.h zxvision.h chardetect.h compileoptions.h contend.h snap/snap_zx8081.h utils.h realjoystick.h  settings.h machines/coleco.h vdp_9918a.h soundchips/sn76489an.h vdp_9918a_sms.h snap/snap_ram.h codsinpr.h zrcp/zeng_online_client.h
+ 	\$(CC) \$(CFLAGS) -c cores/core_coleco.c
+ 
+ core_sg1000.o: cores/core_sg1000.c cores/core_sg1000.h cpu.h debug.h storage/tape.h audio/audio.h video/screen.h soundchips/ay38912.h operaciones.h snap/snap.h timer.h zxvision.h chardetect.h compileoptions.h contend.h snap/snap_zx8081.h utils.h realjoystick.h  settings.h machines/sg1000.h vdp_9918a.h soundchips/sn76489an.h vdp_9918a_sms.h snap/snap_ram.h codsinpr.h zrcp/zeng_online_client.h
+diff --git a/src/cores/core_coleco.c b/src/cores/core_coleco.c
+index 4760849f..cdc7a078 100644
+--- a/src/cores/core_coleco.c
++++ b/src/cores/core_coleco.c
+@@ -57,6 +57,7 @@
+ #include "sn76489an.h"
+ #include "snap_ram.h"
+ #include "codsinpr.h"
++#include "zeng_online_client.h"
+ 
+ 
+ z80_byte byte_leido_core_coleco;
+@@ -680,6 +681,8 @@ void cpu_core_loop_coleco(void)
+ 			core_end_frame_check_zrcp_zeng_snap.v=0;
+ 			check_pending_zrcp_put_snapshot();
+ 			zeng_send_snapshot_if_needed();
++
++            zeng_online_client_end_frame_from_core_functions();
+ 		}
+ 
+ 
+diff --git a/src/snap/snap_zsf.c b/src/snap/snap_zsf.c
+index 2b797bc8..72e17e2d 100644
+--- a/src/snap/snap_zsf.c
++++ b/src/snap/snap_zsf.c
+@@ -759,7 +759,7 @@ Byte fields:
+ 
+ 
+ -Block ID 62: ZSF_KEY_PORTS_SPECTRUM_STATE
+-Tell keyboard ports value in spectrum, zx80/81, jupiter ace, master system, sg1000
++Tell keyboard ports value in spectrum, zx80/81, jupiter ace, master system, sg1000, coleco
+ Byte fields:
+ 0: z80_byte puerto_65278
+ 1: z80_byte puerto_65022
+@@ -3796,7 +3796,7 @@ void save_zsf_snapshot_file_mem(char *filename,z80_byte *destination_memory,int
+     //esto solo si somos en zeng online master y menu no esta abierto
+     if (from_zeng_online && zeng_online_i_am_master.v && !menu_abierto) {
+         //-Block ID 62: ZSF_KEY_PORTS_SPECTRUM_STATE
+-        if (MACHINE_IS_SPECTRUM || MACHINE_IS_ZX8081ACE || MACHINE_IS_SMS || MACHINE_IS_SG1000) {
++        if (MACHINE_IS_SPECTRUM || MACHINE_IS_ZX8081ACE || MACHINE_IS_SMS || MACHINE_IS_SG1000 || MACHINE_IS_COLECO) {
+ 
+ 
+             z80_byte keyportsblock[9];

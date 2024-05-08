@@ -1365,7 +1365,7 @@ core_sms.o: cores/core_sms.c cores/core_sms.h cpu.h debug.h storage/tape.h audio
 core_z88.o: cores/core_z88.c cores/core_z88.h cpu.h debug.h storage/tape.h audio/audio.h video/screen.h operaciones.h snap/snap.h timer.h zxvision.h chardetect.h compileoptions.h contend.h ula.h utils.h machines/z88.h audio/audio.h utils.h settings.h
 	\$(CC) \$(CFLAGS) -c cores/core_z88.c
 
-core_cpc.o: cores/core_cpc.c cores/core_cpc.h cpu.h debug.h storage/tape.h audio/audio.h video/screen.h operaciones.h snap/snap.h timer.h zxvision.h chardetect.h compileoptions.h contend.h ula.h utils.h audio/audio.h utils.h storage/tape.h machines/cpc.h realjoystick.h settings.h snap/snap_zsf.h zrcp/zeng.h zrcp/zeng_online.h snap/snap_ram.h storage/pd765.h
+core_cpc.o: cores/core_cpc.c cores/core_cpc.h cpu.h debug.h storage/tape.h audio/audio.h video/screen.h operaciones.h snap/snap.h timer.h zxvision.h chardetect.h compileoptions.h contend.h ula.h utils.h audio/audio.h utils.h storage/tape.h machines/cpc.h realjoystick.h settings.h snap/snap_zsf.h zrcp/zeng.h zrcp/zeng_online.h snap/snap_ram.h storage/pd765.h zrcp/zeng_online_client.h
 	\$(CC) \$(CFLAGS) -c cores/core_cpc.c
 
 core_pcw.o: cores/core_pcw.c cores/core_pcw.h cpu.h debug.h storage/tape.h audio/audio.h video/screen.h operaciones.h snap/snap.h timer.h zxvision.h chardetect.h compileoptions.h contend.h ula.h utils.h audio/audio.h utils.h storage/tape.h machines/pcw.h realjoystick.h settings.h snap/snap_zsf.h zrcp/zeng.h zrcp/zeng_online.h snap/snap_ram.h storage/pd765.h

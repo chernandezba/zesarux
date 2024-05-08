@@ -438,7 +438,10 @@ ok -la recepcion de keys y snapshot deberia hacerse al mismo momento desde el mi
 -Para cada maquina que queramos que soporte ZENG ONLINE
 Agregar puertos a ZSF_KEY_PORTS_SPECTRUM_STATE en snap_zsf.c. quiza un tag nuevo para tener retrocompatibilidad
 en util_set_reset_key_continue, agregar antes_puerto_ y restaurar valor para cada maquina que se quiera
-O sea, estos cambios de ejemplo:
+
+Ver ejemplos en docs/zeng_online_add_core.txt.
+
+El siguiente ejemplo fue de agregar el puerto joystick:
 
 diff --git a/src/snap_zsf.c b/src/snap_zsf.c
 index db91792..2e33eab 100644
