@@ -759,7 +759,7 @@ Byte fields:
 
 
 -Block ID 62: ZSF_KEY_PORTS_SPECTRUM_STATE
-Tell keyboard ports value in spectrum, zx80/81, jupiter ace, master system, sg1000
+Tell keyboard ports value in spectrum, zx80/81, jupiter ace, master system, sg1000, coleco
 Byte fields:
 0: z80_byte puerto_65278
 1: z80_byte puerto_65022
@@ -3796,7 +3796,7 @@ void save_zsf_snapshot_file_mem(char *filename,z80_byte *destination_memory,int 
     //esto solo si somos en zeng online master y menu no esta abierto
     if (from_zeng_online && zeng_online_i_am_master.v && !menu_abierto) {
         //-Block ID 62: ZSF_KEY_PORTS_SPECTRUM_STATE
-        if (MACHINE_IS_SPECTRUM || MACHINE_IS_ZX8081ACE || MACHINE_IS_SMS || MACHINE_IS_SG1000) {
+        if (MACHINE_IS_SPECTRUM || MACHINE_IS_ZX8081ACE || MACHINE_IS_SMS || MACHINE_IS_SG1000 || MACHINE_IS_COLECO) {
 
 
             z80_byte keyportsblock[9];

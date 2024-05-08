@@ -1353,7 +1353,7 @@ core_msx.o: cores/core_msx.c cores/core_msx.h cpu.h debug.h storage/tape.h audio
 core_svi.o: cores/core_svi.c cores/core_svi.h cpu.h debug.h storage/tape.h audio/audio.h video/screen.h soundchips/ay38912.h operaciones.h snap/snap.h timer.h zxvision.h chardetect.h compileoptions.h contend.h snap/snap_zx8081.h utils.h realjoystick.h  settings.h machines/svi.h snap/snap_ram.h codsinpr.h
 	\$(CC) \$(CFLAGS) -c cores/core_svi.c
 
-core_coleco.o: cores/core_coleco.c cores/core_coleco.h cpu.h debug.h storage/tape.h audio/audio.h video/screen.h soundchips/ay38912.h operaciones.h snap/snap.h timer.h zxvision.h chardetect.h compileoptions.h contend.h snap/snap_zx8081.h utils.h realjoystick.h  settings.h machines/coleco.h vdp_9918a.h soundchips/sn76489an.h vdp_9918a_sms.h snap/snap_ram.h codsinpr.h
+core_coleco.o: cores/core_coleco.c cores/core_coleco.h cpu.h debug.h storage/tape.h audio/audio.h video/screen.h soundchips/ay38912.h operaciones.h snap/snap.h timer.h zxvision.h chardetect.h compileoptions.h contend.h snap/snap_zx8081.h utils.h realjoystick.h  settings.h machines/coleco.h vdp_9918a.h soundchips/sn76489an.h vdp_9918a_sms.h snap/snap_ram.h codsinpr.h zrcp/zeng_online_client.h
 	\$(CC) \$(CFLAGS) -c cores/core_coleco.c
 
 core_sg1000.o: cores/core_sg1000.c cores/core_sg1000.h cpu.h debug.h storage/tape.h audio/audio.h video/screen.h soundchips/ay38912.h operaciones.h snap/snap.h timer.h zxvision.h chardetect.h compileoptions.h contend.h snap/snap_zx8081.h utils.h realjoystick.h  settings.h machines/sg1000.h vdp_9918a.h soundchips/sn76489an.h vdp_9918a_sms.h snap/snap_ram.h codsinpr.h zrcp/zeng_online_client.h

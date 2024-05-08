@@ -29633,6 +29633,8 @@ void menu_audio(MENU_ITEM_PARAMETERS)
                 "a mp3 player or your phone");
 
             if (audio_is_recording_input) {
+
+
 #ifdef COMPILE_SDL
 #ifdef COMPILE_SDL2
                 if (!strcmp(audio_new_driver_name,"sdl")) {
