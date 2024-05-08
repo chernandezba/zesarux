@@ -1344,7 +1344,7 @@ core_ace.o: cores/core_ace.c cores/core_ace.h cpu.h debug.h storage/tape.h audio
 core_ql.o: cores/core_ql.c cores/core_ql.h cpu.h debug.h storage/tape.h audio/audio.h video/screen.h soundchips/ay38912.h operaciones.h snap/snap.h timer.h zxvision.h chardetect.h compileoptions.h contend.h snap/snap_zx8081.h utils.h realjoystick.h ula.h settings.h machines/ql_i8049.h machines/ql_qdos_handler.h machines/ql_zx8302.h zrcp/zeng.h zrcp/zeng_online.h snap/snap_zsf.h snap/snap_ram.h zrcp/zeng_online_client.h
 	\$(CC) \$(CFLAGS) -c cores/core_ql.c
 
-core_mk14.o: cores/core_mk14.c cores/core_mk14.h scmp.h cpu.h debug.h storage/tape.h audio/audio.h video/screen.h soundchips/ay38912.h operaciones.h snap/snap.h timer.h zxvision.h chardetect.h compileoptions.h contend.h snap/snap_zx8081.h utils.h realjoystick.h ula.h settings.h
+core_mk14.o: cores/core_mk14.c cores/core_mk14.h scmp.h cpu.h debug.h storage/tape.h audio/audio.h video/screen.h soundchips/ay38912.h operaciones.h snap/snap.h timer.h zxvision.h chardetect.h compileoptions.h contend.h snap/snap_zx8081.h utils.h realjoystick.h ula.h settings.h snap/snap_zsf.h zrcp/zeng.h zrcp/zeng_online_client.h
 	\$(CC) \$(CFLAGS) -c cores/core_mk14.c
 
 core_msx.o: cores/core_msx.c cores/core_msx.h cpu.h debug.h storage/tape.h audio/audio.h video/screen.h soundchips/ay38912.h operaciones.h snap/snap.h timer.h zxvision.h chardetect.h compileoptions.h contend.h snap/snap_zx8081.h utils.h realjoystick.h  settings.h machines/msx.h snap/snap_ram.h codsinpr.h zrcp/zeng_online_client.h

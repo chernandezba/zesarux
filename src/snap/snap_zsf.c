@@ -851,6 +851,12 @@ z80_byte blink_kbd_a10;
 z80_byte blink_kbd_a9;
 z80_byte blink_kbd_a8;
 
+-Block ID 71: ZSF_KEY_PORTS_MK14_STATE
+Tell keyboard ports value in mk14
+Byte fields:
+0-7:
+z80_byte mk14_keystatus[8]
+
 -Como codificar bloques de memoria para Spectrum 128k, zxuno, tbblue, tsconf, etc?
 Con un numero de bloque (0...255) pero... que tamaño de bloque? tbblue usa paginas de 8kb, tsconf usa paginas de 16kb
 Quizá numero de bloque y parametro que diga tamaño, para tener un block id comun para todos ellos
@@ -936,6 +942,7 @@ char *zsf_block_id_names[]={
   "ZSF_KEY_PORTS_PCW_STATE",
   "ZSF_KEY_PORTS_SAM_STATE",
   "ZSF_KEY_PORTS_Z88_STATE",
+  "ZSF_KEY_PORTS_MK14_STATE",
 
   "Unknown"  //Este siempre al final
 };
@@ -2243,6 +2250,21 @@ if (menu_abierto) return;
     blink_kbd_a10=header[5];
     blink_kbd_a9=header[6];
     blink_kbd_a8=header[7];
+
+}
+
+void load_zsf_key_ports_mk14_state(z80_byte *header)
+{
+    //Si menu abierto, no hacerlo
+
+    if (menu_abierto) return;
+
+    int i;
+
+    for (i=0;i<8;i++) {
+        mk14_keystatus[i]=header[i];
+    }
+
 
 }
 
@@ -3594,6 +3616,10 @@ void load_zsf_snapshot_file_mem(char *filename,z80_byte *origin_memory,int longi
         load_zsf_key_ports_z88_state(block_data);
     break;
 
+    case ZSF_KEY_PORTS_MK14_STATE:
+        load_zsf_key_ports_mk14_state(block_data);
+    break;
+
       case ZSF_ZOC_ETC:
         load_zsf_zoc_etc(block_data);
     break;
@@ -4069,6 +4095,18 @@ void save_zsf_snapshot_file_mem(char *filename,z80_byte *destination_memory,int 
 
             zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, keyportsblock,ZSF_KEY_PORTS_Z88_STATE, 8);
         }
+
+
+        if (MACHINE_IS_MK14) {
+
+            z80_byte keyportsblock[8];
+
+            int i;
+            for (i=0;i<8;i++) keyportsblock[i]=mk14_keystatus[i];
+
+            zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, keyportsblock,ZSF_KEY_PORTS_MK14_STATE, 8);
+        }
+
 
         z80_byte zoc_etc_block[1];
 
