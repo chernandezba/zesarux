@@ -820,6 +820,11 @@ Tell keyboard ports value in svi
 Byte fields:
 0-15: z80_byte svi_keyboard_table[0-15]
 
+-Block ID 69: ZSF_KEY_PORTS_PCW_STATE
+Tell keyboard ports value in pcw
+Byte fields:
+0-15: z80_byte pcw_keyboard_table[0-15]
+
 -Como codificar bloques de memoria para Spectrum 128k, zxuno, tbblue, tsconf, etc?
 Con un numero de bloque (0...255) pero... que tamaño de bloque? tbblue usa paginas de 8kb, tsconf usa paginas de 16kb
 Quizá numero de bloque y parametro que diga tamaño, para tener un block id comun para todos ellos
@@ -902,6 +907,7 @@ char *zsf_block_id_names[]={
   "ZSF_KEY_PORTS_CPC_STATE",
   "ZSF_KEY_PORTS_MSX_STATE",
   "ZSF_KEY_PORTS_SVI_STATE",
+  "ZSF_KEY_PORTS_PCW_STATE",
 
   "Unknown"  //Este siempre al final
 };
@@ -2157,6 +2163,21 @@ void load_zsf_key_ports_svi_state(z80_byte *header)
 
     for (i=0;i<16;i++) {
         svi_keyboard_table[i]=header[i];
+    }
+
+
+}
+
+void load_zsf_key_ports_pcw_state(z80_byte *header)
+{
+    //Si menu abierto, no hacerlo
+
+    if (menu_abierto) return;
+
+    int i;
+
+    for (i=0;i<16;i++) {
+        pcw_keyboard_table[i]=header[i];
     }
 
 
@@ -3498,6 +3519,10 @@ void load_zsf_snapshot_file_mem(char *filename,z80_byte *origin_memory,int longi
         load_zsf_key_ports_svi_state(block_data);
     break;
 
+    case ZSF_KEY_PORTS_PCW_STATE:
+        load_zsf_key_ports_pcw_state(block_data);
+    break;
+
       case ZSF_ZOC_ETC:
         load_zsf_zoc_etc(block_data);
     break;
@@ -3930,6 +3955,16 @@ void save_zsf_snapshot_file_mem(char *filename,z80_byte *destination_memory,int 
             for (i=0;i<16;i++) keyportsblock[i]=svi_keyboard_table[i];
 
             zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, keyportsblock,ZSF_KEY_PORTS_SVI_STATE, 16);
+        }
+
+        if (MACHINE_IS_PCW) {
+
+            z80_byte keyportsblock[16];
+
+            int i;
+            for (i=0;i<16;i++) keyportsblock[i]=pcw_keyboard_table[i];
+
+            zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, keyportsblock,ZSF_KEY_PORTS_PCW_STATE, 16);
         }
 
 
