@@ -58,6 +58,8 @@
 #include "snap_ram.h"
 #include "codsinpr.h"
 
+#include "zeng_online_client.h"
+
 
 z80_byte byte_leido_core_svi;
 
@@ -716,6 +718,8 @@ void cpu_core_loop_svi(void)
 			core_end_frame_check_zrcp_zeng_snap.v=0;
 			check_pending_zrcp_put_snapshot();
 			zeng_send_snapshot_if_needed();
+
+            zeng_online_client_end_frame_from_core_functions();
 		}
 
 

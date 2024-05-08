@@ -810,11 +810,15 @@ Tell keyboard ports value in cpc
 Byte fields:
 0-15: z80_byte cpc_keyboard_table[0-15]
 
--Block ID 67: ZSF_KEY_PORTS_CPC_STATE
+-Block ID 67: ZSF_KEY_PORTS_MSX_STATE
 Tell keyboard ports value in msx
 Byte fields:
 0-15: z80_byte msx_keyboard_table[0-15]
 
+-Block ID 68: ZSF_KEY_PORTS_SVI_STATE
+Tell keyboard ports value in svi
+Byte fields:
+0-15: z80_byte svi_keyboard_table[0-15]
 
 -Como codificar bloques de memoria para Spectrum 128k, zxuno, tbblue, tsconf, etc?
 Con un numero de bloque (0...255) pero... que tamaño de bloque? tbblue usa paginas de 8kb, tsconf usa paginas de 16kb
@@ -827,8 +831,6 @@ Por otra parte, tener bloques diferentes ayuda a saber mejor qué tipos de bloqu
 //Maxima longitud de los bloques de descripcion
 #define MAX_ZSF_BLOCK_ID_NAMELENGTH 30
 
-//Id maximo de nombres sin contar el unknown final
-#define MAX_ZSF_BLOCK_ID_NAMES 67
 char *zsf_block_id_names[]={
  //123456789012345678901234567890
   "ZSF_NOOP",                 //0
@@ -899,6 +901,7 @@ char *zsf_block_id_names[]={
   "ZSF_KEY_PORTS_QL_STATE",
   "ZSF_KEY_PORTS_CPC_STATE",
   "ZSF_KEY_PORTS_MSX_STATE",
+  "ZSF_KEY_PORTS_SVI_STATE",
 
   "Unknown"  //Este siempre al final
 };
@@ -2139,6 +2142,21 @@ void load_zsf_key_ports_msx_state(z80_byte *header)
 
     for (i=0;i<16;i++) {
         msx_keyboard_table[i]=header[i];
+    }
+
+
+}
+
+void load_zsf_key_ports_svi_state(z80_byte *header)
+{
+    //Si menu abierto, no hacerlo
+
+    if (menu_abierto) return;
+
+    int i;
+
+    for (i=0;i<16;i++) {
+        svi_keyboard_table[i]=header[i];
     }
 
 
@@ -3476,6 +3494,10 @@ void load_zsf_snapshot_file_mem(char *filename,z80_byte *origin_memory,int longi
         load_zsf_key_ports_msx_state(block_data);
     break;
 
+    case ZSF_KEY_PORTS_SVI_STATE:
+        load_zsf_key_ports_svi_state(block_data);
+    break;
+
       case ZSF_ZOC_ETC:
         load_zsf_zoc_etc(block_data);
     break;
@@ -3898,6 +3920,16 @@ void save_zsf_snapshot_file_mem(char *filename,z80_byte *destination_memory,int 
             for (i=0;i<16;i++) keyportsblock[i]=msx_keyboard_table[i];
 
             zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, keyportsblock,ZSF_KEY_PORTS_MSX_STATE, 16);
+        }
+
+        if (MACHINE_IS_SVI) {
+
+            z80_byte keyportsblock[16];
+
+            int i;
+            for (i=0;i<16;i++) keyportsblock[i]=svi_keyboard_table[i];
+
+            zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, keyportsblock,ZSF_KEY_PORTS_SVI_STATE, 16);
         }
 
 
