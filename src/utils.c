@@ -7626,10 +7626,7 @@ void util_set_reset_key_continue(enum util_teclas tecla,int pressrelease)
 
 //Si esta zeng online y somos slave, no enviamos teclas locales nuestras
 //ya nos llegara el cambio debido al snapshot y de la recepcion de teclas
-//TODO: habria que hacer esto tambien para otros puertos:
-//puertos sam coupe
-//puertos cpc
-//puertos todas maquinas...
+
 z80_byte antes_puerto_65278=puerto_65278;
 z80_byte antes_puerto_65022=puerto_65022;
 z80_byte antes_puerto_64510=puerto_64510;
@@ -7638,6 +7635,8 @@ z80_byte antes_puerto_61438=puerto_61438;
 z80_byte antes_puerto_57342=puerto_57342;
 z80_byte antes_puerto_49150=puerto_49150;
 z80_byte antes_puerto_32766=puerto_32766;
+
+
 z80_byte antes_puerto_especial_joystick=puerto_especial_joystick;
 
 
@@ -7709,6 +7708,8 @@ z80_byte antes_puerto_especial_joystick=puerto_especial_joystick;
     puerto_57342=antes_puerto_57342;
     puerto_49150=antes_puerto_49150;
     puerto_32766=antes_puerto_32766;
+
+
     puerto_especial_joystick=antes_puerto_especial_joystick;
     //printf("Despues Puerto puerto_61438: %d\n",puerto_61438);
 

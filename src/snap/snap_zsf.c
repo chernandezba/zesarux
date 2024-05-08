@@ -781,6 +781,7 @@ Several variables I need to sync between ZEsarUX instances
 
 Byte fields:
 0: z80_byte joystick_emulation: current joystick type so this is sync on all ZEsarUX ZOC clients
+1: z80_byte puerto_especial_joystick
 
 
 -Block ID 64: ZSF_I8049_AUDIO
@@ -838,7 +839,7 @@ z80_byte puerto_teclado_sam_dff9;
 z80_byte puerto_teclado_sam_bff9;
 z80_byte puerto_teclado_sam_7ff9;
 
--Block ID 70: ZSF_KEY_PORTS_Z88_STATE
+-Block ID 71: ZSF_KEY_PORTS_Z88_STATE
 Tell keyboard ports value in z88
 Byte fields:
 0-7:
@@ -851,11 +852,13 @@ z80_byte blink_kbd_a10;
 z80_byte blink_kbd_a9;
 z80_byte blink_kbd_a8;
 
--Block ID 71: ZSF_KEY_PORTS_MK14_STATE
+-Block ID 72: ZSF_KEY_PORTS_MK14_STATE
 Tell keyboard ports value in mk14
 Byte fields:
 0-7:
 z80_byte mk14_keystatus[8]
+
+
 
 -Como codificar bloques de memoria para Spectrum 128k, zxuno, tbblue, tsconf, etc?
 Con un numero de bloque (0...255) pero... que tamaño de bloque? tbblue usa paginas de 8kb, tsconf usa paginas de 16kb
@@ -2272,6 +2275,7 @@ void load_zsf_zoc_etc(z80_byte *header)
 {
 
     joystick_emulation=header[0];
+    puerto_especial_joystick=header[1];
 
 
 }
@@ -4108,11 +4112,13 @@ void save_zsf_snapshot_file_mem(char *filename,z80_byte *destination_memory,int 
         }
 
 
-        z80_byte zoc_etc_block[1];
+        //Comun a todos que sincronizan desde zeng online
+        z80_byte zoc_etc_block[2];
 
         zoc_etc_block[0]=joystick_emulation;
+        zoc_etc_block[1]=puerto_especial_joystick;
 
-        zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, zoc_etc_block,ZSF_ZOC_ETC, 1);
+        zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, zoc_etc_block,ZSF_ZOC_ETC, 2);
     }
 
 
