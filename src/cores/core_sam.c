@@ -343,66 +343,9 @@ void core_sam_fin_scanline(void)
 
 }
 
-//bucle principal de ejecucion de la cpu de sam coupe
-void cpu_core_loop_sam(void)
+void core_sam_ciclo_fetch(void)
 {
 
-		debug_get_t_stados_parcial_pre();
-
-		timer_check_interrupt();
-
-
-		if (chardetect_detect_char_enabled.v) chardetect_detect_char();
-		if (chardetect_printchar_enabled.v) chardetect_printchar();
-
-
-		//Gestionar autoload
-		gestionar_autoload_sam();
-
-		/*
-		if (tap_load_detect()) {
-        	                //si estamos en pausa, no hacer nada
-                	        if (!tape_pause) {
-					audio_playing.v=0;
-
-					draw_tape_text();
-
-					tap_load();
-					all_interlace_scr_refresca_pantalla();
-
-					//printf ("refresco pantalla\n");
-					//audio_playing.v=1;
-					timer_reset();
-				}
-
-				else {
-					core_spectrum_store_rainbow_current_atributes();
-					//generamos nada. como si fuera un NOP
-
-					contend_read( reg_pc, 4 );
-
-
-				}
-		}
-
-		else  if (tap_save_detect()) {
-	               	        audio_playing.v=0;
-
-				draw_tape_text();
-
-                        	tap_save();
-	                        //audio_playing.v=1;
-				timer_reset();
-               	}
-
-		*/
-
-		if (1==0) {
-		}
-
-
-		else {
-			if (esperando_tiempo_final_t_estados.v==0) {
 
 				//core_spectrum_store_rainbow_current_atributes();
 
@@ -444,15 +387,33 @@ void cpu_core_loop_sam(void)
 				//printf ("t_estados:%d\n",t_estados);
 
 
-				//Soporte interrupciones raster zxuno
-				//Aqui haremos interrupciones raster de sam coupe
-				//if (MACHINE_IS_ZXUNO) zxuno_handle_raster_interrupts();
+
+
+}
+
+//bucle principal de ejecucion de la cpu de sam coupe
+void cpu_core_loop_sam(void)
+{
+
+    debug_get_t_stados_parcial_pre();
+
+    timer_check_interrupt();
+
+
+    if (chardetect_detect_char_enabled.v) chardetect_detect_char();
+    if (chardetect_printchar_enabled.v) chardetect_printchar();
+
+
+    //Gestionar autoload
+    gestionar_autoload_sam();
 
 
 
+    if (esperando_tiempo_final_t_estados.v==0) {
 
-                        }
-                }
+        core_sam_ciclo_fetch();
+
+    }
 
 
     //A mitad de scanline
@@ -477,60 +438,60 @@ void cpu_core_loop_sam(void)
         }
     }
 
-		//ejecutar esto al final de cada una de las scanlines (312)
-		//esto implica que al final del frame de pantalla habremos enviado 312 bytes de sonido
+    //ejecutar esto al final de cada una de las scanlines (312)
+    //esto implica que al final del frame de pantalla habremos enviado 312 bytes de sonido
 
 
-		//A final de cada scanline
-		if ( (t_estados/screen_testados_linea)>t_scanline  ) {
-			core_sam_fin_scanline();
+    //A final de cada scanline
+    if ( (t_estados/screen_testados_linea)>t_scanline  ) {
+        core_sam_fin_scanline();
 
-            //Indicamos que no hemos pasado el medio scanline
-            core_sam_medio_scanline=0;
-		}
+        //Indicamos que no hemos pasado el medio scanline
+        core_sam_medio_scanline=0;
+    }
 
-		if (esperando_tiempo_final_t_estados.v) {
-			timer_pause_waiting_end_frame();
-		}
+    if (esperando_tiempo_final_t_estados.v) {
+        timer_pause_waiting_end_frame();
+    }
 
 
 
 		//Interrupcion de 1/50s. mapa teclas activas y joystick
-                if (interrupcion_fifty_generada.v) {
-			interrupcion_fifty_generada.v=0;
+    if (interrupcion_fifty_generada.v) {
+        interrupcion_fifty_generada.v=0;
 
-                        //y de momento actualizamos tablas de teclado segun tecla leida
-			//printf ("Actualizamos tablas teclado %d ", temp_veces_actualiza_teclas++);
-                       scr_actualiza_tablas_teclado();
+        //y de momento actualizamos tablas de teclado segun tecla leida
+        //printf ("Actualizamos tablas teclado %d ", temp_veces_actualiza_teclas++);
+        scr_actualiza_tablas_teclado();
 
 
-                       //lectura de joystick
-                       realjoystick_main();
+        //lectura de joystick
+        realjoystick_main();
 
-			//printf ("temp conta fifty: %d\n",tempcontafifty++);
-		}
+        //printf ("temp conta fifty: %d\n",tempcontafifty++);
+    }
 
 
 		//Interrupcion de procesador y marca final de frame
-		if (interrupcion_timer_generada.v) {
-			//printf ("Generada interrupcion timer\n");
-                        interrupcion_timer_generada.v=0;
-                        esperando_tiempo_final_t_estados.v=0;
-			interlaced_numero_frame++;
-			//printf ("%d\n",interlaced_numero_frame);
+    if (interrupcion_timer_generada.v) {
+        //printf ("Generada interrupcion timer\n");
+        interrupcion_timer_generada.v=0;
+        esperando_tiempo_final_t_estados.v=0;
+        interlaced_numero_frame++;
+        //printf ("%d\n",interlaced_numero_frame);
 
-					//Para calcular lo que se tarda en ejecutar todo un frame
-					timer_get_elapsed_core_frame_pre();
-                }
-
-
-		//Interrupcion de cpu. gestion im0/1/2. Esto se hace al final de cada frame en spectrum o al cambio de bit6 de R en zx80/81
-		if (interrupcion_maskable_generada.v || interrupcion_non_maskable_generada.v) {
-
-            core_sam_handle_interrupts();
+        //Para calcular lo que se tarda en ejecutar todo un frame
+        timer_get_elapsed_core_frame_pre();
+    }
 
 
-        }
+    //Interrupcion de cpu. gestion im0/1/2. Esto se hace al final de cada frame en spectrum o al cambio de bit6 de R en zx80/81
+    if (interrupcion_maskable_generada.v || interrupcion_non_maskable_generada.v) {
+
+        core_sam_handle_interrupts();
+
+
+    }
 
 	//Fin gestion interrupciones
 
@@ -546,7 +507,4 @@ void cpu_core_loop_sam(void)
     debug_get_t_stados_parcial_post();
 
 }
-
-
-
 
