@@ -157,6 +157,88 @@ void core_sam_handle_interrupts(void)
 
 }
 
+void core_sam_fin_frame_pantalla(void)
+{
+
+
+    //if (rainbow_enabled.v==1) t_scanline_next_fullborder();
+
+    t_scanline=0;
+
+    timer_get_elapsed_core_frame_post();
+
+    //printf ("final scan lines. total: %d\n",screen_scanlines);
+            //printf ("reset no inves\n");
+    set_t_scanline_draw_zero();
+
+
+    //Parche para maquinas que no generan 312 lineas, porque si enviamos menos sonido se escuchara un click al final
+    //Es necesario que cada frame de pantalla contenga 312 bytes de sonido
+    //Igualmente en la rutina de envio_audio se vuelve a comprobar que todo el sonido a enviar
+    //este completo; esto es necesario para Z88
+
+
+    int linea_estados=t_estados/screen_testados_linea;
+
+    while (linea_estados<312) {
+            audio_send_mono_sample(audio_valor_enviar_sonido);
+            linea_estados++;
+    }
+
+
+
+
+    t_estados -=screen_testados_total;
+
+    //Para paperboy, thelosttapesofalbion0 y otros que hacen letras en el border, para que no se desplacen en diagonal
+    //t_estados=0;
+    //->paperboy queda fijo. thelosttapesofalbion0 no se desplaza, sino que tiembla si no forzamos esto
+
+
+    //Final de instrucciones ejecutadas en un frame de pantalla
+    if (iff1.v==1) {
+        interrupcion_maskable_generada.v=1;
+
+    }
+
+
+    cpu_loop_refresca_pantalla();
+
+    vofile_send_frame(rainbow_buffer);
+
+
+    siguiente_frame_pantalla();
+
+
+    if (debug_registers) scr_debug_registers();
+
+    contador_parpadeo--;
+    //printf ("Parpadeo: %d estado: %d\n",contador_parpadeo,estado_parpadeo.v);
+    if (!contador_parpadeo) {
+            contador_parpadeo=16;
+            toggle_flash_state();
+    }
+
+
+    if (!interrupcion_timer_generada.v) {
+        //Llegado a final de frame pero aun no ha llegado interrupcion de timer. Esperemos...
+        //printf ("no demasiado\n");
+        esperando_tiempo_final_t_estados.v=1;
+    }
+
+    else {
+        //Llegado a final de frame y ya ha llegado interrupcion de timer. No esperamos.... Hemos tardado demasiado
+        //printf ("demasiado\n");
+        esperando_tiempo_final_t_estados.v=0;
+    }
+
+    core_end_frame_check_zrcp_zeng_snap.v=1;
+
+
+
+
+}
+
 void core_sam_fin_scanline(void)
 {
 
@@ -252,78 +334,7 @@ void core_sam_fin_scanline(void)
 
     if (t_estados>=screen_testados_total) {
 
-        //if (rainbow_enabled.v==1) t_scanline_next_fullborder();
-
-        t_scanline=0;
-
-        timer_get_elapsed_core_frame_post();
-
-        //printf ("final scan lines. total: %d\n",screen_scanlines);
-                //printf ("reset no inves\n");
-        set_t_scanline_draw_zero();
-
-
-        //Parche para maquinas que no generan 312 lineas, porque si enviamos menos sonido se escuchara un click al final
-        //Es necesario que cada frame de pantalla contenga 312 bytes de sonido
-        //Igualmente en la rutina de envio_audio se vuelve a comprobar que todo el sonido a enviar
-        //este completo; esto es necesario para Z88
-
-
-        int linea_estados=t_estados/screen_testados_linea;
-
-        while (linea_estados<312) {
-                audio_send_mono_sample(audio_valor_enviar_sonido);
-                linea_estados++;
-        }
-
-
-
-
-        t_estados -=screen_testados_total;
-
-        //Para paperboy, thelosttapesofalbion0 y otros que hacen letras en el border, para que no se desplacen en diagonal
-        //t_estados=0;
-        //->paperboy queda fijo. thelosttapesofalbion0 no se desplaza, sino que tiembla si no forzamos esto
-
-
-        //Final de instrucciones ejecutadas en un frame de pantalla
-        if (iff1.v==1) {
-            interrupcion_maskable_generada.v=1;
-
-        }
-
-
-        cpu_loop_refresca_pantalla();
-
-        vofile_send_frame(rainbow_buffer);
-
-
-        siguiente_frame_pantalla();
-
-
-        if (debug_registers) scr_debug_registers();
-
-        contador_parpadeo--;
-        //printf ("Parpadeo: %d estado: %d\n",contador_parpadeo,estado_parpadeo.v);
-        if (!contador_parpadeo) {
-                contador_parpadeo=16;
-                toggle_flash_state();
-        }
-
-
-        if (!interrupcion_timer_generada.v) {
-            //Llegado a final de frame pero aun no ha llegado interrupcion de timer. Esperemos...
-            //printf ("no demasiado\n");
-            esperando_tiempo_final_t_estados.v=1;
-        }
-
-        else {
-            //Llegado a final de frame y ya ha llegado interrupcion de timer. No esperamos.... Hemos tardado demasiado
-            //printf ("demasiado\n");
-            esperando_tiempo_final_t_estados.v=0;
-        }
-
-        core_end_frame_check_zrcp_zeng_snap.v=1;
+        core_sam_fin_frame_pantalla();
 
 
     }
