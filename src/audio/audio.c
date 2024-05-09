@@ -400,6 +400,56 @@ void audio_read_sample_audio_input(void)
     }
 }
 
+void external_audio_source_print_footer(void)
+{
+    if (!audio_can_record_input() || !audio_is_recording_input) return;
+
+
+    //Record audio buffer
+    int tamanyo_buffer_audio,posicion_buffer_audio;
+    //audio_get_buffer_info(&tamanyo_buffer_audio,&posicion_buffer_audio);
+    tamanyo_buffer_audio=audiorecord_input_return_fifo_total_size();
+    posicion_buffer_audio=audiorecord_input_fifo_return_size();
+
+    int perc_audio;
+
+
+    if (tamanyo_buffer_audio==0) {
+        perc_audio=0;
+    }
+
+    else {
+        perc_audio=(posicion_buffer_audio*100)/tamanyo_buffer_audio;
+    }
+
+
+    char texto_buffer[100];
+
+
+    if (audiorecord_last_write_full) {
+                            // 01234567890123456789012345678901
+        sprintf (texto_buffer,"Ext Audio Enabled. Buffer: FULL!");
+
+        //Resetear el aviso de lleno si ha pasado 2 segundos
+        if (contador_segundo_infinito-audiorecord_last_write_full>1000*2) {
+            //printf("Resetear . contador segundo %d last %d\n",contador_segundo_infinito,audiorecord_last_write_full);
+            audiorecord_last_write_full=0;
+        }
+
+    }
+
+    else {
+                            // 01234567890123456789012345678901
+        sprintf (texto_buffer,"Ext Audio Enabled. Buffer: %3d%%",perc_audio);
+    }
+
+	//color inverso
+	menu_putstring_footer(0,2,texto_buffer,WINDOW_FOOTER_PAPER,WINDOW_FOOTER_INK);
+
+
+}
+
+
 //en porcentaje
 int audiovolume=100;
 

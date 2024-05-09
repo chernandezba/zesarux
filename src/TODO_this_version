@@ -742,10 +742,9 @@ y por tanto a nivel de path de indexacion de busqueda, se pierde el ultimo path 
 --Inicio captura de sonido desde fuente externa (para poder cargar de cinta directamente)
 ---
 *SDL1 parece que no permite hacerlo. En windows se resuelve con funciones de windows tal cual
-*pendiente SDL2
-*footer que cambien cuando input source
 
-*coreaudio: segfault al hacer error stop record input.ok ?
+
+
 
 *alsa:
 **poder escoger que tarjeta alsa (tanto input como output). ok input
@@ -874,7 +873,6 @@ O quiza que salte al menu con la linea de opcion seleccionada donde corresponde
 -Incorporar bittransfe como manera de generar snapshot en .tap. Agregar parámetro de estado interrupciones, registro i. Otros registros que falten? R? Problema que está guardando algunos registros en parte alta de la memoria y puede interferir con el stack si no se ha cambiado el CLEAR
 
 
--zeng online agregar a mas maquinas
 
 -comentar desensamblado copion9
 
@@ -889,7 +887,7 @@ spectravideo
 -keyboard help no hace por ejemplo en cpc 664 teclas [ ]
 ok -keyboard help poder liberar teclas pulsadas: quiza con boton derecho en zona que no haya ninguna
 
--carga cinta real: faltaria por sdl2. probar compilar sin pthreads
+-carga cinta real: probar compilar sin pthreads sdl2
 
 
 -Incluir paquete de Haiku OS 64 bit
@@ -904,5 +902,3 @@ ok agregar parametro config y grabado config
 util por ejemplo para leer archivos de licencia,
 aunque eso afecta a todo mensaje genérico que aparezca en pantalla
 O quizá solo hacerlo para determinadas ventanas de algunos menus, por ejemplo el de licencias
-
--zeng online se envia valor puerto joystick en maquinas pcw, etc nuevas?
