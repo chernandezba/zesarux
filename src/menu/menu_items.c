@@ -21495,6 +21495,28 @@ int keyboard_map_table_coords_p2[40*4]={
 };
 
 
+/*
+z80_byte puerto_65278=255; //    db    255            ; V    C    X    Z    Sh    ;0
+z80_byte puerto_65022=255; //    db    255            ; G    F    D    S    A     ;1
+z80_byte puerto_64510=255; //    db              255  ; T    R    E    W    Q     ;2
+z80_byte puerto_63486=255; //    db              255  ; 5    4    3    2    1     ;3
+z80_byte puerto_61438=255; //    db              255  ; 6    7    8    9    0     ;4
+z80_byte puerto_57342=255; //    db              255  ; Y    U    I    O    P     ;5
+z80_byte puerto_49150=255; //    db              255  ; H                J         K      L    Enter ;6
+z80_byte puerto_32766=255; //    db              255  ; B    N    M    Simb Space ;7
+*/
+int keyboard_map_table_coords_zxuno[40*4]={
+6,124,34,148,96,124,116,148,134,124,154,150,176,124,198,150,214,124,236,148,
+76,84,96,112,114,84,132,110,152,84,176,112,192,84,216,110,232,82,254,110,
+62,42,84,70,100,46,124,72,144,44,162,70,184,46,206,70,224,46,246,70,
+44,4,64,28, 84,6,104,30, 122,6,144,30, 164,4,188,28, 202,4,224,26,
+406,2,430,32,366,2,386,30,324,4,346,32,284,4,306,30,244,4,268,28,
+424,46,446,72,386,44,404,70,346,46,366,72,304,42,326,70,262,42,286,70,
+550,46,590,114,394,86,418,112,356,84,380,116,318,84,338,110,274,84,296,108,
+166,162,380,192,6,164,44,190,336,124,358,152,296,124,316,152,256,126,276,150,
+
+};
+
 int keyboard_map_table_coords_tk85[40*4]={
 8,166,52,188, 72,162,104,188, 122,164,156,190, 172,164,204,188, 224,162,254,188,
 46,116,80,138,96,114,128,140,146,112,180,140,196,112,232,140,246,112,282,138,
@@ -21829,6 +21851,15 @@ keyboard_help_double_key keyboard_map_additional_p2[]={
     { 0,0,0,0,NULL,0,NULL,0 }
 };
 
+//Teclas adicionales zxuno
+keyboard_help_double_key keyboard_map_additional_zxuno[]={
+    { 528,4,594,32,   &puerto_65278,1,        &puerto_61438,1 },  //delete
+    { 6,82,46,112,    &puerto_63486,2,        KEY_PORT_VALUE_SHIFT }, //caps lock
+    { 494,126,590,152,  KEY_PORT_VALUE_SHIFT,   NULL, 0},           //caps shift derecha
+    { 546,164,592,194,      KEY_PORT_VALUE_SYMBOL,   NULL, 0 }, //symbol shift derecha
+
+    { 0,0,0,0,NULL,0,NULL,0 }
+};
 
 keyboard_help_double_key keyboard_map_additional_tk95[]={
     { 2,96,60,122,      KEY_PORT_VALUE_SHIFT,   KEY_PORT_VALUE_SYMBOL }, //extend mode
@@ -22112,6 +22143,10 @@ int *keyboard_help_return_map_table(void)
         return keyboard_map_table_coords_p2;
     }
 
+    else if (MACHINE_IS_ZXUNO) {
+        return keyboard_map_table_coords_zxuno;
+    }
+
     else if (MACHINE_IS_PENTAGON) {
         return keyboard_map_table_coords_pentagon;
     }
@@ -22212,6 +22247,10 @@ keyboard_help_double_key *keyboard_help_return_double_keys(void)
 
     else if (MACHINE_IS_SPECTRUM_P2 || MACHINE_IS_SPECTRUM_P2A_P3) {
         return keyboard_map_additional_p2;
+    }
+
+    else if (MACHINE_IS_ZXUNO) {
+        return keyboard_map_additional_zxuno;
     }
 
     else if (MACHINE_IS_TIMEX_TC2048 || MACHINE_IS_TIMEX_TC2068 || MACHINE_IS_TIMEX_TS2068) {
@@ -23232,7 +23271,7 @@ void menu_help_show_keyboard(MENU_ITEM_PARAMETERS)
             if (!menu_help_keyboard_mantener_key_mouse(pulsado_x,pulsado_y)) {
 
                 //Si no se ha pulsado en ninguna tecla, liberar todas
-                printf("Liberar todas teclas pulsadas\n");
+                //printf("Liberar todas teclas pulsadas\n");
                 keyboard_help_reset_teclas_pulsadas();
             }
 
