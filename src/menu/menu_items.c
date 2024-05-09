@@ -21521,6 +21521,28 @@ int keyboard_map_table_coords_zxevo[40*4]={
 
 };
 
+/*
+z80_byte puerto_65278=255; //    db    255            ; V    C    X    Z    Sh    ;0
+z80_byte puerto_65022=255; //    db    255            ; G    F    D    S    A     ;1
+z80_byte puerto_64510=255; //    db              255  ; T    R    E    W    Q     ;2
+z80_byte puerto_63486=255; //    db              255  ; 5    4    3    2    1     ;3
+z80_byte puerto_61438=255; //    db              255  ; 6    7    8    9    0     ;4
+z80_byte puerto_57342=255; //    db              255  ; Y    U    I    O    P     ;5
+z80_byte puerto_49150=255; //    db              255  ; H                J         K      L    Enter ;6
+z80_byte puerto_32766=255; //    db              255  ; B    N    M    Simb Space ;7
+*/
+int keyboard_map_table_coords_chloe[40*4]={
+2,122,40,154,82,122,114,152,118,122,150,152,156,124,186,156,190,124,222,156,
+64,82,94,114,100,82,132,114,136,82,166,114,172,84,204,114,208,84,238,114,
+56,42,86,74,94,42,122,76,128,42,158,74,164,44,192,72,200,44,230,72,
+38,4,70,34,74,2,104,38,110,4,140,36,146,4,176,36,182,4,210,34,
+362,4,392,36,326,4,354,34,290,4,318,34,254,4,284,34,218,4,246,32,
+380,44,408,74,344,44,374,76,308,44,338,76,272,42,304,76,236,44,270,76,
+490,44,534,116,354,84,380,112,318,84,346,116,280,82,312,114,244,82,274,114,
+136,164,354,194,92,164,130,194,298,122,328,154,264,124,290,156,228,124,256,154,
+
+};
+
 int keyboard_map_table_coords_tk85[40*4]={
 8,166,52,188, 72,162,104,188, 122,164,156,190, 172,164,204,188, 224,162,254,188,
 46,116,80,138,96,114,128,140,146,112,180,140,196,112,232,140,246,112,282,138,
@@ -21875,6 +21897,16 @@ keyboard_help_double_key keyboard_map_additional_zxevo[]={
     { 0,0,0,0,NULL,0,NULL,0 }
 };
 
+//Teclas adicionales chloe
+keyboard_help_double_key keyboard_map_additional_chloe[]={
+    { 470,4,534,36,          &puerto_65278,1,        &puerto_61438,1 },  //delete
+    { 4,4,32,36,    &puerto_32766,1,        KEY_PORT_VALUE_SHIFT }, // break
+    { 4,44,48,74,        &puerto_63486,1,        KEY_PORT_VALUE_SHIFT }, //En Chloe, TAB es shift+1.
+    { 2,84,58,114,          &puerto_61438,2,        KEY_PORT_VALUE_SHIFT }, //En Chloe, Control es shift+9
+    { 496,162,534,194,         &puerto_61438,2,        KEY_PORT_VALUE_SHIFT }, //En Chloe, Control es shift+9. Control derecha
+    { 0,0,0,0,NULL,0,NULL,0 }
+};
+
 keyboard_help_double_key keyboard_map_additional_tk95[]={
     { 2,96,60,122,      KEY_PORT_VALUE_SHIFT,   KEY_PORT_VALUE_SYMBOL }, //extend mode
     { 502,96,536,120,   &puerto_65278,1,        &puerto_61438,1 },  //delete
@@ -22165,6 +22197,10 @@ int *keyboard_help_return_map_table(void)
         return keyboard_map_table_coords_zxevo;
     }
 
+    else if (MACHINE_IS_CHLOE) {
+        return keyboard_map_table_coords_chloe;
+    }
+
     else if (MACHINE_IS_PENTAGON) {
         return keyboard_map_table_coords_pentagon;
     }
@@ -22273,6 +22309,10 @@ keyboard_help_double_key *keyboard_help_return_double_keys(void)
 
     else if (MACHINE_IS_ZXEVO) {
         return keyboard_map_additional_zxevo;
+    }
+
+    else if (MACHINE_IS_CHLOE) {
+        return keyboard_map_additional_chloe;
     }
 
     else if (MACHINE_IS_TIMEX_TC2048 || MACHINE_IS_TIMEX_TC2068 || MACHINE_IS_TIMEX_TS2068) {
