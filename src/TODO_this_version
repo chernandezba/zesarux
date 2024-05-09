@@ -744,8 +744,6 @@ y por tanto a nivel de path de indexacion de busqueda, se pierde el ultimo path 
 *SDL1 parece que no permite hacerlo. En windows se resuelve con funciones de windows tal cual
 
 
-
-
 *alsa:
 **poder escoger que tarjeta alsa (tanto input como output). ok input
 **si al capturar obtiene 16 bits, al sumar canales solo hace falta tener en cuenta bytes altos, porque luego ya dividimos/256
