@@ -896,3 +896,7 @@ ok agregar parametro config y grabado config
 util por ejemplo para leer archivos de licencia,
 aunque eso afecta a todo mensaje genérico que aparezca en pantalla
 O quizá solo hacerlo para determinadas ventanas de algunos menus, por ejemplo el de licencias
+
+
+-keyboard help: al pulsar boton derecho solo deberia actuar sobre array de teclas pulsadas
+Y luego al pulsar boton izquierdo o enviar teclas, pulsar las del array

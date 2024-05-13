@@ -21904,6 +21904,12 @@ keyboard_help_double_key keyboard_map_additional_chloe[]={
     { 4,44,48,74,        &puerto_63486,1,        KEY_PORT_VALUE_SHIFT }, //En Chloe, TAB es shift+1.
     { 2,84,58,114,          &puerto_61438,2,        KEY_PORT_VALUE_SHIFT }, //En Chloe, Control es shift+9
     { 496,162,534,194,         &puerto_61438,2,        KEY_PORT_VALUE_SHIFT }, //En Chloe, Control es shift+9. Control derecha
+    { 362,164,400,194,     KEY_PORT_VALUE_SYMBOL,  NULL, 0}, //Alt derecha. alt es symbol?
+    { 442,124,536,156,      KEY_PORT_VALUE_SHIFT,   NULL, 0}, //caps shift derecha
+    { 48,162,88,196,     KEY_PORT_VALUE_SYMBOL,  NULL, 0}, //winkey izquierda
+    { 408,164,444,194,     KEY_PORT_VALUE_SYMBOL,  NULL, 0}, //winkey derecha
+    { 4,164,42,194,     &puerto_63486,2,        KEY_PORT_VALUE_SHIFT }, //caps lock
+
     { 0,0,0,0,NULL,0,NULL,0 }
 };
 
@@ -23098,11 +23104,14 @@ void menu_help_keyboard_generate_key_mouse(int pulsado_x,int pulsado_y)
 
         //if (puerto2!=NULL) *puerto2 |=mascara2;
 
-        reset_keyboard_ports();
+        //reset_keyboard_ports();
 
         zxvision_keys_event_not_send_to_machine=1;
 
     }
+
+    //Liberar tecla pulsada directamente con boton y tambien las que estan mantenidas
+    reset_keyboard_ports();
 }
 
 //Retorna 1 si se ha apuntado a alguna tecla
@@ -23270,7 +23279,9 @@ void menu_help_show_keyboard(MENU_ITEM_PARAMETERS)
         //porque habran todas las otras teclas que se han activado con el boton derecho y que no se liberan
         //No seria facil saber que tecla (o teclas) ha liberado el usuario si hay todas las otras que se activaron con boton derecho
         if ((tecla || todos_puertos_teclado_acumulado!=255) && !mouse_left && !mouse_right) {
-            printf("generar tecla %d\n",tecla);
+            printf("generar tecla en condicion de tecla pulsada. tecla=%d mouse_left: %d mouse_right: %d todos_puertos_teclado_acumulado=%d\n",
+                tecla,mouse_left,mouse_right,todos_puertos_teclado_acumulado);
+            printf("puertos en generar tecla. puerto_65278: %d puerto_32766: %d\n",puerto_65278,puerto_32766);
             z80_byte acumulado;
             int salir=0;
             menu_help_keyboard_overlay_force_draw=1;
