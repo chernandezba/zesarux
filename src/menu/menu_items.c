@@ -21606,6 +21606,20 @@ int keyboard_map_table_coords_msx[8*9*4]={
 
 };
 
+int keyboard_map_table_coords_svi_318[8*11*4]={
+292,30,312,44,38,30,58,44, 68,30,88,44,96,30,116,44,124,30,146,44,154,30,174,42,180,30,202,44,208,30,230,44,
+238,30,256,44,264,30,282,44,314,86,332,98,340,86,360,98,274,112,292,126,346,28,366,44,300,112,318,126,326,112,346,124,
+318,30,338,44,62,86,80,100,190,112,208,126,134,114,152,128,120,86,140,100,112,58,134,72,148,84,168,100,176,86,194,98,
+204,86,222,98,252,58,270,70,230,84,250,100,258,86,276,98,284,84,304,100,244,112,264,126,218,114,236,126,280,58,298,70,
+304,56,326,70,54,58,74,72,140,60,160,72,92,88,110,100,168,58,186,72,224,56,244,72,164,116,182,124,82,58,104,72,
+104,114,124,126, 196,58,214,70, 78,116,98,128, 332,56,352,70, 388,58,408,72, 360,56,378,72, 374,30,408,42, 462,58,488,82,
+32,114,68,128,34,88,54,100,76,140,94,156,106,142,122,156,10,30,30,44,282,4,312,16,368,84,408,96,440,82,464,100,
+10,4,40,14,56,2,90,16,110,4,140,14,160,4,188,14,206,2,232,14,332,4,352,16,360,2,380,16,462,104,484,124,
+134,140,290,154,10,58,46,74,388,2,408,16,6,88,26,100,426,30,444,44, 9999,9999,9999,9999, 9999,9999,9999,9999, 488,84,506,106,
+9999,9999,9999,9999, 9999,9999,9999,9999, 9999,9999,9999,9999, 9999,9999,9999,9999, 9999,9999,9999,9999, 9999,9999,9999,9999, 9999,9999,9999,9999, 9999,9999,9999,9999,
+9999,9999,9999,9999, 9999,9999,9999,9999, 9999,9999,9999,9999, 9999,9999,9999,9999, 9999,9999,9999,9999, 9999,9999,9999,9999, 9999,9999,9999,9999, 9999,9999,9999,9999,
+
+};
 
 /*
 z80_byte puerto_65278=255; //    db    255            ; V    C    X    Z    Sh    ;0
@@ -21954,6 +21968,11 @@ keyboard_help_double_key keyboard_map_additional_msx[]={
     { 0,0,0,0,NULL,0,NULL,0 }
 };
 
+keyboard_help_double_key keyboard_map_additional_svi_318[]={
+    { 354,112,386,126, &svi_keyboard_table[6], 1,   NULL,0 }, //shift derecho
+    { 0,0,0,0,NULL,0,NULL,0 }
+};
+
 keyboard_help_double_key keyboard_map_additional_timex_computer[]={
     { 480,134,526,154,      KEY_PORT_VALUE_SHIFT,   NULL, 0}, //caps shift derecha
 
@@ -22259,6 +22278,10 @@ int *keyboard_help_return_map_table(void)
         return keyboard_map_table_coords_msx;
     }
 
+    else if (MACHINE_IS_SVI_318) {
+        return keyboard_map_table_coords_svi_318;
+    }
+
     else if (MACHINE_IS_SAM) {
         return keyboard_map_table_coords_sam;
     }
@@ -22345,6 +22368,10 @@ keyboard_help_double_key *keyboard_help_return_double_keys(void)
         return keyboard_map_additional_msx;
     }
 
+    else if (MACHINE_IS_SVI_318) {
+        return keyboard_map_additional_svi_318;
+    }
+
     else if (MACHINE_IS_SAM) {
         return keyboard_map_additional_sam;
     }
@@ -22398,6 +22425,12 @@ z80_byte *keyboard_map_ports_table_msx[9]={
     &msx_keyboard_table[0],&msx_keyboard_table[1],&msx_keyboard_table[2],&msx_keyboard_table[3],
     &msx_keyboard_table[4],&msx_keyboard_table[5],&msx_keyboard_table[6],&msx_keyboard_table[7],
     &msx_keyboard_table[8]
+};
+
+z80_byte *keyboard_map_ports_table_svi[11]={
+    &svi_keyboard_table[0],&svi_keyboard_table[1],&svi_keyboard_table[2],&svi_keyboard_table[3],
+    &svi_keyboard_table[4],&svi_keyboard_table[5],&svi_keyboard_table[6],&svi_keyboard_table[7],
+    &svi_keyboard_table[8], &svi_keyboard_table[9], &svi_keyboard_table[10]
 };
 
 z80_byte *keyboard_map_ports_table_cpc[10]={
@@ -22739,6 +22772,12 @@ z80_byte **get_keyboard_map_ports_table(int *total_columnas,int *total_filas)
         *total_columnas=8;
         *total_filas=9;
         return keyboard_map_ports_table_msx;
+    }
+
+    if (MACHINE_IS_SVI) {
+        *total_columnas=8;
+        *total_filas=11;
+        return keyboard_map_ports_table_svi;
     }
 
     if (MACHINE_IS_CPC) {
