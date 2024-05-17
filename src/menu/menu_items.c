@@ -21521,16 +21521,7 @@ int keyboard_map_table_coords_zxevo[40*4]={
 
 };
 
-/*
-z80_byte puerto_65278=255; //    db    255            ; V    C    X    Z    Sh    ;0
-z80_byte puerto_65022=255; //    db    255            ; G    F    D    S    A     ;1
-z80_byte puerto_64510=255; //    db              255  ; T    R    E    W    Q     ;2
-z80_byte puerto_63486=255; //    db              255  ; 5    4    3    2    1     ;3
-z80_byte puerto_61438=255; //    db              255  ; 6    7    8    9    0     ;4
-z80_byte puerto_57342=255; //    db              255  ; Y    U    I    O    P     ;5
-z80_byte puerto_49150=255; //    db              255  ; H                J         K      L    Enter ;6
-z80_byte puerto_32766=255; //    db              255  ; B    N    M    Simb Space ;7
-*/
+
 int keyboard_map_table_coords_chloe[40*4]={
 2,122,40,154,82,122,114,152,118,122,150,152,156,124,186,156,190,124,222,156,
 64,82,94,114,100,82,132,114,136,82,166,114,172,84,204,114,208,84,238,114,
@@ -21576,6 +21567,27 @@ int keyboard_map_table_coords_tk95[40*4]={
 386,62,412,82,352,60,378,82,316,62,342,84,278,62,304,86,244,64,268,84,
 490,60,536,80,364,98,386,120,326,98,350,122,290,98,314,118,254,98,278,118,
 106,168,420,188,450,132,536,154,306,134,330,154,272,134,294,156,238,136,258,156,
+};
+
+/*
+z80_byte puerto_65278=255; //    db    255            ; V    C    X    Z    Sh    ;0
+z80_byte puerto_65022=255; //    db    255            ; G    F    D    S    A     ;1
+z80_byte puerto_64510=255; //    db              255  ; T    R    E    W    Q     ;2
+z80_byte puerto_63486=255; //    db              255  ; 5    4    3    2    1     ;3
+z80_byte puerto_61438=255; //    db              255  ; 6    7    8    9    0     ;4
+z80_byte puerto_57342=255; //    db              255  ; Y    U    I    O    P     ;5
+z80_byte puerto_49150=255; //    db              255  ; H                J         K      L    Enter ;6
+z80_byte puerto_32766=255; //    db              255  ; B    N    M    Simb Space ;7
+*/
+int keyboard_map_table_coords_next[40*4]={
+    2,124,88,161, 143,124,181,159, 183,124,220,161, 224,124,260,159, 264,123,300,161,
+    109,83,149,119,152,83,189,119,193,84,230,120,234,83,270,120,274,84,310,120,
+    101,42,136,79,142,42,178,79,182,42,220,79,226,43,260,78,264,43,299,78,
+    80,2,115,38,122,3,156,38,162,3,197,36,203,2,240,39,243,2,281,38,
+    445,4,480,39,406,3,442,38,365,2,401,38,324,2,361,39,285,2,320,36,
+    465,42,500,80,426,43,461,79,385,42,422,80,345,42,382,79,304,43,341,78,
+    475,84,538,118,436,84,472,119,396,83,432,119,356,84,391,119,314,84,353,119,
+    203,164,381,198,2,165,38,198,384,124,421,159,344,125,381,159,304,124,339,159,
 };
 
 int keyboard_map_table_coords_sms[5*4]={
@@ -21964,6 +21976,29 @@ keyboard_help_double_key keyboard_map_additional_tk95[]={
     { 0,0,0,0,NULL,0,NULL,0 }
 };
 
+keyboard_help_double_key keyboard_map_additional_next[]={
+    { 504,163,539,198,     KEY_PORT_VALUE_SYMBOL,  NULL, 0},  //symbol derecha
+    { 466,123,538,159,      KEY_PORT_VALUE_SHIFT,   NULL, 0}, //caps shift derecha
+    { 503,43,538,120,       &puerto_49150,1,   NULL, 0}, //trozo del enter parte de arriba
+    { 91,124,137,161,        KEY_PORT_VALUE_SHIFT,   KEY_PORT_VALUE_SYMBOL }, //extend mode
+    { 484,3,538,41,          &puerto_65278,1,        &puerto_61438,1 },  //delete
+    { 2,43,46,79,            &puerto_63486,4,        KEY_PORT_VALUE_SHIFT }, //true video
+    { 51,42,96,80,           &puerto_63486,8,        KEY_PORT_VALUE_SHIFT }, //inverse video
+    { 61,83,106,118,          &puerto_61438,2,        KEY_PORT_VALUE_SHIFT },//graph
+    { 40,2,76,38,        &puerto_63486,1,        KEY_PORT_VALUE_SHIFT },//edit
+    { 2,84,56,118,       &puerto_63486,2,        KEY_PORT_VALUE_SHIFT }, //caps lock
+    { 42,165,77,198,        &puerto_57342,2,        KEY_PORT_VALUE_SYMBOL }, // ;
+    { 81,165,118,198,       &puerto_57342,1,        KEY_PORT_VALUE_SYMBOL }, // "
+    { 386,165,422,198,      &puerto_63486,16,       KEY_PORT_VALUE_SHIFT }, // flecha izq
+    { 466,164,501,198,      &puerto_61438,4,        KEY_PORT_VALUE_SHIFT }, // flecha der
+    { 425,123,463,159,      &puerto_61438,8,        KEY_PORT_VALUE_SHIFT }, // flecha arr
+    { 425,165,462,198,      &puerto_61438,16,       KEY_PORT_VALUE_SHIFT }, // flecha abaj
+    { 121,165,159,198,      &puerto_32766,8,        KEY_PORT_VALUE_SYMBOL }, // ,
+    { 163,164,201,198,      &puerto_32766,4,        KEY_PORT_VALUE_SYMBOL }, // .
+    { 2,2,37,39,          &puerto_32766,1,        KEY_PORT_VALUE_SHIFT }, // break
+
+    { 0,0,0,0,NULL,0,NULL,0 }
+};
 
 keyboard_help_double_key keyboard_map_additional_sms[]={
     { 164,114,188,136,      &puerto_65278,4,   NULL,0 }, //segundo boton=tecla X
@@ -22236,6 +22271,10 @@ int *keyboard_help_return_map_table(void)
         return keyboard_map_table_coords_p2;
     }
 
+    else if (MACHINE_IS_TBBLUE) {
+        return keyboard_map_table_coords_next;
+    }
+
     else if (MACHINE_IS_ZXUNO) {
         return keyboard_map_table_coords_zxuno;
     }
@@ -22352,6 +22391,10 @@ keyboard_help_double_key *keyboard_help_return_double_keys(void)
 
     else if (MACHINE_IS_MICRODIGITAL_TK95 || MACHINE_IS_MICRODIGITAL_TK95_SPA) {
         return keyboard_map_additional_tk95;
+    }
+
+    else if (MACHINE_IS_TBBLUE) {
+        return keyboard_map_additional_next;
     }
 
     else if (MACHINE_IS_SPECTRUM_P2 || MACHINE_IS_SPECTRUM_P2A_P3) {
