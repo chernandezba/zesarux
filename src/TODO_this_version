@@ -86,7 +86,7 @@ este parametro. Por ejemplo "reset cpu" (y un dialogo de confirmacion yes/no no 
 --- Fin Documentar ---
 
 
--Incorporar menú de juegos david más visible en esta edición. Quizá en menú In Memoriam?
+-Incorporar menú de juegos David más visible en esta edición. Quizá en menú In Memoriam?
 
 -soportar snapshots .nex con cabecera "NEXT" como exploding fist
 
@@ -98,7 +98,7 @@ este parametro. Por ejemplo "reset cpu" (y un dialogo de confirmacion yes/no no 
 -keyboard help:
 chloe. completar teclas extendidas. ver que hacer con combinaciones de shift...
 
--keyboard help no hace por ejemplo en cpc 664 teclas [ ]
+-keyboard help no hace por ejemplo en cpc 664 teclas [ ] pulsando esas teclas en el teclado fisico
 
 -keyboard help: con ventana abierta, pulsar tecla con raton y pulsar tecla en teclado, no va
 
