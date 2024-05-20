@@ -6,37 +6,27 @@ Para esta version:
 -------------
 
 
-
 -ZENG soporte para QL. ok aunque no envia teclas extendidas
 -ZENG para msx se leen los cursores en destino
 
-
 -kempston mouse en cursor draw en menu abierto lee en apariencia aleatoriamente
-
 
 -snapshot ZSF de nextdows, no guarda la parte inferior de pantalla aparentemente
 
-
--text adventure map: opcion mostrar descripciones. localidad 14 por ejemplo se mezcla??
-
-
+-text adventure map: opcion mostrar descripciones. localidad 14 por ejemplo se mezcla. en que juego??
 
 -Linux: al hacer alt-tab para ir a otra ventana, al volver con raton por ejemplo, el alt "sigue pulsado" en ZEsarUX
-
 
 
 -al conmutar de ventana de ZEsarUX, en Mac, a veces se congela la aplicación. por que? tanto pasa con menu abierto como cerrado.
 Creo que tiene que ver con driver ao null
 
-
 ---Fin Errores---
-
 
 
 -------------
 ---Mejoras---
 -------------
-
 
 
 -custom rom
@@ -45,14 +35,9 @@ find_sharedfile(CUSTOM_MACHINE_2E_MMC_ROM_FILE,custom_romfile);
 #define CUSTOM_MACHINE_2E_MMC_ROM_FILE "alternaterom_plus3e_mmcen3eE.rom"
 
 
-
-
 - ajustar memory zones para zx81: rom deberia ser 8kb. revisar tambien zx80
 
-
 -Teclado en pantalla en rpi borra el input de debajo
-
-
 
 -ahora menus no tabulados ya no tienen boton minimizar. Hay alguna ventana, que no sea realmente un menu,
 y que tenga sentido boton de minimizar?
@@ -61,17 +46,9 @@ Yo entenderia que los botones de minimizar son solo para aplicaciones que pueden
 y por tanto, incluso los cuadros de dialogo (ayuda-changelog por ejemplo) - que no son menu_dibuja_menu -  ni deberian tenerlo
 Por tanto , probablemente, cualquier ventana que use funcion de menu_dibuja_menu (excluyendo tabulados) no deberian poderse minimizar.
 
-
-
-
----Fin Mejoras---
-
-
-
 -First aid de advanced menu items: que diga que hay settings que están ocultos por defecto
 
--Quizá en Mac se congela a veces con driver audio null?
-
+---Fin Mejoras---
 
 
 -Botón derecho botones acciones:
@@ -79,11 +56,9 @@ Por tanto , probablemente, cualquier ventana que use funcion de menu_dibuja_menu
 -Y en dispositivos? Quizá settings de ese dispositivo?
 
 
-
-
 -Si se crea ventana de alto negativo, acaba haciendo panic al asignar memoria. Quizá controlar esto?
 
-
+--- Documentar ---
 
 -Documentar funciones de menu:
 
@@ -95,22 +70,7 @@ menu_dibuja_menu_one_time: para opciones de menu en que se pulsa enter o esc y s
 y por tanto a nivel de path de indexacion de busqueda, se pierde el ultimo path de submenu. Ejemplo de esto: menu_simple_ten_choices
 
 
-
-
-
 -Documentar cómo van los archivos txt de update del server
-
-
-
-
-
--Incorporar menú de juegos david más visible en esta edición. Quizá en menú In Memoriam?
-
-
--soportar snapshots .nex con cabecera "NEXT" como exploding fist
-
-
--revisar si hay mas items de menu que necesiten "..." porque abren ventanas
 
 -documentar items de menus:
 * si tiene submenus, agregarle menu_add_item_menu_tiene_submenu
@@ -119,27 +79,22 @@ este parametro. Por ejemplo "reset cpu" (y un dialogo de confirmacion yes/no no 
 * si disparar la accion, se cerraran todos los menus, agregarle menu_add_item_menu_se_cerrara
 * si solo visible con items avanzados, agregarle menu_add_item_menu_es_avanzado
 
+-comentar desensamblado copion9
 
+-diagrama de como funciona zeng online
+
+--- Fin Documentar ---
+
+
+-Incorporar menú de juegos david más visible en esta edición. Quizá en menú In Memoriam?
+
+-soportar snapshots .nex con cabecera "NEXT" como exploding fist
+
+-revisar si hay mas items de menu que necesiten "..." porque abren ventanas
 
 -keyboard help
 -pulsar , o . en ZX81 con ventana abierta, deja apretada la N o M
 -con los cambios de lectura tecla ahora no deja mantener shift y symbol (con teclado) mas una tecla (clicando con raton)
-
-
--dockerfiles rutas de carpetas al copiar codigo fuente y compilar. Pendiente Dockerfile.pushimage
-O meto todo (*) o indico carpetas solo necesarias
-
-
--opcion para minimizar ventanas a la parte baja de la ventana (o comportamiento como ahora, las minimiza donde estaban)
-
-
-
--Incorporar bittransfe como manera de generar snapshot en .tap. Agregar parámetro de estado interrupciones, registro i. Otros registros que falten? R? Problema que está guardando algunos registros en parte alta de la memoria y puede interferir con el stack si no se ha cambiado el CLEAR
-
-
-
--comentar desensamblado copion9
-
 -keyboard help:
 chloe. completar teclas extendidas. ver que hacer con combinaciones de shift...
 
@@ -147,20 +102,12 @@ chloe. completar teclas extendidas. ver que hacer con combinaciones de shift...
 
 -keyboard help: con ventana abierta, pulsar tecla con raton y pulsar tecla en teclado, no va
 
+-dockerfiles rutas de carpetas al copiar codigo fuente y compilar. Pendiente Dockerfile.pushimage
+O meto todo (*) o indico carpetas solo necesarias
 
--carga cinta real: probar compilar sin pthreads sdl2
+
+-Incorporar bittransfe como manera de generar snapshot en .tap. Agregar parámetro de estado interrupciones, registro i. Otros registros que falten? R? Problema que está guardando algunos registros en parte alta de la memoria y puede interferir con el stack si no se ha cambiado el CLEAR
+
 
 -Incluir paquete de Haiku OS 64 bit
 
-
--quiza recordar ultimo ancho de ventana en void zxvision_generic_message_tooltip(,
-util por ejemplo para leer archivos de licencia,
-aunque eso afecta a todo mensaje genérico que aparezca en pantalla
-O quizá solo hacerlo para determinadas ventanas de algunos menus, por ejemplo el de licencias
-
-
--diagrama de como funciona zeng online
-
-Soportar uft-8 en el footer, que sirva para texto footer normal pero tambien con opciones de --programsettingsinfo de archivos .config.
-Quitar el parche para soportar la eñe en dicha opcion
-Cuidado que  en la consola si hay verbose debug, se muestra caracter extraño para la ñ

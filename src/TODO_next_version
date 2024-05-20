@@ -287,6 +287,15 @@ https://trastero.speccy.org/cosas/FLeon/Fleon.htm
 
 -al insertar cintas parece que no se cierra menu, y antes creo que si que se hacia
 
+-quiza recordar ultimo ancho de ventana en void zxvision_generic_message_tooltip(,
+util por ejemplo para leer archivos de licencia,
+aunque eso afecta a todo mensaje genérico que aparezca en pantalla
+O quizá solo hacerlo para determinadas ventanas de algunos menus, por ejemplo el de licencias
+
+Soportar uft-8 en el footer, que sirva para texto footer normal pero tambien con opciones de --programsettingsinfo de archivos .config.
+Quitar el parche para soportar la eñe en dicha opcion
+Cuidado que  en la consola si hay verbose debug, se muestra caracter extraño para la ñ
+
 ---Fin Mejoras---
 
 

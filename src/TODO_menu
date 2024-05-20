@@ -146,6 +146,8 @@ Una de ellas es el "About" pero ya esta usando dirty_user_must_draw_contents
 
 -hexadecimal editor deberia refrescar continuamente al estar dentro de la ventana?
 
+-opcion para minimizar ventanas a la parte baja de la ventana (o comportamiento como ahora, las minimiza donde estaban)
+
 
 -quiza otras acciones sobre ventana que hagan cambiar el color del marco en determinados eventos al mover el raton? Ejemplo:
 -mostrar titulo ventana entero al pasar raton sobre zona titulo
