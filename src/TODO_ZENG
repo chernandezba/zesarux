@@ -13,10 +13,10 @@ Quizá sigpipe se puede gestionar diferente para cada thread?
 *funciones de envio snapshot, teclas y mensajes, deberian ver si reciben remote prompt? al llamar a zsock_read_all_until_command
 
 
-Ampliar buffer de recepción y el de copia. Y asignarlos por malloc 
+Ampliar buffer de recepción y el de copia. Y asignarlos por malloc
 
 *parar thread zeng y cerrar socket zeng al salir emulador
-*asegurarse que cuando conecte zeng contra remoto al principio, retorna el prompt esperado. Ya lee version pero quiza 
+*asegurarse que cuando conecte zeng contra remoto al principio, retorna el prompt esperado. Ya lee version pero quiza
 habria que hacer que leyera el primer prompt correcto
 
 
@@ -36,15 +36,297 @@ En ambos entornos, mi imac Local, actuando como slave
 *ping pong: algo de desfase en SP pero se puede jugar
 
 
-* ZRCP: habría que protegerlo con user y password, por si alguien abre ese puerto en remoto en el router 
+* ZRCP: habría que protegerlo con user y password, por si alguien abre ese puerto en remoto en el router
 *que pregunte confirmacion en destino si quiere aceptar, mostrando la ip de origen
 *asegurarse que el nodo master, el remoto no sea master. detectar si no hay ningun master, o si los dos son master? como?
 
 -ZENG en CPC: no soporta teclas como [] etc
 -ZENG para el resto de maquinas y cores. Va ligado a poder generar snapshot ZSF
 
--Probar ZENG con aventura conversacional y speech a ver si se corta el speech o no 
--Mensajes enviados entre usuarios por ZENG que vayan a speech también 
+-Probar ZENG con aventura conversacional y speech a ver si se corta el speech o no
+-Mensajes enviados entre usuarios por ZENG que vayan a speech también
 
 -Info ZENG en FAQ: ya está en ayuda. Quizá extender mas?
 
+
+
+---- ZENG ONLINE ----
+
+
+
+-problema con zeng-online y envio de eventos:
+*del master a los slaves hay que enviar eventos, si no enviasemos eventos, si el tiempo de snapshot es algo lento (por ejemplo medio minuto)
+veremos cosas como que jugando al chase hq, el coche acelera y decelera continuamente
+Quiza para solventar eso se podria enviar un snapshot que contenga el valor de los puertos de teclado y/o joystick kempston
+problema: que habria que implementar eso de los puertos en todas las maquinas que se quiera snapshot...
+Igualmente los slaves tienen que poder seguir enviando eventos
+Alternativa: que funcione bien envio de eventos de master a slaves, y de slaves al master. pero eso llevaria el problema
+de que un slave enviaria su evento, y luego al leerlo le llegaria ese mismo, con lo que se aplicaria dos veces... aunque no es un gran problema,
+pero es un gasto de ancho de banda....
+
+
+ok-Quitar bloqueos de comandos simultáneos ZRCP cuando son Zeng online
+bueno lo que hace es que no hay bloqueos de ningun comando ZRCP cuando esta zeng online habilitado
+Esto NO es lo ideal!!
+
+Activar bloqueo de un semáforo al crear una habitación , para evitar crear la misma desde dos sitios. O el semaforo es tal cual la variable que dice que esta creado. lanzar un z_atomic_test_and_set, si devuelve 1 , es que estaba creada ya antes
+
+
+Envío y lectura de eventos.
+-array circular
+
+Envío de eventos
+Se envía al array de la room, se agrega al array y si llega al final va al principio
+
+Lectura de eventos
+-cliente lee continuamente (tanto máster como slave)
+-el server en la conexión ZRCP en pausa de 20ms. Si hay eventos en el array (posicion lectura no es igual a la de escritura), enviarlos todos. Y volver a dormir 20ms
+
+De esta manera una instancia recibirá un evento propio que haya enviado, aunque no tiene porque ser un problema. O si? Porque recibirá una Tecla / liberación de Tecla suya con retraso. Pero como viene en orden puede ser un problema?
+Quizá se puede enviar con un id único de cliente y al leer evento diga de que cliente es. Y si es el suyo mismo, pues ignorarlo. Como asignar ese id? Pues cuando se una a la habitación, se le da un id y es el que tiene que usar al enviar eventos
+El id también podría ser el uuid que todos ZEsarUX tienen, en teoría únicos. Así no hay que obtenerlo del servidor
+Ese uuid siempre está? Aunque no se guarde configuración y/o no se envíen estadísticas? Pues debería estar siempre. Si no se guarda en config, que se genere de nuevo cada vez
+
+
+
+-para juego en red, el master siempre tiene ventaja, pues el no recibe snapshots y su instancia siempre está sincronizada
+Por tanto, para que no haya desventaja al jugar dos personas, lo ideal es que hubiera un master, que no participase,
+y luego dos slaves que fueran los que estuvieran compitiendo
+
+-quiza las veces que se queda congelado el emulador cuando no esta en el foco, es cuando se usa driver audio null
+
+
+
+Toda esta parte cliente de "backend" estara contenida en zeng_online_client.c
+La parte de menus , el "frontend" estara contenida en menu_zeng_online.c
+
+
+
+ok-Get snapshot id para saber si hay uno diferente al último recibido
+Da igual que cuando lo consultemos y cuando hagamos un get snapshot haya cambiado el id, porque si lo pedimos es porque sabremos que es uno distinto al que tenemos y entonces al obtener puede ser que entre ese o otro posterior, ya nos vale
+Pausas entre get id y get snap , cuando no hay uno nuevo, muy cortas, para que nos entre lo antes posible.
+
+-comando para denegar mas join en una room. solo para creator
+-comando para bajar numero de max players en una room. solo para creator
+
+ok -el envio de keys y snapshot deberia hacerse al mismo momento desde el mismo thread
+ok -la recepcion de keys y snapshot deberia hacerse al mismo momento desde el mismo thread
+-eliminar todas funciones variables etc de cuando se creaban desde join/create threads indpendientes
+
+
+
+
+-Para cada maquina que queramos que soporte ZENG ONLINE
+Agregar puertos a ZSF_KEY_PORTS_SPECTRUM_STATE en snap_zsf.c. quiza un tag nuevo para tener retrocompatibilidad
+en util_set_reset_key_continue, agregar antes_puerto_ y restaurar valor para cada maquina que se quiera
+
+Ver ejemplos en docs/zeng_online_add_core.txt.
+
+El siguiente ejemplo fue de agregar el puerto joystick:
+
+diff --git a/src/snap_zsf.c b/src/snap_zsf.c
+index db91792..2e33eab 100644
+--- a/src/snap_zsf.c
++++ b/src/snap_zsf.c
+@@ -769,6 +769,7 @@ Byte fields:
+ 5: z80_byte puerto_57342
+ 6: z80_byte puerto_49150
+ 7: z80_byte puerto_32766
++8: z80_byte joystick_port
+
+ -Como codificar bloques de memoria para Spectrum 128k, zxuno, tbblue, tsconf, etc?
+ Con un numero de bloque (0...255) pero... que tamaño de bloque? tbblue usa paginas de 8kb, tsconf usa paginas de 16kb
+@@ -2042,6 +2043,7 @@ if (menu_abierto) return;
+     puerto_57342=header[5];
+     puerto_49150=header[6];
+     puerto_32766=header[7];
++    puerto_especial_joystick=header[8];
+
+ }
+
+@@ -3668,7 +3670,7 @@ void save_zsf_snapshot_file_mem(char *filename,z80_byte *destination_memory,int
+     //-Block ID 62: ZSF_KEY_PORTS_SPECTRUM_STATE
+     if (zeng_online_connected.v && zeng_online_i_am_master.v && !menu_abierto) {
+
+-        z80_byte keyportsblock[8];
++        z80_byte keyportsblock[9];
+
+         keyportsblock[0]=puerto_65278;
+         keyportsblock[1]=puerto_65022;
+@@ -3678,8 +3680,9 @@ void save_zsf_snapshot_file_mem(char *filename,z80_byte *destination_memory,int
+         keyportsblock[5]=puerto_57342;
+         keyportsblock[6]=puerto_49150;
+         keyportsblock[7]=puerto_32766;
++        keyportsblock[8]=puerto_especial_joystick;
+
+-        zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, keyportsblock,ZSF_KEY_PORTS_SPECTRUM_STATE, 8);
++        zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, keyportsblock,ZSF_KEY_PORTS_SPECTRUM_STATE, 9);
+
+     }
+
+diff --git a/src/utils.c b/src/utils.c
+index 9cb0937..80d1a4c 100644
+--- a/src/utils.c
++++ b/src/utils.c
+@@ -7504,7 +7504,6 @@ void util_set_reset_key_continue(enum util_teclas tecla,int pressrelease)
+ //Si esta zeng online y somos slave, no enviamos teclas locales nuestras
+ //ya nos llegara el cambio debido al snapshot y de la recepcion de teclas
+ //TODO: habria que hacer esto tambien para otros puertos:
+-//puerto joystick / kempston etc
+ //puertos sam coupe
+ //puertos cpc
+ //puertos todas maquinas...
+@@ -7516,6 +7515,7 @@ z80_byte antes_puerto_61438=puerto_61438;
+ z80_byte antes_puerto_57342=puerto_57342;
+ z80_byte antes_puerto_49150=puerto_49150;
+ z80_byte antes_puerto_32766=puerto_32766;
++z80_byte antes_puerto_especial_joystick=puerto_especial_joystick;
+
+
+   util_set_reset_key_continue_after_zeng(tecla,pressrelease);
+@@ -7531,6 +7531,7 @@ z80_byte antes_puerto_32766=puerto_32766;
+     puerto_57342=antes_puerto_57342;
+     puerto_49150=antes_puerto_49150;
+     puerto_32766=antes_puerto_32766;
++    puerto_especial_joystick=antes_puerto_especial_joystick;
+     //printf("Despues Puerto puerto_61438: %d\n",puerto_61438);
+
+     //zoc_decir_pulsada_alguna_tecla_local();
+
+
+----
+
+-consume un 5% aprox de cpu por cada usuario zeng online en mi server
+
+
+
+
+
+ok-Gestión autorizaciones para join
+-cliente intenta join a server.
+ok - Si es el máster join, enviará creator password y este no necesita autorizar
+ok-ese join se queda en espera de respuesta. Su petición va a una fifo, con un id y nickname (o un array circular mejor)
+ok-desde el máster, cada segundo se invoca un comando para ver si hay autorizaciones pendientes. Si hay alguna, se enviara otro comando que retorna id de autorización y nickname, se retorna una linea cada vez en cada peticion del comando, mostrando la mas antigua siempre.
+Si hay alguna pendiente, se abre menú y se pide autorizar
+-por cada una, se muestra nick. Hay que decir si es solo visor o también permite enviar teclas. Y si se autoriza claro
+Se envía un comando con el resultado de cada autorización: id, permisos, y si autoriza o no
+ok-el id es necesario? dado que siempre responderemos sobre la mas antigua, en principio sabemos su id. a no ser que el array haya dado la vuelta, por lo que entonces se sobreescribe.
+Que hacer si se llena el array circular? Quiza dejar la petición de join bloqueada hasta que haya espacio libre en el array
+
+
+
+-Ayuda ZENG, ZENG Online. Y también explicar a nivel técnico como funciona
+
+
+-si se une sin permisos, retorna error al cliente? contara como usuario logueado?
+
+-parece que el bucle de slave no esta saltando cada 20ms, porque? si quito recepcion de snapshot ya si que lo hace bien
+
+
+-si pongo verbose 3 peta con zeng slave
+
+-perfiles:
+*master: todo
+*slave: casi todo menos enviar snapshots ni administrar
+*manager: solo administrar. no recibe snapshots
+
+
+---Idea para obtener snapshots diferenciales:
+*con una idea similar a visualmem, tener una tabla que indique posiciones modificadas por poke_byte,
+luego se envia un snapshot con solo esas direcciones
+
+Luego al recibir el snapshot desde un slave:
+-obtenemos snapshot id (como ahora)
+-obtener snapshot diferencial. En la primera linea indica el id. si el id es justo el anterior que tenemos+1, aplicar ese diferencial
+Si no, hay que traerse un snapshot completo
+
+--problema: si se carga un snapshot (con snapshot load) eso no pasa por poke_byte y habria que asignar esa tabla a "todo modificado"
+--problema: el master genera dos snapshot: el mismo que ahora y el diferencial
+--problema: manteniendo misma estructura de bloques de memoria en snapshot, donde ahora hay 1 byte para cada posicion,
+el diferencial tendrá: 2 bytes con la dirección que indica, 1 byte con ese valor de direccion modificado
+Por tanto, un snapshot de mas de 16kb de direcciones modificadas, probablemente no sea factible. Aunque 16kb modificado
+en un frame de video (que es cada cuanto se envia el snapshot?) es mucha modificacion
+-problema: quiza entre cada recepcion de snapshot pasa mas de 1 snapshot de master, por tanto el diferencial casi nunca se aplicara
+
+En Xeno por ejemplo:
+Escrituras a final de frame: 2699
+Escrituras a final de frame: 3546
+Escrituras a final de frame: 1980
+Escrituras a final de frame: 1526
+Escrituras a final de frame: 2699
+Escrituras a final de frame: 3546
+Escrituras a final de frame: 1985
+
+iMac-de-Cesar:src cesarhernandez$ ls -lha zesarux_autosave.zsf
+-rw-r--r--  1 cesarhernandez  staff    51K 23 oct 18:36 zesarux_autosave.zsf
+iMac-de-Cesar:src cesarhernandez$ gzip zesarux_autosave.zsf
+iMac-de-Cesar:src cesarhernandez$ ls -lha zesarux_autosave.zsf.gz
+-rw-r--r--  1 cesarhernandez  staff    32K 23 oct 18:36 zesarux_autosave.zsf.gz
+
+-Calcular cuantas direcciones de memoria se alteran entre cada snapshot
+
+Además para snapshots diferenciales se podrían almacenar 2 bytes por cada dirección modificada:
+1 byte que diga el offset de dirección. Respecto al anterior. Y si es más de 255, que indique primer byte a 0, siguiente bytes con el offset 16 bits
+1 byte con el valor que obtiene
+Y los primeros 2 bytes de todo indica donde empieza
+
+
+*generacion de snapshot diferencial por el master
+-primero un snapshot completo. se inicializa tabla de diferencias a vacio
+-por cada escritura a ram, ver si el byte a escribir es diferente de lo que hay en ram. si es diferente, meterlo en la tabla
+-al enviar snapshot diferencial:
+  -formato comentado anteriormente: primeros 2 bytes indican el offset. a partir de ahi , repetitivo con:
+    - offset direccion respecto al anterior. si valor es mas de 255, indica offset de 16 bits, se pillara offset de los 2 bytes siguientes. y valor a escribir
+
+*lectura de snapshot diferencial del slave
+-leer primero snapshot completo. recordar estado de la ram y almacenarla en memoria aparte
+-ir leyendo diferencial. PROBLEMA: el master va enviando diferenciales, solo se guarda uno en el servidor. en cuanto el slave deja de leer un diferencial, el estado se desincroniza!! habria que tener varios diferenciales, o que el server vaya almacenando ram en varios estados
+y sea capaz de generar un diferencial segun el snapshot id que pida el slave. PROBLEMA2: quiero que el server no tenga nada de ese procesamiento,
+solo almacena datos que le envia el master, pero no deberia hacer procesamiento
+
+
+---FIN idea para obtener snapshots diferenciales
+
+
+-semaforo cuando se agrega elemento en fifo, o puede coincidir que se pulsa tecla cuando se está enviando al servidor
+Esto implicara semaforo en zeng_fifo_add_element, zeng_fifo_read_element y en todos sitios que usen esto, o sea,
+zeng online y zeng no-online
+
+-mejorar columnas al lista de rooms: created, autojoin... algo que quede mas bonito en pantalla
+
+-si hay un error de red temporal, luego ya no se vuelve a recuperar
+
+
+
+Quizá tarea en el timer tal cual para todo eso
+
+Temporizadores comunes de ver kick y ver mensajes
+
+
+
+
+Snapshot agregar puertos del QL y además evitar pulsaciones de teclas seguidas
+-puertos QL ok. que es lo de las repeticiones??
+
+probar en linux si hay memory leak con snapshots
+
+
+-network traffic:
+agregar marcas de grafica red en vertical
+Network traffic en ascii también
+
+-Menú se cerrará parámetro, indicar que se suele poner en ítems que abren ventana y que queremos que cierren todos los submenus al cerrar la ventana
+
+-Si el leave o el destroy fallan, igualmente tiene que matar el thread y dejarlo como desconectado
+
+-Dejar partida mazogs en online
+Poder aplicar restricción de teclas para auto join? Para que no puedan hacer break por ejemplo. O para una primera asignación restringida y luego otra menos
+Mismo perfil de teclas puede ir a más de un jugador?
+
+
+-zeng online:
+Md5 de los snapshots Zeng? Para evitar cargar snapshots incompletos
+Si versión Zeng online no coincide, da error?
+
+
+-----Fin ZENG ONLINE -----

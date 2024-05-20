@@ -5,91 +5,29 @@ Para esta version:
 ---Errores---
 -------------
 
--exolon rzx, si se abre menu, se queda continuamente disparando y agachado (joystick seleccionado: cursor&shift, aunque parece que no importa esto)
-
-
--parpadeos en driver xwindow en zx desktop al moverse por menus
-
--cacalib, en consola texto pura, parpadeo en menu (y en general en cualquier pixel emulado con brillo)
-
--con daad debug, si hago un cambio de gui style, se activa la opcion de watch en daad debug... quiza no está gestionando bien el overlay??
 
 
 -ZENG soporte para QL. ok aunque no envia teclas extendidas
 -ZENG para msx se leen los cursores en destino
 
 
--revisar en menu_debug_change_registers(void),
-//Si lanzo con debug_print ERR, y estamos en modo step, se habilita multitarea, por que?
-
-
--archivos de cintas que no se cierran en windows al expulsarlas
-
 -kempston mouse en cursor draw en menu abierto lee en apariencia aleatoriamente
 
--speech con caracteres con acentos no los envia, los filtra. acentos de menu? quiza habria que pasar primero otro filtro para solo acentos, convertirlos a sin acentos o caracteres con acentos utf
 
 -snapshot ZSF de nextdows, no guarda la parte inferior de pantalla aparentemente
 
--quiza en threads que no se cancelan en windows (zeng?) agregar llamada a pthread_testcancel();
-
--en daad debug, pulsar m de condmessage, sale dos veces (con cozumel 1 y inventario)
 
 -text adventure map: opcion mostrar descripciones. localidad 14 por ejemplo se mezcla??
 
-
--en menus al moverse con pgup down creo que no siempre va bien, por ejemplo en tracks list de +3 al pgdn siempre queda abajo, mientras que pgup no
-
-
--En visor dsk que solo muestre primer extent de un archivo. ya esta??
--extractor dsk no obtiene bien longitudes de disco cpc (porque intenta obtener cabecera plus3dos). ok ya?
--extractor dsk que use misma manera que visor dsk?
--extractor dsk creo que a veces lee archivos con cabecera plus3dos. ejemplo : chase hq2. tampoco parece obtener bien siempre los datos (de otro sitio...)
-lecturas de plus3dos headers no van bien: Real length file SCREEN  .    read from PLUS3DOS header: 55560
 
 
 -Linux: al hacer alt-tab para ir a otra ventana, al volver con raton por ejemplo, el alt "sigue pulsado" en ZEsarUX
 
 
--quiza seek beyond limit en floppy no deberia saltar error (solo verbose), caso de tauceti pcw. no consigo sacar ese error? otro juego que salga?
-
--rutinas speech y kill speech se llaman aunque no haya nada pendiente. desde timer, llama a scrtextspeech_filter_run_pending
-
--file browser no muestra dispositivos. importante para uart
-Por alguna razón, en /dev no llega a leerlos ni entrando antes del filtro. Quiza algun parametro especial del directorio
-o algo que no hago bien al leer directorio. La solución pasa por escribir el nombre directamente en el file selector (pulsando TAB o click de raton
-arriba)
--no lee enlaces simbolicos en filesystem: ejemplo /home/pi/PREPARADOS de raspiboy
--no se ven enlaces simbólicos en navegador de archivos. Como mínimo de Mac no se ven. Y en Linux?
--quiza get_file_type deberia excluir sockets y devices, no considerarlos archivos normales,
-asi en smartload y similares no aparecerian -> pero en caso de UART si que deben salir dispositivos!!
 
 -al conmutar de ventana de ZEsarUX, en Mac, a veces se congela la aplicación. por que? tanto pasa con menu abierto como cerrado.
+Creo que tiene que ver con driver ao null
 
--revisar pantalla completa en SDL, X11
---en sdl1, con windows en maquina virtual, parece que pone una resolucion menor que la ventana de ZEsarUX, y el footer y la pantalla emulada quedan mezcladas
-
-
--cambio de maquina con full screen (16k a 48k) peta: quiza son en Mac?
-
--boton derecho sobre una ventana, que conmute a esa ventana (pero solo cuando el uso de boton derecho no sea ESC)
-aunque cuando conmuta con boton izquierdo, espera a liberar el boton y por tanto no se lanza la accion del boton izquierdo
-(y no se lanzaria tampoco la del botón derecho)
-
-
--Al conmutar de ventana, no guarda del todo la posicion, pues no restaura bien al desmaximizar: ejemplo
-*Esto en ascii table. Posicion 1. La muevo a otra posicion, Posicion 2
-*Conmuto a otra ventana (pulsando con raton en otra ventana). Vuelvo a ascii table. Maximizo, y desmaximizo. En vez de volver a Posicion 2, se va a Posicion 1.
-
--si se pulsa boton de cerrar todos los menus, desde una ventana que se ha abierto desde otra con menu tabulado, se cierra esa ventana de menu tabulado,
-en vez de dejarse en background
-Ejemplo: AY Player, pulsar Editar playlist, y ahí cerrar todos menus
-
-
--full screen en cpc + real video (y creo que sin real video tambien) se ve mal. Probar por ejemplo con brunilda dandanator
-
--en linux, con "stop emulation on menu", raton no mueve opciones de menu, ni deja mover ventanas
-->no he conseguido reproducirlo
 
 ---Fin Errores---
 
@@ -99,48 +37,6 @@ Ejemplo: AY Player, pulsar Editar playlist, y ahí cerrar todos menus
 ---Mejoras---
 -------------
 
--mejorar render paws/gac/daad/quill:
-*uso atributos igual que spectrum: 8x8 paper+tinta
-*implementar relleno: mapa de puntos rellenos, y mostrar con tramado adecuado. solo fill cuando ventana esté dirty (misma logica que Location Image o ZXLife por ejemplo). algoritmo relleno recursivo? habria que tener un mapa de pixeles de spectrum de 256x192 tal cual
-
--poder detectar si una instancia se ejecuta desde docker (y NO si se ha compilado desde docker):
-esto a nivel de estadística, permito saber en estadisticas web (enviando un parametro) que se han ejecutado instancias de testeo de docker
-
--mejoras accesibilidad:
-* https://www.w3.org/TR/low-vision-needs/
-* eventos en menu con sonidos. metiendo sonido raw directamente en buffer de sonido? o quizá sonidos que sean frecuencias fijas (notas)
-aprovechando cosas como el frequency generator
-ok-eventos: error, mover cursor, cerrar ventana (ventana no de menu)
-
--dall-e. text aventure location image
-*esperar a waitpid?
-*en hobbit las descripciones salen antes de borrar la pantalla
-*en linux: cierro ventana imagen, borro output imagen, abro y segfault
-
-
-
--ctrl/alt +qaop o wskl para mover ventana, en vez de shift, y hacer que todas las ventanas lo soporten (por ejemplo ahora solo va con ventanas que no tengan menu)
-
-
-
--text adventure map: texto en mapa deberia seguir char filter. Pero char filter
-esta pensado solo para print char y mostrarlo en consola. deberia haber una funcion que teniendo un caracter, retornase otro pasado por el filtro
-
--Mostrar juego cargado en titulo ventana. Desaparece al hacer reset. Que limite tiene el texto en los diferentes sistemas operativos?
-
--Browser cintas standard que permita alterar la posición de la cinta
-
-
--zxvision_window: buffer para pixeles, con doble buffer para saber si no ha cambiado un pixel, no refrescarlo
-Hacer uso de parametro dirty, usado igual en draw_window_contents, para saber _si hay que redibujar capa de pixel o no
-ventanas escriben aqui con otra funcion, por ejemplo llamada zxvision_putpixel_buffer, o quiza, renombrar
-todas zxvision_putpixel por zxvision_putpixel_direct, y la nueva llamarla tal cual zxvision_putpixel
-*definición anterior:
--Nuevo concepto para ventanas:
-Buffer de pixel gestionado desde ventanas y renderizado desde draw window contents
-Ideal para help keyboard por ejemplo
-En draw window contents solo renderiza si se ha modificado o bien la capa de texto o de la de píxeles. Y en ese caso renderiza las dos capas
-
 
 
 -custom rom
@@ -149,192 +45,13 @@ find_sharedfile(CUSTOM_MACHINE_2E_MMC_ROM_FILE,custom_romfile);
 #define CUSTOM_MACHINE_2E_MMC_ROM_FILE "alternaterom_plus3e_mmcen3eE.rom"
 
 
--plus3doshandler: se necesita muchas revisiones para que funcione correctamente, algunas llamadas al leer sector que se va a leer puertos,
-ejemplo badlands.dsk y rutina en la 2114h que esta en los traps
-
--ZRCP:
-*array para guardar los threads que se van lanzando?
--completar remote_cerrar_conexion para que cierre todas las conexiones de cliente que puedan haber
-
-
--algun tipo de build que no sea ni linux ni mac ni windows, sino simplemente UNIX_GENERIC o algo similar
-
--conviene ocultar Wall y Wextra en version estable? puede salir algun warning util solo en version estable? no deberia, son warnings muy especificos
-
-
-
--Quiza registro DE al volver de rutina de trap load, deberia ser DE -=bytes_leidos
-
-
--Renombrar setting de background windows por multitask windows? O algo así
-Debe indicar que se puede dejar ventanas en background pero que también pueden haber múltiples ventanas a la vez
-
-
-
--driver fbdev en pc , con "zesarux --noconfigfile --vo fbdev > /dev/null". al desactivar border, genera panic. tambien desactivando border
-
-
--Ayuda en process management. Cada ítem de ayuda muestra mismo mensaje. Además debe ser un string definido una sola vez que en cada ítem apunta a mismo puntero . Que significa esto????????
--process management: no muestra uso tiempo de ventana zxlife si la ventana actual es zxlife
-
-
-
--En visor de disco (dsk) con archivos, que indique User number (UU) de cada archivo? Ver https://www.seasip.info/Cpm/format22.html
--O incluso mejor un browser/viewer de formato CP/M, que indique:
-*extent number
-*date file
-*etc
-
-
--registro debug ficticio EPC soporte para tbblue, zxuno, ....
-
-
--Si se cambia el prompt de ZRCP, esperar también ese prompt en ZENG
-
-
-
--Funciones de utils no deberían involucrar nada del menú
-
-
--quiza funcion que espera_no_tecla sin considerar movimiento raton, deberia ser la habitual, y solo en casos concretos
-usar la que si considera movimiento raton
 
 
 - ajustar memory zones para zx81: rom deberia ser 8kb. revisar tambien zx80
 
 
--A mejorar en Next para próxima versión: Ver TODO_machines, sección Next, en : "A mejorar en Next para próxima versión"
-
-
--incorporar ZEsarUX en taskbar (dbus??) de kde, gnome o lo que se pueda
-
-
-
--Texto fondo tiene que sea carácter 255 para que no se redibuje con espacios. O usar un flag de ventana que dice que no tiene que redibujar el texto
-
-
-
--paws debug que funcione con aventuras en 128k. Ver manual de paws para esto
--daad no usa 128kb. Aunque hay un nuevo parser de daad (hecho en zxbasic) que si usa 128kb. comentar con Carlos-uto
-
--mensajes panic con codigo error. Por ejemplo, 0001 out of memory. mas bien seria un tipo de error, porque out of memory
-hay muchos tipos: out of memory cargando, out of memory asignando buffer rainbow, etc.
-Seria: error message: igual que hay ahora. Y luego clases: 0001 out of memory. 0002 segmentation fault, etc
-
--combinacion de tecla especial que haga un "reinicio" del menu, por si se ha colgado en algun sitio
-
--footer que tambien amplie tamaño segun menu_gui_zoom
-
-
--quiza obtener mas info en descargas speccy online: autor, tamaño archivo, etc
-
-
--pid de ventana creo que deberia incrementarse siempre. ahora si cierras y abres una ventana continuamente, usa mismo pid, porque siempre busca el ultimo disponible. quiza al crearse una ventana deberia incrementarse en 1? o no?
-
-
-
--texto speech en menu se oye antes que se empiece a mostrar filesel
-
--en rpi quiza compilar con onebitspeaker? o no? entiendo que pcspeaker no usara sino que intentara usar gpio
-
-
--Función joystick conmuta full screen
--F función cualquiera Tecla F por joystick
-
 -Teclado en pantalla en rpi borra el input de debajo
 
-
-
--Smartload path tiene setting en command line? si Y en menú? es el del ultimo archivo cargado con smartload
-
--Juego "Simón" haciendo uso del logo X. Y con sonidos de eventos de menú
-
--En imagen IA de descripción, botón para pedir otra imagen a la IA
-
--Estandarizar el nombre del User agent en las peticiones web
-Ahora:
-"ZEsarUX X Darwin"
-
-Uno de ejemplo de Safari:
-"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.6.1 Safari/605.1.15"
-
-Esto permite estadisticas mejor con goaccess. Aunque no parece reconocer el browser como tal "ZEsarUX/10.0"
-
-Soportar uft-8 en el footer, que sirva para texto footer normal pero tambien con opciones de --programsettingsinfo de archivos .config.
-Quitar el parche para soportar la eñe en dicha opcion
-Cuidado que  en la consola si hay verbose debug, se muestra caracter extraño para la ñ
-
--Cat en cpc 6128 con pd765 desactivado, se cuelga
-
-revisar paso de parametros en pthread_create, debe ser con estructuras estaticas (no en stack) o bien estructuras en malloc
-y los miembros no deben ser punteros a *, sino contenido todo en la estructura
-Por ejemplo en
-menu_zsock_http(
-    Si se cancela la query y el thread sigue activo, hay el riesgo de acceder a memoria que ya no esta disponible
-Esa funcion se llama por ejemplo desde speccy browser y viene con punteros que habria que convertir todos en una estructura
-mejorada de menu_zsock_http_struct en que no haya punteros
-Lista en teoria completa de llamadas a pthreads con parametros a revisar:
-menu_zsock_http
-menu_download_file
-
-
-
--Poder ver variables de una cinta .P, .O e incluso basic de spectrum (desde el bloque de basic de un .tap?)
-
-
--fbdev en linux, fbdev_cls peta al cambiar de maquina. Ejemplo de 48k a +3
-
--asociar archivos tap, tzx etc en Mac a ZEsarUX
-
--otro tipo de overlay pero que no se llame continuamente, solo se llame al mover/redimensionar ventanas.
-y desde su aplicacion logicamente si que se llama a su overlay para dibujar
-ejemplo: process switcher: no se necesita que continuamente se estén redibujando todos los iconos, solo cuando haya movimiento de ventanas
-(pues en ese caso se repintan todas).
-otro ejemplo: el logo de la ventana de about: solo hay que redibujarlo cuando hay cambios de ventanas
-otro ejemplo: help keyboard
-y muchos otros ejemplos en que son pixeles que no cambian, que no hay que redibujar continuamente
-Con eso se reducirá mucho el uso de cpu en cada frame
-
--cambio modo stereo de zxuno mediante hardware. registro F7. https://www.zxuno.com/wiki/index.php/ZX_Spectrum
-algun programa que lo use? el zxunocfg?
-
--poder usar tipo de letra de los iconos en el menu. cuando se active char width a 4
-
--cuando se llama a funcion overlay de cada ventana, se deberia pasar como parametro la propia ventana (zxvision_window *),
-asi la funcion de overlay no tiene que guardar un puntero estatico fuera siempre
-complementario: quizá en todos los overlay que no necesiten redibujar siempre, detectar el flag que indica precisamente que se ha borrado, movido, etc, para solo redibujar cuando haya que hacerlo (dirty_user_must_draw_contents)
-->Realmente hay pocas ventanas que tengan overlay de pixeles estaticos
-Una de ellas es el "About" pero ya esta usando dirty_user_must_draw_contents
-
-
-
-
--con speech en menu habilitado
-*teniendo varias ventanas abiertas
-*pulsar F5 para abrir menu principal
-*pulsar ESC
-*se cierra menu, se va el foco a la ventana de mas arriba, y se lee el contenido a speech. ERROR!
-*luego se quita el foco de esa ventana y todo prosigue normalmente
-
--algun tipo de indicacion en un menu que diga que no debe activar salir_todos_menus al pulsar ESC, por ejemplo en algunos no quiero
-que se cierren los anteriores, ejemplo:
-*cambio de zona de memoria desde debug cpu o hexdump
-*breakpoints
-*watches
-En estos casos de momento lo que he hecho es que al final de cada menu se haga un "salir_todos_menus=0"
-
-
--hexadecimal editor deberia refrescar continuamente al estar dentro de la ventana?
-
-
--tiene sentido items de "ESC back/close"?
-
-
-
--Process management: Render emulated display incluye tiempo de todas las ventanas? Si abro el text adventure map, que consume 6 ms con la guerra
-de las vajillas, el tiempo de render dice 8 ms. si cierro text adventure map, el render baja a 3 ms
-
--tooltips en botones superiores y en dispositivos inferiores, y en botones de ventanas
 
 
 -ahora menus no tabulados ya no tienen boton minimizar. Hay alguna ventana, que no sea realmente un menu,
@@ -344,24 +61,6 @@ Yo entenderia que los botones de minimizar son solo para aplicaciones que pueden
 y por tanto, incluso los cuadros de dialogo (ayuda-changelog por ejemplo) - que no son menu_dibuja_menu -  ni deberian tenerlo
 Por tanto , probablemente, cualquier ventana que use funcion de menu_dibuja_menu (excluyendo tabulados) no deberian poderse minimizar.
 
--en menu con curses, no se puede escribir el punto "." ? probado con ZENG host por ejemplo
-
-
-
--si se desactivan botones inferiores y superiores, el limite al mover iconos sigue siendo la zona de esos botones, aunque ya no existan
-Lo mismo pasa con un reorder
-Y lo mismo con posición de nuevos iconos
-
--subir limite de iconos en ZX Desktop de 100 a... ?
-El problema es que las operaciones de dibujado, movimento etc recorren siempre los 100 iconos, existan o no.
-Por tanto si se aumenta ese limite, esas operaciones iran algo mas lentas
-Se deberian recorrer teniendo un indice que diga cual es el ultimo icono existente, y recorrer hasta ese indice. De
-esa manera si que se podría aumentar el límite sin perjudicar dichas operaciones
-
--algún tipo de asistente para el primer arranque? Tipo:
-*idioma: english, español, català
-*zx desktop activado (junto con background windows)
-*etc...
 
 
 
@@ -369,315 +68,9 @@ esa manera si que se podría aumentar el límite sin perjudicar dichas operacion
 
 
 
----- ZENG ONLINE ----
-
-
-
--problema con zeng-online y envio de eventos:
-*del master a los slaves hay que enviar eventos, si no enviasemos eventos, si el tiempo de snapshot es algo lento (por ejemplo medio minuto)
-veremos cosas como que jugando al chase hq, el coche acelera y decelera continuamente
-Quiza para solventar eso se podria enviar un snapshot que contenga el valor de los puertos de teclado y/o joystick kempston
-problema: que habria que implementar eso de los puertos en todas las maquinas que se quiera snapshot...
-Igualmente los slaves tienen que poder seguir enviando eventos
-Alternativa: que funcione bien envio de eventos de master a slaves, y de slaves al master. pero eso llevaria el problema
-de que un slave enviaria su evento, y luego al leerlo le llegaria ese mismo, con lo que se aplicaria dos veces... aunque no es un gran problema,
-pero es un gasto de ancho de banda....
-
-
-ok-Quitar bloqueos de comandos simultáneos ZRCP cuando son Zeng online
-bueno lo que hace es que no hay bloqueos de ningun comando ZRCP cuando esta zeng online habilitado
-Esto NO es lo ideal!!
-
-Activar bloqueo de un semáforo al crear una habitación , para evitar crear la misma desde dos sitios. O el semaforo es tal cual la variable que dice que esta creado. lanzar un z_atomic_test_and_set, si devuelve 1 , es que estaba creada ya antes
-
-
-Envío y lectura de eventos.
--array circular
-
-Envío de eventos
-Se envía al array de la room, se agrega al array y si llega al final va al principio
-
-Lectura de eventos
--cliente lee continuamente (tanto máster como slave)
--el server en la conexión ZRCP en pausa de 20ms. Si hay eventos en el array (posicion lectura no es igual a la de escritura), enviarlos todos. Y volver a dormir 20ms
-
-De esta manera una instancia recibirá un evento propio que haya enviado, aunque no tiene porque ser un problema. O si? Porque recibirá una Tecla / liberación de Tecla suya con retraso. Pero como viene en orden puede ser un problema?
-Quizá se puede enviar con un id único de cliente y al leer evento diga de que cliente es. Y si es el suyo mismo, pues ignorarlo. Como asignar ese id? Pues cuando se una a la habitación, se le da un id y es el que tiene que usar al enviar eventos
-El id también podría ser el uuid que todos ZEsarUX tienen, en teoría únicos. Así no hay que obtenerlo del servidor
-Ese uuid siempre está? Aunque no se guarde configuración y/o no se envíen estadísticas? Pues debería estar siempre. Si no se guarda en config, que se genere de nuevo cada vez
-
-
-
--para juego en red, el master siempre tiene ventaja, pues el no recibe snapshots y su instancia siempre está sincronizada
-Por tanto, para que no haya desventaja al jugar dos personas, lo ideal es que hubiera un master, que no participase,
-y luego dos slaves que fueran los que estuvieran compitiendo
-
--quiza las veces que se queda congelado el emulador cuando no esta en el foco, es cuando se usa driver audio null
-
-
-
-Toda esta parte cliente de "backend" estara contenida en zeng_online_client.c
-La parte de menus , el "frontend" estara contenida en menu_zeng_online.c
-
-
-
-ok-Get snapshot id para saber si hay uno diferente al último recibido
-Da igual que cuando lo consultemos y cuando hagamos un get snapshot haya cambiado el id, porque si lo pedimos es porque sabremos que es uno distinto al que tenemos y entonces al obtener puede ser que entre ese o otro posterior, ya nos vale
-Pausas entre get id y get snap , cuando no hay uno nuevo, muy cortas, para que nos entre lo antes posible.
-
--comando para denegar mas join en una room. solo para creator
--comando para bajar numero de max players en una room. solo para creator
-
-ok -el envio de keys y snapshot deberia hacerse al mismo momento desde el mismo thread
-ok -la recepcion de keys y snapshot deberia hacerse al mismo momento desde el mismo thread
--eliminar todas funciones variables etc de cuando se creaban desde join/create threads indpendientes
-
-
-
-
--Para cada maquina que queramos que soporte ZENG ONLINE
-Agregar puertos a ZSF_KEY_PORTS_SPECTRUM_STATE en snap_zsf.c. quiza un tag nuevo para tener retrocompatibilidad
-en util_set_reset_key_continue, agregar antes_puerto_ y restaurar valor para cada maquina que se quiera
-
-Ver ejemplos en docs/zeng_online_add_core.txt.
-
-El siguiente ejemplo fue de agregar el puerto joystick:
-
-diff --git a/src/snap_zsf.c b/src/snap_zsf.c
-index db91792..2e33eab 100644
---- a/src/snap_zsf.c
-+++ b/src/snap_zsf.c
-@@ -769,6 +769,7 @@ Byte fields:
- 5: z80_byte puerto_57342
- 6: z80_byte puerto_49150
- 7: z80_byte puerto_32766
-+8: z80_byte joystick_port
-
- -Como codificar bloques de memoria para Spectrum 128k, zxuno, tbblue, tsconf, etc?
- Con un numero de bloque (0...255) pero... que tamaño de bloque? tbblue usa paginas de 8kb, tsconf usa paginas de 16kb
-@@ -2042,6 +2043,7 @@ if (menu_abierto) return;
-     puerto_57342=header[5];
-     puerto_49150=header[6];
-     puerto_32766=header[7];
-+    puerto_especial_joystick=header[8];
-
- }
-
-@@ -3668,7 +3670,7 @@ void save_zsf_snapshot_file_mem(char *filename,z80_byte *destination_memory,int
-     //-Block ID 62: ZSF_KEY_PORTS_SPECTRUM_STATE
-     if (zeng_online_connected.v && zeng_online_i_am_master.v && !menu_abierto) {
-
--        z80_byte keyportsblock[8];
-+        z80_byte keyportsblock[9];
-
-         keyportsblock[0]=puerto_65278;
-         keyportsblock[1]=puerto_65022;
-@@ -3678,8 +3680,9 @@ void save_zsf_snapshot_file_mem(char *filename,z80_byte *destination_memory,int
-         keyportsblock[5]=puerto_57342;
-         keyportsblock[6]=puerto_49150;
-         keyportsblock[7]=puerto_32766;
-+        keyportsblock[8]=puerto_especial_joystick;
-
--        zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, keyportsblock,ZSF_KEY_PORTS_SPECTRUM_STATE, 8);
-+        zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, keyportsblock,ZSF_KEY_PORTS_SPECTRUM_STATE, 9);
-
-     }
-
-diff --git a/src/utils.c b/src/utils.c
-index 9cb0937..80d1a4c 100644
---- a/src/utils.c
-+++ b/src/utils.c
-@@ -7504,7 +7504,6 @@ void util_set_reset_key_continue(enum util_teclas tecla,int pressrelease)
- //Si esta zeng online y somos slave, no enviamos teclas locales nuestras
- //ya nos llegara el cambio debido al snapshot y de la recepcion de teclas
- //TODO: habria que hacer esto tambien para otros puertos:
--//puerto joystick / kempston etc
- //puertos sam coupe
- //puertos cpc
- //puertos todas maquinas...
-@@ -7516,6 +7515,7 @@ z80_byte antes_puerto_61438=puerto_61438;
- z80_byte antes_puerto_57342=puerto_57342;
- z80_byte antes_puerto_49150=puerto_49150;
- z80_byte antes_puerto_32766=puerto_32766;
-+z80_byte antes_puerto_especial_joystick=puerto_especial_joystick;
-
-
-   util_set_reset_key_continue_after_zeng(tecla,pressrelease);
-@@ -7531,6 +7531,7 @@ z80_byte antes_puerto_32766=puerto_32766;
-     puerto_57342=antes_puerto_57342;
-     puerto_49150=antes_puerto_49150;
-     puerto_32766=antes_puerto_32766;
-+    puerto_especial_joystick=antes_puerto_especial_joystick;
-     //printf("Despues Puerto puerto_61438: %d\n",puerto_61438);
-
-     //zoc_decir_pulsada_alguna_tecla_local();
-
-
-----
-
--consume un 5% aprox de cpu por cada usuario zeng online en mi server
-
-
-
-
-
-ok-Gestión autorizaciones para join
--cliente intenta join a server.
-ok - Si es el máster join, enviará creator password y este no necesita autorizar
-ok-ese join se queda en espera de respuesta. Su petición va a una fifo, con un id y nickname (o un array circular mejor)
-ok-desde el máster, cada segundo se invoca un comando para ver si hay autorizaciones pendientes. Si hay alguna, se enviara otro comando que retorna id de autorización y nickname, se retorna una linea cada vez en cada peticion del comando, mostrando la mas antigua siempre.
-Si hay alguna pendiente, se abre menú y se pide autorizar
--por cada una, se muestra nick. Hay que decir si es solo visor o también permite enviar teclas. Y si se autoriza claro
-Se envía un comando con el resultado de cada autorización: id, permisos, y si autoriza o no
-ok-el id es necesario? dado que siempre responderemos sobre la mas antigua, en principio sabemos su id. a no ser que el array haya dado la vuelta, por lo que entonces se sobreescribe.
-Que hacer si se llena el array circular? Quiza dejar la petición de join bloqueada hasta que haya espacio libre en el array
-
-
-
--Ayuda ZENG, ZENG Online. Y también explicar a nivel técnico como funciona
-
-
--si se une sin permisos, retorna error al cliente? contara como usuario logueado?
-
--parece que el bucle de slave no esta saltando cada 20ms, porque? si quito recepcion de snapshot ya si que lo hace bien
-
-
--si pongo verbose 3 peta con zeng slave
-
--perfiles:
-*master: todo
-*slave: casi todo menos enviar snapshots ni administrar
-*manager: solo administrar. no recibe snapshots
-
-
----Idea para obtener snapshots diferenciales:
-*con una idea similar a visualmem, tener una tabla que indique posiciones modificadas por poke_byte,
-luego se envia un snapshot con solo esas direcciones
-
-Luego al recibir el snapshot desde un slave:
--obtenemos snapshot id (como ahora)
--obtener snapshot diferencial. En la primera linea indica el id. si el id es justo el anterior que tenemos+1, aplicar ese diferencial
-Si no, hay que traerse un snapshot completo
-
---problema: si se carga un snapshot (con snapshot load) eso no pasa por poke_byte y habria que asignar esa tabla a "todo modificado"
---problema: el master genera dos snapshot: el mismo que ahora y el diferencial
---problema: manteniendo misma estructura de bloques de memoria en snapshot, donde ahora hay 1 byte para cada posicion,
-el diferencial tendrá: 2 bytes con la dirección que indica, 1 byte con ese valor de direccion modificado
-Por tanto, un snapshot de mas de 16kb de direcciones modificadas, probablemente no sea factible. Aunque 16kb modificado
-en un frame de video (que es cada cuanto se envia el snapshot?) es mucha modificacion
--problema: quiza entre cada recepcion de snapshot pasa mas de 1 snapshot de master, por tanto el diferencial casi nunca se aplicara
-
-En Xeno por ejemplo:
-Escrituras a final de frame: 2699
-Escrituras a final de frame: 3546
-Escrituras a final de frame: 1980
-Escrituras a final de frame: 1526
-Escrituras a final de frame: 2699
-Escrituras a final de frame: 3546
-Escrituras a final de frame: 1985
-
-iMac-de-Cesar:src cesarhernandez$ ls -lha zesarux_autosave.zsf
--rw-r--r--  1 cesarhernandez  staff    51K 23 oct 18:36 zesarux_autosave.zsf
-iMac-de-Cesar:src cesarhernandez$ gzip zesarux_autosave.zsf
-iMac-de-Cesar:src cesarhernandez$ ls -lha zesarux_autosave.zsf.gz
--rw-r--r--  1 cesarhernandez  staff    32K 23 oct 18:36 zesarux_autosave.zsf.gz
-
--Calcular cuantas direcciones de memoria se alteran entre cada snapshot
-
-Además para snapshots diferenciales se podrían almacenar 2 bytes por cada dirección modificada:
-1 byte que diga el offset de dirección. Respecto al anterior. Y si es más de 255, que indique primer byte a 0, siguiente bytes con el offset 16 bits
-1 byte con el valor que obtiene
-Y los primeros 2 bytes de todo indica donde empieza
-
-
-*generacion de snapshot diferencial por el master
--primero un snapshot completo. se inicializa tabla de diferencias a vacio
--por cada escritura a ram, ver si el byte a escribir es diferente de lo que hay en ram. si es diferente, meterlo en la tabla
--al enviar snapshot diferencial:
-  -formato comentado anteriormente: primeros 2 bytes indican el offset. a partir de ahi , repetitivo con:
-    - offset direccion respecto al anterior. si valor es mas de 255, indica offset de 16 bits, se pillara offset de los 2 bytes siguientes. y valor a escribir
-
-*lectura de snapshot diferencial del slave
--leer primero snapshot completo. recordar estado de la ram y almacenarla en memoria aparte
--ir leyendo diferencial. PROBLEMA: el master va enviando diferenciales, solo se guarda uno en el servidor. en cuanto el slave deja de leer un diferencial, el estado se desincroniza!! habria que tener varios diferenciales, o que el server vaya almacenando ram en varios estados
-y sea capaz de generar un diferencial segun el snapshot id que pida el slave. PROBLEMA2: quiero que el server no tenga nada de ese procesamiento,
-solo almacena datos que le envia el master, pero no deberia hacer procesamiento
-
-
----FIN idea para obtener snapshots diferenciales
-
-
--semaforo cuando se agrega elemento en fifo, o puede coincidir que se pulsa tecla cuando se está enviando al servidor
-Esto implicara semaforo en zeng_fifo_add_element, zeng_fifo_read_element y en todos sitios que usen esto, o sea,
-zeng online y zeng no-online
-
--mejorar columnas al lista de rooms: created, autojoin... algo que quede mas bonito en pantalla
-
--si hay un error de red temporal, luego ya no se vuelve a recuperar
-
-
-
-Quizá tarea en el timer tal cual para todo eso
-
-Temporizadores comunes de ver kick y ver mensajes
-
-
-
-
-Snapshot agregar puertos del QL y además evitar pulsaciones de teclas seguidas
--puertos QL ok. que es lo de las repeticiones??
-
-probar en linux si hay memory leak con snapshots
-
-
--network traffic:
-agregar marcas de grafica red en vertical
-Network traffic en ascii también
-
--Menú se cerrará parámetro, indicar que se suele poner en ítems que abren ventana y que queremos que cierren todos los submenus al cerrar la ventana
-
--Si el leave o el destroy fallan, igualmente tiene que matar el thread y dejarlo como desconectado
-
--Dejar partida mazogs en online
-Poder aplicar restricción de teclas para auto join? Para que no puedan hacer break por ejemplo. O para una primera asignación restringida y luego otra menos
-Mismo perfil de teclas puede ir a más de un jugador?
-
-
--zeng online:
-Md5 de los snapshots Zeng? Para evitar cargar snapshots incompletos
-Si versión Zeng online no coincide, da error?
-
-
------Fin ZENG ONLINE -----
-
-
-
--mejorar icono para video output
-
--iconos para acciones: backgroundwindow, showbackgroundwindows
-
 -First aid de advanced menu items: que diga que hay settings que están ocultos por defecto
 
 -Quizá en Mac se congela a veces con driver audio null?
-
-
--Debug console quizá ancho debería considerar siempre el Máximo al calcular posición siguiente línea, esto en print y scroll
-Asi se podría redimensionar siempre sin que se descuadren los textos anteriores . hecho?
-
-
--Debug printf solo hacer bloqueo cuando mensajes van a consola de ZX Desktop
-Prueba con redimensionar ventana con driver audio sdl con callback y printf donde avisa de underrun de buffer y en Windows
-
-
--Posible driver nuevo u opción en curses en que el menú siga siendo estándar pero el output de la máquina emulada sea el mismo que stdout
-
-
--app Calculadora que permita escribir expresiones
-
--Tetris en app procrastinate ?
-
--permitir smartload de zrcp sin que haya que abrir y cerrar el menu, para poderlo usar con driver simpletext o null por ejemplo,
-ya que no abren el menu
 
 
 
@@ -692,26 +85,6 @@ ya que no abren el menu
 
 
 
--mejorar setting de ventana de always visible:
-*decoracion ventana este por arriba -> esto lo hace siempre que no estemos manipulando la ventana actual
-las de debajo, si que tiene consideracion de always_visible, pero en la de ayuda no
-porque las de debajo se redibujan llamando a zxvision_draw_below_windows, pero la de arriba no
-
-*al pulsar en esa ventana, detecte bien que es la de arriba. no lo hace bien del todo, pues en una de las llamadas a
-zxvision_coords_in_below_windows,
-(por debajo de 			//Si se pulsa fuera de ventana
-			debug_printf (VERBOSE_DEBUG,"Clicked outside window. Events are sent to emulated machine. X=%d Y=%d",menu_mouse_x,menu_mouse_y);
-
-)
-
-solo llama ahi cuando se pulsa fuera de la ventana activa,
-y si la ventana activa esta en la zona de una ventana siempre visible, no conmutara a una ventana siempre visible
-*quiza tambien seria mejor que una ventana always_visible, vaya siempre arriba del todo cuando se crean ventanas o se mueven?
-pero en ese caso si van arriba del todo quizá tendrian siempre el foco y NO es lo que se espera...
-
-
-
-
 -Documentar funciones de menu:
 
 menu_dibuja_menu: la normal
@@ -723,50 +96,6 @@ y por tanto a nivel de path de indexacion de busqueda, se pierde el ultimo path 
 
 
 
--Nuevos campos para zxvision_windows:
--hora / fecha inicio ventana. Y que se mantenga en sucesivos arranques?
-
-
--soporte libretro?
-
-
--numero de version que corresponda con el año de antigüedad de ZEsarUX? V11 : 2024, V12: 2025, V13: 2026?
-
-
-
--Pantalla completa en Next sale cortada
-
-
-
----
---Inicio captura de sonido desde fuente externa (para poder cargar de cinta directamente)
----
-*SDL1 parece que no permite hacerlo. En windows se resuelve con funciones de windows tal cual
-
-
-*alsa:
-**poder escoger que tarjeta alsa (tanto input como output). ok input
-**si al capturar obtiene 16 bits, al sumar canales solo hace falta tener en cuenta bytes altos, porque luego ya dividimos/256
-
-*pulse: ok?
-
-*windows: soportar compilacion sin pthreads.
-
-
-* Audioalsa: Mirar cuando lee sonido si es que ha leído menos bytes
-Quizá ver si entre cada lectura de buffer ha pasado el tiempo que debe pasar realmente
-
-
----
---Fin captura de sonido
----
-
-ok -Aviso de nueva versión y entonces no sale memoriam
-
-
-
--quiza audiocoreaudio y otros drivers de audio necesitan fifos con semaforos para evitar interferencias en el sonido....
-
 
 
 -Documentar cómo van los archivos txt de update del server
@@ -775,44 +104,11 @@ ok -Aviso de nueva versión y entonces no sale memoriam
 
 
 
--LEC memory extension https://ia600604.us.archive.org/view_archive.php?archive=/1/items/World_of_Spectrum_June_2017_Mirror/World%20of%20Spectrum%20June%202017%20Mirror.zip&file=World%20of%20Spectrum%20June%202017%20Mirror/sinclair/hardware-info/l/LECMemoryExtension.pdf
--CPM para LEC: https://spectrumcomputing.co.uk/index.php?cat=96&id=23809
-https://trastero.speccy.org/cosas/FLeon/todo_sobre_la_ram_y_rom_lec.txt
-https://trastero.speccy.org/cosas/FLeon/Fleon.htm
-
 -Incorporar menú de juegos david más visible en esta edición. Quizá en menú In Memoriam?
 
 
 -soportar snapshots .nex con cabecera "NEXT" como exploding fist
 
-
--libretro:
-compilacion minima con 3 cores:
-
-git clone https://github.com/libretro/libretro-super.git libretro-super
-cd libretro-super
-./libretro-fetch.sh fuse smsplus sameboy
-./libretro-build.sh fuse smsplus sameboy
-
-
-Copiar un core a retroarch, uno de ejemplo
- https://docs.libretro.com/development/cores/developing-cores/#skeletor-sample-core
-cd /Users/cesarhernandez/Downloads/libretro-super
-./libretro-build.sh skeleton
-
-cd "/Users/cesarhernandez/Library/Application Support/RetroArch/cores"
-cp /Users/cesarhernandez/Downloads/libretro-super/dist/osx-x86_64/skeleton_libretro.dylib .
-
-
--filesel: Quizá campos pulsables que se vean distintos?
-Preview archivos txt: renderizarlos como pantalla con tipo de letra del spectrum
-
-
--Acción joystick menú tab
-
-
-
--x11: poder implementar X11_KeyRepeat de SDL1.2 para eliminar lectura de teclas repetidas
 
 -revisar si hay mas items de menu que necesiten "..." porque abren ventanas
 
@@ -825,12 +121,7 @@ este parametro. Por ejemplo "reset cpu" (y un dialogo de confirmacion yes/no no 
 
 
 
--si keyboard help con el foco no refresca cambios en teclas (que vengan de zeng por ejemplo)
-ok boton derecho -poder hacer stick de teclas en keyboard help
--help keyboard completar otras maquinas
-ok-keyboard help: pulsar shift+symbol no cambia a tecla extendida, con ventana help keyboard en el foco:
-no lee ni caps ni symbol solas desde ahi (pulsando en teclado) porque bucle esta en "esperar tecla", y symbol o shift, por si solas,
-no son teclas
+-keyboard help
 -pulsar , o . en ZX81 con ventana abierta, deja apretada la N o M
 -con los cambios de lectura tecla ahora no deja mantener shift y symbol (con teclado) mas una tecla (clicando con raton)
 
@@ -841,32 +132,7 @@ O meto todo (*) o indico carpetas solo necesarias
 
 -opcion para minimizar ventanas a la parte baja de la ventana (o comportamiento como ahora, las minimiza donde estaban)
 
--Títulos de submenus tienen que ser igual al nombre que se ha seleccionado en el menú anterior
 
-
-
--ql_return_full_path: gestionar retorno valor 1 en todos los casos?
--gestionar if (hacer_trap) { aunque device no sea valido?
--ql_microdrive_floppy_emulation: misma gestion cuando mdv1 o mdv2 o flp1 no esten habilitados. Creo que esto ya está correcto
-
-
--Se deben mostrar como inversos los iconos con actividad, aunque no esten habilitados?
-En QL tiene sentido por ejemplo, se intenta acceder a mdv1_ pero no esta activado
-funcion menu_ext_desktop_draw_lower_icon de zxvision.c
-En DSK de +3 ya se enviaba a footer
--footer icono de cinta si se usa la cinta aunque no esté insertada? en standard tape y los traps a rom
--mmc no se puede llegar a hacer porque no salta a lectura mmc si no esta activado zxmmc o mmc
-
-
--keyboard help: con ventana abierta, pulsar tecla con raton y pulsar tecla en teclado, no va
-
-
-Acciones sobre los dos microdrive y el floppy separar en menús
-Y poder activar uno independientemente del otro
-Pero implicaria un menu antes solo para decir que a nivel global esta habilitado o no, demasiados submenus creo...
-O quiza que salte al menu con la linea de opcion seleccionada donde corresponde
-
--al insertar cintas parece que no se cierra menu, y antes creo que si que se hacia
 
 -Incorporar bittransfe como manera de generar snapshot en .tap. Agregar parámetro de estado interrupciones, registro i. Otros registros que falten? R? Problema que está guardando algunos registros en parte alta de la memoria y puede interferir con el stack si no se ha cambiado el CLEAR
 
@@ -879,18 +145,18 @@ chloe. completar teclas extendidas. ver que hacer con combinaciones de shift...
 
 -keyboard help no hace por ejemplo en cpc 664 teclas [ ]
 
+-keyboard help: con ventana abierta, pulsar tecla con raton y pulsar tecla en teclado, no va
+
+
 -carga cinta real: probar compilar sin pthreads sdl2
 
 -Incluir paquete de Haiku OS 64 bit
 
-
--Limitar comandos ZRCP cuando Zeng online server habilitado
-Quizá setting para limitar o no
-->revisar que realmente el cliente no use ningun otro comando
-ok agregar parametro config y grabado config
 
 -quiza recordar ultimo ancho de ventana en void zxvision_generic_message_tooltip(,
 util por ejemplo para leer archivos de licencia,
 aunque eso afecta a todo mensaje genérico que aparezca en pantalla
 O quizá solo hacerlo para determinadas ventanas de algunos menus, por ejemplo el de licencias
 
+
+-diagrama de como funciona zeng online

@@ -165,3 +165,9 @@ Ver funcion prueba_scrcurses_putchar_zx8081
 
 -stdout algunos menus que no van bien. Como display->view colour palette
 
+
+
+--xwindows--
+
+-x11: poder implementar X11_KeyRepeat de SDL1.2 para eliminar lectura de teclas repetidas
+de momento esto afecta a zeng online y se solventa con zoc_keys_tecla_repetida

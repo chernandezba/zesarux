@@ -202,6 +202,35 @@ Un tercer botón que diga "take me there" para cuando sugiere menús, que te lle
 (por ejemplo cuando detecta joystick y dice que vayas al menú de real joystick para configurarlo)
 
 
+
+-mejorar setting de ventana de always visible:
+*decoracion ventana este por arriba -> esto lo hace siempre que no estemos manipulando la ventana actual
+las de debajo, si que tiene consideracion de always_visible, pero en la de ayuda no
+porque las de debajo se redibujan llamando a zxvision_draw_below_windows, pero la de arriba no
+
+*al pulsar en esa ventana, detecte bien que es la de arriba. no lo hace bien del todo, pues en una de las llamadas a
+zxvision_coords_in_below_windows,
+(por debajo de 			//Si se pulsa fuera de ventana
+			debug_printf (VERBOSE_DEBUG,"Clicked outside window. Events are sent to emulated machine. X=%d Y=%d",menu_mouse_x,menu_mouse_y);
+
+)
+
+solo llama ahi cuando se pulsa fuera de la ventana activa,
+y si la ventana activa esta en la zona de una ventana siempre visible, no conmutara a una ventana siempre visible
+*quiza tambien seria mejor que una ventana always_visible, vaya siempre arriba del todo cuando se crean ventanas o se mueven?
+pero en ese caso si van arriba del todo quizá tendrian siempre el foco y NO es lo que se espera...
+
+
+-Nuevos campos para zxvision_windows:
+-hora / fecha inicio ventana. Y que se mantenga en sucesivos arranques?
+
+-filesel: Quizá campos pulsables que se vean distintos?
+Preview archivos txt: renderizarlos como pantalla con tipo de letra del spectrum
+
+
+-Acción joystick menú tab
+
+
 --- FIN ZX Vision
 
 

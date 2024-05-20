@@ -8,6 +8,18 @@
 http://www.rwapadventures.com/ql_wiki/index.php?title=Sinclair%20QL%20Home%20Computer&lang=en
 -Mirar uqlx a ver cómo hace el load
 
+
+-ql_return_full_path: gestionar retorno valor 1 en todos los casos?
+-gestionar if (hacer_trap) { aunque device no sea valido?
+-ql_microdrive_floppy_emulation: misma gestion cuando mdv1 o mdv2 o flp1 no esten habilitados. Creo que esto ya está correcto
+
+
+
+Acciones sobre los dos microdrive y el floppy separar en menús
+Y poder activar uno independientemente del otro
+Pero implicaria un menu antes solo para decir que a nivel global esta habilitado o no, demasiados submenus creo...
+O quiza que salte al menu con la linea de opcion seleccionada donde corresponde
+
 -QL mejorar teclado y repeticiones:
 *si pulsar menos de 1 segundo, devolver esa tecla y ninguna mas en ese segundo
 *si pulsar mas de 1 segundo, devolver tecla con repeticiones
