@@ -318,7 +318,7 @@ z80_int tbblue_layer_sprites[TBBLUE_LAYERS_PIXEL_WIDTH];
 //z80_int tbblue_copper_index_write=0;
 
 
-z80_byte tbblue_machine_id=8;
+z80_byte tbblue_machine_id=0x0a;
 
 /*
 0x0F (15) => Board ID

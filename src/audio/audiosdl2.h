@@ -46,6 +46,9 @@ extern void audiosdl_get_device_name(char *destination);
 
 extern void audiosdl_next_device_capture(void);
 
+extern void audiosdl_stop_record_input(void);
+extern void audiosdl_start_record_input(void);
+
 #define SDL2_MAX_DEVICE_NAME_LENGTH 40
 
 #endif
