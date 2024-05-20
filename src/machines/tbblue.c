@@ -6300,6 +6300,7 @@ char *tbblue_get_layer2_mode_name(void)
     //Resolucion si 256x192x8, organizacion en scanlines, o las otras resoluciones que organizan en columnas
     //00=256x192x8. 01=320x256x8, 10=640x256x4
     int layer2_resolution=(tbblue_registers[112]>>4) & 3;
+    //printf("%02XH %d\n",tbblue_registers[112],layer2_resolution);
 
     return tbblue_layer2_video_modes_names[layer2_resolution];
 }
