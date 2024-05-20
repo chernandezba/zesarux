@@ -3,6 +3,13 @@
 Macros o lenguaje en ZEsarUX
 Que permita integrar con ZRCP y acciones...
 
+-ZRCP:
+*array para guardar los threads que se van lanzando?
+-completar remote_cerrar_conexion para que cierre todas las conexiones de cliente que puedan haber
+
+-Si se cambia el prompt de ZRCP, esperar también ese prompt en ZENG
+
+
 
 -Que se puedan ver errores debug verbose etc pero en ZRCP, de manera que no se vean en consola pero si en ZRCP. Eso permitiría debugar remotamente en raspiboy por ejemplo
 
@@ -28,21 +35,21 @@ Ver si la simulación de pulsado de escape desde smartload de remote protocol no
 Quizá hacer función que mediante una string de entrada (quizá misma que command line) que pueda:
 -establecer valor
 -conmutar valor, en el caso de variables 0/1
-Luego se podrá usar en el futuro para nuevos settings de menú y command line, y automáticamente desde ZRCP 
+Luego se podrá usar en el futuro para nuevos settings de menú y command line, y automáticamente desde ZRCP
 
 
 -for the get-visualmem-xxx commands, could you please add start address & length/end address params?
-Mark Hutchings  
+Mark Hutchings
 
 -exit-emulator de ZRCP no parece funcionar en Mac, pero en Linux si. Va como a medias, desactiva el sonido pero no sale
 
 -al salir emulador desde exit-emulator de ZRCP no acaba de salir del todo. Luego salgo con ctrl-c y el footer luego arranca desactivado
 
--Agregar a extended stack: fecha y hora de entrada en stack. También puede testado y milisegundos de la hora 
+-Agregar a extended stack: fecha y hora de entrada en stack. También puede testado y milisegundos de la hora
 Extended stack visible en menu. Consultable
-Poder consultar stack normal también en menú 
+Poder consultar stack normal también en menú
 
---Enter cpu step en ZRCP con drivers null stdout y simpletext. Se puede abrir menú con drivers null y simpletext? 
+--Enter cpu step en ZRCP con drivers null stdout y simpletext. Se puede abrir menú con drivers null y simpletext?
 Con printf verbose error?
 
 - enter-cpu-step no parece funcionar si hay ventanas en background-> no, parece que solo sucede si menu esta abierto
@@ -70,4 +77,4 @@ En ese caso no hacer mas alla de 500 por ejemplo
 Quiza por el sprintf (pending_error_message
  para que no se pudiera escribir desde dos sitios?
 
--semáforos en Windows. Como? De momento no hace bloqueo si es Windows 
+-semáforos en Windows. Como? De momento no hace bloqueo si es Windows

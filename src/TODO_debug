@@ -12,7 +12,7 @@ Menu debugger:
 
 -posicion electron no va bien en: zx81, tsconf. Revisar otras maquinas. En 48k funciona bien
 
---En debug cpu que diga tiempos de opcodes y/o en que t estado se ejecutan 
+--En debug cpu que diga tiempos de opcodes y/o en que t estado se ejecutan
 
 -poder indicar mas de una accion en misma breakpoint condition, ejemplo
 condition: pc=4000h
@@ -36,9 +36,9 @@ En ese mismo OSD, si pulsamos una tecla en el OSD, se quedara colgado, pues no v
 -Desensamblador, que permita copiar código assembler a texto
 ->desensamblador, pero de momento no puede copiar a texto
 
--condiciones outfired e infired no se disparan cuando son operaciones i/o de dma. es debido 
-a que las variables debug_fire_in y out se resetean antes del core y se comprueban despues, 
-pero la dma va aparte 
+-condiciones outfired e infired no se disparan cuando son operaciones i/o de dma. es debido
+a que las variables debug_fire_in y out se resetean antes del core y se comprueban despues,
+pero la dma va aparte
 
 -debugger z80: que sea capaz de mostrar direcciones NNNN correctas (para JR CC DIS) aunque se este debugando con memory zone y direccion alta.
 Por ejemplo:
@@ -58,7 +58,7 @@ Este JR NZ deberia aparecer como 20004
 -visor sprites: quizá mejorarlo para que se pueda elegir el incremento de salto para cada scanline... Por ejemplo, sprites de tsconf saltan de 256 en 256
 -Ver sprites con zoom y cuadricula
 
--Paso a paso cuando hay condición de debug activa no deja salir (en menú) : ocurre porque sale y al momento salta 
+-Paso a paso cuando hay condición de debug activa no deja salir (en menú) : ocurre porque sale y al momento salta
 breakpoint y vuelve a entrar. Es normal->opcion para poder salir de ahi aun con breakpoint activo? tiene sentido?
 
 -menu debug keys. que muestre en pantalla las teclas que se pulsan
@@ -82,6 +82,12 @@ y ademas, la funcion de debug_dump_nested_functions ya controla esos casos y no 
 -Text Adventure Map
 *botones rapidos para navegar norte/sur/etc?
 
--paws Dump toda tabla procesos 
+-paws Dump toda tabla procesos
 -confirmar parametros de Freehand en quill. crear grafico en illustrator y hacer las 8 posibles combinaciones
 -Número gráficos limitar a maximo 256 (en quill, paws, daad, gac)
+
+-registro debug ficticio EPC soporte para tbblue, zxuno, ....
+
+
+-Debug printf solo hacer bloqueo cuando mensajes van a consola de ZX Desktop
+Prueba con redimensionar ventana con driver audio sdl con callback y printf donde avisa de underrun de buffer y en Windows

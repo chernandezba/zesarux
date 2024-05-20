@@ -148,6 +148,8 @@ Por drivers:
 --curses--
 
 
+-en menu con curses, no se puede escribir el punto "." ? probado con ZENG host por ejemplo
+
 -En overscan con curses salen colores con ??? a la derecha fuera de pantalla
 
 -Con ventana ay piano en background, al ir a Smartload se mezcla texto de ventana ay piano en Smartload

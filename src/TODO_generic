@@ -62,11 +62,11 @@ Falla con drivers: sdl
 -Parámetro change slow en rpi que no venga por defecto
 Y lo haga la gente manualmente y/ o se detecte si es rpi1
 
--Quizá componentes threads que se pueda decidir cuál se activa como threads y cual no 
+-Quizá componentes threads que se pueda decidir cuál se activa como threads y cual no
 Como variable de ejecucion
 
 -remote command: Hexdump internal y de mapped memory debería ser misma función
-Luego flags para ver ascii o ver hexa o quitar espacios en hexa, etc 
+Luego flags para ver ascii o ver hexa o quitar espacios en hexa, etc
 
 -remote command: poder hacer dump de codigo fuente de lineas concretas
 
@@ -147,7 +147,7 @@ probar con over128
 Ampliar el que ya hay
 Tanto para realvideo como sin
 Con realvideo, cada vez que se refresca pantalla se lee de rainbow buffer. Se ahí, los putpixel que se hacen, si que pasan por la putpixel cache para ver si se envían a pantalla gráfica o no
-Sin realvideo, similar, pero no hay rainbow buffer sino que se hace putpixel a cada refresco y se mira si está en la cache putpizel 
+Sin realvideo, similar, pero no hay rainbow buffer sino que se hace putpixel a cada refresco y se mira si está en la cache putpizel
 
 
 -detectar para cualquier tipo de carga si va mas alla de la ramtop
@@ -177,7 +177,7 @@ Pero si indicamos por linea de comandos (sin editar archivo de config) lo siguie
 
 ./zesarux --vo xwindows
 
-Aunque el driver xwindows sea válido dará error antes de parsear esa opción, pues primero parsea el archivo de config y luego linea de comandos. 
+Aunque el driver xwindows sea válido dará error antes de parsear esa opción, pues primero parsea el archivo de config y luego linea de comandos.
 En el caso de drivers de video y audio se podría corregir evaluando drivervook y driveraook al final de parsear todo, pero en casos como valores con rango, como:
 
 --allpixeltotext-scale
@@ -186,3 +186,36 @@ Esto se parsea antes y por tanto no se puede quitar el error
 Por tanto, es difícil de corregir esto. En estos casos, lo mejor es que el usuario edite el .zesaruxrc o bien lo borre para que se recree desde cero,
 pues indicando por linea de comandos no servirá de nada
 
+-poder detectar si una instancia se ejecuta desde docker (y NO si se ha compilado desde docker):
+esto a nivel de estadística, permito saber en estadisticas web (enviando un parametro) que se han ejecutado instancias de testeo de docker
+
+-Mostrar juego cargado en titulo ventana. Desaparece al hacer reset. Que limite tiene el texto en los diferentes sistemas operativos?
+
+-Browser cintas standard que permita alterar la posición de la cinta
+
+-Quiza registro DE al volver de rutina de trap load, deberia ser DE -=bytes_leidos
+
+
+-Funciones de utils no deberían involucrar nada del menú
+
+-incorporar ZEsarUX en taskbar (dbus??) de kde, gnome o lo que se pueda
+
+-mensajes panic con codigo error. Por ejemplo, 0001 out of memory. mas bien seria un tipo de error, porque out of memory
+hay muchos tipos: out of memory cargando, out of memory asignando buffer rainbow, etc.
+Seria: error message: igual que hay ahora. Y luego clases: 0001 out of memory. 0002 segmentation fault, etc
+
+-combinacion de tecla especial que haga un "reinicio" del menu, por si se ha colgado en algun sitio
+
+-footer que tambien amplie tamaño segun menu_gui_zoom
+
+
+-quiza obtener mas info en descargas speccy online: autor, tamaño archivo, etc
+
+-Estandarizar el nombre del User agent en las peticiones web
+Ahora:
+"ZEsarUX X Darwin"
+
+Uno de ejemplo de Safari:
+"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.6.1 Safari/605.1.15"
+
+Esto permite estadisticas mejor con goaccess. Aunque no parece reconocer el browser como tal "ZEsarUX/10.0"

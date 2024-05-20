@@ -58,13 +58,94 @@ c) dejarlo asi tal cual. no es un bug sino una feature: no se vera la marca hast
 Total solo se verá al abrir una app que no estaba abierta. Si ya estaba, la marca se ve siempre
 
 
+-Se deben mostrar como inversos los iconos con actividad, aunque no esten habilitados?
+En QL tiene sentido por ejemplo, se intenta acceder a mdv1_ pero no esta activado
+funcion menu_ext_desktop_draw_lower_icon de zxvision.c
+En DSK de +3 ya se enviaba a footer
+-footer icono de cinta si se usa la cinta aunque no esté insertada? en standard tape y los traps a rom
+-mmc no se puede llegar a hacer porque no salta a lectura mmc si no esta activado zxmmc o mmc
 
+
+-subir limite de iconos en ZX Desktop de 100 a... ?
+El problema es que las operaciones de dibujado, movimento etc recorren siempre los 100 iconos, existan o no.
+Por tanto si se aumenta ese limite, esas operaciones iran algo mas lentas
+Se deberian recorrer teniendo un indice que diga cual es el ultimo icono existente, y recorrer hasta ese indice. De
+esa manera si que se podría aumentar el límite sin perjudicar dichas operaciones
 
 --- FIN ZX Desktop
 
 
 
 --- ZX Vision
+
+-tiene sentido items de "ESC back/close"?
+
+-boton derecho sobre una ventana, que conmute a esa ventana (pero solo cuando el uso de boton derecho no sea ESC)
+aunque cuando conmuta con boton izquierdo, espera a liberar el boton y por tanto no se lanza la accion del boton izquierdo
+(y no se lanzaria tampoco la del botón derecho)
+
+-ctrl/alt +qaop o wskl para mover ventana, en vez de shift, y hacer que todas las ventanas lo soporten (por ejemplo ahora solo va con ventanas que no tengan menu)
+
+
+-zxvision_window: buffer para pixeles, con doble buffer para saber si no ha cambiado un pixel, no refrescarlo
+Hacer uso de parametro dirty, usado igual en draw_window_contents, para saber _si hay que redibujar capa de pixel o no
+ventanas escriben aqui con otra funcion, por ejemplo llamada zxvision_putpixel_buffer, o quiza, renombrar
+todas zxvision_putpixel por zxvision_putpixel_direct, y la nueva llamarla tal cual zxvision_putpixel
+*definición anterior:
+-Nuevo concepto para ventanas:
+Buffer de pixel gestionado desde ventanas y renderizado desde draw window contents
+Ideal para help keyboard por ejemplo
+En draw window contents solo renderiza si se ha modificado o bien la capa de texto o de la de píxeles. Y en ese caso renderiza las dos capas
+
+
+-Renombrar setting de background windows por multitask windows? O algo así
+Debe indicar que se puede dejar ventanas en background pero que también pueden haber múltiples ventanas a la vez
+
+-Ayuda en process management. Cada ítem de ayuda muestra mismo mensaje. Además debe ser un string definido una sola vez que en cada ítem apunta a mismo puntero . Que significa esto????????
+-process management: no muestra uso tiempo de ventana zxlife si la ventana actual es zxlife
+
+-En visor de disco (dsk) con archivos, que indique User number (UU) de cada archivo? Ver https://www.seasip.info/Cpm/format22.html
+-O incluso mejor un browser/viewer de formato CP/M, que indique:
+*extent number
+*date file
+*etc
+
+-quiza funcion que espera_no_tecla sin considerar movimiento raton, deberia ser la habitual, y solo en casos concretos
+usar la que si considera movimiento raton
+
+
+-Texto fondo tiene que sea carácter 255 para que no se redibuje con espacios. O usar un flag de ventana que dice que no tiene que redibujar el texto
+
+
+-pid de ventana creo que deberia incrementarse siempre. ahora si cierras y abres una ventana continuamente, usa mismo pid, porque siempre busca el ultimo disponible. quiza al crearse una ventana deberia incrementarse en 1? o no?
+
+-Juego "Simón" haciendo uso del logo X. Y con sonidos de eventos de menú
+
+-app Calculadora que permita escribir expresiones
+
+-Tetris en app procrastinate ?
+
+-En imagen IA de descripción, botón para pedir otra imagen a la IA
+
+-otro tipo de overlay pero que no se llame continuamente, solo se llame al mover/redimensionar ventanas.
+y desde su aplicacion logicamente si que se llama a su overlay para dibujar
+ejemplo: process switcher: no se necesita que continuamente se estén redibujando todos los iconos, solo cuando haya movimiento de ventanas
+(pues en ese caso se repintan todas).
+otro ejemplo: el logo de la ventana de about: solo hay que redibujarlo cuando hay cambios de ventanas
+otro ejemplo: help keyboard
+y muchos otros ejemplos en que son pixeles que no cambian, que no hay que redibujar continuamente
+Con eso se reducirá mucho el uso de cpu en cada frame
+
+-cuando se llama a funcion overlay de cada ventana, se deberia pasar como parametro la propia ventana (zxvision_window *),
+asi la funcion de overlay no tiene que guardar un puntero estatico fuera siempre
+complementario: quizá en todos los overlay que no necesiten redibujar siempre, detectar el flag que indica precisamente que se ha borrado, movido, etc, para solo redibujar cuando haya que hacerlo (dirty_user_must_draw_contents)
+->Realmente hay pocas ventanas que tengan overlay de pixeles estaticos
+Una de ellas es el "About" pero ya esta usando dirty_user_must_draw_contents
+
+-poder usar tipo de letra de los iconos en el menu. cuando se active char width a 4
+
+-hexadecimal editor deberia refrescar continuamente al estar dentro de la ventana?
+
 
 -quiza otras acciones sobre ventana que hagan cambiar el color del marco en determinados eventos al mover el raton? Ejemplo:
 -mostrar titulo ventana entero al pasar raton sobre zona titulo

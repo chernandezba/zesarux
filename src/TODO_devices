@@ -42,6 +42,14 @@ Y los ST0, ST1, etc de resultado, deben retornar los que hay en DSK? respuesta d
 -----------------------
 
 
+--- Plus3handler
+
+-plus3doshandler: se necesita muchas revisiones para que funcione correctamente, algunas llamadas al leer sector que se va a leer puertos,
+ejemplo badlands.dsk y rutina en la 2114h que esta en los traps
+
+-----------------------
+
+
 --- Betadisk ---
 
 -betadisk: nmi no parece guardar el snapshot, aunque lo intenta
@@ -60,7 +68,7 @@ Y los ST0, ST1, etc de resultado, deben retornar los que hay en DSK? respuesta d
 -Mmap para acceso a mmc/ide. Pero solo cuando se activa "persistent writes".
 mmap tiene flags para decir que es solo lectura pero supongo que fallaria con segfault si escribimos en una zona de solo lectura
 Sin persistent writes deberia hacerlo como siempre: escribiendo en memoria, sin mmap
-Con mmap, se deja de hacer flush, ya que lo hará automáticamente (??) el sistema operativo, al activar mmap 
+Con mmap, se deja de hacer flush, ya que lo hará automáticamente (??) el sistema operativo, al activar mmap
 
 
 -Revisar protección de escritura en páginas divmmc
@@ -74,22 +82,22 @@ It's also mapped instantly (100ns after /MREQ of that fetch is falling down) aft
 
 
 -MMC (y tambien para IDE)
-Mejorar mmc flush etc. Al escribir a disco, debería dejar las operaciones de escritura en espera, esto 
-cuando se lanza desde otro thread desde timer Es critico. 
+Mejorar mmc flush etc. Al escribir a disco, debería dejar las operaciones de escritura en espera, esto
+cuando se lanza desde otro thread desde timer Es critico.
 Si no hay threads, no hay problema, hay un solo hilo y los dos eventos no se dan nunca a la misma vez
 Ejemplo:
 Inicia escritura de byte en memoria mmc. Mete variable flush a 1. Pero aún no ha escrito
 Inicia flush. Mete variable flush a 0. Aún no graba a disco
-Sigue escritura de byte en memoria mmc. 
+Sigue escritura de byte en memoria mmc.
 Sigue el thread de grabado a disco pero puede ser que el byte modificado no entre esta vez
 
-Aunque entrará en el siguiente flush, si lo hay. 
+Aunque entrará en el siguiente flush, si lo hay.
 
-En este caso esto puede quedar corregido simplemente si al expulsar mmc file siempre hacemos flush. 
-Pero esto NO es recomendable pues entonces haríamos siempre flush de toda imagen, se haya escrito o no. 
-Quizá activar flag cuando se escribe al menos una vez y al salir sabemos si hay que grabarlo o no 
+En este caso esto puede quedar corregido simplemente si al expulsar mmc file siempre hacemos flush.
+Pero esto NO es recomendable pues entonces haríamos siempre flush de toda imagen, se haya escrito o no.
+Quizá activar flag cuando se escribe al menos una vez y al salir sabemos si hay que grabarlo o no
 
--Idea: en vez de tener la imagen Mmc, que tenga los archivos que contiene y cree el Mmc copiándolos 
+-Idea: en vez de tener la imagen Mmc, que tenga los archivos que contiene y cree el Mmc copiándolos
 
 -Creacion imagen mmc desde seleccion de imagen mmc, la crea byte a byte y con tamaños grandes puede ser muy lento
 
@@ -105,7 +113,7 @@ https://www.rwapsoftware.co.uk/spectrum/spectrum_divide_notes.html
 
 Implementation of greater ROM/RAM space on DiviDE Plus
 
-DivIDE Plus provides a total of 512K ROM and 512K RAM on the DivIDE Plus in order to enable much improved firmware to be written (this compares to the 8K ROM and 32K RAM available on the original DivIDE Hard Disk Interface). 
+DivIDE Plus provides a total of 512K ROM and 512K RAM on the DivIDE Plus in order to enable much improved firmware to be written (this compares to the 8K ROM and 32K RAM available on the original DivIDE Hard Disk Interface).
 
 We decided on 512K as this would allow ramdisk storage and the following additional firmware to be used (as well as the original divIDE firmware):
 
@@ -119,7 +127,7 @@ The scheme chosen mixes MB-02 paging using the Port &17 with DivIDE paging using
 
 The &E3 Port is untouched. The &17 Port is 8bit, outputs are called Q0..Q7, as follows:
 
-- Q6 and Q7 select the mode (DivIDE, RAM, ROM, reset). 
+- Q6 and Q7 select the mode (DivIDE, RAM, ROM, reset).
 - Q5 bit must be set (1) to enable writing in RAM and ROM modes.  If this is set to 0, it disables the ability to write to RAM or ROM.
 - Q0..Q4 select the memory banks.
 
@@ -192,18 +200,18 @@ https://github.com/charlierobson/ZXpand-Vitamins/wiki/ZXpand---Online-Manual
 
 - emular puerto FFH
 
--Ddh con extended info al final, que contenga marcas de sector y labels ? 
+-Ddh con extended info al final, que contenga marcas de sector y labels ?
 
 
 -lee_hilow_audio: ultimo sector en cara B dice:
 Total bytes leidos: 0
 Sector -407021264
 
--convert a ddh: 
+-convert a ddh:
 *linea de comandos: si se dice repetir, repite solo desde el inicio de los datos de sector, pero deberia hacerlo desde el id de sector y el label
 
 
-------------------            
+------------------
 
 
 -emulación impresion seikosha gp-100a
@@ -211,7 +219,7 @@ Sector -407021264
 
 -Dandanator nueva versión
 
--soporte para más de 1 joystick 
+-soporte para más de 1 joystick
 
 -puerto kempston y puerto 223. Juego El cid
 
