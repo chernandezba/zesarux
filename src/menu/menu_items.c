@@ -22642,7 +22642,7 @@ void menu_help_keyboard_show_speccy_pressed_keys(zxvision_window *ventana,int ke
                 if (valor1==0) {
                     tecla_encontrada=1;
                     menu_help_keyboard_overlay_force_draw=1;
-                    printf("force draw\n");
+                    //printf("force draw\n");
                 }
             }
 
@@ -23391,9 +23391,9 @@ void menu_help_show_keyboard(MENU_ITEM_PARAMETERS)
         //porque habran todas las otras teclas que se han activado con el boton derecho y que no se liberan
         //No seria facil saber que tecla (o teclas) ha liberado el usuario si hay todas las otras que se activaron con boton derecho
         if ((tecla || todos_puertos_teclado_acumulado!=255) && !mouse_left && !mouse_right) {
-            printf("generar tecla en condicion de tecla pulsada. tecla=%d mouse_left: %d mouse_right: %d todos_puertos_teclado_acumulado=%d\n",
-                tecla,mouse_left,mouse_right,todos_puertos_teclado_acumulado);
-            printf("puertos en generar tecla. puerto_65278: %d puerto_32766: %d\n",puerto_65278,puerto_32766);
+            //printf("generar tecla en condicion de tecla pulsada. tecla=%d mouse_left: %d mouse_right: %d todos_puertos_teclado_acumulado=%d\n",
+            //    tecla,mouse_left,mouse_right,todos_puertos_teclado_acumulado);
+            //printf("puertos en generar tecla. puerto_65278: %d puerto_32766: %d\n",puerto_65278,puerto_32766);
             z80_byte acumulado;
             int salir=0;
             menu_help_keyboard_overlay_force_draw=1;
@@ -23416,7 +23416,7 @@ void menu_help_show_keyboard(MENU_ITEM_PARAMETERS)
 
             } while (!salir);
             zxvision_keys_event_not_send_to_machine=1;
-            printf("fin generar tecla\n");
+            //printf("fin generar tecla\n");
 
         }
 
@@ -23430,8 +23430,11 @@ void menu_help_show_keyboard(MENU_ITEM_PARAMETERS)
             pulsado_y *=zoom_y;
 
             if (debug_ultimo_click_x!=pulsado_x && debug_ultimo_click_y!=pulsado_y) {
-                printf("%d,%d,",pulsado_x,pulsado_y);
-                fflush(stdout);
+                //Debug para mostrar coordenada pulsada
+                //printf("%d,%d,",pulsado_x,pulsado_y);
+                //fflush(stdout);
+
+
                 debug_ultimo_click_x=pulsado_x;
                 debug_ultimo_click_y=pulsado_y;
             }
@@ -23460,7 +23463,7 @@ void menu_help_show_keyboard(MENU_ITEM_PARAMETERS)
                 keyboard_help_reset_teclas_pulsadas();
             }
 
-            printf("\n");
+            //printf("\n");
 
             menu_espera_no_tecla();
 
