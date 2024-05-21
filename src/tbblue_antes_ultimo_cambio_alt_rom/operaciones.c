@@ -7176,18 +7176,18 @@ z80_byte lee_puerto_spectrum_no_time(z80_byte puerto_h,z80_byte puerto_l)
 	if ( !menu_abierto && kempston_mouse_emulation.v  &&  (puerto_l&32) == 0  &&  ( (puerto_h&7)==3 || (puerto_h&7)==7 || (puerto_h&2)==2 ) ) {
 		//printf ("kempston mouse. port 0x%x%x\n",puerto_h,puerto_l);
 
-//IN 64479 - return X axis (0-255)
-//IN 65503 - return Y axis (0-255)
-//IN 64223 - return button status
-//D0 - right button
-//D1 - left button
-//D2-D7 - not used
+        //IN 64479 - return X axis (0-255)
+        //IN 65503 - return Y axis (0-255)
+        //IN 64223 - return button status
+        //D0 - right button
+        //D1 - left button
+        //D2-D7 - not used
 
-//From diagram ports
+        //From diagram ports
 
-//X-Axis  = port 64479 xxxxx011 xx0xxxxx
-//Y-Axis  = port 65503 xxxxx111 xx0xxxxx
-//BUTTONS = port 64223 xxxxxx10 xx0xxxxx
+        //X-Axis  = port 64479 xxxxx011 xx0xxxxx
+        //Y-Axis  = port 65503 xxxxx111 xx0xxxxx
+        //BUTTONS = port 64223 xxxxxx10 xx0xxxxx
 
 		z80_byte acumulado=0;
 
@@ -7197,24 +7197,24 @@ z80_byte lee_puerto_spectrum_no_time(z80_byte puerto_h,z80_byte puerto_l)
 			acumulado=kempston_mouse_x*kempston_mouse_factor_sensibilidad;
 		}
 
-                if ((puerto_h&7)==7) {
-                        //Y-Axis
+        if ((puerto_h&7)==7) {
+            //Y-Axis
 			acumulado=kempston_mouse_y*kempston_mouse_factor_sensibilidad;
-                }
+        }
 
-                if ((puerto_h&3)==2) {
-                        //Buttons
+        if ((puerto_h&3)==2) {
+            //Buttons
 			acumulado=255;
 
 			//left button
 			if (mouse_left) acumulado &=(255-2);
-                        //right button
-                        if (mouse_right) acumulado &=(255-1);
+                //right button
+                if (mouse_right) acumulado &=(255-1);
 
-                        //en Next, bits altos se usan para wheel, como no los emulamos, a 0
-                        //https://specnext.dev/wiki/Kempston_Mouse_Buttons
-                        if (MACHINE_IS_TBBLUE) acumulado &=0x0F;
-                }
+                //en Next, bits altos se usan para wheel, como no los emulamos, a 0
+                //https://specnext.dev/wiki/Kempston_Mouse_Buttons
+                if (MACHINE_IS_TBBLUE) acumulado &=0x0F;
+            }
 
 		//printf ("devolvemos valor: %d\n",acumulado);
 		return acumulado;
