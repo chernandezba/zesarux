@@ -939,7 +939,7 @@ Clip window registers
   bit 0 = Reset the Layer 2 clip index
 */
 
-z80_byte clip_windows[4][4];                    // memory array to store actual clip windows
+z80_byte tbblue_clip_windows[4][4];                    // memory array to store actual clip windows
 
 void tbblue_inc_clip_window_index(const z80_byte index_mask) {
     const z80_byte inc_one = (index_mask<<1) ^ index_mask;   // extract bottom bit of mask (+garbage in upper bits)
@@ -1844,8 +1844,8 @@ void tbsprite_put_color_line(int x,z80_byte color,int rangoxmin,int rangoxmax)
 
 
 	//Si fuera del viewport. Clip window on Sprites only work when the "over border bit" is disabled
-	int clipxmin=clip_windows[TBBLUE_CLIP_WINDOW_SPRITES][0]+TBBLUE_SPRITE_BORDER;
-	int clipxmax=clip_windows[TBBLUE_CLIP_WINDOW_SPRITES][1]+TBBLUE_SPRITE_BORDER;
+	int clipxmin=tbblue_clip_windows[TBBLUE_CLIP_WINDOW_SPRITES][0]+TBBLUE_SPRITE_BORDER;
+	int clipxmax=tbblue_clip_windows[TBBLUE_CLIP_WINDOW_SPRITES][1]+TBBLUE_SPRITE_BORDER;
 	z80_byte sprites_over_border=tbblue_registers[21]&2;
 	if (sprites_over_border==0 && (x<clipxmin || x>clipxmax)) return;
 
@@ -1988,10 +1988,10 @@ void tbsprite_do_overlay(void)
 
         if (tbblue_registers[21]&0x20) {
                 // sprite clipping "over border" enabled, double the X coordinate of clip window
-                rangoxmin=2*clip_windows[TBBLUE_CLIP_WINDOW_SPRITES][0];
-                rangoxmax=2*clip_windows[TBBLUE_CLIP_WINDOW_SPRITES][1]+1;
-                rangoymin=clip_windows[TBBLUE_CLIP_WINDOW_SPRITES][2];
-                rangoymax=clip_windows[TBBLUE_CLIP_WINDOW_SPRITES][3];
+                rangoxmin=2*tbblue_clip_windows[TBBLUE_CLIP_WINDOW_SPRITES][0];
+                rangoxmax=2*tbblue_clip_windows[TBBLUE_CLIP_WINDOW_SPRITES][1]+1;
+                rangoymin=tbblue_clip_windows[TBBLUE_CLIP_WINDOW_SPRITES][2];
+                rangoymax=tbblue_clip_windows[TBBLUE_CLIP_WINDOW_SPRITES][3];
                 if (rangoxmax > TBBLUE_SPRITE_BORDER+256+TBBLUE_SPRITE_BORDER-1) {
                     // clamp rangoxmax to 319
                     rangoxmax = TBBLUE_SPRITE_BORDER+256+TBBLUE_SPRITE_BORDER-1;
@@ -2001,10 +2001,10 @@ void tbsprite_do_overlay(void)
 
     else {
         // take clip window coordinates, but limit them to [0,0]->[255,191] (and offset them +32,+32)
-        rangoxmin=clip_windows[TBBLUE_CLIP_WINDOW_SPRITES][0] + TBBLUE_SPRITE_BORDER;
-        rangoxmax=clip_windows[TBBLUE_CLIP_WINDOW_SPRITES][1] + TBBLUE_SPRITE_BORDER;
-        rangoymin=clip_windows[TBBLUE_CLIP_WINDOW_SPRITES][2] + TBBLUE_SPRITE_BORDER;
-        rangoymax=clip_windows[TBBLUE_CLIP_WINDOW_SPRITES][3] + TBBLUE_SPRITE_BORDER;
+        rangoxmin=tbblue_clip_windows[TBBLUE_CLIP_WINDOW_SPRITES][0] + TBBLUE_SPRITE_BORDER;
+        rangoxmax=tbblue_clip_windows[TBBLUE_CLIP_WINDOW_SPRITES][1] + TBBLUE_SPRITE_BORDER;
+        rangoymin=tbblue_clip_windows[TBBLUE_CLIP_WINDOW_SPRITES][2] + TBBLUE_SPRITE_BORDER;
+        rangoymax=tbblue_clip_windows[TBBLUE_CLIP_WINDOW_SPRITES][3] + TBBLUE_SPRITE_BORDER;
         if (rangoymax > TBBLUE_SPRITE_BORDER+192-1) {
             // clamp rangoymax to 32+191 (bottom edge of PAPER)
             rangoymax = TBBLUE_SPRITE_BORDER+192-1;
@@ -3731,25 +3731,25 @@ Bit	Function
 
 	tbblue_registers[112]=0;
 
-	clip_windows[TBBLUE_CLIP_WINDOW_LAYER2][0]=0;
-	clip_windows[TBBLUE_CLIP_WINDOW_LAYER2][1]=255;
-	clip_windows[TBBLUE_CLIP_WINDOW_LAYER2][2]=0;
-	clip_windows[TBBLUE_CLIP_WINDOW_LAYER2][3]=191;
+	tbblue_clip_windows[TBBLUE_CLIP_WINDOW_LAYER2][0]=0;
+	tbblue_clip_windows[TBBLUE_CLIP_WINDOW_LAYER2][1]=255;
+	tbblue_clip_windows[TBBLUE_CLIP_WINDOW_LAYER2][2]=0;
+	tbblue_clip_windows[TBBLUE_CLIP_WINDOW_LAYER2][3]=191;
 
-	clip_windows[TBBLUE_CLIP_WINDOW_SPRITES][0]=0;
-	clip_windows[TBBLUE_CLIP_WINDOW_SPRITES][1]=255;
-	clip_windows[TBBLUE_CLIP_WINDOW_SPRITES][2]=0;
-	clip_windows[TBBLUE_CLIP_WINDOW_SPRITES][3]=191;
+	tbblue_clip_windows[TBBLUE_CLIP_WINDOW_SPRITES][0]=0;
+	tbblue_clip_windows[TBBLUE_CLIP_WINDOW_SPRITES][1]=255;
+	tbblue_clip_windows[TBBLUE_CLIP_WINDOW_SPRITES][2]=0;
+	tbblue_clip_windows[TBBLUE_CLIP_WINDOW_SPRITES][3]=191;
 
-	clip_windows[TBBLUE_CLIP_WINDOW_ULA][0]=0;
-	clip_windows[TBBLUE_CLIP_WINDOW_ULA][1]=255;
-	clip_windows[TBBLUE_CLIP_WINDOW_ULA][2]=0;
-	clip_windows[TBBLUE_CLIP_WINDOW_ULA][3]=191;
+	tbblue_clip_windows[TBBLUE_CLIP_WINDOW_ULA][0]=0;
+	tbblue_clip_windows[TBBLUE_CLIP_WINDOW_ULA][1]=255;
+	tbblue_clip_windows[TBBLUE_CLIP_WINDOW_ULA][2]=0;
+	tbblue_clip_windows[TBBLUE_CLIP_WINDOW_ULA][3]=191;
 
-	clip_windows[TBBLUE_CLIP_WINDOW_TILEMAP][0]=0;
-	clip_windows[TBBLUE_CLIP_WINDOW_TILEMAP][1]=159;
-	clip_windows[TBBLUE_CLIP_WINDOW_TILEMAP][2]=0;
-	clip_windows[TBBLUE_CLIP_WINDOW_TILEMAP][3]=255;
+	tbblue_clip_windows[TBBLUE_CLIP_WINDOW_TILEMAP][0]=0;
+	tbblue_clip_windows[TBBLUE_CLIP_WINDOW_TILEMAP][1]=159;
+	tbblue_clip_windows[TBBLUE_CLIP_WINDOW_TILEMAP][2]=0;
+	tbblue_clip_windows[TBBLUE_CLIP_WINDOW_TILEMAP][3]=255;
 
 
 
@@ -4663,44 +4663,44 @@ void tbblue_set_value_port_position(z80_byte index_position,z80_byte value)
 
 		case 24:
 			//(W) 0x18 (24) => Clip Window Layer 2
-			clip_windows[TBBLUE_CLIP_WINDOW_LAYER2][tbblue_get_clip_window_layer2_index()]=value;
+			tbblue_clip_windows[TBBLUE_CLIP_WINDOW_LAYER2][tbblue_get_clip_window_layer2_index()]=value;
             tbblue_inc_clip_window_layer2_index();
 
 			//debug
-			//printf ("layer2 %d %d %d %d\n",clip_windows[TBBLUE_CLIP_WINDOW_LAYER2][0],clip_windows[TBBLUE_CLIP_WINDOW_LAYER2][1],clip_windows[TBBLUE_CLIP_WINDOW_LAYER2][2],clip_windows[TBBLUE_CLIP_WINDOW_LAYER2][3]);
+			//printf ("layer2 %d %d %d %d\n",tbblue_clip_windows[TBBLUE_CLIP_WINDOW_LAYER2][0],tbblue_clip_windows[TBBLUE_CLIP_WINDOW_LAYER2][1],tbblue_clip_windows[TBBLUE_CLIP_WINDOW_LAYER2][2],tbblue_clip_windows[TBBLUE_CLIP_WINDOW_LAYER2][3]);
 		break;
 
 
 
 		case 25:
 			//((W) 0x19 (25) => Clip Window Sprites
-			clip_windows[TBBLUE_CLIP_WINDOW_SPRITES][tbblue_get_clip_window_sprites_index()]=value;
+			tbblue_clip_windows[TBBLUE_CLIP_WINDOW_SPRITES][tbblue_get_clip_window_sprites_index()]=value;
             tbblue_inc_clip_window_sprites_index();
 
 			//debug
-			//printf ("sprites %d %d %d %d\n",clip_windows[TBBLUE_CLIP_WINDOW_SPRITES][0],clip_windows[TBBLUE_CLIP_WINDOW_SPRITES][1],clip_windows[TBBLUE_CLIP_WINDOW_SPRITES][2],clip_windows[TBBLUE_CLIP_WINDOW_SPRITES][3]);
+			//printf ("sprites %d %d %d %d\n",tbblue_clip_windows[TBBLUE_CLIP_WINDOW_SPRITES][0],tbblue_clip_windows[TBBLUE_CLIP_WINDOW_SPRITES][1],tbblue_clip_windows[TBBLUE_CLIP_WINDOW_SPRITES][2],tbblue_clip_windows[TBBLUE_CLIP_WINDOW_SPRITES][3]);
 		break;
 
 
 
 		case 26:
 			//(W) 0x1A (26) => Clip Window ULA/LoRes
-			clip_windows[TBBLUE_CLIP_WINDOW_ULA][tbblue_get_clip_window_ula_index()]=value;
+			tbblue_clip_windows[TBBLUE_CLIP_WINDOW_ULA][tbblue_get_clip_window_ula_index()]=value;
             tbblue_inc_clip_window_ula_index();
 
 			//debug
-			//printf ("ula %d %d %d %d\n",clip_windows[TBBLUE_CLIP_WINDOW_ULA][0],clip_windows[TBBLUE_CLIP_WINDOW_ULA][1],clip_windows[TBBLUE_CLIP_WINDOW_ULA][2],clip_windows[TBBLUE_CLIP_WINDOW_ULA][3]);
+			//printf ("ula %d %d %d %d\n",tbblue_clip_windows[TBBLUE_CLIP_WINDOW_ULA][0],tbblue_clip_windows[TBBLUE_CLIP_WINDOW_ULA][1],tbblue_clip_windows[TBBLUE_CLIP_WINDOW_ULA][2],tbblue_clip_windows[TBBLUE_CLIP_WINDOW_ULA][3]);
 		break;
 
 
 
 		case 27:
 			//(W) 0x1B (27) => Clip Window Tilemap
-			clip_windows[TBBLUE_CLIP_WINDOW_TILEMAP][tbblue_get_clip_window_tilemap_index()]=value;
+			tbblue_clip_windows[TBBLUE_CLIP_WINDOW_TILEMAP][tbblue_get_clip_window_tilemap_index()]=value;
             tbblue_inc_clip_window_tilemap_index();
 
 			//debug
-			//printf ("tilemap %d %d %d %d\n",clip_windows[TBBLUE_CLIP_WINDOW_TILEMAP][0],clip_windows[TBBLUE_CLIP_WINDOW_TILEMAP][1],clip_windows[TBBLUE_CLIP_WINDOW_TILEMAP][2],clip_windows[TBBLUE_CLIP_WINDOW_TILEMAP][3]);
+			//printf ("tilemap %d %d %d %d\n",tbblue_clip_windows[TBBLUE_CLIP_WINDOW_TILEMAP][0],tbblue_clip_windows[TBBLUE_CLIP_WINDOW_TILEMAP][1],tbblue_clip_windows[TBBLUE_CLIP_WINDOW_TILEMAP][2],tbblue_clip_windows[TBBLUE_CLIP_WINDOW_TILEMAP][3]);
 		break;
 
 
@@ -5026,22 +5026,22 @@ Bit	Function
 
 		case 24:
 			//(W) 0x18 (24) => Clip Window Layer 2
-            return clip_windows[TBBLUE_CLIP_WINDOW_LAYER2][tbblue_get_clip_window_layer2_index()];
+            return tbblue_clip_windows[TBBLUE_CLIP_WINDOW_LAYER2][tbblue_get_clip_window_layer2_index()];
 		break;
 
 		case 25:
 			//((W) 0x19 (25) => Clip Window Sprites
-            return clip_windows[TBBLUE_CLIP_WINDOW_SPRITES][tbblue_get_clip_window_sprites_index()];
+            return tbblue_clip_windows[TBBLUE_CLIP_WINDOW_SPRITES][tbblue_get_clip_window_sprites_index()];
 		break;
 
 		case 26:
 			//(W) 0x1A (26) => Clip Window ULA/LoRes
-			return clip_windows[TBBLUE_CLIP_WINDOW_ULA][tbblue_get_clip_window_ula_index()];
+			return tbblue_clip_windows[TBBLUE_CLIP_WINDOW_ULA][tbblue_get_clip_window_ula_index()];
 		break;
 
 		case 27:
 			//(W) 0x1B (27) => Clip Window Tilemap
-			return clip_windows[TBBLUE_CLIP_WINDOW_TILEMAP][tbblue_get_clip_window_tilemap_index()];
+			return tbblue_clip_windows[TBBLUE_CLIP_WINDOW_TILEMAP][tbblue_get_clip_window_tilemap_index()];
 		break;
 
 		case 28:
@@ -5764,8 +5764,8 @@ the central 256×192 display. The X coordinates are internally doubled to cover 
 
 
 
-	int clipwindow_min_x=clip_windows[TBBLUE_CLIP_WINDOW_TILEMAP][0]*2;
-	int clipwindow_max_x=(clip_windows[TBBLUE_CLIP_WINDOW_TILEMAP][1]+1)*2;
+	int clipwindow_min_x=tbblue_clip_windows[TBBLUE_CLIP_WINDOW_TILEMAP][0]*2;
+	int clipwindow_max_x=(tbblue_clip_windows[TBBLUE_CLIP_WINDOW_TILEMAP][1]+1)*2;
 
 
 
@@ -6397,8 +6397,8 @@ bits 7-0 = Y Offset (0-191)(Reset to 0 after a reset)
     int total_x=256;
 
 
-    int clip_min=clip_windows[TBBLUE_CLIP_WINDOW_LAYER2][0];
-    int clip_max=clip_windows[TBBLUE_CLIP_WINDOW_LAYER2][1];
+    int clip_min=tbblue_clip_windows[TBBLUE_CLIP_WINDOW_LAYER2][0];
+    int clip_max=tbblue_clip_windows[TBBLUE_CLIP_WINDOW_LAYER2][1];
 
     if (layer2_resolution) {
         total_x +=TBBLUE_LAYER2_12_BORDER*2;
@@ -6737,7 +6737,7 @@ void tbblue_do_ula_standard_overlay()
 			//Tener en cuenta valor clip window
 
 			//(W) 0x1A (26) => Clip Window ULA/LoRes
-			if (posx>=clip_windows[TBBLUE_CLIP_WINDOW_ULA][0] && posx<=clip_windows[TBBLUE_CLIP_WINDOW_ULA][1] && scanline_copia>=clip_windows[TBBLUE_CLIP_WINDOW_ULA][2] && scanline_copia<=clip_windows[TBBLUE_CLIP_WINDOW_ULA][3]) {
+			if (posx>=tbblue_clip_windows[TBBLUE_CLIP_WINDOW_ULA][0] && posx<=tbblue_clip_windows[TBBLUE_CLIP_WINDOW_ULA][1] && scanline_copia>=tbblue_clip_windows[TBBLUE_CLIP_WINDOW_ULA][2] && scanline_copia<=tbblue_clip_windows[TBBLUE_CLIP_WINDOW_ULA][3]) {
 				if (!tbblue_force_disable_layer_ula.v) {
 					z80_int color_final=tbblue_get_palette_active_ula(color);
 
@@ -6844,7 +6844,7 @@ void tbblue_do_ula_lores_overlay()
 		//Tener en cuenta valor clip window
 
 		//(W) 0x1A (26) => Clip Window ULA/LoRes
-		if (posx>=clip_windows[TBBLUE_CLIP_WINDOW_ULA][0] && posx<=clip_windows[TBBLUE_CLIP_WINDOW_ULA][1] && scanline_copia>=clip_windows[TBBLUE_CLIP_WINDOW_ULA][2] && scanline_copia<=clip_windows[TBBLUE_CLIP_WINDOW_ULA][3]) {
+		if (posx>=tbblue_clip_windows[TBBLUE_CLIP_WINDOW_ULA][0] && posx<=tbblue_clip_windows[TBBLUE_CLIP_WINDOW_ULA][1] && scanline_copia>=tbblue_clip_windows[TBBLUE_CLIP_WINDOW_ULA][2] && scanline_copia<=tbblue_clip_windows[TBBLUE_CLIP_WINDOW_ULA][3]) {
 			if (!tbblue_force_disable_layer_ula.v) {
 				color_final=tbblue_get_palette_active_ula(color);
 
@@ -6936,7 +6936,7 @@ void screen_store_scanline_rainbow_solo_display_tbblue(void)
     //Overlay de layer2
                         //Capa layer2
             /*if (tbblue_is_active_layer2() && !tbblue_force_disable_layer_layer_two.v) {
-                if (scanline_copia>=clip_windows[TBBLUE_CLIP_WINDOW_LAYER2][2] && scanline_copia<=clip_windows[TBBLUE_CLIP_WINDOW_LAYER2][3]) {
+                if (scanline_copia>=tbblue_clip_windows[TBBLUE_CLIP_WINDOW_LAYER2][2] && scanline_copia<=tbblue_clip_windows[TBBLUE_CLIP_WINDOW_LAYER2][3]) {
                     capalayer2=1;
 
                     tbblue_do_layer2_overlay();
@@ -6978,13 +6978,13 @@ void screen_store_scanline_rainbow_solo_display_tbblue(void)
 
         if (layer2_resolution==0) {
             if (t_scanline_draw>=screen_indice_inicio_pant && t_scanline_draw<screen_indice_fin_pant) {
-                if (y_layer2>=clip_windows[TBBLUE_CLIP_WINDOW_LAYER2][2] && y_layer2<=clip_windows[TBBLUE_CLIP_WINDOW_LAYER2][3]) {
+                if (y_layer2>=tbblue_clip_windows[TBBLUE_CLIP_WINDOW_LAYER2][2] && y_layer2<=tbblue_clip_windows[TBBLUE_CLIP_WINDOW_LAYER2][3]) {
                     dibujar=1;
                 }
             }
         }
 
-        else if (y_layer2>=clip_windows[TBBLUE_CLIP_WINDOW_LAYER2][2] && y_layer2<=clip_windows[TBBLUE_CLIP_WINDOW_LAYER2][3]) {
+        else if (y_layer2>=tbblue_clip_windows[TBBLUE_CLIP_WINDOW_LAYER2][2] && y_layer2<=tbblue_clip_windows[TBBLUE_CLIP_WINDOW_LAYER2][3]) {
             dibujar=1;
         }
 
@@ -7022,7 +7022,7 @@ the central 256×192 display. The X coordinates are internally doubled to cover 
 			*/
 
 			//Tener en cuenta clip window
-		if (y_tile>=clip_windows[TBBLUE_CLIP_WINDOW_TILEMAP][2] && y_tile<=clip_windows[TBBLUE_CLIP_WINDOW_TILEMAP][3]) {
+		if (y_tile>=tbblue_clip_windows[TBBLUE_CLIP_WINDOW_TILEMAP][2] && y_tile<=tbblue_clip_windows[TBBLUE_CLIP_WINDOW_TILEMAP][3]) {
 			//capatiles=1;
 			tbblue_do_tile_overlay(y_tile);
 		}
@@ -7041,7 +7041,7 @@ the central 256×192 display. The X coordinates are internally doubled to cover 
 	int mostrar_sprites=1;
 	if (sprites_over_border==0) {
 		int scanline_copia=t_scanline_draw-screen_indice_inicio_pant;
-		if (scanline_copia<clip_windows[TBBLUE_CLIP_WINDOW_SPRITES][2] || scanline_copia>clip_windows[TBBLUE_CLIP_WINDOW_SPRITES][3]) mostrar_sprites=0;
+		if (scanline_copia<tbblue_clip_windows[TBBLUE_CLIP_WINDOW_SPRITES][2] || scanline_copia>tbblue_clip_windows[TBBLUE_CLIP_WINDOW_SPRITES][3]) mostrar_sprites=0;
 	}
 
 

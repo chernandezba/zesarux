@@ -856,6 +856,8 @@ Byte fields:
 0-7:
 z80_byte mk14_keystatus[8]
 
+-Block ID 73: ZSF_TBBLUE_CLIPWINDOWS
+z80_byte tbblue_clip_windows[4][4]
 
 
 -Como codificar bloques de memoria para Spectrum 128k, zxuno, tbblue, tsconf, etc?
@@ -944,6 +946,7 @@ char *zsf_block_id_names[]={
   "ZSF_KEY_PORTS_SAM_STATE",
   "ZSF_KEY_PORTS_Z88_STATE",
   "ZSF_KEY_PORTS_MK14_STATE",
+  "ZSF_TBBLUE_CLIPWINDOWS",
 
   "Unknown"  //Este siempre al final
 };
@@ -3010,6 +3013,22 @@ Byte fields:
 
 }
 
+void load_zsf_tbblue_clipwindows(z80_byte *header)
+{
+
+    int offset=0;
+
+    int i,j;
+
+    for (i=0;i<4;i++) {
+        for (j=0;j<4;j++) {
+            tbblue_clip_windows[i][j]=header[offset++];
+        }
+    }
+
+
+}
+
 
 void load_zsf_cpc_conf(z80_byte *header)
 {
@@ -3439,6 +3458,10 @@ void load_zsf_snapshot_file_mem(char *filename,z80_byte *origin_memory,int longi
 
       case ZSF_TBBLUE_SPRITES:
         load_zsf_tbblue_sprites(block_data);
+      break;
+
+      case ZSF_TBBLUE_CLIPWINDOWS:
+        load_zsf_tbblue_clipwindows(block_data);
       break;
 
       case ZSF_TIMEX:
@@ -5892,11 +5915,20 @@ if (MACHINE_IS_TBBLUE) {
   free(tbbluespriteblock);
 
 
+    //Clipwindows
+    z80_byte tbblue_clipwindows_block[16];
 
+    int offset=0;
 
+    int j;
 
+    for (i=0;i<4;i++) {
+        for (j=0;j<4;j++) {
+            tbblue_clipwindows_block[offset++]=tbblue_clip_windows[i][j];
+        }
+    }
 
-
+    zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, tbblue_clipwindows_block,ZSF_TBBLUE_CLIPWINDOWS, 16);
 
   //
   //Paletas de color

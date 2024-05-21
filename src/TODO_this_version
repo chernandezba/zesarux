@@ -6,12 +6,8 @@ Para esta version:
 -------------
 
 
--ZENG soporte para QL. ok aunque no envia teclas extendidas
--ZENG para msx se leen los cursores en destino
 
 -kempston mouse en cursor draw en menu abierto lee en apariencia aleatoriamente
-
--snapshot ZSF de nextdows, no guarda la parte inferior de pantalla aparentemente: hay que guardar en snapshot el valor de z80_byte clip_windows[4][4];
 
 -text adventure map: opcion mostrar descripciones. localidad 14 por ejemplo se mezcla. en que juego??
 

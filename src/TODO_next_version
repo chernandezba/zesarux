@@ -301,3 +301,6 @@ Cuidado que  en la consola si hay verbose debug, se muestra caracter extraño pa
 
 -Pantalla completa en Next sale cortada
 
+-ZRCP no envia teclas extendidas cuando se pulsan desde slave: por ejemplo QL y teclas []
+
+-ZENG para msx ¿no? se leen los cursores en destino cuando se pulsan desde slave

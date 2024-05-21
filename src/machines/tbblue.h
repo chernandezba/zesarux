@@ -247,7 +247,7 @@ extern z80_bit tbblue_disable_optimized_sprites;
 #define TBBLUE_CLIP_WINDOW_SPRITES  1
 #define TBBLUE_CLIP_WINDOW_ULA      2
 #define TBBLUE_CLIP_WINDOW_TILEMAP  3
-extern z80_byte clip_windows[4][4];
+extern z80_byte tbblue_clip_windows[4][4];
 
 extern z80_byte tbblue_get_clip_window_layer2_index(void);
 extern z80_byte tbblue_get_clip_window_sprites_index(void);

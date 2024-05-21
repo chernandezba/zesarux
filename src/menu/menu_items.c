@@ -2762,10 +2762,10 @@ bits 5-0 = SRAM page (point to page 11 after a Reset)
             zxvision_print_string_defaults(ventana,1,linea++,texto_buffer);
 
             /*
-            z80_byte clip_windows[TBBLUE_CLIP_WINDOW_LAYER2][4];
-z80_byte clip_windows[TBBLUE_CLIP_WINDOW_SPRITES][4];
-z80_byte clip_windows[TBBLUE_CLIP_WINDOW_ULA][4];
-z80_byte clip_windows[TBBLUE_CLIP_WINDOW_TILEMAP][4];
+            z80_byte tbblue_clip_windows[TBBLUE_CLIP_WINDOW_LAYER2][4];
+z80_byte tbblue_clip_windows[TBBLUE_CLIP_WINDOW_SPRITES][4];
+z80_byte tbblue_clip_windows[TBBLUE_CLIP_WINDOW_ULA][4];
+z80_byte tbblue_clip_windows[TBBLUE_CLIP_WINDOW_TILEMAP][4];
             */
 
             linea++;
@@ -2773,22 +2773,22 @@ z80_byte clip_windows[TBBLUE_CLIP_WINDOW_TILEMAP][4];
             zxvision_print_string_defaults(ventana,1,linea++,texto_buffer);
 
             sprintf (texto_buffer,"Layer2:  X=%3d-%3d Y=%3d-%3d",
-            clip_windows[TBBLUE_CLIP_WINDOW_LAYER2][0],clip_windows[TBBLUE_CLIP_WINDOW_LAYER2][1],clip_windows[TBBLUE_CLIP_WINDOW_LAYER2][2],clip_windows[TBBLUE_CLIP_WINDOW_LAYER2][3]);
+            tbblue_clip_windows[TBBLUE_CLIP_WINDOW_LAYER2][0],tbblue_clip_windows[TBBLUE_CLIP_WINDOW_LAYER2][1],tbblue_clip_windows[TBBLUE_CLIP_WINDOW_LAYER2][2],tbblue_clip_windows[TBBLUE_CLIP_WINDOW_LAYER2][3]);
             zxvision_print_string_defaults(ventana,1,linea++,texto_buffer);
 
 
             sprintf (texto_buffer,"Sprites: X=%3d-%3d Y=%3d-%3d",
-            clip_windows[TBBLUE_CLIP_WINDOW_SPRITES][0],clip_windows[TBBLUE_CLIP_WINDOW_SPRITES][1],clip_windows[TBBLUE_CLIP_WINDOW_SPRITES][2],clip_windows[TBBLUE_CLIP_WINDOW_SPRITES][3]);
+            tbblue_clip_windows[TBBLUE_CLIP_WINDOW_SPRITES][0],tbblue_clip_windows[TBBLUE_CLIP_WINDOW_SPRITES][1],tbblue_clip_windows[TBBLUE_CLIP_WINDOW_SPRITES][2],tbblue_clip_windows[TBBLUE_CLIP_WINDOW_SPRITES][3]);
             zxvision_print_string_defaults(ventana,1,linea++,texto_buffer);
 
 
             sprintf (texto_buffer,"ULA:     X=%3d-%3d Y=%3d-%3d",
-            clip_windows[TBBLUE_CLIP_WINDOW_ULA][0],clip_windows[TBBLUE_CLIP_WINDOW_ULA][1],clip_windows[TBBLUE_CLIP_WINDOW_ULA][2],clip_windows[TBBLUE_CLIP_WINDOW_ULA][3]);
+            tbblue_clip_windows[TBBLUE_CLIP_WINDOW_ULA][0],tbblue_clip_windows[TBBLUE_CLIP_WINDOW_ULA][1],tbblue_clip_windows[TBBLUE_CLIP_WINDOW_ULA][2],tbblue_clip_windows[TBBLUE_CLIP_WINDOW_ULA][3]);
             zxvision_print_string_defaults(ventana,1,linea++,texto_buffer);
 
 
             sprintf (texto_buffer,"Tilemap: X=%3d-%3d Y=%3d-%3d",
-            clip_windows[TBBLUE_CLIP_WINDOW_TILEMAP][0]*2,clip_windows[TBBLUE_CLIP_WINDOW_TILEMAP][1]*2+1,clip_windows[TBBLUE_CLIP_WINDOW_TILEMAP][2],clip_windows[TBBLUE_CLIP_WINDOW_TILEMAP][3]);
+            tbblue_clip_windows[TBBLUE_CLIP_WINDOW_TILEMAP][0]*2,tbblue_clip_windows[TBBLUE_CLIP_WINDOW_TILEMAP][1]*2+1,tbblue_clip_windows[TBBLUE_CLIP_WINDOW_TILEMAP][2],tbblue_clip_windows[TBBLUE_CLIP_WINDOW_TILEMAP][3]);
             zxvision_print_string_defaults(ventana,1,linea++,texto_buffer);
 
 

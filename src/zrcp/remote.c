@@ -3607,19 +3607,19 @@ int return_internal_pointer(char *s,z80_byte **puntero)
 //Retorna NULL si hay algun error
 z80_byte *remote_return_clipwindow(char *tipo)
 {
-//z80_byte clip_windows[4][4];
+//z80_byte tbblue_clip_windows[4][4];
 
   if (!strcmp(tipo,"ula")) {
-    return clip_windows[TBBLUE_CLIP_WINDOW_ULA];
+    return tbblue_clip_windows[TBBLUE_CLIP_WINDOW_ULA];
   }
   else   if (!strcmp(tipo,"layer2")) {
-    return clip_windows[TBBLUE_CLIP_WINDOW_LAYER2];
+    return tbblue_clip_windows[TBBLUE_CLIP_WINDOW_LAYER2];
   }
   else   if (!strcmp(tipo,"sprite")) {
-    return clip_windows[TBBLUE_CLIP_WINDOW_SPRITES];
+    return tbblue_clip_windows[TBBLUE_CLIP_WINDOW_SPRITES];
   }
   else   if (!strcmp(tipo,"tilemap")) {
-    return clip_windows[TBBLUE_CLIP_WINDOW_TILEMAP];
+    return tbblue_clip_windows[TBBLUE_CLIP_WINDOW_TILEMAP];
   }
 
   return NULL;
