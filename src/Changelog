@@ -104,6 +104,7 @@ Fixed timings of opcodes CP (HL), CP (IX+d), CP (IY+d)
 Fixed bug on ZRCP when handling simultaneous connections
 Fixed betadisk sector rollover reading/writing (thanks Mak7ym). Fixed loading for example of: BR_DEA7H, HOMER, PARADISE
 Fixed bug when saving Clip Windows info on Spectrum Next ZSF snapshots
+Fixed reading kempston mouse when menu is open
 
 ----------------------------------------
 
