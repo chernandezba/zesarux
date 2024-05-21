@@ -1686,8 +1686,8 @@ void scrxwindows_actualiza_tablas_teclado(void)
 
 	XEvent event;
 	//quiza lo mejor es mediante eventos sincronos, de tal manera que cuando se pulse una tecla se actualice la tabla...
-//	printf ("lee\n ");
-        //XNextEvent(dpy,&event);
+    //	printf ("lee\n ");
+    //XNextEvent(dpy,&event);
 
 
 
@@ -1710,7 +1710,6 @@ void scrxwindows_actualiza_tablas_teclado(void)
       }
 	*/
 	//Fin capturar cierre ventana
-
 
 
 
