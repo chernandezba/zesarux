@@ -28359,6 +28359,16 @@ void menu_custom_machine_toggle(MENU_ITEM_PARAMETERS)
     setting_set_machine_enable_custom_rom ^=1;
 }
 
+void menu_custom_machine_set_p2e(MENU_ITEM_PARAMETERS)
+{
+    int existe=find_sharedfile(CUSTOM_MACHINE_2E_MMC_ROM_FILE,custom_romfile);
+
+    if (!existe)  {
+        debug_printf(VERBOSE_ERR,"Unable to find %s",CUSTOM_MACHINE_2E_MMC_ROM_FILE);
+        return;
+    }
+}
+
 //Agregar items comunes a los dos menus de maquina: por fabricante o por nombre de maquina
 void menu_machine_selection_common_items(menu_item *m)
 {
@@ -28379,6 +28389,12 @@ void menu_machine_selection_common_items(menu_item *m)
 
             menu_add_item_menu_format(m,MENU_OPCION_NORMAL,menu_custom_machine_romfile,NULL," Rom file: %s",string_romfile_shown);
             menu_add_item_menu_es_avanzado(m);
+
+            if (MACHINE_IS_SPECTRUM_P2A_P3) {
+                menu_add_item_menu_en_es_ca(m,MENU_OPCION_NORMAL,menu_custom_machine_set_p2e,NULL,
+                    " Set +2e/+3e rom"," Establecer +2e/+3e rom"," Establir +2e/+3e rom");
+                menu_add_item_menu_es_avanzado(m);
+            }
         }
 
         //Solo separar en modo avanzado, para las opciones de hotswap y custom machine

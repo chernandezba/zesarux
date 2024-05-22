@@ -85,6 +85,12 @@ y ademas, la funcion de debug_dump_nested_functions ya controla esos casos y no 
 -paws Dump toda tabla procesos
 -confirmar parametros de Freehand en quill. crear grafico en illustrator y hacer las 8 posibles combinaciones
 -Número gráficos limitar a maximo 256 (en quill, paws, daad, gac)
+-text adventure map: opcion mostrar descripciones. localidad 14 por ejemplo se mezcla. en que juego??
+la aventura original quiza. pero esto es porque la 14 parece que muestra varias habitaciones a la vez
+(una con dibujo y otra sin dibujo y solo texto). quiza seria mejor opcion en que, cuando encuentre mas de una
+habitacion en misma posicion, la mueva a otra posicion para que esté aislada
+
+
 
 -registro debug ficticio EPC soporte para tbblue, zxuno, ....
 

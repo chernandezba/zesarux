@@ -42,6 +42,7 @@ Allow to press hotkeys at On Screen Keyboard
 Remember last path used on output tape
 Allow to load 48kB MSX cartridges
 Allow to load MSX cartridges with memory mapper Ascii 8kb, Ascii 16kb, Konami without SCC, Konami with SCC, R-Type
+Allow to set +2e/+3e rom from Custom rom menu item
 Easier compilation on Haiku OS
 Improve Hexadecimal editor on ZX80 and ZX81: show inverse characters
 

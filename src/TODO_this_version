@@ -6,12 +6,6 @@ Para esta version:
 -------------
 
 
--text adventure map: opcion mostrar descripciones. localidad 14 por ejemplo se mezcla. en que juego??
-
--Linux: al hacer alt-tab para ir a otra ventana, al volver con raton por ejemplo, el alt "sigue pulsado" en ZEsarUX
-Posible solucion: https://stackoverflow.com/questions/39087079/detect-modifier-key-release-in-x11-root-window
-Mascaras eventos: ninguna parece capturar cambio ventana: https://tronche.com/gui/x/xlib/events/processing-overview.html#FocusChangeMask
-
 -al conmutar de ventana de ZEsarUX, en Mac, a veces se congela la aplicación. por que? tanto pasa con menu abierto como cerrado.
 Creo que tiene que ver con driver ao null. Me cuesta reproducirlo
 
@@ -21,12 +15,6 @@ Creo que tiene que ver con driver ao null. Me cuesta reproducirlo
 -------------
 ---Mejoras---
 -------------
-
-
--custom rom
-*manera de seleccionar maquina +2e, que es +2a40 con rom "alternaterom_plus3e_mmcen3eE.rom"
-find_sharedfile(CUSTOM_MACHINE_2E_MMC_ROM_FILE,custom_romfile);
-#define CUSTOM_MACHINE_2E_MMC_ROM_FILE "alternaterom_plus3e_mmcen3eE.rom"
 
 
 - ajustar memory zones para zx81: rom deberia ser 8kb. revisar tambien zx80
