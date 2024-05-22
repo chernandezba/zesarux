@@ -29527,9 +29527,11 @@ void menu_in_memoriam(MENU_ITEM_PARAMETERS)
 
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_in_memoriam_diego,NULL,"~~Diego");
         menu_add_item_menu_shortcut(array_menu_common,'d');
+        menu_add_item_menu_tiene_submenu(array_menu_common);
 
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_in_memoriam_david,NULL,"D~~avid");
         menu_add_item_menu_shortcut(array_menu_common,'a');
+        menu_add_item_menu_tiene_submenu(array_menu_common);
 
         menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
