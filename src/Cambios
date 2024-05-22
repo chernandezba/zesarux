@@ -106,6 +106,7 @@ Corregido un error en ZRCP al manejar conexiones simultáneas.
 Corregida la lectura/escritura al hacer rollover en Betadisk (gracias Mak7ym). Carga fija por ejemplo de: BR_DEA7H, HOMER, PARADISE
 Corregido fallo al grabar la información de Clip Windows de Spectrum Next en snapshots ZSF
 Corregida lectura del kempston mouse cuando el menú está abierto
+Corregido tamaño de zona memoria rom en ZX80 y ZX81
 
 
 ----------------------------------------

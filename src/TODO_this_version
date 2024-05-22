@@ -17,8 +17,6 @@ Creo que tiene que ver con driver ao null. Me cuesta reproducirlo
 -------------
 
 
-- ajustar memory zones para zx81: rom deberia ser 8kb. revisar tambien zx80
-
 -Teclado en pantalla en rpi borra el input de debajo
 
 -ahora menus no tabulados ya no tienen boton minimizar. Hay alguna ventana, que no sea realmente un menu,

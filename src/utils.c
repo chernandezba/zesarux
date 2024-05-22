@@ -13485,6 +13485,14 @@ unsigned int machine_get_memory_zone_attrib(int zone, int *readwrite)
         size=BASECONF_ROM_PAGES*16384;
       }
 
+      if (MACHINE_IS_ZX81_TYPE) {
+        size=8192;
+      }
+
+      if (MACHINE_IS_ZX80_TYPE) {
+        size=4096;
+      }
+
       if (MACHINE_IS_QL) {
         size=49152;
       }
