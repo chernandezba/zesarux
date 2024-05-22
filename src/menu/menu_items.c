@@ -289,6 +289,8 @@ int zxlife_opcion_seleccionada=0;
 int text_adventure_tools_opcion_seleccionada=0;
 int zeng_online_server_opcion_seleccionada=0;
 int in_memoriam_opcion_seleccionada=0;
+int in_memoriam_david_opcion_seleccionada=0;
+int in_memoriam_diego_opcion_seleccionada=0;
 
 //Fin opciones seleccionadas para cada menu
 
@@ -29394,7 +29396,7 @@ void menu_in_memoriam_david(MENU_ITEM_PARAMETERS)
 
         menu_add_ESC_item(array_menu_common);
 
-        retorno_menu=menu_dibuja_menu_no_title_lang(&in_memoriam_opcion_seleccionada,&item_seleccionado,array_menu_common,"In Memoriam David");
+        retorno_menu=menu_dibuja_menu_no_title_lang(&in_memoriam_david_opcion_seleccionada,&item_seleccionado,array_menu_common,"In Memoriam David");
 
 
 
@@ -29411,7 +29413,32 @@ void menu_in_memoriam_david(MENU_ITEM_PARAMETERS)
 
 }
 
-void menu_in_memoriam_diego(MENU_ITEM_PARAMETERS)
+void menu_in_memoriam_diego_software(MENU_ITEM_PARAMETERS)
+{
+
+    //localizar archivo o carpeta
+    char buffer_nombre[PATH_MAX];
+
+
+    int existe=find_sharedfile("my_soft/microbyt",buffer_nombre);
+
+    if (!existe) {
+        debug_printf(VERBOSE_ERR,"Can not find software");
+        return;
+    }
+
+    //Ponemos la barra del final para que entre en la carpeta
+    sprintf(quickload_file,"%s/",buffer_nombre);
+
+    //y abrimos menu de smartload
+    quickfile=quickload_file;
+    menu_smartload(0);
+
+
+    salir_todos_menus=1;
+}
+
+void menu_in_memoriam_diego_about(MENU_ITEM_PARAMETERS)
 {
 
     if (gui_language==GUI_LANGUAGE_SPANISH || gui_language==GUI_LANGUAGE_CATALAN) {
@@ -29419,6 +29446,48 @@ void menu_in_memoriam_diego(MENU_ITEM_PARAMETERS)
     }
     else menu_about_read_file("In Memoriam Diego","IN_MEMORIAM_DIEGO",1);
 }
+
+void menu_in_memoriam_diego(MENU_ITEM_PARAMETERS)
+{
+    menu_item *array_menu_common;
+    menu_item item_seleccionado;
+    int retorno_menu;
+
+
+    do {
+
+        menu_add_item_menu_en_es_ca_inicial(&array_menu_common,MENU_OPCION_NORMAL,menu_in_memoriam_diego_about,NULL,
+            "~~About","~~Acerca de","Quant ~~a");
+        menu_add_item_menu_shortcut(array_menu_common,'a');
+        menu_add_item_menu_genera_ventana(array_menu_common);
+
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_in_memoriam_diego_software,NULL,
+            "~~Software from Diego & Oscar","~~Software de Diego & Oscar","~~Software de Diego & Oscar");
+        menu_add_item_menu_shortcut(array_menu_common,'s');
+        menu_add_item_menu_genera_ventana(array_menu_common);
+
+        menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+
+        menu_add_ESC_item(array_menu_common);
+
+        retorno_menu=menu_dibuja_menu_no_title_lang(&in_memoriam_diego_opcion_seleccionada,&item_seleccionado,array_menu_common,"In Memoriam Diego");
+
+
+
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+            //llamamos por valor de funcion
+            if (item_seleccionado.menu_funcion!=NULL) {
+                //printf ("actuamos por funcion\n");
+                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+
+            }
+        }
+
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+
+}
+
+
 
 
 

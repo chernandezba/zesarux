@@ -59,7 +59,6 @@ este parametro. Por ejemplo "reset cpu" (y un dialogo de confirmacion yes/no no 
 --- Fin Documentar ---
 
 
-
 -soportar snapshots .nex con cabecera "NEXT" como exploding fist
 
 -revisar si hay mas items de menu que necesiten "..." porque abren ventanas
