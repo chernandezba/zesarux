@@ -28387,12 +28387,14 @@ void menu_machine_selection_common_items(menu_item *m)
             char string_romfile_shown[20];
             menu_tape_settings_trunc_name(custom_romfile,string_romfile_shown,20);
 
-            menu_add_item_menu_format(m,MENU_OPCION_NORMAL,menu_custom_machine_romfile,NULL," Rom file: %s",string_romfile_shown);
+            menu_add_item_menu_en_es_ca(m,MENU_OPCION_NORMAL,menu_custom_machine_romfile,NULL,
+                " Rom file"," Archivo rom"," Arxiu rom");
+            menu_add_item_menu_sufijo_format(m,": %s",string_romfile_shown);
             menu_add_item_menu_es_avanzado(m);
 
             if (MACHINE_IS_SPECTRUM_P2A_P3) {
                 menu_add_item_menu_en_es_ca(m,MENU_OPCION_NORMAL,menu_custom_machine_set_p2e,NULL,
-                    " Set +2e/+3e rom"," Establecer +2e/+3e rom"," Establir +2e/+3e rom");
+                    " Set +2e/+3e rom"," Establecer rom +2e/+3e"," Establir rom +2e/+3e");
                 menu_add_item_menu_es_avanzado(m);
             }
         }
