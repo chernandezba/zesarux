@@ -78,6 +78,13 @@ esa manera si que se podría aumentar el límite sin perjudicar dichas operacion
 
 --- ZX Vision
 
+-ahora menus no tabulados ya no tienen boton minimizar. Hay alguna ventana, que no sea realmente un menu,
+y que tenga sentido boton de minimizar?
+Por ejemplo, snapshots a ram, el historial es una ventana de tipo menu y ya no se puede minimizar.
+Yo entenderia que los botones de minimizar son solo para aplicaciones que pueden ir a background como tal,
+y por tanto, incluso los cuadros de dialogo (ayuda-changelog por ejemplo) - que no son menu_dibuja_menu -  ni deberian tenerlo
+Por tanto , probablemente, cualquier ventana que use funcion de menu_dibuja_menu (excluyendo tabulados) no deberian poderse minimizar.
+
 -tiene sentido items de "ESC back/close"?
 
 -boton derecho sobre una ventana, que conmute a esa ventana (pero solo cuando el uso de boton derecho no sea ESC)

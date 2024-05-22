@@ -29343,13 +29343,72 @@ void menu_about_about_which(MENU_ITEM_PARAMETERS)
 }
 
 
-void menu_in_memoriam_david(MENU_ITEM_PARAMETERS)
+void menu_in_memoriam_david_about(MENU_ITEM_PARAMETERS)
 {
 
     if (gui_language==GUI_LANGUAGE_SPANISH || gui_language==GUI_LANGUAGE_CATALAN) {
         menu_about_read_file("In Memoriam David","IN_MEMORIAM_DAVID_es",1);
     }
     else menu_about_read_file("In Memoriam David","IN_MEMORIAM_DAVID",1);
+}
+
+void menu_in_memoriam_david_software(MENU_ITEM_PARAMETERS)
+{
+
+    //localizar archivo o carpeta
+    char buffer_nombre[PATH_MAX];
+
+
+    int existe=find_sharedfile("my_soft/bitsoft/bitsoft.zmenu",buffer_nombre);
+
+    if (!existe) {
+        debug_printf(VERBOSE_ERR,"Can not find software");
+        return;
+    }
+
+    zmenu_parse_file(buffer_nombre);
+
+    salir_todos_menus=1;
+}
+
+void menu_in_memoriam_david(MENU_ITEM_PARAMETERS)
+{
+    menu_item *array_menu_common;
+    menu_item item_seleccionado;
+    int retorno_menu;
+
+
+    do {
+
+        menu_add_item_menu_en_es_ca_inicial(&array_menu_common,MENU_OPCION_NORMAL,menu_in_memoriam_david_about,NULL,
+            "~~About","~~Acerca de","Quant ~~a");
+        menu_add_item_menu_shortcut(array_menu_common,'a');
+        menu_add_item_menu_genera_ventana(array_menu_common);
+
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_in_memoriam_david_software,NULL,
+            "~~Software from David","~~Software de David","~~Software de David");
+        menu_add_item_menu_shortcut(array_menu_common,'s');
+        menu_add_item_menu_genera_ventana(array_menu_common);
+
+        menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+
+        menu_add_ESC_item(array_menu_common);
+
+        retorno_menu=menu_dibuja_menu_no_title_lang(&in_memoriam_opcion_seleccionada,&item_seleccionado,array_menu_common,"In Memoriam David");
+
+
+
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+            //llamamos por valor de funcion
+            if (item_seleccionado.menu_funcion!=NULL) {
+                //printf ("actuamos por funcion\n");
+                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+
+            }
+        }
+
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+
 }
 
 void menu_in_memoriam_diego(MENU_ITEM_PARAMETERS)
@@ -29475,7 +29534,7 @@ void menu_help(MENU_ITEM_PARAMETERS)
 
             menu_add_item_menu(array_menu_common,"In Memoriam",MENU_OPCION_NORMAL,menu_in_memoriam,NULL);
             menu_add_item_menu_se_cerrara(array_menu_common);
-            menu_add_item_menu_genera_ventana(array_menu_common);
+            menu_add_item_menu_tiene_submenu(array_menu_common);
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_about_acknowledgements,NULL,
                 "A~~cknowledgements","Agrade~~cimientos","Re~~coneixements");

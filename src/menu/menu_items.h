@@ -226,7 +226,7 @@ extern void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS);
 
 extern void menu_debug_file_utils(MENU_ITEM_PARAMETERS);
 
-extern void menu_in_memoriam_david(MENU_ITEM_PARAMETERS);
+extern void menu_in_memoriam_david_about(MENU_ITEM_PARAMETERS);
 
 extern void menu_process_f_functions_by_action_name(int id_funcion,int si_pulsado_icono_zxdesktop,int id_tecla_f_pulsada,int si_pulsado_boton_redefinido,int numero_boton);
 

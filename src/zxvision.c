@@ -25197,7 +25197,7 @@ void menu_inicio(void)
     if (activated_in_memoriam_david.v) {
         osd_kb_no_mostrar_desde_menu=0; //Volver a permitir aparecer teclado osd
         activated_in_memoriam_david.v=0;
-        menu_in_memoriam_david(0);
+        menu_in_memoriam_david_about(0);
 
         cls_menu_overlay();
     }

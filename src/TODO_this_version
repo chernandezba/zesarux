@@ -19,21 +19,14 @@ Creo que tiene que ver con driver ao null. Me cuesta reproducirlo
 
 -Teclado en pantalla en rpi borra el input de debajo
 
--ahora menus no tabulados ya no tienen boton minimizar. Hay alguna ventana, que no sea realmente un menu,
-y que tenga sentido boton de minimizar?
-Por ejemplo, snapshots a ram, el historial es una ventana de tipo menu y ya no se puede minimizar.
-Yo entenderia que los botones de minimizar son solo para aplicaciones que pueden ir a background como tal,
-y por tanto, incluso los cuadros de dialogo (ayuda-changelog por ejemplo) - que no son menu_dibuja_menu -  ni deberian tenerlo
-Por tanto , probablemente, cualquier ventana que use funcion de menu_dibuja_menu (excluyendo tabulados) no deberian poderse minimizar.
-
--First aid de advanced menu items: que diga que hay settings que están ocultos por defecto
 
 ---Fin Mejoras---
 
 
 -Botón derecho botones acciones:
 -ok editar botón superior.
--Y en dispositivos? Quizá settings de ese dispositivo?
+-Y en dispositivos? Quizá settings de ese dispositivo? la mayoria de dispositivos tienen opciones en menu storage y nada en settings->storage,
+solo tiene entrada en settings el tape
 
 
 -Si se crea ventana de alto negativo, acaba haciendo panic al asignar memoria. Quizá controlar esto?
@@ -66,7 +59,6 @@ este parametro. Por ejemplo "reset cpu" (y un dialogo de confirmacion yes/no no 
 --- Fin Documentar ---
 
 
--Incorporar menú de juegos David más visible en esta edición. Quizá en menú In Memoriam?
 
 -soportar snapshots .nex con cabecera "NEXT" como exploding fist
 
