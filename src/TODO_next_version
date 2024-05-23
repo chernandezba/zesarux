@@ -116,7 +116,9 @@ Ejemplo: AY Player, pulsar Editar playlist, y ahí cerrar todos menus
 -en linux, con "stop emulation on menu", raton no mueve opciones de menu, ni deja mover ventanas
 ->no he conseguido reproducirlo
 
-
+-Exploding fist next:
+*cargando desde browser de next, sale la intro y luego se cuelga
+*cargando con smartload, parece que carga archivos por esx pero no muestra nada en pantalla
 
 ---Fin Errores---
 
@@ -302,9 +304,13 @@ que si se conmuta a otra ventana, la tecla alt ni se leerá...
 Mascaras eventos: ninguna parece capturar cambio ventana: https://tronche.com/gui/x/xlib/events/processing-overview.html#FocusChangeMask
 Con SDL por ejemplo también sucede
 
--Exploding fist next:
-*cargando desde browser de next, sale la intro y luego se cuelga
-*cargando con smartload, parece que carga archivos por esx pero no muestra nada en pantalla
+
+
+
+-Mouse click derecho botones acciones:
+-ok botones superiores, click derecho edita boton.
+-Y en dispositivos? Quizá settings de ese dispositivo? la mayoria de dispositivos tienen opciones en menu storage y nada en settings->storage,
+solo tiene entrada en settings el tape
 
 ---Fin Mejoras---
 
@@ -320,3 +326,4 @@ Con SDL por ejemplo también sucede
 
 -quiza que se permita ventanas que puedan moverse y estar parte fuera de rango visible. mientras origen ventana este dentro de rango,
 el resto puede salir fuera -> comprobar al hacer print y putpixel que no sale fuera
+

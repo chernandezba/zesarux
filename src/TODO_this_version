@@ -23,12 +23,6 @@ Creo que tiene que ver con driver ao null. Me cuesta reproducirlo
 ---Fin Mejoras---
 
 
--Botón derecho botones acciones:
--ok editar botón superior.
--Y en dispositivos? Quizá settings de ese dispositivo? la mayoria de dispositivos tienen opciones en menu storage y nada en settings->storage,
-solo tiene entrada en settings el tape
-
-
 -Si se crea ventana de alto negativo, acaba haciendo panic al asignar memoria. Quizá controlar esto?
 
 --- Documentar ---
@@ -62,14 +56,12 @@ este parametro. Por ejemplo "reset cpu" (y un dialogo de confirmacion yes/no no 
 -revisar si hay mas items de menu que necesiten "..." porque abren ventanas
 
 -keyboard help
--pulsar , o . en ZX81 con ventana abierta, deja apretada la N o M
--con los cambios de lectura tecla ahora no deja mantener shift y symbol (con teclado) mas una tecla (clicando con raton)
--keyboard help:
-chloe. completar teclas extendidas. ver que hacer con combinaciones de shift...
-
--keyboard help no hace por ejemplo en cpc 664 teclas [ ] pulsando esas teclas en el teclado fisico
-
--keyboard help: con ventana abierta, pulsar tecla con raton y pulsar tecla en teclado, no va
+- pulsar , o . en ZX81 con ventana abierta, deja apretada la N o M
+- con los cambios de lectura tecla ahora no deja mantener shift y symbol (con teclado) mas una tecla (clicando con raton)
+- chloe. completar teclas extendidas. ver que hacer con combinaciones de shift...
+- keyboard help no hace por ejemplo en cpc 664 teclas [ ] pulsando esas teclas en el teclado fisico: esto sucede porque en menu
+no genera codigo de tecla al pulsar esas extendidas
+- con ventana abierta, pulsar tecla con raton y pulsar tecla en teclado, no va
 
 -dockerfiles rutas de carpetas al copiar codigo fuente y compilar. Pendiente Dockerfile.pushimage
 O meto todo (*) o indico carpetas solo necesarias
@@ -78,5 +70,5 @@ O meto todo (*) o indico carpetas solo necesarias
 -Incorporar bittransfe como manera de generar snapshot en .tap. Agregar parámetro de estado interrupciones, registro i. Otros registros que falten? R? Problema que está guardando algunos registros en parte alta de la memoria y puede interferir con el stack si no se ha cambiado el CLEAR
 
 
--Incluir paquete de Haiku OS 64 bit
+-Incluir paquete de Haiku OS 64 bit. En Available releases for download: agregar HaikuOs cuando esté
 
