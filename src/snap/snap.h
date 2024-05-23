@@ -57,7 +57,7 @@ extern void autosave_snapshot_at_fixed_interval(void);
 
 extern void load_z80_snapshot(char *archivo);
 
-extern void load_nex_snapshot(char *archivo);
+extern void load_sna_snapshot_common(char *archivo);
 
 extern void snapshot_quick_save(char *nombre);
 
@@ -76,7 +76,7 @@ extern void snap_dump_zsf_on_cpu_panic(void);
 
 extern void load_z80_snapshot_bytes(z80_byte *buffer_lectura,int leidos,z80_int direccion_destino,int comprimido,z80_byte *puntero_memoria);
 
-extern int load_nex_snapshot_open_esxdos(char *nombre_archivo,int forzar_filehandle_cero);
+
 
 #define SNA_48K_HEADER_SIZE 27
 #define SNA_128K_HEADER_SIZE 4
