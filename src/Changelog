@@ -105,6 +105,7 @@ Fixed timings of opcodes CP (HL), CP (IX+d), CP (IY+d)
 Fixed bug on ZRCP when handling simultaneous connections
 Fixed betadisk sector rollover reading/writing (thanks Mak7ym). Fixed loading for example of: BR_DEA7H, HOMER, PARADISE
 Fixed bug when saving Clip Windows info on Spectrum Next ZSF snapshots
+Fixed bug loading .nex snapshots with different header letter case (for example Exploding Fist Next)
 Fixed reading kempston mouse when menu is open
 Fixed memory size rom zone on ZX80 and ZX81
 

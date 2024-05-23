@@ -5641,9 +5641,17 @@ void load_nex_snapshot(char *archivo)
 
 
         //Ver si signatura correcta
-        if (nex_header[0]!='N' || nex_header[1]!='e' || nex_header[2]!='x' || nex_header[3]!='t') {
-                        debug_printf(VERBOSE_ERR,"Unknown NEX signature: 0x%x 0x%x 0x%x 0x%x",nex_header[0],nex_header[1],nex_header[2],nex_header[3]);
-                        return;
+        //Inicialmente la especificacion decia que solo se encontraba "Next" pero por ejemplo el exploding fist dice "NEXT"
+        //Por tanto comparamos sin mirar las mayusculas
+        char version_string[5];
+        version_string[0]=nex_header[0];
+        version_string[1]=nex_header[1];
+        version_string[2]=nex_header[2];
+        version_string[3]=nex_header[3];
+        version_string[4]=0;
+        if (strcasecmp(version_string,"next")) {
+            debug_printf(VERBOSE_ERR,"Unknown NEX signature: 0x%x 0x%x 0x%x 0x%x",nex_header[0],nex_header[1],nex_header[2],nex_header[3]);
+            return;
         }
 
 
@@ -5687,12 +5695,13 @@ void load_nex_snapshot(char *archivo)
 	//no imprimirlo por si no es una string normal
 	//printf ("Snapshot version: %s\n",snap_version);
 
+    //Inicialmente la especificacion decia que la v era mayusculas, pero por ejemplo el exploding fist dice "v"
 	if (
 		!
 		(
-		!strcmp(snap_version,"V1.0") ||
-		!strcmp(snap_version,"V1.1") ||
-		!strcmp(snap_version,"V1.2")
+		!strcasecmp(snap_version,"v1.0") ||
+		!strcasecmp(snap_version,"v1.1") ||
+		!strcasecmp(snap_version,"v1.2")
 		)
 	) {
 

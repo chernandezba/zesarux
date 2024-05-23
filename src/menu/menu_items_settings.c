@@ -11781,7 +11781,7 @@ void menu_cpu_settings(MENU_ITEM_PARAMETERS)
 
 
             menu_add_item_menu_en_es_ca(array_menu_cpu_settings,MENU_OPCION_NORMAL,menu_tbblue_deny_turbo_everywhere,NULL,
-                "Limit turbo on everywhere","Limitar turbo en la everywhere","Limitar turbo a la everywhere");
+                "Limit turbo on everywhere","Limitar turbo en todos sitios","Limitar turbo a tot arreu");
             menu_add_item_menu_prefijo_format(array_menu_cpu_settings,"[%c] ",(tbblue_deny_turbo_everywhere.v ? 'X' : ' ') );
 
             //menu_add_item_menu_shortcut(array_menu_cpu_settings,'d');
