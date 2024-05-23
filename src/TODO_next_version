@@ -120,6 +120,9 @@ Ejemplo: AY Player, pulsar Editar playlist, y ahí cerrar todos menus
 *cargando desde browser de next, sale la intro y luego se cuelga
 *cargando con smartload, parece que carga archivos por esx pero no muestra nada en pantalla
 
+-al conmutar de ventana de ZEsarUX, en Mac, a veces se congela la aplicación. por que? tanto pasa con menu abierto como cerrado.
+Creo que tiene que ver con driver ao null. Me cuesta reproducirlo
+
 ---Fin Errores---
 
 

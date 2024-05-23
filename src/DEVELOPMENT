@@ -1,4 +1,5 @@
 * en cpu.h, actualizar numero de version, comentar SNAPSHOT_VERSION, borrar -SN o -RC sufijo de EMULATOR_VERSION
+* cambiar version en accion push de docker-zesarux.sh
 * cambiar fechas en EMULATOR_DATE, EMULATOR_SHORT_DATE
 * cambiar nombre edicion en EMULATOR_EDITION_NAME
 * en Changelog cambiar nombre edicion y fechas

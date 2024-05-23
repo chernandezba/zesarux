@@ -6,8 +6,7 @@ Para esta version:
 -------------
 
 
--al conmutar de ventana de ZEsarUX, en Mac, a veces se congela la aplicación. por que? tanto pasa con menu abierto como cerrado.
-Creo que tiene que ver con driver ao null. Me cuesta reproducirlo
+
 
 ---Fin Errores---
 
@@ -62,10 +61,6 @@ este parametro. Por ejemplo "reset cpu" (y un dialogo de confirmacion yes/no no 
 - keyboard help no hace por ejemplo en cpc 664 teclas [ ] pulsando esas teclas en el teclado fisico: esto sucede porque en menu
 no genera codigo de tecla al pulsar esas extendidas
 - con ventana abierta, pulsar tecla con raton y pulsar tecla en teclado, no va
-
--dockerfiles rutas de carpetas al copiar codigo fuente y compilar. Pendiente Dockerfile.pushimage
-O meto todo (*) o indico carpetas solo necesarias
-
 
 -Incorporar bittransfe como manera de generar snapshot en .tap. Agregar parámetro de estado interrupciones, registro i. Otros registros que falten? R? Problema que está guardando algunos registros en parte alta de la memoria y puede interferir con el stack si no se ha cambiado el CLEAR
 
