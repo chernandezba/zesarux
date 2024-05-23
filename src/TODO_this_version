@@ -1,12 +1,8 @@
 Para esta version:
 
-
 -------------
 ---Errores---
 -------------
-
-
-
 
 ---Fin Errores---
 
@@ -15,12 +11,7 @@ Para esta version:
 ---Mejoras---
 -------------
 
-
--Teclado en pantalla en rpi borra el input de debajo
-
-
 ---Fin Mejoras---
-
 
 
 
@@ -28,16 +19,7 @@ Para esta version:
 
 
 -Documentar cómo van los archivos txt de update del server
-
--documentar items de menus:
-* si tiene submenus, agregarle menu_add_item_menu_tiene_submenu
-* si genera ventana, agregarle menu_add_item_menu_genera_ventana. o sea, lo que son acciones o submenus, no generan ventana y por tanto no tienen
-este parametro. Por ejemplo "reset cpu" (y un dialogo de confirmacion yes/no no cuenta como "ventana")
-* si disparar la accion, se cerraran todos los menus, agregarle menu_add_item_menu_se_cerrara
-* si solo visible con items avanzados, agregarle menu_add_item_menu_es_avanzado
-
 -comentar desensamblado copion9
-
 -diagrama de como funciona zeng online
 
 --- Fin Documentar ---
@@ -55,6 +37,4 @@ no genera codigo de tecla al pulsar esas extendidas
 
 -Incorporar bittransfe como manera de generar snapshot en .tap. Agregar parámetro de estado interrupciones, registro i. Otros registros que falten? R? Problema que está guardando algunos registros en parte alta de la memoria y puede interferir con el stack si no se ha cambiado el CLEAR
 
-
 -Incluir paquete de Haiku OS 64 bit. En Available releases for download: agregar HaikuOs cuando esté
-

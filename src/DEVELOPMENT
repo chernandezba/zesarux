@@ -143,6 +143,16 @@ menu_generic_message_splash("Reload MMC","OK. MMC file reloaded");
 menu_generic_message("Change DIVMMC ROM","OK. Remember to enable DIVMMC paging to load the firmware");
 menu_generic_message("Rename file","OK. File renamed");
 
+-----------------------------------------
+
+Items de menú:
+
+* si tiene submenus, agregarle menu_add_item_menu_tiene_submenu
+* si genera ventana, agregarle menu_add_item_menu_genera_ventana. o sea, lo que son acciones o submenus, no generan ventana y por tanto no tienen
+este parametro. Por ejemplo "reset cpu" (y un dialogo de confirmacion yes/no no cuenta como "ventana")
+* si disparar la accion, se cerraran todos los menus, agregarle menu_add_item_menu_se_cerrara
+* si solo visible con items avanzados, agregarle menu_add_item_menu_es_avanzado
+
 
 -----------------------------------------
 - Generación de una nueva release
