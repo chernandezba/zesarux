@@ -65,8 +65,6 @@ Drivers audio:
 * windows mingw, con y sin pthreads
 * windows cygwin
 
-
-
 -Funciones de Red:
 --Windows: Probar ZENG, Speccy browser, ZX81 browser, Download TBBLUE SD
 --Mac: Probar ZENG, Speccy browser, ZX81 browser, Download TBBLUE SD
@@ -194,10 +192,7 @@ nota: cacalib, curses  en consola texto (no X) el mouse solo notifica al pulsar 
 -probar watches
 -probar remote command protocol ZRCP, en linux, mac y windows
 -probar zxi ports con extras/media/spectrum/tests/zesarux-zxi-ports.tap , extras/media/spectrum/tests/hardwaredebugport.tap
--probar rzx files con extras/media/spectrum/rzx
 -probar quill/paws/daad debugger
--probar text adventure map
--probar location graphics gac/paws/daad
 -probar quicksave, autosave at interval, snapshots to ram
 -probar todas opciones de menu en general, menus con mas opciones verticalmente de las visibles -> audio settings
 -probar fallback de drivers graficos y de sonido
@@ -276,11 +271,6 @@ nota: cacalib, curses  en consola texto (no X) el mouse solo notifica al pulsar 
 -Probar Baseconf
 -Probar Chrome
 -Probar MK14
-
--Pruebas interfaz menu:
-* habilitar zx desktop. probar botones, iconos
-* zx vision: mover ventana, maximizar, restaurar, minimizar, enviar a background, shift+derecha
-* sonidos en menu al moverse cursor, etc
 
 -probar Sprite chip con demo
 -probar textos splash en cambio de modo de video por ejemplo
