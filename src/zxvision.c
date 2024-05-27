@@ -19813,8 +19813,9 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 							ancho-1+1,alto-2,titulo);		 //hacer de momento igual de ancho que ancho visible para poder usar ultima columna
 
 
-        //no queremos que un menu se pueda minimizar (excluyendo los tabulados claro)
+        //no queremos que un menu se pueda redimensionar ni minimizar (excluyendo los tabulados claro)
         ventana_menu.can_be_minimized=0;
+        ventana_menu.can_be_resized=0;
 
 		//Si no hay barra scroll vertical, usamos hasta la ultima columna
 		menu_dibuja_menu_adjust_last_column(&ventana_menu,ancho,alto);

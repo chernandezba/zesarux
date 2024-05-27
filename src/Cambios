@@ -69,7 +69,7 @@ Mejorado ZX Vision:
   Si necesita mantener el menú abierto y centrarse en la máquina emulada, simplemente haga clic izquierdo y presione la tecla Mayús.
 - Mejorado el fondo del título de la ventana cuando no todos los botones están visibles
 - Mejorado hacer clic y dibujar una ventana siempre visible
-- Ya no se pueden minimizar los menús (eso no tenía sentido)
+- Ya no se pueden minimizar ni redimensionar los menús (eso no tenía sentido)
 - Selector de procesos: desminimiza ventanas al seleccionarlas y quedan minimizadas
 - Conmutador de procesos: ahora se puede configurar para que esté siempre visible
 - Conmutador de procesos: los nombres de los iconos son más descriptivos
