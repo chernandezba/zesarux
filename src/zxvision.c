@@ -19815,7 +19815,10 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 
         //no queremos que un menu se pueda redimensionar ni minimizar (excluyendo los tabulados claro)
         ventana_menu.can_be_minimized=0;
-        ventana_menu.can_be_resized=0;
+
+        //algunos menus dejamos que se puedan redimensionar
+        //realmente son mas cuadros de menus que dialogos, por tanto se tienen que comportar mas como un cuadro
+        if (m->no_es_realmente_un_menu==0) ventana_menu.can_be_resized=0;
 
 		//Si no hay barra scroll vertical, usamos hasta la ultima columna
 		menu_dibuja_menu_adjust_last_column(&ventana_menu,ancho,alto);
@@ -20678,6 +20681,8 @@ void menu_add_item_menu_inicial(menu_item **p,char *texto,int tipo_opcion,t_menu
 
     m->es_menu_tabulado=0; //por defecto no es menu tabulado. esta opcion se hereda en cada item, desde el primero
 
+    m->no_es_realmente_un_menu=0; //por defecto se comporta como un menu. Esto se altera por ejemplo en menus (cuadros de dialogo)
+
 	*p=m;
 }
 
@@ -21093,6 +21098,20 @@ void menu_add_item_menu_tabulado(menu_item *m,int x,int y)
 	m->menu_tabulado_y=y;
 }
 
+
+//Indicar que es mas bien un cuadro de dialogo en vez de un menu
+void menu_add_item_menu_no_es_realmente_un_menu(menu_item *m)
+{
+//busca el ultimo item i le añade el indicado
+
+    while (m->siguiente_item!=NULL)
+    {
+            m=m->siguiente_item;
+    }
+
+    m->no_es_realmente_un_menu=1;
+
+}
 
 //Agregar un valor como opcion al ultimo item de menu
 //Esto sirve, por ejemplo, para que cuando esta en el menu de z88, insertar slot,

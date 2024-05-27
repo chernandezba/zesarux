@@ -926,6 +926,10 @@ struct s_menu_item {
 	int menu_tabulado_x;
 	int menu_tabulado_y;
 
+    //Indica para ciertos cuadros de dialogo, que usan funcion de menu pero no se comportan como menus
+    //les deja por ejemplo redimensionar el menu. Quien lo usa? De momento nadie...
+    int no_es_realmente_un_menu;
+
     //Indica que al disparar la accion, se cerraran todos los menus (se activa salir_todos_menus=1)
     //no haria falta activar esto para items que abren menus tabulados, pues en este caso, al pulsar ESC dentro de un menu tabulado,
     //este ya enviara la orden de cerrar todos menus
@@ -1050,6 +1054,7 @@ extern void menu_add_item_menu_separator(menu_item *m);
 extern void menu_add_item_menu_seleccionado(menu_item *m,void (*menu_funcion_seleccionada)(struct s_menu_item *));
 extern void menu_add_item_menu_se_cerrara(menu_item *m);
 extern void menu_add_item_menu_no_indexar_busqueda(menu_item *m);
+extern void menu_add_item_menu_no_es_realmente_un_menu(menu_item *m);
 
 extern void menu_add_item_menu_spanish(menu_item *m,char *s);
 extern void menu_add_item_menu_spanish_format(menu_item *m,const char * format , ...);
