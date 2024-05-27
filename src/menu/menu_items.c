@@ -31019,12 +31019,9 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_genera_ventana(array_menu_debug);
             menu_add_item_menu_es_avanzado(array_menu_debug);
 
-			menu_add_item_menu_en_es_ca(array_menu_debug,MENU_OPCION_NORMAL,menu_cpu_transaction_log,NULL,
-                "~~CPU Transaction Log","Registro transacciones ~~CPU","Registre transaccions ~~CPU");
-			menu_add_item_menu_shortcut(array_menu_debug,'c');
-            menu_add_item_menu_tiene_submenu(array_menu_debug);
-            menu_add_item_menu_es_avanzado(array_menu_debug);
-		}
+        }
+
+
 
 		if (CPU_IS_MOTOROLA) {
 			menu_add_item_menu_format(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_ioports,NULL,"Debug ~~I/O Addresses");
@@ -31117,15 +31114,7 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_genera_ventana(array_menu_debug);
         }
 
-#ifdef EMULATE_CPU_STATS
-		if (CPU_IS_Z80) {
-			menu_add_item_menu_en_es_ca(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_cpu_stats,NULL,
-                "View CPU Statistics","Ver estadísticas CPU","Veure estadístiques CPU");
-            menu_add_item_menu_tiene_submenu(array_menu_debug);
-            menu_add_item_menu_es_avanzado(array_menu_debug);
-		}
 
-#endif
 
         menu_add_item_menu_en_es_ca(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_view_sensors,NULL,
             "View Sensors","Ver Sensores","Veure Sensors");
@@ -31165,18 +31154,7 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
 
     menu_add_item_menu(array_menu_debug,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
-    menu_add_item_menu_format(array_menu_debug,MENU_OPCION_NORMAL,menu_find,NULL,"~~Find");
-		menu_add_item_menu_shortcut(array_menu_debug,'f');
-    menu_add_item_menu_tooltip(array_menu_debug,"Find bytes on memory");
-    menu_add_item_menu_ayuda(array_menu_debug,"Find bytes on the 64 KB of mapped memory");
-    menu_add_item_menu_tiene_submenu(array_menu_debug);
 
-
-		menu_add_item_menu(array_menu_debug,"~~Poke",MENU_OPCION_NORMAL,menu_poke,NULL);
-		menu_add_item_menu_shortcut(array_menu_debug,'p');
-		menu_add_item_menu_tooltip(array_menu_debug,"Poke address manually or from .POK file");
-		menu_add_item_menu_ayuda(array_menu_debug,"Poke address for infinite lives, etc...");
-        menu_add_item_menu_tiene_submenu(array_menu_debug);
 
 
 
@@ -31221,17 +31199,7 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
 
 
 
-		if (!CPU_IS_MOTOROLA) {
-		    menu_add_item_menu_format(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_input_file_keyboard,NULL,"Input File Spoolin~~g");
-		    menu_add_item_menu_shortcut(array_menu_debug,'g');
-            menu_add_item_menu_tooltip(array_menu_debug,"Sends every character from a text file as keyboard presses");
-            menu_add_item_menu_ayuda(array_menu_debug,"Every character from a text file is sent as keyboard presses. Only Ascii characters, not UFT, Unicode or others. "
-                                                                   "Symbols that require extended mode on Spectrum are not sent: [ ] (c) ~ \\ { }. These can be used "
-                                                                   "as a delay.\n"
-								"Note: symbol | means Shift+1 (Edit)");
-            menu_add_item_menu_tiene_submenu(array_menu_debug);
-            menu_add_item_menu_es_avanzado(array_menu_debug);
-		}
+
 
 
 		/*
@@ -31293,6 +31261,51 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
 		}
 		*/
 
+        menu_add_item_menu(array_menu_debug,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+
+        if (CPU_IS_Z80) {
+			menu_add_item_menu_en_es_ca(array_menu_debug,MENU_OPCION_NORMAL,menu_cpu_transaction_log,NULL,
+                "~~CPU Transaction Log","Registro transacciones ~~CPU","Registre transaccions ~~CPU");
+			menu_add_item_menu_shortcut(array_menu_debug,'c');
+            menu_add_item_menu_tiene_submenu(array_menu_debug);
+            menu_add_item_menu_es_avanzado(array_menu_debug);
+		}
+
+#ifdef EMULATE_CPU_STATS
+		if (CPU_IS_Z80) {
+			menu_add_item_menu_en_es_ca(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_cpu_stats,NULL,
+                "View CPU Statistics","Ver estadísticas CPU","Veure estadístiques CPU");
+            menu_add_item_menu_tiene_submenu(array_menu_debug);
+            menu_add_item_menu_es_avanzado(array_menu_debug);
+		}
+
+#endif
+
+        menu_add_item_menu_format(array_menu_debug,MENU_OPCION_NORMAL,menu_find,NULL,"~~Find");
+            menu_add_item_menu_shortcut(array_menu_debug,'f');
+        menu_add_item_menu_tooltip(array_menu_debug,"Find bytes on memory");
+        menu_add_item_menu_ayuda(array_menu_debug,"Find bytes on the 64 KB of mapped memory");
+        menu_add_item_menu_tiene_submenu(array_menu_debug);
+
+
+		menu_add_item_menu(array_menu_debug,"~~Poke",MENU_OPCION_NORMAL,menu_poke,NULL);
+		menu_add_item_menu_shortcut(array_menu_debug,'p');
+		menu_add_item_menu_tooltip(array_menu_debug,"Poke address manually or from .POK file");
+		menu_add_item_menu_ayuda(array_menu_debug,"Poke address for infinite lives, etc...");
+        menu_add_item_menu_tiene_submenu(array_menu_debug);
+
+
+		if (!CPU_IS_MOTOROLA) {
+		    menu_add_item_menu_format(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_input_file_keyboard,NULL,"Input File Spoolin~~g");
+		    menu_add_item_menu_shortcut(array_menu_debug,'g');
+            menu_add_item_menu_tooltip(array_menu_debug,"Sends every character from a text file as keyboard presses");
+            menu_add_item_menu_ayuda(array_menu_debug,"Every character from a text file is sent as keyboard presses. Only Ascii characters, not UFT, Unicode or others. "
+                                                                   "Symbols that require extended mode on Spectrum are not sent: [ ] (c) ~ \\ { }. These can be used "
+                                                                   "as a delay.\n"
+								"Note: symbol | means Shift+1 (Edit)");
+            menu_add_item_menu_tiene_submenu(array_menu_debug);
+            menu_add_item_menu_es_avanzado(array_menu_debug);
+		}
 
 
         menu_add_item_menu(array_menu_debug,"",MENU_OPCION_SEPARADOR,NULL,NULL);
