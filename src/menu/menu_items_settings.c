@@ -2170,7 +2170,9 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
 					"\nNote: Some styles (like Solarized) need a full video driver, can't be set on curses or aalib for example"
 
 					);
-        menu_add_item_menu_tiene_submenu(array_menu_common);
+
+        //Decimos que saldra una lista con estilos (es como si fuera una ventana aunque llama a funcion de menu)
+        menu_add_item_menu_genera_ventana(array_menu_common);
 
 
         if (si_complete_video_driver() ) {
