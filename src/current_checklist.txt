@@ -1,1 +1,337 @@
 *Bateria de pruebas en curso
+
+
+(ver que tanto progreso de checklist esta ejecutado:
+BYTESTOTAL=`wc -c CHECKLIST|awk '{printf $1}'`
+BYTESPARCIAL=`wc -c current_checklist.txt|awk '{printf $1}'`
+PERC=$(($BYTESPARCIAL*100))
+PERC=$(($PERC/$BYTESTOTAL))
+PERCCOMPLETADO=$((100-$PERC))
+echo "Porcentaje=$PERCCOMPLETADO %"
+)
+
+-probar rendimiento cpu (benchmark*txt). con ao null vo null y ao null vo x11, sin memptr,sin visualmem, sin cpustats
+
+-ejecutar tests/manual_tests.sh
+
+-ejecutar tests/machines_test.sh
+
+-ejecutar tests/games_tests.sh
+
+-ejecutar tests/automatic_test_cycle_machines.sh
+
+-probar cambio idioma menu y ver diferentes menus
+
+
+Drivers video:
+-probar drivers video xwindows, sdl, fbdev, curses, aa, caca, stdout, simpletext, null. desde dentro de xwindows y desde consola de texto real
+*por cada driver (incluido null) y con y sin pthreads:
+**probar redimensionar ventana
+**probar cambio zoom desde menu
+**probar fullscreen en aquellos que lo soportan: xwindows, fbdev, sdl, cocoa
+**probar todas maquinas. probar teclas mayus, ctrl, alt. en z88 mayus izq, der, ctrl, alt, f1, f2, f3
+**probar ocultar raton
+**probar zx desktop
+**probar F6, F7 en curses, caca, aa en Z88 y en Spectrum
+**probar drag&drop en cocoa, sdl2 (a partir 2.0.5)
+**probar desactivando border
+**probar desactivando footer
+**en curses, aa, caca, stdout, simpletext probar juegos para ver que tal "emula" los graficos
+**en curses, aa, caca, stdout, simpletext probar realvideo
+**en aa, caca probar mensajes debug
+**en stdout, probar con modo traprst16 y modo autoredraw
+**en fbdev, probar tambien con --no-use-ttyfbdev y --no-use-ttyrawfbdev y --decimal-full-scale-fbdev
+**probar recreated
+-ejecutar tests/videotest.sh
+
+
+-iniciar con ./zesarux --noconfigfile
+habilitar zxdesktop, mover iconos, pulsar iconos
+
+-probar desactivando xextensions en configure con --disable-xext
+-probar desactivando algun driver de video en compilacion, como x11, y ver que funcionan los otros
+
+Drivers audio:
+-probar drivers sonido pulse, alsa, dsp, sdl, coreaudio, null. con y sin pthreads
+*por cada driver (incluido null) y con y sin pthreads:
+**quitar multitask de menu
+**activar stop emulation en menu
+**esperar a silencio
+**ver en todos casos usos de cpu
+**probar sonido Z88, Spectrum (beep y ay), ZX80/81 (vsync sound y ay)
+**aumentar/bajar velocidad cpu
+***usar tests/soundtest.sh
+***en dsp, si no se tiene dsp real, se puede probar con aoss (que se oye entrecortado continuo) o en cygwin (que distorsiona)
+
+-probar targets:
+* linux 32 bits
+* linux 64 bits
+* raspberry. y activando extensiones raspberry
+* mac os x, con y sin optimizaciones
+* windows mingw, con y sin pthreads
+* windows cygwin
+
+
+
+-Funciones de Red:
+--Windows: Probar ZENG, Speccy browser, ZX81 browser, Download TBBLUE SD
+--Mac: Probar ZENG, Speccy browser, ZX81 browser, Download TBBLUE SD
+--Linux: Probar ZENG, Speccy browser, ZX81 browser, Download TBBLUE SD 
+
+-probar aofile raw y wav
+-probar con --disable-sndfile
+-probar vofile. Con spectrum (border on, border off, ulaplus, spectra, timex), zx80/81 (border on, border off), z88. Con xwindows, curses, stdout y simpletext: en estos drivers probar tanto spectrum, zx81, y z88
+-probar todas maquinas, una por una 
+-probar menu about, con zxdesktop habilitado o no, y con driver de texto
+-probar juegos varios de zx80,zx81, spectrum, aquellos que hacen efectos especiales hi-res, etc
+-probar juegos zx81 multipart: wrx/voyage , wrx/blockbuster
+-probar particularidades Inves: no contended memory. Puerto ficticio para hacer visible RAM baja, requiere hardware debug ports , se puede probar con inves-switch-lowram.tap. Ver RAM baja con view hexdump. Probar con musica Lemmings. Probar investest.tap, que testea entre otras cosas: 64 kb ram, OUT ula AND RAM (border color, snow in border, no sound),  colour ula delay, interrupt starts at video display (not at the top of the border), interrupt escribe en direccion I*256+R valor 255
+-probar hotswap maquina
+-probar custom rom desde menu y desde linea de comandos. probar todas roms
+-probar realvideo spectrum
+-probar realvideo zx80/81
+-probar realvideo z88
+-probar snoweffect de 48k, 128k, con juegos y con extras/media/spectrum/tests/snow_effect.tap. Las que son de pentagon, hacer hotswap a 128
+-probar simular pantalla zx81 en spectrum
+-probar desactivar colores pantalla spectrum
+-probar modos hi-res zx81: hrg, chr$128, udg, wrx, otros hi-res. probar xtricator, pacman 
+-probar autodetect WRX mode on ZX80/81
+-probar chip sonido AY, en spectrum (ay y fuller) y zx81 (quicksilva(asteroids, defenda zx80)  y bi-pak (aydemo, pink panther...))
+-probar turbosound, 3 chips ay
+-probar specdrum, covox
+-probar general sound
+-probar opcion ay speech on/off con chase hq por ejemplo
+-probar abc/acb/bac stereo con demos y tests/stereotest.sh
+-probar view ay piano con extras/media/spectrum/tests/testpiano.tap  y demos turbosound
+-probar menu ay piano, beeper piano. nota: beeper piano con notas largas, como la musica del Zorro
+-probar menu aysheet
+-probar midi output to real device. En Mac se puede usar fluidsynth (brew install fluidsynth) y copiar un soundfont (de aqui por ejemplo http://www.schristiancollins.com/generaluser.php). Se inicia en consola, ahi en la consola dira donde copiar el soundfount
+-probar export to .mid
+-probar autoactivado de chip ay: en spectrum (ay, fuller), zx8081 (en zx80/81 solo con bi-pak (aydemo, pink panther...) )
+-probar sonido vsync en zx81, con orquesta.p, sound.p, beatles.p. probar vsync sound detection
+-probar snaps de spectrum, zx80, zx81, z88. Cargar y grabar. .zx, .o, .p, .z80, solo carga: .z81, .sna. En grabar, generar los mismos p** que hay en snap_tests/ en una carpeta temporal y luego probar a cargarlos (desde zesarux, fuse y eightyone) - esto se hace con automatic_test_save_all.sh. Probar snaps grabados en otros emuladores: Fuse, Eightyone, etc. 
+-probar cintas. Cargar cinta con formato tap, tzx. Grabar cinta con comando save en tap, tzx, p, o
+-probar a guardar snapshots versiones anteriores .zx (1, 2, 3, 4, 5 y 6) y cargar en ZEsarUX versiones viejas y ZXSpectr
+-probar a guardar snapshots .zsf y cargar en ZEsarUX versiones viejas
+-probar any flag loading cintas, con copiador, rocman
+-probar archivos zip, tar, rar, gz
+-probar expansor archivos tap, tzx, dsk, trd, etc
+-probar cambiando rutas a sox, gunzip, etc...
+
+-probar diferentes cargas, a continuacion, hay ejemplos en carpeta snap_tests y tambien alguno suelto, como canciones.smp y orquesta.smp
+*probar carga binaria (tape) smp,wav,rwa en spectrum
+*probar carga binaria (tape) smp,wav,rwa en zx80
+*probar carga binaria (tape) smp,wav,rwa en zx81: con audio real, con save desde basic y aofile (wav y rwa), con rutina de conversion de .p a rwa en real tape
+*probar carga realtape : spectrum: smp,wav,rwa,tap,tzx (tzx normal y turbo). zx80: smp,wav,rwa,o. zx81: smp,wav,rwa,p
+
+-probar watermark, reduce 0.75
+
+-probar linea comandos: --tape, --realtape, --snap, --slotcard, --outtape
+-probar fallback de cinta standard a real tape, juegos: dracula tzx, Death Wish 3 (Erbe - Serie Leyenda).tzx  (DeathWish3(IBSA).tzx.zip), mortadelo y filemon II, Rambo. Parece que silent service si se mete como standard tape no detecta como cargador
+-probar ZXMMC menor de 1 GB y mayor de 1 GB. Probar snap_tests/pruebasplus3e.mmc. cat tab, load, format to 0,4, etc
+-probar divmmc con zxuno y sin zxuno. tambien en instalado en /Applications en Mac y en /usr/ de Linux. Probar reload mmc
+-probar esxdos handler
+-probar divide. Probar reload ide
+-probar zxpand: config "V", config "D=", CAT, CAT "+DIR", DELETE, load "NOMBRE", SAVE "NOMBRE" etc. En zx80, zx81
+config "O=X" donde X es 0, 1 o 2 y probar a sobreescribir archivos, dragons lair version lenta y rapida (optimizada). zxpand linea comandos --enable-zxpand y --zxpand-root-dir (y este probando con path completo, relativo, y con y sin / al final)
+Probar delete, rename, etc y resto de acciones con CMDR, con archivos en minusculas y mayusculas
+-probar dandanator: spectrum y CPC
+-probar superupgrade. Básico, programa de modificación de rom. Programa en basic extras/media/spectrum/tests/superupgrade-test.tap y usando 512kb de rom que sean siempre la misma rom de spectrum 48k. Probar con rman.tap
+-probar kartusho
+-probar ifrom
+-probar betadisk. visual floppy de betadisk
+-probar discos +3. visual floppy de dsk
+-probar file browser
+
+-probar spectra. Test modos. Comparar con ZXSP. X128 NO es correcto del todo, falla la implementacion del flash
+Comparar test 128 pantalla con tabla docs/spectra/SPECTRA 128 Test.txt
+
+-probar modos video timex. Mode 0 standard, 1 dual screen, 2 hires colour 8x1), timex+ulaplus. Mode 6 (512x192 monochrome)
+Modo 0 con solo habilitarlo
+Modo 1 con testtimexmode1.tap
+Modo 2 con demos
+Modo 2 con timex+ulaplus demo slideshow_timex_64.tap, DemoHAM8, DemoHAM8x1.tzx
+Modo 6 512x192 real/simulado a 256x192 con timmy.tap y testtimexmode6.tap y testtimexmode6-ulaplus.tap y alternaterom_sebasic4_rom01.rom(mode 1)
+
+-probar simulacion de carga en spectrum, zx80, zx81
+-probar audio filter on rom save
+-probar verbose 3, 4, debugregisters
+-probar desactivando border, con y sin realvideo, en spectrum y zx8081
+-probar efectos border: btime, overscan, vectron, BorderTrix, Hercules, dark star (cuando te matan), aqua plane, paperboy, super wonder boy (pausa), thelosttapesofalbion0 (pausa), rotatrix, shock megademo, KnightsDemonsDX. en modos 128, 48k e inves.
+-probar ula48.tap, ula128.tap, scroll2017. Deberian verse bien sin necesidad de cambiar early / late timings
+-probar autoactivado de rainbow cuando efectos en border. juegos, demos y snap_tests/test_autorealvideo_border.zx
+-probar color border en ULAPlus
+-probar desactivando ssl
+-probar activando ssl
+-probar azerty. se puede probar pulsando guion o cedilla
+-probar redefinir teclas, en menu y linea comandos
+-probar desactivando contended memory en compilacion
+
+
+-probar desactivando memptr i pasar z80tests.tap de spectrum. probar activando memptr i pasar z80tests.tap
+-probar z80flags.tap. con memptr y --enable-undoc-scfccf son 6 de 152: fallan bit n,a ; bit n,[r,(hl)], ldi, ldd, ldir, lddr
+-probar cpustats
+-probar visualmem, tambien en drivers no graficos como curses, aa, etc
+-probar desactivando cpustats
+-probar desactivando visualmem
+-probar waveform, tambien en drivers no graficos como curses, aa, etc
+-probar ay player. Con versiones 00,01,02,3. Probar Spectrum y CPC
+-probar paleta gris, roja, verde, azul, inverso, real, etc. tambien con modos ulaplus, gigascreen, scanlines, spectra, timex, prism, sam
+-ver paletas de colores
+-probar expansiones de ram de zx80/81
+-probar a generar algun error y que aparezca en menu
+-probar first aid
+-probar a sobreescribir algun archivo y que pida confirmacion en menu
+-probar tooltip y ayuda de opciones en menu
+-probar menus ayudas. probar cargar juego edition name desde about->seleccionar linea 1(activando cursor con f/n) y enter (segundo easter egg)
+-probar shortcuts en menu
+-probar GUI styles: opcion normal, seleccionada, no disponible, no disponible seleccionada, pixel (audio waveform, visual mem, view sprites) en: driver grafico, en caca y en curses
+-probar opcion desactivar contended memory en menu
+-probar fuller audio box emulation
+-probar advanced timing settings 
+-probar menu de stdout
+-probar cargar/grabar pantalla en spectrum 48, 128, +2a, zxuno. formatos scr, pbm, bmp
+-probar cargar/grabar archivo binario. probar cargar binario desde linea comandos
+-probar archivo de configuracion, probar comillas en archivo configuracion (simples y dobles : por ejemplo : --joystickkeyev Up 't' (esto poniendo joystick a none para que se envie solo la t) o  --joystickemulated "Sinclair 2"). probar grabado archivo config
+-probar lightgun, para todos drivers que lo soportan: xwindows, cocoa, sdl, caca (consola texto y X), curses (consola texto y X). con juegos y testlightgun.zx, y con realvideo on y off
+nota: curses, lightgun no va muy fino en los juegos debido al tiempo de retencion del boton de fire
+-probar kempston mouse, para todos drivers que lo soportan: xwindows, cocoa, sdl, caca (consola texto y X), curses (consola texto y X). con demo kempston, art studio
+nota: cacalib, curses  en consola texto (no X) el mouse solo notifica al pulsar fire (y no al mover)
+-probar buscador vidas infinitas. tambien con cpu top speed
+-probar debug i/o ports: spectrum zx80/81, z88, zx-uno, etc
+-probar debugger, step over interrupt, electron position, cursores, toggle, runto, etc
+-probar breakpoint condicionales (=,<,> y con registros indirectos (hl), con and or xor) , operadores bitwise &|^ en variables
+-probar desactivar breakpoints con espacio
+-probar exportar disassemble a archivo texto
+-probar assembler, desde menu y ZRCP
+-probar watches
+-probar remote command protocol ZRCP, en linux, mac y windows
+-probar zxi ports con extras/media/spectrum/tests/zesarux-zxi-ports.tap , extras/media/spectrum/tests/hardwaredebugport.tap
+-probar rzx files con extras/media/spectrum/rzx
+-probar quill/paws/daad debugger
+-probar text adventure map
+-probar location graphics gac/paws/daad
+-probar quicksave, autosave at interval, snapshots to ram
+-probar todas opciones de menu en general, menus con mas opciones verticalmente de las visibles -> audio settings
+-probar fallback de drivers graficos y de sonido
+-probar impresora: en zx spectrum, zx81
+-probar COPY to printer
+-probar --verbose 0 y que no aparezca ningun mensaje por consola...
+-probar footer y cpu uso, temperatura, cinta carga, printing, etc. en xwindows, sdl, fbdev, cocoa, curses. con y sin border. en spectrum, zx80/81 y z88
+-probar custom configuration file, con snap_tests/test_autoconfig.tap  (y hay snap_tests/test_autoconfig.tap.config) y snap_tests/test_autoconfig.p (y hay snap_tests/test_autoconfig.p.config)
+-probar footer cuando se carga cinta/snap detectado por autoselectoptions o custom configuration file:
+* cuando el juego es generico y no se indica nombre (por ejemplo, aydemo)
+* juego que solo pone nombre pero no info, por ejemplo Dancing Demon y Pink Panther
+* cuando se indica juego (como por ejemplo, overscan.tap)
+* nombre con punto, como H.E.R.O.
+* cuando hay segundo mensaje:
+** Song in Lines 5 - no cabe entero 
+** Manic miner zx81 o orquesta - caben los : en el primer mensaje
+** segundo mensaje se desplaza porque no cabe, como beamrider 
+** primer y segundo mensaje se desplazan, como voyage of peril
+** FSCAPES.P, que no da tiempo a mostrar todo el segundo mensaje porque carga partes
+* Con y sin border enabled
+-probar smartload. probar deteccion de tipo tzx (standard o turbo) en quickload
+-probar recent files, drive
+-probar autoload & autosave
+-probar diferentes joysticks: kempston (inves y no-inves), cursor, fuller, etc. autofire. autoleft/right
+-probar on screen keyboard, con F8 y con joystick
+-probar on screen adventure keyboard 
+-probar asignar teclas f a funciones
+-probar --limitopenmenu
+-probar idle bus. con Arkanoid por ejemplo
+-probar realjoystick. probar opciones linea comandos: --joystickkeyev, --joystickkeybt, --joystickevent. Probar menu test joystick. Probar joystick sdl, joystick nativo linux, joystick simulator, disable joystick. En todos casos probar quitar y poner border (porque reinicializa drivers)
+-probar cambio driver audio desde menu
+-probar desactivar putpixel cache en compilacion
+-probar Setting putpixel functions to zoom 1, variable, interlace
+-probar frameskip
+-probar easter eggs
+-probar repeticion de teclas en selector de archivos, ayuda, etc (en opciones de menu no hace repeticion)
+-probar ghosting
+-probar teclas en menu: normal, mayus, minus, -+ ,. TAB BACKSPACE, en mk14, zx8081, spectrum,  , ql, cpc, z88  ( ',' y "." en zx80/81 no va en menu porque se interpreta como symbol+shift y es lo mismo que TAB). en driver xwindow y curses, para cada maquina (total: 6 pruebas)
+-probar rutinas autodeteccion caracteres: algunos de sslfunctions, otro no listado (como Spiderman o masters of the universe), hobbit (usa dos rutinas de caracteres). probar con stdout y xwindows, sdl, etc. probar --enableprintchartrap y --disableprintchartrap en stdout y xwindows
+-probar speech: texto a speech linux, mac os, windows. ruta a --textspeechprogram relativa y absoluta
+-probar speech en stdout
+-probar F4 (pantalla a speech) en Spectrum (con texto normal y graficos), Z88, ZX81 (con y sin rainbow, y con texto normal y con graficos->4 combinaciones). ZX80
+-probar funcion Find. probar buscar pokes
+-probar poke: manual y pok file (tanto buenos como corrupt, longline, desde snap_tests/)
+-probar ram refresh junto con extras/media/spectrum/tests/memoryrefresh.tap
+-probar opcion para desactivar paging en ram/rom
+-probar cpu transaction log
+-probar menu file utilities
+-probar demos beeper
+-probar real beeper activo/desactivado
+-probar tone generator --tonegenerator con 1,2 y 3 en spectrum 48k. Ver menu waveform
+-probar modo interlaced, scanlines y tapes/spectrum/tests/interlace-test.tap. interlaced zx81 con ilena
+-probar modo gigascreen. demos e imagenes
+-probar modos ULA Plus: rgb estandard, modo 3 radastan, modos ZEsarUX. modos ham (cambio rapido de paleta por interrupciones) multicolor demo, etc. hardware scroll radastan+zxuno
+-probar View Basic, variables: ZX80, ZX81, Spectrum
+-probar View Hexdump
+-probar View Sprites
+-probar emulator speed
+-probar turbo mode. manual y en zxuno, prism, chloe y tbblue
+-probar top speed, con threads y sin threads
+-probar accelerate loaders
+-probar mantransferv3
+-probar multiface, transtape, etc... todos los dispositivos de copia
+
+-keymaps en xwindows y sdl para z88, cpc, chloe, sam, ql, ...
+
+-probar Jupiter Ace. centipede (chip ay) y valkyr (speaker y chip ay). cargar y grabar ace. cargar wav
+-probar Chloe 140, 280. Tests, carga trap, grabar tap, chloe keyboard
+-probar Timex. Tests, carga trap, grabar tap
+-Probar Prism: extras/media/spectrum/prism/allvideotests.tap. Tests de chloe. Failsafe mode. Modos lineales de video extras/media/spectrum/prism/linear_modes/
+-Probar TBBlue. Copper (carpeta media... copper con demo specdrum y beast (beast con esxdos handler ) ) .  Sprites con Dungeonette (con esxdos handler), tiles
+-Probar Amstrad cpc. Todas teclas
+-Probar Sam Coupe. Todas teclas. Probar atomlite
+-probar ZX-Uno. diferentes maquinas (48k, 128k, +2a), juegos rom. Probar spi flash file, default y custom. En 48k, 128k, +2a: probar carga tap y grabacion tap, y autosend LOAD"". Probar rutina carga de cinta desde la BIOS. Probar DMA. Probar playmid, que envia .mid a puertos midi del ay (mas rapido sin real video)
+-Probar demos Pentagon. Modo 16C. Nota: confusio.tap requiere usr0
+-Probar TSConf
+-Probar Baseconf
+-Probar Chrome
+-Probar MK14
+
+-Pruebas interfaz menu:
+* habilitar zx desktop. probar botones, iconos
+* zx vision: mover ventana, maximizar, restaurar, minimizar, enviar a background, shift+derecha
+* sonidos en menu al moverse cursor, etc
+
+-probar Sprite chip con demo
+-probar textos splash en cambio de modo de video por ejemplo
+-probar usar extension de archivo no conocida y ver que avisa
+-probar activando funciones de captura de segmentation fault y forzando fallo
+-probar cpu_panic. desde dentro del emulador y antes de entrar 
+-probar en general mayoria de cintas, snaps y eproms incluidas
+-probar instalando en ruta concreta y ejecutando desde alli
+-probar generando archivo binario y probar a ejecutar, e instalar. 
+-probar generando archivo source y probar a compilar e instalar cambiando prefix
+-probar versiones finales: binario->bajar y ejecutar, instalar. source->bajar, compilar y ejecutar, instalar.
+
+pruebas Z88:
+-cambio ram interna
+-agregar ram externa
+-eprom (formatos .eprom, .epr y .63): crear eprom, agregar eprom (eprom, epr y .63), borrado eprom, copia de eprom (desde menu emulador y desde Filer), copia a eprom (desde menu emulador (y llenando la eprom hasta que no quepa mas)  y desde filer), reclaim free space eprom, undelete eprom, insertar eprom desde linea de comandos. insertar en slot 1 o 2 (no escritura)
+-flash: crear flash, agregar flash, borrar flash, copia de flash (desde menu emulador y desde Filer), copia a flash (desde menu emulador (y llenando la flash hasta que no quepa mas)  y desde filer), inicializar flash desde flashstore (y ver que la funcion de erase lo graba con FF), reclaim free space flash, undelete flash, insertar flash desde linea de comandos. insertar en slot 1 o 2 (no escritura)
+-probar card browser con flash y eprom.
+-tarjeta hibrida ram+eprom: insertar la de actualizacion a oz 4.7 a ver si la reconoce y si reconoce RAM
+-grabar snaps con eproms y flash en diferentes slots
+-probar en menus tarjetas de aplicaciones, archivos, desconocidas
+-probar sonido normal beeper (teclas, juegos, etc) y 3200 hz snap_tests/test3200z88.zx
+
+pruebas QL
+-teclado:
+
+the main thing to check is the character codes - use:
+REP Loop:print code(inkey$(-1))
+
+This will show the character code for each pressed key.
+
+In particular check 
+
+a (97)
+CTRL a (1) 
+and 
+ALT a ( ALT is awkard, it returns 255 plus the character code, so you should see on screen two values, 255 then 97 when you press this combination)
+
+-cargar manualmente juegos en memoria mediante load binary
+-cargar lbytes mediante emulacion de microdrive&floppy
