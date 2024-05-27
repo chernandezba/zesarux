@@ -29966,6 +29966,14 @@ void menu_audio(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_genera_ventana(array_menu_audio);
 
 
+        menu_add_item_menu_format(array_menu_audio,MENU_OPCION_NORMAL,menu_audio_new_ayplayer,NULL,"AY ~~Player");
+        menu_add_item_menu_tooltip(array_menu_audio,"Opens the .ay file player menu");
+        menu_add_item_menu_ayuda(array_menu_audio,"Opens the .ay file player menu");
+        menu_add_item_menu_shortcut(array_menu_audio,'p');
+        menu_add_item_menu_se_cerrara(array_menu_audio);
+        menu_add_item_menu_genera_ventana(array_menu_audio);
+
+
         menu_add_item_menu(array_menu_audio,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
         if (MACHINE_IS_QL) {
@@ -29978,12 +29986,6 @@ void menu_audio(MENU_ITEM_PARAMETERS)
         }
         menu_add_item_menu_tiene_submenu(array_menu_audio);
 
-        menu_add_item_menu_format(array_menu_audio,MENU_OPCION_NORMAL,menu_audio_new_ayplayer,NULL,"AY ~~Player");
-        menu_add_item_menu_tooltip(array_menu_audio,"Opens the .ay file player menu");
-        menu_add_item_menu_ayuda(array_menu_audio,"Opens the .ay file player menu");
-        menu_add_item_menu_shortcut(array_menu_audio,'p');
-        menu_add_item_menu_se_cerrara(array_menu_audio);
-        menu_add_item_menu_genera_ventana(array_menu_audio);
 
 
         menu_add_item_menu_en_es_ca(array_menu_audio,MENU_OPCION_NORMAL,menu_record_mid,menu_cond_ay_or_sn_chip,
