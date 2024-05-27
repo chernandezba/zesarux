@@ -131,6 +131,8 @@ Drivers audio:
 *probar carga binaria (tape) smp,wav,rwa en zx81: con audio real, con save desde basic y aofile (wav y rwa), con rutina de conversion de .p a rwa en real tape
 *probar carga realtape : spectrum: smp,wav,rwa,tap,tzx (tzx normal y turbo). zx80: smp,wav,rwa,o. zx81: smp,wav,rwa,p
 
+-probar carga desde cinta real
+
 -probar watermark, reduce 0.75
 
 -probar linea comandos: --tape, --realtape, --snap, --slotcard, --outtape

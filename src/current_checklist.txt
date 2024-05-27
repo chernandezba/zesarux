@@ -90,7 +90,6 @@ Drivers audio:
 -probar chip sonido AY, en spectrum (ay y fuller) y zx81 (quicksilva(asteroids, defenda zx80)  y bi-pak (aydemo, pink panther...))
 -probar turbosound, 3 chips ay
 -probar specdrum, covox
--probar general sound
 -probar opcion ay speech on/off con chase hq por ejemplo
 -probar abc/acb/bac stereo con demos y tests/stereotest.sh
 -probar view ay piano con extras/media/spectrum/tests/testpiano.tap  y demos turbosound
@@ -115,6 +114,7 @@ Drivers audio:
 *probar carga binaria (tape) smp,wav,rwa en zx81: con audio real, con save desde basic y aofile (wav y rwa), con rutina de conversion de .p a rwa en real tape
 *probar carga realtape : spectrum: smp,wav,rwa,tap,tzx (tzx normal y turbo). zx80: smp,wav,rwa,o. zx81: smp,wav,rwa,p
 
+-carga desde cinta real
 -probar watermark, reduce 0.75
 
 -probar linea comandos: --tape, --realtape, --snap, --slotcard, --outtape
@@ -174,11 +174,7 @@ Modo 6 512x192 real/simulado a 256x192 con timmy.tap y testtimexmode6.tap y test
 -probar first aid
 -probar a sobreescribir algun archivo y que pida confirmacion en menu
 -probar tooltip y ayuda de opciones en menu
--probar menus ayudas. probar cargar juego edition name desde about->seleccionar linea 1(activando cursor con f/n) y enter (segundo easter egg)
--probar shortcuts en menu
--probar GUI styles: opcion normal, seleccionada, no disponible, no disponible seleccionada, pixel (audio waveform, visual mem, view sprites) en: driver grafico, en caca y en curses
 -probar opcion desactivar contended memory en menu
--probar fuller audio box emulation
 -probar advanced timing settings 
 -probar menu de stdout
 -probar cargar/grabar pantalla en spectrum 48, 128, +2a, zxuno. formatos scr, pbm, bmp
@@ -222,7 +218,6 @@ nota: cacalib, curses  en consola texto (no X) el mouse solo notifica al pulsar 
 ** primer y segundo mensaje se desplazan, como voyage of peril
 ** FSCAPES.P, que no da tiempo a mostrar todo el segundo mensaje porque carga partes
 * Con y sin border enabled
--probar smartload. probar deteccion de tipo tzx (standard o turbo) en quickload
 -probar recent files, drive
 -probar autoload & autosave
 -probar diferentes joysticks: kempston (inves y no-inves), cursor, fuller, etc. autofire. autoleft/right
