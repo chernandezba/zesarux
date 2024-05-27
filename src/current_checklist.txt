@@ -85,12 +85,8 @@ Drivers audio:
 -probar desactivar colores pantalla spectrum
 -probar modos hi-res zx81: hrg, chr$128, udg, wrx, otros hi-res. probar xtricator, pacman 
 -probar autodetect WRX mode on ZX80/81
--probar chip sonido AY, en spectrum (ay y fuller) y zx81 (quicksilva(asteroids, defenda zx80)  y bi-pak (aydemo, pink panther...))
--probar turbosound, 3 chips ay
--probar specdrum, covox
+-probar chip sonido AY, y zx81 (quicksilva(asteroids, defenda zx80)  y bi-pak (aydemo, pink panther...))
 -probar opcion ay speech on/off con chase hq por ejemplo
--probar abc/acb/bac stereo con demos y tests/stereotest.sh
--probar view ay piano con extras/media/spectrum/tests/testpiano.tap  y demos turbosound
 -probar menu ay piano, beeper piano. nota: beeper piano con notas largas, como la musica del Zorro
 -probar menu aysheet
 -probar midi output to real device. En Mac se puede usar fluidsynth (brew install fluidsynth) y copiar un soundfont (de aqui por ejemplo http://www.schristiancollins.com/generaluser.php). Se inicia en consola, ahi en la consola dira donde copiar el soundfount
