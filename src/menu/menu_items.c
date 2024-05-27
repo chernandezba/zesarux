@@ -29603,10 +29603,6 @@ void menu_help(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_genera_ventana(array_menu_common);
 
 
-            menu_add_item_menu(array_menu_common,"In Memoriam",MENU_OPCION_NORMAL,menu_in_memoriam,NULL);
-            menu_add_item_menu_se_cerrara(array_menu_common);
-            menu_add_item_menu_tiene_submenu(array_menu_common);
-
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_about_acknowledgements,NULL,
                 "A~~cknowledgements","Agrade~~cimientos","Re~~coneixements");
 			menu_add_item_menu_shortcut(array_menu_common,'c');
@@ -29682,11 +29678,16 @@ void menu_help(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_se_cerrara(array_menu_common);
             menu_add_item_menu_genera_ventana(array_menu_common);
 
+            menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+
 			menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_licenses,NULL,
                 "Lic~~enses","Lic~~encias","Llic~~ències");
 			menu_add_item_menu_shortcut(array_menu_common,'e');
             menu_add_item_menu_tiene_submenu(array_menu_common);
 
+            menu_add_item_menu(array_menu_common,"In Memoriam",MENU_OPCION_NORMAL,menu_in_memoriam,NULL);
+            menu_add_item_menu_se_cerrara(array_menu_common);
+            menu_add_item_menu_tiene_submenu(array_menu_common);
 
 
             menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
@@ -29974,26 +29975,9 @@ void menu_audio(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_genera_ventana(array_menu_audio);
 
 
-        menu_add_item_menu(array_menu_audio,"",MENU_OPCION_SEPARADOR,NULL,NULL);
-
-        if (MACHINE_IS_QL) {
-            menu_add_item_menu_format(array_menu_audio,MENU_OPCION_NORMAL,menu_i8049_mixer,menu_cond_i8049_chip,"i8049 Mi~~xer");
-            menu_add_item_menu_shortcut(array_menu_audio,'x');
-        }
-        else {
-            menu_add_item_menu_format(array_menu_audio,MENU_OPCION_NORMAL,menu_ay_mixer,menu_cond_ay_chip,"AY Mi~~xer");
-            menu_add_item_menu_shortcut(array_menu_audio,'x');
-        }
-        menu_add_item_menu_tiene_submenu(array_menu_audio);
 
 
 
-        menu_add_item_menu_en_es_ca(array_menu_audio,MENU_OPCION_NORMAL,menu_record_mid,menu_cond_ay_or_sn_chip,
-            "Audio Chip to .~~mid","Audio Chip a .~~mid","Audio Xip a .~~mid");
-        menu_add_item_menu_tooltip(array_menu_audio,"Saves music from the AY Chip to a .mid file");
-        menu_add_item_menu_ayuda(array_menu_audio,"Saves music from the AY Chip to a .mid file");
-        menu_add_item_menu_shortcut(array_menu_audio,'m');
-        menu_add_item_menu_tiene_submenu(array_menu_audio);
 
         if (audio_can_record_input() ) {
             menu_add_item_menu_separator(array_menu_audio);
@@ -30039,6 +30023,27 @@ void menu_audio(MENU_ITEM_PARAMETERS)
             }
         }
 
+
+        menu_add_item_menu(array_menu_audio,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+
+        if (MACHINE_IS_QL) {
+            menu_add_item_menu_format(array_menu_audio,MENU_OPCION_NORMAL,menu_i8049_mixer,menu_cond_i8049_chip,"i8049 Mi~~xer");
+            menu_add_item_menu_shortcut(array_menu_audio,'x');
+        }
+        else {
+            menu_add_item_menu_format(array_menu_audio,MENU_OPCION_NORMAL,menu_ay_mixer,menu_cond_ay_chip,"AY Mi~~xer");
+            menu_add_item_menu_shortcut(array_menu_audio,'x');
+        }
+        menu_add_item_menu_tiene_submenu(array_menu_audio);
+
+
+
+        menu_add_item_menu_en_es_ca(array_menu_audio,MENU_OPCION_NORMAL,menu_record_mid,menu_cond_ay_or_sn_chip,
+            "Audio Chip to .~~mid","Audio Chip a .~~mid","Audio Xip a .~~mid");
+        menu_add_item_menu_tooltip(array_menu_audio,"Saves music from the AY Chip to a .mid file");
+        menu_add_item_menu_ayuda(array_menu_audio,"Saves music from the AY Chip to a .mid file");
+        menu_add_item_menu_shortcut(array_menu_audio,'m');
+        menu_add_item_menu_tiene_submenu(array_menu_audio);
 
 
         menu_add_item_menu(array_menu_audio,"",MENU_OPCION_SEPARADOR,NULL,NULL);
@@ -31795,14 +31800,7 @@ void menu_snapshot(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_tooltip(array_menu_snapshot,"Save a snapshot quickly");
         menu_add_item_menu_ayuda(array_menu_snapshot,"Save a snapshot quickly. Name prefix and directory to save are configured on settings->Snapshot");
 
-        menu_add_item_menu(array_menu_snapshot,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
-        menu_add_item_menu_en_es_ca(array_menu_snapshot,MENU_OPCION_NORMAL,menu_snapshot_rewind,NULL,
-            "Snapshots to ~~RAM","Instantaneas a ~~RAM","Instantanies a ~~RAM");
-        menu_add_item_menu_shortcut(array_menu_snapshot,'r');
-        menu_add_item_menu_tooltip(array_menu_snapshot,"Options to keep last snapshots in RAM");
-        menu_add_item_menu_ayuda(array_menu_snapshot,"Options to keep last snapshots in RAM");
-        menu_add_item_menu_tiene_submenu(array_menu_snapshot);
 
 
         //Este separador solo aparece cuando la opcion avanzada de autoconfig tambien aparece, por tanto, es un item avanzado en si mismo
@@ -31819,6 +31817,14 @@ void menu_snapshot(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_genera_ventana(array_menu_snapshot);
 
 
+        menu_add_item_menu(array_menu_snapshot,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+
+        menu_add_item_menu_en_es_ca(array_menu_snapshot,MENU_OPCION_NORMAL,menu_snapshot_rewind,NULL,
+            "Snapshots to ~~RAM","Instantaneas a ~~RAM","Instantanies a ~~RAM");
+        menu_add_item_menu_shortcut(array_menu_snapshot,'r');
+        menu_add_item_menu_tooltip(array_menu_snapshot,"Options to keep last snapshots in RAM");
+        menu_add_item_menu_ayuda(array_menu_snapshot,"Options to keep last snapshots in RAM");
+        menu_add_item_menu_tiene_submenu(array_menu_snapshot);
 
 
         menu_add_item_menu(array_menu_snapshot,"",MENU_OPCION_SEPARADOR,NULL,NULL);
