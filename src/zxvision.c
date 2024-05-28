@@ -20204,10 +20204,10 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 
 			//Mover Izquierda:
             //En tabulados, sigue el cursor
-            //En no tabulados, menu anterior
+            //En no tabulados y en no dialogos, menu anterior
             case '5':
 
-                if (m->es_menu_tabulado==0) {
+                if (m->es_menu_tabulado==0 && m->no_es_realmente_un_menu==0) {
                     if (menu_old_behaviour_close_menus.v==0) salir_con_flecha_izquierda=1;
                 }
 
