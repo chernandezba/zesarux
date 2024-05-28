@@ -20185,9 +20185,9 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 
 		//printf ("tecla en dibuja menu: %d\n",tecla);
 
-        //flecha derecha se comporta como enter en menus no tabulados
+        //flecha derecha se comporta como enter en menus no tabulados y si tiene submenu
         if (m->es_menu_tabulado==0) {
-            if (tecla=='8' && menu_old_behaviour_close_menus.v==0) tecla=13;
+            if (tecla=='8' && menu_old_behaviour_close_menus.v==0 && menu_retorna_item(m,(*opcion_inicial))->tiene_submenu) tecla=13;
         }
 
 		switch (tecla) {
@@ -20223,7 +20223,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 
 			//Mover Derecha, solo en tabulados
 			case '8':
-				//en menus tabulados, misma funcion que abajo para un no tabulado
+                //en menus tabulados, misma funcion que abajo para un no tabulado
 				if (m->es_menu_tabulado==0) break;
 
 				(*opcion_inicial)=menu_dibuja_menu_cursor_abajo((*opcion_inicial),max_opciones,m);
