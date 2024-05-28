@@ -14874,8 +14874,7 @@ void menu_online_browse_zx81_create_menu(char *mem, char *mem_after_headers,int 
 
 			if (total_items) {
 				//Si hay resultados con esa letra, normalmente si..
-                //no quiero indexarlo en la busqueda
-            	retorno_menu=menu_dibuja_menu_no_indexado(&zx81_online_browser_opcion_seleccionada,&item_seleccionado,array_menu_common,"ZX81 Games" );
+            	retorno_menu=menu_dibuja_menu_dialogo_no_title_lang(&zx81_online_browser_opcion_seleccionada,&item_seleccionado,array_menu_common,"ZX81 Games" );
 
 
             	if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
@@ -15565,7 +15564,7 @@ Pueden salir antes id o antes title. En bucle leer los dos y cuando estén los d
 
 			if (total_items) {
 
-				retorno_menu=menu_dibuja_menu_no_indexado(&zxinfo_wos_opcion_seleccionada,&item_seleccionado,array_menu_common,
+				retorno_menu=menu_dibuja_menu_dialogo_no_title_lang(&zxinfo_wos_opcion_seleccionada,&item_seleccionado,array_menu_common,
                     windowtitle );
 
 
@@ -32297,8 +32296,7 @@ void menu_plusthreedisk_info_sectors_list(MENU_ITEM_PARAMETERS)
 
         menu_add_ESC_item(array_menu_common);
 
-        //no quiero indexarlo en la busqueda
-        retorno_menu=menu_dibuja_menu_no_indexado(&menu_plusthreedisk_info_sectors_list_opcion_seleccionada,&item_seleccionado,array_menu_common,menu_titulo);
+        retorno_menu=menu_dibuja_menu_dialogo_no_title_lang(&menu_plusthreedisk_info_sectors_list_opcion_seleccionada,&item_seleccionado,array_menu_common,menu_titulo);
 
 
         if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
@@ -32325,6 +32323,7 @@ void menu_plusthreedisk_info_tracks_list(MENU_ITEM_PARAMETERS)
 
 
         menu_add_item_menu_inicial(&array_menu_common,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
+        //menu_add_item_menu_no_es_realmente_un_menu(array_menu_common);
 
         int pista;
         int cara;
@@ -32415,8 +32414,7 @@ void menu_plusthreedisk_info_tracks_list(MENU_ITEM_PARAMETERS)
 
         menu_add_ESC_item(array_menu_common);
 
-        //no quiero indexarlo en la busqueda
-        retorno_menu=menu_dibuja_menu_no_indexado(&menu_plusthreedisk_info_tracks_list_opcion_seleccionada,&item_seleccionado,array_menu_common,"Tracks list");
+        retorno_menu=menu_dibuja_menu_dialogo_no_title_lang(&menu_plusthreedisk_info_tracks_list_opcion_seleccionada,&item_seleccionado,array_menu_common,"Tracks list");
 
 
         if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
@@ -32458,7 +32456,7 @@ void menu_plusthreedisk_info(MENU_ITEM_PARAMETERS)
         dsk_get_protection_scheme(buffer_esquema_proteccion);
 
 
-        menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,"Signature:");
+        menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Signature:");
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL," %s",buffer_signature);
 
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,"Creator:");
@@ -32475,7 +32473,7 @@ void menu_plusthreedisk_info(MENU_ITEM_PARAMETERS)
 
         menu_add_ESC_item(array_menu_common);
 
-        retorno_menu=menu_dibuja_menu_no_title_lang(&menu_plusthreedisk_info_opcion_seleccionada,&item_seleccionado,array_menu_common,"Disk Info");
+        retorno_menu=menu_dibuja_menu_dialogo_no_title_lang(&menu_plusthreedisk_info_opcion_seleccionada,&item_seleccionado,array_menu_common,"Disk Info");
 
 
         if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {

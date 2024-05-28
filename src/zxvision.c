@@ -19813,12 +19813,13 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 							ancho-1+1,alto-2,titulo);		 //hacer de momento igual de ancho que ancho visible para poder usar ultima columna
 
 
-        //no queremos que un menu se pueda redimensionar ni minimizar (excluyendo los tabulados claro)
-        ventana_menu.can_be_minimized=0;
 
-        //algunos menus dejamos que se puedan redimensionar
-        //realmente son mas cuadros de menus que dialogos, por tanto se tienen que comportar mas como un cuadro
-        if (m->no_es_realmente_un_menu==0) ventana_menu.can_be_resized=0;
+        //los menus estrictamente (que no sean cuadros de dialogo) no se pueden redimiensionar ni minimizar
+        //dialogos se pueden. y menus tabulados (que entran por el else de mas abajo) también
+        if (m->no_es_realmente_un_menu==0) {
+            ventana_menu.can_be_resized=0;
+            ventana_menu.can_be_minimized=0;
+        }
 
 		//Si no hay barra scroll vertical, usamos hasta la ultima columna
 		menu_dibuja_menu_adjust_last_column(&ventana_menu,ancho,alto);
@@ -20600,6 +20601,15 @@ int menu_dibuja_menu_no_indexado(int *opcion_inicial,menu_item *item_seleccionad
     return menu_dibuja_menu_no_title_lang(opcion_inicial,item_seleccionado,m,titulo);
 }
 
+//con titulo de menu igual en los 3 idiomas
+int menu_dibuja_menu_dialogo_no_title_lang(int *opcion_inicial,menu_item *item_seleccionado,menu_item *m,char *titulo)
+{
+    m->no_es_realmente_un_menu=1;
+    m->no_indexar_busqueda=1;
+
+    return menu_dibuja_menu_no_title_lang(opcion_inicial,item_seleccionado,m,titulo);
+}
+
 //Igual que menu_dibuja_menu pero este menu se selecciona enter una vez o escape una vez, pero la funcion que la llamada no vuelve
 //a dibujar el menu, por tanto a nivel de path de indexacion de busqueda, se pierde el ultimo path de submenu
 //Ejemplo de esto: menu_simple_ten_choices
@@ -21100,6 +21110,7 @@ void menu_add_item_menu_tabulado(menu_item *m,int x,int y)
 
 
 //Indicar que es mas bien un cuadro de dialogo en vez de un menu
+/*
 void menu_add_item_menu_no_es_realmente_un_menu(menu_item *m)
 {
 //busca el ultimo item i le añade el indicado
@@ -21112,6 +21123,7 @@ void menu_add_item_menu_no_es_realmente_un_menu(menu_item *m)
     m->no_es_realmente_un_menu=1;
 
 }
+*/
 
 //Agregar un valor como opcion al ultimo item de menu
 //Esto sirve, por ejemplo, para que cuando esta en el menu de z88, insertar slot,

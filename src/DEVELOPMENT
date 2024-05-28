@@ -145,6 +145,12 @@ menu_generic_message("Rename file","OK. File renamed");
 
 -----------------------------------------
 
+Si se utiliza funcion de crear menu pero no es un menu estrictamente, llamar a:
+
+menu_dibuja_menu_dialogo
+
+-----------------------------------------
+
 Items de menú:
 
 * si tiene submenus, agregarle menu_add_item_menu_tiene_submenu

@@ -1466,7 +1466,7 @@ void menu_filesel_select_filters(void)
         menu_add_ESC_item(array_menu_common);
 
         //no quiero indexarlo en la busqueda
-        retorno_menu=menu_dibuja_menu_no_indexado(&menu_filesel_select_filters_opcion_seleccionada,&item_seleccionado,array_menu_common,"Filters");
+        retorno_menu=menu_dibuja_menu_dialogo_no_title_lang(&menu_filesel_select_filters_opcion_seleccionada,&item_seleccionado,array_menu_common,"Filters");
 
 
         if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
@@ -3741,8 +3741,8 @@ char *menu_filesel_recent_files_folders(int *tipo)
             strcpy(nombre_ventana,"Recent folders (SPC switch)");
         }
 
-        //no quiero indexarlo en la busqueda
-        retorno_menu=menu_dibuja_menu_no_indexado(&menu_recent_files_opcion_seleccionada,&item_seleccionado,array_menu_recent_files,nombre_ventana);
+
+        retorno_menu=menu_dibuja_menu_dialogo_no_title_lang(&menu_recent_files_opcion_seleccionada,&item_seleccionado,array_menu_recent_files,nombre_ventana);
 
 
         if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {

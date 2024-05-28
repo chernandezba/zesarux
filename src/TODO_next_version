@@ -336,6 +336,11 @@ Menús solo deberían ser líneas navegables hasta un destino
 
 -Poder desactivar logo navidad para máquinas que no tienen RTC (y por tanto siempre estarian en 1 de enero y siempre saldria logo navidad)
 
+-Accesibilidad: no debería leer símbolo ">" de los indicadores de submenús
+
+Quizá main menu que sea ventana de 1 de alto con entradas menu tabuladas de
+Smartload snapshot storage debug etc..
+Y sin barra título
 ---Fin Mejoras---
 
 

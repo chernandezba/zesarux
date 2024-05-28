@@ -5289,8 +5289,7 @@ void menu_hardware_redefine_keys(MENU_ITEM_PARAMETERS)
                 //menu_add_item_menu(array_menu_hardware_redefine_keys,"ESC Back",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
                 menu_add_ESC_item(array_menu_hardware_redefine_keys);
 
-                //no quiero indexarlo en la busqueda
-                retorno_menu=menu_dibuja_menu_no_indexado(&hardware_redefine_keys_opcion_seleccionada,&item_seleccionado,array_menu_hardware_redefine_keys,"Redefine keys" );
+                retorno_menu=menu_dibuja_menu_dialogo_no_title_lang(&hardware_redefine_keys_opcion_seleccionada,&item_seleccionado,array_menu_hardware_redefine_keys,"Redefine keys" );
 
 
 
@@ -11276,8 +11275,7 @@ void menu_zxdesktop_set_configurable_icons(MENU_ITEM_PARAMETERS)
 
         menu_add_ESC_item(array_menu_common);
 
-        //no quiero indexarlo en la busqueda
-        retorno_menu=menu_dibuja_menu_no_indexado(&zxdesktop_set_configurable_icons_opcion_seleccionada,&item_seleccionado,array_menu_common,"Set Icons" );
+        retorno_menu=menu_dibuja_menu_dialogo_no_title_lang(&zxdesktop_set_configurable_icons_opcion_seleccionada,&item_seleccionado,array_menu_common,"Set Icons" );
 
 
 
