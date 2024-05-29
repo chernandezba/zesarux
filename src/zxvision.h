@@ -339,6 +339,7 @@ extern int mouse_is_dragging;
 extern int menu_mouse_left_double_click_counter;
 
 extern z80_bit christmas_mode;
+extern z80_bit avoid_christmas_mode;
 
 
 

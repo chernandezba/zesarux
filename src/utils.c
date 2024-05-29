@@ -4378,6 +4378,7 @@ int util_write_configfile(void)
   if (stats_last_remote_version[0]!=0)       ADD_STRING_CONFIG,"--stats-last-avail-version %s",stats_last_remote_version);
 
 
+  if (avoid_christmas_mode.v)               ADD_STRING_CONFIG,"--avoid-christmas-mode");
 
 
   if (do_no_show_changelog_when_update.v)     ADD_STRING_CONFIG,"--no-show-changelog");

@@ -1330,6 +1330,9 @@ z80_bit no_close_menu_after_smartload={0};
 //Modo navidad: cambios en los colores del logo (tanto footer como splash), mensaje bienvenida, copos de nieve en logo del footer
 z80_bit christmas_mode={0};
 
+//Evitar modo navidad, pensado para máquinas sin reloj RTC y que siempre están en 1 de Enero
+z80_bit avoid_christmas_mode={0};
+
 
 void menu_dibuja_cuadrado(int x1,int y1,int x2,int y2,int color);
 void menu_desactiva_cuadrado(void);

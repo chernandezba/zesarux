@@ -44,6 +44,7 @@ Permitir cargar cartuchos de MSX de 48kB
 Permitir cargar cartuchos de MSX con memory mapper Ascii 8kb, Ascii 16kb, Konami without SCC. Konami with SCC, R-Type
 Permitir elegir +2e/+3e rom desde la entrada de menu Rom personalizada
 Compilación mas fácil en Haiku OS
+Agregada opción para evitar Modo Navidad
 Mejorado editor Hexadecimal en ZX80 y ZX81: mostrar caracteres inversos
 
 Mejorado ZRCP:

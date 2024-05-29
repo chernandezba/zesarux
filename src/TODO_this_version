@@ -38,3 +38,4 @@ no genera codigo de tecla al pulsar esas extendidas
 -Incorporar bittransfe como manera de generar snapshot en .tap. Agregar parámetro de estado interrupciones, registro i. Otros registros que falten? R? Problema que está guardando algunos registros en parte alta de la memoria y puede interferir con el stack si no se ha cambiado el CLEAR
 
 -Incluir paquete de Haiku OS 64 bit. En Available releases for download: agregar HaikuOs cuando esté
+

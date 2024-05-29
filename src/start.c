@@ -447,8 +447,11 @@ void check_christmas_mode(void)
     //Activarlo si mes 12 y dia > 19, o si mes 1 y dia < 9
     //O sea, del 20 de Diciembre hasta el 8 de Enero
     if ((mes==12 && dia>19) || (mes==1 && dia<9)) {
-        debug_printf(VERBOSE_DEBUG,"Enabling christmas mode");
-        christmas_mode.v=1;
+
+        if (avoid_christmas_mode.v==0) {
+            debug_printf(VERBOSE_DEBUG,"Enabling christmas mode");
+            christmas_mode.v=1;
+        }
     }
 }
 
@@ -1745,6 +1748,10 @@ printf (
 		"--machinelist                            Get machines list names whitespace separated, and exit\n"
 		"--disablebetawarning text                Do not pause beta warning message on boot for version named as that parameter text\n"
 		"--tbblue-autoconfigure-sd-already-asked  Do not ask to autoconfigure tbblue initial SD image\n"
+
+        "--enable-christmas-mode                  Force Christmas Mode\n"
+        "--avoid-christmas-mode                   Do not activate Christmas Mode. Useful on machines without RTC that are always on 1 January and/or you don't want this mode to be enabled\n"
+
 
 		//Esto no hace falta que lo vea un usuario, solo lo uso yo para probar partes del emulador
 		//"--codetests                Run develoment code tests\n"
@@ -6337,9 +6344,12 @@ int parse_cmdline_options(int desde_commandline) {
 				audio_tone_generator=valor;
 			}
 
-            //Opcion oculta para probar modo navidad
             else if (!strcmp(argv[puntero_parametro],"--enable-christmas-mode")) {
                 christmas_mode.v=1;
+            }
+
+            else if (!strcmp(argv[puntero_parametro],"--avoid-christmas-mode")) {
+                avoid_christmas_mode.v=1;
             }
 
             //sensor-set position type
