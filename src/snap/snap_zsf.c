@@ -3929,7 +3929,7 @@ void save_zsf_snapshot_file_mem(char *filename,z80_byte *destination_memory,int 
   //Save creator
   //Including 0 end byte
   char creator_buffer[255];
-  sprintf(creator_buffer,"ZEsarUX v." EMULATOR_VERSION );
+  sprintf(creator_buffer,"ZEsarUX " EMULATOR_VERSION );
   zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, (z80_byte *)creator_buffer,ZSF_CREATOR, strlen(creator_buffer)+1);
 
   //Save date time

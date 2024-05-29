@@ -4109,19 +4109,19 @@ void menu_footer_zesarux_emulator(void)
         //Si esta zeng online conectado, alterar algo el mensaje
 
         //01234567890123456789012345678901
-        //ZEsarUX emulator v.11 - ONLINE
-        //ZEsarUX emulator v.11-RC3 - ONLINE
+        //ZEsarUX 11 - ONLINE
+        //ZEsarUX 11-RC3 - ONLINE
         //Aunque ocupe algo mas, por alguna version beta, no deberia pasar nada pues el putchar en el footer controla margenes
         char buffer_footer[100];
 
         if (zeng_online_connected.v) {
             //printf("Mostrando footer con estado conexion ZENG online\n");
-            sprintf(buffer_footer,"ZEsarUX emulator v."EMULATOR_VERSION " %s",zoc_return_connected_status() );
+            sprintf(buffer_footer,"ZEsarUX "EMULATOR_VERSION " %s",zoc_return_connected_status() );
         }
 
         else {
             //printf("Mostrando footer SIN estado conexion ZENG online\n");
-            sprintf(buffer_footer,"ZEsarUX emulator v."EMULATOR_VERSION);
+            sprintf(buffer_footer,"ZEsarUX "EMULATOR_VERSION);
         }
 
 		menu_putstring_footer(0,WINDOW_FOOTER_ELEMENT_Y_ZESARUX_EMULATOR,buffer_footer,WINDOW_FOOTER_INK,WINDOW_FOOTER_PAPER);
@@ -26056,9 +26056,9 @@ void set_splash_zesarux_logo(void)
 
 void get_welcome_message(char *texto_welcome)
 {
-    if (gui_language==GUI_LANGUAGE_SPANISH) sprintf(texto_welcome," Bienvenido a ZEsarUX v." EMULATOR_VERSION " ");
-    else if (gui_language==GUI_LANGUAGE_CATALAN) sprintf(texto_welcome," Benvingut a ZEsarUX v." EMULATOR_VERSION " ");
-    else sprintf(texto_welcome," Welcome to ZEsarUX v." EMULATOR_VERSION " ");
+    if (gui_language==GUI_LANGUAGE_SPANISH) sprintf(texto_welcome," Bienvenido a ZEsarUX " EMULATOR_VERSION " ");
+    else if (gui_language==GUI_LANGUAGE_CATALAN) sprintf(texto_welcome," Benvingut a ZEsarUX " EMULATOR_VERSION " ");
+    else sprintf(texto_welcome," Welcome to ZEsarUX " EMULATOR_VERSION " ");
 }
 
 void get_press_key_menu_message(char *destino)
@@ -27160,8 +27160,10 @@ index_menu *zxvision_index_entrada_menu(char *titulo)
     char titulo_menu_final[MAX_LENGTH_FULL_PATH_SUBMENU];
 
     //Si es menu principal, poner "Main Menu"
-    if (!strcmp("ZEsarUX v." EMULATOR_VERSION,titulo)) strcpy(titulo_menu_final,"Main Menu");
-    else strcpy(titulo_menu_final,titulo);
+    //if (!strcmp("ZEsarUX v." EMULATOR_VERSION,titulo)) strcpy(titulo_menu_final,"Main Menu");
+    //else strcpy(titulo_menu_final,titulo);
+
+    strcpy(titulo_menu_final,titulo);
 
     if (nombre_menu_con_submenu_para_indice[0]==0) sprintf(buf_index_submenu,"%s",titulo_menu_final);
     else sprintf(buf_index_submenu,"-> %s",titulo_menu_final);
