@@ -666,7 +666,8 @@ void menu_poke(MENU_ITEM_PARAMETERS)
                 //menu_add_item_menu(array_menu_poke,"ESC Back",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
                 menu_add_ESC_item(array_menu_poke);
 
-                retorno_menu=menu_dibuja_menu_no_title_lang(&poke_opcion_seleccionada,&item_seleccionado,array_menu_poke,"Poke" );
+                retorno_menu=menu_dibuja_menu(&poke_opcion_seleccionada,&item_seleccionado,array_menu_poke,
+                    "Poke Menu","Menú Poke","Menú Poke" );
 
 
 
@@ -855,7 +856,8 @@ void menu_debug_cpu_stats(MENU_ITEM_PARAMETERS)
                 //menu_add_item_menu(array_menu_cpu_stats,"ESC Back",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
                 menu_add_ESC_item(array_menu_cpu_stats);
 
-                retorno_menu=menu_dibuja_menu_no_title_lang(&cpu_stats_opcion_seleccionada,&item_seleccionado,array_menu_cpu_stats,"CPU Statistics" );
+                retorno_menu=menu_dibuja_menu(&cpu_stats_opcion_seleccionada,&item_seleccionado,array_menu_cpu_stats,
+                    "CPU Statistics Menu","Menú Estadísticas CPU","Menú Estadístiques CPU" );
 
 
                 if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
@@ -10342,7 +10344,8 @@ void menu_cpu_transaction_log(MENU_ITEM_PARAMETERS)
 
                 menu_add_ESC_item(array_menu_cpu_transaction_log);
 
-                retorno_menu=menu_dibuja_menu_no_title_lang(&cpu_transaction_log_opcion_seleccionada,&item_seleccionado,array_menu_cpu_transaction_log,"CPU Transaction Log" );
+                retorno_menu=menu_dibuja_menu(&cpu_transaction_log_opcion_seleccionada,&item_seleccionado,array_menu_cpu_transaction_log,
+                    "CPU Transaction Log Menu","Menú Registro Transacciones CPU","Menú Registre Transaccions CPU" );
 
 
 
@@ -25282,7 +25285,8 @@ void menu_snapshot_rewind(MENU_ITEM_PARAMETERS)
 
         menu_add_ESC_item(array_menu_common);
 
-        retorno_menu=menu_dibuja_menu_no_title_lang(&snapshot_rewind_opcion_seleccionada,&item_seleccionado,array_menu_common,"Snapshots to RAM");
+        retorno_menu=menu_dibuja_menu(&snapshot_rewind_opcion_seleccionada,&item_seleccionado,array_menu_common,
+            "Snapshots to RAM menu","Menú instantáneas a RAM","Menú instantànies a RAM");
 
 
 
@@ -25998,7 +26002,8 @@ void menu_find(MENU_ITEM_PARAMETERS)
 
                 menu_add_ESC_item(array_menu_find);
 
-                retorno_menu=menu_dibuja_menu_no_title_lang(&find_opcion_seleccionada,&item_seleccionado,array_menu_find,"Find" );
+                retorno_menu=menu_dibuja_menu(&find_opcion_seleccionada,&item_seleccionado,array_menu_find,
+                    "Find menu","Menú Find","Menú Find" );
 
 
 
@@ -29864,7 +29869,8 @@ void menu_debug_input_file_keyboard(MENU_ITEM_PARAMETERS)
 
         menu_add_ESC_item(array_menu_input_file_keyboard);
 
-        retorno_menu=menu_dibuja_menu_no_title_lang(&input_file_keyboard_opcion_seleccionada,&item_seleccionado,array_menu_input_file_keyboard,"Input File Spooling" );
+        retorno_menu=menu_dibuja_menu(&input_file_keyboard_opcion_seleccionada,&item_seleccionado,array_menu_input_file_keyboard,
+            "Input File Spooling Menu" ,"Menú Input File Spooling","Menú Input File Spooling");
 
 
         if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
@@ -31286,7 +31292,7 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
 #ifdef EMULATE_CPU_STATS
 		if (CPU_IS_Z80) {
 			menu_add_item_menu_en_es_ca(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_cpu_stats,NULL,
-                "View CPU Statistics","Ver estadísticas CPU","Veure estadístiques CPU");
+                "CPU Statistics","Estadísticas CPU","Estadístiques CPU");
             menu_add_item_menu_tiene_submenu(array_menu_debug);
             menu_add_item_menu_es_avanzado(array_menu_debug);
 		}
