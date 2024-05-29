@@ -23291,6 +23291,11 @@ int menu_help_keyboard_mantener_key_mouse(int pulsado_x,int pulsado_y)
 
 zxvision_window menu_help_show_keyboard_ventana;
 
+//Debug para mostrar coordenada al pulsar, sirve para definir nuevos teclados, de tal manera que:
+//Pulsar boton izquierdo en esquina superior izquierda
+//Pulsar boton izquierdo en esquina inferior derecha
+//Pulsar boton derecho para salto de linea (habitualmente para indicar nueva fila en la tabla de teclas)
+int keyboard_help_debug_coords=0;
 
 int menu_help_show_keyboard_debug_ultimo_click_x=0;
 int menu_help_show_keyboard_debug_ultimo_click_y=0;
@@ -23309,8 +23314,10 @@ void help_keyboard_start_generate_key_mouse_click(zxvision_window *ventana)
 
     if (menu_help_show_keyboard_debug_ultimo_click_x!=pulsado_x && menu_help_show_keyboard_debug_ultimo_click_y!=pulsado_y) {
         //Debug para mostrar coordenada pulsada
-        //printf("%d,%d,",pulsado_x,pulsado_y);
-        //fflush(stdout);
+        if (keyboard_help_debug_coords) {
+            printf("%d,%d,",pulsado_x,pulsado_y);
+            fflush(stdout);
+        }
 
 
         menu_help_show_keyboard_debug_ultimo_click_x=pulsado_x;
@@ -23514,7 +23521,10 @@ void menu_help_show_keyboard(MENU_ITEM_PARAMETERS)
                 keyboard_help_reset_teclas_pulsadas();
             }
 
-            //printf("\n");
+            //Debug para mostrar coordenada pulsada, salto de linea con boton derecho
+            if (keyboard_help_debug_coords) {
+                printf("\n");
+            }
 
             menu_espera_no_tecla();
 
