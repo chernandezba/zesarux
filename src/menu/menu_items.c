@@ -42051,6 +42051,7 @@ void menu_toys(MENU_ITEM_PARAMETERS)
             "This my ZEsarUX own version of the Game of Life :)");
 		menu_add_item_menu_shortcut(array_menu_toys,'l');
         menu_add_item_menu_se_cerrara(array_menu_toys);
+        menu_add_item_menu_genera_ventana(array_menu_toys);
 
 
 
@@ -42060,6 +42061,7 @@ void menu_toys(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_ayuda(array_menu_toys,"This is my ZEsarUX own version of the Unix classic toy ;)");
         menu_add_item_menu_shortcut(array_menu_toys,'e');
         menu_add_item_menu_se_cerrara(array_menu_toys);
+        menu_add_item_menu_genera_ventana(array_menu_toys);
 
 
 
