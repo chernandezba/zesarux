@@ -330,13 +330,13 @@ solo tiene entrada en settings el tape
 
 -hotswap a pentagon
 
--Idea menús:
-Clara distinción entre línea de menú y entre ventana con opciones
-Menús solo deberían ser líneas navegables hasta un destino
-
 
 
 -Accesibilidad: no debería leer símbolo ">" de los indicadores de submenús
+
+-Idea menús:
+Clara distinción entre línea de menú y entre ventana con opciones
+Menús solo deberían ser líneas navegables hasta un destino
 
 Quizá main menu que sea ventana de 1 de alto con entradas menu tabuladas de
 Smartload snapshot storage debug etc..
