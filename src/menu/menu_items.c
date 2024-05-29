@@ -44519,7 +44519,9 @@ void menu_inicio_bucle_main(void)
             menu_add_item_menu_ayuda(array_menu_principal,"Exit ZEsarUX");
 
 
-            retorno_menu=menu_dibuja_menu_no_title_lang(&menu_inicio_opcion_seleccionada,&item_seleccionado,array_menu_principal,"ZEsarUX v." EMULATOR_VERSION );
+            //retorno_menu=menu_dibuja_menu_no_title_lang(&menu_inicio_opcion_seleccionada,&item_seleccionado,array_menu_principal,"ZEsarUX v." EMULATOR_VERSION );
+            retorno_menu=menu_dibuja_menu(&menu_inicio_opcion_seleccionada,&item_seleccionado,array_menu_principal,
+                "Main Menu","Menú Principal","Menú Principal" );
 
             //printf ("Opcion seleccionada: %d\n",menu_inicio_opcion_seleccionada);
             //printf ("Tipo opcion: %d\n",item_seleccionado.tipo_opcion);
