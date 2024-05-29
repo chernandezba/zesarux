@@ -28430,11 +28430,13 @@ void menu_machine_selection_manufacturer(MENU_ITEM_PARAMETERS)
 
     //return_fabricante_maquina
     //Establecemos linea menu segun fabricante activo
-    machine_selection_opcion_seleccionada=return_fabricante_maquina(current_machine_type);
+    machine_selection_opcion_seleccionada=return_fabricante_maquina(current_machine_type)+1;
 
     do {
 
-        menu_add_item_menu_inicial(&array_menu_machine_selection,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
+        //menu_add_item_menu_inicial(&array_menu_machine_selection,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
+        menu_add_item_menu_en_es_ca_inicial(&array_menu_machine_selection,MENU_OPCION_SEPARADOR,NULL,NULL,
+        "--Select manufacturer--","--Selecciona fabricante--","--Selecciona fabricant--");
 
         //Primer fabricante
         //menu_add_item_menu_inicial_format(&array_menu_machine_selection,MENU_OPCION_NORMAL,NULL,NULL,"%s",array_fabricantes_hotkey[0]);
@@ -28453,7 +28455,8 @@ void menu_machine_selection_manufacturer(MENU_ITEM_PARAMETERS)
 
         menu_add_ESC_item(array_menu_machine_selection);
 
-        retorno_menu=menu_dibuja_menu_no_title_lang(&machine_selection_opcion_seleccionada,&item_seleccionado,array_menu_machine_selection,menu_get_string_language("Select manufacturer") );
+        retorno_menu=menu_dibuja_menu(&machine_selection_opcion_seleccionada,&item_seleccionado,array_menu_machine_selection,
+            "Machine menu","Menú Máquina","Menú Màquina" );
 
 
         if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
@@ -28461,7 +28464,7 @@ void menu_machine_selection_manufacturer(MENU_ITEM_PARAMETERS)
             if (machine_selection_opcion_seleccionada>=0 && machine_selection_opcion_seleccionada<=TOTAL_FABRICANTES) {
 
 
-                menu_machine_selection_manufacturer_machines(machine_selection_opcion_seleccionada);
+                menu_machine_selection_manufacturer_machines(machine_selection_opcion_seleccionada-1);
 
 
             }
@@ -28583,7 +28586,10 @@ void menu_machine_selection_by_name(MENU_ITEM_PARAMETERS)
 
 
 		//Como no sabemos cual sera el item inicial, metemos este sin asignar, que se sobreescribe en el siguiente menu_add_item_menu
-		menu_add_item_menu_inicial(&array_menu_common,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
+		//menu_add_item_menu_inicial(&array_menu_common,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
+
+        menu_add_item_menu_en_es_ca_inicial(&array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,
+            "--Select machine--","--Selecciona máquina--","--Selecciona màquina--");
 
 		for (i=0;i<total_maquinas;i++) {
 			//printf ("sorted id: %03d nombre: %s\n",memoria_punteros[i]->id,memoria_punteros[i]->nombre_maquina);
@@ -28593,7 +28599,7 @@ void menu_machine_selection_by_name(MENU_ITEM_PARAMETERS)
 
 			//Si coincide id con la maquina actual, cambiar menu_machine_selection_by_name_opcion_seleccionada
 			if (current_machine_type==memoria_punteros[i]->id) {
-				menu_machine_selection_by_name_opcion_seleccionada=i;
+				menu_machine_selection_by_name_opcion_seleccionada=i+1;
 				//printf ("Match current machine %d with list entry %d. Changing last selected\n",current_machine_type,i);
 			}
 
@@ -28604,7 +28610,8 @@ void menu_machine_selection_by_name(MENU_ITEM_PARAMETERS)
 
 		menu_add_ESC_item(array_menu_common);
 
-		retorno_menu=menu_dibuja_menu_no_title_lang(&menu_machine_selection_by_name_opcion_seleccionada,&item_seleccionado,array_menu_common,"Select Machine" );
+		retorno_menu=menu_dibuja_menu(&menu_machine_selection_by_name_opcion_seleccionada,&item_seleccionado,array_menu_common,
+            "Machine menu","Menú Máquina","Menú Màquina" );
 
 
 			if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {

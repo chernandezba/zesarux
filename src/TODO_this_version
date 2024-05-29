@@ -40,3 +40,5 @@ no genera codigo de tecla al pulsar esas extendidas
 -Incluir paquete de Haiku OS 64 bit. En Available releases for download: agregar HaikuOs cuando esté
 
 -Ver si conviene revisar todos los titulos de menu agregando la palabra "menu"
+
+-revisar bien menu machine en los dos modos (maquina/manufacturer) y los 3 idiomas

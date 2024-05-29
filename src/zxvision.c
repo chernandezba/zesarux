@@ -20920,9 +20920,9 @@ char *menu_text_string_autoframeskip_spanish="Auto Saltar Frames";
 char *menu_text_string_autoframeskip_catalan="Auto Saltar Frames";
 char *menu_text_string_autoframeskip_english="Auto Frameskip";
 
-char *menu_text_string_select_manufacturer_spanish="Selecciona fabricante";
-char *menu_text_string_select_manufacturer_catalan="Selecciona fabricant";
-char *menu_text_string_select_manufacturer_english="Select manufacturer";
+//char *menu_text_string_select_manufacturer_spanish="Selecciona fabricante";
+//char *menu_text_string_select_manufacturer_catalan="Selecciona fabricant";
+//char *menu_text_string_select_manufacturer_english="Select manufacturer";
 
 
 //Funcion para devolver ciertas strings de ingles a español
@@ -20941,11 +20941,11 @@ char *menu_get_string_language(char *texto)
         else return menu_text_string_autoframeskip_english;
     }
 
-    else if (!strcmp(texto,"Select manufacturer")) {
+    /*else if (!strcmp(texto,"Select manufacturer")) {
         if (gui_language==GUI_LANGUAGE_SPANISH) return menu_text_string_select_manufacturer_spanish;
         else if (gui_language==GUI_LANGUAGE_CATALAN) return menu_text_string_select_manufacturer_catalan;
         else return menu_text_string_select_manufacturer_english;
-    }
+    }*/
 
     else return texto;
 }
