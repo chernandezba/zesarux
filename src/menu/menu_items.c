@@ -22770,49 +22770,7 @@ void menu_help_keyboard_activate_bit(z80_byte *puerto,z80_byte mascara)
     else *puerto &=(255-mascara);
 }
 
-void menu_help_keyboard_send_mantenidas_pressed_keys(z80_byte *key_map_ports[],int total_columnas,int total_filas,keyboard_help_double_key *teclas_dobles)
-{
 
-
-    int fila_tecla;
-    int columna_tecla;
-
-    int indice_a_tecla=0;
-
-    for (fila_tecla=0;fila_tecla<total_filas;fila_tecla++) {
-        z80_byte *puerto=key_map_ports[fila_tecla];
-        int mascara=1;
-        for (columna_tecla=0;columna_tecla<total_columnas;columna_tecla++,indice_a_tecla++) {
-
-            if (keyboard_get_teclas_mantenidas_pulsadas_simples(indice_a_tecla)) {
-                menu_help_keyboard_activate_bit(puerto,mascara);
-                //*puerto &=(255-mascara);
-            }
-
-            mascara=mascara<<1;
-        }
-
-    }
-
-    if (teclas_dobles!=NULL) {
-        int i=0;
-
-        while(teclas_dobles[i].puerto1!=NULL) {
-
-
-            if (keyboard_get_teclas_mantenidas_pulsadas_dobles(i)) {
-                //teclas dobles siempre es tecla pulsada: bit=0
-                *teclas_dobles[i].puerto1 &=(255-teclas_dobles[i].mascara1);
-
-                if (teclas_dobles[i].puerto2!=NULL) *teclas_dobles[i].puerto2 &=(255-teclas_dobles[i].mascara2);
-            }
-
-            i++;
-
-        }
-    }
-
-}
 
 int help_keyboard_valor_contador_segundo_anterior;
 
@@ -23148,6 +23106,58 @@ void menu_help_keyboard_highlight_key_mouse(int pulsado_x,int pulsado_y)
 
 }
 
+void menu_help_keyboard_send_mantenidas_pressed_keys(void)
+{
+
+    keyboard_help_double_key *teclas_dobles=keyboard_help_return_double_keys();
+
+    int total_columnas;
+    int total_filas;
+    z80_byte **key_map_ports=get_keyboard_map_ports_table(&total_columnas,&total_filas);
+
+    int indice_a_tecla_simple,indice_a_tecla_doble;
+    int es_tecla_doble;
+
+
+    int fila_tecla;
+    int columna_tecla;
+
+    int indice_a_tecla=0;
+
+    for (fila_tecla=0;fila_tecla<total_filas;fila_tecla++) {
+        z80_byte *puerto=key_map_ports[fila_tecla];
+        int mascara=1;
+        for (columna_tecla=0;columna_tecla<total_columnas;columna_tecla++,indice_a_tecla++) {
+
+            if (keyboard_get_teclas_mantenidas_pulsadas_simples(indice_a_tecla)) {
+                menu_help_keyboard_activate_bit(puerto,mascara);
+                //*puerto &=(255-mascara);
+            }
+
+            mascara=mascara<<1;
+        }
+
+    }
+
+    if (teclas_dobles!=NULL) {
+        int i=0;
+
+        while(teclas_dobles[i].puerto1!=NULL) {
+
+
+            if (keyboard_get_teclas_mantenidas_pulsadas_dobles(i)) {
+                //teclas dobles siempre es tecla pulsada: bit=0
+                *teclas_dobles[i].puerto1 &=(255-teclas_dobles[i].mascara1);
+
+                if (teclas_dobles[i].puerto2!=NULL) *teclas_dobles[i].puerto2 &=(255-teclas_dobles[i].mascara2);
+            }
+
+            i++;
+
+        }
+    }
+
+}
 
 void menu_help_keyboard_generate_key_mouse(int pulsado_x,int pulsado_y)
 {
@@ -23171,7 +23181,9 @@ void menu_help_keyboard_generate_key_mouse(int pulsado_x,int pulsado_y)
     int indice_a_tecla_simple,indice_a_tecla_doble;
     int es_tecla_doble;
 
-    menu_help_keyboard_send_mantenidas_pressed_keys(ports_table,total_columnas,total_filas,teclas_dobles);
+    //Enviar teclas marcadas
+    //menu_help_keyboard_send_mantenidas_pressed_keys(ports_table,total_columnas,total_filas,teclas_dobles);
+    menu_help_keyboard_send_mantenidas_pressed_keys();
 
     menu_help_keyboard_locate_speccy_pressed_keys(keyboard_map_table,ports_table,total_columnas,total_filas,
         pulsado_x,pulsado_y,&puerto1,&mascara1,&puerto2,&mascara2,teclas_dobles,&indice_a_tecla_simple,&indice_a_tecla_doble,&es_tecla_doble);
@@ -23279,6 +23291,37 @@ int menu_help_keyboard_mantener_key_mouse(int pulsado_x,int pulsado_y)
 
 zxvision_window menu_help_show_keyboard_ventana;
 
+
+int menu_help_show_keyboard_debug_ultimo_click_x=0;
+int menu_help_show_keyboard_debug_ultimo_click_y=0;
+
+void help_keyboard_start_generate_key_mouse_click(zxvision_window *ventana)
+{
+    //Nota: si mientras se pulsa con raton, tambien se pulsa en el teclado fisico, la tecla también se enviará
+    //porque en menu_help_keyboard_generate_key_mouse se esta dentro de menu_cpu_core_loop
+    //printf ("inicio pulsar raton: %d\n",contador_segundo_infinito);
+    menu_help_keyboard_overlay_force_draw=1;
+    int pulsado_x,pulsado_y;
+    zxvision_get_mouse_in_window(ventana,&pulsado_x,&pulsado_y);
+
+    pulsado_x *=zoom_x;
+    pulsado_y *=zoom_y;
+
+    if (menu_help_show_keyboard_debug_ultimo_click_x!=pulsado_x && menu_help_show_keyboard_debug_ultimo_click_y!=pulsado_y) {
+        //Debug para mostrar coordenada pulsada
+        //printf("%d,%d,",pulsado_x,pulsado_y);
+        //fflush(stdout);
+
+
+        menu_help_show_keyboard_debug_ultimo_click_x=pulsado_x;
+        menu_help_show_keyboard_debug_ultimo_click_y=pulsado_y;
+    }
+
+    menu_help_keyboard_generate_key_mouse(pulsado_x,pulsado_y);
+    //printf ("despues pulsar raton: %d\n",contador_segundo_infinito);
+
+}
+
 void menu_help_show_keyboard(MENU_ITEM_PARAMETERS)
 {
 
@@ -23375,8 +23418,8 @@ void menu_help_show_keyboard(MENU_ITEM_PARAMETERS)
     //clic derecho: salto linea
     //int keyboard_debug_mouse=1;
 
-    int debug_ultimo_click_x=0;
-    int debug_ultimo_click_y=0;
+    menu_help_show_keyboard_debug_ultimo_click_x=0;
+    menu_help_show_keyboard_debug_ultimo_click_y=0;
 
 	do {
         //printf("bucle\n");
@@ -23394,6 +23437,16 @@ void menu_help_show_keyboard(MENU_ITEM_PARAMETERS)
         //y leer teclado, porque entonces no sabremos cuando el usuario dejara de apretar esa tecla en el teclado,
         //porque habran todas las otras teclas que se han activado con el boton derecho y que no se liberan
         //No seria facil saber que tecla (o teclas) ha liberado el usuario si hay todas las otras que se activaron con boton derecho
+        //Hay un truco para poder enviar las teclas marcadas para pulsar junto con la tecla pulsada:
+        //-dejar pulsada tecla en teclado
+        //-dejar pulsado boton izquierdo raton. esto tambien envia las teclas marcadas
+        //-al liberar boton izquierdo, libera todas las teclas
+
+        //TODO: si se quieren pulsar teclas con teclado y con raton, primero hay que pulsar boton raton  y mantener,
+        //luego pulsar en el teclado la tecla.
+        //No se puede empezar pulsando tecla en el teclado y luego con raton, que querriamos que usase este "if" de abajo,
+        //porque cuando se deja de pulsar el tecla se liberan todos los puertos y entonces se pararia de enviar pulsaciones de raton
+
         if ((tecla || todos_puertos_teclado_acumulado!=255) && !mouse_left && !mouse_right) {
             //printf("generar tecla en condicion de tecla pulsada. tecla=%d mouse_left: %d mouse_right: %d todos_puertos_teclado_acumulado=%d\n",
             //    tecla,mouse_left,mouse_right,todos_puertos_teclado_acumulado);
@@ -23401,6 +23454,9 @@ void menu_help_show_keyboard(MENU_ITEM_PARAMETERS)
             z80_byte acumulado;
             int salir=0;
             menu_help_keyboard_overlay_force_draw=1;
+
+            //printf("Inicio envio tecla\n");
+
 
             //Bucle variante de espera_no_tecla
             do {
@@ -23416,37 +23472,28 @@ void menu_help_show_keyboard(MENU_ITEM_PARAMETERS)
                     menu_cpu_core_loop();
                 }
 
+                //if (mouse_left) printf("pulsado boton izquierdo: %d\n",contador_segundo_infinito);
+
+                //Si mientras se pulsa una tecla, se hace click con raton
+                if (mouse_left && si_menu_mouse_en_ventana_no_en_scrolls() && !mouse_is_dragging) {
+                    help_keyboard_start_generate_key_mouse_click(ventana);
+                }
+
+
+
             //if (contador_segundo_infinito % 1000<100) printf ("menu_espera_no_tecla acumulado: %d\n",acumulado);
 
             } while (!salir);
             zxvision_keys_event_not_send_to_machine=1;
+
+
             //printf("fin generar tecla\n");
 
         }
 
         //Boton izquierdo raton: pulsar tecla
         if (mouse_left && si_menu_mouse_en_ventana_no_en_scrolls() && !mouse_is_dragging) {
-            menu_help_keyboard_overlay_force_draw=1;
-            int pulsado_x,pulsado_y;
-            zxvision_get_mouse_in_window(ventana,&pulsado_x,&pulsado_y);
-
-            pulsado_x *=zoom_x;
-            pulsado_y *=zoom_y;
-
-            if (debug_ultimo_click_x!=pulsado_x && debug_ultimo_click_y!=pulsado_y) {
-                //Debug para mostrar coordenada pulsada
-                //printf("%d,%d,",pulsado_x,pulsado_y);
-                //fflush(stdout);
-
-
-                debug_ultimo_click_x=pulsado_x;
-                debug_ultimo_click_y=pulsado_y;
-            }
-
-            menu_help_keyboard_generate_key_mouse(pulsado_x,pulsado_y);
-            //printf ("despues pulsar: %d\n",contador_segundo_infinito);
-
-
+            help_keyboard_start_generate_key_mouse_click(ventana);
         }
 
         //Boton derecho raton: mantener pulsada tecla
