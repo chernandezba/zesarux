@@ -16847,7 +16847,7 @@ void menu_network(MENU_ITEM_PARAMETERS)
 
             menu_add_ESC_item(array_menu_common);
 
-            retorno_menu=menu_dibuja_menu_no_title_lang(&network_opcion_seleccionada,&item_seleccionado,array_menu_common,"Network" );
+            retorno_menu=menu_dibuja_menu(&network_opcion_seleccionada,&item_seleccionado,array_menu_common,"Network Menu","Menú Network","Menú Network" );
 
 
                 if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
@@ -18852,7 +18852,7 @@ void menu_windows(MENU_ITEM_PARAMETERS)
 
         menu_add_ESC_item(array_menu_common);
 
-        retorno_menu=menu_dibuja_menu_no_title_lang(&windows_opcion_seleccionada,&item_seleccionado,array_menu_common,"Windows" );
+        retorno_menu=menu_dibuja_menu(&windows_opcion_seleccionada,&item_seleccionado,array_menu_common,"Windows Menu","Menú Windows","Menú Windows" );
 
 
         if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
@@ -19655,7 +19655,7 @@ void menu_display_settings(MENU_ITEM_PARAMETERS)
         //menu_add_item_menu(array_menu_display_settings,"ESC Back",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
 		menu_add_ESC_item(array_menu_display_settings);
 
-        retorno_menu=menu_dibuja_menu_no_title_lang(&display_settings_opcion_seleccionada,&item_seleccionado,array_menu_display_settings,"Display" );
+        retorno_menu=menu_dibuja_menu(&display_settings_opcion_seleccionada,&item_seleccionado,array_menu_display_settings,"Display Menu","Menú Display","Menú Display" );
 
 
 
@@ -29693,7 +29693,8 @@ void menu_help(MENU_ITEM_PARAMETERS)
 
             menu_add_ESC_item(array_menu_common);
 
-            retorno_menu=menu_dibuja_menu_no_title_lang(&about_opcion_seleccionada,&item_seleccionado,array_menu_common,"Help" );
+            retorno_menu=menu_dibuja_menu(&about_opcion_seleccionada,&item_seleccionado,array_menu_common,
+                "Help Menu","Menú Help","Menú Help" );
 
 
 
@@ -30050,7 +30051,7 @@ void menu_audio(MENU_ITEM_PARAMETERS)
 
 		menu_add_ESC_item(array_menu_audio);
 
-        retorno_menu=menu_dibuja_menu_no_title_lang(&audio_opcion_seleccionada,&item_seleccionado,array_menu_audio,"Audio" );
+        retorno_menu=menu_dibuja_menu(&audio_opcion_seleccionada,&item_seleccionado,array_menu_audio,"Audio Menu","Menú Audio","Menú Audio" );
 
 
 
@@ -31316,7 +31317,7 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
                 //menu_add_item_menu(array_menu_debug,"ESC Back",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
 		menu_add_ESC_item(array_menu_debug);
 
-        retorno_menu=menu_dibuja_menu_no_title_lang(&debug_opcion_seleccionada,&item_seleccionado,array_menu_debug,"Debug" );
+        retorno_menu=menu_dibuja_menu(&debug_opcion_seleccionada,&item_seleccionado,array_menu_debug,"Debug Menu","Menú Debug","Menú Debug" );
 
 
 
@@ -31829,7 +31830,7 @@ void menu_snapshot(MENU_ITEM_PARAMETERS)
         menu_add_item_menu(array_menu_snapshot,"",MENU_OPCION_SEPARADOR,NULL,NULL);
         menu_add_ESC_item(array_menu_snapshot);
 
-        retorno_menu=menu_dibuja_menu(&snapshot_opcion_seleccionada,&item_seleccionado,array_menu_snapshot,"Snapshot","Instantánea","Instantània");
+        retorno_menu=menu_dibuja_menu(&snapshot_opcion_seleccionada,&item_seleccionado,array_menu_snapshot,"Snapshot Menu","Menú Instantánea","Menú Instantània");
 
 
 
@@ -40937,7 +40938,7 @@ void menu_storage(MENU_ITEM_PARAMETERS)
         //menu_add_item_menu(array_menu_storage,"ESC Back",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
         menu_add_ESC_item(array_menu_storage);
 
-        retorno_menu=menu_dibuja_menu(&storage_opcion_seleccionada,&item_seleccionado,array_menu_storage,"Storage","Almacenamiento","Emmagatzematge" );
+        retorno_menu=menu_dibuja_menu(&storage_opcion_seleccionada,&item_seleccionado,array_menu_storage,"Storage Menu","Menú Almacenamiento","Menú Emmagatzematge" );
 
 
         if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
@@ -42070,7 +42071,8 @@ void menu_toys(MENU_ITEM_PARAMETERS)
                 //menu_add_item_menu(array_menu_toys,"ESC Back",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
 		menu_add_ESC_item(array_menu_toys);
 
-        retorno_menu=menu_dibuja_menu(&toys_opcion_seleccionada,&item_seleccionado,array_menu_toys,"Procrastinate","Procrastinar","Procrastinar");
+        retorno_menu=menu_dibuja_menu(&toys_opcion_seleccionada,&item_seleccionado,array_menu_toys,
+            "Procrastinate Menu","Menú Procrastinar","Menú Procrastinar");
 
 
 

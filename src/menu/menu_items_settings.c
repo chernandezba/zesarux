@@ -8558,7 +8558,7 @@ void menu_settings(MENU_ITEM_PARAMETERS)
 		menu_add_ESC_item(array_menu_settings);
 
                 retorno_menu=menu_dibuja_menu(&settings_opcion_seleccionada,&item_seleccionado,array_menu_settings,
-                    "Settings","Opciones","Opcions");
+                    "Settings Menu","Menú Opciones","Menú Opcions");
 
 
 
