@@ -276,7 +276,7 @@ void enable_wrx(void)
 	}
 
 	if (wrx_present.v==0) {
-		screen_print_splash_text_center(ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,"Enabling WRX video mode");
+		screen_print_splash_text_center_no_if_previous(ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,"Enabling WRX video mode");
 		debug_printf (VERBOSE_INFO,"Enabling WRX video mode");
 	}
 
@@ -525,7 +525,7 @@ void enable_chroma81(void)
 		debug_printf (VERBOSE_WARN,"Chroma 81 is not supported on curses or stdout drivers");
 	}
 	else {
-		if (chroma81.v==0) screen_print_splash_text_center(ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,"Enabling Chroma81 video mode");
+		if (chroma81.v==0) screen_print_splash_text_center_no_if_previous(ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,"Enabling Chroma81 video mode");
 		chroma81.v=1;
 	}
 

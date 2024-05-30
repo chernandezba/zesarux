@@ -264,12 +264,9 @@ void sam_splash_videomode_change(void) {
 
 	}
 
-        //No mostrar mensaje si ya hay otro splash
-        //esto sucede por ejemplo en juegos y demos que continuamente cambian el modo de video,
-        //si lanzasemos esto continuamente, se saturaria la cpu
-        if (menu_splash_text_active.v==0) {
-            screen_print_splash_text_center(ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,mensaje);
-        }
+
+        screen_print_splash_text_center_no_if_previous(ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,mensaje);
+
 
 }
 

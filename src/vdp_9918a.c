@@ -212,7 +212,7 @@ void vdp_9918a_out_command_status(z80_byte value)
                         vdp_9918a_previous_video_mode_splash=video_mode;
                         char buffer_mensaje[256];
                         sprintf(buffer_mensaje,"Setting video mode %s",get_vdp_9918_string_video_mode());
-                        screen_print_splash_text_center(ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,buffer_mensaje);
+                        screen_print_splash_text_center_no_if_previous(ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,buffer_mensaje);
 
                     }
                 }

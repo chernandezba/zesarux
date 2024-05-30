@@ -22247,6 +22247,17 @@ void screen_print_splash_text_center(int tinta,int papel,char *texto)
 	screen_print_splash_text(menu_center_y(),tinta,papel,texto);
 }
 
+//No muestra mensaje si hay otro previo activo
+//Se usa para evitar mostrar continuamente mensajes y saturar la cpu
+//por ejemplo en casos de demos y juegos que continuamente cambian de modo de video y hacen texto splash por ejemplo
+void screen_print_splash_text_center_no_if_previous(int tinta,int papel,char *texto)
+{
+    if (menu_splash_text_active.v) return;
+
+
+	screen_print_splash_text_center(tinta,papel,texto);
+}
+
 //retorna 1 si y
 //otra cosa, 0
 //texto_adicional y funcion_texto_adicional sirven para agregar una opcion, debajo del si/no:

@@ -4056,7 +4056,7 @@ void tbblue_splash_monitor_mode(void)
 
 
 
-	screen_print_splash_text_center(ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,buffer_mensaje);
+	screen_print_splash_text_center_no_if_previous(ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,buffer_mensaje);
 }
 
 void tbblue_splash_layer2_mode(void)
@@ -4067,7 +4067,7 @@ void tbblue_splash_layer2_mode(void)
     sprintf(buffer_mensaje,"Setting Layer 2 mode %s",tbblue_get_layer2_mode_name() );
 
 
-    screen_print_splash_text_center(ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,buffer_mensaje);
+    screen_print_splash_text_center_no_if_previous(ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,buffer_mensaje);
 }
 
 void tbblue_get_string_palette_format(char *texto)
@@ -4141,7 +4141,7 @@ void tbblue_splash_palette_format(void)
 
 	sprintf (mensaje,"Setting %s",videomode);
 
-	screen_print_splash_text_center(ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,mensaje);
+	screen_print_splash_text_center_no_if_previous(ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,mensaje);
 
 
 
@@ -4653,8 +4653,8 @@ void tbblue_set_value_port_position(z80_byte index_position,z80_byte value)
 		case 21:
 			//modo lores
 			if ( (last_register_21&128) != (value&128)) {
-				if (value&128) screen_print_splash_text_center(ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,"Enabling lores video mode. 128x96 256 colours");
-				else screen_print_splash_text_center(ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,"Disabling lores video mode");
+				if (value&128) screen_print_splash_text_center_no_if_previous(ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,"Enabling lores video mode. 128x96 256 colours");
+				else screen_print_splash_text_center_no_if_previous(ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,"Disabling lores video mode");
 			}
 		break;
 

@@ -460,7 +460,7 @@ void set_timex_port_ff(z80_byte value)
 			}
                         else sprintf (mensaje,"Setting Unknown Timex Video Mode %d",value);
 
-                	screen_print_splash_text_center(ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,mensaje);
+                	screen_print_splash_text_center_no_if_previous(ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,mensaje);
 		}
 
         	if ((value&7)==6) {

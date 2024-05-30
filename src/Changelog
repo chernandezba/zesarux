@@ -110,6 +110,7 @@ Fixed bug loading .nex snapshots with different header letter case (for example 
 Fixed reading kempston mouse when menu is open
 Fixed memory size rom zone on ZX80 and ZX81
 Fixed esxdos handler was enabled when machine is not Spectrum
+Fixed high cpu usage when repeated splash messages about video mode changes
 
 ----------------------------------------
 

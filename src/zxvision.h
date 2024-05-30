@@ -1275,6 +1275,7 @@ extern void menu_textspeech_filter_corchetes(char *texto_orig,char *texto);
 
 extern void screen_print_splash_text(int y,int tinta,int papel,char *texto);
 extern void screen_print_splash_text_center(int tinta,int papel,char *texto);
+extern void screen_print_splash_text_center_no_if_previous(int tinta,int papel,char *texto);
 
 extern char menu_realtape_name[];
 

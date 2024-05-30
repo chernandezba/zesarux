@@ -110,7 +110,7 @@ Corregido fallo al cargar snapshots .nex snapshots con diferente cabecera mayús
 Corregida lectura del kempston mouse cuando el menú está abierto
 Corregido tamaño de zona memoria rom en ZX80 y ZX81
 Corregido esxdos handler si estaba activado cuando máquina no es Spectrum
-
+Corregido uso elevado de cpu cuando hay mensajes de splash repetidos acerca de cambios de modo de video
 
 ----------------------------------------
 

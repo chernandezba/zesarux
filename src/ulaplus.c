@@ -232,7 +232,7 @@ void ulaplus_set_mode(z80_byte value)
                                                 debug_printf (VERBOSE_DEBUG,"Disabling ULAplus (mode 0)");
                                                 ulaplus_enabled.v=0;
                                                 if (ulaplus_mode!=ulaplus_mode_anterior) {
-                                                        screen_print_splash_text_center(ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,"Disabling ULAplus (mode 0)");
+                                                        screen_print_splash_text_center_no_if_previous(ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,"Disabling ULAplus (mode 0)");
                                                 }
 
                                         break;
@@ -241,7 +241,7 @@ void ulaplus_set_mode(z80_byte value)
                                                 ulaplus_enabled.v=1;
                                                 debug_printf (VERBOSE_DEBUG,"Enabling ULAplus mode 1. RGB");
                                                 if (ulaplus_mode!=ulaplus_mode_anterior) {
-                                                        screen_print_splash_text_center(ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,"Enabling ULAplus mode 1. RGB");
+                                                        screen_print_splash_text_center_no_if_previous(ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,"Enabling ULAplus mode 1. RGB");
                                                 }
                                         break;
 
@@ -292,7 +292,7 @@ void ulaplus_set_extended_mode(z80_byte value)
                                                 debug_printf (VERBOSE_DEBUG,"Disabling ULAplus (extended mode 0)");
                                                 ulaplus_enabled.v=0;
                                                 if (ulaplus_extended_mode!=ulaplus_mode_anterior) {
-                                                        screen_print_splash_text_center(ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,"Disabling ULAplus (extended mode 0)");
+                                                        screen_print_splash_text_center_no_if_previous(ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,"Disabling ULAplus (extended mode 0)");
                                                 }
 
                                         break;
@@ -301,7 +301,7 @@ void ulaplus_set_extended_mode(z80_byte value)
                                                 ulaplus_enabled.v=1;
 					        debug_printf (VERBOSE_DEBUG,"Enabling linear mode Radastan. 128x96");
                                                 if (ulaplus_extended_mode!=ulaplus_mode_anterior) {
-                                                        screen_print_splash_text_center(ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,"Enabling linear mode Radastan. 128x96");
+                                                        screen_print_splash_text_center_no_if_previous(ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,"Enabling linear mode Radastan. 128x96");
                                                 }
 
                                         break;
@@ -310,7 +310,7 @@ void ulaplus_set_extended_mode(z80_byte value)
                                                 ulaplus_enabled.v=1;
                                                 debug_printf (VERBOSE_DEBUG,"Enabling linear mode ZEsarUX 0. 256x96");
                                                 if (ulaplus_extended_mode!=ulaplus_mode_anterior) {
-                                                        screen_print_splash_text_center(ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,"Enabling linear mode ZEsarUX 0. 256x96");
+                                                        screen_print_splash_text_center_no_if_previous(ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,"Enabling linear mode ZEsarUX 0. 256x96");
                                                 }
 
                                         break;
@@ -319,7 +319,7 @@ void ulaplus_set_extended_mode(z80_byte value)
                                                 ulaplus_enabled.v=1;
                                                 debug_printf (VERBOSE_DEBUG,"Enabling linear mode ZEsarUX 1. 128x192");
                                                 if (ulaplus_extended_mode!=ulaplus_mode_anterior) {
-                                                        screen_print_splash_text_center(ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,"Enabling linear mode ZEsarUX 1. 128x192");
+                                                        screen_print_splash_text_center_no_if_previous(ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,"Enabling linear mode ZEsarUX 1. 128x192");
                                                 }
 
                                         break;
@@ -328,7 +328,7 @@ void ulaplus_set_extended_mode(z80_byte value)
                                                 ulaplus_enabled.v=1;
                                                 debug_printf (VERBOSE_DEBUG,"Enabling linear mode ZEsarUX 2. 256x192");
                                                 if (ulaplus_extended_mode!=ulaplus_mode_anterior) {
-                                                        screen_print_splash_text_center(ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,"Enabling linear mode ZEsarUX 2. 256x192");
+                                                        screen_print_splash_text_center_no_if_previous(ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,"Enabling linear mode ZEsarUX 2. 256x192");
                                                 }
 
                                         break;

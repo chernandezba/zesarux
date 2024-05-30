@@ -9279,8 +9279,8 @@ acts as expected unless this registe is explicitly changed by the user/software.
 						if (pentagon_16c_mode_available.v) {
 
 						if ( (value&1) != estado_antes) {
-							if (value) screen_print_splash_text_center(ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,"Enabling 16C mode");
-							else screen_print_splash_text_center(ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,"Disabling 16C mode");
+							if (value) screen_print_splash_text_center_no_if_previous(ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,"Enabling 16C mode");
+							else screen_print_splash_text_center_no_if_previous(ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,"Disabling 16C mode");
 						}
 						}
 					}

@@ -322,8 +322,8 @@ The bit assignments correspond to the ones when the register is read:
 					0 = 4 colour (mode 4) =512x256
 				  1 = 8 colour (mode 8) =256x256
 				*/
-				if (video_mode==0) screen_print_splash_text_center(ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,"Setting mode 4 512x256");
-				else screen_print_splash_text_center(ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,"Setting mode 8 256x256");
+				if (video_mode==0) screen_print_splash_text_center_no_if_previous(ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,"Setting mode 4 512x256");
+				else screen_print_splash_text_center_no_if_previous(ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,"Setting mode 8 256x256");
 			}
 
 		break;

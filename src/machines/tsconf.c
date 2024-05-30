@@ -339,7 +339,7 @@ void tsconf_splash_video_size_mode_change(void)
   tsconf_get_current_video_mode(buffer_mensaje2);
   sprintf (buffer_mensaje,"Setting video mode %s",buffer_mensaje2);
 
-  screen_print_splash_text_center(ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,buffer_mensaje);
+  screen_print_splash_text_center_no_if_previous(ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,buffer_mensaje);
 }
 
 

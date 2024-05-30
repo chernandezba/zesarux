@@ -296,7 +296,7 @@ void spectra_write(z80_byte value)
 		spectra_return_text_mode(value,nombremodo);
 
 		sprintf (mensaje,"Setting Spectra Video mode %d (%s)",value&mascara_modo,nombremodo);
-		screen_print_splash_text_center(ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,mensaje);
+		screen_print_splash_text_center_no_if_previous(ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,mensaje);
 	}
 
 	spectra_display_mode_register=value;

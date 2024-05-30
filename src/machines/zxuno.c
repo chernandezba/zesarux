@@ -795,10 +795,10 @@ void zxuno_prism_mode_splash(void)
 {
 
     if (zxuno_ports[0x50] & 128) {
-        screen_print_splash_text_center(ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,"Enabling ZX-Uno Prism mode. 256x192x4bpp");
+        screen_print_splash_text_center_no_if_previous(ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,"Enabling ZX-Uno Prism mode. 256x192x4bpp");
     }
     else {
-        screen_print_splash_text_center(ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,"Disabling ZX-Uno Prism mode");
+        screen_print_splash_text_center_no_if_previous(ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,"Disabling ZX-Uno Prism mode");
     }
 }
 
