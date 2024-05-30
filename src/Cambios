@@ -109,6 +109,7 @@ Corregido fallo al grabar la información de Clip Windows de Spectrum Next en sn
 Corregido fallo al cargar snapshots .nex snapshots con diferente cabecera mayúsculas/minúsculas (por ejemplo Exploding Fist Next)
 Corregida lectura del kempston mouse cuando el menú está abierto
 Corregido tamaño de zona memoria rom en ZX80 y ZX81
+Corregido esxdos handler si estaba activado cuando máquina no es Spectrum
 
 
 ----------------------------------------

@@ -109,6 +109,7 @@ Fixed bug when saving Clip Windows info on Spectrum Next ZSF snapshots
 Fixed bug loading .nex snapshots with different header letter case (for example Exploding Fist Next)
 Fixed reading kempston mouse when menu is open
 Fixed memory size rom zone on ZX80 and ZX81
+Fixed esxdos handler was enabled when machine is not Spectrum
 
 ----------------------------------------
 
