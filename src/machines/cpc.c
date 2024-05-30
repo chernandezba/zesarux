@@ -1294,7 +1294,13 @@ void cpc_splash_videomode_change(void) {
 
         }
 
-        screen_print_splash_text_center(ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,mensaje);
+        //No mostrar mensaje si ya hay otro splash
+        //esto sucede por ejemplo en juegos y demos que continuamente cambian el modo de video,
+        //por ejemplo el menu del cpc dandanator,
+        //si lanzasemos esto continuamente, se saturaria la cpu
+        if (menu_splash_text_active.v==0) {
+            screen_print_splash_text_center(ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,mensaje);
+        }
 
 }
 

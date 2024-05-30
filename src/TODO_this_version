@@ -35,3 +35,7 @@ Para esta version:
 -Ver si conviene revisar todos los titulos de menu agregando la palabra "menu"
 
 -revisar bien menu machine en los dos modos (maquina/manufacturer) y los 3 idiomas
+
+-cambio modo video con mensaje de splash, en demos y juegos que cambian continuamente, saturan la cpu
+mostrar esos mensajes solo si no hay otro mensaje de splash activo aun
+Ejemplo dandanator cpc en el menu
