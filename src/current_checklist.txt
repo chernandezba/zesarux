@@ -107,7 +107,7 @@ Drivers audio:
 -probar ZXMMC menor de 1 GB y mayor de 1 GB. Probar snap_tests/pruebasplus3e.mmc. cat tab, load, format to 0,4, etc
 -probar divmmc con zxuno y sin zxuno. tambien en instalado en /Applications en Mac y en /usr/ de Linux. Probar reload mmc
 -probar divide. Probar reload ide
--probar dandanator: spectrum y CPC
+-probar dandanator:  CPC
 -probar superupgrade. Básico, programa de modificación de rom. Programa en basic extras/media/spectrum/tests/superupgrade-test.tap y usando 512kb de rom que sean siempre la misma rom de spectrum 48k. Probar con rman.tap
 -probar kartusho
 -probar ifrom
