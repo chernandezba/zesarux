@@ -39,3 +39,4 @@ Para esta version:
 -cambio modo video con mensaje de splash, en demos y juegos que cambian continuamente, saturan la cpu
 mostrar esos mensajes solo si no hay otro mensaje de splash activo aun
 Ejemplo dandanator cpc en el menu
+Corregir llamada de splash en general? o solo mensajes de splash de cambios de video y similar que pueden lanzarse continuamente
