@@ -39,4 +39,4 @@ echo "Test Inves"
 ./zesarux $OPTIONS --machine inves ../../../soft_retro/spectrum/LEMMIN48.TAP
 
 echo "Test QL"
-./zesarux $OPTIONS --machine ql --zoom 1 --zxdesktop-width 512 --ql-mdv1-root-dir "/Users/cesarhernandez/Documents/ZEsarUX/zesarux/src/my_soft/ql/mago_folder" --enable-ql-mdv-flp --ql-mdv1-read-only
+./zesarux $OPTIONS --machine ql --zoom 1 --zxdesktop-width 512 --ql-mdv1-root-dir "/Users/cesarhernandez/Documents/ZEsarUX/zesarux/src/my_soft/microbyt/ql/mago_folder/" --enable-ql-mdv-flp --ql-mdv1-read-only --ql-mdv1-enable

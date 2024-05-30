@@ -11,10 +11,9 @@ echo "Porcentaje=$PERCCOMPLETADO %"
 )
 
 -probar rendimiento cpu (benchmark*txt). con ao null vo null y ao null vo x11, sin memptr,sin visualmem, sin cpustats
+ok mac
 
 -ejecutar tests/machines_test.sh
-
--ejecutar tests/games_tests.sh
 
 -ejecutar tests/automatic_test_cycle_machines.sh
 
@@ -72,7 +71,6 @@ Drivers audio:
 -probar con --disable-sndfile
 -probar vofile. Con spectrum (border on, border off, ulaplus, spectra, timex), zx80/81 (border on, border off), z88. Con xwindows, curses, stdout y simpletext: en estos drivers probar tanto spectrum, zx81, y z88
 -probar todas maquinas, una por una 
--probar menu about, con zxdesktop habilitado o no, y con driver de texto
 -probar juegos varios de zx80,zx81, spectrum, aquellos que hacen efectos especiales hi-res, etc
 -probar juegos zx81 multipart: wrx/voyage , wrx/blockbuster
 -probar realvideo zx80/81
@@ -106,14 +104,9 @@ Drivers audio:
 -carga desde cinta real
 
 -probar linea comandos: --tape, --realtape, --snap, --slotcard, --outtape
--probar fallback de cinta standard a real tape, juegos: dracula tzx, Death Wish 3 (Erbe - Serie Leyenda).tzx  (DeathWish3(IBSA).tzx.zip), mortadelo y filemon II, Rambo. Parece que silent service si se mete como standard tape no detecta como cargador
 -probar ZXMMC menor de 1 GB y mayor de 1 GB. Probar snap_tests/pruebasplus3e.mmc. cat tab, load, format to 0,4, etc
 -probar divmmc con zxuno y sin zxuno. tambien en instalado en /Applications en Mac y en /usr/ de Linux. Probar reload mmc
--probar esxdos handler
 -probar divide. Probar reload ide
--probar zxpand: config "V", config "D=", CAT, CAT "+DIR", DELETE, load "NOMBRE", SAVE "NOMBRE" etc. En zx80, zx81
-config "O=X" donde X es 0, 1 o 2 y probar a sobreescribir archivos, dragons lair version lenta y rapida (optimizada). zxpand linea comandos --enable-zxpand y --zxpand-root-dir (y este probando con path completo, relativo, y con y sin / al final)
-Probar delete, rename, etc y resto de acciones con CMDR, con archivos en minusculas y mayusculas
 -probar dandanator: spectrum y CPC
 -probar superupgrade. Básico, programa de modificación de rom. Programa en basic extras/media/spectrum/tests/superupgrade-test.tap y usando 512kb de rom que sean siempre la misma rom de spectrum 48k. Probar con rman.tap
 -probar kartusho
@@ -283,20 +276,3 @@ pruebas Z88:
 -probar en menus tarjetas de aplicaciones, archivos, desconocidas
 -probar sonido normal beeper (teclas, juegos, etc) y 3200 hz snap_tests/test3200z88.zx
 
-pruebas QL
--teclado:
-
-the main thing to check is the character codes - use:
-REP Loop:print code(inkey$(-1))
-
-This will show the character code for each pressed key.
-
-In particular check 
-
-a (97)
-CTRL a (1) 
-and 
-ALT a ( ALT is awkard, it returns 255 plus the character code, so you should see on screen two values, 255 then 97 when you press this combination)
-
--cargar manualmente juegos en memoria mediante load binary
--cargar lbytes mediante emulacion de microdrive&floppy
