@@ -28225,7 +28225,7 @@ void menu_hotswap_machine(MENU_ITEM_PARAMETERS)
         //menu_add_item_menu(array_menu_machine_selection,"ESC Back",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
         menu_add_ESC_item(array_menu_machine_selection);
 
-        retorno_menu=menu_dibuja_menu_no_title_lang(&hotswap_machine_opcion_seleccionada,&item_seleccionado,array_menu_machine_selection,"Hotswap Machine" );
+        retorno_menu=menu_dibuja_menu_no_title_lang(&hotswap_machine_opcion_seleccionada,&item_seleccionado,array_menu_machine_selection,"Hotswap Machine Menu" );
 
 
         if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
@@ -44611,6 +44611,8 @@ void menu_inicio_bucle_main(void)
             menu_add_item_menu_ayuda(array_menu_principal,"Some help and related files");
             menu_add_item_menu_tiene_submenu(array_menu_principal);
 
+
+            menu_add_item_menu_separator(array_menu_principal);
 
             menu_add_item_menu_en_es_ca(array_menu_principal,MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL,
                 "Close menu","Cerrar menu","Tancar menu");

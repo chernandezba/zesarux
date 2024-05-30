@@ -134,6 +134,12 @@ Creo que tiene que ver con driver ao null. Me cuesta reproducirlo
 
 -Si se crea ventana de alto negativo, acaba haciendo panic al asignar memoria. Quizá controlar esto?
 
+-keyboard help
+- pulsar , o . en ZX81 con ventana abierta, deja apretada la N o M
+- chloe. completar teclas extendidas. ver que hacer con combinaciones de shift...
+- keyboard help no hace por ejemplo en cpc 664 teclas [ ] pulsando esas teclas en el teclado fisico: esto sucede porque en menu
+no genera codigo de tecla al pulsar esas extendidas
+
 ---Fin Errores---
 
 

@@ -12,8 +12,6 @@ echo "Porcentaje=$PERCCOMPLETADO %"
 
 -probar rendimiento cpu (benchmark*txt). con ao null vo null y ao null vo x11, sin memptr,sin visualmem, sin cpustats
 
--ejecutar tests/manual_tests.sh
-
 -ejecutar tests/machines_test.sh
 
 -ejecutar tests/games_tests.sh
@@ -77,12 +75,9 @@ Drivers audio:
 -probar menu about, con zxdesktop habilitado o no, y con driver de texto
 -probar juegos varios de zx80,zx81, spectrum, aquellos que hacen efectos especiales hi-res, etc
 -probar juegos zx81 multipart: wrx/voyage , wrx/blockbuster
--probar realvideo spectrum
 -probar realvideo zx80/81
 -probar realvideo z88
 -probar snoweffect de 48k, 128k, con juegos y con extras/media/spectrum/tests/snow_effect.tap. Las que son de pentagon, hacer hotswap a 128
--probar simular pantalla zx81 en spectrum
--probar desactivar colores pantalla spectrum
 -probar modos hi-res zx81: hrg, chr$128, udg, wrx, otros hi-res. probar xtricator, pacman 
 -probar autodetect WRX mode on ZX80/81
 -probar chip sonido AY, y zx81 (quicksilva(asteroids, defenda zx80)  y bi-pak (aydemo, pink panther...))
@@ -109,7 +104,6 @@ Drivers audio:
 *probar carga realtape : spectrum: smp,wav,rwa,tap,tzx (tzx normal y turbo). zx80: smp,wav,rwa,o. zx81: smp,wav,rwa,p
 
 -carga desde cinta real
--probar watermark, reduce 0.75
 
 -probar linea comandos: --tape, --realtape, --snap, --slotcard, --outtape
 -probar fallback de cinta standard a real tape, juegos: dracula tzx, Death Wish 3 (Erbe - Serie Leyenda).tzx  (DeathWish3(IBSA).tzx.zip), mortadelo y filemon II, Rambo. Parece que silent service si se mete como standard tape no detecta como cargador
@@ -126,7 +120,6 @@ Probar delete, rename, etc y resto de acciones con CMDR, con archivos en minuscu
 -probar ifrom
 -probar betadisk. visual floppy de betadisk
 -probar discos +3. visual floppy de dsk
--probar file browser
 
 -probar spectra. Test modos. Comparar con ZXSP. X128 NO es correcto del todo, falla la implementacion del flash
 Comparar test 128 pantalla con tabla docs/spectra/SPECTRA 128 Test.txt
