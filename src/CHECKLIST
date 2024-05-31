@@ -85,6 +85,8 @@ Drivers audio:
 --Mac: Probar ZENG, Speccy browser, ZX81 browser, Download TBBLUE SD
 --Linux: Probar ZENG, Speccy browser, ZX81 browser, Download TBBLUE SD 
 
+-Probar ZENG Online server
+
 -probar aofile raw y wav
 -probar con --disable-sndfile
 -probar vofile. Con spectrum (border on, border off, ulaplus, spectra, timex), zx80/81 (border on, border off), z88. Con xwindows, curses, stdout y simpletext: en estos drivers probar tanto spectrum, zx81, y z88
