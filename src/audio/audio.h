@@ -270,6 +270,7 @@ extern int audio_ay_player_load(char *filename);
 extern z80_byte *audio_ay_player_mem;
 extern z80_byte ay_player_pista_actual;
 extern void ay_player_pause_unpause(void);
+extern z80_bit ay_player_paused;
 
 extern z80_byte ay_player_total_songs(void);
 

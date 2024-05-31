@@ -6400,12 +6400,25 @@ void menu_ayplayer_edit_playlist(MENU_ITEM_PARAMETERS)
     } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
 }
 
+zxvision_window zxvision_window_ayplayer;
+
+void ayplayer_set_window_title(void)
+{
+    if (ay_player_paused.v==0) {
+        strcpy(zxvision_window_ayplayer.window_title,"AY Player");
+    }
+    else {
+        strcpy(zxvision_window_ayplayer.window_title,"AY Player (Paused)");
+    }
+}
+
 void menu_audio_new_ayplayer_pause(MENU_ITEM_PARAMETERS)
 {
     ay_player_pause_unpause();
+    ayplayer_set_window_title();
 }
 
-zxvision_window zxvision_window_ayplayer;
+
 
 void menu_audio_new_ayplayer(MENU_ITEM_PARAMETERS)
 {
