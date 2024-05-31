@@ -6402,6 +6402,7 @@ void menu_ayplayer_edit_playlist(MENU_ITEM_PARAMETERS)
 
 zxvision_window zxvision_window_ayplayer;
 
+//Cambiar el titulo segun si esta en modo pause o no
 void ayplayer_set_window_title(void)
 {
     if (ay_player_paused.v==0) {
@@ -6415,8 +6416,8 @@ void ayplayer_set_window_title(void)
 void menu_audio_new_ayplayer_pause(MENU_ITEM_PARAMETERS)
 {
     ay_player_pause_unpause();
-    ayplayer_set_window_title();
 }
+
 
 
 
@@ -6502,6 +6503,8 @@ void menu_audio_new_ayplayer(MENU_ITEM_PARAMETERS)
         menu_item item_seleccionado;
         int retorno_menu;
         do {
+
+            ayplayer_set_window_title();
 
             ayplayer_new_contador_string_author=0;
             ayplayer_new_contador_string_track_name=0;
