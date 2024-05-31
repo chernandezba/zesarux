@@ -126,7 +126,7 @@ Drivers audio:
 -probar desactivando cpustats
 -probar desactivando visualmem
 -probar waveform, tambien en drivers no graficos como curses, aa, etc
--probar ay player. Con versiones 00,01,02,3. Probar Spectrum y CPC
+-probar ay player. Con versiones 00,01,02,3. Probar Spectrum y CPC. Falta CPC
 -probar paleta gris, roja, verde, azul, inverso, real, etc. tambien con modos ulaplus, gigascreen, scanlines, spectra, timex, prism, sam
 -ver paletas de colores
 -probar expansiones de ram de zx80/81
