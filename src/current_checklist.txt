@@ -114,7 +114,6 @@ Drivers audio:
 -probar efectos border: btime, overscan, vectron, BorderTrix, Hercules, dark star (cuando te matan), aqua plane, paperboy, super wonder boy (pausa), thelosttapesofalbion0 (pausa), rotatrix, shock megademo, KnightsDemonsDX. en modos 128, 48k e inves.
 -probar ula48.tap, ula128.tap, scroll2017. Deberian verse bien sin necesidad de cambiar early / late timings
 -probar autoactivado de rainbow cuando efectos en border. juegos, demos y snap_tests/test_autorealvideo_border.zx
--probar color border en ULAPlus
 -probar desactivando ssl
 -probar activando ssl
 -probar azerty. se puede probar pulsando guion o cedilla
@@ -122,9 +121,7 @@ Drivers audio:
 -probar desactivando contended memory en compilacion
 
 
--probar desactivando memptr i pasar z80tests.tap de spectrum. probar activando memptr i pasar z80tests.tap
 -probar z80flags.tap. con memptr y --enable-undoc-scfccf son 6 de 152: fallan bit n,a ; bit n,[r,(hl)], ldi, ldd, ldir, lddr
--probar cpustats
 -probar visualmem, tambien en drivers no graficos como curses, aa, etc
 -probar desactivando cpustats
 -probar desactivando visualmem

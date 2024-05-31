@@ -6445,7 +6445,6 @@ void menu_audio_new_ayplayer(MENU_ITEM_PARAMETERS)
 
 
 
-        //zxvision_new_window(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"AY Player");
 
         zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"AY Player","ayplayer",
             is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
