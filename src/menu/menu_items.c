@@ -13782,6 +13782,7 @@ void menu_direct_midi_output(MENU_ITEM_PARAMETERS)
 			menu_add_item_menu_format(array_menu_direct_midi_output,MENU_OPCION_NORMAL,menu_midi_output_test,NULL,"Test MIDI");
 
             menu_add_item_menu_format(array_menu_direct_midi_output,MENU_OPCION_NORMAL,menu_midi_output_instrument,NULL,"Change instrument");
+            menu_add_item_menu_tiene_submenu(array_menu_direct_midi_output);
 
 
 			menu_add_item_menu_format(array_menu_direct_midi_output,MENU_OPCION_NORMAL,menu_midi_output_reset,NULL,"Reset channels");
