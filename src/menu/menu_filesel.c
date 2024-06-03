@@ -5234,9 +5234,17 @@ int menu_filesel_overlay_show_current_dir_aux(zxvision_window *ventana,char *cur
 
 }
 
-void menu_filesel_overlay_show_current_dir_init_scroll(void)
+//Ubicar el scroll de directorio actual para que se vea toda la parte final de la derecha
+void menu_filesel_overlay_show_current_dir_init_scroll(zxvision_window *ventana)
 {
-    contador_scroll_current_dir=-10;
+    //contador_scroll_current_dir=-10;
+
+    char current_dir[PATH_MAX];
+    char current_dir_mensaje[30];
+
+    int max_rotacion_mensaje_indice=menu_filesel_overlay_show_current_dir_aux(ventana,current_dir,current_dir_mensaje);
+
+    contador_scroll_current_dir=max_rotacion_mensaje_indice;
 }
 
 void menu_filesel_overlay_show_current_dir(zxvision_window *ventana,int rotar)
@@ -5296,7 +5304,12 @@ void menu_filesel_overlay_show_current_dir(zxvision_window *ventana,int rotar)
         contador_scroll_current_dir++;
 
         //10 posiciones de mas y de menos para pausa
-        if (contador_scroll_current_dir>max_rotacion_mensaje_indice+10) menu_filesel_overlay_show_current_dir_init_scroll();
+        if (contador_scroll_current_dir>max_rotacion_mensaje_indice+10) {
+            //Ubicarlo a la izquierda
+            //Como se llama aqui 5 veces por segundo, este -10 indica 2 segundos de pausa
+            //menu_filesel_overlay_show_current_dir_init_scroll(ventana);
+            contador_scroll_current_dir=-10;
+        }
     }
 }
 
@@ -5404,7 +5417,7 @@ int menu_filesel_if_save(char *titulo,char *filtros[],char *archivo,int si_save)
 
 	menu_reset_counters_tecla_repeticion();
 
-    menu_filesel_overlay_show_current_dir_init_scroll();
+    //menu_filesel_overlay_show_current_dir_init_scroll();
 
 	int tecla;
 
@@ -5556,6 +5569,8 @@ int menu_filesel_if_save(char *titulo,char *filtros[],char *archivo,int si_save)
         ventana->must_clear_cache_on_draw=1;
 
 		zxvision_draw_window(ventana);
+
+        menu_filesel_overlay_show_current_dir_init_scroll(ventana);
 
 
 		//Overlay para los previews. Siempre que tengamos video driver completo
@@ -6352,7 +6367,7 @@ int menu_filesel_if_save(char *titulo,char *filtros[],char *archivo,int si_save)
 
 		} while (releer_directorio==0);
 
-        menu_filesel_overlay_show_current_dir_init_scroll();
+        menu_filesel_overlay_show_current_dir_init_scroll(ventana);
 	} while (1);
 
 
