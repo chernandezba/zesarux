@@ -26356,7 +26356,7 @@ char *first_aid_string_filesel_enter_key="Press ENTER or left mouse button to se
 							"Press Space to expand files, like tap, tzx, trd, scl... etc and also all the compressed supported files";
 
 int first_aid_no_smartload=0;
-char *first_aid_string_smartload="This smartload window allows you to load any file known by the emulator. Just select it and go!\n"
+char *first_aid_string_smartload="This smartload window allows you to load any file known by ZEsarUX. Just select it and go!\n"
 							"Press TAB to change between areas in the file browser";
 
 int first_aid_no_initial_menu=0;

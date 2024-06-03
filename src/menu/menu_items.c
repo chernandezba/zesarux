@@ -36517,10 +36517,9 @@ void menu_storage_tape(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_spanish_catalan(array_menu_tape_settings,"--Cinta Estandar--","--Cinta Estandard--");
 		menu_add_item_menu_tooltip(array_menu_tape_settings,"Select Standard tape for Input and Output");
 		menu_add_item_menu_ayuda(array_menu_tape_settings,"Standard tapes are those handled by ROM routines and "
-					"have normal speed (no turbo). These tapes are handled by the emulator and loaded or saved "
-					"very quickly. The input formats supported are: o, p, tap, tzx (binary only), rwa, wav and smp; "
-					"output formats are: o, p, tap and tzx. Those input audio formats (rwa, wav or smp) "
-					"are converted by the emulator to bytes and loaded on the machine memory. For every other non standard "
+					"have normal speed (no turbo). These tapes are handled by ZEsarUX and loaded or saved "
+					"very quickly (for example tap). Audio format files (for example rwa, wav or smp) "
+					"are converted by ZEsarUX to bytes and loaded on the machine memory. For every other non standard "
 					"tapes (turbo or handled by non-ROM routines like loading stripes on different colours) you must use "
 					"Real Input tape for load, and Audio output to file for saving");
 
