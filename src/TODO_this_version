@@ -36,8 +36,6 @@ Para esta version:
 
 -revisar bien menu machine en los dos modos (maquina/manufacturer) y los 3 idiomas
 
--cambio modo video con mensaje de splash, en demos y juegos que cambian continuamente, saturan la cpu
-mostrar esos mensajes solo si no hay otro mensaje de splash activo aun
-Ejemplo dandanator cpc en el menu
-Corregir llamada de splash en general? o solo mensajes de splash de cambios de video y similar que pueden lanzarse continuamente
-Usar una nueva funcion que muestre mensaje solo si no hay otro splash activo
+-dejar 51.83.33.13 como zeng online server por defecto?
+
+-file browser: que ruta a carpeta se vea inicialmente la parte de la derecha de la ruta?

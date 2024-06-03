@@ -86,7 +86,6 @@ ok cocoa
 -probar menu ay piano, beeper piano. nota: beeper piano con notas largas, como la musica del Zorro
 -probar menu aysheet
 -probar midi output to real device. En Mac se puede usar fluidsynth (brew install fluidsynth) y copiar un soundfont (de aqui por ejemplo http://www.schristiancollins.com/generaluser.php). Se inicia en consola, ahi en la consola dira donde copiar el soundfount
--probar export to .mid
 -probar autoactivado de chip ay: en spectrum (ay, fuller), zx8081 (en zx80/81 solo con bi-pak (aydemo, pink panther...) )
 -probar sonido vsync en zx81, con orquesta.p, sound.p, beatles.p. probar vsync sound detection
 -probar snaps de spectrum, zx80, zx81, z88. Cargar y grabar. .zx, .o, .p, .z80, solo carga: .z81, .sna. En grabar, generar los mismos p** que hay en snap_tests/ en una carpeta temporal y luego probar a cargarlos (desde zesarux, fuse y eightyone) - esto se hace con automatic_test_save_all.sh. Probar snaps grabados en otros emuladores: Fuse, Eightyone, etc. 
