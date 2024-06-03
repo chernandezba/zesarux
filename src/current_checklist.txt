@@ -53,6 +53,7 @@ Drivers audio:
 **aumentar/bajar velocidad cpu
 ***usar tests/soundtest.sh
 ***en dsp, si no se tiene dsp real, se puede probar con aoss (que se oye entrecortado continuo) o en cygwin (que distorsiona)
+ok cocoa
 
 -probar targets:
 * linux 32 bits
