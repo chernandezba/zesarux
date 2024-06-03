@@ -5210,6 +5210,30 @@ void old_menu_filesel_overlay_render_preview_in_memory(void)
 //Si es > que un margen en pantalla, tambien indica pausa
 int contador_scroll_current_dir=0;
 
+int menu_filesel_overlay_show_current_dir_aux(zxvision_window *ventana,char *current_dir,char *current_dir_mensaje)
+{
+	//char current_dir[PATH_MAX];
+    //char current_dir_rotado[PATH_MAX];
+	//char buffer_dir[OVERLAY_SCREEN_MAX_WIDTH+1];
+	//char buffer3[PATH_MAX+20];
+
+	//getcwd(current_dir,PATH_MAX);
+    zvfs_getcwd(current_dir,PATH_MAX);
+
+    strcpy(current_dir_mensaje,"Current dir: ");
+    int longitud_current_dir_mensaje=strlen(current_dir_mensaje);
+
+    int longitud=strlen(current_dir);
+
+
+    int ancho_visible_dir=(ventana->visible_width-longitud_current_dir_mensaje-2);
+
+    int max_rotacion_mensaje_indice=longitud-ancho_visible_dir;
+
+    return max_rotacion_mensaje_indice;
+
+}
+
 void menu_filesel_overlay_show_current_dir_init_scroll(void)
 {
     contador_scroll_current_dir=-10;
@@ -5223,17 +5247,19 @@ void menu_filesel_overlay_show_current_dir(zxvision_window *ventana,int rotar)
 	char buffer3[PATH_MAX+20];
 
 	//getcwd(current_dir,PATH_MAX);
-    zvfs_getcwd(current_dir,PATH_MAX);
+    //zvfs_getcwd(current_dir,PATH_MAX);
 
-    char *current_dir_mensaje="Current dir: ";
-    int longitud_current_dir_mensaje=strlen(current_dir_mensaje);
+    char current_dir_mensaje[30];
+    //int longitud_current_dir_mensaje=strlen(current_dir_mensaje);
 
-    int longitud=strlen(current_dir);
+    //int longitud=strlen(current_dir);
 
 
-    int ancho_visible_dir=(ventana->visible_width-longitud_current_dir_mensaje-2);
+    //int ancho_visible_dir=(ventana->visible_width-longitud_current_dir_mensaje-2);
 
-    int max_rotacion_mensaje_indice=longitud-ancho_visible_dir;
+    //int max_rotacion_mensaje_indice=longitud-ancho_visible_dir;
+
+    int max_rotacion_mensaje_indice=menu_filesel_overlay_show_current_dir_aux(ventana,current_dir,current_dir_mensaje);
 
 
     int contador_scroll_current_dir_efectivo=contador_scroll_current_dir;
