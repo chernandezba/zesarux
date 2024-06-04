@@ -59,11 +59,11 @@ Mejorada emulación de QL:
 - Permitir habilitar/deshabilitar cada unidad
 
 Mejorado selector de archivos:
-- desplazando el campo de directorio actual si no cabe en la ventana
-- puede cambiar filtro de extensiones
-- al grabar archivos, cursor se ubica en el campo de archivo, y se sugiere un nombre de archivo
-- zona de selección de archivos en otro color
-- ir atrás un directorio al pulsar flecha izquierda
+- Desplazando el campo de directorio actual si no cabe en la ventana
+- Puede cambiar filtro de extensiones
+- Al grabar archivos, cursor se ubica en el campo de archivo, y se sugiere un nombre de archivo
+- Zona de selección de archivos en otro color
+- Ir atrás un directorio al pulsar flecha izquierda
 
 Mejorado ZX Vision:
 - Se modificó el comportamiento del clic izquierdo del mouse: al presionar el botón izquierdo del mouse fuera de una ventana, se cerrarán todos los menús.
