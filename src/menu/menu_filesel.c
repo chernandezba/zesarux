@@ -5272,22 +5272,22 @@ void menu_filesel_overlay_show_current_dir(zxvision_window *ventana,int rotar)
 
     int contador_scroll_current_dir_efectivo=contador_scroll_current_dir;
 
-
+    //printf("contador scroll: %d\n",contador_scroll_current_dir);
 
     if (contador_scroll_current_dir_efectivo>max_rotacion_mensaje_indice) {
         contador_scroll_current_dir_efectivo=max_rotacion_mensaje_indice;
-        printf("parado1. final de scroll\n");
+        //printf("parado1. final de scroll\n");
     }
 
     if (contador_scroll_current_dir_efectivo<0) {
         contador_scroll_current_dir_efectivo=0;
-        printf("parado2. no ha iniciado scroll\n");
+        //printf("parado2. no ha iniciado scroll\n");
     }
 
     strcpy(current_dir_rotado,&current_dir[contador_scroll_current_dir_efectivo]);
 
     if (contador_scroll_current_dir_efectivo>0) {
-        printf("Desplazado\n");
+        //printf("Desplazado\n");
         if (current_dir_rotado[0]) current_dir_rotado[0]='<';
         //if (current_dir_rotado[0]) current_dir_rotado[0]='.';
         //if (current_dir_rotado[1]) current_dir_rotado[1]='.';
