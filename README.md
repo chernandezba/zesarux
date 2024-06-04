@@ -274,7 +274,7 @@ __FEATURES__
 
 * Kempston mouse emulation
 
-* Supports Network gaming using its own protocol (ZEsarUX Network Gaming protocol - ZENG), which allows you to play to any emulated game, using two or more (up to 16) ZEsarUX instances, located each one on any part of the world or in a local network. Games doesn't have to be modified, you can use any existing game
+* Supports Network gaming using its own protocol (ZEsarUX Network Gaming protocol - ZENG), which allows you to play in two different ways: using two or more (up to 16) ZEsarUX instances, located each one on any part of the world or in a local network, or with a central server (ZENG Online). Games doesn't have to be modified, you can use any existing game
 
 * Uart bridge emulation: allows you to use a real uart-wifi device connected to your computer, on GNU/Linux only (Windows, Mac can simulate it)
 

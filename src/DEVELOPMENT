@@ -3,8 +3,8 @@
 * cambiar fechas en EMULATOR_DATE, EMULATOR_SHORT_DATE
 * cambiar nombre edicion en EMULATOR_EDITION_NAME
 * en Changelog cambiar nombre edicion y fechas
-* activar capture segmentation fault en cpu.c
-* activar capture floating point exception en cpu.c
+* activar capture segmentation fault en start.c
+* activar capture floating point exception en start.c
 * ZESARUX_EXTRAS_URL en cpu.h en principio no hay que tocarlo
 * Cambiar EMULATOR_VERSION en archivo configure
 * Cambiar version en macos/apptemplate/Contents/Info.plist, tag CFBundleVersion
