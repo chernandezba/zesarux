@@ -60,6 +60,7 @@ Available releases for [download](https://github.com/chernandezba/zesarux/releas
 * Binary compiled versions:
 * GNU/Linux 32/64 Bits
 * FreeBSD 64 Bits
+* Haiku OS
 * Mac OS X
 * Windows
 * Raspberry pi (raspbian)

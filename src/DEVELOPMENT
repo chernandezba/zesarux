@@ -44,6 +44,7 @@ Ejemplos de nombres de archivos de una distribución estable y sus tamaños:
 
  ZEsarUX_extras-10.0.zip                        152 MB
  ZEsarUX_freebsd-10.0-freebsd12_x64.tar.gz      35.9 MB
+ ZEsarUX_haiku-11.0.tar.gz                      35.9 MB
  ZEsarUX_linux-10.0-debian10_x32.tar.gz         36.1 MB
  ZEsarUX_linux-10.0-debian10_x64.tar.gz         36.1 MB
  ZEsarUX_macos-10.0-legacy.dmg                  34.3 MB
@@ -170,6 +171,7 @@ MD5SUM
 README
 ZEsarUX_extras-[version].zip
 ZEsarUX_freebsd-[version]-freebsd12_amd64.tar.gz
+ZEsarUX_haiku-[version].tar.gz
 ZEsarUX_linux-[version]-debian11_i686.tar.gz
 ZEsarUX_linux-[version]-debian11_x86_64.tar.gz
 ZEsarUX_linux-[version]-fedora38_x86_64.tar.gz
@@ -182,6 +184,8 @@ ZEsarUX_windows-[version]-legacy.zip
 ZEsarUX_windows-[version].zip
 
 Donde [version] es el numero de version, por ejemplo 10.3
+
+*generar también versión docker con: ./docker-zesarux.sh push
 
 Al final de la subida,
 Generar en servidor ZEsarUX, en ruta
