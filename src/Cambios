@@ -1,27 +1,27 @@
-ZEsarUX 11.0 - David edition. 09 Mayo 2024
+ZEsarUX 11.0 - David edition. 06 Junio 2024
 
 Esta versión está dedicada a mi hermano David. Descanse en paz.
 
 * Cosas nuevas agregadas:
 
 Se agregó carga de audio desde una fuente de audio externa, como un reproductor de cintas. Esto también incluye:
-- Ventana de fuente de audio externa: puede ver la onda de audio, el tipo de señal, y un asistente de azimuth que te avisa cuando tienes que usar el destornillador ;)
-- Analizador de espectro: puede ver el rango de frecuencia completo de la onda de audio
+- Ventana de fuente de audio externa: puedes ver la onda de audio, el tipo de señal, y un asistente de azimuth que te avisa cuando tienes que usar el destornillador ;)
+- Analizador de espectro: puedes ver el rango de frecuencia completo de la onda de audio
 
 Agregado la función ZENG Online, que permite ejecutar cualquier juego emulado de manera multijugador usando un servidor central.
 Agregado soporte ZENG para todas las máquinas emuladas
-Agregado soporte ZENG en el controlador de curses.
-Agregado soporte para guardar pantalla en archivo .txt.
-Agregado soporte para guardar pantalla en archivo .stl, útil para imprimir en una impresora 3D.
+Agregado soporte ZENG en el driver curses.
+Agregado soporte para grabar pantalla en archivo .txt.
+Agregado soporte para grabar pantalla en archivo .stl, útil para imprimir en una impresora 3D.
 Agregado soporte para archivos .P81 de ZX81
-Agregado soporte para grabación snapshots .Z81 de ZX80 y ZX81
+Agregado soporte para grabación de snapshots .Z81 de ZX80 y ZX81
 Agregada Función para cambiar bits en el editor hexadecimal.
 Agregado estilo GUI de TempleOS
 Agregado estilo GUI de QNX
 Agregada Configuración para forzar el modo CHR$ 128 en ZX81
 Agregada función de búsqueda para buscar entradas del menú.
 Agregado tipo de archivos .zmenu para lanzar archivos
-Agregado mas antiguos programas/juegos mios de Spectrum
+Agregados mas programas/juegos mios antiguos de Spectrum
 Agregado Debug Sensors SPK & MIC Bit del puerto FEH
 Agregado algunos copiadores de cintas en menu Almacenamiento-> Tape
 Agregada opción para mensaje de bienvenida rápido
@@ -32,7 +32,7 @@ Agregado selector de paleta en modo de video 1 de PCW
 Permitir cargar Next .nex/.snx/.sna snapshots con archivos adicionales sin tener que copiarlos en el archivo mmc (monta automaticamente el esxdos handler)
 Permitir limitar max cpu turbo en Next
 Permitir pausar en AY Player
-Mejorado Ayuda de Teclado: ahora puedes activar teclas pulsando con el ratón
+Mejorado Ayuda de Teclado: ahora puedes enviar teclas pulsando con el ratón
 Permitir no guardar la configuración al salir de ZEsarUX
 Permitir seleccionar el logotipo normal de ZEsarUX o el logotipo del X Aniversario
 Permitir enviar instantáneas ZENG con mayor frecuencia (incluso cada 20 ms)
@@ -41,8 +41,8 @@ Permitir deshabilitar los colores de Spectrum también en el modo de video real
 Permitir presionar teclas de acceso rápido en el teclado en pantalla
 Recordar ultima ruta utilizada en cinta de salida
 Permitir cargar cartuchos de MSX de 48kB
-Permitir cargar cartuchos de MSX con memory mapper Ascii 8kb, Ascii 16kb, Konami without SCC. Konami with SCC, R-Type
-Permitir elegir +2e/+3e rom desde la entrada de menu Rom personalizada
+Permitir cargar cartuchos de MSX con memory mapper Ascii 8kb, Ascii 16kb, Konami without SCC, Konami with SCC, R-Type
+Permitir elegir rom +2e/+3e desde el menu de Rom personalizada
 Compilación mas fácil en Haiku OS
 Agregada opción para evitar Modo Navidad
 Mejorado editor Hexadecimal en ZX80 y ZX81: mostrar caracteres inversos
@@ -50,7 +50,7 @@ Mejorado editor Hexadecimal en ZX80 y ZX81: mostrar caracteres inversos
 Mejorado ZRCP:
 - Se agregó una función de menú para sincronizar la instantánea local con la remota usando ZRCP
 - Comandos ZRCP agregados: open-menu, print-error, get-text-overlay, cpu-history get extended
-- Permitir usar cpu-step-mode de ZRCP en controladores stdout y simpletext
+- Permitir usar cpu-step-mode de ZRCP en drivers stdout y simpletext
 - Permitir restaurar estado MMU en comando ZRCP "cpu-history restore" en Spectrum 128k/+2/+2a/+3
 
 Mejorada emulación de QL:
@@ -59,22 +59,22 @@ Mejorada emulación de QL:
 - Permitir habilitar/deshabilitar cada unidad
 
 Mejorado selector de archivos:
-- Desplazando el campo de directorio actual si no cabe en la ventana
-- Puede cambiar filtro de extensiones
+- Desplazar el campo de directorio actual si no cabe en la ventana
+- Poder cambiar filtro de extensiones
 - Al grabar archivos, cursor se ubica en el campo de archivo, y se sugiere un nombre de archivo
 - Zona de selección de archivos en otro color
-- Ir atrás un directorio al pulsar flecha izquierda
+- Ir atrás un directorio al pulsar cursor izquierdo
 
 Mejorado ZX Vision:
 - Se modificó el comportamiento del clic izquierdo del mouse: al presionar el botón izquierdo del mouse fuera de una ventana, se cerrarán todos los menús.
-  Si necesita mantener el menú abierto y centrarse en la máquina emulada, simplemente haga clic izquierdo y presione la tecla Mayús.
+  Si necesita mantener el menú abierto y establecer el foco en la máquina emulada, simplemente haga clic izquierdo y presione la tecla Mayús.
 - Mejorado el fondo del título de la ventana cuando no todos los botones están visibles
 - Mejorado hacer clic y dibujar una ventana siempre visible
 - Ya no se pueden minimizar ni redimensionar los menús (eso no tenía sentido)
-- Selector de procesos: desminimiza ventanas al seleccionarlas y quedan minimizadas
-- Conmutador de procesos: ahora se puede configurar para que esté siempre visible
-- Conmutador de procesos: los nombres de los iconos son más descriptivos
-- Los títulos del menú se traducen al idioma seleccionado (aún no todo, tenga paciencia)
+- Process switcher: desminimiza ventanas al seleccionarlas si estaban minimizadas
+- Process switcher: ahora se puede configurar para que esté siempre visible
+- Process switcher: los nombres de los iconos son más descriptivos
+- Los títulos del menú se traducen al idioma seleccionado (aún no todos, ten paciencia)
 - Mejora de la perspectiva del widget de partículas 3D en sensores de visualización.
 
 Mejorado ZX Desktop:
@@ -88,28 +88,28 @@ Mejorado ZX Desktop:
 
 Correcciones ZX Vision:
 - Se corrigió el error cuando la impresión en el pie de página y la columna estaba fuera de los límites (exactamente en la columna 32)
-- Se corrigieron los textos de bienvenida cuando la fila> 23
+- Se corrigieron los textos de bienvenida cuando la fila > 23
 - Se corrigió la pulsación de las teclas '.' y ',' en el menú cuando la máquina es ZX80 o ZX81
 - Se corrigió un error en el estilo ZX Vision BeOS, al presionar F5, los botones de la ventana no desaparecían ni reaparecían.
-- Se corrigieron las ventanas de actualización después de presionar F8 en el teclado en pantalla.
+- Se corrigió la actualización de ventanas después de presionar F8 en el teclado en pantalla.
 - Se corrigieron los mensajes de bienvenida cuando las ventanas de fondo están habilitadas.
-- Corrección posicion inicial para muchas ventanas.
+- Se corrigió la posicion inicial para muchas ventanas.
 
 Corregidas redirecciones http al descargar utilizando el Speccy Online Browser
 Corregido bit 6 de puerto FEH dependiendo si Issue2/3
 Corregido sonido de puerto FEH en Sam Coupe FEH al activar Real Beeper
 Corregido segfault al intentar insertar un archivo de Cinta Real que no existe
 Corregido segfault al insertar un archivo de Cinta Real de ZX81 y abrir Tape Viewer
-Corregido un valor de bus de datos no válido en Jupiter Ace (son 20H en lugar de FFH)
+Corregido un valor de bus de datos no válido en Jupiter Ace (es 20H en lugar de FFH)
 Corregido el bloqueo al dibujar el mapa de aventuras de texto y una aventura GAC corrupta.
 Corregido los tiempos de los códigos de operación CP (HL), CP (IX+d), CP (IY+d)
 Corregido un error en ZRCP al manejar conexiones simultáneas.
-Corregida la lectura/escritura al hacer rollover en Betadisk (gracias Mak7ym). Carga fija por ejemplo de: BR_DEA7H, HOMER, PARADISE
+Corregida la lectura/escritura al hacer rollover en Betadisk (gracias Mak7ym). Carga corregida por ejemplo en: BR_DEA7H, HOMER, PARADISE
 Corregido fallo al grabar la información de Clip Windows de Spectrum Next en snapshots ZSF
-Corregido fallo al cargar snapshots .nex snapshots con diferente cabecera mayúsculas/minúsculas (por ejemplo Exploding Fist Next)
+Corregido fallo al cargar snapshots .nex con diferente cabecera mayúsculas/minúsculas (por ejemplo Exploding Fist Next)
 Corregida lectura del kempston mouse cuando el menú está abierto
 Corregido tamaño de zona memoria rom en ZX80 y ZX81
-Corregido esxdos handler si estaba activado cuando máquina no es Spectrum
+Corregido esxdos handler si estaba activado cuando la máquina no es Spectrum
 Corregido uso elevado de cpu cuando hay mensajes de splash repetidos acerca de cambios de modo de video
 
 ----------------------------------------
