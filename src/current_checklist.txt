@@ -33,34 +33,23 @@ echo "Porcentaje=$PERCCOMPLETADO %"
 -probar a guardar snapshots versiones anteriores .zx (1, 2, 3, 4, 5 y 6) y cargar en ZEsarUX versiones viejas y ZXSpectr
 -probar a guardar snapshots .zsf y cargar en ZEsarUX versiones viejas
 -probar any flag loading cintas, con copiador, rocman
--probar archivos zip, tar, rar, gz
--probar expansor archivos tap, tzx, dsk, trd, etc
 -probar cambiando rutas a sox, gunzip, etc...
 
 -probar diferentes cargas, a continuacion, hay ejemplos en carpeta snap_tests y tambien alguno suelto, como canciones.smp y orquesta.smp
-*probar carga binaria (tape) smp,wav,rwa en spectrum
-*probar carga binaria (tape) smp,wav,rwa en zx80
-*probar carga binaria (tape) smp,wav,rwa en zx81: con audio real, con save desde basic y aofile (wav y rwa), con rutina de conversion de .p a rwa en real tape
-*probar carga realtape : spectrum: smp,wav,rwa,tap,tzx (tzx normal y turbo). zx80: smp,wav,rwa,o. zx81: smp,wav,rwa,p
-
--carga desde cinta real
 
 -probar linea comandos: --tape, --realtape, --snap, --slotcard, --outtape
 
 -probar simulacion de carga en spectrum, zx80, zx81
 -probar audio filter on rom save
--probar verbose 3, 4, debugregisters
 -probar desactivando border, con y sin realvideo, en spectrum y zx8081
 -probar efectos border: btime, overscan, vectron, BorderTrix, Hercules, dark star (cuando te matan), aqua plane, paperboy, super wonder boy (pausa), thelosttapesofalbion0 (pausa), rotatrix, shock megademo, KnightsDemonsDX. en modos 128, 48k e inves.
 -probar ula48.tap, ula128.tap, scroll2017. Deberian verse bien sin necesidad de cambiar early / late timings
--probar autoactivado de rainbow cuando efectos en border. juegos, demos y snap_tests/test_autorealvideo_border.zx
--probar desactivando ssl
--probar activando ssl
 -probar azerty. se puede probar pulsando guion o cedilla
 -probar redefinir teclas, en menu y linea comandos
--probar desactivando contended memory en compilacion
 
 -probar menu de stdout
+
+
 -probar cargar/grabar pantalla en spectrum 48, 128, +2a, zxuno. formatos scr, pbm, bmp
 -probar cargar/grabar archivo binario. probar cargar binario desde linea comandos
 -probar archivo de configuracion, probar comillas en archivo configuracion (simples y dobles : por ejemplo : --joystickkeyev Up 't' (esto poniendo joystick a none para que se envie solo la t) o  --joystickemulated "Sinclair 2"). probar grabado archivo config
@@ -69,7 +58,6 @@ nota: curses, lightgun no va muy fino en los juegos debido al tiempo de retencio
 -probar kempston mouse, para todos drivers que lo soportan: xwindows, cocoa, sdl, caca (consola texto y X), curses (consola texto y X). con demo kempston, art studio
 nota: cacalib, curses  en consola texto (no X) el mouse solo notifica al pulsar fire (y no al mover)
 -probar buscador vidas infinitas. tambien con cpu top speed
--probar debug i/o ports: spectrum zx80/81, z88, zx-uno, etc
 -probar debugger, step over interrupt, electron position, cursores, toggle, runto, etc
 -probar breakpoint condicionales (=,<,> y con registros indirectos (hl), con and or xor) , operadores bitwise &|^ en variables
 -probar desactivar breakpoints con espacio
@@ -78,30 +66,12 @@ nota: cacalib, curses  en consola texto (no X) el mouse solo notifica al pulsar 
 -probar remote command protocol ZRCP, en linux, mac y windows
 -probar zxi ports con extras/media/spectrum/tests/zesarux-zxi-ports.tap , extras/media/spectrum/tests/hardwaredebugport.tap
 -probar quicksave, autosave at interval, snapshots to ram
--probar todas opciones de menu en general, menus con mas opciones verticalmente de las visibles -> audio settings
 -probar fallback de drivers graficos y de sonido
 -probar impresora: en zx spectrum, zx81
 -probar COPY to printer
--probar --verbose 0 y que no aparezca ningun mensaje por consola...
--probar footer y cpu uso, temperatura, cinta carga, printing, etc. en xwindows, sdl, fbdev, cocoa, curses. con y sin border. en spectrum, zx80/81 y z88
 -probar custom configuration file, con snap_tests/test_autoconfig.tap  (y hay snap_tests/test_autoconfig.tap.config) y snap_tests/test_autoconfig.p (y hay snap_tests/test_autoconfig.p.config)
--probar footer cuando se carga cinta/snap detectado por autoselectoptions o custom configuration file:
-* cuando el juego es generico y no se indica nombre (por ejemplo, aydemo)
-* juego que solo pone nombre pero no info, por ejemplo Dancing Demon y Pink Panther
-* cuando se indica juego (como por ejemplo, overscan.tap)
-* nombre con punto, como H.E.R.O.
-* cuando hay segundo mensaje:
-** Song in Lines 5 - no cabe entero 
-** Manic miner zx81 o orquesta - caben los : en el primer mensaje
-** segundo mensaje se desplaza porque no cabe, como beamrider 
-** primer y segundo mensaje se desplazan, como voyage of peril
-** FSCAPES.P, que no da tiempo a mostrar todo el segundo mensaje porque carga partes
-* Con y sin border enabled
--probar diferentes joysticks: kempston (inves y no-inves), cursor, fuller, etc. autofire. autoleft/right
 -probar --limitopenmenu
 -probar idle bus. con Arkanoid por ejemplo
--probar realjoystick. probar opciones linea comandos: --joystickkeyev, --joystickkeybt, --joystickevent. Probar menu test joystick. Probar joystick sdl, joystick nativo linux, joystick simulator, disable joystick. En todos casos probar quitar y poner border (porque reinicializa drivers)
--probar cambio driver audio desde menu
 -probar desactivar putpixel cache en compilacion
 -probar Setting putpixel functions to zoom 1, variable, interlace
 -probar repeticion de teclas en selector de archivos, ayuda, etc (en opciones de menu no hace repeticion)
@@ -115,21 +85,14 @@ nota: cacalib, curses  en consola texto (no X) el mouse solo notifica al pulsar 
 -probar opcion para desactivar paging en ram/rom
 -probar cpu transaction log
 -probar menu file utilities
--probar demos beeper
--probar real beeper activo/desactivado
 -probar tone generator --tonegenerator con 1,2 y 3 en spectrum 48k. Ver menu waveform
--probar modo interlaced, scanlines y tapes/spectrum/tests/interlace-test.tap. interlaced zx81 con ilena
 -probar top speed, con threads y sin threads
--probar accelerate loaders
 
 -keymaps en xwindows y sdl para z88, cpc, chloe, sam, ql, ...
 
 -probar Sprite chip con demo
--probar textos splash en cambio de modo de video por ejemplo
--probar usar extension de archivo no conocida y ver que avisa
 -probar activando funciones de captura de segmentation fault y forzando fallo
 -probar cpu_panic. desde dentro del emulador y antes de entrar 
--probar en general mayoria de cintas, snaps y eproms incluidas
 -probar instalando en ruta concreta y ejecutando desde alli
 -probar generando archivo binario y probar a ejecutar, e instalar. 
 -probar generando archivo source y probar a compilar e instalar cambiando prefix
