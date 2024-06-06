@@ -16,6 +16,7 @@ Agregado soporte para grabar pantalla en archivo .stl, útil para imprimir en un
 Agregado soporte para archivos .P81 de ZX81
 Agregado soporte para grabación de snapshots .Z81 de ZX80 y ZX81
 Agregada Función para cambiar bits en el editor hexadecimal.
+Agregada nueva versión compilada: Haiku OS
 Agregado estilo GUI de TempleOS
 Agregado estilo GUI de QNX
 Agregada Configuración para forzar el modo CHR$ 128 en ZX81

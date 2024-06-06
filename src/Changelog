@@ -16,6 +16,7 @@ Added save screen to .stl file, useful to print on 3D Printer
 Added support for ZX81 .P81 files
 Added save support for ZX80 & ZX81 .Z81 snapshots
 Added function to shift bits on Hex Editor
+Added new compiled version: Haiku OS
 Added TempleOS GUI Style
 Added QNX GUI Style
 Added setting to force CHR$ 128 mode on ZX81
