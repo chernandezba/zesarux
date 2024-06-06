@@ -217,6 +217,17 @@ make
 make debian32 o make debian64
 
 
+** Haiku
+En entorno de 64 bits
+
+export CFLAGS=-O3
+export LDFLAGS=-O3
+./configure --enable-memptr --enable-visualmem --enable-cpustats --enable-ssl --disable-caca --disable-aa --disable-cursesw --prefix /usr
+make clean
+make
+make haiku
+
+
 ** Ubuntu
 desde entorno con Docker:
 make ubuntu

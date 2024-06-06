@@ -1874,6 +1874,15 @@ debian64: all
 	echo
 	echo "Generated file is : ZEsarUX_linux-\$(EMULATOR_VERSION)-debian11_x86_64.tar.gz"
 
+haiku: all
+	./generate_install_sh.sh
+	rm -fR bintargztemp
+	mkdir -p bintargztemp/ZEsarUX-\$(EMULATOR_VERSION)
+	cp -a \$(COMMONFILES) \$(ONLYUNIXBINARIES) bintargztemp/ZEsarUX-\$(EMULATOR_VERSION)/
+	tar -C bintargztemp -cvzf ZEsarUX_linux-\$(EMULATOR_VERSION)-haiku_x86_64.tar.gz ZEsarUX-\$(EMULATOR_VERSION)
+	echo
+	echo "Generated file is : ZEsarUX_linux-\$(EMULATOR_VERSION)-haiku_x86_64.tar.gz"
+
 
 freebsd: all
 	./generate_install_sh.sh
