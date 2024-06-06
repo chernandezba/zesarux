@@ -1879,9 +1879,9 @@ haiku: all
 	rm -fR bintargztemp
 	mkdir -p bintargztemp/ZEsarUX-\$(EMULATOR_VERSION)
 	cp -a \$(COMMONFILES) \$(ONLYUNIXBINARIES) bintargztemp/ZEsarUX-\$(EMULATOR_VERSION)/
-	tar -C bintargztemp -cvzf ZEsarUX_linux-\$(EMULATOR_VERSION)-haiku_x86_64.tar.gz ZEsarUX-\$(EMULATOR_VERSION)
+	tar -C bintargztemp -cvzf ZEsarUX_haiku-\$(EMULATOR_VERSION)_x86_64.tar.gz ZEsarUX-\$(EMULATOR_VERSION)
 	echo
-	echo "Generated file is : ZEsarUX_linux-\$(EMULATOR_VERSION)-haiku_x86_64.tar.gz"
+	echo "Generated file is : ZEsarUX_haiku-\$(EMULATOR_VERSION)_x86_64.tar.gz"
 
 
 freebsd: all
