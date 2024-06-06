@@ -171,7 +171,7 @@ MD5SUM
 README
 ZEsarUX_extras-[version].zip
 ZEsarUX_freebsd-[version]-freebsd12_amd64.tar.gz
-ZEsarUX_haiku-[version].tar.gz
+ZEsarUX_haiku-[version]_x86_64.tar.gz
 ZEsarUX_linux-[version]-debian11_i686.tar.gz
 ZEsarUX_linux-[version]-debian11_x86_64.tar.gz
 ZEsarUX_linux-[version]-fedora38_x86_64.tar.gz
