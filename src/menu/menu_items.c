@@ -30105,10 +30105,10 @@ void menu_audio(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_separator(array_menu_audio);
 
             menu_add_item_menu_en_es_ca(array_menu_audio,MENU_OPCION_NORMAL,NULL,NULL,
-                "--External Audio Source--","--Fuente de sonido externa--","--Font de so externa--");
+                "--External Audio Source--","--Fuente de Sonido Externa--","--Font de So Externa--");
 
             menu_add_item_menu_en_es_ca(array_menu_audio,MENU_OPCION_NORMAL,menu_audio_record_input_enable,NULL,
-                "Enable External Audio Source","Activar fuente de sonido externa","Activar font de so externa");
+                "Enable External Audio Source","Activar Fuente de Sonido Externa","Activar Font de So Externa");
             menu_add_item_menu_prefijo_format(array_menu_audio,"[%c] ", (audio_is_recording_input ? 'X' : ' '));
             menu_add_item_menu_tooltip(array_menu_audio,"Allows you to load audio from external audio source, like tape player, "
                 "a mp3 player or your phone");
@@ -36216,6 +36216,9 @@ void menu_realtape_record_input(MENU_ITEM_PARAMETERS)
 
                 //Y tambien este buffer visual
                 menu_realtape_record_input_empty_visual_buffer();
+
+                //Y decir que buffer no esta lleno
+                audiorecord_last_write_full=0;
             break;
 
 

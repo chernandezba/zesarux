@@ -1,3 +1,12 @@
+ZEsarUX 11.1 - xxxx edition. 06 June 2024
+
+* Fixes:
+
+Remove buffer full indicator when pressing shift+e on External Audio Source window
+
+----
+
+
 ZEsarUX 11.0 - David edition. 06 June 2024
 
 This version is dedicated to my brother David. Rest in peace.
