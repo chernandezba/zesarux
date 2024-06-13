@@ -1,2 +1,0 @@
-David arregló el juego para que funcionase con teclado Inves, que es como un issue 3 (bit 6 de puerto de teclado a 0)
-También le agregó soporte de joystick kempston

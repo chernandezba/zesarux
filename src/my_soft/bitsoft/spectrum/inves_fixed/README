@@ -1,0 +1,11 @@
+These are programs fixed to run on Inves Spectrum+
+
+-attack-inves.tap: basic game from a 3rd party but modified by David to run on Inves Spectrum+. David fixed the game to work on the Inves keyboard, which is like a issue 3 keyboard (keyboard port bit 6 to 0). He also added kempston joystick support
+
+-64chars-inves.tap: program to get 64 characters from a 3rd party but modified by David to run on Inves Spectrum+
+
+-bufferteclado_inves.tap: program from Microhobby magazine to get keyboard buffer, fixed to run on Inves Spectrum+ (interrupts issue)
+
+-intcopy2_inves.tap: unknown program fixed to run on Inves Spectrum+ (interrupts issue)
+
+-ventanas_inves.tap: program from Microhobby magazine to create text windows, fixed to run on Inves Spectrum+ (interrupts issue)

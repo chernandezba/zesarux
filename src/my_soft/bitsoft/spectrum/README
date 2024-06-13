@@ -1,3 +1,11 @@
-elautobus.tzx seems to be based on game "The ticket" that came with the English PAWS version.
+-bittransfe.tap: a file transfer routine, like the Multiface but all in software (using interrupts)
 
-We are not sure if the game is finished or not
+-copiones.tap: modifications made by David to the common "blue copier" to allow turbo load and save
+
+-dibuja4.tzx: a drawing program
+
+-elautobus.tzx seems to be based on game "The ticket" that came with the English PAWS version. We are not sure if the game is finished or not
+
+-gusano.tap: a funny game located in Space...
+
+
