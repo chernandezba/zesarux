@@ -1,5 +1,10 @@
 ZEsarUX 11.1 - xxxx edition. 06 June 2024
 
+
+* Improvements:
+
+Allow hotswap to Pentagon
+
 * Fixes:
 
 Remove buffer full indicator when pressing shift+e on External Audio Source window

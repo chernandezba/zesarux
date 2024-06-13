@@ -27800,6 +27800,13 @@ void hotswap_128k_to_128k(MENU_ITEM_PARAMETERS)
     post_set_machine(NULL);
 }
 
+void hotswap_128k_to_pentagon(MENU_ITEM_PARAMETERS)
+{
+    current_machine_type=MACHINE_ID_PENTAGON;
+    set_machine_params();
+    post_set_machine(NULL);
+}
+
 void hotswap_128k_to_128k_spa(MENU_ITEM_PARAMETERS)
 {
     current_machine_type=MACHINE_ID_SPECTRUM_128_SPA;
@@ -28134,6 +28141,7 @@ void menu_hotswap_machine(MENU_ITEM_PARAMETERS)
         if (MACHINE_IS_SPECTRUM_128_P2) {
             menu_add_item_menu_inicial(&array_menu_machine_selection,"ZX Spectrum+ 128k",MENU_OPCION_NORMAL,hotswap_128k_to_128k,NULL);
             menu_add_item_menu(array_menu_machine_selection,"ZX Spectrum+ 128k (Spanish)",MENU_OPCION_NORMAL,hotswap_128k_to_128k_spa,NULL);
+            menu_add_item_menu(array_menu_machine_selection,"Pentagon",MENU_OPCION_NORMAL,hotswap_128k_to_pentagon,NULL);
             menu_add_item_menu(array_menu_machine_selection,"ZX Spectrum +2",MENU_OPCION_NORMAL,hotswap_128k_to_p2,NULL);
             menu_add_item_menu(array_menu_machine_selection,"ZX Spectrum +2 (French)",MENU_OPCION_NORMAL,hotswap_128k_to_p2f,NULL);
             menu_add_item_menu(array_menu_machine_selection,"ZX Spectrum +2 (Spanish)",MENU_OPCION_NORMAL,hotswap_128k_to_p2_spa,NULL);
