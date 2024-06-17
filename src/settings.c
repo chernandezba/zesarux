@@ -371,6 +371,13 @@ z80_bit zxdesktop_empty_trash_on_exit={0};
 
 z80_bit zxdesktop_icon_show_app_open={1};
 
+
+//
+// ZX Vision Settings
+//
+
+z80_bit zxvision_topbar_menu_enabled={0};
+
 //
 // General Settings
 //

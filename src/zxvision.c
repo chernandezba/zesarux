@@ -24447,69 +24447,74 @@ void menu_topbarmenu(void)
     } while (tecla_leida==0);
 
     if (tecla_leida==13 && mouse_left) {
-        int posicion_x=mouse_x/menu_char_width/menu_gui_zoom;
+        int posicion_x=mouse_x/menu_char_width/menu_gui_zoom; //TODO: esto tendria que dividirse tambien por zoom_x
+
+        int posicion_y=mouse_y/menu_char_height/menu_gui_zoom/zoom_y;
 
         printf("posicion x: %d\n",posicion_x);
 
         menu_espera_no_tecla_con_repeticion();
 
-        force_next_menu_position.v=1;
+        if (posicion_y==0) {
 
-        force_next_menu_position_y=1;
+            force_next_menu_position.v=1;
 
-        //prueba abrir diferentes menus
-        if (posicion_x<11) {
+            force_next_menu_position_y=1;
 
-        }
-        else if (posicion_x<34) {
-            force_next_menu_position_x=4;
-            menu_smartload(0);
-        }
-        else if (posicion_x<56) {
-            force_next_menu_position_x=16;
-            menu_snapshot(0);
-        }
-        else if (posicion_x<76) {
-            force_next_menu_position_x=27;
-            menu_machine_selection(0);
-        }
-        else if (posicion_x<92) {
-            force_next_menu_position_x=37;
-            menu_audio(0);
-        }
-        else if (posicion_x<112) {
-            force_next_menu_position_x=45;
-            menu_display_settings(0);
-        }
-        else if (posicion_x<132) {
-            force_next_menu_position_x=55;
-            menu_storage(0);
-        }
-        else if (posicion_x<148) {
-            force_next_menu_position_x=65;
-            menu_debug_main(0);
-        }
-        else if (posicion_x<169) {
-            force_next_menu_position_x=73;
-            menu_network(0);
-        }
-        else if (posicion_x<188) {
-            force_next_menu_position_x=83;
-            menu_windows(0);
-        }
-        else if (posicion_x<199) {
-            force_next_menu_position_x=93;
-            menu_settings(0);
-        }
-        else if (posicion_x<300) {
-            force_next_menu_position_x=98;
-            menu_help(0);
+            //prueba abrir diferentes menus
+            if (posicion_x<11) {
+                force_next_menu_position_x=0;
+                menu_inicio_bucle_main();
+            }
+            else if (posicion_x<34) {
+                force_next_menu_position_x=4;
+                menu_smartload(0);
+            }
+            else if (posicion_x<56) {
+                force_next_menu_position_x=16;
+                menu_snapshot(0);
+            }
+            else if (posicion_x<76) {
+                force_next_menu_position_x=27;
+                menu_machine_selection(0);
+            }
+            else if (posicion_x<92) {
+                force_next_menu_position_x=37;
+                menu_audio(0);
+            }
+            else if (posicion_x<112) {
+                force_next_menu_position_x=45;
+                menu_display_settings(0);
+            }
+            else if (posicion_x<132) {
+                force_next_menu_position_x=55;
+                menu_storage(0);
+            }
+            else if (posicion_x<148) {
+                force_next_menu_position_x=65;
+                menu_debug_main(0);
+            }
+            else if (posicion_x<169) {
+                force_next_menu_position_x=73;
+                menu_network(0);
+            }
+            else if (posicion_x<188) {
+                force_next_menu_position_x=83;
+                menu_windows(0);
+            }
+            else if (posicion_x<199) {
+                force_next_menu_position_x=93;
+                menu_settings(0);
+            }
+            else if (posicion_x<300) {
+                force_next_menu_position_x=98;
+                menu_help(0);
+            }
+
         }
 
 
 //34,56,76,92,112,132,148,169,188
-
-
     }
 
     menu_espera_no_tecla_con_repeticion();
@@ -24552,11 +24557,17 @@ void menu_inicio_bucle(void)
 		}
 
         //prueba menu en barra arriba del todo
-        //menu_topbarmenu();
+        if (zxvision_topbar_menu_enabled.v) {
+            menu_topbarmenu();
+        }
 
-        //printf("antes menu_inicio_bucle_main. salir_todos_menus=%d\n",salir_todos_menus);
-		menu_inicio_bucle_main();
-        //printf("despues menu_inicio_bucle_main\n");
+        else {
+
+            //printf("antes menu_inicio_bucle_main. salir_todos_menus=%d\n",salir_todos_menus);
+            menu_inicio_bucle_main();
+            //printf("despues menu_inicio_bucle_main\n");
+
+        }
 
 		//Se reabre el menu tambien si pulsada tecla F5 en cualquiera de los menus
 		if (menu_pressed_open_menu_while_in_menu.v) {

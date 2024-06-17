@@ -178,5 +178,7 @@ extern z80_bit opcion_fast_welcome_message;
 
 extern z80_bit opcion_no_welcome_message;
 
+extern z80_bit zxvision_topbar_menu_enabled;
+
 #endif
 

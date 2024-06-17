@@ -2070,6 +2070,11 @@ void menu_item_old_behaviour_close_menus(MENU_ITEM_PARAMETERS)
     menu_old_behaviour_close_menus.v ^=1;
 }
 
+void menu_interface_enable_topbar_menu(MENU_ITEM_PARAMETERS)
+{
+    zxvision_topbar_menu_enabled.v ^=1;
+}
+
 void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
 {
     menu_item *array_menu_common;
@@ -2232,6 +2237,13 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
                 menu_add_item_menu_es_avanzado(array_menu_common);
             }
         }
+
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_enable_topbar_menu,NULL,
+            "Enable topbar menu (EXPERIMENTAL)","Activar topbar menu (EXPERIMENTAL)","Activar topbar menu (EXPERIMENTAL)");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ", (zxvision_topbar_menu_enabled.v ? 'X' : ' ') );
+        menu_add_item_menu_es_avanzado(array_menu_common);
+
+
 
 		menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_interface_tooltip,NULL,"[%c] ~~Tooltips",(tooltip_enabled.v ? 'X' : ' ') );
 		menu_add_item_menu_shortcut(array_menu_common,'t');
