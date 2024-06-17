@@ -1213,7 +1213,7 @@ printf("\n"
 		"-------------------\n"
 		"\n"
 
-		"--joystickemulated type     Type of joystick emulated. Type can be one of: ");
+		"--joystickemulated type     Type of emulated joystick. Type can be one of: ");
 
 	joystick_print_types();
 		printf (" (default: %s).\n",joystick_texto[joystick_emulation]);

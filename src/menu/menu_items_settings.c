@@ -5590,7 +5590,7 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
 
 		if (MACHINE_IS_SPECTRUM || MACHINE_IS_ZX8081 || MACHINE_IS_SAM || MACHINE_IS_CPC || MACHINE_IS_MSX || MACHINE_IS_SVI || MACHINE_IS_PCW) {
             menu_add_item_menu_en_es_ca(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_joystick,NULL,
-                "~~Joystick type","Tipo ~~Joystick","Tipus ~~Joystick");
+                "Emulated ~~Joystick type","Tipo ~~Joystick emulado","Tipus ~~Joystick emulat");
 			menu_add_item_menu_sufijo_format(array_menu_hardware_settings," [%s]",joystick_texto[joystick_emulation]);
 			menu_add_item_menu_shortcut(array_menu_hardware_settings,'j');
         	        menu_add_item_menu_tooltip(array_menu_hardware_settings,"Decide which joystick type is emulated");
@@ -5643,9 +5643,9 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
 
 		if (MACHINE_IS_SPECTRUM) {
 
-			if (gunstick_emulation==0) menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_gunstick,NULL,"[ ] ~~Lightgun");
-			else menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_gunstick,NULL,"[%s] ~~Lightgun",gunstick_texto[gunstick_emulation]);
-			menu_add_item_menu_shortcut(array_menu_hardware_settings,'l');
+			if (gunstick_emulation==0) menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_gunstick,NULL,"[ ] Lightgun");
+			else menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_gunstick,NULL,"[%s] Lightgun",gunstick_texto[gunstick_emulation]);
+			//menu_add_item_menu_shortcut(array_menu_hardware_settings,'l');
 			menu_add_item_menu_tooltip(array_menu_hardware_settings,"Decide which kind of lightgun is emulated with the mouse");
 			menu_add_item_menu_ayuda(array_menu_hardware_settings,"Lightgun emulation supports the following two models:\n\n"
 					"Gunstick from MHT Ingenieros S.L: all types except AYChip\n\n"
@@ -5722,6 +5722,15 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
 
 		menu_add_item_menu(array_menu_hardware_settings,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
+
+		menu_add_item_menu_en_es_ca(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_cpu_settings,NULL,
+            "~~CPU settings","Opciones ~~CPU","Opcions ~~CPU");
+		menu_add_item_menu_shortcut(array_menu_hardware_settings,'c');
+	    	menu_add_item_menu_tooltip(array_menu_hardware_settings,"Change some CPU settings");
+		menu_add_item_menu_ayuda(array_menu_hardware_settings,"Change some CPU settings");
+        menu_add_item_menu_tiene_submenu(array_menu_hardware_settings);
+        menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
+
 		//Keyboard settings
 		menu_add_item_menu_en_es_ca(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_keyboard_settings,NULL,
             "~~Keyboard settings","Opciones te~~klado","Opcions te~~klat");
@@ -5772,6 +5781,16 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_tiene_submenu(array_menu_hardware_settings);
 
 
+
+		if (MACHINE_IS_SPECTRUM) {
+			menu_add_item_menu_en_es_ca(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_ula_settings,NULL,
+                "U~~LA settings","Opciones U~~LA","Opcions U~~LA");
+			menu_add_item_menu_shortcut(array_menu_hardware_settings,'l');
+            menu_add_item_menu_tooltip(array_menu_hardware_settings,"Change some ULA settings");
+            menu_add_item_menu_ayuda(array_menu_hardware_settings,"Change some ULA settings");
+            menu_add_item_menu_tiene_submenu(array_menu_hardware_settings);
+            menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
+		}
 
 		// De momento esto desactivado
         /*
@@ -8422,12 +8441,12 @@ void menu_settings(MENU_ITEM_PARAMETERS)
 		menu_add_item_menu_ayuda(array_menu_settings,"Configuration file");
         menu_add_item_menu_tiene_submenu(array_menu_settings);
 
-		menu_add_item_menu_format(array_menu_settings,MENU_OPCION_NORMAL,menu_cpu_settings,NULL,"~~CPU");
+		/*menu_add_item_menu_format(array_menu_settings,MENU_OPCION_NORMAL,menu_cpu_settings,NULL,"~~CPU");
 		menu_add_item_menu_shortcut(array_menu_settings,'c');
 	    	menu_add_item_menu_tooltip(array_menu_settings,"Change some CPU settings");
 		menu_add_item_menu_ayuda(array_menu_settings,"Change some CPU settings");
         menu_add_item_menu_tiene_submenu(array_menu_settings);
-        menu_add_item_menu_es_avanzado(array_menu_settings);
+        menu_add_item_menu_es_avanzado(array_menu_settings);*/
 
 		menu_add_item_menu(array_menu_settings,"D~~ebug",MENU_OPCION_NORMAL,menu_settings_debug,NULL);
 		menu_add_item_menu_shortcut(array_menu_settings,'e');
@@ -8514,6 +8533,7 @@ void menu_settings(MENU_ITEM_PARAMETERS)
 		menu_add_item_menu_ayuda(array_menu_settings,"Storage settings");
         menu_add_item_menu_tiene_submenu(array_menu_settings);
 
+        /*
 		if (MACHINE_IS_SPECTRUM) {
 			menu_add_item_menu_format(array_menu_settings,MENU_OPCION_NORMAL,menu_ula_settings,NULL,"U~~LA");
 			menu_add_item_menu_shortcut(array_menu_settings,'l');
@@ -8521,9 +8541,8 @@ void menu_settings(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_ayuda(array_menu_settings,"Change some ULA settings");
             menu_add_item_menu_tiene_submenu(array_menu_settings);
             menu_add_item_menu_es_avanzado(array_menu_settings);
-
-
 		}
+        */
 
 		if (scr_driver_can_ext_desktop() ) {
 			menu_add_item_menu_format(array_menu_settings,MENU_OPCION_NORMAL,menu_ext_desktop_settings,NULL,"ZX Des~~ktop");
