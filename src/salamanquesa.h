@@ -25,5 +25,6 @@
 extern unsigned char bitmap_salamanquesa[];
 extern unsigned char bitmap_salamanquesa_otra_mas[];
 extern unsigned char david_pequenyo_64pix_transparent[];
+extern unsigned char diego_64pix_transparent[];
 
 #endif
