@@ -280,7 +280,7 @@ void instruccion_ddfd_35 ()
 
         reg=*registro_ixiy;
 
-        //reg=inc_16bit(reg);
+
 	reg++;
 
 	*registro_ixiy=reg;
@@ -384,7 +384,7 @@ void instruccion_ddfd_43 ()
 
         reg=*registro_ixiy;
 
-        //reg=dec_16bit(reg);
+
 	reg--;
 
         *registro_ixiy=reg;

@@ -4197,53 +4197,7 @@ z80_int adc_16bit(z80_int reg, z80_int value)
 
 }
 
-/*z80_int inc_16bit(z80_int reg)
-{
-//INC 16 bit register
-	reg++;
-	return reg;
-}
 
-z80_int dec_16bit(z80_int reg)
-{
-//DEC 16 bit register
-	reg--;
-	return reg;
-}
-*/
-
-/*
-
-z80_int inc_16bit(z80_int reg)
-{
-//INC 16 bit register
-
-	z80_byte h;
-
-        reg++;
-
-        h=value_16_to_8h(reg);
-        set_undocumented_flags_bits(h);
-
-	return reg;
-
-}
-
-
-z80_int dec_16bit(z80_int reg)
-{
-//DEC 16 bit register
-	z80_byte h;
-
-        reg--;
-
-        h=value_16_to_8h(reg);
-        set_undocumented_flags_bits(h);
-
-        return reg;
-
-}
-*/
 
 z80_int desp8_to_16(z80_byte desp)
 {

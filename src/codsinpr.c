@@ -69,7 +69,7 @@ void instruccion_3()
         contend_read_no_mreq( IR, 1 );
         contend_read_no_mreq( IR, 1 );
 
-	//BC=inc_16bit(BC);
+
 	BC++;
 
 }
@@ -162,7 +162,7 @@ void instruccion_11()
         contend_read_no_mreq( IR, 1 );
         contend_read_no_mreq( IR, 1 );
 
-	//BC=dec_16bit(BC);
+
 	BC--;
 
 
@@ -254,7 +254,7 @@ void instruccion_19()
         contend_read_no_mreq( IR, 1 );
         contend_read_no_mreq( IR, 1 );
 
-	//DE=inc_16bit(DE);
+
 	DE++;
 
 }
@@ -333,7 +333,7 @@ void instruccion_27()
         contend_read_no_mreq( IR, 1 );
         contend_read_no_mreq( IR, 1 );
 
-	//DE=dec_16bit(DE);
+
 	DE--;
 
 }
@@ -419,7 +419,7 @@ void instruccion_35()
         contend_read_no_mreq( IR, 1 );
         contend_read_no_mreq( IR, 1 );
 
-	//HL=inc_16bit(HL);
+
 	HL++;
 
 
@@ -569,7 +569,7 @@ void instruccion_43()
         contend_read_no_mreq( IR, 1 );
         contend_read_no_mreq( IR, 1 );
 
-	//HL=dec_16bit(HL);
+
 	HL--;
 
 }
