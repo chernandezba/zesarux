@@ -24429,7 +24429,8 @@ void menu_topbarmenu(void)
     //Prueba para mostrar una linea de menu arriba
 
     menu_escribe_texto(0,0,ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,
-       //01234567890123456789012345678901234567
+       //01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789
+       //0         1         2         3         4         5         6         7         8         9         10
         " Z | Smartload | Snapshot | Machine | Audio | Display | Storage | Debug | Network | Windows | Settings | Help ");
 
     int tecla_leida=0;
@@ -24447,7 +24448,7 @@ void menu_topbarmenu(void)
     } while (tecla_leida==0);
 
     if (tecla_leida==13 && mouse_left) {
-        int posicion_x=mouse_x/menu_char_width/menu_gui_zoom; //TODO: esto tendria que dividirse tambien por zoom_x
+        int posicion_x=mouse_x/menu_char_width/menu_gui_zoom/zoom_x;
 
         int posicion_y=mouse_y/menu_char_height/menu_gui_zoom/zoom_y;
 
@@ -24462,51 +24463,51 @@ void menu_topbarmenu(void)
             force_next_menu_position_y=1;
 
             //prueba abrir diferentes menus
-            if (posicion_x<11) {
+            if (posicion_x<3) {
                 force_next_menu_position_x=0;
                 menu_inicio_bucle_main();
             }
-            else if (posicion_x<34) {
+            else if (posicion_x<15) {
                 force_next_menu_position_x=4;
                 menu_smartload(0);
             }
-            else if (posicion_x<56) {
+            else if (posicion_x<26) {
                 force_next_menu_position_x=16;
                 menu_snapshot(0);
             }
-            else if (posicion_x<76) {
+            else if (posicion_x<36) {
                 force_next_menu_position_x=27;
                 menu_machine_selection(0);
             }
-            else if (posicion_x<92) {
+            else if (posicion_x<44) {
                 force_next_menu_position_x=37;
                 menu_audio(0);
             }
-            else if (posicion_x<112) {
+            else if (posicion_x<54) {
                 force_next_menu_position_x=45;
                 menu_display_settings(0);
             }
-            else if (posicion_x<132) {
+            else if (posicion_x<64) {
                 force_next_menu_position_x=55;
                 menu_storage(0);
             }
-            else if (posicion_x<148) {
+            else if (posicion_x<72) {
                 force_next_menu_position_x=65;
                 menu_debug_main(0);
             }
-            else if (posicion_x<169) {
+            else if (posicion_x<82) {
                 force_next_menu_position_x=73;
                 menu_network(0);
             }
-            else if (posicion_x<188) {
+            else if (posicion_x<92) {
                 force_next_menu_position_x=83;
                 menu_windows(0);
             }
-            else if (posicion_x<199) {
+            else if (posicion_x<103) {
                 force_next_menu_position_x=93;
                 menu_settings(0);
             }
-            else if (posicion_x<300) {
+            else if (posicion_x<110) {
                 force_next_menu_position_x=98;
                 menu_help(0);
             }
