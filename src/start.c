@@ -7730,7 +7730,7 @@ void end_emulator(void)
 void end_emulator_autosave_snapshot(void)
 {
 
-    if (autosave_snapshot_on_exit.v) autosave_snapshot();
+    if (autosave_snapshot_on_exit.v && save_snapshot_file_on_exit_dialog.v) autosave_snapshot();
 
     end_emulator();
 }

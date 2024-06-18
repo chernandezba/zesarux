@@ -44344,6 +44344,9 @@ void menu_onscreen_keyboard(MENU_ITEM_PARAMETERS)
 }
 
 char menu_exit_emulator_additional_save_config[100]="";
+char menu_exit_emulator_additional_save_snapshot[100]="";
+
+z80_bit save_snapshot_file_on_exit_dialog={1};
 
 char *menu_exit_emulator_additional_item(void)
 {
@@ -44359,6 +44362,20 @@ void menu_exit_emulator_additional_item_trigger(void)
     save_configuration_file_on_exit.v ^=1;
 }
 
+
+char *menu_exit_emulator_additional_item2(void)
+{
+    sprintf(menu_exit_emulator_additional_save_snapshot,
+        "[%c] Save snapshot",(save_snapshot_file_on_exit_dialog.v ? 'X' : ' '));
+
+    return menu_exit_emulator_additional_save_snapshot;
+}
+
+
+void menu_exit_emulator_additional_item_trigger2(void)
+{
+    save_snapshot_file_on_exit_dialog.v ^=1;
+}
 
 void menu_exit_emulator(MENU_ITEM_PARAMETERS)
 {
@@ -44376,8 +44393,21 @@ void menu_exit_emulator(MENU_ITEM_PARAMETERS)
 	else {
         //Si tiene opcion de guardado configuracion, damos opcion para que no la guarde
         if (save_configuration_file_on_exit.v) {
-            salir=menu_confirm_yesno_texto_additional_item("Exit ZEsarUX",menu_get_string_language("Sure?"),
-                menu_exit_emulator_additional_item,menu_exit_emulator_additional_item_trigger);
+            if (autosave_snapshot_on_exit.v) {
+                //Permitimos no grabar config ni no grabar snapshot
+                salir=menu_confirm_yesno_texto_additional_item("Exit ZEsarUX",menu_get_string_language("Sure?"),
+                    menu_exit_emulator_additional_item,menu_exit_emulator_additional_item_trigger,
+                    menu_exit_emulator_additional_item2,menu_exit_emulator_additional_item_trigger2
+                    );
+            }
+
+            else {
+                //Permitimos no grabar config
+                salir=menu_confirm_yesno_texto_additional_item("Exit ZEsarUX",menu_get_string_language("Sure?"),
+                    menu_exit_emulator_additional_item,menu_exit_emulator_additional_item_trigger,
+                    NULL,NULL
+                    );
+            }
         }
         else {
             salir=menu_confirm_yesno("Exit ZEsarUX");

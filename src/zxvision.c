@@ -22263,8 +22263,12 @@ void screen_print_splash_text_center_no_if_previous(int tinta,int papel,char *te
 //texto_adicional y funcion_texto_adicional sirven para agregar una opcion, debajo del si/no:
 // texto_adicional: funcion que retorna el texto a mostrar, debe ser un puntero a algo fuera del stack
 // funcion_trigger_texto_adicional: funcion que se ejecuta al darle al enter en dicho item adicional
+//texto_adicional2 y funcion_trigger_texto_adicional2: lo mismo pero para un segundo item
 //Si no se quiere adicional, pasarlas como NULL
-int menu_confirm_yesno_texto_additional_item(char *texto_ventana,char *texto_interior,char *(*texto_adicional)(void),void (*funcion_trigger_texto_adicional) (void) )
+int menu_confirm_yesno_texto_additional_item(char *texto_ventana,char *texto_interior,
+    char *(*texto_adicional)(void),void (*funcion_trigger_texto_adicional) (void),
+    char *(*texto_adicional2)(void),void (*funcion_trigger_texto_adicional2) (void)
+)
 {
 
 	//Si se fuerza siempre yes
@@ -22325,6 +22329,10 @@ int menu_confirm_yesno_texto_additional_item(char *texto_ventana,char *texto_int
             menu_add_item_menu_format(array_menu_confirm_yes_no,MENU_OPCION_NORMAL,NULL,NULL,texto_adicional() );
         }
 
+        if (texto_adicional2!=NULL) {
+            menu_add_item_menu_format(array_menu_confirm_yes_no,MENU_OPCION_NORMAL,NULL,NULL,texto_adicional2() );
+        }
+
 
         retorno_menu=menu_dibuja_menu_no_title_lang(&confirm_yes_no_opcion_seleccionada,&item_seleccionado,array_menu_confirm_yes_no,texto_ventana);
 
@@ -22334,6 +22342,10 @@ int menu_confirm_yesno_texto_additional_item(char *texto_ventana,char *texto_int
             //llamamos por valor de funcion
             if (funcion_trigger_texto_adicional!=NULL && confirm_yes_no_opcion_seleccionada==4) {
                  funcion_trigger_texto_adicional();
+            }
+
+            else if (funcion_trigger_texto_adicional2!=NULL && confirm_yes_no_opcion_seleccionada==5) {
+                 funcion_trigger_texto_adicional2();
             }
 
             else {
@@ -22361,7 +22373,7 @@ int menu_confirm_yesno_texto_additional_item(char *texto_ventana,char *texto_int
 //otra cosa, 0
 int menu_confirm_yesno_texto(char *texto_ventana,char *texto_interior)
 {
-    return menu_confirm_yesno_texto_additional_item(texto_ventana,texto_interior,NULL,NULL);
+    return menu_confirm_yesno_texto_additional_item(texto_ventana,texto_interior,NULL,NULL,NULL,NULL);
 }
 
 

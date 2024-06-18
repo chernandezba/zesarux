@@ -149,6 +149,7 @@ extern int menu_realtape_cond(void);
 
 extern void menu_reinsert_std_tape(void);
 
+extern z80_bit save_snapshot_file_on_exit_dialog;
 
 extern int menu_zeng_send_message_cond(void);
 
