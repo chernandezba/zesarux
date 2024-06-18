@@ -24431,7 +24431,7 @@ void menu_topbarmenu(void)
     menu_escribe_texto(0,0,ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,
        //01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789
        //0         1         2         3         4         5         6         7         8         9         10
-        " Z | Smartload | Snapshot | Machine | Audio | Display | Storage | Debug | Network | Windows | Settings | Help ");
+        " Z  Smartload  Snapshot  Machine  Audio  Display  Storage  Debug  Network  Windows  Settings  Help ");
 
     int tecla_leida=0;
 
@@ -24463,7 +24463,7 @@ void menu_topbarmenu(void)
             force_next_menu_position_y=1;
 
             //prueba abrir diferentes menus
-            if (posicion_x<3) {
+            if (posicion_x<4) {
                 force_next_menu_position_x=0;
                 menu_inicio_bucle_main();
             }
@@ -24471,44 +24471,44 @@ void menu_topbarmenu(void)
                 force_next_menu_position_x=4;
                 menu_smartload(0);
             }
-            else if (posicion_x<26) {
-                force_next_menu_position_x=16;
+            else if (posicion_x<25) {
+                force_next_menu_position_x=15;
                 menu_snapshot(0);
             }
-            else if (posicion_x<36) {
-                force_next_menu_position_x=27;
+            else if (posicion_x<34) {
+                force_next_menu_position_x=25;
                 menu_machine_selection(0);
             }
-            else if (posicion_x<44) {
-                force_next_menu_position_x=37;
+            else if (posicion_x<41) {
+                force_next_menu_position_x=34;
                 menu_audio(0);
             }
-            else if (posicion_x<54) {
-                force_next_menu_position_x=45;
+            else if (posicion_x<50) {
+                force_next_menu_position_x=41;
                 menu_display_settings(0);
             }
-            else if (posicion_x<64) {
-                force_next_menu_position_x=55;
+            else if (posicion_x<59) {
+                force_next_menu_position_x=50;
                 menu_storage(0);
             }
-            else if (posicion_x<72) {
-                force_next_menu_position_x=65;
+            else if (posicion_x<66) {
+                force_next_menu_position_x=59;
                 menu_debug_main(0);
             }
-            else if (posicion_x<82) {
-                force_next_menu_position_x=73;
+            else if (posicion_x<75) {
+                force_next_menu_position_x=66;
                 menu_network(0);
             }
-            else if (posicion_x<92) {
-                force_next_menu_position_x=83;
+            else if (posicion_x<84) {
+                force_next_menu_position_x=75;
                 menu_windows(0);
             }
-            else if (posicion_x<103) {
-                force_next_menu_position_x=93;
+            else if (posicion_x<94) {
+                force_next_menu_position_x=84;
                 menu_settings(0);
             }
-            else if (posicion_x<110) {
-                force_next_menu_position_x=98;
+            else if (posicion_x<99) {
+                force_next_menu_position_x=94;
                 menu_help(0);
             }
 
