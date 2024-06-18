@@ -1,6 +1,7 @@
 --set-launcher "Programas David"
 --add-launcher-entry-smartload "Bit Transfer 2" "spectrum/bittransfe2.tap"
---add-launcher-entry-smartload "Dibuja 10" "spectrum/dibuja10.tap"
+--add-launcher-entry-smartload "Calendario" "spectrum/calendario.tap"
+--add-launcher-entry-smartload "Dibuja 11" "spectrum/dibuja11.tap"
 --add-launcher-entry-smartload "El Autobus" "spectrum/elautobus.tzx"
 --add-launcher-entry-smartload "Gusano" "spectrum/gusano.tap"
 --add-launcher-entry-smartload "LoadSave" "spectrum/loadsave.tap"

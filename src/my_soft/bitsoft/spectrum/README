@@ -1,8 +1,11 @@
 -bittransfe.tap, bittransfe2.tap: a file transfer routine, like the Multiface but all in software (using interrupts)
 
--copiones.tap: modifications made by David to the common "blue copier" to allow turbo load and save
+-calendario.tap: program to get a calendar of a year
 
--dibuja4.tzx. dibuja9.tap, dibuja10.tap: a drawing program. different versions: 4,9 and 10
+-copiones.tap: modifications made by David to the common "blue copier" to allow turbo load and save
+-copiones2.tap: modifications made by David to the common "blue copier" to allow turbo load and save. copy 2-4 use the Turbo Sprit turbo routine, abd copy 5-7 use the World Series Basketball turbo routine
+
+-dibuja4.tzx. dibuja9.tap, dibuja10.tap, dibuja11.tap: a drawing program. different versions: 4,9,10 and 11
 
 -elautobus.tzx seems to be based on game "The ticket" that came with the English PAWS version. We are not sure if the game is finished or not
 
@@ -14,4 +17,4 @@
 
 -sonido.tap: simple assembler source program (GEN format) to play a sound
 
-
+-telefonos.tap: simple Masterfile database of phone numbers
