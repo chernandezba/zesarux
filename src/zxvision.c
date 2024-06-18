@@ -24427,11 +24427,35 @@ void menu_topbarmenu(void)
 {
 
     //Prueba para mostrar una linea de menu arriba
+                     //01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789
+                     //0         1         2         3         4         5         6         7         8         9         10
+    char *linea_menus="Z  Smartload  Snapshot  Machine  Audio  Display  Storage  Debug  Network  Windows  Settings  Help";
 
-    menu_escribe_texto(0,0,ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,
-       //01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789
-       //0         1         2         3         4         5         6         7         8         9         10
-        " Z  Smartload  Snapshot  Machine  Audio  Display  Storage  Debug  Network  Windows  Settings  Help ");
+    menu_escribe_texto(0,0,ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,linea_menus);
+
+    //Generar posiciones de donde está cada menu
+    //20 posiciones maximo, incluyendo el primero
+    int posiciones_menus[20];
+
+    posiciones_menus[0]=0;
+
+    int i,total_posiciones;
+    int leido_espacio=0;
+    for (i=0,total_posiciones=1;linea_menus[i];i++) {
+        if (leido_espacio) {
+            if (linea_menus[i]!=' ') {
+                printf("posicion %d i %d\n",total_posiciones,i);
+                posiciones_menus[total_posiciones++]=i;
+                leido_espacio=0;
+            }
+        }
+        else {
+            if (linea_menus[i]==' ') leido_espacio=1;
+        }
+    }
+
+    //El del menu Help
+    posiciones_menus[total_posiciones++]=i;
 
     int tecla_leida=0;
 
@@ -24462,60 +24486,69 @@ void menu_topbarmenu(void)
 
             force_next_menu_position_y=1;
 
-            //prueba abrir diferentes menus
-            if (posicion_x<4) {
-                force_next_menu_position_x=0;
-                menu_inicio_bucle_main();
-            }
-            else if (posicion_x<15) {
-                force_next_menu_position_x=4;
-                menu_smartload(0);
-            }
-            else if (posicion_x<25) {
-                force_next_menu_position_x=15;
-                menu_snapshot(0);
-            }
-            else if (posicion_x<34) {
-                force_next_menu_position_x=25;
-                menu_machine_selection(0);
-            }
-            else if (posicion_x<41) {
-                force_next_menu_position_x=34;
-                menu_audio(0);
-            }
-            else if (posicion_x<50) {
-                force_next_menu_position_x=41;
-                menu_display_settings(0);
-            }
-            else if (posicion_x<59) {
-                force_next_menu_position_x=50;
-                menu_storage(0);
-            }
-            else if (posicion_x<66) {
-                force_next_menu_position_x=59;
-                menu_debug_main(0);
-            }
-            else if (posicion_x<75) {
-                force_next_menu_position_x=66;
-                menu_network(0);
-            }
-            else if (posicion_x<84) {
-                force_next_menu_position_x=75;
-                menu_windows(0);
-            }
-            else if (posicion_x<94) {
-                force_next_menu_position_x=84;
-                menu_settings(0);
-            }
-            else if (posicion_x<99) {
-                force_next_menu_position_x=94;
-                menu_help(0);
+            //Detectar que menu hemos pulsado
+            int i;
+            for (i=0;i<total_posiciones;i++) {
+                if (posicion_x<posiciones_menus[i]) break;
             }
 
+            if (i<total_posiciones) {
+                i--;
+                force_next_menu_position_x=posiciones_menus[i];
+
+                switch(i) {
+                    case 0:
+                        menu_inicio_bucle_main();
+                    break;
+
+                    case 1:
+                        menu_smartload(0);
+                    break;
+
+                    case 2:
+                        menu_snapshot(0);
+                    break;
+
+                    case 3:
+                        menu_machine_selection(0);
+                    break;
+
+                    case 4:
+                        menu_audio(0);
+                    break;
+
+                    case 5:
+                        menu_display_settings(0);
+                    break;
+
+                    case 6:
+                        menu_storage(0);
+                    break;
+
+                    case 7:
+                        menu_debug_main(0);
+                    break;
+
+                    case 8:
+                        menu_network(0);
+                    break;
+
+                    case 9:
+                        menu_windows(0);
+                    break;
+
+                    case 10:
+                        menu_settings(0);
+                    break;
+
+                    case 11:
+                        menu_help(0);
+                    break;
+                }
+            }
         }
 
 
-//34,56,76,92,112,132,148,169,188
     }
 
     menu_espera_no_tecla_con_repeticion();
