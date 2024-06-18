@@ -19,7 +19,7 @@
 
 */
 
-#include "salamanquesa.h"
+#include "about_logo.h"
 
 //Logo salamanquesa "icons_buttons/salamanquesa.bmp" mostrado en el about. Es un bmp volcado a RAM
 //obtenido con:
@@ -1019,6 +1019,8 @@ unsigned char david_pequenyo_64pix_transparent[]={
 
 //obtenido con:
 //hexdump -C -v diego_64pix_transparent.bmp |cut -d ' ' -f2-|cut -d '|' -f1|sed 's/  / /g'|cut -d ' ' -f2-|sed 's/ $/,/'|sed 's/ /,0x/g'|sed 's/^/0x/'
+//Nota: uso color azul para fondo, solo porque es mas fácil para mi en el Gimp retocar la imagen
+//buscando el color "blanco" resultado de cortar, y que aparece como pixeles blancos alrededor que no interesa tener
 unsigned char diego_64pix_transparent[]={
 0x42,0x4d,0x8a,0x14,0x00,0x00,0x00,0x00,0x00,0x00,0x8a,0x04,0x00,0x00,0x7c,0x00,
 0x00,0x00,0x40,0x00,0x00,0x00,0x40,0x00,0x00,0x00,0x01,0x00,0x08,0x00,0x00,0x00,

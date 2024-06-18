@@ -137,7 +137,7 @@
 #include "samram.h"
 #include "hilow_datadrive.h"
 #include "utils_text_adventure.h"
-#include "salamanquesa.h"
+#include "about_logo.h"
 #include "hilow_datadrive_audio.h"
 #include "hilow_barbanegra.h"
 #include "transtape.h"
@@ -24863,28 +24863,28 @@ zxvision_window *menu_new_about_window_overlay_window;
 
 int new_about_window_ancho_mostrar=0;
 
-//Dice si esta activa la 0 o la 1 o la 2
+//Dice el about logo activo
 //Por defecto la 1 (aunque en version 11 es la 2, la de David)
 //0 salamanquesa primera
 //1 salamanquesa segunda
 //2 David
 //3 Diego
-int cual_salamanquesa=2;
+int cual_about_logo=2;
 
 unsigned char *retorna_bitmap_salamanquesa(void)
 {
-    if (cual_salamanquesa==1) return bitmap_salamanquesa_otra_mas;
-    else if (cual_salamanquesa==2) return david_pequenyo_64pix_transparent;
-    else if (cual_salamanquesa==3) return diego_64pix_transparent;
+    if (cual_about_logo==1) return bitmap_salamanquesa_otra_mas;
+    else if (cual_about_logo==2) return david_pequenyo_64pix_transparent;
+    else if (cual_about_logo==3) return diego_64pix_transparent;
     else return bitmap_salamanquesa;
 }
 
 int retorna_color_transparente_salamanquesa(void)
 {
 
-    if (cual_salamanquesa==1) return 0xfe;
-    else if (cual_salamanquesa==2) return 255;
-    else if (cual_salamanquesa==3) return 0x23;
+    if (cual_about_logo==1) return 0xfe;
+    else if (cual_about_logo==2) return 255;
+    else if (cual_about_logo==3) return 0x23;
     else return 255;
 
 }
@@ -25201,8 +25201,8 @@ void menu_about_new(MENU_ITEM_PARAMETERS)
                             if (contador_segundo_infinito-tiempo_pulsando_inicial>1000) {
                                 //printf("Switch logo\n");
                                 //click normal. cambiar a la otra salamanquesa
-                                cual_salamanquesa++;
-                                if (cual_salamanquesa>3) cual_salamanquesa=0;
+                                cual_about_logo++;
+                                if (cual_about_logo>3) cual_about_logo=0;
                                 menu_about_load_bmp_palette();
 
                                 tiempo_pulsando_inicial=0;
