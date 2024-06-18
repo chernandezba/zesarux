@@ -24884,7 +24884,7 @@ int retorna_color_transparente_salamanquesa(void)
 
     if (cual_salamanquesa==1) return 0xfe;
     else if (cual_salamanquesa==2) return 255;
-    else if (cual_salamanquesa==3) return 255;
+    else if (cual_salamanquesa==3) return 0x23;
     else return 255;
 
 }
