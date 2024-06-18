@@ -35453,6 +35453,17 @@ void menu_realtape_record_input_analize_azimuth_end(zxvision_window *w,int linea
                 //Si es tono guia, borrar mensaje de la linea siguiente donde informa de ajuste de azimuth,
                 //porque se puede haber quedado de antes y en caso de tono guia no deducimos azimuth
                 zxvision_print_string_defaults_fillspc_format(w,1,linea+1,"");
+
+                //Y decimos cabezal perfectamente alineado
+                menu_realtape_record_input_porcentaje_azimuth_antes=menu_realtape_record_input_porcentaje_azimuth;
+                menu_realtape_record_input_porcentaje_azimuth=100;
+
+                menu_realtape_record_input_aviso_azimuth=0;
+
+                //Si ha cambiado valor azimuth, avisar para refrescar toda pantalla
+                if (menu_realtape_record_input_porcentaje_azimuth_antes!=menu_realtape_record_input_porcentaje_azimuth) {
+                    w->must_clear_cache_on_draw_once=1;
+                }
             }
             else if (input_analize_input_wave.cuantos_guias<minimo_ondas &&
             input_analize_input_wave.cuantos_unos<minimo_ondas) {
