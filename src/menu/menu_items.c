@@ -35449,6 +35449,10 @@ void menu_realtape_record_input_analize_azimuth_end(zxvision_window *w,int linea
                 input_analize_input_wave.cuantos_guias>input_analize_input_wave.cuantos_ceros) {
                 zxvision_print_string_defaults_fillspc(w,1,linea,"Signal type: Pilot tone");
                 strcpy(buffer_signal_type,animacion_string_pilot_tone);
+
+                //Si es tono guia, borrar mensaje de la linea siguiente donde informa de ajuste de azimuth,
+                //porque se puede haber quedado de antes y en caso de tono guia no deducimos azimuth
+                zxvision_print_string_defaults_fillspc_format(w,1,linea+1,"");
             }
             else if (input_analize_input_wave.cuantos_guias<minimo_ondas &&
             input_analize_input_wave.cuantos_unos<minimo_ondas) {
