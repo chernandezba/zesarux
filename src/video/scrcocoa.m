@@ -1754,7 +1754,7 @@ int scrcocoa_keymap_z88_cpc_leftz; //Tecla a la izquierda de la Z. usada en Chlo
                 break;
 
                 case COCOA_KEY_TAB:
-                        util_set_reset_key(UTIL_KEY_TAB,pressrelease);
+                        joystick_possible_tab_key(pressrelease);
                 break;
 
                 case COCOA_KEY_CAPSLOCK:

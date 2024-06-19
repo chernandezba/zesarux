@@ -1420,7 +1420,7 @@ void deal_with_keys(XEvent *event,int pressrelease)
                         break;
 
 			case XK_Tab:
-				util_set_reset_key(UTIL_KEY_TAB,pressrelease);
+				joystick_possible_tab_key(pressrelease);
                         break;
 
 			case XK_Caps_Lock:

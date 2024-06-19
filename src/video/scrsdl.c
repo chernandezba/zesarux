@@ -1062,7 +1062,7 @@ void scrsdl_deal_keys(int pressrelease,int tecla)
                         break;
 
                         case SDLK_TAB:
-                                util_set_reset_key(UTIL_KEY_TAB,pressrelease);
+                                joystick_possible_tab_key(pressrelease);
                         break;
 
                         case SDLK_CAPSLOCK:

@@ -107,7 +107,7 @@ extern void joystick_print_types(void);
 extern void joystick_cycle_next_type(void);
 extern void joystick_cycle_next_type_autofire(void);
 
-#define JOYSTICK_KEY_FIRE_TOTAL 7
+#define JOYSTICK_KEY_FIRE_TOTAL 8
 
 #define JOYSTICK_KEY_FIRE_IS_HOME 0
 #define JOYSTICK_KEY_FIRE_IS_RIGHTALT 1
@@ -116,6 +116,7 @@ extern void joystick_cycle_next_type_autofire(void);
 #define JOYSTICK_KEY_FIRE_IS_LEFTALT 4
 #define JOYSTICK_KEY_FIRE_IS_LEFTCTRL 5
 #define JOYSTICK_KEY_FIRE_IS_LEFTSHIFT 6
+#define JOYSTICK_KEY_FIRE_IS_TAB 7
 
 extern char *joystick_defined_fire_texto[];
 extern int joystick_defined_key_fire;
@@ -127,5 +128,6 @@ extern void joystick_possible_rightctrl_key(int pressrelease);
 extern void joystick_possible_leftshift_key(int pressrelease);
 extern void joystick_possible_leftalt_key(int pressrelease);
 extern void joystick_possible_leftctrl_key(int pressrelease);
+extern void joystick_possible_tab_key(int pressrelease);
 
 #endif

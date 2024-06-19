@@ -1221,7 +1221,7 @@ printf("\n"
 
 
 	printf(
-        "--joystickfirekey n         Define which key triggers the fire function for the joystick: 0=Home, 1=RightAlt, 2=RightCtrl, 3=RightShift, 4=LeftAlt, 5=LeftCtrl, 6=LeftShift\n"
+        "--joystickfirekey n         Define which key triggers the fire function for the joystick: 0=Home, 1=RightAlt, 2=RightCtrl, 3=RightShift, 4=LeftAlt, 5=LeftCtrl, 6=LeftShift, 7=Tab\n"
 		"--disablerealjoystick       Disable real joystick emulation\n"
 		"--realjoystickpath f        Change default real joystick device path (used on Linux)\n"
         "--realjoystickindex n       Change default real joystick device id (used on Windows and other OS with SDL driver)\n"

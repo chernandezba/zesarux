@@ -1014,7 +1014,7 @@ void scrfbdev_actualiza_tablas_teclado_rawmode(void){
 				break;
 
 			case RAWKEY_Tab:
-				util_set_reset_key(UTIL_KEY_TAB,pressrelease);
+				joystick_possible_tab_key(pressrelease);
 				break;
 
 			case RAWKEY_Caps_Lock:

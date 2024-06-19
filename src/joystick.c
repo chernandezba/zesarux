@@ -62,6 +62,7 @@ char *joystick_defined_fire_texto[]={
     "LeftAlt",
     "LeftCtrl",
     "LeftShift",
+    "Tab"
 };
 
 //Funciones que segun la tecla pulsada de posibles joystick fire (home, rightalt, etc)
@@ -109,6 +110,12 @@ void joystick_possible_leftctrl_key(int pressrelease)
 {
     if (joystick_defined_key_fire==JOYSTICK_KEY_FIRE_IS_LEFTCTRL && joystick_emulation!=JOYSTICK_NONE) util_set_reset_key(UTIL_KEY_FIRE,pressrelease);
     else util_set_reset_key(UTIL_KEY_CONTROL_L,pressrelease);
+}
+
+void joystick_possible_tab_key(int pressrelease)
+{
+    if (joystick_defined_key_fire==JOYSTICK_KEY_FIRE_IS_TAB && joystick_emulation!=JOYSTICK_NONE) util_set_reset_key(UTIL_KEY_FIRE,pressrelease);
+    else util_set_reset_key(UTIL_KEY_TAB,pressrelease);
 }
 
 int gunstick_emulation=0;
