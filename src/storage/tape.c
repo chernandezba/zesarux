@@ -838,6 +838,40 @@ void tap_load_ace(void)
 //Indicador de que bloque estamos leyendo el siguiente, para el visor de cinta
 int tape_viewer_block_index=0;
 
+
+//Ir a un bloque especifico dentro de la cinta. Esto vale para tap y tzx en principio
+void tape_seek_to_block(int index_to_seek)
+{
+
+    fseek(ptr_mycinta,0, SEEK_SET);
+
+
+    z80_int cinta_longitud;
+
+    tape_viewer_block_index=0;
+
+    while (tape_viewer_block_index<index_to_seek) {
+
+
+        //Movemos indicador de bloque, para el visor de cinta y saber donde estamos
+        tape_viewer_block_index++;
+
+        cinta_longitud=tape_block_readlength();
+        if (cinta_longitud==0) {
+            //posible fin de cinta
+            return;
+        }
+
+
+        printf("Saltando bloque de %d bytes\n",cinta_longitud);
+        //Saltamos flag+datos+checksum
+        tape_block_seek(cinta_longitud,SEEK_CUR);
+
+
+    }
+
+}
+
 void tap_load(void)
 {
 

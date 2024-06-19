@@ -101,6 +101,7 @@ extern void realtape_insert(void);
 extern void realtape_eject(void);
 
 extern int tape_viewer_block_index;
+extern void tape_seek_to_block(int index_to_seek);
 
 extern z80_bit realtape_inserted;
 extern z80_bit realtape_playing;
