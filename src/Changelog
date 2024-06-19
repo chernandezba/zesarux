@@ -7,7 +7,7 @@ Allow hotswap to Pentagon
 Improve Azimuth warning on External Audio Source Window
 Allow to not save snapshot when exiting ZEsarUX
 Allow to define Left Alt, Left Ctrl, Left Shift or TAB as Joystick Fire action
-Show current tape read position on Input Tape Viewer for .tap files
+Allow to change current tape read position on Input Tape Viewer for .tap files
 
 * Fixes:
 

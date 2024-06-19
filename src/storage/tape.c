@@ -843,6 +843,8 @@ int tape_viewer_block_index=0;
 void tape_seek_to_block(int index_to_seek)
 {
 
+    debug_printf(VERBOSE_INFO,"Seeking to block %d",index_to_seek);
+
     fseek(ptr_mycinta,0, SEEK_SET);
 
 
@@ -863,7 +865,7 @@ void tape_seek_to_block(int index_to_seek)
         }
 
 
-        printf("Saltando bloque de %d bytes\n",cinta_longitud);
+        debug_printf(VERBOSE_DEBUG,"Skipping block of %d bytes",cinta_longitud);
         //Saltamos flag+datos+checksum
         tape_block_seek(cinta_longitud,SEEK_CUR);
 

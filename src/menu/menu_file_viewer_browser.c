@@ -3797,7 +3797,8 @@ void menu_file_tzx_browser_show(char *filename)
 
 //indice_bloque_actual se usa por ejemplo en cinta de entrada para decirle cual es el siguiente bloque a leer,
 //y se visualiza en el visor con un ">". Si vale <0, no se visualizara nunca
-void menu_tape_browser_show(char *filename,int indice_bloque_actual)
+//Retorna valor>=0 si el usuario ha pulsado enter en alguna linea, lo cual pretende hacer seek a ese bloque
+int menu_tape_browser_show(char *filename,int indice_bloque_actual)
 {
 
 	//Si tzx o cdt
@@ -3805,21 +3806,21 @@ void menu_tape_browser_show(char *filename,int indice_bloque_actual)
 	    !util_compare_file_extension(filename,"cdt")
 		) {
 		menu_file_tzx_browser_show(filename);
-		return;
+		return -1;
 	}
 
 	//Si pzx
 	if (!util_compare_file_extension(filename,"pzx")
 		) {
 		menu_file_pzx_browser_show(filename);
-		return;
+		return -1;
 	}
 
 	//Si cas
 	if (!util_compare_file_extension(filename,"cas")
 		) {
 		menu_file_cas_browser_show(filename);
-		return;
+		return -1;
 	}
 
     //wav, rwa, etc
@@ -3828,7 +3829,7 @@ void menu_tape_browser_show(char *filename,int indice_bloque_actual)
         !util_compare_file_extension(filename,"rwa")
 		) {
 		menu_file_realtape_browser_show(filename);
-		return;
+		return -1;
 	}
 
 
@@ -3836,19 +3837,19 @@ void menu_tape_browser_show(char *filename,int indice_bloque_actual)
     //ZX80 O, ZX81 P
     if (!util_compare_file_extension(filename,"p") || !util_compare_file_extension(filename,"p81")) {
         menu_file_p_browser_show(filename);
-        return;
+        return -1;
     }
 
     if (!util_compare_file_extension(filename,"o")) {
         menu_file_o_browser_show(filename);
-        return;
+        return -1;
     }
 
 
 	//tapefile
 	if (util_compare_file_extension(filename,"tap")!=0) {
 		debug_printf(VERBOSE_ERR,"Tape browser not supported for this tape type");
-		return;
+		return -1;
 	}
 
 	//Leemos cinta en memoria
@@ -3870,7 +3871,7 @@ void menu_tape_browser_show(char *filename,int indice_bloque_actual)
 
     if (zvfs_fopen_read(filename,&in_fatfs,&ptr_tapebrowser,&fil)<0) {
         debug_printf(VERBOSE_ERR,"Unable to open tape for browsing");
-        return;
+        return -1;
     }
 
 
@@ -3900,7 +3901,7 @@ void menu_tape_browser_show(char *filename,int indice_bloque_actual)
 	if (leidos==0) {
                 debug_printf(VERBOSE_ERR,"Error reading tape");
 		free(taperead);
-                return;
+                return -1;
         }
 
         zvfs_fclose(in_fatfs,ptr_tapebrowser,&fil);
@@ -3960,12 +3961,23 @@ void menu_tape_browser_show(char *filename,int indice_bloque_actual)
 
 	texto_browser[indice_buffer]=0;
 	//menu_generic_message_tooltip("Tape browser", 0, 0, 1, NULL, "%s", texto_browser);
-	zxvision_generic_message_tooltip("Tape viewer" , 0 , 0, 0, 1, NULL, 1, "%s", texto_browser);
+
+    generic_message_tooltip_return retorno_ventana;
+
+	zxvision_generic_message_tooltip("Tape viewer" , 0 , 0, 0, 1, &retorno_ventana, 1, "%s", texto_browser);
 
 
 
 	free(taperead);
     free(texto_browser);
+
+
+	//Si se sale con ESC
+    if (retorno_ventana.estado_retorno==0) return -1;
+
+
+	return retorno_ventana.linea_seleccionada;
+
 
 }
 
