@@ -100,6 +100,8 @@ extern char realtape_last_value;
 extern void realtape_insert(void);
 extern void realtape_eject(void);
 
+extern int tape_viewer_block_index;
+
 extern z80_bit realtape_inserted;
 extern z80_bit realtape_playing;
 extern z80_bit realtape_loading_sound;

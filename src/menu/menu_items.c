@@ -34229,17 +34229,17 @@ void menu_z88_slots(MENU_ITEM_PARAMETERS)
 
 void menu_tape_browser(MENU_ITEM_PARAMETERS)
 {
-	menu_tape_browser_show(tapefile);
+	menu_tape_browser_show(tapefile,tape_viewer_block_index);
 }
 
 void menu_tape_browser_output(MENU_ITEM_PARAMETERS)
 {
-	menu_tape_browser_show(tape_out_file);
+	menu_tape_browser_show(tape_out_file,-1);
 }
 
 void menu_tape_browser_real(MENU_ITEM_PARAMETERS)
 {
-	menu_tape_browser_show(realtape_name);
+	menu_tape_browser_show(realtape_name,-1);
 }
 
 

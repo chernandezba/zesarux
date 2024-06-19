@@ -513,6 +513,7 @@ if (tape_out_file!=0) {
 int tap_open(void)
 {
 
+    tape_viewer_block_index=0;
     initial_tap_load.v=0;
 
     if (tapefile!=0) {
@@ -834,6 +835,9 @@ void tap_load_ace(void)
 	reg_pc=pop_valor();
 }
 
+//Indicador de que bloque estamos leyendo el siguiente, para el visor de cinta
+int tape_viewer_block_index=0;
+
 void tap_load(void)
 {
 
@@ -872,14 +876,19 @@ void tap_load(void)
 				return;
 			}
 
+            //Movemos indicador de bloque, para el visor de cinta y saber donde estamos
+            tape_viewer_block_index++;
+
 			cinta_longitud=tape_block_readlength();
 			if (cinta_longitud==0) {
                 int retornar_error=1;
                 if (tape_auto_rewind.v) {
                     if (tape_block_feof()) {
                         debug_printf(VERBOSE_INFO,"End of tape and autorewind enabled. Rewind tape");
+                        tape_viewer_block_index=0;
                         tape_block_rewindbegin();
 
+                        tape_viewer_block_index++;
                         cinta_longitud=tape_block_readlength();
 
                         if (cinta_longitud!=0) retornar_error=0;

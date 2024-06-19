@@ -3795,8 +3795,9 @@ void menu_file_tzx_browser_show(char *filename)
 }
 
 
-
-void menu_tape_browser_show(char *filename)
+//indice_bloque_actual se usa por ejemplo en cinta de entrada para decirle cual es el siguiente bloque a leer,
+//y se visualiza en el visor con un ">". Si vale <0, no se visualizara nunca
+void menu_tape_browser_show(char *filename,int indice_bloque_actual)
 {
 
 	//Si tzx o cdt
@@ -3905,7 +3906,7 @@ void menu_tape_browser_show(char *filename)
         zvfs_fclose(in_fatfs,ptr_tapebrowser,&fil);
         //fclose(ptr_tapebrowser);
 
-	char buffer_texto[60];
+	char buffer_texto[70];
 
 	int longitud_bloque;
 
@@ -3916,8 +3917,14 @@ void menu_tape_browser_show(char *filename)
 
     int offset_debug=0;
 
+    int id_bloque_leido=0;
+
 	while(total_mem>0) {
-		longitud_bloque=util_tape_tap_get_info(puntero_lectura,buffer_texto,1);
+		longitud_bloque=util_tape_tap_get_info(puntero_lectura,&buffer_texto[1],1);
+
+        //dejamos un espacio para poder indicar, si conviene, donde está el puntero actual de lectura
+        if (id_bloque_leido==indice_bloque_actual) buffer_texto[0]='>';
+        else buffer_texto[0]=32;
 		total_mem-=longitud_bloque;
 		puntero_lectura +=longitud_bloque;
 		debug_printf (VERBOSE_DEBUG,"Tape browser. Offset %d Block: %s",offset_debug,buffer_texto);
@@ -3937,7 +3944,19 @@ void menu_tape_browser_show(char *filename)
                                 indice_buffer +=longitud_texto;
                         }
 
+        id_bloque_leido++;
+
 	}
+
+    strcpy(buffer_texto," End of Tape");
+
+    if (id_bloque_leido==indice_bloque_actual) {
+        buffer_texto[0]='>';
+    }
+
+    longitud_texto=strlen(buffer_texto)+1; //Agregar salto de linea
+    sprintf (&texto_browser[indice_buffer],"%s\n",buffer_texto);
+    indice_buffer +=longitud_texto;
 
 	texto_browser[indice_buffer]=0;
 	//menu_generic_message_tooltip("Tape browser", 0, 0, 1, NULL, "%s", texto_browser);
@@ -5385,7 +5404,7 @@ void menu_file_viewer_read_file(char *title,char *file_name)
         //printf ("es z88 basic: %d\n",file_is_z88_basic(file_name));
 
         //Algunos tipos conocidos
-        if (!util_compare_file_extension(file_name,"tap")) menu_tape_browser_show(file_name);
+        if (!util_compare_file_extension(file_name,"tap")) menu_tape_browser_show(file_name,-1);
 
         else if (!util_compare_file_extension(file_name,"zx")) menu_file_zx_browser_show(file_name);
 
