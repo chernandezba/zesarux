@@ -4518,13 +4518,51 @@ void menu_hardware_tbblue_core_version(MENU_ITEM_PARAMETERS)
 
 
 }
-
-void menu_hardware_joystick_fire_key(MENU_ITEM_PARAMETERS)
+/*
+void old_menu_hardware_joystick_fire_key(MENU_ITEM_PARAMETERS)
 {
     joystick_defined_key_fire++;
     if (joystick_defined_key_fire==7) joystick_defined_key_fire=0;
 }
+*/
 
+void menu_hardware_joystick_fire_key(MENU_ITEM_PARAMETERS)
+{
+
+
+    menu_item *array_menu_common;
+    menu_item item_seleccionado;
+    int retorno_menu;
+    int opcion_seleccionada=joystick_defined_key_fire;
+
+
+    menu_add_item_menu_inicial(&array_menu_common,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
+
+    int i;
+
+    for (i=0;i<JOYSTICK_KEY_FIRE_TOTAL;i++) {
+
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,joystick_defined_fire_texto[i]);
+
+    }
+
+    menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+
+    menu_add_ESC_item(array_menu_common);
+
+    retorno_menu=menu_dibuja_menu_no_title_lang(&opcion_seleccionada,&item_seleccionado,array_menu_common,"Fire Key");
+
+
+
+    if (retorno_menu==MENU_RETORNO_NORMAL && (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0) {
+        joystick_defined_key_fire=opcion_seleccionada;
+        //Al volver de esta manera, hay que indicar al index_search que se "va atras" un menu
+        //Esto ya se llama por defecto en gestion de menu, cuando se pulsa ESC o flecha atras,
+        //pero en este caso, se sale con la aceptacion de la opcion, y no es ni ESC ni flecha atras
+        zxvision_index_delete_last_submenu_path();
+    }
+
+}
 
 
 //OLD: Solo permitimos autofire para Kempston, Fuller ,Zebra y mikrogen, para evitar que con cursor o con sinclair se este mandando una tecla y dificulte moverse por el menu
