@@ -111,6 +111,9 @@ extern void joystick_cycle_next_type_autofire(void);
 #define JOYSTICK_KEY_FIRE_IS_RIGHTALT 1
 #define JOYSTICK_KEY_FIRE_IS_RIGHTCTRL 2
 #define JOYSTICK_KEY_FIRE_IS_RIGHTSHIFT 3
+#define JOYSTICK_KEY_FIRE_IS_LEFTALT 4
+#define JOYSTICK_KEY_FIRE_IS_LEFTCTRL 5
+#define JOYSTICK_KEY_FIRE_IS_LEFTSHIFT 6
 
 extern char *joystick_defined_fire_texto[];
 extern int joystick_defined_key_fire;
@@ -119,5 +122,8 @@ extern void joystick_possible_home_key(int pressrelease);
 extern void joystick_possible_rightshift_key(int pressrelease);
 extern void joystick_possible_rightalt_key(int pressrelease);
 extern void joystick_possible_rightctrl_key(int pressrelease);
+extern void joystick_possible_leftshift_key(int pressrelease);
+extern void joystick_possible_leftalt_key(int pressrelease);
+extern void joystick_possible_leftctrl_key(int pressrelease);
 
 #endif

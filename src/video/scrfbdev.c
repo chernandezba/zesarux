@@ -959,7 +959,7 @@ void scrfbdev_actualiza_tablas_teclado_rawmode(void){
 				break;
 
 			case RAWKEY_Shift_L:
-				util_set_reset_key(UTIL_KEY_SHIFT_L,pressrelease);
+				joystick_possible_leftshift_key(pressrelease);
 				break;
 
 			case RAWKEY_Shift_R:
@@ -967,7 +967,7 @@ void scrfbdev_actualiza_tablas_teclado_rawmode(void){
 				break;
 
 			case RAWKEY_Alt_L:
-				util_set_reset_key(UTIL_KEY_ALT_L,pressrelease);
+				joystick_possible_leftalt_key(pressrelease);
 				break;
 
 				//case RAWKEY_Alt_R:
@@ -975,7 +975,7 @@ void scrfbdev_actualiza_tablas_teclado_rawmode(void){
 				//break;
 
 			case RAWKEY_Control_L:
-				util_set_reset_key(UTIL_KEY_CONTROL_L,pressrelease);
+				joystick_possible_leftctrl_key(pressrelease);
 				break;
 
 				//case RAWKEY_Control_R:

@@ -6,6 +6,7 @@ ZEsarUX 11.1 - xxxx edition. 06 June 2024
 Allow hotswap to Pentagon
 Improve Azimuth warning on External Audio Source Window
 Allow to not save snapshot when exiting ZEsarUX
+Allow to define Left Alt, Left Ctrl or Left Shift as Joystick Fire action
 
 * Fixes:
 

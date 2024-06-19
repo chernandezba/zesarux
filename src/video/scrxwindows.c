@@ -1354,7 +1354,7 @@ void deal_with_keys(XEvent *event,int pressrelease)
 			break;
 
 			case XK_Shift_L:
-				util_set_reset_key(UTIL_KEY_SHIFT_L,pressrelease);
+				joystick_possible_leftshift_key(pressrelease);
 			break;
 
                         case XK_Shift_R:
@@ -1362,7 +1362,7 @@ void deal_with_keys(XEvent *event,int pressrelease)
                         break;
 
                         case XK_Alt_L:
-				util_set_reset_key(UTIL_KEY_ALT_L,pressrelease);
+				joystick_possible_leftalt_key(pressrelease);
 			break;
                         case XK_Alt_R:
 				joystick_possible_rightalt_key(pressrelease);
@@ -1370,7 +1370,7 @@ void deal_with_keys(XEvent *event,int pressrelease)
 
 
 			case XK_Control_L:
-				util_set_reset_key(UTIL_KEY_CONTROL_L,pressrelease);
+				joystick_possible_leftctrl_key(pressrelease);
                         break;
 
 			case XK_Control_R:

@@ -1221,7 +1221,7 @@ printf("\n"
 
 
 	printf(
-        "--joystickfirekey n         Define which key triggers the fire function for the joystick: 0=Home, 1=RightAlt, 2=RightCtrl, 3=RightShift\n"
+        "--joystickfirekey n         Define which key triggers the fire function for the joystick: 0=Home, 1=RightAlt, 2=RightCtrl, 3=RightShift, 4=LeftAlt, 5=LeftCtrl, 6=LeftShift\n"
 		"--disablerealjoystick       Disable real joystick emulation\n"
 		"--realjoystickpath f        Change default real joystick device path (used on Linux)\n"
         "--realjoystickindex n       Change default real joystick device id (used on Windows and other OS with SDL driver)\n"
@@ -5901,7 +5901,7 @@ int parse_cmdline_options(int desde_commandline) {
             else if (!strcmp(argv[puntero_parametro],"--joystickfirekey")) {
                 siguiente_parametro_argumento();
                 int valor=parse_string_to_number(argv[puntero_parametro]);
-				if (valor<0 || valor>3) {
+				if (valor<0 || valor>6) {
 					printf ("Invalid value %d for setting --joystickfirekey\n",valor);
                     exit(1);
 				}

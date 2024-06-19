@@ -1686,7 +1686,7 @@ int scrcocoa_keymap_z88_cpc_leftz; //Tecla a la izquierda de la Z. usada en Chlo
 
                 // Estos de shift , alt y control no se leen por aqui en teoria
                 case COCOA_KEY_LSHIFT:
-                        util_set_reset_key(UTIL_KEY_SHIFT_L,pressrelease);
+                        joystick_possible_leftshift_key(pressrelease);
                 break;
 
                 case COCOA_KEY_RSHIFT:
@@ -1694,7 +1694,7 @@ int scrcocoa_keymap_z88_cpc_leftz; //Tecla a la izquierda de la Z. usada en Chlo
                 break;
 
                 case COCOA_KEY_LALT:
-                        util_set_reset_key(UTIL_KEY_ALT_L,pressrelease);
+                        joystick_possible_leftalt_key(pressrelease);
                 break;
 
                 case COCOA_KEY_RALT:
@@ -1702,7 +1702,7 @@ int scrcocoa_keymap_z88_cpc_leftz; //Tecla a la izquierda de la Z. usada en Chlo
                 break;
 
                 case COCOA_KEY_LCTRL:
-                        util_set_reset_key(UTIL_KEY_CONTROL_L,pressrelease);
+                        joystick_possible_leftctrl_key(pressrelease);
                 break;
 
                 case COCOA_KEY_RCTRL:
@@ -2166,7 +2166,7 @@ int scrcocoa_antespulsadoshift_l=0,scrcocoa_antespulsadoshift_r=0,scrcocoa_antes
 	//notificar cambios
 	if (pulsadoshift_l!=scrcocoa_antespulsadoshift_l) {
 		//printf ("notificar cambio shift left\n");
-		util_set_reset_key(UTIL_KEY_SHIFT_L,pulsadoshift_l);
+		joystick_possible_leftshift_key(pulsadoshift_l);
 	}
 
     //notificar cambios
@@ -2180,7 +2180,7 @@ int scrcocoa_antespulsadoshift_l=0,scrcocoa_antespulsadoshift_r=0,scrcocoa_antes
 
 	if (pulsadoctrl_l!=scrcocoa_antespulsadoctrl_l) {
 		//printf ("notificar cambio ctrl. ahora: %d\n",pulsadoctrl);
-		util_set_reset_key(UTIL_KEY_CONTROL_L,pulsadoctrl_l);
+		joystick_possible_leftctrl_key(pulsadoctrl_l);
 	}
 
 	if (pulsadoctrl_r!=scrcocoa_antespulsadoctrl_r) {
@@ -2191,7 +2191,7 @@ int scrcocoa_antespulsadoshift_l=0,scrcocoa_antespulsadoshift_r=0,scrcocoa_antes
 
 	if (pulsadoalt_l!=scrcocoa_antespulsadoalt_l) {
 		//printf ("notificar cambio alt l\n");
-		util_set_reset_key(UTIL_KEY_ALT_L,pulsadoalt_l);
+		joystick_possible_leftalt_key(pulsadoalt_l);
 	}
 
 	if (pulsadoalt_r!=scrcocoa_antespulsadoalt_r) {
