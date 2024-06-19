@@ -1,19 +1,369 @@
-Para esta version:
+Para versión siguiente:
 
 -------------
 ---Errores---
 -------------
 
+---Indexado menu---
+-error indexado:
+Main Menu-> Settings-> Hardware Settings-> Next machine id-> Hardware Settings-> Next machine id-> Hardware Settings-> Next machine id-> Hardware Settings
+Sucede porque funcion de menu menu_tbblue_machine_id, sale al pulsar enter y por tanto no llama a zxvision_index_delete_last_submenu_path
+O bien digo que ese menu no esté indexado, o se complica la cosa...
+Pero habran otros muchos menus que se sale al pulsar enter
+Y puede ser un problema, porque si cada vez que creo un menu y salgo con enter me tengo que acordar de esto pues...
+De momento en settings lo dejo desactivado por defecto el indexado hasta que no consiga estabilizar esto
+Ajustar comportamiento por defecto en parametros start, en grabado de parametros en utils
+La problematica de esto es, con un ejemplo: estamos en submenu A->B->C
+Dentro de menu C, no podemos saber si al pulsar una tecla (enter, esc o lo que sea), si volvemos a cargar el mismo menu C, o si vamos a un menu
+hacia atras, porque hay gestiones diferentes en menus (como el del Next machine id, que se sale del menu con Enter)
+Por tanto segun hagamos un comportamiento u otro, podemos ir erroneamente a menu A->B->C->C, o A->B->B etc
+Quiza los menus deberian tener un identificador interno, para detectar repetidos
+O quiza, que los propios menus generasen el titulo A->B->C (o que indicasen el menu "padre"), porque la mayoria saben de donde se generan,
+pero eso puede dar problemas en caso que un submenu se llame desde dos sitios diferentes (como ZX Desktop settings,
+que sale desde settings->zx desktop pero tambien con boton derecho sobre desktop)
+
+
+-Buscador opciones de menú
+
+En todos los sitios donde se cierre un menu pero no se haya salido con ESC o flecha atras, hay que llamar a:
+zxvision_index_delete_last_submenu_path();
+
+-parece que el archivo de indice a veces lo escribe en otras rutas
+
+-al cambiar de idioma, deja el indexado de busqueda raro en el submenu que esta dicha opcion (en cambio a català por ejemplo):
+Main Menu-> Settings-> General Settings-> Opciones Generales-> Opcions Generals
+
+-buscar opciones de menu deberia considerar el titulo del menu con traduccion de idioma
+Para ello la funcion de dibujar menu debe admitir 3 titulos en vez de uno: uno para cada idioma
+Esto significaria tambien que al cambiar de idioma habria que resetear el indice de busqueda
+->ok. agregar mas titulos localizados
+
+-llamada de menu no indexado (menu_dibuja_menu_no_indexado) que permita titulo en los 3 idiomas
+
+-Quizá cada funcion que abre un menu, tiene que indicar también el titulo del menu contando submenos, por ejemplo,
+en el menu de storage->tape, al abrir el menu hay que indicar el titulo entero:
+"Storage -> Tape". El problema es que hay que indicarlo además en los 3 idiomas.
+Y que pasa con menús que aún no se le indica el titulo entero? Que le pongo?
+
+
+-Títulos de submenus tienen que ser igual al nombre que se ha seleccionado en el menú anterior, esto facilitaria este indice de menus
+
+-Documentar funciones de menu respecto a indexado:
+
+menu_dibuja_menu: la normal
+
+menu_dibuja_menu_no_indexado: para usar ventanas con opciones pero no queremos que este indexado, como por ejemplo Tracks List
+
+menu_dibuja_menu_one_time: para opciones de menu en que se pulsa enter o esc y se sale siempre del menu, no se vuelve a dibujar ese menu,
+y por tanto a nivel de path de indexacion de busqueda, se pierde el ultimo path de submenu. Ejemplo de esto: menu_simple_ten_choices
+
+--Fin Indexado menu---
+
+
+-exolon rzx, si se abre menu, se queda continuamente disparando y agachado (joystick seleccionado: cursor&shift, aunque parece que no importa esto)
+
+
+-parpadeos en driver xwindow en zx desktop al moverse por menus
+
+-cacalib, en consola texto pura, parpadeo en menu (y en general en cualquier pixel emulado con brillo)
+
+-con daad debug, si hago un cambio de gui style, se activa la opcion de watch en daad debug... quiza no está gestionando bien el overlay??
+
+
+-revisar en menu_debug_change_registers(void),
+//Si lanzo con debug_print ERR, y estamos en modo step, se habilita multitarea, por que?
+
+
+-archivos de cintas que no se cierran en windows al expulsarlas
+
+-speech con caracteres con acentos no los envia, los filtra. acentos de menu? quiza habria que pasar primero otro filtro para solo acentos, convertirlos a sin acentos o caracteres con acentos utf
+
+-quiza en threads que no se cancelan en windows (zeng?) agregar llamada a pthread_testcancel();
+
+-en daad debug, pulsar m de condmessage, sale dos veces (con cozumel 1 y inventario)
+
+-en menus al moverse con pgup down creo que no siempre va bien, por ejemplo en tracks list de +3 al pgdn siempre queda abajo, mientras que pgup no
+
+
+-En visor dsk que solo muestre primer extent de un archivo. ya esta??
+-extractor dsk no obtiene bien longitudes de disco cpc (porque intenta obtener cabecera plus3dos). ok ya?
+-extractor dsk que use misma manera que visor dsk?
+-extractor dsk creo que a veces lee archivos con cabecera plus3dos. ejemplo : chase hq2. tampoco parece obtener bien siempre los datos (de otro sitio...)
+lecturas de plus3dos headers no van bien: Real length file SCREEN  .    read from PLUS3DOS header: 55560
+
+-quiza seek beyond limit en floppy no deberia saltar error (solo verbose), caso de tauceti pcw. no consigo sacar ese error? otro juego que salga?
+
+-rutinas speech y kill speech se llaman aunque no haya nada pendiente. desde timer, llama a scrtextspeech_filter_run_pending
+
+-file browser no muestra dispositivos. importante para uart
+Por alguna razón, en /dev no llega a leerlos ni entrando antes del filtro. Quiza algun parametro especial del directorio
+o algo que no hago bien al leer directorio. La solución pasa por escribir el nombre directamente en el file selector (pulsando TAB o click de raton
+arriba)
+-no lee enlaces simbolicos en filesystem: ejemplo /home/pi/PREPARADOS de raspiboy
+-no se ven enlaces simbólicos en navegador de archivos. Como mínimo de Mac no se ven. Y en Linux?
+-quiza get_file_type deberia excluir sockets y devices, no considerarlos archivos normales,
+asi en smartload y similares no aparecerian -> pero en caso de UART si que deben salir dispositivos!!
+
+-revisar pantalla completa en SDL, X11
+--en sdl1, con windows en maquina virtual, parece que pone una resolucion menor que la ventana de ZEsarUX, y el footer y la pantalla emulada quedan mezcladas
+
+
+-cambio de maquina con full screen (16k a 48k) peta: quiza son en Mac?
+
+
+-Al conmutar de ventana, no guarda del todo la posicion, pues no restaura bien al desmaximizar: ejemplo
+*Esto en ascii table. Posicion 1. La muevo a otra posicion, Posicion 2
+*Conmuto a otra ventana (pulsando con raton en otra ventana). Vuelvo a ascii table. Maximizo, y desmaximizo. En vez de volver a Posicion 2, se va a Posicion 1.
+
+-si se pulsa boton de cerrar todos los menus, desde una ventana que se ha abierto desde otra con menu tabulado, se cierra esa ventana de menu tabulado,
+en vez de dejarse en background
+Ejemplo: AY Player, pulsar Editar playlist, y ahí cerrar todos menus
+
+
+-full screen en cpc + real video (y creo que sin real video tambien) se ve mal. Probar por ejemplo con brunilda dandanator
+
+-en linux, con "stop emulation on menu", raton no mueve opciones de menu, ni deja mover ventanas
+->no he conseguido reproducirlo
+
+-Exploding fist next:
+*cargando desde browser de next, sale la intro y luego se cuelga
+*cargando con smartload, parece que carga archivos por esx pero no muestra nada en pantalla
+
+-al conmutar de ventana de ZEsarUX, en Mac, a veces se congela la aplicación. por que? tanto pasa con menu abierto como cerrado.
+Creo que tiene que ver con driver ao null. Me cuesta reproducirlo
+
+-Si se crea ventana de alto negativo, acaba haciendo panic al asignar memoria. Quizá controlar esto?
+
+-keyboard help
+- pulsar , o . en ZX81 con ventana abierta, deja apretada la N o M
+- chloe. completar teclas extendidas. ver que hacer con combinaciones de shift...
+- keyboard help no hace por ejemplo en cpc 664 teclas [ ] pulsando esas teclas en el teclado fisico: esto sucede porque en menu
+no genera codigo de tecla al pulsar esas extendidas
+
 ---Fin Errores---
+
 
 
 -------------
 ---Mejoras---
 -------------
 
+-mejorar render paws/gac/daad/quill:
+*uso atributos igual que spectrum: 8x8 paper+tinta
+*implementar relleno: mapa de puntos rellenos, y mostrar con tramado adecuado. solo fill cuando ventana esté dirty (misma logica que Location Image o ZXLife por ejemplo). algoritmo relleno recursivo? habria que tener un mapa de pixeles de spectrum de 256x192 tal cual
+
+
+
+
+-dall-e. text aventure location image
+*esperar a waitpid?
+*en hobbit las descripciones salen antes de borrar la pantalla
+*en linux: cierro ventana imagen, borro output imagen, abro y segfault
+
+
+-text adventure map: texto en mapa deberia seguir char filter. Pero char filter
+esta pensado solo para print char y mostrarlo en consola. deberia haber una funcion que teniendo un caracter, retornase otro pasado por el filtro
+
+
+
+
+-algun tipo de build que no sea ni linux ni mac ni windows, sino simplemente UNIX_GENERIC o algo similar
+
+-conviene ocultar Wall y Wextra en version estable? puede salir algun warning util solo en version estable? no deberia, son warnings muy especificos
+
+
+
+-driver fbdev en pc , con "zesarux --noconfigfile --vo fbdev > /dev/null". al desactivar border, genera panic. tambien desactivando border
+
+
+
+
+-A mejorar en Next para próxima versión: Ver TODO_machines, sección Next, en : "A mejorar en Next para próxima versión"
+
+
+-paws debug que funcione con aventuras en 128k. Ver manual de paws para esto
+-daad no usa 128kb. Aunque hay un nuevo parser de daad (hecho en zxbasic) que si usa 128kb. comentar con Carlos-uto
+
+
+-texto speech en menu se oye antes que se empiece a mostrar filesel
+
+-en rpi quiza compilar con onebitspeaker? o no? entiendo que pcspeaker no usara sino que intentara usar gpio
+
+
+-Función joystick conmuta full screen
+-F función cualquiera Tecla F por joystick
+
+
+-Smartload path tiene setting en command line? si Y en menú? es el del ultimo archivo cargado con smartload
+
+
+
+revisar paso de parametros en pthread_create, debe ser con estructuras estaticas (no en stack) o bien estructuras en malloc
+y los miembros no deben ser punteros a *, sino contenido todo en la estructura
+Por ejemplo en
+menu_zsock_http(
+    Si se cancela la query y el thread sigue activo, hay el riesgo de acceder a memoria que ya no esta disponible
+Esa funcion se llama por ejemplo desde speccy browser y viene con punteros que habria que convertir todos en una estructura
+mejorada de menu_zsock_http_struct en que no haya punteros
+Lista en teoria completa de llamadas a pthreads con parametros a revisar:
+menu_zsock_http
+menu_download_file
+
+
+
+-Poder ver variables de una cinta .P, .O e incluso basic de spectrum (desde el bloque de basic de un .tap?)
+
+
+-fbdev en linux, fbdev_cls peta al cambiar de maquina. Ejemplo de 48k a +3
+
+-asociar archivos tap, tzx etc en Mac a ZEsarUX
+
+
+
+-cambio modo stereo de zxuno mediante hardware. registro F7. https://www.zxuno.com/wiki/index.php/ZX_Spectrum
+algun programa que lo use? el zxunocfg?
+
+
+
+-con speech en menu habilitado
+*teniendo varias ventanas abiertas
+*pulsar F5 para abrir menu principal
+*pulsar ESC
+*se cierra menu, se va el foco a la ventana de mas arriba, y se lee el contenido a speech. ERROR!
+*luego se quita el foco de esa ventana y todo prosigue normalmente
+
+-algun tipo de indicacion en un menu que diga que no debe activar salir_todos_menus al pulsar ESC, por ejemplo en algunos no quiero
+que se cierren los anteriores, ejemplo:
+*cambio de zona de memoria desde debug cpu o hexdump
+*breakpoints
+*watches
+En estos casos de momento lo que he hecho es que al final de cada menu se haga un "salir_todos_menus=0"
+
+
+
+-Process management: Render emulated display incluye tiempo de todas las ventanas? Si abro el text adventure map, que consume 6 ms con la guerra
+de las vajillas, el tiempo de render dice 8 ms. si cierro text adventure map, el render baja a 3 ms
+
+-tooltips en botones superiores y en dispositivos inferiores, y en botones de ventanas
+
+
+
+-si se desactivan botones inferiores y superiores, el limite al mover iconos sigue siendo la zona de esos botones, aunque ya no existan
+Lo mismo pasa con un reorder
+Y lo mismo con posición de nuevos iconos
+
+
+
+-algún tipo de asistente para el primer arranque? Tipo:
+*idioma: english, español, català
+*zx desktop activado (junto con background windows)
+*etc...
+
+
+
+-mejorar icono para video output
+
+-iconos para acciones: backgroundwindow, showbackgroundwindows
+
+-Debug console quizá ancho debería considerar siempre el Máximo al calcular posición siguiente línea, esto en print y scroll
+Asi se podría redimensionar siempre sin que se descuadren los textos anteriores . hecho?
+
+
+-Posible driver nuevo u opción en curses en que el menú siga siendo estándar pero el output de la máquina emulada sea el mismo que stdout
+
+
+-permitir smartload de zrcp sin que haya que abrir y cerrar el menu, para poderlo usar con driver simpletext o null por ejemplo,
+ya que no abren el menu
+
+
+-soporte libretro:
+compilacion minima con 3 cores:
+
+git clone https://github.com/libretro/libretro-super.git libretro-super
+cd libretro-super
+./libretro-fetch.sh fuse smsplus sameboy
+./libretro-build.sh fuse smsplus sameboy
+
+
+Copiar un core a retroarch, uno de ejemplo
+ https://docs.libretro.com/development/cores/developing-cores/#skeletor-sample-core
+cd /Users/cesarhernandez/Downloads/libretro-super
+./libretro-build.sh skeleton
+
+cd "/Users/cesarhernandez/Library/Application Support/RetroArch/cores"
+cp /Users/cesarhernandez/Downloads/libretro-super/dist/osx-x86_64/skeleton_libretro.dylib .
+
+
+
+-numero de version que corresponda con el año de antigüedad de ZEsarUX? V11 : 2024, V12: 2025, V13: 2026?
+
+
+
+-LEC memory extension https://ia600604.us.archive.org/view_archive.php?archive=/1/items/World_of_Spectrum_June_2017_Mirror/World%20of%20Spectrum%20June%202017%20Mirror.zip&file=World%20of%20Spectrum%20June%202017%20Mirror/sinclair/hardware-info/l/LECMemoryExtension.pdf
+-CPM para LEC: https://spectrumcomputing.co.uk/index.php?cat=96&id=23809
+https://trastero.speccy.org/cosas/FLeon/todo_sobre_la_ram_y_rom_lec.txt
+https://trastero.speccy.org/cosas/FLeon/Fleon.htm
+
+
+
+
+-al insertar cintas parece que no se cierra menu, y antes creo que si que se hacia
+
+-quiza recordar ultimo ancho de ventana en void zxvision_generic_message_tooltip(,
+util por ejemplo para leer archivos de licencia,
+aunque eso afecta a todo mensaje genérico que aparezca en pantalla
+O quizá solo hacerlo para determinadas ventanas de algunos menus, por ejemplo el de licencias
+
+Soportar uft-8 en el footer, que sirva para texto footer normal pero tambien con opciones de --programsettingsinfo de archivos .config.
+Quitar el parche para soportar la eñe en dicha opcion
+Cuidado que  en la consola si hay verbose debug, se muestra caracter extraño para la ñ
+
+-Linux: al hacer alt-tab para ir a otra ventana, al volver con raton por ejemplo, el alt "sigue pulsado" en ZEsarUX
+Posible solucion: https://stackoverflow.com/questions/39087079/detect-modifier-key-release-in-x11-root-window. Creo que lo mejor, como se comenta en una posible solución ahí, seria: cuando se ha pulsado alt, leer cada x segundos, si la tecla alt está pulsada o no, aunque no acabo de entender
+que si se conmuta a otra ventana, la tecla alt ni se leerá...
+Mascaras eventos: ninguna parece capturar cambio ventana: https://tronche.com/gui/x/xlib/events/processing-overview.html#FocusChangeMask
+Con SDL por ejemplo también sucede
+
+
+
+
+-Mouse click derecho botones acciones:
+-ok botones superiores, click derecho edita boton.
+-Y en dispositivos? Quizá settings de ese dispositivo? la mayoria de dispositivos tienen opciones en menu storage y nada en settings->storage,
+solo tiene entrada en settings el tape
+
+-Teclado en pantalla en rpi borra el input de debajo
+
+
+
+-Accesibilidad: no debería leer símbolo ">" de los indicadores de submenús
+
+-Idea menús:
+Clara distinción entre línea de menú y entre ventana con opciones
+Menús solo deberían ser líneas navegables hasta un destino
+
+Quizá main menu que sea ventana de 1 de alto con entradas menu tabuladas de
+Smartload snapshot storage debug etc..
+Y sin barra título
 ---Fin Mejoras---
 
 
+-Pantalla completa en Next sale cortada
+
+-ZRCP no envia teclas extendidas cuando se pulsan desde slave: por ejemplo QL y teclas []
+
+-ZENG para msx ¿no? se leen los cursores en destino cuando se pulsan desde slave
+
+-gac debug con condactos y paso a paso
+- Emulación trs 80?
+
+-quiza que se permita ventanas que puedan moverse y estar parte fuera de rango visible. mientras origen ventana este dentro de rango,
+el resto puede salir fuera -> comprobar al hacer print y putpixel que no sale fuera
+
+-Incorporar bittransfe como manera de generar snapshot en .tap. Agregar parámetro de estado interrupciones, registro i. Otros registros que falten? R? Problema que está guardando algunos registros en parte alta de la memoria y puede interferir con el stack si no se ha cambiado el CLEAR
+
+
+-carpetas con acentos en file selector sale a la derecha el texto de <dir> movido
 
 --- Documentar ---
 
@@ -24,5 +374,4 @@ Para esta version:
 
 --- Fin Documentar ---
 
-
--cinta tap/tzx entrada , que indique donde está el puntero de lectura
+Que se pueda alterar el puntero de lectura en cintas tap
