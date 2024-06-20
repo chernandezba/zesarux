@@ -9581,7 +9581,9 @@ int convert_tzx_to_rwa(char *origen, char *destino)
 
 	//playtzx-0.12c/playtzx -au -freq 15600 Rambo.tzx Rambo.rwa
 	char *argumentos[]={
-		"playtzx","-au","-freq","","",""
+		"playtzx","-au","-freq","",
+        "-sil","",
+        "",""
 	};
 
 	//sprintf (tzx_frecuencia_sonido,"%d",FRECUENCIA_SONIDO);
@@ -9590,10 +9592,17 @@ int convert_tzx_to_rwa(char *origen, char *destino)
 
 
 	argumentos[3]=tzx_frecuencia_sonido;
-	argumentos[4]=origen;
-	argumentos[5]=destino;
 
-	return main_playtzx(6,argumentos);
+    //Agregar 2 segundos de silencio al principio
+    //Sin este silencio, la autocarga de Spectrum +3 no funciona, por que no le da tiempo entre que inicia la rom y se pone a cargar
+    char buffer_silencio[20];
+    sprintf(buffer_silencio,"%d",FRECUENCIA_SONIDO_RWA_FILES*2);
+    argumentos[5]=buffer_silencio;
+
+	argumentos[6]=origen;
+	argumentos[7]=destino;
+
+	return main_playtzx(8,argumentos);
 }
 
 void convert_o_p_to_rwa_write_silence(FILE *ptr_archivo,int segundos)

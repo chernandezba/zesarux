@@ -12,6 +12,7 @@ Allow to change current tape read position on Input Tape Viewer for .tap files
 * Fixes:
 
 Remove buffer full indicator when pressing shift+e on External Audio Source window
+Fixed TZX autload as Real Tape on Spectrum +3
 
 ----
 

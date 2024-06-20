@@ -237,6 +237,8 @@ char vochead[0x20] = {'C', 'r', 'e', 'a', 't', 'i', 'v', 'e', ' ', 'V', 'o', 'i'
 	int speed;
 	int x, last, lastlen;
 
+    int silence_beginning=0;
+
 	int loop_start = 0;		/* Position of the last Loop Start block */
 	int loop_count = 0;		/* Counter of the Loop */
 	int call_pos = 0;		/* Position of the last Call Sequence block */
@@ -440,6 +442,10 @@ char vochead[0x20] = {'C', 'r', 'e', 'a', 't', 'i', 'v', 'e', ' ', 'V', 'o', 'i'
 		 * // then go to position 32 from the beginning of the file
 		 * lseek(ofh, 32, SEEK_SET);
 		 */
+
+        int i;
+        char byte_to_write=0;
+        for (i=0;i<silence_beginning;i++) write(ofh, &byte_to_write, 1);
 
 		vocpos = 0;
 	}
@@ -1020,6 +1026,12 @@ char vochead[0x20] = {'C', 'r', 'e', 'a', 't', 'i', 'v', 'e', ' ', 'V', 'o', 'i'
 	{
 		files=0;
 		//debug_printf(VERBOSE_INFO,"ZXTape Utilities - Play TZX , TZX to VOC Converter and TZX Info v0.12c for Linux");
+
+        //int kk;
+        //for (kk=0;kk<argc;kk++) {
+        //    printf("arg %d: [%s]\n",kk,argv[kk]);
+        //}
+
 		if (argc < 2) {
 			debug_printf(VERBOSE_INFO,"Usage: playtzx [switches] file.tzx [output.voc|output.au]");
 			debug_printf(VERBOSE_INFO,"       Switches:  -voc      Create a .VOC file instead of audio output");
@@ -1032,6 +1044,7 @@ char vochead[0x20] = {'C', 'r', 'e', 'a', 't', 'i', 'v', 'e', ' ', 'V', 'o', 'i'
 			debug_printf(VERBOSE_INFO,"                  -e    n   End replay/conversion after block n");
 			debug_printf(VERBOSE_INFO,"                  -p        Wait after each page of Info");
 			debug_printf(VERBOSE_INFO,"                  -128      Work in 128k mode");
+            debug_printf(VERBOSE_INFO,"                  -sil  n   Adds n bytes of silence at the beginning");
 			exit(0);
 		}
 		/* Check for command line options */
@@ -1096,6 +1109,14 @@ char vochead[0x20] = {'C', 'r', 'e', 'a', 't', 'i', 'v', 'e', ' ', 'V', 'o', 'i'
 							invalidoption(argv[n]);
 
 						nfreq = getnumber(argv[n + 1]);
+						n++;
+						break;
+
+					case 's':
+						if (strcmp(argv[n], "-sil"))
+							invalidoption(argv[n]);
+
+						silence_beginning = getnumber(argv[n + 1]);
 						n++;
 						break;
 

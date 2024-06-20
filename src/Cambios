@@ -12,6 +12,7 @@ Permitir cambiar posicion de lectura actual en Visor de Cinta de Entrada para ar
 * Correcciones:
 
 Quitar indicador de buffer lleno al pulsar shift+e en ventana de Fuente de sonido externa
+Corregida autocarga de TZX como Cinta Real en Spectrum +3
 
 ----
 
