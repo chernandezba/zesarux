@@ -27786,6 +27786,27 @@ void hotswap_p2a_to_p2aspa(MENU_ITEM_PARAMETERS)
     post_set_machine(NULL);
 }
 
+void hotswap_p2a_to_p3a40(MENU_ITEM_PARAMETERS)
+{
+    current_machine_type=MACHINE_ID_SPECTRUM_P3_40;
+    set_machine_params();
+    post_set_machine(NULL);
+}
+
+void hotswap_p2a_to_p3a41(MENU_ITEM_PARAMETERS)
+{
+    current_machine_type=MACHINE_ID_SPECTRUM_P3_41;
+    set_machine_params();
+    post_set_machine(NULL);
+}
+
+void hotswap_p2a_to_p3aspa(MENU_ITEM_PARAMETERS)
+{
+    current_machine_type=MACHINE_ID_SPECTRUM_P3_SPA;
+    set_machine_params();
+    post_set_machine(NULL);
+}
+
 void hotswap_p2a_to_128k(MENU_ITEM_PARAMETERS)
 {
     hotswap_p2a_to_128();
@@ -28155,11 +28176,14 @@ void menu_hotswap_machine(MENU_ITEM_PARAMETERS)
             menu_add_item_menu(array_menu_machine_selection,"ZX Spectrum 48k",MENU_OPCION_NORMAL,hotswap_128k_to_48k,NULL);
         }
 
-        //maquinas p2a
+        //maquinas p2a, p3
         if (MACHINE_IS_SPECTRUM_P2A_P3) {
             menu_add_item_menu_inicial(&array_menu_machine_selection,"ZX Spectrum +2A (ROM v4.0)",MENU_OPCION_NORMAL,hotswap_p2a_to_p2a40,NULL);
             menu_add_item_menu(array_menu_machine_selection,"ZX Spectrum +2A (ROM v4.1)",MENU_OPCION_NORMAL,hotswap_p2a_to_p2a41,NULL);
             menu_add_item_menu(array_menu_machine_selection,"ZX Spectrum +2A (Spanish)",MENU_OPCION_NORMAL,hotswap_p2a_to_p2aspa,NULL);
+            menu_add_item_menu(array_menu_machine_selection,"ZX Spectrum +3 (ROM v4.0)",MENU_OPCION_NORMAL,hotswap_p2a_to_p3a40,NULL);
+            menu_add_item_menu(array_menu_machine_selection,"ZX Spectrum +3 (ROM v4.1)",MENU_OPCION_NORMAL,hotswap_p2a_to_p3a41,NULL);
+            menu_add_item_menu(array_menu_machine_selection,"ZX Spectrum +3 (Spanish)",MENU_OPCION_NORMAL,hotswap_p2a_to_p3aspa,NULL);
             menu_add_item_menu(array_menu_machine_selection,"ZX Spectrum 128k",MENU_OPCION_NORMAL,hotswap_p2a_to_128k,NULL);
             menu_add_item_menu(array_menu_machine_selection,"ZX Spectrum 48k",MENU_OPCION_NORMAL,hotswap_p2a_to_48k,NULL);
         }
