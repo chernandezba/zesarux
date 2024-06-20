@@ -528,6 +528,7 @@ extern int zxvision_currently_restoring_windows_on_start;
 extern void zxvision_restore_windows_on_startup(void);
 extern void zxvision_restore_one_window(char *ventana_a_restaurar);
 extern void zxvision_restart_all_background_windows(void);
+extern void zxvision_reapply_style_colours_all_windows(void);
 extern void menu_calculate_mouse_xy_absolute_interface(int *resultado_x,int *resultado_y);
 extern void menu_calculate_mouse_xy_absolute_interface_pixel(int *resultado_x,int *resultado_y);
 extern void zxvision_get_mouse_in_window(zxvision_window *ventana,int *posx,int *posy);

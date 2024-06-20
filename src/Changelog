@@ -9,6 +9,9 @@ Allow to not save snapshot when exiting ZEsarUX
 Allow to define Left Alt, Left Ctrl, Left Shift or TAB as Joystick Fire action
 Allow to change current tape read position on Input Tape Viewer for .tap files
 
+Improved ZX Vision:
+- When selecting ZX Vision Style, it is applied on moving cursor
+
 * Fixes:
 
 Remove buffer full indicator when pressing shift+e on External Audio Source window

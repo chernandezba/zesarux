@@ -1448,6 +1448,26 @@ void menu_interface_change_gui_style_apply(MENU_ITEM_PARAMETERS)
     zxvision_restart_all_background_windows();
 }
 
+
+//Al seleccionar un estilo, sin tener que pulsar enter, se aplica sobre la marcha
+void menu_interface_change_gui_style_select(struct s_menu_item *item_seleccionado)
+{
+
+    estilo_gui_activo=item_seleccionado->valor_opcion;
+
+    set_charset_from_gui();
+
+    menu_init_footer();
+
+    //zxvision_restart_all_background_windows();
+
+    //Recolorear ventanas sin tener que reabrirlas (que es lo que hace menu_interface_change_gui_style_apply)
+    zxvision_reapply_style_colours_all_windows();
+
+    //Redibujar barra de titulo y marco
+    zxvision_redraw_all_windows();
+}
+
 void menu_interface_change_gui_style_test(MENU_ITEM_PARAMETERS)
 {
     menu_espera_no_tecla();
@@ -1598,6 +1618,8 @@ void menu_interface_change_gui_style(MENU_ITEM_PARAMETERS)
             else {
                 menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_interface_change_gui_style_apply,NULL,definiciones_estilos_gui[i].nombre_estilo);
                 menu_add_item_menu_valor_opcion(array_menu_common,i);
+
+                menu_add_item_menu_seleccionado(array_menu_common,menu_interface_change_gui_style_select);
             }
 
         }
@@ -1628,6 +1650,11 @@ void menu_interface_change_gui_style(MENU_ITEM_PARAMETERS)
 
 
     } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+
+    //Aplicamos el estilo, aun sin haber tenido que pulsar enter
+    //Dado que al mover el cursor ya se esta medio aplicando (sin recrear las ventanas),
+    //ahora se recrean y el color ya se vera bien
+    menu_interface_change_gui_style_apply(estilo_gui_activo);
 
 }
 
