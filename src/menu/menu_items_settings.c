@@ -1619,6 +1619,7 @@ void menu_interface_change_gui_style(MENU_ITEM_PARAMETERS)
                 menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_interface_change_gui_style_apply,NULL,definiciones_estilos_gui[i].nombre_estilo);
                 menu_add_item_menu_valor_opcion(array_menu_common,i);
 
+                //Llamar a la funcion de cambio de estilo simplemente al mover el cursor y sin tener que pulsar enter
                 menu_add_item_menu_seleccionado(array_menu_common,menu_interface_change_gui_style_select);
             }
 

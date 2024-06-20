@@ -10035,14 +10035,12 @@ void zxvision_restart_all_background_windows(void)
 //Cambia el color del caracter espacio en una ventana dada
 void zxvision_change_space_colour(zxvision_window *w,int papel)
 {
-    //Cambiar caracter espacio de fondo
+
     int total_width=w->total_width;
     int total_height=w->total_height;
 
     int buffer_size=total_width*total_height;
 
-
-    //Inicializarlo todo con texto blanco
 
     int i;
     overlay_screen *p;
@@ -10137,7 +10135,7 @@ void zxvision_reapply_style_colours_all_windows(void)
         else {
             //printf("ventana: %s\n",pointer_window->geometry_name);
 
-            //Obtenemos la siguiente ventana antes de borrar la actual
+            //Obtenemos la siguiente ventana antes pasar a la siguiente
             zxvision_window *next_window=pointer_window->next_window;
 
             pointer_window->dirty_must_draw_contents=1;
