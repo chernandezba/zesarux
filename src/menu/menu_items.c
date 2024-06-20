@@ -15507,7 +15507,7 @@ Pueden salir antes id o antes title. En bucle leer los dos y cuando estén los d
                             if (!showindex) {
                                 //Remodificamos ultimo_fulltitle para meterle el indice delante
                                 char buf[1024];
-                                sprintf (buf,"%d %s",ultimo_indice_id,ultimo_fulltitle);
+                                sprintf (buf,"%2d %s",ultimo_indice_id,ultimo_fulltitle);
                                 strcpy(ultimo_fulltitle,buf);
                             }
 
