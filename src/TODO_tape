@@ -23,7 +23,6 @@ da segmentation fault-> quiza el problema viene del lector tzx
 
 -Carga interna de bloque en spectrum es capaz de interpretar rwa generado. Carga interna de zx81 no carga un rwa generado
 
--Carga por line in
 
 -Smpatap y leezx81 que soporten también rwa 15600 hz. comparar valores constantes de esos smpatap.c y leezx81.c con los que lleva el emulador
 

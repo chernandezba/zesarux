@@ -18,9 +18,7 @@ el refresco de pantalla y por tanto, se ralentiza todo y acaba yendo mas o menos
 
 -watermark sin realvideo no hace zoom. importante???
 
-Opcion desactivar colores que solo va en realvideo off:
--Quitar atributos que se pueda aunque esté modo rainbow
--Quizá simplemente una paleta grayscale y cuando haga render final, que convierta valores rgb a gris
+
 
 -Joystick SDL: Soporte joystick SDL2
 
