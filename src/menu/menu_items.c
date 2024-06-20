@@ -32688,10 +32688,10 @@ void menu_plusthreedisk(MENU_ITEM_PARAMETERS)
     do {
 
 
-        char string_dskplusthree_file_shown[17];
+        char string_dskplusthree_file_shown[20];
 
 
-        menu_tape_settings_trunc_name(dskplusthree_file_name,string_dskplusthree_file_shown,17);
+        menu_tape_settings_trunc_name(dskplusthree_file_name,string_dskplusthree_file_shown,20);
         //menu_add_item_menu_inicial_format(&array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_storage_dskplusthree_file,NULL,
         //    "~~DSK File: [%s]",string_dskplusthree_file_shown);
         menu_add_item_menu_en_es_ca_inicial(&array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_storage_dskplusthree_file,NULL,
