@@ -10057,10 +10057,54 @@ void zxvision_change_space_colour(zxvision_window *w,int papel)
     }
 }
 
+
+
 //Funcion para reaplicar colores en las ventanas existentes
 //De momento solo se usa por la funcion de cambio de estilo de gui, mientras se mueve el cursor, y sin tener
 //que recrear todas las ventanas, se cambian los colores
 void zxvision_reapply_style_colours_all_windows(void)
+{
+
+    if (zxvision_current_window==NULL) return;
+
+	//Primero ir a buscar la de abajo del todo
+	zxvision_window *pointer_window;
+
+	//printf ("original window: %p\n",w);
+        //printf ("\noriginal window: %p. Title: %s\n",w,w->window_title);
+
+
+	pointer_window=zxvision_find_first_window_below_this(zxvision_current_window);
+
+	//printf ("after while pointer_window->previous_window!=NULL\n");
+
+
+
+	while (pointer_window!=zxvision_current_window && pointer_window!=NULL) {
+
+
+        pointer_window->dirty_must_draw_contents=1;
+        pointer_window->dirty_user_must_draw_contents=1;
+        pointer_window->default_paper=ESTILO_GUI_PAPEL_NORMAL;
+
+
+        //Cambiar caracter espacio de fondo
+        zxvision_change_space_colour(pointer_window,ESTILO_GUI_PAPEL_NORMAL);
+
+        //El resto de colores se refrescaran por si solos cuando el overlay de cada ventana diga que hay que refrescar
+
+		pointer_window=pointer_window->next_window;
+	}
+
+
+
+}
+
+
+//Funcion para reaplicar colores en las ventanas existentes
+//De momento solo se usa por la funcion de cambio de estilo de gui, mientras se mueve el cursor, y sin tener
+//que recrear todas las ventanas, se cambian los colores
+void old_zxvision_reapply_style_colours_all_windows(void)
 {
 	if (!menu_allow_background_windows) return;
 
@@ -10083,49 +10127,6 @@ void zxvision_reapply_style_colours_all_windows(void)
     //Y ahora de ahi hacia arriba
     int salir=0;
     do {
-
-        //Hay que ir con ojo con los punteros a ventana. Dado que lo que haremos sera reseguir las ventanas,
-        //empezando desde la de mas abajo, antes de reabrir una, guardamos el puntero a la siguiente,
-        //reabrimos y vamos a la siguiente
-
-        //Y finalizamos cuando la que hemos redibujado era la misma que la inicial
-        /*
-        Ejemplo tenemos ventanas:
-        A
-        B
-        C
-        D
-        Donde la actual es la A
-
-        La primera que encontramos abajo es la D, Al reabrirla tendremos:
-
-        D
-        A
-        B
-        C
-
-        La siguiente la C
-
-        C
-        D
-        A
-        B
-
-        La siguiente la B
-        B
-        C
-        D
-        A
-
-        Y la siguiente la A
-        A
-        B
-        C
-        D
-
-        Y entonces es cuando verá que la última que hemos reabierto, la A, era la inicial A, y finaliza
-
-        */
 
         //printf("Puntero ventana: %p\n",pointer_window);
         if (pointer_window==NULL) {
