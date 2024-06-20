@@ -1482,7 +1482,7 @@ void menu_interface_change_gui_style_test(MENU_ITEM_PARAMETERS)
 
     zxvision_window ventana;
 
-    zxvision_new_window(&ventana,x,y,ancho,alto,ancho-1,alto-2,"Test style");
+    zxvision_new_window(&ventana,x,y,ancho,alto,ancho-1,alto-2,"Style info");
 
     zxvision_draw_window(&ventana);
 
@@ -1627,8 +1627,8 @@ void menu_interface_change_gui_style(MENU_ITEM_PARAMETERS)
         menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
         //Y opcion para probar estilo
-        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_interface_change_gui_style_test,NULL,"~~Test style");
-        menu_add_item_menu_shortcut(array_menu_common,'t');
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_interface_change_gui_style_test,NULL,"Style ~~info");
+        menu_add_item_menu_shortcut(array_menu_common,'i');
 
 
 
