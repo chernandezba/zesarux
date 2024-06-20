@@ -10070,14 +10070,8 @@ void zxvision_reapply_style_colours_all_windows(void)
 	//Primero ir a buscar la de abajo del todo
 	zxvision_window *pointer_window;
 
-	//printf ("original window: %p\n",w);
-        //printf ("\noriginal window: %p. Title: %s\n",w,w->window_title);
-
 
 	pointer_window=zxvision_find_first_window_below_this(zxvision_current_window);
-
-	//printf ("after while pointer_window->previous_window!=NULL\n");
-
 
 
 	while (pointer_window!=zxvision_current_window && pointer_window!=NULL) {
@@ -10087,8 +10081,7 @@ void zxvision_reapply_style_colours_all_windows(void)
         pointer_window->dirty_user_must_draw_contents=1;
         pointer_window->default_paper=ESTILO_GUI_PAPEL_NORMAL;
 
-
-        //Cambiar caracter espacio de fondo
+        //Cambiar color caracter espacio
         zxvision_change_space_colour(pointer_window,ESTILO_GUI_PAPEL_NORMAL);
 
         //El resto de colores se refrescaran por si solos cuando el overlay de cada ventana diga que hay que refrescar
@@ -10097,77 +10090,9 @@ void zxvision_reapply_style_colours_all_windows(void)
 	}
 
 
-
 }
 
 
-//Funcion para reaplicar colores en las ventanas existentes
-//De momento solo se usa por la funcion de cambio de estilo de gui, mientras se mueve el cursor, y sin tener
-//que recrear todas las ventanas, se cambian los colores
-void old_zxvision_reapply_style_colours_all_windows(void)
-{
-	if (!menu_allow_background_windows) return;
-
-
-	//Si no hay multitask, no restaurar, porque esto puede implicar que se abran ventanas que necesitan multitask,
-	//y se quejen con "This window needs multitask enabled", y ese mensaje no se ve el error, y espera una tecla
-	if (!menu_multitarea) return;
-
-    if (zxvision_current_window==NULL) return;
-
-
-
-    //Primero ir a buscar la de abajo del todo
-    zxvision_window *pointer_window;
-
-    pointer_window=zxvision_find_first_window_below_this(zxvision_current_window);
-
-    zxvision_window *initial_current_window=zxvision_current_window;
-
-    //Y ahora de ahi hacia arriba
-    int salir=0;
-    do {
-
-        //printf("Puntero ventana: %p\n",pointer_window);
-        if (pointer_window==NULL) {
-            debug_printf(VERBOSE_DEBUG,"Window is null. Exiting");
-            salir=1;
-        }
-        else {
-            //printf("ventana: %s\n",pointer_window->geometry_name);
-
-            //Obtenemos la siguiente ventana antes pasar a la siguiente
-            zxvision_window *next_window=pointer_window->next_window;
-
-            pointer_window->dirty_must_draw_contents=1;
-            pointer_window->dirty_user_must_draw_contents=1;
-            pointer_window->default_paper=ESTILO_GUI_PAPEL_NORMAL;
-
-
-            //Cambiar caracter espacio de fondo
-            zxvision_change_space_colour(pointer_window,ESTILO_GUI_PAPEL_NORMAL);
-
-            //El resto de colores se refrescaran por si solos cuando el overlay de cada ventana diga que hay que refrescar
-
-
-            //Si la que hemos redibujado era la inicial, salimos
-            if (pointer_window==initial_current_window) {
-                debug_printf(VERBOSE_DEBUG,"Redrawn window was the last. Exiting");
-                salir=1;
-            }
-
-            else {
-                pointer_window=next_window;
-            }
-
-        }
-
-
-    } while(!salir);
-
-
-
-}
 
 
 void zxvision_set_draw_window_parameters(zxvision_window *w)
