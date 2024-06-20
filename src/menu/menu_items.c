@@ -34229,18 +34229,28 @@ void menu_z88_slots(MENU_ITEM_PARAMETERS)
 
 void menu_tape_browser(MENU_ITEM_PARAMETERS)
 {
-	int linea=menu_tape_browser_show(tapefile,tape_viewer_block_index);
 
-    if (!is_tape_inserted()) return;
+    int repetir_browser;
 
-    //Si es .tap, podemos hacer browse
-    if (!util_compare_file_extension(tapefile,"tap")) {
-        if (linea>=0) {
-            if (menu_confirm_yesno("Seek to block?")) {
-                tape_seek_to_block(linea);
+    do {
+
+        repetir_browser=0;
+
+        int linea=menu_tape_browser_show(tapefile,tape_viewer_block_index);
+
+        if (!is_tape_inserted()) return;
+
+        //Si es .tap, podemos hacer browse
+        if (!util_compare_file_extension(tapefile,"tap")) {
+            if (linea>=0) {
+                if (menu_confirm_yesno("Seek to block?")) {
+                    tape_seek_to_block(linea);
+                    repetir_browser=1;
+                }
             }
         }
-    }
+
+    } while (repetir_browser);
 
 }
 
