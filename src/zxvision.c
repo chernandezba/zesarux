@@ -27516,6 +27516,18 @@ void zxvision_index_load_from_disk(void)
     free(buffer_index);
 }
 
+void zxvision_change_gui_style(int estilo)
+{
+
+    if (estilo<0 || estilo>=ESTILOS_GUI) {
+        debug_printf(VERBOSE_ERR,"Can't change GUI style to id %d",estilo);
+        return;
+    }
+
+    estilo_gui_activo=estilo;
+    set_charset_from_gui();
+}
+
 //Ajusta estilo del driver de video si este no es driver completo y el seleccionado necesita un driver completo
 void menu_adjust_gui_style_to_driver(void)
 {
@@ -27539,9 +27551,8 @@ void menu_adjust_gui_style_to_driver(void)
                 definiciones_estilos_gui[estilo_gui_activo].nombre_estilo,
                 definiciones_estilos_gui[i].nombre_estilo);
 
-            estilo_gui_activo=i;
-            //realmente aqui el charset da un poco igual porque en estos drivers el texto mostrado no usa ese charset
-            set_charset_from_gui();
+            zxvision_change_gui_style(i);
+
 
             return;
         }

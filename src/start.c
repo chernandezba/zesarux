@@ -5552,25 +5552,9 @@ int parse_cmdline_options(int desde_commandline) {
 					exit(1);
 				}
 
-                estilo_gui_activo=indice;
-                set_charset_from_gui();
+                zxvision_change_gui_style(indice);
 
-                /*
 
-				int i;
-				for (i=0;i<ESTILOS_GUI;i++) {
-					if (!strcasecmp(argv[puntero_parametro],definiciones_estilos_gui[i].nombre_estilo)) {
-						estilo_gui_activo=i;
-						set_charset_from_gui();
-						break;
-					}
-				}
-				if (i==ESTILOS_GUI) {
-					printf ("Invalid GUI style: %s\n",argv[puntero_parametro]);
-					exit(1);
-				}
-
-                */
             }
 
             else if (!strcmp(argv[puntero_parametro],"--charset")) {

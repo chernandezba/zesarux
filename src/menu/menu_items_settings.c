@@ -1439,9 +1439,7 @@ void menu_interface_change_gui_style_apply(MENU_ITEM_PARAMETERS)
 {
 
     //Si se pulsa Enter
-    estilo_gui_activo=valor_opcion;
-
-    set_charset_from_gui();
+    zxvision_change_gui_style(valor_opcion);
 
     menu_init_footer();
 
@@ -1453,9 +1451,7 @@ void menu_interface_change_gui_style_apply(MENU_ITEM_PARAMETERS)
 void menu_interface_change_gui_style_select(struct s_menu_item *item_seleccionado)
 {
 
-    estilo_gui_activo=item_seleccionado->valor_opcion;
-
-    set_charset_from_gui();
+    zxvision_change_gui_style(item_seleccionado->valor_opcion);
 
     menu_init_footer();
 

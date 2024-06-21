@@ -524,6 +524,8 @@ extern int zxvision_find_known_window(char *nombre);
 
 extern int total_restore_window_array_elements;
 
+extern void zxvision_change_gui_style(int estilo);
+
 extern int zxvision_currently_restoring_windows_on_start;
 extern void zxvision_restore_windows_on_startup(void);
 extern void zxvision_restore_one_window(char *ventana_a_restaurar);
