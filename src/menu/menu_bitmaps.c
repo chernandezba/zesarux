@@ -5091,23 +5091,23 @@ char *bitmap_button_ext_desktop_my_machine_cz2000[EXT_DESKTOP_BUTTONS_ANCHO]={
 	"                          ",
 	"                          ",
 	"                          ",
-	"      x    x x x          ",
-	"      xx   x x x          ",	//10
-	"      x x  x x x          ",
-	"      x  x x x x          ",
-	"      x   xx x x          ",
-    "      x    x x xxxxx      ",
-	"                          ",
-	"                          ",
-	"                          ",
-	"                          ",
-	"                          ",
-	"                          ",    //20
-	"                          ",
-	"                          ",
-	"                          ",
-	"                          ",
-	"                          " 	 //25
+    "                          ",
+	"                          ",	//10
+	" xxxxxxxxxxxxxxxxxxxxxxxx ",
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
+	"xxwxxwxwwwwwxxxxxxxxxxxxxx",
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
+	"xxwwxwwxwwxwwxwwxwwxwwxxxx",
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
+	"xxxwwxwwxwwxwwxwwxwwxwwxxx",
+	"xxxxxxxxxxxxxxxxxxxxxxxxxr",    //20
+	"xxxxwwxwwxwwxwwxwwxwwxwwry",
+	"xxxxxxxxxxxxxxxxxxxxxxxryg",
+	"xxxwwxwwxwwxwwxwwxwwxwrygb",
+	"xxxxxxxxxxxxxxxxxxxxxrygbx",
+	" xxxxxxxxxxxxxxxxxxxrygbx " 	 //25
 };
 
 char *bitmap_button_ext_desktop_my_machine_cz_spectrum[EXT_DESKTOP_BUTTONS_ANCHO]={
