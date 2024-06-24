@@ -1351,6 +1351,16 @@ char *string_machines_list_description=
 					    " TK95     Microdigital TK95\n"
                         " TK95S    Microdigital TK95 (Spanish)\n"
 
+                        //Czerweny CZ 1000, CZ 1500, CZ 2000, CZ 1000 Plus, CZ 1500 Plus, CZ Spectrum, CZ Spectrum Plus
+
+                        " CZ1000   Czerweny CZ1000\n"
+                        " CZ1500   Czerweny CZ1500\n"
+                        " CZ1000p  Czerweny CZ1000 Plus\n"
+                        " CZ1500p  Czerweny CZ1500 Plus\n"
+                        " CZ2000   Czerweny CZ2000\n"
+                        " CZSPEC   Czerweny CZ Spectrum\n"
+                        " CZSPECp  Czerweny CZ Spectrum Plus\n"
+
 							" Z88      Cambridge Z88\n"
 
 							" Sam      Sam Coupe\n"
@@ -1469,6 +1479,15 @@ struct s_machine_names machine_names[]={
     {"Microdigital TK82C",		MACHINE_ID_MICRODIGITAL_TK82C},
     {"Microdigital TK83",		MACHINE_ID_MICRODIGITAL_TK83},
     {"Microdigital TK85",		MACHINE_ID_MICRODIGITAL_TK85},
+
+    {"Czerweny CZ1000",MACHINE_ID_CZ_1000},
+    {"Czerweny CZ1500",MACHINE_ID_CZ_1500},
+    {"Czerweny CZ1000 Plus",MACHINE_ID_CZ_1000_PLUS},
+    {"Czerweny CZ1500 Plus",MACHINE_ID_CZ_1500_PLUS},
+    {"Czerweny CZ2000",MACHINE_ID_CZ_2000},
+    {"Czerweny CZ Spectrum",MACHINE_ID_CZ_SPECTRUM},
+    {"Czerweny CZ Spectrum Plus",MACHINE_ID_CZ_SPECTRUM_PLUS},
+
     {"Z88",  				130},
     {"CPC 464",  			MACHINE_ID_CPC_464},
     {"CPC 4128",  			MACHINE_ID_CPC_4128},
@@ -2010,7 +2029,10 @@ void set_machine_params(void)
 29=Timex TC2048
 30=Timex TC2068
 31=tk95s
-32-39=Reservadas otras Spectrum
+32=CZ 2000
+33=CZ SPECTRUM
+34=CZ SPECTRUM_PLUS
+35-39=Reservadas otras Spectrum
 
 100=colecovision
 101=sega sg1000
@@ -2051,6 +2073,11 @@ void set_machine_params(void)
 190=Amstrad PCW 8256
 191=Amstrad PCW 8512
 192-199 reservado para otros PCW
+
+200=CZ 1000
+201=CZ 1500
+202=CZ 1000 PLUS
+203=CZ 1500 PLUS
 */
 
 		char mensaje_error[200];
@@ -2670,6 +2697,9 @@ You don't need timings for H/V sync =)
 		case MACHINE_ID_SPECTRUM_48_PLUS_SPA:
         case MACHINE_ID_SPECTRUM_48_PLUS_ENG:
         case MACHINE_ID_TIMEX_TC2048:
+        case MACHINE_ID_CZ_2000:
+        case MACHINE_ID_CZ_SPECTRUM:
+        case MACHINE_ID_CZ_SPECTRUM_PLUS:
 		poke_byte=poke_byte_spectrum_48k;
 		peek_byte=peek_byte_spectrum_48k;
 		peek_byte_no_time=peek_byte_no_time_spectrum_48k;
@@ -2993,6 +3023,10 @@ You don't need timings for H/V sync =)
         case MACHINE_ID_MICRODIGITAL_TK82C:
         case MACHINE_ID_MICRODIGITAL_TK83:
         case MACHINE_ID_MICRODIGITAL_TK85:
+        case MACHINE_ID_CZ_1000:
+        case MACHINE_ID_CZ_1500:
+        case MACHINE_ID_CZ_1000_PLUS:
+        case MACHINE_ID_CZ_1500_PLUS:
                 poke_byte=poke_byte_zx80;
                 peek_byte=peek_byte_zx80;
 		peek_byte_no_time=peek_byte_zx80_no_time;
@@ -3403,6 +3437,8 @@ void rom_load(char *romfilename)
 	if (romfilename==NULL) {
 		switch (current_machine_type) {
             case 0:
+            case MACHINE_ID_CZ_2000:
+            case MACHINE_ID_CZ_SPECTRUM:
             romfilename="48.rom";
             break;
 
@@ -3412,6 +3448,7 @@ void rom_load(char *romfilename)
             break;
 
             case 2:
+            case MACHINE_ID_CZ_SPECTRUM_PLUS:
             romfilename="inves.rom";
             break;
 
@@ -3554,6 +3591,10 @@ void rom_load(char *romfilename)
             case MACHINE_ID_TIMEX_TS1000: //misma rom
             case MACHINE_ID_MICRODIGITAL_TK82C:
             case MACHINE_ID_MICRODIGITAL_TK83:
+            case MACHINE_ID_CZ_1000:
+            case MACHINE_ID_CZ_1500:
+            case MACHINE_ID_CZ_1000_PLUS:
+            case MACHINE_ID_CZ_1500_PLUS:
 
             romfilename="zx81.rom";
 

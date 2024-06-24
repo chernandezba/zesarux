@@ -716,7 +716,7 @@ int array_maquinas_science_of_cambridge[]={
 };
 
 int array_maquinas_czerweny_electronica[]={
-	255
+	MACHINE_ID_CZ_1000,MACHINE_ID_CZ_1500,MACHINE_ID_CZ_1000_PLUS,MACHINE_ID_CZ_1500_PLUS,MACHINE_ID_CZ_2000,MACHINE_ID_CZ_SPECTRUM,MACHINE_ID_CZ_SPECTRUM_PLUS,255
 };
 
 //Retorna array a maquinas segun fabricante
@@ -952,6 +952,16 @@ int return_fabricante_maquina(int maquina)
     case MACHINE_ID_MK14_STANDARD:
       return FABRICANTE_SCIENCE_OF_CAMBRIDGE;
     break;
+
+            case MACHINE_ID_CZ_1000:
+            case MACHINE_ID_CZ_1500:
+            case MACHINE_ID_CZ_1000_PLUS:
+            case MACHINE_ID_CZ_1500_PLUS:
+            case MACHINE_ID_CZ_2000:
+            case MACHINE_ID_CZ_SPECTRUM:
+            case MACHINE_ID_CZ_SPECTRUM_PLUS:
+                return FABRICANTE_CZERWENY_ELECTRONICA;
+            break;
 
 		default:
 			cpu_panic ("Unknown manufacturer for machine id");

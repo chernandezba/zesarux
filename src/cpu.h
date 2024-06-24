@@ -416,6 +416,9 @@ extern z80_bit stdout_simpletext_automatic_redraw;
 #define MACHINE_ID_TIMEX_TC2048			    29
 #define MACHINE_ID_TIMEX_TC2068			    30
 #define MACHINE_ID_MICRODIGITAL_TK95_SPA	31
+#define MACHINE_ID_CZ_2000                  32
+#define MACHINE_ID_CZ_SPECTRUM              33
+#define MACHINE_ID_CZ_SPECTRUM_PLUS         34
 
 #define MACHINE_ID_COLECO                   100
 
@@ -455,6 +458,11 @@ extern z80_bit stdout_simpletext_automatic_redraw;
 #define MACHINE_ID_PCW_8256                 190
 #define MACHINE_ID_PCW_8512                 191
 
+#define MACHINE_ID_CZ_1000                  200
+#define MACHINE_ID_CZ_1500                  201
+#define MACHINE_ID_CZ_1000_PLUS             202
+#define MACHINE_ID_CZ_1500_PLUS             203
+
 
 //
 //Condiciones de maquinas activas
@@ -482,6 +490,14 @@ extern z80_bit stdout_simpletext_automatic_redraw;
 #define MACHINE_IS_TIMEX_TS2068             (current_machine_type==MACHINE_ID_TIMEX_TS2068)
 #define MACHINE_IS_TIMEX_TC2068             (current_machine_type==MACHINE_ID_TIMEX_TC2068)
 #define MACHINE_IS_TIMEX_TC2048             (current_machine_type==MACHINE_ID_TIMEX_TC2048)
+
+#define MACHINE_IS_CZ_1000                  (current_machine_type==MACHINE_ID_CZ_1000)
+#define MACHINE_IS_CZ_1500                  (current_machine_type==MACHINE_ID_CZ_1500)
+#define MACHINE_IS_CZ_1000_PLUS             (current_machine_type==MACHINE_ID_CZ_1000_PLUS)
+#define MACHINE_IS_CZ_1500_PLUS             (current_machine_type==MACHINE_ID_CZ_1500_PLUS)
+#define MACHINE_IS_CZ_2000                  (current_machine_type==MACHINE_ID_CZ_2000)
+#define MACHINE_IS_CZ_SPECTRUM              (current_machine_type==MACHINE_ID_CZ_SPECTRUM)
+#define MACHINE_IS_CZ_SPECTRUM_PLUS         (current_machine_type==MACHINE_ID_CZ_SPECTRUM_PLUS)
 
 #define MACHINE_IS_PRISM                    (current_machine_type==MACHINE_ID_PRISM)
 #define MACHINE_IS_TBBLUE                   (current_machine_type==MACHINE_ID_TBBLUE)
@@ -541,7 +557,7 @@ extern z80_bit stdout_simpletext_automatic_redraw;
 
 #define MACHINE_IS_SPECTRUM_48_PLUS_SPA         (current_machine_type==MACHINE_ID_SPECTRUM_48_PLUS_SPA)
 #define MACHINE_IS_SPECTRUM_48_PLUS_ENG         (current_machine_type==MACHINE_ID_SPECTRUM_48_PLUS_ENG)
-#define MACHINE_IS_SPECTRUM_16_48               ( (current_machine_type<=MACHINE_ID_MICRODIGITAL_TK95) || MACHINE_IS_SPECTRUM_48_PLUS_SPA || MACHINE_IS_SPECTRUM_48_PLUS_ENG || MACHINE_IS_TIMEX_TC2048 || MACHINE_IS_MICRODIGITAL_TK95_SPA)
+#define MACHINE_IS_SPECTRUM_16_48               ( (current_machine_type<=MACHINE_ID_MICRODIGITAL_TK95) || MACHINE_IS_SPECTRUM_48_PLUS_SPA || MACHINE_IS_SPECTRUM_48_PLUS_ENG || MACHINE_IS_TIMEX_TC2048 || MACHINE_IS_MICRODIGITAL_TK95_SPA || MACHINE_IS_CZ_2000 || MACHINE_IS_CZ_SPECTRUM || MACHINE_IS_CZ_SPECTRUM_PLUS)
 
 #define MACHINE_IS_SPECTRUM_128_P2              ( (current_machine_type>=MACHINE_ID_SPECTRUM_128 && current_machine_type<=MACHINE_ID_SPECTRUM_P2_SPA) || MACHINE_IS_PENTAGON)
 #define MACHINE_IS_SPECTRUM_P2                  ( (current_machine_type>=MACHINE_ID_SPECTRUM_P2 && current_machine_type<=MACHINE_ID_SPECTRUM_P2_SPA))
@@ -562,7 +578,7 @@ extern z80_bit stdout_simpletext_automatic_redraw;
 #define MACHINE_IS_TIMEX_TS_TC_2068             (MACHINE_IS_TIMEX_TS2068 || MACHINE_IS_TIMEX_TC2068)
 
 #define MACHINE_IS_ZX80_TYPE                    (MACHINE_IS_ZX80 || MACHINE_IS_MICRODIGITAL_TK80 || MACHINE_IS_MICRODIGITAL_TK82)
-#define MACHINE_IS_ZX81_TYPE                    (MACHINE_IS_ZX81 || MACHINE_IS_TIMEX_TS1000 || MACHINE_IS_TIMEX_TS1500 || MACHINE_IS_MICRODIGITAL_TK82C || MACHINE_IS_MICRODIGITAL_TK83 || MACHINE_IS_MICRODIGITAL_TK85)
+#define MACHINE_IS_ZX81_TYPE                    (MACHINE_IS_ZX81 || MACHINE_IS_TIMEX_TS1000 || MACHINE_IS_TIMEX_TS1500 || MACHINE_IS_MICRODIGITAL_TK82C || MACHINE_IS_MICRODIGITAL_TK83 || MACHINE_IS_MICRODIGITAL_TK85 || MACHINE_IS_CZ_1000 || MACHINE_IS_CZ_1500 || MACHINE_IS_CZ_1000_PLUS || MACHINE_IS_CZ_1500_PLUS)
 #define MACHINE_IS_ZX8081                       (MACHINE_IS_ZX80_TYPE || MACHINE_IS_ZX81_TYPE)
 #define MACHINE_IS_ZX8081ACE                    (MACHINE_IS_ZX8081 || MACHINE_IS_ACE)
 

@@ -3,6 +3,7 @@ ZEsarUX 11.1 - xxxx edition. 06 June 2024
 
 * Improvements:
 
+Added machines Czerweny CZ 1000, CZ 1500, CZ 1000 Plus, CZ 1500 Plus, CZ 2000, CZ Spectrum, CZ Spectrum Plus
 Allow hotswap to Pentagon and to Spectrum +3
 Improve Azimuth warning on External Audio Source Window
 Allow to not save snapshot when exiting ZEsarUX
