@@ -28426,22 +28426,15 @@ void menu_machine_selection_manufacturer_machines(int fabricante)
                 int retorno_menu;
 	do {
 
+        menu_add_item_menu_inicial(&array_menu_machine_selection_por_fabricante,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
+
 		for (i=0;maquinas[i]!=255;i++) {
 			m=maquinas[i];
 			//printf ("%d\n",m);
 			nombre_maquina=get_machine_name(m);
 			//printf ("%d %s\n",m,nombre_maquina);
 
-
-			if (i==0) {
-				//Primera maquina
-	                        menu_add_item_menu_inicial_format(&array_menu_machine_selection_por_fabricante,MENU_OPCION_NORMAL,NULL,NULL,"%s",nombre_maquina);
-
-			}
-
-			else {
-				menu_add_item_menu_format(array_menu_machine_selection_por_fabricante,MENU_OPCION_NORMAL,NULL,NULL,"%s",nombre_maquina);
-			}
+            menu_add_item_menu_format(array_menu_machine_selection_por_fabricante,MENU_OPCION_NORMAL,NULL,NULL,"%s",nombre_maquina);
 
 
 		}

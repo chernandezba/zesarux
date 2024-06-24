@@ -523,6 +523,7 @@ Ascii Corp
 Cambridge Computers
 Chloe Corporation
 Coleco Industries
+Czerweny Electronica
 Investronica
 Jupiter Cantab
 Mario Prato
@@ -542,7 +543,7 @@ VTrucco/FB Labs
 ZXUno Team
 */
 
-#define TOTAL_FABRICANTES 22
+#define TOTAL_FABRICANTES 23
 
 
 #define FABRICANTE_AMSTRAD                      0
@@ -550,24 +551,24 @@ ZXUno Team
 #define FABRICANTE_CAMBRIDGE_COMPUTERS          2
 #define FABRICANTE_CHLOE_CORPORATION            3
 #define FABRICANTE_COLECO_INDUSTRIES            4
-#define FABRICANTE_INVESTRONICA                 5
-#define FABRICANTE_JUPITER_CANTAB               6
-#define FABRICANTE_MARIOPRATO                   7
-#define FABRICANTE_MICRODIGITAL_ELECTRONICA     8
-#define FABRICANTE_MILES_GORDON                 9
-#define FABRICANTE_NEDOPC                       10
-#define FABRICANTE_NEW_HORIZONS                 11
-#define FABRICANTE_PENTAGON                     12
-#define FABRICANTE_SCIENCE_OF_CAMBRIDGE         13
-#define FABRICANTE_SEGA                         14
-#define FABRICANTE_SINCLAIR                     15
-#define FABRICANTE_SPECTRAVIDEO_INTERNATIONAL   16
-#define FABRICANTE_TIMEX_COMPUTERS              17
-#define FABRICANTE_TIMEX_SINCLAIR               18
-#define FABRICANTE_TSLABS                       19
-#define FABRICANTE_TBBLUE                       20
-#define FABRICANTE_ZXUNO_TEAM                   21
-
+#define FABRICANTE_CZERWENY_ELECTRONICA         5
+#define FABRICANTE_INVESTRONICA                 6
+#define FABRICANTE_JUPITER_CANTAB               7
+#define FABRICANTE_MARIOPRATO                   8
+#define FABRICANTE_MICRODIGITAL_ELECTRONICA     9
+#define FABRICANTE_MILES_GORDON                 10
+#define FABRICANTE_NEDOPC                       11
+#define FABRICANTE_NEW_HORIZONS                 12
+#define FABRICANTE_PENTAGON                     13
+#define FABRICANTE_SCIENCE_OF_CAMBRIDGE         14
+#define FABRICANTE_SEGA                         15
+#define FABRICANTE_SINCLAIR                     16
+#define FABRICANTE_SPECTRAVIDEO_INTERNATIONAL   17
+#define FABRICANTE_TIMEX_COMPUTERS              18
+#define FABRICANTE_TIMEX_SINCLAIR               19
+#define FABRICANTE_TSLABS                       20
+#define FABRICANTE_TBBLUE                       21
+#define FABRICANTE_ZXUNO_TEAM                   22
 
 
 extern char *array_fabricantes[];

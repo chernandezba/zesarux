@@ -589,6 +589,7 @@ Cambridge computers
 Jupiter cantab
 Miles Gordon Tech
 Pentagon
+Czerweny Electronica
 
 
 */
@@ -599,6 +600,7 @@ char *array_fabricantes_hotkey[]={
         "Cam~~bridge Computers",
         "~~Chloe Corporation",
         "Coleco In~~dustries",
+        "Czerweny Electronica",
         "~~Investronica",
         "J~~upiter Cantab",
         "Ma~~rio Prato",
@@ -619,7 +621,7 @@ char *array_fabricantes_hotkey[]={
 };
 
 //Si letra es espacio->no hay letra. spectravideo o timex computer no hay letras libres
-char array_fabricantes_hotkey_letra[]="aobcdiurmyewpngs  tlvz";
+char array_fabricantes_hotkey_letra[]="aobcd iurmyewpngs  tlvz";
 
 
 
@@ -713,6 +715,10 @@ int array_maquinas_science_of_cambridge[]={
 	MACHINE_ID_MK14_STANDARD,255
 };
 
+int array_maquinas_czerweny_electronica[]={
+	255
+};
+
 //Retorna array a maquinas segun fabricante
 int *return_maquinas_fabricante(int fabricante)
 {
@@ -803,6 +809,10 @@ int *return_maquinas_fabricante(int fabricante)
 
     case FABRICANTE_SCIENCE_OF_CAMBRIDGE:
       return array_maquinas_science_of_cambridge;
+    break;
+
+    case FABRICANTE_CZERWENY_ELECTRONICA:
+        return array_maquinas_czerweny_electronica;
     break;
 
 		default:
