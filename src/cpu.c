@@ -1353,11 +1353,11 @@ char *string_machines_list_description=
 
                         //Czerweny CZ 1000, CZ 1500, CZ 2000, CZ 1000 Plus, CZ 1500 Plus, CZ Spectrum, CZ Spectrum Plus
 
-                        " CZ1000   Czerweny CZ1000\n"
-                        " CZ1500   Czerweny CZ1500\n"
-                        " CZ1000p  Czerweny CZ1000 Plus\n"
-                        " CZ1500p  Czerweny CZ1500 Plus\n"
-                        " CZ2000   Czerweny CZ2000\n"
+                        " CZ1000   Czerweny CZ 1000\n"
+                        " CZ1500   Czerweny CZ 1500\n"
+                        " CZ1000p  Czerweny CZ 1000 Plus\n"
+                        " CZ1500p  Czerweny CZ 1500 Plus\n"
+                        " CZ2000   Czerweny CZ 2000\n"
                         " CZSPEC   Czerweny CZ Spectrum\n"
                         " CZSPECp  Czerweny CZ Spectrum Plus\n"
 
@@ -1480,11 +1480,11 @@ struct s_machine_names machine_names[]={
     {"Microdigital TK83",		MACHINE_ID_MICRODIGITAL_TK83},
     {"Microdigital TK85",		MACHINE_ID_MICRODIGITAL_TK85},
 
-    {"Czerweny CZ1000",MACHINE_ID_CZ_1000},
-    {"Czerweny CZ1500",MACHINE_ID_CZ_1500},
-    {"Czerweny CZ1000 Plus",MACHINE_ID_CZ_1000_PLUS},
-    {"Czerweny CZ1500 Plus",MACHINE_ID_CZ_1500_PLUS},
-    {"Czerweny CZ2000",MACHINE_ID_CZ_2000},
+    {"Czerweny CZ 1000",MACHINE_ID_CZ_1000},
+    {"Czerweny CZ 1500",MACHINE_ID_CZ_1500},
+    {"Czerweny CZ 1000 Plus",MACHINE_ID_CZ_1000_PLUS},
+    {"Czerweny CZ 1500 Plus",MACHINE_ID_CZ_1500_PLUS},
+    {"Czerweny CZ 2000",MACHINE_ID_CZ_2000},
     {"Czerweny CZ Spectrum",MACHINE_ID_CZ_SPECTRUM},
     {"Czerweny CZ Spectrum Plus",MACHINE_ID_CZ_SPECTRUM_PLUS},
 
