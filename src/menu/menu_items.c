@@ -21393,6 +21393,7 @@ void menu_help_keyboard_load_bmp(void)
     else if (MACHINE_IS_MICRODIGITAL_TK82C) strcpy(nombrebmp,"keyboard_zx81.bmp"); //mismo teclado
     else if (MACHINE_IS_MICRODIGITAL_TK83) strcpy(nombrebmp,"keyboard_zx81.bmp"); //mismo teclado
     else if (MACHINE_IS_TIMEX_TS1500) strcpy(nombrebmp,"keyboard_ts1500.bmp");
+    else if (MACHINE_IS_CZ_1500) strcpy(nombrebmp,"keyboard_ts1500.bmp"); //mismo teclado
     else if (MACHINE_IS_MICRODIGITAL_TK85) strcpy(nombrebmp,"keyboard_tk85.bmp");
     else if (MACHINE_IS_ZXEVO) strcpy(nombrebmp,"keyboard_zxevo.bmp");
     else if (MACHINE_IS_ZXUNO) strcpy(nombrebmp,"keyboard_zxuno.bmp");
@@ -22356,7 +22357,7 @@ int *keyboard_help_return_map_table(void)
         return keyboard_map_table_coords_timex_computer;
     }
 
-    else if (MACHINE_IS_TIMEX_TS1500) {
+    else if (MACHINE_IS_TIMEX_TS1500 || MACHINE_IS_CZ_1500) {
         return keyboard_map_table_coords_timex_sinclair_1500;
     }
 

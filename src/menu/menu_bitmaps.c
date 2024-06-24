@@ -4964,7 +4964,7 @@ char *bitmap_button_ext_desktop_my_machine_cz1000[EXT_DESKTOP_BUTTONS_ANCHO]={
     "                          ",     //0
   	"                          ",
 	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
-	"xxwxxwxwwwwwwxxxxxxxxxxxxx",
+	"xxwxxwxwwwwwxxxxxxxxxxxxxx",
 	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
 	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
 	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
@@ -5001,23 +5001,23 @@ char *bitmap_button_ext_desktop_my_machine_cz1500[EXT_DESKTOP_BUTTONS_ANCHO]={
 	"                          ",
 	"                          ",
 	"                          ",
-	"      x    x x x          ",
-	"      xx   x x x          ",	//10
-	"      x x  x x x          ",
-	"      x  x x x x          ",
-	"      x   xx x x          ",
-    "      x    x x xxxxx      ",
-	"                          ",
-	"                          ",
-	"                          ",
-	"                          ",
-	"                          ",
-	"                          ",    //20
-	"                          ",
-	"                          ",
-	"                          ",
-	"                          ",
-	"                          " 	 //25
+    "                          ",
+	"                          ",	//10
+	" wwwwwwwwwwwwwwwwwwwwwwww ",
+	"wwwwwwwwwwwwwwwwwwwwwwwwww",
+	"wwwwwwwwwwwwwwwwwwwwwwwwww",
+	"wwwxxwxwwwwxwwwwwwwwwwwwww",
+	"wwwwwwwwwwwwwwwwwwwwwwwwww",
+	"wwwwwwwwwwwwwwwwwwwwwwwwww",
+	"wwWWwWWwWWwWWwWWwWWwWWwwww",
+	"wwwwwwwwwwwwwwwwwwwwwwwwww",
+	"wwwWWwWWwWWwWWwWWwWWwWWwww",
+	"wwwwwwwwwwwwwwwwwwwwwwwwww",    //20
+	"wwwwWWwWWwWWwWWwWWwWWwWWww",
+	"wwwwwwwwwwwwwwwwwwwwwwwwww",
+	"wwwWWwWWwWWwWWwWWwWWwwwwww",
+	"wwwwwwwwwwwwwwwwwwwwwwwwww",
+	" wwwwwwwwwwwwwwwwwwwwwwww " 	 //25
 };
 
 char *bitmap_button_ext_desktop_my_machine_cz1000_plus[EXT_DESKTOP_BUTTONS_ANCHO]={
