@@ -21381,6 +21381,7 @@ void menu_help_keyboard_load_bmp(void)
     else if (MACHINE_IS_SPECTRUM_P2A_P3) strcpy(nombrebmp,"keyboard_p3.bmp");
     else if (MACHINE_IS_SPECTRUM_16) strcpy(nombrebmp,"keyboard_16.bmp");
     else if (MACHINE_IS_SPECTRUM_48_PLUS_SPA) strcpy(nombrebmp,"keyboard_48s.bmp");
+    else if (MACHINE_IS_CZ_SPECTRUM_PLUS) strcpy(nombrebmp,"keyboard_48s.bmp"); //mismo teclado
     else if (MACHINE_IS_SPECTRUM_48_PLUS_ENG) strcpy(nombrebmp,"keyboard_48p.bmp"); //mismo teclado que el 128, aunque dejo archivos separados
     else if (MACHINE_IS_SPECTRUM_128) strcpy(nombrebmp,"keyboard_128.bmp");
     else if (MACHINE_IS_SPECTRUM_128_SPA) strcpy(nombrebmp,"keyboard_128s.bmp");
@@ -22321,7 +22322,7 @@ void keyboard_help_reset_teclas_pulsadas(void)
 int *keyboard_help_return_map_table(void)
 {
     if (MACHINE_IS_SPECTRUM_48_PLUS_SPA || MACHINE_IS_SPECTRUM_48_PLUS_ENG ||
-        MACHINE_IS_INVES || MACHINE_IS_SPECTRUM_128 || MACHINE_IS_SPECTRUM_128_SPA) {
+        MACHINE_IS_INVES || MACHINE_IS_SPECTRUM_128 || MACHINE_IS_SPECTRUM_128_SPA || MACHINE_IS_CZ_SPECTRUM_PLUS) {
         return keyboard_map_table_coords_48p;
     }
 
@@ -22443,7 +22444,7 @@ keyboard_help_double_key *keyboard_help_return_double_keys(void)
     keyboard_help_double_key *teclas_dobles=NULL;
 
     if (MACHINE_IS_SPECTRUM_48_PLUS_SPA || MACHINE_IS_SPECTRUM_48_PLUS_ENG ||
-        MACHINE_IS_INVES || MACHINE_IS_SPECTRUM_128 || MACHINE_IS_SPECTRUM_128_SPA) {
+        MACHINE_IS_INVES || MACHINE_IS_SPECTRUM_128 || MACHINE_IS_SPECTRUM_128_SPA || MACHINE_IS_CZ_SPECTRUM_PLUS) {
             teclas_dobles=keyboard_map_additional_48p;
     }
 

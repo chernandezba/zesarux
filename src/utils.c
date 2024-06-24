@@ -11696,13 +11696,13 @@ struct s_machines_short_names_id machines_short_names_id[]={
    {"TS1500",MACHINE_ID_TIMEX_TS1500,bitmap_button_ext_desktop_my_machine_ts1500},
 
 
-{"CZ1000",MACHINE_ID_CZ_1000,bitmap_button_ext_desktop_my_machine_cz1000},
-{"CZ1500",MACHINE_ID_CZ_1500,bitmap_button_ext_desktop_my_machine_cz1500},
-{"CZ1000p",MACHINE_ID_CZ_1000_PLUS,bitmap_button_ext_desktop_my_machine_cz1000_plus},
-{"CZ1500p",MACHINE_ID_CZ_1500_PLUS,bitmap_button_ext_desktop_my_machine_cz1500_plus},
-{"CZ2000",MACHINE_ID_CZ_2000,bitmap_button_ext_desktop_my_machine_cz2000},
-{"CZSPEC",MACHINE_ID_CZ_SPECTRUM,bitmap_button_ext_desktop_my_machine_cz_spectrum},
-{"CZSPECp",MACHINE_ID_CZ_SPECTRUM_PLUS,bitmap_button_ext_desktop_my_machine_cz_spectrum_plus},
+    {"CZ1000",MACHINE_ID_CZ_1000,bitmap_button_ext_desktop_my_machine_cz1000},
+    {"CZ1500",MACHINE_ID_CZ_1500,bitmap_button_ext_desktop_my_machine_cz1500},
+    {"CZ1000p",MACHINE_ID_CZ_1000_PLUS,bitmap_button_ext_desktop_my_machine_cz1000_plus},
+    {"CZ1500p",MACHINE_ID_CZ_1500_PLUS,bitmap_button_ext_desktop_my_machine_cz1500_plus},
+    {"CZ2000",MACHINE_ID_CZ_2000,bitmap_button_ext_desktop_my_machine_cz2000},
+    {"CZSPEC",MACHINE_ID_CZ_SPECTRUM,bitmap_button_ext_desktop_my_machine_cz_spectrum},
+    {"CZSPECp",MACHINE_ID_CZ_SPECTRUM_PLUS,bitmap_button_ext_desktop_my_machine_cz_spectrum_plus},
 
 
 

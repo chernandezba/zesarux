@@ -5151,23 +5151,23 @@ char *bitmap_button_ext_desktop_my_machine_cz_spectrum_plus[EXT_DESKTOP_BUTTONS_
 	"                          ",
 	"                          ",
 	"                          ",
-	"      x    x x x          ",
-	"      xx   x x x          ",	//10
-	"      x x  x x x          ",
-	"      x  x x x x          ",
-	"      x   xx x x          ",
-    "      x    x x xxxxx      ",
-	"                          ",
-	"                          ",
-	"                          ",
-	"                          ",
-	"                          ",
-	"                          ",    //20
-	"                          ",
-	"                          ",
-	"                          ",
-	"                          ",
-	"                          " 	 //25
+    "                          ",
+	"                          ",	//10
+	"xxxxxxxxxxxxxxxxxxxxxxxxx ",
+	"xxxxxxxxxxxxxxxxxxxxxrygb ",
+	"xxxxxxxxxxxxxxxxxxxxrygbx ",
+	"xxrrxwwwxxxxxxxxxxxrygbxx ",
+	"xxxxxxxxxxxxxxxxxxxxxxxxx ",
+	"xxxxxxxxxxxxxxxxxxxxxxxxx ",
+	"xxwwxwwxwwxwwxwwxwwxwwwxx ",
+	"xxxxxxxxxxxxxxxxxxxxxxxxx ",
+	"xxwxwwxwwxwwxwwxwwxwwxwxx ",
+	"xxxxxxxxxxxxxxxxxxxxxxwxx ",    //20
+	"xxwwwxwwxwwxwwxwwxwwxwwxx ",
+	"xxxxxxxxxxxxxxxxxxxxxxxxx ",
+	"xxwxwwxwwxwwwwwwwwwxwxwxx ",
+	"xxxxxxxxxxxxxxxxxxxxxxxxx ",
+	"xxxxxxxxxxxxxxxxxxxxxxxxx " 	 //25
 };
 
 //Icono "My machine" para TK82c
