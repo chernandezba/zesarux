@@ -839,12 +839,6 @@ index 7771e2a..0bc9509 100644
 
 
 
-
-
-
-
-
-
 diff --git a/src/keyboard_48p.bmp b/src/keyboard_48p.bmp
 new file mode 100644
 index 0000000..3c7fcc7
@@ -964,20 +958,20 @@ index a6b8c23..8e3051b 100644
     {"48ks",20},
     {"Inves",2},
     {"TK90X",3},
-diff --git a/src/zxvision.c b/src/zxvision.c
-index 363164e..23697c6 100644
---- a/src/zxvision.c
-+++ b/src/zxvision.c
-@@ -5130,6 +5130,14 @@ char **menu_ext_desktop_draw_configurable_icon_return_machine_icon(void)
 
-         else if (MACHINE_IS_SPECTRUM_P3) {
-             bitmap=bitmap_button_ext_desktop_my_machine_spectrum_p3;
-+        }
-+
-+        else if (MACHINE_IS_SPECTRUM_48_PLUS_ENG) {
-+            bitmap=bitmap_button_ext_desktop_my_machine_spectrum_48_spa;
-         }
-     }
+
+
+diff --git a/src/utils.c b/src/utils.c
+index b9211404..8ae300f0 100644
+--- a/src/utils.c
++++ b/src/utils.c
+@@ -11694,6 +11694,18 @@ struct s_machines_short_names_id machines_short_names_id[]={
+    {"ACE",122,bitmap_button_ext_desktop_my_machine_ace},
+    {"TS1000",MACHINE_ID_TIMEX_TS1000,bitmap_button_ext_desktop_my_machine_ts1000},
+    {"TS1500",MACHINE_ID_TIMEX_TS1500,bitmap_button_ext_desktop_my_machine_ts1500},
++{"48kp",MACHINE_ID_SPECTRUM_48_PLUS_ENG,bitmap_button_ext_desktop_my_machine_48kp},
+
+
 
 # Agregar en debug.c, en struct s_machine_family machine_family_list[]={ , si no es una maquina de la familia Spectrum
 

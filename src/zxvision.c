@@ -5721,7 +5721,7 @@ char **menu_ext_desktop_draw_configurable_icon_return_machine_icon(void)
 }
 
 
-
+/*
 char **old_menu_ext_desktop_draw_configurable_icon_return_machine_icon(void)
 {
 
@@ -5903,6 +5903,8 @@ char **old_menu_ext_desktop_draw_configurable_icon_return_machine_icon(void)
 
     return bitmap;
 }
+
+*/
 
 //Retorna bitmap de una accion
 /*

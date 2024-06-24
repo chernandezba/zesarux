@@ -204,6 +204,15 @@ extern char *bitmap_button_ext_desktop_my_machine_tk82[];
 extern char *bitmap_button_ext_desktop_my_machine_zx81[];
 extern char *bitmap_button_ext_desktop_my_machine_ts1000[];
 extern char *bitmap_button_ext_desktop_my_machine_ts1500[];
+
+extern char *bitmap_button_ext_desktop_my_machine_cz1000[];
+extern char *bitmap_button_ext_desktop_my_machine_cz1500[];
+extern char *bitmap_button_ext_desktop_my_machine_cz1000_plus[];
+extern char *bitmap_button_ext_desktop_my_machine_cz1500_plus[];
+extern char *bitmap_button_ext_desktop_my_machine_cz2000[];
+extern char *bitmap_button_ext_desktop_my_machine_cz_spectrum[];
+extern char *bitmap_button_ext_desktop_my_machine_cz_spectrum_plus[];
+
 extern char *bitmap_button_ext_desktop_my_machine_tk82c[];
 extern char *bitmap_button_ext_desktop_my_machine_tk83[];
 extern char *bitmap_button_ext_desktop_my_machine_tk85[];

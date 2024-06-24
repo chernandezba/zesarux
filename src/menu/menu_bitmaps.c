@@ -4958,6 +4958,218 @@ char *bitmap_button_ext_desktop_my_machine_ts1500[EXT_DESKTOP_BUTTONS_ANCHO]={
 };
 
 
+//Icono "My machine" para CZ1000
+char *bitmap_button_ext_desktop_my_machine_cz1000[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "                          ",     //0
+  	"                          ",
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
+	"xxwxxwxwwwwwwxxxxxxxxxxxxx",
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "xxxxxxxxxxxxxxxxxxxxxxxxxx",
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",	//10
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
+	"xxWWxWWxWWxWWxWWxWWxWWxxxx",
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
+	"xxxWWxWWxWWxWWxWWxWWxWWxxx",
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",    //20
+	"xxxxWWxWWxWWxWWxWWxWWxWWxx",
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
+	"xxxWWxWWxWWxWWxWWxWWxWWxxx",
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx" 	 //25
+};
+
+
+char *bitmap_button_ext_desktop_my_machine_cz1500[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "                          ",     //0
+  	"                          ",
+	"                          ",
+	"                          ",
+	"                          ",
+	"                          ",
+	"                          ",
+	"                          ",
+	"                          ",
+	"      x    x x x          ",
+	"      xx   x x x          ",	//10
+	"      x x  x x x          ",
+	"      x  x x x x          ",
+	"      x   xx x x          ",
+    "      x    x x xxxxx      ",
+	"                          ",
+	"                          ",
+	"                          ",
+	"                          ",
+	"                          ",
+	"                          ",    //20
+	"                          ",
+	"                          ",
+	"                          ",
+	"                          ",
+	"                          " 	 //25
+};
+
+char *bitmap_button_ext_desktop_my_machine_cz1000_plus[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "                          ",     //0
+  	"                          ",
+	"                          ",
+	"                          ",
+	"                          ",
+	"                          ",
+	"                          ",
+	"                          ",
+	"                          ",
+	"      x    x x x          ",
+	"      xx   x x x          ",	//10
+	"      x x  x x x          ",
+	"      x  x x x x          ",
+	"      x   xx x x          ",
+    "      x    x x xxxxx      ",
+	"                          ",
+	"                          ",
+	"                          ",
+	"                          ",
+	"                          ",
+	"                          ",    //20
+	"                          ",
+	"                          ",
+	"                          ",
+	"                          ",
+	"                          " 	 //25
+};
+
+char *bitmap_button_ext_desktop_my_machine_cz1500_plus[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "                          ",     //0
+  	"                          ",
+	"                          ",
+	"                          ",
+	"                          ",
+	"                          ",
+	"                          ",
+	"                          ",
+	"                          ",
+	"      x    x x x          ",
+	"      xx   x x x          ",	//10
+	"      x x  x x x          ",
+	"      x  x x x x          ",
+	"      x   xx x x          ",
+    "      x    x x xxxxx      ",
+	"                          ",
+	"                          ",
+	"                          ",
+	"                          ",
+	"                          ",
+	"                          ",    //20
+	"                          ",
+	"                          ",
+	"                          ",
+	"                          ",
+	"                          " 	 //25
+};
+
+char *bitmap_button_ext_desktop_my_machine_cz2000[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "                          ",     //0
+  	"                          ",
+	"                          ",
+	"                          ",
+	"                          ",
+	"                          ",
+	"                          ",
+	"                          ",
+	"                          ",
+	"      x    x x x          ",
+	"      xx   x x x          ",	//10
+	"      x x  x x x          ",
+	"      x  x x x x          ",
+	"      x   xx x x          ",
+    "      x    x x xxxxx      ",
+	"                          ",
+	"                          ",
+	"                          ",
+	"                          ",
+	"                          ",
+	"                          ",    //20
+	"                          ",
+	"                          ",
+	"                          ",
+	"                          ",
+	"                          " 	 //25
+};
+
+char *bitmap_button_ext_desktop_my_machine_cz_spectrum[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "                          ",     //0
+  	"                          ",
+	"                          ",
+	"                          ",
+	"                          ",
+	"                          ",
+	"                          ",
+	"                          ",
+	"                          ",
+	"      x    x x x          ",
+	"      xx   x x x          ",	//10
+	"      x x  x x x          ",
+	"      x  x x x x          ",
+	"      x   xx x x          ",
+    "      x    x x xxxxx      ",
+	"                          ",
+	"                          ",
+	"                          ",
+	"                          ",
+	"                          ",
+	"                          ",    //20
+	"                          ",
+	"                          ",
+	"                          ",
+	"                          ",
+	"                          " 	 //25
+};
+
+char *bitmap_button_ext_desktop_my_machine_cz_spectrum_plus[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "                          ",     //0
+  	"                          ",
+	"                          ",
+	"                          ",
+	"                          ",
+	"                          ",
+	"                          ",
+	"                          ",
+	"                          ",
+	"      x    x x x          ",
+	"      xx   x x x          ",	//10
+	"      x x  x x x          ",
+	"      x  x x x x          ",
+	"      x   xx x x          ",
+    "      x    x x xxxxx      ",
+	"                          ",
+	"                          ",
+	"                          ",
+	"                          ",
+	"                          ",
+	"                          ",    //20
+	"                          ",
+	"                          ",
+	"                          ",
+	"                          ",
+	"                          " 	 //25
+};
+
 //Icono "My machine" para TK82c
 char *bitmap_button_ext_desktop_my_machine_tk82c[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345

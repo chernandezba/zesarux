@@ -21389,6 +21389,7 @@ void menu_help_keyboard_load_bmp(void)
     else if (MACHINE_IS_MICRODIGITAL_TK82) strcpy(nombrebmp,"keyboard_zx80.bmp");
     else if (MACHINE_IS_ZX81) strcpy(nombrebmp,"keyboard_zx81.bmp");
     else if (MACHINE_IS_TIMEX_TS1000) strcpy(nombrebmp,"keyboard_zx81.bmp"); //mismo teclado
+    else if (MACHINE_IS_CZ_1000) strcpy(nombrebmp,"keyboard_zx81.bmp"); //mismo teclado
     else if (MACHINE_IS_MICRODIGITAL_TK82C) strcpy(nombrebmp,"keyboard_zx81.bmp"); //mismo teclado
     else if (MACHINE_IS_MICRODIGITAL_TK83) strcpy(nombrebmp,"keyboard_zx81.bmp"); //mismo teclado
     else if (MACHINE_IS_TIMEX_TS1500) strcpy(nombrebmp,"keyboard_ts1500.bmp");
