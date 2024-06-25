@@ -30454,10 +30454,7 @@ void menu_debug_view_basic(MENU_ITEM_PARAMETERS)
     free(results_buffer);
 }
 
-void menu_debug_lost_vsync(MENU_ITEM_PARAMETERS)
-{
-	simulate_lost_vsync.v ^=1;
-}
+
 
 
 
@@ -31356,13 +31353,6 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
 
 
 
-		if (menu_cond_zx8081() ) {
-
-			menu_add_item_menu_format(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_lost_vsync,NULL,
-				"Simulate lost VSYNC: %s",(simulate_lost_vsync.v==1 ? "On" : "Off"));
-            menu_add_item_menu_se_cerrara(array_menu_debug);
-            menu_add_item_menu_es_avanzado(array_menu_debug);
-		}
 
 
 

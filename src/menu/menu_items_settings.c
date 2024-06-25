@@ -6989,6 +6989,11 @@ void menu_display_force_zx81_chr_128(MENU_ITEM_PARAMETERS)
     force_zx81_chr_128.v ^=1;
 }
 
+void menu_display_lost_vsync(MENU_ITEM_PARAMETERS)
+{
+	simulate_lost_vsync.v ^=1;
+}
+
 //menu display settings
 void menu_settings_display(MENU_ITEM_PARAMETERS)
 {
@@ -7304,6 +7309,10 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
 			menu_add_item_menu_ayuda(array_menu_settings_display,"Video minimum vsync length in t-states");
             menu_add_item_menu_es_avanzado(array_menu_settings_display);
 
+
+			menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_lost_vsync,NULL,
+				"[%c] Simulate lost VSYNC",(simulate_lost_vsync.v==1 ? 'X' : ' '));
+            menu_add_item_menu_es_avanzado(array_menu_settings_display);
 
 			menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_autodetect_wrx,NULL,"[%c] Autodetect WRX",(autodetect_wrx.v==1 ? 'X' : ' '));
 			menu_add_item_menu_tooltip(array_menu_settings_display,"Autodetect the need to enable WRX mode on ZX80/81");
