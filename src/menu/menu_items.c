@@ -24909,7 +24909,7 @@ int new_about_window_ancho_mostrar=0;
 //1 salamanquesa segunda
 //2 David
 //3 Diego
-int cual_about_logo=2;
+int cual_about_logo=1;
 
 unsigned char *retorna_bitmap_salamanquesa(void)
 {
