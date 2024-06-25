@@ -545,7 +545,7 @@ ZXUno Team
 
 #define TOTAL_FABRICANTES 23
 
-
+//Deben estar en mismo orden alfabetico siempre, por ejemplo en array_fabricantes lo mismo que aqui
 #define FABRICANTE_AMSTRAD                      0
 #define FABRICANTE_ASCII_CORP                   1
 #define FABRICANTE_CAMBRIDGE_COMPUTERS          2
