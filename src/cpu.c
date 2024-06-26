@@ -3694,6 +3694,8 @@ void rom_load(char *romfilename)
         return;
     }
 
+    int tamanyo_archivo_rom=get_file_size(romfilename);
+
     int expected_rom_size=get_rom_size(current_machine_type);
 
 		//Caso Inves. ROM esta en el final de la memoria asignada
@@ -3902,6 +3904,10 @@ Total 20 pages=320 Kb
 
     else if (MACHINE_IS_ZX80_TYPE) {
         //ZX80
+        //Soportar roms de 8kb, especialmente la rom del zx81 corriendo en zx80 como si fuera un modelo actualizado,
+        //pero logicamente sin el generador de nmi
+        if (tamanyo_archivo_rom==8192) expected_rom_size=8192;
+
         leidos=fread(memoria_spectrum,1,expected_rom_size,ptr_romfile);
         if (leidos!=expected_rom_size) {
             debug_printf(VERBOSE_ERR,"Error loading ROM. Expected size: %d Loaded: %d",expected_rom_size,leidos);
