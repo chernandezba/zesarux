@@ -27822,7 +27822,7 @@ void hotswap_zx8080_to_zx8081_common(int target_machine)
 
     free(memoria_buffer);
 
-    menu_warn_message("Note that ROM data are the same as the previous machine");
+
 
 
 }
@@ -27831,19 +27831,52 @@ void hotswap_zx80_to_zx81(MENU_ITEM_PARAMETERS)
 {
     hotswap_zx8080_to_zx8081_common(MACHINE_ID_ZX81);
 
+    menu_warn_message("Note that ROM data are the same as the previous machine");
+
 }
 
 void hotswap_zx81_to_zx80(MENU_ITEM_PARAMETERS)
 {
 
 
+
+
+    //pasar a modo fast, desde modo fast si que hace hotswap a zx80
+    //call_address(0x02e7);
+
+    //EI
+    /*iff1.v=iff2.v=1;
+
+    push_valor(reg_pc,PUSH_VALUE_TYPE_CALL);
+    reg_pc=0x02e7;
+
+
+
+    int i;
+    for (i=0;i<100000;i++) cpu_core_loop();
+
     printf("nmi_generator_active.v: %d hsync_generator_active.v: %d\n",nmi_generator_active.v,hsync_generator_active.v);
+    */
+
+
+
     hotswap_zx8080_to_zx8081_common(MACHINE_ID_ZX80);
 
-    //pasar a modo fast
-    //call_address(0x02e7);
-    //push_valor(reg_pc,PUSH_VALUE_TYPE_CALL);
-    //reg_pc=0x02e7;
+    hotswapped_from_zx81=1;
+
+    menu_warn_message("Note that ROM data are the same as the previous machine");
+
+
+    if (memoria_spectrum[16443] & 128) {
+        menu_warn_message("Seems you were in SLOW mode. Probably you need to set FAST mode before hotswap to avoid hang");
+    }
+
+    if (rainbow_enabled.v) menu_warn_message("You probably need to disable realvideo");
+
+
+
+    return;
+
 
     nmi_generator_active.v=0;
     //res 7,(cdflag)

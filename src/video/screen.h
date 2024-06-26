@@ -47,6 +47,7 @@ extern z80_bit inverse_video;
 
 extern void scr_refresca_border(void);
 
+extern int hotswapped_from_zx81;
 
 extern void (*scr_refresca_pantalla) (void);
 extern void (*scr_refresca_pantalla_solo_driver) (void);

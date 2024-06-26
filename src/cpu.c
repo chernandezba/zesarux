@@ -2265,7 +2265,7 @@ void set_machine_params(void)
 
 		fetch_opcode=fetch_opcode_spectrum;
 
-
+        hotswapped_from_zx81=0;
 
 		//2 para ZX81 mejor
 		//0 para spectrum mejor

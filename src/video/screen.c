@@ -5176,6 +5176,9 @@ void scr_refresca_pantalla_y_border_mk14(void)
 }
 
 
+//Usada para mostrar bien los caracteres al hacer hotswap de zx81 a zx80 sin realvideo
+int hotswapped_from_zx81=0;
+
 //Rutina usada por todos los drivers para escribir caracteres en pantalla en zx8081 y ace, en rutina de refresco que
 //lee directament de DFILE
 void scr_putchar_zx8081_comun(int x,int y, z80_byte caracter)
@@ -5209,7 +5212,11 @@ void scr_putchar_zx8081_comun(int x,int y, z80_byte caracter)
 	//con los caracteres fuera de rango, devolvemos '?'
 	if (caracter>63) caracter=15;
 
-        if (MACHINE_IS_ZX80_TYPE) direccion=0x0E00;
+        if (MACHINE_IS_ZX80_TYPE) {
+            direccion=0x0E00;
+
+            if (hotswapped_from_zx81) direccion=0x1E00;
+        }
         else direccion=0x1E00;
 
         scr_putsprite_zx8081(direccion+caracter*8,x,y,inverse);
