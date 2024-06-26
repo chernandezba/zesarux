@@ -27835,6 +27835,8 @@ void hotswap_zx80_to_zx81(MENU_ITEM_PARAMETERS)
 
 void hotswap_zx81_to_zx80(MENU_ITEM_PARAMETERS)
 {
+
+    //printf("nmi_generator_active.v: %d hsync_generator_active.v: %d\n",nmi_generator_active.v,hsync_generator_active.v);
     hotswap_zx8080_to_zx8081_common(MACHINE_ID_ZX80);
 
 }

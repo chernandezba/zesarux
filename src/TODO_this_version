@@ -380,4 +380,4 @@ el resto puede salir fuera -> comprobar al hacer print y putpixel que no sale fu
 -Microace. https://www.timexsinclair.com/computers/microace/
 -Ringo R470
 
--parametro vsync sound zx80/zx81 que se guarde
+-quiza hsync_generator_active.v en zx80/81, que no se usa practicamente, puede servir para estabilizar la imagen en horizontal
