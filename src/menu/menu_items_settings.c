@@ -3836,7 +3836,7 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
 			menu_add_item_menu_ayuda(array_menu_settings_audio,"Tries to detect when vsync sound is played. This feature is experimental");
 
 
-			menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_audio_sound_zx8081,menu_cond_zx8081,"[%c] VSYNC Sound on zx80/81", (zx8081_vsync_sound.v==1 ? 'X' : ' '));
+			menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_audio_sound_zx8081,menu_cond_zx8081,"[%c] VSYNC Sound", (zx8081_vsync_sound.v==1 ? 'X' : ' '));
 			menu_add_item_menu_tooltip(array_menu_settings_audio,"Enables or disables VSYNC sound on ZX80 and ZX81");
 			menu_add_item_menu_ayuda(array_menu_settings_audio,"This method uses the VSYNC signal on the TV to make sound");
 

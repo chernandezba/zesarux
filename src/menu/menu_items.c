@@ -27768,6 +27768,7 @@ void hotswap_cpc_to_6128(MENU_ITEM_PARAMETERS)
     post_set_machine(NULL);
 }
 
+/*
 void hotswap_zx8081_common(void)
 {
 
@@ -27784,18 +27785,60 @@ void hotswap_zx8081_common(void)
 
 
 }
+*/
 
+/*
 void hotswap_zx8081_to_zx80(MENU_ITEM_PARAMETERS)
 {
     current_machine_type=MACHINE_ID_ZX80;
     hotswap_zx8081_common();
 }
+*/
 
+/*
 void hotswap_zx8081_to_zx81(MENU_ITEM_PARAMETERS)
 {
     current_machine_type=MACHINE_ID_ZX81;
     hotswap_zx8081_common();
 }
+*/
+
+void hotswap_zx8080_to_zx8081_common(int target_machine)
+{
+
+    //Copiaremos el contenido de la rom+ram en la maquina de destino
+
+    z80_byte *memoria_buffer;
+    memoria_buffer=util_malloc(65536,"Can not allocate memory for hotswap");
+
+    int i;
+    for (i=0;i<65536;i++) memoria_buffer[i]=memoria_spectrum[i];
+
+    current_machine_type=target_machine;
+    set_machine(NULL);
+
+    //Restaurar rom+ram
+    for (i=0;i<65536;i++) memoria_spectrum[i]=memoria_buffer[i];
+
+    free(memoria_buffer);
+
+    menu_warn_message("Note that ROM data are the same as the previous machine");
+
+
+}
+
+void hotswap_zx80_to_zx81(MENU_ITEM_PARAMETERS)
+{
+    hotswap_zx8080_to_zx8081_common(MACHINE_ID_ZX81);
+
+}
+
+void hotswap_zx81_to_zx80(MENU_ITEM_PARAMETERS)
+{
+    hotswap_zx8080_to_zx8081_common(MACHINE_ID_ZX80);
+
+}
+
 
 void hotswap_resto_a_48k(MENU_ITEM_PARAMETERS)
 {
@@ -28270,7 +28313,7 @@ void menu_hotswap_machine(MENU_ITEM_PARAMETERS)
 			menu_add_item_menu_valor_opcion(array_menu_machine_selection,1);
 			menu_add_item_menu(array_menu_machine_selection,"ZX80",MENU_OPCION_NORMAL,hotswap_zx80_to_zx80,NULL);
 			menu_add_item_menu_valor_opcion(array_menu_machine_selection,2);
-            menu_add_item_menu(array_menu_machine_selection,"ZX81",MENU_OPCION_NORMAL,hotswap_zx8081_to_zx81,NULL);
+            menu_add_item_menu(array_menu_machine_selection,"ZX81",MENU_OPCION_NORMAL,hotswap_zx80_to_zx81,NULL);
         }
 
         //maquinas zx81
@@ -28287,7 +28330,7 @@ void menu_hotswap_machine(MENU_ITEM_PARAMETERS)
 			menu_add_item_menu_valor_opcion(array_menu_machine_selection,4);
 			menu_add_item_menu(array_menu_machine_selection,"ZX81",MENU_OPCION_NORMAL,hotswap_zx81_to_zx81,NULL);
 			menu_add_item_menu_valor_opcion(array_menu_machine_selection,5);
-            menu_add_item_menu(array_menu_machine_selection,"ZX80",MENU_OPCION_NORMAL,hotswap_zx8081_to_zx80,NULL);
+            menu_add_item_menu(array_menu_machine_selection,"ZX80",MENU_OPCION_NORMAL,hotswap_zx81_to_zx80,NULL);
         }
 
 
