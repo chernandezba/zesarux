@@ -27836,8 +27836,19 @@ void hotswap_zx80_to_zx81(MENU_ITEM_PARAMETERS)
 void hotswap_zx81_to_zx80(MENU_ITEM_PARAMETERS)
 {
 
-    //printf("nmi_generator_active.v: %d hsync_generator_active.v: %d\n",nmi_generator_active.v,hsync_generator_active.v);
+
+    printf("nmi_generator_active.v: %d hsync_generator_active.v: %d\n",nmi_generator_active.v,hsync_generator_active.v);
     hotswap_zx8080_to_zx8081_common(MACHINE_ID_ZX80);
+
+    //pasar a modo fast
+    //call_address(0x02e7);
+    //push_valor(reg_pc,PUSH_VALUE_TYPE_CALL);
+    //reg_pc=0x02e7;
+
+    nmi_generator_active.v=0;
+    //res 7,(cdflag)
+    //16443
+    memoria_spectrum[16443] &=127;
 
 }
 
