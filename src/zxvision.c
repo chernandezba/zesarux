@@ -20257,6 +20257,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 		int lineas_mover_pgup_dn;
 		int conta_mover_pgup_dn;
         int scroll_esperado_pgdn;
+        int scroll_esperado_pgup;
         //int scroll_antes_pgdn;
 
 		//printf ("tecla en dibuja menu: %d\n",tecla);
@@ -20318,6 +20319,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
                 zxvision_sound_event_cursor_movement();
 			break;
 
+/*
 			//PgUp
 			case 24:
 				lineas_mover_pgup_dn=ventana->visible_height-3;
@@ -20330,6 +20332,37 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 				//si hay algun item como separador, se lo saltara, moviendo el cursor mas lineas de lo deseado
 				//printf ("lineas mover: %d\n",lineas_mover_pgup_dn);
 				for (conta_mover_pgup_dn=0;conta_mover_pgup_dn<lineas_mover_pgup_dn;conta_mover_pgup_dn++) (*opcion_inicial)=menu_dibuja_menu_cursor_arriba_common((*opcion_inicial),max_opciones,m);
+
+                zxvision_sound_event_cursor_movement();
+
+			break;
+*/
+
+			//PgUp
+			case 24:
+                //Mover hacia arriba hasta que llega el scroll a valor esperado o se llega al maximo de opciones o se va a abajo del todo
+
+                scroll_esperado_pgup=ventana->offset_y - (ventana->visible_height-3);
+                printf("scroll esperado: %d\n",scroll_esperado_pgup);
+
+                int salir_pgup=0;
+
+				for (conta_mover_pgup_dn=0;conta_mover_pgup_dn<max_opciones && ventana->offset_y>scroll_esperado_pgup && !salir_pgup;conta_mover_pgup_dn++) {
+                    int scroll_antes_pgdn=ventana->offset_y;
+                    (*opcion_inicial)=menu_dibuja_menu_cursor_arriba_common((*opcion_inicial),max_opciones,m);
+                    //Ajustar scroll de ventana
+                    menu_dibuja_menu_set_offset_y_common(ventana,m,*opcion_inicial);
+                    printf("mover arriba. offset_y: %d\n",ventana->offset_y);
+
+                    //Si el scroll actual ha llegado al final del todo y dado la vuelta
+                    if (ventana->offset_y>scroll_antes_pgdn) {
+                        printf("llegado al final y dado la vuelta. compensar hacia abajo\n");
+                        //subir uno hacia arriba y salir
+                        (*opcion_inicial)=menu_dibuja_menu_cursor_abajo_common((*opcion_inicial),max_opciones,m);
+                        salir_pgup=1;
+                    }
+
+                }
 
                 zxvision_sound_event_cursor_movement();
 
@@ -20359,7 +20392,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 			//PgDn
 			case 25:
 
-                //Mover hacia abajo hasta que cambia el scroll o se llega al maximo de opciones
+                //Mover hacia abajo hasta que llega el scroll a valor esperado o se llega al maximo de opciones o se va a arriba del todo
 
                 scroll_esperado_pgdn=ventana->offset_y + ventana->visible_height-3;
                 printf("scroll esperado: %d\n",scroll_esperado_pgdn);
