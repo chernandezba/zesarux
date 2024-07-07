@@ -13,6 +13,7 @@ Permitir cargar rom de 8kb en ZX80 (por ejemplo la rom del ZX81, como un ZX80 ac
 
 Mejorado ZX Vision:
 - Al seleccionar estilo de ZX Vision Style, se aplica al mover el cursor
+- Mejorar movimiento del cursor en menús al pulsar PgDn/PgUp
 
 * Correcciones:
 

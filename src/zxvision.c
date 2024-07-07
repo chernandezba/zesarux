@@ -20258,6 +20258,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 		int conta_mover_pgup_dn;
         int scroll_esperado_pgdn;
         int scroll_esperado_pgup;
+        int movido_en_ventana;
         //int scroll_antes_pgdn;
 
 		//printf ("tecla en dibuja menu: %d\n",tecla);
@@ -20342,8 +20343,13 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 			case 24:
                 //Mover hacia arriba hasta que llega el scroll a valor esperado o se llega al maximo de opciones o se va a abajo del todo
 
-                scroll_esperado_pgup=ventana->offset_y - (ventana->visible_height-3);
-                printf("scroll esperado: %d\n",scroll_esperado_pgup);
+                //calcular el cursor donde esta relativamente en ventana
+                movido_en_ventana=(*opcion_inicial)-(ventana->offset_y);
+
+                //Si el cursor esta en la mitad inferior de la ventana, hacer pgup lo que hace es llevarnos a la posicion del cursor arriba-1 posicion
+                if (movido_en_ventana>(ventana->visible_height/2)) scroll_esperado_pgup=ventana->offset_y-1;
+                else scroll_esperado_pgup=ventana->offset_y - (ventana->visible_height-3);
+                //printf("scroll esperado: %d\n",scroll_esperado_pgup);
 
                 int salir_pgup=0;
 
@@ -20352,11 +20358,11 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
                     (*opcion_inicial)=menu_dibuja_menu_cursor_arriba_common((*opcion_inicial),max_opciones,m);
                     //Ajustar scroll de ventana
                     menu_dibuja_menu_set_offset_y_common(ventana,m,*opcion_inicial);
-                    printf("mover arriba. offset_y: %d\n",ventana->offset_y);
+                    //printf("mover arriba. offset_y: %d\n",ventana->offset_y);
 
                     //Si el scroll actual ha llegado al final del todo y dado la vuelta
                     if (ventana->offset_y>scroll_antes_pgdn) {
-                        printf("llegado al final y dado la vuelta. compensar hacia abajo\n");
+                        //printf("llegado al final y dado la vuelta. compensar hacia abajo\n");
                         //subir uno hacia arriba y salir
                         (*opcion_inicial)=menu_dibuja_menu_cursor_abajo_common((*opcion_inicial),max_opciones,m);
                         salir_pgup=1;
@@ -20394,8 +20400,16 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 
                 //Mover hacia abajo hasta que llega el scroll a valor esperado o se llega al maximo de opciones o se va a arriba del todo
 
-                scroll_esperado_pgdn=ventana->offset_y + ventana->visible_height-3;
-                printf("scroll esperado: %d\n",scroll_esperado_pgdn);
+                //calcular el cursor donde esta relativamente en ventana
+                movido_en_ventana=(*opcion_inicial)-(ventana->offset_y);
+
+                //Si el cursor esta en la mitad superior de la ventana, hacer pgdn lo que hace es llevarnos a la posicion del cursor abajo+1 posicion
+                if (movido_en_ventana<(ventana->visible_height/2)) scroll_esperado_pgdn=ventana->offset_y+1;
+                else scroll_esperado_pgdn=ventana->offset_y + ventana->visible_height-3;
+
+
+                //printf("scroll esperado: %d\n",scroll_esperado_pgdn);
+                //printf("linea_seleccionada: %d offset_y: %d movido_en_ventana: %d\n",(*opcion_inicial),ventana->offset_y,movido_en_ventana);
 
                 int salir_pgdn=0;
 
@@ -20404,11 +20418,11 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
                     (*opcion_inicial)=menu_dibuja_menu_cursor_abajo_common((*opcion_inicial),max_opciones,m);
                     //Ajustar scroll de ventana
                     menu_dibuja_menu_set_offset_y_common(ventana,m,*opcion_inicial);
-                    printf("mover abajo. offset_y: %d\n",ventana->offset_y);
+                    //printf("mover abajo. offset_y: %d\n",ventana->offset_y);
 
                     //Si el scroll actual ha llegado al final del todo y dado la vuelta
                     if (ventana->offset_y<scroll_antes_pgdn) {
-                        printf("llegado al final y dado la vuelta. compensar hacia arriba\n");
+                        //printf("llegado al final y dado la vuelta. compensar hacia arriba\n");
                         //subir uno hacia arriba y salir
                         (*opcion_inicial)=menu_dibuja_menu_cursor_arriba_common((*opcion_inicial),max_opciones,m);
                         salir_pgdn=1;
