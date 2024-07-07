@@ -19657,6 +19657,21 @@ int menu_dibuja_menu_adjust_last_column(zxvision_window *w,int ancho,int alto)
 
 }
 
+void menu_dibuja_menu_set_offset_y_common(zxvision_window *ventana,menu_item *m,int opcion_inicial)
+{
+		//Si menu tabulado, ajustamos scroll de zxvision
+		if (m->es_menu_tabulado) {
+			int linea_cursor=menu_retorna_item(m,opcion_inicial)->menu_tabulado_y;
+			//printf ("ajustar scroll a %d\n",linea_cursor);
+			zxvision_set_offset_y_visible(ventana,linea_cursor);
+		}
+
+		else {
+			zxvision_set_offset_y_visible(ventana,opcion_inicial);
+		}
+
+}
+
 z80_int menu_mouse_frame_counter=0;
 z80_int menu_mouse_frame_counter_anterior=0;
 
@@ -19949,17 +19964,9 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 		//desactivado en zxvision , tiene su propio scroll
 
 
+        //Ajustar scroll de ventana
+        menu_dibuja_menu_set_offset_y_common(ventana,m,*opcion_inicial);
 
-		//Si menu tabulado, ajustamos scroll de zxvision
-		if (m->es_menu_tabulado) {
-			int linea_cursor=menu_retorna_item(m,(*opcion_inicial))->menu_tabulado_y;
-			//printf ("ajustar scroll a %d\n",linea_cursor);
-			zxvision_set_offset_y_visible(ventana,linea_cursor);
-		}
-
-		else {
-			zxvision_set_offset_y_visible(ventana,(*opcion_inicial));
-		}
 
 
         menu_item *funcion_seleccionado_item=menu_retorna_item(m,(*opcion_inicial));
