@@ -20256,6 +20256,8 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 
 		int lineas_mover_pgup_dn;
 		int conta_mover_pgup_dn;
+        int scroll_esperado_pgdn;
+        //int scroll_antes_pgdn;
 
 		//printf ("tecla en dibuja menu: %d\n",tecla);
 
@@ -20333,7 +20335,8 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 
 			break;
 
-			//PgUp
+/*
+			//PgDn
 			case 25:
 				lineas_mover_pgup_dn=ventana->visible_height-3;
 				//Ver si al limite de abajo
@@ -20351,6 +20354,38 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 
 			break;
 
+*/
+
+			//PgDn
+			case 25:
+
+                //Mover hacia abajo hasta que cambia el scroll o se llega al maximo de opciones
+
+                scroll_esperado_pgdn=ventana->offset_y + ventana->visible_height-3;
+                printf("scroll esperado: %d\n",scroll_esperado_pgdn);
+
+                int salir_pgdn=0;
+
+				for (conta_mover_pgup_dn=0;conta_mover_pgup_dn<max_opciones && ventana->offset_y<scroll_esperado_pgdn && !salir_pgdn;conta_mover_pgup_dn++) {
+                    int scroll_antes_pgdn=ventana->offset_y;
+                    (*opcion_inicial)=menu_dibuja_menu_cursor_abajo_common((*opcion_inicial),max_opciones,m);
+                    //Ajustar scroll de ventana
+                    menu_dibuja_menu_set_offset_y_common(ventana,m,*opcion_inicial);
+                    printf("mover abajo. offset_y: %d\n",ventana->offset_y);
+
+                    //Si el scroll actual ha llegado al final del todo y dado la vuelta
+                    if (ventana->offset_y<scroll_antes_pgdn) {
+                        printf("llegado al final y dado la vuelta. compensar hacia arriba\n");
+                        //subir uno hacia arriba y salir
+                        (*opcion_inicial)=menu_dibuja_menu_cursor_arriba_common((*opcion_inicial),max_opciones,m);
+                        salir_pgdn=1;
+                    }
+
+                }
+
+                zxvision_sound_event_cursor_movement();
+
+			break;
 
 
 			case 32:
