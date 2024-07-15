@@ -1320,7 +1320,7 @@ F7FF->F000
 FFFF->F800
 */
 
-	return direccion_pixel++;
+	return direccion_pixel+1;
 
                                         switch (direccion_pixel) {
                                                 case 0x07FF:
@@ -2330,7 +2330,6 @@ void screen_store_scanline_rainbow_solo_display_cpc(void)
 
 
 
-
         int bit;
 
 
@@ -2341,13 +2340,23 @@ void screen_store_scanline_rainbow_solo_display_cpc(void)
 
         yfinal=y_display;
         //offset_tabla=cpc_line_display_table[yfinal];
-        offset_tabla=((yfinal / alto_caracter) * cpc_crtc_registers[1]*2) + ((yfinal % alto_caracter) * 2048);
+
+        int char_row=yfinal / alto_caracter;
+        int char_scanline=yfinal % alto_caracter;
+
+        offset_tabla=(char_row * cpc_crtc_registers[1]*2) + (char_scanline * 2048);
+
 
 
 
         direccion_pixel=offset_tabla+crtc_offset_videoram;
 
-        //puntero=cpc_ram_mem_table[3]+offset_tabla;
+
+
+        //printf("yfinal: %d char_row: %d char_scanline: %d crtc_offset_videoram: %d (%04XH) offset_tabla: %d (%04XH) direccion_pixel: %d (%04XH)\n",
+        //    yfinal,char_row,char_scanline,crtc_offset_videoram,crtc_offset_videoram,offset_tabla,offset_tabla,direccion_pixel,direccion_pixel);
+
+
 
 
 
