@@ -2913,7 +2913,7 @@ z80_byte tbblue_clip_windows[TBBLUE_CLIP_WINDOW_TILEMAP][4];
             sprintf(texto_buffer,"Vsync height:    %d",cpc_crtc_get_total_vsync_height_crtc());
             zxvision_print_string_defaults_fillspc(ventana,1,linea++,texto_buffer);
 
-            sprintf(texto_buffer,"Videoram offset: %05XH",cpc_ctrc_get_offset_videoram());
+            sprintf(texto_buffer,"Videoram offset: %03XH",cpc_ctrc_get_offset_videoram());
             zxvision_print_string_defaults_fillspc(ventana,1,linea++,texto_buffer);
         }
 

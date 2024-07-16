@@ -1314,12 +1314,15 @@ void cpc_splash_videomode_change(void) {
 
 
 
-z80_int cpc_refresca_ajusta_offet(z80_int direccion_pixel)
+z80_int cpc_incrementa_puntero_videoram(z80_int direccion_pixel)
 {
 
-	//de momento no hacemos nada
-	//hasta entender que significa:
+	//Cuando se llega al final de uno de los 8 scanlines, se vuelve al principio
+    //Esto aplica tanto renderizado de la pantalla izquierda-derecha, como uso de los registros de scroll hardware
 /*
+
+https://cpctech.cpc-live.com/docs/screen.html
+
 On a hardware scrolling screen, there is a problem:
 C7FF->C000
 CFFF->C800
@@ -1331,47 +1334,47 @@ F7FF->F000
 FFFF->F800
 */
 
-	//return direccion_pixel+1;
-
-                                        switch (direccion_pixel) {
-                                                case 0x07FF:
-                                                        direccion_pixel=0x0000;
-                                                break;
-
-                                                case 0x0FFF:
-                                                        direccion_pixel=0x0800;
-                                                break;
-
-                                                case 0x17FF:
-                                                        direccion_pixel=0x1000;
-                                                break;
-
-                                                case 0x1FFF:
-                                                        direccion_pixel=0x1800;
-                                                break;
-
-                                                case 0x27FF:
-                                                        direccion_pixel=0x2000;
-                                                break;
-
-                                                case 0x2FFF:
-                                                        direccion_pixel=0x2800;
-                                                break;
-
-                                                case 0x37FF:
-                                                        direccion_pixel=0x3000;
-                                                break;
-
-                                                case 0x3FFF:
-                                                        direccion_pixel=0x3800;
-                                                break;
-
-						default:
-							direccion_pixel++;
-						break;
 
 
-                                        }
+    switch (direccion_pixel) {
+        case 0x07FF:
+            direccion_pixel=0x0000;
+        break;
+
+        case 0x0FFF:
+            direccion_pixel=0x0800;
+        break;
+
+        case 0x17FF:
+            direccion_pixel=0x1000;
+        break;
+
+        case 0x1FFF:
+            direccion_pixel=0x1800;
+        break;
+
+        case 0x27FF:
+            direccion_pixel=0x2000;
+        break;
+
+        case 0x2FFF:
+            direccion_pixel=0x2800;
+        break;
+
+        case 0x37FF:
+            direccion_pixel=0x3000;
+        break;
+
+        case 0x3FFF:
+            direccion_pixel=0x3800;
+        break;
+
+        default:
+            direccion_pixel++;
+        break;
+
+
+    }
 
 	return direccion_pixel;
 }
@@ -1658,7 +1661,7 @@ z80_int cpc_sumar_direccion_pantalla(z80_int direccion_pixel,z80_int sumar)
 {
 
     for (;sumar>0;sumar--) {
-        direccion_pixel=cpc_refresca_ajusta_offet(direccion_pixel);
+        direccion_pixel=cpc_incrementa_puntero_videoram(direccion_pixel);
     }
 
     return direccion_pixel;
@@ -1762,7 +1765,10 @@ FFFF->F800
         z80_int offset;
         for (yy=0;yy<200;yy++) {
                 //offset=((yy / 8) * cpc_crtc_registers[1]*2) + ((yy % 8) * 2048);
-                offset=((yy / alto_caracter) * cpc_crtc_registers[1]*2) + ((yy % alto_caracter) * 2048);
+                int char_row=yy / alto_caracter;
+                int char_scanline=yy % alto_caracter;
+
+                offset=(char_row * cpc_crtc_registers[1]*2) + (char_scanline * 2048);
                 cpc_line_display_table[yy]=offset;
         }
 
@@ -1791,7 +1797,7 @@ FFFF->F800
 					//Cada pixel por cuaduplicado
 					byte_leido=*(cpc_ram_mem_table[crtc_video_page]+(direccion_pixel&16383) ); //Solo offset dentro de 16kb
 
-					//if (crtc_offset_videoram) direccion_pixel=cpc_refresca_ajusta_offet(direccion_pixel);
+					//if (crtc_offset_videoram) direccion_pixel=cpc_incrementa_puntero_videoram(direccion_pixel);
 					//else direccion_pixel++;
 
 					direccion_pixel=cpc_sumar_direccion_pantalla(direccion_pixel,1);
@@ -1827,7 +1833,7 @@ pixel 0 (bit 1)	pixel 1 (bit 1)	pixel 2 (bit 1)	pixel 3 (bit 1)	pixel 0 (bit 0)	
 					//Duplicamos cada pixel en ancho
 					byte_leido=*(cpc_ram_mem_table[crtc_video_page]+(direccion_pixel&16383) ); //Solo offset dentro de 16kb
 
-					//if (crtc_offset_videoram) direccion_pixel=cpc_refresca_ajusta_offet(direccion_pixel);
+					//if (crtc_offset_videoram) direccion_pixel=cpc_incrementa_puntero_videoram(direccion_pixel);
 					//else direccion_pixel++;
 					direccion_pixel=cpc_sumar_direccion_pantalla(direccion_pixel,1);
 
@@ -1866,7 +1872,7 @@ pixel 0 (bit 1)	pixel 1 (bit 1)	pixel 2 (bit 1)	pixel 3 (bit 1)	pixel 0 (bit 0)	
                 		        //printf ("Mode 2, 640x200 resolution, 2 colours\n");
 					byte_leido=*(cpc_ram_mem_table[crtc_video_page]+(direccion_pixel&16383) ); //Solo offset dentro de 16kb
 
-					//if (crtc_offset_videoram) direccion_pixel=cpc_refresca_ajusta_offet(direccion_pixel);
+					//if (crtc_offset_videoram) direccion_pixel=cpc_incrementa_puntero_videoram(direccion_pixel);
 					//else direccion_pixel++;
 					direccion_pixel=cpc_sumar_direccion_pantalla(direccion_pixel,1);
 
@@ -1883,7 +1889,7 @@ pixel 0 (bit 1)	pixel 1 (bit 1)	pixel 2 (bit 1)	pixel 3 (bit 1)	pixel 0 (bit 0)	
 		                        //printf ("Mode 3, 160x200 resolution, 4 colours (undocumented)\n");
 					//temp
 					//http://cpctech.cpc-live.com/docs/graphics.html
-					//if (crtc_offset_videoram) direccion_pixel=cpc_refresca_ajusta_offet(direccion_pixel);
+					//if (crtc_offset_videoram) direccion_pixel=cpc_incrementa_puntero_videoram(direccion_pixel);
 					byte_leido=*(cpc_ram_mem_table[crtc_video_page]+(direccion_pixel&16383) ); //Solo offset dentro de 16kb
                     direccion_pixel=cpc_sumar_direccion_pantalla(direccion_pixel,1);
 
@@ -2494,7 +2500,7 @@ pixel 0 (bit 1)	pixel 1 (bit 1)	pixel 2 (bit 1)	pixel 3 (bit 1)	pixel 0 (bit 0)	
 		                        //printf ("Mode 3, 160x200 resolution, 4 colours (undocumented)\n");
 					//temp
 					//http://cpctech.cpc-live.com/docs/graphics.html
-					//if (crtc_offset_videoram) direccion_pixel=cpc_refresca_ajusta_offet(direccion_pixel);
+					//if (crtc_offset_videoram) direccion_pixel=cpc_incrementa_puntero_videoram(direccion_pixel);
 
 
 					byte_leido=*(cpc_ram_mem_table[crtc_video_page]+(direccion_pixel&16383) ); //Solo offset dentro de 16kb
