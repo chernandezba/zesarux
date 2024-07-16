@@ -1334,8 +1334,23 @@ F7FF->F000
 FFFF->F800
 */
 
+    //Simplificacion. Aunque tecnicamente es mas lento (pero ocupa mas codigo)
+    /*
+    if (direccion_pixel<0x07FF || direccion_pixel>0x3FFF) direccion_pixel++;
+    else {
+        z80_int dir_offset=direccion_pixel & 0xFFF;
+        z80_int dir_mascara=direccion_pixel & 0xF000;
+
+        if (dir_offset==0x07FF) direccion_pixel=dir_mascara | 0x0000;
+        else if (dir_offset==0x0FFF) direccion_pixel=dir_mascara | 0x0800;
+        else direccion_pixel++;
+    }
+
+    return direccion_pixel;
+    */
 
 
+    //Mas codigo aunque mas rapido:
     switch (direccion_pixel) {
         case 0x07FF:
             direccion_pixel=0x0000;

@@ -48,6 +48,7 @@
 #include "settings.h"
 #include "atomic.h"
 #include "zeng_online.h"
+#include "cpc.h"
 
 void codetests_repetitions(void)
 {
@@ -2273,6 +2274,66 @@ void codetests_stl(void)
     util_stl_cube(ptr_stl,10,20,0,0,1,1,1,1);
 }
 
+z80_int codetests_cpc_videoram_increment_check(z80_int direccion_pixel)
+{
+    switch (direccion_pixel) {
+        case 0x07FF:
+            direccion_pixel=0x0000;
+        break;
+
+        case 0x0FFF:
+            direccion_pixel=0x0800;
+        break;
+
+        case 0x17FF:
+            direccion_pixel=0x1000;
+        break;
+
+        case 0x1FFF:
+            direccion_pixel=0x1800;
+        break;
+
+        case 0x27FF:
+            direccion_pixel=0x2000;
+        break;
+
+        case 0x2FFF:
+            direccion_pixel=0x2800;
+        break;
+
+        case 0x37FF:
+            direccion_pixel=0x3000;
+        break;
+
+        case 0x3FFF:
+            direccion_pixel=0x3800;
+        break;
+
+        default:
+            direccion_pixel++;
+        break;
+
+
+    }
+
+	return direccion_pixel;
+
+}
+
+void codetests_cpc_videoram_increment(void)
+{
+    z80_int dir_pixel;
+
+    for (dir_pixel=0;dir_pixel<0x3FFF;dir_pixel++) {
+        z80_int expected_addr=codetests_cpc_videoram_increment_check(dir_pixel);
+        z80_int addr_to_test=cpc_incrementa_puntero_videoram(dir_pixel);
+        if (expected_addr!=addr_to_test) {
+            printf("Error! Increment %X. Expected: %X. Got: %X\n",dir_pixel,expected_addr,addr_to_test);
+            exit(1);
+        }
+    }
+}
+
 void codetests_main(int main_argc,char *main_argv[])
 {
 
@@ -2386,6 +2447,9 @@ void codetests_main(int main_argc,char *main_argv[])
 
     printf("\nRunning multiply 8 bits code tests\n");
     codetests_multiply_8bits();
+
+    printf("\nRunning cpc codetests videoram increment\n");
+    codetests_cpc_videoram_increment();
 
     //printf("\nRunning codetests stl\n");
     //codetests_stl();
