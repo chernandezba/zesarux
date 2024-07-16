@@ -20,6 +20,7 @@ Improved ZX Vision:
 Remove buffer full indicator when pressing shift+e on External Audio Source window
 Fixed TZX autload as Real Tape on Spectrum +3
 Fixed hotswap ZX80 to ZX81, ZX81 to ZX80
+Fixed Amstrad CPC Scroll
 
 ----
 

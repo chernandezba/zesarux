@@ -1643,6 +1643,17 @@ void scr_refresca_border_cpc(unsigned int color)
 }
 
 
+z80_int cpc_sumar_direccion_pantalla(z80_int direccion_pixel,z80_int sumar)
+{
+
+    for (;sumar>0;sumar--) {
+        direccion_pixel=cpc_refresca_ajusta_offet(direccion_pixel);
+    }
+
+    return direccion_pixel;
+
+}
+
 //Refresco de pantalla CPC sin rainbow
 void scr_refresca_pantalla_cpc(void)
 {
@@ -1750,7 +1761,13 @@ FFFF->F800
 	for (y=0;y<total_alto;y++){
 		yfinal=y*2;
 		offset_tabla=cpc_line_display_table[y];
-		direccion_pixel=offset_tabla+crtc_offset_videoram;
+		//direccion_pixel=offset_tabla+crtc_offset_videoram;
+
+        //sumar teniendo en cuenta los wraparound
+        direccion_pixel=offset_tabla;
+
+        direccion_pixel=cpc_sumar_direccion_pantalla(direccion_pixel,crtc_offset_videoram);
+
 
 		//puntero=cpc_ram_mem_table[3]+offset_tabla;
 
@@ -1766,7 +1783,7 @@ FFFF->F800
 					//if (crtc_offset_videoram) direccion_pixel=cpc_refresca_ajusta_offet(direccion_pixel);
 					//else direccion_pixel++;
 
-					direccion_pixel++;
+					direccion_pixel=cpc_sumar_direccion_pantalla(direccion_pixel,1);
 
 					color0=(byte_leido&128)>>7 | (byte_leido&8)>>2 | (byte_leido&32)>>3 | (byte_leido&2)<<2;
 					color1=(byte_leido&64)>>6  | (byte_leido&4)>>1 | (byte_leido&16)>>2 | (byte_leido&1)<<3;
@@ -1801,7 +1818,7 @@ pixel 0 (bit 1)	pixel 1 (bit 1)	pixel 2 (bit 1)	pixel 3 (bit 1)	pixel 0 (bit 0)	
 
 					//if (crtc_offset_videoram) direccion_pixel=cpc_refresca_ajusta_offet(direccion_pixel);
 					//else direccion_pixel++;
-					direccion_pixel++;
+					direccion_pixel=cpc_sumar_direccion_pantalla(direccion_pixel,1);
 
 					color0=(byte_leido&128)>>7 | ((byte_leido&8)>>2);
 					//if (cpc_palette_table[color0]!=4) printf ("color0: %d valor: %d\n",color0,cpc_palette_table[color0]);
@@ -1840,7 +1857,7 @@ pixel 0 (bit 1)	pixel 1 (bit 1)	pixel 2 (bit 1)	pixel 3 (bit 1)	pixel 0 (bit 0)	
 
 					//if (crtc_offset_videoram) direccion_pixel=cpc_refresca_ajusta_offet(direccion_pixel);
 					//else direccion_pixel++;
-					direccion_pixel++;
+					direccion_pixel=cpc_sumar_direccion_pantalla(direccion_pixel,1);
 
 					for (bit=0;bit<8;bit++) {
 						color0=(byte_leido&128)>>7;
@@ -1855,9 +1872,9 @@ pixel 0 (bit 1)	pixel 1 (bit 1)	pixel 2 (bit 1)	pixel 3 (bit 1)	pixel 0 (bit 0)	
 		                        //printf ("Mode 3, 160x200 resolution, 4 colours (undocumented)\n");
 					//temp
 					//http://cpctech.cpc-live.com/docs/graphics.html
-					if (crtc_offset_videoram) direccion_pixel=cpc_refresca_ajusta_offet(direccion_pixel);
+					//if (crtc_offset_videoram) direccion_pixel=cpc_refresca_ajusta_offet(direccion_pixel);
 					byte_leido=*(cpc_ram_mem_table[crtc_video_page]+(direccion_pixel&16383) ); //Solo offset dentro de 16kb
-                    direccion_pixel++;
+                    direccion_pixel=cpc_sumar_direccion_pantalla(direccion_pixel,1);
 
                     color0=(byte_leido&128)>>7 | ((byte_leido&8)>>2);
                     //if (cpc_palette_table[color0]!=4) printf ("color0: %d valor: %d\n",color0,cpc_palette_table[color0]);
@@ -2204,16 +2221,7 @@ void screen_store_scanline_rainbow_solo_border_cpc(void)
 }
 
 
-z80_int cpc_sumar_direccion_pantalla(z80_int direccion_pixel,z80_int sumar)
-{
 
-    for (;sumar>0;sumar--) {
-        direccion_pixel=cpc_refresca_ajusta_offet(direccion_pixel);
-    }
-
-    return direccion_pixel;
-
-}
 
 //Guardar en buffer rainbow la linea actual.
 //Tener en cuenta que si border esta desactivado, la primera linea del buffer sera de display,
