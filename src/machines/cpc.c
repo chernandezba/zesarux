@@ -2387,14 +2387,15 @@ void screen_store_scanline_rainbow_solo_display_cpc(void)
 
 
     	for (x=offset_x;x<ancho_total+offset_x;) {
+
+            byte_leido=*(cpc_ram_mem_table[crtc_video_page]+(direccion_pixel&16383) ); //Solo offset dentro de 16kb
+            direccion_pixel=cpc_sumar_direccion_pantalla(direccion_pixel,1);
+
 			switch (modo_video) {
                 case 0:  //160x200
 
                     //printf ("Mode 0, 160x200 resolution, 16 colours\n");
 					//Cada pixel por cuaduplicado
-					byte_leido=*(cpc_ram_mem_table[crtc_video_page]+(direccion_pixel&16383) ); //Solo offset dentro de 16kb
-
-					direccion_pixel=cpc_sumar_direccion_pantalla(direccion_pixel,1);
 
 					color0=(byte_leido&128)>>7 | (byte_leido&8)>>2 | (byte_leido&32)>>3 | (byte_leido&2)<<2;
 					color1=(byte_leido&64)>>6  | (byte_leido&4)>>1 | (byte_leido&16)>>2 | (byte_leido&1)<<3;
@@ -2426,9 +2427,7 @@ pixel 0 (bit 1)	pixel 1 (bit 1)	pixel 2 (bit 1)	pixel 3 (bit 1)	pixel 0 (bit 0)	
 */
 		                        //printf ("Mode 1, 320x200 resolution, 4 colours\n");
 					//Duplicamos cada pixel en ancho
-					byte_leido=*(cpc_ram_mem_table[crtc_video_page]+(direccion_pixel&16383) ); //Solo offset dentro de 16kb
 
-                    direccion_pixel=cpc_sumar_direccion_pantalla(direccion_pixel,1);
 
 					color0=(byte_leido&128)>>7 | ((byte_leido&8)>>2);
 					//if (cpc_palette_table[color0]!=4) printf ("color0: %d valor: %d\n",color0,cpc_palette_table[color0]);
@@ -2463,11 +2462,8 @@ pixel 0 (bit 1)	pixel 1 (bit 1)	pixel 2 (bit 1)	pixel 3 (bit 1)	pixel 0 (bit 0)	
 
 
                 case 2:
-                		        //printf ("Mode 2, 640x200 resolution, 2 colours\n");
-					byte_leido=*(cpc_ram_mem_table[crtc_video_page]+(direccion_pixel&16383) ); //Solo offset dentro de 16kb
+                    //printf ("Mode 2, 640x200 resolution, 2 colours\n");
 
-
-					direccion_pixel=cpc_sumar_direccion_pantalla(direccion_pixel,1);
 
 					for (bit=0;bit<8;bit++) {
 						color0=(byte_leido&128)>>7;
@@ -2481,12 +2477,8 @@ pixel 0 (bit 1)	pixel 1 (bit 1)	pixel 2 (bit 1)	pixel 3 (bit 1)	pixel 0 (bit 0)	
 
 
                 case 3:
-		                        //printf ("Mode 3, 160x200 resolution, 4 colours (undocumented)\n");
+                    //printf ("Mode 3, 160x200 resolution, 4 colours (undocumented)\n");
 
-					byte_leido=*(cpc_ram_mem_table[crtc_video_page]+(direccion_pixel&16383) ); //Solo offset dentro de 16kb
-
-
-                    direccion_pixel=cpc_sumar_direccion_pantalla(direccion_pixel,1);
 
                     color0=(byte_leido&128)>>7 | ((byte_leido&8)>>2);
                     //if (cpc_palette_table[color0]!=4) printf ("color0: %d valor: %d\n",color0,cpc_palette_table[color0]);
@@ -2512,9 +2504,9 @@ pixel 0 (bit 1)	pixel 1 (bit 1)	pixel 2 (bit 1)	pixel 3 (bit 1)	pixel 0 (bit 0)	
 
             default:
 
-            //Aqui no deberia llegar nunca. pero por si acaso
+                //Aqui no deberia llegar nunca. pero por si acaso
 
-            x++;
+                x++;
             break;
 
         }
