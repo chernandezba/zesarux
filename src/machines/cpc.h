@@ -151,6 +151,8 @@ extern int cpc_crtc_get_bottom_border_height(void);
 extern int cpc_crtc_get_total_hsync_width(void);
 extern int cpc_crtc_get_total_vsync_height_crtc(void);
 
+extern z80_int cpc_ctrc_get_offset_videoram(void);
+
 //extern z80_bit cpc_endframe_workaround;
 
 extern int cpc_crtc_contador_scanline;

@@ -637,6 +637,17 @@ int cpc_crtc_get_vsync_position(void)
     return valor;
 }
 
+z80_int cpc_ctrc_get_offset_videoram(void)
+{
+
+    z80_int crtc_offset_videoram=(cpc_crtc_registers[13])  + (256*(cpc_crtc_registers[12]&3));
+
+    crtc_offset_videoram *= 2;
+
+    return crtc_offset_videoram;
+
+}
+
 //Obtener scanline donde acaba despues de borde superior, en el caso del conteo que hace el crtc:
 //0...x pixeles
 //..... borde inferior
@@ -1706,11 +1717,11 @@ Register Index	Register Name	Range	CPC Setting	Notes
 
 //http://www.grimware.org/doku.php/documentations/devices/crtc
 
-	z80_int crtc_offset_videoram=(cpc_crtc_registers[13])  + (256*(cpc_crtc_registers[12]&3));
+	z80_int crtc_offset_videoram=cpc_ctrc_get_offset_videoram();
 	z80_byte crtc_video_page=(cpc_crtc_registers[12]>>4)&3;
 	//printf ("offset: %d video page: %d\n",crtc_offset_videoram,crtc_video_page);
 
-	crtc_offset_videoram *=2;
+
 
 	int alto_caracter,ancho_total,total_alto,offset_x;
 
@@ -2338,11 +2349,11 @@ void screen_store_scanline_rainbow_solo_display_cpc(void)
     int x;
     int color0,color1,color2,color3;
 
-        z80_int crtc_offset_videoram=(cpc_crtc_registers[13])  + (256*(cpc_crtc_registers[12]&3));
+        z80_int crtc_offset_videoram=cpc_ctrc_get_offset_videoram();
         z80_byte crtc_video_page=(cpc_crtc_registers[12]>>4)&3;
         //printf ("offset: %d video page: %d\n",crtc_offset_videoram,crtc_video_page);
 
-        crtc_offset_videoram *=2;
+
 
 
 
