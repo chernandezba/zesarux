@@ -1686,24 +1686,24 @@ z80_int cpc_sumar_direccion_pantalla(z80_int direccion_pixel,z80_int sumar)
 //Refresco de pantalla CPC sin rainbow
 void scr_refresca_pantalla_cpc(void)
 {
-	z80_byte modo_video=cpc_gate_registers[2] &3;
+    z80_byte modo_video=cpc_gate_registers[2] &3;
 
-	if (cpc_forzar_modo_video.v) {
-		modo_video=cpc_forzar_modo_video_modo;
-	}
+    if (cpc_forzar_modo_video.v) {
+        modo_video=cpc_forzar_modo_video_modo;
+    }
 
 
-	z80_int x,y;
+    z80_int x,y;
 
-	z80_int offset_tabla;
-	z80_byte byte_leido;
+    z80_int offset_tabla;
+    z80_byte byte_leido;
 
-	z80_int direccion_pixel;
+    z80_int direccion_pixel;
 
-	int color0,color1,color2,color3;
+    int color0,color1,color2,color3;
 
-	int yfinal;
-	int bit;
+    int yfinal;
+    int bit;
 
 /*
 http://www.cpcwiki.eu/index.php/CRTC
@@ -1735,17 +1735,17 @@ Register Index	Register Name	Range	CPC Setting	Notes
 
 //http://www.grimware.org/doku.php/documentations/devices/crtc
 
-	z80_int crtc_offset_videoram=cpc_ctrc_get_offset_videoram();
-	z80_byte crtc_video_page=(cpc_crtc_registers[12]>>4)&3;
-	//printf ("offset: %d video page: %d\n",crtc_offset_videoram,crtc_video_page);
+    z80_int crtc_offset_videoram=cpc_ctrc_get_offset_videoram();
+    z80_byte crtc_video_page=(cpc_crtc_registers[12]>>4)&3;
+    //printf ("offset: %d video page: %d\n",crtc_offset_videoram,crtc_video_page);
 
 
 
-	int alto_caracter,ancho_total,total_alto,offset_x;
+    int alto_caracter,ancho_total,total_alto,offset_x;
 
 
 
-	scr_cpc_return_ancho_alto(&ancho_total,&total_alto,&alto_caracter,&offset_x);
+    scr_cpc_return_ancho_alto(&ancho_total,&total_alto,&alto_caracter,&offset_x);
 
 
 /*
@@ -1770,22 +1770,18 @@ FFFF->F800
 
 
 
-
-
-
-
 	//Temporal. Quiza no tener que inicializar la tabla cada vez??? Esta tabla
 	//sale tal cual de init_cpc_line_display_table pero cambiando valor 80
-        int yy;
-        z80_int offset;
-        for (yy=0;yy<200;yy++) {
-                //offset=((yy / 8) * cpc_crtc_registers[1]*2) + ((yy % 8) * 2048);
-                int char_row=yy / alto_caracter;
-                int char_scanline=yy % alto_caracter;
+    int yy;
+    z80_int offset;
+    for (yy=0;yy<200;yy++) {
+            //offset=((yy / 8) * cpc_crtc_registers[1]*2) + ((yy % 8) * 2048);
+            int char_row=yy / alto_caracter;
+            int char_scanline=yy % alto_caracter;
 
-                offset=(char_row * cpc_crtc_registers[1]*2) + (char_scanline * 2048);
-                cpc_line_display_table[yy]=offset;
-        }
+            offset=(char_row * cpc_crtc_registers[1]*2) + (char_scanline * 2048);
+            cpc_line_display_table[yy]=offset;
+    }
 
 
 
@@ -1806,13 +1802,14 @@ FFFF->F800
 		//x lo incrementa cada modo por separado
 		//for (x=0;x<640;) {
 		for (x=offset_x;x<ancho_total+offset_x;) {
+            byte_leido=*(cpc_ram_mem_table[crtc_video_page]+(direccion_pixel&16383) ); //Solo offset dentro de 16kb
+            direccion_pixel=cpc_sumar_direccion_pantalla(direccion_pixel,1);
 			switch (modo_video) {
-		                case 0:
-                		        //printf ("Mode 0, 160x200 resolution, 16 colours\n");
-					//Cada pixel por cuaduplicado
-					byte_leido=*(cpc_ram_mem_table[crtc_video_page]+(direccion_pixel&16383) ); //Solo offset dentro de 16kb
 
-					direccion_pixel=cpc_sumar_direccion_pantalla(direccion_pixel,1);
+                case 0:
+                    //printf ("Mode 0, 160x200 resolution, 16 colours\n");
+					//Cada pixel por cuaduplicado
+
 
 					color0=(byte_leido&128)>>7 | (byte_leido&8)>>2 | (byte_leido&32)>>3 | (byte_leido&2)<<2;
 					color1=(byte_leido&64)>>6  | (byte_leido&4)>>1 | (byte_leido&16)>>2 | (byte_leido&1)<<3;
@@ -1832,20 +1829,17 @@ FFFF->F800
                     cpc_putpixel_zoom(x++,yfinal,color1);
 
 
-		                break;
+                break;
 
-                		case 1:
+                case 1:
 
 /*
 Mode 1, 320×200, 4 colors (each byte of video memory represents 4 pixels):
 bit 7	        bit 6	        bit 5	        bit 4	        bit 3	        bit 2	        bit 1	        bit 0
 pixel 0 (bit 1)	pixel 1 (bit 1)	pixel 2 (bit 1)	pixel 3 (bit 1)	pixel 0 (bit 0)	pixel 1(bit 0)	pixel 2 (bit 0)	pixel 3 (bit 0)
 */
-		                        //printf ("Mode 1, 320x200 resolution, 4 colours\n");
+                    //printf ("Mode 1, 320x200 resolution, 4 colours\n");
 					//Duplicamos cada pixel en ancho
-					byte_leido=*(cpc_ram_mem_table[crtc_video_page]+(direccion_pixel&16383) ); //Solo offset dentro de 16kb
-
-					direccion_pixel=cpc_sumar_direccion_pantalla(direccion_pixel,1);
 
 					color0=(byte_leido&128)>>7 | ((byte_leido&8)>>2);
 					//if (cpc_palette_table[color0]!=4) printf ("color0: %d valor: %d\n",color0,cpc_palette_table[color0]);
@@ -1876,13 +1870,10 @@ pixel 0 (bit 1)	pixel 1 (bit 1)	pixel 2 (bit 1)	pixel 3 (bit 1)	pixel 0 (bit 0)	
 					cpc_putpixel_zoom(x++,yfinal,color3);
 
 
-                		break;
+                break;
 
-		                case 2:
-                		        //printf ("Mode 2, 640x200 resolution, 2 colours\n");
-					byte_leido=*(cpc_ram_mem_table[crtc_video_page]+(direccion_pixel&16383) ); //Solo offset dentro de 16kb
-
-					direccion_pixel=cpc_sumar_direccion_pantalla(direccion_pixel,1);
+                case 2:
+                    //printf ("Mode 2, 640x200 resolution, 2 colours\n");
 
 					for (bit=0;bit<8;bit++) {
 						color0=(byte_leido&128)>>7;
@@ -1891,13 +1882,10 @@ pixel 0 (bit 1)	pixel 1 (bit 1)	pixel 2 (bit 1)	pixel 3 (bit 1)	pixel 0 (bit 0)	
                         cpc_putpixel_zoom(x++,yfinal,color0);
 						byte_leido=byte_leido<<1;
 					}
-		                break;
+                break;
 
-                		case 3:
-		                        //printf ("Mode 3, 160x200 resolution, 4 colours (undocumented)\n");
-
-					byte_leido=*(cpc_ram_mem_table[crtc_video_page]+(direccion_pixel&16383) ); //Solo offset dentro de 16kb
-                    direccion_pixel=cpc_sumar_direccion_pantalla(direccion_pixel,1);
+                case 3:
+                    //printf ("Mode 3, 160x200 resolution, 4 colours (undocumented)\n");
 
                     color0=(byte_leido&128)>>7 | ((byte_leido&8)>>2);
                     //if (cpc_palette_table[color0]!=4) printf ("color0: %d valor: %d\n",color0,cpc_palette_table[color0]);
@@ -1917,8 +1905,8 @@ pixel 0 (bit 1)	pixel 1 (bit 1)	pixel 2 (bit 1)	pixel 3 (bit 1)	pixel 0 (bit 0)	
                     cpc_putpixel_zoom(x++,yfinal,color1);
                     cpc_putpixel_zoom(x++,yfinal,color1);
 
-                    break;
-		        }
+                break;
+            }
 
 		}
 	}
