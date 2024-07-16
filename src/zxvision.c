@@ -20254,7 +20254,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 
 		if (tecla!=0) menu_tooltip_counter=0;
 
-		int lineas_mover_pgup_dn;
+		//int lineas_mover_pgup_dn;
 		int conta_mover_pgup_dn;
         int scroll_esperado_pgdn;
         int scroll_esperado_pgup;

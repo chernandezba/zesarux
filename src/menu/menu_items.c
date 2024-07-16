@@ -23209,8 +23209,8 @@ void menu_help_keyboard_send_mantenidas_pressed_keys(void)
     int total_filas;
     z80_byte **key_map_ports=get_keyboard_map_ports_table(&total_columnas,&total_filas);
 
-    int indice_a_tecla_simple,indice_a_tecla_doble;
-    int es_tecla_doble;
+    //int indice_a_tecla_simple,indice_a_tecla_doble;
+    //int es_tecla_doble;
 
 
     int fila_tecla;
