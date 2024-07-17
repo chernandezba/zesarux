@@ -883,7 +883,6 @@ Pero sigue sin ir...
 -ay player en modo cpc no borra debajo de pantalla diferentes ventanas
 --machine cpc464 en aa,caca en consola de texto real da segmentation fault
 -Que pasa con keymap y otras teclas de cpc en drivers que no soportan keymap
--Hardware scroll no va fino
 -Paginación de memoria cpc en la función por defecto array que tenga: 0,1,2,3
 Luego en cpc con más de 64 kb se puede re mapear según registro 3 del gate array
 
@@ -900,27 +899,7 @@ temporalmente desactivamos comando de stop real tape cuando motor off
 
 -en debug paginas memoria, que muestre correctamente paginas dandanator cpc
 
--Implementar registros 12 y 13 crtc del cpc para scroll y cambio de buffer video
 
-For a 16k screen:
-screen start byte offset = (((R12 & 0x03)*256) + (R13 & 255))*2
-For a 32k screen:
-screen start byte offset = (((R12 & 15)*256) + (R13 & 255))*2
-On a hardware scrolling screen, there is a problem:
-C7FF->C000
-CFFF->C800
-D7FF->D000
-DFFF->D800
-E7FF->E000
-EFFF->E800
-F7FF->F000
-FFFF->F800
-
-Quizá esto dice que al incrementar de c7ff pasa a c000 en vez de c800
-
-Seguramente al dibujar pantalla cuando se pasa de offset ffffh se vuelve a c000h, es decir, el offset cuenta siempre desde la base de pantalla y un contador que va de 0 a 16383 y luego resetea a 0 (si se define pantalla de 16k)
-
-http://www.cpcwiki.eu/index.php/Programming:Hardware_scrolling_the_screen_using_the_CRTC
 
 -Cpc traps Rom
 http://www.cpcwiki.eu/index.php/Format:TAP_tape_image_file_format
@@ -955,7 +934,14 @@ Bit	Value	Function
 
 Deberia mirar ese bit esta a 1 para poner el contador a 0?
 
+-Pendiente cpc: no soportamos pantallas de mas de 16kb, se deberia agregar el calculo correspondiente:
+For a 16k screen:
 
+screen start byte offset = (((R12 & 0x03)*256) + (R13 & 255))*2
+
+For a 32k screen:
+
+screen start byte offset = (((R12 & 15)*256) + (R13 & 255))*2
 
 
 *puerto DF en snapshot zsf

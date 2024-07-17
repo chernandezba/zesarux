@@ -2891,15 +2891,21 @@ z80_byte tbblue_clip_windows[TBBLUE_CLIP_WINDOW_TILEMAP][4];
             );
             zxvision_print_string_defaults_fillspc(ventana,1,linea++,texto_buffer);
 
+            sprintf(texto_buffer,"Videoram offset: %03XH",cpc_ctrc_get_offset_videoram());
+            zxvision_print_string_defaults_fillspc(ventana,1,linea++,texto_buffer);
+
+            sprintf(texto_buffer,"Videoram page:   %XH",cpc_ctrc_get_video_page());
+            zxvision_print_string_defaults_fillspc(ventana,1,linea++,texto_buffer);
+
             //zxvision_print_string_defaults_fillspc(ventana,1,linea++,"Borders");
 
-            sprintf(texto_buffer,"Border Top:  %3d Bottom: %3d",
+            sprintf(texto_buffer,"Border Top:      %3d Bottom: %3d",
                 cpc_crtc_get_top_border_height(),
                 cpc_crtc_get_bottom_border_height()
             );
             zxvision_print_string_defaults_fillspc(ventana,1,linea++,texto_buffer);
 
-            sprintf(texto_buffer,"Border Left: %3d Right:  %3d",
+            sprintf(texto_buffer,"Border Left:     %3d Right:  %3d",
                 cpc_crtc_get_total_left_border(),
                 cpc_crtc_get_total_right_border()
             );
@@ -2913,8 +2919,6 @@ z80_byte tbblue_clip_windows[TBBLUE_CLIP_WINDOW_TILEMAP][4];
             sprintf(texto_buffer,"Vsync height:    %d",cpc_crtc_get_total_vsync_height_crtc());
             zxvision_print_string_defaults_fillspc(ventana,1,linea++,texto_buffer);
 
-            sprintf(texto_buffer,"Videoram offset: %03XH",cpc_ctrc_get_offset_videoram());
-            zxvision_print_string_defaults_fillspc(ventana,1,linea++,texto_buffer);
         }
 
 

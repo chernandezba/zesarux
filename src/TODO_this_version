@@ -395,11 +395,3 @@ Bob Morane
 Canadair
 Vector Ball
 
--Pendiente cpc: no soportamos pantallas de mas de 16kb, se deberia agregar el calculo correspondiente:
-For a 16k screen:
-
-screen start byte offset = (((R12 & 0x03)*256) + (R13 & 255))*2
-
-For a 32k screen:
-
-screen start byte offset = (((R12 & 15)*256) + (R13 & 255))*2
