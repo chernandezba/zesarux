@@ -11141,7 +11141,7 @@ void menu_debug_draw_sprites(void)
 
 
 
-		for (y=0;y<view_sprites_alto_sprite;y+=menu_debug_draw_sprites_zoom_sprites) {
+		for (y=0;y<view_sprites_alto_sprite*menu_debug_draw_sprites_zoom_sprites;y+=menu_debug_draw_sprites_zoom_sprites) {
 			if (view_sprites_scr_sprite && y<192) {
 				 puntero=view_sprites_direccion+screen_addr_table[(y<<5)];
 			}
