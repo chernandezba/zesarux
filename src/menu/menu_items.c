@@ -11459,7 +11459,20 @@ void menu_debug_draw_sprites(void)
                         int color_pixel=color;
                         if (menu_debug_draw_sprites_zoom_sprites>=4 && menu_debug_draw_sprites_grid) {
                             //cuadricula
-                            if (zx==0 || zy==0) color_pixel=ESTILO_GUI_TINTA_NORMAL;
+                            if (zx==0 || zy==0) {
+                                /*
+                                if (view_sprites_bpp==1) {
+                                    if (color_pixel==ESTILO_GUI_PAPEL_NORMAL) color_pixel=ESTILO_GUI_TINTA_NORMAL;
+                                    else color_pixel=ESTILO_GUI_PAPEL_NORMAL;
+                                }
+
+                                else color_pixel=ESTILO_GUI_TINTA_NORMAL;
+                                */
+
+                                //La cuadricula con el color de waveform siempre se vera bien encima de un fondo de papel
+
+                                color_pixel=ESTILO_GUI_COLOR_WAVEFORM;
+                            }
                         }
 				        zxvision_putpixel(menu_debug_draw_sprites_window,finalx+zx,yorigen+y+zy,color_pixel);
                     }
