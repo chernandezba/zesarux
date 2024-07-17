@@ -11455,7 +11455,7 @@ void menu_debug_draw_sprites(void)
                 int zx,zy;
                 for (zx=0;zx<menu_debug_draw_sprites_zoom_sprites;zx++) {
                     for (zy=0;zy<menu_debug_draw_sprites_zoom_sprites;zy++) {
-                        //Contemplar rejilla a partir de zoom 5
+                        //Contemplar rejilla a partir de zoom 4
                         int color_pixel=color;
                         if (menu_debug_draw_sprites_zoom_sprites>=4 && menu_debug_draw_sprites_grid) {
                             //cuadricula
