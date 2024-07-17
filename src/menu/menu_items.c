@@ -11096,6 +11096,8 @@ void menu_debug_draw_sprites(void)
     //si ventana minimizada, no ejecutar todo el codigo de overlay
     if (menu_debug_draw_sprites_window->is_minimized) return;
 
+    //Visor de sprites hardware no soporta zoom de momento (habria que repensar los bucles "for" para que esto funcionase)
+    if (view_sprites_hardware) menu_debug_draw_sprites_zoom_sprites=1;
 
 	//int sx=SPRITES_X+1;
 	//int sx=1;
@@ -11901,15 +11903,19 @@ void menu_debug_view_sprites_textinfo(zxvision_window *ventana)
             else sprintf(mensaje_texto_sms," [%c] SMS Mo~~de 4",(view_sprites_sms_tiles==1 ? '>' : 'v') );
         }
 
+        char mensaje_magnify[30];
+        mensaje_magnify[0]=0;
+        if (!view_sprites_hardware) sprintf(mensaje_magnify,"[%d] Ma~~gnify",menu_debug_draw_sprites_zoom_sprites);
+
         char mensaje_grid[30];
         mensaje_grid[0]=0;
         if (menu_debug_draw_sprites_zoom_sprites>=4) sprintf(mensaje_grid,"[%c] ~^Grid",(menu_debug_draw_sprites_grid ? 'X' : ' '));
 
-		sprintf(buffer_segunda_linea, "[%c] ~~inv [%c] Sc~~r %s%s%s%s [%d] Ma~~gnify %s",
+		sprintf(buffer_segunda_linea, "[%c] ~~inv [%c] Sc~~r %s%s%s%s %s %s",
 					(view_sprites_inverse.v ? 'X' : ' '),
 					(view_sprites_scr_sprite ? 'X' : ' '),
 					mensaje_texto_hardware,mensaje_texto_sms,mensaje_texto_zx81_pseudohires,mensaje_texto_pcw_screen,
-                    menu_debug_draw_sprites_zoom_sprites,mensaje_grid);
+                    mensaje_magnify,mensaje_grid);
 
 
 		zxvision_print_string_defaults_fillspc(ventana,1,linea++,buffer_primera_linea);
