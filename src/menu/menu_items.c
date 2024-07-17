@@ -11083,6 +11083,7 @@ int menu_draw_sprites_get_origin_y(void)
 }*/
 
 int menu_debug_draw_sprites_zoom_sprites=1;
+int menu_debug_draw_sprites_grid=0;
 
 void menu_debug_draw_sprites(void)
 {
@@ -11452,7 +11453,13 @@ void menu_debug_draw_sprites(void)
                 int zx,zy;
                 for (zx=0;zx<menu_debug_draw_sprites_zoom_sprites;zx++) {
                     for (zy=0;zy<menu_debug_draw_sprites_zoom_sprites;zy++) {
-				        zxvision_putpixel(menu_debug_draw_sprites_window,finalx+zx,yorigen+y+zy,color);
+                        //Contemplar rejilla a partir de zoom 5
+                        int color_pixel=color;
+                        if (menu_debug_draw_sprites_zoom_sprites>=4 && menu_debug_draw_sprites_grid) {
+                            //cuadricula
+                            if (zx==0 || zy==0) color_pixel=ESTILO_GUI_TINTA_NORMAL;
+                        }
+				        zxvision_putpixel(menu_debug_draw_sprites_window,finalx+zx,yorigen+y+zy,color_pixel);
                     }
                 }
 
@@ -11830,10 +11837,10 @@ void menu_debug_view_sprites_textinfo(zxvision_window *ventana)
 
     if (linea>=0) {
 
-		char buffer_primera_linea[64]; //dar espacio de mas para poder alojar el ~de los atajos
-		char buffer_segunda_linea[64];
+		char buffer_primera_linea[100]; //dar espacio de mas para poder alojar el ~de los atajos
+		char buffer_segunda_linea[100];
 
-		char buffer_tercera_linea[64];
+		char buffer_tercera_linea[100];
 
 		//Forzar a mostrar atajos
 		z80_bit antes_menu_writing_inverse_color;
@@ -11894,11 +11901,15 @@ void menu_debug_view_sprites_textinfo(zxvision_window *ventana)
             else sprintf(mensaje_texto_sms," [%c] SMS Mo~~de 4",(view_sprites_sms_tiles==1 ? '>' : 'v') );
         }
 
+        char mensaje_grid[30];
+        mensaje_grid[0]=0;
+        if (menu_debug_draw_sprites_zoom_sprites>=4) sprintf(mensaje_grid,"[%c] ~^Grid",(menu_debug_draw_sprites_grid ? 'X' : ' '));
 
-		sprintf(buffer_segunda_linea, "[%c] ~~inv [%c] Sc~~r %s%s%s%s [%d] Ma~~gnify",
+		sprintf(buffer_segunda_linea, "[%c] ~~inv [%c] Sc~~r %s%s%s%s [%d] Ma~~gnify %s",
 					(view_sprites_inverse.v ? 'X' : ' '),
 					(view_sprites_scr_sprite ? 'X' : ' '),
-					mensaje_texto_hardware,mensaje_texto_sms,mensaje_texto_zx81_pseudohires,mensaje_texto_pcw_screen,menu_debug_draw_sprites_zoom_sprites);
+					mensaje_texto_hardware,mensaje_texto_sms,mensaje_texto_zx81_pseudohires,mensaje_texto_pcw_screen,
+                    menu_debug_draw_sprites_zoom_sprites,mensaje_grid);
 
 
 		zxvision_print_string_defaults_fillspc(ventana,1,linea++,buffer_primera_linea);
@@ -12135,10 +12146,14 @@ void menu_debug_view_sprites(MENU_ITEM_PARAMETERS)
 
                     case 'g':
                         menu_debug_draw_sprites_zoom_sprites++;
-                        if (menu_debug_draw_sprites_zoom_sprites>4) {
+                        if (menu_debug_draw_sprites_zoom_sprites>8) {
                             menu_debug_draw_sprites_zoom_sprites=1;
                             ventana->must_clear_cache_on_draw_once=1;
                         }
+                    break;
+
+                    case 'G':
+                        menu_debug_draw_sprites_grid ^=1;
                     break;
 
 
