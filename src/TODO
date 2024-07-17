@@ -352,6 +352,7 @@ Si es botón está también mapeado a un evento, entonces esa letra no se ve
 -Spectra: dos ventanas, una muestra pantalla principal (salida normal de spectrum) y la otra muestra la pantalla que genera la salida del spectra
 quizá modo dual de spectra se puede hacer en misma ventana pero haciéndola el doble de ancho para que se vean las dos pantallas
 ->quiza no tiene mucho sentido porque se puede abrir ventana de sprites con visor de pantalla
+->Esto quizá ya se puede usar con la pantalla de video info: ah no, porque video info tambien se ve en modo spectra
 
 * Nuevos componentes o hardware *
 
@@ -405,7 +406,6 @@ al final se reduce a enviar la tecla cada 20 ms por ejemplo, por tanto, es pract
 -spool: poder enviar sentencia especial, tipo \s para enviar shift, o \y para enviar symbol, etc
 -spool: spool file activado se comporta mal al pulsar en botones de menu. aun peor si se usa modo turbo spool
 
-- Rasp en carcasa de spectrum
 
 
 - lightgun. magnum light phaser no va bien
@@ -421,11 +421,6 @@ E indicar valor por defecto
 
 -Reset parámetros por defecto en quickload también para spectrum
 
-
--Juegos fallan
--powerup. al cargar. hay que reinsertar cinta, y hay que cargarlo en modo usr0 . no me preocupa mucho porque es una demo de pentagon...
-comparacion con zxspectr.
-powerup: ok
 
 
 -en sped52, si se hace poke

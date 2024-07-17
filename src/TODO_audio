@@ -99,7 +99,6 @@ utilizar mismo método que el resample a 1 bit: si valor es menor que anterior, 
 
 -aumentar frecuencia 15600 para mejor sonido
 
--lectura de sonido desde line-in, para poder cargar directo desde casette
 
 -reducir fifo por defecto de pulse? de 10 a 2?
 -reducir fifo por defecto de alsa? de 4 a 2?

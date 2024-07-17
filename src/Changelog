@@ -10,6 +10,7 @@ Allow to not save snapshot when exiting ZEsarUX
 Allow to define Left Alt, Left Ctrl, Left Shift or TAB as Joystick Fire action
 Allow to change current tape read position on Input Tape Viewer for .tap files
 Allow loading a 8kb rom in ZX80 (for example the ZX81 rom, like an upgraded ZX80 to ZX81)
+Allow magnify sprites on View Sprites
 
 Improved ZX Vision:
 - When selecting ZX Vision Style, it is applied on moving cursor

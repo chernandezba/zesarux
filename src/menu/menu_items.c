@@ -11082,6 +11082,8 @@ int menu_draw_sprites_get_origin_y(void)
         view_sprites_ancho_sprite,view_sprites_alto_sprite,ESTILO_GUI_PAPEL_NORMAL);
 }*/
 
+int menu_debug_draw_sprites_zoom_sprites=1;
+
 void menu_debug_draw_sprites(void)
 {
 
@@ -11137,7 +11139,9 @@ void menu_debug_draw_sprites(void)
 
 		int tamanyo_linea=view_sprites_bytes_por_linea;
 
-		for (y=0;y<view_sprites_alto_sprite;y++) {
+
+
+		for (y=0;y<view_sprites_alto_sprite;y+=menu_debug_draw_sprites_zoom_sprites) {
 			if (view_sprites_scr_sprite && y<192) {
 				 puntero=view_sprites_direccion+screen_addr_table[(y<<5)];
 			}
@@ -11384,7 +11388,7 @@ void menu_debug_draw_sprites(void)
                 //para sms, solo hacer este bucle 1 vez
                 if (view_sprites_sms_tiles) total_bpp=8;
 
-				for (bit=0;bit<8;bit+=total_bpp,incx++,finalx++,x++) {
+				for (bit=0;bit<8;bit+=total_bpp,incx++,finalx+=menu_debug_draw_sprites_zoom_sprites,x++) {
 
 
 
@@ -11444,7 +11448,14 @@ void menu_debug_draw_sprites(void)
                 }
 
 
-				zxvision_putpixel(menu_debug_draw_sprites_window,finalx,yorigen+y,color);
+                //Contemplar zoom de sprites
+                int zx,zy;
+                for (zx=0;zx<menu_debug_draw_sprites_zoom_sprites;zx++) {
+                    for (zy=0;zy<menu_debug_draw_sprites_zoom_sprites;zy++) {
+				        zxvision_putpixel(menu_debug_draw_sprites_window,finalx+zx,yorigen+y+zy,color);
+                    }
+                }
+
 			   }
 
                 byte_leido_sms_1=byte_leido_sms_1<<1;
@@ -11884,10 +11895,10 @@ void menu_debug_view_sprites_textinfo(zxvision_window *ventana)
         }
 
 
-		sprintf(buffer_segunda_linea, "[%c] ~~inv [%c] Sc~~r %s%s%s%s",
+		sprintf(buffer_segunda_linea, "[%c] ~~inv [%c] Sc~~r %s%s%s%s [%d] Ma~~gnify",
 					(view_sprites_inverse.v ? 'X' : ' '),
 					(view_sprites_scr_sprite ? 'X' : ' '),
-					mensaje_texto_hardware,mensaje_texto_sms,mensaje_texto_zx81_pseudohires,mensaje_texto_pcw_screen);
+					mensaje_texto_hardware,mensaje_texto_sms,mensaje_texto_zx81_pseudohires,mensaje_texto_pcw_screen,menu_debug_draw_sprites_zoom_sprites);
 
 
 		zxvision_print_string_defaults_fillspc(ventana,1,linea++,buffer_primera_linea);
@@ -12121,6 +12132,14 @@ void menu_debug_view_sprites(MENU_ITEM_PARAMETERS)
 						    if (view_sprites_offset_palette>=256) view_sprites_offset_palette=0;
                         }
 					break;
+
+                    case 'g':
+                        menu_debug_draw_sprites_zoom_sprites++;
+                        if (menu_debug_draw_sprites_zoom_sprites>4) {
+                            menu_debug_draw_sprites_zoom_sprites=1;
+                            ventana->must_clear_cache_on_draw_once=1;
+                        }
+                    break;
 
 
 					case 'l':

@@ -381,7 +381,7 @@ el resto puede salir fuera -> comprobar al hacer print y putpixel que no sale fu
 
 -quiza hsync_generator_active.v en zx80/81, que no se usa practicamente, puede servir para estabilizar la imagen en horizontal
 
--probar scroll hardware en cpc:
+-Para probar scroll hardware en cpc:
 
 https://syx.neocities.org/posts/old_games_with_scroll
 boulder dash3
