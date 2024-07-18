@@ -22,6 +22,7 @@ Remove buffer full indicator when pressing shift+e on External Audio Source wind
 Fixed TZX autload as Real Tape on Spectrum +3
 Fixed hotswap ZX80 to ZX81, ZX81 to ZX80
 Fixed Amstrad CPC Scroll
+Fixed loading .nex snapshots and Layer 2 not being initialized (fixes errors on Head Over Heels for Next, for example)
 
 ----
 

@@ -228,6 +228,15 @@ They are not supported by esxDOS."
 
 }
 
+void load_nex_snapshot_set_default_next_registers(void)
+{
+    //revisar todos valores por defecto de
+    //https://gitlab.com/thesmog358/tbblue/-/blob/master/src/asm/nexload/nexload.asm?ref_type=heads
+    tbblue_registers[18]=9;
+
+}
+
+
 //Cargar snapshot nex
 void load_nex_snapshot(char *archivo)
 {
@@ -281,6 +290,8 @@ void load_nex_snapshot(char *archivo)
 
 
     load_nex_snapshot_if_mount_exdos_folder(archivo);
+
+    load_nex_snapshot_set_default_next_registers();
 
 	//Al cargar .nex lo pone en turbo x 4
 	debug_printf(VERBOSE_DEBUG,"Setting turbo x 4 because it's the usual speed when loading .nex files from NextOS");
@@ -398,7 +409,9 @@ void load_nex_snapshot(char *archivo)
 		int tbblue_layer2_offset=tbblue_get_offset_start_layer2();
 		leidos=fread(&memoria_spectrum[tbblue_layer2_offset],1,49152,ptr_nexfile);
 		//Asumimos que esta activo modo layer2 entonces
-		//tbblue_out_port_layer2_value(1);
+        //Esto es necesario en Head Over Heels por ejemplo
+		tbblue_out_port_layer2_value(2);
+
 		//tbblue_registers[0x15]=4; //Layer priority L S U
 	}
 

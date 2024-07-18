@@ -22,6 +22,7 @@ Quitar indicador de buffer lleno al pulsar shift+e en ventana de Fuente de sonid
 Corregida autocarga de TZX como Cinta Real en Spectrum +3
 Corregido hotswap ZX80 a ZX81, ZX81 a ZX80
 Corregido Scroll de Amstrad CPC
+Corregida carga de snapshots .nex snapshots y la inicialización incorrecta de Layer 2 (corrige errores en Head Over Heels de Next por ejemplo)
 
 ----
 
