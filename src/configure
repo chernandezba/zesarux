@@ -1703,7 +1703,7 @@ gs.o: soundchips/gs.c soundchips/gs.h cpu.h debug.h utils.h operaciones.h conten
 betadisk.o: storage/betadisk.c storage/betadisk.h cpu.h debug.h utils.h operaciones.h ula.h mem128.h video/screen.h machines/tsconf.h menu/menu_items.h settings.h
 	\$(CC) \$(CFLAGS) -c storage/betadisk.c
 
-codetests.o: codetests.c codetests.h cpu.h debug.h utils.h operaciones.h ula.h mem128.h video/screen.h machines/tbblue.h assemble.h expression_parser.h audio/audio.h zrcp/zeng.h zrcp/zeng_online.h network.h settings.h atomic.h cpc.h
+codetests.o: codetests.c codetests.h cpu.h debug.h utils.h operaciones.h ula.h mem128.h video/screen.h machines/tbblue.h assemble.h expression_parser.h audio/audio.h zrcp/zeng.h zrcp/zeng_online.h network.h settings.h atomic.h machines/cpc.h
 	\$(CC) \$(CFLAGS) -c codetests.c
 
 assemble.o: assemble.c assemble.h cpu.h debug.h utils.h
