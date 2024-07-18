@@ -7321,6 +7321,9 @@ void menu_debug_cpu_backwards_history_run(zxvision_window *ventana)
 
 }
 
+
+int salir_lista_cpu_history=0;
+
 void menu_debug_cpu_history_select(MENU_ITEM_PARAMETERS)
 {
     //menu_debug_memory_pointer=valor_opcion;
@@ -7353,7 +7356,18 @@ void menu_debug_cpu_history_select(MENU_ITEM_PARAMETERS)
     char string_mensaje[2048];
     sprintf(string_mensaje,"%s\n\n%s",string_destino_registros,string_disassemble);
 
-    menu_generic_message("Registers",string_mensaje);
+    //menu_generic_message("Registers",string_mensaje);
+
+
+    int opcion_seleccionada=zxvision_menu_generic_message_two_buttons("Registers", string_mensaje,"<GO to PC>", "<OK>");
+
+    //printf("opcion: %d\n",opcion_seleccionada);
+
+    if (opcion_seleccionada==0) {
+        menu_debug_follow_pc.v=0; //se deja de seguir pc
+        menu_debug_memory_pointer=valor_pc;
+        salir_lista_cpu_history=1;
+    }
 }
 
 void menu_debug_cpu_history(void)
@@ -7379,6 +7393,8 @@ void menu_debug_cpu_history(void)
     if (total_items_menus>1000) total_items_menus=1000;
 
     int menu_debug_cpu_history_opcion_seleccionada=0;
+
+    salir_lista_cpu_history=0;
 
     menu_item *array_menu_common;
     menu_item item_seleccionado;
@@ -7453,7 +7469,7 @@ void menu_debug_cpu_history(void)
             }
         }
 
-    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus && !salir_lista_cpu_history);
 }
 
 int menu_debug_registers_print_main_step(zxvision_window *ventana)

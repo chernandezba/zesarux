@@ -23237,6 +23237,104 @@ void zxvision_menu_generic_message_setting(char *titulo, const char *texto, char
 }
 
 
+//Mensaje con dos botones
+int zxvision_menu_generic_message_two_buttons(char *titulo, const char *texto,
+    char *texto_opcion1,
+    char *texto_opcion2
+    )
+{
+
+	int lineas_agregar=2;
+
+
+
+	zxvision_generic_message_tooltip(titulo , lineas_agregar , 0, 0, 0, NULL, 1, "%s", texto);
+
+
+	if (!strcmp(scr_new_driver_name,"stdout")) {
+        char buffer_opciones[200];
+        sprintf(buffer_opciones,"1) %s  2) %s  other) exit",texto_opcion1,texto_opcion2);
+		printf ("%s\n",buffer_opciones);
+		scrstdout_menu_print_speech_macro (buffer_opciones);
+        int retorno;
+		scanf("%d",&retorno);
+
+        if (retorno==1) return 0;
+        if (retorno==2) return 1;
+		return -1;
+	}
+
+	zxvision_window *ventana;
+
+	//Nuestra ventana sera la actual
+	ventana=zxvision_current_window;
+
+	int posicion_y_opcion=ventana->visible_height-lineas_agregar-1;
+	//printf ("%d %d\n",posicion_y_opcion,ventana->visible_height);
+
+	int ancho_ventana=ventana->visible_width;
+	int posicion_centro_x=ancho_ventana/2-1; //un poco mas a la izquierda
+
+	if (posicion_centro_x<0) posicion_centro_x=0;
+
+
+		menu_item *array_menu_generic_message_setting;
+        menu_item item_seleccionado;
+		int array_menu_generic_message_setting_opcion_seleccionada=0;
+        int retorno_menu;
+
+	int salir=0;
+    do {
+
+
+		//char buffer_texto_opcion[64];
+		//char buffer_texto_ok[64];
+
+		//sprintf (buffer_texto_opcion,"[%c] %s",(*valor_opcion ? 'X' : ' ' ),texto_opcion);
+		//strcpy(buffer_texto_ok,"<OK>");
+
+		//Tengo antes los textos para sacar longitud y centrarlos
+        int longitud_texto1=strlen(texto_opcion1);
+        int longitud_texto2=strlen(texto_opcion2);
+        int longitud_dos_textos=longitud_texto1+longitud_texto2+1; //+1 para dejar un espacio en medio
+
+		int posicion_x_opcion1=posicion_centro_x-longitud_dos_textos/2;
+		int posicion_x_opcion2=posicion_x_opcion1+longitud_texto1+1;
+
+
+		menu_add_item_menu_inicial_format(&array_menu_generic_message_setting,MENU_OPCION_NORMAL,NULL,NULL,texto_opcion1);
+		menu_add_item_menu_tabulado(array_menu_generic_message_setting,posicion_x_opcion1,posicion_y_opcion);
+
+
+		menu_add_item_menu_format(array_menu_generic_message_setting,MENU_OPCION_NORMAL,NULL,NULL,texto_opcion2);
+		menu_add_item_menu_tabulado(array_menu_generic_message_setting,posicion_x_opcion2,posicion_y_opcion);
+
+
+		//Nombre de ventana solo aparece en el caso de stdout
+    	retorno_menu=menu_dibuja_menu_no_title_lang(&array_menu_generic_message_setting_opcion_seleccionada,&item_seleccionado,array_menu_generic_message_setting,titulo);
+
+
+
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+                salir=1;
+        }
+
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus && !salir);
+
+
+
+	zxvision_destroy_window(ventana);
+
+	//Y liberar esa memoria, dado que la ventana esta asignada en memoria global
+	free(ventana);
+
+    //Si salido con ESC
+    if (item_seleccionado.tipo_opcion&MENU_OPCION_ESC || retorno_menu==MENU_RETORNO_ESC) return -1;
+
+    return array_menu_generic_message_setting_opcion_seleccionada;
+}
+
+
 void menu_generic_message_splash(char *titulo, const char * texto)
 {
 

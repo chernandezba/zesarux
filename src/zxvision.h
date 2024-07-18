@@ -1087,6 +1087,7 @@ extern void menu_generic_message_splash(char *titulo, const char * texto);
 extern void menu_generic_message_warn(char *titulo, const char * texto);
 
 extern void zxvision_menu_generic_message_setting(char *titulo, const char *texto, char *texto_opcion, int *valor_opcion);
+extern int zxvision_menu_generic_message_two_buttons(char *titulo, const char *texto,char *texto_opcion1, char *texto_opcion2);
 
 
 extern void zxvision_rearrange_background_windows(int si_cascada,int si_aplicar_a_inmutables);
