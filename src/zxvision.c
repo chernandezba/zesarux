@@ -23247,13 +23247,10 @@ int zxvision_menu_generic_message_two_buttons(char *titulo, const char *texto,
 	int lineas_agregar=2;
 
 
-
-	zxvision_generic_message_tooltip(titulo , lineas_agregar , 0, 0, 0, NULL, 1, "%s", texto);
-
-
 	if (!strcmp(scr_new_driver_name,"stdout")) {
+        printf("%s\n",texto);
         char buffer_opciones[200];
-        sprintf(buffer_opciones,"1) %s  2) %s  other) exit",texto_opcion1,texto_opcion2);
+        sprintf(buffer_opciones,"1) %s  2) %s  0) exit",texto_opcion1,texto_opcion2);
 		printf ("%s\n",buffer_opciones);
 		scrstdout_menu_print_speech_macro (buffer_opciones);
         int retorno;
@@ -23263,6 +23260,8 @@ int zxvision_menu_generic_message_two_buttons(char *titulo, const char *texto,
         if (retorno==2) return 1;
 		return -1;
 	}
+
+	zxvision_generic_message_tooltip(titulo , lineas_agregar , 0, 0, 0, NULL, 1, "%s", texto);
 
 	zxvision_window *ventana;
 
@@ -23278,20 +23277,15 @@ int zxvision_menu_generic_message_two_buttons(char *titulo, const char *texto,
 	if (posicion_centro_x<0) posicion_centro_x=0;
 
 
-		menu_item *array_menu_generic_message_setting;
-        menu_item item_seleccionado;
-		int array_menu_generic_message_setting_opcion_seleccionada=0;
-        int retorno_menu;
+    menu_item *array_menu_generic_message_setting;
+    menu_item item_seleccionado;
+    int array_menu_generic_message_setting_opcion_seleccionada=0;
+    int retorno_menu;
 
 	int salir=0;
     do {
 
 
-		//char buffer_texto_opcion[64];
-		//char buffer_texto_ok[64];
-
-		//sprintf (buffer_texto_opcion,"[%c] %s",(*valor_opcion ? 'X' : ' ' ),texto_opcion);
-		//strcpy(buffer_texto_ok,"<OK>");
 
 		//Tengo antes los textos para sacar longitud y centrarlos
         int longitud_texto1=strlen(texto_opcion1);
