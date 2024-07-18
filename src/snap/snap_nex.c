@@ -232,7 +232,26 @@ void load_nex_snapshot_set_default_next_registers(void)
 {
     //revisar todos valores por defecto de
     //https://gitlab.com/thesmog358/tbblue/-/blob/master/src/asm/nexload/nexload.asm?ref_type=heads
-    tbblue_registers[18]=9;
+
+    tbblue_registers[18]=9;     // layer2 page
+    tbblue_registers[19]=12;    // layer2 shadow page
+    tbblue_registers[20]=0xe3;  // transparent index
+    tbblue_registers[21]=1;     // priorities + sprite over border + sprite enable
+
+    tbblue_registers[22]=0;     // layer2 xy scroll
+    tbblue_registers[23]=0;
+
+
+    tbblue_registers[45]=0;     // sound drive reset
+
+    tbblue_registers[50]=0;     // lores XY scroll
+    tbblue_registers[51]=0;
+
+    tbblue_registers[67]=0;     // ula palette
+    tbblue_registers[66]=15;    // allow flashing
+
+    tbblue_registers[74]=0;     // transparency fallback value
+    tbblue_registers[75]=0xe3;  // sprite transparency index
 
 }
 
@@ -293,21 +312,25 @@ void load_nex_snapshot(char *archivo)
 
     load_nex_snapshot_set_default_next_registers();
 
-	//Al cargar .nex lo pone en turbo x 4
-	debug_printf(VERBOSE_DEBUG,"Setting turbo x 4 because it's the usual speed when loading .nex files from NextOS");
+	//Al cargar .nex lo pone en turbo x 8
+	debug_printf(VERBOSE_DEBUG,"Setting turbo x 8 because it's the usual speed when loading .nex files from NextOS");
 
 	z80_byte reg7=tbblue_registers[7];
 
 	reg7 &=(255-3); //Quitar los dos bits bajos
 
-	reg7 |=2;
+	reg7 |=3;
 	//(R/W)	07 => Turbo mode
-	//bit 1-0 = Turbo (00 = 3.5MHz, 01 = 7MHz, 10 = 14MHz)
+    /*
+    %00 = 3.5MHz
+    %01 = 7MHz
+    %10 = 14MHz
+    %11 = 28MHz (works since core 3.0
+    */
+
 
 	tbblue_registers[7]=reg7;
 	tbblue_set_emulator_setting_turbo();
-
-
 
 
 	//desactivamos interrupciones. No esta en el formato pero supongo que es asi
