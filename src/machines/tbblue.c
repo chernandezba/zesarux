@@ -3713,6 +3713,8 @@ void tbblue_reset_common(void)
 	tbblue_registers[97]=0;
 	tbblue_registers[98]=0;
 
+    tbblue_registers[104] &=0x13; //Pongo a 0 los bits documentados que estan a 0 con un soft reset
+
 	//Aunque no esté especificado como tal, ponemos este a 0
 	/*
 Bit	Function

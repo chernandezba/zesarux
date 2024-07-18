@@ -253,6 +253,12 @@ void load_nex_snapshot_set_default_next_registers(void)
     tbblue_registers[74]=0;     // transparency fallback value
     tbblue_registers[75]=0xe3;  // sprite transparency index
 
+    //Habilitar capa ula. Aunque esto no lo hace el nexload, asumo que siempre es asi
+    //por que si no, puede pasar que carguemos el xmas2020.nex, que desactiva la capa ula,
+    //y luego el Warhawk.nex necesita la capa ula
+    //tbblue_registers[104] &=127;
+    //Esto ya lo hace el soft reset
+
 }
 
 
