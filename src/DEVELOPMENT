@@ -211,7 +211,7 @@ Habilita drivers video: xwindows, sdl, fbdev, curses, stdout, simpletext y drive
 con comandos:
 export CFLAGS=-O3
 export LDFLAGS=-O3
-./configure --enable-memptr --enable-visualmem --enable-cpustats --enable-ssl --disable-caca --disable-aa --disable-cursesw --prefix /usr
+./configure --enable-ssl --disable-caca --disable-aa --disable-cursesw --prefix /usr
 make clean
 make
 make debian32 o make debian64
@@ -222,7 +222,7 @@ En entorno de 64 bits
 
 export CFLAGS=-O3
 export LDFLAGS=-O3
-./configure --enable-memptr --enable-visualmem --enable-cpustats --enable-ssl --disable-caca --disable-aa --disable-cursesw --prefix /usr
+./configure --enable-ssl --disable-caca --disable-aa --disable-cursesw --prefix /usr
 make clean
 make
 make haiku
@@ -246,7 +246,7 @@ Habilita drivers video: xwindows, sdl, fbdev, curses, stdout, simpletext y drive
 con comandos:
 export CFLAGS=-O3
 export LDFLAGS=-O3
-./configure --enable-memptr --enable-visualmem --enable-cpustats --enable-ssl --disable-caca --disable-aa --disable-cursesw --prefix /usr
+./configure --enable-ssl --disable-caca --disable-aa --disable-cursesw --prefix /usr
 make clean
 make
 make freebsd
@@ -260,7 +260,7 @@ Habilita extensiones raspberry, drivers video: fbdev, curses, y drivers audio: a
 con comandos:
 export CFLAGS=-O3
 export LDFLAGS=-O3
-./configure --enable-raspberry --spectrum-reduced-core --enable-ssl --disable-xwindows --disable-caca --disable-aa --disable-pulse --disable-pcspeaker --disable-simpletext --disable-stdout --disable-cursesw --prefix /usr
+./configure --enable-raspberry --spectrum-reduced-core --disable-memptr --disable-visualmem --disable-cpustats --enable-ssl --disable-xwindows --disable-caca --disable-aa --disable-pulse --disable-pcspeaker --disable-simpletext --disable-stdout --disable-cursesw --prefix /usr
 
 La salida debe ser similar a:
  Enabled Video output drivers: curses sdl fbdev null
@@ -305,7 +305,7 @@ Versión sin optimizaciones, sin SSL:
 export CFLAGS="-mmacosx-version-min=10.13"
 export LDFLAGS="-mmacosx-version-min=10.13"
 
-./configure --enable-memptr --enable-visualmem --enable-cpustats --disable-xwindows --disable-sdl --disable-fbdev --disable-caca --disable-aa --disable-curses --disable-sndfile
+./configure --disable-xwindows --disable-sdl --disable-fbdev --disable-caca --disable-aa --disable-curses --disable-sndfile
 make clean
 make
 make macapp
@@ -325,7 +325,7 @@ export LDFLAGS="-O3"
 #Al menos poner un 10.x dos versiones inferior al que yo tenga, suponiendo que funcione bien...
 #-Use otool -l /path/to/binary and inspect the LC_VERSION_MIN_MACOSX load command;
 
-./configure --enable-memptr --enable-visualmem --enable-cpustats --disable-xwindows --disable-sdl --disable-fbdev --disable-caca --disable-aa --disable-curses --disable-sndfile
+./configure --disable-xwindows --disable-sdl --disable-fbdev --disable-caca --disable-aa --disable-curses --disable-sndfile
 make clean
 make
 make macapp
@@ -351,7 +351,7 @@ export CFLAGS="-O3 -I/c/openssl-1.1.1d-win32-mingw/include"
 export LDFLAGS="-O3 -L/c/openssl-1.1.1d-win32-mingw/lib"
 
 
-./configure --enable-memptr --enable-visualmem --enable-cpustats --enable-ssl
+./configure --enable-ssl
 
 
 Esto compilara con SDL1
