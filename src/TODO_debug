@@ -56,7 +56,6 @@ Este JR NZ deberia aparecer como 20004
 -poder cargar tabla de simbolos de un codigo fuente
 
 -visor sprites: quizá mejorarlo para que se pueda elegir el incremento de salto para cada scanline... Por ejemplo, sprites de tsconf saltan de 256 en 256
--Ver sprites con uadricula
 
 -Paso a paso cuando hay condición de debug activa no deja salir (en menú) : ocurre porque sale y al momento salta
 breakpoint y vuelve a entrar. Es normal->opcion para poder salir de ahi aun con breakpoint activo? tiene sentido?

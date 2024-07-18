@@ -182,9 +182,9 @@ However, you can tune the compilation process a bit, depending on your operating
 
 Even more, if you have a slow device like the Raspberry Pi 1 or Zero, I recommend you:
 
-    $ ./configure --enable-raspberry --spectrum-reduced-core
+    $ ./configure --enable-raspberry --spectrum-reduced-core --disable-memptr --disable-visualmem --disable-cpustats
 
-This will also ensure that the "reduced core" is on by default, which uses less cpu, although you can also switch it from command line, or at runtime.
+This will also ensure that the "reduced core" is on by default, which uses less cpu, although you can also switch it from command line, or at runtime. Also we do not compile memptr, visualmem and cpu stats, which use a bit more cpu
 
 
 NOTE: by using the reduced core some features will NOT be available. See the FAQ file, where it talks about the Spectrum reduced core

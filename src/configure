@@ -60,10 +60,13 @@ show_help()
         echo "--disable-networking         Disable networking functions"
 	echo "--disable-cocoa              Disable Cocoa Mac OS X native GUI"
 	echo "--disable-linuxrealjoystick  Disable linux real joystick support"
-	echo "--enable-memptr              Enable MEMPTR emulation"
 	echo "--enable-undoc-scfccf        Enable SCF/CCF undocumented flags emulation"
-	echo "--enable-visualmem           Enable visual memory option on menu"
-	echo "--enable-cpustats            Enable CPU statistics option on menu"
+	echo "--enable-memptr              Enable MEMPTR emulation (enabled by default)"
+	echo "--disable-memptr             Disable MEMPTR emulation"
+	echo "--enable-visualmem           Enable visual memory option on menu (enabled by default)"
+	echo "--disable-visualmem          Disable visual memory option on menu"
+	echo "--enable-cpustats            Enable CPU statistics option on menu (enabled by default)"
+	echo "--disable-cpustats           Disable CPU statistics option on menu"
 	echo "--enable-raspberry           Enable Raspberry extensions"
 	echo "--enable-sdl2                Enable SDL2 libraries. Experimental"
 	echo "--enable-ssl                 Enable ssl functions"
@@ -132,10 +135,10 @@ OPTIONSNDFILE="enabled"
 OPTIONXEXT="enabled"
 OPTIONXVIDMODE="enabled"
 INSTALLPREFIX="/usr/local"
-OPTIONEMULATE_MEMPTR=""
 OPTIONEMULATE_UNDOC_SCF_CCF=""
-OPTIONEMULATE_VISUALMEM=""
-OPTIONEMULATE_CPU_STATS=""
+OPTIONEMULATE_MEMPTR="yes"
+OPTIONEMULATE_VISUALMEM="yes"
+OPTIONEMULATE_CPU_STATS="yes"
 OPTIONEMULATE_RASPBERRY=""
 OPTIONEMULATE_CONTEND="yes"
 OPTIONPUTPIXELCACHE="yes"
@@ -288,20 +291,32 @@ while [ $# -gt 0 ]; do
 	OPTIONCOCOA=""
 	;;
 
+	--enable-undoc-scfccf)
+	OPTIONEMULATE_UNDOC_SCF_CCF="yes"
+	;;
+
 	--enable-memptr)
 	OPTIONEMULATE_MEMPTR="yes"
 	;;
 
-	--enable-undoc-scfccf)
-	OPTIONEMULATE_UNDOC_SCF_CCF="yes"
+	--disable-memptr)
+	OPTIONEMULATE_MEMPTR=""
 	;;
 
 	--enable-visualmem)
 	OPTIONEMULATE_VISUALMEM="yes"
         ;;
 
+	--disable-visualmem)
+	OPTIONEMULATE_VISUALMEM=""
+        ;;
+
         --enable-cpustats)
         OPTIONEMULATE_CPU_STATS="yes"
+        ;;
+
+        --disable-cpustats)
+        OPTIONEMULATE_CPU_STATS=""
         ;;
 
         --enable-raspberry)
@@ -2462,13 +2477,13 @@ COMPILE_VARIABLES="$COMPILE_VARIABLES COMPILE_COREAUDIO"
 fi
 
 
+
 if [ "$OPTIONEMULATE_MEMPTR" != "" ]; then
 cat >> compileoptions.h << _EOF
 #define EMULATE_MEMPTR
 _EOF
 COMPILE_VARIABLES="$COMPILE_VARIABLES EMULATE_MEMPTR"
 fi
-
 
 if [ "$OPTIONEMULATE_UNDOC_SCF_CCF" != "" ]; then
 cat >> compileoptions.h << _EOF
@@ -2484,6 +2499,7 @@ cat >> compileoptions.h << _EOF
 _EOF
 COMPILE_VARIABLES="$COMPILE_VARIABLES EMULATE_VISUALMEM"
 fi
+
 
 if [ "$OPTIONEMULATE_CPU_STATS" != "" ]; then
 cat >> compileoptions.h << _EOF

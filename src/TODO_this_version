@@ -395,3 +395,6 @@ Bob Morane
 Canadair
 Vector Ball
 
+
+-asumir opciones --enable-memptr --enable-visualmem --enable-cpustats por defecto activas
+Opciones en cambio para desactivarlas en script configure

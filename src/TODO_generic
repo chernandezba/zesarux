@@ -90,8 +90,7 @@ void reset_peek_byte_function_ram_refresh(void)
 
 -SDL2 mejor usar scancodes en vez de keycodes, al menos para teclas extendidas
 
--asumir opciones --enable-memptr --enable-visualmem --enable-cpustats por defecto activas
-Opciones en cambio para desactivarlas en script configure
+
 
 -en configure, al activar joystick, activa tambien pthread. porque???
 LDFLAGS="$LDFLAGS -lpthread"
