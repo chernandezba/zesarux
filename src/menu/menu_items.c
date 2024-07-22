@@ -26290,12 +26290,23 @@ void menu_memory_cheat_view_results(MENU_ITEM_PARAMETERS)
         if (menu_memory_cheat_array_list[i].matches) {
             //printf("Adding %d\n",i);
 
-            if (CPU_IS_MOTOROLA) {
+            int digitos=4;
+
+            if (CPU_IS_MOTOROLA) digitos=6;
+
+            /*if (CPU_IS_MOTOROLA) {
                 sprintf(buffer_linea,"%06XH, had value %02XH (%3d)",i,menu_memory_cheat_array_list[i].value_last_scan,menu_memory_cheat_array_list[i].value_last_scan);
             }
             else {
                 sprintf(buffer_linea,"%04XH, had value %02XH (%3d)",i,menu_memory_cheat_array_list[i].value_last_scan,menu_memory_cheat_array_list[i].value_last_scan);
-            }
+            }*/
+
+           z80_byte valor_actual=peek_byte_z80_moto(i);
+
+            sprintf(buffer_linea,"%0*XH, had %02XH (%3d), now %02XH (%3d)",
+                digitos,i,menu_memory_cheat_array_list[i].value_last_scan,menu_memory_cheat_array_list[i].value_last_scan,
+                valor_actual,valor_actual);
+
             indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_linea);
 
             //Proteccion aqui tambien porque pueden generarse muchos bloques en este bucle
