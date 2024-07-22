@@ -26948,7 +26948,7 @@ void menu_memory_cheat(MENU_ITEM_PARAMETERS)
 
 
         //zxvision_print_string_defaults_fillspc(ventana,1,0,"First Scan");
-        menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_memory_cheat_first_scan_start,NULL,"Start First Scan");
+        menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_memory_cheat_first_scan_start,NULL,"<Start First Scan>");
         menu_add_item_menu_tabulado(array_menu_common,1,0);
 
 
@@ -26978,10 +26978,10 @@ void menu_memory_cheat(MENU_ITEM_PARAMETERS)
         if (menu_memory_cheat_realizado_first_scan) {
 
             menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_memory_cheat_view_results,menu_memory_cheat_view_results_cond,
-                "View Results (%d)",menu_memory_cheat_scan_total_results);
+                "<View Results (%d)>",menu_memory_cheat_scan_total_results);
             menu_add_item_menu_tabulado(array_menu_common,1,3);
 
-            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_memory_cheat_next_scan_start,NULL,"Start Next Scan");
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_memory_cheat_next_scan_start,NULL,"<Start Next Scan>");
             menu_add_item_menu_tabulado(array_menu_common,1,5);
 
             menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_memory_cheat_next_scan_condition,NULL,
