@@ -26883,7 +26883,7 @@ void menu_memory_cheat(MENU_ITEM_PARAMETERS)
         int xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
         if (!util_find_window_geometry("memorycheat",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
-            ancho_ventana=39;
+            ancho_ventana=43;
             alto_ventana=10;
 
             xventana=menu_center_x()-ancho_ventana/2;
@@ -26999,14 +26999,14 @@ void menu_memory_cheat(MENU_ITEM_PARAMETERS)
             ) {
                 menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_memory_cheat_next_scan_change_first_parameter,NULL,
                     "%02XH",memory_cheat_next_scan_condition_first_parameter);
-                menu_add_item_menu_tabulado(array_menu_common,26,6);
+                menu_add_item_menu_tabulado(array_menu_common,31,6);
 
                 if (memory_cheat_next_scan_condition==MEMORY_CHEAT_NEXT_SCAN_VALUE_BETWEEN) {
-                    zxvision_print_string_defaults(ventana,26+4,6,"and");
+                    zxvision_print_string_defaults(ventana,31+4,6,"and");
                     //menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,"and");
                     menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_memory_cheat_next_scan_change_second_parameter,NULL,
                         "%02XH",memory_cheat_next_scan_condition_second_parameter);
-                    menu_add_item_menu_tabulado(array_menu_common,26+4+4,6);
+                    menu_add_item_menu_tabulado(array_menu_common,31+4+4,6);
                 }
             }
 
