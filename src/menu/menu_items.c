@@ -26290,15 +26290,20 @@ void menu_memory_cheat_view_results(MENU_ITEM_PARAMETERS)
         if (menu_memory_cheat_array_list[i].matches) {
             printf("Adding %d\n",i);
 
-                sprintf(buffer_linea,"%6X = %02X",i,menu_memory_cheat_array_list[i].value_last_scan);
-                indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_linea);
+            if (CPU_IS_MOTOROLA) {
+                sprintf(buffer_linea,"%06X = %02X",i,menu_memory_cheat_array_list[i].value_last_scan);
+            }
+            else {
+                sprintf(buffer_linea,"%04X = %02X",i,menu_memory_cheat_array_list[i].value_last_scan);
+            }
+            indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_linea);
 
-                //Proteccion aqui tambien porque pueden generarse muchos bloques en este bucle
-                if (indice_buffer>=MAX_TEXTO_BROWSER-1024) {
-                        debug_printf(VERBOSE_ERR,"Too many entries. Showing only what is allowed on memory");
-                        salir=1;
-                        break;
-                }
+            //Proteccion aqui tambien porque pueden generarse muchos bloques en este bucle
+            if (indice_buffer>=MAX_TEXTO_BROWSER-1024) {
+                    debug_printf(VERBOSE_ERR,"Too many entries. Showing only what is allowed on memory");
+                    salir=1;
+                    break;
+            }
 
 
         }
@@ -26308,11 +26313,44 @@ void menu_memory_cheat_view_results(MENU_ITEM_PARAMETERS)
 
 
 	texto_browser[indice_buffer]=0;
-	zxvision_generic_message_tooltip("View Results" , 0 , 0, 0, 1, NULL, 1, "%s", texto_browser);
+
+
+	generic_message_tooltip_return retorno_ventana;
+
+
+	zxvision_generic_message_tooltip("View Results" , 0 , 0, 0, 1, &retorno_ventana, 1, "%s", texto_browser);
 
 
     free(texto_browser);
 
+
+	//Si se sale con ESC
+    if (retorno_ventana.estado_retorno==0) return;
+
+    printf("Linea seleccionada: %s\n",retorno_ventana.texto_seleccionado);
+
+    //Para saber la dirección, simplemente parseamos esa linea hasta el "="
+
+    for (i=0;retorno_ventana.texto_seleccionado[i];i++) {
+        if (retorno_ventana.texto_seleccionado[i]=='=') {
+            //Formato es "direccion_en_hexa = . por tanto metemos una H antes del =
+            retorno_ventana.texto_seleccionado[i-1]='H';
+            retorno_ventana.texto_seleccionado[i]=0;
+            break;
+        }
+    }
+
+    int direccion=parse_string_to_number(retorno_ventana.texto_seleccionado);
+    printf("Dir: %d\n",direccion);
+
+
+    //Ventana para hacer poke
+    char string_valor[4];
+    sprintf (string_valor,"%XH",peek_byte_no_time(direccion));
+    menu_ventana_scanf("New Value: ",string_valor,4);
+    z80_byte new_value=parse_string_to_number(string_valor);
+
+    poke_byte_z80_moto(direccion,new_value);
 
 }
 
@@ -26548,7 +26586,7 @@ void menu_memory_cheat_next_scan_change_first_parameter(MENU_ITEM_PARAMETERS)
 {
     char string_valor[4];
     sprintf (string_valor,"%XH",memory_cheat_next_scan_condition_first_parameter);
-    menu_ventana_scanf("Address: ",string_valor,4);
+    menu_ventana_scanf("Value: ",string_valor,4);
     memory_cheat_next_scan_condition_first_parameter=parse_string_to_number(string_valor);
 }
 
@@ -26556,7 +26594,7 @@ void menu_memory_cheat_next_scan_change_second_parameter(MENU_ITEM_PARAMETERS)
 {
     char string_valor[4];
     sprintf (string_valor,"%XH",memory_cheat_next_scan_condition_second_parameter);
-    menu_ventana_scanf("Address: ",string_valor,4);
+    menu_ventana_scanf("Value: ",string_valor,4);
     memory_cheat_next_scan_condition_second_parameter=parse_string_to_number(string_valor);
 }
 
