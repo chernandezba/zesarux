@@ -11,6 +11,7 @@ Permitir definir Alt Izq, Ctrl Izq, Shift Izq o TAB como acción de Fuego de Joy
 Permitir cambiar posicion de lectura actual en Visor de Cinta de Entrada para archivos .tap
 Permitir cargar rom de 8kb en ZX80 (por ejemplo la rom del ZX81, como un ZX80 actualizado a ZX81)
 Permitir aumentar sprites en View Sprites
+Agregar función de "Memory Cheat"
 Mejorada compilación: opciones --enable-memptr --enable-visualmem --enable-cpustats están activadas por defecto en ./configure
 Mejorado debug cpu history: permitir cambiar el puntero de memoria según el registro PC mostrado en el historial
 

@@ -11,6 +11,7 @@ Allow to define Left Alt, Left Ctrl, Left Shift or TAB as Joystick Fire action
 Allow to change current tape read position on Input Tape Viewer for .tap files
 Allow loading a 8kb rom in ZX80 (for example the ZX81 rom, like an upgraded ZX80 to ZX81)
 Allow magnify sprites on View Sprites
+Added Memory Cheat feature
 Improve compilation: settings --enable-memptr --enable-visualmem --enable-cpustats are enabled by default on ./configure
 Improved debug cpu history: allow to change memory pointer to the PC register show in history
 

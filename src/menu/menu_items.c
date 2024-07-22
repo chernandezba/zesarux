@@ -26273,49 +26273,47 @@ void menu_memory_cheat_init_array(void)
 void menu_memory_cheat_view_results(MENU_ITEM_PARAMETERS)
 {
 
-    menu_item *array_menu_common;
-    menu_item item_seleccionado;
-    int retorno_menu;
+	char *texto_browser=util_malloc_max_texto_browser();
+	int indice_buffer=0;
 
 
+    int total_elementos=get_efectivo_tamanyo_find_buffer();
 
-    do {
+    int i;
 
-        menu_add_item_menu_inicial(&array_menu_common,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
+    int salir=0;
 
-        int total_elementos=get_efectivo_tamanyo_find_buffer();
+    char buffer_linea[100];
 
-        int i;
+    for (i=0;i<total_elementos && !salir;i++) {
 
-        for (i=0;i<total_elementos;i++) {
-            //TODO: Agregar como linea de texto, no como item de menu
-            if (menu_memory_cheat_array_list[i].matches) {
-                printf("Adding %d\n",i);
-                menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,
-                    "%6X = %02X",i,menu_memory_cheat_array_list[i].value_last_scan);
-                menu_add_item_menu_tiene_submenu(array_menu_common);
-            }
+        if (menu_memory_cheat_array_list[i].matches) {
+            printf("Adding %d\n",i);
+
+                sprintf(buffer_linea,"%6X = %02X",i,menu_memory_cheat_array_list[i].value_last_scan);
+                indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_linea);
+
+                //Proteccion aqui tambien porque pueden generarse muchos bloques en este bucle
+                if (indice_buffer>=MAX_TEXTO_BROWSER-1024) {
+                        debug_printf(VERBOSE_ERR,"Too many entries. Showing only what is allowed on memory");
+                        salir=1;
+                        break;
+                }
+
 
         }
 
-        menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
-
-        menu_add_ESC_item(array_menu_common);
-
-        retorno_menu=menu_dibuja_menu_no_title_lang(&memory_cheat_opcion_seleccionada,&item_seleccionado,array_menu_common,"View Results");
+    }
 
 
 
-        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
-            //llamamos por valor de funcion
-            if (item_seleccionado.menu_funcion!=NULL) {
-                //printf ("actuamos por funcion\n");
-                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+	texto_browser[indice_buffer]=0;
+	zxvision_generic_message_tooltip("View Results" , 0 , 0, 0, 1, NULL, 1, "%s", texto_browser);
 
-            }
-        }
 
-    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+    free(texto_browser);
+
+
 }
 
 
