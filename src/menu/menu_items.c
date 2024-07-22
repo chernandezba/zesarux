@@ -26358,7 +26358,7 @@ void menu_memory_cheat_view_results(MENU_ITEM_PARAMETERS)
 
     //Ventana para hacer poke
     char string_valor[4];
-    sprintf (string_valor,"%XH",peek_byte_no_time(direccion));
+    sprintf (string_valor,"%XH",peek_byte_z80_moto(direccion));
 
     char titulo_ventana[100];
     sprintf(titulo_ventana,"New Value to %XH",direccion);
