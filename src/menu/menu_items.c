@@ -26556,7 +26556,7 @@ void menu_memory_cheat_next_scan_start(MENU_ITEM_PARAMETERS)
             menu_memory_cheat_array_list[i].value_last_scan=value;
 
             if (matches) {
-                printf ("Address %X matches condition (value=%X)\n",i,value);
+                //printf ("Address %X matches condition (value=%X)\n",i,value);
                 menu_memory_cheat_scan_total_results++;
             }
             menu_memory_cheat_array_list[i].matches=matches;
