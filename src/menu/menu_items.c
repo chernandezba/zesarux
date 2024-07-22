@@ -26220,9 +26220,9 @@ char *memory_cheat_first_scan_possible_conditions_strings[]={
     "Unknown Value"
 };
 
-enum memory_cheat_first_scan_possible_conditions memory_cheat_first_scan_condition=MEMORY_CHEAT_FIRST_SCAN_UNKNOWN_VALUE;
-z80_byte memory_cheat_first_scan_condition_first_parameter=128;
-z80_byte memory_cheat_first_scan_condition_second_parameter=138;
+enum memory_cheat_first_scan_possible_conditions memory_cheat_first_scan_condition=MEMORY_CHEAT_FIRST_SCAN_EXACT_VALUE;
+z80_byte memory_cheat_first_scan_condition_first_parameter=0;
+z80_byte memory_cheat_first_scan_condition_second_parameter=255;
 
 
 enum memory_cheat_next_scan_possible_conditions {
@@ -26253,9 +26253,9 @@ char *memory_cheat_next_scan_possible_conditions_strings[]={
     "Same as First"
 };
 
-enum memory_cheat_next_scan_possible_conditions memory_cheat_next_scan_condition=MEMORY_CHEAT_NEXT_SCAN_SAME_AS_FIRST;
-z80_byte memory_cheat_next_scan_condition_first_parameter=10;
-z80_byte memory_cheat_next_scan_condition_second_parameter=138;
+enum memory_cheat_next_scan_possible_conditions memory_cheat_next_scan_condition=MEMORY_CHEAT_NEXT_SCAN_EXACT_VALUE;
+z80_byte memory_cheat_next_scan_condition_first_parameter=0;
+z80_byte memory_cheat_next_scan_condition_second_parameter=255;
 
 void menu_memory_cheat_init_array(void)
 {
@@ -26291,10 +26291,10 @@ void menu_memory_cheat_view_results(MENU_ITEM_PARAMETERS)
             printf("Adding %d\n",i);
 
             if (CPU_IS_MOTOROLA) {
-                sprintf(buffer_linea,"%06XH = %02XH (%3d)",i,menu_memory_cheat_array_list[i].value_last_scan,menu_memory_cheat_array_list[i].value_last_scan);
+                sprintf(buffer_linea,"%06XH, had value %02XH (%3d)",i,menu_memory_cheat_array_list[i].value_last_scan,menu_memory_cheat_array_list[i].value_last_scan);
             }
             else {
-                sprintf(buffer_linea,"%04XH = %02XH (%3d)",i,menu_memory_cheat_array_list[i].value_last_scan,menu_memory_cheat_array_list[i].value_last_scan);
+                sprintf(buffer_linea,"%04XH, had value %02XH (%3d)",i,menu_memory_cheat_array_list[i].value_last_scan,menu_memory_cheat_array_list[i].value_last_scan);
             }
             indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_linea);
 
@@ -26329,10 +26329,10 @@ void menu_memory_cheat_view_results(MENU_ITEM_PARAMETERS)
 
     printf("Linea seleccionada: %s\n",retorno_ventana.texto_seleccionado);
 
-    //Para saber la dirección, simplemente parseamos esa linea hasta el "="
+    //Para saber la dirección, simplemente parseamos esa linea hasta el ","
 
     for (i=0;retorno_ventana.texto_seleccionado[i];i++) {
-        if (retorno_ventana.texto_seleccionado[i]=='=') {
+        if (retorno_ventana.texto_seleccionado[i]==',') {
             //Formato es "direccion_en_hexa = . por tanto metemos una H antes del =
             //retorno_ventana.texto_seleccionado[i-1]='H';
 
@@ -26348,7 +26348,10 @@ void menu_memory_cheat_view_results(MENU_ITEM_PARAMETERS)
     //Ventana para hacer poke
     char string_valor[4];
     sprintf (string_valor,"%XH",peek_byte_no_time(direccion));
-    menu_ventana_scanf("New Value: ",string_valor,4);
+
+    char titulo_ventana[100];
+    sprintf(titulo_ventana,"New Value to %XH",direccion);
+    menu_ventana_scanf(titulo_ventana,string_valor,4);
     z80_byte new_value=parse_string_to_number(string_valor);
 
     poke_byte_z80_moto(direccion,new_value);
@@ -26660,23 +26663,24 @@ void menu_memory_cheat_next_scan(MENU_ITEM_PARAMETERS)
             memory_cheat_next_scan_condition!=MEMORY_CHEAT_NEXT_SCAN_SAME_AS_FIRST
         ) {
             menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_memory_cheat_next_scan_change_first_parameter,NULL,
-                "%02XH",memory_cheat_next_scan_condition_first_parameter);
+                " %02XH",memory_cheat_next_scan_condition_first_parameter);
 
             if (memory_cheat_next_scan_condition==MEMORY_CHEAT_NEXT_SCAN_VALUE_BETWEEN) {
                 menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,"and");
                 menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_memory_cheat_next_scan_change_second_parameter,NULL,
-                    "%02XH",memory_cheat_next_scan_condition_second_parameter);
+                    " %02XH",memory_cheat_next_scan_condition_second_parameter);
             }
         }
 
+        menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
-        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_memory_cheat_next_scan_start,NULL,"Next Scan");
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_memory_cheat_next_scan_start,NULL,"Go");
 
         menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
         menu_add_ESC_item(array_menu_common);
 
-        retorno_menu=menu_dibuja_menu_no_title_lang(&menu_memory_cheat_next_scan_opcion_seleccionada,&item_seleccionado,array_menu_common,"Memory Cheat");
+        retorno_menu=menu_dibuja_menu_no_title_lang(&menu_memory_cheat_next_scan_opcion_seleccionada,&item_seleccionado,array_menu_common,"Next Scan");
 
 
 
@@ -26729,23 +26733,25 @@ void menu_memory_cheat_first_scan(MENU_ITEM_PARAMETERS)
         //Mostrar parametro excepto en un caso
         if (memory_cheat_first_scan_condition!=MEMORY_CHEAT_FIRST_SCAN_UNKNOWN_VALUE) {
             menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_memory_cheat_first_scan_change_first_parameter,NULL,
-                "%02XH",memory_cheat_first_scan_condition_first_parameter);
+                " %02XH",memory_cheat_first_scan_condition_first_parameter);
 
             if (memory_cheat_first_scan_condition==MEMORY_CHEAT_FIRST_SCAN_VALUE_BETWEEN) {
                 menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,"and");
                 menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_memory_cheat_first_scan_change_second_parameter,NULL,
-                    "%02XH",memory_cheat_first_scan_condition_second_parameter);
+                    " %02XH",memory_cheat_first_scan_condition_second_parameter);
             }
         }
 
+        menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
-        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_memory_cheat_first_scan_start,NULL,"Start Scan");
+
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_memory_cheat_first_scan_start,NULL,"Go");
 
         menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
         menu_add_ESC_item(array_menu_common);
 
-        retorno_menu=menu_dibuja_menu_no_title_lang(&menu_memory_cheat_first_scan_opcion_seleccionada,&item_seleccionado,array_menu_common,"Memory Cheat");
+        retorno_menu=menu_dibuja_menu_no_title_lang(&menu_memory_cheat_first_scan_opcion_seleccionada,&item_seleccionado,array_menu_common,"First Scan");
 
 
 
