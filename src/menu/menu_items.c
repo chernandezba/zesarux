@@ -26291,10 +26291,10 @@ void menu_memory_cheat_view_results(MENU_ITEM_PARAMETERS)
             printf("Adding %d\n",i);
 
             if (CPU_IS_MOTOROLA) {
-                sprintf(buffer_linea,"%06X = %02X",i,menu_memory_cheat_array_list[i].value_last_scan);
+                sprintf(buffer_linea,"%06XH = %02XH (%3d)",i,menu_memory_cheat_array_list[i].value_last_scan,menu_memory_cheat_array_list[i].value_last_scan);
             }
             else {
-                sprintf(buffer_linea,"%04X = %02X",i,menu_memory_cheat_array_list[i].value_last_scan);
+                sprintf(buffer_linea,"%04XH = %02XH (%3d)",i,menu_memory_cheat_array_list[i].value_last_scan,menu_memory_cheat_array_list[i].value_last_scan);
             }
             indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_linea);
 
@@ -26334,7 +26334,8 @@ void menu_memory_cheat_view_results(MENU_ITEM_PARAMETERS)
     for (i=0;retorno_ventana.texto_seleccionado[i];i++) {
         if (retorno_ventana.texto_seleccionado[i]=='=') {
             //Formato es "direccion_en_hexa = . por tanto metemos una H antes del =
-            retorno_ventana.texto_seleccionado[i-1]='H';
+            //retorno_ventana.texto_seleccionado[i-1]='H';
+
             retorno_ventana.texto_seleccionado[i]=0;
             break;
         }
@@ -26495,9 +26496,14 @@ int memory_cheat_next_scan_matches(z80_byte value,z80_byte previous_value,z80_by
 
 }
 
+int menu_memory_cheat_first_scan_total_results=0;
+int salir_menu_menu_memory_cheat_first_scan;
+
 void menu_memory_cheat_first_scan_start(MENU_ITEM_PARAMETERS)
 {
     int total_elementos=get_efectivo_tamanyo_find_buffer();
+
+    menu_memory_cheat_first_scan_total_results=0;
 
     int i;
     for (i=0;i<total_elementos;i++) {
@@ -26509,17 +26515,34 @@ void menu_memory_cheat_first_scan_start(MENU_ITEM_PARAMETERS)
 
         if (matches) {
             printf ("Address %X matches condition (value=%X)\n",i,value);
+            menu_memory_cheat_first_scan_total_results++;
         }
         menu_memory_cheat_array_list[i].matches=matches;
     }
 
     menu_memory_cheat_realizado_first_scan=1;
 
+
+
+    //Si hay al menos 1, volvemos al menu anterior
+    if (menu_memory_cheat_first_scan_total_results) {
+        salir_menu_menu_memory_cheat_first_scan=1;
+        menu_generic_message_format("End scan","Total results: %d",menu_memory_cheat_first_scan_total_results);
+    }
+    else {
+        menu_generic_message_warn("End scan","No results found");
+    }
+
 }
+
+int menu_memory_cheat_next_scan_total_results=0;
+int salir_menu_menu_memory_cheat_next_scan;
 
 void menu_memory_cheat_next_scan_start(MENU_ITEM_PARAMETERS)
 {
     int total_elementos=get_efectivo_tamanyo_find_buffer();
+
+    menu_memory_cheat_next_scan_total_results=0;
 
     int i;
     for (i=0;i<total_elementos;i++) {
@@ -26531,12 +26554,24 @@ void menu_memory_cheat_next_scan_start(MENU_ITEM_PARAMETERS)
 
             if (matches) {
                 printf ("Address %X matches condition (value=%X)\n",i,value);
+                menu_memory_cheat_next_scan_total_results++;
             }
             menu_memory_cheat_array_list[i].matches=matches;
         }
     }
 
-    menu_memory_cheat_realizado_first_scan=1;
+
+
+
+    //Si hay al menos 1, volvemos al menu anterior
+    if (menu_memory_cheat_next_scan_total_results) {
+        salir_menu_menu_memory_cheat_next_scan=1;
+        menu_generic_message_format("End scan","Total results: %d",menu_memory_cheat_next_scan_total_results);
+    }
+
+    else {
+        menu_generic_message_warn("End scan","No results found");
+    }
 
 }
 
@@ -26598,6 +26633,8 @@ void menu_memory_cheat_next_scan_change_second_parameter(MENU_ITEM_PARAMETERS)
     memory_cheat_next_scan_condition_second_parameter=parse_string_to_number(string_valor);
 }
 
+
+
 void menu_memory_cheat_next_scan(MENU_ITEM_PARAMETERS)
 {
 
@@ -26606,7 +26643,7 @@ void menu_memory_cheat_next_scan(MENU_ITEM_PARAMETERS)
     menu_item item_seleccionado;
     int retorno_menu;
 
-
+    salir_menu_menu_memory_cheat_next_scan=0;
 
     do {
 
@@ -26652,7 +26689,7 @@ void menu_memory_cheat_next_scan(MENU_ITEM_PARAMETERS)
             }
         }
 
-    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus && !salir_menu_menu_memory_cheat_next_scan);
 }
 
 void menu_memory_cheat_first_scan_change_first_parameter(MENU_ITEM_PARAMETERS)
@@ -26671,6 +26708,8 @@ void menu_memory_cheat_first_scan_change_second_parameter(MENU_ITEM_PARAMETERS)
     memory_cheat_first_scan_condition_second_parameter=parse_string_to_number(string_valor);
 }
 
+
+
 void menu_memory_cheat_first_scan(MENU_ITEM_PARAMETERS)
 {
 
@@ -26680,6 +26719,7 @@ void menu_memory_cheat_first_scan(MENU_ITEM_PARAMETERS)
     int retorno_menu;
 
 
+    salir_menu_menu_memory_cheat_first_scan=0;
 
     do {
 
@@ -26718,7 +26758,7 @@ void menu_memory_cheat_first_scan(MENU_ITEM_PARAMETERS)
             }
         }
 
-    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus && !salir_menu_menu_memory_cheat_first_scan);
 }
 
 void menu_memory_cheat(MENU_ITEM_PARAMETERS)
