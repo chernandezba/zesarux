@@ -26288,7 +26288,7 @@ void menu_memory_cheat_view_results(MENU_ITEM_PARAMETERS)
     for (i=0;i<total_elementos && !salir;i++) {
 
         if (menu_memory_cheat_array_list[i].matches) {
-            printf("Adding %d\n",i);
+            //printf("Adding %d\n",i);
 
             if (CPU_IS_MOTOROLA) {
                 sprintf(buffer_linea,"%06XH, had value %02XH (%3d)",i,menu_memory_cheat_array_list[i].value_last_scan,menu_memory_cheat_array_list[i].value_last_scan);
@@ -26499,14 +26499,14 @@ int memory_cheat_next_scan_matches(z80_byte value,z80_byte previous_value,z80_by
 
 }
 
-int menu_memory_cheat_first_scan_total_results=0;
+int menu_memory_cheat_scan_total_results=0;
 int salir_menu_menu_memory_cheat_first_scan;
 
 void menu_memory_cheat_first_scan_start(MENU_ITEM_PARAMETERS)
 {
     int total_elementos=get_efectivo_tamanyo_find_buffer();
 
-    menu_memory_cheat_first_scan_total_results=0;
+    menu_memory_cheat_scan_total_results=0;
 
     int i;
     for (i=0;i<total_elementos;i++) {
@@ -26517,8 +26517,8 @@ void menu_memory_cheat_first_scan_start(MENU_ITEM_PARAMETERS)
         menu_memory_cheat_array_list[i].value_last_scan=value;
 
         if (matches) {
-            printf ("Address %X matches condition (value=%X)\n",i,value);
-            menu_memory_cheat_first_scan_total_results++;
+            //printf ("Address %X matches condition (value=%X)\n",i,value);
+            menu_memory_cheat_scan_total_results++;
         }
         menu_memory_cheat_array_list[i].matches=matches;
     }
@@ -26528,9 +26528,9 @@ void menu_memory_cheat_first_scan_start(MENU_ITEM_PARAMETERS)
 
 
     //Si hay al menos 1, volvemos al menu anterior
-    if (menu_memory_cheat_first_scan_total_results) {
+    if (menu_memory_cheat_scan_total_results) {
         salir_menu_menu_memory_cheat_first_scan=1;
-        menu_generic_message_format("End scan","Total results: %d",menu_memory_cheat_first_scan_total_results);
+        menu_generic_message_format("End scan","Total results: %d",menu_memory_cheat_scan_total_results);
     }
     else {
         menu_generic_message_warn("End scan","No results found");
@@ -26538,14 +26538,14 @@ void menu_memory_cheat_first_scan_start(MENU_ITEM_PARAMETERS)
 
 }
 
-int menu_memory_cheat_next_scan_total_results=0;
+
 int salir_menu_menu_memory_cheat_next_scan;
 
 void menu_memory_cheat_next_scan_start(MENU_ITEM_PARAMETERS)
 {
     int total_elementos=get_efectivo_tamanyo_find_buffer();
 
-    menu_memory_cheat_next_scan_total_results=0;
+    menu_memory_cheat_scan_total_results=0;
 
     int i;
     for (i=0;i<total_elementos;i++) {
@@ -26557,7 +26557,7 @@ void menu_memory_cheat_next_scan_start(MENU_ITEM_PARAMETERS)
 
             if (matches) {
                 printf ("Address %X matches condition (value=%X)\n",i,value);
-                menu_memory_cheat_next_scan_total_results++;
+                menu_memory_cheat_scan_total_results++;
             }
             menu_memory_cheat_array_list[i].matches=matches;
         }
@@ -26567,9 +26567,9 @@ void menu_memory_cheat_next_scan_start(MENU_ITEM_PARAMETERS)
 
 
     //Si hay al menos 1, volvemos al menu anterior
-    if (menu_memory_cheat_next_scan_total_results) {
+    if (menu_memory_cheat_scan_total_results) {
         salir_menu_menu_memory_cheat_next_scan=1;
-        menu_generic_message_format("End scan","Total results: %d",menu_memory_cheat_next_scan_total_results);
+        menu_generic_message_format("End scan","Total results: %d",menu_memory_cheat_scan_total_results);
     }
 
     else {
@@ -26852,6 +26852,11 @@ void menu_memory_cheat_overlay(void)
 //Almacenar la estructura de ventana aqui para que se pueda referenciar desde otros sitios
 zxvision_window zxvision_window_memory_cheat;
 
+int menu_memory_cheat_view_results_cond(void)
+{
+    if (menu_memory_cheat_scan_total_results) return 1;
+    else return 0;
+}
 
 void menu_memory_cheat(MENU_ITEM_PARAMETERS)
 {
@@ -26972,7 +26977,8 @@ void menu_memory_cheat(MENU_ITEM_PARAMETERS)
 
         if (menu_memory_cheat_realizado_first_scan) {
 
-            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_memory_cheat_view_results,NULL,"View Results");
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_memory_cheat_view_results,menu_memory_cheat_view_results_cond,
+                "View Results (%d)",menu_memory_cheat_scan_total_results);
             menu_add_item_menu_tabulado(array_menu_common,1,3);
 
             menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_memory_cheat_next_scan_start,NULL,"Start Next Scan");
@@ -27005,12 +27011,6 @@ void menu_memory_cheat(MENU_ITEM_PARAMETERS)
             }
 
         }
-
-
-
-
-
-
 
 
 		//Nombre de ventana solo aparece en el caso de stdout
