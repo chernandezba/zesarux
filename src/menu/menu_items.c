@@ -26267,16 +26267,31 @@ struct memory_cheat_watch_struct {
 struct memory_cheat_watch_struct memory_cheat_watch_list[MEMORY_CHEAT_MAX_WATCHES];
 #define MEMORY_CHEAT_WATCHES_LINE 8
 
+int memory_cheat_total_elements;
+
+void menu_memory_cheat_init_array_malloc(void)
+{
+    debug_printf(VERBOSE_INFO,"Allocating memory for Memory Cheat List");
+
+    memory_cheat_total_elements=get_efectivo_tamanyo_find_buffer();
+
+    int total_memoria=sizeof(struct menu_memory_cheat_array_struct)*memory_cheat_total_elements;
+
+    menu_memory_cheat_array_list=util_malloc(total_memoria,"Can not initialize results list");
+
+    int i;
+
+    for (i=0;i<memory_cheat_total_elements;i++) {
+        menu_memory_cheat_array_list[i].matches=0;
+    }
+}
+
 void menu_memory_cheat_init_array(void)
 {
     if (!menu_memory_cheat_array_inicializado) {
         menu_memory_cheat_array_inicializado=1;
 
-        int total_elementos=get_efectivo_tamanyo_find_buffer();
-
-        int total_memoria=sizeof(struct menu_memory_cheat_array_struct)*total_elementos;
-
-        menu_memory_cheat_array_list=util_malloc(total_memoria,"Can not initialize results list");
+        menu_memory_cheat_init_array_malloc();
 
         //Inicializar watches
         int i;
@@ -26284,6 +26299,15 @@ void menu_memory_cheat_init_array(void)
             memory_cheat_watch_list[i].activo=0;
         }
 
+    }
+
+    //Si se cambia de maquina spectrum a ql, hay que aumentar el array
+    if (memory_cheat_total_elements!=get_efectivo_tamanyo_find_buffer()) {
+        debug_printf(VERBOSE_INFO,"Memory cheat array list must be reallocated due to machine change");
+
+        free(menu_memory_cheat_array_list);
+
+        menu_memory_cheat_init_array_malloc();
     }
 }
 
@@ -26417,7 +26441,7 @@ void menu_memory_cheat_view_results(MENU_ITEM_PARAMETERS)
 	//Si se sale con ESC
     if (retorno_ventana.estado_retorno==0) return;
 
-    printf("Linea seleccionada: %s\n",retorno_ventana.texto_seleccionado);
+    //printf("Linea seleccionada: %s\n",retorno_ventana.texto_seleccionado);
 
     //Para saber la dirección, simplemente parseamos esa linea hasta el ","
 
@@ -26432,7 +26456,7 @@ void menu_memory_cheat_view_results(MENU_ITEM_PARAMETERS)
     }
 
     int direccion=parse_string_to_number(retorno_ventana.texto_seleccionado);
-    printf("Dir: %d\n",direccion);
+    //printf("Dir: %d\n",direccion);
 
     //Si hay que hacer escritura, ya sabemos la direccion
     //Si hay que hacer un set watch, tiene que pedir el watch_id
@@ -27025,10 +27049,7 @@ void menu_memory_cheat(MENU_ITEM_PARAMETERS)
 
 	zxvision_draw_window(ventana);
 
-	z80_byte tecla;
 
-
-	int salir=0;
 
 
     menu_memory_cheat_window=ventana; //Decimos que el overlay lo hace sobre la ventana que tenemos aqui
@@ -27048,13 +27069,6 @@ void menu_memory_cheat(MENU_ITEM_PARAMETERS)
 
 
 
-
-	//Toda ventana que este listada en zxvision_known_window_names_array debe permitir poder salir desde aqui
-	//Se sale despues de haber inicializado overlay y de cualquier otra variable que necesite el overlay
-	if (zxvision_currently_restoring_windows_on_start) {
-		//printf ("Saliendo de ventana ya que la estamos restaurando en startup\n");
-		return;
-	}
 
 	menu_item *array_menu_common;
 	menu_item item_seleccionado;
