@@ -190,7 +190,6 @@ esto a nivel de estadística, permito saber en estadisticas web (enviando un par
 
 -Mostrar juego cargado en titulo ventana. Desaparece al hacer reset. Que limite tiene el texto en los diferentes sistemas operativos?
 
--Browser cintas standard que permita alterar la posición de la cinta
 
 -Quiza registro DE al volver de rutina de trap load, deberia ser DE -=bytes_leidos
 
