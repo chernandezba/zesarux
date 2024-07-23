@@ -25817,39 +25817,7 @@ int menu_find_bytes_list_from(int *lista,int total_items,int inicio)
 
 }
 
-//Antiguo para buscar 1 solo byte
-void old_delete_menu_find_bytes_find(MENU_ITEM_PARAMETERS)
-{
 
-        //Buscar en la memoria direccionable (0...65535) si se encuentra el byte
-        z80_byte byte_to_find;
-
-
-        char string_find[4];
-
-        sprintf (string_find,"0");
-
-        menu_ventana_scanf("Find byte",string_find,4);
-
-        int valor_find=parse_string_to_number(string_find);
-
-        if (valor_find<0 || valor_find>255) {
-                debug_printf (VERBOSE_ERR,"Invalid value %d",valor_find);
-                return;
-        }
-
-
-        byte_to_find=valor_find;
-
-
-        int total_items_found;
-
-				total_items_found=menu_find_bytes_process(byte_to_find);
-
-        menu_generic_message_format("Find","Total addresses found: %d",total_items_found);
-
-
-}
 
 //Para buscar mas de 1 byte separado por espacio
 void menu_find_bytes_find(MENU_ITEM_PARAMETERS)
