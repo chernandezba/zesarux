@@ -26437,6 +26437,10 @@ void menu_memory_cheat_view_results(MENU_ITEM_PARAMETERS)
 
     free(texto_browser);
 
+    //Impedir que desde menu_generic_message se pulse en otra ventana u F5 porque entonces se enviara una orden
+    //de cierre al menu tabulado con OK, y no se quedaria la ventana de memory cheat en background
+    salir_todos_menus=0;
+
 
 	//Si se sale con ESC
     if (retorno_ventana.estado_retorno==0) return;
@@ -26641,6 +26645,11 @@ void menu_memory_cheat_first_scan_start(MENU_ITEM_PARAMETERS)
         menu_generic_message_warn("End scan","No results found");
     }
 
+    //Impedir que desde menu_generic_message se pulse en otra ventana u F5 porque entonces se enviara una orden
+    //de cierre al menu tabulado con OK, y no se quedaria la ventana de memory cheat en background
+    salir_todos_menus=0;
+
+
 }
 
 
@@ -26679,6 +26688,10 @@ void menu_memory_cheat_next_scan_start(MENU_ITEM_PARAMETERS)
     else {
         menu_generic_message_warn("End scan","No results found");
     }
+
+    //Impedir que desde menu_generic_message se pulse en otra ventana u F5 porque entonces se enviara una orden
+    //de cierre al menu tabulado con OK, y no se quedaria la ventana de memory cheat en background
+    salir_todos_menus=0;
 
 }
 
@@ -27017,6 +27030,10 @@ void menu_memory_cheat(MENU_ITEM_PARAMETERS)
 
     //En caso de menus tabulados, suele ser necesario esto. Si no, la ventana se quedaria visible
 
+//if (retorno_menu==MENU_RETORNO_ESC) printf("Retorno con ESC\n");
+//if (retorno_menu==MENU_RETORNO_BACKGROUND) printf("Retorno con background\n");
+//if (retorno_menu==MENU_RETORNO_NORMAL) printf("Retorno normal\n");
+//printf("retorno_menu: %d\n",retorno_menu);
 
     //Grabar geometria ventana
     util_add_window_geometry_compact(ventana);
