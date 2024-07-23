@@ -26257,6 +26257,16 @@ enum memory_cheat_next_scan_possible_conditions memory_cheat_next_scan_condition
 z80_byte memory_cheat_next_scan_condition_first_parameter=0;
 z80_byte memory_cheat_next_scan_condition_second_parameter=255;
 
+//para los watches
+struct memory_cheat_watch_struct {
+    int activo;
+    int direccion;
+};
+
+#define MEMORY_CHEAT_MAX_WATCHES 4
+struct memory_cheat_watch_struct memory_cheat_watch_list[MEMORY_CHEAT_MAX_WATCHES];
+#define MEMORY_CHEAT_WATCHES_LINE 8
+
 void menu_memory_cheat_init_array(void)
 {
     if (!menu_memory_cheat_array_inicializado) {
@@ -26267,7 +26277,76 @@ void menu_memory_cheat_init_array(void)
         int total_memoria=sizeof(struct menu_memory_cheat_array_struct)*total_elementos;
 
         menu_memory_cheat_array_list=util_malloc(total_memoria,"Can not initialize results list");
+
+        //Inicializar watches
+        int i;
+        for (i=0;i<4;i++) {
+            memory_cheat_watch_list[i].activo=0;
+        }
+
     }
+}
+
+
+void menu_memory_cheat_set_watch_or_write_no_ask_choice(int opcion,int direccion,int watch_id,int pedir_direccion_en_set_watch)
+{
+
+
+    //Pedir direccion
+    if (direccion==-1 || (pedir_direccion_en_set_watch && opcion==2)) {
+        char string_direccion[8];
+        strcpy(string_direccion,"0");
+
+        menu_ventana_scanf("Address",string_direccion,8);
+
+        direccion=parse_string_to_number(string_direccion);
+    }
+
+
+
+    if (opcion==1) {
+
+
+        //Ventana para hacer poke
+        char string_valor[4];
+        sprintf (string_valor,"%XH",peek_byte_z80_moto(direccion));
+
+        char titulo_ventana[100];
+        sprintf(titulo_ventana,"New Value to %XH",direccion);
+        menu_ventana_scanf(titulo_ventana,string_valor,4);
+        z80_byte new_value=parse_string_to_number(string_valor);
+
+        poke_byte_z80_moto(direccion,new_value);
+    }
+
+    if (opcion==2) {
+
+        //Pedir watch_id si es -1
+        if (watch_id==-1) {
+            char string_valor[4];
+            strcpy(string_valor,"1");
+
+            menu_ventana_scanf("Watch (1-4)",string_valor,4);
+            watch_id=parse_string_to_number(string_valor);
+            if (watch_id<1 || watch_id>MEMORY_CHEAT_MAX_WATCHES) {
+                debug_printf(VERBOSE_ERR,"Invalid watch number");
+            }
+            watch_id--;
+        }
+
+        memory_cheat_watch_list[watch_id].activo=1;
+        memory_cheat_watch_list[watch_id].direccion=direccion;
+    }
+
+}
+
+void menu_memory_cheat_set_watch_or_write(int direccion,int watch_id,int pedir_direccion_en_set_watch)
+{
+    int opcion=menu_simple_two_choices("Action","Do you want to","Write address","Set watch");
+
+    menu_memory_cheat_set_watch_or_write_no_ask_choice(opcion,direccion,watch_id,pedir_direccion_en_set_watch);
+
+
 }
 
 void menu_memory_cheat_view_results(MENU_ITEM_PARAMETERS)
@@ -26355,17 +26434,9 @@ void menu_memory_cheat_view_results(MENU_ITEM_PARAMETERS)
     int direccion=parse_string_to_number(retorno_ventana.texto_seleccionado);
     printf("Dir: %d\n",direccion);
 
-
-    //Ventana para hacer poke
-    char string_valor[4];
-    sprintf (string_valor,"%XH",peek_byte_z80_moto(direccion));
-
-    char titulo_ventana[100];
-    sprintf(titulo_ventana,"New Value to %XH",direccion);
-    menu_ventana_scanf(titulo_ventana,string_valor,4);
-    z80_byte new_value=parse_string_to_number(string_valor);
-
-    poke_byte_z80_moto(direccion,new_value);
+    //Si hay que hacer escritura, ya sabemos la direccion
+    //Si hay que hacer un set watch, tiene que pedir el watch_id
+    menu_memory_cheat_set_watch_or_write(direccion,-1,0);
 
 }
 
@@ -26849,7 +26920,26 @@ void menu_memory_cheat_overlay(void)
     //Print....
     //Tambien contar si se escribe siempre o se tiene en cuenta contador_segundo...
 
-    //De momento no escribimos nada en el overlay de esta ventana
+    //mostrar watches
+    int i;
+    int x=1;
+
+    int digitos=4;
+    if (CPU_IS_MOTOROLA) digitos=6;
+
+    int incremento=10; //digitos+2;
+
+    for (i=0;i<MEMORY_CHEAT_MAX_WATCHES;i++) {
+        if (memory_cheat_watch_list[i].activo) {
+            int direccion=memory_cheat_watch_list[i].direccion;
+            zxvision_print_string_defaults_format(menu_memory_cheat_window,x,MEMORY_CHEAT_WATCHES_LINE+2,
+                "%0*XH",digitos,direccion);
+            zxvision_print_string_defaults_format(menu_memory_cheat_window,x,MEMORY_CHEAT_WATCHES_LINE+3,
+                "%02XH (%3d)",peek_byte_z80_moto(direccion),peek_byte_z80_moto(direccion));
+        }
+
+        x +=incremento;
+    }
 
 
     //Mostrar contenido
@@ -26867,6 +26957,25 @@ int menu_memory_cheat_view_results_cond(void)
 {
     if (menu_memory_cheat_scan_total_results) return 1;
     else return 0;
+}
+
+void menu_memory_cheat_change_watch(MENU_ITEM_PARAMETERS)
+{
+    int watch_id=valor_opcion;
+    int direccion=-1;
+
+    if (memory_cheat_watch_list[watch_id].activo) {
+        direccion=memory_cheat_watch_list[watch_id].direccion;
+        //Pedir direccion cuando es un set watch
+        //Si es un write en cambio no, porque ya sabe la direccion, que es la del watch activo
+        menu_memory_cheat_set_watch_or_write(direccion,watch_id,1);
+    }
+
+    //Si no tiene watch, solo podemos hacer set watch
+    else {
+        //Pedir direccion de set watch
+        menu_memory_cheat_set_watch_or_write_no_ask_choice(2,direccion,watch_id,1);
+    }
 }
 
 void menu_memory_cheat(MENU_ITEM_PARAMETERS)
@@ -26895,7 +27004,7 @@ void menu_memory_cheat(MENU_ITEM_PARAMETERS)
 
         if (!util_find_window_geometry("memorycheat",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
             ancho_ventana=43;
-            alto_ventana=10;
+            alto_ventana=14;
 
             xventana=menu_center_x()-ancho_ventana/2;
             yventana=menu_center_y()-alto_ventana/2;
@@ -26956,6 +27065,8 @@ void menu_memory_cheat(MENU_ITEM_PARAMETERS)
         //zxvision_print_string_defaults_fillspc(ventana,1,6,"");
         //zxvision_print_string_defaults_fillspc(ventana,1,7,"");
         zxvision_cls(ventana);
+
+        zxvision_print_string_defaults_fillspc(ventana,1,MEMORY_CHEAT_WATCHES_LINE,"Watches");
 
 
         //zxvision_print_string_defaults_fillspc(ventana,1,0,"First Scan");
@@ -27022,6 +27133,19 @@ void menu_memory_cheat(MENU_ITEM_PARAMETERS)
             }
 
         }
+
+        int i;
+        int x=1;
+        for (i=0;i<MEMORY_CHEAT_MAX_WATCHES;i++) {
+
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_memory_cheat_change_watch,NULL,
+                "Watch %d",i+1);
+            menu_add_item_menu_tabulado(array_menu_common,x,MEMORY_CHEAT_WATCHES_LINE+1);
+            menu_add_item_menu_valor_opcion(array_menu_common,i);
+
+            x+=10;
+        }
+
 
 
 		//Nombre de ventana solo aparece en el caso de stdout
