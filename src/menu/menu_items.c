@@ -26762,15 +26762,6 @@ void menu_memory_cheat_first_scan_change_second_parameter(MENU_ITEM_PARAMETERS)
 
 
 
-/*
-Inicio de Template de ventana de menu que se puede enviar a background
-Sustituir "memory_cheat" por el nombre de la ventana
-Sustituir "memorycheat" por el nombre corto de la ventana (nombre identificativo de geometria, string sin _)
-Sustituir "Memory Cheat" por el titulo de la ventana
-Y definirla en zxvision_known_window_names_array
-*/
-
-
 zxvision_window *menu_memory_cheat_window;
 
 
