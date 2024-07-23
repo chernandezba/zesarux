@@ -19,6 +19,7 @@ Improved debug cpu history: allow to change memory pointer to the PC register sh
 Improved ZX Vision:
 - When selecting ZX Vision Style, it is applied on moving cursor
 - Improve cursor movement on menus when pressing PgDn/PgUp
+- Warn on the resize mark when a window has to be enlarged (because there is text beyond current size)
 
 * Fixes:
 

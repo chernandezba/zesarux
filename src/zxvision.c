@@ -1334,7 +1334,7 @@ z80_bit christmas_mode={0};
 z80_bit avoid_christmas_mode={0};
 
 
-void menu_dibuja_cuadrado(int x1,int y1,int x2,int y2,int color);
+void menu_dibuja_cuadrado(int x1,int y1,int x2,int y2,int color,int color_marca_redimensionado);
 void menu_desactiva_cuadrado(void);
 void menu_establece_cuadrado(int x1,int y1,int x2,int y2,int color);
 
@@ -1392,6 +1392,10 @@ int cuadrado_x1,cuadrado_y1,cuadrado_x2,cuadrado_y2,cuadrado_color;
 
 //Y si dicho recuadro tiene marca de redimensionado posible para zxvision
 int cuadrado_activo_resize=0;
+
+//Indica que ventana activa tiene la marca de redimensionado con aviso
+//Esto sucede cuando se ha escrito mas alla del tamanyo de la ventana
+int cuadrado_activo_marca_redimensionado_aviso=0;
 
 //Indica que la ventana activa tiene boton de minimizar
 int ventana_activa_puede_minimizar=0;
@@ -7554,7 +7558,16 @@ void normal_overlay_texto_menu_final(void)
 {
 
 	if (cuadrado_activo && ventana_tipo_activa) {
-		menu_dibuja_cuadrado(cuadrado_x1,cuadrado_y1,cuadrado_x2,cuadrado_y2,cuadrado_color);
+        int color_marca_redimensionado=cuadrado_color;
+
+        if (cuadrado_activo_marca_redimensionado_aviso) {
+            //darle parpadeo a la marca
+            if ( (contador_segundo_infinito % 1000) >500) {
+                color_marca_redimensionado=ESTILO_GUI_COLOR_AVISO;
+            }
+        }
+
+		menu_dibuja_cuadrado(cuadrado_x1,cuadrado_y1,cuadrado_x2,cuadrado_y2,cuadrado_color,color_marca_redimensionado);
 
 	}
 
@@ -7573,6 +7586,7 @@ void normal_overlay_texto_menu_final(void)
 
 }
 
+/*
 void old_normal_overlay_texto_menu_final(void)
 {
 
@@ -7595,6 +7609,7 @@ void old_normal_overlay_texto_menu_final(void)
 
 
 }
+*/
 
 #ifdef DEBUG_ZXVISION_USE_CACHE_OVERLAY_TEXT
 z80_byte debug_zxvision_cache_overlay_caracter=33;
@@ -7789,6 +7804,7 @@ void menu_establece_cuadrado(int x1,int y1,int x2,int y2,int color)
 
 	//Por defecto no se ve marca de resize, para compatibilidad con ventanas no zxvision
 	cuadrado_activo_resize=0;
+    cuadrado_activo_marca_redimensionado_aviso=0;
     ventana_activa_puede_minimizar=0;
 	//ventana_activa_tipo_zxvision=0;
 
@@ -7799,6 +7815,7 @@ void menu_desactiva_cuadrado(void)
 {
 	cuadrado_activo=0;
 	cuadrado_activo_resize=0;
+    cuadrado_activo_marca_redimensionado_aviso=0;
     ventana_activa_puede_minimizar=0;
 	//ventana_activa_tipo_zxvision=0;
 }
@@ -8847,7 +8864,7 @@ int ventana_marca_redimensionado_raton_encima=0;
 //dibuja cuadrado (4 lineas) usado en los menus para xwindows y fbdev
 //Entrada: x1,y1 punto superior izquierda,x2,y2 punto inferior derecha en resolucion de zx spectrum. Color
 //nota: realmente no es un cuadrado porque el titulo ya hace de franja superior
-void menu_dibuja_cuadrado(int x1,int y1,int x2,int y2,int color)
+void menu_dibuja_cuadrado(int x1,int y1,int x2,int y2,int color,int color_marca_redimensionado)
 {
 
 	if (!ESTILO_GUI_MUESTRA_RECUADRO) return;
@@ -8856,7 +8873,10 @@ void menu_dibuja_cuadrado(int x1,int y1,int x2,int y2,int color)
 	int x,y;
 
     //Si ratón está encima de la zona de redimensionado
-    if (ventana_marca_redimensionado_raton_encima && menu_change_frame_when_resize_zone.v) color=ESTILO_GUI_COLOR_AVISO;
+    if (ventana_marca_redimensionado_raton_encima && menu_change_frame_when_resize_zone.v) {
+        color=ESTILO_GUI_COLOR_AVISO;
+        color_marca_redimensionado=ESTILO_GUI_COLOR_AVISO;
+    }
 
 	//Para poner una marca en la ventana indicando si es de tipo zxvision
 	//int centro_marca_zxvison_x=x2-3-6;
@@ -8907,22 +8927,22 @@ void menu_dibuja_cuadrado(int x1,int y1,int x2,int y2,int color)
             //     ****
 
             //Arriba del todo
-            scr_putpixel_gui_zoom((x2-1)*menu_gui_zoom,(y2-4)*menu_gui_zoom,color,menu_gui_zoom);
+            scr_putpixel_gui_zoom((x2-1)*menu_gui_zoom,(y2-4)*menu_gui_zoom,color_marca_redimensionado,menu_gui_zoom);
 
             //Medio
-            scr_putpixel_gui_zoom((x2-1)*menu_gui_zoom,(y2-3)*menu_gui_zoom,color,menu_gui_zoom);
-            scr_putpixel_gui_zoom((x2-2)*menu_gui_zoom,(y2-3)*menu_gui_zoom,color,menu_gui_zoom);
+            scr_putpixel_gui_zoom((x2-1)*menu_gui_zoom,(y2-3)*menu_gui_zoom,color_marca_redimensionado,menu_gui_zoom);
+            scr_putpixel_gui_zoom((x2-2)*menu_gui_zoom,(y2-3)*menu_gui_zoom,color_marca_redimensionado,menu_gui_zoom);
 
             //Abajo
-            scr_putpixel_gui_zoom((x2-1)*menu_gui_zoom,(y2-2)*menu_gui_zoom,color,menu_gui_zoom);
-            scr_putpixel_gui_zoom((x2-2)*menu_gui_zoom,(y2-2)*menu_gui_zoom,color,menu_gui_zoom);
-            scr_putpixel_gui_zoom((x2-3)*menu_gui_zoom,(y2-2)*menu_gui_zoom,color,menu_gui_zoom);
+            scr_putpixel_gui_zoom((x2-1)*menu_gui_zoom,(y2-2)*menu_gui_zoom,color_marca_redimensionado,menu_gui_zoom);
+            scr_putpixel_gui_zoom((x2-2)*menu_gui_zoom,(y2-2)*menu_gui_zoom,color_marca_redimensionado,menu_gui_zoom);
+            scr_putpixel_gui_zoom((x2-3)*menu_gui_zoom,(y2-2)*menu_gui_zoom,color_marca_redimensionado,menu_gui_zoom);
 
             //Abajo del todo
-            scr_putpixel_gui_zoom((x2-1)*menu_gui_zoom,(y2-1)*menu_gui_zoom,color,menu_gui_zoom);
-            scr_putpixel_gui_zoom((x2-2)*menu_gui_zoom,(y2-1)*menu_gui_zoom,color,menu_gui_zoom);
-            scr_putpixel_gui_zoom((x2-3)*menu_gui_zoom,(y2-1)*menu_gui_zoom,color,menu_gui_zoom);
-            scr_putpixel_gui_zoom((x2-4)*menu_gui_zoom,(y2-1)*menu_gui_zoom,color,menu_gui_zoom);
+            scr_putpixel_gui_zoom((x2-1)*menu_gui_zoom,(y2-1)*menu_gui_zoom,color_marca_redimensionado,menu_gui_zoom);
+            scr_putpixel_gui_zoom((x2-2)*menu_gui_zoom,(y2-1)*menu_gui_zoom,color_marca_redimensionado,menu_gui_zoom);
+            scr_putpixel_gui_zoom((x2-3)*menu_gui_zoom,(y2-1)*menu_gui_zoom,color_marca_redimensionado,menu_gui_zoom);
+            scr_putpixel_gui_zoom((x2-4)*menu_gui_zoom,(y2-1)*menu_gui_zoom,color_marca_redimensionado,menu_gui_zoom);
 
         }
 
@@ -10587,6 +10607,8 @@ void zxvision_new_window_no_check_range(zxvision_window *w,int x,int y,int visib
 	w->can_mouse_send_hotkeys=0;
 
     w->no_refresh_change_offset=0;
+
+    w->tried_write_beyond_size=0;
 
 	w->visible_cursor=0;
 	w->cursor_line=0;
@@ -12605,6 +12627,8 @@ void zxvision_draw_window(zxvision_window *w)
     ventana_activa_puede_minimizar=w->can_be_minimized;
 	//ventana_activa_tipo_zxvision=1;
 
+    cuadrado_activo_marca_redimensionado_aviso=w->tried_write_beyond_size;
+
 
 	//Si no hay barras de desplazamiento, alterar scroll horiz o vertical segun corresponda
 	if (!zxvision_if_horizontal_scroll_bar(w)) {
@@ -13422,6 +13446,7 @@ void zxvision_set_visible_width(zxvision_window *w,int visible_width)
 	zxvision_redraw_window_on_move(w);
 
     zxvision_set_all_flag_dirty_must_draw_contents();
+    w->tried_write_beyond_size=0;
 
 }
 
@@ -13445,6 +13470,7 @@ void zxvision_set_visible_height(zxvision_window *w,int visible_height)
 	zxvision_redraw_window_on_move(w);
 
     zxvision_set_all_flag_dirty_must_draw_contents();
+    w->tried_write_beyond_size=0;
 
 }
 
@@ -14079,7 +14105,20 @@ void zxvision_set_attr(zxvision_window *w,int x,int y,int tinta,int papel,int pa
 void zxvision_print_char(zxvision_window *w,int x,int y,overlay_screen *caracter)
 {
 	//Comprobar limites
-	if (x>=w->total_width || x<0 || y>=w->total_height || y<0) return;
+	if (x>=w->total_width || x<0 || y>=w->total_height || y<0) {
+
+        z80_byte letra_escribir=caracter->caracter;
+        if (letra_escribir!=32 && (x>=w->total_width || y>=w->total_height)) {
+            //Indicar que se intentó escribir mas alla del limite de la ventana, siempre que caracter no sea espacio
+            //printf("pasa limites. caracter %c (%d)\n",letra_escribir,letra_escribir);
+            w->tried_write_beyond_size=1;
+
+            //Si es la ventana actual, avisar al momento
+            if (zxvision_current_window==w) cuadrado_activo_marca_redimensionado_aviso=1;
+        }
+
+        return;
+    }
 
     zxvision_set_flag_dirty_must_draw_contents(w);
 

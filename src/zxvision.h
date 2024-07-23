@@ -197,6 +197,9 @@ struct s_zxvision_window {
     //usado en process switcher por ejemplo
     int not_altered_by_massive_changes;
 
+    //indica que se ha intentado escribir mas alla del tamanyo de la ventana
+    int tried_write_beyond_size;
+
 	//Posicion del cursor y si esta visible
 	int visible_cursor;
 	int cursor_line;
