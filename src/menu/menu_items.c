@@ -26606,7 +26606,7 @@ int memory_cheat_next_scan_matches(z80_byte value,z80_byte previous_value,z80_by
 }
 
 int menu_memory_cheat_scan_total_results=0;
-int salir_menu_menu_memory_cheat_first_scan;
+
 
 void menu_memory_cheat_first_scan_start(MENU_ITEM_PARAMETERS)
 {
@@ -26635,7 +26635,6 @@ void menu_memory_cheat_first_scan_start(MENU_ITEM_PARAMETERS)
 
     //Si hay al menos 1, volvemos al menu anterior
     if (menu_memory_cheat_scan_total_results) {
-        salir_menu_menu_memory_cheat_first_scan=1;
         menu_generic_message_format("End scan","Total results: %d",menu_memory_cheat_scan_total_results);
     }
     else {
@@ -26645,7 +26644,7 @@ void menu_memory_cheat_first_scan_start(MENU_ITEM_PARAMETERS)
 }
 
 
-int salir_menu_menu_memory_cheat_next_scan;
+
 
 void menu_memory_cheat_next_scan_start(MENU_ITEM_PARAMETERS)
 {
@@ -26674,7 +26673,6 @@ void menu_memory_cheat_next_scan_start(MENU_ITEM_PARAMETERS)
 
     //Si hay al menos 1, volvemos al menu anterior
     if (menu_memory_cheat_scan_total_results) {
-        salir_menu_menu_memory_cheat_next_scan=1;
         menu_generic_message_format("End scan","Total results: %d",menu_memory_cheat_scan_total_results);
     }
 
@@ -26744,64 +26742,6 @@ void menu_memory_cheat_next_scan_change_second_parameter(MENU_ITEM_PARAMETERS)
 
 
 
-void menu_memory_cheat_next_scan(MENU_ITEM_PARAMETERS)
-{
-
-
-    menu_item *array_menu_common;
-    menu_item item_seleccionado;
-    int retorno_menu;
-
-    salir_menu_menu_memory_cheat_next_scan=0;
-
-    do {
-
-        menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_memory_cheat_next_scan_condition,NULL,
-            "Condition: %s",memory_cheat_next_scan_possible_conditions_strings[memory_cheat_next_scan_condition]);
-
-
-        //Mostrar parametro excepto
-        if (
-            memory_cheat_next_scan_condition!=MEMORY_CHEAT_NEXT_SCAN_INCREASED_VALUE &&
-            memory_cheat_next_scan_condition!=MEMORY_CHEAT_NEXT_SCAN_DECREASED_VALUE &&
-            memory_cheat_next_scan_condition!=MEMORY_CHEAT_NEXT_SCAN_CHANGED_VALUE &&
-            memory_cheat_next_scan_condition!=MEMORY_CHEAT_NEXT_SCAN_UNCHANGED_VALUE &&
-            memory_cheat_next_scan_condition!=MEMORY_CHEAT_NEXT_SCAN_SAME_AS_FIRST
-        ) {
-            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_memory_cheat_next_scan_change_first_parameter,NULL,
-                " %02XH",memory_cheat_next_scan_condition_first_parameter);
-
-            if (memory_cheat_next_scan_condition==MEMORY_CHEAT_NEXT_SCAN_VALUE_BETWEEN) {
-                menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,"and");
-                menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_memory_cheat_next_scan_change_second_parameter,NULL,
-                    " %02XH",memory_cheat_next_scan_condition_second_parameter);
-            }
-        }
-
-        menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
-
-        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_memory_cheat_next_scan_start,NULL,"Go");
-
-        menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
-
-        menu_add_ESC_item(array_menu_common);
-
-        retorno_menu=menu_dibuja_menu_no_title_lang(&menu_memory_cheat_next_scan_opcion_seleccionada,&item_seleccionado,array_menu_common,"Next Scan");
-
-
-
-        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
-            //llamamos por valor de funcion
-            if (item_seleccionado.menu_funcion!=NULL) {
-                //printf ("actuamos por funcion\n");
-                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
-
-            }
-        }
-
-    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus && !salir_menu_menu_memory_cheat_next_scan);
-}
-
 void menu_memory_cheat_first_scan_change_first_parameter(MENU_ITEM_PARAMETERS)
 {
     char string_valor[4];
@@ -26820,104 +26760,6 @@ void menu_memory_cheat_first_scan_change_second_parameter(MENU_ITEM_PARAMETERS)
 
 
 
-void menu_memory_cheat_first_scan(MENU_ITEM_PARAMETERS)
-{
-
-
-    menu_item *array_menu_common;
-    menu_item item_seleccionado;
-    int retorno_menu;
-
-
-    salir_menu_menu_memory_cheat_first_scan=0;
-
-    do {
-
-        menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_memory_cheat_first_scan_condition,NULL,
-            "Condition: %s",memory_cheat_first_scan_possible_conditions_strings[memory_cheat_first_scan_condition]);
-
-        //Mostrar parametro excepto en un caso
-        if (memory_cheat_first_scan_condition!=MEMORY_CHEAT_FIRST_SCAN_UNKNOWN_VALUE) {
-            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_memory_cheat_first_scan_change_first_parameter,NULL,
-                " %02XH",memory_cheat_first_scan_condition_first_parameter);
-
-            if (memory_cheat_first_scan_condition==MEMORY_CHEAT_FIRST_SCAN_VALUE_BETWEEN) {
-                menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,"and");
-                menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_memory_cheat_first_scan_change_second_parameter,NULL,
-                    " %02XH",memory_cheat_first_scan_condition_second_parameter);
-            }
-        }
-
-        menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
-
-
-        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_memory_cheat_first_scan_start,NULL,"Go");
-
-        menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
-
-        menu_add_ESC_item(array_menu_common);
-
-        retorno_menu=menu_dibuja_menu_no_title_lang(&menu_memory_cheat_first_scan_opcion_seleccionada,&item_seleccionado,array_menu_common,"First Scan");
-
-
-
-        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
-            //llamamos por valor de funcion
-            if (item_seleccionado.menu_funcion!=NULL) {
-                //printf ("actuamos por funcion\n");
-                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
-
-            }
-        }
-
-    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus && !salir_menu_menu_memory_cheat_first_scan);
-}
-
-void old_menu_memory_cheat(MENU_ITEM_PARAMETERS)
-{
-
-    //Inicializamos array si no esta inicializado
-    menu_memory_cheat_init_array();
-
-    menu_item *array_menu_common;
-    menu_item item_seleccionado;
-    int retorno_menu;
-
-
-
-    do {
-
-        menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_memory_cheat_first_scan,NULL,"First Scan");
-        menu_add_item_menu_tiene_submenu(array_menu_common);
-
-        if (menu_memory_cheat_realizado_first_scan) {
-
-            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_memory_cheat_view_results,NULL,"View Results");
-            menu_add_item_menu_tiene_submenu(array_menu_common);
-
-            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_memory_cheat_next_scan,NULL,"Next Scan");
-            menu_add_item_menu_tiene_submenu(array_menu_common);
-        }
-
-        menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
-
-        menu_add_ESC_item(array_menu_common);
-
-        retorno_menu=menu_dibuja_menu_no_title_lang(&memory_cheat_opcion_seleccionada,&item_seleccionado,array_menu_common,"Memory Cheat");
-
-
-
-        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
-            //llamamos por valor de funcion
-            if (item_seleccionado.menu_funcion!=NULL) {
-                //printf ("actuamos por funcion\n");
-                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
-
-            }
-        }
-
-    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
-}
 
 
 /*
