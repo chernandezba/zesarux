@@ -395,4 +395,6 @@ Bob Morane
 Canadair
 Vector Ball
 
--quiza un indicador en la ventana cuando se ha escrito mas alla del ancho o del alto, que indique que hay que hacer mas grande la ventana
+ok-quiza un indicador en la ventana cuando se ha escrito mas alla del ancho o del alto, que indique que hay que hacer mas grande la ventana
+quiza algunas ventanas que no avise de redimensionado, un parametro para decir que no lo haga
+Por ejemplo smartload, pues avisa cuando se esta haciendo scroll del directorio actual
