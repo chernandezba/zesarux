@@ -25894,6 +25894,51 @@ void menu_find_bytes_find(MENU_ITEM_PARAMETERS)
 
 
 }
+
+
+
+//Para buscar texto
+void menu_find_string(MENU_ITEM_PARAMETERS)
+{
+
+    //maximos bytes a buscar
+    #define MENU_FIND_STRING_MAX 100
+
+    int lista[MENU_FIND_STRING_MAX];
+
+    //Buscar en la memoria direccionable (0...65535) si se encuentran los bytes indicados
+    //z80_byte byte_to_find;
+
+
+    char string_find[MENU_FIND_STRING_MAX];
+
+    string_find[0]=0;
+
+    menu_ventana_scanf("Write string",string_find,MENU_FIND_STRING_MAX);
+
+    //Si cadena vacia, no hacer nada
+    if (string_find[0]==0) return;
+
+    //ir procesando cada valor
+    int i;
+
+    for (i=0;string_find[i];i++) {
+        lista[i]=(unsigned char)string_find[i];
+    }
+
+    int total_numeros=i;
+
+
+    int total_items_found;
+
+    total_items_found=menu_find_bytes_list_from(lista,total_numeros,0);
+
+    menu_generic_message_format("Find","Total addresses found: %d",total_items_found);
+
+
+}
+
+
 //int total_tamanyo_find_buffer=0;
 
 void menu_find_bytes_alloc_if_needed(void)
@@ -25939,6 +25984,8 @@ void menu_find_bytes(MENU_ITEM_PARAMETERS)
                         "You can find it by making a MRA breakpoint to the address where the lives are stored, or a condition breakpoint "
 			"(NN)=value, setting NN to the address where lives are stored, and value to the desired number of lives, for example: (51308)=2.\n"
                         "When the breakpoint is caught, you will probably have the section of code where the lives are decremented ;) ");
+
+                menu_add_item_menu_format(array_menu_find_bytes,MENU_OPCION_NORMAL,menu_find_string,NULL,"Find text string");
 
                 menu_add_item_menu_format(array_menu_find_bytes,MENU_OPCION_NORMAL,menu_find_bytes_view_results,NULL,"View results");
                 menu_add_item_menu_tooltip(array_menu_find_bytes,"View results");
