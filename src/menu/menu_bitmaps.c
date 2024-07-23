@@ -3529,6 +3529,36 @@ char *bitmap_button_ext_desktop_visualmem[EXT_DESKTOP_BUTTONS_ANCHO]={
 	"                          " 	 //25
 };
 
+char *bitmap_button_ext_desktop_memorycheat[EXT_DESKTOP_BUTTONS_ANCHO]={
+   //01234567890123456789012345
+    "         xxxx             ", //0
+    "        x    x            ",
+    "       x  xx  x           ",
+  	"       x x  x x           ",
+	"       x x  x x           ",
+	"       x  xx  x           ",
+	"        x    x            ",
+	"         x  x             ",
+	"         x x              ",
+	"         x  x             ",
+	"         x  x             ", //10
+    "         x x              ",
+    "         x  x             ",
+	"  x   x  x  x x   x   x   ",
+	"  x   x  x  x x   x   x   ",
+	"xxxxxxxxxx  xxxxxxxxxxxxxx",
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
+	"xxxxxxxxxwwwxxxwwxxwxxxwxx",
+	"xwxxxxxxxwxxwxwxxwxwwxwwxx",
+	"xwwxxxxxxwwwxxwwwwxwxwxwxx",
+	"xwxxxxxxxwxwxxwxxwxwxxxwxx", //20
+	"xxxxxxxxxwxxwxwxxwxwxxxwxx",
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
+	"  x   x   x   x   x   x   ",
+	"  x   x   x   x   x   x   "
+};
+
 char *bitmap_button_ext_desktop_zxlife[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345
     "                          ",     //0
