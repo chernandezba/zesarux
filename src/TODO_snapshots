@@ -43,7 +43,7 @@ Quiza habria que parsear algunos parametros del .config tambien despues de carga
 -formato zsf debe guardar iff1 y iff2 por separado
 
 
--En snapshot poder guardar notas. Visibles desde menú snapshot. Se pierden al cargar otro snapshot
+-En snapshot poder guardar notas de texto. Visibles desde menú snapshot. Se pierden al cargar otro snapshot
 Esto es un nuevo tipo de campo en ZSF. Como se pide? Al guardar un snapshot o desde menú snapshot?
 Quizá desde menú y con un first aid que lo explique
 

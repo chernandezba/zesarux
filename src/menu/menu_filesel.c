@@ -5552,6 +5552,9 @@ int menu_filesel_if_save(char *titulo,char *filtros[],char *archivo,int si_save)
         ventana->acortar_cursor=1;
 		strcpy(ventana->geometry_name,"filesel");
 
+        //no indicar que se ha escrito mas alla del tamanyo
+        ventana->do_not_warn_tried_write_beyond_size=1;
+
         //zona de color mas alla del scroll
         //Para indicar siempre en un color la zona de fileselector
         ventana->beyond_x=1;

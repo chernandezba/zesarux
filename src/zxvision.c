@@ -10610,6 +10610,8 @@ void zxvision_new_window_no_check_range(zxvision_window *w,int x,int y,int visib
 
     w->tried_write_beyond_size=0;
 
+    w->do_not_warn_tried_write_beyond_size=0;
+
 	w->visible_cursor=0;
 	w->cursor_line=0;
     w->acortar_cursor=0;
@@ -12616,6 +12618,13 @@ void zxvision_draw_scroll_bars(zxvision_window *w)
 	}
 }
 
+void zxvision_set_mark_tried_write_beyond_size(zxvision_window *w)
+{
+    if (w->do_not_warn_tried_write_beyond_size==0) {
+        cuadrado_activo_marca_redimensionado_aviso=1;
+    }
+}
+
 void zxvision_draw_window(zxvision_window *w)
 {
 	menu_dibuja_ventana(w->x,w->y,w->visible_width,w->visible_height,w->window_title);
@@ -12627,7 +12636,13 @@ void zxvision_draw_window(zxvision_window *w)
     ventana_activa_puede_minimizar=w->can_be_minimized;
 	//ventana_activa_tipo_zxvision=1;
 
-    cuadrado_activo_marca_redimensionado_aviso=w->tried_write_beyond_size;
+    //Avisar que se ha intentado escribir mas alla del tamanyo ventana, pero siempre que
+    //la ventana no haya desactivado esto
+    cuadrado_activo_marca_redimensionado_aviso=0;
+
+    if (w->tried_write_beyond_size) {
+        zxvision_set_mark_tried_write_beyond_size(w);
+    }
 
 
 	//Si no hay barras de desplazamiento, alterar scroll horiz o vertical segun corresponda
@@ -14114,7 +14129,9 @@ void zxvision_print_char(zxvision_window *w,int x,int y,overlay_screen *caracter
             w->tried_write_beyond_size=1;
 
             //Si es la ventana actual, avisar al momento
-            if (zxvision_current_window==w) cuadrado_activo_marca_redimensionado_aviso=1;
+            if (zxvision_current_window==w) {
+                zxvision_set_mark_tried_write_beyond_size(w);
+            }
         }
 
         return;

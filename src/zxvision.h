@@ -200,6 +200,11 @@ struct s_zxvision_window {
     //indica que se ha intentado escribir mas alla del tamanyo de la ventana
     int tried_write_beyond_size;
 
+    //indica que esta ventana no se avisara de que se ha intentado escribir mas alla del tamanyo de la ventana
+    //por ejemplo ventana Filesel cuando hace scroll de campo de carpeta actual, intenta escribir mas alla
+    //y no quiero que indique
+    int do_not_warn_tried_write_beyond_size;
+
 	//Posicion del cursor y si esta visible
 	int visible_cursor;
 	int cursor_line;

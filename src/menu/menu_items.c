@@ -7198,6 +7198,11 @@ void menu_debug_hexdump_overlay(void)
 
     ventana=menu_debug_hexdump_overlay_window;
 
+    //temp. seguir registro IX
+    //menu_debug_hexdump_direccion=reg_ix-8*menu_hexdump_lineas_total;
+    //En multiples de 8, que es lo que cabe en una linea asi se ira desplazando de linea en linea
+    //menu_debug_hexdump_direccion &=(65535-7);
+
     //Asumimos siempre empieza en linea 2
     menu_hexdump_print_hexa_ascii(ventana,2);
 
@@ -30377,6 +30382,8 @@ void menu_about_help(MENU_ITEM_PARAMETERS)
 			"- Click out of the window and press shift key to put the focus on the emulated machine and send there keyboard presses\n"
 			"- Can also be moved with the keyboard: Shift+QAOP\n"
 			"- Can also be resized with the keyboard: Shift+WSKL\n"
+            "- Note: If the resize zone of the window (bottom-right) flashes in red colour, means that the window needs "
+            "to be enlarged, because there is text beyond current size.\n"
 
 			"\n"
 

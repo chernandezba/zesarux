@@ -393,8 +393,7 @@ frecuencias muy altas.
 
 -Ventana ayuda teclado:
 * que se pudiera hacer sin multiplicar por zoom_gui? asi en next, cpc, ql etc no se verian el doble de grande
-* al iniciar emulador, si la ventana se ha guardado en background, siempre arranca por defecto inicialmente como spectrum48, y al pulsar
-en la ventana del teclado ya se actualiza con la máquina actual
+
 
 
 -Mostrar info en menu network de descargas, commits etc. Solo si hay ssl (porque github solo esta con https)

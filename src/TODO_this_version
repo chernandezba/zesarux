@@ -395,6 +395,10 @@ Bob Morane
 Canadair
 Vector Ball
 
-ok-quiza un indicador en la ventana cuando se ha escrito mas alla del ancho o del alto, que indique que hay que hacer mas grande la ventana
-quiza algunas ventanas que no avise de redimensionado, un parametro para decir que no lo haga
-Por ejemplo smartload, pues avisa cuando se esta haciendo scroll del directorio actual
+-Visualizacion de datos escritos en memoria por una rutina de carga
+Quiza valerse de variable mwa y registro IX y cuando se escribe en direccion posterior a anterior+1
+Ver volcado en hexa y decimal
+O bien que vista Hexadecimal editor siga a registro IX
+linea 7201 de menu_items.c. Meter un "follow expression" en Hexadecimal editor y que lo haga
+cuando ventana este en el fondo
+-hexeditor refresco continuo de overlay también deberia hacerse cuando está la ventana activa y no está modo edición
