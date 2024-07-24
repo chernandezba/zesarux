@@ -7209,9 +7209,7 @@ void menu_debug_hexdump_overlay(void)
     //Asumimos siempre empieza en linea 2
     //No refrescar desde overlay si esta en edit mode
 
-    if (!menu_hexdump_edit_mode) {
-        menu_hexdump_print_hexa_ascii(ventana,2);
-    }
+
 
     //Si follow
     if (menu_hexdump_follow_mode) {
@@ -7232,6 +7230,10 @@ void menu_debug_hexdump_overlay(void)
 
         }
 
+    }
+
+    if (!menu_hexdump_edit_mode) {
+        menu_hexdump_print_hexa_ascii(ventana,2);
     }
 
     zxvision_draw_window_contents(ventana);
