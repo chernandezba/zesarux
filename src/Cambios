@@ -15,6 +15,7 @@ Agregar función de "Memory Cheat": util para encontrar contadores de energia, b
 Agregado menú para buscar cadenas de texto
 Mejorada compilación: opciones --enable-memptr --enable-visualmem --enable-cpustats están activadas por defecto en ./configure
 Mejorado debug cpu history: permitir cambiar el puntero de memoria según el registro PC mostrado en el historial
+Mejorado Hexadecimal editor: ahora los datos se refrescan también cuando la ventana tiene el foco
 
 Mejorado ZX Vision:
 - Al seleccionar estilo de ZX Vision Style, se aplica al mover el cursor

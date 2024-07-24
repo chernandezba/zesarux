@@ -7204,7 +7204,11 @@ void menu_debug_hexdump_overlay(void)
     //menu_debug_hexdump_direccion &=(65535-7);
 
     //Asumimos siempre empieza en linea 2
-    menu_hexdump_print_hexa_ascii(ventana,2);
+    //No refrescar desde overlay si esta en edit mode
+
+    if (!menu_hexdump_edit_mode) {
+        menu_hexdump_print_hexa_ascii(ventana,2);
+    }
 
     zxvision_draw_window_contents(ventana);
 
@@ -7425,33 +7429,18 @@ void menu_debug_hexdump(MENU_ITEM_PARAMETERS)
 
     zxvision_draw_window(ventana);
 
+    //El overlay de esta ventana refresca la vista hexadecimal continuamente
+    //desde el bucle principal tambien se refresca la vista, aunque solo cuando se pulsa una tecla
+    //Esto permite que si estamos dentro de la ventana y la memoria cambia, se refleje al momento
     menu_debug_hexdump_overlay_window=ventana;
     zxvision_set_window_overlay(ventana,menu_debug_hexdump_overlay);
 
-    //Esto es un poco diferente que otras ventanas, ya que solo hay overlay cuando la ventana esta en segundo plano
-    //Ademas, cuando se crea la ventana al haber hecho restore al iniciar el emulador,
-    //no se activa el overlay. Podria activarlo aqui, pero no tiene mucho sentido,
-    //ya que al iniciar el emulador, el puntero por ejemplo del hex editor apunta a 0, y dudo
-    //que el usuario quiera ver esa dirección al iniciar. Lo normal es que al arrancar el usuario
-    //elija la ventana del hex editor y ya indique que direccion quiere ir
 
     if (zxvision_currently_restoring_windows_on_start) {
         //printf ("Saliendo de ventana ya que la estamos restaurando en startup\n");
         return;
     }
 
-    //Este es un tanto peculiar porque no hace overlay cuando la ventana esta en primer plano
-    zxvision_reset_window_overlay(ventana);
-
-    //Mas info: al entrar en esta ventana por segunda vez, despues de tenerla en background, alguien podria pensar que
-    //la ventana se mostrara entonces dos veces: 1 por estar en background, y 2 por las propias rutinas que hay aqui para dibujarla
-    //pero cuando estamos aqui, somos nosotros mismos los que deberíamos hacer el overlay aqui dentro (que no se hace). Las funciones
-    //de redibujado de zxvision redibujan las ventanas que están en background, llamando a sus overlays, pero no llaman al overlay
-    //de la propia ventana que está activa
-
-	//Nos guardamos alto y ancho anterior. Si el usuario redimensiona la ventana, la redibujamos
-	//int alto_anterior=alto_ventana;
-	//int ancho_anterior=ancho_ventana;
 
     int alto_anterior;
     int ancho_anterior;
@@ -7868,20 +7857,10 @@ void menu_debug_hexdump(MENU_ITEM_PARAMETERS)
     } while (salir==0);
 
 
-    //En este caso es un poco diferente, esta ventana tiene overlay solo cuando
-    //esta en background
-
-    zxvision_set_window_overlay(ventana,menu_debug_hexdump_overlay);
-
-
-
-
-
 
 	//Grabar geometria ventana
 	util_add_window_geometry_compact(ventana);
 
-	//zxvision_destroy_window(ventana);
 
 
 	if (tecla==3) {

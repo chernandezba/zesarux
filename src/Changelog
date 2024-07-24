@@ -15,6 +15,7 @@ Added Memory Cheat feature: useful to find counters of energy, bombs, ammo or an
 Added Find text string menu
 Improve compilation: settings --enable-memptr --enable-visualmem --enable-cpustats are enabled by default on ./configure
 Improved debug cpu history: allow to change memory pointer to the PC register show in history
+Improved Hexadecimal editor: now the data is refreshed when the window has the focus too
 
 Improved ZX Vision:
 - When selecting ZX Vision Style, it is applied on moving cursor
