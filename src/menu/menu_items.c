@@ -6773,7 +6773,10 @@ void menu_debug_hexdump_cursor_arriba(void);
 
 int menu_debug_hexdump_cursor_en_zona_ascii=0;
 
-
+//Modo follow expresion: registros, valores, etc, como expresiones de breakpoint
+int menu_hexdump_follow_mode=0;
+//La expresion parseada como tokens
+token_parser menu_hexdump_follow_expression[MAX_PARSER_TOKENS_NUM];
 
 void menu_debug_hexdump_print_editcursor(zxvision_window *ventana,int x,int y,char caracter)
 {
@@ -7210,6 +7213,27 @@ void menu_debug_hexdump_overlay(void)
         menu_hexdump_print_hexa_ascii(ventana,2);
     }
 
+    //Si follow
+    if (menu_hexdump_follow_mode) {
+
+        int error_code;
+
+        int resultado=exp_par_evaluate_token(menu_hexdump_follow_expression,MAX_PARSER_TOKENS_NUM,&error_code);
+
+        if (error_code) {
+            //printf("Error processing follow expression\n");
+        }
+
+        else {
+
+            //printf("Resultado follow: %d\n",resultado);
+
+            menu_debug_hexdump_direccion=resultado;
+
+        }
+
+    }
+
     zxvision_draw_window_contents(ventana);
 
     //printf("Redibujando en background\n");
@@ -7268,7 +7292,9 @@ int menu_debux_hexdump_leyenda(zxvision_window *ventana,int linea)
 			buffer_puntero[0]=0;
 		}
 
-		sprintf (buffer_linea,"%smemptr%s C%sopy ~~shiftbits",string_atajos,buffer_puntero,string_atajos);
+		sprintf (buffer_linea,"%smemptr%s [%c] fo~~llow C%sopy ~~shiftbits",string_atajos,buffer_puntero,
+            (menu_hexdump_follow_mode ? 'X' : ' '),
+            string_atajos);
 
 
 		//menu_escribe_linea_opcion(linea++,-1,1,buffer_linea);
@@ -7380,12 +7406,56 @@ menu_z80_moto_int menu_debug_hexdump_change_pointer(menu_z80_moto_int p)
 
 }
 
+void menu_debug_hexdump_follow(void)
+{
+
+    if (menu_hexdump_follow_mode) {
+        menu_hexdump_follow_mode=0;
+    }
+
+    else {
+
+        char string_texto[MAX_BREAKPOINT_CONDITION_LENGTH];
+        char copia_string_texto[MAX_BREAKPOINT_CONDITION_LENGTH];
+
+        exp_par_tokens_to_exp(menu_hexdump_follow_expression,string_texto,MAX_PARSER_TOKENS_NUM);
+        strcpy(copia_string_texto,string_texto);
+
+        menu_ventana_scanf("Expression to follow",string_texto,MAX_BREAKPOINT_CONDITION_LENGTH);
+
+        int result=exp_par_exp_to_tokens(string_texto,menu_hexdump_follow_expression);
+        if (result<0) {
+            //menu_hexdump_follow_expression[0].tipo=TPT_FIN; //Inicializarlo vacio
+            //Dejamos la expresion anterior
+            exp_par_exp_to_tokens(copia_string_texto,menu_hexdump_follow_expression);
+            menu_error_message("Error adding follow expression");
+        }
+
+        else {
+
+            menu_hexdump_follow_mode=1;
+
+        }
+
+    }
+
+
+
+}
+
 zxvision_window zxvision_window_debug_hexdump;
+
+int menu_debug_hexdump_inicializada_follow_expression=0;
 
 void menu_debug_hexdump(MENU_ITEM_PARAMETERS)
 {
 	menu_espera_no_tecla();
 	menu_reset_counters_tecla_repeticion();
+
+    if (!menu_debug_hexdump_inicializada_follow_expression) {
+        menu_debug_hexdump_inicializada_follow_expression=1;
+        menu_hexdump_follow_expression[0].tipo=TPT_FIN;
+    }
 
 	zxvision_window *ventana;
     ventana=&zxvision_window_debug_hexdump;
@@ -7680,6 +7750,10 @@ void menu_debug_hexdump(MENU_ITEM_PARAMETERS)
             //case 'l':
             //	menu_debug_hex_shows_inves_low_ram.v ^=1;
             //break;
+
+            case 'l':
+                menu_debug_hexdump_follow();
+            break;
 
             case 'z':
 
