@@ -395,10 +395,3 @@ Bob Morane
 Canadair
 Vector Ball
 
--Visualizacion de datos escritos en memoria por una rutina de carga
-Quiza valerse de variable mwa y registro IX y cuando se escribe en direccion posterior a anterior+1
-Ver volcado en hexa y decimal
-O bien que vista Hexadecimal editor siga a registro IX
-linea 7201 de menu_items.c. Meter un "follow expression" en Hexadecimal editor y que lo haga
-cuando ventana este en el fondo
--hexeditor refresco continuo de overlay también deberia hacerse cuando está la ventana activa y no está modo edición
