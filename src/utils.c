@@ -11919,6 +11919,13 @@ char letra_minuscula(char c)
         return c;
 }
 
+//Devuelve la letra en minusculas, pero considerando valores int
+int int_minuscula(int c)
+{
+        if (c>='A' && c<='Z') c=c+('a'-'A');
+        return c;
+}
+
 //Convierte una string en minusculas
 void string_a_minusculas(char *origen, char *destino)
 {
@@ -21468,12 +21475,19 @@ z80_64bit util_sqrt(z80_64bit number,int *result_type)
 }
 
 //Dice si la direccion de memoria dir contiene los bytes de la lista.
-int util_compare_bytes_address(menu_z80_moto_int dir,int *lista,int total_items)
+int util_compare_bytes_address(menu_z80_moto_int dir,int *lista,int total_items,int case_insensitive)
 {
     int i;
 
     for (i=0;i<total_items;i++) {
-        if (peek_byte_z80_moto(dir+i)!=lista[i]) {
+        z80_byte byte_leido=peek_byte_z80_moto(dir+i);
+        int byte_en_lista=lista[i];
+
+        if (case_insensitive) {
+            byte_leido=int_minuscula(byte_leido);
+            byte_en_lista=int_minuscula(byte_en_lista);
+        }
+        if (byte_leido!=byte_en_lista) {
             //printf("Not equal address %d\n",dir);
             return 0;
         }

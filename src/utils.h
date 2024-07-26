@@ -971,7 +971,7 @@ extern int util_abs(int v);
 extern int util_sign(int v);
 extern int util_get_cosine(int degrees);
 extern int util_get_sine(int degrees);
-extern int util_compare_bytes_address(menu_z80_moto_int dir,int *lista,int total_items);
+extern int util_compare_bytes_address(menu_z80_moto_int dir,int *lista,int total_items,int case_insensitive);
 extern z80_64bit util_sqrt(z80_64bit number,int *result_type);
 extern int util_get_acosine(int cosine);
 

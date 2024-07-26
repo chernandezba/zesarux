@@ -25815,7 +25815,7 @@ int menu_find_bytes_process(z80_byte byte_to_find)
 
 //Busqueda desde direccion indicada una lista de bytes
 //menu_z80_moto_int dir,int *lista,int total_items
-int menu_find_bytes_list_from(int *lista,int total_items,int inicio)
+int menu_find_bytes_list_from(int *lista,int total_items,int inicio,int case_insensitive)
 {
 	int dir;
 	int total_items_found=0;
@@ -25831,7 +25831,7 @@ int menu_find_bytes_list_from(int *lista,int total_items,int inicio)
 					menu_find_bytes_empty=1;
 
 					for (dir=inicio;dir<final_find;dir++) {
-                                    if (util_compare_bytes_address(dir,lista,total_items)) {
+                                    if (util_compare_bytes_address(dir,lista,total_items,case_insensitive)) {
 									//if (peek_byte_z80_moto(dir)==byte_to_find) {
 													menu_find_bytes_mem_pointer[dir]=1;
 
@@ -25858,7 +25858,7 @@ int menu_find_bytes_list_from(int *lista,int total_items,int inicio)
 					for (i=0;i<final_find;i++) {
 									if (menu_find_bytes_mem_pointer[i]) {
 													//Ver el contenido de esa direccion
-                                                    if (util_compare_bytes_address(i,lista,total_items)) {
+                                                    if (util_compare_bytes_address(i,lista,total_items,case_insensitive)) {
 													//if (peek_byte_z80_moto(i)==byte_to_find) {
 																	//al menos hay un resultado
 																	menu_find_bytes_empty=0;
@@ -25948,7 +25948,7 @@ void menu_find_bytes_find(MENU_ITEM_PARAMETERS)
 
     //total_items_found=menu_find_bytes_process(byte_to_find);
 
-    total_items_found=menu_find_bytes_list_from(lista,total_numeros,0);
+    total_items_found=menu_find_bytes_list_from(lista,total_numeros,0,0);
 
     menu_generic_message_format("Find","Total addresses found: %d",total_items_found);
 
@@ -25991,7 +25991,7 @@ void menu_find_string(MENU_ITEM_PARAMETERS)
 
     int total_items_found;
 
-    total_items_found=menu_find_bytes_list_from(lista,total_numeros,0);
+    total_items_found=menu_find_bytes_list_from(lista,total_numeros,0,1);
 
     menu_generic_message_format("Find","Total addresses found: %d",total_items_found);
 
@@ -26030,7 +26030,11 @@ void menu_find_bytes(MENU_ITEM_PARAMETERS)
 
         do {
 
-                menu_add_item_menu_inicial_format(&array_menu_find_bytes,MENU_OPCION_NORMAL,menu_find_bytes_find,NULL,"Find bytes");
+            char tipo_busqueda[20];
+            if (menu_find_bytes_empty) strcpy(tipo_busqueda,"(initial)");
+            else strcpy(tipo_busqueda,"(next)");
+
+                menu_add_item_menu_inicial_format(&array_menu_find_bytes,MENU_OPCION_NORMAL,menu_find_bytes_find,NULL,"Find bytes %s",tipo_busqueda);
                 menu_add_item_menu_tooltip(array_menu_find_bytes,"Find several byte on memory");
                 menu_add_item_menu_ayuda(array_menu_find_bytes,"Find some bytes on the 64 KB of mapped memory, considering the last address found (if any).\n"
                         "It can also be used to find POKEs, it's very easy: \n"
@@ -26045,7 +26049,7 @@ void menu_find_bytes(MENU_ITEM_PARAMETERS)
 			"(NN)=value, setting NN to the address where lives are stored, and value to the desired number of lives, for example: (51308)=2.\n"
                         "When the breakpoint is caught, you will probably have the section of code where the lives are decremented ;) ");
 
-                menu_add_item_menu_format(array_menu_find_bytes,MENU_OPCION_NORMAL,menu_find_string,NULL,"Find text string");
+                menu_add_item_menu_format(array_menu_find_bytes,MENU_OPCION_NORMAL,menu_find_string,NULL,"Find text string %s",tipo_busqueda);
 
                 menu_add_item_menu_format(array_menu_find_bytes,MENU_OPCION_NORMAL,menu_find_bytes_view_results,NULL,"View results");
                 menu_add_item_menu_tooltip(array_menu_find_bytes,"View results");
