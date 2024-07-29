@@ -152,6 +152,6 @@ enum ql_qdos_unidades {
 
 extern void ql_insert_mdv_flp(enum ql_qdos_unidades unidad,char *dir_to_mount);
 
-
+extern void ql_copy_if_flp1_follow_mdv1(void);
 
 #endif

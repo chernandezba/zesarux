@@ -23956,6 +23956,8 @@ void menu_ql_replace_underscore_only_one(MENU_ITEM_PARAMETERS)
 void menu_ql_flp1_follow_mdv1(MENU_ITEM_PARAMETERS)
 {
 	ql_flp1_follow_mdv1.v ^=1;
+
+    ql_copy_if_flp1_follow_mdv1();
 }
 
 void menu_ql_data_size_headerless(MENU_ITEM_PARAMETERS)
@@ -24108,6 +24110,8 @@ void menu_ql_mdv_flp(MENU_ITEM_PARAMETERS)
 
 							menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_ql_flp1_follow_mdv1,NULL,"[%c] FLP1 path follows MDV1",
                     (ql_flp1_follow_mdv1.v ? 'X' : ' ') );
+                            menu_add_item_menu_tooltip(array_menu_common,"flp1 path parameter is copied from mdv1 path parameter");
+                            menu_add_item_menu_ayuda(array_menu_common,"flp1 path parameter is copied from mdv1 path parameter");
 
                             menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_ql_data_size_headerless,NULL,"[%6d] Data size for headerless exe",
                                 ql_task_default_data_size);

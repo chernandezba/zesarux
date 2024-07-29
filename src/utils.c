@@ -4064,6 +4064,7 @@ int util_write_configfile(void)
   if (ql_device_mdv2_readonly)                ADD_STRING_CONFIG,"--ql-mdv2-read-only");
   if (ql_device_flp1_readonly)                ADD_STRING_CONFIG,"--ql-flp1-read-only");
 
+  if (ql_flp1_follow_mdv1.v)                  ADD_STRING_CONFIG,"--ql-flp1-dir-copied-mdv1");
 
   if (dandanator_rom_file_name[0]!=0)         ADD_STRING_CONFIG,"--dandanator-rom \"%s\"",dandanator_rom_file_name);
   if (dandanator_enabled.v)                   ADD_STRING_CONFIG,"--enable-dandanator");

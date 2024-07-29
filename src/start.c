@@ -1498,6 +1498,7 @@ printf("\n"
         "--ql-mdv1-read-only             Mark mdv1 as read only\n"
         "--ql-mdv2-read-only             Mark mdv2 as read only\n"
         "--ql-flp1-read-only             Mark flp1 as read only\n"
+        "--ql-flp1-dir-copied-mdv1       flp1 path parameter is copied from mdv1 path parameter\n"
 
 
 		"\n"
@@ -4596,6 +4597,10 @@ int parse_cmdline_options(int desde_commandline) {
 
             else if (!strcmp(argv[puntero_parametro],"--ql-flp1-read-only")) {
                 ql_device_flp1_readonly=1;
+            }
+
+            else if (!strcmp(argv[puntero_parametro],"--ql-flp1-dir-copied-mdv1")) {
+                ql_flp1_follow_mdv1.v=1;
             }
 
 

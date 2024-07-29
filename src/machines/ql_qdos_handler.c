@@ -989,6 +989,12 @@ int ql_return_full_path(char *device, char *file, char *fullpath)
     return 0;
 }
 
+void ql_copy_if_flp1_follow_mdv1(void)
+{
+    //Si se copia misma ruta de mdv1 a flp1
+    if (ql_flp1_follow_mdv1.v) strcpy(ql_flp1_root_dir,ql_mdv1_root_dir);
+}
+
 void ql_insert_mdv_flp(enum ql_qdos_unidades unidad,char *dir_to_mount)
 {
 
@@ -1011,8 +1017,7 @@ void ql_insert_mdv_flp(enum ql_qdos_unidades unidad,char *dir_to_mount)
             sprintf (ql_mdv1_root_dir,"%s",dir_to_mount);
             ql_device_mdv1_enabled=1;
 
-            //Si se copia misma ruta de mdv1 a flp1
-            if (ql_flp1_follow_mdv1.v) strcpy(ql_flp1_root_dir,dir_to_mount);
+            ql_copy_if_flp1_follow_mdv1();
         break;
     }
 
