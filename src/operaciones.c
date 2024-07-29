@@ -6844,7 +6844,7 @@ z80_byte temp_tsconf_first_sd_0=1;
 z80_byte lee_puerto_spectrum_no_time(z80_byte puerto_h,z80_byte puerto_l)
 {
 
-    //printf ("In Port %x asked, PC after=0x%x\n",puerto_l+256*puerto_h,reg_pc);
+    //if (reg_pc>16383) printf ("In Port %x asked, PC after=0x%x\n",puerto_l+256*puerto_h,reg_pc);
 
 	debug_fired_in=1;
 	//extern z80_byte in_port_ay(z80_int puerto);
@@ -8789,7 +8789,7 @@ void out_port_spectrum_border(z80_int puerto,z80_byte value)
 void out_port_spectrum_no_time(z80_int puerto,z80_byte value)
 {
 
-    //printf("out_port_spectrum_no_time port %04XH value %02XH\n",puerto,value);
+    //if (reg_pc>16383) printf("out_port_spectrum_no_time port %04XH value %02XH PC after=0x%x\n",puerto,value,reg_pc);
 
 	debug_fired_out=1;
         //Los OUTS los capturan los diferentes interfaces que haya conectados, por tanto no hacer return en ninguno, para que se vayan comprobando
