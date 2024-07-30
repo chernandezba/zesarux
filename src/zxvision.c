@@ -19802,17 +19802,17 @@ void menu_dibuja_menu_cierra_n_submenus(int veces)
 
     if (menu_show_submenus_tree.v==0) return;
 
-    printf("--Inicio menu_dibuja_menu_cierra_n_submenus (%d)\n",veces);
+    //printf("--Inicio menu_dibuja_menu_cierra_n_submenus (%d)\n",veces);
 
     //Tenemos que cerrar de arriba hacia abajo
     zxvision_window *w=menu_dibuja_menu_find_last_submenu();
 
 
     while (w!=NULL && veces>0) {
-        printf("Cerrando submenu %p [%s]\n",w,w->window_title);
+        //printf("Cerrando submenu %p [%s]\n",w,w->window_title);
         //No andar redibujando, hacerlo al final del todo
         zxvision_destroy_window_if_redraw(w,0);
-        printf("Despues cerrado submenu %p [%s]\n",w,w->window_title);
+        //printf("Despues cerrado submenu %p [%s]\n",w,w->window_title);
 
         zxvision_window *memory_to_free=w;
         w=w->submenu_previous;
@@ -19825,14 +19825,14 @@ void menu_dibuja_menu_cierra_n_submenus(int veces)
 
     if (w==NULL) {
         menu_dibuja_menu_primer_submenu=NULL;
-        printf("Cerrados todos menus\n");
+        //printf("Cerrados todos menus\n");
     }
 
     cls_menu_overlay();
 
     zxvision_redraw_all_windows();
 
-    printf("--Fin menu_dibuja_menu_cierra_submenu_dos_ultimos\n");
+    //printf("--Fin menu_dibuja_menu_cierra_submenu_dos_ultimos\n");
 }
 
 //liberar memoria de todos los submenus
@@ -19874,7 +19874,7 @@ void menu_dibuja_menu_cierra_submenu_dos_ultimos(void)
 
 
 
-void menu_dibuja_menu_get_menu_pos(int ancho,int alto,int *xnormal,int *ynormal)
+void menu_dibuja_menu_get_menu_pos(int *xnormal,int *ynormal)
 {
     //menu centrado normalmente
     //*xnormal=menu_center_x()-ancho/2;
@@ -20090,7 +20090,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 
     else {
         //Posicionar segun politica de submenus
-        menu_dibuja_menu_get_menu_pos(ancho,alto,&x,&y);
+        menu_dibuja_menu_get_menu_pos(&x,&y);
 
     }
 

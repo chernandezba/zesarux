@@ -45934,7 +45934,7 @@ void menu_inicio_bucle_main(void)
 
 	} while (!salir_menu && !salir_todos_menus);
 
-    printf("llamar a menu_dibuja_menu_cierra_todos_submenus desde fin menu_inicio_bucle_main\n");
+   // printf("llamar a menu_dibuja_menu_cierra_todos_submenus desde fin menu_inicio_bucle_main\n");
     menu_dibuja_menu_cierra_todos_submenus();
 
 }
