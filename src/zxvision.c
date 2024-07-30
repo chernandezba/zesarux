@@ -19880,49 +19880,54 @@ void menu_dibuja_menu_get_menu_pos(int ancho,int alto,int *xnormal,int *ynormal)
     *xnormal=menu_center_x()-ancho/2;
 	*ynormal=menu_center_y()-alto/2;
 
-    //menu a la derecha del anterior siempre que tengamos zx desktop habilitado
-    if (menu_show_submenus_tree.v && screen_ext_desktop_enabled) {
+    //menu a la derecha del anterior siempre que tengamos zx desktop habilitado y opcion de situar menus en zx desktop
+    if (menu_show_submenus_tree.v && screen_ext_desktop_enabled && screen_ext_desktop_place_menu) {
 
-        force_next_menu_position.v=1;
+        //si no hay forzado coordenadas ya por otra razon (pulsado de boton superior por ejemplo)
+        if (force_next_menu_position.v==0) {
 
-
-        //es el primero?
-        if (menu_dibuja_menu_primer_submenu==NULL) {
-            int x,y;
+            force_next_menu_position.v=1;
 
 
-            int alto_boton;
-            int ancho_boton;
-            menu_ext_desktop_buttons_get_geometry(&ancho_boton,&alto_boton,NULL,NULL,NULL);
+            //es el primero?
+            if (menu_dibuja_menu_primer_submenu==NULL) {
+                int x,y;
 
-            //Ajustar coordenada y
-            int alto_texto=menu_char_height*menu_gui_zoom*zoom_y;
-            y=(alto_boton/alto_texto); //antes sumaba +1, porque? de esa manera quedaba 1 linea de separación con los botones...
 
-            //Ajustar coordenada x
-            int origen_x=menu_get_origin_x_zxdesktop_aux(1);
+                int alto_boton;
+                int ancho_boton;
+                menu_ext_desktop_buttons_get_geometry(&ancho_boton,&alto_boton,NULL,NULL,NULL);
 
-            //int offset_x=cual_boton*ancho_boton;
-            //int ancho_texto=menu_char_width*menu_gui_zoom*zoom_x;
-            x=origen_x; //+(offset_x/ancho_texto);
+                //Ajustar coordenada y
+                int alto_texto=menu_char_height*menu_gui_zoom*zoom_y;
+                y=(alto_boton/alto_texto); //antes sumaba +1, porque? de esa manera quedaba 1 linea de separación con los botones...
 
-            force_next_menu_position_x=x;
-            force_next_menu_position_y=y;
+                //Ajustar coordenada x
+                int origen_x=menu_get_origin_x_zxdesktop_aux(1);
 
-        }
+                //int offset_x=cual_boton*ancho_boton;
+                //int ancho_texto=menu_char_width*menu_gui_zoom*zoom_x;
+                x=origen_x; //+(offset_x/ancho_texto);
 
-        else {
-            //a la derecha del anterior
-            //temporalmente no hacer nada
-            //force_next_menu_position.v=0;
+                force_next_menu_position_x=x;
+                force_next_menu_position_y=y;
 
-            zxvision_window *ultima_ventana=menu_dibuja_menu_find_last_submenu();
+            }
 
-            int x=ultima_ventana->x+ultima_ventana->visible_width;
-            int y=ultima_ventana->y+ultima_ventana->submenu_linea_seleccionada+1;
+            else {
+                //a la derecha del anterior
+                //temporalmente no hacer nada
+                //force_next_menu_position.v=0;
 
-            force_next_menu_position_x=x;
-            force_next_menu_position_y=y;
+                zxvision_window *ultima_ventana=menu_dibuja_menu_find_last_submenu();
+
+                int x=ultima_ventana->x+ultima_ventana->visible_width;
+                int y=ultima_ventana->y+ultima_ventana->submenu_linea_seleccionada+1;
+
+                force_next_menu_position_x=x;
+                force_next_menu_position_y=y;
+            }
+
         }
     }
 
@@ -20844,6 +20849,8 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 	//*opcion_inicial=(*opcion_inicial);
 
 	//nos apuntamos valor de retorno
+
+    force_next_menu_position.v=0;
 
 	menu_item *menu_sel;
 	menu_sel=menu_retorna_item(m,(*opcion_inicial));
