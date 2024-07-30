@@ -2099,6 +2099,16 @@ void menu_interface_enable_topbar_menu(MENU_ITEM_PARAMETERS)
     zxvision_topbar_menu_enabled.v ^=1;
 }
 
+void menu_interface_previous_submenus(MENU_ITEM_PARAMETERS)
+{
+    if (menu_show_submenus_tree.v) {
+        menu_dibuja_menu_cierra_todos_submenus();
+        menu_show_submenus_tree.v=0;
+    }
+
+    else menu_show_submenus_tree.v=1;
+}
+
 void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
 {
     menu_item *array_menu_common;
@@ -2309,6 +2319,12 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_ayuda(array_menu_common,"Shows submenu indicator character (>) on menu items with submenus");
         menu_add_item_menu_es_avanzado(array_menu_common);
 
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_previous_submenus,NULL,
+            "Show previous submenus","Mostrar submenús previos","Mostrar submenús previs");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_show_submenus_tree.v ? 'X' : ' ') );
+		menu_add_item_menu_tooltip(array_menu_common,"Shows previous submenus");
+        menu_add_item_menu_ayuda(array_menu_common,"Shows previous submenus");
+        menu_add_item_menu_es_avanzado(array_menu_common);
 
 		menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_hide_minimize_button,NULL,
             "Minimize button","Botón de minimizar","Botó de minimitzar");

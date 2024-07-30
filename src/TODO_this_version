@@ -395,12 +395,5 @@ Bob Morane
 Canadair
 Vector Ball
 
--Para menus que se muestran menus anteriores abiertos:
-*menu_dibuja_menu tiene que usar estructura ventana en memoria con malloc, no en el stack.
-Pero para eso luego debe tener manera de cerrarlas
-*menu_dibuja_menu quiza gestiona directamente pulsaciones de items que abren submenus. Y se llama a si misma para los submenus
-Al cerrar un submenu, se borra estructura ventana en memoria de ese submenu
-->quiza entonces no hace falta asignar en memoria: se asigna en el stack,
-al salir del menu se libera. y como gestiona por ella misma la llamada a submenus, ya se vera el menu anterior dibujado
 
 -feature que al pasar cursor por item de menu que tiene submenu, entre momentaneamente en ese submenu y lo muestre

@@ -1184,6 +1184,7 @@ extern z80_bit menu_hide_background_button_on_inactive;
 extern z80_bit menu_invert_mouse_scroll;
 extern z80_bit menu_mouse_right_send_esc;
 extern z80_bit menu_old_behaviour_close_menus;
+extern z80_bit menu_show_submenus_tree;
 
 extern z80_bit auto_frameskip_even_when_movin_windows;
 extern z80_bit frameskip_draw_zxdesktop_background;
