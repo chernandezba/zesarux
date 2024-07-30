@@ -19850,6 +19850,61 @@ void menu_dibuja_menu_cierra_submenu_dos_ultimos(void)
 
 
 
+void menu_dibuja_menu_get_menu_pos(int ancho,int alto,int *xnormal,int *ynormal)
+{
+    //menu centrado normalmente
+    *xnormal=menu_center_x()-ancho/2;
+	*ynormal=menu_center_y()-alto/2;
+
+    //menu a la derecha del anterior siempre que tengamos zx desktop habilitado
+    if (menu_show_submenus_tree.v && screen_ext_desktop_enabled) {
+
+        force_next_menu_position.v=1;
+
+
+        //es el primero?
+        if (menu_dibuja_menu_primer_submenu==NULL) {
+            int x,y;
+
+
+            int alto_boton;
+            int ancho_boton;
+            menu_ext_desktop_buttons_get_geometry(&ancho_boton,&alto_boton,NULL,NULL,NULL);
+
+            //Ajustar coordenada y
+            int alto_texto=menu_char_height*menu_gui_zoom*zoom_y;
+            y=(alto_boton/alto_texto); //antes sumaba +1, porque? de esa manera quedaba 1 linea de separación con los botones...
+
+            //Ajustar coordenada x
+            int origen_x=menu_get_origin_x_zxdesktop_aux(1);
+
+            //int offset_x=cual_boton*ancho_boton;
+            //int ancho_texto=menu_char_width*menu_gui_zoom*zoom_x;
+            x=origen_x; //+(offset_x/ancho_texto);
+
+            force_next_menu_position_x=x;
+            force_next_menu_position_y=y;
+
+        }
+
+        else {
+            //a la derecha del anterior
+            //temporalmente no hacer nada
+            //force_next_menu_position.v=0;
+
+            zxvision_window *ultima_ventana=menu_dibuja_menu_find_last_submenu();
+
+            int x=ultima_ventana->x+ultima_ventana->visible_width;
+            int y=ultima_ventana->y+1; //TODO: aqui lo ideal es que se situase a la altura del submenu que se ha elegido
+
+            force_next_menu_position_x=x;
+            force_next_menu_position_y=y;
+        }
+    }
+
+
+}
+
 int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item *m,char *titulo_en,char *titulo_es,char *titulo_ca)
 {
 
@@ -19980,8 +20035,10 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 
 	alto=max_opciones+2;
 
-	x=menu_center_x()-ancho/2;
-	y=menu_center_y()-alto/2;
+    menu_dibuja_menu_get_menu_pos(ancho,alto,&x,&y);
+
+	//x=menu_center_x()-ancho/2;
+	//y=menu_center_y()-alto/2;
 
 	//Si se abre desde botones de menu
 	if (force_next_menu_position.v) {

@@ -403,5 +403,4 @@ Al cerrar un submenu, se borra estructura ventana en memoria de ese submenu
 ->quiza entonces no hace falta asignar en memoria: se asigna en el stack,
 al salir del menu se libera. y como gestiona por ella misma la llamada a submenus, ya se vera el menu anterior dibujado
 
--quiza unificar funcion que borra todas ventanas de menus con la que solo borra las dos ultimas
 -feature que al pasar cursor por item de menu que tiene submenu, entre momentaneamente en ese submenu y lo muestre
