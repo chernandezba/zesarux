@@ -19877,20 +19877,24 @@ void menu_dibuja_menu_cierra_submenu_dos_ultimos(void)
 void menu_dibuja_menu_get_menu_pos(int ancho,int alto,int *xnormal,int *ynormal)
 {
     //menu centrado normalmente
-    *xnormal=menu_center_x()-ancho/2;
-	*ynormal=menu_center_y()-alto/2;
+    //*xnormal=menu_center_x()-ancho/2;
+	//*ynormal=menu_center_y()-alto/2;
 
     //menu a la derecha del anterior siempre que tengamos zx desktop habilitado y opcion de situar menus en zx desktop
     if (menu_show_submenus_tree.v && screen_ext_desktop_enabled && screen_ext_desktop_place_menu) {
 
-        //si no hay forzado coordenadas ya por otra razon (pulsado de boton superior por ejemplo)
-        if (force_next_menu_position.v==0) {
 
-            force_next_menu_position.v=1;
+        //es el primero
+        if (menu_dibuja_menu_primer_submenu==NULL) {
 
+            //Al primero se le puede forzar posicion, por los botones superiores por ejemplo
+            if (force_next_menu_position.v) {
+                *xnormal=force_next_menu_position_x;
+                *ynormal=force_next_menu_position_y;
+            }
 
-            //es el primero?
-            if (menu_dibuja_menu_primer_submenu==NULL) {
+            //Posicionamos al inicio del zx desktop
+            else {
                 int x,y;
 
 
@@ -19909,26 +19913,25 @@ void menu_dibuja_menu_get_menu_pos(int ancho,int alto,int *xnormal,int *ynormal)
                 //int ancho_texto=menu_char_width*menu_gui_zoom*zoom_x;
                 x=origen_x; //+(offset_x/ancho_texto);
 
-                force_next_menu_position_x=x;
-                force_next_menu_position_y=y;
-
-            }
-
-            else {
-                //a la derecha del anterior
-                //temporalmente no hacer nada
-                //force_next_menu_position.v=0;
-
-                zxvision_window *ultima_ventana=menu_dibuja_menu_find_last_submenu();
-
-                int x=ultima_ventana->x+ultima_ventana->visible_width;
-                int y=ultima_ventana->y+ultima_ventana->submenu_linea_seleccionada+1;
-
-                force_next_menu_position_x=x;
-                force_next_menu_position_y=y;
+                *xnormal=x;
+                *ynormal=y;
             }
 
         }
+
+        else {
+            //a la derecha del anterior
+
+            zxvision_window *ultima_ventana=menu_dibuja_menu_find_last_submenu();
+
+            int x=ultima_ventana->x+ultima_ventana->visible_width;
+            int y=ultima_ventana->y+ultima_ventana->submenu_linea_seleccionada+1;
+
+            *xnormal=x;
+            *ynormal=y;
+        }
+
+
     }
 
 
@@ -20064,24 +20067,43 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 
 	alto=max_opciones+2;
 
-    menu_dibuja_menu_get_menu_pos(ancho,alto,&x,&y);
 
-	//x=menu_center_x()-ancho/2;
-	//y=menu_center_y()-alto/2;
 
-	//Si se abre desde botones de menu
-	if (force_next_menu_position.v) {
+	x=menu_center_x()-ancho/2;
+	y=menu_center_y()-alto/2;
 
-        x=force_next_menu_position_x;
-        y=force_next_menu_position_y;
+    int posicionar_submenu=0;
+
+    if (menu_show_submenus_tree.v && screen_ext_desktop_enabled && screen_ext_desktop_place_menu) posicionar_submenu=1;
+
+    if (!posicionar_submenu) {
+
+        //Solo alterar posicion si se abre desde botones de menu por ejemplo
+        if (force_next_menu_position.v) {
+
+            x=force_next_menu_position_x;
+            y=force_next_menu_position_y;
+
+            //Reajustar x por si se ha salido
+            if (x+ancho>scr_get_menu_width()) x=scr_get_menu_width()-ancho;
+
+            //Reajustar y por si se ha salido
+            if (y+alto>scr_get_menu_height()) y=scr_get_menu_height()-alto;
+
+        }
+
+    }
+
+    else {
+        //Posicionar segun politica de submenus
+        menu_dibuja_menu_get_menu_pos(ancho,alto,&x,&y);
 
 		//Reajustar x por si se ha salido
 		if (x+ancho>scr_get_menu_width()) x=scr_get_menu_width()-ancho;
 
 		//Reajustar y por si se ha salido
 		if (y+alto>scr_get_menu_height()) y=scr_get_menu_height()-alto;
-
-	}
+    }
 
 	int ancho_visible=ancho;
 	int alto_visible=alto;
@@ -20830,7 +20852,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 
 	//nos apuntamos valor de retorno
 
-    force_next_menu_position.v=0;
+    //force_next_menu_position.v=0;
 
 	menu_item *menu_sel;
 	menu_sel=menu_retorna_item(m,(*opcion_inicial));
