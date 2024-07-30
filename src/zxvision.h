@@ -227,6 +227,8 @@ struct s_zxvision_window {
     //Lo siguiente solo usado por los submenus
     struct s_zxvision_window *submenu_next;
     struct s_zxvision_window *submenu_previous;
+    //linea seleccionada con enter
+    int submenu_linea_seleccionada;
 };
 
 typedef struct s_zxvision_window zxvision_window;

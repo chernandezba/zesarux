@@ -19895,7 +19895,7 @@ void menu_dibuja_menu_get_menu_pos(int ancho,int alto,int *xnormal,int *ynormal)
             zxvision_window *ultima_ventana=menu_dibuja_menu_find_last_submenu();
 
             int x=ultima_ventana->x+ultima_ventana->visible_width;
-            int y=ultima_ventana->y+1; //TODO: aqui lo ideal es que se situase a la altura del submenu que se ha elegido
+            int y=ultima_ventana->y+ultima_ventana->submenu_linea_seleccionada+1;
 
             force_next_menu_position_x=x;
             force_next_menu_position_y=y;
@@ -20865,6 +20865,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 	//Salir del menu diciendo que no se ha pulsado tecla
 	menu_speech_tecla_pulsada=0;
 
+    ventana->submenu_linea_seleccionada=*opcion_inicial;
 
 	//En caso de menus tabulados, es responsabilidad de este de borrar con cls y liberar ventana
 	if (es_tabulado==0) {
