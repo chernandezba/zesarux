@@ -10956,7 +10956,7 @@ void zxvision_fill_window_transparent(zxvision_window *w)
 //Indica si en el siguiente evento de cierre de ventana no reproduce sonido de cierre de ventana
 int zxvision_next_do_not_play_close_window_sound=0;
 
-void zxvision_destroy_window(zxvision_window *w)
+void zxvision_destroy_window_if_redraw(zxvision_window *w,int redraw)
 {
 	zxvision_current_window=w->previous_window;
 
@@ -10981,15 +10981,17 @@ void zxvision_destroy_window(zxvision_window *w)
 		//printf ("Dibujando ventanas por detras\n");
 
 		//printf ("proxima ventana antes de dibujar: %p\n",w->next_window);
-		zxvision_draw_below_windows_nospeech(w);
 
 
-		zxvision_set_draw_window_parameters(zxvision_current_window);
+        if (redraw) {
+            zxvision_draw_below_windows_nospeech(w);
+            zxvision_set_draw_window_parameters(zxvision_current_window);
 
-		//Dibujar ventana que habia debajo
-		zxvision_draw_window(zxvision_current_window);
-		zxvision_draw_window_contents(zxvision_current_window);
-		//printf ("Dibujando ventana de debajo que ahora es de frente\n");
+            //Dibujar ventana que habia debajo
+            zxvision_draw_window(zxvision_current_window);
+            zxvision_draw_window_contents(zxvision_current_window);
+            //printf ("Dibujando ventana de debajo que ahora es de frente\n");
+        }
 	}
 
 	menu_speech_tecla_pulsada=antes_menu_speech_tecla_pulsada;
@@ -11007,14 +11009,21 @@ void zxvision_destroy_window(zxvision_window *w)
 
     zxvision_set_all_flag_dirty_must_draw_contents();
 
-    cls_menu_overlay();
+    if (redraw) {
+        cls_menu_overlay();
 
-    zxvision_redraw_all_windows();
+        zxvision_redraw_all_windows();
+    }
 
     if (!zxvision_next_do_not_play_close_window_sound) zxvision_sound_event_close_window();
 
     zxvision_next_do_not_play_close_window_sound=0;
 
+}
+
+void zxvision_destroy_window(zxvision_window *w)
+{
+    zxvision_destroy_window_if_redraw(w,1);
 }
 
 void zxvision_speech_read_current_window(void)
@@ -19796,7 +19805,8 @@ void menu_dibuja_menu_cierra_n_submenus(int veces)
 
     while (w!=NULL && veces>0) {
         printf("Cerrando submenu %p [%s]\n",w,w->window_title);
-        zxvision_destroy_window(w);
+        //No andar redibujando, hacerlo al final del todo
+        zxvision_destroy_window_if_redraw(w,0);
         printf("Despues cerrado submenu %p [%s]\n",w,w->window_title);
 
         zxvision_window *memory_to_free=w;
@@ -19812,6 +19822,10 @@ void menu_dibuja_menu_cierra_n_submenus(int veces)
         menu_dibuja_menu_primer_submenu=NULL;
         printf("Cerrados todos menus\n");
     }
+
+    cls_menu_overlay();
+
+    zxvision_redraw_all_windows();
 
     printf("--Fin menu_dibuja_menu_cierra_submenu_dos_ultimos\n");
 }
