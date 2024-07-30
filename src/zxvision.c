@@ -20072,26 +20072,6 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 	//Si se abre desde botones de menu
 	if (force_next_menu_position.v) {
 
-		//No lo desactivamos, así todos los menus que se abran dependiendo de este menu, tambien se posicionaran debajo del boton
-		//force_next_menu_position.v=0;
-
-		//printf ("Menu opened from direct buttons\n");
-
-		/*int alto_boton;
-		int ancho_boton;
-		menu_ext_desktop_buttons_get_geometry(&ancho_boton,&alto_boton,NULL,NULL,NULL);
-
-		//Ajustar coordenada y
-		int alto_texto=menu_char_height*menu_gui_zoom*zoom_y;
-		y=(alto_boton/alto_texto); //antes sumaba +1, porque? de esa manera quedaba 1 linea de separación con los botones...
-
-		//Ajustar coordenada x
-		int origen_x=menu_get_origin_x_zxdesktop_aux(1);
-
-		int offset_x=force_next_menu_position_which*ancho_boton;
-		int ancho_texto=menu_char_width*menu_gui_zoom*zoom_x;
-		x=origen_x+(offset_x/ancho_texto);*/
-
         x=force_next_menu_position_x;
         y=force_next_menu_position_y;
 
