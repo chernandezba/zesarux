@@ -10724,6 +10724,11 @@ void zxvision_window_delete_all_windows(void)
 
 	} while (ventana!=NULL);
 
+    //Gestion de los submenus
+    //liberar memoria de todos los submenus, ya se han cerrado desde el bucle previo
+    menu_dibuja_menu_free_all();
+
+
 }
 
 
@@ -19828,6 +19833,25 @@ void menu_dibuja_menu_cierra_n_submenus(int veces)
     zxvision_redraw_all_windows();
 
     printf("--Fin menu_dibuja_menu_cierra_submenu_dos_ultimos\n");
+}
+
+//liberar memoria de todos los submenus
+void menu_dibuja_menu_free_all(void)
+{
+    if (menu_show_submenus_tree.v==0) return;
+
+    zxvision_window *w=menu_dibuja_menu_primer_submenu;
+
+    if (w==NULL) return;
+
+    while (w->submenu_next!=NULL) {
+        free(w);
+        w=w->submenu_next;
+    }
+
+
+    menu_dibuja_menu_primer_submenu=NULL;
+
 }
 
 void menu_dibuja_menu_cierra_todos_submenus(void)
