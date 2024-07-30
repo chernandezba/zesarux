@@ -1179,6 +1179,9 @@ z80_bit menu_mouse_right_send_esc={0};
 // Flecha izquierda lleva al menu anterior, flecha derecha es como enter (esto en menus no tabulados)
 z80_bit menu_old_behaviour_close_menus={0};
 
+//Indica que al abrir submenus, se ven los menus anteriores
+z80_bit menu_show_submenus_tree={0};
+
 //indica que se ha pulsado ESC y por tanto debe aparecer el menu, o gestion de breakpoints, osd, etc
 //y tambien, la lectura de puertos de teclado (254) no devuelve nada
 int menu_abierto=0;
@@ -10539,7 +10542,7 @@ void zxvision_new_window_no_check_range(zxvision_window *w,int x,int y,int visib
 
 	//Ventana anterior
 	w->previous_window=zxvision_current_window;
-	//printf ("Previous window: %p\n",w->previous_window);
+    //printf ("Previous window: %p\n",w->previous_window);
 	w->next_window=NULL;
 
 	//Ventana siguiente, decir a la anterior, es la actual
@@ -19745,6 +19748,191 @@ z80_int menu_mouse_frame_counter_anterior=0;
 //asigna en item_seleccionado valores de: tipo_opcion, menu_funcion (debe ser una estructura ya asignada)
 
 
+//Primer submenu visible cuando se van abriendo menus (el de mas abajo)
+zxvision_window *menu_dibuja_menu_primer_submenu=NULL;
+
+zxvision_window *menu_dibuja_menu_find_last_submenu(void)
+{
+    zxvision_window *w=menu_dibuja_menu_primer_submenu;
+
+    if (w==NULL) return NULL;
+
+    while (w->submenu_next!=NULL) {
+        w=w->submenu_next;
+    }
+
+    return w;
+}
+
+
+void menu_dibuja_menu_add_submenu(zxvision_window *w)
+{
+
+    if (menu_show_submenus_tree.v==0) return;
+
+    zxvision_window *last_submenu=menu_dibuja_menu_find_last_submenu();
+
+    if (last_submenu==NULL) {
+        menu_dibuja_menu_primer_submenu=w;
+    }
+    else {
+        last_submenu->submenu_next=w;
+    }
+
+    w->submenu_next=NULL;
+    w->submenu_previous=last_submenu;
+}
+
+void menu_dibuja_menu_cierra_n_submenus(int veces)
+{
+
+    if (menu_show_submenus_tree.v==0) return;
+
+    printf("--Inicio menu_dibuja_menu_cierra_n_submenus (%d)\n",veces);
+
+    //Tenemos que cerrar de arriba hacia abajo
+    zxvision_window *w=menu_dibuja_menu_find_last_submenu();
+
+
+    while (w!=NULL && veces>0) {
+        printf("Cerrando submenu %p [%s]\n",w,w->window_title);
+        zxvision_destroy_window(w);
+        printf("Despues cerrado submenu %p [%s]\n",w,w->window_title);
+
+        zxvision_window *memory_to_free=w;
+        w=w->submenu_previous;
+        free(memory_to_free);
+
+        veces--;
+
+        if (w!=NULL) w->submenu_next=NULL;
+    }
+
+    if (w==NULL) {
+        menu_dibuja_menu_primer_submenu=NULL;
+        printf("Cerrados todos menus\n");
+    }
+
+    printf("--Fin menu_dibuja_menu_cierra_submenu_dos_ultimos\n");
+}
+
+void menu_dibuja_menu_cierra_todos_submenus(void)
+{
+
+    if (menu_show_submenus_tree.v==0) return;
+
+    menu_dibuja_menu_cierra_n_submenus(9999);
+    return;
+
+    printf("--Inicio menu_dibuja_menu_cierra_todos_submenus\n");
+
+    //Tenemos que cerrar de arriba hacia abajo
+    zxvision_window *w=menu_dibuja_menu_find_last_submenu();
+
+
+    while (w!=NULL) {
+        printf("Cerrando submenu %p [%s]\n",w,w->window_title);
+        zxvision_destroy_window(w);
+        printf("Despues cerrado submenu %p [%s]\n",w,w->window_title);
+
+        zxvision_window *memory_to_free=w;
+        w=w->submenu_previous;
+        free(memory_to_free);
+    }
+
+    menu_dibuja_menu_primer_submenu=NULL;
+    printf("--Fin menu_dibuja_menu_cierra_todos_submenus\n");
+}
+
+void menu_dibuja_menu_cierra_submenu_dos_ultimos(void)
+{
+
+    if (menu_show_submenus_tree.v==0) return;
+
+    menu_dibuja_menu_cierra_n_submenus(2);
+
+    return;
+
+    printf("--Inicio menu_dibuja_menu_cierra_submenu_dos_ultimos\n");
+
+
+    //Tenemos que cerrar de arriba hacia abajo
+    zxvision_window *w=menu_dibuja_menu_find_last_submenu();
+
+    int veces=2;
+
+    while (w!=NULL && veces>0) {
+        printf("Cerrando submenu %p [%s]\n",w,w->window_title);
+        zxvision_destroy_window(w);
+        printf("Despues cerrado submenu %p [%s]\n",w,w->window_title);
+
+        zxvision_window *memory_to_free=w;
+        w=w->submenu_previous;
+        free(memory_to_free);
+
+        veces--;
+
+        if (w!=NULL) w->submenu_next=NULL;
+    }
+
+    if (w==NULL) {
+        menu_dibuja_menu_primer_submenu=NULL;
+        printf("Cerrados todos menus\n");
+    }
+
+    printf("--Fin menu_dibuja_menu_cierra_submenu_dos_ultimos\n");
+}
+
+void old_menu_dibuja_menu_cierra_submenu_dos_ultimos(void)
+{
+
+    if (menu_show_submenus_tree.v==0) return;
+
+    zxvision_window *memory_to_free;
+    zxvision_window *previous;
+
+    printf("--Inicio menu_dibuja_menu_cierra_submenu_ultimo\n");
+
+    //Tenemos que cerrar de arriba hacia abajo
+    zxvision_window *w=menu_dibuja_menu_find_last_submenu();
+
+    int veces=2;
+
+    while (veces>0) {
+
+        if (w==NULL) return;
+
+        printf("Cerrando submenu %p [%s]\n",w,w->window_title);
+        zxvision_destroy_window(w);
+        printf("Despues cerrado submenu %p [%s]\n",w,w->window_title);
+
+        memory_to_free=w;
+        previous=w->submenu_previous;
+        free(memory_to_free);
+
+        /*if (w==menu_dibuja_menu_primer_submenu) {
+            //Hemos cerrado el ultimo. salir
+            menu_dibuja_menu_primer_submenu=NULL;
+            return;
+        }*/
+
+        w=previous;
+
+        if (w!=NULL) w->submenu_next=NULL;
+        else {
+            //Hemos cerrado el ultimo. salir
+            menu_dibuja_menu_primer_submenu=NULL;
+            printf("--Cerrado ultimo menu en  menu_dibuja_menu_cierra_submenu_ultimo\n");
+            return;
+        }
+
+        veces--;
+    }
+
+
+
+    printf("--Fin menu_dibuja_menu_cierra_submenu_ultimo\n");
+}
 
 int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item *m,char *titulo_en,char *titulo_es,char *titulo_ca)
 {
@@ -19940,15 +20128,23 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 
 	if (m->es_menu_tabulado==0) {
 
+        if (menu_show_submenus_tree.v) {
+            //asignar espacio ventana con malloc, para no perderlo en el stack
+            zxvision_window *ventana_para_submenus=util_malloc(sizeof(zxvision_window),"Can not allocate memory for submenu window");
 
+            ventana=ventana_para_submenus;
 
+            menu_dibuja_menu_add_submenu(ventana);
+        }
+
+        else ventana=&ventana_menu;
 
 		//zxvision_new_window(&ventana_menu,x,y,ancho_visible,alto_visible,
 		//					ancho-1,alto-2,titulo);		 //hacer de momento igual de ancho que ancho visible para poder usar ultima columna
 
 
 		//Hacer 1 mas de ancho total para poder usar columna derecha
-		zxvision_new_window(&ventana_menu,x,y,ancho_visible,alto_visible,
+		zxvision_new_window(ventana,x,y,ancho_visible,alto_visible,
 							ancho-1+1,alto-2,titulo);		 //hacer de momento igual de ancho que ancho visible para poder usar ultima columna
 
 
@@ -19956,16 +20152,13 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
         //los menus estrictamente (que no sean cuadros de dialogo) no se pueden redimiensionar ni minimizar
         //dialogos se pueden. y menus tabulados (que entran por el else de mas abajo) también
         if (m->no_es_realmente_un_menu==0) {
-            ventana_menu.can_be_resized=0;
-            ventana_menu.can_be_minimized=0;
+            ventana->can_be_resized=0;
+            ventana->can_be_minimized=0;
         }
 
 		//Si no hay barra scroll vertical, usamos hasta la ultima columna
-		menu_dibuja_menu_adjust_last_column(&ventana_menu,ancho,alto);
+		menu_dibuja_menu_adjust_last_column(ventana,ancho,alto);
 
-
-
-		ventana=&ventana_menu;
 
 	}
 
@@ -20672,6 +20865,8 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 	strcpy(item_seleccionado->texto_misc,menu_sel->texto_misc);
 
     int menu_se_cerrara=menu_sel->menu_se_cerrara;
+    int tiene_submenu=menu_sel->tiene_submenu;
+    int genera_ventana=menu_sel->genera_ventana;
 
 	//printf ("misc selected: %s %s\n",item_seleccionado->texto_misc,menu_sel->texto_misc);
 
@@ -20705,7 +20900,28 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
         //solo deberia ser cuando son ventanas no de menu
         zxvision_next_do_not_play_close_window_sound=1;
 
-		zxvision_destroy_window(ventana);
+        //si hay setting de submenu, no siempre se destruye ventana
+        if (menu_show_submenus_tree.v) {
+            if (salir_con_flecha_izquierda) {
+                //Quitamos el actual, y el anterior tambien, dado que el anterior se va a redibujar
+                menu_dibuja_menu_cierra_submenu_dos_ultimos();
+            }
+
+            else {
+                int cerrar_ventanas=0;
+
+                if (tiene_submenu==0) cerrar_ventanas=1;
+
+                if (menu_se_cerrara) cerrar_ventanas=1;
+                if (genera_ventana) cerrar_ventanas=1;
+
+                if (cerrar_ventanas) menu_dibuja_menu_cierra_todos_submenus();
+            }
+
+        }
+        else {
+            zxvision_destroy_window(ventana);
+        }
 	}
 
 	//printf ("tecla al salir de dibuja menu: %d\n",tecla);

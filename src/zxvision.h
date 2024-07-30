@@ -223,6 +223,10 @@ struct s_zxvision_window {
 
 	//Puntero a funcion de overlay
 	void (*overlay_function) (void);
+
+    //Lo siguiente solo usado por los submenus
+    struct s_zxvision_window *submenu_next;
+    struct s_zxvision_window *submenu_previous;
 };
 
 typedef struct s_zxvision_window zxvision_window;
