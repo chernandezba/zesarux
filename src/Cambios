@@ -20,6 +20,7 @@ Mejorado Hexadecimal editor:
 - Ahora el puntero de memoria puede seguir una expresión (un registro de la CPU por ejemplo)
 
 Mejorado ZX Vision:
+- Los menús muestran los previous menús al seleccionar submenús
 - Al seleccionar estilo de ZX Vision Style, se aplica al mover el cursor
 - Mejorar movimiento del cursor en menús al pulsar PgDn/PgUp
 - Avisar en la marca de redimensionado cuando una ventana se tiene que aumentar de tamaño (porque hay texto mas allá del tamaño actual)

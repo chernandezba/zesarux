@@ -4180,6 +4180,8 @@ int util_write_configfile(void)
   if (menu_hide_vertical_percentaje_bar.v) ADD_STRING_CONFIG,"--hide-menu-percentage-bar");
 
   if (menu_hide_submenu_indicator.v)            ADD_STRING_CONFIG,"--hide-menu-submenu-indicator");
+  if (menu_show_submenus_tree.v==0)             ADD_STRING_CONFIG,"--no-show-previous-submenus");
+
   if (menu_hide_minimize_button.v)           ADD_STRING_CONFIG,"--hide-menu-minimize-button");
   if (menu_hide_maximize_button.v)           ADD_STRING_CONFIG,"--hide-menu-maximize-button");
   if (menu_hide_close_button.v)              ADD_STRING_CONFIG,"--hide-menu-close-button");

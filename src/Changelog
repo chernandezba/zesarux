@@ -20,6 +20,7 @@ Improved Hexadecimal editor:
 - Now the memory pointer can follow a expression (CPU register for example)
 
 Improved ZX Vision:
+- Menus show previous menus when selecting submenus
 - When selecting ZX Vision Style, it is applied on moving cursor
 - Improve cursor movement on menus when pressing PgDn/PgUp
 - Warn on the resize mark when a window has to be enlarged (because there is text beyond current size)

@@ -1663,6 +1663,7 @@ printf("\n"
         "--old-behaviour-menu-esc-etc             Old menu behaviour: ESC go back, Apps go back to previous menu\n"
 		"--hide-menu-percentage-bar               Hides vertical percentaje bar on the right of text windows and file selector\n"
         "--hide-menu-submenu-indicator            Hides submenu indicator character (>) on menu items with submenus\n"
+        "--no-show-previous-submenus              Do not show previous submenus\n"
 		"--hide-menu-minimize-button              Hides minimize button on the title window\n"
         "--hide-menu-maximize-button              Hides maximize button on the title window\n"
 		"--hide-menu-close-button                 Hides close button on the title window\n"
@@ -4897,6 +4898,10 @@ int parse_cmdline_options(int desde_commandline) {
 			else if (!strcmp(argv[puntero_parametro],"--hide-menu-submenu-indicator")) {
                 menu_hide_submenu_indicator.v=1;
 			}
+
+            else if (!strcmp(argv[puntero_parametro],"--no-show-previous-submenus")) {
+                menu_show_submenus_tree.v=0;
+            }
 
 
 			else if (!strcmp(argv[puntero_parametro],"--language")) {
