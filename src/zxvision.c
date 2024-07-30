@@ -20084,12 +20084,6 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
             x=force_next_menu_position_x;
             y=force_next_menu_position_y;
 
-            //Reajustar x por si se ha salido
-            if (x+ancho>scr_get_menu_width()) x=scr_get_menu_width()-ancho;
-
-            //Reajustar y por si se ha salido
-            if (y+alto>scr_get_menu_height()) y=scr_get_menu_height()-alto;
-
         }
 
     }
@@ -20098,12 +20092,12 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
         //Posicionar segun politica de submenus
         menu_dibuja_menu_get_menu_pos(ancho,alto,&x,&y);
 
-		//Reajustar x por si se ha salido
-		if (x+ancho>scr_get_menu_width()) x=scr_get_menu_width()-ancho;
-
-		//Reajustar y por si se ha salido
-		if (y+alto>scr_get_menu_height()) y=scr_get_menu_height()-alto;
     }
+
+    //Reajustar x,y por si se ha salido con los posicionados anteriores
+    if (x+ancho>scr_get_menu_width()) x=scr_get_menu_width()-ancho;
+    if (y+alto>scr_get_menu_height()) y=scr_get_menu_height()-alto;
+
 
 	int ancho_visible=ancho;
 	int alto_visible=alto;
