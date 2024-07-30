@@ -942,14 +942,6 @@ struct s_menu_item {
 	int menu_tabulado_x;
 	int menu_tabulado_y;
 
-    //Indica para ciertos cuadros de dialogo, que usan funcion de menu pero no se comportan como menus
-    //les deja por ejemplo redimensionar el menu. Quien lo usa? De momento nadie...
-    int no_es_realmente_un_menu;
-
-    //Indica que al disparar la accion, se cerraran todos los menus (se activa salir_todos_menus=1)
-    //no haria falta activar esto para items que abren menus tabulados, pues en este caso, al pulsar ESC dentro de un menu tabulado,
-    //este ya enviara la orden de cerrar todos menus
-    int menu_se_cerrara;
 
 	//tipo de la opcion
 	int tipo_opcion;
@@ -971,6 +963,15 @@ struct s_menu_item {
     //funcion que salta al seleccionar un item
     //Esto es, al mover el cursor sobre esa opción, podemos hacer que llame a una función
     void (*menu_funcion_seleccionada)(struct s_menu_item *item_seleccionado);
+
+    //Indica para ciertos cuadros de dialogo, que usan funcion de menu pero no se comportan como menus
+    //les deja por ejemplo redimensionar el menu. Quien lo usa? De momento nadie...
+    int no_es_realmente_un_menu;
+
+    //Indica que al disparar la accion, se cerraran todos los menus (se activa salir_todos_menus=1)
+    //no haria falta activar esto para items que abren menus tabulados, pues en este caso, al pulsar ESC dentro de un menu tabulado,
+    //este ya enviara la orden de cerrar todos menus
+    int menu_se_cerrara;
 
     //si este item de menu desplega otro menu
     int tiene_submenu;

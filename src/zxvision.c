@@ -1180,7 +1180,7 @@ z80_bit menu_mouse_right_send_esc={0};
 z80_bit menu_old_behaviour_close_menus={0};
 
 //Indica que al abrir submenus, se ven los menus anteriores
-z80_bit menu_show_submenus_tree={0};
+z80_bit menu_show_submenus_tree={1};
 
 //indica que se ha pulsado ESC y por tanto debe aparecer el menu, o gestion de breakpoints, osd, etc
 //y tambien, la lectura de puertos de teclado (254) no devuelve nada
@@ -19822,26 +19822,7 @@ void menu_dibuja_menu_cierra_todos_submenus(void)
     if (menu_show_submenus_tree.v==0) return;
 
     menu_dibuja_menu_cierra_n_submenus(9999);
-    return;
 
-    printf("--Inicio menu_dibuja_menu_cierra_todos_submenus\n");
-
-    //Tenemos que cerrar de arriba hacia abajo
-    zxvision_window *w=menu_dibuja_menu_find_last_submenu();
-
-
-    while (w!=NULL) {
-        printf("Cerrando submenu %p [%s]\n",w,w->window_title);
-        zxvision_destroy_window(w);
-        printf("Despues cerrado submenu %p [%s]\n",w,w->window_title);
-
-        zxvision_window *memory_to_free=w;
-        w=w->submenu_previous;
-        free(memory_to_free);
-    }
-
-    menu_dibuja_menu_primer_submenu=NULL;
-    printf("--Fin menu_dibuja_menu_cierra_todos_submenus\n");
 }
 
 void menu_dibuja_menu_cierra_submenu_dos_ultimos(void)
@@ -19851,88 +19832,9 @@ void menu_dibuja_menu_cierra_submenu_dos_ultimos(void)
 
     menu_dibuja_menu_cierra_n_submenus(2);
 
-    return;
-
-    printf("--Inicio menu_dibuja_menu_cierra_submenu_dos_ultimos\n");
-
-
-    //Tenemos que cerrar de arriba hacia abajo
-    zxvision_window *w=menu_dibuja_menu_find_last_submenu();
-
-    int veces=2;
-
-    while (w!=NULL && veces>0) {
-        printf("Cerrando submenu %p [%s]\n",w,w->window_title);
-        zxvision_destroy_window(w);
-        printf("Despues cerrado submenu %p [%s]\n",w,w->window_title);
-
-        zxvision_window *memory_to_free=w;
-        w=w->submenu_previous;
-        free(memory_to_free);
-
-        veces--;
-
-        if (w!=NULL) w->submenu_next=NULL;
-    }
-
-    if (w==NULL) {
-        menu_dibuja_menu_primer_submenu=NULL;
-        printf("Cerrados todos menus\n");
-    }
-
-    printf("--Fin menu_dibuja_menu_cierra_submenu_dos_ultimos\n");
 }
 
-void old_menu_dibuja_menu_cierra_submenu_dos_ultimos(void)
-{
 
-    if (menu_show_submenus_tree.v==0) return;
-
-    zxvision_window *memory_to_free;
-    zxvision_window *previous;
-
-    printf("--Inicio menu_dibuja_menu_cierra_submenu_ultimo\n");
-
-    //Tenemos que cerrar de arriba hacia abajo
-    zxvision_window *w=menu_dibuja_menu_find_last_submenu();
-
-    int veces=2;
-
-    while (veces>0) {
-
-        if (w==NULL) return;
-
-        printf("Cerrando submenu %p [%s]\n",w,w->window_title);
-        zxvision_destroy_window(w);
-        printf("Despues cerrado submenu %p [%s]\n",w,w->window_title);
-
-        memory_to_free=w;
-        previous=w->submenu_previous;
-        free(memory_to_free);
-
-        /*if (w==menu_dibuja_menu_primer_submenu) {
-            //Hemos cerrado el ultimo. salir
-            menu_dibuja_menu_primer_submenu=NULL;
-            return;
-        }*/
-
-        w=previous;
-
-        if (w!=NULL) w->submenu_next=NULL;
-        else {
-            //Hemos cerrado el ultimo. salir
-            menu_dibuja_menu_primer_submenu=NULL;
-            printf("--Cerrado ultimo menu en  menu_dibuja_menu_cierra_submenu_ultimo\n");
-            return;
-        }
-
-        veces--;
-    }
-
-
-
-    printf("--Fin menu_dibuja_menu_cierra_submenu_ultimo\n");
-}
 
 int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item *m,char *titulo_en,char *titulo_es,char *titulo_ca)
 {
@@ -20910,12 +20812,20 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
             else {
                 int cerrar_ventanas=0;
 
-                if (tiene_submenu==0) cerrar_ventanas=1;
+                //if (tiene_submenu==0) cerrar_ventanas=1;
 
                 if (menu_se_cerrara) cerrar_ventanas=1;
                 if (genera_ventana) cerrar_ventanas=1;
 
                 if (cerrar_ventanas) menu_dibuja_menu_cierra_todos_submenus();
+
+                else {
+                    if (tiene_submenu==0) {
+                        //Si no tiene submenu ni genera ventana, asumimos que se recargara el menu (es un setting que conmuta)
+                        //por tanto borrar solo esta ventana actual
+                        menu_dibuja_menu_cierra_n_submenus(1);
+                    }
+                }
             }
 
         }
