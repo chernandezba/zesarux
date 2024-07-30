@@ -840,6 +840,8 @@ void menu_debug_cpu_stats(MENU_ITEM_PARAMETERS)
         int retorno_menu;
         do {
                 menu_add_item_menu_inicial_format(&array_menu_cpu_stats,MENU_OPCION_NORMAL,menu_debug_cpu_resumen_stats,NULL,"Compact Statistics");
+                menu_add_item_menu_genera_ventana(array_menu_cpu_stats);
+                menu_add_item_menu_se_cerrara(array_menu_cpu_stats);
                 menu_add_item_menu_tooltip(array_menu_cpu_stats,"Shows Compact CPU Statistics");
                 menu_add_item_menu_ayuda(array_menu_cpu_stats,"Shows the most used opcode for every type: without preffix, with ED preffix, "
 					"etc. CPU Statistics are reset when changing machine or resetting CPU.");
