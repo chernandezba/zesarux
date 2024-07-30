@@ -396,4 +396,7 @@ Canadair
 Vector Ball
 
 
--feature que al pasar cursor por item de menu que tiene submenu, entre momentaneamente en ese submenu y lo muestre
+-feature que al pasar cursor por item de menu que tiene submenu, entre momentaneamente en ese submenu y lo muestre.
+para ello se simulará pulsado de enter pero con un flag en gestión de menú que diga que entrará en menú y luego
+simulará enviado de ESC. así podrá tener la lista de ítems de ese menú y dibujarlo, pero sin entrar realmente en el.
+Esto permite ver opciones submenu sin tener que entrar, tal y como funcionan los menús modernos de cualquier programa
