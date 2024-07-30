@@ -29749,6 +29749,7 @@ void menu_machine_selection_manufacturer(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_format(array_menu_machine_selection,MENU_OPCION_NORMAL,NULL,NULL,"%s",array_fabricantes_hotkey[i]);
             z80_byte letra=array_fabricantes_hotkey_letra[i];
             if (letra!=' ') menu_add_item_menu_shortcut(array_menu_machine_selection,letra);
+            menu_add_item_menu_tiene_submenu(array_menu_machine_selection);
         }
 
         menu_machine_selection_common_items(array_menu_machine_selection);
@@ -33574,7 +33575,8 @@ void menu_plusthreedisk_info_sectors_list(MENU_ITEM_PARAMETERS)
                 //Codificamos la opcion para el submenu asi
                 int valor_opcion_menu=pista+cara*256+sector*65536;
                 menu_add_item_menu_valor_opcion(array_menu_common,valor_opcion_menu);
-                menu_add_item_menu_tiene_submenu(array_menu_common);
+                //menu_add_item_menu_tiene_submenu(array_menu_common);
+                menu_add_item_menu_genera_ventana(array_menu_common);
 
                 //Leer chrn para debug
                 z80_byte leido_id_c,leido_id_h,leido_id_r,leido_id_n;
