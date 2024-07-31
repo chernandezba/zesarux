@@ -1,9 +1,13 @@
 ZEsarUX 11.1 - Zorro edition. 30 July 2024
 
+* New things added:
+
+Added machines Czerweny CZ 1000, CZ 1500, CZ 1000 Plus, CZ 1500 Plus, CZ 2000, CZ Spectrum, CZ Spectrum Plus
+Added Memory Cheat feature: useful to find counters of energy, bombs, ammo or any other cheat in a game
+Added Find text string menu
 
 * Improvements:
 
-Added machines Czerweny CZ 1000, CZ 1500, CZ 1000 Plus, CZ 1500 Plus, CZ 2000, CZ Spectrum, CZ Spectrum Plus
 Allow hotswap to Pentagon and to Spectrum +3
 Improve Azimuth warning on External Audio Source Window
 Allow to not save snapshot when exiting ZEsarUX
@@ -11,8 +15,6 @@ Allow to define Left Alt, Left Ctrl, Left Shift or TAB as Joystick Fire action
 Allow to change current tape read position on Input Tape Viewer for .tap files
 Allow loading a 8kb rom in ZX80 (for example the ZX81 rom, like an upgraded ZX80 to ZX81)
 Allow magnify sprites on View Sprites
-Added Memory Cheat feature: useful to find counters of energy, bombs, ammo or any other cheat in a game
-Added Find text string menu
 Improve compilation: settings --enable-memptr --enable-visualmem --enable-cpustats are enabled by default on ./configure
 Improved debug cpu history: allow to change memory pointer to the PC register show in history
 Improved Hexadecimal editor:
