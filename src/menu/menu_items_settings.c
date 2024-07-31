@@ -1121,7 +1121,7 @@ void menu_interface_fast_welcome_message(MENU_ITEM_PARAMETERS)
 {
     opcion_fast_welcome_message.v ^=1;
 }
-extern int force_menu_dibuja_menu_recorrer_menus;
+
 void menu_full_index_search(MENU_ITEM_PARAMETERS)
 {
     if (menu_confirm_yesno("Full index scan")) {
@@ -5546,7 +5546,9 @@ void menu_keyboard_settings(MENU_ITEM_PARAMETERS)
 		menu_add_item_menu_shortcut(array_menu_keyboard_settings,'r');
 		menu_add_item_menu_tooltip(array_menu_keyboard_settings,"Redefine one key to another");
 		menu_add_item_menu_ayuda(array_menu_keyboard_settings,"Redefine one key to another");
-        menu_add_item_menu_tiene_submenu(array_menu_keyboard_settings);
+
+        //realmente no es un submenu
+        //menu_add_item_menu_tiene_submenu(array_menu_keyboard_settings);
 
 
 

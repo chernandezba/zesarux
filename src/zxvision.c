@@ -19948,7 +19948,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
     else if (gui_language==GUI_LANGUAGE_CATALAN) titulo=titulo_ca;
     else titulo=titulo_en;
 
-    printf("Entrando en menu [%s]\n",titulo);
+
 
     //Nota: la variable de opción seleccionada (*opcion_inicial) se manipula con el puntero para poderse leer desde otros sitios
     //(ejemplo del overlay al elegir botones a acciones en ZX Desktop)
@@ -20248,9 +20248,10 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
         menu_refresca_pantalla();
 
         if (menu_dibuja_menu_recorrer_menus) {
+            printf("Entrando en menu [%s]\n",titulo);
             if (menu_dibuja_menu_recorrer_menus==2) {
                 menu_dibuja_menu_recorrer_menus=1;
-                printf("Volvemos de una flecha izquierda. Aumentar\n");
+                //printf("Volvemos de una flecha izquierda. Aumentar\n");
                 (*opcion_inicial)=menu_dibuja_menu_cursor_abajo_common((*opcion_inicial),max_opciones,m);
             }
 
@@ -20261,20 +20262,31 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 
                 menu_item *item_recorrer=menu_retorna_item(m,(*opcion_inicial));
 
-                printf("item [%s]. *opcion_inicial %d max_opciones %d\n",item_recorrer->texto_opcion,*opcion_inicial,max_opciones);
+                //printf("item [%s]. *opcion_inicial %d max_opciones %d\n",item_recorrer->texto_opcion,*opcion_inicial,max_opciones);
 
-                if (item_recorrer->tiene_submenu) {
+                int item_test_submenu_activo=1;
+
+                t_menu_funcion_activo item_test_sel_activo;
+                item_test_sel_activo=item_recorrer->menu_funcion_activo;
+
+                if (item_test_sel_activo!=NULL) {
+                    if ( item_test_sel_activo()==0 ) item_test_submenu_activo=0;
+                }
+
+
+                if (item_recorrer->tiene_submenu && item_test_submenu_activo) {
                     //entrar a submenu con  enter
                     salir_recorrer=1;
                     tecla=13;
                     printf("Entrar en submenu [%s]\n",item_recorrer->texto_opcion);
+
                 }
 
                 else {
 
                     if (*opcion_inicial>=max_opciones-1) {
                         //Salir con flecha izquierda
-                        printf("salir con flecha izquierda\n");
+                        //printf("salir con flecha izquierda\n");
                         salir_recorrer=1;
 
                         if (m->no_es_realmente_un_menu) {
@@ -20289,12 +20301,12 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
                     else {
 
                         int anterior_opcion=*opcion_inicial;
-                        printf("bajar\n");
+                        //printf("bajar\n");
                         (*opcion_inicial)=menu_dibuja_menu_cursor_abajo_common((*opcion_inicial),max_opciones,m);
 
                         //Si ha dado la vuelta
                         if (*opcion_inicial<anterior_opcion) {
-                            printf("salir con flecha izquierda\n");
+                            //printf("salir con flecha izquierda\n");
                             salir_recorrer=1;
 
                             if (m->no_es_realmente_un_menu) {

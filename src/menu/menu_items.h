@@ -249,6 +249,7 @@ extern void menu_hilow_convert_get_audio_buffer(void);
 
 extern int menu_inicio_opcion_seleccionada;
 
+extern int force_menu_dibuja_menu_recorrer_menus;
 
 struct s_menu_debug_view_sensors_list {
     char short_name[SENSORS_MAX_SHORT_NAME];
