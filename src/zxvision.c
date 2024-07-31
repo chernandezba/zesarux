@@ -19937,6 +19937,8 @@ void menu_dibuja_menu_get_menu_pos(int *xnormal,int *ynormal)
 
 }
 
+int menu_dibuja_menu_recorrer_menus=0;
+
 int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item *m,char *titulo_en,char *titulo_es,char *titulo_ca)
 {
 
@@ -19945,6 +19947,8 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
     if (gui_language==GUI_LANGUAGE_SPANISH) titulo=titulo_es;
     else if (gui_language==GUI_LANGUAGE_CATALAN) titulo=titulo_ca;
     else titulo=titulo_en;
+
+    printf("Entrando en menu [%s]\n",titulo);
 
     //Nota: la variable de opción seleccionada (*opcion_inicial) se manipula con el puntero para poderse leer desde otros sitios
     //(ejemplo del overlay al elegir botones a acciones en ZX Desktop)
@@ -20243,9 +20247,83 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 
         menu_refresca_pantalla();
 
+        if (menu_dibuja_menu_recorrer_menus) {
+            if (menu_dibuja_menu_recorrer_menus==2) {
+                menu_dibuja_menu_recorrer_menus=1;
+                printf("Volvemos de una flecha izquierda. Aumentar\n");
+                (*opcion_inicial)=menu_dibuja_menu_cursor_abajo_common((*opcion_inicial),max_opciones,m);
+            }
+
+            //Recorrer cada submenu
+            int salir_recorrer=0;
+
+            do {
+
+                menu_item *item_recorrer=menu_retorna_item(m,(*opcion_inicial));
+
+                printf("item [%s]. *opcion_inicial %d max_opciones %d\n",item_recorrer->texto_opcion,*opcion_inicial,max_opciones);
+
+                if (item_recorrer->tiene_submenu) {
+                    //entrar a submenu con  enter
+                    salir_recorrer=1;
+                    tecla=13;
+                    printf("Entrar en submenu [%s]\n",item_recorrer->texto_opcion);
+                }
+
+                else {
+
+                    if (*opcion_inicial>=max_opciones-1) {
+                        //Salir con flecha izquierda
+                        printf("salir con flecha izquierda\n");
+                        salir_recorrer=1;
+
+                        if (m->no_es_realmente_un_menu) {
+                            printf("salir con esc\n");
+                            tecla=MENU_RETORNO_ESC;
+                        }
+
+                        else tecla='5';
+                        menu_dibuja_menu_recorrer_menus=2;
+                    }
+
+                    else {
+
+                        int anterior_opcion=*opcion_inicial;
+                        printf("bajar\n");
+                        (*opcion_inicial)=menu_dibuja_menu_cursor_abajo_common((*opcion_inicial),max_opciones,m);
+
+                        //Si ha dado la vuelta
+                        if (*opcion_inicial<anterior_opcion) {
+                            printf("salir con flecha izquierda\n");
+                            salir_recorrer=1;
+
+                            if (m->no_es_realmente_un_menu) {
+                                printf("salir con esc\n");
+                                tecla=MENU_RETORNO_ESC;
+                            }
+
+                            else tecla='5';
+                            menu_dibuja_menu_recorrer_menus=2;
+                        }
+
+
+
+                    }
+
+                }
+            } while (!salir_recorrer);
+
+
+
+        }
+
+        else {
+
 		//printf ("despues de menu_refresca_pantalla\n");
 
 		tecla=0;
+
+        }
 
 		//la inicializamos a 0. aunque parece que no haga falta, podria ser que el bucle siguiente
 		//no se entrase (porque menu_tooltip_counter<TOOLTIP_SECONDS) y entonces tecla_leida tendria valor indefinido

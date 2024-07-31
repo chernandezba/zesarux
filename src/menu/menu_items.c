@@ -45714,9 +45714,15 @@ void menu_search(MENU_ITEM_PARAMETERS)
     free(text_buffer);
 }
 
+int force_menu_dibuja_menu_recorrer_menus=0;
+
 int menu_inicio_mostrar_main_menu(int salir_menu)
 {
 
+    if (force_menu_dibuja_menu_recorrer_menus) {
+        force_menu_dibuja_menu_recorrer_menus=0;
+        menu_dibuja_menu_recorrer_menus=1;
+    }
 
             int retorno_menu;
 
@@ -45986,6 +45992,9 @@ void menu_inicio_bucle_main(void)
 
    // printf("llamar a menu_dibuja_menu_cierra_todos_submenus desde fin menu_inicio_bucle_main\n");
     menu_dibuja_menu_cierra_todos_submenus();
+
+    //Si se ha lanzado un reindexado entero de todos los menus
+    menu_dibuja_menu_recorrer_menus=0;
 
 }
 

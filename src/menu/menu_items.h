@@ -247,6 +247,7 @@ extern char enviado_hilow_sample_convirtiendo;
 
 extern void menu_hilow_convert_get_audio_buffer(void);
 
+extern int menu_inicio_opcion_seleccionada;
 
 
 struct s_menu_debug_view_sensors_list {

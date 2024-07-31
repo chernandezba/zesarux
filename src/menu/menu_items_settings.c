@@ -1121,7 +1121,21 @@ void menu_interface_fast_welcome_message(MENU_ITEM_PARAMETERS)
 {
     opcion_fast_welcome_message.v ^=1;
 }
+extern int force_menu_dibuja_menu_recorrer_menus;
+void menu_full_index_search(MENU_ITEM_PARAMETERS)
+{
+    if (menu_confirm_yesno("Full index scan")) {
+        menu_dibuja_menu_recorrer_menus=1;
+        menu_generic_message("Full index scan","Press a key. Then press F5 and enjoy the party...");
+        force_menu_dibuja_menu_recorrer_menus=1;
+        //Reseteamos ultimas opciones de menu principal, settings, general a 0
+        menu_inicio_opcion_seleccionada=0;
+        settings_opcion_seleccionada=0;
+        window_settings_opcion_seleccionada=0;
 
+        salir_todos_menus=1;
+    }
+}
 
 void menu_general_settings(MENU_ITEM_PARAMETERS)
 {
@@ -1408,6 +1422,11 @@ void menu_general_settings(MENU_ITEM_PARAMETERS)
             "Reset search index","Reset índice búsqueda","Reset índex recerca");
             menu_add_item_menu_tooltip(array_menu_window_settings,"Reset index of the search feature");
             menu_add_item_menu_ayuda(array_menu_window_settings,"Reset index of the search feature");
+
+            menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_full_index_search,NULL,
+            "Full scan search index","Completo escaneo índice búsqueda","Complet escaneig índex recerca");
+            menu_add_item_menu_tooltip(array_menu_window_settings,"Run a Full scan search index");
+            menu_add_item_menu_ayuda(array_menu_window_settings,"Run a Full scan search index");
         }
 
 
