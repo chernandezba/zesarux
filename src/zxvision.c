@@ -20025,8 +20025,9 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 
     //Indexar siempre que no diga que no hay que indexarlo, ni tampoco menus tabulados,
     //pues menus tabulados son mas bien para ventanas, como visual memory, y no menus de opciones
-    if (m->no_indexar_busqueda==0 && m->es_menu_tabulado==0 && index_menu_enabled.v) {
-        indice_menu_actual=zxvision_index_entrada_menu(titulo);
+    //Y siempre que indique el full path en el primer item de menu
+    if (m->no_indexar_busqueda==0 && m->es_menu_tabulado==0 && index_menu_enabled.v && m->index_full_path!=NULL) {
+        indice_menu_actual=zxvision_index_entrada_menu(m->index_full_path);
     }
 
 
@@ -20053,7 +20054,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
             //Para el indice de opciones de menu
             //Indexar siempre que no diga que no hay que indexarlo, ni tampoco menus tabulados,
             //pues menus tabulados son mas bien para ventanas, como visual memory, y no menus de opciones
-            if (m->no_indexar_busqueda==0 && m->es_menu_tabulado==0 && index_menu_enabled.v) {
+            if (m->no_indexar_busqueda==0 && m->es_menu_tabulado==0 && index_menu_enabled.v && m->index_full_path!=NULL) {
                 zxvision_index_add_menu_linea(indice_menu_actual,menu_retorna_item_language(aux));
             }
 
@@ -20941,7 +20942,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
         //Indexar siempre que no diga que no hay que indexarlo, ni tampoco menus tabulados,
         //pues menus tabulados son mas bien para ventanas, como visual memory, y no menus de opciones
         if (es_no_indexar_busqueda==0 && es_menu_tabulado==0 && index_menu_enabled.v) {
-            zxvision_index_delete_last_submenu_path();
+            //innecesario con nuevo metodo de indexacion zxvision_index_delete_last_submenu_path();
         }
         return MENU_RETORNO_ESC;
     }
@@ -20973,7 +20974,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
             //Indexar siempre que no diga que no hay que indexarlo, ni tampoco menus tabulados,
             //pues menus tabulados son mas bien para ventanas, como visual memory, y no menus de opciones
             if (es_no_indexar_busqueda==0 && es_menu_tabulado==0 && index_menu_enabled.v) {
-                zxvision_index_delete_last_submenu_path();
+                //innecesario con nuevo metodo de indexacion zxvision_index_delete_last_submenu_path();
             }
             ya_borrado_helper_atras=1;
 
@@ -20999,7 +21000,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
             //Indexar siempre que no diga que no hay que indexarlo, ni tampoco menus tabulados,
             //pues menus tabulados son mas bien para ventanas, como visual memory, y no menus de opciones
             if (es_no_indexar_busqueda==0 && es_menu_tabulado==0 && index_menu_enabled.v) {
-                zxvision_index_delete_last_submenu_path();
+                //innecesario con nuevo metodo de indexacion zxvision_index_delete_last_submenu_path();
             }
            }
         }
@@ -21016,7 +21017,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
         //printf("ultimo else\n");
         if (tecla_atajo) zxvision_helper_menu_shortcut_print(tecla_atajo);
 
-        if (es_one_time) zxvision_index_delete_last_submenu_path();
+        //innecesario con nuevo metodo de indexacion if (es_one_time) zxvision_index_delete_last_submenu_path();
 
         return MENU_RETORNO_NORMAL;
     }
@@ -21079,6 +21080,8 @@ void menu_add_item_menu_common_defaults(menu_item *m,int tipo_opcion,t_menu_func
     m->menu_funcion_activo=menu_funcion_activo;
     m->texto_ayuda=NULL;
     m->texto_tooltip=NULL;
+
+    m->index_full_path=NULL;
 
     //Por defecto inicializado a ""
     m->texto_misc[0]=0;
@@ -21245,6 +21248,14 @@ void menu_add_item_menu_tiene_submenu(menu_item *m)
         m->tiene_submenu=1;
 }
 
+//Agregar el nombre de full path de indexado
+void menu_add_item_menu_index_full_path(menu_item *m,char *s)
+{
+    //Esto lo agrega tal cual al primer item, por tanto podemos llamarlo desde cualquier momento de la creacion del menu
+
+
+    m->index_full_path=s;
+}
 
 //Agregar decirle que tiene genera ventana al ultimo item de menu
 void menu_add_item_menu_genera_ventana(menu_item *m)
@@ -22788,7 +22799,7 @@ int menu_confirm_yesno_texto_additional_item(char *texto_ventana,char *texto_int
                 //Al volver de esta manera, hay que indicar al index_search que se "va atras" un menu
                 //Esto ya se llama por defecto en gestion de menu, cuando se pulsa ESC o flecha atras,
                 //pero en este caso, se sale con la aceptacion de la opcion, y no es ni ESC ni flecha atras
-                zxvision_index_delete_last_submenu_path();
+                //innecesario con nuevo metodo de indexacion zxvision_index_delete_last_submenu_path();
 
                 if (confirm_yes_no_opcion_seleccionada==1) return 1;
                 else return 0;
@@ -23502,7 +23513,7 @@ void zxvision_menu_generic_message_setting(char *titulo, const char *texto, char
                     //Al volver de esta manera, hay que indicar al index_search que se "va atras" un menu
                     //Esto ya se llama por defecto en gestion de menu, cuando se pulsa ESC o flecha atras,
                     //pero en este caso, se sale con la aceptacion de la opcion, y no es ni ESC ni flecha atras
-                    zxvision_index_delete_last_submenu_path();
+                    //innecesario con nuevo metodo de indexacion zxvision_index_delete_last_submenu_path();
 					salir=1;
 				}
 
@@ -24771,7 +24782,7 @@ void menu_inicio_handle_button_presses(void)
         if (menu_inicio_handle_button_presses_userdef(pulsado_boton)==0) {
 
             //Inicializar indice search, indicar ruta vacia
-            zxvision_index_search_init_menu_path_main_menu();
+            //innecesario con nuevo metodo de indexacion zxvision_index_search_init_menu_path_main_menu();
 
             switch (pulsado_boton) {
                 case 0:
@@ -27786,6 +27797,15 @@ void zxvision_index_get_last_submenu(char *destino)
 }
 
 index_menu *zxvision_index_entrada_menu(char *titulo)
+{
+
+    //printf("Menu [%s]\n",nombre_menu_con_submenu_para_indice);
+    index_menu *indice_menu_actual=zxvision_index_add_replace_menu(titulo);
+
+    return indice_menu_actual;
+}
+
+index_menu *old_zxvision_index_entrada_menu(char *titulo)
 {
     //Para el indice de opciones de menu
     char buf_index_submenu[MAX_LENGTH_FULL_PATH_SUBMENU];

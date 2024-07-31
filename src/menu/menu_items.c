@@ -19798,6 +19798,10 @@ void menu_display_settings(MENU_ITEM_PARAMETERS)
         //menu_add_item_menu(array_menu_display_settings,"ESC Back",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
 		menu_add_ESC_item(array_menu_display_settings);
 
+        //La llamada a menu_add_item_menu_index_full_path lo agrega al principio del array, por tanto lo podemos llamar desde cualquier
+        //punto de la creacion del menu. Lo llamo desde aqui porque queda esteticamente mas bonito
+        menu_add_item_menu_index_full_path(array_menu_display_settings,"Main Menu-> Display");
+
         retorno_menu=menu_dibuja_menu(&display_settings_opcion_seleccionada,&item_seleccionado,array_menu_display_settings,"Display Menu","Menú Display","Menú Display" );
 
 
@@ -33132,6 +33136,10 @@ void menu_snapshot(MENU_ITEM_PARAMETERS)
         menu_add_item_menu(array_menu_snapshot,"",MENU_OPCION_SEPARADOR,NULL,NULL);
         menu_add_ESC_item(array_menu_snapshot);
 
+        //La llamada a menu_add_item_menu_index_full_path lo agrega al principio del array, por tanto lo podemos llamar desde cualquier
+        //punto de la creacion del menu. Lo llamo desde aqui porque queda esteticamente mas bonito
+        menu_add_item_menu_index_full_path(array_menu_snapshot,"Main Menu-> Snapshot");
+
         retorno_menu=menu_dibuja_menu(&snapshot_opcion_seleccionada,&item_seleccionado,array_menu_snapshot,"Snapshot Menu","Menú Instantánea","Menú Instantània");
 
 
@@ -45892,6 +45900,10 @@ void menu_inicio_bucle_main(void)
             menu_add_item_menu_tooltip(array_menu_principal,"Exit ZEsarUX");
             menu_add_item_menu_ayuda(array_menu_principal,"Exit ZEsarUX");
 
+
+            //La llamada a menu_add_item_menu_index_full_path lo agrega al principio del array, por tanto lo podemos llamar desde cualquier
+            //punto de la creacion del menu. Lo llamo desde aqui porque queda esteticamente mas bonito
+            menu_add_item_menu_index_full_path(array_menu_principal,"Main Menu");
 
             //retorno_menu=menu_dibuja_menu_no_title_lang(&menu_inicio_opcion_seleccionada,&item_seleccionado,array_menu_principal,"ZEsarUX v." EMULATOR_VERSION );
             retorno_menu=menu_dibuja_menu(&menu_inicio_opcion_seleccionada,&item_seleccionado,array_menu_principal,

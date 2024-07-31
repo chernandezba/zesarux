@@ -175,8 +175,6 @@ Esto no es un TO-DO como tal , solo un comentario del nuevo funcionamiento
 
 -quiza un widget de sensors con la Z del logo?
 
--Si hay submenu, quizá gestionar desde propia función de menú. Y/o no cerrar menú anterior
-
 -Audio chip sheet en modo texto. Que salgan en 3 líneas de texto por cada canal y las notas y hagan scroll igual
 
 -select machine by name hace scroll horizontal la ventana de menu. por que? porque se activa scroll vertical y se pierde 1 caracter de ancho

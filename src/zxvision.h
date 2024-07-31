@@ -995,6 +995,9 @@ struct s_menu_item {
     //a dibujar el menu, por tanto a nivel de path de indexacion de busqueda, se pierde el ultimo path de submenu
     //Ejemplo de esto: menu_simple_ten_choices
     int one_time;
+
+    //Apunta al texto del nombre de la ruta completa de este menu, para indexar la busqueda
+    char *index_full_path;
 };
 
 typedef struct s_menu_item menu_item;
@@ -1074,6 +1077,7 @@ extern void menu_add_item_menu_seleccionado(menu_item *m,void (*menu_funcion_sel
 extern void menu_add_item_menu_se_cerrara(menu_item *m);
 extern void menu_add_item_menu_no_indexar_busqueda(menu_item *m);
 extern void menu_add_item_menu_no_es_realmente_un_menu(menu_item *m);
+extern void menu_add_item_menu_index_full_path(menu_item *m,char *s);
 
 extern void menu_add_item_menu_spanish(menu_item *m,char *s);
 extern void menu_add_item_menu_spanish_format(menu_item *m,const char * format , ...);
