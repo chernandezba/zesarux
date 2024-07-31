@@ -1077,7 +1077,7 @@ extern void menu_add_item_menu_seleccionado(menu_item *m,void (*menu_funcion_sel
 extern void menu_add_item_menu_se_cerrara(menu_item *m);
 extern void menu_add_item_menu_no_indexar_busqueda(menu_item *m);
 extern void menu_add_item_menu_no_es_realmente_un_menu(menu_item *m);
-extern void menu_add_item_menu_index_full_path(menu_item *m,char *s);
+extern void menu_add_item_menu_index_full_path(menu_item *m,char *index_name_en,char *index_name_es,char *index_name_ca);
 
 extern void menu_add_item_menu_spanish(menu_item *m,char *s);
 extern void menu_add_item_menu_spanish_format(menu_item *m,const char * format , ...);

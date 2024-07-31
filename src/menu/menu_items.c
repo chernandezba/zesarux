@@ -16990,6 +16990,8 @@ void menu_network(MENU_ITEM_PARAMETERS)
 
             menu_add_ESC_item(array_menu_common);
 
+            menu_add_item_menu_index_full_path(array_menu_common,"Main Menu-> Network","Menú Principal-> Network","Menú Principal-> Network");
+
             retorno_menu=menu_dibuja_menu(&network_opcion_seleccionada,&item_seleccionado,array_menu_common,"Network Menu","Menú Network","Menú Network" );
 
 
@@ -18995,6 +18997,8 @@ void menu_windows(MENU_ITEM_PARAMETERS)
 
         menu_add_ESC_item(array_menu_common);
 
+        menu_add_item_menu_index_full_path(array_menu_common,"Main Menu-> Windows","Menú Principal-> Windows","Menú Principal-> Windows");
+
         retorno_menu=menu_dibuja_menu(&windows_opcion_seleccionada,&item_seleccionado,array_menu_common,"Windows Menu","Menú Windows","Menú Windows" );
 
 
@@ -19800,7 +19804,7 @@ void menu_display_settings(MENU_ITEM_PARAMETERS)
 
         //La llamada a menu_add_item_menu_index_full_path lo agrega al principio del array, por tanto lo podemos llamar desde cualquier
         //punto de la creacion del menu. Lo llamo desde aqui porque queda esteticamente mas bonito
-        menu_add_item_menu_index_full_path(array_menu_display_settings,"Main Menu-> Display");
+        menu_add_item_menu_index_full_path(array_menu_display_settings,"Main Menu-> Display","Menú Principal-> Display","Menú Principal-> Display");
 
         retorno_menu=menu_dibuja_menu(&display_settings_opcion_seleccionada,&item_seleccionado,array_menu_display_settings,"Display Menu","Menú Display","Menú Display" );
 
@@ -29763,7 +29767,7 @@ void menu_machine_selection_manufacturer(MENU_ITEM_PARAMETERS)
 
         //La llamada a menu_add_item_menu_index_full_path lo agrega al principio del array, por tanto lo podemos llamar desde cualquier
         //punto de la creacion del menu. Lo llamo desde aqui porque queda esteticamente mas bonito
-        menu_add_item_menu_index_full_path(array_menu_machine_selection,"Main Menu-> Machine");
+        menu_add_item_menu_index_full_path(array_menu_machine_selection,"Main Menu-> Machine","Menú Principal-> Máquina","Menú Principal-> Màquina");
 
         retorno_menu=menu_dibuja_menu(&machine_selection_opcion_seleccionada,&item_seleccionado,array_menu_machine_selection,
             "Machine menu","Menú Máquina","Menú Màquina" );
@@ -29922,7 +29926,7 @@ void menu_machine_selection_by_name(MENU_ITEM_PARAMETERS)
 
         //La llamada a menu_add_item_menu_index_full_path lo agrega al principio del array, por tanto lo podemos llamar desde cualquier
         //punto de la creacion del menu. Lo llamo desde aqui porque queda esteticamente mas bonito
-        menu_add_item_menu_index_full_path(array_menu_common,"Main Menu-> Machine");
+        menu_add_item_menu_index_full_path(array_menu_common,"Main Menu-> Machine","Menú Principal-> Máquina","Menú Principal-> Màquina");
 
 		retorno_menu=menu_dibuja_menu(&menu_machine_selection_by_name_opcion_seleccionada,&item_seleccionado,array_menu_common,
             "Machine menu","Menú Máquina","Menú Màquina" );
@@ -31016,6 +31020,8 @@ void menu_help(MENU_ITEM_PARAMETERS)
 
             menu_add_ESC_item(array_menu_common);
 
+            menu_add_item_menu_index_full_path(array_menu_common,"Main Menu-> Help","Menú Principal-> Help","Menú Principal-> Help");
+
             retorno_menu=menu_dibuja_menu(&about_opcion_seleccionada,&item_seleccionado,array_menu_common,
                 "Help Menu","Menú Help","Menú Help" );
 
@@ -31377,7 +31383,7 @@ void menu_audio(MENU_ITEM_PARAMETERS)
 
         //La llamada a menu_add_item_menu_index_full_path lo agrega al principio del array, por tanto lo podemos llamar desde cualquier
         //punto de la creacion del menu. Lo llamo desde aqui porque queda esteticamente mas bonito
-        menu_add_item_menu_index_full_path(array_menu_audio,"Main Menu-> Audio");
+        menu_add_item_menu_index_full_path(array_menu_audio,"Main Menu-> Audio","Menú Principal-> Audio","Menú Principal-> Audio");
 
         retorno_menu=menu_dibuja_menu(&audio_opcion_seleccionada,&item_seleccionado,array_menu_audio,"Audio Menu","Menú Audio","Menú Audio" );
 
@@ -32635,6 +32641,8 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
                 //menu_add_item_menu(array_menu_debug,"ESC Back",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
 		menu_add_ESC_item(array_menu_debug);
 
+        menu_add_item_menu_index_full_path(array_menu_debug,"Main Menu-> Debug","Menú Principal-> Debug","Menú Principal-> Debug");
+
         retorno_menu=menu_dibuja_menu(&debug_opcion_seleccionada,&item_seleccionado,array_menu_debug,"Debug Menu","Menú Debug","Menú Debug" );
 
 
@@ -33150,7 +33158,7 @@ void menu_snapshot(MENU_ITEM_PARAMETERS)
 
         //La llamada a menu_add_item_menu_index_full_path lo agrega al principio del array, por tanto lo podemos llamar desde cualquier
         //punto de la creacion del menu. Lo llamo desde aqui porque queda esteticamente mas bonito
-        menu_add_item_menu_index_full_path(array_menu_snapshot,"Main Menu-> Snapshot");
+        menu_add_item_menu_index_full_path(array_menu_snapshot,"Main Menu-> Snapshot","Menú Principal-> Instantánea","Menú Principal-> Instantània");
 
         retorno_menu=menu_dibuja_menu(&snapshot_opcion_seleccionada,&item_seleccionado,array_menu_snapshot,"Snapshot Menu","Menú Instantánea","Menú Instantània");
 
@@ -42300,6 +42308,8 @@ void menu_storage(MENU_ITEM_PARAMETERS)
         //menu_add_item_menu(array_menu_storage,"ESC Back",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
         menu_add_ESC_item(array_menu_storage);
 
+        menu_add_item_menu_index_full_path(array_menu_storage,"Main Menu-> Storage","Menú Principal-> Almacenamiento","Menú Principal-> Emmagatzematge");
+
         retorno_menu=menu_dibuja_menu(&storage_opcion_seleccionada,&item_seleccionado,array_menu_storage,"Storage Menu","Menú Almacenamiento","Menú Emmagatzematge" );
 
 
@@ -43432,6 +43442,8 @@ void menu_toys(MENU_ITEM_PARAMETERS)
         menu_add_item_menu(array_menu_toys,"",MENU_OPCION_SEPARADOR,NULL,NULL);
                 //menu_add_item_menu(array_menu_toys,"ESC Back",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
 		menu_add_ESC_item(array_menu_toys);
+
+        menu_add_item_menu_index_full_path(array_menu_toys,"Main Menu-> Procrastinate","Menú Principal-> Procrastinar","Menú Principal-> Procrastinar");
 
         retorno_menu=menu_dibuja_menu(&toys_opcion_seleccionada,&item_seleccionado,array_menu_toys,
             "Procrastinate Menu","Menú Procrastinar","Menú Procrastinar");
@@ -45915,7 +45927,7 @@ void menu_inicio_bucle_main(void)
 
             //La llamada a menu_add_item_menu_index_full_path lo agrega al principio del array, por tanto lo podemos llamar desde cualquier
             //punto de la creacion del menu. Lo llamo desde aqui porque queda esteticamente mas bonito
-            menu_add_item_menu_index_full_path(array_menu_principal,"Main Menu");
+            menu_add_item_menu_index_full_path(array_menu_principal,"Main Menu","Menú Principal","Menú Principal");
 
             //retorno_menu=menu_dibuja_menu_no_title_lang(&menu_inicio_opcion_seleccionada,&item_seleccionado,array_menu_principal,"ZEsarUX v." EMULATOR_VERSION );
             retorno_menu=menu_dibuja_menu(&menu_inicio_opcion_seleccionada,&item_seleccionado,array_menu_principal,

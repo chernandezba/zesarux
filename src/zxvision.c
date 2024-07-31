@@ -21249,12 +21249,18 @@ void menu_add_item_menu_tiene_submenu(menu_item *m)
 }
 
 //Agregar el nombre de full path de indexado
-void menu_add_item_menu_index_full_path(menu_item *m,char *s)
+void menu_add_item_menu_index_full_path(menu_item *m,char *index_name_en,char *index_name_es,char *index_name_ca)
 {
     //Esto lo agrega tal cual al primer item, por tanto podemos llamarlo desde cualquier momento de la creacion del menu
 
+    char *titulo;
 
-    m->index_full_path=s;
+    if (gui_language==GUI_LANGUAGE_SPANISH) titulo=index_name_es;
+    else if (gui_language==GUI_LANGUAGE_CATALAN) titulo=index_name_ca;
+    else titulo=index_name_en;
+
+
+    m->index_full_path=titulo;
 }
 
 //Agregar decirle que tiene genera ventana al ultimo item de menu
