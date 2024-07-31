@@ -27683,10 +27683,18 @@ void zxvision_index_menu_init(void)
 //Buscar indice de menu. NULL si no encontrado
 index_menu *zxvision_index_search_menu(char *nombre)
 {
+
+    //Convertir a string sin acentos etc
+    char nombre_sin_acentos[MAX_LENGTH_FULL_PATH_SUBMENU];
+
+    util_convert_utf_no_utf(nombre,nombre_sin_acentos,strlen(nombre));
+
+
     index_menu *menu=first_index_menu;
 
     while (menu!=NULL) {
-        if (!strcasecmp(nombre,menu->titulo_menu)) return menu;
+        //printf("Comparar [%s] [%s]\n",nombre_sin_acentos,menu->titulo_menu);
+        if (!strcasecmp(nombre_sin_acentos,menu->titulo_menu)) return menu;
 
         menu=menu->next_menu;
     }
