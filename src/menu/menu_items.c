@@ -45765,7 +45765,7 @@ void menu_inicio_bucle_main(void)
 		else {
             //printf("else if\n");
             zxvision_helper_menu_shortcut_init();
-            zxvision_index_search_init_menu_path();
+            //zxvision_index_search_init_menu_path();
 
             //Cada vez que se abre el menu, se genera un ciclo del juego de la vida
             //gamelife_fire_next_event();
