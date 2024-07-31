@@ -29761,6 +29761,10 @@ void menu_machine_selection_manufacturer(MENU_ITEM_PARAMETERS)
 
         menu_add_ESC_item(array_menu_machine_selection);
 
+        //La llamada a menu_add_item_menu_index_full_path lo agrega al principio del array, por tanto lo podemos llamar desde cualquier
+        //punto de la creacion del menu. Lo llamo desde aqui porque queda esteticamente mas bonito
+        menu_add_item_menu_index_full_path(array_menu_machine_selection,"Main Menu-> Machine");
+
         retorno_menu=menu_dibuja_menu(&machine_selection_opcion_seleccionada,&item_seleccionado,array_menu_machine_selection,
             "Machine menu","Menú Máquina","Menú Màquina" );
 
@@ -29915,6 +29919,10 @@ void menu_machine_selection_by_name(MENU_ITEM_PARAMETERS)
 
 
 		menu_add_ESC_item(array_menu_common);
+
+        //La llamada a menu_add_item_menu_index_full_path lo agrega al principio del array, por tanto lo podemos llamar desde cualquier
+        //punto de la creacion del menu. Lo llamo desde aqui porque queda esteticamente mas bonito
+        menu_add_item_menu_index_full_path(array_menu_common,"Main Menu-> Machine");
 
 		retorno_menu=menu_dibuja_menu(&menu_machine_selection_by_name_opcion_seleccionada,&item_seleccionado,array_menu_common,
             "Machine menu","Menú Máquina","Menú Màquina" );
@@ -31366,6 +31374,10 @@ void menu_audio(MENU_ITEM_PARAMETERS)
 
 
 		menu_add_ESC_item(array_menu_audio);
+
+        //La llamada a menu_add_item_menu_index_full_path lo agrega al principio del array, por tanto lo podemos llamar desde cualquier
+        //punto de la creacion del menu. Lo llamo desde aqui porque queda esteticamente mas bonito
+        menu_add_item_menu_index_full_path(array_menu_audio,"Main Menu-> Audio");
 
         retorno_menu=menu_dibuja_menu(&audio_opcion_seleccionada,&item_seleccionado,array_menu_audio,"Audio Menu","Menú Audio","Menú Audio" );
 
