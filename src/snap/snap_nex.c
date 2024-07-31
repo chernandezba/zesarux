@@ -46,6 +46,7 @@
 #include "tbblue.h"
 #include "timex.h"
 #include "ula.h"
+#include "joystick.h"
 
 #if defined(__APPLE__)
         #include <sys/syslimits.h>
@@ -199,6 +200,9 @@ void load_snx_snapshot(char *archivo)
 
     load_nex_snapshot_change_to_next();
 
+    //joystick kempston, por defecto en Next, y algunos juegos dependen de esto, como BubblegumBros
+    joystick_emulation=JOYSTICK_KEMPSTON;
+
     //Decimos que no cambiamos a maquina spectrum, ya que forzaremos siempre next
     sna_setting_no_change_machine.v=1;
 
@@ -317,6 +321,9 @@ void load_nex_snapshot(char *archivo)
     load_nex_snapshot_if_mount_exdos_folder(archivo);
 
     load_nex_snapshot_set_default_next_registers();
+
+    //joystick kempston, por defecto en Next, y algunos juegos dependen de esto, como BubblegumBros
+    joystick_emulation=JOYSTICK_KEMPSTON;
 
 	//Al cargar .nex lo pone en turbo x 8
 	debug_printf(VERBOSE_DEBUG,"Setting turbo x 8 because it's the usual speed when loading .nex files from NextOS");
