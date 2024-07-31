@@ -20030,6 +20030,10 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
     //Indexar siempre que no diga que no hay que indexarlo, ni tampoco menus tabulados,
     //pues menus tabulados son mas bien para ventanas, como visual memory, y no menus de opciones
     //Y siempre que indique el full path en el primer item de menu
+
+    //temp agregar titulo indice aunque no tenga indicado
+    //if (m->index_full_path==NULL) m->index_full_path=titulo;
+
     if (m->no_indexar_busqueda==0 && m->es_menu_tabulado==0 && index_menu_enabled.v && m->index_full_path!=NULL) {
         indice_menu_actual=zxvision_index_entrada_menu(m->index_full_path);
     }
