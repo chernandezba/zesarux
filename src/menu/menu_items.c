@@ -45714,89 +45714,14 @@ void menu_search(MENU_ITEM_PARAMETERS)
     free(text_buffer);
 }
 
-void menu_inicio_bucle_main(void)
+int menu_inicio_mostrar_main_menu(int salir_menu)
 {
-    //printf("menu_inicio_bucle_main: menu_pressed_zxdesktop_button_which %d menu_pressed_zxdesktop_lower_icon_which %d pulsado_alguna_ventana_con_menu_cerrado %d\n",
-    //            menu_pressed_zxdesktop_button_which,menu_pressed_zxdesktop_lower_icon_which,pulsado_alguna_ventana_con_menu_cerrado);
-
-    //printf("menu_inicio_bucle_main pulsado_alguna_ventana_con_menu_cerrado: %d\n",pulsado_alguna_ventana_con_menu_cerrado);
-    //Primera ayuda siempre que no se haya pulsado en botones de menu diferentes del menu principal o dispositivos
-    int mostrar_first_aid_menu=1;
-    if (menu_pressed_zxdesktop_lower_icon_which>=0) mostrar_first_aid_menu=0;
-    if (menu_pressed_zxdesktop_configurable_icon_which>=0) mostrar_first_aid_menu=0;
-
-    //boton de menu distinto del boton de menu principal
-    if (menu_pressed_zxdesktop_button_which>0) mostrar_first_aid_menu=0;
-
-    if (mostrar_first_aid_menu) menu_first_aid("initial_menu");
-
-	//Si descargar stats
-	//Si se pregunta si se quiere enviar estadisticas, solo si esta el grabado de configuracion, e interfaz permite menu (no stdout ni simpletext ni null)
-	if (save_configuration_file_on_exit.v && stats_asked.v==0 && si_normal_menu_video_driver()) {
-		stats_ask_if_enable();
-	}
-
-	int retorno_menu;
-
-	menu_item *array_menu_principal;
-	menu_item item_seleccionado;
-
-	int salir_menu=0;
 
 
-	do {
-        //printf("menu_pressed_zxdesktop_configurable_icon_which %d\n",menu_pressed_zxdesktop_configurable_icon_which);
-        //printf("antes del if\n");
-		if (menu_pressed_zxdesktop_button_which>=0 || menu_pressed_zxdesktop_lower_icon_which>=0
-            || menu_pressed_zxdesktop_configurable_icon_which>=0 || menu_pressed_zxdesktop_right_button_background>=0
-            || pulsado_alguna_ventana_con_menu_cerrado) {
+            int retorno_menu;
 
-            //printf("se cumple if: menu_pressed_zxdesktop_button_which %d menu_pressed_zxdesktop_lower_icon_which %d pulsado_alguna_ventana_con_menu_cerrado %d\n",
-            //    menu_pressed_zxdesktop_button_which,menu_pressed_zxdesktop_lower_icon_which,pulsado_alguna_ventana_con_menu_cerrado);
-
-			cls_menu_overlay();
-		//Si se habia pulsado boton de zx desktop y boton no es el 0
-		//con boton 0 lo que hacemos es abrir el menu solamente
-			if (menu_pressed_zxdesktop_button_which>0) {
-							menu_inicio_handle_button_presses();
-			}
-
-			//Si era 0 es el menu inicio y liberamos el boton
-			else if (menu_pressed_zxdesktop_button_which==0) {
-				menu_pressed_zxdesktop_button_which=-1;
-			}
-
-			else if (menu_pressed_zxdesktop_lower_icon_which>=0) {
-				menu_inicio_handle_lower_icon_presses();
-			}
-
-            else if (menu_pressed_zxdesktop_configurable_icon_which>=0) {
-                menu_inicio_handle_configurable_icon_presses();
-            }
-
-            else if (menu_pressed_zxdesktop_right_button_background>=0) {
-                menu_inicio_handle_right_button_background();
-            }
-			//printf ("despues menu_inicio_handle_button_presses\n");
-
-            else if (pulsado_alguna_ventana_con_menu_cerrado) {
-                debug_printf(VERBOSE_DEBUG,"Pressed on a window with menu closed from menu_inicio_bucle_main");
-                pulsado_alguna_ventana_con_menu_cerrado=0;
-                salir_menu=1;
-            }
-		}
-
-		else {
-            //printf("else if\n");
-            zxvision_helper_menu_shortcut_init();
-            //zxvision_index_search_init_menu_path();
-
-            //Cada vez que se abre el menu, se genera un ciclo del juego de la vida
-            //gamelife_fire_next_event();
-
-            if (strcmp(scr_new_driver_name,"xwindows")==0 || strcmp(scr_new_driver_name,"sdl")==0 || strcmp(scr_new_driver_name,"caca")==0 || strcmp(scr_new_driver_name,"fbdev")==0 || strcmp(scr_new_driver_name,"cocoa")==0 || strcmp(scr_new_driver_name,"curses")==0) f_functions=1;
-            else f_functions=0;
-
+            menu_item *array_menu_principal;
+            menu_item item_seleccionado;
 
             menu_add_item_menu_en_es_ca_inicial(&array_menu_principal,MENU_OPCION_NORMAL,menu_smartload,NULL,
                 "~~Smart load","Carga ingenio~~sa","Càrrega enginyo~~sa");
@@ -45967,6 +45892,93 @@ void menu_inicio_bucle_main(void)
                 //printf ("opcion ESC o pulsado ESC\n");
                 salir_menu=1;
             }
+
+    return salir_menu;
+
+}
+
+void menu_inicio_bucle_main(void)
+{
+    //printf("menu_inicio_bucle_main: menu_pressed_zxdesktop_button_which %d menu_pressed_zxdesktop_lower_icon_which %d pulsado_alguna_ventana_con_menu_cerrado %d\n",
+    //            menu_pressed_zxdesktop_button_which,menu_pressed_zxdesktop_lower_icon_which,pulsado_alguna_ventana_con_menu_cerrado);
+
+    //printf("menu_inicio_bucle_main pulsado_alguna_ventana_con_menu_cerrado: %d\n",pulsado_alguna_ventana_con_menu_cerrado);
+    //Primera ayuda siempre que no se haya pulsado en botones de menu diferentes del menu principal o dispositivos
+    int mostrar_first_aid_menu=1;
+    if (menu_pressed_zxdesktop_lower_icon_which>=0) mostrar_first_aid_menu=0;
+    if (menu_pressed_zxdesktop_configurable_icon_which>=0) mostrar_first_aid_menu=0;
+
+    //boton de menu distinto del boton de menu principal
+    if (menu_pressed_zxdesktop_button_which>0) mostrar_first_aid_menu=0;
+
+    if (mostrar_first_aid_menu) menu_first_aid("initial_menu");
+
+	//Si descargar stats
+	//Si se pregunta si se quiere enviar estadisticas, solo si esta el grabado de configuracion, e interfaz permite menu (no stdout ni simpletext ni null)
+	if (save_configuration_file_on_exit.v && stats_asked.v==0 && si_normal_menu_video_driver()) {
+		stats_ask_if_enable();
+	}
+
+
+
+	int salir_menu=0;
+
+
+	do {
+        //printf("menu_pressed_zxdesktop_configurable_icon_which %d\n",menu_pressed_zxdesktop_configurable_icon_which);
+        //printf("antes del if\n");
+		if (menu_pressed_zxdesktop_button_which>=0 || menu_pressed_zxdesktop_lower_icon_which>=0
+            || menu_pressed_zxdesktop_configurable_icon_which>=0 || menu_pressed_zxdesktop_right_button_background>=0
+            || pulsado_alguna_ventana_con_menu_cerrado) {
+
+            //printf("se cumple if: menu_pressed_zxdesktop_button_which %d menu_pressed_zxdesktop_lower_icon_which %d pulsado_alguna_ventana_con_menu_cerrado %d\n",
+            //    menu_pressed_zxdesktop_button_which,menu_pressed_zxdesktop_lower_icon_which,pulsado_alguna_ventana_con_menu_cerrado);
+
+			cls_menu_overlay();
+		//Si se habia pulsado boton de zx desktop y boton no es el 0
+		//con boton 0 lo que hacemos es abrir el menu solamente
+			if (menu_pressed_zxdesktop_button_which>0) {
+							menu_inicio_handle_button_presses();
+			}
+
+			//Si era 0 es el menu inicio y liberamos el boton
+			else if (menu_pressed_zxdesktop_button_which==0) {
+				menu_pressed_zxdesktop_button_which=-1;
+			}
+
+			else if (menu_pressed_zxdesktop_lower_icon_which>=0) {
+				menu_inicio_handle_lower_icon_presses();
+			}
+
+            else if (menu_pressed_zxdesktop_configurable_icon_which>=0) {
+                menu_inicio_handle_configurable_icon_presses();
+            }
+
+            else if (menu_pressed_zxdesktop_right_button_background>=0) {
+                menu_inicio_handle_right_button_background();
+            }
+			//printf ("despues menu_inicio_handle_button_presses\n");
+
+            else if (pulsado_alguna_ventana_con_menu_cerrado) {
+                debug_printf(VERBOSE_DEBUG,"Pressed on a window with menu closed from menu_inicio_bucle_main");
+                pulsado_alguna_ventana_con_menu_cerrado=0;
+                salir_menu=1;
+            }
+		}
+
+		else {
+            //printf("else if\n");
+            zxvision_helper_menu_shortcut_init();
+            //zxvision_index_search_init_menu_path();
+
+            //Cada vez que se abre el menu, se genera un ciclo del juego de la vida
+            //gamelife_fire_next_event();
+
+            if (strcmp(scr_new_driver_name,"xwindows")==0 || strcmp(scr_new_driver_name,"sdl")==0 || strcmp(scr_new_driver_name,"caca")==0 || strcmp(scr_new_driver_name,"fbdev")==0 || strcmp(scr_new_driver_name,"cocoa")==0 || strcmp(scr_new_driver_name,"curses")==0) f_functions=1;
+            else f_functions=0;
+
+            //Mostrar menu principal
+            salir_menu=menu_inicio_mostrar_main_menu(salir_menu);
 
 		}
 
