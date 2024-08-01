@@ -20528,6 +20528,11 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 				tecla=13;
 			}
 
+            //enviar flecha izquierda si boton derecho raton
+			else if (si_menu_mouse_en_ventana() && mouse_right && mouse_en_zona_opciones && !mouse_is_dragging) {
+				//printf ("Enviamos flecha izquierda\n");
+				tecla='5';
+			}
 
 			else if (tecla_leida==11) tecla='7';
 			else if (tecla_leida==10) tecla='6';

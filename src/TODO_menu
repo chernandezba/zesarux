@@ -151,7 +151,6 @@ Una de ellas es el "About" pero ya esta usando dirty_user_must_draw_contents
 
 -poder usar tipo de letra de los iconos en el menu. cuando se active char width a 4
 
--hexadecimal editor deberia refrescar continuamente al estar dentro de la ventana?
 
 -opcion para minimizar ventanas a la parte baja de la ventana (o comportamiento como ahora, las minimiza donde estaban)
 
