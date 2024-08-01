@@ -29571,12 +29571,16 @@ void menu_machine_selection_manufacturer_machines(int fabricante)
 	maquinas=return_maquinas_fabricante(fabricante);
 
 	//cambiar linea seleccionada a maquina en cuestion
-	int indice_maquina=return_machine_position(maquinas,current_machine_type);
-	if (indice_maquina!=255) machine_selection_por_fabricante_opcion_seleccionada=indice_maquina;
-	else {
-		//Maquina no es de este menu. Resetear linea a 0
-		machine_selection_por_fabricante_opcion_seleccionada=0;
-	}
+    //siempre que no estemos en un full index rescan del buscador de opciones
+
+    if (!menu_dibuja_menu_recorrer_menus) {
+        int indice_maquina=return_machine_position(maquinas,current_machine_type);
+        if (indice_maquina!=255) machine_selection_por_fabricante_opcion_seleccionada=indice_maquina;
+        else {
+            //Maquina no es de este menu. Resetear linea a 0
+            machine_selection_por_fabricante_opcion_seleccionada=0;
+        }
+    }
 
 	char *nombre_maquina;
 
@@ -29614,9 +29618,13 @@ void menu_machine_selection_manufacturer_machines(int fabricante)
                         //menu_add_item_menu(array_menu_machine_selection_por_fabricante,"ESC Back",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
                         menu_add_ESC_item(array_menu_machine_selection_por_fabricante);
 
+        //char titulo_con_hotkey[100];
+        char titulo[100];
+        //sprintf(titulo,"%s",array_fabricantes_hotkey[fabricante]);
+        menu_convierte_texto_sin_modificadores(array_fabricantes_hotkey[fabricante],titulo);
 
-
-                        retorno_menu=menu_dibuja_menu_no_title_lang(&machine_selection_por_fabricante_opcion_seleccionada,&item_seleccionado,array_menu_machine_selection_por_fabricante,"Select machine" );
+        //retorno_menu=menu_dibuja_menu_no_title_lang(&machine_selection_por_fabricante_opcion_seleccionada,&item_seleccionado,array_menu_machine_selection_por_fabricante,"Select machine" );
+        retorno_menu=menu_dibuja_menu_no_title_lang(&machine_selection_por_fabricante_opcion_seleccionada,&item_seleccionado,array_menu_machine_selection_por_fabricante,titulo );
 
                         //printf ("Opcion seleccionada: %d\n",machine_selection_por_fabricante_opcion_seleccionada);
 
@@ -29739,7 +29747,10 @@ void menu_machine_selection_manufacturer(MENU_ITEM_PARAMETERS)
 
     //return_fabricante_maquina
     //Establecemos linea menu segun fabricante activo
-    machine_selection_opcion_seleccionada=return_fabricante_maquina(current_machine_type)+1;
+    //Siempre que no estemos en un full index rescan del buscador de opciones
+    if (!menu_dibuja_menu_recorrer_menus) {
+        machine_selection_opcion_seleccionada=return_fabricante_maquina(current_machine_type)+1;
+    }
 
     do {
 
@@ -29912,8 +29923,11 @@ void menu_machine_selection_by_name(MENU_ITEM_PARAMETERS)
 			menu_add_item_menu_valor_opcion(array_menu_common,memoria_punteros[i]->id);
 
 			//Si coincide id con la maquina actual, cambiar menu_machine_selection_by_name_opcion_seleccionada
+            //Siempre que no estemos en un full index rescan del buscador de opciones
 			if (current_machine_type==memoria_punteros[i]->id) {
-				menu_machine_selection_by_name_opcion_seleccionada=i+1;
+                if (!menu_dibuja_menu_recorrer_menus) {
+				    menu_machine_selection_by_name_opcion_seleccionada=i+1;
+                }
 				//printf ("Match current machine %d with list entry %d. Changing last selected\n",current_machine_type,i);
 			}
 

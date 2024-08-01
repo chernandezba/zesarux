@@ -1125,6 +1125,8 @@ void menu_interface_fast_welcome_message(MENU_ITEM_PARAMETERS)
 void menu_full_index_search(MENU_ITEM_PARAMETERS)
 {
     if (menu_confirm_yesno("Full index scan")) {
+        zxvision_index_menu_init();
+
         menu_dibuja_menu_recorrer_menus=1;
         menu_generic_message("Full index scan","Press a key. Then press F5 and enjoy the party...");
         force_menu_dibuja_menu_recorrer_menus=1;

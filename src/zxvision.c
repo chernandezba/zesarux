@@ -7893,10 +7893,10 @@ void menu_convierte_texto_sin_modificadores(char *texto,char *texto_destino)
 			origen +=3;
 		}
 
-		else {
+		//else {
 			c=texto[origen];
 			texto_destino[destino]=c;
-		}
+		//}
 		//printf ("origen: %d destino: %d\n",origen,destino);
 	}
 
@@ -19778,6 +19778,28 @@ zxvision_window *menu_dibuja_menu_find_last_submenu(void)
     return w;
 }
 
+void menu_dibuja_menu_get_full_path_menu(char *s)
+{
+
+    *s=0;
+
+    zxvision_window *w=menu_dibuja_menu_primer_submenu;
+
+    if (w==NULL) return;
+
+    strcpy(s,w->window_title);
+
+    while (w->submenu_next!=NULL) {
+
+        w=w->submenu_next;
+
+        int longitud=strlen(s);
+        sprintf(&s[longitud],"-> %s",w->window_title);
+
+    }
+
+
+}
 
 void menu_dibuja_menu_add_submenu(zxvision_window *w)
 {
@@ -20031,8 +20053,26 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
     //pues menus tabulados son mas bien para ventanas, como visual memory, y no menus de opciones
     //Y siempre que indique el full path en el primer item de menu
 
-    //temp agregar titulo indice aunque no tenga indicado
-    //if (m->index_full_path==NULL) m->index_full_path=titulo;
+    //Si no tiene titulo...
+    if (m->index_full_path==NULL) {
+
+        char buf_full_path[MAX_LENGTH_FULL_PATH_SUBMENU];
+
+        //Obtener titulo considerando las ventanas anteriores
+        menu_dibuja_menu_get_full_path_menu(buf_full_path);
+
+        //Agregarle la ventana actual, que aun no esta en la lista de ventanas
+        int longitud=strlen(buf_full_path);
+        if (longitud==0) strcpy(buf_full_path,titulo);
+        else sprintf(&buf_full_path[longitud],"-> %s",titulo);
+
+        //generar uno aunque no sepa los subtitulos anteriores
+        //sprintf(buf_full_path,"... -> %s",titulo);
+
+        m->index_full_path=buf_full_path;
+
+        //printf("Titulo: [%s]\n",buf_full_path);
+    }
 
     if (m->no_indexar_busqueda==0 && m->es_menu_tabulado==0 && index_menu_enabled.v && m->index_full_path!=NULL) {
         indice_menu_actual=zxvision_index_entrada_menu(m->index_full_path);
@@ -20252,7 +20292,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
         menu_refresca_pantalla();
 
         if (menu_dibuja_menu_recorrer_menus) {
-            printf("Entrando en menu [%s]\n",titulo);
+            debug_printf(VERBOSE_INFO,"Entering menu [%s]",titulo);
             if (menu_dibuja_menu_recorrer_menus==2) {
                 menu_dibuja_menu_recorrer_menus=1;
                 //printf("Volvemos de una flecha izquierda. Aumentar\n");
@@ -20282,7 +20322,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
                     //entrar a submenu con  enter
                     salir_recorrer=1;
                     tecla=13;
-                    printf("Entrar en submenu [%s]\n",item_recorrer->texto_opcion);
+                    debug_printf(VERBOSE_INFO,"Entering submenu [%s]",item_recorrer->texto_opcion);
 
                 }
 

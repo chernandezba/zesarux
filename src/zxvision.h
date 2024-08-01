@@ -1048,6 +1048,7 @@ extern void zxvision_index_menu_init(void);
 extern void zxvision_index_save_to_disk(void);
 extern void zxvision_index_load_from_disk(void);
 
+extern void menu_convierte_texto_sin_modificadores(char *texto,char *texto_destino);
 extern int menu_dibuja_menu_recorrer_menus;
 
 extern int menu_ventana_scanf(char *titulo,char *texto,int max_length);
