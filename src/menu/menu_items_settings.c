@@ -5922,6 +5922,10 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
 
 		menu_add_ESC_item(array_menu_hardware_settings);
 
+        //Nota: si no se agrega el nombre del path del indice, se generará uno automáticamente
+        menu_add_item_menu_index_full_path(array_menu_hardware_settings,
+            "Main Menu-> Settings-> Hardware","Menú Principal-> Opciones-> Hardware","Menú Principal-> Opcions-> Hardware");
+
         retorno_menu=menu_dibuja_menu(&hardware_settings_opcion_seleccionada,&item_seleccionado,array_menu_hardware_settings,
             "Hardware Settings","Opciones Hardware","Opcions Hardware" );
 

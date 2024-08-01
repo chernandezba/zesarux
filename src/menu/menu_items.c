@@ -47271,7 +47271,7 @@ void menu_template_menu(MENU_ITEM_PARAMETERS)
 
         //Nota: si no se agrega el nombre del path del indice, se generará uno automáticamente
         menu_add_item_menu_index_full_path(array_menu_common,
-            "Main Menu-> Storage","Menú Principal-> Almacenamiento","Menú Principal-> Emmagatzematge");
+            "Main Menu-> Storage-> Template","Menú Principal-> Almacenamiento-> Plantilla","Menú Principal-> Emmagatzematge-> Plantilla");
 
         retorno_menu=menu_dibuja_menu(&template_menu_opcion_seleccionada,&item_seleccionado,array_menu_common,
             "Template Menu","Menú Plantilla","Menú Plantilla" );
