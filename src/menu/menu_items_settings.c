@@ -2384,7 +2384,7 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
 
 
 		menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_mouse_right_esc,NULL,
-            "Right mouse sends ESC","Boton derecho envia ESC","Botó dret envia ESC");
+            "Right mouse sends ESC","Botón derecho envia ESC","Botó dret envia ESC");
         menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_mouse_right_send_esc.v ? 'X' : ' ') );
         menu_add_item_menu_tooltip(array_menu_common,"Right button mouse simulate ESC key or secondary actions");
         menu_add_item_menu_ayuda(array_menu_common,"Right button mouse simulate ESC key or secondary actions");

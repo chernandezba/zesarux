@@ -20529,7 +20529,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 			}
 
             //enviar flecha izquierda si boton derecho raton
-			else if (si_menu_mouse_en_ventana() && mouse_right && mouse_en_zona_opciones && !mouse_is_dragging) {
+			else if (si_menu_mouse_en_ventana() && mouse_right && mouse_en_zona_opciones && !mouse_is_dragging && menu_mouse_right_send_esc.v==0) {
 				//printf ("Enviamos flecha izquierda\n");
 				tecla='5';
 			}
