@@ -19959,6 +19959,46 @@ void menu_dibuja_menu_get_menu_pos(int *xnormal,int *ynormal)
 
 }
 
+
+int menu_dibuja_menu_mouse_en_menus_anteriores(void)
+{
+
+    if (!si_menu_mouse_en_ventana() && mouse_left && !mouse_is_dragging) {
+
+        int x,y;
+
+        //La llamada a menu_calculate_mouse_xy_absolute_interface modifica algunas variables globales, que no quiero se se alteren
+
+        //int antes_mouse_movido=mouse_movido;
+        //int antes_last_mouse_x=last_mouse_x;
+        //int antes_mouse_y=mouse_y;
+
+        menu_calculate_mouse_xy_absolute_interface(&x,&y);
+
+        //printf("x: %d y: %d\n",x,y);
+        //mouse_movido=antes_mouse_movido;
+        //last_mouse_x=antes_last_mouse_x;
+        //mouse_y=antes_mouse_y;
+
+
+
+        zxvision_window *w=menu_dibuja_menu_primer_submenu;
+
+
+        while (w!=NULL) {
+            if (x>=(w->x) && y>=(w->y) && x<=(w->x+w->visible_width-1) && y<=(w->y+w->visible_height-1)) return 1;
+
+            w=w->submenu_next;
+        }
+
+    }
+
+    return 0;
+
+
+
+}
+
 int menu_dibuja_menu_recorrer_menus=0;
 
 int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item *m,char *titulo_en,char *titulo_es,char *titulo_ca)
@@ -20528,8 +20568,20 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 				tecla=13;
 			}
 
+            //Si se pulsa flecha izquierda en zona de menus anteriores
+			else if (menu_dibuja_menu_mouse_en_menus_anteriores()) {
+				//printf ("Enviamos flecha izquierda porque raton en zona menus anteriores\n");
+				tecla='5';
+                //mouse_left=0;
+                //menu_espera_no_tecla();
+
+
+                //esto se ha habilitado porque se ha detectado pulsacion del raton fuera de la ventana activa
+                salir_todos_menus=0;
+			}
+
             //enviar flecha izquierda si boton derecho raton
-			else if (si_menu_mouse_en_ventana() && mouse_right && mouse_en_zona_opciones && !mouse_is_dragging && menu_mouse_right_send_esc.v==0) {
+			else if (/*si_menu_mouse_en_ventana() &&  mouse_en_zona_opciones &&*/ mouse_right && !mouse_is_dragging && menu_mouse_right_send_esc.v==0) {
 				//printf ("Enviamos flecha izquierda\n");
 				tecla='5';
 			}
@@ -20656,6 +20708,8 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
             if (tecla=='8' && menu_old_behaviour_close_menus.v==0 && menu_retorna_item(m,(*opcion_inicial))->tiene_submenu) tecla=13;
         }
 
+        //printf("tecla: %d\n",tecla);
+
 		switch (tecla) {
 			case 13:
 				//ver si la opcion seleccionada esta activa
@@ -20674,7 +20728,10 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
             case '5':
 
                 if (m->es_menu_tabulado==0 && m->no_es_realmente_un_menu==0) {
-                    if (menu_old_behaviour_close_menus.v==0) salir_con_flecha_izquierda=1;
+                    if (menu_old_behaviour_close_menus.v==0) {
+                        salir_con_flecha_izquierda=1;
+                        //printf("salir con flecha izquierda\n");
+                    }
                 }
 
                 else {
@@ -21077,6 +21134,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 
     //Parecido a ESC, pero no cerramos todos menus
     if (salir_con_flecha_izquierda) {
+        //printf("Return con flecha izquierda\n");
         zxvision_helper_menu_shortcut_delete_last();
         //Indexar siempre que no diga que no hay que indexarlo, ni tampoco menus tabulados,
         //pues menus tabulados son mas bien para ventanas, como visual memory, y no menus de opciones

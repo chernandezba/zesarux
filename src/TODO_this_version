@@ -346,6 +346,8 @@ ok. agregar nombre de indice en todos los menus
 
 
 -poder ir a menu anterior con raton, pulsando en ventana anterior o bien algun boton en la ventana de menu
+*de momento se puede con boton derecho de raton
+*ok pulsando en submenus anteriores
 
 
 -Poder ver variables de una cinta .P, .O e incluso basic de spectrum (desde el bloque de basic de un .tap?)
