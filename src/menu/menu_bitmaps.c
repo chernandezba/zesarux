@@ -3531,23 +3531,23 @@ char *bitmap_button_ext_desktop_visualmem[EXT_DESKTOP_BUTTONS_ANCHO]={
 
 char *bitmap_button_ext_desktop_memorycheat[EXT_DESKTOP_BUTTONS_ANCHO]={
    //01234567890123456789012345
-    "         xxxx             ", //0
-    "        xyyyyx            ",
-    "       xyyxxyyx           ",
-  	"       xyxyyxyx           ",
-	"       xyxyyxyx           ",
-	"       xyyxxyyx           ",
-	"        xyyyyx            ",
-	"         xyyx             ",
-	"         xyx              ",
-	"         xyyx             ",
-	"         xyyx             ", //10
-    "         xyx              ",
-    "         xyyx             ",
-	"  x   x  xyyx x   x   x   ",
-	"  x   x  xyyx x   x   x   ",
-	"xxxxxxxx xyyx xxxxxxxxxxxx",
-	"xxxxxxxx xxxx xxxxxxxxxxxx",
+    "         xxxxxx           ", //0
+    "        xyyyyyyx          ",
+    "       xyyyxxyyyx         ",
+  	"       xyyx  xyyx         ",
+	"       xyyx  xyyx         ",
+	"       xyyyxxyyyx         ",
+	"        xyyyyyyx          ",
+    "         xyyyyx           ",
+	"         xyyyyx           ",
+	"         xyyyyx           ",
+	"         xyyyx            ", //10
+	"         xyyyyx           ",
+    "         xyyyyx           ",
+	"  x   x  xyyyyx x   x   x ",
+	"  x   x  xyyyx  x   x   x ",
+	"xxxxxxxx xyyyyx xxxxxxxxxx",
+	"xxxxxxxx xxxxxx xxxxxxxxxx",
 	"xxxxxxxxxwwwxxxwwxxwxxxwxx",
 	"xwxxxxxxxwxxwxwxxwxwwxwwxx",
 	"xwwxxxxxxwwwxxwwwwxwxwxwxx",

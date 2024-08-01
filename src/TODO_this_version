@@ -5,48 +5,10 @@ Para versión siguiente:
 -------------
 
 ---Indexado menu---
--error indexado:
-Main Menu-> Settings-> Hardware Settings-> Next machine id-> Hardware Settings-> Next machine id-> Hardware Settings-> Next machine id-> Hardware Settings
-Sucede porque funcion de menu menu_tbblue_machine_id, sale al pulsar enter y por tanto no llama a zxvision_index_delete_last_submenu_path
-O bien digo que ese menu no esté indexado, o se complica la cosa...
-Pero habran otros muchos menus que se sale al pulsar enter
-Y puede ser un problema, porque si cada vez que creo un menu y salgo con enter me tengo que acordar de esto pues...
-De momento en settings lo dejo desactivado por defecto el indexado hasta que no consiga estabilizar esto
-Ajustar comportamiento por defecto en parametros start, en grabado de parametros en utils
-La problematica de esto es, con un ejemplo: estamos en submenu A->B->C
-Dentro de menu C, no podemos saber si al pulsar una tecla (enter, esc o lo que sea), si volvemos a cargar el mismo menu C, o si vamos a un menu
-hacia atras, porque hay gestiones diferentes en menus (como el del Next machine id, que se sale del menu con Enter)
-Por tanto segun hagamos un comportamiento u otro, podemos ir erroneamente a menu A->B->C->C, o A->B->B etc
-Quiza los menus deberian tener un identificador interno, para detectar repetidos
-O quiza, que los propios menus generasen el titulo A->B->C (o que indicasen el menu "padre"), porque la mayoria saben de donde se generan,
-pero eso puede dar problemas en caso que un submenu se llame desde dos sitios diferentes (como ZX Desktop settings,
-que sale desde settings->zx desktop pero tambien con boton derecho sobre desktop)
-
-
--Buscador opciones de menú
-
-En todos los sitios donde se cierre un menu pero no se haya salido con ESC o flecha atras, hay que llamar a:
-zxvision_index_delete_last_submenu_path();
 
 -parece que el archivo de indice a veces lo escribe en otras rutas
 
--al cambiar de idioma, deja el indexado de busqueda raro en el submenu que esta dicha opcion (en cambio a català por ejemplo):
-Main Menu-> Settings-> General Settings-> Opciones Generales-> Opcions Generals
 
--buscar opciones de menu deberia considerar el titulo del menu con traduccion de idioma
-Para ello la funcion de dibujar menu debe admitir 3 titulos en vez de uno: uno para cada idioma
-Esto significaria tambien que al cambiar de idioma habria que resetear el indice de busqueda
-->ok. agregar mas titulos localizados
-
--llamada de menu no indexado (menu_dibuja_menu_no_indexado) que permita titulo en los 3 idiomas
-
--Quizá cada funcion que abre un menu, tiene que indicar también el titulo del menu contando submenos, por ejemplo,
-en el menu de storage->tape, al abrir el menu hay que indicar el titulo entero:
-"Storage -> Tape". El problema es que hay que indicarlo además en los 3 idiomas.
-Y que pasa con menús que aún no se le indica el titulo entero? Que le pongo?
-
-
--Títulos de submenus tienen que ser igual al nombre que se ha seleccionado en el menú anterior, esto facilitaria este indice de menus
 
 -Documentar funciones de menu respecto a indexado:
 
@@ -165,7 +127,6 @@ esta pensado solo para print char y mostrarlo en consola. deberia haber una func
 
 
 
-
 -algun tipo de build que no sea ni linux ni mac ni windows, sino simplemente UNIX_GENERIC o algo similar
 
 -conviene ocultar Wall y Wextra en version estable? puede salir algun warning util solo en version estable? no deberia, son warnings muy especificos
@@ -173,8 +134,6 @@ esta pensado solo para print char y mostrarlo en consola. deberia haber una func
 
 
 -driver fbdev en pc , con "zesarux --noconfigfile --vo fbdev > /dev/null". al desactivar border, genera panic. tambien desactivando border
-
-
 
 
 -A mejorar en Next para próxima versión: Ver TODO_machines, sección Next, en : "A mejorar en Next para próxima versión"
@@ -208,9 +167,6 @@ Lista en teoria completa de llamadas a pthreads con parametros a revisar:
 menu_zsock_http
 menu_download_file
 
-
-
--Poder ver variables de una cinta .P, .O e incluso basic de spectrum (desde el bloque de basic de un .tap?)
 
 
 -fbdev en linux, fbdev_cls peta al cambiar de maquina. Ejemplo de 48k a +3
@@ -381,21 +337,6 @@ el resto puede salir fuera -> comprobar al hacer print y putpixel que no sale fu
 
 -quiza hsync_generator_active.v en zx80/81, que no se usa practicamente, puede servir para estabilizar la imagen en horizontal
 
--Para probar scroll hardware en cpc:
-
-https://syx.neocities.org/posts/old_games_with_scroll
-boulder dash3
-Doctor Who and the Mines of Terror
-Five A Side Soccer
-Legend of Kage
-Street Machine
-Xeno
-007 The Living Daylights (uso intensivo , se ve fatal)
-Bob Morane
-Canadair
-Vector Ball
-
-
 
 -buscador opciones menu: creo que lo mejor es que cada menu indique, al crearse, la ruta donde se ubican
 Por ejemplo "Betadisk" está en Main Menu->Storage->Betadisk
@@ -403,3 +344,7 @@ ok. agregar nombre de indice en todos los menus
 
 -head over heels next: personaje heels siempre se ve por detrás
 -poder ir a menu anterior con raton, pulsando en ventana anterior o bien algun boton en la ventana de menu
+
+-Poder ver variables de una cinta .P, .O e incluso basic de spectrum (desde el bloque de basic de un .tap?)
+quizá tiene un uso muy reducido porque los programas necesariamente no se graban con variables, excepto algunos que guardan datos
+como matrices y cosas asi. pero en ese caso se pueden cargar y ya luego examinar variables

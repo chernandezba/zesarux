@@ -296,7 +296,7 @@ nota: cacalib, curses  en consola texto (no X) el mouse solo notifica al pulsar 
 -probar Timex. Tests, carga trap, grabar tap
 -Probar Prism: extras/media/spectrum/prism/allvideotests.tap. Tests de chloe. Failsafe mode. Modos lineales de video extras/media/spectrum/prism/linear_modes/
 -Probar TBBlue. Copper (carpeta media... copper con demo specdrum y beast (beast con esxdos handler ) ) .  Sprites con Dungeonette (con esxdos handler), tiles. cargar con --noconfigfile y smartload un archivo .nex con archivos de recursos (usara esxdos handler), ver que cargue todo bien
--Probar Amstrad cpc. Todas teclas
+-Probar Amstrad cpc. Todas teclas. Para probar scroll hardware en cpc: https://syx.neocities.org/posts/old_games_with_scroll: boulder dash3, Doctor Who and the Mines of Terror, Five A Side Soccer, Legend of Kage, Street Machine, Xeno, 007 The Living Daylights (uso intensivo , se ve fatal), Bob Morane, Canadair, Vector Ball
 -Probar Sam Coupe. Todas teclas. Probar atomlite
 -probar ZX-Uno. diferentes maquinas (48k, 128k, +2a), juegos rom. Probar spi flash file, default y custom. En 48k, 128k, +2a: probar carga tap y grabacion tap, y autosend LOAD"". Probar rutina carga de cinta desde la BIOS. Probar DMA. Probar playmid, que envia .mid a puertos midi del ay (mas rapido sin real video)
 -Probar demos Pentagon. Modo 16C. Nota: confusio.tap requiere usr0
