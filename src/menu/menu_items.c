@@ -297,6 +297,8 @@ int menu_memory_cheat_next_scan_opcion_seleccionada=0;
 
 //Fin opciones seleccionadas para cada menu
 
+//Variable solo usada como template
+int template_menu_opcion_seleccionada;
 
 //Ultima direccion pokeada
 int last_debug_poke_dir=16384;
@@ -47191,4 +47193,105 @@ void menu_template_window_can_be_backgrounded(MENU_ITEM_PARAMETERS)
 
 /*
 Fin de Template de ventana de menu que se puede enviar a background
+*/
+
+
+
+/*
+
+Inicio de template para gestion de menu
+
+Sustituir:
+
+template_menu por el nombre del menu (aparece en la funcion y en la variable de opcion seleccionada)
+Cambiar titulo de menu en llamada a funcion menu_dibuja_menu
+*/
+
+void menu_template_menu(MENU_ITEM_PARAMETERS)
+{
+    menu_item *array_menu_common;
+    menu_item item_seleccionado;
+    int retorno_menu;
+
+
+    do {
+
+        menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_defcon,NULL,"~~Defcon");
+        menu_add_item_menu_shortcut(array_menu_common,'d');
+        menu_add_item_menu_tiene_submenu(array_menu_common);
+
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_dinamid3,NULL,"D~~inamid3");
+        menu_add_item_menu_shortcut(array_menu_common,'i');
+        menu_add_item_menu_tiene_submenu(array_menu_common);
+
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_hilow_barbanegra,NULL,"HiLow ~~Barbanegra");
+        menu_add_item_menu_shortcut(array_menu_common,'b');
+        menu_add_item_menu_tiene_submenu(array_menu_common);
+
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_interface007,NULL,"I~~nterface007");
+        menu_add_item_menu_shortcut(array_menu_common,'n');
+        menu_add_item_menu_tiene_submenu(array_menu_common);
+
+        if (MACHINE_IS_SPECTRUM_16_48) {
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_mantransfer,NULL,"M~~antransfer");
+            menu_add_item_menu_shortcut(array_menu_common,'a');
+            menu_add_item_menu_tiene_submenu(array_menu_common);
+        }
+
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_mhpokeador,NULL,"Microhobby ~~Pokeador Automático");
+        menu_add_item_menu_shortcut(array_menu_common,'p');
+        menu_add_item_menu_tiene_submenu(array_menu_common);
+
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_multiface,NULL,"~~Multiface");
+        menu_add_item_menu_shortcut(array_menu_common,'m');
+        menu_add_item_menu_tiene_submenu(array_menu_common);
+
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_phoenix,NULL,"P~~hoenix");
+        menu_add_item_menu_shortcut(array_menu_common,'h');
+        menu_add_item_menu_tiene_submenu(array_menu_common);
+
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_ramjet,NULL,"~~Ramjet");
+        menu_add_item_menu_shortcut(array_menu_common,'r');
+        menu_add_item_menu_tiene_submenu(array_menu_common);
+
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_specmate,NULL,"~~Spec-Mate");
+        menu_add_item_menu_shortcut(array_menu_common,'s');
+        menu_add_item_menu_tiene_submenu(array_menu_common);
+
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_transtape,NULL,"~~Transtape");
+        menu_add_item_menu_shortcut(array_menu_common,'t');
+        menu_add_item_menu_tiene_submenu(array_menu_common);
+
+
+
+        menu_add_item_menu_separator(array_menu_common);
+
+        menu_add_ESC_item(array_menu_common);
+
+
+        //Nota: si no se agrega el nombre del path del indice, se generará uno automáticamente
+        menu_add_item_menu_index_full_path(array_menu_common,
+            "Main Menu-> Storage","Menú Principal-> Almacenamiento","Menú Principal-> Emmagatzematge");
+
+        retorno_menu=menu_dibuja_menu(&template_menu_opcion_seleccionada,&item_seleccionado,array_menu_common,
+            "Template Menu","Menú Plantilla","Menú Plantilla" );
+
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+            //llamamos por valor de funcion
+            if (item_seleccionado.menu_funcion!=NULL) {
+                //printf ("actuamos por funcion\n");
+                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+
+            }
+        }
+
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+
+}
+
+
+/*
+
+Fin de template para gestion de menu
+
 */
