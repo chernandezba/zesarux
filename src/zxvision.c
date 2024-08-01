@@ -19963,7 +19963,7 @@ void menu_dibuja_menu_get_menu_pos(int *xnormal,int *ynormal)
 int menu_dibuja_menu_mouse_en_menus_anteriores(void)
 {
 
-    if (!si_menu_mouse_en_ventana() && mouse_left && !mouse_is_dragging) {
+    if (!si_menu_mouse_en_ventana() && mouse_left && !mouse_is_dragging && menu_show_submenus_tree.v) {
 
         int x,y;
 
@@ -20098,20 +20098,33 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 
         char buf_full_path[MAX_LENGTH_FULL_PATH_SUBMENU];
 
-        //Obtener titulo considerando las ventanas anteriores
-        menu_dibuja_menu_get_full_path_menu(buf_full_path);
+        //Lo deducimos teniendo en cuenta que hay submenus previos
+        if (menu_show_submenus_tree.v) {
 
-        //Agregarle la ventana actual, que aun no esta en la lista de ventanas
-        int longitud=strlen(buf_full_path);
-        if (longitud==0) strcpy(buf_full_path,titulo);
-        else sprintf(&buf_full_path[longitud],"-> %s",titulo);
 
-        //generar uno aunque no sepa los subtitulos anteriores
-        //sprintf(buf_full_path,"... -> %s",titulo);
+            //Obtener titulo considerando las ventanas anteriores
+            menu_dibuja_menu_get_full_path_menu(buf_full_path);
+
+            //Agregarle la ventana actual, que aun no esta en la lista de ventanas
+            int longitud=strlen(buf_full_path);
+            if (longitud==0) strcpy(buf_full_path,titulo);
+            else sprintf(&buf_full_path[longitud],"-> %s",titulo);
+
+            //generar uno aunque no sepa los subtitulos anteriores
+            //sprintf(buf_full_path,"... -> %s",titulo);
+
+
+
+            //printf("Titulo: [%s]\n",buf_full_path);
+        }
+
+        else {
+            //no tenemos submenus previos. Metemos un texto generico
+            sprintf(buf_full_path,"... -> %s",titulo);
+        }
 
         m->index_full_path=buf_full_path;
 
-        //printf("Titulo: [%s]\n",buf_full_path);
     }
 
     if (m->no_indexar_busqueda==0 && m->es_menu_tabulado==0 && index_menu_enabled.v && m->index_full_path!=NULL) {
