@@ -4,7 +4,7 @@ ZEsarUX 11.1 - Zorro edition. 30 July 2024
 
 Added machines Czerweny CZ 1000, CZ 1500, CZ 1000 Plus, CZ 1500 Plus, CZ 2000, CZ Spectrum, CZ Spectrum Plus
 Added Memory Cheat feature: useful to find counters of energy, bombs, ammo or any other cheat in a game
-Added Find text string menu
+Added Find text string on memory menu
 
 * Improvements:
 
@@ -34,6 +34,13 @@ Fixed TZX autload as Real Tape on Spectrum +3
 Fixed hotswap ZX80 to ZX81, ZX81 to ZX80
 Fixed Amstrad CPC Scroll
 Fixed loading .nex snapshots and Layer 2 not being initialized (fixes errors on Head Over Heels for Next, for example)
+Fixed Search menu feature
+
+* Misc Changes:
+
+...
+
+* As always, there are some other minor bugfixes and improvements
 
 ----
 

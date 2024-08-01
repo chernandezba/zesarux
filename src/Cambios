@@ -4,7 +4,7 @@ ZEsarUX 11.1 - Zorro edition. 30 Julio 2024
 
 Agregadas máquinas Czerweny CZ 1000, CZ 1500, CZ 1000 Plus, CZ 1500 Plus, CZ 2000, CZ Spectrum, CZ Spectrum Plus
 Agregar función de "Memory Cheat": util para encontrar contadores de energia, bombas, munición o cualquier otro truco de un juego
-Agregado menú para buscar cadenas de texto
+Agregado menú para buscar cadenas de texto en memoria
 
 * Mejoras:
 
@@ -34,6 +34,13 @@ Corregida autocarga de TZX como Cinta Real en Spectrum +3
 Corregido hotswap ZX80 a ZX81, ZX81 a ZX80
 Corregido Scroll de Amstrad CPC
 Corregida carga de snapshots .nex snapshots y la inicialización incorrecta de Layer 2 (corrige errores en Head Over Heels de Next por ejemplo)
+Corregida característica de Buscar menú
+
+* Cambios varios:
+
+...
+
+* Como siempre, hay otras mejoras y correcciones de errores menores.
 
 ----
 
