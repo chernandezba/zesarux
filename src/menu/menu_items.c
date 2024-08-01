@@ -26461,7 +26461,7 @@ void menu_memory_cheat_set_watch_or_write_no_ask_choice(int opcion,int direccion
 
 void menu_memory_cheat_set_watch_or_write(int direccion,int watch_id,int pedir_direccion_en_set_watch)
 {
-    int opcion=menu_simple_three_choices("Action","Do you want to","Write address","Set watch","Open Hexadecimal Editor");
+    int opcion=menu_simple_three_choices("Action","Do you want to","Write value","Set watch","Open Hexadecimal Editor");
 
     if (opcion==3) {
         menu_debug_hexdump_direccion=direccion;
