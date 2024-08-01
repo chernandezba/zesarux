@@ -3541,13 +3541,13 @@ char *bitmap_button_ext_desktop_memorycheat[EXT_DESKTOP_BUTTONS_ANCHO]={
 	"        xyyyyyyx          ",
     "         xyyyyx           ",
 	"         xyyyyx           ",
-	"         xyyyx            ", //10
-	"         xyyyyx           ",
+	"         xyyyyx           ", //10
+	"         xyyyx            ",
     "         xyyyyx           ",
 	"  x   x  xyyyyx x   x   x ",
-	"  x   x  xyyyx  x   x   x ",
-	"xxxxxxxx xyyyyx xxxxxxxxxx",
-	"xxxxxxxx xxxxxx xxxxxxxxxx",
+	"  x   x  xyyyyx x   x   x ",
+	"xxxxxxxx xyyyx  xxxxxxxxxx",
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
 	"xxxxxxxxxwwwxxxwwxxwxxxwxx",
 	"xwxxxxxxxwxxwxwxxwxwwxwwxx",
 	"xwwxxxxxxwwwxxwwwwxwxwxwxx",
