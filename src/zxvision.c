@@ -9607,8 +9607,13 @@ void menu_dibuja_ventana(int x,int y,int ancho,int alto,char *titulo_original_ut
 int last_mouse_x,last_mouse_y;
 int mouse_movido=0;
 
+//Coordenadas dentro de la ventana activa, en caracter
 int menu_mouse_x=0;
 int menu_mouse_y=0;
+
+//Coordenadas dentro de toda la ventana de ZEsarUX, en caracter
+int zxvision_mouse_x=0;
+int zxvision_mouse_y=0;
 
 zxvision_window *zxvision_current_window=NULL;
 
@@ -18308,6 +18313,9 @@ void menu_calculate_mouse_xy(void)
 	//printf ("antes de restar: %d,%d\n",x,y);
 	*/
 
+    zxvision_mouse_x=x;
+    zxvision_mouse_y=y;
+
 	x -=current_win_x;
 	y -=current_win_y;
 
@@ -19967,19 +19975,14 @@ int menu_dibuja_menu_mouse_en_menus_anteriores(void)
 
         int x,y;
 
-        //La llamada a menu_calculate_mouse_xy_absolute_interface modifica algunas variables globales, que no quiero se se alteren
+        //menu_calculate_mouse_xy_absolute_interface(&x,&y);
 
-        //int antes_mouse_movido=mouse_movido;
-        //int antes_last_mouse_x=last_mouse_x;
-        //int antes_mouse_y=mouse_y;
+        //printf("antes   %d,%d\n",x,y);
 
-        menu_calculate_mouse_xy_absolute_interface(&x,&y);
+        x=zxvision_mouse_x;
+        y=zxvision_mouse_y;
 
-        //printf("x: %d y: %d\n",x,y);
-        //mouse_movido=antes_mouse_movido;
-        //last_mouse_x=antes_last_mouse_x;
-        //mouse_y=antes_mouse_y;
-
+        //printf("despues %d,%d\n",x,y);
 
 
         zxvision_window *w=menu_dibuja_menu_primer_submenu;
