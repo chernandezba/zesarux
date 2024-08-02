@@ -16887,36 +16887,7 @@ void menu_network(MENU_ITEM_PARAMETERS)
 
 #ifndef NETWORKING_DISABLED
 
-            menu_add_item_menu_separator(array_menu_common);
 
-			menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_zeng,NULL,"Z~~ENG");
-			menu_add_item_menu_shortcut(array_menu_common,'e');
-			menu_add_item_menu_tooltip(array_menu_common,"Setup ZEsarUX Network Gaming");
-			menu_add_item_menu_ayuda(array_menu_common,"ZEsarUX Network Gaming protocol (ZENG) allows you to play to any emulated game, using two or more ZEsarUX instances, "
-			  "located each one on any part of the world or in a local network.\n"
-			  "Games doesn't have to be modified, you can use any existing game. "
-			  "ZENG works by sending special commands through the ZRCP protocol, so in order to use ZENG you must enable ZRCP protocol on menu settings-debug. "
-			  "This protocol listens on tcp port 10000 so you should open your firewall/router to use it. "
-			  "One ZEsarUX instance will be the master node and the other instances will be the slaves nodes.\n"
-			  "Please do NOT set more than one node as master\n"
-			  "When you enable ZENG on all nodes:\n"
-			  "-all key/joystick presses will be sent between all nodes\n"
-			  "-every two seconds a snapshot will be sent from the master to all the slave nodes\n\n"
-			  "Note about using joystick: real joystick (and cursors on keyboard) are sent to the other nodes as "
-			  "the direction/button (left,right,up,down or fire) but not the type of joystick emulated (kempston, fuller, etc). "
-			  "So you must configure same joystick emulation on all nodes. Also, real joystick to keys events are not sent by ZENG, just the joystick event"
-			);
-            menu_add_item_menu_tiene_submenu(array_menu_common);
-
-
-			menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online,NULL,"ZENG ~~Online");
-			menu_add_item_menu_shortcut(array_menu_common,'o');
-			menu_add_item_menu_tooltip(array_menu_common,"Connect to a ZEsarUX Network Gaming Online server");
-			menu_add_item_menu_ayuda(array_menu_common,"ZEsarUX Network Gaming protocol Online (ZENG Online) allows you to play to any emulated game, using two or more ZEsarUX instances, "
-			  "located each one on any part of the world or in a local network.\n"
-              "It's similar to ZENG but uses a central online server\n"
-			);
-            menu_add_item_menu_tiene_submenu(array_menu_common);
 
             menu_add_item_menu_separator(array_menu_common);
 
@@ -16960,6 +16931,12 @@ void menu_network(MENU_ITEM_PARAMETERS)
 #endif
 
 
+			menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_network_traffic,NULL,"Network traffic");
+            menu_add_item_menu_se_cerrara(array_menu_common);
+            menu_add_item_menu_genera_ventana(array_menu_common);
+
+
+
 			menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_network_http_request,NULL,
                 "Test Http request","Test peticion Http","Test peticio Http");
             menu_add_item_menu_se_cerrara(array_menu_common);
@@ -16967,6 +16944,38 @@ void menu_network(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_es_avanzado(array_menu_common);
 
             menu_add_item_menu_separator(array_menu_common);
+
+
+
+			menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_zeng,NULL,"Z~~ENG");
+			menu_add_item_menu_shortcut(array_menu_common,'e');
+			menu_add_item_menu_tooltip(array_menu_common,"Setup ZEsarUX Network Gaming");
+			menu_add_item_menu_ayuda(array_menu_common,"ZEsarUX Network Gaming protocol (ZENG) allows you to play to any emulated game, using two or more ZEsarUX instances, "
+			  "located each one on any part of the world or in a local network.\n"
+			  "Games doesn't have to be modified, you can use any existing game. "
+			  "ZENG works by sending special commands through the ZRCP protocol, so in order to use ZENG you must enable ZRCP protocol on menu settings-debug. "
+			  "This protocol listens on tcp port 10000 so you should open your firewall/router to use it. "
+			  "One ZEsarUX instance will be the master node and the other instances will be the slaves nodes.\n"
+			  "Please do NOT set more than one node as master\n"
+			  "When you enable ZENG on all nodes:\n"
+			  "-all key/joystick presses will be sent between all nodes\n"
+			  "-every two seconds a snapshot will be sent from the master to all the slave nodes\n\n"
+			  "Note about using joystick: real joystick (and cursors on keyboard) are sent to the other nodes as "
+			  "the direction/button (left,right,up,down or fire) but not the type of joystick emulated (kempston, fuller, etc). "
+			  "So you must configure same joystick emulation on all nodes. Also, real joystick to keys events are not sent by ZENG, just the joystick event"
+			);
+            menu_add_item_menu_tiene_submenu(array_menu_common);
+
+
+			menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online,NULL,"ZENG ~~Online Client");
+			menu_add_item_menu_shortcut(array_menu_common,'o');
+			menu_add_item_menu_tooltip(array_menu_common,"Connect to a ZEsarUX Network Gaming Online server");
+			menu_add_item_menu_ayuda(array_menu_common,"ZEsarUX Network Gaming protocol Online (ZENG Online) allows you to play to any emulated game, using two or more ZEsarUX instances, "
+			  "located each one on any part of the world or in a local network.\n"
+              "It's similar to ZENG but uses a central online server\n"
+			);
+            menu_add_item_menu_tiene_submenu(array_menu_common);
+
 
 			menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_server,NULL,"ZENG Online Server");
 			menu_add_item_menu_tooltip(array_menu_common,"Setup ZEsarUX Network Gaming Online server");
@@ -16976,19 +16985,12 @@ void menu_network(MENU_ITEM_PARAMETERS)
 			);
             menu_add_item_menu_tiene_submenu(array_menu_common);
 
-            menu_add_item_menu_separator(array_menu_common);
 
-
-			menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_network_traffic,NULL,"Network traffic");
-            menu_add_item_menu_se_cerrara(array_menu_common);
-            menu_add_item_menu_genera_ventana(array_menu_common);
-
-
-//Fin de condicion si hay pthreads
+//Fin de condicion ifndef NETWORKING_DISABLED
 #endif
 
 
-			menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+			menu_add_item_menu_separator(array_menu_common);
 
             menu_add_ESC_item(array_menu_common);
 
@@ -19445,6 +19447,7 @@ void menu_text_adventure_tools(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_tooltip(array_menu_common,"Open On Screen Adventure Keyboard");
         menu_add_item_menu_ayuda(array_menu_common,"Here you have an on screen keyboard but uses words instead of just letters. "
             "It's useful to play Text Adventures, you can redefine your own words");
+        menu_add_item_menu_genera_ventana(array_menu_common);
 
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_unpaws_ungac,NULL,
             "~~Extract words to Adv. Keyb.","~~Extraer palabras a Tecl. Av.","~~Extreure paraules a Tecl. Av.");
@@ -32249,6 +32252,7 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
     do {
         menu_add_item_menu_inicial(&array_menu_debug,"~~Reset",MENU_OPCION_NORMAL,menu_debug_reset,NULL);
 		menu_add_item_menu_shortcut(array_menu_debug,'r');
+        menu_add_item_menu_genera_ventana(array_menu_debug);
 
         //Agregar una acción de solo hacer PC=0 en casos, por ejemplo, en que hay divide en modo mapram y no queremos
         //que se reinicialice toda la maquina y perder ese mapeo
@@ -46007,7 +46011,7 @@ void menu_inicio_bucle_main(void)
 	} while (!salir_menu && !salir_todos_menus);
 
    // printf("llamar a menu_dibuja_menu_cierra_todos_submenus desde fin menu_inicio_bucle_main\n");
-    menu_dibuja_menu_cierra_todos_submenus();
+    menu_dibuja_submenu_cierra_todos_submenus();
 
     //Si se ha lanzado un reindexado entero de todos los menus
     menu_dibuja_menu_recorrer_menus=0;

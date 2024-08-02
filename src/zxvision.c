@@ -10731,7 +10731,7 @@ void zxvision_window_delete_all_windows(void)
 
     //Gestion de los submenus
     //liberar memoria de todos los submenus, ya se han cerrado desde el bucle previo
-    menu_dibuja_menu_free_all();
+    menu_dibuja_submenu_free_all();
 
 
 }
@@ -19757,25 +19757,19 @@ void menu_dibuja_menu_set_offset_y_common(zxvision_window *ventana,menu_item *m,
 z80_int menu_mouse_frame_counter=0;
 z80_int menu_mouse_frame_counter_anterior=0;
 
-//Funcion de gestion de menu
-//Entrada: opcion_inicial: puntero a opcion inicial seleccionada
-//m: estructura de menu (estructura en forma de lista con punteros)
-//titulo: titulo de la ventana del menu
-//Nota: x,y, ancho, alto de la ventana se calculan segun el contenido de la misma
 
-//Retorno
-//valor retorno: tecla pulsada: 0 normal (ENTER), 1 ESCAPE,... MENU_RETORNO_XXXX
 
-//opcion_inicial contiene la opcion seleccionada.
-//asigna en item_seleccionado valores de: tipo_opcion, menu_funcion (debe ser una estructura ya asignada)
-
+//
+//Inicio funciones de visibilidad de submenus previos
+//Todas las funciones relacionadas con esto empiezan por menu_dibuja_submenu*
+//
 
 //Primer submenu visible cuando se van abriendo menus (el de mas abajo)
-zxvision_window *menu_dibuja_menu_primer_submenu=NULL;
+zxvision_window *menu_dibuja_submenu_primer_submenu=NULL;
 
-zxvision_window *menu_dibuja_menu_find_last_submenu(void)
+zxvision_window *menu_dibuja_submenu_find_last_submenu(void)
 {
-    zxvision_window *w=menu_dibuja_menu_primer_submenu;
+    zxvision_window *w=menu_dibuja_submenu_primer_submenu;
 
     if (w==NULL) return NULL;
 
@@ -19786,12 +19780,12 @@ zxvision_window *menu_dibuja_menu_find_last_submenu(void)
     return w;
 }
 
-void menu_dibuja_menu_get_full_path_menu(char *s)
+void menu_dibuja_submenu_get_full_path_menu(char *s)
 {
 
     *s=0;
 
-    zxvision_window *w=menu_dibuja_menu_primer_submenu;
+    zxvision_window *w=menu_dibuja_submenu_primer_submenu;
 
     if (w==NULL) return;
 
@@ -19809,15 +19803,15 @@ void menu_dibuja_menu_get_full_path_menu(char *s)
 
 }
 
-void menu_dibuja_menu_add_submenu(zxvision_window *w)
+void menu_dibuja_submenu_add_submenu(zxvision_window *w)
 {
 
     if (menu_show_submenus_tree.v==0) return;
 
-    zxvision_window *last_submenu=menu_dibuja_menu_find_last_submenu();
+    zxvision_window *last_submenu=menu_dibuja_submenu_find_last_submenu();
 
     if (last_submenu==NULL) {
-        menu_dibuja_menu_primer_submenu=w;
+        menu_dibuja_submenu_primer_submenu=w;
     }
     else {
         last_submenu->submenu_next=w;
@@ -19827,15 +19821,15 @@ void menu_dibuja_menu_add_submenu(zxvision_window *w)
     w->submenu_previous=last_submenu;
 }
 
-void menu_dibuja_menu_cierra_n_submenus(int veces)
+void menu_dibuja_submenu_cierra_n_submenus(int veces)
 {
 
     if (menu_show_submenus_tree.v==0) return;
 
-    //printf("--Inicio menu_dibuja_menu_cierra_n_submenus (%d)\n",veces);
+    //printf("--Inicio menu_dibuja_submenu_cierra_n_submenus (%d)\n",veces);
 
     //Tenemos que cerrar de arriba hacia abajo
-    zxvision_window *w=menu_dibuja_menu_find_last_submenu();
+    zxvision_window *w=menu_dibuja_submenu_find_last_submenu();
 
 
     while (w!=NULL && veces>0) {
@@ -19854,7 +19848,7 @@ void menu_dibuja_menu_cierra_n_submenus(int veces)
     }
 
     if (w==NULL) {
-        menu_dibuja_menu_primer_submenu=NULL;
+        menu_dibuja_submenu_primer_submenu=NULL;
         //printf("Cerrados todos menus\n");
     }
 
@@ -19862,15 +19856,15 @@ void menu_dibuja_menu_cierra_n_submenus(int veces)
 
     zxvision_redraw_all_windows();
 
-    //printf("--Fin menu_dibuja_menu_cierra_submenu_dos_ultimos\n");
+    //printf("--Fin menu_dibuja_submenu_cierra_submenu_dos_ultimos\n");
 }
 
 //liberar memoria de todos los submenus
-void menu_dibuja_menu_free_all(void)
+void menu_dibuja_submenu_free_all(void)
 {
     if (menu_show_submenus_tree.v==0) return;
 
-    zxvision_window *w=menu_dibuja_menu_primer_submenu;
+    zxvision_window *w=menu_dibuja_submenu_primer_submenu;
 
     if (w==NULL) return;
 
@@ -19880,31 +19874,31 @@ void menu_dibuja_menu_free_all(void)
     }
 
 
-    menu_dibuja_menu_primer_submenu=NULL;
+    menu_dibuja_submenu_primer_submenu=NULL;
 
 }
 
-void menu_dibuja_menu_cierra_todos_submenus(void)
+void menu_dibuja_submenu_cierra_todos_submenus(void)
 {
 
     if (menu_show_submenus_tree.v==0) return;
 
-    menu_dibuja_menu_cierra_n_submenus(9999);
+    menu_dibuja_submenu_cierra_n_submenus(9999);
 
 }
 
-void menu_dibuja_menu_cierra_submenu_dos_ultimos(void)
+void menu_dibuja_submenu_cierra_submenu_dos_ultimos(void)
 {
 
     if (menu_show_submenus_tree.v==0) return;
 
-    menu_dibuja_menu_cierra_n_submenus(2);
+    menu_dibuja_submenu_cierra_n_submenus(2);
 
 }
 
 
 
-void menu_dibuja_menu_get_menu_pos(int *xnormal,int *ynormal)
+void menu_dibuja_submenu_get_menu_pos(int *xnormal,int *ynormal)
 {
     //menu centrado normalmente
     //*xnormal=menu_center_x()-ancho/2;
@@ -19915,7 +19909,7 @@ void menu_dibuja_menu_get_menu_pos(int *xnormal,int *ynormal)
 
 
         //es el primero
-        if (menu_dibuja_menu_primer_submenu==NULL) {
+        if (menu_dibuja_submenu_primer_submenu==NULL) {
 
             //Al primero se le puede forzar posicion, por los botones superiores por ejemplo
             if (force_next_menu_position.v) {
@@ -19952,7 +19946,7 @@ void menu_dibuja_menu_get_menu_pos(int *xnormal,int *ynormal)
         else {
             //a la derecha del anterior
 
-            zxvision_window *ultima_ventana=menu_dibuja_menu_find_last_submenu();
+            zxvision_window *ultima_ventana=menu_dibuja_submenu_find_last_submenu();
 
             int x=ultima_ventana->x+ultima_ventana->visible_width;
             int y=ultima_ventana->y+ultima_ventana->submenu_linea_seleccionada+1;
@@ -19968,7 +19962,7 @@ void menu_dibuja_menu_get_menu_pos(int *xnormal,int *ynormal)
 }
 
 
-int menu_dibuja_menu_mouse_en_menus_anteriores(void)
+int menu_dibuja_submenu_mouse_en_menus_anteriores(void)
 {
 
     if (!si_menu_mouse_en_ventana() && mouse_left && !mouse_is_dragging && menu_show_submenus_tree.v) {
@@ -19985,7 +19979,7 @@ int menu_dibuja_menu_mouse_en_menus_anteriores(void)
         //printf("despues %d,%d\n",x,y);
 
 
-        zxvision_window *w=menu_dibuja_menu_primer_submenu;
+        zxvision_window *w=menu_dibuja_submenu_primer_submenu;
 
 
         while (w!=NULL) {
@@ -20002,8 +19996,25 @@ int menu_dibuja_menu_mouse_en_menus_anteriores(void)
 
 }
 
+
+//
+//Fin funciones de visibilidad de submenus previos
+//
+
 int menu_dibuja_menu_recorrer_menus=0;
 
+
+//Funcion de gestion de menu
+//Entrada: opcion_inicial: puntero a opcion inicial seleccionada
+//m: estructura de menu (estructura en forma de lista con punteros)
+//titulo: titulo de la ventana del menu
+//Nota: x,y, ancho, alto de la ventana se calculan segun el contenido de la misma
+
+//Retorno
+//valor retorno: tecla pulsada: 0 normal (ENTER), 1 ESCAPE,... MENU_RETORNO_XXXX
+
+//opcion_inicial contiene la opcion seleccionada.
+//asigna en item_seleccionado valores de: tipo_opcion, menu_funcion (debe ser una estructura ya asignada)
 int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item *m,char *titulo_en,char *titulo_es,char *titulo_ca)
 {
 
@@ -20102,11 +20113,11 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
         char buf_full_path[MAX_LENGTH_FULL_PATH_SUBMENU];
 
         //Lo deducimos teniendo en cuenta que hay submenus previos
-        if (menu_show_submenus_tree.v) {
+        if (menu_show_submenus_tree.v && m->no_es_realmente_un_menu==0) {
 
 
             //Obtener titulo considerando las ventanas anteriores
-            menu_dibuja_menu_get_full_path_menu(buf_full_path);
+            menu_dibuja_submenu_get_full_path_menu(buf_full_path);
 
             //Agregarle la ventana actual, que aun no esta en la lista de ventanas
             int longitud=strlen(buf_full_path);
@@ -20179,7 +20190,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 
     int posicionar_submenu=0;
 
-    if (menu_show_submenus_tree.v && screen_ext_desktop_enabled && screen_ext_desktop_place_menu) posicionar_submenu=1;
+    if (menu_show_submenus_tree.v && m->no_es_realmente_un_menu==0 && screen_ext_desktop_enabled && screen_ext_desktop_place_menu) posicionar_submenu=1;
 
     if (!posicionar_submenu) {
 
@@ -20195,7 +20206,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 
     else {
         //Posicionar segun politica de submenus
-        menu_dibuja_menu_get_menu_pos(&x,&y);
+        menu_dibuja_submenu_get_menu_pos(&x,&y);
 
     }
 
@@ -20231,13 +20242,13 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 
 	if (m->es_menu_tabulado==0) {
 
-        if (menu_show_submenus_tree.v) {
+        if (menu_show_submenus_tree.v && m->no_es_realmente_un_menu==0) {
             //asignar espacio ventana con malloc, para no perderlo en el stack
             zxvision_window *ventana_para_submenus=util_malloc(sizeof(zxvision_window),"Can not allocate memory for submenu window");
 
             ventana=ventana_para_submenus;
 
-            menu_dibuja_menu_add_submenu(ventana);
+            menu_dibuja_submenu_add_submenu(ventana);
         }
 
         else ventana=&ventana_menu;
@@ -20585,7 +20596,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 			}
 
             //Si se pulsa flecha izquierda en zona de menus anteriores
-			else if (menu_dibuja_menu_mouse_en_menus_anteriores()) {
+			else if (menu_dibuja_submenu_mouse_en_menus_anteriores() && m->no_es_realmente_un_menu==0) {
 				//printf ("Enviamos flecha izquierda porque raton en zona menus anteriores\n");
 				tecla='5';
                 //mouse_left=0;
@@ -21115,10 +21126,10 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
         zxvision_next_do_not_play_close_window_sound=1;
 
         //si hay setting de submenu, no siempre se destruye ventana
-        if (menu_show_submenus_tree.v) {
+        if (menu_show_submenus_tree.v && m->no_es_realmente_un_menu==0) {
             if (salir_con_flecha_izquierda) {
                 //Quitamos el actual, y el anterior tambien, dado que el anterior se va a redibujar
-                menu_dibuja_menu_cierra_submenu_dos_ultimos();
+                menu_dibuja_submenu_cierra_submenu_dos_ultimos();
             }
 
             else {
@@ -21129,13 +21140,13 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
                 if (menu_se_cerrara) cerrar_ventanas=1;
                 if (genera_ventana) cerrar_ventanas=1;
 
-                if (cerrar_ventanas) menu_dibuja_menu_cierra_todos_submenus();
+                if (cerrar_ventanas) menu_dibuja_submenu_cierra_todos_submenus();
 
                 else {
                     if (tiene_submenu==0) {
                         //Si no tiene submenu ni genera ventana, asumimos que se recargara el menu (es un setting que conmuta)
                         //por tanto borrar solo esta ventana actual
-                        menu_dibuja_menu_cierra_n_submenus(1);
+                        menu_dibuja_submenu_cierra_n_submenus(1);
                     }
                 }
             }
@@ -22999,7 +23010,7 @@ int menu_confirm_yesno_texto_additional_item(char *texto_ventana,char *texto_int
         }
 
 
-        retorno_menu=menu_dibuja_menu_no_title_lang(&confirm_yes_no_opcion_seleccionada,&item_seleccionado,array_menu_confirm_yes_no,texto_ventana);
+        retorno_menu=menu_dibuja_menu_dialogo_no_title_lang(&confirm_yes_no_opcion_seleccionada,&item_seleccionado,array_menu_confirm_yes_no,texto_ventana);
 
 
 
@@ -23072,7 +23083,7 @@ int menu_simple_two_choices(char *texto_ventana,char *texto_interior,char *opcio
 
 
 
-            retorno_menu=menu_dibuja_menu_one_time(&simple_two_choices_opcion_seleccionada,&item_seleccionado,array_menu_simple_two_choices,texto_ventana);
+            retorno_menu=menu_dibuja_menu_dialogo_no_title_lang(&simple_two_choices_opcion_seleccionada,&item_seleccionado,array_menu_simple_two_choices,texto_ventana);
 
 
 
@@ -23121,7 +23132,7 @@ int menu_simple_three_choices(char *texto_ventana,char *texto_interior,char *opc
 
 
 
-            retorno_menu=menu_dibuja_menu_one_time(&simple_three_choices_opcion_seleccionada,&item_seleccionado,array_menu_simple_three_choices,texto_ventana);
+            retorno_menu=menu_dibuja_menu_dialogo_no_title_lang(&simple_three_choices_opcion_seleccionada,&item_seleccionado,array_menu_simple_three_choices,texto_ventana);
 
 
 
@@ -23174,7 +23185,7 @@ int menu_simple_four_choices(char *texto_ventana,char *texto_interior,char *opci
 
 
 
-            retorno_menu=menu_dibuja_menu_one_time(&simple_four_choices_opcion_seleccionada,&item_seleccionado,array_menu_simple_four_choices,texto_ventana);
+            retorno_menu=menu_dibuja_menu_dialogo_no_title_lang(&simple_four_choices_opcion_seleccionada,&item_seleccionado,array_menu_simple_four_choices,texto_ventana);
 
 
 
@@ -23229,9 +23240,9 @@ int menu_simple_five_choices(char *texto_ventana,char *texto_interior,char *opci
 
 
 
-            retorno_menu=menu_dibuja_menu_one_time(&simple_five_choices_opcion_seleccionada,&item_seleccionado,array_menu_simple_five_choices,texto_ventana);
+            //retorno_menu=menu_dibuja_menu_one_time(&simple_five_choices_opcion_seleccionada,&item_seleccionado,array_menu_simple_five_choices,texto_ventana);
 
-
+            retorno_menu=menu_dibuja_menu_dialogo_no_title_lang(&simple_five_choices_opcion_seleccionada,&item_seleccionado,array_menu_simple_five_choices,texto_ventana);
 
             if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
                     //llamamos por valor de funcion

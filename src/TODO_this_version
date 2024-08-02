@@ -349,8 +349,17 @@ ok. agregar nombre de indice en todos los menus
 *de momento se puede con boton derecho de raton
 *ok pulsando en submenus anteriores
 
+-Quick save screen. Y además con tecla F
+Que genere un nombre random o con fecha
 
+-menu display. teclado en pantalla. quiza poner aqui el nuevo de help keyboard. dejar ese viejo solo para drivers de video de tipo texto, cacalib, etc. considerar ademas que ese antiguo solo sale para spectrum y zx80/81. Ojo que el teclado en pantalla de texto debería también salir al pulsar tecla de OSD teclado, pero solo cuando es driver texto
 
 -Poder ver variables de una cinta .P, .O e incluso basic de spectrum (desde el bloque de basic de un .tap?)
 quizá tiene un uso muy reducido porque los programas necesariamente no se graban con variables, excepto algunos que guardan datos
 como matrices y cosas asi. pero en ese caso se pueden cargar y ya luego examinar variables
+
+-issues de submenus:
+ok - al abrir osd adventure keyboard, se ven submenus anteriores. ok faltaba menu_add_item_menu_genera_ventana
+-debug->reset. ventana confirmacion sale sin que este menu debug visible. quiza tiene que llamar a genera ventana?
+aunque luego menu confirmacion si/no quiza tendria que decir que no es un menu, lo mismo con otras funciones de *x*choices. por otra parte, reset tendria que salir de todos los menus luego
+Se prueba por ejemplo en menu_simple_five_choices (y en two, three y four), y en menu_confirm_yesno

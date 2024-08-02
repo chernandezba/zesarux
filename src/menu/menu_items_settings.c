@@ -2123,7 +2123,7 @@ void menu_interface_enable_topbar_menu(MENU_ITEM_PARAMETERS)
 void menu_interface_previous_submenus(MENU_ITEM_PARAMETERS)
 {
     if (menu_show_submenus_tree.v) {
-        menu_dibuja_menu_cierra_todos_submenus();
+        menu_dibuja_submenu_cierra_todos_submenus();
         menu_show_submenus_tree.v=0;
     }
 
