@@ -5555,6 +5555,7 @@ void menu_keyboard_settings(MENU_ITEM_PARAMETERS)
 		menu_add_item_menu_en_es_ca(array_menu_keyboard_settings,MENU_OPCION_NORMAL,menu_hardware_redefine_keys,NULL,
             "~~Redefine keys","~~Redefinir teclas","~~Redefinir tecles");
 		menu_add_item_menu_shortcut(array_menu_keyboard_settings,'r');
+        menu_add_item_menu_genera_ventana(array_menu_keyboard_settings);
 		menu_add_item_menu_tooltip(array_menu_keyboard_settings,"Redefine one key to another");
 		menu_add_item_menu_ayuda(array_menu_keyboard_settings,"Redefine one key to another");
 
@@ -8403,35 +8404,41 @@ void menu_accessibility_menu(MENU_ITEM_PARAMETERS)
 
     do {
 
-        menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_accessibility_menu_high_contrast,NULL,"Set high ~~contrast style");
+        menu_add_item_menu_en_es_ca_inicial(&array_menu_common,MENU_OPCION_NORMAL,menu_accessibility_menu_high_contrast,NULL,
+            "Set high ~~contrast style","Establecer estilo alto ~~contraste","Establecir estil alt ~~contrast");
         menu_add_item_menu_shortcut(array_menu_common,'c');
         menu_add_item_menu_tooltip(array_menu_common,"This setting can be also be enabled/disabled from Settings-> ZX Vision menu");
         menu_add_item_menu_ayuda(array_menu_common,"This setting can be also be enabled/disabled from Settings-> ZX Vision menu");
 
-        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_accessibility_menu_big_font,NULL,"Set big ~~font");
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_accessibility_menu_big_font,NULL,
+            "Set big ~~font","Establecer ~~fuente letra grande","Establir ~~font lletra gran");
         menu_add_item_menu_shortcut(array_menu_common,'f');
         menu_add_item_menu_tooltip(array_menu_common,"This setting can be also be enabled/disabled from Settings-> ZX Vision menu");
         menu_add_item_menu_ayuda(array_menu_common,"This setting can be also be enabled/disabled from Settings-> ZX Vision menu");
 
 
-        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_accessibility_menu_hotkeys,NULL,"Force ~~hotkeys");
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_accessibility_menu_hotkeys,NULL,
+            "Force ~~hotkeys","Forzar ~~hotkeys","Forçar ~~hotkeys");
         menu_add_item_menu_shortcut(array_menu_common,'h');
         menu_add_item_menu_tooltip(array_menu_common,"This setting can be also be enabled/disabled from Settings-> ZX Vision menu");
         menu_add_item_menu_ayuda(array_menu_common,"This setting can be also be enabled/disabled from Settings-> ZX Vision menu");
 
 
-        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_accessibility_menu_disable_back,NULL,"Disable background ~~windows");
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_accessibility_menu_disable_back,NULL,
+            "Disable background ~~windows","Desactivar ~~windows en background","Desactivar ~~windows en background");
         menu_add_item_menu_shortcut(array_menu_common,'w');
         menu_add_item_menu_tooltip(array_menu_common,"This setting can be also be enabled/disabled from Settings-> ZX Vision menu");
         menu_add_item_menu_ayuda(array_menu_common,"This setting can be also be enabled/disabled from Settings-> ZX Vision menu");
 
         if (screen_ext_desktop_enabled) {
-            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_accessibility_menu_zxdesktop_clean,NULL,"ZX Desktop c~~lean fill");
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_accessibility_menu_zxdesktop_clean,NULL,
+                "ZX Desktop c~~lean background","ZX Desktop fondo ~~limpio","ZX Desktop fons c~~lar");
             menu_add_item_menu_shortcut(array_menu_common,'l');
             menu_add_item_menu_tooltip(array_menu_common,"This setting can be also be enabled/disabled from Settings-> ZX Desktop menu");
             menu_add_item_menu_ayuda(array_menu_common,"This setting can be also be enabled/disabled from Settings-> ZX Desktop menu");
 
-            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_accessibility_menu_zxdesktop_button_boxes,NULL,"ZX Desktop ~~objects visibility");
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_accessibility_menu_zxdesktop_button_boxes,NULL,
+                "ZX Desktop ~~objects visibility","ZX Desktop visibilidad ~~objetos","ZX Desktop visibilitat ~~objectes");
             menu_add_item_menu_shortcut(array_menu_common,'o');
             menu_add_item_menu_tooltip(array_menu_common,"Affects buttons and icons. This setting can be also be enabled/disabled from Settings-> ZX Desktop menu");
             menu_add_item_menu_ayuda(array_menu_common,"Affects buttons and icons. This setting can be also be enabled/disabled from Settings-> ZX Desktop menu");
@@ -8439,11 +8446,15 @@ void menu_accessibility_menu(MENU_ITEM_PARAMETERS)
 
         menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
-        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_interface_inverse_video,NULL,"[%c] Inverse colours",(inverse_video.v==1 ? 'X' : ' ') );
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_inverse_video,NULL,
+            "Inverse colours","Colores inversos","Colors invertits");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(inverse_video.v==1 ? 'X' : ' ') );
 		menu_add_item_menu_tooltip(array_menu_common,"Inverse Color Palette");
 		menu_add_item_menu_ayuda(array_menu_common,"Inverses all the colours used on the emulator, including menu");
 
-        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_accessibility_gray_scale,NULL,"[%c] Gray mode",(screen_gray_mode ? 'X' : ' ' ));
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_accessibility_gray_scale,NULL,
+            "Gray mode","Modo grises","Mode grisos");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(screen_gray_mode ? 'X' : ' ' ) );
 		menu_add_item_menu_tooltip(array_menu_common,"Set Gray Palette");
 		menu_add_item_menu_ayuda(array_menu_common,"Set Gray Palette to all the colours used on the emulator, including menu");
 
