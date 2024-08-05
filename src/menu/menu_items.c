@@ -31425,9 +31425,10 @@ void menu_debug_reset(MENU_ITEM_PARAMETERS)
 {
 	if (menu_confirm_yesno("Reset CPU")==1) {
 		reset_cpu();
-                //Y salimos de todos los menus
-                salir_todos_menus=1;
+
 	}
+    //Y salimos de todos los menus
+    salir_todos_menus=1;
 
 }
 
@@ -31443,43 +31444,48 @@ void menu_debug_prism_failsafe(MENU_ITEM_PARAMETERS)
 		//Para aplicar cambio de pagina rom
 		prism_set_memory_pages();
 
-                //Y salimos de todos los menus
-                salir_todos_menus=1;
+
 	}
+    //Y salimos de todos los menus
+    salir_todos_menus=1;
 }
 
 void menu_debug_hard_reset(MENU_ITEM_PARAMETERS)
 {
-        if (menu_confirm_yesno("Hard Reset CPU")==1) {
-                hard_reset_cpu();
-                //Y salimos de todos los menus
-                salir_todos_menus=1;
-        }
+    if (menu_confirm_yesno("Hard Reset CPU")==1) {
+            hard_reset_cpu();
+    }
+    //Y salimos de todos los menus
+    salir_todos_menus=1;
 
 }
 
 
 void menu_debug_nmi(MENU_ITEM_PARAMETERS)
 {
-        if (menu_confirm_yesno("Generate NMI")==1) {
+    if (menu_confirm_yesno("Generate NMI")==1) {
 
-		generate_nmi();
+        generate_nmi();
 
-                //Y salimos de todos los menus
-                salir_todos_menus=1;
-        }
+
+    }
+
+    //Y salimos de todos los menus
+    salir_todos_menus=1;
 
 }
 
 void menu_debug_nmi_multiface_tbblue(MENU_ITEM_PARAMETERS)
 {
-        if (menu_confirm_yesno("Generate Multiface NMI")==1) {
+    if (menu_confirm_yesno("Generate Multiface NMI")==1) {
 
 		generate_nmi_multiface_tbblue();
 
-                //Y salimos de todos los menus
-                salir_todos_menus=1;
-        }
+
+    }
+
+    //Y salimos de todos los menus
+    salir_todos_menus=1;
 
 }
 
@@ -31518,9 +31524,11 @@ void menu_debug_special_nmi(MENU_ITEM_PARAMETERS)
 		//Valor nmievent
 		zxuno_ports[8]=valor_nmi;
 
-                //Y salimos de todos los menus
-                salir_todos_menus=1;
+
         }
+
+    //Y salimos de todos los menus
+    salir_todos_menus=1;
 
 }
 
@@ -31824,9 +31832,10 @@ void menu_debug_set_pc_zero(MENU_ITEM_PARAMETERS)
 {
 	if (menu_confirm_yesno("Set PC=0")==1) {
 		reg_pc=0;
-        //Y salimos de todos los menus
-        salir_todos_menus=1;
 	}
+
+    //Y salimos de todos los menus
+    salir_todos_menus=1;
 
 }
 
@@ -32264,6 +32273,7 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_ayuda(array_menu_debug,"It only resets cpu by setting PC register to zero.\n"
                 "Useful for example using DivIDE firmwares in MAPRAM mode and you need to restart it but without "
                 "losing the mapping");
+            menu_add_item_menu_genera_ventana(array_menu_debug);
             menu_add_item_menu_es_avanzado(array_menu_debug);
         }
 
@@ -32282,15 +32292,18 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
 				"On Z88, it's the same as opening flap and pressing reset button.\n"
 				"On ZX-Uno, it's the same as pressing Ctrl-Alt-Backspace or powering off and on the machine"
 				);
+            menu_add_item_menu_genera_ventana(array_menu_debug);
 		}
 
 		if (!CPU_IS_MOTOROLA) {
     		menu_add_item_menu(array_menu_debug,"Generate ~~NMI",MENU_OPCION_NORMAL,menu_debug_nmi,NULL);
             menu_add_item_menu_spanish(array_menu_debug,"Generar ~~NMI");
 			menu_add_item_menu_shortcut(array_menu_debug,'n');
+            menu_add_item_menu_genera_ventana(array_menu_debug);
 
 			if (MACHINE_IS_TBBLUE && multiface_enabled.v && (tbblue_registers[6]&8) ) {
                 menu_add_item_menu(array_menu_debug,"Generate Multiface NMI",MENU_OPCION_NORMAL,menu_debug_nmi_multiface_tbblue,NULL);
+                menu_add_item_menu_genera_ventana(array_menu_debug);
             }
 		}
 
@@ -37898,7 +37911,7 @@ void menu_storage_tape(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_en_es_ca(array_menu_tape_settings,MENU_OPCION_NORMAL,menu_storage_tape_copier,NULL,
                 "Run Tape Copier","Ejecutar copión","Executar copiador");
             //menu_add_item_menu_shortcut(array_menu_tape_settings,'v');
-            menu_add_item_menu_tiene_submenu(array_menu_tape_settings);
+            menu_add_item_menu_genera_ventana(array_menu_tape_settings);
             menu_add_item_menu_tooltip(array_menu_tape_settings,"Allow to run a tape copier");
             menu_add_item_menu_ayuda(array_menu_tape_settings,"Allow to run a tape copier");
         }

@@ -1801,10 +1801,12 @@ void menu_interface_force_confirm_yes(MENU_ITEM_PARAMETERS)
 	force_confirm_yes.v ^=1;
 }
 
+/*
 void menu_interface_force_atajo(MENU_ITEM_PARAMETERS)
 {
         menu_force_writing_inverse_color.v ^=1;
 }
+*/
 
 void menu_interface_tooltip(MENU_ITEM_PARAMETERS)
 {
@@ -1828,10 +1830,12 @@ void menu_setting_select_machine_by_name(MENU_ITEM_PARAMETERS)
 	setting_machine_selection_by_name.v ^=1;
 }
 
+/*
 void menu_interface_first_aid(MENU_ITEM_PARAMETERS)
 {
 	menu_disable_first_aid.v ^=1;
 }
+*/
 
 void menu_interface_restore_first_aid(MENU_ITEM_PARAMETERS)
 {
@@ -2153,9 +2157,10 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
 		menu_add_item_menu_tooltip(array_menu_common,"Menu character height");
 		menu_add_item_menu_ayuda(array_menu_common,"Menu character height. You can reduce it so allowing more text rows in a window");
 
-		menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_first_aid,NULL,
+		menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,
             "First aid help","Ayuda de primeros auxilios","Ajuda de primers auxilis");
         menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_disable_first_aid.v==0 ? 'X' : ' ') );
+        menu_add_item_menu_opcion_conmuta(array_menu_common,&menu_disable_first_aid);
 		menu_add_item_menu_tooltip(array_menu_common,"Enable or disable First Aid help");
 		menu_add_item_menu_ayuda(array_menu_common,"Enable or disable First Aid help");
 
@@ -2307,9 +2312,10 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
 		menu_add_item_menu_tooltip(array_menu_common,"Enable or disable tooltips");
 		menu_add_item_menu_ayuda(array_menu_common,"Enable or disable tooltips");
 
-		menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_force_atajo,NULL,
+		menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,
             "Force visible ~~hotkeys","Forzar visibilidad ~~hotkeys","Forçar visibilitat ~~hotkeys");
         menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_force_writing_inverse_color.v ? 'X' : ' ') );
+        menu_add_item_menu_opcion_conmuta(array_menu_common,&menu_force_writing_inverse_color);
         menu_add_item_menu_shortcut(array_menu_common,'h');
 		menu_add_item_menu_tooltip(array_menu_common,"Force always show hotkeys");
 		menu_add_item_menu_ayuda(array_menu_common,"Force always show hotkeys. By default it will only be shown after a timeout or wrong key pressed");
@@ -5656,7 +5662,7 @@ void menu_tbblue_machine_id(MENU_ITEM_PARAMETERS)
                 //menu_add_item_menu(array_menu_tbblue_hardware_id,"ESC Back",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
                 menu_add_ESC_item(array_menu_tbblue_hardware_id);
 
-                retorno_menu=menu_dibuja_menu_no_title_lang(&menu_tbblue_hardware_id_opcion_seleccionada,&item_seleccionado,array_menu_tbblue_hardware_id,"Next machine id" );
+                retorno_menu=menu_dibuja_menu_dialogo_no_title_lang(&menu_tbblue_hardware_id_opcion_seleccionada,&item_seleccionado,array_menu_tbblue_hardware_id,"Next machine id" );
 
 
 
@@ -5801,6 +5807,10 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
 
 
   		if (MACHINE_IS_TBBLUE) {
+
+            menu_add_item_menu_separator(array_menu_hardware_settings);
+            menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
+
 			menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_tbblue_fast_boot_mode,NULL,"[%c] Next fast boot mode",
 			(tbblue_fast_boot_mode.v ? 'X' : ' ') );
 			menu_add_item_menu_tooltip(array_menu_hardware_settings,"Boots tbblue directly to a 48 rom but with all the Next features enabled (except divmmc)");
@@ -5822,6 +5832,9 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
 			menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_tbblue_rtc_traps,NULL,"[%c] Next RTC traps",(tbblue_use_rtc_traps ? 'X' : ' ') );
 			menu_add_item_menu_tooltip(array_menu_hardware_settings,"Allows RTC trap for NextOS ROM");
 			menu_add_item_menu_ayuda(array_menu_hardware_settings,"Allows RTC trap for NextOS ROM and any program that uses RTC.SYS");
+            menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
+
+            menu_add_item_menu_separator(array_menu_hardware_settings);
             menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
 
 		}

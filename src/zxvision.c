@@ -21085,6 +21085,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 	item_seleccionado->tipo_opcion=menu_sel->tipo_opcion;
 	item_seleccionado->valor_opcion=menu_sel->valor_opcion;
     item_seleccionado->atajo_tecla=menu_sel->atajo_tecla;
+    item_seleccionado->opcion_conmuta=menu_sel->opcion_conmuta;
 	strcpy(item_seleccionado->texto_opcion,menu_retorna_item_language(menu_sel));
 	strcpy(item_seleccionado->texto_misc,menu_sel->texto_misc);
 
@@ -21243,6 +21244,12 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 
         //innecesario con nuevo metodo de indexacion if (es_one_time) zxvision_index_delete_last_submenu_path();
 
+        //Si se gestiona la conmutacion de opcion directamente desde aqui
+        if (item_seleccionado->opcion_conmuta!=NULL) {
+            //printf("Conmutar variable directamente desde menu\n");
+            item_seleccionado->opcion_conmuta->v ^=1;
+        }
+
         return MENU_RETORNO_NORMAL;
     }
 
@@ -21318,6 +21325,7 @@ void menu_add_item_menu_common_defaults(menu_item *m,int tipo_opcion,t_menu_func
     m->one_time=0;
     m->opcion_marcada=0;
     m->menu_se_cerrara=0;
+    m->opcion_conmuta=NULL;
 
     m->menu_funcion_espacio=NULL;
 
@@ -21470,6 +21478,19 @@ void menu_add_item_menu_tiene_submenu(menu_item *m)
         }
 
         m->tiene_submenu=1;
+}
+
+//Agregar decirle que tiene opcion que conmuta al ultimo item de menu
+void menu_add_item_menu_opcion_conmuta(menu_item *m,z80_bit *opcion)
+{
+       //busca el ultimo item i le añade el indicado
+
+        while (m->siguiente_item!=NULL)
+        {
+                m=m->siguiente_item;
+        }
+
+        m->opcion_conmuta=opcion;
 }
 
 //Agregar el nombre de full path de indexado
@@ -23299,8 +23320,8 @@ int menu_simple_six_choices(char *texto_ventana,char *texto_interior,char *opcio
 
 
 
-            retorno_menu=menu_dibuja_menu_one_time(&simple_six_choices_opcion_seleccionada,&item_seleccionado,array_menu_simple_six_choices,texto_ventana);
-
+            //retorno_menu=menu_dibuja_menu_one_time(&simple_six_choices_opcion_seleccionada,&item_seleccionado,array_menu_simple_six_choices,texto_ventana);
+            retorno_menu=menu_dibuja_menu_dialogo_no_title_lang(&simple_six_choices_opcion_seleccionada,&item_seleccionado,array_menu_simple_six_choices,texto_ventana);
 
 
             if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
@@ -23360,7 +23381,7 @@ int menu_simple_seven_choices(char *texto_ventana,char *texto_interior,char *opc
 
 
 
-            retorno_menu=menu_dibuja_menu_one_time(&simple_seven_choices_opcion_seleccionada,&item_seleccionado,array_menu_simple_seven_choices,texto_ventana);
+            retorno_menu=menu_dibuja_menu_dialogo_no_title_lang(&simple_seven_choices_opcion_seleccionada,&item_seleccionado,array_menu_simple_seven_choices,texto_ventana);
 
 
 
@@ -23425,7 +23446,7 @@ int menu_simple_eight_choices(char *texto_ventana,char *texto_interior,char *opc
 
 
 
-            retorno_menu=menu_dibuja_menu_one_time(&simple_eight_choices_opcion_seleccionada,&item_seleccionado,array_menu_simple_eight_choices,texto_ventana);
+            retorno_menu=menu_dibuja_menu_dialogo_no_title_lang(&simple_eight_choices_opcion_seleccionada,&item_seleccionado,array_menu_simple_eight_choices,texto_ventana);
 
 
 
@@ -23492,7 +23513,7 @@ int menu_simple_nine_choices(char *texto_ventana,char *texto_interior,char *opci
 
 
 
-            retorno_menu=menu_dibuja_menu_one_time(&simple_nine_choices_opcion_seleccionada,&item_seleccionado,array_menu_simple_nine_choices,texto_ventana);
+            retorno_menu=menu_dibuja_menu_dialogo_no_title_lang(&simple_nine_choices_opcion_seleccionada,&item_seleccionado,array_menu_simple_nine_choices,texto_ventana);
 
 
 
@@ -23563,7 +23584,7 @@ int menu_simple_ten_choices(char *texto_ventana,char *texto_interior,char *opcio
 
 
 
-            retorno_menu=menu_dibuja_menu_one_time(&simple_nine_choices_opcion_seleccionada,&item_seleccionado,array_menu_simple_nine_choices,texto_ventana);
+            retorno_menu=menu_dibuja_menu_dialogo_no_title_lang(&simple_nine_choices_opcion_seleccionada,&item_seleccionado,array_menu_simple_nine_choices,texto_ventana);
 
 
             if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {

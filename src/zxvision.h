@@ -996,6 +996,9 @@ struct s_menu_item {
     //Ejemplo de esto: menu_simple_ten_choices
     int one_time;
 
+    //puntero a opcion que conmuta, gestionado directamente desde funcion de menu
+    z80_bit *opcion_conmuta;
+
     //Apunta al texto del nombre de la ruta completa de este menu, para indexar la busqueda
     char *index_full_path;
 };
@@ -1071,6 +1074,7 @@ extern void menu_add_item_menu_tabulado(menu_item *m,int x,int y);
 extern void menu_add_item_menu_espacio(menu_item *m,t_menu_funcion menu_funcion_espacio);
 extern void menu_add_item_menu_misc(menu_item *m,char *texto_misc);
 extern void menu_add_item_menu_tiene_submenu(menu_item *m);
+extern void menu_add_item_menu_opcion_conmuta(menu_item *m,z80_bit *opcion);
 extern void menu_add_item_menu_genera_ventana(menu_item *m);
 extern void menu_add_item_menu_es_avanzado(menu_item *m);
 extern void menu_add_item_menu_marcar_opcion(menu_item *m,int valor);
