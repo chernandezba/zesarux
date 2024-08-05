@@ -5602,7 +5602,7 @@ void menu_hardware_dinamic_sd1(MENU_ITEM_PARAMETERS)
 
 void menu_tbblue_board_id(MENU_ITEM_PARAMETERS)
 {
-    int opcion=menu_simple_three_choices("Board ID","Select one",
+    int opcion=menu_simple_three_choices("Next Board ID","Select one",
         "ZXN Issue 2, XC6SLX16-2FTG256","ZXN Issue 3, XC6SLX16-2FTG256","ZXN Issue 4, XC7A15T-1CSG324");
 
     switch (opcion) {
@@ -5621,6 +5621,8 @@ void menu_tbblue_board_id(MENU_ITEM_PARAMETERS)
         break;
 
     }
+
+    salir_todos_menus=1;
 }
 
 
@@ -5693,6 +5695,8 @@ void menu_tbblue_machine_id(MENU_ITEM_PARAMETERS)
 
 
                 }
+
+                salir_todos_menus=1;
 
 }
 
@@ -5822,15 +5826,15 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
 
 			menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_tbblue_machine_id,NULL,"[%02X] Next machine id",tbblue_machine_id);
-            menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
+            menu_add_item_menu_add_flags(array_menu_hardware_settings,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_ES_AVANZADO | MENU_ITEM_FLAG_SE_CERRARA);
 
 			menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_tbblue_board_id,NULL,"[%02X] Next board id",tbblue_board_id);
-            menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
+            menu_add_item_menu_add_flags(array_menu_hardware_settings,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_ES_AVANZADO | MENU_ITEM_FLAG_SE_CERRARA);
 
 			//menu_hardware_tbblue_core_version
 			menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_tbblue_core_version,NULL,"[%d.%d.%d] Next core version",
 									tbblue_core_current_version_major,tbblue_core_current_version_minor,tbblue_core_current_version_subminor);
-            menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
+            menu_add_item_menu_add_flags(array_menu_hardware_settings,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_ES_AVANZADO | MENU_ITEM_FLAG_SE_CERRARA);
 
 
 			menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_tbblue_rtc_traps,NULL,"[%c] Next RTC traps",(tbblue_use_rtc_traps ? 'X' : ' ') );

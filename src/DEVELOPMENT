@@ -155,7 +155,8 @@ menu_dibuja_menu_dialogo_no_title_lang
 Items de menú:
 
 * si tiene submenus, agregarle menu_add_item_menu_tiene_submenu
-* si genera ventana, agregarle menu_add_item_menu_genera_ventana. o sea, lo que son acciones o submenus, no generan ventana y por tanto no tienen este parametro. Por ejemplo "reset cpu" (y un dialogo de confirmacion yes/no no cuenta como "ventana"). Esto mostrará puntos suspensivos (...) a la derecha del item de menu. Independiente de si esa ventana permite background o no (por ejemplo osd aventure keyboard no permite background)
+* si genera ventana, agregarle menu_add_item_menu_genera_ventana. "Next machine id" por ejemplo presenta una lista de opciones y
+tiene este parametro. Por lo general, lo que son acciones (sin ventanas de confirmación) o submenus, no generan ventana y por tanto no tienen este parametro. Esto mostrará puntos suspensivos (...) a la derecha del item de menu. Independiente de si esa ventana permite background o no (por ejemplo osd aventure keyboard no permite background)
 * si disparar la accion, se cerraran todos los menus, agregarle menu_add_item_menu_se_cerrara
 * si solo visible con items avanzados, agregarle menu_add_item_menu_es_avanzado
 
