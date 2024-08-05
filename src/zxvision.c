@@ -17769,7 +17769,7 @@ void zxvision_rearrange_background_windows(int si_cascada,int si_aplicar_a_inmut
                 forzar_process_switcher=1;
                 //printf("Es process switcher\n");
                 x=0;
-                y=scr_get_menu_height()-ventana->visible_height-0;
+                y=scr_get_menu_height()-ventana->visible_height;
             }
         }
 
