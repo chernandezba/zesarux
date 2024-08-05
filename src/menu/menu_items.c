@@ -560,7 +560,7 @@ void menu_debug_poke_pok_file_select(char *pokfile)
             //menu_add_item_menu(array_menu_debug_pok_file,"ESC Back",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
             menu_add_ESC_item(array_menu_debug_pok_file);
 
-            retorno_menu=menu_dibuja_menu_no_title_lang(&debug_pok_file_opcion_seleccionada,&item_seleccionado,array_menu_debug_pok_file,"Select Poke" );
+            retorno_menu=menu_dibuja_menu_dialogo_no_title_lang(&debug_pok_file_opcion_seleccionada,&item_seleccionado,array_menu_debug_pok_file,"Select Poke" );
 
 
 
@@ -644,6 +644,7 @@ void menu_poke(MENU_ITEM_PARAMETERS)
 
 
                 menu_add_item_menu_inicial_format(&array_menu_poke,MENU_OPCION_NORMAL,menu_debug_poke,NULL,"~~Poke");
+                menu_add_item_menu_add_flags(array_menu_poke,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
                 menu_add_item_menu_shortcut(array_menu_poke,'p');
                 menu_add_item_menu_tooltip(array_menu_poke,"Poke address");
                 menu_add_item_menu_ayuda(array_menu_poke,"Poke address for infinite lives, etc... This item follows active memory zone. "
@@ -659,6 +660,7 @@ void menu_poke(MENU_ITEM_PARAMETERS)
 
 		if (MACHINE_IS_SPECTRUM) {
 			menu_add_item_menu(array_menu_poke,"Poke from .POK ~~file",MENU_OPCION_NORMAL,menu_debug_poke_pok_file,NULL);
+            menu_add_item_menu_add_flags(array_menu_poke,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
 			menu_add_item_menu_shortcut(array_menu_poke,'f');
 			menu_add_item_menu_tooltip(array_menu_poke,"Poke reading .POK file");
 			menu_add_item_menu_ayuda(array_menu_poke,"Poke reading .POK file");
@@ -14815,6 +14817,7 @@ void menu_zeng(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_separator(array_menu_common);
 
             menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_manual_sync_snapshot,NULL,"Sync snapshot to remote");
+            menu_add_item_menu_add_flags(array_menu_common,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
 
 
 			menu_add_item_menu_separator(array_menu_common);
@@ -21409,7 +21412,7 @@ void menu_debug_tsconf_tbblue_msx(MENU_ITEM_PARAMETERS)
 
 		menu_add_item_menu_inicial_format(&array_menu_debug_tsconf_tbblue_msx,MENU_OPCION_NORMAL,menu_debug_tsconf_tbblue_msx_videoregisters,NULL,"Video ~~Info");
 		menu_add_item_menu_shortcut(array_menu_debug_tsconf_tbblue_msx,'i');
-        menu_add_item_menu_se_cerrara(array_menu_debug_tsconf_tbblue_msx);
+        menu_add_item_menu_add_flags(array_menu_debug_tsconf_tbblue_msx,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
 
         if (MACHINE_IS_CPC && rainbow_enabled.v) {
             menu_add_item_menu(array_menu_debug_tsconf_tbblue_msx,"",MENU_OPCION_SEPARADOR,NULL,NULL);
@@ -21423,25 +21426,25 @@ void menu_debug_tsconf_tbblue_msx(MENU_ITEM_PARAMETERS)
         if (!MACHINE_IS_CPC) {
 		menu_add_item_menu_format(array_menu_debug_tsconf_tbblue_msx,MENU_OPCION_NORMAL,menu_tsconf_layer_settings,NULL,"Video ~~Layers");
 		menu_add_item_menu_shortcut(array_menu_debug_tsconf_tbblue_msx,'l');
-        menu_add_item_menu_se_cerrara(array_menu_debug_tsconf_tbblue_msx);
+        menu_add_item_menu_add_flags(array_menu_debug_tsconf_tbblue_msx,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
         }
 
         if (!MACHINE_IS_CPC) {
 		menu_add_item_menu_format(array_menu_debug_tsconf_tbblue_msx,MENU_OPCION_NORMAL,menu_debug_tsconf_tbblue_msx_spritenav,NULL,"~~Sprite navigator");
 		menu_add_item_menu_shortcut(array_menu_debug_tsconf_tbblue_msx,'s');
-        menu_add_item_menu_se_cerrara(array_menu_debug_tsconf_tbblue_msx);
+        menu_add_item_menu_add_flags(array_menu_debug_tsconf_tbblue_msx,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
         }
 
         if (MACHINE_IS_TBBLUE) {
 		    menu_add_item_menu_format(array_menu_debug_tsconf_tbblue_msx,MENU_OPCION_NORMAL,menu_debug_sprite_mangement_disable,NULL,"Sprite ~~disabling");
 		    menu_add_item_menu_shortcut(array_menu_debug_tsconf_tbblue_msx,'d');
-            menu_add_item_menu_se_cerrara(array_menu_debug_tsconf_tbblue_msx);
+            menu_add_item_menu_add_flags(array_menu_debug_tsconf_tbblue_msx,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
         }
 
 		if (MACHINE_IS_TSCONF || MACHINE_IS_TBBLUE || MACHINE_HAS_VDP_9918A) {
 			menu_add_item_menu_format(array_menu_debug_tsconf_tbblue_msx,MENU_OPCION_NORMAL,menu_debug_tsconf_tbblue_msx_tilenav,NULL,"~~Tile navigator");
 			menu_add_item_menu_shortcut(array_menu_debug_tsconf_tbblue_msx,'t');
-            menu_add_item_menu_se_cerrara(array_menu_debug_tsconf_tbblue_msx);
+            menu_add_item_menu_add_flags(array_menu_debug_tsconf_tbblue_msx,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
 		}
 
         if (MACHINE_IS_TBBLUE) {
@@ -21453,7 +21456,7 @@ void menu_debug_tsconf_tbblue_msx(MENU_ITEM_PARAMETERS)
 		if (MACHINE_IS_MSX || MACHINE_IS_SVI) {
 			menu_add_item_menu_format(array_menu_debug_tsconf_tbblue_msx,MENU_OPCION_NORMAL,menu_debug_msx_svi_memory_info,NULL,"~~Memory Info");
 			menu_add_item_menu_shortcut(array_menu_debug_tsconf_tbblue_msx,'m');
-            menu_add_item_menu_se_cerrara(array_menu_debug_tsconf_tbblue_msx);
+            menu_add_item_menu_add_flags(array_menu_debug_tsconf_tbblue_msx,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
 		}
 
                 menu_add_item_menu(array_menu_debug_tsconf_tbblue_msx,"",MENU_OPCION_SEPARADOR,NULL,NULL);
@@ -33168,7 +33171,7 @@ void menu_snapshot(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_en_es_ca(array_menu_snapshot,MENU_OPCION_NORMAL,menu_snapshot_quickload,NULL,
             "Quickl~~oad","L~~oad rapido","L~~oad rapid");
         menu_add_item_menu_shortcut(array_menu_snapshot,'o');
-        menu_add_item_menu_genera_ventana(array_menu_snapshot);
+        menu_add_item_menu_add_flags(array_menu_snapshot,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
         menu_add_item_menu_tooltip(array_menu_snapshot,"Load a snapshot quickly");
         menu_add_item_menu_ayuda(array_menu_snapshot,"Browses on the quicksave directory");
 

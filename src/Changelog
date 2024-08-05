@@ -22,6 +22,7 @@ Improved Hexadecimal editor:
 - Now the memory pointer can follow a expression (CPU register for example)
 
 Improved ZX Vision:
+- More GUI improvements following more guidelines from (retro)-specification IBM CUA
 - Menus show previous menus when selecting submenus
 - When selecting ZX Vision Style, it is applied on moving cursor
 - Improve cursor movement on menus when pressing PgDn/PgUp

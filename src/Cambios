@@ -22,6 +22,7 @@ Mejorado Hexadecimal editor:
 - Ahora el puntero de memoria puede seguir una expresión (un registro de la CPU por ejemplo)
 
 Mejorado ZX Vision:
+- Mas mejoras en la interfaz siguiendo más indicaciones de la (retro)-especificación IBM CUA
 - Los menús muestran los previous menús al seleccionar submenús
 - Al seleccionar estilo de ZX Vision Style, se aplica al mover el cursor
 - Mejorar movimiento del cursor en menús al pulsar PgDn/PgUp
