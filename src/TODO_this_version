@@ -364,5 +364,3 @@ ok - al abrir osd adventure keyboard, se ven submenus anteriores. ok faltaba men
 aunque luego menu confirmacion si/no quiza tendria que decir que no es un menu, lo mismo con otras funciones de *x*choices. por otra parte, reset tendria que salir de todos los menus luego
 Se prueba por ejemplo en menu_simple_five_choices (y en two, three, four, six, seven, eight, nine, ten), y en menu_confirm_yesno
 ok --opciones->hardware->next machine id. esta bien que al seleccionar el dialogo, se vea el menu abierto???
-
--poder ubicar el process switcher siempre abajo a la izquierda
