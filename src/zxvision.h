@@ -1053,6 +1053,7 @@ extern void zxvision_index_load_from_disk(void);
 
 extern void menu_convierte_texto_sin_modificadores(char *texto,char *texto_destino);
 extern int menu_dibuja_menu_recorrer_menus;
+extern int menu_dibuja_menu_recorrer_menus_entrado_submenu;
 
 extern int menu_ventana_scanf(char *titulo,char *texto,int max_length);
 extern int menu_ventana_scanf_numero(char *titulo,char *texto,int max_length,int incremento,int minimo,int maximo,int circular);

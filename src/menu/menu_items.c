@@ -45759,6 +45759,7 @@ int menu_inicio_mostrar_main_menu(int salir_menu)
     if (force_menu_dibuja_menu_recorrer_menus) {
         force_menu_dibuja_menu_recorrer_menus=0;
         menu_dibuja_menu_recorrer_menus=1;
+        menu_dibuja_menu_recorrer_menus_entrado_submenu=1;
     }
 
             int retorno_menu;

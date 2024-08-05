@@ -1130,10 +1130,6 @@ void menu_full_index_search(MENU_ITEM_PARAMETERS)
         menu_dibuja_menu_recorrer_menus=1;
         menu_generic_message("Full index scan","Press a key. Then press F5 and enjoy the party...");
         force_menu_dibuja_menu_recorrer_menus=1;
-        //Reseteamos ultimas opciones de menu principal, settings, general a 0
-        menu_inicio_opcion_seleccionada=0;
-        settings_opcion_seleccionada=0;
-        window_settings_opcion_seleccionada=0;
 
         salir_todos_menus=1;
     }

@@ -20001,8 +20001,11 @@ int menu_dibuja_submenu_mouse_en_menus_anteriores(void)
 //Fin funciones de visibilidad de submenus previos
 //
 
+//Usado en el reindexado de el indice de busqueda
 int menu_dibuja_menu_recorrer_menus=0;
 
+//cuando entramos en submenu, resetear la opcion a la primera
+int menu_dibuja_menu_recorrer_menus_entrado_submenu=0;
 
 //Funcion de gestion de menu
 //Entrada: opcion_inicial: puntero a opcion inicial seleccionada
@@ -20024,6 +20027,12 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
     else if (gui_language==GUI_LANGUAGE_CATALAN) titulo=titulo_ca;
     else titulo=titulo_en;
 
+
+    //Se esta recreando todo el indice de busqueda y se acaba de entrar en un menu, resetear opcion a la primera
+    if (menu_dibuja_menu_recorrer_menus && menu_dibuja_menu_recorrer_menus_entrado_submenu) {
+        menu_dibuja_menu_recorrer_menus_entrado_submenu=0;
+        *opcion_inicial=0;
+    }
 
 
     //Nota: la variable de opción seleccionada (*opcion_inicial) se manipula con el puntero para poderse leer desde otros sitios
@@ -20390,6 +20399,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
                     salir_recorrer=1;
                     tecla=13;
                     debug_printf(VERBOSE_INFO,"Entering submenu [%s]",item_recorrer->texto_opcion);
+                    menu_dibuja_menu_recorrer_menus_entrado_submenu=1;
 
                 }
 

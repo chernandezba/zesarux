@@ -363,4 +363,4 @@ ok - al abrir osd adventure keyboard, se ven submenus anteriores. ok faltaba men
 --debug->reset. ventana confirmacion sale sin que este menu debug visible. quiza tiene que llamar a genera ventana?
 aunque luego menu confirmacion si/no quiza tendria que decir que no es un menu, lo mismo con otras funciones de *x*choices. por otra parte, reset tendria que salir de todos los menus luego
 Se prueba por ejemplo en menu_simple_five_choices (y en two, three, four, six, seven, eight, nine, ten), y en menu_confirm_yesno
---opciones->hardware->next machine id. esta bien que al seleccionar el dialogo, se vea el menu abierto???
+ok --opciones->hardware->next machine id. esta bien que al seleccionar el dialogo, se vea el menu abierto???
