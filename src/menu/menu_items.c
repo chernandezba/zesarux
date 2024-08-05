@@ -13550,7 +13550,7 @@ void menu_record_mid_instrument(MENU_ITEM_PARAMETERS)
 
         menu_add_ESC_item(array_menu_common);
 
-        retorno_menu=menu_dibuja_menu_no_title_lang(&record_mid_instrument_opcion_seleccionada,&item_seleccionado,array_menu_common,"Instrument");
+        retorno_menu=menu_dibuja_menu_dialogo_no_title_lang(&record_mid_instrument_opcion_seleccionada,&item_seleccionado,array_menu_common,"Instrument");
 
         //no queremos que al pulsar ESC aqui se cierren todos los menus anteriores
         salir_todos_menus=0;
@@ -13560,6 +13560,7 @@ void menu_record_mid_instrument(MENU_ITEM_PARAMETERS)
             mid_instrument=record_mid_instrument_opcion_seleccionada;
             mid_set_cambio_instrumento();
             menu_generic_message_splash("Change instrument","OK. Instrument changed");
+            salir_todos_menus=1;
             return;
         }
 
@@ -13632,7 +13633,7 @@ void menu_record_mid(MENU_ITEM_PARAMETERS)
 
                     menu_add_item_menu_en_es_ca(array_menu_record_mid,MENU_OPCION_NORMAL,menu_record_mid_instrument,NULL,
                         "Change Instrument","Cambiar Instrumento","Canviar Instrument");
-                    menu_add_item_menu_tiene_submenu(array_menu_record_mid);
+                    menu_add_item_menu_genera_ventana(array_menu_record_mid);
 
 					if (mid_notes_recorded) {
 
@@ -13834,14 +13835,17 @@ void menu_midi_output_instrument(MENU_ITEM_PARAMETERS)
 
         menu_add_ESC_item(array_menu_common);
 
-        retorno_menu=menu_dibuja_menu_no_title_lang(&midi_output_instrument_opcion_seleccionada,&item_seleccionado,array_menu_common,"Instrument");
+        retorno_menu=menu_dibuja_menu_dialogo_no_title_lang(&midi_output_instrument_opcion_seleccionada,&item_seleccionado,array_menu_common,"Instrument");
 
         //no queremos que al pulsar ESC aqui se cierren todos los menus anteriores
         salir_todos_menus=0;
 
         if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
             //Cambiar instrumento y salir
+
             audio_midi_set_instrument(midi_output_instrument_opcion_seleccionada);
+            menu_generic_message_splash("Change instrument","OK. Instrument changed");
+            salir_todos_menus=1;
             return;
         }
 
@@ -13908,7 +13912,7 @@ void menu_direct_midi_output(MENU_ITEM_PARAMETERS)
 			menu_add_item_menu_format(array_menu_direct_midi_output,MENU_OPCION_NORMAL,menu_midi_output_test,NULL,"Test MIDI");
 
             menu_add_item_menu_format(array_menu_direct_midi_output,MENU_OPCION_NORMAL,menu_midi_output_instrument,NULL,"Change instrument");
-            menu_add_item_menu_tiene_submenu(array_menu_direct_midi_output);
+            menu_add_item_menu_genera_ventana(array_menu_direct_midi_output);
 
 
 			menu_add_item_menu_format(array_menu_direct_midi_output,MENU_OPCION_NORMAL,menu_midi_output_reset,NULL,"Reset channels");
