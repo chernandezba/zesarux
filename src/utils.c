@@ -4203,6 +4203,8 @@ int util_write_configfile(void)
 
   if (setting_process_switcher_always_visible.v)     ADD_STRING_CONFIG,"--process-switcher-always-visible");
 
+  if (setting_process_switcher_force_left_bottom.v==0)  ADD_STRING_CONFIG,"--process-switcher-no-left-bottom");
+
   if (menu_allow_background_windows)          ADD_STRING_CONFIG,"--allow-background-windows");
 
   if (always_force_overlay_visible_when_menu_closed) ADD_STRING_CONFIG,"--allow-background-windows-closed-menu");

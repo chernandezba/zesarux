@@ -44851,6 +44851,23 @@ void process_switcher_sync_always_visible_setting(void)
     //else printf("NO Encontrada ventana process switcher\n");
 }
 
+void process_switcher_sync_always_left_bottom_setting(void)
+{
+    //Si la ventana esta ya abierta, ponemos o quitamos setting de immutable
+    zxvision_window *ventana=zxvision_find_window_in_background("processswitcher");
+
+    if (ventana!=NULL) {
+        debug_printf(VERBOSE_DEBUG,"Found process switcher window, so syncing left-bottom setting");
+        if (setting_process_switcher_force_left_bottom.v) {
+            zxvision_set_x_position(ventana,0);
+            zxvision_set_y_position(ventana,scr_get_menu_height()-ventana->visible_height);
+            //ventana->x=0;
+            //ventana->y=scr_get_menu_height()-ventana->visible_height-0;
+        }
+    }
+    //else printf("NO Encontrada ventana process switcher\n");
+}
+
 //Almacenar la estructura de ventana aqui para que se pueda referenciar desde otros sitios
 zxvision_window zxvision_window_process_switcher;
 
@@ -44904,6 +44921,8 @@ void menu_process_switcher(MENU_ITEM_PARAMETERS)
     process_switcher_sync_immutable_setting();
 
     process_switcher_sync_always_visible_setting();
+
+    process_switcher_sync_always_left_bottom_setting();
 
 	zxvision_draw_window(ventana);
 

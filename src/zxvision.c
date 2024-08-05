@@ -17761,6 +17761,18 @@ void zxvision_rearrange_background_windows(int si_cascada,int si_aplicar_a_inmut
             y=yfinal-ventana->visible_height;
         }
 
+        int forzar_process_switcher=0;
+
+        //Si es process switcher, ajustar abajo a la izquierda
+        if (setting_process_switcher_force_left_bottom.v) {
+            if (!strcasecmp(ventana->geometry_name,"processswitcher")) {
+                forzar_process_switcher=1;
+                //printf("Es process switcher\n");
+                x=0;
+                y=scr_get_menu_height()-ventana->visible_height-0;
+            }
+        }
+
         if (x<0) x=0;
         if (y<0) y=0;
 
@@ -17768,7 +17780,7 @@ void zxvision_rearrange_background_windows(int si_cascada,int si_aplicar_a_inmut
 
         //TODO: en caso de ventanas de este tipo (como process switcher) se la considera igual aunque no se graban las modificaciones,
         //o sea por ejemplo que si se hace cascade, esta ventana no se reubicará aunque habrá un "hueco" en la cascada donde deberia ir ubicada
-        if (ventana->not_altered_by_massive_changes==0 || si_aplicar_a_inmutables) {
+        if (ventana->not_altered_by_massive_changes==0 || si_aplicar_a_inmutables || forzar_process_switcher) {
 
 		ventana->x=x;
 		ventana->y=y;

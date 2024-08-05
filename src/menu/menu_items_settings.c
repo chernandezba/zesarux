@@ -2023,6 +2023,13 @@ void menu_interface_process_switcher_always_visible(MENU_ITEM_PARAMETERS)
     process_switcher_sync_always_visible_setting();
 }
 
+void menu_interface_process_switcher_always_left_bottom(MENU_ITEM_PARAMETERS)
+{
+    setting_process_switcher_force_left_bottom.v ^=1;
+
+    process_switcher_sync_always_left_bottom_setting();
+
+}
 
 void menu_interface_charset_customfile(MENU_ITEM_PARAMETERS)
 {
@@ -2409,6 +2416,14 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(setting_process_switcher_always_visible.v ? 'X' : ' ') );
         menu_add_item_menu_tooltip(array_menu_common,"Process switcher is always visible (on top of all windows)");
         menu_add_item_menu_ayuda(array_menu_common,"Process switcher is always visible (on top of all windows)");
+        menu_add_item_menu_es_avanzado(array_menu_common);
+
+        //TODO: este setting tendria que estar quiza en otro sitio
+		menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_process_switcher_always_left_bottom,NULL,
+            "Process switcher force left-bottom","Process switcher forzar izquierda-abajo","Process switcher forçar esquerra-avall");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(setting_process_switcher_force_left_bottom.v ? 'X' : ' ') );
+        menu_add_item_menu_tooltip(array_menu_common,"Process switcher is always located on left-bottom");
+        menu_add_item_menu_ayuda(array_menu_common,"Process switcher is always located on left-bottom");
         menu_add_item_menu_es_avanzado(array_menu_common);
 
 
