@@ -2485,7 +2485,9 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
             "    Restore windows geometry","    Restaurar geometria ventanas","    Restaurar geometria finestres");
 		menu_add_item_menu_tooltip(array_menu_common,"Restore all windows positions and sizes to their default values");
 		menu_add_item_menu_ayuda(array_menu_common,"Restore all windows positions and sizes to their default values");
-        menu_add_item_menu_es_avanzado(array_menu_common);
+        menu_add_item_menu_add_flags(array_menu_common,MENU_ITEM_FLAG_SE_CERRARA | MENU_ITEM_FLAG_ES_AVANZADO);
+        //menu_add_item_menu_se_cerrara(array_menu_common);
+        //menu_add_item_menu_es_avanzado(array_menu_common);
 
 
 

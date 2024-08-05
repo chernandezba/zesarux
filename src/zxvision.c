@@ -21480,6 +21480,23 @@ void menu_add_item_menu_tiene_submenu(menu_item *m)
         m->tiene_submenu=1;
 }
 
+//Agregar flags al ultimo item de menu
+void menu_add_item_menu_add_flags(menu_item *m,int flags)
+{
+    //busca el ultimo item i le añade el indicado
+
+    while (m->siguiente_item!=NULL)
+    {
+        m=m->siguiente_item;
+    }
+
+    if ( (flags & MENU_ITEM_FLAG_TIENE_SUBMENU)) m->tiene_submenu=1;
+    if ( (flags & MENU_ITEM_FLAG_GENERA_VENTANA)) m->genera_ventana=1;
+    if ( (flags & MENU_ITEM_FLAG_ES_AVANZADO)) m->item_avanzado=1;
+    if ( (flags & MENU_ITEM_FLAG_SE_CERRARA)) m->menu_se_cerrara=1;
+
+}
+
 //Agregar decirle que tiene opcion que conmuta al ultimo item de menu
 void menu_add_item_menu_opcion_conmuta(menu_item *m,z80_bit *opcion)
 {
@@ -22968,6 +22985,10 @@ int menu_confirm_yesno_texto_additional_item(char *texto_ventana,char *texto_int
 )
 {
 
+    //conservar estado de salir todos menus antes de invocar funcion de menu
+    //por si esta activo, permitir que se cierren los menus despues de invocar a la funcion de pregunta yes/no
+    int antes_salir_todos_menus=salir_todos_menus;
+
 	//Si se fuerza siempre yes
 	if (force_confirm_yes.v) return 1;
 
@@ -23047,6 +23068,8 @@ int menu_confirm_yesno_texto_additional_item(char *texto_ventana,char *texto_int
 
             else {
 
+                salir_todos_menus=antes_salir_todos_menus;
+
                 //Al volver de esta manera, hay que indicar al index_search que se "va atras" un menu
                 //Esto ya se llama por defecto en gestion de menu, cuando se pulsa ESC o flecha atras,
                 //pero en este caso, se sale con la aceptacion de la opcion, y no es ni ESC ni flecha atras
@@ -23059,6 +23082,8 @@ int menu_confirm_yesno_texto_additional_item(char *texto_ventana,char *texto_int
         }
 
     } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+
+    salir_todos_menus=antes_salir_todos_menus;
 
 	return 0;
 

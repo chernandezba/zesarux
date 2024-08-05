@@ -1073,17 +1073,27 @@ extern void menu_add_item_menu_valor_opcion(menu_item *m,int valor_opcion);
 extern void menu_add_item_menu_tabulado(menu_item *m,int x,int y);
 extern void menu_add_item_menu_espacio(menu_item *m,t_menu_funcion menu_funcion_espacio);
 extern void menu_add_item_menu_misc(menu_item *m,char *texto_misc);
-extern void menu_add_item_menu_tiene_submenu(menu_item *m);
 extern void menu_add_item_menu_opcion_conmuta(menu_item *m,z80_bit *opcion);
+extern void menu_add_item_menu_marcar_opcion(menu_item *m,int valor);
+extern void menu_add_item_menu_seleccionado(menu_item *m,void (*menu_funcion_seleccionada)(struct s_menu_item *));
+extern void menu_add_item_menu_index_full_path(menu_item *m,char *index_name_en,char *index_name_es,char *index_name_ca);
+extern void menu_add_item_menu_separator(menu_item *m);
+extern void menu_add_item_menu_no_es_realmente_un_menu(menu_item *m);
+extern void menu_add_item_menu_no_indexar_busqueda(menu_item *m);
+
+//Flags como alternativa para usar las funciones de menu_add_item_menu_tiene_submenu, menu_add_item_menu_genera_ventana, etc
+#define MENU_ITEM_FLAG_TIENE_SUBMENU 1
+#define MENU_ITEM_FLAG_GENERA_VENTANA 2
+#define MENU_ITEM_FLAG_ES_AVANZADO 4
+#define MENU_ITEM_FLAG_SE_CERRARA 8
+
+extern void menu_add_item_menu_add_flags(menu_item *m,int flags);
+
+extern void menu_add_item_menu_tiene_submenu(menu_item *m);
 extern void menu_add_item_menu_genera_ventana(menu_item *m);
 extern void menu_add_item_menu_es_avanzado(menu_item *m);
-extern void menu_add_item_menu_marcar_opcion(menu_item *m,int valor);
-extern void menu_add_item_menu_separator(menu_item *m);
-extern void menu_add_item_menu_seleccionado(menu_item *m,void (*menu_funcion_seleccionada)(struct s_menu_item *));
 extern void menu_add_item_menu_se_cerrara(menu_item *m);
-extern void menu_add_item_menu_no_indexar_busqueda(menu_item *m);
-extern void menu_add_item_menu_no_es_realmente_un_menu(menu_item *m);
-extern void menu_add_item_menu_index_full_path(menu_item *m,char *index_name_en,char *index_name_es,char *index_name_ca);
+
 
 extern void menu_add_item_menu_spanish(menu_item *m,char *s);
 extern void menu_add_item_menu_spanish_format(menu_item *m,const char * format , ...);
