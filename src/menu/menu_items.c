@@ -33183,7 +33183,7 @@ void menu_snapshot(MENU_ITEM_PARAMETERS)
         menu_add_item_menu(array_menu_snapshot,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
         menu_add_item_menu_en_es_ca(array_menu_snapshot,MENU_OPCION_NORMAL,menu_snapshot_rewind,NULL,
-            "Snapshots to ~~RAM","Instantaneas a ~~RAM","Instantanies a ~~RAM");
+            "Snapshots to ~~RAM","Instantáneas a ~~RAM","Instantànies a ~~RAM");
         menu_add_item_menu_shortcut(array_menu_snapshot,'r');
         menu_add_item_menu_tooltip(array_menu_snapshot,"Options to keep last snapshots in RAM");
         menu_add_item_menu_ayuda(array_menu_snapshot,"Options to keep last snapshots in RAM");
