@@ -18911,7 +18911,7 @@ void menu_zxdesktop_trash(MENU_ITEM_PARAMETERS)
 
         menu_add_ESC_item(array_menu_common);
 
-        retorno_menu=menu_dibuja_menu_no_title_lang(&zxdesktop_trash_opcion_seleccionada,&item_seleccionado,array_menu_common,"Trash Can" );
+        retorno_menu=menu_dibuja_menu_dialogo_no_title_lang(&zxdesktop_trash_opcion_seleccionada,&item_seleccionado,array_menu_common,"Trash Can" );
 
 
 
