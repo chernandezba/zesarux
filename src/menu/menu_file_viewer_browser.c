@@ -1804,7 +1804,7 @@ void menu_file_dsk_browser_show_click_file(MENU_ITEM_PARAMETERS)
 
 
 
-        menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_common);
 
         menu_add_ESC_item(array_menu_common);
 
@@ -2114,7 +2114,7 @@ void menu_file_dsk_browser_show(char *filename)
         }
 
 
-        menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_common);
 
         menu_add_ESC_item(array_menu_common);
 

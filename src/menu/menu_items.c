@@ -6370,7 +6370,7 @@ void menu_ayplayer_edit_playlist(MENU_ITEM_PARAMETERS)
 
         if (ay_player_playlist_get_total_elements()!=0) {
 
-            menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+            menu_add_item_menu_separator(array_menu_common);
 
             //Recorrer toda la playlist
             ay_player_playlist_item *playitem=ay_player_first_item_playlist;
@@ -6392,7 +6392,7 @@ void menu_ayplayer_edit_playlist(MENU_ITEM_PARAMETERS)
 
 
 
-        menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_common);
 
         menu_add_ESC_item(array_menu_common);
 
@@ -13546,7 +13546,7 @@ void menu_record_mid_instrument(MENU_ITEM_PARAMETERS)
 
 
 
-        menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_common);
 
         menu_add_ESC_item(array_menu_common);
 
@@ -13831,7 +13831,7 @@ void menu_midi_output_instrument(MENU_ITEM_PARAMETERS)
 
 
 
-        menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_common);
 
         menu_add_ESC_item(array_menu_common);
 
@@ -14275,12 +14275,12 @@ void menu_i8049_mixer(MENU_ITEM_PARAMETERS)
 
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_i8049_mixer_random,NULL,"[%c] Random", (ql_sound_feature_random_enabled ? 'X' : ' '));
 
-        menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_common);
 
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_i8049_mixer_stop_sound,NULL,"    Stop sound");
 
 
-        menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_common);
 
 
 
@@ -14797,12 +14797,12 @@ void menu_zeng(MENU_ITEM_PARAMETERS)
 				menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_send_message,menu_zeng_send_message_cond,"Broadcast message");
 			}
 
-            menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+            menu_add_item_menu_separator(array_menu_common);
 
             menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_manual_sync_snapshot,NULL,"Sync snapshot to remote");
 
 
-			menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+			menu_add_item_menu_separator(array_menu_common);
 
             menu_add_ESC_item(array_menu_common);
 
@@ -15017,7 +15017,7 @@ void menu_online_browse_zx81_create_menu(char *mem, char *mem_after_headers,int 
 
 
 
-			menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+			menu_add_item_menu_separator(array_menu_common);
 
             menu_add_ESC_item(array_menu_common);
 
@@ -15707,7 +15707,7 @@ Pueden salir antes id o antes title. En bucle leer los dos y cuando estén los d
 
 
 
-			menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+			menu_add_item_menu_separator(array_menu_common);
 
 			menu_add_ESC_item(array_menu_common);
 
@@ -19001,7 +19001,7 @@ void menu_windows(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_se_cerrara(array_menu_common);
 
 
-        menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_common);
 
         menu_add_ESC_item(array_menu_common);
 
@@ -21240,7 +21240,7 @@ void menu_debug_msx_svi_memory_info(MENU_ITEM_PARAMETERS)
 
 		//if (!total_ventanas) menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"(Empty)");
 
-		//menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+		//menu_add_item_menu_separator(array_menu_common);
 
 		menu_add_ESC_item(array_menu_common);
 		menu_add_item_menu_tabulado(array_menu_common,1,alto_ventana-4);
@@ -23869,7 +23869,7 @@ void menu_zxpand(MENU_ITEM_PARAMETERS)
 
 
 
-			menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+			menu_add_item_menu_separator(array_menu_common);
 
             menu_add_ESC_item(array_menu_common);
 
@@ -24063,7 +24063,7 @@ void menu_ql_mdv_flp(MENU_ITEM_PARAMETERS)
                     (ql_microdrive_floppy_emulation ? 'X' : ' ') );
 
                     if (ql_microdrive_floppy_emulation) {
-                            menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+                            menu_add_item_menu_separator(array_menu_common);
 
                             char string_ql_mdv1_root_dir_shown[28];
                             char string_ql_mdv2_root_dir_shown[28];
@@ -24084,7 +24084,7 @@ void menu_ql_mdv_flp(MENU_ITEM_PARAMETERS)
                             menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_ql_mdv1_readonly,NULL,"[%c] Read only",
                                 (ql_device_mdv1_readonly ? 'X' : ' ') );
 
-                            menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+                            menu_add_item_menu_separator(array_menu_common);
 
 
                             menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,"Mdv2 root dir:");
@@ -24098,7 +24098,7 @@ void menu_ql_mdv_flp(MENU_ITEM_PARAMETERS)
 
                             menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_ql_mdv2_readonly,NULL,"[%c] Read only",
                                 (ql_device_mdv2_readonly ? 'X' : ' ') );
-                            menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+                            menu_add_item_menu_separator(array_menu_common);
 
 
                             menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,"Flp1 root dir:");
@@ -24113,7 +24113,7 @@ void menu_ql_mdv_flp(MENU_ITEM_PARAMETERS)
                             menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_ql_flp1_readonly,NULL,"[%c] Read only",
                                 (ql_device_flp1_readonly ? 'X' : ' ') );
 
-							menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+							menu_add_item_menu_separator(array_menu_common);
 
 
                             /*
@@ -24138,7 +24138,7 @@ void menu_ql_mdv_flp(MENU_ITEM_PARAMETERS)
                     }
 
 
-			menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+			menu_add_item_menu_separator(array_menu_common);
 
             menu_add_ESC_item(array_menu_common);
 
@@ -25502,7 +25502,7 @@ void menu_snapshot_rewind_browse(MENU_ITEM_PARAMETERS)
 
 
 
-        menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_common);
 
         menu_add_ESC_item(array_menu_common);
 
@@ -25575,13 +25575,13 @@ void menu_snapshot_rewind(MENU_ITEM_PARAMETERS)
 
         if (snapshot_in_ram_enabled.v) {
 
-            menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+            menu_add_item_menu_separator(array_menu_common);
             menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_snapshot_rewind_browse,NULL,"Browse");
 
         }
 
 
-        menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_common);
 
         menu_add_ESC_item(array_menu_common);
 
@@ -25749,7 +25749,7 @@ void menu_find_bytes_view_results(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Empty list");
         }
 
-        menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_common);
 
         menu_add_ESC_item(array_menu_common);
 
@@ -26602,7 +26602,7 @@ void menu_memory_cheat_first_scan_condition(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"%s",memory_cheat_first_scan_possible_conditions_strings[i]);
         }
 
-        menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_common);
 
         menu_add_ESC_item(array_menu_common);
 
@@ -26828,7 +26828,7 @@ void menu_memory_cheat_next_scan_condition(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"%s",memory_cheat_next_scan_possible_conditions_strings[i]);
         }
 
-        menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_common);
 
         menu_add_ESC_item(array_menu_common);
 
@@ -27462,7 +27462,7 @@ int menu_debug_view_sensors_get_sensor_tipo(int tipo)
 
 
 
-    menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+    menu_add_item_menu_separator(array_menu_common);
 
     menu_add_ESC_item(array_menu_common);
 
@@ -27517,7 +27517,7 @@ int menu_debug_view_sensors_get_sensor_item(int sensor_id)
     }
 
 
-    menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+    menu_add_item_menu_separator(array_menu_common);
 
     menu_add_ESC_item(array_menu_common);
 
@@ -30655,7 +30655,7 @@ void menu_licenses(MENU_ITEM_PARAMETERS)
 			menu_add_item_menu_shortcut(array_menu_common,'p');
 
 
-            menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+            menu_add_item_menu_separator(array_menu_common);
 
             menu_add_ESC_item(array_menu_common);
 
@@ -30741,7 +30741,7 @@ void menu_in_memoriam_david(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_shortcut(array_menu_common,'s');
         menu_add_item_menu_genera_ventana(array_menu_common);
 
-        menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_common);
 
         menu_add_ESC_item(array_menu_common);
 
@@ -30815,7 +30815,7 @@ void menu_in_memoriam_diego(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_shortcut(array_menu_common,'s');
         menu_add_item_menu_genera_ventana(array_menu_common);
 
-        menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_common);
 
         menu_add_ESC_item(array_menu_common);
 
@@ -30882,7 +30882,7 @@ void menu_in_memoriam(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_shortcut(array_menu_common,'a');
         menu_add_item_menu_tiene_submenu(array_menu_common);
 
-        menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_common);
 
         menu_add_ESC_item(array_menu_common);
 
@@ -31027,7 +31027,7 @@ void menu_help(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_se_cerrara(array_menu_common);
             menu_add_item_menu_genera_ventana(array_menu_common);
 
-            menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+            menu_add_item_menu_separator(array_menu_common);
 
 			menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_licenses,NULL,
                 "Lic~~enses","Lic~~encias","Llic~~ències");
@@ -31039,7 +31039,7 @@ void menu_help(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_tiene_submenu(array_menu_common);
 
 
-            menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+            menu_add_item_menu_separator(array_menu_common);
 
             menu_add_ESC_item(array_menu_common);
 
@@ -41174,7 +41174,7 @@ void menu_transtape(MENU_ITEM_PARAMETERS)
         }
 
 
-        menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_common);
 
         menu_add_ESC_item(array_menu_common);
 
@@ -41253,7 +41253,7 @@ void menu_specmate(MENU_ITEM_PARAMETERS)
             "Type the name of the program. Press 'ENTER' to save\n"
         );
 
-        menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_common);
 
         menu_add_ESC_item(array_menu_common);
 
@@ -41307,7 +41307,7 @@ void menu_interface007(MENU_ITEM_PARAMETERS)
             "2, 3, 4 or 5: to save at 2x, 3x, 4x or 5x speed\n"
         );
 
-        menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_common);
 
         menu_add_ESC_item(array_menu_common);
 
@@ -41362,7 +41362,7 @@ void menu_dinamid3(MENU_ITEM_PARAMETERS)
             "d: save snapshot to tape with a copy program that copies it to microdrive"
         );
 
-        menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_common);
 
         menu_add_ESC_item(array_menu_common);
 
@@ -41475,7 +41475,7 @@ void menu_mantransfer(MENU_ITEM_PARAMETERS)
 					"but the saving routine sees im1 by default, so, saving from a real spectrum or another emulator "
 					"instead ZEsarUX will only work if the cpu is in IM1 mode (and not IM2)");
 
-        menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_common);
 
         menu_add_ESC_item(array_menu_common);
 
@@ -41535,7 +41535,7 @@ void menu_phoenix(MENU_ITEM_PARAMETERS)
         );
 
 
-        menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_common);
 
         menu_add_ESC_item(array_menu_common);
 
@@ -41593,7 +41593,7 @@ void menu_defcon(MENU_ITEM_PARAMETERS)
 
 
 
-        menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_common);
 
         menu_add_ESC_item(array_menu_common);
 
@@ -41670,7 +41670,7 @@ void menu_ramjet(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_tooltip(array_menu_common,"It seems version 2 is compatible with 48k/128k and version 3 is compatible with +2A/+3");
         menu_add_item_menu_ayuda(array_menu_common,"It seems version 2 is compatible with 48k/128k and version 3 is compatible with +2A/+3");
 
-        menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_common);
 
         menu_add_ESC_item(array_menu_common);
 
@@ -41847,7 +41847,7 @@ void menu_hilow_barbanegra(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_ayuda(array_menu_common,"Enable HiLow barbanegra");
 
 
-        menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_common);
 
         menu_add_ESC_item(array_menu_common);
 
@@ -42053,7 +42053,7 @@ void menu_storage_copy_devices(MENU_ITEM_PARAMETERS)
 
 
 
-        menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_common);
 
         menu_add_ESC_item(array_menu_common);
 

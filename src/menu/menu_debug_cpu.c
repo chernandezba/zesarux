@@ -7451,7 +7451,7 @@ void menu_debug_cpu_history(void)
         }
 
 
-        menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_common);
 
         menu_add_ESC_item(array_menu_common);
 
@@ -7857,7 +7857,7 @@ void menu_debug_cpu_view_stack(void)
         }
 
 
-        menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_common);
 
         menu_add_ESC_item(array_menu_common);
 

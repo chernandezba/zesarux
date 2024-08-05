@@ -1461,7 +1461,7 @@ void menu_filesel_select_filters(void)
         }
 
 
-        menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_common);
 
         menu_add_ESC_item(array_menu_common);
 

@@ -1643,7 +1643,7 @@ void menu_interface_change_gui_style(MENU_ITEM_PARAMETERS)
 
         }
 
-        menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_common);
 
         //Y opcion para probar estilo
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_interface_change_gui_style_test,NULL,"Style ~~info");
@@ -1651,7 +1651,7 @@ void menu_interface_change_gui_style(MENU_ITEM_PARAMETERS)
 
 
 
-        menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_common);
 
         menu_add_ESC_item(array_menu_common);
 
@@ -2282,7 +2282,7 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
 
         }
 
-        menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_common);
 
 
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_disable_menu_mouse,NULL,
@@ -2416,7 +2416,7 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_es_avanzado(array_menu_common);
 
 
-        menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_common);
 
 
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_multitask,NULL,
@@ -2439,7 +2439,7 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
 
 
 
-        menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_common);
 
 
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_item_old_behaviour_close_menus,NULL,
@@ -2456,7 +2456,7 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
             "- When closing a window that's created from a menu, all menus will be closed\n"
             "- Cursor left go back to the previous menu, Cursor right activates the item (the same as Enter)\n"
         );
-        menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_common);
 
 
 		menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_allow_background_windows,NULL,
@@ -2491,7 +2491,7 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
 
 
 
-        menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_common);
 
 
 		if (si_complete_video_driver() ) {
@@ -2504,7 +2504,7 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
 
 
 
-        menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_common);
         //menu_add_item_menu(array_menu_common,"ESC Back",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
 		menu_add_ESC_item(array_menu_common);
 
@@ -4618,7 +4618,7 @@ void menu_hardware_joystick_fire_key(MENU_ITEM_PARAMETERS)
 
     }
 
-    menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+    menu_add_item_menu_separator(array_menu_common);
 
     menu_add_ESC_item(array_menu_common);
 
@@ -4669,7 +4669,7 @@ void menu_hardware_joystick(MENU_ITEM_PARAMETERS)
 
     }
 
-    menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+    menu_add_item_menu_separator(array_menu_common);
 
     menu_add_ESC_item(array_menu_common);
 
@@ -8444,7 +8444,7 @@ void menu_accessibility_menu(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_ayuda(array_menu_common,"Affects buttons and icons. This setting can be also be enabled/disabled from Settings-> ZX Desktop menu");
         }
 
-        menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_common);
 
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_inverse_video,NULL,
             "Inverse colours","Colores inversos","Colors invertits");
@@ -8468,7 +8468,7 @@ void menu_accessibility_menu(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_tooltip(array_menu_common,"Disables flash for emulated machines and also for menu interface");
         menu_add_item_menu_ayuda(array_menu_common,"Disables flash for emulated machines and also for menu interface");
 
-        menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_common);
 
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_gui_sounds,NULL,
             "Enable GUI Sounds","Activar sonidos interfaz","Activar sons interfície");
@@ -8477,7 +8477,8 @@ void menu_accessibility_menu(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_ayuda(array_menu_common,"Enable sounds for GUI events");
 
 
-        menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        //menu_add_item_menu_separator(array_menu_common);
+        menu_add_item_menu_separator(array_menu_common);
 
         menu_add_ESC_item(array_menu_common);
 
@@ -11447,7 +11448,7 @@ void menu_zxdesktop_set_configurable_icons(MENU_ITEM_PARAMETERS)
         }
 
 
-        menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_common);
 
         menu_add_ESC_item(array_menu_common);
 
@@ -12125,7 +12126,7 @@ void menu_fileselector_settings(MENU_ITEM_PARAMETERS)
 
 
 
-        menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_common);
 
         menu_add_ESC_item(array_menu_common);
 
@@ -12223,7 +12224,7 @@ void menu_settings_statistics(MENU_ITEM_PARAMETERS)
 
 
 
-			menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+			menu_add_item_menu_separator(array_menu_common);
 
             menu_add_ESC_item(array_menu_common);
 

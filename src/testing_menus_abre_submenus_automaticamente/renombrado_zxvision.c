@@ -28240,7 +28240,7 @@ void parse_zmenufile_options(void)
     }
 
     if (es_un_lanzador_juegos) {
-        menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_common);
 
         menu_add_ESC_item(array_menu_common);
 
