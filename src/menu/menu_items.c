@@ -837,46 +837,61 @@ void menu_cpu_full_stats_clear(MENU_ITEM_PARAMETERS)
 
 void menu_debug_cpu_stats(MENU_ITEM_PARAMETERS)
 {
-        menu_item *array_menu_cpu_stats;
-        menu_item item_seleccionado;
-        int retorno_menu;
-        do {
-                menu_add_item_menu_inicial_format(&array_menu_cpu_stats,MENU_OPCION_NORMAL,menu_debug_cpu_resumen_stats,NULL,"Compact Statistics");
-                menu_add_item_menu_genera_ventana(array_menu_cpu_stats);
-                menu_add_item_menu_se_cerrara(array_menu_cpu_stats);
-                menu_add_item_menu_tooltip(array_menu_cpu_stats,"Shows Compact CPU Statistics");
-                menu_add_item_menu_ayuda(array_menu_cpu_stats,"Shows the most used opcode for every type: without preffix, with ED preffix, "
-					"etc. CPU Statistics are reset when changing machine or resetting CPU.");
+    menu_item *array_menu_cpu_stats;
+    menu_item item_seleccionado;
+    int retorno_menu;
+    do {
+        menu_add_item_menu_inicial_format(&array_menu_cpu_stats,MENU_OPCION_NORMAL,menu_debug_cpu_resumen_stats,NULL,"Compact Statistics");
+        menu_add_item_menu_genera_ventana(array_menu_cpu_stats);
+        menu_add_item_menu_se_cerrara(array_menu_cpu_stats);
+        menu_add_item_menu_tooltip(array_menu_cpu_stats,"Shows Compact CPU Statistics");
+        menu_add_item_menu_ayuda(array_menu_cpu_stats,"Shows the most used opcode for every type: without preffix, with ED preffix, "
+            "etc. CPU Statistics are reset when changing machine or resetting CPU.");
 
 
-                menu_add_item_menu_format(array_menu_cpu_stats,MENU_OPCION_NORMAL,menu_cpu_full_stats_codsinpr,NULL,"Full Statistics No pref");
-		menu_add_item_menu_format(array_menu_cpu_stats,MENU_OPCION_NORMAL,menu_cpu_full_stats_codpred,NULL,"Full Statistics Pref ED");
-		menu_add_item_menu_format(array_menu_cpu_stats,MENU_OPCION_NORMAL,menu_cpu_full_stats_codprcb,NULL,"Full Statistics Pref CB");
-		menu_add_item_menu_format(array_menu_cpu_stats,MENU_OPCION_NORMAL,menu_cpu_full_stats_codprdd,NULL,"Full Statistics Pref DD");
-		menu_add_item_menu_format(array_menu_cpu_stats,MENU_OPCION_NORMAL,menu_cpu_full_stats_codprfd,NULL,"Full Statistics Pref FD");
-		menu_add_item_menu_format(array_menu_cpu_stats,MENU_OPCION_NORMAL,menu_cpu_full_stats_codprddcb,NULL,"Full Statistics Pref DDCB");
-		menu_add_item_menu_format(array_menu_cpu_stats,MENU_OPCION_NORMAL,menu_cpu_full_stats_codprfdcb,NULL,"Full Statistics Pref FDCB");
-		menu_add_item_menu_format(array_menu_cpu_stats,MENU_OPCION_NORMAL,menu_cpu_full_stats_clear,NULL,"Clear Statistics");
+        menu_add_item_menu_format(array_menu_cpu_stats,MENU_OPCION_NORMAL,menu_cpu_full_stats_codsinpr,NULL,"Full Statistics No pref");
+        menu_add_item_menu_add_flags(array_menu_cpu_stats,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
+
+        menu_add_item_menu_format(array_menu_cpu_stats,MENU_OPCION_NORMAL,menu_cpu_full_stats_codpred,NULL,"Full Statistics Pref ED");
+        menu_add_item_menu_add_flags(array_menu_cpu_stats,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
+
+        menu_add_item_menu_format(array_menu_cpu_stats,MENU_OPCION_NORMAL,menu_cpu_full_stats_codprcb,NULL,"Full Statistics Pref CB");
+        menu_add_item_menu_add_flags(array_menu_cpu_stats,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
+
+        menu_add_item_menu_format(array_menu_cpu_stats,MENU_OPCION_NORMAL,menu_cpu_full_stats_codprdd,NULL,"Full Statistics Pref DD");
+        menu_add_item_menu_add_flags(array_menu_cpu_stats,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
+
+        menu_add_item_menu_format(array_menu_cpu_stats,MENU_OPCION_NORMAL,menu_cpu_full_stats_codprfd,NULL,"Full Statistics Pref FD");
+        menu_add_item_menu_add_flags(array_menu_cpu_stats,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
+
+        menu_add_item_menu_format(array_menu_cpu_stats,MENU_OPCION_NORMAL,menu_cpu_full_stats_codprddcb,NULL,"Full Statistics Pref DDCB");
+        menu_add_item_menu_add_flags(array_menu_cpu_stats,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
+
+        menu_add_item_menu_format(array_menu_cpu_stats,MENU_OPCION_NORMAL,menu_cpu_full_stats_codprfdcb,NULL,"Full Statistics Pref FDCB");
+        menu_add_item_menu_add_flags(array_menu_cpu_stats,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
+
+        menu_add_item_menu_format(array_menu_cpu_stats,MENU_OPCION_NORMAL,menu_cpu_full_stats_clear,NULL,"Clear Statistics");
+        menu_add_item_menu_add_flags(array_menu_cpu_stats,MENU_ITEM_FLAG_SE_CERRARA);
 
 
-                menu_add_item_menu(array_menu_cpu_stats,"",MENU_OPCION_SEPARADOR,NULL,NULL);
-                //menu_add_item_menu(array_menu_cpu_stats,"ESC Back",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
-                menu_add_ESC_item(array_menu_cpu_stats);
+        menu_add_item_menu(array_menu_cpu_stats,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        //menu_add_item_menu(array_menu_cpu_stats,"ESC Back",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
+        menu_add_ESC_item(array_menu_cpu_stats);
 
-                retorno_menu=menu_dibuja_menu(&cpu_stats_opcion_seleccionada,&item_seleccionado,array_menu_cpu_stats,
-                    "CPU Statistics Menu","Menú Estadísticas CPU","Menú Estadístiques CPU" );
+        retorno_menu=menu_dibuja_menu(&cpu_stats_opcion_seleccionada,&item_seleccionado,array_menu_cpu_stats,
+            "CPU Statistics Menu","Menú Estadísticas CPU","Menú Estadístiques CPU" );
 
 
-                if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
-                        //llamamos por valor de funcion
-                        if (item_seleccionado.menu_funcion!=NULL) {
-                                //printf ("actuamos por funcion\n");
-                                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+            //llamamos por valor de funcion
+            if (item_seleccionado.menu_funcion!=NULL) {
+                    //printf ("actuamos por funcion\n");
+                    item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
 
-                        }
-                }
+            }
+        }
 
-        } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
 }
 
 int cpu_stats_valor_contador_segundo_anterior;
