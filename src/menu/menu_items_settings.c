@@ -9549,7 +9549,7 @@ void menu_hardware_realjoystick_keys(MENU_ITEM_PARAMETERS)
                 //menu_add_item_menu(array_menu_hardware_realjoystick_keys,"ESC Back",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
                 menu_add_ESC_item(array_menu_hardware_realjoystick_keys);
 
-                retorno_menu=menu_dibuja_menu_no_title_lang(&hardware_realjoystick_keys_opcion_seleccionada,&item_seleccionado,array_menu_hardware_realjoystick_keys,"Joystick to keys" );
+                retorno_menu=menu_dibuja_menu_dialogo_no_title_lang(&hardware_realjoystick_keys_opcion_seleccionada,&item_seleccionado,array_menu_hardware_realjoystick_keys,"Joystick to keys" );
 
 
 
@@ -9616,7 +9616,7 @@ void menu_hardware_realjoystick_event(MENU_ITEM_PARAMETERS)
                 //menu_add_item_menu(array_menu_hardware_realjoystick_event,"ESC Back",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
                 menu_add_ESC_item(array_menu_hardware_realjoystick_event);
 
-                retorno_menu=menu_dibuja_menu_no_title_lang(&hardware_realjoystick_event_opcion_seleccionada,&item_seleccionado,array_menu_hardware_realjoystick_event,"Joystick to events" );
+                retorno_menu=menu_dibuja_menu_dialogo_no_title_lang(&hardware_realjoystick_event_opcion_seleccionada,&item_seleccionado,array_menu_hardware_realjoystick_event,"Joystick to events" );
 
 
 
@@ -9923,32 +9923,16 @@ void menu_hardware_realjoystick(MENU_ITEM_PARAMETERS)
 	int retorno_menu;
 	do {
 
-		menu_add_item_menu_en_es_ca_inicial(&array_menu_hardware_realjoystick,MENU_OPCION_NORMAL,menu_hardware_realjoystick_event,NULL,
-            "Joystick to ~~events","Joystick a ~~eventos","Joystick a ~~events");
-		menu_add_item_menu_shortcut(array_menu_hardware_realjoystick,'e');
-		menu_add_item_menu_tooltip(array_menu_hardware_realjoystick,"Define which events generate every button/movement of the joystick");
-		menu_add_item_menu_ayuda(array_menu_hardware_realjoystick,"Define which events generate every button/movement of the joystick");
-        menu_add_item_menu_tiene_submenu(array_menu_hardware_realjoystick);
 
-
-
-		menu_add_item_menu_en_es_ca(array_menu_hardware_realjoystick,MENU_OPCION_NORMAL,menu_hardware_realjoystick_keys,NULL,
-            "Joystick to ~~keys","Joystick a te~~klas","Joystick a te~~kles");
-		menu_add_item_menu_shortcut(array_menu_hardware_realjoystick,'k');
-		menu_add_item_menu_tooltip(array_menu_hardware_realjoystick,"Define which press key generate every button/movement of the joystick");
-		menu_add_item_menu_ayuda(array_menu_hardware_realjoystick,"Define which press key generate every button/movement of the joystick");
-        menu_add_item_menu_tiene_submenu(array_menu_hardware_realjoystick);
-
-
-		menu_add_item_menu_en_es_ca(array_menu_hardware_realjoystick,MENU_OPCION_NORMAL,menu_hardware_realjoystick_test,NULL,
+		menu_add_item_menu_en_es_ca_inicial(&array_menu_hardware_realjoystick,MENU_OPCION_NORMAL,menu_hardware_realjoystick_test,NULL,
             "Joystick ~~information","~~Información del joystick","~~Informació del joystick");
         menu_add_item_menu_add_flags(array_menu_hardware_realjoystick,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
 		menu_add_item_menu_shortcut(array_menu_hardware_realjoystick,'i');
 		menu_add_item_menu_tooltip(array_menu_hardware_realjoystick,"Joystick information");
 		menu_add_item_menu_ayuda(array_menu_hardware_realjoystick,"Joystick information and test tool");
 
+
 		if (!realjoystick_is_linux_native() ) {
-			menu_add_item_menu(array_menu_hardware_realjoystick,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 			menu_add_item_menu_en_es_ca(array_menu_hardware_realjoystick,MENU_OPCION_NORMAL,menu_hardware_realjoystick_autocalibrate,NULL,
                 "Auto~~calibrate value","Valor Auto~~calibrado","Valor Auto~~calibrat");
             menu_add_item_menu_sufijo_format(array_menu_hardware_realjoystick," [%5d]",realjoystick_autocalibrate_value);
@@ -9958,7 +9942,6 @@ void menu_hardware_realjoystick(MENU_ITEM_PARAMETERS)
 										"Axis values read from joystick less than n and greater than -n are considered as 0. "
 										" Default: 16384. Not used on native linux real joystick");
 		}
-
 
 		//En linux, poder decir si usamos driver nativo o no
 
@@ -9972,8 +9955,28 @@ void menu_hardware_realjoystick(MENU_ITEM_PARAMETERS)
 
 #endif
 
+		menu_add_item_menu_separator(array_menu_hardware_realjoystick);
 
-		menu_add_item_menu(array_menu_hardware_realjoystick,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+		menu_add_item_menu_en_es_ca(array_menu_hardware_realjoystick,MENU_OPCION_NORMAL,menu_hardware_realjoystick_event,NULL,
+            "Joystick to ~~events","Joystick a ~~eventos","Joystick a ~~events");
+		menu_add_item_menu_shortcut(array_menu_hardware_realjoystick,'e');
+		menu_add_item_menu_tooltip(array_menu_hardware_realjoystick,"Define which events generate every button/movement of the joystick");
+		menu_add_item_menu_ayuda(array_menu_hardware_realjoystick,"Define which events generate every button/movement of the joystick");
+        menu_add_item_menu_add_flags(array_menu_hardware_realjoystick,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
+
+
+
+		menu_add_item_menu_en_es_ca(array_menu_hardware_realjoystick,MENU_OPCION_NORMAL,menu_hardware_realjoystick_keys,NULL,
+            "Joystick to ~~keys","Joystick a te~~klas","Joystick a te~~kles");
+		menu_add_item_menu_shortcut(array_menu_hardware_realjoystick,'k');
+		menu_add_item_menu_tooltip(array_menu_hardware_realjoystick,"Define which press key generate every button/movement of the joystick");
+		menu_add_item_menu_ayuda(array_menu_hardware_realjoystick,"Define which press key generate every button/movement of the joystick");
+        menu_add_item_menu_add_flags(array_menu_hardware_realjoystick,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
+
+
+        menu_add_item_menu_separator(array_menu_hardware_realjoystick);
+
+
 
 		menu_add_item_menu_en_es_ca(array_menu_hardware_realjoystick,MENU_OPCION_NORMAL,menu_hardware_realjoystick_set_defaults,NULL,
             "Set events&keys to default","Cambio eventos&teclas a defecto","Canvi events&tecles a defecte");
@@ -9981,8 +9984,7 @@ void menu_hardware_realjoystick(MENU_ITEM_PARAMETERS)
 		menu_add_item_menu_tooltip(array_menu_hardware_realjoystick,"Reset events & keys table to default values");
 		menu_add_item_menu_ayuda(array_menu_hardware_realjoystick,"Reset events & keys table to default values");
 
-
-		menu_add_item_menu(array_menu_hardware_realjoystick,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+		menu_add_item_menu_separator(array_menu_hardware_realjoystick);
 
 		menu_add_ESC_item(array_menu_hardware_realjoystick);
 
