@@ -37839,6 +37839,7 @@ void menu_storage_tape(MENU_ITEM_PARAMETERS)
 
 		menu_tape_settings_trunc_name(tapefile,string_tape_load_shown,20);
 		menu_add_item_menu_format(array_menu_tape_settings,MENU_OPCION_NORMAL,menu_tape_open,NULL,"~~Input [%s]",string_tape_load_shown);
+        menu_add_item_menu_prefijo(array_menu_tape_settings,"    ");
 		menu_add_item_menu_shortcut(array_menu_tape_settings,'i');
 
 
@@ -37849,9 +37850,11 @@ void menu_storage_tape(MENU_ITEM_PARAMETERS)
             "[%c] Input tape inserted",(is_tape_inserted() ? 'X' : ' '));
 
 		menu_add_item_menu_format(array_menu_tape_settings,MENU_OPCION_NORMAL,menu_tape_browser,menu_tape_input_insert_cond,"Tape Vi~~ewer");
+        menu_add_item_menu_prefijo(array_menu_tape_settings,"    ");
 		menu_add_item_menu_shortcut(array_menu_tape_settings,'e');
 		menu_add_item_menu_tooltip(array_menu_tape_settings,"Browse Input tape");
 		menu_add_item_menu_ayuda(array_menu_tape_settings,"Browse Input tape");
+        menu_add_item_menu_add_flags(array_menu_tape_settings,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
 
 
 		menu_add_item_menu(array_menu_tape_settings,"",MENU_OPCION_SEPARADOR,NULL,NULL);
@@ -37859,6 +37862,7 @@ void menu_storage_tape(MENU_ITEM_PARAMETERS)
 
         menu_tape_settings_trunc_name(tape_out_file,string_tape_save_shown,20);
 		menu_add_item_menu_format(array_menu_tape_settings,MENU_OPCION_NORMAL,menu_tape_out_open,NULL,"~~Output [%s]",string_tape_save_shown);
+        menu_add_item_menu_prefijo(array_menu_tape_settings,"    ");
 		menu_add_item_menu_shortcut(array_menu_tape_settings,'o');
 
         //sprintf (string_tape_save_inserted,"[%c] Output tape inserted",((tape_loadsave_inserted & TAPE_SAVE_INSERTED)!=0 ? 'X' : ' '));
@@ -37868,9 +37872,11 @@ void menu_storage_tape(MENU_ITEM_PARAMETERS)
             "[%c] Output tape inserted",((tape_loadsave_inserted & TAPE_SAVE_INSERTED)!=0 ? 'X' : ' '));
 
 		menu_add_item_menu_format(array_menu_tape_settings,MENU_OPCION_NORMAL,menu_tape_browser_output,menu_tape_output_insert_cond,"Tape Viewe~~r");
+        menu_add_item_menu_prefijo(array_menu_tape_settings,"    ");
 		menu_add_item_menu_shortcut(array_menu_tape_settings,'r');
 		menu_add_item_menu_tooltip(array_menu_tape_settings,"Browse Output tape");
 		menu_add_item_menu_ayuda(array_menu_tape_settings,"Browse Output tape");
+        menu_add_item_menu_add_flags(array_menu_tape_settings,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
 
 
         menu_add_item_menu(array_menu_tape_settings,"",MENU_OPCION_SEPARADOR,NULL,NULL);
@@ -37898,6 +37904,7 @@ void menu_storage_tape(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_en_es_ca(array_menu_tape_settings,MENU_OPCION_NORMAL,menu_realtape_open,NULL,
             "~~File","~~Fichero","~~Fitxer");
         menu_add_item_menu_sufijo_format(array_menu_tape_settings," [%s]",string_realtape_shown);
+        menu_add_item_menu_prefijo(array_menu_tape_settings,"    ");
 		menu_add_item_menu_shortcut(array_menu_tape_settings,'f');
 		menu_add_item_menu_tooltip(array_menu_tape_settings,"Audio file to use as the input audio");
 		menu_add_item_menu_ayuda(array_menu_tape_settings,"Audio file to use as the input audio");
@@ -37919,6 +37926,7 @@ void menu_storage_tape(MENU_ITEM_PARAMETERS)
 		menu_add_item_menu_ayuda(array_menu_tape_settings,"Start playing the audio tape");
 
 		menu_add_item_menu_format(array_menu_tape_settings,MENU_OPCION_NORMAL,menu_tape_browser_real,menu_realtape_cond,"Tape Vie~~wer");
+        menu_add_item_menu_prefijo(array_menu_tape_settings,"    ");
 		menu_add_item_menu_shortcut(array_menu_tape_settings,'w');
         menu_add_item_menu_genera_ventana(array_menu_tape_settings);
         menu_add_item_menu_se_cerrara(array_menu_tape_settings);
@@ -37927,6 +37935,7 @@ void menu_storage_tape(MENU_ITEM_PARAMETERS)
 
         menu_add_item_menu_en_es_ca(array_menu_tape_settings,MENU_OPCION_NORMAL,menu_visual_realtape,NULL,
             "~~Visual Real Tape","Cinta Real ~~Visual","Cinta Real ~~Visual");
+        menu_add_item_menu_prefijo(array_menu_tape_settings,"    ");
         menu_add_item_menu_shortcut(array_menu_tape_settings,'v');
         menu_add_item_menu_se_cerrara(array_menu_tape_settings);
         menu_add_item_menu_genera_ventana(array_menu_tape_settings);
@@ -37940,6 +37949,7 @@ void menu_storage_tape(MENU_ITEM_PARAMETERS)
 
             menu_add_item_menu_en_es_ca(array_menu_tape_settings,MENU_OPCION_NORMAL,menu_storage_tape_copier,NULL,
                 "Run Tape Copier","Ejecutar copión","Executar copiador");
+            menu_add_item_menu_prefijo(array_menu_tape_settings,"    ");
             //menu_add_item_menu_shortcut(array_menu_tape_settings,'v');
             menu_add_item_menu_genera_ventana(array_menu_tape_settings);
             menu_add_item_menu_tooltip(array_menu_tape_settings,"Allow to run a tape copier");
