@@ -1366,12 +1366,14 @@ void menu_general_settings(MENU_ITEM_PARAMETERS)
 
        	menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_language,NULL,
             "~~Language","~~Lenguaje","~~Llenguatge");
-        menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%s] ",idioma);
+        menu_add_item_menu_prefijo_format(array_menu_window_settings,"    ");
+        menu_add_item_menu_sufijo_format(array_menu_window_settings," [%s]",idioma);
         menu_add_item_menu_shortcut(array_menu_window_settings,'l');
 
        	menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_logo_type,NULL,
             "ZEsarUX logo","ZEsarUX logo","ZEsarUX logo");
-        menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%s] ",(xanniversary_logo.v ? "X Anniversary" : "Normal"));
+        menu_add_item_menu_prefijo_format(array_menu_window_settings,"    ");
+        menu_add_item_menu_sufijo_format(array_menu_window_settings," [%s]",(xanniversary_logo.v ? "X Anniversary" : "Normal"));
 
        	menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_welcome_message,NULL,
             "Show welcome logo & message","Mostrar logo bienvenida y mensaje","Mostrar logo benvinguda i missatge");
@@ -1390,7 +1392,8 @@ void menu_general_settings(MENU_ITEM_PARAMETERS)
 
         menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_change_online_download_path,NULL,
         "Online Download Path","Ruta descargas online","Ruta descarregues online");
-        menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%s] ",string_online_download_path);
+        menu_add_item_menu_prefijo_format(array_menu_window_settings,"    ");
+        menu_add_item_menu_sufijo_format(array_menu_window_settings," [%s]",string_online_download_path);
         menu_add_item_menu_tooltip(array_menu_window_settings,"Where to download files from the speccy and zx81 online browser");
         menu_add_item_menu_ayuda(array_menu_window_settings,"Where to download files from the speccy and zx81 online browser. If not set, they are download to a temporary folder");
 
@@ -5740,7 +5743,8 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
 		if (MACHINE_IS_SPECTRUM || MACHINE_IS_ZX8081 || MACHINE_IS_SAM || MACHINE_IS_CPC || MACHINE_IS_MSX || MACHINE_IS_SVI || MACHINE_IS_PCW) {
             menu_add_item_menu_en_es_ca(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_joystick,NULL,
                 "Emulated ~~Joystick type","Tipo ~~Joystick emulado","Tipus ~~Joystick emulat");
-			menu_add_item_menu_prefijo_format(array_menu_hardware_settings,"[%s] ",joystick_texto[joystick_emulation]);
+            menu_add_item_menu_prefijo_format(array_menu_hardware_settings,"    ");
+			menu_add_item_menu_sufijo_format(array_menu_hardware_settings," [%s]",joystick_texto[joystick_emulation]);
 			menu_add_item_menu_shortcut(array_menu_hardware_settings,'j');
         	        menu_add_item_menu_tooltip(array_menu_hardware_settings,"Decide which joystick type is emulated");
                 	menu_add_item_menu_ayuda(array_menu_hardware_settings,"Joystick is emulated with:\n"
@@ -5755,7 +5759,8 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
         //right shift como right shift del Z88
         menu_add_item_menu_en_es_ca(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_joystick_fire_key,NULL,
             "Fire key","Tecla disparo","Tecla foc");
-        menu_add_item_menu_prefijo_format(array_menu_hardware_settings,"[%s] ",joystick_defined_fire_texto[joystick_defined_key_fire]);
+        menu_add_item_menu_prefijo_format(array_menu_hardware_settings,"    ");
+        menu_add_item_menu_sufijo_format(array_menu_hardware_settings," [%s]",joystick_defined_fire_texto[joystick_defined_key_fire]);
         menu_add_item_menu_tooltip(array_menu_hardware_settings,"Define which key triggers the fire function for the joystick");
         menu_add_item_menu_ayuda(array_menu_hardware_settings,"Define which key triggers the fire function for the joystick. "
             "Not all video drivers support reading all keys");
@@ -5767,7 +5772,8 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
         else {
             menu_add_item_menu_en_es_ca(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_autofire,NULL,
             "Joystick ~~Autofire","Joystick ~~Autodisparo","Joystick ~~Autofoc");
-            menu_add_item_menu_prefijo_format(array_menu_hardware_settings,"[%d Hz] ",50/joystick_autofire_frequency);
+            menu_add_item_menu_prefijo_format(array_menu_hardware_settings,"    ");
+            menu_add_item_menu_sufijo_format(array_menu_hardware_settings," [%d Hz]",50/joystick_autofire_frequency);
         }
         menu_add_item_menu_shortcut(array_menu_hardware_settings,'a');
         menu_add_item_menu_tooltip(array_menu_hardware_settings,"Frequency for the joystick autofire");
@@ -5778,7 +5784,8 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
 
         menu_add_item_menu_en_es_ca(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_autoleftright,NULL,
             "Joystick AutoLeftRight","Joystick AutoIzqDer","Joystick AutoEsqDreta");
-        menu_add_item_menu_prefijo_format(array_menu_hardware_settings,"[%d Hz] ",50/joystick_autoleftright_frequency);
+        menu_add_item_menu_prefijo_format(array_menu_hardware_settings,"    ");
+        menu_add_item_menu_sufijo_format(array_menu_hardware_settings," [%d Hz]",50/joystick_autoleftright_frequency);
         menu_add_item_menu_tooltip(array_menu_hardware_settings,"You have to define a F-key or a button to trigger the action: JoyLeftRight");
         menu_add_item_menu_ayuda(array_menu_hardware_settings,"You have to define a F-key or a button to trigger the action: JoyLeftRight");
         menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
@@ -5870,7 +5877,8 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
 
         menu_add_item_menu_en_es_ca(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_cpu_speed,NULL,
             "Emulator Spee~~d","Veloci~~dad Emulador","Velocitat Emula~~dor");
-		menu_add_item_menu_prefijo_format(array_menu_hardware_settings,"[%3d%%] ",porcentaje_velocidad_emulador);
+        menu_add_item_menu_prefijo_format(array_menu_hardware_settings,"    ");
+		menu_add_item_menu_sufijo_format(array_menu_hardware_settings," [%3d%%]",porcentaje_velocidad_emulador);
 		menu_add_item_menu_shortcut(array_menu_hardware_settings,'d');
 		menu_add_item_menu_tooltip(array_menu_hardware_settings,"Change the emulator Speed");
 		menu_add_item_menu_ayuda(array_menu_hardware_settings,"Changes all the emulator speed by setting a different interval between display frames. "
