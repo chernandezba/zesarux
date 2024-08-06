@@ -364,3 +364,7 @@ ok - al abrir osd adventure keyboard, se ven submenus anteriores. ok faltaba men
 aunque luego menu confirmacion si/no quiza tendria que decir que no es un menu, lo mismo con otras funciones de *x*choices. por otra parte, reset tendria que salir de todos los menus luego
 Se prueba por ejemplo en menu_simple_five_choices (y en two, three, four, six, seven, eight, nine, ten), y en menu_confirm_yesno
 ok --opciones->hardware->next machine id. esta bien que al seleccionar el dialogo, se vea el menu abierto???
+
+
+-quiza en un menu_dibuja_menu_dialogo_no_title_lang, al pulsar ESC, no debe activar salir_todos_menus
+aunque no todos. por ejemplo en +3dsk, visor format disc, pulsar en archivo-> blocks, ahi si pulsa esc si que interesa que cierre todo

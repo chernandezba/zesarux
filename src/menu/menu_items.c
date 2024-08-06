@@ -26499,6 +26499,8 @@ void menu_memory_cheat_set_watch_or_write(int direccion,int watch_id,int pedir_d
 
     }
 
+    //no queremos que al pulsar ESC se cierre la ventana de memory cheat
+    salir_todos_menus=0;
 
 }
 
@@ -26624,7 +26626,7 @@ void menu_memory_cheat_first_scan_condition(MENU_ITEM_PARAMETERS)
 
         menu_add_ESC_item(array_menu_common);
 
-        retorno_menu=menu_dibuja_menu_no_title_lang(&opcion_seleccionada,&item_seleccionado,array_menu_common,"Condition");
+        retorno_menu=menu_dibuja_menu_dialogo_no_title_lang(&opcion_seleccionada,&item_seleccionado,array_menu_common,"Condition");
 
 
 
@@ -26637,6 +26639,9 @@ void menu_memory_cheat_first_scan_condition(MENU_ITEM_PARAMETERS)
         }
 
     } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+
+    //no queremos que al pulsar ESC se cierre la ventana de memory cheat
+    salir_todos_menus=0;
 }
 
 int memory_cheat_first_scan_matches(z80_byte value)
@@ -26850,7 +26855,7 @@ void menu_memory_cheat_next_scan_condition(MENU_ITEM_PARAMETERS)
 
         menu_add_ESC_item(array_menu_common);
 
-        retorno_menu=menu_dibuja_menu_no_title_lang(&opcion_seleccionada,&item_seleccionado,array_menu_common,"Condition");
+        retorno_menu=menu_dibuja_menu_dialogo_no_title_lang(&opcion_seleccionada,&item_seleccionado,array_menu_common,"Condition");
 
 
 
@@ -26864,6 +26869,9 @@ void menu_memory_cheat_next_scan_condition(MENU_ITEM_PARAMETERS)
         }
 
     } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+
+    //no queremos que al pulsar ESC se cierre la ventana de memory cheat
+    salir_todos_menus=0;
 }
 
 void menu_memory_cheat_next_scan_change_first_parameter(MENU_ITEM_PARAMETERS)
