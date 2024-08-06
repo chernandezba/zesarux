@@ -443,16 +443,14 @@ void menu_settings_config_file(MENU_ITEM_PARAMETERS)
 		menu_add_item_menu_shortcut(array_menu_settings_config_file,'v');
 		menu_add_item_menu_tooltip(array_menu_settings_config_file,"View configuration file");
 		menu_add_item_menu_ayuda(array_menu_settings_config_file,"View configuration file");
-        menu_add_item_menu_es_avanzado(array_menu_settings_config_file);
-        menu_add_item_menu_genera_ventana(array_menu_settings_config_file);
+        menu_add_item_menu_add_flags(array_menu_settings_config_file,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_ES_AVANZADO | MENU_ITEM_FLAG_SE_CERRARA);
 
 		menu_add_item_menu_en_es_ca(array_menu_settings_config_file,MENU_OPCION_NORMAL,menu_settings_config_file_show_location,NULL,
             "    Show config file ~~path","    Ver ~~path archivo configuración","    Veure ~~path arxiu configuració");
 		menu_add_item_menu_shortcut(array_menu_settings_config_file,'p');
 		menu_add_item_menu_tooltip(array_menu_settings_config_file,"Show config file location");
 		menu_add_item_menu_ayuda(array_menu_settings_config_file,"Show config file location");
-        menu_add_item_menu_es_avanzado(array_menu_settings_config_file);
-        menu_add_item_menu_genera_ventana(array_menu_settings_config_file);
+        menu_add_item_menu_add_flags(array_menu_settings_config_file,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_ES_AVANZADO | MENU_ITEM_FLAG_SE_CERRARA);
 
 
 		menu_add_item_menu_en_es_ca(array_menu_settings_config_file,MENU_OPCION_NORMAL,menu_settings_config_file_reset,NULL,
@@ -3102,7 +3100,7 @@ void menu_settings_debug(MENU_ITEM_PARAMETERS)
 
 		menu_add_item_menu_en_es_ca(array_menu_settings_debug,MENU_OPCION_NORMAL, menu_breakpoints_condition_behaviour,NULL,
             "~~Breakp. behaviour","Comportamiento ~~Breakp.","Comportament ~~Breakp.");
-        menu_add_item_menu_sufijo_format(array_menu_settings_debug," [%s]",(debug_breakpoints_cond_behaviour.v ? "On Change" : "Always") );
+        menu_add_item_menu_prefijo_format(array_menu_settings_debug,"[%s] ",(debug_breakpoints_cond_behaviour.v ? "On Change" : "Always") );
 		menu_add_item_menu_tooltip(array_menu_settings_debug,"Indicates whether breakpoints are fired always or only on change from false to true");
 		menu_add_item_menu_ayuda(array_menu_settings_debug,"Indicates whether breakpoints are fired always or only on change from false to true");
 		menu_add_item_menu_shortcut(array_menu_settings_debug,'b');
@@ -3115,7 +3113,7 @@ void menu_settings_debug(MENU_ITEM_PARAMETERS)
 																															//  01234567890123456789012345678901
 		menu_add_item_menu_en_es_ca(array_menu_settings_debug,MENU_OPCION_NORMAL, menu_debug_settings_show_fired_breakpoint,NULL,
             "Show fired breakpoint","Ver breakpoint disparado","Veure breakpoint disparat");
-        menu_add_item_menu_sufijo_format(array_menu_settings_debug," [%s]",show_fired_breakpoint_type);
+        menu_add_item_menu_prefijo_format(array_menu_settings_debug,"[%s] ",show_fired_breakpoint_type);
 		menu_add_item_menu_tooltip(array_menu_settings_debug,"Tells to show the breakpoint condition when it is fired");
 		menu_add_item_menu_ayuda(array_menu_settings_debug,"Tells to show the breakpoint condition when it is fired. "
 								"Possible values:\n"
@@ -5731,7 +5729,7 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
 		if (MACHINE_IS_SPECTRUM || MACHINE_IS_ZX8081 || MACHINE_IS_SAM || MACHINE_IS_CPC || MACHINE_IS_MSX || MACHINE_IS_SVI || MACHINE_IS_PCW) {
             menu_add_item_menu_en_es_ca(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_joystick,NULL,
                 "Emulated ~~Joystick type","Tipo ~~Joystick emulado","Tipus ~~Joystick emulat");
-			menu_add_item_menu_sufijo_format(array_menu_hardware_settings," [%s]",joystick_texto[joystick_emulation]);
+			menu_add_item_menu_prefijo_format(array_menu_hardware_settings,"[%s] ",joystick_texto[joystick_emulation]);
 			menu_add_item_menu_shortcut(array_menu_hardware_settings,'j');
         	        menu_add_item_menu_tooltip(array_menu_hardware_settings,"Decide which joystick type is emulated");
                 	menu_add_item_menu_ayuda(array_menu_hardware_settings,"Joystick is emulated with:\n"

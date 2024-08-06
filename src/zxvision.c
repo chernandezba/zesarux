@@ -21505,17 +21505,17 @@ void menu_add_item_menu_tiene_submenu(menu_item *m)
 //Agregar flags al ultimo item de menu
 void menu_add_item_menu_add_flags(menu_item *m,int flags)
 {
-    //busca el ultimo item i le añade el indicado
 
+    //Nos situamos ya en el último item para que las llamadas a los diferentes flags sean mas rápidas
     while (m->siguiente_item!=NULL)
     {
         m=m->siguiente_item;
     }
 
-    if ( (flags & MENU_ITEM_FLAG_TIENE_SUBMENU)) m->tiene_submenu=1;
-    if ( (flags & MENU_ITEM_FLAG_GENERA_VENTANA)) m->genera_ventana=1;
-    if ( (flags & MENU_ITEM_FLAG_ES_AVANZADO)) m->item_avanzado=1;
-    if ( (flags & MENU_ITEM_FLAG_SE_CERRARA)) m->menu_se_cerrara=1;
+    if ( (flags & MENU_ITEM_FLAG_TIENE_SUBMENU)) menu_add_item_menu_tiene_submenu(m);
+    if ( (flags & MENU_ITEM_FLAG_GENERA_VENTANA)) menu_add_item_menu_genera_ventana(m);
+    if ( (flags & MENU_ITEM_FLAG_ES_AVANZADO)) menu_add_item_menu_es_avanzado(m);
+    if ( (flags & MENU_ITEM_FLAG_SE_CERRARA)) menu_add_item_menu_se_cerrara(m);
 
 }
 
