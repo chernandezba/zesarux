@@ -15,7 +15,6 @@
 cat esxdos_handler.c |grep ESXDOS_RST8_|grep -v ESXDOS_RST8_FA_|grep case|grep -v "/"|sed 's/.*case //'|sed 's/:/,/'|sed 's/ESXDOS_RST8_//'|sort|tr '\n' ' '
 tener en cuenta de sacar de esta lista los casos que retornan hacia rst8 (con funcion esxdos_handler_run_normal_rst8), como DISK_READ
 
-* desactivar simulador joystick: realjoystick.c: int simulador_joystick=0;
 * Actualizar features, segun lo agregado a Changelog
 * vigilar funciones F de pruebas en xwindows, desactivar las que sean de pruebas
 

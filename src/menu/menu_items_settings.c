@@ -9942,6 +9942,7 @@ void menu_hardware_realjoystick(MENU_ITEM_PARAMETERS)
 
 		menu_add_item_menu_en_es_ca(array_menu_hardware_realjoystick,MENU_OPCION_NORMAL,menu_hardware_realjoystick_test,NULL,
             "Joystick ~~information","~~Información del joystick","~~Informació del joystick");
+        menu_add_item_menu_add_flags(array_menu_hardware_realjoystick,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
 		menu_add_item_menu_shortcut(array_menu_hardware_realjoystick,'i');
 		menu_add_item_menu_tooltip(array_menu_hardware_realjoystick,"Joystick information");
 		menu_add_item_menu_ayuda(array_menu_hardware_realjoystick,"Joystick information and test tool");
@@ -9950,7 +9951,7 @@ void menu_hardware_realjoystick(MENU_ITEM_PARAMETERS)
 			menu_add_item_menu(array_menu_hardware_realjoystick,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 			menu_add_item_menu_en_es_ca(array_menu_hardware_realjoystick,MENU_OPCION_NORMAL,menu_hardware_realjoystick_autocalibrate,NULL,
                 "Auto~~calibrate value","Valor Auto~~calibrado","Valor Auto~~calibrat");
-            menu_add_item_menu_prefijo_format(array_menu_hardware_realjoystick,"[%5d] ",realjoystick_autocalibrate_value);
+            menu_add_item_menu_sufijo_format(array_menu_hardware_realjoystick," [%5d]",realjoystick_autocalibrate_value);
 			menu_add_item_menu_shortcut(array_menu_hardware_realjoystick,'c');
 			menu_add_item_menu_tooltip(array_menu_hardware_realjoystick,"Autocalibrate value");
 			menu_add_item_menu_ayuda(array_menu_hardware_realjoystick,"Parameter to autocalibrate joystick axis. "
@@ -9976,6 +9977,7 @@ void menu_hardware_realjoystick(MENU_ITEM_PARAMETERS)
 
 		menu_add_item_menu_en_es_ca(array_menu_hardware_realjoystick,MENU_OPCION_NORMAL,menu_hardware_realjoystick_set_defaults,NULL,
             "Set events&keys to default","Cambio eventos&teclas a defecto","Canvi events&tecles a defecte");
+        menu_add_item_menu_add_flags(array_menu_hardware_realjoystick,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
 		menu_add_item_menu_tooltip(array_menu_hardware_realjoystick,"Reset events & keys table to default values");
 		menu_add_item_menu_ayuda(array_menu_hardware_realjoystick,"Reset events & keys table to default values");
 

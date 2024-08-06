@@ -70,7 +70,7 @@ z80_bit realjoystick_disabled={0};
 z80_bit realjoystick_clear_keys_on_smartload={0};
 
 
-//si no usamos un joystick real sino un simulador. Solo para testing en desarrollo
+//si no usamos un joystick real sino un simulador.
 int simulador_joystick=0;
 
 
@@ -351,15 +351,6 @@ void realjoystick_null_main(void)
 int realjoystick_simulador_init(void)
 {
 	debug_printf (VERBOSE_DEBUG,"realjoystick_simulador_init");
-
-
-
-		printf ("!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"
-		        "WARNING: using joystick simulator. Don't enable it on production version. Use F7 key to simulate joystick event\n"
-			"!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
-		sleep(4);
-
-
 
 	strcpy(realjoystick_joy_name,"Joystick simulator");
 	realjoystick_total_axes=255;
