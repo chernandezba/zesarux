@@ -1947,14 +1947,16 @@ void menu_special_fx_settings(MENU_ITEM_PARAMETERS)
 
         menu_add_item_menu_inicial_format(&array_menu_special_fx_settings,MENU_OPCION_NORMAL,menu_interface_mix_menu,NULL,"Menu Mix Method");
         menu_add_item_menu_spanish_catalan(array_menu_special_fx_settings,"Metodo mezclado menu","Metode barreja menu");
-        menu_add_item_menu_prefijo_format(array_menu_special_fx_settings,"[%s] ",screen_menu_mix_methods_strings[screen_menu_mix_method] );
+        menu_add_item_menu_sufijo_format(array_menu_special_fx_settings," [%s]",screen_menu_mix_methods_strings[screen_menu_mix_method] );
+        menu_add_item_menu_prefijo(array_menu_special_fx_settings,"    ");
         menu_add_item_menu_tooltip(array_menu_special_fx_settings,"How to mix menu and the layer below");
         menu_add_item_menu_ayuda(array_menu_special_fx_settings,"How to mix menu and the layer below");
 
         if (screen_menu_mix_method==2) {
             menu_add_item_menu_en_es_ca(array_menu_special_fx_settings,MENU_OPCION_NORMAL,menu_interface_mix_tranparency,NULL,
                 "Transparency","Transparencia","Transparencia");
-            menu_add_item_menu_prefijo_format(array_menu_special_fx_settings,"[%d%%] ",screen_menu_mix_transparency );
+            menu_add_item_menu_sufijo_format(array_menu_special_fx_settings," [%d%%]",screen_menu_mix_transparency );
+            menu_add_item_menu_prefijo(array_menu_special_fx_settings,"    ");
             menu_add_item_menu_tooltip(array_menu_special_fx_settings,"Transparency percentage to apply to menu");
             menu_add_item_menu_ayuda(array_menu_special_fx_settings,"Transparency percentage to apply to menu");
         }
@@ -2150,7 +2152,8 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
 
 		menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_interface_charwidth,NULL,"Menu char width");
         menu_add_item_menu_spanish_catalan(array_menu_common,"Ancho de caracter de menú","Ample de caracter de menú");
-        menu_add_item_menu_prefijo_format(array_menu_common,"[%d] ",menu_char_width);
+        menu_add_item_menu_sufijo_format(array_menu_common," [%d]",menu_char_width);
+        menu_add_item_menu_prefijo(array_menu_common,"    ");
 		//menu_add_item_menu_shortcut(array_menu_common,'i');
 		menu_add_item_menu_tooltip(array_menu_common,"Menu character width");
 		menu_add_item_menu_ayuda(array_menu_common,"Menu character width. You can reduce it so allowing more text columns in a window");
@@ -2158,7 +2161,8 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
 
 		menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_interface_charheight,NULL,"Menu char height");
         menu_add_item_menu_spanish_catalan(array_menu_common,"Altura de caracter de menú","Alçada de caracter de menú");
-        menu_add_item_menu_prefijo_format(array_menu_common,"[%d] ",menu_char_height);
+        menu_add_item_menu_sufijo_format(array_menu_common," [%d]",menu_char_height);
+        menu_add_item_menu_prefijo(array_menu_common,"    ");
 		menu_add_item_menu_tooltip(array_menu_common,"Menu character height");
 		menu_add_item_menu_ayuda(array_menu_common,"Menu character height. You can reduce it so allowing more text rows in a window");
 
