@@ -2591,7 +2591,8 @@ void menu_osd_settings(MENU_ITEM_PARAMETERS)
     //Esta posicion afecta tanto al watermark normal como al forzado de 0.75
     menu_add_item_menu_en_es_ca(array_menu_osd_settings,MENU_OPCION_NORMAL,menu_osd_settings_watermark_position,NULL,
         "Watermark ~~position","~~Posición marca de agua","~~Posició marca d'aigüa");
-    menu_add_item_menu_prefijo_format(array_menu_osd_settings,"[%d] ",screen_watermark_position);
+    menu_add_item_menu_sufijo_format(array_menu_osd_settings," [%d]",screen_watermark_position);
+    menu_add_item_menu_prefijo_format(array_menu_osd_settings,"    ");
     menu_add_item_menu_shortcut(array_menu_osd_settings,'p');
 
 
@@ -2712,7 +2713,7 @@ void menu_external_tools_config(MENU_ITEM_PARAMETERS)
 		menu_tape_settings_trunc_name(external_tool_tar,string_tar,20);
 		menu_tape_settings_trunc_name(external_tool_unrar,string_unrar,20);
 
-        menu_add_item_menu_inicial_format(&array_menu_external_tools_config,MENU_OPCION_NORMAL,menu_external_tool_sox,NULL,"~~Sox [%s]",string_sox);
+        menu_add_item_menu_inicial_format(&array_menu_external_tools_config,MENU_OPCION_NORMAL,menu_external_tool_sox,NULL,"~~Sox    [%s]",string_sox);
 		menu_add_item_menu_shortcut(array_menu_external_tools_config,'s');
         menu_add_item_menu_tooltip(array_menu_external_tools_config,"Change Sox Path");
         menu_add_item_menu_ayuda(array_menu_external_tools_config,"Change Sox Path. Path can not include spaces");
@@ -2732,13 +2733,13 @@ void menu_external_tools_config(MENU_ITEM_PARAMETERS)
 
 
 
-        menu_add_item_menu_format(array_menu_external_tools_config,MENU_OPCION_NORMAL,menu_external_tool_tar,NULL,"~~Tar [%s]",string_tar);
+        menu_add_item_menu_format(array_menu_external_tools_config,MENU_OPCION_NORMAL,menu_external_tool_tar,NULL,"~~Tar    [%s]",string_tar);
 		menu_add_item_menu_shortcut(array_menu_external_tools_config,'t');
         menu_add_item_menu_tooltip(array_menu_external_tools_config,"Change Tar Path");
         menu_add_item_menu_ayuda(array_menu_external_tools_config,"Change Tar Path. Path can not include spaces");
 
 
-        menu_add_item_menu_format(array_menu_external_tools_config,MENU_OPCION_NORMAL,menu_external_tool_unrar,NULL,"Un~~rar [%s]",string_unrar);
+        menu_add_item_menu_format(array_menu_external_tools_config,MENU_OPCION_NORMAL,menu_external_tool_unrar,NULL,"Un~~rar  [%s]",string_unrar);
 		menu_add_item_menu_shortcut(array_menu_external_tools_config,'r');
         menu_add_item_menu_tooltip(array_menu_external_tools_config,"Change Unrar Path");
         menu_add_item_menu_ayuda(array_menu_external_tools_config,"Change Unrar Path. Path can not include spaces");
@@ -5788,7 +5789,7 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
 
         if (joystick_autofire_frequency) {
             menu_add_item_menu_en_es_ca(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_autofire_frequency,NULL,
-            "Autofire frequency","Frecuencia Autodisparo","Frequència Autofoc");
+            "Autofire frequency","Frecuencia Autodisparo","Freqüència Autofoc");
             menu_add_item_menu_prefijo_format(array_menu_hardware_settings,"     ");
             menu_add_item_menu_sufijo_format(array_menu_hardware_settings," [%d Hz]",50/joystick_autofire_frequency);
             menu_add_item_menu_tooltip(array_menu_hardware_settings,"Frequency for the joystick autofire");
@@ -5869,22 +5870,27 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
 			menu_add_item_menu_ayuda(array_menu_hardware_settings,"Boots tbblue directly to a 48 rom but with all the Next features enabled (except divmmc)");
             menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
 
-			menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_tbblue_machine_id,NULL,"[%02X] Next machine id",tbblue_machine_id);
-            menu_add_item_menu_add_flags(array_menu_hardware_settings,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_ES_AVANZADO | MENU_ITEM_FLAG_SE_CERRARA);
-
-			menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_tbblue_board_id,NULL,"[%02X] Next board id",tbblue_board_id);
-            menu_add_item_menu_add_flags(array_menu_hardware_settings,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_ES_AVANZADO | MENU_ITEM_FLAG_SE_CERRARA);
-
-			//menu_hardware_tbblue_core_version
-			menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_tbblue_core_version,NULL,"[%d.%d.%d] Next core version",
-									tbblue_core_current_version_major,tbblue_core_current_version_minor,tbblue_core_current_version_subminor);
-            menu_add_item_menu_add_flags(array_menu_hardware_settings,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_ES_AVANZADO | MENU_ITEM_FLAG_SE_CERRARA);
-
-
 			menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_tbblue_rtc_traps,NULL,"[%c] Next RTC traps",(tbblue_use_rtc_traps ? 'X' : ' ') );
 			menu_add_item_menu_tooltip(array_menu_hardware_settings,"Allows RTC trap for NextOS ROM");
 			menu_add_item_menu_ayuda(array_menu_hardware_settings,"Allows RTC trap for NextOS ROM and any program that uses RTC.SYS");
             menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
+
+			menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_tbblue_machine_id,NULL,"Next machine id [%02X]",tbblue_machine_id);
+            menu_add_item_menu_prefijo_format(array_menu_hardware_settings,"    ");
+            menu_add_item_menu_add_flags(array_menu_hardware_settings,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_ES_AVANZADO | MENU_ITEM_FLAG_SE_CERRARA);
+
+			menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_tbblue_board_id,NULL,"Next board id [%02X]",tbblue_board_id);
+            menu_add_item_menu_prefijo_format(array_menu_hardware_settings,"    ");
+            menu_add_item_menu_add_flags(array_menu_hardware_settings,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_ES_AVANZADO | MENU_ITEM_FLAG_SE_CERRARA);
+
+			//menu_hardware_tbblue_core_version
+			menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_tbblue_core_version,NULL,"Next core version [%d.%d.%d]",
+									tbblue_core_current_version_major,tbblue_core_current_version_minor,tbblue_core_current_version_subminor);
+            menu_add_item_menu_prefijo_format(array_menu_hardware_settings,"    ");
+            menu_add_item_menu_add_flags(array_menu_hardware_settings,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_ES_AVANZADO | MENU_ITEM_FLAG_SE_CERRARA);
+
+
+
 
             menu_add_item_menu_separator(array_menu_hardware_settings);
             menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
@@ -7591,7 +7597,8 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
 
 
 		if (MACHINE_IS_SPECTRUM || MACHINE_IS_ZX8081 || MACHINE_IS_CPC) {
-			menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_osd_word_kb_length,NULL,"[%d] OSD Adventure KB length",adventure_keyboard_key_length);
+			menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_osd_word_kb_length,NULL,"OSD Adventure KB length [%d] ",adventure_keyboard_key_length);
+            menu_add_item_menu_prefijo_format(array_menu_settings_display,"    ");
 			menu_add_item_menu_tooltip(array_menu_settings_display,"Define the duration for every key press on the Adventure Text OSD Keyboard");
 			menu_add_item_menu_ayuda(array_menu_settings_display,"Define the duration for every key press on the Adventure Text OSD Keyboard, in 1/50 seconds (default 50)");
             menu_add_item_menu_es_avanzado(array_menu_settings_display);
@@ -8254,6 +8261,7 @@ void menu_chardetection_settings(MENU_ITEM_PARAMETERS)
 
 
 	                        menu_add_item_menu_format(array_menu_chardetection_settings,MENU_OPCION_NORMAL,menu_chardetection_settings_second_trap,NULL,"~~Second trap address [%d]",chardetect_second_trap_char_dir);
+                menu_add_item_menu_prefijo(array_menu_chardetection_settings,"    ");
 				menu_add_item_menu_shortcut(array_menu_chardetection_settings,'s');
         	                menu_add_item_menu_tooltip(array_menu_chardetection_settings,"Address of the second print routine");
                 	        menu_add_item_menu_ayuda(array_menu_chardetection_settings,"Address of the second print routine");
@@ -8265,6 +8273,7 @@ void menu_chardetection_settings(MENU_ITEM_PARAMETERS)
 
 
         	                menu_add_item_menu_format(array_menu_chardetection_settings,MENU_OPCION_NORMAL,menu_chardetection_settings_third_trap,NULL,"T~~hird trap address [%d]",chardetect_third_trap_char_dir);
+                menu_add_item_menu_prefijo(array_menu_chardetection_settings,"    ");
 				menu_add_item_menu_shortcut(array_menu_chardetection_settings,'h');
                 	        menu_add_item_menu_tooltip(array_menu_chardetection_settings,"Address of the third print routine");
                         	menu_add_item_menu_ayuda(array_menu_chardetection_settings,"Address of the third print routine");
@@ -8277,6 +8286,7 @@ void menu_chardetection_settings(MENU_ITEM_PARAMETERS)
 
 
                         menu_add_item_menu_format(array_menu_chardetection_settings,MENU_OPCION_NORMAL,menu_chardetection_settings_chardetect_char_filter,NULL,"Char ~~filter [%s]",chardetect_char_filter_names[chardetect_char_filter]);
+            menu_add_item_menu_prefijo(array_menu_chardetection_settings,"    ");
 			menu_add_item_menu_shortcut(array_menu_chardetection_settings,'f');
 			menu_add_item_menu_tooltip(array_menu_chardetection_settings,"Send characters to an internal filter");
 			menu_add_item_menu_ayuda(array_menu_chardetection_settings,"Send characters to an internal filter");
@@ -8306,6 +8316,7 @@ void menu_chardetection_settings(MENU_ITEM_PARAMETERS)
 
 
 	                        menu_add_item_menu_format(array_menu_chardetection_settings,MENU_OPCION_NORMAL,menu_chardetection_settings_stdout_trap_detection,NULL,"Detect ~~routine [%s]",trap_char_detection_routines_texto[trap_char_detection_routine_number]);
+                            menu_add_item_menu_prefijo(array_menu_chardetection_settings,"    ");
 				menu_add_item_menu_shortcut(array_menu_chardetection_settings,'r');
         			 menu_add_item_menu_tooltip(array_menu_chardetection_settings,"Selects method for second trap character routine detection");
 	                        menu_add_item_menu_ayuda(array_menu_chardetection_settings,"This function enables second trap character routine detection for programs "
@@ -8320,13 +8331,15 @@ void menu_chardetection_settings(MENU_ITEM_PARAMETERS)
 
 
         	                if (trap_char_detection_routine_number!=TRAP_CHAR_DETECTION_ROUTINE_AUTOMATIC && trap_char_detection_routine_number!=TRAP_CHAR_DETECTION_ROUTINE_NONE)  {
-                        	        menu_add_item_menu_format(array_menu_chardetection_settings,MENU_OPCION_NORMAL,menu_chardetection_settings_second_trap_range_min,NULL,"Detection routine mi~~n [%d]",chardetect_second_trap_detect_pc_min);
+                        	        menu_add_item_menu_format(array_menu_chardetection_settings,MENU_OPCION_NORMAL,menu_chardetection_settings_second_trap_range_min,NULL,"Mi~~n address [%d]",chardetect_second_trap_detect_pc_min);
+                                    menu_add_item_menu_prefijo(array_menu_chardetection_settings,"     ");
 					menu_add_item_menu_shortcut(array_menu_chardetection_settings,'n');
 					menu_add_item_menu_tooltip(array_menu_chardetection_settings,"Lower address limit to find character routine");
 					menu_add_item_menu_ayuda(array_menu_chardetection_settings,"Lower address limit to find character routine");
 
 
-                	                menu_add_item_menu_format(array_menu_chardetection_settings,MENU_OPCION_NORMAL,menu_chardetection_settings_second_trap_range_max,NULL,"Detection routine ma~~x [%d]",chardetect_second_trap_detect_pc_max);
+                	                menu_add_item_menu_format(array_menu_chardetection_settings,MENU_OPCION_NORMAL,menu_chardetection_settings_second_trap_range_max,NULL,"Ma~~x address [%d]",chardetect_second_trap_detect_pc_max);
+                                    menu_add_item_menu_prefijo(array_menu_chardetection_settings,"     ");
 					menu_add_item_menu_shortcut(array_menu_chardetection_settings,'x');
 					menu_add_item_menu_tooltip(array_menu_chardetection_settings,"Higher address limit to find character routine");
 					menu_add_item_menu_ayuda(array_menu_chardetection_settings,"Higher address limit to find character routine");
