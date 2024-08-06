@@ -8241,51 +8241,47 @@ void menu_chardetection_chardetect_rom_number_compat(MENU_ITEM_PARAMETERS)
 //menu chardetection settings
 void menu_chardetection_settings(MENU_ITEM_PARAMETERS)
 {
-        menu_item *array_menu_chardetection_settings;
-        menu_item item_seleccionado;
-        int retorno_menu;
-        do {
+    menu_item *array_menu_chardetection_settings;
+    menu_item item_seleccionado;
+    int retorno_menu;
+    do {
 
-                        menu_add_item_menu_inicial_format(&array_menu_chardetection_settings,MENU_OPCION_NORMAL,menu_chardetection_settings_trap_rst16,NULL,"[%c] ~~Trap print", (chardetect_printchar_enabled.v==1 ? 'X' : ' ' ));
-			menu_add_item_menu_shortcut(array_menu_chardetection_settings,'t');
-                        menu_add_item_menu_tooltip(array_menu_chardetection_settings,"It enables the emulator to show and send to speech the text sent to standard rom print call routines and non standard, generated from some games, specially text adventures");
-                        menu_add_item_menu_ayuda(array_menu_chardetection_settings,"It enables the emulator to show and send to speech the text sent to standard rom print call routines and generated from some games, specially text adventures. "
-                                                "On Spectrum, ZX80, ZX81 machines, standard rom calls are RST 10H. On Z88, it traps OS_OUT and some other calls. Non standard calls are the ones indicated on Second and Third trap");
-
-
-			if (chardetect_printchar_enabled.v) {
-
-                menu_add_item_menu_format(array_menu_chardetection_settings,MENU_OPCION_NORMAL,menu_chardetection_chardetect_rom_number_compat,NULL,"[%c] ROM number print compat", (chardetect_rom_compat_numbers.v==1 ? 'X' : ' ' ));
-                menu_add_item_menu_tooltip(array_menu_chardetection_settings,"Enable ROM trap compatibility for printing numbers (but not good for printing from games, like PAWS)");
-                menu_add_item_menu_ayuda(array_menu_chardetection_settings,"Enable ROM trap compatibility for printing numbers (but not good for printing from games, like PAWS)");
+        menu_add_item_menu_inicial_format(&array_menu_chardetection_settings,MENU_OPCION_NORMAL,menu_chardetection_settings_trap_rst16,NULL,"[%c] ~~Trap print", (chardetect_printchar_enabled.v==1 ? 'X' : ' ' ));
+        menu_add_item_menu_shortcut(array_menu_chardetection_settings,'t');
+        menu_add_item_menu_tooltip(array_menu_chardetection_settings,"It enables the emulator to show and send to speech the text sent to standard rom print call routines and non standard, generated from some games, specially text adventures");
+        menu_add_item_menu_ayuda(array_menu_chardetection_settings,"It enables the emulator to show and send to speech the text sent to standard rom print call routines and generated from some games, specially text adventures. "
+            "On Spectrum, ZX80, ZX81 machines, standard rom calls are RST 10H. On Z88, it traps OS_OUT and some other calls. Non standard calls are the ones indicated on Second and Third trap");
 
 
-	                        menu_add_item_menu_format(array_menu_chardetection_settings,MENU_OPCION_NORMAL,menu_chardetection_settings_second_trap,NULL,"~~Second trap address [%d]",chardetect_second_trap_char_dir);
-                menu_add_item_menu_prefijo(array_menu_chardetection_settings,"    ");
-				menu_add_item_menu_shortcut(array_menu_chardetection_settings,'s');
-        	                menu_add_item_menu_tooltip(array_menu_chardetection_settings,"Address of the second print routine");
-                	        menu_add_item_menu_ayuda(array_menu_chardetection_settings,"Address of the second print routine");
+        if (chardetect_printchar_enabled.v) {
 
-	                        menu_add_item_menu_format(array_menu_chardetection_settings,MENU_OPCION_NORMAL,menu_chardetection_settings_second_trap_sum32,NULL,"[%c] Second trap s~~um 32",(chardetect_second_trap_sum32.v ? 'X' : ' '));
-				menu_add_item_menu_shortcut(array_menu_chardetection_settings,'u');
-				menu_add_item_menu_tooltip(array_menu_chardetection_settings,"Sums 32 to the ASCII value read");
-				menu_add_item_menu_ayuda(array_menu_chardetection_settings,"Sums 32 to the ASCII value read");
+            menu_add_item_menu_format(array_menu_chardetection_settings,MENU_OPCION_NORMAL,menu_chardetection_chardetect_rom_number_compat,NULL,"[%c] ROM number print compat", (chardetect_rom_compat_numbers.v==1 ? 'X' : ' ' ));
+            menu_add_item_menu_tooltip(array_menu_chardetection_settings,"Enable ROM trap compatibility for printing numbers (but not good for printing from games, like PAWS)");
+            menu_add_item_menu_ayuda(array_menu_chardetection_settings,"Enable ROM trap compatibility for printing numbers (but not good for printing from games, like PAWS)");
 
 
-        	                menu_add_item_menu_format(array_menu_chardetection_settings,MENU_OPCION_NORMAL,menu_chardetection_settings_third_trap,NULL,"T~~hird trap address [%d]",chardetect_third_trap_char_dir);
-                menu_add_item_menu_prefijo(array_menu_chardetection_settings,"    ");
-				menu_add_item_menu_shortcut(array_menu_chardetection_settings,'h');
-                	        menu_add_item_menu_tooltip(array_menu_chardetection_settings,"Address of the third print routine");
-                        	menu_add_item_menu_ayuda(array_menu_chardetection_settings,"Address of the third print routine");
+            menu_add_item_menu_format(array_menu_chardetection_settings,MENU_OPCION_NORMAL,menu_chardetection_settings_second_trap,NULL,"~~Second trap address [%d]",chardetect_second_trap_char_dir);
+            menu_add_item_menu_prefijo(array_menu_chardetection_settings,"    ");
+            menu_add_item_menu_shortcut(array_menu_chardetection_settings,'s');
+            menu_add_item_menu_tooltip(array_menu_chardetection_settings,"Address of the second print routine");
+            menu_add_item_menu_ayuda(array_menu_chardetection_settings,"Address of the second print routine");
 
-       menu_add_item_menu(array_menu_chardetection_settings,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+            menu_add_item_menu_format(array_menu_chardetection_settings,MENU_OPCION_NORMAL,menu_chardetection_settings_second_trap_sum32,NULL,"[%c] Second trap s~~um 32",(chardetect_second_trap_sum32.v ? 'X' : ' '));
+            menu_add_item_menu_shortcut(array_menu_chardetection_settings,'u');
+            menu_add_item_menu_tooltip(array_menu_chardetection_settings,"Sums 32 to the ASCII value read");
+            menu_add_item_menu_ayuda(array_menu_chardetection_settings,"Sums 32 to the ASCII value read");
 
 
+            menu_add_item_menu_format(array_menu_chardetection_settings,MENU_OPCION_NORMAL,menu_chardetection_settings_third_trap,NULL,"T~~hird trap address [%d]",chardetect_third_trap_char_dir);
+            menu_add_item_menu_prefijo(array_menu_chardetection_settings,"    ");
+            menu_add_item_menu_shortcut(array_menu_chardetection_settings,'h');
+            menu_add_item_menu_tooltip(array_menu_chardetection_settings,"Address of the third print routine");
+            menu_add_item_menu_ayuda(array_menu_chardetection_settings,"Address of the third print routine");
+
+            menu_add_item_menu(array_menu_chardetection_settings,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
 
-
-
-                        menu_add_item_menu_format(array_menu_chardetection_settings,MENU_OPCION_NORMAL,menu_chardetection_settings_chardetect_char_filter,NULL,"Char ~~filter [%s]",chardetect_char_filter_names[chardetect_char_filter]);
+            menu_add_item_menu_format(array_menu_chardetection_settings,MENU_OPCION_NORMAL,menu_chardetection_settings_chardetect_char_filter,NULL,"Char ~~filter [%s]",chardetect_char_filter_names[chardetect_char_filter]);
             menu_add_item_menu_prefijo(array_menu_chardetection_settings,"    ");
 			menu_add_item_menu_shortcut(array_menu_chardetection_settings,'f');
 			menu_add_item_menu_tooltip(array_menu_chardetection_settings,"Send characters to an internal filter");
@@ -8297,81 +8293,81 @@ void menu_chardetection_settings(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_tooltip(array_menu_chardetection_settings,"Just ignore new line characters");
             menu_add_item_menu_ayuda(array_menu_chardetection_settings,"Just ignore new line characters");
 
-			}
+        }
 
-                menu_add_item_menu(array_menu_chardetection_settings,"",MENU_OPCION_SEPARADOR,NULL,NULL);
-
-
-
-			menu_add_item_menu_format(array_menu_chardetection_settings,MENU_OPCION_NORMAL,menu_chardetection_settings_enable,NULL,"[%c] Enable 2nd trap ~~detection",(chardetect_detect_char_enabled.v ? 'X' : ' '));
-			menu_add_item_menu_shortcut(array_menu_chardetection_settings,'d');
-			menu_add_item_menu_tooltip(array_menu_chardetection_settings,"Enable char detection method to guess Second Trap address");
-			menu_add_item_menu_ayuda(array_menu_chardetection_settings,"Enable char detection method to guess Second Trap address");
+        menu_add_item_menu(array_menu_chardetection_settings,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
 
 
-
-
-			if (chardetect_detect_char_enabled.v) {
-
-
-	                        menu_add_item_menu_format(array_menu_chardetection_settings,MENU_OPCION_NORMAL,menu_chardetection_settings_stdout_trap_detection,NULL,"Detect ~~routine [%s]",trap_char_detection_routines_texto[trap_char_detection_routine_number]);
-                            menu_add_item_menu_prefijo(array_menu_chardetection_settings,"    ");
-				menu_add_item_menu_shortcut(array_menu_chardetection_settings,'r');
-        			 menu_add_item_menu_tooltip(array_menu_chardetection_settings,"Selects method for second trap character routine detection");
-	                        menu_add_item_menu_ayuda(array_menu_chardetection_settings,"This function enables second trap character routine detection for programs "
-                                                "that does not use RST16 calls to ROM for printing characters, on Spectrum models. "
-                                                "It tries to guess where the printing "
-                                                "routine is located and set Second Trap address when it finds it. This function has some pre-defined known "
-                                                "detection call printing routines (for example AD Adventures) and one other totally automatic method, "
-                                        	"which first tries to find automatically an aproximate range where the routine is, and then, "
-						"it finds which routine is, trying all on this list. "
-						"This automatic method "
-                                                "makes writing operations a bit slower (only while running the detection routine)");
-
-
-        	                if (trap_char_detection_routine_number!=TRAP_CHAR_DETECTION_ROUTINE_AUTOMATIC && trap_char_detection_routine_number!=TRAP_CHAR_DETECTION_ROUTINE_NONE)  {
-                        	        menu_add_item_menu_format(array_menu_chardetection_settings,MENU_OPCION_NORMAL,menu_chardetection_settings_second_trap_range_min,NULL,"Mi~~n address [%d]",chardetect_second_trap_detect_pc_min);
-                                    menu_add_item_menu_prefijo(array_menu_chardetection_settings,"     ");
-					menu_add_item_menu_shortcut(array_menu_chardetection_settings,'n');
-					menu_add_item_menu_tooltip(array_menu_chardetection_settings,"Lower address limit to find character routine");
-					menu_add_item_menu_ayuda(array_menu_chardetection_settings,"Lower address limit to find character routine");
-
-
-                	                menu_add_item_menu_format(array_menu_chardetection_settings,MENU_OPCION_NORMAL,menu_chardetection_settings_second_trap_range_max,NULL,"Ma~~x address [%d]",chardetect_second_trap_detect_pc_max);
-                                    menu_add_item_menu_prefijo(array_menu_chardetection_settings,"     ");
-					menu_add_item_menu_shortcut(array_menu_chardetection_settings,'x');
-					menu_add_item_menu_tooltip(array_menu_chardetection_settings,"Higher address limit to find character routine");
-					menu_add_item_menu_ayuda(array_menu_chardetection_settings,"Higher address limit to find character routine");
-	                        }
-
-
-			}
+        menu_add_item_menu_format(array_menu_chardetection_settings,MENU_OPCION_NORMAL,menu_chardetection_settings_enable,NULL,"[%c] Enable 2nd trap ~~detection",(chardetect_detect_char_enabled.v ? 'X' : ' '));
+        menu_add_item_menu_shortcut(array_menu_chardetection_settings,'d');
+        menu_add_item_menu_tooltip(array_menu_chardetection_settings,"Enable char detection method to guess Second Trap address");
+        menu_add_item_menu_ayuda(array_menu_chardetection_settings,"Enable char detection method to guess Second Trap address");
 
 
 
 
 
+        if (chardetect_detect_char_enabled.v) {
 
 
-                menu_add_item_menu(array_menu_chardetection_settings,"",MENU_OPCION_SEPARADOR,NULL,NULL);
-                //menu_add_item_menu(array_menu_chardetection_settings,"ESC Back",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
-                menu_add_ESC_item(array_menu_chardetection_settings);
+            menu_add_item_menu_format(array_menu_chardetection_settings,MENU_OPCION_NORMAL,menu_chardetection_settings_stdout_trap_detection,NULL,"Detect ~~routine [%s]",trap_char_detection_routines_texto[trap_char_detection_routine_number]);
+            menu_add_item_menu_prefijo(array_menu_chardetection_settings,"    ");
+            menu_add_item_menu_shortcut(array_menu_chardetection_settings,'r');
+            menu_add_item_menu_tooltip(array_menu_chardetection_settings,"Selects method for second trap character routine detection");
+            menu_add_item_menu_ayuda(array_menu_chardetection_settings,"This function enables second trap character routine detection for programs "
+                "that does not use RST16 calls to ROM for printing characters, on Spectrum models. "
+                "It tries to guess where the printing "
+                "routine is located and set Second Trap address when it finds it. This function has some pre-defined known "
+                "detection call printing routines (for example AD Adventures) and one other totally automatic method, "
+                "which first tries to find automatically an aproximate range where the routine is, and then, "
+                "it finds which routine is, trying all on this list. "
+                "This automatic method "
+                "makes writing operations a bit slower (only while running the detection routine)");
 
-                retorno_menu=menu_dibuja_menu_no_title_lang(&chardetection_settings_opcion_seleccionada,&item_seleccionado,array_menu_chardetection_settings,"Print char traps" );
+
+            if (trap_char_detection_routine_number!=TRAP_CHAR_DETECTION_ROUTINE_AUTOMATIC && trap_char_detection_routine_number!=TRAP_CHAR_DETECTION_ROUTINE_NONE)  {
+                menu_add_item_menu_format(array_menu_chardetection_settings,MENU_OPCION_NORMAL,menu_chardetection_settings_second_trap_range_min,NULL,"Mi~~n address [%d]",chardetect_second_trap_detect_pc_min);
+                menu_add_item_menu_prefijo(array_menu_chardetection_settings,"     ");
+                menu_add_item_menu_shortcut(array_menu_chardetection_settings,'n');
+                menu_add_item_menu_tooltip(array_menu_chardetection_settings,"Lower address limit to find character routine");
+                menu_add_item_menu_ayuda(array_menu_chardetection_settings,"Lower address limit to find character routine");
+
+
+                menu_add_item_menu_format(array_menu_chardetection_settings,MENU_OPCION_NORMAL,menu_chardetection_settings_second_trap_range_max,NULL,"Ma~~x address [%d]",chardetect_second_trap_detect_pc_max);
+                menu_add_item_menu_prefijo(array_menu_chardetection_settings,"     ");
+                menu_add_item_menu_shortcut(array_menu_chardetection_settings,'x');
+                menu_add_item_menu_tooltip(array_menu_chardetection_settings,"Higher address limit to find character routine");
+                menu_add_item_menu_ayuda(array_menu_chardetection_settings,"Higher address limit to find character routine");
+            }
+
+
+        }
 
 
 
-                if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
-                        //llamamos por valor de funcion
-                        if (item_seleccionado.menu_funcion!=NULL) {
-                                //printf ("actuamos por funcion\n");
-                                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
 
-                        }
-                }
 
-        } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+
+
+        menu_add_item_menu(array_menu_chardetection_settings,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        //menu_add_item_menu(array_menu_chardetection_settings,"ESC Back",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
+        menu_add_ESC_item(array_menu_chardetection_settings);
+
+        retorno_menu=menu_dibuja_menu_no_title_lang(&chardetection_settings_opcion_seleccionada,&item_seleccionado,array_menu_chardetection_settings,"Print char traps" );
+
+
+
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+            //llamamos por valor de funcion
+            if (item_seleccionado.menu_funcion!=NULL) {
+                //printf ("actuamos por funcion\n");
+                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+
+            }
+        }
+
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
 
 }
 
