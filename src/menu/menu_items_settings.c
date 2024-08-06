@@ -1415,13 +1415,13 @@ void menu_general_settings(MENU_ITEM_PARAMETERS)
 
         if (index_menu_enabled.v) {
             menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_reset_index_search,NULL,
-            "Reset search index","Reset índice búsqueda","Reset índex recerca");
+            "    Reset search index","    Reset índice búsqueda","    Reset índex recerca");
             menu_add_item_menu_se_cerrara(array_menu_window_settings);
             menu_add_item_menu_tooltip(array_menu_window_settings,"Reset index of the search feature");
             menu_add_item_menu_ayuda(array_menu_window_settings,"Reset index of the search feature");
 
             menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_full_index_search,NULL,
-            "Full scan search index","Completo escaneo índice búsqueda","Complet escaneig índex recerca");
+            "    Full scan search index","    Completo escaneo índice búsqueda","    Complet escaneig índex recerca");
             menu_add_item_menu_tooltip(array_menu_window_settings,"Run a Full scan search index");
             menu_add_item_menu_ayuda(array_menu_window_settings,"Run a Full scan search index");
         }
@@ -3100,7 +3100,8 @@ void menu_settings_debug(MENU_ITEM_PARAMETERS)
 
 		menu_add_item_menu_en_es_ca(array_menu_settings_debug,MENU_OPCION_NORMAL, menu_breakpoints_condition_behaviour,NULL,
             "~~Breakp. behaviour","Comportamiento ~~Breakp.","Comportament ~~Breakp.");
-        menu_add_item_menu_prefijo_format(array_menu_settings_debug,"[%s] ",(debug_breakpoints_cond_behaviour.v ? "On Change" : "Always") );
+        menu_add_item_menu_prefijo_format(array_menu_settings_debug,"    ");
+        menu_add_item_menu_sufijo_format(array_menu_settings_debug," [%s]",(debug_breakpoints_cond_behaviour.v ? "On Change" : "Always") );
 		menu_add_item_menu_tooltip(array_menu_settings_debug,"Indicates whether breakpoints are fired always or only on change from false to true");
 		menu_add_item_menu_ayuda(array_menu_settings_debug,"Indicates whether breakpoints are fired always or only on change from false to true");
 		menu_add_item_menu_shortcut(array_menu_settings_debug,'b');
@@ -3113,7 +3114,8 @@ void menu_settings_debug(MENU_ITEM_PARAMETERS)
 																															//  01234567890123456789012345678901
 		menu_add_item_menu_en_es_ca(array_menu_settings_debug,MENU_OPCION_NORMAL, menu_debug_settings_show_fired_breakpoint,NULL,
             "Show fired breakpoint","Ver breakpoint disparado","Veure breakpoint disparat");
-        menu_add_item_menu_prefijo_format(array_menu_settings_debug,"[%s] ",show_fired_breakpoint_type);
+        menu_add_item_menu_prefijo_format(array_menu_settings_debug,"    ");
+        menu_add_item_menu_sufijo_format(array_menu_settings_debug," [%s]",show_fired_breakpoint_type);
 		menu_add_item_menu_tooltip(array_menu_settings_debug,"Tells to show the breakpoint condition when it is fired");
 		menu_add_item_menu_ayuda(array_menu_settings_debug,"Tells to show the breakpoint condition when it is fired. "
 								"Possible values:\n"
@@ -3136,7 +3138,8 @@ void menu_settings_debug(MENU_ITEM_PARAMETERS)
 
 		if (si_complete_video_driver() ) {
 			menu_add_item_menu_en_es_ca(array_menu_settings_debug,MENU_OPCION_NORMAL,menu_debug_settings_visualmem_grafico,NULL,
-                "    Show Visualmem","    Ver Memoria Visual","    Veure Memoria Visual");
+                "Show Visualmem","Ver Memoria Visual","Veure Memoria Visual");
+            menu_add_item_menu_prefijo_format(array_menu_settings_debug,"    ");
 			menu_add_item_menu_sufijo_format(array_menu_settings_debug," [%s]",(setting_mostrar_visualmem_grafico.v ? "Graphic" : "Text") );
 
 
@@ -3149,14 +3152,16 @@ void menu_settings_debug(MENU_ITEM_PARAMETERS)
 
 		menu_add_item_menu_en_es_ca(array_menu_settings_debug,MENU_OPCION_NORMAL,menu_debug_verbose,NULL,
             "Verbose ~~level","Nive~~l Verbose","Nive~~ll Verbose");
-        menu_add_item_menu_prefijo_format(array_menu_settings_debug,"[%d] ",verbose_level);
+        menu_add_item_menu_prefijo_format(array_menu_settings_debug,"    ");
+        menu_add_item_menu_sufijo_format(array_menu_settings_debug," [%d]",verbose_level);
 		menu_add_item_menu_shortcut(array_menu_settings_debug,'l');
         menu_add_item_menu_tooltip(array_menu_settings_debug,"Verbose level for debug messages. Usually shown on terminal console or on debug console window");
         menu_add_item_menu_ayuda(array_menu_settings_debug,"Verbose level for debug messages. Usually shown on terminal console or on debug console window");
 
 		menu_add_item_menu_en_es_ca(array_menu_settings_debug,MENU_OPCION_NORMAL,menu_debug_verbose_excludeinclude,NULL,
             "Message filter","Filtro mensajes","Filtre missatges");
-        menu_add_item_menu_prefijo_format(array_menu_settings_debug,"[%s] ",
+        menu_add_item_menu_prefijo_format(array_menu_settings_debug,"    ");
+        menu_add_item_menu_sufijo_format(array_menu_settings_debug," [%s]",
             (debug_mascara_modo_exclude_include==VERBOSE_MASK_CLASS_TYPE_EXCLUDE ? "Exclude" : "Include") );
 		menu_add_item_menu_shortcut(array_menu_settings_debug,'l');
         menu_add_item_menu_tooltip(array_menu_settings_debug,"Filter type for debug messages");
@@ -3166,7 +3171,8 @@ void menu_settings_debug(MENU_ITEM_PARAMETERS)
 
 		menu_add_item_menu_en_es_ca(array_menu_settings_debug,MENU_OPCION_NORMAL,menu_debug_verbose_filter,NULL,
             "Filter mask","Máscara filtro","Màscara filtre");
-        menu_add_item_menu_prefijo_format(array_menu_settings_debug,"[%08X] ",valor_mascara);
+        menu_add_item_menu_prefijo_format(array_menu_settings_debug,"    ");
+        menu_add_item_menu_sufijo_format(array_menu_settings_debug," [%08X]",valor_mascara);
 		menu_add_item_menu_shortcut(array_menu_settings_debug,'l');
         menu_add_item_menu_tooltip(array_menu_settings_debug,"Filter mask for debug messages");
         menu_add_item_menu_ayuda(array_menu_settings_debug,"Filter mask for debug messages");
@@ -3215,7 +3221,8 @@ void menu_settings_debug(MENU_ITEM_PARAMETERS)
 
         menu_add_item_menu_en_es_ca(array_menu_settings_debug,MENU_OPCION_NORMAL, menu_debug_settings_max_history,NULL,
             "Max history items","Max items en historial","Max items a l'historial");
-        menu_add_item_menu_prefijo_format(array_menu_settings_debug,"[%d] ",cpu_history_get_max_size() );
+        menu_add_item_menu_prefijo_format(array_menu_settings_debug,"    ");
+        menu_add_item_menu_sufijo_format(array_menu_settings_debug," [%d]",cpu_history_get_max_size() );
         menu_add_item_menu_tooltip(array_menu_settings_debug,ayuda_leyenda);
         menu_add_item_menu_ayuda(array_menu_settings_debug,ayuda_leyenda);
 
@@ -3234,7 +3241,8 @@ void menu_settings_debug(MENU_ITEM_PARAMETERS)
 		//if (remote_protocol_enabled.v) {
 			menu_add_item_menu_en_es_ca(array_menu_settings_debug,MENU_OPCION_NORMAL, menu_debug_configuration_remoteproto_port,NULL,
                 "ZRCP ~~port","~~Puerto ZRCP","~~Port ZRCP");
-            menu_add_item_menu_prefijo_format(array_menu_settings_debug,"[%d] ",remote_protocol_port );
+            menu_add_item_menu_prefijo_format(array_menu_settings_debug,"    ");
+            menu_add_item_menu_sufijo_format(array_menu_settings_debug," [%d]",remote_protocol_port );
 			menu_add_item_menu_tooltip(array_menu_settings_debug,"Changes remote command protocol port");
 			menu_add_item_menu_ayuda(array_menu_settings_debug,"Changes remote command protocol port");
 			menu_add_item_menu_shortcut(array_menu_settings_debug,'p');
@@ -3243,7 +3251,8 @@ void menu_settings_debug(MENU_ITEM_PARAMETERS)
             menu_tape_settings_trunc_name(remote_prompt_command_string,string_prompt,20);
 			menu_add_item_menu_en_es_ca(array_menu_settings_debug,MENU_OPCION_NORMAL, menu_debug_configuration_remoteproto_prompt,NULL,
                 "ZRCP pro~~mpt","ZRCP pro~~mpt","ZRCP pro~~mpt");
-            menu_add_item_menu_prefijo_format(array_menu_settings_debug,"[%s] ",string_prompt );
+            menu_add_item_menu_prefijo_format(array_menu_settings_debug,"    ");
+            menu_add_item_menu_sufijo_format(array_menu_settings_debug," [%s]",string_prompt );
 			menu_add_item_menu_tooltip(array_menu_settings_debug,"Changes remote command protocol prompt");
 			menu_add_item_menu_ayuda(array_menu_settings_debug,"Changes remote command protocol prompt");
 			menu_add_item_menu_shortcut(array_menu_settings_debug,'m');
@@ -3251,6 +3260,7 @@ void menu_settings_debug(MENU_ITEM_PARAMETERS)
 
 #endif
 
+        menu_add_item_menu_separator(array_menu_settings_debug);
 
 		menu_add_item_menu_en_es_ca(array_menu_settings_debug,MENU_OPCION_NORMAL, menu_hardware_debug_port,NULL,
             "Hardware ~~debug ports","Puertos ~~debug hardware","Ports ~~debug hardware");
@@ -3265,6 +3275,7 @@ void menu_settings_debug(MENU_ITEM_PARAMETERS)
 			menu_tape_settings_trunc_name(zesarux_zxi_hardware_debug_file,string_zesarux_zxi_hardware_debug_file_shown,18);
         	menu_add_item_menu_en_es_ca(array_menu_settings_debug,MENU_OPCION_NORMAL,menu_zesarux_zxi_hardware_debug_file,NULL,
                 "Byte ~~file","~~Fichero byte","~~Fitxer byte");
+            menu_add_item_menu_prefijo_format(array_menu_settings_debug,"    ");
             menu_add_item_menu_sufijo_format(array_menu_settings_debug," [%s]",string_zesarux_zxi_hardware_debug_file_shown);
 			menu_add_item_menu_tooltip(array_menu_settings_debug,"File used on using register 6 (HARDWARE_DEBUG_BYTE_FILE)");
 			menu_add_item_menu_ayuda(array_menu_settings_debug,"File used on using register 6 (HARDWARE_DEBUG_BYTE_FILE)");
