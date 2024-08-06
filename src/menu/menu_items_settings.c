@@ -3813,8 +3813,9 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
 
 
 
-			menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_audio_change_ay_chips,menu_cond_ay_chip,"[%d] AY ~~Chips %s",total_ay_chips,
+			menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_audio_change_ay_chips,menu_cond_ay_chip,"AY ~~Chips [%d] %s",total_ay_chips,
 				(total_ay_chips>1 ? "(Turbosound)" : "") );
+            menu_add_item_menu_prefijo(array_menu_settings_audio,"    ");
 			menu_add_item_menu_shortcut(array_menu_settings_audio,'c');
 			menu_add_item_menu_tooltip(array_menu_settings_audio,"Total number of AY Chips");
 			menu_add_item_menu_ayuda(array_menu_settings_audio,"Total number of AY Chips");
@@ -5021,7 +5022,7 @@ void menu_hardware_memory_settings(MENU_ITEM_PARAMETERS)
 
                         //int ram_zx8081=(ramtop_zx8081-16383)/1024;
 												int ram_zx8081=zx8081_get_standard_ram();
-                        menu_add_item_menu_format(array_menu_hardware_memory_settings,MENU_OPCION_NORMAL,menu_hardware_zx8081_ramtop,menu_cond_zx8081,"ZX80/81 Standard RAM [%d KB]",ram_zx8081);
+                        menu_add_item_menu_format(array_menu_hardware_memory_settings,MENU_OPCION_NORMAL,menu_hardware_zx8081_ramtop,menu_cond_zx8081,"    ZX80/81 Standard RAM [%d KB]",ram_zx8081);
                         menu_add_item_menu_tooltip(array_menu_hardware_memory_settings,"Standard RAM for the ZX80/81");
                         menu_add_item_menu_ayuda(array_menu_hardware_memory_settings,"Standard RAM for the ZX80/81");
 
@@ -7415,13 +7416,15 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
 
 
 
-			menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_x_offset,menu_cond_zx8081_realvideo,"[%d] Video x_offset",offset_zx8081_t_coordx);
+			menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_x_offset,menu_cond_zx8081_realvideo,"Video x_offset [%d]",offset_zx8081_t_coordx);
+            menu_add_item_menu_prefijo(array_menu_settings_display,"    ");
 			menu_add_item_menu_tooltip(array_menu_settings_display,"Video horizontal image offset");
 			menu_add_item_menu_ayuda(array_menu_settings_display,"Video horizontal image offset, usually you don't need to change this");
             menu_add_item_menu_es_avanzado(array_menu_settings_display);
 
 
-			menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_minimo_vsync,menu_cond_zx8081_realvideo,"[%d] Video min. vsync length",minimo_duracion_vsync);
+			menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_minimo_vsync,menu_cond_zx8081_realvideo,"Video min. vsync length [%d]",minimo_duracion_vsync);
+            menu_add_item_menu_prefijo(array_menu_settings_display,"    ");
 			menu_add_item_menu_tooltip(array_menu_settings_display,"Video minimum vsync length in t-states");
 			menu_add_item_menu_ayuda(array_menu_settings_display,"Video minimum vsync length in t-states");
             menu_add_item_menu_es_avanzado(array_menu_settings_display);
@@ -7972,6 +7975,7 @@ void menu_textspeech(MENU_ITEM_PARAMETERS)
 
 
                         menu_add_item_menu_inicial_format(&array_menu_textspeech,MENU_OPCION_NORMAL,menu_textspeech_filter_program,NULL,"~~Speech program [%s]",string_filterprogram_shown);
+                        menu_add_item_menu_prefijo(array_menu_textspeech,"    ");
 			menu_add_item_menu_shortcut(array_menu_textspeech,'s');
         	        menu_add_item_menu_tooltip(array_menu_textspeech,"Specify which program to send generated text");
         	        menu_add_item_menu_ayuda(array_menu_textspeech,"Specify which program to send generated text. Text is send to the program "
@@ -7985,6 +7989,7 @@ void menu_textspeech(MENU_ITEM_PARAMETERS)
 			if (textspeech_filter_program!=NULL) {
 
 				menu_add_item_menu_format(array_menu_textspeech,MENU_OPCION_NORMAL,menu_textspeech_stop_filter_program,NULL,"Stop program [%s]",string_stop_filterprogram_shown);
+                menu_add_item_menu_prefijo(array_menu_textspeech,"    ");
 
         	                menu_add_item_menu_tooltip(array_menu_textspeech,"Specify a path to a program or script in charge of stopping the running speech program");
                 	        menu_add_item_menu_ayuda(array_menu_textspeech,"Specify a path to a program or script in charge of stopping the running speech program. If not specified, the current speech script can't be stopped");
@@ -8025,7 +8030,8 @@ void menu_textspeech(MENU_ITEM_PARAMETERS)
                 menu_add_item_menu_tooltip(array_menu_textspeech,"Settings for texto coming from trap print and sent to speech");
                 menu_add_item_menu_ayuda(array_menu_textspeech,"Settings for texto coming from trap print and sent to speech");
 
-                    menu_add_item_menu_format(array_menu_textspeech,MENU_OPCION_NORMAL,menu_chardetection_settings_stdout_line_width,NULL,"[%d] Line w~~idth",chardetect_line_width);
+                    menu_add_item_menu_format(array_menu_textspeech,MENU_OPCION_NORMAL,menu_chardetection_settings_stdout_line_width,NULL,"Line w~~idth [%d]",chardetect_line_width);
+                    menu_add_item_menu_prefijo(array_menu_textspeech,"    ");
                 menu_add_item_menu_shortcut(array_menu_textspeech,'i');
                 menu_add_item_menu_tooltip(array_menu_textspeech,"The minimum characters to detect as a line text");
                 menu_add_item_menu_ayuda(array_menu_textspeech,"The minimum characters to detect as a line text. Setting 0 means no limit, so "
@@ -8047,7 +8053,8 @@ void menu_textspeech(MENU_ITEM_PARAMETERS)
 
                 }
 
-                menu_add_item_menu_format(array_menu_textspeech,MENU_OPCION_NORMAL,menu_textspeech_filter_timeout,NULL,"[%d] ~~Timeout no enter",textspeech_timeout_no_enter);
+                menu_add_item_menu_format(array_menu_textspeech,MENU_OPCION_NORMAL,menu_textspeech_filter_timeout,NULL,"~~Timeout no enter [%d]",textspeech_timeout_no_enter);
+                menu_add_item_menu_prefijo(array_menu_textspeech,"    ");
                 menu_add_item_menu_shortcut(array_menu_textspeech,'t');
                 menu_add_item_menu_tooltip(array_menu_textspeech,"After some seconds the text will be sent to the Speech program when no "
                         "new line is sent");
@@ -10209,7 +10216,8 @@ void menu_settings_tape(MENU_ITEM_PARAMETERS)
         if (realtape_algorithm_new.v) {
             menu_add_item_menu_en_es_ca(array_menu_settings_tape,MENU_OPCION_NORMAL,menu_realtape_algorithm_new_noise_reduction,NULL,
                 "Noise reduction","Reducción de ruido","Reducció de soroll");
-            menu_add_item_menu_prefijo_format(array_menu_settings_tape,"[%d] ",realtape_algorithm_new_noise_reduction);
+            menu_add_item_menu_sufijo_format(array_menu_settings_tape," [%d]",realtape_algorithm_new_noise_reduction);
+            menu_add_item_menu_prefijo_format(array_menu_settings_tape,"    ");
             menu_add_item_menu_tooltip(array_menu_settings_tape,"Noise reduction value");
             menu_add_item_menu_ayuda(array_menu_settings_tape,"Noise reduction value. Set a value >0 when you need to reduce noise");
             menu_add_item_menu_es_avanzado(array_menu_settings_tape);
@@ -10220,7 +10228,8 @@ void menu_settings_tape(MENU_ITEM_PARAMETERS)
 
             menu_add_item_menu_en_es_ca(array_menu_settings_tape,MENU_OPCION_NORMAL,menu_realtape_volumen,NULL,
                 "Volume bit 1 range","Rango Volumen bit 1","Rang Volum bit 1");
-            menu_add_item_menu_prefijo_format(array_menu_settings_tape,"[%s%d] ",(realtape_volumen>0 ? "+" : ""),realtape_volumen);
+            menu_add_item_menu_sufijo_format(array_menu_settings_tape," [%s%d]",(realtape_volumen>0 ? "+" : ""),realtape_volumen);
+            menu_add_item_menu_prefijo_format(array_menu_settings_tape,"    ");
             menu_add_item_menu_tooltip(array_menu_settings_tape,"Volume bit 1 starting range value");
             menu_add_item_menu_ayuda(array_menu_settings_tape,"The input audio value read (considering range from -128 to +127) is treated "
                         "normally as 1 if the value is in range 0...+127, and 0 if it is in range -127...-1. This setting "
@@ -10233,7 +10242,8 @@ void menu_settings_tape(MENU_ITEM_PARAMETERS)
 
 		menu_add_item_menu_en_es_ca(array_menu_settings_tape,MENU_OPCION_NORMAL,menu_realtape_wave_offset,NULL,
             "Level Offset","Desplazamiento nivel","Desplaçament nivell");
-        menu_add_item_menu_prefijo_format(array_menu_settings_tape,"[%d] ",realtape_wave_offset);
+        menu_add_item_menu_sufijo_format(array_menu_settings_tape," [%d]",realtape_wave_offset);
+        menu_add_item_menu_prefijo_format(array_menu_settings_tape,"    ");
 		menu_add_item_menu_tooltip(array_menu_settings_tape,"Apply offset to sound value read");
 		menu_add_item_menu_ayuda(array_menu_settings_tape,"Indicates some value (positive or negative) to sum to the raw value read "
 					"(considering range from -128 to +127) to the input audio value read");
