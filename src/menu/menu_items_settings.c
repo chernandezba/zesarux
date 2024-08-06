@@ -11987,7 +11987,7 @@ void menu_cpu_settings(MENU_ITEM_PARAMETERS)
 
 		//hotkeys usadas: todc
 
-		char buffer_velocidad[16];
+		char buffer_velocidad[30];
 
 		if (CPU_IS_Z80 && !MACHINE_IS_Z88) {
 			int cpu_hz=get_cpu_frequency();
@@ -12000,13 +12000,13 @@ void menu_cpu_settings(MENU_ITEM_PARAMETERS)
 								//01234567890123456789012345678901
 								//           1234567890
 								//Turbo: 16X 99.999 MHz
-			sprintf(buffer_velocidad,"%d.%d MHz",mhz_enteros,decimal_mhz);
+			sprintf(buffer_velocidad," %d.%d MHz",mhz_enteros,decimal_mhz);
 		}
 		else {
 			buffer_velocidad[0]=0;
 		}
 
-		menu_add_item_menu_inicial_format(&array_menu_cpu_settings,MENU_OPCION_NORMAL,menu_turbo_mode,NULL,"~~Turbo [%dX %s]",cpu_turbo_speed,buffer_velocidad);
+		menu_add_item_menu_inicial_format(&array_menu_cpu_settings,MENU_OPCION_NORMAL,menu_turbo_mode,NULL,"~~Turbo [%dX%s]",cpu_turbo_speed,buffer_velocidad);
         menu_add_item_menu_prefijo_format(array_menu_cpu_settings,"    ");
 		menu_add_item_menu_shortcut(array_menu_cpu_settings,'t');
 		menu_add_item_menu_tooltip(array_menu_cpu_settings,"Changes only the Z80 speed");

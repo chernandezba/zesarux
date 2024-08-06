@@ -24091,8 +24091,10 @@ void menu_ql_mdv_flp(MENU_ITEM_PARAMETERS)
                             menu_tape_settings_trunc_name(ql_flp1_root_dir,string_ql_flp1_root_dir_shown,28);
 
                             menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,"Mdv1 root dir:");
+                            menu_add_item_menu_prefijo(array_menu_common,"    ");
 
                             menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_ql_mdv1,NULL,"[%s]",string_ql_mdv1_root_dir_shown);
+                            menu_add_item_menu_prefijo(array_menu_common,"    ");
 
                             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_ql_mdv1_enable,menu_ql_mdv1_emulation_cond,
                                 "Enabled","Activado","Activat");
@@ -24106,8 +24108,10 @@ void menu_ql_mdv_flp(MENU_ITEM_PARAMETERS)
 
 
                             menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,"Mdv2 root dir:");
+                            menu_add_item_menu_prefijo(array_menu_common,"    ");
 
                             menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_ql_mdv2,NULL,"[%s]",string_ql_mdv2_root_dir_shown);
+                            menu_add_item_menu_prefijo(array_menu_common,"    ");
 
                             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_ql_mdv2_enable,menu_ql_mdv2_emulation_cond,
                                 "Enabled","Activado","Activat");
@@ -24120,8 +24124,10 @@ void menu_ql_mdv_flp(MENU_ITEM_PARAMETERS)
 
 
                             menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,"Flp1 root dir:");
+                            menu_add_item_menu_prefijo(array_menu_common,"    ");
 
                             menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_ql_flp1,NULL,"[%s]",string_ql_flp1_root_dir_shown);
+                            menu_add_item_menu_prefijo(array_menu_common,"    ");
 
                             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_ql_flp1_enable,menu_ql_flp1_emulation_cond,
                                 "Enabled","Activado","Activat");
@@ -24150,8 +24156,9 @@ void menu_ql_mdv_flp(MENU_ITEM_PARAMETERS)
                             menu_add_item_menu_tooltip(array_menu_common,"flp1 path parameter is copied from mdv1 path parameter");
                             menu_add_item_menu_ayuda(array_menu_common,"flp1 path parameter is copied from mdv1 path parameter");
 
-                            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_ql_data_size_headerless,NULL,"[%6d] Data size for headerless exe",
+                            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_ql_data_size_headerless,NULL,"Data size for headerless exe [%6d]",
                                 ql_task_default_data_size);
+                            menu_add_item_menu_prefijo(array_menu_common,"    ");
 
                     }
 
