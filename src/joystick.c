@@ -215,13 +215,12 @@ char *gunstick_texto[]={
 void joystick_cycle_next_type_autofire(void)
 {
 
-	//Si no esta autofire
-        if (menu_hardware_autofire_cond()==0) {
+
                 //desactivamos autofire
                 joystick_autofire_frequency=0;
                 //y ponemos tecla fire a 0, por si se habia quedado activa
                 puerto_especial_joystick=0;
-        }
+
 }
 
 void joystick_cycle_next_type(void)

@@ -4660,17 +4660,6 @@ void menu_hardware_joystick_fire_key(MENU_ITEM_PARAMETERS)
 }
 
 
-//OLD: Solo permitimos autofire para Kempston, Fuller ,Zebra y mikrogen, para evitar que con cursor o con sinclair se este mandando una tecla y dificulte moverse por el menu
-int menu_hardware_autofire_cond(void)
-{
-	//if (joystick_emulation==JOYSTICK_FULLER || joystick_emulation==JOYSTICK_KEMPSTON || joystick_emulation==JOYSTICK_ZEBRA || joystick_emulation==JOYSTICK_MIKROGEN) return 1;
-	//return 0;
-
-	return 1;
-}
-
-
-
 
 void menu_hardware_joystick(MENU_ITEM_PARAMETERS)
 {
@@ -4746,16 +4735,22 @@ int menu_hardware_gunstick_aychip_cond(void)
 	else return 0;
 }
 
-void menu_hardware_autofire(MENU_ITEM_PARAMETERS)
+void menu_hardware_autofire_enable(MENU_ITEM_PARAMETERS)
 {
 	if (joystick_autofire_frequency==0) joystick_autofire_frequency=1;
-	else if (joystick_autofire_frequency==1) joystick_autofire_frequency=2;
+
+	else joystick_autofire_frequency=0;
+}
+
+void menu_hardware_autofire_frequency(MENU_ITEM_PARAMETERS)
+{
+
+	if (joystick_autofire_frequency==1) joystick_autofire_frequency=2;
 	else if (joystick_autofire_frequency==2) joystick_autofire_frequency=5;
 	else if (joystick_autofire_frequency==5) joystick_autofire_frequency=10;
 	else if (joystick_autofire_frequency==10) joystick_autofire_frequency=25;
 	else if (joystick_autofire_frequency==25) joystick_autofire_frequency=50;
-
-	else joystick_autofire_frequency=0;
+	else joystick_autofire_frequency=1;
 }
 
 void menu_hardware_autoleftright(MENU_ITEM_PARAMETERS)
@@ -5765,22 +5760,31 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_ayuda(array_menu_hardware_settings,"Define which key triggers the fire function for the joystick. "
             "Not all video drivers support reading all keys");
 
-        if (joystick_autofire_frequency==0) {
-            menu_add_item_menu_en_es_ca(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_autofire,menu_hardware_autofire_cond,
-                "[ ] Joystick ~~Autofire","[ ] Joystick ~~Autodisparo","[ ] Joystick ~~Autofoc");
-        }
-        else {
-            menu_add_item_menu_en_es_ca(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_autofire,NULL,
-            "Joystick ~~Autofire","Joystick ~~Autodisparo","Joystick ~~Autofoc");
-            menu_add_item_menu_prefijo_format(array_menu_hardware_settings,"    ");
-            menu_add_item_menu_sufijo_format(array_menu_hardware_settings," [%d Hz]",50/joystick_autofire_frequency);
-        }
+
+
+
+        menu_add_item_menu_en_es_ca(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_autofire_enable,NULL,
+                "Joystick ~~Autofire","Joystick ~~Autodisparo","Joystick ~~Autofoc");
+        menu_add_item_menu_prefijo_format(array_menu_hardware_settings,"[%c] ",(joystick_autofire_frequency ? 'X' : ' ' ));
         menu_add_item_menu_shortcut(array_menu_hardware_settings,'a');
-        menu_add_item_menu_tooltip(array_menu_hardware_settings,"Frequency for the joystick autofire");
-        menu_add_item_menu_ayuda(array_menu_hardware_settings,"Times per second (Hz) the joystick fire is auto-switched from pressed to not pressed and viceversa. "
-                                        "Autofire can only be enabled on Kempston, Fuller, Zebra and Mikrogen; Sinclair, Cursor, and OPQA can not have "
-                                        "autofire because this function can interfiere with the menu (it might think a key is pressed)");
+        menu_add_item_menu_tooltip(array_menu_hardware_settings,"Enable joystick autofire");
+        menu_add_item_menu_ayuda(array_menu_hardware_settings,"Enable joystick autofire");
         menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
+
+
+
+        if (joystick_autofire_frequency) {
+            menu_add_item_menu_en_es_ca(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_autofire_frequency,NULL,
+            "Autofire frequency","Frecuencia Autodisparo","Frequència Autofoc");
+            menu_add_item_menu_prefijo_format(array_menu_hardware_settings,"     ");
+            menu_add_item_menu_sufijo_format(array_menu_hardware_settings," [%d Hz]",50/joystick_autofire_frequency);
+            menu_add_item_menu_tooltip(array_menu_hardware_settings,"Frequency for the joystick autofire");
+            menu_add_item_menu_ayuda(array_menu_hardware_settings,"Times per second (Hz) the joystick fire is auto-switched from pressed to not pressed and viceversa. "
+                                            "Autofire can only be enabled on Kempston, Fuller, Zebra and Mikrogen; Sinclair, Cursor, and OPQA can not have "
+                                            "autofire because this function can interfiere with the menu (it might think a key is pressed)");
+            menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
+        }
+
 
         menu_add_item_menu_en_es_ca(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_autoleftright,NULL,
             "Joystick AutoLeftRight","Joystick AutoIzqDer","Joystick AutoEsqDreta");
