@@ -5737,7 +5737,7 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
 
 		if (MACHINE_IS_SPECTRUM || MACHINE_IS_ZX8081 || MACHINE_IS_SAM || MACHINE_IS_CPC || MACHINE_IS_MSX || MACHINE_IS_SVI || MACHINE_IS_PCW) {
             menu_add_item_menu_en_es_ca(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_joystick,NULL,
-                "Emulated ~~Joystick type","Tipo ~~Joystick emulado","Tipus ~~Joystick emulat");
+                "Emulated ~~Joystick","~~Joystick emulado","~~Joystick emulat");
             menu_add_item_menu_prefijo_format(array_menu_hardware_settings,"    ");
 			menu_add_item_menu_sufijo_format(array_menu_hardware_settings," [%s]",joystick_texto[joystick_emulation]);
 			menu_add_item_menu_shortcut(array_menu_hardware_settings,'j');
@@ -8916,7 +8916,8 @@ void menu_settings_snapshot(MENU_ITEM_PARAMETERS)
 
 		menu_add_item_menu_en_es_ca(array_menu_settings_snapshot,MENU_OPCION_NORMAL,menu_snapshot_save_version,NULL,
             "Save ZX Snapshot ~~version","Grabar ZX Snapshot ~~versión","Gravar ZX Snapshot ~~versió");
-        menu_add_item_menu_prefijo_format(array_menu_settings_snapshot,"[%d] ",snap_zx_version_save);
+        menu_add_item_menu_sufijo_format(array_menu_settings_snapshot," [%d]",snap_zx_version_save);
+        menu_add_item_menu_prefijo_format(array_menu_settings_snapshot,"    ");
 		menu_add_item_menu_shortcut(array_menu_settings_snapshot,'v');
         menu_add_item_menu_tooltip(array_menu_settings_snapshot,"Decide which kind of .ZX version file is saved");
         menu_add_item_menu_ayuda(array_menu_settings_snapshot,"Version 1,2,3 works on ZEsarUX and ZXSpectr\n"
@@ -9003,6 +9004,7 @@ void menu_settings_snapshot(MENU_ITEM_PARAMETERS)
 			menu_add_item_menu_en_es_ca(array_menu_settings_snapshot,MENU_OPCION_NORMAL,menu_snapshot_autosnap_path,NULL,
                 "Autosnap ~~path","Autosnap car~~peta","Autosnap car~~peta");
             menu_add_item_menu_sufijo_format(array_menu_settings_snapshot," [%s]",string_autosnap_path);
+            menu_add_item_menu_prefijo_format(array_menu_settings_snapshot,"    ");
 			menu_add_item_menu_shortcut(array_menu_settings_snapshot,'p');
 			menu_add_item_menu_tooltip(array_menu_settings_snapshot,"Where to save/load automatic snapshot. If not set, uses current directory");
 			menu_add_item_menu_ayuda(array_menu_settings_snapshot,"Where to save/load automatic snapshot. If not set, uses current directory");
@@ -9035,6 +9037,7 @@ void menu_settings_snapshot(MENU_ITEM_PARAMETERS)
 		menu_add_item_menu_en_es_ca(array_menu_settings_snapshot,MENU_OPCION_NORMAL,menu_snapshot_autosave_at_interval_prefix,NULL,
             "QS&CA P~~refix","QS&CA P~~refijo","QS&CA P~~refix");
         menu_add_item_menu_sufijo_format(array_menu_settings_snapshot," [%s]",string_autosave_interval_prefix);
+        menu_add_item_menu_prefijo_format(array_menu_settings_snapshot,"    ");
 		menu_add_item_menu_shortcut(array_menu_settings_snapshot,'r');
         menu_add_item_menu_tooltip(array_menu_settings_snapshot,"Name prefix for quicksave and continous autosave snapshots");
         menu_add_item_menu_ayuda(array_menu_settings_snapshot,"Name prefix for quicksave and continous autosave snapshots. The final name will be: prefix-date-hour.zsf");
@@ -9042,6 +9045,7 @@ void menu_settings_snapshot(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_en_es_ca(array_menu_settings_snapshot,MENU_OPCION_NORMAL,menu_snapshot_autosave_at_interval_directory,NULL,
             "QS&CA P~~ath","QS&CA C~~arpeta","QS&CA C~~arpeta");
         menu_add_item_menu_sufijo_format(array_menu_settings_snapshot," [%s]",string_autosave_interval_path);
+        menu_add_item_menu_prefijo_format(array_menu_settings_snapshot,"    ");
         menu_add_item_menu_shortcut(array_menu_settings_snapshot,'a');
         menu_add_item_menu_tooltip(array_menu_settings_snapshot,"Path to save quicksave & continous autosave");
         menu_add_item_menu_ayuda(array_menu_settings_snapshot,"Path to save quicksave & continous autosave. If not set, will use current directory");
@@ -11553,7 +11557,8 @@ void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
 		if (screen_ext_desktop_enabled) {
 			menu_add_item_menu_format(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_width,
                 menu_ext_desktop_cond,"~~Width");
-            menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%4d] ",zxdesktop_width);
+            menu_add_item_menu_sufijo_format(array_menu_ext_desktop_settings," [%4d]",zxdesktop_width);
+            menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"    ");
             menu_add_item_menu_shortcut(array_menu_ext_desktop_settings,'w');
 			menu_add_item_menu_tooltip(array_menu_ext_desktop_settings,"Tells the width of the ZX Desktop space");
 			menu_add_item_menu_ayuda(array_menu_ext_desktop_settings,"Final width is this value in pixels X current horizontal zoom");
@@ -11561,13 +11566,15 @@ void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
 
 			menu_add_item_menu_format(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_custom_width,
                 menu_ext_desktop_cond,"~~Custom Width");
+            menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"    ");
             menu_add_item_menu_shortcut(array_menu_ext_desktop_settings,'c');
             menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
             menu_add_item_menu_genera_ventana(array_menu_ext_desktop_settings);
 
 			menu_add_item_menu_format(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_height,
                 menu_ext_desktop_cond,"~~Height");
-            menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%4d] ",zxdesktop_height);
+            menu_add_item_menu_sufijo_format(array_menu_ext_desktop_settings," [%4d]",zxdesktop_height);
+            menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"    ");
             menu_add_item_menu_shortcut(array_menu_ext_desktop_settings,'h');
 			menu_add_item_menu_tooltip(array_menu_ext_desktop_settings,"Tells the height of the ZX Desktop space");
 			menu_add_item_menu_ayuda(array_menu_ext_desktop_settings,"Final height is this value in pixels X current vertical zoom");
@@ -11575,6 +11582,7 @@ void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
 
 			menu_add_item_menu_format(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_custom_height,
                 menu_ext_desktop_cond,"C~~ustom Height");
+            menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"    ");
             menu_add_item_menu_shortcut(array_menu_ext_desktop_settings,'u');
             menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
             menu_add_item_menu_genera_ventana(array_menu_ext_desktop_settings);
@@ -11585,7 +11593,7 @@ void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
 
 
 			menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_placemenu,NULL,
-                "Open Menu on ZX Desktop","Abrir menu en ZX Desktop","Obrir menu al ZX Desktop");
+                "Open Menu on ZX Desktop","Abrir menú en ZX Desktop","Obrir menú al ZX Desktop");
             menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(screen_ext_desktop_place_menu ? 'X' : ' ' ) );
 			menu_add_item_menu_tooltip(array_menu_ext_desktop_settings,"Try to place new menu items on the ZX Desktop space");
 			menu_add_item_menu_ayuda(array_menu_ext_desktop_settings,"Try to place new menu items on the ZX Desktop space");
@@ -11752,7 +11760,8 @@ void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
 
             menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_filltype,NULL,
                 "~~Fill type","Tipo ~~fill","Tipus ~~farcit");
-            menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%s] ",fill_type_name);
+            menu_add_item_menu_sufijo_format(array_menu_ext_desktop_settings," [%s]",fill_type_name);
+            menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"    ");
             menu_add_item_menu_shortcut(array_menu_ext_desktop_settings,'f');
 
 			if (seleccion_primary) {
@@ -11761,7 +11770,8 @@ void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
                 if (menu_ext_desktop_fill==7) color_primario &=7;
 				menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_fillcolor,NULL,
                         "Primary Fill Color","Color primario relleno","Color primari de farciment");
-				menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%s] ",spectrum_colour_names[color_primario]);
+				menu_add_item_menu_sufijo_format(array_menu_ext_desktop_settings," [%s]",spectrum_colour_names[color_primario]);
+                menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"    ");
 			}
 
             if (menu_ext_desktop_fill==7) {
@@ -11774,7 +11784,8 @@ void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
 			if (seleccion_secondary) {
 				menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_fillcolor_second,NULL,
                     "Secondary Fill Color","Color secundario relleno","Color secundari de farciment");
-                menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%s] ",spectrum_colour_names[menu_ext_desktop_fill_second_color]);
+                menu_add_item_menu_sufijo_format(array_menu_ext_desktop_settings," [%s]",spectrum_colour_names[menu_ext_desktop_fill_second_color]);
+                menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"    ");
 			}
 
 
@@ -11783,6 +11794,7 @@ void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_zxdesktop_scrfile,NULL,
                 "~~SCR file","archivo ~~SCR","arxiu ~~SCR");
             menu_add_item_menu_sufijo_format(array_menu_ext_desktop_settings," [%s]",string_back_scr_shown);
+            menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"    ");
             menu_add_item_menu_shortcut(array_menu_ext_desktop_settings,'s');
             menu_add_item_menu_tooltip(array_menu_ext_desktop_settings,"Sets a SCR file for ZX Desktop background. Flash attributes are not used");
             menu_add_item_menu_ayuda(array_menu_ext_desktop_settings,"Sets a SCR file for ZX Desktop background. Flash attributes are not used");
