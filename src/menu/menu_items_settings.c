@@ -4378,27 +4378,33 @@ void menu_ula_advanced(MENU_ITEM_PARAMETERS)
     do {
         menu_add_item_menu_en_es_ca_inicial(&array_menu_hardware_advanced,MENU_OPCION_NORMAL,menu_hardware_advanced_hidden_top_border,NULL,
             "Hidden Top Border","Borde Superior Oculto","Vora Superior Oculta");
-        menu_add_item_menu_prefijo_format(array_menu_hardware_advanced,"[%2d] ",screen_invisible_borde_superior);
+        menu_add_item_menu_sufijo_format(array_menu_hardware_advanced," [%2d]",screen_invisible_borde_superior);
+        menu_add_item_menu_prefijo_format(array_menu_hardware_advanced,"    ");
 
         menu_add_item_menu_en_es_ca(array_menu_hardware_advanced,MENU_OPCION_NORMAL,menu_hardware_advanced_visible_top_border,NULL,
             "Visible Top Border","Borde Superior Visible","Vora Superior Visible");
-        menu_add_item_menu_prefijo_format(array_menu_hardware_advanced,"[%d] ",screen_borde_superior);
+        menu_add_item_menu_sufijo_format(array_menu_hardware_advanced," [%d]",screen_borde_superior);
+        menu_add_item_menu_prefijo_format(array_menu_hardware_advanced,"    ");
 
         menu_add_item_menu_en_es_ca(array_menu_hardware_advanced,MENU_OPCION_NORMAL,menu_hardware_advanced_visible_bottom_border,NULL,
             "Visible Bottom Border","Borde Inferior Visible","Vora Inferior Visible");
-        menu_add_item_menu_prefijo_format(array_menu_hardware_advanced,"[%d] ",screen_total_borde_inferior);
+        menu_add_item_menu_sufijo_format(array_menu_hardware_advanced," [%d]",screen_total_borde_inferior);
+        menu_add_item_menu_prefijo_format(array_menu_hardware_advanced,"    ");
 
         menu_add_item_menu_en_es_ca(array_menu_hardware_advanced,MENU_OPCION_NORMAL,menu_hardware_advanced_borde_izquierdo,NULL,
             "Left Border TLength","Borde Izquierdo TLongitud","Vora Esquerra TLongitut");
-        menu_add_item_menu_prefijo_format(array_menu_hardware_advanced,"[%d] ",screen_total_borde_izquierdo/2);
+        menu_add_item_menu_sufijo_format(array_menu_hardware_advanced," [%d]",screen_total_borde_izquierdo/2);
+        menu_add_item_menu_prefijo_format(array_menu_hardware_advanced,"    ");
 
         menu_add_item_menu_en_es_ca(array_menu_hardware_advanced,MENU_OPCION_NORMAL,menu_hardware_advanced_borde_derecho,NULL,
             "Right Border TLength","Borde Derecho TLongitud","Vora Dreta TLongitut");
-        menu_add_item_menu_prefijo_format(array_menu_hardware_advanced,"[%d] ",screen_total_borde_derecho/2);
+        menu_add_item_menu_sufijo_format(array_menu_hardware_advanced," [%d]",screen_total_borde_derecho/2);
+        menu_add_item_menu_prefijo_format(array_menu_hardware_advanced,"    ");
 
         menu_add_item_menu_en_es_ca(array_menu_hardware_advanced,MENU_OPCION_NORMAL,menu_hardware_advanced_hidden_borde_derecho,NULL,
             "Right Hidden B. TLength","B. Derecho Oculto TLongitud","V. Dreta Oculta TLongitut");
-        menu_add_item_menu_prefijo_format(array_menu_hardware_advanced,"[%d] ",screen_invisible_borde_derecho/2);
+        menu_add_item_menu_sufijo_format(array_menu_hardware_advanced," [%d]",screen_invisible_borde_derecho/2);
+        menu_add_item_menu_prefijo_format(array_menu_hardware_advanced,"    ");
 
 
         menu_add_item_menu(array_menu_hardware_advanced,"",MENU_OPCION_SEPARADOR,NULL,NULL);
@@ -4448,7 +4454,8 @@ void menu_ula_settings(MENU_ITEM_PARAMETERS)
         if (MACHINE_IS_SPECTRUM) {
             menu_add_item_menu_en_es_ca(array_menu_ula_settings,MENU_OPCION_NORMAL,menu_ula_late_timings,NULL,
                 "ULA ~~timing","~~Temporización ULA","~~Temporització ULA");
-            menu_add_item_menu_prefijo_format(array_menu_ula_settings,"[%s] ",(ula_late_timings.v ? "Late" : "Early"));
+            menu_add_item_menu_sufijo_format(array_menu_ula_settings," [%s]",(ula_late_timings.v ? "Late" : "Early"));
+            menu_add_item_menu_prefijo_format(array_menu_ula_settings,"    ");
             menu_add_item_menu_shortcut(array_menu_ula_settings,'t');
             menu_add_item_menu_tooltip(array_menu_ula_settings,"Use ULA early or late timings");
             menu_add_item_menu_ayuda(array_menu_ula_settings,"Late timings have the contended memory table start one t-state later");
@@ -4505,7 +4512,8 @@ void menu_ula_settings(MENU_ITEM_PARAMETERS)
         if (CPU_IS_Z80 && !MACHINE_IS_ACE) {
             menu_add_item_menu_en_es_ca(array_menu_ula_settings,MENU_OPCION_NORMAL,menu_ula_databus_value,NULL,
                 "~~ULA Databus value","Valor ~~ULA Databus","Valor ~~ULA Databus");
-            menu_add_item_menu_prefijo_format(array_menu_ula_settings,"[%d] ",ula_databus_value);
+            menu_add_item_menu_sufijo_format(array_menu_ula_settings," [%d]",ula_databus_value);
+            menu_add_item_menu_prefijo_format(array_menu_ula_settings,"    ");
             menu_add_item_menu_shortcut(array_menu_ula_settings,'u');
         }
 
@@ -5223,6 +5231,7 @@ void menu_hardware_printers(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_en_es_ca(array_menu_hardware_printers,MENU_OPCION_NORMAL,menu_hardware_zxprinter_bitmapfile,
             menu_hardware_zxprinter_cond,"Bitmap file","Archivo bitmap","Arxiu bitmap");
         menu_add_item_menu_sufijo_format(array_menu_hardware_printers," [%s]",string_bitmapfile_shown);
+        menu_add_item_menu_prefijo_format(array_menu_hardware_printers,"    ");
 
         menu_add_item_menu_tooltip(array_menu_hardware_printers,"Sends printer output to image file");
         menu_add_item_menu_ayuda(array_menu_hardware_printers,"Printer output is saved to a image file. Supports pbm file format, and "
@@ -5237,6 +5246,7 @@ void menu_hardware_printers(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_en_es_ca(array_menu_hardware_printers,MENU_OPCION_NORMAL,menu_hardware_zxprinter_ocrfile,
             menu_hardware_zxprinter_cond,"OCR file","Archivo OCR","Arxiu OCR");
         menu_add_item_menu_sufijo_format(array_menu_hardware_printers," [%s]",string_ocrfile_shown);
+        menu_add_item_menu_prefijo_format(array_menu_hardware_printers,"    ");
 
         menu_add_item_menu_tooltip(array_menu_hardware_printers,"Sends printer output to text file using OCR method");
         menu_add_item_menu_ayuda(array_menu_hardware_printers,"Printer output is saved to a text file using OCR method to guess text. "
@@ -5246,6 +5256,7 @@ void menu_hardware_printers(MENU_ITEM_PARAMETERS)
 
 		menu_add_item_menu_en_es_ca(array_menu_hardware_printers,MENU_OPCION_NORMAL,menu_hardware_zxprinter_copy,
             menu_hardware_zxprinter_cond,"Run COPY routine","Ejecutar rutina COPY","Executar rutina COPY");
+        menu_add_item_menu_prefijo_format(array_menu_hardware_printers,"    ");
 
         menu_add_item_menu_tooltip(array_menu_hardware_printers,"Runs ROM COPY routine");
 		menu_add_item_menu_ayuda(array_menu_hardware_printers,"It calls ROM copy routine on Spectrum and ZX-81, like the COPY command on BASIC. \n"
@@ -5469,7 +5480,8 @@ void menu_keyboard_settings(MENU_ITEM_PARAMETERS)
 		if (MACHINE_IS_SPECTRUM) {
 			menu_add_item_menu_en_es_ca(array_menu_keyboard_settings,MENU_OPCION_NORMAL,menu_hardware_keyboard_issue,
                 menu_hardware_keyboard_issue_cond,"Keyboard ~~Issue","Teclado ~~Issue","Teclat ~~Issue");
-            menu_add_item_menu_prefijo_format(array_menu_keyboard_settings,"[%c] ", (keyboard_issue2.v==1 ? '2' : '3'));
+            menu_add_item_menu_sufijo_format(array_menu_keyboard_settings," [%c]", (keyboard_issue2.v==1 ? '2' : '3'));
+            menu_add_item_menu_prefijo_format(array_menu_keyboard_settings,"    ");
 			menu_add_item_menu_shortcut(array_menu_keyboard_settings,'i');
 			menu_add_item_menu_tooltip(array_menu_keyboard_settings,"Type of Spectrum keyboard emulated");
 			menu_add_item_menu_ayuda(array_menu_keyboard_settings,"Changes the way the Spectrum keyboard port returns its bit 6");
@@ -5572,6 +5584,7 @@ void menu_keyboard_settings(MENU_ITEM_PARAMETERS)
         	//Redefine keys
 		menu_add_item_menu_en_es_ca(array_menu_keyboard_settings,MENU_OPCION_NORMAL,menu_hardware_redefine_keys,NULL,
             "~~Redefine keys","~~Redefinir teclas","~~Redefinir tecles");
+        menu_add_item_menu_prefijo_format(array_menu_keyboard_settings,"    ");
 		menu_add_item_menu_shortcut(array_menu_keyboard_settings,'r');
         menu_add_item_menu_genera_ventana(array_menu_keyboard_settings);
 		menu_add_item_menu_tooltip(array_menu_keyboard_settings,"Redefine one key to another");
@@ -11967,6 +11980,7 @@ void menu_cpu_settings(MENU_ITEM_PARAMETERS)
 		}
 
 		menu_add_item_menu_inicial_format(&array_menu_cpu_settings,MENU_OPCION_NORMAL,menu_turbo_mode,NULL,"~~Turbo [%dX %s]",cpu_turbo_speed,buffer_velocidad);
+        menu_add_item_menu_prefijo_format(array_menu_cpu_settings,"    ");
 		menu_add_item_menu_shortcut(array_menu_cpu_settings,'t');
 		menu_add_item_menu_tooltip(array_menu_cpu_settings,"Changes only the Z80 speed");
 		menu_add_item_menu_ayuda(array_menu_cpu_settings,"Changes only the Z80 speed. Do not modify FPS, interrupts or any other parameter. "
@@ -12038,6 +12052,7 @@ void menu_cpu_settings(MENU_ITEM_PARAMETERS)
 			menu_add_item_menu_en_es_ca(array_menu_cpu_settings,MENU_OPCION_NORMAL,menu_cpu_type,NULL,
                 "Z80 CPU Type","Tipo CPU Z80","Tipus CPU Z80");
             menu_add_item_menu_sufijo_format(array_menu_cpu_settings," [%s]",z80_cpu_types_strings[z80_cpu_current_type]);
+            menu_add_item_menu_prefijo_format(array_menu_cpu_settings,"    ");
 			menu_add_item_menu_tooltip(array_menu_cpu_settings,"Chooses the cpu type");
 			menu_add_item_menu_ayuda(array_menu_cpu_settings,"CPU type modifies the way the CPU fires an IM0 interrupt, or the behaviour of opcode OUT (C),0, for example");
 
@@ -12055,6 +12070,7 @@ void menu_cpu_settings(MENU_ITEM_PARAMETERS)
 			menu_add_item_menu_en_es_ca(array_menu_cpu_settings,MENU_OPCION_NORMAL,menu_spectrum_core_reduced,NULL,
                 "Spectrum ~~core","~~Core Spectrum","~~Core Spectrum");
 			menu_add_item_menu_sufijo_format(array_menu_cpu_settings," [%s]",(core_spectrum_uses_reduced.v ? "Reduced" : "Normal") );
+            menu_add_item_menu_prefijo_format(array_menu_cpu_settings,"    ");
 			menu_add_item_menu_shortcut(array_menu_cpu_settings,'c');
 			menu_add_item_menu_tooltip(array_menu_cpu_settings,"Switches between the normal Spectrum core or the reduced core");
 			menu_add_item_menu_ayuda(array_menu_cpu_settings,"When using the Spectrum reduced core, the following features are NOT available or are NOT properly emulated:\n"
