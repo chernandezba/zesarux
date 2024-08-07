@@ -9,6 +9,7 @@ Added Quicksave screen function
 
 * Improvements:
 
+Allow save screen to bmp for most machines
 Allow hotswap to Pentagon and to Spectrum +3
 Added setting to disable persistent writes on Z88 Cards
 Improve Azimuth warning on External Audio Source Window

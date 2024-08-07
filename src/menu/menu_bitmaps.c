@@ -4319,35 +4319,33 @@ char *bitmap_button_ext_desktop_quicksave[EXT_DESKTOP_BUTTONS_ANCHO]={
 
 
 char *bitmap_button_ext_desktop_quicksave_scr[EXT_DESKTOP_BUTTONS_ANCHO]={
-   //01234567890123456789012345
-    "                     xx   ",     //0
-  	"                     xx   ",
-	"                     xx   ",
-	"                     xx   ",
-	"         bbbbbbbb  xxxxxx ",
-	"        bbbbbbbbbb  xxxx  ",
-	"       bbbbbbbbbbbb  xx   ",
-	"      bbbbbbbbbbbbbb      ",
-	"     bbbbbbbbbbbbbbbb     ",
-	" bbbbbbbbbbbbbbbbbbbbbbbb ",
-	"bbbbbbbbbbb    bbbbbbbbbbb",	//10
-	"bbbbbbbbbb      bbbbbbbbbb",
-	"bbbWWbbbb        bbbbbbbbb",
-	"bbbWWbbb   xx     bbbbbbbb",
-	"bbbbbbbb  x       bbbbbbbb",
-	"bbbbbbb   x        bbbbbbb",
-	"bbbbbbb            bbbbbbb",
-	"bbbbbbb            bbbbbbb",
-	"bbbbbbwwwwwwwwwwwwwwbbbbbb",
-	"bbbbbbwxxxwxxxwxxxwwbbbbbb",
-	"bbbbbbwxwwwxwwwxwwxwbbbbbb",	//20
-	"bbbbbbwxxxwxwwwxxxwwbbbbbb",
-	"bbbbbbwwwxwxwwwxwxwwbbbbbb",
-	"bbbbbbwxxxwxxxwxwwxwbbbbbb",
-	"bbbbbbwwwwwwwwwwwwwwbbbbbb",
-	"bbbbbbbbbbbbbbbbbbbbbbbbbb"	//25
-
-
+    //01234567890123456789012345
+    "                          ",     //0
+  	"                          ",
+	"RRRRRRRRRRRRRRRRRRRRRRRRR ",
+	"RrrrrrrrrrrrrrrrrrrrrrrrR ",
+	"Rr                     rR ",
+	"Rr                     rR ",
+	"Rr          x          rR ",
+	"Rr          x          rR ",
+	"Rr          x          rR ",
+	"Rr          x          rR ",
+	"Rr          x          rR ", //10
+	"Rr          x          rR ",
+	"Rr      x   x   x      rR ",
+	"Rr       x  x  x       rR ",
+	"Rr        x x x        rR ",
+	"Rr  x      xxx      x  rR ",
+	"Rr  x       x       x  rR ",
+	"Rr  x               x  rR ",
+	"Rr  xxxxxxxxxxxxxxxxx  rR ",
+	"Rr                     rR ",
+	"RrrrrrrrrrrrrrrrrrrrrrrrR ",    //20
+	"RRRRRRRRRRRRRRRRRRRRRRRRR ",
+	"        RRRRRRRRR         ",
+	"       RRRRRRRRRRR        ",
+	"      RRRRRRRRRRRRR       ",
+	"     rrrrrrrrrrrrrrr      " 	 //25
 };
 
 char *bitmap_button_ext_desktop_nmi[EXT_DESKTOP_BUTTONS_ANCHO]={

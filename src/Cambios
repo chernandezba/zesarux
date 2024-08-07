@@ -9,6 +9,7 @@ Agregado función de grabado rápido de pantalla
 
 * Mejoras:
 
+Permitir grabar pantalla a bmp para la mayoría de máquinas
 Permitir hotswap a Pentagon y a Spectrum +3
 Agregada opción para desactivar escrituras persistentes en tarjetas de Z88
 Mejorar aviso de Azimuth en ventana External Audio Source

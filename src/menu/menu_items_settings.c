@@ -9075,16 +9075,16 @@ void menu_settings_snapshot(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_sufijo_format(array_menu_settings_snapshot," [%s]",string_autosave_interval_prefix);
         menu_add_item_menu_prefijo_format(array_menu_settings_snapshot,"    ");
 		menu_add_item_menu_shortcut(array_menu_settings_snapshot,'r');
-        menu_add_item_menu_tooltip(array_menu_settings_snapshot,"Name prefix for quicksave and continous autosave snapshots");
-        menu_add_item_menu_ayuda(array_menu_settings_snapshot,"Name prefix for quicksave and continous autosave snapshots. The final name will be: prefix-date-hour.zsf");
+        menu_add_item_menu_tooltip(array_menu_settings_snapshot,"Name prefix for quicksave (snapshot and screen) and continous autosave snapshots");
+        menu_add_item_menu_ayuda(array_menu_settings_snapshot,"Name prefix for quicksave (snapshot and screen) and continous autosave snapshots. The final name will be: prefix-date-hour.zsf");
 
         menu_add_item_menu_en_es_ca(array_menu_settings_snapshot,MENU_OPCION_NORMAL,menu_snapshot_autosave_at_interval_directory,NULL,
             "QS&CA P~~ath","QS&CA C~~arpeta","QS&CA C~~arpeta");
         menu_add_item_menu_sufijo_format(array_menu_settings_snapshot," [%s]",string_autosave_interval_path);
         menu_add_item_menu_prefijo_format(array_menu_settings_snapshot,"    ");
         menu_add_item_menu_shortcut(array_menu_settings_snapshot,'a');
-        menu_add_item_menu_tooltip(array_menu_settings_snapshot,"Path to save quicksave & continous autosave");
-        menu_add_item_menu_ayuda(array_menu_settings_snapshot,"Path to save quicksave & continous autosave. If not set, will use current directory");
+        menu_add_item_menu_tooltip(array_menu_settings_snapshot,"Path to save quicksave (snapshot and screen) & continous autosave");
+        menu_add_item_menu_ayuda(array_menu_settings_snapshot,"Path to save quicksave (snapshot and screen) & continous autosave. If not set, will use current directory");
 
 
 
