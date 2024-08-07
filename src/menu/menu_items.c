@@ -19814,13 +19814,16 @@ void menu_display_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_genera_ventana(array_menu_display_settings);
 		menu_add_item_menu_tooltip(array_menu_display_settings,"Save screen to disk. BMP format requires to enable real video first");
 		menu_add_item_menu_ayuda(array_menu_display_settings,"Save screen to disk. BMP format requires to enable real video first");
+        }
 
-
-
-        menu_add_item_menu_en_es_ca(array_menu_display_settings,MENU_OPCION_NORMAL,menu_display_quicksave_scr,NULL,
-            "Quicks~~ave Screen","S~~alvado Pantalla rápido","S~~alvat Pantalla ràpid");
-        menu_add_item_menu_tooltip(array_menu_display_settings,"Save screen to disk quickly");
-        menu_add_item_menu_ayuda(array_menu_display_settings,"Save screen to disk quickly. Name prefix and directory to save are configured on settings->Snapshot");
+        if (MACHINE_IS_SPECTRUM) {
+            menu_add_item_menu_en_es_ca(array_menu_display_settings,MENU_OPCION_NORMAL,menu_display_quicksave_scr,NULL,
+                "Qu~~icksave Screen","Salvado Pantalla ráp~~ido","Salvat Pantalla ràp~~id");
+            menu_add_item_menu_se_cerrara(array_menu_display_settings);
+            menu_add_item_menu_genera_ventana(array_menu_display_settings);
+            menu_add_item_menu_shortcut(array_menu_display_settings,'i');
+            menu_add_item_menu_tooltip(array_menu_display_settings,"Save screen to disk quickly");
+            menu_add_item_menu_ayuda(array_menu_display_settings,"Save screen to disk quickly. Name prefix and directory to save are configured on settings->Snapshot");
 
 		}
 
@@ -33246,6 +33249,8 @@ void menu_snapshot(MENU_ITEM_PARAMETERS)
 
         menu_add_item_menu_en_es_ca(array_menu_snapshot,MENU_OPCION_NORMAL,menu_snapshot_quicksave,NULL,
             "Quicks~~ave","S~~alvado rapido","S~~alvat rapid");
+        menu_add_item_menu_se_cerrara(array_menu_snapshot);
+        menu_add_item_menu_genera_ventana(array_menu_snapshot);
         menu_add_item_menu_shortcut(array_menu_snapshot,'a');
         menu_add_item_menu_tooltip(array_menu_snapshot,"Save a snapshot quickly");
         menu_add_item_menu_ayuda(array_menu_snapshot,"Save a snapshot quickly. Name prefix and directory to save are configured on settings->Snapshot");
