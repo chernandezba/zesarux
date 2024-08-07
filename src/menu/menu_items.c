@@ -18151,15 +18151,17 @@ void screen_quick_save(char *nombre)
 {
   char final_name[PATH_MAX];
 
-
+    char extension[4];
+    if (MACHINE_IS_SPECTRUM) strcpy(extension,"scr");
+    else strcpy(extension,"bmp");
 
   char time_string[40];
 
   snapshot_get_date_time_string(time_string);
 
-  if (snapshot_autosave_interval_quicksave_directory[0]==0) sprintf (final_name,"%s-%s.scr",snapshot_autosave_interval_quicksave_name,time_string);
+  if (snapshot_autosave_interval_quicksave_directory[0]==0) sprintf (final_name,"%s-%s.%s",snapshot_autosave_interval_quicksave_name,time_string,extension);
 
-  else sprintf (final_name,"%s/%s-%s.scr",snapshot_autosave_interval_quicksave_directory,snapshot_autosave_interval_quicksave_name,time_string);
+  else sprintf (final_name,"%s/%s-%s.%s",snapshot_autosave_interval_quicksave_directory,snapshot_autosave_interval_quicksave_name,time_string,extension);
 
   save_screen(final_name);
 
@@ -18175,10 +18177,14 @@ void menu_display_quicksave_scr(MENU_ITEM_PARAMETERS)
 	screen_quick_save(final_name);
 
     //Crear un icono siempre que zx desktop este visible
-    zxvision_create_configurable_icon_file_type(F_FUNCION_DESKTOP_GENERIC_SMARTLOAD,final_name);
+    //Y en este caso solo para spectrum
+    //pues es un scr y tiene sentido gestionarlo desde escritorio
+    if (MACHINE_IS_SPECTRUM) {
+        zxvision_create_configurable_icon_file_type(F_FUNCION_DESKTOP_GENERIC_SMARTLOAD,final_name);
+    }
 
 
-	menu_generic_message_format("Quicksave SCR","OK. Screen file name: %s",final_name);
+	menu_generic_message_format("Quicksave Screen","OK. Screen file name: %s",final_name);
 
 }
 
@@ -19806,7 +19812,7 @@ void menu_display_settings(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_genera_ventana(array_menu_display_settings);
 		}
 
-		if (MACHINE_IS_SPECTRUM || MACHINE_IS_ZX8081 || MACHINE_IS_CPC) {
+        //Al menos la escritura en bmp está permitido para toda máquina que soporte realvideo
 		menu_add_item_menu_en_es_ca(array_menu_display_settings,MENU_OPCION_NORMAL,menu_display_save_screen,NULL,
             "~~Save Screen","~~Salvar Pantalla","~~Salvar Pantalla");
 		menu_add_item_menu_shortcut(array_menu_display_settings,'s');
@@ -19814,18 +19820,18 @@ void menu_display_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_genera_ventana(array_menu_display_settings);
 		menu_add_item_menu_tooltip(array_menu_display_settings,"Save screen to disk. BMP format requires to enable real video first");
 		menu_add_item_menu_ayuda(array_menu_display_settings,"Save screen to disk. BMP format requires to enable real video first");
-        }
 
-        if (MACHINE_IS_SPECTRUM) {
-            menu_add_item_menu_en_es_ca(array_menu_display_settings,MENU_OPCION_NORMAL,menu_display_quicksave_scr,NULL,
-                "Qu~~icksave Screen","Salvado Pantalla ráp~~ido","Salvat Pantalla ràp~~id");
-            menu_add_item_menu_se_cerrara(array_menu_display_settings);
-            menu_add_item_menu_genera_ventana(array_menu_display_settings);
-            menu_add_item_menu_shortcut(array_menu_display_settings,'i');
-            menu_add_item_menu_tooltip(array_menu_display_settings,"Save screen to disk quickly");
-            menu_add_item_menu_ayuda(array_menu_display_settings,"Save screen to disk quickly. Name prefix and directory to save are configured on settings->Snapshot");
 
-		}
+
+        menu_add_item_menu_en_es_ca(array_menu_display_settings,MENU_OPCION_NORMAL,menu_display_quicksave_scr,NULL,
+            "Qu~~icksave Screen","Salvado Pantalla ráp~~ido","Salvat Pantalla ràp~~id");
+        menu_add_item_menu_se_cerrara(array_menu_display_settings);
+        menu_add_item_menu_genera_ventana(array_menu_display_settings);
+        menu_add_item_menu_shortcut(array_menu_display_settings,'i');
+        menu_add_item_menu_tooltip(array_menu_display_settings,"Save screen to disk quickly");
+        menu_add_item_menu_ayuda(array_menu_display_settings,"Save screen to disk quickly. .SCR by default on Spectrum, .BMP on other machines. Name prefix and directory to save are configured on settings->Snapshot");
+
+
 
 
 		menu_add_item_menu_en_es_ca(array_menu_display_settings,MENU_OPCION_NORMAL,menu_view_screen,NULL,
@@ -46353,7 +46359,7 @@ void menu_process_f_functions_by_action_name(int id_funcion,int si_pulsado_icono
 
 		break;
 
-		case F_FUNCION_QUICKSAVE_SCR:
+		case F_FUNCION_QUICKSAVE_SCREEN:
 
 			menu_display_quicksave_scr(0);
 
