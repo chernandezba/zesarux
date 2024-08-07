@@ -18146,6 +18146,42 @@ void menu_display_save_screen(MENU_ITEM_PARAMETERS)
 
 }
 
+//Realiza quicksave de pantalla y retorna nombre en char nombre, siempre que no sea NULL
+void screen_quick_save(char *nombre)
+{
+  char final_name[PATH_MAX];
+
+
+
+  char time_string[40];
+
+  snapshot_get_date_time_string(time_string);
+
+  if (snapshot_autosave_interval_quicksave_directory[0]==0) sprintf (final_name,"%s-%s.scr",snapshot_autosave_interval_quicksave_name,time_string);
+
+  else sprintf (final_name,"%s/%s-%s.scr",snapshot_autosave_interval_quicksave_directory,snapshot_autosave_interval_quicksave_name,time_string);
+
+  save_screen(final_name);
+
+  if (nombre!=NULL) strcpy(nombre,final_name);
+}
+
+
+void menu_display_quicksave_scr(MENU_ITEM_PARAMETERS)
+{
+	char final_name[PATH_MAX];
+
+
+	screen_quick_save(final_name);
+
+    //Crear un icono siempre que zx desktop este visible
+    zxvision_create_configurable_icon_file_type(F_FUNCION_DESKTOP_GENERIC_SMARTLOAD,final_name);
+
+
+	menu_generic_message_format("Quicksave SCR","OK. Screen file name: %s",final_name);
+
+}
+
 
 void menu_unpaws_ungac(MENU_ITEM_PARAMETERS)
 {
@@ -19778,6 +19814,14 @@ void menu_display_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_genera_ventana(array_menu_display_settings);
 		menu_add_item_menu_tooltip(array_menu_display_settings,"Save screen to disk. BMP format requires to enable real video first");
 		menu_add_item_menu_ayuda(array_menu_display_settings,"Save screen to disk. BMP format requires to enable real video first");
+
+
+
+        menu_add_item_menu_en_es_ca(array_menu_display_settings,MENU_OPCION_NORMAL,menu_display_quicksave_scr,NULL,
+            "Quicks~~ave Screen","S~~alvado Pantalla rápido","S~~alvat Pantalla ràpid");
+        menu_add_item_menu_tooltip(array_menu_display_settings,"Save screen to disk quickly");
+        menu_add_item_menu_ayuda(array_menu_display_settings,"Save screen to disk quickly. Name prefix and directory to save are configured on settings->Snapshot");
+
 		}
 
 
@@ -46301,6 +46345,12 @@ void menu_process_f_functions_by_action_name(int id_funcion,int si_pulsado_icono
 		case F_FUNCION_QUICKSAVE:
 
 			menu_snapshot_quicksave(0);
+
+		break;
+
+		case F_FUNCION_QUICKSAVE_SCR:
+
+			menu_display_quicksave_scr(0);
 
 		break;
 

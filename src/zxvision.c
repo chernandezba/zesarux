@@ -176,6 +176,7 @@ defined_f_function defined_direct_functions_array[MAX_F_FUNCTIONS]={
 	{"SmartLoad",F_FUNCION_SMARTLOAD,bitmap_button_ext_desktop_smartload,""},
 	{"Quickload",F_FUNCION_QUICKLOAD,bitmap_button_ext_desktop_quickload,""},
 	{"Quicksave",F_FUNCION_QUICKSAVE,bitmap_button_ext_desktop_quicksave,""},
+    {"QuicksaveSCR",F_FUNCION_QUICKSAVE_SCR,bitmap_button_ext_desktop_quicksave_scr,""},
 	{"LoadBinary",F_FUNCION_LOADBINARY,bitmap_button_ext_desktop_loadbinary,""},
 	{"SaveBinary",F_FUNCION_SAVEBINARY,bitmap_button_ext_desktop_savebinary,""},
     {"Settings",F_FUNCION_SETTINGS,bitmap_button_ext_desktop_settings,""},
