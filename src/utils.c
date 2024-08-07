@@ -4021,6 +4021,7 @@ int util_write_configfile(void)
   if (hilow_write_protection.v)		            ADD_STRING_CONFIG,"--hilow-write-protection");
   if (hilow_persistent_writes.v==0)	            ADD_STRING_CONFIG,"--hilow-no-persistent-writes");
 
+  if (z88_eprom_or_flash_persistent_writes.v==0)    ADD_STRING_CONFIG,"--z88-no-persistent-writes");
 
   if (ide_file_name[0]!=0)                    ADD_STRING_CONFIG,"--ide-file \"%s\"",ide_file_name);
   if (ide_enabled.v)                          ADD_STRING_CONFIG,"--enable-ide");

@@ -9,6 +9,7 @@ Added Find text string on memory menu
 * Improvements:
 
 Allow hotswap to Pentagon and to Spectrum +3
+Added setting to disable persistent writes on Z88 Cards
 Improve Azimuth warning on External Audio Source Window
 Allow to not save snapshot when exiting ZEsarUX
 Allow to define Left Alt, Left Ctrl, Left Shift or TAB as Joystick Fire action
@@ -37,6 +38,7 @@ Fixed hotswap ZX80 to ZX81, ZX81 to ZX80
 Fixed Amstrad CPC Scroll
 Fixed loading .nex snapshots and Layer 2 not being initialized (fixes errors on Head Over Heels for Next, for example)
 Fixed Search menu feature
+Fixed bug saving .ZSF Z88 snapshot when RAM or Memory Card block is not compressed
 
 * Misc Changes:
 

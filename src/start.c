@@ -1553,6 +1553,15 @@ printf("\n"
 
 		"\n"
 		"\n"
+		"Storage - Z88 Cards\n"
+		"-------------------------------\n"
+		"\n"
+
+		"--z88-no-persistent-writes      Disable Z88 persistent writes\n"
+
+
+		"\n"
+		"\n"
 		"ULA Settings\n"
 		"------------\n"
 		"\n"
@@ -4309,6 +4318,10 @@ int parse_cmdline_options(int desde_commandline) {
 			else if (!strcmp(argv[puntero_parametro],"--hilow-no-persistent-writes")) {
 				hilow_persistent_writes.v=0;
 			}
+
+            else if (!strcmp(argv[puntero_parametro],"--z88-no-persistent-writes")) {
+                z88_eprom_or_flash_persistent_writes.v=0;
+            }
 
             else if (!strcmp(argv[puntero_parametro],"--load-source-code")) {
                     command_line_load_source_code.v=1;

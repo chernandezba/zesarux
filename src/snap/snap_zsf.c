@@ -5180,7 +5180,9 @@ Byte Fields:
         int longitud_bloque=save_zsf_copyblock_compress_uncompres(&memoria_spectrum[16384*bank],&compressed_ramblock[6],longitud_ram,&si_comprimido);
         if (si_comprimido) compressed_ramblock[0]|=1;
 
-        debug_printf(VERBOSE_DEBUG,"Saving ZSF_Z88_MEMBLOCK bank: %d length: %d",bank,longitud_bloque);
+        debug_printf(VERBOSE_DEBUG,"Saving ZSF_Z88_MEMBLOCK bank: %d length: %d compressed: %s",bank,longitud_bloque,
+            (si_comprimido ? "Yes" : "No"));
+
 
         //Store block to file
         zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, compressed_ramblock,ZSF_Z88_MEMBLOCK, longitud_bloque+6);
@@ -5196,13 +5198,15 @@ Byte Fields:
     for (i=0;i<bancos_total;i++) {
         z80_byte bank=0x20+i;
 
+        compressed_ramblock[0]=0;
         compressed_ramblock[5]=bank;
 
         int si_comprimido;
         int longitud_bloque=save_zsf_copyblock_compress_uncompres(&memoria_spectrum[16384*bank],&compressed_ramblock[6],longitud_ram,&si_comprimido);
         if (si_comprimido) compressed_ramblock[0]|=1;
 
-        debug_printf(VERBOSE_DEBUG,"Saving ZSF_Z88_MEMBLOCK bank: %d length: %d",bank,longitud_bloque);
+        debug_printf(VERBOSE_DEBUG,"Saving ZSF_Z88_MEMBLOCK bank: %d length: %d compressed: %s",bank,longitud_bloque,
+            (si_comprimido ? "Yes" : "No"));
 
         //Store block to file
         zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, compressed_ramblock,ZSF_Z88_MEMBLOCK, longitud_bloque+6);
@@ -5224,6 +5228,8 @@ Byte Fields:
                 //calculo numero de bancos
                 bancos_total=(z88_memory_slots[slot].size+1)/16384;
                 for (i=0;i<bancos_total;i++) {
+                    compressed_ramblock[0]=0;
+
                     //save_zx_snapshot_bytes_z88(ptr_zxfile,0x40*slot+i);
                     z80_byte bank=0x40*slot+i;
 
@@ -5233,7 +5239,8 @@ Byte Fields:
                     int longitud_bloque=save_zsf_copyblock_compress_uncompres(&memoria_spectrum[16384*bank],&compressed_ramblock[6],longitud_ram,&si_comprimido);
                     if (si_comprimido) compressed_ramblock[0]|=1;
 
-                    debug_printf(VERBOSE_DEBUG,"Saving ZSF_Z88_MEMBLOCK bank: %d length: %d",bank,longitud_bloque);
+                    debug_printf(VERBOSE_DEBUG,"Saving ZSF_Z88_MEMBLOCK bank: %d length: %d compressed: %s",bank,longitud_bloque,
+                        (si_comprimido ? "Yes" : "No"));
 
                     //Store block to file
                     zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, compressed_ramblock,ZSF_Z88_MEMBLOCK, longitud_bloque+6);

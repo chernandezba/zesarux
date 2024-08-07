@@ -102,6 +102,7 @@ extern z88_memory_slot z88_memory_slots[];
 extern z80_long_int z88_internal_rom_size;
 extern z80_long_int z88_internal_ram_size;
 
+extern z80_bit z88_eprom_or_flash_persistent_writes;
 
 //Para algunas funciones que usan direcciones del z88
 struct s_z88_dir {

@@ -251,6 +251,9 @@ z88_memory_slot z88_memory_slots[4];
 //si la tarjeta eprom o flash debe escribir a disco ya que se ha escrito en alguna direccion
 int z88_eprom_or_flash_must_flush_to_disk=0;
 
+//si se escriben en disco los cambios o solo se quedan en memoria
+z80_bit z88_eprom_or_flash_persistent_writes={1};
+
 
 //modo programacion forzado para una flash
 //esto se usa por ejemplo para escribir archivo desde menu, desde pc a flash, para no tener que ponerla en modo programacion
@@ -2154,15 +2157,24 @@ void z88_flush_eprom_or_flash_to_disk(void)
 
 	debug_printf (VERBOSE_INFO,"Flushing EPROM/FLASH to disk");
 
+        //Justo antes del fwrite se pone flush a 0, porque si mientras esta el fwrite entra alguna operacion de escritura,
+        //metera flush a 1
+	z88_eprom_or_flash_must_flush_to_disk=0;
+
+
+    if (z88_eprom_or_flash_persistent_writes.v==0) {
+        debug_printf (VERBOSE_INFO,"Do not write EPROM/FLASH to disk because persistent writes setting is not enabled");
+        return;
+    }
+
+
 	size++;
 
         //Si tipo ram+eprom, alterar size
         if (z88_memory_slots[3].type==4) size /=2;
 
 
-        //Justo antes del fwrite se pone flush a 0, porque si mientras esta el fwrite entra alguna operacion de escritura,
-        //metera flush a 1
-	z88_eprom_or_flash_must_flush_to_disk=0;
+
 
 
 

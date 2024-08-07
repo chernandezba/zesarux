@@ -371,3 +371,14 @@ ok --opciones->hardware->next machine id. esta bien que al seleccionar el dialog
 aunque no todos. por ejemplo en +3dsk, visor format disc, pulsar en archivo-> blocks, ahi si pulsa esc si que interesa que cierre todo
 
 -revisar accesibilidad y submenus... a veces se lee submenu. ejemplo text to speech pulsar alguna opcion que conmuta en ese menu
+
+-opcion persistent writes para cartuchos eprom z88 (solo en slot 3?)
+
+-grabar estado z88 en zsf con eprom en slot 2 de lemlevels.epr genera error al cargarlo de:
+Length uncompressed (16628) is not expected length (16384). It should not happen!
+iMac-de-Cesar:src cesarhernandez$ cp zesarux_autosave.zsf zesarux_autosave_error.zsf
+iMac-de-Cesar:src cesarhernandez$ cp ~/.zesaruxrc zesaruxrc_error
+ok
+Ver si pueden haber otros bloques de maquinas que al grabar no estén reconsiderando poner flag de comprimido por defecto a 0
+
+-revisar si se puede mejorar menu config z88 cards

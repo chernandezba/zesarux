@@ -17504,6 +17504,7 @@ void menu_mmc_divmmc(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_en_es_ca_inicial(&array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_mmc_file,NULL,
             "~~MMC File","Archivo ~~MMC","Arxiu ~~MMC");
         menu_add_item_menu_sufijo_format(array_menu_mmc_divmmc," [%s]",string_mmc_file_shown);
+        menu_add_item_menu_prefijo(array_menu_mmc_divmmc,"    ");
         menu_add_item_menu_shortcut(array_menu_mmc_divmmc,'m');
         menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"MMC Emulation file");
         menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"MMC Emulation file");
@@ -17513,6 +17514,7 @@ void menu_mmc_divmmc(MENU_ITEM_PARAMETERS)
 
             menu_add_item_menu_en_es_ca(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_mmc_autoconfigure_tbblue,NULL,
                 "Autoconfigure Next SD","Autoconfigurar Next SD","Autoconfigurar Next SD");
+            menu_add_item_menu_prefijo(array_menu_mmc_divmmc,"    ");
 
         }
 
@@ -17548,6 +17550,7 @@ void menu_mmc_divmmc(MENU_ITEM_PARAMETERS)
         if (mmc_enabled.v) {
             menu_add_item_menu_en_es_ca(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_mmc_reload,NULL,
                 "Reload MMC file","Recargar archivo MMC","Recarregar arxiu MMC");
+            menu_add_item_menu_prefijo(array_menu_mmc_divmmc,"    ");
             menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"Reload MMC contents from MMC file to emulator memory");
             menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"Reload MMC contents from MMC file to emulator memory. You can modify the MMC file "
                 "outside the emulator, and reload its contents without having to disable and enable MM.");
@@ -17585,6 +17588,7 @@ void menu_mmc_divmmc(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_en_es_ca(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_divmmc_rom_file,NULL,
                 "DIVMMC EPROM File","DIVMMC Archivo EPROM","DIVMMC Arxiu EPROM");
             menu_add_item_menu_sufijo_format(array_menu_mmc_divmmc," [%s]", string_divmmc_rom_file_shown);
+            menu_add_item_menu_prefijo(array_menu_mmc_divmmc,"    ");
             menu_add_item_menu_es_avanzado(array_menu_mmc_divmmc);
 
             menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"Changes DIVMMC firmware eprom file");
@@ -17635,6 +17639,7 @@ void menu_mmc_divmmc(MENU_ITEM_PARAMETERS)
 
         menu_add_item_menu_en_es_ca(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_mmc_browser,menu_storage_mmc_emulation_cond,
             "MMC ~~Browser","MMC ~~Browser","MMC ~~Browser");
+        menu_add_item_menu_prefijo(array_menu_mmc_divmmc,"    ");
         menu_add_item_menu_shortcut(array_menu_mmc_divmmc,'b');
         menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"MMC Browser");
         menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"MMC Browser");
@@ -17896,6 +17901,7 @@ void menu_ide_divide(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_en_es_ca_inicial(&array_menu_ide_divide,MENU_OPCION_NORMAL,menu_storage_ide_file,NULL,
             "~~IDE File","Archivo ~~IDE","Arxiu ~~IDE");
         menu_add_item_menu_sufijo_format(array_menu_ide_divide," [%s]",string_ide_file_shown);
+        menu_add_item_menu_prefijo(array_menu_ide_divide,"    ");
         menu_add_item_menu_shortcut(array_menu_ide_divide,'i');
         menu_add_item_menu_tooltip(array_menu_ide_divide,"IDE Emulation file");
         menu_add_item_menu_ayuda(array_menu_ide_divide,"IDE Emulation file");
@@ -17932,6 +17938,7 @@ void menu_ide_divide(MENU_ITEM_PARAMETERS)
         if (ide_enabled.v) {
             menu_add_item_menu_en_es_ca(array_menu_ide_divide,MENU_OPCION_NORMAL,menu_storage_ide_reload,NULL,
                 "Reload IDE file","Recargar archivo IDE","Recarregar arxiu IDE");
+            menu_add_item_menu_prefijo(array_menu_ide_divide,"    ");
             menu_add_item_menu_tooltip(array_menu_ide_divide,"Reload IDE contents from IDE file to emulator memory");
             menu_add_item_menu_ayuda(array_menu_ide_divide,"Reload IDE contents from IDE file to emulator memory. You can modify the IDE file "
                                     "outside the emulator, and reload its contents without having to disable and enable IDE");
@@ -17965,6 +17972,7 @@ void menu_ide_divide(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_en_es_ca(array_menu_ide_divide,MENU_OPCION_NORMAL,menu_divide_rom_file,NULL,
                 "DIVIDE EPROM File","Archivo EPROM DIVIDE","Arxiu EPROM DIVIDE");
             menu_add_item_menu_sufijo_format(array_menu_ide_divide," [%s]", string_divide_rom_file_shown);
+            menu_add_item_menu_prefijo(array_menu_ide_divide,"    ");
             menu_add_item_menu_es_avanzado(array_menu_ide_divide);
 
             menu_add_item_menu_tooltip(array_menu_ide_divide,"Changes DIVIDE firmware eprom file");
@@ -18023,6 +18031,7 @@ void menu_ide_divide(MENU_ITEM_PARAMETERS)
 
         menu_add_item_menu_en_es_ca(array_menu_ide_divide,MENU_OPCION_NORMAL,menu_storage_ide_browser,menu_storage_ide_emulation_cond,
             "IDE ~~Browser","IDE ~~Browser","IDE ~~Browser");
+        menu_add_item_menu_prefijo(array_menu_ide_divide,"    ");
         menu_add_item_menu_shortcut(array_menu_ide_divide,'b');
         menu_add_item_menu_tooltip(array_menu_ide_divide,"IDE Browser");
         menu_add_item_menu_ayuda(array_menu_ide_divide,"IDE Browser");
@@ -23875,6 +23884,7 @@ void menu_zxpand(MENU_ITEM_PARAMETERS)
 				menu_tape_settings_trunc_name(zxpand_root_dir,string_zxpand_root_folder_shown,20);
 
 				menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_storage_zxpand_root_dir,NULL,"~~Root dir: %s",string_zxpand_root_folder_shown);
+                menu_add_item_menu_prefijo(array_menu_common,"    ");
                         	menu_add_item_menu_shortcut(array_menu_common,'r');
 				menu_add_item_menu_tooltip(array_menu_common,"Sets the root directory for ZXpand filesystem");
 				menu_add_item_menu_ayuda(array_menu_common,"Sets the root directory for ZXpand filesystem. "
@@ -33355,6 +33365,7 @@ void menu_esxdos_traps(MENU_ITEM_PARAMETERS)
         if (esxdos_handler_enabled.v) {
             menu_tape_settings_trunc_name(esxdos_handler_root_dir,string_esxdos_traps_root_dir_shown,18);
             menu_add_item_menu_format(array_menu_esxdos_traps,MENU_OPCION_NORMAL,menu_esxdos_traps_root_dir,NULL,"~~Root dir: %s",string_esxdos_traps_root_dir_shown);
+            menu_add_item_menu_prefijo(array_menu_esxdos_traps,"    ");
             menu_add_item_menu_shortcut(array_menu_esxdos_traps,'r');
 
             menu_add_item_menu_tooltip(array_menu_esxdos_traps,"Sets the root directory for ESXDOS filesystem");
@@ -33938,6 +33949,7 @@ void menu_plusthreedisk(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_en_es_ca_inicial(&array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_storage_dskplusthree_file,NULL,
             "~~DSK File","Archivo ~~DSK","Arxiu ~~DSK");
         menu_add_item_menu_sufijo_format(array_menu_plusthreedisk," [%s]",string_dskplusthree_file_shown);
+        menu_add_item_menu_prefijo(array_menu_plusthreedisk,"    ");
         menu_add_item_menu_shortcut(array_menu_plusthreedisk,'d');
         menu_add_item_menu_tooltip(array_menu_plusthreedisk,"DSK Emulation file");
         menu_add_item_menu_ayuda(array_menu_plusthreedisk,"DSK Emulation file");
@@ -34037,17 +34049,20 @@ void menu_plusthreedisk(MENU_ITEM_PARAMETERS)
 
         menu_add_item_menu_en_es_ca(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_plusthreedisk_info,menu_storage_dskplusthree_info_cond,
             "Disk ~~Info","Disk ~~Info","Disk ~~Info");
+        menu_add_item_menu_prefijo(array_menu_plusthreedisk,"    ");
         menu_add_item_menu_shortcut(array_menu_plusthreedisk,'i');
         menu_add_item_menu_genera_ventana(array_menu_plusthreedisk);
 
         menu_add_item_menu_en_es_ca(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_plusthreedisk_info_tracks_list,menu_storage_dskplusthree_info_cond,
             "Tracks ~~list","~~Lista Pistas","~~Llista Pistes");
+        menu_add_item_menu_prefijo(array_menu_plusthreedisk,"    ");
         menu_add_item_menu_shortcut(array_menu_plusthreedisk,'l');
         menu_add_item_menu_genera_ventana(array_menu_plusthreedisk);
 
 
         menu_add_item_menu_en_es_ca(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_storage_dskplusthree_browser,
             menu_storage_dskplusthree_emulation_cond,"Disk ~~Format Viewer","Visor ~~Formato Disco","Visor ~~Format Disc");
+        menu_add_item_menu_prefijo(array_menu_plusthreedisk,"    ");
         menu_add_item_menu_shortcut(array_menu_plusthreedisk,'f');
         menu_add_item_menu_tooltip(array_menu_plusthreedisk,"Disk Format Viewer");
         menu_add_item_menu_ayuda(array_menu_plusthreedisk,"Disk Format Viewer");
@@ -34057,6 +34072,7 @@ void menu_plusthreedisk(MENU_ITEM_PARAMETERS)
 
         menu_add_item_menu_en_es_ca(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_visual_floppy,NULL,
             "~~Visual Floppy","~~Visual Floppy","~~Visual Floppy");
+        menu_add_item_menu_prefijo(array_menu_plusthreedisk,"    ");
         menu_add_item_menu_shortcut(array_menu_plusthreedisk,'v');
         menu_add_item_menu_se_cerrara(array_menu_plusthreedisk);
         menu_add_item_menu_genera_ventana(array_menu_plusthreedisk);
@@ -34253,10 +34269,10 @@ void menu_msxcart(MENU_ITEM_PARAMETERS)
                     if (sms_mapper_type==SMS_MAPPER_TYPE_SEGA) strcpy(buf_mapper_type,"Sega");
                     if (sms_mapper_type==SMS_MAPPER_TYPE_CODEMASTERS) strcpy(buf_mapper_type,"CodeMasters");
 
-                    menu_add_item_menu_format(array_menu_msxcart,MENU_OPCION_NORMAL,menu_sms_mapper_type,NULL,"[%s] Mapper type",buf_mapper_type);
+                    menu_add_item_menu_format(array_menu_msxcart,MENU_OPCION_NORMAL,menu_sms_mapper_type,NULL,"Mapper type [%s]",buf_mapper_type);
 
                     //Esto no tiene mucho sentido cambiarlo a no ser que quieras hacer debug o ver que sucede....
-                    menu_add_item_menu_format(array_menu_msxcart,MENU_OPCION_NORMAL,menu_sms_mapper_cartridge_size,NULL,"[%d KB] Cartridge Size",sms_cartridge_size/1024);
+                    menu_add_item_menu_format(array_menu_msxcart,MENU_OPCION_NORMAL,menu_sms_mapper_cartridge_size,NULL,"Cartridge Size [%d KB]",sms_cartridge_size/1024);
 
                     menu_add_item_menu(array_menu_msxcart,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
@@ -34691,7 +34707,7 @@ void menu_z88_slot_insert_flash_intel(MENU_ITEM_PARAMETERS)
 
 
 //Si se han aplicado cambios (insertar tarjeta memoria) para volver a menu anterior
-z80_bit menu_z88_slot_insert_applied_changes={0};
+//z80_bit menu_z88_slot_insert_applied_changes={0};
 
 void menu_z88_slot_insert_apply(MENU_ITEM_PARAMETERS)
 {
@@ -34701,7 +34717,8 @@ void menu_z88_slot_insert_apply(MENU_ITEM_PARAMETERS)
 
 		if (menu_confirm_yesno("Need Hard Reset")==1) {
 			z88_change_internal_ram(menu_insert_slot_ram_size);
-			menu_z88_slot_insert_applied_changes.v=1;
+			//menu_z88_slot_insert_applied_changes.v=1;
+            menu_generic_message_splash("Apply changes","OK. Changes applied");
 		}
 		return;
 	}
@@ -34710,7 +34727,8 @@ void menu_z88_slot_insert_apply(MENU_ITEM_PARAMETERS)
 	if (menu_insert_slot_type==0) {
 		//RAM
 		z88_insert_ram_card(menu_insert_slot_ram_size,menu_insert_slot_number);
-		menu_z88_slot_insert_applied_changes.v=1;
+		//menu_z88_slot_insert_applied_changes.v=1;
+        menu_generic_message_splash("Apply changes","OK. Changes applied");
 	}
 
 
@@ -34721,7 +34739,8 @@ void menu_z88_slot_insert_apply(MENU_ITEM_PARAMETERS)
 
         else {
             z88_load_eprom_card(menu_insert_slot_eprom_name,menu_insert_slot_number);
-            menu_z88_slot_insert_applied_changes.v=1;
+            //menu_z88_slot_insert_applied_changes.v=1;
+            menu_generic_message_splash("Apply changes","OK. Changes applied");
         }
     }
 
@@ -34731,7 +34750,8 @@ void menu_z88_slot_insert_apply(MENU_ITEM_PARAMETERS)
 
         else {
             z88_load_flash_intel_card(menu_insert_slot_flash_intel_name,menu_insert_slot_number);
-            menu_z88_slot_insert_applied_changes.v=1;
+            //menu_z88_slot_insert_applied_changes.v=1;
+            menu_generic_message_splash("Apply changes","OK. Changes applied");
         }
     }
 
@@ -34742,7 +34762,8 @@ void menu_z88_slot_insert_apply(MENU_ITEM_PARAMETERS)
 
         else {
             z88_load_hybrid_eprom_card(menu_insert_slot_eprom_name,menu_insert_slot_number);
-            menu_z88_slot_insert_applied_changes.v=1;
+            //menu_z88_slot_insert_applied_changes.v=1;
+            menu_generic_message_splash("Apply changes","OK. Changes applied");
         }
     }
 
@@ -34831,7 +34852,7 @@ void menu_z88_slot_insert(MENU_ITEM_PARAMETERS)
 
 	if (menu_insert_slot_number<0 || menu_insert_slot_number>3) cpu_panic ("Invalid slot number");
 
-	menu_z88_slot_insert_applied_changes.v=0;
+	//menu_z88_slot_insert_applied_changes.v=0;
 
 
 	if (menu_insert_slot_number>0) {
@@ -34972,7 +34993,7 @@ void menu_z88_slot_insert(MENU_ITEM_PARAMETERS)
             }
         }
 
-    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus && !menu_z88_slot_insert_applied_changes.v );
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus /*&& !menu_z88_slot_insert_applied_changes.v */);
 
 
 }
@@ -35278,6 +35299,10 @@ void menu_z88_slot_open_flap(MENU_ITEM_PARAMETERS)
     z88_open_flap();
 }
 
+void menu_z88_slot_persistent_writes(MENU_ITEM_PARAMETERS)
+{
+    z88_eprom_or_flash_persistent_writes.v ^=1;
+}
 
 //menu z88 slots
 void menu_z88_slots(MENU_ITEM_PARAMETERS)
@@ -35410,9 +35435,20 @@ void menu_z88_slots(MENU_ITEM_PARAMETERS)
 
 			}
 
-			//Si hay una eprom en slot 3, dar opcion de borrar
+			//Si hay una eprom o flash en slot 3, dar opcion de borrar
 			if (slot==3 && z88_memory_slots[3].size!=0 && (z88_memory_slots[3].type==2 || z88_memory_slots[3].type==3) ) {
+                menu_add_item_menu(array_menu_z88_slots,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+
+                menu_add_item_menu_format(array_menu_z88_slots,MENU_OPCION_NORMAL,menu_z88_slot_persistent_writes,NULL,
+                    "[%c] Persistent writes",(z88_eprom_or_flash_persistent_writes.v ? 'X' : ' ') );
+                menu_add_item_menu_tooltip(array_menu_z88_slots,"Tells if card writes are saved to disk");
+                menu_add_item_menu_ayuda(array_menu_z88_slots,"Tells if card writes are saved to disk. "
+                    "Note: all writing operations to card are always saved to internal memory, but this setting "
+                    "tells if these changes are written to disk or not.");
+
 				menu_add_item_menu_format(array_menu_z88_slots,MENU_OPCION_NORMAL,menu_z88_slot_erase_eprom_flash,NULL,"Erase Card");
+                menu_add_item_menu_prefijo(array_menu_z88_slots,"    ");
+                menu_add_item_menu_add_flags(array_menu_z88_slots,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
                 menu_add_item_menu_tooltip(array_menu_z88_slots,"Card can only be erased on slot 3");
                 menu_add_item_menu_ayuda(array_menu_z88_slots,"Card can only be erased on slot 3");
 			}
@@ -35422,16 +35458,24 @@ void menu_z88_slots(MENU_ITEM_PARAMETERS)
 
 				if (slot==3) {
 
+                    menu_add_item_menu(array_menu_z88_slots,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+
 					menu_add_item_menu_format(array_menu_z88_slots,MENU_OPCION_NORMAL,menu_z88_eprom_flash_reclaim_free_space,NULL,"Reclaim Free Space");
+                    menu_add_item_menu_prefijo(array_menu_z88_slots,"    ");
+                    menu_add_item_menu_add_flags(array_menu_z88_slots,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
 					menu_add_item_menu_tooltip(array_menu_z88_slots,"It reclaims the space used by deleted files");
 					menu_add_item_menu_ayuda(array_menu_z88_slots,"It reclaims the space used by deleted files");
 
 					menu_add_item_menu_format(array_menu_z88_slots,MENU_OPCION_NORMAL,menu_z88_eprom_flash_undelete_files,NULL,"Undelete Files");
+                    menu_add_item_menu_prefijo(array_menu_z88_slots,"    ");
+                    menu_add_item_menu_add_flags(array_menu_z88_slots,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
 					menu_add_item_menu_tooltip(array_menu_z88_slots,"Undelete deleted files");
 					menu_add_item_menu_ayuda(array_menu_z88_slots,"Undelete deleted files");
 
 
 					menu_add_item_menu_format(array_menu_z88_slots,MENU_OPCION_NORMAL,menu_z88_slot_copy_to_eprom_flash,NULL,"Copy to Card");
+                    menu_add_item_menu_prefijo(array_menu_z88_slots,"    ");
+                    menu_add_item_menu_add_flags(array_menu_z88_slots,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
 					menu_add_item_menu_tooltip(array_menu_z88_slots,"Copy files from your hard drive to Card");
 					menu_add_item_menu_ayuda(array_menu_z88_slots,"Copy files from your hard drive to Card. "
 						"Card card must be initialized before you can copy files to it, "
@@ -35440,15 +35484,19 @@ void menu_z88_slots(MENU_ITEM_PARAMETERS)
 				}
 
 
-
+                menu_add_item_menu(array_menu_z88_slots,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
 				menu_add_item_menu_format(array_menu_z88_slots,MENU_OPCION_NORMAL,menu_z88_slot_card_browser,NULL,"Card browser");
+                menu_add_item_menu_prefijo(array_menu_z88_slots,"    ");
+                menu_add_item_menu_add_flags(array_menu_z88_slots,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
 				menu_add_item_menu_tooltip(array_menu_z88_slots,"Browse card");
 				menu_add_item_menu_ayuda(array_menu_z88_slots,"Browse card");
                 //establecemos numero slot como opcion de ese item de menu
                 menu_add_item_menu_valor_opcion(array_menu_z88_slots,slot);
 
 				menu_add_item_menu_format(array_menu_z88_slots,MENU_OPCION_NORMAL,menu_z88_slot_copy_from_eprom,NULL,"Copy from Card");
+                menu_add_item_menu_prefijo(array_menu_z88_slots,"    ");
+                menu_add_item_menu_add_flags(array_menu_z88_slots,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
 				menu_add_item_menu_tooltip(array_menu_z88_slots,"Copy files from Card to your hard drive");
 				menu_add_item_menu_ayuda(array_menu_z88_slots,"Copy files from Card to your hard drive");
                 //establecemos numero slot como opcion de ese item de menu
@@ -38163,6 +38211,7 @@ void menu_dandanator(MENU_ITEM_PARAMETERS)
 
                         menu_tape_settings_trunc_name(dandanator_rom_file_name,string_dandanator_file_shown,13);
                         menu_add_item_menu_inicial_format(&array_menu_dandanator,MENU_OPCION_NORMAL,menu_dandanator_rom_file,NULL,"~~ROM File [%s]",string_dandanator_file_shown);
+                        menu_add_item_menu_prefijo(array_menu_dandanator,"    ");
                         menu_add_item_menu_shortcut(array_menu_dandanator,'r');
                         menu_add_item_menu_tooltip(array_menu_dandanator,"ROM Emulation file");
                         menu_add_item_menu_ayuda(array_menu_dandanator,"ROM Emulation file");
@@ -38175,6 +38224,7 @@ void menu_dandanator(MENU_ITEM_PARAMETERS)
 
 
 			menu_add_item_menu_format(array_menu_dandanator,MENU_OPCION_NORMAL,menu_storage_dandanator_press_button,menu_storage_dandanator_press_button_cond,"~~Press button");
+            menu_add_item_menu_prefijo(array_menu_dandanator,"    ");
 			menu_add_item_menu_shortcut(array_menu_dandanator,'p');
                         menu_add_item_menu_tooltip(array_menu_dandanator,"Press button");
                         menu_add_item_menu_ayuda(array_menu_dandanator,"Press button");
@@ -38289,6 +38339,7 @@ void menu_kartusho(MENU_ITEM_PARAMETERS)
 
                         menu_tape_settings_trunc_name(kartusho_rom_file_name,string_kartusho_file_shown,13);
                         menu_add_item_menu_inicial_format(&array_menu_kartusho,MENU_OPCION_NORMAL,menu_kartusho_rom_file,NULL,"~~ROM File [%s]",string_kartusho_file_shown);
+                        menu_add_item_menu_prefijo(array_menu_kartusho,"    ");
                         menu_add_item_menu_shortcut(array_menu_kartusho,'r');
                         menu_add_item_menu_tooltip(array_menu_kartusho,"ROM Emulation file");
                         menu_add_item_menu_ayuda(array_menu_kartusho,"ROM Emulation file");
@@ -38301,6 +38352,7 @@ void menu_kartusho(MENU_ITEM_PARAMETERS)
 
 
 			menu_add_item_menu_format(array_menu_kartusho,MENU_OPCION_NORMAL,menu_storage_kartusho_press_button,menu_storage_kartusho_press_button_cond,"~~Press button");
+             menu_add_item_menu_prefijo(array_menu_kartusho,"    ");
 			menu_add_item_menu_shortcut(array_menu_kartusho,'p');
                         menu_add_item_menu_tooltip(array_menu_kartusho,"Press button");
                         menu_add_item_menu_ayuda(array_menu_kartusho,"Press button");
@@ -38413,6 +38465,7 @@ void menu_samram(MENU_ITEM_PARAMETERS)
 
                         menu_tape_settings_trunc_name(samram_rom_file_name,string_samram_file_shown,13);
                         menu_add_item_menu_inicial_format(&array_menu_samram,MENU_OPCION_NORMAL,menu_samram_rom_file,NULL,"~~ROM File [%s]",string_samram_file_shown);
+                        menu_add_item_menu_prefijo(array_menu_samram,"    ");
                         menu_add_item_menu_shortcut(array_menu_samram,'r');
                         menu_add_item_menu_tooltip(array_menu_samram,"ROM Emulation file");
                         menu_add_item_menu_ayuda(array_menu_samram,"ROM Emulation file");
@@ -38535,6 +38588,7 @@ void menu_ifrom(MENU_ITEM_PARAMETERS)
 
                         menu_tape_settings_trunc_name(ifrom_rom_file_name,string_ifrom_file_shown,13);
                         menu_add_item_menu_inicial_format(&array_menu_ifrom,MENU_OPCION_NORMAL,menu_ifrom_rom_file,NULL,"~~ROM File [%s]",string_ifrom_file_shown);
+                        menu_add_item_menu_prefijo(array_menu_ifrom,"    ");
                         menu_add_item_menu_shortcut(array_menu_ifrom,'r');
                         menu_add_item_menu_tooltip(array_menu_ifrom,"ROM Emulation file");
                         menu_add_item_menu_ayuda(array_menu_ifrom,"ROM Emulation file");
@@ -38547,6 +38601,7 @@ void menu_ifrom(MENU_ITEM_PARAMETERS)
 
 
 			menu_add_item_menu_format(array_menu_ifrom,MENU_OPCION_NORMAL,menu_storage_ifrom_press_button,menu_storage_ifrom_press_button_cond,"~~Press button");
+            menu_add_item_menu_prefijo(array_menu_ifrom,"    ");
 			menu_add_item_menu_shortcut(array_menu_ifrom,'p');
                         menu_add_item_menu_tooltip(array_menu_ifrom,"Press button");
                         menu_add_item_menu_ayuda(array_menu_ifrom,"Press button");
@@ -40449,6 +40504,7 @@ void menu_hilow(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_en_es_ca_inicial(&array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_file,NULL,
             "HiLow ~~File","~~Fichero HiLow","~~Fitxer HiLow");
         menu_add_item_menu_sufijo_format(array_menu_hilow," [%s]",string_hilow_file_shown);
+        menu_add_item_menu_prefijo(array_menu_hilow,"    ");
         menu_add_item_menu_shortcut(array_menu_hilow,'f');
         menu_add_item_menu_tooltip(array_menu_hilow,"HiLow Data Drive Emulation file");
         menu_add_item_menu_ayuda(array_menu_hilow,"HiLow Data Drive Emulation file");
@@ -40501,18 +40557,21 @@ void menu_hilow(MENU_ITEM_PARAMETERS)
 
         menu_add_item_menu_en_es_ca(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_format,menu_storage_hilow_enabled_cond,
             "Fo~~rmat","Fo~~rmatear","Fo~~rmatejar");
+        menu_add_item_menu_prefijo(array_menu_hilow,"    ");
         menu_add_item_menu_shortcut(array_menu_hilow,'r');
         menu_add_item_menu_se_cerrara(array_menu_hilow);
         menu_add_item_menu_genera_ventana(array_menu_hilow);
 
         menu_add_item_menu_en_es_ca(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_browser,menu_storage_hilow_enabled_cond,
             "~~Browse","~~Browse","~~Browse");
+        menu_add_item_menu_prefijo(array_menu_hilow,"    ");
         menu_add_item_menu_shortcut(array_menu_hilow,'b');
         menu_add_item_menu_se_cerrara(array_menu_hilow);
         menu_add_item_menu_genera_ventana(array_menu_hilow);
 
         menu_add_item_menu_en_es_ca(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_chkdsk,menu_storage_hilow_enabled_cond,
             "~~Chkdsk","~~Chkdsk","~~Chkdsk");
+        menu_add_item_menu_prefijo(array_menu_hilow,"    ");
         menu_add_item_menu_shortcut(array_menu_hilow,'c');
         menu_add_item_menu_se_cerrara(array_menu_hilow);
         menu_add_item_menu_genera_ventana(array_menu_hilow);
@@ -40524,6 +40583,7 @@ void menu_hilow(MENU_ITEM_PARAMETERS)
 #ifdef USE_PTHREADS
         menu_add_item_menu_en_es_ca(array_menu_hilow,MENU_OPCION_NORMAL,menu_hilow_convert_audio,NULL,
             "Convert Audio","Convertir Audio","Convertir Audio");
+        menu_add_item_menu_prefijo(array_menu_hilow,"    ");
         menu_add_item_menu_se_cerrara(array_menu_hilow);
         menu_add_item_menu_genera_ventana(array_menu_hilow);
 
@@ -40690,6 +40750,7 @@ void menu_betadisk(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_en_es_ca_inicial(&array_menu_betadisk,MENU_OPCION_NORMAL,menu_storage_trd_file,NULL,
             "~~TRD File","Archivo ~~TRD","Arxiu ~~TRD");
         menu_add_item_menu_sufijo_format(array_menu_betadisk," [%s]",string_trd_file_shown);
+        menu_add_item_menu_prefijo(array_menu_betadisk,"    ");
         menu_add_item_menu_shortcut(array_menu_betadisk,'t');
         menu_add_item_menu_tooltip(array_menu_betadisk,"TRD Emulation file");
         menu_add_item_menu_ayuda(array_menu_betadisk,"TRD Emulation file");
@@ -40744,6 +40805,7 @@ void menu_betadisk(MENU_ITEM_PARAMETERS)
 
         menu_add_item_menu_en_es_ca(array_menu_betadisk,MENU_OPCION_NORMAL,menu_storage_trd_browser,menu_storage_trd_emulation_cond,
             "TRD ~~Viewer","~~Visor TRD","~~Visor TRD");
+        menu_add_item_menu_prefijo(array_menu_betadisk,"    ");
         menu_add_item_menu_shortcut(array_menu_betadisk,'v');
         menu_add_item_menu_genera_ventana(array_menu_betadisk);
         menu_add_item_menu_tooltip(array_menu_betadisk,"TRD Viewer");
@@ -40751,6 +40813,7 @@ void menu_betadisk(MENU_ITEM_PARAMETERS)
 
         menu_add_item_menu_en_es_ca(array_menu_betadisk,MENU_OPCION_NORMAL,menu_visual_floppy,NULL,
             "Visual Floppy","Visual Floppy","Visual Floppy");
+        menu_add_item_menu_prefijo(array_menu_betadisk,"    ");
         menu_add_item_menu_se_cerrara(array_menu_betadisk);
         menu_add_item_menu_genera_ventana(array_menu_betadisk);
 
@@ -40855,6 +40918,7 @@ void menu_superupgrade(MENU_ITEM_PARAMETERS)
 
                         menu_tape_settings_trunc_name(superupgrade_rom_file_name,string_superupgrade_file_shown,13);
                         menu_add_item_menu_inicial_format(&array_menu_superupgrade,MENU_OPCION_NORMAL,menu_superupgrade_rom_file,NULL,"~~Flash File [%s]",string_superupgrade_file_shown);
+                        menu_add_item_menu_prefijo(array_menu_superupgrade,"    ");
                         menu_add_item_menu_shortcut(array_menu_superupgrade,'f');
                         menu_add_item_menu_tooltip(array_menu_superupgrade,"Flash Emulation file");
                         menu_add_item_menu_ayuda(array_menu_superupgrade,"Flash Emulation file");
@@ -41039,6 +41103,7 @@ void menu_zxuno_spi_flash(MENU_ITEM_PARAMETERS)
 			else menu_tape_settings_trunc_name(zxuno_flash_spi_name,string_spi_flash_file_shown,12);
 
 			menu_add_item_menu_inicial_format(&array_menu_zxuno_spi_flash,MENU_OPCION_NORMAL,menu_zxuno_spi_flash_file,NULL,"~~Flash File: [%s]",string_spi_flash_file_shown);
+            menu_add_item_menu_prefijo(array_menu_zxuno_spi_flash,"    ");
 			menu_add_item_menu_shortcut(array_menu_zxuno_spi_flash,'f');
 			menu_add_item_menu_tooltip(array_menu_zxuno_spi_flash,"File used for the ZX-Uno SPI Flash");
 			menu_add_item_menu_ayuda(array_menu_zxuno_spi_flash,"File used for the ZX-Uno SPI Flash");

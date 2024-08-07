@@ -9,6 +9,7 @@ Agregado menú para buscar cadenas de texto en memoria
 * Mejoras:
 
 Permitir hotswap a Pentagon y a Spectrum +3
+Agregada opción para desactivar escrituras persistentes en tarjetas de Z88
 Mejorar aviso de Azimuth en ventana External Audio Source
 Permitir no guardar snapshot al salir de ZEsarUX
 Permitir definir Alt Izq, Ctrl Izq, Shift Izq o TAB como acción de Fuego de Joystick
@@ -37,6 +38,7 @@ Corregido hotswap ZX80 a ZX81, ZX81 a ZX80
 Corregido Scroll de Amstrad CPC
 Corregida carga de snapshots .nex snapshots y la inicialización incorrecta de Layer 2 (corrige errores en Head Over Heels de Next por ejemplo)
 Corregida característica de Buscar menú
+Corregido error al grabar snapshots .ZSF de Z88 cuando el bloque de RAM o de tarjeta de memoria no está comprimido
 
 * Cambios varios:
 
