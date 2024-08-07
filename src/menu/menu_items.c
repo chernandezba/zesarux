@@ -28756,8 +28756,8 @@ void hotswap_p2a_to_128(void)
 }
 
 
-
-void hotswap_128_to_p2a(void)
+//maquina: tal cual el id de maquina
+void hotswap_128_to_p2a_p3(int maquina)
 {
 	//Copiamos ROM0 en ROM0, ROM1 en ROM1, ROM0 en ROM2 y ROM1 en ROM3 de +2a
 	//La ram la copiamos tal cual
@@ -28800,7 +28800,8 @@ void hotswap_128_to_p2a(void)
 	}
 
 	//Spectrum +2A
-        current_machine_type=MACHINE_ID_SPECTRUM_P2A_40;
+        //current_machine_type=MACHINE_ID_SPECTRUM_P2A_40;
+        current_machine_type=maquina;
 
         set_machine(NULL);
 
@@ -29133,7 +29134,13 @@ void hotswap_128k_to_p2_spa(MENU_ITEM_PARAMETERS)
 
 void hotswap_128k_to_p2a(MENU_ITEM_PARAMETERS)
 {
-    hotswap_128_to_p2a();
+    hotswap_128_to_p2a_p3(MACHINE_ID_SPECTRUM_P2A_40);
+    menu_warn_message("Note that ROM data are the previous data coming from 128K");
+}
+
+void hotswap_128k_to_p3(MENU_ITEM_PARAMETERS)
+{
+    hotswap_128_to_p2a_p3(MACHINE_ID_SPECTRUM_P3_40);
     menu_warn_message("Note that ROM data are the previous data coming from 128K");
 }
 
@@ -29442,6 +29449,7 @@ void menu_hotswap_machine(MENU_ITEM_PARAMETERS)
             menu_add_item_menu(array_menu_machine_selection,"ZX Spectrum +2 (French)",MENU_OPCION_NORMAL,hotswap_128k_to_p2f,NULL);
             menu_add_item_menu(array_menu_machine_selection,"ZX Spectrum +2 (Spanish)",MENU_OPCION_NORMAL,hotswap_128k_to_p2_spa,NULL);
             menu_add_item_menu(array_menu_machine_selection,"ZX Spectrum +2A (ROM v4.0)",MENU_OPCION_NORMAL,hotswap_128k_to_p2a,NULL);
+            menu_add_item_menu(array_menu_machine_selection,"ZX Spectrum +3 (ROM v4.0)",MENU_OPCION_NORMAL,hotswap_128k_to_p3,NULL);
             menu_add_item_menu(array_menu_machine_selection,"ZX Spectrum 48k",MENU_OPCION_NORMAL,hotswap_128k_to_48k,NULL);
         }
 

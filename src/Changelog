@@ -12,6 +12,7 @@ Added setting to disable persistent writes on Z88 Cards
 
 Allow save screen to bmp for most machines
 Allow hotswap to Pentagon and to Spectrum +3
+Allow hotswap from Spectrum 128 to Spectrum +3
 Improve Azimuth warning on External Audio Source Window
 Allow to not save snapshot when exiting ZEsarUX
 Allow to define Left Alt, Left Ctrl, Left Shift or TAB as Joystick Fire action
