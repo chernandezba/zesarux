@@ -45993,6 +45993,7 @@ int menu_inicio_mostrar_main_menu(int salir_menu)
                 menu_add_item_menu_tooltip(array_menu_principal,"Search menu");
                 menu_add_item_menu_ayuda(array_menu_principal,"Search menu");
                 menu_add_item_menu_genera_ventana(array_menu_principal);
+                menu_add_item_menu_se_cerrara(array_menu_principal);
             }
 
             menu_add_item_menu_en_es_ca(array_menu_principal,MENU_OPCION_NORMAL,menu_toys,NULL,

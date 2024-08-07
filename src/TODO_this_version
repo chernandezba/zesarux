@@ -345,9 +345,6 @@ ok. agregar nombre de indice en todos los menus
 -head over heels next: personaje heels siempre se ve por detrás
 
 
--poder ir a menu anterior con raton, pulsando en ventana anterior o bien algun boton en la ventana de menu
-*de momento se puede con boton derecho de raton
-*ok pulsando en submenus anteriores
 
 -Quick save screen. Y además con tecla F
 Que genere un nombre random o con fecha
@@ -359,26 +356,10 @@ quizá tiene un uso muy reducido porque los programas necesariamente no se graba
 como matrices y cosas asi. pero en ese caso se pueden cargar y ya luego examinar variables
 
 -issues de submenus:
-ok - al abrir osd adventure keyboard, se ven submenus anteriores. ok faltaba menu_add_item_menu_genera_ventana
---debug->reset. ventana confirmacion sale sin que este menu debug visible. quiza tiene que llamar a genera ventana?
-aunque luego menu confirmacion si/no quiza tendria que decir que no es un menu, lo mismo con otras funciones de *x*choices. por otra parte, reset tendria que salir de todos los menus luego
-Se prueba por ejemplo en menu_simple_five_choices (y en two, three, four, six, seven, eight, nine, ten), y en menu_confirm_yesno
-ok --opciones->hardware->next machine id. esta bien que al seleccionar el dialogo, se vea el menu abierto???
 
--revisar menu storage y todos los dispositivos diferentes y espacios en menus, que quede todo coherente
 
 -quiza en un menu_dibuja_menu_dialogo_no_title_lang, al pulsar ESC, no debe activar salir_todos_menus
 aunque no todos. por ejemplo en +3dsk, visor format disc, pulsar en archivo-> blocks, ahi si pulsa esc si que interesa que cierre todo
 
 -revisar accesibilidad y submenus... a veces se lee submenu. ejemplo text to speech pulsar alguna opcion que conmuta en ese menu
 
--opcion persistent writes para cartuchos eprom z88 (solo en slot 3?)
-
--grabar estado z88 en zsf con eprom en slot 2 de lemlevels.epr genera error al cargarlo de:
-Length uncompressed (16628) is not expected length (16384). It should not happen!
-iMac-de-Cesar:src cesarhernandez$ cp zesarux_autosave.zsf zesarux_autosave_error.zsf
-iMac-de-Cesar:src cesarhernandez$ cp ~/.zesaruxrc zesaruxrc_error
-ok
-Ver si pueden haber otros bloques de maquinas que al grabar no estén reconsiderando poner flag de comprimido por defecto a 0
-
--revisar si se puede mejorar menu config z88 cards
