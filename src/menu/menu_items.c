@@ -17571,6 +17571,7 @@ void menu_mmc_divmmc(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_en_es_ca(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_divmmc_diviface_total_ram,NULL,
                 "DIVMMC RAM","DIVMMC RAM","DIVMMC RAM");
             menu_add_item_menu_sufijo_format(array_menu_mmc_divmmc," [%d KB]",get_diviface_total_ram() );
+            menu_add_item_menu_prefijo(array_menu_mmc_divmmc,"    ");
             menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"Changes DIVMMC RAM");
             menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"Changes DIVMMC RAM");
             menu_add_item_menu_es_avanzado(array_menu_mmc_divmmc);

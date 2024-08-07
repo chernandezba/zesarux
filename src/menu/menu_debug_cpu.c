@@ -927,7 +927,7 @@ void menu_breakpoints(MENU_ITEM_PARAMETERS)
 
         menu_add_item_menu(array_menu_breakpoints,"",MENU_OPCION_SEPARADOR,NULL,NULL);
         menu_add_ESC_item(array_menu_breakpoints);
-        retorno_menu=menu_dibuja_menu_no_title_lang(&breakpoints_opcion_seleccionada,&item_seleccionado,array_menu_breakpoints,"Breakpoints" );
+        retorno_menu=menu_dibuja_menu_dialogo_no_title_lang(&breakpoints_opcion_seleccionada,&item_seleccionado,array_menu_breakpoints,"Breakpoints" );
 
 
 
@@ -5013,7 +5013,7 @@ void menu_debug_gac_view_messages_ask(void)
         menu_add_item_menu(array_menu_daad_tipo_mensaje,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 		menu_add_ESC_item(array_menu_daad_tipo_mensaje);
 
-        retorno_menu=menu_dibuja_menu_no_title_lang(&daad_tipo_mensaje_opcion_seleccionada,&item_seleccionado,array_menu_daad_tipo_mensaje,"Message type" );
+        retorno_menu=menu_dibuja_menu_dialogo_no_title_lang(&daad_tipo_mensaje_opcion_seleccionada,&item_seleccionado,array_menu_daad_tipo_mensaje,"Message type" );
 
 
         //no queremos que al pulsar ESC aqui se cierren todos los menus anteriores
@@ -5082,7 +5082,7 @@ void menu_debug_daad_view_messages_ask(void)
         menu_add_item_menu(array_menu_daad_tipo_mensaje,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 		menu_add_ESC_item(array_menu_daad_tipo_mensaje);
 
-        retorno_menu=menu_dibuja_menu_no_title_lang(&daad_tipo_mensaje_opcion_seleccionada,&item_seleccionado,array_menu_daad_tipo_mensaje,"Message type" );
+        retorno_menu=menu_dibuja_menu_dialogo_no_title_lang(&daad_tipo_mensaje_opcion_seleccionada,&item_seleccionado,array_menu_daad_tipo_mensaje,"Message type" );
 
 
         //no queremos que al pulsar ESC aqui se cierren todos los menus anteriores
