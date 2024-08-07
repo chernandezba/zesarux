@@ -3124,7 +3124,7 @@ void menu_settings_debug(MENU_ITEM_PARAMETERS)
 		else strcpy(show_fired_breakpoint_type,"Never");																	//						   OnlyNonPC
 																															//  01234567890123456789012345678901
 		menu_add_item_menu_en_es_ca(array_menu_settings_debug,MENU_OPCION_NORMAL, menu_debug_settings_show_fired_breakpoint,NULL,
-            "Show fired breakpoint","Ver breakpoint disparado","Veure breakpoint disparat");
+            "Show fired breakp.","Ver breakp. disparado","Veure breakp. disparat");
         menu_add_item_menu_prefijo_format(array_menu_settings_debug,"    ");
         menu_add_item_menu_sufijo_format(array_menu_settings_debug," [%s]",show_fired_breakpoint_type);
 		menu_add_item_menu_tooltip(array_menu_settings_debug,"Tells to show the breakpoint condition when it is fired");
@@ -7607,7 +7607,7 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
 
 
 		if (MACHINE_IS_SPECTRUM || MACHINE_IS_ZX8081 || MACHINE_IS_CPC) {
-			menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_osd_word_kb_length,NULL,"OSD Adventure KB length [%d] ",adventure_keyboard_key_length);
+			menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_osd_word_kb_length,NULL,"OSD Adv. KB length [%d] ",adventure_keyboard_key_length);
             menu_add_item_menu_prefijo_format(array_menu_settings_display,"    ");
 			menu_add_item_menu_tooltip(array_menu_settings_display,"Define the duration for every key press on the Adventure Text OSD Keyboard");
 			menu_add_item_menu_ayuda(array_menu_settings_display,"Define the duration for every key press on the Adventure Text OSD Keyboard, in 1/50 seconds (default 50)");
