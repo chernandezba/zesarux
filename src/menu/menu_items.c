@@ -35487,7 +35487,9 @@ void menu_z88_slots(MENU_ITEM_PARAMETERS)
                 menu_add_item_menu(array_menu_z88_slots,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
 				menu_add_item_menu_format(array_menu_z88_slots,MENU_OPCION_NORMAL,menu_z88_slot_card_browser,NULL,"Card browser");
-                menu_add_item_menu_prefijo(array_menu_z88_slots,"    ");
+
+                //Solo desplazar a la derecha si ha podido salir setting de persistent writes, para que quede todo bien alineado
+                if (slot==3) menu_add_item_menu_prefijo(array_menu_z88_slots,"    ");
                 menu_add_item_menu_add_flags(array_menu_z88_slots,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
 				menu_add_item_menu_tooltip(array_menu_z88_slots,"Browse card");
 				menu_add_item_menu_ayuda(array_menu_z88_slots,"Browse card");
@@ -35495,7 +35497,9 @@ void menu_z88_slots(MENU_ITEM_PARAMETERS)
                 menu_add_item_menu_valor_opcion(array_menu_z88_slots,slot);
 
 				menu_add_item_menu_format(array_menu_z88_slots,MENU_OPCION_NORMAL,menu_z88_slot_copy_from_eprom,NULL,"Copy from Card");
-                menu_add_item_menu_prefijo(array_menu_z88_slots,"    ");
+
+                //Solo desplazar a la derecha si ha podido salir setting de persistent writes, para que quede todo bien alineado
+                if (slot==3) menu_add_item_menu_prefijo(array_menu_z88_slots,"    ");
                 menu_add_item_menu_add_flags(array_menu_z88_slots,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
 				menu_add_item_menu_tooltip(array_menu_z88_slots,"Copy files from Card to your hard drive");
 				menu_add_item_menu_ayuda(array_menu_z88_slots,"Copy files from Card to your hard drive");

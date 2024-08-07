@@ -2155,11 +2155,6 @@ void z88_flush_eprom_or_flash_to_disk(void)
 		return;
 	}
 
-	debug_printf (VERBOSE_INFO,"Flushing EPROM/FLASH to disk");
-
-        //Justo antes del fwrite se pone flush a 0, porque si mientras esta el fwrite entra alguna operacion de escritura,
-        //metera flush a 1
-	z88_eprom_or_flash_must_flush_to_disk=0;
 
 
     if (z88_eprom_or_flash_persistent_writes.v==0) {
@@ -2167,6 +2162,11 @@ void z88_flush_eprom_or_flash_to_disk(void)
         return;
     }
 
+    debug_printf (VERBOSE_INFO,"Flushing EPROM/FLASH to disk");
+
+    //Justo antes del fwrite se pone flush a 0, porque si mientras esta el fwrite entra alguna operacion de escritura,
+    //metera flush a 1
+	z88_eprom_or_flash_must_flush_to_disk=0;
 
 	size++;
 
