@@ -3226,6 +3226,11 @@ void zxvision_menu_filesel_print_text_contents(zxvision_window *ventana)
 void file_utils_info_file(char *archivo)
 {
 
+    if (!si_existe_archivo(archivo)) {
+        menu_error_message("File does not exist");
+        return;
+    }
+
     char buffer_tamanyo[100]="";
 
     //Si es carpeta no mostrar tamaño
