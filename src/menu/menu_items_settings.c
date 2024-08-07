@@ -1194,8 +1194,12 @@ void menu_general_settings(MENU_ITEM_PARAMETERS)
 			fps=50/divisor;
 		}
 
-		menu_add_item_menu_format(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_frameskip,NULL,"[%d] F~~rameskip (%d FPS)",frameskip,fps);
-        menu_add_item_menu_spanish_format(array_menu_window_settings,"[%d] Saltar F~~rames (%d FPS)",frameskip,fps);
+        menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_frameskip,NULL,
+            "F~~rameskip","Saltar F~~rames","Saltar F~~rames");
+        menu_add_item_menu_sufijo_format(array_menu_window_settings," [%d] (%d FPS)",frameskip,fps);
+        menu_add_item_menu_prefijo(array_menu_window_settings,"    ");
+		//menu_add_item_menu_format(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_frameskip,NULL,"    F~~rameskip [%d] (%d FPS)",frameskip,fps);
+        //menu_add_item_menu_spanish_format(array_menu_window_settings,"[%d] Saltar F~~rames (%d FPS)",frameskip,fps);
 		menu_add_item_menu_shortcut(array_menu_window_settings,'r');
         menu_add_item_menu_tooltip(array_menu_window_settings,"Sets the number of frames to skip every time the screen needs to be refreshed");
         menu_add_item_menu_ayuda(array_menu_window_settings,"Sets the number of frames to skip every time the screen needs to be refreshed");
@@ -1274,10 +1278,14 @@ void menu_general_settings(MENU_ITEM_PARAMETERS)
 
 
         if (si_complete_video_driver() ) {
-                menu_add_item_menu_format(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_zoom,menu_interface_zoom_cond,"[%d] Window Size ~~Zoom",zoom_x);
-                menu_add_item_menu_shortcut(array_menu_window_settings,'z');
-                menu_add_item_menu_tooltip(array_menu_window_settings,"Change Window Zoom");
-                menu_add_item_menu_ayuda(array_menu_window_settings,"Changes Window Size Zoom (width and height)");
+            menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_zoom,menu_interface_zoom_cond,
+                "Window Size ~~Zoom","~~Zoom Tamaño Ventana","~~Zoom Tamany Finestra");
+            menu_add_item_menu_sufijo_format(array_menu_window_settings," [%d]",zoom_x);
+            menu_add_item_menu_prefijo(array_menu_window_settings,"    ");
+            //menu_add_item_menu_format(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_zoom,menu_interface_zoom_cond,"[%d] Window Size ~~Zoom",zoom_x);
+            menu_add_item_menu_shortcut(array_menu_window_settings,'z');
+            menu_add_item_menu_tooltip(array_menu_window_settings,"Change Window Zoom");
+            menu_add_item_menu_ayuda(array_menu_window_settings,"Changes Window Size Zoom (width and height)");
 
                 menu_add_item_menu_format(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_zoom_autochange_big_display,NULL,
                     "[%c] Autochange Zoom big display",(autochange_zoom_big_display.v ? 'X' : ' ' ));
@@ -1286,7 +1294,7 @@ void menu_general_settings(MENU_ITEM_PARAMETERS)
         }
 
 
-		menu_add_item_menu_format(array_menu_window_settings,MENU_OPCION_NORMAL,menu_window_settings_reduce_075,NULL,"[%c] R~~educe to 0.75",(screen_reduce_075.v ? 'X' : ' ') );
+		menu_add_item_menu_format(array_menu_window_settings,MENU_OPCION_NORMAL,menu_window_settings_reduce_075,NULL,"[%c] R~~educe display factor 0.75",(screen_reduce_075.v ? 'X' : ' ') );
 		menu_add_item_menu_shortcut(array_menu_window_settings,'e');
 		menu_add_item_menu_tooltip(array_menu_window_settings,"Reduce machine display output by 0.75. Enables realvideo and forces watermark");
 		menu_add_item_menu_ayuda(array_menu_window_settings,"Reduce machine display output by 0.75. Enables realvideo and forces watermark. This feature has been used on a large bulb display for the RunZX 2018 event");
@@ -1298,10 +1306,10 @@ void menu_general_settings(MENU_ITEM_PARAMETERS)
 			menu_add_item_menu_ayuda(array_menu_window_settings,"Antialias is only applied to the standard 16 Spectrum colors");
             menu_add_item_menu_es_avanzado(array_menu_window_settings);
 
-			menu_add_item_menu_format(array_menu_window_settings,MENU_OPCION_NORMAL,menu_window_settings_reduce_075_ofx,NULL,"[%d]  Offset x",screen_reduce_offset_x);
+			menu_add_item_menu_format(array_menu_window_settings,MENU_OPCION_NORMAL,menu_window_settings_reduce_075_ofx,NULL,"     Offset x [%d]",screen_reduce_offset_x);
             menu_add_item_menu_es_avanzado(array_menu_window_settings);
 
-			menu_add_item_menu_format(array_menu_window_settings,MENU_OPCION_NORMAL,menu_window_settings_reduce_075_ofy,NULL,"[%d]  Offset y",screen_reduce_offset_y);
+			menu_add_item_menu_format(array_menu_window_settings,MENU_OPCION_NORMAL,menu_window_settings_reduce_075_ofy,NULL,"     Offset y [%d]",screen_reduce_offset_y);
             menu_add_item_menu_es_avanzado(array_menu_window_settings);
 		}
 

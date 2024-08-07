@@ -6,12 +6,12 @@ Added machines Czerweny CZ 1000, CZ 1500, CZ 1000 Plus, CZ 1500 Plus, CZ 2000, C
 Added Memory Cheat feature: useful to find counters of energy, bombs, ammo or any other cheat in a game
 Added Find text string on memory menu
 Added Quicksave screen function
+Added setting to disable persistent writes on Z88 Cards
 
 * Improvements:
 
 Allow save screen to bmp for most machines
 Allow hotswap to Pentagon and to Spectrum +3
-Added setting to disable persistent writes on Z88 Cards
 Improve Azimuth warning on External Audio Source Window
 Allow to not save snapshot when exiting ZEsarUX
 Allow to define Left Alt, Left Ctrl, Left Shift or TAB as Joystick Fire action
@@ -25,7 +25,7 @@ Improved Hexadecimal editor:
 - Now the memory pointer can follow a expression (CPU register for example)
 
 Improved ZX Vision:
-- More GUI improvements following more guidelines from (retro)-specification IBM CUA
+- More GUI improvements following more guidelines from the (retro)-specification IBM CUA
 - Menus show previous menus when selecting submenus
 - When selecting ZX Vision Style, it is applied on moving cursor
 - Improve cursor movement on menus when pressing PgDn/PgUp

@@ -345,8 +345,6 @@ ok. agregar nombre de indice en todos los menus
 -head over heels next: personaje heels siempre se ve por detrás
 
 
-
-
 -menu display. teclado en pantalla. quiza poner aqui el nuevo de help keyboard. dejar ese viejo solo para drivers de video de tipo texto, cacalib, etc. considerar ademas que ese antiguo solo sale para spectrum y zx80/81. Ojo que el teclado en pantalla de texto debería también salir al pulsar tecla de OSD teclado, pero solo cuando es driver texto
 
 -Poder ver variables de una cinta .P, .O e incluso basic de spectrum (desde el bloque de basic de un .tap?)
@@ -354,11 +352,8 @@ quizá tiene un uso muy reducido porque los programas necesariamente no se graba
 como matrices y cosas asi. pero en ese caso se pueden cargar y ya luego examinar variables
 
 -issues de submenus:
-
-
--quiza en un menu_dibuja_menu_dialogo_no_title_lang, al pulsar ESC, no debe activar salir_todos_menus
+--quiza en un menu_dibuja_menu_dialogo_no_title_lang, al pulsar ESC, no debe activar salir_todos_menus
 aunque no todos. por ejemplo en +3dsk, visor format disc, pulsar en archivo-> blocks, ahi si pulsa esc si que interesa que cierre todo
 
 -revisar accesibilidad y submenus... a veces se lee submenu. ejemplo text to speech pulsar alguna opcion que conmuta en ese menu
 
--info file de acceso directo de archivo inexistente da fechas y datos extraños

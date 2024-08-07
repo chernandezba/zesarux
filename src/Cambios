@@ -6,12 +6,12 @@ Agregadas máquinas Czerweny CZ 1000, CZ 1500, CZ 1000 Plus, CZ 1500 Plus, CZ 20
 Agregar función de "Memory Cheat": util para encontrar contadores de energia, bombas, munición o cualquier otro truco de un juego
 Agregado menú para buscar cadenas de texto en memoria
 Agregado función de grabado rápido de pantalla
+Agregada opción para desactivar escrituras persistentes en tarjetas de Z88
 
 * Mejoras:
 
 Permitir grabar pantalla a bmp para la mayoría de máquinas
 Permitir hotswap a Pentagon y a Spectrum +3
-Agregada opción para desactivar escrituras persistentes en tarjetas de Z88
 Mejorar aviso de Azimuth en ventana External Audio Source
 Permitir no guardar snapshot al salir de ZEsarUX
 Permitir definir Alt Izq, Ctrl Izq, Shift Izq o TAB como acción de Fuego de Joystick
