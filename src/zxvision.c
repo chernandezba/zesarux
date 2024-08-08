@@ -4089,21 +4089,40 @@ int menu_si_mostrar_footer_f5_menu(void)
 	return 0;
 }
 
+//Durante 60 segundos aparece
+int menu_footer_f5_menu_counter=60;
+
+
+void menu_footer_f5_menu_timer(void)
+{
+    if (menu_footer_f5_menu_counter>0) {
+        menu_footer_f5_menu_counter--;
+
+        //Si llega a 0, actualizarlo con footer definitivo
+        if (menu_footer_f5_menu_counter==0) menu_footer_bottom_line();
+    }
+}
+
+void menu_putstring_footer_spaces(int y)
+{
+    menu_putstring_footer(0,y,"                                ",WINDOW_FOOTER_INK,WINDOW_FOOTER_PAPER);
+}
+
 void menu_footer_f5_menu(void)
 {
 
     //Decir F5 menu en linea de tarjetas de memoria de z88
-    //Y si es la primera vez
-    if (menu_si_mostrar_footer_f5_menu() ) {
-        //Borrar antes con espacios si hay algo               //01234567890123456789012345678901
-        //Sucede que al cargar emulador con un tap, se pone abajo primero el nombre de emulador y version,
-        //y cuando se quita el splash, se pone este texto. Si no pongo espacios, se mezcla parte del texto de F5 menu etc con la version del emulador
 
-        menu_putstring_footer(0,WINDOW_FOOTER_ELEMENT_Y_F5MENU,"                                ",WINDOW_FOOTER_INK,WINDOW_FOOTER_PAPER);
-        char texto_f_menu[32];
-        sprintf(texto_f_menu,"%s Menu",openmenu_key_message);
-        menu_putstring_footer(0,WINDOW_FOOTER_ELEMENT_Y_F5MENU,texto_f_menu,WINDOW_FOOTER_INK,WINDOW_FOOTER_PAPER);
-    }
+    //Borrar antes con espacios si hay algo               //01234567890123456789012345678901
+    //Sucede que al cargar emulador con un tap, se pone abajo primero el nombre de emulador y version,
+    //y cuando se quita el splash, se pone este texto. Si no pongo espacios, se mezcla parte del texto de F5 menu etc con la version del emulador
+
+    //menu_putstring_footer(0,WINDOW_FOOTER_ELEMENT_Y_F5MENU,"                                ",WINDOW_FOOTER_INK,WINDOW_FOOTER_PAPER);
+    menu_putstring_footer_spaces(WINDOW_FOOTER_ELEMENT_Y_F5MENU);
+    char texto_f_menu[32];
+    sprintf(texto_f_menu,"%s Menu",openmenu_key_message);
+    menu_putstring_footer(0,WINDOW_FOOTER_ELEMENT_Y_F5MENU,texto_f_menu,WINDOW_FOOTER_INK,WINDOW_FOOTER_PAPER);
+
 
 
 }
@@ -4114,25 +4133,33 @@ void menu_footer_zesarux_emulator(void)
 	if (menu_si_mostrar_footer_f5_menu() ) {
 		debug_printf (VERBOSE_DEBUG,"Showing ZEsarUX footer message");
 
-        //Si esta zeng online conectado, alterar algo el mensaje
-
-        //01234567890123456789012345678901
-        //ZEsarUX 11 - ONLINE
-        //ZEsarUX 11-RC3 - ONLINE
-        //Aunque ocupe algo mas, por alguna version beta, no deberia pasar nada pues el putchar en el footer controla margenes
-        char buffer_footer[100];
-
-        if (zeng_online_connected.v) {
-            //printf("Mostrando footer con estado conexion ZENG online\n");
-            sprintf(buffer_footer,"ZEsarUX "EMULATOR_VERSION " %s",zoc_return_connected_status() );
+        if (menu_footer_f5_menu_counter) {
+            menu_footer_f5_menu();
         }
 
         else {
-            //printf("Mostrando footer SIN estado conexion ZENG online\n");
-            sprintf(buffer_footer,"ZEsarUX "EMULATOR_VERSION);
-        }
 
-		menu_putstring_footer(0,WINDOW_FOOTER_ELEMENT_Y_ZESARUX_EMULATOR,buffer_footer,WINDOW_FOOTER_INK,WINDOW_FOOTER_PAPER);
+            //Si esta zeng online conectado, alterar algo el mensaje
+
+            //01234567890123456789012345678901
+            //ZEsarUX 11 - ONLINE
+            //ZEsarUX 11-RC3 - ONLINE
+            //Aunque ocupe algo mas, por alguna version beta, no deberia pasar nada pues el putchar en el footer controla margenes
+            char buffer_footer[100];
+
+            if (zeng_online_connected.v) {
+                //printf("Mostrando footer con estado conexion ZENG online\n");
+                sprintf(buffer_footer,"ZEsarUX "EMULATOR_VERSION " %s",zoc_return_connected_status() );
+            }
+
+            else {
+                //printf("Mostrando footer SIN estado conexion ZENG online\n");
+                sprintf(buffer_footer,"ZEsarUX "EMULATOR_VERSION);
+            }
+
+            menu_putstring_footer(0,WINDOW_FOOTER_ELEMENT_Y_ZESARUX_EMULATOR,buffer_footer,WINDOW_FOOTER_INK,WINDOW_FOOTER_PAPER);
+
+        }
 
 	}
 
@@ -27083,7 +27110,7 @@ void set_welcome_message(void)
 
 }
 
-int first_time_menu_footer_f5_menu=1;
+
 
 
 //2 segundos antes de que se avise si hay detectado joystick o no
@@ -27150,12 +27177,12 @@ void reset_welcome_message(void)
 			reset_menu_overlay_function();
 			debug_printf (VERBOSE_DEBUG,"End splash text");
 
-			//Quitamos el splash text pero dejamos el F5 menu abajo en el footer, hasta que algo borre ese mensaje
-			//(por ejemplo que cargamos una cinta/snap con configuracion y genera mensaje en texto inverso en el footer)
-			if (first_time_menu_footer_f5_menu) {
-				menu_footer_f5_menu();
-				first_time_menu_footer_f5_menu=0; //Solo mostrarlo una sola vez
-			}
+			//Quitamos el splash text pero dejamos el F5 menu abajo en el footer durante 60 segundos y hasta que algo borre ese mensaje
+			//(por ejemplo que cargamos una cinta/snap con configuracion y genera mensaje en texto inverso en el footer) o se abra el menu
+			//if (first_time_menu_footer_f5_menu) {
+            //menu_footer_f5_menu_counter=60;
+            //menu_footer_zesarux_emulator();
+			//}
 
 
 

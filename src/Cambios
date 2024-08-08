@@ -42,6 +42,7 @@ Corregido Scroll de Amstrad CPC
 Corregida carga de snapshots .nex snapshots y la inicialización incorrecta de Layer 2 (corrige errores en Head Over Heels de Next por ejemplo)
 Corregida característica de Buscar menú
 Corregido error al grabar snapshots .ZSF de Z88 cuando el bloque de RAM o de tarjeta de memoria no está comprimido
+Corregido mostrar texto en footer de F5/Button menu
 
 * Cambios varios:
 

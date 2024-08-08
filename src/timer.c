@@ -856,7 +856,7 @@ void timer_check_interrupt(void)
 
             cf2_floppy_icon_activity();
 
-
+            menu_footer_f5_menu_timer();
 
             if (betadisk_simulated_motor>0) betadisk_simulated_motor--;
 
