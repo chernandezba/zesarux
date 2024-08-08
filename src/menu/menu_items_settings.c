@@ -3607,17 +3607,22 @@ void menu_aofile(MENU_ITEM_PARAMETERS)
 
 void menu_audio_audiodac_type(MENU_ITEM_PARAMETERS)
 {
+
+    audiodac_selected_type++;
+    if (audiodac_selected_type==MAX_AUDIODAC_TYPES) {
+        audiodac_selected_type=0;
+    }
+
+}
+
+void menu_audio_audiodac_enable(MENU_ITEM_PARAMETERS)
+{
 	if (audiodac_enabled.v==0) {
 		audiodac_enabled.v=1;
-		audiodac_selected_type=0;
 	}
 
 	else {
-		audiodac_selected_type++;
-		if (audiodac_selected_type==MAX_AUDIODAC_TYPES) {
-			audiodac_selected_type=0;
-			audiodac_enabled.v=0;
-		}
+		audiodac_enabled.v=0;
 	}
 }
 
@@ -3881,19 +3886,25 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
 			char string_audiodac[32];
 
 				if (audiodac_enabled.v) {
-					sprintf (string_audiodac,": %s",audiodac_types[audiodac_selected_type].name);
+					sprintf (string_audiodac,"%s",audiodac_types[audiodac_selected_type].name);
 				}
 				else {
 					strcpy(string_audiodac,"");
 				}
 
-				menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_audio_audiodac_type,NULL,"[%c] ~~DAC%s",(audiodac_enabled.v ? 'X' : ' ' ),
-						string_audiodac);
+				menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_audio_audiodac_enable,NULL,
+                    "[%c] ~~DAC Enabled",(audiodac_enabled.v ? 'X' : ' ' ));
 				menu_add_item_menu_shortcut(array_menu_settings_audio,'d');
                 menu_add_item_menu_es_avanzado(array_menu_settings_audio);
 
-				if (audiodac_enabled.v) {
-					menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_audio_audiodac_set_port,NULL,"[%02XH] DAC port",audiodac_types[audiodac_selected_type].port);
+                if (audiodac_enabled.v) {
+				    menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_audio_audiodac_type,NULL,
+                        "    ~~DAC Type [%s]",string_audiodac);
+
+
+					menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_audio_audiodac_set_port,NULL,
+                        "DAC port [%02XH]",audiodac_types[audiodac_selected_type].port);
+                    menu_add_item_menu_prefijo(array_menu_settings_audio,"    ");
                     menu_add_item_menu_es_avanzado(array_menu_settings_audio);
 				}
 

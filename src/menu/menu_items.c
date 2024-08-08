@@ -17596,7 +17596,7 @@ void menu_mmc_divmmc(MENU_ITEM_PARAMETERS)
             if (divmmc_rom_name[0]==0) sprintf (string_divmmc_rom_file_shown,"Default");
             else menu_tape_settings_trunc_name(divmmc_rom_name, string_divmmc_rom_file_shown,10);
             menu_add_item_menu_en_es_ca(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_divmmc_rom_file,NULL,
-                "DIVMMC EPROM File","DIVMMC Archivo EPROM","DIVMMC Arxiu EPROM");
+                "DIVMMC EPROM File","Archivo EPROM DIVMMC","Arxiu EPROM DIVMMC");
             menu_add_item_menu_sufijo_format(array_menu_mmc_divmmc," [%s]", string_divmmc_rom_file_shown);
             menu_add_item_menu_prefijo(array_menu_mmc_divmmc,"    ");
             menu_add_item_menu_es_avanzado(array_menu_mmc_divmmc);
