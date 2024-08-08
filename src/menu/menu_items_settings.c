@@ -3867,8 +3867,9 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_es_avanzado(array_menu_settings_audio);
 
             if (gs_enabled.v) {
-                menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_audio_general_sound_mem,NULL,"[%4d KB] General Sound RAM",
-                (gs_memory_mapping_mask_pages+1)*32 );
+                menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_audio_general_sound_mem,NULL,
+                    "General Sound RAM [%4d KB]", (gs_memory_mapping_mask_pages+1)*32 );
+                menu_add_item_menu_prefijo(array_menu_settings_audio,"    ");
                 menu_add_item_menu_es_avanzado(array_menu_settings_audio);
             }
         }
