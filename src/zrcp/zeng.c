@@ -520,7 +520,7 @@ int zeng_connect_remotes(void)
 			//Si somos master, que el remoto no lo sea tambien
 			int es_master_remoto=parse_string_to_number(buffer);
 			if (es_master_remoto) {
-				debug_printf (VERBOSE_ERR,"There is one than one ZENG master. That is NOT recommended. Use at your own risk ;)");
+				debug_printf (VERBOSE_ERR,"There is more than one ZENG master. That is NOT recommended. Use at your own risk ;)");
 			}
 
 		}
@@ -1303,7 +1303,7 @@ char *zeng_utils_sync_local_to_remote_get_snap(void)
     strcpy (&snapshot_mem_hexa[char_destino],"\n");
 
 
-    printf ("snapshot to send, length: %d\n",longitud);
+    //printf ("snapshot to send, length: %d\n",longitud);
 
 
     //Liberar memoria que ya no se usa

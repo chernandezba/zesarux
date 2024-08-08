@@ -14772,7 +14772,7 @@ void menu_zeng(MENU_ITEM_PARAMETERS)
 
 			//Si esta thread de conexion ejecutandose, mostrar otra opcion
 			if (zeng_enable_thread_running) {
-				menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_cancel_connect,NULL,"Connecting...");
+				menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_cancel_connect,NULL,"    Connecting...");
 			}
 
             else {
@@ -14782,7 +14782,8 @@ void menu_zeng(MENU_ITEM_PARAMETERS)
 
 			char string_host_shown[16];
 			menu_tape_settings_trunc_name(zeng_remote_hostname,string_host_shown,16);
-			menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_host,menu_zeng_host_cond,"[%s] Remote ~~Hosts",string_host_shown);
+			menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_host,menu_zeng_host_cond,"Remote ~~Hosts [%s]",string_host_shown);
+            menu_add_item_menu_prefijo(array_menu_common,"    ");
             menu_add_item_menu_tooltip(array_menu_common,"You may specifify several hosts separated with comma (,) and no whitespace between them");
             menu_add_item_menu_ayuda(array_menu_common,"You may specifify several hosts separated with comma (,) and no whitespace between them. "
                 "You can also specify a different port using format host:port"
@@ -14790,12 +14791,15 @@ void menu_zeng(MENU_ITEM_PARAMETERS)
 			menu_add_item_menu_shortcut(array_menu_common,'h');
 
 
-			menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_port,menu_zeng_host_cond,"[%d] Remote Port",zeng_remote_port);
+			menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_port,menu_zeng_host_cond,"Remote Port [%d]",zeng_remote_port);
+            menu_add_item_menu_prefijo(array_menu_common,"    ");
+
 			menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_master,menu_zeng_host_cond,"[%c] ~~Master",(zeng_i_am_master ? 'X' : ' ') );
 			menu_add_item_menu_shortcut(array_menu_common,'m');
 
 			if (zeng_i_am_master) {
-				menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_snapshot_frames,NULL,"[%d ms] Snapshot ms",zeng_frames_video_cada_snapshot*20);
+				menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_snapshot_frames,NULL,"Snapshot freq [%d ms]",zeng_frames_video_cada_snapshot*20);
+                menu_add_item_menu_prefijo(array_menu_common,"    ");
                 menu_add_item_menu_tooltip(array_menu_common,"Snapshot sending frequency on miliseconds");
                 menu_add_item_menu_ayuda(array_menu_common,"Snapshot sending frequency on miliseconds");
 
@@ -14812,11 +14816,14 @@ void menu_zeng(MENU_ITEM_PARAMETERS)
 
 			if (zeng_enabled.v) {
 				menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_send_message,menu_zeng_send_message_cond,"Broadcast message");
+                menu_add_item_menu_prefijo(array_menu_common,"    ");
+                menu_add_item_menu_add_flags(array_menu_common,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
 			}
 
             menu_add_item_menu_separator(array_menu_common);
 
             menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_manual_sync_snapshot,NULL,"Sync snapshot to remote");
+            menu_add_item_menu_prefijo(array_menu_common,"    ");
             menu_add_item_menu_add_flags(array_menu_common,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
 
 
@@ -16270,12 +16277,14 @@ void menu_zeng_online_server(MENU_ITEM_PARAMETERS)
 
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_server_max_rooms,NULL,
             "Maximum rooms","Máximo habitaciones","Màxim habitacions");
-        menu_add_item_menu_prefijo_format(array_menu_common,"[%d] ",zeng_online_current_max_rooms);
+        menu_add_item_menu_sufijo_format(array_menu_common," [%d]",zeng_online_current_max_rooms);
+        menu_add_item_menu_prefijo(array_menu_common,"    ");
 
 
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_server_max_players_per_room,NULL,
             "Default max players per room","Max jugadores por hab. defecto","Max jugadors per hab. defecte");
-        menu_add_item_menu_prefijo_format(array_menu_common,"[%d] ",zeng_online_current_max_players_per_room);
+        menu_add_item_menu_sufijo_format(array_menu_common," [%d]",zeng_online_current_max_players_per_room);
+        menu_add_item_menu_prefijo(array_menu_common,"    ");
 
 
 

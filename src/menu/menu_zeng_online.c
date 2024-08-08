@@ -585,6 +585,8 @@ void menu_zeng_online_join_list(MENU_ITEM_PARAMETERS)
         zeng_online_client_authorize_join(permisos);
     }
 
+    salir_todos_menus=1;
+
 }
 
 
@@ -666,6 +668,8 @@ void menu_zeng_online_create_room(MENU_ITEM_PARAMETERS)
 
 
     }
+
+    salir_todos_menus=1;
 }
 
 void menu_zeng_online_rejoin_master(MENU_ITEM_PARAMETERS)
@@ -708,6 +712,8 @@ void menu_zeng_online_rejoin_master(MENU_ITEM_PARAMETERS)
 
 
     }
+
+    salir_todos_menus=1;
 }
 
 //Unirse como un tipo de "manager" pero que no envia snapshots
@@ -762,6 +768,8 @@ void menu_zeng_online_rejoin_manager_master(MENU_ITEM_PARAMETERS)
 
 
     }
+
+    salir_todos_menus=1;
 }
 
 void menu_zeng_online_list_rooms_menu_item(MENU_ITEM_PARAMETERS)
@@ -860,7 +868,7 @@ int menu_zeng_online_ask_user_get_uuid(char *uuid,int ocultar_master,int agregar
         }
 
 
-        retorno_menu=menu_dibuja_menu_no_title_lang(&opcion_seleccionada,&item_seleccionado,array_menu_common,"Users");
+        retorno_menu=menu_dibuja_menu_dialogo_no_title_lang(&opcion_seleccionada,&item_seleccionado,array_menu_common,"Users");
 
     //No quedarnos en bucle como un menu. Al seleccionar usuario, se establece el uuid, y siempre que no se salga con ESC
     if ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus) {
@@ -885,6 +893,8 @@ void menu_zeng_online_list_users(MENU_ITEM_PARAMETERS)
 
     //no hacemos nada con el uuid en este caso
     menu_zeng_online_ask_user_get_uuid(buffer_uuid,0,0);
+
+    salir_todos_menus=1;
 
 
 }
@@ -968,6 +978,8 @@ void menu_zeng_online_autojoin_room(MENU_ITEM_PARAMETERS)
     zeng_online_client_autojoin_room(permisos);
 
     zxvision_simple_progress_window("Autojoin room", menu_zeng_online_autojoin_room_cond,menu_zeng_online_connecting_common_print );
+
+    salir_todos_menus=1;
 
 }
 
@@ -1081,6 +1093,8 @@ void menu_zeng_online_join_room(MENU_ITEM_PARAMETERS)
 
 
     }
+
+    salir_todos_menus=1;
 }
 
 //Estructura para las teclas mostradas en el teclado de restricted keys
@@ -1206,6 +1220,8 @@ void menu_zeng_online_kick_user(MENU_ITEM_PARAMETERS)
         zeng_online_client_kick_user(buffer_uuid);
         zxvision_simple_progress_window("Kick user", menu_zeng_online_kick_user_cond,menu_zeng_online_connecting_common_print );
     }
+
+    salir_todos_menus=1;
 
 }
 
@@ -1460,7 +1476,7 @@ void menu_zeng_online_restricted_keys(MENU_ITEM_PARAMETERS)
 
         menu_add_ESC_item(array_menu_common);
 
-        retorno_menu=menu_dibuja_menu_no_title_lang(&zeng_online_restricted_keys_opcion_seleccionada,&item_seleccionado,array_menu_common,"Restricted keys");
+        retorno_menu=menu_dibuja_menu_dialogo_no_title_lang(&zeng_online_restricted_keys_opcion_seleccionada,&item_seleccionado,array_menu_common,"Restricted keys");
 
 
         if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
@@ -1516,12 +1532,12 @@ void menu_zeng_online(MENU_ITEM_PARAMETERS)
             "~~Server","~~Servidor","~~Servidor");
         char string_zeng_online_server[16];
         menu_tape_settings_trunc_name(zeng_online_server,string_zeng_online_server,16);
-        menu_add_item_menu_prefijo_format(array_menu_common,"[%s] ",string_zeng_online_server);
+        menu_add_item_menu_sufijo_format(array_menu_common," [%s]",string_zeng_online_server);
         menu_add_item_menu_shortcut(array_menu_common,'s');
 
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_nickname,menu_zeng_online_not_connected_cond,
             "~~Nickname","~~Nickname","~~Nickname");
-        menu_add_item_menu_prefijo_format(array_menu_common,"[%s] ",zeng_online_nickname);
+        menu_add_item_menu_sufijo_format(array_menu_common," [%s]",zeng_online_nickname);
         menu_add_item_menu_shortcut(array_menu_common,'n');
 
         if (zeng_online_connected.v) {
@@ -1534,29 +1550,29 @@ void menu_zeng_online(MENU_ITEM_PARAMETERS)
 
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_list_rooms_menu_item,NULL,
             "List rooms","Listar habitaciones","Llistar habitacions");
-        menu_add_item_menu_genera_ventana(array_menu_common);
+        menu_add_item_menu_add_flags(array_menu_common,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
 
         //Create room + join / destroy room
         if (zeng_online_connected.v==0) {
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_join_room,NULL,
             "Jo~~in to room","Un~~irse a habitación","Un~~ir-se a habitació");
             menu_add_item_menu_shortcut(array_menu_common,'i');
-            menu_add_item_menu_genera_ventana(array_menu_common);
+            menu_add_item_menu_add_flags(array_menu_common,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_create_room,NULL,
             "~~Create room & Join as Master","~~Crear habitación & Unir como master","~~Crear habitació & Unir com master");
             menu_add_item_menu_shortcut(array_menu_common,'c');
-            menu_add_item_menu_genera_ventana(array_menu_common);
+            menu_add_item_menu_add_flags(array_menu_common,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_rejoin_master,NULL,
             "Rejoin as Master","Reunir como master","Reunir com master");
             menu_add_item_menu_es_avanzado(array_menu_common);
-            menu_add_item_menu_genera_ventana(array_menu_common);
+            menu_add_item_menu_add_flags(array_menu_common,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_rejoin_manager_master,NULL,
             "Rejoin as Manager","Reunir como manager","Reunir com manager");
             menu_add_item_menu_es_avanzado(array_menu_common);
-            menu_add_item_menu_genera_ventana(array_menu_common);
+            menu_add_item_menu_add_flags(array_menu_common,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
 
 
         }
@@ -1601,7 +1617,7 @@ void menu_zeng_online(MENU_ITEM_PARAMETERS)
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_list_users,NULL,
             "List users","Listar usuarios","Llistar usuaris");
-            menu_add_item_menu_genera_ventana(array_menu_common);
+            menu_add_item_menu_add_flags(array_menu_common,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
             menu_add_item_menu_es_avanzado(array_menu_common);
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_write_message_room,NULL,
@@ -1619,34 +1635,33 @@ void menu_zeng_online(MENU_ITEM_PARAMETERS)
                 menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_autojoin_room,NULL,
                 "Set autojoin","Activar autounir","Activar autounir");
                 menu_add_item_menu_es_avanzado(array_menu_common);
-                menu_add_item_menu_genera_ventana(array_menu_common);
+                menu_add_item_menu_add_flags(array_menu_common,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
 
                 menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_disable_autojoin_room,NULL,
                 "Reset autojoin","Desactivar autounir","Desactivar autounir");
-                menu_add_item_menu_es_avanzado(array_menu_common);
+                menu_add_item_menu_add_flags(array_menu_common,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
 
                 menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_restricted_keys,NULL,
                 "Restricted keys","Teclas restringidas","Tecles restringides");
-                menu_add_item_menu_tiene_submenu(array_menu_common);
-                menu_add_item_menu_genera_ventana(array_menu_common);
+                menu_add_item_menu_add_flags(array_menu_common,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
 
                 menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_kick_user,NULL,
                 "Kick user","Expulsar usuario","Expulsar usuari");
-                menu_add_item_menu_genera_ventana(array_menu_common);
+                menu_add_item_menu_add_flags(array_menu_common,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
 
                 menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_max_players_room,NULL,
                 "Set max players per room","Definir max jugadores por hab.","Definir max jugadors per hab.");
-                menu_add_item_menu_genera_ventana(array_menu_common);
+                menu_add_item_menu_add_flags(array_menu_common,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
 
                 menu_add_item_menu_separator(array_menu_common);
 
                 menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_allow_message_room,NULL,
                 "Allow broadcast messages","Permitir mensajes difusión","Permetre missatges difusió");
-                menu_add_item_menu_es_avanzado(array_menu_common);
+                menu_add_item_menu_add_flags(array_menu_common,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
 
                 menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_disallow_message_room,NULL,
                 "Disallow broadcast messages","No permitir mensajes difusión","No permetre missatges difusió");
-                menu_add_item_menu_es_avanzado(array_menu_common);
+                menu_add_item_menu_add_flags(array_menu_common,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
 
                 menu_add_item_menu_separator(array_menu_common);
                 menu_add_item_menu_es_avanzado(array_menu_common);
@@ -1654,10 +1669,12 @@ void menu_zeng_online(MENU_ITEM_PARAMETERS)
 
                 menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_leave_room_master,NULL,
                 "Leave room","Abandonar habitación","Abandonar habitació");
+                menu_add_item_menu_add_flags(array_menu_common,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
 
                 menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_destroy_room,NULL,
                 "~~Destroy room","~~Destruir habitación","~~Destruir habitació");
                 menu_add_item_menu_shortcut(array_menu_common,'d');
+                menu_add_item_menu_add_flags(array_menu_common,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
 
 
                 if (created_room_user_permissions & ZENG_ONLINE_PERMISSIONS_PUT_SNAPSHOT) {
@@ -1678,6 +1695,7 @@ void menu_zeng_online(MENU_ITEM_PARAMETERS)
 
                 menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_leave_room_slave,NULL,
                 "Leave room","Abandonar habitación","Abandonar habitació");
+                menu_add_item_menu_add_flags(array_menu_common,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
 
                 if (created_room_user_permissions & ZENG_ONLINE_PERMISSIONS_GET_SNAPSHOT) {
                     menu_add_item_menu_separator(array_menu_common);
