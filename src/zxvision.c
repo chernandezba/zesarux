@@ -28502,7 +28502,7 @@ void parse_zmenufile_options(void)
 
         menu_add_ESC_item(array_menu_common);
 
-        retorno_menu=menu_dibuja_menu_no_title_lang(&opcion_seleccionada,&item_seleccionado,array_menu_common,zmenu_launcher_title);
+        retorno_menu=menu_dibuja_menu_dialogo_no_title_lang(&opcion_seleccionada,&item_seleccionado,array_menu_common,zmenu_launcher_title);
 
 
 

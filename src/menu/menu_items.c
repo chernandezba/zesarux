@@ -30815,6 +30815,8 @@ void menu_in_memoriam_david_about(MENU_ITEM_PARAMETERS)
         menu_about_read_file("In Memoriam David","IN_MEMORIAM_DAVID_es",1);
     }
     else menu_about_read_file("In Memoriam David","IN_MEMORIAM_DAVID",1);
+
+    salir_todos_menus=1;
 }
 
 void menu_in_memoriam_david_software(MENU_ITEM_PARAMETERS)
@@ -30908,6 +30910,8 @@ void menu_in_memoriam_diego_about(MENU_ITEM_PARAMETERS)
         menu_about_read_file("In Memoriam Diego","IN_MEMORIAM_DIEGO_es",1);
     }
     else menu_about_read_file("In Memoriam Diego","IN_MEMORIAM_DIEGO",1);
+
+    salir_todos_menus=1;
 }
 
 void menu_in_memoriam_diego(MENU_ITEM_PARAMETERS)
@@ -31149,7 +31153,7 @@ void menu_help(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_tiene_submenu(array_menu_common);
 
             menu_add_item_menu(array_menu_common,"In Memoriam",MENU_OPCION_NORMAL,menu_in_memoriam,NULL);
-            menu_add_item_menu_se_cerrara(array_menu_common);
+            //menu_add_item_menu_se_cerrara(array_menu_common);
             menu_add_item_menu_tiene_submenu(array_menu_common);
 
 
