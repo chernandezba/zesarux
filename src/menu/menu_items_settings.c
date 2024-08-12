@@ -3084,7 +3084,8 @@ void menu_settings_debug(MENU_ITEM_PARAMETERS)
 
 		menu_add_item_menu_en_es_ca(array_menu_settings_debug,MENU_OPCION_NORMAL, menu_debug_settings_sourcecode_skipcols,NULL,
             "Source code skip Cols","Código fuente saltar cols","Codi font saltar cols");
-		menu_add_item_menu_prefijo_format(array_menu_settings_debug,"[%d] ",debug_load_source_code_skip_columns);
+		menu_add_item_menu_sufijo_format(array_menu_settings_debug," [%d]",debug_load_source_code_skip_columns);
+        menu_add_item_menu_prefijo(array_menu_settings_debug,"    ");
         menu_add_item_menu_tooltip(array_menu_settings_debug,"Skip columns when searching for label from the beginning of line");
         menu_add_item_menu_ayuda(array_menu_settings_debug,"Skip columns when searching for label from the beginning of line");
 
