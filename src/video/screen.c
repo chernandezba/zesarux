@@ -262,6 +262,9 @@ z80_bit simulate_screen_zx8081;
 //Modo 16C de pentagon
 z80_bit pentagon_16c_mode_available={0};
 
+//Modo flash color
+z80_bit spectrum_flash_color_mode={0};
+
 //Refrescar pantalla spectrum sin colores. Solo para modo no realvideo
 z80_bit scr_refresca_sin_colores={0};
 
@@ -8244,6 +8247,14 @@ bits D3-D5: Selection of ink and paper color in extended screen resolution mode 
 
 			GET_PIXEL_COLOR
 
+            if (spectrum_flash_color_mode.v) {
+                if (flash) {
+                    paper=0;
+                    flash=0;
+                    ink=FLASH_COLOR_FIRST_COLOR+(attribute&127);
+                }
+            }
+
 			int cambiada_tinta,cambiada_paper;
 
 			cambiada_tinta=cambiada_paper=0;
@@ -9423,6 +9434,47 @@ Bit 6 GRN1 most  significant bit of green.
 
     }
 
+    //colores para flash colour
+    //TODO: obtener paleta exacta
+    for (i=0;i<128;i++) {
+        //Se combina tinta y papel (y brillo) para sacar un color
+        int brillo=(i & 64 ? 8 : 0);
+        int tinta=i & 7;
+        int papel=(i>>3) & 7;
+        int indice_color_tinta=tinta+brillo;
+        int indice_color_papel=papel+brillo;
+
+        b=spectrum_colortable_normal[indice_color_tinta] & 0xFF;
+        g=(spectrum_colortable_normal[indice_color_tinta] >> 8 ) & 0xFF;
+        r=(spectrum_colortable_normal[indice_color_tinta] >> 16 ) & 0xFF;
+
+        b2=spectrum_colortable_normal[indice_color_papel] & 0xFF;
+        g2=(spectrum_colortable_normal[indice_color_papel] >> 8 ) & 0xFF;
+        r2=(spectrum_colortable_normal[indice_color_papel] >> 16 ) & 0xFF;
+
+        if (tinta==0) {
+            b=spectrum_colortable_normal[indice_color_papel] & 0xFF;
+            g=(spectrum_colortable_normal[indice_color_papel] >> 8 ) & 0xFF;
+            r=(spectrum_colortable_normal[indice_color_papel] >> 16 ) & 0xFF;
+        }
+
+        else if (papel==0) {
+            b=spectrum_colortable_normal[indice_color_tinta] & 0xFF;
+            g=(spectrum_colortable_normal[indice_color_tinta] >> 8 ) & 0xFF;
+            r=(spectrum_colortable_normal[indice_color_tinta] >> 16 ) & 0xFF;
+        }
+
+        else {
+
+            r=(r+r2)/2;
+            g=(g+g2)/2;
+            b=(b+b2)/2;
+
+        }
+
+        screen_set_colour_normal(FLASH_COLOR_FIRST_COLOR+i,(r<<16)|(g<<8)|b);
+
+    }
 
 
     //Si video inverso o grises

@@ -14,6 +14,7 @@ Permitir grabar pantalla a bmp para la mayoría de máquinas
 Permitir hotswap a Pentagon y a Spectrum +3
 Permitir hotswap desde Spectrum 128 a Spectrum +3
 Mejorar aviso de Azimuth en ventana External Audio Source
+Agregado modo Flash Color
 Permitir no guardar snapshot al salir de ZEsarUX
 Permitir definir Alt Izq, Ctrl Izq, Shift Izq o TAB como acción de Fuego de Joystick
 Permitir cambiar posicion de lectura actual en Visor de Cinta de Entrada para archivos .tap
