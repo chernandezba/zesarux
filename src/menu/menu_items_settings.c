@@ -7139,6 +7139,11 @@ void menu_display_lost_vsync(MENU_ITEM_PARAMETERS)
 	simulate_lost_vsync.v ^=1;
 }
 
+void menu_display_flash_color(MENU_ITEM_PARAMETERS)
+{
+    spectrum_flash_color_mode.v ^=1;
+}
+
 //menu display settings
 void menu_settings_display(MENU_ITEM_PARAMETERS)
 {
@@ -7332,6 +7337,10 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
                     menu_add_item_menu_es_avanzado(array_menu_settings_display);
 				}
 
+                if (MACHINE_IS_SPECTRUM) {
+                    menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_flash_color,NULL,
+                        "[%c] Flash color",(spectrum_flash_color_mode.v ? 'X' : ' '));
+                }
 
 
 				if (MACHINE_IS_SPECTRUM && !MACHINE_IS_ZXEVO && !MACHINE_IS_TBBLUE)  {

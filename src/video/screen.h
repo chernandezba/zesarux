@@ -215,6 +215,8 @@ extern z80_bit gigascreen_enabled;
 
 extern z80_bit pentagon_16c_mode_available;
 
+extern z80_bit spectrum_flash_color_mode;
+
 extern int screen_mode_16c_is_enabled(void);
 extern void enable_16c_mode(void);
 extern void disable_16c_mode(void);
