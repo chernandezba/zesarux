@@ -248,7 +248,7 @@
 
 
         //
-        //Pruebas 17 Agosto 2020. Compilando sin optimizaciones ni opciones (./configure)
+        //Pruebas 17 Agosto 2020. Compilando sin optimizaciones ni opciones (./configure --disable-memptr --disable-visualmem --disable-cpustats)
         //
         //sin rainbow
         //sin memptr,sin visualmem, sin cpustats

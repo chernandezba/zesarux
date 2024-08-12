@@ -9452,6 +9452,7 @@ Bit 6 GRN1 most  significant bit of green.
         g2=(spectrum_colortable_normal[indice_color_papel] >> 8 ) & 0xFF;
         r2=(spectrum_colortable_normal[indice_color_papel] >> 16 ) & 0xFF;
 
+        //Si tinta o papel es 0, se saca color sin hacer promedio
         if (tinta==0) {
             b=spectrum_colortable_normal[indice_color_papel] & 0xFF;
             g=(spectrum_colortable_normal[indice_color_papel] >> 8 ) & 0xFF;

@@ -357,3 +357,5 @@ aunque no todos. por ejemplo en +3dsk, visor format disc, pulsar en archivo-> bl
 
 -revisar accesibilidad y submenus... a veces se lee submenu. ejemplo text to speech pulsar alguna opcion que conmuta en ese menu
 
+-con no border on full screen & no footer on full screen, al salir de full screen a veces peta
+parece que es la llamada a menu_interface_border
