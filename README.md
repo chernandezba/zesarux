@@ -145,6 +145,8 @@ __FEATURES__
 
 * Emulates ULAplus: Standard 64 colour palette, linear modes with 16 colours per pixel: Radastan Mode: 128x96, ZEsarUX modes: 256x96, 128x192, 256x192
 
+* Emulates Flash Color mode (128 color)
+
 * Emulates Chroma81 ZX81 Colour mode
 
 * Emulates Spectra Video Modes

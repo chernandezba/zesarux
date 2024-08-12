@@ -7340,6 +7340,11 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
                 if (MACHINE_IS_SPECTRUM) {
                     menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_flash_color,NULL,
                         "[%c] Flash color",(spectrum_flash_color_mode.v ? 'X' : ' '));
+                    menu_add_item_menu_tooltip(array_menu_settings_display,"Enable flash color mode");
+                    menu_add_item_menu_ayuda(array_menu_settings_display,"Enable flash color mode. This mode has a total of 128 colors, "
+                        "but there are only a few games that support it, you may find them on the ZEsarUX extras package"
+
+                        );
                 }
 
 
