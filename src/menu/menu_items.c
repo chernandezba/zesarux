@@ -35721,7 +35721,7 @@ int menu_ask_no_append_truncate_texto(char *texto_ventana,char *texto_interior)
 
 
 
-		retorno_menu=menu_dibuja_menu_no_title_lang(&ask_no_append_truncate_opcion_seleccionada,&item_seleccionado,array_menu_ask_no_append_truncate,texto_ventana);
+		retorno_menu=menu_dibuja_menu_dialogo_no_title_lang(&ask_no_append_truncate_opcion_seleccionada,&item_seleccionado,array_menu_ask_no_append_truncate,texto_ventana);
 
 
 
