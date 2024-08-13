@@ -1715,7 +1715,8 @@ extern z80_bit menu_zxdesktop_lower_buttons_enabled;
 
 extern z80_bit zxdesktop_switch_button_enabled;
 
-extern void topbar_timer_event(void);
+extern int force_next_menu_position_x;
+extern int force_next_menu_position_y;
 
 extern void zxdesktop_switchdesktop_timer_event(void);
 

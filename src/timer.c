@@ -69,6 +69,7 @@
 #include "pcw.h"
 #include "utils_text_adventure.h"
 #include "zeng_online.h"
+#include "zxvision_topbar.h"
 
 #include "autoselectoptions.h"
 
