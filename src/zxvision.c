@@ -122,7 +122,7 @@
 
 
 
-
+void menu_topbarmenu_write_bar(void);
 
 int zxvision_switch_to_window_on_open_menu=0;
 char zxvision_switch_to_window_on_open_menu_name[MAX_NAME_WINDOW_GEOMETRY];
@@ -3983,6 +3983,88 @@ void zxdesktop_switchdesktop_timer_event(void)
 }
 
 
+int previous_switchtopbar_timer_event_mouse_x=0;
+int previous_switchtopbar_timer_event_mouse_y=0;
+//si estaba visible o no
+z80_bit switchtopbar_button_visible={0};
+
+//temporizador desde que empieza a no moverse
+int switchtopbar_button_visible_timer=0;
+
+void topbar_make_switchbutton_visible(void)
+{
+
+    if (zxvision_topbar_menu_enabled.v==0) return;
+
+    debug_printf(VERBOSE_INFO,"Make topbar switch button visible");
+    printf("Make topbar switch button visible\n");
+    switchtopbar_button_visible.v=1;
+
+}
+
+#define MAX_SWITCH_DESKTOP_VISIBLE_TIMER 100
+
+void topbar_make_switchbutton_invisible(void)
+{
+    if (zxvision_topbar_menu_enabled.v==0) return;
+
+    //Esto puede ser redundante desde abajo donde se llama pero a esta funcion se llama desde otros sitios
+    //e interesa establecer el timer como conviene
+    switchtopbar_button_visible_timer=MAX_SWITCH_DESKTOP_VISIBLE_TIMER;
+
+    debug_printf(VERBOSE_INFO,"Make topbar switch button hidden");
+    printf("Make topbar switch button hidden\n");
+    switchtopbar_button_visible.v=0;
+
+    if (menu_abierto) return;
+
+    //Para borrar el texto de topbar
+    cls_menu_overlay();
+
+}
+
+//Ocultar o mostrar topbar cuando menu cerrado
+void topbar_timer_event(void)
+{
+
+    if (zxvision_topbar_menu_enabled.v==0) return;
+
+
+    int movido=0;
+
+    if (previous_switchtopbar_timer_event_mouse_x!=mouse_x || previous_switchtopbar_timer_event_mouse_y!=mouse_y)
+    {
+        movido=1;
+    }
+
+    previous_switchtopbar_timer_event_mouse_x=mouse_x;
+    previous_switchtopbar_timer_event_mouse_y=mouse_y;
+
+
+    //No estaba visible
+    if (switchtopbar_button_visible.v==0) {
+        if (movido) {
+            topbar_make_switchbutton_visible();
+        }
+    }
+
+    //Estaba visible
+    else {
+        if (movido) {
+            switchtopbar_button_visible_timer=0;
+        }
+
+        else {
+            switchtopbar_button_visible_timer++;
+
+            //en 2 segundos (50*2 frames) desaparece
+            if (switchtopbar_button_visible_timer==MAX_SWITCH_DESKTOP_VISIBLE_TIMER) {
+                topbar_make_switchbutton_invisible();
+            }
+        }
+
+    }
+}
 
 
 
@@ -7623,6 +7705,21 @@ void normal_overlay_texto_menu_final(void)
 		menu_draw_background_windows_overlay_after_normal();
 		menu_speech_tecla_pulsada=antes_menu_speech_tecla_pulsada;
 	}
+
+    //Dibujar topbar
+    if (zxvision_topbar_menu_enabled.v) {
+        int mostrar_topbar=0;
+        if (menu_abierto) mostrar_topbar=1;
+
+        if (overlay_visible_when_menu_closed) {
+            //si menu cerrado pero se ha movido raton
+            if (switchtopbar_button_visible.v) mostrar_topbar=1;
+        }
+
+        if (mostrar_topbar) {
+            menu_topbarmenu_write_bar();
+        }
+    }
 
 
 }
@@ -25309,15 +25406,20 @@ z80_byte menu_topbarmenu_get_key(void)
     return tecla;
 }
 
+                               //01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789
+                               //0         1         2         3         4         5         6         7         8         9         10
+char *topbar_string_linea_menus="Z  Smartload  Snapshot  Machine  Audio  Display  Storage  Debug  Network  Windows  Settings  Help";
+
+void menu_topbarmenu_write_bar(void)
+{
+
+    menu_escribe_texto(0,0,ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,topbar_string_linea_menus);
+
+}
+
 void menu_topbarmenu(void)
 {
 
-    //Prueba para mostrar una linea de menu arriba
-                     //01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789
-                     //0         1         2         3         4         5         6         7         8         9         10
-    char *linea_menus="Z  Smartload  Snapshot  Machine  Audio  Display  Storage  Debug  Network  Windows  Settings  Help";
-
-    menu_escribe_texto(0,0,ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,linea_menus);
 
     //Generar posiciones de donde está cada menu
     //20 posiciones maximo, incluyendo el primero
@@ -25327,16 +25429,16 @@ void menu_topbarmenu(void)
 
     int i,total_posiciones;
     int leido_espacio=0;
-    for (i=0,total_posiciones=1;linea_menus[i];i++) {
+    for (i=0,total_posiciones=1;topbar_string_linea_menus[i];i++) {
         if (leido_espacio) {
-            if (linea_menus[i]!=' ') {
+            if (topbar_string_linea_menus[i]!=' ') {
                 printf("posicion %d i %d\n",total_posiciones,i);
                 posiciones_menus[total_posiciones++]=i;
                 leido_espacio=0;
             }
         }
         else {
-            if (linea_menus[i]==' ') leido_espacio=1;
+            if (topbar_string_linea_menus[i]==' ') leido_espacio=1;
         }
     }
 

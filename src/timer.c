@@ -723,6 +723,9 @@ void timer_check_interrupt(void)
         //Ocultación/activación de botón switch zx desktop
         zxdesktop_switchdesktop_timer_event();
 
+        //Ocultación/activación topbar
+        topbar_timer_event();
+
         pd765_handle_speed_motor();
 
         //para que la rotacion sea constante en dicha ventana
