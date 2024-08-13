@@ -20168,6 +20168,8 @@ int menu_dibuja_menu_recorrer_menus_entrado_submenu=0;
 int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item *m,char *titulo_en,char *titulo_es,char *titulo_ca)
 {
 
+    //printf ("inicio menu. menu_dibuja_submenu_primer_submenu=%p\n",menu_dibuja_submenu_primer_submenu);
+
     char *titulo;
 
     if (gui_language==GUI_LANGUAGE_SPANISH) titulo=titulo_es;
@@ -21368,6 +21370,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
     //Se pulsa tecla ESC
 	if (tecla==MENU_RETORNO_ESC) {
         //printf("tecla ESC\n");
+        //printf("salir con ESC. menu_dibuja_submenu_primer_submenu=%p\n",menu_dibuja_submenu_primer_submenu);
         //Cerrar todos menus
         if (menu_old_behaviour_close_menus.v==0) {
             salir_todos_menus=1;
@@ -21396,7 +21399,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 	else if (tecla==MENU_RETORNO_BACKGROUND) return MENU_RETORNO_BACKGROUND;
 
 	else {
-        //printf("ultimo else\n");
+        //printf("ultimo else. menu_dibuja_submenu_primer_submenu=%p\n",menu_dibuja_submenu_primer_submenu);
         if (tecla_atajo) zxvision_helper_menu_shortcut_print(tecla_atajo);
 
         //innecesario con nuevo metodo de indexacion if (es_one_time) zxvision_index_delete_last_submenu_path();
@@ -25426,6 +25429,7 @@ int if_menu_topbarmenu_pressed_bar(void)
 
 }
 
+//Indica que se ha pulsado en la barra de menu antes de entrar en menu_topbarmenu()
 int menu_topbarmenu_pressed_bar=0;
 
 void menu_topbarmenu(void)
@@ -25547,6 +25551,11 @@ void menu_topbarmenu(void)
                         menu_help(0);
                     break;
                 }
+
+                //Necesario para cerrar submenus, por ejemplo si estamos en un item de menu con submenus,
+                //y simplemente pulsamos fuera del menu, con lo que se simula pulsado ESC
+                //pero deja submenus abiertos
+                menu_dibuja_submenu_cierra_todos_submenus();
             }
         }
 

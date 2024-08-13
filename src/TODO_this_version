@@ -360,6 +360,8 @@ aunque no todos. por ejemplo en +3dsk, visor format disc, pulsar en archivo-> bl
 -con no border on full screen & no footer on full screen, al salir de full screen a veces peta
 parece que es la llamada a menu_interface_border
 
--Para top menu
-*primero poder desactivar solo botones de arriba bajo demanda
-*top bar tiene que poder aparecer como overlay. Así se puede hacer mostrar al mover ratón, y también mientras menús están activos
+-top bar menu
+ok*primero poder desactivar solo botones de arriba bajo demanda
+ok*top bar tiene que poder aparecer como overlay. Así se puede hacer mostrar al mover ratón, y también mientras menús están activos
+-si menu que se abre tiene seleccionado un item de submenu, al pulsar boton izquierdo en otro sitio provoca que esa ventana
+la deja en lista de submenu

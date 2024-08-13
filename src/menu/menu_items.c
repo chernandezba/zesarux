@@ -46237,8 +46237,14 @@ void menu_inicio_bucle_main(void)
 
 	} while (!salir_menu && !salir_todos_menus);
 
-   // printf("llamar a menu_dibuja_menu_cierra_todos_submenus desde fin menu_inicio_bucle_main\n");
+//extern zxvision_window *menu_dibuja_submenu_primer_submenu;
+    //printf("llamar a menu_dibuja_menu_cierra_todos_submenus desde fin menu_inicio_bucle_main. antes menu_dibuja_submenu_primer_submenu=%p\n",menu_dibuja_submenu_primer_submenu);
+
+    //Necesario para cerrar submenus, por ejemplo si estamos en un item de menu con submenus,
+    //y simplemente pulsamos fuera del menu, con lo que se simula pulsado ESC
+    //pero deja submenus abiertos
     menu_dibuja_submenu_cierra_todos_submenus();
+    //printf("llamar a menu_dibuja_menu_cierra_todos_submenus desde fin menu_inicio_bucle_main. despues menu_dibuja_submenu_primer_submenu=%p\n",menu_dibuja_submenu_primer_submenu);
 
     //Si se ha lanzado un reindexado entero de todos los menus
     menu_dibuja_menu_recorrer_menus=0;
