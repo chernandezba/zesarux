@@ -5418,115 +5418,117 @@ void menu_draw_ext_desktop_dibujar_boton_pulsado(int boton)
 	menu_draw_ext_desktop_one_button_bitmap(boton,1,0);
 }
 
+void menu_draw_ext_desktop_upper_icons(int xinicio)
+{
 
+    /*
+    0           1          2         3        4           5        6         7       8         9         10        11     12
+    ZEsarUX | Smartload | Machine | Storage | Snapshot | Audio | Network | Debug | Display | Windows | Settings | Help | Exit
+    */
+    int total_botones;
+
+    //total_botones=EXT_DESKTOP_TOTAL_BUTTONS;
+
+    //Tamanyo fijo
+
+
+    //Tamanyo variable segun tamanyo ZX Desktop. Iconos con contenido 26x26.
+    //Hay que dejar margen de 6 por cada lado (3 izquierdo, 3 derecho, 3 alto, 3 alto)
+    //Cada 3 pixeles de margen son: fondo-negro(rectangulo)-gris(de dentro boton)
+    //total maximo 32x32
+    //Ejemplo:
+    /*
+
+char *zesarux_ascii_logo[ZESARUX_ASCII_LOGO_ALTO]={
+................................
+################################
+--------------------------------
+    "WWWWWWWWWWWWWWWWWWWWWWWWWW",     //0
+    "WXXXXXXXXXXXXXXXXXXXXXXXXW",
+    "WXXXXXXXXXXXXXXXXXXXXXXXXW",
+    "WXXXXXXXXXXXXXXXXXXXXXXXXW",
+    "WXXXXXXXXXXXXXXXXXXXXXXXXW",
+    "WWWWWWWWWWWWWWWWWXXXXWWWWW",
+    "                WXXXXW   W",
+    "                WXXXXW  RW",
+    "             WWWWXXXXW RRW",
+    "            WXXXXWWWW RRRW",
+    "            WXXXXW   RRRRW",	//10
+    "            WXXXXW  RRRRYW",
+    "         WWWWXXXXW RRRRYYW",
+    "        WXXXXWWWW RRRRYYYW",
+    "        WXXXXW   RRRRYYYYW",
+    "        WXXXXW  RRRRYYYYGW",
+    "     WWWWXXXXW RRRRYYYYGGW",
+    "    WXXXXWWWW RRRRYYYYGGGW",
+    "    WXXXXW   RRRRYYYYGGGGW",
+    "    WXXXXW  RRRRYYYYGGGGCW",
+    "WWWWWXXXXW RRRRYYYYGGGGCCW",    //20
+    "WXXXXXXXXXXXXXXXXXXXXXXXXW",
+    "WXXXXXXXXXXXXXXXXXXXXXXXXW",
+    "WXXXXXXXXXXXXXXXXXXXXXXXXW",
+    "WXXXXXXXXXXXXXXXXXXXXXXXXW",
+    "WWWWWWWWWWWWWWWWWWWWWWWWWW" 		//25
+};
+    */
+
+    int ancho_boton;
+    int alto_boton;
+
+
+    int xfinal;
+
+
+    menu_ext_desktop_buttons_get_geometry(&ancho_boton,&alto_boton,&total_botones,NULL,&xfinal);
+
+    //printf("draw buttons ancho_boton %d alto_boton %d total_botones %d xfinal %d\n",
+    //ancho_boton,alto_boton,total_botones,xfinal);
+
+
+    //int nivel_zoom=1;
+
+    //Si hay espacio para meter iconos con zoom 2
+    //6 pixeles de margen
+    //if (ancho_boton>=(6+EXT_DESKTOP_BUTTONS_ANCHO*2)) nivel_zoom=2;
+
+
+    int x;
+    int contador_boton=0;
+
+    for (x=xinicio;contador_boton<total_botones;x+=ancho_boton,contador_boton++) {
+        menu_draw_ext_desktop_one_button_background(contador_boton,0);
+    }
+
+
+    //Boton ZEsarUX en primer botón. Centrado
+    /*
+    screen_put_watermark_generic(NULL,xinicio+ancho_boton/2-ZESARUX_ASCII_LOGO_ANCHO/2,yinicio+alto_boton/2-ZESARUX_ASCII_LOGO_ALTO/2
+        ,0, menu_draw_ext_desktop_putpixel_bitmap);
+
+*/
+
+
+    //Dibujar botones
+    int numero_boton;
+    for (numero_boton=0;numero_boton<total_botones;numero_boton++) {
+
+        menu_draw_ext_desktop_one_button_bitmap(numero_boton,0,0);
+
+
+    }
+
+}
 
 void menu_draw_ext_desktop_buttons(int xinicio)
 {
 
     if (menu_zxdesktop_upper_buttons_enabled.v) {
-
-	//TODO
-	/*
-	0           1          2         3        4           5        6         7       8         9         10        11     12
-	ZEsarUX | Smartload | Machine | Storage | Snapshot | Audio | Network | Debug | Display | Windows | Settings | Help | Exit
-	*/
-	int total_botones;
-
-	//total_botones=EXT_DESKTOP_TOTAL_BUTTONS;
-
-	//Tamanyo fijo
-
-
-	//Tamanyo variable segun tamanyo ZX Desktop. Iconos con contenido 26x26.
-	//Hay que dejar margen de 6 por cada lado (3 izquierdo, 3 derecho, 3 alto, 3 alto)
-	//Cada 3 pixeles de margen son: fondo-negro(rectangulo)-gris(de dentro boton)
-	//total maximo 32x32
-	//Ejemplo:
-	/*
-
-char *zesarux_ascii_logo[ZESARUX_ASCII_LOGO_ALTO]={
-  ................................
-  ################################
-  --------------------------------
-    "WWWWWWWWWWWWWWWWWWWWWWWWWW",     //0
-  	"WXXXXXXXXXXXXXXXXXXXXXXXXW",
-	"WXXXXXXXXXXXXXXXXXXXXXXXXW",
-	"WXXXXXXXXXXXXXXXXXXXXXXXXW",
-	"WXXXXXXXXXXXXXXXXXXXXXXXXW",
-	"WWWWWWWWWWWWWWWWWXXXXWWWWW",
-	"                WXXXXW   W",
-	"                WXXXXW  RW",
-	"             WWWWXXXXW RRW",
-	"            WXXXXWWWW RRRW",
-	"            WXXXXW   RRRRW",	//10
-	"            WXXXXW  RRRRYW",
-	"         WWWWXXXXW RRRRYYW",
-	"        WXXXXWWWW RRRRYYYW",
-	"        WXXXXW   RRRRYYYYW",
-	"        WXXXXW  RRRRYYYYGW",
-	"     WWWWXXXXW RRRRYYYYGGW",
-	"    WXXXXWWWW RRRRYYYYGGGW",
-	"    WXXXXW   RRRRYYYYGGGGW",
-	"    WXXXXW  RRRRYYYYGGGGCW",
-	"WWWWWXXXXW RRRRYYYYGGGGCCW",    //20
-	"WXXXXXXXXXXXXXXXXXXXXXXXXW",
-	"WXXXXXXXXXXXXXXXXXXXXXXXXW",
-	"WXXXXXXXXXXXXXXXXXXXXXXXXW",
-	"WXXXXXXXXXXXXXXXXXXXXXXXXW",
-	"WWWWWWWWWWWWWWWWWWWWWWWWWW" 		//25
-};
-	*/
-
-	int ancho_boton;
-	int alto_boton;
-
-
-	int xfinal;
-
-
-	menu_ext_desktop_buttons_get_geometry(&ancho_boton,&alto_boton,&total_botones,NULL,&xfinal);
-
-	//printf("draw buttons ancho_boton %d alto_boton %d total_botones %d xfinal %d\n",
-	//ancho_boton,alto_boton,total_botones,xfinal);
-
-
-	//int nivel_zoom=1;
-
-	//Si hay espacio para meter iconos con zoom 2
-	//6 pixeles de margen
-	//if (ancho_boton>=(6+EXT_DESKTOP_BUTTONS_ANCHO*2)) nivel_zoom=2;
-
-
-	int x;
-	int contador_boton=0;
-
-	for (x=xinicio;contador_boton<total_botones;x+=ancho_boton,contador_boton++) {
-		menu_draw_ext_desktop_one_button_background(contador_boton,0);
-	}
-
-
-	//Boton ZEsarUX en primer botón. Centrado
-	/*
-	screen_put_watermark_generic(NULL,xinicio+ancho_boton/2-ZESARUX_ASCII_LOGO_ANCHO/2,yinicio+alto_boton/2-ZESARUX_ASCII_LOGO_ALTO/2
-		,0, menu_draw_ext_desktop_putpixel_bitmap);
-
-*/
-
-
-	//Dibujar botones
-	int numero_boton;
-	for (numero_boton=0;numero_boton<total_botones;numero_boton++) {
-
-		menu_draw_ext_desktop_one_button_bitmap(numero_boton,0,0);
-
-
-	}
-
+        menu_draw_ext_desktop_upper_icons(xinicio);
     }
 
-	//Dibujar iconos activos de la parte inferior
+
     if (menu_zxdesktop_lower_buttons_enabled.v) {
-	menu_draw_ext_desktop_lower_icons();
+	    menu_draw_ext_desktop_lower_icons();
     }
 
 
