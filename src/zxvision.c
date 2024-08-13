@@ -25417,9 +25417,20 @@ void menu_topbarmenu_write_bar(void)
 
 }
 
+int if_menu_topbarmenu_pressed_bar(void)
+{
+    int posicion_y=mouse_y/menu_char_height/menu_gui_zoom/zoom_y;
+
+    if (posicion_y==0) return 1;
+    else return 0;
+
+}
+
+int menu_topbarmenu_pressed_bar=0;
+
 void menu_topbarmenu(void)
 {
-
+    printf("Entramos en topbar menu. mouse_left: %d menu_topbarmenu_pressed_bar: %d\n",mouse_left,menu_topbarmenu_pressed_bar);
 
     //Generar posiciones de donde está cada menu
     //20 posiciones maximo, incluyendo el primero
@@ -25432,7 +25443,7 @@ void menu_topbarmenu(void)
     for (i=0,total_posiciones=1;topbar_string_linea_menus[i];i++) {
         if (leido_espacio) {
             if (topbar_string_linea_menus[i]!=' ') {
-                printf("posicion %d i %d\n",total_posiciones,i);
+                //printf("posicion %d i %d\n",total_posiciones,i);
                 posiciones_menus[total_posiciones++]=i;
                 leido_espacio=0;
             }
@@ -25447,7 +25458,7 @@ void menu_topbarmenu(void)
 
     int tecla_leida=0;
 
-    do {
+    while (tecla_leida==0 && !menu_topbarmenu_pressed_bar) {
 
         menu_refresca_pantalla();
 
@@ -25457,18 +25468,21 @@ void menu_topbarmenu(void)
 
         if (mouse_left) tecla_leida=13;
 
-    } while (tecla_leida==0);
 
-    if (tecla_leida==13 && mouse_left) {
+
+    }
+
+    if ( (tecla_leida==13 && mouse_left) || menu_topbarmenu_pressed_bar) {
+        menu_topbarmenu_pressed_bar=0;
         int posicion_x=mouse_x/menu_char_width/menu_gui_zoom/zoom_x;
 
-        int posicion_y=mouse_y/menu_char_height/menu_gui_zoom/zoom_y;
+        //int posicion_y=mouse_y/menu_char_height/menu_gui_zoom/zoom_y;
 
         printf("posicion x: %d\n",posicion_x);
 
         menu_espera_no_tecla_con_repeticion();
 
-        if (posicion_y==0) {
+        if (if_menu_topbarmenu_pressed_bar()) {
 
             force_next_menu_position.v=1;
 
@@ -25578,7 +25592,7 @@ void menu_inicio_bucle(void)
 			//printf ("Reabrimos menu para boton pulsado %d lower icon %d\n",menu_pressed_zxdesktop_button_which,menu_pressed_zxdesktop_lower_icon_which);
 		}
 
-        //prueba menu en barra arriba del todo
+        //menu en barra arriba del todo
         if (zxvision_topbar_menu_enabled.v) {
             menu_topbarmenu();
         }
@@ -25820,6 +25834,8 @@ void menu_inicio(void)
 
 	//printf ("inicio menu_inicio. menu_event_remote_protocol_enterstep.v=%d\n",menu_event_remote_protocol_enterstep.v);
     pulsado_alguna_ventana_con_menu_cerrado=0;
+
+    menu_topbarmenu_pressed_bar=0;
 
     int indice_abrir_ventana_sin_multitarea=-1;
 
@@ -26116,6 +26132,10 @@ void menu_inicio(void)
 
         }
 
+        //Si pulsado en topbar menu
+        if (!pulsado_alguna_ventana_con_menu_cerrado) {
+            if (if_menu_topbarmenu_pressed_bar() ) menu_topbarmenu_pressed_bar=1;
+        }
 
         //printf("menu_inicio: menu_pressed_zxdesktop_button_which %d menu_pressed_zxdesktop_lower_icon_which %d pulsado_alguna_ventana_con_menu_cerrado %d\n",
         //    menu_pressed_zxdesktop_button_which,menu_pressed_zxdesktop_lower_icon_which,pulsado_alguna_ventana_con_menu_cerrado);
