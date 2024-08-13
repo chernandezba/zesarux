@@ -1324,7 +1324,9 @@ z80_bit force_next_menu_position={0};
 int force_next_menu_position_x=0;
 int force_next_menu_position_y=0;
 
-z80_bit menu_zxdesktop_buttons_enabled={1};
+//z80_bit menu_zxdesktop_buttons_enabled={1};
+z80_bit menu_zxdesktop_upper_buttons_enabled={1};
+z80_bit menu_zxdesktop_lower_buttons_enabled={1};
 
 z80_bit zxdesktop_switch_button_enabled={1};
 
@@ -5397,7 +5399,7 @@ void menu_ext_desktop_draw_lower_icon(int numero_boton,int pulsado)
 void menu_draw_ext_desktop_lower_icons(void)
 {
 
-    if (menu_zxdesktop_buttons_enabled.v==0) return;
+    if (menu_zxdesktop_lower_buttons_enabled.v==0) return;
 
 	int total_iconos=TOTAL_ZXDESKTOP_MAX_LOWER_ICONS;
 
@@ -5420,6 +5422,8 @@ void menu_draw_ext_desktop_dibujar_boton_pulsado(int boton)
 
 void menu_draw_ext_desktop_buttons(int xinicio)
 {
+
+    if (menu_zxdesktop_upper_buttons_enabled.v) {
 
 	//TODO
 	/*
@@ -5518,8 +5522,12 @@ char *zesarux_ascii_logo[ZESARUX_ASCII_LOGO_ALTO]={
 
 	}
 
+    }
+
 	//Dibujar iconos activos de la parte inferior
+    if (menu_zxdesktop_lower_buttons_enabled.v) {
 	menu_draw_ext_desktop_lower_icons();
+    }
 
 
     //mostrar todos los iconos de la parte superior, pero solo para modo debug
@@ -7019,10 +7027,10 @@ void menu_draw_ext_desktop(void)
     if (dibujar_zxdesktop_background) menu_draw_ext_desktop_background(xstart_zxdesktop);
 
 
-	//Dibujar botones si están activados (por defecto)
-	if (menu_zxdesktop_buttons_enabled.v) {
-		menu_draw_ext_desktop_buttons(xstart_zxdesktop);
-	}
+	//Dibujar botones
+	//if (menu_zxdesktop_buttons_enabled.v) {
+    menu_draw_ext_desktop_buttons(xstart_zxdesktop);
+	//}
 
     //Dibujar iconos
     menu_draw_ext_desktop_configurable_icons();
@@ -15466,7 +15474,7 @@ void zxvision_handle_maximize(zxvision_window *w)
 
 
                 //Si hay botones parte superior zxdesktop, origen_y lo incrementamos
-                if (menu_zxdesktop_buttons_enabled.v) {
+                if (menu_zxdesktop_upper_buttons_enabled.v) {
                     yinicial=EXT_DESKTOP_BUTTONS_TOTAL_SIZE/8;
 
                     //Y quitamos ese alto disponible para no sobreescribir botones inferiores
@@ -15750,7 +15758,7 @@ int zxvision_if_mouse_in_zlogo_or_buttons_desktop(void)
 
 		//Si esta en zona botones de zx desktop. Y si estan habilitados
 
-		if (menu_zxdesktop_buttons_enabled.v) {
+		if (menu_zxdesktop_upper_buttons_enabled.v) {
 			int ancho_boton,alto_boton,total_botones,xinicio_botones,xfinal_botones;
 			menu_ext_desktop_buttons_get_geometry(&ancho_boton,&alto_boton,&total_botones,&xinicio_botones,&xfinal_botones);
 
@@ -15771,7 +15779,7 @@ int zxvision_if_mouse_in_zlogo_or_buttons_desktop(void)
 
 		//Si esta en zona de iconos lower de zx desktop. Y si estan habilitados
 
-		if (menu_zxdesktop_buttons_enabled.v) {
+		if (menu_zxdesktop_lower_buttons_enabled.v) {
 			int ancho_boton,alto_boton,xinicio_botones,xfinal_botones,yinicio_botones;
 			menu_ext_desktop_lower_icons_get_geometry(&ancho_boton,&alto_boton,NULL,&xinicio_botones,&xfinal_botones,&yinicio_botones);
 
@@ -17281,7 +17289,7 @@ void zxvision_handle_mouse_events(zxvision_window *w)
             //Si esta en zona botones de zx desktop. Y si estan habilitados
             //Si pulsado boton derecho sobre iconos superiores
 
-            if (menu_zxdesktop_buttons_enabled.v) {
+            if (menu_zxdesktop_upper_buttons_enabled.v) {
                 int ancho_boton,alto_boton,total_botones,xinicio_botones,xfinal_botones;
                 menu_ext_desktop_buttons_get_geometry(&ancho_boton,&alto_boton,&total_botones,&xinicio_botones,&xfinal_botones);
 
@@ -17752,7 +17760,7 @@ void zxvision_rearrange_background_windows(int si_cascada,int si_aplicar_a_inmut
 	int origen_y=0;
 
 	//Si hay botones parte superior zxdesktop, origen_y lo incrementamos
-	if (screen_ext_desktop_enabled && scr_driver_can_ext_desktop() && menu_zxdesktop_buttons_enabled.v) {
+	if (screen_ext_desktop_enabled && scr_driver_can_ext_desktop() && menu_zxdesktop_upper_buttons_enabled.v) {
 		origen_y=EXT_DESKTOP_BUTTONS_TOTAL_SIZE/8;
 
         //Y quitamos ese alto disponible para no sobreescribir botones inferiores

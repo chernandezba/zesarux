@@ -34,6 +34,9 @@ Improved ZX Vision:
 - Warn on the resize mark when a window has to be enlarged (because there is text beyond current size)
 - Process switcher is located at bottom-left part of the display by default
 
+Improved ZX Desktop:
+- Allow to enable/disable upper and lower buttons independently
+
 * Fixes:
 
 Remove buffer full indicator when pressing shift+e on External Audio Source window

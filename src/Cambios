@@ -34,6 +34,9 @@ Mejorado ZX Vision:
 - Avisar en la marca de redimensionado cuando una ventana se tiene que aumentar de tamaño (porque hay texto mas allá del tamaño actual)
 - El Process switcher se ubica en la parte izquierda-abajo de la pantalla por defecto
 
+Mejorado ZX Desktop:
+- Permitir activar/desactivar botones superiores e inferiores de manera independiente
+
 * Correcciones:
 
 Quitar indicador de buffer lleno al pulsar shift+e en ventana de Fuente de sonido externa

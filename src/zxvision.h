@@ -1709,7 +1709,9 @@ extern void set_menu_gui_zoom(void);
 
 extern z80_bit no_close_menu_after_smartload;
 
-extern z80_bit menu_zxdesktop_buttons_enabled;
+//extern z80_bit menu_zxdesktop_buttons_enabled;
+extern z80_bit menu_zxdesktop_upper_buttons_enabled;
+extern z80_bit menu_zxdesktop_lower_buttons_enabled;
 
 extern z80_bit zxdesktop_switch_button_enabled;
 

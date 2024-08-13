@@ -1604,7 +1604,8 @@ printf("\n"
 		"--zxdesktop-fill-secondary-color n             ZX Desktop secondary fill color (0-15)\n"
         "--zxdesktop-fill-degraded-inverted             ZX Desktop inverted colours on degraded fill type\n"
 		"--zxdesktop-new-items                          Try to place new menu items on the ZX Desktop space\n"
-		"--zxdesktop-disable-buttons                    Disable ZX Desktop direct access buttons\n"
+		"--zxdesktop-disable-upper-buttons              Disable ZX Desktop direct access upper buttons\n"
+        "--zxdesktop-disable-lower-buttons              Disable ZX Desktop direct access lower buttons\n"
 		"--zxdesktop-transparent-upper-buttons          Make ZX Desktop upper buttons transparent\n"
 		"--zxdesktop-transparent-lower-buttons          Make ZX Desktop lower buttons transparent\n"
         "--zxdesktop-disable-box-upper-buttons          Disable box around ZX Desktop upper buttons\n"
@@ -2710,8 +2711,18 @@ int parse_cmdline_options(int desde_commandline) {
 				screen_ext_desktop_place_menu=1;
 			}
 
+            //Se mantiene por compatibilidad hacia atras
 			else if (!strcmp(argv[puntero_parametro],"--zxdesktop-disable-buttons")) {
-				menu_zxdesktop_buttons_enabled.v=0;
+				menu_zxdesktop_upper_buttons_enabled.v=0;
+                menu_zxdesktop_lower_buttons_enabled.v=0;
+			}
+
+			else if (!strcmp(argv[puntero_parametro],"--zxdesktop-disable-upper-buttons")) {
+				menu_zxdesktop_upper_buttons_enabled.v=0;
+			}
+
+			else if (!strcmp(argv[puntero_parametro],"--zxdesktop-disable-lower-buttons")) {
+                menu_zxdesktop_lower_buttons_enabled.v=0;
 			}
 
 			else if (!strcmp(argv[puntero_parametro],"--zxdesktop-transparent-upper-buttons")) {

@@ -11163,9 +11163,14 @@ void menu_ext_desk_settings_placemenu(MENU_ITEM_PARAMETERS)
 	screen_ext_desktop_place_menu ^=1;
 }
 
-void menu_ext_desk_settings_direct_buttons(MENU_ITEM_PARAMETERS)
+void menu_ext_desk_settings_direct_upper_buttons(MENU_ITEM_PARAMETERS)
 {
-	menu_zxdesktop_buttons_enabled.v ^=1;
+	menu_zxdesktop_upper_buttons_enabled.v ^=1;
+}
+
+void menu_ext_desk_settings_direct_lower_buttons(MENU_ITEM_PARAMETERS)
+{
+	menu_zxdesktop_lower_buttons_enabled.v ^=1;
 }
 
 void menu_ext_desk_settings_upper_transparent(MENU_ITEM_PARAMETERS)
@@ -11698,12 +11703,12 @@ void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
 
             menu_add_item_menu_separator(array_menu_ext_desktop_settings);
 
-			menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_direct_buttons,NULL,
-                "~~Direct access buttons","Botones de acceso ~~directo","Botons d'access ~~directe");
-            menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(menu_zxdesktop_buttons_enabled.v ? 'X' : ' ' ) );
-            menu_add_item_menu_shortcut(array_menu_ext_desktop_settings,'d');
+			menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_direct_upper_buttons,NULL,
+                "Direct access upper buttons","Botones de acceso directo superiores","Botons d'accés directe superiors");
+            menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(menu_zxdesktop_upper_buttons_enabled.v ? 'X' : ' ' ) );
+            //menu_add_item_menu_shortcut(array_menu_ext_desktop_settings,'d');
 
-			if (menu_zxdesktop_buttons_enabled.v) {
+			if (menu_zxdesktop_upper_buttons_enabled.v) {
 				menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_upper_transparent,NULL,
                     "Transparent upper buttons","Botones superiores transparentes","Botons superiors transparents");
                 menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(menu_ext_desktop_transparent_upper_icons.v ? 'X' : ' ' ) );
@@ -11724,8 +11729,14 @@ void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
                 menu_add_item_menu_separator(array_menu_ext_desktop_settings);
                 menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
 
+            }
 
+			menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_direct_lower_buttons,NULL,
+                "Direct access lower buttons","Botones de acceso directo inferiores","Botons d'accés directe inferiors");
+            menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(menu_zxdesktop_lower_buttons_enabled.v ? 'X' : ' ' ) );
+            //menu_add_item_menu_shortcut(array_menu_ext_desktop_settings,'d');
 
+            if (menu_zxdesktop_lower_buttons_enabled.v) {
 
 				menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_lower_transparent,NULL,
                     "Transparent lower buttons","Botones inferiores transparentes","Botons inferiors transparents");
