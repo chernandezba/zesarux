@@ -89,6 +89,16 @@ Bit	Value	Function
 
 */
 
+//Para roms aditionales
+struct s_cpc_additional_rom {
+    z80_byte bank_number; //el que le quiera asignar el usuario
+    int enabled;
+};
+
+struct s_cpc_additional_rom cpc_additional_roms[CPC_MAX_ADDITIONAL_ROMS];
+
+z80_byte *cpc_additional_rom_pointer=NULL;
+
 z80_byte cpc_border_color=0;
 
 z80_byte cpc_crtc_registers[32];
@@ -368,13 +378,35 @@ The Video RAM is always located in the first 64K, VRAM is in no way affected by 
     else {
         //Entra ROM
         //en 6128 y 664 ver si entra amsdos rom
-        printf("puerto df:%d\n",cpc_port_df);
+        //printf("puerto df:%d\n",cpc_port_df);
         if ((MACHINE_IS_CPC_HAS_FLOPPY) && cpc_port_df==7) {
             //Entra AMSDOS
             cpc_memory_paged_read[3]=cpc_rom_mem_table[2];
         }
-        else {
+        else if (cpc_port_df==0) {
             cpc_memory_paged_read[3]=cpc_rom_mem_table[1];
+        }
+
+        else {
+            //Modulos externos. Ver si hay alguno activado y es ese banco
+            int i;
+            int encontrado=0;
+            for (i=0;i<CPC_MAX_ADDITIONAL_ROMS && !encontrado;i++) {
+                if (cpc_additional_roms[i].enabled && cpc_additional_roms[i].bank_number==cpc_port_df) {
+                    encontrado=1;
+                    break;
+                }
+            }
+
+            if (!encontrado) {
+                //por defecto cualquier otro
+                cpc_memory_paged_read[3]=cpc_rom_mem_table[1];
+            }
+
+            else {
+                printf("found additional rom %d answering to bank %d\n",i,cpc_port_df);
+                cpc_memory_paged_read[3]=cpc_additional_rom_pointer+16384*i;
+            }
         }
 
 		debug_cpc_type_memory_paged_read[3]=CPC_MEMORY_TYPE_ROM;
@@ -416,6 +448,16 @@ void cpc_init_memory_tables()
         for (i=0;i<8;i++) {
                 cpc_ram_mem_table[i]=puntero;
                 puntero +=16384;
+        }
+
+        //Y roms adicionales
+        if (cpc_additional_rom_pointer==NULL) {
+            cpc_additional_rom_pointer=util_malloc(CPC_MAX_ADDITIONAL_ROMS*16384,"Can not allocate memory for additonal roms");
+            for (i=0;i<CPC_MAX_ADDITIONAL_ROMS;i++) {
+                cpc_additional_roms[i].enabled=0;
+                //numero de banco sugerido
+                cpc_additional_roms[i].bank_number=8+i;
+            }
         }
 
 }

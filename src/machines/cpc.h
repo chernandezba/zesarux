@@ -25,6 +25,8 @@
 
 #include "cpu.h"
 
+#define CPC_MAX_ADDITIONAL_ROMS 8
+
 extern z80_byte cpc_gate_registers[];
 
 extern z80_byte *cpc_rom_mem_table[];
