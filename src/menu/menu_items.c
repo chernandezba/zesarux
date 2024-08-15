@@ -42274,6 +42274,26 @@ void menu_cpc_additional_roms_bank(MENU_ITEM_PARAMETERS)
 	menu_ventana_scanf_numero_enhanced("Bank number",&cpc_additional_roms[valor_opcion].bank_number,3,+1,0,255,0);
 }
 
+void menu_cpc_additional_roms_load(MENU_ITEM_PARAMETERS)
+{
+	int offset_rom=16384*valor_opcion;
+
+    char romfile[PATH_MAX];
+
+    char *filtros[2];
+
+    filtros[0]="rom";
+    filtros[1]=0;
+
+
+    if (menu_filesel("Select Screen File",filtros,romfile)==1) {
+		util_load_file_bytes(&cpc_additional_rom_pointer[offset_rom],romfile,16384);
+            //Y salimos de todos los menus
+            //salir_todos_menus=1;
+
+    }	
+}
+
 void menu_cpc_additional_roms(MENU_ITEM_PARAMETERS)
 {
     menu_item *array_menu_common;
@@ -42297,7 +42317,12 @@ void menu_cpc_additional_roms(MENU_ITEM_PARAMETERS)
 
 			menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_cpc_additional_roms_bank,NULL,
 				"    Bank [%d]",cpc_additional_roms[i].bank_number);
-			menu_add_item_menu_valor_opcion(array_menu_common,i);			
+			menu_add_item_menu_valor_opcion(array_menu_common,i);	
+
+			menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_cpc_additional_roms_load,NULL,
+				"    Load ROM",cpc_additional_roms[i].bank_number);
+			menu_add_item_menu_valor_opcion(array_menu_common,i);
+			menu_add_item_menu_add_flags(array_menu_common,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);					
 
 			menu_add_item_menu_separator(array_menu_common);
 		}

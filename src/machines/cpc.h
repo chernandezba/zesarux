@@ -35,6 +35,8 @@ struct s_cpc_additional_rom {
 
 extern struct s_cpc_additional_rom cpc_additional_roms[];
 
+extern z80_byte *cpc_additional_rom_pointer;
+
 extern z80_byte cpc_gate_registers[];
 
 extern z80_byte *cpc_rom_mem_table[];
