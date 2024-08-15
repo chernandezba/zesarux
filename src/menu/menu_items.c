@@ -42297,6 +42297,77 @@ void menu_cpc_additional_roms_load(MENU_ITEM_PARAMETERS)
     }	
 }
 
+void menu_cpc_additional_roms_info(MENU_ITEM_PARAMETERS)
+{
+
+
+	int offset_rom=16384*valor_opcion;
+
+
+	//Command table pointer en bytes 4 y 5 (y apuntando a C000 en adelante)
+	z80_int command_table_ptr=value_8_to_16(cpc_additional_rom_pointer[offset_rom+5],cpc_additional_rom_pointer[offset_rom+4]);
+
+	command_table_ptr &=16383;
+
+	int puntero_total=offset_rom+command_table_ptr;
+
+	z80_byte *puntero=&cpc_additional_rom_pointer[puntero_total];
+
+	//Mostrar los dos primeros comandos
+
+    char *text_buffer=util_malloc_max_texto_generic_message("Can not allocate memory for showing stats");
+    //Empezar con cadena vacia para poder concatenar
+    text_buffer[0]=0;
+
+	//margen suficiente para que quepa una linea ...
+	char buf_linea[100];
+
+	//Mostrar los 10 primeros comandos (de haberlos)
+	//El primero es el nombre del cartucho
+
+	int total_comandos=0;
+	int salir=0;
+
+	while (total_comandos<20 && !salir) {
+		//Ultimo comando acaba con 0 en teoria, aunque protext por ejemplo tiene byte 16
+		if (*puntero<32) salir=1;
+		else {
+			int i=0;
+			//Hasta encontrar bit alzado
+			while ( ((*puntero)&128)==0) {
+				buf_linea[i]=*puntero;
+				i++;
+				puntero++;
+			}
+
+			buf_linea[i++]=(*puntero)&127;
+			puntero++;
+			buf_linea[i++]='\n';
+			buf_linea[i]=0;
+			//printf("[%s]\n",buf_linea);
+
+		
+
+			if (total_comandos==0) util_concat_string(text_buffer,"Name: ",MAX_TEXTO_GENERIC_MESSAGE);
+			else util_concat_string(text_buffer,"|",MAX_TEXTO_GENERIC_MESSAGE);
+
+			util_concat_string(text_buffer,buf_linea,MAX_TEXTO_GENERIC_MESSAGE);
+
+			if (total_comandos==0) util_concat_string(text_buffer,"First 20 Commands:\n",MAX_TEXTO_GENERIC_MESSAGE);
+
+			total_comandos++;
+
+		}
+	}
+
+
+	menu_generic_message("ROM Information",text_buffer);
+
+
+
+	free(text_buffer);
+}
+
 void menu_cpc_additional_roms(MENU_ITEM_PARAMETERS)
 {
     menu_item *array_menu_common;
@@ -42325,7 +42396,14 @@ void menu_cpc_additional_roms(MENU_ITEM_PARAMETERS)
 			menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_cpc_additional_roms_load,NULL,
 				"    Load ROM",cpc_additional_roms[i].bank_number);
 			menu_add_item_menu_valor_opcion(array_menu_common,i);
-			menu_add_item_menu_add_flags(array_menu_common,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);					
+			menu_add_item_menu_add_flags(array_menu_common,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);	
+
+			if (cpc_additional_roms[i].enabled)	{
+				menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_cpc_additional_roms_info,NULL,
+					"    Info");
+				menu_add_item_menu_valor_opcion(array_menu_common,i);
+				menu_add_item_menu_add_flags(array_menu_common,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);				
+			}			
 
 			menu_add_item_menu_separator(array_menu_common);
 		}
