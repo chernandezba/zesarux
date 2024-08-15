@@ -89,11 +89,7 @@ Bit	Value	Function
 
 */
 
-//Para roms aditionales
-struct s_cpc_additional_rom {
-    z80_byte bank_number; //el que le quiera asignar el usuario
-    int enabled;
-};
+
 
 struct s_cpc_additional_rom cpc_additional_roms[CPC_MAX_ADDITIONAL_ROMS];
 

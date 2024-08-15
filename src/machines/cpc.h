@@ -27,6 +27,14 @@
 
 #define CPC_MAX_ADDITIONAL_ROMS 8
 
+//Para roms aditionales
+struct s_cpc_additional_rom {
+    z80_byte bank_number; //el que le quiera asignar el usuario
+    int enabled;
+};
+
+extern struct s_cpc_additional_rom cpc_additional_roms[];
+
 extern z80_byte cpc_gate_registers[];
 
 extern z80_byte *cpc_rom_mem_table[];

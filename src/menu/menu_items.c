@@ -294,6 +294,7 @@ int in_memoriam_diego_opcion_seleccionada=0;
 int memory_cheat_opcion_seleccionada=0;
 int menu_memory_cheat_first_scan_opcion_seleccionada=0;
 int menu_memory_cheat_next_scan_opcion_seleccionada=0;
+int cpc_additional_roms_opcion_seleccionada=0;
 
 //Fin opciones seleccionadas para cada menu
 
@@ -42263,6 +42264,72 @@ void menu_storage_copy_devices(MENU_ITEM_PARAMETERS)
 
 }
 
+void menu_cpc_additional_roms_enable(MENU_ITEM_PARAMETERS)
+{
+	cpc_additional_roms[valor_opcion].enabled ^=1;
+}
+
+void menu_cpc_additional_roms_bank(MENU_ITEM_PARAMETERS)
+{
+	menu_ventana_scanf_numero_enhanced("Bank number",&cpc_additional_roms[valor_opcion].bank_number,3,+1,0,255,0);
+}
+
+void menu_cpc_additional_roms(MENU_ITEM_PARAMETERS)
+{
+    menu_item *array_menu_common;
+    menu_item item_seleccionado;
+    int retorno_menu;
+
+
+    do {
+
+		menu_add_item_menu_inicial(&array_menu_common,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
+
+		int i;
+
+		for (i=0;i<CPC_MAX_ADDITIONAL_ROMS;i++) {
+			menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,"Rom %d",i);
+
+
+			menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_cpc_additional_roms_enable,NULL,
+				"[%c] Enabled",(cpc_additional_roms[i].enabled ? 'X' : ' '));
+			menu_add_item_menu_valor_opcion(array_menu_common,i);
+
+			menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_cpc_additional_roms_bank,NULL,
+				"    Bank [%d]",cpc_additional_roms[i].bank_number);
+			menu_add_item_menu_valor_opcion(array_menu_common,i);			
+
+			menu_add_item_menu_separator(array_menu_common);
+		}
+ 
+        
+
+        //menu_add_item_menu_separator(array_menu_common);
+
+        menu_add_ESC_item(array_menu_common);
+
+
+        //Nota: si no se agrega el nombre del path del indice, se generará uno automáticamente
+        menu_add_item_menu_index_full_path(array_menu_common,
+            "Main Menu-> Storage-> Additional ROMS","Menú Principal-> Almacenamiento-> ROMS adicionales",
+                "Menú Principal-> Emmagatzematge-> ROMS adicionals");
+
+        retorno_menu=menu_dibuja_menu(&cpc_additional_roms_opcion_seleccionada,&item_seleccionado,array_menu_common,
+            "Additional ROMS","ROMS adicionales","ROMS adicionals" );
+
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+            //llamamos por valor de funcion
+            if (item_seleccionado.menu_funcion!=NULL) {
+                //printf ("actuamos por funcion\n");
+                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+
+            }
+        }
+
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+
+}
+
 
 //menu storage
 void menu_storage(MENU_ITEM_PARAMETERS)
@@ -42332,6 +42399,11 @@ void menu_storage(MENU_ITEM_PARAMETERS)
 			menu_add_item_menu_tooltip(array_menu_storage,"3\" Compact Floppy Disc emulation");
 			menu_add_item_menu_ayuda(array_menu_storage,"3\" Compact Floppy Disc emulation, used on Spectrum +3, Amstrad CPC 6128,664, Amstrad PCW");
             menu_add_item_menu_tiene_submenu(array_menu_storage);
+		}
+
+		if (MACHINE_IS_CPC) {
+			menu_add_item_menu_format(array_menu_storage,MENU_OPCION_NORMAL,menu_cpc_additional_roms,NULL,"Additional ROMS");
+			menu_add_item_menu_tiene_submenu(array_menu_storage);
 		}
 
 
