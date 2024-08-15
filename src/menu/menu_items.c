@@ -42286,7 +42286,7 @@ void menu_cpc_additional_roms_load(MENU_ITEM_PARAMETERS)
     filtros[1]=0;
 
 
-    if (menu_filesel("Select Screen File",filtros,romfile)==1) {
+    if (menu_filesel("Select ROM File",filtros,romfile)==1) {
 		util_load_file_bytes(&cpc_additional_rom_pointer[offset_rom],romfile,16384);
 
 		//habilitamos esa rom
@@ -42311,7 +42311,7 @@ void menu_cpc_additional_roms(MENU_ITEM_PARAMETERS)
 		int i;
 
 		for (i=0;i<CPC_MAX_ADDITIONAL_ROMS;i++) {
-			menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,"Rom %d",i);
+			menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,"Rom %d",i+1);
 
 
 			menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_cpc_additional_roms_enable,NULL,
