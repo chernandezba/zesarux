@@ -368,6 +368,7 @@ The Video RAM is always located in the first 64K, VRAM is in no way affected by 
     else {
         //Entra ROM
         //en 6128 y 664 ver si entra amsdos rom
+        printf("puerto df:%d\n",cpc_port_df);
         if ((MACHINE_IS_CPC_HAS_FLOPPY) && cpc_port_df==7) {
             //Entra AMSDOS
             cpc_memory_paged_read[3]=cpc_rom_mem_table[2];

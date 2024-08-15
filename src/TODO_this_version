@@ -366,3 +366,5 @@ ok*top bar tiene que poder aparecer como overlay. Así se puede hacer mostrar al
 -si menu que se abre tiene seleccionado un item de submenu, al pulsar boton izquierdo en otro sitio provoca que esa ventana
 la deja en lista de submenu
 -busqueda indexada. que cuando se haya abierto top bar agregue automaticamente "Main Menu" a todos
+
+-poder cargar roms externas de cpc
