@@ -7,6 +7,7 @@ Agregar función de "Memory Cheat": util para encontrar contadores de energia, b
 Agregado menú para buscar cadenas de texto en memoria
 Agregado función de grabado rápido de pantalla
 Agregada opción para desactivar escrituras persistentes en tarjetas de Z88
+Agregada emulación de ROMS adicionales en CPC
 
 * Mejoras:
 

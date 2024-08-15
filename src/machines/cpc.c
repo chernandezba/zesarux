@@ -400,7 +400,7 @@ The Video RAM is always located in the first 64K, VRAM is in no way affected by 
             }
 
             else {
-                printf("found additional rom %d answering to bank %d\n",i,cpc_port_df);
+                //printf("found additional rom %d answering to bank %d\n",i,cpc_port_df);
                 cpc_memory_paged_read[3]=cpc_additional_rom_pointer+16384*i;
             }
         }
@@ -449,12 +449,22 @@ void cpc_init_memory_tables()
         //Y roms adicionales
         if (cpc_additional_rom_pointer==NULL) {
             cpc_additional_rom_pointer=util_malloc(CPC_MAX_ADDITIONAL_ROMS*16384,"Can not allocate memory for additonal roms");
-            for (i=0;i<CPC_MAX_ADDITIONAL_ROMS;i++) {
-                cpc_additional_roms[i].enabled=0;
-                //numero de banco sugerido
+        }
+
+        //Desactivados por defecto
+        for (i=0;i<CPC_MAX_ADDITIONAL_ROMS;i++) {
+            cpc_additional_roms[i].enabled=0;
+            //numero de banco sugerido
+
+            //En cpc 6128/664
+            if (MACHINE_IS_CPC_HAS_FLOPPY) {
                 cpc_additional_roms[i].bank_number=8+i;
             }
-        }
+            else {
+                cpc_additional_roms[i].bank_number=1+i;
+            }
+        }        
+      
 
 }
 

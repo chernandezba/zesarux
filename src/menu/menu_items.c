@@ -42288,8 +42288,11 @@ void menu_cpc_additional_roms_load(MENU_ITEM_PARAMETERS)
 
     if (menu_filesel("Select Screen File",filtros,romfile)==1) {
 		util_load_file_bytes(&cpc_additional_rom_pointer[offset_rom],romfile,16384);
+
+		//habilitamos esa rom
+		cpc_additional_roms[valor_opcion].enabled=1;
             //Y salimos de todos los menus
-            //salir_todos_menus=1;
+            salir_todos_menus=1;
 
     }	
 }
