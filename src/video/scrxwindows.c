@@ -1713,9 +1713,28 @@ void scrxwindows_actualiza_tablas_teclado(void)
 
 
 
-	while (XCheckWindowEvent(dpy,ventana,KeyPressMask|KeyReleaseMask|StructureNotifyMask|ExposureMask|ButtonPressMask|ButtonReleaseMask|PointerMotionMask,&event)) {
+	while (XCheckWindowEvent(dpy,ventana,FocusChangeMask|KeyPressMask|KeyReleaseMask|StructureNotifyMask|ExposureMask|ButtonPressMask|ButtonReleaseMask|PointerMotionMask,&event)) {
 	  //printf ("evento tipo: %d\n",event.type);
           switch(event.type){
+
+			case FocusIn:
+				//printf("FocusIn\n");
+			break;
+
+
+			case FocusOut:
+				//printf("FocusOut\n");
+
+				//Si se ha salido con alt-tab, liberar tecla alt, pues las X11 no avisan de alt liberado al salir
+				//de la ventana asi
+
+				//De hecho lo ideal seria liberar todas teclas al perder el foco de la ventana,
+				//pero por probar, de momento empezar por liberar alt
+				debug_printf(VERBOSE_INFO,"Releasing alt when losing window focus (to avoid alt pressed when alt-tab key combination pressed)");
+				
+				util_set_reset_key(UTIL_KEY_ALT_L,0);
+
+			break;			
 
 		//Mouse
 		case ButtonPress:
@@ -2025,7 +2044,7 @@ alto +=screen_get_ext_desktop_height_zoom();
 
 	// We want to get MapNotify events
 
-	XSelectInput(dpy, ventana, KeyPressMask | KeyReleaseMask | StructureNotifyMask | ExposureMask | ButtonPressMask | ButtonReleaseMask | PointerMotionMask);
+	XSelectInput(dpy, ventana, FocusChangeMask| KeyPressMask | KeyReleaseMask | StructureNotifyMask | ExposureMask | ButtonPressMask | ButtonReleaseMask | PointerMotionMask);
 
 	// "Map" the window (that is, make it appear on the screen)
 
