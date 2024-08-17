@@ -42278,7 +42278,7 @@ void menu_cpc_additional_roms_load(MENU_ITEM_PARAMETERS)
 {
 	int offset_rom=16384*valor_opcion;
 
-    char romfile[PATH_MAX];
+    //char romfile[PATH_MAX];
 
     char *filtros[2];
 
@@ -42286,8 +42286,8 @@ void menu_cpc_additional_roms_load(MENU_ITEM_PARAMETERS)
     filtros[1]=0;
 
 
-    if (menu_filesel("Select ROM File",filtros,romfile)==1) {
-		util_load_file_bytes(&cpc_additional_rom_pointer[offset_rom],romfile,16384);
+    if (menu_filesel("Select ROM File",filtros,cpc_additional_rom_file_name[valor_opcion])==1) {
+		util_load_file_bytes(&cpc_additional_rom_pointer[offset_rom],cpc_additional_rom_file_name[valor_opcion],16384);
 
 		//habilitamos esa rom
 		cpc_additional_roms[valor_opcion].enabled=1;
@@ -42393,8 +42393,14 @@ void menu_cpc_additional_roms(MENU_ITEM_PARAMETERS)
 				"    Bank [%d]",cpc_additional_roms[i].bank_number);
 			menu_add_item_menu_valor_opcion(array_menu_common,i);	
 
+
+			char string_rom_file_shown[13];
+
+
+			menu_tape_settings_trunc_name(cpc_additional_rom_file_name[i],string_rom_file_shown,13);
+			
 			menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_cpc_additional_roms_load,NULL,
-				"    Load ROM",cpc_additional_roms[i].bank_number);
+				"    ROM File [%s]",string_rom_file_shown);
 			menu_add_item_menu_valor_opcion(array_menu_common,i);
 			menu_add_item_menu_add_flags(array_menu_common,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);	
 

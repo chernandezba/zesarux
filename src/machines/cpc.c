@@ -22,6 +22,14 @@
 #include <stdio.h>
 #include <string.h>
 
+
+#include <dirent.h>
+
+#if defined(__APPLE__)
+        #include <sys/syslimits.h>
+#endif
+
+
 #include "cpc.h"
 #include "cpu.h"
 #include "screen.h"
@@ -94,6 +102,10 @@ Bit	Value	Function
 struct s_cpc_additional_rom cpc_additional_roms[CPC_MAX_ADDITIONAL_ROMS];
 
 z80_byte *cpc_additional_rom_pointer=NULL;
+
+
+char cpc_additional_rom_file_name[CPC_MAX_ADDITIONAL_ROMS][PATH_MAX];
+
 
 z80_byte cpc_border_color=0;
 
@@ -463,6 +475,9 @@ void cpc_init_memory_tables()
             else {
                 cpc_additional_roms[i].bank_number=1+i;
             }
+
+            //Ademas inicializamos los nombres de archivos de rom a "", usados en el menu
+            cpc_additional_rom_file_name[i][0]=0;
         }        
       
 
