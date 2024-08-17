@@ -7682,7 +7682,9 @@ void end_emulator_saveornot_config(int saveconfig)
 	}
 
     //Guardar indice de busqueda de menu
-    zxvision_index_save_to_disk();
+	if (saveconfig) {
+    	zxvision_index_save_to_disk();
+	}
 
 	//end_remote_protocol(); porque si no, no se puede finalizar el emulador desde el puerto telnet
 	if (!remote_calling_end_emulator.v) {
