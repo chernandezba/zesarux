@@ -1732,7 +1732,7 @@ void scrxwindows_actualiza_tablas_teclado(void)
 				//pero por probar, de momento empezar por liberar alt
 				debug_printf(VERBOSE_INFO,"Releasing alt when losing window focus (to avoid alt pressed when alt-tab key combination pressed)");
 				
-				util_set_reset_key(UTIL_KEY_ALT_L,0);
+				joystick_possible_leftalt_key(0);
 
 			break;			
 
