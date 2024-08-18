@@ -25,6 +25,20 @@
 
 #include "cpu.h"
 
+
+#include <dirent.h>
+#if defined(__APPLE__)
+        #include <sys/syslimits.h>
+#endif
+
+
+//Por el tema de usar PATH_MAX en windows
+#ifdef MINGW
+#include <stdlib.h>
+#define PATH_MAX MAX_PATH
+#define NAME_MAX MAX_PATH
+#endif
+
 #define CPC_MAX_ADDITIONAL_ROMS 8
 
 //Para roms aditionales
