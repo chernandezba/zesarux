@@ -414,7 +414,9 @@ void load_nex_snapshot(char *archivo)
 
 
 	debug_printf(VERBOSE_DEBUG,"Mapping ram %d at C000H",nex_header[139]);
-	tbblue_out_port_32765(nex_header[139]);
+	tbblue_registers[80+6]=nex_header[139]*2;
+	tbblue_registers[80+7]=nex_header[139]*2+1;
+	tbblue_set_memory_pages();
 
 	//file handler address
 	z80_int nex_file_handler=value_8_to_16(nex_header[141],nex_header[140]);
