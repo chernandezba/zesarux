@@ -369,3 +369,9 @@ Posible solucion: https://stackoverflow.com/questions/39087079/detect-modifier-k
 que si se conmuta a otra ventana, la tecla alt ni se leerá...
 Mascaras eventos: ninguna parece capturar cambio ventana: https://tronche.com/gui/x/xlib/events/processing-overview.html#FocusChangeMask
 Con SDL por ejemplo también sucede
+
+
+-parámetro --aditionalconfig (o similar) que cargue un archivo adicional de config ".zesaruxdevrc" buscando en misma ruta  
+que el otro, pero si no está, que no de error
+
+-agregar --no-saveconf-on-exit
