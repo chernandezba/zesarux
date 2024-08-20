@@ -42271,7 +42271,11 @@ void menu_cpc_additional_roms_enable(MENU_ITEM_PARAMETERS)
 
 void menu_cpc_additional_roms_bank(MENU_ITEM_PARAMETERS)
 {
-	menu_ventana_scanf_numero_enhanced("Bank number",&cpc_additional_roms[valor_opcion].bank_number,3,+1,0,255,0);
+	int bank=cpc_additional_roms[valor_opcion].bank_number;
+
+	menu_ventana_scanf_numero_enhanced("Bank number",&bank,4,+1,0,255,0);
+
+	cpc_additional_roms[valor_opcion].bank_number=bank;
 }
 
 void menu_cpc_additional_roms_load(MENU_ITEM_PARAMETERS)
