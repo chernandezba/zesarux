@@ -3383,7 +3383,7 @@ int configfile_read_aux(char *configfile,char *mem)
 
 //Devuelve 1 si ok
 //0 si error
-int util_get_configfile_name(char *configfile)
+int util_get_configfile_name_aux(char *configfile,char *file_to_find)
 {
   if (customconfigfile!=NULL) {
         sprintf(configfile,"%s",customconfigfile);
@@ -3398,7 +3398,7 @@ int util_get_configfile_name(char *configfile)
   		return 0;
   	}
 
-  	sprintf(configfile,"%s/%s",directorio_home,DEFAULT_ZESARUX_CONFIG_FILE);
+  	sprintf(configfile,"%s/%s",directorio_home,file_to_find);
 
   #else
   	char *homedrive;
@@ -3411,7 +3411,7 @@ int util_get_configfile_name(char *configfile)
                   return 0;
           }
 
-  	sprintf(configfile,"%s\\%s\\%s",homedrive,homepath,DEFAULT_ZESARUX_CONFIG_FILE);
+  	sprintf(configfile,"%s\\%s\\%s",homedrive,homepath,file_to_find);
 
   #endif
 
@@ -3419,6 +3419,10 @@ int util_get_configfile_name(char *configfile)
 
 }
 
+int util_get_configfile_name(char *configfile)
+{
+  return util_get_configfile_name_aux(configfile,DEFAULT_ZESARUX_CONFIG_FILE);
+}
 
 //Devuelve 1 si ok
 //0 si error
