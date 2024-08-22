@@ -4730,7 +4730,7 @@ int devconfigfile_read(char *mem,int limite)
 	//Ver si archivo existe
 
 	if (!si_existe_archivo(configfile)) {
-		debug_printf(VERBOSE_INFO,"Configuration file %s not found",configfile);
+		debug_printf(VERBOSE_INFO,"Additional configuration file %s not found",configfile);
 
                 return 0;
 
