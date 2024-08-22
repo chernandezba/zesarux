@@ -3424,6 +3424,11 @@ int util_get_configfile_name(char *configfile)
   return util_get_configfile_name_aux(configfile,DEFAULT_ZESARUX_CONFIG_FILE);
 }
 
+int util_get_devconfigfile_name(char *configfile)
+{
+  return util_get_configfile_name_aux(configfile,DEFAULT_ZESARUX_DEVCONFIG_FILE);
+}
+
 //Devuelve 1 si ok
 //0 si error
 int util_create_sample_configfile(int additional)
@@ -4708,6 +4713,39 @@ int configfile_read(char *mem,int limite)
 
 }
 
+int devconfigfile_read(char *mem,int limite)
+{
+
+
+
+	char configfile[PATH_MAX];
+
+  if (util_get_devconfigfile_name(configfile)==0)  {
+    debug_printf(VERBOSE_INFO,"Unable to find $HOME, or HOMEDRIVE or HOMEPATH environment variables to open dev configuration file");
+    return 0;
+  }
+
+
+
+	//Ver si archivo existe
+
+	if (!si_existe_archivo(configfile)) {
+		debug_printf(VERBOSE_INFO,"Configuration file %s not found",configfile);
+
+                return 0;
+
+	}
+
+        int tamanyo_archivo=get_file_size(configfile);
+
+        if (tamanyo_archivo>limite) {
+             cpu_panic("Configuration file larger than maximum allowed size. Exiting");
+        }
+
+	return configfile_read_aux(configfile,mem);
+
+}
+
 //Retorna puntero a caracter leido que hace de final (sea final de linea o de archivo)
 char *configfile_end_line(char *m)
 {
@@ -4844,6 +4882,37 @@ void configfile_parse(void)
 	}
 
 	return;
+}
+
+
+char *devconfigfile_argv[MAX_PARAMETERS_CONFIG_FILE];
+int devconfigfile_argc=0;
+
+
+//Devuelve 0 si no existe el archivo o error
+int devconfigfile_parse(void)
+{
+    //Esta memoria no la liberamos nunca, pues se usara despues
+    //en varios sitios, como en parse_cmdline_options(0), y tambien se dejan fijados punteros a muchos parametros
+    //que se leen del archivo de config, como realtape_name=argv[puntero_parametro];
+	char *mem_devconfig=malloc(MAX_SIZE_CONFIG_FILE+1);
+
+
+
+    if (mem_devconfig==NULL) {
+		cpu_panic("Unable to allocate memory for configuration file");
+	}
+
+	if (devconfigfile_read(mem_devconfig,MAX_SIZE_CONFIG_FILE)==0) {
+		//No hay archivo de configuracion. Parametros vacios
+		return 0;
+	}
+
+
+	configfile_parse_lines(mem_devconfig,&devconfigfile_argv[0],&devconfigfile_argc);
+
+        return 1;
+
 }
 
 char *custom_config_mem_pointer=NULL;

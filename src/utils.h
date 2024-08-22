@@ -132,6 +132,10 @@ extern void configfile_parse(void);
 extern char *configfile_argv[];
 extern int configfile_argc;
 
+extern int devconfigfile_parse(void);
+extern char *devconfigfile_argv[];
+extern int devconfigfile_argc;
+
 extern void configfile_parse_lines(char *mem,char *p_argv[],int *p_argc);
 
 extern z80_bit debug_parse_config_file;
@@ -646,6 +650,8 @@ extern void convert_numeros_letras_puerto_teclado_continue(z80_byte tecla,int pr
 extern int util_tape_tap_get_info(z80_byte *tape,char *texto,int origin_tap);
 
 #define DEFAULT_ZESARUX_CONFIG_FILE ".zesaruxrc"
+
+#define DEFAULT_ZESARUX_DEVCONFIG_FILE ".zesaruxdevrc"
 
 extern char *customconfigfile;
 

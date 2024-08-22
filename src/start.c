@@ -243,6 +243,8 @@ pthread_t thread_main_loop;
 
 z80_bit test_config_and_exit={0};
 
+z80_bit load_additional_config={0};
+
 char *scrfile;
 z80_bit quickload_inicial;
 char *quickload_nombre;
@@ -1173,6 +1175,7 @@ printf("\n"
         "--disablemenufileutils                         Disable File Utilities menu\n"
         "--disable-search-menu                          Disable search menu feature\n"
         "--enable-search-menu                           Enable search menu feature\n"
+		"--load-additional-config                       Loads an additional .zesaruxdevrc config file (if exists) after loading .zesaruxrc and parsing command line settings\n"
 
 
 		"\n"
@@ -5575,6 +5578,10 @@ int parse_cmdline_options(int desde_commandline) {
                 index_menu_enabled.v=1;
             }
 
+			else if (!strcmp(argv[puntero_parametro],"--load-additional-config")) {
+				load_additional_config.v=1;
+			}
+
 			else if (!strcmp(argv[puntero_parametro],"--forcevisiblehotkeys")) {
                                 menu_force_writing_inverse_color.v=1;
 			}
@@ -7035,6 +7042,23 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
 		printf ("\n\n");
         zesarux_cmdline_help();
         exit(1);
+	}
+
+	//Parsear dev config file, si especificada opcion
+	if (load_additional_config.v) {
+		
+        if (devconfigfile_parse()) {
+			
+
+			argc=devconfigfile_argc;
+			argv=devconfigfile_argv;
+			puntero_parametro=0;
+
+			//Desde parseo de archivo de config no se genera error nunca, se es mas tolerante, avisando del error, pero
+			//parseando siguientes parametros
+
+			parse_cmdline_options(0);		
+		}
 	}
 
 	if (test_config_and_exit.v) exit(0);

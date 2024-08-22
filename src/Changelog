@@ -17,6 +17,7 @@ Allow hotswap from Spectrum 128 to Spectrum +3
 Improve Azimuth warning on External Audio Source Window
 Added Flash Color mode
 Allow to not save snapshot when exiting ZEsarUX
+Allow to load an additional config file .zesaruxdevrc
 Allow to define Left Alt, Left Ctrl, Left Shift or TAB as Joystick Fire action
 Allow to change current tape read position on Input Tape Viewer for .tap files
 Allow loading a 8kb rom in ZX80 (for example the ZX81 rom, like an upgraded ZX80 to ZX81)
