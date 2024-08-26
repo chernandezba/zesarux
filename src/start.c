@@ -697,10 +697,19 @@ void zesarux_cmdline_help(void)
 void zesarux_cmdline_help_expert(void)
 {
 
-	printf ("Expert options: \n"
-
-
-
+	printf (
+        "The following are expert options, these are classified as \"expert\" only maybe because a regular user won't use them, "
+        "just expert users, but are used the same way as the settings on the normal --help.\n"
+        "All the options (both from --help and --experthelp) can be used from command line or from a configuration file.\n"
+        "\n"
+        "The following is the order parsing options :\n"
+        "\n"
+        "1) Special options from command line: --noconfigfile, --configfile, --help, --experthelp\n"
+        "2) Settings from the configuration file .zesaruxrc\n"
+        "3) Settings from command line\n"
+        "4) Settings from .zesaruxdevrc if activated setting --load-additional-config and the .zesaruxdevrc file exists\n"
+        "\n"
+        "So, the expert options are:\n"
 
 		"\n"
 		"\n"

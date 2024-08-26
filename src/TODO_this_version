@@ -363,6 +363,3 @@ ok*top bar tiene que poder aparecer como overlay. Así se puede hacer mostrar al
 la deja en lista de submenu
 -busqueda indexada. que cuando se haya abierto top bar agregue automaticamente "Main Menu" a todos
 
-
-
--agregar --no-saveconf-on-exit
