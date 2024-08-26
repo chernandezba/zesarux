@@ -364,7 +364,7 @@ la deja en lista de submenu
 -busqueda indexada. que cuando se haya abierto top bar agregue automaticamente "Main Menu" a todos
 
 
-ok con xwindow-Linux. revisar sdl diferentes versiones: al hacer alt-tab para ir a otra ventana, al volver con raton por ejemplo, el alt "sigue pulsado" en ZEsarUX
+ok con xwindow-Linux, ok sd1. revisar sdl diferentes versiones: al hacer alt-tab para ir a otra ventana, al volver con raton por ejemplo, el alt "sigue pulsado" en ZEsarUX
 Posible solucion: https://stackoverflow.com/questions/39087079/detect-modifier-key-release-in-x11-root-window. Creo que lo mejor, como se comenta en una posible solución ahí, seria: cuando se ha pulsado alt, leer cada x segundos, si la tecla alt está pulsada o no, aunque no acabo de entender
 que si se conmuta a otra ventana, la tecla alt ni se leerá...
 Mascaras eventos: ninguna parece capturar cambio ventana: https://tronche.com/gui/x/xlib/events/processing-overview.html#FocusChangeMask

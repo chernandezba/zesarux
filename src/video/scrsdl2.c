@@ -1436,7 +1436,32 @@ void scrsdl_actualiza_tablas_teclado(void)
             }
 		}
 
+		if (event.type==SDL_WINDOWEVENT) {
+			//printf("SDL_WINDOWEVENT. event=%d\n",event.window.event);
 
+			if (event.window.event==SDL_WINDOWEVENT_FOCUS_LOST) {
+
+                //printf("FocusOut\n");
+
+                //Si se ha salido con alt-tab, liberar tecla alt, pues SDL no avisa de alt liberado al salir
+                //de la ventana asi
+                //Parece que en Linux esto es necesario, no se si con Windows o Mac con este driver
+                //Pero lo pongo de la misma manera que se hace con driver xwindow y sdl1, para que sea coherente
+
+                //De hecho lo ideal seria liberar todas teclas al perder el foco de la ventana,
+                //pero por probar, de momento empezar por liberar alt
+                debug_printf(VERBOSE_INFO,"Releasing alt when losing window focus (to avoid alt pressed when alt-tab key combination pressed)");
+
+                joystick_possible_leftalt_key(0);
+
+            }
+			if (event.window.event==SDL_WINDOWEVENT_FOCUS_GAINED) {
+
+				//printf("Ganamos foco\n");
+
+			}
+
+		}
 
 		if (event.type==SDL_KEYDOWN || event.type==SDL_KEYUP) {
 			if (event.type==SDL_KEYDOWN) pressrelease=1;

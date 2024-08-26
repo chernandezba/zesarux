@@ -1399,6 +1399,7 @@ void scrsdl_actualiza_tablas_teclado(void)
 
                     //Si se ha salido con alt-tab, liberar tecla alt, pues SDL no avisa de alt liberado al salir
                     //de la ventana asi
+                    //Parece que en Linux esto es necesario, pero con Windows no hace falta
 
                     //De hecho lo ideal seria liberar todas teclas al perder el foco de la ventana,
                     //pero por probar, de momento empezar por liberar alt
