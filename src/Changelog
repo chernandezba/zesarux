@@ -42,7 +42,7 @@ Improved ZX Desktop:
 * Fixes:
 
 Remove buffer full indicator when pressing shift+e on External Audio Source window
-Fixed alt key pressed when changing to another window by using alt-tab on xwindow driver on Linux
+Fixed alt key pressed when changing to another window by using alt-tab on xwindow and sdl drivers
 Fixed TZX autload as Real Tape on Spectrum +3
 Fixed hotswap ZX80 to ZX81, ZX81 to ZX80
 Fixed Amstrad CPC Scroll

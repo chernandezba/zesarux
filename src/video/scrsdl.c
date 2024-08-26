@@ -1368,7 +1368,7 @@ void scrsdl_actualiza_tablas_teclado(void)
 
     while( SDL_PollEvent( &event ) ){
 
-
+//printf("evento %d\n",event.type);
 		//Si se ha dejado de redimensionar la ventana
 		if (event.type!=SDL_VIDEORESIZE) {
             if (scrsdl_debe_redimensionar) {
@@ -1385,6 +1385,34 @@ void scrsdl_actualiza_tablas_teclado(void)
 		}
 
 
+		if (event.type==SDL_ACTIVEEVENT) {
+			//printf("SDL_ACTIVEEVENT. type=%d gain=%d state=%d\n",event.active.type,event.active.gain,event.active.state);
+			//SDL_APPMOUSEFOCUS if mouse focus was gained or lost, SDL_APPINPUTFOCUS if input focus was gained or lost, or SDL_APPACTIVE
+			//if (event.active.state==SDL_APPMOUSEFOCUS) printf("SDL_APPMOUSEFOCUS\n");
+
+			if (event.active.state==SDL_APPINPUTFOCUS) {
+				//printf("SDL_APPINPUTFOCUS\n");
+				if (event.active.gain==0) {
+					//printf("Perdemos foco\n");
+
+                    //printf("FocusOut\n");
+
+                    //Si se ha salido con alt-tab, liberar tecla alt, pues SDL no avisa de alt liberado al salir
+                    //de la ventana asi
+
+                    //De hecho lo ideal seria liberar todas teclas al perder el foco de la ventana,
+                    //pero por probar, de momento empezar por liberar alt
+                    debug_printf(VERBOSE_INFO,"Releasing alt when losing window focus (to avoid alt pressed when alt-tab key combination pressed)");
+
+                    joystick_possible_leftalt_key(0);
+
+				}
+
+				//else printf("Ganamos foco\n");
+			}
+
+			//if (event.active.state==SDL_APPACTIVE) printf("SDL_APPACTIVE\n");
+		}
 
 		if (event.type==SDL_KEYDOWN || event.type==SDL_KEYUP) {
 			if (event.type==SDL_KEYDOWN) pressrelease=1;
