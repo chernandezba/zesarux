@@ -1415,7 +1415,7 @@ void menu_general_settings(MENU_ITEM_PARAMETERS)
                 "Change Video Driver","Cambiar Driver Video","Canviar Driver Video");
             menu_add_item_menu_es_avanzado(array_menu_window_settings);
             menu_add_item_menu_se_cerrara(array_menu_window_settings);
-            menu_add_item_menu_genera_ventana(array_menu_window_settings);            
+            menu_add_item_menu_genera_ventana(array_menu_window_settings);
 		}
 
         menu_add_item_menu_separator(array_menu_window_settings);
@@ -4047,7 +4047,7 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_spanish_catalan(array_menu_settings_audio,"Cambiar Driv~~er Audio","Canviar Driv~~er Audio");
         menu_add_item_menu_shortcut(array_menu_settings_audio,'e');
         menu_add_item_menu_se_cerrara(array_menu_settings_audio);
-        menu_add_item_menu_genera_ventana(array_menu_settings_audio);            
+        menu_add_item_menu_genera_ventana(array_menu_settings_audio);
 
         menu_add_item_menu_es_avanzado(array_menu_settings_audio);
 

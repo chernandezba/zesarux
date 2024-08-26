@@ -7046,9 +7046,9 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
 
 	//Parsear dev config file, si especificada opcion
 	if (load_additional_config.v) {
-		
+
         if (devconfigfile_parse()) {
-			
+
 
 			argc=devconfigfile_argc;
 			argv=devconfigfile_argv;
@@ -7057,7 +7057,7 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
 			//Desde parseo de archivo de config no se genera error nunca, se es mas tolerante, avisando del error, pero
 			//parseando siguientes parametros
 
-			parse_cmdline_options(0);		
+			parse_cmdline_options(0);
 		}
 	}
 

@@ -1731,10 +1731,10 @@ void scrxwindows_actualiza_tablas_teclado(void)
 				//De hecho lo ideal seria liberar todas teclas al perder el foco de la ventana,
 				//pero por probar, de momento empezar por liberar alt
 				debug_printf(VERBOSE_INFO,"Releasing alt when losing window focus (to avoid alt pressed when alt-tab key combination pressed)");
-				
+
 				joystick_possible_leftalt_key(0);
 
-			break;			
+			break;
 
 		//Mouse
 		case ButtonPress:

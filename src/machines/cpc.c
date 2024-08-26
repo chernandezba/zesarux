@@ -98,7 +98,7 @@ Bit	Value	Function
 */
 
 
-
+//Informacion de roms adicionales
 struct s_cpc_additional_rom cpc_additional_roms[CPC_MAX_ADDITIONAL_ROMS];
 
 z80_byte *cpc_additional_rom_pointer=NULL;
@@ -478,8 +478,8 @@ void cpc_init_memory_tables()
 
             //Ademas inicializamos los nombres de archivos de rom a "", usados en el menu
             cpc_additional_rom_file_name[i][0]=0;
-        }        
-      
+        }
+
 
 }
 

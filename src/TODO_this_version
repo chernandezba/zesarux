@@ -371,7 +371,7 @@ Mascaras eventos: ninguna parece capturar cambio ventana: https://tronche.com/gu
 Con SDL por ejemplo también sucede
 
 
--parámetro --aditionalconfig (o similar) que cargue un archivo adicional de config ".zesaruxdevrc" buscando en misma ruta  
+-parámetro --aditionalconfig (o similar) que cargue un archivo adicional de config ".zesaruxdevrc" buscando en misma ruta
 que el otro, pero si no está, que no de error
 
 -agregar --no-saveconf-on-exit
