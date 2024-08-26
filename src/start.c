@@ -1755,6 +1755,7 @@ printf (
 		"\n"
 
 		"--saveconf-on-exit                       Always save configuration when exiting emulator\n"
+        "--no-saveconf-on-exit                    Do not save configuration when exiting emulator (default setting). Can be used to override a previous --saveconf-on-exit for example\n"
 		"--quickexit                              Exit emulator quickly: no yes/no confirmation and no fadeout\n"
 		"--exit-after n                           Exit emulator after n seconds\n"
 		"--last-version s                         String which identifies last build version run. Usually doesnt need to change it, used to show the start popup of the new version changes\n"
@@ -2588,6 +2589,10 @@ int parse_cmdline_options(int desde_commandline) {
 
 			else if (!strcmp(argv[puntero_parametro],"--saveconf-on-exit")) {
 				save_configuration_file_on_exit.v=1;
+			}
+
+			else if (!strcmp(argv[puntero_parametro],"--no-saveconf-on-exit")) {
+				save_configuration_file_on_exit.v=0;
 			}
 
 			else if (!strcmp(argv[puntero_parametro],"--zoomx")) {
