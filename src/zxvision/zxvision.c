@@ -16590,8 +16590,38 @@ void zxvision_handle_mouse_events(zxvision_window *w)
 
 	if (mouse_left && !mouse_is_dragging) {
 
+        //printf("if_menu_topbarmenu_pressed_bar() =%d\n",if_menu_topbarmenu_pressed_bar());
+
+        if (if_menu_topbarmenu_enabled_and_pressed_bar() ) {
+            //printf("pulsado en top bar desde zxvision_handle_mouse_events\n");
+
+            menu_pressed_open_menu_while_in_menu.v=1;
+            salir_todos_menus=1;
+
+            /*
+            Estas decisiones son parecidas en casos:
+            pulsar tecla menu cuando menu activo (menu_if_pressed_menu_button en menu_get_pressed_key_no_modifier), conmutar ventana, pulsar logo ZEsarUX en ext desktop
+            */
+
+            if (!menu_allow_background_windows) {
+                    mouse_pressed_close_window=1;
+            }
+
+            else {
+                //Si la ventana activa permite ir a background, mandarla a background
+                if (zxvision_current_window->can_be_backgrounded) {
+                        mouse_pressed_background_window=1;
+                }
+
+                //Si la ventana activa no permite ir a background, cerrarla
+                else {
+                        mouse_pressed_close_window=1;
+                }
+            }
+        }
+
 		//Si se pulsa dentro de ventana y no esta arrastrando
-	 	if (si_menu_mouse_en_ventana() && !zxvision_keys_event_not_send_to_machine) {
+	 	else if (si_menu_mouse_en_ventana() && !zxvision_keys_event_not_send_to_machine) {
 			debug_printf (VERBOSE_DEBUG,"Clicked inside window. Events are not sent to emulated machine");
 			zxvision_keys_event_not_send_to_machine=1;
 			ventana_tipo_activa=1;
@@ -25353,7 +25383,14 @@ void menu_inicio_bucle(void)
 
             printf("despues topbar menu. menu_pressed_open_menu_while_in_menu.v=%d\n",menu_pressed_open_menu_while_in_menu.v);
 
-            //if (if_menu_topbarmenu_pressed_bar() ) menu_topbarmenu_pressed_bar=1;
+            //Aqui miramos si hay un evento de reapertura de menu, este evento menu_pressed_open_menu_while_in_menu.v
+            //se definio para el menu "clasico" y no el topbar, aunque nos sirve igual
+            //Se podria haber usado otro evento diferente? quiza si
+            //esto viene de la funcion zxvision_handle_mouse_events y el if (if_menu_topbarmenu_enabled_and_pressed_bar ) {
+            if (menu_pressed_open_menu_while_in_menu.v && if_menu_topbarmenu_pressed_bar() ) {
+                menu_topbarmenu_pressed_bar=1;
+                reopen_menu=1;
+            }
 
         }
 

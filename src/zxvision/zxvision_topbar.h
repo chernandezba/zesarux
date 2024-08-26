@@ -27,5 +27,6 @@ extern void topbar_text_overlay(void);
 extern int menu_topbarmenu_pressed_bar;
 extern void menu_topbarmenu(void);
 extern int if_menu_topbarmenu_pressed_bar(void);
+extern int if_menu_topbarmenu_enabled_and_pressed_bar(void);
 
 #endif

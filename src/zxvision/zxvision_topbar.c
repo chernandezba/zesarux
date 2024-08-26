@@ -162,6 +162,14 @@ int if_menu_topbarmenu_pressed_bar(void)
 
 }
 
+
+int if_menu_topbarmenu_enabled_and_pressed_bar(void)
+{
+    if (zxvision_topbar_menu_enabled.v==0) return 0;
+
+    return if_menu_topbarmenu_pressed_bar();
+}
+
 //Indica que se ha pulsado en la barra de menu antes de entrar en menu_topbarmenu()
 int menu_topbarmenu_pressed_bar=0;
 
