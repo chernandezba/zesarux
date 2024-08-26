@@ -19911,7 +19911,7 @@ void menu_dibuja_submenu_cierra_n_submenus(int veces)
 }
 
 //liberar memoria de todos los submenus
-void menu_dibuja_submenu_free_all(void)
+void old_con_error_menu_dibuja_submenu_free_all(void)
 {
     if (menu_show_submenus_tree.v==0) return;
 
@@ -19922,6 +19922,25 @@ void menu_dibuja_submenu_free_all(void)
     while (w->submenu_next!=NULL) {
         free(w);
         w=w->submenu_next;
+    }
+
+
+    menu_dibuja_submenu_primer_submenu=NULL;
+
+}
+
+//liberar memoria de todos los submenus
+void menu_dibuja_submenu_free_all(void)
+{
+    if (menu_show_submenus_tree.v==0) return;
+
+    zxvision_window *w=menu_dibuja_submenu_primer_submenu;
+
+
+    while (w!=NULL) {
+        zxvision_window *next_w=w->submenu_next;
+        free(w);
+        w=next_w;
     }
 
 

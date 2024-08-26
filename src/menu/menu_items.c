@@ -42298,7 +42298,7 @@ void menu_cpc_additional_roms_load(MENU_ITEM_PARAMETERS)
             //Y salimos de todos los menus
             salir_todos_menus=1;
 
-    }	
+    }
 }
 
 void menu_cpc_additional_roms_info(MENU_ITEM_PARAMETERS)
@@ -42350,7 +42350,7 @@ void menu_cpc_additional_roms_info(MENU_ITEM_PARAMETERS)
 			buf_linea[i]=0;
 			//printf("[%s]\n",buf_linea);
 
-		
+
 
 			if (total_comandos==0) util_concat_string(text_buffer,"Name: ",MAX_TEXTO_GENERIC_MESSAGE);
 			else util_concat_string(text_buffer,"|",MAX_TEXTO_GENERIC_MESSAGE);
@@ -42395,30 +42395,30 @@ void menu_cpc_additional_roms(MENU_ITEM_PARAMETERS)
 
 			menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_cpc_additional_roms_bank,NULL,
 				"    Bank [%d]",cpc_additional_roms[i].bank_number);
-			menu_add_item_menu_valor_opcion(array_menu_common,i);	
+			menu_add_item_menu_valor_opcion(array_menu_common,i);
 
 
 			char string_rom_file_shown[13];
 
 
 			menu_tape_settings_trunc_name(cpc_additional_rom_file_name[i],string_rom_file_shown,13);
-			
+
 			menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_cpc_additional_roms_load,NULL,
 				"    ROM File [%s]",string_rom_file_shown);
 			menu_add_item_menu_valor_opcion(array_menu_common,i);
-			menu_add_item_menu_add_flags(array_menu_common,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);	
+			menu_add_item_menu_add_flags(array_menu_common,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
 
 			if (cpc_additional_roms[i].enabled)	{
 				menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_cpc_additional_roms_info,NULL,
 					"    Info");
 				menu_add_item_menu_valor_opcion(array_menu_common,i);
-				menu_add_item_menu_add_flags(array_menu_common,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);				
-			}			
+				menu_add_item_menu_add_flags(array_menu_common,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
+			}
 
 			menu_add_item_menu_separator(array_menu_common);
 		}
- 
-        
+
+
 
         //menu_add_item_menu_separator(array_menu_common);
 
