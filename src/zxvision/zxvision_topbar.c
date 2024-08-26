@@ -194,14 +194,19 @@ void menu_topbarmenu(void)
     posiciones_menus[total_posiciones++]=i;
 
     int tecla_leida=0;
+    int salir_topbar=0;
 
+
+    do {
+
+    //Esperar tecla/raton, y siempre que no se haya entrado abriendo el menu pulsando ya en barra superior
     while (tecla_leida==0 && !menu_topbarmenu_pressed_bar) {
 
         menu_refresca_pantalla();
 
         tecla_leida=menu_topbarmenu_get_key();
 
-        printf("tecla leida: %d\n",tecla_leida);
+        //printf("tecla leida: %d\n",tecla_leida);
 
         if (mouse_left) tecla_leida=13;
 
@@ -209,6 +214,7 @@ void menu_topbarmenu(void)
 
     }
 
+    //Si pulsado boton raton en el paso anterior o se haya entrado abriendo el menu pulsando ya en barra superior
     if ( (tecla_leida==13 && mouse_left) || menu_topbarmenu_pressed_bar) {
         menu_topbarmenu_pressed_bar=0;
         int posicion_x=mouse_x/menu_char_width/menu_gui_zoom/zoom_x;
@@ -217,9 +223,13 @@ void menu_topbarmenu(void)
 
         printf("posicion x: %d\n",posicion_x);
 
-        menu_espera_no_tecla_con_repeticion();
+
+        //asumimos que saldremos del topbar
+        salir_topbar=1;
 
         if (if_menu_topbarmenu_pressed_bar()) {
+
+            menu_espera_no_tecla_con_repeticion();
 
             force_next_menu_position.v=1;
 
@@ -232,6 +242,10 @@ void menu_topbarmenu(void)
             }
 
             if (i<total_posiciones) {
+                //hemos pulsado en topbar, nos mantenemos
+                salir_topbar=0;
+
+
                 i--;
                 force_next_menu_position_x=posiciones_menus[i];
 
@@ -285,17 +299,38 @@ void menu_topbarmenu(void)
                     break;
                 }
 
+                printf("despues switch. if_menu_topbarmenu_pressed_bar= %d mouse_left= %d\n",
+                    if_menu_topbarmenu_pressed_bar(),mouse_left);
+
                 //Necesario para cerrar submenus, por ejemplo si estamos en un item de menu con submenus,
                 //y simplemente pulsamos fuera del menu, con lo que se simula pulsado ESC
                 //pero deja submenus abiertos
                 menu_dibuja_submenu_cierra_todos_submenus();
+
+
+                if (if_menu_topbarmenu_pressed_bar() && mouse_left)  {
+                    //continuamos aqui y sin tener que esperar tecla
+                    printf("Reentraremos en menu\n");
+                    menu_topbarmenu_pressed_bar=1;
+                }
             }
         }
 
 
     }
 
+    //temp salimos siempre
+    //el problema es que para reentrar hay que tener mouse_left activo, pero de cada menu
+    //siempre se sale y se espera a liberar boton, entonces mouse_left sera 0 siempre porque el boton no se estara pulsando
+    //Hay que reentrar aqui de otra manera
+    salir_topbar=1;
+
+    //salir en caso que pulsado en otra zona que no es menu
+    } while (!salir_topbar);
+
     menu_espera_no_tecla_con_repeticion();
+
+    printf("salir menu_topbarmenu\n");
 }
 
 

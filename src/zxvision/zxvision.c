@@ -25350,6 +25350,11 @@ void menu_inicio_bucle(void)
         //menu en barra arriba del todo
         if (zxvision_topbar_menu_enabled.v) {
             menu_topbarmenu();
+
+            printf("despues topbar menu. menu_pressed_open_menu_while_in_menu.v=%d\n",menu_pressed_open_menu_while_in_menu.v);
+
+            //if (if_menu_topbarmenu_pressed_bar() ) menu_topbarmenu_pressed_bar=1;
+
         }
 
         else {
