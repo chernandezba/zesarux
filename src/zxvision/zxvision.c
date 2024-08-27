@@ -25476,6 +25476,11 @@ void menu_inicio_pre_retorno(void)
     reset_menu_overlay_function();
     menu_set_menu_abierto(0);
 
+    //Necesario para cerrar submenus, por ejemplo si estamos en un item de menu con submenus,
+    //y simplemente pulsamos fuera del menu, con lo que se simula pulsado ESC
+    //pero deja submenus abiertos
+    menu_dibuja_submenu_cierra_todos_submenus();
+
     //Ya no se deberia mostrar boton de cerrar todos menus
     //como desde aqui ya va bien, se quitó desde el otro sitio donde se deshabilita, en menu_inicio_bucle
     menu_mostrar_boton_close_all_menus.v=0;
@@ -26346,10 +26351,7 @@ void menu_inicio(void)
 
             //printf("Fin procesamiento f funciones\n");
 
-            //Necesario para cerrar submenus, por ejemplo si estamos en un item de menu con submenus,
-            //y simplemente pulsamos fuera del menu, con lo que se simula pulsado ESC
-            //pero deja submenus abiertos
-            menu_dibuja_submenu_cierra_todos_submenus();
+
         }
 
 
