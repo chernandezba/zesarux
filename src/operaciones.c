@@ -949,6 +949,10 @@ Gestionar direcciones shadow de RAM desde 2000H hasta 3FFFH
 
 Y tambien validar que no se vaya mas alla de la ramtop
 
+hay mirrors en 2400 (de 2000), en 2C00 (de 2800), y en 3400, 3800 y 3C00 (de 3000), cada bloque de 1K. Si miras el test, se ve.
+
+la RAM de caracteres (en 2800 y 2C00) es de solo escritura
+
 */
 
 z80_int jupiterace_adjust_memory_pointer(z80_int dir)
@@ -971,12 +975,10 @@ z80_int jupiterace_adjust_memory_pointer(z80_int dir)
 	//19 KB. ramtop=32767=7FFH=01111111 11111111
 	//35 KB. ramtop=49151=BFFH=10111111 11111111
 
-	//Si hay 35 KB y se accede a direccion, por ejemplo, 65535, se convierte en: FFFF AND BFFH = BFFH
-	//Si se accede a 49152 es: C000H AND BFFH = 8000H = 32768
-
-        else {
+    /*else {
+        //Aqui no deberia llegar nunca pero por si acaso
 		if (dir>ramtop_ace) dir = (dir&(ramtop_ace));
-	}
+	}*/
 
 	return dir;
 }
@@ -984,6 +986,8 @@ z80_int jupiterace_adjust_memory_pointer(z80_int dir)
 
 void poke_byte_ace_no_time(z80_int dir,z80_byte valor)
 {
+
+    if (dir>ramtop_ace) return;
 
 
 	dir=jupiterace_adjust_memory_pointer(dir);
@@ -1073,8 +1077,20 @@ z80_byte peek_byte_ace_no_time(z80_int dir)
 	set_visualmemreadbuffer(dir);
 #endif
 
+    if (dir>ramtop_ace) return 255;
+
 	dir=jupiterace_adjust_memory_pointer(dir);
-        return memoria_spectrum[dir];
+
+    //2800H-2BFFH Shadow de 2C00H
+    //2C00H-2FFFH 1K Ram
+    //la RAM de caracteres (en 2800 y 2C00) es de solo escritura, aunque
+    //el valor teórico es byte bajo de direcciones OR byte del dato
+    if (dir>=0x2c00 && dir<=0x2fff) {
+        return ( (dir & 0xFF) | memoria_spectrum[dir]);
+    }
+
+
+    return memoria_spectrum[dir];
 
 }
 
