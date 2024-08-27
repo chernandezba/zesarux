@@ -26343,6 +26343,13 @@ void menu_inicio(void)
 
             menu_muestra_pending_error_message(); //Si se genera un error derivado de funcion F
             cls_menu_overlay();
+
+            //printf("Fin procesamiento f funciones\n");
+
+            //Necesario para cerrar submenus, por ejemplo si estamos en un item de menu con submenus,
+            //y simplemente pulsamos fuera del menu, con lo que se simula pulsado ESC
+            //pero deja submenus abiertos
+            menu_dibuja_submenu_cierra_todos_submenus();
         }
 
 
