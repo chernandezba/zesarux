@@ -1724,7 +1724,7 @@ int scrcocoa_keymap_z88_cpc_leftz; //Tecla a la izquierda de la Z. usada en Chlo
                 break;
 
                 case COCOA_KEY_LALT:
-                        printf("press/release alt: %d\n",pressrelease);
+                        //printf("press/release alt: %d\n",pressrelease);
                         joystick_possible_leftalt_key(pressrelease);
                 break;
 
