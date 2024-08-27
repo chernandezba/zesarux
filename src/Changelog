@@ -43,7 +43,7 @@ Improved ZX Desktop:
 
 Remove buffer full indicator when pressing shift+e on External Audio Source window
 Fixed alt key pressed when changing to another window by using alt-tab on xwindow, sdl1 and sdl2 drivers
-Fixed TZX autload as Real Tape on Spectrum +3
+Fixed TZX autoload as Real Tape on Spectrum +3
 Fixed hotswap ZX80 to ZX81, ZX81 to ZX80
 Fixed Amstrad CPC Scroll
 Fixed loading .nex snapshots and Layer 2 not being initialized (fixes errors on Head Over Heels for Next, for example)
