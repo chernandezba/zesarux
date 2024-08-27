@@ -2281,8 +2281,6 @@ int scrcocoa_antespulsadoshift_l=0,scrcocoa_antespulsadoshift_r=0,scrcocoa_antes
 - (void)startEmulationWithArgc:(int)argc argv:(char**)argv;
 - (void)openPanelDidEnd:(NSOpenPanel *)sheet returnCode:(int)returnCode contextInfo:(void *)contextInfo;
 - (void)toggleFullScreen:(id)sender;
-- (void)showQEMUDoc:(id)sender;
-- (void)showQEMUTec:(id)sender;
 - (void)openzesaruxmenu:(id)sender;
 - (void)setzoomone:(id)sender;
 
@@ -2403,21 +2401,7 @@ int scrcocoa_antespulsadoshift_l=0,scrcocoa_antespulsadoshift_r=0,scrcocoa_antes
     [cocoaView toggleFullScreen:sender];
 }
 
-- (void)showQEMUDoc:(id)sender
-{
-    //COCOA_DEBUG("ZesaruxCocoaAppController: showQEMUDoc\n");
 
-    [[NSWorkspace sharedWorkspace] openFile:[NSString stringWithFormat:@"%@/../doc/qemu/qemu-doc.html",
-        [[NSBundle mainBundle] resourcePath]] withApplication:@"Help Viewer"];
-}
-
-- (void)showQEMUTec:(id)sender
-{
-    //COCOA_DEBUG("ZesaruxCocoaAppController: showQEMUTec\n");
-
-    [[NSWorkspace sharedWorkspace] openFile:[NSString stringWithFormat:@"%@/../doc/qemu/qemu-tech.html",
-        [[NSBundle mainBundle] resourcePath]] withApplication:@"Help Viewer"];
-}
 
 - (void) openzesaruxmenu:(id)sender
 {
