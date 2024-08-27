@@ -46,6 +46,7 @@ Corregido tecla alt pulsada al cambiar de ventana pulsando alt-tab en drivers xw
 Corregida autocarga de TZX como Cinta Real en Spectrum +3
 Corregido hotswap ZX80 a ZX81, ZX81 a ZX80
 Corregido Scroll de Amstrad CPC
+Corregido mapa de memoria y comportamiento en Jupiter Ace: ahora es perfecto y mejor que cualquier otro emulador
 Corregida carga de snapshots .nex y la inicialización incorrecta de Layer 2 (corrige errores en Head Over Heels de Next por ejemplo)
 Corregida carga de snapshots .nex y la MMU no gestionada correctamente
 Corregida característica de Buscar menú

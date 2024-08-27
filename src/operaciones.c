@@ -1084,9 +1084,9 @@ z80_byte peek_byte_ace_no_time(z80_int dir)
     //2800H-2BFFH Shadow de 2C00H
     //2C00H-2FFFH 1K Ram
     //la RAM de caracteres (en 2800 y 2C00) es de solo escritura, aunque
-    //el valor teórico es byte bajo de direcciones OR byte del dato
+    //el valor teórico es byte bajo de direcciones (rotado y con máscara) OR byte del dato
     if (dir>=0x2c00 && dir<=0x2fff) {
-        return ( (dir & 0xFF) | memoria_spectrum[dir]);
+        return ( ((dir >> 3) & 0x7F) | memoria_spectrum[dir]);
     }
 
 
