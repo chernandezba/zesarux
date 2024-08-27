@@ -159,6 +159,9 @@ typedef struct {
 
 id cocoaView;
 
+//inicializarlos con valores 0 al principio
+int scrcocoa_antespulsadoctrl_l=0,scrcocoa_antespulsadoctrl_r=0,scrcocoa_antespulsadoalt_l=0,scrcocoa_antespulsadoalt_r=0;
+int scrcocoa_antespulsadoshift_l=0,scrcocoa_antespulsadoshift_r=0,scrcocoa_antespulsadocmd_l=0,scrcocoa_antespulsadocmd_r=0; //,scrcocoa_antespulsadocapslock=0;
 
 
 //donde se guarda nuestro bitmap
@@ -421,6 +424,7 @@ int keymap[] =
 - (void)activaSelectores;
 - (void)redimensionaVentana:(int)width height:(int)height;
 - (void)windowWillStartLiveResize:(NSNotification *)notification;
+- (void)appDeactivated:(NSNotification *)notification;
 - (void)windowDidEndLiveResize:(NSNotification *)notification;
 @end
 
@@ -771,6 +775,7 @@ IOHIDManagerSetDeviceMatching(hidManager, matchDict);
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(windowDidEndLiveResize:) name:NSWindowDidEndLiveResizeNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(windowWillStartLiveResize:) name:NSWindowWillStartLiveResizeNotification object:nil];
+    [[[NSWorkspace sharedWorkspace] notificationCenter] addObserver:self selector:@selector(appDeactivated:) name:NSWorkspaceDidDeactivateApplicationNotification object:nil];
 
 }
 
@@ -843,6 +848,31 @@ IOHIDManagerSetDeviceMatching(hidManager, matchDict);
    //printf ("resize: %d X %d\n",width,height);
 
 }
+
+- (void)appDeactivated:(NSNotification *)notification
+{
+
+    //printf("Alguna app se desactiva\n");
+    //Aqui entra cuando cualquier ventana se desactiva (pierde el foco), no solo la nuestra
+    //No tengo claro como identificar que este evento es de nuestra ventana, veo info nada clara sobre esto
+    //Entonces la solución es: liberar alt siempre que una ventana pierde el foco, que no tiene que ser la nuestra
+    //Si es la nuestra, perfecto, se libera. Y si es otra, será por ejemplo que estamos fuera de la nuestra conmutando
+    //entre otras ventanas y tampoco pasa nada que liberemos ese alt
+
+    //Igualmente aqui no afecta el caso de alt-tab en linux (en Mac se conmuta con cmd-tab), pero sí que pasaria
+    //por ejemplo si estamos en ZEsarUX pulsando alt, y con el ratón pulsamos en otra ventana: alt en ZEsarUX se quedaria pulsado
+    //Es raro, pero podria suceder
+
+
+    debug_printf(VERBOSE_INFO,"Releasing alt when losing window focus (to avoid alt pressed when alt-tab key combination pressed)");
+
+    joystick_possible_leftalt_key(0);
+
+    //Necesario esto en Mac. Si no, volveriamos a la ventana y al pulsar alt, la primera pulsacion no se leeria
+    scrcocoa_antespulsadoalt_l=0;
+
+}
+
 
 
 - (void)windowWillStartLiveResize:(NSNotification *)notification
@@ -1694,6 +1724,7 @@ int scrcocoa_keymap_z88_cpc_leftz; //Tecla a la izquierda de la Z. usada en Chlo
                 break;
 
                 case COCOA_KEY_LALT:
+                        printf("press/release alt: %d\n",pressrelease);
                         joystick_possible_leftalt_key(pressrelease);
                 break;
 
@@ -2013,9 +2044,6 @@ int scrcocoa_keymap_z88_cpc_leftz; //Tecla a la izquierda de la Z. usada en Chlo
 
 }
 
-//inicializarlos con valores 0 al principio
-int scrcocoa_antespulsadoctrl_l=0,scrcocoa_antespulsadoctrl_r=0,scrcocoa_antespulsadoalt_l=0,scrcocoa_antespulsadoalt_r=0;
-int scrcocoa_antespulsadoshift_l=0,scrcocoa_antespulsadoshift_r=0,scrcocoa_antespulsadocmd_l=0,scrcocoa_antespulsadocmd_r=0; //,scrcocoa_antespulsadocapslock=0;
 
 - (void) migestionEvento:(NSEvent *)event
 {
@@ -2190,7 +2218,7 @@ int scrcocoa_antespulsadoshift_l=0,scrcocoa_antespulsadoshift_r=0,scrcocoa_antes
 
 
 	if (pulsadoalt_l!=scrcocoa_antespulsadoalt_l) {
-		//printf ("notificar cambio alt l\n");
+		//printf ("notificar cambio alt l. pulsadoalt_l=%d\n",pulsadoalt_l);
 		joystick_possible_leftalt_key(pulsadoalt_l);
 	}
 

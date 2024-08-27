@@ -42,7 +42,7 @@ Mejorado ZX Desktop:
 * Correcciones:
 
 Quitar indicador de buffer lleno al pulsar shift+e en ventana de Fuente de sonido externa
-Corregido tecla alt pulsada al cambiar de ventana pulsando alt-tab en drivers xwindow, sdl1 y sdl2
+Corregido tecla alt pulsada al cambiar de ventana pulsando alt-tab en drivers xwindow, cocoa, sdl1 y sdl2
 Corregida autocarga de TZX como Cinta Real en Spectrum +3
 Corregido hotswap ZX80 a ZX81, ZX81 a ZX80
 Corregido Scroll de Amstrad CPC
