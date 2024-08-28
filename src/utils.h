@@ -1044,4 +1044,6 @@ extern void parse_string_to_number_add_label(char *texto,int numero);
 
 extern labeltree *parse_string_labeltree;
 
+extern void labels_load(char *archivo);
+
 #endif

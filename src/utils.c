@@ -9348,6 +9348,69 @@ void parse_string_to_number_add_label(char *texto,int numero)
     if (l!=NULL) parse_string_labeltree=l;
 }
 
+void labels_load_parse_one_line(z80_byte *memoria)
+{
+    printf("Parseando linea: [%s]\n",memoria);
+}
+
+void labels_load_parse_lines(z80_byte *memoria,int longitud)
+{
+    z80_byte *inicio_linea=memoria;
+
+    //Separar cada linea
+    while (1) {
+        //Buscar cr/lf o final de archivo
+        if ((*memoria==10 || *memoria==13) || longitud==0) {
+            *memoria=0;
+            labels_load_parse_one_line(inicio_linea);
+
+            //buscar siguiente linea
+            while ( (*memoria==10 || *memoria==13) && longitud>0) {
+                memoria++;
+                longitud--;
+            }
+
+            //fin de archivo
+            if (longitud==0) return;
+
+            inicio_linea=memoria;
+        }
+
+        else {
+            memoria++;
+            longitud--;
+        }
+    }
+
+
+}
+
+//Cargar archivo de etiquetas
+void labels_load(char *archivo)
+{
+    if (!si_existe_archivo(archivo)) {
+        debug_printf(VERBOSE_ERR,"File %s does not exist",archivo);
+        return;
+    }
+
+    long long int longitud=get_file_size(ZESARUX_INDEX_MENU_FILE);
+
+    //Si longitud 0 (cosa extraña) volver sin mas
+    if (!longitud) return;
+
+    //Asignamos 1 byte mas para el 0 del final
+    z80_byte *buffer_labels=util_malloc(longitud+1,"Can not allocate memory to read labels file");
+
+    int total_leidos=util_load_file_bytes(buffer_labels,archivo,longitud);
+
+    if (!total_leidos) return;
+
+    //Ir procesando linea a linea
+    labels_load_parse_lines(buffer_labels,longitud);
+
+    free(buffer_labels);
+}
+
 //Retorna numero parseado. Si acaba en H, se supone que es hexadecimal
 //Si acaba en
 //Si empieza por ' o "" es un caracter (1 solo caracter, no un string)
