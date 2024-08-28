@@ -22994,7 +22994,14 @@ labeltree *labeltree_add_element(labeltree *l,char *name,int value)
     //Inicializar label
     newlabel->left=NULL;
     newlabel->right=NULL;
-    strcpy(newlabel->name,name);
+
+    if (strlen(name)>MAX_LABELTREE_NAME-1) {
+        //acortar. excede limite
+        strncpy(newlabel->name,name,MAX_LABELTREE_NAME-1);
+        debug_printf(VERBOSE_ERR,"Label [%s] length exceeds limit (%d). Truncating it",name,MAX_LABELTREE_NAME-1);
+    }
+
+    else strcpy(newlabel->name,name);
     newlabel->value=value;
 
     //Si no habia ninguno
