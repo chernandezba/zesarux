@@ -9361,6 +9361,29 @@ enum token_parser_formato {
 	TPF_ASCII
 }; */
 
+int parse_string_is_hexa(char *texto,int longitud)
+{
+    int i;
+
+    for (i=0;i<longitud;i++) {
+        if (!
+            (
+            (texto[i]>='a' && texto[i]<='f') ||
+            (texto[i]>='A' && texto[i]<='F') ||
+            (texto[i]>='0' && texto[i]<='9')
+
+            )
+        ) {
+            return 0;
+        }
+    }
+
+    return 1;
+
+}
+
+
+
 unsigned int parse_string_to_number_get_type(char *texto,enum token_parser_formato *tipo_valor)
 {
 	int value;
@@ -9391,14 +9414,18 @@ unsigned int parse_string_to_number_get_type(char *texto,enum token_parser_forma
 	char sufijo=texto[posicion_sufijo];
 	if (sufijo=='H' || sufijo=='h') {
 		//hexadecimal
-		//quitamos sufijo y parseamos
-		texto[posicion_sufijo]=0;
-		value=strtol(texto, NULL, 16);
-		//volvemos a dejar sufijo tal cual
-		texto[posicion_sufijo]=sufijo;
+        //Vamos a comprobar que todo lo que haya este en el rango 0..9 a..f A...F
+        //Por que si no, un label que se llame por ejemplo "Research" pensara que es un valor hexadecimal, porque acaba en h
+        if (parse_string_is_hexa(texto,posicion_sufijo)) {
+            //quitamos sufijo y parseamos
+            texto[posicion_sufijo]=0;
+            value=strtol(texto, NULL, 16);
+            //volvemos a dejar sufijo tal cual
+            texto[posicion_sufijo]=sufijo;
 
-                *tipo_valor=TPF_HEXADECIMAL;
-		return value;
+                    *tipo_valor=TPF_HEXADECIMAL;
+            return value;
+        }
 	}
 
         if (sufijo=='%') {
@@ -9417,6 +9444,7 @@ unsigned int parse_string_to_number_get_type(char *texto,enum token_parser_forma
     if ( (texto[0]>='A' && texto[0]<='Z') ||
          (texto[0]>='a' && texto[0]<='z')
         ) {
+            //printf("Paseamos [%s] con parse_string_to_number_label\n",texto);
         return parse_string_to_number_label(texto);
     }
 
@@ -22887,7 +22915,10 @@ labeltree *labeltree_find_element(labeltree *l,char *name)
         previous=l;
 
         int resta=strcasecmp(name,l->name);
-        if (!resta) return l; //Encontrado
+        if (!resta) {
+            //printf("Encontrado exacto\n");
+            return l; //Encontrado
+        }
 
         if (resta>0) {
             l=l->right;

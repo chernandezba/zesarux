@@ -839,6 +839,8 @@ int exp_par_exp_to_tokens(char *expression,token_parser *tokens)
                         return -1;
                     }
 
+                    //printf("En expression parser encontrado exacto\n");
+
                 }
 
 
