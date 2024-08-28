@@ -32586,11 +32586,13 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_en_es_ca(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_show_symbol_table,NULL,
                 "Show symbol table","Mostrar Tabla Símbolos","Mostrar Taula Símbols");
             menu_add_item_menu_se_cerrara(array_menu_debug);
+            menu_add_item_menu_genera_ventana(array_menu_debug);
             menu_add_item_menu_es_avanzado(array_menu_debug);
 
             menu_add_item_menu_en_es_ca(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_symbol_table_unload,NULL,
                 "Unload Symbol Table","Descartar Tabla Símbolos","Descartar Taula Símbols");
             menu_add_item_menu_se_cerrara(array_menu_debug);
+            menu_add_item_menu_genera_ventana(array_menu_debug);
             menu_add_item_menu_es_avanzado(array_menu_debug);
 
         }

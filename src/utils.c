@@ -9381,7 +9381,7 @@ void labels_load_parse_one_line(z80_byte *memoria)
 
     z80_byte *valor=memoria;
 
-    printf("Parseamos label: [%s] valor: [%s]\n",label,valor);
+    //printf("Parseamos label: [%s] valor: [%s]\n",label,valor);
 
     int valor_numero=parse_string_to_number((char *)valor);
 
@@ -23056,7 +23056,7 @@ void labeltree_free(labeltree *l)
     labeltree *left=l->left;
     labeltree *right=l->right;
 
-    printf("Liberar [%s] %p\n",l->name,l);
+    //printf("Liberar [%s] %p\n",l->name,l);
     free(l);
 
     labeltree_free(left);
