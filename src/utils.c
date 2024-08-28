@@ -22792,24 +22792,24 @@ int util_string_starts_with(char *texto, char *prefijo)
 labeltree *labeltree_add_element(labeltree *l,char *name)
 {
 
-    printf("Adding [%s]\n",name);
+    //printf("Adding [%s]\n",name);
 
     labeltree *previous=l;
 
     int resta=0;
 
     while (l!=NULL) {
-        printf("En bucle while. label leida=[%s]\n",l->name);
+        //printf("En bucle while. label leida=[%s]\n",l->name);
         previous=l;
 
         resta=strcasecmp(name,l->name);
         if (resta>0) {
             l=l->right;
-            printf("Vamos a la derecha\n");
+            //printf("Vamos a la derecha\n");
         }
         else {
             l=l->left;
-            printf("Vamos a la izquierda\n");
+            //printf("Vamos a la izquierda\n");
         }
     }
 
@@ -22822,17 +22822,17 @@ labeltree *labeltree_add_element(labeltree *l,char *name)
 
     //Si no habia ninguno
     if (previous==NULL) {
-        printf("Primera etiqueta\n");
+        //printf("Primera etiqueta\n");
         return newlabel;
     }
     else {
         if (resta>0) {
             previous->right=newlabel;
-            printf("Se escribe a la derecha\n");
+            //printf("Se escribe a la derecha\n");
         }
         else {
             previous->left=newlabel;
-            printf("Se escribe a la izquierda\n");
+            //printf("Se escribe a la izquierda\n");
         }
 
         return NULL;
@@ -22843,12 +22843,12 @@ labeltree *labeltree_add_element(labeltree *l,char *name)
 //Buscar una labeltree
 labeltree *labeltree_find_element(labeltree *l,char *name)
 {
-    printf("Buscando [%s]\n",name);
+    //printf("Buscando [%s]\n",name);
 
     labeltree *previous=l;
 
     while (l!=NULL) {
-        printf("En bucle while. label leida=[%s]\n",l->name);
+        //printf("En bucle while. label leida=[%s]\n",l->name);
         previous=l;
 
         int resta=strcasecmp(name,l->name);
@@ -22856,11 +22856,11 @@ labeltree *labeltree_find_element(labeltree *l,char *name)
 
         if (resta>0) {
             l=l->right;
-            printf("Vamos a la derecha\n");
+            //printf("Vamos a la derecha\n");
         }
         else {
             l=l->left;
-            printf("Vamos a la izquierda\n");
+            //printf("Vamos a la izquierda\n");
         }
     }
 
