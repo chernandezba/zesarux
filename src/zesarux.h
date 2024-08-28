@@ -32,7 +32,7 @@
 
 //Para Mac
 #if defined(__APPLE__)
-        #include <sys/syslimits.h>
+    #include <sys/syslimits.h>
 #endif
 
 
@@ -43,17 +43,9 @@
 #define NAME_MAX MAX_PATH
 #endif
 
-//Para FreeBSD
-//Nota: no en todos mis .h que uso PATH_MAX tengo este include, es debido a que en algunos incluyo utils.h y en este utils.h se incluye a su vez limits.h
-#ifdef __FreeBSD__
+//FreeBSD, Haiku (y quizá otros Unix) utilizan este
 #include <limits.h>
-#endif
 
-//Para haiku
-#ifdef HAIKU_OS
-//Para incluir PATH_MAX
-#include <limits.h>
-#endif
 
 //
 //Fin uso de PATH_MAX en diferentes sistemas operativos
