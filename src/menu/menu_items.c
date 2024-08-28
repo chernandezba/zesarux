@@ -25557,6 +25557,30 @@ void menu_debug_load_source_code(MENU_ITEM_PARAMETERS)
 
 }
 
+void menu_debug_load_symbol_table(MENU_ITEM_PARAMETERS)
+{
+
+    char symbols_load_file[PATH_MAX];
+
+    char *filtros[2];
+
+    filtros[0]="sym";
+    filtros[1]=0;
+
+
+    if (menu_filesel("Select Symbol File",filtros,symbols_load_file)==1) {
+        labels_load(symbols_load_file);
+
+
+        menu_generic_message_splash("Load Symbol Table","OK File loaded");
+        //Y salimos de todos los menus
+        salir_todos_menus=1;
+
+
+    }
+
+}
+
 void menu_snapshot_rewind_browse_select(MENU_ITEM_PARAMETERS)
 {
     //Aplicar ese snapshot
@@ -32495,6 +32519,15 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_se_cerrara(array_menu_debug);
             menu_add_item_menu_es_avanzado(array_menu_debug);
         }
+
+        menu_add_item_menu_en_es_ca(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_load_symbol_table,NULL,
+            "Load Symbol Table","Cargar Tabla Símbolos","Carregar Taula Símbols");
+        menu_add_item_menu_se_cerrara(array_menu_debug);
+        menu_add_item_menu_genera_ventana(array_menu_debug);
+        menu_add_item_menu_tooltip(array_menu_debug,"Load symbol table");
+        menu_add_item_menu_ayuda(array_menu_debug,"Load symbol table. Format for every line is:\n"
+            "LABEL[spaces, tabs, :]VALUE");
+        menu_add_item_menu_es_avanzado(array_menu_debug);
 
 		if (MACHINE_IS_TSCONF || MACHINE_IS_ZXUNO || datagear_dma_emulation.v) {
 			menu_add_item_menu_format(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_dma_tsconf_zxuno,NULL,"Debug D~~MA");
