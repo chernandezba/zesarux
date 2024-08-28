@@ -470,6 +470,7 @@ int exp_par_is_funcion(char *texto,int *final,enum token_parser_indice *indice_f
     if (!exp_par_is_parentesis_abrir(*texto)) return 0;
 
     if (i==MAX_PARSER_TEXTOS_INDICE_LENGTH) {
+        //printf("Error expresion\n");
         //Final de buffer. error
         return -1;
     }
@@ -795,8 +796,49 @@ int exp_par_exp_to_tokens(char *expression,token_parser *tokens)
                 resultado=exp_par_is_number(expression,&final);
 
                 if (resultado<=0) {
-                    //printf ("return number with error (evaluated [%s]\n",expression);
-                    return -1; //error
+                    //Si hay labels cargados, dejaremos que luego parse_string_to_number_get_type lo evalue
+                    //en caso que exista ese label claro
+                    if (parse_string_labeltree==NULL) {
+                        //printf ("return number with error (evaluated [%s])\n",expression);
+                        return -1; //error
+                    }
+
+
+
+                    //Encontrar longitud de ese label
+                    //Caracteres de fin: lo que no sea letras, numeros, guiones bajos
+                    int jj;
+                    final=0;
+                    for (jj=0;expression[jj];jj++,final++) {
+                        if (!
+                            (
+                            (expression[jj]>='a' && expression[jj]<='z') ||
+                            (expression[jj]>='A' && expression[jj]<='Z') ||
+                            (expression[jj]>='0' && expression[jj]<='9') ||
+                            expression[jj]=='_'
+                            )
+                        ) {
+                            break;
+                        }
+                    }
+
+                    //Metemos en buffer temporal
+                    char label_temp[MAX_PARSER_TEXTOS_INDICE_LENGTH];
+                    exp_par_copy_string(expression,label_temp,final);
+
+                    // comprobar antes si ese label realmente existe
+                    labeltree *found=labeltree_find_element(parse_string_labeltree,label_temp);
+
+                    if (found==NULL) {
+                        //No hay labels cargadas
+                        return -1;
+                    }
+
+                    //Si no encontrado exacto
+                    if (strcasecmp(label_temp,found->name)) {
+                        return -1;
+                    }
+
                 }
 
 
@@ -809,7 +851,7 @@ int exp_par_exp_to_tokens(char *expression,token_parser *tokens)
                 char buffer_temp[MAX_PARSER_TEXTOS_INDICE_LENGTH];
                 exp_par_copy_string(expression,buffer_temp,final);
 
-                //Parseamos numero
+                //Parseamos numero o label
                 enum token_parser_formato formato;
                 int valor=parse_string_to_number_get_type(buffer_temp,&formato);
 

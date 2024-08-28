@@ -1035,10 +1035,13 @@ struct s_labeltree {
 
 typedef struct s_labeltree labeltree;
 
-labeltree *labeltree_add_element(labeltree *l,char *name,int value);
 
-labeltree *labeltree_find_element(labeltree *l,char *name);
+extern labeltree *labeltree_add_element(labeltree *l,char *name,int value);
 
-void parse_string_to_number_add_label(char *texto,int numero);
+extern labeltree *labeltree_find_element(labeltree *l,char *name);
+
+extern void parse_string_to_number_add_label(char *texto,int numero);
+
+extern labeltree *parse_string_labeltree;
 
 #endif
