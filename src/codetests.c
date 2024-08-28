@@ -2346,13 +2346,22 @@ char *expected_labels[]={
     "perro"
 };
 
+int expected_labels_values[]={
+    10,30,40,60,20,50
+};
+
 void codetests_labeltree_list_and_check(labeltree *l)
 {
     if (l==NULL) return;
 
-    printf("Label read: [%s]\n",l->name);
+    printf("Label read: [%s]. value: [%d]\n",l->name,l->value);
     if (strcmp(l->name,expected_labels[codetests_labeltree_list_and_check_index])) {
         printf("ERROR. Expected label: [%s]\n",expected_labels[codetests_labeltree_list_and_check_index]);
+        exit(1);
+    }
+
+    if (l->value!=expected_labels_values[codetests_labeltree_list_and_check_index]) {
+        printf("ERROR. Expected label value: [%d]\n",expected_labels_values[codetests_labeltree_list_and_check_index]);
         exit(1);
     }
 
@@ -2369,12 +2378,12 @@ void codetests_labeltree(void)
 
 
     //primer elemento se asigna el puntero
-    l=labeltree_add_element(l,"mama");
-    labeltree_add_element(l,"papa");
-    labeltree_add_element(l,"adios");
-    labeltree_add_element(l,"casa");
-    labeltree_add_element(l,"perro");
-    labeltree_add_element(l,"coche");
+    l=labeltree_add_element(l,"mama",10);
+    labeltree_add_element(l,"papa",20);
+    labeltree_add_element(l,"adios",30);
+    labeltree_add_element(l,"casa",40);
+    labeltree_add_element(l,"perro",50);
+    labeltree_add_element(l,"coche",60);
 
     /*
     El arbol quedara asi:

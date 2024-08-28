@@ -9319,6 +9319,27 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
 	}
 }
 
+//Memoria para labels
+labeltree *parse_string_labeltree=NULL;
+
+unsigned int parse_string_to_number_label(char *texto)
+{
+    labeltree *found=labeltree_find_element(parse_string_labeltree,texto);
+
+    if (found==NULL) {
+        //No hay labels cargadas
+        return 0;
+    }
+
+    //Si encontrado exacto
+    if (!strcasecmp(texto,found->name)) {
+        return found->value;
+    }
+
+    //Si no encontrado exacto, retornar 0
+    return 0;
+}
+
 
 
 //Retorna numero parseado. Si acaba en H, se supone que es hexadecimal
@@ -9385,6 +9406,13 @@ unsigned int parse_string_to_number_get_type(char *texto,enum token_parser_forma
                 *tipo_valor=TPF_BINARIO;
 		return value;
 	}
+
+    //Si empieza por letra, es un label
+    if ( (texto[0]>='A' && texto[0]<='Z') ||
+         (texto[0]>='a' && texto[0]<='z')
+        ) {
+        return parse_string_to_number_label(texto);
+    }
 
 	//decimal
         return atoi(texto);
@@ -22788,8 +22816,8 @@ int util_string_starts_with(char *texto, char *prefijo)
 
 
 //Gestion de arbol binario para almacenar etiquetas
-//Devuelve puntero diferente de NULL si se ha creado el primer elemento
-labeltree *labeltree_add_element(labeltree *l,char *name)
+//Devuelve puntero diferente de NULL si se ha creado el primer elemento, apuntando a dicho elemento inicial
+labeltree *labeltree_add_element(labeltree *l,char *name,int value)
 {
 
     //printf("Adding [%s]\n",name);
@@ -22819,6 +22847,7 @@ labeltree *labeltree_add_element(labeltree *l,char *name)
     newlabel->left=NULL;
     newlabel->right=NULL;
     strcpy(newlabel->name,name);
+    newlabel->value=value;
 
     //Si no habia ninguno
     if (previous==NULL) {

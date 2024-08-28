@@ -1030,11 +1030,12 @@ struct s_labeltree {
     char name[MAX_LABELTREE_NAME];
     struct s_labeltree *left;
     struct s_labeltree *right;
+    int value;
 };
 
 typedef struct s_labeltree labeltree;
 
-labeltree *labeltree_add_element(labeltree *l,char *name);
+labeltree *labeltree_add_element(labeltree *l,char *name,int value);
 
 labeltree *labeltree_find_element(labeltree *l,char *name);
 
