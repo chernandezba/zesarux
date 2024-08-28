@@ -1039,4 +1039,6 @@ labeltree *labeltree_add_element(labeltree *l,char *name,int value);
 
 labeltree *labeltree_find_element(labeltree *l,char *name);
 
+void parse_string_to_number_add_label(char *texto,int numero);
+
 #endif

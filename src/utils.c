@@ -9340,7 +9340,13 @@ unsigned int parse_string_to_number_label(char *texto)
     return 0;
 }
 
+void parse_string_to_number_add_label(char *texto,int numero)
+{
+    labeltree *l=labeltree_add_element(parse_string_labeltree,texto,numero);
 
+    //primer elemento
+    if (l!=NULL) parse_string_labeltree=l;
+}
 
 //Retorna numero parseado. Si acaba en H, se supone que es hexadecimal
 //Si acaba en
