@@ -9359,19 +9359,28 @@ void labels_load_parse_lines(z80_byte *memoria,int longitud)
 
     //Separar cada linea
     while (1) {
+        //printf("longitud: %d\n",longitud);
         //Buscar cr/lf o final de archivo
         if ((*memoria==10 || *memoria==13) || longitud==0) {
             *memoria=0;
             labels_load_parse_one_line(inicio_linea);
 
-            //buscar siguiente linea
-            while ( (*memoria==10 || *memoria==13) && longitud>0) {
-                memoria++;
-                longitud--;
+            //Siguiente caracter
+            memoria++;
+            longitud--;
+
+            if (longitud>0) {
+
+                //buscar siguiente linea
+                while ( (*memoria==10 || *memoria==13) && longitud>0) {
+                    memoria++;
+                    longitud--;
+                }
+
             }
 
             //fin de archivo
-            if (longitud==0) return;
+            if (longitud<=0) return;
 
             inicio_linea=memoria;
         }
@@ -9393,7 +9402,7 @@ void labels_load(char *archivo)
         return;
     }
 
-    long long int longitud=get_file_size(ZESARUX_INDEX_MENU_FILE);
+    long long int longitud=get_file_size(archivo);
 
     //Si longitud 0 (cosa extraña) volver sin mas
     if (!longitud) return;
