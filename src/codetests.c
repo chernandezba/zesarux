@@ -2334,6 +2334,89 @@ void codetests_cpc_videoram_increment(void)
     }
 }
 
+int codetests_labeltree_list_and_check_index=0;
+
+//Orden esperado tal cual las va leyendo de manera recursiva en codetests_labeltree_list_and_check
+char *expected_labels[]={
+    "mama",
+    "adios",
+    "casa",
+    "coche",
+    "papa",
+    "perro"
+};
+
+void codetests_labeltree_list_and_check(labeltree *l)
+{
+    if (l==NULL) return;
+
+    printf("Label read: [%s]\n",l->name);
+    if (strcmp(l->name,expected_labels[codetests_labeltree_list_and_check_index])) {
+        printf("ERROR. Expected label: [%s]\n",expected_labels[codetests_labeltree_list_and_check_index]);
+        exit(1);
+    }
+
+    codetests_labeltree_list_and_check_index++;
+
+    codetests_labeltree_list_and_check(l->left);
+    codetests_labeltree_list_and_check(l->right);
+}
+
+void codetests_labeltree(void)
+{
+
+    labeltree *l=NULL;
+
+
+    //primer elemento se asigna el puntero
+    l=labeltree_add_element(l,"mama");
+    labeltree_add_element(l,"papa");
+    labeltree_add_element(l,"adios");
+    labeltree_add_element(l,"casa");
+    labeltree_add_element(l,"perro");
+    labeltree_add_element(l,"coche");
+
+    /*
+    El arbol quedara asi:
+
+            mama
+          /     \
+         /      \
+      adios    papa
+        \        \
+         \        \
+        casa     perro
+          \
+           \
+          coche
+    */
+
+    //iteramos sobre todos
+    printf("Listing and checking all labels\n");
+    codetests_labeltree_list_and_check(l);
+
+    printf("Finding elements\n");
+    labeltree *found;
+
+    //busqueda exacta
+    found=labeltree_find_element(l,"casa");
+
+    if (strcasecmp(found->name,"casa")) {
+        printf("Can't find element\n");
+        exit(1);
+    }
+
+    //busqueda de otra palabra que no esta
+    found=labeltree_find_element(l,"pan");
+
+    //en este caso el mas cercano es "papa"
+    if (strcasecmp(found->name,"papa")) {
+        printf("Can't find element\n");
+        exit(1);
+    }
+
+}
+
 void codetests_main(int main_argc,char *main_argv[])
 {
 
@@ -2450,6 +2533,9 @@ void codetests_main(int main_argc,char *main_argv[])
 
     printf("\nRunning cpc codetests videoram increment\n");
     codetests_cpc_videoram_increment();
+
+    printf("\nRunning labeltree tests\n");
+    codetests_labeltree();
 
     //printf("\nRunning codetests stl\n");
     //codetests_stl();

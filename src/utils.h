@@ -1034,5 +1034,8 @@ struct s_labeltree {
 
 typedef struct s_labeltree labeltree;
 
+labeltree *labeltree_add_element(labeltree *l,char *name);
+
+labeltree *labeltree_find_element(labeltree *l,char *name);
 
 #endif

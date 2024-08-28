@@ -22839,3 +22839,32 @@ labeltree *labeltree_add_element(labeltree *l,char *name)
     }
 
 }
+
+//Buscar una labeltree
+labeltree *labeltree_find_element(labeltree *l,char *name)
+{
+    printf("Buscando [%s]\n",name);
+
+    labeltree *previous=l;
+
+    while (l!=NULL) {
+        printf("En bucle while. label leida=[%s]\n",l->name);
+        previous=l;
+
+        int resta=strcasecmp(name,l->name);
+        if (!resta) return l; //Encontrado
+
+        if (resta>0) {
+            l=l->right;
+            printf("Vamos a la derecha\n");
+        }
+        else {
+            l=l->left;
+            printf("Vamos a la izquierda\n");
+        }
+    }
+
+    //En caso que la busqueda no sea exacta, se retornara la mas cercana
+    return previous;
+
+}
