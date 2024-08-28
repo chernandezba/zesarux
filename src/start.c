@@ -963,6 +963,7 @@ printf(
 printf (
 	    "--set-mem-breakpoint a n            Set memory breakpoint at address a for type n\n"
         "--load-source-code f                Load source code from file\n"
+        "--load-symbol-table f               Load symbol table from file\n"
 	    "--hardware-debug-ports              These ports are used to interact with ZEsarUX, for example showing a ASCII character on console, read ZEsarUX version, etc. "
 		"Read file extras/docs/zesarux_zxi_registers.txt for more information\n"
 	    "--hardware-debug-ports-byte-file f  Sets the file used on register HARDWARE_DEBUG_BYTE_FILE\n"
@@ -4357,6 +4358,13 @@ int parse_cmdline_options(int desde_commandline) {
                     siguiente_parametro_argumento();
 
                     command_line_load_source_code_file=argv[puntero_parametro];
+            }
+
+            else if (!strcmp(argv[puntero_parametro],"--load-symbol-table")) {
+
+                    siguiente_parametro_argumento();
+
+                    labels_load(argv[puntero_parametro]);
             }
 
 			else if (!strcmp(argv[puntero_parametro],"--trd-file")) {
