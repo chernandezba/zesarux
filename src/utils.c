@@ -9350,7 +9350,43 @@ void parse_string_to_number_add_label(char *texto,int numero)
 
 void labels_load_parse_one_line(z80_byte *memoria)
 {
-    printf("Parseando linea: [%s]\n",memoria);
+    //Separar linea en
+    //LABEL[espacios, tabs, dos puntos :]VALOR
+    //printf("Parseando linea: [%s]\n",memoria);
+
+    z80_byte *label=memoria;
+    int longitud=strlen((char *)memoria);
+
+    //buscar separador
+    while ( longitud && *memoria!=9 && *memoria!=32 && *memoria!=':') {
+        memoria++;
+        longitud--;
+    }
+
+    if (!longitud) {
+        //fin de linea sin leer separador
+        return;
+    }
+
+    *memoria=0;
+
+    memoria++;
+    longitud--;
+
+    //saltar separadores hasta valor
+    while ( longitud && (*memoria==9 || *memoria==32 || *memoria==':') ) {
+        memoria++;
+        longitud--;
+    }
+
+    z80_byte *valor=memoria;
+
+    printf("Parseamos label: [%s] valor: [%s]\n",label,valor);
+
+    int valor_numero=parse_string_to_number((char *)valor);
+
+    parse_string_to_number_add_label((char *)label,valor_numero);
+
 }
 
 void labels_load_parse_lines(z80_byte *memoria,int longitud)
