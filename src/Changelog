@@ -8,6 +8,7 @@ Added Find text string on memory menu
 Added Quicksave screen function
 Added setting to disable persistent writes on Z88 Cards
 Added CPC Additional ROMS emulation
+Added Symbol Table loading to improve debugging
 
 * Improvements:
 

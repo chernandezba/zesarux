@@ -1024,7 +1024,10 @@ extern int util_write_stl_file(char *archivo, int ancho, int alto, z80_byte *sou
 extern void util_move_turtle(int xorig,int yorig,int grados,int longitud,int *xfinal,int *yfinal);
 extern int util_string_starts_with(char *texto, char *prefijo);
 
-#define MAX_LABELTREE_NAME 50
+//#define MAX_LABELTREE_NAME 50
+
+//Dado que tiene relacion con el parser, estas longitudes tienen que ser iguales
+#define MAX_LABELTREE_NAME MAX_PARSER_TEXTOS_INDICE_LENGTH
 
 struct s_labeltree {
     char name[MAX_LABELTREE_NAME];
