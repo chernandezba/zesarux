@@ -22785,3 +22785,57 @@ int util_string_starts_with(char *texto, char *prefijo)
 
     return 1;
 }
+
+
+//Gestion de arbol binario para almacenar etiquetas
+//Devuelve puntero diferente de NULL si se ha creado el primer elemento
+labeltree *labeltree_add_element(labeltree *l,char *name)
+{
+
+    printf("Adding [%s]\n",name);
+
+    labeltree *previous=l;
+
+    int resta=0;
+
+    while (l!=NULL) {
+        printf("En bucle while. label leida=[%s]\n",l->name);
+        previous=l;
+
+        resta=strcasecmp(name,l->name);
+        if (resta>0) {
+            l=l->right;
+            printf("Vamos a la derecha\n");
+        }
+        else {
+            l=l->left;
+            printf("Vamos a la izquierda\n");
+        }
+    }
+
+    labeltree *newlabel=util_malloc(sizeof(labeltree),"Can not allocate memory for labeltree element");
+
+    //Inicializar label
+    newlabel->left=NULL;
+    newlabel->right=NULL;
+    strcpy(newlabel->name,name);
+
+    //Si no habia ninguno
+    if (previous==NULL) {
+        printf("Primera etiqueta\n");
+        return newlabel;
+    }
+    else {
+        if (resta>0) {
+            previous->right=newlabel;
+            printf("Se escribe a la derecha\n");
+        }
+        else {
+            previous->left=newlabel;
+            printf("Se escribe a la izquierda\n");
+        }
+
+        return NULL;
+    }
+
+}

@@ -1024,4 +1024,15 @@ extern int util_write_stl_file(char *archivo, int ancho, int alto, z80_byte *sou
 extern void util_move_turtle(int xorig,int yorig,int grados,int longitud,int *xfinal,int *yfinal);
 extern int util_string_starts_with(char *texto, char *prefijo);
 
+#define MAX_LABELTREE_NAME 50
+
+struct s_labeltree {
+    char name[MAX_LABELTREE_NAME];
+    struct s_labeltree *left;
+    struct s_labeltree *right;
+};
+
+typedef struct s_labeltree labeltree;
+
+
 #endif
