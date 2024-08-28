@@ -22,21 +22,13 @@
 #ifndef ZXVISION_H
 #define ZXVISION_H
 
-#include <dirent.h>
-#if defined(__APPLE__)
-        #include <sys/syslimits.h>
-#endif
 
 
 #include "cpu.h"
 
 
-//Por el tema de usar PATH_MAX en windows
-#ifdef MINGW
-#include <stdlib.h>
-#define PATH_MAX MAX_PATH
-#define NAME_MAX MAX_PATH
-#endif
+//Para usar PATH_MAX
+#include "zesarux.h"
 
 /*
  ZXVISION_USE_CACHE_OVERLAY_TEXT : Activar cache de overlay_screen_array. Si no se ha modificado una posicion concreta en overlay_screen_array,

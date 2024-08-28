@@ -22,27 +22,10 @@
 #ifndef AUDIO_H
 #define AUDIO_H
 
-#include <dirent.h>
-#if defined(__APPLE__)
-        #include <sys/syslimits.h>
-#endif
-
-
 #include "cpu.h"
 
-
-//Por el tema de usar PATH_MAX en windows
-#ifdef MINGW
-#include <stdlib.h>
-#define PATH_MAX MAX_PATH
-#define NAME_MAX MAX_PATH
-#endif
-
-//Por el uso de PATH_MAX en FreeBSD
-//Nota: no en todos mis .h que uso PATH_MAX tengo este include, es debido a que en algunos incluyo utils.h y en este utils.h se incluye a su vez limits.h
-#ifdef __FreeBSD__
-#include <limits.h>
-#endif
+//Para usar PATH_MAX
+#include "zesarux.h"
 
 
 //lineas de cada pantalla. al final de cada linea se guarda el bit a enviar al altavoz

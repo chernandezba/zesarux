@@ -22,21 +22,10 @@
 #ifndef MENU_FILESEL_H
 #define MENU_FILESEL_H
 
-#include <dirent.h>
-#if defined(__APPLE__)
-        #include <sys/syslimits.h>
-#endif
-
-
 #include "cpu.h"
 
-
-//Por el tema de usar PATH_MAX en windows
-#ifdef MINGW
-#include <stdlib.h>
-#define PATH_MAX MAX_PATH
-#define NAME_MAX MAX_PATH
-#endif
+//Para usar PATH_MAX
+#include "zesarux.h"
 
 
 
