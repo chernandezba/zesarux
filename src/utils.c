@@ -9433,6 +9433,12 @@ void labels_load_parse_lines(z80_byte *memoria,int longitud)
 //Cargar archivo de etiquetas
 void labels_load(char *archivo)
 {
+
+    //Liberar si habia alguno
+    labeltree_free(parse_string_labeltree);
+
+    parse_string_labeltree=NULL;
+
     if (!si_existe_archivo(archivo)) {
         debug_printf(VERBOSE_ERR,"File %s does not exist",archivo);
         return;
@@ -23041,4 +23047,18 @@ labeltree *labeltree_find_element(labeltree *l,char *name)
     //En caso que la busqueda no sea exacta, se retornara la mas cercana
     return previous;
 
+}
+
+void labeltree_free(labeltree *l)
+{
+    if (l==NULL) return;
+
+    labeltree *left=l->left;
+    labeltree *right=l->right;
+
+    printf("Liberar [%s] %p\n",l->name,l);
+    free(l);
+
+    labeltree_free(left);
+    labeltree_free(right);
 }

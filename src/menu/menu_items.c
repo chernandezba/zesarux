@@ -25581,6 +25581,59 @@ void menu_debug_load_symbol_table(MENU_ITEM_PARAMETERS)
 
 }
 
+char *menu_debug_show_symbol_table_texto_browser;
+//int menu_debug_show_symbol_table_indice_buffer;
+
+
+void menu_debug_show_symbol_table_recurse(labeltree *l)
+{
+    if (l==NULL) return;
+
+    char buffer_texto[MAX_LABELTREE_NAME+100];
+
+    sprintf(buffer_texto,"%s: %d\n",l->name,l->value);
+
+    util_concat_string(menu_debug_show_symbol_table_texto_browser,buffer_texto,MAX_TEXTO_GENERIC_MESSAGE);
+
+
+    menu_debug_show_symbol_table_recurse(l->left);
+    menu_debug_show_symbol_table_recurse(l->right);
+}
+
+void menu_debug_symbol_table_unload(MENU_ITEM_PARAMETERS)
+{
+    labeltree_free(parse_string_labeltree);
+    parse_string_labeltree=NULL;
+
+    menu_generic_message_splash("Unload Symbol Table","OK Symbols Unloaded");
+
+}
+
+
+void menu_debug_show_symbol_table(MENU_ITEM_PARAMETERS)
+{
+    menu_debug_show_symbol_table_texto_browser=util_malloc_max_texto_browser();
+	//menu_debug_show_symbol_table_indice_buffer=0;
+
+    menu_debug_show_symbol_table_texto_browser[0]=0;
+
+    menu_debug_show_symbol_table_recurse(parse_string_labeltree);
+
+
+
+			//sprintf(buffer_bloque," count: %d",count);
+			//menu_debug_show_symbol_table_indice_buffer +=util_add_string_newline(&texto_browser[menu_debug_show_symbol_table_indice_buffer],buffer_bloque);
+
+
+//util_concat_string(menu_debug_show_symbol_table_texto_browser,buffer_temporal,MAX_TEXTO_GENERIC_MESSAGE);
+
+	//menu_debug_show_symbol_table_texto_browser[menu_debug_show_symbol_table_indice_buffer]=0;
+	zxvision_generic_message_tooltip("Symbol Table" , 0 , 0, 0, 1, NULL, 1, "%s", menu_debug_show_symbol_table_texto_browser);
+
+
+    free(menu_debug_show_symbol_table_texto_browser);
+}
+
 void menu_snapshot_rewind_browse_select(MENU_ITEM_PARAMETERS)
 {
     //Aplicar ese snapshot
@@ -32528,6 +32581,19 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_ayuda(array_menu_debug,"Load symbol table. Format for every line is:\n"
             "LABEL[spaces, tabs, :]VALUE");
         menu_add_item_menu_es_avanzado(array_menu_debug);
+
+        if (parse_string_labeltree!=NULL) {
+            menu_add_item_menu_en_es_ca(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_show_symbol_table,NULL,
+                "Show symbol table","Mostrar Tabla Símbolos","Mostrar Taula Símbols");
+            menu_add_item_menu_se_cerrara(array_menu_debug);
+            menu_add_item_menu_es_avanzado(array_menu_debug);
+
+            menu_add_item_menu_en_es_ca(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_symbol_table_unload,NULL,
+                "Unload Symbol Table","Descartar Tabla Símbolos","Descartar Taula Símbols");
+            menu_add_item_menu_se_cerrara(array_menu_debug);
+            menu_add_item_menu_es_avanzado(array_menu_debug);
+
+        }
 
 		if (MACHINE_IS_TSCONF || MACHINE_IS_ZXUNO || datagear_dma_emulation.v) {
 			menu_add_item_menu_format(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_dma_tsconf_zxuno,NULL,"Debug D~~MA");

@@ -1046,4 +1046,6 @@ extern labeltree *parse_string_labeltree;
 
 extern void labels_load(char *archivo);
 
+extern void labeltree_free(labeltree *l);
+
 #endif
