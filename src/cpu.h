@@ -212,11 +212,7 @@ extern z80_int get_im2_interrupt_vector(void);
 #endif
 
 
-//Para haiku
-#ifdef HAIKU_OS
-//Para incluir PATH_MAX
-#include <limits.h>
-#endif
+
 
 
 extern z80_byte puerto_65278; //    db    255  ; V    C    X    Z    Sh    ;0

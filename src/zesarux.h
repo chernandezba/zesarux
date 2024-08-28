@@ -43,9 +43,15 @@
 #define NAME_MAX MAX_PATH
 #endif
 
-//Para en FreeBSD
+//Para FreeBSD
 //Nota: no en todos mis .h que uso PATH_MAX tengo este include, es debido a que en algunos incluyo utils.h y en este utils.h se incluye a su vez limits.h
 #ifdef __FreeBSD__
+#include <limits.h>
+#endif
+
+//Para haiku
+#ifdef HAIKU_OS
+//Para incluir PATH_MAX
 #include <limits.h>
 #endif
 

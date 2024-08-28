@@ -24,10 +24,8 @@
 
 #include "ql.h"
 
-#include <dirent.h>
-#if defined(__APPLE__)
-        #include <sys/syslimits.h>
-#endif
+//Para usar PATH_MAX
+#include "zesarux.h"
 
 #include "utils.h"
 

@@ -22,9 +22,7 @@
 #ifndef UTILS_H
 #define UTILS_H
 
-#ifdef __FreeBSD__
-#include <limits.h>
-#endif
+
 
 #include "cpu.h"
 #include "compileoptions.h"
@@ -35,12 +33,8 @@
 #include <dirent.h>
 #include <sys/stat.h>
 
-#ifdef MINGW
-#include <stdlib.h>
-#define PATH_MAX MAX_PATH
-#define NAME_MAX MAX_PATH
-#endif
-
+//Para usar PATH_MAX
+#include "zesarux.h"
 
 
 extern void util_get_file_extension(char *filename,char *extension);
