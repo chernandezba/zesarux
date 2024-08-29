@@ -17,6 +17,10 @@
 
 -loadsave.tap: seems to be a load/save turbo routine
 
+-pantallas.tap: three different screens created probably from Basic
+
+-reloj_dobleborder.tap: two interrupt routines: to get two colours in border, and to get a permanent clock on the screen
+
 -sonido.tap: simple assembler source program (GEN format) to play a sound
 
 -telefonos.tap: simple Masterfile database of phone numbers
