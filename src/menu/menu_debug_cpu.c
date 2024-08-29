@@ -675,10 +675,10 @@ void menu_mem_breakpoints(MENU_ITEM_PARAMETERS)
 
                 menu_add_item_menu(array_menu_mem_breakpoints,"",MENU_OPCION_SEPARADOR,NULL,NULL);
                 menu_add_ESC_item(array_menu_mem_breakpoints);
-                retorno_menu=menu_dibuja_menu_no_title_lang(&mem_breakpoints_opcion_seleccionada,&item_seleccionado,array_menu_mem_breakpoints,"Memory Breakpoints" );
+                retorno_menu=menu_dibuja_menu_dialogo_no_title_lang(&mem_breakpoints_opcion_seleccionada,&item_seleccionado,array_menu_mem_breakpoints,"Memory Breakpoints" );
 
         //no queremos que al pulsar ESC aqui se cierren todos los menus anteriores
-        salir_todos_menus=0;
+        //salir_todos_menus=0;
 
 
                 if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
@@ -847,6 +847,8 @@ void menu_breakpoints(MENU_ITEM_PARAMETERS)
 
 		menu_add_item_menu_format(array_menu_breakpoints,MENU_OPCION_NORMAL,menu_mem_breakpoints,NULL,"~~Memory breakpoints");
 		menu_add_item_menu_shortcut(array_menu_breakpoints,'m');
+        menu_add_item_menu_genera_ventana(array_menu_breakpoints);
+        menu_add_item_menu_se_cerrara(array_menu_breakpoints);
 
 		menu_add_item_menu_format(array_menu_breakpoints,MENU_OPCION_NORMAL,menu_clear_all_breakpoints,NULL,"Clear all breakpoints");
 
