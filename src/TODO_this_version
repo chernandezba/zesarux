@@ -338,7 +338,7 @@ el resto puede salir fuera -> comprobar al hacer print y putpixel que no sale fu
 Por ejemplo "Betadisk" está en Main Menu->Storage->Betadisk
 ok. agregar nombre de indice en todos los menus
 
--head over heels next: personaje heels siempre se ve por detrás
+ok era un bug de ellos-head over heels next: personaje heels siempre se ve por detrás
 
 
 -menu display. teclado en pantalla. quiza poner aqui el nuevo de help keyboard. dejar ese viejo solo para drivers de video de tipo texto, cacalib, etc. considerar ademas que ese antiguo solo sale para spectrum y zx80/81. Ojo que el teclado en pantalla de texto debería también salir al pulsar tecla de OSD teclado, pero solo cuando es driver texto
