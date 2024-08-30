@@ -1467,6 +1467,8 @@ extern void zxvision_empty_trash(void);
 extern void zxvision_move_configurable_icon_to_trash(int indice_icono);
 extern int zxvision_add_configurable_icon(int indice_funcion);
 extern int zxvision_add_configurable_icon_by_id_action(enum defined_f_function_ids id_funcion);
+extern void zxvision_add_configurable_icon_by_id_action_and_auto_extra(enum defined_f_function_ids id_funcion);
+extern void zxvision_add_extra_parameters_element_action(enum defined_f_function_ids accion, char *parametros, char *nombre_icono);
 extern void menu_inicio_handle_configurable_icon_presses(void);
 extern void menu_inicio_handle_right_button_background(void);
 extern void zxvision_check_all_configurable_icons_positions(void);

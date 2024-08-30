@@ -767,6 +767,38 @@ int zxvision_add_configurable_icon_no_add_position(int indice_funcion)
 
 }
 
+//Función auxiliar para asignar parametros adicionales a iconos, botones a acciones, o f funciones,
+//Dependiendo del tipo de accion, si es por ejemplo SET_MACHINE, indicar parametro de maquina actual
+//Parecido a zxdesktop_add_extra_parameters_element_action pero aqui es todo automatico y no se pide nada al usuario
+void zxvision_add_extra_parameters_element_action(enum defined_f_function_ids accion, char *parametros, char *nombre_icono)
+{
+    if (accion==F_FUNCION_SET_MACHINE) {
+        char buffer_maquina[100];
+
+        get_machine_config_name_by_number(buffer_maquina,current_machine_type);
+        if (buffer_maquina[0]!=0) {
+            strcpy(parametros,buffer_maquina);
+
+            if (nombre_icono!=NULL) {
+                //Cambiar nombre icono con la maquina en cuestión
+                sprintf(nombre_icono,"Set %s",get_machine_name(current_machine_type));
+            }
+
+        }
+    }
+
+
+    //Cualquier otra acción, dejar los parámetros en blanco para no arrastrar parámetros
+    //de acciones anteriores que si que tenian parámetros
+    //Esto podria haber ocasionado que si primero configuramos accion set_machine, y luego la cambiamos
+    //a machine selection, ese machine selection no pide parámetros pero como arrastramos un parámetro
+    //anterior, al disparar machine selection, como la gestión de la acción es la misma que set_machine, se le pasaría
+    //ese parámetro "heredado" y no preguntaria la maquina
+    else {
+        //printf("Limpiar parametros\n");
+        parametros[0]=0;
+    }
+}
 
 //Agregar nuevo icono indicandole id de accion
 int zxvision_add_configurable_icon_by_id_action(enum defined_f_function_ids id_funcion)
@@ -775,6 +807,23 @@ int zxvision_add_configurable_icon_by_id_action(enum defined_f_function_ids id_f
     int indice_accion=zxvision_get_id_direct_funcion_index(id_funcion);
     return zxvision_add_configurable_icon(indice_accion);
 }
+
+//Agregar nuevo icono indicandole id de accion y detectando parametros extra segun tipo de icono
+void zxvision_add_configurable_icon_by_id_action_and_auto_extra(enum defined_f_function_ids id_funcion)
+{
+    int indice_icono=zxvision_add_configurable_icon_by_id_action(id_funcion);
+
+
+    if (indice_icono>=0) {
+        //Asignar parametros extra segun el tipo de accion
+
+        zxvision_add_extra_parameters_element_action(id_funcion,
+            zxdesktop_configurable_icons_list[indice_icono].extra_info,
+            zxdesktop_configurable_icons_list[indice_icono].text_icon);
+
+    }
+}
+
 
 //Crear un icono con parametros "nombre" y con extra_info
 void zxvision_create_configurable_icon(enum defined_f_function_ids id_funcion,char *nombre,char *extra_info)

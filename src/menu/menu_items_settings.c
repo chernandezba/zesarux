@@ -10703,28 +10703,14 @@ int menu_zxdesktop_get_window_list(void)
 }
 
 //Función auxiliar para asignar parametros adicionales a iconos, botones a acciones, o f funciones,
-//Dependiendo del tipo de accion, si es por ejemplo SET_MACHINE, indicar parametro de maquina actual,
-//si es OPEN_WINDOW, pedir al usuario de la lista de ventanas y ademas asignar el nombre del icono como el nombre_corto de la ventana
+//Dependiendo del tipo de accion, si es por ejemplo  OPEN_WINDOW, pedir al usuario de la lista de ventanas y ademas asignar el nombre del icono como el nombre_corto de la ventana
 //nombre_icono vale NULL si no aplica a ese elemento (o sea ni para botones ni para f-funciones)
+//Parecido a zxvision_add_extra_parameters_element_action pero aqui se pueden pedir cosas al usuario, como la ventana a elegir
 void zxdesktop_add_extra_parameters_element_action(enum defined_f_function_ids accion, char *parametros, char *nombre_icono)
 {
-    if (accion==F_FUNCION_SET_MACHINE) {
-        char buffer_maquina[100];
-
-        get_machine_config_name_by_number(buffer_maquina,current_machine_type);
-        if (buffer_maquina[0]!=0) {
-            strcpy(parametros,buffer_maquina);
-
-            if (nombre_icono!=NULL) {
-                //Cambiar nombre icono con la maquina en cuestión
-                sprintf(nombre_icono,"Set %s",get_machine_name(current_machine_type));
-            }
-
-        }
-    }
 
     //Si es open window, mostrar lista de posibles ventanas
-    else if (accion==F_FUNCION_OPEN_WINDOW) {
+    if (accion==F_FUNCION_OPEN_WINDOW) {
         int elemento=menu_zxdesktop_get_window_list();
         if (elemento>=0) {
 
@@ -10744,16 +10730,8 @@ void zxdesktop_add_extra_parameters_element_action(enum defined_f_function_ids a
         }
     }
 
-    //Cualquier otra acción, dejar los parámetros en blanco para no arrastrar parámetros
-    //de acciones anteriores que si que tenian parámetros
-    //Esto podria haber ocasionado que si primero configuramos accion set_machine, y luego la cambiamos
-    //a machine selection, ese machine selection no pide parámetros pero como arrastramos un parámetro
-    //anterior, al disparar machine selection, como la gestión de la acción es la misma que set_machine, se le pasaría
-    //ese parámetro "heredado" y no preguntaria la maquina
-    else {
-        //printf("Limpiar parametros\n");
-        parametros[0]=0;
-    }
+    else zxvision_add_extra_parameters_element_action(accion, parametros, nombre_icono);
+
 }
 
 
@@ -11403,6 +11381,12 @@ void menu_zxdesktop_set_configurable_icons_info(MENU_ITEM_PARAMETERS)
     file_utils_info_file(zxdesktop_configurable_icons_list[valor_opcion].extra_info);
 }
 
+void menu_zxdesktop_set_configurable_icons_create_link_to_machine(MENU_ITEM_PARAMETERS)
+{
+
+    zxvision_add_configurable_icon_by_id_action_and_auto_extra(F_FUNCION_SET_MACHINE);
+
+}
 
 void menu_zxdesktop_set_configurable_icons_modify(MENU_ITEM_PARAMETERS)
 {
@@ -11487,8 +11471,15 @@ void menu_zxdesktop_set_configurable_icons_modify(MENU_ITEM_PARAMETERS)
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_debug_reset,NULL,
                 "~~Reset CPU","~~Reset CPU","~~Reset CPU");
+
+            //TODO: necesario esto???
             menu_add_item_menu_valor_opcion(array_menu_common,valor_opcion);
+
             menu_add_item_menu_shortcut(array_menu_common,'r');
+
+
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zxdesktop_set_configurable_icons_create_link_to_machine,
+                NULL,"Create Icon on ZX Desktop","Crear Icono en ZX Desktop","Crear Icona a ZX Desktop");
 
         }
 
