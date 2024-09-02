@@ -37636,7 +37636,8 @@ void menu_realtape_record_input_overlay(void)
 
 
     if (alto>0) {
-        menu_realtape_record_input_draw_waveform(menu_realtape_record_input_window,x,y,ancho,alto);
+        //-1 porque si no, se corta 1 pixel por debajo
+        menu_realtape_record_input_draw_waveform(menu_realtape_record_input_window,x,y,ancho,alto-1);
     }
 
     menu_realtape_record_input_analize_azimuth_end(menu_realtape_record_input_window,linea_info_azimuth);
