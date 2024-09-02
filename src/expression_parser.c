@@ -780,30 +780,13 @@ int exp_par_exp_to_tokens(char *expression,token_parser *tokens)
                 //Consideramos numero
 
                 //printf ("parsing number from %s\n",expression);
+
                 int signo_valor=+1;
 
-                //Ver si empieza por - o +
-                if ( (*expression)=='-') {
-                    signo_valor=-1;
-                    expression++;
-                }
+                //Ver antes si puede ser un label
+                int eslabel=0;
 
-                if ( (*expression)=='+') {
-                    signo_valor=+1; //aunque ya viene asi por defecto antes, pero para que quede mas claro
-                    expression++;
-                }
-
-                resultado=exp_par_is_number(expression,&final);
-
-                if (resultado<=0) {
-                    //Si hay labels cargados, dejaremos que luego parse_string_to_number_get_type lo evalue
-                    //en caso que exista ese label claro
-                    if (parse_string_labeltree==NULL) {
-                        //printf ("return number with error (evaluated [%s])\n",expression);
-                        return -1; //error
-                    }
-
-
+                if (parse_string_labeltree!=NULL) {
 
                     //Encontrar longitud de ese label
                     //Caracteres de fin: lo que no sea letras, numeros, guiones bajos
@@ -829,20 +812,48 @@ int exp_par_exp_to_tokens(char *expression,token_parser *tokens)
                     // comprobar antes si ese label realmente existe
                     labeltree *found=labeltree_find_element(parse_string_labeltree,label_temp);
 
-                    if (found==NULL) {
-                        //No hay labels cargadas
-                        return -1;
+                    if (found!=NULL) {
+
+                        //Si encontrado exacto
+                        if (!strcasecmp(label_temp,found->name)) {
+                            eslabel=1;
+                        }
+
                     }
 
-                    //Si no encontrado exacto
-                    if (strcasecmp(label_temp,found->name)) {
-                        return -1;
-                    }
-
-                    //printf("En expression parser encontrado exacto\n");
+                   //printf("En expression parser encontrado exacto. es label\n");
 
                 }
 
+                if (!eslabel) {
+
+                    //printf("no es label\n");
+
+
+                    //Ver si empieza por - o +
+                    if ( (*expression)=='-') {
+                        signo_valor=-1;
+                        expression++;
+                    }
+
+                    if ( (*expression)=='+') {
+                        signo_valor=+1; //aunque ya viene asi por defecto antes, pero para que quede mas claro
+                        expression++;
+                    }
+
+                    resultado=exp_par_is_number(expression,&final);
+
+                    //printf("resultado exp_par_is_number: %d\n",resultado);
+
+                    //no es un numero
+                    if (resultado<=0) {
+                        //printf ("return number with error (evaluated [%s]\n",expression);
+                        return -1; //error
+                    }
+
+                    //printf("despues if (resultado<=0)\n");
+
+                }
 
                 //printf ("final index: %d\n",final);
                 //Es un numero
@@ -865,6 +876,7 @@ int exp_par_exp_to_tokens(char *expression,token_parser *tokens)
                 //Meter valor
                 tokens[indice_token].valor=valor;
 
+                //printf("valor= %d\n",valor);
             }
 
 
@@ -2216,7 +2228,7 @@ int exp_par_evaluate_expression(char *entrada,char *salida,char *string_detoken)
 
 	//printf ("\nText to token: %s\n",string_texto);
 	result=exp_par_exp_to_tokens(entrada,tokens);
-	//printf ("result: %d\n",result);
+	//printf ("result exp_par_exp_to_tokens: %d\n",result);
 	if (result>=0) {
 			//Pasamos primero a string de nuevo
 			//char string_detoken[MAX_BREAKPOINT_CONDITION_LENGTH];
