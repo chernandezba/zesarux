@@ -4424,6 +4424,8 @@ int util_write_configfile(void)
 
   if (parameter_disablebetawarning[0])        ADD_STRING_CONFIG,"--disablebetawarning \"%s\"",parameter_disablebetawarning);
 
+  if (parameter_disable_allbetawarningsleep.v)  ADD_STRING_CONFIG,"--disableallbetawarningpause");
+
   for (i=0;i<total_config_window_geometry;i++) {
        ADD_STRING_CONFIG,"--window-geometry %s %d %d %d %d %d %d %d %d", saved_config_window_geometry_array[i].nombre,
        saved_config_window_geometry_array[i].x,saved_config_window_geometry_array[i].y,

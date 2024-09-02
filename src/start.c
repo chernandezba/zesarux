@@ -333,6 +333,8 @@ z80_bit command_line_ayplayer_start_playlist={0};
 
 z80_bit command_line_start_zeng_online_server={0};
 
+z80_bit parameter_disable_allbetawarningsleep={0};
+
 //Fin command_line flags
 
 //Para Windows con pthreads. En todos los sistemas, se permite main loop en pthread, excepto en Windows
@@ -1774,6 +1776,7 @@ printf (
         "--no-show-david-in-memoriam              Do not show David in memoriam message\n"
 		"--machinelist                            Get machines list names whitespace separated, and exit\n"
 		"--disablebetawarning text                Do not pause beta warning message on boot for version named as that parameter text\n"
+        "--disableallbetawarningpause             Do not pause beta warning message on boot for any version\n"
 		"--tbblue-autoconfigure-sd-already-asked  Do not ask to autoconfigure tbblue initial SD image\n"
 
         "--enable-christmas-mode                  Force Christmas Mode\n"
@@ -6221,6 +6224,10 @@ int parse_cmdline_options(int desde_commandline) {
 				strcpy(parameter_disablebetawarning,argv[puntero_parametro]);
 			}
 
+            else if (!strcmp(argv[puntero_parametro],"--disableallbetawarningpause")) {
+                parameter_disable_allbetawarningsleep.v=1;
+            }
+
             //Mantenido por compatibilidad con versiones antiguas
 			else if (!strcmp(argv[puntero_parametro],"--windowgeometry")) {
 				siguiente_parametro_argumento();
@@ -7099,8 +7106,15 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
 	printf ("WARNING. This is a Snapshot version and not a stable one\n"
 			 "Some features may not work, random crashes could happen, abnormal CPU use, or lots of debug messages on console\n\n");
 
-	//Si no coincide ese parametro, hacer pausa
-	if (strcmp(parameter_disablebetawarning,EMULATOR_VERSION)) {
+    int pausa_warning_snapshot=1;
+
+    //Si coincide ese parametro, no hacer pausa
+    if (!strcmp(parameter_disablebetawarning,EMULATOR_VERSION)) pausa_warning_snapshot=0;
+
+    if (parameter_disable_allbetawarningsleep.v) pausa_warning_snapshot=0;
+
+
+	if (pausa_warning_snapshot) {
 		sleep (3);
 	}
 #endif

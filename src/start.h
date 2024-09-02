@@ -44,4 +44,6 @@ extern int siguiente_parametro(void);
 
 extern void siguiente_parametro_argumento(void);
 
+extern z80_bit parameter_disable_allbetawarningsleep;
+
 #endif
