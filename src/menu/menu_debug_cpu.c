@@ -8314,6 +8314,11 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
 					//run tal cual. como runto pero sin poner breakpoint
                     tecla=2; //Simular ESC
 					salir_todos_menus=1;
+
+                    //Si se habia abierto el menu desde un breakpoint lanzado, quitar este flag
+                    //porque si no, se ira al menu principal al salir de aqui (cuando no esta permitido ventanas en background)
+                    //(la razon de eso, ver la secuencia de condiciones en funcion menu_inicio)
+                    menu_event_open_menu.v=0;
                 }
 
 				if (tecla=='n' && menu_debug_registers_current_view==8) {
@@ -8952,6 +8957,11 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
 					cpu_step_mode.v=0;
 					acumulado=0; //teclas pulsadas
 					//Con esto saldremos
+
+                    //Si se habia abierto el menu desde un breakpoint lanzado, quitar este flag
+                    //porque si no, se ira al menu principal al salir de aqui (cuando no esta permitido ventanas en background)
+                    //(la razon de eso, ver la secuencia de condiciones en funcion menu_inicio)
+                    menu_event_open_menu.v=0;
                 }
 
                 if (tecla=='n' && menu_debug_registers_current_view==8) {

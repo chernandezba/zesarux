@@ -53,6 +53,7 @@ Corregida carga de snapshots .nex y la MMU no gestionada correctamente
 Corregida característica de Buscar menú
 Corregido error al grabar snapshots .ZSF de Z88 cuando el bloque de RAM o de tarjeta de memoria no está comprimido
 Corregido mostrar texto en footer de F5/Button menu
+Corregido bug que se reabria el menu al executar comando run desde debug cpu y la opcion --allow-background-windows estaba desactivada
 
 * Cambios varios:
 

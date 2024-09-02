@@ -25692,6 +25692,7 @@ void menu_inicio(void)
 
 
     if (zxvision_switch_to_window_on_open_menu) {
+        //printf("zxvision_switch_to_window_on_open_menu\n");
         zxvision_switch_to_window_on_open_menu=0;
 
         //printf ("0 salir_todos_menus: %d\n",salir_todos_menus);
@@ -25808,6 +25809,8 @@ void menu_inicio(void)
         //Si pulsado en boton pero no pulsado en ventanas (ventanas siempre estan por encima y por tanto tienen prioridad)
         //Hay que ver antes pulsado_alguna_ventana_con_menu_cerrado por la misma razon que la explicada anterior con zxvision_if_mouse_in_zlogo_or_buttons_desktop
         if (!pulsado_alguna_ventana_con_menu_cerrado) {
+
+            //printf("pulsado_alguna_ventana_con_menu_cerrado\n");
 
             //Pulsado en boton de aumentar zx desktop en ancho
             if (zxvision_if_mouse_in_lower_button_enlarge_zxdesktop_width()) {
@@ -26041,7 +26044,7 @@ void menu_inicio(void)
 	int liberar_teclas_y_esperar=1; //Si se liberan teclas y se espera a liberar teclado
 
 
-	//printf("antes breakpoint exception\n");
+	//printf("antes breakpoint exception. menu_breakpoint_exception.v=%d\n",menu_breakpoint_exception.v);
 
 
 	if (menu_breakpoint_exception.v) {
@@ -26056,6 +26059,8 @@ void menu_inicio(void)
 			*/
 			liberar_teclas_y_esperar=0;
 		}
+
+        //printf("despues if breakpoint exception. menu_breakpoint_exception.v=%d\n",menu_breakpoint_exception.v);
 	}
 
 //printf ("2inicio menu_inicio\n");
@@ -26509,10 +26514,11 @@ void menu_inicio(void)
 	menu_was_open_by_right_mouse_button.v=0;
 
 
+//printf("antes menu_inicio_pre_retorno. menu_breakpoint_exception.v=%d\n",menu_breakpoint_exception.v);
 	//Volver
 	menu_inicio_pre_retorno();
 
-//printf ("salir menu\n");
+//printf("salir menu. menu_breakpoint_exception.v=%d\n",menu_breakpoint_exception.v);
 
     //Si se ha hecho drag & drop con el menu abierto, decir de abrir de nuevo el menu para gestionar ese drag & drop
     if (menu_event_pending_drag_drop_menu_open.v) {
