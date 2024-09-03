@@ -58,4 +58,6 @@ The conversions are easy:
 * license: all the programs I made for the spectrum are covered by the GNU GPL license, so sped52 is also covered by it. All the future changes to sped must include the source code.
 
 
+IMPORTANT!
 
+This sped52 version has a bug. When you save object code (command "O") it always save starting at 49152 address, no matter what address you put on the ORG directive. It has been fixed on sped53
