@@ -1,0 +1,12 @@
+artillero-nuevo.tap creo que fue un intento de hacer mi juego del Artillero en Codigo Maquina
+Me estuvo ayudando mi hermano David, creo que al final no se acabó dicha conversion
+
+Los bloques que hay son:
+
+UDGMENINS (2): Mensajes, GDU, ¿INS?
+INSCUADR, INSCUAD2, INS3CUAD: With plots?
+INCIBLO.P ?
+ART.1
+ARTILLER.2
+
+ART.GENS4: Codigo fuente en formato GENS4
