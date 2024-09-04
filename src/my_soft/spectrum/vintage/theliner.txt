@@ -1,0 +1,4 @@
+theliner35.tap  y theliner67.tzx utilizan dos formatos diferentes para guardar los dibujos
+
+El primero utiliza una matriz de caracteres, mientras que el segundo utiliza un bloque de datos especial (primer byte de cabecera=4)
+No se en que momento se cambió del formato de matriz de caracteres al bloque de datos especial, pero en algún momento entre la versión 35 y la 67
