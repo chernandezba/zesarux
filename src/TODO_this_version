@@ -365,3 +365,6 @@ la deja en lista de submenu
 claro. o no, porque si hay top bar, "Storage" menu por ejemplo es un menu directo sin tener que pasar por Main Menu
 -al estar en un menu y pulsar en otro de topbar, que se reabra, el truco creo que esta en activar menu_pressed_open_menu_while_in_menu.v
 
+
+
+-poner programas pre-carga basic para realdebug, memoedit, que pida direccion a cargar y en el caso de realdebug, que version quiere 48 o 128

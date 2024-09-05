@@ -37971,7 +37971,24 @@ void menu_input_spectrum_analyzer(MENU_ITEM_PARAMETERS)
 
 }
 
+void menu_storage_tape_my_soft(MENU_ITEM_PARAMETERS)
+{
 
+    char buffer_nombre[PATH_MAX];
+
+	if (find_sharedfile("my_soft/spectrum/vintage/",buffer_nombre)) {
+		debug_printf(VERBOSE_INFO,"Loading tape copier %s",buffer_nombre);
+		strcpy(quickload_file,buffer_nombre);
+		quickfile=quickload_file;
+
+        menu_smartload(0);
+
+        salir_todos_menus=1;
+    }
+    else {
+        debug_printf(VERBOSE_ERR,"Can't find my software");
+    }
+}
 
 void menu_storage_tape_copier(MENU_ITEM_PARAMETERS)
 {
@@ -38193,6 +38210,15 @@ void menu_storage_tape(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_genera_ventana(array_menu_tape_settings);
             menu_add_item_menu_tooltip(array_menu_tape_settings,"Allow to run a tape copier");
             menu_add_item_menu_ayuda(array_menu_tape_settings,"Allow to run a tape copier");
+
+
+            menu_add_item_menu_en_es_ca(array_menu_tape_settings,MENU_OPCION_NORMAL,menu_storage_tape_my_soft,NULL,
+                "Software made by me","Programas míos","Programes meus");
+            menu_add_item_menu_prefijo(array_menu_tape_settings,"    ");
+            //menu_add_item_menu_shortcut(array_menu_tape_settings,'v');
+            menu_add_item_menu_genera_ventana(array_menu_tape_settings);
+            menu_add_item_menu_tooltip(array_menu_tape_settings,"Open folder with some of programs made by me");
+            menu_add_item_menu_ayuda(array_menu_tape_settings,"Open folder with some of programs made by me");
         }
 
 
