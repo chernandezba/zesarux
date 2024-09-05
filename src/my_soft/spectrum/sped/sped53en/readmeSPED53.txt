@@ -321,7 +321,7 @@ RANDOMIZE USR 0 (to go to 48k mode but having 128k of memory).
 
 Then the second which was next on the TAP did:
 
-CLEAR 49151: OUT 32765,17: LOAD "" CODE 49152: RANDMOIZE USR 49152
+CLEAR 49151: OUT 32765,17: LOAD "" CODE 49152: RANDOMIZE USR 49152
 
 We have put the above in a bit of BASIC for you - so you can just use the
 Next facility to load from a TAP using the Browser just make sure you use
