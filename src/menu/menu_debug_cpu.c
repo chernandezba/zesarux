@@ -391,7 +391,7 @@ int menu_change_memory_zone_list_title(char *titulo)
 
                 menu_add_ESC_item(array_menu_memory_zones);
 
-                retorno_menu=menu_dibuja_menu_no_title_lang(&menu_change_memory_zone_list_opcion_seleccionada,&item_seleccionado,array_menu_memory_zones,titulo );
+                retorno_menu=menu_dibuja_menu_dialogo_no_title_lang(&menu_change_memory_zone_list_opcion_seleccionada,&item_seleccionado,array_menu_memory_zones,titulo );
 
 
                 //no queremos que al pulsar ESC aqui se cierren todos los menus anteriores
