@@ -25,6 +25,7 @@
 
 
 #include "if1.h"
+#include "microdrive.h"
 #include "cpu.h"
 #include "debug.h"
 #include "utils.h"
