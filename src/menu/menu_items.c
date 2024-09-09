@@ -41235,7 +41235,7 @@ void menu_interface1_enable(MENU_ITEM_PARAMETERS)
 void menu_storage_microdrive_file(MENU_ITEM_PARAMETERS)
 {
 
-	//microdrive_disable();
+	microdrive_eject();
 
         char *filtros[2];
 
@@ -41289,6 +41289,22 @@ void menu_storage_microdrive_file(MENU_ITEM_PARAMETERS)
         }
 }
 
+void menu_storage_microdrive_enable(MENU_ITEM_PARAMETERS)
+{
+    if (microdrive_enabled.v) {
+        microdrive_eject();
+    }
+    else {
+        microdrive_insert();
+    }
+
+}
+
+int menu_storage_microdrive_enable_cond(void)
+{
+    if (microdrive_file_name[0]==0) return 0;
+    else return 1;
+}
 
 void menu_interface1(MENU_ITEM_PARAMETERS)
 {
@@ -41324,7 +41340,7 @@ void menu_interface1(MENU_ITEM_PARAMETERS)
 
 
 
-        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_storage_microdrive_enable,menu_storage_microdrive_enable_cond,
             "microdrive ~~Emulation","~~Emulación microdrive","~~Emulació microdrive");
         menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ", (microdrive_enabled.v ? 'X' : ' '));
         menu_add_item_menu_shortcut(array_menu_common,'e');
@@ -47725,6 +47741,18 @@ struct s_zxdesktop_lowericons_info zdesktop_lowericons_array[TOTAL_ZXDESKTOP_MAX
 	{ zxdesktop_lowericon_cassete_is_visible, zxdesktop_lowericon_cassete_real_is_active,zxdesktop_lowericon_cassete_accion,
 		bitmap_lowericon_ext_desktop_cassette_active,bitmap_lowericon_ext_desktop_cassette_inactive,&zxdesktop_icon_tape_real_inverse},
 
+	//MDV1
+	{ zxdesktop_lowericon_mdv1_is_visible, zxdesktop_lowericon_mdv1_is_active, zxdesktop_lowericon_mdv_flp_accion,
+		bitmap_lowericon_ext_desktop_mdv_active,bitmap_lowericon_ext_desktop_mdv_inactive,&zxdesktop_icon_mdv1_inverse},
+
+    //MDV2
+	{ zxdesktop_lowericon_mdv2_is_visible, zxdesktop_lowericon_mdv2_is_active, zxdesktop_lowericon_mdv_flp_accion,
+		bitmap_lowericon_ext_desktop_mdv_active,bitmap_lowericon_ext_desktop_mdv_inactive,&zxdesktop_icon_mdv2_inverse},
+
+    //Floppy QL.
+	{ zxdesktop_lowericon_flp1_is_visible, zxdesktop_lowericon_flp1_is_active, zxdesktop_lowericon_mdv_flp_accion,
+		bitmap_lowericon_ext_desktop_flp_active,bitmap_lowericon_ext_desktop_flp_inactive,&zxdesktop_icon_flp1_inverse},
+
 	//floppy +3
 	{ zxdesktop_lowericon_plus3_flp_is_visible, zxdesktop_lowericon_plus3_flp_is_active,zxdesktop_lowericon_plus3_flp_accion,
 		bitmap_lowericon_ext_desktop_plus3_flp_active,bitmap_lowericon_ext_desktop_plus3_flp_inactive,&zxdesktop_icon_plus3_inverse},
@@ -47765,17 +47793,6 @@ struct s_zxdesktop_lowericons_info zdesktop_lowericons_array[TOTAL_ZXDESKTOP_MAX
 	{ zxdesktop_lowericon_cart_timex_is_visible, zxdesktop_lowericon_cart_timex_is_active, zxdesktop_lowericon_cart_timex_accion,
 		bitmap_lowericon_ext_desktop_cart_timex_active,bitmap_lowericon_ext_desktop_cart_timex_inactive,&zxdesktop_common_icon_no_inverse},
 
-	//MDV1
-	{ zxdesktop_lowericon_mdv1_is_visible, zxdesktop_lowericon_mdv1_is_active, zxdesktop_lowericon_mdv_flp_accion,
-		bitmap_lowericon_ext_desktop_mdv_active,bitmap_lowericon_ext_desktop_mdv_inactive,&zxdesktop_icon_mdv1_inverse},
-
-    //MDV2
-	{ zxdesktop_lowericon_mdv2_is_visible, zxdesktop_lowericon_mdv2_is_active, zxdesktop_lowericon_mdv_flp_accion,
-		bitmap_lowericon_ext_desktop_mdv_active,bitmap_lowericon_ext_desktop_mdv_inactive,&zxdesktop_icon_mdv2_inverse},
-
-    //Floppy QL.
-	{ zxdesktop_lowericon_flp1_is_visible, zxdesktop_lowericon_flp1_is_active, zxdesktop_lowericon_mdv_flp_accion,
-		bitmap_lowericon_ext_desktop_flp_active,bitmap_lowericon_ext_desktop_flp_inactive,&zxdesktop_icon_flp1_inverse},
 
 	//3 Cartuchos de Z88.
 	{ zxdesktop_lowericon_z88_cart_is_visible, zxdesktop_lowericon_z88_cart_1_is_active, zxdesktop_lowericon_z88_cart_1_accion,

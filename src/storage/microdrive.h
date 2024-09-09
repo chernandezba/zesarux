@@ -40,4 +40,6 @@ extern void microdrive_insert(void);
 
 extern void microdrive_footer_operating(void);
 
+extern void microdrive_eject(void);
+
 #endif

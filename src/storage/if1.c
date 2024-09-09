@@ -345,6 +345,8 @@ int contador_estado_microdrive=0;
 z80_byte interface1_get_value_port(z80_byte puerto_l)
 {
 
+    if (microdrive_enabled.v==0) return 0;
+
     //Puerto de estado
     if (puerto_l==0xef) {
         //printf ("In Port %x asked, PC after=0x%x\n",puerto_l+256*puerto_h,reg_pc);

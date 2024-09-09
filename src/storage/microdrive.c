@@ -108,6 +108,7 @@ void mdr_next_sector(void)
 z80_byte mdr_next_byte(void)
 {
 
+    if (microdrive_enabled.v==0) return 0;
 
 
     int offset_to_sector=mdr_current_sector*MDR_BYTES_PER_SECTOR;
@@ -147,10 +148,8 @@ z80_byte mdr_next_byte(void)
 void microdrive_insert(void)
 {
       //Cargar microdrive de prueba
-       if1_microdrive_buffer=malloc(MDR_MAX_FILE_SIZE);
-       if (if1_microdrive_buffer==NULL) {
-                cpu_panic ("No enough memory for Microdrive buffer");
-       }
+       if1_microdrive_buffer=util_malloc(MDR_MAX_FILE_SIZE,"No enough memory for Microdrive buffer");
+
 
        FILE *ptr_microdrive_file;
        //Leer archivo mdr
@@ -171,6 +170,20 @@ void microdrive_insert(void)
 
                microdrive_enabled.v=1;
        }
+}
+
+void microdrive_eject(void)
+{
+	if (microdrive_enabled.v==0) return;
+
+	//Hacer flush si hay algun cambio
+	//microdrive_flush_contents_to_disk();
+
+
+	free(if1_microdrive_buffer);
+
+
+	microdrive_enabled.v=0;
 }
 
 

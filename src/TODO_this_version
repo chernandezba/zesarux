@@ -367,7 +367,7 @@ claro. o no, porque si hay top bar, "Storage" menu por ejemplo es un menu direct
 
 
 -microdrive:
-*si no elegido mdr, que devuelva datos vacios  (ni gap ni sync tampoco)
+ok *si no elegido mdr, que devuelva datos vacios  (ni gap ni sync tampoco)
 *grabacion datos. formateo
 *elegir mdr
 *mas de 1 microdrive a la vez
@@ -375,4 +375,4 @@ claro. o no, porque si hay top bar, "Storage" menu por ejemplo es un menu direct
 *debug i/o ports
 *algo como visual floppy
 ok *visualmem
-*icono microdrive
+ok *icono microdrive
