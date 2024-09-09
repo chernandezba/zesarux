@@ -6860,7 +6860,7 @@ z80_byte temp_tsconf_first_sd_0=1;
 z80_byte lee_puerto_spectrum_no_time(z80_byte puerto_h,z80_byte puerto_l)
 {
 
-    if (puerto_l==0xef || puerto_l==0xe7) {
+    if (if1_enabled.v && (puerto_l==0xef || puerto_l==0xe7)) {
         return interface1_get_value_port(puerto_l);
     }
 

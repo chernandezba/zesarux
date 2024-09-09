@@ -366,3 +366,10 @@ claro. o no, porque si hay top bar, "Storage" menu por ejemplo es un menu direct
 -al estar en un menu y pulsar en otro de topbar, que se reabra, el truco creo que esta en activar menu_pressed_open_menu_while_in_menu.v
 
 
+-microdrive:
+*grabacion datos. formateo
+*elegir mdr
+*mas de 1 microdrive a la vez
+*proteccion escritura (ultimo byte del mdr)
+*debug i/o ports
+*algo como visual floppy o quiza visualmem

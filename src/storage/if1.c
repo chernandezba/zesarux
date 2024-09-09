@@ -378,17 +378,11 @@ z80_byte mdr_next_byte(void)
 {
 
 
-    //int pos_en_sector=puntero_mdr % MDR_BYTES_PER_SECTOR;
-
-    //int sector=puntero_mdr/MDR_BYTES_PER_SECTOR;
 
     int offset_to_sector=mdr_current_sector*MDR_BYTES_PER_SECTOR;
 
     int offset_efectivo;
 
-    //Si esta en los primeros 15 bytes
-    //if (mdr_current_offset_in_sector<=14) offset_efectivo=14-mdr_current_offset_in_sector;
-    //else offset_efectivo=542-mdr_current_offset_in_sector;
 
     offset_efectivo=mdr_current_offset_in_sector;
 
@@ -400,7 +394,6 @@ z80_byte mdr_next_byte(void)
     printf("Retornando byte mdr de offset en PC=%04XH sector %d, offset %d (offset_efectivo=%d) =0x%02X\n",
         reg_pc,mdr_current_sector,mdr_current_offset_in_sector,offset_efectivo,valor);
 
-    //puntero_mdr++;
 
 
     mdr_current_offset_in_sector++;
@@ -412,66 +405,68 @@ z80_byte mdr_next_byte(void)
     }
 
 
-    //if (puntero_mdr>=97740) puntero_mdr=0;
 
     return valor;
 
 }
 
+//Contador simple para saber si tenemos que devolver gap, sync o datos
+int contador_estado_microdrive=0;
 
-int temp_if1=0;
 
-
-
-/*
- Microdrive cartridge
-   GAP      PREAMBLE      15 byte      GAP      PREAMBLE      15 byte    512     1
- [-----][00 00 ... ff ff][BLOCK HEAD][-----][00 00 ... ff ff][REC HEAD][ DATA ][CHK]
- Preamble = 10 * 0x00 + 2 * 0xff (12 byte)
-*/
 
 
 z80_byte interface1_get_value_port(z80_byte puerto_l)
 {
+
+    //Puerto de estado
     if (puerto_l==0xef) {
         //printf ("In Port %x asked, PC after=0x%x\n",puerto_l+256*puerto_h,reg_pc);
 
-        temp_if1++;
+        /*
+        Microdrive cartridge
+        GAP      PREAMBLE      15 byte      GAP      PREAMBLE      15 byte    512     1
+        [-----][00 00 ... ff ff][BLOCK HEAD][-----][00 00 ... ff ff][REC HEAD][ DATA ][CHK]
+        Preamble = 10 * 0x00 + 2 * 0xff (12 byte)
+        */
+
+
+        contador_estado_microdrive++;
 
 
 
         z80_byte return_value=0;
 
-        if      (temp_if1<40) return_value=4; //gap
-        else if (temp_if1<60) return_value=2; //sync
-        else if (temp_if1<80) return_value=0; //datos
+        //numero arbitrario realmente, cada cuanto incrementamos el contador para pasar de un estado al otro
+        //La rom del interface1 por ejemplo cuando está leyendo datos (puerto e7) no está leyendo el puerto de estado (ef)
+        //por tanto ese incremento del estado de datos (valor 0) a paso a estado gap lo producimos cuando ha pasado el contadort
+        //aunque en dispositivo real esto sucederia justo al dejar de enviar los 543 bytes
+        //Logicamente esto no va a la velocidad real ni cuento t-estados ni nada, por ejemplo si lees del puerto
+        //de datos, te llegará el siguiente byte, y su vuelves a leer, aunque no haya pasado el tiempo "real" del microdrive
+        //para que llegue el siguiente byte, te llegará
+        #define MICRODRIVE_PASOS_CAMBIO_ESTADO 20
 
-        else if (temp_if1<100) return_value=4; //gap
-        else if (temp_if1<120) return_value=2; //sync
-        else if (temp_if1<140) return_value=0; //datos
+        if      (contador_estado_microdrive<MICRODRIVE_PASOS_CAMBIO_ESTADO) return_value=4; //gap
+        else if (contador_estado_microdrive<MICRODRIVE_PASOS_CAMBIO_ESTADO*2) return_value=2; //sync
+        else if (contador_estado_microdrive<MICRODRIVE_PASOS_CAMBIO_ESTADO*3) return_value=0; //datos
 
-        if (temp_if1>=140) {
+        else if (contador_estado_microdrive<MICRODRIVE_PASOS_CAMBIO_ESTADO*4) return_value=4; //gap
+        else if (contador_estado_microdrive<MICRODRIVE_PASOS_CAMBIO_ESTADO*5) return_value=2; //sync
+        else if (contador_estado_microdrive<MICRODRIVE_PASOS_CAMBIO_ESTADO*6) return_value=0; //datos
+
+        if (contador_estado_microdrive>=MICRODRIVE_PASOS_CAMBIO_ESTADO*6) {
             mdr_next_sector();
-            temp_if1=0; //1000
+            contador_estado_microdrive=0; //1000
         }
 
-        printf ("In Port %x asked, PC after=0x%x temp_if1=%d return_value=0x%x\n",puerto_l,reg_pc,temp_if1,return_value);
+        printf ("In Port %x asked, PC after=0x%x contador_estado_microdrive=%d return_value=0x%x\n",puerto_l,reg_pc,contador_estado_microdrive,return_value);
 
         return return_value;
     }
 
     if (puerto_l==0xe7) {
-        //printf ("In Port %x asked, Microdrive READ, PC after=0x%x\n",puerto_l+256*puerto_h,reg_pc);
 
-        //sleep(5);
-
-        //temp_if1=0; //para que retorne gap
-
-        z80_byte return_value=mdr_next_byte();
-
-        //printf("Return value: %d\n",return_value);
-
-        return return_value;
+        return mdr_next_byte();
     }
 
 
