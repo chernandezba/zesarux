@@ -387,16 +387,18 @@ z80_byte mdr_next_byte(void)
     int offset_efectivo;
 
     //Si esta en los primeros 15 bytes
-    if (mdr_current_offset_in_sector<=14) offset_efectivo=14-mdr_current_offset_in_sector;
-    else offset_efectivo=542-mdr_current_offset_in_sector;
+    //if (mdr_current_offset_in_sector<=14) offset_efectivo=14-mdr_current_offset_in_sector;
+    //else offset_efectivo=542-mdr_current_offset_in_sector;
+
+    offset_efectivo=mdr_current_offset_in_sector;
 
 
     offset_efectivo +=offset_to_sector;
 
     z80_byte valor=if1_microdrive_buffer[offset_efectivo];
 
-    printf("Retornando byte mdr de offset sector %d, offset %d (offset_efectivo=%d) =0x%02X\n",
-        mdr_current_sector,mdr_current_offset_in_sector,offset_efectivo,valor);
+    printf("Retornando byte mdr de offset en PC=%04XH sector %d, offset %d (offset_efectivo=%d) =0x%02X\n",
+        reg_pc,mdr_current_sector,mdr_current_offset_in_sector,offset_efectivo,valor);
 
     //puntero_mdr++;
 
@@ -421,6 +423,14 @@ int temp_if1=0;
 
 
 
+/*
+ Microdrive cartridge
+   GAP      PREAMBLE      15 byte      GAP      PREAMBLE      15 byte    512     1
+ [-----][00 00 ... ff ff][BLOCK HEAD][-----][00 00 ... ff ff][REC HEAD][ DATA ][CHK]
+ Preamble = 10 * 0x00 + 2 * 0xff (12 byte)
+*/
+
+
 z80_byte interface1_get_value_port(z80_byte puerto_l)
 {
     if (puerto_l==0xef) {
@@ -428,25 +438,24 @@ z80_byte interface1_get_value_port(z80_byte puerto_l)
 
         temp_if1++;
 
-        if (temp_if1>100) {
+
+
+        z80_byte return_value=0;
+
+        if      (temp_if1<40) return_value=4; //gap
+        else if (temp_if1<60) return_value=2; //sync
+        else if (temp_if1<80) return_value=0; //datos
+
+        else if (temp_if1<100) return_value=4; //gap
+        else if (temp_if1<120) return_value=2; //sync
+        else if (temp_if1<140) return_value=0; //datos
+
+        if (temp_if1>=140) {
             mdr_next_sector();
             temp_if1=0; //1000
         }
 
-        z80_byte return_value=0;
-
-        if (temp_if1<40) return_value=4; //gap
-        else if (temp_if1<60) return_value=2; //sync
-        else if (temp_if1==60) return_value=0; //datos
-        else if (temp_if1<100) return_value=4; //gap
-
-
-        //printf("Return value: %d\n",return_value);
-
-        //Mientras no este en gap o sync, tambien "avanza" el puerto de lectura
-        //mdr_next_byte();
-
-        printf ("In Port %x asked, PC after=0x%x return_value=0x%x\n",puerto_l,reg_pc,return_value);
+        printf ("In Port %x asked, PC after=0x%x temp_if1=%d return_value=0x%x\n",puerto_l,reg_pc,temp_if1,return_value);
 
         return return_value;
     }
@@ -456,7 +465,7 @@ z80_byte interface1_get_value_port(z80_byte puerto_l)
 
         //sleep(5);
 
-        temp_if1=60; //para que retorne gap
+        //temp_if1=0; //para que retorne gap
 
         z80_byte return_value=mdr_next_byte();
 
