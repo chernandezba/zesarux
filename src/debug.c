@@ -5605,7 +5605,8 @@ void debug_get_ioports(char *stats_buffer)
             sprintf (buf_linea,"MDV current sector: %3d\n",mdr_current_sector);
             sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
-            sprintf (buf_linea,"MDV offset sector:  %3d\n",mdr_current_offset_in_sector);
+            //Dos saltos de linea porque es la del final
+            sprintf (buf_linea,"MDV offset sector:  %3d\n\n",mdr_current_offset_in_sector);
             sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
         }
