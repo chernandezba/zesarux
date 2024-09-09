@@ -41,5 +41,9 @@ extern void microdrive_insert(void);
 extern void microdrive_footer_operating(void);
 
 extern void microdrive_eject(void);
+extern z80_byte microdrive_status_ef(void);
+
+#define MICRODRIVE_STATUS_BIT_GAP  4
+#define MICRODRIVE_STATUS_BIT_SYNC 2
 
 #endif

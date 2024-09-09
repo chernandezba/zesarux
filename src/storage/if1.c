@@ -336,8 +336,7 @@ void enable_if1(void)
 
 
 
-//Contador simple para saber si tenemos que devolver gap, sync o datos
-int contador_estado_microdrive=0;
+
 
 
 
@@ -349,49 +348,10 @@ z80_byte interface1_get_value_port(z80_byte puerto_l)
 
     //Puerto de estado
     if (puerto_l==0xef) {
-        //printf ("In Port %x asked, PC after=0x%x\n",puerto_l+256*puerto_h,reg_pc);
-
-        /*
-        Microdrive cartridge
-        GAP      PREAMBLE      15 byte      GAP      PREAMBLE      15 byte    512     1
-        [-----][00 00 ... ff ff][BLOCK HEAD][-----][00 00 ... ff ff][REC HEAD][ DATA ][CHK]
-        Preamble = 10 * 0x00 + 2 * 0xff (12 byte)
-        */
-
-
-        contador_estado_microdrive++;
-
-
-
-        z80_byte return_value=0;
-
-        //numero arbitrario realmente, cada cuanto incrementamos el contador para pasar de un estado al otro
-        //La rom del interface1 por ejemplo cuando está leyendo datos (puerto e7) no está leyendo el puerto de estado (ef)
-        //por tanto ese incremento del estado de datos (valor 0) a paso a estado gap lo producimos cuando ha pasado el contadort
-        //aunque en dispositivo real esto sucederia justo al dejar de enviar los 543 bytes
-        //Logicamente esto no va a la velocidad real ni cuento t-estados ni nada, por ejemplo si lees del puerto
-        //de datos, te llegará el siguiente byte, y su vuelves a leer, aunque no haya pasado el tiempo "real" del microdrive
-        //para que llegue el siguiente byte, te llegará
-        #define MICRODRIVE_PASOS_CAMBIO_ESTADO 20
-
-        if      (contador_estado_microdrive<MICRODRIVE_PASOS_CAMBIO_ESTADO) return_value=4; //gap
-        else if (contador_estado_microdrive<MICRODRIVE_PASOS_CAMBIO_ESTADO*2) return_value=2; //sync
-        else if (contador_estado_microdrive<MICRODRIVE_PASOS_CAMBIO_ESTADO*3) return_value=0; //datos
-
-        else if (contador_estado_microdrive<MICRODRIVE_PASOS_CAMBIO_ESTADO*4) return_value=4; //gap
-        else if (contador_estado_microdrive<MICRODRIVE_PASOS_CAMBIO_ESTADO*5) return_value=2; //sync
-        else if (contador_estado_microdrive<MICRODRIVE_PASOS_CAMBIO_ESTADO*6) return_value=0; //datos
-
-        if (contador_estado_microdrive>=MICRODRIVE_PASOS_CAMBIO_ESTADO*6) {
-            mdr_next_sector();
-            contador_estado_microdrive=0; //1000
-        }
-
-        printf ("In Port %x asked, PC after=0x%x contador_estado_microdrive=%d return_value=0x%x\n",puerto_l,reg_pc,contador_estado_microdrive,return_value);
-
         microdrive_footer_operating();
 
-        return return_value;
+        return microdrive_status_ef();
+
     }
 
     if (puerto_l==0xe7) {

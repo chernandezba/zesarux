@@ -367,6 +367,7 @@ claro. o no, porque si hay top bar, "Storage" menu por ejemplo es un menu direct
 
 
 -microdrive:
+*no carga pantallas. quiza es que solo lee 1 sector?
 ok *si no elegido mdr, que devuelva datos vacios  (ni gap ni sync tampoco)
 *grabacion datos. formateo
 *elegir mdr

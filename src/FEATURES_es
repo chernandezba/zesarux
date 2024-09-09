@@ -98,6 +98,8 @@
 
 * Soporta formatos de snapshot: ZSF, ZX, Z80, SP, SPG, NEX, SNA, P, P81, O, Z81, ACE
 
+* Soporta formatos de microdrive: MDR (Spectrum) y MDV (formato QLAY format en QL)
+
 * Soporta formatos de floppy disk: DSK
 
 * Soporta formatos de tarjetas MMC/SD: HDF, IMG, RAW (.MMC)
@@ -115,6 +117,8 @@
 * Emula Datagear/MB02 DMA, ZX-Uno DMA
 
 * Emula controladora de disco Nec PD765, utilizada en Spectrum +3, CPC 664, CPC 6128, PCW
+
+* Emulata ZX Microdrive en ZX Spectrum y QL
 
 * Emula Betadisk/TR-DOS. Soporte directo para archivos .trd. scl files pueden convertirse desde el selector de archivos pulsando espacio
 
