@@ -41,6 +41,10 @@ z80_bit if1_rom_paged={0};
 z80_byte interface1_last_value_port_ef=0;
 z80_byte interface1_last_value_port_e7=0;
 
+//Guardarlo para debug
+z80_byte interface1_last_read_status_ef=0;
+z80_byte interface1_last_read_e7=0;
+
 #define IF1_ROM_NAME "if1-v2.rom"
 
 /*
@@ -358,7 +362,11 @@ z80_byte interface1_get_value_port(z80_byte puerto_l)
 
         microdrive_footer_operating();
 
-        return mdr_next_byte();
+        z80_byte value=mdr_next_byte();
+
+        interface1_last_read_e7=value;
+
+        return value;
     }
 
 

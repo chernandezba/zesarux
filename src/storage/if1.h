@@ -26,6 +26,11 @@
 
 extern z80_bit if1_enabled;
 
+extern z80_byte interface1_last_read_status_ef;
+extern z80_byte interface1_last_read_e7;
+extern z80_byte interface1_last_value_port_ef;
+extern z80_byte interface1_last_value_port_e7;
+
 extern void enable_if1(void);
 extern void disable_if1(void);
 

@@ -113,6 +113,8 @@
 #include "interface007.h"
 #include "pd765.h"
 #include "pcw.h"
+#include "if1.h"
+#include "microdrive.h"
 
 struct timeval debug_timer_antes, debug_timer_ahora;
 
@@ -5564,6 +5566,43 @@ void debug_get_ioports(char *stats_buffer)
   	if (MACHINE_IS_SPECTRUM) {
   		sprintf (buf_linea,"Spectrum FE port: %02X\n",out_254_original_value);
   		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+        if (if1_enabled.v) {
+            sprintf (buf_linea,"Interface1:\n");
+            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+            sprintf (buf_linea,"Port EF read:  %02XH\n",interface1_last_read_status_ef);
+            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+            sprintf (buf_linea,"%s %s %s %s %s\n",
+                (interface1_last_read_status_ef & 0x10 ? "Busy" : "    "),
+                (interface1_last_read_status_ef & 0x08 ? "DTR" :  "   "),
+                (interface1_last_read_status_ef & 0x04 ? "Gap" :  "   "),
+                (interface1_last_read_status_ef & 0x02 ? "Sync" : "    "),
+                (interface1_last_read_status_ef & 0x01 ? "WP" :   "  ")
+            );
+            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+            sprintf (buf_linea,"Port EF write: %02XH\n",interface1_last_value_port_ef);
+            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+            sprintf (buf_linea,"%s %s %s %s %s %s\n",
+                (interface1_last_value_port_ef & 0x20 ? "Wait"  : "    "),
+                (interface1_last_value_port_ef & 0x10 ? "CTS"   : "   "),
+                (interface1_last_value_port_ef & 0x08 ? "Erase" : "     "),
+                (interface1_last_value_port_ef & 0x04 ? "R"     : "W"),
+                (interface1_last_value_port_ef & 0x02 ? "CCLK"  : "    "),
+                (interface1_last_value_port_ef & 0x01 ? "CDAT"  : "    ")
+            );
+            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+            sprintf (buf_linea,"Port E7 read:  %02XH\n",interface1_last_read_e7);
+            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+            sprintf (buf_linea,"Port E7 write: %02XH\n",interface1_last_value_port_e7);
+            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+        }
 
   		//Spectra
   		if (spectra_enabled.v) {

@@ -202,6 +202,8 @@ void microdrive_footer_operating(void)
 //Contador simple para saber si tenemos que devolver gap, sync o datos
 int contador_estado_microdrive=0;
 
+
+
 z80_byte microdrive_status_ef(void)
 {
         //printf ("In Port %x asked, PC after=0x%x\n",puerto_l+256*puerto_h,reg_pc);
@@ -244,6 +246,7 @@ z80_byte microdrive_status_ef(void)
 
         printf ("In Port ef asked, PC after=0x%x contador_estado_microdrive=%d return_value=0x%x\n",reg_pc,contador_estado_microdrive,return_value);
 
+        interface1_last_read_status_ef=return_value;
 
         return return_value;
 
