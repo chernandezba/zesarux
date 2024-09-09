@@ -43,9 +43,15 @@ extern void microdrive_footer_operating(void);
 extern void microdrive_eject(void);
 extern z80_byte microdrive_status_ef(void);
 
+extern int mdr_current_sector;
+extern int mdr_current_offset_in_sector;
+
 
 
 #define MICRODRIVE_STATUS_BIT_GAP  4
 #define MICRODRIVE_STATUS_BIT_SYNC 2
+
+//Si vale 1, es que no esta protegido
+#define MICRODRIVE_STATUS_BIT_NOT_WRITE_PROTECT 1
 
 #endif

@@ -5579,7 +5579,7 @@ void debug_get_ioports(char *stats_buffer)
                 (interface1_last_read_status_ef & 0x08 ? "DTR" :  "   "),
                 (interface1_last_read_status_ef & 0x04 ? "Gap" :  "   "),
                 (interface1_last_read_status_ef & 0x02 ? "Sync" : "    "),
-                (interface1_last_read_status_ef & 0x01 ? "WP" :   "  ")
+                (interface1_last_read_status_ef & 0x01 ? "  "   : "WP")
             );
             sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
@@ -5587,12 +5587,12 @@ void debug_get_ioports(char *stats_buffer)
             sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
             sprintf (buf_linea,"%s %s %s %s %s %s\n",
-                (interface1_last_value_port_ef & 0x20 ? "Wait"  : "    "),
-                (interface1_last_value_port_ef & 0x10 ? "CTS"   : "   "),
-                (interface1_last_value_port_ef & 0x08 ? "Erase" : "     "),
-                (interface1_last_value_port_ef & 0x04 ? "R"     : "W"),
-                (interface1_last_value_port_ef & 0x02 ? "CCLK"  : "    "),
-                (interface1_last_value_port_ef & 0x01 ? "CDAT"  : "    ")
+                (interface1_last_value_port_ef & 0x20 ? "    " :    "Wait"),
+                (interface1_last_value_port_ef & 0x10 ? "   " :     "CTS"),
+                (interface1_last_value_port_ef & 0x08 ? "     " :   "Erase"),
+                (interface1_last_value_port_ef & 0x04 ? "R"     :   "W"),
+                (interface1_last_value_port_ef & 0x02 ? "    " :    "CCLK"),
+                (interface1_last_value_port_ef & 0x01 ? "    " :    "CDAT")
             );
             sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
@@ -5600,6 +5600,12 @@ void debug_get_ioports(char *stats_buffer)
             sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
             sprintf (buf_linea,"Port E7 write: %02XH\n",interface1_last_value_port_e7);
+            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+            sprintf (buf_linea,"MDV current sector: %3d\n",mdr_current_sector);
+            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+            sprintf (buf_linea,"MDV offset sector:  %3d\n",mdr_current_offset_in_sector);
             sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
         }
