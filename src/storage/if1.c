@@ -30,6 +30,7 @@
 #include "utils.h"
 #include "operaciones.h"
 #include "zxvision.h"
+#include "compileoptions.h"
 
 z80_bit if1_enabled={0};
 z80_byte *if1_memory_pointer;
@@ -362,6 +363,50 @@ void enable_if1(void)
 
 //int puntero_mdr=0;
 
+//-1 si no aplica
+int microdrive_get_visualmem_position(unsigned int address)
+{
+#ifdef EMULATE_VISUALMEM
+
+
+    //El buffer de visualmem en este caso tiene mismo tamaño que dispositivo microdrive
+    int posicion_final=address;
+
+    //por si acaso
+    if (posicion_final>=0 && posicion_final<VISUALMEM_MICRODRIVE_BUFFER_SIZE) {
+        return posicion_final;
+
+
+    }
+
+
+#endif
+
+	return -1;
+}
+
+void microdrive_set_visualmem_read(unsigned int address)
+{
+#ifdef EMULATE_VISUALMEM
+	int posicion_final=microdrive_get_visualmem_position(address);
+	if (posicion_final>=0) {
+		set_visualmemmicrodrive_read_buffer(posicion_final);
+	}
+
+#endif
+}
+
+void microdrive_set_visualmem_write(unsigned int address)
+{
+#ifdef EMULATE_VISUALMEM
+	int posicion_final=microdrive_get_visualmem_position(address);
+	if (posicion_final>=0) {
+		set_visualmemmicrodrive_write_buffer(posicion_final);
+	}
+
+#endif
+}
+
 int mdr_current_sector=0;
 int mdr_current_offset_in_sector=0;
 
@@ -390,6 +435,8 @@ z80_byte mdr_next_byte(void)
     offset_efectivo +=offset_to_sector;
 
     z80_byte valor=if1_microdrive_buffer[offset_efectivo];
+
+    microdrive_set_visualmem_read(offset_efectivo);
 
     printf("Retornando byte mdr de offset en PC=%04XH sector %d, offset %d (offset_efectivo=%d) =0x%02X\n",
         reg_pc,mdr_current_sector,mdr_current_offset_in_sector,offset_efectivo,valor);

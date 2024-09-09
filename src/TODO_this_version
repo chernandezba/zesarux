@@ -372,4 +372,6 @@ claro. o no, porque si hay top bar, "Storage" menu por ejemplo es un menu direct
 *mas de 1 microdrive a la vez
 *proteccion escritura (ultimo byte del mdr)
 *debug i/o ports
-*algo como visual floppy o quiza visualmem
+*algo como visual floppy
+ok *visualmem
+*icono microdrive

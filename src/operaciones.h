@@ -38,6 +38,7 @@
 
 #define VISUALMEM_MMC_BUFFER_SIZE (1024*1024)
 #define VISUALMEM_HILOW_BUFFER_SIZE (HILOW_DEVICE_SIZE)
+#define VISUALMEM_MICRODRIVE_BUFFER_SIZE 137922
 
 
 extern z80_byte *visualmem_buffer;
@@ -71,6 +72,13 @@ extern z80_byte *visualmem_hilow_write_buffer;
 extern void set_visualmemhilow_write_buffer(int dir);
 extern void clear_visualmemhilow_write_buffer(int dir);
 
+extern z80_byte *visualmem_microdrive_read_buffer;
+extern void set_visualmemmicrodrive_read_buffer(int dir);
+extern void clear_visualmemmicrodrive_read_buffer(int dir);
+
+extern z80_byte *visualmem_microdrive_write_buffer;
+extern void set_visualmemmicrodrive_write_buffer(int dir);
+extern void clear_visualmemmicrodrive_write_buffer(int dir);
 
 #endif
 

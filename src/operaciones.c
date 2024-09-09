@@ -158,6 +158,12 @@ z80_byte *visualmem_hilow_read_buffer=NULL;
 //lo mismo pero para hilow escritura
 z80_byte *visualmem_hilow_write_buffer=NULL;
 
+//lo mismo pero para microdrive lectura
+z80_byte *visualmem_microdrive_read_buffer=NULL;
+
+//lo mismo pero para microdrive escritura
+z80_byte *visualmem_microdrive_write_buffer=NULL;
+
 void init_visualmembuffer(void)
 {
 	//int visualmem_size=65536;
@@ -193,6 +199,12 @@ void init_visualmembuffer(void)
 	visualmem_hilow_write_buffer=util_malloc_fill(VISUALMEM_HILOW_BUFFER_SIZE,"Can not allocate visualmem HiLow write buffer",0);
 
 
+	debug_printf(VERBOSE_INFO,"Allocating %d bytes for visualmem Microdrive read buffer",VISUALMEM_MICRODRIVE_BUFFER_SIZE);
+	visualmem_microdrive_read_buffer=util_malloc_fill(VISUALMEM_MICRODRIVE_BUFFER_SIZE,"Can not allocate visualmem Microdrive read buffer",0);
+
+
+	debug_printf(VERBOSE_INFO,"Allocating %d bytes for visualmem Microdrive write buffer",VISUALMEM_MICRODRIVE_BUFFER_SIZE);
+	visualmem_microdrive_write_buffer=util_malloc_fill(VISUALMEM_MICRODRIVE_BUFFER_SIZE,"Can not allocate visualmem Microdrive write buffer",0);
 }
 
 void set_visualmembuffer(int dir)
@@ -247,6 +259,18 @@ void set_visualmemhilow_write_buffer(int dir)
         if (valor<255) visualmem_hilow_write_buffer[dir]=valor+1;
 }
 
+void set_visualmemmicrodrive_read_buffer(int dir)
+{
+        z80_byte valor=visualmem_microdrive_read_buffer[dir];
+        if (valor<255) visualmem_microdrive_read_buffer[dir]=valor+1;
+}
+
+void set_visualmemmicrodrive_write_buffer(int dir)
+{
+        z80_byte valor=visualmem_microdrive_write_buffer[dir];
+        if (valor<255) visualmem_microdrive_write_buffer[dir]=valor+1;
+}
+
 void clear_visualmembuffer(int dir)
 {
         visualmem_buffer[dir]=0;
@@ -280,6 +304,16 @@ void clear_visualmemhilow_read_buffer(int dir)
 void clear_visualmemhilow_write_buffer(int dir)
 {
         visualmem_hilow_write_buffer[dir]=0;
+}
+
+void clear_visualmemmicrodrive_read_buffer(int dir)
+{
+        visualmem_microdrive_read_buffer[dir]=0;
+}
+
+void clear_visualmemmicrodrive_write_buffer(int dir)
+{
+        visualmem_microdrive_write_buffer[dir]=0;
 }
 
 #endif
