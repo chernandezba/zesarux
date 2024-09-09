@@ -31,4 +31,6 @@ extern void disable_if1(void);
 
 extern z80_bit if1_rom_paged;
 
+extern z80_byte interface1_get_value_port(z80_byte puerto_l);
+
 #endif

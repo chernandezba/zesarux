@@ -35,10 +35,8 @@ z80_bit if1_enabled={0};
 z80_byte *if1_memory_pointer;
 z80_bit if1_rom_paged={0};
 
-z80_byte *if1_microdrive_buffer;
-int indice_microdrive_buffer=0;
 
-int if1_antes_pedido_longitud=-1;
+
 
 #define IF1_ROM_NAME "if1-v2.rom"
 
@@ -50,6 +48,9 @@ http://faqwiki.zxnet.co.uk/wiki/ZX_Interface_1
 http://www.sinclair.hu/speccyalista/konyvtar/kezikonyvek/ZXInterface1_Microdrive_Manual.pdf
 
 http://k1.spdns.de/Vintage/Sinclair/82/Peripherals/Interface%201%20and%20Microdrives%20(Sinclair)/ROMs/
+
+
+https://worldofspectrum.org/faq/reference/formats.htm
 
 */
 
@@ -71,9 +72,6 @@ int if1_nested_id_peek_byte_no_time;
 
 
 
-z80_byte temp_valor_prueba;
-
-//void cpu_core_loop_if1(void)
 z80_byte cpu_core_loop_if1(z80_int dir GCC_UNUSED, z80_byte value GCC_UNUSED)
 {
 
@@ -94,89 +92,10 @@ z80_byte cpu_core_loop_if1(z80_int dir GCC_UNUSED, z80_byte value GCC_UNUSED)
                         //if1_rom_paged.v=0;
 			despaginar=1;
                 }
-		//Traps de funciones
-		if (reg_pc==0x1F3F) {
-			//THE 'READ SECTOR' HOOK CODE
-			//Sector esta en IX+$0D  CHREC
-			printf ("Read sector routine. Sector=%d\n",peek_byte_no_time(reg_iy+0x0d) );
-		}
 
-		/*
-;; CHK-PRES
-L154E:  CALL    L163E           ; routine TEST-BRK allows the user to stop.
 
-        IN      A,($EF)         ; read the microdrive port.
-        AND     $04             ; test for the gap bit
-        JR      NZ,L155B        ; forward, if not, to NOPRES
 
-		*/
-		if (reg_pc==0x1553) {
-			printf ("CHK-PRES. Force microdrive present\n");
-			//Cambiamos A. Microdrive presente
-			reg_a=0;
-		}
-
-		if (reg_pc==0x15e2) {
-			printf ("GET-M-HD THE 'RECEIVE BLOCK FROM MICRODRIVE HEADER' ROUTINE\n");
-			//menu_abierto=1;
-		}
-
-		if (reg_pc==0x15f2) {
-			printf ("GET-M-BLK\n");
-			//En DE longitud
-			//En stack, destino
-			z80_int destino=peek_word_no_time(reg_sp);
-			printf ("Destino: %d Longitud: %d\n",destino,reg_de);
-
-			//if (reg_de!=15) sleep(3);
-
-			//quitamos valor de la pila
-			//reg_sp++;
-			//reg_sp++;
-
-			if (if1_antes_pedido_longitud>=0) {
-				//Si antes era 15 y ahora 15, saltamos 528 bytes
-				if (if1_antes_pedido_longitud==15 && reg_de==15) {
-					indice_microdrive_buffer+=528;
-					printf ("antes pedido 15 bytes. saltar 528 de datos\n");
-				}
-				else {
-					printf ("\n");
-					//sleep(3);
-				}
-			}
-
-			int i;
-			z80_byte caracter;
-
-			//Si puntero esta en el ultimo sector y se habian leido antes 15 bytes
-			if (indice_microdrive_buffer>=(98284-528) ) {
-				printf ("indice: %d\n",indice_microdrive_buffer);
-				//sleep(3);
-			}
-
-			//Debug del sector que tiene en la cabecera
-			printf ("Sector en cabecera (+3): %d\n",3+if1_microdrive_buffer[indice_microdrive_buffer+1]);
-			printf ("Posible sector que busca: %d\n",peek_byte_no_time(23753) );
-			if (peek_byte_no_time(23753)==3+if1_microdrive_buffer[indice_microdrive_buffer+1]) {
-				printf ("Match\n");
-				//sleep(1);
-			}
-
-			for (i=0;i<reg_de;i++) {
-				//-1 porque saltamos el byte final que indica proteccion escritura
-				if (indice_microdrive_buffer>=(98284-1)) indice_microdrive_buffer=0;
-				caracter=if1_microdrive_buffer[indice_microdrive_buffer++];
-
-				poke_byte_no_time(destino+i,caracter);
-				printf ("%c ",(caracter>=32 && caracter<=127 ? caracter : '.' ) );
-			}
-			if1_antes_pedido_longitud=reg_de;
-
-			//Ir al final de la rutina
-			reg_pc=0x1638;
-		}
-        }
+    }
 
         //Llamar a anterior
         debug_nested_core_call_previous(if1_nested_id_core);
@@ -356,63 +275,77 @@ void disable_if1(void)
 	free(if1_memory_pointer);
 }
 
+z80_byte *if1_microdrive_buffer;
+
+
+int mdr_total_sectors=0;
+
+#define MDR_BYTES_PER_SECTOR 543
+
 void enable_if1(void)
 {
 	if (if1_enabled.v) return;
 	//Asignar memoria
-        int size=8192;
+    int size=8192;
 
-        debug_printf (VERBOSE_DEBUG,"Allocating %d kb of memory for Interface 1 emulation",size/1024);
+    debug_printf (VERBOSE_DEBUG,"Allocating %d kb of memory for Interface 1 emulation",size/1024);
 
-        if1_memory_pointer=malloc(size);
-        if (if1_memory_pointer==NULL) {
-                cpu_panic ("No enough memory for Interface 1 emulation emulation");
-        }
+    if1_memory_pointer=malloc(size);
+    if (if1_memory_pointer==NULL) {
+            cpu_panic ("No enough memory for Interface 1 emulation emulation");
+    }
 
 	//Cargar ROM
 	FILE *ptr_if1_romfile;
-        int leidos=0;
+    int leidos=0;
 
-        debug_printf (VERBOSE_INFO,"Loading if1 firmware %s",IF1_ROM_NAME);
+    debug_printf (VERBOSE_INFO,"Loading if1 firmware %s",IF1_ROM_NAME);
 
-        open_sharedfile(IF1_ROM_NAME,&ptr_if1_romfile);
-
-
-        if (ptr_if1_romfile!=NULL) {
-                leidos=fread(if1_memory_pointer,1,size,ptr_if1_romfile);
-                fclose(ptr_if1_romfile);
-        }
+    open_sharedfile(IF1_ROM_NAME,&ptr_if1_romfile);
 
 
+    if (ptr_if1_romfile!=NULL) {
+            leidos=fread(if1_memory_pointer,1,size,ptr_if1_romfile);
+            fclose(ptr_if1_romfile);
+    }
 
-        if (leidos!=size || ptr_if1_romfile==NULL) {
-                debug_printf (VERBOSE_ERR,"Error reading Interface 1 firmware, file " IF1_ROM_NAME );
-                //Lo desactivamos asi porque el disable hace otras cosas, como cambiar el core loop, que no queremos
-                if1_enabled.v=0;
-                return ;
-        }
 
-	//Cargar microdrive de prueba
-	if1_microdrive_buffer=malloc(256*1024);
-	if (if1_microdrive_buffer==NULL) {
+
+    if (leidos!=size || ptr_if1_romfile==NULL) {
+            debug_printf (VERBOSE_ERR,"Error reading Interface 1 firmware, file " IF1_ROM_NAME );
+            //Lo desactivamos asi porque el disable hace otras cosas, como cambiar el core loop, que no queremos
+            if1_enabled.v=0;
+            return ;
+    }
+
+
+
+
+      //Cargar microdrive de prueba
+       if1_microdrive_buffer=malloc(256*1024);
+       if (if1_microdrive_buffer==NULL) {
                 cpu_panic ("No enough memory for Microdrive buffer");
-	}
+       }
 
-	FILE *ptr_microdrive_file;
-
-	//Leer archivo mdr
+       FILE *ptr_microdrive_file;
+       //Leer archivo mdr
         ptr_microdrive_file=fopen("prueba.mdr","rb");
 
-	if (ptr_microdrive_file==NULL) {
-		debug_printf (VERBOSE_ERR,"Cannot locate prueba.mdr");
-	}
+       if (ptr_microdrive_file==NULL) {
+               debug_printf (VERBOSE_ERR,"Cannot locate prueba.mdr");
+       }
 
-	else {
-		//Leer todo el archivo microdrive de prueba
-		int leidos=fread(if1_microdrive_buffer,1,98284,ptr_microdrive_file);
-		printf ("leidos %d bytes de microdrive\n",leidos);
-		fclose(ptr_microdrive_file);
-	}
+       else {
+               //Leer todo el archivo microdrive de prueba
+               int leidos=fread(if1_microdrive_buffer,1,97740,ptr_microdrive_file);
+               printf ("leidos %d bytes de microdrive\n",leidos);
+
+                mdr_total_sectors=leidos/MDR_BYTES_PER_SECTOR;
+
+               fclose(ptr_microdrive_file);
+       }
+
+
 
 
 
@@ -424,4 +357,115 @@ void enable_if1(void)
 
 	if1_rom_paged.v=0;
 	if1_enabled.v=1;
+}
+
+
+//int puntero_mdr=0;
+
+int mdr_current_sector=0;
+int mdr_current_offset_in_sector=0;
+
+void mdr_next_sector(void)
+{
+
+    mdr_current_offset_in_sector=0;
+    mdr_current_sector++;
+    if (mdr_current_sector>=mdr_total_sectors) mdr_current_sector=0;
+}
+
+
+z80_byte mdr_next_byte(void)
+{
+
+
+    //int pos_en_sector=puntero_mdr % MDR_BYTES_PER_SECTOR;
+
+    //int sector=puntero_mdr/MDR_BYTES_PER_SECTOR;
+
+    int offset_to_sector=mdr_current_sector*MDR_BYTES_PER_SECTOR;
+
+    int offset_efectivo;
+
+    //Si esta en los primeros 15 bytes
+    if (mdr_current_offset_in_sector<=14) offset_efectivo=14-mdr_current_offset_in_sector;
+    else offset_efectivo=542-mdr_current_offset_in_sector;
+
+
+    offset_efectivo +=offset_to_sector;
+
+    z80_byte valor=if1_microdrive_buffer[offset_efectivo];
+
+    printf("Retornando byte mdr de offset sector %d, offset %d (offset_efectivo=%d) =0x%02X\n",
+        mdr_current_sector,mdr_current_offset_in_sector,offset_efectivo,valor);
+
+    //puntero_mdr++;
+
+
+    mdr_current_offset_in_sector++;
+
+
+    if (mdr_current_offset_in_sector>=MDR_BYTES_PER_SECTOR) {
+        mdr_next_sector();
+
+    }
+
+
+    //if (puntero_mdr>=97740) puntero_mdr=0;
+
+    return valor;
+
+}
+
+
+int temp_if1=0;
+
+
+
+z80_byte interface1_get_value_port(z80_byte puerto_l)
+{
+    if (puerto_l==0xef) {
+        //printf ("In Port %x asked, PC after=0x%x\n",puerto_l+256*puerto_h,reg_pc);
+
+        temp_if1++;
+
+        if (temp_if1>100) {
+            mdr_next_sector();
+            temp_if1=0; //1000
+        }
+
+        z80_byte return_value=0;
+
+        if (temp_if1<40) return_value=4; //gap
+        else if (temp_if1<60) return_value=2; //sync
+        else if (temp_if1==60) return_value=0; //datos
+        else if (temp_if1<100) return_value=4; //gap
+
+
+        //printf("Return value: %d\n",return_value);
+
+        //Mientras no este en gap o sync, tambien "avanza" el puerto de lectura
+        //mdr_next_byte();
+
+        printf ("In Port %x asked, PC after=0x%x return_value=0x%x\n",puerto_l,reg_pc,return_value);
+
+        return return_value;
+    }
+
+    if (puerto_l==0xe7) {
+        //printf ("In Port %x asked, Microdrive READ, PC after=0x%x\n",puerto_l+256*puerto_h,reg_pc);
+
+        //sleep(5);
+
+        temp_if1=60; //para que retorne gap
+
+        z80_byte return_value=mdr_next_byte();
+
+        //printf("Return value: %d\n",return_value);
+
+        return return_value;
+    }
+
+
+    return 0;
+
 }
