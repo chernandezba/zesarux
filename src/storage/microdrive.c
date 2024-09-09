@@ -32,6 +32,8 @@
 #include "operaciones.h"
 #include "zxvision.h"
 #include "compileoptions.h"
+#include "menu_items.h"
+#include "screen.h"
 
 
 z80_byte *if1_microdrive_buffer;
@@ -169,4 +171,18 @@ void microdrive_insert(void)
 
                microdrive_enabled.v=1;
        }
+}
+
+
+void microdrive_footer_operating(void)
+{
+
+
+    generic_footertext_print_operating("MDR");
+
+    //Y poner icono en inverso
+    if (!zxdesktop_icon_mdv1_inverse) {
+        zxdesktop_icon_mdv1_inverse=1;
+        menu_draw_ext_desktop();
+    }
 }

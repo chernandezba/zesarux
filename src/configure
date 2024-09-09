@@ -1790,7 +1790,7 @@ diviface.o: storage/diviface.c storage/diviface.h cpu.h debug.h utils.h zxvision
 if1.o: storage/if1.c storage/if1.h storage/microdrive.h cpu.h debug.h utils.h operaciones.h zxvision/zxvision.h
 	\$(CC) \$(CFLAGS) -c storage/if1.c
 
-microdrive.o: storage/microdrive.c storage/microdrive.h storage/if1.h cpu.h debug.h utils.h operaciones.h zxvision/zxvision.h
+microdrive.o: storage/microdrive.c storage/microdrive.h storage/if1.h cpu.h debug.h utils.h operaciones.h zxvision/zxvision.h menu/menu_items.h video/screen.h
 	\$(CC) \$(CFLAGS) -c storage/microdrive.c
 
 ds1307.o: ds1307.c ds1307.h cpu.h debug.h utils.h operaciones.h zxvision/zxvision.h

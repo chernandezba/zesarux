@@ -6894,10 +6894,6 @@ z80_byte temp_tsconf_first_sd_0=1;
 z80_byte lee_puerto_spectrum_no_time(z80_byte puerto_h,z80_byte puerto_l)
 {
 
-    if (if1_enabled.v && (puerto_l==0xef || puerto_l==0xe7)) {
-        return interface1_get_value_port(puerto_l);
-    }
-
 	debug_fired_in=1;
 	//extern z80_byte in_port_ay(z80_int puerto);
 	//65533 o 49149
@@ -7307,23 +7303,9 @@ z80_byte lee_puerto_spectrum_no_time(z80_byte puerto_h,z80_byte puerto_l)
 		return eight_bit_simple_ide_read(puerto_l);
 	}
 
-	if (if1_enabled.v) {
-		if (puerto_l==0xf7) {
-			//Net
-			return 255;
-		}
-
-		if (puerto_l==0xef) {
-			//Status bits
-			//return 0;
-			return 255;
-		}
-
-		if (puerto_l==0xe7) {
-			//Data read/write
-			return 255;
-		}
-	}
+    if (if1_enabled.v && (puerto_l==0xef || puerto_l==0xe7)) {
+        return interface1_get_value_port(puerto_l);
+    }
 
 
 	//Puertos DIVMMC
@@ -7568,7 +7550,7 @@ if (MACHINE_IS_SPECTRUM_128_P2)
 
 
 	//debug_printf (VERBOSE_DEBUG,"In Port %x unknown asked, PC after=0x%x",puerto_l+256*puerto_h,reg_pc);
-	printf ("In Port %x unknown asked, PC after=0x%x\n",puerto_l+256*puerto_h,reg_pc);
+	//printf ("In Port %x unknown asked, PC after=0x%x\n",puerto_l+256*puerto_h,reg_pc);
 	//printf ("idle bus port: %d\n",puerto_l+256*puerto_h);
 	return valor_idle_bus_port;
 
@@ -9095,7 +9077,9 @@ Port: 10-- ---- ---- --0-
 
 	}
 
-
+    if (if1_enabled.v && (puerto_l==0xef || puerto_l==0xe7)) {
+        interface1_write_value_port(puerto_l,value);
+    }
 
 
 	//Puertos paginacion para superupgrade

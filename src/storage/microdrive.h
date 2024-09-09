@@ -38,4 +38,6 @@ extern z80_bit microdrive_enabled;
 
 extern void microdrive_insert(void);
 
+extern void microdrive_footer_operating(void);
+
 #endif

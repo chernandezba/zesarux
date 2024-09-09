@@ -38,7 +38,8 @@ z80_byte *if1_memory_pointer;
 z80_bit if1_rom_paged={0};
 
 
-
+z80_byte interface1_last_value_port_ef=0;
+z80_byte interface1_last_value_port_e7=0;
 
 #define IF1_ROM_NAME "if1-v2.rom"
 
@@ -386,10 +387,14 @@ z80_byte interface1_get_value_port(z80_byte puerto_l)
 
         printf ("In Port %x asked, PC after=0x%x contador_estado_microdrive=%d return_value=0x%x\n",puerto_l,reg_pc,contador_estado_microdrive,return_value);
 
+        microdrive_footer_operating();
+
         return return_value;
     }
 
     if (puerto_l==0xe7) {
+
+        microdrive_footer_operating();
 
         return mdr_next_byte();
     }
@@ -398,3 +403,19 @@ z80_byte interface1_get_value_port(z80_byte puerto_l)
     return 0;
 
 }
+
+void interface1_write_value_port(z80_byte puerto_l,z80_byte value)
+{
+    if (puerto_l==0xe7) {
+        interface1_last_value_port_e7=value;
+        microdrive_footer_operating();
+    }
+
+    if (puerto_l==0xef) {
+        interface1_last_value_port_ef=value;
+        printf("Write to port EF value %02XH\n",value);
+        microdrive_footer_operating();
+    }
+
+}
+
