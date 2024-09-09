@@ -377,3 +377,4 @@ ok *debug i/o ports
 ok *visualmem
 ok *icono microdrive
 ok *si no elegido mdr, que devuelva datos vacios  (ni gap ni sync tampoco)
+*a veces no carga programas, teniendo que desactivar y activar interface. quiza algun contador que no se resetea bien?
