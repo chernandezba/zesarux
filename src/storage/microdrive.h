@@ -25,4 +25,17 @@
 #include "cpu.h"
 
 
+#define MDR_BYTES_PER_SECTOR 543
+#define MDR_MAX_FILE_SIZE 137923
+
+extern z80_byte mdr_next_byte(void);
+
+extern void mdr_next_sector(void);
+
+extern char microdrive_file_name[];
+
+extern z80_bit microdrive_enabled;
+
+extern void microdrive_insert(void);
+
 #endif

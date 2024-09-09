@@ -153,6 +153,7 @@
 #include "pcw.h"
 #include "zeng_online.h"
 #include "mk14.h"
+#include "microdrive.h"
 
 #ifdef COMPILE_ALSA
 #include "audioalsa.h"
@@ -41231,6 +41232,63 @@ void menu_interface1_enable(MENU_ITEM_PARAMETERS)
 	else disable_if1();
 }
 
+void menu_storage_microdrive_file(MENU_ITEM_PARAMETERS)
+{
+
+	//microdrive_disable();
+
+        char *filtros[2];
+
+        filtros[0]="mdr";
+		filtros[1]=0;
+
+
+
+	   //guardamos directorio actual
+        char directorio_actual[PATH_MAX];
+        getcwd(directorio_actual,PATH_MAX);
+
+              //Obtenemos directorio de trd
+        //si no hay directorio, vamos a rutas predefinidas
+        if (microdrive_file_name[0]==0) menu_chdir_sharedfiles();
+
+        else {
+                char directorio[PATH_MAX];
+                util_get_dir(microdrive_file_name,directorio);
+                //printf ("strlen directorio: %d directorio: %s\n",strlen(directorio),directorio);
+
+                //cambiamos a ese directorio, siempre que no sea nulo
+                if (directorio[0]!=0) {
+                        debug_printf (VERBOSE_INFO,"Changing to last directory: %s",directorio);
+                        zvfs_chdir(directorio);
+                }
+        }
+
+
+
+		int ret=menu_filesel("Select MDR File",filtros,microdrive_file_name);
+		//volvemos a directorio inicial
+        zvfs_chdir(directorio_actual);
+
+
+        if (ret==1) {
+
+
+            microdrive_insert();
+
+		}
+
+
+
+        //Sale con ESC
+        else {
+                //Quitar nombre
+                microdrive_file_name[0]=0;
+
+
+        }
+}
+
 
 void menu_interface1(MENU_ITEM_PARAMETERS)
 {
@@ -41249,6 +41307,29 @@ void menu_interface1(MENU_ITEM_PARAMETERS)
         //menu_add_item_menu_shortcut(array_menu_common,'i');
         //menu_add_item_menu_tiene_submenu(array_menu_common);
 
+
+        char string_microdrive_file_shown[17];
+
+
+
+        menu_tape_settings_trunc_name(microdrive_file_name,string_microdrive_file_shown,17);
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_storage_microdrive_file,NULL,
+            "~~microdrive File","Archivo ~~microdrive","Arxiu ~~microdrive");
+        menu_add_item_menu_sufijo_format(array_menu_common," [%s]",string_microdrive_file_shown);
+        menu_add_item_menu_prefijo(array_menu_common,"    ");
+        menu_add_item_menu_shortcut(array_menu_common,'m');
+        menu_add_item_menu_tooltip(array_menu_common,"microdrive Emulation file");
+        menu_add_item_menu_ayuda(array_menu_common,"microdrive Emulation file");
+
+
+
+
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,
+            "microdrive ~~Emulation","~~Emulación microdrive","~~Emulació microdrive");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ", (microdrive_enabled.v ? 'X' : ' '));
+        menu_add_item_menu_shortcut(array_menu_common,'e');
+        menu_add_item_menu_tooltip(array_menu_common,"microdrive Emulation");
+        menu_add_item_menu_ayuda(array_menu_common,"microdrive Emulation");
 
 
 
