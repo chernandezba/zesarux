@@ -41306,6 +41306,11 @@ int menu_storage_microdrive_enable_cond(void)
     else return 1;
 }
 
+void menu_storage_microdrive_write_protection(MENU_ITEM_PARAMETERS)
+{
+    microdrive_write_protect.v ^=1;
+}
+
 void menu_interface1(MENU_ITEM_PARAMETERS)
 {
     menu_item *array_menu_common;
@@ -41330,23 +41335,31 @@ void menu_interface1(MENU_ITEM_PARAMETERS)
 
         menu_tape_settings_trunc_name(microdrive_file_name,string_microdrive_file_shown,17);
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_storage_microdrive_file,NULL,
-            "~~microdrive File","Archivo ~~microdrive","Arxiu ~~microdrive");
+            "~~Microdrive File","Archivo ~~Microdrive","Arxiu ~~Microdrive");
         menu_add_item_menu_sufijo_format(array_menu_common," [%s]",string_microdrive_file_shown);
         menu_add_item_menu_prefijo(array_menu_common,"    ");
         menu_add_item_menu_shortcut(array_menu_common,'m');
-        menu_add_item_menu_tooltip(array_menu_common,"microdrive Emulation file");
-        menu_add_item_menu_ayuda(array_menu_common,"microdrive Emulation file");
+        menu_add_item_menu_tooltip(array_menu_common,"Microdrive Emulation file");
+        menu_add_item_menu_ayuda(array_menu_common,"Microdrive Emulation file");
 
 
 
 
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_storage_microdrive_enable,menu_storage_microdrive_enable_cond,
-            "microdrive ~~Emulation","~~Emulación microdrive","~~Emulació microdrive");
+            "Microdrive ~~Emulation","~~Emulación Microdrive","~~Emulació Microdrive");
         menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ", (microdrive_enabled.v ? 'X' : ' '));
         menu_add_item_menu_shortcut(array_menu_common,'e');
-        menu_add_item_menu_tooltip(array_menu_common,"microdrive Emulation");
-        menu_add_item_menu_ayuda(array_menu_common,"microdrive Emulation");
+        menu_add_item_menu_tooltip(array_menu_common,"Microdrive Emulation");
+        menu_add_item_menu_ayuda(array_menu_common,"Microdrive Emulation");
 
+
+
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_storage_microdrive_write_protection,NULL,
+            "Write ~~Protection","~~Protección escritura","~~Protecció escriptura");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ", (microdrive_write_protect.v ? 'X' : ' '));
+        menu_add_item_menu_shortcut(array_menu_common,'p');
+        menu_add_item_menu_tooltip(array_menu_common,"Write Protection");
+        menu_add_item_menu_ayuda(array_menu_common,"Write Protection");
 
 
         menu_add_item_menu_separator(array_menu_common);

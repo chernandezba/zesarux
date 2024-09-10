@@ -378,6 +378,7 @@ void interface1_write_value_port(z80_byte puerto_l,z80_byte value)
 {
     if (puerto_l==0xe7) {
         interface1_last_value_port_e7=value;
+        printf("Saving byte to port EF value %02XH\n",value);
         microdrive_footer_operating();
     }
 

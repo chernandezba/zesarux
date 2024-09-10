@@ -46,6 +46,8 @@ char microdrive_file_name[PATH_MAX]="";
 
 z80_bit microdrive_enabled={0};
 
+z80_bit microdrive_write_protect={0};
+
 
 //int puntero_mdr=0;
 
@@ -178,6 +180,12 @@ void microdrive_insert(void)
                fclose(ptr_microdrive_file);
 
                microdrive_enabled.v=1;
+
+               //leer byte de write protect
+
+               microdrive_write_protect.v=0;
+
+               if (if1_microdrive_buffer[leidos-1]) microdrive_write_protect.v=1;
        }
 }
 
@@ -256,8 +264,7 @@ z80_byte microdrive_status_ef(void)
         printf ("In Port ef asked, PC after=0x%x contador_estado_microdrive=%d return_value=0x%x\n",reg_pc,contador_estado_microdrive,return_value);
 
 
-//temp
-//return_value |=MICRODRIVE_STATUS_BIT_NOT_WRITE_PROTECT;
+        if (microdrive_write_protect.v==0) return_value |=MICRODRIVE_STATUS_BIT_NOT_WRITE_PROTECT;
 
         interface1_last_read_status_ef=return_value;
 
