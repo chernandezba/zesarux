@@ -98,11 +98,17 @@ void microdrive_set_visualmem_write(unsigned int address)
 int mdr_current_sector=0;
 int mdr_current_offset_in_sector=0;
 
+
+//Indica que estamos en la zona de preamble antes de escribir (10 ceros, 2 ff)
+int mdr_write_preamble_index=0;
+
 void mdr_next_sector(void)
 {
     mdr_current_offset_in_sector=0;
     mdr_current_sector++;
     if (mdr_current_sector>=mdr_total_sectors) mdr_current_sector=0;
+
+    mdr_write_preamble_index=0;
 
     printf("siguiente sector. actual=%d\n",mdr_current_sector);
 }
@@ -159,6 +165,15 @@ void mdr_write_byte(z80_byte valor)
 {
    if (microdrive_enabled.v==0) return;
 
+    //Esto es un poco chapuza pero funciona
+    //La zona de preamble son 10 bytes a 0 y 2 bytes a FF
+   if (mdr_write_preamble_index<12) {
+    printf("Do not write as we are on the preamble zone\n");
+    mdr_write_preamble_index++;
+    return;
+   }
+
+
     if (mdr_current_offset_in_sector>=MDR_BYTES_PER_SECTOR) {
         //Si estamos al final del sector, no permitir escribir
         return;
@@ -179,8 +194,9 @@ void mdr_write_byte(z80_byte valor)
 
     microdrive_set_visualmem_write(offset_efectivo);
 
-    printf("Escribiendo byte mdr de offset en PC=%04XH sector %d, offset %d (offset_efectivo=%d) =0x%02X\n",
-        reg_pc,mdr_current_sector,mdr_current_offset_in_sector,offset_efectivo,valor);
+    printf("Escribiendo byte mdr de offset en PC=%04XH sector %d, offset %d (offset_efectivo=%d) =0x%02X (%c)\n",
+        reg_pc,mdr_current_sector,mdr_current_offset_in_sector,offset_efectivo,
+        valor,(valor>=32 && valor<=126 ? valor : '.'));
 
 
 
