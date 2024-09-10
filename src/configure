@@ -1396,7 +1396,7 @@ scmp.o: scmp.c scmp.h cpu.h operaciones.h
 	\$(CC) \$(CFLAGS) -c scmp.c
 
 
-timer.o: timer.c timer.h cpu.h start.h audio/audio.h debug.h zxvision/zxvision.h storage/tape.h video/screen.h compileoptions.h machines/zx8081.h joystick.h utils.h printers.h machines/z88.h autoselectoptions.h machines/zxuno.h textspeech.h storage/mmc.h storage/ide.h storage/zxpand.h storage/superupgrade.h snap/snap.h snap/snap_rzx.h machines/ql.h storage/esxdos_handler.h storage/betadisk.h storage/pd765.h settings.h machines/ql_i8049.h machines/cpc.h snap/snap_ram.h storage/hilow_datadrive.h dsk.h menu/menu_items.h machines/pcw.h zrcp/zeng_online.h zxvision/zxvision_topbar.h
+timer.o: timer.c timer.h cpu.h start.h audio/audio.h debug.h zxvision/zxvision.h storage/tape.h video/screen.h compileoptions.h machines/zx8081.h joystick.h utils.h printers.h machines/z88.h autoselectoptions.h machines/zxuno.h textspeech.h storage/mmc.h storage/ide.h storage/zxpand.h storage/superupgrade.h snap/snap.h snap/snap_rzx.h machines/ql.h storage/esxdos_handler.h storage/betadisk.h storage/pd765.h settings.h machines/ql_i8049.h machines/cpc.h snap/snap_ram.h storage/hilow_datadrive.h dsk.h menu/menu_items.h machines/pcw.h zrcp/zeng_online.h zxvision/zxvision_topbar.h storage/microdrive.h
 	\$(CC) \$(CFLAGS) -c timer.c
 
 

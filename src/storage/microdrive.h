@@ -50,6 +50,8 @@ extern z80_bit microdrive_write_protect;
 
 extern void mdr_write_byte(z80_byte valor);
 
+extern void microdrive_flush_to_disk(void);
+
 #define MICRODRIVE_STATUS_BIT_GAP  4
 #define MICRODRIVE_STATUS_BIT_SYNC 2
 

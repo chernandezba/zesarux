@@ -48,6 +48,7 @@ z80_bit microdrive_enabled={0};
 
 z80_bit microdrive_write_protect={0};
 
+int microdrive_must_flush_to_disk=0;
 
 //int puntero_mdr=0;
 
@@ -164,6 +165,8 @@ z80_byte mdr_next_byte(void)
 void mdr_write_byte(z80_byte valor)
 {
    if (microdrive_enabled.v==0) return;
+
+   microdrive_must_flush_to_disk=1;
 
     //Esto es un poco chapuza pero funciona
     //La zona de preamble son 10 bytes a 0 y 2 bytes a FF
@@ -319,5 +322,72 @@ z80_byte microdrive_status_ef(void)
         interface1_last_read_status_ef=return_value;
 
         return return_value;
+
+}
+
+
+
+void microdrive_flush_to_disk(void)
+{
+
+	if (microdrive_enabled.v==0) return;
+
+        if (microdrive_must_flush_to_disk==0) {
+                debug_printf (VERBOSE_DEBUG,"Trying to flush microdrive to disk but no changes made");
+                return;
+        }
+
+	/*if (microdrive_persistent_writes.v==0) {
+                debug_printf (VERBOSE_DEBUG,"Trying to flush microdrive to disk but persistent writes disabled");
+                return;
+        }*/
+
+
+        debug_printf (VERBOSE_INFO,"Flushing microdrive to disk");
+
+        printf ("Flushing microdrive to disk\n");
+
+
+        FILE *ptr_microdrivefile;
+
+	debug_printf (VERBOSE_INFO,"Opening microdrive File %s",microdrive_file_name);
+	ptr_microdrivefile=fopen(microdrive_file_name,"wb");
+
+        int escritos=0;
+
+        int size=mdr_total_sectors*MDR_BYTES_PER_SECTOR;
+
+
+
+        if (ptr_microdrivefile!=NULL) {
+
+
+
+                z80_byte *puntero;
+                puntero=if1_microdrive_buffer;
+
+		//Justo antes del fwrite se pone flush a 0, porque si mientras esta el fwrite entra alguna operacion de escritura,
+		//metera flush a 1
+		microdrive_must_flush_to_disk=0;
+
+                escritos=fwrite(puntero,1,size,ptr_microdrivefile);
+
+                //Agregar el byte final que indica proteccion escritura o no
+                z80_byte proteccion=microdrive_write_protect.v;
+
+                escritos=fwrite(&proteccion,1,1,ptr_microdrivefile);
+
+                fclose(ptr_microdrivefile);
+
+
+        }
+
+        //printf ("ptr_microdrivefile: %d\n",ptr_microdrivefile);
+        //printf ("escritos: %lld\n",escritos);
+
+        if (escritos!=size || ptr_microdrivefile==NULL) {
+                debug_printf (VERBOSE_ERR,"Error writing to microdrive file. Disabling write file operations");
+		        //microdrive_persistent_writes.v=0;
+        }
 
 }

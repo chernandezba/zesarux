@@ -70,6 +70,7 @@
 #include "utils_text_adventure.h"
 #include "zeng_online.h"
 #include "zxvision_topbar.h"
+#include "microdrive.h"
 
 #include "autoselectoptions.h"
 
@@ -851,6 +852,9 @@ void timer_check_interrupt(void)
 
             //escritura de contenido de HiLow a disco
             hilow_flush_contents_to_disk();
+
+            //escritura de contenido de microdrive a disco
+            microdrive_flush_to_disk();
 
             rzx_print_footer();
 
