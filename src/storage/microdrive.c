@@ -164,11 +164,18 @@ z80_byte mdr_next_byte(void)
 
 }
 
+int mdr_write_beyond_15bytes=0;
+
 void mdr_write_byte(z80_byte valor)
 {
    if (microdrive_enabled.v==0) return;
 
    microdrive_must_flush_to_disk=1;
+
+   if (mdr_write_beyond_15bytes) {
+    printf("Do not write as we are beyond 15 bytes header\n");
+    return;
+   }
 
     //Esto es un poco chapuza pero funciona
     //La zona de preamble son 10 bytes a 0 y 2 bytes a FF
@@ -207,6 +214,11 @@ void mdr_write_byte(z80_byte valor)
 
 
     mdr_current_offset_in_sector++;
+
+    //Si estamos en offset 15, bloqueamos escrituras hasta que haya un cambio de read a write
+    if (mdr_current_offset_in_sector==15) {
+        mdr_write_beyond_15bytes=1;
+    }
 
 
 }
@@ -408,10 +420,18 @@ void microdrive_write_port_ef(z80_byte value)
         //Si pasamos de lectura a escritura, inicializar contadores
         if (antes_interface1_last_value_port_ef &4) {
             if ((interface1_last_value_port_ef&4)==0) {
-                printf("pasamos a write\n");
+                printf("pasamos a write. PC=%04XH\n",reg_pc);
 
-            //contador_estado_microdrive=0;
-            //mdr_write_preamble_index=0;
+                //liberar al siguiente sector. Esto es para format
+                if (mdr_write_beyond_15bytes) {
+                    printf("Allowing write again to next sector header 15 bytes probably from FORMAT command\n");
+                        mdr_write_beyond_15bytes=0;
+
+                    contador_estado_microdrive=0;
+                    mdr_next_sector();
+
+                    //mdr_write_preamble_index=0;
+                }
 
             }
         }
