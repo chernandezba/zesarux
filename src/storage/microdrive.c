@@ -98,10 +98,11 @@ int mdr_current_offset_in_sector=0;
 
 void mdr_next_sector(void)
 {
-
     mdr_current_offset_in_sector=0;
     mdr_current_sector++;
     if (mdr_current_sector>=mdr_total_sectors) mdr_current_sector=0;
+
+    printf("siguiente sector. actual=%d\n",mdr_current_sector);
 }
 
 
@@ -109,6 +110,13 @@ z80_byte mdr_next_byte(void)
 {
 
     if (microdrive_enabled.v==0) return 0;
+
+    if (mdr_current_offset_in_sector>=MDR_BYTES_PER_SECTOR) {
+        //Si estamos al final del sector, devolver 0
+        //Esto no es lo real en el hardware, pero nos sirve
+        //Realmente pasaremos al siguiente sector cuando se lea del puerto ef y hayamos pasado el tiempo final
+        return 0;
+    }
 
 
     int offset_to_sector=mdr_current_sector*MDR_BYTES_PER_SECTOR;
@@ -133,10 +141,11 @@ z80_byte mdr_next_byte(void)
     mdr_current_offset_in_sector++;
 
 
+    /*
     if (mdr_current_offset_in_sector>=MDR_BYTES_PER_SECTOR) {
         mdr_next_sector();
-
     }
+    */
 
 
 
