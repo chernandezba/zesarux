@@ -375,7 +375,7 @@ void microdrive_flush_to_disk(void)
                 //Agregar el byte final que indica proteccion escritura o no
                 z80_byte proteccion=microdrive_write_protect.v;
 
-                escritos=fwrite(&proteccion,1,1,ptr_microdrivefile);
+                fwrite(&proteccion,1,1,ptr_microdrivefile);
 
                 fclose(ptr_microdrivefile);
 

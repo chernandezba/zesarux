@@ -368,7 +368,8 @@ claro. o no, porque si hay top bar, "Storage" menu por ejemplo es un menu direct
 
 -microdrive:
 ok *no carga pantallas. quiza es que solo lee 1 sector?
-*grabacion datos. formateo
+ok *grabacion datos
+*formateo
 *elegir mdr
 *mas de 1 microdrive a la vez
 ok *proteccion escritura (ultimo byte del mdr)
