@@ -375,6 +375,11 @@ z80_byte interface1_get_value_port(z80_byte puerto_l)
         return value;
     }
 
+    if (puerto_l==0xf7) {
+        printf("Interface1 net read\n");
+        return 0;
+    }
+
 
     return 0;
 
@@ -392,6 +397,10 @@ void interface1_write_value_port(z80_byte puerto_l,z80_byte value)
 
     if (puerto_l==0xef) {
         microdrive_write_port_ef(value);
+    }
+
+    if (puerto_l==0xf7) {
+        printf("Interface1 net write\n");
     }
 
 }

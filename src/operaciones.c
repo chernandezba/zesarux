@@ -7303,7 +7303,7 @@ z80_byte lee_puerto_spectrum_no_time(z80_byte puerto_h,z80_byte puerto_l)
 		return eight_bit_simple_ide_read(puerto_l);
 	}
 
-    if (if1_enabled.v && (puerto_l==0xef || puerto_l==0xe7)) {
+    if (if1_enabled.v && (puerto_l==0xef || puerto_l==0xe7 || puerto_l==0xf7)) {
         return interface1_get_value_port(puerto_l);
     }
 
@@ -9077,7 +9077,7 @@ Port: 10-- ---- ---- --0-
 
 	}
 
-    if (if1_enabled.v && (puerto_l==0xef || puerto_l==0xe7)) {
+    if (if1_enabled.v && (puerto_l==0xef || puerto_l==0xe7 || puerto_l==0xf7)) {
         interface1_write_value_port(puerto_l,value);
     }
 
