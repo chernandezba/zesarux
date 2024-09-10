@@ -38,12 +38,17 @@ z80_byte *if1_memory_pointer;
 z80_bit if1_rom_paged={0};
 
 
-z80_byte interface1_last_value_port_ef=0;
-z80_byte interface1_last_value_port_e7=0;
-
+z80_byte interface1_last_value_port_ef=0xff;
 //Guardarlo para debug
-z80_byte interface1_last_read_status_ef=0;
+z80_byte interface1_last_read_status_ef=0xff;
+
+z80_byte interface1_last_value_port_e7=0;
+//Guardarlo para debug
 z80_byte interface1_last_read_e7=0;
+
+
+
+
 
 #define IF1_ROM_NAME "if1-v2.rom"
 

@@ -180,6 +180,7 @@ void mdr_write_byte(z80_byte valor)
 
 
     if (mdr_current_offset_in_sector>=MDR_BYTES_PER_SECTOR) {
+        printf("Do not write as we are at the end of sector\n");
         //Si estamos al final del sector, no permitir escribir
         return;
     }
@@ -405,9 +406,9 @@ void microdrive_write_port_ef(z80_byte value)
         microdrive_footer_operating();
 
         //Si pasamos de lectura a escritura, inicializar contadores
-        if (antes_interface1_last_value_port_ef &8) {
-            if ((interface1_last_value_port_ef&8)==0) {
-                printf("pasamos a erase\n");
+        if (antes_interface1_last_value_port_ef &4) {
+            if ((interface1_last_value_port_ef&4)==0) {
+                printf("pasamos a write\n");
 
             //contador_estado_microdrive=0;
             //mdr_write_preamble_index=0;
