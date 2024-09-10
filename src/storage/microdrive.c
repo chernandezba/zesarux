@@ -155,6 +155,40 @@ z80_byte mdr_next_byte(void)
 
 }
 
+void mdr_write_byte(z80_byte valor)
+{
+   if (microdrive_enabled.v==0) return;
+
+    if (mdr_current_offset_in_sector>=MDR_BYTES_PER_SECTOR) {
+        //Si estamos al final del sector, no permitir escribir
+        return;
+    }
+
+
+    int offset_to_sector=mdr_current_sector*MDR_BYTES_PER_SECTOR;
+
+    int offset_efectivo;
+
+
+    offset_efectivo=mdr_current_offset_in_sector;
+
+
+    offset_efectivo +=offset_to_sector;
+
+    if1_microdrive_buffer[offset_efectivo]=valor;
+
+    microdrive_set_visualmem_write(offset_efectivo);
+
+    printf("Escribiendo byte mdr de offset en PC=%04XH sector %d, offset %d (offset_efectivo=%d) =0x%02X\n",
+        reg_pc,mdr_current_sector,mdr_current_offset_in_sector,offset_efectivo,valor);
+
+
+
+    mdr_current_offset_in_sector++;
+
+
+}
+
 
 void microdrive_insert(void)
 {

@@ -48,6 +48,8 @@ extern int mdr_current_offset_in_sector;
 
 extern z80_bit microdrive_write_protect;
 
+extern void mdr_write_byte(z80_byte valor);
+
 #define MICRODRIVE_STATUS_BIT_GAP  4
 #define MICRODRIVE_STATUS_BIT_SYNC 2
 
