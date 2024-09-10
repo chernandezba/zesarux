@@ -48,6 +48,8 @@ z80_bit microdrive_enabled={0};
 
 z80_bit microdrive_write_protect={0};
 
+z80_bit microdrive_persistent_writes={0};
+
 int microdrive_must_flush_to_disk=0;
 
 //int puntero_mdr=0;
@@ -337,10 +339,10 @@ void microdrive_flush_to_disk(void)
                 return;
         }
 
-	/*if (microdrive_persistent_writes.v==0) {
+	if (microdrive_persistent_writes.v==0) {
                 debug_printf (VERBOSE_DEBUG,"Trying to flush microdrive to disk but persistent writes disabled");
                 return;
-        }*/
+        }
 
 
         debug_printf (VERBOSE_INFO,"Flushing microdrive to disk");
