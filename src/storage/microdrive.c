@@ -391,3 +391,25 @@ void microdrive_flush_to_disk(void)
         }
 
 }
+
+void microdrive_write_port_ef(z80_byte value)
+{
+
+    z80_byte antes_interface1_last_value_port_ef=interface1_last_value_port_ef;
+
+
+        interface1_last_value_port_ef=value;
+        printf("Write to port EF value %02XH\n",value);
+        microdrive_footer_operating();
+
+        //Si pasamos de lectura a escritura, inicializar contadores
+        if (antes_interface1_last_value_port_ef &8) {
+            if ((interface1_last_value_port_ef&8)==0) {
+                printf("pasamos a erase\n");
+
+            //contador_estado_microdrive=0;
+            //mdr_write_preamble_index=0;
+
+            }
+        }
+}
