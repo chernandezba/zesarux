@@ -8101,6 +8101,8 @@ void screen_store_scanline_rainbow_solo_display(void)
 	//Por defecto
 	puntero_buffer_atributos=scanline_buffer;
 
+    int color_antes_inves=0;
+
 
 	if (timex_video_emulation.v) {
 		//Modos de video Timex
@@ -8279,10 +8281,14 @@ bits D3-D5: Selection of ink and paper color in extended screen resolution mode 
                             //leer atributo anterior
 							if (x!=0) brillo_temp=puntero_buffer_atributos[posicion_array_pixeles_atributos-3]&64;
 							else {
+                                 //tambien sucede la transicion desde el border contra la primera columna de atributos
                                 brillo_temp=0;
-                                //tambien sucede la transicion desde el border contra la primera columna de atributos
+                                color_antes_inves=out_254 &7  ; //TODO: esto no va bien si vamos cambiando el border en cada scanline
+                                //solo pillara el ultimo valor de border
                             }
-							if (brillo_temp==0) {
+
+                            //Solo hacerlo cuando color anterior es negro y sin brillo
+							if (brillo_temp==0 && color_antes_inves==0) {
 								if (paper==8) {
 									paper=INVES_BLACK_BRIGHT;
                                     //paper=ink;
@@ -8322,6 +8328,8 @@ bits D3-D5: Selection of ink and paper color in extended screen resolution mode 
 
 
 				color= ( byte_leido & 128 ? ink : paper ) ;
+
+                color_antes_inves=color;
 
 
 
