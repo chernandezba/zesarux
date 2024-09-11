@@ -8261,8 +8261,11 @@ bits D3-D5: Selection of ink and paper color in extended screen resolution mode 
 
                         for (bit=0;bit<8;bit++) {
 
-				//ula color bug para Inves. Solo cuando color siguiente es negro. Da igual color anterior ?¿
-                //la linea vertical se ve azul (color 1)
+				//ula color bug para Inves.
+                //se ve claramente que pasa con transicion de papel negro de brillo 0 a brillo 1
+                //Pero está por determinar si sucede con cualquier color
+                //En el caso de negro, se ve momentaneamente una linea vertical de papel negro pero con brillo,
+                //cosa que en principio es un color que no existe
 				if (MACHINE_IS_INVES && inves_ula_bright_error.v) {  //Paper 8 indica paper 0 con brillo
 					//printf ("bright\n");
 					if (bit==0) {
@@ -8281,12 +8284,12 @@ bits D3-D5: Selection of ink and paper color in extended screen resolution mode 
                             }
 							if (brillo_temp==0) {
 								if (paper==8) {
-									paper=1;
+									paper=INVES_BLACK_BRIGHT;
                                     //paper=ink;
 									cambiada_paper=1;
 								}
 								if (ink==8) {
-									ink=1;
+									ink=INVES_BLACK_BRIGHT;
                                     //ink=paper;
 									cambiada_tinta=1;
 								}
@@ -9488,6 +9491,10 @@ Bit 6 GRN1 most  significant bit of green.
         screen_set_colour_normal(FLASH_COLOR_FIRST_COLOR+i,(r<<16)|(g<<8)|b);
 
     }
+
+    //Color negro con brillo en Inves
+    r=g=b=70;
+    screen_set_colour_normal(INVES_BLACK_BRIGHT,(r<<16)|(g<<8)|b);
 
 
     //Si video inverso o grises
