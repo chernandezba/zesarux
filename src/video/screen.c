@@ -8262,22 +8262,32 @@ bits D3-D5: Selection of ink and paper color in extended screen resolution mode 
                         for (bit=0;bit<8;bit++) {
 
 				//ula color bug para Inves. Solo cuando color siguiente es negro. Da igual color anterior ?¿
+                //la linea vertical se ve azul (color 1)
 				if (MACHINE_IS_INVES && inves_ula_bright_error.v) {  //Paper 8 indica paper 0 con brillo
 					//printf ("bright\n");
 					if (bit==0) {
+
+                        //Hay brillo actual
 						if (paper==8 || ink==8) {
 							//printf ("cambiado\n");
 							//Si ha cambiado de 0 a 1
 							z80_byte brillo_temp;
+
+                            //leer atributo anterior
 							if (x!=0) brillo_temp=puntero_buffer_atributos[posicion_array_pixeles_atributos-3]&64;
-							else brillo_temp=0;
+							else {
+                                brillo_temp=0;
+                                //tambien sucede la transicion desde el border contra la primera columna de atributos
+                            }
 							if (brillo_temp==0) {
 								if (paper==8) {
-									paper=1; //temp
+									paper=1;
+                                    //paper=ink;
 									cambiada_paper=1;
 								}
 								if (ink==8) {
 									ink=1;
+                                    //ink=paper;
 									cambiada_tinta=1;
 								}
 							}
@@ -8288,6 +8298,8 @@ bits D3-D5: Selection of ink and paper color in extended screen resolution mode 
 					}
 
 					else {
+
+                        //Recuperar colores
 						if (cambiada_paper==1) {
 							cambiada_paper=0;
 							paper=8;
