@@ -8679,7 +8679,8 @@ void out_port_spectrum_border(z80_int puerto,z80_byte value)
     //Actualizar bit 6 de puerto feh segun si teclado issue 2 o 3
     out_port_spectrum_fe_issue(value);
 
-	//printf ("out port 254 desde reg_pc=%d. puerto: %04XH value: %02XH\n",reg_pc,puerto,value);
+    //Puertos sonido lemmings
+	//if (puerto!=0x00FE && puerto!=0x18FE && puerto!=0x10FE && puerto!=0x08FE) printf ("out port 254 desde reg_pc=%d. puerto: %04XH value: %02XH\n",reg_pc,puerto,value);
 
 	//Guardamos temporalmente el valor anterior para compararlo con el actual
 	//en el metodo de autodeteccion de border real video
