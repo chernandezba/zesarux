@@ -16,6 +16,7 @@ Added Symbol Table loading to improve debugging
 Allow save screen to bmp for most machines
 Allow hotswap to Pentagon and to Spectrum +3
 Allow hotswap from Spectrum 128 to Spectrum +3
+Allow to load .SP snapshots of 64kb (like Shadow of Unicorn)
 Improve Azimuth warning on External Audio Source Window
 Added Flash Color mode
 Allow to not save snapshot when exiting ZEsarUX

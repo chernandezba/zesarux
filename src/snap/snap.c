@@ -1876,7 +1876,8 @@ void load_sp_snapshot(char *archivo)
         int leidos;
 
         //leer datos
-        buffer_lectura=malloc(49152);
+        //Maximo hasta snapshots de 64kb (shadow of unicorn por ejemplo)
+        buffer_lectura=malloc(65536);
         if (buffer_lectura==NULL) cpu_panic("Cannot allocate memory when loading .sp file");
 
 
@@ -1912,8 +1913,32 @@ void load_sp_snapshot(char *archivo)
 
         //cargar datos
 
-        leidos=fread(buffer_lectura,1,49152,ptr_spfile);
-        load_sp_snapshot_bytes_48k(buffer_lectura,leidos,16384);
+        //Soportar snapshot que empieza en rom, como shadow of unicorn
+        //Esto sobreescribira la rom de la maquina
+        int tamanyo_archivo=get_file_size(archivo);
+
+        if (tamanyo_archivo==65574) {
+            //printf("Cargando desde dir 0\n");
+            leidos=fread(buffer_lectura,1,65536,ptr_spfile);
+
+            //void load_sp_snapshot_bytes_48k(z80_byte *buffer_lectura,int leidos,z80_int direccion_destino)
+            z80_int direccion_destino=0;
+
+	        debug_printf (VERBOSE_INFO,"Loading %d bytes at address %d",leidos,direccion_destino);
+
+            z80_byte byte_leido;
+
+            for (;leidos>0;leidos--) {
+                byte_leido=*buffer_lectura++;
+                memoria_spectrum[direccion_destino++]=byte_leido;
+            }
+        }
+
+        else {
+
+            leidos=fread(buffer_lectura,1,49152,ptr_spfile);
+            load_sp_snapshot_bytes_48k(buffer_lectura,leidos,16384);
+        }
 
 	fclose(ptr_spfile);
 
