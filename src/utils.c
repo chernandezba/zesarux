@@ -17572,6 +17572,13 @@ int util_convert_sp_to_scr(char *filename,char *archivo_destino)
 {
         //snapshot sp a SCR
 
+        int snap_64kb=0;
+
+        //Soportar snapshot que empieza en rom, como shadow of unicorn
+        int tamanyo_archivo=get_file_size(filename);
+
+        if (tamanyo_archivo==65574) snap_64kb=1;
+
 
         z80_byte sp_header[SP_HEADER_SIZE];
 
@@ -17635,6 +17642,17 @@ int util_convert_sp_to_scr(char *filename,char *archivo_destino)
         */
 
         int i;
+
+        if (snap_64kb) {
+            //Saltar los primeros 16kb
+
+            for (i=0;i<16384;i++) {
+                    z80_byte byte_leido;
+
+                    zvfs_fread(in_fatfs,&byte_leido,1,ptr_spfile,&fil);
+
+            }
+        }
 
         for (i=0;i<6912;i++) {
                 z80_byte byte_leido;
