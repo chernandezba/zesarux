@@ -238,7 +238,8 @@ void mdr_write_byte(z80_byte valor)
 
         if (escrito_byte_info_una_vez) {
             printf("no escribir byte info en formateo\n");
-            escribir=0;
+            valor=0;
+            //escribir=0;
         }
 
         else {
