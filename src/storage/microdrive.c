@@ -142,12 +142,14 @@ z80_byte mdr_next_byte(void)
 
     microdrive_set_visualmem_read(offset_efectivo);
 
-    printf("Retornando byte mdr de offset en PC=%04XH sector %d, offset %d (offset_efectivo=%d) =0x%02X\n",
-        reg_pc,mdr_current_sector,mdr_current_offset_in_sector,offset_efectivo,valor);
+    printf("Retornando byte mdr de offset en PC=%04XH sector %d, offset %d (offset_efectivo=%d), mdr_write_preamble_index=%d =0x%02X\n",
+        reg_pc,mdr_current_sector,mdr_current_offset_in_sector,offset_efectivo,mdr_write_preamble_index,valor);
 
 
 
     mdr_current_offset_in_sector++;
+
+    mdr_write_preamble_index++;
 
 
     /*
@@ -164,6 +166,9 @@ z80_byte mdr_next_byte(void)
 
 int mdr_write_beyond_15bytes=0;
 
+//Contador simple para saber si tenemos que devolver gap, sync o datos
+int contador_estado_microdrive=0;
+
 void mdr_write_byte(z80_byte valor)
 {
     if (microdrive_enabled.v==0) return;
@@ -171,17 +176,36 @@ void mdr_write_byte(z80_byte valor)
     microdrive_must_flush_to_disk=1;
 
     if (mdr_write_beyond_15bytes) {
-        printf("Do not write as we are beyond 15 bytes header\n");
-        return;
+        //printf("Do not write as we are beyond 15 bytes header\n");
+        //return;
     }
+
+    /*
+    Microdrive cartridge
+    GAP      PREAMBLE      15 byte      GAP      PREAMBLE      15 byte    512     1
+    [-----][00 00 ... ff ff][BLOCK HEAD][-----][00 00 ... ff ff][REC HEAD][ DATA ][CHK]
+    Preamble = 10 * 0x00 + 2 * 0xff (12 byte)
+    */
+
+    //Preamble:
+    //0-11 preamble
+    //12-26 header
+    //27-29 gap
+    //30-41 preamble
+    //42-569 datos
 
     //Esto es un poco chapuza pero funciona
     //La zona de preamble son 10 bytes a 0 y 2 bytes a FF
-    if (mdr_write_preamble_index<12) {
-        printf("Do not write as we are on the preamble zone\n");
+    if (
+        (mdr_write_preamble_index>=0 && mdr_write_preamble_index<=11) ||
+        (mdr_write_preamble_index>=27 && mdr_write_preamble_index<=41)
+    ) {
+        printf("Do not write as we are on the preamble or gap zone (mdr_write_preamble_index=%d)\n",mdr_write_preamble_index);
         mdr_write_preamble_index++;
         return;
     }
+
+    mdr_write_preamble_index++;
 
 
     if (mdr_current_offset_in_sector>=MDR_BYTES_PER_SECTOR) {
@@ -217,6 +241,12 @@ void mdr_write_byte(z80_byte valor)
     if (mdr_current_offset_in_sector==15) {
         mdr_write_beyond_15bytes=1;
     }
+
+    /*if (mdr_current_offset_in_sector>=MDR_BYTES_PER_SECTOR) {
+        printf("Going beyond sector on write. next sector\n");
+        contador_estado_microdrive=0;
+        mdr_next_sector();
+    }*/
 
 
 }
@@ -282,8 +312,7 @@ void microdrive_footer_operating(void)
     }
 }
 
-//Contador simple para saber si tenemos que devolver gap, sync o datos
-int contador_estado_microdrive=0;
+
 
 
 
@@ -420,8 +449,28 @@ void microdrive_write_port_ef(z80_byte value)
         if ((interface1_last_value_port_ef&4)==0) {
             printf("pasamos a write. PC=%04XH\n",reg_pc);
 
+            //Preamble:
+            //0-11 preamble
+            //12-26 header
+            //27-29 gap
+            //30-41 preamble
+            //42-569 datos
+
+            //Saltar a seccion de preamble si conviene
+            if (mdr_write_preamble_index<30) {
+                mdr_write_preamble_index=30;
+                printf("Situar mdr_write_preamble_index en %d\n",mdr_write_preamble_index);
+            }
+
+
+            if (mdr_current_offset_in_sector>=MDR_BYTES_PER_SECTOR) {
+                printf("next sector\n");
+                contador_estado_microdrive=0;
+                mdr_next_sector();
+            }
+
             //liberar al siguiente sector. Esto es para format
-            if (mdr_write_beyond_15bytes) {
+            /*if (mdr_write_beyond_15bytes) {
                 printf("Allowing write again to next sector header 15 bytes probably from FORMAT command\n");
                 mdr_write_beyond_15bytes=0;
 
@@ -429,7 +478,7 @@ void microdrive_write_port_ef(z80_byte value)
                 mdr_next_sector();
 
                 //mdr_write_preamble_index=0;
-            }
+            }*/
 
         }
     }
