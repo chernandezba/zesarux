@@ -169,6 +169,10 @@ int mdr_write_beyond_15bytes=0;
 //Contador simple para saber si tenemos que devolver gap, sync o datos
 int contador_estado_microdrive=0;
 
+int escrito_byte_info_una_vez=0;
+
+int microdrive_formateando=0;
+
 void mdr_write_byte(z80_byte valor)
 {
     if (microdrive_enabled.v==0) return;
@@ -225,12 +229,33 @@ void mdr_write_byte(z80_byte valor)
 
     offset_efectivo +=offset_to_sector;
 
-    if1_microdrive_buffer[offset_efectivo]=valor;
+    //prueba formateo
+    //TODO: detectar formateo
 
-    microdrive_set_visualmem_write(offset_efectivo);
 
-    printf("Escribiendo byte mdr de offset en PC=%04XH sector %d, offset %d (offset_efectivo=%d) =0x%02X (%c)\n",
-        reg_pc,mdr_current_sector,mdr_current_offset_in_sector,offset_efectivo,
+    int escribir=1;
+    if (mdr_current_offset_in_sector>=15 && microdrive_formateando) {
+
+        if (escrito_byte_info_una_vez) {
+            printf("no escribir byte info en formateo\n");
+            escribir=0;
+        }
+
+        else {
+            escrito_byte_info_una_vez=1;
+        }
+
+    }
+
+    if (escribir) {
+        if1_microdrive_buffer[offset_efectivo]=valor;
+
+        microdrive_set_visualmem_write(offset_efectivo);
+
+    }
+
+    printf("Escribiendo byte mdr de offset en PC=%04XH sector %d, offset %d (offset_efectivo=%d) mdr_write_preamble_index=%d : 0x%02X (%c)\n",
+        reg_pc,mdr_current_sector,mdr_current_offset_in_sector,offset_efectivo,mdr_write_preamble_index,
         valor,(valor>=32 && valor<=126 ? valor : '.'));
 
 
@@ -456,8 +481,8 @@ void microdrive_write_port_ef(z80_byte value)
             //30-41 preamble
             //42-569 datos
 
-            //Saltar a seccion de preamble si conviene
-            if (mdr_write_preamble_index<30) {
+            //Saltar a seccion de preamble si conviene (esto cuando se ha acabado de escribir cabecera)
+            if (mdr_write_preamble_index<30 && mdr_write_preamble_index>0) {
                 mdr_write_preamble_index=30;
                 printf("Situar mdr_write_preamble_index en %d\n",mdr_write_preamble_index);
             }

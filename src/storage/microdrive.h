@@ -54,6 +54,10 @@ extern void microdrive_flush_to_disk(void);
 
 extern void microdrive_write_port_ef(z80_byte value);
 
+extern int microdrive_formateando;
+
+extern int escrito_byte_info_una_vez;
+
 extern z80_bit microdrive_persistent_writes;
 
 #define MICRODRIVE_STATUS_BIT_GAP  4

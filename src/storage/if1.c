@@ -105,6 +105,20 @@ z80_byte cpu_core_loop_if1(z80_int dir GCC_UNUSED, z80_byte value GCC_UNUSED)
             despaginar=1;
         }
 
+        if (reg_pc==0x01b5) {
+            //Asumir no formateo
+            microdrive_formateando=0;
+
+            if (reg_a==2) {
+                printf("Detectado rutina formateo\n");
+                microdrive_formateando=1;
+            }
+            else {
+                escrito_byte_info_una_vez=0;
+            }
+
+        }
+
 
 
     }
