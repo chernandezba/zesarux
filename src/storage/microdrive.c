@@ -62,7 +62,7 @@ Quizá esto es un fallo de emulacion o del propio interface1. En Fuse por ejempl
 #include "screen.h"
 
 
-z80_byte *if1_microdrive_buffer;
+
 
 
 int mdr_total_sectors=0;
@@ -150,6 +150,10 @@ void mdr_next_sector(void)
 
 z80_byte mdr_next_byte(void)
 {
+    int microdrive_activo=microdrive_primer_motor_activo();
+    //Si no hay ninguno activo, nada
+    if (microdrive_activo<0) return 0;
+
 
     if (microdrive_enabled.v==0) return 0;
 
@@ -171,7 +175,7 @@ z80_byte mdr_next_byte(void)
 
     offset_efectivo +=offset_to_sector;
 
-    z80_byte valor=if1_microdrive_buffer[offset_efectivo];
+    z80_byte valor=microdrive_status[microdrive_activo].if1_microdrive_buffer[offset_efectivo];
 
     microdrive_set_visualmem_read(offset_efectivo);
 
@@ -232,11 +236,13 @@ int microdrive_formateando=0;
 
 void mdr_write_byte(z80_byte valor)
 {
-    if (microdrive_enabled.v==0) return;
 
     int microdrive_activo=microdrive_primer_motor_activo();
-    //Si no hay ninguno activo, asumimos el primero
-    if (microdrive_activo<0) microdrive_activo=0;
+    //Si no hay ninguno activo, nada
+    if (microdrive_activo<0) return;
+
+    if (microdrive_enabled.v==0) return;
+
 
     microdrive_status[microdrive_activo].microdrive_must_flush_to_disk=1;
 
@@ -326,7 +332,7 @@ void mdr_write_byte(z80_byte valor)
     if (microdrive_sector_es_erroneo(mdr_current_sector)) escribir=0;
 
     if (escribir) {
-        if1_microdrive_buffer[offset_efectivo]=valor;
+        microdrive_status[microdrive_activo].if1_microdrive_buffer[offset_efectivo]=valor;
 
         microdrive_set_visualmem_write(offset_efectivo);
 
@@ -360,7 +366,7 @@ void mdr_write_byte(z80_byte valor)
 void microdrive_insert(int microdrive_seleccionado)
 {
     //Cargar microdrive de prueba
-    if1_microdrive_buffer=util_malloc(MDR_MAX_FILE_SIZE,"No enough memory for Microdrive buffer");
+    microdrive_status[microdrive_seleccionado].if1_microdrive_buffer=util_malloc(MDR_MAX_FILE_SIZE,"No enough memory for Microdrive buffer");
 
 
     FILE *ptr_microdrive_file;
@@ -373,7 +379,7 @@ void microdrive_insert(int microdrive_seleccionado)
 
     else {
         //Leer todo el archivo microdrive de prueba
-        int leidos=fread(if1_microdrive_buffer,1,MDR_MAX_FILE_SIZE,ptr_microdrive_file);
+        int leidos=fread(microdrive_status[microdrive_seleccionado].if1_microdrive_buffer,1,MDR_MAX_FILE_SIZE,ptr_microdrive_file);
         printf ("leidos %d bytes de microdrive\n",leidos);
 
         mdr_total_sectors=leidos/MDR_BYTES_PER_SECTOR;
@@ -386,7 +392,7 @@ void microdrive_insert(int microdrive_seleccionado)
 
         microdrive_write_protect.v=0;
 
-        if (if1_microdrive_buffer[leidos-1]) microdrive_write_protect.v=1;
+        if (microdrive_status[microdrive_seleccionado].if1_microdrive_buffer[leidos-1]) microdrive_write_protect.v=1;
     }
 
 
@@ -401,7 +407,7 @@ void microdrive_eject(int microdrive_seleccionado)
 	//microdrive_flush_contents_to_disk();
 
 
-	free(if1_microdrive_buffer);
+	free(microdrive_status[microdrive_seleccionado].if1_microdrive_buffer);
 
 
 	microdrive_enabled.v=0;
@@ -514,7 +520,7 @@ void microdrive_flush_to_disk_one(int microdrive_seleccionado)
 
 
         z80_byte *puntero;
-        puntero=if1_microdrive_buffer;
+        puntero=microdrive_status[microdrive_seleccionado].if1_microdrive_buffer;
 
         //Justo antes del fwrite se pone flush a 0, porque si mientras esta el fwrite entra alguna operacion de escritura,
         //metera flush a 1

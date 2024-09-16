@@ -75,6 +75,8 @@ struct s_microdrive_status {
 
     char microdrive_file_name[PATH_MAX];
     int microdrive_must_flush_to_disk;
+
+    z80_byte *if1_microdrive_buffer;
 };
 
 extern struct s_microdrive_status microdrive_status[];
