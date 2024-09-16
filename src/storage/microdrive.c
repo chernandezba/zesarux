@@ -64,20 +64,11 @@ Quizá esto es un fallo de emulacion o del propio interface1. En Fuse por ejempl
 
 
 
-
-
-
-
-
-
-
-
 z80_bit microdrive_write_protect={0};
 
 z80_bit microdrive_persistent_writes={0};
 
-int mdr_current_sector=0;
-int mdr_current_offset_in_sector=0;
+
 
 
 //Indica que estamos en la zona de preamble antes de escribir (10 ceros, 2 ff)
@@ -155,13 +146,15 @@ int microdrive_primer_motor_activo(void)
 
 void mdr_next_sector(int microdrive_seleccionado)
 {
-    mdr_current_offset_in_sector=0;
-    mdr_current_sector++;
-    if (mdr_current_sector>=microdrive_status[microdrive_seleccionado].mdr_total_sectors) mdr_current_sector=0;
+    microdrive_status[microdrive_seleccionado].mdr_current_offset_in_sector=0;
+    microdrive_status[microdrive_seleccionado].mdr_current_sector++;
+    if (microdrive_status[microdrive_seleccionado].mdr_current_sector>=microdrive_status[microdrive_seleccionado].mdr_total_sectors) {
+        microdrive_status[microdrive_seleccionado].mdr_current_sector=0;
+    }
 
     mdr_write_preamble_index=0;
 
-    printf("siguiente sector. actual=%d\n",mdr_current_sector);
+    printf("siguiente sector. actual=%d\n",microdrive_status[microdrive_seleccionado].mdr_current_sector);
 }
 
 
@@ -174,7 +167,7 @@ z80_byte mdr_next_byte(void)
 
     if (microdrive_status[microdrive_activo].microdrive_enabled==0) return 0;
 
-    if (mdr_current_offset_in_sector>=MDR_BYTES_PER_SECTOR) {
+    if (microdrive_status[microdrive_activo].mdr_current_offset_in_sector>=MDR_BYTES_PER_SECTOR) {
         //Si estamos al final del sector, devolver 0
         //Esto no es lo real en el hardware, pero nos sirve
         //Realmente pasaremos al siguiente sector cuando se lea del puerto ef y hayamos pasado el tiempo final
@@ -182,12 +175,12 @@ z80_byte mdr_next_byte(void)
     }
 
 
-    int offset_to_sector=mdr_current_sector*MDR_BYTES_PER_SECTOR;
+    int offset_to_sector=microdrive_status[microdrive_activo].mdr_current_sector*MDR_BYTES_PER_SECTOR;
 
     int offset_efectivo;
 
 
-    offset_efectivo=mdr_current_offset_in_sector;
+    offset_efectivo=microdrive_status[microdrive_activo].mdr_current_offset_in_sector;
 
 
     offset_efectivo +=offset_to_sector;
@@ -201,11 +194,11 @@ z80_byte mdr_next_byte(void)
     microdrive_set_visualmem_read(offset_efectivo);
 
     printf("Retornando byte mdr de offset en PC=%04XH sector %d, offset %d (offset_efectivo=%d), mdr_write_preamble_index=%d =0x%02X\n",
-        reg_pc,mdr_current_sector,mdr_current_offset_in_sector,offset_efectivo,mdr_write_preamble_index,valor);
+        reg_pc,microdrive_status[microdrive_activo].mdr_current_sector,microdrive_status[microdrive_activo].mdr_current_offset_in_sector,offset_efectivo,mdr_write_preamble_index,valor);
 
 
 
-    mdr_current_offset_in_sector++;
+    microdrive_status[microdrive_activo].mdr_current_offset_in_sector++;
 
     mdr_write_preamble_index++;
 
@@ -277,19 +270,19 @@ void mdr_write_byte(z80_byte valor)
     mdr_write_preamble_index++;
 
 
-    if (mdr_current_offset_in_sector>=MDR_BYTES_PER_SECTOR) {
+    if (microdrive_status[microdrive_activo].mdr_current_offset_in_sector>=MDR_BYTES_PER_SECTOR) {
         printf("Do not write as we are at the end of sector\n");
         //Si estamos al final del sector, no permitir escribir
         return;
     }
 
 
-    int offset_to_sector=mdr_current_sector*MDR_BYTES_PER_SECTOR;
+    int offset_to_sector=microdrive_status[microdrive_activo].mdr_current_sector*MDR_BYTES_PER_SECTOR;
 
     int offset_efectivo;
 
 
-    offset_efectivo=mdr_current_offset_in_sector;
+    offset_efectivo=microdrive_status[microdrive_activo].mdr_current_offset_in_sector;
 
 
     offset_efectivo +=offset_to_sector;
@@ -303,7 +296,7 @@ void mdr_write_byte(z80_byte valor)
     //Si estamos formateando, solo permitir la primera vez escribir bytes mas alla de la zona de cabecera
     //Si no hicieramos eso, el microdrive resultante tendria 0kb libreas
     //TODO: probablemente esto no pasaria si se emulasen los tiempos y el movimiento real del microdrive
-    if (mdr_current_offset_in_sector>=15 && microdrive_formateando) {
+    if (microdrive_status[microdrive_activo].mdr_current_offset_in_sector>=15 && microdrive_formateando) {
 
         //temp
         valor=0;
@@ -327,7 +320,7 @@ void mdr_write_byte(z80_byte valor)
     }
 
     //Simular sectores erroneos
-    if (microdrive_sector_es_erroneo(mdr_current_sector)) escribir=0;
+    if (microdrive_sector_es_erroneo(microdrive_status[microdrive_activo].mdr_current_sector)) escribir=0;
 
     if (escribir) {
         microdrive_status[microdrive_activo].if1_microdrive_buffer[offset_efectivo]=valor;
@@ -337,12 +330,12 @@ void mdr_write_byte(z80_byte valor)
     }
 
     printf("Escribiendo byte mdr de offset en PC=%04XH sector %d, offset %d (offset_efectivo=%d) mdr_write_preamble_index=%d : 0x%02X (%c)\n",
-        reg_pc,mdr_current_sector,mdr_current_offset_in_sector,offset_efectivo,mdr_write_preamble_index,
+        reg_pc,microdrive_status[microdrive_activo].mdr_current_sector,microdrive_status[microdrive_activo].mdr_current_offset_in_sector,offset_efectivo,mdr_write_preamble_index,
         valor,(valor>=32 && valor<=126 ? valor : '.'));
 
 
 
-    mdr_current_offset_in_sector++;
+    microdrive_status[microdrive_activo].mdr_current_offset_in_sector++;
 
 
 
@@ -603,7 +596,7 @@ void microdrive_write_port_ef(z80_byte value)
             }
 
 
-            if (mdr_current_offset_in_sector>=MDR_BYTES_PER_SECTOR) {
+            if (microdrive_status[microdrive_seleccionado].mdr_current_offset_in_sector>=MDR_BYTES_PER_SECTOR) {
                 printf("next sector\n");
                 contador_estado_microdrive=0;
                 mdr_next_sector(microdrive_seleccionado);
@@ -626,5 +619,7 @@ void init_microdrives(void)
         microdrive_status[i].microdrive_file_name[0]=0;
         microdrive_status[i].microdrive_must_flush_to_disk=0;
         microdrive_status[i].mdr_total_sectors=0;
+        microdrive_status[i].mdr_current_sector=0;
+        microdrive_status[i].mdr_current_offset_in_sector=0;
     }
 }

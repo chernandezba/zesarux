@@ -79,6 +79,8 @@ struct s_microdrive_status {
     z80_byte *if1_microdrive_buffer;
 
     int mdr_total_sectors;
+    int mdr_current_sector;
+    int mdr_current_offset_in_sector;
 };
 
 extern struct s_microdrive_status microdrive_status[];
