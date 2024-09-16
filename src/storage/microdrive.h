@@ -34,8 +34,6 @@ extern z80_byte mdr_next_byte(void);
 
 extern void mdr_next_sector(int microdrive_seleccionado);
 
-extern char microdrive_file_name[];
-
 
 extern void microdrive_insert(int microdrive_seleccionado);
 
@@ -44,8 +42,6 @@ extern void microdrive_footer_operating(void);
 extern void microdrive_eject(int microdrive_seleccionado);
 extern z80_byte microdrive_status_ef(void);
 
-extern int mdr_current_sector;
-extern int mdr_current_offset_in_sector;
 
 extern z80_bit microdrive_write_protect;
 
@@ -57,9 +53,8 @@ extern void microdrive_write_port_ef(z80_byte value);
 
 extern int microdrive_formateando;
 
-extern int escrito_byte_info_una_vez;
+//extern int escrito_byte_info_una_vez;
 
-extern z80_bit microdrive_persistent_writes;
 
 #define MICRODRIVE_STATUS_BIT_GAP  4
 #define MICRODRIVE_STATUS_BIT_SYNC 2
@@ -75,6 +70,8 @@ struct s_microdrive_status {
 
     char microdrive_file_name[PATH_MAX];
     int microdrive_must_flush_to_disk;
+
+    int microdrive_persistent_writes;
 
     z80_byte *if1_microdrive_buffer;
 

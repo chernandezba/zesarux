@@ -66,12 +66,6 @@ Quizá esto es un fallo de emulacion o del propio interface1. En Fuse por ejempl
 
 z80_bit microdrive_write_protect={0};
 
-z80_bit microdrive_persistent_writes={0};
-
-
-
-
-
 
 
 
@@ -481,7 +475,7 @@ void microdrive_flush_to_disk_one(int microdrive_seleccionado)
         return;
     }
 
-	if (microdrive_persistent_writes.v==0) {
+	if (microdrive_status[microdrive_seleccionado].microdrive_persistent_writes==0) {
         debug_printf (VERBOSE_DEBUG,"Trying to flush microdrive to disk but persistent writes disabled");
         return;
     }
@@ -631,5 +625,6 @@ void init_microdrives(void)
         microdrive_status[i].mdr_current_offset_in_sector=0;
         microdrive_status[i].contador_estado_microdrive=0;
         microdrive_status[i].mdr_write_preamble_index=0;
+        microdrive_status[i].microdrive_persistent_writes=0;
     }
 }

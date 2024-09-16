@@ -41322,7 +41322,7 @@ void menu_storage_microdrive_write_protection(MENU_ITEM_PARAMETERS)
 
 void menu_storage_microdrive_persistent_writes(MENU_ITEM_PARAMETERS)
 {
-    microdrive_persistent_writes.v ^=1;
+    microdrive_status[valor_opcion].microdrive_persistent_writes ^=1;
 }
 
 void menu_interface1(MENU_ITEM_PARAMETERS)
@@ -41385,7 +41385,7 @@ void menu_interface1(MENU_ITEM_PARAMETERS)
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_storage_microdrive_persistent_writes,NULL,
                 "Persistent Writes","Escrituras Persistentes","Escriptures Persistents");
-            menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(microdrive_persistent_writes.v ? 'X' : ' ') );
+            menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(microdrive_status[i].microdrive_persistent_writes ? 'X' : ' ') );
             menu_add_item_menu_valor_opcion(array_menu_common,i);
             menu_add_item_menu_tooltip(array_menu_common,"Tells if Microdrive writes are saved to disk");
             menu_add_item_menu_ayuda(array_menu_common,"Tells if Microdrive writes are saved to disk. "
