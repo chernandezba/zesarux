@@ -330,6 +330,10 @@ void mdr_write_byte(z80_byte valor)
 
 }
 
+//prueba
+
+int mdr_motores[8];
+
 
 void microdrive_insert(void)
 {
@@ -362,6 +366,11 @@ void microdrive_insert(void)
 
         if (if1_microdrive_buffer[leidos-1]) microdrive_write_protect.v=1;
     }
+
+
+    //temp
+    int i;
+    for (i=0;i<8;i++) mdr_motores[i]=0;
 }
 
 void microdrive_eject(void)
@@ -391,8 +400,19 @@ void microdrive_footer_operating(void)
     }
 }
 
+//Retornar que motor empezando por el primero esta activo
+//Retorna 0...7 si hay alguno
+//-1 si no
+int microdrive_primer_motor_activo(void)
+{
+    //Mostrar que motores activos
+    int i;
+    for (i=0;i<7;i++) {
+        if (mdr_motores[i]) return i;
+    }
 
-
+    return -1;
+}
 
 
 z80_byte microdrive_status_ef(void)
@@ -523,6 +543,26 @@ void microdrive_write_port_ef(z80_byte value)
     printf("Write to port EF value %02XH\n",value);
     microdrive_footer_operating();
 
+
+    //Si alterar motores
+    if( !( value & 0x02 ) && ( antes_interface1_last_value_port_ef & 0x02 ) ) {      /* ~~\__ */
+        int i;
+
+        for( i = 7; i > 0; i-- ) {
+        /* Rotate one drive */
+        mdr_motores[i] = mdr_motores[i - 1];
+        }
+        mdr_motores[0] = (value & 0x01) ? 0 : 1;
+
+    }
+
+    //Mostrar que motores activos
+    int motor_activo=microdrive_primer_motor_activo();
+    if (motor_activo>=0) printf("Motor activo %d\n",motor_activo+1);
+
+    //if1_ula.comms_clk = ( val & 0x02 ) ? 1 : 0;
+
+
     //Si pasamos de lectura a escritura, inicializar contadores
     if (antes_interface1_last_value_port_ef &4) {
         if ((interface1_last_value_port_ef&4)==0) {
@@ -561,4 +601,5 @@ void microdrive_write_port_ef(z80_byte value)
 
         }
     }
+
 }

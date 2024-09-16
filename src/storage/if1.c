@@ -404,7 +404,8 @@ void interface1_write_value_port(z80_byte puerto_l,z80_byte value)
     }
 
     if (puerto_l==0xf7) {
-        printf("Interface1 net write\n");
+        //printf("Interface1 net write\n");
+        //printf("Write to port F7 value %02XH\n",value);
     }
 
 }

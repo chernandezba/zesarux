@@ -381,3 +381,75 @@ ok *si no elegido mdr, que devuelva datos vacios  (ni gap ni sync tampoco)
 ok *a veces no carga programas, teniendo que desactivar y activar interface. quiza algun contador que no se resetea bien?
 *en grabacion datos y en lectura datos comprobar que los bits de estado los haya indicado correctamente el usuario?
 *parametros config linea comandos/.zesaruxrc
+
+seleccion drive
+
+port_ctr_out( libspectrum_byte val )
+{
+  int m;
+
+  if( !( val & 0x02 ) && ( if1_ula.comms_clk ) ) {      /* ~~\__ */
+
+    for( m = 7; m > 0; m-- ) {
+      /* Rotate one drive */
+      microdrive[m].motor_on = microdrive[m - 1].motor_on;
+    }
+    microdrive[0].motor_on = (val & 0x01) ? 0 : 1;
+
+    ...
+
+    if1_ula.comms_clk = ( val & 0x02 ) ? 1 : 0;
+
+
+      switch( decode_port( port ) ) {
+  case PORT_MDR: port_mdr_out( val ); break;
+  case PORT_CTR: port_ctr_out( val ); break;
+  case PORT_NET: port_net_out( val ); break;
+  case PORT_UNKNOWN: break;
+
+
+enum if1_port {
+  PORT_MDR,
+  PORT_CTR,
+  PORT_NET,
+  PORT_UNKNOWN,
+};
+
+static enum if1_port
+decode_port( libspectrum_word port )
+{
+    switch( port & 0x0018 ) {
+    case 0x0000: return PORT_MDR;
+    case 0x0008: return PORT_CTR;
+    case 0x0010: return PORT_NET;
+        default: return PORT_UNKNOWN;
+    }
+}
+
+
+f7   1111 0111 & 18 = 10 NET
+ef   1110 1111 & 18 = 01 CTR
+e7 : 1110 0111 & 18 = 00 MDR
+
+
+
+port_mdr_in( void )
+{
+  libspectrum_byte ret = 0xff;
+  int m;
+
+  for( m = 0; m < 8; m++ ) {
+
+    microdrive_t *mdr = &microdrive[ m ];
+
+    if( mdr->motor_on && mdr->inserted ) {
+
+      if( mdr->transfered < mdr->max_bytes ) {
+        mdr->last = libspectrum_microdrive_data( mdr->cartridge,
+                                                   mdr->head_pos );
+        increment_head( m );
+      }
+
+      mdr->transfered++;
+      ret &= mdr->last;  /* I assume negative logic, but how know? */
+    }
