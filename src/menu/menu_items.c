@@ -41304,16 +41304,7 @@ void menu_storage_microdrive_enable(MENU_ITEM_PARAMETERS)
 
 }
 
-int menu_storage_microdrive_enable_cond(void)
-{
 
-    //temporal
-    //int microdrive_seleccionado=0;
-
-    //if (microdrive_status[microdrive_seleccionado].microdrive_file_name[0]==0) return 0;
-    //else return 1;
-    return 1;
-}
 
 void menu_storage_microdrive_write_protection(MENU_ITEM_PARAMETERS)
 {
@@ -41323,6 +41314,11 @@ void menu_storage_microdrive_write_protection(MENU_ITEM_PARAMETERS)
 void menu_storage_microdrive_persistent_writes(MENU_ITEM_PARAMETERS)
 {
     microdrive_status[valor_opcion].microdrive_persistent_writes ^=1;
+}
+
+int menu_interface1_cond_disabled(void)
+{
+    return 0;
 }
 
 void menu_interface1(MENU_ITEM_PARAMETERS)
@@ -41363,10 +41359,18 @@ void menu_interface1(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_ayuda(array_menu_common,"Microdrive Emulation file");
 
 
+            //Truco para que parezca que se usa llamada a condicion de los 4 microdrives diferentes, sin
+            //tener que crear 4 funciones diferentes de condicion
+            if (microdrive_status[i].microdrive_file_name[0]) {
+                menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_storage_microdrive_enable,NULL,
+                    "Microdrive ~~Emulation","~~Emulación Microdrive","~~Emulació Microdrive");
+            }
 
+            else {
+                menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_storage_microdrive_enable,menu_interface1_cond_disabled,
+                    "Microdrive ~~Emulation","~~Emulación Microdrive","~~Emulació Microdrive");
+            }
 
-            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_storage_microdrive_enable,menu_storage_microdrive_enable_cond,
-                "Microdrive ~~Emulation","~~Emulación Microdrive","~~Emulació Microdrive");
             menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ", (microdrive_status[i].microdrive_enabled ? 'X' : ' '));
             menu_add_item_menu_valor_opcion(array_menu_common,i);
             menu_add_item_menu_shortcut(array_menu_common,'e');

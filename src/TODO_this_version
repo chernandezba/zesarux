@@ -371,7 +371,7 @@ ok *no carga pantallas. quiza es que solo lee 1 sector?
 ok *grabacion datos
 ok *formateo. saca menos espacio del esperado
 ok *elegir mdr
-*mas de 1 microdrive a la vez
+ok *mas de 1 microdrive a la vez
 ok *proteccion escritura (ultimo byte del mdr)
 *algo como visual floppy
 ok *debug i/o ports
