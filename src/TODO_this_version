@@ -369,8 +369,8 @@ claro. o no, porque si hay top bar, "Storage" menu por ejemplo es un menu direct
 -microdrive:
 ok *no carga pantallas. quiza es que solo lee 1 sector?
 ok *grabacion datos
-*formateo. saca menos espacio del esperado
-*elegir mdr
+ok *formateo. saca menos espacio del esperado
+ok *elegir mdr
 *mas de 1 microdrive a la vez
 ok *proteccion escritura (ultimo byte del mdr)
 *algo como visual floppy
@@ -380,3 +380,4 @@ ok *icono microdrive
 ok *si no elegido mdr, que devuelva datos vacios  (ni gap ni sync tampoco)
 ok *a veces no carga programas, teniendo que desactivar y activar interface. quiza algun contador que no se resetea bien?
 *en grabacion datos y en lectura datos comprobar que los bits de estado los haya indicado correctamente el usuario?
+*parametros config linea comandos/.zesaruxrc

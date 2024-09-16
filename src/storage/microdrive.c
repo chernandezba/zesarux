@@ -19,6 +19,32 @@
 
 */
 
+/*
+
+Sobre la emulacion del microdrive:
+
+Es una emulación muy mejorable:
+
+- No se emula el movimiento real del microdrive: si no se lee o se escribe, el microdrive no se mueve
+Solo se avanza el puntero de lectura/escritura cuando se hace una operación de lectura o escritura
+- Los bits de lectura/escritura se están ignorando: por ejemplo se puede escribir aunque no se haya metido la controladora en modo escritura
+- Se detecta cuando se lanza un comando format: esto es porque se comporta ligeramente diferente al comando de escritura.
+Esto no haria falta seguramente si se emulasen los tiempos y el movimiento real del microdrive
+- Se deberían guardar los bytes de gap y de preamble: dado que el formato .mdr no lo soporta, los ignoramos, pero no es lo deseable
+
+
+TODO:
+
+-con un mdr en blanco de 137923 bytes (bytes a 0), si formateamos se obtene 127 kb libres segun el cat. Cosa correcta
+Si vuelvo a formatear, obtiene 126 kb libres
+Si salgo de ZEsarUX y vuelvo a entrar y selecciono ese mdr ya formateado y reformateo, se vuelven a obtener 126 kb libres
+
+Si salgo de ZEsarUX y vuelvo a escribir todos los bytes a 0, y formateo, se obtienen 127 kb libres
+Quizá esto es un fallo de emulacion o del propio interface1. En Fuse por ejemplo, un microdrive en blanco al formatearlo siempre da
+126 kb libres, no 127, por lo que quizá Fuse también tiene un error o quizá el error está en la propia rom del interface1
+
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <dirent.h>
@@ -164,12 +190,23 @@ z80_byte mdr_next_byte(void)
 
 }
 
-int mdr_write_beyond_15bytes=0;
+//simular sectores erroneos
+//Entrada: sector: sector fisico
+int microdrive_sector_es_erroneo(int sector)
+{
+    //if (sector<100) return 1;
+
+    return 0;
+
+}
+
+
+//int mdr_write_beyond_15bytes=0;
 
 //Contador simple para saber si tenemos que devolver gap, sync o datos
 int contador_estado_microdrive=0;
 
-int escrito_byte_info_una_vez=0;
+//int escrito_byte_info_una_vez=0;
 
 int microdrive_formateando=0;
 
@@ -179,10 +216,10 @@ void mdr_write_byte(z80_byte valor)
 
     microdrive_must_flush_to_disk=1;
 
-    if (mdr_write_beyond_15bytes) {
+    /*if (mdr_write_beyond_15bytes) {
         //printf("Do not write as we are beyond 15 bytes header\n");
         //return;
-    }
+    }*/
 
     /*
     Microdrive cartridge
@@ -234,19 +271,35 @@ void mdr_write_byte(z80_byte valor)
 
 
     int escribir=1;
+
+    //Si estamos formateando, solo permitir la primera vez escribir bytes mas alla de la zona de cabecera
+    //Si no hicieramos eso, el microdrive resultante tendria 0kb libreas
+    //TODO: probablemente esto no pasaria si se emulasen los tiempos y el movimiento real del microdrive
     if (mdr_current_offset_in_sector>=15 && microdrive_formateando) {
+
+        //temp
+        valor=0;
+        printf("no escribir byte info en formateo\n");
+
+        /*
 
         if (escrito_byte_info_una_vez) {
             printf("no escribir byte info en formateo\n");
+
+            //En vez de eso, escribir siempre 0
             valor=0;
-            //escribir=0;
         }
 
         else {
             escrito_byte_info_una_vez=1;
         }
 
+        */
+
     }
+
+    //Simular sectores erroneos
+    if (microdrive_sector_es_erroneo(mdr_current_sector)) escribir=0;
 
     if (escribir) {
         if1_microdrive_buffer[offset_efectivo]=valor;
@@ -264,9 +317,9 @@ void mdr_write_byte(z80_byte valor)
     mdr_current_offset_in_sector++;
 
     //Si estamos en offset 15, bloqueamos escrituras hasta que haya un cambio de read a write
-    if (mdr_current_offset_in_sector==15) {
+    /*if (mdr_current_offset_in_sector==15) {
         mdr_write_beyond_15bytes=1;
-    }
+    }*/
 
     /*if (mdr_current_offset_in_sector>=MDR_BYTES_PER_SECTOR) {
         printf("Going beyond sector on write. next sector\n");

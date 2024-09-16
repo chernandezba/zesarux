@@ -114,7 +114,7 @@ z80_byte cpu_core_loop_if1(z80_int dir GCC_UNUSED, z80_byte value GCC_UNUSED)
                 microdrive_formateando=1;
             }
             else {
-                escrito_byte_info_una_vez=0;
+                //escrito_byte_info_una_vez=0;
             }
 
         }
