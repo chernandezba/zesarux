@@ -80,6 +80,13 @@ int microdrive_must_flush_to_disk=0;
 
 //int puntero_mdr=0;
 
+
+//prueba
+
+//int mdr_motores[8];
+
+struct s_microdrive_status microdrive_status[MAX_MICRODRIVES];
+
 //-1 si no aplica
 int microdrive_get_visualmem_position(unsigned int address)
 {
@@ -330,9 +337,7 @@ void mdr_write_byte(z80_byte valor)
 
 }
 
-//prueba
 
-int mdr_motores[8];
 
 
 void microdrive_insert(void)
@@ -370,7 +375,7 @@ void microdrive_insert(void)
 
     //temp
     int i;
-    for (i=0;i<8;i++) mdr_motores[i]=0;
+    for (i=0;i<MAX_MICRODRIVES;i++) microdrive_status[i].motor_on=0;
 }
 
 void microdrive_eject(void)
@@ -408,7 +413,7 @@ int microdrive_primer_motor_activo(void)
     //Mostrar que motores activos
     int i;
     for (i=0;i<7;i++) {
-        if (mdr_motores[i]) return i;
+        if (microdrive_status[i].motor_on) return i;
     }
 
     return -1;
@@ -550,9 +555,9 @@ void microdrive_write_port_ef(z80_byte value)
 
         for( i = 7; i > 0; i-- ) {
         /* Rotate one drive */
-        mdr_motores[i] = mdr_motores[i - 1];
+        microdrive_status[i].motor_on = microdrive_status[i - 1].motor_on;
         }
-        mdr_motores[0] = (value & 0x01) ? 0 : 1;
+        microdrive_status[0].motor_on = (value & 0x01) ? 0 : 1;
 
     }
 

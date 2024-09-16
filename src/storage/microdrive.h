@@ -66,4 +66,10 @@ extern z80_bit microdrive_persistent_writes;
 //Si vale 1, es que no esta protegido
 #define MICRODRIVE_STATUS_BIT_NOT_WRITE_PROTECT 1
 
+#define MAX_MICRODRIVES 8
+
+struct s_microdrive_status {
+    int motor_on;
+};
+
 #endif
