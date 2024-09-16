@@ -343,7 +343,7 @@ void microdrive_insert(int microdrive_seleccionado)
     ptr_microdrive_file=fopen(microdrive_status[microdrive_seleccionado].microdrive_file_name,"rb");
 
     if (ptr_microdrive_file==NULL) {
-        debug_printf (VERBOSE_ERR,"Cannot locate %s",microdrive_status[microdrive_seleccionado].microdrive_file_name);
+        debug_printf (VERBOSE_ERR,"Cannot locate file: %s",microdrive_status[microdrive_seleccionado].microdrive_file_name);
     }
 
     else {
