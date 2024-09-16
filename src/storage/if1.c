@@ -348,6 +348,11 @@ void enable_if1(void)
 
 	if1_rom_paged.v=0;
 	if1_enabled.v=1;
+
+
+    //Motores a 0
+    int i;
+    for (i=0;i<MAX_MICRODRIVES;i++) microdrive_status[i].motor_on=0;
 }
 
 

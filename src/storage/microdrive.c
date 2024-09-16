@@ -68,7 +68,7 @@ z80_byte *if1_microdrive_buffer;
 int mdr_total_sectors=0;
 
 
-char microdrive_file_name[PATH_MAX]="";
+
 
 z80_bit microdrive_enabled={0};
 
@@ -340,7 +340,7 @@ void mdr_write_byte(z80_byte valor)
 
 
 
-void microdrive_insert(void)
+void microdrive_insert(int microdrive_seleccionado)
 {
     //Cargar microdrive de prueba
     if1_microdrive_buffer=util_malloc(MDR_MAX_FILE_SIZE,"No enough memory for Microdrive buffer");
@@ -348,10 +348,10 @@ void microdrive_insert(void)
 
     FILE *ptr_microdrive_file;
     //Leer archivo mdr
-    ptr_microdrive_file=fopen(microdrive_file_name,"rb");
+    ptr_microdrive_file=fopen(microdrive_status[microdrive_seleccionado].microdrive_file_name,"rb");
 
     if (ptr_microdrive_file==NULL) {
-        debug_printf (VERBOSE_ERR,"Cannot locate %s",microdrive_file_name);
+        debug_printf (VERBOSE_ERR,"Cannot locate %s",microdrive_status[microdrive_seleccionado].microdrive_file_name);
     }
 
     else {
@@ -373,12 +373,10 @@ void microdrive_insert(void)
     }
 
 
-    //temp
-    int i;
-    for (i=0;i<MAX_MICRODRIVES;i++) microdrive_status[i].motor_on=0;
+
 }
 
-void microdrive_eject(void)
+void microdrive_eject(int microdrive_seleccionado)
 {
 	if (microdrive_enabled.v==0) return;
 
@@ -494,10 +492,13 @@ void microdrive_flush_to_disk(void)
     printf ("Flushing microdrive to disk\n");
 
 
+    //temporal
+    int microdrive_seleccionado=0;
+
     FILE *ptr_microdrivefile;
 
-    debug_printf (VERBOSE_INFO,"Opening microdrive File %s",microdrive_file_name);
-    ptr_microdrivefile=fopen(microdrive_file_name,"wb");
+    debug_printf (VERBOSE_INFO,"Opening microdrive File %s",microdrive_status[microdrive_seleccionado].microdrive_file_name);
+    ptr_microdrivefile=fopen(microdrive_status[microdrive_seleccionado].microdrive_file_name,"wb");
 
     int escritos=0;
 
@@ -607,4 +608,14 @@ void microdrive_write_port_ef(z80_byte value)
         }
     }
 
+}
+
+//Inicializar algunas cosas al principio del todo
+void init_microdrives(void)
+{
+    int i;
+
+    for (i=0;i<MAX_MICRODRIVES;i++) {
+        microdrive_status[i].microdrive_file_name[0]=0;
+    }
 }

@@ -6957,6 +6957,8 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
 
     main_leezx81_init_semaphore();
 
+    init_microdrives();
+
     init_zxdesktop_configurable_icons();
 
     zxvision_index_menu_init();

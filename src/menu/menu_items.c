@@ -41235,7 +41235,10 @@ void menu_interface1_enable(MENU_ITEM_PARAMETERS)
 void menu_storage_microdrive_file(MENU_ITEM_PARAMETERS)
 {
 
-	microdrive_eject();
+    //temporal
+    int microdrive_seleccionado=0;
+
+	microdrive_eject(microdrive_seleccionado);
 
         char *filtros[2];
 
@@ -41250,11 +41253,11 @@ void menu_storage_microdrive_file(MENU_ITEM_PARAMETERS)
 
               //Obtenemos directorio de trd
         //si no hay directorio, vamos a rutas predefinidas
-        if (microdrive_file_name[0]==0) menu_chdir_sharedfiles();
+        if (microdrive_status[microdrive_seleccionado].microdrive_file_name[0]==0) menu_chdir_sharedfiles();
 
         else {
                 char directorio[PATH_MAX];
-                util_get_dir(microdrive_file_name,directorio);
+                util_get_dir(microdrive_status[microdrive_seleccionado].microdrive_file_name,directorio);
                 //printf ("strlen directorio: %d directorio: %s\n",strlen(directorio),directorio);
 
                 //cambiamos a ese directorio, siempre que no sea nulo
@@ -41266,15 +41269,14 @@ void menu_storage_microdrive_file(MENU_ITEM_PARAMETERS)
 
 
 
-		int ret=menu_filesel("Select MDR File",filtros,microdrive_file_name);
+		int ret=menu_filesel("Select MDR File",filtros,microdrive_status[microdrive_seleccionado].microdrive_file_name);
 		//volvemos a directorio inicial
         zvfs_chdir(directorio_actual);
 
 
         if (ret==1) {
 
-
-            microdrive_insert();
+            microdrive_insert(microdrive_seleccionado);
 
 		}
 
@@ -41283,7 +41285,7 @@ void menu_storage_microdrive_file(MENU_ITEM_PARAMETERS)
         //Sale con ESC
         else {
                 //Quitar nombre
-                microdrive_file_name[0]=0;
+                microdrive_status[microdrive_seleccionado].microdrive_file_name[0]=0;
 
 
         }
@@ -41291,18 +41293,26 @@ void menu_storage_microdrive_file(MENU_ITEM_PARAMETERS)
 
 void menu_storage_microdrive_enable(MENU_ITEM_PARAMETERS)
 {
+
+    //temporal
+    int microdrive_seleccionado=0;
+
     if (microdrive_enabled.v) {
-        microdrive_eject();
+        microdrive_eject(microdrive_seleccionado);
     }
     else {
-        microdrive_insert();
+        microdrive_insert(microdrive_seleccionado);
     }
 
 }
 
 int menu_storage_microdrive_enable_cond(void)
 {
-    if (microdrive_file_name[0]==0) return 0;
+
+    //temporal
+    int microdrive_seleccionado=0;
+
+    if (microdrive_status[microdrive_seleccionado].microdrive_file_name[0]==0) return 0;
     else return 1;
 }
 
@@ -41337,8 +41347,11 @@ void menu_interface1(MENU_ITEM_PARAMETERS)
         char string_microdrive_file_shown[17];
 
 
+        //temp
+        int microdrive_seleccionado=0;
 
-        menu_tape_settings_trunc_name(microdrive_file_name,string_microdrive_file_shown,17);
+
+        menu_tape_settings_trunc_name(microdrive_status[microdrive_seleccionado].microdrive_file_name,string_microdrive_file_shown,17);
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_storage_microdrive_file,NULL,
             "~~Microdrive File","Archivo ~~Microdrive","Arxiu ~~Microdrive");
         menu_add_item_menu_sufijo_format(array_menu_common," [%s]",string_microdrive_file_shown);

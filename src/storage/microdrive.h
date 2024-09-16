@@ -24,6 +24,8 @@
 
 #include "cpu.h"
 
+#include "zesarux.h"
+
 
 #define MDR_BYTES_PER_SECTOR 543
 #define MDR_MAX_FILE_SIZE 137923
@@ -36,11 +38,11 @@ extern char microdrive_file_name[];
 
 extern z80_bit microdrive_enabled;
 
-extern void microdrive_insert(void);
+extern void microdrive_insert(int microdrive_seleccionado);
 
 extern void microdrive_footer_operating(void);
 
-extern void microdrive_eject(void);
+extern void microdrive_eject(int microdrive_seleccionado);
 extern z80_byte microdrive_status_ef(void);
 
 extern int mdr_current_sector;
@@ -70,6 +72,12 @@ extern z80_bit microdrive_persistent_writes;
 
 struct s_microdrive_status {
     int motor_on;
+
+    char microdrive_file_name[PATH_MAX];
 };
+
+extern struct s_microdrive_status microdrive_status[];
+
+extern void init_microdrives(void);
 
 #endif
