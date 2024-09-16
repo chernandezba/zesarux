@@ -74,6 +74,7 @@ struct s_microdrive_status {
     int motor_on;
 
     char microdrive_file_name[PATH_MAX];
+    int microdrive_must_flush_to_disk;
 };
 
 extern struct s_microdrive_status microdrive_status[];

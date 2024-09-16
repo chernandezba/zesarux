@@ -76,7 +76,7 @@ z80_bit microdrive_write_protect={0};
 
 z80_bit microdrive_persistent_writes={0};
 
-int microdrive_must_flush_to_disk=0;
+//int microdrive_must_flush_to_disk=0;
 
 //int puntero_mdr=0;
 
@@ -207,6 +207,19 @@ int microdrive_sector_es_erroneo(int sector)
 
 }
 
+//Retornar que motor empezando por el primero esta activo
+//Retorna 0...7 si hay alguno
+//-1 si no
+int microdrive_primer_motor_activo(void)
+{
+    //Mostrar que motores activos
+    int i;
+    for (i=0;i<7;i++) {
+        if (microdrive_status[i].motor_on) return i;
+    }
+
+    return -1;
+}
 
 //int mdr_write_beyond_15bytes=0;
 
@@ -221,7 +234,11 @@ void mdr_write_byte(z80_byte valor)
 {
     if (microdrive_enabled.v==0) return;
 
-    microdrive_must_flush_to_disk=1;
+    int microdrive_activo=microdrive_primer_motor_activo();
+    //Si no hay ninguno activo, asumimos el primero
+    if (microdrive_activo<0) microdrive_activo=0;
+
+    microdrive_status[microdrive_activo].microdrive_must_flush_to_disk=1;
 
     /*if (mdr_write_beyond_15bytes) {
         //printf("Do not write as we are beyond 15 bytes header\n");
@@ -403,19 +420,7 @@ void microdrive_footer_operating(void)
     }
 }
 
-//Retornar que motor empezando por el primero esta activo
-//Retorna 0...7 si hay alguno
-//-1 si no
-int microdrive_primer_motor_activo(void)
-{
-    //Mostrar que motores activos
-    int i;
-    for (i=0;i<7;i++) {
-        if (microdrive_status[i].motor_on) return i;
-    }
 
-    return -1;
-}
 
 
 z80_byte microdrive_status_ef(void)
@@ -471,12 +476,12 @@ z80_byte microdrive_status_ef(void)
 
 
 
-void microdrive_flush_to_disk(void)
+void microdrive_flush_to_disk_one(int microdrive_seleccionado)
 {
 
 	if (microdrive_enabled.v==0) return;
 
-    if (microdrive_must_flush_to_disk==0) {
+    if (microdrive_status[microdrive_seleccionado].microdrive_must_flush_to_disk==0) {
         debug_printf (VERBOSE_DEBUG,"Trying to flush microdrive to disk but no changes made");
         return;
     }
@@ -489,11 +494,9 @@ void microdrive_flush_to_disk(void)
 
     debug_printf (VERBOSE_INFO,"Flushing microdrive to disk");
 
-    printf ("Flushing microdrive to disk\n");
+    printf ("Flushing microdrive %d to disk\n",microdrive_seleccionado);
 
 
-    //temporal
-    int microdrive_seleccionado=0;
 
     FILE *ptr_microdrivefile;
 
@@ -515,7 +518,7 @@ void microdrive_flush_to_disk(void)
 
         //Justo antes del fwrite se pone flush a 0, porque si mientras esta el fwrite entra alguna operacion de escritura,
         //metera flush a 1
-        microdrive_must_flush_to_disk=0;
+        microdrive_status[microdrive_seleccionado].microdrive_must_flush_to_disk=0;
 
         escritos=fwrite(puntero,1,size,ptr_microdrivefile);
 
@@ -533,11 +536,23 @@ void microdrive_flush_to_disk(void)
     //printf ("escritos: %lld\n",escritos);
 
     if (escritos!=size || ptr_microdrivefile==NULL) {
-        debug_printf (VERBOSE_ERR,"Error writing to microdrive file. Disabling write file operations");
+        debug_printf (VERBOSE_ERR,"Error writing to microdrive file");
         //microdrive_persistent_writes.v=0;
     }
 
 }
+
+void microdrive_flush_to_disk(void)
+{
+    int i;
+
+    for (i=0;i<MAX_MICRODRIVES;i++) {
+        microdrive_flush_to_disk_one(i);
+    }
+
+}
+
+
 
 void microdrive_write_port_ef(z80_byte value)
 {
@@ -617,5 +632,6 @@ void init_microdrives(void)
 
     for (i=0;i<MAX_MICRODRIVES;i++) {
         microdrive_status[i].microdrive_file_name[0]=0;
+        microdrive_status[i].microdrive_must_flush_to_disk=0;
     }
 }
