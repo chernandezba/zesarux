@@ -402,10 +402,37 @@ void microdrive_footer_operating(void)
     generic_footertext_print_operating(buffer);
 
     //Y poner icono en inverso
-    if (!zxdesktop_icon_mdv1_inverse) {
-        zxdesktop_icon_mdv1_inverse=1;
-        menu_draw_ext_desktop();
+
+    switch (motor_activo) {
+        case 0:
+            if (!zxdesktop_icon_mdv1_inverse) {
+                zxdesktop_icon_mdv1_inverse=1;
+                menu_draw_ext_desktop();
+            }
+        break;
+
+        case 1:
+            if (!zxdesktop_icon_mdv2_inverse) {
+                zxdesktop_icon_mdv2_inverse=1;
+                menu_draw_ext_desktop();
+            }
+        break;
+
+        case 2:
+            if (!zxdesktop_icon_mdv3_inverse) {
+                zxdesktop_icon_mdv3_inverse=1;
+                menu_draw_ext_desktop();
+            }
+        break;
+
+        case 3:
+            if (!zxdesktop_icon_mdv4_inverse) {
+                zxdesktop_icon_mdv4_inverse=1;
+                menu_draw_ext_desktop();
+            }
+        break;
     }
+
 }
 
 

@@ -289,6 +289,8 @@ extern int zxdesktop_icon_ide_inverse;
 extern int zxdesktop_icon_zxpand_inverse;
 extern int zxdesktop_icon_mdv1_inverse;
 extern int zxdesktop_icon_mdv2_inverse;
+extern int zxdesktop_icon_mdv3_inverse;
+extern int zxdesktop_icon_mdv4_inverse;
 extern int zxdesktop_icon_flp1_inverse;
 extern int zxdesktop_icon_dandanator_inverse;
 extern int zxdesktop_icon_zxunoflash_inverse;

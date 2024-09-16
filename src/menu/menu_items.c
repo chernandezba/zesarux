@@ -47669,6 +47669,22 @@ int zxdesktop_lowericon_mdv2_is_visible(void)
 {
 	if (MACHINE_IS_QL) return 1;
 
+    if (MACHINE_IS_SPECTRUM && microdrive_status[1].microdrive_enabled) return 1;
+
+	else return 0;
+}
+
+int zxdesktop_lowericon_mdv3_is_visible(void)
+{
+    if (MACHINE_IS_SPECTRUM && microdrive_status[2].microdrive_enabled) return 1;
+
+	else return 0;
+}
+
+int zxdesktop_lowericon_mdv4_is_visible(void)
+{
+    if (MACHINE_IS_SPECTRUM && microdrive_status[3].microdrive_enabled) return 1;
+
 	else return 0;
 }
 
@@ -47694,8 +47710,26 @@ int zxdesktop_lowericon_mdv1_is_active(void)
 
 int zxdesktop_lowericon_mdv2_is_active(void)
 {
-	if (ql_microdrive_floppy_emulation && ql_device_mdv2_enabled) return 1;
-	else return 0;
+    if (MACHINE_IS_QL) {
+        if (ql_microdrive_floppy_emulation && ql_device_mdv2_enabled) return 1;
+        else return 0;
+    }
+
+    else {
+        return microdrive_status[1].microdrive_enabled;
+    }
+}
+
+int zxdesktop_lowericon_mdv3_is_active(void)
+{
+    return microdrive_status[2].microdrive_enabled;
+
+}
+
+int zxdesktop_lowericon_mdv4_is_active(void)
+{
+    return microdrive_status[3].microdrive_enabled;
+
 }
 
 int zxdesktop_lowericon_flp1_is_active(void)
@@ -47773,6 +47807,8 @@ int zxdesktop_icon_ide_inverse=0;
 int zxdesktop_icon_zxpand_inverse=0;
 int zxdesktop_icon_mdv1_inverse=0;
 int zxdesktop_icon_mdv2_inverse=0;
+int zxdesktop_icon_mdv3_inverse=0;
+int zxdesktop_icon_mdv4_inverse=0;
 int zxdesktop_icon_flp1_inverse=0;
 int zxdesktop_icon_dandanator_inverse=0;
 int zxdesktop_icon_zxunoflash_inverse=0;
@@ -47795,6 +47831,14 @@ struct s_zxdesktop_lowericons_info zdesktop_lowericons_array[TOTAL_ZXDESKTOP_MAX
     //MDV2
 	{ zxdesktop_lowericon_mdv2_is_visible, zxdesktop_lowericon_mdv2_is_active, zxdesktop_lowericon_mdv_flp_accion,
 		bitmap_lowericon_ext_desktop_mdv_active,bitmap_lowericon_ext_desktop_mdv_inactive,&zxdesktop_icon_mdv2_inverse},
+
+	//MDV3
+	{ zxdesktop_lowericon_mdv3_is_visible, zxdesktop_lowericon_mdv3_is_active, zxdesktop_lowericon_mdv_flp_accion,
+		bitmap_lowericon_ext_desktop_mdv_active,bitmap_lowericon_ext_desktop_mdv_inactive,&zxdesktop_icon_mdv3_inverse},
+
+    //MDV4
+	{ zxdesktop_lowericon_mdv4_is_visible, zxdesktop_lowericon_mdv4_is_active, zxdesktop_lowericon_mdv_flp_accion,
+		bitmap_lowericon_ext_desktop_mdv_active,bitmap_lowericon_ext_desktop_mdv_inactive,&zxdesktop_icon_mdv4_inverse},
 
     //Floppy QL.
 	{ zxdesktop_lowericon_flp1_is_visible, zxdesktop_lowericon_flp1_is_active, zxdesktop_lowericon_mdv_flp_accion,

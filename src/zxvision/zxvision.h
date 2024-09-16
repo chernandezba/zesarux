@@ -1737,7 +1737,7 @@ struct s_zxdesktop_lowericons_info {
 
 
 
-#define TOTAL_ZXDESKTOP_MAX_LOWER_ICONS 22
+#define TOTAL_ZXDESKTOP_MAX_LOWER_ICONS 24
 
 
 
