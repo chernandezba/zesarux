@@ -48,6 +48,7 @@ Quizá esto es un fallo de emulacion o del propio interface1. En Fuse por ejempl
 #include <stdio.h>
 #include <stdlib.h>
 #include <dirent.h>
+#include <string.h>
 
 
 #include "microdrive.h"
@@ -60,12 +61,6 @@ Quizá esto es un fallo de emulacion o del propio interface1. En Fuse por ejempl
 #include "compileoptions.h"
 #include "menu_items.h"
 #include "screen.h"
-
-
-
-
-
-
 
 
 
@@ -392,8 +387,19 @@ void microdrive_eject(int microdrive_seleccionado)
 
 void microdrive_footer_operating(void)
 {
+    char buffer[20];
 
-    generic_footertext_print_operating("MDR");
+    int motor_activo=microdrive_primer_motor_activo();
+    if (motor_activo>=0) {
+        printf("MOTOR ACTIVO: %d\n",motor_activo);
+        sprintf(buffer,"MDV%d",motor_activo+1);
+    }
+
+    else strcpy(buffer,"MDV");
+
+    //printf("%s\n",buffer);
+
+    generic_footertext_print_operating(buffer);
 
     //Y poner icono en inverso
     if (!zxdesktop_icon_mdv1_inverse) {
@@ -555,7 +561,7 @@ void microdrive_write_port_ef(z80_byte value)
 
     interface1_last_value_port_ef=value;
     printf("Write to port EF value %02XH\n",value);
-    microdrive_footer_operating();
+
 
 
     //Si alterar motores
@@ -572,7 +578,10 @@ void microdrive_write_port_ef(z80_byte value)
 
     //Mostrar que motores activos
     int motor_activo=microdrive_primer_motor_activo();
-    if (motor_activo>=0) printf("Motor activo %d\n",motor_activo+1);
+    if (motor_activo>=0) {
+        printf("Motor activo %d\n",motor_activo+1);
+        //microdrive_footer_operating();
+    }
 
     int microdrive_seleccionado=motor_activo;
 

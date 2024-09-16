@@ -367,7 +367,7 @@ z80_byte interface1_get_value_port(z80_byte puerto_l)
 
     //Puerto de estado
     if (puerto_l==0xef) {
-        microdrive_footer_operating();
+        //microdrive_footer_operating();
 
         return microdrive_status_ef();
 
