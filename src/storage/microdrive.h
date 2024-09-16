@@ -32,7 +32,7 @@
 
 extern z80_byte mdr_next_byte(void);
 
-extern void mdr_next_sector(void);
+extern void mdr_next_sector(int microdrive_seleccionado);
 
 extern char microdrive_file_name[];
 
@@ -77,6 +77,8 @@ struct s_microdrive_status {
     int microdrive_must_flush_to_disk;
 
     z80_byte *if1_microdrive_buffer;
+
+    int mdr_total_sectors;
 };
 
 extern struct s_microdrive_status microdrive_status[];

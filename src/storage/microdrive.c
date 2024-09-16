@@ -65,7 +65,7 @@ Quizá esto es un fallo de emulacion o del propio interface1. En Fuse por ejempl
 
 
 
-int mdr_total_sectors=0;
+
 
 
 
@@ -76,14 +76,22 @@ z80_bit microdrive_write_protect={0};
 
 z80_bit microdrive_persistent_writes={0};
 
-//int microdrive_must_flush_to_disk=0;
+int mdr_current_sector=0;
+int mdr_current_offset_in_sector=0;
 
-//int puntero_mdr=0;
 
+//Indica que estamos en la zona de preamble antes de escribir (10 ceros, 2 ff)
+int mdr_write_preamble_index=0;
 
-//prueba
+//int mdr_write_beyond_15bytes=0;
 
-//int mdr_motores[8];
+//Contador simple para saber si tenemos que devolver gap, sync o datos
+int contador_estado_microdrive=0;
+
+//int escrito_byte_info_una_vez=0;
+
+int microdrive_formateando=0;
+
 
 struct s_microdrive_status microdrive_status[MAX_MICRODRIVES];
 
@@ -129,18 +137,27 @@ void microdrive_set_visualmem_write(unsigned int address)
 #endif
 }
 
-int mdr_current_sector=0;
-int mdr_current_offset_in_sector=0;
+
+//Retornar que motor empezando por el primero esta activo
+//Retorna 0...7 si hay alguno
+//-1 si no
+int microdrive_primer_motor_activo(void)
+{
+    //Mostrar que motores activos
+    int i;
+    for (i=0;i<7;i++) {
+        if (microdrive_status[i].motor_on) return i;
+    }
+
+    return -1;
+}
 
 
-//Indica que estamos en la zona de preamble antes de escribir (10 ceros, 2 ff)
-int mdr_write_preamble_index=0;
-
-void mdr_next_sector(void)
+void mdr_next_sector(int microdrive_seleccionado)
 {
     mdr_current_offset_in_sector=0;
     mdr_current_sector++;
-    if (mdr_current_sector>=mdr_total_sectors) mdr_current_sector=0;
+    if (mdr_current_sector>=microdrive_status[microdrive_seleccionado].mdr_total_sectors) mdr_current_sector=0;
 
     mdr_write_preamble_index=0;
 
@@ -193,11 +210,7 @@ z80_byte mdr_next_byte(void)
     mdr_write_preamble_index++;
 
 
-    /*
-    if (mdr_current_offset_in_sector>=MDR_BYTES_PER_SECTOR) {
-        mdr_next_sector();
-    }
-    */
+
 
 
 
@@ -215,28 +228,9 @@ int microdrive_sector_es_erroneo(int sector)
 
 }
 
-//Retornar que motor empezando por el primero esta activo
-//Retorna 0...7 si hay alguno
-//-1 si no
-int microdrive_primer_motor_activo(void)
-{
-    //Mostrar que motores activos
-    int i;
-    for (i=0;i<7;i++) {
-        if (microdrive_status[i].motor_on) return i;
-    }
 
-    return -1;
-}
 
-//int mdr_write_beyond_15bytes=0;
 
-//Contador simple para saber si tenemos que devolver gap, sync o datos
-int contador_estado_microdrive=0;
-
-//int escrito_byte_info_una_vez=0;
-
-int microdrive_formateando=0;
 
 void mdr_write_byte(z80_byte valor)
 {
@@ -350,16 +344,7 @@ void mdr_write_byte(z80_byte valor)
 
     mdr_current_offset_in_sector++;
 
-    //Si estamos en offset 15, bloqueamos escrituras hasta que haya un cambio de read a write
-    /*if (mdr_current_offset_in_sector==15) {
-        mdr_write_beyond_15bytes=1;
-    }*/
 
-    /*if (mdr_current_offset_in_sector>=MDR_BYTES_PER_SECTOR) {
-        printf("Going beyond sector on write. next sector\n");
-        contador_estado_microdrive=0;
-        mdr_next_sector();
-    }*/
 
 
 }
@@ -386,7 +371,7 @@ void microdrive_insert(int microdrive_seleccionado)
         int leidos=fread(microdrive_status[microdrive_seleccionado].if1_microdrive_buffer,1,MDR_MAX_FILE_SIZE,ptr_microdrive_file);
         printf ("leidos %d bytes de microdrive\n",leidos);
 
-        mdr_total_sectors=leidos/MDR_BYTES_PER_SECTOR;
+        microdrive_status[microdrive_seleccionado].mdr_total_sectors=leidos/MDR_BYTES_PER_SECTOR;
 
         fclose(ptr_microdrive_file);
 
@@ -469,8 +454,11 @@ z80_byte microdrive_status_ef(void)
     else if (contador_estado_microdrive<MICRODRIVE_PASOS_CAMBIO_ESTADO*6) return_value=0; //datos
 
     if (contador_estado_microdrive>=MICRODRIVE_PASOS_CAMBIO_ESTADO*6) {
-        mdr_next_sector();
-        contador_estado_microdrive=0;
+        int motor_activo=microdrive_primer_motor_activo();
+        if (motor_activo>=0) {
+            mdr_next_sector(motor_activo);
+            contador_estado_microdrive=0;
+        }
     }
 
     printf ("In Port ef asked, PC after=0x%x contador_estado_microdrive=%d return_value=0x%x\n",reg_pc,contador_estado_microdrive,return_value);
@@ -515,7 +503,7 @@ void microdrive_flush_to_disk_one(int microdrive_seleccionado)
 
     int escritos=0;
 
-    int size=mdr_total_sectors*MDR_BYTES_PER_SECTOR;
+    int size=microdrive_status[microdrive_seleccionado].mdr_total_sectors*MDR_BYTES_PER_SECTOR;
 
 
 
@@ -591,6 +579,8 @@ void microdrive_write_port_ef(z80_byte value)
     int motor_activo=microdrive_primer_motor_activo();
     if (motor_activo>=0) printf("Motor activo %d\n",motor_activo+1);
 
+    int microdrive_seleccionado=motor_activo;
+
     //if1_ula.comms_clk = ( val & 0x02 ) ? 1 : 0;
 
 
@@ -616,19 +606,10 @@ void microdrive_write_port_ef(z80_byte value)
             if (mdr_current_offset_in_sector>=MDR_BYTES_PER_SECTOR) {
                 printf("next sector\n");
                 contador_estado_microdrive=0;
-                mdr_next_sector();
+                mdr_next_sector(microdrive_seleccionado);
             }
 
-            //liberar al siguiente sector. Esto es para format
-            /*if (mdr_write_beyond_15bytes) {
-                printf("Allowing write again to next sector header 15 bytes probably from FORMAT command\n");
-                mdr_write_beyond_15bytes=0;
 
-                contador_estado_microdrive=0;
-                mdr_next_sector();
-
-                //mdr_write_preamble_index=0;
-            }*/
 
         }
     }
@@ -644,5 +625,6 @@ void init_microdrives(void)
         microdrive_status[i].microdrive_enabled=0;
         microdrive_status[i].microdrive_file_name[0]=0;
         microdrive_status[i].microdrive_must_flush_to_disk=0;
+        microdrive_status[i].mdr_total_sectors=0;
     }
 }
