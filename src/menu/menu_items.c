@@ -41317,7 +41317,7 @@ int menu_storage_microdrive_enable_cond(void)
 
 void menu_storage_microdrive_write_protection(MENU_ITEM_PARAMETERS)
 {
-    microdrive_write_protect.v ^=1;
+    microdrive_status[valor_opcion].microdrive_write_protect ^=1;
 }
 
 void menu_storage_microdrive_persistent_writes(MENU_ITEM_PARAMETERS)
@@ -41377,7 +41377,7 @@ void menu_interface1(MENU_ITEM_PARAMETERS)
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_storage_microdrive_write_protection,NULL,
                 "Write ~~Protection","~~Protección escritura","~~Protecció escriptura");
-            menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ", (microdrive_write_protect.v ? 'X' : ' '));
+            menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ", (microdrive_status[i].microdrive_write_protect ? 'X' : ' '));
             menu_add_item_menu_valor_opcion(array_menu_common,i);
             menu_add_item_menu_shortcut(array_menu_common,'p');
             menu_add_item_menu_tooltip(array_menu_common,"Write Protection");

@@ -64,7 +64,7 @@ Quizá esto es un fallo de emulacion o del propio interface1. En Fuse por ejempl
 
 
 
-z80_bit microdrive_write_protect={0};
+
 
 
 
@@ -364,9 +364,11 @@ void microdrive_insert(int microdrive_seleccionado)
 
         //leer byte de write protect
 
-        microdrive_write_protect.v=0;
+        microdrive_status[microdrive_seleccionado].microdrive_write_protect=0;
 
-        if (microdrive_status[microdrive_seleccionado].if1_microdrive_buffer[leidos-1]) microdrive_write_protect.v=1;
+        if (microdrive_status[microdrive_seleccionado].if1_microdrive_buffer[leidos-1]) {
+            microdrive_status[microdrive_seleccionado].microdrive_write_protect=1;
+        }
     }
 
 
@@ -450,12 +452,14 @@ z80_byte microdrive_status_ef(void)
 
         printf ("In Port ef asked, PC after=0x%x contador_estado_microdrive=%d return_value=0x%x\n",
             reg_pc,microdrive_status[motor_activo].contador_estado_microdrive,return_value);
+
+        if (microdrive_status[motor_activo].microdrive_write_protect==0) return_value |=MICRODRIVE_STATUS_BIT_NOT_WRITE_PROTECT;
     }
 
 
 
 
-    if (microdrive_write_protect.v==0) return_value |=MICRODRIVE_STATUS_BIT_NOT_WRITE_PROTECT;
+
 
     interface1_last_read_status_ef=return_value;
 
@@ -512,7 +516,7 @@ void microdrive_flush_to_disk_one(int microdrive_seleccionado)
         escritos=fwrite(puntero,1,size,ptr_microdrivefile);
 
         //Agregar el byte final que indica proteccion escritura o no
-        z80_byte proteccion=microdrive_write_protect.v;
+        z80_byte proteccion=microdrive_status[microdrive_seleccionado].microdrive_write_protect;
 
         fwrite(&proteccion,1,1,ptr_microdrivefile);
 
@@ -626,5 +630,6 @@ void init_microdrives(void)
         microdrive_status[i].contador_estado_microdrive=0;
         microdrive_status[i].mdr_write_preamble_index=0;
         microdrive_status[i].microdrive_persistent_writes=0;
+        microdrive_status[i].microdrive_write_protect=0;
     }
 }

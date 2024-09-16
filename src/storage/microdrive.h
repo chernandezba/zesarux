@@ -43,8 +43,6 @@ extern void microdrive_eject(int microdrive_seleccionado);
 extern z80_byte microdrive_status_ef(void);
 
 
-extern z80_bit microdrive_write_protect;
-
 extern void mdr_write_byte(z80_byte valor);
 
 extern void microdrive_flush_to_disk(void);
@@ -72,6 +70,7 @@ struct s_microdrive_status {
     int microdrive_must_flush_to_disk;
 
     int microdrive_persistent_writes;
+    int microdrive_write_protect;
 
     z80_byte *if1_microdrive_buffer;
 
