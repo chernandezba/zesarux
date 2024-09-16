@@ -81,6 +81,12 @@ struct s_microdrive_status {
     int mdr_total_sectors;
     int mdr_current_sector;
     int mdr_current_offset_in_sector;
+
+    //Contador simple para saber si tenemos que devolver gap, sync o datos
+    int contador_estado_microdrive;
+
+    //Indica que estamos en la zona de preamble antes de escribir (10 ceros, 2 ff)
+    int mdr_write_preamble_index;
 };
 
 extern struct s_microdrive_status microdrive_status[];

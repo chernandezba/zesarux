@@ -71,15 +71,9 @@ z80_bit microdrive_persistent_writes={0};
 
 
 
-//Indica que estamos en la zona de preamble antes de escribir (10 ceros, 2 ff)
-int mdr_write_preamble_index=0;
 
-//int mdr_write_beyond_15bytes=0;
 
-//Contador simple para saber si tenemos que devolver gap, sync o datos
-int contador_estado_microdrive=0;
 
-//int escrito_byte_info_una_vez=0;
 
 int microdrive_formateando=0;
 
@@ -152,7 +146,7 @@ void mdr_next_sector(int microdrive_seleccionado)
         microdrive_status[microdrive_seleccionado].mdr_current_sector=0;
     }
 
-    mdr_write_preamble_index=0;
+    microdrive_status[microdrive_seleccionado].mdr_write_preamble_index=0;
 
     printf("siguiente sector. actual=%d\n",microdrive_status[microdrive_seleccionado].mdr_current_sector);
 }
@@ -194,13 +188,15 @@ z80_byte mdr_next_byte(void)
     microdrive_set_visualmem_read(offset_efectivo);
 
     printf("Retornando byte mdr de offset en PC=%04XH sector %d, offset %d (offset_efectivo=%d), mdr_write_preamble_index=%d =0x%02X\n",
-        reg_pc,microdrive_status[microdrive_activo].mdr_current_sector,microdrive_status[microdrive_activo].mdr_current_offset_in_sector,offset_efectivo,mdr_write_preamble_index,valor);
+        reg_pc,microdrive_status[microdrive_activo].mdr_current_sector,
+        microdrive_status[microdrive_activo].mdr_current_offset_in_sector,
+        offset_efectivo,microdrive_status[microdrive_activo].mdr_write_preamble_index,valor);
 
 
 
     microdrive_status[microdrive_activo].mdr_current_offset_in_sector++;
 
-    mdr_write_preamble_index++;
+    microdrive_status[microdrive_activo].mdr_write_preamble_index++;
 
 
 
@@ -259,15 +255,15 @@ void mdr_write_byte(z80_byte valor)
     //Esto es un poco chapuza pero funciona
     //La zona de preamble son 10 bytes a 0 y 2 bytes a FF
     if (
-        (mdr_write_preamble_index>=0 && mdr_write_preamble_index<=11) ||
-        (mdr_write_preamble_index>=27 && mdr_write_preamble_index<=41)
+        (microdrive_status[microdrive_activo].mdr_write_preamble_index>=0 && microdrive_status[microdrive_activo].mdr_write_preamble_index<=11) ||
+        (microdrive_status[microdrive_activo].mdr_write_preamble_index>=27 && microdrive_status[microdrive_activo].mdr_write_preamble_index<=41)
     ) {
-        printf("Do not write as we are on the preamble or gap zone (mdr_write_preamble_index=%d)\n",mdr_write_preamble_index);
-        mdr_write_preamble_index++;
+        printf("Do not write as we are on the preamble or gap zone (mdr_write_preamble_index=%d)\n",microdrive_status[microdrive_activo].mdr_write_preamble_index);
+        microdrive_status[microdrive_activo].mdr_write_preamble_index++;
         return;
     }
 
-    mdr_write_preamble_index++;
+    microdrive_status[microdrive_activo].mdr_write_preamble_index++;
 
 
     if (microdrive_status[microdrive_activo].mdr_current_offset_in_sector>=MDR_BYTES_PER_SECTOR) {
@@ -330,7 +326,9 @@ void mdr_write_byte(z80_byte valor)
     }
 
     printf("Escribiendo byte mdr de offset en PC=%04XH sector %d, offset %d (offset_efectivo=%d) mdr_write_preamble_index=%d : 0x%02X (%c)\n",
-        reg_pc,microdrive_status[microdrive_activo].mdr_current_sector,microdrive_status[microdrive_activo].mdr_current_offset_in_sector,offset_efectivo,mdr_write_preamble_index,
+        reg_pc,microdrive_status[microdrive_activo].mdr_current_sector,
+        microdrive_status[microdrive_activo].mdr_current_offset_in_sector,offset_efectivo,
+        microdrive_status[microdrive_activo].mdr_write_preamble_index,
         valor,(valor>=32 && valor<=126 ? valor : '.'));
 
 
@@ -422,8 +420,11 @@ z80_byte microdrive_status_ef(void)
     Preamble = 10 * 0x00 + 2 * 0xff (12 byte)
     */
 
+    int motor_activo=microdrive_primer_motor_activo();
 
-    contador_estado_microdrive++;
+    if (motor_activo>=0) {
+        microdrive_status[motor_activo].contador_estado_microdrive++;
+    }
 
 
 
@@ -438,23 +439,26 @@ z80_byte microdrive_status_ef(void)
     //para que llegue el siguiente byte, te llegará
     #define MICRODRIVE_PASOS_CAMBIO_ESTADO 20
 
-    if      (contador_estado_microdrive<MICRODRIVE_PASOS_CAMBIO_ESTADO)   return_value=MICRODRIVE_STATUS_BIT_GAP; //gap
-    else if (contador_estado_microdrive<MICRODRIVE_PASOS_CAMBIO_ESTADO*2) return_value=MICRODRIVE_STATUS_BIT_SYNC; //sync
-    else if (contador_estado_microdrive<MICRODRIVE_PASOS_CAMBIO_ESTADO*3) return_value=0; //datos
+    if (motor_activo>=0) {
 
-    else if (contador_estado_microdrive<MICRODRIVE_PASOS_CAMBIO_ESTADO*4) return_value=MICRODRIVE_STATUS_BIT_GAP; //gap
-    else if (contador_estado_microdrive<MICRODRIVE_PASOS_CAMBIO_ESTADO*5) return_value=MICRODRIVE_STATUS_BIT_SYNC; //sync
-    else if (contador_estado_microdrive<MICRODRIVE_PASOS_CAMBIO_ESTADO*6) return_value=0; //datos
+        if      (microdrive_status[motor_activo].contador_estado_microdrive<MICRODRIVE_PASOS_CAMBIO_ESTADO)   return_value=MICRODRIVE_STATUS_BIT_GAP; //gap
+        else if (microdrive_status[motor_activo].contador_estado_microdrive<MICRODRIVE_PASOS_CAMBIO_ESTADO*2) return_value=MICRODRIVE_STATUS_BIT_SYNC; //sync
+        else if (microdrive_status[motor_activo].contador_estado_microdrive<MICRODRIVE_PASOS_CAMBIO_ESTADO*3) return_value=0; //datos
 
-    if (contador_estado_microdrive>=MICRODRIVE_PASOS_CAMBIO_ESTADO*6) {
-        int motor_activo=microdrive_primer_motor_activo();
-        if (motor_activo>=0) {
+        else if (microdrive_status[motor_activo].contador_estado_microdrive<MICRODRIVE_PASOS_CAMBIO_ESTADO*4) return_value=MICRODRIVE_STATUS_BIT_GAP; //gap
+        else if (microdrive_status[motor_activo].contador_estado_microdrive<MICRODRIVE_PASOS_CAMBIO_ESTADO*5) return_value=MICRODRIVE_STATUS_BIT_SYNC; //sync
+        else if (microdrive_status[motor_activo].contador_estado_microdrive<MICRODRIVE_PASOS_CAMBIO_ESTADO*6) return_value=0; //datos
+
+        if (microdrive_status[motor_activo].contador_estado_microdrive>=MICRODRIVE_PASOS_CAMBIO_ESTADO*6) {
             mdr_next_sector(motor_activo);
-            contador_estado_microdrive=0;
+            microdrive_status[motor_activo].contador_estado_microdrive=0;
         }
+
+        printf ("In Port ef asked, PC after=0x%x contador_estado_microdrive=%d return_value=0x%x\n",
+            reg_pc,microdrive_status[motor_activo].contador_estado_microdrive,return_value);
     }
 
-    printf ("In Port ef asked, PC after=0x%x contador_estado_microdrive=%d return_value=0x%x\n",reg_pc,contador_estado_microdrive,return_value);
+
 
 
     if (microdrive_write_protect.v==0) return_value |=MICRODRIVE_STATUS_BIT_NOT_WRITE_PROTECT;
@@ -589,17 +593,21 @@ void microdrive_write_port_ef(z80_byte value)
             //30-41 preamble
             //42-569 datos
 
-            //Saltar a seccion de preamble si conviene (esto cuando se ha acabado de escribir cabecera)
-            if (mdr_write_preamble_index<30 && mdr_write_preamble_index>0) {
-                mdr_write_preamble_index=30;
-                printf("Situar mdr_write_preamble_index en %d\n",mdr_write_preamble_index);
-            }
+            if (microdrive_seleccionado>=0) {
+
+                //Saltar a seccion de preamble si conviene (esto cuando se ha acabado de escribir cabecera)
+                if (microdrive_status[microdrive_seleccionado].mdr_write_preamble_index<30 && microdrive_status[microdrive_seleccionado].mdr_write_preamble_index>0) {
+                    microdrive_status[microdrive_seleccionado].mdr_write_preamble_index=30;
+                    printf("Situar mdr_write_preamble_index en %d\n",microdrive_status[microdrive_seleccionado].mdr_write_preamble_index);
+                }
 
 
-            if (microdrive_status[microdrive_seleccionado].mdr_current_offset_in_sector>=MDR_BYTES_PER_SECTOR) {
-                printf("next sector\n");
-                contador_estado_microdrive=0;
-                mdr_next_sector(microdrive_seleccionado);
+                if (microdrive_status[microdrive_seleccionado].mdr_current_offset_in_sector>=MDR_BYTES_PER_SECTOR) {
+                    printf("next sector\n");
+                    microdrive_status[microdrive_seleccionado].contador_estado_microdrive=0;
+                    mdr_next_sector(microdrive_seleccionado);
+                }
+
             }
 
 
@@ -621,5 +629,7 @@ void init_microdrives(void)
         microdrive_status[i].mdr_total_sectors=0;
         microdrive_status[i].mdr_current_sector=0;
         microdrive_status[i].mdr_current_offset_in_sector=0;
+        microdrive_status[i].contador_estado_microdrive=0;
+        microdrive_status[i].mdr_write_preamble_index=0;
     }
 }
