@@ -36,7 +36,6 @@ extern void mdr_next_sector(void);
 
 extern char microdrive_file_name[];
 
-extern z80_bit microdrive_enabled;
 
 extern void microdrive_insert(int microdrive_seleccionado);
 
@@ -71,6 +70,7 @@ extern z80_bit microdrive_persistent_writes;
 #define MAX_MICRODRIVES 8
 
 struct s_microdrive_status {
+    int microdrive_enabled;
     int motor_on;
 
     char microdrive_file_name[PATH_MAX];

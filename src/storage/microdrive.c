@@ -70,7 +70,7 @@ int mdr_total_sectors=0;
 
 
 
-z80_bit microdrive_enabled={0};
+
 
 z80_bit microdrive_write_protect={0};
 
@@ -155,7 +155,7 @@ z80_byte mdr_next_byte(void)
     if (microdrive_activo<0) return 0;
 
 
-    if (microdrive_enabled.v==0) return 0;
+    if (microdrive_status[microdrive_activo].microdrive_enabled==0) return 0;
 
     if (mdr_current_offset_in_sector>=MDR_BYTES_PER_SECTOR) {
         //Si estamos al final del sector, devolver 0
@@ -175,7 +175,11 @@ z80_byte mdr_next_byte(void)
 
     offset_efectivo +=offset_to_sector;
 
+
+
     z80_byte valor=microdrive_status[microdrive_activo].if1_microdrive_buffer[offset_efectivo];
+
+
 
     microdrive_set_visualmem_read(offset_efectivo);
 
@@ -241,7 +245,7 @@ void mdr_write_byte(z80_byte valor)
     //Si no hay ninguno activo, nada
     if (microdrive_activo<0) return;
 
-    if (microdrive_enabled.v==0) return;
+    if (microdrive_status[microdrive_activo].microdrive_enabled==0) return;
 
 
     microdrive_status[microdrive_activo].microdrive_must_flush_to_disk=1;
@@ -386,7 +390,7 @@ void microdrive_insert(int microdrive_seleccionado)
 
         fclose(ptr_microdrive_file);
 
-        microdrive_enabled.v=1;
+        microdrive_status[microdrive_seleccionado].microdrive_enabled=1;
 
         //leer byte de write protect
 
@@ -401,7 +405,7 @@ void microdrive_insert(int microdrive_seleccionado)
 
 void microdrive_eject(int microdrive_seleccionado)
 {
-	if (microdrive_enabled.v==0) return;
+	if (microdrive_status[microdrive_seleccionado].microdrive_enabled==0) return;
 
 	//Hacer flush si hay algun cambio
 	//microdrive_flush_contents_to_disk();
@@ -410,7 +414,7 @@ void microdrive_eject(int microdrive_seleccionado)
 	free(microdrive_status[microdrive_seleccionado].if1_microdrive_buffer);
 
 
-	microdrive_enabled.v=0;
+	microdrive_status[microdrive_seleccionado].microdrive_enabled=0;
 }
 
 
@@ -485,7 +489,7 @@ z80_byte microdrive_status_ef(void)
 void microdrive_flush_to_disk_one(int microdrive_seleccionado)
 {
 
-	if (microdrive_enabled.v==0) return;
+	if (microdrive_status[microdrive_seleccionado].microdrive_enabled==0) return;
 
     if (microdrive_status[microdrive_seleccionado].microdrive_must_flush_to_disk==0) {
         debug_printf (VERBOSE_DEBUG,"Trying to flush microdrive to disk but no changes made");
@@ -637,6 +641,7 @@ void init_microdrives(void)
     int i;
 
     for (i=0;i<MAX_MICRODRIVES;i++) {
+        microdrive_status[i].microdrive_enabled=0;
         microdrive_status[i].microdrive_file_name[0]=0;
         microdrive_status[i].microdrive_must_flush_to_disk=0;
     }

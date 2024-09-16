@@ -361,8 +361,9 @@ void enable_if1(void)
 
 z80_byte interface1_get_value_port(z80_byte puerto_l)
 {
+    //printf("get value port %X\n",puerto_l);
 
-    if (microdrive_enabled.v==0) return 0;
+    //if (microdrive_enabled.v==0) return 0;
 
     //Puerto de estado
     if (puerto_l==0xef) {

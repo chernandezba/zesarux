@@ -41235,8 +41235,7 @@ void menu_interface1_enable(MENU_ITEM_PARAMETERS)
 void menu_storage_microdrive_file(MENU_ITEM_PARAMETERS)
 {
 
-    //temporal
-    int microdrive_seleccionado=0;
+    int microdrive_seleccionado=valor_opcion;
 
 	microdrive_eject(microdrive_seleccionado);
 
@@ -41294,10 +41293,9 @@ void menu_storage_microdrive_file(MENU_ITEM_PARAMETERS)
 void menu_storage_microdrive_enable(MENU_ITEM_PARAMETERS)
 {
 
-    //temporal
-    int microdrive_seleccionado=0;
+    int microdrive_seleccionado=valor_opcion;
 
-    if (microdrive_enabled.v) {
+    if (microdrive_status[microdrive_seleccionado].microdrive_enabled) {
         microdrive_eject(microdrive_seleccionado);
     }
     else {
@@ -41310,10 +41308,11 @@ int menu_storage_microdrive_enable_cond(void)
 {
 
     //temporal
-    int microdrive_seleccionado=0;
+    //int microdrive_seleccionado=0;
 
-    if (microdrive_status[microdrive_seleccionado].microdrive_file_name[0]==0) return 0;
-    else return 1;
+    //if (microdrive_status[microdrive_seleccionado].microdrive_file_name[0]==0) return 0;
+    //else return 1;
+    return 1;
 }
 
 void menu_storage_microdrive_write_protection(MENU_ITEM_PARAMETERS)
@@ -41343,53 +41342,61 @@ void menu_interface1(MENU_ITEM_PARAMETERS)
         //menu_add_item_menu_shortcut(array_menu_common,'i');
         //menu_add_item_menu_tiene_submenu(array_menu_common);
 
+        //De momento soportar hasta 4 microdrives en el menu , aunque se permiten hasta 8
 
-        char string_microdrive_file_shown[17];
+        int i;
+        for (i=0;i<4;i++) {
 
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,"--Microdrive %d--",i+1);
 
-        //temp
-        int microdrive_seleccionado=0;
-
-
-        menu_tape_settings_trunc_name(microdrive_status[microdrive_seleccionado].microdrive_file_name,string_microdrive_file_shown,17);
-        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_storage_microdrive_file,NULL,
-            "~~Microdrive File","Archivo ~~Microdrive","Arxiu ~~Microdrive");
-        menu_add_item_menu_sufijo_format(array_menu_common," [%s]",string_microdrive_file_shown);
-        menu_add_item_menu_prefijo(array_menu_common,"    ");
-        menu_add_item_menu_shortcut(array_menu_common,'m');
-        menu_add_item_menu_tooltip(array_menu_common,"Microdrive Emulation file");
-        menu_add_item_menu_ayuda(array_menu_common,"Microdrive Emulation file");
+            char string_microdrive_file_shown[17];
 
 
-
-
-        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_storage_microdrive_enable,menu_storage_microdrive_enable_cond,
-            "Microdrive ~~Emulation","~~Emulación Microdrive","~~Emulació Microdrive");
-        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ", (microdrive_enabled.v ? 'X' : ' '));
-        menu_add_item_menu_shortcut(array_menu_common,'e');
-        menu_add_item_menu_tooltip(array_menu_common,"Microdrive Emulation");
-        menu_add_item_menu_ayuda(array_menu_common,"Microdrive Emulation");
+            menu_tape_settings_trunc_name(microdrive_status[i].microdrive_file_name,string_microdrive_file_shown,17);
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_storage_microdrive_file,NULL,
+                "~~Microdrive File","Archivo ~~Microdrive","Arxiu ~~Microdrive");
+            menu_add_item_menu_sufijo_format(array_menu_common," [%s]",string_microdrive_file_shown);
+            menu_add_item_menu_prefijo(array_menu_common,"    ");
+            menu_add_item_menu_valor_opcion(array_menu_common,i);
+            menu_add_item_menu_shortcut(array_menu_common,'m');
+            menu_add_item_menu_tooltip(array_menu_common,"Microdrive Emulation file");
+            menu_add_item_menu_ayuda(array_menu_common,"Microdrive Emulation file");
 
 
 
-        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_storage_microdrive_write_protection,NULL,
-            "Write ~~Protection","~~Protección escritura","~~Protecció escriptura");
-        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ", (microdrive_write_protect.v ? 'X' : ' '));
-        menu_add_item_menu_shortcut(array_menu_common,'p');
-        menu_add_item_menu_tooltip(array_menu_common,"Write Protection");
-        menu_add_item_menu_ayuda(array_menu_common,"Write Protection");
 
-        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_storage_microdrive_persistent_writes,NULL,
-            "Persistent Writes","Escrituras Persistentes","Escriptures Persistents");
-        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(microdrive_persistent_writes.v ? 'X' : ' ') );
-        menu_add_item_menu_tooltip(array_menu_common,"Tells if Microdrive writes are saved to disk");
-        menu_add_item_menu_ayuda(array_menu_common,"Tells if Microdrive writes are saved to disk. "
-            "Note: all writing operations to Microdrive are always saved to internal memory (unless you disable write permission), but this setting "
-            "tells if these changes are written to disk or not."
-            );
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_storage_microdrive_enable,menu_storage_microdrive_enable_cond,
+                "Microdrive ~~Emulation","~~Emulación Microdrive","~~Emulació Microdrive");
+            menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ", (microdrive_status[i].microdrive_enabled ? 'X' : ' '));
+            menu_add_item_menu_valor_opcion(array_menu_common,i);
+            menu_add_item_menu_shortcut(array_menu_common,'e');
+            menu_add_item_menu_tooltip(array_menu_common,"Microdrive Emulation");
+            menu_add_item_menu_ayuda(array_menu_common,"Microdrive Emulation");
 
 
-        menu_add_item_menu_separator(array_menu_common);
+
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_storage_microdrive_write_protection,NULL,
+                "Write ~~Protection","~~Protección escritura","~~Protecció escriptura");
+            menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ", (microdrive_write_protect.v ? 'X' : ' '));
+            menu_add_item_menu_valor_opcion(array_menu_common,i);
+            menu_add_item_menu_shortcut(array_menu_common,'p');
+            menu_add_item_menu_tooltip(array_menu_common,"Write Protection");
+            menu_add_item_menu_ayuda(array_menu_common,"Write Protection");
+
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_storage_microdrive_persistent_writes,NULL,
+                "Persistent Writes","Escrituras Persistentes","Escriptures Persistents");
+            menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(microdrive_persistent_writes.v ? 'X' : ' ') );
+            menu_add_item_menu_valor_opcion(array_menu_common,i);
+            menu_add_item_menu_tooltip(array_menu_common,"Tells if Microdrive writes are saved to disk");
+            menu_add_item_menu_ayuda(array_menu_common,"Tells if Microdrive writes are saved to disk. "
+                "Note: all writing operations to Microdrive are always saved to internal memory (unless you disable write permission), but this setting "
+                "tells if these changes are written to disk or not."
+                );
+
+
+            menu_add_item_menu_separator(array_menu_common);
+
+        }
 
         menu_add_ESC_item(array_menu_common);
 
@@ -47681,7 +47688,7 @@ int zxdesktop_lowericon_mdv1_is_active(void)
     }
 
     else {
-        return microdrive_enabled.v;
+        return microdrive_status[0].microdrive_enabled;
     }
 }
 
