@@ -381,6 +381,8 @@ ok *si no elegido mdr, que devuelva datos vacios  (ni gap ni sync tampoco)
 ok *a veces no carga programas, teniendo que desactivar y activar interface. quiza algun contador que no se resetea bien?
 *en grabacion datos y en lectura datos comprobar que los bits de estado los haya indicado correctamente el usuario?
 *parametros config linea comandos/.zesaruxrc
+*soporte spectrum 128k
+*soporte smartload
 
 seleccion drive
 

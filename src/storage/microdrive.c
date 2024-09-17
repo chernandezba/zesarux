@@ -198,9 +198,13 @@ z80_byte mdr_next_byte(void)
 
 //simular sectores erroneos
 //Entrada: sector: sector fisico
-int microdrive_sector_es_erroneo(int sector)
+int microdrive_sector_es_erroneo(int microdrive_activo,int sector,int offset_in_sector)
 {
-    //if (sector<100) return 1;
+    //Nota: parece que la ROM determina que un sector es erroneo cuando el checksum (byte 14) es incorrecto
+    //Alteraremos solo ese byte
+    if (sector==0 && offset_in_sector==14) {
+        return (microdrive_status[microdrive_activo].bad_sectors_simulated[sector]);
+    }
 
     return 0;
 
@@ -305,7 +309,12 @@ void mdr_write_byte(z80_byte valor)
     }
 
     //Simular sectores erroneos
-    if (microdrive_sector_es_erroneo(microdrive_status[microdrive_activo].mdr_current_sector)) escribir=0;
+    if (microdrive_sector_es_erroneo(microdrive_activo,microdrive_status[microdrive_activo].mdr_current_sector,
+    microdrive_status[microdrive_activo].mdr_current_offset_in_sector)) {
+        //alterar valor porque es incorrecto
+        valor ^=255;
+
+    }
 
     if (escribir) {
         microdrive_status[microdrive_activo].if1_microdrive_buffer[offset_efectivo]=valor;
@@ -667,5 +676,11 @@ void init_microdrives(void)
         microdrive_status[i].mdr_write_preamble_index=0;
         microdrive_status[i].microdrive_persistent_writes=0;
         microdrive_status[i].microdrive_write_protect=0;
+
+
+        int j;
+        for (j=0;j<MDR_MAX_SECTORS;j++) {
+            microdrive_status[i].bad_sectors_simulated[j]=0;
+        }
     }
 }

@@ -28,7 +28,8 @@
 
 
 #define MDR_BYTES_PER_SECTOR 543
-#define MDR_MAX_FILE_SIZE 137923
+#define MDR_MAX_SECTORS 254
+#define MDR_MAX_FILE_SIZE ((MDR_BYTES_PER_SECTOR*MDR_MAX_SECTORS)+1)
 
 extern z80_byte mdr_next_byte(void);
 
@@ -83,6 +84,8 @@ struct s_microdrive_status {
 
     //Indica que estamos en la zona de preamble antes de escribir (10 ceros, 2 ff)
     int mdr_write_preamble_index;
+
+    int bad_sectors_simulated[MDR_MAX_SECTORS];
 };
 
 extern struct s_microdrive_status microdrive_status[];

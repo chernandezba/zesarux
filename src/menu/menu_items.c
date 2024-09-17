@@ -41321,6 +41321,10 @@ int menu_interface1_cond_disabled(void)
     return 0;
 }
 
+void menu_storage_microdrive_simulate_bad_sectors(MENU_ITEM_PARAMETERS)
+{
+}
+
 void menu_interface1(MENU_ITEM_PARAMETERS)
 {
     menu_item *array_menu_common;
@@ -41401,6 +41405,11 @@ void menu_interface1(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_separator(array_menu_common);
 
         }
+
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_storage_microdrive_simulate_bad_sectors,NULL,
+                "Simulate bad sectors","Simular sectores erroneos","Simular sectors erronis");
+        menu_add_item_menu_prefijo(array_menu_common,"    ");
+        menu_add_item_menu_tiene_submenu(array_menu_common);
 
         menu_add_ESC_item(array_menu_common);
 
