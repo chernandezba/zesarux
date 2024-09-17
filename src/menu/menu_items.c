@@ -41327,7 +41327,16 @@ void menu_mdv_simulate_bad_change(MENU_ITEM_PARAMETERS)
     int microdrive_seleccionado=valor_opcion & 0xFF;
     int sector=valor_opcion >> 8;
 
-    printf("MDV: %d sector: %d\n",microdrive_seleccionado,sector);
+    //printf("MDV: %d sector: %d\n",microdrive_seleccionado,sector);
+
+    int opcion=menu_simple_two_choices("Bad Sector","Do you want to:","Remove from list","No change");
+
+    switch(opcion) {
+        case 1:
+            microdrive_status[microdrive_seleccionado].bad_sectors_simulated[sector]=0;
+        break;
+
+    }
 }
 
 void menu_mdv_simulate_bad_add(MENU_ITEM_PARAMETERS)
