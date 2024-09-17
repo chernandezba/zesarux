@@ -202,7 +202,7 @@ int microdrive_sector_es_erroneo(int microdrive_activo,int sector,int offset_in_
 {
     //Nota: parece que la ROM determina que un sector es erroneo cuando el checksum (byte 14) es incorrecto
     //Alteraremos solo ese byte
-    if (sector==0 && offset_in_sector==14) {
+    if (offset_in_sector==14) {
         return (microdrive_status[microdrive_activo].bad_sectors_simulated[sector]);
     }
 

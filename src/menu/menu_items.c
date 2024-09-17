@@ -41335,11 +41335,13 @@ void menu_mdv_simulate_bad_add(MENU_ITEM_PARAMETERS)
     //valor=microdrive_seleccionado+sector*256;
     int microdrive_seleccionado=valor_opcion;
 
-    printf("MDV: %d\n",microdrive_seleccionado);
+    //printf("MDV: %d\n",microdrive_seleccionado);
 
     int max_valor=microdrive_status[microdrive_seleccionado].mdr_total_sectors-1;
 
-    int sector=menu_ventana_scanf_numero_enhanced("Sector?",&sector,3,+1,0,max_valor,0);
+    int sector=0;
+
+    menu_ventana_scanf_numero_enhanced("Sector?",&sector,4,+1,0,max_valor,0);
 
     microdrive_status[microdrive_seleccionado].bad_sectors_simulated[sector]=1;
 
@@ -41366,7 +41368,7 @@ void menu_mdv_simulate_bad(MENU_ITEM_PARAMETERS)
         int i;
         for (i=0;i<MDR_MAX_SECTORS;i++) {
 
-            if (microdrive_status[i].bad_sectors_simulated[i]) {
+            if (microdrive_status[microdrive_seleccionado].bad_sectors_simulated[i]) {
 
                 menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_mdv_simulate_bad_change,NULL,"Sector %d",i);
 
@@ -41389,14 +41391,9 @@ void menu_mdv_simulate_bad(MENU_ITEM_PARAMETERS)
         menu_add_ESC_item(array_menu_common);
 
 
-        //Nota: si no se agrega el nombre del path del indice, se generará uno automáticamente
-        menu_add_item_menu_index_full_path(array_menu_common,
-            "Main Menu-> Storage-> Interface1-> Simulate Bad Sectors",
-            "Menú Principal-> Almacenamiento-> Simular sectores erroneos",
-            "Menú Principal-> Emmagatzematge-> Simular sectors erronis");
 
-        retorno_menu=menu_dibuja_menu(&opcion_seleccionada,&item_seleccionado,array_menu_common,
-            "Simulate bad sectors","Simular sectores erroneos","Simular sectors erronis" );
+        retorno_menu=menu_dibuja_menu_dialogo_no_title_lang(&opcion_seleccionada,&item_seleccionado,array_menu_common,
+            "Simulate bad sectors");
 
         if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
             //llamamos por valor de funcion
