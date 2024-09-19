@@ -684,3 +684,17 @@ void init_microdrives(void)
         }
     }
 }
+
+
+z80_byte microdrive_get_byte_sector(int microdrive_seleccionado,int sector,int sector_offset)
+{
+    if (!microdrive_status[microdrive_seleccionado].microdrive_enabled) return 0;
+
+    if (sector>=microdrive_status[microdrive_seleccionado].mdr_total_sectors) return 0;
+
+    if (sector_offset>=MDR_BYTES_PER_SECTOR) return 0;
+
+    int offset=sector*MDR_BYTES_PER_SECTOR+sector_offset;
+
+    return microdrive_status[microdrive_seleccionado].if1_microdrive_buffer[offset];
+}

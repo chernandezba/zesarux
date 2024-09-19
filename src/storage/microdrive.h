@@ -92,4 +92,6 @@ extern struct s_microdrive_status microdrive_status[];
 
 extern void init_microdrives(void);
 
+extern z80_byte microdrive_get_byte_sector(int microdrive_seleccionado,int sector,int sector_offset);
+
 #endif

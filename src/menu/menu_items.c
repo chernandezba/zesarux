@@ -41481,6 +41481,78 @@ void menu_storage_microdrive_simulate_bad_sectors(MENU_ITEM_PARAMETERS)
 
 }
 
+void menu_storage_microdrive_map(MENU_ITEM_PARAMETERS)
+{
+
+    //temp
+    int microdrive_seleccionado=0;
+
+    int sectores_por_linea=16;
+
+    int i;
+
+    int x=0;
+
+    for (i=0;i<microdrive_status[microdrive_seleccionado].mdr_total_sectors;i++) {
+        z80_byte data_recflg=microdrive_get_byte_sector(microdrive_seleccionado,i,15);
+        z80_byte record_segment=microdrive_get_byte_sector(microdrive_seleccionado,i,16);
+
+        if (data_recflg!=0 && data_recflg!=4 && data_recflg!=6) printf("%d\n",data_recflg);
+
+        z80_byte logical_sector=microdrive_get_byte_sector(microdrive_seleccionado,i,1);
+
+        z80_byte header_recflg=microdrive_get_byte_sector(microdrive_seleccionado,i,0);
+
+        //rec_length cuenta la cabecera de 9 bytes en sector 0
+        z80_int rec_length=microdrive_get_byte_sector(microdrive_seleccionado,i,17)+256*microdrive_get_byte_sector(microdrive_seleccionado,i,18);
+
+        if (microdrive_status[microdrive_seleccionado].bad_sectors_simulated[i]) printf("X");
+
+        else if ((data_recflg & 0x06)==0x04) printf("U"); //Usado completamente
+
+        else if ((data_recflg & 0x06)==0x06) printf("u"); //Ultimo sector. Puede estar lleno o usado parcialmente
+
+        else printf(".");
+
+        //printf("%02X ",record_segment);
+
+        //printf("%d\n",rec_length);
+
+        /*
+        //Mostrar nombre archivo
+        if (record_segment==0 && (data_recflg & 0x04)==0x04) {
+            z80_int tamanyo=microdrive_get_byte_sector(microdrive_seleccionado,i,31)+256*microdrive_get_byte_sector(microdrive_seleccionado,i,32);
+
+            char nombre[11];
+            int j;
+            for (j=0;j<10;j++) {
+                z80_byte letra_nombre=microdrive_get_byte_sector(microdrive_seleccionado,i,19+j);
+
+                if (letra_nombre<32 || letra_nombre>126) letra_nombre='.';
+
+                nombre[j]=letra_nombre;
+            }
+
+            nombre[j]=0;
+
+            printf(" %s %d bytes\n",nombre,tamanyo);
+        }*/
+
+
+
+
+        x++;
+
+        if (x==sectores_por_linea) {
+            x=0;
+            printf("\n");
+        }
+    }
+
+    printf("\n");
+
+}
+
 void menu_interface1(MENU_ITEM_PARAMETERS)
 {
     menu_item *array_menu_common;
@@ -41564,6 +41636,11 @@ void menu_interface1(MENU_ITEM_PARAMETERS)
 
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_storage_microdrive_simulate_bad_sectors,NULL,
                 "Simulate bad sectors","Simular sectores erroneos","Simular sectors erronis");
+        menu_add_item_menu_prefijo(array_menu_common,"    ");
+        menu_add_item_menu_tiene_submenu(array_menu_common);
+
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_storage_microdrive_map,NULL,
+                "Microdrive map","Mapa microdrive","Mapa microdrive");
         menu_add_item_menu_prefijo(array_menu_common,"    ");
         menu_add_item_menu_tiene_submenu(array_menu_common);
 
