@@ -41522,12 +41522,14 @@ int menu_microdrive_map_browse(zxvision_window *ventana,int tipo,int microdrive_
 
     char buffer_linea[MAX_ANCHO_LINEAS_GENERIC_MESSAGE+1]="";
 
-    char microdrive_label[11];
+    char microdrive_label[11]="";
 
     int escrito_microdrive_label=0;
 
     //Sacamos el label del sector 0 primero. Si esta erroneo, ya se corregira cuando se detecte el primer archivo
     menu_microdrive_map_browse_get_label(microdrive_label,microdrive_seleccionado,0);
+
+    //printf("primer label: %s\n",microdrive_label);
 
     for (i=0;i<microdrive_status[microdrive_seleccionado].mdr_total_sectors;i++) {
         char caracter_info;
@@ -41535,7 +41537,10 @@ int menu_microdrive_map_browse(zxvision_window *ventana,int tipo,int microdrive_
         z80_byte data_recflg=microdrive_get_byte_sector(microdrive_seleccionado,i,15);
         z80_byte record_segment=microdrive_get_byte_sector(microdrive_seleccionado,i,16);
 
-        if (data_recflg!=0 && data_recflg!=4 && data_recflg!=6) printf("%d\n",data_recflg);
+
+        //flag de los datos
+        //if (data_recflg!=0 && data_recflg!=4 && data_recflg!=6) printf("%d\n",data_recflg);
+
 
         z80_byte logical_sector=microdrive_get_byte_sector(microdrive_seleccionado,i,1);
 
@@ -41618,7 +41623,8 @@ int menu_microdrive_map_browse(zxvision_window *ventana,int tipo,int microdrive_
                 //Antes de escribir primer archivo, agregar label
                 if (!escrito_microdrive_label) {
                     escrito_microdrive_label=1;
-                    menu_microdrive_map_browse_get_label(microdrive_label,microdrive_seleccionado,0);
+                    menu_microdrive_map_browse_get_label(microdrive_label,microdrive_seleccionado,i);
+                    //printf("segundo label: %s\n",microdrive_label);
                     zxvision_print_string_defaults_fillspc_format(ventana,1,y_ventana_inicial++,
                         "Label: %s",microdrive_label);
                 }
