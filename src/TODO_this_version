@@ -383,6 +383,7 @@ ok *a veces no carga programas, teniendo que desactivar y activar interface. qui
 *parametros config linea comandos/.zesaruxrc
 *soporte spectrum 128k
 *soporte smartload
+*obtener fragmentacion de un mdr
 
 seleccion drive
 
