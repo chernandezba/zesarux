@@ -41485,6 +41485,7 @@ void menu_storage_microdrive_simulate_bad_sectors(MENU_ITEM_PARAMETERS)
 
 //tipo indica que se solicita:
 //0: mapa microdrive
+//1: listado archivos
 //y_ventana_inicial: coordenada y inicial para escribir en ventana
 
 //Retorna la coordenada y
@@ -41538,25 +41539,30 @@ int menu_microdrive_map_browse(zxvision_window *ventana,int tipo,int microdrive_
 
         //printf("%d\n",rec_length);
 
-        /*
+
         //Mostrar nombre archivo
-        if (record_segment==0 && (data_recflg & 0x04)==0x04) {
-            z80_int tamanyo=microdrive_get_byte_sector(microdrive_seleccionado,i,31)+256*microdrive_get_byte_sector(microdrive_seleccionado,i,32);
+        if (tipo==1) {
+            if (record_segment==0 && (data_recflg & 0x04)==0x04) {
+                z80_int tamanyo=microdrive_get_byte_sector(microdrive_seleccionado,i,31)+256*microdrive_get_byte_sector(microdrive_seleccionado,i,32);
 
-            char nombre[11];
-            int j;
-            for (j=0;j<10;j++) {
-                z80_byte letra_nombre=microdrive_get_byte_sector(microdrive_seleccionado,i,19+j);
+                char nombre[11];
+                int j;
+                for (j=0;j<10;j++) {
+                    z80_byte letra_nombre=microdrive_get_byte_sector(microdrive_seleccionado,i,19+j);
 
-                if (letra_nombre<32 || letra_nombre>126) letra_nombre='.';
+                    if (letra_nombre<32 || letra_nombre>126) letra_nombre='.';
 
-                nombre[j]=letra_nombre;
+                    nombre[j]=letra_nombre;
+                }
+
+                nombre[j]=0;
+
+                //printf(" %s %d bytes\n",nombre,tamanyo);
+
+                zxvision_print_string_defaults_fillspc_format(ventana,1,y_ventana_inicial++,
+                    " %s %d bytes",nombre,tamanyo);
             }
-
-            nombre[j]=0;
-
-            printf(" %s %d bytes\n",nombre,tamanyo);
-        }*/
+        }
 
 
 
@@ -41565,7 +41571,7 @@ int menu_microdrive_map_browse(zxvision_window *ventana,int tipo,int microdrive_
 
         if (x==sectores_por_linea || i==microdrive_status[microdrive_seleccionado].mdr_total_sectors-1) {
             x=0;
-            printf("\n");
+            //printf("\n");
             if (tipo==0) {
                 zxvision_print_string_defaults_fillspc(ventana,1,y_ventana_inicial++,buffer_linea);
                 buffer_linea[0]=0;
@@ -41605,6 +41611,47 @@ void menu_storage_microdrive_map(MENU_ITEM_PARAMETERS)
     zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"X: Bad sector.  .: Unused sector");
 
     //Ajustar al final de la leyenda
+    zxvision_set_visible_height(&ventana,linea+2);
+    zxvision_set_total_height(&ventana,linea);
+
+    //Recalcular centro
+    y=menu_center_y()-ventana.visible_height/2;
+
+    zxvision_set_y_position(&ventana,y);
+
+    zxvision_draw_window(&ventana);
+    zxvision_draw_window_contents(&ventana);
+
+    zxvision_wait_until_esc(&ventana);
+
+
+
+    zxvision_destroy_window(&ventana);
+}
+
+void menu_storage_microdrive_browse(MENU_ITEM_PARAMETERS)
+{
+
+    int ancho=40;
+    int alto=20;
+    int x=menu_center_x()-ancho/2;
+    int y=menu_center_y()-alto/2;
+
+    zxvision_window ventana;
+
+    //pueden haber tantos sectores como archivos
+    int alto_total_ventana=MDR_MAX_SECTORS;
+
+    zxvision_new_window(&ventana,x,y,ancho,alto,
+                                            ancho-1,alto_total_ventana,"Microdrive Browse");
+
+
+
+
+    int linea=menu_microdrive_map_browse(&ventana,1,valor_opcion,0);
+
+
+    //Ajustar al final
     zxvision_set_visible_height(&ventana,linea+2);
     zxvision_set_total_height(&ventana,linea);
 
@@ -41703,6 +41750,13 @@ void menu_interface1(MENU_ITEM_PARAMETERS)
 
                 menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_storage_microdrive_map,NULL,
                         "Microdrive map","Mapa microdrive","Mapa microdrive");
+                menu_add_item_menu_prefijo(array_menu_common,"    ");
+                menu_add_item_menu_se_cerrara(array_menu_common);
+                menu_add_item_menu_genera_ventana(array_menu_common);
+                menu_add_item_menu_valor_opcion(array_menu_common,i);
+
+                menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_storage_microdrive_browse,NULL,
+                        "Microdrive browse","Explorar microdrive","Explorar microdrive");
                 menu_add_item_menu_prefijo(array_menu_common,"    ");
                 menu_add_item_menu_se_cerrara(array_menu_common);
                 menu_add_item_menu_genera_ventana(array_menu_common);
