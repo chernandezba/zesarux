@@ -41416,6 +41416,8 @@ void menu_mdv_simulate_bad(MENU_ITEM_PARAMETERS)
     } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
 }
 
+
+//Funcion sin uso
 void menu_storage_microdrive_simulate_bad_sectors(MENU_ITEM_PARAMETERS)
 {
     menu_item *array_menu_common;
@@ -41481,11 +41483,10 @@ void menu_storage_microdrive_simulate_bad_sectors(MENU_ITEM_PARAMETERS)
 
 }
 
-void menu_storage_microdrive_map(MENU_ITEM_PARAMETERS)
+void menu_microdrive_map_browse(int microdrive_seleccionado)
 {
 
-    //temp
-    int microdrive_seleccionado=0;
+
 
     int sectores_por_linea=16;
 
@@ -41551,6 +41552,12 @@ void menu_storage_microdrive_map(MENU_ITEM_PARAMETERS)
 
     printf("\n");
 
+}
+
+
+void menu_storage_microdrive_map(MENU_ITEM_PARAMETERS)
+{
+    menu_microdrive_map_browse(valor_opcion);
 }
 
 void menu_interface1(MENU_ITEM_PARAMETERS)
@@ -41629,20 +41636,32 @@ void menu_interface1(MENU_ITEM_PARAMETERS)
                 "tells if these changes are written to disk or not."
                 );
 
+            if (microdrive_status[i].microdrive_enabled) {
+
+                menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_storage_microdrive_map,NULL,
+                        "Microdrive map","Mapa microdrive","Mapa microdrive");
+                menu_add_item_menu_prefijo(array_menu_common,"    ");
+                menu_add_item_menu_se_cerrara(array_menu_common);
+                menu_add_item_menu_genera_ventana(array_menu_common);
+                menu_add_item_menu_valor_opcion(array_menu_common,i);
+
+
+                menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_mdv_simulate_bad,NULL,
+                        "Simulate bad sectors","Simular sectores erroneos","Simular sectors erronis");
+                menu_add_item_menu_prefijo(array_menu_common,"    ");
+                menu_add_item_menu_valor_opcion(array_menu_common,i);
+                menu_add_item_menu_se_cerrara(array_menu_common);
+                menu_add_item_menu_genera_ventana(array_menu_common);
+
+            }
+
 
             menu_add_item_menu_separator(array_menu_common);
 
         }
 
-        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_storage_microdrive_simulate_bad_sectors,NULL,
-                "Simulate bad sectors","Simular sectores erroneos","Simular sectors erronis");
-        menu_add_item_menu_prefijo(array_menu_common,"    ");
-        menu_add_item_menu_tiene_submenu(array_menu_common);
 
-        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_storage_microdrive_map,NULL,
-                "Microdrive map","Mapa microdrive","Mapa microdrive");
-        menu_add_item_menu_prefijo(array_menu_common,"    ");
-        menu_add_item_menu_tiene_submenu(array_menu_common);
+
 
         menu_add_ESC_item(array_menu_common);
 
