@@ -41483,7 +41483,9 @@ void menu_storage_microdrive_simulate_bad_sectors(MENU_ITEM_PARAMETERS)
 
 }
 
-void menu_microdrive_map_browse(int microdrive_seleccionado)
+//tipo indica que se solicita:
+//0: mapa microdrive
+void menu_microdrive_map_browse(zxvision_window *ventana,int tipo,int microdrive_seleccionado,int y_ventana_inicial)
 {
 
 
@@ -41494,7 +41496,12 @@ void menu_microdrive_map_browse(int microdrive_seleccionado)
 
     int x=0;
 
+
+    char buffer_linea[MAX_ANCHO_LINEAS_GENERIC_MESSAGE+1]="";
+
     for (i=0;i<microdrive_status[microdrive_seleccionado].mdr_total_sectors;i++) {
+        char caracter_info;
+
         z80_byte data_recflg=microdrive_get_byte_sector(microdrive_seleccionado,i,15);
         z80_byte record_segment=microdrive_get_byte_sector(microdrive_seleccionado,i,16);
 
@@ -41507,13 +41514,22 @@ void menu_microdrive_map_browse(int microdrive_seleccionado)
         //rec_length cuenta la cabecera de 9 bytes en sector 0
         z80_int rec_length=microdrive_get_byte_sector(microdrive_seleccionado,i,17)+256*microdrive_get_byte_sector(microdrive_seleccionado,i,18);
 
-        if (microdrive_status[microdrive_seleccionado].bad_sectors_simulated[i]) printf("X");
 
-        else if ((data_recflg & 0x06)==0x04) printf("U"); //Usado completamente
+        caracter_info='.';
 
-        else if ((data_recflg & 0x06)==0x06) printf("u"); //Ultimo sector. Puede estar lleno o usado parcialmente
+        if (microdrive_status[microdrive_seleccionado].bad_sectors_simulated[i]) caracter_info='X';
 
-        else printf(".");
+        else if ((data_recflg & 0x06)==0x04) caracter_info='U'; //Usado completamente
+
+        else if ((data_recflg & 0x06)==0x06) caracter_info='u'; //Ultimo sector. Puede estar lleno o usado parcialmente
+
+
+        char string_caracter[2];
+
+        string_caracter[0]=caracter_info;
+        string_caracter[1]=0;
+
+        util_concat_string(buffer_linea,string_caracter,MAX_ANCHO_LINEAS_GENERIC_MESSAGE);
 
         //printf("%02X ",record_segment);
 
@@ -41547,6 +41563,10 @@ void menu_microdrive_map_browse(int microdrive_seleccionado)
         if (x==sectores_por_linea) {
             x=0;
             printf("\n");
+            if (tipo==0) {
+                zxvision_print_string_defaults_fillspc(ventana,1,y_ventana_inicial++,buffer_linea);
+                buffer_linea[0]=0;
+            }
         }
     }
 
@@ -41557,7 +41577,29 @@ void menu_microdrive_map_browse(int microdrive_seleccionado)
 
 void menu_storage_microdrive_map(MENU_ITEM_PARAMETERS)
 {
-    menu_microdrive_map_browse(valor_opcion);
+
+    int ancho=32;
+    int alto=25;
+    int x=menu_center_x()-ancho/2;
+    int y=menu_center_y()-alto/2;
+
+    zxvision_window ventana;
+
+    zxvision_new_window(&ventana,x,y,ancho,alto,
+                                            64,alto-2,"Memory subzones");
+
+    zxvision_draw_window(&ventana);
+
+
+    menu_microdrive_map_browse(&ventana,0,valor_opcion,0);
+
+    zxvision_draw_window_contents(&ventana);
+
+    zxvision_wait_until_esc(&ventana);
+
+
+
+    zxvision_destroy_window(&ventana);
 }
 
 void menu_interface1(MENU_ITEM_PARAMETERS)
