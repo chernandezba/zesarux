@@ -41485,12 +41485,15 @@ void menu_storage_microdrive_simulate_bad_sectors(MENU_ITEM_PARAMETERS)
 
 //tipo indica que se solicita:
 //0: mapa microdrive
-void menu_microdrive_map_browse(zxvision_window *ventana,int tipo,int microdrive_seleccionado,int y_ventana_inicial)
+//y_ventana_inicial: coordenada y inicial para escribir en ventana
+
+//Retorna la coordenada y
+int menu_microdrive_map_browse(zxvision_window *ventana,int tipo,int microdrive_seleccionado,int y_ventana_inicial)
 {
 
 
 
-    int sectores_por_linea=16;
+    int sectores_por_linea=32;
 
     int i;
 
@@ -41560,7 +41563,7 @@ void menu_microdrive_map_browse(zxvision_window *ventana,int tipo,int microdrive
 
         x++;
 
-        if (x==sectores_por_linea) {
+        if (x==sectores_por_linea || i==microdrive_status[microdrive_seleccionado].mdr_total_sectors-1) {
             x=0;
             printf("\n");
             if (tipo==0) {
@@ -41572,13 +41575,15 @@ void menu_microdrive_map_browse(zxvision_window *ventana,int tipo,int microdrive
 
     printf("\n");
 
+    return y_ventana_inicial;
+
 }
 
 
 void menu_storage_microdrive_map(MENU_ITEM_PARAMETERS)
 {
 
-    int ancho=32;
+    int ancho=40;
     int alto=25;
     int x=menu_center_x()-ancho/2;
     int y=menu_center_y()-alto/2;
@@ -41586,12 +41591,18 @@ void menu_storage_microdrive_map(MENU_ITEM_PARAMETERS)
     zxvision_window ventana;
 
     zxvision_new_window(&ventana,x,y,ancho,alto,
-                                            64,alto-2,"Memory subzones");
+                                            64,alto-2,"Microdrive Map");
 
     zxvision_draw_window(&ventana);
 
 
-    menu_microdrive_map_browse(&ventana,0,valor_opcion,0);
+    int linea=menu_microdrive_map_browse(&ventana,0,valor_opcion,0);
+
+    linea++;
+
+    zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"U: Used sector");
+    zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"u: Used sector and final of a file");
+    zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"X: Bad sector.  .: Unused sector");
 
     zxvision_draw_window_contents(&ventana);
 
