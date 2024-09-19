@@ -41584,16 +41584,16 @@ void menu_storage_microdrive_map(MENU_ITEM_PARAMETERS)
 {
 
     int ancho=40;
-    int alto=25;
+    int alto=20;
     int x=menu_center_x()-ancho/2;
     int y=menu_center_y()-alto/2;
 
     zxvision_window ventana;
 
     zxvision_new_window(&ventana,x,y,ancho,alto,
-                                            64,alto-2,"Microdrive Map");
+                                            ancho-1,alto-2,"Microdrive Map");
 
-    zxvision_draw_window(&ventana);
+
 
 
     int linea=menu_microdrive_map_browse(&ventana,0,valor_opcion,0);
@@ -41604,6 +41604,16 @@ void menu_storage_microdrive_map(MENU_ITEM_PARAMETERS)
     zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"u: Used sector and final of a file");
     zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"X: Bad sector.  .: Unused sector");
 
+    //Ajustar al final de la leyenda
+    zxvision_set_visible_height(&ventana,linea+2);
+    zxvision_set_total_height(&ventana,linea);
+
+    //Recalcular centro
+    y=menu_center_y()-ventana.visible_height/2;
+
+    zxvision_set_y_position(&ventana,y);
+
+    zxvision_draw_window(&ventana);
     zxvision_draw_window_contents(&ventana);
 
     zxvision_wait_until_esc(&ventana);
