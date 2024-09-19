@@ -41483,6 +41483,25 @@ void menu_storage_microdrive_simulate_bad_sectors(MENU_ITEM_PARAMETERS)
 
 }
 
+void menu_microdrive_map_browse_get_label(char *texto,int microdrive_seleccionado,int sector)
+{
+    int i;
+
+    for (i=0;i<10;i++) {
+        z80_byte caracter=microdrive_get_byte_sector(microdrive_seleccionado,sector,4+i);
+
+        if (caracter<32 || caracter>126) caracter='.';
+
+        texto[i]=caracter;
+
+    }
+
+    texto[i]=0;
+}
+
+
+
+
 //tipo indica que se solicita:
 //0: mapa microdrive
 //1: listado archivos
@@ -41502,6 +41521,13 @@ int menu_microdrive_map_browse(zxvision_window *ventana,int tipo,int microdrive_
 
 
     char buffer_linea[MAX_ANCHO_LINEAS_GENERIC_MESSAGE+1]="";
+
+    char microdrive_label[11];
+
+    int escrito_microdrive_label=0;
+
+    //Sacamos el label del sector 0 primero. Si esta erroneo, ya se corregira cuando se detecte el primer archivo
+    menu_microdrive_map_browse_get_label(microdrive_label,microdrive_seleccionado,0);
 
     for (i=0;i<microdrive_status[microdrive_seleccionado].mdr_total_sectors;i++) {
         char caracter_info;
@@ -41588,6 +41614,15 @@ int menu_microdrive_map_browse(zxvision_window *ventana,int tipo,int microdrive_
 
                 util_tape_get_info_tapeblock((z80_byte *)buffer_tap_temp,flag,longitud,buffer_info_tape);
 
+
+                //Antes de escribir primer archivo, agregar label
+                if (!escrito_microdrive_label) {
+                    escrito_microdrive_label=1;
+                    menu_microdrive_map_browse_get_label(microdrive_label,microdrive_seleccionado,0);
+                    zxvision_print_string_defaults_fillspc_format(ventana,1,y_ventana_inicial++,
+                        "Label: %s",microdrive_label);
+                }
+
                 zxvision_print_string_defaults_fillspc(ventana,1,y_ventana_inicial++,buffer_info_tape);
             }
         }
@@ -41607,7 +41642,14 @@ int menu_microdrive_map_browse(zxvision_window *ventana,int tipo,int microdrive_
         }
     }
 
-    printf("\n");
+    //Si no habia ningun archivo, hay que escribir el label desde aqui
+    if (tipo==1) {
+        if (!escrito_microdrive_label) {
+            zxvision_print_string_defaults_fillspc_format(ventana,1,y_ventana_inicial++,
+                "Label: %s",microdrive_label);
+        }
+    }
+
 
     return y_ventana_inicial;
 
