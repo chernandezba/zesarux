@@ -41546,21 +41546,49 @@ int menu_microdrive_map_browse(zxvision_window *ventana,int tipo,int microdrive_
                 z80_int tamanyo=microdrive_get_byte_sector(microdrive_seleccionado,i,31)+256*microdrive_get_byte_sector(microdrive_seleccionado,i,32);
 
                 char nombre[11];
-                int j;
-                for (j=0;j<10;j++) {
-                    z80_byte letra_nombre=microdrive_get_byte_sector(microdrive_seleccionado,i,19+j);
 
-                    if (letra_nombre<32 || letra_nombre>126) letra_nombre='.';
 
-                    nombre[j]=letra_nombre;
-                }
 
-                nombre[j]=0;
 
                 //printf(" %s %d bytes\n",nombre,tamanyo);
 
-                zxvision_print_string_defaults_fillspc_format(ventana,1,y_ventana_inicial++,
-                    " %s %d bytes",nombre,tamanyo);
+                char buffer_info_tape[100];
+
+                z80_byte buffer_tap_temp[36];
+                //primer byte cabecera
+                buffer_tap_temp[0]=microdrive_get_byte_sector(microdrive_seleccionado,i,30);
+
+                int j;
+
+
+                //nombre
+                for (j=0;j<10;j++) {
+                    z80_byte letra_nombre=microdrive_get_byte_sector(microdrive_seleccionado,i,19+j);
+
+                    buffer_tap_temp[1+j]=letra_nombre;
+                }
+
+                //parametros cabecera
+                for (j=0;j<6;j++) {
+                    buffer_tap_temp[11+j]=microdrive_get_byte_sector(microdrive_seleccionado,i,31+j);
+                }
+
+                //excepcion en basic. esta diferente en cabecera de microdrive y de cinta
+                //linea autorun
+                if (buffer_tap_temp[0]==0) {
+                    buffer_tap_temp[13]=microdrive_get_byte_sector(microdrive_seleccionado,i,37);
+                    buffer_tap_temp[14]=microdrive_get_byte_sector(microdrive_seleccionado,i,38);
+                }
+
+
+                util_tape_tap_get_info(buffer_tap_temp,buffer_info_tape,0);
+
+                z80_byte flag=0;
+                z80_int longitud=19;
+
+                util_tape_get_info_tapeblock((z80_byte *)buffer_tap_temp,flag,longitud,buffer_info_tape);
+
+                zxvision_print_string_defaults_fillspc(ventana,1,y_ventana_inicial++,buffer_info_tape);
             }
         }
 
