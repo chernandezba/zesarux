@@ -41670,7 +41670,7 @@ int menu_microdrive_map_browse(zxvision_window *ventana,int tipo,int microdrive_
 void menu_storage_microdrive_map(MENU_ITEM_PARAMETERS)
 {
 
-    int ancho=40;
+    int ancho=36;
     int alto=20;
     int x=menu_center_x()-ancho/2;
     int y=menu_center_y()-alto/2;
