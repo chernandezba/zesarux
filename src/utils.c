@@ -13101,6 +13101,8 @@ void util_tape_get_info_tapeblock_ace(z80_byte *tape,z80_byte flag,z80_int longi
 
 void util_tape_get_info_tapeblock(z80_byte *tape,z80_byte flag,z80_int longitud,char *texto)
 {
+
+    //42 caracteres maximo de la info?
 	char buffer_nombre[11];
 
 	z80_byte first_byte=tape[0];
@@ -13108,11 +13110,13 @@ void util_tape_get_info_tapeblock(z80_byte *tape,z80_byte flag,z80_int longitud,
 			//Posible cabecera
 			util_tape_get_name_header(&tape[1],buffer_nombre);
 
-                        z80_int cabecera_longitud;
-                        z80_int cabecera_inicio;
+            z80_int cabecera_longitud;
+            z80_int cabecera_inicio;
 
-                        cabecera_longitud=value_8_to_16(tape[12],tape[11]);
-                        cabecera_inicio=value_8_to_16(tape[14],tape[13]);
+            cabecera_longitud=value_8_to_16(tape[12],tape[11]);
+            cabecera_inicio=value_8_to_16(tape[14],tape[13]);
+
+            char array_var_name='a'+(tape[14] & 0x1F)-1;
 
 
 
@@ -13120,16 +13124,16 @@ void util_tape_get_info_tapeblock(z80_byte *tape,z80_byte flag,z80_int longitud,
 			switch (first_byte) {
 				case 0:
                     //Si tiene autoinicio
-                    if (cabecera_inicio<32768) sprintf(texto,"Program %s [LINE %d]",buffer_nombre,cabecera_inicio);
-					else sprintf(texto,"Program %s",buffer_nombre);
+                    if (cabecera_inicio<32768) sprintf(texto,"Program %s [size %d,LINE %d]",buffer_nombre,cabecera_longitud,cabecera_inicio);
+					else sprintf(texto,"Program %s [size %d]",buffer_nombre,cabecera_longitud);
 				break;
 
 				case 1:
-					sprintf(texto,"Num array %s",buffer_nombre);
+					sprintf(texto,"Num array %s [size %d,%c()]",buffer_nombre,cabecera_longitud,array_var_name);
 				break;
 
 				case 2:
-					sprintf(texto,"Char array %s",buffer_nombre);
+					sprintf(texto,"Char array %s [size %d,%c$()]",buffer_nombre,cabecera_longitud,array_var_name);
 				break;
 
 				case 3:

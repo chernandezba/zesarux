@@ -41583,7 +41583,7 @@ int menu_microdrive_map_browse(zxvision_window *ventana,int tipo,int microdrive_
 
                 //printf(" %s %d bytes\n",nombre,tamanyo);
 
-                char buffer_info_tape[100];
+                char buffer_info_tape[32*4]; //4 lineas mas que suficiente
 
                 z80_byte buffer_tap_temp[36];
                 //primer byte cabecera
@@ -41609,6 +41609,11 @@ int menu_microdrive_map_browse(zxvision_window *ventana,int tipo,int microdrive_
                 if (buffer_tap_temp[0]==0) {
                     buffer_tap_temp[13]=microdrive_get_byte_sector(microdrive_seleccionado,i,37);
                     buffer_tap_temp[14]=microdrive_get_byte_sector(microdrive_seleccionado,i,38);
+                }
+
+                //excepcion en arrays. nombre variable
+                if (buffer_tap_temp[0]==1 || buffer_tap_temp[0]==2) {
+                    buffer_tap_temp[14]=microdrive_get_byte_sector(microdrive_seleccionado,i,35);
                 }
 
 
@@ -41684,7 +41689,8 @@ void menu_storage_microdrive_map(MENU_ITEM_PARAMETERS)
 
     zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"U: Used sector");
     zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"u: Used sector and final of a file");
-    zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"X: Bad sector.  .: Unused sector");
+    zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"X: Bad sector");
+    zxvision_print_string_defaults_fillspc(&ventana,1,linea++,".: Unused sector");
 
     //Ajustar al final de la leyenda
     zxvision_set_visible_height(&ventana,linea+2);
@@ -41708,7 +41714,7 @@ void menu_storage_microdrive_map(MENU_ITEM_PARAMETERS)
 void menu_storage_microdrive_browse(MENU_ITEM_PARAMETERS)
 {
 
-    int ancho=40;
+    int ancho=50;
     int alto=20;
     int x=menu_center_x()-ancho/2;
     int y=menu_center_y()-alto/2;
