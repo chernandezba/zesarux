@@ -16767,7 +16767,14 @@ int util_extract_mdr(char *filename,char *tempdir)
 
 
                 char buffer_temp_file[PATH_MAX];
-                sprintf (buffer_temp_file,"%s/%s",tempdir,nombre);
+
+
+                //Si es program, agregar extension .bas
+                if (buffer_tap_temp[0]==0) {
+                    sprintf (buffer_temp_file,"%s/%s.bas",tempdir,nombre);
+                }
+
+                else sprintf (buffer_temp_file,"%s/%s",tempdir,nombre);
 
 
                 util_save_file(destino,tamanyo,buffer_temp_file);

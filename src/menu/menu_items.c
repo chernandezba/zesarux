@@ -41597,7 +41597,7 @@ int total_sectors
 
         z80_byte header_recflg=f_get_byte(microdrive_seleccionado,i,0);
 
-        //rec_length cuenta la cabecera de 9 bytes en sector 0
+        //rec_length cuenta la cabecera de 9 bytes en bloque 0
         z80_int rec_length=f_get_byte(microdrive_seleccionado,i,17)+256*f_get_byte(microdrive_seleccionado,i,18);
 
 
