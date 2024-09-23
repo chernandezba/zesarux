@@ -803,6 +803,8 @@ extern int util_extract_tap(char *filename,char *tempdir,char *tzxfile,int tzx_t
 
 extern int util_extract_ddh(char *filename,char *tempdir);
 
+extern int util_extract_mdr(char *filename,char *tempdir);
+
 extern int util_extract_p(char *filename,char *tempdir);
 
 extern int util_extract_o(char *filename,char *tempdir);

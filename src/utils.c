@@ -16569,12 +16569,285 @@ int util_extract_tap(char *filename,char *tempdir,char *tzxfile,int tzx_turbo_rg
 
 }
 
+z80_byte util_extract_mdr_get_byte(z80_byte *puntero,int sector,int sector_offset)
+{
+
+    int offset=sector*MDR_BYTES_PER_SECTOR;
+
+    offset +=sector_offset;
+
+    return puntero[offset];
+}
+
+//Rutina para extraer MDR
+int util_extract_mdr(char *filename,char *tempdir)
+{
+
+	if (util_compare_file_extension(filename,"mdr")!=0) {
+		debug_printf(VERBOSE_ERR,"MDR expander not supported for this microdrive type");
+		return 1;
+	}
+
+	//Leemos cinta en memoria
+	int total_file_size=get_file_size(filename);
+
+	z80_byte *taperead;
+
+
+
+    FILE *ptr_tapebrowser;
+
+    //Soporte para FatFS
+    FIL fil;        /* File object */
+    //FRESULT fr;     /* FatFs return code */
+
+    int in_fatfs;
+
+
+    if (zvfs_fopen_read(filename,&in_fatfs,&ptr_tapebrowser,&fil)<0) {
+        debug_printf(VERBOSE_ERR,"Unable to open tape %s for extracting mdr",filename);
+        return 1;
+    }
+
+
+	taperead=util_malloc(total_file_size,"Can not allocate memory for expand mdr");
+
+
+    int leidos;
+
+
+    leidos=zvfs_fread(in_fatfs,taperead,total_file_size,ptr_tapebrowser,&fil);
+
+
+	if (leidos==0) {
+        debug_printf(VERBOSE_ERR,"Error reading tape");
+		free(taperead);
+        return 1;
+    }
+
+    zvfs_fclose(in_fatfs,ptr_tapebrowser,&fil);
+
+
+   //int menu_microdrive_map_browse(zxvision_window *ventana,int tipo,int microdrive_seleccionado,int y_ventana_inicial,
+//z80_byte (*f_get_byte)(int microdrive_seleccionado,int sector,int sector_offset),
+//int total_sectors
+
+    int total_sectors=leidos/MDR_BYTES_PER_SECTOR;
+
+
+   int obtener_bad_sector=0;
+
+
+
+    int sectores_por_linea=32;
+
+    int i;
+
+    int x=0;
+
+
+    char buffer_linea[MAX_ANCHO_LINEAS_GENERIC_MESSAGE+1]="";
+
+
+    //printf("primer label: %s\n",microdrive_label);
+
+    int used_sectors=0;
+
+    for (i=0;i<total_sectors;i++) {
+        char caracter_info;
+
+        z80_byte data_recflg=util_extract_mdr_get_byte(taperead,i,15);
+        z80_byte record_segment=util_extract_mdr_get_byte(taperead,i,16);
+
+
+        //flag de los datos
+        //if (data_recflg!=0 && data_recflg!=4 && data_recflg!=6) printf("%d\n",data_recflg);
+
+
+        z80_byte logical_sector=util_extract_mdr_get_byte(taperead,i,1);
+
+        z80_byte header_recflg=util_extract_mdr_get_byte(taperead,i,0);
+
+        //rec_length cuenta la cabecera de 9 bytes en sector 0
+        z80_int rec_length=util_extract_mdr_get_byte(taperead,i,17)+256*util_extract_mdr_get_byte(taperead,i,18);
+
+
+        caracter_info='.';
+
+        int es_bad_sector=0;
+
+
+
+
+        if (es_bad_sector) caracter_info='X';
+
+        else if ((data_recflg & 0x06)==0x04) {
+            caracter_info='U'; //Usado completamente
+            used_sectors++;
+        }
+
+        else if ((data_recflg & 0x06)==0x06) {
+            caracter_info='u'; //Ultimo sector. Puede estar lleno o usado parcialmente
+            used_sectors++;
+        }
+
+
+        char string_caracter[2];
+
+        string_caracter[0]=caracter_info;
+        string_caracter[1]=0;
+
+        util_concat_string(buffer_linea,string_caracter,MAX_ANCHO_LINEAS_GENERIC_MESSAGE);
+
+        //printf("%02X ",record_segment);
+
+        //printf("%d\n",rec_length);
+
+
+        //Mostrar nombre archivo
+
+            if (record_segment==0 && (data_recflg & 0x04)==0x04) {
+                z80_int tamanyo=util_extract_mdr_get_byte(taperead,i,31)+256*util_extract_mdr_get_byte(taperead,i,32);
+
+                char nombre[11];
+
+
+
+
+                //printf(" %s %d bytes\n",nombre,tamanyo);
+
+                char buffer_info_tape[32*4]; //4 lineas mas que suficiente
+
+                z80_byte buffer_tap_temp[36];
+                //primer byte cabecera
+                buffer_tap_temp[0]=util_extract_mdr_get_byte(taperead,i,30);
+
+                int j;
+
+
+                //nombre
+                for (j=0;j<10;j++) {
+                    z80_byte letra_nombre=util_extract_mdr_get_byte(taperead,i,19+j);
+
+                    buffer_tap_temp[1+j]=letra_nombre;
+                }
+
+                //parametros cabecera
+                for (j=0;j<6;j++) {
+                    buffer_tap_temp[11+j]=util_extract_mdr_get_byte(taperead,i,31+j);
+                }
+
+                //excepcion en basic. esta diferente en cabecera de microdrive y de cinta
+                //linea autorun
+                if (buffer_tap_temp[0]==0) {
+                    buffer_tap_temp[13]=util_extract_mdr_get_byte(taperead,i,37);
+                    buffer_tap_temp[14]=util_extract_mdr_get_byte(taperead,i,38);
+                }
+
+                //excepcion en arrays. nombre variable
+                if (buffer_tap_temp[0]==1 || buffer_tap_temp[0]==2) {
+                    buffer_tap_temp[14]=util_extract_mdr_get_byte(taperead,i,35);
+                }
+
+
+                util_tape_tap_get_info(buffer_tap_temp,buffer_info_tape,0);
+
+                z80_byte flag=0;
+                z80_int longitud=19;
+
+                util_tape_get_info_tapeblock((z80_byte *)buffer_tap_temp,flag,longitud,buffer_info_tape);
+
+
+
+
+                printf("%s\n",buffer_info_tape);
+            }
+
+
+
+
+
+        x++;
+
+
+    }
+
+
+
+    /*
+
+    int id_archivo;
+
+    //Ver que sector usamos, si el 0 o el 1
+    int sector;
+    z80_int usage_counter_zero=hilow_util_get_usage_counter(0,taperead);
+    z80_int usage_counter_one=hilow_util_get_usage_counter(1,taperead);
+
+    if (usage_counter_zero>usage_counter_one) sector=0;
+    else sector=1;
+
+    int total_archivos=hilow_util_get_total_files(sector,taperead);
+
+    if (total_archivos>HILOW_MAX_FILES_DIRECTORY) total_archivos=HILOW_MAX_FILES_DIRECTORY;
+
+    for (id_archivo=0;id_archivo<total_archivos;id_archivo++) {
+
+
+        hilow_util_get_file_name(sector,taperead,id_archivo,buffer_texto);
+
+
+        z80_int longitud=hilow_util_get_file_length(sector,taperead,id_archivo);
+
+        //printf("nombre: %s longitud: %d\n",buffer_texto,longitud);
+
+        z80_byte *mem_archivo;
+
+        mem_archivo=util_malloc(longitud,"Can not allocate memory for expand ddh");
+
+        hilow_util_get_file_contents(sector,taperead,id_archivo,mem_archivo);
+
+        //Si es program, agregar extension .bas
+        z80_byte tipo_archivo=hilow_util_get_file_type(sector,taperead,id_archivo);
+
+        char buffer_temp_file[PATH_MAX];
+
+        if (tipo_archivo==0) {
+            sprintf (buffer_temp_file,"%s/%s.bas",tempdir,buffer_texto);
+        }
+        else sprintf (buffer_temp_file,"%s/%s",tempdir,buffer_texto);
+
+
+        util_save_file(mem_archivo,longitud,buffer_temp_file);
+
+        //Si longitud era 6912, indicar la pantalla para los previews
+        if (longitud==6912) {
+            //Indicar con un archivo en la propia carpeta cual es el archivo de pantalla
+            //usado en los previews
+            char buff_preview_scr[PATH_MAX];
+            sprintf(buff_preview_scr,"%s/%s",tempdir,MENU_SCR_INFO_FILE_NAME);
+
+            //Meter en archivo MENU_SCR_INFO_FILE_NAME la ruta al archivo de pantalla
+            util_save_file((z80_byte *)buffer_temp_file,strlen(buffer_temp_file)+1,buff_preview_scr);
+        }
+
+        free(mem_archivo);
+    }
+
+    */
+
+
+	free(taperead);
+
+	return 0;
+
+}
+
 //Rutina para extraer DDH
 int util_extract_ddh(char *filename,char *tempdir)
 {
 
 	if (util_compare_file_extension(filename,"ddh")!=0) {
-		debug_printf(VERBOSE_ERR,"Tape expander not supported for this tape type");
+		debug_printf(VERBOSE_ERR,"DDH expander not supported for this image type");
 		return 1;
 	}
 
@@ -17714,6 +17987,9 @@ int util_convert_any_to_scr(char *filename,char *archivo_destino)
     }
     else if (!util_compare_file_extension(filename,"ddh") ) {
             retorno=util_extract_ddh(filename,tmpdir);
+    }
+    else if (!util_compare_file_extension(filename,"mdr") ) {
+            retorno=util_extract_mdr(filename,tmpdir);
     }
     else if (!util_compare_file_extension(filename,"dsk") ) {
             //Ejemplos de DSK que muestran pantalla: CASTLE MASTER.DSK , Drazen Petrovic Basket.dsk
@@ -22413,6 +22689,11 @@ int util_extract_preview_file_expandable(char *nombre,char *tmpdir)
 					retorno=util_extract_ddh(nombre,tmpdir);
 			}
 
+			else if (!util_compare_file_extension(nombre,"mdr") ) {
+					debug_printf (VERBOSE_DEBUG,"Is a mdr file");
+					retorno=util_extract_mdr(nombre,tmpdir);
+			}
+
 			else if (!util_compare_file_extension(nombre,"dsk") ) {
 					debug_printf (VERBOSE_DEBUG,"Is a dsk file");
                     //Ejemplos de DSK que muestran pantalla: CASTLE MASTER.DSK , Drazen Petrovic Basket.dsk
@@ -22533,7 +22814,8 @@ int util_get_extract_preview_type_file(char *nombre,long long int file_size)
 		!util_compare_file_extension(nombre,"pzx") ||
 		!util_compare_file_extension(nombre,"trd") ||
 		!util_compare_file_extension(nombre,"dsk") ||
-        !util_compare_file_extension(nombre,"ddh")
+        !util_compare_file_extension(nombre,"ddh") ||
+        !util_compare_file_extension(nombre,"mdr")
 
 	) {
         return 1;
