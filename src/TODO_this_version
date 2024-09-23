@@ -384,5 +384,5 @@ ok *a veces no carga programas, teniendo que desactivar y activar interface. qui
 *soporte spectrum 128k
 *soporte smartload
 ok *visor archivos desde file utils. reusando misma funcion
-*expandir archivos mdr. vista previa
+ok *expandir archivos mdr. vista previa
 *obtener fragmentacion de un mdr
