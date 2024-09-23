@@ -701,35 +701,42 @@ z80_byte microdrive_get_byte_sector(int microdrive_seleccionado,int sector,int s
 
 
 //Obtener un archivo de zona de memoria mdr
-void mdr_get_file(z80_byte *origen,int total_sectors,char *nombre,int tamanyo,z80_byte *destino)
+void mdr_get_file(z80_byte *origen,int total_sectors,char *nombre,int tamanyo,z80_byte *destino,int *p_fragmentados,int *p_no_fragmentados)
 {
     int i;
 
     int tamanyo_contando_cabecera=tamanyo+9;
 
-    int sectores_a_buscar=tamanyo_contando_cabecera/512;
+    int total_sectores_a_buscar=tamanyo_contando_cabecera/512;
 
     //Ver si el ultimo sector esta cortado
 
     int resto=tamanyo_contando_cabecera % 512;
 
-    if (resto) sectores_a_buscar++;
+    if (resto) total_sectores_a_buscar++;
 
-    printf("Sectores a buscar: %d\n",sectores_a_buscar);
+    printf("Sectores a buscar: %d\n",total_sectores_a_buscar);
 
-    int sector;
+    int bloque_buscando;
+
+    //Informacion de fragmentacion
+    //Si un sector no es consecutivo al otro, aumenta fragmentacion
+    int frag_anterior_sector=-1;
+
+    int frag_sectores_fragmentados=0;
+    int frag_sectores_no_fragmentados=1; //Al menos el primero no esta fragmentado logicamente
 
     //Cada uno de los bloques a buscar
-    for (sector=0;sector<sectores_a_buscar;sector++) {
+    for (bloque_buscando=0;bloque_buscando<total_sectores_a_buscar;bloque_buscando++) {
 
         //buscar cada sector cada vez en toda la imagen
         for (i=0;i<total_sectors;i++) {
             int offset_sector=i*MDR_BYTES_PER_SECTOR;
 
-            z80_byte data_recflg=origen[offset_sector+15];
+            //z80_byte data_recflg=origen[offset_sector+15];
             z80_byte record_segment=origen[offset_sector+16];
 
-            if (record_segment==sector /* && (data_recflg & 0x04)==0x04*/) {
+            if (record_segment==bloque_buscando /* && (data_recflg & 0x04)==0x04*/) {
                 char nombre_comparar[11];
 
                 int j;
@@ -743,12 +750,12 @@ void mdr_get_file(z80_byte *origen,int total_sectors,char *nombre,int tamanyo,z8
                 nombre_comparar[j]=0;
 
                 if (!strcmp(nombre_comparar,nombre)) {
-                    printf("Match nombre [%s] en sector %d\n",nombre,sector);
+                    printf("Match nombre [%s] en sector %d\n",nombre,bloque_buscando);
 
                     //Grabar ese bloque
                     //Si es record 0, saltar 9 bytes de la cabecera de datos
                     int offset_a_grabar=30;
-                    int tamanyo_restar=512;
+                    //int tamanyo_restar=512;
 
                     z80_int rec_length=origen[offset_sector+17]+256*origen[offset_sector+18];
 
@@ -760,10 +767,24 @@ void mdr_get_file(z80_byte *origen,int total_sectors,char *nombre,int tamanyo,z8
                     memcpy(destino,&origen[offset_sector+offset_a_grabar],rec_length);
                     destino +=rec_length;
 
+                    if (bloque_buscando!=0) {
+                        if (i==frag_anterior_sector+1) frag_sectores_no_fragmentados++;
+                        else frag_sectores_fragmentados++;
+                    }
+
+                    frag_anterior_sector=i;
+
                     break;
                 }
+
+
             }
         }
 
     }
+
+    //printf("Info fragmentacion: Fragmentados: %d No fragmentados: %d\n",frag_sectores_fragmentados,frag_sectores_no_fragmentados);
+
+    *p_fragmentados=frag_sectores_fragmentados;
+    *p_no_fragmentados=frag_sectores_no_fragmentados;
 }

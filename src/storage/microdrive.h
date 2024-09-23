@@ -95,4 +95,6 @@ extern void init_microdrives(void);
 
 extern z80_byte microdrive_get_byte_sector(int microdrive_seleccionado,int sector,int sector_offset);
 
+extern void mdr_get_file(z80_byte *origen,int total_sectors,char *nombre,int tamanyo,z80_byte *destino,int *p_fragmentados,int *p_no_fragmentados);
+
 #endif

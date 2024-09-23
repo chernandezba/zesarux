@@ -16639,16 +16639,10 @@ int util_extract_mdr(char *filename,char *tempdir)
     int i;
 
 
-
-    char buffer_linea[MAX_ANCHO_LINEAS_GENERIC_MESSAGE+1]="";
-
-
-    //printf("primer label: %s\n",microdrive_label);
-
-    int used_sectors=0;
+    int frag_sectores_fragmentados=0;
+    int frag_sectores_no_fragmentados=0;
 
     for (i=0;i<total_sectors;i++) {
-        char caracter_info;
 
         z80_byte data_recflg=util_extract_mdr_get_byte(taperead,i,15);
         z80_byte record_segment=util_extract_mdr_get_byte(taperead,i,16);
@@ -16658,40 +16652,14 @@ int util_extract_mdr(char *filename,char *tempdir)
         //if (data_recflg!=0 && data_recflg!=4 && data_recflg!=6) printf("%d\n",data_recflg);
 
 
-        z80_byte logical_sector=util_extract_mdr_get_byte(taperead,i,1);
 
-        z80_byte header_recflg=util_extract_mdr_get_byte(taperead,i,0);
+        //z80_byte header_recflg=util_extract_mdr_get_byte(taperead,i,0);
 
         //rec_length cuenta la cabecera de 9 bytes en sector 0
-        z80_int rec_length=util_extract_mdr_get_byte(taperead,i,17)+256*util_extract_mdr_get_byte(taperead,i,18);
-
-
-        caracter_info='.';
-
-        int es_bad_sector=0;
+        //z80_int rec_length=util_extract_mdr_get_byte(taperead,i,17)+256*util_extract_mdr_get_byte(taperead,i,18);
 
 
 
-
-        if (es_bad_sector) caracter_info='X';
-
-        else if ((data_recflg & 0x06)==0x04) {
-            caracter_info='U'; //Usado completamente
-            used_sectors++;
-        }
-
-        else if ((data_recflg & 0x06)==0x06) {
-            caracter_info='u'; //Ultimo sector. Puede estar lleno o usado parcialmente
-            used_sectors++;
-        }
-
-
-        char string_caracter[2];
-
-        string_caracter[0]=caracter_info;
-        string_caracter[1]=0;
-
-        util_concat_string(buffer_linea,string_caracter,MAX_ANCHO_LINEAS_GENERIC_MESSAGE);
 
         //printf("%02X ",record_segment);
 
@@ -16762,12 +16730,13 @@ int util_extract_mdr(char *filename,char *tempdir)
                 //buffer para archivo de testino
                 z80_byte *destino=util_malloc(tamanyo,"Can not allocate memory to get file");
 
-                mdr_get_file(taperead,total_sectors,nombre,tamanyo,destino);
+                int frag,nofrag;
+                mdr_get_file(taperead,total_sectors,nombre,tamanyo,destino,&frag,&nofrag);
 
-
+                frag_sectores_fragmentados +=frag;
+                frag_sectores_no_fragmentados +=nofrag;
 
                 char buffer_temp_file[PATH_MAX];
-
 
                 //Si es program, agregar extension .bas
                 if (buffer_tap_temp[0]==0) {
@@ -16803,66 +16772,7 @@ int util_extract_mdr(char *filename,char *tempdir)
 
 
 
-    /*
-
-    int id_archivo;
-
-    //Ver que sector usamos, si el 0 o el 1
-    int sector;
-    z80_int usage_counter_zero=hilow_util_get_usage_counter(0,taperead);
-    z80_int usage_counter_one=hilow_util_get_usage_counter(1,taperead);
-
-    if (usage_counter_zero>usage_counter_one) sector=0;
-    else sector=1;
-
-    int total_archivos=hilow_util_get_total_files(sector,taperead);
-
-    if (total_archivos>HILOW_MAX_FILES_DIRECTORY) total_archivos=HILOW_MAX_FILES_DIRECTORY;
-
-    for (id_archivo=0;id_archivo<total_archivos;id_archivo++) {
-
-
-        hilow_util_get_file_name(sector,taperead,id_archivo,buffer_texto);
-
-
-        z80_int longitud=hilow_util_get_file_length(sector,taperead,id_archivo);
-
-        //printf("nombre: %s longitud: %d\n",buffer_texto,longitud);
-
-        z80_byte *mem_archivo;
-
-        mem_archivo=util_malloc(longitud,"Can not allocate memory for expand ddh");
-
-        hilow_util_get_file_contents(sector,taperead,id_archivo,mem_archivo);
-
-        //Si es program, agregar extension .bas
-        z80_byte tipo_archivo=hilow_util_get_file_type(sector,taperead,id_archivo);
-
-        char buffer_temp_file[PATH_MAX];
-
-        if (tipo_archivo==0) {
-            sprintf (buffer_temp_file,"%s/%s.bas",tempdir,buffer_texto);
-        }
-        else sprintf (buffer_temp_file,"%s/%s",tempdir,buffer_texto);
-
-
-        util_save_file(mem_archivo,longitud,buffer_temp_file);
-
-        //Si longitud era 6912, indicar la pantalla para los previews
-        if (longitud==6912) {
-            //Indicar con un archivo en la propia carpeta cual es el archivo de pantalla
-            //usado en los previews
-            char buff_preview_scr[PATH_MAX];
-            sprintf(buff_preview_scr,"%s/%s",tempdir,MENU_SCR_INFO_FILE_NAME);
-
-            //Meter en archivo MENU_SCR_INFO_FILE_NAME la ruta al archivo de pantalla
-            util_save_file((z80_byte *)buffer_temp_file,strlen(buffer_temp_file)+1,buff_preview_scr);
-        }
-
-        free(mem_archivo);
-    }
-
-    */
+    printf("Info fragmentacion: Fragmentados: %d No fragmentados: %d\n",frag_sectores_fragmentados,frag_sectores_no_fragmentados);
 
 
 	free(taperead);
