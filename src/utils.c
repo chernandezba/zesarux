@@ -16635,15 +16635,9 @@ int util_extract_mdr(char *filename,char *tempdir)
     int total_sectors=leidos/MDR_BYTES_PER_SECTOR;
 
 
-   int obtener_bad_sector=0;
-
-
-
-    int sectores_por_linea=32;
 
     int i;
 
-    int x=0;
 
 
     char buffer_linea[MAX_ANCHO_LINEAS_GENERIC_MESSAGE+1]="";
@@ -16730,7 +16724,10 @@ int util_extract_mdr(char *filename,char *tempdir)
                     z80_byte letra_nombre=util_extract_mdr_get_byte(taperead,i,19+j);
 
                     buffer_tap_temp[1+j]=letra_nombre;
+                    nombre[j]=letra_nombre;
                 }
+
+                nombre[j]=0;
 
                 //parametros cabecera
                 for (j=0;j<6;j++) {
@@ -16760,14 +16757,26 @@ int util_extract_mdr(char *filename,char *tempdir)
 
 
 
-                printf("%s\n",buffer_info_tape);
+                printf("Nombre: [%s] (file_length=%d)\n",buffer_info_tape,tamanyo);
+
+                //buffer para archivo de testino
+                z80_byte *destino=util_malloc(tamanyo,"Can not allocate memory to get file");
+
+                mdr_get_file(taperead,total_sectors,nombre,tamanyo,destino);
+
+
+
+                char buffer_temp_file[PATH_MAX];
+                sprintf (buffer_temp_file,"%s/%s",tempdir,nombre);
+
+
+                util_save_file(destino,tamanyo,buffer_temp_file);
+
+                free(destino);
             }
 
 
 
-
-
-        x++;
 
 
     }

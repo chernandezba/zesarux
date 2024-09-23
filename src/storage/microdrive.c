@@ -698,3 +698,35 @@ z80_byte microdrive_get_byte_sector(int microdrive_seleccionado,int sector,int s
 
     return microdrive_status[microdrive_seleccionado].if1_microdrive_buffer[offset];
 }
+
+
+//Obtener un archivo de zona de memoria mdr
+void mdr_get_file(z80_byte *origen,int total_sectors,char *nombre,int tamanyo,z80_byte *destino)
+{
+    int i;
+
+    for (i=0;i<total_sectors;i++) {
+        int offset_sector=i*MDR_BYTES_PER_SECTOR;
+
+        z80_byte data_recflg=origen[offset_sector+15];
+        z80_byte record_segment=origen[offset_sector+16];
+
+        if (record_segment==0 && (data_recflg & 0x04)==0x04) {
+            char nombre_comparar[11];
+
+            int j;
+
+            for (j=0;j<10;j++) {
+                z80_byte letra_nombre=origen[offset_sector+19+j];
+
+                nombre_comparar[j]=letra_nombre;
+            }
+
+            nombre_comparar[j]=0;
+
+            if (!strcmp(nombre_comparar,nombre)) {
+                printf("Match nombre [%s] en sector i\n",nombre);
+            }
+        }
+    }
+}
