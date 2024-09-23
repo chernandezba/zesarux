@@ -16779,6 +16779,19 @@ int util_extract_mdr(char *filename,char *tempdir)
 
                 util_save_file(destino,tamanyo,buffer_temp_file);
 
+
+
+                //Si longitud era 6912, indicar la pantalla para los previews
+                if (tamanyo==6912) {
+                    //Indicar con un archivo en la propia carpeta cual es el archivo de pantalla
+                    //usado en los previews
+                    char buff_preview_scr[PATH_MAX];
+                    sprintf(buff_preview_scr,"%s/%s",tempdir,MENU_SCR_INFO_FILE_NAME);
+
+                    //Meter en archivo MENU_SCR_INFO_FILE_NAME la ruta al archivo de pantalla
+                    util_save_file((z80_byte *)buffer_temp_file,strlen(buffer_temp_file)+1,buff_preview_scr);
+                }
+
                 free(destino);
             }
 
