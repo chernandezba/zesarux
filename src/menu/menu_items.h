@@ -252,6 +252,10 @@ extern int menu_inicio_opcion_seleccionada;
 
 extern int force_menu_dibuja_menu_recorrer_menus;
 
+extern int menu_microdrive_map_browse(zxvision_window *ventana,int tipo,int microdrive_seleccionado,int y_ventana_inicial,
+z80_byte (*f_get_byte)(int microdrive_seleccionado,int sector,int sector_offset),
+int total_sectors);
+
 struct s_menu_debug_view_sensors_list {
     char short_name[SENSORS_MAX_SHORT_NAME];
     int fila;

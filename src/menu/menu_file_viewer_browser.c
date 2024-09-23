@@ -54,6 +54,7 @@
 #include "snap_zsf.h"
 #include "hilow_datadrive.h"
 #include "zx8081.h"
+#include "microdrive.h"
 
 #if defined(__APPLE__)
 	#include <sys/syslimits.h>
@@ -2137,6 +2138,96 @@ void menu_file_dsk_browser_show(char *filename)
 
 }
 
+z80_byte *mdr_file_memory;
+
+z80_byte menu_file_mdr_browser_show_get_byte(int microdrive_seleccionado,int sector,int sector_offset)
+{
+    int offset=sector*MDR_BYTES_PER_SECTOR;
+
+    offset +=sector_offset;
+
+    return mdr_file_memory[offset];
+}
+
+
+void menu_file_mdr_browser_show(char *filename)
+{
+
+
+	int bytes_to_load=get_file_size(filename);
+
+
+	mdr_file_memory=util_malloc(bytes_to_load,"Can not allocate memory for mdr browser");
+
+
+
+    FILE *ptr_file_mdr_browser;
+
+    //Soporte para FatFS
+    FIL fil;        /* File object */
+
+    int in_fatfs;
+
+    if (zvfs_fopen_read(filename,&in_fatfs,&ptr_file_mdr_browser,&fil)<0) {
+        debug_printf(VERBOSE_ERR,"Unable to open file");
+        free(mdr_file_memory);
+        return;
+    }
+
+
+    int leidos;
+
+    leidos=zvfs_fread(in_fatfs,mdr_file_memory,bytes_to_load,ptr_file_mdr_browser,&fil);
+
+
+    if (leidos==0) {
+        debug_printf(VERBOSE_ERR,"Error reading file");
+        return;
+    }
+
+    zvfs_fclose(in_fatfs,ptr_file_mdr_browser,&fil);
+
+
+    free(mdr_file_memory);
+
+    int total_sectors=leidos/MDR_BYTES_PER_SECTOR;
+
+
+    int ancho=50;
+    int alto=20;
+    int x=menu_center_x()-ancho/2;
+    int y=menu_center_y()-alto/2;
+
+    zxvision_window ventana;
+
+    //pueden haber tantos sectores como archivos
+    int alto_total_ventana=MDR_MAX_SECTORS;
+
+    zxvision_new_window(&ventana,x,y,ancho,alto,
+                                            ancho-1,alto_total_ventana,"Microdrive Browse");
+
+
+    int linea=menu_microdrive_map_browse(&ventana,1,0,0,menu_file_mdr_browser_show_get_byte,total_sectors);
+
+
+    //Ajustar al final
+    zxvision_set_visible_height(&ventana,linea+2);
+    zxvision_set_total_height(&ventana,linea);
+
+    //Recalcular centro
+    y=menu_center_y()-ventana.visible_height/2;
+
+    zxvision_set_y_position(&ventana,y);
+
+    zxvision_draw_window(&ventana);
+    zxvision_draw_window_contents(&ventana);
+
+    zxvision_wait_until_esc(&ventana);
+
+
+    zxvision_destroy_window(&ventana);
+
+}
 
 
 
@@ -5490,6 +5581,8 @@ void menu_file_viewer_read_file(char *title,char *file_name)
         else if (!util_compare_file_extension(file_name,"eprom")) menu_z88_new_ptr_card_browser(file_name);
 
         else if (!util_compare_file_extension(file_name,"zsf")) menu_file_zsf_browser_show(file_name);
+
+        else if (!util_compare_file_extension(file_name,"mdr")) menu_file_mdr_browser_show(file_name);
 
         //Si archivo no tiene extension pero su contenido parece indicar que es z88 basic
         else if (!util_compare_file_extension(file_name,"") && file_is_z88_basic(file_name)) menu_file_basic_browser_show(file_name);

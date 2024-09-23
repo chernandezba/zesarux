@@ -41276,6 +41276,38 @@ void menu_storage_microdrive_file(MENU_ITEM_PARAMETERS)
 
         if (ret==1) {
 
+            if (!si_existe_archivo(microdrive_status[microdrive_seleccionado].microdrive_file_name)) {
+                if (menu_confirm_yesno_texto("File does not exist","Create?")==0) {
+                    microdrive_status[microdrive_seleccionado].microdrive_file_name[0]=0;
+                    return;
+                }
+
+
+                int total_sectors=MDR_MAX_SECTORS;
+
+                //Si se sale con Cancel o se pone valor incorrecto
+                if (menu_ventana_scanf_numero_enhanced("Total Sectors?",&total_sectors,4,+1,1,MDR_MAX_SECTORS,0)<0 || if_pending_error_message) {
+                    microdrive_status[microdrive_seleccionado].microdrive_file_name[0]=0;
+                    return;
+                }
+
+                //Crear archivo vacio
+                FILE *ptr_mdrfile;
+                ptr_mdrfile=fopen(microdrive_status[microdrive_seleccionado].microdrive_file_name,"wb");
+
+                int totalsize=total_sectors*MDR_BYTES_PER_SECTOR+1; //+1 del byte final de write protect
+                z80_byte valor_grabar=0;
+
+                if (ptr_mdrfile!=NULL) {
+                    while (totalsize) {
+                        fwrite(&valor_grabar,1,1,ptr_mdrfile);
+                        totalsize--;
+                    }
+                    fclose(ptr_mdrfile);
+                }
+
+            }
+
             microdrive_insert(microdrive_seleccionado);
 
 		}
@@ -41483,12 +41515,15 @@ void menu_storage_microdrive_simulate_bad_sectors(MENU_ITEM_PARAMETERS)
 
 }
 
-void menu_microdrive_map_browse_get_label(char *texto,int microdrive_seleccionado,int sector)
+void menu_microdrive_map_browse_get_label(char *texto,int microdrive_seleccionado,int sector,
+z80_byte (*f_get_byte)(int microdrive_seleccionado,int sector,int sector_offset)
+
+)
 {
     int i;
 
     for (i=0;i<10;i++) {
-        z80_byte caracter=microdrive_get_byte_sector(microdrive_seleccionado,sector,4+i);
+        z80_byte caracter=f_get_byte(microdrive_seleccionado,sector,4+i);
 
         if (caracter<32 || caracter>126) caracter='.';
 
@@ -41506,12 +41541,26 @@ void menu_microdrive_map_browse_get_label(char *texto,int microdrive_seleccionad
 //0: mapa microdrive
 //1: listado archivos
 //y_ventana_inicial: coordenada y inicial para escribir en ventana
+//f_get_byte: funcion que retorna un byte de un sector y offset de un microdrive seleccionado
+//  si es NULL, se usa funcion microdrive_get_byte_sector
+//total_sectors: total sectores del microdrive. Si f_get_byte es NULL, total_sectors se obtiene de microdrive_status
 
 //Retorna la coordenada y
-int menu_microdrive_map_browse(zxvision_window *ventana,int tipo,int microdrive_seleccionado,int y_ventana_inicial)
+int menu_microdrive_map_browse(zxvision_window *ventana,int tipo,int microdrive_seleccionado,int y_ventana_inicial,
+z80_byte (*f_get_byte)(int microdrive_seleccionado,int sector,int sector_offset),
+int total_sectors
+
+)
 {
 
+    int obtener_bad_sector=0;
 
+    //Se usa microdrive_insertado
+    if (f_get_byte==NULL) {
+        f_get_byte=microdrive_get_byte_sector;
+        total_sectors=microdrive_status[microdrive_seleccionado].mdr_total_sectors;
+        obtener_bad_sector=1;
+    }
 
     int sectores_por_linea=32;
 
@@ -41527,36 +41576,51 @@ int menu_microdrive_map_browse(zxvision_window *ventana,int tipo,int microdrive_
     int escrito_microdrive_label=0;
 
     //Sacamos el label del sector 0 primero. Si esta erroneo, ya se corregira cuando se detecte el primer archivo
-    menu_microdrive_map_browse_get_label(microdrive_label,microdrive_seleccionado,0);
+    menu_microdrive_map_browse_get_label(microdrive_label,microdrive_seleccionado,0,f_get_byte);
 
     //printf("primer label: %s\n",microdrive_label);
 
-    for (i=0;i<microdrive_status[microdrive_seleccionado].mdr_total_sectors;i++) {
+    int used_sectors=0;
+
+    for (i=0;i<total_sectors;i++) {
         char caracter_info;
 
-        z80_byte data_recflg=microdrive_get_byte_sector(microdrive_seleccionado,i,15);
-        z80_byte record_segment=microdrive_get_byte_sector(microdrive_seleccionado,i,16);
+        z80_byte data_recflg=f_get_byte(microdrive_seleccionado,i,15);
+        z80_byte record_segment=f_get_byte(microdrive_seleccionado,i,16);
 
 
         //flag de los datos
         //if (data_recflg!=0 && data_recflg!=4 && data_recflg!=6) printf("%d\n",data_recflg);
 
 
-        z80_byte logical_sector=microdrive_get_byte_sector(microdrive_seleccionado,i,1);
+        z80_byte logical_sector=f_get_byte(microdrive_seleccionado,i,1);
 
-        z80_byte header_recflg=microdrive_get_byte_sector(microdrive_seleccionado,i,0);
+        z80_byte header_recflg=f_get_byte(microdrive_seleccionado,i,0);
 
         //rec_length cuenta la cabecera de 9 bytes en sector 0
-        z80_int rec_length=microdrive_get_byte_sector(microdrive_seleccionado,i,17)+256*microdrive_get_byte_sector(microdrive_seleccionado,i,18);
+        z80_int rec_length=f_get_byte(microdrive_seleccionado,i,17)+256*f_get_byte(microdrive_seleccionado,i,18);
 
 
         caracter_info='.';
 
-        if (microdrive_status[microdrive_seleccionado].bad_sectors_simulated[i]) caracter_info='X';
+        int es_bad_sector=0;
 
-        else if ((data_recflg & 0x06)==0x04) caracter_info='U'; //Usado completamente
+        if (obtener_bad_sector) {
+            if (microdrive_status[microdrive_seleccionado].bad_sectors_simulated[i]) es_bad_sector=1;
+        }
 
-        else if ((data_recflg & 0x06)==0x06) caracter_info='u'; //Ultimo sector. Puede estar lleno o usado parcialmente
+
+        if (es_bad_sector) caracter_info='X';
+
+        else if ((data_recflg & 0x06)==0x04) {
+            caracter_info='U'; //Usado completamente
+            used_sectors++;
+        }
+
+        else if ((data_recflg & 0x06)==0x06) {
+            caracter_info='u'; //Ultimo sector. Puede estar lleno o usado parcialmente
+            used_sectors++;
+        }
 
 
         char string_caracter[2];
@@ -41574,7 +41638,7 @@ int menu_microdrive_map_browse(zxvision_window *ventana,int tipo,int microdrive_
         //Mostrar nombre archivo
         if (tipo==1) {
             if (record_segment==0 && (data_recflg & 0x04)==0x04) {
-                z80_int tamanyo=microdrive_get_byte_sector(microdrive_seleccionado,i,31)+256*microdrive_get_byte_sector(microdrive_seleccionado,i,32);
+                z80_int tamanyo=f_get_byte(microdrive_seleccionado,i,31)+256*f_get_byte(microdrive_seleccionado,i,32);
 
                 char nombre[11];
 
@@ -41587,33 +41651,33 @@ int menu_microdrive_map_browse(zxvision_window *ventana,int tipo,int microdrive_
 
                 z80_byte buffer_tap_temp[36];
                 //primer byte cabecera
-                buffer_tap_temp[0]=microdrive_get_byte_sector(microdrive_seleccionado,i,30);
+                buffer_tap_temp[0]=f_get_byte(microdrive_seleccionado,i,30);
 
                 int j;
 
 
                 //nombre
                 for (j=0;j<10;j++) {
-                    z80_byte letra_nombre=microdrive_get_byte_sector(microdrive_seleccionado,i,19+j);
+                    z80_byte letra_nombre=f_get_byte(microdrive_seleccionado,i,19+j);
 
                     buffer_tap_temp[1+j]=letra_nombre;
                 }
 
                 //parametros cabecera
                 for (j=0;j<6;j++) {
-                    buffer_tap_temp[11+j]=microdrive_get_byte_sector(microdrive_seleccionado,i,31+j);
+                    buffer_tap_temp[11+j]=f_get_byte(microdrive_seleccionado,i,31+j);
                 }
 
                 //excepcion en basic. esta diferente en cabecera de microdrive y de cinta
                 //linea autorun
                 if (buffer_tap_temp[0]==0) {
-                    buffer_tap_temp[13]=microdrive_get_byte_sector(microdrive_seleccionado,i,37);
-                    buffer_tap_temp[14]=microdrive_get_byte_sector(microdrive_seleccionado,i,38);
+                    buffer_tap_temp[13]=f_get_byte(microdrive_seleccionado,i,37);
+                    buffer_tap_temp[14]=f_get_byte(microdrive_seleccionado,i,38);
                 }
 
                 //excepcion en arrays. nombre variable
                 if (buffer_tap_temp[0]==1 || buffer_tap_temp[0]==2) {
-                    buffer_tap_temp[14]=microdrive_get_byte_sector(microdrive_seleccionado,i,35);
+                    buffer_tap_temp[14]=f_get_byte(microdrive_seleccionado,i,35);
                 }
 
 
@@ -41628,7 +41692,7 @@ int menu_microdrive_map_browse(zxvision_window *ventana,int tipo,int microdrive_
                 //Antes de escribir primer archivo, agregar label
                 if (!escrito_microdrive_label) {
                     escrito_microdrive_label=1;
-                    menu_microdrive_map_browse_get_label(microdrive_label,microdrive_seleccionado,i);
+                    menu_microdrive_map_browse_get_label(microdrive_label,microdrive_seleccionado,i,f_get_byte);
                     //printf("segundo label: %s\n",microdrive_label);
                     zxvision_print_string_defaults_fillspc_format(ventana,1,y_ventana_inicial++,
                         "Label: %s",microdrive_label);
@@ -41643,7 +41707,7 @@ int menu_microdrive_map_browse(zxvision_window *ventana,int tipo,int microdrive_
 
         x++;
 
-        if (x==sectores_por_linea || i==microdrive_status[microdrive_seleccionado].mdr_total_sectors-1) {
+        if (x==sectores_por_linea || i==total_sectors-1) {
             x=0;
             //printf("\n");
             if (tipo==0) {
@@ -41662,6 +41726,15 @@ int menu_microdrive_map_browse(zxvision_window *ventana,int tipo,int microdrive_
     }
 
 
+    if (tipo==0) {
+        int total_kb=total_sectors*512/1024;
+        int used_kb=used_sectors*512/1024;
+        zxvision_print_string_defaults_fillspc_format(ventana,1,y_ventana_inicial++,
+            "Used %d KB. Total %d KB (%d sectors)",used_kb,total_kb,total_sectors);
+        buffer_linea[0]=0;
+    }
+
+
     return y_ventana_inicial;
 
 }
@@ -41670,7 +41743,7 @@ int menu_microdrive_map_browse(zxvision_window *ventana,int tipo,int microdrive_
 void menu_storage_microdrive_map(MENU_ITEM_PARAMETERS)
 {
 
-    int ancho=36;
+    int ancho=42;
     int alto=20;
     int x=menu_center_x()-ancho/2;
     int y=menu_center_y()-alto/2;
@@ -41683,7 +41756,7 @@ void menu_storage_microdrive_map(MENU_ITEM_PARAMETERS)
 
 
 
-    int linea=menu_microdrive_map_browse(&ventana,0,valor_opcion,0);
+    int linea=menu_microdrive_map_browse(&ventana,0,valor_opcion,0,NULL,0);
 
     linea++;
 
@@ -41730,7 +41803,7 @@ void menu_storage_microdrive_browse(MENU_ITEM_PARAMETERS)
 
 
 
-    int linea=menu_microdrive_map_browse(&ventana,1,valor_opcion,0);
+    int linea=menu_microdrive_map_browse(&ventana,1,valor_opcion,0,NULL,0);
 
 
     //Ajustar al final

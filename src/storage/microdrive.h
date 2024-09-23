@@ -26,8 +26,9 @@
 
 #include "zesarux.h"
 
-
+//bytes en crudo por sector, contando cabeceras
 #define MDR_BYTES_PER_SECTOR 543
+
 #define MDR_MAX_SECTORS 254
 #define MDR_MAX_FILE_SIZE ((MDR_BYTES_PER_SECTOR*MDR_MAX_SECTORS)+1)
 
