@@ -16772,7 +16772,17 @@ int util_extract_mdr(char *filename,char *tempdir)
 
 
 
-    printf("Info fragmentacion: Fragmentados: %d No fragmentados: %d\n",frag_sectores_fragmentados,frag_sectores_no_fragmentados);
+
+    int total=frag_sectores_fragmentados+frag_sectores_no_fragmentados;
+
+    int porc_frag;
+
+    if (total==0) porc_frag=0;
+
+    else porc_frag=(frag_sectores_fragmentados*100)/total;
+
+    printf("Info fragmentacion: Fragmentados: %d No fragmentados: %d (%d %%)\n",
+        frag_sectores_fragmentados,frag_sectores_no_fragmentados,porc_frag);
 
 
 	free(taperead);
