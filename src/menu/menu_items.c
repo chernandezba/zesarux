@@ -41681,7 +41681,7 @@ int total_sectors
                 }
 
 
-                util_tape_tap_get_info(buffer_tap_temp,buffer_info_tape,0);
+                //util_tape_tap_get_info(buffer_tap_temp,buffer_info_tape,0);
 
                 z80_byte flag=0;
                 z80_int longitud=19;
@@ -41742,23 +41742,138 @@ int total_sectors
 
 void menu_storage_microdrive_map(MENU_ITEM_PARAMETERS)
 {
+    struct s_mdr_file_cat *catalogo;
+
+    catalogo=mdr_get_file_catalogue(microdrive_status[valor_opcion].if1_microdrive_buffer,microdrive_status[valor_opcion].mdr_total_sectors);
+
+    printf("Nuevo catalogo\n");
+
+    printf("Label: [%s]\n",catalogo->label);
+
+    int i;
+
+    for (i=0;i<catalogo->total_files;i++) {
+        printf("%d [%s] size: %d\n",i,catalogo->file[i].name,catalogo->file[i].file_size);
+
+        //bloques
+        int j;
+
+        for (j=0;j<catalogo->file[i].total_sectors;j++) {
+            printf("%d ",catalogo->file[i].sectors_list[j]);
+        }
+        printf("\n");
+    }
+
 
     int ancho=42;
     int alto=20;
-    int x=menu_center_x()-ancho/2;
-    int y=menu_center_y()-alto/2;
+    int xventana=menu_center_x()-ancho/2;
+    int yventana=menu_center_y()-alto/2;
 
     zxvision_window ventana;
 
-    zxvision_new_window(&ventana,x,y,ancho,alto,
+    zxvision_new_window(&ventana,xventana,yventana,ancho,alto,
                                             ancho-1,alto-2,"Microdrive Map");
 
+    int salir=0;
+
+   //Si vale -1, mapear todos
+    //Si es >=0, mapear uno solo
+    int buscar_archivo=-1;
+
+    do {
+    //TODO: reconvertir esto en mapa usando mdr_get_file_catalogue
+    //Por defecto mapa total, pero luego se puede ver mapa de cada archivo por separado
+    //Que tambien diga fragmentacion archivos
+
+    //Indicar la letra del sector (Used, used y final , X defectuoso, "." sin uso
+    char letras_sectores[MDR_MAX_SECTORS];
+    //inicializar con "."
+    for (i=0;i<microdrive_status[valor_opcion].mdr_total_sectors;i++) {
+        letras_sectores[i]='.';
+    }
 
 
 
-    int linea=menu_microdrive_map_browse(&ventana,0,valor_opcion,0,NULL,0);
 
-    linea++;
+    int inicio_busqueda=0;
+    int final_busqueda=catalogo->total_files;
+
+    if (buscar_archivo>=0) {
+        inicio_busqueda=buscar_archivo;
+        final_busqueda=inicio_busqueda+1;
+    }
+
+    //Buscar todos archivos
+    //TODO: buscar solo uno concreto
+    for (i=inicio_busqueda;i<final_busqueda;i++) {
+        //bloques
+        int j;
+
+        for (j=0;j<catalogo->file[i].total_sectors;j++) {
+            int sector_usado=catalogo->file[i].sectors_list[j];
+            printf("%d ",sector_usado);
+            char letra='U';
+            if (j==catalogo->file[i].total_sectors-1) letra='u';
+
+
+            if (microdrive_status[valor_opcion].bad_sectors_simulated[sector_usado]) letra='X';
+
+            letras_sectores[sector_usado]=letra;
+        }
+    }
+
+
+    //
+
+
+
+
+    int linea=0;
+
+    int sectores_por_linea=32;
+    int x=0;
+
+    char buffer_linea[MAX_ANCHO_LINEAS_GENERIC_MESSAGE+1]="";
+
+    for (i=0;i<microdrive_status[valor_opcion].mdr_total_sectors;i++) {
+        char caracter_info=letras_sectores[i];
+
+    //int linea=menu_microdrive_map_browse(&ventana,0,valor_opcion,0,NULL,0);
+
+
+        char string_caracter[2];
+
+        string_caracter[0]=caracter_info;
+        string_caracter[1]=0;
+
+        util_concat_string(buffer_linea,string_caracter,MAX_ANCHO_LINEAS_GENERIC_MESSAGE);
+
+        x++;
+
+        if (x==sectores_por_linea || i==microdrive_status[valor_opcion].mdr_total_sectors-1) {
+            x=0;
+            //printf("\n");
+
+                zxvision_print_string_defaults_fillspc(&ventana,1,linea++,buffer_linea);
+                buffer_linea[0]=0;
+
+        }
+
+    }
+
+    if (buscar_archivo>=0) {
+        zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++,
+            "File %3d: %s",buscar_archivo+1,catalogo->file[buscar_archivo].name);
+        zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++,
+                "Fragmentation: %d %%",catalogo->file[buscar_archivo].porcentaje_fragmentacion);
+    }
+    else {
+        zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"Showing all files");
+        zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++,
+                "Fragmentation: %d %%",catalogo->porcentaje_fragmentacion);
+    }
+
 
     zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"U: Used sector");
     zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"u: Used sector and final of a file");
@@ -41770,18 +41885,46 @@ void menu_storage_microdrive_map(MENU_ITEM_PARAMETERS)
     zxvision_set_total_height(&ventana,linea);
 
     //Recalcular centro
-    y=menu_center_y()-ventana.visible_height/2;
+    yventana=menu_center_y()-ventana.visible_height/2;
 
-    zxvision_set_y_position(&ventana,y);
+    zxvision_set_y_position(&ventana,yventana);
 
     zxvision_draw_window(&ventana);
     zxvision_draw_window_contents(&ventana);
 
-    zxvision_wait_until_esc(&ventana);
+    //zxvision_wait_until_esc(&ventana);
+
+    z80_byte tecla=zxvision_common_getkey_refresh();
 
 
+        switch (tecla) {
+
+            case 8:
+                //izquierda
+                if (buscar_archivo>-1) buscar_archivo--;
+            break;
+
+            case 9:
+                //derecha
+                if (buscar_archivo<catalogo->total_files-1) buscar_archivo++;
+            break;
+
+            //Salir con ESC
+            case 2:
+                salir=1;
+            break;
+
+            //O tecla background
+            case 3:
+                salir=1;
+            break;
+        }
+
+    } while (!salir);
 
     zxvision_destroy_window(&ventana);
+
+    free(catalogo);
 }
 
 void menu_storage_microdrive_browse(MENU_ITEM_PARAMETERS)
@@ -41802,8 +41945,28 @@ void menu_storage_microdrive_browse(MENU_ITEM_PARAMETERS)
 
 
 
+    //Manera antigua de obtener el listado
+    //int linea=menu_microdrive_map_browse(&ventana,1,valor_opcion,0,NULL,0);
 
-    int linea=menu_microdrive_map_browse(&ventana,1,valor_opcion,0,NULL,0);
+    int linea=0;
+
+    struct s_mdr_file_cat *catalogo;
+
+    catalogo=mdr_get_file_catalogue(microdrive_status[0].if1_microdrive_buffer,microdrive_status[0].mdr_total_sectors);
+
+    zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++,"Label: %s",catalogo->label);
+
+
+    int i;
+
+    for (i=0;i<catalogo->total_files;i++) {
+        //printf("%d [%s]\n",i,catalogo->file[i].name_extended);
+        zxvision_print_string_defaults_fillspc(&ventana,1,linea++,catalogo->file[i].name_extended);
+    }
+
+    free(catalogo);
+
+
 
 
     //Ajustar al final

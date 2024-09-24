@@ -788,3 +788,346 @@ void mdr_get_file(z80_byte *origen,int total_sectors,char *nombre,int tamanyo,z8
     *p_fragmentados=frag_sectores_fragmentados;
     *p_no_fragmentados=frag_sectores_no_fragmentados;
 }
+
+//Obtener info de un archivo de zona de memoria mdr
+void mdr_get_info_file(z80_byte *origen,int total_sectors,char *nombre,int tamanyo,struct s_mdr_file_cat_one_file *file,int *p_fragmentados,int *p_no_fragmentados)
+{
+    int i;
+
+    int tamanyo_contando_cabecera=tamanyo+9;
+
+    int total_sectores_a_buscar=tamanyo_contando_cabecera/512;
+
+    //Ver si el ultimo sector esta cortado
+
+    int resto=tamanyo_contando_cabecera % 512;
+
+    if (resto) total_sectores_a_buscar++;
+
+    printf("Sectores a buscar: %d\n",total_sectores_a_buscar);
+
+    file->total_sectors=total_sectores_a_buscar;
+
+    int bloque_buscando;
+
+    //Informacion de fragmentacion
+    //Si un sector no es consecutivo al otro, aumenta fragmentacion
+    int frag_anterior_sector=-1;
+
+    int frag_sectores_fragmentados=0;
+    int frag_sectores_no_fragmentados=1; //Al menos el primero no esta fragmentado logicamente
+
+
+    //Cada uno de los bloques a buscar
+    for (bloque_buscando=0;bloque_buscando<total_sectores_a_buscar;bloque_buscando++) {
+
+        //buscar cada sector cada vez en toda la imagen
+        for (i=0;i<total_sectors;i++) {
+            int offset_sector=i*MDR_BYTES_PER_SECTOR;
+
+            //z80_byte data_recflg=origen[offset_sector+15];
+            z80_byte record_segment=origen[offset_sector+16];
+
+            if (record_segment==bloque_buscando /* && (data_recflg & 0x04)==0x04*/) {
+                char nombre_comparar[11];
+
+                int j;
+
+                for (j=0;j<10;j++) {
+                    z80_byte letra_nombre=origen[offset_sector+19+j];
+
+                    nombre_comparar[j]=letra_nombre;
+                }
+
+                nombre_comparar[j]=0;
+
+                if (!strcmp(nombre_comparar,nombre)) {
+                    printf("Match nombre [%s] en sector %d\n",nombre,bloque_buscando);
+
+                    //Grabar ese bloque
+                    //Si es record 0, saltar 9 bytes de la cabecera de datos
+                    int offset_a_grabar=30;
+                    //int tamanyo_restar=512;
+
+                    z80_int rec_length=origen[offset_sector+17]+256*origen[offset_sector+18];
+
+                    if (record_segment==0) {
+                        offset_a_grabar+=9;
+                        rec_length-=9;
+                    }
+
+                    //memcpy(destino,&origen[offset_sector+offset_a_grabar],rec_length);
+                    //destino +=rec_length;
+
+                    if (bloque_buscando!=0) {
+                        if (i==frag_anterior_sector+1) frag_sectores_no_fragmentados++;
+                        else frag_sectores_fragmentados++;
+                    }
+
+                    file->sectors_list[bloque_buscando]=i;
+
+                    frag_anterior_sector=i;
+
+                    break;
+                }
+
+
+            }
+        }
+
+    }
+
+    //printf("Info fragmentacion: Fragmentados: %d No fragmentados: %d\n",frag_sectores_fragmentados,frag_sectores_no_fragmentados);
+
+    *p_fragmentados=frag_sectores_fragmentados;
+    *p_no_fragmentados=frag_sectores_no_fragmentados;
+}
+
+
+z80_byte mdr_get_file_catalogue_get_byte(z80_byte *puntero,int sector,int sector_offset)
+{
+
+    int offset=sector*MDR_BYTES_PER_SECTOR;
+
+    offset +=sector_offset;
+
+    return puntero[offset];
+}
+
+
+void mdr_get_file_from_catalogue(z80_byte *origen,struct s_mdr_file_cat_one_file *archivo,z80_byte *destino)
+{
+    int i;
+
+    int tamanyo=archivo->file_size;
+
+    //Ocupa 0. no busquemos nada
+    //if (tamanyo==0) return;
+
+    int tamanyo_contando_cabecera=tamanyo+9;
+
+    int total_sectores_a_buscar=tamanyo_contando_cabecera/512;
+
+    //Ver si el ultimo sector esta cortado
+
+    int resto=tamanyo_contando_cabecera % 512;
+
+    if (resto) total_sectores_a_buscar++;
+
+    printf("Sectores a buscar: %d\n",total_sectores_a_buscar);
+
+    int bloque_buscando;
+
+    //Informacion de fragmentacion
+    //Si un sector no es consecutivo al otro, aumenta fragmentacion
+    int frag_anterior_sector=-1;
+
+    int frag_sectores_fragmentados=0;
+    int frag_sectores_no_fragmentados=1; //Al menos el primero no esta fragmentado logicamente
+
+
+    //Cada uno de los bloques a buscar
+    for (bloque_buscando=0;bloque_buscando<total_sectores_a_buscar;bloque_buscando++) {
+
+
+        int i=archivo->sectors_list[bloque_buscando];
+
+
+        int offset_sector=i*MDR_BYTES_PER_SECTOR;
+
+
+        //Grabar ese bloque
+        //Si es record 0, saltar 9 bytes de la cabecera de datos
+        int offset_a_grabar=30;
+        //int tamanyo_restar=512;
+
+        int rec_length=origen[offset_sector+17]+256*origen[offset_sector+18];
+
+
+        if (bloque_buscando==0) {
+            offset_a_grabar+=9;
+            rec_length-=9;
+        }
+
+        printf("Copiando %d bytes\n",rec_length);
+
+        if (rec_length>0) {
+            memcpy(destino,&origen[offset_sector+offset_a_grabar],rec_length);
+        }
+
+        destino +=rec_length;
+
+
+    }
+
+
+}
+
+
+void mdr_get_file_catalogue_get_label(char *texto,z80_byte *origen,int sector)
+{
+    int i;
+
+    for (i=0;i<10;i++) {
+        z80_byte caracter=mdr_get_file_catalogue_get_byte(origen,sector,4+i);
+
+        if (caracter<32 || caracter>126) caracter='.';
+
+        texto[i]=caracter;
+
+    }
+
+    texto[i]=0;
+}
+
+//devuelve el listado de archivos de un mdr
+//usado por multiples funciones para facilitar el acceso a los archivos
+struct s_mdr_file_cat *mdr_get_file_catalogue(z80_byte *origen,int total_sectors)
+{
+
+    //Asignar memoria
+    struct s_mdr_file_cat *catalogo=util_malloc(sizeof(struct s_mdr_file_cat),"Can not allocate memory for catalogue");
+
+    int i;
+
+    catalogo->total_files=0;
+
+
+    int frag_sectores_fragmentados=0;
+    int frag_sectores_no_fragmentados=0;
+
+    int escrito_microdrive_label=0;
+
+    //Sacamos el label del sector 0 primero. Si esta erroneo, ya se corregira cuando se detecte el primer archivo
+    mdr_get_file_catalogue_get_label(catalogo->label,origen,0);
+
+    for (i=0;i<total_sectors;i++) {
+
+        z80_byte data_recflg=mdr_get_file_catalogue_get_byte(origen,i,15);
+        z80_byte record_segment=mdr_get_file_catalogue_get_byte(origen,i,16);
+
+
+
+        //Mostrar nombre archivo
+
+            if (record_segment==0 && (data_recflg & 0x04)==0x04) {
+                z80_int tamanyo=mdr_get_file_catalogue_get_byte(origen,i,31)+256*mdr_get_file_catalogue_get_byte(origen,i,32);
+
+                //char nombre[11];
+
+
+
+
+                //printf(" %s %d bytes\n",nombre,tamanyo);
+
+                //char buffer_info_tape[32*4]; //4 lineas mas que suficiente
+
+                z80_byte buffer_tap_temp[36];
+                //primer byte cabecera
+                buffer_tap_temp[0]=mdr_get_file_catalogue_get_byte(origen,i,30);
+                catalogo->file[catalogo->total_files].header_info[0]=buffer_tap_temp[0];
+
+                int j;
+
+
+                //nombre
+                for (j=0;j<10;j++) {
+                    z80_byte letra_nombre=mdr_get_file_catalogue_get_byte(origen,i,19+j);
+
+                    buffer_tap_temp[1+j]=letra_nombre;
+
+                    catalogo->file[catalogo->total_files].name[j]=letra_nombre;
+                    //nombre[j]=letra_nombre;
+                }
+
+                catalogo->file[catalogo->total_files].name[j]=0;
+
+                //parametros cabecera
+                for (j=0;j<6;j++) {
+                    buffer_tap_temp[11+j]=mdr_get_file_catalogue_get_byte(origen,i,31+j);
+                    catalogo->file[catalogo->total_files].header_info[1+j]=buffer_tap_temp[11+j];
+                }
+
+                //excepcion en basic. esta diferente en cabecera de microdrive y de cinta
+                //linea autorun
+                if (buffer_tap_temp[0]==0) {
+                    buffer_tap_temp[13]=mdr_get_file_catalogue_get_byte(origen,i,37);
+                    buffer_tap_temp[14]=mdr_get_file_catalogue_get_byte(origen,i,38);
+                }
+
+                //excepcion en arrays. nombre variable
+                if (buffer_tap_temp[0]==1 || buffer_tap_temp[0]==2) {
+                    buffer_tap_temp[14]=mdr_get_file_catalogue_get_byte(origen,i,35);
+                }
+
+
+
+                //util_tape_tap_get_info(buffer_tap_temp,buffer_info_tape,0);
+
+                z80_byte flag=0;
+                z80_int longitud=19;
+
+                util_tape_get_info_tapeblock((z80_byte *)buffer_tap_temp,flag,longitud,catalogo->file[catalogo->total_files].name_extended);
+
+
+
+
+
+                //printf("Nombre: [%s] (file_length=%d)\n",buffer_info_tape,tamanyo);
+
+
+
+                int frag,nofrag;
+                mdr_get_info_file(origen,total_sectors,catalogo->file[catalogo->total_files].name,tamanyo,&catalogo->file[catalogo->total_files],&frag,&nofrag);
+
+                catalogo->file[catalogo->total_files].file_size=tamanyo;
+
+                //fragmentacion de ese archivo
+                int file_frag_total_suma=frag+nofrag;
+
+                int file_porc_frag;
+
+                if (file_frag_total_suma==0) file_porc_frag=0;
+
+                else file_porc_frag=(frag*100)/file_frag_total_suma;
+
+                catalogo->file[catalogo->total_files].porcentaje_fragmentacion=file_porc_frag;
+
+
+                //fragmentacion total
+                frag_sectores_fragmentados +=frag;
+                frag_sectores_no_fragmentados +=nofrag;
+
+
+                catalogo->total_files++;
+
+
+                //Corregir label, si sector 0 no se usaba, corregir desde primer sector usado
+                if (!escrito_microdrive_label) {
+                    escrito_microdrive_label=1;
+                     mdr_get_file_catalogue_get_label(catalogo->label,origen,i);
+                }
+            }
+
+
+
+
+
+    }
+
+
+
+
+    int total=frag_sectores_fragmentados+frag_sectores_no_fragmentados;
+
+    int porc_frag;
+
+    if (total==0) porc_frag=0;
+
+    else porc_frag=(frag_sectores_fragmentados*100)/total;
+
+    catalogo->porcentaje_fragmentacion=porc_frag;
+
+    return catalogo;
+
+}

@@ -97,4 +97,36 @@ extern z80_byte microdrive_get_byte_sector(int microdrive_seleccionado,int secto
 
 extern void mdr_get_file(z80_byte *origen,int total_sectors,char *nombre,int tamanyo,z80_byte *destino,int *p_fragmentados,int *p_no_fragmentados);
 
+
+struct s_mdr_file_cat_one_file {
+    //nombre tal cual esta en el microdrive
+    char name[11];
+
+    //nombre descriptivo con la info del archivo etc
+    char name_extended[200];
+
+    //bytes de cabecera
+    //tal cual vendrian en una cabecera de 17 bytes, pero sin incluir el nombre
+    z80_byte header_info[7];
+
+    int file_size;
+    int total_sectors;
+    z80_byte sectors_list[MDR_MAX_SECTORS];
+
+    int porcentaje_fragmentacion;
+};
+
+struct s_mdr_file_cat {
+    int total_files;
+    int porcentaje_fragmentacion;
+
+    struct s_mdr_file_cat_one_file file[MDR_MAX_SECTORS];
+
+    char label[11];
+};
+
+extern struct s_mdr_file_cat *mdr_get_file_catalogue(z80_byte *origen,int total_sectors);
+
+extern void mdr_get_file_from_catalogue(z80_byte *origen,struct s_mdr_file_cat_one_file *archivo,z80_byte *destino);
+
 #endif

@@ -2138,7 +2138,9 @@ void menu_file_dsk_browser_show(char *filename)
 
 }
 
+/*
 z80_byte *mdr_file_memory;
+
 
 z80_byte menu_file_mdr_browser_show_get_byte(int microdrive_seleccionado,int sector,int sector_offset)
 {
@@ -2148,7 +2150,7 @@ z80_byte menu_file_mdr_browser_show_get_byte(int microdrive_seleccionado,int sec
 
     return mdr_file_memory[offset];
 }
-
+*/
 
 void menu_file_mdr_browser_show(char *filename)
 {
@@ -2157,6 +2159,7 @@ void menu_file_mdr_browser_show(char *filename)
 	int bytes_to_load=get_file_size(filename);
 
 
+    z80_byte *mdr_file_memory;
 	mdr_file_memory=util_malloc(bytes_to_load,"Can not allocate memory for mdr browser");
 
 
@@ -2188,7 +2191,6 @@ void menu_file_mdr_browser_show(char *filename)
     zvfs_fclose(in_fatfs,ptr_file_mdr_browser,&fil);
 
 
-    free(mdr_file_memory);
 
     int total_sectors=leidos/MDR_BYTES_PER_SECTOR;
 
@@ -2207,7 +2209,32 @@ void menu_file_mdr_browser_show(char *filename)
                                             ancho-1,alto_total_ventana,"Microdrive Browse");
 
 
-    int linea=menu_microdrive_map_browse(&ventana,1,0,0,menu_file_mdr_browser_show_get_byte,total_sectors);
+      //Manera antigua de obtener el listado
+    //int linea=menu_microdrive_map_browse(&ventana,1,0,0,menu_file_mdr_browser_show_get_byte,total_sectors);
+
+
+
+
+    int linea=0;
+
+    struct s_mdr_file_cat *catalogo;
+
+    catalogo=mdr_get_file_catalogue(mdr_file_memory,total_sectors);
+
+    free(mdr_file_memory);
+
+    zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++,"Label: %s",catalogo->label);
+
+
+    int i;
+
+    for (i=0;i<catalogo->total_files;i++) {
+        //printf("browse %d [%s]\n",i,catalogo->file[i].name_extended);
+        zxvision_print_string_defaults_fillspc(&ventana,1,linea++,catalogo->file[i].name_extended);
+    }
+
+    free(catalogo);
+
 
 
     //Ajustar al final
