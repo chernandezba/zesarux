@@ -41766,7 +41766,7 @@ void menu_storage_microdrive_map(MENU_ITEM_PARAMETERS)
 
 
     int ancho=42;
-    int alto=20;
+    int alto=25;
     int xventana=menu_center_x()-ancho/2;
     int yventana=menu_center_y()-alto/2;
 
@@ -41789,8 +41789,13 @@ void menu_storage_microdrive_map(MENU_ITEM_PARAMETERS)
     //Indicar la letra del sector (Used, used y final , X defectuoso, "." sin uso
     char letras_sectores[MDR_MAX_SECTORS];
     //inicializar con "."
+    //y los que sean erroneos
     for (i=0;i<microdrive_status[valor_opcion].mdr_total_sectors;i++) {
-        letras_sectores[i]='.';
+        char letra='.';
+
+        if (microdrive_status[valor_opcion].bad_sectors_simulated[i]) letra='X';
+
+        letras_sectores[i]=letra;
     }
 
 
@@ -41818,8 +41823,6 @@ void menu_storage_microdrive_map(MENU_ITEM_PARAMETERS)
             char letra='U';
             if (j==catalogo->file[i].total_sectors-1) letra='u';
 
-
-            if (microdrive_status[valor_opcion].bad_sectors_simulated[sector_usado]) letra='X';
 
             letras_sectores[sector_usado]=letra;
 
@@ -41866,6 +41869,11 @@ void menu_storage_microdrive_map(MENU_ITEM_PARAMETERS)
 
     }
 
+    //Forzar a mostrar atajos
+    z80_bit antes_menu_writing_inverse_color;
+    antes_menu_writing_inverse_color.v=menu_writing_inverse_color.v;
+    menu_writing_inverse_color.v=1;
+
     zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"Legend:");
     zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"U: Used sector");
     zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"u: Used sector and final of a file");
@@ -41886,7 +41894,7 @@ void menu_storage_microdrive_map(MENU_ITEM_PARAMETERS)
         zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"");
         zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"File Info:");
         zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++,
-            "File %3d: %s",buscar_archivo+1,catalogo->file[buscar_archivo].name);
+            "File %3d/%3d: %s",buscar_archivo+1,catalogo->total_files,catalogo->file[buscar_archivo].name);
     }
     else {
         //zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"Microdrive Info:");
@@ -41919,6 +41927,10 @@ void menu_storage_microdrive_map(MENU_ITEM_PARAMETERS)
         zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"");
     }
 
+    zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"Use cursors ~~< ~~> to show files info");
+
+    //Restaurar comportamiento atajos
+    menu_writing_inverse_color.v=antes_menu_writing_inverse_color.v;
 
     //Ajustar al final de la leyenda
     zxvision_set_visible_height(&ventana,linea+2);
