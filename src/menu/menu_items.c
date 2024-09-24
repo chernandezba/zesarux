@@ -41907,10 +41907,16 @@ void menu_storage_microdrive_map(MENU_ITEM_PARAMETERS)
     int medio=0;
     if (used_sectors % 2 !=0) medio=1;
 
-    if (medio) zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++,
-        "Used %d.5 KB",used_kb);
-    else zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++,
-        "Used %d KB",used_kb);
+    int tamanyo_archivo=catalogo->file[buscar_archivo].file_size;
+
+    if (buscar_archivo>=0) {
+        zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++,
+            "Size: %5d B Used %d%s KB",tamanyo_archivo,used_kb,(medio ? ".5" : ""));
+    }
+    else {
+        zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++,
+            "Used %d%s KB",used_kb,(medio ? ".5" : ""));
+    }
 
 
     if (buscar_archivo>=0) {
