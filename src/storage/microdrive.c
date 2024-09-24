@@ -790,7 +790,8 @@ void mdr_get_file(z80_byte *origen,int total_sectors,char *nombre,int tamanyo,z8
 }
 
 //Obtener info de un archivo de zona de memoria mdr
-void mdr_get_info_file(z80_byte *origen,int total_sectors,char *nombre,int tamanyo,struct s_mdr_file_cat_one_file *file,int *p_fragmentados,int *p_no_fragmentados)
+//Para poder soportar duplicados, indicamos un sector de inicio y de ahi en adelante (y puede dar la vuelta una vez)
+void mdr_get_info_file(z80_byte *origen,int total_sectors,char *nombre,int tamanyo,struct s_mdr_file_cat_one_file *file,int *p_fragmentados,int *p_no_fragmentados,int sector_inicio)
 {
     int i;
 
@@ -822,7 +823,16 @@ void mdr_get_info_file(z80_byte *origen,int total_sectors,char *nombre,int taman
     for (bloque_buscando=0;bloque_buscando<total_sectores_a_buscar;bloque_buscando++) {
 
         //buscar cada sector cada vez en toda la imagen
-        for (i=0;i<total_sectors;i++) {
+        //empieza desde el sector de inicio indicado para poder mostrar correctamente localizacion
+        //de archivos duplicados
+        int vuelta=0;
+
+        int encontrado=0;
+
+        int sector_primero=sector_inicio;
+
+        for (vuelta=0;vuelta<2 && !encontrado;vuelta++) {
+        for (i=sector_primero;i<total_sectors && !encontrado;i++) {
             int offset_sector=i*MDR_BYTES_PER_SECTOR;
 
             //z80_byte data_recflg=origen[offset_sector+15];
@@ -868,11 +878,15 @@ void mdr_get_info_file(z80_byte *origen,int total_sectors,char *nombre,int taman
 
                     frag_anterior_sector=i;
 
-                    break;
+                    encontrado=1;
                 }
 
 
             }
+        }
+
+        //la siguiente vuelta empieza desde cero
+        sector_primero=0;
         }
 
     }
@@ -1078,7 +1092,7 @@ struct s_mdr_file_cat *mdr_get_file_catalogue(z80_byte *origen,int total_sectors
 
 
                 int frag,nofrag;
-                mdr_get_info_file(origen,total_sectors,catalogo->file[catalogo->total_files].name,tamanyo,&catalogo->file[catalogo->total_files],&frag,&nofrag);
+                mdr_get_info_file(origen,total_sectors,catalogo->file[catalogo->total_files].name,tamanyo,&catalogo->file[catalogo->total_files],&frag,&nofrag,i);
 
                 catalogo->file[catalogo->total_files].file_size=tamanyo;
 

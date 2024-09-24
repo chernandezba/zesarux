@@ -386,5 +386,5 @@ ok *a veces no carga programas, teniendo que desactivar y activar interface. qui
 ok *visor archivos desde file utils. reusando misma funcion
 ok *expandir archivos mdr. vista previa
 ok *obtener fragmentacion de un mdr
-* microdrive map en caso de mdr como el de paws que hay archivos duplicados, el mapa y el listado no sale bien, no considera duplicados
+ok * microdrive map en caso de mdr como el de paws que hay archivos duplicados, el mapa y el listado no sale bien, no considera duplicados
 *fragmentacion cuando pasa del ultimo sector al primero no tendria que incrementar fragmentacion. pasa con mdr pantallas.mdr

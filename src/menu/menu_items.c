@@ -41804,8 +41804,10 @@ void menu_storage_microdrive_map(MENU_ITEM_PARAMETERS)
         final_busqueda=inicio_busqueda+1;
     }
 
+    int used_sectors=0;
+
     //Buscar todos archivos
-    //TODO: buscar solo uno concreto
+    //o buscar solo uno concreto
     for (i=inicio_busqueda;i<final_busqueda;i++) {
         //bloques
         int j;
@@ -41820,6 +41822,8 @@ void menu_storage_microdrive_map(MENU_ITEM_PARAMETERS)
             if (microdrive_status[valor_opcion].bad_sectors_simulated[sector_usado]) letra='X';
 
             letras_sectores[sector_usado]=letra;
+
+            used_sectors++;
         }
     }
 
@@ -41861,6 +41865,26 @@ void menu_storage_microdrive_map(MENU_ITEM_PARAMETERS)
         }
 
     }
+
+    int total_kb=microdrive_status[valor_opcion].mdr_total_sectors*512/1024;
+
+    zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++,
+        "Label: %s",catalogo->label);
+
+    zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++,
+        "Total %d KB (%d sectors)",total_kb,microdrive_status[valor_opcion].mdr_total_sectors);
+
+    int used_kb=used_sectors/2; //*512/1024
+
+    //Si es medio sector, o 1.5 etc
+    int medio=0;
+    if (used_sectors % 2 !=0) medio=1;
+
+    if (medio) zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++,
+        "Used %d.5 KB",used_kb);
+    else zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++,
+        "Used %d KB",used_kb);
+
 
     if (buscar_archivo>=0) {
         zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++,
