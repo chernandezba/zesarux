@@ -388,3 +388,4 @@ ok *expandir archivos mdr. vista previa
 ok *obtener fragmentacion de un mdr
 ok * microdrive map en caso de mdr como el de paws que hay archivos duplicados, el mapa y el listado no sale bien, no considera duplicados
 *fragmentacion cuando pasa del ultimo sector al primero no tendria que incrementar fragmentacion. pasa con mdr pantallas.mdr
+*en microdrive map, mostrar tamaño real de cada archivo (ej 6912 bytes)
