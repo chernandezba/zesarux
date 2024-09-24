@@ -41866,6 +41866,14 @@ void menu_storage_microdrive_map(MENU_ITEM_PARAMETERS)
 
     }
 
+    zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"Legend:");
+    zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"U: Used sector");
+    zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"u: Used sector and final of a file");
+    zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"X: Bad sector");
+    zxvision_print_string_defaults_fillspc(&ventana,1,linea++,".: Unused sector");
+
+    zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"");
+    zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"Microdrive Info:");
     int total_kb=microdrive_status[valor_opcion].mdr_total_sectors*512/1024;
 
     zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++,
@@ -41873,6 +41881,17 @@ void menu_storage_microdrive_map(MENU_ITEM_PARAMETERS)
 
     zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++,
         "Total %d KB (%d sectors)",total_kb,microdrive_status[valor_opcion].mdr_total_sectors);
+
+    if (buscar_archivo>=0) {
+        zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"");
+        zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"File Info:");
+        zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++,
+            "File %3d: %s",buscar_archivo+1,catalogo->file[buscar_archivo].name);
+    }
+    else {
+        //zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"Microdrive Info:");
+    }
+
 
     int used_kb=used_sectors/2; //*512/1024
 
@@ -41888,21 +41907,18 @@ void menu_storage_microdrive_map(MENU_ITEM_PARAMETERS)
 
     if (buscar_archivo>=0) {
         zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++,
-            "File %3d: %s",buscar_archivo+1,catalogo->file[buscar_archivo].name);
-        zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++,
                 "Fragmentation: %d %%",catalogo->file[buscar_archivo].porcentaje_fragmentacion);
     }
     else {
-        zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"Showing all files");
         zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++,
                 "Fragmentation: %d %%",catalogo->porcentaje_fragmentacion);
+
+        //lineas mas en blanco para que ocupe la ventana lo mismo que cuando hace file info y no cambie el tamaño de ventana
+        zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"");
+        zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"");
+        zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"");
     }
 
-
-    zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"U: Used sector");
-    zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"u: Used sector and final of a file");
-    zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"X: Bad sector");
-    zxvision_print_string_defaults_fillspc(&ventana,1,linea++,".: Unused sector");
 
     //Ajustar al final de la leyenda
     zxvision_set_visible_height(&ventana,linea+2);
