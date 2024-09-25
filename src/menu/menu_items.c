@@ -41811,7 +41811,11 @@ void menu_storage_microdrive_chkdsk(MENU_ITEM_PARAMETERS)
     //Inicialmente no hay ninguno en uso
     for (i=0;i<MDR_MAX_SECTORS;i++) ids_duplicados[i]=0;
 
+    //Contar copias, archivos que le faltan bloques, etc
+    int archivos_faltan_bloques=0;
     for (i=0;i<catalogo->total_files;i++) {
+        if (catalogo->file[i].faltan_bloques) archivos_faltan_bloques++;
+
         if (catalogo->file[i].numero_copias>1) {
             //Si este no lo hemos contado ya
 
@@ -41841,6 +41845,12 @@ void menu_storage_microdrive_chkdsk(MENU_ITEM_PARAMETERS)
     zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"Problems:");
 
     int problemas_detectados=0;
+
+    if (archivos_faltan_bloques) {
+        zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++,"Files with missing blocks:          %3d",archivos_faltan_bloques);
+        problemas_detectados=1;
+    }
+
 
     if (!problemas_detectados) zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"No problems detected");
 

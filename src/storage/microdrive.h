@@ -115,6 +115,9 @@ struct s_mdr_file_cat_one_file {
 
     //Id que se genera con el catalogo: archivos iguales (que son copias uno de otros) tienen mismo id
     int id_file;
+
+    //Indica que a un archivo le faltan bloques. Usado en chkdsk
+    int faltan_bloques;
 };
 
 struct s_mdr_file_cat {

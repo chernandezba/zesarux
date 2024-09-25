@@ -717,6 +717,8 @@ void mdr_get_info_file(z80_byte *origen,int total_sectors,char *nombre,int taman
     int frag_sectores_fragmentados=0;
     int frag_sectores_no_fragmentados=1; //Al menos el primero no esta fragmentado logicamente
 
+    file->faltan_bloques=0;
+
 
     //Cada uno de los bloques a buscar
     for (bloque_buscando=0;bloque_buscando<total_sectores_a_buscar;bloque_buscando++) {
@@ -751,7 +753,7 @@ void mdr_get_info_file(z80_byte *origen,int total_sectors,char *nombre,int taman
                     nombre_comparar[j]=0;
 
                     if (!strcmp(nombre_comparar,nombre)) {
-                        printf("Match nombre [%s] en sector %d\n",nombre,bloque_buscando);
+                        printf("Match nombre [%s] en sector %d (record segment=%d)\n",nombre,i,bloque_buscando);
 
                         //Grabar ese bloque
                         //Si es record 0, saltar 9 bytes de la cabecera de datos
@@ -786,8 +788,14 @@ void mdr_get_info_file(z80_byte *origen,int total_sectors,char *nombre,int taman
                 }
             }
 
+
             //la siguiente vuelta empieza desde cero
             sector_primero=0;
+        }
+
+        if (!encontrado) {
+            printf("Bloque buscado %d de archivo %s no encontrado\n",bloque_buscando,nombre);
+            file->faltan_bloques=1;
         }
 
     }
