@@ -41598,12 +41598,16 @@ void menu_storage_microdrive_map(MENU_ITEM_PARAMETERS)
 
         for (j=0;j<catalogo->file[i].total_sectors;j++) {
             int sector_usado=catalogo->file[i].sectors_list[j];
-            printf("%d ",sector_usado);
-            char letra='U';
-            if (j==catalogo->file[i].total_sectors-1) letra='u';
+
+            if (sector_usado>=0) {
+                //printf("%d ",sector_usado);
+                char letra='U';
+                if (j==catalogo->file[i].total_sectors-1) letra='u';
 
 
-            letras_sectores[sector_usado]=letra;
+                letras_sectores[sector_usado]=letra;
+
+            }
 
             used_sectors++;
         }
@@ -41828,6 +41832,8 @@ void menu_storage_microdrive_chkdsk(MENU_ITEM_PARAMETERS)
             }
         }
     }
+
+    //Ver si hay bloques no asignados a archivos
 
     //Contar cuantos archivos tienen mas de una copia
     for (i=0;i<MDR_MAX_SECTORS;i++) {

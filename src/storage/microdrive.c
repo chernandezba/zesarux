@@ -796,6 +796,8 @@ void mdr_get_info_file(z80_byte *origen,int total_sectors,char *nombre,int taman
         if (!encontrado) {
             printf("Bloque buscado %d de archivo %s no encontrado\n",bloque_buscando,nombre);
             file->faltan_bloques=1;
+
+            file->sectors_list[bloque_buscando]=-1;
         }
 
     }
@@ -848,30 +850,34 @@ void mdr_get_file_from_catalogue(z80_byte *origen,struct s_mdr_file_cat_one_file
 
         int i=archivo->sectors_list[bloque_buscando];
 
-
-        int offset_sector=i*MDR_BYTES_PER_SECTOR;
-
-
-        //Grabar ese bloque
-        //Si es record 0, saltar 9 bytes de la cabecera de datos
-        int offset_a_grabar=30;
-        //int tamanyo_restar=512;
-
-        int rec_length=origen[offset_sector+17]+256*origen[offset_sector+18];
+        if (i>=0) {
 
 
-        if (bloque_buscando==0) {
-            offset_a_grabar+=9;
-            rec_length-=9;
+            int offset_sector=i*MDR_BYTES_PER_SECTOR;
+
+
+            //Grabar ese bloque
+            //Si es record 0, saltar 9 bytes de la cabecera de datos
+            int offset_a_grabar=30;
+            //int tamanyo_restar=512;
+
+            int rec_length=origen[offset_sector+17]+256*origen[offset_sector+18];
+
+
+            if (bloque_buscando==0) {
+                offset_a_grabar+=9;
+                rec_length-=9;
+            }
+
+            printf("Copiando %d bytes\n",rec_length);
+
+            if (rec_length>0) {
+                memcpy(destino,&origen[offset_sector+offset_a_grabar],rec_length);
+            }
+
+            destino +=rec_length;
+
         }
-
-        printf("Copiando %d bytes\n",rec_length);
-
-        if (rec_length>0) {
-            memcpy(destino,&origen[offset_sector+offset_a_grabar],rec_length);
-        }
-
-        destino +=rec_length;
 
 
     }
@@ -926,6 +932,23 @@ void mdr_set_max_copias_todos_archivos(struct s_mdr_file_cat *catalogo)
             catalogo->file[i].numero_copias=max_copias;
         }
     }
+}
+
+//Dice si existe un archivo en el catalogo
+int mdr_if_file_exists_catalogue(struct s_mdr_file_cat *catalogo,char *nombre)
+{
+
+    int i;
+
+    for (i=0;i<catalogo->total_files;i++) {
+        if (!strcmp(nombre,catalogo->file[i].name)) {
+            return 1;
+        }
+
+    }
+
+    return 0;
+
 }
 
 //Dice el numero de copias de un archivo
