@@ -391,4 +391,5 @@ ok *fragmentacion cuando pasa del ultimo sector al primero no tendria que increm
 *algo como visual floppy
 *chkdsk? que compruebe checksums.
 *browse/microdrive map que muestre caracteres de nombres de archivo <32 o >127 con "."
-
+*si random.mdr, browse peta en memcpy(destino,&origen[offset_sector+offset_a_grabar],rec_length);
+*datos de un print # no aparecen en microdrive map o en browse. ver streams.mdr
