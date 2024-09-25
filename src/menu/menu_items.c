@@ -41783,17 +41783,7 @@ void menu_storage_microdrive_chkdsk(MENU_ITEM_PARAMETERS)
 
     int i;
 
-    for (i=0;i<catalogo->total_files;i++) {
-        printf("%d [%s] size: %d\n",i,catalogo->file[i].name,catalogo->file[i].file_size);
 
-        //bloques
-        int j;
-
-        for (j=0;j<catalogo->file[i].total_sectors;j++) {
-            printf("%d ",catalogo->file[i].sectors_list[j]);
-        }
-        printf("\n");
-    }
 
 
     int ancho=42;
@@ -41804,175 +41794,56 @@ void menu_storage_microdrive_chkdsk(MENU_ITEM_PARAMETERS)
     zxvision_window ventana;
 
     zxvision_new_window(&ventana,xventana,yventana,ancho,alto,
-                                            ancho-1,alto-2,"Microdrive Map");
-
-    int salir=0;
-
-   //Si vale -1, mapear todos
-    //Si es >=0, mapear uno solo
-    int buscar_archivo=-1;
-
-
-
-    //Por defecto mapa total, pero luego se puede ver mapa de cada archivo por separado
-    //Que tambien diga fragmentacion archivos
-
-    //Indicar la letra del sector (Used, used y final , X defectuoso, "." sin uso
-    char letras_sectores[MDR_MAX_SECTORS];
-    //inicializar con "."
-    //y los que sean erroneos
-    for (i=0;i<microdrive_status[valor_opcion].mdr_total_sectors;i++) {
-        char letra='.';
-
-        if (microdrive_status[valor_opcion].bad_sectors_simulated[i]) letra='X';
-
-        letras_sectores[i]=letra;
-    }
-
-
-
-
-    int inicio_busqueda=0;
-    int final_busqueda=catalogo->total_files;
-
-    if (buscar_archivo>=0) {
-        inicio_busqueda=buscar_archivo;
-        final_busqueda=inicio_busqueda+1;
-    }
-
-    int used_sectors=0;
-
-    //Buscar todos archivos
-    //o buscar solo uno concreto
-    for (i=inicio_busqueda;i<final_busqueda;i++) {
-        //bloques
-        int j;
-
-        for (j=0;j<catalogo->file[i].total_sectors;j++) {
-            int sector_usado=catalogo->file[i].sectors_list[j];
-            printf("%d ",sector_usado);
-            char letra='U';
-            if (j==catalogo->file[i].total_sectors-1) letra='u';
-
-
-            letras_sectores[sector_usado]=letra;
-
-            used_sectors++;
-        }
-    }
-
-
-    //
-
+                                            ancho-1,alto-2,"Microdrive Chkdsk");
 
 
 
     int linea=0;
 
-    int sectores_por_linea=32;
-    int x=0;
+    //Buscar archivos duplicados
+    int archivos_con_copias=0;
 
-    char buffer_linea[MAX_ANCHO_LINEAS_GENERIC_MESSAGE+1]="";
+    int total_extra_copias=0;
 
-    for (i=0;i<microdrive_status[valor_opcion].mdr_total_sectors;i++) {
-        char caracter_info=letras_sectores[i];
+    //Array de archivos duplicados para saber si un id esta en uso o no
+    int ids_duplicados[MDR_MAX_SECTORS];
 
-    //int linea=menu_microdrive_map_browse(&ventana,0,valor_opcion,0,NULL,0);
+    //Inicialmente no hay ninguno en uso
+    for (i=0;i<MDR_MAX_SECTORS;i++) ids_duplicados[i]=0;
 
+    for (i=0;i<catalogo->total_files;i++) {
+        if (catalogo->file[i].numero_copias>1) {
+            //Si este no lo hemos contado ya
 
-        char string_caracter[2];
+            int id_file=catalogo->file[i].id_file;
+            if (ids_duplicados[id_file]==0) {
 
-        string_caracter[0]=caracter_info;
-        string_caracter[1]=0;
+                ids_duplicados[id_file]=1;
 
-        util_concat_string(buffer_linea,string_caracter,MAX_ANCHO_LINEAS_GENERIC_MESSAGE);
-
-        x++;
-
-        if (x==sectores_por_linea || i==microdrive_status[valor_opcion].mdr_total_sectors-1) {
-            x=0;
-            //printf("\n");
-
-                zxvision_print_string_defaults_fillspc(&ventana,1,linea++,buffer_linea);
-                buffer_linea[0]=0;
-
+                total_extra_copias+=catalogo->file[i].numero_copias-1; //si son dos copias, solo contamos una copia extra
+            }
         }
-
     }
 
-    //Forzar a mostrar atajos
-    z80_bit antes_menu_writing_inverse_color;
-    antes_menu_writing_inverse_color.v=menu_writing_inverse_color.v;
-    menu_writing_inverse_color.v=1;
+    //Contar cuantos archivos tienen mas de una copia
+    for (i=0;i<MDR_MAX_SECTORS;i++) {
+        if (ids_duplicados[i]) archivos_con_copias++;
+    }
 
-    zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"Legend:");
-    zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"U: Used sector");
-    zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"u: Used sector and final of a file");
-    zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"X: Bad sector");
-    zxvision_print_string_defaults_fillspc(&ventana,1,linea++,".: Unused sector");
+    zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"Info:");
+    zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++,"Label: %s",catalogo->label);
+    zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++,"Total sectors:                      %3d",microdrive_status[valor_opcion].mdr_total_sectors);
+    zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++,"Used sectors:                       %3d",catalogo->used_sectors);
+    zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++,"Unique files with more than 1 copy: %3d",archivos_con_copias);
+    zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++,"Total extra file copies:            %3d",total_extra_copias);
 
     zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"");
-    zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"Microdrive Info:");
-    int total_kb=microdrive_status[valor_opcion].mdr_total_sectors*512/1024;
+    zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"Problems:");
 
-    zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++,
-        "Label: %s",catalogo->label);
+    int problemas_detectados=0;
 
-    zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++,
-        "Total %d KB (%d sectors)",total_kb,microdrive_status[valor_opcion].mdr_total_sectors);
+    if (!problemas_detectados) zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"No problems detected");
 
-    if (buscar_archivo>=0) {
-        zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"");
-        zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"File Info:");
-
-        char buffer_copias[30]="";
-        int copias=catalogo->file[buscar_archivo].numero_copias;
-        if (copias>1) sprintf(buffer_copias," (%d copies)",copias);
-
-        zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++,
-            "File %3d/%3d: %s%s",buscar_archivo+1,catalogo->total_files,catalogo->file[buscar_archivo].name,buffer_copias);
-    }
-    else {
-        //zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"Microdrive Info:");
-    }
-
-
-    int used_kb=used_sectors/2; //*512/1024
-
-    //Si es medio sector, o 1.5 etc
-    int medio=0;
-    if (used_sectors % 2 !=0) medio=1;
-
-    int tamanyo_archivo=catalogo->file[buscar_archivo].file_size;
-
-    if (buscar_archivo>=0) {
-        zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++,
-            "Size: %5d B Used %d%s KB",tamanyo_archivo,used_kb,(medio ? ".5" : ""));
-    }
-    else {
-        zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++,
-            "Used %d%s KB",used_kb,(medio ? ".5" : ""));
-    }
-
-
-    if (buscar_archivo>=0) {
-        zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++,
-                "Fragmentation: %d %%",catalogo->file[buscar_archivo].porcentaje_fragmentacion);
-    }
-    else {
-        zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++,
-                "Fragmentation: %d %%",catalogo->porcentaje_fragmentacion);
-
-        //lineas mas en blanco para que ocupe la ventana lo mismo que cuando hace file info y no cambie el tamaño de ventana
-        zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"");
-        zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"");
-        zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"");
-    }
-
-    zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"Use cursors ~~< ~~> to show files info");
-
-    //Restaurar comportamiento atajos
-    menu_writing_inverse_color.v=antes_menu_writing_inverse_color.v;
 
 
 

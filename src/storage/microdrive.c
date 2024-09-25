@@ -955,6 +955,7 @@ struct s_mdr_file_cat *mdr_get_file_catalogue(z80_byte *origen,int total_sectors
     int i;
 
     catalogo->total_files=0;
+    catalogo->used_sectors=0;
 
 
     int frag_sectores_fragmentados=0;
@@ -972,7 +973,7 @@ struct s_mdr_file_cat *mdr_get_file_catalogue(z80_byte *origen,int total_sectors
         z80_byte data_recflg=mdr_get_file_catalogue_get_byte(origen,i,15);
         z80_byte record_segment=mdr_get_file_catalogue_get_byte(origen,i,16);
 
-
+        if ((data_recflg & 0x04)==0x04) catalogo->used_sectors++;
 
         //Mostrar nombre archivo
 

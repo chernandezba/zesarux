@@ -119,6 +119,7 @@ struct s_mdr_file_cat_one_file {
 
 struct s_mdr_file_cat {
     int total_files;
+    int used_sectors;
     int porcentaje_fragmentacion;
 
     struct s_mdr_file_cat_one_file file[MDR_MAX_SECTORS];
