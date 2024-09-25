@@ -141,4 +141,6 @@ extern void microdrive_switch_write_protection(int microdrive_seleccionado);
 
 extern int mdr_if_file_exists_catalogue(struct s_mdr_file_cat *catalogo,char *nombre);
 
+extern int mdr_chkdsk_get_files_no_block_zero(struct s_mdr_file_cat *catalogo,z80_byte *origen,int total_sectors);
+
 #endif

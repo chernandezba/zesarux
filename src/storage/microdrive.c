@@ -934,22 +934,7 @@ void mdr_set_max_copias_todos_archivos(struct s_mdr_file_cat *catalogo)
     }
 }
 
-//Dice si existe un archivo en el catalogo
-int mdr_if_file_exists_catalogue(struct s_mdr_file_cat *catalogo,char *nombre)
-{
 
-    int i;
-
-    for (i=0;i<catalogo->total_files;i++) {
-        if (!strcmp(nombre,catalogo->file[i].name)) {
-            return 1;
-        }
-
-    }
-
-    return 0;
-
-}
 
 //Dice el numero de copias de un archivo
 //Y si tiene mas de una copia, retorna el id que se genera del catalogo
@@ -1157,6 +1142,71 @@ struct s_mdr_file_cat *mdr_get_file_catalogue(z80_byte *origen,int total_sectors
 
 }
 
+//Dice si existe un archivo en el catalogo
+int mdr_if_file_exists_catalogue(struct s_mdr_file_cat *catalogo,char *nombre)
+{
+
+    int i;
+
+    for (i=0;i<catalogo->total_files;i++) {
+        if (!strcmp(nombre,catalogo->file[i].name)) {
+            return 1;
+        }
+
+    }
+
+    return 0;
+
+}
+
+//Como parte de chkdsk, ver si hay bloques de archivos que no tienen bloque 0
+//devuelve el listado de archivos de un mdr
+//usado por multiples funciones para facilitar el acceso a los archivos
+int mdr_chkdsk_get_files_no_block_zero(struct s_mdr_file_cat *catalogo,z80_byte *origen,int total_sectors)
+{
+
+
+    int i;
+
+    int files_sin_bloque_zero=0;
+
+
+    for (i=0;i<total_sectors;i++) {
+
+        z80_byte data_recflg=mdr_get_file_catalogue_get_byte(origen,i,15);
+        z80_byte record_segment=mdr_get_file_catalogue_get_byte(origen,i,16);
+
+        if (record_segment!=0 && (data_recflg & 0x04)==0x04) {
+
+
+            int j;
+
+            char buffer_nombre[11];
+
+
+            //nombre
+            for (j=0;j<10;j++) {
+                z80_byte letra_nombre=mdr_get_file_catalogue_get_byte(origen,i,19+j);
+
+                buffer_nombre[j]=letra_nombre;
+
+            }
+
+            buffer_nombre[j]=0;
+
+            if (!mdr_if_file_exists_catalogue(catalogo,buffer_nombre)) {
+                printf("Bloque %d de archivo [%s] no tiene bloque cero asociado\n",record_segment,buffer_nombre);
+                files_sin_bloque_zero++;
+            }
+        }
+
+
+    }
+
+
+    return files_sin_bloque_zero;
+
+}
 
 
 void microdrive_switch_write_protection(int microdrive_seleccionado)

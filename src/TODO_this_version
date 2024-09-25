@@ -389,6 +389,6 @@ ok *fragmentacion cuando pasa del ultimo sector al primero no tendria que increm
 *parametros config linea comandos/.zesaruxrc
 *soporte spectrum 128k
 *algo como visual floppy
-*chkdsk? que compruebe checksums. que compruebe que cada archivo tiene los bloques necesarios (y en orden: 0,1,2, etc)
-que indique si tiene clones de archivos, no como error sino como info.
+*chkdsk? que compruebe checksums.
+*browse/microdrive map que muestre caracteres de nombres de archivo <32 o >127 con "."
 

@@ -41790,7 +41790,7 @@ void menu_storage_microdrive_chkdsk(MENU_ITEM_PARAMETERS)
 
 
 
-    int ancho=42;
+    int ancho=46;
     int alto=25;
     int xventana=menu_center_x()-ancho/2;
     int yventana=menu_center_y()-alto/2;
@@ -41834,6 +41834,8 @@ void menu_storage_microdrive_chkdsk(MENU_ITEM_PARAMETERS)
     }
 
     //Ver si hay bloques no asignados a archivos
+    int archivos_sin_bloque_zero=mdr_chkdsk_get_files_no_block_zero(catalogo,
+        microdrive_status[valor_opcion].if1_microdrive_buffer,microdrive_status[valor_opcion].mdr_total_sectors);
 
     //Contar cuantos archivos tienen mas de una copia
     for (i=0;i<MDR_MAX_SECTORS;i++) {
@@ -41842,10 +41844,10 @@ void menu_storage_microdrive_chkdsk(MENU_ITEM_PARAMETERS)
 
     zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"Info:");
     zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++,"Label: %s",catalogo->label);
-    zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++,"Total sectors:                      %3d",microdrive_status[valor_opcion].mdr_total_sectors);
-    zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++,"Used sectors:                       %3d",catalogo->used_sectors);
-    zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++,"Unique files with more than 1 copy: %3d",archivos_con_copias);
-    zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++,"Total extra file copies:            %3d",total_extra_copias);
+    zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++,"Total sectors:                           %3d",microdrive_status[valor_opcion].mdr_total_sectors);
+    zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++,"Used sectors:                            %3d",catalogo->used_sectors);
+    zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++,"Unique files with more than 1 copy:      %3d",archivos_con_copias);
+    zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++,"Total extra file copies:                 %3d",total_extra_copias);
 
     zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"");
     zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"Problems:");
@@ -41853,12 +41855,21 @@ void menu_storage_microdrive_chkdsk(MENU_ITEM_PARAMETERS)
     int problemas_detectados=0;
 
     if (archivos_faltan_bloques) {
-        zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++,"Files with missing blocks:          %3d",archivos_faltan_bloques);
+        zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++,"Files with missing blocks:               %3d",archivos_faltan_bloques);
+        problemas_detectados=1;
+    }
+
+    if (archivos_sin_bloque_zero) {
+        zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++,"Lost blocks missing block zero:          %3d",archivos_sin_bloque_zero);
         problemas_detectados=1;
     }
 
 
     if (!problemas_detectados) zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"No problems detected");
+    else {
+        zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"");
+        zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"Note: problems are only shown, but not fixed");
+    }
 
 
 
