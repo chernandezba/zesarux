@@ -143,4 +143,6 @@ extern int mdr_if_file_exists_catalogue(struct s_mdr_file_cat *catalogo,char *no
 
 extern int mdr_chkdsk_get_files_no_block_zero(struct s_mdr_file_cat *catalogo,z80_byte *origen,int total_sectors);
 
+extern void mdr_get_file_name_escaped(char *origen,char *destino);
+
 #endif

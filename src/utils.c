@@ -16684,12 +16684,16 @@ int util_extract_mdr(char *filename,char *tempdir)
 
         char buffer_temp_file[PATH_MAX];
 
+        char nombre_escapado[11];
+
+        mdr_get_file_name_escaped(catalogo->file[i].name,nombre_escapado);
+
         //Si es program, agregar extension .bas
         if (catalogo->file[i].header_info[0]==0) {
-            sprintf (buffer_temp_file,"%s/%s.bas",tempdir,catalogo->file[i].name);
+            sprintf (buffer_temp_file,"%s/%s.bas",tempdir,nombre_escapado);
         }
 
-        else sprintf (buffer_temp_file,"%s/%s",tempdir,catalogo->file[i].name);
+        else sprintf (buffer_temp_file,"%s/%s",tempdir,nombre_escapado);
 
         util_save_file(destino,tamanyo,buffer_temp_file);
 

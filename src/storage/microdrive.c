@@ -1208,6 +1208,19 @@ int mdr_chkdsk_get_files_no_block_zero(struct s_mdr_file_cat *catalogo,z80_byte 
 
 }
 
+//obtener nombre archivo pero vigilando caracteres extraños
+void mdr_get_file_name_escaped(char *origen,char *destino)
+{
+    int i;
+
+    for (i=0;i<10;i++) {
+        char letra=origen[i];
+        if (letra<32 || letra>126) letra='.';
+        destino[i]=letra;
+    }
+
+    destino[i]=0;
+}
 
 void microdrive_switch_write_protection(int microdrive_seleccionado)
 {
