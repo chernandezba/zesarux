@@ -731,63 +731,63 @@ void mdr_get_info_file(z80_byte *origen,int total_sectors,char *nombre,int taman
         int sector_primero=sector_inicio;
 
         for (vuelta=0;vuelta<2 && !encontrado;vuelta++) {
-        for (i=sector_primero;i<total_sectors && !encontrado;i++) {
-            int offset_sector=i*MDR_BYTES_PER_SECTOR;
+            for (i=sector_primero;i<total_sectors && !encontrado;i++) {
+                int offset_sector=i*MDR_BYTES_PER_SECTOR;
 
-            //z80_byte data_recflg=origen[offset_sector+15];
-            z80_byte record_segment=origen[offset_sector+16];
+                //z80_byte data_recflg=origen[offset_sector+15];
+                z80_byte record_segment=origen[offset_sector+16];
 
-            if (record_segment==bloque_buscando /* && (data_recflg & 0x04)==0x04*/) {
-                char nombre_comparar[11];
+                if (record_segment==bloque_buscando /* && (data_recflg & 0x04)==0x04*/) {
+                    char nombre_comparar[11];
 
-                int j;
+                    int j;
 
-                for (j=0;j<10;j++) {
-                    z80_byte letra_nombre=origen[offset_sector+19+j];
+                    for (j=0;j<10;j++) {
+                        z80_byte letra_nombre=origen[offset_sector+19+j];
 
-                    nombre_comparar[j]=letra_nombre;
-                }
-
-                nombre_comparar[j]=0;
-
-                if (!strcmp(nombre_comparar,nombre)) {
-                    printf("Match nombre [%s] en sector %d\n",nombre,bloque_buscando);
-
-                    //Grabar ese bloque
-                    //Si es record 0, saltar 9 bytes de la cabecera de datos
-                    int offset_a_grabar=30;
-                    //int tamanyo_restar=512;
-
-                    z80_int rec_length=origen[offset_sector+17]+256*origen[offset_sector+18];
-
-                    if (record_segment==0) {
-                        offset_a_grabar+=9;
-                        rec_length-=9;
+                        nombre_comparar[j]=letra_nombre;
                     }
 
-                    //memcpy(destino,&origen[offset_sector+offset_a_grabar],rec_length);
-                    //destino +=rec_length;
+                    nombre_comparar[j]=0;
 
-                    if (bloque_buscando!=0) {
-                        //Si sectores consecutivos, no incrementa fragmentación
-                        if (i==frag_anterior_sector+1) frag_sectores_no_fragmentados++;
-                        //O si anterior sector era el ultimo y este es el primero
-                        else if (i==0 && frag_anterior_sector==total_sectors-1) frag_sectores_no_fragmentados++;
-                        else frag_sectores_fragmentados++;
+                    if (!strcmp(nombre_comparar,nombre)) {
+                        printf("Match nombre [%s] en sector %d\n",nombre,bloque_buscando);
+
+                        //Grabar ese bloque
+                        //Si es record 0, saltar 9 bytes de la cabecera de datos
+                        int offset_a_grabar=30;
+                        //int tamanyo_restar=512;
+
+                        z80_int rec_length=origen[offset_sector+17]+256*origen[offset_sector+18];
+
+                        if (record_segment==0) {
+                            offset_a_grabar+=9;
+                            rec_length-=9;
+                        }
+
+                        //memcpy(destino,&origen[offset_sector+offset_a_grabar],rec_length);
+                        //destino +=rec_length;
+
+                        if (bloque_buscando!=0) {
+                            //Si sectores consecutivos, no incrementa fragmentación
+                            if (i==frag_anterior_sector+1) frag_sectores_no_fragmentados++;
+                            //O si anterior sector era el ultimo y este es el primero
+                            else if (i==0 && frag_anterior_sector==total_sectors-1) frag_sectores_no_fragmentados++;
+                            else frag_sectores_fragmentados++;
+                        }
+
+                        file->sectors_list[bloque_buscando]=i;
+
+                        frag_anterior_sector=i;
+
+                        encontrado=1;
                     }
 
-                    file->sectors_list[bloque_buscando]=i;
-
-                    frag_anterior_sector=i;
-
-                    encontrado=1;
                 }
-
             }
-        }
 
-        //la siguiente vuelta empieza desde cero
-        sector_primero=0;
+            //la siguiente vuelta empieza desde cero
+            sector_primero=0;
         }
 
     }
