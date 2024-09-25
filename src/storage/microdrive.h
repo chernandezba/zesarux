@@ -112,6 +112,9 @@ struct s_mdr_file_cat_one_file {
     int porcentaje_fragmentacion;
 
     int numero_copias;
+
+    //Id que se genera con el catalogo: archivos iguales (que son copias uno de otros) tienen mismo id
+    int id_file;
 };
 
 struct s_mdr_file_cat {

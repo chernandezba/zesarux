@@ -920,15 +920,25 @@ void mdr_set_max_copias_todos_archivos(struct s_mdr_file_cat *catalogo)
     }
 }
 
-int mdr_get_file_catalogue_get_copias(struct s_mdr_file_cat *catalogo,char *nombre)
+//Dice el numero de copias de un archivo
+//Y si tiene mas de una copia, retorna el id que se genera del catalogo
+int mdr_get_file_catalogue_get_copias(struct s_mdr_file_cat *catalogo,char *nombre,int *p_id_file)
 {
     int copias=1;
+
+    int id_file=-1;
 
     int i;
 
     for (i=0;i<catalogo->total_files;i++) {
-        if (!strcmp(nombre,catalogo->file[i].name)) copias++;
+        if (!strcmp(nombre,catalogo->file[i].name)) {
+            copias++;
+            id_file=catalogo->file[i].id_file;
+        }
+
     }
+
+    *p_id_file=id_file;
 
     return copias;
 
@@ -954,6 +964,8 @@ struct s_mdr_file_cat *mdr_get_file_catalogue(z80_byte *origen,int total_sectors
 
     //Sacamos el label del sector 0 primero. Si esta erroneo, ya se corregira cuando se detecte el primer archivo
     mdr_get_file_catalogue_get_label(catalogo->label,origen,0);
+
+    int id_file=0;
 
     for (i=0;i<total_sectors;i++) {
 
@@ -997,15 +1009,29 @@ struct s_mdr_file_cat *mdr_get_file_catalogue(z80_byte *origen,int total_sectors
                 catalogo->file[catalogo->total_files].name[j]=0;
 
                 //Ver si ese archivo ya existia, para considerar duplicados
-                int copias_archivo=mdr_get_file_catalogue_get_copias(catalogo,catalogo->file[catalogo->total_files].name);
+                int id_file_con_copias;
+                int copias_archivo=mdr_get_file_catalogue_get_copias(catalogo,catalogo->file[catalogo->total_files].name,&id_file_con_copias);
 
                 if (copias_archivo>1) {
                     //A medida que se van leyendo archivos, si por ejemplo hay 3 archivos duplicados de nombre "run",
                     //el primero dirá que no tiene duplicados, el segundo dirá que tiene 1 duplicado, y el tercero dirá que
                     //tiene 2 duplicados
                     //Luego se reajusta al final el valor maximo para todos
-                    printf("Archivo [%s] tiene %d copias\n",catalogo->file[catalogo->total_files].name,copias_archivo);
+                    //printf("Archivo [%s] tiene %d copias\n",catalogo->file[catalogo->total_files].name,copias_archivo);
+
+                    //metemos mismo id
+                    catalogo->file[catalogo->total_files].id_file=id_file_con_copias;
                 }
+                else {
+                    //id_file uno generado
+                    catalogo->file[catalogo->total_files].id_file=id_file;
+                    id_file++;
+                }
+
+                printf("--Archivo [%s] con id [%d] tiene %d copias\n",
+                    catalogo->file[catalogo->total_files].name,
+                    catalogo->file[catalogo->total_files].id_file,
+                    copias_archivo);
 
                 catalogo->file[catalogo->total_files].numero_copias=copias_archivo;
 
