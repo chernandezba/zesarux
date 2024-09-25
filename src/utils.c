@@ -157,6 +157,8 @@
 #include "menu_bitmaps.h"
 #include "zeng_online.h"
 #include "zeng_online_client.h"
+#include "if1.h"
+#include "microdrive.h"
 
 //Archivo usado para entrada de teclas
 FILE *ptr_input_file_keyboard;
@@ -5343,6 +5345,7 @@ int quickload_valid_extension(char *nombre) {
                 || !util_compare_file_extension(nombre,"spg")
                 || !util_compare_file_extension(nombre,"nex")
                 || !util_compare_file_extension(nombre,"trd")
+                || !util_compare_file_extension(nombre,"mdr")
                 || !util_compare_file_extension(nombre,"dsk")
                 || !util_compare_file_extension(nombre,"z80")
                 || !util_compare_file_extension(nombre,"tzx")
@@ -5497,7 +5500,7 @@ int quickload_continue(char *nombre) {
 	top_speed_timer.v=0;
 
 	//Poner modo turbo a 1. En Z88 no hacer esto, pues desasigna los slots , porque llama a set_machine_params y este a init_z88_memory_slots
-	if (!MACHINE_IS_Z88) {
+	if (!MACHINE_IS_Z88 && cpu_turbo_speed!=1) {
 		cpu_turbo_speed=1;
 		cpu_set_turbo_speed();
 	}
@@ -5778,6 +5781,34 @@ int quickload_continue(char *nombre) {
 
         betadisk_enable();
         trd_insert_disk(nombre);
+
+
+		return 0;
+
+	}
+
+	//MDR
+	else if (
+		!util_compare_file_extension(nombre,"mdr")
+	) {
+		//Aqui el autoload da igual. cambiamos siempre a Spectrum si conviene
+		if (!MACHINE_IS_SPECTRUM) {
+			current_machine_type=MACHINE_ID_SPECTRUM_48;
+			set_machine(NULL);
+
+            //establecer parametros por defecto. Incluido quitar slots de memoria
+            set_machine_params();
+            reset_cpu();
+
+        }
+
+        enable_if1();
+
+        microdrive_eject(0);
+
+        strcpy(microdrive_status[0].microdrive_file_name,nombre);
+
+        microdrive_insert(0);
 
 
 		return 0;
@@ -16569,228 +16600,6 @@ int util_extract_tap(char *filename,char *tempdir,char *tzxfile,int tzx_turbo_rg
 
 }
 
-z80_byte util_extract_mdr_get_byte(z80_byte *puntero,int sector,int sector_offset)
-{
-
-    int offset=sector*MDR_BYTES_PER_SECTOR;
-
-    offset +=sector_offset;
-
-    return puntero[offset];
-}
-
-//Rutina para extraer MDR
-int old_util_extract_mdr(char *filename,char *tempdir)
-{
-
-	if (util_compare_file_extension(filename,"mdr")!=0) {
-		debug_printf(VERBOSE_ERR,"MDR expander not supported for this microdrive type");
-		return 1;
-	}
-
-	//Leemos cinta en memoria
-	int total_file_size=get_file_size(filename);
-
-	z80_byte *taperead;
-
-
-
-    FILE *ptr_tapebrowser;
-
-    //Soporte para FatFS
-    FIL fil;        /* File object */
-    //FRESULT fr;     /* FatFs return code */
-
-    int in_fatfs;
-
-
-    if (zvfs_fopen_read(filename,&in_fatfs,&ptr_tapebrowser,&fil)<0) {
-        debug_printf(VERBOSE_ERR,"Unable to open tape %s for extracting mdr",filename);
-        return 1;
-    }
-
-
-	taperead=util_malloc(total_file_size,"Can not allocate memory for expand mdr");
-
-
-    int leidos;
-
-
-    leidos=zvfs_fread(in_fatfs,taperead,total_file_size,ptr_tapebrowser,&fil);
-
-
-	if (leidos==0) {
-        debug_printf(VERBOSE_ERR,"Error reading tape");
-		free(taperead);
-        return 1;
-    }
-
-    zvfs_fclose(in_fatfs,ptr_tapebrowser,&fil);
-
-
-   //int menu_microdrive_map_browse(zxvision_window *ventana,int tipo,int microdrive_seleccionado,int y_ventana_inicial,
-//z80_byte (*f_get_byte)(int microdrive_seleccionado,int sector,int sector_offset),
-//int total_sectors
-
-    int total_sectors=leidos/MDR_BYTES_PER_SECTOR;
-
-
-
-    int i;
-
-
-    int frag_sectores_fragmentados=0;
-    int frag_sectores_no_fragmentados=0;
-
-    for (i=0;i<total_sectors;i++) {
-
-        z80_byte data_recflg=util_extract_mdr_get_byte(taperead,i,15);
-        z80_byte record_segment=util_extract_mdr_get_byte(taperead,i,16);
-
-
-        //flag de los datos
-        //if (data_recflg!=0 && data_recflg!=4 && data_recflg!=6) printf("%d\n",data_recflg);
-
-
-
-        //z80_byte header_recflg=util_extract_mdr_get_byte(taperead,i,0);
-
-        //rec_length cuenta la cabecera de 9 bytes en sector 0
-        //z80_int rec_length=util_extract_mdr_get_byte(taperead,i,17)+256*util_extract_mdr_get_byte(taperead,i,18);
-
-
-
-
-        //printf("%02X ",record_segment);
-
-        //printf("%d\n",rec_length);
-
-
-        //Mostrar nombre archivo
-
-            if (record_segment==0 && (data_recflg & 0x04)==0x04) {
-                z80_int tamanyo=util_extract_mdr_get_byte(taperead,i,31)+256*util_extract_mdr_get_byte(taperead,i,32);
-
-                char nombre[11];
-
-
-
-
-                //printf(" %s %d bytes\n",nombre,tamanyo);
-
-                char buffer_info_tape[32*4]; //4 lineas mas que suficiente
-
-                z80_byte buffer_tap_temp[36];
-                //primer byte cabecera
-                buffer_tap_temp[0]=util_extract_mdr_get_byte(taperead,i,30);
-
-                int j;
-
-
-                //nombre
-                for (j=0;j<10;j++) {
-                    z80_byte letra_nombre=util_extract_mdr_get_byte(taperead,i,19+j);
-
-                    buffer_tap_temp[1+j]=letra_nombre;
-                    nombre[j]=letra_nombre;
-                }
-
-                nombre[j]=0;
-
-                //parametros cabecera
-                for (j=0;j<6;j++) {
-                    buffer_tap_temp[11+j]=util_extract_mdr_get_byte(taperead,i,31+j);
-                }
-
-                //excepcion en basic. esta diferente en cabecera de microdrive y de cinta
-                //linea autorun
-                if (buffer_tap_temp[0]==0) {
-                    buffer_tap_temp[13]=util_extract_mdr_get_byte(taperead,i,37);
-                    buffer_tap_temp[14]=util_extract_mdr_get_byte(taperead,i,38);
-                }
-
-                //excepcion en arrays. nombre variable
-                if (buffer_tap_temp[0]==1 || buffer_tap_temp[0]==2) {
-                    buffer_tap_temp[14]=util_extract_mdr_get_byte(taperead,i,35);
-                }
-
-
-                util_tape_tap_get_info(buffer_tap_temp,buffer_info_tape,0);
-
-                z80_byte flag=0;
-                z80_int longitud=19;
-
-                util_tape_get_info_tapeblock((z80_byte *)buffer_tap_temp,flag,longitud,buffer_info_tape);
-
-
-
-
-                printf("Nombre: [%s] (file_length=%d)\n",buffer_info_tape,tamanyo);
-
-                //buffer para archivo de testino
-                z80_byte *destino=util_malloc(tamanyo,"Can not allocate memory to get file");
-
-                int frag,nofrag;
-                mdr_get_file(taperead,total_sectors,nombre,tamanyo,destino,&frag,&nofrag);
-
-                frag_sectores_fragmentados +=frag;
-                frag_sectores_no_fragmentados +=nofrag;
-
-                char buffer_temp_file[PATH_MAX];
-
-                //Si es program, agregar extension .bas
-                if (buffer_tap_temp[0]==0) {
-                    sprintf (buffer_temp_file,"%s/%s.bas",tempdir,nombre);
-                }
-
-                else sprintf (buffer_temp_file,"%s/%s",tempdir,nombre);
-
-
-                util_save_file(destino,tamanyo,buffer_temp_file);
-
-
-
-                //Si longitud era 6912, indicar la pantalla para los previews
-                if (tamanyo==6912) {
-                    //Indicar con un archivo en la propia carpeta cual es el archivo de pantalla
-                    //usado en los previews
-                    char buff_preview_scr[PATH_MAX];
-                    sprintf(buff_preview_scr,"%s/%s",tempdir,MENU_SCR_INFO_FILE_NAME);
-
-                    //Meter en archivo MENU_SCR_INFO_FILE_NAME la ruta al archivo de pantalla
-                    util_save_file((z80_byte *)buffer_temp_file,strlen(buffer_temp_file)+1,buff_preview_scr);
-                }
-
-                free(destino);
-            }
-
-
-
-
-
-    }
-
-
-
-
-    int total=frag_sectores_fragmentados+frag_sectores_no_fragmentados;
-
-    int porc_frag;
-
-    if (total==0) porc_frag=0;
-
-    else porc_frag=(frag_sectores_fragmentados*100)/total;
-
-    printf("Info fragmentacion: Fragmentados: %d No fragmentados: %d (%d %%)\n",
-        frag_sectores_fragmentados,frag_sectores_no_fragmentados,porc_frag);
-
-
-	free(taperead);
-
-	return 0;
-
-}
-
 
 //Rutina para extraer MDR
 int util_extract_mdr(char *filename,char *tempdir)
@@ -16899,159 +16708,6 @@ int util_extract_mdr(char *filename,char *tempdir)
     }
 
     free(catalogo);
-
-	free(taperead);
-
-	return 0;
-
-    //int i;
-
-
-    int frag_sectores_fragmentados=0;
-    int frag_sectores_no_fragmentados=0;
-
-    for (i=0;i<total_sectors;i++) {
-
-        z80_byte data_recflg=util_extract_mdr_get_byte(taperead,i,15);
-        z80_byte record_segment=util_extract_mdr_get_byte(taperead,i,16);
-
-
-        //flag de los datos
-        //if (data_recflg!=0 && data_recflg!=4 && data_recflg!=6) printf("%d\n",data_recflg);
-
-
-
-        //z80_byte header_recflg=util_extract_mdr_get_byte(taperead,i,0);
-
-        //rec_length cuenta la cabecera de 9 bytes en sector 0
-        //z80_int rec_length=util_extract_mdr_get_byte(taperead,i,17)+256*util_extract_mdr_get_byte(taperead,i,18);
-
-
-
-
-        //printf("%02X ",record_segment);
-
-        //printf("%d\n",rec_length);
-
-
-        //Mostrar nombre archivo
-
-            if (record_segment==0 && (data_recflg & 0x04)==0x04) {
-                z80_int tamanyo=util_extract_mdr_get_byte(taperead,i,31)+256*util_extract_mdr_get_byte(taperead,i,32);
-
-                char nombre[11];
-
-
-
-
-                //printf(" %s %d bytes\n",nombre,tamanyo);
-
-                char buffer_info_tape[32*4]; //4 lineas mas que suficiente
-
-                z80_byte buffer_tap_temp[36];
-                //primer byte cabecera
-                buffer_tap_temp[0]=util_extract_mdr_get_byte(taperead,i,30);
-
-                int j;
-
-
-                //nombre
-                for (j=0;j<10;j++) {
-                    z80_byte letra_nombre=util_extract_mdr_get_byte(taperead,i,19+j);
-
-                    buffer_tap_temp[1+j]=letra_nombre;
-                    nombre[j]=letra_nombre;
-                }
-
-                nombre[j]=0;
-
-                //parametros cabecera
-                for (j=0;j<6;j++) {
-                    buffer_tap_temp[11+j]=util_extract_mdr_get_byte(taperead,i,31+j);
-                }
-
-                //excepcion en basic. esta diferente en cabecera de microdrive y de cinta
-                //linea autorun
-                if (buffer_tap_temp[0]==0) {
-                    buffer_tap_temp[13]=util_extract_mdr_get_byte(taperead,i,37);
-                    buffer_tap_temp[14]=util_extract_mdr_get_byte(taperead,i,38);
-                }
-
-                //excepcion en arrays. nombre variable
-                if (buffer_tap_temp[0]==1 || buffer_tap_temp[0]==2) {
-                    buffer_tap_temp[14]=util_extract_mdr_get_byte(taperead,i,35);
-                }
-
-
-                util_tape_tap_get_info(buffer_tap_temp,buffer_info_tape,0);
-
-                z80_byte flag=0;
-                z80_int longitud=19;
-
-                util_tape_get_info_tapeblock((z80_byte *)buffer_tap_temp,flag,longitud,buffer_info_tape);
-
-
-
-
-                printf("Nombre: [%s] (file_length=%d)\n",buffer_info_tape,tamanyo);
-
-                //buffer para archivo de testino
-                z80_byte *destino=util_malloc(tamanyo,"Can not allocate memory to get file");
-
-                int frag,nofrag;
-                mdr_get_file(taperead,total_sectors,nombre,tamanyo,destino,&frag,&nofrag);
-
-                frag_sectores_fragmentados +=frag;
-                frag_sectores_no_fragmentados +=nofrag;
-
-                char buffer_temp_file[PATH_MAX];
-
-                //Si es program, agregar extension .bas
-                if (buffer_tap_temp[0]==0) {
-                    sprintf (buffer_temp_file,"%s/%s.bas",tempdir,nombre);
-                }
-
-                else sprintf (buffer_temp_file,"%s/%s",tempdir,nombre);
-
-
-                util_save_file(destino,tamanyo,buffer_temp_file);
-
-
-
-                //Si longitud era 6912, indicar la pantalla para los previews
-                if (tamanyo==6912) {
-                    //Indicar con un archivo en la propia carpeta cual es el archivo de pantalla
-                    //usado en los previews
-                    char buff_preview_scr[PATH_MAX];
-                    sprintf(buff_preview_scr,"%s/%s",tempdir,MENU_SCR_INFO_FILE_NAME);
-
-                    //Meter en archivo MENU_SCR_INFO_FILE_NAME la ruta al archivo de pantalla
-                    util_save_file((z80_byte *)buffer_temp_file,strlen(buffer_temp_file)+1,buff_preview_scr);
-                }
-
-                free(destino);
-            }
-
-
-
-
-
-    }
-
-
-
-
-    int total=frag_sectores_fragmentados+frag_sectores_no_fragmentados;
-
-    int porc_frag;
-
-    if (total==0) porc_frag=0;
-
-    else porc_frag=(frag_sectores_fragmentados*100)/total;
-
-    printf("Info fragmentacion: Fragmentados: %d No fragmentados: %d (%d %%)\n",
-        frag_sectores_fragmentados,frag_sectores_no_fragmentados,porc_frag);
-
 
 	free(taperead);
 

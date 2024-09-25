@@ -2106,6 +2106,7 @@ void set_machine_params(void)
 		hilow_enabled.v=0;
         samram_enabled.v=0;
         hilow_bbn_enabled.v=0;
+        if1_enabled.v=0;
         mhpokeador_enabled.v=0;
         multiface_enabled.v=0;
         transtape_enabled.v=0;

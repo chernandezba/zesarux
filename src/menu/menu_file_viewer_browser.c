@@ -2138,19 +2138,7 @@ void menu_file_dsk_browser_show(char *filename)
 
 }
 
-/*
-z80_byte *mdr_file_memory;
 
-
-z80_byte menu_file_mdr_browser_show_get_byte(int microdrive_seleccionado,int sector,int sector_offset)
-{
-    int offset=sector*MDR_BYTES_PER_SECTOR;
-
-    offset +=sector_offset;
-
-    return mdr_file_memory[offset];
-}
-*/
 
 void menu_file_mdr_browser_show(char *filename)
 {

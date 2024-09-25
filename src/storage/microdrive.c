@@ -66,6 +66,8 @@ Quizá esto es un fallo de emulacion o del propio interface1. En Fuse por ejempl
 
 int microdrive_formateando=0;
 
+void microdrive_flush_to_disk_one(int microdrive_seleccionado);
+
 
 struct s_microdrive_status microdrive_status[MAX_MICRODRIVES];
 
@@ -343,7 +345,6 @@ void mdr_write_byte(z80_byte valor)
 
 void microdrive_insert(int microdrive_seleccionado)
 {
-    //Cargar microdrive de prueba
     microdrive_status[microdrive_seleccionado].if1_microdrive_buffer=util_malloc(MDR_MAX_FILE_SIZE,"No enough memory for Microdrive buffer");
 
 
@@ -384,7 +385,7 @@ void microdrive_eject(int microdrive_seleccionado)
 	if (microdrive_status[microdrive_seleccionado].microdrive_enabled==0) return;
 
 	//Hacer flush si hay algun cambio
-	//microdrive_flush_contents_to_disk();
+	microdrive_flush_to_disk_one(microdrive_seleccionado);
 
 
 	free(microdrive_status[microdrive_seleccionado].if1_microdrive_buffer);
@@ -686,108 +687,6 @@ void init_microdrives(void)
 }
 
 
-z80_byte microdrive_get_byte_sector(int microdrive_seleccionado,int sector,int sector_offset)
-{
-    if (!microdrive_status[microdrive_seleccionado].microdrive_enabled) return 0;
-
-    if (sector>=microdrive_status[microdrive_seleccionado].mdr_total_sectors) return 0;
-
-    if (sector_offset>=MDR_BYTES_PER_SECTOR) return 0;
-
-    int offset=sector*MDR_BYTES_PER_SECTOR+sector_offset;
-
-    return microdrive_status[microdrive_seleccionado].if1_microdrive_buffer[offset];
-}
-
-
-//Obtener un archivo de zona de memoria mdr
-void mdr_get_file(z80_byte *origen,int total_sectors,char *nombre,int tamanyo,z80_byte *destino,int *p_fragmentados,int *p_no_fragmentados)
-{
-    int i;
-
-    int tamanyo_contando_cabecera=tamanyo+9;
-
-    int total_sectores_a_buscar=tamanyo_contando_cabecera/512;
-
-    //Ver si el ultimo sector esta cortado
-
-    int resto=tamanyo_contando_cabecera % 512;
-
-    if (resto) total_sectores_a_buscar++;
-
-    printf("Sectores a buscar: %d\n",total_sectores_a_buscar);
-
-    int bloque_buscando;
-
-    //Informacion de fragmentacion
-    //Si un sector no es consecutivo al otro, aumenta fragmentacion
-    int frag_anterior_sector=-1;
-
-    int frag_sectores_fragmentados=0;
-    int frag_sectores_no_fragmentados=1; //Al menos el primero no esta fragmentado logicamente
-
-    //Cada uno de los bloques a buscar
-    for (bloque_buscando=0;bloque_buscando<total_sectores_a_buscar;bloque_buscando++) {
-
-        //buscar cada sector cada vez en toda la imagen
-        for (i=0;i<total_sectors;i++) {
-            int offset_sector=i*MDR_BYTES_PER_SECTOR;
-
-            //z80_byte data_recflg=origen[offset_sector+15];
-            z80_byte record_segment=origen[offset_sector+16];
-
-            if (record_segment==bloque_buscando /* && (data_recflg & 0x04)==0x04*/) {
-                char nombre_comparar[11];
-
-                int j;
-
-                for (j=0;j<10;j++) {
-                    z80_byte letra_nombre=origen[offset_sector+19+j];
-
-                    nombre_comparar[j]=letra_nombre;
-                }
-
-                nombre_comparar[j]=0;
-
-                if (!strcmp(nombre_comparar,nombre)) {
-                    printf("Match nombre [%s] en sector %d\n",nombre,bloque_buscando);
-
-                    //Grabar ese bloque
-                    //Si es record 0, saltar 9 bytes de la cabecera de datos
-                    int offset_a_grabar=30;
-                    //int tamanyo_restar=512;
-
-                    z80_int rec_length=origen[offset_sector+17]+256*origen[offset_sector+18];
-
-                    if (record_segment==0) {
-                        offset_a_grabar+=9;
-                        rec_length-=9;
-                    }
-
-                    memcpy(destino,&origen[offset_sector+offset_a_grabar],rec_length);
-                    destino +=rec_length;
-
-                    if (bloque_buscando!=0) {
-                        if (i==frag_anterior_sector+1) frag_sectores_no_fragmentados++;
-                        else frag_sectores_fragmentados++;
-                    }
-
-                    frag_anterior_sector=i;
-
-                    break;
-                }
-
-
-            }
-        }
-
-    }
-
-    //printf("Info fragmentacion: Fragmentados: %d No fragmentados: %d\n",frag_sectores_fragmentados,frag_sectores_no_fragmentados);
-
-    *p_fragmentados=frag_sectores_fragmentados;
-    *p_no_fragmentados=frag_sectores_no_fragmentados;
-}
 
 //Obtener info de un archivo de zona de memoria mdr
 //Para poder soportar duplicados, indicamos un sector de inicio y de ahi en adelante (y puede dar la vuelta una vez)
@@ -870,7 +769,10 @@ void mdr_get_info_file(z80_byte *origen,int total_sectors,char *nombre,int taman
                     //destino +=rec_length;
 
                     if (bloque_buscando!=0) {
+                        //Si sectores consecutivos, no incrementa fragmentación
                         if (i==frag_anterior_sector+1) frag_sectores_no_fragmentados++;
+                        //O si anterior sector era el ultimo y este es el primero
+                        else if (i==0 && frag_anterior_sector==total_sectors-1) frag_sectores_no_fragmentados++;
                         else frag_sectores_fragmentados++;
                     }
 
@@ -880,7 +782,6 @@ void mdr_get_info_file(z80_byte *origen,int total_sectors,char *nombre,int taman
 
                     encontrado=1;
                 }
-
 
             }
         }
@@ -911,7 +812,6 @@ z80_byte mdr_get_file_catalogue_get_byte(z80_byte *puntero,int sector,int sector
 
 void mdr_get_file_from_catalogue(z80_byte *origen,struct s_mdr_file_cat_one_file *archivo,z80_byte *destino)
 {
-    int i;
 
     int tamanyo=archivo->file_size;
 
@@ -932,12 +832,6 @@ void mdr_get_file_from_catalogue(z80_byte *origen,struct s_mdr_file_cat_one_file
 
     int bloque_buscando;
 
-    //Informacion de fragmentacion
-    //Si un sector no es consecutivo al otro, aumenta fragmentacion
-    int frag_anterior_sector=-1;
-
-    int frag_sectores_fragmentados=0;
-    int frag_sectores_no_fragmentados=1; //Al menos el primero no esta fragmentado logicamente
 
 
     //Cada uno de los bloques a buscar
@@ -992,6 +886,52 @@ void mdr_get_file_catalogue_get_label(char *texto,z80_byte *origen,int sector)
     }
 
     texto[i]=0;
+}
+
+int mdr_get_file_catalogue_get_valor_max_copias(struct s_mdr_file_cat *catalogo,char *nombre)
+{
+    int copias=1;
+
+    int i;
+
+    //Buscar valor maximo
+    for (i=0;i<catalogo->total_files;i++) {
+        if (!strcmp(nombre,catalogo->file[i].name)) {
+            if (catalogo->file[i].numero_copias>copias) copias=catalogo->file[i].numero_copias;
+        }
+    }
+
+    return copias;
+
+}
+
+void mdr_set_max_copias_todos_archivos(struct s_mdr_file_cat *catalogo)
+{
+    int i;
+
+    //Establecer valor copias
+    for (i=0;i<catalogo->total_files;i++) {
+        int max_copias=mdr_get_file_catalogue_get_valor_max_copias(catalogo,catalogo->file[i].name);
+        //solo alterarlo si es >1
+        if (max_copias>1) {
+            printf("Readjusting file [%s] to %d copies\n",catalogo->file[i].name,max_copias);
+            catalogo->file[i].numero_copias=max_copias;
+        }
+    }
+}
+
+int mdr_get_file_catalogue_get_copias(struct s_mdr_file_cat *catalogo,char *nombre)
+{
+    int copias=1;
+
+    int i;
+
+    for (i=0;i<catalogo->total_files;i++) {
+        if (!strcmp(nombre,catalogo->file[i].name)) copias++;
+    }
+
+    return copias;
+
 }
 
 //devuelve el listado de archivos de un mdr
@@ -1055,6 +995,19 @@ struct s_mdr_file_cat *mdr_get_file_catalogue(z80_byte *origen,int total_sectors
                 }
 
                 catalogo->file[catalogo->total_files].name[j]=0;
+
+                //Ver si ese archivo ya existia, para considerar duplicados
+                int copias_archivo=mdr_get_file_catalogue_get_copias(catalogo,catalogo->file[catalogo->total_files].name);
+
+                if (copias_archivo>1) {
+                    //A medida que se van leyendo archivos, si por ejemplo hay 3 archivos duplicados de nombre "run",
+                    //el primero dirá que no tiene duplicados, el segundo dirá que tiene 1 duplicado, y el tercero dirá que
+                    //tiene 2 duplicados
+                    //Luego se reajusta al final el valor maximo para todos
+                    printf("Archivo [%s] tiene %d copias\n",catalogo->file[catalogo->total_files].name,copias_archivo);
+                }
+
+                catalogo->file[catalogo->total_files].numero_copias=copias_archivo;
 
                 //parametros cabecera
                 for (j=0;j<6;j++) {
@@ -1130,7 +1083,7 @@ struct s_mdr_file_cat *mdr_get_file_catalogue(z80_byte *origen,int total_sectors
     }
 
 
-
+    mdr_set_max_copias_todos_archivos(catalogo);
 
     int total=frag_sectores_fragmentados+frag_sectores_no_fragmentados;
 
@@ -1144,4 +1097,13 @@ struct s_mdr_file_cat *mdr_get_file_catalogue(z80_byte *origen,int total_sectors
 
     return catalogo;
 
+}
+
+
+
+void microdrive_switch_write_protection(int microdrive_seleccionado)
+{
+    microdrive_status[microdrive_seleccionado].microdrive_write_protect ^=1;
+
+    microdrive_status[microdrive_seleccionado].microdrive_must_flush_to_disk=1;
 }

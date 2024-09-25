@@ -373,18 +373,22 @@ ok *formateo. saca menos espacio del esperado
 ok *elegir mdr
 ok *mas de 1 microdrive a la vez
 ok *proteccion escritura (ultimo byte del mdr)
-*algo como visual floppy
 ok *debug i/o ports
 ok *visualmem
 ok *icono microdrive
 ok *si no elegido mdr, que devuelva datos vacios  (ni gap ni sync tampoco)
 ok *a veces no carga programas, teniendo que desactivar y activar interface. quiza algun contador que no se resetea bien?
-*en grabacion datos y en lectura datos comprobar que los bits de estado los haya indicado correctamente el usuario?
-*parametros config linea comandos/.zesaruxrc
-*soporte spectrum 128k
-*soporte smartload
+ok *soporte smartload
 ok *visor archivos desde file utils. reusando misma funcion
 ok *expandir archivos mdr. vista previa
 ok *obtener fragmentacion de un mdr
 ok * microdrive map en caso de mdr como el de paws que hay archivos duplicados, el mapa y el listado no sale bien, no considera duplicados
-*fragmentacion cuando pasa del ultimo sector al primero no tendria que incrementar fragmentacion. pasa con mdr pantallas.mdr
+ok *fragmentacion cuando pasa del ultimo sector al primero no tendria que incrementar fragmentacion. pasa con mdr pantallas.mdr
+*si no hay microdrive insertado y se hace un CAT, deberia retornar error de "Microdrive not present"
+*en grabacion datos y en lectura datos comprobar que los bits de estado los haya indicado correctamente el usuario?
+*parametros config linea comandos/.zesaruxrc
+*soporte spectrum 128k
+*algo como visual floppy
+*chkdsk? que compruebe checksums. que compruebe que cada archivo tiene los bloques necesarios (y en orden: 0,1,2, etc)
+que indique si tiene clones de archivos, no como error sino como info.
+
