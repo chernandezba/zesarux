@@ -42102,13 +42102,11 @@ void menu_interface1(MENU_ITEM_PARAMETERS)
 
     do {
 
-        menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_interface1_enable,NULL,"Enable");
+        menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_interface1_enable,NULL,"~~Enable");
         menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(if1_enabled.v ? 'X' : ' ' ));
+        menu_add_item_menu_shortcut(array_menu_common,'e');
 
 
-        //menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_dinamid3,NULL,"D~~inamid3");
-        //menu_add_item_menu_shortcut(array_menu_common,'i');
-        //menu_add_item_menu_tiene_submenu(array_menu_common);
 
         //De momento soportar hasta 4 microdrives en el menu , aunque se permiten hasta 8
 
@@ -42122,11 +42120,10 @@ void menu_interface1(MENU_ITEM_PARAMETERS)
 
             menu_tape_settings_trunc_name(microdrive_status[i].microdrive_file_name,string_microdrive_file_shown,17);
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_storage_microdrive_file,NULL,
-                "~~Microdrive File","Archivo ~~Microdrive","Arxiu ~~Microdrive");
+                "Microdrive File","Archivo Microdrive","Arxiu Microdrive");
             menu_add_item_menu_sufijo_format(array_menu_common," [%s]",string_microdrive_file_shown);
             menu_add_item_menu_prefijo(array_menu_common,"    ");
             menu_add_item_menu_valor_opcion(array_menu_common,i);
-            menu_add_item_menu_shortcut(array_menu_common,'m');
             menu_add_item_menu_tooltip(array_menu_common,"Microdrive Emulation file");
             menu_add_item_menu_ayuda(array_menu_common,"Microdrive Emulation file");
 
@@ -42135,27 +42132,25 @@ void menu_interface1(MENU_ITEM_PARAMETERS)
             //tener que crear 4 funciones diferentes de condicion
             if (microdrive_status[i].microdrive_file_name[0]) {
                 menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_storage_microdrive_enable,NULL,
-                    "Microdrive ~~Emulation","~~Emulación Microdrive","~~Emulació Microdrive");
+                    "Microdrive Emulation","Emulación Microdrive","Emulació Microdrive");
             }
 
             else {
                 menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_storage_microdrive_enable,menu_interface1_cond_disabled,
-                    "Microdrive ~~Emulation","~~Emulación Microdrive","~~Emulació Microdrive");
+                    "Microdrive Emulation","Emulación Microdrive","Emulació Microdrive");
             }
 
             menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ", (microdrive_status[i].microdrive_enabled ? 'X' : ' '));
             menu_add_item_menu_valor_opcion(array_menu_common,i);
-            menu_add_item_menu_shortcut(array_menu_common,'e');
             menu_add_item_menu_tooltip(array_menu_common,"Microdrive Emulation");
             menu_add_item_menu_ayuda(array_menu_common,"Microdrive Emulation");
 
 
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_storage_microdrive_write_protection,NULL,
-                "Write ~~Protection","~~Protección escritura","~~Protecció escriptura");
+                "Write Protection","Protección escritura","Protecció escriptura");
             menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ", (microdrive_status[i].microdrive_write_protect ? 'X' : ' '));
             menu_add_item_menu_valor_opcion(array_menu_common,i);
-            menu_add_item_menu_shortcut(array_menu_common,'p');
             menu_add_item_menu_tooltip(array_menu_common,"Write Protection");
             menu_add_item_menu_ayuda(array_menu_common,"Write Protection");
 
