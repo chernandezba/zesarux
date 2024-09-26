@@ -41820,6 +41820,16 @@ void menu_storage_microdrive_chkdsk(MENU_ITEM_PARAMETERS)
     free(catalogo);
 }
 
+z80_byte menu_strg_mdv_sec_info_get_byte(z80_byte *puntero,int sector,int sector_offset)
+{
+
+    int offset=sector*MDR_BYTES_PER_SECTOR;
+
+    offset +=sector_offset;
+
+    return puntero[offset];
+}
+
 
 void menu_storage_microdrive_sectors_info(MENU_ITEM_PARAMETERS)
 {
@@ -41845,9 +41855,98 @@ void menu_storage_microdrive_sectors_info(MENU_ITEM_PARAMETERS)
 
     int salir=0;
 
+
     int current_sector=0;
 
+    z80_byte *origen=microdrive_status[microdrive_seleccionado].if1_microdrive_buffer;
+
     do {
+
+        int linea=0;
+
+
+
+/*
+    offset length
+              0      1   HDFLAG   Value 1, to indicate header block  *See note.
+      1      1   HDNUMB   sector number (values 254 down to 1)
+      2      2            not used (and of undetermined value)
+      4     10   HDNAME   microdrive cartridge name (blank padded)
+     14      1   HDCHK    header checksum (of first 14 bytes)
+
+     15      1   RECFLG   - bit 0: always 0 to indicate record block
+                          - bit 1: set for the EOF block
+                          - bit 2: reset for a PRINT file
+                          - bits 3-7: not used (value 0)
+
+     16      1   RECNUM   data block sequence number (value starts at 0)
+     17      2   RECLEN   data block length (<=512, LSB first)
+     19     10   RECNAM   filename (blank padded)
+     29      1   DESCHK   record descriptor checksum (of previous 14 bytes)
+     30    512            data block
+    542      1   DCHK     data block checksum (of all 512 bytes of data
+                          block, even when not all bytes are used)
+*/
+
+        z80_byte hd_flg=menu_strg_mdv_sec_info_get_byte(origen,current_sector,0);
+        z80_byte hd_num=menu_strg_mdv_sec_info_get_byte(origen,current_sector,1);
+
+        char hd_name[11];
+        int i;
+        for (i=0;i<10;i++) {
+            z80_byte letra=menu_strg_mdv_sec_info_get_byte(origen,current_sector,4+i);
+            if (letra<32 || letra>126) letra='.';
+            hd_name[i]=letra;
+        }
+
+        hd_name[i]=0;
+
+
+        z80_byte hd_chk=menu_strg_mdv_sec_info_get_byte(origen,current_sector,14);
+        z80_byte data_recflg=menu_strg_mdv_sec_info_get_byte(origen,current_sector,15);
+        z80_byte rec_num=menu_strg_mdv_sec_info_get_byte(origen,current_sector,16);
+        z80_int rec_len=menu_strg_mdv_sec_info_get_byte(origen,current_sector,17)+256*menu_strg_mdv_sec_info_get_byte(origen,current_sector,18);
+
+        char rec_name[11];
+
+        for (i=0;i<10;i++) {
+            z80_byte letra=menu_strg_mdv_sec_info_get_byte(origen,current_sector,19+i);
+            if (letra<32 || letra>126) letra='.';
+            rec_name[i]=letra;
+        }
+
+        rec_name[i]=0;
+
+        z80_byte des_chk=menu_strg_mdv_sec_info_get_byte(origen,current_sector,29);
+        z80_byte data_chk=menu_strg_mdv_sec_info_get_byte(origen,current_sector,542);
+
+        int sector_usado=0;
+
+        //A used record block is either an EOF block (bit 1 of RECFLG is 1) or
+        //contains 512 bytes of data (RECLEN=512, i.e. bit 1 of MSB is 1).
+        if (rec_len==512 || (data_recflg & 0x02)==0x02) sector_usado=1;
+
+        zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++,"Physical Sector %3d/%3d: %s",
+            current_sector,microdrive_status[microdrive_seleccionado].mdr_total_sectors,
+            (sector_usado ? "Used" : "Unused")
+        );
+
+        zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"");
+
+        zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"Off Name");
+        zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++,"  0 HDFLAG: %02XH",hd_flg);
+        zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++,"  1 HDNUMB: %02XH - Sector Number -",hd_num);
+        zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++,"  4 HDNAME: %s",hd_name);
+        zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++," 14 HDCHK:  %02XH",hd_chk);
+        zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++," 15 RECFLG: %02XH",data_recflg);
+        zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++," 16 RECNUM: %02XH",rec_num);
+        zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++," 17 RECNUM: %5d",rec_len);
+        zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++," 19 RECNAM: %s",rec_name);
+        zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++," 29 DESCHK: %02XH",des_chk);
+        zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++,"542 DCHK:   %02XH",data_chk);
+
+
+
         zxvision_draw_window_contents(&ventana);
 
         z80_byte tecla=zxvision_common_getkey_refresh();
@@ -41881,8 +41980,6 @@ void menu_storage_microdrive_sectors_info(MENU_ITEM_PARAMETERS)
     zxvision_destroy_window(&ventana);
 
 
-
-    zxvision_destroy_window(&ventana);
 }
 
 void menu_storage_microdrive_browse(MENU_ITEM_PARAMETERS)
