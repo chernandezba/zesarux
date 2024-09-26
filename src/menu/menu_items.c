@@ -41835,8 +41835,8 @@ void menu_storage_microdrive_sectors_info(MENU_ITEM_PARAMETERS)
 {
 
 
-    int ancho=46;
-    int alto=25;
+    int ancho=48;
+    int alto=26;
     int xventana=menu_center_x()-ancho/2;
     int yventana=menu_center_y()-alto/2;
 
@@ -41938,10 +41938,16 @@ void menu_storage_microdrive_sectors_info(MENU_ITEM_PARAMETERS)
         zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"");
 
         zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"Off Name");
+
+        zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"");
+        zxvision_print_string_defaults_fillspc(&ventana,1,linea++," ---Header--- ");
         zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++,"  0 HDFLAG: %02XH",hd_flg);
-        zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++,"  1 HDNUMB: %02XH - Sector Number   -",hd_num);
+        zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++,"  1 HDNUMB: %02XH   - Sector Number   -",hd_num);
         zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++,"  4 HDNAME: %s",hd_name);
-        zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++," 14 HDCHK:  %02XH - Header Checksum -",hd_chk);
+        zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++," 14 HDCHK:  %02XH   - Header Checksum -",hd_chk);
+
+        zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"");
+        zxvision_print_string_defaults_fillspc(&ventana,1,linea++," ---Record Descriptor--- ");
         zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++," 15 RECFLG: %02XH",data_recflg);
         zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++,"    Bit 0=%d (%srecord block)",
             data_recflg&1,((data_recflg&1)==0 ? "" : "no "));
@@ -41950,11 +41956,15 @@ void menu_storage_microdrive_sectors_info(MENU_ITEM_PARAMETERS)
         zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++,"    Bit 2=%d (%sPRINT file)",
             (data_recflg&4)>>2,((data_recflg&4)==0 ? "" : "no "));
 
-        zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++," 16 RECNUM: %02XH - data block sequence number",rec_num);
+        zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++," 16 RECNUM: %02XH   - data block sequence number",rec_num);
         zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++," 17 RECLEN: %5d - data block length",rec_len);
         zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++," 19 RECNAM: %s",rec_name);
-        zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++," 29 DESCHK: %02XH - record descriptor checksum (of previous 14 bytes)",des_chk);
-        zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++,"542 DCHK:   %02XH - data block checksum (of all 512 bytes of data)",data_chk);
+        zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++," 29 DESCHK: %02XH   - record descriptor checksum",des_chk);
+
+        zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"");
+        zxvision_print_string_defaults_fillspc(&ventana,1,linea++," ---Data--- ");
+
+        zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++,"542 DCHK:   %02XH   - data block checksum",data_chk);
 
 
 
