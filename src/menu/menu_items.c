@@ -41435,7 +41435,7 @@ void menu_mdv_simulate_bad(MENU_ITEM_PARAMETERS)
 
 
         retorno_menu=menu_dibuja_menu_dialogo_no_title_lang(&opcion_seleccionada,&item_seleccionado,array_menu_common,
-            "Simulate bad sectors");
+            "Emulate bad sectors");
 
         if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
             //llamamos por valor de funcion
@@ -41836,7 +41836,7 @@ void menu_storage_microdrive_sectors_info(MENU_ITEM_PARAMETERS)
 
 
     int ancho=48;
-    int alto=26;
+    int alto=27;
     int xventana=menu_center_x()-ancho/2;
     int yventana=menu_center_y()-alto/2;
 
@@ -41931,9 +41931,25 @@ void menu_storage_microdrive_sectors_info(MENU_ITEM_PARAMETERS)
             current_sector*MDR_BYTES_PER_SECTOR
         );
 
-        zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++,"Sector %s",
-            (sector_usado ? "Used" : "Unused")
-        );
+        zxvision_print_string_defaults_fillspc(&ventana,1,linea,"Sector");
+
+        if (sector_usado) {
+            //color inverso
+            zxvision_print_string(&ventana,8,linea,ESTILO_GUI_PAPEL_NORMAL,ESTILO_GUI_TINTA_NORMAL,0,"Used");
+        }
+        else {
+            zxvision_print_string_defaults(&ventana,8,linea,"Unused");
+        }
+
+
+        if (microdrive_status[microdrive_seleccionado].bad_sectors_simulated[current_sector]) {
+            zxvision_print_string(&ventana,15,linea,ESTILO_GUI_COLOR_AVISO,ESTILO_GUI_PAPEL_NORMAL,0,"Bad Sector");
+        }
+
+        linea++;
+
+
+
 
         zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"");
 
@@ -41966,6 +41982,17 @@ void menu_storage_microdrive_sectors_info(MENU_ITEM_PARAMETERS)
 
         zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++,"542 DCHK:   %02XH   - data block checksum",data_chk);
 
+
+        //Forzar a mostrar atajos
+        z80_bit antes_menu_writing_inverse_color;
+        antes_menu_writing_inverse_color.v=menu_writing_inverse_color.v;
+        menu_writing_inverse_color.v=1;
+
+        zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"");
+        zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"Use cursors ~~< ~~> to change sector");
+
+        //Restaurar comportamiento atajos
+        menu_writing_inverse_color.v=antes_menu_writing_inverse_color.v;
 
 
         zxvision_draw_window_contents(&ventana);
@@ -42174,7 +42201,7 @@ void menu_interface1(MENU_ITEM_PARAMETERS)
 
 
                 menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_mdv_simulate_bad,NULL,
-                        "Simulate bad sectors","Simular sectores erroneos","Simular sectors erronis");
+                        "Emulate bad sectors","Emular sectores erroneos","Emular sectors erronis");
                 menu_add_item_menu_prefijo(array_menu_common,"    ");
                 menu_add_item_menu_valor_opcion(array_menu_common,i);
                 menu_add_item_menu_se_cerrara(array_menu_common);
@@ -43794,7 +43821,8 @@ void menu_storage(MENU_ITEM_PARAMETERS)
 		}
 
         if (MACHINE_IS_SPECTRUM) {
-            menu_add_item_menu_format(array_menu_storage,MENU_OPCION_NORMAL,menu_interface1,NULL,"Interface1");
+            menu_add_item_menu_format(array_menu_storage,MENU_OPCION_NORMAL,menu_interface1,NULL,"I~~nterface1");
+            menu_add_item_menu_shortcut(array_menu_storage,'o');
             menu_add_item_menu_tooltip(array_menu_storage,"Interface1 settings");
             menu_add_item_menu_ayuda(array_menu_storage,"Interface1 settings");
             menu_add_item_menu_tiene_submenu(array_menu_storage);
