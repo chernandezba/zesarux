@@ -41821,6 +41821,70 @@ void menu_storage_microdrive_chkdsk(MENU_ITEM_PARAMETERS)
 }
 
 
+void menu_storage_microdrive_sectors_info(MENU_ITEM_PARAMETERS)
+{
+
+
+    int ancho=46;
+    int alto=25;
+    int xventana=menu_center_x()-ancho/2;
+    int yventana=menu_center_y()-alto/2;
+
+    zxvision_window ventana;
+
+    zxvision_new_window(&ventana,xventana,yventana,ancho,alto,
+                                            ancho-1,alto-2,"Sectors info");
+
+
+
+
+    int microdrive_seleccionado=valor_opcion;
+
+
+    zxvision_draw_window(&ventana);
+
+    int salir=0;
+
+    int current_sector=0;
+
+    do {
+        zxvision_draw_window_contents(&ventana);
+
+        z80_byte tecla=zxvision_common_getkey_refresh();
+
+
+        switch (tecla) {
+
+            case 8:
+                //izquierda
+                if (current_sector>0) current_sector--;
+            break;
+
+            case 9:
+                //derecha
+                if (current_sector<microdrive_status[microdrive_seleccionado].mdr_total_sectors-1) current_sector++;
+            break;
+
+            //Salir con ESC
+            case 2:
+                salir=1;
+            break;
+
+            //O tecla background
+            case 3:
+                salir=1;
+            break;
+        }
+
+    } while (!salir);
+
+    zxvision_destroy_window(&ventana);
+
+
+
+    zxvision_destroy_window(&ventana);
+}
+
 void menu_storage_microdrive_browse(MENU_ITEM_PARAMETERS)
 {
 
@@ -41978,6 +42042,13 @@ void menu_interface1(MENU_ITEM_PARAMETERS)
 
                 menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_storage_microdrive_browse,NULL,
                         "Microdrive browse","Explorar microdrive","Explorar microdrive");
+                menu_add_item_menu_prefijo(array_menu_common,"    ");
+                menu_add_item_menu_se_cerrara(array_menu_common);
+                menu_add_item_menu_genera_ventana(array_menu_common);
+                menu_add_item_menu_valor_opcion(array_menu_common,i);
+
+                menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_storage_microdrive_sectors_info,NULL,
+                        "Sectors info","Info Sectores","Info Sectors");
                 menu_add_item_menu_prefijo(array_menu_common,"    ");
                 menu_add_item_menu_se_cerrara(array_menu_common);
                 menu_add_item_menu_genera_ventana(array_menu_common);
