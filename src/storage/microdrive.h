@@ -32,6 +32,9 @@
 #define MDR_MAX_SECTORS 254
 #define MDR_MAX_FILE_SIZE ((MDR_BYTES_PER_SECTOR*MDR_MAX_SECTORS)+1)
 
+//Aunque la emulacion permite hasta 8, lo limito a 4 en los menus
+#define MAX_MICRODRIVES_BY_CONFIG 4
+
 extern z80_byte mdr_next_byte(void);
 
 extern void mdr_next_sector(int microdrive_seleccionado);
@@ -121,6 +124,9 @@ struct s_mdr_file_cat_one_file {
     //Indica que a un archivo le faltan bloques. Usado en chkdsk
     //O sea que tienen al menos el primer bloque 0 y le falta alguno de los siguientes
     int faltan_bloques;
+
+    //Dice que el archivo es un "Print file", o sea, resultado de abrir un stream # y escribir en el
+    int esprintfile;
 };
 
 struct s_mdr_file_cat {

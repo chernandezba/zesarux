@@ -675,7 +675,7 @@ void init_microdrives(void)
         microdrive_status[i].mdr_current_offset_in_sector=0;
         microdrive_status[i].contador_estado_microdrive=0;
         microdrive_status[i].mdr_write_preamble_index=0;
-        microdrive_status[i].microdrive_persistent_writes=0;
+        microdrive_status[i].microdrive_persistent_writes=1;
         microdrive_status[i].microdrive_write_protect=0;
 
 
@@ -690,11 +690,23 @@ void init_microdrives(void)
 
 //Obtener info de un archivo de zona de memoria mdr
 //Para poder soportar duplicados, indicamos un sector de inicio y de ahi en adelante (y puede dar la vuelta una vez)
-void mdr_get_info_file(z80_byte *origen,int total_sectors,char *nombre,int tamanyo,struct s_mdr_file_cat_one_file *file,int *p_fragmentados,int *p_no_fragmentados,int sector_inicio)
+//retorna tamanyo util en el caso de archivos de print# que no se sabe a priori cuanto ocupan
+int mdr_get_info_file(z80_byte *origen,int total_sectors,char *nombre,int tamanyo,struct s_mdr_file_cat_one_file *file,int *p_fragmentados,int *p_no_fragmentados,int sector_inicio)
 {
     int i;
 
-    int tamanyo_contando_cabecera=tamanyo+9;
+    int tamanyo_contando_cabecera;
+
+    int tamanyo_printfile=0;
+
+    if (file->esprintfile==0) {
+        tamanyo_contando_cabecera=tamanyo+9;
+    }
+    else {
+        tamanyo_contando_cabecera=65535; //maximo??
+        tamanyo=65535; //maximo??
+    }
+
 
     int total_sectores_a_buscar=tamanyo_contando_cabecera/512;
 
@@ -719,9 +731,13 @@ void mdr_get_info_file(z80_byte *origen,int total_sectors,char *nombre,int taman
 
     file->faltan_bloques=0;
 
+    //si es un printfile, acabar al encontrar un eof
+    int final_printfile=0;
+
+    int total_sectors_printfile=0;
 
     //Cada uno de los bloques a buscar
-    for (bloque_buscando=0;bloque_buscando<total_sectores_a_buscar;bloque_buscando++) {
+    for (bloque_buscando=0;bloque_buscando<total_sectores_a_buscar && !final_printfile;bloque_buscando++) {
 
         //buscar cada sector cada vez en toda la imagen
         //empieza desde el sector de inicio indicado para poder mostrar correctamente localizacion
@@ -738,6 +754,8 @@ void mdr_get_info_file(z80_byte *origen,int total_sectors,char *nombre,int taman
 
                 //z80_byte data_recflg=origen[offset_sector+15];
                 z80_byte record_segment=origen[offset_sector+16];
+
+                z80_byte data_recflg=origen[offset_sector+15];
 
                 if (record_segment==bloque_buscando /* && (data_recflg & 0x04)==0x04*/) {
                     char nombre_comparar[11];
@@ -762,7 +780,7 @@ void mdr_get_info_file(z80_byte *origen,int total_sectors,char *nombre,int taman
 
                         z80_int rec_length=origen[offset_sector+17]+256*origen[offset_sector+18];
 
-                        if (record_segment==0) {
+                        if (record_segment==0 && file->esprintfile==0) {
                             offset_a_grabar+=9;
                             rec_length-=9;
                         }
@@ -781,6 +799,14 @@ void mdr_get_info_file(z80_byte *origen,int total_sectors,char *nombre,int taman
                         file->sectors_list[bloque_buscando]=i;
 
                         frag_anterior_sector=i;
+
+                        if (file->esprintfile) {
+                            tamanyo_printfile +=rec_length;
+
+                            total_sectors_printfile++;
+
+                            if (data_recflg & 2) final_printfile=1;
+                        }
 
                         encontrado=1;
                     }
@@ -806,6 +832,13 @@ void mdr_get_info_file(z80_byte *origen,int total_sectors,char *nombre,int taman
 
     *p_fragmentados=frag_sectores_fragmentados;
     *p_no_fragmentados=frag_sectores_no_fragmentados;
+
+    if (file->esprintfile) {
+        file->total_sectors=total_sectors_printfile;
+        return tamanyo_printfile;
+    }
+
+    else return tamanyo;
 }
 
 
@@ -857,14 +890,14 @@ void mdr_get_file_from_catalogue(z80_byte *origen,struct s_mdr_file_cat_one_file
 
 
             //Grabar ese bloque
-            //Si es record 0, saltar 9 bytes de la cabecera de datos
+            //Si es record 0 y no es printfile, saltar 9 bytes de la cabecera de datos
             int offset_a_grabar=30;
             //int tamanyo_restar=512;
 
             int rec_length=origen[offset_sector+17]+256*origen[offset_sector+18];
 
 
-            if (bloque_buscando==0) {
+            if (bloque_buscando==0 && archivo->esprintfile==0) {
                 offset_a_grabar+=9;
                 rec_length-=9;
             }
@@ -988,20 +1021,42 @@ struct s_mdr_file_cat *mdr_get_file_catalogue(z80_byte *origen,int total_sectors
 
         z80_byte data_recflg=mdr_get_file_catalogue_get_byte(origen,i,15);
         z80_byte record_segment=mdr_get_file_catalogue_get_byte(origen,i,16);
+        z80_int rec_len=mdr_get_file_catalogue_get_byte(origen,i,17)+256*mdr_get_file_catalogue_get_byte(origen,i,18);
 
-        if ((data_recflg & 0x04)==0x04) catalogo->used_sectors++;
+        int sector_usado=0;
 
-        //Mostrar nombre archivo
+        //A used record block is either an EOF block (bit 1 of RECFLG is 1) or
+        //contains 512 bytes of data (RECLEN=512, i.e. bit 1 of MSB is 1).
+        if (rec_len==512 || (data_recflg & 0x02)==0x02) sector_usado=1;
 
-            if (record_segment==0 && (data_recflg & 0x04)==0x04) {
-                z80_int tamanyo=mdr_get_file_catalogue_get_byte(origen,i,31)+256*mdr_get_file_catalogue_get_byte(origen,i,32);
+        //if ((data_recflg & 0x04)==0x04) catalogo->used_sectors++;
+        if (sector_usado) {
+            catalogo->used_sectors++;
+
+            //Mostrar nombre archivo
+
+            //if (record_segment==0 && (data_recflg & 0x04)==0x04) {
+            if (record_segment==0) {
+
+                //bit 2: reset for a PRINT file
+                int printfile_flag=data_recflg & 4;
+
+                z80_int tamanyo;
+
+                if (printfile_flag) {
+                    //Si tiene cabecera "estandar" de 17 bytes
+                    tamanyo=mdr_get_file_catalogue_get_byte(origen,i,31)+256*mdr_get_file_catalogue_get_byte(origen,i,32);
+                    catalogo->file[catalogo->total_files].esprintfile=0;
+                }
+                else {
+                    //TODO: el tamanyo hay que ir obteniendolo sumando cada bloque
+                    tamanyo=rec_len;
+                    catalogo->file[catalogo->total_files].esprintfile=1;
+                }
 
                 //char nombre[11];
 
 
-
-
-                //printf(" %s %d bytes\n",nombre,tamanyo);
 
                 //char buffer_info_tape[32*4]; //4 lineas mas que suficiente
 
@@ -1024,6 +1079,8 @@ struct s_mdr_file_cat *mdr_get_file_catalogue(z80_byte *origen,int total_sectors
                 }
 
                 catalogo->file[catalogo->total_files].name[j]=0;
+
+                printf(" %s %d bytes PRINTFILE BIT=%d\n",catalogo->file[catalogo->total_files].name,tamanyo,data_recflg & 4);
 
                 //Ver si ese archivo ya existia, para considerar duplicados
                 int id_file_con_copias;
@@ -1052,35 +1109,6 @@ struct s_mdr_file_cat *mdr_get_file_catalogue(z80_byte *origen,int total_sectors
 
                 catalogo->file[catalogo->total_files].numero_copias=copias_archivo;
 
-                //parametros cabecera
-                for (j=0;j<6;j++) {
-                    buffer_tap_temp[11+j]=mdr_get_file_catalogue_get_byte(origen,i,31+j);
-                    catalogo->file[catalogo->total_files].header_info[1+j]=buffer_tap_temp[11+j];
-                }
-
-                //excepcion en basic. esta diferente en cabecera de microdrive y de cinta
-                //linea autorun
-                if (buffer_tap_temp[0]==0) {
-                    buffer_tap_temp[13]=mdr_get_file_catalogue_get_byte(origen,i,37);
-                    buffer_tap_temp[14]=mdr_get_file_catalogue_get_byte(origen,i,38);
-                }
-
-                //excepcion en arrays. nombre variable
-                if (buffer_tap_temp[0]==1 || buffer_tap_temp[0]==2) {
-                    buffer_tap_temp[14]=mdr_get_file_catalogue_get_byte(origen,i,35);
-                }
-
-
-
-                //util_tape_tap_get_info(buffer_tap_temp,buffer_info_tape,0);
-
-                z80_byte flag=0;
-                z80_int longitud=19;
-
-                util_tape_get_info_tapeblock((z80_byte *)buffer_tap_temp,flag,longitud,catalogo->file[catalogo->total_files].name_extended);
-
-
-
 
 
                 //printf("Nombre: [%s] (file_length=%d)\n",buffer_info_tape,tamanyo);
@@ -1088,9 +1116,51 @@ struct s_mdr_file_cat *mdr_get_file_catalogue(z80_byte *origen,int total_sectors
 
 
                 int frag,nofrag;
-                mdr_get_info_file(origen,total_sectors,catalogo->file[catalogo->total_files].name,tamanyo,&catalogo->file[catalogo->total_files],&frag,&nofrag,i);
+                tamanyo=mdr_get_info_file(origen,total_sectors,catalogo->file[catalogo->total_files].name,tamanyo,&catalogo->file[catalogo->total_files],&frag,&nofrag,i);
+
+                printf(">>Archivo en catalogo [%s] size %d\n",catalogo->file[catalogo->total_files].name,tamanyo);
 
                 catalogo->file[catalogo->total_files].file_size=tamanyo;
+
+
+               //Obtener mas info de la cabecera extendida, si la tiene
+                if (printfile_flag) {
+                    //parametros cabecera
+                    for (j=0;j<6;j++) {
+                        buffer_tap_temp[11+j]=mdr_get_file_catalogue_get_byte(origen,i,31+j);
+                        catalogo->file[catalogo->total_files].header_info[1+j]=buffer_tap_temp[11+j];
+                    }
+
+                    //excepcion en basic. esta diferente en cabecera de microdrive y de cinta
+                    //linea autorun
+                    if (buffer_tap_temp[0]==0) {
+                        buffer_tap_temp[13]=mdr_get_file_catalogue_get_byte(origen,i,37);
+                        buffer_tap_temp[14]=mdr_get_file_catalogue_get_byte(origen,i,38);
+                    }
+
+                    //excepcion en arrays. nombre variable
+                    if (buffer_tap_temp[0]==1 || buffer_tap_temp[0]==2) {
+                        buffer_tap_temp[14]=mdr_get_file_catalogue_get_byte(origen,i,35);
+                    }
+
+
+
+                    //util_tape_tap_get_info(buffer_tap_temp,buffer_info_tape,0);
+
+                    z80_byte flag=0;
+                    z80_int longitud=19;
+
+                    util_tape_get_info_tapeblock((z80_byte *)buffer_tap_temp,flag,longitud,catalogo->file[catalogo->total_files].name_extended);
+                }
+                else {
+                    //Nombre extendido es el mismo que el normal
+                    //Dado que no tiene cabecera de 17 bytes
+                    sprintf(catalogo->file[catalogo->total_files].name_extended,
+                        "Stream %s [size %d]",
+                        catalogo->file[catalogo->total_files].name,
+                        tamanyo);
+                }
+
 
                 //fragmentacion de ese archivo
                 int file_frag_total_suma=frag+nofrag;
@@ -1115,11 +1185,11 @@ struct s_mdr_file_cat *mdr_get_file_catalogue(z80_byte *origen,int total_sectors
                 //Corregir label, si sector 0 no se usaba, corregir desde primer sector usado
                 if (!escrito_microdrive_label) {
                     escrito_microdrive_label=1;
-                     mdr_get_file_catalogue_get_label(catalogo->label,origen,i);
+                    mdr_get_file_catalogue_get_label(catalogo->label,origen,i);
                 }
             }
 
-
+        }
 
 
 

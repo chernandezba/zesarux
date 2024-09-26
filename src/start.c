@@ -293,6 +293,7 @@ z80_bit command_line_zxmmc={0};
 z80_bit command_line_divmmc={0};
 z80_bit command_line_divmmc_ports={0};
 
+z80_bit command_line_if1={0};
 
 z80_bit command_line_ide={0};
 z80_bit command_line_divide={0};
@@ -1470,6 +1471,18 @@ printf("\n"
 
         "--kartusho-rom f                Set Kartusho rom file\n"
         "--enable-kartusho               Enable Kartusho emulation. Requires --kartusho-rom\n"
+
+
+		"\n"
+		"\n"
+		"Storage - Microdrive Settings\n"
+		"-----------------------------s\n"
+		"\n"
+
+        "--zx-mdv-file n f               Set Microdrive n file (n between 1 and 4)\n"
+        "--zx-mdv-enable n               Enable mdv(n) (n between 1 and 4)\n"
+        "--zx-mdv-no-persistent-writes n Disable mdv(n) persistent writes (enabled by default) (n between 1 and 4)\n"
+        "--enable-interface1             Enable Interface 1 emulation\n"
 
 
 		"\n"
@@ -4406,6 +4419,79 @@ int parse_cmdline_options(int desde_commandline) {
 			else if (!strcmp(argv[puntero_parametro],"--trd-no-persistent-writes")) {
 				trd_persistent_writes.v=0;
 			}
+
+			else if (!strcmp(argv[puntero_parametro],"--zx-mdv-file")) {
+				siguiente_parametro_argumento();
+
+                int microdrive_seleccionado=parse_string_to_number(argv[puntero_parametro]);
+
+                //aunque la emulacion soporta hasta 8, por el menu solo soportamos hasta 4
+                if (microdrive_seleccionado<1 || microdrive_seleccionado>MAX_MICRODRIVES_BY_CONFIG) {
+					printf ("Invalid microdrive number\n");
+					exit(1);
+				}
+
+                microdrive_seleccionado--;
+
+                siguiente_parametro_argumento();
+
+                //Si es ruta relativa, poner ruta absoluta
+                if (!si_ruta_absoluta(argv[puntero_parametro])) {
+                        //printf ("es ruta relativa\n");
+
+                        //TODO: quiza hacer esto con convert_relative_to_absolute pero esa funcion es para directorios,
+                        //no para directorios con archivo, por tanto quiza habria que hacer un paso intermedio separando
+                        //directorio de archivo
+                        char directorio_actual[PATH_MAX];
+                        getcwd(directorio_actual,PATH_MAX);
+
+                        sprintf (microdrive_status[microdrive_seleccionado].microdrive_file_name,"%s/%s",directorio_actual,argv[puntero_parametro]);
+
+                }
+
+				else {
+					sprintf (microdrive_status[microdrive_seleccionado].microdrive_file_name,"%s",argv[puntero_parametro]);
+				}
+
+			}
+
+            else if (!strcmp(argv[puntero_parametro],"--zx-mdv-enable")) {
+				siguiente_parametro_argumento();
+
+                int microdrive_seleccionado=parse_string_to_number(argv[puntero_parametro]);
+
+                //aunque la emulacion soporta hasta 8, por el menu solo soportamos hasta 4
+                if (microdrive_seleccionado<1 || microdrive_seleccionado>MAX_MICRODRIVES_BY_CONFIG) {
+					printf ("Invalid microdrive number\n");
+					exit(1);
+				}
+
+                microdrive_seleccionado--;
+
+                microdrive_insert(microdrive_seleccionado);
+            }
+
+            else if (!strcmp(argv[puntero_parametro],"--zx-mdv-no-persistent-writes")) {
+				siguiente_parametro_argumento();
+
+                int microdrive_seleccionado=parse_string_to_number(argv[puntero_parametro]);
+
+                //aunque la emulacion soporta hasta 8, por el menu solo soportamos hasta 4
+                if (microdrive_seleccionado<1 || microdrive_seleccionado>MAX_MICRODRIVES_BY_CONFIG) {
+					printf ("Invalid microdrive number\n");
+					exit(1);
+				}
+
+                microdrive_seleccionado--;
+
+                microdrive_status[microdrive_seleccionado].microdrive_persistent_writes=0;
+            }
+
+
+
+            else if (!strcmp(argv[puntero_parametro],"--enable-interface1")) {
+                command_line_if1.v=1;
+            }
 
 			else if (!strcmp(argv[puntero_parametro],"--mmc-file")) {
 				siguiente_parametro_argumento();
@@ -7467,7 +7553,9 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
 		divide_diviface_enable();
     }
 
-
+    if (command_line_if1.v) {
+        enable_if1();
+    }
 
 	if (command_line_esxdos_handler.v) {
 		esxdos_handler_enable();

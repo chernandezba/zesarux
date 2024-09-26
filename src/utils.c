@@ -4019,6 +4019,15 @@ int util_write_configfile(void)
   if (mmc_write_protection.v)		      ADD_STRING_CONFIG,"--mmc-write-protection");
   if (mmc_persistent_writes.v==0)	      ADD_STRING_CONFIG,"--mmc-no-persistent-writes");
 
+  if (if1_enabled.v)                        ADD_STRING_CONFIG,"--enable-interface1");
+
+  for (i=0;i<MAX_MICRODRIVES_BY_CONFIG;i++) {
+    if (microdrive_status[i].microdrive_file_name[0]!=0)  ADD_STRING_CONFIG,"--zx-mdv-file %d \"%s\"",i+1,microdrive_status[i].microdrive_file_name);
+    if (microdrive_status[i].microdrive_enabled) ADD_STRING_CONFIG,"--zx-mdv-enable %d",i+1);
+    if (microdrive_status[i].microdrive_persistent_writes==0) ADD_STRING_CONFIG,"--zx-mdv-no-persistent-writes %d",i+1);
+  }
+
+
   //Los settings de  mmc paging no guardarlo si maquina es tbblue, pues acaba activando el divmmc paging en tbblue y entonces esto provoca que no arranque la tbblue rom
   if (!MACHINE_IS_TBBLUE) {
     if (divmmc_diviface_enabled.v)            ADD_STRING_CONFIG,"--enable-divmmc-paging");

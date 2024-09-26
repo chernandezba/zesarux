@@ -386,10 +386,22 @@ ok * microdrive map en caso de mdr como el de paws que hay archivos duplicados, 
 ok *fragmentacion cuando pasa del ultimo sector al primero no tendria que incrementar fragmentacion. pasa con mdr pantallas.mdr
 *si no hay microdrive insertado y se hace un CAT, deberia retornar error de "Microdrive not present"
 *en grabacion datos y en lectura datos comprobar que los bits de estado los haya indicado correctamente el usuario?
-*parametros config linea comandos/.zesaruxrc
+ok *parametros config linea comandos/.zesaruxrc
 *soporte spectrum 128k
 *algo como visual floppy
-*chkdsk? que compruebe checksums.
+*chkdsk que compruebe checksums.
 *browse/microdrive map que muestre caracteres de nombres de archivo <32 o >127 con "."
 *si random.mdr, browse peta en memcpy(destino,&origen[offset_sector+offset_a_grabar],rec_length);
-*datos de un print # no aparecen en microdrive map o en browse. ver streams.mdr
+ok revisar *datos de un print # no aparecen en microdrive map o en browse. ver streams.mdr
+
+
+*Otro visor de mdr que diga por cada sector los campos:
+
+Recflag: valor y significado (si es eof, print etc)
+
+Reclen
+Name
+Cabecera 17 bytes
+Etc
+
+Con opción para ir directo a hex editor al sector actual con memory zona de mdr

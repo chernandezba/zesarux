@@ -297,7 +297,7 @@ int menu_memory_cheat_first_scan_opcion_seleccionada=0;
 int menu_memory_cheat_next_scan_opcion_seleccionada=0;
 int cpc_additional_roms_opcion_seleccionada=0;
 int interface1_opcion_seleccionada=0;
-int mdv_simulate_bad_sectors_opcion_seleccionada=0;
+//int mdv_simulate_bad_sectors_opcion_seleccionada=0;
 
 //Fin opciones seleccionadas para cada menu
 
@@ -41450,72 +41450,6 @@ void menu_mdv_simulate_bad(MENU_ITEM_PARAMETERS)
 }
 
 
-//Funcion sin uso
-void menu_storage_microdrive_simulate_bad_sectors(MENU_ITEM_PARAMETERS)
-{
-    menu_item *array_menu_common;
-    menu_item item_seleccionado;
-    int retorno_menu;
-
-
-    do {
-
-        menu_add_item_menu_inicial(&array_menu_common,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
-
-        //De momento soportar hasta 4 microdrives en el menu , aunque se permiten hasta 8
-
-        int hay_alguno=0;
-
-        int i;
-        for (i=0;i<4;i++) {
-
-            if (microdrive_status[i].microdrive_enabled) {
-
-                menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_mdv_simulate_bad,NULL,"Microdrive %d",i+1);
-                menu_add_item_menu_valor_opcion(array_menu_common,i);
-
-
-                hay_alguno=1;
-
-
-            }
-
-
-
-        }
-
-        if (!hay_alguno) {
-            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"No microdrives enabled to select");
-        }
-
-        menu_add_item_menu_separator(array_menu_common);
-
-
-        menu_add_ESC_item(array_menu_common);
-
-
-        //Nota: si no se agrega el nombre del path del indice, se generará uno automáticamente
-        menu_add_item_menu_index_full_path(array_menu_common,
-            "Main Menu-> Storage-> Interface1-> Simulate Bad Sectors",
-            "Menú Principal-> Almacenamiento-> Simular sectores erroneos",
-            "Menú Principal-> Emmagatzematge-> Simular sectors erronis");
-
-        retorno_menu=menu_dibuja_menu(&mdv_simulate_bad_sectors_opcion_seleccionada,&item_seleccionado,array_menu_common,
-            "Simulate bad sectors","Simular sectores erroneos","Simular sectors erronis" );
-
-        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
-            //llamamos por valor de funcion
-            if (item_seleccionado.menu_funcion!=NULL) {
-                //printf ("actuamos por funcion\n");
-                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
-
-            }
-        }
-
-    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
-
-}
-
 
 
 
@@ -41912,7 +41846,9 @@ void menu_storage_microdrive_browse(MENU_ITEM_PARAMETERS)
 
     struct s_mdr_file_cat *catalogo;
 
-    catalogo=mdr_get_file_catalogue(microdrive_status[0].if1_microdrive_buffer,microdrive_status[0].mdr_total_sectors);
+    int microdrive_seleccionado=valor_opcion;
+
+    catalogo=mdr_get_file_catalogue(microdrive_status[microdrive_seleccionado].if1_microdrive_buffer,microdrive_status[microdrive_seleccionado].mdr_total_sectors);
 
     zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++,"Label: %s",catalogo->label);
 
@@ -41968,7 +41904,7 @@ void menu_interface1(MENU_ITEM_PARAMETERS)
         //De momento soportar hasta 4 microdrives en el menu , aunque se permiten hasta 8
 
         int i;
-        for (i=0;i<4;i++) {
+        for (i=0;i<MAX_MICRODRIVES_BY_CONFIG;i++) {
 
             menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,"--Microdrive %d--",i+1);
 

@@ -619,6 +619,9 @@ void cpu_set_turbo_speed(void)
 	z80_bit antes_mutiface_enabled;
 	antes_mutiface_enabled.v=multiface_enabled.v;
 
+	z80_bit antes_if1_enabled;
+	antes_if1_enabled.v=if1_enabled.v;
+
 	z80_bit antes_cpu_code_coverage_enabled;
 	antes_cpu_code_coverage_enabled.v=cpu_code_coverage_enabled.v;
 
@@ -694,7 +697,10 @@ void cpu_set_turbo_speed(void)
 
 	if (antes_mutiface_enabled.v) multiface_enable();
 
-
+    if (antes_if1_enabled.v) {
+        //printf("Reactivar if1\n");
+        enable_if1();
+    }
 
 	if (antes_cpu_code_coverage_enabled.v) set_cpu_core_code_coverage_enable();
 
