@@ -365,6 +365,9 @@ la deja en lista de submenu
 claro. o no, porque si hay top bar, "Storage" menu por ejemplo es un menu directo sin tener que pasar por Main Menu
 -al estar en un menu y pulsar en otro de topbar, que se reabra, el truco creo que esta en activar menu_pressed_open_menu_while_in_menu.v
 
+-quiza menu_ventana_scanf_numero_enhanced deberia mostrar el error en ventana en vez de soltarlo por debug_printf,
+porque luego hay sitios como Sectors info de microdrive que al cambiar de sector con tecla 's' tengo que detectar
+si hay un pending error message y mostrarlo
 
 -microdrive:
 ok *no carga pantallas. quiza es que solo lee 1 sector?
@@ -393,7 +396,13 @@ ok *parametros config linea comandos/.zesaruxrc
 *browse/microdrive map que muestre caracteres de nombres de archivo <32 o >127 con "."
 *si random.mdr, browse peta en memcpy(destino,&origen[offset_sector+offset_a_grabar],rec_length);
 ok revisar *datos de un print # no aparecen en microdrive map o en browse. ver streams.mdr
+*sectors info: poder abrir hex editor desde ese sector (necesitara nuevo memory zone de imagen mdr, zona de toda la imagen)
+*nueva funcion: poder recuperar archivos borrados. en sector 51 de paws (Professional Adventure Writer - All.mdr)  parece que hay uno
+identificar sectores borrados (An empty record block has a zero in bit 1 of RECFLG and also RECLEN=0) y enlazar
+archivos que tengan mismo recnam y enlazar mediante recnum (y siempre que recnam no sea nombre todo a 0)
 
+*mdr de trans express tiene algun bloque sin bloque 0 y otros errores aparentes
+quiza chkdsk deberia decir que errores hay (por ejemplo files with missing blocks)
 
 *Otro visor de mdr que diga por cada sector los campos:
 

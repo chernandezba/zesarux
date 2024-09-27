@@ -41768,7 +41768,8 @@ void menu_storage_microdrive_chkdsk(MENU_ITEM_PARAMETERS)
     }
 
     //Ver si hay bloques no asignados a archivos
-    int archivos_sin_bloque_zero=mdr_chkdsk_get_files_no_block_zero(catalogo,
+    //int archivos_sin_bloque_zero;
+    mdr_chkdsk_get_files_no_block_zero(catalogo,
         microdrive_status[valor_opcion].if1_microdrive_buffer,microdrive_status[valor_opcion].mdr_total_sectors);
 
     //Contar cuantos archivos tienen mas de una copia
@@ -41793,9 +41794,33 @@ void menu_storage_microdrive_chkdsk(MENU_ITEM_PARAMETERS)
         problemas_detectados=1;
     }
 
-    if (archivos_sin_bloque_zero) {
-        zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++,"Lost blocks missing block zero:          %3d",archivos_sin_bloque_zero);
+    if (catalogo->chkdsk_total_files_sin_bloque_zero) {
+        zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++,"Lost blocks missing block zero:          %3d",catalogo->chkdsk_total_files_sin_bloque_zero);
         problemas_detectados=1;
+
+        zxvision_print_string_defaults(&ventana,1,linea," Sectors: ");
+
+        int x=11; //posicionar despues de "Sectors:"
+
+        char buffer_numero[5]; //3 digitos numero, coma, 0 del final
+
+        //hasta ancho-5 para dar un margen de escribir los "..."
+        for (i=0;i<catalogo->chkdsk_total_files_sin_bloque_zero && x<ancho-5;i++) {
+            sprintf(buffer_numero,"%d,",catalogo->chkdsk_files_sin_bloque_zero_sectors[i]);
+
+            zxvision_print_string_defaults(&ventana,x,linea,buffer_numero);
+            int longitud=strlen(buffer_numero);
+            x +=longitud;
+        }
+
+        //Si no ha acabado de listarlos todos, meter "..."
+        if (i!=catalogo->chkdsk_total_files_sin_bloque_zero) zxvision_print_string_defaults(&ventana,x,linea,"...");
+        else {
+            //quitar la coma del final
+            zxvision_print_string_defaults(&ventana,x-1,linea," ");
+        }
+        linea++;
+
     }
 
 
@@ -41836,7 +41861,7 @@ void menu_storage_microdrive_sectors_info(MENU_ITEM_PARAMETERS)
 
 
     int ancho=48;
-    int alto=27;
+    int alto=28;
     int xventana=menu_center_x()-ancho/2;
     int yventana=menu_center_y()-alto/2;
 
@@ -41927,7 +41952,7 @@ void menu_storage_microdrive_sectors_info(MENU_ITEM_PARAMETERS)
         if (rec_len==512 || (data_recflg & 0x02)==0x02) sector_usado=1;
 
         zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++,"Physical Sector %3d/%3d Offset: %05XH",
-            current_sector,microdrive_status[microdrive_seleccionado].mdr_total_sectors,
+            current_sector,microdrive_status[microdrive_seleccionado].mdr_total_sectors-1,
             current_sector*MDR_BYTES_PER_SECTOR
         );
 
@@ -41969,7 +41994,7 @@ void menu_storage_microdrive_sectors_info(MENU_ITEM_PARAMETERS)
             data_recflg&1,((data_recflg&1)==0 ? "" : "no "));
         zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++,"    Bit 1=%d (%sEOF block)",
             (data_recflg&2)>>1,((data_recflg&2) ? "" : "no "));
-        zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++,"    Bit 2=%d (%sPRINT file)",
+        zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++,"    Bit 2=%d (%sPRINT/STREAM file)",
             (data_recflg&4)>>2,((data_recflg&4)==0 ? "" : "no "));
 
         zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++," 16 RECNUM: %02XH   - data block sequence number",rec_num);
@@ -41990,6 +42015,7 @@ void menu_storage_microdrive_sectors_info(MENU_ITEM_PARAMETERS)
 
         zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"");
         zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"Use cursors ~~< ~~> to change sector");
+        zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"~~s: jump to sector");
 
         //Restaurar comportamiento atajos
         menu_writing_inverse_color.v=antes_menu_writing_inverse_color.v;
@@ -41999,6 +42025,7 @@ void menu_storage_microdrive_sectors_info(MENU_ITEM_PARAMETERS)
 
         z80_byte tecla=zxvision_common_getkey_refresh();
 
+        int max_valor;
 
         switch (tecla) {
 
@@ -42020,6 +42047,24 @@ void menu_storage_microdrive_sectors_info(MENU_ITEM_PARAMETERS)
             //O tecla background
             case 3:
                 salir=1;
+            break;
+
+            case 's':
+
+                max_valor=microdrive_status[microdrive_seleccionado].mdr_total_sectors-1;
+
+                int sector=current_sector;
+
+                int retorno=menu_ventana_scanf_numero_enhanced("Sector?",&sector,4,+1,0,max_valor,0);
+
+                //comprobar error
+                if (if_pending_error_message) {
+                    menu_muestra_pending_error_message(); //Si se genera un error derivado de menu_ventana_scanf_numero_enhanced
+                }
+
+                if (retorno>=0) current_sector=sector;
+
+
             break;
         }
 

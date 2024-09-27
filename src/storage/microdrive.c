@@ -30,7 +30,15 @@ Solo se avanza el puntero de lectura/escritura cuando se hace una operación de 
 - Los bits de lectura/escritura se están ignorando: por ejemplo se puede escribir aunque no se haya metido la controladora en modo escritura
 - Se detecta cuando se lanza un comando format: esto es porque se comporta ligeramente diferente al comando de escritura.
 Esto no haria falta seguramente si se emulasen los tiempos y el movimiento real del microdrive
+
 - Se deberían guardar los bytes de gap y de preamble: dado que el formato .mdr no lo soporta, los ignoramos, pero no es lo deseable
+El formato mdr está limitado a que se guarde la información con la estructura que impone la rom del interface 1, pero estaria
+interesante tener otro formato de microdrive que permitiese señales de gap y preamble en cualquier punto del microdrive,
+y para ello seria necesario algo como una estructura de formato de 16 bits y que por ejemplo el bit 15 indicase que es señal
+de preamble, el 14 de gap... y cualquier dato escrito tuviese esos dos bits a 0... Quizá el formato mdv usado en QL tiene
+la solución a esto (o no). Pero con un formato nuevo de archivo de microdrive (diferente al mdr) se podría permitir
+cualquier formato de sistema de archivos que se quisiera meter en el microdrive.. nadie lo iba a usar probablemente, pero
+seria interesante :)
 
 
 TODO:
@@ -1027,6 +1035,8 @@ struct s_mdr_file_cat *mdr_get_file_catalogue(z80_byte *origen,int total_sectors
 
         //A used record block is either an EOF block (bit 1 of RECFLG is 1) or
         //contains 512 bytes of data (RECLEN=512, i.e. bit 1 of MSB is 1).
+        //An empty record block has a zero in bit 1 of RECFLG and also RECLEN=0
+        //An unusable block (as determined by the FORMAT command) is an EOF block with RECLEN=0.
         if (rec_len==512 || (data_recflg & 0x02)==0x02) sector_usado=1;
 
         //if ((data_recflg & 0x04)==0x04) catalogo->used_sectors++;
@@ -1232,22 +1242,24 @@ int mdr_if_file_exists_catalogue(struct s_mdr_file_cat *catalogo,char *nombre)
 //Como parte de chkdsk, ver si hay bloques de archivos que no tienen bloque 0
 //devuelve el listado de archivos de un mdr
 //usado por multiples funciones para facilitar el acceso a los archivos
-int mdr_chkdsk_get_files_no_block_zero(struct s_mdr_file_cat *catalogo,z80_byte *origen,int total_sectors)
+void mdr_chkdsk_get_files_no_block_zero(struct s_mdr_file_cat *catalogo,z80_byte *origen,int total_sectors)
 {
 
 
     int i;
 
-    int files_sin_bloque_zero=0;
+    //int files_sin_bloque_zero=0;
+
+    catalogo->chkdsk_total_files_sin_bloque_zero=0;
 
 
     for (i=0;i<total_sectors;i++) {
 
         z80_byte data_recflg=mdr_get_file_catalogue_get_byte(origen,i,15);
         z80_byte record_segment=mdr_get_file_catalogue_get_byte(origen,i,16);
+        z80_int rec_len=mdr_get_file_catalogue_get_byte(origen,i,17)+256*mdr_get_file_catalogue_get_byte(origen,i,18);
 
-        if (record_segment!=0 && (data_recflg & 0x04)==0x04) {
-
+        if (record_segment!=0 && ((rec_len==512 || (data_recflg & 0x02)==0x02)) ) {
 
             int j;
 
@@ -1265,16 +1277,15 @@ int mdr_chkdsk_get_files_no_block_zero(struct s_mdr_file_cat *catalogo,z80_byte 
             buffer_nombre[j]=0;
 
             if (!mdr_if_file_exists_catalogue(catalogo,buffer_nombre)) {
-                printf("Bloque %d de archivo [%s] no tiene bloque cero asociado\n",record_segment,buffer_nombre);
-                files_sin_bloque_zero++;
+                printf("Bloque %d de archivo [%s] no tiene bloque cero asociado. Sector=%d\n",record_segment,buffer_nombre,i);
+                catalogo->chkdsk_files_sin_bloque_zero_sectors[catalogo->chkdsk_total_files_sin_bloque_zero]=i;
+                catalogo->chkdsk_total_files_sin_bloque_zero++;
             }
         }
 
 
     }
 
-
-    return files_sin_bloque_zero;
 
 }
 
