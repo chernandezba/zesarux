@@ -41562,7 +41562,7 @@ void menu_storage_microdrive_map(MENU_ITEM_PARAMETERS)
     int sectores_por_linea=32;
     int x=0;
 
-    char buffer_linea[MAX_ANCHO_LINEAS_GENERIC_MESSAGE+1]="";
+    //char buffer_linea[MAX_ANCHO_LINEAS_GENERIC_MESSAGE+1]="";
 
     for (i=0;i<microdrive_status[valor_opcion].mdr_total_sectors;i++) {
         char caracter_info=letras_sectores[i];
@@ -41570,12 +41570,12 @@ void menu_storage_microdrive_map(MENU_ITEM_PARAMETERS)
     //int linea=menu_microdrive_map_browse(&ventana,0,valor_opcion,0,NULL,0);
 
 
-        char string_caracter[2];
+        //char string_caracter[2];
 
-        string_caracter[0]=caracter_info;
-        string_caracter[1]=0;
+        //string_caracter[0]=caracter_info;
+        //string_caracter[1]=0;
 
-        util_concat_string(buffer_linea,string_caracter,MAX_ANCHO_LINEAS_GENERIC_MESSAGE);
+        //util_concat_string(buffer_linea,string_caracter,MAX_ANCHO_LINEAS_GENERIC_MESSAGE);
 
         int tinta=ESTILO_GUI_TINTA_NORMAL;
         int papel=ESTILO_GUI_PAPEL_NORMAL;
@@ -41598,7 +41598,7 @@ void menu_storage_microdrive_map(MENU_ITEM_PARAMETERS)
 
             //zxvision_print_string_defaults_fillspc(&ventana,1,linea++,buffer_linea);
             linea++;
-            buffer_linea[0]=0;
+            //buffer_linea[0]=0;
 
         }
 
@@ -41635,7 +41635,7 @@ void menu_storage_microdrive_map(MENU_ITEM_PARAMETERS)
         if (copias>1) sprintf(buffer_copias," (%d copies)",copias);
 
         zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++,
-            "File %3d/%3d: %s%s",buscar_archivo+1,catalogo->total_files,catalogo->file[buscar_archivo].name,buffer_copias);
+            "File %3d/%3d Name: %s%s",buscar_archivo+1,catalogo->total_files,catalogo->file[buscar_archivo].name,buffer_copias);
     }
     else {
         //zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"Microdrive Info:");
