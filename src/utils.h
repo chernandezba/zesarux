@@ -885,6 +885,10 @@ extern void snapshot_get_date_time_string(char *texto);
 #define MEMORY_ZONE_INTERFACE007_ROM 46
 #define MEMORY_ZONE_DINAMID3_ROM 47
 #define MEMORY_ZONE_DSK_SECTOR 48
+#define MEMORY_ZONE_MDV1 49
+#define MEMORY_ZONE_MDV2 50
+#define MEMORY_ZONE_MDV3 51
+#define MEMORY_ZONE_MDV4 52
 
 
 

@@ -14267,6 +14267,34 @@ unsigned int machine_get_memory_zone_attrib(int zone, int *readwrite)
         }
     break;
 
+    case MEMORY_ZONE_MDV1:
+        if (microdrive_status[0].microdrive_enabled) {
+            *readwrite=1;
+            size=microdrive_status[0].mdr_total_sectors*MDR_BYTES_PER_SECTOR;
+        }
+    break;
+
+    case MEMORY_ZONE_MDV2:
+        if (microdrive_status[1].microdrive_enabled) {
+            *readwrite=1;
+            size=microdrive_status[1].mdr_total_sectors*MDR_BYTES_PER_SECTOR;
+        }
+    break;
+
+    case MEMORY_ZONE_MDV3:
+        if (microdrive_status[2].microdrive_enabled) {
+            *readwrite=1;
+            size=microdrive_status[2].mdr_total_sectors*MDR_BYTES_PER_SECTOR;
+        }
+    break;
+
+    case MEMORY_ZONE_MDV4:
+        if (microdrive_status[3].microdrive_enabled) {
+            *readwrite=1;
+            size=microdrive_status[3].mdr_total_sectors*MDR_BYTES_PER_SECTOR;
+        }
+    break;
+
   }
 
   return size;
@@ -14756,6 +14784,30 @@ z80_byte *machine_get_memory_zone_pointer(int zone, int address)
     case MEMORY_ZONE_DSK_SECTOR:
         if (dsk_memory_zone_dsk_sector_enabled.v) {
             p=&p3dsk_buffer_disco[dsk_memory_zone_dsk_sector_start+address];
+        }
+    break;
+
+    case MEMORY_ZONE_MDV1:
+        if (microdrive_status[0].microdrive_enabled) {
+            p=&microdrive_status[0].if1_microdrive_buffer[address];
+        }
+    break;
+
+    case MEMORY_ZONE_MDV2:
+        if (microdrive_status[1].microdrive_enabled) {
+            p=&microdrive_status[1].if1_microdrive_buffer[address];
+        }
+    break;
+
+    case MEMORY_ZONE_MDV3:
+        if (microdrive_status[2].microdrive_enabled) {
+            p=&microdrive_status[2].if1_microdrive_buffer[address];
+        }
+    break;
+
+    case MEMORY_ZONE_MDV4:
+        if (microdrive_status[3].microdrive_enabled) {
+            p=&microdrive_status[3].if1_microdrive_buffer[address];
         }
     break;
 
@@ -15271,6 +15323,34 @@ void machine_get_memory_zone_name(int zone, char *name)
         if (dsk_memory_zone_dsk_sector_enabled.v) {
                        //123456789012345678901234567890
             strcpy(name,"DSK Sector");
+        }
+    break;
+
+    case MEMORY_ZONE_MDV1:
+        if (microdrive_status[0].microdrive_enabled) {
+                       //123456789012345678901234567890
+            strcpy(name,"MDV1 Device");
+        }
+    break;
+
+    case MEMORY_ZONE_MDV2:
+        if (microdrive_status[1].microdrive_enabled) {
+                       //123456789012345678901234567890
+            strcpy(name,"MDV2 Device");
+        }
+    break;
+
+    case MEMORY_ZONE_MDV3:
+        if (microdrive_status[2].microdrive_enabled) {
+                       //123456789012345678901234567890
+            strcpy(name,"MDV3 Device");
+        }
+    break;
+
+    case MEMORY_ZONE_MDV4:
+        if (microdrive_status[3].microdrive_enabled) {
+                       //123456789012345678901234567890
+            strcpy(name,"MDV4 Device");
         }
     break;
 
