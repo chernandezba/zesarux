@@ -41978,6 +41978,8 @@ void menu_storage_microdrive_sectors_info(MENU_ITEM_PARAMETERS)
 
     int salir=0;
 
+    int abrir_hex_editor=0;
+
     //Si microdrive seleccionado no llega al ultimo sector que hemos visualizado (porque se haya cambiado)
     //o porque microdrive_seleccionado no sea el mismo que el anterior,
     //ir a sector 0
@@ -42143,7 +42145,7 @@ void menu_storage_microdrive_sectors_info(MENU_ITEM_PARAMETERS)
 
         zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"");
         zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"Use cursors ~~< ~~> to change sector");
-        zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"~~s: jump to sector");
+        zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"~~s: jump to sector  ~~x: open hex editor");
 
         //Restaurar comportamiento atajos
         menu_writing_inverse_color.v=antes_menu_writing_inverse_color.v;
@@ -42194,11 +42196,41 @@ void menu_storage_microdrive_sectors_info(MENU_ITEM_PARAMETERS)
 
 
             break;
+
+            case 'x':
+                abrir_hex_editor=1;
+                salir=1;
+            break;
+
         }
 
     } while (!salir);
 
     zxvision_destroy_window(&ventana);
+
+    if (abrir_hex_editor) {
+        switch (microdrive_seleccionado) {
+            case 0:
+                 menu_set_memzone(MEMORY_ZONE_MDV1);
+            break;
+
+            case 1:
+                 menu_set_memzone(MEMORY_ZONE_MDV2);
+            break;
+
+            case 2:
+                 menu_set_memzone(MEMORY_ZONE_MDV3);
+            break;
+
+            case 3:
+                 menu_set_memzone(MEMORY_ZONE_MDV4);
+            break;
+        }
+
+        menu_debug_hexdump_direccion=mdv_sectors_info_current_sector*MDR_BYTES_PER_SECTOR;
+
+        menu_debug_hexdump(0);
+    }
 
 
 }
