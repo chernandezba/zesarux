@@ -155,7 +155,7 @@ struct s_mdr_file_cat {
 
 extern struct s_mdr_file_cat *mdr_get_file_catalogue(z80_byte *origen,int total_sectors);
 
-extern void mdr_get_file_from_catalogue(z80_byte *origen,struct s_mdr_file_cat_one_file *archivo,z80_byte *destino,int tamanyo_esperado);
+extern void mdr_get_file_from_catalogue(z80_byte *origen,struct s_mdr_file_cat_one_file *archivo,z80_byte *destino,int tamanyo_esperado,int total_sectors);
 
 extern void microdrive_switch_write_protection(int microdrive_seleccionado);
 

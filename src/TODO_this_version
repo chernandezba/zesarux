@@ -406,3 +406,5 @@ ajustar los checksums
 *mdr de trans express tiene algun bloque sin bloque 0 y otros errores aparentes
 quiza chkdsk deberia decir que errores hay (por ejemplo files with missing blocks)
 
+*otros chkdsk: bloques de archivos usados en mas de 1 archivo a la vez
+O bloques de archivos que apunten mas alla de sector maximo

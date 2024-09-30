@@ -872,7 +872,7 @@ void mdr_safe_memcpy(z80_byte *puntero,int sector,int sector_offset,z80_byte *de
 }
 
 
-void mdr_get_file_from_catalogue(z80_byte *origen,struct s_mdr_file_cat_one_file *archivo,z80_byte *destino,int tamanyo_esperado)
+void mdr_get_file_from_catalogue(z80_byte *origen,struct s_mdr_file_cat_one_file *archivo,z80_byte *destino,int tamanyo_esperado,int total_sectors)
 {
 
     int tamanyo=archivo->file_size;
@@ -903,6 +903,12 @@ void mdr_get_file_from_catalogue(z80_byte *origen,struct s_mdr_file_cat_one_file
         int i=archivo->sectors_list[bloque_buscando];
 
         if (i>=0) {
+
+            if (i>=total_sectors) {
+                printf("Asking for sector %d of a file but maximum sector number: %d\n",i,total_sectors-1);
+            }
+
+            else {
 
 
             int offset_sector=i*MDR_BYTES_PER_SECTOR;
@@ -939,6 +945,8 @@ void mdr_get_file_from_catalogue(z80_byte *origen,struct s_mdr_file_cat_one_file
             }
 
             destino +=rec_length;
+
+            }
 
         }
 

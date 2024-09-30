@@ -16767,7 +16767,7 @@ int util_extract_mdr(char *filename,char *tempdir)
         z80_byte *destino=util_malloc(tamanyo,"Can not allocate memory to get file");
 
 
-        mdr_get_file_from_catalogue(taperead,&catalogo->file[i],destino,tamanyo);
+        mdr_get_file_from_catalogue(taperead,&catalogo->file[i],destino,tamanyo,total_sectors);
 
 
 
