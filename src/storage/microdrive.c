@@ -911,40 +911,40 @@ void mdr_get_file_from_catalogue(z80_byte *origen,struct s_mdr_file_cat_one_file
             else {
 
 
-            int offset_sector=i*MDR_BYTES_PER_SECTOR;
+                int offset_sector=i*MDR_BYTES_PER_SECTOR;
 
 
-            //Grabar ese bloque
-            //Si es record 0 y no es printfile, saltar 9 bytes de la cabecera de datos
-            int offset_a_grabar=30;
-            //int tamanyo_restar=512;
+                //Grabar ese bloque
+                //Si es record 0 y no es printfile, saltar 9 bytes de la cabecera de datos
+                int offset_a_grabar=30;
+                //int tamanyo_restar=512;
 
-            int rec_length=origen[offset_sector+17]+256*origen[offset_sector+18];
+                int rec_length=origen[offset_sector+17]+256*origen[offset_sector+18];
 
 
-            if (bloque_buscando==0 && archivo->esprintfile==0) {
-                offset_a_grabar+=9;
-                rec_length-=9;
-            }
-
-            printf("Copiando %d bytes\n",rec_length);
-
-            if (rec_length>0) {
-                //memcpy(destino,&origen[offset_sector+offset_a_grabar],rec_length);
-                //Si la longitud de lo que se va a copiar excede la longitud restante esperada,
-                //en casos de imagenes corruptas
-                if (rec_length>tamanyo_esperado) {
-                    printf("Asked for %d bytes but exceeding remaining %d\n",rec_length,tamanyo_esperado);
-                    rec_length=tamanyo_esperado;
+                if (bloque_buscando==0 && archivo->esprintfile==0) {
+                    offset_a_grabar+=9;
+                    rec_length-=9;
                 }
 
-                tamanyo_esperado -=rec_length;
+                printf("Copiando %d bytes\n",rec_length);
+
+                if (rec_length>0) {
+                    //memcpy(destino,&origen[offset_sector+offset_a_grabar],rec_length);
+                    //Si la longitud de lo que se va a copiar excede la longitud restante esperada,
+                    //en casos de imagenes corruptas
+                    if (rec_length>tamanyo_esperado) {
+                        printf("Asked for %d bytes but exceeding remaining %d\n",rec_length,tamanyo_esperado);
+                        rec_length=tamanyo_esperado;
+                    }
+
+                    tamanyo_esperado -=rec_length;
 
 
-                mdr_safe_memcpy(origen,i,offset_a_grabar,destino,rec_length);
-            }
+                    mdr_safe_memcpy(origen,i,offset_a_grabar,destino,rec_length);
+                }
 
-            destino +=rec_length;
+                destino +=rec_length;
 
             }
 
