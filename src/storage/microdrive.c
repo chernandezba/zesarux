@@ -872,7 +872,7 @@ void mdr_safe_memcpy(z80_byte *puntero,int sector,int sector_offset,z80_byte *de
 }
 
 
-void mdr_get_file_from_catalogue(z80_byte *origen,struct s_mdr_file_cat_one_file *archivo,z80_byte *destino)
+void mdr_get_file_from_catalogue(z80_byte *origen,struct s_mdr_file_cat_one_file *archivo,z80_byte *destino,int tamanyo_esperado)
 {
 
     int tamanyo=archivo->file_size;
@@ -925,6 +925,16 @@ void mdr_get_file_from_catalogue(z80_byte *origen,struct s_mdr_file_cat_one_file
 
             if (rec_length>0) {
                 //memcpy(destino,&origen[offset_sector+offset_a_grabar],rec_length);
+                //Si la longitud de lo que se va a copiar excede la longitud restante esperada,
+                //en casos de imagenes corruptas
+                if (rec_length>tamanyo_esperado) {
+                    printf("Asked for %d bytes but exceeding remaining %d\n",rec_length,tamanyo_esperado);
+                    rec_length=tamanyo_esperado;
+                }
+
+                tamanyo_esperado -=rec_length;
+
+
                 mdr_safe_memcpy(origen,i,offset_a_grabar,destino,rec_length);
             }
 
