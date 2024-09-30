@@ -860,6 +860,17 @@ z80_byte mdr_get_file_catalogue_get_byte(z80_byte *puntero,int sector,int sector
     return puntero[offset];
 }
 
+void mdr_safe_memcpy(z80_byte *puntero,int sector,int sector_offset,z80_byte *destino,int longitud)
+{
+    while (longitud>0) {
+        z80_byte byte_leido=mdr_get_file_catalogue_get_byte(puntero,sector,sector_offset++);
+        *destino=byte_leido;
+
+        destino++;
+        longitud--;
+    }
+}
+
 
 void mdr_get_file_from_catalogue(z80_byte *origen,struct s_mdr_file_cat_one_file *archivo,z80_byte *destino)
 {
@@ -913,7 +924,8 @@ void mdr_get_file_from_catalogue(z80_byte *origen,struct s_mdr_file_cat_one_file
             printf("Copiando %d bytes\n",rec_length);
 
             if (rec_length>0) {
-                memcpy(destino,&origen[offset_sector+offset_a_grabar],rec_length);
+                //memcpy(destino,&origen[offset_sector+offset_a_grabar],rec_length);
+                mdr_safe_memcpy(origen,i,offset_a_grabar,destino,rec_length);
             }
 
             destino +=rec_length;
