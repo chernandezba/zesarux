@@ -41516,8 +41516,6 @@ void menu_storage_microdrive_map(MENU_ITEM_PARAMETERS)
     }
 
 
-
-
     int inicio_busqueda=0;
     int final_busqueda=catalogo->total_files;
 
@@ -41542,7 +41540,6 @@ void menu_storage_microdrive_map(MENU_ITEM_PARAMETERS)
                 char letra='U';
                 if (j==catalogo->file[i].total_sectors-1) letra='u';
 
-
                 letras_sectores[sector_usado]=letra;
 
             }
@@ -41550,10 +41547,6 @@ void menu_storage_microdrive_map(MENU_ITEM_PARAMETERS)
             used_sectors++;
         }
     }
-
-
-    //
-
 
 
 
@@ -41566,16 +41559,6 @@ void menu_storage_microdrive_map(MENU_ITEM_PARAMETERS)
 
     for (i=0;i<microdrive_status[valor_opcion].mdr_total_sectors;i++) {
         char caracter_info=letras_sectores[i];
-
-    //int linea=menu_microdrive_map_browse(&ventana,0,valor_opcion,0,NULL,0);
-
-
-        //char string_caracter[2];
-
-        //string_caracter[0]=caracter_info;
-        //string_caracter[1]=0;
-
-        //util_concat_string(buffer_linea,string_caracter,MAX_ANCHO_LINEAS_GENERIC_MESSAGE);
 
         int tinta=ESTILO_GUI_TINTA_NORMAL;
         int papel=ESTILO_GUI_PAPEL_NORMAL;
@@ -41594,12 +41577,7 @@ void menu_storage_microdrive_map(MENU_ITEM_PARAMETERS)
 
         if (x==sectores_por_linea || i==microdrive_status[valor_opcion].mdr_total_sectors-1) {
             x=0;
-            //printf("\n");
-
-            //zxvision_print_string_defaults_fillspc(&ventana,1,linea++,buffer_linea);
             linea++;
-            //buffer_linea[0]=0;
-
         }
 
     }
