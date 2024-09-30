@@ -42227,9 +42227,10 @@ void menu_storage_microdrive_sectors_info(MENU_ITEM_PARAMETERS)
             break;
         }
 
-        menu_debug_hexdump_direccion=mdv_sectors_info_current_sector*MDR_BYTES_PER_SECTOR;
+        //Inicializar info de tamanyo zona
+        menu_debug_set_memory_zone_attr();
 
-        menu_debug_hexdump_direccion=adjust_address_memory_size(menu_debug_hexdump_direccion);
+        menu_debug_hexdump_direccion=mdv_sectors_info_current_sector*MDR_BYTES_PER_SECTOR;
 
         menu_debug_hexdump(0);
     }

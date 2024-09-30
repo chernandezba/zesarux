@@ -406,4 +406,3 @@ ajustar los checksums
 *mdr de trans express tiene algun bloque sin bloque 0 y otros errores aparentes
 quiza chkdsk deberia decir que errores hay (por ejemplo files with missing blocks)
 
-falla al saltar a memory zone, solo offset hasta ffffh
