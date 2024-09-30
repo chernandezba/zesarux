@@ -32,6 +32,7 @@
 #include "operaciones.h"
 #include "zxvision.h"
 #include "compileoptions.h"
+#include "mem128.h"
 
 z80_bit if1_enabled={0};
 z80_byte *if1_memory_pointer;
@@ -92,8 +93,21 @@ z80_byte cpu_core_loop_if1(z80_int dir GCC_UNUSED, z80_byte value GCC_UNUSED)
 	//Gestionar traps
 	if (if1_rom_paged.v==0) {
 		if (reg_pc==8 || reg_pc==5896) {
-			printf ("paging if1 rom when pc=%d\n",reg_pc);
-			if1_rom_paged.v=1;
+
+            //Entra esa rom si esta activa rom 1 de spectrum 128
+
+            int entra_if1_rom=0;
+
+            if (MACHINE_IS_SPECTRUM_128_P2) {
+                //Solo si estabamos en rom 1
+                if ((puerto_32765 & 16) ==16) entra_if1_rom=1;
+            }
+            else entra_if1_rom=1;
+
+            if (entra_if1_rom) {
+                printf ("paging if1 rom when pc=%d\n",reg_pc);
+                if1_rom_paged.v=1;
+            }
 		}
 	}
 

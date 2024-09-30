@@ -390,12 +390,13 @@ ok *fragmentacion cuando pasa del ultimo sector al primero no tendria que increm
 *si no hay microdrive insertado y se hace un CAT, deberia retornar error de "Microdrive not present"
 *en grabacion datos y en lectura datos comprobar que los bits de estado los haya indicado correctamente el usuario?
 ok *parametros config linea comandos/.zesaruxrc
-*soporte spectrum 128k
+ok *soporte spectrum 128k
 *algo como visual floppy
-*chkdsk que compruebe checksums.
+ok *chkdsk que compruebe checksums.
 *browse/microdrive map que muestre caracteres de nombres de archivo <32 o >127 con "."
 *si random.mdr, browse peta en memcpy(destino,&origen[offset_sector+offset_a_grabar],rec_length);
 ok revisar *datos de un print # no aparecen en microdrive map o en browse. ver streams.mdr
+
 *sectors info: poder abrir hex editor desde ese sector (necesitara nuevo memory zone de imagen mdr, zona de toda la imagen)
 *nueva funcion: poder recuperar archivos borrados. en sector 51 de paws (Professional Adventure Writer - All.mdr)  parece que hay uno
 identificar sectores borrados (An empty record block has a zero in bit 1 of RECFLG and also RECLEN=0) y enlazar

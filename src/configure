@@ -1787,7 +1787,7 @@ divide.o: storage/divide.c storage/divide.h storage/divmmc.h storage/diviface.h 
 diviface.o: storage/diviface.c storage/diviface.h cpu.h debug.h utils.h zxvision/zxvision.h video/screen.h operaciones.h machines/zxuno.h contend.h machines/prism.h machines/tbblue.h machines/tsconf.h
 	\$(CC) \$(CFLAGS) -c storage/diviface.c
 
-if1.o: storage/if1.c storage/if1.h storage/microdrive.h cpu.h debug.h utils.h operaciones.h zxvision/zxvision.h
+if1.o: storage/if1.c storage/if1.h storage/microdrive.h cpu.h debug.h utils.h operaciones.h zxvision/zxvision.h mem128.h
 	\$(CC) \$(CFLAGS) -c storage/if1.c
 
 microdrive.o: storage/microdrive.c storage/microdrive.h storage/if1.h cpu.h debug.h utils.h operaciones.h zxvision/zxvision.h menu/menu_items.h video/screen.h
