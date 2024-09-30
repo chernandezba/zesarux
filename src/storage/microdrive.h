@@ -142,6 +142,15 @@ struct s_mdr_file_cat {
     //Usado por funcion mdr_chkdsk_get_files_no_block_zero
     int chkdsk_total_files_sin_bloque_zero;
     z80_byte chkdsk_files_sin_bloque_zero_sectors[MDR_MAX_SECTORS];
+
+    //checksums leidos y calculados. Usado por funcion mdr_chkdsk_get_checksums
+    z80_byte hd_chk[MDR_MAX_SECTORS];
+    z80_byte des_chk[MDR_MAX_SECTORS];
+    z80_byte data_chk[MDR_MAX_SECTORS];
+
+    z80_byte calculated_hd_chk[MDR_MAX_SECTORS];
+    z80_byte calculated_des_chk[MDR_MAX_SECTORS];
+    z80_byte calculated_data_chk[MDR_MAX_SECTORS];
 };
 
 extern struct s_mdr_file_cat *mdr_get_file_catalogue(z80_byte *origen,int total_sectors);
@@ -155,5 +164,11 @@ extern int mdr_if_file_exists_catalogue(struct s_mdr_file_cat *catalogo,char *no
 extern void mdr_chkdsk_get_files_no_block_zero(struct s_mdr_file_cat *catalogo,z80_byte *origen,int total_sectors);
 
 extern void mdr_get_file_name_escaped(char *origen,char *destino);
+
+extern void mdr_truncate_spaces_name(char *texto);
+
+extern z80_byte mdr_calculate_checksum(z80_byte *origen,int sector,int offset_sector,int longitud);
+
+extern void mdr_chkdsk_get_checksums(struct s_mdr_file_cat *catalogo,z80_byte *origen,int total_sectors);
 
 #endif

@@ -41459,6 +41459,10 @@ void menu_storage_microdrive_map(MENU_ITEM_PARAMETERS)
 
     catalogo=mdr_get_file_catalogue(microdrive_status[valor_opcion].if1_microdrive_buffer,microdrive_status[valor_opcion].mdr_total_sectors);
 
+
+    mdr_chkdsk_get_checksums(catalogo,
+        microdrive_status[valor_opcion].if1_microdrive_buffer,microdrive_status[valor_opcion].mdr_total_sectors);
+
     printf("Nuevo catalogo\n");
 
     printf("Label: [%s]\n",catalogo->label);
@@ -41573,14 +41577,28 @@ void menu_storage_microdrive_map(MENU_ITEM_PARAMETERS)
 
         util_concat_string(buffer_linea,string_caracter,MAX_ANCHO_LINEAS_GENERIC_MESSAGE);
 
+        int tinta=ESTILO_GUI_TINTA_NORMAL;
+        int papel=ESTILO_GUI_PAPEL_NORMAL;
+
+        //Y bad checksum
+        if (catalogo->hd_chk[i]!=catalogo->calculated_hd_chk[i] ||
+            catalogo->des_chk[i]!=catalogo->calculated_des_chk[i] ||
+            catalogo->data_chk[i]!=catalogo->calculated_data_chk[i]) {
+                tinta=ESTILO_GUI_COLOR_AVISO;
+        }
+
+
+        zxvision_print_string_format(&ventana,x+1,linea,tinta,papel,0,"%c",caracter_info);
+
         x++;
 
         if (x==sectores_por_linea || i==microdrive_status[valor_opcion].mdr_total_sectors-1) {
             x=0;
             //printf("\n");
 
-                zxvision_print_string_defaults_fillspc(&ventana,1,linea++,buffer_linea);
-                buffer_linea[0]=0;
+            //zxvision_print_string_defaults_fillspc(&ventana,1,linea++,buffer_linea);
+            linea++;
+            buffer_linea[0]=0;
 
         }
 
@@ -41596,6 +41614,7 @@ void menu_storage_microdrive_map(MENU_ITEM_PARAMETERS)
     zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"u: Used sector and final of a file");
     zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"X: Bad sector");
     zxvision_print_string_defaults_fillspc(&ventana,1,linea++,".: Unused sector");
+    zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"Coloured Letter: Bad checksum on sector");
 
     zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"");
     zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"Microdrive Info:");
@@ -41751,8 +41770,30 @@ void menu_storage_microdrive_chkdsk(MENU_ITEM_PARAMETERS)
 
     //Contar copias, archivos que le faltan bloques, etc
     int archivos_faltan_bloques=0;
+
+    //margen mas que suficiente
+    char buf_archivos_faltan_bloques[130]="";
+
     for (i=0;i<catalogo->total_files;i++) {
-        if (catalogo->file[i].faltan_bloques) archivos_faltan_bloques++;
+        if (catalogo->file[i].faltan_bloques) {
+            archivos_faltan_bloques++;
+
+            //meter nombre de archivos en una lista. Limite 100 caracteres o ancho de ventana
+            int longitud_texto=strlen(buf_archivos_faltan_bloques);
+            if (longitud_texto<100 && longitud_texto<ancho) {
+                char nombre_escapado[11];
+
+                mdr_get_file_name_escaped(catalogo->file[i].name,nombre_escapado);
+
+                mdr_truncate_spaces_name(nombre_escapado);
+
+                char buf_linea[20];
+                sprintf(buf_linea,"%s,",nombre_escapado);
+
+                //Maximo 111 de 100+11
+                util_concat_string(buf_archivos_faltan_bloques,buf_linea,111);
+            }
+        }
 
         if (catalogo->file[i].numero_copias>1) {
             //Si este no lo hemos contado ya
@@ -41771,6 +41812,63 @@ void menu_storage_microdrive_chkdsk(MENU_ITEM_PARAMETERS)
     //int archivos_sin_bloque_zero;
     mdr_chkdsk_get_files_no_block_zero(catalogo,
         microdrive_status[valor_opcion].if1_microdrive_buffer,microdrive_status[valor_opcion].mdr_total_sectors);
+
+    //Calcular checksums
+    int error_checksum_header=0;
+    int error_checksum_descriptor=0;
+    int error_checksum_data=0;
+    mdr_chkdsk_get_checksums(catalogo,
+        microdrive_status[valor_opcion].if1_microdrive_buffer,microdrive_status[valor_opcion].mdr_total_sectors);
+
+    //margen mas que suficiente
+    char buf_error_checksum_header[130]="";
+    char buf_error_checksum_descriptor[130]="";
+    char buf_error_checksum_data[130]="";
+
+    for (i=0;i<MDR_MAX_SECTORS;i++) {
+        if (catalogo->hd_chk[i]!=catalogo->calculated_hd_chk[i]) {
+            error_checksum_header++;
+
+            //meter nombre de archivos en una lista. Limite 100 caracteres o ancho de ventana
+            int longitud_texto=strlen(buf_error_checksum_header);
+            if (longitud_texto<100 && longitud_texto<ancho) {
+                char buf_linea[20];
+                sprintf(buf_linea,"%d,",i);
+
+                //Maximo 111 de 100+11
+                util_concat_string(buf_error_checksum_header,buf_linea,111);
+            }
+        }
+
+        if (catalogo->des_chk[i]!=catalogo->calculated_des_chk[i]) {
+            error_checksum_descriptor++;
+
+            //meter nombre de archivos en una lista. Limite 100 caracteres o ancho de ventana
+            int longitud_texto=strlen(buf_error_checksum_descriptor);
+            if (longitud_texto<100 && longitud_texto<ancho) {
+                char buf_linea[20];
+                sprintf(buf_linea,"%d,",i);
+
+                //Maximo 111 de 100+11
+                util_concat_string(buf_error_checksum_descriptor,buf_linea,111);
+            }
+        }
+
+        if (catalogo->data_chk[i]!=catalogo->calculated_data_chk[i]) {
+            error_checksum_data++;
+
+            //meter nombre de archivos en una lista. Limite 100 caracteres o ancho de ventana
+            int longitud_texto=strlen(buf_error_checksum_data);
+            if (longitud_texto<100 && longitud_texto<ancho) {
+                char buf_linea[20];
+                sprintf(buf_linea,"%d,",i);
+
+                //Maximo 111 de 100+11
+                util_concat_string(buf_error_checksum_data,buf_linea,111);
+            }
+        }
+
+    }
 
     //Contar cuantos archivos tienen mas de una copia
     for (i=0;i<MDR_MAX_SECTORS;i++) {
@@ -41792,6 +41890,8 @@ void menu_storage_microdrive_chkdsk(MENU_ITEM_PARAMETERS)
     if (archivos_faltan_bloques) {
         zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++,"Files with missing blocks:               %3d",archivos_faltan_bloques);
         problemas_detectados=1;
+
+        zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++," Files: %s",buf_archivos_faltan_bloques);
     }
 
     if (catalogo->chkdsk_total_files_sin_bloque_zero) {
@@ -41821,6 +41921,24 @@ void menu_storage_microdrive_chkdsk(MENU_ITEM_PARAMETERS)
         }
         linea++;
 
+    }
+
+    if (error_checksum_header) {
+        problemas_detectados=1;
+        zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++,"Invalid header checksums");
+        zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++," Sectors: %s",buf_error_checksum_header);
+    }
+
+    if (error_checksum_descriptor) {
+        problemas_detectados=1;
+        zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++,"Invalid descriptor checksums");
+        zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++," Sectors: %s",buf_error_checksum_descriptor);
+    }
+
+    if (error_checksum_data) {
+        problemas_detectados=1;
+        zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++,"Invalid data checksums");
+        zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++," Sectors: %s",buf_error_checksum_data);
     }
 
 
@@ -41861,7 +41979,7 @@ void menu_storage_microdrive_sectors_info(MENU_ITEM_PARAMETERS)
 
 
     int ancho=48;
-    int alto=28;
+    int alto=31;
     int xventana=menu_center_x()-ancho/2;
     int yventana=menu_center_y()-alto/2;
 
@@ -41928,6 +42046,8 @@ void menu_storage_microdrive_sectors_info(MENU_ITEM_PARAMETERS)
 
 
         z80_byte hd_chk=menu_strg_mdv_sec_info_get_byte(origen,current_sector,14);
+        z80_byte calculated_hd_chk=mdr_calculate_checksum(origen,current_sector,0,14);
+
         z80_byte data_recflg=menu_strg_mdv_sec_info_get_byte(origen,current_sector,15);
         z80_byte rec_num=menu_strg_mdv_sec_info_get_byte(origen,current_sector,16);
         z80_int rec_len=menu_strg_mdv_sec_info_get_byte(origen,current_sector,17)+256*menu_strg_mdv_sec_info_get_byte(origen,current_sector,18);
@@ -41943,7 +42063,10 @@ void menu_storage_microdrive_sectors_info(MENU_ITEM_PARAMETERS)
         rec_name[i]=0;
 
         z80_byte des_chk=menu_strg_mdv_sec_info_get_byte(origen,current_sector,29);
+        z80_byte calculated_des_chk=mdr_calculate_checksum(origen,current_sector,15,14);
+
         z80_byte data_chk=menu_strg_mdv_sec_info_get_byte(origen,current_sector,542);
+        z80_byte calculated_data_chk=mdr_calculate_checksum(origen,current_sector,30,512);
 
         int sector_usado=0;
 
@@ -41986,6 +42109,11 @@ void menu_storage_microdrive_sectors_info(MENU_ITEM_PARAMETERS)
         zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++,"  1 HDNUMB: %02XH   - Sector Number   -",hd_num);
         zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++,"  4 HDNAME: %s",hd_name);
         zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++," 14 HDCHK:  %02XH   - Header Checksum -",hd_chk);
+        //printf("calculated_hd_chk: %02XH\n",calculated_hd_chk);
+        if (hd_chk!=calculated_hd_chk) {
+            zxvision_print_string_format(&ventana,1,linea++,ESTILO_GUI_PAPEL_NORMAL,ESTILO_GUI_TINTA_NORMAL,0," Error: should be: %02XH",calculated_hd_chk);
+        }
+        else zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"");
 
         zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"");
         zxvision_print_string_defaults_fillspc(&ventana,1,linea++," ---Record Descriptor--- ");
@@ -42001,11 +42129,22 @@ void menu_storage_microdrive_sectors_info(MENU_ITEM_PARAMETERS)
         zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++," 17 RECLEN: %5d - data block length",rec_len);
         zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++," 19 RECNAM: %s",rec_name);
         zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++," 29 DESCHK: %02XH   - record descriptor checksum",des_chk);
+        //printf("calculated_des_chk: %02XH\n",calculated_des_chk);
+        if (des_chk!=calculated_des_chk) {
+            zxvision_print_string_format(&ventana,1,linea++,ESTILO_GUI_PAPEL_NORMAL,ESTILO_GUI_TINTA_NORMAL,0," Error: should be: %02XH",calculated_des_chk);
+        }
+        else zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"");
 
         zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"");
         zxvision_print_string_defaults_fillspc(&ventana,1,linea++," ---Data--- ");
 
         zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++,"542 DCHK:   %02XH   - data block checksum",data_chk);
+
+        //printf("calculated_data_chk: %02XH\n",calculated_data_chk);
+        if (data_chk!=calculated_data_chk) {
+            zxvision_print_string_format(&ventana,1,linea++,ESTILO_GUI_PAPEL_NORMAL,ESTILO_GUI_TINTA_NORMAL,0," Error: should be: %02XH",calculated_data_chk);
+        }
+        else zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"");
 
 
         //Forzar a mostrar atajos

@@ -404,13 +404,5 @@ archivos que tengan mismo recnam y enlazar mediante recnum (y siempre que recnam
 *mdr de trans express tiene algun bloque sin bloque 0 y otros errores aparentes
 quiza chkdsk deberia decir que errores hay (por ejemplo files with missing blocks)
 
-*Otro visor de mdr que diga por cada sector los campos:
-
-Recflag: valor y significado (si es eof, print etc)
-
-Reclen
-Name
-Cabecera 17 bytes
-Etc
-
-Con opción para ir directo a hex editor al sector actual con memory zona de mdr
+*Info sectores: Con opción para ir directo a hex editor al sector actual con memory zona de mdr
+conservar ultimo sector visto al entrar (y pasar a 0 cuando se inserta etc para no salir de rango)

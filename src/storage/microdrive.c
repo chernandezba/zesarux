@@ -1309,3 +1309,59 @@ void microdrive_switch_write_protection(int microdrive_seleccionado)
 
     microdrive_status[microdrive_seleccionado].microdrive_must_flush_to_disk=1;
 }
+
+//truncar espacios finales del nombre
+void mdr_truncate_spaces_name(char *texto)
+{
+    int longitud=strlen(texto);
+
+    int i;
+
+    for (i=longitud-1;i>=0;i--) {
+        if (texto[i]==' ') texto[i]=0;
+        else return;
+    }
+
+}
+
+//calcular checksum de un bloque
+z80_byte mdr_calculate_checksum(z80_byte *origen,int sector,int offset_sector,int longitud)
+{
+    int resultado=0;
+
+    int i;
+
+    for (i=0;i<longitud;i++) {
+        resultado +=mdr_get_file_catalogue_get_byte(origen,sector,offset_sector);
+        if (resultado==255) resultado=0;
+        else if (resultado>255) {
+            resultado=(resultado % 256)+1;
+        }
+
+        offset_sector++;
+    }
+
+    return resultado;
+}
+
+//Como parte de chkdsk, obtener checksums de mdr y tambien calcularlos
+void mdr_chkdsk_get_checksums(struct s_mdr_file_cat *catalogo,z80_byte *origen,int total_sectors)
+{
+
+
+    int i;
+    for (i=0;i<total_sectors;i++) {
+
+        catalogo->hd_chk[i]=mdr_get_file_catalogue_get_byte(origen,i,14);
+        catalogo->calculated_hd_chk[i]=mdr_calculate_checksum(origen,i,0,14);
+
+        catalogo->des_chk[i]=mdr_get_file_catalogue_get_byte(origen,i,29);
+        catalogo->calculated_des_chk[i]=mdr_calculate_checksum(origen,i,15,14);
+
+        catalogo->data_chk[i]=mdr_get_file_catalogue_get_byte(origen,i,542);
+        catalogo->calculated_data_chk[i]=mdr_calculate_checksum(origen,i,30,512);
+
+    }
+
+
+}
