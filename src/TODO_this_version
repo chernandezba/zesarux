@@ -396,14 +396,12 @@ ok *chkdsk que compruebe checksums.
 *browse/microdrive map que muestre caracteres de nombres de archivo <32 o >127 con "."
 *si random.mdr, browse peta en memcpy(destino,&origen[offset_sector+offset_a_grabar],rec_length);
 ok revisar *datos de un print # no aparecen en microdrive map o en browse. ver streams.mdr
+ok *sectors info: poder abrir hex editor desde ese sector (necesitara nuevo memory zone de imagen mdr, zona de toda la imagen)
 
-*sectors info: poder abrir hex editor desde ese sector (necesitara nuevo memory zone de imagen mdr, zona de toda la imagen)
 *nueva funcion: poder recuperar archivos borrados. en sector 51 de paws (Professional Adventure Writer - All.mdr)  parece que hay uno
 identificar sectores borrados (An empty record block has a zero in bit 1 of RECFLG and also RECLEN=0) y enlazar
 archivos que tengan mismo recnam y enlazar mediante recnum (y siempre que recnam no sea nombre todo a 0)
+ajustar los checksums
 
 *mdr de trans express tiene algun bloque sin bloque 0 y otros errores aparentes
 quiza chkdsk deberia decir que errores hay (por ejemplo files with missing blocks)
-
-*Info sectores: Con opción para ir directo a hex editor al sector actual con memory zona de mdr
-ok conservar ultimo sector visto al entrar (y pasar a 0 cuando se inserta etc para no salir de rango)

@@ -41483,7 +41483,7 @@ void menu_storage_microdrive_map(MENU_ITEM_PARAMETERS)
 
 
     int ancho=42;
-    int alto=25;
+    int alto=26;
     int xventana=menu_center_x()-ancho/2;
     int yventana=menu_center_y()-alto/2;
 
@@ -42102,7 +42102,7 @@ void menu_storage_microdrive_sectors_info(MENU_ITEM_PARAMETERS)
         zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++," 14 HDCHK:  %02XH   - Header Checksum -",hd_chk);
         //printf("calculated_hd_chk: %02XH\n",calculated_hd_chk);
         if (hd_chk!=calculated_hd_chk) {
-            zxvision_print_string_format(&ventana,1,linea++,ESTILO_GUI_PAPEL_NORMAL,ESTILO_GUI_TINTA_NORMAL,0," Error: should be: %02XH",calculated_hd_chk);
+            zxvision_print_string_format(&ventana,1,linea++,ESTILO_GUI_COLOR_AVISO,ESTILO_GUI_PAPEL_NORMAL,0," Error: should be: %02XH",calculated_hd_chk);
         }
         else zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"");
 
@@ -42122,7 +42122,7 @@ void menu_storage_microdrive_sectors_info(MENU_ITEM_PARAMETERS)
         zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++," 29 DESCHK: %02XH   - record descriptor checksum",des_chk);
         //printf("calculated_des_chk: %02XH\n",calculated_des_chk);
         if (des_chk!=calculated_des_chk) {
-            zxvision_print_string_format(&ventana,1,linea++,ESTILO_GUI_PAPEL_NORMAL,ESTILO_GUI_TINTA_NORMAL,0," Error: should be: %02XH",calculated_des_chk);
+            zxvision_print_string_format(&ventana,1,linea++,ESTILO_GUI_COLOR_AVISO,ESTILO_GUI_PAPEL_NORMAL,0," Error: should be: %02XH",calculated_des_chk);
         }
         else zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"");
 
@@ -42133,7 +42133,7 @@ void menu_storage_microdrive_sectors_info(MENU_ITEM_PARAMETERS)
 
         //printf("calculated_data_chk: %02XH\n",calculated_data_chk);
         if (data_chk!=calculated_data_chk) {
-            zxvision_print_string_format(&ventana,1,linea++,ESTILO_GUI_PAPEL_NORMAL,ESTILO_GUI_TINTA_NORMAL,0," Error: should be: %02XH",calculated_data_chk);
+            zxvision_print_string_format(&ventana,1,linea++,ESTILO_GUI_COLOR_AVISO,ESTILO_GUI_PAPEL_NORMAL,0," Error: should be: %02XH",calculated_data_chk);
         }
         else zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"");
 
@@ -42370,23 +42370,15 @@ void menu_interface1(MENU_ITEM_PARAMETERS)
                 );
 
             if (microdrive_status[i].microdrive_enabled) {
+                menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_storage_microdrive_browse,NULL,
+                        "Microdrive browse","Explorar microdrive","Explorar microdrive");
+                menu_add_item_menu_prefijo(array_menu_common,"    ");
+                menu_add_item_menu_se_cerrara(array_menu_common);
+                menu_add_item_menu_genera_ventana(array_menu_common);
+                menu_add_item_menu_valor_opcion(array_menu_common,i);
 
                 menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_storage_microdrive_map,NULL,
                         "Microdrive map","Mapa microdrive","Mapa microdrive");
-                menu_add_item_menu_prefijo(array_menu_common,"    ");
-                menu_add_item_menu_se_cerrara(array_menu_common);
-                menu_add_item_menu_genera_ventana(array_menu_common);
-                menu_add_item_menu_valor_opcion(array_menu_common,i);
-
-                menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_storage_microdrive_chkdsk,NULL,
-                        "Chkdsk","Chkdsk","Chkdsk");
-                menu_add_item_menu_prefijo(array_menu_common,"    ");
-                menu_add_item_menu_se_cerrara(array_menu_common);
-                menu_add_item_menu_genera_ventana(array_menu_common);
-                menu_add_item_menu_valor_opcion(array_menu_common,i);
-
-                menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_storage_microdrive_browse,NULL,
-                        "Microdrive browse","Explorar microdrive","Explorar microdrive");
                 menu_add_item_menu_prefijo(array_menu_common,"    ");
                 menu_add_item_menu_se_cerrara(array_menu_common);
                 menu_add_item_menu_genera_ventana(array_menu_common);
@@ -42399,6 +42391,12 @@ void menu_interface1(MENU_ITEM_PARAMETERS)
                 menu_add_item_menu_genera_ventana(array_menu_common);
                 menu_add_item_menu_valor_opcion(array_menu_common,i);
 
+                menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_storage_microdrive_chkdsk,NULL,
+                        "Chkdsk","Chkdsk","Chkdsk");
+                menu_add_item_menu_prefijo(array_menu_common,"    ");
+                menu_add_item_menu_se_cerrara(array_menu_common);
+                menu_add_item_menu_genera_ventana(array_menu_common);
+                menu_add_item_menu_valor_opcion(array_menu_common,i);
 
                 menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_mdv_simulate_bad,NULL,
                         "Emulate bad sectors","Emular sectores erroneos","Emular sectors erronis");
