@@ -41951,6 +41951,8 @@ z80_byte menu_strg_mdv_sec_info_get_byte(z80_byte *puntero,int sector,int sector
     return puntero[offset];
 }
 
+int mdv_sectors_info_current_sector=0;
+int mdv_sectors_info_last_microdrive_seleccionado=0;
 
 void menu_storage_microdrive_sectors_info(MENU_ITEM_PARAMETERS)
 {
@@ -41976,8 +41978,17 @@ void menu_storage_microdrive_sectors_info(MENU_ITEM_PARAMETERS)
 
     int salir=0;
 
+    //Si microdrive seleccionado no llega al ultimo sector que hemos visualizado (porque se haya cambiado)
+    //o porque microdrive_seleccionado no sea el mismo que el anterior,
+    //ir a sector 0
+    if (mdv_sectors_info_current_sector>=microdrive_status[microdrive_seleccionado].mdr_total_sectors ||
+        mdv_sectors_info_last_microdrive_seleccionado != microdrive_seleccionado
 
-    int current_sector=0;
+    ) {
+        mdv_sectors_info_current_sector=0;
+    }
+
+    mdv_sectors_info_last_microdrive_seleccionado=microdrive_seleccionado;
 
     z80_byte *origen=microdrive_status[microdrive_seleccionado].if1_microdrive_buffer;
 
@@ -42009,13 +42020,13 @@ void menu_storage_microdrive_sectors_info(MENU_ITEM_PARAMETERS)
                           block, even when not all bytes are used)
 */
 
-        z80_byte hd_flg=menu_strg_mdv_sec_info_get_byte(origen,current_sector,0);
-        z80_byte hd_num=menu_strg_mdv_sec_info_get_byte(origen,current_sector,1);
+        z80_byte hd_flg=menu_strg_mdv_sec_info_get_byte(origen,mdv_sectors_info_current_sector,0);
+        z80_byte hd_num=menu_strg_mdv_sec_info_get_byte(origen,mdv_sectors_info_current_sector,1);
 
         char hd_name[11];
         int i;
         for (i=0;i<10;i++) {
-            z80_byte letra=menu_strg_mdv_sec_info_get_byte(origen,current_sector,4+i);
+            z80_byte letra=menu_strg_mdv_sec_info_get_byte(origen,mdv_sectors_info_current_sector,4+i);
             if (letra<32 || letra>126) letra='.';
             hd_name[i]=letra;
         }
@@ -42023,28 +42034,28 @@ void menu_storage_microdrive_sectors_info(MENU_ITEM_PARAMETERS)
         hd_name[i]=0;
 
 
-        z80_byte hd_chk=menu_strg_mdv_sec_info_get_byte(origen,current_sector,14);
-        z80_byte calculated_hd_chk=mdr_calculate_checksum(origen,current_sector,0,14);
+        z80_byte hd_chk=menu_strg_mdv_sec_info_get_byte(origen,mdv_sectors_info_current_sector,14);
+        z80_byte calculated_hd_chk=mdr_calculate_checksum(origen,mdv_sectors_info_current_sector,0,14);
 
-        z80_byte data_recflg=menu_strg_mdv_sec_info_get_byte(origen,current_sector,15);
-        z80_byte rec_num=menu_strg_mdv_sec_info_get_byte(origen,current_sector,16);
-        z80_int rec_len=menu_strg_mdv_sec_info_get_byte(origen,current_sector,17)+256*menu_strg_mdv_sec_info_get_byte(origen,current_sector,18);
+        z80_byte data_recflg=menu_strg_mdv_sec_info_get_byte(origen,mdv_sectors_info_current_sector,15);
+        z80_byte rec_num=menu_strg_mdv_sec_info_get_byte(origen,mdv_sectors_info_current_sector,16);
+        z80_int rec_len=menu_strg_mdv_sec_info_get_byte(origen,mdv_sectors_info_current_sector,17)+256*menu_strg_mdv_sec_info_get_byte(origen,mdv_sectors_info_current_sector,18);
 
         char rec_name[11];
 
         for (i=0;i<10;i++) {
-            z80_byte letra=menu_strg_mdv_sec_info_get_byte(origen,current_sector,19+i);
+            z80_byte letra=menu_strg_mdv_sec_info_get_byte(origen,mdv_sectors_info_current_sector,19+i);
             if (letra<32 || letra>126) letra='.';
             rec_name[i]=letra;
         }
 
         rec_name[i]=0;
 
-        z80_byte des_chk=menu_strg_mdv_sec_info_get_byte(origen,current_sector,29);
-        z80_byte calculated_des_chk=mdr_calculate_checksum(origen,current_sector,15,14);
+        z80_byte des_chk=menu_strg_mdv_sec_info_get_byte(origen,mdv_sectors_info_current_sector,29);
+        z80_byte calculated_des_chk=mdr_calculate_checksum(origen,mdv_sectors_info_current_sector,15,14);
 
-        z80_byte data_chk=menu_strg_mdv_sec_info_get_byte(origen,current_sector,542);
-        z80_byte calculated_data_chk=mdr_calculate_checksum(origen,current_sector,30,512);
+        z80_byte data_chk=menu_strg_mdv_sec_info_get_byte(origen,mdv_sectors_info_current_sector,542);
+        z80_byte calculated_data_chk=mdr_calculate_checksum(origen,mdv_sectors_info_current_sector,30,512);
 
         int sector_usado=0;
 
@@ -42053,8 +42064,8 @@ void menu_storage_microdrive_sectors_info(MENU_ITEM_PARAMETERS)
         if (rec_len==512 || (data_recflg & 0x02)==0x02) sector_usado=1;
 
         zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++,"Physical Sector %3d/%3d Offset: %05XH",
-            current_sector,microdrive_status[microdrive_seleccionado].mdr_total_sectors-1,
-            current_sector*MDR_BYTES_PER_SECTOR
+            mdv_sectors_info_current_sector,microdrive_status[microdrive_seleccionado].mdr_total_sectors-1,
+            mdv_sectors_info_current_sector*MDR_BYTES_PER_SECTOR
         );
 
         zxvision_print_string_defaults_fillspc(&ventana,1,linea,"Sector");
@@ -42068,7 +42079,7 @@ void menu_storage_microdrive_sectors_info(MENU_ITEM_PARAMETERS)
         }
 
 
-        if (microdrive_status[microdrive_seleccionado].bad_sectors_simulated[current_sector]) {
+        if (microdrive_status[microdrive_seleccionado].bad_sectors_simulated[mdv_sectors_info_current_sector]) {
             zxvision_print_string(&ventana,15,linea,ESTILO_GUI_COLOR_AVISO,ESTILO_GUI_PAPEL_NORMAL,0,"Bad Sector");
         }
 
@@ -42148,12 +42159,12 @@ void menu_storage_microdrive_sectors_info(MENU_ITEM_PARAMETERS)
 
             case 8:
                 //izquierda
-                if (current_sector>0) current_sector--;
+                if (mdv_sectors_info_current_sector>0) mdv_sectors_info_current_sector--;
             break;
 
             case 9:
                 //derecha
-                if (current_sector<microdrive_status[microdrive_seleccionado].mdr_total_sectors-1) current_sector++;
+                if (mdv_sectors_info_current_sector<microdrive_status[microdrive_seleccionado].mdr_total_sectors-1) mdv_sectors_info_current_sector++;
             break;
 
             //Salir con ESC
@@ -42170,7 +42181,7 @@ void menu_storage_microdrive_sectors_info(MENU_ITEM_PARAMETERS)
 
                 max_valor=microdrive_status[microdrive_seleccionado].mdr_total_sectors-1;
 
-                int sector=current_sector;
+                int sector=mdv_sectors_info_current_sector;
 
                 int retorno=menu_ventana_scanf_numero_enhanced("Sector?",&sector,4,+1,0,max_valor,0);
 
@@ -42179,7 +42190,7 @@ void menu_storage_microdrive_sectors_info(MENU_ITEM_PARAMETERS)
                     menu_muestra_pending_error_message(); //Si se genera un error derivado de menu_ventana_scanf_numero_enhanced
                 }
 
-                if (retorno>=0) current_sector=sector;
+                if (retorno>=0) mdv_sectors_info_current_sector=sector;
 
 
             break;

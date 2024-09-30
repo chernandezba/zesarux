@@ -406,4 +406,4 @@ archivos que tengan mismo recnam y enlazar mediante recnum (y siempre que recnam
 quiza chkdsk deberia decir que errores hay (por ejemplo files with missing blocks)
 
 *Info sectores: Con opción para ir directo a hex editor al sector actual con memory zona de mdr
-conservar ultimo sector visto al entrar (y pasar a 0 cuando se inserta etc para no salir de rango)
+ok conservar ultimo sector visto al entrar (y pasar a 0 cuando se inserta etc para no salir de rango)
