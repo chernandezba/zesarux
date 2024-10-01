@@ -105,7 +105,7 @@ z80_byte cpu_core_loop_if1(z80_int dir GCC_UNUSED, z80_byte value GCC_UNUSED)
             else entra_if1_rom=1;
 
             if (entra_if1_rom) {
-                printf ("paging if1 rom when pc=%d\n",reg_pc);
+                DBG_PRINT_IF1 VERBOSE_PARANOID,"IF1: paging if1 rom when pc=%d",reg_pc);
                 if1_rom_paged.v=1;
             }
 		}
@@ -114,7 +114,7 @@ z80_byte cpu_core_loop_if1(z80_int dir GCC_UNUSED, z80_byte value GCC_UNUSED)
 
 	if (if1_rom_paged.v==1) {
 		if (reg_pc==1792) {
-            printf ("unpaging if1 rom after pc=%d\n",reg_pc);
+            DBG_PRINT_IF1 VERBOSE_PARANOID,"IF1: unpaging if1 rom after pc=%d",reg_pc);
             //if1_rom_paged.v=0;
             despaginar=1;
         }
@@ -124,7 +124,7 @@ z80_byte cpu_core_loop_if1(z80_int dir GCC_UNUSED, z80_byte value GCC_UNUSED)
             microdrive_formateando=0;
 
             if (reg_a==2) {
-                printf("Detectado rutina formateo\n");
+                DBG_PRINT_IF1 VERBOSE_PARANOID,"IF1: Detected FORMAT command\n");
                 microdrive_formateando=1;
             }
             else {
@@ -212,7 +212,7 @@ void if1_set_peek_poke_functions(void)
     //Ver si ya no estaban activas. Porque ? Tiene sentido esto? Esto seguramente vino de diviface.c en que a veces se llama aqui
     //estando ya la intefaz activa. Pero quiza en este if1 no sucedera nunca. Quitar esta comprobacion?
     if (poke_byte!=poke_byte_nested_handler) {
-        debug_printf (VERBOSE_DEBUG,"poke_byte_nested_handler is not enabled calling if1_set_peek_poke_functions. Enabling");
+        DBG_PRINT_IF1 VERBOSE_DEBUG,"IF1: poke_byte_nested_handler is not enabled calling if1_set_peek_poke_functions. Enabling");
         activar=1;
     }
 
@@ -221,14 +221,14 @@ void if1_set_peek_poke_functions(void)
         if (debug_nested_find_function_name(nested_list_poke_byte,"if1 poke_byte")==NULL) {
             //No estaba en la lista
             activar=1;
-            debug_printf (VERBOSE_DEBUG,"poke_byte_nested_handler is enabled but not found if1 poke_byte. Enabling");
+            DBG_PRINT_IF1 VERBOSE_DEBUG,"IF1: poke_byte_nested_handler is enabled but not found if1 poke_byte. Enabling");
     }
 
     }
 
 
     if (activar) {
-        debug_printf (VERBOSE_DEBUG,"Setting IF1 poke / peek functions");
+        DBG_PRINT_IF1 VERBOSE_DEBUG,"IF1: Setting IF1 poke / peek functions");
         //Guardar anteriores
         //if1_original_poke_byte=poke_byte;
         //if1_original_poke_byte_no_time=poke_byte_no_time;
@@ -254,7 +254,7 @@ void if1_set_peek_poke_functions(void)
 //Restaurar rutinas de if1
 void if1_restore_peek_poke_functions(void)
 {
-    debug_printf (VERBOSE_DEBUG,"Restoring original poke / peek functions before IF1");
+    DBG_PRINT_IF1 VERBOSE_DEBUG,"IF1: Restoring original poke / peek functions before IF1");
     //poke_byte=if1_original_poke_byte;
     //poke_byte_no_time=if1_original_poke_byte_no_time;
     //peek_byte=if1_original_peek_byte;
@@ -274,7 +274,7 @@ void if1_set_core_function(void)
     //Ver si ya no estaban activas. Porque ? Tiene sentido esto? Esto seguramente vino de diviface.c en que a veces se llama aqui
     //estando ya la intefaz activa. Pero quiza en este if1 no sucedera nunca. Quitar esta comprobacion?
     if (cpu_core_loop!=cpu_core_loop_nested_handler) {
-        debug_printf (VERBOSE_DEBUG,"cpu_core_loop_nested_handler is not enabled calling if1_set_core_functions. Enabling");
+        DBG_PRINT_IF1 VERBOSE_DEBUG,"IF1: cpu_core_loop_nested_handler is not enabled calling if1_set_core_functions. Enabling");
         activar=1;
     }
 
@@ -283,14 +283,14 @@ void if1_set_core_function(void)
         if (debug_nested_find_function_name(nested_list_core,"if1 cpu_core_loop")==NULL) {
             //No estaba en la lista
             activar=1;
-            debug_printf (VERBOSE_DEBUG,"cpu_core_loop_nested_handler is enabled but not found if1 cpu_core_loop. Enabling");
+            DBG_PRINT_IF1 VERBOSE_DEBUG,"IF1: cpu_core_loop_nested_handler is enabled but not found if1 cpu_core_loop. Enabling");
         }
 
     }
 
 
     if (activar) {
-		debug_printf (VERBOSE_DEBUG,"Setting IF1 Core loop");
+		DBG_PRINT_IF1 VERBOSE_DEBUG,"IF1: Setting IF1 Core loop");
 		//Guardar anterior
 		//cpu_core_loop_no_if1=cpu_core_loop;
 
@@ -302,7 +302,7 @@ void if1_set_core_function(void)
 
 void if1_restore_core_function(void)
 {
-	debug_printf (VERBOSE_DEBUG,"Restoring original if1 core loop");
+	DBG_PRINT_IF1 VERBOSE_DEBUG,"IF1: Restoring original if1 core loop");
 	//cpu_core_loop=cpu_core_loop_no_if1;
     debug_nested_core_del(if1_nested_id_core);
 }
@@ -323,7 +323,7 @@ void enable_if1(void)
 	//Asignar memoria
     int size=8192;
 
-    debug_printf (VERBOSE_DEBUG,"Allocating %d kb of memory for Interface 1 emulation",size/1024);
+    DBG_PRINT_IF1 VERBOSE_DEBUG,"IF1: Allocating %d kb of memory for Interface 1 emulation",size/1024);
 
     if1_memory_pointer=util_malloc(size,"No enough memory for Interface 1 emulation emulation");
 
@@ -332,7 +332,7 @@ void enable_if1(void)
 	FILE *ptr_if1_romfile;
     int leidos=0;
 
-    debug_printf (VERBOSE_INFO,"Loading if1 firmware %s",IF1_ROM_NAME);
+    DBG_PRINT_IF1 VERBOSE_DEBUG,"IF1: Loading if1 firmware %s",IF1_ROM_NAME);
 
     open_sharedfile(IF1_ROM_NAME,&ptr_if1_romfile);
 
@@ -345,7 +345,7 @@ void enable_if1(void)
 
 
     if (leidos!=size || ptr_if1_romfile==NULL) {
-        debug_printf (VERBOSE_ERR,"Error reading Interface 1 firmware, file " IF1_ROM_NAME );
+        DBG_PRINT_IF1 VERBOSE_ERR,"IF1: Error reading Interface 1 firmware, file " IF1_ROM_NAME );
         //Lo desactivamos asi porque el disable hace otras cosas, como cambiar el core loop, que no queremos
         if1_enabled.v=0;
         return ;
@@ -400,7 +400,7 @@ z80_byte interface1_get_value_port(z80_byte puerto_l)
     }
 
     if (puerto_l==0xf7) {
-        printf("Interface1 net read\n");
+        //printf("Interface1 net read\n");
         return 0;
     }
 
@@ -414,7 +414,7 @@ void interface1_write_value_port(z80_byte puerto_l,z80_byte value)
     //Escribir byte
     if (puerto_l==0xe7) {
         interface1_last_value_port_e7=value;
-        printf("Saving byte to port E7 value %02XH\n",value);
+        DBG_PRINT_IF1 VERBOSE_PARANOID,"IF1: Saving byte to port E7 value %02XH",value);
         microdrive_footer_operating();
         mdr_write_byte(value);
     }

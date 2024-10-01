@@ -39,4 +39,7 @@ extern z80_bit if1_rom_paged;
 extern z80_byte interface1_get_value_port(z80_byte puerto_l);
 extern void interface1_write_value_port(z80_byte puerto_l,z80_byte value);
 
+//Para poder hacer debug_printf con la clase de debug adecuada
+#define DBG_PRINT_IF1 debug_printf(VERBOSE_CLASS_IF1|
+
 #endif

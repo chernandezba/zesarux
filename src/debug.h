@@ -154,6 +154,7 @@ extern int core_spectrum_executed_halt_in_this_scanline;
 #define VERBOSE_CLASS_PCW   (1<<10)
 #define VERBOSE_CLASS_ZENG_ONLINE   (1<<11)
 #define VERBOSE_CLASS_ZENG_ONLINE_CLIENT   (1<<12)
+#define VERBOSE_CLASS_IF1 (1<<13)
 
 //Mensajes sin clase indicada. Bit 31 que seria de signo no lo toco. Uso bit 30 para el de anythingelse
 #define VERBOSE_CLASS_ANYTHINGELSE (1<<30)

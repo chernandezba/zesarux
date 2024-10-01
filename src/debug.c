@@ -1068,6 +1068,7 @@ debug_masks_class debug_masks_class_list[]={
     {"PCW",VERBOSE_CLASS_PCW},
     {"ZENG_ONLINE",VERBOSE_CLASS_ZENG_ONLINE},
     {"ZENG_ONLINE_CLIENT",VERBOSE_CLASS_ZENG_ONLINE_CLIENT},
+    {"INTERFACE1",VERBOSE_CLASS_IF1},
     {"ANYTHINGELSE",VERBOSE_CLASS_ANYTHINGELSE},
     {"",0}  //Siempre este al final
 };
