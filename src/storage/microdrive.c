@@ -352,6 +352,12 @@ void mdr_write_byte(z80_byte valor)
 
 void microdrive_insert(int microdrive_seleccionado)
 {
+
+    DBG_PRINT_MDR VERBOSE_INFO,"MDR: Inserting microdrive file %s on MDV%d",
+        microdrive_status[microdrive_seleccionado].microdrive_file_name,
+        microdrive_seleccionado+1
+    );
+
     microdrive_status[microdrive_seleccionado].if1_microdrive_buffer=util_malloc(MDR_MAX_FILE_SIZE,"No enough memory for Microdrive buffer");
 
 
@@ -390,6 +396,8 @@ void microdrive_insert(int microdrive_seleccionado)
 void microdrive_eject(int microdrive_seleccionado)
 {
 	if (microdrive_status[microdrive_seleccionado].microdrive_enabled==0) return;
+
+    DBG_PRINT_MDR VERBOSE_INFO,"MDR: Eject microdrive MDV%d",microdrive_seleccionado+1);
 
 	//Hacer flush si hay algun cambio
 	microdrive_flush_to_disk_one(microdrive_seleccionado);

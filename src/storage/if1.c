@@ -309,6 +309,8 @@ void if1_restore_core_function(void)
 
 void disable_if1(void)
 {
+    DBG_PRINT_IF1 VERBOSE_INFO,"IF1: Disabling Interface 1 emulation");
+
 	if1_restore_core_function();
 	if1_restore_peek_poke_functions();
 	if1_enabled.v=0;
@@ -320,6 +322,9 @@ void disable_if1(void)
 void enable_if1(void)
 {
 	if (if1_enabled.v) return;
+
+    DBG_PRINT_IF1 VERBOSE_INFO,"IF1: Enabling Interface 1 emulation");
+
 	//Asignar memoria
     int size=8192;
 
