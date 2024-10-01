@@ -147,7 +147,7 @@ void mdr_next_sector(int microdrive_seleccionado)
 
     microdrive_status[microdrive_seleccionado].mdr_write_preamble_index=0;
 
-    printf("siguiente sector. actual=%d\n",microdrive_status[microdrive_seleccionado].mdr_current_sector);
+    DBG_PRINT_MDR VERBOSE_PARANOID,"MDR: next sector. current=%d",microdrive_status[microdrive_seleccionado].mdr_current_sector);
 }
 
 
@@ -186,7 +186,7 @@ z80_byte mdr_next_byte(void)
 
     microdrive_set_visualmem_read(offset_efectivo);
 
-    printf("Retornando byte mdr de offset en PC=%04XH sector %d, offset %d (offset_efectivo=%d), mdr_write_preamble_index=%d =0x%02X\n",
+    DBG_PRINT_MDR VERBOSE_PARANOID,"MDR: Returning byte offset from PC=%04XH sector %d, offset %d (effective_offset%d), mdr_write_preamble_index=%d =0x%02X",
         reg_pc,microdrive_status[microdrive_activo].mdr_current_sector,
         microdrive_status[microdrive_activo].mdr_current_offset_in_sector,
         offset_efectivo,microdrive_status[microdrive_activo].mdr_write_preamble_index,valor);
@@ -261,7 +261,7 @@ void mdr_write_byte(z80_byte valor)
         (microdrive_status[microdrive_activo].mdr_write_preamble_index>=0 && microdrive_status[microdrive_activo].mdr_write_preamble_index<=11) ||
         (microdrive_status[microdrive_activo].mdr_write_preamble_index>=27 && microdrive_status[microdrive_activo].mdr_write_preamble_index<=41)
     ) {
-        printf("Do not write as we are on the preamble or gap zone (mdr_write_preamble_index=%d)\n",microdrive_status[microdrive_activo].mdr_write_preamble_index);
+        DBG_PRINT_MDR VERBOSE_PARANOID,"MDR: Do not write as we are on the preamble or gap zone (mdr_write_preamble_index=%d)",microdrive_status[microdrive_activo].mdr_write_preamble_index);
         microdrive_status[microdrive_activo].mdr_write_preamble_index++;
         return;
     }
@@ -270,7 +270,7 @@ void mdr_write_byte(z80_byte valor)
 
 
     if (microdrive_status[microdrive_activo].mdr_current_offset_in_sector>=MDR_BYTES_PER_SECTOR) {
-        printf("Do not write as we are at the end of sector\n");
+        DBG_PRINT_MDR VERBOSE_PARANOID,"MDR: Do not write as we are at the end of sector");
         //Si estamos al final del sector, no permitir escribir
         return;
     }
@@ -297,9 +297,8 @@ void mdr_write_byte(z80_byte valor)
     //TODO: probablemente esto no pasaria si se emulasen los tiempos y el movimiento real del microdrive
     if (microdrive_status[microdrive_activo].mdr_current_offset_in_sector>=15 && microdrive_formateando) {
 
-        //temp
         valor=0;
-        printf("no escribir byte info en formateo\n");
+        DBG_PRINT_MDR VERBOSE_PARANOID,"MDR: Do not write byte info when formatting");
 
         /*
 
@@ -333,7 +332,7 @@ void mdr_write_byte(z80_byte valor)
 
     }
 
-    printf("Escribiendo byte mdr de offset en PC=%04XH sector %d, offset %d (offset_efectivo=%d) mdr_write_preamble_index=%d : 0x%02X (%c)\n",
+    DBG_PRINT_MDR VERBOSE_PARANOID,"MDR: Writing byte mdr from PC=%04XH sector %d, offset %d (effective_offset=%d) mdr_write_preamble_index=%d : 0x%02X (%c)\n",
         reg_pc,microdrive_status[microdrive_activo].mdr_current_sector,
         microdrive_status[microdrive_activo].mdr_current_offset_in_sector,offset_efectivo,
         microdrive_status[microdrive_activo].mdr_write_preamble_index,
@@ -361,13 +360,13 @@ void microdrive_insert(int microdrive_seleccionado)
     ptr_microdrive_file=fopen(microdrive_status[microdrive_seleccionado].microdrive_file_name,"rb");
 
     if (ptr_microdrive_file==NULL) {
-        debug_printf (VERBOSE_ERR,"Cannot locate file: %s",microdrive_status[microdrive_seleccionado].microdrive_file_name);
+        DBG_PRINT_MDR VERBOSE_ERR,"MDR: Cannot locate file: %s",microdrive_status[microdrive_seleccionado].microdrive_file_name);
     }
 
     else {
         //Leer todo el archivo microdrive de prueba
         int leidos=fread(microdrive_status[microdrive_seleccionado].if1_microdrive_buffer,1,MDR_MAX_FILE_SIZE,ptr_microdrive_file);
-        printf ("leidos %d bytes de microdrive\n",leidos);
+        DBG_PRINT_MDR VERBOSE_INFO,"MDR: Read %d bytes from microdrive image",leidos);
 
         microdrive_status[microdrive_seleccionado].mdr_total_sectors=leidos/MDR_BYTES_PER_SECTOR;
 
@@ -409,7 +408,7 @@ void microdrive_footer_operating(void)
 
     int motor_activo=microdrive_primer_motor_activo();
     if (motor_activo>=0) {
-        printf("MOTOR ACTIVO: %d\n",motor_activo);
+        //printf("MOTOR ACTIVO: %d\n",motor_activo);
         sprintf(buffer,"MDV%d",motor_activo+1);
     }
 
@@ -501,7 +500,7 @@ z80_byte microdrive_status_ef(void)
             microdrive_status[motor_activo].contador_estado_microdrive=0;
         }
 
-        printf ("In Port ef asked, PC after=0x%x contador_estado_microdrive=%d return_value=0x%x\n",
+        DBG_PRINT_MDR VERBOSE_PARANOID,"MDR: In Port ef asked, PC after=0x%x contador_estado_microdrive=%d return_value=0x%x",
             reg_pc,microdrive_status[motor_activo].contador_estado_microdrive,return_value);
 
         if (microdrive_status[motor_activo].microdrive_write_protect==0) return_value |=MICRODRIVE_STATUS_BIT_NOT_WRITE_PROTECT;
@@ -528,25 +527,23 @@ void microdrive_flush_to_disk_one(int microdrive_seleccionado)
 	if (microdrive_status[microdrive_seleccionado].microdrive_enabled==0) return;
 
     if (microdrive_status[microdrive_seleccionado].microdrive_must_flush_to_disk==0) {
-        debug_printf (VERBOSE_DEBUG,"Trying to flush microdrive to disk but no changes made");
+        DBG_PRINT_MDR VERBOSE_DEBUG,"MDR: Trying to flush microdrive to disk but no changes made");
         return;
     }
 
 	if (microdrive_status[microdrive_seleccionado].microdrive_persistent_writes==0) {
-        debug_printf (VERBOSE_DEBUG,"Trying to flush microdrive to disk but persistent writes disabled");
+        DBG_PRINT_MDR VERBOSE_DEBUG,"MDR: Trying to flush microdrive to disk but persistent writes disabled");
         return;
     }
 
 
-    debug_printf (VERBOSE_INFO,"Flushing microdrive to disk");
-
-    printf ("Flushing microdrive %d to disk\n",microdrive_seleccionado);
+    DBG_PRINT_MDR VERBOSE_INFO,"MDR: Flushing microdrive %d to disk",microdrive_seleccionado);
 
 
 
     FILE *ptr_microdrivefile;
 
-    debug_printf (VERBOSE_INFO,"Opening microdrive File %s",microdrive_status[microdrive_seleccionado].microdrive_file_name);
+    DBG_PRINT_MDR VERBOSE_INFO,"MDR: Opening microdrive File %s",microdrive_status[microdrive_seleccionado].microdrive_file_name);
     ptr_microdrivefile=fopen(microdrive_status[microdrive_seleccionado].microdrive_file_name,"wb");
 
     int escritos=0;
@@ -582,7 +579,7 @@ void microdrive_flush_to_disk_one(int microdrive_seleccionado)
     //printf ("escritos: %lld\n",escritos);
 
     if (escritos!=size || ptr_microdrivefile==NULL) {
-        debug_printf (VERBOSE_ERR,"Error writing to microdrive file");
+        DBG_PRINT_MDR VERBOSE_ERR,"MDR: Error writing to microdrive file");
         //microdrive_persistent_writes.v=0;
     }
 
@@ -607,7 +604,7 @@ void microdrive_write_port_ef(z80_byte value)
 
 
     interface1_last_value_port_ef=value;
-    printf("Write to port EF value %02XH\n",value);
+    //printf("Write to port EF value %02XH\n",value);
 
 
 
@@ -626,8 +623,7 @@ void microdrive_write_port_ef(z80_byte value)
     //Mostrar que motores activos
     int motor_activo=microdrive_primer_motor_activo();
     if (motor_activo>=0) {
-        printf("Motor activo %d\n",motor_activo+1);
-        //microdrive_footer_operating();
+        //printf("Motor activo %d\n",motor_activo+1);
     }
 
     int microdrive_seleccionado=motor_activo;
@@ -638,7 +634,7 @@ void microdrive_write_port_ef(z80_byte value)
     //Si pasamos de lectura a escritura, inicializar contadores
     if (antes_interface1_last_value_port_ef &4) {
         if ((interface1_last_value_port_ef&4)==0) {
-            printf("pasamos a write. PC=%04XH\n",reg_pc);
+            DBG_PRINT_MDR VERBOSE_PARANOID,"MDR: switching from read to write operation. PC=%04XH",reg_pc);
 
             //Preamble:
             //0-11 preamble
@@ -652,12 +648,12 @@ void microdrive_write_port_ef(z80_byte value)
                 //Saltar a seccion de preamble si conviene (esto cuando se ha acabado de escribir cabecera)
                 if (microdrive_status[microdrive_seleccionado].mdr_write_preamble_index<30 && microdrive_status[microdrive_seleccionado].mdr_write_preamble_index>0) {
                     microdrive_status[microdrive_seleccionado].mdr_write_preamble_index=30;
-                    printf("Situar mdr_write_preamble_index en %d\n",microdrive_status[microdrive_seleccionado].mdr_write_preamble_index);
+                    DBG_PRINT_MDR VERBOSE_PARANOID,"MDR: Change mdr_write_preamble_index to %d",microdrive_status[microdrive_seleccionado].mdr_write_preamble_index);
                 }
 
 
                 if (microdrive_status[microdrive_seleccionado].mdr_current_offset_in_sector>=MDR_BYTES_PER_SECTOR) {
-                    printf("next sector\n");
+                    DBG_PRINT_MDR VERBOSE_PARANOID,"MDR: next sector when writing");
                     microdrive_status[microdrive_seleccionado].contador_estado_microdrive=0;
                     mdr_next_sector(microdrive_seleccionado);
                 }

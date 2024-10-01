@@ -173,4 +173,7 @@ extern z80_byte mdr_calculate_checksum(z80_byte *origen,int sector,int offset_se
 
 extern void mdr_chkdsk_get_checksums(struct s_mdr_file_cat *catalogo,z80_byte *origen,int total_sectors);
 
+//Para poder hacer debug_printf con la clase de debug adecuada
+#define DBG_PRINT_MDR debug_printf(VERBOSE_CLASS_MDR|
+
 #endif
