@@ -508,7 +508,9 @@ z80_byte microdrive_status_ef(void)
     }
 
 
-
+    //En principio con esto le dice que si no esta el microdrive habilitado, dira error:
+    //Microdrive not present
+    if (microdrive_status[motor_activo].microdrive_enabled==0) return_value=MICRODRIVE_STATUS_BIT_GAP | MICRODRIVE_STATUS_BIT_SYNC;
 
 
 

@@ -389,18 +389,22 @@ ok *expandir archivos mdr. vista previa
 ok *obtener fragmentacion de un mdr
 ok * microdrive map en caso de mdr como el de paws que hay archivos duplicados, el mapa y el listado no sale bien, no considera duplicados
 ok *fragmentacion cuando pasa del ultimo sector al primero no tendria que incrementar fragmentacion. pasa con mdr pantallas.mdr
-*si no hay microdrive insertado y se hace un CAT, deberia retornar error de "Microdrive not present"
-*en grabacion datos y en lectura datos comprobar que los bits de estado los haya indicado correctamente el usuario?
+ok *si no hay microdrive insertado y se hace un CAT, deberia retornar error de "Microdrive not present"
 ok *parametros config linea comandos/.zesaruxrc
 ok *soporte spectrum 128k
-*algo como visual floppy
+
 ok *chkdsk que compruebe checksums.
 *browse/microdrive map que muestre caracteres de nombres de archivo <32 o >127 con "."
 ok *si random.mdr, browse peta en memcpy(destino,&origen[offset_sector+offset_a_grabar],rec_length);
 ok revisar *datos de un print # no aparecen en microdrive map o en browse. ver streams.mdr
 ok *sectors info: poder abrir hex editor desde ese sector (necesitara nuevo memory zone de imagen mdr, zona de toda la imagen)
 
+*poder activar un sector no usado como usado:
+-asignar nombre, recnum (0) , marcar como usado (stream quizá) y corregir checksums
 
+*algo como visual floppy
+
+*en grabacion datos y en lectura datos comprobar que los bits de estado los haya indicado correctamente el usuario?
 
 *mdr de trans express tiene algun bloque sin bloque 0 y otros errores aparentes
 quiza chkdsk deberia decir que errores hay (por ejemplo files with missing blocks)

@@ -5602,12 +5602,18 @@ void debug_get_ioports(char *stats_buffer)
             sprintf (buf_linea,"Port E7 write: %02XH\n",interface1_last_value_port_e7);
             sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
-            sprintf (buf_linea,"MDV1 current sector: %3d\n",microdrive_status[0].mdr_current_sector);
-            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+            int i;
 
-            //Dos saltos de linea porque es la del final
-            sprintf (buf_linea,"MDV1 offset sector:  %3d\n\n",microdrive_status[0].mdr_current_offset_in_sector);
-            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+            for (i=0;i<MAX_MICRODRIVES_BY_CONFIG;i++) {
+
+                sprintf (buf_linea,"MDV%d current sector: %3d\n",i+1,microdrive_status[i].mdr_current_sector);
+                sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+                //Dos saltos de linea porque es la del final
+                sprintf (buf_linea,"MDV%d offset sector:  %3d\n\n",i+1,microdrive_status[i].mdr_current_offset_in_sector);
+                sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+            }
 
         }
 
