@@ -356,6 +356,8 @@ aunque no todos. por ejemplo en +3dsk, visor format disc, pulsar en archivo-> bl
 -con no border on full screen & no footer on full screen, al salir de full screen a veces peta
 parece que es la llamada a menu_interface_border
 
+-zona de memoria nueva que apunte a buffers internos, como real video, audio buffer o cosas asi. tiene sentido?
+
 -top bar menu
 ok*primero poder desactivar solo botones de arriba bajo demanda
 ok*top bar tiene que poder aparecer como overlay. Así se puede hacer mostrar al mover ratón, y también mientras menús están activos
@@ -398,13 +400,8 @@ ok *si random.mdr, browse peta en memcpy(destino,&origen[offset_sector+offset_a_
 ok revisar *datos de un print # no aparecen en microdrive map o en browse. ver streams.mdr
 ok *sectors info: poder abrir hex editor desde ese sector (necesitara nuevo memory zone de imagen mdr, zona de toda la imagen)
 
-*nueva funcion: poder recuperar archivos borrados. en sector 51 de paws (Professional Adventure Writer - All.mdr)  parece que hay uno
-identificar sectores borrados (An empty record block has a zero in bit 1 of RECFLG and also RECLEN=0) y enlazar
-archivos que tengan mismo recnam y enlazar mediante recnum (y siempre que recnam no sea nombre todo a 0)
-ajustar los checksums
+
 
 *mdr de trans express tiene algun bloque sin bloque 0 y otros errores aparentes
 quiza chkdsk deberia decir que errores hay (por ejemplo files with missing blocks)
 
-*otros chkdsk: bloques de archivos usados en mas de 1 archivo a la vez
-O bloques de archivos que apunten mas alla de sector maximo

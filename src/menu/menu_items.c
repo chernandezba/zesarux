@@ -41483,7 +41483,7 @@ void menu_storage_microdrive_map(MENU_ITEM_PARAMETERS)
 
 
     int ancho=42;
-    int alto=26;
+    int alto=27;
     int xventana=menu_center_x()-ancho/2;
     int yventana=menu_center_y()-alto/2;
 
@@ -41567,7 +41567,17 @@ void menu_storage_microdrive_map(MENU_ITEM_PARAMETERS)
         if (catalogo->hd_chk[i]!=catalogo->calculated_hd_chk[i] ||
             catalogo->des_chk[i]!=catalogo->calculated_des_chk[i] ||
             catalogo->data_chk[i]!=catalogo->calculated_data_chk[i]) {
-                tinta=ESTILO_GUI_COLOR_AVISO;
+
+            //Si es sector sin uso, puede indicar archivo borrado
+            //Nota: la operación de "undelete" no tiene sentido en microdrive,
+            //porque cuando se borra un archivo se sobreescribe la sección data de los sectores
+            if (caracter_info=='.') {
+                if (buscar_archivo==-1) {
+                    caracter_info='-';
+                }
+            }
+
+            else tinta=ESTILO_GUI_COLOR_AVISO;
         }
 
 
@@ -41592,6 +41602,7 @@ void menu_storage_microdrive_map(MENU_ITEM_PARAMETERS)
     zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"u: Used sector and final of a file");
     zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"X: Bad sector");
     zxvision_print_string_defaults_fillspc(&ventana,1,linea++,".: Unused sector");
+    zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"-: Unused sector & possible deleted");
     zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"Coloured Letter: Bad checksum on sector");
 
     zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"");
@@ -41832,7 +41843,9 @@ void menu_storage_microdrive_chkdsk(MENU_ITEM_PARAMETERS)
             }
         }
 
-        if (catalogo->data_chk[i]!=catalogo->calculated_data_chk[i]) {
+        //Sectores de archivos borrados parecen tener mal el data checksum
+        //por eso solo indicar error de ese checksum si es un sector en uso
+        if (catalogo->data_chk[i]!=catalogo->calculated_data_chk[i] && catalogo->used_sectors_list[i]) {
             error_checksum_data++;
 
             //meter nombre de archivos en una lista. Limite 100 caracteres o ancho de ventana
@@ -42087,7 +42100,10 @@ void menu_storage_microdrive_sectors_info(MENU_ITEM_PARAMETERS)
 
         linea++;
 
+        int color_aviso_checksum_tinta=ESTILO_GUI_COLOR_AVISO;
 
+        //Si es sector borrado, el checksum puede estar mal, no cambiar color
+        if (!sector_usado) color_aviso_checksum_tinta=ESTILO_GUI_TINTA_NORMAL;
 
 
         zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"");
@@ -42102,7 +42118,7 @@ void menu_storage_microdrive_sectors_info(MENU_ITEM_PARAMETERS)
         zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++," 14 HDCHK:  %02XH   - Header Checksum -",hd_chk);
         //printf("calculated_hd_chk: %02XH\n",calculated_hd_chk);
         if (hd_chk!=calculated_hd_chk) {
-            zxvision_print_string_format(&ventana,1,linea++,ESTILO_GUI_COLOR_AVISO,ESTILO_GUI_PAPEL_NORMAL,0," Error: should be: %02XH",calculated_hd_chk);
+            zxvision_print_string_format(&ventana,1,linea++,color_aviso_checksum_tinta,ESTILO_GUI_PAPEL_NORMAL,0," Error: should be: %02XH",calculated_hd_chk);
         }
         else zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"");
 
@@ -42122,7 +42138,7 @@ void menu_storage_microdrive_sectors_info(MENU_ITEM_PARAMETERS)
         zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++," 29 DESCHK: %02XH   - record descriptor checksum",des_chk);
         //printf("calculated_des_chk: %02XH\n",calculated_des_chk);
         if (des_chk!=calculated_des_chk) {
-            zxvision_print_string_format(&ventana,1,linea++,ESTILO_GUI_COLOR_AVISO,ESTILO_GUI_PAPEL_NORMAL,0," Error: should be: %02XH",calculated_des_chk);
+            zxvision_print_string_format(&ventana,1,linea++,color_aviso_checksum_tinta,ESTILO_GUI_PAPEL_NORMAL,0," Error: should be: %02XH",calculated_des_chk);
         }
         else zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"");
 
@@ -42133,7 +42149,7 @@ void menu_storage_microdrive_sectors_info(MENU_ITEM_PARAMETERS)
 
         //printf("calculated_data_chk: %02XH\n",calculated_data_chk);
         if (data_chk!=calculated_data_chk) {
-            zxvision_print_string_format(&ventana,1,linea++,ESTILO_GUI_COLOR_AVISO,ESTILO_GUI_PAPEL_NORMAL,0," Error: should be: %02XH",calculated_data_chk);
+            zxvision_print_string_format(&ventana,1,linea++,color_aviso_checksum_tinta,ESTILO_GUI_PAPEL_NORMAL,0," Error: should be: %02XH",calculated_data_chk);
         }
         else zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"");
 

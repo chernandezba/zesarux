@@ -138,6 +138,8 @@ struct s_mdr_file_cat {
 
     char label[11];
 
+    //Lista de sectores usados
+    int used_sectors_list[MDR_MAX_SECTORS];
 
     //Usado por funcion mdr_chkdsk_get_files_no_block_zero
     int chkdsk_total_files_sin_bloque_zero;

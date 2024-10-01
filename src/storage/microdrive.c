@@ -1069,6 +1069,8 @@ struct s_mdr_file_cat *mdr_get_file_catalogue(z80_byte *origen,int total_sectors
         //An unusable block (as determined by the FORMAT command) is an EOF block with RECLEN=0.
         if (rec_len==512 || (data_recflg & 0x02)==0x02) sector_usado=1;
 
+        catalogo->used_sectors_list[i]=sector_usado;
+
         //if ((data_recflg & 0x04)==0x04) catalogo->used_sectors++;
         if (sector_usado) {
             catalogo->used_sectors++;
