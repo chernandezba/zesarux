@@ -16752,14 +16752,14 @@ int util_extract_mdr(char *filename,char *tempdir)
     int i;
 
     for (i=0;i<catalogo->total_files;i++) {
-        printf("%d [%s]\n",i,catalogo->file[i].name);
+        //printf("%d [%s]\n",i,catalogo->file[i].name);
 
         //mdr_get_file_from_catalogue(taperead,total_sectors,nombre,tamanyo,destino,&frag,&nofrag);
 
         int tamanyo=catalogo->file[i].file_size;
 
 
-        printf("tamanyo: %d\n",tamanyo);
+        //printf("tamanyo: %d\n",tamanyo);
 
 
 

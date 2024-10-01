@@ -41463,13 +41463,13 @@ void menu_storage_microdrive_map(MENU_ITEM_PARAMETERS)
     mdr_chkdsk_get_checksums(catalogo,
         microdrive_status[valor_opcion].if1_microdrive_buffer,microdrive_status[valor_opcion].mdr_total_sectors);
 
-    printf("Nuevo catalogo\n");
+    //printf("Nuevo catalogo\n");
 
-    printf("Label: [%s]\n",catalogo->label);
+    //printf("Label: [%s]\n",catalogo->label);
 
     int i;
 
-    for (i=0;i<catalogo->total_files;i++) {
+    /*for (i=0;i<catalogo->total_files;i++) {
         printf("%d [%s] size: %d\n",i,catalogo->file[i].name,catalogo->file[i].file_size);
 
         //bloques
@@ -41479,7 +41479,7 @@ void menu_storage_microdrive_map(MENU_ITEM_PARAMETERS)
             printf("%d ",catalogo->file[i].sectors_list[j]);
         }
         printf("\n");
-    }
+    }*/
 
 
     int ancho=42;
@@ -41723,9 +41723,9 @@ void menu_storage_microdrive_chkdsk(MENU_ITEM_PARAMETERS)
 
     catalogo=mdr_get_file_catalogue(microdrive_status[valor_opcion].if1_microdrive_buffer,microdrive_status[valor_opcion].mdr_total_sectors);
 
-    printf("Nuevo catalogo\n");
+    //printf("Nuevo catalogo\n");
 
-    printf("Label: [%s]\n",catalogo->label);
+    //printf("Label: [%s]\n",catalogo->label);
 
     int i;
 

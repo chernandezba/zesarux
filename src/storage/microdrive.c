@@ -332,7 +332,7 @@ void mdr_write_byte(z80_byte valor)
 
     }
 
-    DBG_PRINT_MDR VERBOSE_PARANOID,"MDR: Writing byte mdr from PC=%04XH sector %d, offset %d (effective_offset=%d) mdr_write_preamble_index=%d : 0x%02X (%c)\n",
+    DBG_PRINT_MDR VERBOSE_PARANOID,"MDR: Writing byte mdr from PC=%04XH sector %d, offset %d (effective_offset=%d) mdr_write_preamble_index=%d : 0x%02X (%c)",
         reg_pc,microdrive_status[microdrive_activo].mdr_current_sector,
         microdrive_status[microdrive_activo].mdr_current_offset_in_sector,offset_efectivo,
         microdrive_status[microdrive_activo].mdr_write_preamble_index,
