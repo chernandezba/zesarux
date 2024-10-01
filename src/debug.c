@@ -5608,12 +5608,14 @@ void debug_get_ioports(char *stats_buffer)
 
             for (i=0;i<MAX_MICRODRIVES_BY_CONFIG;i++) {
 
-                sprintf (buf_linea,"MDV%d current sector: %3d\n",i+1,microdrive_status[i].mdr_current_sector);
-                sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+                if (microdrive_status[i].microdrive_enabled) {
+                    sprintf (buf_linea,"MDV%d current sector: %3d\n",i+1,microdrive_status[i].mdr_current_sector);
+                    sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
-                //Dos saltos de linea porque es la del final
-                sprintf (buf_linea,"MDV%d offset sector:  %3d\n\n",i+1,microdrive_status[i].mdr_current_offset_in_sector);
-                sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+                    //Dos saltos de linea porque es la del final
+                    sprintf (buf_linea,"MDV%d offset sector:  %3d\n",i+1,microdrive_status[i].mdr_current_offset_in_sector);
+                    sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+                }
 
             }
 

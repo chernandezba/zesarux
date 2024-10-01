@@ -147,7 +147,7 @@ void mdr_next_sector(int microdrive_seleccionado)
 
     microdrive_status[microdrive_seleccionado].mdr_write_preamble_index=0;
 
-    DBG_PRINT_MDR VERBOSE_PARANOID,"MDR: next sector. current=%d",microdrive_status[microdrive_seleccionado].mdr_current_sector);
+    DBG_PRINT_MDR VERBOSE_DEBUG,"MDR: next sector. current=%d",microdrive_status[microdrive_seleccionado].mdr_current_sector);
 }
 
 
