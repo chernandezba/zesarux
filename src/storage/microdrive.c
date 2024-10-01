@@ -186,7 +186,7 @@ z80_byte mdr_next_byte(void)
 
     microdrive_set_visualmem_read(offset_efectivo);
 
-    DBG_PRINT_MDR VERBOSE_PARANOID,"MDR: Returning byte offset from PC=%04XH sector %d, offset %d (effective_offset%d), mdr_write_preamble_index=%d =0x%02X",
+    DBG_PRINT_MDR VERBOSE_PARANOID,"MDR: Returning byte offset from PC=%04XH sector %d, offset %d (effective_offset=%d), mdr_write_preamble_index=%d =0x%02X",
         reg_pc,microdrive_status[microdrive_activo].mdr_current_sector,
         microdrive_status[microdrive_activo].mdr_current_offset_in_sector,
         offset_efectivo,microdrive_status[microdrive_activo].mdr_write_preamble_index,valor);
@@ -527,12 +527,12 @@ void microdrive_flush_to_disk_one(int microdrive_seleccionado)
 	if (microdrive_status[microdrive_seleccionado].microdrive_enabled==0) return;
 
     if (microdrive_status[microdrive_seleccionado].microdrive_must_flush_to_disk==0) {
-        DBG_PRINT_MDR VERBOSE_DEBUG,"MDR: Trying to flush microdrive to disk but no changes made");
+        DBG_PRINT_MDR VERBOSE_DEBUG,"MDR: Trying to flush microdrive %d to disk but no changes made",microdrive_seleccionado);
         return;
     }
 
 	if (microdrive_status[microdrive_seleccionado].microdrive_persistent_writes==0) {
-        DBG_PRINT_MDR VERBOSE_DEBUG,"MDR: Trying to flush microdrive to disk but persistent writes disabled");
+        DBG_PRINT_MDR VERBOSE_DEBUG,"MDR: Trying to flush microdrive %d to disk but persistent writes disabled",microdrive_seleccionado);
         return;
     }
 
@@ -722,7 +722,7 @@ int mdr_get_info_file(z80_byte *origen,int total_sectors,char *nombre,int tamany
 
     if (resto) total_sectores_a_buscar++;
 
-    printf("Sectores a buscar: %d\n",total_sectores_a_buscar);
+    DBG_PRINT_MDR VERBOSE_DEBUG,"MDR: Sectors to find: %d",total_sectores_a_buscar);
 
     file->total_sectors=total_sectores_a_buscar;
 
@@ -777,7 +777,7 @@ int mdr_get_info_file(z80_byte *origen,int total_sectors,char *nombre,int tamany
                     nombre_comparar[j]=0;
 
                     if (!strcmp(nombre_comparar,nombre)) {
-                        printf("Match nombre [%s] en sector %d (record segment=%d)\n",nombre,i,bloque_buscando);
+                        DBG_PRINT_MDR VERBOSE_DEBUG,"MDR: Match name [%s] on sector %d (record segment=%d)",nombre,i,bloque_buscando);
 
                         //Grabar ese bloque
                         //Si es record 0, saltar 9 bytes de la cabecera de datos
@@ -826,7 +826,7 @@ int mdr_get_info_file(z80_byte *origen,int total_sectors,char *nombre,int tamany
         }
 
         if (!encontrado) {
-            printf("Bloque buscado %d de archivo %s no encontrado\n",bloque_buscando,nombre);
+            DBG_PRINT_MDR VERBOSE_DEBUG,"MDR: Block searched %d from file [%s] not found",bloque_buscando,nombre);
             file->faltan_bloques=1;
 
             file->sectors_list[bloque_buscando]=-1;
@@ -888,7 +888,7 @@ void mdr_get_file_from_catalogue(z80_byte *origen,struct s_mdr_file_cat_one_file
 
     if (resto) total_sectores_a_buscar++;
 
-    printf("Sectores a buscar: %d\n",total_sectores_a_buscar);
+    DBG_PRINT_MDR VERBOSE_DEBUG,"MDR: Sectors to find: %d",total_sectores_a_buscar);
 
     int bloque_buscando;
 
@@ -903,7 +903,7 @@ void mdr_get_file_from_catalogue(z80_byte *origen,struct s_mdr_file_cat_one_file
         if (i>=0) {
 
             if (i>=total_sectors) {
-                printf("Asking for sector %d of a file but maximum sector number: %d\n",i,total_sectors-1);
+                DBG_PRINT_MDR VERBOSE_DEBUG,"MDR: Asking for sector %d of a file but maximum sector number: %d",i,total_sectors-1);
             }
 
             else {
@@ -925,14 +925,14 @@ void mdr_get_file_from_catalogue(z80_byte *origen,struct s_mdr_file_cat_one_file
                     rec_length-=9;
                 }
 
-                printf("Copiando %d bytes\n",rec_length);
+                DBG_PRINT_MDR VERBOSE_DEBUG,"MDR: Copying %d bytes",rec_length);
 
                 if (rec_length>0) {
                     //memcpy(destino,&origen[offset_sector+offset_a_grabar],rec_length);
                     //Si la longitud de lo que se va a copiar excede la longitud restante esperada,
                     //en casos de imagenes corruptas
                     if (rec_length>tamanyo_esperado) {
-                        printf("Asked for %d bytes but exceeding remaining %d\n",rec_length,tamanyo_esperado);
+                        DBG_PRINT_MDR VERBOSE_DEBUG,"MDR: Asked for %d bytes but exceeding remaining %d",rec_length,tamanyo_esperado);
                         rec_length=tamanyo_esperado;
                     }
 
@@ -997,7 +997,7 @@ void mdr_set_max_copias_todos_archivos(struct s_mdr_file_cat *catalogo)
         int max_copias=mdr_get_file_catalogue_get_valor_max_copias(catalogo,catalogo->file[i].name);
         //solo alterarlo si es >1
         if (max_copias>1) {
-            printf("Readjusting file [%s] to %d copies\n",catalogo->file[i].name,max_copias);
+            DBG_PRINT_MDR VERBOSE_DEBUG,"MDR: Readjusting file [%s] to %d copies",catalogo->file[i].name,max_copias);
             catalogo->file[i].numero_copias=max_copias;
         }
     }
@@ -1120,7 +1120,7 @@ struct s_mdr_file_cat *mdr_get_file_catalogue(z80_byte *origen,int total_sectors
 
                 catalogo->file[catalogo->total_files].name[j]=0;
 
-                printf(" %s %d bytes PRINTFILE BIT=%d\n",catalogo->file[catalogo->total_files].name,tamanyo,data_recflg & 4);
+                //printf(" %s %d bytes PRINTFILE BIT=%d\n",catalogo->file[catalogo->total_files].name,tamanyo,data_recflg & 4);
 
                 //Ver si ese archivo ya existia, para considerar duplicados
                 int id_file_con_copias;
@@ -1142,7 +1142,7 @@ struct s_mdr_file_cat *mdr_get_file_catalogue(z80_byte *origen,int total_sectors
                     id_file++;
                 }
 
-                printf("--Archivo [%s] con id [%d] tiene %d copias\n",
+                DBG_PRINT_MDR VERBOSE_DEBUG,"MDR: File [%s] with id [%d] has %d copies",
                     catalogo->file[catalogo->total_files].name,
                     catalogo->file[catalogo->total_files].id_file,
                     copias_archivo);
@@ -1158,7 +1158,7 @@ struct s_mdr_file_cat *mdr_get_file_catalogue(z80_byte *origen,int total_sectors
                 int frag,nofrag;
                 tamanyo=mdr_get_info_file(origen,total_sectors,catalogo->file[catalogo->total_files].name,tamanyo,&catalogo->file[catalogo->total_files],&frag,&nofrag,i);
 
-                printf(">>Archivo en catalogo [%s] size %d\n",catalogo->file[catalogo->total_files].name,tamanyo);
+                //printf(">>Archivo en catalogo [%s] size %d\n",catalogo->file[catalogo->total_files].name,tamanyo);
 
                 catalogo->file[catalogo->total_files].file_size=tamanyo;
 
@@ -1307,7 +1307,7 @@ void mdr_chkdsk_get_files_no_block_zero(struct s_mdr_file_cat *catalogo,z80_byte
             buffer_nombre[j]=0;
 
             if (!mdr_if_file_exists_catalogue(catalogo,buffer_nombre)) {
-                printf("Bloque %d de archivo [%s] no tiene bloque cero asociado. Sector=%d\n",record_segment,buffer_nombre,i);
+                DBG_PRINT_MDR VERBOSE_DEBUG,"MDR: Block %d from file [%s] does not have zero block associated. Sector=%d",record_segment,buffer_nombre,i);
                 catalogo->chkdsk_files_sin_bloque_zero_sectors[catalogo->chkdsk_total_files_sin_bloque_zero]=i;
                 catalogo->chkdsk_total_files_sin_bloque_zero++;
             }
