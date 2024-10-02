@@ -41667,6 +41667,12 @@ void menu_storage_microdrive_map(MENU_ITEM_PARAMETERS)
     }
 
     zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"Use cursors ~~< ~~> to show files info");
+    if (buscar_archivo>=0) {
+        zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"~~r: Rename file");
+    }
+    else {
+        zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"");
+    }
 
     //Restaurar comportamiento atajos
     menu_writing_inverse_color.v=antes_menu_writing_inverse_color.v;
@@ -41698,6 +41704,24 @@ void menu_storage_microdrive_map(MENU_ITEM_PARAMETERS)
             case 9:
                 //derecha
                 if (buscar_archivo<catalogo->total_files-1) buscar_archivo++;
+            break;
+
+            //rename
+            case 'r':
+                if (buscar_archivo>=0) {
+                    char buffer_nombre[11];
+
+                    mdr_get_file_name_escaped(catalogo->file[buscar_archivo].name,buffer_nombre);
+
+                    mdr_truncate_spaces_name(buffer_nombre);
+
+                    menu_ventana_scanf("New name",buffer_nombre,11);
+
+                    mdr_rename_file(catalogo,microdrive_status[valor_opcion].if1_microdrive_buffer,buscar_archivo,buffer_nombre);
+
+                    //Y hacer flush
+                    microdrive_status[valor_opcion].microdrive_must_flush_to_disk=1;
+                }
             break;
 
             //Salir con ESC

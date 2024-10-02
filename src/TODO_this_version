@@ -406,8 +406,8 @@ ok *quiza chkdsk deberia decir que errores hay (por ejemplo files with missing b
 -asignar nombre, recnum (0) , marcar como usado (stream quizá) y corregir checksums
 
 *algo como visual floppy
-*opcion para poder hacer rename de files?
-pero habria que alterar el registro del nombre en todos los sectores, la cabecera de 17 bytes (si la tiene) y los checksums
+ok *opcion para poder hacer rename de files
+
 
 *en grabacion datos y en lectura datos comprobar que los bits de estado los haya indicado correctamente el usuario?
 

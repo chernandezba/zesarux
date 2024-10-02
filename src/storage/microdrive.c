@@ -1414,3 +1414,40 @@ void mdr_chkdsk_get_checksums(struct s_mdr_file_cat *catalogo,z80_byte *origen,i
 
 
 }
+
+void mdr_rename_file(struct s_mdr_file_cat *catalogo,z80_byte *if1_microdrive_buffer,int indice_archivo,char *new_name)
+{
+    int i;
+
+    //completar nombre destino con espacios
+                    //  1234567890
+    char dest_name[11]="          ";
+
+    for (i=0;new_name[i];i++) {
+        dest_name[i]=new_name[i];
+    }
+
+    struct s_mdr_file_cat_one_file *archivo=&catalogo->file[indice_archivo];
+
+    for (i=0;i<archivo->total_sectors;i++) {
+        int sector=archivo->sectors_list[i];
+        DBG_PRINT_MDR VERBOSE_DEBUG,"MDR: Changing file name on sector %d",sector);
+
+        int offset=sector*MDR_BYTES_PER_SECTOR;
+
+        int name_offset=19; //en el byte 19 se pone el nombre
+
+        int j;
+        for (j=0;j<10;j++) {
+            if1_microdrive_buffer[offset+name_offset+j]=dest_name[j];
+        }
+
+
+        //Ajustar deschk
+        z80_byte calculated_des_chk=mdr_calculate_checksum(if1_microdrive_buffer,sector,15,14);
+        if1_microdrive_buffer[offset+29]=calculated_des_chk;
+
+        //printf("des_chk: %02XH\n",calculated_des_chk);
+
+    }
+}

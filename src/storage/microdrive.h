@@ -173,6 +173,8 @@ extern z80_byte mdr_calculate_checksum(z80_byte *origen,int sector,int offset_se
 
 extern void mdr_chkdsk_get_checksums(struct s_mdr_file_cat *catalogo,z80_byte *origen,int total_sectors);
 
+extern void mdr_rename_file(struct s_mdr_file_cat *catalogo,z80_byte *if1_microdrive_buffer,int indice_archivo,char *dest_name);
+
 //Para poder hacer debug_printf con la clase de debug adecuada
 #define DBG_PRINT_MDR debug_printf(VERBOSE_CLASS_MDR|
 
