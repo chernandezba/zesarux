@@ -41455,291 +41455,303 @@ void menu_mdv_simulate_bad(MENU_ITEM_PARAMETERS)
 
 void menu_storage_microdrive_map(MENU_ITEM_PARAMETERS)
 {
-    struct s_mdr_file_cat *catalogo;
-
-    catalogo=mdr_get_file_catalogue(microdrive_status[valor_opcion].if1_microdrive_buffer,microdrive_status[valor_opcion].mdr_total_sectors);
-
-
-    mdr_chkdsk_get_checksums(catalogo,
-        microdrive_status[valor_opcion].if1_microdrive_buffer,microdrive_status[valor_opcion].mdr_total_sectors);
-
-    //printf("Nuevo catalogo\n");
-
-    //printf("Label: [%s]\n",catalogo->label);
-
-    int i;
-
-    /*for (i=0;i<catalogo->total_files;i++) {
-        printf("%d [%s] size: %d\n",i,catalogo->file[i].name,catalogo->file[i].file_size);
-
-        //bloques
-        int j;
-
-        for (j=0;j<catalogo->file[i].total_sectors;j++) {
-            printf("%d ",catalogo->file[i].sectors_list[j]);
-        }
-        printf("\n");
-    }*/
-
-
-    int ancho=42;
-    int alto=27;
-    int xventana=menu_center_x()-ancho/2;
-    int yventana=menu_center_y()-alto/2;
-
-    zxvision_window ventana;
-
-    zxvision_new_window(&ventana,xventana,yventana,ancho,alto,
-                                            ancho-1,alto-2,"Microdrive Map");
-
-    int salir=0;
-
-   //Si vale -1, mapear todos
-    //Si es >=0, mapear uno solo
-    int buscar_archivo=-1;
+    //para empezar de nuevo cuando se renombra un archivo
+    int recargar_microdrive;
 
     do {
 
-    //Por defecto mapa total, pero luego se puede ver mapa de cada archivo por separado
-    //Que tambien diga fragmentacion archivos
+        recargar_microdrive=0;
 
-    //Indicar la letra del sector (Used, used y final , X defectuoso, "." sin uso
-    char letras_sectores[MDR_MAX_SECTORS];
-    //inicializar con "."
-    //y los que sean erroneos
-    for (i=0;i<microdrive_status[valor_opcion].mdr_total_sectors;i++) {
-        char letra='.';
+        struct s_mdr_file_cat *catalogo;
 
-        if (microdrive_status[valor_opcion].bad_sectors_simulated[i]) letra='X';
-
-        letras_sectores[i]=letra;
-    }
+        catalogo=mdr_get_file_catalogue(microdrive_status[valor_opcion].if1_microdrive_buffer,microdrive_status[valor_opcion].mdr_total_sectors);
 
 
-    int inicio_busqueda=0;
-    int final_busqueda=catalogo->total_files;
+        mdr_chkdsk_get_checksums(catalogo,
+            microdrive_status[valor_opcion].if1_microdrive_buffer,microdrive_status[valor_opcion].mdr_total_sectors);
 
-    if (buscar_archivo>=0) {
-        inicio_busqueda=buscar_archivo;
-        final_busqueda=inicio_busqueda+1;
-    }
+        //printf("Nuevo catalogo\n");
 
-    int used_sectors=0;
+        //printf("Label: [%s]\n",catalogo->label);
 
-    //Buscar todos archivos
-    //o buscar solo uno concreto
-    for (i=inicio_busqueda;i<final_busqueda;i++) {
-        //bloques
-        int j;
+        int i;
 
-        for (j=0;j<catalogo->file[i].total_sectors;j++) {
-            int sector_usado=catalogo->file[i].sectors_list[j];
+        /*for (i=0;i<catalogo->total_files;i++) {
+            printf("%d [%s] size: %d\n",i,catalogo->file[i].name,catalogo->file[i].file_size);
 
-            if (sector_usado>=0) {
-                //printf("%d ",sector_usado);
-                char letra='U';
-                if (j==catalogo->file[i].total_sectors-1) letra='u';
+            //bloques
+            int j;
 
-                letras_sectores[sector_usado]=letra;
+            for (j=0;j<catalogo->file[i].total_sectors;j++) {
+                printf("%d ",catalogo->file[i].sectors_list[j]);
+            }
+            printf("\n");
+        }*/
 
+
+        int ancho=42;
+        int alto=27;
+        int xventana=menu_center_x()-ancho/2;
+        int yventana=menu_center_y()-alto/2;
+
+        zxvision_window ventana;
+
+        zxvision_new_window(&ventana,xventana,yventana,ancho,alto,
+                                                ancho-1,alto-2,"Microdrive Map");
+
+        int salir=0;
+
+    //Si vale -1, mapear todos
+        //Si es >=0, mapear uno solo
+        int buscar_archivo=-1;
+
+        do {
+
+        //Por defecto mapa total, pero luego se puede ver mapa de cada archivo por separado
+        //Que tambien diga fragmentacion archivos
+
+        //Indicar la letra del sector (Used, used y final , X defectuoso, "." sin uso
+        char letras_sectores[MDR_MAX_SECTORS];
+        //inicializar con "."
+        //y los que sean erroneos
+        for (i=0;i<microdrive_status[valor_opcion].mdr_total_sectors;i++) {
+            char letra='.';
+
+            if (microdrive_status[valor_opcion].bad_sectors_simulated[i]) letra='X';
+
+            letras_sectores[i]=letra;
+        }
+
+
+        int inicio_busqueda=0;
+        int final_busqueda=catalogo->total_files;
+
+        if (buscar_archivo>=0) {
+            inicio_busqueda=buscar_archivo;
+            final_busqueda=inicio_busqueda+1;
+        }
+
+        int used_sectors=0;
+
+        //Buscar todos archivos
+        //o buscar solo uno concreto
+        for (i=inicio_busqueda;i<final_busqueda;i++) {
+            //bloques
+            int j;
+
+            for (j=0;j<catalogo->file[i].total_sectors;j++) {
+                int sector_usado=catalogo->file[i].sectors_list[j];
+
+                if (sector_usado>=0) {
+                    //printf("%d ",sector_usado);
+                    char letra='U';
+                    if (j==catalogo->file[i].total_sectors-1) letra='u';
+
+                    letras_sectores[sector_usado]=letra;
+
+                }
+
+                used_sectors++;
+            }
+        }
+
+
+
+        int linea=0;
+
+        int sectores_por_linea=32;
+        int x=0;
+
+        //char buffer_linea[MAX_ANCHO_LINEAS_GENERIC_MESSAGE+1]="";
+
+        for (i=0;i<microdrive_status[valor_opcion].mdr_total_sectors;i++) {
+            char caracter_info=letras_sectores[i];
+
+            int tinta=ESTILO_GUI_TINTA_NORMAL;
+            int papel=ESTILO_GUI_PAPEL_NORMAL;
+
+            //Y bad checksum
+            if (catalogo->hd_chk[i]!=catalogo->calculated_hd_chk[i] ||
+                catalogo->des_chk[i]!=catalogo->calculated_des_chk[i] ||
+                catalogo->data_chk[i]!=catalogo->calculated_data_chk[i]) {
+
+                //Si es sector sin uso, puede indicar archivo borrado
+                //Nota: la operación de "undelete" no tiene sentido en microdrive,
+                //porque cuando se borra un archivo se sobreescribe la sección data de los sectores
+                if (caracter_info=='.') {
+                    if (buscar_archivo==-1) {
+                        caracter_info='-';
+                    }
+                }
+
+                else tinta=ESTILO_GUI_COLOR_AVISO;
             }
 
-            used_sectors++;
-        }
-    }
 
+            zxvision_print_string_format(&ventana,x+1,linea,tinta,papel,0,"%c",caracter_info);
 
+            x++;
 
-    int linea=0;
-
-    int sectores_por_linea=32;
-    int x=0;
-
-    //char buffer_linea[MAX_ANCHO_LINEAS_GENERIC_MESSAGE+1]="";
-
-    for (i=0;i<microdrive_status[valor_opcion].mdr_total_sectors;i++) {
-        char caracter_info=letras_sectores[i];
-
-        int tinta=ESTILO_GUI_TINTA_NORMAL;
-        int papel=ESTILO_GUI_PAPEL_NORMAL;
-
-        //Y bad checksum
-        if (catalogo->hd_chk[i]!=catalogo->calculated_hd_chk[i] ||
-            catalogo->des_chk[i]!=catalogo->calculated_des_chk[i] ||
-            catalogo->data_chk[i]!=catalogo->calculated_data_chk[i]) {
-
-            //Si es sector sin uso, puede indicar archivo borrado
-            //Nota: la operación de "undelete" no tiene sentido en microdrive,
-            //porque cuando se borra un archivo se sobreescribe la sección data de los sectores
-            if (caracter_info=='.') {
-                if (buscar_archivo==-1) {
-                    caracter_info='-';
-                }
+            if (x==sectores_por_linea || i==microdrive_status[valor_opcion].mdr_total_sectors-1) {
+                x=0;
+                linea++;
             }
 
-            else tinta=ESTILO_GUI_COLOR_AVISO;
+        }
+
+        //Forzar a mostrar atajos
+        z80_bit antes_menu_writing_inverse_color;
+        antes_menu_writing_inverse_color.v=menu_writing_inverse_color.v;
+        menu_writing_inverse_color.v=1;
+
+        zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"Legend:");
+        zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"U: Used sector");
+        zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"u: Used sector and final of a file");
+        zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"X: Bad sector");
+        zxvision_print_string_defaults_fillspc(&ventana,1,linea++,".: Unused sector");
+        zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"-: Unused sector & possible deleted");
+        zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"Coloured Letter: Bad checksum on sector");
+
+        zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"");
+        zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"Microdrive Info:");
+        int total_kb=microdrive_status[valor_opcion].mdr_total_sectors*512/1024;
+
+        zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++,
+            "Label: %s",catalogo->label);
+
+        zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++,
+            "Total %d KB (%d sectors)",total_kb,microdrive_status[valor_opcion].mdr_total_sectors);
+
+        if (buscar_archivo>=0) {
+            zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"");
+            zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"File Info:");
+
+            char buffer_copias[30]="";
+            int copias=catalogo->file[buscar_archivo].numero_copias;
+            if (copias>1) sprintf(buffer_copias," (%d copies)",copias);
+
+            char buf_nombre[11];
+            mdr_get_file_name_escaped(catalogo->file[buscar_archivo].name,buf_nombre);
+
+            zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++,
+                "File %3d/%3d Name: %s%s",buscar_archivo+1,catalogo->total_files,buf_nombre,buffer_copias);
+        }
+        else {
+            //zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"Microdrive Info:");
         }
 
 
-        zxvision_print_string_format(&ventana,x+1,linea,tinta,papel,0,"%c",caracter_info);
+        int used_kb=used_sectors/2; //*512/1024
 
-        x++;
+        //Si es medio sector, o 1.5 etc
+        int medio=0;
+        if (used_sectors % 2 !=0) medio=1;
 
-        if (x==sectores_por_linea || i==microdrive_status[valor_opcion].mdr_total_sectors-1) {
-            x=0;
-            linea++;
+        int tamanyo_archivo=catalogo->file[buscar_archivo].file_size;
+
+        if (buscar_archivo>=0) {
+            zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++,
+                "Size: %5d B Used %d%s KB",tamanyo_archivo,used_kb,(medio ? ".5" : ""));
+        }
+        else {
+            zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++,
+                "Used %d%s KB",used_kb,(medio ? ".5" : ""));
         }
 
-    }
 
-    //Forzar a mostrar atajos
-    z80_bit antes_menu_writing_inverse_color;
-    antes_menu_writing_inverse_color.v=menu_writing_inverse_color.v;
-    menu_writing_inverse_color.v=1;
+        if (buscar_archivo>=0) {
+            zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++,
+                    "Fragmentation: %d %%",catalogo->file[buscar_archivo].porcentaje_fragmentacion);
+        }
+        else {
+            zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++,
+                    "Fragmentation: %d %%",catalogo->porcentaje_fragmentacion);
 
-    zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"Legend:");
-    zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"U: Used sector");
-    zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"u: Used sector and final of a file");
-    zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"X: Bad sector");
-    zxvision_print_string_defaults_fillspc(&ventana,1,linea++,".: Unused sector");
-    zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"-: Unused sector & possible deleted");
-    zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"Coloured Letter: Bad checksum on sector");
-
-    zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"");
-    zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"Microdrive Info:");
-    int total_kb=microdrive_status[valor_opcion].mdr_total_sectors*512/1024;
-
-    zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++,
-        "Label: %s",catalogo->label);
-
-    zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++,
-        "Total %d KB (%d sectors)",total_kb,microdrive_status[valor_opcion].mdr_total_sectors);
-
-    if (buscar_archivo>=0) {
-        zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"");
-        zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"File Info:");
-
-        char buffer_copias[30]="";
-        int copias=catalogo->file[buscar_archivo].numero_copias;
-        if (copias>1) sprintf(buffer_copias," (%d copies)",copias);
-
-        char buf_nombre[11];
-        mdr_get_file_name_escaped(catalogo->file[buscar_archivo].name,buf_nombre);
-
-        zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++,
-            "File %3d/%3d Name: %s%s",buscar_archivo+1,catalogo->total_files,buf_nombre,buffer_copias);
-    }
-    else {
-        //zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"Microdrive Info:");
-    }
-
-
-    int used_kb=used_sectors/2; //*512/1024
-
-    //Si es medio sector, o 1.5 etc
-    int medio=0;
-    if (used_sectors % 2 !=0) medio=1;
-
-    int tamanyo_archivo=catalogo->file[buscar_archivo].file_size;
-
-    if (buscar_archivo>=0) {
-        zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++,
-            "Size: %5d B Used %d%s KB",tamanyo_archivo,used_kb,(medio ? ".5" : ""));
-    }
-    else {
-        zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++,
-            "Used %d%s KB",used_kb,(medio ? ".5" : ""));
-    }
-
-
-    if (buscar_archivo>=0) {
-        zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++,
-                "Fragmentation: %d %%",catalogo->file[buscar_archivo].porcentaje_fragmentacion);
-    }
-    else {
-        zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++,
-                "Fragmentation: %d %%",catalogo->porcentaje_fragmentacion);
-
-        //lineas mas en blanco para que ocupe la ventana lo mismo que cuando hace file info y no cambie el tamaño de ventana
-        zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"");
-        zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"");
-        zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"");
-    }
-
-    zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"Use cursors ~~< ~~> to show files info");
-    if (buscar_archivo>=0) {
-        zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"~~r: Rename file");
-    }
-    else {
-        zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"");
-    }
-
-    //Restaurar comportamiento atajos
-    menu_writing_inverse_color.v=antes_menu_writing_inverse_color.v;
-
-    //Ajustar al final de la leyenda
-    zxvision_set_visible_height(&ventana,linea+2);
-    zxvision_set_total_height(&ventana,linea);
-
-    //Recalcular centro
-    yventana=menu_center_y()-ventana.visible_height/2;
-
-    zxvision_set_y_position(&ventana,yventana);
-
-    zxvision_draw_window(&ventana);
-    zxvision_draw_window_contents(&ventana);
-
-    //zxvision_wait_until_esc(&ventana);
-
-    z80_byte tecla=zxvision_common_getkey_refresh();
-
-
-        switch (tecla) {
-
-            case 8:
-                //izquierda
-                if (buscar_archivo>-1) buscar_archivo--;
-            break;
-
-            case 9:
-                //derecha
-                if (buscar_archivo<catalogo->total_files-1) buscar_archivo++;
-            break;
-
-            //rename
-            case 'r':
-                if (buscar_archivo>=0) {
-                    char buffer_nombre[11];
-
-                    mdr_get_file_name_escaped(catalogo->file[buscar_archivo].name,buffer_nombre);
-
-                    mdr_truncate_spaces_name(buffer_nombre);
-
-                    menu_ventana_scanf("New name",buffer_nombre,11);
-
-                    mdr_rename_file(catalogo,microdrive_status[valor_opcion].if1_microdrive_buffer,buscar_archivo,buffer_nombre);
-
-                    //Y hacer flush
-                    microdrive_status[valor_opcion].microdrive_must_flush_to_disk=1;
-                }
-            break;
-
-            //Salir con ESC
-            case 2:
-                salir=1;
-            break;
-
-            //O tecla background
-            case 3:
-                salir=1;
-            break;
+            //lineas mas en blanco para que ocupe la ventana lo mismo que cuando hace file info y no cambie el tamaño de ventana
+            zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"");
+            zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"");
+            zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"");
         }
 
-    } while (!salir);
+        zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"Use cursors ~~< ~~> to show files info");
+        if (buscar_archivo>=0) {
+            zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"~~r: Rename file");
+        }
+        else {
+            zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"");
+        }
 
-    zxvision_destroy_window(&ventana);
+        //Restaurar comportamiento atajos
+        menu_writing_inverse_color.v=antes_menu_writing_inverse_color.v;
 
-    free(catalogo);
+        //Ajustar al final de la leyenda
+        zxvision_set_visible_height(&ventana,linea+2);
+        zxvision_set_total_height(&ventana,linea);
+
+        //Recalcular centro
+        yventana=menu_center_y()-ventana.visible_height/2;
+
+        zxvision_set_y_position(&ventana,yventana);
+
+        zxvision_draw_window(&ventana);
+        zxvision_draw_window_contents(&ventana);
+
+        //zxvision_wait_until_esc(&ventana);
+
+        z80_byte tecla=zxvision_common_getkey_refresh();
+
+
+            switch (tecla) {
+
+                case 8:
+                    //izquierda
+                    if (buscar_archivo>-1) buscar_archivo--;
+                break;
+
+                case 9:
+                    //derecha
+                    if (buscar_archivo<catalogo->total_files-1) buscar_archivo++;
+                break;
+
+                //rename
+                case 'r':
+                    if (buscar_archivo>=0) {
+                        char buffer_nombre[11];
+
+                        mdr_get_file_name_escaped(catalogo->file[buscar_archivo].name,buffer_nombre);
+
+                        mdr_truncate_spaces_name(buffer_nombre);
+
+                        menu_ventana_scanf("New name",buffer_nombre,11);
+
+                        mdr_rename_file(catalogo,microdrive_status[valor_opcion].if1_microdrive_buffer,buscar_archivo,buffer_nombre);
+
+                        //Y hacer flush
+                        microdrive_status[valor_opcion].microdrive_must_flush_to_disk=1;
+
+                        salir=1;
+                        recargar_microdrive=1;
+                    }
+                break;
+
+                //Salir con ESC
+                case 2:
+                    salir=1;
+                break;
+
+                //O tecla background
+                case 3:
+                    salir=1;
+                break;
+            }
+
+        } while (!salir);
+
+        zxvision_destroy_window(&ventana);
+
+        free(catalogo);
+
+    } while (recargar_microdrive);
 }
 
 
