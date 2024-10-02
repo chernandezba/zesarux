@@ -41623,8 +41623,11 @@ void menu_storage_microdrive_map(MENU_ITEM_PARAMETERS)
         int copias=catalogo->file[buscar_archivo].numero_copias;
         if (copias>1) sprintf(buffer_copias," (%d copies)",copias);
 
+        char buf_nombre[11];
+        mdr_get_file_name_escaped(catalogo->file[buscar_archivo].name,buf_nombre);
+
         zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++,
-            "File %3d/%3d Name: %s%s",buscar_archivo+1,catalogo->total_files,catalogo->file[buscar_archivo].name,buffer_copias);
+            "File %3d/%3d Name: %s%s",buscar_archivo+1,catalogo->total_files,buf_nombre,buffer_copias);
     }
     else {
         //zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"Microdrive Info:");

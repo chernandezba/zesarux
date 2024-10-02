@@ -785,7 +785,11 @@ int mdr_get_info_file(z80_byte *origen,int total_sectors,char *nombre,int tamany
                     nombre_comparar[j]=0;
 
                     if (!strcmp(nombre_comparar,nombre)) {
-                        DBG_PRINT_MDR VERBOSE_DEBUG,"MDR: Match name [%s] on sector %d (record segment=%d)",nombre,i,bloque_buscando);
+
+                        char buf_nombre[11];
+                        mdr_get_file_name_escaped(nombre,buf_nombre);
+
+                        DBG_PRINT_MDR VERBOSE_DEBUG,"MDR: Match name [%s] on sector %d (record segment=%d)",buf_nombre,i,bloque_buscando);
 
                         //Grabar ese bloque
                         //Si es record 0, saltar 9 bytes de la cabecera de datos
@@ -1150,8 +1154,11 @@ struct s_mdr_file_cat *mdr_get_file_catalogue(z80_byte *origen,int total_sectors
                     id_file++;
                 }
 
+                char buf_nombre[11];
+                mdr_get_file_name_escaped(catalogo->file[catalogo->total_files].name,buf_nombre);
+
                 DBG_PRINT_MDR VERBOSE_DEBUG,"MDR: File [%s] with id [%d] has %d copies",
-                    catalogo->file[catalogo->total_files].name,
+                    buf_nombre,
                     catalogo->file[catalogo->total_files].id_file,
                     copias_archivo);
 

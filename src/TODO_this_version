@@ -398,6 +398,9 @@ ok *chkdsk que compruebe checksums.
 ok *si random.mdr, browse peta en memcpy(destino,&origen[offset_sector+offset_a_grabar],rec_length);
 ok revisar *datos de un print # no aparecen en microdrive map o en browse. ver streams.mdr
 ok *sectors info: poder abrir hex editor desde ese sector (necesitara nuevo memory zone de imagen mdr, zona de toda la imagen)
+ok *mdr de trans express tiene algun bloque sin bloque 0 y otros errores aparentes
+quiza chkdsk deberia decir que errores hay (por ejemplo files with missing blocks)
+
 
 *poder activar un sector no usado como usado:
 -asignar nombre, recnum (0) , marcar como usado (stream quizá) y corregir checksums
@@ -408,6 +411,5 @@ pero habria que alterar el registro del nombre en todos los sectores, la cabecer
 
 *en grabacion datos y en lectura datos comprobar que los bits de estado los haya indicado correctamente el usuario?
 
-*mdr de trans express tiene algun bloque sin bloque 0 y otros errores aparentes
-quiza chkdsk deberia decir que errores hay (por ejemplo files with missing blocks)
+
 
