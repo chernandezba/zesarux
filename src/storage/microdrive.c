@@ -1322,6 +1322,10 @@ void mdr_chkdsk_get_files_no_block_zero(struct s_mdr_file_cat *catalogo,z80_byte
             buffer_nombre[j]=0;
 
             if (!mdr_if_file_exists_catalogue(catalogo,buffer_nombre)) {
+
+                //buffer_nombre a partir de aqui solo se usa para mostrarlo en consola. escapar caracteres extraños
+                mdr_get_file_name_escaped(buffer_nombre,buffer_nombre);
+
                 DBG_PRINT_MDR VERBOSE_DEBUG,"MDR: Block %d from file [%s] does not have zero block associated. Sector=%d",record_segment,buffer_nombre,i);
                 catalogo->chkdsk_files_sin_bloque_zero_sectors[catalogo->chkdsk_total_files_sin_bloque_zero]=i;
                 catalogo->chkdsk_total_files_sin_bloque_zero++;
