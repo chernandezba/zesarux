@@ -400,14 +400,13 @@ ok revisar *datos de un print # no aparecen en microdrive map o en browse. ver s
 ok *sectors info: poder abrir hex editor desde ese sector (necesitara nuevo memory zone de imagen mdr, zona de toda la imagen)
 ok *mdr de trans express tiene algun bloque sin bloque 0 y otros errores aparentes
 ok *quiza chkdsk deberia decir que errores hay (por ejemplo files with missing blocks)
+ok *opcion para poder hacer rename de files
 
 
 *poder activar un sector no usado como usado:
 -asignar nombre, recnum (0) , marcar como usado (stream quizá) y corregir checksums
 
 *algo como visual floppy
-ok *opcion para poder hacer rename de files
-
 
 *en grabacion datos y en lectura datos comprobar que los bits de estado los haya indicado correctamente el usuario?
 
