@@ -41942,7 +41942,12 @@ void menu_storage_microdrive_chkdsk(MENU_ITEM_PARAMETERS)
         zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"Note: problems are only shown, but not fixed");
     }
 
+    //Ajustar alto ventana al maximo necesario (donde haya lineas escritas)
+    zxvision_resize_minimum_height(&ventana);
 
+    //Recalcular centro
+    int y=menu_center_y()-ventana.visible_height/2;
+    zxvision_set_y_position(&ventana,y);
 
 
     zxvision_draw_window(&ventana);

@@ -13622,6 +13622,49 @@ void zxvision_set_total_height(zxvision_window *w,int total_height)
 
 }
 
+//Ajustar el alto de ventana al minimo necesario (o sea, cortar lineas en blanco por abajo)
+int zxvision_resize_minimum_height_get_max_y(zxvision_window *w)
+{
+
+	int y,x;
+
+	for (y=w->total_height-1;y>=0;y--) {
+		int offset_caracter=y*(w->total_width);
+
+		for (x=0;x<(w->total_width);x++) {
+
+            overlay_screen *caracter;
+            caracter=w->memory;
+            caracter=&caracter[offset_caracter];
+
+            z80_byte caracter_escribir=caracter->caracter;
+
+			if (caracter_escribir!=32) return y;
+			offset_caracter++;
+		}
+
+    }
+
+    return 0;
+
+
+}
+
+//Ajustar el alto de ventana al minimo necesario (o sea, cortar lineas en blanco por abajo)
+void zxvision_resize_minimum_height(zxvision_window *w)
+{
+
+	int linea=zxvision_resize_minimum_height_get_max_y(w);
+
+    zxvision_set_visible_height(w,linea+3);
+    zxvision_set_total_height(w,linea+1);
+
+}
+
+
+
+
+
 /*char *zxvision_get_text_margin(zxvision_window *w,int linea)
 {
 	int i;

@@ -535,12 +535,12 @@ void microdrive_flush_to_disk_one(int microdrive_seleccionado)
 	if (microdrive_status[microdrive_seleccionado].microdrive_enabled==0) return;
 
     if (microdrive_status[microdrive_seleccionado].microdrive_must_flush_to_disk==0) {
-        DBG_PRINT_MDR VERBOSE_DEBUG,"MDR: Trying to flush microdrive %d to disk but no changes made",microdrive_seleccionado);
+        //DBG_PRINT_MDR VERBOSE_DEBUG,"MDR: Trying to flush microdrive %d to disk but no changes made",microdrive_seleccionado);
         return;
     }
 
 	if (microdrive_status[microdrive_seleccionado].microdrive_persistent_writes==0) {
-        DBG_PRINT_MDR VERBOSE_DEBUG,"MDR: Trying to flush microdrive %d to disk but persistent writes disabled",microdrive_seleccionado);
+        //DBG_PRINT_MDR VERBOSE_DEBUG,"MDR: Trying to flush microdrive %d to disk but persistent writes disabled",microdrive_seleccionado);
         return;
     }
 
