@@ -21302,12 +21302,10 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 	//guardamos antes si el tipo es tabulado antes de
 	//liberar el item de menu
 	int es_tabulado=m->es_menu_tabulado;
-    int es_no_indexar_busqueda=m->no_indexar_busqueda;
-    int es_menu_tabulado=m->es_menu_tabulado;
-    //int es_one_time=m->one_time;
+
 
 	//Liberar memoria del menu
-        aux=m;
+    aux=m;
 	menu_item *nextfree;
 
     do {
