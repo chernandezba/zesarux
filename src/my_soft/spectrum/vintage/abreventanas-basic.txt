@@ -1,0 +1,3 @@
+El programa esta en basic pero se probo a compilar con el compilador de basic
+"ZX Compiler V2.0 (c) Threlfall and Hodgson". En la linea 1000 se llama a usr 60000 donde se deberia ubicar
+el compilador
