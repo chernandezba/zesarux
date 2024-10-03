@@ -729,8 +729,12 @@ void core_spectrum_handle_interrupts(void)
 
 
 
-        //Caso Inves. Hacer poke (I*256+R) con 255
+        //Bug Inves. Sobreescribe memoria cuando hay una interrupcion. Modificar (I*256+R) con 255
         if (MACHINE_IS_INVES) {
+            //Importante que este check se lance antes de hacer iff1.v=iff2.v=0;,
+            //porque no detecta ese bug de inves si no estan habilitadas las interrupciones
+            inves_check_write_on_interrupt_bug();
+
             z80_byte reg_r_total=(reg_r&127) | (reg_r_bit7 &128);
 
             z80_int dir=reg_i*256+reg_r_total;

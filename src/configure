@@ -1676,7 +1676,7 @@ contend.o: contend.c contend.h cpu.h debug.h video/screen.h compileoptions.h ula
 joystick.o: joystick.c joystick.h cpu.h debug.h video/screen.h zxvision/zxvision.h zrcp/zeng.h zrcp/zeng_online.h
 	\$(CC) \$(CFLAGS) -c joystick.c
 
-ula.o: ula.c ula.h cpu.h start.h debug.h video/screen.h contend.h zxvision/zxvision.h copy_interfaces/multiface.h storage/betadisk.h settings.h storage/divmmc.c storage/hilow_datadrive.h samram.h copy_interfaces/hilow_barbanegra.h copy_interfaces/transtape.h copy_interfaces/mhpokeador.h copy_interfaces/specmate.h copy_interfaces/phoenix.h copy_interfaces/defcon.h copy_interfaces/ramjet.h copy_interfaces/interface007.h copy_interfaces/dinamid3.h
+ula.o: ula.c ula.h cpu.h start.h debug.h video/screen.h contend.h zxvision/zxvision.h copy_interfaces/multiface.h storage/betadisk.h settings.h storage/divmmc.c storage/hilow_datadrive.h samram.h copy_interfaces/hilow_barbanegra.h copy_interfaces/transtape.h copy_interfaces/mhpokeador.h copy_interfaces/specmate.h copy_interfaces/phoenix.h copy_interfaces/defcon.h copy_interfaces/ramjet.h copy_interfaces/interface007.h copy_interfaces/dinamid3.h operaciones.h
 	\$(CC) \$(CFLAGS) -c ula.c
 
 mmc.o: storage/mmc.c storage/mmc.h cpu.h debug.h utils.h zxvision/zxvision.h video/screen.h storage/divmmc.h compileoptions.h operaciones.h menu/menu_items.h

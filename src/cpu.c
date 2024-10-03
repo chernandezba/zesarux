@@ -1149,6 +1149,7 @@ void reset_cpu(void)
         if (MACHINE_IS_INVES) {
 		//Inves
 		t_scanline_draw=screen_indice_inicio_pant;
+        alertado_inves_check_write_on_interrupt_bug=0;
         }
 
 	init_chip_ay();

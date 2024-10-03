@@ -45,6 +45,7 @@
 #include "ramjet.h"
 #include "interface007.h"
 #include "dinamid3.h"
+#include "operaciones.h"
 
 
 //#define ZESARUX_ZXI_PORT_REGISTER 0xCF3B
@@ -861,4 +862,56 @@ z80_byte get_ula_databus_value(void)
     if (dinamic_sd1.v) valor=valor & (255-32);
 
     return valor;
+}
+
+int alertado_inves_check_write_on_interrupt_bug=0;
+
+void inves_check_write_on_interrupt_bug(void)
+{
+
+    //Si Inves, detectar si puede petar porque escribe en (I*256+R) con 255
+    //Ranarama Erbe Edition peta debido a esto
+    //Kings Valley no peta aunque da falsos positivos en este check: va cambiando registro R>127, aunque
+    //luego lo cambia a <128 y no parece que llegue a coincidir todas las condiciones
+    //Barbarian por ejemplo cumple todas las condiciones excepto que no cambia el registro R,
+    //pero eso significa que si cargamos primero el Ranarama, petará, dejará el registro R >127, y si cargamos
+    //a continuación el Barbarian, se reseteará
+    //Livingstone supongo 1 también fallará como el Barbarian
+    //otros que fallan si registro R era >127: Lorna, TaiPan,
+
+    //para testear si un juego tiene el bug:
+    //./zesarux --noconfigfile --vo stdout --ao null "/Users/cesarhernandez/Desktop/rana-cargado.zsf" --exit-after 5
+    //--fastautoload --realloadfast --machine inves --disablemenuandexit --disableallbetawarningpause --deletetzxpauses King\'s\ Valley.tap
+    if (MACHINE_IS_INVES && iff1.v==1 && im_mode==2) {
+        //Si R>127
+
+        if (reg_r_bit7) {
+            //La tabla de interrupciones se sobreescribira con 255. Si no habia 255, acabara reseteandose
+            z80_int interrupt_vector=get_im2_interrupt_vector();
+
+            z80_byte dir_l,dir_h;
+            dir_l=peek_byte_no_time(interrupt_vector++);
+            dir_h=peek_byte_no_time(interrupt_vector);
+
+            if (dir_l!=255 || dir_h!=255) {
+                if (!alertado_inves_check_write_on_interrupt_bug) {
+
+                    debug_printf(VERBOSE_ERR,"This game will probably crash due to the Inves write-on-interrupt bug "
+                        "(ISR=%02X%02XH, I=%02XH, R=%02XH, IM_MODE=2, IFF1=1)",
+                        dir_h,dir_l,reg_i,(reg_r&127) | (reg_r_bit7 &128)
+                    );
+
+
+                    //printf("This game will probably crash due to the Inves write-on-interrupt bug (PC=%04XH) (ISR=%02X%02XH)\n",reg_pc,dir_h,dir_l);
+                    alertado_inves_check_write_on_interrupt_bug=1;
+                    //Se volvera a avisar a partir de haber hecho un reset
+                }
+
+                return;
+
+            }
+
+        }
+    }
+
 }

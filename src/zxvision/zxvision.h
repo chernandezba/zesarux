@@ -1111,6 +1111,7 @@ extern void menu_add_item_menu_sufijo_format(menu_item *m,const char * format , 
 
 extern void menu_warn_message(char *texto);
 extern void menu_error_message(char *texto);
+extern void menu_error_message_format(const char * format , ...);
 
 extern void menu_generic_message(char *titulo, const char * texto);
 extern void menu_generic_message_format(char *titulo, const char * format , ...);

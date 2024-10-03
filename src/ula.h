@@ -96,4 +96,8 @@ extern z80_bit dinamic_sd1;
 
 extern z80_byte get_ula_databus_value(void);
 
+extern void inves_check_write_on_interrupt_bug(void);
+
+extern int alertado_inves_check_write_on_interrupt_bug;
+
 #endif

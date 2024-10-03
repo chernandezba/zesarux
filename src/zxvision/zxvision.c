@@ -22504,6 +22504,20 @@ void menu_error_message(char *texto)
 
 }
 
+void menu_error_message_format(const char * format , ...)
+{
+
+    char buffer_final[4096];
+
+    va_list args;
+    va_start (args, format);
+    vsprintf (buffer_final,format, args);
+    va_end (args);
+
+    menu_error_message(buffer_final);
+
+}
+
 //Similar a snprintf
 void menu_generic_message_aux_copia(char *origen,char *destino, int longitud)
 {
