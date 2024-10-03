@@ -294,8 +294,7 @@ int audiorecord_input_fifo_write(char *origen,int longitud)
             if (!audiorecord_avisado_fifo_llena) {
                 audiorecord_avisado_fifo_llena=1;
                 int miliseconds_lost=(1000*longitud)/AUDIO_RECORD_FREQUENCY;
-                debug_printf(VERBOSE_ERR,"External Audio Source buffer is full, a fragment of %d ms has been lost. "
-                    "I recommend you to disable and enable External Audio Source in order to empty the input buffer",
+                debug_printf(VERBOSE_ERR,"External Audio Source buffer is full, a fragment of %d ms has been lost",
                     miliseconds_lost);
             }
 
