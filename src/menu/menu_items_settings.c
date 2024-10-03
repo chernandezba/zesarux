@@ -1434,12 +1434,15 @@ void menu_general_settings(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_tooltip(array_menu_window_settings,"Reset index of the search feature");
             menu_add_item_menu_ayuda(array_menu_window_settings,"Reset index of the search feature");
 
-            menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_full_index_search,NULL,
-            "    Full scan search index","    Completo escaneo índice búsqueda","    Complet escaneig índex recerca");
-            menu_add_item_menu_se_cerrara(array_menu_window_settings);
-            menu_add_item_menu_genera_ventana(array_menu_window_settings);
-            menu_add_item_menu_tooltip(array_menu_window_settings,"Run a Full scan search index");
-            menu_add_item_menu_ayuda(array_menu_window_settings,"Run a Full scan search index");
+            //El escaneo completo es incompatible con la manera antigua de gestionar ESC / flecha izquierda
+            if (menu_old_behaviour_close_menus.v==0) {
+                menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_full_index_search,NULL,
+                "    Full scan search index","    Completo escaneo índice búsqueda","    Complet escaneig índex recerca");
+                menu_add_item_menu_se_cerrara(array_menu_window_settings);
+                menu_add_item_menu_genera_ventana(array_menu_window_settings);
+                menu_add_item_menu_tooltip(array_menu_window_settings,"Run a Full scan search index");
+                menu_add_item_menu_ayuda(array_menu_window_settings,"Run a Full scan search index");
+            }
         }
 
 
