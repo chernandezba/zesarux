@@ -6,9 +6,6 @@ Para versión siguiente:
 
 ---Indexado menu---
 
--parece que el archivo de indice a veces lo escribe en otras rutas
-
-
 
 -Documentar funciones de menu respecto a indexado:
 
@@ -18,6 +15,8 @@ menu_dibuja_menu_no_indexado: para usar ventanas con opciones pero no queremos q
 
 menu_dibuja_menu_one_time: para opciones de menu en que se pulsa enter o esc y se sale siempre del menu, no se vuelve a dibujar ese menu,
 y por tanto a nivel de path de indexacion de busqueda, se pierde el ultimo path de submenu. Ejemplo de esto: menu_simple_ten_choices
+
+menu_dibuja_menu_dialogo_no_title_lang: misma apariencia que una ventana de menu, pero no queremos que este en el arbol de submenus, sino centrado en pantalla, y ademas que no esté indexado
 
 --Fin Indexado menu---
 
@@ -413,3 +412,5 @@ ok *opcion para poder hacer rename de files
 
 
 *botones superiores e inferiores que no estén pegados a la pantalla: moverlos una columna a la derecha
+
+*marcando "antiguo comportamiento menu (ESC,etc)" al pulsar esc en cada ventana, se genera una nueva

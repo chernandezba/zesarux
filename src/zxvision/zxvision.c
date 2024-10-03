@@ -20605,7 +20605,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
                         salir_recorrer=1;
 
                         if (m->no_es_realmente_un_menu) {
-                            printf("salir con esc\n");
+                            //printf("salir con esc\n");
                             tecla=MENU_RETORNO_ESC;
                         }
 
@@ -20625,7 +20625,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
                             salir_recorrer=1;
 
                             if (m->no_es_realmente_un_menu) {
-                                printf("salir con esc\n");
+                                //printf("salir con esc\n");
                                 tecla=MENU_RETORNO_ESC;
                             }
 
@@ -22031,21 +22031,7 @@ void menu_add_item_menu_tabulado(menu_item *m,int x,int y)
 }
 
 
-//Indicar que es mas bien un cuadro de dialogo en vez de un menu
-/*
-void menu_add_item_menu_no_es_realmente_un_menu(menu_item *m)
-{
-//busca el ultimo item i le añade el indicado
 
-    while (m->siguiente_item!=NULL)
-    {
-            m=m->siguiente_item;
-    }
-
-    m->no_es_realmente_un_menu=1;
-
-}
-*/
 
 //Agregar un valor como opcion al ultimo item de menu
 //Esto sirve, por ejemplo, para que cuando esta en el menu de z88, insertar slot,
