@@ -21400,11 +21400,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
         else {
             //Comportamiento antiguo. ESC nos lleva hacia atras
             zxvision_helper_menu_shortcut_delete_last();
-            //Indexar siempre que no diga que no hay que indexarlo, ni tampoco menus tabulados,
-            //pues menus tabulados son mas bien para ventanas, como visual memory, y no menus de opciones
-            if (es_no_indexar_busqueda==0 && es_menu_tabulado==0 && index_menu_enabled.v) {
-                //innecesario con nuevo metodo de indexacion zxvision_index_delete_last_submenu_path();
-            }
+
             ya_borrado_helper_atras=1;
 
             //no indicar helper
@@ -21425,14 +21421,9 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
         else {
             //Aqui podria suceder que pulsamos ESC en la propia opcion de ESC
             //Solo borrar en total una letra
-           if (!ya_borrado_helper_atras) {
-            zxvision_helper_menu_shortcut_delete_last();
-            //Indexar siempre que no diga que no hay que indexarlo, ni tampoco menus tabulados,
-            //pues menus tabulados son mas bien para ventanas, como visual memory, y no menus de opciones
-            if (es_no_indexar_busqueda==0 && es_menu_tabulado==0 && index_menu_enabled.v) {
-                //innecesario con nuevo metodo de indexacion zxvision_index_delete_last_submenu_path();
+            if (!ya_borrado_helper_atras) {
+                zxvision_helper_menu_shortcut_delete_last();
             }
-           }
         }
 
         return MENU_RETORNO_ESC;
