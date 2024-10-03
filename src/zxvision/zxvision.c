@@ -21330,7 +21330,12 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 
         //si hay setting de submenu, no siempre se destruye ventana
         if (menu_show_submenus_tree.v && m->no_es_realmente_un_menu==0) {
-            if (salir_con_flecha_izquierda || menu_old_behaviour_close_menus.v) {
+            if (salir_con_flecha_izquierda ||
+
+                //con antiguo comportamiento, al pulsar ESC o seleccionar item esc, se comporta igual que salir con flecha izquierda
+                (  (tecla==MENU_RETORNO_ESC || ((item_seleccionado->tipo_opcion)&MENU_OPCION_ESC)  ) && menu_old_behaviour_close_menus.v)
+
+            ) {
                 //Quitamos el actual, y el anterior tambien, dado que el anterior se va a redibujar
                 menu_dibuja_submenu_cierra_submenu_dos_ultimos();
             }
