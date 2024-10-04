@@ -5616,13 +5616,72 @@ void menu_debug_draw_visualmem(void)
 
 }
 
+#define VISUALMEM_TOTAL_TYPES 13
 
+char *visualmem_types_names[]={
+		"MEM Write",   //0
+		"MEM Read",
+		"Opcode",
+		"MEM W+R+Opcode",
+		"MMC Write",
+		"MMC Read",
+		"MMC Write+Read",
+		"HiLow Write",
+		"HiLow Read",
+		"HiLow Write+Read",
+		"Microdrive Write", //10
+		"Microdrive Read",
+		"Microdrive Write+Read"
+};
 
-
-void menu_debug_new_visualmem_looking(MENU_ITEM_PARAMETERS)
+void menu_visualmem_change_type_set(MENU_ITEM_PARAMETERS)
 {
-	menu_visualmem_donde++;
-	if (menu_visualmem_donde==13) menu_visualmem_donde=0;
+    menu_visualmem_donde=valor_opcion;
+
+}
+
+
+
+void menu_visualmem_change_type(MENU_ITEM_PARAMETERS)
+{
+    menu_item *array_menu_common;
+    menu_item item_seleccionado;
+    int retorno_menu;
+
+    int opcion_seleccionada=menu_visualmem_donde;
+
+    //No reintentar. seleccionar uno y salir
+    //do {
+
+        menu_add_item_menu_inicial(&array_menu_common,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
+
+        int i;
+
+        for (i=0;i<VISUALMEM_TOTAL_TYPES;i++) {
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_visualmem_change_type_set,NULL,"%s",visualmem_types_names[i]);
+            menu_add_item_menu_valor_opcion(array_menu_common,i);
+        }
+
+
+        menu_add_item_menu_separator(array_menu_common);
+
+        menu_add_ESC_item(array_menu_common);
+
+
+        retorno_menu=menu_dibuja_menu_dialogo_no_title_lang(&opcion_seleccionada,&item_seleccionado,array_menu_common,
+            "Visualmem Type");
+
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+            //llamamos por valor de funcion
+            if (item_seleccionado.menu_funcion!=NULL) {
+                //printf ("actuamos por funcion\n");
+                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+
+            }
+        }
+
+    //} while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+
 }
 
 void menu_debug_new_visualmem_defrag_mode(MENU_ITEM_PARAMETERS)
@@ -5743,22 +5802,8 @@ void menu_debug_new_visualmem(MENU_ITEM_PARAMETERS)
 		}
 
 
-		char texto_looking[32];
-		if (menu_visualmem_donde == 0) sprintf (texto_looking,"MEM Write");
-		else if (menu_visualmem_donde == 1) sprintf (texto_looking,"MEM Read");
-		else if (menu_visualmem_donde == 2) sprintf (texto_looking,"Opcode");
-		else if (menu_visualmem_donde == 3) sprintf (texto_looking,"MEM W+R+Opcode");
-		else if (menu_visualmem_donde == 4) sprintf (texto_looking,"MMC Write");
-		else if (menu_visualmem_donde == 5) sprintf (texto_looking,"MMC Read");
-		else if (menu_visualmem_donde == 6) sprintf (texto_looking,"MMC Write+Read");
-		else if (menu_visualmem_donde == 7) sprintf (texto_looking,"HiLow Write");
-		else if (menu_visualmem_donde == 8) sprintf (texto_looking,"HiLow Read");
-		else if (menu_visualmem_donde == 9 )sprintf (texto_looking,"HiLow Write+Read");
-		else if (menu_visualmem_donde == 10) sprintf (texto_looking,"Microdrive Write");
-		else if (menu_visualmem_donde == 11) sprintf (texto_looking,"Microdrive Read");
-		else sprintf (texto_looking,"Microdrive Write+Read");
 
-		menu_add_item_menu_format(array_menu_debug_new_visualmem,MENU_OPCION_NORMAL,menu_debug_new_visualmem_looking,NULL,"~~Looking: %s",texto_looking);
+		menu_add_item_menu_format(array_menu_debug_new_visualmem,MENU_OPCION_NORMAL,menu_visualmem_change_type,NULL,"~~Looking: %s",visualmem_types_names[menu_visualmem_donde]);
 		menu_add_item_menu_shortcut(array_menu_debug_new_visualmem,'l');
 
 		menu_add_item_menu_ayuda(array_menu_debug_new_visualmem,"Which visualmem to look at.\n\nIf you select MEM W+R+Opcode, the final color will be a RGB color result of:\n\n"
