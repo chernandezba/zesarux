@@ -42535,6 +42535,12 @@ void menu_visual_microdrive_dibujar_microdrive_estatico(struct zxvision_vectoria
     d->pencil_on(d);
     d->setpos(d,357+152,678);
 
+    //esponjita
+    d->pencil_off(d);
+    d->setpos(d,284,62);
+    d->setcolour(d,6); //esponjita
+    d->drawfilledrectangle(d,392-284,21);
+
 }
 
 void menu_visual_microdrive_overlay(void)
