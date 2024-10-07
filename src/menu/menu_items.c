@@ -42527,11 +42527,34 @@ void menu_visual_microdrive_dibujar_microdrive_estatico(struct zxvision_vectoria
 
 
     //empieza en tangente izquierda de donde se enrolla
+    //Efecto de temblar al moverse, si esta motor on
+    //TODO: meter esto en funcion dinamica, no en estatica
+    int color_fondo=ESTILO_GUI_PAPEL_NORMAL;
+    int desplazamiento=5;
+    //borrar lineas anteriores
+    d->setcolour(d,color_fondo);
+    d->setpos(d,pos_x_rodillo_enrollado,678);
+    d->pencil_on(d);
+    d->setpos(d,10,136);
+    d->pencil_off(d);
+    d->setpos(d,pos_x_rodillo_enrollado+desplazamiento,678);
+    d->pencil_on(d);
+    d->setpos(d,10,136);
+    d->pencil_off(d);
+
+    int sumar_pos=0;
+    if (microdrive_status[menu_visual_microdrive_mirando_microdrive].motor_on) {
+        int offset_actual=microdrive_status[numero_microdrive].mdr_current_offset_in_sector;
+        int sector_actual=microdrive_status[numero_microdrive].mdr_current_sector;
+        if (sector_actual % 2) sumar_pos=desplazamiento;
+    }
+
+
     d->setcolour(d,color_cinta_enrollada);
-    d->set_x(d,pos_x_rodillo_enrollado);
+    d->setpos(d,pos_x_rodillo_enrollado+sumar_pos,678);
 
     d->pencil_on(d);
-    //primer tramp
+    //primer tramo
     d->setpos(d,10,136);
 
     //tangente cinta arriba
