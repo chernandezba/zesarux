@@ -42474,8 +42474,6 @@ void menu_visual_microdrive_dibujar_microdrive_estatico(struct zxvision_vectoria
 
     int numero_microdrive=menu_visual_microdrive_mirando_microdrive;
 
-    if (numero_microdrive>=MAX_MICRODRIVES) numero_microdrive=0;
-
     int total_sectores=microdrive_status[numero_microdrive].mdr_total_sectors;
 
     //sacar radio
@@ -42541,6 +42539,76 @@ void menu_visual_microdrive_dibujar_microdrive_estatico(struct zxvision_vectoria
     d->setcolour(d,6); //esponjita
     d->drawfilledrectangle(d,392-284,21);
 
+
+}
+
+int visual_micro_antes_grados_rodillo=0;
+
+void menu_visual_microdrive_dibujar_microdrive_dinamico_dibuja_radio(struct zxvision_vectorial_draw *d,int grados,int color)
+{
+
+    int x_origen_rodillo=573;
+    int y_origen_rodillo=136;
+    int longitud=97;
+
+    d->pencil_off(d);
+    d->setcolour(d,color);
+    d->setpos(d,x_origen_rodillo,y_origen_rodillo);
+    d->pencil_on(d);
+
+
+
+    //sacar final linea
+    int yfinal=y_origen_rodillo-((longitud*util_get_sine(grados))/10000);
+
+    int xfinal=x_origen_rodillo+((longitud*util_get_cosine(grados))/10000);
+
+
+    d->setpos(d,xfinal,yfinal);
+
+}
+
+int temp_grados=0;
+
+
+void menu_visual_microdrive_dibujar_microdrive_dinamico(struct zxvision_vectorial_draw *d)
+{
+    int numero_microdrive=menu_visual_microdrive_mirando_microdrive;
+
+    if (numero_microdrive>=MAX_MICRODRIVES) numero_microdrive=0;
+
+    //radios del rodillo amarillo, que va girando
+    int sector_actual=microdrive_status[numero_microdrive].mdr_current_sector;
+    int offset_actual=microdrive_status[numero_microdrive].mdr_current_offset_in_sector;
+
+    int total_offset=(sector_actual*MDR_BYTES_PER_SECTOR)+offset_actual;
+
+    //borrar grados anteriores
+    int color_fondo=ESTILO_GUI_PAPEL_NORMAL; //temp
+
+    menu_visual_microdrive_dibujar_microdrive_dinamico_dibuja_radio(d,visual_micro_antes_grados_rodillo,color_fondo);
+    menu_visual_microdrive_dibujar_microdrive_dinamico_dibuja_radio(d,visual_micro_antes_grados_rodillo+120,color_fondo);
+    menu_visual_microdrive_dibujar_microdrive_dinamico_dibuja_radio(d,visual_micro_antes_grados_rodillo+240,color_fondo);
+
+    //asumimos cada byte mueve 1 grado
+    int grados=(total_offset % 360);
+
+
+
+    //temp
+    //grados=temp_grados;
+    temp_grados++;
+
+
+    //va hacia abajo. o sea la cinta se mueve hacia la derecha
+    grados=-grados;
+
+    visual_micro_antes_grados_rodillo=grados;
+    menu_visual_microdrive_dibujar_microdrive_dinamico_dibuja_radio(d,grados,6);
+    menu_visual_microdrive_dibujar_microdrive_dinamico_dibuja_radio(d,grados+120,6);
+    menu_visual_microdrive_dibujar_microdrive_dinamico_dibuja_radio(d,grados+240,6);
+
+
 }
 
 void menu_visual_microdrive_overlay(void)
@@ -42569,6 +42637,8 @@ void menu_visual_microdrive_overlay(void)
 
     menu_visual_microdrive_dibujar_microdrive_estatico(&dibujo_microdrive_estatico);
 
+    menu_visual_microdrive_dibujar_microdrive_dinamico(&dibujo_microdrive_estatico);
+
     //Mostrar contenido
     zxvision_draw_window_contents(menu_visual_microdrive_window);
 
@@ -42584,6 +42654,9 @@ zxvision_window zxvision_window_visual_microdrive;
 void menu_visual_microdrive(MENU_ITEM_PARAMETERS)
 {
     menu_visual_microdrive_mirando_microdrive=valor_opcion;
+
+    //por si acaso
+    if (menu_visual_microdrive_mirando_microdrive>=MAX_MICRODRIVES) menu_visual_microdrive_mirando_microdrive=0;
 
 	menu_espera_no_tecla();
 
