@@ -42454,12 +42454,26 @@ void menu_visual_microdrive_dibujar_microdrive_estatico(struct zxvision_vectoria
     d->setcolour(d,15);
     d->setpos(d,108,136);
     d->drawcircle(d,98);
+    d->drawcircle(d,97);
+    d->drawcircle(d,96);
+    d->drawcircle(d,95);
+
+    //y parte de ese rodillo muestra la cinta
+    d->setcolour(d,color_cinta_enrollada);
+    d->drawarc(d,100,90,180); //algo mas que 98 de radio para que no se pegue
 
     //rodillo arriba a la derecha
     d->pencil_off(d);
     d->setcolour(d,6);
     d->setpos(d,573,136);
     d->drawcircle(d,98);
+    d->drawcircle(d,97);
+    d->drawcircle(d,96);
+    d->drawcircle(d,95);
+
+    //y parte de ese rodillo muestra la cinta
+    d->setcolour(d,color_cinta_enrollada);
+    d->drawarc(d,100,0,90); //algo mas que 98 de radio para que no se pegue
 
     //esponjita
     d->pencil_off(d);
@@ -42522,7 +42536,7 @@ void menu_visual_microdrive_dibujar_microdrive_estatico(struct zxvision_vectoria
 
     //tangente cinta arriba
     d->pencil_off(d);
-    d->setpos(d,108,136-98);
+    d->setpos(d,108,136-100); //algo mas de radio 98
     d->pencil_on(d);
     //segundo tramo
     d->setpos(d,170,0);
@@ -42538,7 +42552,7 @@ void menu_visual_microdrive_dibujar_microdrive_estatico(struct zxvision_vectoria
     //hacia el rodillo amarillo
     //por arriba
     //sexto tramo
-    d->setpos(d,573,136-98);
+    d->setpos(d,573,136-100); //algo mas de radio 98
     //derecha
     d->pencil_off(d);
     d->setpos(d,573+98,136);
@@ -42559,7 +42573,7 @@ void menu_visual_microdrive_dibujar_microdrive_dinamico_dibuja_radio(struct zxvi
 
     int x_origen_rodillo=573;
     int y_origen_rodillo=136;
-    int longitud=97;
+    int longitud=96; //algo menos de 98 para que no se salga
 
     d->pencil_off(d);
     d->setcolour(d,color);
@@ -42659,8 +42673,13 @@ void menu_visual_microdrive_overlay(void)
     int offset_x=menu_char_width*2;
     int offset_y=menu_char_height*1;
 
+    //Ajustar escalas
+
+    int real_width=tamanyo_ocupado_microdrive_ancho;
+    int real_height=(real_width*1000)/700;
+
     zxvision_vecdraw_init(&dibujo_microdrive_estatico,menu_visual_microdrive_window,700,1000,
-        tamanyo_ocupado_microdrive_ancho,tamanyo_ocupado_microdrive_alto,offset_x,offset_y);
+        real_width,real_height,offset_x,offset_y);
 
     menu_visual_microdrive_dibujar_microdrive_estatico(&dibujo_microdrive_estatico);
 

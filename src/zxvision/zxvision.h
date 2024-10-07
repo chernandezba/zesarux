@@ -1849,6 +1849,8 @@ struct zxvision_vectorial_draw
 
     void (*drawcircle)(struct zxvision_vectorial_draw *d,int radio);
 
+    void (*drawarc)(struct zxvision_vectorial_draw *d,int radio,int inicio_grado,int final_grado);
+
     void (*drawfilledrectangle)(struct zxvision_vectorial_draw *d,int ancho,int alto);
 
 };
