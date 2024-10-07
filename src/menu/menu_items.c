@@ -42410,6 +42410,162 @@ void menu_storage_microdrive_browse(MENU_ITEM_PARAMETERS)
     zxvision_destroy_window(&ventana);
 }
 
+
+zxvision_window *menu_visual_microdrive_window;
+
+
+void menu_visual_microdrive_dibujar_microdrive_estatico(struct zxvision_vectorial_draw *d)
+{
+    d->setpos(d,0,0);
+}
+
+void menu_visual_microdrive_overlay(void)
+{
+
+    menu_speech_tecla_pulsada=1; //Si no, envia continuamente todo ese texto a speech
+
+    //si ventana minimizada, no ejecutar todo el codigo de overlay
+    if (menu_visual_microdrive_window->is_minimized) return;
+
+
+    //Print....
+    //Tambien contar si se escribe siempre o se tiene en cuenta contador_segundo...
+
+    //Dibujo del microdrive, parte estatica que no se modifica
+    struct zxvision_vectorial_draw dibujo_microdrive_estatico;
+
+    int tamanyo_ocupado_microdrive_ancho=(menu_visual_microdrive_window->total_width-3)*menu_char_width;
+    int tamanyo_ocupado_microdrive_alto=(menu_visual_microdrive_window->total_height-2)*menu_char_height;
+
+    zxvision_vecdraw_init(&dibujo_microdrive_estatico,menu_visual_microdrive_window,700,1000,
+        tamanyo_ocupado_microdrive_ancho,tamanyo_ocupado_microdrive_alto);
+
+    menu_visual_microdrive_dibujar_microdrive_estatico(&dibujo_microdrive_estatico);
+
+    //Mostrar contenido
+    zxvision_draw_window_contents(menu_visual_microdrive_window);
+
+}
+
+
+
+
+//Almacenar la estructura de ventana aqui para que se pueda referenciar desde otros sitios
+zxvision_window zxvision_window_visual_microdrive;
+
+
+void menu_visual_microdrive(MENU_ITEM_PARAMETERS)
+{
+	menu_espera_no_tecla();
+
+    if (!menu_multitarea) {
+        menu_warn_message("This window needs multitask enabled");
+        return;
+    }
+
+    zxvision_window *ventana;
+    ventana=&zxvision_window_visual_microdrive;
+
+	//IMPORTANTE! no crear ventana si ya existe. Esto hay que hacerlo en todas las ventanas que permiten background.
+	//si no se hiciera, se crearia la misma ventana, y en la lista de ventanas activas , al redibujarse,
+	//la primera ventana repetida apuntaria a la segunda, que es el mismo puntero, y redibujaria la misma, y se quedaria en bucle colgado
+	//zxvision_delete_window_if_exists(ventana);
+
+    //Crear ventana si no existe
+    if (!zxvision_if_window_already_exists(ventana)) {
+        int xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
+
+        if (!util_find_window_geometry("visualmicrodrive",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
+            ancho_ventana=30;
+            alto_ventana=20;
+
+            xventana=menu_center_x()-ancho_ventana/2;
+            yventana=menu_center_y()-alto_ventana/2;
+        }
+
+
+        zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"Visual Microdrive",
+            "visualmicrodrive",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
+
+        ventana->can_be_backgrounded=1;
+
+    }
+
+    //Si ya existe, activar esta ventana
+    else {
+        zxvision_activate_this_window(ventana);
+    }
+
+	zxvision_draw_window(ventana);
+
+	z80_byte tecla;
+
+
+	int salir=0;
+
+
+    menu_visual_microdrive_window=ventana; //Decimos que el overlay lo hace sobre la ventana que tenemos aqui
+
+
+    //cambio overlay
+    zxvision_set_window_overlay(ventana,menu_visual_microdrive_overlay);
+
+
+    //Toda ventana que este listada en zxvision_known_window_names_array debe permitir poder salir desde aqui
+    //Se sale despues de haber inicializado overlay y de cualquier otra variable que necesite el overlay
+    if (zxvision_currently_restoring_windows_on_start) {
+            //printf ("Saliendo de ventana ya que la estamos restaurando en startup\n");
+            return;
+    }
+
+    do {
+
+
+		tecla=zxvision_common_getkey_refresh();
+
+
+        switch (tecla) {
+
+            case 11:
+                //arriba
+                //blablabla
+            break;
+
+
+
+            //Salir con ESC
+            case 2:
+                salir=1;
+            break;
+
+            //O tecla background
+            case 3:
+                salir=1;
+            break;
+        }
+
+
+    } while (salir==0);
+
+
+	util_add_window_geometry_compact(ventana);
+
+	if (tecla==3) {
+		zxvision_message_put_window_background();
+	}
+
+	else {
+
+		zxvision_destroy_window(ventana);
+	}
+
+
+}
+
+
+
+
+
 void menu_interface1(MENU_ITEM_PARAMETERS)
 {
     menu_item *array_menu_common;
@@ -42505,6 +42661,13 @@ void menu_interface1(MENU_ITEM_PARAMETERS)
 
                 menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_storage_microdrive_chkdsk,NULL,
                         "Chkdsk","Chkdsk","Chkdsk");
+                menu_add_item_menu_prefijo(array_menu_common,"    ");
+                menu_add_item_menu_se_cerrara(array_menu_common);
+                menu_add_item_menu_genera_ventana(array_menu_common);
+                menu_add_item_menu_valor_opcion(array_menu_common,i);
+
+                menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_visual_microdrive,NULL,
+                        "Visual Microdrive","Visual Microdrive","Visual Microdrive");
                 menu_add_item_menu_prefijo(array_menu_common,"    ");
                 menu_add_item_menu_se_cerrara(array_menu_common);
                 menu_add_item_menu_genera_ventana(array_menu_common);

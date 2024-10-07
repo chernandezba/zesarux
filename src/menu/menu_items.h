@@ -252,6 +252,7 @@ extern int menu_inicio_opcion_seleccionada;
 
 extern int force_menu_dibuja_menu_recorrer_menus;
 
+extern void menu_visual_microdrive(MENU_ITEM_PARAMETERS);
 
 
 struct s_menu_debug_view_sensors_list {

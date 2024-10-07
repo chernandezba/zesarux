@@ -1803,4 +1803,37 @@ extern void menu_ext_desk_settings_height_enlarge_reduce(int enlarge_reduce);
 extern char zxvision_helper_shorcuts_accumulated[];
 
 
+//Para dibujo vectorial, usando escala. Utilizado en Visual Microdrive por ejemplo
+struct zxvision_vectorial_draw
+{
+    //Dimensiones simuladas del dibujo. Ejemplo: 700x1000
+    int virtual_width;
+    int virtual_height;
+
+    //Dimensiones tal cual se mostraran en pantalla. Ejemplo: 350x500
+    int real_width;
+    int real_heigth;
+
+    //Posiciones actuales
+    int virtual_x;
+    int virtual_y;
+    int real_x;
+    int real_y;
+
+    //Si esta lapiz activado o no
+    int pencil_enabled;
+    int pencil_colour;
+
+    //Ventana asociada
+    zxvision_window *ventana;
+
+    //Funcion de mover posicion
+    void (*setpos)(struct zxvision_vectorial_draw *d,int x,int y);
+
+};
+
+extern void zxvision_vecdraw_init(struct zxvision_vectorial_draw *d,zxvision_window *w,int virtual_width,int virtual_height,int real_width,int real_height);
+
+
+
 #endif

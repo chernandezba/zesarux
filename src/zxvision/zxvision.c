@@ -9755,6 +9755,7 @@ zxvision_known_window_names zxvision_known_window_names_array[]={
 #ifdef EMULATE_VISUALMEM
 	{"visualmem",           "visualmem",menu_debug_new_visualmem,bitmap_button_ext_desktop_visualmem},
 #endif
+    {"visualmicrodrive",    "vsmicrodrive",   menu_visual_microdrive,bitmap_button_ext_desktop_nothing},
     {"visualrealtape",      "vsrealtape",   menu_visual_realtape,bitmap_button_ext_desktop_visualrealtape},
     {"watches",             "watches",menu_watches,bitmap_button_ext_desktop_watches},
     {"waveform",            "waveform",menu_audio_new_waveform,bitmap_button_ext_desktop_waveform},
@@ -28640,4 +28641,66 @@ void zmenu_parse_file(char *archivo)
 
         parse_zmenufile_options();
     }
+}
+
+void zxvision_vecdraw_get_real_coords(struct zxvision_vectorial_draw *d,int virtual_x,int virtual_y,
+    int *p_real_x,int *p_real_y)
+{
+    //Convertir coordenada
+    int real_x=(virtual_x*d->real_width)/d->virtual_width;
+    int real_y=(virtual_y*d->real_heigth)/d->virtual_height;
+
+    *p_real_x=real_x;
+    *p_real_y=real_y;
+
+}
+
+
+void zxvision_vecdraw_putpixel(zxvision_window *ventana,int x,int y,int color)
+{
+    zxvision_putpixel(ventana,x,y,color);
+}
+
+//Funciones de dibujo vectorial, se asocian a la estructura como si fuera orientacion a objetos, aunque no lo es
+void zxvision_vecdraw_setpos(struct zxvision_vectorial_draw *d,int virtual_x,int virtual_y)
+{
+    int old_virtual_x=d->virtual_x;
+    int old_virtual_y=d->virtual_y;
+    int old_real_x=d->real_x;
+    int old_real_y=d->real_y;
+
+    d->virtual_x=virtual_x;
+    d->virtual_y=virtual_y;
+
+    //calcular coordenadas reales
+    int real_x,real_y;
+    zxvision_vecdraw_get_real_coords(d,virtual_x,virtual_y,&real_x,&real_y);
+
+    d->real_x=real_x;
+    d->real_y=real_y;
+
+
+    if (d->pencil_enabled) {
+        //hay que trazar linea
+        zxvision_draw_line(d->ventana,old_real_x,old_real_y,real_x,real_y,d->pencil_colour,
+                            zxvision_vecdraw_putpixel);
+    }
+
+}
+
+//Inicializar estructura de dibujo vectorial
+void zxvision_vecdraw_init(struct zxvision_vectorial_draw *d,zxvision_window *w,int virtual_width,int virtual_height,int real_width,int real_height)
+{
+
+    d->virtual_width=virtual_width;
+    d->virtual_height=virtual_height;
+    d->real_width=real_width;
+    d->real_heigth=real_height;
+    d->ventana=w;
+
+    d->virtual_x=d->virtual_y=d->real_x=d->real_y=0;
+    d->pencil_enabled=0;
+    d->pencil_colour=0;
+
+    d->setpos=zxvision_vecdraw_setpos;
 }
