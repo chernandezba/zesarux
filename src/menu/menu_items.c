@@ -42440,7 +42440,7 @@ void menu_visual_microdrive_dibujar_microdrive_estatico(struct zxvision_vectoria
     //abajo
     d->set_x(d,0);
 
-    //arriba
+    //izquierda
     d->set_y(d,400);
     d->setpos(d,61,225);
 
@@ -42448,6 +42448,19 @@ void menu_visual_microdrive_dibujar_microdrive_estatico(struct zxvision_vectoria
     d->setpos(d,0,0);
     d->pencil_on(d);
     d->set_y(d,136);
+
+    //rodillo arriba a la izquierda
+    d->pencil_off(d);
+    d->setcolour(d,15);
+    d->setpos(d,108,136);
+    d->drawcircle(d,98);
+
+    //rodillo arriba a la derecha
+    d->pencil_off(d);
+    d->setcolour(d,6);
+    d->setpos(d,573,136);
+    d->drawcircle(d,98);
+
 
     //circulo donde va la cinta enrollada
     d->setcolour(d,15);
@@ -42484,11 +42497,43 @@ void menu_visual_microdrive_dibujar_microdrive_estatico(struct zxvision_vectoria
         d->drawcircle(d,i);
     }
 
+    //posicion maxima de la cinta enrollada. de ahi saldra una tangente hacia el rodillo superior izquierdo
+    int pos_x_rodillo_enrollado=357-i+1;
+
     //y de ahi toda la zona blanca
     d->setcolour(d,15);
     for (;i<295;i++) {
         d->drawcircle(d,i);
     }
+
+    //tangente cinta izquirda
+    d->setcolour(d,color_cinta_enrollada);
+    d->set_x(d,pos_x_rodillo_enrollado);
+
+    d->pencil_on(d);
+    d->setpos(d,10,136);
+
+    //tangente cinta arriba
+    d->pencil_off(d);
+    d->setpos(d,108,136-98);
+    d->pencil_on(d);
+    d->setpos(d,170,0);
+
+    //de ahi hacia la esponjita
+    d->setpos(d,284,62);
+    d->set_x(d,392);
+    //hacia arriba
+    d->setpos(d,506,0);
+    //hacia el rodillo amarillo
+    //por arriba
+    d->setpos(d,573,136-98);
+    //derecha
+    d->pencil_off(d);
+    d->setpos(d,573+98,136);
+
+    //y tangente hacia el interior, el inicio de donde se enrolla el microdrive
+    d->pencil_on(d);
+    d->setpos(d,357+152,678);
 
 }
 
