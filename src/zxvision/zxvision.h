@@ -1814,6 +1814,10 @@ struct zxvision_vectorial_draw
     int real_width;
     int real_heigth;
 
+    //Offset donde empieza el dibujo, coordenadas reales
+    int offset_x;
+    int offset_y;
+
     //Posiciones actuales
     int virtual_x;
     int virtual_y;
@@ -1830,9 +1834,23 @@ struct zxvision_vectorial_draw
     //Funcion de mover posicion
     void (*setpos)(struct zxvision_vectorial_draw *d,int x,int y);
 
+    //Funcion de mover posicion
+    void (*set_x)(struct zxvision_vectorial_draw *d,int x);
+    void (*set_y)(struct zxvision_vectorial_draw *d,int y);
+
+    //Funcion pencil_on
+    void (*pencil_on)(struct zxvision_vectorial_draw *d);
+
+    //Funcion pencil_off
+    void (*pencil_off)(struct zxvision_vectorial_draw *d);
+
+    //Funcion pencil_off
+    void (*setcolour)(struct zxvision_vectorial_draw *d,int color);
+
 };
 
-extern void zxvision_vecdraw_init(struct zxvision_vectorial_draw *d,zxvision_window *w,int virtual_width,int virtual_height,int real_width,int real_height);
+extern void zxvision_vecdraw_init(struct zxvision_vectorial_draw *d,zxvision_window *w,int virtual_width,int virtual_height,
+    int real_width,int real_height,int offset_x,int offset_y);
 
 
 

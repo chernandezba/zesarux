@@ -28662,10 +28662,26 @@ void zxvision_vecdraw_putpixel(zxvision_window *ventana,int x,int y,int color)
 }
 
 //Funciones de dibujo vectorial, se asocian a la estructura como si fuera orientacion a objetos, aunque no lo es
+
+void zxvision_vecdraw_pencil_on(struct zxvision_vectorial_draw *d)
+{
+    d->pencil_enabled=1;
+}
+
+void zxvision_vecdraw_pencil_off(struct zxvision_vectorial_draw *d)
+{
+    d->pencil_enabled=0;
+}
+
+void zxvision_vecdraw_setcolour(struct zxvision_vectorial_draw *d,int colour)
+{
+    d->pencil_colour=colour;
+}
+
 void zxvision_vecdraw_setpos(struct zxvision_vectorial_draw *d,int virtual_x,int virtual_y)
 {
-    int old_virtual_x=d->virtual_x;
-    int old_virtual_y=d->virtual_y;
+    //int old_virtual_x=d->virtual_x;
+    //int old_virtual_y=d->virtual_y;
     int old_real_x=d->real_x;
     int old_real_y=d->real_y;
 
@@ -28682,14 +28698,31 @@ void zxvision_vecdraw_setpos(struct zxvision_vectorial_draw *d,int virtual_x,int
 
     if (d->pencil_enabled) {
         //hay que trazar linea
-        zxvision_draw_line(d->ventana,old_real_x,old_real_y,real_x,real_y,d->pencil_colour,
-                            zxvision_vecdraw_putpixel);
+        zxvision_draw_line(d->ventana,
+            old_real_x+d->offset_x,old_real_y+d->offset_y,
+            real_x+d->offset_x,real_y+d->offset_y,
+            d->pencil_colour,
+            zxvision_vecdraw_putpixel
+        );
     }
 
 }
 
+void zxvision_vecdraw_set_x(struct zxvision_vectorial_draw *d,int virtual_x)
+{
+    int virtual_y=d->virtual_y;
+    zxvision_vecdraw_setpos(d,virtual_x,virtual_y);
+}
+
+void zxvision_vecdraw_set_y(struct zxvision_vectorial_draw *d,int virtual_y)
+{
+    int virtual_x=d->virtual_x;
+    zxvision_vecdraw_setpos(d,virtual_x,virtual_y);
+}
+
 //Inicializar estructura de dibujo vectorial
-void zxvision_vecdraw_init(struct zxvision_vectorial_draw *d,zxvision_window *w,int virtual_width,int virtual_height,int real_width,int real_height)
+void zxvision_vecdraw_init(struct zxvision_vectorial_draw *d,zxvision_window *w,int virtual_width,int virtual_height,
+    int real_width,int real_height,int offset_x,int offset_y)
 {
 
     d->virtual_width=virtual_width;
@@ -28697,10 +28730,17 @@ void zxvision_vecdraw_init(struct zxvision_vectorial_draw *d,zxvision_window *w,
     d->real_width=real_width;
     d->real_heigth=real_height;
     d->ventana=w;
+    d->offset_x=offset_x;
+    d->offset_y=offset_y;
 
     d->virtual_x=d->virtual_y=d->real_x=d->real_y=0;
     d->pencil_enabled=0;
     d->pencil_colour=0;
 
     d->setpos=zxvision_vecdraw_setpos;
+    d->set_x=zxvision_vecdraw_set_x;
+    d->set_y=zxvision_vecdraw_set_y;
+    d->pencil_on=zxvision_vecdraw_pencil_on;
+    d->pencil_off=zxvision_vecdraw_pencil_off;
+    d->setcolour=zxvision_vecdraw_setcolour;
 }

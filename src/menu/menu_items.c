@@ -42416,7 +42416,35 @@ zxvision_window *menu_visual_microdrive_window;
 
 void menu_visual_microdrive_dibujar_microdrive_estatico(struct zxvision_vectorial_draw *d)
 {
+    d->pencil_off(d);
     d->setpos(d,0,0);
+
+    int color_marco=7; //gris
+
+    d->setcolour(d,color_marco);
+    d->pencil_on(d);
+
+    //Parte de arriba
+    d->setpos(d,170,0);
+    d->setpos(d,262,84);
+    d->set_x(d,414);
+    d->setpos(d,506,0);
+    d->setpos(d,699,0);
+
+    //derecha
+    d->set_y(d,999);
+
+    //abajo
+    d->set_x(d,0);
+
+    //arriba
+    d->set_y(d,400);
+    d->setpos(d,61,225);
+
+    d->pencil_off(d);
+    d->setpos(d,0,0);
+    d->pencil_on(d);
+    d->set_y(d,136);
 }
 
 void menu_visual_microdrive_overlay(void)
@@ -42437,8 +42465,11 @@ void menu_visual_microdrive_overlay(void)
     int tamanyo_ocupado_microdrive_ancho=(menu_visual_microdrive_window->total_width-3)*menu_char_width;
     int tamanyo_ocupado_microdrive_alto=(menu_visual_microdrive_window->total_height-2)*menu_char_height;
 
+    int offset_x=menu_char_width*2;
+    int offset_y=menu_char_height*1;
+
     zxvision_vecdraw_init(&dibujo_microdrive_estatico,menu_visual_microdrive_window,700,1000,
-        tamanyo_ocupado_microdrive_ancho,tamanyo_ocupado_microdrive_alto);
+        tamanyo_ocupado_microdrive_ancho,tamanyo_ocupado_microdrive_alto,offset_x,offset_y);
 
     menu_visual_microdrive_dibujar_microdrive_estatico(&dibujo_microdrive_estatico);
 
