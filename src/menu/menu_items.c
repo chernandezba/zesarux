@@ -42461,6 +42461,11 @@ void menu_visual_microdrive_dibujar_microdrive_estatico(struct zxvision_vectoria
     d->setpos(d,573,136);
     d->drawcircle(d,98);
 
+    //esponjita
+    d->pencil_off(d);
+    d->setpos(d,284,62);
+    d->setcolour(d,6); //esponjita
+    d->drawfilledrectangle(d,392-284,21);
 
     //circulo donde va la cinta enrollada
     d->setcolour(d,15);
@@ -42504,26 +42509,35 @@ void menu_visual_microdrive_dibujar_microdrive_estatico(struct zxvision_vectoria
         d->drawcircle(d,i);
     }
 
-    //tangente cinta izquirda
+    //cinta visible.
+
+
+    //empieza en tangente izquierda de donde se enrolla
     d->setcolour(d,color_cinta_enrollada);
     d->set_x(d,pos_x_rodillo_enrollado);
 
     d->pencil_on(d);
+    //primer tramp
     d->setpos(d,10,136);
 
     //tangente cinta arriba
     d->pencil_off(d);
     d->setpos(d,108,136-98);
     d->pencil_on(d);
+    //segundo tramo
     d->setpos(d,170,0);
 
     //de ahi hacia la esponjita
+    //tercer tramo
     d->setpos(d,284,62);
+    //cuarto tramo
     d->set_x(d,392);
     //hacia arriba
+    //quinto tramo
     d->setpos(d,506,0);
     //hacia el rodillo amarillo
     //por arriba
+    //sexto tramo
     d->setpos(d,573,136-98);
     //derecha
     d->pencil_off(d);
@@ -42531,13 +42545,9 @@ void menu_visual_microdrive_dibujar_microdrive_estatico(struct zxvision_vectoria
 
     //y tangente hacia el interior, el inicio de donde se enrolla el microdrive
     d->pencil_on(d);
+    //septimo tramo
     d->setpos(d,357+152,678);
 
-    //esponjita
-    d->pencil_off(d);
-    d->setpos(d,284,62);
-    d->setcolour(d,6); //esponjita
-    d->drawfilledrectangle(d,392-284,21);
 
 
 }
@@ -42575,8 +42585,6 @@ void menu_visual_microdrive_dibujar_microdrive_dinamico(struct zxvision_vectoria
 {
     int numero_microdrive=menu_visual_microdrive_mirando_microdrive;
 
-    if (numero_microdrive>=MAX_MICRODRIVES) numero_microdrive=0;
-
     //radios del rodillo amarillo, que va girando
     int sector_actual=microdrive_status[numero_microdrive].mdr_current_sector;
     int offset_actual=microdrive_status[numero_microdrive].mdr_current_offset_in_sector;
@@ -42607,6 +42615,25 @@ void menu_visual_microdrive_dibujar_microdrive_dinamico(struct zxvision_vectoria
     menu_visual_microdrive_dibujar_microdrive_dinamico_dibuja_radio(d,grados,6);
     menu_visual_microdrive_dibujar_microdrive_dinamico_dibuja_radio(d,grados+120,6);
     menu_visual_microdrive_dibujar_microdrive_dinamico_dibuja_radio(d,grados+240,6);
+
+
+    //Si estamos en sector 0, se indicara con color rojo donde esta la separacion del sector
+
+    if (sector_actual==0) {
+        //De momento solo indicarlo en el trocito que lee la esponjita
+        //TODO: usar offset en el sector. De momento solo poner esa zona en rojo
+
+        int ancho_esponjita=392-284;
+        //En ese tramo
+
+        //esponjita
+        d->pencil_off(d);
+        d->setpos(d,284,62);
+        d->setcolour(d,2);
+        d->pencil_on(d);
+        d->set_x(d,284+ancho_esponjita/2); //La "marca" del sector 0 que sea la mitad del ancho de la esponjita
+
+    }
 
 
 }
