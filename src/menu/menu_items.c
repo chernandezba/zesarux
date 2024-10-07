@@ -42422,7 +42422,7 @@ void menu_visual_microdrive_dibujar_microdrive_estatico(struct zxvision_vectoria
     d->setpos(d,0,0);
 
     int color_marco=7; //gris
-    int color_cinta_enrollada=2; //color temporal. esto sera negro
+    int color_cinta_enrollada=0; //esto sera negro
 
     d->setcolour(d,color_marco);
     d->pencil_on(d);
@@ -42453,8 +42453,8 @@ void menu_visual_microdrive_dibujar_microdrive_estatico(struct zxvision_vectoria
     d->setcolour(d,15);
     d->pencil_off(d);
     d->setpos(d,357,678);
-    d->drawcircle(d,152);
-    d->drawcircle(d,295);
+    d->drawcircle(d,152); //donde se enrolla la cinta
+    //d->drawcircle(d,295); //hasta la zona blanca
 
     //cinta enrollada. maximo grueso=295-152=143
     int max_radio_cinta_sectores=143-10; //para que no llegue al tope
@@ -42468,10 +42468,27 @@ void menu_visual_microdrive_dibujar_microdrive_estatico(struct zxvision_vectoria
     //sacar radio
     int radio_cinta_sectores=(total_sectores*max_radio_cinta_sectores)/MDR_MAX_SECTORS;
 
-    radio_cinta_sectores +=152;
+    int radio_base=152;
+    d->setcolour(d,15);
+
+    int i;
+    for (i=0;i<radio_base;i++) {
+        d->drawcircle(d,i);
+    }
+
 
     d->setcolour(d,color_cinta_enrollada);
-    d->drawcircle(d,radio_cinta_sectores);
+
+
+    for (i=radio_base;i<radio_base+radio_cinta_sectores;i++) {
+        d->drawcircle(d,i);
+    }
+
+    //y de ahi toda la zona blanca
+    d->setcolour(d,15);
+    for (;i<295;i++) {
+        d->drawcircle(d,i);
+    }
 
 }
 
