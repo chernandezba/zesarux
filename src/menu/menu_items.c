@@ -42413,6 +42413,8 @@ void menu_storage_microdrive_browse(MENU_ITEM_PARAMETERS)
 
 zxvision_window *menu_visual_microdrive_window;
 
+//cual (mdv0, 1, 2 estamos mirando)
+int menu_visual_microdrive_mirando_microdrive=0;
 
 void menu_visual_microdrive_dibujar_microdrive_estatico(struct zxvision_vectorial_draw *d)
 {
@@ -42420,6 +42422,7 @@ void menu_visual_microdrive_dibujar_microdrive_estatico(struct zxvision_vectoria
     d->setpos(d,0,0);
 
     int color_marco=7; //gris
+    int color_cinta_enrollada=2; //color temporal. esto sera negro
 
     d->setcolour(d,color_marco);
     d->pencil_on(d);
@@ -42445,6 +42448,31 @@ void menu_visual_microdrive_dibujar_microdrive_estatico(struct zxvision_vectoria
     d->setpos(d,0,0);
     d->pencil_on(d);
     d->set_y(d,136);
+
+    //circulo donde va la cinta enrollada
+    d->setcolour(d,15);
+    d->pencil_off(d);
+    d->setpos(d,357,678);
+    d->drawcircle(d,152);
+    d->drawcircle(d,295);
+
+    //cinta enrollada. maximo grueso=295-152=143
+    int max_radio_cinta_sectores=143-10; //para que no llegue al tope
+
+    int numero_microdrive=menu_visual_microdrive_mirando_microdrive;
+
+    if (numero_microdrive>=MAX_MICRODRIVES) numero_microdrive=0;
+
+    int total_sectores=microdrive_status[numero_microdrive].mdr_total_sectors;
+
+    //sacar radio
+    int radio_cinta_sectores=(total_sectores*max_radio_cinta_sectores)/MDR_MAX_SECTORS;
+
+    radio_cinta_sectores +=152;
+
+    d->setcolour(d,color_cinta_enrollada);
+    d->drawcircle(d,radio_cinta_sectores);
+
 }
 
 void menu_visual_microdrive_overlay(void)
@@ -42487,6 +42515,8 @@ zxvision_window zxvision_window_visual_microdrive;
 
 void menu_visual_microdrive(MENU_ITEM_PARAMETERS)
 {
+    menu_visual_microdrive_mirando_microdrive=valor_opcion;
+
 	menu_espera_no_tecla();
 
     if (!menu_multitarea) {

@@ -28656,9 +28656,23 @@ void zxvision_vecdraw_get_real_coords(struct zxvision_vectorial_draw *d,int virt
 }
 
 
-void zxvision_vecdraw_putpixel(zxvision_window *ventana,int x,int y,int color)
+/*void zxvision_vecdraw_putpixel(zxvision_window *ventana,int x,int y,int color)
 {
     zxvision_putpixel(ventana,x,y,color);
+}
+*/
+
+void zxvision_vecdraw_circle(struct zxvision_vectorial_draw *d,int radio)
+{
+    //calcular coordenadas reales
+    int real_x,real_y;
+    zxvision_vecdraw_get_real_coords(d,d->virtual_x,d->virtual_y,&real_x,&real_y);
+
+    //calcular radio real
+    int real_radio=(radio*d->real_width)/d->virtual_width;
+
+    zxvision_draw_ellipse(d->ventana,real_x+d->offset_x,real_y+d->offset_y,real_radio,real_radio,d->pencil_colour,zxvision_putpixel,360);
+
 }
 
 //Funciones de dibujo vectorial, se asocian a la estructura como si fuera orientacion a objetos, aunque no lo es
@@ -28702,7 +28716,7 @@ void zxvision_vecdraw_setpos(struct zxvision_vectorial_draw *d,int virtual_x,int
             old_real_x+d->offset_x,old_real_y+d->offset_y,
             real_x+d->offset_x,real_y+d->offset_y,
             d->pencil_colour,
-            zxvision_vecdraw_putpixel
+            zxvision_putpixel
         );
     }
 
@@ -28743,4 +28757,5 @@ void zxvision_vecdraw_init(struct zxvision_vectorial_draw *d,zxvision_window *w,
     d->pencil_on=zxvision_vecdraw_pencil_on;
     d->pencil_off=zxvision_vecdraw_pencil_off;
     d->setcolour=zxvision_vecdraw_setcolour;
+    d->drawcircle=zxvision_vecdraw_circle;
 }

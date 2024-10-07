@@ -1847,6 +1847,8 @@ struct zxvision_vectorial_draw
     //Funcion pencil_off
     void (*setcolour)(struct zxvision_vectorial_draw *d,int color);
 
+    void (*drawcircle)(struct zxvision_vectorial_draw *d,int radio);
+
 };
 
 extern void zxvision_vecdraw_init(struct zxvision_vectorial_draw *d,zxvision_window *w,int virtual_width,int virtual_height,
