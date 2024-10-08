@@ -42430,6 +42430,12 @@ void menu_visual_microdrive_slow_movement(MENU_ITEM_PARAMETERS)
     visual_microdrive_slow_movement ^=1;
 }
 
+void menu_visual_microdrive_cual(MENU_ITEM_PARAMETERS)
+{
+    menu_visual_microdrive_mirando_microdrive++;
+    if (menu_visual_microdrive_mirando_microdrive>=MAX_MICRODRIVES_BY_CONFIG) menu_visual_microdrive_mirando_microdrive=0;
+}
+
 void visual_microdrive_get_info_rodillos_interiores(int *radio_cinta_sectores,int *radio_base)
 {
     //cinta enrollada. maximo grueso=295-152=143
@@ -42806,15 +42812,27 @@ void menu_visual_microdrive_overlay(void)
     //Dibujo del microdrive
     struct zxvision_vectorial_draw dibujo_microdrive;
 
-    int tamanyo_ocupado_microdrive_ancho=(menu_visual_microdrive_window->total_width-3)*menu_char_width;
-    int tamanyo_ocupado_microdrive_alto=(menu_visual_microdrive_window->total_height-2)*menu_char_height;
+    //quitamos 4: 2 columnas izquierda margen, columna derecha margen, columna scroll
+    int tamanyo_ocupado_microdrive_ancho=(menu_visual_microdrive_window->visible_width-4)*menu_char_width;
+    //quitamos 5: barra titulo,barra scroll, 2 lineas menu, 1 linea separacion
+    int tamanyo_ocupado_microdrive_alto=(menu_visual_microdrive_window->visible_height-5)*menu_char_height;
 
     int offset_x=menu_char_width*2;
     int offset_y=menu_char_height*3;
 
     //Ajustar escalas
+    //Relacion de aspecto ideal: 700 ancho, 1000 alto
 
     int real_width=tamanyo_ocupado_microdrive_ancho;
+
+
+    int max_ancho_esperado_por_aspecto=(tamanyo_ocupado_microdrive_alto*700)/1000;
+    if (real_width>max_ancho_esperado_por_aspecto) {
+        //Con esto el microdrive siempre esta dentro de la ventana entero, independientemente del tamaño de la ventana
+        //printf("relacion ancho mal\n");
+        real_width=max_ancho_esperado_por_aspecto;
+    }
+
     int real_height=(real_width*1000)/700;
 
     zxvision_vecdraw_init(&dibujo_microdrive,menu_visual_microdrive_window,700,1000,
@@ -42930,12 +42948,19 @@ void menu_visual_microdrive(MENU_ITEM_PARAMETERS)
         //borrar primera linea por si conmuta parametro rotacion
         //zxvision_fill_width_spaces_paper(ventana,0,HEATMAP_INDEX_FIRST_COLOR);
 
-		menu_add_item_menu_inicial_format(&array_menu_visual_microdrive,MENU_OPCION_NORMAL,menu_visual_microdrive_slow_movement,NULL
+
+
+		menu_add_item_menu_inicial_format(&array_menu_visual_microdrive,MENU_OPCION_NORMAL,menu_visual_microdrive_cual,NULL
+            ,"~~Looking MDV%d",menu_visual_microdrive_mirando_microdrive+1);
+		menu_add_item_menu_shortcut(array_menu_visual_microdrive,'l');
+		menu_add_item_menu_ayuda(array_menu_visual_microdrive,"Which microdrive");
+		menu_add_item_menu_tabulado(array_menu_visual_microdrive,1,0);
+
+		menu_add_item_menu_format(array_menu_visual_microdrive,MENU_OPCION_NORMAL,menu_visual_microdrive_slow_movement,NULL
             ,"[%c] ~~Slow movement",(visual_microdrive_slow_movement ? 'X' : ' '));
 		menu_add_item_menu_shortcut(array_menu_visual_microdrive,'s');
 		menu_add_item_menu_ayuda(array_menu_visual_microdrive,"Slow movement");
-		menu_add_item_menu_tabulado(array_menu_visual_microdrive,1,0);
-
+		menu_add_item_menu_tabulado(array_menu_visual_microdrive,1,1);
 
 
 		//Nombre de ventana solo aparece en el caso de stdout
