@@ -42416,6 +42416,32 @@ zxvision_window *menu_visual_microdrive_window;
 //cual (mdv0, 1, 2 estamos mirando)
 int menu_visual_microdrive_mirando_microdrive=0;
 
+int visual_micro_antes_grados_rodillo=0;
+
+int visual_microdrive_slow_movement=1;
+
+int visual_microdrive_slow_movement_grados=0;
+
+#define VISUAL_MICRODRIVE_COLOR_FONDO AMIGAOS_COLOUR_blue
+
+void visual_microdrive_get_info_rodillos_interiores(int *radio_cinta_sectores,int *radio_base)
+{
+    //cinta enrollada. maximo grueso=295-152=143
+    int max_radio_cinta_sectores=143-10; //para que no llegue al tope
+
+    int numero_microdrive=menu_visual_microdrive_mirando_microdrive;
+
+    int total_sectores=microdrive_status[numero_microdrive].mdr_total_sectors;
+
+    //sacar radio
+    *radio_cinta_sectores=(total_sectores*max_radio_cinta_sectores)/MDR_MAX_SECTORS;
+
+    //Si es un microdrive super pequeño, al menos 1 de radio
+    if (*radio_cinta_sectores==0) *radio_cinta_sectores=1;
+
+    *radio_base=152;
+}
+
 void menu_visual_microdrive_dibujar_microdrive_estatico(struct zxvision_vectorial_draw *d)
 {
     d->pencil_off(d);
@@ -42427,20 +42453,35 @@ void menu_visual_microdrive_dibujar_microdrive_estatico(struct zxvision_vectoria
     d->setcolour(d,color_marco);
     d->pencil_on(d);
 
-    //Parte de arriba
+    //Marco exterior del microdrive. Parte de arriba
     d->setpos(d,170,0);
     d->setpos(d,262,84);
     d->set_x(d,414);
     d->setpos(d,506,0);
     d->setpos(d,699,0);
 
-    //derecha
+    //hasta pestaña proteccion escritura
+    d->set_y(d,340);
+
+    //pestaña proteccion escritura
+    //Si esta protegido contra escritura, la pestaña no esta
+    if (!microdrive_status[menu_visual_microdrive_mirando_microdrive].microdrive_write_protect) {
+        //La pestaña tiene unos 20 de ancho
+        d->drawfilledrectangle(d,-20,506-340);
+    }
+
+
+    d->pencil_off(d);
+    d->set_y(d,506);
+    d->pencil_on(d);
+
+    //hasta abajo
     d->set_y(d,999);
 
-    //abajo
+    //Marco de abajo
     d->set_x(d,0);
 
-    //izquierda
+    //Marco de izquierda
     d->set_y(d,400);
     d->setpos(d,61,225);
 
@@ -42462,18 +42503,8 @@ void menu_visual_microdrive_dibujar_microdrive_estatico(struct zxvision_vectoria
     d->setcolour(d,color_cinta_enrollada);
     d->drawarc(d,100,90,180); //algo mas que 98 de radio para que no se pegue
 
-    //rodillo arriba a la derecha
-    d->pencil_off(d);
-    d->setcolour(d,6);
-    d->setpos(d,573,136);
-    d->drawcircle(d,98);
-    d->drawcircle(d,97);
-    d->drawcircle(d,96);
-    d->drawcircle(d,95);
 
-    //y parte de ese rodillo muestra la cinta
-    d->setcolour(d,color_cinta_enrollada);
-    d->drawarc(d,100,0,90); //algo mas que 98 de radio para que no se pegue
+
 
     //esponjita
     d->pencil_off(d);
@@ -42488,20 +42519,15 @@ void menu_visual_microdrive_dibujar_microdrive_estatico(struct zxvision_vectoria
     d->drawcircle(d,152); //donde se enrolla la cinta
     //d->drawcircle(d,295); //hasta la zona blanca
 
-    //cinta enrollada. maximo grueso=295-152=143
-    int max_radio_cinta_sectores=143-10; //para que no llegue al tope
+    int radio_cinta_sectores;
+    int radio_base;
+    visual_microdrive_get_info_rodillos_interiores(&radio_cinta_sectores,&radio_base);
 
-    int numero_microdrive=menu_visual_microdrive_mirando_microdrive;
 
-    int total_sectores=microdrive_status[numero_microdrive].mdr_total_sectors;
-
-    //sacar radio
-    int radio_cinta_sectores=(total_sectores*max_radio_cinta_sectores)/MDR_MAX_SECTORS;
-
-    int radio_base=152;
     d->setcolour(d,15);
 
     int i;
+    //Zona blanca interior
     for (i=0;i<radio_base;i++) {
         d->drawcircle(d,i);
     }
@@ -42509,15 +42535,14 @@ void menu_visual_microdrive_dibujar_microdrive_estatico(struct zxvision_vectoria
 
     d->setcolour(d,color_cinta_enrollada);
 
-
+    //Cinta enrollada
     for (i=radio_base;i<radio_base+radio_cinta_sectores;i++) {
         d->drawcircle(d,i);
     }
 
-    //posicion maxima de la cinta enrollada. de ahi saldra una tangente hacia el rodillo superior izquierdo
-    int pos_x_rodillo_enrollado=357-i+1;
 
-    //y de ahi toda la zona blanca
+
+    //y de ahi toda la zona blanca exterior
     d->setcolour(d,15);
     for (;i<295;i++) {
         d->drawcircle(d,i);
@@ -42525,39 +42550,8 @@ void menu_visual_microdrive_dibujar_microdrive_estatico(struct zxvision_vectoria
 
     //cinta visible.
 
-
-    //empieza en tangente izquierda de donde se enrolla
-    //Efecto de temblar al moverse, si esta motor on
-    //TODO: meter esto en funcion dinamica, no en estatica
-    int color_fondo=ESTILO_GUI_PAPEL_NORMAL;
-    int desplazamiento=5;
-    //borrar lineas anteriores
-    d->setcolour(d,color_fondo);
-    d->setpos(d,pos_x_rodillo_enrollado,678);
-    d->pencil_on(d);
-    d->setpos(d,10,136);
-    d->pencil_off(d);
-    d->setpos(d,pos_x_rodillo_enrollado+desplazamiento,678);
-    d->pencil_on(d);
-    d->setpos(d,10,136);
-    d->pencil_off(d);
-
-    int sumar_pos=0;
-    if (microdrive_status[menu_visual_microdrive_mirando_microdrive].motor_on) {
-        int offset_actual=microdrive_status[numero_microdrive].mdr_current_offset_in_sector;
-        int sector_actual=microdrive_status[numero_microdrive].mdr_current_sector;
-        if (sector_actual % 2) sumar_pos=desplazamiento;
-    }
-
-
     d->setcolour(d,color_cinta_enrollada);
-    d->setpos(d,pos_x_rodillo_enrollado+sumar_pos,678);
-
-    d->pencil_on(d);
-    //primer tramo
-    d->setpos(d,10,136);
-
-    //tangente cinta arriba
+    //desde arriba del rodillo izquierdo
     d->pencil_off(d);
     d->setpos(d,108,136-100); //algo mas de radio 98
     d->pencil_on(d);
@@ -42576,27 +42570,19 @@ void menu_visual_microdrive_dibujar_microdrive_estatico(struct zxvision_vectoria
     //por arriba
     //sexto tramo
     d->setpos(d,573,136-100); //algo mas de radio 98
-    //derecha
-    d->pencil_off(d);
-    d->setpos(d,573+98,136);
-
-    //y tangente hacia el interior, el inicio de donde se enrolla el microdrive
-    d->pencil_on(d);
-    //septimo tramo
-    d->setpos(d,357+152,678);
 
 
 
 }
 
-int visual_micro_antes_grados_rodillo=0;
+
 
 void menu_visual_microdrive_dibujar_microdrive_dinamico_dibuja_radio(struct zxvision_vectorial_draw *d,int grados,int color)
 {
 
     int x_origen_rodillo=573;
     int y_origen_rodillo=136;
-    int longitud=96; //algo menos de 98 para que no se salga
+    int longitud=88; //algo menos de 98 para que no se salga
 
     d->pencil_off(d);
     d->setcolour(d,color);
@@ -42615,8 +42601,21 @@ void menu_visual_microdrive_dibujar_microdrive_dinamico_dibuja_radio(struct zxvi
 
 }
 
-int temp_grados=0;
 
+
+void visual_microdrive_marca_sector_cero(struct zxvision_vectorial_draw *d,int color)
+{
+
+    int ancho_esponjita=392-284;
+
+
+    d->pencil_off(d);
+    d->setpos(d,284,62);
+    d->setcolour(d,color);
+    d->pencil_on(d);
+    d->set_x(d,284+ancho_esponjita/2); //La "marca" del sector 0 que sea la mitad del ancho de la esponjita
+
+}
 
 void menu_visual_microdrive_dibujar_microdrive_dinamico(struct zxvision_vectorial_draw *d)
 {
@@ -42629,7 +42628,7 @@ void menu_visual_microdrive_dibujar_microdrive_dinamico(struct zxvision_vectoria
     int total_offset=(sector_actual*MDR_BYTES_PER_SECTOR)+offset_actual;
 
     //borrar grados anteriores
-    int color_fondo=ESTILO_GUI_PAPEL_NORMAL; //temp
+    int color_fondo=VISUAL_MICRODRIVE_COLOR_FONDO;
 
     menu_visual_microdrive_dibujar_microdrive_dinamico_dibuja_radio(d,visual_micro_antes_grados_rodillo,color_fondo);
     menu_visual_microdrive_dibujar_microdrive_dinamico_dibuja_radio(d,visual_micro_antes_grados_rodillo+120,color_fondo);
@@ -42638,11 +42637,12 @@ void menu_visual_microdrive_dibujar_microdrive_dinamico(struct zxvision_vectoria
     //asumimos cada byte mueve 1 grado
     int grados=(total_offset % 360);
 
+    int motor_on=microdrive_status[menu_visual_microdrive_mirando_microdrive].motor_on;
 
-
-    //temp
-    //grados=temp_grados;
-    temp_grados++;
+    if (visual_microdrive_slow_movement) {
+        grados=visual_microdrive_slow_movement_grados % 360;
+        if (motor_on) visual_microdrive_slow_movement_grados++;
+    }
 
 
     //va hacia abajo. o sea la cinta se mueve hacia la derecha
@@ -42655,25 +42655,133 @@ void menu_visual_microdrive_dibujar_microdrive_dinamico(struct zxvision_vectoria
 
 
     //Si estamos en sector 0, se indicara con color rojo donde esta la separacion del sector
+    //Borrar antes posibles restos
+    int color_cinta_enrollada=0; //esto sera negro
+    visual_microdrive_marca_sector_cero(d,color_cinta_enrollada);
 
     if (sector_actual==0) {
         //De momento solo indicarlo en el trocito que lee la esponjita
         //TODO: usar offset en el sector. De momento solo poner esa zona en rojo
 
-        int ancho_esponjita=392-284;
-        //En ese tramo
-
-        //esponjita
-        d->pencil_off(d);
-        d->setpos(d,284,62);
-        d->setcolour(d,2);
-        d->pencil_on(d);
-        d->set_x(d,284+ancho_esponjita/2); //La "marca" del sector 0 que sea la mitad del ancho de la esponjita
+        visual_microdrive_marca_sector_cero(d,2);
 
     }
 
 
+    int radio_cinta_sectores;
+    int radio_base;
+    visual_microdrive_get_info_rodillos_interiores(&radio_cinta_sectores,&radio_base);
+
+    //posicion maxima de la cinta enrollada. de ahi saldra una tangente hacia el rodillo superior izquierdo
+    int pos_x_rodillo_enrollado=357-(radio_base+radio_cinta_sectores)+1;
+
+    //Efecto de movimiento en la cinta
+    //Efecto de temblar al moverse, si esta motor on
+
+    int desplazamiento=5;
+    //borrar lineas anteriores
+    d->pencil_off(d);
+    d->setcolour(d,color_fondo);
+    d->setpos(d,pos_x_rodillo_enrollado,678);
+    d->pencil_on(d);
+    d->setpos(d,10,136);
+    d->pencil_off(d);
+    d->setpos(d,pos_x_rodillo_enrollado+desplazamiento,678);
+    d->pencil_on(d);
+    d->setpos(d,10,136);
+    d->pencil_off(d);
+
+    int sumar_pos=0;
+
+    if (motor_on) {
+        int offset_actual=microdrive_status[numero_microdrive].mdr_current_offset_in_sector;
+        int sector_actual=microdrive_status[numero_microdrive].mdr_current_sector;
+        if (sector_actual % 2) sumar_pos=desplazamiento;
+    }
+
+
+
+    d->setcolour(d,color_cinta_enrollada);
+    d->setpos(d,pos_x_rodillo_enrollado+sumar_pos,678);
+
+    d->pencil_on(d);
+    //primer tramo, desde abajo a la izquierda hasta pegado a rodillo izquierdo
+    d->setpos(d,10,136);
+
+
+    //y tangente hacia el interior, el inicio de donde se enrolla el microdrive
+    //Temblado de la cinta en horizontal si esta motor on
+    //Borrando anteriores
+    d->setcolour(d,color_fondo);
+    d->pencil_off(d);
+    d->setpos(d,573+98,136);
+    d->pencil_on(d);
+    d->setpos(d,357+152,678);
+
+    d->pencil_off(d);
+    d->setpos(d,573+98,136);
+    d->pencil_on(d);
+    d->setpos(d,357+152-desplazamiento,678);
+
+    //Y dibujar la cinta
+    d->setcolour(d,color_cinta_enrollada);
+    d->pencil_off(d);
+    d->setpos(d,573+98,136);
+
+    d->pencil_on(d);
+    //septimo tramo
+    d->setpos(d,357+152-sumar_pos,678);
+
+
+    //rodillo arriba a la derecha. redibujar entero porque el borrado de radios puede borrar parte de este
+    //tambien la cinta de la derecha sobrescribe encima de aqui, y queremos que el rodillo siempre este por encima
+    d->pencil_off(d);
+    d->setcolour(d,6);
+    d->setpos(d,573,136);
+    d->drawcircle(d,98);
+    d->drawcircle(d,97);
+    d->drawcircle(d,96);
+    d->drawcircle(d,95);
+
+    //y parte del rodillo de la derecha muestra la cinta
+    d->pencil_off(d);
+    d->setpos(d,573,136);
+    d->setcolour(d,color_cinta_enrollada);
+    d->drawarc(d,100,0,90); //algo mas que 98 de radio para que no se pegue
+
+    //Cabezal lector
+    int color_cabezal=15;
+    //Si está escribiendo, color rojo
+    //Si lee, color verde
+    //Si no esta motor activado, color blanco
+    if (motor_on) {
+        if (interface1_last_value_port_ef & 0x04) color_cabezal=4; //read
+        else color_cabezal=2; //write
+    }
+
+    d->setcolour(d,color_cabezal);
+    //izquierda
+    d->pencil_off(d);
+    d->setpos(d,284,-10);
+    d->pencil_on(d);
+    d->set_y(d,30);
+    //derecha
+    d->pencil_off(d);
+    d->setpos(d,392,-10);
+    d->pencil_on(d);
+    d->set_y(d,30);
+    //arco lector parte abajo
+    d->pencil_off(d);
+    //centro del arco
+    d->setpos(d,284+(392-284)/2,-10);
+    d->pencil_on(d);
+
+    //tanto inicio arco como radio se han hecho a ojo para que quede bien
+    int inicio_arco=210;
+    d->drawarc(d,68,inicio_arco,270+(270-inicio_arco));
 }
+
+//int visual_microdrive_forzar_redraw=0;
 
 void menu_visual_microdrive_overlay(void)
 {
@@ -42684,11 +42792,13 @@ void menu_visual_microdrive_overlay(void)
     if (menu_visual_microdrive_window->is_minimized) return;
 
 
+
+
     //Print....
     //Tambien contar si se escribe siempre o se tiene en cuenta contador_segundo...
 
-    //Dibujo del microdrive, parte estatica que no se modifica
-    struct zxvision_vectorial_draw dibujo_microdrive_estatico;
+    //Dibujo del microdrive
+    struct zxvision_vectorial_draw dibujo_microdrive;
 
     int tamanyo_ocupado_microdrive_ancho=(menu_visual_microdrive_window->total_width-3)*menu_char_width;
     int tamanyo_ocupado_microdrive_alto=(menu_visual_microdrive_window->total_height-2)*menu_char_height;
@@ -42701,12 +42811,19 @@ void menu_visual_microdrive_overlay(void)
     int real_width=tamanyo_ocupado_microdrive_ancho;
     int real_height=(real_width*1000)/700;
 
-    zxvision_vecdraw_init(&dibujo_microdrive_estatico,menu_visual_microdrive_window,700,1000,
+    zxvision_vecdraw_init(&dibujo_microdrive,menu_visual_microdrive_window,700,1000,
         real_width,real_height,offset_x,offset_y);
 
-    menu_visual_microdrive_dibujar_microdrive_estatico(&dibujo_microdrive_estatico);
 
-    menu_visual_microdrive_dibujar_microdrive_dinamico(&dibujo_microdrive_estatico);
+    //No redibujar si no hay cambios de nada
+    if (menu_visual_microdrive_window->dirty_user_must_draw_contents /*|| visual_microdrive_forzar_redraw*/) {
+        printf("Redibujando parte estatica. %d\n",contador_segundo_infinito);
+        menu_visual_microdrive_dibujar_microdrive_estatico(&dibujo_microdrive);
+        menu_visual_microdrive_window->dirty_user_must_draw_contents=0;
+        //visual_microdrive_forzar_redraw=0;
+    }
+
+    menu_visual_microdrive_dibujar_microdrive_dinamico(&dibujo_microdrive);
 
     //Mostrar contenido
     zxvision_draw_window_contents(menu_visual_microdrive_window);
@@ -42722,10 +42839,6 @@ zxvision_window zxvision_window_visual_microdrive;
 
 void menu_visual_microdrive(MENU_ITEM_PARAMETERS)
 {
-    menu_visual_microdrive_mirando_microdrive=valor_opcion;
-
-    //por si acaso
-    if (menu_visual_microdrive_mirando_microdrive>=MAX_MICRODRIVES) menu_visual_microdrive_mirando_microdrive=0;
 
 	menu_espera_no_tecla();
 
@@ -42760,6 +42873,12 @@ void menu_visual_microdrive(MENU_ITEM_PARAMETERS)
 
         ventana->can_be_backgrounded=1;
 
+
+        //definir color de papel de fondo
+        ventana->default_paper=VISUAL_MICRODRIVE_COLOR_FONDO; //AMIGAOS_COLOUR_blue;
+        zxvision_cls(ventana);
+        //visual_microdrive_forzar_redraw=1;
+
     }
 
     //Si ya existe, activar esta ventana
@@ -42768,6 +42887,9 @@ void menu_visual_microdrive(MENU_ITEM_PARAMETERS)
     }
 
 	zxvision_draw_window(ventana);
+
+    //para mostrar correctamente el color del fondo alterado por default_paper
+    zxvision_draw_window_contents(ventana);
 
 	z80_byte tecla;
 
@@ -42780,6 +42902,8 @@ void menu_visual_microdrive(MENU_ITEM_PARAMETERS)
 
     //cambio overlay
     zxvision_set_window_overlay(ventana,menu_visual_microdrive_overlay);
+
+    //ventana->dirty_user_must_draw_contents=1;
 
 
     //Toda ventana que este listada en zxvision_known_window_names_array debe permitir poder salir desde aqui
