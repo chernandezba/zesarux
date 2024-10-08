@@ -43006,8 +43006,14 @@ void menu_visual_microdrive(MENU_ITEM_PARAMETERS)
 }
 
 
+void menu_visual_microdrive_previo(MENU_ITEM_PARAMETERS)
+{
+    //Definir cual estara activo
+    menu_visual_microdrive_mirando_microdrive=valor_opcion;
+    if (menu_visual_microdrive_mirando_microdrive>=MAX_MICRODRIVES_BY_CONFIG) menu_visual_microdrive_mirando_microdrive=0;
 
-
+    menu_visual_microdrive(0);
+}
 
 void menu_interface1(MENU_ITEM_PARAMETERS)
 {
@@ -43109,7 +43115,7 @@ void menu_interface1(MENU_ITEM_PARAMETERS)
                 menu_add_item_menu_genera_ventana(array_menu_common);
                 menu_add_item_menu_valor_opcion(array_menu_common,i);
 
-                menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_visual_microdrive,NULL,
+                menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_visual_microdrive_previo,NULL,
                         "Visual Microdrive","Visual Microdrive","Visual Microdrive");
                 menu_add_item_menu_prefijo(array_menu_common,"    ");
                 menu_add_item_menu_se_cerrara(array_menu_common);
