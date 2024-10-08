@@ -297,6 +297,7 @@ int menu_memory_cheat_first_scan_opcion_seleccionada=0;
 int menu_memory_cheat_next_scan_opcion_seleccionada=0;
 int cpc_additional_roms_opcion_seleccionada=0;
 int interface1_opcion_seleccionada=0;
+int visualmicrodrive_opcion_seleccionada=0;
 //int mdv_simulate_bad_sectors_opcion_seleccionada=0;
 
 //Fin opciones seleccionadas para cada menu
@@ -42418,11 +42419,16 @@ int menu_visual_microdrive_mirando_microdrive=0;
 
 int visual_micro_antes_grados_rodillo=0;
 
-int visual_microdrive_slow_movement=1;
+int visual_microdrive_slow_movement=0;
 
 int visual_microdrive_slow_movement_grados=0;
 
 #define VISUAL_MICRODRIVE_COLOR_FONDO AMIGAOS_COLOUR_blue
+
+void menu_visual_microdrive_slow_movement(MENU_ITEM_PARAMETERS)
+{
+    visual_microdrive_slow_movement ^=1;
+}
 
 void visual_microdrive_get_info_rodillos_interiores(int *radio_cinta_sectores,int *radio_base)
 {
@@ -42804,7 +42810,7 @@ void menu_visual_microdrive_overlay(void)
     int tamanyo_ocupado_microdrive_alto=(menu_visual_microdrive_window->total_height-2)*menu_char_height;
 
     int offset_x=menu_char_width*2;
-    int offset_y=menu_char_height*1;
+    int offset_y=menu_char_height*3;
 
     //Ajustar escalas
 
@@ -42913,39 +42919,53 @@ void menu_visual_microdrive(MENU_ITEM_PARAMETERS)
             return;
     }
 
-    do {
 
-
-		tecla=zxvision_common_getkey_refresh();
-
-
-        switch (tecla) {
-
-            case 11:
-                //arriba
-                //blablabla
-            break;
+    	menu_item *array_menu_visual_microdrive;
+	menu_item item_seleccionado;
+	int retorno_menu;
+	do {
 
 
 
-            //Salir con ESC
-            case 2:
-                salir=1;
-            break;
+        //borrar primera linea por si conmuta parametro rotacion
+        //zxvision_fill_width_spaces_paper(ventana,0,HEATMAP_INDEX_FIRST_COLOR);
 
-            //O tecla background
-            case 3:
-                salir=1;
-            break;
-        }
+		menu_add_item_menu_inicial_format(&array_menu_visual_microdrive,MENU_OPCION_NORMAL,menu_visual_microdrive_slow_movement,NULL
+            ,"[%c] ~~Slow movement",(visual_microdrive_slow_movement ? 'X' : ' '));
+		menu_add_item_menu_shortcut(array_menu_visual_microdrive,'s');
+		menu_add_item_menu_ayuda(array_menu_visual_microdrive,"Slow movement");
+		menu_add_item_menu_tabulado(array_menu_visual_microdrive,1,0);
 
 
-    } while (salir==0);
+
+		//Nombre de ventana solo aparece en el caso de stdout
+		retorno_menu=menu_dibuja_menu_no_title_lang(&visualmicrodrive_opcion_seleccionada,&item_seleccionado,array_menu_visual_microdrive,"Visual Microdrive" );
+
+		if (retorno_menu!=MENU_RETORNO_BACKGROUND) {
+            //En caso de menus tabulados, es responsabilidad de este de borrar la ventana
+            //Con este cls provoca que se borren todas las otras ventanas en background
+
+
+            if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+                    //llamamos por valor de funcion
+                    if (item_seleccionado.menu_funcion!=NULL) {
+                            //printf ("actuamos por funcion\n");
+                            item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+
+
+                    }
+            }
+		}
+
+	} while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus && retorno_menu!=MENU_RETORNO_BACKGROUND);
+
+
+
 
 
 	util_add_window_geometry_compact(ventana);
 
-	if (tecla==3) {
+	if (retorno_menu==MENU_RETORNO_BACKGROUND) {
 		zxvision_message_put_window_background();
 	}
 
@@ -42953,6 +42973,9 @@ void menu_visual_microdrive(MENU_ITEM_PARAMETERS)
 
 		zxvision_destroy_window(ventana);
 	}
+
+
+
 
 
 }
