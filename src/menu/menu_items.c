@@ -42690,7 +42690,7 @@ void menu_visual_microdrive_dibujar_microdrive_dinamico(struct zxvision_vectoria
     //Efecto de movimiento en la cinta
     //Efecto de temblar al moverse, si esta motor on
 
-    int desplazamiento=5;
+    int desplazamiento=6;
     //borrar lineas anteriores
     d->pencil_off(d);
     d->setcolour(d,color_fondo);
