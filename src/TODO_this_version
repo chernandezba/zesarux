@@ -410,7 +410,7 @@ ok Rodillo que se pueda mover más lento.  Opción
 ok Pestaña protección escritura
 ok Cabezal. Que indique lectura o escritura
 ok Rodillo exterior que hace girar el microdrive
-Icono visual microdrive
+ok Icono visual microdrive
 
 *en grabacion datos y en lectura datos comprobar que los bits de estado los haya indicado correctamente el usuario?
 *agregar documentación a extras. Ver que documento esta mejor

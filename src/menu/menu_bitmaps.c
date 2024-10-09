@@ -1436,32 +1436,32 @@ char *bitmap_lowericon_ext_desktop_flp_active[EXT_DESKTOP_BUTTONS_ANCHO]={
 
 char *bitmap_button_ext_desktop_visualmicrodrive[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345
-    " wwwwww             wwwww ",     //0
-  	" wxxxxxw           wxxxxw ",
-	" wx    xxwwwwwwwwwwx   xw ",
-	" wx      xxxxxxxxxx    xw ",
-	" wx                    xw ",
-	"   WW             yy   xw ",
-	"  WWWW           yyyy  xw ",
-	"  WWWW           yyyy  xw ",
-	"   WW             yy   xw ",
-	"  wx                   xw ",
-	" wx                    xw ",	//10
-	" wx                    xw ",
-	" wx                    xw ",
+    " wwwwwwxxx       xxwwwwww ",     //0
+  	" wxxxxxw  xx   xx  xxxxxw ",
+	" wx  x xxwwwxxxwwwwx   xw ",
+	" wx x    xxxxxxxxxx x  xw ",
+	" wxx                x  xw ",
+	"  xWW             yyx  xw ",
+	" xWWWW           yyyyx xw ",
+	" xWWWW           yyyyx xw ",
+	"  xWW             yyx  xw ",
+	"  wx                x  xw ",
+	" wx x              x  xxw ",	//10
+	" wx x     xxxxxx   x  xxw ",
+	" wx  x   xxxxxxxx x   xxw ",
+	" wx  x  xxxxxxxxxxx   xxw ",
+	" wx   xxxxxwwwwxxxx    xw ",
+	" wx   xxxxwwwwwwxxx    xw ",
+	" wx    xxxwwwwwwxxx    xw ",
+	" wx    xxxwwwwwwxxx    xw ",
+	" wx    xxxwwwwwwxxx    xw ",
+	" wx    xxxxwwwwxxxx    xw ",    //20
+	" wx     xxxxxxxxxx     xw ",
+	" wx      xxxxxxxx      xw ",
 	" wx       xxxxxx       xw ",
-	" wx      xxxxxxxx      xw ",
-	" wx     xxxwwwwxxx     xw ",
-	" wx     xxwwwwwwxx     xw ",
-	" wx     xxwwwwwwxx     xw ",
-	" wx     xxwwwwwwxx     xw ",
-	" wx     xxwwwwwwxx     xw ",
-	"wxx     xxxwwwwxxx     xxw",    //20
-	" wx      xxxxxxxx      xw ",
-	"wxx       xxxxxx       xxw",
-	" wx                    xw ",
-	"wxxxxxxxxxxxxxxxxxxxxxxxxw",
-	"wwwwwwwwwwwwwwwwwwwwwwwwww" 	 //25
+    " wx                    xw ",
+	" wxxxxxxxxxxxxxxxxxxxxxxw ",
+	" wwwwwwwwwwwwwwwwwwwwwwww " 	 //25
 };
 
 char *bitmap_lowericon_ext_desktop_flp_inactive[EXT_DESKTOP_BUTTONS_ANCHO]={
