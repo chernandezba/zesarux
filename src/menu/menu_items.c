@@ -42502,18 +42502,7 @@ void menu_visual_microdrive_dibujar_microdrive_estatico(struct zxvision_vectoria
     d->pencil_on(d);
     d->set_y(d,136);
 
-    //rodillo arriba a la izquierda
-    d->pencil_off(d);
-    d->setcolour(d,15);
-    d->setpos(d,108,136);
-    d->drawcircle(d,98);
-    d->drawcircle(d,97);
-    d->drawcircle(d,96);
-    d->drawcircle(d,95);
 
-    //y parte de ese rodillo muestra la cinta
-    d->setcolour(d,color_cinta_enrollada);
-    d->drawarc(d,100,90,180); //algo mas que 98 de radio para que no se pegue
 
 
 
@@ -42589,12 +42578,10 @@ void menu_visual_microdrive_dibujar_microdrive_estatico(struct zxvision_vectoria
 
 
 
-void menu_visual_microdrive_dibujar_microdrive_dinamico_dibuja_radio(struct zxvision_vectorial_draw *d,int grados,int color)
+void menu_visual_microdrive_dibujar_microdrive_dinamico_dibuja_radio(struct zxvision_vectorial_draw *d,
+    int x_origen_rodillo,int y_origen_rodillo,int longitud,int grados,int color)
 {
 
-    int x_origen_rodillo=573;
-    int y_origen_rodillo=136;
-    int longitud=88; //algo menos de 98 para que no se salga
 
     d->pencil_off(d);
     d->setcolour(d,color);
@@ -42642,9 +42629,13 @@ void menu_visual_microdrive_dibujar_microdrive_dinamico(struct zxvision_vectoria
     //borrar grados anteriores
     int color_fondo=VISUAL_MICRODRIVE_COLOR_FONDO;
 
-    menu_visual_microdrive_dibujar_microdrive_dinamico_dibuja_radio(d,visual_micro_antes_grados_rodillo,color_fondo);
-    menu_visual_microdrive_dibujar_microdrive_dinamico_dibuja_radio(d,visual_micro_antes_grados_rodillo+120,color_fondo);
-    menu_visual_microdrive_dibujar_microdrive_dinamico_dibuja_radio(d,visual_micro_antes_grados_rodillo+240,color_fondo);
+    int x_origen_rodillo=573;
+    int y_origen_rodillo=136;
+    int longitud=88; //algo menos de 98 para que no se salga
+
+    menu_visual_microdrive_dibujar_microdrive_dinamico_dibuja_radio(d,x_origen_rodillo,y_origen_rodillo,longitud,visual_micro_antes_grados_rodillo,color_fondo);
+    menu_visual_microdrive_dibujar_microdrive_dinamico_dibuja_radio(d,x_origen_rodillo,y_origen_rodillo,longitud,visual_micro_antes_grados_rodillo+120,color_fondo);
+    menu_visual_microdrive_dibujar_microdrive_dinamico_dibuja_radio(d,x_origen_rodillo,y_origen_rodillo,longitud,visual_micro_antes_grados_rodillo+240,color_fondo);
 
     //asumimos cada byte mueve 1 grado
     int grados=(total_offset % 360);
@@ -42660,10 +42651,10 @@ void menu_visual_microdrive_dibujar_microdrive_dinamico(struct zxvision_vectoria
     //va hacia abajo. o sea la cinta se mueve hacia la derecha
     grados=-grados;
 
-    visual_micro_antes_grados_rodillo=grados;
-    menu_visual_microdrive_dibujar_microdrive_dinamico_dibuja_radio(d,grados,6);
-    menu_visual_microdrive_dibujar_microdrive_dinamico_dibuja_radio(d,grados+120,6);
-    menu_visual_microdrive_dibujar_microdrive_dinamico_dibuja_radio(d,grados+240,6);
+
+    menu_visual_microdrive_dibujar_microdrive_dinamico_dibuja_radio(d,x_origen_rodillo,y_origen_rodillo,longitud,grados,6);
+    menu_visual_microdrive_dibujar_microdrive_dinamico_dibuja_radio(d,x_origen_rodillo,y_origen_rodillo,longitud,grados+120,6);
+    menu_visual_microdrive_dibujar_microdrive_dinamico_dibuja_radio(d,x_origen_rodillo,y_origen_rodillo,longitud,grados+240,6);
 
 
     //Si estamos en sector 0, se indicara con color rojo donde esta la separacion del sector
@@ -42761,6 +42752,39 @@ void menu_visual_microdrive_dibujar_microdrive_dinamico(struct zxvision_vectoria
     d->setcolour(d,color_cinta_enrollada);
     d->drawarc(d,100,0,90); //algo mas que 98 de radio para que no se pegue
 
+
+    //rodillo arriba a la izquierda
+    //radios de movimiento
+
+    x_origen_rodillo=108;
+    //borrar anterior
+
+    menu_visual_microdrive_dibujar_microdrive_dinamico_dibuja_radio(d,x_origen_rodillo,y_origen_rodillo,longitud,visual_micro_antes_grados_rodillo,color_fondo);
+    menu_visual_microdrive_dibujar_microdrive_dinamico_dibuja_radio(d,x_origen_rodillo,y_origen_rodillo,longitud,visual_micro_antes_grados_rodillo+120,color_fondo);
+    menu_visual_microdrive_dibujar_microdrive_dinamico_dibuja_radio(d,x_origen_rodillo,y_origen_rodillo,longitud,visual_micro_antes_grados_rodillo+240,color_fondo);
+
+    //actual
+    menu_visual_microdrive_dibujar_microdrive_dinamico_dibuja_radio(d,x_origen_rodillo,y_origen_rodillo,longitud,grados,15);
+    menu_visual_microdrive_dibujar_microdrive_dinamico_dibuja_radio(d,x_origen_rodillo,y_origen_rodillo,longitud,grados+120,15);
+    menu_visual_microdrive_dibujar_microdrive_dinamico_dibuja_radio(d,x_origen_rodillo,y_origen_rodillo,longitud,grados+240,15);
+
+
+    //circulo exterior
+    d->pencil_off(d);
+    d->setcolour(d,15);
+    d->setpos(d,108,136);
+    d->drawcircle(d,98);
+    d->drawcircle(d,97);
+    d->drawcircle(d,96);
+    d->drawcircle(d,95);
+
+    //y parte de ese rodillo muestra la cinta
+    d->setcolour(d,color_cinta_enrollada);
+    d->drawarc(d,100,90,180); //algo mas que 98 de radio para que no se pegue
+
+
+
+
     //Cabezal lector
     int color_cabezal=15;
     //Si está escribiendo, color rojo
@@ -42791,6 +42815,45 @@ void menu_visual_microdrive_dibujar_microdrive_dinamico(struct zxvision_vectoria
     //tanto inicio arco como radio se han hecho a ojo para que quede bien
     int inicio_arco=210;
     d->drawarc(d,68,inicio_arco,270+(270-inicio_arco));
+
+
+    //Rodillo exterior de arrastre
+
+    x_origen_rodillo=-35;
+    y_origen_rodillo=175;
+
+
+
+    //Radios de movimiento. Se mueve al contrario que el rodillo derecho
+
+    longitud=42;
+    //borrar los anteriores
+    //se mueve mas rapidamente que los rodillos grandes
+    //esto es debido porque he hecho el rodillo mas pequeño, y como está en contacto con el grande,
+    //el pequeño se movera mas rapido que el grande
+    //TODO: no sé el tamaño real del rodillo de arrastre, lo he hecho mas pequeño porque en el dibujo queda mejor asi
+    int antes_grados=-visual_micro_antes_grados_rodillo*2;
+
+    menu_visual_microdrive_dibujar_microdrive_dinamico_dibuja_radio(d,x_origen_rodillo,y_origen_rodillo,longitud,antes_grados,color_fondo);
+    menu_visual_microdrive_dibujar_microdrive_dinamico_dibuja_radio(d,x_origen_rodillo,y_origen_rodillo,longitud,antes_grados+120,color_fondo);
+    menu_visual_microdrive_dibujar_microdrive_dinamico_dibuja_radio(d,x_origen_rodillo,y_origen_rodillo,longitud,antes_grados+240,color_fondo);
+
+    int grados_izquierdo=-grados*2;
+    menu_visual_microdrive_dibujar_microdrive_dinamico_dibuja_radio(d,x_origen_rodillo,y_origen_rodillo,longitud,grados_izquierdo,15);
+    menu_visual_microdrive_dibujar_microdrive_dinamico_dibuja_radio(d,x_origen_rodillo,y_origen_rodillo,longitud,grados_izquierdo+120,15);
+    menu_visual_microdrive_dibujar_microdrive_dinamico_dibuja_radio(d,x_origen_rodillo,y_origen_rodillo,longitud,grados_izquierdo+240,15);
+
+
+    //circulo exterior
+    d->pencil_off(d);
+    d->setcolour(d,15);
+    d->setpos(d,x_origen_rodillo,y_origen_rodillo);
+    d->drawcircle(d,50);
+    d->drawcircle(d,49);
+    d->drawcircle(d,48);
+
+    visual_micro_antes_grados_rodillo=grados;
+
 }
 
 //int visual_microdrive_forzar_redraw=0;
@@ -42812,30 +42875,51 @@ void menu_visual_microdrive_overlay(void)
     //Dibujo del microdrive
     struct zxvision_vectorial_draw dibujo_microdrive;
 
-    //quitamos 4: 2 columnas izquierda margen, columna derecha margen, columna scroll
-    int tamanyo_ocupado_microdrive_ancho=(menu_visual_microdrive_window->visible_width-4)*menu_char_width;
+    //quitamos 4: 1 columnas izquierda margen, columna derecha margen, columna scroll
+    int tamanyo_ocupado_microdrive_ancho=(menu_visual_microdrive_window->visible_width-3)*menu_char_width;
     //quitamos 5: barra titulo,barra scroll, 2 lineas menu, 1 linea separacion
     int tamanyo_ocupado_microdrive_alto=(menu_visual_microdrive_window->visible_height-5)*menu_char_height;
 
-    int offset_x=menu_char_width*2;
+    int offset_x=menu_char_width*1;
     int offset_y=menu_char_height*3;
 
     //Ajustar escalas
     //Relacion de aspecto ideal: 700 ancho, 1000 alto
 
+    int ancho_total_dibujo_virtual=700;
+
+    //Le tenemos que considerar el rodillo de arrastre. Empieza en -35 y son 50 de radio
+    //Este rodillo no estaba considerado en el dibujo original (que era de 700 de ancho) por eso tengo que sumarlo aparte
+    //y ademas ajustar el offset_x para que quepa bien
+    int ocupado_rodillo_izquierdo=85;
+    ancho_total_dibujo_virtual +=ocupado_rodillo_izquierdo;
+
+
+
     int real_width=tamanyo_ocupado_microdrive_ancho;
 
 
-    int max_ancho_esperado_por_aspecto=(tamanyo_ocupado_microdrive_alto*700)/1000;
+    //Desactivar este trocito si queremos que el ancho pueda crecer independientemente del alto de ventana. SOLO PARA PRUEBAS
+    int max_ancho_esperado_por_aspecto=(tamanyo_ocupado_microdrive_alto*ancho_total_dibujo_virtual)/1000;
     if (real_width>max_ancho_esperado_por_aspecto) {
         //Con esto el microdrive siempre esta dentro de la ventana entero, independientemente del tamaño de la ventana
         //printf("relacion ancho mal\n");
         real_width=max_ancho_esperado_por_aspecto;
     }
 
-    int real_height=(real_width*1000)/700;
 
-    zxvision_vecdraw_init(&dibujo_microdrive,menu_visual_microdrive_window,700,1000,
+    int real_height=(real_width*1000)/ancho_total_dibujo_virtual;
+
+
+    //Al offset_x hay que sumarle lo que ocupa el rodillo izquierdo (85 puntos en resolucion virtual)
+    //El offset es en pixeles reales
+    //Convertir de esos 85 a reales
+    int sumar_offset_x=(ocupado_rodillo_izquierdo*real_width)/ancho_total_dibujo_virtual;
+    //printf("sumar por rodillo izquierdo: %d\n",sumar_offset_x);
+    offset_x +=sumar_offset_x;
+
+
+    zxvision_vecdraw_init(&dibujo_microdrive,menu_visual_microdrive_window,ancho_total_dibujo_virtual,1000,
         real_width,real_height,offset_x,offset_y);
 
 
