@@ -41770,14 +41770,16 @@ void menu_storage_microdrive_map(MENU_ITEM_PARAMETERS)
 
                         mdr_truncate_spaces_name(buffer_nombre);
 
-                        menu_ventana_scanf("New name",buffer_nombre,11);
+                        int retorno=menu_ventana_scanf("New name",buffer_nombre,11);
 
-                        mdr_rename_file(catalogo,microdrive_status[valor_opcion].if1_microdrive_buffer,buscar_archivo,buffer_nombre);
+                        if (retorno>=0) {
+                            mdr_rename_file(catalogo,microdrive_status[valor_opcion].if1_microdrive_buffer,buscar_archivo,buffer_nombre);
 
-                        //Y hacer flush
-                        microdrive_status[valor_opcion].microdrive_must_flush_to_disk=1;
+                            //Y hacer flush
+                            microdrive_status[valor_opcion].microdrive_must_flush_to_disk=1;
 
-                        menu_generic_message_splash("Rename file","OK. File has been renamed");
+                            menu_generic_message_splash("Rename file","OK. File has been renamed");
+                        }
 
                         salir=1;
                         recargar_microdrive=1;
@@ -42591,9 +42593,40 @@ void menu_visual_microdrive_dibujar_microdrive_dinamico_dibuja_radio(struct zxvi
 
 
     //sacar final linea
-    int yfinal=y_origen_rodillo-((longitud*util_get_sine(grados))/10000);
+    int longitud_y=(longitud*util_get_sine(grados))/10000;
+    //printf("longitud_y antes: %d\n",longitud_y);
 
-    int xfinal=x_origen_rodillo+((longitud*util_get_cosine(grados))/10000);
+    //reajustar comportamiento decimales para que se comporte como el dibujado de circulos
+    //Nota: eso es debido a que el calculo de coordenadas virtuales se hace diferente al dibujar el circulo o al trazar una linea
+    //y/o tambien a la falta de uso de variables con decimales para calcular
+    //probablemente con el uso de float para real_radio en zxvision_vecdraw_arc se solventaria
+
+    //Si hacemos paso de coordenadas virtuales a reales, y de vuelta a virtuales,
+    //en el calculo sin decimales nos comportaremos ¿igual? que el dibujado de circulos
+    //Si no hiciera esto, estas lineas de radio no están siempre exactas desde el centro al circulo,
+    //a veces sobresale del circulo (cuando el dibujo es pequeño), a veces no llega a tocar al circulo (cuando el dibujo es grande)
+
+    //pasar a dimensiones reales
+    longitud_y=(longitud_y*d->real_width)/d->virtual_width;
+
+    //y de vuelta a virtuales
+    longitud_y=(longitud_y*d->virtual_width)/d->real_width;
+
+    //printf("longitud_y despues: %d\n",longitud_y);
+
+    int yfinal=y_origen_rodillo-longitud_y;
+
+    int longitud_x=(longitud*util_get_cosine(grados))/10000;
+
+    //reajustar comportamiento decimales para que se comporte como el dibujado de circulos
+    //pasar a dimensiones reales
+    longitud_x=(longitud_x*d->real_heigth)/d->virtual_height;
+
+    //y de vuelta a virtuales
+    longitud_x=(longitud_x*d->virtual_height)/d->real_heigth;
+
+
+    int xfinal=x_origen_rodillo+longitud_x;
 
 
     d->setpos(d,xfinal,yfinal);
@@ -42631,7 +42664,7 @@ void menu_visual_microdrive_dibujar_microdrive_dinamico(struct zxvision_vectoria
 
     int x_origen_rodillo=573;
     int y_origen_rodillo=136;
-    int longitud=88; //algo menos de 98 para que no se salga
+    int longitud=98-1; //1 menos para que no sobresalga
 
     menu_visual_microdrive_dibujar_microdrive_dinamico_dibuja_radio(d,x_origen_rodillo,y_origen_rodillo,longitud,visual_micro_antes_grados_rodillo,color_fondo);
     menu_visual_microdrive_dibujar_microdrive_dinamico_dibuja_radio(d,x_origen_rodillo,y_origen_rodillo,longitud,visual_micro_antes_grados_rodillo+120,color_fondo);
@@ -42826,7 +42859,7 @@ void menu_visual_microdrive_dibujar_microdrive_dinamico(struct zxvision_vectoria
 
     //Radios de movimiento. Se mueve al contrario que el rodillo derecho
 
-    longitud=42;
+    longitud=50-1; //1 menos para que no sobresalga
     //borrar los anteriores
     //se mueve mas rapidamente que los rodillos grandes
     //esto es debido porque he hecho el rodillo mas pequeño, y como está en contacto con el grande,
@@ -42850,7 +42883,7 @@ void menu_visual_microdrive_dibujar_microdrive_dinamico(struct zxvision_vectoria
     d->setpos(d,x_origen_rodillo,y_origen_rodillo);
     d->drawcircle(d,50);
     d->drawcircle(d,49);
-    d->drawcircle(d,48);
+    //d->drawcircle(d,48);
 
     visual_micro_antes_grados_rodillo=grados;
 
