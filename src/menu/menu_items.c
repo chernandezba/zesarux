@@ -42688,141 +42688,141 @@ void menu_visual_microdrive_dibujar_microdrive_dinamico(struct zxvision_vectoria
     //Dibujar interior solo si esta habilitado ese microdrive
     if (microdrive_status[numero_microdrive].microdrive_enabled) {
 
-    //Borrar los anteriores
-    menu_visual_microdrive_dibujar_microdrive_dinamico_dibuja_radio(d,x_origen_rodillo,y_origen_rodillo,longitud,visual_micro_antes_grados_rodillo,color_fondo);
-    menu_visual_microdrive_dibujar_microdrive_dinamico_dibuja_radio(d,x_origen_rodillo,y_origen_rodillo,longitud,visual_micro_antes_grados_rodillo+120,color_fondo);
-    menu_visual_microdrive_dibujar_microdrive_dinamico_dibuja_radio(d,x_origen_rodillo,y_origen_rodillo,longitud,visual_micro_antes_grados_rodillo+240,color_fondo);
+        //Borrar los anteriores
+        menu_visual_microdrive_dibujar_microdrive_dinamico_dibuja_radio(d,x_origen_rodillo,y_origen_rodillo,longitud,visual_micro_antes_grados_rodillo,color_fondo);
+        menu_visual_microdrive_dibujar_microdrive_dinamico_dibuja_radio(d,x_origen_rodillo,y_origen_rodillo,longitud,visual_micro_antes_grados_rodillo+120,color_fondo);
+        menu_visual_microdrive_dibujar_microdrive_dinamico_dibuja_radio(d,x_origen_rodillo,y_origen_rodillo,longitud,visual_micro_antes_grados_rodillo+240,color_fondo);
 
-    //Dibujar los actuales
-    menu_visual_microdrive_dibujar_microdrive_dinamico_dibuja_radio(d,x_origen_rodillo,y_origen_rodillo,longitud,grados,6);
-    menu_visual_microdrive_dibujar_microdrive_dinamico_dibuja_radio(d,x_origen_rodillo,y_origen_rodillo,longitud,grados+120,6);
-    menu_visual_microdrive_dibujar_microdrive_dinamico_dibuja_radio(d,x_origen_rodillo,y_origen_rodillo,longitud,grados+240,6);
-
-
-    //Si estamos en sector 0, se indicara con color rojo donde esta la separacion del sector
-    //Borrar antes posibles restos
-    int color_cinta_enrollada=0; //esto sera negro
-    visual_microdrive_marca_sector_cero(d,color_cinta_enrollada);
-
-    if (sector_actual==0) {
-        //De momento solo indicarlo en el trocito que lee la esponjita
-        //TODO: usar offset en el sector. De momento solo poner esa zona en rojo
-
-        visual_microdrive_marca_sector_cero(d,2);
-
-    }
+        //Dibujar los actuales
+        menu_visual_microdrive_dibujar_microdrive_dinamico_dibuja_radio(d,x_origen_rodillo,y_origen_rodillo,longitud,grados,6);
+        menu_visual_microdrive_dibujar_microdrive_dinamico_dibuja_radio(d,x_origen_rodillo,y_origen_rodillo,longitud,grados+120,6);
+        menu_visual_microdrive_dibujar_microdrive_dinamico_dibuja_radio(d,x_origen_rodillo,y_origen_rodillo,longitud,grados+240,6);
 
 
-    int radio_cinta_sectores;
-    int radio_base;
-    visual_microdrive_get_info_rodillos_interiores(&radio_cinta_sectores,&radio_base);
+        //Si estamos en sector 0, se indicara con color rojo donde esta la separacion del sector
+        //Borrar antes posibles restos
+        int color_cinta_enrollada=0; //esto sera negro
+        visual_microdrive_marca_sector_cero(d,color_cinta_enrollada);
 
-    //posicion maxima de la cinta enrollada. de ahi saldra una tangente hacia el rodillo superior izquierdo
-    int pos_x_rodillo_enrollado=357-(radio_base+radio_cinta_sectores)+1;
+        if (sector_actual==0) {
+            //De momento solo indicarlo en el trocito que lee la esponjita
+            //TODO: usar offset en el sector. De momento solo poner esa zona en rojo
 
-    //Efecto de movimiento en la cinta
-    //Efecto de temblar al moverse, si esta motor on
+            visual_microdrive_marca_sector_cero(d,2);
 
-    int desplazamiento=6;
-    //borrar lineas anteriores
-    d->pencil_off(d);
-    d->setcolour(d,color_fondo);
-    d->setpos(d,pos_x_rodillo_enrollado,678);
-    d->pencil_on(d);
-    d->setpos(d,10,136);
-    d->pencil_off(d);
-    d->setpos(d,pos_x_rodillo_enrollado+desplazamiento,678);
-    d->pencil_on(d);
-    d->setpos(d,10,136);
-    d->pencil_off(d);
-
-    int sumar_pos=0;
-
-    if (motor_on) {
-        int offset_actual=microdrive_status[numero_microdrive].mdr_current_offset_in_sector;
-        int sector_actual=microdrive_status[numero_microdrive].mdr_current_sector;
-        if (sector_actual % 2) sumar_pos=desplazamiento;
-    }
+        }
 
 
+        int radio_cinta_sectores;
+        int radio_base;
+        visual_microdrive_get_info_rodillos_interiores(&radio_cinta_sectores,&radio_base);
 
-    d->setcolour(d,color_cinta_enrollada);
-    d->setpos(d,pos_x_rodillo_enrollado+sumar_pos,678);
+        //posicion maxima de la cinta enrollada. de ahi saldra una tangente hacia el rodillo superior izquierdo
+        int pos_x_rodillo_enrollado=357-(radio_base+radio_cinta_sectores)+1;
 
-    d->pencil_on(d);
-    //primer tramo, desde abajo a la izquierda hasta pegado a rodillo izquierdo
-    d->setpos(d,10,136);
+        //Efecto de movimiento en la cinta
+        //Efecto de temblar al moverse, si esta motor on
 
+        int desplazamiento=6;
+        //borrar lineas anteriores
+        d->pencil_off(d);
+        d->setcolour(d,color_fondo);
+        d->setpos(d,pos_x_rodillo_enrollado,678);
+        d->pencil_on(d);
+        d->setpos(d,10,136);
+        d->pencil_off(d);
+        d->setpos(d,pos_x_rodillo_enrollado+desplazamiento,678);
+        d->pencil_on(d);
+        d->setpos(d,10,136);
+        d->pencil_off(d);
 
-    //y tangente hacia el interior, el inicio de donde se enrolla el microdrive
-    //Temblado de la cinta en horizontal si esta motor on
-    //Borrando anteriores
-    d->setcolour(d,color_fondo);
-    d->pencil_off(d);
-    d->setpos(d,573+98,136);
-    d->pencil_on(d);
-    d->setpos(d,357+152,678);
+        int sumar_pos=0;
 
-    d->pencil_off(d);
-    d->setpos(d,573+98,136);
-    d->pencil_on(d);
-    d->setpos(d,357+152-desplazamiento,678);
-
-    //Y dibujar la cinta
-    d->setcolour(d,color_cinta_enrollada);
-    d->pencil_off(d);
-    d->setpos(d,573+98,136);
-
-    d->pencil_on(d);
-    //septimo tramo
-    d->setpos(d,357+152-sumar_pos,678);
-
-
-    //rodillo arriba a la derecha. redibujar entero porque el borrado de radios puede borrar parte de este
-    //tambien la cinta de la derecha sobrescribe encima de aqui, y queremos que el rodillo siempre este por encima
-    d->pencil_off(d);
-    d->setcolour(d,6);
-    d->setpos(d,573,136);
-    d->drawcircle(d,98);
-    d->drawcircle(d,97);
-    d->drawcircle(d,96);
-    d->drawcircle(d,95);
-
-    //y parte del rodillo de la derecha muestra la cinta
-    d->pencil_off(d);
-    d->setpos(d,573,136);
-    d->setcolour(d,color_cinta_enrollada);
-    d->drawarc(d,100,0,90); //algo mas que 98 de radio para que no se pegue
+        if (motor_on) {
+            int offset_actual=microdrive_status[numero_microdrive].mdr_current_offset_in_sector;
+            int sector_actual=microdrive_status[numero_microdrive].mdr_current_sector;
+            if (sector_actual % 2) sumar_pos=desplazamiento;
+        }
 
 
-    //rodillo arriba a la izquierda
-    //radios de movimiento
 
-    x_origen_rodillo=108;
-    //borrar anterior
+        d->setcolour(d,color_cinta_enrollada);
+        d->setpos(d,pos_x_rodillo_enrollado+sumar_pos,678);
 
-    menu_visual_microdrive_dibujar_microdrive_dinamico_dibuja_radio(d,x_origen_rodillo,y_origen_rodillo,longitud,visual_micro_antes_grados_rodillo,color_fondo);
-    menu_visual_microdrive_dibujar_microdrive_dinamico_dibuja_radio(d,x_origen_rodillo,y_origen_rodillo,longitud,visual_micro_antes_grados_rodillo+120,color_fondo);
-    menu_visual_microdrive_dibujar_microdrive_dinamico_dibuja_radio(d,x_origen_rodillo,y_origen_rodillo,longitud,visual_micro_antes_grados_rodillo+240,color_fondo);
-
-    //actual
-    menu_visual_microdrive_dibujar_microdrive_dinamico_dibuja_radio(d,x_origen_rodillo,y_origen_rodillo,longitud,grados,15);
-    menu_visual_microdrive_dibujar_microdrive_dinamico_dibuja_radio(d,x_origen_rodillo,y_origen_rodillo,longitud,grados+120,15);
-    menu_visual_microdrive_dibujar_microdrive_dinamico_dibuja_radio(d,x_origen_rodillo,y_origen_rodillo,longitud,grados+240,15);
+        d->pencil_on(d);
+        //primer tramo, desde abajo a la izquierda hasta pegado a rodillo izquierdo
+        d->setpos(d,10,136);
 
 
-    //circulo exterior
-    d->pencil_off(d);
-    d->setcolour(d,15);
-    d->setpos(d,108,136);
-    d->drawcircle(d,98);
-    d->drawcircle(d,97);
-    d->drawcircle(d,96);
-    d->drawcircle(d,95);
+        //y tangente hacia el interior, el inicio de donde se enrolla el microdrive
+        //Temblado de la cinta en horizontal si esta motor on
+        //Borrando anteriores
+        d->setcolour(d,color_fondo);
+        d->pencil_off(d);
+        d->setpos(d,573+98,136);
+        d->pencil_on(d);
+        d->setpos(d,357+152,678);
 
-    //y parte de ese rodillo muestra la cinta
-    d->setcolour(d,color_cinta_enrollada);
-    d->drawarc(d,100,90,180); //algo mas que 98 de radio para que no se pegue
+        d->pencil_off(d);
+        d->setpos(d,573+98,136);
+        d->pencil_on(d);
+        d->setpos(d,357+152-desplazamiento,678);
+
+        //Y dibujar la cinta
+        d->setcolour(d,color_cinta_enrollada);
+        d->pencil_off(d);
+        d->setpos(d,573+98,136);
+
+        d->pencil_on(d);
+        //septimo tramo
+        d->setpos(d,357+152-sumar_pos,678);
+
+
+        //rodillo arriba a la derecha. redibujar entero porque el borrado de radios puede borrar parte de este
+        //tambien la cinta de la derecha sobrescribe encima de aqui, y queremos que el rodillo siempre este por encima
+        d->pencil_off(d);
+        d->setcolour(d,6);
+        d->setpos(d,573,136);
+        d->drawcircle(d,98);
+        d->drawcircle(d,97);
+        d->drawcircle(d,96);
+        d->drawcircle(d,95);
+
+        //y parte del rodillo de la derecha muestra la cinta
+        d->pencil_off(d);
+        d->setpos(d,573,136);
+        d->setcolour(d,color_cinta_enrollada);
+        d->drawarc(d,100,0,90); //algo mas que 98 de radio para que no se pegue
+
+
+        //rodillo arriba a la izquierda
+        //radios de movimiento
+
+        x_origen_rodillo=108;
+        //borrar anterior
+
+        menu_visual_microdrive_dibujar_microdrive_dinamico_dibuja_radio(d,x_origen_rodillo,y_origen_rodillo,longitud,visual_micro_antes_grados_rodillo,color_fondo);
+        menu_visual_microdrive_dibujar_microdrive_dinamico_dibuja_radio(d,x_origen_rodillo,y_origen_rodillo,longitud,visual_micro_antes_grados_rodillo+120,color_fondo);
+        menu_visual_microdrive_dibujar_microdrive_dinamico_dibuja_radio(d,x_origen_rodillo,y_origen_rodillo,longitud,visual_micro_antes_grados_rodillo+240,color_fondo);
+
+        //actual
+        menu_visual_microdrive_dibujar_microdrive_dinamico_dibuja_radio(d,x_origen_rodillo,y_origen_rodillo,longitud,grados,15);
+        menu_visual_microdrive_dibujar_microdrive_dinamico_dibuja_radio(d,x_origen_rodillo,y_origen_rodillo,longitud,grados+120,15);
+        menu_visual_microdrive_dibujar_microdrive_dinamico_dibuja_radio(d,x_origen_rodillo,y_origen_rodillo,longitud,grados+240,15);
+
+
+        //circulo exterior
+        d->pencil_off(d);
+        d->setcolour(d,15);
+        d->setpos(d,108,136);
+        d->drawcircle(d,98);
+        d->drawcircle(d,97);
+        d->drawcircle(d,96);
+        d->drawcircle(d,95);
+
+        //y parte de ese rodillo muestra la cinta
+        d->setcolour(d,color_cinta_enrollada);
+        d->drawarc(d,100,90,180); //algo mas que 98 de radio para que no se pegue
 
 
     }
