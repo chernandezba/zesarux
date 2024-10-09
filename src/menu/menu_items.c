@@ -42458,6 +42458,10 @@ void visual_microdrive_get_info_rodillos_interiores(int *radio_cinta_sectores,in
 
 void menu_visual_microdrive_dibujar_microdrive_estatico(struct zxvision_vectorial_draw *d)
 {
+
+    //Si microdrive no habilitado, no dibujarlo
+    if (!microdrive_status[menu_visual_microdrive_mirando_microdrive].microdrive_enabled) return;
+
     d->pencil_off(d);
     d->setpos(d,0,0);
 
@@ -42666,9 +42670,6 @@ void menu_visual_microdrive_dibujar_microdrive_dinamico(struct zxvision_vectoria
     int y_origen_rodillo=136;
     int longitud=98-1; //1 menos para que no sobresalga
 
-    menu_visual_microdrive_dibujar_microdrive_dinamico_dibuja_radio(d,x_origen_rodillo,y_origen_rodillo,longitud,visual_micro_antes_grados_rodillo,color_fondo);
-    menu_visual_microdrive_dibujar_microdrive_dinamico_dibuja_radio(d,x_origen_rodillo,y_origen_rodillo,longitud,visual_micro_antes_grados_rodillo+120,color_fondo);
-    menu_visual_microdrive_dibujar_microdrive_dinamico_dibuja_radio(d,x_origen_rodillo,y_origen_rodillo,longitud,visual_micro_antes_grados_rodillo+240,color_fondo);
 
     //asumimos cada byte mueve 1 grado
     int grados=(total_offset % 360);
@@ -42684,7 +42685,15 @@ void menu_visual_microdrive_dibujar_microdrive_dinamico(struct zxvision_vectoria
     //va hacia abajo. o sea la cinta se mueve hacia la derecha
     grados=-grados;
 
+    //Dibujar interior solo si esta habilitado ese microdrive
+    if (microdrive_status[numero_microdrive].microdrive_enabled) {
 
+    //Borrar los anteriores
+    menu_visual_microdrive_dibujar_microdrive_dinamico_dibuja_radio(d,x_origen_rodillo,y_origen_rodillo,longitud,visual_micro_antes_grados_rodillo,color_fondo);
+    menu_visual_microdrive_dibujar_microdrive_dinamico_dibuja_radio(d,x_origen_rodillo,y_origen_rodillo,longitud,visual_micro_antes_grados_rodillo+120,color_fondo);
+    menu_visual_microdrive_dibujar_microdrive_dinamico_dibuja_radio(d,x_origen_rodillo,y_origen_rodillo,longitud,visual_micro_antes_grados_rodillo+240,color_fondo);
+
+    //Dibujar los actuales
     menu_visual_microdrive_dibujar_microdrive_dinamico_dibuja_radio(d,x_origen_rodillo,y_origen_rodillo,longitud,grados,6);
     menu_visual_microdrive_dibujar_microdrive_dinamico_dibuja_radio(d,x_origen_rodillo,y_origen_rodillo,longitud,grados+120,6);
     menu_visual_microdrive_dibujar_microdrive_dinamico_dibuja_radio(d,x_origen_rodillo,y_origen_rodillo,longitud,grados+240,6);
@@ -42816,7 +42825,7 @@ void menu_visual_microdrive_dibujar_microdrive_dinamico(struct zxvision_vectoria
     d->drawarc(d,100,90,180); //algo mas que 98 de radio para que no se pegue
 
 
-
+    }
 
     //Cabezal lector
     int color_cabezal=15;
@@ -42851,10 +42860,8 @@ void menu_visual_microdrive_dibujar_microdrive_dinamico(struct zxvision_vectoria
 
 
     //Rodillo exterior de arrastre
-
     x_origen_rodillo=-35;
     y_origen_rodillo=175;
-
 
 
     //Radios de movimiento. Se mueve al contrario que el rodillo derecho
