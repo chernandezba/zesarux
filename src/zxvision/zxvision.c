@@ -9755,7 +9755,7 @@ zxvision_known_window_names zxvision_known_window_names_array[]={
 #ifdef EMULATE_VISUALMEM
 	{"visualmem",           "visualmem",menu_debug_new_visualmem,bitmap_button_ext_desktop_visualmem},
 #endif
-    {"visualmicrodrive",    "vsmicrodrive",   menu_visual_microdrive,bitmap_button_ext_desktop_nothing},
+    {"visualmicrodrive",    "vsmicrodrive",   menu_visual_microdrive,bitmap_button_ext_desktop_visualmicrodrive},
     {"visualrealtape",      "vsrealtape",   menu_visual_realtape,bitmap_button_ext_desktop_visualrealtape},
     {"watches",             "watches",menu_watches,bitmap_button_ext_desktop_watches},
     {"waveform",            "waveform",menu_audio_new_waveform,bitmap_button_ext_desktop_waveform},

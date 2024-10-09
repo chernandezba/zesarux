@@ -409,7 +409,7 @@ ok *opcion para poder hacer rename de files
 ok Rodillo que se pueda mover más lento.  Opción
 ok Pestaña protección escritura
 ok Cabezal. Que indique lectura o escritura
-Rodillo exterior que hace girar el microdrive
+ok Rodillo exterior que hace girar el microdrive
 Icono visual microdrive
 
 *en grabacion datos y en lectura datos comprobar que los bits de estado los haya indicado correctamente el usuario?

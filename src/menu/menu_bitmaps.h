@@ -164,6 +164,7 @@ extern char *bitmap_lowericon_ext_desktop_sg1000_active[];
 extern char *bitmap_lowericon_ext_desktop_sg1000_inactive[];
 extern char *bitmap_lowericon_ext_desktop_sms_active[];
 extern char *bitmap_lowericon_ext_desktop_sms_inactive[];
+extern char *bitmap_button_ext_desktop_visualmicrodrive[];
 
 extern char *bitmap_lowericon_ext_desktop_plus3_flp_active[];
 extern char *bitmap_lowericon_ext_desktop_plus3_flp_active_framezero[];
