@@ -1435,33 +1435,33 @@ char *bitmap_lowericon_ext_desktop_flp_active[EXT_DESKTOP_BUTTONS_ANCHO]={
 };
 
 char *bitmap_button_ext_desktop_visualmicrodrive[EXT_DESKTOP_BUTTONS_ANCHO]={
-    //01234567890123456789012345
-    " wwwwwwxxx       xxwwwwww ",     //0
-  	" wxxxxxw  xx   xx  xxxxxw ",
-	" wx  x xxwwwxxxwwwwx   xw ",
-	" wx x    xxxxxxxxxx x  xw ",
-	" wxx                x  xw ",
-	"  xWW             yyx  xw ",
-	" xWWWW           yyyyx xw ",
-	" xWWWW           yyyyx xw ",
-	"  xWW             yyx  xw ",
-	"  wx                x  xw ",
-	" wx x              x  xxw ",	//10
-	" wx x     xxxxxx   x  xxw ",
-	" wx  x   xxxxxxxx x   xxw ",
-	" wx  x  xxxxxxxxxxx   xxw ",
-	" wx   xxxxxwwwwxxxx    xw ",
-	" wx   xxxxwwwwwwxxx    xw ",
-	" wx    xxxwwwwwwxxx    xw ",
-	" wx    xxxwwwwwwxxx    xw ",
-	" wx    xxxwwwwwwxxx    xw ",
-	" wx    xxxxwwwwxxxx    xw ",    //20
-	" wx     xxxxxxxxxx     xw ",
-	" wx      xxxxxxxx      xw ",
-	" wx       xxxxxx       xw ",
-    " wx                    xw ",
-	" wxxxxxxxxxxxxxxxxxxxxxxw ",
-	" wwwwwwwwwwwwwwwwwwwwwwww " 	 //25
+   //01234567890123456789012345
+    " wwwwwwxxxcccccccxxwwwww  ", //0
+	" wxxxxxwccxxcccxxccxxxxw  ",
+	" wxccxcxxwwwxxxwwwwxccxw  ",
+	" wxcxccccxxxxxxxxxxcxcxw  ",
+	" wxxccccccccccccccccxcxw  ",
+	" cxWWcccccccccccccyyxcxw  ",
+	" xWWWWcccccccccccyyyyxxw  ",
+	" xWWWWcccccccccccyyyyxxw  ",
+	" cxWWcccccccccccccyyxcxw  ",
+	" cwxccccccccccccccccxcxw  ",
+	" wxcxccccccccccccccxccxw  ",	//10
+	" wxcxcccccxxxxxxcccxcxxw  ",
+	" wxccxcccxxxxxxxxcxccxxw  ",
+	" wxccxccxxxxxxxxxxxccxxw  ",
+	" wxcccxxxxxwwwwxxxxccxxw  ",
+	" wxcccxxxxwwwwwwxxxccxxw  ",
+	" wxccccxxxwwwwwwxxxcccxw  ",
+	" wxccccxxxwwwwwwxxxcccxw  ",
+	" wxccccxxxwwwwwwxxxcccxw  ",
+	" wxccccxxxxwwwwxxxxcccxw  ",	//20
+	" wxcccccxxxxxxxxxxccccxw  ",
+	" wxccccccxxxxxxxxcccccxw  ",
+	" wxcccccccxxxxxxccccccxw  ",
+    " wxcccccccccccccccccccxw  ",
+	" wxxxxxxxxxxxxxxxxxxxxxw  ",
+	" wwwwwwwwwwwwwwwwwwwwwwww "    //25
 };
 
 char *bitmap_lowericon_ext_desktop_flp_inactive[EXT_DESKTOP_BUTTONS_ANCHO]={
