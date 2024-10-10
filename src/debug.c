@@ -5588,11 +5588,17 @@ void debug_get_ioports(char *stats_buffer)
             sprintf (buf_linea,"Port EF write: %02XH\n",interface1_last_value_port_ef);
             sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
-            sprintf (buf_linea,"%s %s %s %s %s %s\n",
+
+
+            sprintf (buf_linea,"%s %s %s %s %s %s %s\n",
                 (interface1_last_value_port_ef & 0x20 ? "    " :    "Wait"),
                 (interface1_last_value_port_ef & 0x10 ? "   " :     "CTS"),
                 (interface1_last_value_port_ef & 0x08 ? "     " :   "Erase"),
                 (interface1_last_value_port_ef & 0x04 ? "R"     :   "W"),
+
+                //Si es Erase sin Write, esta escribiendo GAP
+                ((interface1_last_value_port_ef & 0x08)==0 && (interface1_last_value_port_ef & 0x04) ? "GAPW" : "    "),
+
                 (interface1_last_value_port_ef & 0x02 ? "    " :    "CCLK"),
                 (interface1_last_value_port_ef & 0x01 ? "    " :    "CDAT")
             );
