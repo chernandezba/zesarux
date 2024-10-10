@@ -871,8 +871,8 @@ void core_spectrum_ciclo_fetch(void)
 #endif
 
 
-    //Si la cpu está detenida por señal HALT, reemplazar opcode por NOP
-    if (z80_halt_signal.v) {
+    //Si la cpu está detenida por señal HALT o WAIT, reemplazar opcode por NOP
+    if (z80_halt_signal.v || z80_wait_signal.v) {
         byte_leido_core_spectrum=0;
     }
     else {

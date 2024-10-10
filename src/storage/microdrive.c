@@ -275,16 +275,16 @@ void mdr_write_byte(z80_byte valor)
     ) {
         DBG_PRINT_MDR VERBOSE_PARANOID,"MDR: Do not write as we are on the preamble or gap zone (mdr_write_preamble_index=%d)",microdrive_status[microdrive_activo].mdr_write_preamble_index);
 
-        printf("Do not write as we are on the preamble or gap zone EF port: %02XH value: %02XH t_states=%d (mdr_write_preamble_index=%d)\n",
-            interface1_last_value_port_ef,valor,t_estados,microdrive_status[microdrive_activo].mdr_write_preamble_index);
+        //printf("Do not write as we are on the preamble or gap zone EF port: %02XH value: %02XH t_states=%d (mdr_write_preamble_index=%d)\n",
+        //    interface1_last_value_port_ef,valor,t_estados,microdrive_status[microdrive_activo].mdr_write_preamble_index);
 
         microdrive_status[microdrive_activo].mdr_write_preamble_index++;
         return;
     }
 
     if (microdrive_status[microdrive_activo].mdr_write_preamble_index>=42 || microdrive_status[microdrive_activo].mdr_write_preamble_index>=44) {
-        printf("Write byte. EF port: %02XH value: %02XH t_states=%d (mdr_write_preamble_index=%d)\n",
-            interface1_last_value_port_ef,valor,t_estados,microdrive_status[microdrive_activo].mdr_write_preamble_index);
+        //printf("Write byte. EF port: %02XH value: %02XH t_states=%d (mdr_write_preamble_index=%d)\n",
+        //    interface1_last_value_port_ef,valor,t_estados,microdrive_status[microdrive_activo].mdr_write_preamble_index);
     }
 
 
@@ -618,7 +618,7 @@ void microdrive_write_port_ef(z80_byte value)
 
 
     interface1_last_value_port_ef=value;
-    printf("Write to port EF value %02XH. t_states=%d\n",value,t_estados);
+    //printf("Write to port EF value %02XH. t_states=%d\n",value,t_estados);
 
 
 

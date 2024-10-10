@@ -188,6 +188,7 @@ extern z80_bit iff1,iff2;
 
 extern z80_bit interrupcion_pendiente;
 extern z80_bit z80_halt_signal;
+extern z80_bit z80_wait_signal;
 extern z80_byte im_mode;
 extern z80_bit cpu_step_mode;
 extern int core_refetch;

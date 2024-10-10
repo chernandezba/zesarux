@@ -7440,6 +7440,7 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
 	interrupcion_timer_generada.v=0;
 
 	z80_halt_signal.v=0;
+    z80_wait_signal.v=0;
 
 	esperando_tiempo_final_t_estados.v=0;
 	framescreen_saltar=0;

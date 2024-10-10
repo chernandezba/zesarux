@@ -508,6 +508,7 @@ z80_bit interrupcion_timer_generada;
 
 z80_bit z80_halt_signal;
 
+z80_bit z80_wait_signal;
 
 z80_byte *memoria_spectrum;
 
@@ -999,6 +1000,8 @@ void reset_cpu(void)
 
 	reg_pc=0;
 	reg_i=0;
+
+    z80_wait_signal.v=0;
 
 	//mapear rom 0 en modos 128k y paginas RAM normales
 	puerto_32765=0;
