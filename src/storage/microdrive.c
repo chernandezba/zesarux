@@ -1457,3 +1457,34 @@ void mdr_rename_file(struct s_mdr_file_cat *catalogo,z80_byte *if1_microdrive_bu
 
     }
 }
+
+
+//
+// Para gestionar microdrive en formato raw
+//
+
+int microdrive_is_raw=0;
+
+
+void microdrive_raw_move(void)
+{
+    //Primero liberamos la señal wait de la cpu, si es que estaba
+    if (z80_wait_signal.v) {
+        printf ("Liberar wait signal en t_estados: %d\n",t_estados);
+    }
+
+    z80_wait_signal.v=0;
+
+    //printf ("Avanzar posicion microdrive. t_estados: %d\n",t_estados);
+
+}
+
+void mdr_raw_write_byte(z80_byte value)
+{
+    //Activar wait signal hasta que se avance al siguiente byte
+    z80_wait_signal.v=1;
+
+    printf ("Activando wait debido a out puerto. t_estados: %d\n",t_estados);
+
+
+}

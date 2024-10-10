@@ -175,6 +175,8 @@ extern void mdr_chkdsk_get_checksums(struct s_mdr_file_cat *catalogo,z80_byte *o
 
 extern void mdr_rename_file(struct s_mdr_file_cat *catalogo,z80_byte *if1_microdrive_buffer,int indice_archivo,char *dest_name);
 
+extern int microdrive_is_raw;
+
 //Para poder hacer debug_printf con la clase de debug adecuada
 #define DBG_PRINT_MDR debug_printf(VERBOSE_CLASS_MDR|
 

@@ -822,6 +822,8 @@ void core_spectrum_ciclo_fetch(void)
     //Eventos de la controladora de disco
     pd765_next_event_from_core();
 
+    if (MACHINE_IS_SPECTRUM) interface1_count_tstates();
+
 
 #ifdef DEBUG_SECOND_TRAP_STDOUT
 

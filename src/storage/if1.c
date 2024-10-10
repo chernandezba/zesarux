@@ -33,6 +33,7 @@
 #include "zxvision.h"
 #include "compileoptions.h"
 #include "mem128.h"
+#include "screen.h"
 
 z80_bit if1_enabled={0};
 z80_byte *if1_memory_pointer;
@@ -421,7 +422,9 @@ void interface1_write_value_port(z80_byte puerto_l,z80_byte value)
         interface1_last_value_port_e7=value;
         DBG_PRINT_IF1 VERBOSE_PARANOID,"IF1: Saving byte to port E7 value %02XH",value);
         microdrive_footer_operating();
-        mdr_write_byte(value);
+
+        if (microdrive_is_raw) mdr_raw_write_byte(value);
+        else mdr_write_byte(value);
     }
 
     if (puerto_l==0xef) {
@@ -435,3 +438,52 @@ void interface1_write_value_port(z80_byte puerto_l,z80_byte value)
 
 }
 
+//
+// Para gestionar microdrive en formato raw
+//
+
+//Valor de t_estados anterior
+int interface1_estados_anterior=0;
+
+//Cuantos t_estados han pasado desde el ultimo avance del microdrive
+int interface1_transcurrido_desde_ultimo_movimiento=0;
+
+void interface1_count_tstates(void)
+{
+    if (if1_enabled.v==0) return;
+
+    if (!microdrive_is_raw) return;
+
+    int microdrive_activo=microdrive_primer_motor_activo();
+    //Si no hay ninguno activo, nada
+    if (microdrive_activo<0) return;
+
+    if (!microdrive_status[microdrive_activo].motor_on) return;
+
+    int delta_testados;
+
+    //Cada 168 t-estados, avanzar un byte
+    if (t_estados>interface1_estados_anterior) {
+        delta_testados=t_estados-interface1_estados_anterior;
+    }
+
+    else {
+        //ha dado la vuelta
+        //printf("ha dado la vuelta\n");
+        delta_testados=screen_testados_total-interface1_estados_anterior;
+        //printf("parcial delta: %5d t_estados: %d screen_testados_total: %d\n",delta_testados,t_estados,screen_testados_total);
+        delta_testados +=t_estados;
+    }
+
+    //if (t_estados<100 || t_estados>70000) printf("delta: %5d t_estados: %d\n",delta_testados,t_estados);
+
+    interface1_transcurrido_desde_ultimo_movimiento +=delta_testados;
+
+    if (interface1_transcurrido_desde_ultimo_movimiento>=168) {
+        interface1_transcurrido_desde_ultimo_movimiento -=168;
+        microdrive_raw_move();
+    }
+
+
+    interface1_estados_anterior=t_estados;
+}
