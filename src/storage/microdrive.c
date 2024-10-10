@@ -263,14 +263,30 @@ void mdr_write_byte(z80_byte valor)
 
     //Esto es un poco chapuza pero funciona
     //La zona de preamble son 10 bytes a 0 y 2 bytes a FF
+
+    if (interface1_last_value_port_ef!=0xe2) {
+        //printf("port is not E2. port: %02XH value: %02XH (mdr_write_preamble_index=%d)\n",
+          //  interface1_last_value_port_ef,valor,microdrive_status[microdrive_activo].mdr_write_preamble_index);
+    }
+
     if (
         (microdrive_status[microdrive_activo].mdr_write_preamble_index>=0 && microdrive_status[microdrive_activo].mdr_write_preamble_index<=11) ||
         (microdrive_status[microdrive_activo].mdr_write_preamble_index>=27 && microdrive_status[microdrive_activo].mdr_write_preamble_index<=41)
     ) {
         DBG_PRINT_MDR VERBOSE_PARANOID,"MDR: Do not write as we are on the preamble or gap zone (mdr_write_preamble_index=%d)",microdrive_status[microdrive_activo].mdr_write_preamble_index);
+
+        printf("Do not write as we are on the preamble or gap zone EF port: %02XH value: %02XH t_states=%d (mdr_write_preamble_index=%d)\n",
+            interface1_last_value_port_ef,valor,t_estados,microdrive_status[microdrive_activo].mdr_write_preamble_index);
+
         microdrive_status[microdrive_activo].mdr_write_preamble_index++;
         return;
     }
+
+    if (microdrive_status[microdrive_activo].mdr_write_preamble_index>=42 || microdrive_status[microdrive_activo].mdr_write_preamble_index>=44) {
+        printf("Write byte. EF port: %02XH value: %02XH t_states=%d (mdr_write_preamble_index=%d)\n",
+            interface1_last_value_port_ef,valor,t_estados,microdrive_status[microdrive_activo].mdr_write_preamble_index);
+    }
+
 
     microdrive_status[microdrive_activo].mdr_write_preamble_index++;
 
@@ -297,7 +313,7 @@ void mdr_write_byte(z80_byte valor)
     int escribir=1;
 
     //Si estamos formateando, solo permitir la primera vez escribir bytes mas alla de la zona de cabecera
-    //Si no hicieramos eso, el microdrive resultante tendria 0kb libreas
+    //Si no hicieramos eso, el microdrive resultante tendria 0kb libres
     //TODO: probablemente esto no pasaria si se emulasen los tiempos y el movimiento real del microdrive
     if (microdrive_status[microdrive_activo].mdr_current_offset_in_sector>=15 && microdrive_formateando) {
 
@@ -602,7 +618,7 @@ void microdrive_write_port_ef(z80_byte value)
 
 
     interface1_last_value_port_ef=value;
-    //printf("Write to port EF value %02XH\n",value);
+    printf("Write to port EF value %02XH. t_states=%d\n",value,t_estados);
 
 
 
