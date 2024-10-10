@@ -422,6 +422,8 @@ ok Icono visual microdrive
 -operacion out activa wait (ya hecho).
 -desde microdrive_raw_move, si esta cabezal en lectura, deja valor leido (y posibles señales gap o sync) en alguna variable.
 Y si esta cabezal en escritura, escribir dato en la posicion actual, asi como bit que indique si es solo erase (sin write, que seria un gap) o erase+write
+en lectura, gap se interpretara directamente de la info de 16 bits (Bit 0 del primer byte a 0)
+y sync se activará cuando haya lectura de dos bytes a FF seguidos
 
 -lectura de puerto, activara wait. Luego hay que hacer que "rebobine" la instruccion (posicionarse de nuevo en el in)
 para que cuando se libere wait se retorne el valor leido que viene desde microdrive_raw_move
@@ -430,4 +432,13 @@ Si es asi, no modificar nada, solo "rebobinar" el pc al principio de la instrucc
 Cuando se haya liberado ese wait, el leer el puerto tiene que determinar que NO hay que hacer un wait de nuevo y retornar el valor
 que se habia depositado desde microdrive_raw_move en alguna variable
 
--definir memoria de 16 bits para el contenido del microdrive
+-definir memoria de 16 bits para el contenido del microdrive:
+Byte 0:
+
+Bit 0:
+-a 1 si el dato se ha escrito con señales Erase+Write
+-a 0 si el dato se ha escrito solo con señal de Erase. Lo que se interpretará como un gap
+Bit 1: a 1 si es un byte defectuoso (o sea en mal estado y que provocara errores). Por determinar como gestionar esto
+Bit 2-7: sin uso de momento
+
+Byte 1: Dato escrito. Si era un gap, el dato no es relevante (no se habrá escrito nada aqui)
