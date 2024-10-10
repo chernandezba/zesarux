@@ -39,6 +39,12 @@ de preamble, el 14 de gap... y cualquier dato escrito tuviese esos dos bits a 0.
 la solución a esto (o no). Pero con un formato nuevo de archivo de microdrive (diferente al mdr) se podría permitir
 cualquier formato de sistema de archivos que se quisiera meter en el microdrive.. nadie lo iba a usar probablemente, pero
 seria interesante :)
+Pero para esto, habria que poder distinguir lo que es escritura normal de bytes o gap o preamble; en apariencia, en preamble
+son 10 bytes con valor 0 y 2 bytes con valor 255, pero si para escribir un preamble solo se hiciera eso, se podría confundir
+un preamble con cualquier secuencia de 10 bytes a 0 y 2 bytes a 255 que hubiera en los datos guardados
+Tiene que intervenir o bien alguna señal que se habilita en el hardware de alguna manera, o bien, que se trate de la
+temporización de esas señales, que tal y como estén guardados, se distingan claramente de cuando son bytes de datos
+
 
 
 TODO:
@@ -286,8 +292,6 @@ void mdr_write_byte(z80_byte valor)
 
     offset_efectivo +=offset_to_sector;
 
-    //prueba formateo
-    //TODO: detectar formateo
 
 
     int escribir=1;
@@ -300,20 +304,6 @@ void mdr_write_byte(z80_byte valor)
         valor=0;
         DBG_PRINT_MDR VERBOSE_PARANOID,"MDR: Do not write byte info when formatting");
 
-        /*
-
-        if (escrito_byte_info_una_vez) {
-            printf("no escribir byte info en formateo\n");
-
-            //En vez de eso, escribir siempre 0
-            valor=0;
-        }
-
-        else {
-            escrito_byte_info_una_vez=1;
-        }
-
-        */
 
     }
 
@@ -617,12 +607,12 @@ void microdrive_write_port_ef(z80_byte value)
 
 
     //Si alterar motores
-    if( !( value & 0x02 ) && ( antes_interface1_last_value_port_ef & 0x02 ) ) {      /* ~~\__ */
+    if( !( value & 0x02 ) && ( antes_interface1_last_value_port_ef & 0x02 ) ) {
         int i;
 
-        for( i = 7; i > 0; i-- ) {
-        /* Rotate one drive */
-        microdrive_status[i].motor_on = microdrive_status[i - 1].motor_on;
+        for (i=7;i>0;i--) {
+            // Rotate one drive
+            microdrive_status[i].motor_on = microdrive_status[i - 1].motor_on;
         }
         microdrive_status[0].motor_on = (value & 0x01) ? 0 : 1;
 
