@@ -5597,6 +5597,7 @@ void debug_get_ioports(char *stats_buffer)
                 (interface1_last_value_port_ef & 0x04 ? "R"     :   "W"),
 
                 //Si es Erase sin Write, esta escribiendo GAP
+                //Porque solo borra la cinta sin escribir ningun dato en ella
                 ((interface1_last_value_port_ef & 0x08)==0 && (interface1_last_value_port_ef & 0x04) ? "GAPW" : "    "),
 
                 (interface1_last_value_port_ef & 0x02 ? "    " :    "CCLK"),
