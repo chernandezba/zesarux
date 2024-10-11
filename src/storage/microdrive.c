@@ -619,7 +619,10 @@ void microdrive_write_port_ef(z80_byte value)
 
     interface1_last_value_port_ef=value;
     //printf("Write to port EF value %02XH. t_states=%d\n",value,t_estados);
-
+    if ((interface1_last_value_port_ef & 0x08)==0 && (interface1_last_value_port_ef & 0x04)) {
+        //printf("Pasar a GAP WRITE\n");
+        //sleep(1);
+    }
 
 
     //Si alterar motores
@@ -1465,26 +1468,292 @@ void mdr_rename_file(struct s_mdr_file_cat *catalogo,z80_byte *if1_microdrive_bu
 
 int microdrive_is_raw=0;
 
+int microdrive_raw_pending_read_port=0;
+
+int microdrive_raw_pending_status_port=0;
+
+//Ultimo dato leido por el cabezal
+z80_int microdrive_raw_last_read_byte;
+
+//Ultimo dato enviado para escribir
+z80_byte microdrive_raw_last_byte_to_write;
+
+//Temporal imagen del microdrive en raw
+#define MICRODRIVE_RAW_SIZE 5000
+
+z80_int microdrive_raw_image[MICRODRIVE_RAW_SIZE];
+
+int microdrive_raw_current_position=0;
+
+
+
+z80_int microdrive_raw_return_value_at_pos(void)
+{
+    return microdrive_raw_image[microdrive_raw_current_position];
+}
+
+void microdrive_raw_write_value_at_pos(z80_int valor)
+{
+    microdrive_raw_image[microdrive_raw_current_position]=valor;
+}
+
+void microdrive_raw_advance_position(void)
+{
+    microdrive_raw_current_position++;
+    if (microdrive_raw_current_position>=MICRODRIVE_RAW_SIZE) microdrive_raw_current_position=0;
+}
+
+int temp_pending_dump=0;
+
+void microdrive_raw_dump_values(void)
+{
+    temp_pending_dump=1;
+}
+
+void microdrive_raw_dump_values_dump(void)
+{
+    int i;
+
+    for (i=0;i<MICRODRIVE_RAW_SIZE;i++) {
+        printf("%03X ",microdrive_raw_image[i]);
+    }
+
+    printf("\n");
+    sleep(20);
+    temp_pending_dump=0;
+}
+
+//Para detectar secuencias sync. 00 FF FF
+//TODO: esto es simplificado a 3 bytes, ver cual es la secuencia correcta. 6 bytes total? 12 bytes?
+int microdrive_raw_sync_sequence=0;
+//-1=nada
+//0=leido 00
+//1=leido FF
+
+//Si ultima secuencia leida era sync. Cuando la secuencia esta entera
+int microdrive_raw_last_read_byte_is_sync=0;
+
+
+//Si esta a cero, el wait era por puerto e7
+//Si esta a uno, el wait era por puerto ef
+//Si esta a dos, el wait era por out a puerto de datos
+int estado_wait_por_puerto_tipo=0;
 
 void microdrive_raw_move(void)
 {
     //Primero liberamos la señal wait de la cpu, si es que estaba
     if (z80_wait_signal.v) {
         printf ("Liberar wait signal en t_estados: %d\n",t_estados);
+
+        if (estado_wait_por_puerto_tipo==1) microdrive_raw_pending_status_port=1;
+        if (estado_wait_por_puerto_tipo==0) microdrive_raw_pending_read_port=1;
+    }
+
+    if (temp_pending_dump) {
+        microdrive_raw_dump_values_dump();
     }
 
     z80_wait_signal.v=0;
 
     //printf ("Avanzar posicion microdrive. t_estados: %d\n",t_estados);
 
+    //Erase o leer
+    if ((interface1_last_value_port_ef & 0x08)==0) {
+        //Erase
+
+        z80_int value_to_write=microdrive_raw_last_byte_to_write;
+
+        //Tiene señal de write o solo erase? (si solo es erase, sera un gap)
+        if ((interface1_last_value_port_ef & 0x04)==0) {
+            //tiene write
+            printf("Writing value %04XH at pos %d\n",value_to_write,microdrive_raw_current_position);
+            //sleep(1);
+        }
+
+        else {
+            value_to_write |=0x0100;
+            printf("Writing GAP %04XH at pos %d\n",value_to_write,microdrive_raw_current_position);
+            //sleep(1);
+        }
+
+
+   //GAP WRITE if ((interface1_last_value_port_ef & 0x08)==0 && (interface1_last_value_port_ef & 0x04)) {
+
+        microdrive_raw_write_value_at_pos(value_to_write);
+
+
+    }
+
+
+    else if (interface1_last_value_port_ef & 0x04) {
+        //LEER
+
+        printf("Cabezal en lectura. posicion %d\n",microdrive_raw_current_position);
+        microdrive_raw_last_read_byte=microdrive_raw_return_value_at_pos();
+        if (microdrive_raw_last_read_byte & 0x0100) {
+            printf ("En microdrive_raw_move leemos byte gap en posicion %d\n",microdrive_raw_current_position);
+            //Si es gap, sera un 0 al final
+            microdrive_raw_last_read_byte=0x0100;
+            //sleep(1);
+        }
+
+        else {
+            //detectar sync
+
+            printf("microdrive_raw_sync_sequence: %d\n",microdrive_raw_sync_sequence);
+
+            switch(microdrive_raw_sync_sequence) {
+                //no hay secuencia inicial aun
+                case -1:
+                    if (microdrive_raw_last_read_byte==0) microdrive_raw_sync_sequence++;
+                    else {
+                        //microdrive_raw_last_read_byte_is_sync=0;
+                    }
+                break;
+
+                case 0:
+                    //Ha habido un 0 inicial. Viene un FF?
+                    if (microdrive_raw_last_read_byte==0xFF) microdrive_raw_sync_sequence++;
+                    else {
+                        //Si se lee 00, mantenerse aqui
+                        if (microdrive_raw_last_read_byte!=0x00) {
+                            microdrive_raw_sync_sequence=-1;
+
+                        printf("Ponerse a -1 desde case 0\n");
+                        //sleep(1);
+                        }
+                    }
+                break;
+
+                case 1:
+                    //Ya se ha leido un FF. Viene otro FF?
+                    if (microdrive_raw_last_read_byte==0xFF) {
+                        microdrive_raw_sync_sequence++;
+                        //Y activamos sync
+                        printf ("En microdrive_raw_move leemos byte sync en posicion %d\n",microdrive_raw_current_position);
+                        printf("-------Activar secuencia sync\n");
+                        //sleep(1);
+                        microdrive_raw_last_read_byte_is_sync=1;
+
+                        //Y volvemos a estado inicial
+                        microdrive_raw_sync_sequence=-1;
+                        printf("Ponerse a -1 desde case 1\n");
+                        //sleep(1);
+                    }
+
+                    else {
+                        microdrive_raw_sync_sequence=-1;
+                        //microdrive_raw_last_read_byte_is_sync=0;
+                        printf("Ponerse a -1 desde case 1 2\n");
+                        //sleep(1);
+                    }
+                break;
+
+                default:
+                    //Si diferente de FF, quitar sync
+                    if (microdrive_raw_last_read_byte!=0xFF) {
+                        printf("Desactivar secuencia sync\n");
+                        //sleep(1);
+                        //TODO cuando se libera realmente la señal de sync? microdrive_raw_last_read_byte_is_sync=0;
+                        microdrive_raw_sync_sequence=-1;
+
+                        printf("Ponerse a -1 desde default\n");
+                        //sleep(1);
+                    }
+                break;
+
+            }
+        }
+    }
+
+
+
+    //Y avanzamos cabezal
+    microdrive_raw_advance_position();
+
 }
 
 void mdr_raw_write_byte(z80_byte value)
 {
+
+    microdrive_raw_last_byte_to_write=value;
+
+
+
     //Activar wait signal hasta que se avance al siguiente byte
     z80_wait_signal.v=1;
 
+    estado_wait_por_puerto_tipo=2;
+
     printf ("Activando wait debido a out puerto. t_estados: %d\n",t_estados);
 
+
+}
+
+
+
+z80_byte microdrive_raw_status_ef(void)
+{
+    printf ("In Port EF asked, PC after=0x%x\n",reg_pc);
+    //sleep(2);
+
+    /*
+    Microdrive cartridge
+    GAP      PREAMBLE      15 byte      GAP      PREAMBLE      15 byte    512     1
+    [-----][00 00 ... ff ff][BLOCK HEAD][-----][00 00 ... ff ff][REC HEAD][ DATA ][CHK]
+    Preamble = 10 * 0x00 + 2 * 0xff (12 byte)
+    */
+
+    int motor_activo=microdrive_primer_motor_activo();
+
+
+    //Este puerto tambien activa wait
+
+    z80_byte return_value=0;
+
+
+
+    if (motor_activo>=0) {
+
+        //Tiene gap?
+        if (microdrive_raw_last_read_byte & 0x0100) {
+            return_value=MICRODRIVE_STATUS_BIT_GAP;
+            printf("----Retornar GAP\n");
+            //sleep(1);
+        }
+
+        //Ver si habia sync
+        else if (microdrive_raw_last_read_byte_is_sync) {
+            return_value=MICRODRIVE_STATUS_BIT_SYNC;
+            printf("----Retornar SYNC\n");
+
+            //sleep(1);
+        }
+
+
+
+        //return_value=MICRODRIVE_STATUS_BIT_GAP; //gap
+        //return_value=MICRODRIVE_STATUS_BIT_SYNC; //sync
+
+
+        printf ("MDR: In Port ef asked, PC after=0x%x microdrive_raw_current_position=%d return_value=0x%x\n",
+            reg_pc,microdrive_raw_current_position,return_value);
+
+        if (microdrive_status[motor_activo].microdrive_write_protect==0) return_value |=MICRODRIVE_STATUS_BIT_NOT_WRITE_PROTECT;
+    }
+
+    //resetear señal sync solo desde aqui
+    microdrive_raw_last_read_byte_is_sync=0;
+
+    //En principio con esto le dice que si no esta el microdrive habilitado, dira error:
+    //Microdrive not present
+    //temp if (microdrive_status[motor_activo].microdrive_enabled==0) return_value=MICRODRIVE_STATUS_BIT_GAP | MICRODRIVE_STATUS_BIT_SYNC;
+
+    if ((return_value & MICRODRIVE_STATUS_BIT_SYNC)==0) printf("No retornar SYNC\n");
+    if ((return_value & MICRODRIVE_STATUS_BIT_GAP)==0) printf("No retornar GAP\n");
+
+    interface1_last_read_status_ef=return_value;
+
+    return return_value;
 
 }

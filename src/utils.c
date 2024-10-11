@@ -8368,6 +8368,10 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
 
                         case UTIL_KEY_LEFT:
                                 if (pressrelease) {
+                                    //temp
+
+                                    microdrive_raw_dump_values();
+
                                         //puerto_65278 &=255-1;
                                         //puerto_63486 &=255-16;
                                         joystick_set_left(1);

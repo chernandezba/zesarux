@@ -2086,16 +2086,27 @@ void instruccion_218()
 void instruccion_219()
 {
 //IN A,(N)
+z80_byte valor_leido_puerto;
+
 #ifdef EMULATE_MEMPTR
 	z80_byte port;
 	port=lee_byte_pc();
 	set_memptr( (reg_a<<8) + port +1 );
-	reg_a=lee_puerto(reg_a,port);
+	valor_leido_puerto=lee_puerto(reg_a,port);
 #else
-	reg_a=lee_puerto(reg_a,lee_byte_pc());
+	valor_leido_puerto=lee_puerto(reg_a,lee_byte_pc());
 #endif
 
+    //Si se ha activado wait
+    if (z80_wait_signal.v) {
+        //Retroceder pc
+        reg_pc--;
+        reg_pc--;
+        //printf("Retrocediendo desde in a n9\n");
+        //sleep(1);
+    }
 
+    else reg_a=valor_leido_puerto;
 
 }
 

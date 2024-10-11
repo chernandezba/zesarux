@@ -177,6 +177,18 @@ extern void mdr_rename_file(struct s_mdr_file_cat *catalogo,z80_byte *if1_microd
 
 extern int microdrive_is_raw;
 
+extern int microdrive_raw_pending_read_port;
+
+extern z80_int microdrive_raw_last_read_byte;
+
+extern int microdrive_raw_pending_status_port;
+
+extern int estado_wait_por_puerto_tipo;
+
+extern z80_byte microdrive_raw_status_ef(void);
+
+extern void mdr_raw_write_byte(z80_byte value);
+
 //Para poder hacer debug_printf con la clase de debug adecuada
 #define DBG_PRINT_MDR debug_printf(VERBOSE_CLASS_MDR|
 

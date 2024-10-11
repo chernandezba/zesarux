@@ -378,7 +378,6 @@ void enable_if1(void)
 
 
 
-
 z80_byte interface1_get_value_port(z80_byte puerto_l)
 {
     //printf("get value port %X\n",puerto_l);
@@ -389,7 +388,42 @@ z80_byte interface1_get_value_port(z80_byte puerto_l)
     if (puerto_l==0xef) {
         //microdrive_footer_operating();
 
-        return microdrive_status_ef();
+        if (microdrive_is_raw) {
+
+
+            //Si volvemos de un in con su wait
+            if (microdrive_raw_pending_status_port) {
+                microdrive_raw_pending_status_port=0;
+
+
+                z80_byte value=microdrive_raw_status_ef();
+
+
+                printf("Retornar de lectura puerto EF valor %02XH pc=%04XH\n",value,reg_pc);
+
+                if ((value & MICRODRIVE_STATUS_BIT_SYNC)) {
+                    printf("Retornar SYNC a la lectura del puerto\n");
+                    //sleep(1);
+                }
+
+                //sleep(1);
+                return value;
+            }
+
+            else {
+                //En caso contrario, habilitar wait
+                z80_wait_signal.v=1;
+                printf("Pasamos a wait al leer puerto EF\n");
+                estado_wait_por_puerto_tipo=1;
+                //sleep(2);
+                return 0;
+            }
+
+
+
+
+        }
+        else return microdrive_status_ef();
 
     }
 
@@ -397,6 +431,36 @@ z80_byte interface1_get_value_port(z80_byte puerto_l)
     if (puerto_l==0xe7) {
 
         microdrive_footer_operating();
+
+
+        if (microdrive_is_raw) {
+            //Si volvemos de un in con su wait
+            if (microdrive_raw_pending_read_port) {
+                microdrive_raw_pending_read_port=0;
+
+
+
+                z80_byte value=microdrive_raw_last_read_byte & 0xFF;
+
+                //Si era un gap, retornar 0
+                if (microdrive_raw_last_read_byte & 0x0100) value=0;
+
+                interface1_last_read_e7=value;
+                printf("Retornar de lectura puerto E7 valor %02XH pc=%04XH\n",value,reg_pc);
+                //sleep(1);
+                return value;
+            }
+
+            else {
+                //En caso contrario, habilitar wait
+                printf("Pasamos a wait al leer puerto E7\n");
+                estado_wait_por_puerto_tipo=0;
+                //sleep(2);
+                z80_wait_signal.v=1;
+                return 0;
+            }
+        }
+
 
         z80_byte value=mdr_next_byte();
 

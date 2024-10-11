@@ -598,9 +598,21 @@ void instruccion_ed_64 ()
 #ifdef EMULATE_MEMPTR
         set_memptr(BC+1);
 #endif
+    z80_byte valor_puerto=lee_puerto(reg_b,reg_c);
 
-	reg_b=lee_puerto(reg_b,reg_c);
-	set_flags_in_reg(reg_b);
+    //Si se ha activado wait
+    if (z80_wait_signal.v) {
+        //Retroceder pc
+        reg_pc--;
+        reg_pc--;
+    }
+
+    else {
+
+        reg_b=valor_puerto;
+        set_flags_in_reg(reg_b);
+
+    }
 }
 
 void instruccion_ed_65 ()
@@ -717,8 +729,25 @@ void instruccion_ed_72 ()
         set_memptr(BC+1);
 #endif
 
-        reg_c=lee_puerto(reg_b,reg_c);
-	set_flags_in_reg(reg_c);
+   z80_byte valor_puerto=lee_puerto(reg_b,reg_c);
+
+    //Si se ha activado wait
+    if (z80_wait_signal.v) {
+        //Retroceder pc
+        reg_pc--;
+        reg_pc--;
+    }
+
+    else {
+
+
+        reg_c=valor_puerto;
+	    set_flags_in_reg(reg_c);
+
+    }
+
+
+
 }
 
 void instruccion_ed_73 ()
@@ -815,8 +844,23 @@ void instruccion_ed_80 ()
         set_memptr(BC+1);
 #endif
 
-        reg_d=lee_puerto(reg_b,reg_c);
+   z80_byte valor_puerto=lee_puerto(reg_b,reg_c);
+
+    //Si se ha activado wait
+    if (z80_wait_signal.v) {
+        //Retroceder pc
+        reg_pc--;
+        reg_pc--;
+    }
+
+    else {
+
+        reg_d=valor_puerto;
 	set_flags_in_reg(reg_d);
+
+    }
+
+
 }
 
 void instruccion_ed_81 ()
@@ -911,8 +955,23 @@ void instruccion_ed_88 ()
         set_memptr(BC+1);
 #endif
 
-        reg_e=lee_puerto(reg_b,reg_c);
+   z80_byte valor_puerto=lee_puerto(reg_b,reg_c);
+
+    //Si se ha activado wait
+    if (z80_wait_signal.v) {
+        //Retroceder pc
+        reg_pc--;
+        reg_pc--;
+    }
+
+    else {
+
+        reg_e=valor_puerto;
 	set_flags_in_reg(reg_e);
+
+    }
+
+
 }
 
 void instruccion_ed_89 ()
@@ -1008,8 +1067,23 @@ void instruccion_ed_96 ()
         set_memptr(BC+1);
 #endif
 
-        reg_h=lee_puerto(reg_b,reg_c);
+   z80_byte valor_puerto=lee_puerto(reg_b,reg_c);
+
+    //Si se ha activado wait
+    if (z80_wait_signal.v) {
+        //Retroceder pc
+        reg_pc--;
+        reg_pc--;
+    }
+
+    else {
+
+        reg_h=valor_puerto;
 	set_flags_in_reg(reg_h);
+
+    }
+
+
 }
 
 void instruccion_ed_97 ()
@@ -1129,8 +1203,23 @@ void instruccion_ed_104 ()
         set_memptr(BC+1);
 #endif
 
-        reg_l=lee_puerto(reg_b,reg_c);
+   z80_byte valor_puerto=lee_puerto(reg_b,reg_c);
+
+    //Si se ha activado wait
+    if (z80_wait_signal.v) {
+        //Retroceder pc
+        reg_pc--;
+        reg_pc--;
+    }
+
+    else {
+
+        reg_l=valor_puerto;
 	set_flags_in_reg(reg_l);
+
+    }
+
+
 }
 
 void instruccion_ed_105 ()
@@ -1252,8 +1341,23 @@ void instruccion_ed_112 ()
         set_memptr(BC+1);
 #endif
 
-        result=lee_puerto(reg_b,reg_c);
+   z80_byte valor_puerto=lee_puerto(reg_b,reg_c);
+
+    //Si se ha activado wait
+    if (z80_wait_signal.v) {
+        //Retroceder pc
+        reg_pc--;
+        reg_pc--;
+    }
+
+    else {
+
+        result=valor_puerto;
         set_flags_in_reg(result);
+
+    }
+
+
 
 }
 
@@ -1350,8 +1454,24 @@ void instruccion_ed_120 ()
 #ifdef EMULATE_MEMPTR
         set_memptr(BC+1);
 #endif
-        reg_a=lee_puerto(reg_b,reg_c);
+
+   z80_byte valor_puerto=lee_puerto(reg_b,reg_c);
+
+    //Si se ha activado wait
+    if (z80_wait_signal.v) {
+        //Retroceder pc
+        reg_pc--;
+        reg_pc--;
+    }
+
+    else {
+
+        reg_a=valor_puerto;
 	set_flags_in_reg(reg_a);
+
+    }
+
+
 
 }
 
@@ -1679,12 +1799,22 @@ void instruccion_ed_152 ()
     // IN (C) part
     z80_int in_valor = (z80_int)lee_puerto(reg_b,reg_c);    // read + extend to 16b
 
+        //Si se ha activado wait
+    if (z80_wait_signal.v) {
+        //Retroceder pc
+        reg_pc--;
+        reg_pc--;
+    }
+
+    else {
+
     // combine it into new PC, keeping two top bits from current PC (pointing at next instruction)
     in_valor <<= 6;
     reg_pc = (reg_pc&0xC000) | in_valor;
 #ifdef EMULATE_MEMPTR
     set_memptr(reg_pc);     // not sure how this actually works, needs Cesar review
 #endif
+    }
 }
 
 void instruccion_ed_153 ()
@@ -1778,6 +1908,16 @@ void instruccion_ed_162 ()
 
 
         value=lee_puerto(reg_b,reg_c);
+
+    //Si se ha activado wait
+    if (z80_wait_signal.v) {
+        //Retroceder pc
+        reg_pc--;
+        reg_pc--;
+    }
+
+    else {
+
         poke_byte(HL,value);
 #ifdef EMULATE_MEMPTR
 	set_memptr( BC+1  );
@@ -1799,6 +1939,7 @@ void instruccion_ed_162 ()
 	Z80_FLAGS = (Z80_FLAGS & (255-FLAG_S-FLAG_Z-FLAG_3-FLAG_5) ) | sz53_table[reg_b];
 
 	set_flags_parity(( aux & 0x07 ) ^ reg_b);
+    }
 
 }
 
@@ -1960,6 +2101,16 @@ void instruccion_ed_170 ()
 
 
         value=lee_puerto(reg_b,reg_c);
+
+    //Si se ha activado wait
+    if (z80_wait_signal.v) {
+        //Retroceder pc
+        reg_pc--;
+        reg_pc--;
+    }
+
+    else {
+
         poke_byte(HL,value);
 #ifdef EMULATE_MEMPTR
         set_memptr( BC-1  );
@@ -1983,7 +2134,7 @@ void instruccion_ed_170 ()
 
         set_flags_parity(( aux & 0x07 ) ^ reg_b);
 
-
+    }
 
 }
 
@@ -2204,6 +2355,18 @@ void instruccion_ed_178 ()
 
 
         value=lee_puerto(reg_b,reg_c);
+
+    //Si se ha activado wait
+    if (z80_wait_signal.v) {
+        printf("INIR en wait\n");
+        //Retroceder pc
+        reg_pc--;
+        reg_pc--;
+    }
+
+    else {
+
+
         z80_last_data_transferred_ot_in=value;
         poke_byte(HL,value);
 #ifdef EMULATE_MEMPTR
@@ -2239,6 +2402,8 @@ void instruccion_ed_178 ()
 
 
         HL++;
+
+    }
 
 }
 
@@ -2488,6 +2653,16 @@ void instruccion_ed_186 ()
 
 
         value=lee_puerto(reg_b,reg_c);
+
+    //Si se ha activado wait
+    if (z80_wait_signal.v) {
+        //Retroceder pc
+        reg_pc--;
+        reg_pc--;
+    }
+
+    else {
+
         z80_last_data_transferred_ot_in=value;
         poke_byte(HL,value);
 #ifdef EMULATE_MEMPTR
@@ -2523,6 +2698,7 @@ void instruccion_ed_186 ()
         }
 
         HL--;
+    }
 
 }
 

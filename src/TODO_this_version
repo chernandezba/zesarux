@@ -433,12 +433,13 @@ Cuando se haya liberado ese wait, el leer el puerto tiene que determinar que NO 
 que se habia depositado desde microdrive_raw_move en alguna variable
 
 -definir memoria de 16 bits para el contenido del microdrive:
-Byte 0:
+
+Byte 0: Dato escrito. Si era un gap, el dato no es relevante (no se habrá escrito nada aqui)
+
+Byte 1:
 
 Bit 0:
 -a 1 si el dato se ha escrito con señales Erase+Write
 -a 0 si el dato se ha escrito solo con señal de Erase. Lo que se interpretará como un gap
 Bit 1: a 1 si es un byte defectuoso (o sea en mal estado y que provocara errores). Por determinar como gestionar esto
 Bit 2-7: sin uso de momento
-
-Byte 1: Dato escrito. Si era un gap, el dato no es relevante (no se habrá escrito nada aqui)
