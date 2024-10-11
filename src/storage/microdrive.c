@@ -1539,6 +1539,8 @@ int microdrive_raw_last_read_byte_is_sync=0;
 //Si esta a dos, el wait era por out a puerto de datos
 int estado_wait_por_puerto_tipo=0;
 
+z80_byte raw_anterior_leido;
+
 void microdrive_raw_move(void)
 {
     //Primero liberamos la señal wait de la cpu, si es que estaba
@@ -1597,8 +1599,21 @@ void microdrive_raw_move(void)
             //sleep(1);
         }
 
+
+
         else {
-            //detectar sync
+                //detectar sync
+
+            if ( ((microdrive_raw_last_read_byte&0xFF) & raw_anterior_leido)==0) {
+                microdrive_raw_last_read_byte_is_sync=1;
+                printf("Nuevo SYNC\n");
+                //sleep(1);
+            }
+            else microdrive_raw_last_read_byte_is_sync=0;
+
+            raw_anterior_leido=microdrive_raw_last_read_byte & 0xFF;
+
+            /*
 
             printf("microdrive_raw_sync_sequence: %d\n",microdrive_raw_sync_sequence);
 
@@ -1633,7 +1648,7 @@ void microdrive_raw_move(void)
                         printf ("En microdrive_raw_move leemos byte sync en posicion %d\n",microdrive_raw_current_position);
                         printf("-------Activar secuencia sync\n");
                         //sleep(1);
-                        microdrive_raw_last_read_byte_is_sync=1;
+                        //microdrive_raw_last_read_byte_is_sync=1;
 
                         //Y volvemos a estado inicial
                         microdrive_raw_sync_sequence=-1;
@@ -1663,6 +1678,7 @@ void microdrive_raw_move(void)
                 break;
 
             }
+            */
         }
     }
 
@@ -1743,13 +1759,16 @@ z80_byte microdrive_raw_status_ef(void)
     }
 
     //resetear señal sync solo desde aqui
-    microdrive_raw_last_read_byte_is_sync=0;
+    //microdrive_raw_last_read_byte_is_sync=0;
 
     //En principio con esto le dice que si no esta el microdrive habilitado, dira error:
     //Microdrive not present
     //temp if (microdrive_status[motor_activo].microdrive_enabled==0) return_value=MICRODRIVE_STATUS_BIT_GAP | MICRODRIVE_STATUS_BIT_SYNC;
 
-    if ((return_value & MICRODRIVE_STATUS_BIT_SYNC)==0) printf("No retornar SYNC\n");
+    if ((return_value & MICRODRIVE_STATUS_BIT_SYNC)==0) {
+        printf("No retornar SYNC\n");
+        //sleep(1);
+    }
     if ((return_value & MICRODRIVE_STATUS_BIT_GAP)==0) printf("No retornar GAP\n");
 
     interface1_last_read_status_ef=return_value;
