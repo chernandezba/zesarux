@@ -1479,7 +1479,7 @@ z80_int microdrive_raw_last_read_byte;
 z80_byte microdrive_raw_last_byte_to_write;
 
 //Temporal imagen del microdrive en raw
-#define MICRODRIVE_RAW_SIZE 5000
+#define MICRODRIVE_RAW_SIZE 200000
 
 z80_int microdrive_raw_image[MICRODRIVE_RAW_SIZE];
 
