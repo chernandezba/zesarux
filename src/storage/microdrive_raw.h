@@ -24,6 +24,10 @@
 
 #include "cpu.h"
 
+#define MICRODRIVE_RAW_HEADER_SIZE 256
+
+#define MICRODRIVE_RAW_SIGNATURE "RAWMDV"
+
 //extern int microdrive_is_raw;
 
 extern int microdrive_raw_pending_read_port;
@@ -47,5 +51,7 @@ extern void microdrive_raw_insert(int microdrive_seleccionado);
 extern int microdrive_current_is_raw(void);
 
 extern void microdrive_raw_flush_to_disk_one(int microdrive_seleccionado);
+
+extern void microdrive_raw_create_header(char *destino);
 
 #endif

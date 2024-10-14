@@ -80,7 +80,13 @@ struct s_microdrive_status {
     int microdrive_persistent_writes;
     int microdrive_write_protect;
 
+    //Para formato MDR
     z80_byte *if1_microdrive_buffer;
+
+    //Para formato RAW
+    z80_int *raw_microdrive_buffer;
+    //Tamaño expresado en words (posiciones de 16 bits)
+    int raw_total_size;
 
     int mdr_total_sectors;
     int mdr_current_sector;

@@ -27,6 +27,7 @@
 #include <string.h>
 
 
+#include "microdrive_raw.h"
 #include "microdrive.h"
 #include "if1.h"
 #include "cpu.h"
@@ -67,7 +68,7 @@ Bit 1: a 1 si es un byte defectuoso (o sea en mal estado y que provocara errores
 Bit 2-7: sin uso de momento
 */
 
-z80_int microdrive_raw_image[MICRODRIVE_RAW_SIZE];
+//z80_int microdrive_raw_image[MICRODRIVE_RAW_SIZE];
 
 int microdrive_raw_current_position=0;
 
@@ -75,12 +76,14 @@ int microdrive_raw_current_position=0;
 
 z80_int microdrive_raw_return_value_at_pos(void)
 {
-    return microdrive_raw_image[microdrive_raw_current_position];
+    z80_int *puntero=microdrive_status[0].raw_microdrive_buffer;
+    return puntero[microdrive_raw_current_position];
 }
 
 void microdrive_raw_write_value_at_pos(z80_int valor)
 {
-    microdrive_raw_image[microdrive_raw_current_position]=valor;
+    z80_int *puntero=microdrive_status[0].raw_microdrive_buffer;
+    puntero[microdrive_raw_current_position]=valor;
     //printf("Posicion %d tiene %03XH\n",microdrive_raw_current_position,microdrive_raw_image[microdrive_raw_current_position]);
 }
 
@@ -100,9 +103,10 @@ void microdrive_raw_dump_values(void)
 void microdrive_raw_dump_values_dump(void)
 {
     int i;
+    z80_int *puntero=microdrive_status[0].raw_microdrive_buffer;
 
     for (i=0;i<MICRODRIVE_RAW_SIZE;i++) {
-        printf("%03X ",microdrive_raw_image[i]);
+        printf("%03X ",puntero[i]);
     }
 
     printf("\n");
@@ -375,9 +379,102 @@ z80_byte microdrive_raw_read_port_ef(void)
 void microdrive_raw_insert(int microdrive_seleccionado)
 {
 
-    //temporal
-    microdrive_status[microdrive_seleccionado].microdrive_enabled=1;
-    microdrive_status[microdrive_seleccionado].raw_format=1;
+    DBG_PRINT_MDR VERBOSE_INFO,"MDR: Inserting RAW microdrive file %s on MDV%d",
+        microdrive_status[microdrive_seleccionado].microdrive_file_name,
+        microdrive_seleccionado+1
+    );
+
+    //Leer tamanyo
+    int tamanyo_archivo=get_file_size(microdrive_status[microdrive_seleccionado].microdrive_file_name);
+
+    //restar cabecera
+    tamanyo_archivo -=MICRODRIVE_RAW_HEADER_SIZE;
+
+    //Si es tamaño invalido o impar (porque son registros de 16 bits y por tanto par)
+    if (tamanyo_archivo<=0 || (tamanyo_archivo &1) ) {
+        DBG_PRINT_MDR VERBOSE_ERR,"MDR: Invalid size for RAW microdrive file");
+        return;
+    }
+
+    microdrive_status[microdrive_seleccionado].raw_microdrive_buffer=util_malloc(tamanyo_archivo,"No enough memory for Microdrive buffer");
+
+    //Leer cabecera y comparar si valida signature
+    char header[MICRODRIVE_RAW_HEADER_SIZE];
+
+    FILE *ptr_microdrive_file;
+    //Leer archivo mdr
+    ptr_microdrive_file=fopen(microdrive_status[microdrive_seleccionado].microdrive_file_name,"rb");
+
+    if (ptr_microdrive_file==NULL) {
+        DBG_PRINT_MDR VERBOSE_ERR,"MDR: Cannot locate file: %s",microdrive_status[microdrive_seleccionado].microdrive_file_name);
+    }
+
+    else {
+        fread(header,1,MICRODRIVE_RAW_HEADER_SIZE,ptr_microdrive_file);
+
+        char expected_signature[7];
+        strcpy(expected_signature,MICRODRIVE_RAW_SIGNATURE);
+
+        char read_signature[7];
+        memcpy(read_signature,header,6);
+        read_signature[6]=0;
+
+        if (strcmp(read_signature,expected_signature)) {
+            DBG_PRINT_MDR VERBOSE_ERR,"MDR: Invalid RAW microdrive signature file");
+            return;
+        }
+
+        //Mostrar los otros datos a nivel de info
+        z80_byte header_version=header[6];
+        char header_creator[30];
+        memcpy(header_creator,&header[7],30);
+        header_creator[29]=0;
+
+        char header_machine[20];
+        memcpy(header_machine,&header[37],20);
+        header_machine[19]=0;
+
+        char header_date[19];
+        memcpy(header_date,&header[57],19);
+        header_date[18]=0;
+
+        DBG_PRINT_MDR VERBOSE_INFO,"MDR: File version %d created on %s from machine %s on date %s",
+            header_version,header_creator,header_machine,header_date);
+
+
+        int total_microdrive=tamanyo_archivo/2;
+
+        microdrive_status[microdrive_seleccionado].raw_total_size=total_microdrive;
+
+        int i;
+
+        for (i=0;i<total_microdrive;i++) {
+            //Para soportar arquitecturas big endian, leer cada par de bytes
+            z80_byte valor_leido1,valor_leido2;
+
+            fread(&valor_leido1,1,1,ptr_microdrive_file);
+            fread(&valor_leido2,1,1,ptr_microdrive_file);
+
+            z80_int word_leido=valor_leido1+256*valor_leido2;
+
+            microdrive_status[microdrive_seleccionado].raw_microdrive_buffer[i]=word_leido;
+        }
+
+
+        //DBG_PRINT_MDR VERBOSE_INFO,"MDR: Read %d bytes from microdrive image",leidos);
+
+
+
+        fclose(ptr_microdrive_file);
+
+
+
+        microdrive_status[microdrive_seleccionado].microdrive_enabled=1;
+        microdrive_status[microdrive_seleccionado].raw_format=1;
+
+        microdrive_raw_current_position=0;
+
+    }
 
 }
 
@@ -393,4 +490,104 @@ int microdrive_current_is_raw(void)
 
 void microdrive_raw_flush_to_disk_one(int microdrive_seleccionado)
 {
+
+
+    FILE *ptr_microdrivefile;
+
+    DBG_PRINT_MDR VERBOSE_INFO,"MDR: Opening microdrive File %s",microdrive_status[microdrive_seleccionado].microdrive_file_name);
+    ptr_microdrivefile=fopen(microdrive_status[microdrive_seleccionado].microdrive_file_name,"wb");
+
+    int escritos=0;
+
+    int size=microdrive_status[microdrive_seleccionado].mdr_total_sectors*MDR_BYTES_PER_SECTOR;
+
+
+
+    if (ptr_microdrivefile!=NULL) {
+
+
+
+        z80_byte *puntero;
+        //puntero=microdrive_status[microdrive_seleccionado].if1_microdrive_buffer;
+
+        //temporal
+        //Escribir cabecera
+        char header[MICRODRIVE_RAW_HEADER_SIZE];
+        microdrive_raw_create_header(header);
+
+        //Justo antes del fwrite se pone flush a 0, porque si mientras esta el fwrite entra alguna operacion de escritura,
+        //metera flush a 1
+        microdrive_status[microdrive_seleccionado].microdrive_must_flush_to_disk=0;
+
+        //Cabecera
+        fwrite(header,1,MICRODRIVE_RAW_HEADER_SIZE,ptr_microdrivefile);
+
+        //escritos=fwrite(puntero,1,size,ptr_microdrivefile);
+
+        //Escribir datos
+        int i;
+        for (i=0;i<microdrive_status[microdrive_seleccionado].raw_total_size;i++) {
+            z80_byte byte1,byte2;
+
+            z80_int word=microdrive_status[microdrive_seleccionado].raw_microdrive_buffer[i];
+
+
+            byte1=word & 0xFF;
+            byte2=(word>>8) & 0xFF;
+
+            fwrite(&byte1,1,1,ptr_microdrivefile);
+            fwrite(&byte2,1,1,ptr_microdrivefile);
+        }
+
+        fclose(ptr_microdrivefile);
+
+
+    }
+
+    //printf ("ptr_microdrivefile: %d\n",ptr_microdrivefile);
+    //printf ("escritos: %lld\n",escritos);
+
+    if (escritos!=size || ptr_microdrivefile==NULL) {
+        DBG_PRINT_MDR VERBOSE_ERR,"MDR: Error writing to microdrive file");
+        //microdrive_persistent_writes.v=0;
+    }
+}
+
+//Escribe la cabecera de un archivo raw microdrive (.RMD).
+//256 bytes
+void microdrive_raw_create_header(char *destino)
+{
+    //Inicializar a 0 todo
+    int i;
+
+    for (i=0;i<MICRODRIVE_RAW_HEADER_SIZE;i++) destino[i]=0;
+
+/*
+-Firma:
+offset  Descripcion
+0       “RAWMDV” 6 bytes
+6       -Version. byte. actual: 0
+7       -Creator: 30 bytes. 0 del final opcional. Ejemplo “ZEsarUX 11.1-SN”
+37      -Machine: para que máquina se está usando. 0 del final opcional. 20 bytes:
+        “Spectrum”
+        “QL”
+57      19 bytes. 0 del final opcional
+        -Fecha: 19 bytes. 0 del final opcional
+        “DD/MM/AAAA HH:MM:SS”
+
+76-255  Reservado. A 0
+*/
+    strcpy(destino,MICRODRIVE_RAW_SIGNATURE);
+
+    destino[6]=0; //Version
+
+    strcpy(&destino[7],"ZEsarUX " EMULATOR_VERSION);
+
+    if (MACHINE_IS_QL) strcpy(&destino[37],"QL");
+    else strcpy(&destino[37],"Spectrum");
+
+    char time_string[40];
+    snapshot_get_date_time_string_human(time_string);
+    strcpy(&destino[57],time_string);
+
 }
