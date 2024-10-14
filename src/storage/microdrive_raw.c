@@ -168,6 +168,8 @@ void microdrive_raw_move(void)
             //Solo Erase, por tanto es un gap
             //printf("Writing GAP %04XH at pos %d\n",value_to_write,microdrive_raw_current_position);
             //sleep(1);
+            //El byte como dato sera 0
+            value_to_write &=0xFF00;
         }
 
 
