@@ -43213,33 +43213,36 @@ void menu_interface1(MENU_ITEM_PARAMETERS)
                 );
 
             if (microdrive_status[i].microdrive_enabled) {
-                menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_storage_microdrive_browse,NULL,
-                        "Microdrive browse","Explorar microdrive","Explorar microdrive");
-                menu_add_item_menu_prefijo(array_menu_common,"    ");
-                menu_add_item_menu_se_cerrara(array_menu_common);
-                menu_add_item_menu_genera_ventana(array_menu_common);
-                menu_add_item_menu_valor_opcion(array_menu_common,i);
 
-                menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_storage_microdrive_map,NULL,
-                        "Microdrive map","Mapa microdrive","Mapa microdrive");
-                menu_add_item_menu_prefijo(array_menu_common,"    ");
-                menu_add_item_menu_se_cerrara(array_menu_common);
-                menu_add_item_menu_genera_ventana(array_menu_common);
-                menu_add_item_menu_valor_opcion(array_menu_common,i);
+                if (microdrive_status[i].raw_format==0) {
+                    menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_storage_microdrive_browse,NULL,
+                            "Microdrive browse","Explorar microdrive","Explorar microdrive");
+                    menu_add_item_menu_prefijo(array_menu_common,"    ");
+                    menu_add_item_menu_se_cerrara(array_menu_common);
+                    menu_add_item_menu_genera_ventana(array_menu_common);
+                    menu_add_item_menu_valor_opcion(array_menu_common,i);
 
-                menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_storage_microdrive_sectors_info,NULL,
-                        "Sectors info","Info Sectores","Info Sectors");
-                menu_add_item_menu_prefijo(array_menu_common,"    ");
-                menu_add_item_menu_se_cerrara(array_menu_common);
-                menu_add_item_menu_genera_ventana(array_menu_common);
-                menu_add_item_menu_valor_opcion(array_menu_common,i);
+                    menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_storage_microdrive_map,NULL,
+                            "Microdrive map","Mapa microdrive","Mapa microdrive");
+                    menu_add_item_menu_prefijo(array_menu_common,"    ");
+                    menu_add_item_menu_se_cerrara(array_menu_common);
+                    menu_add_item_menu_genera_ventana(array_menu_common);
+                    menu_add_item_menu_valor_opcion(array_menu_common,i);
 
-                menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_storage_microdrive_chkdsk,NULL,
-                        "Chkdsk","Chkdsk","Chkdsk");
-                menu_add_item_menu_prefijo(array_menu_common,"    ");
-                menu_add_item_menu_se_cerrara(array_menu_common);
-                menu_add_item_menu_genera_ventana(array_menu_common);
-                menu_add_item_menu_valor_opcion(array_menu_common,i);
+                    menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_storage_microdrive_sectors_info,NULL,
+                            "Sectors info","Info Sectores","Info Sectors");
+                    menu_add_item_menu_prefijo(array_menu_common,"    ");
+                    menu_add_item_menu_se_cerrara(array_menu_common);
+                    menu_add_item_menu_genera_ventana(array_menu_common);
+                    menu_add_item_menu_valor_opcion(array_menu_common,i);
+
+                    menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_storage_microdrive_chkdsk,NULL,
+                            "Chkdsk","Chkdsk","Chkdsk");
+                    menu_add_item_menu_prefijo(array_menu_common,"    ");
+                    menu_add_item_menu_se_cerrara(array_menu_common);
+                    menu_add_item_menu_genera_ventana(array_menu_common);
+                    menu_add_item_menu_valor_opcion(array_menu_common,i);
+                }
 
                 menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_visual_microdrive_previo,NULL,
                         "Visual Microdrive","Visual Microdrive","Visual Microdrive");
