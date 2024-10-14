@@ -8370,7 +8370,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                 if (pressrelease) {
                                     //temp
 
-                                    microdrive_raw_dump_values();
+                                    //microdrive_raw_dump_values();
 
                                         //puerto_65278 &=255-1;
                                         //puerto_63486 &=255-16;

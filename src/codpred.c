@@ -740,7 +740,6 @@ void instruccion_ed_72 ()
 
     else {
 
-
         reg_c=valor_puerto;
 	    set_flags_in_reg(reg_c);
 
@@ -2358,7 +2357,6 @@ void instruccion_ed_178 ()
 
     //Si se ha activado wait
     if (z80_wait_signal.v) {
-        printf("INIR en wait\n");
         //Retroceder pc
         reg_pc--;
         reg_pc--;

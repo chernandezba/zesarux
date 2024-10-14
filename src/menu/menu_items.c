@@ -41287,10 +41287,11 @@ void menu_storage_microdrive_file(MENU_ITEM_PARAMETERS)
 
 	microdrive_eject(microdrive_seleccionado);
 
-        char *filtros[2];
+        char *filtros[3];
 
-        filtros[0]="mdr";
-		filtros[1]=0;
+        filtros[0]="rmd";
+        filtros[1]="mdr";
+		filtros[2]=0;
 
 
 
@@ -42672,6 +42673,7 @@ void menu_visual_microdrive_dibujar_microdrive_dinamico(struct zxvision_vectoria
 
 
     //asumimos cada byte mueve 1 grado
+    //La cinta se mueve hacia la izquierda
     int grados=(total_offset % 360);
 
     int motor_on=microdrive_status[menu_visual_microdrive_mirando_microdrive].motor_on;
@@ -42683,7 +42685,7 @@ void menu_visual_microdrive_dibujar_microdrive_dinamico(struct zxvision_vectoria
 
 
     //va hacia abajo. o sea la cinta se mueve hacia la derecha
-    grados=-grados;
+    //grados=-grados;
 
     //Dibujar interior solo si esta habilitado ese microdrive
     if (microdrive_status[numero_microdrive].microdrive_enabled) {

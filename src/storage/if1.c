@@ -26,6 +26,7 @@
 
 #include "if1.h"
 #include "microdrive.h"
+#include "microdrive_raw.h"
 #include "cpu.h"
 #include "debug.h"
 #include "utils.h"
@@ -126,7 +127,7 @@ z80_byte cpu_core_loop_if1(z80_int dir GCC_UNUSED, z80_byte value GCC_UNUSED)
 
             if (reg_a==2) {
                 DBG_PRINT_IF1 VERBOSE_PARANOID,"IF1: Detected FORMAT command\n");
-                microdrive_formateando=1;
+                if (!microdrive_current_is_raw() ) microdrive_formateando=1;
             }
             else {
                 //escrito_byte_info_una_vez=0;
@@ -388,40 +389,8 @@ z80_byte interface1_get_value_port(z80_byte puerto_l)
     if (puerto_l==0xef) {
         //microdrive_footer_operating();
 
-        if (microdrive_is_raw) {
-
-
-            //Si volvemos de un in con su wait
-            if (microdrive_raw_pending_status_port) {
-                microdrive_raw_pending_status_port=0;
-
-
-                z80_byte value=microdrive_raw_status_ef();
-
-
-                printf("Retornar de lectura puerto EF valor %02XH pc=%04XH\n",value,reg_pc);
-
-                if ((value & MICRODRIVE_STATUS_BIT_SYNC)) {
-                    printf("Retornar SYNC a la lectura del puerto\n");
-                    //sleep(1);
-                }
-
-                //sleep(1);
-                return value;
-            }
-
-            else {
-                //En caso contrario, habilitar wait
-                z80_wait_signal.v=1;
-                printf("Pasamos a wait al leer puerto EF\n");
-                estado_wait_por_puerto_tipo=1;
-                //sleep(2);
-                return 0;
-            }
-
-
-
-
+        if (microdrive_current_is_raw()) {
+            return microdrive_raw_read_port_ef();
         }
         else return microdrive_status_ef();
 
@@ -432,37 +401,14 @@ z80_byte interface1_get_value_port(z80_byte puerto_l)
 
         microdrive_footer_operating();
 
+        z80_byte value;
 
-        if (microdrive_is_raw) {
-            //Si volvemos de un in con su wait
-            if (microdrive_raw_pending_read_port) {
-                microdrive_raw_pending_read_port=0;
-
-
-
-                z80_byte value=microdrive_raw_last_read_byte & 0xFF;
-
-                //Si era un gap, retornar 0
-                if (microdrive_raw_last_read_byte & 0x0100) value=0;
-
-                interface1_last_read_e7=value;
-                printf("Retornar de lectura puerto E7 valor %02XH pc=%04XH\n",value,reg_pc);
-                //sleep(1);
-                return value;
-            }
-
-            else {
-                //En caso contrario, habilitar wait
-                printf("Pasamos a wait al leer puerto E7\n");
-                estado_wait_por_puerto_tipo=0;
-                //sleep(2);
-                z80_wait_signal.v=1;
-                return 0;
-            }
+        if (microdrive_current_is_raw()) {
+            value=microdrive_raw_read_port_e7();
         }
 
 
-        z80_byte value=mdr_next_byte();
+        else value=mdr_next_byte();
 
         interface1_last_read_e7=value;
 
@@ -487,7 +433,7 @@ void interface1_write_value_port(z80_byte puerto_l,z80_byte value)
         DBG_PRINT_IF1 VERBOSE_PARANOID,"IF1: Saving byte to port E7 value %02XH",value);
         microdrive_footer_operating();
 
-        if (microdrive_is_raw) mdr_raw_write_byte(value);
+        if (microdrive_current_is_raw()) mdr_raw_write_byte(value);
         else mdr_write_byte(value);
     }
 
@@ -516,7 +462,7 @@ void interface1_count_tstates(void)
 {
     if (if1_enabled.v==0) return;
 
-    if (!microdrive_is_raw) return;
+    if (!microdrive_current_is_raw()) return;
 
     int microdrive_activo=microdrive_primer_motor_activo();
     //Si no hay ninguno activo, nada

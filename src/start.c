@@ -153,6 +153,8 @@
 #include "pcw.h"
 #include "zeng_online.h"
 #include "zeng_online_client.h"
+#include "microdrive.h"
+#include "microdrive_raw.h"
 
 
 #ifdef COMPILE_STDOUT
