@@ -154,6 +154,7 @@
 #include "zeng_online.h"
 #include "mk14.h"
 #include "microdrive.h"
+#include "microdrive_raw.h"
 
 #ifdef COMPILE_ALSA
 #include "audioalsa.h"
@@ -41330,29 +41331,71 @@ void menu_storage_microdrive_file(MENU_ITEM_PARAMETERS)
                     return;
                 }
 
+				if (!util_compare_file_extension(microdrive_status[microdrive_seleccionado].microdrive_file_name,"mdr")) {
 
-                int total_sectors=MDR_MAX_SECTORS;
 
-                //Si se sale con Cancel o se pone valor incorrecto
-                if (menu_ventana_scanf_numero_enhanced("Total Sectors?",&total_sectors,4,+1,1,MDR_MAX_SECTORS,0)<0 || if_pending_error_message) {
-                    microdrive_status[microdrive_seleccionado].microdrive_file_name[0]=0;
-                    return;
-                }
+					int total_sectors=MDR_MAX_SECTORS;
 
-                //Crear archivo vacio
-                FILE *ptr_mdrfile;
-                ptr_mdrfile=fopen(microdrive_status[microdrive_seleccionado].microdrive_file_name,"wb");
+					//Si se sale con Cancel o se pone valor incorrecto
+					if (menu_ventana_scanf_numero_enhanced("Total Sectors?",&total_sectors,4,+1,1,MDR_MAX_SECTORS,0)<0 || if_pending_error_message) {
+						microdrive_status[microdrive_seleccionado].microdrive_file_name[0]=0;
+						return;
+					}
 
-                int totalsize=total_sectors*MDR_BYTES_PER_SECTOR+1; //+1 del byte final de write protect
-                z80_byte valor_grabar=0;
+					//Crear archivo vacio
+					FILE *ptr_mdrfile;
+					ptr_mdrfile=fopen(microdrive_status[microdrive_seleccionado].microdrive_file_name,"wb");
 
-                if (ptr_mdrfile!=NULL) {
-                    while (totalsize) {
-                        fwrite(&valor_grabar,1,1,ptr_mdrfile);
-                        totalsize--;
-                    }
-                    fclose(ptr_mdrfile);
-                }
+					int totalsize=total_sectors*MDR_BYTES_PER_SECTOR+1; //+1 del byte final de write protect
+					z80_byte valor_grabar=0;
+
+					if (ptr_mdrfile!=NULL) {
+						while (totalsize) {
+							fwrite(&valor_grabar,1,1,ptr_mdrfile);
+							totalsize--;
+						}
+						fclose(ptr_mdrfile);
+					}
+
+				}
+
+				else {
+					//Para raw
+					int total_size=100000;
+
+					//Si se sale con Cancel o se pone valor incorrecto
+					if (menu_ventana_scanf_numero_enhanced("Total Size?",&total_size,7,+1,1,100000,0)<0 || if_pending_error_message) {
+						microdrive_status[microdrive_seleccionado].microdrive_file_name[0]=0;
+						return;
+					}
+
+					//Espacio en bytes *2
+					total_size *=2;
+
+					//Crear archivo vacio
+					FILE *ptr_mdrfile;
+					ptr_mdrfile=fopen(microdrive_status[microdrive_seleccionado].microdrive_file_name,"wb");
+
+					//Escribir cabecera
+					char header[MICRODRIVE_RAW_HEADER_SIZE];
+
+					microdrive_raw_create_header(header);
+
+					fwrite(header,1,MICRODRIVE_RAW_HEADER_SIZE,ptr_mdrfile);
+
+
+					
+					z80_byte valor_grabar=0;
+
+					if (ptr_mdrfile!=NULL) {
+						while (total_size) {
+							fwrite(&valor_grabar,1,1,ptr_mdrfile);
+							total_size--;
+						}
+						fclose(ptr_mdrfile);
+					}
+
+				}
 
             }
 
