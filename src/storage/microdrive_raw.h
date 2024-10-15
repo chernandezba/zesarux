@@ -28,6 +28,8 @@
 
 #define MICRODRIVE_RAW_SIGNATURE "RAWMDV"
 
+#define MICRODRIVE_RAW_COMMON_SIZE 200000
+
 //extern int microdrive_is_raw;
 
 extern int microdrive_raw_pending_read_port;

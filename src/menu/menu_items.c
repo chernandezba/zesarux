@@ -41361,10 +41361,10 @@ void menu_storage_microdrive_file(MENU_ITEM_PARAMETERS)
 
 				else {
 					//Para raw
-					int total_size=100000;
+					int total_size=MICRODRIVE_RAW_COMMON_SIZE;
 
 					//Si se sale con Cancel o se pone valor incorrecto
-					if (menu_ventana_scanf_numero_enhanced("Total Size?",&total_size,7,+1,1,100000,0)<0 || if_pending_error_message) {
+					if (menu_ventana_scanf_numero_enhanced("Total Size?",&total_size,7,+1,1,1000000,0)<0 || if_pending_error_message) {
 						microdrive_status[microdrive_seleccionado].microdrive_file_name[0]=0;
 						return;
 					}
@@ -42487,15 +42487,28 @@ void visual_microdrive_get_info_rodillos_interiores(int *radio_cinta_sectores,in
     //cinta enrollada. maximo grueso=295-152=143
     int max_radio_cinta_sectores=143-10; //para que no llegue al tope
 
-    int numero_microdrive=menu_visual_microdrive_mirando_microdrive;
+	//Si es imagen raw, obtener de otra manera
+	if (microdrive_status[menu_visual_microdrive_mirando_microdrive].raw_format) {
+		int size=microdrive_status[menu_visual_microdrive_mirando_microdrive].raw_total_size;
+		*radio_cinta_sectores=(size*max_radio_cinta_sectores)/MICRODRIVE_RAW_COMMON_SIZE;
+	}
 
-    int total_sectores=microdrive_status[numero_microdrive].mdr_total_sectors;
+	else {
 
-    //sacar radio
-    *radio_cinta_sectores=(total_sectores*max_radio_cinta_sectores)/MDR_MAX_SECTORS;
+
+		int numero_microdrive=menu_visual_microdrive_mirando_microdrive;
+
+		int total_sectores=microdrive_status[numero_microdrive].mdr_total_sectors;
+
+		//sacar radio
+		*radio_cinta_sectores=(total_sectores*max_radio_cinta_sectores)/MDR_MAX_SECTORS;
+
+	}
 
     //Si es un microdrive super pequeño, al menos 1 de radio
     if (*radio_cinta_sectores==0) *radio_cinta_sectores=1;
+	//Controlar maximo tambien
+	if (*radio_cinta_sectores>max_radio_cinta_sectores) *radio_cinta_sectores=max_radio_cinta_sectores;
 
     *radio_base=152;
 }

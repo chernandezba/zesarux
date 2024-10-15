@@ -423,3 +423,5 @@ ok Icono visual microdrive
 -leer puertos microdrive (o out) sin microdrive insertado, dejan en estado wait la cpu por siempre (hasta reset). Hacer que si no hay microdrive insertado, se retorne siempre gap (y sync?). Pero si puerto de estado es bloqueante, nunca apareceria el mensaje de error de "microdrive not present". entonces es que el puerto de estado no es bloqueante? NO-> porque activa el motor
 
 -en estado wait se pueden disparar interrupciones? en teoria creo que no...
+
+-averiguar MICRODRIVE_RAW_COMMON_SIZE para microdrive de 254 sectores
