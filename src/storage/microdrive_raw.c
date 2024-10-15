@@ -465,14 +465,37 @@ void microdrive_raw_insert(int microdrive_seleccionado)
 
         int i;
 
+        //Leer primero datos
         for (i=0;i<total_microdrive;i++) {
-            //Para soportar arquitecturas big endian, leer cada par de bytes
+            
             z80_byte valor_leido1,valor_leido2;
 
             fread(&valor_leido1,1,1,ptr_microdrive_file);
-            fread(&valor_leido2,1,1,ptr_microdrive_file);
+            
 
-            z80_int word_leido=valor_leido1+256*valor_leido2;
+            z80_int word_leido;
+
+            word_leido=valor_leido1;
+            
+
+            microdrive_status[microdrive_seleccionado].raw_microdrive_buffer[i]=word_leido;
+        }
+
+        //Y luego info de cada dato (gap, etc)
+        for (i=0;i<total_microdrive;i++) {
+            
+            z80_byte valor_leido1,valor_leido2;
+
+            fread(&valor_leido1,1,1,ptr_microdrive_file);
+            
+
+            z80_int word_leido=microdrive_status[microdrive_seleccionado].raw_microdrive_buffer[i];
+
+            //Modificar solo 8 bits altos
+            word_leido &=0x00FF;
+
+            word_leido |=(valor_leido1<<8);
+            
 
             microdrive_status[microdrive_seleccionado].raw_microdrive_buffer[i]=word_leido;
         }
@@ -524,10 +547,6 @@ void microdrive_raw_flush_to_disk_one(int microdrive_seleccionado)
 
 
 
-        //z80_byte *puntero;
-        //puntero=microdrive_status[microdrive_seleccionado].if1_microdrive_buffer;
-
-        //temporal
         //Escribir cabecera
         char header[MICRODRIVE_RAW_HEADER_SIZE];
         microdrive_raw_create_header(header);
@@ -544,15 +563,29 @@ void microdrive_raw_flush_to_disk_one(int microdrive_seleccionado)
         //Escribir datos
         int i;
         for (i=0;i<microdrive_status[microdrive_seleccionado].raw_total_size;i++) {
-            z80_byte byte1,byte2;
+            z80_byte byte1;
 
             z80_int word=microdrive_status[microdrive_seleccionado].raw_microdrive_buffer[i];
 
 
             byte1=word & 0xFF;
-            byte2=(word>>8) & 0xFF;
+            
 
             fwrite(&byte1,1,1,ptr_microdrivefile);
+            
+        }
+
+        //Escribir info de cada dato (gap, etc)
+        for (i=0;i<microdrive_status[microdrive_seleccionado].raw_total_size;i++) {
+            z80_byte byte2;
+
+            z80_int word=microdrive_status[microdrive_seleccionado].raw_microdrive_buffer[i];
+
+
+            
+            byte2=(word>>8) & 0xFF;
+
+            
             fwrite(&byte2,1,1,ptr_microdrivefile);
         }
 
