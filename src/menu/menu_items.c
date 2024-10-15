@@ -42718,7 +42718,13 @@ void menu_visual_microdrive_dibujar_microdrive_dinamico(struct zxvision_vectoria
     int sector_actual=microdrive_status[numero_microdrive].mdr_current_sector;
     int offset_actual=microdrive_status[numero_microdrive].mdr_current_offset_in_sector;
 
-    int total_offset=(sector_actual*MDR_BYTES_PER_SECTOR)+offset_actual;
+	int total_offset;
+
+	if (microdrive_status[menu_visual_microdrive_mirando_microdrive].raw_format) {
+		total_offset=microdrive_status[menu_visual_microdrive_mirando_microdrive].raw_current_position;
+	}
+
+    else total_offset=(sector_actual*MDR_BYTES_PER_SECTOR)+offset_actual;
 
     //borrar grados anteriores
     int color_fondo=VISUAL_MICRODRIVE_COLOR_FONDO;

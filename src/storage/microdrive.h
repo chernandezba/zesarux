@@ -87,6 +87,7 @@ struct s_microdrive_status {
     z80_int *raw_microdrive_buffer;
     //Tamaño expresado en words (posiciones de 16 bits)
     int raw_total_size;
+    int raw_current_position;
 
     int mdr_total_sectors;
     int mdr_current_sector;

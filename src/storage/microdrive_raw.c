@@ -70,27 +70,34 @@ Bit 2-7: sin uso de momento
 
 //z80_int microdrive_raw_image[MICRODRIVE_RAW_SIZE];
 
-int microdrive_raw_current_position=0;
+//int microdrive_raw_current_position=0;
 
 
 
 z80_int microdrive_raw_return_value_at_pos(int microdrive_activo)
 {
     z80_int *puntero=microdrive_status[microdrive_activo].raw_microdrive_buffer;
+
+    int microdrive_raw_current_position=microdrive_status[microdrive_activo].raw_current_position;
     return puntero[microdrive_raw_current_position];
 }
 
 void microdrive_raw_write_value_at_pos(int microdrive_activo,z80_int valor)
 {
     z80_int *puntero=microdrive_status[microdrive_activo].raw_microdrive_buffer;
+    int microdrive_raw_current_position=microdrive_status[microdrive_activo].raw_current_position;
     puntero[microdrive_raw_current_position]=valor;
     //printf("Posicion %d tiene %03XH\n",microdrive_raw_current_position,microdrive_raw_image[microdrive_raw_current_position]);
 }
 
 void microdrive_raw_advance_position(int microdrive_activo)
 {
+    int microdrive_raw_current_position=microdrive_status[microdrive_activo].raw_current_position;
+
     microdrive_raw_current_position++;
     if (microdrive_raw_current_position>=microdrive_status[microdrive_activo].raw_total_size) microdrive_raw_current_position=0;
+
+    microdrive_status[microdrive_activo].raw_current_position=microdrive_raw_current_position;
 }
 
 int temp_pending_dump=0;
@@ -511,8 +518,8 @@ void microdrive_raw_insert(int microdrive_seleccionado)
 
         microdrive_status[microdrive_seleccionado].microdrive_enabled=1;
         microdrive_status[microdrive_seleccionado].raw_format=1;
+        microdrive_status[microdrive_seleccionado].raw_current_position=0;
 
-        microdrive_raw_current_position=0;
 
     }
 
