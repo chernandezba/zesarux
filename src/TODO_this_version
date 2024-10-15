@@ -430,3 +430,4 @@ ok-averiguar MICRODRIVE_RAW_COMMON_SIZE para microdrive de 254 sectores
 -memory zone raw. y que pueda ver opcionalmente los bytes de info?
 -current position en debug i/o ports
 -bad sectors (positions) raw
+-segundos de fecha de marca de tiempo en imagen microdrive, en mac, no pone 0X cuando X<10?

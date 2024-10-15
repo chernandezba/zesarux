@@ -176,7 +176,8 @@ void microdrive_raw_move(void)
             //printf("Writing GAP %04XH at pos %d\n",value_to_write,microdrive_raw_current_position);
             //sleep(1);
             //El byte como dato sera 0
-            value_to_write &=0xFF00;
+            //Y gap a 0 tambien
+            value_to_write &=0x0000;
         }
 
 
@@ -188,6 +189,24 @@ void microdrive_raw_move(void)
         //Si no hay ninguno activo, nada
         if (microdrive_activo>=0 && microdrive_status[microdrive_activo].microdrive_enabled) {
             //printf("Escribiendo %03XH\n",value_to_write);
+
+            //Preservar del byte de info, bits 1-7.
+            z80_int valor_leido=microdrive_raw_return_value_at_pos(microdrive_activo);
+            valor_leido &=0xFE00;
+
+            //y el valor a escribir preservar asi como el bit de gap
+            value_to_write &=0x01FF;
+
+            //Si posicion esta marcado como erroneo, alterar byte
+            if (valor_leido & 0x0200) {
+                printf("Alterar byte\n");
+
+                //Lo invertimos completamente
+                value_to_write ^= 0x00FF;
+            }
+
+            value_to_write |=valor_leido;
+
             microdrive_raw_write_value_at_pos(microdrive_activo,value_to_write);
             microdrive_status[microdrive_activo].microdrive_must_flush_to_disk=1;
         }
@@ -647,4 +666,15 @@ offset  Descripcion
     snapshot_get_date_time_string_human(time_string);
     strcpy(&destino[57],time_string);
 
+}
+
+
+void microdrive_raw_mark_bad_position(int microdrive_seleccionado,int position)
+{
+    z80_int *puntero=microdrive_status[microdrive_seleccionado].raw_microdrive_buffer;
+    z80_int valor_leido=puntero[position];
+
+    valor_leido |=0x0200;
+
+    puntero[position]=valor_leido;
 }

@@ -41469,13 +41469,29 @@ void menu_mdv_simulate_bad_add(MENU_ITEM_PARAMETERS)
 
     //printf("MDV: %d\n",microdrive_seleccionado);
 
-    int max_valor=microdrive_status[microdrive_seleccionado].mdr_total_sectors-1;
+	if (microdrive_status[microdrive_seleccionado].raw_format) {
+		int max_valor=microdrive_status[microdrive_seleccionado].raw_total_size-1;
 
-    int sector=0;
+		int position=0;
 
-    menu_ventana_scanf_numero_enhanced("Sector?",&sector,4,+1,0,max_valor,0);
+		menu_ventana_scanf_numero_enhanced("Position?",&position,7,+1,0,max_valor,0);
 
-    microdrive_status[microdrive_seleccionado].bad_sectors_simulated[sector]=1;
+		microdrive_raw_mark_bad_position(microdrive_seleccionado,position);
+
+
+	}
+
+	else {
+
+		int max_valor=microdrive_status[microdrive_seleccionado].mdr_total_sectors-1;
+
+		int sector=0;
+
+		menu_ventana_scanf_numero_enhanced("Sector?",&sector,4,+1,0,max_valor,0);
+
+		microdrive_status[microdrive_seleccionado].bad_sectors_simulated[sector]=1;
+
+	}
 
 }
 
