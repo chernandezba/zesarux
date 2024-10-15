@@ -199,10 +199,10 @@ void microdrive_raw_move(void)
 
             //Si posicion esta marcado como erroneo, alterar byte
             if (valor_leido & MICRODRIVE_RAW_INFO_BYTE_MASK_BAD_POSITION) {
-                printf("Alterar byte\n");
+                //printf("Alterar byte\n");
 
-                //Lo invertimos completamente
-                value_to_write ^= 0x00FF;
+                //inversion de algunos bits
+                value_to_write ^= 0x00EA;
             }
 
             value_to_write |=valor_leido;
@@ -251,6 +251,13 @@ void microdrive_raw_move(void)
             raw_anterior_leido=microdrive_raw_last_read_byte & 0xFF;
 
         }
+
+        //Si posicion esta marcado como erroneo, alterar byte
+        if (microdrive_raw_last_read_byte & MICRODRIVE_RAW_INFO_BYTE_MASK_BAD_POSITION) {
+            //invertimos bits arbitrarios
+            microdrive_raw_last_read_byte ^= 0xCD;
+        }            
+
     }
 
 

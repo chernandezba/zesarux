@@ -41567,7 +41567,12 @@ void menu_mdv_simulate_bad(MENU_ITEM_PARAMETERS)
 			}
 		}
 
-        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_mdv_simulate_bad_add,NULL,"Add bad sector");
+		if (microdrive_status[microdrive_seleccionado].raw_format) {
+			menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_mdv_simulate_bad_add,NULL,"Add bad position");
+		}
+		else {
+        	menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_mdv_simulate_bad_add,NULL,"Add bad sector");
+		}
         menu_add_item_menu_valor_opcion(array_menu_common,microdrive_seleccionado);
 
 
