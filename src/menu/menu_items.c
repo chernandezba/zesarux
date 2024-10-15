@@ -43244,12 +43244,6 @@ void menu_interface1(MENU_ITEM_PARAMETERS)
                     menu_add_item_menu_valor_opcion(array_menu_common,i);
                 }
 
-                menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_visual_microdrive_previo,NULL,
-                        "Visual Microdrive","Visual Microdrive","Visual Microdrive");
-                menu_add_item_menu_prefijo(array_menu_common,"    ");
-                menu_add_item_menu_se_cerrara(array_menu_common);
-                menu_add_item_menu_genera_ventana(array_menu_common);
-                menu_add_item_menu_valor_opcion(array_menu_common,i);
 
                 menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_mdv_simulate_bad,NULL,
                         "Emulate bad sectors","Emular sectores erroneos","Emular sectors erronis");
@@ -43259,6 +43253,13 @@ void menu_interface1(MENU_ITEM_PARAMETERS)
                 menu_add_item_menu_genera_ventana(array_menu_common);
 
             }
+
+			menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_visual_microdrive_previo,NULL,
+					"Visual Microdrive","Visual Microdrive","Visual Microdrive");
+			menu_add_item_menu_prefijo(array_menu_common,"    ");
+			menu_add_item_menu_se_cerrara(array_menu_common);
+			menu_add_item_menu_genera_ventana(array_menu_common);
+			menu_add_item_menu_valor_opcion(array_menu_common,i);
 
 
             menu_add_item_menu_separator(array_menu_common);
