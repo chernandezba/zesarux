@@ -30,7 +30,8 @@
 
 //789 bytes por sector es lo que me salen mis calculos en formato raw, formateado desde la rom de interface1
 //El tamaño comun sera eso multiplicado por 254 sectores
-#define MICRODRIVE_RAW_COMMON_SIZE (789*254)
+#define MICRODRIVE_RAW_COMMON_SECTOR_SIZE 789
+#define MICRODRIVE_RAW_COMMON_SIZE (MICRODRIVE_RAW_COMMON_SECTOR_SIZE*254)
 
 #define MICRODRIVE_RAW_INFO_BYTE_MASK_BAD_POSITION 0x0200
 

@@ -42827,13 +42827,27 @@ void menu_visual_microdrive_dibujar_microdrive_dinamico(struct zxvision_vectoria
         int color_cinta_enrollada=0; //esto sera negro
         visual_microdrive_marca_sector_cero(d,color_cinta_enrollada);
 
-        if (sector_actual==0) {
-            //De momento solo indicarlo en el trocito que lee la esponjita
-            //TODO: usar offset en el sector. De momento solo poner esa zona en rojo
+		int marca_sector_cero=0;
 
-            visual_microdrive_marca_sector_cero(d,2);
+		if (microdrive_status[numero_microdrive].raw_format) {
 
-        }
+			//Asi un poco a ojo, en formato raw, esa posicion mas o menos es la del sector 0
+			if (microdrive_status[numero_microdrive].raw_current_position<MICRODRIVE_RAW_COMMON_SECTOR_SIZE) {
+				marca_sector_cero=1;
+			}
+		}
+
+        else {
+			if (sector_actual==0) {
+            	//De momento solo indicarlo en el trocito que lee la esponjita
+            	//TODO: usar offset en el sector. De momento solo poner esa zona en rojo
+
+				marca_sector_cero=1;
+
+        	}
+		}
+
+		if (marca_sector_cero) visual_microdrive_marca_sector_cero(d,2);
 
 
         int radio_cinta_sectores;
