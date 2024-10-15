@@ -41462,6 +41462,24 @@ void menu_mdv_simulate_bad_change(MENU_ITEM_PARAMETERS)
     }
 }
 
+void menu_mdv_simulate_raw_bad_change(MENU_ITEM_PARAMETERS)
+{
+    int microdrive_seleccionado=valor_opcion & 0xFF;
+    int posicion=valor_opcion >> 8;
+
+    //printf("MDV: %d sector: %d\n",microdrive_seleccionado,sector);
+
+    int opcion=menu_simple_two_choices("Bad Position","Do you want to:","Remove from list","No change");
+
+    switch(opcion) {
+        case 1:
+			microdrive_raw_unmark_bad_position(microdrive_seleccionado,posicion);
+        break;
+
+    }
+}
+
+
 void menu_mdv_simulate_bad_add(MENU_ITEM_PARAMETERS)
 {
     //valor=microdrive_seleccionado+sector*256;
@@ -41514,20 +41532,40 @@ void menu_mdv_simulate_bad(MENU_ITEM_PARAMETERS)
 
 
         int i;
-        for (i=0;i<MDR_MAX_SECTORS;i++) {
 
-            if (microdrive_status[microdrive_seleccionado].bad_sectors_simulated[i]) {
+		if (microdrive_status[microdrive_seleccionado].raw_format) {
+			z80_int *puntero=microdrive_status[microdrive_seleccionado].raw_microdrive_buffer;
+			for (i=0;i<microdrive_status[microdrive_seleccionado].raw_total_size;i++) {
 
-                menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_mdv_simulate_bad_change,NULL,"Sector %d",i);
+				if (puntero[i] & MICRODRIVE_RAW_INFO_BYTE_MASK_BAD_POSITION) {
 
-                //Codificar sector y microdrive seleccionado como:
-                //valor=microdrive_seleccionado+sector*256;
-                menu_add_item_menu_valor_opcion(array_menu_common,microdrive_seleccionado+i*256);
-            }
+					menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_mdv_simulate_raw_bad_change,NULL,"Position %d",i);
+
+					//Codificar sector y microdrive seleccionado como:
+					//valor=microdrive_seleccionado+sector*256;
+					menu_add_item_menu_valor_opcion(array_menu_common,microdrive_seleccionado+i*256);
+				}
 
 
 
-        }
+			}
+		}
+		else {
+			for (i=0;i<MDR_MAX_SECTORS;i++) {
+
+				if (microdrive_status[microdrive_seleccionado].bad_sectors_simulated[i]) {
+
+					menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_mdv_simulate_bad_change,NULL,"Sector %d",i);
+
+					//Codificar sector y microdrive seleccionado como:
+					//valor=microdrive_seleccionado+sector*256;
+					menu_add_item_menu_valor_opcion(array_menu_common,microdrive_seleccionado+i*256);
+				}
+
+
+
+			}
+		}
 
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_mdv_simulate_bad_add,NULL,"Add bad sector");
         menu_add_item_menu_valor_opcion(array_menu_common,microdrive_seleccionado);

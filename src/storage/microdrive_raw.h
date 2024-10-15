@@ -32,6 +32,8 @@
 //El tamaño comun sera eso multiplicado por 254 sectores
 #define MICRODRIVE_RAW_COMMON_SIZE (789*254)
 
+#define MICRODRIVE_RAW_INFO_BYTE_MASK_BAD_POSITION 0x0200
+
 //extern int microdrive_is_raw;
 
 extern int microdrive_raw_pending_read_port;

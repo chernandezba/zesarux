@@ -198,7 +198,7 @@ void microdrive_raw_move(void)
             value_to_write &=0x01FF;
 
             //Si posicion esta marcado como erroneo, alterar byte
-            if (valor_leido & 0x0200) {
+            if (valor_leido & MICRODRIVE_RAW_INFO_BYTE_MASK_BAD_POSITION) {
                 printf("Alterar byte\n");
 
                 //Lo invertimos completamente
@@ -674,7 +674,19 @@ void microdrive_raw_mark_bad_position(int microdrive_seleccionado,int position)
     z80_int *puntero=microdrive_status[microdrive_seleccionado].raw_microdrive_buffer;
     z80_int valor_leido=puntero[position];
 
-    valor_leido |=0x0200;
+    valor_leido |=MICRODRIVE_RAW_INFO_BYTE_MASK_BAD_POSITION;
 
     puntero[position]=valor_leido;
 }
+
+
+void microdrive_raw_unmark_bad_position(int microdrive_seleccionado,int position)
+{
+    z80_int *puntero=microdrive_status[microdrive_seleccionado].raw_microdrive_buffer;
+    z80_int valor_leido=puntero[position];
+
+    valor_leido &=(0xFFFF - MICRODRIVE_RAW_INFO_BYTE_MASK_BAD_POSITION);
+
+    puntero[position]=valor_leido;
+}
+
