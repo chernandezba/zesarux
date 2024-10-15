@@ -42803,9 +42803,19 @@ void menu_visual_microdrive_dibujar_microdrive_dinamico(struct zxvision_vectoria
         int sumar_pos=0;
 
         if (motor_on) {
-            int offset_actual=microdrive_status[numero_microdrive].mdr_current_offset_in_sector;
-            int sector_actual=microdrive_status[numero_microdrive].mdr_current_sector;
-            if (sector_actual % 2) sumar_pos=desplazamiento;
+            //int offset_actual=microdrive_status[numero_microdrive].mdr_current_offset_in_sector;
+
+			if (microdrive_status[numero_microdrive].raw_format) {
+				//Cinta raw tiembla cada paso de 500 bytes
+				int paso=total_offset/500;
+				if (paso % 2) sumar_pos=desplazamiento;	
+			}
+
+			else {
+				//En caso de mdr, tiembla cada paso de sector
+				int sector_actual=microdrive_status[numero_microdrive].mdr_current_sector;
+				if (sector_actual % 2) sumar_pos=desplazamiento;
+			}
         }
 
 
