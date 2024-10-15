@@ -28,7 +28,9 @@
 
 #define MICRODRIVE_RAW_SIGNATURE "RAWMDV"
 
-#define MICRODRIVE_RAW_COMMON_SIZE 200000
+//789 bytes por sector es lo que me salen mis calculos en formato raw, formateado desde la rom de interface1
+//El tamaño comun sera eso multiplicado por 254 sectores
+#define MICRODRIVE_RAW_COMMON_SIZE (789*254)
 
 //extern int microdrive_is_raw;
 
