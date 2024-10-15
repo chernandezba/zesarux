@@ -427,8 +427,9 @@ ok -crear nuevo archivo raw
 ok-averiguar MICRODRIVE_RAW_COMMON_SIZE para microdrive de 254 sectores
 -visualmem en raw
 -algo para ver sectores raw, mostrando gaps
--memory zone raw. y que pueda ver opcionalmente los bytes de info?
+ok-memory zone raw. 
+-y que pueda ver opcionalmente los bytes de info?
 ok-current position en debug i/o ports
 ok-bad sectors (positions) raw
 -segundos de fecha de marca de tiempo en imagen microdrive, en mac, no pone 0X cuando X<10?
--indicacion sector 0 en visual microdrive (marca roja)
+ok-indicacion sector 0 en visual microdrive (marca roja)

@@ -14274,28 +14274,40 @@ unsigned int machine_get_memory_zone_attrib(int zone, int *readwrite)
     case MEMORY_ZONE_MDV1:
         if (microdrive_status[0].microdrive_enabled) {
             *readwrite=1;
-            size=microdrive_status[0].mdr_total_sectors*MDR_BYTES_PER_SECTOR;
+            if (microdrive_status[0].raw_format) {
+                size=microdrive_status[0].raw_total_size;
+            }
+            else size=microdrive_status[0].mdr_total_sectors*MDR_BYTES_PER_SECTOR;
         }
     break;
 
     case MEMORY_ZONE_MDV2:
         if (microdrive_status[1].microdrive_enabled) {
             *readwrite=1;
-            size=microdrive_status[1].mdr_total_sectors*MDR_BYTES_PER_SECTOR;
+            if (microdrive_status[1].raw_format) {
+                size=microdrive_status[1].raw_total_size;
+            }
+            else size=microdrive_status[1].mdr_total_sectors*MDR_BYTES_PER_SECTOR;
         }
     break;
 
     case MEMORY_ZONE_MDV3:
         if (microdrive_status[2].microdrive_enabled) {
             *readwrite=1;
-            size=microdrive_status[2].mdr_total_sectors*MDR_BYTES_PER_SECTOR;
+            if (microdrive_status[2].raw_format) {
+                size=microdrive_status[2].raw_total_size;
+            }
+            else size=microdrive_status[2].mdr_total_sectors*MDR_BYTES_PER_SECTOR;
         }
     break;
 
     case MEMORY_ZONE_MDV4:
         if (microdrive_status[3].microdrive_enabled) {
             *readwrite=1;
-            size=microdrive_status[3].mdr_total_sectors*MDR_BYTES_PER_SECTOR;
+            if (microdrive_status[3].raw_format) {
+                size=microdrive_status[3].raw_total_size;
+            }
+            else size=microdrive_status[3].mdr_total_sectors*MDR_BYTES_PER_SECTOR;
         }
     break;
 
@@ -14793,25 +14805,37 @@ z80_byte *machine_get_memory_zone_pointer(int zone, int address)
 
     case MEMORY_ZONE_MDV1:
         if (microdrive_status[0].microdrive_enabled) {
-            p=&microdrive_status[0].if1_microdrive_buffer[address];
+            if (microdrive_status[0].raw_format) {
+                p=(z80_byte *) &microdrive_status[0].raw_microdrive_buffer[address];
+            }
+            else p=&microdrive_status[0].if1_microdrive_buffer[address];
         }
     break;
 
     case MEMORY_ZONE_MDV2:
         if (microdrive_status[1].microdrive_enabled) {
-            p=&microdrive_status[1].if1_microdrive_buffer[address];
+            if (microdrive_status[1].raw_format) {
+                p=(z80_byte *) &microdrive_status[1].raw_microdrive_buffer[address];
+            }
+            else p=&microdrive_status[1].if1_microdrive_buffer[address];
         }
     break;
 
     case MEMORY_ZONE_MDV3:
         if (microdrive_status[2].microdrive_enabled) {
-            p=&microdrive_status[2].if1_microdrive_buffer[address];
+            if (microdrive_status[2].raw_format) {
+                p=(z80_byte *) &microdrive_status[2].raw_microdrive_buffer[address];
+            }
+            else p=&microdrive_status[2].if1_microdrive_buffer[address];
         }
     break;
 
     case MEMORY_ZONE_MDV4:
         if (microdrive_status[3].microdrive_enabled) {
-            p=&microdrive_status[3].if1_microdrive_buffer[address];
+            if (microdrive_status[3].raw_format) {
+                p=(z80_byte *) &microdrive_status[3].raw_microdrive_buffer[address];
+            }
+            else p=&microdrive_status[3].if1_microdrive_buffer[address];
         }
     break;
 

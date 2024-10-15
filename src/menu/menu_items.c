@@ -42982,6 +42982,13 @@ void menu_visual_microdrive_dibujar_microdrive_dinamico(struct zxvision_vectoria
     if (motor_on) {
         if (interface1_last_value_port_ef & 0x04) color_cabezal=4; //read
         else color_cabezal=2; //write
+
+		//escribiendo gap. magenta
+		//no se aprecia por tanto no lo habilito
+		/*if ((interface1_last_value_port_ef & 0x08)==0 && (interface1_last_value_port_ef & 0x04)) {
+			//printf("Magenta\n");
+			color_cabezal=3;
+		}*/
     }
 
     d->setcolour(d,color_cabezal);
