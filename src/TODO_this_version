@@ -433,3 +433,4 @@ ok-current position en debug i/o ports
 ok-bad sectors (positions) raw
 -segundos de fecha de marca de tiempo en imagen microdrive, en mac, no pone 0X cuando X<10?
 ok-indicacion sector 0 en visual microdrive (marca roja)
+-convertir mdr a rmd. y al reves
