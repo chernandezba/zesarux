@@ -429,3 +429,4 @@ ok-averiguar MICRODRIVE_RAW_COMMON_SIZE para microdrive de 254 sectores
 -algo para ver sectores raw, mostrando gaps
 -memory zone raw. y que pueda ver opcionalmente los bytes de info?
 -current position en debug i/o ports
+-bad sectors (positions) raw
