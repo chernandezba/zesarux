@@ -23855,7 +23855,7 @@ int menu_ask_list_texto(char *texto_ventana,char *texto_interior,char *entradas_
 
 
 
-                retorno_menu=menu_dibuja_menu_no_title_lang(&ask_list_texto_opcion_seleccionada,&item_seleccionado,array_menu_ask_list,texto_ventana);
+                retorno_menu=menu_dibuja_menu_dialogo_no_title_lang(&ask_list_texto_opcion_seleccionada,&item_seleccionado,array_menu_ask_list,texto_ventana);
 
 
 
