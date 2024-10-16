@@ -46,7 +46,7 @@ int microdrive_raw_pending_read_port=0;
 int microdrive_raw_pending_status_port=0;
 
 //Ultimo dato leido por el cabezal
-z80_int microdrive_raw_last_read_byte;
+z80_int microdrive_raw_last_read_data;
 
 //Ultimo dato enviado para escribir
 z80_byte microdrive_raw_last_byte_to_write;
@@ -226,14 +226,14 @@ void microdrive_raw_move(void)
         //Si no hay ninguno activo, nada
         if (microdrive_activo>=0) {
 
-            microdrive_raw_last_read_byte=microdrive_raw_return_value_at_pos(microdrive_activo);
+            microdrive_raw_last_read_data=microdrive_raw_return_value_at_pos(microdrive_activo);
         }
 
 
-        if ((microdrive_raw_last_read_byte & 0x0100)==0) {
+        if ((microdrive_raw_last_read_data & 0x0100)==0) {
             //printf ("En microdrive_raw_move leemos byte gap en posicion %d\n",microdrive_raw_current_position);
             //Si es gap, sera un 0 al final
-            microdrive_raw_last_read_byte=0x0000;
+            microdrive_raw_last_read_data=0x0000;
             //sleep(1);
         }
 
@@ -241,21 +241,21 @@ void microdrive_raw_move(void)
 
         else {
             //detectar sync
-            if ( ((microdrive_raw_last_read_byte&0xFF) & raw_anterior_leido)==0) {
+            if ( ((microdrive_raw_last_read_data & 0xFF) & raw_anterior_leido)==0) {
                 microdrive_raw_last_read_data_is_sync=1;
                 //printf("Nuevo SYNC\n");
                 //sleep(1);
             }
             else microdrive_raw_last_read_data_is_sync=0;
 
-            raw_anterior_leido=microdrive_raw_last_read_byte & 0xFF;
+            raw_anterior_leido=microdrive_raw_last_read_data & 0xFF;
 
         }
 
         //Si posicion esta marcado como erroneo, alterar byte
-        if (microdrive_raw_last_read_byte & MICRODRIVE_RAW_INFO_BYTE_MASK_BAD_POSITION) {
+        if (microdrive_raw_last_read_data & MICRODRIVE_RAW_INFO_BYTE_MASK_BAD_POSITION) {
             //invertimos bits arbitrarios
-            microdrive_raw_last_read_byte ^= 0xCD;
+            microdrive_raw_last_read_data ^= 0xCD;
         }
 
     }
@@ -310,7 +310,7 @@ z80_byte microdrive_raw_status_ef(void)
     if (motor_activo>=0) {
 
         //Tiene gap?
-        if ((microdrive_raw_last_read_byte & 0x0100)==0) {
+        if ((microdrive_raw_last_read_data & 0x0100)==0) {
             return_value=MICRODRIVE_STATUS_BIT_GAP;
             //printf("----Retornar GAP\n");
             //sleep(1);
@@ -367,10 +367,10 @@ z80_byte microdrive_raw_read_port_e7(void)
 
 
 
-        z80_byte value=microdrive_raw_last_read_byte & 0xFF;
+        z80_byte value=microdrive_raw_last_read_data & 0xFF;
 
         //Si era un gap, retornar 0
-        if ((microdrive_raw_last_read_byte & 0x0100)==0) value=0;
+        if ((microdrive_raw_last_read_data & 0x0100)==0) value=0;
 
         //interface1_last_read_e7=value;
 
