@@ -139,6 +139,12 @@ int estado_wait_por_puerto_tipo=0;
 
 z80_byte raw_anterior_leido;
 
+//0 el actual, 1 el anterior, 2 el anterior al 2, etc
+//saltara sync si 0 es ff, 1 2 y 3 son 0
+z80_byte raw_nuevo_sync_lista[8]={0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff};
+
+int nuevo_algoritmo_sync=0;
+
 void microdrive_raw_move(void)
 {
     //Primero liberamos la señal wait de la cpu, si es que estaba
@@ -230,10 +236,35 @@ void microdrive_raw_move(void)
         }
 
 
+        if (nuevo_algoritmo_sync) {
+            //Nuevo sync
+            //rotar
+            //0 el actual, 1 el anterior, 2 el anterior al 2, etc
+            raw_nuevo_sync_lista[7]=raw_nuevo_sync_lista[6];
+            raw_nuevo_sync_lista[6]=raw_nuevo_sync_lista[5];
+            raw_nuevo_sync_lista[5]=raw_nuevo_sync_lista[4];
+            raw_nuevo_sync_lista[4]=raw_nuevo_sync_lista[3];
+            raw_nuevo_sync_lista[3]=raw_nuevo_sync_lista[2];
+            raw_nuevo_sync_lista[2]=raw_nuevo_sync_lista[1];
+            raw_nuevo_sync_lista[1]=raw_nuevo_sync_lista[0];
+            raw_nuevo_sync_lista[0]=microdrive_raw_last_read_data & 0xFF;
+
+        }
+
+
         if ((microdrive_raw_last_read_data & 0x0100)==0) {
             //printf ("En microdrive_raw_move leemos byte gap en posicion %d\n",microdrive_raw_current_position);
             //Si es gap, sera un 0 al final
             microdrive_raw_last_read_data=0x0000;
+
+            //nuevo sync
+            if (nuevo_algoritmo_sync) {
+                if (microdrive_raw_last_read_data_is_sync) {
+                    microdrive_raw_last_read_data_is_sync=0;
+                    printf("reset sync en %d\n",microdrive_status[0].raw_current_position);
+                }
+            }
+
             //sleep(1);
         }
 
@@ -241,12 +272,40 @@ void microdrive_raw_move(void)
 
         else {
             //detectar sync
+            if (!nuevo_algoritmo_sync) {
             if ( ((microdrive_raw_last_read_data & 0xFF) & raw_anterior_leido)==0) {
                 microdrive_raw_last_read_data_is_sync=1;
                 //printf("Nuevo SYNC\n");
                 //sleep(1);
             }
             else microdrive_raw_last_read_data_is_sync=0;
+            }
+
+            if (nuevo_algoritmo_sync) {
+                //Temporal. Otra manera de detectar sync
+                //saltara sync si 0 es ff, 1 2 y 3 son 0
+                if (raw_nuevo_sync_lista[0]==0xFF &&
+                    raw_nuevo_sync_lista[1]==0xFF &&
+                    raw_nuevo_sync_lista[2]==0x00 &&
+                    raw_nuevo_sync_lista[3]==0x00 &&
+                    raw_nuevo_sync_lista[4]==0x00 &&
+                    raw_nuevo_sync_lista[5]==0x00 &&
+                    raw_nuevo_sync_lista[6]==0x00 &&
+                    raw_nuevo_sync_lista[7]==0x00
+
+                ) {
+                        printf("nuevo sync en %d\n",microdrive_status[0].raw_current_position);
+
+                        microdrive_raw_last_read_data_is_sync=1;
+
+                }
+
+                // It stays valid until the absence of data is detected
+                //else microdrive_raw_last_read_data_is_sync=0;
+
+                //Fin nuevo sync
+            }
+
 
             raw_anterior_leido=microdrive_raw_last_read_data & 0xFF;
 
