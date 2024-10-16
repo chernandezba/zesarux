@@ -572,9 +572,6 @@ void microdrive_raw_flush_to_disk_one(int microdrive_seleccionado)
 
     int escritos=0;
 
-    int size=microdrive_status[microdrive_seleccionado].mdr_total_sectors*MDR_BYTES_PER_SECTOR;
-
-
 
     if (ptr_microdrivefile!=NULL) {
 
@@ -630,7 +627,7 @@ void microdrive_raw_flush_to_disk_one(int microdrive_seleccionado)
     //printf ("ptr_microdrivefile: %d\n",ptr_microdrivefile);
     //printf ("escritos: %lld\n",escritos);
 
-    if (escritos!=size || ptr_microdrivefile==NULL) {
+    if (ptr_microdrivefile==NULL) {
         DBG_PRINT_MDR VERBOSE_ERR,"MDR: Error writing to microdrive file");
         //microdrive_persistent_writes.v=0;
     }

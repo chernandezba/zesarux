@@ -436,7 +436,7 @@ ok-indicacion sector 0 en visual microdrive (marca roja)
 -convertir mdr a rmd. y al reves
 Conversión de mdr a raw: fácil. Se agregan gaps y sync donde toquen
 
-Conversión de raw a mdr: cortar ignorando gaps y sync. Pero hay que determinar en qué offset de la imagen empieza el primer sector: mediante gap se debería poder
+Conversión de raw a mdr: cortar ignorando gaps y sync. Pero hay que determinar en qué offset de la imagen empieza el primer sector: mediante gap se debería poder.
 
 
 -Al hacer eject y/o insertar otra imagen, liberar memoria
