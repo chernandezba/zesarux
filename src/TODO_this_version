@@ -454,3 +454,6 @@ Conversión de raw a mdr: cortar ignorando gaps y sync. Pero hay que determinar 
 
 -separar info byte en array distinto?
 -probar cambiar algoritmo sync
+
+-convertir raw microdrive a mdr que soporte empezar por a mitad de sector y dar la vuelta
+contar el total de bytes leidos en vez de la posicion. dar la vuelta cuando convenga

@@ -11251,6 +11251,12 @@ saltar a paso 1
     }
 
     fwrite(microdrive_buffer_mdr,1,pos_mdr,ptr_outputfile);
+
+    //Agregar el byte final que indica proteccion escritura o no. Lo ponemos como protegido
+    z80_byte proteccion=1;
+
+    fwrite(&proteccion,1,1,ptr_outputfile);
+
     fclose(ptr_outputfile);
 
 
