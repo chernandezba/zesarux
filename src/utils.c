@@ -11093,6 +11093,21 @@ int convert_any_to_wav(char *origen, char *destino)
         return 0;
 }
 
+int convert_rmd_to_mdr_find_end_sync(int pos_raw,int total_size,z80_byte *microdrive_buffer_datos,z80_byte *microdrive_buffer_info)
+{
+    //Buscar dos ff seguidos
+    z80_byte antes_valor=0;
+
+    while (pos_raw<total_size) {
+        z80_byte current_value=microdrive_buffer_datos[pos_raw++];
+        if (antes_valor == 0xFF && current_value == 0xFF) return pos_raw;
+
+        antes_valor=current_value;
+    }
+
+    return pos_raw;
+}
+
 int convert_rmd_to_mdr_find_end_gap(int pos_raw,int total_size,z80_byte *microdrive_buffer_datos,z80_byte *microdrive_buffer_info)
 {
     //Buscar primer gap
@@ -11108,6 +11123,7 @@ int convert_rmd_to_mdr_find_end_gap(int pos_raw,int total_size,z80_byte *microdr
         pos_raw++;
     }
 
+    //printf("End gap en %d\n",pos_raw);
     return pos_raw;
 }
 
@@ -11125,7 +11141,7 @@ paso1:
 buscar gap inicio gap y final gap. saltar 10 bytes 00 + 2 ff.
 leer 15 bytes
 saltar 10 bytes 00 + 2 ff.
-leer 15 bytes+512
+leer 15 bytes+512+1
 --esto es fin de sector
 saltar a paso 1
 */
@@ -11186,12 +11202,12 @@ buscar gap inicio gap y final gap. saltar 10 bytes 00 + 2 ff.
 leer 15 bytes
 buscar gap inicio gap y final gap
 saltar 10 bytes 00 + 2 ff.
-leer 15 bytes+512
+leer 15 bytes+512+1
 --esto es fin de sector
 saltar a paso 1
 */
 
-    while (pos_raw>=total_size) {
+    while (pos_raw<total_size) {
 
         //buscar gap inicio gap y final gap.
         pos_raw=convert_rmd_to_mdr_find_end_gap(pos_raw,total_size,microdrive_buffer_datos,microdrive_buffer_info);
@@ -11216,8 +11232,8 @@ saltar a paso 1
         pos_raw +=12;
         if (pos_raw>=total_size) break;
 
-        //leer 15 bytes+512
-        for (i=0;i<15+512 && pos_raw<total_size;i++) {
+        //leer 15 bytes+512+1
+        for (i=0;i<15+512+1 && pos_raw<total_size;i++) {
             microdrive_buffer_mdr[pos_mdr++]=microdrive_buffer_datos[pos_raw++];
         }
         if (pos_raw>=total_size) break;
@@ -11234,7 +11250,7 @@ saltar a paso 1
             return 1;
     }
 
-    fwrite(microdrive_buffer_mdr,1,pos_raw,ptr_outputfile);
+    fwrite(microdrive_buffer_mdr,1,pos_mdr,ptr_outputfile);
     fclose(ptr_outputfile);
 
 
