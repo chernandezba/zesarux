@@ -416,8 +416,11 @@ void microdrive_eject(int microdrive_seleccionado)
 	//Hacer flush si hay algun cambio
 	microdrive_flush_to_disk_one(microdrive_seleccionado);
 
-
-	free(microdrive_status[microdrive_seleccionado].if1_microdrive_buffer);
+    if (microdrive_status[microdrive_seleccionado].raw_format) {
+        free(microdrive_status[microdrive_seleccionado].raw_microdrive_buffer);
+    else {
+	    free(microdrive_status[microdrive_seleccionado].if1_microdrive_buffer);
+    }
 
 
 	microdrive_status[microdrive_seleccionado].microdrive_enabled=0;
