@@ -159,6 +159,7 @@
 #include "zeng_online_client.h"
 #include "if1.h"
 #include "microdrive.h"
+#include "microdrive_raw.h"
 
 //Archivo usado para entrada de teclas
 FILE *ptr_input_file_keyboard;
@@ -8368,10 +8369,6 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
 
                         case UTIL_KEY_LEFT:
                                 if (pressrelease) {
-                                    //temp
-
-                                    //microdrive_raw_dump_values();
-
                                         //puerto_65278 &=255-1;
                                         //puerto_63486 &=255-16;
                                         joystick_set_left(1);
@@ -11096,6 +11093,153 @@ int convert_any_to_wav(char *origen, char *destino)
         return 0;
 }
 
+int convert_rmd_to_mdr_find_end_gap(int pos_raw,int total_size,z80_byte *microdrive_buffer_datos,z80_byte *microdrive_buffer_info)
+{
+    //Buscar primer gap
+
+    while ((microdrive_buffer_info[pos_raw] & 0x01)  && pos_raw<total_size) {
+        pos_raw++;
+    }
+
+    if (pos_raw>=total_size) return pos_raw;
+
+    //Buscar fin gap
+    while ((microdrive_buffer_info[pos_raw] & 0x01)==0  && pos_raw<total_size) {
+        pos_raw++;
+    }
+
+    return pos_raw;
+}
+
+int convert_rmd_to_mdr(char *origen, char *destino)
+{
+
+/*
+    Microdrive cartridge
+    GAP      PREAMBLE      15 byte      GAP      PREAMBLE      15 byte    512     1
+    [-----][00 00 ... ff ff][BLOCK HEAD][-----][00 00 ... ff ff][REC HEAD][ DATA ][CHK]
+    Preamble = 10 * 0x00 + 2 * 0xff (12 byte)
+
+*algo como:
+paso1:
+buscar gap inicio gap y final gap. saltar 10 bytes 00 + 2 ff.
+leer 15 bytes
+saltar 10 bytes 00 + 2 ff.
+leer 15 bytes+512
+--esto es fin de sector
+saltar a paso 1
+*/
+
+    //Leer tamanyo
+    int tamanyo_archivo=get_file_size(origen);
+
+    //restar cabecera
+    tamanyo_archivo -=MICRODRIVE_RAW_HEADER_SIZE;
+
+    //Si es tamaño invalido o impar (porque son registros de 16 bits y por tanto par)
+    if (tamanyo_archivo<=0 || (tamanyo_archivo &1) ) {
+        debug_printf(VERBOSE_ERR,"Invalid size for RAW microdrive file");
+        return 1;
+    }
+
+	int leidos;
+
+	char buffer_cabecera[MICRODRIVE_RAW_HEADER_SIZE];
+
+    FILE *ptr_inputfile;
+    ptr_inputfile=fopen(origen,"rb");
+
+    if (ptr_inputfile==NULL) {
+            debug_printf (VERBOSE_ERR,"Error opening %s",origen);
+            return 1;
+    }
+
+
+
+
+	//Leemos la cabecera
+    fread(buffer_cabecera,1,MICRODRIVE_RAW_HEADER_SIZE,ptr_inputfile);
+
+    int total_size=tamanyo_archivo/2;
+
+    //leemos datos e info datos aparte
+    z80_byte *microdrive_buffer_datos=util_malloc(total_size,"No enough memory for Microdrive buffer");
+    z80_byte *microdrive_buffer_info=util_malloc(total_size,"No enough memory for Microdrive buffer");
+
+    fread(microdrive_buffer_datos,1,total_size,ptr_inputfile);
+    fread(microdrive_buffer_info,1,total_size,ptr_inputfile);
+
+
+
+	fclose (ptr_inputfile);
+
+    //Y buffer para mdr
+    //Al menos espacio ocupado en raw
+    z80_byte *microdrive_buffer_mdr=util_malloc(total_size,"No enough memory for Microdrive buffer");
+
+    int pos_raw=0;
+    int pos_mdr=0;
+
+/*
+paso1:
+buscar gap inicio gap y final gap. saltar 10 bytes 00 + 2 ff.
+leer 15 bytes
+buscar gap inicio gap y final gap
+saltar 10 bytes 00 + 2 ff.
+leer 15 bytes+512
+--esto es fin de sector
+saltar a paso 1
+*/
+
+    while (pos_raw>=total_size) {
+
+        //buscar gap inicio gap y final gap.
+        pos_raw=convert_rmd_to_mdr_find_end_gap(pos_raw,total_size,microdrive_buffer_datos,microdrive_buffer_info);
+        if (pos_raw>=total_size) break;
+
+        //saltar 10 bytes 00 + 2 ff.
+        pos_raw +=12;
+        if (pos_raw>=total_size) break;
+
+        //leer 15 bytes
+        int i;
+        for (i=0;i<15 && pos_raw<total_size;i++) {
+            microdrive_buffer_mdr[pos_mdr++]=microdrive_buffer_datos[pos_raw++];
+        }
+        if (pos_raw>=total_size) break;
+
+        //buscar gap inicio gap y final gap
+        pos_raw=convert_rmd_to_mdr_find_end_gap(pos_raw,total_size,microdrive_buffer_datos,microdrive_buffer_info);
+        if (pos_raw>=total_size) break;
+
+        //saltar 10 bytes 00 + 2 ff.
+        pos_raw +=12;
+        if (pos_raw>=total_size) break;
+
+        //leer 15 bytes+512
+        for (i=0;i<15+512 && pos_raw<total_size;i++) {
+            microdrive_buffer_mdr[pos_mdr++]=microdrive_buffer_datos[pos_raw++];
+        }
+        if (pos_raw>=total_size) break;
+    }
+
+
+
+
+	FILE *ptr_outputfile;
+	ptr_outputfile=fopen(destino,"wb");
+
+    if (ptr_outputfile==NULL) {
+            debug_printf (VERBOSE_ERR,"Error opening %s",destino);
+            return 1;
+    }
+
+    fwrite(microdrive_buffer_mdr,1,pos_raw,ptr_outputfile);
+    fclose(ptr_outputfile);
+
+
+    return 0;
+}
 
 int convert_hdf_to_raw(char *origen, char *destino)
 {
