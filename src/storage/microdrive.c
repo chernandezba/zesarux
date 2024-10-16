@@ -418,6 +418,7 @@ void microdrive_eject(int microdrive_seleccionado)
 
     if (microdrive_status[microdrive_seleccionado].raw_format) {
         free(microdrive_status[microdrive_seleccionado].raw_microdrive_buffer);
+    }
     else {
 	    free(microdrive_status[microdrive_seleccionado].if1_microdrive_buffer);
     }
