@@ -458,4 +458,5 @@ Conversión de raw a mdr: cortar ignorando gaps y sync. Pero hay que determinar 
 -convertir raw microdrive a mdr que soporte empezar por a mitad de sector y dar la vuelta
 contar el total de bytes leidos en vez de la posicion. dar la vuelta cuando convenga
 
--convertir multiface exolon raw a mdr falla en un archivo. quiza es porque el buscar sync tiene que ser mejor?
+-convertir multiface exolon raw a mdr falla en un archivo. quiza es porque el buscar sync tiene que ser mejor? quiza porque hay que dar la vuelta
+al microdrive desde el final?
