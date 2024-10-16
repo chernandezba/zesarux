@@ -11214,7 +11214,7 @@ saltar a paso 1
         if (pos_raw>=total_size) break;
 
         //saltar 10 bytes 00 + 2 ff.
-        pos_raw +=12;
+        pos_raw=convert_rmd_to_mdr_find_end_sync(pos_raw,total_size,microdrive_buffer_datos,microdrive_buffer_info);
         if (pos_raw>=total_size) break;
 
         //leer 15 bytes
@@ -11229,7 +11229,7 @@ saltar a paso 1
         if (pos_raw>=total_size) break;
 
         //saltar 10 bytes 00 + 2 ff.
-        pos_raw +=12;
+        pos_raw=convert_rmd_to_mdr_find_end_sync(pos_raw,total_size,microdrive_buffer_datos,microdrive_buffer_info);
         if (pos_raw>=total_size) break;
 
         //leer 15 bytes+512+1
