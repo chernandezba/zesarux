@@ -129,7 +129,7 @@ void microdrive_raw_dump_values_dump(void)
 //1=leido FF
 
 //Si ultima secuencia leida era sync. Cuando la secuencia esta entera
-int microdrive_raw_last_read_byte_is_sync=0;
+int microdrive_raw_last_read_data_is_sync=0;
 
 
 //Si esta a cero, el wait era por puerto e7
@@ -242,11 +242,11 @@ void microdrive_raw_move(void)
         else {
             //detectar sync
             if ( ((microdrive_raw_last_read_byte&0xFF) & raw_anterior_leido)==0) {
-                microdrive_raw_last_read_byte_is_sync=1;
+                microdrive_raw_last_read_data_is_sync=1;
                 //printf("Nuevo SYNC\n");
                 //sleep(1);
             }
-            else microdrive_raw_last_read_byte_is_sync=0;
+            else microdrive_raw_last_read_data_is_sync=0;
 
             raw_anterior_leido=microdrive_raw_last_read_byte & 0xFF;
 
@@ -256,7 +256,7 @@ void microdrive_raw_move(void)
         if (microdrive_raw_last_read_byte & MICRODRIVE_RAW_INFO_BYTE_MASK_BAD_POSITION) {
             //invertimos bits arbitrarios
             microdrive_raw_last_read_byte ^= 0xCD;
-        }            
+        }
 
     }
 
@@ -317,7 +317,7 @@ z80_byte microdrive_raw_status_ef(void)
         }
 
         //Ver si habia sync
-        else if (microdrive_raw_last_read_byte_is_sync) {
+        else if (microdrive_raw_last_read_data_is_sync) {
             return_value=MICRODRIVE_STATUS_BIT_SYNC;
             //printf("----Retornar SYNC\n");
 
@@ -337,7 +337,7 @@ z80_byte microdrive_raw_status_ef(void)
     }
 
     //resetear señal sync solo desde aqui
-    //microdrive_raw_last_read_byte_is_sync=0;
+    //microdrive_raw_last_read_data_is_sync=0;
 
     //En principio con esto le dice que si no esta el microdrive habilitado, dira error:
     //Microdrive not present
@@ -500,27 +500,27 @@ void microdrive_raw_insert(int microdrive_seleccionado)
 
         //Leer primero datos
         for (i=0;i<total_microdrive;i++) {
-            
+
             z80_byte valor_leido1,valor_leido2;
 
             fread(&valor_leido1,1,1,ptr_microdrive_file);
-            
+
 
             z80_int word_leido;
 
             word_leido=valor_leido1;
-            
+
 
             microdrive_status[microdrive_seleccionado].raw_microdrive_buffer[i]=word_leido;
         }
 
         //Y luego info de cada dato (gap, etc)
         for (i=0;i<total_microdrive;i++) {
-            
+
             z80_byte valor_leido1,valor_leido2;
 
             fread(&valor_leido1,1,1,ptr_microdrive_file);
-            
+
 
             z80_int word_leido=microdrive_status[microdrive_seleccionado].raw_microdrive_buffer[i];
 
@@ -528,7 +528,7 @@ void microdrive_raw_insert(int microdrive_seleccionado)
             word_leido &=0x00FF;
 
             word_leido |=(valor_leido1<<8);
-            
+
 
             microdrive_status[microdrive_seleccionado].raw_microdrive_buffer[i]=word_leido;
         }
@@ -602,10 +602,10 @@ void microdrive_raw_flush_to_disk_one(int microdrive_seleccionado)
 
 
             byte1=word & 0xFF;
-            
+
 
             fwrite(&byte1,1,1,ptr_microdrivefile);
-            
+
         }
 
         //Escribir info de cada dato (gap, etc)
@@ -615,10 +615,10 @@ void microdrive_raw_flush_to_disk_one(int microdrive_seleccionado)
             z80_int word=microdrive_status[microdrive_seleccionado].raw_microdrive_buffer[i];
 
 
-            
+
             byte2=(word>>8) & 0xFF;
 
-            
+
             fwrite(&byte2,1,1,ptr_microdrivefile);
         }
 

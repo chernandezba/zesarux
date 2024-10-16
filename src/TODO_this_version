@@ -426,11 +426,27 @@ ok -crear nuevo archivo raw
 
 ok-averiguar MICRODRIVE_RAW_COMMON_SIZE para microdrive de 254 sectores
 -visualmem en raw
--algo para ver sectores raw, mostrando gaps
-ok-memory zone raw. 
+-algo para ver sectores raw, mostrando gaps. una especie de visual memory pero mostrando zonas de gap y datos
+ok-memory zone raw.
 -y que pueda ver opcionalmente los bytes de info?
 ok-current position en debug i/o ports
 ok-bad sectors (positions) raw
 -segundos de fecha de marca de tiempo en imagen microdrive, en mac, no pone 0X cuando X<10?
 ok-indicacion sector 0 en visual microdrive (marca roja)
 -convertir mdr a rmd. y al reves
+Conversión de mdr a raw: fácil. Se agregan gaps y sync donde toquen
+
+Conversión de raw a mdr: cortar ignorando gaps y sync. Pero hay que determinar en qué offset de la imagen empieza el primer sector: mediante gap se debería poder
+
+
+-Al hacer eject y/o insertar otra imagen, liberar memoria
+
+-Simular desgaste por estiramiento de cinta. Ampliar imagen de microdrive
+-Agregar en debug CPU ver señales de halt y wait
+
+-Formatos de microdrive alternativos :
+*Cp/m de LEC rom
+*multiface 128
+
+-separar info byte en array distinto?
+-probar cambiar algoritmo sync
