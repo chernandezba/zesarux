@@ -819,9 +819,15 @@ void core_spectrum_ciclo_fetch(void)
 	core_spectrum_store_rainbow_current_atributes();
 	TIMESENSOR_ENTRY_POST(TIMESENSOR_ID_core_spectrum_store_rainbow_current_atributes);
 
+    //Eventos que necesitan contar testados, van aqui antes del ciclo de fetch, como la controladora de disco o el microdrive
+    //Nota: estos no se pueden poner en las funciones core_nested del dispositivo, porque no siempre se tienen que estar lanzando,
+    //por ejemplo cuando se ha llegado al final de frames de pantalla y se espera al timer de 1/50s, el core se sigue ejecutando,
+    //pero el fetch no se llama. Si se pusieran en el core nested, se llamarian siempre
+
     //Eventos de la controladora de disco
     pd765_next_event_from_core();
 
+    //avance de la posición del microdrive
     if (MACHINE_IS_SPECTRUM) interface1_count_tstates();
 
 

@@ -491,8 +491,10 @@ void interface1_count_tstates(void)
 
     if (interface1_transcurrido_desde_ultimo_movimiento>=168) {
         interface1_transcurrido_desde_ultimo_movimiento -=168;
+        //printf("mover cabezal en testados: %d testados_parc: %d interface1_transcurrido_desde_ultimo_movimiento: %d\n",t_estados,debug_t_estados_parcial,interface1_transcurrido_desde_ultimo_movimiento);
         microdrive_raw_move();
     }
+
 
 
     interface1_estados_anterior=t_estados;

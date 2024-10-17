@@ -41384,7 +41384,7 @@ void menu_storage_microdrive_file(MENU_ITEM_PARAMETERS)
 					fwrite(header,1,MICRODRIVE_RAW_HEADER_SIZE,ptr_mdrfile);
 
 
-					
+
 					z80_byte valor_grabar=0;
 
 					if (ptr_mdrfile!=NULL) {
@@ -42881,7 +42881,7 @@ void menu_visual_microdrive_dibujar_microdrive_dinamico(struct zxvision_vectoria
 			if (microdrive_status[numero_microdrive].raw_format) {
 				//Cinta raw tiembla cada paso de 500 bytes
 				int paso=total_offset/500;
-				if (paso % 2) sumar_pos=desplazamiento;	
+				if (paso % 2) sumar_pos=desplazamiento;
 			}
 
 			else {
@@ -43193,10 +43193,10 @@ void menu_visual_microdrive(MENU_ITEM_PARAMETERS)
     //para mostrar correctamente el color del fondo alterado por default_paper
     zxvision_draw_window_contents(ventana);
 
-	z80_byte tecla;
+	//z80_byte tecla;
 
 
-	int salir=0;
+	//int salir=0;
 
 
     menu_visual_microdrive_window=ventana; //Decimos que el overlay lo hace sobre la ventana que tenemos aqui

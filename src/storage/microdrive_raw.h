@@ -61,4 +61,10 @@ extern void microdrive_raw_flush_to_disk_one(int microdrive_seleccionado);
 
 extern void microdrive_raw_create_header(char *destino);
 
+extern void microdrive_raw_move(void);
+
+extern void microdrive_raw_mark_bad_position(int microdrive_seleccionado,int position);
+
+extern void microdrive_raw_unmark_bad_position(int microdrive_seleccionado,int position);
+
 #endif

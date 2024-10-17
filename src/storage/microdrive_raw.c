@@ -160,6 +160,7 @@ void microdrive_raw_advance_position(int microdrive_activo)
     microdrive_status[microdrive_activo].raw_current_position=microdrive_raw_current_position;
 }
 
+/*
 int temp_pending_dump=0;
 
 void microdrive_raw_dump_values(void)
@@ -180,6 +181,7 @@ void microdrive_raw_dump_values_dump(void)
     sleep(20);
     temp_pending_dump=0;
 }
+*/
 
 //Para detectar secuencias sync. 00 FF FF
 //TODO: esto es simplificado a 3 bytes, ver cual es la secuencia correcta. 6 bytes total? 12 bytes?
@@ -223,9 +225,9 @@ void microdrive_raw_move(void)
         if (estado_wait_por_puerto_tipo==0) microdrive_raw_pending_read_port=1;
     }
 
-    if (temp_pending_dump) {
+    /*if (temp_pending_dump) {
         microdrive_raw_dump_values_dump();
-    }
+    }*/
 
     z80_wait_signal.v=0;
 
@@ -646,7 +648,8 @@ void microdrive_raw_insert(int microdrive_seleccionado)
         //Leer primero datos
         for (i=0;i<total_microdrive;i++) {
 
-            z80_byte valor_leido1,valor_leido2;
+            z80_byte valor_leido1;
+            //,valor_leido2;
 
             fread(&valor_leido1,1,1,ptr_microdrive_file);
 
@@ -662,7 +665,8 @@ void microdrive_raw_insert(int microdrive_seleccionado)
         //Y luego info de cada dato (gap, etc)
         for (i=0;i<total_microdrive;i++) {
 
-            z80_byte valor_leido1,valor_leido2;
+            z80_byte valor_leido1;
+            //,valor_leido2;
 
             fread(&valor_leido1,1,1,ptr_microdrive_file);
 
@@ -715,7 +719,7 @@ void microdrive_raw_flush_to_disk_one(int microdrive_seleccionado)
     DBG_PRINT_MDR VERBOSE_INFO,"MDR: Opening microdrive File %s",microdrive_status[microdrive_seleccionado].microdrive_file_name);
     ptr_microdrivefile=fopen(microdrive_status[microdrive_seleccionado].microdrive_file_name,"wb");
 
-    int escritos=0;
+    //int escritos=0;
 
 
     if (ptr_microdrivefile!=NULL) {
