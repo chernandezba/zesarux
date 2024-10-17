@@ -71,7 +71,7 @@ So my current implementation of the sync signal is:
 -Reading from status port EF blocks the cpu (enables WAIT signal) until the next byte is read/written, like reading/writing E7 port
 
 I have both algorithms available on my code, with the variable:
-microdrive_raw_nuevo_algoritmo_sync
+microdrive_raw_new_sync_algorithm
 
 If it's set to 0, it uses my algorithm that works (byte AND previous byte).
 It it's set to 1, it uses the "real" behaviour from the ula, but it doesn't work well: after format from basic,
@@ -211,7 +211,7 @@ z80_byte raw_nuevo_sync_lista[8]={0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff};
 //Puerto EF no es bloqueante. Y sync se activa al detectar secuencia de bytes FF,FF,0,0,0,0,0,0. Sync se pone a 0 al leer gaps
 //Si que acaba de formatear si hago que cuando sync esta activado, el bit 1 (el sync) de retorno del puerto EF es 0. Y si esta desactivado, retorno 1
 //En ese caso formatea pero con menos capacidad. Por lo que asumo que bien del todo tampoco va
-int microdrive_raw_nuevo_algoritmo_sync=0;
+int microdrive_raw_new_sync_algorithm=0;
 
 void microdrive_raw_move(void)
 {
@@ -304,7 +304,7 @@ void microdrive_raw_move(void)
         }
 
 
-        if (microdrive_raw_nuevo_algoritmo_sync) {
+        if (microdrive_raw_new_sync_algorithm) {
             //Nuevo sync
             //rotar
             //0 el actual, 1 el anterior, 2 el anterior al 2, etc
@@ -326,7 +326,7 @@ void microdrive_raw_move(void)
             microdrive_raw_last_read_data=0x0000;
 
             //nuevo sync
-            if (microdrive_raw_nuevo_algoritmo_sync) {
+            if (microdrive_raw_new_sync_algorithm) {
                 microdrive_raw_last_read_data_is_sync=0; //sync reseteado.
                 printf("reset sync en %d\n",microdrive_status[0].raw_current_position);
 
@@ -339,7 +339,7 @@ void microdrive_raw_move(void)
 
         else {
             //detectar sync
-            if (!microdrive_raw_nuevo_algoritmo_sync) {
+            if (!microdrive_raw_new_sync_algorithm) {
             if ( ((microdrive_raw_last_read_data & 0xFF) & raw_anterior_leido)==0) {
                 microdrive_raw_last_read_data_is_sync=0; //sync disabled
                 //printf("Nuevo SYNC\n");
@@ -348,7 +348,7 @@ void microdrive_raw_move(void)
             else microdrive_raw_last_read_data_is_sync=1; //sync enabled
             }
 
-            if (microdrive_raw_nuevo_algoritmo_sync) {
+            if (microdrive_raw_new_sync_algorithm) {
                 //Temporal. Otra manera de detectar sync
                 //saltara sync si 0 es ff, 1 2 y 3 son 0
                 if (raw_nuevo_sync_lista[0]==0xFF &&
@@ -530,7 +530,7 @@ z80_byte microdrive_raw_read_port_ef(void)
 {
 
     //Si nuevo algoritmo, puerto no es bloqueante
-    if (microdrive_raw_nuevo_algoritmo_sync) {
+    if (microdrive_raw_new_sync_algorithm) {
         //printf("Puerto no bloqueante EF\n");
         z80_byte value=microdrive_raw_status_ef();
 
