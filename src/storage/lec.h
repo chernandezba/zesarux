@@ -22,6 +22,7 @@
 #ifndef LEC_H
 #define LEC_H
 
-#define LEC_MAX_RAM_SIZE (16*32768)
+#define LEC_MAX_RAM_BLOCKS 16
+#define LEC_MAX_RAM_SIZE (LEC_MAX_RAM_BLOCKS*32768)
 
 #endif
