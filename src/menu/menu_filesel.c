@@ -3031,7 +3031,7 @@ int menu_filesel_file_can_be_expanded(char *archivo)
     char *extensiones_validas[]={
         "hdf","tap","tzx","cdt","pzx",
         "trd","dsk","epr","eprom",
-        "flash","p","p81","o","mdv","scl","ddh","mdr",
+        "flash","p","p81","o","mdv","scl","ddh","mdr","rmd",
         NULL
     };
 
@@ -3081,6 +3081,11 @@ int menu_filesel_expand(char *archivo,char *tmpdir)
         else if (!util_compare_file_extension(archivo,"mdr") ) {
                 debug_printf (VERBOSE_DEBUG,"Is a mdr file");
         	return util_extract_mdr(archivo,tmpdir);
+        }
+
+        else if (!util_compare_file_extension(archivo,"rmd") ) {
+                debug_printf (VERBOSE_DEBUG,"Is a rmd file");
+        	return util_extract_rmd(archivo,tmpdir);
         }
 
         else if (

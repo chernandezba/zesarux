@@ -17002,6 +17002,21 @@ int util_extract_mdr(char *filename,char *tempdir)
 
 }
 
+//Rutina para extraer RMD. Pasamos a MDR y luego llamar a util_extract_mdr
+int util_extract_rmd(char *filename,char *tempdir)
+{
+    char tmpfile[PATH_MAX];
+
+    char buf_file_no_dir[PATH_MAX];
+    util_get_file_no_directory(filename,buf_file_no_dir);
+
+    sprintf (tmpfile,"%s/%s.mdr",get_tmpdir_base(),buf_file_no_dir);
+
+    convert_rmd_to_mdr(filename,tmpfile);
+
+    return util_extract_mdr(tmpfile,tempdir);
+}
+
 //Rutina para extraer DDH
 int util_extract_ddh(char *filename,char *tempdir)
 {
