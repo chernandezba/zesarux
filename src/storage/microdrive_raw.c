@@ -19,7 +19,67 @@
 
 */
 
-//Emulación microdrive en raw, sin tener en cuenta formato .mdr o el que sea
+/*
+
+RAW Microdrive emulation, that can hold any filesystem (not just the interface 1 rom: the one supported for .mdr files)
+
+Info about how it works:
+
+-Reading or writing to data port E7 blocks the cpu (enables WAIT signal) until the next byte is read/written
+-Every 168 t-states the microdrive reads a byte and releases WAIT signal
+-Reading or writing to status port EF doesn't block the cpu
+
+-The microdrive can write two types of signals:
+*regular data: 0 and 1. They are written enabling the erase+write signals
+*silence: called also gap. It's written enabling the erase signal only
+
+-About reading GAP or SIGNAL bits from port EF:
+*gap signal is enabled when reading gaps from microdrive. Bit 2 or port EF is set when detected gap, or reset when no gap
+*sync signal. This is the info from Charles Ingley, who reverse engineered the interface 1 ula and
+sells the "vLA1 - Sinclair ZX Interface 1 ULA Replacement":
+
+"
+The SYNC signal indicates when a sequence of 8 ones (0xFF) is received (after a minimum number of zeroes)
+on either Microdrive channel after a GAP has ended and signals the start of valid data. It stays valid until
+the absence of data is detected (i.e. a GAP is detected). There is no requirement for 10 zeroes to be present
+before the SYNC byte, this is just how emulator images have standardised. For the hardware to decode properly
+at least 3 valid zeroes need to precede the SYNC byte. Due to tape dropouts all 10 leading zeroes after a GAP may not be present.
+
+Sync is bit 1 of port EF and is 0 when sync is detected
+
+
+An emulator works with an image that contains  fully decoded bytes and luckily has no need for the header
+apart from synthesizing the GAP and SYNC signals for IO emulation. The format on a real tape is two streams
+of serial bits interleaved across the two channels. The hardware first needs to synchronise to the incoming
+data and then determine where the byte boundaries occur. The gaps in the tape format are always followed by a
+unique bit sequence (24 or more zero bits followed by 8 one bits) on each channel.
+The zeroes determine the bit boundaries for decoding and the 8 ones determine the byte boundary. 
+
+When I mention ones and zeroes I'm talking about bit value (bytes are just an abstraction in hardware).
+"
+
+When he says "a unique bit sequence (24 or more zero bits followed by 8 one bits) on each channel. " it means for every track,
+so the sync sequence is formed by FF FF 00 00 00 00 00 00
+
+HOWEVER, if I emulate this behaviour, it doesn't format well from the interface 1 rom (I mean a normal FORMAT command from basic).
+The total available sectors are less than expected.
+I assume something in my timmings are not accurate, or some other error I haven't found
+
+So my current implementation of the sync signal is:
+-If the current byte AND (logical AND) previous byte read is 0, sync is disabled
+-Otherwise, sync is enabled
+-Reading from status port EF blocks the cpu (enables WAIT signal) until the next byte is read/written, like reading/writing E7 port
+
+I have both algorithms available on my code, with the variable:
+microdrive_raw_nuevo_algoritmo_sync
+
+If it's set to 0, it uses my algorithm that works (byte AND previous byte).
+It it's set to 1, it uses the "real" behaviour from the ula, but it doesn't work well: after format from basic,
+the total available sectors are less than expected
+I have kept the two algorithms so maybe in the future I can fix it and use the real algorithm
+
+
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -143,7 +203,15 @@ z80_byte raw_anterior_leido;
 //saltara sync si 0 es ff, 1 2 y 3 son 0
 z80_byte raw_nuevo_sync_lista[8]={0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff};
 
-int nuevo_algoritmo_sync=0;
+
+//Si es 0, puerto EF es bloqueante. Y Sync=1 cuando byte anterior AND actual=0; en caso contrario, sync=0. Esto funciona
+//formateando con la rom del interface1 y con multiface 128
+
+//Si es 1, es el comportamiento teorico de la ULA de la interface1. Aunque NO acaba de formatear con la rom del interface1
+//Puerto EF no es bloqueante. Y sync se activa al detectar secuencia de bytes FF,FF,0,0,0,0,0,0. Sync se pone a 0 al leer gaps
+//Si que acaba de formatear si hago que cuando sync esta activado, el bit 1 (el sync) de retorno del puerto EF es 0. Y si esta desactivado, retorno 1
+//En ese caso formatea pero con menos capacidad. Por lo que asumo que bien del todo tampoco va
+int microdrive_raw_nuevo_algoritmo_sync=0;
 
 void microdrive_raw_move(void)
 {
@@ -236,7 +304,7 @@ void microdrive_raw_move(void)
         }
 
 
-        if (nuevo_algoritmo_sync) {
+        if (microdrive_raw_nuevo_algoritmo_sync) {
             //Nuevo sync
             //rotar
             //0 el actual, 1 el anterior, 2 el anterior al 2, etc
@@ -258,11 +326,10 @@ void microdrive_raw_move(void)
             microdrive_raw_last_read_data=0x0000;
 
             //nuevo sync
-            if (nuevo_algoritmo_sync) {
-                if (microdrive_raw_last_read_data_is_sync) {
-                    microdrive_raw_last_read_data_is_sync=0;
-                    printf("reset sync en %d\n",microdrive_status[0].raw_current_position);
-                }
+            if (microdrive_raw_nuevo_algoritmo_sync) {
+                microdrive_raw_last_read_data_is_sync=0; //sync reseteado.
+                printf("reset sync en %d\n",microdrive_status[0].raw_current_position);
+
             }
 
             //sleep(1);
@@ -272,16 +339,16 @@ void microdrive_raw_move(void)
 
         else {
             //detectar sync
-            if (!nuevo_algoritmo_sync) {
+            if (!microdrive_raw_nuevo_algoritmo_sync) {
             if ( ((microdrive_raw_last_read_data & 0xFF) & raw_anterior_leido)==0) {
-                microdrive_raw_last_read_data_is_sync=1;
+                microdrive_raw_last_read_data_is_sync=0; //sync disabled
                 //printf("Nuevo SYNC\n");
                 //sleep(1);
             }
-            else microdrive_raw_last_read_data_is_sync=0;
+            else microdrive_raw_last_read_data_is_sync=1; //sync enabled
             }
 
-            if (nuevo_algoritmo_sync) {
+            if (microdrive_raw_nuevo_algoritmo_sync) {
                 //Temporal. Otra manera de detectar sync
                 //saltara sync si 0 es ff, 1 2 y 3 son 0
                 if (raw_nuevo_sync_lista[0]==0xFF &&
@@ -296,12 +363,10 @@ void microdrive_raw_move(void)
                 ) {
                         printf("nuevo sync en %d\n",microdrive_status[0].raw_current_position);
 
-                        microdrive_raw_last_read_data_is_sync=1;
+                        microdrive_raw_last_read_data_is_sync=1; //sync enabled
 
                 }
 
-                // It stays valid until the absence of data is detected
-                //else microdrive_raw_last_read_data_is_sync=0;
 
                 //Fin nuevo sync
             }
@@ -376,11 +441,20 @@ z80_byte microdrive_raw_status_ef(void)
         }
 
         //Ver si habia sync
-        else if (microdrive_raw_last_read_data_is_sync) {
-            return_value=MICRODRIVE_STATUS_BIT_SYNC;
-            //printf("----Retornar SYNC\n");
+        else {
+            if (microdrive_raw_last_read_data_is_sync) {
+                return_value &=(255-MICRODRIVE_STATUS_BIT_SYNC);
+                //Si hay sync, bit a 0
+                //Si no hay sync, bit a 1
 
-            //sleep(1);
+                //printf("----Retornar SYNC\n");
+
+                //sleep(1);
+            }
+            else {
+                //No hay sync. bit a 1
+                return_value |=MICRODRIVE_STATUS_BIT_SYNC;
+            }
         }
 
 
@@ -454,6 +528,18 @@ z80_byte microdrive_raw_read_port_e7(void)
 
 z80_byte microdrive_raw_read_port_ef(void)
 {
+
+    //Si nuevo algoritmo, puerto no es bloqueante
+    if (microdrive_raw_nuevo_algoritmo_sync) {
+        //printf("Puerto no bloqueante EF\n");
+        z80_byte value=microdrive_raw_status_ef();
+
+        //if (value & MICRODRIVE_STATUS_BIT_GAP) printf("Leyendo puerto EF hay GAP. t_estados: %d\n",t_estados);
+        //if (value & MICRODRIVE_STATUS_BIT_SYNC) printf("Leyendo puerto EF hay SYNC. t_estados: %d\n",t_estados);
+
+        return value;
+    }
+
     //Si volvemos de un in con su wait
     if (microdrive_raw_pending_status_port) {
         microdrive_raw_pending_status_port=0;

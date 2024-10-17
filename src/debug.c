@@ -5580,7 +5580,7 @@ void debug_get_ioports(char *stats_buffer)
                 (interface1_last_read_status_ef & 0x10 ? "Busy" : "    "),
                 (interface1_last_read_status_ef & 0x08 ? "DTR" :  "   "),
                 (interface1_last_read_status_ef & 0x04 ? "Gap" :  "   "),
-                (interface1_last_read_status_ef & 0x02 ? "Sync" : "    "),
+                (interface1_last_read_status_ef & 0x02 ? "    " : "Sync"),
                 (interface1_last_read_status_ef & 0x01 ? "  "   : "WP")
             );
             sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
