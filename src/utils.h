@@ -807,6 +807,8 @@ extern int util_extract_ddh(char *filename,char *tempdir);
 
 extern int util_extract_mdr(char *filename,char *tempdir);
 
+extern int util_extract_rmd(char *filename,char *tempdir);
+
 extern int util_extract_p(char *filename,char *tempdir);
 
 extern int util_extract_o(char *filename,char *tempdir);

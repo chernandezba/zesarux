@@ -18166,6 +18166,9 @@ int util_convert_any_to_scr(char *filename,char *archivo_destino)
     else if (!util_compare_file_extension(filename,"mdr") ) {
             retorno=util_extract_mdr(filename,tmpdir);
     }
+    else if (!util_compare_file_extension(filename,"rmd") ) {
+            retorno=util_extract_rmd(filename,tmpdir);
+    }
     else if (!util_compare_file_extension(filename,"dsk") ) {
             //Ejemplos de DSK que muestran pantalla: CASTLE MASTER.DSK , Drazen Petrovic Basket.dsk
             retorno=util_extract_dsk(filename,tmpdir);
@@ -22869,6 +22872,11 @@ int util_extract_preview_file_expandable(char *nombre,char *tmpdir)
 					retorno=util_extract_mdr(nombre,tmpdir);
 			}
 
+			else if (!util_compare_file_extension(nombre,"rmd") ) {
+					debug_printf (VERBOSE_DEBUG,"Is a rmd file");
+					retorno=util_extract_rmd(nombre,tmpdir);
+			}
+
 			else if (!util_compare_file_extension(nombre,"dsk") ) {
 					debug_printf (VERBOSE_DEBUG,"Is a dsk file");
                     //Ejemplos de DSK que muestran pantalla: CASTLE MASTER.DSK , Drazen Petrovic Basket.dsk
@@ -22990,7 +22998,8 @@ int util_get_extract_preview_type_file(char *nombre,long long int file_size)
 		!util_compare_file_extension(nombre,"trd") ||
 		!util_compare_file_extension(nombre,"dsk") ||
         !util_compare_file_extension(nombre,"ddh") ||
-        !util_compare_file_extension(nombre,"mdr")
+        !util_compare_file_extension(nombre,"mdr") ||
+        !util_compare_file_extension(nombre,"rmd")
 
 	) {
         return 1;

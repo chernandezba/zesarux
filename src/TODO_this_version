@@ -455,7 +455,8 @@ contar el total de bytes leidos en vez de la posicion. dar la vuelta cuando conv
 
 -convertir multiface exolon raw a mdr falla en un archivo. quiza es porque el buscar sync tiene que ser mejor? quiza porque hay que dar la vuelta
 al microdrive desde el final?
-
+-quickload rmd
+-view file info rmd (datos cabecera)
 
 
 -LEC memory extension https://ia600604.us.archive.org/view_archive.php?archive=/1/items/World_of_Spectrum_June_2017_Mirror/World%20of%20Spectrum%20June%202017%20Mirror.zip&file=World%20of%20Spectrum%20June%202017%20Mirror/sinclair/hardware-info/l/LECMemoryExtension.pdf
