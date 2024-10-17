@@ -57,7 +57,7 @@ int lec_nested_id_poke_byte_no_time;
 //0=lec-80
 //1=lec-272
 //2=lec-528
-int lec_memory_type=0;
+int lec_memory_type=1;
 
 int lec_all_ram(void)
 {
@@ -76,15 +76,31 @@ void lec_init_memory_tables(void)
 
 void lec_set_memory_pages(void)
 {
+    z80_byte page;
 
     switch (lec_memory_type) {
 
         //LEC-80
         case 0:
-
             lec_memory_pages[0]=lec_ram_memory_table[0];
             lec_memory_pages[1]=lec_ram_memory_table[1];
+        break;
 
+        //LEC-272
+        case 1:
+
+        page=(lec_port_fd>>4) & 7;
+            lec_memory_pages[0]=lec_ram_memory_table[page];
+            printf("segment 0 has page %d\n",page);
+
+/*
+D6 - N2 selects the number of 32K RAM page at #0000-7fff,
+ D5 - N1 selects the number of 32K RAM page at #0000-7fff,
+D4 - N0 selects the number of 32K RAM page at #0000-7fff,
+*/
+
+
+            lec_memory_pages[1]=lec_ram_memory_table[7];
         break;
 
         default:
@@ -100,7 +116,7 @@ void lec_out_port(z80_byte value)
     printf("Lec out port %02XH\n",value);
 
     lec_port_fd=value;
-    lec_set_memory_pages;
+    lec_set_memory_pages();
 
     if (lec_port_fd & 128) printf("Enabling lec memory all ram\n");
     else printf("Disabling lec memory all ram\n");

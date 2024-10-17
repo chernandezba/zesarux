@@ -140,6 +140,8 @@
 
 * Emulates SamRam interface by Gerton Lunter (author of famous Z80 emulator)
 
+* Emulates LEC Memory extension
+
 * Emulates HiLow DataDrive
 
 * Handles RAM, EPROM, Intel Flash and Hybrid (RAM+EPROM) cards on Z88

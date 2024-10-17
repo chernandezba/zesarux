@@ -146,6 +146,7 @@
 #include "dsk.h"
 #include "plus3dos_handler.h"
 #include "pcw.h"
+#include "lec.h"
 
 
 #ifdef COMPILE_STDOUT
@@ -1275,6 +1276,10 @@ util_stats_init();
 	if (hilow_enabled.v) {
 		hilow_reset();
 	}
+
+    if (lec_enabled.v) {
+        lec_reset();
+    }
 
 	if (hilow_bbn_enabled.v) {
 		hilow_bbn_reset();
