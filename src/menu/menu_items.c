@@ -155,6 +155,7 @@
 #include "mk14.h"
 #include "microdrive.h"
 #include "microdrive_raw.h"
+#include "lec.h"
 
 #ifdef COMPILE_ALSA
 #include "audioalsa.h"
@@ -299,6 +300,7 @@ int menu_memory_cheat_next_scan_opcion_seleccionada=0;
 int cpc_additional_roms_opcion_seleccionada=0;
 int interface1_opcion_seleccionada=0;
 int visualmicrodrive_opcion_seleccionada=0;
+int lec_memory_opcion_seleccionada=0;
 //int mdv_simulate_bad_sectors_opcion_seleccionada=0;
 
 //Fin opciones seleccionadas para cada menu
@@ -44836,6 +44838,63 @@ void menu_cpc_additional_roms(MENU_ITEM_PARAMETERS)
 
 }
 
+void menu_lec_memory_enable(MENU_ITEM_PARAMETERS)
+{
+    if (lec_enabled.v) lec_disable();
+    else lec_enable();
+}
+
+
+void menu_lec_memory(MENU_ITEM_PARAMETERS)
+{
+    menu_item *array_menu_common;
+    menu_item item_seleccionado;
+    int retorno_menu;
+
+
+    do {
+
+        menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_lec_memory_enable,NULL,"~~Enable");
+        menu_add_item_menu_shortcut(array_menu_common,'e');
+
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(lec_enabled.v ? 'X' : ' ' ));
+
+
+        //menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_dinamid3,NULL,"D~~inamid3");
+        //menu_add_item_menu_shortcut(array_menu_common,'i');
+        //menu_add_item_menu_tiene_submenu(array_menu_common);
+
+
+
+
+        menu_add_item_menu_separator(array_menu_common);
+
+        menu_add_ESC_item(array_menu_common);
+
+
+        //Nota: si no se agrega el nombre del path del indice, se generará uno automáticamente
+        menu_add_item_menu_index_full_path(array_menu_common,
+            "Main Menu-> Storage-> LEC Memory","Menú Principal-> Almacenamiento-> LEC Memory","Menú Principal-> Emmagatzematge-> LEC Memory");
+
+        retorno_menu=menu_dibuja_menu(&lec_memory_opcion_seleccionada,&item_seleccionado,array_menu_common,
+            "LEC Memory Menu","Menú LEC Memory","Menú LEC Memory" );
+
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+            //llamamos por valor de funcion
+            if (item_seleccionado.menu_funcion!=NULL) {
+                //printf ("actuamos por funcion\n");
+                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+
+            }
+        }
+
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+
+}
+
+
+
+
 
 //menu storage
 void menu_storage(MENU_ITEM_PARAMETERS)
@@ -45040,6 +45099,13 @@ void menu_storage(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_tiene_submenu(array_menu_storage);
 		}
 
+		if (MACHINE_IS_SPECTRUM) {
+			//menu_tape_settings_trunc_name(mmc_file_name,string_mmc_file_shown,13);
+			menu_add_item_menu_format(array_menu_storage,MENU_OPCION_NORMAL,menu_lec_memory,NULL,"LEC memory");
+			menu_add_item_menu_tooltip(array_menu_storage,"LEC Memory extension");
+			menu_add_item_menu_ayuda(array_menu_storage,"LEC Memory extension");
+            menu_add_item_menu_tiene_submenu(array_menu_storage);
+		}
 
 
 		if (MACHINE_IS_SPECTRUM) {

@@ -92,6 +92,7 @@
 #include "pcw.h"
 #include "dsk.h"
 #include "utils_text_adventure.h"
+#include "lec.h"
 
 
 void (*poke_byte)(z80_int dir,z80_byte valor);
@@ -9082,6 +9083,9 @@ Port: 10-- ---- ---- --0-
         interface1_write_value_port(puerto_l,value);
     }
 
+    if (lec_enabled.v) {
+        if (puerto_l==0xFD) lec_out_port(value);
+    }
 
 	//Puertos paginacion para superupgrade
  if (superupgrade_enabled.v)

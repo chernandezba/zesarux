@@ -22,7 +22,12 @@
 #ifndef LEC_H
 #define LEC_H
 
+#include "cpu.h"
+
 #define LEC_MAX_RAM_BLOCKS 16
 #define LEC_MAX_RAM_SIZE (LEC_MAX_RAM_BLOCKS*32768)
+
+extern z80_bit lec_enabled;
+extern void lec_out_port(z80_byte value);
 
 #endif

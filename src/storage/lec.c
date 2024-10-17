@@ -95,6 +95,16 @@ void lec_set_memory_pages(void)
 
 }
 
+void lec_out_port(z80_byte value)
+{
+    printf("Lec out port %02XH\n",value);
+
+    lec_port_fd=value;
+    lec_set_memory_pages;
+
+    if (lec_port_fd & 128) printf("Enabling lec memory all ram\n");
+    else printf("Disabling lec memory all ram\n");
+}
 
 z80_byte *lec_get_memory_pointer(int dir)
 {
