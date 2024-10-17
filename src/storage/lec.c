@@ -123,7 +123,7 @@ D3 - N3 selects the number of 32K RAM page at #0000-7fff, when PG=1. Don't care 
             lec_memory_pages[0]=lec_ram_memory_table[page];
             printf("lec 528 segment 0 has page %d\n",page);
 
-
+            lec_memory_pages[1]=lec_ram_memory_table[15];
 
         break;
 
