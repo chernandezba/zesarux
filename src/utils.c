@@ -16888,6 +16888,7 @@ int util_extract_tap(char *filename,char *tempdir,char *tzxfile,int tzx_turbo_rg
 int util_extract_mdr(char *filename,char *tempdir)
 {
 
+
 	if (util_compare_file_extension(filename,"mdr")!=0) {
 		debug_printf(VERBOSE_ERR,"MDR expander not supported for this microdrive type");
 		return 1;
@@ -16938,6 +16939,7 @@ int util_extract_mdr(char *filename,char *tempdir)
 //int total_sectors
 
     int total_sectors=leidos/MDR_BYTES_PER_SECTOR;
+    //printf("total sectors: %d\n",total_sectors);
 
     struct s_mdr_file_cat *catalogo;
 
@@ -16991,6 +16993,8 @@ int util_extract_mdr(char *filename,char *tempdir)
             //Meter en archivo MENU_SCR_INFO_FILE_NAME la ruta al archivo de pantalla
             util_save_file((z80_byte *)buffer_temp_file,strlen(buffer_temp_file)+1,buff_preview_scr);
         }
+
+        free(destino);
 
     }
 

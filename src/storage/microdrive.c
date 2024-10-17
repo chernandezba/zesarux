@@ -976,6 +976,10 @@ void mdr_get_file_from_catalogue(z80_byte *origen,struct s_mdr_file_cat_one_file
 
                     tamanyo_esperado -=rec_length;
 
+                    if (rec_length>512) {
+                        DBG_PRINT_MDR VERBOSE_DEBUG,"MDR: Asked for more than 512 bytes to read of a sector (%d). Error. Truncating to 512",rec_length);
+                        rec_length=512;
+                    }
 
                     mdr_safe_memcpy(origen,i,offset_a_grabar,destino,rec_length);
                 }
