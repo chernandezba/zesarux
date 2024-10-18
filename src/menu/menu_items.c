@@ -43121,7 +43121,7 @@ void menu_visual_microdrive_overlay(void)
 
     //No redibujar si no hay cambios de nada
     if (menu_visual_microdrive_window->dirty_user_must_draw_contents /*|| visual_microdrive_forzar_redraw*/) {
-        printf("Redibujando parte estatica. %d\n",contador_segundo_infinito);
+        //printf("Redibujando parte estatica. %d\n",contador_segundo_infinito);
         menu_visual_microdrive_dibujar_microdrive_estatico(&dibujo_microdrive);
         menu_visual_microdrive_window->dirty_user_must_draw_contents=0;
         //visual_microdrive_forzar_redraw=0;
@@ -43295,6 +43295,12 @@ void menu_visual_microdrive_previo(MENU_ITEM_PARAMETERS)
     menu_visual_microdrive(0);
 }
 
+void menu_interface1_rom_version(MENU_ITEM_PARAMETERS)
+{
+    if (if1_rom_version==1) if1_rom_version=2;
+    else if1_rom_version=1;
+}
+
 void menu_interface1(MENU_ITEM_PARAMETERS)
 {
     menu_item *array_menu_common;
@@ -43309,6 +43315,8 @@ void menu_interface1(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_shortcut(array_menu_common,'e');
 
 
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_interface1_rom_version,NULL,"ROM version");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%d] ",if1_rom_version);
 
         //De momento soportar hasta 4 microdrives en el menu , aunque se permiten hasta 8
 

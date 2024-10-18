@@ -448,7 +448,6 @@ Conversión de raw a mdr: cortar ignorando gaps y sync. Pero hay que determinar 
 *multiface 128
 
 -separar info byte en array distinto?
--probar cambiar algoritmo sync
 
 -convertir raw microdrive a mdr que soporte empezar por a mitad de sector y dar la vuelta
 contar el total de bytes leidos en vez de la posicion. dar la vuelta cuando convenga
@@ -457,6 +456,8 @@ contar el total de bytes leidos en vez de la posicion. dar la vuelta cuando conv
 al microdrive desde el final?
 -quickload rmd
 -view file info rmd (datos cabecera)
+ok -seleccion de rom interface1: version 1 o 2. Versión 1 formatea a 127k, version 2 a 126k, para mejorar "fiabilidad". Por defecto 2
+-recopilar info microdrive de links utiles
 
 
 -LEC memory extension https://ia600604.us.archive.org/view_archive.php?archive=/1/items/World_of_Spectrum_June_2017_Mirror/World%20of%20Spectrum%20June%202017%20Mirror.zip&file=World%20of%20Spectrum%20June%202017%20Mirror/sinclair/hardware-info/l/LECMemoryExtension.pdf
@@ -464,4 +465,10 @@ al microdrive desde el final?
 https://trastero.speccy.org/cosas/FLeon/todo_sobre_la_ram_y_rom_lec.txt
 https://trastero.speccy.org/cosas/FLeon/Fleon.htm
 
+https://worldofspectrum.org/archive/software/utilities/cpm-22-for-the-lec-memory-extension-jiri-lamac
+
 -agregar memory zone lec
+-Lec write no debería escribir en la RAM real, ya que se quita la RAM real. Aunque si lo hace tampoco pasa nada.
+De hecho hay que hacer que lo haga para que sume t-estados de escritura
+-Tape traps para lec rom? no, los traps funcionan pues tiene rutinas estandard de carga y grabacion
+-Como incluir las lec rom? como alternate? mover todas las alternate a carpeta alternate?

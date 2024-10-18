@@ -67,4 +67,9 @@ extern void microdrive_raw_mark_bad_position(int microdrive_seleccionado,int pos
 
 extern void microdrive_raw_unmark_bad_position(int microdrive_seleccionado,int position);
 
+extern void microdrive_raw_insert(int microdrive_seleccionado);
+
+extern void microdrive_raw_flush_to_disk_one(int microdrive_seleccionado);
+
+
 #endif

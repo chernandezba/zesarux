@@ -22,11 +22,12 @@
 /*
 
 RAW Microdrive emulation, that can hold any filesystem (not just the interface 1 rom: the one supported for .mdr files)
+For standard .MDR emulation, see file "microdrive.c"
 
 Info about how it works:
 
 -Reading or writing to data port E7 blocks the cpu (enables WAIT signal) until the next byte is read/written
--Every 168 t-states the microdrive reads a byte and releases WAIT signal
+-Every 168 t-states the microdrive reads a byte, advances one position and releases WAIT signal
 -Reading or writing to status port EF doesn't block the cpu
 
 -The microdrive can write two types of signals:
@@ -58,8 +59,8 @@ The zeroes determine the bit boundaries for decoding and the 8 ones determine th
 When I mention ones and zeroes I'm talking about bit value (bytes are just an abstraction in hardware).
 "
 
-When he says "a unique bit sequence (24 or more zero bits followed by 8 one bits) on each channel. " it means for every track,
-so the sync sequence is formed by FF FF 00 00 00 00 00 00
+When he says "a unique bit sequence (24 or more zero bits followed by 8 one bits) on each channel. " it means for the two tracks,
+so the sync sequence is formed by FF FF 00 00 00 00 00 00. This byte sequence triggers the sync signal.
 
 HOWEVER, if I emulate this behaviour, it doesn't format well from the interface 1 rom (I mean a normal FORMAT command from basic).
 The total available sectors are less than expected.
@@ -73,10 +74,28 @@ So my current implementation of the sync signal is:
 I have both algorithms available on my code, with the variable:
 microdrive_raw_new_sync_algorithm
 
-If it's set to 0, it uses my algorithm that works (byte AND previous byte).
+If it's set to 0, it uses my algorithm that works (byte AND previous byte). This is the default value.
 It it's set to 1, it uses the "real" behaviour from the ula, but it doesn't work well: after format from basic,
-the total available sectors are less than expected
+the total available sectors are less than expected. Do NOT set it unless you know what you are doing
 I have kept the two algorithms so maybe in the future I can fix it and use the real algorithm
+
+
+
+More info:
+
+https://worldofspectrum.org/faq/reference/formats.htm
+
+https://ia601504.us.archive.org/23/items/spectrum_microdrive_book/spectrum_microdrive_book.pdf
+
+https://sinclair.wiki.zxnet.co.uk/wiki/ZX_Interface_1
+
+https://k1.spdns.de/Vintage/Sinclair/82/Peripherals/Interface%201%20and%20Microdrives%20(Sinclair)/Microdrive-IF1%20Complete%20Rom%20Disassembly.pdf
+
+http://rk.nvg.ntnu.no/sinclair/faq/fileform.html#MDR
+
+https://k1.spdns.de/Vintage/Sinclair/82/Peripherals/Interface%201%20and%20Microdrives%20(Sinclair)/ZX%20Interface%20I%20and%20Interface%20II%20Service%20Manual%20%232.pdf
+
+https://microhobby.speccy.cz/sinclair.htm
 
 
 */
@@ -206,7 +225,7 @@ z80_byte raw_anterior_leido;
 z80_byte raw_nuevo_sync_lista[8]={0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff};
 
 
-//Si es 0, puerto EF es bloqueante. Y Sync=1 cuando byte anterior AND actual=0; en caso contrario, sync=0. Esto funciona
+//Si es 0, puerto EF es bloqueante. Y Sync=0 cuando byte anterior AND actual=0; en caso contrario, sync=1. Esto funciona
 //formateando con la rom del interface1 y con multiface 128
 
 //Si es 1, es el comportamiento teorico de la ULA de la interface1. Aunque NO acaba de formatear con la rom del interface1

@@ -59,6 +59,24 @@ Si salgo de ZEsarUX y vuelvo a escribir todos los bytes a 0, y formateo, se obti
 Quizá esto es un fallo de emulacion o del propio interface1. En Fuse por ejemplo, un microdrive en blanco al formatearlo siempre da
 126 kb libres, no 127, por lo que quizá Fuse también tiene un error o quizá el error está en la propia rom del interface1
 
+Links utiles:
+https://worldofspectrum.org/faq/reference/formats.htm
+
+https://ia601504.us.archive.org/23/items/spectrum_microdrive_book/spectrum_microdrive_book.pdf
+
+https://sinclair.wiki.zxnet.co.uk/wiki/ZX_Interface_1
+
+https://k1.spdns.de/Vintage/Sinclair/82/Peripherals/Interface%201%20and%20Microdrives%20(Sinclair)/Microdrive-IF1%20Complete%20Rom%20Disassembly.pdf
+
+http://rk.nvg.ntnu.no/sinclair/faq/fileform.html#MDR
+
+https://k1.spdns.de/Vintage/Sinclair/82/Peripherals/Interface%201%20and%20Microdrives%20(Sinclair)/ZX%20Interface%20I%20and%20Interface%20II%20Service%20Manual%20%232.pdf
+
+https://microhobby.speccy.cz/sinclair.htm
+
+
+
+
 */
 
 #include <stdio.h>
@@ -68,6 +86,7 @@ Quizá esto es un fallo de emulacion o del propio interface1. En Fuse por ejempl
 
 
 #include "microdrive.h"
+#include "microdrive_raw.h"
 #include "if1.h"
 #include "cpu.h"
 #include "debug.h"

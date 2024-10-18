@@ -72,6 +72,7 @@
 #include "menu_items.h"
 #include "plus3dos_handler.h"
 #include "zeng_online_client.h"
+#include "if1.h"
 
 z80_byte byte_leido_core_spectrum;
 

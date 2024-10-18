@@ -31,4 +31,7 @@ extern z80_bit lec_enabled;
 extern void lec_out_port(z80_byte value);
 extern void lec_reset(void);
 
+extern void lec_disable(void);
+extern void lec_enable(void);
+
 #endif

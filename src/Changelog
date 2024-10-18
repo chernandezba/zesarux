@@ -2,7 +2,7 @@ ZEsarUX 11.1 - Zorro edition. 30 July 2024
 
 * New things added:
 
-Added ZX Microdrive emulation on ZX Spectrum
+Added ZX Microdrive emulation on ZX Spectrum: that includes: mdr emulation, raw format, visual microdrive.... COMPLETAR ESTO
 Added LEC memory extension emulation
 Added machines Czerweny CZ 1000, CZ 1500, CZ 1000 Plus, CZ 1500 Plus, CZ 2000, CZ Spectrum, CZ Spectrum Plus
 Added Memory Cheat feature: useful to find counters of energy, bombs, ammo or any other cheat in a game

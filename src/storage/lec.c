@@ -157,7 +157,6 @@ z80_byte lec_common_peek(z80_int dir)
 {
 
 
-	int segmento;
 	z80_byte *puntero;
 
     puntero=lec_get_memory_pointer(dir);
@@ -169,7 +168,6 @@ void lec_common_poke(z80_int dir,z80_byte valor)
 {
 
 
-	int segmento;
 	z80_byte *puntero;
 
     puntero=lec_get_memory_pointer(dir);

@@ -50,10 +50,12 @@ z80_byte interface1_last_value_port_e7=0;
 z80_byte interface1_last_read_e7=0;
 
 
+int if1_rom_version=2;
+
+char *if1_v1_rom_name="if1-v1.rom";
+char *if1_v2_rom_name="if1-v2.rom";
 
 
-
-#define IF1_ROM_NAME "if1-v2.rom"
 
 /*
 http://thespeccyzone.emuunlim.org/hardwarefiles/technical_files/i1_microdrives.htm
@@ -319,7 +321,11 @@ void disable_if1(void)
 	free(if1_memory_pointer);
 }
 
-
+char *if1_return_rom_name(void)
+{
+    if (if1_rom_version==1) return if1_v1_rom_name;
+    else return if1_v2_rom_name;
+}
 
 void enable_if1(void)
 {
@@ -339,9 +345,9 @@ void enable_if1(void)
 	FILE *ptr_if1_romfile;
     int leidos=0;
 
-    DBG_PRINT_IF1 VERBOSE_DEBUG,"IF1: Loading if1 firmware %s",IF1_ROM_NAME);
+    DBG_PRINT_IF1 VERBOSE_INFO,"IF1: Loading if1 firmware %s",if1_return_rom_name() );
 
-    open_sharedfile(IF1_ROM_NAME,&ptr_if1_romfile);
+    open_sharedfile(if1_return_rom_name(),&ptr_if1_romfile);
 
 
     if (ptr_if1_romfile!=NULL) {
@@ -352,7 +358,7 @@ void enable_if1(void)
 
 
     if (leidos!=size || ptr_if1_romfile==NULL) {
-        DBG_PRINT_IF1 VERBOSE_ERR,"IF1: Error reading Interface 1 firmware, file " IF1_ROM_NAME );
+        DBG_PRINT_IF1 VERBOSE_ERR,"IF1: Error reading Interface 1 firmware, file %s",if1_return_rom_name() );
         //Lo desactivamos asi porque el disable hace otras cosas, como cambiar el core loop, que no queremos
         if1_enabled.v=0;
         return ;
@@ -462,6 +468,8 @@ void interface1_count_tstates(void)
 {
     if (if1_enabled.v==0) return;
 
+    //TODO: esto solo funciona para un microdrive activo a la vez
+    //Caso remoto, pero podrian haber varios funcionando
     if (!microdrive_current_is_raw()) return;
 
     int microdrive_activo=microdrive_primer_motor_activo();
