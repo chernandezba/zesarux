@@ -530,6 +530,12 @@ z80_byte microdrive_status_ef(void)
     //para que llegue el siguiente byte, te llegará
     #define MICRODRIVE_PASOS_CAMBIO_ESTADO 20
 
+    //Nota: Devolver bit de MICRODRIVE_STATUS_BIT_SYNC implica que se interpreta como que NO hay sync: el bit 1
+    //de estatus del puerto implica que si es 0 hay sync, si es 1 no hay sync
+    //por tanto cuando se asigna return_value=MICRODRIVE_STATUS_BIT_SYNC quiere decir que no hay sync
+    //Tiene en parte lógica porque fuera de la secuencia de bytes sync (00 00 ... FF FF) se le está enviando 0, cosa que implica que hay sync
+    //Esto no lo sabía cuando hice esta rutina pero posteriormente he visto que el bit de status de sync va al "revés" de lo normal
+
     if (motor_activo>=0) {
 
         if      (microdrive_status[motor_activo].contador_estado_microdrive<MICRODRIVE_PASOS_CAMBIO_ESTADO)   return_value=MICRODRIVE_STATUS_BIT_GAP; //gap
