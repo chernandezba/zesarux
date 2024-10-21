@@ -165,7 +165,9 @@ void core_cpc_end_scanline_stuff(void)
 	audio_valor_enviar_sonido_derecho +=da_output_ay_derecho();
 
     if (cpc_sound_mic.v) {
-        int sonido_mic=(bit_salida_sonido_cpc_mic.v ? 100 : -100);
+        //bit 5    Cassette Write data     Cassette Out (sometimes also used as Printer Bit7, see 8bit Printer Ports)
+        int sonido_mic=(cpc_ppi_ports[2] & 0x20 ? 100 : -100);
+
         //de momento valor arbitrario
 
         audio_valor_enviar_sonido_izquierdo /=2;

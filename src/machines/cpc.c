@@ -123,8 +123,6 @@ z80_byte cpc_ppi_ports[4];
 //si se incluye mic en la salida al speaker
 z80_bit cpc_sound_mic={0};
 
-//mic
-z80_bit bit_salida_sonido_cpc_mic;
 
 //Paleta actual de CPC
 z80_byte cpc_palette_table[16];
@@ -1084,11 +1082,7 @@ void cpc_cassette_motor_control (int valor_bit)
     }
 }
 
-void cpc_sync_cassete_out_bit(void)
-{
-    //bit 5 	Cassette Write data 	Cassette Out (sometimes also used as Printer Bit7, see 8bit Printer Ports)
-    bit_salida_sonido_cpc_mic.v=(cpc_ppi_ports[2]>>5)&1;
-}
+
 
 void cpc_out_ppi(z80_byte puerto_h,z80_byte value)
 {
@@ -1100,42 +1094,42 @@ Bit 9   Bit 8   PPI Function    Read/Write status
 1       1       Control Write Only
 */
 
-        z80_byte port_number=puerto_h&3;
+    z80_byte port_number=puerto_h&3;
 	z80_byte psg_function;
 
 
     //printf ("Writing PPI port %02XH (PPI funcion %d) value %d on PC=%d\n",puerto_h,puerto_h&3,value,reg_pc);
 
-        switch (port_number) {
-                case 0:
+    switch (port_number) {
+        case 0:
 
-                        //printf ("Writing PPI port A value %d en pc=%d\n",value,reg_pc);
-                        cpc_ppi_ports[0]=value;
-
-
-                        //Si control esta en output
-                    /*
-                    if ((cpc_psg_control_bits & 16)==0) {
-                        printf ("Writing PPI port A value %d en pc en modo escritura=%d\n",value,reg_pc);
-			            cpc_ppi_ports[0]=value;
-                    }
-
-                    else {
-                        printf ("Writing PPI port A value %d en pc en modo lectura=%d\n",value,reg_pc);
-			            //cpc_ppi_ports[0]=value;
-                        ay_3_8912_registro_sel[ay_chip_selected]=value;
-                    }
-                    */
+                //printf ("Writing PPI port A value %d en pc=%d\n",value,reg_pc);
+                cpc_ppi_ports[0]=value;
 
 
-                break;
+                //Si control esta en output
+            /*
+            if ((cpc_psg_control_bits & 16)==0) {
+                printf ("Writing PPI port A value %d en pc en modo escritura=%d\n",value,reg_pc);
+                cpc_ppi_ports[0]=value;
+            }
 
-                case 1:
-                        //printf ("Writing PPI port B value 0x%02X pc=%d\n",value,reg_pc);
-			cpc_ppi_ports[1]=value;
-                break;
+            else {
+                printf ("Writing PPI port A value %d en pc en modo lectura=%d\n",value,reg_pc);
+                //cpc_ppi_ports[0]=value;
+                ay_3_8912_registro_sel[ay_chip_selected]=value;
+            }
+            */
 
-                case 2:
+
+        break;
+
+        case 1:
+            //printf ("Writing PPI port B value 0x%02X pc=%d\n",value,reg_pc);
+            cpc_ppi_ports[1]=value;
+        break;
+
+        case 2:
                         //printf ("Writing PPI port C value 0x%02X\n",value);
 /*
 Bit 7	Bit 6	Function
@@ -1238,12 +1232,11 @@ The data will be written into the register. Finally, the PSG must be put into an
 
 			//cpc_ppi_ports[2]=value;
 
-                cpc_sync_cassete_out_bit();
 
 
-                break;
+        break;
 
-                case 3:
+        case 3:
                         //printf ("Writing PPI port control write only value 0x%02X on pc=%d\n",value,reg_pc);
                         //sleep(1);
             /*
@@ -1310,7 +1303,6 @@ Otherwise, if Bit 7 is "0" then the register is used to set or clear a single bi
 				cpc_ppi_ports[2] &=mascara;
 				cpc_ppi_ports[2] |=valor_bit;
 
-                cpc_sync_cassete_out_bit();
 
 				//printf ("Valor despues Reg C: %d\n",cpc_ppi_ports[2]);
 
@@ -1320,10 +1312,10 @@ Otherwise, if Bit 7 is "0" then the register is used to set or clear a single bi
 				}
 			}
 
-                break;
+        break;
 
 
-        }
+    }
 
 }
 
