@@ -3801,7 +3801,11 @@ void menu_audiosdl_callback_type(MENU_ITEM_PARAMETERS)
 void menu_audio_ace_mic(MENU_ITEM_PARAMETERS)
 {
     ace_sound_mic.v ^=1;
-    cpc_sound_mic.v ^=1;
+}
+
+void menu_audio_cpc_mic(MENU_ITEM_PARAMETERS)
+{
+    cpc_sound_cassette_out.v ^=1;
 }
 
 void menu_settings_audio(MENU_ITEM_PARAMETERS)
@@ -3976,13 +3980,19 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
 
 		menu_add_item_menu(array_menu_settings_audio,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
-        if (MACHINE_IS_ACE || MACHINE_IS_CPC) {
+        if (MACHINE_IS_ACE) {
             menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_audio_ace_mic,NULL,
                 "[%c] Enable MIC",(ace_sound_mic.v ? 'X' : ' '));
                 menu_add_item_menu_tooltip(array_menu_settings_audio,"Allow to hear MIC output");
                 menu_add_item_menu_ayuda(array_menu_settings_audio,"Allow to hear MIC output");
         }
 
+        if (MACHINE_IS_CPC) {
+            menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_audio_cpc_mic,NULL,
+                "[%c] Enable Cassette Out sound",(cpc_sound_cassette_out.v ? 'X' : ' '));
+                menu_add_item_menu_tooltip(array_menu_settings_audio,"Allow to hear Cassette Out sound");
+                menu_add_item_menu_ayuda(array_menu_settings_audio,"Allow to hear Cassette Out sound");
+        }
 
 		if (MACHINE_IS_SPECTRUM) {
 			menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_audio_beep_filter_on_rom_save,NULL,"ROM SAVE filter");

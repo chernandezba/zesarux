@@ -120,8 +120,8 @@ z80_byte cpc_crtc_last_selected_register=0;
 z80_byte cpc_ppi_ports[4];
 
 
-//si se incluye mic en la salida al speaker
-z80_bit cpc_sound_mic={0};
+//si se incluye Cassette out en la salida
+z80_bit cpc_sound_cassette_out={0};
 
 
 //Paleta actual de CPC
