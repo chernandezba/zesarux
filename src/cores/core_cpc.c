@@ -165,7 +165,7 @@ void core_cpc_end_scanline_stuff(void)
 	audio_valor_enviar_sonido_derecho +=da_output_ay_derecho();
 
     if (cpc_sound_mic.v) {
-        int sonido_mic=(bit_salida_sonido_cpc_mic.v ? 50 : -50);
+        int sonido_mic=(bit_salida_sonido_cpc_mic.v ? 100 : -100);
         //de momento valor arbitrario
 
         audio_valor_enviar_sonido_izquierdo /=2;

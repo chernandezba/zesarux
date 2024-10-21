@@ -30,6 +30,7 @@ Mejorada compilación: opciones --enable-memptr --enable-visualmem --enable-cpus
 Mejorado debug cpu history: permitir cambiar el puntero de memoria según el registro PC mostrado en el historial
 Mejorada emulación del Inves Spectrum+: alertar cuando un juego puede resetearse debido al bug de Inves de write-on-interrupt
 Mejorada emulación de Jupiter Ace: permitir escuchar salida MIC
+Mejorada emulación de CPC: permitir escuchar sonido de Salida Casette
 Mejorado Hexadecimal editor:
 - Ahora los datos se refrescan también cuando la ventana tiene el foco
 - Ahora el puntero de memoria puede seguir una expresión (un registro de la CPU por ejemplo)
