@@ -119,6 +119,13 @@ z80_byte cpc_crtc_last_selected_register=0;
 //3=Control
 z80_byte cpc_ppi_ports[4];
 
+
+//si se incluye mic en la salida al speaker
+z80_bit cpc_sound_mic={0};
+
+//mic
+z80_bit bit_salida_sonido_cpc_mic;
+
 //Paleta actual de CPC
 z80_byte cpc_palette_table[16];
 
@@ -1133,6 +1140,13 @@ Bit 7	Bit 6	Function
 1	1	Select PSG register
 
 */
+
+            //bit 5 	Cassette Write data 	Cassette Out (sometimes also used as Printer Bit7, see 8bit Printer Ports)
+            bit_salida_sonido_cpc_mic.v=(value>>5)&1;
+            printf("Out port ppi C %02XH %d\n",value,bit_salida_sonido_cpc_mic.v);
+
+            if (bit_salida_sonido_cpc_mic.v || value==0x78) sleep(5);
+
 			psg_function=(value>>6)&3;
             //printf ("Writing PPI port C value %d psg_funcion %d pc=%d\n",value,psg_function,reg_pc);
 
@@ -1293,6 +1307,15 @@ Otherwise, if Bit 7 is "0" then the register is used to set or clear a single bi
 
 				cpc_ppi_ports[2] &=mascara;
 				cpc_ppi_ports[2] |=valor_bit;
+
+
+                bit_salida_sonido_cpc_mic.v=(cpc_ppi_ports[2]>>5)&1;
+                if (bit_salida_sonido_cpc_mic.v || cpc_ppi_ports[2]==0x78) {
+                    printf ("1 Valor despues Reg C: %d bit_salida_sonido_cpc_mic: %d\n",cpc_ppi_ports[2],bit_salida_sonido_cpc_mic.v);
+                    //sleep(5);
+                }
+
+                printf ("Valor despues Reg C: %d bit_salida_sonido_cpc_mic: %d\n",cpc_ppi_ports[2],bit_salida_sonido_cpc_mic.v);
 
 				//printf ("Valor despues Reg C: %d\n",cpc_ppi_ports[2]);
 

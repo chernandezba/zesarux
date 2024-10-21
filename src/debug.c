@@ -6089,6 +6089,20 @@ void debug_get_ioports(char *stats_buffer)
 					sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 			}
 
+
+            sprintf (buf_linea,"\nPPI Port A:  %02X\n",cpc_ppi_ports[0]);
+            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+            sprintf (buf_linea,"PPI Port B:  %02X\n",cpc_ppi_ports[1]);
+            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+            sprintf (buf_linea,"PPI Port C:  %02X\n",cpc_ppi_ports[2]);
+            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+            sprintf (buf_linea,"PPI Control:  %02X\n",cpc_ppi_ports[3]);
+            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+
 			sprintf (buf_linea,"\nGate Registers:\n");
   			sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 

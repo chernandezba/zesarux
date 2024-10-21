@@ -43297,8 +43297,42 @@ void menu_visual_microdrive_previo(MENU_ITEM_PARAMETERS)
 
 void menu_interface1_rom_version(MENU_ITEM_PARAMETERS)
 {
+
+    if (if1_custom_rom_enabled.v) {
+        if1_custom_rom_enabled.v=0;
+        if1_rom_version=1;
+        return;
+    }
+
     if (if1_rom_version==1) if1_rom_version=2;
-    else if1_rom_version=1;
+
+    else if1_custom_rom_enabled.v=1;
+}
+
+int menu_interface1_rom_cond(void)
+{
+    if (if1_enabled.v) return 0;
+    else return 1;
+}
+
+void menu_interface1_rom_file(MENU_ITEM_PARAMETERS)
+{
+    char *filtros[2];
+
+    filtros[0]="rom";
+    filtros[1]=0;
+
+
+    if (menu_filesel("Select ROM File",filtros, if1_custom_rom_file)==1) {
+        //Nada
+
+    }
+    //Sale con ESC
+    else {
+        //Quitar nombre
+        if1_custom_rom_file[0]=0;
+    }
+
 }
 
 void menu_interface1(MENU_ITEM_PARAMETERS)
@@ -43315,8 +43349,26 @@ void menu_interface1(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_shortcut(array_menu_common,'e');
 
 
-        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_interface1_rom_version,NULL,"ROM version");
-        menu_add_item_menu_prefijo_format(array_menu_common,"[%d] ",if1_rom_version);
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_interface1_rom_version,menu_interface1_rom_cond,"ROM selection");
+        menu_add_item_menu_prefijo(array_menu_common,"    ");
+        menu_add_item_menu_es_avanzado(array_menu_common);
+
+        if (if1_custom_rom_enabled.v) {
+            menu_add_item_menu_sufijo_format(array_menu_common," [Custom]");
+
+            char string_if1_rom_file_shown[10];
+
+            menu_tape_settings_trunc_name(if1_custom_rom_file, string_if1_rom_file_shown,10);
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface1_rom_file,NULL,
+                "IF1 ROM File","Archivo ROM IF1","Arxiu ROM IF1");
+            menu_add_item_menu_sufijo_format(array_menu_common," [%s]", string_if1_rom_file_shown);
+            menu_add_item_menu_prefijo(array_menu_common,"    ");
+            menu_add_item_menu_es_avanzado(array_menu_common);
+        }
+        else {
+            menu_add_item_menu_sufijo_format(array_menu_common," [Version %d]",if1_rom_version);
+            menu_add_item_menu_es_avanzado(array_menu_common);
+        }
 
         //De momento soportar hasta 4 microdrives en el menu , aunque se permiten hasta 8
 

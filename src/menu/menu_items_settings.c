@@ -3798,7 +3798,11 @@ void menu_audiosdl_callback_type(MENU_ITEM_PARAMETERS)
     audiosdl_use_new_callback.v ^=1;
 }
 
-
+void menu_audio_ace_mic(MENU_ITEM_PARAMETERS)
+{
+    ace_sound_mic.v ^=1;
+    cpc_sound_mic.v ^=1;
+}
 
 void menu_settings_audio(MENU_ITEM_PARAMETERS)
 {
@@ -3971,6 +3975,13 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
 		}
 
 		menu_add_item_menu(array_menu_settings_audio,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+
+        if (MACHINE_IS_ACE || MACHINE_IS_CPC) {
+            menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_audio_ace_mic,NULL,
+                "[%c] Enable MIC",(ace_sound_mic.v ? 'X' : ' '));
+                menu_add_item_menu_tooltip(array_menu_settings_audio,"Allow to hear MIC output");
+                menu_add_item_menu_ayuda(array_menu_settings_audio,"Allow to hear MIC output");
+        }
 
 
 		if (MACHINE_IS_SPECTRUM) {

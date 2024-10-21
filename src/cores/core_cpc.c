@@ -164,6 +164,19 @@ void core_cpc_end_scanline_stuff(void)
 	audio_valor_enviar_sonido_izquierdo +=da_output_ay_izquierdo();
 	audio_valor_enviar_sonido_derecho +=da_output_ay_derecho();
 
+    if (cpc_sound_mic.v) {
+        int sonido_mic=(bit_salida_sonido_cpc_mic.v ? 50 : -50);
+        //de momento valor arbitrario
+
+        audio_valor_enviar_sonido_izquierdo /=2;
+        audio_valor_enviar_sonido_izquierdo += sonido_mic/2;
+
+        audio_valor_enviar_sonido_derecho /=2;
+        audio_valor_enviar_sonido_derecho += sonido_mic/2;
+
+        //printf("sonido_mic: %d\n",sonido_mic);
+    }
+
     int leer_cinta_real=0;
 
     if (realtape_inserted.v && realtape_playing.v) leer_cinta_real=1;

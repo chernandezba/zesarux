@@ -829,7 +829,7 @@ void core_spectrum_ciclo_fetch(void)
     pd765_next_event_from_core();
 
     //avance de la posición del microdrive
-    if (MACHINE_IS_SPECTRUM) interface1_count_tstates();
+    //interface1_count_tstates();
 
 
 #ifdef DEBUG_SECOND_TRAP_STDOUT

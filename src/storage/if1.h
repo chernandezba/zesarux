@@ -46,4 +46,8 @@ extern void interface1_count_tstates(void);
 //Para poder hacer debug_printf con la clase de debug adecuada
 #define DBG_PRINT_IF1 debug_printf(VERBOSE_CLASS_IF1|
 
+extern z80_bit if1_custom_rom_enabled;
+
+extern char if1_custom_rom_file[];
+
 #endif

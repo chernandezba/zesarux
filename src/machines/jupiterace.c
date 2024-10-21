@@ -33,12 +33,33 @@
 
 int amplitud_speaker_actual_ace=AMPLITUD_BEEPER;
 
+//beeper
 z80_bit bit_salida_sonido_ace;
+
+//mic
+z80_bit bit_salida_sonido_ace_mic;
+
+//si se incluye mic en la salida al speaker
+z80_bit ace_sound_mic={0};
 
 int da_amplitud_speaker_ace(void)
 {
-                                if (bit_salida_sonido_ace.v) return amplitud_speaker_actual_ace;
-                                else return -amplitud_speaker_actual_ace;
+    if (ace_sound_mic.v) {
+        int valor_speaker;
+        if (bit_salida_sonido_ace.v) valor_speaker=amplitud_speaker_actual_ace;
+        else valor_speaker=-amplitud_speaker_actual_ace;
+
+        int valor_mic;
+        if (bit_salida_sonido_ace_mic.v) valor_mic=amplitud_speaker_actual_ace;
+        else valor_mic=-amplitud_speaker_actual_ace;
+
+        return (valor_speaker+valor_mic)/2;
+    }
+
+    else {
+        if (bit_salida_sonido_ace.v) return amplitud_speaker_actual_ace;
+        else return -amplitud_speaker_actual_ace;
+    }
 }
 
 

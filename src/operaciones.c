@@ -7608,41 +7608,39 @@ void out_port_ace_no_time(z80_int puerto,z80_byte value)
 	debug_fired_out=1;
 
 
-        z80_byte puerto_l=puerto&0xFF;
-        //z80_byte puerto_h=(puerto>>8)&0xFF;
+    z80_byte puerto_l=puerto&0xFF;
+    //z80_byte puerto_h=(puerto>>8)&0xFF;
 
-       //Puerto ULA, cualquier puerto par
+    //Puerto ULA, cualquier puerto par
 
-        if ((puerto_l & 1)==0) {
+    if ((puerto_l & 1)==0) {
 
-		//Any write to this port toggles the speaker "on".
-                                        //y ponemos a high la salida del altavoz
-                        bit_salida_sonido_ace.v=1;
+        //Any write to this port toggles the speaker "on".
+        //y ponemos a high la salida del altavoz
+        bit_salida_sonido_ace.v=1;
 
-                        set_value_beeper_on_array(da_amplitud_speaker_ace() );
+        //bit 3 es el mic
+        bit_salida_sonido_ace_mic.v=(value>>3)&1;
 
-                                silence_detection_counter=0;
-                                beeper_silence_detection_counter=0;
+        set_value_beeper_on_array(da_amplitud_speaker_ace() );
 
-
-			//bit_salida_sonido_ace.v=value&1;
-			//set_value_beeper_on_array(da_amplitud_speaker_ace() );
-			//printf ("Out port ACE ula value: %d\n",bit_salida_sonido_ace.v);
+        silence_detection_counter=0;
+        beeper_silence_detection_counter=0;
 
 
-	}
+    }
 
 
-        //Soundbox
-        if (puerto_l==0xFD) {
-                        activa_ay_chip_si_conviene();
-                        if (ay_chip_present.v==1) out_port_ay(65533,value);
-                }
+    //Soundbox
+    if (puerto_l==0xFD) {
+        activa_ay_chip_si_conviene();
+        if (ay_chip_present.v==1) out_port_ay(65533,value);
+    }
 
-        if (puerto_l==0xFF) {
-                        activa_ay_chip_si_conviene();
-                        if (ay_chip_present.v==1) out_port_ay(49149,value);
-        }
+    if (puerto_l==0xFF) {
+        activa_ay_chip_si_conviene();
+        if (ay_chip_present.v==1) out_port_ay(49149,value);
+    }
 
 
 }

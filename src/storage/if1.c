@@ -35,6 +35,7 @@
 #include "compileoptions.h"
 #include "mem128.h"
 #include "screen.h"
+#include "zesarux.h"
 
 z80_bit if1_enabled={0};
 z80_byte *if1_memory_pointer;
@@ -55,6 +56,11 @@ int if1_rom_version=2;
 char *if1_v1_rom_name="if1-v1.rom";
 char *if1_v2_rom_name="if1-v2.rom";
 
+z80_bit if1_custom_rom_enabled={0};
+
+char if1_custom_rom_file[PATH_MAX]="";
+
+int if1_rom_size=8192;
 
 
 /*
@@ -91,6 +97,9 @@ int if1_nested_id_peek_byte_no_time;
 
 z80_byte cpu_core_loop_if1(z80_int dir GCC_UNUSED, z80_byte value GCC_UNUSED)
 {
+
+    //Solo contar estados cuando el core no está detenido esperando a siguiente interrupcion
+    if (esperando_tiempo_final_t_estados.v==0) interface1_count_tstates();
 
 	int despaginar=0;
 
@@ -184,7 +193,8 @@ z80_byte if1_peek_byte(z80_int dir,z80_byte value GCC_UNUSED)
 
 	if (if1_rom_paged.v && dir<16384) {
 		//printf ("Returning peek at if1 %d 0x%04X\n",dir,dir);
-		return if1_memory_pointer[dir&8191];
+        int mascara=if1_rom_size-1;
+		return if1_memory_pointer[dir&mascara];
 	}
 
 	//return if1_original_peek_byte(dir);
@@ -198,7 +208,8 @@ z80_byte if1_peek_byte_no_time(z80_int dir,z80_byte value GCC_UNUSED)
 
     if (if1_rom_paged.v && dir<16384) {
 		//printf ("Returning peek at if1 %d 0x%04X\n",dir,dir);
-		return if1_memory_pointer[dir&8191];
+        int mascara=if1_rom_size-1;
+		return if1_memory_pointer[dir&mascara];
 	}
 
         //return if1_original_peek_byte_no_time(dir);
@@ -334,7 +345,7 @@ void enable_if1(void)
     DBG_PRINT_IF1 VERBOSE_INFO,"IF1: Enabling Interface 1 emulation");
 
 	//Asignar memoria
-    int size=8192;
+    int size=16384;
 
     DBG_PRINT_IF1 VERBOSE_DEBUG,"IF1: Allocating %d kb of memory for Interface 1 emulation",size/1024);
 
@@ -343,22 +354,31 @@ void enable_if1(void)
 
 	//Cargar ROM
 	FILE *ptr_if1_romfile;
-    int leidos=0;
+    //int leidos=0;
 
-    DBG_PRINT_IF1 VERBOSE_INFO,"IF1: Loading if1 firmware %s",if1_return_rom_name() );
+    if (if1_custom_rom_enabled.v) {
+        DBG_PRINT_IF1 VERBOSE_INFO,"IF1: Loading custom if1 firmware %s",if1_custom_rom_file);
+        ptr_if1_romfile=fopen(if1_custom_rom_file,"rb");
+    }
 
-    open_sharedfile(if1_return_rom_name(),&ptr_if1_romfile);
+    else {
+
+        DBG_PRINT_IF1 VERBOSE_INFO,"IF1: Loading if1 firmware %s",if1_return_rom_name() );
+
+        open_sharedfile(if1_return_rom_name(),&ptr_if1_romfile);
+
+    }
 
 
     if (ptr_if1_romfile!=NULL) {
-        leidos=fread(if1_memory_pointer,1,size,ptr_if1_romfile);
+        if1_rom_size=fread(if1_memory_pointer,1,size,ptr_if1_romfile);
         fclose(ptr_if1_romfile);
     }
 
 
 
-    if (leidos!=size || ptr_if1_romfile==NULL) {
-        DBG_PRINT_IF1 VERBOSE_ERR,"IF1: Error reading Interface 1 firmware, file %s",if1_return_rom_name() );
+    if ((if1_rom_size!=8192 && if1_rom_size!=16384) || ptr_if1_romfile==NULL) {
+        DBG_PRINT_IF1 VERBOSE_ERR,"IF1: Error reading Interface 1 firmware");
         //Lo desactivamos asi porque el disable hace otras cosas, como cambiar el core loop, que no queremos
         if1_enabled.v=0;
         return ;
@@ -464,6 +484,9 @@ int interface1_estados_anterior=0;
 //Cuantos t_estados han pasado desde el ultimo avance del microdrive
 int interface1_transcurrido_desde_ultimo_movimiento=0;
 
+//12us per bit cell=6 us per two tracks=48 us per byte=0.000048 seconds per byte    =48 microseconds
+//1-tstate=                                            0.000000285714286 seconds    =0.285 microseconds
+int speed_mdv=168;
 void interface1_count_tstates(void)
 {
     if (if1_enabled.v==0) return;
@@ -481,13 +504,13 @@ void interface1_count_tstates(void)
     int delta_testados;
 
     //Cada 168 t-estados, avanzar un byte
-    if (t_estados>interface1_estados_anterior) {
+    if (t_estados>=interface1_estados_anterior) {
         delta_testados=t_estados-interface1_estados_anterior;
     }
 
     else {
         //ha dado la vuelta
-        //printf("ha dado la vuelta\n");
+        //printf("ha dado la vuelta. t_estados=%d interface1_estados_anterior=%d\n",t_estados,interface1_estados_anterior);
         delta_testados=screen_testados_total-interface1_estados_anterior;
         //printf("parcial delta: %5d t_estados: %d screen_testados_total: %d\n",delta_testados,t_estados,screen_testados_total);
         delta_testados +=t_estados;
@@ -497,9 +520,10 @@ void interface1_count_tstates(void)
 
     interface1_transcurrido_desde_ultimo_movimiento +=delta_testados;
 
-    if (interface1_transcurrido_desde_ultimo_movimiento>=168) {
-        interface1_transcurrido_desde_ultimo_movimiento -=168;
-        //printf("mover cabezal en testados: %d testados_parc: %d interface1_transcurrido_desde_ultimo_movimiento: %d\n",t_estados,debug_t_estados_parcial,interface1_transcurrido_desde_ultimo_movimiento);
+    if (interface1_transcurrido_desde_ultimo_movimiento>=speed_mdv) {
+        interface1_transcurrido_desde_ultimo_movimiento -=speed_mdv;
+        //printf("mover cabezal en testados: %d testados_parc: %d interface1_transcurrido_desde_ultimo_movimiento: %d screen_testados_total: %d\n",
+        //    t_estados,debug_t_estados_parcial,interface1_transcurrido_desde_ultimo_movimiento,screen_testados_total);
         microdrive_raw_move();
     }
 

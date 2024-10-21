@@ -64,6 +64,9 @@ extern z80_byte debug_cpc_type_memory_paged_read[];
 extern z80_byte debug_cpc_paginas_memoria_mapeadas_read[];
 extern void init_cpc_line_display_table(void);
 
+extern z80_bit cpc_sound_mic;
+extern z80_bit bit_salida_sonido_cpc_mic;
+
 //Hacer que estos valores de border sean multiples de 8
 #define CPC_LEFT_BORDER_NO_ZOOM 80
 //#define CPC_LEFT_BORDER_NO_ZOOM 192

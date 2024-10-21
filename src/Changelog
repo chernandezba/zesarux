@@ -29,6 +29,7 @@ Allow magnify sprites on View Sprites
 Improve compilation: settings --enable-memptr --enable-visualmem --enable-cpustats are enabled by default on ./configure
 Improved debug cpu history: allow to change memory pointer to the PC register show in history
 Improved Inves Spectrum+ emulation: alert when a game may crash due to the Inves write-on-interrupt bug
+Improved Jupiter Ace emulation: allow to hear MIC output
 Improved Hexadecimal editor:
 - Now the data is refreshed when the window has the focus too
 - Now the memory pointer can follow a expression (CPU register for example)

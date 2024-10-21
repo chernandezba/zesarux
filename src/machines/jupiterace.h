@@ -29,6 +29,8 @@ extern int da_amplitud_speaker_ace(void);
 extern int amplitud_speaker_actual_ace;
 
 extern z80_bit bit_salida_sonido_ace;
+extern z80_bit bit_salida_sonido_ace_mic;
+extern z80_bit ace_sound_mic;
 
 extern void set_ace_ramtop(z80_byte valor);
 extern int get_ram_ace(void);
