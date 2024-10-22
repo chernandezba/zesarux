@@ -43393,8 +43393,15 @@ void menu_microdrive_raw_map_draw(zxvision_window *w)
     //Colores de visualmem, en principio
     //Zonas de datos en rojo
     //Gap en color unused
-    int color_gap=ESTILO_GUI_COLOR_UNUSED_VISUALMEM;
-    int color_pixel=ESTILO_GUI_COLOR_AVISO;
+    int color_gap=7;
+    int color_pixel=2+8;
+
+    //otros colores por definir aun
+    int color_gap_leyendo=15;
+    int color_pixel_leyendo=2; //como el color de aviso pero sin brillo
+
+    int color_gap_escribiendo=4; //verde
+    int color_pixel_escribiendo=6; //amarillo
 
     int total_size=microdrive_status[microdrive_raw_map_selected_unit].raw_total_size;
 
@@ -43411,6 +43418,32 @@ void menu_microdrive_raw_map_draw(zxvision_window *w)
             //es un gap
             color=color_gap;
         }
+
+        //Consultar visualmem
+#ifdef EMULATE_VISUALMEM
+        int posicion_visualmem=microdrive_get_visualmem_position(i);
+        if (posicion_visualmem>=0) {
+
+
+            //Si lectura
+            if (visualmem_microdrive_read_buffer[posicion_visualmem]) {
+                visualmem_microdrive_read_buffer[posicion_visualmem]=0;
+                if (color==color_gap) color=color_gap_leyendo;
+                else if (color==color_pixel) color=color_pixel_leyendo;
+            }
+
+            //Si escritura
+            if (visualmem_microdrive_write_buffer[posicion_visualmem]) {
+                visualmem_microdrive_write_buffer[posicion_visualmem]=0;
+                if (color==color_gap) color=color_gap_escribiendo;
+                else if (color==color_pixel) color=color_pixel_escribiendo;
+            }
+
+
+
+        }
+
+#endif
 
         //Para zoom positivo
         if (microdrive_raw_map_zoom>=1) {
