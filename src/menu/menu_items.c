@@ -43349,17 +43349,63 @@ void menu_interface1_rom_file(MENU_ITEM_PARAMETERS)
 
 
 
-/*
-Inicio de Template de ventana de menu que se puede enviar a background
-Sustituir "microdrive_raw_map" por el nombre de la ventana
-Sustituir "microdriverawmap" por el nombre corto de la ventana (nombre identificativo de geometria, string sin _)
-Sustituir "Microdrive Raw Map" por el titulo de la ventana
-Y definirla en zxvision_known_window_names_array
-*/
+int microdrive_raw_map_selected_unit=0;
 
+//Zoom:
+//1=1 pixel por posicion
+//2=2 pixel por posicion
+//4=4 pixel por posicion
+//8=8 pixel por posicion
+//-2 = 1 pixel por cada 2 posiciones
+//-4 = 1 pixel por cada 4 posiciones
+//-8 = 1 pixel por cada 8 posiciones
+int microdrive_raw_map_zoom=1;
+
+//Donde empieza el mapa en coordenadas de pixel
+int microdrive_raw_map_start_x=1;
+int microdrive_raw_map_start_y=2;
 
 zxvision_window *menu_microdrive_raw_map_window;
 
+void menu_microdrive_raw_map_draw(zxvision_window *w)
+{
+    int offset_x=microdrive_raw_map_start_x*menu_char_width;
+    int offset_y=microdrive_raw_map_start_y*menu_char_height;
+
+    int total_ancho=(w->visible_width-microdrive_raw_map_start_x-1)*menu_char_width;
+    int total_alto=(w->visible_height-microdrive_raw_map_start_y-2)*menu_char_height;
+
+    //Colores de visualmem, en principio
+    //Zonas de datos en rojo
+    //Gap en color unused
+    int color_gap=ESTILO_GUI_COLOR_UNUSED_VISUALMEM;
+    int color_pixel=ESTILO_GUI_COLOR_AVISO;
+
+    int total_size=microdrive_status[microdrive_raw_map_selected_unit].raw_total_size;
+
+    int i;
+    int x=0;
+    int y=0;
+
+    for (i=0;i<total_size;i++) {
+        z80_int dato_leido=microdrive_status[microdrive_raw_map_selected_unit].raw_microdrive_buffer[i];
+        int color=color_pixel;
+
+        if ((dato_leido & MICRODRIVE_RAW_INFO_BYTE_MASK_DATA)==0) {
+            //es un gap
+            color=color_gap;
+        }
+
+        zxvision_putpixel(w,x+offset_x,y+offset_y,color);
+
+        x++;
+        if (x>=total_ancho) {
+            x=0;
+            y++;
+        }
+    }
+
+}
 
 void menu_microdrive_raw_map_overlay(void)
 {
@@ -43372,6 +43418,12 @@ void menu_microdrive_raw_map_overlay(void)
 
     //Print....
     //Tambien contar si se escribe siempre o se tiene en cuenta contador_segundo...
+
+    //Solo hacer esto con los que son raw
+    if (!microdrive_status[microdrive_raw_map_selected_unit].microdrive_enabled) return;
+    if (!microdrive_status[microdrive_raw_map_selected_unit].raw_format) return;
+
+    menu_microdrive_raw_map_draw(menu_microdrive_raw_map_window);
 
 
     //Mostrar contenido
@@ -43452,6 +43504,18 @@ void menu_microdrive_raw_map(MENU_ITEM_PARAMETERS)
 
     do {
 
+        zxvision_print_string_defaults_fillspc_format(ventana,1,0,"Selected MDV: %d",microdrive_raw_map_selected_unit);
+        if (!microdrive_status[microdrive_raw_map_selected_unit].microdrive_enabled) {
+            zxvision_print_string_defaults_fillspc_format(ventana,1,1,"Selected MDV is not enabled");
+        }
+
+        else if (!microdrive_status[microdrive_raw_map_selected_unit].raw_format) {
+            zxvision_print_string_defaults_fillspc_format(ventana,1,1,"Selected MDV is not raw");
+        }
+
+        else zxvision_print_string_defaults_fillspc(ventana,1,1,"");
+
+        zxvision_draw_window_contents(ventana);
 
 		tecla=zxvision_common_getkey_refresh();
 
