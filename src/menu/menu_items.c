@@ -43390,11 +43390,20 @@ void menu_microdrive_raw_map_draw(zxvision_window *w)
     int max_alto=total_alto-offset_y;
     int max_ancho=total_ancho-offset_x;
 
+    enum lista_estados_pixel {
+        DATO_SIN_USO,
+        GAP_SIN_USO,
+        DATO_LEYENDO,
+        GAP_LEYENDO,
+        DATO_ESCRIBIENDO,
+        GAP_ESCRIBIENDO
+    };
+
     //Colores de visualmem, en principio
     //Zonas de datos en rojo
     //Gap en color unused
-    int color_gap=7;
-    int color_pixel=2;
+    int color_gap=7; //byte de gap sin uso (ni read ni write)
+    int color_pixel=2; //byte de datos sin uso (ni read ni write)
 
     //otros colores por definir aun
     int color_gap_leyendo=15;
@@ -43412,11 +43421,13 @@ void menu_microdrive_raw_map_draw(zxvision_window *w)
     //Si esta dibujando mas alla de y visible, finalizar
     for (i=0;i<total_size && y<max_alto;i++) {
         z80_int dato_leido=microdrive_status[microdrive_raw_map_selected_unit].raw_microdrive_buffer[i];
-        int color=color_pixel;
+
+        enum lista_estados_pixel estado_pixel=DATO_SIN_USO;
+
 
         if ((dato_leido & MICRODRIVE_RAW_INFO_BYTE_MASK_DATA)==0) {
             //es un gap
-            color=color_gap;
+            estado_pixel=GAP_SIN_USO;
         }
 
         //Consultar visualmem
@@ -43428,22 +43439,52 @@ void menu_microdrive_raw_map_draw(zxvision_window *w)
             //Si lectura
             if (visualmem_microdrive_read_buffer[posicion_visualmem]) {
                 visualmem_microdrive_read_buffer[posicion_visualmem]=0;
-                if (color==color_gap) color=color_gap_leyendo;
-                else if (color==color_pixel) color=color_pixel_leyendo;
+                if (estado_pixel==GAP_SIN_USO) estado_pixel=GAP_LEYENDO;
+                else if (estado_pixel==DATO_SIN_USO) estado_pixel=DATO_LEYENDO;
             }
 
             //Si escritura
             if (visualmem_microdrive_write_buffer[posicion_visualmem]) {
                 visualmem_microdrive_write_buffer[posicion_visualmem]=0;
-                if (color==color_gap) color=color_gap_escribiendo;
-                else if (color==color_pixel) color=color_pixel_escribiendo;
+                if (estado_pixel==GAP_SIN_USO) estado_pixel=GAP_ESCRIBIENDO;
+                else if (estado_pixel==DATO_SIN_USO) estado_pixel=DATO_ESCRIBIENDO;
             }
-
-
 
         }
 
 #endif
+
+        int color;
+
+        switch(estado_pixel) {
+            case DATO_SIN_USO:
+                color=color_pixel;
+            break;
+
+            case GAP_SIN_USO:
+                color=color_gap;
+            break;
+
+            case DATO_LEYENDO:
+                color=color_pixel_leyendo;
+            break;
+
+            case GAP_LEYENDO:
+                color=color_gap_leyendo;
+            break;
+
+            case DATO_ESCRIBIENDO:
+                color=color_pixel_escribiendo;
+            break;
+
+            case GAP_ESCRIBIENDO:
+                color=color_gap_escribiendo;
+            break;
+
+            default:
+                color=color_pixel;
+            break;
+        }
 
         //Para zoom positivo
         if (microdrive_raw_map_zoom>=1) {
