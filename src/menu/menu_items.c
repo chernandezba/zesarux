@@ -43480,7 +43480,7 @@ void menu_microdrive_raw_map_draw(zxvision_window *w)
                 int pos_vencedor=0;
 
                 for (j=0;j<6;j++) {
-                    if (estados_pixel_zoom[0]>estados_pixel_zoom[pos_vencedor]) {
+                    if (estados_pixel_zoom[j]>estados_pixel_zoom[pos_vencedor]) {
                         pos_vencedor=j;
                     }
                 }
@@ -43545,7 +43545,7 @@ void menu_microdrive_raw_map_draw(zxvision_window *w)
 
         //zoom negativo
         else {
-            if (conteo_zoom) {
+            if (conteo_zoom==0) {
                 menu_microdrive_raw_map_draw_putpixel(w,1,x+offset_x,y+offset_y,color);
 
                 x++;
@@ -43596,7 +43596,7 @@ void menu_microdrive_raw_map_change_zoom(void)
 
     else {
         microdrive_raw_map_zoom *=2;
-        if (microdrive_raw_map_zoom<-8) microdrive_raw_map_zoom=1;
+        if (microdrive_raw_map_zoom<-64) microdrive_raw_map_zoom=1;
     }
 
 }
@@ -43670,6 +43670,7 @@ void menu_microdrive_raw_map(MENU_ITEM_PARAMETERS)
     }
 
     do {
+        zxvision_cls(ventana);
 
         zxvision_print_string_defaults_fillspc_format(ventana,1,0,"Selected MDV: %d Zoom: %d",
             microdrive_raw_map_selected_unit,microdrive_raw_map_zoom);
