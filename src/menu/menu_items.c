@@ -43369,6 +43369,8 @@ int microdrive_raw_map_start_y=2;
 
 zxvision_window *menu_microdrive_raw_map_window;
 
+int microdrive_raw_map_forzar_dibujado=0;
+
 void menu_microdrive_raw_map_draw_putpixel(zxvision_window *w,int zoom,int xorig,int yorig,int color)
 {
     int x,y;
@@ -43438,6 +43440,15 @@ void menu_microdrive_raw_map_draw(zxvision_window *w)
         max_alto=total_size; //es mucho menos que eso, pero para que no limite
     }
 
+    //redibujarla entera cuando se haya movido, o alguna por encima , etc etc
+    if (w->dirty_user_must_draw_contents) {
+        microdrive_raw_map_forzar_dibujado=1;
+
+        w->dirty_user_must_draw_contents=0;
+    }
+
+    int total_pixeles_dibujados=0;
+
     for (i=0;i<total_size && y<max_alto;i++) {
         z80_int dato_leido=microdrive_status[microdrive_raw_map_selected_unit].raw_microdrive_buffer[i];
 
@@ -43449,24 +43460,52 @@ void menu_microdrive_raw_map_draw(zxvision_window *w)
             estado_pixel=GAP_SIN_USO;
         }
 
+        int dibujar_pixel=0;
+
+        if (microdrive_raw_map_forzar_dibujado) {
+            dibujar_pixel=1;
+        }
+
         //Consultar visualmem
 #ifdef EMULATE_VISUALMEM
         int posicion_visualmem=microdrive_get_visualmem_position(i);
         if (posicion_visualmem>=0) {
 
+            //Evitar tener que redibujar todos los pixeles. Solo los que se hayan modificado esta vez o la anterior
 
             //Si lectura
-            if (visualmem_microdrive_read_buffer[posicion_visualmem]) {
-                visualmem_microdrive_read_buffer[posicion_visualmem]=0;
-                if (estado_pixel==GAP_SIN_USO) estado_pixel=GAP_LEYENDO;
-                else if (estado_pixel==DATO_SIN_USO) estado_pixel=DATO_LEYENDO;
+            z80_byte visualmem_read_buffer=visualmem_microdrive_read_buffer[posicion_visualmem];
+            if (visualmem_read_buffer) {
+                dibujar_pixel=1;
+
+                //Si vale 1, es que ha habido cambio en visualmem. Si vale 2, es que era la posicion anterior
+                if (visualmem_read_buffer==1) {
+                    visualmem_read_buffer=2;
+
+                    if (estado_pixel==GAP_SIN_USO) estado_pixel=GAP_LEYENDO;
+                    else if (estado_pixel==DATO_SIN_USO) estado_pixel=DATO_LEYENDO;
+                }
+
+                else if (visualmem_read_buffer>=2) visualmem_read_buffer=0;
+
+                visualmem_microdrive_read_buffer[posicion_visualmem]=visualmem_read_buffer;
             }
 
             //Si escritura
-            if (visualmem_microdrive_write_buffer[posicion_visualmem]) {
-                visualmem_microdrive_write_buffer[posicion_visualmem]=0;
-                if (estado_pixel==GAP_SIN_USO) estado_pixel=GAP_ESCRIBIENDO;
-                else if (estado_pixel==DATO_SIN_USO) estado_pixel=DATO_ESCRIBIENDO;
+            z80_byte visualmem_write_buffer=visualmem_microdrive_write_buffer[posicion_visualmem];
+            if (visualmem_write_buffer) {
+                dibujar_pixel=1;
+
+                if (visualmem_write_buffer==1) {
+                    visualmem_write_buffer=2;
+
+                    if (estado_pixel==GAP_SIN_USO) estado_pixel=GAP_ESCRIBIENDO;
+                    else if (estado_pixel==DATO_SIN_USO) estado_pixel=DATO_ESCRIBIENDO;
+                }
+
+                else if (visualmem_write_buffer>=2) visualmem_write_buffer=0;
+
+                visualmem_microdrive_write_buffer[posicion_visualmem]=visualmem_write_buffer;
             }
 
         }
@@ -43540,7 +43579,10 @@ void menu_microdrive_raw_map_draw(zxvision_window *w)
         if (microdrive_raw_map_zoom>=1) {
 
 
-            menu_microdrive_raw_map_draw_putpixel(w,microdrive_raw_map_zoom,x+offset_x,y+offset_y,color);
+            if (dibujar_pixel) {
+                menu_microdrive_raw_map_draw_putpixel(w,microdrive_raw_map_zoom,x+offset_x,y+offset_y,color);
+                total_pixeles_dibujados++;
+            }
 
 
             x+=microdrive_raw_map_zoom;
@@ -43553,7 +43595,10 @@ void menu_microdrive_raw_map_draw(zxvision_window *w)
         //zoom negativo
         else {
             if (conteo_zoom==0) {
-                menu_microdrive_raw_map_draw_putpixel(w,1,x+offset_x,y+offset_y,color);
+                if (dibujar_pixel) {
+                    menu_microdrive_raw_map_draw_putpixel(w,1,x+offset_x,y+offset_y,color);
+                    total_pixeles_dibujados++;
+                }
 
                 x++;
                 if (x>=max_ancho) {
@@ -43563,6 +43608,10 @@ void menu_microdrive_raw_map_draw(zxvision_window *w)
             }
         }
     }
+
+    microdrive_raw_map_forzar_dibujado=0;
+
+    printf("total posiciones dibujadas: %d\n",total_pixeles_dibujados);
 
 }
 
@@ -43677,6 +43726,7 @@ void menu_microdrive_raw_map(MENU_ITEM_PARAMETERS)
     }
 
     do {
+        microdrive_raw_map_forzar_dibujado=1;
         zxvision_cls(ventana);
 
         zxvision_print_string_defaults_fillspc_format(ventana,1,0,"Selected MDV: %d Zoom: %d autoscroll: [%c]",
