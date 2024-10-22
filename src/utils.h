@@ -449,6 +449,8 @@ extern int convert_hdf_to_raw(char *origen, char *destino);
 
 extern int convert_rmd_to_mdr(char *origen, char *destino);
 
+extern int convert_mdr_to_rmd(char *origen, char *destino);
+
 extern z80_bit quickload_guessing_tzx_type;
 
 extern int load_binary_file(char *binary_file_load,int valor_leido_direccion,int valor_leido_longitud);

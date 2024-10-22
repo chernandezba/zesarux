@@ -200,12 +200,12 @@ void init_visualmembuffer(void)
 	visualmem_hilow_write_buffer=util_malloc_fill(VISUALMEM_HILOW_BUFFER_SIZE,"Can not allocate visualmem HiLow write buffer",0);
 
 
-	debug_printf(VERBOSE_INFO,"Allocating %d bytes for visualmem Microdrive read buffer",VISUALMEM_MICRODRIVE_BUFFER_SIZE);
-	visualmem_microdrive_read_buffer=util_malloc_fill(VISUALMEM_MICRODRIVE_BUFFER_SIZE,"Can not allocate visualmem Microdrive read buffer",0);
+	debug_printf(VERBOSE_INFO,"Allocating %d bytes for visualmem Microdrive read buffer",VISUALMEM_MICRODRIVE_ASSIGNED_BUFFER_SIZE);
+	visualmem_microdrive_read_buffer=util_malloc_fill(VISUALMEM_MICRODRIVE_ASSIGNED_BUFFER_SIZE,"Can not allocate visualmem Microdrive read buffer",0);
 
 
-	debug_printf(VERBOSE_INFO,"Allocating %d bytes for visualmem Microdrive write buffer",VISUALMEM_MICRODRIVE_BUFFER_SIZE);
-	visualmem_microdrive_write_buffer=util_malloc_fill(VISUALMEM_MICRODRIVE_BUFFER_SIZE,"Can not allocate visualmem Microdrive write buffer",0);
+	debug_printf(VERBOSE_INFO,"Allocating %d bytes for visualmem Microdrive write buffer",VISUALMEM_MICRODRIVE_ASSIGNED_BUFFER_SIZE);
+	visualmem_microdrive_write_buffer=util_malloc_fill(VISUALMEM_MICRODRIVE_ASSIGNED_BUFFER_SIZE,"Can not allocate visualmem Microdrive write buffer",0);
 }
 
 void set_visualmembuffer(int dir)

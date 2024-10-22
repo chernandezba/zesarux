@@ -415,27 +415,34 @@ ok Icono visual microdrive
 
 *microdrive en formato raw:
 ok -crear nuevo archivo raw
--leer puertos microdrive (o out) sin microdrive insertado, dejan en estado wait la cpu por siempre (hasta reset). Hacer que si no hay microdrive insertado, se retorne siempre gap (y sync?). Pero si puerto de estado es bloqueante, nunca apareceria el mensaje de error de "microdrive not present". entonces es que el puerto de estado no es bloqueante? NO-> porque activa el motor
+
+ok-leer puertos microdrive (o out) sin motor activo, dejan en estado wait la cpu por siempre (hasta reset)
 
 -en estado wait se pueden disparar interrupciones? en teoria creo que no...
 
 ok-averiguar MICRODRIVE_RAW_COMMON_SIZE para microdrive de 254 sectores
--visualmem en raw
+ok-visualmem en raw
 -algo para ver sectores raw, mostrando gaps. una especie de visual memory pero mostrando zonas de gap y datos
 ok-memory zone raw.
 -y que pueda ver opcionalmente los bytes de info?
+
 ok-current position en debug i/o ports
 ok-bad sectors (positions) raw
--segundos de fecha de marca de tiempo en imagen microdrive, en mac, no pone 0X cuando X<10?
+
 ok-indicacion sector 0 en visual microdrive (marca roja)
--convertir mdr a rmd. y al reves
-Conversión de mdr a raw: fácil. Se agregan gaps y sync donde toquen
 
-Conversión de raw a mdr: cortar ignorando gaps y sync. Pero hay que determinar en qué offset de la imagen empieza el primer sector: mediante gap se debería poder. Y luego también ignorar las secuencias de sync. Y tener en cuenta bytes que parecen escribirse despues de los 512 bytes de data que no son validos. O sea, teniendo en cuenta esto:
+ok-preview error en nuevosync300k.rmd
+ok -seleccion de rom interface1: version 1 o 2. Versión 1 formatea a 127k, version 2 a 126k, para mejorar "fiabilidad". Por defecto 2
+ok-quickload rmd
 
+ok -convertir rmd a mdr. corregir que sync se dispara con secuencia completa, permitir dar la vuelta al archivo
+soporte empezar por a mitad de sector y dar la vuelta
+contar el total de bytes leidos en vez de la posicion. dar la vuelta cuando convenga
 
+ok-convertir mdr a rmd
 
-    Cuando se acaba una seccion de datos (15 bytes o 15+512) saltar al siguiente sector
+-segundos de fecha de marca de tiempo en imagen microdrive, en mac, no pone 0X cuando X<10?
+
 
 
 -Al hacer eject y/o insertar otra imagen, liberar memoria
@@ -450,16 +457,16 @@ Conversión de raw a mdr: cortar ignorando gaps y sync. Pero hay que determinar 
 -separar info byte en array distinto?
 -mascara de puertos microdrive, no solo E7 y EE...
 
--convertir raw microdrive a mdr que soporte empezar por a mitad de sector y dar la vuelta
-contar el total de bytes leidos en vez de la posicion. dar la vuelta cuando convenga
 
--convertir multiface exolon raw a mdr falla en un archivo. quiza es porque el buscar sync tiene que ser mejor? quiza porque hay que dar la vuelta
+ok-convertir multiface exolon raw a mdr falla en un archivo. quiza es porque el buscar sync tiene que ser mejor? quiza porque hay que dar la vuelta
 al microdrive desde el final?
--quickload rmd
--view file info rmd (datos cabecera)
-ok -seleccion de rom interface1: version 1 o 2. Versión 1 formatea a 127k, version 2 a 126k, para mejorar "fiabilidad". Por defecto 2
+
+ok-view file info rmd (datos cabecera)
+
 -recopilar info microdrive de links utiles
--preview error en nuevosync300k.rmd
+
+
+
 -quiza en wait solo deberia hacer:
     if (z80_wait_signal.v) {
         t_estados++;
@@ -481,3 +488,5 @@ De hecho hay que hacer que lo haga para que sume t-estados de escritura
 
 
 -revisar sonido en Save en CPC(ok), MSX...
+
+-pendiente documentar especificacion archivos ddh: sectores tal cual, sin cabeceras de cada sector?

@@ -146,18 +146,20 @@ Bit 2-7: sin uso de momento
 
 
 
-z80_int microdrive_raw_return_value_at_pos(int microdrive_activo)
+z80_int microdrive_raw_return_value_at_pos(int microdrive_activo,int visualmem_update)
 {
     z80_int *puntero=microdrive_status[microdrive_activo].raw_microdrive_buffer;
 
     int microdrive_raw_current_position=microdrive_status[microdrive_activo].raw_current_position;
+    if (visualmem_update) microdrive_set_visualmem_read(microdrive_raw_current_position);
     return puntero[microdrive_raw_current_position];
 }
 
-void microdrive_raw_write_value_at_pos(int microdrive_activo,z80_int valor)
+void microdrive_raw_write_value_at_pos(int microdrive_activo,z80_int valor,int visualmem_update)
 {
     z80_int *puntero=microdrive_status[microdrive_activo].raw_microdrive_buffer;
     int microdrive_raw_current_position=microdrive_status[microdrive_activo].raw_current_position;
+    if (visualmem_update) microdrive_set_visualmem_write(microdrive_raw_current_position);
     puntero[microdrive_raw_current_position]=valor;
     //printf("Posicion %d tiene %03XH\n",microdrive_raw_current_position,microdrive_raw_image[microdrive_raw_current_position]);
 }
@@ -172,28 +174,7 @@ void microdrive_raw_advance_position(int microdrive_activo)
     microdrive_status[microdrive_activo].raw_current_position=microdrive_raw_current_position;
 }
 
-/*
-int temp_pending_dump=0;
 
-void microdrive_raw_dump_values(void)
-{
-    temp_pending_dump=1;
-}
-
-void microdrive_raw_dump_values_dump(void)
-{
-    int i;
-    z80_int *puntero=microdrive_status[0].raw_microdrive_buffer;
-
-    for (i=0;i<microdrive_status[0].raw_total_size;i++) {
-        printf("%03X ",puntero[i]);
-    }
-
-    printf("\n");
-    sleep(20);
-    temp_pending_dump=0;
-}
-*/
 
 
 //Si ultima secuencia leida era sync. Cuando la secuencia esta entera
@@ -245,7 +226,7 @@ void microdrive_raw_move(void)
         if ((interface1_last_value_port_ef & 0x04)==0) {
             //tiene erase+write. Es un dato normal
             //printf("Writing value %04XH at pos %d\n",value_to_write,microdrive_raw_current_position);
-            value_to_write |=0x0100;
+            value_to_write |=MICRODRIVE_RAW_INFO_BYTE_MASK_DATA;
             //sleep(1);
         }
 
@@ -267,9 +248,10 @@ void microdrive_raw_move(void)
         //Si no hay ninguno activo, nada
         if (microdrive_activo>=0 && microdrive_status[microdrive_activo].microdrive_enabled) {
             //printf("Escribiendo %03XH\n",value_to_write);
+            //printf("Cabezal en escritura. posicion %d\n",microdrive_status[microdrive_activo].raw_current_position);
 
             //Preservar del byte de info, bits 1-7.
-            z80_int valor_leido=microdrive_raw_return_value_at_pos(microdrive_activo);
+            z80_int valor_leido=microdrive_raw_return_value_at_pos(microdrive_activo,0);
             valor_leido &=0xFE00;
 
             //y el valor a escribir preservar asi como el bit de gap
@@ -285,7 +267,7 @@ void microdrive_raw_move(void)
 
             value_to_write |=valor_leido;
 
-            microdrive_raw_write_value_at_pos(microdrive_activo,value_to_write);
+            microdrive_raw_write_value_at_pos(microdrive_activo,value_to_write,1);
             microdrive_status[microdrive_activo].microdrive_must_flush_to_disk=1;
         }
 
@@ -303,8 +285,8 @@ void microdrive_raw_move(void)
 
         //Si no hay ninguno activo, nada
         if (microdrive_activo>=0) {
-
-            microdrive_raw_last_read_data=microdrive_raw_return_value_at_pos(microdrive_activo);
+            //printf("Cabezal en lectura. posicion %d\n",microdrive_status[microdrive_activo].raw_current_position);
+            microdrive_raw_last_read_data=microdrive_raw_return_value_at_pos(microdrive_activo,1);
         }
 
 

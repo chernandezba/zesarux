@@ -427,7 +427,15 @@ z80_byte interface1_get_value_port(z80_byte puerto_l)
 
         microdrive_footer_operating();
 
-        z80_byte value;
+         z80_byte value;
+
+        int microdrive_activo=microdrive_primer_motor_activo();
+        //Si no hay ninguno activo, se quedara para siempre esperando en wait
+        if (microdrive_activo<0) {
+            value=microdrive_raw_read_port_e7();
+            return value;
+        }
+
 
         if (microdrive_current_is_raw()) {
             value=microdrive_raw_read_port_e7();

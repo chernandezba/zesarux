@@ -39,6 +39,9 @@ extern z80_byte mdr_next_byte(void);
 
 extern void mdr_next_sector(int microdrive_seleccionado);
 
+extern void microdrive_set_visualmem_write(unsigned int address);
+extern void microdrive_set_visualmem_read(unsigned int address);
+
 
 extern void microdrive_insert(int microdrive_seleccionado);
 

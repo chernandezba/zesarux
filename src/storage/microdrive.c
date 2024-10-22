@@ -116,7 +116,7 @@ int microdrive_get_visualmem_position(unsigned int address)
     int posicion_final=address;
 
     //por si acaso
-    if (posicion_final>=0 && posicion_final<VISUALMEM_MICRODRIVE_BUFFER_SIZE) {
+    if (posicion_final>=0 && posicion_final<VISUALMEM_MICRODRIVE_ASSIGNED_BUFFER_SIZE) {
         return posicion_final;
     }
 
@@ -1109,6 +1109,14 @@ struct s_mdr_file_cat *mdr_get_file_catalogue(z80_byte *origen,int total_sectors
     catalogo->total_files=0;
     catalogo->used_sectors=0;
 
+    if (total_sectors>MDR_MAX_SECTORS) {
+        DBG_PRINT_MDR VERBOSE_INFO,"MDR: Trying to catalogue a mdr with more than %d sectors (total %d)",MDR_MAX_SECTORS,total_sectors);
+        //return catalogo;
+
+        total_sectors=MDR_MAX_SECTORS;
+    }
+
+
 
     int frag_sectores_fragmentados=0;
     int frag_sectores_no_fragmentados=0;
@@ -1290,6 +1298,7 @@ struct s_mdr_file_cat *mdr_get_file_catalogue(z80_byte *origen,int total_sectors
 
 
                 catalogo->total_files++;
+                //printf("Total files: %d\n",catalogo->total_files);
 
 
                 //Corregir label, si sector 0 no se usaba, corregir desde primer sector usado

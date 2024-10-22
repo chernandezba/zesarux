@@ -55,6 +55,7 @@
 #include "hilow_datadrive.h"
 #include "zx8081.h"
 #include "microdrive.h"
+#include "microdrive_raw.h"
 
 #if defined(__APPLE__)
 	#include <sys/syslimits.h>
@@ -555,6 +556,114 @@ void menu_file_zx_browser_show(char *filename)
 	zxvision_generic_message_tooltip("ZEsarUX ZX file browser" , 0 , 0, 0, 1, NULL, 1, "%s", texto_browser);
 
 
+    free(texto_browser);
+
+}
+
+
+
+void menu_file_rmd_browser_show(char *filename)
+{
+
+    char header[MICRODRIVE_RAW_HEADER_SIZE];
+
+	int bytes_to_load=MICRODRIVE_RAW_HEADER_SIZE;
+
+	z80_byte *rmd_file_memory;
+	rmd_file_memory=malloc(bytes_to_load);
+	if (rmd_file_memory==NULL) {
+		debug_printf(VERBOSE_ERR,"Unable to assign memory");
+		return;
+	}
+
+
+    FILE *ptr_file_rmd_browser;
+
+    //Soporte para FatFS
+    FIL fil;        /* File object */
+
+    int in_fatfs;
+
+
+    if (zvfs_fopen_read(filename,&in_fatfs,&ptr_file_rmd_browser,&fil)<0) {
+		debug_printf(VERBOSE_ERR,"Unable to open file");
+		free(rmd_file_memory);
+    }
+
+
+    int leidos;
+
+    leidos=zvfs_fread(in_fatfs,(z80_byte *)header,bytes_to_load,ptr_file_rmd_browser,&fil);
+
+	if (leidos==0) {
+        debug_printf(VERBOSE_ERR,"Error reading file");
+        return;
+    }
+
+    zvfs_fclose(in_fatfs,ptr_file_rmd_browser,&fil);
+
+
+	char buffer_texto[64]; //2 lineas, por si acaso
+
+	char *texto_browser=util_malloc_max_texto_browser();
+	int indice_buffer=0;
+
+
+    char expected_signature[7];
+    strcpy(expected_signature,MICRODRIVE_RAW_SIGNATURE);
+
+    char read_signature[7];
+    memcpy(read_signature,header,6);
+    read_signature[6]=0;
+
+    if (strcmp(read_signature,expected_signature)) {
+        sprintf(buffer_texto,"Invalid RAW microdrive signature file");
+        indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
+    }
+
+    else {
+
+        sprintf(buffer_texto,"RMD ZEsarUX Raw MicroDrive file");
+        indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
+
+        z80_byte header_version=header[6];
+        char header_creator[30];
+        memcpy(header_creator,&header[7],30);
+        header_creator[29]=0;
+
+        char header_machine[20];
+        memcpy(header_machine,&header[37],20);
+        header_machine[19]=0;
+
+        char header_date[19];
+        memcpy(header_date,&header[57],19);
+        header_date[18]=0;
+
+        //DBG_PRINT_MDR VERBOSE_INFO,"MDR: File version %d created on %s from machine %s on date %s",
+        //    header_version,header_creator,header_machine,header_date);
+
+
+        sprintf(buffer_texto,"File version: %d",header_version);
+        indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
+
+        sprintf(buffer_texto,"Creator: %s",header_creator);
+        indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
+
+        sprintf(buffer_texto,"Machine: %s",header_machine);
+        indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
+
+        sprintf(buffer_texto,"Date: %s",header_date);
+        indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
+
+
+    }
+
+	texto_browser[indice_buffer]=0;
+
+	zxvision_generic_message_tooltip("RMD file browser" , 0 , 0, 0, 1, NULL, 1, "%s", texto_browser);
+
+
+	free(rmd_file_memory);
     free(texto_browser);
 
 }
@@ -5596,6 +5705,8 @@ void menu_file_viewer_read_file(char *title,char *file_name)
         else if (!util_compare_file_extension(file_name,"eprom")) menu_z88_new_ptr_card_browser(file_name);
 
         else if (!util_compare_file_extension(file_name,"zsf")) menu_file_zsf_browser_show(file_name);
+
+        else if (!util_compare_file_extension(file_name,"rmd")) menu_file_rmd_browser_show(file_name);
 
         else if (!util_compare_file_extension(file_name,"mdr")) menu_file_mdr_browser_show(file_name);
 

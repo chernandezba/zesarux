@@ -2231,6 +2231,25 @@ extern int convert_p_to_rwa_tmpdir(char *origen, char *destino);
                 }
         }
 
+        else if (!util_compare_file_extension(archivo,"mdr")) {
+                char *opciones[]={
+                        "MDR to RMD",
+                        NULL};
+
+                int opcion=menu_ask_list_texto("File converter","Select conversion",opciones);
+		if (opcion<0) {
+			//Salido con ESC
+			return;
+		}
+                switch (opcion) {
+                        case 0:
+                                sprintf(archivo_destino,"%s/%s.rmd",directorio,archivo);
+                                convert_mdr_to_rmd(fullpath,archivo_destino);
+                        break;
+
+                }
+        }
+
         else if (!util_compare_file_extension(archivo,"hdf")) {
                 char *opciones[]={
                         "HDF to IDE",

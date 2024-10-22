@@ -27,6 +27,7 @@
 #include "cpu.h"
 #include "hilow_datadrive.h"
 #include "microdrive.h"
+#include "microdrive_raw.h"
 
 #ifdef EMULATE_MEMPTR
         #define set_memptr(value) memptr=value
@@ -39,8 +40,13 @@
 
 #define VISUALMEM_MMC_BUFFER_SIZE (1024*1024)
 #define VISUALMEM_HILOW_BUFFER_SIZE (HILOW_DEVICE_SIZE)
+
+
 //-1 del byte final que indica proteccion escritura
 #define VISUALMEM_MICRODRIVE_BUFFER_SIZE (MDR_MAX_FILE_SIZE-1)
+
+//Maximo asignado. Que es el maximo habitual para raw
+#define VISUALMEM_MICRODRIVE_ASSIGNED_BUFFER_SIZE MICRODRIVE_RAW_COMMON_SIZE
 
 
 extern z80_byte *visualmem_buffer;

@@ -5356,6 +5356,7 @@ int quickload_valid_extension(char *nombre) {
                 || !util_compare_file_extension(nombre,"nex")
                 || !util_compare_file_extension(nombre,"trd")
                 || !util_compare_file_extension(nombre,"mdr")
+                || !util_compare_file_extension(nombre,"rmd")
                 || !util_compare_file_extension(nombre,"dsk")
                 || !util_compare_file_extension(nombre,"z80")
                 || !util_compare_file_extension(nombre,"tzx")
@@ -5797,9 +5798,10 @@ int quickload_continue(char *nombre) {
 
 	}
 
-	//MDR
+	//MDR y RMD
 	else if (
-		!util_compare_file_extension(nombre,"mdr")
+		!util_compare_file_extension(nombre,"mdr") ||
+        !util_compare_file_extension(nombre,"rmd")
 	) {
 		//Aqui el autoload da igual. cambiamos siempre a Spectrum si conviene
 		if (!MACHINE_IS_SPECTRUM) {
@@ -11095,14 +11097,36 @@ int convert_any_to_wav(char *origen, char *destino)
 
 int convert_rmd_to_mdr_find_end_sync(int pos_raw,int total_size,z80_byte *microdrive_buffer_datos,z80_byte *microdrive_buffer_info)
 {
-    //Buscar dos ff seguidos
-    z80_byte antes_valor=0;
+    z80_byte sync_lista[8]={0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff};
 
     while (pos_raw<total_size) {
-        z80_byte current_value=microdrive_buffer_datos[pos_raw++];
-        if (antes_valor == 0xFF && current_value == 0xFF) return pos_raw;
 
-        antes_valor=current_value;
+
+        z80_byte current_value=microdrive_buffer_datos[pos_raw++];
+
+        //Rotar los anteriores
+        sync_lista[7]=sync_lista[6];
+        sync_lista[6]=sync_lista[5];
+        sync_lista[5]=sync_lista[4];
+        sync_lista[4]=sync_lista[3];
+        sync_lista[3]=sync_lista[2];
+        sync_lista[2]=sync_lista[1];
+        sync_lista[1]=sync_lista[0];
+        sync_lista[0]=current_value;
+
+        if (sync_lista[0]==0xFF &&
+            sync_lista[1]==0xFF &&
+            sync_lista[2]==0x00 &&
+            sync_lista[3]==0x00 &&
+            sync_lista[4]==0x00 &&
+            sync_lista[5]==0x00 &&
+            sync_lista[6]==0x00 &&
+            sync_lista[7]==0x00
+
+        ) {
+            return pos_raw;
+        }
+
     }
 
     return pos_raw;
@@ -11256,6 +11280,171 @@ saltar a paso 1
     z80_byte proteccion=1;
 
     fwrite(&proteccion,1,1,ptr_outputfile);
+
+    fclose(ptr_outputfile);
+
+
+    return 0;
+}
+
+
+
+int convert_mdr_to_rmd(char *origen, char *destino)
+{
+
+/*
+    Microdrive cartridge
+    GAP      PREAMBLE      15 byte      GAP      PREAMBLE      15 byte    512     1
+    [-----][00 00 ... ff ff][BLOCK HEAD][-----][00 00 ... ff ff][REC HEAD][ DATA ][CHK]
+    Preamble = 10 * 0x00 + 2 * 0xff (12 byte)
+
+
+*/
+
+    int gap_length=59;
+
+    int sync_length=8;
+
+    int end_sector_relleno=6*16; //valores a fc al final de sector de relleno, basurilla, podria ser cualquier cosa
+
+    z80_byte sync_bytes[8]={0,0,0,0,0,0,0xff,0xff};
+
+
+    int sector_raw_length=MDR_BYTES_PER_SECTOR+gap_length+sync_length+gap_length+sync_length+end_sector_relleno;
+
+    //Leer tamanyo
+    int tamanyo_archivo=get_file_size(origen);
+
+
+    //Si es tamaño invalido o impar (porque son registros de 16 bits y por tanto par)
+    if (tamanyo_archivo<=0) {
+        debug_printf(VERBOSE_ERR,"Invalid size for MDR microdrive file");
+        return 1;
+    }
+
+	int leidos;
+
+
+    //buffer para mdr
+    z80_byte *microdrive_buffer_mdr=util_malloc(tamanyo_archivo,"No enough memory for Microdrive buffer");
+
+    int total_sectors=tamanyo_archivo/MDR_BYTES_PER_SECTOR;
+
+
+
+
+    FILE *ptr_inputfile;
+    ptr_inputfile=fopen(origen,"rb");
+
+    if (ptr_inputfile==NULL) {
+            debug_printf (VERBOSE_ERR,"Error opening %s",origen);
+            return 1;
+    }
+
+    fread(microdrive_buffer_mdr,1,tamanyo_archivo,ptr_inputfile);
+
+	fclose (ptr_inputfile);
+
+
+    //Espacio para datos e info
+    int size_raw=total_sectors*sector_raw_length;
+
+    z80_byte *microdrive_buffer_datos=util_malloc(size_raw,"No enough memory for Microdrive buffer");
+    z80_byte *microdrive_buffer_info=util_malloc(size_raw,"No enough memory for Microdrive buffer");
+
+
+    int pos_mdr=0;
+
+    int pos_raw=0;
+
+
+    while (total_sectors>0) {
+        //printf("Remaining sectors: %d\n",total_sectors);
+
+        //Meter gap
+        int i;
+        for (i=0;i<gap_length;i++) {
+            microdrive_buffer_datos[pos_raw]=0;
+            microdrive_buffer_info[pos_raw]=0;
+
+            pos_raw++;
+        }
+
+        //Meter sync
+        for (i=0;i<sync_length;i++) {
+            microdrive_buffer_datos[pos_raw]=sync_bytes[i];
+            microdrive_buffer_info[pos_raw]=(MICRODRIVE_RAW_INFO_BYTE_MASK_DATA>>8) & 0xFF;
+
+            pos_raw++;
+        }
+
+        //Meter 15 bytes
+        for (i=0;i<15;i++) {
+            microdrive_buffer_datos[pos_raw]=microdrive_buffer_mdr[pos_mdr];
+            microdrive_buffer_info[pos_raw]=(MICRODRIVE_RAW_INFO_BYTE_MASK_DATA>>8) & 0xFF;
+
+            pos_raw++;
+            pos_mdr++;
+        }
+
+
+        //Meter gap
+        for (i=0;i<gap_length;i++) {
+            microdrive_buffer_datos[pos_raw]=0;
+            microdrive_buffer_info[pos_raw]=0;
+
+            pos_raw++;
+        }
+
+        //Meter sync
+        for (i=0;i<sync_length;i++) {
+            microdrive_buffer_datos[pos_raw]=sync_bytes[i];
+            microdrive_buffer_info[pos_raw]=(MICRODRIVE_RAW_INFO_BYTE_MASK_DATA>>8) & 0xFF;
+
+            pos_raw++;
+        }
+
+        //Meter 15+512+1 bytes
+        for (i=0;i<15+512+1;i++) {
+            microdrive_buffer_datos[pos_raw]=microdrive_buffer_mdr[pos_mdr];
+            microdrive_buffer_info[pos_raw]=(MICRODRIVE_RAW_INFO_BYTE_MASK_DATA>>8) & 0xFF;
+
+            pos_raw++;
+            pos_mdr++;
+        }
+
+        //Meter relleno
+        for (i=0;i<end_sector_relleno;i++) {
+            microdrive_buffer_datos[pos_raw]=0xFC;
+            microdrive_buffer_info[pos_raw]=(MICRODRIVE_RAW_INFO_BYTE_MASK_DATA>>8) & 0xFF;
+
+            pos_raw++;
+        }
+
+
+        total_sectors--;
+    }
+
+
+
+
+	FILE *ptr_outputfile;
+	ptr_outputfile=fopen(destino,"wb");
+
+    if (ptr_outputfile==NULL) {
+            debug_printf (VERBOSE_ERR,"Error opening %s",destino);
+            return 1;
+    }
+
+
+    char buffer_cabecera[MICRODRIVE_RAW_HEADER_SIZE];
+    microdrive_raw_create_header(buffer_cabecera);
+
+    fwrite(buffer_cabecera,1,MICRODRIVE_RAW_HEADER_SIZE,ptr_outputfile);
+
+    fwrite(microdrive_buffer_datos,1,pos_raw,ptr_outputfile);
+    fwrite(microdrive_buffer_info,1,pos_raw,ptr_outputfile);
+
 
     fclose(ptr_outputfile);
 
@@ -16943,7 +17132,11 @@ int util_extract_mdr(char *filename,char *tempdir)
 
     struct s_mdr_file_cat *catalogo;
 
+    //printf("Before catalogo\n");
+
     catalogo=mdr_get_file_catalogue(taperead,total_sectors);
+
+    //printf("After catalogo\n");
 
     int i;
 
@@ -17014,7 +17207,13 @@ int util_extract_rmd(char *filename,char *tempdir)
     char buf_file_no_dir[PATH_MAX];
     util_get_file_no_directory(filename,buf_file_no_dir);
 
-    sprintf (tmpfile,"%s/%s.mdr",get_tmpdir_base(),buf_file_no_dir);
+    //Agregamos extension temp para evitar posible coincidencia con un directorio igual
+    //(generado de un preview al abrir este archivo .rmd.mdr)
+    //Ejemplo: expandir archivo bug.rmd.mdr genera carpeta bug.rmd.mdr
+    //Pero si expandieramos archivo bug.rmd generaria archivo temporal bug.rmd.mdr, de mismo nombre que la carpeta anterior,
+    //por eso el archivo temporal sera bug.rmd.temp.mdr
+
+    sprintf (tmpfile,"%s/%s.temp.mdr",get_tmpdir_base(),buf_file_no_dir);
 
     convert_rmd_to_mdr(filename,tmpfile);
 

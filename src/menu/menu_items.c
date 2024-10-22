@@ -5215,7 +5215,19 @@ void menu_visualmem_get_start_end(int *inicio,int *final)
 	}
 
 	if (menu_visualmem_donde==10 || menu_visualmem_donde==11 || menu_visualmem_donde==12) {
-		final_puntero_membuffer=VISUALMEM_MICRODRIVE_BUFFER_SIZE;
+        //microdrive. Si raw, es mas grande
+        int esraw=0;
+        int microdrive_activo=microdrive_primer_motor_activo();
+        //Si no hay ninguno activo, asumimos el primero
+        if (microdrive_activo<0) esraw=microdrive_status[0].raw_format;
+
+        else esraw=microdrive_status[microdrive_activo].raw_format;
+
+
+        if (esraw) {
+            final_puntero_membuffer=VISUALMEM_MICRODRIVE_ASSIGNED_BUFFER_SIZE;
+        }
+		else final_puntero_membuffer=VISUALMEM_MICRODRIVE_BUFFER_SIZE;
 	}
 
 
@@ -39873,7 +39885,7 @@ void menu_hilow_convert_help(void)
         "It seems that the B-side will only be correctly read if it was formatted only once; however, I haven't tested it too much "
         "so maybe you have luck reading B-side ;)\n"
         "g: Invert audio input signal ('mirror' vertically), needed for some tapes\n"
-        "f: Change noise filter threshold, higher values means increase noise reduction\n"
+        "t: Change noise filter threshold, higher values means increase noise reduction\n"
         "d: Enable adaptative algorithm, which adjusts bit width depending on the S_START_BYTE signal.\n"
         "c: Autocorrect. Try to fix read errors depending on S_START_BYTE signal, useful for bad quality audio tapes\n"
         "u: Enable sound. You may use the Waveform Window to see the signal; the Scroll shape mode from that window "
@@ -43335,6 +43347,155 @@ void menu_interface1_rom_file(MENU_ITEM_PARAMETERS)
 
 }
 
+
+
+/*
+Inicio de Template de ventana de menu que se puede enviar a background
+Sustituir "microdrive_raw_map" por el nombre de la ventana
+Sustituir "microdriverawmap" por el nombre corto de la ventana (nombre identificativo de geometria, string sin _)
+Sustituir "Microdrive Raw Map" por el titulo de la ventana
+Y definirla en zxvision_known_window_names_array
+*/
+
+
+zxvision_window *menu_microdrive_raw_map_window;
+
+
+void menu_microdrive_raw_map_overlay(void)
+{
+
+    menu_speech_tecla_pulsada=1; //Si no, envia continuamente todo ese texto a speech
+
+    //si ventana minimizada, no ejecutar todo el codigo de overlay
+    if (menu_microdrive_raw_map_window->is_minimized) return;
+
+
+    //Print....
+    //Tambien contar si se escribe siempre o se tiene en cuenta contador_segundo...
+
+
+    //Mostrar contenido
+    zxvision_draw_window_contents(menu_microdrive_raw_map_window);
+
+}
+
+
+
+
+//Almacenar la estructura de ventana aqui para que se pueda referenciar desde otros sitios
+zxvision_window zxvision_window_microdrive_raw_map;
+
+
+void menu_microdrive_raw_map(MENU_ITEM_PARAMETERS)
+{
+	menu_espera_no_tecla();
+
+    if (!menu_multitarea) {
+        menu_warn_message("This window needs multitask enabled");
+        return;
+    }
+
+    zxvision_window *ventana;
+    ventana=&zxvision_window_microdrive_raw_map;
+
+	//IMPORTANTE! no crear ventana si ya existe. Esto hay que hacerlo en todas las ventanas que permiten background.
+	//si no se hiciera, se crearia la misma ventana, y en la lista de ventanas activas , al redibujarse,
+	//la primera ventana repetida apuntaria a la segunda, que es el mismo puntero, y redibujaria la misma, y se quedaria en bucle colgado
+	//zxvision_delete_window_if_exists(ventana);
+
+    //Crear ventana si no existe
+    if (!zxvision_if_window_already_exists(ventana)) {
+        int xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
+
+        if (!util_find_window_geometry("microdriverawmap",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
+            ancho_ventana=30;
+            alto_ventana=20;
+
+            xventana=menu_center_x()-ancho_ventana/2;
+            yventana=menu_center_y()-alto_ventana/2;
+        }
+
+
+        zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"Microdrive Raw Map",
+            "microdriverawmap",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
+
+        ventana->can_be_backgrounded=1;
+
+    }
+
+    //Si ya existe, activar esta ventana
+    else {
+        zxvision_activate_this_window(ventana);
+    }
+
+	zxvision_draw_window(ventana);
+
+	z80_byte tecla;
+
+
+	int salir=0;
+
+
+    menu_microdrive_raw_map_window=ventana; //Decimos que el overlay lo hace sobre la ventana que tenemos aqui
+
+
+    //cambio overlay
+    zxvision_set_window_overlay(ventana,menu_microdrive_raw_map_overlay);
+
+
+    //Toda ventana que este listada en zxvision_known_window_names_array debe permitir poder salir desde aqui
+    //Se sale despues de haber inicializado overlay y de cualquier otra variable que necesite el overlay
+    if (zxvision_currently_restoring_windows_on_start) {
+            //printf ("Saliendo de ventana ya que la estamos restaurando en startup\n");
+            return;
+    }
+
+    do {
+
+
+		tecla=zxvision_common_getkey_refresh();
+
+
+        switch (tecla) {
+
+            case 11:
+                //arriba
+                //blablabla
+            break;
+
+
+
+            //Salir con ESC
+            case 2:
+                salir=1;
+            break;
+
+            //O tecla background
+            case 3:
+                salir=1;
+            break;
+        }
+
+
+    } while (salir==0);
+
+
+	util_add_window_geometry_compact(ventana);
+
+	if (tecla==3) {
+		zxvision_message_put_window_background();
+	}
+
+	else {
+
+		zxvision_destroy_window(ventana);
+	}
+
+
+}
+
+
+
 void menu_interface1(MENU_ITEM_PARAMETERS)
 {
     menu_item *array_menu_common;
@@ -43452,6 +43613,15 @@ void menu_interface1(MENU_ITEM_PARAMETERS)
 
                     menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_storage_microdrive_chkdsk,NULL,
                             "Chkdsk","Chkdsk","Chkdsk");
+                    menu_add_item_menu_prefijo(array_menu_common,"    ");
+                    menu_add_item_menu_se_cerrara(array_menu_common);
+                    menu_add_item_menu_genera_ventana(array_menu_common);
+                    menu_add_item_menu_valor_opcion(array_menu_common,i);
+                }
+
+                else {
+                    menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_microdrive_raw_map,NULL,
+                            "Microdrive raw map","Mapa raw microdrive","Mapa raw microdrive");
                     menu_add_item_menu_prefijo(array_menu_common,"    ");
                     menu_add_item_menu_se_cerrara(array_menu_common);
                     menu_add_item_menu_genera_ventana(array_menu_common);
@@ -47900,13 +48070,13 @@ void menu_smartload(MENU_ITEM_PARAMETERS)
 
 	menu_first_aid("smartload");
 
-    char *filtros[42]={
+    char *filtros[]={
         "63", "80", "81", "ace","ay",   "bin",  "cas","cdt",
         "col","dck","dsk","epr","eprom","flash","nex","o",
         "p",  "p81", "pok","pzx","rom","rwa",  "rzx",  "scr",
         "sg", "smp","sms","sna","snx","sp",   "spg",  "tap",
-        "trd", "mdr", "tzx","wav","z80","z81","zmenu","zsf",
-        "zx", 0
+        "trd", "mdr", "rmd", "tzx","wav","z80","z81","zmenu",
+        "zsf","zx", 0
     };
 
 
