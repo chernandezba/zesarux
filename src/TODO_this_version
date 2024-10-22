@@ -422,9 +422,10 @@ ok-leer puertos microdrive (o out) sin motor activo, dejan en estado wait la cpu
 
 ok-averiguar MICRODRIVE_RAW_COMMON_SIZE para microdrive de 254 sectores
 ok-visualmem en raw
--algo para ver sectores raw, mostrando gaps. una especie de visual memory pero mostrando zonas de gap y datos
 ok-memory zone raw.
 -y que pueda ver opcionalmente los bytes de info?
+
+-microdrive raw map: poder moverme (offset vertical para ver todo contenido)
 
 ok-current position en debug i/o ports
 ok-bad sectors (positions) raw

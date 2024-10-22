@@ -43373,6 +43373,8 @@ int microdrive_raw_map_forzar_dibujado=0;
 
 int microdrive_raw_map_minimo_zoom_reduccion=64;
 
+int microdrive_raw_map_antes_pos_cabezal_lectura=-1;
+
 void menu_microdrive_raw_map_draw_putpixel(zxvision_window *w,int zoom,int xorig,int yorig,int color)
 {
     int x,y;
@@ -43460,6 +43462,8 @@ void menu_microdrive_raw_map_draw(zxvision_window *w)
 
     int dibujar_cabezal_lectura=0;
 
+    int pos_cabezal=microdrive_status[microdrive_raw_map_selected_unit].raw_current_position;
+
     for (i=0;i<total_size && y<max_alto;i++) {
         z80_int dato_leido=microdrive_status[microdrive_raw_map_selected_unit].raw_microdrive_buffer[i];
 
@@ -43520,6 +43524,12 @@ void menu_microdrive_raw_map_draw(zxvision_window *w)
             }
 
         }
+#else
+
+    //Si no tiene visualmem es poco optimo porque al no saber que se ha modificado, necesitamos redibujar todo siempre
+    //Y consumira mucha cpu
+    dibujar_pixel=1;
+
 
 #endif
 
@@ -43588,7 +43598,7 @@ void menu_microdrive_raw_map_draw(zxvision_window *w)
 
         //Si posicion cerca del cabezal de lectura. x posiciones atras o adelante
         //Ese x tiene que ser el valor maximo de -zoom, para que siempre se vea el cabezal
-        int pos_cabezal=microdrive_status[microdrive_raw_map_selected_unit].raw_current_position;
+
         int pos_menos=pos_cabezal-microdrive_raw_map_minimo_zoom_reduccion;
         int pos_mas=pos_cabezal+microdrive_raw_map_minimo_zoom_reduccion;
 
@@ -43597,9 +43607,16 @@ void menu_microdrive_raw_map_draw(zxvision_window *w)
             dibujar_pixel=1;
         }*/
 
+       int longitud_cabezal=10;
 
+        //Si en la posicion actual del cabezal
         if (i==pos_cabezal) {
-            dibujar_cabezal_lectura=10;
+            dibujar_cabezal_lectura=longitud_cabezal;
+        }
+
+        //O en la anterior del cabezal
+        if (i>=microdrive_raw_map_antes_pos_cabezal_lectura && i<microdrive_raw_map_antes_pos_cabezal_lectura+longitud_cabezal) {
+            dibujar_pixel=1;
         }
 
 
@@ -43648,6 +43665,8 @@ void menu_microdrive_raw_map_draw(zxvision_window *w)
     }
 
     microdrive_raw_map_forzar_dibujado=0;
+
+    microdrive_raw_map_antes_pos_cabezal_lectura=pos_cabezal;
 
     if (total_pixeles_dibujados) printf("total posiciones dibujadas: %d\n",total_pixeles_dibujados);
 
