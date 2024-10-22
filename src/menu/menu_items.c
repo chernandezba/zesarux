@@ -43403,18 +43403,23 @@ void menu_microdrive_raw_map_draw(zxvision_window *w)
         GAP_ESCRIBIENDO
     };
 
-    //Colores de visualmem, en principio
-    //Zonas de datos en rojo
-    //Gap en color unused
-    int color_gap=7; //byte de gap sin uso (ni read ni write)
-    int color_pixel=2; //byte de datos sin uso (ni read ni write)
+    //byte de gap sin uso (ni read ni write)
+    //blanco sin brillo
+    int color_gap=7;
 
-    //otros colores por definir aun
-    int color_gap_leyendo=15;
-    int color_pixel_leyendo=2+8; //como el color de aviso pero con brillo
+    //byte de datos sin uso (ni read ni write)
+    //rojo
+    int color_pixel=1;
 
-    int color_gap_escribiendo=4; //verde
-    int color_pixel_escribiendo=6; //amarillo
+    //blanco con brillo
+    int color_gap_leyendo=7+8;
+
+    //cyan
+    int color_pixel_leyendo=5;
+
+    //Al escribir, los dos salen rojos
+    int color_gap_escribiendo=2;
+    int color_pixel_escribiendo=2;
 
     int total_size=microdrive_status[microdrive_raw_map_selected_unit].raw_total_size;
 
@@ -43611,7 +43616,7 @@ void menu_microdrive_raw_map_draw(zxvision_window *w)
 
     microdrive_raw_map_forzar_dibujado=0;
 
-    printf("total posiciones dibujadas: %d\n",total_pixeles_dibujados);
+    if (total_pixeles_dibujados) printf("total posiciones dibujadas: %d\n",total_pixeles_dibujados);
 
 }
 
