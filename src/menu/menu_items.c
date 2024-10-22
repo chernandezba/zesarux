@@ -43425,7 +43425,7 @@ void menu_microdrive_raw_map_draw(zxvision_window *w)
     int color_gap_escribiendo=2;
     int color_pixel_escribiendo=2;
 
-    int color_posicion_lectura=4;
+    int color_posicion_lectura=0; //4
 
     int total_size=microdrive_status[microdrive_raw_map_selected_unit].raw_total_size;
 

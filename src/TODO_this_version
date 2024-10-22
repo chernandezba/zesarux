@@ -425,7 +425,14 @@ ok-visualmem en raw
 ok-memory zone raw.
 -y que pueda ver opcionalmente los bytes de info?
 
--microdrive raw map: poder moverme (offset vertical para ver todo contenido)
+-microdrive raw map:
+*poder moverme (offset vertical para ver todo contenido)
+*opcion mostrar header o no
+*color rojo para sectores defectuosos
+*autoscroll?
+*indicadores en vertical que diga que offset es
+*color diferentes para bytes no 0? no tiene mucho sentido. toda zona que ya ha sido formateada, tiene datos
+*zoom de 4 y 8 que la casilla tenga separacion con las otras
 
 ok-current position en debug i/o ports
 ok-bad sectors (positions) raw
