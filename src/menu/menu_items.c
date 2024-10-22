@@ -43371,6 +43371,8 @@ zxvision_window *menu_microdrive_raw_map_window;
 
 int microdrive_raw_map_forzar_dibujado=0;
 
+int microdrive_raw_map_minimo_zoom_reduccion=64;
+
 void menu_microdrive_raw_map_draw_putpixel(zxvision_window *w,int zoom,int xorig,int yorig,int color)
 {
     int x,y;
@@ -43421,6 +43423,8 @@ void menu_microdrive_raw_map_draw(zxvision_window *w)
     int color_gap_escribiendo=2;
     int color_pixel_escribiendo=2;
 
+    int color_posicion_lectura=4;
+
     int total_size=microdrive_status[microdrive_raw_map_selected_unit].raw_total_size;
 
     int i;
@@ -43453,6 +43457,8 @@ void menu_microdrive_raw_map_draw(zxvision_window *w)
     }
 
     int total_pixeles_dibujados=0;
+
+    int dibujar_cabezal_lectura=0;
 
     for (i=0;i<total_size && y<max_alto;i++) {
         z80_int dato_leido=microdrive_status[microdrive_raw_map_selected_unit].raw_microdrive_buffer[i];
@@ -43580,9 +43586,30 @@ void menu_microdrive_raw_map_draw(zxvision_window *w)
             break;
         }
 
+        //Si posicion cerca del cabezal de lectura. x posiciones atras o adelante
+        //Ese x tiene que ser el valor maximo de -zoom, para que siempre se vea el cabezal
+        int pos_cabezal=microdrive_status[microdrive_raw_map_selected_unit].raw_current_position;
+        int pos_menos=pos_cabezal-microdrive_raw_map_minimo_zoom_reduccion;
+        int pos_mas=pos_cabezal+microdrive_raw_map_minimo_zoom_reduccion;
+
+        /*if (i>=pos_menos && i<=pos_mas) {
+            color=color_posicion_lectura;
+            dibujar_pixel=1;
+        }*/
+
+
+        if (i==pos_cabezal) {
+            dibujar_cabezal_lectura=10;
+        }
+
+
         //Para zoom positivo
         if (microdrive_raw_map_zoom>=1) {
-
+            if (dibujar_cabezal_lectura) {
+                dibujar_cabezal_lectura--;
+                color=color_posicion_lectura;
+                dibujar_pixel=1;
+            }
 
             if (dibujar_pixel) {
                 menu_microdrive_raw_map_draw_putpixel(w,microdrive_raw_map_zoom,x+offset_x,y+offset_y,color);
@@ -43600,6 +43627,12 @@ void menu_microdrive_raw_map_draw(zxvision_window *w)
         //zoom negativo
         else {
             if (conteo_zoom==0) {
+                if (dibujar_cabezal_lectura) {
+                    dibujar_cabezal_lectura--;
+                    color=color_posicion_lectura;
+                    dibujar_pixel=1;
+                }
+
                 if (dibujar_pixel) {
                     menu_microdrive_raw_map_draw_putpixel(w,1,x+offset_x,y+offset_y,color);
                     total_pixeles_dibujados++;
@@ -43657,7 +43690,8 @@ void menu_microdrive_raw_map_change_zoom(void)
 
     else {
         microdrive_raw_map_zoom *=2;
-        if (microdrive_raw_map_zoom<-64) microdrive_raw_map_zoom=1;
+        int menor_zoom=-microdrive_raw_map_minimo_zoom_reduccion;
+        if (microdrive_raw_map_zoom<menor_zoom) microdrive_raw_map_zoom=1;
     }
 
 }
