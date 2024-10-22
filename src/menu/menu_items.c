@@ -43394,11 +43394,11 @@ void menu_microdrive_raw_map_draw(zxvision_window *w)
     //Zonas de datos en rojo
     //Gap en color unused
     int color_gap=7;
-    int color_pixel=2+8;
+    int color_pixel=2;
 
     //otros colores por definir aun
     int color_gap_leyendo=15;
-    int color_pixel_leyendo=2; //como el color de aviso pero sin brillo
+    int color_pixel_leyendo=2+8; //como el color de aviso pero con brillo
 
     int color_gap_escribiendo=4; //verde
     int color_pixel_escribiendo=6; //amarillo
