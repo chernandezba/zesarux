@@ -43391,7 +43391,7 @@ void menu_microdrive_raw_map_draw(zxvision_window *w)
     int max_ancho=total_ancho-offset_x;
 
     enum lista_estados_pixel {
-        DATO_SIN_USO,
+        DATO_SIN_USO=0,
         GAP_SIN_USO,
         DATO_LEYENDO,
         GAP_LEYENDO,
@@ -43418,7 +43418,19 @@ void menu_microdrive_raw_map_draw(zxvision_window *w)
     int x=0;
     int y=0;
 
+    int reducir_zoom=0;
+
+    if (microdrive_raw_map_zoom<0) {
+        reducir_zoom=-microdrive_raw_map_zoom;
+    }
+
+    //Para indicar cuantos estados hay de cada en cada posicion
+    int estados_pixel_zoom[6]={0,0,0,0,0,0};
+
     //Si esta dibujando mas alla de y visible, finalizar
+
+    int conteo_zoom=0;
+
     for (i=0;i<total_size && y<max_alto;i++) {
         z80_int dato_leido=microdrive_status[microdrive_raw_map_selected_unit].raw_microdrive_buffer[i];
 
@@ -43453,6 +43465,37 @@ void menu_microdrive_raw_map_draw(zxvision_window *w)
         }
 
 #endif
+
+        estados_pixel_zoom[estado_pixel]=estados_pixel_zoom[estado_pixel]+1;
+
+        if (microdrive_raw_map_zoom<0) {
+
+            conteo_zoom++;
+            if (conteo_zoom>=reducir_zoom) {
+
+                conteo_zoom=0;
+
+                //Contar cual ha salido vencedor
+                int j;
+                int pos_vencedor=0;
+
+                for (j=0;j<6;j++) {
+                    if (estados_pixel_zoom[0]>estados_pixel_zoom[pos_vencedor]) {
+                        pos_vencedor=j;
+                    }
+                }
+
+                estado_pixel=pos_vencedor;
+
+                estados_pixel_zoom[0]=0;
+                estados_pixel_zoom[1]=0;
+                estados_pixel_zoom[2]=0;
+                estados_pixel_zoom[3]=0;
+                estados_pixel_zoom[4]=0;
+                estados_pixel_zoom[5]=0;
+            }
+        }
+
 
         int color;
 
@@ -43499,6 +43542,19 @@ void menu_microdrive_raw_map_draw(zxvision_window *w)
                 y+=microdrive_raw_map_zoom;
             }
         }
+
+        //zoom negativo
+        else {
+            if (conteo_zoom) {
+                menu_microdrive_raw_map_draw_putpixel(w,1,x+offset_x,y+offset_y,color);
+
+                x++;
+                if (x>=max_ancho) {
+                    x=0;
+                    y++;
+                }
+            }
+        }
     }
 
 }
@@ -43530,9 +43586,18 @@ void menu_microdrive_raw_map_overlay(void)
 
 void menu_microdrive_raw_map_change_zoom(void)
 {
-    microdrive_raw_map_zoom *=2;
 
-    if (microdrive_raw_map_zoom>8) microdrive_raw_map_zoom=1;
+    if (microdrive_raw_map_zoom>0) {
+
+        microdrive_raw_map_zoom *=2;
+
+        if (microdrive_raw_map_zoom>8) microdrive_raw_map_zoom=-2;
+    }
+
+    else {
+        microdrive_raw_map_zoom *=2;
+        if (microdrive_raw_map_zoom<-8) microdrive_raw_map_zoom=1;
+    }
 
 }
 
