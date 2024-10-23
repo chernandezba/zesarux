@@ -43381,6 +43381,12 @@ int microdrive_raw_map_draw_scroll_y=0;
 
 int microdrive_raw_map_draw_fin_dibujar=0;
 
+//Si muestra hexa (0) o char (1)
+int microdrive_raw_map_draw_zoom_show_char=0;
+
+//Si muestra cabezal de lectura o no
+int microdrive_raw_map_dibujar_cabezal=1;
+
 //y en coordenadas de fila, siendo 0 la primera linea del footer, 1 la segunda, etc
 void menu_microdrive_raw_map_draw_putpixel_char(zxvision_window *w,int x,int y,int tinta,int papel,z80_byte caracter)
 {
@@ -43475,7 +43481,11 @@ void menu_microdrive_raw_map_draw_putpixel(zxvision_window *w,int zoom,int xorig
 
             char buffer[3];
 
-            sprintf(buffer,"%02X",byte_leido);
+            if (microdrive_raw_map_draw_zoom_show_char) {
+                sprintf(buffer,"%c ",(byte_leido>=32 && byte_leido<=126 ? byte_leido : '.'));
+            }
+
+            else sprintf(buffer,"%02X",byte_leido);
 
             int xcaracter=xorig+1;
             int ycaracter=yfinal+4;
@@ -43716,7 +43726,7 @@ void menu_microdrive_raw_map_draw(zxvision_window *w)
        int longitud_cabezal=10;
 
         //Si en la posicion actual del cabezal
-        if (i==pos_cabezal) {
+        if (i==pos_cabezal && microdrive_raw_map_dibujar_cabezal) {
             dibujar_cabezal_lectura=longitud_cabezal;
         }
 
@@ -43934,9 +43944,32 @@ void menu_microdrive_raw_map(MENU_ITEM_PARAMETERS)
         microdrive_raw_map_forzar_dibujado=1;
         zxvision_cls(ventana);
 
-        zxvision_print_string_defaults_fillspc_format(ventana,1,0,"Selected MDV: %d Zoom: %d autoscroll: [%c]",
-            microdrive_raw_map_selected_unit,microdrive_raw_map_zoom,
-            (microdrive_raw_map_autoscroll ? 'X' : ' ' ));
+        //Forzar a mostrar atajos
+        z80_bit antes_menu_writing_inverse_color;
+        antes_menu_writing_inverse_color.v=menu_writing_inverse_color.v;
+        menu_writing_inverse_color.v=1;
+
+        char buffer_show_char[60]="";
+
+        if (microdrive_raw_map_zoom>=16) {
+            sprintf(buffer_show_char,"[%c] Show ~~char",
+            (microdrive_raw_map_draw_zoom_show_char ? 'X' : ' '));
+        }
+
+        zxvision_print_string_defaults_fillspc_format(ventana,1,0,"Selected MDV: %d ~~Zoom: %d %s",
+            microdrive_raw_map_selected_unit,microdrive_raw_map_zoom,buffer_show_char);
+
+        //zxvision_print_string_defaults_fillspc(ventana,1,1,"");
+
+        zxvision_print_string_defaults_fillspc_format(ventana,1,1,"[%c] ~~Autoscroll. Current: %7d [%c] Show ~~head",
+            (microdrive_raw_map_autoscroll ? 'X' : ' ' ),
+            microdrive_raw_map_draw_scroll_y,
+            (microdrive_raw_map_dibujar_cabezal ? 'X' : ' ' )
+        );
+
+
+
+
         if (!microdrive_status[microdrive_raw_map_selected_unit].microdrive_enabled) {
             zxvision_print_string_defaults_fillspc_format(ventana,1,1,"Selected MDV is not enabled");
         }
@@ -43945,9 +43978,11 @@ void menu_microdrive_raw_map(MENU_ITEM_PARAMETERS)
             zxvision_print_string_defaults_fillspc_format(ventana,1,1,"Selected MDV is not raw");
         }
 
-        else zxvision_print_string_defaults_fillspc(ventana,1,1,"");
 
         zxvision_draw_window_contents(ventana);
+
+        //Restaurar comportamiento atajos
+        menu_writing_inverse_color.v=antes_menu_writing_inverse_color.v;
 
         //para scroll con teclas
         int mover_scroll=1;
@@ -43968,6 +44003,14 @@ void menu_microdrive_raw_map(MENU_ITEM_PARAMETERS)
 
             case 'a':
                 microdrive_raw_map_autoscroll^=1;
+            break;
+
+            case 'c':
+                microdrive_raw_map_draw_zoom_show_char ^=1;
+            break;
+
+            case 'h':
+                microdrive_raw_map_dibujar_cabezal ^=1;
             break;
 
             //Salir con ESC
