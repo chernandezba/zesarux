@@ -43918,8 +43918,10 @@ void menu_microdrive_raw_map_overlay(void)
 
     menu_microdrive_raw_map_draw(menu_microdrive_raw_map_window);
 
-
-    //menu_microdrive_raw_map_mostrar_opciones(menu_microdrive_raw_map_window);
+    //No alterar w->dirty_user_must_draw_contents, que lo altera al hacer prints
+    int antes_draw=menu_microdrive_raw_map_window->dirty_user_must_draw_contents;
+    menu_microdrive_raw_map_mostrar_opciones(menu_microdrive_raw_map_window);
+    menu_microdrive_raw_map_window->dirty_user_must_draw_contents=antes_draw;
 
     //Mostrar contenido
     zxvision_draw_window_contents(menu_microdrive_raw_map_window);
