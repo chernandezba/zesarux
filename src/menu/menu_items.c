@@ -43658,7 +43658,11 @@ void menu_microdrive_raw_map_draw(zxvision_window *w)
 
     int salir=0;
 
-    for (i=menu_microdrive_raw_map_start_index;i<total_size && !salir ;i++) {
+    int inicio_index=menu_microdrive_raw_map_start_index;
+
+    //if (microdrive_raw_map_autoscroll) inicio_index=0;
+
+    for (i=inicio_index;i<total_size && !salir;i++) {
         z80_int dato_leido=microdrive_status[microdrive_raw_map_selected_unit].raw_microdrive_buffer[i];
 
         //Conteo de cantidad de bytes que caben en una linea solo para la primera linea
@@ -43888,17 +43892,32 @@ void menu_microdrive_raw_map_draw(zxvision_window *w)
     int forzado_siguiente_redraw=0;
 
     //Si hay que cambiar scroll. Solo considerar cuando no se haya hecho un full redraw
+    //Autoscroll a la posicion del cabezal
     if (!microdrive_raw_map_forzar_dibujado && microdrive_raw_map_autoscroll) {
 
 
         printf("Salido bucle en i %d menu_microdrive_raw_map_last_index_pixeled: %d\n",
             i,menu_microdrive_raw_map_last_index_pixeled);
 
-            menu_microdrive_raw_map_start_index=menu_microdrive_raw_map_last_index_pixeled;
+            //menu_microdrive_raw_map_start_index=menu_microdrive_raw_map_last_index_pixeled;
 
-            forzado_siguiente_redraw=1;
+            int next_pos=pos_cabezal;
 
-            w->must_clear_cache_on_draw_once=1;
+            //ajustarla a multiple de linea
+            if (menu_microdrive_raw_map_byte_width>0) {
+                int resto=next_pos % menu_microdrive_raw_map_byte_width;
+                next_pos -=resto;
+            }
+
+            if (menu_microdrive_raw_map_start_index!=next_pos) {
+                menu_microdrive_raw_map_start_index=next_pos;
+
+                printf("cambiar inicio a %d\n",menu_microdrive_raw_map_start_index);
+
+                forzado_siguiente_redraw=1;
+
+                w->must_clear_cache_on_draw_once=1;
+            }
 
 
     }
