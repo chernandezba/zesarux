@@ -43388,10 +43388,7 @@ int microdrive_raw_map_draw_zoom_show_char=0;
 //Si muestra cabezal de lectura o no
 int microdrive_raw_map_dibujar_cabezal=1;
 
-//Se consulta para saber en donde esta enseñando arriba del todo, o sea, que posicion del microdrive es
-//dado que siempre se empieza por la posicion 0, segun el scroll actual, esas posiciones quedan "por arriba" y no se ven
-//En cuanto se muestra la primera posicion visible como pixeles, se obtiene la posicion del microdrive que apunta ahi
-int menu_microdrive_raw_map_pos_primera_linea=0;
+
 
 //Inicio desde donde se empieza a leer
 int menu_microdrive_raw_map_start_index=0;
@@ -43449,7 +43446,7 @@ void menu_microdrive_raw_map_draw_putpixel_char(zxvision_window *w,int x,int y,i
 
 //Si zoom >8 , mostramos contenido celda
 //dibujar_pixel solo se hace para controlar limites pero no dibuja pixeles realmente
-int menu_microdrive_raw_map_draw_putpixel(zxvision_window *w,int zoom,int xorig,int yorig,int color,z80_int dato_leido,int dibujar_pixel)
+void menu_microdrive_raw_map_draw_putpixel(zxvision_window *w,int zoom,int xorig,int yorig,int color,z80_int dato_leido,int dibujar_pixel)
 {
     int x,y;
 
@@ -43457,7 +43454,7 @@ int menu_microdrive_raw_map_draw_putpixel(zxvision_window *w,int zoom,int xorig,
 
     microdrive_raw_map_draw_putpixel_last_y=yorig;
 
-    int primera_linea=0;
+
 
     for (y=0;y<zoom;y++) {
 
@@ -43466,9 +43463,9 @@ int menu_microdrive_raw_map_draw_putpixel(zxvision_window *w,int zoom,int xorig,
 
         yfinal +=y;
 
-        if (yfinal<limite_superior) return 0;
+        if (yfinal<limite_superior) return;
 
-        if (yfinal==limite_superior) primera_linea=1;
+
 
         //printf("y %d\n",yfinal);
 
@@ -43478,7 +43475,7 @@ int menu_microdrive_raw_map_draw_putpixel(zxvision_window *w,int zoom,int xorig,
             microdrive_raw_map_draw_fin_dibujar=1;
         }
 
-        if (!dibujar_pixel) return primera_linea;
+        if (!dibujar_pixel) return;
 
         for (x=0;x<zoom;x++) {
 
@@ -43518,7 +43515,7 @@ int menu_microdrive_raw_map_draw_putpixel(zxvision_window *w,int zoom,int xorig,
         }
     }
 
-    return primera_linea;
+
 }
 
 void menu_microdrive_raw_map_mostrar_opciones(zxvision_window *ventana)
@@ -43820,7 +43817,7 @@ void menu_microdrive_raw_map_draw(zxvision_window *w)
             dibujar_pixel=1;
         }
 
-        int es_primera_linea=0;
+
 
         //Para zoom positivo
         if (microdrive_raw_map_zoom>=1) {
@@ -43830,15 +43827,12 @@ void menu_microdrive_raw_map_draw(zxvision_window *w)
                 dibujar_pixel=1;
             }
 
-            es_primera_linea=menu_microdrive_raw_map_draw_putpixel(w,microdrive_raw_map_zoom,x+offset_x,y+offset_y,color,dato_leido,dibujar_pixel);
+            menu_microdrive_raw_map_draw_putpixel(w,microdrive_raw_map_zoom,x+offset_x,y+offset_y,color,dato_leido,dibujar_pixel);
             if (dibujar_pixel) {
                 total_pixeles_dibujados++;
             }
 
-            //Si es la primera linea visible
-            if (es_primera_linea && x==0) {
-                menu_microdrive_raw_map_pos_primera_linea=i;
-            }
+
 
 
             x+=microdrive_raw_map_zoom;
@@ -43857,15 +43851,12 @@ void menu_microdrive_raw_map_draw(zxvision_window *w)
                     dibujar_pixel=1;
                 }
 
-                es_primera_linea=menu_microdrive_raw_map_draw_putpixel(w,1,x+offset_x,y+offset_y,color,dato_leido,dibujar_pixel);
+                menu_microdrive_raw_map_draw_putpixel(w,1,x+offset_x,y+offset_y,color,dato_leido,dibujar_pixel);
                 if (dibujar_pixel) {
                     total_pixeles_dibujados++;
                 }
 
-                //Si es la primera linea visible
-                if (es_primera_linea && x==0) {
-                    menu_microdrive_raw_map_pos_primera_linea=i;
-                }
+
 
                 x++;
                 if (x>=max_ancho) {
@@ -43922,50 +43913,7 @@ void menu_microdrive_raw_map_draw(zxvision_window *w)
 
     }
 
-    /*
-    if (!microdrive_raw_map_forzar_dibujado && microdrive_raw_map_autoscroll) {
-        int inicio_y_visible=microdrive_raw_map_draw_scroll_y;
-        int alto_ventana_pixeles=(w->visible_height * menu_char_height) - offset_y;
-        int final_y_visible=inicio_y_visible+alto_ventana_pixeles;
 
-    printf("Salido bucle en i %d microdrive_raw_map_draw_fin_dibujar: %d microdrive_raw_map_forzar_dibujado: %d\n",
-        i,microdrive_raw_map_draw_fin_dibujar,microdrive_raw_map_forzar_dibujado);
-
-        //printf("microdrive_raw_map_draw_putpixel_last_y: %d inicio_y_visible: %d final_y_visible: %d\n",
-        //            microdrive_raw_map_draw_putpixel_last_y,inicio_y_visible,final_y_visible);
-
-        if (microdrive_raw_map_draw_putpixel_last_y<inicio_y_visible || microdrive_raw_map_draw_putpixel_last_y>final_y_visible) {
-
-            printf("cambiar scroll. microdrive_raw_map_draw_putpixel_last_y: %d inicio_y_visible: %d final_y_visible: %d\n",
-                    microdrive_raw_map_draw_putpixel_last_y,inicio_y_visible,final_y_visible);
-
-
-            int offset_final=microdrive_raw_map_draw_putpixel_last_y- offset_y; //-alto_ventana_pixeles;
-            if (offset_final<0) offset_final=0;
-
-            //printf("cambiar scroll a %d\n",offset_final);
-
-
-            //microdrive_raw_map_draw_scroll_y=offset_final;
-
-            //temp de momento no cambiar menu_microdrive_raw_map_start_index=i-1;
-
-            printf("Cambiar offset a %d\n",menu_microdrive_raw_map_start_index);
-
-            if (menu_microdrive_raw_map_start_index<0) menu_microdrive_raw_map_start_index=0;
-            if (menu_microdrive_raw_map_start_index>=total_size) menu_microdrive_raw_map_start_index=total_size-1;
-
-
-
-            forzado_siguiente_redraw=1;
-
-            w->must_clear_cache_on_draw_once=1;
-
-        }
-    }
-
-
-    */
 
     microdrive_raw_map_forzar_dibujado=0;
 
@@ -44103,16 +44051,7 @@ void menu_microdrive_raw_map(MENU_ITEM_PARAMETERS)
         zxvision_draw_window_contents(ventana);
 
 
-        /*
-        //NO: Esto ya lo hace bien desde overlay, al final llama a menu_microdrive_raw_map_mostrar_opciones
 
-        //Dibujarlo desde aqui tambien para que calcule menu_microdrive_raw_map_pos_primera_linea
-        menu_microdrive_raw_map_draw(ventana);
-        //Y mostramos las opciones con esa posicion actualizada
-        menu_microdrive_raw_map_mostrar_opciones(ventana);
-
-        zxvision_draw_window_contents(ventana);
-        */
 
 
 
