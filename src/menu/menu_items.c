@@ -43399,6 +43399,10 @@ int menu_microdrive_raw_map_start_index=0;
 //Bytes mostrados en pantalla por linea
 int menu_microdrive_raw_map_byte_width=0;
 
+
+//Ultima posicion de indice leida de pixel escrito
+int menu_microdrive_raw_map_last_index_pixeled=0;
+
 //y en coordenadas de fila, siendo 0 la primera linea del footer, 1 la segunda, etc
 void menu_microdrive_raw_map_draw_putpixel_char(zxvision_window *w,int x,int y,int tinta,int papel,z80_byte caracter)
 {
@@ -43470,7 +43474,7 @@ int menu_microdrive_raw_map_draw_putpixel(zxvision_window *w,int zoom,int xorig,
 
         //detectar si hace putpixel mas alla de zona visible de ventana
         if (yfinal>(w->visible_height+w->offset_y)*menu_char_height) {
-            printf("final dibujado mapa en %d\n",yfinal);
+            //printf("final dibujado mapa en %d\n",yfinal);
             microdrive_raw_map_draw_fin_dibujar=1;
         }
 
@@ -43867,30 +43871,53 @@ void menu_microdrive_raw_map_draw(zxvision_window *w)
             }
         }
 
+        if (dibujar_pixel) menu_microdrive_raw_map_last_index_pixeled=i;
+
         //Si ha saltado de linea y se ha detectado final visible
         if (x==0 && microdrive_raw_map_draw_fin_dibujar) {
-            printf("saliendo en y: %d i: %d\n",y,i);
+            //printf("saliendo en y: %d i: %d\n",y,i);
             salir=1;
         }
     }
 
-    printf("Salido bucle en i %d microdrive_raw_map_draw_fin_dibujar: %d microdrive_raw_map_forzar_dibujado: %d\n",
-        i,microdrive_raw_map_draw_fin_dibujar,microdrive_raw_map_forzar_dibujado);
+    //printf("Salido bucle en i %d microdrive_raw_map_draw_fin_dibujar: %d microdrive_raw_map_forzar_dibujado: %d\n",
+    //    i,microdrive_raw_map_draw_fin_dibujar,microdrive_raw_map_forzar_dibujado);
+
+    printf("Ultimo pixelado en %d\n",menu_microdrive_raw_map_last_index_pixeled);
 
     int forzado_siguiente_redraw=0;
 
     //Si hay que cambiar scroll. Solo considerar cuando no se haya hecho un full redraw
     if (!microdrive_raw_map_forzar_dibujado && microdrive_raw_map_autoscroll) {
+
+
+        printf("Salido bucle en i %d menu_microdrive_raw_map_last_index_pixeled: %d\n",
+            i,menu_microdrive_raw_map_last_index_pixeled);
+
+            menu_microdrive_raw_map_start_index=menu_microdrive_raw_map_last_index_pixeled;
+
+            forzado_siguiente_redraw=1;
+
+            w->must_clear_cache_on_draw_once=1;
+
+
+    }
+
+    /*
+    if (!microdrive_raw_map_forzar_dibujado && microdrive_raw_map_autoscroll) {
         int inicio_y_visible=microdrive_raw_map_draw_scroll_y;
         int alto_ventana_pixeles=(w->visible_height * menu_char_height) - offset_y;
         int final_y_visible=inicio_y_visible+alto_ventana_pixeles;
+
+    printf("Salido bucle en i %d microdrive_raw_map_draw_fin_dibujar: %d microdrive_raw_map_forzar_dibujado: %d\n",
+        i,microdrive_raw_map_draw_fin_dibujar,microdrive_raw_map_forzar_dibujado);
 
         //printf("microdrive_raw_map_draw_putpixel_last_y: %d inicio_y_visible: %d final_y_visible: %d\n",
         //            microdrive_raw_map_draw_putpixel_last_y,inicio_y_visible,final_y_visible);
 
         if (microdrive_raw_map_draw_putpixel_last_y<inicio_y_visible || microdrive_raw_map_draw_putpixel_last_y>final_y_visible) {
 
-            printf("microdrive_raw_map_draw_putpixel_last_y: %d inicio_y_visible: %d final_y_visible: %d\n",
+            printf("cambiar scroll. microdrive_raw_map_draw_putpixel_last_y: %d inicio_y_visible: %d final_y_visible: %d\n",
                     microdrive_raw_map_draw_putpixel_last_y,inicio_y_visible,final_y_visible);
 
 
@@ -43902,7 +43929,7 @@ void menu_microdrive_raw_map_draw(zxvision_window *w)
 
             //microdrive_raw_map_draw_scroll_y=offset_final;
 
-            menu_microdrive_raw_map_start_index=i-1;
+            //temp de momento no cambiar menu_microdrive_raw_map_start_index=i-1;
 
             printf("Cambiar offset a %d\n",menu_microdrive_raw_map_start_index);
 
@@ -43917,6 +43944,9 @@ void menu_microdrive_raw_map_draw(zxvision_window *w)
 
         }
     }
+
+
+    */
 
     microdrive_raw_map_forzar_dibujado=0;
 
