@@ -44035,16 +44035,9 @@ void menu_microdrive_raw_map(MENU_ITEM_PARAMETERS)
         zxvision_draw_window_contents(ventana);
 
 
-
-
-
-
         //para scroll con teclas
         int mover_scroll=menu_microdrive_raw_map_byte_width;
 
-        /*if (microdrive_raw_map_zoom>0) {
-            mover_scroll=microdrive_raw_map_zoom;
-        }*/
 
 		tecla=zxvision_common_getkey_refresh();
 
@@ -44078,12 +44071,24 @@ void menu_microdrive_raw_map(MENU_ITEM_PARAMETERS)
                 salir=1;
             break;
 
-            //arriba
-            case 11:
+            //izquierda
+            case 8:
 
-                menu_microdrive_raw_map_start_index-=mover_scroll;
+                menu_microdrive_raw_map_start_index--;
                 if (menu_microdrive_raw_map_start_index<0) menu_microdrive_raw_map_start_index=0;
 
+                ventana->must_clear_cache_on_draw_once=1;
+                microdrive_raw_map_forzar_dibujado=1;
+
+
+            break;
+
+            //Derecha
+            case 9:
+                menu_microdrive_raw_map_start_index++;
+                if (menu_microdrive_raw_map_start_index>=microdrive_status[microdrive_raw_map_selected_unit].raw_total_size) {
+                    menu_microdrive_raw_map_start_index=microdrive_status[microdrive_raw_map_selected_unit].raw_total_size-1;
+                }
                 ventana->must_clear_cache_on_draw_once=1;
                 microdrive_raw_map_forzar_dibujado=1;
 
@@ -44096,6 +44101,18 @@ void menu_microdrive_raw_map(MENU_ITEM_PARAMETERS)
                 if (menu_microdrive_raw_map_start_index>=microdrive_status[microdrive_raw_map_selected_unit].raw_total_size) {
                     menu_microdrive_raw_map_start_index=microdrive_status[microdrive_raw_map_selected_unit].raw_total_size-1;
                 }
+                ventana->must_clear_cache_on_draw_once=1;
+                microdrive_raw_map_forzar_dibujado=1;
+
+
+            break;
+
+            //arriba
+            case 11:
+
+                menu_microdrive_raw_map_start_index-=mover_scroll;
+                if (menu_microdrive_raw_map_start_index<0) menu_microdrive_raw_map_start_index=0;
+
                 ventana->must_clear_cache_on_draw_once=1;
                 microdrive_raw_map_forzar_dibujado=1;
 
