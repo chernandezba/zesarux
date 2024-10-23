@@ -438,6 +438,9 @@ ok *zoom de 4 y 8 que la casilla tenga separacion con las otras
 ok *detectar y maxima y no escribir? siempre que autoscroll off
 ok *en zoom 16 opcion mostrar hexadecimal o caracter
 ok *detectar mejor que parte del dibujo no se vera por debajo, dando algo de margen para que pueda hacer autoscroll
+*no mostrar valor scroll, mejor mostrar posicion en leyenda al lado de mapa
+
+ok *full erase del microdrive raw
 
 ok-current position en debug i/o ports
 ok-bad sectors (positions) raw

@@ -804,6 +804,8 @@ void microdrive_raw_mark_bad_position(int microdrive_seleccionado,int position)
     valor_leido |=MICRODRIVE_RAW_INFO_BYTE_MASK_BAD_POSITION;
 
     puntero[position]=valor_leido;
+
+    microdrive_status[microdrive_seleccionado].microdrive_must_flush_to_disk=1;
 }
 
 
@@ -815,5 +817,20 @@ void microdrive_raw_unmark_bad_position(int microdrive_seleccionado,int position
     valor_leido &=(0xFFFF - MICRODRIVE_RAW_INFO_BYTE_MASK_BAD_POSITION);
 
     puntero[position]=valor_leido;
+
+    microdrive_status[microdrive_seleccionado].microdrive_must_flush_to_disk=1;
 }
 
+void microdrive_raw_full_erase(int microdrive_seleccionado)
+{
+    z80_int *puntero=microdrive_status[microdrive_seleccionado].raw_microdrive_buffer;
+
+    int i;
+
+    for (i=0;i<microdrive_status[microdrive_seleccionado].raw_total_size;i++) {
+        puntero[i]=0;
+    }
+
+    microdrive_status[microdrive_seleccionado].microdrive_must_flush_to_disk=1;
+
+}

@@ -43453,7 +43453,7 @@ void menu_microdrive_raw_map_draw_putpixel(zxvision_window *w,int zoom,int xorig
 
         //detectar si hace putpixel mas alla de zona visible de ventana
         if (yfinal>(w->visible_height+w->offset_y)*menu_char_height) {
-            printf("final dibujado mapa en %d\n",yfinal);
+            //printf("final dibujado mapa en %d\n",yfinal);
             microdrive_raw_map_draw_fin_dibujar=1;
         }
 
@@ -43494,6 +43494,49 @@ void menu_microdrive_raw_map_draw_putpixel(zxvision_window *w,int zoom,int xorig
             menu_microdrive_raw_map_draw_putpixel_char(w,xcaracter+8,ycaracter,color_tinta,color,buffer[1]);
         }
     }
+}
+
+void menu_microdrive_raw_map_mostrar_opciones(zxvision_window *ventana)
+{
+
+    //Forzar a mostrar atajos
+    z80_bit antes_menu_writing_inverse_color;
+    antes_menu_writing_inverse_color.v=menu_writing_inverse_color.v;
+    menu_writing_inverse_color.v=1;
+
+    char buffer_show_char[60]="";
+
+    if (microdrive_raw_map_zoom>=16) {
+        sprintf(buffer_show_char,"[%c] Show ~~char",
+        (microdrive_raw_map_draw_zoom_show_char ? 'X' : ' '));
+    }
+
+    zxvision_print_string_defaults_fillspc_format(ventana,1,0,"Selected MDV: %d ~~Zoom: %d %s",
+        microdrive_raw_map_selected_unit,microdrive_raw_map_zoom,buffer_show_char);
+
+    //zxvision_print_string_defaults_fillspc(ventana,1,1,"");
+
+    zxvision_print_string_defaults_fillspc_format(ventana,1,1,"[%c] ~~Autoscroll. Current: %7d [%c] Show ~~head",
+        (microdrive_raw_map_autoscroll ? 'X' : ' ' ),
+        microdrive_raw_map_draw_scroll_y,
+        (microdrive_raw_map_dibujar_cabezal ? 'X' : ' ' )
+    );
+
+
+
+
+    if (!microdrive_status[microdrive_raw_map_selected_unit].microdrive_enabled) {
+        zxvision_print_string_defaults_fillspc_format(ventana,1,1,"Selected MDV is not enabled");
+    }
+
+    else if (!microdrive_status[microdrive_raw_map_selected_unit].raw_format) {
+        zxvision_print_string_defaults_fillspc_format(ventana,1,1,"Selected MDV is not raw");
+    }
+
+
+
+    //Restaurar comportamiento atajos
+    menu_writing_inverse_color.v=antes_menu_writing_inverse_color.v;
 }
 
 
@@ -43564,6 +43607,8 @@ void menu_microdrive_raw_map_draw(zxvision_window *w)
     //redibujarla entera cuando se haya movido, o alguna por encima , etc etc
     if (w->dirty_user_must_draw_contents) {
         microdrive_raw_map_forzar_dibujado=1;
+
+        //menu_microdrive_raw_map_mostrar_opciones(w);
 
         w->dirty_user_must_draw_contents=0;
     }
@@ -43796,7 +43841,7 @@ void menu_microdrive_raw_map_draw(zxvision_window *w)
 
         if (microdrive_raw_map_draw_putpixel_last_y<inicio_y_visible || microdrive_raw_map_draw_putpixel_last_y>final_y_visible) {
 
-        printf("microdrive_raw_map_draw_putpixel_last_y: %d inicio_y_visible: %d final_y_visible: %d\n",
+            printf("microdrive_raw_map_draw_putpixel_last_y: %d inicio_y_visible: %d final_y_visible: %d\n",
                     microdrive_raw_map_draw_putpixel_last_y,inicio_y_visible,final_y_visible);
 
 
@@ -43944,45 +43989,11 @@ void menu_microdrive_raw_map(MENU_ITEM_PARAMETERS)
         microdrive_raw_map_forzar_dibujado=1;
         zxvision_cls(ventana);
 
-        //Forzar a mostrar atajos
-        z80_bit antes_menu_writing_inverse_color;
-        antes_menu_writing_inverse_color.v=menu_writing_inverse_color.v;
-        menu_writing_inverse_color.v=1;
-
-        char buffer_show_char[60]="";
-
-        if (microdrive_raw_map_zoom>=16) {
-            sprintf(buffer_show_char,"[%c] Show ~~char",
-            (microdrive_raw_map_draw_zoom_show_char ? 'X' : ' '));
-        }
-
-        zxvision_print_string_defaults_fillspc_format(ventana,1,0,"Selected MDV: %d ~~Zoom: %d %s",
-            microdrive_raw_map_selected_unit,microdrive_raw_map_zoom,buffer_show_char);
-
-        //zxvision_print_string_defaults_fillspc(ventana,1,1,"");
-
-        zxvision_print_string_defaults_fillspc_format(ventana,1,1,"[%c] ~~Autoscroll. Current: %7d [%c] Show ~~head",
-            (microdrive_raw_map_autoscroll ? 'X' : ' ' ),
-            microdrive_raw_map_draw_scroll_y,
-            (microdrive_raw_map_dibujar_cabezal ? 'X' : ' ' )
-        );
-
-
-
-
-        if (!microdrive_status[microdrive_raw_map_selected_unit].microdrive_enabled) {
-            zxvision_print_string_defaults_fillspc_format(ventana,1,1,"Selected MDV is not enabled");
-        }
-
-        else if (!microdrive_status[microdrive_raw_map_selected_unit].raw_format) {
-            zxvision_print_string_defaults_fillspc_format(ventana,1,1,"Selected MDV is not raw");
-        }
-
+        menu_microdrive_raw_map_mostrar_opciones(ventana);
 
         zxvision_draw_window_contents(ventana);
 
-        //Restaurar comportamiento atajos
-        menu_writing_inverse_color.v=antes_menu_writing_inverse_color.v;
+
 
         //para scroll con teclas
         int mover_scroll=1;
@@ -44059,6 +44070,15 @@ void menu_microdrive_raw_map(MENU_ITEM_PARAMETERS)
 		zxvision_destroy_window(ventana);
 	}
 
+
+}
+
+void menu_microdrive_raw_full_erase(MENU_ITEM_PARAMETERS)
+{
+    if (menu_confirm_yesno("Erase")) {
+        microdrive_raw_full_erase(valor_opcion);
+        menu_generic_message_splash("Erase","OK. Microdrive has been erased");
+    }
 
 }
 
@@ -44190,6 +44210,13 @@ void menu_interface1(MENU_ITEM_PARAMETERS)
                 else {
                     menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_microdrive_raw_map,NULL,
                             "Microdrive raw map","Mapa raw microdrive","Mapa raw microdrive");
+                    menu_add_item_menu_prefijo(array_menu_common,"    ");
+                    menu_add_item_menu_se_cerrara(array_menu_common);
+                    menu_add_item_menu_genera_ventana(array_menu_common);
+                    menu_add_item_menu_valor_opcion(array_menu_common,i);
+
+                    menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_microdrive_raw_full_erase,NULL,
+                            "Full erase","Borrado completo","Borrat complet");
                     menu_add_item_menu_prefijo(array_menu_common,"    ");
                     menu_add_item_menu_se_cerrara(array_menu_common);
                     menu_add_item_menu_genera_ventana(array_menu_common);
