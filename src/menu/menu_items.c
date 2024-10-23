@@ -44023,10 +44023,7 @@ void menu_microdrive_raw_map(MENU_ITEM_PARAMETERS)
 
         zxvision_draw_window_contents(ventana);
 
-        //menu_microdrive_raw_map_mostrar_opciones(ventana);
 
-        //ventana->must_clear_cache_on_draw_once=1;
-        //microdrive_raw_map_forzar_dibujado=1;
 
         //Dibujarlo desde aqui tambien para que calcule menu_microdrive_raw_map_pos_primera_linea
         menu_microdrive_raw_map_draw(ventana);
