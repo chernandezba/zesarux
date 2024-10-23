@@ -43397,8 +43397,7 @@ int menu_microdrive_raw_map_start_index=0;
 int menu_microdrive_raw_map_byte_width=0;
 
 
-//Ultima posicion de indice leida de pixel escrito
-int menu_microdrive_raw_map_last_index_pixeled=0;
+
 
 //y en coordenadas de fila, siendo 0 la primera linea del footer, 1 la segunda, etc
 void menu_microdrive_raw_map_draw_putpixel_char(zxvision_window *w,int x,int y,int tinta,int papel,z80_byte caracter)
@@ -43866,11 +43865,10 @@ void menu_microdrive_raw_map_draw(zxvision_window *w)
             }
         }
 
-        if (dibujar_pixel) menu_microdrive_raw_map_last_index_pixeled=i;
 
         //Si ha saltado de linea y se ha detectado final visible
         if (x==0 && microdrive_raw_map_draw_fin_dibujar) {
-            //printf("saliendo en y: %d i: %d\n",y,i);
+            printf("saliendo en y: %d i: %d\n",y,i);
             salir=1;
         }
     }
@@ -43878,7 +43876,8 @@ void menu_microdrive_raw_map_draw(zxvision_window *w)
     //printf("Salido bucle en i %d microdrive_raw_map_draw_fin_dibujar: %d microdrive_raw_map_forzar_dibujado: %d\n",
     //    i,microdrive_raw_map_draw_fin_dibujar,microdrive_raw_map_forzar_dibujado);
 
-    printf("Ultimo pixelado en %d\n",menu_microdrive_raw_map_last_index_pixeled);
+    printf("Salido bucle en i %d \n",
+        i);
 
     int forzado_siguiente_redraw=0;
 
@@ -43887,10 +43886,8 @@ void menu_microdrive_raw_map_draw(zxvision_window *w)
     if (!microdrive_raw_map_forzar_dibujado && microdrive_raw_map_autoscroll) {
 
 
-        printf("Salido bucle en i %d menu_microdrive_raw_map_last_index_pixeled: %d\n",
-            i,menu_microdrive_raw_map_last_index_pixeled);
 
-            //menu_microdrive_raw_map_start_index=menu_microdrive_raw_map_last_index_pixeled;
+
 
             int next_pos=pos_cabezal;
 
