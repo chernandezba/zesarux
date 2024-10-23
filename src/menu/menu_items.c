@@ -44023,9 +44023,9 @@ void menu_microdrive_raw_map(MENU_ITEM_PARAMETERS)
 
         zxvision_draw_window_contents(ventana);
 
-        /*
 
-        Esto ya lo hace bien desde overlay, al final llama a menu_microdrive_raw_map_mostrar_opciones
+        /*
+        //NO: Esto ya lo hace bien desde overlay, al final llama a menu_microdrive_raw_map_mostrar_opciones
 
         //Dibujarlo desde aqui tambien para que calcule menu_microdrive_raw_map_pos_primera_linea
         menu_microdrive_raw_map_draw(ventana);
