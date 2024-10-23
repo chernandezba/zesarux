@@ -43387,6 +43387,11 @@ int microdrive_raw_map_draw_zoom_show_char=0;
 //Si muestra cabezal de lectura o no
 int microdrive_raw_map_dibujar_cabezal=1;
 
+//Se consulta para saber en donde esta enseñando arriba del todo, o sea, que posicion del microdrive es
+//dado que siempre se empieza por la posicion 0, segun el scroll actual, esas posiciones quedan "por arriba" y no se ven
+//En cuanto se muestra la primera posicion visible como pixeles, se obtiene la posicion del microdrive que apunta ahi
+int menu_microdrive_raw_map_pos_primera_linea=0;
+
 //y en coordenadas de fila, siendo 0 la primera linea del footer, 1 la segunda, etc
 void menu_microdrive_raw_map_draw_putpixel_char(zxvision_window *w,int x,int y,int tinta,int papel,z80_byte caracter)
 {
@@ -43432,7 +43437,7 @@ void menu_microdrive_raw_map_draw_putpixel_char(zxvision_window *w,int x,int y,i
 }
 
 //Si zoom >8 , mostramos contenido celda
-void menu_microdrive_raw_map_draw_putpixel(zxvision_window *w,int zoom,int xorig,int yorig,int color,z80_int dato_leido)
+int menu_microdrive_raw_map_draw_putpixel(zxvision_window *w,int zoom,int xorig,int yorig,int color,z80_int dato_leido)
 {
     int x,y;
 
@@ -43440,7 +43445,7 @@ void menu_microdrive_raw_map_draw_putpixel(zxvision_window *w,int zoom,int xorig
 
     microdrive_raw_map_draw_putpixel_last_y=yorig;
 
-
+    int primera_linea=0;
 
     for (y=0;y<zoom;y++) {
 
@@ -43449,7 +43454,9 @@ void menu_microdrive_raw_map_draw_putpixel(zxvision_window *w,int zoom,int xorig
 
         yfinal +=y;
 
-        if (yfinal<limite_superior) return;
+        if (yfinal<limite_superior) return 0;
+
+        if (yfinal==limite_superior) primera_linea=1;
 
         //detectar si hace putpixel mas alla de zona visible de ventana
         if (yfinal>(w->visible_height+w->offset_y)*menu_char_height) {
@@ -43494,6 +43501,8 @@ void menu_microdrive_raw_map_draw_putpixel(zxvision_window *w,int zoom,int xorig
             menu_microdrive_raw_map_draw_putpixel_char(w,xcaracter+8,ycaracter,color_tinta,color,buffer[1]);
         }
     }
+
+    return primera_linea;
 }
 
 void menu_microdrive_raw_map_mostrar_opciones(zxvision_window *ventana)
@@ -43516,9 +43525,9 @@ void menu_microdrive_raw_map_mostrar_opciones(zxvision_window *ventana)
 
     //zxvision_print_string_defaults_fillspc(ventana,1,1,"");
 
-    zxvision_print_string_defaults_fillspc_format(ventana,1,1,"[%c] ~~Autoscroll. Current: %7d [%c] Show ~~head",
+    zxvision_print_string_defaults_fillspc_format(ventana,1,1,"[%c] ~~Autoscroll. Start pos: %7d [%c] Show ~~head",
         (microdrive_raw_map_autoscroll ? 'X' : ' ' ),
-        microdrive_raw_map_draw_scroll_y,
+        menu_microdrive_raw_map_pos_primera_linea,
         (microdrive_raw_map_dibujar_cabezal ? 'X' : ' ' )
     );
 
@@ -43540,6 +43549,7 @@ void menu_microdrive_raw_map_mostrar_opciones(zxvision_window *ventana)
 }
 
 
+
 void menu_microdrive_raw_map_draw(zxvision_window *w)
 {
     int offset_x=microdrive_raw_map_start_x*menu_char_width;
@@ -43550,6 +43560,8 @@ void menu_microdrive_raw_map_draw(zxvision_window *w)
 
     int max_y=total_alto+microdrive_raw_map_draw_scroll_y;
     int max_ancho=total_ancho-offset_x;
+
+    //menu_microdrive_raw_map_max_ancho=max_ancho;
 
     enum lista_estados_pixel {
         DATO_SIN_USO=0,
@@ -43612,6 +43624,9 @@ void menu_microdrive_raw_map_draw(zxvision_window *w)
 
         w->dirty_user_must_draw_contents=0;
     }
+
+    if (microdrive_raw_map_forzar_dibujado) printf("Forzar redibujado\n");
+    else printf("no forzar redibujado\n");
 
     int total_pixeles_dibujados=0;
 
@@ -43780,6 +43795,7 @@ void menu_microdrive_raw_map_draw(zxvision_window *w)
             dibujar_pixel=1;
         }
 
+        int es_primera_linea=0;
 
         //Para zoom positivo
         if (microdrive_raw_map_zoom>=1) {
@@ -43790,8 +43806,13 @@ void menu_microdrive_raw_map_draw(zxvision_window *w)
             }
 
             if (dibujar_pixel) {
-                menu_microdrive_raw_map_draw_putpixel(w,microdrive_raw_map_zoom,x+offset_x,y+offset_y,color,dato_leido);
+                es_primera_linea=menu_microdrive_raw_map_draw_putpixel(w,microdrive_raw_map_zoom,x+offset_x,y+offset_y,color,dato_leido);
                 total_pixeles_dibujados++;
+            }
+
+            //Si es la primera linea visible
+            if (es_primera_linea && x==0) {
+                menu_microdrive_raw_map_pos_primera_linea=i;
             }
 
 
@@ -43812,8 +43833,13 @@ void menu_microdrive_raw_map_draw(zxvision_window *w)
                 }
 
                 if (dibujar_pixel) {
-                    menu_microdrive_raw_map_draw_putpixel(w,1,x+offset_x,y+offset_y,color,dato_leido);
+                    es_primera_linea=menu_microdrive_raw_map_draw_putpixel(w,1,x+offset_x,y+offset_y,color,dato_leido);
                     total_pixeles_dibujados++;
+                }
+
+                //Si es la primera linea visible
+                if (es_primera_linea && x==0) {
+                    menu_microdrive_raw_map_pos_primera_linea=i;
                 }
 
                 x++;
