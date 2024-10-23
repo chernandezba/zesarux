@@ -43377,6 +43377,7 @@ int microdrive_raw_map_antes_pos_cabezal_lectura=-1;
 
 int microdrive_raw_map_draw_putpixel_last_y=0;
 
+//Hay que intentar hacer obsoleto esto
 int microdrive_raw_map_draw_scroll_y=0;
 
 int microdrive_raw_map_draw_fin_dibujar=0;
@@ -43391,6 +43392,12 @@ int microdrive_raw_map_dibujar_cabezal=1;
 //dado que siempre se empieza por la posicion 0, segun el scroll actual, esas posiciones quedan "por arriba" y no se ven
 //En cuanto se muestra la primera posicion visible como pixeles, se obtiene la posicion del microdrive que apunta ahi
 int menu_microdrive_raw_map_pos_primera_linea=0;
+
+//Inicio desde donde se empieza a leer
+int menu_microdrive_raw_map_start_index=0;
+
+//Bytes mostrados en pantalla por linea
+int menu_microdrive_raw_map_byte_width=0;
 
 //y en coordenadas de fila, siendo 0 la primera linea del footer, 1 la segunda, etc
 void menu_microdrive_raw_map_draw_putpixel_char(zxvision_window *w,int x,int y,int tinta,int papel,z80_byte caracter)
@@ -43437,7 +43444,8 @@ void menu_microdrive_raw_map_draw_putpixel_char(zxvision_window *w,int x,int y,i
 }
 
 //Si zoom >8 , mostramos contenido celda
-int menu_microdrive_raw_map_draw_putpixel(zxvision_window *w,int zoom,int xorig,int yorig,int color,z80_int dato_leido)
+//dibujar_pixel solo se hace para controlar limites pero no dibuja pixeles realmente
+int menu_microdrive_raw_map_draw_putpixel(zxvision_window *w,int zoom,int xorig,int yorig,int color,z80_int dato_leido,int dibujar_pixel)
 {
     int x,y;
 
@@ -43458,11 +43466,15 @@ int menu_microdrive_raw_map_draw_putpixel(zxvision_window *w,int zoom,int xorig,
 
         if (yfinal==limite_superior) primera_linea=1;
 
+        //printf("y %d\n",yfinal);
+
         //detectar si hace putpixel mas alla de zona visible de ventana
         if (yfinal>(w->visible_height+w->offset_y)*menu_char_height) {
-            //printf("final dibujado mapa en %d\n",yfinal);
+            printf("final dibujado mapa en %d\n",yfinal);
             microdrive_raw_map_draw_fin_dibujar=1;
         }
+
+        if (!dibujar_pixel) return primera_linea;
 
         for (x=0;x<zoom;x++) {
 
@@ -43527,7 +43539,7 @@ void menu_microdrive_raw_map_mostrar_opciones(zxvision_window *ventana)
 
     zxvision_print_string_defaults_fillspc_format(ventana,1,1,"[%c] ~~Autoscroll. Start pos: %7d [%c] Show ~~head",
         (microdrive_raw_map_autoscroll ? 'X' : ' ' ),
-        menu_microdrive_raw_map_pos_primera_linea,
+        menu_microdrive_raw_map_start_index,
         (microdrive_raw_map_dibujar_cabezal ? 'X' : ' ' )
     );
 
@@ -43625,8 +43637,8 @@ void menu_microdrive_raw_map_draw(zxvision_window *w)
         w->dirty_user_must_draw_contents=0;
     }
 
-    if (microdrive_raw_map_forzar_dibujado) printf("Forzar redibujado\n");
-    else printf("no forzar redibujado\n");
+    //if (microdrive_raw_map_forzar_dibujado) printf("Forzar redibujado\n");
+    //else printf("no forzar redibujado\n");
 
     int total_pixeles_dibujados=0;
 
@@ -43638,10 +43650,15 @@ void menu_microdrive_raw_map_draw(zxvision_window *w)
 
     microdrive_raw_map_draw_fin_dibujar=0;
 
+    menu_microdrive_raw_map_byte_width=0;
+
     int salir=0;
 
-    for (i=0;i<total_size && !salir ;i++) {
+    for (i=menu_microdrive_raw_map_start_index;i<total_size && !salir ;i++) {
         z80_int dato_leido=microdrive_status[microdrive_raw_map_selected_unit].raw_microdrive_buffer[i];
+
+        //Conteo de cantidad de bytes que caben en una linea solo para la primera linea
+        if (y==0) menu_microdrive_raw_map_byte_width++;
 
         enum lista_estados_pixel estado_pixel=DATO_SIN_USO;
 
@@ -43805,8 +43822,8 @@ void menu_microdrive_raw_map_draw(zxvision_window *w)
                 dibujar_pixel=1;
             }
 
+            es_primera_linea=menu_microdrive_raw_map_draw_putpixel(w,microdrive_raw_map_zoom,x+offset_x,y+offset_y,color,dato_leido,dibujar_pixel);
             if (dibujar_pixel) {
-                es_primera_linea=menu_microdrive_raw_map_draw_putpixel(w,microdrive_raw_map_zoom,x+offset_x,y+offset_y,color,dato_leido);
                 total_pixeles_dibujados++;
             }
 
@@ -43832,8 +43849,8 @@ void menu_microdrive_raw_map_draw(zxvision_window *w)
                     dibujar_pixel=1;
                 }
 
+                es_primera_linea=menu_microdrive_raw_map_draw_putpixel(w,1,x+offset_x,y+offset_y,color,dato_leido,dibujar_pixel);
                 if (dibujar_pixel) {
-                    es_primera_linea=menu_microdrive_raw_map_draw_putpixel(w,1,x+offset_x,y+offset_y,color,dato_leido);
                     total_pixeles_dibujados++;
                 }
 
@@ -43851,8 +43868,14 @@ void menu_microdrive_raw_map_draw(zxvision_window *w)
         }
 
         //Si ha saltado de linea y se ha detectado final visible
-        if (x==0 && microdrive_raw_map_draw_fin_dibujar) salir=1;
+        if (x==0 && microdrive_raw_map_draw_fin_dibujar) {
+            printf("saliendo en y: %d i: %d\n",y,i);
+            salir=1;
+        }
     }
+
+    printf("Salido bucle en i %d microdrive_raw_map_draw_fin_dibujar: %d microdrive_raw_map_forzar_dibujado: %d\n",
+        i,microdrive_raw_map_draw_fin_dibujar,microdrive_raw_map_forzar_dibujado);
 
     int forzado_siguiente_redraw=0;
 
@@ -43874,11 +43897,18 @@ void menu_microdrive_raw_map_draw(zxvision_window *w)
             int offset_final=microdrive_raw_map_draw_putpixel_last_y- offset_y; //-alto_ventana_pixeles;
             if (offset_final<0) offset_final=0;
 
-            printf("cambiar scroll a %d\n",offset_final);
+            //printf("cambiar scroll a %d\n",offset_final);
 
-            microdrive_raw_map_draw_scroll_y=offset_final;
 
-            //microdrive_raw_map_draw_scroll_y+=10;
+            //microdrive_raw_map_draw_scroll_y=offset_final;
+
+            menu_microdrive_raw_map_start_index=i-1;
+
+            printf("Cambiar offset a %d\n",menu_microdrive_raw_map_start_index);
+
+            if (menu_microdrive_raw_map_start_index<0) menu_microdrive_raw_map_start_index=0;
+            if (menu_microdrive_raw_map_start_index>=total_size) menu_microdrive_raw_map_start_index=total_size-1;
+
 
 
             forzado_siguiente_redraw=1;
@@ -43894,7 +43924,7 @@ void menu_microdrive_raw_map_draw(zxvision_window *w)
 
     microdrive_raw_map_antes_pos_cabezal_lectura=pos_cabezal;
 
-    if (total_pixeles_dibujados) printf("total posiciones dibujadas: %d. scroll=%d\n",total_pixeles_dibujados,microdrive_raw_map_draw_scroll_y);
+    //if (total_pixeles_dibujados) printf("total posiciones dibujadas: %d. scroll=%d\n",total_pixeles_dibujados,microdrive_raw_map_draw_scroll_y);
 
 
 
@@ -44038,11 +44068,11 @@ void menu_microdrive_raw_map(MENU_ITEM_PARAMETERS)
 
 
         //para scroll con teclas
-        int mover_scroll=1;
+        int mover_scroll=menu_microdrive_raw_map_byte_width;
 
-        if (microdrive_raw_map_zoom>0) {
+        /*if (microdrive_raw_map_zoom>0) {
             mover_scroll=microdrive_raw_map_zoom;
-        }
+        }*/
 
 		tecla=zxvision_common_getkey_refresh();
 
@@ -44078,21 +44108,25 @@ void menu_microdrive_raw_map(MENU_ITEM_PARAMETERS)
 
             //arriba
             case 11:
-                if (microdrive_raw_map_draw_scroll_y>0) {
-                    microdrive_raw_map_draw_scroll_y-=mover_scroll;
-                    if (microdrive_raw_map_draw_scroll_y<0) microdrive_raw_map_draw_scroll_y=0;
 
-                    ventana->must_clear_cache_on_draw_once=1;
-                    microdrive_raw_map_forzar_dibujado=1;
+                menu_microdrive_raw_map_start_index-=mover_scroll;
+                if (menu_microdrive_raw_map_start_index<0) menu_microdrive_raw_map_start_index=0;
 
-                }
+                ventana->must_clear_cache_on_draw_once=1;
+                microdrive_raw_map_forzar_dibujado=1;
+
+
             break;
 
             //abajo
             case 10:
-                microdrive_raw_map_draw_scroll_y+=mover_scroll;
+                menu_microdrive_raw_map_start_index+=mover_scroll;
+                if (menu_microdrive_raw_map_start_index>=microdrive_status[microdrive_raw_map_selected_unit].raw_total_size) {
+                    menu_microdrive_raw_map_start_index=microdrive_status[microdrive_raw_map_selected_unit].raw_total_size-1;
+                }
                 ventana->must_clear_cache_on_draw_once=1;
                 microdrive_raw_map_forzar_dibujado=1;
+
 
             break;
         }
