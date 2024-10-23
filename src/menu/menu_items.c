@@ -43375,9 +43375,6 @@ int microdrive_raw_map_minimo_zoom_reduccion=64;
 
 int microdrive_raw_map_antes_pos_cabezal_lectura=-1;
 
-int microdrive_raw_map_draw_putpixel_last_y=0;
-
-
 
 int microdrive_raw_map_draw_fin_dibujar=0;
 
@@ -43449,8 +43446,6 @@ void menu_microdrive_raw_map_draw_putpixel(zxvision_window *w,int zoom,int xorig
     int x,y;
 
     int limite_superior=microdrive_raw_map_start_y*menu_char_height;
-
-    microdrive_raw_map_draw_putpixel_last_y=yorig;
 
 
 
@@ -43795,8 +43790,7 @@ void menu_microdrive_raw_map_draw(zxvision_window *w)
         //Si posicion cerca del cabezal de lectura. x posiciones atras o adelante
         //Ese x tiene que ser el valor maximo de -zoom, para que siempre se vea el cabezal
 
-        int pos_menos=pos_cabezal-microdrive_raw_map_minimo_zoom_reduccion;
-        int pos_mas=pos_cabezal+microdrive_raw_map_minimo_zoom_reduccion;
+
 
         /*if (i>=pos_menos && i<=pos_mas) {
             color=color_posicion_lectura;
@@ -43913,7 +43907,6 @@ void menu_microdrive_raw_map_draw(zxvision_window *w)
     if (forzado_siguiente_redraw) microdrive_raw_map_forzar_dibujado=1;
 
     microdrive_raw_map_antes_pos_cabezal_lectura=pos_cabezal;
-
 
 
 }
