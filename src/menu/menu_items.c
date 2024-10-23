@@ -43377,8 +43377,7 @@ int microdrive_raw_map_antes_pos_cabezal_lectura=-1;
 
 int microdrive_raw_map_draw_putpixel_last_y=0;
 
-//Hay que intentar hacer obsoleto esto
-int microdrive_raw_map_draw_scroll_y=0;
+
 
 int microdrive_raw_map_draw_fin_dibujar=0;
 
@@ -43457,7 +43456,7 @@ void menu_microdrive_raw_map_draw_putpixel(zxvision_window *w,int zoom,int xorig
 
     for (y=0;y<zoom;y++) {
 
-        int yfinal=yorig-microdrive_raw_map_draw_scroll_y;
+        int yfinal=yorig;
 
 
         yfinal +=y;
@@ -43492,7 +43491,7 @@ void menu_microdrive_raw_map_draw_putpixel(zxvision_window *w,int zoom,int xorig
     if (zoom>=16) {
         //Escribir caracter, siempre que no sea gap
         if (dato_leido & MICRODRIVE_RAW_INFO_BYTE_MASK_DATA) {
-            int yfinal=yorig-microdrive_raw_map_draw_scroll_y;
+            int yfinal=yorig;
 
             int color_tinta=7-(color&7);
 
@@ -43570,7 +43569,7 @@ void menu_microdrive_raw_map_draw(zxvision_window *w)
     int total_ancho=(w->visible_width-microdrive_raw_map_start_x-1)*menu_char_width;
     int total_alto=(w->visible_height-microdrive_raw_map_start_y-2)*menu_char_height;
 
-    int max_y=total_alto+microdrive_raw_map_draw_scroll_y;
+    int max_y=total_alto;
     int max_ancho=total_ancho-offset_x;
 
     //menu_microdrive_raw_map_max_ancho=max_ancho;
@@ -43886,9 +43885,6 @@ void menu_microdrive_raw_map_draw(zxvision_window *w)
     if (!microdrive_raw_map_forzar_dibujado && microdrive_raw_map_autoscroll) {
 
 
-
-
-
             int next_pos=pos_cabezal;
 
             //ajustarla a multiple de linea
@@ -43917,8 +43913,6 @@ void menu_microdrive_raw_map_draw(zxvision_window *w)
     if (forzado_siguiente_redraw) microdrive_raw_map_forzar_dibujado=1;
 
     microdrive_raw_map_antes_pos_cabezal_lectura=pos_cabezal;
-
-    //if (total_pixeles_dibujados) printf("total posiciones dibujadas: %d. scroll=%d\n",total_pixeles_dibujados,microdrive_raw_map_draw_scroll_y);
 
 
 
