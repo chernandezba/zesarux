@@ -41656,7 +41656,7 @@ void menu_storage_microdrive_map(MENU_ITEM_PARAMETERS)
         }*/
 
 
-        int ancho=42;
+        int ancho=43;
         int alto=27;
         int xventana=menu_center_x()-ancho/2;
         int yventana=menu_center_y()-alto/2;
@@ -41816,7 +41816,8 @@ void menu_storage_microdrive_map(MENU_ITEM_PARAMETERS)
 
             if (buscar_archivo>=0) {
                 zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++,
-                    "Size: %5d B Used %d%s KB",tamanyo_archivo,used_kb,(medio ? ".5" : ""));
+                    "Size: %5d B Used %d%s KB First sect: %d",tamanyo_archivo,used_kb,(medio ? ".5" : ""),
+                        catalogo->file[buscar_archivo].sectors_list[0]);
             }
             else {
                 zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++,

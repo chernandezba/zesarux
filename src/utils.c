@@ -11095,14 +11095,17 @@ int convert_any_to_wav(char *origen, char *destino)
         return 0;
 }
 
-int convert_rmd_to_mdr_find_end_sync(int pos_raw,int total_size,z80_byte *microdrive_buffer_datos,z80_byte *microdrive_buffer_info)
+int convert_rmd_to_mdr_find_end_sync(int pos_raw,int *total_leidos,int total_size,z80_byte *microdrive_buffer_datos)
 {
     z80_byte sync_lista[8]={0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff};
 
-    while (pos_raw<total_size) {
+    while ((*total_leidos)<total_size) {
 
 
         z80_byte current_value=microdrive_buffer_datos[pos_raw++];
+        if (pos_raw>=total_size) pos_raw=0; //soportar dar la vuelta
+
+        (*total_leidos)++;
 
         //Rotar los anteriores
         sync_lista[7]=sync_lista[6];
@@ -11132,19 +11135,25 @@ int convert_rmd_to_mdr_find_end_sync(int pos_raw,int total_size,z80_byte *microd
     return pos_raw;
 }
 
-int convert_rmd_to_mdr_find_end_gap(int pos_raw,int total_size,z80_byte *microdrive_buffer_datos,z80_byte *microdrive_buffer_info)
+int convert_rmd_to_mdr_find_end_gap(int pos_raw,int *total_leidos,int total_size,z80_byte *microdrive_buffer_info,int *inicio_gap)
 {
     //Buscar primer gap
 
-    while ((microdrive_buffer_info[pos_raw] & 0x01)  && pos_raw<total_size) {
+    while ((microdrive_buffer_info[pos_raw] & 0x01)  && *total_leidos<total_size) {
+        (*total_leidos)++;
         pos_raw++;
+        if (pos_raw>=total_size) pos_raw=0; //soportar dar la vuelta
     }
 
-    if (pos_raw>=total_size) return pos_raw;
+    *inicio_gap=pos_raw;
+
+    if (*total_leidos>=total_size) return pos_raw;
 
     //Buscar fin gap
-    while ((microdrive_buffer_info[pos_raw] & 0x01)==0  && pos_raw<total_size) {
+    while ((microdrive_buffer_info[pos_raw] & 0x01)==0  && *total_leidos<total_size) {
+        (*total_leidos)++;
         pos_raw++;
+        if (pos_raw>=total_size) pos_raw=0; //soportar dar la vuelta
     }
 
     //printf("End gap en %d\n",pos_raw);
@@ -11182,7 +11191,7 @@ saltar a paso 1
         return 1;
     }
 
-	int leidos;
+	//int leidos;
 
 	char buffer_cabecera[MICRODRIVE_RAW_HEADER_SIZE];
 
@@ -11220,6 +11229,8 @@ saltar a paso 1
     int pos_raw=0;
     int pos_mdr=0;
 
+    int total_leidos=0;
+
 /*
 paso1:
 buscar gap inicio gap y final gap. saltar 10 bytes 00 + 2 ff.
@@ -11231,36 +11242,62 @@ leer 15 bytes+512+1
 saltar a paso 1
 */
 
-    while (pos_raw<total_size) {
+    //Primero ver donde empieza el primer gap para ver todo lo que "descuenta" del principio
+    int primer_gap_encontrado=0;
+
+
+    while (total_leidos<total_size) {
+
+        int inicio_gap;
+
+        //printf("pos_raw: %d total_leidos: %d\n",pos_raw,total_leidos);
 
         //buscar gap inicio gap y final gap.
-        pos_raw=convert_rmd_to_mdr_find_end_gap(pos_raw,total_size,microdrive_buffer_datos,microdrive_buffer_info);
-        if (pos_raw>=total_size) break;
+        pos_raw=convert_rmd_to_mdr_find_end_gap(pos_raw,&total_leidos,total_size,microdrive_buffer_info,&inicio_gap);
+        if (total_leidos>=total_size) break;
+
+        if (!primer_gap_encontrado) {
+            //printf("primer gap en %d. pos_raw: %d total_leidos: %d\n",inicio_gap,pos_raw,total_leidos);
+            primer_gap_encontrado=1;
+            total_leidos -=inicio_gap; //para descontar lo que no es gap del principio
+            total_leidos--;
+            if (total_leidos<0) total_leidos=0;
+
+            //printf("despues primer gap: pos_raw: %d total_leidos: %d\n",pos_raw,total_leidos);
+
+            //y poder dar la vuelta
+            //TODO: realmente habria que buscar gap y ademas que fuese inicio de sector realmente, y ademas gap durante cierto rato
+            //no vale con solo gap porque podria ser el gap que hay entre cabecera y datos
+        }
 
         //saltar 10 bytes 00 + 2 ff.
-        pos_raw=convert_rmd_to_mdr_find_end_sync(pos_raw,total_size,microdrive_buffer_datos,microdrive_buffer_info);
-        if (pos_raw>=total_size) break;
+        pos_raw=convert_rmd_to_mdr_find_end_sync(pos_raw,&total_leidos,total_size,microdrive_buffer_datos);
+        if (total_leidos>=total_size) break;
 
         //leer 15 bytes
         int i;
-        for (i=0;i<15 && pos_raw<total_size;i++) {
+        for (i=0;i<15 && total_leidos<total_size;i++) {
             microdrive_buffer_mdr[pos_mdr++]=microdrive_buffer_datos[pos_raw++];
+            if (pos_raw>=total_size) pos_raw=0; //soportar dar la vuelta
+            total_leidos++;
         }
-        if (pos_raw>=total_size) break;
+        if (total_leidos>=total_size) break;
 
         //buscar gap inicio gap y final gap
-        pos_raw=convert_rmd_to_mdr_find_end_gap(pos_raw,total_size,microdrive_buffer_datos,microdrive_buffer_info);
-        if (pos_raw>=total_size) break;
+        pos_raw=convert_rmd_to_mdr_find_end_gap(pos_raw,&total_leidos,total_size,microdrive_buffer_info,&inicio_gap);
+        if (total_leidos>=total_size) break;
 
         //saltar 10 bytes 00 + 2 ff.
-        pos_raw=convert_rmd_to_mdr_find_end_sync(pos_raw,total_size,microdrive_buffer_datos,microdrive_buffer_info);
-        if (pos_raw>=total_size) break;
+        pos_raw=convert_rmd_to_mdr_find_end_sync(pos_raw,&total_leidos,total_size,microdrive_buffer_datos);
+        if (total_leidos>=total_size) break;
 
         //leer 15 bytes+512+1
-        for (i=0;i<15+512+1 && pos_raw<total_size;i++) {
+        for (i=0;i<15+512+1 && total_leidos<total_size;i++) {
             microdrive_buffer_mdr[pos_mdr++]=microdrive_buffer_datos[pos_raw++];
+            if (pos_raw>=total_size) pos_raw=0; //soportar dar la vuelta
+            total_leidos++;
         }
-        if (pos_raw>=total_size) break;
+        if (total_leidos>=total_size) break;
     }
 
 
@@ -11322,7 +11359,7 @@ int convert_mdr_to_rmd(char *origen, char *destino)
         return 1;
     }
 
-	int leidos;
+	//int leidos;
 
 
     //buffer para mdr
