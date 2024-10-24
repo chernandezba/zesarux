@@ -24669,6 +24669,7 @@ int menu_ventana_scanf_numero(char *titulo,char *texto,int max_length,int increm
 //Similar a menu_ventana_scanf_numero pero evita tener que crear el buffer de char temporal
 //Y ademas muestra error si limites se exceden
 //Retorna -1 si pulsado ESC
+//Si se ha pulsado ESC o si se exceden los limites, no se modifica *variable
 int menu_ventana_scanf_numero_enhanced(char *titulo,int *variable,int max_length,int incremento,int minimo,int maximo,int circular)
 {
 

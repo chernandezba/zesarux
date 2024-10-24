@@ -190,6 +190,8 @@ extern void mdr_rename_file(struct s_mdr_file_cat *catalogo,z80_byte *if1_microd
 
 extern int microdrive_primer_motor_activo(void);
 
+extern int microdrive_get_visualmem_position(unsigned int address);
+
 
 //Para poder hacer debug_printf con la clase de debug adecuada
 #define DBG_PRINT_MDR debug_printf(VERBOSE_CLASS_MDR|
