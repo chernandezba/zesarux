@@ -11260,7 +11260,7 @@ saltar a paso 1
             //printf("primer gap en %d. pos_raw: %d total_leidos: %d\n",inicio_gap,pos_raw,total_leidos);
             primer_gap_encontrado=1;
             total_leidos -=inicio_gap; //para descontar lo que no es gap del principio
-            total_leidos--;
+            //total_leidos--;
             if (total_leidos<0) total_leidos=0;
 
             //printf("despues primer gap: pos_raw: %d total_leidos: %d\n",pos_raw,total_leidos);
