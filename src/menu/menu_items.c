@@ -43593,22 +43593,22 @@ void menu_microdrive_raw_map_mostrar_opciones(zxvision_window *ventana)
     char buffer_zoom[50]="";
 
     if (microdrive_raw_map_zoom>0) {
-        sprintf(buffer_zoom,"%2dX    ",microdrive_raw_map_zoom);
+        sprintf(buffer_zoom,"    %2dX",microdrive_raw_map_zoom);
     }
 
     else {
         switch (microdrive_raw_map_zoom) {
 
             case -2:
-                strcpy(buffer_zoom,"0.5X   ");
+                strcpy(buffer_zoom,"   0.5X");
             break;
 
             case -4:
-                strcpy(buffer_zoom,"0.25X  ");
+                strcpy(buffer_zoom,"  0.25X");
             break;
 
             case -8:
-                strcpy(buffer_zoom,"0.125X ");
+                strcpy(buffer_zoom," 0.125X");
             break;
 
             case -16:
@@ -44168,6 +44168,10 @@ void menu_microdrive_raw_map(MENU_ITEM_PARAMETERS)
     if (!menu_multitarea) {
         menu_warn_message("This window needs multitask enabled");
         return;
+    }
+
+    if (zxvision_find_window_in_background("visualmem")) {
+        menu_warn_message("Visual Memory window is opened. It may generate bad behaviour on Microdrive Raw Map having that window opened");
     }
 
     zxvision_window *ventana;

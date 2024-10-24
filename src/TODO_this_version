@@ -437,18 +437,15 @@ ok *zoom de 4 y 8 que la casilla tenga separacion con las otras
 ok *detectar y maxima y no escribir? siempre que autoscroll off
 ok *en zoom 16 opcion mostrar hexadecimal o caracter
 ok *detectar mejor que parte del dibujo no se vera por debajo, dando algo de margen para que pueda hacer autoscroll
-*avisar que si esta abierto visual memory, no se veran bien los cambios, deberia cerrarse visual memory
+ok *avisar que si esta abierto visual memory, no se veran bien los cambios, deberia cerrarse visual memory
 
 
 ok *full erase del microdrive raw
-
 ok-current position en debug i/o ports
 ok-bad sectors (positions) raw
-
 ok-indicacion sector 0 en visual microdrive (marca roja)
-
 ok-preview error en nuevosync300k.rmd
-ok -seleccion de rom interface1: version 1 o 2. Versión 1 formatea a 127k, version 2 a 126k, para mejorar "fiabilidad". Por defecto 2
+ok-seleccion de rom interface1: version 1 o 2. Versión 1 formatea a 127k, version 2 a 126k, para mejorar "fiabilidad". Por defecto 2
 ok-quickload rmd
 
 ok -convertir rmd a mdr. corregir que sync se dispara con secuencia completa, permitir dar la vuelta al archivo
