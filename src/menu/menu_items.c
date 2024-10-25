@@ -301,6 +301,7 @@ int cpc_additional_roms_opcion_seleccionada=0;
 int interface1_opcion_seleccionada=0;
 int visualmicrodrive_opcion_seleccionada=0;
 int lec_memory_opcion_seleccionada=0;
+int menu_mdv_simulate_bad_opcion_seleccionada=0;
 //int mdv_simulate_bad_sectors_opcion_seleccionada=0;
 
 //Fin opciones seleccionadas para cada menu
@@ -41493,6 +41494,7 @@ void menu_mdv_simulate_raw_bad_change(MENU_ITEM_PARAMETERS)
     }
 }
 
+int menu_mdv_simulate_bad_add_last_position=0;
 
 void menu_mdv_simulate_bad_add(MENU_ITEM_PARAMETERS)
 {
@@ -41504,11 +41506,16 @@ void menu_mdv_simulate_bad_add(MENU_ITEM_PARAMETERS)
 	if (microdrive_status[microdrive_seleccionado].raw_format) {
 		int max_valor=microdrive_status[microdrive_seleccionado].raw_total_size-1;
 
-		int position=0;
 
-		menu_ventana_scanf_numero_enhanced("Position?",&position,7,+1,0,max_valor,0);
+		if (menu_ventana_scanf_numero_enhanced("Position?",&menu_mdv_simulate_bad_add_last_position,7,+1,0,max_valor,0)>=0) {
+		    microdrive_raw_mark_bad_position(microdrive_seleccionado,menu_mdv_simulate_bad_add_last_position);
 
-		microdrive_raw_mark_bad_position(microdrive_seleccionado,position);
+            //Indicar siguiente posicion por si se vuelve a agregar otro
+            if (menu_mdv_simulate_bad_add_last_position<max_valor) menu_mdv_simulate_bad_add_last_position++;
+
+            //para que el cursor se situe en add bad sector
+            menu_mdv_simulate_bad_opcion_seleccionada++;
+        }
 
 
 	}
@@ -41519,9 +41526,9 @@ void menu_mdv_simulate_bad_add(MENU_ITEM_PARAMETERS)
 
 		int sector=0;
 
-		menu_ventana_scanf_numero_enhanced("Sector?",&sector,4,+1,0,max_valor,0);
-
-		microdrive_status[microdrive_seleccionado].bad_sectors_simulated[sector]=1;
+		if (menu_ventana_scanf_numero_enhanced("Sector?",&sector,4,+1,0,max_valor,0)>=0) {
+		    microdrive_status[microdrive_seleccionado].bad_sectors_simulated[sector]=1;
+        }
 
 	}
 
@@ -41536,7 +41543,7 @@ void menu_mdv_simulate_bad(MENU_ITEM_PARAMETERS)
     menu_item item_seleccionado;
     int retorno_menu;
 
-    int opcion_seleccionada=1;
+    //int opcion_seleccionada=1;
 
 
     do {
@@ -41597,7 +41604,7 @@ void menu_mdv_simulate_bad(MENU_ITEM_PARAMETERS)
 
 
 
-        retorno_menu=menu_dibuja_menu_dialogo_no_title_lang(&opcion_seleccionada,&item_seleccionado,array_menu_common,
+        retorno_menu=menu_dibuja_menu_dialogo_no_title_lang(&menu_mdv_simulate_bad_opcion_seleccionada,&item_seleccionado,array_menu_common,
             "Emulate bad sectors");
 
         if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
@@ -43622,8 +43629,20 @@ void menu_microdrive_raw_map_mostrar_opciones(zxvision_window *ventana)
         }
     }
 
-    zxvision_print_string_defaults_fillspc_format(ventana,1,0,"Zoom: %s Start ~~pos: %7d",
-        buffer_zoom,menu_microdrive_raw_map_start_index);
+    int total_limit=microdrive_status[microdrive_raw_map_selected_unit].raw_total_size;
+    int perc;
+
+    total_limit--;
+
+    if (total_limit>0) {
+        perc=(menu_microdrive_raw_map_start_index*100)/total_limit;
+    }
+
+    else perc=0;
+
+    zxvision_print_string_defaults_fillspc_format(ventana,1,0,"Zoom: %s Curr. ~~pos: %7d/%7d (%3d %%)",
+        buffer_zoom,menu_microdrive_raw_map_start_index,
+        total_limit,perc);
 
 
     zxvision_print_string_defaults_fillspc_format(ventana,1,1,"[%d] ~~mdv ~~z: -zoom ~~x: +zoom %s",
@@ -43631,7 +43650,8 @@ void menu_microdrive_raw_map_mostrar_opciones(zxvision_window *ventana)
 
     //zxvision_print_string_defaults_fillspc(ventana,1,1,"");
 
-    zxvision_print_string_defaults_fillspc_format(ventana,1,2,"[%c] ~~Autoscroll [%c] ~~Head cursors,PgUp,PgDn: change pos",
+    //zxvision_print_string_defaults_fillspc_format(ventana,1,2,"[%c] ~~Autoscroll [%c] ~~Head cursors,PgUp,PgDn: change pos",
+    zxvision_print_string_defaults_fillspc_format(ventana,1,2,"[%c] ~~Autoscroll [%c] ~~Head",
         (microdrive_raw_map_autoscroll ? 'X' : ' ' ),
         (microdrive_raw_map_dibujar_cabezal ? 'X' : ' ' )
     );
@@ -43660,10 +43680,10 @@ void menu_microdrive_raw_map_draw(zxvision_window *w)
     int offset_x=microdrive_raw_map_start_x*menu_char_width;
     int offset_y=microdrive_raw_map_start_y*menu_char_height;
 
-    int total_ancho=(w->visible_width-microdrive_raw_map_start_x-1)*menu_char_width;
-    int total_alto=(w->visible_height-microdrive_raw_map_start_y-2)*menu_char_height;
+    int total_ancho=(w->visible_width-microdrive_raw_map_start_x)*menu_char_width;
+    //int total_alto=(w->visible_height-microdrive_raw_map_start_y-2)*menu_char_height;
 
-    int max_y=total_alto;
+    //int max_y=total_alto;
     int max_ancho=total_ancho-offset_x;
 
     //menu_microdrive_raw_map_max_ancho=max_ancho;
@@ -43730,7 +43750,7 @@ void menu_microdrive_raw_map_draw(zxvision_window *w)
 
     if (microdrive_raw_map_autoscroll) {
         //no limitar alto
-        max_y=max_y*2; //total_size; //es mucho menos que eso, pero para que no limite
+        //max_y=max_y*2; //total_size; //es mucho menos que eso, pero para que no limite
     }
 
     //redibujarla entera cuando se haya movido, o alguna por encima , etc etc
@@ -44188,8 +44208,8 @@ void menu_microdrive_raw_map(MENU_ITEM_PARAMETERS)
         int xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
         if (!util_find_window_geometry("microdriverawmap",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
-            ancho_ventana=30;
-            alto_ventana=100;
+            ancho_ventana=50;
+            alto_ventana=30;
 
             xventana=menu_center_x()-ancho_ventana/2;
             yventana=menu_center_y()-alto_ventana/2;
@@ -44381,6 +44401,27 @@ void menu_microdrive_raw_full_erase(MENU_ITEM_PARAMETERS)
 }
 
 
+void menu_microdrive_raw_enlarge(MENU_ITEM_PARAMETERS)
+{
+
+	int perc=2;
+
+	if (menu_ventana_scanf_numero_enhanced("Stretch (%)",&perc,4,+1,1,100,0)>=0) {
+
+        //if (perc>=1 && perc<=50 && !if_pending_error_message) {
+            if (menu_confirm_yesno("Stretch")) {
+
+                int parametro=100/perc;
+                microdrive_raw_enlarge(valor_opcion,parametro);
+                menu_generic_message_splash("Enlarge","OK. Microdrive has been stretched");
+
+
+            }
+        //}
+
+    }
+
+}
 
 void menu_interface1(MENU_ITEM_PARAMETERS)
 {
@@ -44515,6 +44556,13 @@ void menu_interface1(MENU_ITEM_PARAMETERS)
 
                     menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_microdrive_raw_full_erase,NULL,
                             "Full erase","Borrado completo","Borrat complet");
+                    menu_add_item_menu_prefijo(array_menu_common,"    ");
+                    menu_add_item_menu_se_cerrara(array_menu_common);
+                    menu_add_item_menu_genera_ventana(array_menu_common);
+                    menu_add_item_menu_valor_opcion(array_menu_common,i);
+
+                    menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_microdrive_raw_enlarge,NULL,
+                            "Stretch","Estiramiento","Estirament");
                     menu_add_item_menu_prefijo(array_menu_common,"    ");
                     menu_add_item_menu_se_cerrara(array_menu_common);
                     menu_add_item_menu_genera_ventana(array_menu_common);

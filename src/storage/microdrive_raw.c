@@ -828,9 +828,59 @@ void microdrive_raw_full_erase(int microdrive_seleccionado)
     int i;
 
     for (i=0;i<microdrive_status[microdrive_seleccionado].raw_total_size;i++) {
-        puntero[i]=0;
+        //Conservar bit de defectuoso y el resto a 0
+        z80_int valor_leido=puntero[i] & MICRODRIVE_RAW_INFO_BYTE_MASK_BAD_POSITION;
+        puntero[i]=valor_leido;
     }
 
     microdrive_status[microdrive_seleccionado].microdrive_must_flush_to_disk=1;
+
+}
+
+//ampliacion dice: cada cuantos X posiciones se le agregara 1 mas
+void microdrive_raw_enlarge(int microdrive_seleccionado,int ampliacion)
+{
+
+    if (ampliacion<=0) {
+        DBG_PRINT_MDR VERBOSE_ERR,"MDR: Invalid stretch parameter");
+        return;
+    }
+
+    int current_size=microdrive_status[microdrive_seleccionado].raw_total_size;
+
+
+    //si ampliacion=1, es el doble de ampliacion, que sera el doble del original
+    //Y el espacio necesario es de 16 bits
+    z80_int *new_microdrive_buffer=util_malloc(current_size*2*2,"No enough memory for Microdrive buffer");
+
+
+    int i;
+    int destino=0;
+    int sub_pos=0;
+
+    for (i=0;i<current_size;i++) {
+        //printf("%d\n",i);
+        new_microdrive_buffer[destino++]=microdrive_status[microdrive_seleccionado].raw_microdrive_buffer[i];
+
+        //Si ampliar
+        sub_pos++;
+        if (sub_pos==ampliacion) {
+            new_microdrive_buffer[destino++]=0;
+            sub_pos=0;
+        }
+    }
+
+
+
+    microdrive_status[microdrive_seleccionado].raw_total_size=destino;
+
+    //printf("before free\n");
+
+    free(microdrive_status[microdrive_seleccionado].raw_microdrive_buffer);
+
+    microdrive_status[microdrive_seleccionado].raw_microdrive_buffer=new_microdrive_buffer;
+
+    microdrive_status[microdrive_seleccionado].microdrive_must_flush_to_disk=1;
+
 
 }

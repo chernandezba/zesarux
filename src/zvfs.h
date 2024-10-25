@@ -39,5 +39,6 @@ extern const char *zvfs_get_strerror(FRESULT error);
 extern void zvfs_fseek(int in_fatfs,FILE *ptr_file, long offset, int whence,FIL *fil);
 extern long zvfs_ftell(int in_fatfs,FILE *ptr_file, FIL *fil);
 extern z80_byte zvfs_fgetc(int in_fatfs,FILE *ptr_file_hexdump_browser,FIL *fil);
+extern long long int zvfs_get_file_size(char *name);
 
 #endif

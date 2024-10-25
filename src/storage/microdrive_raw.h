@@ -75,5 +75,7 @@ extern void microdrive_raw_flush_to_disk_one(int microdrive_seleccionado);
 
 extern void microdrive_raw_full_erase(int microdrive_seleccionado);
 
+extern void microdrive_raw_enlarge(int microdrive_seleccionado,int ampliacion);
+
 
 #endif

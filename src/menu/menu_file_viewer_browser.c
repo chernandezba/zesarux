@@ -602,6 +602,11 @@ void menu_file_rmd_browser_show(char *filename)
 
     zvfs_fclose(in_fatfs,ptr_file_rmd_browser,&fil);
 
+    long long int tamanyo_archivo=zvfs_get_file_size(filename);
+
+    int espacio_crudo=(tamanyo_archivo-MICRODRIVE_RAW_HEADER_SIZE)/2;
+    int aprox_efectivo=espacio_crudo/MICRODRIVE_RAW_COMMON_SECTOR_SIZE;
+
 
 	char buffer_texto[64]; //2 lineas, por si acaso
 
@@ -655,6 +660,13 @@ void menu_file_rmd_browser_show(char *filename)
         sprintf(buffer_texto,"Date: %s",header_date);
         indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
 
+
+        sprintf(buffer_texto,"RAW size: %d bytes",espacio_crudo);
+        indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
+
+        //Media de 512 bytes por sector, aunque es algo menos
+        sprintf(buffer_texto,"Aprox effective size: %d sectors\n (%d KB)",aprox_efectivo,aprox_efectivo/2);
+        indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
 
     }
 
@@ -2321,7 +2333,11 @@ void menu_file_mdr_browser_show(char *filename)
     free(mdr_file_memory);
 
     zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++,"Label: %s",catalogo->label);
+    zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++,"Size: %d sectors (%d KB)",total_sectors,total_sectors/2);
 
+    zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"");
+    zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"Contents");
+    zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"--------");
 
     int i;
 

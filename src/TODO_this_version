@@ -386,7 +386,6 @@ ok *fragmentacion cuando pasa del ultimo sector al primero no tendria que increm
 ok *si no hay microdrive insertado y se hace un CAT, deberia retornar error de "Microdrive not present"
 ok *parametros config linea comandos/.zesaruxrc
 ok *soporte spectrum 128k
-
 ok *chkdsk que compruebe checksums.
 ok *browse/microdrive map que muestre caracteres de nombres de archivo <32 o >127 con "."
 ok *si random.mdr, browse peta en memcpy(destino,&origen[offset_sector+offset_a_grabar],rec_length);
@@ -438,6 +437,8 @@ ok *detectar y maxima y no escribir? siempre que autoscroll off
 ok *en zoom 16 opcion mostrar hexadecimal o caracter
 ok *detectar mejor que parte del dibujo no se vera por debajo, dando algo de margen para que pueda hacer autoscroll
 ok *avisar que si esta abierto visual memory, no se veran bien los cambios, deberia cerrarse visual memory
+*icono para microdrive raw map
+ok -Simular desgaste por estiramiento de cinta. Ampliar imagen de microdrive
 
 
 ok *full erase del microdrive raw
@@ -450,7 +451,8 @@ ok-quickload rmd
 
 ok -convertir rmd a mdr. corregir que sync se dispara con secuencia completa, permitir dar la vuelta al archivo
 ok soporte empezar por a mitad de sector y dar la vuelta
-contar el total de bytes leidos en vez de la posicion. dar la vuelta cuando convenga
+ok -add sector que pille valor incrementativo y meta linea siguiente en cursor
+ok -dar una columna mas de ancho al dibujado raw map
 
 ok-convertir mdr a rmd
 
@@ -462,13 +464,17 @@ Con Fuse tampoco encuentra ese archivo
 La particularidad es que ese archivo tiene bloques a final de microdrive y al principio
 -esa conversion de rmd a mdr, sin archivos (solo con el formateo) pasa de 126 a 125 sectores...
 
+-Test unitario para Microdrive. Tanto mdr como Rmd
+Cargar
+Quizá también grabar y cargar? Sin escrituras persistentes
+
 -segundos de fecha de marca de tiempo en imagen microdrive, en mac, no pone 0X cuando X<10?
 
 
 
--Al hacer eject y/o insertar otra imagen, liberar memoria
+ok -Al hacer eject y/o insertar otra imagen, liberar memoria
 
--Simular desgaste por estiramiento de cinta. Ampliar imagen de microdrive
+
 -Agregar en debug CPU ver señales de halt y wait
 
 -Formatos de microdrive alternativos :

@@ -319,6 +319,18 @@ void zvfs_rename(char *old,char *new)
     }
 }
 
+long long int zvfs_get_file_size(char *name)
+{
+    if (util_path_is_mmc_fatfs(name)) {
+        FILINFO fno;
+        f_stat(name,&fno);
+        return fno.fsize;
+    }
+    else {
+        return get_file_size(name);
+    }
+}
+
 int zvfs_delete(char *filename)
 {
     if (util_path_is_mmc_fatfs(filename)) {
