@@ -44408,16 +44408,16 @@ void menu_microdrive_raw_enlarge(MENU_ITEM_PARAMETERS)
 
 	if (menu_ventana_scanf_numero_enhanced("Stretch (%)",&perc,4,+1,1,100,0)>=0) {
 
-        //if (perc>=1 && perc<=50 && !if_pending_error_message) {
-            if (menu_confirm_yesno("Stretch")) {
+        if (menu_confirm_yesno("Stretch")) {
 
-                int parametro=100/perc;
-                microdrive_raw_enlarge(valor_opcion,parametro);
-                menu_generic_message_splash("Enlarge","OK. Microdrive has been stretched");
+            int parametro=100/perc;
+            microdrive_raw_enlarge(valor_opcion,parametro);
+            menu_generic_message_splash("Enlarge","OK. Microdrive has been stretched");
 
+            //Por alguna razon despues de menu_ventana_scanf_numero_enhanced hay que forzar salir_todos_menus si quieremos que se cierren los menus
+            salir_todos_menus=1;
 
-            }
-        //}
+        }
 
     }
 
