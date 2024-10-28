@@ -43,7 +43,6 @@
 #include "sg1000.h"
 #include "sms.h"
 #include "svi.h"
-#include "lec.h"
 
 //Direcciones donde estan cada pagina de ram
 //Antes habian 8 solo (8 paginas de 16kb cada una)
@@ -189,14 +188,6 @@ z80_byte *get_base_mem_pantalla_continue(void)
 {
 
 	if (superupgrade_enabled.v) return superupgrade_ram_memory_table[5];
-
-    if (lec_enabled.v) {
-        if (lec_all_ram()) {
-            z80_byte *p=lec_memory_pages[0];
-            return p+16384;
-        }
-    }
-
 	if (MACHINE_IS_SPECTRUM_16_48) return &memoria_spectrum[16384];
 
 	if (MACHINE_IS_SPECTRUM_128_P2_P2A_P3) {
