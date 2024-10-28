@@ -366,45 +366,9 @@ porque luego hay sitios como Sectors info de microdrive que al cambiar de sector
 si hay un pending error message y mostrarlo
 
 -microdrive:
-ok *no carga pantallas. quiza es que solo lee 1 sector?
-ok *grabacion datos
-ok *formateo. saca menos espacio del esperado
-ok *elegir mdr
-ok *mas de 1 microdrive a la vez
-ok *proteccion escritura (ultimo byte del mdr)
-ok *debug i/o ports
-ok *visualmem
-ok *icono microdrive
-ok *si no elegido mdr, que devuelva datos vacios  (ni gap ni sync tampoco)
-ok *a veces no carga programas, teniendo que desactivar y activar interface. quiza algun contador que no se resetea bien?
-ok *soporte smartload
-ok *visor archivos desde file utils. reusando misma funcion
-ok *expandir archivos mdr. vista previa
-ok *obtener fragmentacion de un mdr
-ok * microdrive map en caso de mdr como el de paws que hay archivos duplicados, el mapa y el listado no sale bien, no considera duplicados
-ok *fragmentacion cuando pasa del ultimo sector al primero no tendria que incrementar fragmentacion. pasa con mdr pantallas.mdr
-ok *si no hay microdrive insertado y se hace un CAT, deberia retornar error de "Microdrive not present"
-ok *parametros config linea comandos/.zesaruxrc
-ok *soporte spectrum 128k
-ok *chkdsk que compruebe checksums.
-ok *browse/microdrive map que muestre caracteres de nombres de archivo <32 o >127 con "."
-ok *si random.mdr, browse peta en memcpy(destino,&origen[offset_sector+offset_a_grabar],rec_length);
-ok revisar *datos de un print # no aparecen en microdrive map o en browse. ver streams.mdr
-ok *sectors info: poder abrir hex editor desde ese sector (necesitara nuevo memory zone de imagen mdr, zona de toda la imagen)
-ok *mdr de trans express tiene algun bloque sin bloque 0 y otros errores aparentes
-ok *quiza chkdsk deberia decir que errores hay (por ejemplo files with missing blocks)
-ok *opcion para poder hacer rename de files
-
 
 *poder activar un sector no usado como usado:
 -asignar nombre, recnum (0) , marcar como usado (stream quizá) y corregir checksums
-
-*visual microdrive
-ok Rodillo que se pueda mover más lento.  Opción
-ok Pestaña protección escritura
-ok Cabezal. Que indique lectura o escritura
-ok Rodillo exterior que hace girar el microdrive
-ok Icono visual microdrive
 
 *en grabacion datos y en lectura datos comprobar que los bits de estado los haya indicado correctamente el usuario?
 *agregar documentación a extras. Ver que documento esta mejor
@@ -413,48 +377,15 @@ ok Icono visual microdrive
 *botones superiores e inferiores que no estén pegados a la pantalla: moverlos una columna a la derecha
 
 *microdrive en formato raw:
-ok -crear nuevo archivo raw
-
-ok-leer puertos microdrive (o out) sin motor activo, dejan en estado wait la cpu por siempre (hasta reset)
-
--en estado wait se pueden disparar interrupciones? en teoria creo que no...
-
-ok-averiguar MICRODRIVE_RAW_COMMON_SIZE para microdrive de 254 sectores
-ok-visualmem en raw
 ok-memory zone raw.
 -y que pueda ver opcionalmente los bytes de info?
 
 -microdrive raw map:
-ok *poder moverme (offset vertical para ver todo contenido)
-ok *pgup, down para incrementar scroll
-ok *opcion mostrar cabezal lectura o no
-ok *color rojo para sectores defectuosos. o magenta? para distinguir del rojo cuando escribe
-ok *autoscroll
-ok *color diferentes para bytes no 0? no tiene mucho sentido. toda zona que ya ha sido formateada, tiene datos. o en zoom 8 mostrar byte pixeles en el cuadrado
-ok *Poder cambiar posición escribiendo número
-ok *zoom de 4 y 8 que la casilla tenga separacion con las otras
-ok *detectar y maxima y no escribir? siempre que autoscroll off
-ok *en zoom 16 opcion mostrar hexadecimal o caracter
-ok *detectar mejor que parte del dibujo no se vera por debajo, dando algo de margen para que pueda hacer autoscroll
-ok *avisar que si esta abierto visual memory, no se veran bien los cambios, deberia cerrarse visual memory
+
 *icono para microdrive raw map
-ok -Simular desgaste por estiramiento de cinta. Ampliar imagen de microdrive
+*f1 ayuda. que indique colores, etc
 
 
-ok *full erase del microdrive raw
-ok-current position en debug i/o ports
-ok-bad sectors (positions) raw
-ok-indicacion sector 0 en visual microdrive (marca roja)
-ok-preview error en nuevosync300k.rmd
-ok-seleccion de rom interface1: version 1 o 2. Versión 1 formatea a 127k, version 2 a 126k, para mejorar "fiabilidad". Por defecto 2
-ok-quickload rmd
-
-ok -convertir rmd a mdr. corregir que sync se dispara con secuencia completa, permitir dar la vuelta al archivo
-ok soporte empezar por a mitad de sector y dar la vuelta
-ok -add sector que pille valor incrementativo y meta linea siguiente en cursor
-ok -dar una columna mas de ancho al dibujado raw map
-
-ok-convertir mdr a rmd
 
 -convertir rmd a mdr y vuelta a rmd
 Con archivos p256, etc.
@@ -468,27 +399,15 @@ La particularidad es que ese archivo tiene bloques a final de microdrive y al pr
 Cargar
 Quizá también grabar y cargar? Sin escrituras persistentes
 
--segundos de fecha de marca de tiempo en imagen microdrive, en mac, no pone 0X cuando X<10?
+ok?-segundos de fecha de marca de tiempo en imagen microdrive, en mac, no pone 0X cuando X<10?
 
 
-
-ok -Al hacer eject y/o insertar otra imagen, liberar memoria
-
-
--Agregar en debug CPU ver señales de halt y wait
 
 -Formatos de microdrive alternativos :
 *Cp/m de LEC rom
 *multiface 128
 
--separar info byte en array distinto?
--mascara de puertos microdrive, no solo E7 y EE...
 
-
-ok-convertir multiface exolon raw a mdr falla en un archivo. quiza es porque el buscar sync tiene que ser mejor? quiza porque hay que dar la vuelta
-al microdrive desde el final?
-
-ok-view file info rmd (datos cabecera)
 
 -recopilar info microdrive de links utiles
 

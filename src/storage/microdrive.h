@@ -55,6 +55,8 @@ extern void mdr_write_byte(z80_byte valor);
 
 extern void microdrive_flush_to_disk(void);
 
+extern void microdrive_force_flush_to_disk(void);
+
 extern void microdrive_write_port_ef(z80_byte value);
 
 extern int microdrive_formateando;
@@ -91,6 +93,7 @@ struct s_microdrive_status {
     //Tamaño expresado en words (posiciones de 16 bits)
     int raw_total_size;
     int raw_current_position;
+    unsigned int raw_usage_counter;
 
     int mdr_total_sectors;
     int mdr_current_sector;

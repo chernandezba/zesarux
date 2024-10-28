@@ -144,6 +144,8 @@ Bit 2-7: sin uso de momento
 */
 
 
+//Simular problemas como creacion de sectores erroneos y alargamiento de la cinta
+z80_bit microdrive_raw_real_life_problems={0};
 
 
 z80_int microdrive_raw_return_value_at_pos(int microdrive_activo,int visualmem_update)
@@ -164,12 +166,60 @@ void microdrive_raw_write_value_at_pos(int microdrive_activo,z80_int valor,int v
     //printf("Posicion %d tiene %03XH\n",microdrive_raw_current_position,microdrive_raw_image[microdrive_raw_current_position]);
 }
 
+/*
+En los primeros 50 usos, la cinta se puede alargar un 2%, random con 10% de probabilidad
+Para cada 100 usos, se puede generar una posición errónea (5% de probabilidad)
+*/
+void microdrive_raw_simulate_real_problems(int microdrive_activo)
+{
+
+    if (microdrive_raw_real_life_problems.v==0) return;
+
+    unsigned int usage_counter=microdrive_status[microdrive_activo].raw_usage_counter;
+
+    if (usage_counter<50) {
+        int valor_random=util_get_random();
+        //printf("valor_random %d\n",valor_random);
+        if ((valor_random % 100)<10) {
+            DBG_PRINT_MDR VERBOSE_INFO,"MDR: Enlarge microdrive 2%%");
+            microdrive_raw_enlarge(microdrive_activo,50);
+        }
+    }
+
+    if ((usage_counter % 100)==0) {
+        int valor_random=util_get_random();
+        //printf("valor_random %d\n",valor_random);
+        if ((valor_random % 100)<5) {
+            DBG_PRINT_MDR VERBOSE_INFO,"MDR: Generate bad position");
+
+            //Por cubrir mas tamaño, pues random estara maximo 65535 aprox
+            int posicion=valor_random*4;
+
+            //Y ajustar al tamaño final
+            int pos_final=(posicion % microdrive_status[microdrive_activo].raw_total_size);
+
+            microdrive_raw_mark_bad_position(microdrive_activo,pos_final);
+
+        }
+    }
+
+}
+
+void microdrive_raw_increment_usage_counter(int microdrive_activo)
+{
+    microdrive_status[microdrive_activo].raw_usage_counter++;
+    microdrive_raw_simulate_real_problems(microdrive_activo);
+}
+
 void microdrive_raw_advance_position(int microdrive_activo)
 {
     int microdrive_raw_current_position=microdrive_status[microdrive_activo].raw_current_position;
 
     microdrive_raw_current_position++;
-    if (microdrive_raw_current_position>=microdrive_status[microdrive_activo].raw_total_size) microdrive_raw_current_position=0;
+    if (microdrive_raw_current_position>=microdrive_status[microdrive_activo].raw_total_size) {
+        microdrive_raw_current_position=0;
+        microdrive_raw_increment_usage_counter(microdrive_activo);
+    }
 
     microdrive_status[microdrive_activo].raw_current_position=microdrive_raw_current_position;
 }
@@ -570,7 +620,7 @@ void microdrive_raw_insert(int microdrive_seleccionado)
     microdrive_status[microdrive_seleccionado].raw_microdrive_buffer=util_malloc(tamanyo_archivo,"No enough memory for Microdrive buffer");
 
     //Leer cabecera y comparar si valida signature
-    char header[MICRODRIVE_RAW_HEADER_SIZE];
+    z80_byte header[MICRODRIVE_RAW_HEADER_SIZE];
 
     FILE *ptr_microdrive_file;
     //Leer archivo mdr
@@ -595,22 +645,38 @@ void microdrive_raw_insert(int microdrive_seleccionado)
             return;
         }
 
+  /*
+  0       “RAWMDV” 6 bytes
+6       -Version. byte. actual: 0
+7       -Creator: 30 bytes. 0 del final opcional. Ejemplo “ZEsarUX 11.1-SN”
+37      -Machine: para que máquina se está usando. 0 del final opcional. 20 bytes:
+        “Spectrum”
+        “QL”
+57      19 bytes. 0 del final opcional
+        -Fecha: 19 bytes. 0 del final opcional
+        “DD/MM/AAAA HH:MM:SS”
+  */
+
+        //bloques de char con 1 byte mas para poder meter los ceros del final, porque el 0 es opcional en la cabecera
         //Mostrar los otros datos a nivel de info
+
         z80_byte header_version=header[6];
-        char header_creator[30];
+        char header_creator[31];
         memcpy(header_creator,&header[7],30);
-        header_creator[29]=0;
+        header_creator[30]=0;
 
-        char header_machine[20];
+        char header_machine[21];
         memcpy(header_machine,&header[37],20);
-        header_machine[19]=0;
+        header_machine[20]=0;
 
-        char header_date[19];
+        char header_date[20];
         memcpy(header_date,&header[57],19);
-        header_date[18]=0;
+        header_date[19]=0;
 
-        DBG_PRINT_MDR VERBOSE_INFO,"MDR: File version %d created on %s from machine %s on date %s",
-            header_version,header_creator,header_machine,header_date);
+        microdrive_status[microdrive_seleccionado].raw_usage_counter=header[76]|(header[77]<<8)|(header[78]<<16)|(header[79]<<24);
+
+        DBG_PRINT_MDR VERBOSE_INFO,"MDR: File version %d created on %s from machine %s on date %s usage counter %u",
+            header_version,header_creator,header_machine,header_date,microdrive_status[microdrive_seleccionado].raw_usage_counter);
 
 
         int total_microdrive=tamanyo_archivo/2;
@@ -701,8 +767,8 @@ void microdrive_raw_flush_to_disk_one(int microdrive_seleccionado)
 
 
         //Escribir cabecera
-        char header[MICRODRIVE_RAW_HEADER_SIZE];
-        microdrive_raw_create_header(header);
+        z80_byte header[MICRODRIVE_RAW_HEADER_SIZE];
+        microdrive_raw_create_header(header,microdrive_status[microdrive_seleccionado].raw_usage_counter);
 
         //Justo antes del fwrite se pone flush a 0, porque si mientras esta el fwrite entra alguna operacion de escritura,
         //metera flush a 1
@@ -758,7 +824,7 @@ void microdrive_raw_flush_to_disk_one(int microdrive_seleccionado)
 
 //Escribe la cabecera de un archivo raw microdrive (.RMD).
 //256 bytes
-void microdrive_raw_create_header(char *destino)
+void microdrive_raw_create_header(z80_byte *destino,unsigned int usagecounter)
 {
     //Inicializar a 0 todo
     int i;
@@ -778,20 +844,26 @@ offset  Descripcion
         -Fecha: 19 bytes. 0 del final opcional
         “DD/MM/AAAA HH:MM:SS”
 
-76-255  Reservado. A 0
+76-79   Usage counter, cantidad de veces que se ha pasado por la posición 0 del microdrive. Entero sin signo de 32 bits, little endian
+80-255  Reservado. A 0
 */
-    strcpy(destino,MICRODRIVE_RAW_SIGNATURE);
+    strcpy((char *)destino,MICRODRIVE_RAW_SIGNATURE);
 
     destino[6]=0; //Version
 
-    strcpy(&destino[7],"ZEsarUX " EMULATOR_VERSION);
+    strcpy((char *)&destino[7],"ZEsarUX " EMULATOR_VERSION);
 
-    if (MACHINE_IS_QL) strcpy(&destino[37],"QL");
-    else strcpy(&destino[37],"Spectrum");
+    if (MACHINE_IS_QL) strcpy((char *)&destino[37],"QL");
+    else strcpy((char *)&destino[37],"Spectrum");
 
     char time_string[40];
     snapshot_get_date_time_string_human(time_string);
-    strcpy(&destino[57],time_string);
+    strcpy((char *)&destino[57],time_string);
+
+    destino[76]=usagecounter & 0xFF;
+    destino[77]=(usagecounter>>8) & 0xFF;
+    destino[78]=(usagecounter>>16) & 0xFF;
+    destino[79]=(usagecounter>>24) & 0xFF;
 
 }
 

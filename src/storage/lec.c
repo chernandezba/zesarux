@@ -57,7 +57,7 @@ int lec_nested_id_poke_byte_no_time;
 //0=lec-80
 //1=lec-272
 //2=lec-528
-int lec_memory_type=2;
+int lec_memory_type=0;
 
 int lec_all_ram(void)
 {
@@ -101,8 +101,6 @@ D4 - N0 selects the number of 32K RAM page at #0000-7fff,
             printf("segment 0 has page %d\n",page);
 
 
-
-
             lec_memory_pages[1]=lec_ram_memory_table[7];
         break;
 
@@ -118,7 +116,7 @@ D3 - N3 selects the number of 32K RAM page at #0000-7fff, when PG=1. Don't care 
 
             page=(lec_port_fd>>4) & 7;
 
-            page |=((lec_port_fd>>3)&1) * 8;
+            page |=lec_port_fd & 8;
 
             lec_memory_pages[0]=lec_ram_memory_table[page];
             printf("lec 528 segment 0 has page %d\n",page);

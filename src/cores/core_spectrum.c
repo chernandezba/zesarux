@@ -349,7 +349,9 @@ void core_spectrum_fin_frame_pantalla(void)
 
 
     //Final de instrucciones ejecutadas en un frame de pantalla
-    if (iff1.v==1) {
+
+    //En estado wait no se lanzan interrupciones
+    if (iff1.v==1 && z80_wait_signal.v==0) {
         interrupcion_maskable_generada.v=1;
 
         testados_desde_inicio_pulso_interrupcion=t_estados;
@@ -793,7 +795,9 @@ void core_spectrum_handle_interrupts_pentagon(void)
                 //printf ("scanline %d t_estados %d\n",t_estados/screen_testados_linea,t_estados);
 
                 disparada_int_pentagon=1;
-                if (iff1.v==1) {
+
+                //En estado wait no se lanzan interrupciones
+                if (iff1.v==1 && z80_wait_signal.v==0) {
                     //printf ("Generated pentagon interrupt\n");
                     //printf ("scanline %d t_estados %d\n",t_estados/screen_testados_linea,t_estados);
                     interrupcion_maskable_generada.v=1;

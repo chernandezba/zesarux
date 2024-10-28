@@ -405,25 +405,25 @@ void enable_if1(void)
 
 
 
-z80_byte interface1_get_value_port(z80_byte puerto_l)
+z80_byte interface1_get_value_port(z80_byte funcion)
 {
     //printf("get value port %X\n",puerto_l);
 
     //if (microdrive_enabled.v==0) return 0;
 
-    //Puerto de estado
-    if (puerto_l==0xef) {
-        //microdrive_footer_operating();
+    //Decodificar puerto
+    /*
+    {"-----------10---", "ZX Interface 1 RS232/Network"}, //Tipico F7=111 10 111
+    {"-----------01---", "ZX Interface 1 Control"},       //Tipico EF=111 01 111
+    {"-----------00---", "ZX Interface 1 Microdrive"},    //Tipico E7=111 00 111
+    */
 
-        if (microdrive_current_is_raw()) {
-            return microdrive_raw_read_port_ef();
-        }
-        else return microdrive_status_ef();
+    //z80_byte valor_mascara_aplicada=(puerto_l & 0x18)>>3;
 
-    }
+
 
     //Leer byte
-    if (puerto_l==0xe7) {
+    if (funcion==0) {
 
         microdrive_footer_operating();
 
@@ -449,7 +449,18 @@ z80_byte interface1_get_value_port(z80_byte puerto_l)
         return value;
     }
 
-    if (puerto_l==0xf7) {
+    //Puerto de estado
+    if (funcion==1) {
+        //microdrive_footer_operating();
+
+        if (microdrive_current_is_raw()) {
+            return microdrive_raw_read_port_ef();
+        }
+        else return microdrive_status_ef();
+
+    }
+
+    if (funcion==2) {
         //printf("Interface1 net read\n");
         return 0;
     }
@@ -459,10 +470,21 @@ z80_byte interface1_get_value_port(z80_byte puerto_l)
 
 }
 
-void interface1_write_value_port(z80_byte puerto_l,z80_byte value)
+void interface1_write_value_port(z80_byte funcion,z80_byte value)
 {
+
+    //Decodificar puerto
+    /*
+    {"-----------10---", "ZX Interface 1 RS232/Network"}, //Tipico F7=111 10 111
+    {"-----------01---", "ZX Interface 1 Control"},       //Tipico EF=111 01 111
+    {"-----------00---", "ZX Interface 1 Microdrive"},    //Tipico E7=111 00 111
+    */
+
+    //z80_byte valor_mascara_aplicada=(puerto_l & 0x18)>>3;
+
+
     //Escribir byte
-    if (puerto_l==0xe7) {
+    if (funcion==0) {
         interface1_last_value_port_e7=value;
         DBG_PRINT_IF1 VERBOSE_PARANOID,"IF1: Saving byte to port E7 value %02XH",value);
         microdrive_footer_operating();
@@ -471,11 +493,11 @@ void interface1_write_value_port(z80_byte puerto_l,z80_byte value)
         else mdr_write_byte(value);
     }
 
-    if (puerto_l==0xef) {
+    if (funcion==1) {
         microdrive_write_port_ef(value);
     }
 
-    if (puerto_l==0xf7) {
+    if (funcion==2) {
         //printf("Interface1 net write\n");
         //printf("Write to port F7 value %02XH\n",value);
     }

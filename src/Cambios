@@ -27,10 +27,15 @@ Permitir cambiar posicion de lectura actual en Visor de Cinta de Entrada para ar
 Permitir cargar rom de 8kb en ZX80 (por ejemplo la rom del ZX81, como un ZX80 actualizado a ZX81)
 Permitir aumentar sprites en View Sprites
 Mejorada compilación: opciones --enable-memptr --enable-visualmem --enable-cpustats están activadas por defecto en ./configure
-Mejorado debug cpu history: permitir cambiar el puntero de memoria según el registro PC mostrado en el historial
 Mejorada emulación del Inves Spectrum+: alertar cuando un juego puede resetearse debido al bug de Inves de write-on-interrupt
 Mejorada emulación de Jupiter Ace: permitir escuchar salida MIC
 Mejorada emulación de CPC: permitir escuchar sonido de Salida Casette
+Mejorado el core de emulación de Spectrum de la CPU Z80: agregado estado wait (necesario para emular el microdrive)
+
+Mejorado Debug:
+- CPU history: permitir cambiar el puntero de memoria según el registro PC mostrado en el historial
+- Mostar cuando la CPU está en estado wait
+
 Mejorado Hexadecimal editor:
 - Ahora los datos se refrescan también cuando la ventana tiene el foco
 - Ahora el puntero de memoria puede seguir una expresión (un registro de la CPU por ejemplo)

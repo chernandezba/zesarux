@@ -11474,8 +11474,8 @@ int convert_mdr_to_rmd(char *origen, char *destino)
     }
 
 
-    char buffer_cabecera[MICRODRIVE_RAW_HEADER_SIZE];
-    microdrive_raw_create_header(buffer_cabecera);
+    z80_byte buffer_cabecera[MICRODRIVE_RAW_HEADER_SIZE];
+    microdrive_raw_create_header(buffer_cabecera,0);
 
     fwrite(buffer_cabecera,1,MICRODRIVE_RAW_HEADER_SIZE,ptr_outputfile);
 
@@ -23798,4 +23798,24 @@ void labeltree_free(labeltree *l)
 
     labeltree_free(left);
     labeltree_free(right);
+}
+
+
+//Devolver valor random teniendo en cuenta algoritmo de ruido del chip AY pero tambien tiene en cuenta pulsaciones de teclado o raton
+int util_get_random(void)
+{
+    ay_randomize(0);
+
+    int valor_random=randomize_noise[0];
+
+    //un poco mas aleatorio
+    //como util_random_noise es valor en ms de tiempo pulsado tecla o raton, habitualmente
+    //esto ira de 0 a 1000
+    valor_random +=util_random_noise;
+
+    //Para generar valores impares
+    if (util_random_noise<500) valor_random++;
+
+    return valor_random;
+
 }

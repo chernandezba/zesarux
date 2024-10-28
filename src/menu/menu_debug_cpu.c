@@ -1716,7 +1716,7 @@ void menu_debug_show_register_line(int linea,char *textoregistros,int *columnas_
             break;
 
             case 10:
-                sprintf (textoregistros,"IM%d IFF%c%c %s",im_mode,DEBUG_STRING_IFF12,(z80_halt_signal.v ? "HLT" : "") );
+                sprintf (textoregistros,"IM%d IFF%c%c",im_mode,DEBUG_STRING_IFF12 );
                 if (registros_modificados & MOD_REG_IFF)          *columnas_modificadas |=5|(6<<4)|(7<<8);      //columna 5,6,7 registro IFF
                 //nunca se va a dar junto el cambio de IFF y IM
                 if (registros_modificados & MOD_REG_IM_MODE)      *columnas_modificadas |=1|(2<<4);      //columna 1,2 registro IM
@@ -1816,12 +1816,18 @@ void menu_debug_show_register_line(int linea,char *textoregistros,int *columnas_
             break;
 
             case 16:
+                if (z80_halt_signal.v) strcpy(textoregistros,"CPU HALT");
+                else if (z80_wait_signal.v) strcpy(textoregistros,"CPU WAIT");
+            break;
+
+
             case 17:
             case 18:
             case 19:
+            case 20:
                 //Por defecto, cad
                 //Mostrar en una linea, dos bloques de memoria mapeadas
-                offset_bloque=linea-16;  //este 16 debe coincidir con el primer case de este bloque
+                offset_bloque=linea-17;  //este 17 debe coincidir con el primer case de este bloque
                                         //para que la primera linea de este bloque sea offset_bloque=0
 
                 offset_bloque *=2; //2 bloques por cada linea
@@ -2691,6 +2697,7 @@ Solo tienes que buscar en esa tabla el número de palabra de flag 33, que sea de
                 int guessed_next_pos_source=-1;
 
 				//char buffer_linea[MAX_LINE_CPU_REGISTERS_LENGTH];
+                //printf("limite: %d\n",limite);
                 for (i=0;i<limite;i++) {
 
 					//Por si acaso

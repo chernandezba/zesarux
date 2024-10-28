@@ -433,6 +433,11 @@ void microdrive_eject(int microdrive_seleccionado)
     DBG_PRINT_MDR VERBOSE_INFO,"MDR: Eject microdrive MDV%d",microdrive_seleccionado+1);
 
 	//Hacer flush si hay algun cambio
+    //Si es raw, escribir para guardar usage counter
+    if (microdrive_status[microdrive_seleccionado].raw_format) {
+        microdrive_status[microdrive_seleccionado].microdrive_must_flush_to_disk=1;
+    }
+
 	microdrive_flush_to_disk_one(microdrive_seleccionado);
 
     if (microdrive_status[microdrive_seleccionado].raw_format) {
@@ -651,6 +656,21 @@ void microdrive_flush_to_disk(void)
 
 }
 
+//de los microdrive que son raw, decirles que hay que hacer flush, para escribir el usage counter
+//Y luego hacer flush de todos, y hará de todos los raw (los que tengan habilitado persistent writes) y del resto, los que realmente necesitasen hacer flush
+void microdrive_force_flush_to_disk(void)
+{
+    int i;
+
+    for (i=0;i<MAX_MICRODRIVES;i++) {
+        if (microdrive_status[i].raw_format) {
+            microdrive_status[i].microdrive_must_flush_to_disk=1;
+        }
+    }
+
+    microdrive_flush_to_disk();
+
+}
 
 
 void microdrive_write_port_ef(z80_byte value)

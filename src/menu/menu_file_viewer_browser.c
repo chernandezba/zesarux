@@ -565,7 +565,7 @@ void menu_file_zx_browser_show(char *filename)
 void menu_file_rmd_browser_show(char *filename)
 {
 
-    char header[MICRODRIVE_RAW_HEADER_SIZE];
+    z80_byte header[MICRODRIVE_RAW_HEADER_SIZE];
 
 	int bytes_to_load=MICRODRIVE_RAW_HEADER_SIZE;
 
@@ -631,18 +631,36 @@ void menu_file_rmd_browser_show(char *filename)
         sprintf(buffer_texto,"RMD ZEsarUX Raw MicroDrive file");
         indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
 
+  /*
+  0       “RAWMDV” 6 bytes
+6       -Version. byte. actual: 0
+7       -Creator: 30 bytes. 0 del final opcional. Ejemplo “ZEsarUX 11.1-SN”
+37      -Machine: para que máquina se está usando. 0 del final opcional. 20 bytes:
+        “Spectrum”
+        “QL”
+57      19 bytes. 0 del final opcional
+        -Fecha: 19 bytes. 0 del final opcional
+        “DD/MM/AAAA HH:MM:SS”
+  */
+
+        //bloques de char con 1 byte mas para poder meter los ceros del final, porque el 0 es opcional en la cabecera
+
         z80_byte header_version=header[6];
-        char header_creator[30];
+        char header_creator[31];
         memcpy(header_creator,&header[7],30);
-        header_creator[29]=0;
+        header_creator[30]=0;
 
-        char header_machine[20];
+        char header_machine[21];
         memcpy(header_machine,&header[37],20);
-        header_machine[19]=0;
+        header_machine[20]=0;
 
-        char header_date[19];
+        char header_date[20];
         memcpy(header_date,&header[57],19);
-        header_date[18]=0;
+        header_date[19]=0;
+
+        unsigned int usage_counter;
+        usage_counter=header[76]|(header[77]<<8)|(header[78]<<16)|(header[79]<<24);
+
 
         //DBG_PRINT_MDR VERBOSE_INFO,"MDR: File version %d created on %s from machine %s on date %s",
         //    header_version,header_creator,header_machine,header_date);
@@ -658,6 +676,9 @@ void menu_file_rmd_browser_show(char *filename)
         indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
 
         sprintf(buffer_texto,"Date: %s",header_date);
+        indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
+
+        sprintf(buffer_texto,"Usage counter: %u",usage_counter);
         indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
 
 

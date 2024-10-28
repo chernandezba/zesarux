@@ -61,7 +61,7 @@ extern int microdrive_current_is_raw(void);
 
 extern void microdrive_raw_flush_to_disk_one(int microdrive_seleccionado);
 
-extern void microdrive_raw_create_header(char *destino);
+extern void microdrive_raw_create_header(z80_byte *destino,unsigned int usagecounter);
 
 extern void microdrive_raw_move(void);
 
@@ -76,6 +76,8 @@ extern void microdrive_raw_flush_to_disk_one(int microdrive_seleccionado);
 extern void microdrive_raw_full_erase(int microdrive_seleccionado);
 
 extern void microdrive_raw_enlarge(int microdrive_seleccionado,int ampliacion);
+
+extern z80_bit microdrive_raw_real_life_problems;
 
 
 #endif

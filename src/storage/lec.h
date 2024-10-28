@@ -34,4 +34,6 @@ extern void lec_reset(void);
 extern void lec_disable(void);
 extern void lec_enable(void);
 
+extern int lec_memory_type;
+
 #endif

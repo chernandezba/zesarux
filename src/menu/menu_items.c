@@ -41392,9 +41392,9 @@ void menu_storage_microdrive_file(MENU_ITEM_PARAMETERS)
 					ptr_mdrfile=fopen(microdrive_status[microdrive_seleccionado].microdrive_file_name,"wb");
 
 					//Escribir cabecera
-					char header[MICRODRIVE_RAW_HEADER_SIZE];
+					z80_byte header[MICRODRIVE_RAW_HEADER_SIZE];
 
-					microdrive_raw_create_header(header);
+					microdrive_raw_create_header(header,0);
 
 					fwrite(header,1,MICRODRIVE_RAW_HEADER_SIZE,ptr_mdrfile);
 
@@ -43394,6 +43394,9 @@ int microdrive_raw_map_draw_zoom_show_char=0;
 int microdrive_raw_map_dibujar_cabezal=1;
 
 
+//Si muestra posiciones_sync
+int microdrive_raw_map_dibujar_sync=0;
+
 
 //Inicio desde donde se empieza a leer
 int menu_microdrive_raw_map_start_index=0;
@@ -43651,9 +43654,10 @@ void menu_microdrive_raw_map_mostrar_opciones(zxvision_window *ventana)
     //zxvision_print_string_defaults_fillspc(ventana,1,1,"");
 
     //zxvision_print_string_defaults_fillspc_format(ventana,1,2,"[%c] ~~Autoscroll [%c] ~~Head cursors,PgUp,PgDn: change pos",
-    zxvision_print_string_defaults_fillspc_format(ventana,1,2,"[%c] ~~Autoscroll [%c] ~~Head",
+    zxvision_print_string_defaults_fillspc_format(ventana,1,2,"[%c] ~~Autoscroll [%c] show ~~Head [%c] show ~~Sync",
         (microdrive_raw_map_autoscroll ? 'X' : ' ' ),
-        (microdrive_raw_map_dibujar_cabezal ? 'X' : ' ' )
+        (microdrive_raw_map_dibujar_cabezal ? 'X' : ' ' ),
+        (microdrive_raw_map_dibujar_sync ? 'X' : ' ' )
     );
 
 
@@ -43673,7 +43677,34 @@ void menu_microdrive_raw_map_mostrar_opciones(zxvision_window *ventana)
     menu_writing_inverse_color.v=antes_menu_writing_inverse_color.v;
 }
 
+//Retorna 0 si no es sync
+int microdrive_raw_map_detect_sync(int microdrive_seleccionado,int pos)
+{
+    //Primero ver que al menos hay 8 posiciones posibles
+    int total_size=microdrive_status[microdrive_seleccionado].raw_total_size;
 
+    z80_int *p=microdrive_status[microdrive_seleccionado].raw_microdrive_buffer;
+
+    if (pos<=total_size-8) {
+        //Ver que los 8 siguientes sean datos con valores esperados
+        //Nos quedamos con la mascara del dato y el bit que indica gap o no
+        if (
+            (p[pos+0] & 0x1FF)==0x0100 &&
+            (p[pos+1] & 0x1FF)==0x0100 &&
+            (p[pos+2] & 0x1FF)==0x0100 &&
+            (p[pos+3] & 0x1FF)==0x0100 &&
+            (p[pos+4] & 0x1FF)==0x0100 &&
+            (p[pos+5] & 0x1FF)==0x0100 &&
+            (p[pos+6] & 0x1FF)==0x01FF &&
+            (p[pos+7] & 0x1FF)==0x01FF
+        ) {
+            return 1;
+        }
+    }
+
+    return 0;
+
+}
 
 void menu_microdrive_raw_map_draw(zxvision_window *w)
 {
@@ -43723,8 +43754,10 @@ void menu_microdrive_raw_map_draw(zxvision_window *w)
     int color_pixel_escribiendo=2;
     int color_defectuso_escribiendo=2;
 
+    int color_sync=6;
 
-
+    //Para que no muestre sync inicialmente en ningun sitio. con -8 ya hubiera sido suficiente
+    int ultima_pos_sync=-100;
 
 
     int color_posicion_lectura=0; //4
@@ -43802,6 +43835,16 @@ void menu_microdrive_raw_map_draw(zxvision_window *w)
         if (dato_leido & MICRODRIVE_RAW_INFO_BYTE_MASK_BAD_POSITION) {
             //Es defectuoso
             estado_pixel=DEFECTUOSO_SIN_USO;
+        }
+
+        //Detectar sync
+        if (microdrive_raw_map_dibujar_sync) {
+            int posible_sync=microdrive_raw_map_detect_sync(microdrive_raw_map_selected_unit,i);
+
+            if (posible_sync) {
+                //printf("Detectado sync en %d\n",i);
+                ultima_pos_sync=i;
+            }
         }
 
         int dibujar_pixel=0;
@@ -43903,6 +43946,7 @@ void menu_microdrive_raw_map_draw(zxvision_window *w)
         switch(estado_pixel) {
             case DATO_SIN_USO:
                 color=color_pixel;
+                if (i>=ultima_pos_sync && i<=ultima_pos_sync+7) color=color_sync;
             break;
 
             case GAP_SIN_USO:
@@ -44312,6 +44356,10 @@ void menu_microdrive_raw_map(MENU_ITEM_PARAMETERS)
                 microdrive_raw_map_dibujar_cabezal ^=1;
             break;
 
+            case 's':
+                microdrive_raw_map_dibujar_sync ^=1;
+            break;
+
             case 'p':
                 microdrive_raw_map_edit_index();
                 ventana->must_clear_cache_on_draw_once=1;
@@ -44423,6 +44471,11 @@ void menu_microdrive_raw_enlarge(MENU_ITEM_PARAMETERS)
 
 }
 
+void menu_interface1_raw_real_life_problems(MENU_ITEM_PARAMETERS)
+{
+    microdrive_raw_real_life_problems.v ^=1;
+}
+
 void menu_interface1(MENU_ITEM_PARAMETERS)
 {
     menu_item *array_menu_common;
@@ -44457,6 +44510,17 @@ void menu_interface1(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_sufijo_format(array_menu_common," [Version %d]",if1_rom_version);
             menu_add_item_menu_es_avanzado(array_menu_common);
         }
+
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface1_raw_real_life_problems,NULL,
+            "Simulate real problems","Simular problemas reales","Simular problemes reals");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ", (microdrive_raw_real_life_problems.v ? 'X' : ' ' ));
+        menu_add_item_menu_tooltip(array_menu_common,"When using RAW images (RMD) simulate bad behaviour like stretch and bad sectors");
+        menu_add_item_menu_ayuda(array_menu_common,"When using RAW images (RMD) simulate bad behaviour like stretch and bad sectors. "
+            "It counts the times the microdrive is read/written completely (usage counter) and then:\n"
+            "- The first 50 times the microdrive can stretch 2% with a probability of 10%\n"
+            "- Every 100 times, a position can be marked as bad with a probability of 5% "
+        );
+
 
         //De momento soportar hasta 4 microdrives en el menu , aunque se permiten hasta 8
 
@@ -46015,6 +46079,12 @@ void menu_lec_memory_enable(MENU_ITEM_PARAMETERS)
     else lec_enable();
 }
 
+void menu_lec_memory_type(MENU_ITEM_PARAMETERS)
+{
+    lec_memory_type++;
+    if (lec_memory_type==3) lec_memory_type=0;
+}
+
 
 void menu_lec_memory(MENU_ITEM_PARAMETERS)
 {
@@ -46030,8 +46100,15 @@ void menu_lec_memory(MENU_ITEM_PARAMETERS)
 
         menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(lec_enabled.v ? 'X' : ' ' ));
 
+        char buffer_tipo[10];
 
-        //menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_dinamid3,NULL,"D~~inamid3");
+        if (lec_memory_type==0) strcpy(buffer_tipo,"80");
+        else if (lec_memory_type==1) strcpy(buffer_tipo,"272");
+        else strcpy(buffer_tipo,"528");
+
+
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_lec_memory_type,NULL,"~~Type");
+        menu_add_item_menu_sufijo_format(array_menu_common," [%s]",buffer_tipo);
         //menu_add_item_menu_shortcut(array_menu_common,'i');
         //menu_add_item_menu_tiene_submenu(array_menu_common);
 

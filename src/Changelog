@@ -2,7 +2,13 @@ ZEsarUX 11.1 - Zorro edition. 30 July 2024
 
 * New things added:
 
-Added ZX Microdrive emulation on ZX Spectrum: that includes: mdr emulation, raw format, visual microdrive.... COMPLETAR ESTO
+Added ZX Microdrive emulation on ZX Spectrum: that includes:
+- Standard MDR emulation. Allow to browse inside MDR files, see file map, fragmentation, rename files, sectors info, chkdsk and emulate bad sectors
+- Raw microdrive emulation. Supporting other non-interface1 rom file formats, like extending microdrive space with Multiface 128.
+Allow to see microdrive raw map (gap zones, sync bytes, data) and have "real problems", like autogenerate bad sectors or stretching the microdrive when it's new.
+- Visual Microdrive: Allow to see a microdrive cartridge in action
+
+raw format, visual microdrive.... COMPLETAR ESTO
 Added LEC memory extension emulation
 Added machines Czerweny CZ 1000, CZ 1500, CZ 1000 Plus, CZ 1500 Plus, CZ 2000, CZ Spectrum, CZ Spectrum Plus
 Added Memory Cheat feature: useful to find counters of energy, bombs, ammo or any other cheat in a game
@@ -27,10 +33,15 @@ Allow to change current tape read position on Input Tape Viewer for .tap files
 Allow loading a 8kb rom in ZX80 (for example the ZX81 rom, like an upgraded ZX80 to ZX81)
 Allow magnify sprites on View Sprites
 Improve compilation: settings --enable-memptr --enable-visualmem --enable-cpustats are enabled by default on ./configure
-Improved debug cpu history: allow to change memory pointer to the PC register show in history
 Improved Inves Spectrum+ emulation: alert when a game may crash due to the Inves write-on-interrupt bug
 Improved Jupiter Ace emulation: allow to hear MIC output
 Improved CPC emulation: allow to hear Cassete Out sound
+Improve Spectrum Z80 CPU emulation core: add wait state (needed to emulate microdrive)
+
+Improved Debug:
+- CPU history: allow to change memory pointer to the PC register show in history
+- Show when CPU is in wait state
+
 Improved Hexadecimal editor:
 - Now the data is refreshed when the window has the focus too
 - Now the memory pointer can follow a expression (CPU register for example)
