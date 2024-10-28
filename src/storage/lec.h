@@ -35,5 +35,7 @@ extern void lec_disable(void);
 extern void lec_enable(void);
 
 extern int lec_memory_type;
+extern int lec_all_ram(void);
+extern z80_byte *lec_memory_pages[];
 
 #endif

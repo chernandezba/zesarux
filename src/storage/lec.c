@@ -147,8 +147,11 @@ void lec_out_port(z80_byte value)
 z80_byte *lec_get_memory_pointer(int dir)
 {
     int segmento=dir / 32768;
+    z80_byte *p=lec_memory_pages[segmento] + (dir & 32767);
 
-    return lec_memory_pages[segmento] + (dir & 32767);
+    //printf("dir %d is %p\n",dir,p);
+
+    return p;
 }
 
 z80_byte lec_common_peek(z80_int dir)
@@ -182,9 +185,10 @@ z80_byte lec_poke_byte_no_time(z80_int dir,z80_byte valor)
         if (lec_all_ram()) {
             lec_common_poke(dir,valor);
         }
+        else debug_nested_poke_byte_no_time_call_previous(lec_nested_id_poke_byte_no_time,dir,valor);
     }
 
-	debug_nested_poke_byte_no_time_call_previous(lec_nested_id_poke_byte_no_time,dir,valor);
+	//debug_nested_poke_byte_no_time_call_previous(lec_nested_id_poke_byte_no_time,dir,valor);
 
     //Para que no se queje el compilador, aunque este valor de retorno no lo usamos
     return 0;
@@ -203,9 +207,10 @@ z80_byte lec_poke_byte(z80_int dir,z80_byte valor)
         if (lec_all_ram()) {
             lec_common_poke(dir,valor);
         }
+        else debug_nested_poke_byte_call_previous(lec_nested_id_poke_byte,dir,valor);
     }
 
-	debug_nested_poke_byte_call_previous(lec_nested_id_poke_byte,dir,valor);
+	//debug_nested_poke_byte_call_previous(lec_nested_id_poke_byte,dir,valor);
 
     //Para que no se queje el compilador, aunque este valor de retorno no lo usamos
     return 0;
@@ -223,6 +228,7 @@ z80_byte lec_peek_byte_no_time(z80_int dir,z80_byte value GCC_UNUSED)
         if (lec_all_ram()) {
             return lec_common_peek(dir);
         }
+        else return valor_leido;
     }
 
     return valor_leido;
@@ -239,6 +245,7 @@ z80_byte lec_peek_byte(z80_int dir,z80_byte value GCC_UNUSED)
         if (lec_all_ram()) {
             return lec_common_peek(dir);
         }
+        else return valor_leido;
     }
 
     return valor_leido;

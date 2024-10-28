@@ -1460,7 +1460,7 @@ saa_simul.o: soundchips/saa_simul.c soundchips/saa_simul.h soundchips/ay38912.h 
 screen.o: video/screen.c video/screen.h cpu.h debug.h mem128.h machines/chloe.h machines/prism.h machines/timex.h machines/cpc.h machines/prism.h operaciones.h machines/zx8081.h charset.h zxvision/zxvision.h menu/menu_bitmaps.h audio/audio.h contend.h ula.h storage/tape_smp.h machines/z88.h ulaplus.h machines/zxuno.h spectra.h spritechip.h timer.h machines/sam.h machines/ql.h machines/chrome.h machines/zxevo.h machines/tsconf.h machines/baseconf.h machines/mk14.h vdp_9918a.h machines/msx.h machines/coleco.h machines/ql_zx8302.h stats.h vdp_9918a_sms.h menu/menu_items.h chardetect.h machines/pcw.h textspeech.h
 	\$(CC) \$(CFLAGS) -c video/screen.c
 
-mem128.o: mem128.c cpu.h mem128.h debug.h contend.h machines/zxuno.h machines/chloe.h machines/prism.h machines/timex.h machines/sam.h ula.h machines/tbblue.h storage/superupgrade.h machines/chrome.h machines/zxevo.h machines/tsconf.h machines/baseconf.h machines/msx.h machines/coleco.h machines/sg1000.h machines/sms.h machines/svi.h
+mem128.o: mem128.c cpu.h mem128.h debug.h contend.h machines/zxuno.h machines/chloe.h machines/prism.h machines/timex.h machines/sam.h ula.h machines/tbblue.h storage/superupgrade.h machines/chrome.h machines/zxevo.h machines/tsconf.h machines/baseconf.h machines/msx.h machines/coleco.h machines/sg1000.h machines/sms.h machines/svi.h storage/lec.h
 	\$(CC) \$(CFLAGS) -c mem128.c
 
 timex.o: machines/timex.c machines/timex.h cpu.h debug.h contend.h storage/tape.h mem128.h zxvision/zxvision.h machines/chloe.h machines/prism.h machines/zxuno.h machines/tbblue.h settings.h
