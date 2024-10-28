@@ -427,9 +427,7 @@ https://trastero.speccy.org/cosas/FLeon/Fleon.htm
 https://worldofspectrum.org/archive/software/utilities/cpm-22-for-the-lec-memory-extension-jiri-lamac
 
 -agregar memory zone lec
--Lec write no debería escribir en la RAM real, ya que se quita la RAM real. Aunque si lo hace tampoco pasa nada.
-De hecho hay que hacer que lo haga para que sume t-estados de escritura
--Tape traps para lec rom? no, los traps funcionan pues tiene rutinas estandard de carga y grabacion
+-mostrar paginas de memoria lec en debug cpu
 -Como incluir las lec rom? como alternate? mover todas las alternate a carpeta alternate?
 
 

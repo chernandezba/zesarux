@@ -98,7 +98,7 @@ D4 - N0 selects the number of 32K RAM page at #0000-7fff,
 
             page=(lec_port_fd>>4) & 7;
             lec_memory_pages[0]=lec_ram_memory_table[page];
-            printf("segment 0 has page %d\n",page);
+            //printf("segment 0 has page %d\n",page);
 
 
             lec_memory_pages[1]=lec_ram_memory_table[7];
@@ -119,7 +119,7 @@ D3 - N3 selects the number of 32K RAM page at #0000-7fff, when PG=1. Don't care 
             page |=lec_port_fd & 8;
 
             lec_memory_pages[0]=lec_ram_memory_table[page];
-            printf("lec 528 segment 0 has page %d\n",page);
+            //printf("lec 528 segment 0 has page %d\n",page);
 
             lec_memory_pages[1]=lec_ram_memory_table[15];
 
@@ -135,13 +135,13 @@ D3 - N3 selects the number of 32K RAM page at #0000-7fff, when PG=1. Don't care 
 
 void lec_out_port(z80_byte value)
 {
-    printf("Lec out port %02XH\n",value);
+    //printf("Lec out port %02XH\n",value);
 
     lec_port_fd=value;
     lec_set_memory_pages();
 
-    if (lec_port_fd & 128) printf("Enabling lec memory all ram\n");
-    else printf("Disabling lec memory all ram\n");
+    //if (lec_port_fd & 128) printf("Enabling lec memory all ram\n");
+    //else printf("Disabling lec memory all ram\n");
 }
 
 z80_byte *lec_get_memory_pointer(int dir)
@@ -161,7 +161,7 @@ z80_byte lec_common_peek(z80_int dir)
 	z80_byte *puntero;
 
     puntero=lec_get_memory_pointer(dir);
-    t_estados +=3;
+    //t_estados +=3;
     return *puntero;
 
 }
@@ -173,13 +173,18 @@ void lec_common_poke(z80_int dir,z80_byte valor)
 	z80_byte *puntero;
 
     puntero=lec_get_memory_pointer(dir);
-    t_estados +=3;
+    //t_estados +=3;
 
     *puntero=valor;
 
 }
 
-
+/*
+Comprobando con CP/M para lec memory, por una parte tenemos que:
+Memoria >=32768, siempre es lec. El chip de memoria "original" del spectrum se extrae
+Memoria <=32767, si esta mapeada all-ram, es memoria lec (y si hay una escritura, solo ira a lec).
+  Y si no esta mapeada all-ram, es memoria original del spectrum
+*/
 z80_byte lec_poke_byte_no_time(z80_int dir,z80_byte valor)
 {
 
@@ -188,18 +193,17 @@ z80_byte lec_poke_byte_no_time(z80_int dir,z80_byte valor)
         if (lec_all_ram()) {
             lec_common_poke(dir,valor);
         }
-        else debug_nested_poke_byte_no_time_call_previous(lec_nested_id_poke_byte_no_time,dir,valor);
+        else {
+            debug_nested_poke_byte_no_time_call_previous(lec_nested_id_poke_byte_no_time,dir,valor);
+        }
     }
 
-	//debug_nested_poke_byte_no_time_call_previous(lec_nested_id_poke_byte_no_time,dir,valor);
 
     //Para que no se queje el compilador, aunque este valor de retorno no lo usamos
     return 0;
 
 
 }
-
-
 
 
 z80_byte lec_poke_byte(z80_int dir,z80_byte valor)
@@ -210,10 +214,11 @@ z80_byte lec_poke_byte(z80_int dir,z80_byte valor)
         if (lec_all_ram()) {
             lec_common_poke(dir,valor);
         }
-        else debug_nested_poke_byte_call_previous(lec_nested_id_poke_byte,dir,valor);
+        else {
+            debug_nested_poke_byte_call_previous(lec_nested_id_poke_byte,dir,valor);
+        }
     }
 
-	//debug_nested_poke_byte_call_previous(lec_nested_id_poke_byte,dir,valor);
 
     //Para que no se queje el compilador, aunque este valor de retorno no lo usamos
     return 0;
@@ -231,7 +236,9 @@ z80_byte lec_peek_byte_no_time(z80_int dir,z80_byte value GCC_UNUSED)
         if (lec_all_ram()) {
             return lec_common_peek(dir);
         }
-        else return valor_leido;
+        else {
+            return valor_leido;
+        }
     }
 
     return valor_leido;
@@ -248,7 +255,9 @@ z80_byte lec_peek_byte(z80_int dir,z80_byte value GCC_UNUSED)
         if (lec_all_ram()) {
             return lec_common_peek(dir);
         }
-        else return valor_leido;
+        else {
+            return valor_leido;
+        }
     }
 
     return valor_leido;
