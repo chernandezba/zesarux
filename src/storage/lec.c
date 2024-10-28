@@ -161,6 +161,8 @@ z80_byte lec_common_peek(z80_int dir)
 	z80_byte *puntero;
 
     puntero=lec_get_memory_pointer(dir);
+
+    //Si sumasemos estados, no parece haber manera para formatear en cp/m lec
     //t_estados +=3;
     return *puntero;
 
@@ -173,6 +175,8 @@ void lec_common_poke(z80_int dir,z80_byte valor)
 	z80_byte *puntero;
 
     puntero=lec_get_memory_pointer(dir);
+
+    //Si sumasemos estados, no parece haber manera para formatear en cp/m lec
     //t_estados +=3;
 
     *puntero=valor;
