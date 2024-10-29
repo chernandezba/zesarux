@@ -38993,6 +38993,17 @@ void menu_storage_hilow_cover(MENU_ITEM_PARAMETERS)
     hilow_tapa_has_been_opened.v ^=1;
 }
 
+void menu_storage_hilow_hear_load(MENU_ITEM_PARAMETERS)
+{
+    hilow_hear_load_sound.v ^=1;
+}
+
+void menu_storage_hilow_hear_save(MENU_ITEM_PARAMETERS)
+{
+    hilow_hear_save_sound.v ^=1;
+}
+
+
 void menu_storage_hilow_file(MENU_ITEM_PARAMETERS)
 {
 
@@ -40870,6 +40881,15 @@ void menu_hilow(MENU_ITEM_PARAMETERS)
             "Note: all writing operations to hilow are always saved to internal memory (unless you disable write permission), but this setting "
             "tells if these changes are written to disk or not."
         );
+
+        menu_add_item_menu_en_es_ca(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_hear_load,NULL,
+            "Hear load sound","Escuchar sonido de carga","Escoltar so de càrrega");
+        menu_add_item_menu_prefijo_format(array_menu_hilow,"[%c] ",(hilow_hear_load_sound.v ? 'X' : ' ') );
+
+        menu_add_item_menu_en_es_ca(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_hear_save,NULL,
+            "Hear save sound","Escuchar sonido de grabación","Escoltar so de gravació");
+        menu_add_item_menu_prefijo_format(array_menu_hilow,"[%c] ",(hilow_hear_save_sound.v ? 'X' : ' ') );
+
 
         menu_add_item_menu_separator(array_menu_hilow);
 

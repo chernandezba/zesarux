@@ -476,6 +476,10 @@ void core_spectrum_fin_scanline(void)
             gs_mix_dac_channels();
         }
 
+        if (hilow_enabled.v) {
+            hilow_mix_audio();
+        }
+
         int leer_cinta_real=0;
 
         if (realtape_inserted.v && realtape_playing.v) leer_cinta_real=1;

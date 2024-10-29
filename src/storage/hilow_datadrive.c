@@ -38,6 +38,7 @@
 #include "screen.h"
 #include "menu_items.h"
 #include "mem128.h"
+#include "audio.h"
 
 
 z80_bit hilow_enabled={0};
@@ -75,6 +76,9 @@ z80_bit hilow_write_protection={0};
 
 //Si se hacen traps a la rom
 z80_bit hilow_rom_traps={1};
+
+z80_bit hilow_hear_load_sound={1};
+z80_bit hilow_hear_save_sound={1};
 
 //-1 si no aplica
 int hilow_get_visualmem_position(unsigned int address)
@@ -394,8 +398,6 @@ void hilow_action_open_tape(void)
         hilow_cinta_insertada_flag.v=0;
     }
 
-    //temp
-    last_raw_audio_data_read=0;
 }
 
 void hilow_action_close_tape(void)
@@ -1853,7 +1855,27 @@ It is always a 1 when the drive is switched off.
 
 z80_byte last_hilow_port_value=0;
 
+//Esto solo es para enviar a tarjeta de sonido por si queremos escuchar sonidos de carga o grabacion
+z80_byte hilow_ultimo_sample_sonido=0;
 
+void hilow_mix_audio(void)
+{
+    if (hilow_hear_load_sound.v==0 && hilow_hear_save_sound.v) return;
+
+    //Si esta motor en marcha
+    if ((last_hilow_port_value & 0x20)==0) return;
+
+
+    reset_silence_detection_counter();
+    audio_valor_enviar_sonido_izquierdo /=2;
+    audio_valor_enviar_sonido_izquierdo += hilow_ultimo_sample_sonido/2;
+
+    audio_valor_enviar_sonido_derecho /=2;
+    audio_valor_enviar_sonido_derecho += hilow_ultimo_sample_sonido/2;
+
+
+
+}
 
 int hilow_cinta_en_movimiento=0;
 
@@ -2026,10 +2048,16 @@ void hilow_raw_move(void)
         if (last_hilow_port_value & 1) valor_escribir=255;
 
         puntero_audio[hilow_posicion_cabezal]=valor_escribir;
+
+        if (hilow_hear_save_sound.v) hilow_ultimo_sample_sonido=valor_escribir;
     }
 
 
-    else last_raw_audio_data_read=puntero_audio[hilow_posicion_cabezal];
+    else {
+        //leyendo
+        last_raw_audio_data_read=puntero_audio[hilow_posicion_cabezal];
+        if (hilow_hear_load_sound.v) hilow_ultimo_sample_sonido=last_raw_audio_data_read;
+    }
 
     if (hilow_posicion_cabezal%5000 ==1) {
         if (last_hilow_port_value & 0x08) {

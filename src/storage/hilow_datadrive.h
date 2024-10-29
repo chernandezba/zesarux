@@ -115,4 +115,7 @@ extern z80_byte hilow_util_get_file_type(int sector,z80_byte *puntero_memoria,in
 extern void hilow_util_get_file_contents(int sector,z80_byte *puntero_memoria,int indice_archivo,z80_byte *destino_memoria);
 extern void hilow_util_get_free_sectors_list(int sector_dir,z80_byte *puntero_memoria,int *sectores);
 
+extern z80_bit hilow_hear_load_sound;
+extern z80_bit hilow_hear_save_sound;
+
 #endif
