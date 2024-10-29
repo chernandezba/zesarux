@@ -2032,7 +2032,7 @@ void hilow_raw_move(void)
     else last_raw_audio_data_read=puntero_audio[hilow_posicion_cabezal];
 
     if (hilow_posicion_cabezal%5000 ==1) {
-        if (last_hilow_port_value & 0x80) {
+        if (last_hilow_port_value & 0x08) {
             printf("rapido pos %d\n",hilow_posicion_cabezal);
         }
         else {
@@ -2070,7 +2070,7 @@ void hilow_count_tstates(void)
     int velocidad=speed_hilow_normal;
 
     //Bit 3 - Fast (1 = Fast, 0 = Slow)
-    if (last_hilow_port_value & 0x80) {
+    if (last_hilow_port_value & 0x08) {
         velocidad=speed_hilow_rapido;
         //printf("rapido\n");
     }
