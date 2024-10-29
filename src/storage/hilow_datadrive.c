@@ -1925,6 +1925,9 @@ Bit 2 - Cassette Sense (1 = Cassette in place, 0 = No cassette)
 Bit 1 - Reverse (1 = Reverse, 0 = Forward) (Inverted last bit written to bit 1 of OUT FFh, used in "Start the tape" routine)
 Bit 0 - Cassette Motion (0 = Moving, 1 = Stopped)
 
+Note: "Data Bit In" is always 1 when Cassette is "stopped"
+Note: Bit 1 is confusing, it seems to be the last bit written to bit 1, but inverted. I have no idea why, but the "Start the tape" routine doesn't work properly without it.
+Note: Cassette Motion can register as "stopped" when the motor is off, or when the start or end of the tape has been reached. It is always a 1 when the drive is switched off.
 
 */
 
@@ -1939,7 +1942,12 @@ Bit 0 - Cassette Motion (0 = Moving, 1 = Stopped)
 
     if (last_raw_audio_data_read) valor_retorno |=64;
 
-    if (!hilow_cinta_en_movimiento) valor_retorno |=1;
+    //Parece que bit 6 tambien se activa cuando cinta detenida
+
+    if (!hilow_cinta_en_movimiento) {
+        valor_retorno |=1;
+        valor_retorno |=64;
+    }
 
     //Bit 1 - Reverse (1 = Reverse, 0 = Forward) (Inverted last bit written to bit 1 of OUT FFh, used in "Start the tape" routine)
     if ((last_hilow_port_value & 0x02)==0) valor_retorno |=0x02;
@@ -2023,7 +2031,16 @@ void hilow_raw_move(void)
 
     else last_raw_audio_data_read=puntero_audio[hilow_posicion_cabezal];
 
-    if (hilow_posicion_cabezal%1000 ==1) printf("pos %d\n",hilow_posicion_cabezal);
+    if (hilow_posicion_cabezal%5000 ==1) {
+        if (last_hilow_port_value & 0x80) {
+            printf("rapido pos %d\n",hilow_posicion_cabezal);
+        }
+        else {
+            printf("lento pos %d\n",hilow_posicion_cabezal);
+        }
+    }
+
+
 
 }
 
