@@ -832,8 +832,7 @@ void core_spectrum_ciclo_fetch(void)
     //Eventos de la controladora de disco
     pd765_next_event_from_core();
 
-    //avance de la posición del microdrive
-    //interface1_count_tstates();
+
 
 
 #ifdef DEBUG_SECOND_TRAP_STDOUT

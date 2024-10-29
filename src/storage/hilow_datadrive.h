@@ -103,6 +103,7 @@ extern z80_int hilow_util_get_usage_counter(int sector,z80_byte *p);
 extern z80_byte hilow_util_get_free_sectors(int sector_dir,z80_byte *p);
 
 extern z80_bit hilow_rom_traps;
+extern void hilow_count_tstates(void);
 
 extern int hilow_util_get_file_offset(int indice_archivo);
 extern int hilow_util_get_total_files(int sector,z80_byte *puntero_memoria);

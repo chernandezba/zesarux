@@ -1166,6 +1166,9 @@ void hilow_trap_format(void)
 z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC_UNUSED)
 {
 
+    //Solo contar estados cuando el core no está detenido esperando a siguiente interrupcion
+    if (esperando_tiempo_final_t_estados.v==0) hilow_count_tstates();
+
     //Llamar a anterior
     debug_nested_core_call_previous(hilow_nested_id_core);
 
@@ -1538,8 +1541,8 @@ void hilow_reset(void)
 
 }
 
-
-void hilow_write_port_ff(z80_int port GCC_UNUSED,z80_byte value GCC_UNUSED)
+//Funcion antes de las pruebas con puerto i/o real
+void old_hilow_write_port_ff(z80_int port GCC_UNUSED,z80_byte value GCC_UNUSED)
 {
     hilow_footer_operating();
 /*
@@ -1562,8 +1565,8 @@ Puede que esos comandos sea combinacion de bits
 	//printf ("Writing hilow port %04XH value %02XH from PC=%04XH\n",port,value,reg_pc);
 }
 
-
-z80_byte hilow_read_port_ff(z80_int puerto GCC_UNUSED)
+//Funcion antes de las pruebas con puerto i/o real
+z80_byte old_hilow_read_port_ff(z80_int puerto GCC_UNUSED)
 {
 
     hilow_footer_operating();
@@ -1805,4 +1808,245 @@ void hilow_util_get_file_contents(int sector_dir,z80_byte *puntero_memoria,int i
         longitud -=leer;
     }
 
+}
+
+
+
+
+
+
+
+/*
+Info from Jane McKay
+
+OUT FFh
+Bit 7 - Reset the Cassette Change bit (1 = reset, 0 = do nothing) (writing a 1 here will set bit 3 of IN FFh back to a 1)
+Bit 6 - (Not used?)
+Bit 5 - Motor On (1 = On, 0 = Stop)
+Bit 4 - Write Gate (1 = Write Enabled, 0 = Write Disabled)
+Bit 3 - Fast (1 = Fast, 0 = Slow)
+Bit 2 - Track Select (1 = Side 1, 0 = Side 2)
+Bit 1 - Forward (1 = Forward, 0 = Reverse)
+Bit 0 - Data Bit Out (saving)
+
+IN FFh
+Bit 7 - (Not used?)
+Bit 6 - Data Bit In (loading)
+Bit 5 - (Not used?)
+Bit 4 - (Not used?)
+Bit 3 - Cassette Change (0 = Cassette Changed, 1 = Not Changed) (it is "changed" if the Cassette Sense bit has ever gone low)
+Bit 2 - Cassette Sense (1 = Cassette in place, 0 = No cassette)
+Bit 1 - Reverse (1 = Reverse, 0 = Forward) (Inverted last bit written to bit 1 of OUT FFh, used in "Start the tape" routine)
+Bit 0 - Cassette Motion (0 = Moving, 1 = Stopped)
+
+Note: "Data Bit In" is always 1 when Cassette is "stopped"
+Note: Bit 1 is confusing, it seems to be the last bit written to bit 1, but inverted. I have no idea why, but the "Start the tape"
+routine doesn't work properly without it.
+Note: Cassette Motion can register as "stopped" when the motor is off, or when the start or end of the tape has been reached.
+It is always a 1 when the drive is switched off.
+*/
+
+z80_byte last_hilow_port_value=0;
+
+z80_byte last_raw_audio_data_read=0;
+
+int hilow_cinta_en_movimiento=0;
+
+void hilow_write_port_ff(z80_int port GCC_UNUSED,z80_byte value)
+{
+    hilow_footer_operating();
+
+/*
+OUT FFh
+Bit 7 - Reset the Cassette Change bit (1 = reset, 0 = do nothing) (writing a 1 here will set bit 3 of IN FFh back to a 1)
+Bit 6 - (Not used?)
+Bit 5 - Motor On (1 = On, 0 = Stop)
+Bit 4 - Write Gate (1 = Write Enabled, 0 = Write Disabled)
+Bit 3 - Fast (1 = Fast, 0 = Slow)
+Bit 2 - Track Select (1 = Side 1, 0 = Side 2)
+Bit 1 - Forward (1 = Forward, 0 = Reverse)
+Bit 0 - Data Bit Out (saving)
+*/
+
+    last_hilow_port_value=value;
+
+    if (value & 0x20) hilow_cinta_en_movimiento=1;
+    else hilow_cinta_en_movimiento=0;
+}
+
+int hilow_posicion_cabezal=0;
+
+//pruebas dispositivo
+#define BUFFER_AUDIO_HILOW 1000000
+z80_byte temp_buffer_audio_hilow[BUFFER_AUDIO_HILOW];
+
+z80_byte hilow_read_port_ff(z80_int puerto GCC_UNUSED)
+{
+
+    hilow_footer_operating();
+
+/*
+Lectura:
+
+Bit 7: ??
+Bit 6: A 1 si grabador encendido
+Bit 5: ??
+Bit 4: ??
+Bit 3: A 0 si se ha abierto la tapa en algun momento
+Bit 2: A 1 si hay cinta insertada
+Bit 1: ??
+Bit 0: A 1 cuando esta listo para leer?
+
+IN FFh
+Bit 7 - (Not used?)
+Bit 6 - Data Bit In (loading)
+Bit 5 - (Not used?)
+Bit 4 - (Not used?)
+Bit 3 - Cassette Change (0 = Cassette Changed, 1 = Not Changed) (it is "changed" if the Cassette Sense bit has ever gone low)
+Bit 2 - Cassette Sense (1 = Cassette in place, 0 = No cassette)
+Bit 1 - Reverse (1 = Reverse, 0 = Forward) (Inverted last bit written to bit 1 of OUT FFh, used in "Start the tape" routine)
+Bit 0 - Cassette Motion (0 = Moving, 1 = Stopped)
+
+
+*/
+
+	//printf ("Reading hilow port %04XH value from PC=%04XH\n",puerto,reg_pc);
+
+
+    z80_byte valor_retorno=0;
+
+    if (hilow_cinta_insertada_flag.v) valor_retorno |=4; //Hay cinta insertada
+
+    if (hilow_tapa_has_been_opened.v==0) valor_retorno |=8; //No se ha abierto la tapa en algun momento
+
+    if (last_raw_audio_data_read) valor_retorno |=64;
+
+    if (!hilow_cinta_en_movimiento) valor_retorno |=1;
+
+    return valor_retorno;
+
+
+}
+
+
+//
+// Para gestionar hilow en formato raw
+//
+
+//Valor de t_estados anterior
+int hilow_estados_anterior=0;
+
+//Cuantos t_estados han pasado desde el ultimo avance del hilow
+int hilow_transcurrido_desde_ultimo_movimiento=0;
+
+
+int speed_hilow_normal=10;
+int speed_hilow_rapido=2;
+//10x speed for playing (which works out at 8 t-states per sample) and 40x speed for fast forward/rewind (2 t-states per sample).
+
+
+
+
+
+void hilow_raw_move(void)
+{
+    //printf("Mover posicion hilow en t_estados %d\n",t_estados);
+
+    //Direccion
+    int direccion=+1;
+
+    //Bit 1 - Forward (1 = Forward, 0 = Reverse)
+    if (last_hilow_port_value & 0x02) {
+        //printf("moviendose hacia atras\n");
+        direccion=-1;
+    }
+    else {
+        //printf("moviendose hacia adelante\n");
+    }
+
+    //asumimos
+    hilow_cinta_en_movimiento=1;
+
+    hilow_posicion_cabezal +=direccion;
+
+    if (direccion>=0) {
+        if (hilow_posicion_cabezal>=BUFFER_AUDIO_HILOW) {
+            printf("llegado al final\n");
+            hilow_posicion_cabezal=BUFFER_AUDIO_HILOW-1;
+            hilow_cinta_en_movimiento=0;
+        }
+
+    }
+    else {
+        if (hilow_posicion_cabezal<0) {
+            printf("llegado al principio\n");
+            hilow_posicion_cabezal=0;
+            hilow_cinta_en_movimiento=0;
+        }
+    }
+
+    //Si escribir o leer
+    //Bit 4 - Write Gate (1 = Write Enabled, 0 = Write Disabled)
+    if (last_hilow_port_value & 0x10) {
+        printf("Escribiendo\n");
+        z80_byte valor_escribir=0;
+        //Bit 0 - Data Bit Out (saving)
+        if (last_hilow_port_value & 1) valor_escribir=255;
+
+        temp_buffer_audio_hilow[hilow_posicion_cabezal]=valor_escribir;
+    }
+
+
+    else last_raw_audio_data_read=temp_buffer_audio_hilow[hilow_posicion_cabezal];
+
+}
+
+void hilow_count_tstates(void)
+{
+
+    //Bit 5 - Motor On (1 = On, 0 = Stop)
+    if ((last_hilow_port_value & 0x20)==0) return;
+    //printf("Motor moviendose en t_estados %d\n",t_estados);
+
+
+    int delta_testados;
+
+    //Cada x t-estados, avanzar un byte
+    if (t_estados>=hilow_estados_anterior) {
+        delta_testados=t_estados-hilow_estados_anterior;
+    }
+
+    else {
+        //ha dado la vuelta
+        //printf("ha dado la vuelta. t_estados=%d hilow_estados_anterior=%d\n",t_estados,hilow_estados_anterior);
+        delta_testados=screen_testados_total-hilow_estados_anterior;
+        //printf("parcial delta: %5d t_estados: %d screen_testados_total: %d\n",delta_testados,t_estados,screen_testados_total);
+        delta_testados +=t_estados;
+    }
+
+    int velocidad=speed_hilow_normal;
+
+    //Bit 3 - Fast (1 = Fast, 0 = Slow)
+    if (last_hilow_port_value & 0x80) {
+        velocidad=speed_hilow_rapido;
+        //printf("rapido\n");
+    }
+    else {
+        //printf("lento\n");
+    }
+
+    //if (t_estados<100 || t_estados>70000) printf("delta: %5d t_estados: %d\n",delta_testados,t_estados);
+
+    hilow_transcurrido_desde_ultimo_movimiento +=delta_testados;
+
+    while (hilow_transcurrido_desde_ultimo_movimiento>=velocidad) {
+        hilow_transcurrido_desde_ultimo_movimiento -=velocidad;
+        //printf("mover cabezal en testados: %d testados_parc: %d hilow_transcurrido_desde_ultimo_movimiento: %d screen_testados_total: %d\n",
+        //    t_estados,debug_t_estados_parcial,hilow_transcurrido_desde_ultimo_movimiento,screen_testados_total);
+        hilow_raw_move();
+    }
+
+
+
+    hilow_estados_anterior=t_estados;
 }
