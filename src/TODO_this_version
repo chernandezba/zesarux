@@ -365,29 +365,28 @@ claro. o no, porque si hay top bar, "Storage" menu por ejemplo es un menu direct
 porque luego hay sitios como Sectors info de microdrive que al cambiar de sector con tecla 's' tengo que detectar
 si hay un pending error message y mostrarlo
 
--microdrive:
+-botones superiores e inferiores que no estén pegados a la pantalla: moverlos una columna a la derecha
 
+-----------------------
+---INICIO microdrive---
+-----------------------
+
+-Microdrive standard MDR
 *poder activar un sector no usado como usado:
 -asignar nombre, recnum (0) , marcar como usado (stream quizá) y corregir checksums
 
 *en grabacion datos y en lectura datos comprobar que los bits de estado los haya indicado correctamente el usuario?
-*agregar documentación a extras. Ver que documento esta mejor
-
-
-*botones superiores e inferiores que no estén pegados a la pantalla: moverlos una columna a la derecha
-
-*microdrive en formato raw:
-ok-memory zone raw.
--y que pueda ver opcionalmente los bytes de info?
-
--microdrive raw map:
-
-*icono para microdrive raw map
-*f1 ayuda. que indique colores, etc
 
 
 
--convertir rmd a mdr y vuelta a rmd
+-Microdrive en formato raw:
+
+
+*microdrive raw map:
+-icono para microdrive raw map
+-f1 ayuda. que indique colores, etc
+
+*convertir rmd a mdr y vuelta a rmd
 Con archivos p256, etc.
 mdr no encuentra todo archivo p4096 (parece que falla dos ultimos bloques), aunque chkdsk bien y extract archivo bien
 rmd final funciona bien, encuentra todos archivos
@@ -395,18 +394,6 @@ Con Fuse tampoco encuentra ese archivo
 La particularidad es que ese archivo tiene bloques a final de microdrive y al principio
 -esa conversion de rmd a mdr, sin archivos (solo con el formateo) pasa de 126 a 125 sectores...
 
--Test unitario para Microdrive. Tanto mdr como Rmd
-Cargar
-Quizá también grabar y cargar? Sin escrituras persistentes
-
-
-
--Formatos de microdrive alternativos :
-*Cp/m de LEC rom
-*multiface 128
-
-
--recopilar info microdrive de links utiles
 
 
 
@@ -415,19 +402,20 @@ Quizá también grabar y cargar? Sin escrituras persistentes
         t_estados++;
     }
 
+-----------------------
+---FIN microdrive---
+-----------------------
 
--LEC memory extension https://ia600604.us.archive.org/view_archive.php?archive=/1/items/World_of_Spectrum_June_2017_Mirror/World%20of%20Spectrum%20June%202017%20Mirror.zip&file=World%20of%20Spectrum%20June%202017%20Mirror/sinclair/hardware-info/l/LECMemoryExtension.pdf
--CPM para LEC: https://spectrumcomputing.co.uk/index.php?cat=96&id=23809
-https://trastero.speccy.org/cosas/FLeon/todo_sobre_la_ram_y_rom_lec.txt
-https://trastero.speccy.org/cosas/FLeon/Fleon.htm
-
-https://worldofspectrum.org/archive/software/utilities/cpm-22-for-the-lec-memory-extension-jiri-lamac
-
+LEC:
 -agregar memory zone lec
 -mostrar paginas de memoria lec en debug cpu
--Como incluir las lec rom? como alternate? mover todas las alternate a carpeta alternate?
+
 
 
 -revisar sonido en Save en CPC(ok), MSX...
 
--pendiente documentar especificacion archivos ddh: sectores tal cual, sin cabeceras de cada sector?
+
+-hilow datadrive:
+*emulación del puerto i/o
+*pendiente documentar especificacion archivos ddh: sectores tal cual, sin cabeceras de cada sector?
+

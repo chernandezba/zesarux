@@ -43,6 +43,7 @@
 #include "sg1000.h"
 #include "sms.h"
 #include "svi.h"
+#include "if1.h"
 
 //Direcciones donde estan cada pagina de ram
 //Antes habian 8 solo (8 paginas de 16kb cada una)
@@ -793,6 +794,10 @@ int mem_paging_is_enabled(void)
 int if_spectrum_basic_rom_paged_in(void)
 {
     if (MACHINE_IS_SPECTRUM_16_48) {
+        //Excepcion si interface 1 activado y mapeado
+        if (if1_enabled.v) {
+            if (if1_rom_paged.v) return 0;
+        }
 
         //maquina 16k, inves ,48k o tk
         return 1;
@@ -801,7 +806,13 @@ int if_spectrum_basic_rom_paged_in(void)
     if (MACHINE_IS_SPECTRUM_128_P2)  {
 
         //maquina 128k. rom 1 mapeada
-        if ((puerto_32765 & 16) ==16) return 1;
+        if ((puerto_32765 & 16) ==16) {
+            //Excepcion si interface 1 activado y mapeado
+            if (if1_enabled.v) {
+                if (if1_rom_paged.v) return 0;
+            }
+            return 1;
+        }
         else return 0;
     }
 

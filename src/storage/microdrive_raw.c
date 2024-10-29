@@ -21,7 +21,11 @@
 
 /*
 
-RAW Microdrive emulation, that can hold any filesystem (not just the interface 1 rom: the one supported for .mdr files)
+RAW Microdrive emulation, that can hold any filesystem (not just the interface 1 rom: the one supported for .mdr files).
+This can be used formatting from standard interface 1 rom but also from Multiface 128 or from CP/M for LEC memory:
+-Multiface 128 reduce gaps and other residual data, having a compatible filesystem with interface 1 rom but get more usable space
+-CP/M for LEC memory uses a completely different filesystem format
+
 For standard .MDR emulation, see file "microdrive.c"
 
 Info about how it works:

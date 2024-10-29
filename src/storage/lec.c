@@ -315,14 +315,8 @@ void lec_alloc_memory(void)
 
 void lec_reset(void)
 {
-    /*
-	lec_puerto_43b=0;
-  lec_flash_write_protected.v=1;
-  lec_write_status=0;
-  lec_write_buffer_index=0;
-  lec_pending_protect_flash.v=0;
-  */
- lec_port_fd=0;
+
+    lec_port_fd=0;
 
 	lec_set_memory_pages();
 }

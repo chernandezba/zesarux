@@ -42,3 +42,33 @@ if [ $? != 0 ]; then
 else
 	echo "OK Load +3 Disk"
 fi
+
+echo
+
+
+# Also test loading microdrive
+echo "Test Load Standard Microdrive MDR"
+./zesarux --noconfigfile --ao null --vo stdout --tape tests/testmicrodrive.tap --zx-mdv-file 1 tests/testmicrodrive.mdr --zx-mdv-enable 1 --zx-mdv-no-persistent-writes 1 --enable-interface1 --exit-after 10 --fastautoload > $TEMPFILE
+
+grep "RUN PROGRAM OK" $TEMPFILE
+
+if [ $? != 0 ]; then
+        echo "ERROR Load Standard Microdrive MDR"
+        exit 1
+else
+        echo "OK Load Standard Microdrive MDR"
+fi
+
+echo
+
+echo "Test Load RAW Microdrive RMD"
+./zesarux --noconfigfile --ao null --vo stdout --tape tests/testmicrodrive.tap --zx-mdv-file 1 tests/testmicrodrive.rmd --zx-mdv-enable 1 --zx-mdv-no-persistent-writes 1 --enable-interface1 --exit-after 10 --fastautoload > $TEMPFILE
+
+grep "RUN PROGRAM OK" $TEMPFILE
+
+if [ $? != 0 ]; then
+        echo "ERROR Load RAW Microdrive RMD"
+        exit 1
+else
+        echo "OK Load RAW Microdrive RMD"
+fi
