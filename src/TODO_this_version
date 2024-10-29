@@ -378,7 +378,6 @@ si hay un pending error message y mostrarlo
 *en grabacion datos y en lectura datos comprobar que los bits de estado los haya indicado correctamente el usuario?
 
 
-
 -Microdrive en formato raw:
 
 
@@ -386,7 +385,7 @@ si hay un pending error message y mostrarlo
 -f1 ayuda. que indique colores, etc
 
 *convertir rmd a mdr y vuelta a rmd
-Con archivos p256, etc.
+Con archivos p256, etc. creados con microdrive-test.tap
 mdr no encuentra todo archivo p4096 (parece que falla dos ultimos bloques), aunque chkdsk bien y extract archivo bien
 rmd final funciona bien, encuentra todos archivos
 Con Fuse tampoco encuentra ese archivo

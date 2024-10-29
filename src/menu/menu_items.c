@@ -43648,7 +43648,7 @@ void menu_microdrive_raw_map_mostrar_opciones(zxvision_window *ventana)
         total_limit,perc);
 
 
-    zxvision_print_string_defaults_fillspc_format(ventana,1,1,"[%d] ~~mdv ~~z: -zoom ~~x: +zoom %s",
+    zxvision_print_string_defaults_fillspc_format(ventana,1,1,"~~f~~1: help [%d] ~~mdv ~~z: -zoom ~~x: +zoom %s",
         microdrive_raw_map_selected_unit+1,buffer_show_char);
 
     //zxvision_print_string_defaults_fillspc(ventana,1,1,"");
@@ -43736,7 +43736,7 @@ void menu_microdrive_raw_map_draw(zxvision_window *w)
     int color_gap=7;
 
     //byte de datos sin uso (ni read ni write)
-    //rojo
+    //azul
     int color_pixel=1;
 
     //blanco con brillo
@@ -44222,6 +44222,53 @@ void microdrive_raw_map_edit_index(void)
 
 }
 
+void microdrive_raw_map_help(void)
+{
+
+    menu_generic_message("Help",
+    "This window is a raw map of the microdrive. It means that you can see positions on microdrive where data is stored but also "
+    "zones that don't have any data (gaps) \n"
+    "\n"
+    "The map is refreshed continuosly, if you write data to the microdrive for example, the changes are shown on this window.\n"
+    "\n"
+    "Every position on the map has different color, depending on the type:\n"
+    "- Data has blue color. If reading that Data, the color is cyan. If writing, the color is red\n"
+    "- Gap has white color. If reading that Data, the color is bright white. If writing, the color is red\n"
+    "- Bad position has magenta color. If reading that Data, the color is bright magenta. If writing, the color is red\n"
+    "- Sync bytes have yellow color. If reading or writing, change to same color as Data\n"
+    "- Head position is shown in black color\n"
+    "\n"
+
+
+
+    "There are several zoom levels which means:\n"
+    "1X: Every position on the microdrive (1 byte or 1 gap) is shown by one pixel on the map\n"
+    "2X: Every position on the microdrive is shown by a square of 2x2 on the map\n"
+    "4X: Every position on the microdrive is shown by a square of 4x4 on the map\n"
+    "8X: Every position on the microdrive is shown by a square of 8x8 on the map; "
+    "this zoom level also allows to 'see' a byte representation: for example if byte at position has value 255 you will see a horizontal line "
+    "of 8 pixels width, or if byte at position has value 128, you will see a pixel at the left part of the square\n"
+    "16X: Every position on the microdrive is shown by a square of 16x16 on the map; "
+    "this zoom level also shows you the byte value at position (hexadecimal or ascii)\n"
+    "0.5X: Every 2 positions on the microdrive are shown by one pixel on the map\n"
+    "0.25X: Every 4 positions on the microdrive are shown by one pixel on the map\n"
+    "0.125X: Every 8 positions on the microdrive are shown by one pixel on the map\n"
+    "0.0625X: Every 16 positions on the microdrive are shown by one pixel on the map\n"
+    "\n"
+
+    "The following keys are valid on the map:\n"
+    "m: Select microdrive\n"
+    "z: Zoom out\n"
+    "x: Zoom in\n"
+    "c: Show ascii character at position instead of hexadecimal (when zoom 16X)\n"
+    "a: Autoscroll. Move map to where the microdrive head position is\n"
+    "h: Show microdrive head position\n"
+    "s: Highlight sync bytes\n"
+
+    "Apart from these keys, by using the arrow keys, PgUp/Down, you can scroll the map conveniently.\n"
+    );
+}
+
 //Almacenar la estructura de ventana aqui para que se pueda referenciar desde otros sitios
 zxvision_window zxvision_window_microdrive_raw_map;
 
@@ -44363,6 +44410,10 @@ void menu_microdrive_raw_map(MENU_ITEM_PARAMETERS)
             case 'p':
                 microdrive_raw_map_edit_index();
                 ventana->must_clear_cache_on_draw_once=1;
+            break;
+
+            case MENU_TECLA_AYUDA:
+                microdrive_raw_map_help();
             break;
 
             //Salir con ESC
