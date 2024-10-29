@@ -1917,7 +1917,7 @@ z80_byte *hilow_get_audio_buffer(void)
 {
     //Bit 2 - Track Select (1 = Side 1, 0 = Side 2)
     if (last_hilow_port_value & 0x04) return temp_buffer_audio_hilow_cara_a;
-    else return temp_buffer_audio_hilow_cara_a;
+    else return temp_buffer_audio_hilow_cara_b;
 }
 
 z80_byte hilow_read_port_ff(z80_int puerto GCC_UNUSED)
