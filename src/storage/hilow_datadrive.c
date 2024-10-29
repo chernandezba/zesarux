@@ -2060,11 +2060,12 @@ void hilow_raw_move(void)
     }
 
     if (hilow_posicion_cabezal%5000 ==1) {
+
         if (last_hilow_port_value & 0x08) {
-            printf("rapido pos %d\n",hilow_posicion_cabezal);
+            printf("rapido cara %c pos %d\n",(last_hilow_port_value & 0x04 ? 'A' : 'B'),hilow_posicion_cabezal);
         }
         else {
-            printf("lento pos %d\n",hilow_posicion_cabezal);
+            printf("lento cara %c pos %d\n",(last_hilow_port_value & 0x04 ? 'A' : 'B'),hilow_posicion_cabezal);
         }
     }
 
