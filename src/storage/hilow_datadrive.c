@@ -1870,6 +1870,8 @@ Bit 0 - Data Bit Out (saving)
 
     last_hilow_port_value=value;
 
+    if (value & 0x80) hilow_tapa_has_been_opened.v=0;
+
     if (value & 0x20) hilow_cinta_en_movimiento=1;
     else hilow_cinta_en_movimiento=0;
 }
@@ -1877,8 +1879,17 @@ Bit 0 - Data Bit Out (saving)
 int hilow_posicion_cabezal=0;
 
 //pruebas dispositivo
-#define BUFFER_AUDIO_HILOW 1000000
-z80_byte temp_buffer_audio_hilow[BUFFER_AUDIO_HILOW];
+//cinta de 8 minutos por cara
+#define BUFFER_AUDIO_HILOW (44100*60*10)
+z80_byte temp_buffer_audio_hilow_cara_a[BUFFER_AUDIO_HILOW];
+z80_byte temp_buffer_audio_hilow_cara_b[BUFFER_AUDIO_HILOW];
+
+z80_byte *hilow_get_audio_buffer(void)
+{
+    //Bit 2 - Track Select (1 = Side 1, 0 = Side 2)
+    if (last_hilow_port_value & 0x04) return temp_buffer_audio_hilow_cara_a;
+    else return temp_buffer_audio_hilow_cara_a;
+}
 
 z80_byte hilow_read_port_ff(z80_int puerto GCC_UNUSED)
 {
@@ -1923,6 +1934,9 @@ Bit 0 - Cassette Motion (0 = Moving, 1 = Stopped)
 
     if (!hilow_cinta_en_movimiento) valor_retorno |=1;
 
+    //Bit 1 - Reverse (1 = Reverse, 0 = Forward) (Inverted last bit written to bit 1 of OUT FFh, used in "Start the tape" routine)
+    if ((last_hilow_port_value & 0x02)==0) valor_retorno |=0x02;
+
     return valor_retorno;
 
 
@@ -1956,7 +1970,7 @@ void hilow_raw_move(void)
     int direccion=+1;
 
     //Bit 1 - Forward (1 = Forward, 0 = Reverse)
-    if (last_hilow_port_value & 0x02) {
+    if ((last_hilow_port_value & 0x02)==0) {
         //printf("moviendose hacia atras\n");
         direccion=-1;
     }
@@ -1967,37 +1981,42 @@ void hilow_raw_move(void)
     //asumimos
     hilow_cinta_en_movimiento=1;
 
-    hilow_posicion_cabezal +=direccion;
 
     if (direccion>=0) {
-        if (hilow_posicion_cabezal>=BUFFER_AUDIO_HILOW) {
+
+        if (hilow_posicion_cabezal==BUFFER_AUDIO_HILOW-1) {
             printf("llegado al final\n");
-            hilow_posicion_cabezal=BUFFER_AUDIO_HILOW-1;
             hilow_cinta_en_movimiento=0;
         }
+
+        else hilow_posicion_cabezal++;
 
     }
     else {
-        if (hilow_posicion_cabezal<0) {
+        if (hilow_posicion_cabezal==0) {
             printf("llegado al principio\n");
-            hilow_posicion_cabezal=0;
             hilow_cinta_en_movimiento=0;
         }
+        else hilow_posicion_cabezal--;
     }
+
+    z80_byte *puntero_audio=hilow_get_audio_buffer();
 
     //Si escribir o leer
     //Bit 4 - Write Gate (1 = Write Enabled, 0 = Write Disabled)
     if (last_hilow_port_value & 0x10) {
-        printf("Escribiendo\n");
+        //printf("Escribiendo\n");
         z80_byte valor_escribir=0;
         //Bit 0 - Data Bit Out (saving)
         if (last_hilow_port_value & 1) valor_escribir=255;
 
-        temp_buffer_audio_hilow[hilow_posicion_cabezal]=valor_escribir;
+        puntero_audio[hilow_posicion_cabezal]=valor_escribir;
     }
 
 
-    else last_raw_audio_data_read=temp_buffer_audio_hilow[hilow_posicion_cabezal];
+    else last_raw_audio_data_read=puntero_audio[hilow_posicion_cabezal];
+
+    if (hilow_posicion_cabezal%1000 ==0) printf("pos %d\n",hilow_posicion_cabezal);
 
 }
 
