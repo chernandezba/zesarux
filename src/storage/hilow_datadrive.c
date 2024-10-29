@@ -384,6 +384,8 @@ void hilow_tapa_reset_was_opened(void)
    hilow_tapa_has_been_opened.v=0;
 }
 
+z80_byte last_raw_audio_data_read=0;
+
 void hilow_action_open_tape(void)
 {
     if (hilow_cinta_insertada_flag.v) {
@@ -391,6 +393,9 @@ void hilow_action_open_tape(void)
         hilow_tapa_action_was_opened();
         hilow_cinta_insertada_flag.v=0;
     }
+
+    //temp
+    last_raw_audio_data_read=0;
 }
 
 void hilow_action_close_tape(void)
@@ -1848,7 +1853,7 @@ It is always a 1 when the drive is switched off.
 
 z80_byte last_hilow_port_value=0;
 
-z80_byte last_raw_audio_data_read=0;
+
 
 int hilow_cinta_en_movimiento=0;
 
@@ -1872,7 +1877,9 @@ Bit 0 - Data Bit Out (saving)
 
     if (value & 0x80) hilow_tapa_has_been_opened.v=0;
 
-    if (value & 0x20) hilow_cinta_en_movimiento=1;
+    if (value & 0x20) {
+        //hilow_cinta_en_movimiento=1;
+    }
     else hilow_cinta_en_movimiento=0;
 }
 
@@ -1985,7 +1992,7 @@ void hilow_raw_move(void)
     if (direccion>=0) {
 
         if (hilow_posicion_cabezal==BUFFER_AUDIO_HILOW-1) {
-            printf("llegado al final\n");
+            //printf("llegado al final\n");
             hilow_cinta_en_movimiento=0;
         }
 
@@ -1994,7 +2001,7 @@ void hilow_raw_move(void)
     }
     else {
         if (hilow_posicion_cabezal==0) {
-            printf("llegado al principio\n");
+            //printf("llegado al principio\n");
             hilow_cinta_en_movimiento=0;
         }
         else hilow_posicion_cabezal--;
@@ -2016,7 +2023,7 @@ void hilow_raw_move(void)
 
     else last_raw_audio_data_read=puntero_audio[hilow_posicion_cabezal];
 
-    if (hilow_posicion_cabezal%1000 ==0) printf("pos %d\n",hilow_posicion_cabezal);
+    if (hilow_posicion_cabezal%1000 ==1) printf("pos %d\n",hilow_posicion_cabezal);
 
 }
 
