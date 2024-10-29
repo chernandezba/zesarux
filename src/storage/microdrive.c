@@ -59,6 +59,11 @@ Si salgo de ZEsarUX y vuelvo a escribir todos los bytes a 0, y formateo, se obti
 Quizá esto es un fallo de emulacion o del propio interface1. En Fuse por ejemplo, un microdrive en blanco al formatearlo siempre da
 126 kb libres, no 127, por lo que quizá Fuse también tiene un error o quizá el error está en la propia rom del interface1
 
+-Al realizar una operación de escritura o lectura (out o in al puerto E7) no se comprueba que realmente se esté en modo leer o escribir
+(Bit 2 R/W de puerto EF), por tanto se puede escribir haciendo out sin poner en modo escritura, o al reves
+Esto sí que está implementado completamente cuando se usa una imagen raw (RMD)
+
+
 Links utiles:
 https://worldofspectrum.org/faq/reference/formats.htm
 

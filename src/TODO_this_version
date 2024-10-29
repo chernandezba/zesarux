@@ -374,15 +374,8 @@ si hay un pending error message y mostrarlo
 -Microdrive standard MDR
 *poder activar un sector no usado como usado:
 -asignar nombre, recnum (0) , marcar como usado (stream quizá) y corregir checksums
+-quiza desde ventana de microdrive map
 
-*en grabacion datos y en lectura datos comprobar que los bits de estado los haya indicado correctamente el usuario?
-
-
--Microdrive en formato raw:
-
-
-*microdrive raw map:
--f1 ayuda. que indique colores, etc
 
 *convertir rmd a mdr y vuelta a rmd
 Con archivos p256, etc. creados con microdrive-test.tap

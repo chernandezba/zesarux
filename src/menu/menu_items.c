@@ -44264,7 +44264,7 @@ void microdrive_raw_map_help(void)
     "a: Autoscroll. Move map to where the microdrive head position is\n"
     "h: Show microdrive head position\n"
     "s: Highlight sync bytes\n"
-
+    "\n"
     "Apart from these keys, by using the arrow keys, PgUp/Down, you can scroll the map conveniently.\n"
     );
 }
@@ -44714,10 +44714,12 @@ void menu_interface1(MENU_ITEM_PARAMETERS)
 
         //Nota: si no se agrega el nombre del path del indice, se generará uno automáticamente
         menu_add_item_menu_index_full_path(array_menu_common,
-            "Main Menu-> Storage-> Interface1","Menú Principal-> Almacenamiento-> Interface1","Menú Principal-> Emmagatzematge-> Interface1");
+            "Main Menu-> Storage-> IF1/Microdrive",
+            "Menú Principal-> Almacenamiento-> IF1/Microdrive",
+            "Menú Principal-> Emmagatzematge-> IF1/Microdrive");
 
         retorno_menu=menu_dibuja_menu(&interface1_opcion_seleccionada,&item_seleccionado,array_menu_common,
-            "Menu Interface1","Menú Interface1","Menú Interface1" );
+            "Menu IF1/Microdrive","Menú IF1/Microdrive","Menú IF1/Microdrive" );
 
         if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
             //llamamos por valor de funcion
@@ -46383,10 +46385,10 @@ void menu_storage(MENU_ITEM_PARAMETERS)
 		}
 
         if (MACHINE_IS_SPECTRUM_16_48 || MACHINE_IS_SPECTRUM_128_P2) {
-            menu_add_item_menu_format(array_menu_storage,MENU_OPCION_NORMAL,menu_interface1,NULL,"I~~nterface1");
+            menu_add_item_menu_format(array_menu_storage,MENU_OPCION_NORMAL,menu_interface1,NULL,"I~~F1/Microdrive");
             menu_add_item_menu_shortcut(array_menu_storage,'n');
-            menu_add_item_menu_tooltip(array_menu_storage,"Interface1 settings");
-            menu_add_item_menu_ayuda(array_menu_storage,"Interface1 settings");
+            menu_add_item_menu_tooltip(array_menu_storage,"Interface1 and Microdrive settings");
+            menu_add_item_menu_ayuda(array_menu_storage,"Interface1 and Microdrive settings");
             menu_add_item_menu_tiene_submenu(array_menu_storage);
 		}
 
