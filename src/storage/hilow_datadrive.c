@@ -73,6 +73,9 @@ z80_bit hilow_persistent_writes={1};
 
 z80_bit hilow_write_protection={0};
 
+//Si se hacen traps a la rom
+z80_bit hilow_rom_traps={1};
+
 //-1 si no aplica
 int hilow_get_visualmem_position(unsigned int address)
 {
@@ -1174,6 +1177,9 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
         return 0;
     }
 
+    if (hilow_rom_traps.v==0) return 0;
+
+    //Traps a la rom
 
     //debug de rutinas
     if (reg_pc==0x186D) {

@@ -40814,6 +40814,10 @@ void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS)
 // FIN ventana de convertir audio HiLow a archivo DDH
 //
 
+void menu_storage_hilow_rom_traps(MENU_ITEM_PARAMETERS)
+{
+    hilow_rom_traps.v ^=1;
+}
 
 void menu_hilow(MENU_ITEM_PARAMETERS)
 {
@@ -40842,6 +40846,12 @@ void menu_hilow(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_shortcut(array_menu_hilow,'h');
         menu_add_item_menu_tooltip(array_menu_hilow,"Enable hilow");
         menu_add_item_menu_ayuda(array_menu_hilow,"Enable hilow");
+
+        menu_add_item_menu_en_es_ca(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_rom_traps,NULL,
+            "ROM traps","Traps a la ROM","Traps a la ROM");
+        menu_add_item_menu_prefijo_format(array_menu_hilow,"[%c] ", (hilow_rom_traps.v ? 'X' : ' '));
+        menu_add_item_menu_tooltip(array_menu_hilow,"Enable hilow rom traps");
+        menu_add_item_menu_ayuda(array_menu_hilow,"Enable hilow rom traps");
 
         menu_add_item_menu_en_es_ca(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_write_protect,NULL,
             "Wr~~ite protect","Protección escr~~itura","Protecció escr~~iptura");

@@ -401,6 +401,8 @@ LEC:
 -agregar memory zone lec
 -mostrar paginas de memoria lec en debug cpu
 
+Hilow
+-Poder habilitar dispositivo aunque no se haya seleccionado .ddh
 
 
 -revisar sonido en Save en CPC(ok), MSX...
