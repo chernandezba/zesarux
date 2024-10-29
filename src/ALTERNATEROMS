@@ -1,29 +1,31 @@
+The following alternate roms are in alternate_roms directory:
 
-alternaterom_aszmice07.rom - ASZMIC E07 ROM - ZX80/ZX81 Replacement ROM which includes assembler & debugger
+
+aszmice07.rom - ASZMIC E07 ROM - ZX80/ZX81 Replacement ROM which includes assembler & debugger
 This rom is actually 4K long, but it starts at 4000H. So it is copied twice to be 8k length to work on ZX81
 
-alternaterom_ace.rom: patch by "Dutra.Lacerda" (https://t.me/JupiterACE)
+ace.rom: patch by "Dutra.Lacerda" (https://t.me/JupiterACE)
 3 words Restored, CODE word added (Sieve*10=5m W=16.4x) GPL3 DISTRO
 
-alternaterom_opense.rom  OpenSE BASIC Version 3.1.2, For Spectrum 48K
+opense.rom  OpenSE BASIC Version 3.1.2, For Spectrum 48K
 http://sourceforge.net/projects/sebasic/
 
 
-alternaterom_sebasic4_rom1.rom SEBASIC standalone ROM 1 supporting the normal 32x24 mode, Version 4.1.0, For Spectrum 48K
+sebasic4_rom1.rom SEBASIC standalone ROM 1 supporting the normal 32x24 mode, Version 4.1.0, For Spectrum 48K
 https://github.com/cheveron/sebasic4/wiki
 
-alternaterom_derby_p_32K.rom, alternaterom_derby_pp_64K.rom: Derby+ and Derby++ roms, for Spectrums with 128KB of RAM
+derby_p_32K.rom, derby_pp_64K.rom: Derby+ and Derby++ roms, for Spectrums with 128KB of RAM
 and 32K or 64 KB of ROM
 https://zx.itch.io/derbypro
 
 
-alternaterom_plus3e_mmcen3eE.rom  alternaterom_plus3e_mmces3eE.rom
+plus3e_mmcen3eE.rom  plus3e_mmces3eE.rom
 +3e ROMs v1.38. For Spectrum +2A/+3 models
 http://www.worldofspectrum.org/zxplus3e/p3eroms.html
 The first on English, the second on Spanish
 Both for mmc interface, you can enable MMC and ZXMMC emulation on ZEsarUX. 
 
-alternaterom_plus3e_sm8en3eE.rom alternaterom_plus3e_sm8es3eE.rom
+plus3e_sm8en3eE.rom plus3e_sm8es3eE.rom
 +3e ROMs v1.38. For Spectrum +2A/+3 models
 http://www.worldofspectrum.org/zxplus3e/p3eroms.html
 The first on English, the second on Spanish
@@ -31,13 +33,13 @@ Both for ide 8-bit simple
 
 
 
-alternaterom_plus2c.rom ZX Spectrum Plus 2C, For Spectrum 128k/+2
+plus2c.rom ZX Spectrum Plus 2C, For Spectrum 128k/+2
 Unofficial ROM by Andrew Owen
 
 
 --
 
-alternaterom_plus2b.rom: +2B ROM Set. For Spectrum +2A/+3 models
+plus2b.rom: +2B ROM Set. For Spectrum +2A/+3 models
 
 The +2B ROM set includes the following:
 

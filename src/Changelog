@@ -4,11 +4,9 @@ ZEsarUX 11.1 - Zorro edition. 30 July 2024
 
 Added ZX Microdrive emulation on ZX Spectrum: that includes:
 - Standard MDR emulation. Allow to browse inside MDR files, see file map, fragmentation, rename files, sectors info, chkdsk and emulate bad sectors
-- Raw microdrive emulation. Supporting other non-interface1 rom file formats, like extending microdrive space with Multiface 128.
-Allow to see microdrive raw map (gap zones, sync bytes, data) and have "real problems", like autogenerate bad sectors or stretching the microdrive when it's new.
+- Raw microdrive emulation. Supporting other non-interface1 rom file formats, like extending microdrive space with Multiface 128 or CP/M for LEC memory. Allow to see microdrive raw map (gap zones, sync bytes, data) and have "real problems", like autogenerate bad sectors or stretching the microdrive when it's new.
 - Visual Microdrive: Allow to see a microdrive cartridge in action
 
-raw format, visual microdrive.... COMPLETAR ESTO
 Added LEC memory extension emulation
 Added machines Czerweny CZ 1000, CZ 1500, CZ 1000 Plus, CZ 1500 Plus, CZ 2000, CZ Spectrum, CZ Spectrum Plus
 Added Memory Cheat feature: useful to find counters of energy, bombs, ammo or any other cheat in a game

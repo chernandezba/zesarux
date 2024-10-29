@@ -376,7 +376,7 @@ extern z80_bit stdout_simpletext_automatic_redraw;
 //Valores para stdout. Estan aqui porque se graban en archivo .zx, aunque no este el driver stdout compilado
 //fin valores para stdout
 
-#define CUSTOM_MACHINE_2E_MMC_ROM_FILE "alternaterom_plus3e_mmcen3eE.rom"
+#define CUSTOM_MACHINE_2E_MMC_ROM_FILE "alternate_roms/plus3e_mmcen3eE.rom"
 
 //
 // Identificadores de maquinas. Valor de 8 bits
