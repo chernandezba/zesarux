@@ -1434,6 +1434,41 @@ char *bitmap_lowericon_ext_desktop_flp_active[EXT_DESKTOP_BUTTONS_ANCHO]={
 	"  wwwwwwwwwwwwwwwwwwwwww  " 	 //25
 };
 
+
+char *bitmap_button_ext_desktop_mdvrawmap[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "                          ",     //0
+  	" bbbbbbbbbbbbbbbbbbbbbbbb ",
+	" bbbbbbbbbbbbbbbbbbbbbbbb ",
+	" bbbbbbbbbbWWWWWWWWWWWbbb ",
+    " bbbbbbbbbbbbbbbbbbbbbbbb ",
+	" WWWWWWWWWWWbbbbbbbbbWWWW ",
+    " bbbbbbbbbbbbbbbbbbbbbbbb ",
+	" bbWWWWWWWWWWWWWWWWWWWWbb ",
+  	" bbbbbbbbbbbbbbbbbbbbbbbb ",
+	" bbbbbbbbbbbbbbbbbbbbbbbb ",
+
+	" bbbbbbbbbbbWWWWWWWWWWWbb ",  //10
+    " bbbbbbbbbbbbbbbbbbbbbbbb ",
+	" bWWWWWWWWWWWbbbbbbbbbWWW ",
+    " bbbbbbbbbbbbbbbbbbbbbbbb ",
+	" bbbWWWWWWWWWWWWWWWWWWWWb ",
+  	" bbbbbbbbbbbbbbbbbbbbbbbb ",
+	" bbbbbbbbbbbbbbbbbbbbbbbb ",
+
+	" bbbbbbbbbbbbWWWWWWWWWWWb ",
+    " bbbbbbbbbbbbbbbbbbbbbbbb ",
+	" bbWWWWWWWWWWWbbbbbbbbbWW ",
+    " bbbbbbbbbbbbbbbbbbbbbbbb ",  //20
+	" bbbbWWWWWWWWWWWWWWWWWWWW ",
+  	" bbbbbbbbbbbbbbbbbbbbbbbb ",
+	" bbbbbbbbbbbbbbbbbbbbbbbb ",
+	" bbbbbbbbbbbbbbbbbbbbbbbb ",
+	"                          "  //25
+};
+
+
+
 char *bitmap_button_ext_desktop_visualmicrodrive[EXT_DESKTOP_BUTTONS_ANCHO]={
    //01234567890123456789012345
     " wwwwwwxxxcccccccxxwwwww  ", //0
