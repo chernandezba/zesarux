@@ -44227,7 +44227,7 @@ void microdrive_raw_map_help(void)
 
     menu_generic_message("Help",
     "This window is a raw map of the microdrive. It means that you can see positions on microdrive where data is stored but also "
-    "zones that don't have any data (gaps) \n"
+    "zones that don't have any data (gaps, zones when the head has erased the data but not written anything)\n"
     "\n"
     "The map is refreshed continuosly, if you write data to the microdrive for example, the changes are shown on this window.\n"
     "\n"
@@ -44235,11 +44235,11 @@ void microdrive_raw_map_help(void)
     "- Data has blue color. If reading that Data, the color is cyan. If writing, the color is red\n"
     "- Gap has white color. If reading that Data, the color is bright white. If writing, the color is red\n"
     "- Bad position has magenta color. If reading that Data, the color is bright magenta. If writing, the color is red\n"
-    "- Sync bytes have yellow color. If reading or writing, change to same color as Data\n"
     "- Head position is shown in black color\n"
+    "- Sync bytes have yellow color. If reading or writing, change to same color as Data. "
+    "Sync bytes are this sequence of bytes: 00 00 00 00 00 00 FF FF. They are just like regular data, but they are used "
+    "by the interface 1 rom to know when a sector begins or when the data in that sector begins\n"
     "\n"
-
-
 
     "There are several zoom levels which means:\n"
     "1X: Every position on the microdrive (1 byte or 1 gap) is shown by one pixel on the map\n"
