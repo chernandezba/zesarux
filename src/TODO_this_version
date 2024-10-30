@@ -425,7 +425,7 @@ Hilow
 -si encendido y motor detenido, lectura bit de audio siempre es 1
 -si apagado y motor detenido, lectura bit de audio siempre es 0
 
--insertar cinta, que permita ddh y raw, y luego utilice la carga de uno u otro y habilite/deshabilite traps a la rom?
+ok -insertar cinta, que permita ddh y raw, y luego utilice la carga de uno u otro y habilite/deshabilite traps a la rom?
 
 Además si no está encendido lógicamente no avanzamos posición
 

@@ -5690,7 +5690,19 @@ Bit 0 - Data Bit Out (saving)
 
             int porcentaje=porcentaje_long;
 
-            sprintf (buf_linea,"Current position: %9d/%9d (%3d %%)\n",hilow_posicion_cabezal,hilow_raw_device_buffer_total_size,porcentaje);
+            sprintf (buf_linea,"Position: %9d/%9d (%3d %%)\n",hilow_posicion_cabezal,hilow_raw_device_buffer_total_size,porcentaje);
+            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+            //Y en minutos, segundos, samples
+            int samples=hilow_posicion_cabezal % HILOW_RAW_SAMPLE_FREQ;
+            int segundos=hilow_posicion_cabezal / HILOW_RAW_SAMPLE_FREQ;
+            int minutos=segundos / 60;
+            int segundos_mostrar=segundos % 60;
+
+            long long int minutos_total_cinta_long=(hilow_raw_device_buffer_total_size*2L)/HILOW_RAW_SAMPLE_FREQ/60;
+            int minutos_total_cinta=minutos_total_cinta_long;
+
+            sprintf (buf_linea,"      (%02d:%02d.%05d)/C%d",minutos,segundos_mostrar,samples,minutos_total_cinta);
             sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
         }
 

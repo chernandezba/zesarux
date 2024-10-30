@@ -76,7 +76,7 @@ extern z80_byte *hilow_device_buffer;
 //Bit 0 - Data Bit Out (saving)
 #define HILOW_PORT_MASK_BIT_OUT 0x01
 
-
+#define HILOW_RAW_SAMPLE_FREQ 44100
 
 
 extern void hilow_device_mem_format(int si_escribir_en_ram,int si_escribir_en_device,char *label);

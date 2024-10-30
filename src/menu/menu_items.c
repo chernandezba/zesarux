@@ -39079,15 +39079,15 @@ void menu_storage_hilow_file(MENU_ITEM_PARAMETERS)
                 if (opcion<1) return;
                 switch (opcion) {
                     case 1:
-                        capacidad=44100*(60*15); //cinta C15 (de 7.5 minutos por cara)
+                        capacidad=HILOW_RAW_SAMPLE_FREQ*(60*15); //cinta C15 (de 7.5 minutos por cara)
                     break;
 
                     case 2:
-                        capacidad=44100*(60*30);
+                        capacidad=HILOW_RAW_SAMPLE_FREQ*(60*30);
                     break;
 
                     case 3:
-                        capacidad=44100*(60*60);
+                        capacidad=HILOW_RAW_SAMPLE_FREQ*(60*60);
                     break;
                 }
 
