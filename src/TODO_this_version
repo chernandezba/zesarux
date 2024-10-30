@@ -401,6 +401,12 @@ LEC:
 -agregar memory zone lec
 -mostrar paginas de memoria lec en debug cpu
 
+
+
+-----------------------
+---INICIO Hilow     ---
+-----------------------
+
 Hilow
 -Poder habilitar dispositivo aunque no se haya seleccionado .ddh
 
@@ -419,6 +425,7 @@ Hilow
 -si encendido y motor detenido, lectura bit de audio siempre es 1
 -si apagado y motor detenido, lectura bit de audio siempre es 0
 
+-insertar cinta, que permita ddh y raw, y luego utilice la carga de uno u otro y habilite/deshabilite traps a la rom?
 
 Además si no está encendido lógicamente no avanzamos posición
 
@@ -430,3 +437,8 @@ Además si no está encendido lógicamente no avanzamos posición
 
 -si cinta ddh, hacer traps a rom y lecturas y escrituras de puerto van exactamente como antes.
 Si es raw, hacerlo sin traps y lecturas y escrituras son funciones nuevas
+
+
+-----------------------
+---FIN Hilow        ---
+-----------------------
