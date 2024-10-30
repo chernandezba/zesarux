@@ -39094,19 +39094,22 @@ void menu_storage_hilow_file(MENU_ITEM_PARAMETERS)
 
 
                 //Crear archivo vacio
+                //para que sea mas rapido, asignamos memoria, generamos vacio y luego grabamos todo de golpe
+                z80_byte *temp_mem=util_malloc(capacidad,"Can not allocate memory for image creation");
+
+                memset(temp_mem,0,capacidad);
+
                 FILE *ptr_hilowfile;
                 ptr_hilowfile=fopen(hilow_file_name,"wb");
 
-                long long int totalsize=capacidad;
-                z80_byte valor_grabar=0;
-
                 if (ptr_hilowfile!=NULL) {
-                    while (totalsize) {
-                        fwrite(&valor_grabar,1,1,ptr_hilowfile);
-                        totalsize--;
-                    }
+
+                    fwrite(temp_mem,1,capacidad,ptr_hilowfile);
+
                     fclose(ptr_hilowfile);
                 }
+
+                free(temp_mem);
             }
 
 		}
