@@ -1696,7 +1696,7 @@ void hilow_reset(void)
 }
 
 //Funcion antes de las pruebas con puerto i/o real
-void old_hilow_write_port_ff(z80_int port GCC_UNUSED,z80_byte value GCC_UNUSED)
+void hilow_write_port_ff_ddh(z80_int port GCC_UNUSED,z80_byte value GCC_UNUSED)
 {
     hilow_footer_operating();
 /*
@@ -1720,7 +1720,7 @@ Puede que esos comandos sea combinacion de bits
 }
 
 //Funcion antes de las pruebas con puerto i/o real
-z80_byte old_hilow_read_port_ff(z80_int puerto GCC_UNUSED)
+z80_byte hilow_read_port_ff_ddh(z80_int puerto GCC_UNUSED)
 {
 
     hilow_footer_operating();
@@ -2012,13 +2012,16 @@ void hilow_mix_audio(void)
     //Si esta motor en marcha
     if ((last_hilow_port_value & 0x20)==0) return;
 
+    int sonido_hilow=hilow_ultimo_sample_sonido;
+    sonido_hilow -=128;
+
 
     reset_silence_detection_counter();
     audio_valor_enviar_sonido_izquierdo /=2;
-    audio_valor_enviar_sonido_izquierdo += hilow_ultimo_sample_sonido/2;
+    audio_valor_enviar_sonido_izquierdo += sonido_hilow/2;
 
     audio_valor_enviar_sonido_derecho /=2;
-    audio_valor_enviar_sonido_derecho += hilow_ultimo_sample_sonido/2;
+    audio_valor_enviar_sonido_derecho += sonido_hilow/2;
 
 
 
@@ -2026,7 +2029,7 @@ void hilow_mix_audio(void)
 
 int hilow_cinta_en_movimiento=0;
 
-void hilow_write_port_ff(z80_int port GCC_UNUSED,z80_byte value)
+void hilow_write_port_ff_raw(z80_int port GCC_UNUSED,z80_byte value)
 {
     hilow_footer_operating();
 
@@ -2062,7 +2065,7 @@ z80_byte *hilow_get_audio_buffer(void)
     else return hilow_raw_device_buffer_side_b;
 }
 
-z80_byte hilow_read_port_ff(z80_int puerto GCC_UNUSED)
+z80_byte hilow_read_port_ff_raw(z80_int puerto GCC_UNUSED)
 {
 
     hilow_footer_operating();
@@ -2126,6 +2129,19 @@ Note: Cassette Motion can register as "stopped" when the motor is off, or when t
     return valor_retorno;
 
 
+}
+
+z80_byte hilow_read_port_ff(z80_int puerto)
+{
+    if (hilow_rom_traps.v) return hilow_read_port_ff_ddh(puerto);
+    else return hilow_read_port_ff_raw(puerto);
+}
+
+
+void hilow_write_port_ff(z80_int port,z80_byte value)
+{
+    if (hilow_rom_traps.v) hilow_write_port_ff_ddh(port,value);
+    else return hilow_write_port_ff_raw(port,value);
 }
 
 
