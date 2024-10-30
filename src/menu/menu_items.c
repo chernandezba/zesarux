@@ -39012,7 +39012,6 @@ void menu_storage_hilow_file(MENU_ITEM_PARAMETERS)
     char *filtros[2];
 
     filtros[0]="ddh"; //Data Drive HiLow
-    //Parecido a los de Coleco ddp ( digital data pack)
     filtros[1]=0;
 
 
@@ -39031,8 +39030,8 @@ void menu_storage_hilow_file(MENU_ITEM_PARAMETERS)
 
         //cambiamos a ese directorio, siempre que no sea nulo
         if (directorio[0]!=0) {
-                debug_printf (VERBOSE_INFO,"Changing to last directory: %s",directorio);
-                zvfs_chdir(directorio);
+            debug_printf (VERBOSE_INFO,"Changing to last directory: %s",directorio);
+            zvfs_chdir(directorio);
         }
     }
 
@@ -39049,8 +39048,6 @@ void menu_storage_hilow_file(MENU_ITEM_PARAMETERS)
                 hilow_file_name[0]=0;
                 return;
             }
-
-
 
 
 			//Crear archivo vacio
@@ -39081,8 +39078,107 @@ void menu_storage_hilow_file(MENU_ITEM_PARAMETERS)
     else {
             //Quitar nombre
             hilow_file_name[0]=0;
+    }
+}
 
 
+void menu_storage_hilow_raw_file(MENU_ITEM_PARAMETERS)
+{
+
+	//hilow_disable();  //para poder cambiar cinta en caliente y copiar con SAVE "=programa"
+
+
+
+
+    char *filtros[2];
+
+    filtros[0]="raw"; //Audio raw
+    filtros[1]=0;
+
+
+    //guardamos directorio actual
+    char directorio_actual[PATH_MAX];
+    getcwd(directorio_actual,PATH_MAX);
+
+    //Obtenemos directorio de trd
+    //si no hay directorio, vamos a rutas predefinidas
+    if (hilow_raw_file_name[0]==0) menu_chdir_sharedfiles();
+
+    else {
+        char directorio[PATH_MAX];
+        util_get_dir(hilow_raw_file_name,directorio);
+        //printf ("strlen directorio: %d directorio: %s\n",strlen(directorio),directorio);
+
+        //cambiamos a ese directorio, siempre que no sea nulo
+        if (directorio[0]!=0) {
+            debug_printf (VERBOSE_INFO,"Changing to last directory: %s",directorio);
+            zvfs_chdir(directorio);
+        }
+    }
+
+
+
+    int ret=menu_filesel("Select Data Drive File",filtros,hilow_raw_file_name);
+    //volvemos a directorio inicial
+    zvfs_chdir(directorio_actual);
+
+
+    if (ret==1) {
+		if (!si_existe_archivo(hilow_raw_file_name)) {
+			if (menu_confirm_yesno_texto("File does not exist","Create?")==0) {
+                hilow_raw_file_name[0]=0;
+                return;
+            }
+
+            int opcion=menu_simple_three_choices("Capacity","Select","C15","C30","C60");
+
+            int capacidad;
+
+            if (opcion<1) return;
+            switch (opcion) {
+                case 1:
+                    capacidad=44100*(60*15); //cinta C15 (de 7.5 minutos por cara)
+                break;
+
+                case 2:
+                    capacidad=44100*(60*30);
+                break;
+
+                case 3:
+                    capacidad=44100*(60*60);
+                break;
+            }
+
+
+
+			//Crear archivo vacio
+            FILE *ptr_hilowfile;
+			ptr_hilowfile=fopen(hilow_raw_file_name,"wb");
+
+            long long int totalsize=capacidad;
+			z80_byte valor_grabar=0;
+
+            if (ptr_hilowfile!=NULL) {
+				while (totalsize) {
+					fwrite(&valor_grabar,1,1,ptr_hilowfile);
+					totalsize--;
+				}
+                fclose(ptr_hilowfile);
+            }
+
+		}
+
+        //si ya estaba habilitado, cargar la imagen
+        if (hilow_enabled.v) {
+            hilow_load_raw_device_file();
+        }
+
+
+    }
+    //Sale con ESC
+    else {
+        //Quitar nombre
+        hilow_raw_file_name[0]=0;
     }
 }
 
@@ -39093,8 +39189,14 @@ void menu_storage_hilow_persistent_writes(MENU_ITEM_PARAMETERS)
 
 int menu_storage_hilow_emulation_cond(void)
 {
-    if (hilow_file_name[0]==0) return 0;
-    else return 1;
+    if (hilow_rom_traps.v) {
+        if (hilow_file_name[0]==0) return 0;
+        else return 1;
+    }
+    else {
+        if (hilow_raw_file_name[0]==0) return 0;
+        else return 1;
+    }
 }
 
 int menu_storage_hilow_enabled_cond(void)
@@ -40830,6 +40932,13 @@ void menu_storage_hilow_rom_traps(MENU_ITEM_PARAMETERS)
     hilow_rom_traps.v ^=1;
 }
 
+int menu_storage_hilow_rom_traps_cond(void)
+{
+    //no dejar cambiar modo si esta ya habilitado
+    if (hilow_enabled.v) return 0;
+    else return 1;
+}
+
 void menu_hilow(MENU_ITEM_PARAMETERS)
 {
     menu_item *array_menu_hilow;
@@ -40837,18 +40946,39 @@ void menu_hilow(MENU_ITEM_PARAMETERS)
     int retorno_menu;
     do {
 
+        menu_add_item_menu_en_es_ca_inicial(&array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_rom_traps,menu_storage_hilow_rom_traps_cond,
+            "    Emulation type","    Tipo emulación","    Tipus emulació");
+        menu_add_item_menu_sufijo_format(array_menu_hilow," [%s]", (hilow_rom_traps.v ? "ROM Traps" : "Low level"));
+        menu_add_item_menu_tooltip(array_menu_hilow,"Enable hilow rom traps");
+        menu_add_item_menu_ayuda(array_menu_hilow,"Enable hilow rom traps");
+
+
         char string_hilow_file_shown[17];
 
+        if (hilow_rom_traps.v) {
+            menu_tape_settings_trunc_name(hilow_file_name,string_hilow_file_shown,17);
+            menu_add_item_menu_en_es_ca(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_file,NULL,
+                "HiLow ~~File","~~Fichero HiLow","~~Fitxer HiLow");
+            menu_add_item_menu_sufijo_format(array_menu_hilow," [%s]",string_hilow_file_shown);
+            menu_add_item_menu_prefijo(array_menu_hilow,"    ");
+            menu_add_item_menu_shortcut(array_menu_hilow,'f');
+            menu_add_item_menu_tooltip(array_menu_hilow,"HiLow Data Drive Emulation file");
+            menu_add_item_menu_ayuda(array_menu_hilow,"HiLow Data Drive Emulation file");
+        }
+        else {
+
+            menu_tape_settings_trunc_name(hilow_raw_file_name,string_hilow_file_shown,17);
 
 
-        menu_tape_settings_trunc_name(hilow_file_name,string_hilow_file_shown,17);
-        menu_add_item_menu_en_es_ca_inicial(&array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_file,NULL,
-            "HiLow ~~File","~~Fichero HiLow","~~Fitxer HiLow");
-        menu_add_item_menu_sufijo_format(array_menu_hilow," [%s]",string_hilow_file_shown);
-        menu_add_item_menu_prefijo(array_menu_hilow,"    ");
-        menu_add_item_menu_shortcut(array_menu_hilow,'f');
-        menu_add_item_menu_tooltip(array_menu_hilow,"HiLow Data Drive Emulation file");
-        menu_add_item_menu_ayuda(array_menu_hilow,"HiLow Data Drive Emulation file");
+            menu_add_item_menu_en_es_ca(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_raw_file,NULL,
+                "HiLow raw ~~File","~~Fichero raw HiLow","~~Fitxer raw HiLow");
+            menu_add_item_menu_sufijo_format(array_menu_hilow," [%s]",string_hilow_file_shown);
+            menu_add_item_menu_prefijo(array_menu_hilow,"    ");
+            menu_add_item_menu_shortcut(array_menu_hilow,'f');
+            menu_add_item_menu_tooltip(array_menu_hilow,"HiLow Data Drive Emulation file");
+            menu_add_item_menu_ayuda(array_menu_hilow,"HiLow Data Drive Emulation file");
+
+        }
 
 
         menu_add_item_menu_en_es_ca(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_emulation,menu_storage_hilow_emulation_cond,
@@ -40858,11 +40988,7 @@ void menu_hilow(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_tooltip(array_menu_hilow,"Enable hilow");
         menu_add_item_menu_ayuda(array_menu_hilow,"Enable hilow");
 
-        menu_add_item_menu_en_es_ca(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_rom_traps,NULL,
-            "ROM traps","Traps a la ROM","Traps a la ROM");
-        menu_add_item_menu_prefijo_format(array_menu_hilow,"[%c] ", (hilow_rom_traps.v ? 'X' : ' '));
-        menu_add_item_menu_tooltip(array_menu_hilow,"Enable hilow rom traps");
-        menu_add_item_menu_ayuda(array_menu_hilow,"Enable hilow rom traps");
+
 
         menu_add_item_menu_en_es_ca(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_write_protect,NULL,
             "Wr~~ite protect","Protección escr~~itura","Protecció escr~~iptura");
@@ -40882,13 +41008,15 @@ void menu_hilow(MENU_ITEM_PARAMETERS)
             "tells if these changes are written to disk or not."
         );
 
-        menu_add_item_menu_en_es_ca(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_hear_load,NULL,
-            "Hear load sound","Escuchar sonido de carga","Escoltar so de càrrega");
-        menu_add_item_menu_prefijo_format(array_menu_hilow,"[%c] ",(hilow_hear_load_sound.v ? 'X' : ' ') );
+        if (hilow_rom_traps.v==0) {
+            menu_add_item_menu_en_es_ca(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_hear_load,NULL,
+                "Hear load sound","Escuchar sonido de carga","Escoltar so de càrrega");
+            menu_add_item_menu_prefijo_format(array_menu_hilow,"[%c] ",(hilow_hear_load_sound.v ? 'X' : ' ') );
 
-        menu_add_item_menu_en_es_ca(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_hear_save,NULL,
-            "Hear save sound","Escuchar sonido de grabación","Escoltar so de gravació");
-        menu_add_item_menu_prefijo_format(array_menu_hilow,"[%c] ",(hilow_hear_save_sound.v ? 'X' : ' ') );
+            menu_add_item_menu_en_es_ca(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_hear_save,NULL,
+                "Hear save sound","Escuchar sonido de grabación","Escoltar so de gravació");
+            menu_add_item_menu_prefijo_format(array_menu_hilow,"[%c] ",(hilow_hear_save_sound.v ? 'X' : ' ') );
+        }
 
 
         menu_add_item_menu_separator(array_menu_hilow);

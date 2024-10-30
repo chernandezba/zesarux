@@ -5634,6 +5634,57 @@ void debug_get_ioports(char *stats_buffer)
 
         }
 
+        if (hilow_enabled.v) {
+            sprintf (buf_linea,"Hilow Datadrive:\n");
+            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+            /*
+            OUT FFh
+Bit 7 - Reset the Cassette Change bit (1 = reset, 0 = do nothing) (writing a 1 here will set bit 3 of IN FFh back to a 1)
+Bit 6 - (Not used?)
+Bit 5 - Motor On (1 = On, 0 = Stop)
+Bit 4 - Write Gate (1 = Write Enabled, 0 = Write Disabled)
+Bit 3 - Fast (1 = Fast, 0 = Slow)
+Bit 2 - Track Select (1 = Side 1, 0 = Side 2)
+Bit 1 - Forward (1 = Forward, 0 = Reverse)
+Bit 0 - Data Bit Out (saving)
+            */
+
+            sprintf (buf_linea,"Port FF written:  %02XH\n",last_hilow_port_value);
+            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+            /*
+            //Bit 5 - Motor On (1 = On, 0 = Stop)
+#define HILOW_PORT_MASK_MOTOR_ON 0x20
+
+//Bit 4 - Write Gate (1 = Write Enabled, 0 = Write Disabled)
+#define HILOW_PORT_MASK_WRITE_EN 0x10
+
+//Bit 3 - Fast (1 = Fast, 0 = Slow)
+#define HILOW_PORT_MASK_FAST 0x08
+
+//Bit 2 - Track Select (1 = Side 1, 0 = Side 2)
+#define HILOW_PORT_MASK_TRACK 0x04
+
+//Bit 1 - Forward (1 = Forward, 0 = Reverse)
+#define HILOW_PORT_MASK_FORWARD 0x02
+
+//Bit 0 - Data Bit Out (saving)
+#define HILOW_PORT_MASK_BIT_OUT 0x01
+            */
+
+            sprintf (buf_linea,"[%s] [%s] [%s] [%s] [%s] [%s]\n",
+                (last_hilow_port_value & HILOW_PORT_MASK_MOTOR_ON ? "Motor On " :    "Motor Off"),
+                (last_hilow_port_value & HILOW_PORT_MASK_WRITE_EN ? "Write" :     "Read "),
+                (last_hilow_port_value & HILOW_PORT_MASK_FAST ? "40x" :   "10x"),
+                (last_hilow_port_value & HILOW_PORT_MASK_FORWARD ? "FWD" : "BCK"),
+                (last_hilow_port_value & HILOW_PORT_MASK_TRACK ? "Side A"     :   "Side B"),
+                (last_hilow_port_value & HILOW_PORT_MASK_BIT_OUT ? "Out1" :    "Out0")
+            );
+            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+            sprintf (buf_linea,"Current position: %d\n",hilow_posicion_cabezal);
+            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+        }
+
   		//Spectra
   		if (spectra_enabled.v) {
   			sprintf (buf_linea,"Spectra video mode register: %02X\n",spectra_display_mode_register);

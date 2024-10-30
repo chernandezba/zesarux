@@ -74,11 +74,28 @@ z80_bit hilow_persistent_writes={1};
 
 z80_bit hilow_write_protection={0};
 
-//Si se hacen traps a la rom
+//Si se hacen traps a la rom. Si está desactivado, se usará emulación del puerto FF
 z80_bit hilow_rom_traps={1};
 
 z80_bit hilow_hear_load_sound={1};
 z80_bit hilow_hear_save_sound={1};
+
+//Para archivo ddh
+char hilow_file_name[PATH_MAX]="";
+
+//Para archivos raw
+char hilow_raw_file_name[PATH_MAX]="";
+
+
+//para guardar la imagen del datadrive ddh
+//nota: aunque se usen archivos raw y no ddh, este buffer se asignara igual
+z80_byte *hilow_device_buffer=NULL;
+
+//para guardar la imagen en raw del datadrive, caras A y B
+z80_byte *hilow_raw_device_buffer_side_a=NULL;
+z80_byte *hilow_raw_device_buffer_side_b=NULL;
+
+int hilow_raw_device_buffer_total_size=0;
 
 //-1 si no aplica
 int hilow_get_visualmem_position(unsigned int address)
@@ -124,10 +141,14 @@ void hilow_set_visualmem_write(unsigned int address)
 #endif
 }
 
+
 void hilow_flush_contents_to_disk(void)
 {
 
     if (hilow_enabled.v==0) return;
+
+    //Si es archivo raw, no hacer flush aqui
+    if (hilow_rom_traps.v==0) return;
 
     if (hilow_must_flush_to_disk==0) {
         debug_printf (VERBOSE_DEBUG,"Trying to flush HiLow to disk but no changes made");
@@ -180,6 +201,60 @@ void hilow_flush_contents_to_disk(void)
         debug_printf (VERBOSE_ERR,"Error writing to HiLow file. Disabling write file operations");
         hilow_persistent_writes.v=0;
     }
+
+}
+
+
+/*
+Escribir contenido de cara A y cara B, uno despues del otro
+*/
+void hilow_raw_flush_contents_to_disk(void)
+{
+
+    if (hilow_enabled.v==0) return;
+
+    //Si no es archivo raw, no hacer flush aqui
+    if (hilow_rom_traps.v) return;
+
+
+    if (hilow_persistent_writes.v==0) {
+        debug_printf (VERBOSE_DEBUG,"Trying to flush HiLow to disk but persistent writes disabled");
+        return;
+    }
+
+    debug_printf (VERBOSE_INFO,"Flushing HiLow to disk");
+
+
+    FILE *ptr_hilowfile;
+
+    debug_printf (VERBOSE_INFO,"Opening HiLow File %s",hilow_raw_file_name);
+    ptr_hilowfile=fopen(hilow_raw_file_name,"wb");
+
+
+
+    int escritos=0;
+
+
+    if (ptr_hilowfile!=NULL) {
+
+        escritos=fwrite(hilow_raw_device_buffer_side_a,1,hilow_raw_device_buffer_total_size,ptr_hilowfile);
+        if (escritos!=hilow_raw_device_buffer_total_size) {
+            debug_printf (VERBOSE_ERR,"Error writing to HiLow file");
+        }
+
+        escritos=fwrite(hilow_raw_device_buffer_side_b,1,hilow_raw_device_buffer_total_size,ptr_hilowfile);
+        if (escritos!=hilow_raw_device_buffer_total_size) {
+            debug_printf (VERBOSE_ERR,"Error writing to HiLow file");
+        }
+
+        fclose(ptr_hilowfile);
+    }
+
+
+    if (ptr_hilowfile==NULL) {
+        debug_printf (VERBOSE_ERR,"Error writing to HiLow file");
+    }
+
 
 }
 
@@ -407,8 +482,6 @@ void hilow_action_close_tape(void)
     }
 }
 
-//para guardar la imagen del datadrive
-z80_byte *hilow_device_buffer=NULL;
 
 int hilow_write_byte_device(int sector,int offset,z80_byte valor)
 {
@@ -1439,7 +1512,7 @@ int hilow_load_rom(void)
     return 0;
 }
 
-char hilow_file_name[PATH_MAX]="";
+
 
 int hilow_load_device_file(void)
 {
@@ -1487,6 +1560,55 @@ int hilow_load_device_file(void)
 
 }
 
+
+
+int hilow_load_raw_device_file(void)
+{
+
+
+    if (!si_existe_archivo(hilow_raw_file_name)) {
+        debug_printf (VERBOSE_ERR,"Error opening HiLow RAW Data Drive file %s",hilow_raw_file_name);
+        return 1;
+    }
+
+    int bytes_a_leer=get_file_size(hilow_raw_file_name);
+
+    hilow_raw_device_buffer_total_size=bytes_a_leer/2;
+
+    hilow_raw_device_buffer_side_a=util_malloc(hilow_raw_device_buffer_total_size,"Can not allocate memory for HiLow RAW Data Drive");
+    hilow_raw_device_buffer_side_b=util_malloc(hilow_raw_device_buffer_total_size,"Can not allocate memory for HiLow RAW Data Drive");
+
+
+    FILE *ptr_hilowfile;
+
+    debug_printf (VERBOSE_INFO,"Opening HiLow RAW Data Drive File %s",hilow_raw_file_name);
+    ptr_hilowfile=fopen(hilow_raw_file_name,"rb");
+
+
+    if (ptr_hilowfile==NULL) {
+        debug_printf (VERBOSE_ERR,"Error opening HiLow RAW Data Drive file %s",hilow_raw_file_name);
+        return 1;
+    }
+
+
+    fread(hilow_raw_device_buffer_side_a,1,hilow_raw_device_buffer_total_size,ptr_hilowfile);
+    fread(hilow_raw_device_buffer_side_b,1,hilow_raw_device_buffer_total_size,ptr_hilowfile);
+
+
+    fclose(ptr_hilowfile);
+
+
+
+    //por alguna razon, el cat inicial necesita que este abierta la tapa
+    //luego se autocierra en lectura o escritura
+    //quiza indica mejor si esta a 0 -> cinta cambiada. y a 1- >cinta no cambiaa
+    //quien indica que ya no ha sido abierta?
+    hilow_tapa_action_was_opened();
+
+    return 0;
+
+}
+
 void hilow_enable(void)
 {
 
@@ -1506,7 +1628,12 @@ void hilow_enable(void)
 
     hilow_alloc_device_memory();
 
-    if (hilow_load_device_file()) return;
+    if (hilow_rom_traps.v) {
+        if (hilow_load_device_file()) return;
+    }
+    else {
+        if (hilow_load_raw_device_file()) return;
+    }
 
 	if (hilow_load_rom()) return;
 
@@ -1524,6 +1651,11 @@ void hilow_disable(void)
 
 	//Hacer flush si hay algun cambio
 	hilow_flush_contents_to_disk();
+
+    //Hacer flush si son imagenes raw
+    if (hilow_rom_traps.v==0) {
+        hilow_raw_flush_contents_to_disk();
+    }
 
 	hilow_restore_peek_poke_functions();
 
@@ -1907,17 +2039,12 @@ Bit 0 - Data Bit Out (saving)
 
 int hilow_posicion_cabezal=0;
 
-//pruebas dispositivo
-//cinta de 8 minutos por cara
-#define BUFFER_AUDIO_HILOW (44100*60*10)
-z80_byte temp_buffer_audio_hilow_cara_a[BUFFER_AUDIO_HILOW];
-z80_byte temp_buffer_audio_hilow_cara_b[BUFFER_AUDIO_HILOW];
 
 z80_byte *hilow_get_audio_buffer(void)
 {
     //Bit 2 - Track Select (1 = Side 1, 0 = Side 2)
-    if (last_hilow_port_value & 0x04) return temp_buffer_audio_hilow_cara_a;
-    else return temp_buffer_audio_hilow_cara_b;
+    if (last_hilow_port_value & 0x04) return hilow_raw_device_buffer_side_a;
+    else return hilow_raw_device_buffer_side_b;
 }
 
 z80_byte hilow_read_port_ff(z80_int puerto GCC_UNUSED)
@@ -1962,7 +2089,14 @@ Note: Cassette Motion can register as "stopped" when the motor is off, or when t
 
     if (hilow_tapa_has_been_opened.v==0) valor_retorno |=8; //No se ha abierto la tapa en algun momento
 
-    if (last_raw_audio_data_read) valor_retorno |=64;
+    //margen volumen
+    if (last_raw_audio_data_read-128>10) {
+        //printf("1\n");
+        valor_retorno |=64;
+    }
+    else {
+        //printf("0\n");
+    }
 
     //Parece que bit 6 tambien se activa cuando cinta detenida
 
@@ -1991,7 +2125,7 @@ int hilow_estados_anterior=0;
 int hilow_transcurrido_desde_ultimo_movimiento=0;
 
 
-int speed_hilow_normal=10;
+int speed_hilow_normal=8;
 int speed_hilow_rapido=2;
 //10x speed for playing (which works out at 8 t-states per sample) and 40x speed for fast forward/rewind (2 t-states per sample).
 
@@ -2021,7 +2155,7 @@ void hilow_raw_move(void)
 
     if (direccion>=0) {
 
-        if (hilow_posicion_cabezal==BUFFER_AUDIO_HILOW-1) {
+        if (hilow_posicion_cabezal==hilow_raw_device_buffer_total_size-1) {
             //printf("llegado al final\n");
             hilow_cinta_en_movimiento=0;
         }
@@ -2043,9 +2177,10 @@ void hilow_raw_move(void)
     //Bit 4 - Write Gate (1 = Write Enabled, 0 = Write Disabled)
     if (last_hilow_port_value & 0x10) {
         //printf("Escribiendo\n");
-        z80_byte valor_escribir=0;
+        //f0 y 10 para hacer igual que emulador x128
+        z80_byte valor_escribir=0x10;
         //Bit 0 - Data Bit Out (saving)
-        if (last_hilow_port_value & 1) valor_escribir=255;
+        if (last_hilow_port_value & 1) valor_escribir=0xf0;
 
         puntero_audio[hilow_posicion_cabezal]=valor_escribir;
 

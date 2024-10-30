@@ -58,6 +58,27 @@ es mas, ese 514H esta en el codigo fuente de la rom
 
 extern z80_byte *hilow_device_buffer;
 
+//Bit 5 - Motor On (1 = On, 0 = Stop)
+#define HILOW_PORT_MASK_MOTOR_ON 0x20
+
+//Bit 4 - Write Gate (1 = Write Enabled, 0 = Write Disabled)
+#define HILOW_PORT_MASK_WRITE_EN 0x10
+
+//Bit 3 - Fast (1 = Fast, 0 = Slow)
+#define HILOW_PORT_MASK_FAST 0x08
+
+//Bit 2 - Track Select (1 = Side 1, 0 = Side 2)
+#define HILOW_PORT_MASK_TRACK 0x04
+
+//Bit 1 - Forward (1 = Forward, 0 = Reverse)
+#define HILOW_PORT_MASK_FORWARD 0x02
+
+//Bit 0 - Data Bit Out (saving)
+#define HILOW_PORT_MASK_BIT_OUT 0x01
+
+
+
+
 extern void hilow_device_mem_format(int si_escribir_en_ram,int si_escribir_en_device,char *label);
 
 extern void hilow_tapa_action_was_opened(void);
@@ -66,6 +87,9 @@ extern void hilow_action_open_tape(void);
 extern void hilow_action_close_tape(void);
 
 extern char hilow_file_name[];
+
+extern char hilow_raw_file_name[];
+
 
 extern int hilow_load_device_file(void);
 
@@ -117,5 +141,9 @@ extern void hilow_util_get_free_sectors_list(int sector_dir,z80_byte *puntero_me
 
 extern z80_bit hilow_hear_load_sound;
 extern z80_bit hilow_hear_save_sound;
+extern int hilow_posicion_cabezal;
+extern z80_byte last_hilow_port_value;
+extern int hilow_load_raw_device_file(void);
+extern void hilow_raw_flush_contents_to_disk(void);
 
 #endif
