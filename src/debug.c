@@ -5681,7 +5681,16 @@ Bit 0 - Data Bit Out (saving)
             );
             sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
-            sprintf (buf_linea,"Current position: %d\n",hilow_posicion_cabezal);
+            //de 64 bits porque al multiplicar por 100 se puede salir de rango
+            long long int porcentaje_long=0;
+
+            if (hilow_raw_device_buffer_total_size!=0) {
+                porcentaje_long=(hilow_posicion_cabezal*100L)/hilow_raw_device_buffer_total_size;
+            }
+
+            int porcentaje=porcentaje_long;
+
+            sprintf (buf_linea,"Current position: %9d/%9d (%3d %%)\n",hilow_posicion_cabezal,hilow_raw_device_buffer_total_size,porcentaje);
             sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
         }
 

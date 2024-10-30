@@ -413,25 +413,20 @@ Hilow
 *Hilow raw emular protección escritura
 * Zona a principio y fin de cinta no usable (la parte esa blanca sin zona magnética)
 
-*Al escribir/leer archivo raw de la cara B, lo tiene que hacer al revés (de final al principio)
 
-ok Hilow al decir si bit leído es 0 o 1 ver si el valor de Sample es >=128 y eso es un 1. Si es menor, es un 0.
-Esto lo hará compatible con x128 y con cinta logo
 
 * Hilow simular reproductor encendido o no:
 -si encendido y motor detenido, lectura bit de audio siempre es 1
 -si apagado y motor detenido, lectura bit de audio siempre es 0
 
-*como cargar cara A y B? archivos separados?
 
 Además si no está encendido lógicamente no avanzamos posición
 
--insertar un raw file tiene que hacer flush del anterior
-flush se hace al extraer, al salir de ZEsarUX o al insertar otro raw file
--hilow_load_device_file que cargue raw si no estan los traps habilitados
-o hacer una hilow_load_raw_device_file con parametro que diga cara 1 o 2
-hilow_load_raw_device_file: que si cara A y cara B son diferentes tamaños, quejarse con error
 
--cuando llega al final o principio, al cabo de unos segundos, se apaga el motor?
+-hilow_load_device_file que cargue raw si no estan los traps habilitados
+
+
+
+
 -si cinta ddh, hacer traps a rom y lecturas y escrituras de puerto van exactamente como antes.
 Si es raw, hacerlo sin traps y lecturas y escrituras son funciones nuevas
