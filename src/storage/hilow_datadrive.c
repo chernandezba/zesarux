@@ -84,7 +84,7 @@ z80_bit hilow_hear_save_sound={1};
 char hilow_file_name[PATH_MAX]="";
 
 //Para archivos raw
-char hilow_raw_file_name[PATH_MAX]="";
+//char hilow_raw_file_name[PATH_MAX]="";
 
 
 //para guardar la imagen del datadrive ddh
@@ -227,8 +227,8 @@ void hilow_raw_flush_contents_to_disk(void)
 
     FILE *ptr_hilowfile;
 
-    debug_printf (VERBOSE_INFO,"Opening HiLow File %s",hilow_raw_file_name);
-    ptr_hilowfile=fopen(hilow_raw_file_name,"wb");
+    debug_printf (VERBOSE_INFO,"Opening HiLow File %s",hilow_file_name);
+    ptr_hilowfile=fopen(hilow_file_name,"wb");
 
 
 
@@ -1514,7 +1514,7 @@ int hilow_load_rom(void)
 
 
 
-int hilow_load_device_file(void)
+int hilow_load_ddh_device_file(void)
 {
     if (hilow_device_buffer==NULL) {
         debug_printf(VERBOSE_ERR,"HiLow is not enabled");
@@ -1566,12 +1566,12 @@ int hilow_load_raw_device_file(void)
 {
 
 
-    if (!si_existe_archivo(hilow_raw_file_name)) {
-        debug_printf (VERBOSE_ERR,"Error opening HiLow RAW Data Drive file %s",hilow_raw_file_name);
+    if (!si_existe_archivo(hilow_file_name)) {
+        debug_printf (VERBOSE_ERR,"Error opening HiLow RAW Data Drive file %s",hilow_file_name);
         return 1;
     }
 
-    int bytes_a_leer=get_file_size(hilow_raw_file_name);
+    int bytes_a_leer=get_file_size(hilow_file_name);
 
     hilow_raw_device_buffer_total_size=bytes_a_leer/2;
 
@@ -1581,12 +1581,12 @@ int hilow_load_raw_device_file(void)
 
     FILE *ptr_hilowfile;
 
-    debug_printf (VERBOSE_INFO,"Opening HiLow RAW Data Drive File %s",hilow_raw_file_name);
-    ptr_hilowfile=fopen(hilow_raw_file_name,"rb");
+    debug_printf (VERBOSE_INFO,"Opening HiLow RAW Data Drive File %s",hilow_file_name);
+    ptr_hilowfile=fopen(hilow_file_name,"rb");
 
 
     if (ptr_hilowfile==NULL) {
-        debug_printf (VERBOSE_ERR,"Error opening HiLow RAW Data Drive file %s",hilow_raw_file_name);
+        debug_printf (VERBOSE_ERR,"Error opening HiLow RAW Data Drive file %s",hilow_file_name);
         return 1;
     }
 
@@ -1609,6 +1609,25 @@ int hilow_load_raw_device_file(void)
 
 }
 
+int hilow_load_device_file(void)
+{
+
+    if (!util_compare_file_extension(hilow_file_name,"ddh")) {
+        hilow_rom_traps.v=1;
+    }
+    else {
+        hilow_rom_traps.v=0;
+    }
+
+
+    if (hilow_rom_traps.v) {
+        return hilow_load_ddh_device_file();
+    }
+    else {
+        return hilow_load_raw_device_file();
+    }
+}
+
 void hilow_enable(void)
 {
 
@@ -1628,12 +1647,8 @@ void hilow_enable(void)
 
     hilow_alloc_device_memory();
 
-    if (hilow_rom_traps.v) {
-        if (hilow_load_device_file()) return;
-    }
-    else {
-        if (hilow_load_raw_device_file()) return;
-    }
+    if (hilow_load_device_file()) return;
+
 
 	if (hilow_load_rom()) return;
 

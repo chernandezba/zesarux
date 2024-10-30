@@ -88,7 +88,7 @@ extern void hilow_action_close_tape(void);
 
 extern char hilow_file_name[];
 
-extern char hilow_raw_file_name[];
+//extern char hilow_raw_file_name[];
 
 
 extern int hilow_load_device_file(void);
