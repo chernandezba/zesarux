@@ -146,4 +146,6 @@ extern z80_byte last_hilow_port_value;
 extern int hilow_load_raw_device_file(void);
 extern void hilow_raw_flush_contents_to_disk(void);
 
+extern void hilow_timer_cinta_en_extremo(void);
+
 #endif

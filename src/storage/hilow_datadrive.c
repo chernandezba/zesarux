@@ -2129,9 +2129,36 @@ int speed_hilow_normal=8;
 int speed_hilow_rapido=2;
 //10x speed for playing (which works out at 8 t-states per sample) and 40x speed for fast forward/rewind (2 t-states per sample).
 
+//tiempo en segundos en que la cinta se queda al principio o al final, antes de detener el motor
+#define HILOW_RAW_TIEMPO_EXTREMO 3
 
+int hilow_raw_contador_tiempo_llegado_extremo_cinta=0;
 
+//si la cinta esta en el extremo (inicio o final)
+int hilow_raw_cinta_en_extremo=0;
 
+void hilow_timer_cinta_en_extremo(void)
+{
+    if (!hilow_raw_cinta_en_extremo) return;
+
+    //Si motor en marcha
+    if ((last_hilow_port_value & HILOW_PORT_MASK_MOTOR_ON)==0) return;
+
+    if (hilow_raw_contador_tiempo_llegado_extremo_cinta==HILOW_RAW_TIEMPO_EXTREMO) {
+        //detener motor
+        printf("Deteniendo motor\n");
+
+        //Bit 5 - Motor On (1 = On, 0 = Stop)
+        last_hilow_port_value &=(255-HILOW_PORT_MASK_MOTOR_ON);
+
+        hilow_cinta_en_movimiento=0;
+    }
+
+    else {
+        hilow_raw_contador_tiempo_llegado_extremo_cinta++;
+    }
+
+}
 
 void hilow_raw_move(void)
 {
@@ -2158,17 +2185,30 @@ void hilow_raw_move(void)
         if (hilow_posicion_cabezal==hilow_raw_device_buffer_total_size-1) {
             //printf("llegado al final\n");
             hilow_cinta_en_movimiento=0;
+            hilow_raw_cinta_en_extremo=1;
         }
 
-        else hilow_posicion_cabezal++;
+        else {
+            hilow_posicion_cabezal++;
+
+            hilow_raw_cinta_en_extremo=0;
+            hilow_raw_contador_tiempo_llegado_extremo_cinta=0;
+
+        }
 
     }
     else {
         if (hilow_posicion_cabezal==0) {
             //printf("llegado al principio\n");
             hilow_cinta_en_movimiento=0;
+            hilow_raw_cinta_en_extremo=1;
         }
-        else hilow_posicion_cabezal--;
+        else {
+            hilow_posicion_cabezal--;
+
+            hilow_raw_cinta_en_extremo=0;
+            hilow_raw_contador_tiempo_llegado_extremo_cinta=0;
+        }
     }
 
     z80_byte *puntero_audio=hilow_get_audio_buffer();

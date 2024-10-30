@@ -853,6 +853,9 @@ void timer_check_interrupt(void)
             //escritura de contenido de HiLow a disco
             hilow_flush_contents_to_disk();
 
+            //temporizador hilow en modo raw para ver si la cinta esta en un extremo
+            hilow_timer_cinta_en_extremo();
+
             //escritura de contenido de microdrive a disco
             microdrive_flush_to_disk();
 
