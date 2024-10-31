@@ -5702,7 +5702,7 @@ Bit 0 - Data Bit Out (saving)
             long long int minutos_total_cinta_long=(hilow_raw_device_buffer_total_size*2L)/HILOW_RAW_SAMPLE_FREQ/60;
             int minutos_total_cinta=minutos_total_cinta_long;
 
-            sprintf (buf_linea,"      (%02d:%02d.%05d)/C%d",minutos,segundos_mostrar,samples,minutos_total_cinta);
+            sprintf (buf_linea,"      (%02d:%02d.%05d)/C%d\n",minutos,segundos_mostrar,samples,minutos_total_cinta);
             sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
         }
 

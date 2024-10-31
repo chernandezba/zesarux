@@ -80,7 +80,7 @@ z80_bit hilow_rom_traps={1};
 z80_bit hilow_hear_load_sound={1};
 z80_bit hilow_hear_save_sound={1};
 
-//Para archivo ddh
+//Para archivo ddh o raw
 char hilow_file_name[PATH_MAX]="";
 
 //Para archivos raw
@@ -96,6 +96,53 @@ z80_byte *hilow_raw_device_buffer_side_a=NULL;
 z80_byte *hilow_raw_device_buffer_side_b=NULL;
 
 int hilow_raw_device_buffer_total_size=0;
+
+//Tal cual emular el boton de casette encendido
+z80_bit hilow_reproductor_encendido={1};
+
+//Posicion del cabezal sobre la cinta
+int hilow_posicion_cabezal=0;
+
+//Ultimo valor enviado al puerto FF
+z80_byte last_hilow_port_value=0;
+
+//Esto solo es para enviar a tarjeta de sonido por si queremos escuchar sonidos de carga o grabacion
+z80_byte hilow_ultimo_sample_sonido=0;
+
+//Ultimo sample de sonido leido
+z80_byte last_raw_audio_data_read=0;
+
+//
+//Inicio gestion movimiento de la cinta
+//
+
+//Valor de t_estados anterior
+int hilow_estados_anterior=0;
+
+//Cuantos t_estados han pasado desde el ultimo avance del hilow
+int hilow_transcurrido_desde_ultimo_movimiento=0;
+
+
+int speed_hilow_normal=8;
+int speed_hilow_rapido=2;
+//10x speed for playing (which works out at 8 t-states per sample) and 40x speed for fast forward/rewind (2 t-states per sample).
+
+//tiempo en segundos en que la cinta se queda al principio o al final, antes de detener el motor
+#define HILOW_RAW_TIEMPO_EXTREMO 3
+
+int hilow_raw_contador_tiempo_llegado_extremo_cinta=0;
+
+//si la cinta esta en el extremo (inicio o final)
+int hilow_raw_cinta_en_extremo=0;
+
+//Si esta en movimiento, o sea:
+//motor encendido y cinta no está en uno de los extremos
+int hilow_cinta_en_movimiento=0;
+
+//
+//Fin gestion movimiento de la cinta
+//
+
 
 //-1 si no aplica
 int hilow_get_visualmem_position(unsigned int address)
@@ -216,6 +263,10 @@ void hilow_raw_flush_contents_to_disk(void)
     //Si no es archivo raw, no hacer flush aqui
     if (hilow_rom_traps.v) return;
 
+    if (hilow_must_flush_to_disk==0) {
+        debug_printf (VERBOSE_DEBUG,"Trying to flush HiLow to disk but no changes made");
+        return;
+    }
 
     if (hilow_persistent_writes.v==0) {
         debug_printf (VERBOSE_DEBUG,"Trying to flush HiLow to disk but persistent writes disabled");
@@ -463,7 +514,7 @@ void hilow_tapa_reset_was_opened(void)
    hilow_tapa_has_been_opened.v=0;
 }
 
-z80_byte last_raw_audio_data_read=0;
+
 
 void hilow_action_open_tape(void)
 {
@@ -1966,7 +2017,9 @@ void hilow_util_get_file_contents(int sector_dir,z80_byte *puntero_memoria,int i
 
 
 
-
+//
+// Inicio gestionar hilow en formato raw
+//
 
 
 
@@ -2000,14 +2053,13 @@ Note: Cassette Motion can register as "stopped" when the motor is off, or when t
 It is always a 1 when the drive is switched off.
 */
 
-z80_byte last_hilow_port_value=0;
 
-//Esto solo es para enviar a tarjeta de sonido por si queremos escuchar sonidos de carga o grabacion
-z80_byte hilow_ultimo_sample_sonido=0;
 
 void hilow_mix_audio(void)
 {
     if (hilow_hear_load_sound.v==0 && hilow_hear_save_sound.v) return;
+
+    if (hilow_rom_traps.v) return;
 
     //Si esta motor en marcha
     if ((last_hilow_port_value & 0x20)==0) return;
@@ -2027,7 +2079,7 @@ void hilow_mix_audio(void)
 
 }
 
-int hilow_cinta_en_movimiento=0;
+
 
 void hilow_write_port_ff_raw(z80_int port GCC_UNUSED,z80_byte value)
 {
@@ -2052,10 +2104,12 @@ Bit 0 - Data Bit Out (saving)
     if (value & 0x20) {
         //hilow_cinta_en_movimiento=1;
     }
-    else hilow_cinta_en_movimiento=0;
+    else {
+        hilow_cinta_en_movimiento=0;
+    }
 }
 
-int hilow_posicion_cabezal=0;
+
 
 
 z80_byte *hilow_get_audio_buffer(void)
@@ -2073,21 +2127,16 @@ z80_byte hilow_read_port_ff_raw(z80_int puerto GCC_UNUSED)
 /*
 Lectura:
 
-Bit 7: ??
-Bit 6: A 1 si grabador encendido
-Bit 5: ??
-Bit 4: ??
-Bit 3: A 0 si se ha abierto la tapa en algun momento
-Bit 2: A 1 si hay cinta insertada
-Bit 1: ??
-Bit 0: A 1 cuando esta listo para leer?
 
 IN FFh
 Bit 7 - (Not used?)
 Bit 6 - Data Bit In (loading)
 Bit 5 - (Not used?)
 Bit 4 - (Not used?)
-Bit 3 - Cassette Change (0 = Cassette Changed, 1 = Not Changed) (it is "changed" if the Cassette Sense bit has ever gone low)
+
+Bit 3 - Cassette Change (0 = Cassette Changed, 1 = Not Changed) (it is "changed" if the Cassette Sense bit has ever gone low).
+O sea, A 0 si se ha abierto la tapa en algun momento
+
 Bit 2 - Cassette Sense (1 = Cassette in place, 0 = No cassette)
 Bit 1 - Reverse (1 = Reverse, 0 = Forward) (Inverted last bit written to bit 1 of OUT FFh, used in "Start the tape" routine)
 Bit 0 - Cassette Motion (0 = Moving, 1 = Stopped)
@@ -2107,7 +2156,7 @@ Note: Cassette Motion can register as "stopped" when the motor is off, or when t
 
     if (hilow_tapa_has_been_opened.v==0) valor_retorno |=8; //No se ha abierto la tapa en algun momento
 
-    //margen volumen
+    //margen volumen 10
     if (last_raw_audio_data_read-128>10) {
         //printf("1\n");
         valor_retorno |=64;
@@ -2117,11 +2166,18 @@ Note: Cassette Motion can register as "stopped" when the motor is off, or when t
     }
 
     //Parece que bit 6 tambien se activa cuando cinta detenida
-
     if (!hilow_cinta_en_movimiento) {
         valor_retorno |=1;
         valor_retorno |=64;
     }
+
+    /*
+    * Hilow simular reproductor encendido o no:
+        -si encendido y motor detenido, lectura bit de audio siempre es 1
+        -si apagado y motor detenido, lectura bit de audio siempre es 0
+    */
+
+    if (hilow_reproductor_encendido.v==0) valor_retorno &=(255-64);
 
     //Bit 1 - Reverse (1 = Reverse, 0 = Forward) (Inverted last bit written to bit 1 of OUT FFh, used in "Start the tape" routine)
     if ((last_hilow_port_value & 0x02)==0) valor_retorno |=0x02;
@@ -2129,6 +2185,31 @@ Note: Cassette Motion can register as "stopped" when the motor is off, or when t
     return valor_retorno;
 
 
+}
+
+void hilow_raw_set_motor_off(void)
+{
+    //Bit 5 - Motor On (1 = On, 0 = Stop)
+    last_hilow_port_value &=(255-HILOW_PORT_MASK_MOTOR_ON);
+
+    hilow_cinta_en_movimiento=0;
+
+}
+
+void hilow_raw_power_off_player(void)
+{
+    hilow_reproductor_encendido.v=0;
+
+    //Motor off y cinta en movimiento off
+    hilow_raw_set_motor_off();
+}
+
+void hilow_raw_power_on_player(void)
+{
+    hilow_reproductor_encendido.v=1;
+
+    //Motor off y cinta en movimiento off
+    hilow_raw_set_motor_off();
 }
 
 z80_byte hilow_read_port_ff(z80_int puerto)
@@ -2145,31 +2226,14 @@ void hilow_write_port_ff(z80_int port,z80_byte value)
 }
 
 
-//
-// Para gestionar hilow en formato raw
-//
-
-//Valor de t_estados anterior
-int hilow_estados_anterior=0;
-
-//Cuantos t_estados han pasado desde el ultimo avance del hilow
-int hilow_transcurrido_desde_ultimo_movimiento=0;
 
 
-int speed_hilow_normal=8;
-int speed_hilow_rapido=2;
-//10x speed for playing (which works out at 8 t-states per sample) and 40x speed for fast forward/rewind (2 t-states per sample).
 
-//tiempo en segundos en que la cinta se queda al principio o al final, antes de detener el motor
-#define HILOW_RAW_TIEMPO_EXTREMO 3
-
-int hilow_raw_contador_tiempo_llegado_extremo_cinta=0;
-
-//si la cinta esta en el extremo (inicio o final)
-int hilow_raw_cinta_en_extremo=0;
 
 void hilow_timer_cinta_en_extremo(void)
 {
+    if (hilow_rom_traps.v) return;
+
     if (!hilow_raw_cinta_en_extremo) return;
 
     //Si motor en marcha
@@ -2254,6 +2318,7 @@ void hilow_raw_move(void)
         if (last_hilow_port_value & 1) valor_escribir=0xf0;
 
         puntero_audio[hilow_posicion_cabezal]=valor_escribir;
+        hilow_must_flush_to_disk=1;
 
         if (hilow_hear_save_sound.v) hilow_ultimo_sample_sonido=valor_escribir;
     }
@@ -2282,6 +2347,10 @@ void hilow_raw_move(void)
 void hilow_count_tstates(void)
 {
 
+    //Si reproductor apagado, no hacer nada
+    if (hilow_reproductor_encendido.v==0) return;
+
+    //Si motor detenido, no hacer nada
     //Bit 5 - Motor On (1 = On, 0 = Stop)
     if ((last_hilow_port_value & 0x20)==0) return;
     //printf("Motor moviendose en t_estados %d\n",t_estados);
@@ -2328,3 +2397,9 @@ void hilow_count_tstates(void)
 
     hilow_estados_anterior=t_estados;
 }
+
+
+
+//
+// Fin gestionar hilow en formato raw
+//

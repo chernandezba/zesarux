@@ -400,6 +400,7 @@ La particularidad es que ese archivo tiene bloques a final de microdrive y al pr
 LEC:
 -agregar memory zone lec
 -mostrar paginas de memoria lec en debug cpu
+-grabar video ejecutando cp/m y usando microdrives
 
 
 -revisar sonido en Save en CPC(ok), MSX...
@@ -418,7 +419,7 @@ Hilow
 *Hilow raw emular protección escritura
 * Zona a principio y fin de cinta no usable (la parte esa blanca sin zona magnética)
 
--nmi no va? si que va. primero save "*juego" y luego boton nmi.
+-nmi no va? si que va. primero save "*juego"
 Desde este momento no se debe ejecutar ningún comando de HiLow (ni SAVE "CAT"), o no funcionará al disparar la NMI.
 
 Posteriormente se carga desde cinta el juego en forma normal, y cuando termine de cargar se presiona el botón NMI, con lo que suena una sirena en el parlante del Spectrum o el
@@ -426,9 +427,7 @@ TV si fuera una TK90/TK95.
 
 Confirmamos con SYMBOL SHIFT y el juego se guarda en el datadrive.
 
-* Hilow simular reproductor encendido o no:
--si encendido y motor detenido, lectura bit de audio siempre es 1
--si apagado y motor detenido, lectura bit de audio siempre es 0
+
 
 ok -insertar cinta, que permita ddh y raw, y luego utilice la carga de uno u otro y habilite/deshabilite traps a la rom?
 
@@ -439,7 +438,23 @@ Además si no está encendido lógicamente no avanzamos posición
 ok-si cinta ddh, hacer traps a rom y lecturas y escrituras de puerto van exactamente como antes.
 Si es raw, hacerlo sin traps y lecturas y escrituras son funciones nuevas
 
+-Máxima capacidad hilow? Cinta de 90? si, cinta de 90 deja 492 K libres
+un ddh vacio da 488K!
+se podria tener uno mayor?
+me da a mi que esos 4kb que faltan son los dos sectores de 2kb de directorio, que lo deduje mal
+el limite son 246+2 sectores? no tocarlos ddh por lo hacerlos incompatibles. o si? apenas no hay ddh
+ademas se podria compensar fácilmente
+
+en ddh, sectores cara A son 0-127, cara B 128-246, van unos seguidos de otros
+
+
 
 -----------------------
 ---FIN Hilow        ---
 -----------------------
+
+-redocumentar efecto de brillo de color del Inves según ultima info con Pedro
+
+-en changelog decir que inves detecta bugs de:
+
+Error:    This game will probably crash due to the Inves write-on-interrupt bug (ISR=FCFCH, I=FBH, R=ACH, IM_MODE=2, IFF1=1

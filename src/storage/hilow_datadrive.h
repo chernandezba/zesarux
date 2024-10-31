@@ -88,9 +88,6 @@ extern void hilow_action_close_tape(void);
 
 extern char hilow_file_name[];
 
-//extern char hilow_raw_file_name[];
-
-
 extern int hilow_load_device_file(void);
 
 extern void hilow_nmi(void);
@@ -126,9 +123,6 @@ extern z80_bit hilow_tapa_has_been_opened;
 extern z80_int hilow_util_get_usage_counter(int sector,z80_byte *p);
 extern z80_byte hilow_util_get_free_sectors(int sector_dir,z80_byte *p);
 
-extern z80_bit hilow_rom_traps;
-extern void hilow_count_tstates(void);
-
 extern int hilow_util_get_file_offset(int indice_archivo);
 extern int hilow_util_get_total_files(int sector,z80_byte *puntero_memoria);
 extern int hilow_get_num_sectors_file(int sector,z80_byte *puntero_memoria,int indice_archivo);
@@ -139,6 +133,8 @@ extern z80_byte hilow_util_get_file_type(int sector,z80_byte *puntero_memoria,in
 extern void hilow_util_get_file_contents(int sector,z80_byte *puntero_memoria,int indice_archivo,z80_byte *destino_memoria);
 extern void hilow_util_get_free_sectors_list(int sector_dir,z80_byte *puntero_memoria,int *sectores);
 
+extern z80_bit hilow_rom_traps;
+extern void hilow_count_tstates(void);
 extern z80_bit hilow_hear_load_sound;
 extern z80_bit hilow_hear_save_sound;
 extern int hilow_posicion_cabezal;
@@ -148,5 +144,10 @@ extern void hilow_raw_flush_contents_to_disk(void);
 
 extern void hilow_timer_cinta_en_extremo(void);
 extern int hilow_raw_device_buffer_total_size;
+
+extern z80_bit hilow_reproductor_encendido;
+
+extern void hilow_raw_power_off_player(void);
+extern void hilow_raw_power_on_player(void);
 
 #endif
