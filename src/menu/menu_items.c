@@ -40963,6 +40963,8 @@ void menu_hilow(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_prefijo_format(array_menu_hilow,"[%c] ", (hilow_reproductor_encendido.v ? 'X' : ' '));
             menu_add_item_menu_tooltip(array_menu_hilow,"If tape player is powered on or not");
             menu_add_item_menu_ayuda(array_menu_hilow,"If tape player is powered on or not");
+
+            menu_add_item_menu_separator(array_menu_hilow);
         }
 
         menu_add_item_menu_en_es_ca(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_insert,NULL,

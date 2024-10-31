@@ -2241,12 +2241,9 @@ void hilow_timer_cinta_en_extremo(void)
 
     if (hilow_raw_contador_tiempo_llegado_extremo_cinta==HILOW_RAW_TIEMPO_EXTREMO) {
         //detener motor
-        printf("Deteniendo motor\n");
+        //printf("Deteniendo motor\n");
 
-        //Bit 5 - Motor On (1 = On, 0 = Stop)
-        last_hilow_port_value &=(255-HILOW_PORT_MASK_MOTOR_ON);
-
-        hilow_cinta_en_movimiento=0;
+        hilow_raw_set_motor_off();
     }
 
     else {
@@ -2317,8 +2314,10 @@ void hilow_raw_move(void)
         //Bit 0 - Data Bit Out (saving)
         if (last_hilow_port_value & 1) valor_escribir=0xf0;
 
-        puntero_audio[hilow_posicion_cabezal]=valor_escribir;
-        hilow_must_flush_to_disk=1;
+        if (hilow_write_protection.v==0) {
+            puntero_audio[hilow_posicion_cabezal]=valor_escribir;
+            hilow_must_flush_to_disk=1;
+        }
 
         if (hilow_hear_save_sound.v) hilow_ultimo_sample_sonido=valor_escribir;
     }
@@ -2333,10 +2332,10 @@ void hilow_raw_move(void)
     if (hilow_posicion_cabezal%5000 ==1) {
 
         if (last_hilow_port_value & 0x08) {
-            printf("rapido cara %c pos %d\n",(last_hilow_port_value & 0x04 ? 'A' : 'B'),hilow_posicion_cabezal);
+            //printf("rapido cara %c pos %d\n",(last_hilow_port_value & 0x04 ? 'A' : 'B'),hilow_posicion_cabezal);
         }
         else {
-            printf("lento cara %c pos %d\n",(last_hilow_port_value & 0x04 ? 'A' : 'B'),hilow_posicion_cabezal);
+            //printf("lento cara %c pos %d\n",(last_hilow_port_value & 0x04 ? 'A' : 'B'),hilow_posicion_cabezal);
         }
     }
 

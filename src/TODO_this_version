@@ -416,16 +416,8 @@ Hilow
 
 -hilow datadrive:
 *pendiente documentar especificacion archivos ddh: sectores tal cual, sin cabeceras de cada sector?
-*Hilow raw emular protección escritura
+ok *Hilow raw emular protección escritura
 * Zona a principio y fin de cinta no usable (la parte esa blanca sin zona magnética)
-
--nmi no va? si que va. primero save "*juego"
-Desde este momento no se debe ejecutar ningún comando de HiLow (ni SAVE "CAT"), o no funcionará al disparar la NMI.
-
-Posteriormente se carga desde cinta el juego en forma normal, y cuando termine de cargar se presiona el botón NMI, con lo que suena una sirena en el parlante del Spectrum o el
-TV si fuera una TK90/TK95.
-
-Confirmamos con SYMBOL SHIFT y el juego se guarda en el datadrive.
 
 
 
