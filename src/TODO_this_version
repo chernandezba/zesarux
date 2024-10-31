@@ -402,16 +402,15 @@ LEC:
 -mostrar paginas de memoria lec en debug cpu
 
 
+-revisar sonido en Save en CPC(ok), MSX...
+
 
 -----------------------
 ---INICIO Hilow     ---
 -----------------------
 
 Hilow
--Poder habilitar dispositivo aunque no se haya seleccionado .ddh
 
-
--revisar sonido en Save en CPC(ok), MSX...
 
 
 -hilow datadrive:
@@ -419,7 +418,13 @@ Hilow
 *Hilow raw emular protección escritura
 * Zona a principio y fin de cinta no usable (la parte esa blanca sin zona magnética)
 
+-nmi no va? si que va. primero save "*juego" y luego boton nmi.
+Desde este momento no se debe ejecutar ningún comando de HiLow (ni SAVE "CAT"), o no funcionará al disparar la NMI.
 
+Posteriormente se carga desde cinta el juego en forma normal, y cuando termine de cargar se presiona el botón NMI, con lo que suena una sirena en el parlante del Spectrum o el
+TV si fuera una TK90/TK95.
+
+Confirmamos con SYMBOL SHIFT y el juego se guarda en el datadrive.
 
 * Hilow simular reproductor encendido o no:
 -si encendido y motor detenido, lectura bit de audio siempre es 1
@@ -430,12 +435,8 @@ ok -insertar cinta, que permita ddh y raw, y luego utilice la carga de uno u otr
 Además si no está encendido lógicamente no avanzamos posición
 
 
--hilow_load_device_file que cargue raw si no estan los traps habilitados
 
-
-
-
--si cinta ddh, hacer traps a rom y lecturas y escrituras de puerto van exactamente como antes.
+ok-si cinta ddh, hacer traps a rom y lecturas y escrituras de puerto van exactamente como antes.
 Si es raw, hacerlo sin traps y lecturas y escrituras son funciones nuevas
 
 
