@@ -95,6 +95,7 @@ z80_byte *hilow_device_buffer=NULL;
 z80_byte *hilow_raw_device_buffer_side_a=NULL;
 z80_byte *hilow_raw_device_buffer_side_b=NULL;
 
+//Total espacio usado por el buffer raw
 int hilow_raw_device_buffer_total_size=0;
 
 //Tal cual emular el boton de casette encendido
@@ -2252,8 +2253,18 @@ void hilow_timer_cinta_en_extremo(void)
 
 }
 
+//Si esta al principio o final de cinta que no se puede escribir (esa parte en blanco sin zona magnetica)
+int hilow_raw_en_zona_blanca(int posicion)
+{
+    int espacio_samples=HILOW_RAW_SAMPLE_FREQ*HILOW_RAW_ZONA_BLANCA_SEC;
+    if (posicion<espacio_samples || posicion>hilow_raw_device_buffer_total_size-espacio_samples) return 1;
+    else return 0;
+}
+
 void hilow_raw_write_byte(int posicion,z80_byte valor)
 {
+    if (hilow_raw_en_zona_blanca(posicion)) return;
+
     z80_byte *puntero_audio=hilow_get_audio_buffer();
 
     puntero_audio[posicion]=valor;
@@ -2261,6 +2272,8 @@ void hilow_raw_write_byte(int posicion,z80_byte valor)
 
 z80_byte hilow_raw_read_byte(int posicion)
 {
+    if (hilow_raw_en_zona_blanca(posicion)) return 0;
+
     z80_byte *puntero_audio=hilow_get_audio_buffer();
 
     return puntero_audio[posicion];

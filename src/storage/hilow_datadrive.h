@@ -78,6 +78,8 @@ extern z80_byte *hilow_device_buffer;
 
 #define HILOW_RAW_SAMPLE_FREQ 44100
 
+//espacio en segundos al principio y final de cinta que no se puede escribir (esa parte en blanco sin zona magnetica)
+#define HILOW_RAW_ZONA_BLANCA_SEC 3
 
 extern void hilow_device_mem_format(int si_escribir_en_ram,int si_escribir_en_device,char *label);
 
