@@ -2252,6 +2252,20 @@ void hilow_timer_cinta_en_extremo(void)
 
 }
 
+void hilow_raw_write_byte(int posicion,z80_byte valor)
+{
+    z80_byte *puntero_audio=hilow_get_audio_buffer();
+
+    puntero_audio[posicion]=valor;
+}
+
+z80_byte hilow_raw_read_byte(int posicion)
+{
+    z80_byte *puntero_audio=hilow_get_audio_buffer();
+
+    return puntero_audio[posicion];
+}
+
 void hilow_raw_move(void)
 {
     //printf("Mover posicion hilow en t_estados %d\n",t_estados);
@@ -2303,7 +2317,7 @@ void hilow_raw_move(void)
         }
     }
 
-    z80_byte *puntero_audio=hilow_get_audio_buffer();
+
 
     //Si escribir o leer
     //Bit 4 - Write Gate (1 = Write Enabled, 0 = Write Disabled)
@@ -2315,7 +2329,7 @@ void hilow_raw_move(void)
         if (last_hilow_port_value & 1) valor_escribir=0xf0;
 
         if (hilow_write_protection.v==0) {
-            puntero_audio[hilow_posicion_cabezal]=valor_escribir;
+            hilow_raw_write_byte(hilow_posicion_cabezal,valor_escribir);
             hilow_must_flush_to_disk=1;
         }
 
@@ -2325,7 +2339,7 @@ void hilow_raw_move(void)
 
     else {
         //leyendo
-        last_raw_audio_data_read=puntero_audio[hilow_posicion_cabezal];
+        last_raw_audio_data_read=hilow_raw_read_byte(hilow_posicion_cabezal);
         if (hilow_hear_load_sound.v) hilow_ultimo_sample_sonido=last_raw_audio_data_read;
     }
 

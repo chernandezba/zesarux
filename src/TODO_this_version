@@ -410,9 +410,6 @@ LEC:
 ---INICIO Hilow     ---
 -----------------------
 
-Hilow
-
-
 
 -hilow datadrive:
 *pendiente documentar especificacion archivos ddh: sectores tal cual, sin cabeceras de cada sector?
@@ -420,15 +417,6 @@ ok *Hilow raw emular protección escritura
 * Zona a principio y fin de cinta no usable (la parte esa blanca sin zona magnética)
 
 
-
-ok -insertar cinta, que permita ddh y raw, y luego utilice la carga de uno u otro y habilite/deshabilite traps a la rom?
-
-Además si no está encendido lógicamente no avanzamos posición
-
-
-
-ok-si cinta ddh, hacer traps a rom y lecturas y escrituras de puerto van exactamente como antes.
-Si es raw, hacerlo sin traps y lecturas y escrituras son funciones nuevas
 
 -Máxima capacidad hilow? Cinta de 90? si, cinta de 90 deja 492 K libres
 un ddh vacio da 488K!
