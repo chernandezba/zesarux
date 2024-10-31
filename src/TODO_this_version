@@ -413,8 +413,7 @@ LEC:
 
 -hilow datadrive:
 *pendiente documentar especificacion archivos ddh: sectores tal cual, sin cabeceras de cada sector?
-ok *Hilow raw emular protección escritura
-* Zona a principio y fin de cinta no usable (la parte esa blanca sin zona magnética)
+cara A y cara B seguidas. realmente a nivel de ddh da igual, sectores 0..127 son cara A, 128..255 son cara B
 
 
 
@@ -424,9 +423,6 @@ se podria tener uno mayor?
 me da a mi que esos 4kb que faltan son los dos sectores de 2kb de directorio, que lo deduje mal
 el limite son 246+2 sectores? no tocarlos ddh por lo hacerlos incompatibles. o si? apenas no hay ddh
 ademas se podria compensar fácilmente
-
-en ddh, sectores cara A son 0-127, cara B 128-246, van unos seguidos de otros
-
 
 
 -----------------------
