@@ -40875,14 +40875,106 @@ void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS)
 
 }
 
+void menu_generic_visualtape_dibujar_rollos(struct zxvision_vectorial_draw *d,int porcentaje_cinta_izquierdo)
+{
 
-//
-// FIN ventana de convertir audio HiLow a archivo DDH
-//
+    int max_radio=250; //para un maximo de una cinta de 90
+    int min_radio=110;
+
+    //calcular que tanto de radio relleno
+    int sumar_radio=((max_radio-min_radio)*porcentaje_cinta_izquierdo)/100;
+
+    int radio_rellenar_izquierdo=min_radio+sumar_radio;
+
+    d->pencil_off(d);
+    d->setpos(d,280,290);
+
+    int color_marco=7; //gris
+    int color_cinta_enrollada=0; //esto sera negro
+
+    d->setcolour(d,color_cinta_enrollada);
+
+    d->drawcircle(d,radio_rellenar_izquierdo);
 
 
 
 
+}
+
+void menu_generic_visualtape_dibujar_cinta_estatica(struct zxvision_vectorial_draw *d)
+{
+    d->pencil_off(d);
+    d->setpos(d,0,0);
+
+    int color_marco=7; //gris
+    int color_cinta_enrollada=0; //esto sera negro
+
+    d->setcolour(d,color_marco);
+    d->pencil_on(d);
+
+    //Marco exterior de la cinta
+    d->set_x(d,1000);
+    d->set_y(d,630);
+    d->set_x(d,0);
+    d->set_y(d,0);
+
+}
+
+
+//Dibujar una cinta vectorial en pantalla
+//Parametros:
+//w: en que ventana
+//porcentaje_cinta_izquierdo: que tanto % de cinta esta llena en el cilindro izquierdo. En el derecho sera 100-porcentaje_cinta_izquierdo
+//redibujar_rollos: redibujar cinta enrollada, 0 o 1. Se le pone a 1 cuando ha cambiado significativamente
+//redibujar_parte_estatica: si redibujar partes estaticas: marco exterior, recuadros... todo aquello que no es dinamico
+void menu_generic_visualtape(zxvision_window *w,int porcentaje_cinta_izquierdo,int redibujar_rollos,int redibujar_parte_estatica)
+{
+
+    //Dibujo de la cinta
+    struct zxvision_vectorial_draw dibujo_visualtape;
+
+    //quitamos 4: 1 columnas izquierda margen, columna derecha margen, columna scroll
+    int tamanyo_ocupado_microdrive_ancho=(w->visible_width-3)*menu_char_width;
+    //quitamos 5: barra titulo,barra scroll, 2 lineas menu, 1 linea separacion
+    int tamanyo_ocupado_microdrive_alto=(w->visible_height-5)*menu_char_height;
+
+    int offset_x=menu_char_width*1;
+    int offset_y=menu_char_height*3;
+
+    //Ajustar escalas
+    //Relacion de aspecto ideal: 1000 ancho, 630 alto
+
+    int ancho_total_dibujo_virtual=1000;
+
+
+
+    int real_width=tamanyo_ocupado_microdrive_ancho;
+
+
+    //Desactivar este trocito si queremos que el ancho pueda crecer independientemente del alto de ventana. SOLO PARA PRUEBAS
+    int max_ancho_esperado_por_aspecto=(tamanyo_ocupado_microdrive_alto*ancho_total_dibujo_virtual)/630;
+    if (real_width>max_ancho_esperado_por_aspecto) {
+        //Con esto el microdrive siempre esta dentro de la ventana entero, independientemente del tamaño de la ventana
+        //printf("relacion ancho mal\n");
+        real_width=max_ancho_esperado_por_aspecto;
+    }
+
+
+    int real_height=(real_width*630)/ancho_total_dibujo_virtual;
+
+
+
+
+    zxvision_vecdraw_init(&dibujo_visualtape,w,ancho_total_dibujo_virtual,630,
+        real_width,real_height,offset_x,offset_y);
+
+
+
+
+
+   if (redibujar_parte_estatica) menu_generic_visualtape_dibujar_cinta_estatica(&dibujo_visualtape);
+   if (redibujar_rollos) menu_generic_visualtape_dibujar_rollos(&dibujo_visualtape,porcentaje_cinta_izquierdo);
+}
 
 
 
@@ -40900,6 +40992,24 @@ void menu_hilow_visual_datadrive_overlay(void)
 
     //Print....
     //Tambien contar si se escribe siempre o se tiene en cuenta contador_segundo...
+
+    //Mostrar cinta, usar dibujo generico
+
+    int porcentaje_transcurrido=hilow_raw_transcurrido_cinta_porc();
+    int minutos_total_cinta=hilow_raw_get_minutes_tape();
+
+    //Tenemos que dar el porcentaje sobre el maximo, que es de una cinta de 90 (45 minutos por cara)
+    //Sacar el porcentaje que representa el total de la cinta sobre una de 90
+    int porc_90=(minutos_total_cinta*100)/90;
+
+    //Y aplicamos el transcurrido sobre ese valor
+    int porcentaje=(porc_90*porcentaje_transcurrido)/100;
+
+
+    int porcentaje_cinta_izquierdo=porc_90-porcentaje;
+
+
+    menu_generic_visualtape(menu_hilow_visual_datadrive_window,porcentaje_cinta_izquierdo,1,1);
 
 
     //Mostrar contenido

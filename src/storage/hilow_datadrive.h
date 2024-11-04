@@ -164,4 +164,8 @@ extern int debug_hilow_last_sector;
 extern z80_byte hilow_read_port_ff_raw(z80_int puerto GCC_UNUSED);
 extern z80_byte hilow_read_port_ff_ddh(z80_int puerto GCC_UNUSED);
 
+extern int hilow_raw_get_minutes_tape(void);
+
+extern int hilow_raw_transcurrido_cinta_porc(void);
+
 #endif
