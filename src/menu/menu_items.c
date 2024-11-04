@@ -40875,28 +40875,79 @@ void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS)
 
 }
 
-void menu_generic_visualtape_dibujar_rollos(struct zxvision_vectorial_draw *d,int porcentaje_cinta_izquierdo)
+#define GENERIC_VISUALTAPE_COLOR_FONDO AMIGAOS_COLOUR_blue
+
+void menu_generic_visualtape_dibujar_un_rollo(struct zxvision_vectorial_draw *d,int radio,int dibujar_borrar)
+{
+    int max_radio=250; //para un maximo de una cinta de 90
+    int min_radio=110;
+
+    int color_fondo=GENERIC_VISUALTAPE_COLOR_FONDO;
+
+    int color_cinta_enrollada=0; //esto sera negro
+
+    int i;
+
+    d->setcolour(d,color_fondo);
+
+    //borrar lo que excede
+
+    if (!dibujar_borrar) {
+        for (i=radio;i<=max_radio;i++) {
+            d->drawcircle(d,i);
+        }
+    }
+
+    //dibujar lo que aplica
+
+    if (dibujar_borrar) {
+        d->setcolour(d,color_cinta_enrollada);
+
+        for (i=min_radio;i<=radio;i++) {
+            d->drawcircle(d,i);
+        }
+    }
+}
+
+
+
+void menu_generic_visualtape_dibujar_rollos(struct zxvision_vectorial_draw *d,int porcentaje_cinta_izquierdo,int porcentaje_cinta_derecha)
 {
 
     int max_radio=250; //para un maximo de una cinta de 90
     int min_radio=110;
 
+
+
+    //temporal color
+    int color_fondo=GENERIC_VISUALTAPE_COLOR_FONDO;
+
+
     //calcular que tanto de radio relleno
-    int sumar_radio=((max_radio-min_radio)*porcentaje_cinta_izquierdo)/100;
+    int sumar_radio_izq=((max_radio-min_radio)*porcentaje_cinta_izquierdo)/100;
+    int sumar_radio_der=((max_radio-min_radio)*porcentaje_cinta_derecha)/100;
 
-    int radio_rellenar_izquierdo=min_radio+sumar_radio;
+    int radio_rellenar_izquierdo=min_radio+sumar_radio_izq;
+    int radio_rellenar_derecho=min_radio+sumar_radio_der;
 
+    //Borrar
     d->pencil_off(d);
     d->setpos(d,280,290);
+    menu_generic_visualtape_dibujar_un_rollo(d,radio_rellenar_izquierdo,0);
 
-    int color_marco=7; //gris
-    int color_cinta_enrollada=0; //esto sera negro
-
-    d->setcolour(d,color_cinta_enrollada);
-
-    d->drawcircle(d,radio_rellenar_izquierdo);
+    d->pencil_off(d);
+    d->setpos(d,1000-280,290);
+    menu_generic_visualtape_dibujar_un_rollo(d,radio_rellenar_derecho,0);
 
 
+    //Dibujar
+    d->pencil_off(d);
+    d->setpos(d,280,290);
+    menu_generic_visualtape_dibujar_un_rollo(d,radio_rellenar_izquierdo,1);
+
+    d->pencil_off(d);
+    d->setpos(d,1000-280,290);
+    menu_generic_visualtape_dibujar_un_rollo(d,radio_rellenar_derecho,1);
 
 
 }
@@ -40927,7 +40978,7 @@ void menu_generic_visualtape_dibujar_cinta_estatica(struct zxvision_vectorial_dr
 //porcentaje_cinta_izquierdo: que tanto % de cinta esta llena en el cilindro izquierdo. En el derecho sera 100-porcentaje_cinta_izquierdo
 //redibujar_rollos: redibujar cinta enrollada, 0 o 1. Se le pone a 1 cuando ha cambiado significativamente
 //redibujar_parte_estatica: si redibujar partes estaticas: marco exterior, recuadros... todo aquello que no es dinamico
-void menu_generic_visualtape(zxvision_window *w,int porcentaje_cinta_izquierdo,int redibujar_rollos,int redibujar_parte_estatica)
+void menu_generic_visualtape(zxvision_window *w,int porcentaje_cinta_izquierdo,int porcentaje_cinta_derecha,int redibujar_rollos,int redibujar_parte_estatica)
 {
 
     //Dibujo de la cinta
@@ -40973,7 +41024,7 @@ void menu_generic_visualtape(zxvision_window *w,int porcentaje_cinta_izquierdo,i
 
 
    if (redibujar_parte_estatica) menu_generic_visualtape_dibujar_cinta_estatica(&dibujo_visualtape);
-   if (redibujar_rollos) menu_generic_visualtape_dibujar_rollos(&dibujo_visualtape,porcentaje_cinta_izquierdo);
+   if (redibujar_rollos) menu_generic_visualtape_dibujar_rollos(&dibujo_visualtape,porcentaje_cinta_izquierdo,porcentaje_cinta_derecha);
 }
 
 
@@ -41007,9 +41058,10 @@ void menu_hilow_visual_datadrive_overlay(void)
 
 
     int porcentaje_cinta_izquierdo=porc_90-porcentaje;
+    int porcentaje_cinta_derecho=porcentaje;
 
 
-    menu_generic_visualtape(menu_hilow_visual_datadrive_window,porcentaje_cinta_izquierdo,1,1);
+    menu_generic_visualtape(menu_hilow_visual_datadrive_window,porcentaje_cinta_izquierdo,porcentaje_cinta_derecho,1,1);
 
 
     //Mostrar contenido
