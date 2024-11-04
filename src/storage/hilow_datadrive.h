@@ -43,9 +43,13 @@ es mas, ese 514H esta en el codigo fuente de la rom
 */
 #define HILOW_DIRECTORY_TABLE_SIZE 0x514
 
-//Deduzco por la tabla de sectores libre y como se modifica que el sector mayor es F5H (245)
-#define HILOW_MAX_SECTORS 246
-//#define HILOW_MAX_SECTORS 256
+
+#define HILOW_MAX_SECTORS 256
+
+//del 03 hasta el fd (251)pero no esta 7e,7f,80,81,82, o sea 251-5=246 para asignar mas los 2 de directorio=248. = 496 total en crudo
+#define HILOW_MAX_DATA_USABLE_SECTORS 246
+
+//#define HILOW_MAX_ID_SECTOR 0xfd
 
 #define HILOW_DEVICE_SIZE (HILOW_SECTOR_SIZE*HILOW_MAX_SECTORS)
 
@@ -147,9 +151,15 @@ extern void hilow_raw_flush_contents_to_disk(void);
 extern void hilow_timer_cinta_en_extremo(void);
 extern int hilow_raw_device_buffer_total_size;
 
+extern z80_byte hilow_raw_return_port_ff_value(void);
+
 extern z80_bit hilow_reproductor_encendido;
 
 extern void hilow_raw_power_off_player(void);
 extern void hilow_raw_power_on_player(void);
+
+extern int debug_hilow_last_sector;
+extern z80_byte hilow_read_port_ff_raw(z80_int puerto GCC_UNUSED);
+extern z80_byte hilow_read_port_ff_ddh(z80_int puerto GCC_UNUSED);
 
 #endif

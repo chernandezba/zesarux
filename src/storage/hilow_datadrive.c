@@ -19,6 +19,36 @@
 
 */
 
+/*
+Sobre formato ddh:
+
+Se define de manera simple 256 sectores de 2048 bytes cada sector, por simplificar el acceso.
+
+Sin embargo una cinta hilow al máximo de capacidad
+tiene menos espacio usado.
+
+del 03 hasta el fd (251)pero no esta 7e,7f,80,81,82, o sea 251-5=246 para asignar mas los 2 de directorio=248. = 496 total en crudo
+
+01 al 7d  son 125
+
+83 al fd (253) son
+
+131 al 253 son 123
+
+125+123=248
+Creo que no hay feh ni ffh por no tener más espacio en la tabla de directorio. O porque el ff siempre es byte de final
+
+81 y 82 no existen como usables porque 01 y 02 no son usables para datos. Aunque se hubiera podido.
+Quizá pensaron en usarlos también como directorio pero no
+
+Así quitando el 00, 7e, 7f,80,81,82,fe, ff son los 8 que faltarían de 248 para llegar a 256
+
+Por tanto en un archivo ddh se tendrán los sectores sin usar (y por tanto ocupando espacio de mas):
+
+00, 7e, 7f,80,81,82,fe, ff
+
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <dirent.h>
@@ -139,6 +169,12 @@ int hilow_raw_cinta_en_extremo=0;
 //Si esta en movimiento, o sea:
 //motor encendido y cinta no está en uno de los extremos
 int hilow_cinta_en_movimiento=0;
+
+
+//Para debug cuando se usan rom traps
+int debug_hilow_last_sector=0;
+
+
 
 //
 //Fin gestion movimiento de la cinta
@@ -534,6 +570,48 @@ void hilow_action_close_tape(void)
     }
 }
 
+//Sector desde 0,1,2,3,4.... 7b,7c, 82,83,84
+int old_hilow_get_offset_sector(int sector,int offset)
+{
+    if (sector==0x7f || sector==0x80 || sector==0x81) {
+        printf("Invalid sector %02XH\n",sector);
+        return -1;
+    }
+
+    int cara_b=sector & 0x80;
+
+    int sector_sin_cara=sector & 0x7f;
+
+    if (cara_b) sector_sin_cara -=2; //El primero sera 82h
+
+    /*
+    Sectores cara A: del 01 al 7d  son 125
+    Sectores cara B: 83(131) al fd (253) son 123
+    */
+
+    int offset_final=sector_sin_cara*HILOW_SECTOR_SIZE;
+
+    if (cara_b) offset_final +=(125*HILOW_SECTOR_SIZE);
+
+    offset_final +=offset;
+
+    return offset_final;
+
+
+}
+
+
+int hilow_get_offset_sector(int sector,int offset)
+{
+
+    int offset_final=sector*HILOW_SECTOR_SIZE;
+
+    offset_final +=offset;
+
+    return offset_final;
+
+
+}
 
 int hilow_write_byte_device(int sector,int offset,z80_byte valor)
 {
@@ -544,9 +622,8 @@ int hilow_write_byte_device(int sector,int offset,z80_byte valor)
 
     if (hilow_write_protection.v) return 0;
 
-    offset +=(sector*HILOW_SECTOR_SIZE);
 
-    //if (sector==255) printf("Sector 255 offset: %d max: %d\n",offset,HILOW_DEVICE_SIZE);
+    offset=hilow_get_offset_sector(sector,offset);
 
     if (offset>=HILOW_DEVICE_SIZE || offset<0) {
         debug_printf (VERBOSE_DEBUG,"Error. Trying to write beyond HiLow Data Drive. Size: %ld Asked sector: %d Offset: %d",
@@ -573,10 +650,11 @@ z80_byte hilow_read_byte_device(int sector,int offset)
     //autocerrar tapa
     hilow_tapa_reset_was_opened();
 
-    offset +=(sector*HILOW_SECTOR_SIZE);
+
+    offset=hilow_get_offset_sector(sector,offset);
 
     if (offset>=HILOW_DEVICE_SIZE || offset<0) {
-        debug_printf (VERBOSE_DEBUG,"Error. Trying to read beyond HiLow Data Drive. Size: %ld Asked sector: %d Offset: %d",
+        debug_printf (VERBOSE_INFO,"Error. Trying to read beyond HiLow Data Drive. Size: %ld Asked sector: %d Offset: %d",
                         HILOW_DEVICE_SIZE,sector,offset);
         //no desactivamos porque esto implica quitar funciones de peek/poke anidadas del core y petaria
 		//hilow_disable();
@@ -784,20 +862,7 @@ int hilow_write_mem_to_device(z80_int dir,int sector,int longitud,int offset_des
 {
     int i;
 
-    //printf("Writing memory to hilow device. dir=%04XH sector=%d length=%04XH offset_destination=%04XH\n",
-    //    dir,sector,longitud,offset_destination);
 
-    if (sector>=HILOW_MAX_SECTORS || sector<0) {
-        //printf("Sector beyond maximum. Do nothing\n");
-
-        debug_printf (VERBOSE_DEBUG,"Error. Trying to write beyond max HiLow Data Drive sectors. Size: %ld Asked sector: %d Offset: %d",
-                        HILOW_DEVICE_SIZE,sector,offset_destination);
-
-        //no desactivamos porque esto implica quitar funciones de peek/poke anidadas del core y petaria
-		//hilow_disable();
-
-        return 1;
-    }
 
     for (i=0;i<longitud;i++) {
         z80_byte c=peek_byte_no_time(dir+i);
@@ -811,23 +876,17 @@ int hilow_write_mem_to_device(z80_int dir,int sector,int longitud,int offset_des
 
 void hilow_device_set_sectores_disponible(int si_escribir_en_ram,int si_escribir_en_device)
 {
-    //total sectores: HILOW_MAX_SECTORS
-    //maximo id usable: HILOW_MAX_SECTORS-1
-    //total sectores para usar en la tabla (descartando el 0 y el 1): HILOW_MAX_SECTORS-2
 
-    //Ejemplo con 3 sectores:
-    //total sectores: 3
-    //maximo id usable: 1
-    //total sectores para usar en la tabla (descartando el 0 y el 1): 1  (el 2)
+    //del 03 hasta el fd (251)pero no esta 7e,7f,80,81,82, o sea 251-5=246 para asignar mas los 2 de directorio=248. = 496 total en crudo
 
     int offset=1011;
-    z80_byte value_to_write=HILOW_MAX_SECTORS-2;
+    z80_byte value_to_write=HILOW_MAX_DATA_USABLE_SECTORS;
 
     if (si_escribir_en_ram) poke_byte_no_time(8192+offset,value_to_write);
     if (si_escribir_en_device) {
         //En ambas copias de directorio
-        hilow_write_byte_device(0,offset,value_to_write);
         hilow_write_byte_device(1,offset,value_to_write);
+        hilow_write_byte_device(2,offset,value_to_write);
     }
     //en las rutinas de la rom se suele acceder por la direccion 3BF3
     //(3BF3 AND 2047) = 1011
@@ -849,8 +908,8 @@ void hilow_device_initialize_sector_zero(int si_escribir_en_ram,int si_escribir_
     for (i=0;i<HILOW_SECTOR_SIZE;i++,offset++) {
         if (si_escribir_en_device) {
             //En ambas copias de directorio
-            hilow_write_byte_device(0,offset,255);
             hilow_write_byte_device(1,offset,255);
+            hilow_write_byte_device(2,offset,255);
         }
         if (si_escribir_en_ram) poke_byte_no_time(8192+offset,255);
     }
@@ -868,8 +927,8 @@ void hilow_device_set_usage_counter(int si_escribir_en_ram,int si_escribir_en_de
     for (i=0;i<2;i++,offset++) {
         if (si_escribir_en_device) {
             //En ambas copias de directorio
-            hilow_write_byte_device(0,offset,0);
             hilow_write_byte_device(1,offset,0);
+            hilow_write_byte_device(2,offset,0);
         }
         if (si_escribir_en_ram) poke_byte_no_time(8192+offset,0);
     }
@@ -895,8 +954,8 @@ void hilow_create_sector_table(int si_escribir_en_ram,int si_escribir_en_device)
     //El 00 inicial de la tabla
     if (si_escribir_en_device) {
         //En ambas copias de directorio
-        hilow_write_byte_device(0,offset,0);
         hilow_write_byte_device(1,offset,0);
+        hilow_write_byte_device(2,offset,0);
     }
     if (si_escribir_en_ram) poke_byte_no_time(8192+offset,0);
 
@@ -904,17 +963,23 @@ void hilow_create_sector_table(int si_escribir_en_ram,int si_escribir_en_device)
 
 
     //Es <= dado que el id de sector siempre lo decrementamos
-    for (id_sector_tabla=3;id_sector_tabla<=HILOW_MAX_SECTORS;id_sector_tabla++) {
-        //sector 1 y 2 no lo metemos en tabla
+    for (id_sector_tabla=0;id_sector_tabla<=255;id_sector_tabla++) {
+        //sectores 00,01,02,7e,7f, 80,81,82,fe,ff  no lo metemos en tabla
+        int id_sector_sin_cara=id_sector_tabla & 0x7f;
+        //Sin considerar cara es sector 0,1,2,7e,7f, asi la comparacion nos vale para las dos caras
 
-        if (si_escribir_en_device) {
-            //En ambas copias de directorio
-            hilow_write_byte_device(0,offset,id_sector_tabla);
-            hilow_write_byte_device(1,offset,id_sector_tabla);
+        if (id_sector_sin_cara!=0 && id_sector_sin_cara!=1 && id_sector_sin_cara!=2 &&
+            id_sector_sin_cara!=0x7e &&  id_sector_sin_cara!=0x7f) {
+
+            if (si_escribir_en_device) {
+                //En ambas copias de directorio
+                hilow_write_byte_device(1,offset,id_sector_tabla);
+                hilow_write_byte_device(2,offset,id_sector_tabla);
+            }
+            if (si_escribir_en_ram) poke_byte_no_time(8192+offset,id_sector_tabla);
+
+            offset++;
         }
-        if (si_escribir_en_ram) poke_byte_no_time(8192+offset,id_sector_tabla);
-
-        offset++;
 
     }
 
@@ -946,8 +1011,8 @@ void hilow_set_tapelabel(int si_escribir_en_ram,int si_escribir_en_device,char *
     for (i=0;i<9;i++,offset++) {
         if (si_escribir_en_device) {
             //En ambas copias de directorio
-            hilow_write_byte_device(0,offset,buffer_destino[i]);
             hilow_write_byte_device(1,offset,buffer_destino[i]);
+            hilow_write_byte_device(2,offset,buffer_destino[i]);
         }
         if (si_escribir_en_ram) poke_byte_no_time(8192+offset,buffer_destino[i]);
     }
@@ -1012,12 +1077,13 @@ void hilow_device_mem_format(int si_escribir_en_ram,int si_escribir_en_device,ch
 }
 
 
-//Cual es el sector de la tabla de directorio leido. Al escribir se va alternando 0 y 1
-int hilow_sector_tabla_directorio=0;
+//Cual es el sector de la tabla de directorio leido. Al escribir se va alternando 1 y 2
+int hilow_sector_tabla_directorio=1;
 
 void hilow_write_directory_sector(void)
 {
-    hilow_sector_tabla_directorio ^=1;
+    hilow_sector_tabla_directorio++;
+    if (hilow_sector_tabla_directorio==3) hilow_sector_tabla_directorio=1;
 
     z80_int dir_inicio=8192;
     z80_int longitud=HILOW_DIRECTORY_TABLE_SIZE;
@@ -1069,19 +1135,20 @@ void hilow_trap_write_verify(void)
 
         else {
 
-            //Sectores 1 y 2 son de directorio. Al final el sector logico de hilow 1 es el mio 0
+            //Sectores 1 y 2 son de directorio.
 
-            //Lo logico seria no permitir esto. Sector 0 para llamadas a la rom es el directorio (sea el 0 o 1 logico),
+            //Lo logico seria no permitir esto. Sector 0 para llamadas a la rom es el directorio (sea el 1 o el 2),
             //y luego se empieza a usar sectores de la rom a partir del 3
             if (sector==1 || sector==2) {
-                debug_printf(VERBOSE_ERR,"HiLow: Trying to write to invalid sector %d",sector);
+                debug_printf(VERBOSE_ERR,"HiLow: Trying to write to invalid sector %02XH",sector);
                 return;
             }
 
+            debug_printf(VERBOSE_INFO,"HiLow: Write from %04XH length %04XH sector %02XH",dir_inicio,longitud,sector);
 
-            sector--;
+            //sector--;
 
-            debug_printf(VERBOSE_INFO,"HiLow: Write from %04XH length %04XH sector %d",dir_inicio,longitud,sector);
+            debug_hilow_last_sector=sector;
 
             if (hilow_write_mem_to_device(dir_inicio,sector,longitud,0)) {
                 //Error al escribir, sector mas alla del rango
@@ -1129,7 +1196,7 @@ int hilow_read_device_to_mem(z80_int dir,int sector,int longitud)
     //printf("Reading data from sector %d length %04XH to address %04XH\n",sector,longitud,dir);
 
 
-    if (sector>=HILOW_MAX_SECTORS || sector<0) {
+    if (sector<0) {
         //printf("Sector beyond maximum. Do nothing\n");
 
         debug_printf (VERBOSE_DEBUG,"Error. Trying to read beyond max HiLow Data Drive sectors. Size: %ld Asked sector: %d",
@@ -1153,23 +1220,23 @@ void hilow_read_directory_sector(void)
     z80_int inicio_datos=8192;
     z80_int leer_datos=HILOW_DIRECTORY_TABLE_SIZE;
 
-    //Usar el sector 0/1 dependiendo de que tenga el valor de contador mas alto
+    //Usar el sector 1/2 dependiendo de que tenga el valor de contador mas alto
 
     z80_int contador_sector_cero;
     z80_int contador_sector_uno;
 
 
-    contador_sector_cero=value_8_to_16(hilow_read_byte_device(0,1),hilow_read_byte_device(0,0));
-    contador_sector_uno= value_8_to_16(hilow_read_byte_device(1,1),hilow_read_byte_device(1,0));
+    contador_sector_cero=value_8_to_16(hilow_read_byte_device(1,1),hilow_read_byte_device(1,0));
+    contador_sector_uno= value_8_to_16(hilow_read_byte_device(2,1),hilow_read_byte_device(2,0));
 
     //printf("Directory usage counters. Sector zero: %d Sector one: %d\n",contador_sector_cero,contador_sector_uno);
 
 
     if (contador_sector_cero>contador_sector_uno) {
-        hilow_sector_tabla_directorio=0;
+        hilow_sector_tabla_directorio=1;
     }
     else {
-        hilow_sector_tabla_directorio=1;
+        hilow_sector_tabla_directorio=2;
     }
 
     //printf("Reading directory (size: %d) from sector %d as it has the highest usage counter (or they are both the same)\n",leer_datos,hilow_sector_tabla_directorio);
@@ -1219,10 +1286,9 @@ void hilow_trap_read(void)
             return;
         }
 
-        //Sectores 1 y 2 son de directorio. Al final el sector logico de hilow 1 es el mio 0
-        sector--;
+        debug_printf(VERBOSE_INFO,"HiLow: Read from sector %02XH to %04XH length %04XH",sector,inicio_datos,leer_datos);
 
-        debug_printf(VERBOSE_INFO,"HiLow: Read from sector %d to %04XH length %04XH",sector,inicio_datos,leer_datos);
+        debug_hilow_last_sector=sector;
 
         reg_a=hilow_read_device_to_mem(inicio_datos,sector,leer_datos);
     }
@@ -1274,8 +1340,8 @@ void hilow_trap_format(void)
     hilow_create_sector_table(1,0);
 
     //Finalmente escribimos tal cual el contenido de la memoria HiLow al dispositivo, en ambas copias de directorio
-    hilow_write_mem_to_device(8192,0,HILOW_SECTOR_SIZE,0);
     hilow_write_mem_to_device(8192,1,HILOW_SECTOR_SIZE,0);
+    hilow_write_mem_to_device(8192,2,HILOW_SECTOR_SIZE,0);
 
     //La rom posteriormente escribira una copia del directorio desde direccion L08C4
 
@@ -1284,10 +1350,10 @@ void hilow_trap_format(void)
 
     reg_pc=pop_valor();
 
-    //Decimos que el ultimo sector de directorio leido es el 0
-    //esto realmente daria un poco igual, pero es para indicar despues de un formateo que dado que ambos sectores 0 y 1 son iguales,
-    //los dos tienen contador a 0, y por la logica de escritura, habremos leido del 0 pero escrito en el 1
-    hilow_sector_tabla_directorio=0;
+    //Decimos que el ultimo sector de directorio leido es el 1
+    //esto realmente daria un poco igual, pero es para indicar despues de un formateo que dado que ambos sectores 1 y 2 son iguales,
+    //los dos tienen contador a 0, y por la logica de escritura, habremos leido del 1 pero escrito en el 2
+    hilow_sector_tabla_directorio=1;
 
     //printf("Returning from FORMAT to address %04XH\n",reg_pc);
 
@@ -1769,13 +1835,14 @@ Bit de valor 08H tambien parece tener algo que ver
 Puede que esos comandos sea combinacion de bits
 */
 	//printf ("Writing hilow port %04XH value %02XH from PC=%04XH\n",port,value,reg_pc);
+    last_hilow_port_value=value;
 }
 
 //Funcion antes de las pruebas con puerto i/o real
 z80_byte hilow_read_port_ff_ddh(z80_int puerto GCC_UNUSED)
 {
 
-    hilow_footer_operating();
+
 
 /*
 Lectura:
@@ -1813,14 +1880,14 @@ Bit 0: A 1 cuando esta listo para leer?
 
 z80_int hilow_util_get_usage_counter(int sector_dir,z80_byte *p)
 {
-    if (sector_dir) p +=HILOW_SECTOR_SIZE;
+    p +=hilow_get_offset_sector(sector_dir,0);
 
     return value_8_to_16(p[1],p[0]);
 }
 
 z80_byte hilow_util_get_free_sectors(int sector_dir,z80_byte *p)
 {
-    if (sector_dir) p +=HILOW_SECTOR_SIZE;
+    p +=hilow_get_offset_sector(sector_dir,0);
 
     return p[0x3F3];
 }
@@ -1830,9 +1897,8 @@ void hilow_util_get_free_sectors_list(int sector_dir,z80_byte *puntero_memoria,i
 {
     int total_free_sectores=hilow_util_get_free_sectors(sector_dir,puntero_memoria);
 
-    if (sector_dir) puntero_memoria +=HILOW_SECTOR_SIZE;
+    puntero_memoria +=hilow_get_offset_sector(sector_dir,0x3F5);
 
-    puntero_memoria +=0x3F5;
 
 
     int i;
@@ -1859,7 +1925,7 @@ int hilow_util_get_file_offset(int indice_archivo)
 int hilow_util_get_total_files(int sector_dir,z80_byte *puntero_memoria)
 {
 
-    if (sector_dir) puntero_memoria +=HILOW_SECTOR_SIZE;
+    puntero_memoria +=hilow_get_offset_sector(sector_dir,0);
 
     int i;
 
@@ -1884,7 +1950,7 @@ int hilow_util_get_total_files(int sector_dir,z80_byte *puntero_memoria)
 int hilow_get_num_sectors_file(int sector_dir,z80_byte *puntero_memoria,int indice_archivo)
 {
 
-    if (sector_dir) puntero_memoria +=HILOW_SECTOR_SIZE;
+    puntero_memoria +=hilow_get_offset_sector(sector_dir,0);
 
     int offset_archivo=hilow_util_get_file_offset(indice_archivo);
 
@@ -1894,7 +1960,7 @@ int hilow_get_num_sectors_file(int sector_dir,z80_byte *puntero_memoria,int indi
 
 int hilow_util_get_sectors_file(int sector_dir,int indice_archivo,z80_byte *puntero_memoria,int *sectores)
 {
-    if (sector_dir) puntero_memoria +=HILOW_SECTOR_SIZE;
+    puntero_memoria +=hilow_get_offset_sector(sector_dir,0);
 
     int offset_archivo=hilow_util_get_file_offset(indice_archivo);
 
@@ -1913,7 +1979,7 @@ int hilow_util_get_sectors_file(int sector_dir,int indice_archivo,z80_byte *punt
 
 void hilow_util_get_file_name(int sector_dir,z80_byte *puntero_memoria,int indice_archivo,char *nombre)
 {
-    if (sector_dir) puntero_memoria +=HILOW_SECTOR_SIZE;
+    puntero_memoria +=hilow_get_offset_sector(sector_dir,0);
 
     int offset_archivo=hilow_util_get_file_offset(indice_archivo);
 
@@ -1933,7 +1999,7 @@ void hilow_util_get_file_name(int sector_dir,z80_byte *puntero_memoria,int indic
 //Retorna el primer byte de la cabecera: 0 program, 3 bytes, etc
 z80_byte hilow_util_get_file_type(int sector_dir,z80_byte *puntero_memoria,int indice_archivo)
 {
-    if (sector_dir) puntero_memoria +=HILOW_SECTOR_SIZE;
+    puntero_memoria +=hilow_get_offset_sector(sector_dir,0);
 
     int offset_archivo=hilow_util_get_file_offset(indice_archivo);
 
@@ -1947,7 +2013,7 @@ z80_int hilow_util_get_file_length(int sector_dir,z80_byte *puntero_memoria,int 
 
     //printf("hilow_util_get_file_length sector: %d puntero_memoria %p indice_archivo %d\n",sector_dir,puntero_memoria,indice_archivo);
 
-    if (sector_dir) puntero_memoria +=HILOW_SECTOR_SIZE;
+    puntero_memoria +=hilow_get_offset_sector(sector_dir,0);
 
     int offset_archivo=hilow_util_get_file_offset(indice_archivo);
 
@@ -1959,16 +2025,14 @@ z80_int hilow_util_get_file_length(int sector_dir,z80_byte *puntero_memoria,int 
 
 z80_byte hilow_util_get_sector_byte(int sector,z80_byte *puntero_memoria,int offset_origen)
 {
-    int offset=sector*HILOW_SECTOR_SIZE;
-
-    offset +=offset_origen;
+    int offset=hilow_get_offset_sector(sector,offset_origen);
 
     if (offset>=HILOW_DEVICE_SIZE || offset<0) return 0;
 
     return puntero_memoria[offset];
 }
 
-//Recordar que los sectores en hilow empiezan a numerarse en el 1
+
 void hilow_util_get_sector(int sector,z80_byte *puntero_memoria,z80_byte *destino,int total_leer)
 {
 
@@ -2005,8 +2069,6 @@ void hilow_util_get_file_contents(int sector_dir,z80_byte *puntero_memoria,int i
 
         //printf("Reading sector %d\n",sector_leer);
 
-        //Recordar que los sectores en hilow empiezan a numerarse en el 1
-        sector_leer--;
         hilow_util_get_sector(sector_leer,puntero_memoria,destino_memoria,leer);
 
         destino_memoria +=leer;
@@ -2123,8 +2185,6 @@ z80_byte *hilow_get_audio_buffer(void)
 z80_byte hilow_read_port_ff_raw(z80_int puerto GCC_UNUSED)
 {
 
-    hilow_footer_operating();
-
 /*
 Lectura:
 
@@ -2215,8 +2275,14 @@ void hilow_raw_power_on_player(void)
 
 z80_byte hilow_read_port_ff(z80_int puerto)
 {
-    if (hilow_rom_traps.v) return hilow_read_port_ff_ddh(puerto);
-    else return hilow_read_port_ff_raw(puerto);
+    hilow_footer_operating();
+
+    z80_byte value;
+
+    if (hilow_rom_traps.v) value=hilow_read_port_ff_ddh(puerto);
+    else value=hilow_read_port_ff_raw(puerto);
+
+    return value;
 }
 
 

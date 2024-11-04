@@ -4330,9 +4330,9 @@ void menu_hilow_browser_print_used_sectors(zxvision_window *w,z80_byte *puntero_
             for (i=0;i<total_sectores;i++) {
                 z80_byte sector_actual=sectores[i];
 
-                //Id de sectores usados empieza por el 1
+
                 //No mostrar sector si es menor que 3
-                if (sector_actual>=3) menu_hilow_browser_print_char_sector(w,sector_actual-1,'u');
+                if (sector_actual>=3) menu_hilow_browser_print_char_sector(w,sector_actual,'u');
 
                 //sectores en cara B se numeran igual en orden pero con bit 7 alzado
                 //Considerar por ejemplo sector 3 y 131, ambos son consecutivos
@@ -4386,7 +4386,7 @@ void menu_hilow_datadrive_browser(z80_byte *puntero_memoria_orig)
     }*/
 
     int ancho=52;
-    int alto=22;
+    int alto=23;
     int x=menu_center_x()-ancho/2;
     int y=menu_center_y()-alto/2;
 
@@ -4444,7 +4444,7 @@ Maximo sectores por archivo: 25
 
    z80_byte tecla;
    int current_file=0;
-   int sector_directorio=0;
+   int sector_directorio=1;
 
     do {
 
@@ -4452,10 +4452,9 @@ Maximo sectores por archivo: 25
 
         puntero_memoria=puntero_memoria_orig;
 
-        if (sector_directorio) {
-            //Ir al siguiente sector
-            puntero_memoria +=HILOW_SECTOR_SIZE;
-        }
+
+        puntero_memoria +=sector_directorio*HILOW_SECTOR_SIZE;
+
 
         int linea=0;
 
@@ -4523,7 +4522,14 @@ Maximo sectores por archivo: 25
             int i;
 
             for (i=0;i<HILOW_MAX_SECTORS;i++) {
-                menu_hilow_browser_print_char_sector(&ventana,i,'.');
+                char caracter='.';
+
+                if (i==0 || i==0x7e ||  i==0x7f || i==0x80 || i==0x81 || i==0x82 || i==0xfe ||  i==0xff)
+                    {
+                        caracter='x';
+                }
+
+                menu_hilow_browser_print_char_sector(&ventana,i,caracter);
             }
 
 
@@ -4531,8 +4537,8 @@ Maximo sectores por archivo: 25
             menu_hilow_browser_print_used_sectors(&ventana,puntero_memoria,total_files);
 
             //Y el 0 y el 1 los usa las dos copias de directorio
-            menu_hilow_browser_print_char_sector(&ventana,0,'D');
             menu_hilow_browser_print_char_sector(&ventana,1,'D');
+            menu_hilow_browser_print_char_sector(&ventana,2,'D');
 
             //linea fragmentacion
             //int hilow_browser_fragmentation_total_sectors=0;
@@ -4560,10 +4566,9 @@ Maximo sectores por archivo: 25
 
                 zxvision_print_string_defaults_format(&ventana,columna_sectores+col,linea,"%3d ",sectores[i]);
 
-                //Id de sectores empieza a numerar en 1
                 int sector_file=sectores[i];
                 //No mostrar sector si es menor que 3
-                if (sector_file>=3) menu_hilow_browser_print_char_sector(&ventana,sector_file-1,'F');
+                if (sector_file>=3) menu_hilow_browser_print_char_sector(&ventana,sector_file,'F');
 
 
                 if ((i+1) % sectores_por_linea == 0) {
@@ -4576,7 +4581,7 @@ Maximo sectores por archivo: 25
             }
 
 
-            zxvision_print_string_defaults(&ventana,1,hilow_browser_inicio_y_mapa-1,"Legend: [D]irectory [u]sed [F]ile [.]free");
+            zxvision_print_string_defaults(&ventana,1,hilow_browser_inicio_y_mapa-1,"Legend: [D]irect [u]sed [F]ile [.]free [x]unusable");
         }
 
         //Restaurar comportamiento atajos
@@ -4599,7 +4604,8 @@ Maximo sectores por archivo: 25
             break;
 
             case 'd':
-                sector_directorio ^=1;
+                sector_directorio++;
+                if (sector_directorio==3) sector_directorio=1;
                 current_file=0;
             break;
 		}
@@ -4624,8 +4630,8 @@ void menu_file_ddh_browser_show(char *filename)
 
 
 
-    //Leer solo sector 0 y 1
-	long long int bytes_to_load=HILOW_SECTOR_SIZE*2;
+    //Leer solo sector 0 y 1 y 2 (aunque el 0 estara vacio)
+	long long int bytes_to_load=HILOW_SECTOR_SIZE*3;
 
 	z80_byte *ddh_file_memory;
 	ddh_file_memory=malloc(bytes_to_load);

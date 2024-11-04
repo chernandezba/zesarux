@@ -677,15 +677,28 @@ int hilow_read_audio_buscar_inicio_sector(int posicion)
 }
 
 
+//Sector desde 0,1,2,3,4.... 7b,7c, 82,83,84
+//Ya viene restado sector-1
+int hilow_read_audio_get_offset_sector(int sector)
+{
+
+    int offset_final=sector*HILOW_SECTOR_SIZE;
+
+
+    return offset_final;
+
+
+}
+
 
 void hilow_read_audio_write_sector_to_memory(int sector)
 {
     if (hilow_read_audio_modo_verbose) printf("Saving sector %d to memory\n",sector);
 
-    sector--;
-
     //Copiar a memoria ddh
-    int offset_destino=sector*HILOW_SECTOR_SIZE;
+    //int offset_destino=sector*HILOW_SECTOR_SIZE;
+
+    int offset_destino=hilow_read_audio_get_offset_sector(sector);
 
     if (hilow_read_audio_modo_verbose) printf("Destination offset to file ddh: %d\n",offset_destino);
 
@@ -696,7 +709,7 @@ void hilow_read_audio_write_sector_to_memory(int sector)
     }*/
 
     //por si acaso sector fuera de rango
-    if (sector<0 || sector>=HILOW_MAX_SECTORS) {
+    if (sector<0) {
         if (hilow_read_audio_modo_verbose) printf("Out of range sector\n");
     }
 

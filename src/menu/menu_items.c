@@ -39218,8 +39218,8 @@ void menu_storage_hilow_chkdsk(MENU_ITEM_PARAMETERS)
 
     char buffer_ok_error[10];
 
-    z80_int usage_counter_zero=hilow_util_get_usage_counter(0,hilow_device_buffer);
-    z80_int usage_counter_one=hilow_util_get_usage_counter(1,hilow_device_buffer);
+    z80_int usage_counter_zero=hilow_util_get_usage_counter(1,hilow_device_buffer);
+    z80_int usage_counter_one=hilow_util_get_usage_counter(2,hilow_device_buffer);
 
     if (usage_counter_zero==usage_counter_one) {
         strcpy(buffer_ok_error,txt_ok);
@@ -39244,7 +39244,7 @@ void menu_storage_hilow_chkdsk(MENU_ITEM_PARAMETERS)
     //Free sectors
     //No puede ser mayor que el valor de HILOW_MAX_SECTORS-2
     int sector;
-    for (sector=0;sector<2;sector++) {
+    for (sector=1;sector<=2;sector++) {
         //Inicializar tabla de sectores usados
         int i;
         for (i=0;i<256;i++) {
@@ -39331,8 +39331,8 @@ void menu_storage_hilow_chkdsk(MENU_ITEM_PARAMETERS)
             int j;
             for (j=0;j<s;j++) {
                 int sector_usado=sectores[j];
-                //que los ids no sean mayores o igual que HILOW_MAX_SECTORS, o no sean menor que 3
-                if (sector_usado>=HILOW_MAX_SECTORS || sector_usado<3) {
+
+                if (sector_usado>0xfd || sector_usado<3) {
                     sprintf (buffer_texto,"%s File id %d uses invalid sector %d",txt_err,f,sector_usado);
                     longitud_texto=strlen(buffer_texto)+1; //Agregar salto de linea
                     sprintf (&texto_chkdsk[indice_buffer],"%s\n",buffer_texto);

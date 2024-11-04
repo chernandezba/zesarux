@@ -17315,11 +17315,11 @@ int util_extract_ddh(char *filename,char *tempdir)
 
     //Ver que sector usamos, si el 0 o el 1
     int sector;
-    z80_int usage_counter_zero=hilow_util_get_usage_counter(0,taperead);
-    z80_int usage_counter_one=hilow_util_get_usage_counter(1,taperead);
+    z80_int usage_counter_zero=hilow_util_get_usage_counter(1,taperead);
+    z80_int usage_counter_one=hilow_util_get_usage_counter(2,taperead);
 
-    if (usage_counter_zero>usage_counter_one) sector=0;
-    else sector=1;
+    if (usage_counter_zero>usage_counter_one) sector=1;
+    else sector=2;
 
     int total_archivos=hilow_util_get_total_files(sector,taperead);
 

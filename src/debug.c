@@ -5681,29 +5681,69 @@ Bit 0 - Data Bit Out (saving)
             );
             sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
-            //de 64 bits porque al multiplicar por 100 se puede salir de rango
-            long long int porcentaje_long=0;
+            z80_byte last_value_read;
+            //En el caso de raw, leemos el estado del puerto instantaneo. Si no, leemos el ultimo valor
+            if (hilow_rom_traps.v) last_value_read=hilow_read_port_ff_ddh(0xFF);
+            else last_value_read=hilow_read_port_ff_raw(0xFF);
 
-            if (hilow_raw_device_buffer_total_size!=0) {
-                porcentaje_long=(hilow_posicion_cabezal*100L)/hilow_raw_device_buffer_total_size;
+            sprintf (buf_linea,"Port FF read:  %02XH\n",last_value_read);
+            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+            /*
+IN FFh
+Bit 7 - (Not used?)
+Bit 6 - Data Bit In (loading)
+Bit 5 - (Not used?)
+Bit 4 - (Not used?)
+
+Bit 3 - Cassette Change (0 = Cassette Changed, 1 = Not Changed) (it is "changed" if the Cassette Sense bit has ever gone low).
+O sea, A 0 si se ha abierto la tapa en algun momento
+
+Bit 2 - Cassette Sense (1 = Cassette in place, 0 = No cassette)
+Bit 1 - Reverse (1 = Reverse, 0 = Forward) (Inverted last bit written to bit 1 of OUT FFh, used in "Start the tape" routine)
+Bit 0 - Cassette Motion (0 = Moving, 1 = Stopped)
+            */
+
+            sprintf (buf_linea,"[%s] [%s] [%s] [%s] [%s]\n",
+                (last_value_read & 0x40 ? "In1" :    "In0"),
+                (last_value_read & 0x08 ? "NotOpned" :  "Opened  " ),
+                (last_value_read & 0x04 ? "CasPre" :   "CasAbs"),
+                (last_value_read & 0x02 ? "BCK" : "FWD"),
+                (last_value_read & 0x01 ? "Stopped"     :   "Moving ")
+
+            );
+            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+            if (hilow_rom_traps.v) {
+                sprintf (buf_linea,"Last sector:  %02XH\n",debug_hilow_last_sector);
+                sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
             }
 
-            int porcentaje=porcentaje_long;
+            else {
 
-            sprintf (buf_linea,"Position: %9d/%9d (%3d %%)\n",hilow_posicion_cabezal,hilow_raw_device_buffer_total_size,porcentaje);
-            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+                //de 64 bits porque al multiplicar por 100 se puede salir de rango
+                long long int porcentaje_long=0;
 
-            //Y en minutos, segundos, samples
-            int samples=hilow_posicion_cabezal % HILOW_RAW_SAMPLE_FREQ;
-            int segundos=hilow_posicion_cabezal / HILOW_RAW_SAMPLE_FREQ;
-            int minutos=segundos / 60;
-            int segundos_mostrar=segundos % 60;
+                if (hilow_raw_device_buffer_total_size!=0) {
+                    porcentaje_long=(hilow_posicion_cabezal*100L)/hilow_raw_device_buffer_total_size;
+                }
 
-            long long int minutos_total_cinta_long=(hilow_raw_device_buffer_total_size*2L)/HILOW_RAW_SAMPLE_FREQ/60;
-            int minutos_total_cinta=minutos_total_cinta_long;
+                int porcentaje=porcentaje_long;
 
-            sprintf (buf_linea,"      (%02d:%02d.%05d)/C%d\n",minutos,segundos_mostrar,samples,minutos_total_cinta);
-            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+                sprintf (buf_linea,"Position: %9d/%9d (%3d %%)\n",hilow_posicion_cabezal,hilow_raw_device_buffer_total_size,porcentaje);
+                sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+                //Y en minutos, segundos, samples
+                int samples=hilow_posicion_cabezal % HILOW_RAW_SAMPLE_FREQ;
+                int segundos=hilow_posicion_cabezal / HILOW_RAW_SAMPLE_FREQ;
+                int minutos=segundos / 60;
+                int segundos_mostrar=segundos % 60;
+
+                long long int minutos_total_cinta_long=(hilow_raw_device_buffer_total_size*2L)/HILOW_RAW_SAMPLE_FREQ/60;
+                int minutos_total_cinta=minutos_total_cinta_long;
+
+                sprintf (buf_linea,"      (%02d:%02d.%05d)/C%d\n",minutos,segundos_mostrar,samples,minutos_total_cinta);
+                sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+            }
         }
 
   		//Spectra
