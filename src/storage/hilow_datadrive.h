@@ -158,6 +158,8 @@ extern z80_bit hilow_reproductor_encendido;
 extern void hilow_raw_power_off_player(void);
 extern void hilow_raw_power_on_player(void);
 
+extern void hilow_mix_audio(void);
+
 extern int debug_hilow_last_sector;
 extern z80_byte hilow_read_port_ff_raw(z80_int puerto GCC_UNUSED);
 extern z80_byte hilow_read_port_ff_ddh(z80_int puerto GCC_UNUSED);
