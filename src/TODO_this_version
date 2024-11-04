@@ -427,16 +427,10 @@ ok-Debug I/o ver puerto lectura hilow
 
 -Comentarios en la ROM de hilow de Jane recopilar
 
-
 -convertir ddh a raw
 
--corregir nuevo maximo de sectores en:
-ok*hilow datadrive browse
-ok*expandir archivos
-ok*file info?
-ok*chkdsk
-ok*hilow_util_get_sector
-ok*browse desde file utils no conmuta bien al otro directorio
+-format ddh desde basic: ver si se puede hacer simple cara/doble cara
+
 
 -----------------------
 ---FIN Hilow        ---

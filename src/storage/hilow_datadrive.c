@@ -23,11 +23,24 @@
 Sobre formato ddh:
 
 Se define de manera simple 256 sectores de 2048 bytes cada sector, por simplificar el acceso.
+No se guardan las cabeceras de cada sector, que están presentes en las cintas, solo los datos.
 
 Sin embargo una cinta hilow al máximo de capacidad
-tiene menos espacio usado.
+tiene menos espacio usado (menos de 256 sectores). Esto se deduce formateando una cinta en formato crudo (audio raw)
+y viendo como asigna la tabla de sectores disponibles.
 
-del 03 hasta el fd (251)pero no esta 7e,7f,80,81,82, o sea 251-5=246 para asignar mas los 2 de directorio=248. = 496 total en crudo
+-Sector 0: cuando se pide acceder a dicho sector, se solicita acceso al sector de directorio 1 o 2,
+segun el que esté actualizado mas recientemente
+-En una cinta de máxima capacidad, el 7e, 7f, fe,ff no los pone como usables en la tabla de sectores libres
+Sospecho que porque el ff se usa realmente como identificador de fin de tabla, o porque no habia
+mas espacio en la tabla de sectores libres (esto explicaria porque tampoco aparecen 7e o fe)
+El 80h no se usa de la misma manera que el 0 tampoco
+Y como el 1 y 2 son de directorio, el 81h y 82h no se usan (porque no hay directorio de la cara B,
+quizá pensaron en usarlos también como directorio pero no)
+
+Por tanto tenemos:
+
+-del 03 hasta el fd (251) pero no esta 7e,7f,80,81,82, o sea 251-5=246 para asignar mas los 2 de directorio=248. = 496 total en crudo
 
 01 al 7d  son 125
 
@@ -35,13 +48,9 @@ del 03 hasta el fd (251)pero no esta 7e,7f,80,81,82, o sea 251-5=246 para asigna
 
 131 al 253 son 123
 
-125+123=248
+125 cara A+123 cara B=248 sectores tota.es
 Creo que no hay feh ni ffh por no tener más espacio en la tabla de directorio. O porque el ff siempre es byte de final
 
-81 y 82 no existen como usables porque 01 y 02 no son usables para datos. Aunque se hubiera podido.
-Quizá pensaron en usarlos también como directorio pero no
-
-Así quitando el 00, 7e, 7f,80,81,82,fe, ff son los 8 que faltarían de 248 para llegar a 256
 
 Por tanto en un archivo ddh se tendrán los sectores sin usar (y por tanto ocupando espacio de mas):
 
