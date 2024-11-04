@@ -41031,6 +41031,9 @@ void menu_generic_visualtape(zxvision_window *w,int porcentaje_cinta_izquierdo,i
 
 zxvision_window *menu_hilow_visual_datadrive_window;
 
+//Ver si ha cambiado el porcentaje sobre los rollos, para redibujar
+//eso indica que la cantidad de cinta enrollada es diferente
+int menu_hilow_visual_datadrive_porcentaje_anterior=-1;
 
 void menu_hilow_visual_datadrive_overlay(void)
 {
@@ -41060,8 +41063,14 @@ void menu_hilow_visual_datadrive_overlay(void)
     int porcentaje_cinta_izquierdo=porc_90-porcentaje;
     int porcentaje_cinta_derecho=porcentaje;
 
+    int redibujar_rollos=0;
 
-    menu_generic_visualtape(menu_hilow_visual_datadrive_window,porcentaje_cinta_izquierdo,porcentaje_cinta_derecho,1,1);
+    if (porcentaje!=menu_hilow_visual_datadrive_porcentaje_anterior) redibujar_rollos=1;
+
+
+    menu_generic_visualtape(menu_hilow_visual_datadrive_window,porcentaje_cinta_izquierdo,porcentaje_cinta_derecho,redibujar_rollos,1);
+
+    menu_hilow_visual_datadrive_porcentaje_anterior=porcentaje;
 
 
     //Mostrar contenido
@@ -41084,6 +41093,9 @@ void menu_hilow_visual_datadrive(MENU_ITEM_PARAMETERS)
         menu_warn_message("This window needs multitask enabled");
         return;
     }
+
+    //forzar redibujar rollos
+    menu_hilow_visual_datadrive_porcentaje_anterior=-1;
 
     zxvision_window *ventana;
     ventana=&zxvision_window_hilow_visual_datadrive;
