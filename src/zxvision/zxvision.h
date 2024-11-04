@@ -1833,6 +1833,10 @@ struct zxvision_vectorial_draw
 
     //Funcion de mover posicion
     void (*setpos)(struct zxvision_vectorial_draw *d,int x,int y);
+    void (*setrelpos)(struct zxvision_vectorial_draw *d,int x,int y);
+
+    //Funcion de mover posicion sin dejar rastro escrito
+    void (*jumppos)(struct zxvision_vectorial_draw *d,int x,int y);
 
     //Funcion de mover posicion
     void (*set_x)(struct zxvision_vectorial_draw *d,int x);

@@ -28735,12 +28735,8 @@ void zxvision_vecdraw_setcolour(struct zxvision_vectorial_draw *d,int colour)
     d->pencil_colour=colour;
 }
 
-void zxvision_vecdraw_setpos(struct zxvision_vectorial_draw *d,int virtual_x,int virtual_y)
+void zxvision_vecdraw_jumppos(struct zxvision_vectorial_draw *d,int virtual_x,int virtual_y)
 {
-    //int old_virtual_x=d->virtual_x;
-    //int old_virtual_y=d->virtual_y;
-    int old_real_x=d->real_x;
-    int old_real_y=d->real_y;
 
     d->virtual_x=virtual_x;
     d->virtual_y=virtual_y;
@@ -28751,6 +28747,52 @@ void zxvision_vecdraw_setpos(struct zxvision_vectorial_draw *d,int virtual_x,int
 
     d->real_x=real_x;
     d->real_y=real_y;
+
+
+}
+
+void zxvision_vecdraw_setpos(struct zxvision_vectorial_draw *d,int virtual_x,int virtual_y)
+{
+
+    int old_real_x=d->real_x;
+    int old_real_y=d->real_y;
+
+
+    //calcular coordenadas reales
+    int real_x,real_y;
+    zxvision_vecdraw_get_real_coords(d,virtual_x,virtual_y,&real_x,&real_y);
+
+
+    zxvision_vecdraw_jumppos(d,virtual_x,virtual_y);
+
+
+    if (d->pencil_enabled) {
+        //hay que trazar linea
+        zxvision_draw_line(d->ventana,
+            old_real_x+d->offset_x,old_real_y+d->offset_y,
+            real_x+d->offset_x,real_y+d->offset_y,
+            d->pencil_colour,
+            zxvision_putpixel
+        );
+    }
+
+}
+
+void zxvision_vecdraw_setrelpos(struct zxvision_vectorial_draw *d,int rel_virtual_x,int rel_virtual_y)
+{
+
+    int old_real_x=d->real_x;
+    int old_real_y=d->real_y;
+
+    int virtual_x=d->virtual_x+rel_virtual_x;
+    int virtual_y=d->virtual_y+rel_virtual_y;
+
+    //calcular coordenadas reales
+    int real_x,real_y;
+    zxvision_vecdraw_get_real_coords(d,virtual_x,virtual_y,&real_x,&real_y);
+
+
+    zxvision_vecdraw_jumppos(d,virtual_x,virtual_y);
 
 
     if (d->pencil_enabled) {
@@ -28795,6 +28837,8 @@ void zxvision_vecdraw_init(struct zxvision_vectorial_draw *d,zxvision_window *w,
     d->pencil_colour=0;
 
     d->setpos=zxvision_vecdraw_setpos;
+    d->setrelpos=zxvision_vecdraw_setrelpos;
+    d->jumppos=zxvision_vecdraw_jumppos;
     d->set_x=zxvision_vecdraw_set_x;
     d->set_y=zxvision_vecdraw_set_y;
     d->pencil_on=zxvision_vecdraw_pencil_on;

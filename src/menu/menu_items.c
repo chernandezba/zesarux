@@ -40921,6 +40921,9 @@ void menu_generic_visualtape_dibujar_rollos(struct zxvision_vectorial_draw *d,in
 
     //temporal color
     int color_fondo=GENERIC_VISUALTAPE_COLOR_FONDO;
+    int ancho_cinta=1000;
+    int alto_cinta=630;
+    int color_marco=7; //gris
 
 
     //calcular que tanto de radio relleno
@@ -40949,25 +40952,58 @@ void menu_generic_visualtape_dibujar_rollos(struct zxvision_vectorial_draw *d,in
     d->setpos(d,1000-280,290);
     menu_generic_visualtape_dibujar_un_rollo(d,radio_rellenar_derecho,1);
 
+    //Paralelogramo de abajo
+    d->pencil_on(d);
+    d->setcolour(d,color_marco);
+    d->jumppos(d,150,alto_cinta-1);
+    d->setrelpos(d,+45,-160);
+    d->setrelpos(d,+610,0);
+    d->setrelpos(d,+45,+160);
+
 
 }
 
 void menu_generic_visualtape_dibujar_cinta_estatica(struct zxvision_vectorial_draw *d)
 {
-    d->pencil_off(d);
-    d->setpos(d,0,0);
+    int radio_bordes_esquinas=30;
 
+    int ancho_cinta=1000;
+    int alto_cinta=630;
     int color_marco=7; //gris
     int color_cinta_enrollada=0; //esto sera negro
 
-    d->setcolour(d,color_marco);
     d->pencil_on(d);
+    d->setcolour(d,color_marco);
 
     //Marco exterior de la cinta
-    d->set_x(d,1000);
-    d->set_y(d,630);
-    d->set_x(d,0);
-    d->set_y(d,0);
+    d->jumppos(d,radio_bordes_esquinas,0);
+    d->set_x(d,ancho_cinta-1-radio_bordes_esquinas);
+
+    d->jumppos(d,ancho_cinta,radio_bordes_esquinas);
+    d->set_y(d,alto_cinta-1-radio_bordes_esquinas);
+
+    d->jumppos(d,ancho_cinta-1-radio_bordes_esquinas,alto_cinta-1);
+    d->set_x(d,radio_bordes_esquinas);
+
+    d->jumppos(d,0,alto_cinta-1-radio_bordes_esquinas);
+    d->set_y(d,radio_bordes_esquinas);
+
+    //Esquina arriba izquierda
+    d->jumppos(d,radio_bordes_esquinas,radio_bordes_esquinas);
+    d->drawarc(d,radio_bordes_esquinas,90,180);
+    //Arriba derecha
+    d->jumppos(d,ancho_cinta-radio_bordes_esquinas,radio_bordes_esquinas);
+    d->drawarc(d,radio_bordes_esquinas,0,90);
+    //Abajo derecha
+    d->jumppos(d,ancho_cinta-radio_bordes_esquinas,alto_cinta-radio_bordes_esquinas);
+    d->drawarc(d,radio_bordes_esquinas,270,361);
+    //Abajo izquierda
+    d->jumppos(d,radio_bordes_esquinas,alto_cinta-radio_bordes_esquinas);
+    d->drawarc(d,radio_bordes_esquinas,180,270);
+
+
+
+
 
 }
 
