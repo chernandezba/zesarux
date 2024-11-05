@@ -41019,6 +41019,78 @@ void menu_generic_visualtape_dibujar_cinta_estatica(struct zxvision_vectorial_dr
 
 }
 
+int menu_generic_visualtap_calculate_coord_grados(int sine,int longitud,int grados,int real_width,int virtual_width)
+{
+    //sacar final linea
+    int longitud_y;
+
+    if (sine) {
+        longitud_y=(longitud*util_get_sine(grados))/10000;
+    }
+    else {
+        longitud_y=(longitud*util_get_cosine(grados))/10000;
+    }
+    //printf("longitud_y antes: %d\n",longitud_y);
+
+    //reajustar comportamiento decimales para que se comporte como el dibujado de circulos
+    //Nota: eso es debido a que el calculo de coordenadas virtuales se hace diferente al dibujar el circulo o al trazar una linea
+    //y/o tambien a la falta de uso de variables con decimales para calcular
+    //probablemente con el uso de float para real_radio en zxvision_vecdraw_arc se solventaria
+
+    //Si hacemos paso de coordenadas virtuales a reales, y de vuelta a virtuales,
+    //en el calculo sin decimales nos comportaremos ¿igual? que el dibujado de circulos
+    //Si no hiciera esto, estas lineas de radio no están siempre exactas desde el centro al circulo,
+    //a veces sobresale del circulo (cuando el dibujo es pequeño), a veces no llega a tocar al circulo (cuando el dibujo es grande)
+
+    //pasar a dimensiones reales
+    longitud_y=(longitud_y*real_width)/virtual_width;
+
+    //y de vuelta a virtuales
+    longitud_y=(longitud_y*virtual_width)/real_width;
+
+    return longitud_y;
+
+}
+
+
+void menu_generic_visualtape_dibujar_rodillo_arrastre(struct zxvision_vectorial_draw *d,
+    int x_origen_rodillo,int y_origen_rodillo,int longitud,int longitud2,int grados,int color)
+{
+
+
+    d->pencil_off(d);
+    d->setcolour(d,color);
+    d->setpos(d,x_origen_rodillo,y_origen_rodillo);
+    d->pencil_on(d);
+
+
+
+    //sacar final linea
+    int longitud_y=menu_generic_visualtap_calculate_coord_grados(1,longitud,grados,d->real_width,d->virtual_width);
+    int yfinal=y_origen_rodillo-longitud_y;
+
+
+    int longitud_x=menu_generic_visualtap_calculate_coord_grados(0,longitud,grados,d->real_heigth,d->virtual_height);
+    int xfinal=x_origen_rodillo+longitud_x;
+
+
+    d->jumppos(d,xfinal,yfinal);
+
+
+    longitud_y=menu_generic_visualtap_calculate_coord_grados(1,longitud2,grados,d->real_width,d->virtual_width);
+    yfinal=yfinal-longitud_y;
+
+
+    longitud_x=menu_generic_visualtap_calculate_coord_grados(0,longitud2,grados,d->real_heigth,d->virtual_height);
+    xfinal=xfinal+longitud_x;
+
+
+    d->setpos(d,xfinal,yfinal);
+
+}
+
+
+
 
 //Dibujar una cinta vectorial en pantalla
 //Parametros:
@@ -41026,7 +41098,8 @@ void menu_generic_visualtape_dibujar_cinta_estatica(struct zxvision_vectorial_dr
 //porcentaje_cinta_izquierdo: que tanto % de cinta esta llena en el cilindro izquierdo. En el derecho sera 100-porcentaje_cinta_izquierdo
 //redibujar_rollos: redibujar cinta enrollada, 0 o 1. Se le pone a 1 cuando ha cambiado significativamente
 //redibujar_parte_estatica: si redibujar partes estaticas: marco exterior, recuadros... todo aquello que no es dinamico
-void menu_generic_visualtape(zxvision_window *w,int porcentaje_cinta_izquierdo,int porcentaje_cinta_derecha,int redibujar_rollos,int redibujar_parte_estatica)
+void menu_generic_visualtape(zxvision_window *w,int porcentaje_cinta_izquierdo,int porcentaje_cinta_derecha,
+    int grados_rodillos,int antes_grados_rodillos,int redibujar_rollos,int redibujar_parte_estatica,int redibujar_rodillos_arrastre)
 {
 
     //Dibujo de la cinta
@@ -41073,6 +41146,46 @@ void menu_generic_visualtape(zxvision_window *w,int porcentaje_cinta_izquierdo,i
 
    if (redibujar_parte_estatica) menu_generic_visualtape_dibujar_cinta_estatica(&dibujo_visualtape);
    if (redibujar_rollos) menu_generic_visualtape_dibujar_rollos(&dibujo_visualtape,porcentaje_cinta_izquierdo,porcentaje_cinta_derecha);
+
+   if (redibujar_rodillos_arrastre) {
+
+    printf("Redibujando rodillos arrastre. %d\n",contador_segundo_infinito);
+    int color_rodillo=15;
+    int centro_rodillo_x=280;
+    int centro_rodillo_dos_x=1000-280;
+    int centro_rodillo_y=290;
+
+        int longitud2=20;
+        int longitud=(110/2)-longitud2;
+
+        //primero borrar los anteriores
+        int color_fondo=GENERIC_VISUALTAPE_COLOR_FONDO;
+        int grados=antes_grados_rodillos;
+        int segmentos;
+
+    for (segmentos=0;segmentos<6;segmentos++) {
+        menu_generic_visualtape_dibujar_rodillo_arrastre(&dibujo_visualtape,centro_rodillo_x,centro_rodillo_y,
+            longitud,longitud2,grados,color_fondo);
+        menu_generic_visualtape_dibujar_rodillo_arrastre(&dibujo_visualtape,centro_rodillo_dos_x,centro_rodillo_y,
+            longitud,longitud2,grados,color_fondo);
+
+            grados +=60;
+    }
+
+        grados=grados_rodillos;
+
+
+    for (segmentos=0;segmentos<6;segmentos++) {
+        menu_generic_visualtape_dibujar_rodillo_arrastre(&dibujo_visualtape,centro_rodillo_x,centro_rodillo_y,
+            longitud,longitud2,grados,color_rodillo);
+        menu_generic_visualtape_dibujar_rodillo_arrastre(&dibujo_visualtape,centro_rodillo_dos_x,centro_rodillo_y,
+            longitud,longitud2,grados,color_rodillo);
+
+            grados +=60;
+    }
+   }
+
+
 }
 
 
@@ -41082,6 +41195,9 @@ zxvision_window *menu_hilow_visual_datadrive_window;
 //Ver si ha cambiado el porcentaje sobre los rollos, para redibujar
 //eso indica que la cantidad de cinta enrollada es diferente
 int menu_hilow_visual_datadrive_porcentaje_anterior=-1;
+
+int antes_hilow_visual_rodillo_arrastre_grados=-1;
+
 
 void menu_hilow_visual_datadrive_overlay(void)
 {
@@ -41118,11 +41234,17 @@ void menu_hilow_visual_datadrive_overlay(void)
     //determinar esto solo cuando sea necesario. probablemente con dirty
     int redibujar_parte_estatica=0;
 
+    int redibujar_rodillos_arrastre=0;
+
+    //Si grados rodillos antes iguales a actual, no redibujar
+    if (hilow_visual_rodillo_arrastre_grados!=antes_hilow_visual_rodillo_arrastre_grados) redibujar_rodillos_arrastre=1;
+
     //No redibujar si no hay cambios de nada
     if (menu_hilow_visual_datadrive_window->dirty_user_must_draw_contents) {
-        printf("Redibujando parte estatica y dinamica. %d\n",contador_segundo_infinito);
+        printf("Redibujando parte estatica y dinamica y rodillos arrastre. %d\n",contador_segundo_infinito);
         redibujar_parte_estatica=1;
         redibujar_rollos=1;
+        redibujar_rodillos_arrastre=1;
 
         menu_hilow_visual_datadrive_window->dirty_user_must_draw_contents=0;
     }
@@ -41132,9 +41254,13 @@ void menu_hilow_visual_datadrive_overlay(void)
     }
 
 
-    menu_generic_visualtape(menu_hilow_visual_datadrive_window,porcentaje_cinta_izquierdo,porcentaje_cinta_derecho,redibujar_rollos,redibujar_parte_estatica);
+
+    menu_generic_visualtape(menu_hilow_visual_datadrive_window,porcentaje_cinta_izquierdo,porcentaje_cinta_derecho,
+    hilow_visual_rodillo_arrastre_grados,antes_hilow_visual_rodillo_arrastre_grados,
+    redibujar_rollos,redibujar_parte_estatica,redibujar_rodillos_arrastre);
 
     menu_hilow_visual_datadrive_porcentaje_anterior=porcentaje;
+    antes_hilow_visual_rodillo_arrastre_grados=hilow_visual_rodillo_arrastre_grados;
 
 
     //Mostrar contenido

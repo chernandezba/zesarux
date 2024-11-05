@@ -148,8 +148,10 @@ extern z80_byte last_hilow_port_value;
 extern int hilow_load_raw_device_file(void);
 extern void hilow_raw_flush_contents_to_disk(void);
 
-extern void hilow_timer_cinta_en_extremo(void);
+extern void hilow_timer_events(void);
 extern int hilow_raw_device_buffer_total_size;
+
+extern int hilow_visual_rodillo_arrastre_grados;
 
 extern z80_byte hilow_raw_return_port_ff_value(void);
 

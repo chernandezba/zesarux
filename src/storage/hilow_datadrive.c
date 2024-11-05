@@ -2301,14 +2301,45 @@ void hilow_write_port_ff(z80_int port,z80_byte value)
     else return hilow_write_port_ff_raw(port,value);
 }
 
+//Usado en visual tape
+int hilow_visual_rodillo_arrastre_grados=0;
 
+int hilow_timer_events_counter=0;
 
-
-
-
-void hilow_timer_cinta_en_extremo(void)
+//Eventos de timer
+//Para ver si cinta en extremo, para mover rodillos de arrastre
+void hilow_timer_events(void)
 {
     if (hilow_rom_traps.v) return;
+
+    //ver si esta motor on y no esta atascado (o sea ver variable movimiento)
+    if (hilow_cinta_en_movimiento) {
+        //Mover rodillo de arrastre para visual tape
+        //en 1 segundo avanza 360 grados, en velocidad normal de cinta 1x
+        //O sea 360/50=7 grados cada frame de video
+        int incremento_grados=7;
+
+        //temp
+        //incremento_grados=1;
+
+        //10x o 40x
+        if (last_hilow_port_value & HILOW_PORT_MASK_FAST) incremento_grados *=40;
+        else incremento_grados *=10;
+
+        //Adelante o atras
+        if ((last_hilow_port_value & HILOW_PORT_MASK_FORWARD)==0) incremento_grados=-incremento_grados;
+
+        hilow_visual_rodillo_arrastre_grados +=incremento_grados;
+        hilow_visual_rodillo_arrastre_grados=(hilow_visual_rodillo_arrastre_grados % 360);
+    }
+
+
+    //Lo siguiente una vez por segundo
+    hilow_timer_events_counter+=20;
+
+    if (hilow_timer_events_counter!=1000) return;
+
+    hilow_timer_events_counter=0;
 
     if (!hilow_raw_cinta_en_extremo) return;
 
