@@ -40916,12 +40916,31 @@ void menu_generic_visualtape_dibujar_un_rollo(struct zxvision_vectorial_draw *d,
 #define GENERIC_VISUALTAPE_ROLLO_DERECHO_X (GENERIC_VISUALTAPE_ANCHO_CINTA-GENERIC_VISUALTAPE_ROLLO_IZQUIERDO_X)
 #define GENERIC_VISUALTAPE_ROLLO_DERECHO_Y 290
 
+//para un maximo de una cinta de 90
+#define GENERIC_VISUALTAPE_ROLLO_MAX_RADIO 250
+
+#define GENERIC_VISUALTAPE_ROLLO_MIN_RADIO 110
+
+//Retorna el radio de los rollos segun porcentajes
+void menu_generic_visualtape_da_radios_rollos(int porcentaje_cinta_izquierdo,int porcentaje_cinta_derecha,int *p_radio_izq,int *p_radio_der)
+{
+    int max_radio=GENERIC_VISUALTAPE_ROLLO_MAX_RADIO;
+    int min_radio=GENERIC_VISUALTAPE_ROLLO_MIN_RADIO;
+
+    //calcular que tanto de radio relleno
+    int sumar_radio_izq=((max_radio-min_radio)*porcentaje_cinta_izquierdo)/100;
+    int sumar_radio_der=((max_radio-min_radio)*porcentaje_cinta_derecha)/100;
+
+    int radio_rellenar_izquierdo=min_radio+sumar_radio_izq;
+    int radio_rellenar_derecho=min_radio+sumar_radio_der;
+
+    *p_radio_izq=radio_rellenar_izquierdo;
+    *p_radio_der=radio_rellenar_derecho;
+
+}
+
 void menu_generic_visualtape_dibujar_rollos(struct zxvision_vectorial_draw *d,int porcentaje_cinta_izquierdo,int porcentaje_cinta_derecha)
 {
-
-    int max_radio=250; //para un maximo de una cinta de 90
-    int min_radio=110;
-
 
 
     //temporal color
@@ -40932,11 +40951,18 @@ void menu_generic_visualtape_dibujar_rollos(struct zxvision_vectorial_draw *d,in
 
 
     //calcular que tanto de radio relleno
+    /*
     int sumar_radio_izq=((max_radio-min_radio)*porcentaje_cinta_izquierdo)/100;
     int sumar_radio_der=((max_radio-min_radio)*porcentaje_cinta_derecha)/100;
 
     int radio_rellenar_izquierdo=min_radio+sumar_radio_izq;
     int radio_rellenar_derecho=min_radio+sumar_radio_der;
+    */
+
+    int radio_rellenar_izquierdo;
+    int radio_rellenar_derecho;
+
+    menu_generic_visualtape_da_radios_rollos(porcentaje_cinta_izquierdo,porcentaje_cinta_derecha,&radio_rellenar_izquierdo,&radio_rellenar_derecho);
 
     //Borrar
     d->pencil_off(d);
