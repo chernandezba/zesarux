@@ -41132,21 +41132,11 @@ void menu_generic_visualtape_dibujar_rodillo_arrastre(struct zxvision_vectorial_
 
     d->setpos(d,xfinal,yfinal);
 
-    //Linea que une el rodillo enrollado hasta los rodillos pequeños fijos
-    //Izquierda
 
-    //Calcular final rollo
-
-    //Posiciones rodillos pequeños fijos
-    /*
-        for (i=0;i<=VISUALTAPE_RODILLO_FIJO_RADIO;i++) {
-        d->jumppos(d,VISUALTAPE_RODILLO_FIJO_X,VISUALTAPE_RODILLO_FIJO_Y);
-        d->drawcircle(d,i);
-        d->jumppos(d,1000-VISUALTAPE_RODILLO_FIJO_X,VISUALTAPE_RODILLO_FIJO_Y);
-    */
 }
 
-void menu_generic_visualtape_draw_rodillos_arrastre(struct zxvision_vectorial_draw *dibujo_visualtape,int grados_rodillos,int antes_grados_rodillos)
+void menu_generic_visualtape_draw_rodillos_arrastre(struct zxvision_vectorial_draw *d,
+    int grados_rodillos,int antes_grados_rodillos,int porcentaje_cinta_izquierdo,int porcentaje_cinta_derecha)
 {
 
 
@@ -41166,9 +41156,9 @@ void menu_generic_visualtape_draw_rodillos_arrastre(struct zxvision_vectorial_dr
     int segmentos;
 
     for (segmentos=0;segmentos<6;segmentos++) {
-        menu_generic_visualtape_dibujar_rodillo_arrastre(dibujo_visualtape,centro_rodillo_x,centro_rodillo_y,
+        menu_generic_visualtape_dibujar_rodillo_arrastre(d,centro_rodillo_x,centro_rodillo_y,
         longitud,longitud2,grados,color_fondo);
-        menu_generic_visualtape_dibujar_rodillo_arrastre(dibujo_visualtape,centro_rodillo_dos_x,centro_rodillo_y,
+        menu_generic_visualtape_dibujar_rodillo_arrastre(d,centro_rodillo_dos_x,centro_rodillo_y,
         longitud,longitud2,grados,color_fondo);
 
         grados +=60;
@@ -41178,13 +41168,34 @@ void menu_generic_visualtape_draw_rodillos_arrastre(struct zxvision_vectorial_dr
 
 
     for (segmentos=0;segmentos<6;segmentos++) {
-        menu_generic_visualtape_dibujar_rodillo_arrastre(dibujo_visualtape,centro_rodillo_x,centro_rodillo_y,
+        menu_generic_visualtape_dibujar_rodillo_arrastre(d,centro_rodillo_x,centro_rodillo_y,
         longitud,longitud2,grados,color_rodillo);
-        menu_generic_visualtape_dibujar_rodillo_arrastre(dibujo_visualtape,centro_rodillo_dos_x,centro_rodillo_y,
+        menu_generic_visualtape_dibujar_rodillo_arrastre(d,centro_rodillo_dos_x,centro_rodillo_y,
         longitud,longitud2,grados,color_rodillo);
 
         grados +=60;
     }
+
+    //Linea que une el rodillo enrollado hasta los rodillos pequeños fijos
+    //Izquierda
+
+    int radio_rellenar_izquierdo;
+    int radio_rellenar_derecho;
+
+    menu_generic_visualtape_da_radios_rollos(porcentaje_cinta_izquierdo,porcentaje_cinta_derecha,&radio_rellenar_izquierdo,&radio_rellenar_derecho);
+
+    int pos_x_origen=GENERIC_VISUALTAPE_ROLLO_IZQUIERDO_X-radio_rellenar_izquierdo;
+    int pos_y_origen=GENERIC_VISUALTAPE_ROLLO_IZQUIERDO_Y;
+
+    d->jumppos(d,pos_x_origen,pos_y_origen);
+    int color_cinta=0;
+    d->setcolour(d,color_cinta);
+
+    //Calcular final rollo
+    d->pencil_on(d);
+    d->setpos(d,VISUALTAPE_RODILLO_FIJO_X-VISUALTAPE_RODILLO_FIJO_RADIO,VISUALTAPE_RODILLO_FIJO_Y);
+
+
 
 }
 
@@ -41249,7 +41260,7 @@ void menu_generic_visualtape(zxvision_window *w,int porcentaje_cinta_izquierdo,i
 
     printf("Redibujando rodillos arrastre. %d\n",contador_segundo_infinito);
 
-    menu_generic_visualtape_draw_rodillos_arrastre(&dibujo_visualtape,grados_rodillos,antes_grados_rodillos);
+    menu_generic_visualtape_draw_rodillos_arrastre(&dibujo_visualtape,grados_rodillos,antes_grados_rodillos,porcentaje_cinta_izquierdo,porcentaje_cinta_derecha);
 
    }
 
