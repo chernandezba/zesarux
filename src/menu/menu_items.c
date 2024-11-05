@@ -41089,6 +41089,47 @@ void menu_generic_visualtape_dibujar_rodillo_arrastre(struct zxvision_vectorial_
 
 }
 
+void menu_generic_visualtape_draw_rodillos_arrastre(struct zxvision_vectorial_draw *dibujo_visualtape,int grados_rodillos,int antes_grados_rodillos)
+{
+
+
+    int color_rodillo=15;
+    int centro_rodillo_x=280;
+    int centro_rodillo_dos_x=1000-280;
+    int centro_rodillo_y=290;
+
+    int longitud2=20;
+
+    //radio interior del rodillo=110/2
+    int longitud=(110/2)-longitud2;
+
+    //primero borrar los anteriores
+    int color_fondo=GENERIC_VISUALTAPE_COLOR_FONDO;
+    int grados=antes_grados_rodillos;
+    int segmentos;
+
+    for (segmentos=0;segmentos<6;segmentos++) {
+        menu_generic_visualtape_dibujar_rodillo_arrastre(dibujo_visualtape,centro_rodillo_x,centro_rodillo_y,
+        longitud,longitud2,grados,color_fondo);
+        menu_generic_visualtape_dibujar_rodillo_arrastre(dibujo_visualtape,centro_rodillo_dos_x,centro_rodillo_y,
+        longitud,longitud2,grados,color_fondo);
+
+        grados +=60;
+    }
+
+    grados=grados_rodillos;
+
+
+    for (segmentos=0;segmentos<6;segmentos++) {
+        menu_generic_visualtape_dibujar_rodillo_arrastre(dibujo_visualtape,centro_rodillo_x,centro_rodillo_y,
+        longitud,longitud2,grados,color_rodillo);
+        menu_generic_visualtape_dibujar_rodillo_arrastre(dibujo_visualtape,centro_rodillo_dos_x,centro_rodillo_y,
+        longitud,longitud2,grados,color_rodillo);
+
+        grados +=60;
+    }
+
+}
 
 
 
@@ -41150,39 +41191,9 @@ void menu_generic_visualtape(zxvision_window *w,int porcentaje_cinta_izquierdo,i
    if (redibujar_rodillos_arrastre) {
 
     printf("Redibujando rodillos arrastre. %d\n",contador_segundo_infinito);
-    int color_rodillo=15;
-    int centro_rodillo_x=280;
-    int centro_rodillo_dos_x=1000-280;
-    int centro_rodillo_y=290;
 
-        int longitud2=20;
-        int longitud=(110/2)-longitud2;
+    menu_generic_visualtape_draw_rodillos_arrastre(&dibujo_visualtape,grados_rodillos,antes_grados_rodillos);
 
-        //primero borrar los anteriores
-        int color_fondo=GENERIC_VISUALTAPE_COLOR_FONDO;
-        int grados=antes_grados_rodillos;
-        int segmentos;
-
-    for (segmentos=0;segmentos<6;segmentos++) {
-        menu_generic_visualtape_dibujar_rodillo_arrastre(&dibujo_visualtape,centro_rodillo_x,centro_rodillo_y,
-            longitud,longitud2,grados,color_fondo);
-        menu_generic_visualtape_dibujar_rodillo_arrastre(&dibujo_visualtape,centro_rodillo_dos_x,centro_rodillo_y,
-            longitud,longitud2,grados,color_fondo);
-
-            grados +=60;
-    }
-
-        grados=grados_rodillos;
-
-
-    for (segmentos=0;segmentos<6;segmentos++) {
-        menu_generic_visualtape_dibujar_rodillo_arrastre(&dibujo_visualtape,centro_rodillo_x,centro_rodillo_y,
-            longitud,longitud2,grados,color_rodillo);
-        menu_generic_visualtape_dibujar_rodillo_arrastre(&dibujo_visualtape,centro_rodillo_dos_x,centro_rodillo_y,
-            longitud,longitud2,grados,color_rodillo);
-
-            grados +=60;
-    }
    }
 
 
