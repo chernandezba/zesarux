@@ -41212,6 +41212,45 @@ void menu_generic_visualtape_cinta_rollos_rodillos(struct zxvision_vectorial_dra
 
 }
 
+void menu_generic_visualtape_draw_tdk(struct zxvision_vectorial_draw *d)
+{
+
+    int inicio_letras_x=500-75;
+    int inicio_letras_y=630-200;
+    int alto_letras=50;
+
+    d->setcolour(d,7);
+    d->pencil_on(d);
+
+    //T
+    d->jumppos(d,inicio_letras_x+25,inicio_letras_y);
+    d->setrelpos(d,0,-alto_letras);
+    d->jumppos(d,inicio_letras_x+5,inicio_letras_y-alto_letras);
+    d->setrelpos(d,+40,0);
+
+    //D
+    d->jumppos(d,inicio_letras_x+50+5,inicio_letras_y);
+    d->setrelpos(d,0,-alto_letras);
+    d->setrelpos(d,+15,0);
+    d->jumppos(d,inicio_letras_x+50+5,inicio_letras_y);
+    d->setrelpos(d,+15,0);
+    //d->setrelpos(d,+40,+alto_letras/2);
+    //d->setrelpos(d,-40,+alto_letras/2);
+
+    d->jumppos(d,inicio_letras_x+50+5+15,inicio_letras_y-alto_letras/2);
+    d->drawarc(d,alto_letras/2,269,360+91);
+
+    //K
+    d->jumppos(d,inicio_letras_x+100+5,inicio_letras_y);
+    d->setrelpos(d,0,-alto_letras);
+
+    d->jumppos(d,inicio_letras_x+100+5,inicio_letras_y-alto_letras/2);
+    d->setrelpos(d,+30,-alto_letras/2);
+    d->jumppos(d,inicio_letras_x+100+5,inicio_letras_y-alto_letras/2);
+    d->setrelpos(d,+30,+alto_letras/2);
+
+}
+
 void menu_generic_visualtape_draw_rodillos_arrastre(struct zxvision_vectorial_draw *d,
     int grados_rodillos,int antes_grados_rodillos,int porcentaje_cinta_izquierdo,int porcentaje_cinta_derecha,
     int antes_porcentaje_cinta_izquierdo,int antes_porcentaje_cinta_derecha,int temblor)
@@ -41264,7 +41303,7 @@ void menu_generic_visualtape_draw_rodillos_arrastre(struct zxvision_vectorial_dr
 
 
 
-
+    menu_generic_visualtape_draw_tdk(d);
 
 
 }

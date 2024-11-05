@@ -439,6 +439,8 @@ ok-Debug I/o ver puerto lectura hilow
 *cinta desde rodillos hacia rodillos y cabezal.  tembleque de cinta
 *cabezal lectura?
 *opcion para slow movement/movimiento real 10x o 40x
+-si ventana muy pequeña, da floating point exception
+
 
 
 -al insertar cinta, poner posicion cabezal en 0
