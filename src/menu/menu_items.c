@@ -41135,8 +41135,33 @@ void menu_generic_visualtape_dibujar_rodillo_arrastre(struct zxvision_vectorial_
 
 }
 
+void menu_generic_visualtape_cinta_rollos_rodillos(struct zxvision_vectorial_draw *d,
+    int porcentaje_cinta_izquierdo,int porcentaje_cinta_derecha,int color)
+{
+    //Linea que une el rodillo enrollado hasta los rodillos pequeños fijos
+    //Izquierda
+
+    int radio_rellenar_izquierdo;
+    int radio_rellenar_derecho;
+
+    menu_generic_visualtape_da_radios_rollos(porcentaje_cinta_izquierdo,porcentaje_cinta_derecha,&radio_rellenar_izquierdo,&radio_rellenar_derecho);
+
+    int pos_x_origen=GENERIC_VISUALTAPE_ROLLO_IZQUIERDO_X-radio_rellenar_izquierdo;
+    int pos_y_origen=GENERIC_VISUALTAPE_ROLLO_IZQUIERDO_Y;
+
+    d->jumppos(d,pos_x_origen,pos_y_origen);
+    int color_cinta=color;
+    d->setcolour(d,color_cinta);
+
+    //Calcular final rollo
+    d->pencil_on(d);
+    d->setpos(d,VISUALTAPE_RODILLO_FIJO_X-VISUALTAPE_RODILLO_FIJO_RADIO,VISUALTAPE_RODILLO_FIJO_Y);
+
+}
+
 void menu_generic_visualtape_draw_rodillos_arrastre(struct zxvision_vectorial_draw *d,
-    int grados_rodillos,int antes_grados_rodillos,int porcentaje_cinta_izquierdo,int porcentaje_cinta_derecha)
+    int grados_rodillos,int antes_grados_rodillos,int porcentaje_cinta_izquierdo,int porcentaje_cinta_derecha,
+    int antes_porcentaje_cinta_izquierdo,int antes_porcentaje_cinta_derecha)
 {
 
 
@@ -41176,8 +41201,13 @@ void menu_generic_visualtape_draw_rodillos_arrastre(struct zxvision_vectorial_dr
         grados +=60;
     }
 
-    //Linea que une el rodillo enrollado hasta los rodillos pequeños fijos
-    //Izquierda
+    //Linea que une el rodillo enrollado hasta los rodillos pequeños fijos. Primero borrar con porcentaje anterior
+    menu_generic_visualtape_cinta_rollos_rodillos(d,antes_porcentaje_cinta_izquierdo,antes_porcentaje_cinta_derecha,GENERIC_VISUALTAPE_COLOR_FONDO);
+
+    //Luego dibujar
+    menu_generic_visualtape_cinta_rollos_rodillos(d,porcentaje_cinta_izquierdo,porcentaje_cinta_derecha,0);
+
+    /*
 
     int radio_rellenar_izquierdo;
     int radio_rellenar_derecho;
@@ -41194,7 +41224,7 @@ void menu_generic_visualtape_draw_rodillos_arrastre(struct zxvision_vectorial_dr
     //Calcular final rollo
     d->pencil_on(d);
     d->setpos(d,VISUALTAPE_RODILLO_FIJO_X-VISUALTAPE_RODILLO_FIJO_RADIO,VISUALTAPE_RODILLO_FIJO_Y);
-
+    */
 
 
 }
@@ -41208,6 +41238,7 @@ void menu_generic_visualtape_draw_rodillos_arrastre(struct zxvision_vectorial_dr
 //redibujar_rollos: redibujar cinta enrollada, 0 o 1. Se le pone a 1 cuando ha cambiado significativamente
 //redibujar_parte_estatica: si redibujar partes estaticas: marco exterior, recuadros... todo aquello que no es dinamico
 void menu_generic_visualtape(zxvision_window *w,int porcentaje_cinta_izquierdo,int porcentaje_cinta_derecha,
+    int antes_porcentaje_cinta_izquierdo,int antes_porcentaje_cinta_derecha,
     int grados_rodillos,int antes_grados_rodillos,int redibujar_rollos,int redibujar_parte_estatica,int redibujar_rodillos_arrastre)
 {
 
@@ -41260,7 +41291,9 @@ void menu_generic_visualtape(zxvision_window *w,int porcentaje_cinta_izquierdo,i
 
     printf("Redibujando rodillos arrastre. %d\n",contador_segundo_infinito);
 
-    menu_generic_visualtape_draw_rodillos_arrastre(&dibujo_visualtape,grados_rodillos,antes_grados_rodillos,porcentaje_cinta_izquierdo,porcentaje_cinta_derecha);
+    menu_generic_visualtape_draw_rodillos_arrastre(&dibujo_visualtape,grados_rodillos,antes_grados_rodillos,
+        porcentaje_cinta_izquierdo,porcentaje_cinta_derecha,
+        antes_porcentaje_cinta_izquierdo,antes_porcentaje_cinta_derecha);
 
    }
 
@@ -41333,8 +41366,11 @@ void menu_hilow_visual_datadrive_overlay(void)
     }
 
 
+    int antes_porcentaje_cinta_izquierdo=porc_90-menu_hilow_visual_datadrive_porcentaje_anterior;;
+    int antes_porcentaje_cinta_derecho=menu_hilow_visual_datadrive_porcentaje_anterior;
 
     menu_generic_visualtape(menu_hilow_visual_datadrive_window,porcentaje_cinta_izquierdo,porcentaje_cinta_derecho,
+    antes_porcentaje_cinta_izquierdo,antes_porcentaje_cinta_derecho,
     hilow_visual_rodillo_arrastre_grados,antes_hilow_visual_rodillo_arrastre_grados,
     redibujar_rollos,redibujar_parte_estatica,redibujar_rodillos_arrastre);
 
