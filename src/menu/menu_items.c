@@ -40909,7 +40909,12 @@ void menu_generic_visualtape_dibujar_un_rollo(struct zxvision_vectorial_draw *d,
     }
 }
 
-
+#define GENERIC_VISUALTAPE_ANCHO_CINTA 1000
+#define GENERIC_VISUALTAPE_ALTO_CINTA 630
+#define GENERIC_VISUALTAPE_ROLLO_IZQUIERDO_X 280
+#define GENERIC_VISUALTAPE_ROLLO_IZQUIERDO_Y 290
+#define GENERIC_VISUALTAPE_ROLLO_DERECHO_X (GENERIC_VISUALTAPE_ANCHO_CINTA-GENERIC_VISUALTAPE_ROLLO_IZQUIERDO_X)
+#define GENERIC_VISUALTAPE_ROLLO_DERECHO_Y 290
 
 void menu_generic_visualtape_dibujar_rollos(struct zxvision_vectorial_draw *d,int porcentaje_cinta_izquierdo,int porcentaje_cinta_derecha)
 {
@@ -40921,8 +40926,8 @@ void menu_generic_visualtape_dibujar_rollos(struct zxvision_vectorial_draw *d,in
 
     //temporal color
     int color_fondo=GENERIC_VISUALTAPE_COLOR_FONDO;
-    int ancho_cinta=1000;
-    int alto_cinta=630;
+    int ancho_cinta=GENERIC_VISUALTAPE_ANCHO_CINTA;
+    int alto_cinta=GENERIC_VISUALTAPE_ALTO_CINTA;
     int color_marco=7; //gris
 
 
@@ -40935,21 +40940,21 @@ void menu_generic_visualtape_dibujar_rollos(struct zxvision_vectorial_draw *d,in
 
     //Borrar
     d->pencil_off(d);
-    d->setpos(d,280,290);
+    d->setpos(d,GENERIC_VISUALTAPE_ROLLO_IZQUIERDO_X,GENERIC_VISUALTAPE_ROLLO_IZQUIERDO_Y);
     menu_generic_visualtape_dibujar_un_rollo(d,radio_rellenar_izquierdo,0);
 
     d->pencil_off(d);
-    d->setpos(d,ancho_cinta-280,290);
+    d->setpos(d,GENERIC_VISUALTAPE_ROLLO_DERECHO_X,GENERIC_VISUALTAPE_ROLLO_DERECHO_Y);
     menu_generic_visualtape_dibujar_un_rollo(d,radio_rellenar_derecho,0);
 
 
     //Dibujar
     d->pencil_off(d);
-    d->setpos(d,280,290);
+    d->setpos(d,GENERIC_VISUALTAPE_ROLLO_IZQUIERDO_X,GENERIC_VISUALTAPE_ROLLO_IZQUIERDO_Y);
     menu_generic_visualtape_dibujar_un_rollo(d,radio_rellenar_izquierdo,1);
 
     d->pencil_off(d);
-    d->setpos(d,ancho_cinta-280,290);
+    d->setpos(d,GENERIC_VISUALTAPE_ROLLO_DERECHO_X,GENERIC_VISUALTAPE_ROLLO_DERECHO_Y);
     menu_generic_visualtape_dibujar_un_rollo(d,radio_rellenar_derecho,1);
 
     //Paralelogramo de abajo
@@ -41066,7 +41071,7 @@ int menu_generic_visualtap_calculate_coord_grados(int sine,int longitud,int grad
 
 }
 
-
+//Dibujar rodillos de arrastre con su movimiento, asi como cinta que une la zona enrollada con rodillos pequeños fijos
 void menu_generic_visualtape_dibujar_rodillo_arrastre(struct zxvision_vectorial_draw *d,
     int x_origen_rodillo,int y_origen_rodillo,int longitud,int longitud2,int grados,int color)
 {
@@ -41101,6 +41106,18 @@ void menu_generic_visualtape_dibujar_rodillo_arrastre(struct zxvision_vectorial_
 
     d->setpos(d,xfinal,yfinal);
 
+    //Linea que une el rodillo enrollado hasta los rodillos pequeños fijos
+    //Izquierda
+
+    //Calcular final rollo
+
+    //Posiciones rodillos pequeños fijos
+    /*
+        for (i=0;i<=VISUALTAPE_RODILLO_FIJO_RADIO;i++) {
+        d->jumppos(d,VISUALTAPE_RODILLO_FIJO_X,VISUALTAPE_RODILLO_FIJO_Y);
+        d->drawcircle(d,i);
+        d->jumppos(d,1000-VISUALTAPE_RODILLO_FIJO_X,VISUALTAPE_RODILLO_FIJO_Y);
+    */
 }
 
 void menu_generic_visualtape_draw_rodillos_arrastre(struct zxvision_vectorial_draw *dibujo_visualtape,int grados_rodillos,int antes_grados_rodillos)
