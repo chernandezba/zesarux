@@ -2319,8 +2319,6 @@ void hilow_timer_events(void)
         //O sea 360/50=7 grados cada frame de video
         int incremento_grados=7;
 
-        //temp
-        //incremento_grados=1;
 
         //10x o 40x
         if (last_hilow_port_value & HILOW_PORT_MASK_FAST) incremento_grados *=40;

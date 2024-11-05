@@ -41262,24 +41262,9 @@ void menu_generic_visualtape_draw_rodillos_arrastre(struct zxvision_vectorial_dr
     menu_generic_visualtape_cinta_rollos_rodillos(d,porcentaje_cinta_izquierdo,porcentaje_cinta_derecha,
         0,temblor);
 
-    /*
 
-    int radio_rellenar_izquierdo;
-    int radio_rellenar_derecho;
 
-    menu_generic_visualtape_da_radios_rollos(porcentaje_cinta_izquierdo,porcentaje_cinta_derecha,&radio_rellenar_izquierdo,&radio_rellenar_derecho);
 
-    int pos_x_origen=GENERIC_VISUALTAPE_ROLLO_IZQUIERDO_X-radio_rellenar_izquierdo;
-    int pos_y_origen=GENERIC_VISUALTAPE_ROLLO_IZQUIERDO_Y;
-
-    d->jumppos(d,pos_x_origen,pos_y_origen);
-    int color_cinta=0;
-    d->setcolour(d,color_cinta);
-
-    //Calcular final rollo
-    d->pencil_on(d);
-    d->setpos(d,VISUALTAPE_RODILLO_FIJO_X-VISUALTAPE_RODILLO_FIJO_RADIO,VISUALTAPE_RODILLO_FIJO_Y);
-    */
 
 
 }
