@@ -40963,6 +40963,10 @@ void menu_generic_visualtape_dibujar_rollos(struct zxvision_vectorial_draw *d,in
 
 }
 
+#define VISUALTAPE_RODILLO_FIJO_X 50
+#define VISUALTAPE_RODILLO_FIJO_Y (630-100)
+#define VISUALTAPE_RODILLO_FIJO_RADIO 10
+
 void menu_generic_visualtape_dibujar_cinta_estatica(struct zxvision_vectorial_draw *d)
 {
     int radio_bordes_esquinas=30;
@@ -41013,6 +41017,16 @@ void menu_generic_visualtape_dibujar_cinta_estatica(struct zxvision_vectorial_dr
         d->jumppos(d,280,290);
         d->drawcircle(d,i);
         d->jumppos(d,ancho_cinta-280,290);
+        d->drawcircle(d,i);
+    }
+
+    //rodillos fijo donde se ancla la cinta
+    d->setcolour(d,7);
+
+    for (i=0;i<=VISUALTAPE_RODILLO_FIJO_RADIO;i++) {
+        d->jumppos(d,VISUALTAPE_RODILLO_FIJO_X,VISUALTAPE_RODILLO_FIJO_Y);
+        d->drawcircle(d,i);
+        d->jumppos(d,1000-VISUALTAPE_RODILLO_FIJO_X,VISUALTAPE_RODILLO_FIJO_Y);
         d->drawcircle(d,i);
     }
 
