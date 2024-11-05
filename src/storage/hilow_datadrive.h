@@ -153,6 +153,8 @@ extern int hilow_raw_device_buffer_total_size;
 
 extern int hilow_visual_rodillo_arrastre_grados;
 
+extern int hilow_cinta_en_movimiento;
+
 extern z80_byte hilow_raw_return_port_ff_value(void);
 
 extern z80_bit hilow_reproductor_encendido;

@@ -41003,6 +41003,7 @@ void menu_generic_visualtape_dibujar_rollos(struct zxvision_vectorial_draw *d,in
 #define VISUALTAPE_RODILLO_MOVIL_DERECHO_X (1000-90)
 #define VISUALTAPE_RODILLO_MOVIL_Y (630-50)
 #define VISUALTAPE_RODILLO_MOVIL_RADIO 40
+#define VISUALTAPE_RODILLO_MOVIL_RADIO_INTERIOR 6
 
 void menu_generic_visualtape_dibujar_cinta_estatica(struct zxvision_vectorial_draw *d)
 {
@@ -41068,7 +41069,16 @@ void menu_generic_visualtape_dibujar_cinta_estatica(struct zxvision_vectorial_dr
     }
 
     //rodillos inferiores moviles. Aunque yo no los hago moviles
-    for (i=0;i<=VISUALTAPE_RODILLO_MOVIL_RADIO;i++) {
+    for (i=VISUALTAPE_RODILLO_MOVIL_RADIO_INTERIOR;i<=VISUALTAPE_RODILLO_MOVIL_RADIO;i++) {
+        d->jumppos(d,VISUALTAPE_RODILLO_MOVIL_IZQUIERDO_X,VISUALTAPE_RODILLO_MOVIL_Y);
+        d->drawcircle(d,i);
+        d->jumppos(d,VISUALTAPE_RODILLO_MOVIL_DERECHO_X,VISUALTAPE_RODILLO_MOVIL_Y);
+        d->drawcircle(d,i);
+    }
+
+    //la parte interior en negro
+    d->setcolour(d,0);
+    for (i=0;i<=VISUALTAPE_RODILLO_MOVIL_RADIO_INTERIOR;i++) {
         d->jumppos(d,VISUALTAPE_RODILLO_MOVIL_IZQUIERDO_X,VISUALTAPE_RODILLO_MOVIL_Y);
         d->drawcircle(d,i);
         d->jumppos(d,VISUALTAPE_RODILLO_MOVIL_DERECHO_X,VISUALTAPE_RODILLO_MOVIL_Y);
@@ -41150,7 +41160,7 @@ void menu_generic_visualtape_dibujar_rodillo_arrastre(struct zxvision_vectorial_
 }
 
 void menu_generic_visualtape_cinta_rollos_rodillos(struct zxvision_vectorial_draw *d,
-    int porcentaje_cinta_izquierdo,int porcentaje_cinta_derecha,int color)
+    int porcentaje_cinta_izquierdo,int porcentaje_cinta_derecha,int color,int temblor)
 {
     //Linea que une el rodillo enrollado hasta los rodillos pequeños fijos y a los moviles de abajo
 
@@ -41162,6 +41172,12 @@ void menu_generic_visualtape_cinta_rollos_rodillos(struct zxvision_vectorial_dra
     //Algo menos de radio para que no parezca que la cinta no toca el rodillo
     radio_rellenar_izquierdo--;
     radio_rellenar_derecho--;
+
+    //Efecto temblor
+    if (temblor) {
+        radio_rellenar_izquierdo -=2;
+        radio_rellenar_derecho -=2;
+    }
 
     //Izquierdo
     int pos_x_origen=GENERIC_VISUALTAPE_ROLLO_IZQUIERDO_X-radio_rellenar_izquierdo;
@@ -41198,7 +41214,7 @@ void menu_generic_visualtape_cinta_rollos_rodillos(struct zxvision_vectorial_dra
 
 void menu_generic_visualtape_draw_rodillos_arrastre(struct zxvision_vectorial_draw *d,
     int grados_rodillos,int antes_grados_rodillos,int porcentaje_cinta_izquierdo,int porcentaje_cinta_derecha,
-    int antes_porcentaje_cinta_izquierdo,int antes_porcentaje_cinta_derecha)
+    int antes_porcentaje_cinta_izquierdo,int antes_porcentaje_cinta_derecha,int temblor)
 {
 
 
@@ -41239,10 +41255,12 @@ void menu_generic_visualtape_draw_rodillos_arrastre(struct zxvision_vectorial_dr
     }
 
     //Linea que une el rodillo enrollado hasta los rodillos pequeños fijos. Primero borrar con porcentaje anterior
-    menu_generic_visualtape_cinta_rollos_rodillos(d,antes_porcentaje_cinta_izquierdo,antes_porcentaje_cinta_derecha,GENERIC_VISUALTAPE_COLOR_FONDO);
+    menu_generic_visualtape_cinta_rollos_rodillos(d,antes_porcentaje_cinta_izquierdo,antes_porcentaje_cinta_derecha,
+        GENERIC_VISUALTAPE_COLOR_FONDO,temblor^1);
 
     //Luego dibujar
-    menu_generic_visualtape_cinta_rollos_rodillos(d,porcentaje_cinta_izquierdo,porcentaje_cinta_derecha,0);
+    menu_generic_visualtape_cinta_rollos_rodillos(d,porcentaje_cinta_izquierdo,porcentaje_cinta_derecha,
+        0,temblor);
 
     /*
 
@@ -41276,7 +41294,7 @@ void menu_generic_visualtape_draw_rodillos_arrastre(struct zxvision_vectorial_dr
 //redibujar_parte_estatica: si redibujar partes estaticas: marco exterior, recuadros... todo aquello que no es dinamico
 void menu_generic_visualtape(zxvision_window *w,int porcentaje_cinta_izquierdo,int porcentaje_cinta_derecha,
     int antes_porcentaje_cinta_izquierdo,int antes_porcentaje_cinta_derecha,
-    int grados_rodillos,int antes_grados_rodillos,int redibujar_rollos,int redibujar_parte_estatica,int redibujar_rodillos_arrastre)
+    int grados_rodillos,int antes_grados_rodillos,int redibujar_rollos,int redibujar_parte_estatica,int redibujar_rodillos_arrastre,int temblor)
 {
 
     //Dibujo de la cinta
@@ -41330,7 +41348,7 @@ void menu_generic_visualtape(zxvision_window *w,int porcentaje_cinta_izquierdo,i
 
     menu_generic_visualtape_draw_rodillos_arrastre(&dibujo_visualtape,grados_rodillos,antes_grados_rodillos,
         porcentaje_cinta_izquierdo,porcentaje_cinta_derecha,
-        antes_porcentaje_cinta_izquierdo,antes_porcentaje_cinta_derecha);
+        antes_porcentaje_cinta_izquierdo,antes_porcentaje_cinta_derecha,temblor);
 
    }
 
@@ -41347,6 +41365,7 @@ int menu_hilow_visual_datadrive_porcentaje_anterior=-1;
 
 int antes_hilow_visual_rodillo_arrastre_grados=-1;
 
+int menu_hilow_visual_datadrive_temblor=0;
 
 void menu_hilow_visual_datadrive_overlay(void)
 {
@@ -41409,7 +41428,10 @@ void menu_hilow_visual_datadrive_overlay(void)
     menu_generic_visualtape(menu_hilow_visual_datadrive_window,porcentaje_cinta_izquierdo,porcentaje_cinta_derecho,
     antes_porcentaje_cinta_izquierdo,antes_porcentaje_cinta_derecho,
     hilow_visual_rodillo_arrastre_grados,antes_hilow_visual_rodillo_arrastre_grados,
-    redibujar_rollos,redibujar_parte_estatica,redibujar_rodillos_arrastre);
+    redibujar_rollos,redibujar_parte_estatica,redibujar_rodillos_arrastre,menu_hilow_visual_datadrive_temblor);
+
+    //Si esta en movimiento, tiembla
+    if (hilow_cinta_en_movimiento) menu_hilow_visual_datadrive_temblor^=1;
 
     menu_hilow_visual_datadrive_porcentaje_anterior=porcentaje;
     antes_hilow_visual_rodillo_arrastre_grados=hilow_visual_rodillo_arrastre_grados;
