@@ -41152,7 +41152,7 @@ void menu_generic_visualtape_dibujar_rodillo_arrastre(struct zxvision_vectorial_
 void menu_generic_visualtape_cinta_rollos_rodillos(struct zxvision_vectorial_draw *d,
     int porcentaje_cinta_izquierdo,int porcentaje_cinta_derecha,int color)
 {
-    //Linea que une el rodillo enrollado hasta los rodillos pequeños fijos
+    //Linea que une el rodillo enrollado hasta los rodillos pequeños fijos y a los moviles de abajo
 
     int radio_rellenar_izquierdo;
     int radio_rellenar_derecho;
@@ -41175,6 +41175,9 @@ void menu_generic_visualtape_cinta_rollos_rodillos(struct zxvision_vectorial_dra
     d->pencil_on(d);
     d->setpos(d,VISUALTAPE_RODILLO_FIJO_IZQUIERDO_X-VISUALTAPE_RODILLO_FIJO_RADIO,VISUALTAPE_RODILLO_FIJO_Y);
 
+    //Y ahora hasta el rodillo movil
+    d->setpos(d,VISUALTAPE_RODILLO_MOVIL_IZQUIERDO_X-VISUALTAPE_RODILLO_MOVIL_RADIO,VISUALTAPE_RODILLO_MOVIL_Y);
+
     //Derecho
     pos_x_origen=GENERIC_VISUALTAPE_ROLLO_DERECHO_X+radio_rellenar_derecho;
     pos_y_origen=GENERIC_VISUALTAPE_ROLLO_DERECHO_Y;
@@ -41183,6 +41186,13 @@ void menu_generic_visualtape_cinta_rollos_rodillos(struct zxvision_vectorial_dra
 
     //Calcular final rollo
     d->setpos(d,VISUALTAPE_RODILLO_FIJO_DERECHO_X+VISUALTAPE_RODILLO_FIJO_RADIO,VISUALTAPE_RODILLO_FIJO_Y);
+
+    //Y ahora hasta el rodillo movil
+    d->setpos(d,VISUALTAPE_RODILLO_MOVIL_DERECHO_X+VISUALTAPE_RODILLO_MOVIL_RADIO,VISUALTAPE_RODILLO_MOVIL_Y);
+
+    //Y cinta que une por debajo
+    d->jumppos(d,VISUALTAPE_RODILLO_MOVIL_IZQUIERDO_X,VISUALTAPE_RODILLO_MOVIL_Y+VISUALTAPE_RODILLO_MOVIL_RADIO);
+    d->setpos(d,VISUALTAPE_RODILLO_MOVIL_DERECHO_X,VISUALTAPE_RODILLO_MOVIL_Y+VISUALTAPE_RODILLO_MOVIL_RADIO);
 
 }
 
