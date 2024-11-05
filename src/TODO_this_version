@@ -431,6 +431,17 @@ ok-Debug I/o ver puerto lectura hilow
 
 -format ddh desde basic: ver si se puede hacer simple cara/doble cara
 
+-visual datadrive
+*indicar C60 o lo que sea. letras vectoriales?
+*otros detalles de una cinta real: marca tdk? nombre archivo? pestañas protección escritura (ambas cara A y B)
+*rodillos de arrastre
+*dentado de rodillos en movimiento. 1 vuelta por segundo
+*cinta desde rodillos hacia rodillos y cabezal.  tembleque de cinta
+*cabezal lectura?
+*opcion para slow movement/movimiento real 10x o 40x
+
+
+-al insertar cinta, poner posicion cabezal en 0
 
 -----------------------
 ---FIN Hilow        ---

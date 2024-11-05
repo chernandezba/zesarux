@@ -40939,7 +40939,7 @@ void menu_generic_visualtape_dibujar_rollos(struct zxvision_vectorial_draw *d,in
     menu_generic_visualtape_dibujar_un_rollo(d,radio_rellenar_izquierdo,0);
 
     d->pencil_off(d);
-    d->setpos(d,1000-280,290);
+    d->setpos(d,ancho_cinta-280,290);
     menu_generic_visualtape_dibujar_un_rollo(d,radio_rellenar_derecho,0);
 
 
@@ -40949,7 +40949,7 @@ void menu_generic_visualtape_dibujar_rollos(struct zxvision_vectorial_draw *d,in
     menu_generic_visualtape_dibujar_un_rollo(d,radio_rellenar_izquierdo,1);
 
     d->pencil_off(d);
-    d->setpos(d,1000-280,290);
+    d->setpos(d,ancho_cinta-280,290);
     menu_generic_visualtape_dibujar_un_rollo(d,radio_rellenar_derecho,1);
 
     //Paralelogramo de abajo
@@ -40996,13 +40996,25 @@ void menu_generic_visualtape_dibujar_cinta_estatica(struct zxvision_vectorial_dr
     d->drawarc(d,radio_bordes_esquinas,0,90);
     //Abajo derecha
     d->jumppos(d,ancho_cinta-radio_bordes_esquinas,alto_cinta-radio_bordes_esquinas);
-    d->drawarc(d,radio_bordes_esquinas,270,361);
+    d->drawarc(d,radio_bordes_esquinas,270,361); //con 360 no acaba de cerrar bien el marco
     //Abajo izquierda
     d->jumppos(d,radio_bordes_esquinas,alto_cinta-radio_bordes_esquinas);
     d->drawarc(d,radio_bordes_esquinas,180,270);
 
+    //Rodillos. Parte blanca
+    int max_radio=110;
+    int min_radio=55;
 
 
+    int i;
+    d->setcolour(d,15);
+
+    for (i=min_radio;i<=max_radio;i++) {
+        d->jumppos(d,280,290);
+        d->drawcircle(d,i);
+        d->jumppos(d,ancho_cinta-280,290);
+        d->drawcircle(d,i);
+    }
 
 
 }
@@ -41103,8 +41115,24 @@ void menu_hilow_visual_datadrive_overlay(void)
 
     if (porcentaje!=menu_hilow_visual_datadrive_porcentaje_anterior) redibujar_rollos=1;
 
+    //determinar esto solo cuando sea necesario. probablemente con dirty
+    int redibujar_parte_estatica=0;
 
-    menu_generic_visualtape(menu_hilow_visual_datadrive_window,porcentaje_cinta_izquierdo,porcentaje_cinta_derecho,redibujar_rollos,1);
+    //No redibujar si no hay cambios de nada
+    if (menu_hilow_visual_datadrive_window->dirty_user_must_draw_contents) {
+        printf("Redibujando parte estatica y dinamica. %d\n",contador_segundo_infinito);
+        redibujar_parte_estatica=1;
+        redibujar_rollos=1;
+
+        menu_hilow_visual_datadrive_window->dirty_user_must_draw_contents=0;
+    }
+
+    if (redibujar_rollos) {
+        printf("Redibujando parte dinamica. %d\n",contador_segundo_infinito);
+    }
+
+
+    menu_generic_visualtape(menu_hilow_visual_datadrive_window,porcentaje_cinta_izquierdo,porcentaje_cinta_derecho,redibujar_rollos,redibujar_parte_estatica);
 
     menu_hilow_visual_datadrive_porcentaje_anterior=porcentaje;
 
