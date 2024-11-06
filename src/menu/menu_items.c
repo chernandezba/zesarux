@@ -41481,6 +41481,8 @@ int menu_hilow_visual_datadrive_temblor=0;
 
 int menu_hilow_antes_semaforos=-1;
 
+int visual_hilow_datadrive_forzar_dibujado=0;
+
 void menu_hilow_visual_datadrive_overlay(void)
 {
 
@@ -41529,7 +41531,7 @@ void menu_hilow_visual_datadrive_overlay(void)
     if (hilow_visual_rodillo_arrastre_grados!=antes_hilow_visual_rodillo_arrastre_grados) redibujar_rodillos_arrastre=1;
 
     //No redibujar si no hay cambios de nada
-    if (menu_hilow_visual_datadrive_window->dirty_user_must_draw_contents) {
+    if (menu_hilow_visual_datadrive_window->dirty_user_must_draw_contents || visual_hilow_datadrive_forzar_dibujado) {
         printf("Redibujando parte estatica y dinamica y rodillos arrastre. %d\n",contador_segundo_infinito);
         redibujar_parte_estatica=1;
         redibujar_rollos=1;
@@ -41538,6 +41540,8 @@ void menu_hilow_visual_datadrive_overlay(void)
 
         menu_hilow_visual_datadrive_window->dirty_user_must_draw_contents=0;
     }
+
+    visual_hilow_datadrive_forzar_dibujado=0;
 
     if (redibujar_rollos) {
         printf("Redibujando parte dinamica. %d\n",contador_segundo_infinito);
@@ -41728,13 +41732,20 @@ void menu_hilow_visual_datadrive(MENU_ITEM_PARAMETERS)
 	int retorno_menu;
 	do {
 
+        //Borrar posible texto anterior
+        //zxvision_print_string_defaults_fillspc(ventana,1,1,"");
+
+        visual_hilow_datadrive_forzar_dibujado=1;
+        zxvision_cls(ventana);
+
+
         if (hilow_enabled.v==0) zxvision_print_string_defaults_fillspc(ventana,1,1,"Hilow is not enabled");
 
         if (hilow_rom_traps.v) zxvision_print_string_defaults_fillspc(ventana,1,1,"You must insert a raw file");
 
         if (hilow_cinta_insertada_flag.v==0) zxvision_print_string_defaults_fillspc(ventana,1,1,"Tape is not inserted");
 
-
+        zxvision_draw_window_contents(ventana);
 
 
 		menu_add_item_menu_inicial_format(&array_menu_visual_hilow,MENU_OPCION_NORMAL,menu_visual_hilow_slow_movement,NULL
