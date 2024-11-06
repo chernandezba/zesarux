@@ -40898,6 +40898,9 @@ void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS)
 }
 
 #define GENERIC_VISUALTAPE_COLOR_FONDO AMIGAOS_COLOUR_blue
+#define VISUALTAPE_COLOR_MARCO 7
+#define VISUALTAPE_COLOR_RODILLOS 15
+
 #define GENERIC_VISUALTAPE_ANCHO_CINTA 1000
 #define GENERIC_VISUALTAPE_ALTO_CINTA 630
 #define VISUALTAPE_RODILLO_ARRASTRE_IZQ_X 280
@@ -40909,12 +40912,6 @@ void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS)
 //para un maximo de una cinta de 90
 #define GENERIC_VISUALTAPE_ROLLO_MAX_RADIO 250
 #define GENERIC_VISUALTAPE_ROLLO_MIN_RADIO 110
-
-
-#define VISUALTAPE_COLOR_FONDO AMIGAOS_COLOUR_blue
-#define VISUALTAPE_COLOR_MARCO 7
-#define VISUALTAPE_COLOR_RODILLOS 15
-
 
 
 //Rodillos arrastre
@@ -40939,8 +40936,8 @@ void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS)
 
 void menu_generic_visualtape_dibujar_un_rollo(struct zxvision_vectorial_draw *d,int radio,int dibujar_borrar)
 {
-    int max_radio=250; //para un maximo de una cinta de 90
-    int min_radio=110;
+    int max_radio=GENERIC_VISUALTAPE_ROLLO_MAX_RADIO; //para un maximo de una cinta de 90
+    int min_radio=GENERIC_VISUALTAPE_ROLLO_MIN_RADIO;
 
     int color_fondo=GENERIC_VISUALTAPE_COLOR_FONDO;
 
@@ -40995,7 +40992,7 @@ void menu_generic_visualtape_dibujar_rollos(struct zxvision_vectorial_draw *d,in
 
 
     int alto_cinta=GENERIC_VISUALTAPE_ALTO_CINTA;
-    int color_marco=7; //gris
+    int color_marco=VISUALTAPE_COLOR_MARCO; //gris
 
 
     //calcular que tanto de radio relleno
@@ -41035,9 +41032,6 @@ void menu_generic_visualtape_dibujar_rollos(struct zxvision_vectorial_draw *d,in
 
 
 }
-
-
-
 
 
 
@@ -41262,8 +41256,8 @@ void menu_generic_visualtape_cinta_rollos_rodillos(struct zxvision_vectorial_dra
 void menu_generic_visualtape_draw_tdk(struct zxvision_vectorial_draw *d)
 {
 
-    int inicio_letras_x=500-75;
-    int inicio_letras_y=630-200;
+    int inicio_letras_x=GENERIC_VISUALTAPE_ANCHO_CINTA/2-75;
+    int inicio_letras_y=GENERIC_VISUALTAPE_ALTO_CINTA-200;
     int alto_letras=50;
 
     d->setcolour(d,7);
@@ -41281,16 +41275,12 @@ void menu_generic_visualtape_draw_tdk(struct zxvision_vectorial_draw *d)
     d->setrelpos(d,+15,0);
     d->jumppos(d,inicio_letras_x+50+5,inicio_letras_y);
     d->setrelpos(d,+15,0);
-    //d->setrelpos(d,+40,+alto_letras/2);
-    //d->setrelpos(d,-40,+alto_letras/2);
-
     d->jumppos(d,inicio_letras_x+50+5+15,inicio_letras_y-alto_letras/2);
     d->drawarc(d,alto_letras/2,269,360+91);
 
     //K
     d->jumppos(d,inicio_letras_x+100+5,inicio_letras_y);
     d->setrelpos(d,0,-alto_letras);
-
     d->jumppos(d,inicio_letras_x+100+5,inicio_letras_y-alto_letras/2);
     d->setrelpos(d,+30,-alto_letras/2);
     d->jumppos(d,inicio_letras_x+100+5,inicio_letras_y-alto_letras/2);
@@ -41304,15 +41294,18 @@ void menu_generic_visualtape_draw_rodillos_arrastre(struct zxvision_vectorial_dr
 {
 
 
-    int color_rodillo=15;
-    int centro_rodillo_x=280;
-    int centro_rodillo_dos_x=1000-280;
-    int centro_rodillo_y=290;
+    int color_rodillo=VISUALTAPE_COLOR_RODILLOS;
+    int centro_rodillo_x=VISUALTAPE_RODILLO_ARRASTRE_IZQ_X;
+    int centro_rodillo_dos_x=GENERIC_VISUALTAPE_ROLLO_DERECHO_X;
+    int centro_rodillo_y=VISUALTAPE_RODILLO_ARRASTRE_Y;
 
     int longitud2=20;
 
+    //El dentado consiste en trazar desde el centro hasta tocar el rodillo,
+    //pero con longitud2 de longitud de cada diente
+
     //radio interior del rodillo=110/2
-    int longitud=(110/2)-longitud2;
+    int longitud=VISUALTAPE_RODILLO_ARRASTRE_MIN_RADIO-longitud2;
 
     //primero borrar los anteriores
     int color_fondo=GENERIC_VISUALTAPE_COLOR_FONDO;
@@ -41685,7 +41678,7 @@ void menu_hilow_visual_datadrive(MENU_ITEM_PARAMETERS)
         ventana->can_be_backgrounded=1;
 
         //definir color de papel de fondo
-        ventana->default_paper=VISUALTAPE_COLOR_FONDO;
+        ventana->default_paper=GENERIC_VISUALTAPE_COLOR_FONDO;
         zxvision_cls(ventana);
         //visual_microdrive_forzar_redraw=1;
 
@@ -50359,7 +50352,7 @@ void menu_visual_cassette_tape(MENU_ITEM_PARAMETERS)
         ventana->can_be_backgrounded=1;
 
         //definir color de papel de fondo
-        ventana->default_paper=VISUALTAPE_COLOR_FONDO;
+        ventana->default_paper=GENERIC_VISUALTAPE_COLOR_FONDO;
         zxvision_cls(ventana);
         //visual_microdrive_forzar_redraw=1;
 
