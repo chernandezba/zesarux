@@ -1697,10 +1697,7 @@ int hilow_load_ddh_device_file(void)
     }
     */
 
-    //por alguna razon, el cat inicial necesita que este abierta la tapa
-    //luego se autocierra en lectura o escritura
-    //quiza indica mejor si esta a 0 -> cinta cambiada. y a 1- >cinta no cambiaa
-    //quien indica que ya no ha sido abierta?
+    //Indicar que la tapa se ha abierto para hacer que recargue el sector de directorio
     hilow_tapa_action_was_opened();
 
     return 0;
@@ -1744,12 +1741,11 @@ int hilow_load_raw_device_file(void)
 
     fclose(ptr_hilowfile);
 
+    hilow_posicion_cabezal=0;
+    hilow_raw_set_motor_off();
 
 
-    //por alguna razon, el cat inicial necesita que este abierta la tapa
-    //luego se autocierra en lectura o escritura
-    //quiza indica mejor si esta a 0 -> cinta cambiada. y a 1- >cinta no cambiaa
-    //quien indica que ya no ha sido abierta?
+    //Indicar que la tapa se ha abierto para hacer que recargue el sector de directorio
     hilow_tapa_action_was_opened();
 
     return 0;
@@ -1817,6 +1813,8 @@ void hilow_disable(void)
     //Hacer flush si son imagenes raw
     if (hilow_rom_traps.v==0) {
         hilow_raw_flush_contents_to_disk();
+        hilow_posicion_cabezal=0;
+        hilow_raw_set_motor_off();
     }
 
 	hilow_restore_peek_poke_functions();

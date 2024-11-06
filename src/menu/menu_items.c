@@ -41569,7 +41569,7 @@ void menu_hilow_visual_datadrive_overlay(void)
     }
 
     //verde
-    else if (!hilow_cinta_en_movimiento && (last_hilow_port_value & HILOW_PORT_MASK_MOTOR_ON)==0) {
+    else if (!hilow_cinta_en_movimiento && (last_hilow_port_value & HILOW_PORT_MASK_MOTOR_ON)==0 && hilow_reproductor_encendido.v) {
         semaforos_hilow |=16;
     }
 

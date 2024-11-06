@@ -433,23 +433,8 @@ ok-Debug I/o ver puerto lectura hilow
 
 -visual datadrive
 *indicar C60 o lo que sea. letras vectoriales?
-*otros detalles de una cinta real: marca tdk? nombre archivo? pestañas protección escritura (ambas cara A y B)
-*rodillos de arrastre
-*dentado de rodillos en movimiento. 1 vuelta por segundo
-*cinta desde rodillos hacia rodillos y cabezal.  tembleque de cinta
+*otros detalles de una cinta real: nombre archivo? pestañas protección escritura (ambas cara A y B)
 *cabezal lectura?
-*opcion para slow movement/movimiento real 10x o 40x
-
--que no aparezca cinta si no esta "tape inserted" (el flag ese que se controla desde el menu)
--que no aparezca si cinta no es raw
-
--tamaño usable de visual tape se lo tiene que dar la funcion que llama (en este caso hilow visual, pero podria ser .tap visual). Esto no esta bien:
-    int tamanyo_ocupado_microdrive_ancho=(w->visible_width-3)*menu_char_width;
-    //quitamos 5: barra titulo,barra scroll, 2 lineas menu, 1 linea separacion
-    int tamanyo_ocupado_microdrive_alto=(w->visible_height-5)*menu_char_height;
-    int offset_x=menu_char_width*1;
-    int offset_y=menu_char_height*3;
-
 
 
 -al insertar cinta, poner posicion cabezal en 0

@@ -157,6 +157,8 @@ extern int hilow_cinta_en_movimiento;
 
 extern int hilow_visual_slow_movement;
 
+extern void hilow_raw_set_motor_off(void);
+
 extern z80_byte hilow_raw_return_port_ff_value(void);
 
 extern z80_bit hilow_reproductor_encendido;
