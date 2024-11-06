@@ -41416,11 +41416,11 @@ void menu_generic_visualtape(zxvision_window *w,
 
 
 
-    int ancho_total_dibujo_virtual=1000;
+    int ancho_total_dibujo_virtual=GENERIC_VISUALTAPE_ANCHO_CINTA;
 
     if (semaforos_hilow) ancho_total_dibujo_virtual+=100;
 
-    zxvision_vecdraw_init(&dibujo_visualtape,w,ancho_total_dibujo_virtual,630,
+    zxvision_vecdraw_init(&dibujo_visualtape,w,ancho_total_dibujo_virtual,GENERIC_VISUALTAPE_ALTO_CINTA,
         real_width,real_height,offset_x,offset_y);
 
 
@@ -41587,7 +41587,7 @@ void menu_hilow_visual_datadrive_overlay(void)
     //Relacion de aspecto ideal: 1000 ancho, 630 alto
     //Sumamos 100 mas para los "semaforos" de hilow
 
-    int ancho_total_dibujo_virtual=1000;
+    int ancho_total_dibujo_virtual=GENERIC_VISUALTAPE_ANCHO_CINTA;
 
     //Sumar espacio de los semaforos
     ancho_total_dibujo_virtual+=100;
@@ -41598,7 +41598,7 @@ void menu_hilow_visual_datadrive_overlay(void)
 
 
     //Desactivar este trocito si queremos que el ancho pueda crecer independientemente del alto de ventana. SOLO PARA PRUEBAS
-    int max_ancho_esperado_por_aspecto=(tamanyo_ocupado_hilow_alto*ancho_total_dibujo_virtual)/630;
+    int max_ancho_esperado_por_aspecto=(tamanyo_ocupado_hilow_alto*ancho_total_dibujo_virtual)/GENERIC_VISUALTAPE_ALTO_CINTA;
     if (real_width>max_ancho_esperado_por_aspecto) {
         //Con esto el microdrive siempre esta dentro de la ventana entero, independientemente del tamaño de la ventana
         //printf("relacion ancho mal\n");
@@ -41606,7 +41606,7 @@ void menu_hilow_visual_datadrive_overlay(void)
     }
 
 
-    int real_height=(real_width*630)/ancho_total_dibujo_virtual;
+    int real_height=(real_width*GENERIC_VISUALTAPE_ALTO_CINTA)/ancho_total_dibujo_virtual;
 
 
 
@@ -41705,8 +41705,8 @@ void menu_hilow_visual_datadrive(MENU_ITEM_PARAMETERS)
     //Toda ventana que este listada en zxvision_known_window_names_array debe permitir poder salir desde aqui
     //Se sale despues de haber inicializado overlay y de cualquier otra variable que necesite el overlay
     if (zxvision_currently_restoring_windows_on_start) {
-            //printf ("Saliendo de ventana ya que la estamos restaurando en startup\n");
-            return;
+        //printf ("Saliendo de ventana ya que la estamos restaurando en startup\n");
+        return;
     }
 
 
@@ -41796,18 +41796,16 @@ void menu_hilow(MENU_ITEM_PARAMETERS)
     do {
 
 
-
-
         char string_hilow_file_shown[17];
 
-            menu_tape_settings_trunc_name(hilow_file_name,string_hilow_file_shown,17);
-            menu_add_item_menu_en_es_ca_inicial(&array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_file,NULL,
-                "HiLow ~~File","~~Fichero HiLow","~~Fitxer HiLow");
-            menu_add_item_menu_sufijo_format(array_menu_hilow," [%s]",string_hilow_file_shown);
-            menu_add_item_menu_prefijo(array_menu_hilow,"    ");
-            menu_add_item_menu_shortcut(array_menu_hilow,'f');
-            menu_add_item_menu_tooltip(array_menu_hilow,"HiLow Data Drive Emulation file");
-            menu_add_item_menu_ayuda(array_menu_hilow,"HiLow Data Drive Emulation file");
+        menu_tape_settings_trunc_name(hilow_file_name,string_hilow_file_shown,17);
+        menu_add_item_menu_en_es_ca_inicial(&array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_file,NULL,
+            "HiLow ~~File","~~Fichero HiLow","~~Fitxer HiLow");
+        menu_add_item_menu_sufijo_format(array_menu_hilow," [%s]",string_hilow_file_shown);
+        menu_add_item_menu_prefijo(array_menu_hilow,"    ");
+        menu_add_item_menu_shortcut(array_menu_hilow,'f');
+        menu_add_item_menu_tooltip(array_menu_hilow,"HiLow Data Drive Emulation file");
+        menu_add_item_menu_ayuda(array_menu_hilow,"HiLow Data Drive Emulation file");
 
 
 
@@ -41817,14 +41815,6 @@ void menu_hilow(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_shortcut(array_menu_hilow,'h');
         menu_add_item_menu_tooltip(array_menu_hilow,"Enable hilow");
         menu_add_item_menu_ayuda(array_menu_hilow,"Enable hilow");
-
-        /*
-        if (hilow_enabled.v) {
-            menu_add_item_menu_en_es_ca(array_menu_hilow,MENU_OPCION_SEPARADOR,NULL,NULL,
-                "    Emulation type","    Tipo emulación","    Tipus emulació");
-            menu_add_item_menu_sufijo_format(array_menu_hilow," [%s]", (hilow_rom_traps.v ? "ROM Traps" : "Low level"));
-        }
-        */
 
 
 
