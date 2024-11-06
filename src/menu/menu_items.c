@@ -50185,7 +50185,9 @@ void menu_visual_cassette_tape_overlay(void)
     //int porc_90=100;
 
     //Y aplicamos el transcurrido sobre ese valor
-    int porcentaje=(elapsed_seconds*100)/total_seconds;
+    int porcentaje;
+    if (total_seconds==0) porcentaje=0;
+    else porcentaje=(elapsed_seconds*100)/total_seconds;
 
 
     int porcentaje_cinta_izquierdo=100-porcentaje;
@@ -50253,16 +50255,14 @@ void menu_visual_cassette_tape_overlay(void)
     //Relacion de aspecto ideal: 1000 ancho, 630 alto
 
 
-    int ancho_total_dibujo_virtual=1000;
-
-
+    int ancho_total_dibujo_virtual=GENERIC_VISUALTAPE_ANCHO_CINTA;
 
 
     int real_width=tamanyo_ocupado_viscastape_ancho;
 
 
     //Desactivar este trocito si queremos que el ancho pueda crecer independientemente del alto de ventana. SOLO PARA PRUEBAS
-    int max_ancho_esperado_por_aspecto=(tamanyo_ocupado_viscastape_alto*ancho_total_dibujo_virtual)/630;
+    int max_ancho_esperado_por_aspecto=(tamanyo_ocupado_viscastape_alto*ancho_total_dibujo_virtual)/GENERIC_VISUALTAPE_ALTO_CINTA;
     if (real_width>max_ancho_esperado_por_aspecto) {
         //Con esto el microdrive siempre esta dentro de la ventana entero, independientemente del tamaño de la ventana
         //printf("relacion ancho mal\n");
@@ -50270,7 +50270,7 @@ void menu_visual_cassette_tape_overlay(void)
     }
 
 
-    int real_height=(real_width*630)/ancho_total_dibujo_virtual;
+    int real_height=(real_width*GENERIC_VISUALTAPE_ALTO_CINTA)/ancho_total_dibujo_virtual;
 
 
 
