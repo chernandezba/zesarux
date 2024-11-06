@@ -41010,25 +41010,40 @@ void menu_generic_visualtape_dibujar_rollos(struct zxvision_vectorial_draw *d,in
 }
 
 #define VISUALTAPE_COLOR_FONDO AMIGAOS_COLOUR_blue
+#define VISUALTAPE_COLOR_MARCO 7
+#define VISUALTAPE_COLOR_RODILLOS 15
+#define VISUALTAPE_ANCHO_CINTA 1000
+#define VISUALTAPE_ALTO_CINTA 630
+
+//Rodillos arrastre
+#define VISUALTAPE_RODILLO_ARRASTRE_MAX_RADIO 110
+#define VISUALTAPE_RODILLO_ARRASTRE_MIN_RADIO 55
+#define VISUALTAPE_RODILLO_ARRASTRE_IZQ_X 280
+#define VISUALTAPE_RODILLO_ARRASTRE_DER_X (VISUALTAPE_ANCHO_CINTA-VISUALTAPE_RODILLO_ARRASTRE_IZQ_X)
+#define VISUALTAPE_RODILLO_ARRASTRE_Y 290
 
 #define VISUALTAPE_RODILLO_FIJO_IZQUIERDO_X 50
-#define VISUALTAPE_RODILLO_FIJO_DERECHO_X (1000-50)
-#define VISUALTAPE_RODILLO_FIJO_Y (630-100)
+#define VISUALTAPE_RODILLO_FIJO_DERECHO_X (VISUALTAPE_ANCHO_CINTA-50)
+#define VISUALTAPE_RODILLO_FIJO_Y (VISUALTAPE_ALTO_CINTA-100)
 #define VISUALTAPE_RODILLO_FIJO_RADIO 10
 
+//Rodillos inferiores
 #define VISUALTAPE_RODILLO_MOVIL_IZQUIERDO_X 90
-#define VISUALTAPE_RODILLO_MOVIL_DERECHO_X (1000-90)
-#define VISUALTAPE_RODILLO_MOVIL_Y (630-50)
+#define VISUALTAPE_RODILLO_MOVIL_DERECHO_X (VISUALTAPE_ANCHO_CINTA-90)
+#define VISUALTAPE_RODILLO_MOVIL_Y (VISUALTAPE_ALTO_CINTA-50)
 #define VISUALTAPE_RODILLO_MOVIL_RADIO 40
 #define VISUALTAPE_RODILLO_MOVIL_RADIO_INTERIOR 6
+
+
+
 
 void menu_generic_visualtape_dibujar_cinta_estatica(struct zxvision_vectorial_draw *d,int pestanyas_escritura)
 {
     int radio_bordes_esquinas=30;
 
-    int ancho_cinta=1000;
-    int alto_cinta=630;
-    int color_marco=7; //gris
+    int ancho_cinta=VISUALTAPE_ANCHO_CINTA;
+    int alto_cinta=VISUALTAPE_ALTO_CINTA;
+    int color_marco=VISUALTAPE_COLOR_MARCO;
 
 
     d->pencil_on(d);
@@ -41061,22 +41076,22 @@ void menu_generic_visualtape_dibujar_cinta_estatica(struct zxvision_vectorial_dr
     d->drawarc(d,radio_bordes_esquinas,180,270);
 
     //Rodillos. Parte blanca
-    int max_radio=110;
-    int min_radio=55;
+    int max_radio=VISUALTAPE_RODILLO_ARRASTRE_MAX_RADIO;
+    int min_radio=VISUALTAPE_RODILLO_ARRASTRE_MIN_RADIO;
 
 
     int i;
-    d->setcolour(d,15);
+    d->setcolour(d,VISUALTAPE_COLOR_RODILLOS);
 
     for (i=min_radio;i<=max_radio;i++) {
-        d->jumppos(d,280,290);
+        d->jumppos(d,VISUALTAPE_RODILLO_ARRASTRE_IZQ_X,VISUALTAPE_RODILLO_ARRASTRE_Y);
         d->drawcircle(d,i);
-        d->jumppos(d,ancho_cinta-280,290);
+        d->jumppos(d,VISUALTAPE_RODILLO_ARRASTRE_DER_X,VISUALTAPE_RODILLO_ARRASTRE_Y);
         d->drawcircle(d,i);
     }
 
     //rodillos fijo donde se ancla la cinta
-    d->setcolour(d,7);
+    d->setcolour(d,VISUALTAPE_COLOR_RODILLOS);
 
     for (i=0;i<=VISUALTAPE_RODILLO_FIJO_RADIO;i++) {
         d->jumppos(d,VISUALTAPE_RODILLO_FIJO_IZQUIERDO_X,VISUALTAPE_RODILLO_FIJO_Y);
