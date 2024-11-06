@@ -41006,6 +41006,8 @@ void menu_generic_visualtape_dibujar_rollos(struct zxvision_vectorial_draw *d,in
 
 }
 
+#define VISUALTAPE_COLOR_FONDO AMIGAOS_COLOUR_blue
+
 #define VISUALTAPE_RODILLO_FIJO_IZQUIERDO_X 50
 #define VISUALTAPE_RODILLO_FIJO_DERECHO_X (1000-50)
 #define VISUALTAPE_RODILLO_FIJO_Y (630-100)
@@ -41577,9 +41579,9 @@ void menu_hilow_visual_datadrive_overlay(void)
 
     //Calcular tamaños
 
-    int tamanyo_ocupado_microdrive_ancho=(w->visible_width-3)*menu_char_width;
+    int tamanyo_ocupado_hilow_ancho=(w->visible_width-3)*menu_char_width;
     //quitamos 5: barra titulo,barra scroll, 2 lineas menu, 1 linea separacion
-    int tamanyo_ocupado_microdrive_alto=(w->visible_height-5)*menu_char_height;
+    int tamanyo_ocupado_hilow_alto=(w->visible_height-5)*menu_char_height;
 
     int offset_x=menu_char_width*1;
     int offset_y=menu_char_height*3;
@@ -41595,11 +41597,11 @@ void menu_hilow_visual_datadrive_overlay(void)
 
 
 
-    int real_width=tamanyo_ocupado_microdrive_ancho;
+    int real_width=tamanyo_ocupado_hilow_ancho;
 
 
     //Desactivar este trocito si queremos que el ancho pueda crecer independientemente del alto de ventana. SOLO PARA PRUEBAS
-    int max_ancho_esperado_por_aspecto=(tamanyo_ocupado_microdrive_alto*ancho_total_dibujo_virtual)/630;
+    int max_ancho_esperado_por_aspecto=(tamanyo_ocupado_hilow_alto*ancho_total_dibujo_virtual)/630;
     if (real_width>max_ancho_esperado_por_aspecto) {
         //Con esto el microdrive siempre esta dentro de la ventana entero, independientemente del tamaño de la ventana
         //printf("relacion ancho mal\n");
@@ -41673,6 +41675,11 @@ void menu_hilow_visual_datadrive(MENU_ITEM_PARAMETERS)
             "hilowvisualdatadrive",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
 
         ventana->can_be_backgrounded=1;
+
+        //definir color de papel de fondo
+        ventana->default_paper=VISUALTAPE_COLOR_FONDO;
+        zxvision_cls(ventana);
+        //visual_microdrive_forzar_redraw=1;
 
     }
 
