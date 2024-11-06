@@ -258,6 +258,8 @@ extern void menu_microdrive_raw_map(MENU_ITEM_PARAMETERS);
 
 extern void menu_hilow_visual_datadrive(MENU_ITEM_PARAMETERS);
 
+extern void menu_visual_cassette_tape(MENU_ITEM_PARAMETERS);
+
 
 struct s_menu_debug_view_sensors_list {
     char short_name[SENSORS_MAX_SHORT_NAME];

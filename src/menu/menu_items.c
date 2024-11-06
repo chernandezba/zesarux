@@ -303,6 +303,7 @@ int visualmicrodrive_opcion_seleccionada=0;
 int lec_memory_opcion_seleccionada=0;
 int menu_mdv_simulate_bad_opcion_seleccionada=0;
 int visualhilow_opcion_seleccionada=0;
+int visualcasette_tape_opcion_seleccionada=0;
 //int mdv_simulate_bad_sectors_opcion_seleccionada=0;
 
 //Fin opciones seleccionadas para cada menu
@@ -38315,6 +38316,14 @@ void menu_storage_tape(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_tooltip(array_menu_tape_settings,"See an audio render of your tape, see tape blocks and rewind or move forward the cassette player");
         menu_add_item_menu_ayuda(array_menu_tape_settings,"See an audio render of your tape, see tape blocks and rewind or move forward the cassette player");
 
+
+        menu_add_item_menu_en_es_ca(array_menu_tape_settings,MENU_OPCION_NORMAL,menu_visual_cassette_tape,NULL,
+            "~~Visual Casette Tape","Cinta Casette ~~Visual","Cinta Casette ~~Visual");
+        menu_add_item_menu_prefijo(array_menu_tape_settings,"    ");
+        menu_add_item_menu_se_cerrara(array_menu_tape_settings);
+        menu_add_item_menu_genera_ventana(array_menu_tape_settings);
+
+
         }
 
         if (MACHINE_IS_SPECTRUM) {
@@ -50121,6 +50130,310 @@ void menu_process_switcher(MENU_ITEM_PARAMETERS)
 }
 
 
+
+zxvision_window *menu_visual_cassette_tape_window;
+
+//Ver si ha cambiado el porcentaje sobre los rollos, para redibujar
+//eso indica que la cantidad de cinta enrollada es diferente
+int menu_visual_cassette_tape_porcentaje_anterior=-1;
+
+int antes_visual_cassette_tape_rodillo_arrastre_grados=-1;
+
+int menu_visual_cassette_tape_temblor=0;
+
+
+
+int visual_cassette_tape_forzar_dibujado=0;
+
+
+//temp
+int visual_cassette_tape_rodillo_arrastre_grados=0;
+
+void menu_visual_cassette_tape_overlay(void)
+{
+
+    menu_speech_tecla_pulsada=1; //Si no, envia continuamente todo ese texto a speech
+
+    //si ventana minimizada, no ejecutar todo el codigo de overlay
+    if (menu_visual_cassette_tape_window->is_minimized) return;
+
+
+    //Si no esta hilow activado y con cinta raw enabled, no mostrar
+    if (hilow_enabled.v==0) return;
+
+    if (hilow_rom_traps.v) return;
+
+    if (hilow_cinta_insertada_flag.v==0) return;
+
+
+    //Mostrar cinta, usar dibujo generico
+
+    int porcentaje_transcurrido=hilow_raw_transcurrido_cinta_porc();
+    int minutos_total_cinta=hilow_raw_get_minutes_tape();
+
+    //Tenemos que dar el porcentaje sobre el maximo, que es de una cinta de 90 (45 minutos por cara)
+    //Sacar el porcentaje que representa el total de la cinta sobre una de 90
+    int porc_90=(minutos_total_cinta*100)/90;
+
+    //Y aplicamos el transcurrido sobre ese valor
+    int porcentaje=(porc_90*porcentaje_transcurrido)/100;
+
+
+    int porcentaje_cinta_izquierdo=porc_90-porcentaje;
+    int porcentaje_cinta_derecho=porcentaje;
+
+    int redibujar_rollos=0;
+
+    if (porcentaje!=menu_visual_cassette_tape_porcentaje_anterior) redibujar_rollos=1;
+
+    //determinar esto solo cuando sea necesario. probablemente con dirty
+    int redibujar_parte_estatica=0;
+
+    int redibujar_rodillos_arrastre=0;
+
+
+
+    //Si grados rodillos antes iguales a actual, no redibujar
+    if (visual_cassette_tape_rodillo_arrastre_grados!=antes_visual_cassette_tape_rodillo_arrastre_grados) redibujar_rodillos_arrastre=1;
+
+    //No redibujar si no hay cambios de nada
+    if (menu_visual_cassette_tape_window->dirty_user_must_draw_contents || visual_cassette_tape_forzar_dibujado) {
+        printf("Redibujando parte estatica y dinamica y rodillos arrastre. %d\n",contador_segundo_infinito);
+        redibujar_parte_estatica=1;
+        redibujar_rollos=1;
+        redibujar_rodillos_arrastre=1;
+
+
+        menu_visual_cassette_tape_window->dirty_user_must_draw_contents=0;
+    }
+
+    visual_cassette_tape_forzar_dibujado=0;
+
+    if (redibujar_rollos) {
+        printf("Redibujando parte dinamica. %d\n",contador_segundo_infinito);
+    }
+
+
+    int antes_porcentaje_cinta_izquierdo=porc_90-menu_visual_cassette_tape_porcentaje_anterior;;
+    int antes_porcentaje_cinta_derecho=menu_visual_cassette_tape_porcentaje_anterior;
+
+
+
+    int semaforos_hilow=0;
+
+
+
+
+    //Si esta motor on, tiembla
+    if (last_hilow_port_value & HILOW_PORT_MASK_MOTOR_ON) {
+        menu_visual_cassette_tape_temblor^=1;
+        redibujar_rodillos_arrastre=1;
+    }
+
+    zxvision_window *w=menu_visual_cassette_tape_window;
+
+    //Calcular tamaños
+
+
+    int tamanyo_ocupado_viscastape_ancho=(w->visible_width-3)*menu_char_width;
+    //quitamos 5: barra titulo,barra scroll, 2 lineas menu, 1 linea separacion
+    int tamanyo_ocupado_viscastape_alto=(w->visible_height-5)*menu_char_height;
+
+    int offset_x=menu_char_width*1;
+    int offset_y=menu_char_height*3;
+
+    //Ajustar escalas
+    //Relacion de aspecto ideal: 1000 ancho, 630 alto
+
+
+    int ancho_total_dibujo_virtual=1000;
+
+
+
+
+    int real_width=tamanyo_ocupado_viscastape_ancho;
+
+
+    //Desactivar este trocito si queremos que el ancho pueda crecer independientemente del alto de ventana. SOLO PARA PRUEBAS
+    int max_ancho_esperado_por_aspecto=(tamanyo_ocupado_viscastape_alto*ancho_total_dibujo_virtual)/630;
+    if (real_width>max_ancho_esperado_por_aspecto) {
+        //Con esto el microdrive siempre esta dentro de la ventana entero, independientemente del tamaño de la ventana
+        //printf("relacion ancho mal\n");
+        real_width=max_ancho_esperado_por_aspecto;
+    }
+
+
+    int real_height=(real_width*630)/ancho_total_dibujo_virtual;
+
+
+
+    menu_generic_visualtape(menu_visual_cassette_tape_window,
+    real_width,real_height,offset_x,offset_y,
+    porcentaje_cinta_izquierdo,porcentaje_cinta_derecho,
+    antes_porcentaje_cinta_izquierdo,antes_porcentaje_cinta_derecho,
+    visual_cassette_tape_rodillo_arrastre_grados,antes_visual_cassette_tape_rodillo_arrastre_grados,
+    redibujar_rollos,redibujar_parte_estatica,redibujar_rodillos_arrastre,menu_visual_cassette_tape_temblor,semaforos_hilow);
+
+
+
+    menu_visual_cassette_tape_porcentaje_anterior=porcentaje;
+    antes_visual_cassette_tape_rodillo_arrastre_grados=visual_cassette_tape_rodillo_arrastre_grados;
+
+
+    //Mostrar contenido
+    zxvision_draw_window_contents(menu_visual_cassette_tape_window);
+
+}
+
+//temp
+int visual_cassette_tape_slow_movement=0;
+
+void menu_visual_cassette_tape_slow_movement(MENU_ITEM_PARAMETERS)
+{
+    visual_cassette_tape_slow_movement ^=1;
+}
+
+//Almacenar la estructura de ventana aqui para que se pueda referenciar desde otros sitios
+zxvision_window zxvision_window_visual_cassette_tape;
+
+
+void menu_visual_cassette_tape(MENU_ITEM_PARAMETERS)
+{
+	menu_espera_no_tecla();
+
+    if (!menu_multitarea) {
+        menu_warn_message("This window needs multitask enabled");
+        return;
+    }
+
+    //forzar redibujar rollos
+    menu_visual_cassette_tape_porcentaje_anterior=-1;
+
+    zxvision_window *ventana;
+    ventana=&zxvision_window_visual_cassette_tape;
+
+	//IMPORTANTE! no crear ventana si ya existe. Esto hay que hacerlo en todas las ventanas que permiten background.
+	//si no se hiciera, se crearia la misma ventana, y en la lista de ventanas activas , al redibujarse,
+	//la primera ventana repetida apuntaria a la segunda, que es el mismo puntero, y redibujaria la misma, y se quedaria en bucle colgado
+	//zxvision_delete_window_if_exists(ventana);
+
+    //Crear ventana si no existe
+    if (!zxvision_if_window_already_exists(ventana)) {
+        int xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
+
+        if (!util_find_window_geometry("visualcassettetape",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
+            ancho_ventana=30;
+            alto_ventana=20;
+
+            xventana=menu_center_x()-ancho_ventana/2;
+            yventana=menu_center_y()-alto_ventana/2;
+        }
+
+
+        zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"Visual Casette Tape",
+            "visualcassettetape",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
+
+        ventana->can_be_backgrounded=1;
+
+        //definir color de papel de fondo
+        ventana->default_paper=VISUALTAPE_COLOR_FONDO;
+        zxvision_cls(ventana);
+        //visual_microdrive_forzar_redraw=1;
+
+    }
+
+    //Si ya existe, activar esta ventana
+    else {
+        zxvision_activate_this_window(ventana);
+    }
+
+	zxvision_draw_window(ventana);
+
+    //para mostrar correctamente el color del fondo alterado por default_paper
+    zxvision_draw_window_contents(ventana);
+
+
+    menu_visual_cassette_tape_window=ventana; //Decimos que el overlay lo hace sobre la ventana que tenemos aqui
+
+
+    //cambio overlay
+    zxvision_set_window_overlay(ventana,menu_visual_cassette_tape_overlay);
+
+
+    //Toda ventana que este listada en zxvision_known_window_names_array debe permitir poder salir desde aqui
+    //Se sale despues de haber inicializado overlay y de cualquier otra variable que necesite el overlay
+    if (zxvision_currently_restoring_windows_on_start) {
+            //printf ("Saliendo de ventana ya que la estamos restaurando en startup\n");
+            return;
+    }
+
+
+	menu_item *array_menu_visual_cassette_tape;
+	menu_item item_seleccionado;
+	int retorno_menu;
+	do {
+
+        //Borrar posible texto anterior
+        //zxvision_print_string_defaults_fillspc(ventana,1,1,"");
+
+        visual_cassette_tape_forzar_dibujado=1;
+        zxvision_cls(ventana);
+
+
+        if (hilow_enabled.v==0) zxvision_print_string_defaults_fillspc(ventana,1,1,"Hilow is not enabled");
+
+        if (hilow_rom_traps.v) zxvision_print_string_defaults_fillspc(ventana,1,1,"You must insert a raw file");
+
+        if (hilow_cinta_insertada_flag.v==0) zxvision_print_string_defaults_fillspc(ventana,1,1,"Tape is not inserted");
+
+        zxvision_draw_window_contents(ventana);
+
+
+		menu_add_item_menu_inicial_format(&array_menu_visual_cassette_tape,MENU_OPCION_NORMAL,menu_visual_cassette_tape_slow_movement,NULL
+            ,"[%c] ~~Slow movement",(visual_cassette_tape_slow_movement ? 'X' : ' '));
+		menu_add_item_menu_shortcut(array_menu_visual_cassette_tape,'s');
+		menu_add_item_menu_ayuda(array_menu_visual_cassette_tape,"Slow movement");
+		menu_add_item_menu_tabulado(array_menu_visual_cassette_tape,1,0);
+
+
+		//Nombre de ventana solo aparece en el caso de stdout
+		retorno_menu=menu_dibuja_menu_no_title_lang(&visualcasette_tape_opcion_seleccionada,&item_seleccionado,array_menu_visual_cassette_tape,"Visual Cassette Tape" );
+
+		if (retorno_menu!=MENU_RETORNO_BACKGROUND) {
+            //En caso de menus tabulados, es responsabilidad de este de borrar la ventana
+            //Con este cls provoca que se borren todas las otras ventanas en background
+
+
+            if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+                    //llamamos por valor de funcion
+                    if (item_seleccionado.menu_funcion!=NULL) {
+                            //printf ("actuamos por funcion\n");
+                            item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+
+
+                    }
+            }
+		}
+
+	} while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus && retorno_menu!=MENU_RETORNO_BACKGROUND);
+
+
+
+
+
+	util_add_window_geometry_compact(ventana);
+
+	if (retorno_menu==MENU_RETORNO_BACKGROUND) {
+		zxvision_message_put_window_background();
+	}
+
+	else {
+
+		zxvision_destroy_window(ventana);
+	}
+
+
+}
 
 
 
