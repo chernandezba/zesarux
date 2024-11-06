@@ -2324,6 +2324,8 @@ void hilow_write_port_ff(z80_int port,z80_byte value)
 //Usado en visual tape
 int hilow_visual_rodillo_arrastre_grados=0;
 
+int hilow_visual_slow_movement=0;
+
 int hilow_timer_events_counter=0;
 
 //Eventos de timer
@@ -2343,6 +2345,8 @@ void hilow_timer_events(void)
         //10x o 40x
         if (last_hilow_port_value & HILOW_PORT_MASK_FAST) incremento_grados *=40;
         else incremento_grados *=10;
+
+        if (hilow_visual_slow_movement) incremento_grados=1;
 
         //Adelante o atras
         if ((last_hilow_port_value & HILOW_PORT_MASK_FORWARD)==0) incremento_grados=-incremento_grados;

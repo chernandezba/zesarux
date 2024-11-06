@@ -302,6 +302,7 @@ int interface1_opcion_seleccionada=0;
 int visualmicrodrive_opcion_seleccionada=0;
 int lec_memory_opcion_seleccionada=0;
 int menu_mdv_simulate_bad_opcion_seleccionada=0;
+int visualhilow_opcion_seleccionada=0;
 //int mdv_simulate_bad_sectors_opcion_seleccionada=0;
 
 //Fin opciones seleccionadas para cada menu
@@ -41489,8 +41490,13 @@ void menu_hilow_visual_datadrive_overlay(void)
     if (menu_hilow_visual_datadrive_window->is_minimized) return;
 
 
-    //Print....
-    //Tambien contar si se escribe siempre o se tiene en cuenta contador_segundo...
+    //Si no esta hilow activado y con cinta raw enabled, no mostrar
+    if (hilow_enabled.v==0) return;
+
+    if (hilow_rom_traps.v) return;
+
+    if (hilow_cinta_insertada_flag.v==0) return;
+
 
     //Mostrar cinta, usar dibujo generico
 
@@ -41632,7 +41638,10 @@ void menu_hilow_visual_datadrive_overlay(void)
 }
 
 
-
+void menu_visual_hilow_slow_movement(MENU_ITEM_PARAMETERS)
+{
+    hilow_visual_slow_movement ^=1;
+}
 
 //Almacenar la estructura de ventana aqui para que se pueda referenciar desde otros sitios
 zxvision_window zxvision_window_hilow_visual_datadrive;
@@ -41690,6 +41699,9 @@ void menu_hilow_visual_datadrive(MENU_ITEM_PARAMETERS)
 
 	zxvision_draw_window(ventana);
 
+    //para mostrar correctamente el color del fondo alterado por default_paper
+    zxvision_draw_window_contents(ventana);
+
 	z80_byte tecla;
 
 
@@ -41710,39 +41722,56 @@ void menu_hilow_visual_datadrive(MENU_ITEM_PARAMETERS)
             return;
     }
 
-    do {
+
+	menu_item *array_menu_visual_hilow;
+	menu_item item_seleccionado;
+	int retorno_menu;
+	do {
+
+        if (hilow_enabled.v==0) zxvision_print_string_defaults_fillspc(ventana,1,1,"Hilow is not enabled");
+
+        if (hilow_rom_traps.v) zxvision_print_string_defaults_fillspc(ventana,1,1,"You must insert a raw file");
+
+        if (hilow_cinta_insertada_flag.v==0) zxvision_print_string_defaults_fillspc(ventana,1,1,"Tape is not inserted");
 
 
-		tecla=zxvision_common_getkey_refresh();
 
 
-        switch (tecla) {
-
-            case 11:
-                //arriba
-                //blablabla
-            break;
-
+		menu_add_item_menu_inicial_format(&array_menu_visual_hilow,MENU_OPCION_NORMAL,menu_visual_hilow_slow_movement,NULL
+            ,"[%c] ~~Slow movement",(hilow_visual_slow_movement ? 'X' : ' '));
+		menu_add_item_menu_shortcut(array_menu_visual_hilow,'s');
+		menu_add_item_menu_ayuda(array_menu_visual_hilow,"Slow movement");
+		menu_add_item_menu_tabulado(array_menu_visual_hilow,1,0);
 
 
-            //Salir con ESC
-            case 2:
-                salir=1;
-            break;
+		//Nombre de ventana solo aparece en el caso de stdout
+		retorno_menu=menu_dibuja_menu_no_title_lang(&visualhilow_opcion_seleccionada,&item_seleccionado,array_menu_visual_hilow,"Visual Hilow Datadrive" );
 
-            //O tecla background
-            case 3:
-                salir=1;
-            break;
-        }
+		if (retorno_menu!=MENU_RETORNO_BACKGROUND) {
+            //En caso de menus tabulados, es responsabilidad de este de borrar la ventana
+            //Con este cls provoca que se borren todas las otras ventanas en background
 
 
-    } while (salir==0);
+            if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+                    //llamamos por valor de funcion
+                    if (item_seleccionado.menu_funcion!=NULL) {
+                            //printf ("actuamos por funcion\n");
+                            item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+
+
+                    }
+            }
+		}
+
+	} while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus && retorno_menu!=MENU_RETORNO_BACKGROUND);
+
+
+
 
 
 	util_add_window_geometry_compact(ventana);
 
-	if (tecla==3) {
+	if (retorno_menu==MENU_RETORNO_BACKGROUND) {
 		zxvision_message_put_window_background();
 	}
 

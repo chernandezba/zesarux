@@ -155,6 +155,8 @@ extern int hilow_visual_rodillo_arrastre_grados;
 
 extern int hilow_cinta_en_movimiento;
 
+extern int hilow_visual_slow_movement;
+
 extern z80_byte hilow_raw_return_port_ff_value(void);
 
 extern z80_bit hilow_reproductor_encendido;
