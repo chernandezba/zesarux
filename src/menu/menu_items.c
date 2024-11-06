@@ -41198,8 +41198,8 @@ void menu_generic_visualtape_cinta_rollos_rodillos(struct zxvision_vectorial_dra
     menu_generic_visualtape_da_radios_rollos(porcentaje_cinta_izquierdo,porcentaje_cinta_derecha,&radio_rellenar_izquierdo,&radio_rellenar_derecho);
 
     //Algo menos de radio para que no parezca que la cinta no toca el rodillo
-    radio_rellenar_izquierdo--;
-    radio_rellenar_derecho--;
+    radio_rellenar_izquierdo-=2;
+    radio_rellenar_derecho-=2;
 
     //Efecto temblor
     if (temblor) {
@@ -50290,8 +50290,7 @@ void menu_visual_cassette_tape_overlay(void)
 
 }
 
-//temp
-int visual_cassette_tape_slow_movement=0;
+
 
 void menu_visual_cassette_tape_slow_movement(MENU_ITEM_PARAMETERS)
 {

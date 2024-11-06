@@ -2121,12 +2121,16 @@ int realtape_get_total_seconds(void)
 //Usado en ventana de visual cassette
 int visual_cassette_tape_rodillo_arrastre_grados=0;
 
+int visual_cassette_tape_slow_movement=0;
+
 void realtape_visual_cassete_timer(void)
 {
 
     if (realtape_inserted.v==0 || realtape_playing.v==0) return;
 
     int incremento_grados=7;
+
+    if (visual_cassette_tape_slow_movement) incremento_grados=1;
 
 
     visual_cassette_tape_rodillo_arrastre_grados +=incremento_grados;

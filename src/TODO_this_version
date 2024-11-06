@@ -432,16 +432,16 @@ LEC:
 *cabezal lectura?
 *icono
 *tamaño por defecto ventana
-*ajustar temblor porque parece que se sale de cinta
+ok *ajustar temblor porque parece que se sale de cinta
 *eliminar debug print
 
 -visualcassettetape
 *icono
 *soporte tap, tzx y otros formatos de cinta binaria
-*setting slow movement
+ok *setting slow movement
 *revisar tmp y otras variables hilow
 *tamaño por defecto ventana
-*ajustar temblor porque parece que se sale de cinta
+ok *ajustar temblor porque parece que se sale de cinta
 *si se avanza cinta desde visual real tape, con cinta parada, no refresca bien
 *eliminar debug print
 

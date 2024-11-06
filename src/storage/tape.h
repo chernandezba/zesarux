@@ -155,6 +155,7 @@ extern long long int realtape_file_size;
 extern long long int realtape_file_size_counter;
 
 extern int visual_cassette_tape_rodillo_arrastre_grados;
+extern int visual_cassette_tape_slow_movement;
 
 extern void realtape_pause_unpause(void);
 extern int realtape_get_current_bit_playing(void);
