@@ -40889,6 +40889,17 @@ void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS)
 }
 
 #define GENERIC_VISUALTAPE_COLOR_FONDO AMIGAOS_COLOUR_blue
+#define GENERIC_VISUALTAPE_ANCHO_CINTA 1000
+#define GENERIC_VISUALTAPE_ALTO_CINTA 630
+#define GENERIC_VISUALTAPE_ROLLO_IZQUIERDO_X 280
+#define GENERIC_VISUALTAPE_ROLLO_IZQUIERDO_Y 290
+#define GENERIC_VISUALTAPE_ROLLO_DERECHO_X (GENERIC_VISUALTAPE_ANCHO_CINTA-GENERIC_VISUALTAPE_ROLLO_IZQUIERDO_X)
+#define GENERIC_VISUALTAPE_ROLLO_DERECHO_Y 290
+
+//para un maximo de una cinta de 90
+#define GENERIC_VISUALTAPE_ROLLO_MAX_RADIO 250
+
+#define GENERIC_VISUALTAPE_ROLLO_MIN_RADIO 110
 
 void menu_generic_visualtape_dibujar_un_rollo(struct zxvision_vectorial_draw *d,int radio,int dibujar_borrar)
 {
@@ -40922,17 +40933,7 @@ void menu_generic_visualtape_dibujar_un_rollo(struct zxvision_vectorial_draw *d,
     }
 }
 
-#define GENERIC_VISUALTAPE_ANCHO_CINTA 1000
-#define GENERIC_VISUALTAPE_ALTO_CINTA 630
-#define GENERIC_VISUALTAPE_ROLLO_IZQUIERDO_X 280
-#define GENERIC_VISUALTAPE_ROLLO_IZQUIERDO_Y 290
-#define GENERIC_VISUALTAPE_ROLLO_DERECHO_X (GENERIC_VISUALTAPE_ANCHO_CINTA-GENERIC_VISUALTAPE_ROLLO_IZQUIERDO_X)
-#define GENERIC_VISUALTAPE_ROLLO_DERECHO_Y 290
 
-//para un maximo de una cinta de 90
-#define GENERIC_VISUALTAPE_ROLLO_MAX_RADIO 250
-
-#define GENERIC_VISUALTAPE_ROLLO_MIN_RADIO 110
 
 //Retorna el radio de los rollos segun porcentajes
 void menu_generic_visualtape_da_radios_rollos(int porcentaje_cinta_izquierdo,int porcentaje_cinta_derecha,int *p_radio_izq,int *p_radio_der)
@@ -40956,21 +40957,13 @@ void menu_generic_visualtape_dibujar_rollos(struct zxvision_vectorial_draw *d,in
 {
 
 
-    //temporal color
-    int color_fondo=GENERIC_VISUALTAPE_COLOR_FONDO;
-    int ancho_cinta=GENERIC_VISUALTAPE_ANCHO_CINTA;
+
     int alto_cinta=GENERIC_VISUALTAPE_ALTO_CINTA;
     int color_marco=7; //gris
 
 
     //calcular que tanto de radio relleno
-    /*
-    int sumar_radio_izq=((max_radio-min_radio)*porcentaje_cinta_izquierdo)/100;
-    int sumar_radio_der=((max_radio-min_radio)*porcentaje_cinta_derecha)/100;
 
-    int radio_rellenar_izquierdo=min_radio+sumar_radio_izq;
-    int radio_rellenar_derecho=min_radio+sumar_radio_der;
-    */
 
     int radio_rellenar_izquierdo;
     int radio_rellenar_derecho;
@@ -41027,7 +41020,7 @@ void menu_generic_visualtape_dibujar_cinta_estatica(struct zxvision_vectorial_dr
     int ancho_cinta=1000;
     int alto_cinta=630;
     int color_marco=7; //gris
-    int color_cinta_enrollada=0; //esto sera negro
+
 
     d->pencil_on(d);
     d->setcolour(d,color_marco);
@@ -41327,10 +41320,10 @@ void menu_generic_visualtape_draw_rodillos_arrastre(struct zxvision_vectorial_dr
 
 void menu_generic_visualtape_draw_un_semaforo(struct zxvision_vectorial_draw *d,int activo,int color)
 {
-    int x_semaforos=1050;
+
     int radio_semaforos=30;
-    int y_inicial_semaforos=100;
-    int separacion_semaforos=200;
+
+
 
     int color_relleno=GENERIC_VISUALTAPE_COLOR_FONDO;
     if (activo) color_relleno=color+8; //activo con brillo
@@ -41354,7 +41347,7 @@ void menu_generic_visualtape_draw_semaforos_hilow(struct zxvision_vectorial_draw
 {
 
     int x_semaforos=1050;
-    int radio_semaforos=30;
+
     int y_inicial_semaforos=100;
     int separacion_semaforos=200;
 
@@ -41391,42 +41384,7 @@ void menu_generic_visualtape(zxvision_window *w,
     //Dibujo de la cinta
     struct zxvision_vectorial_draw dibujo_visualtape;
 
-    //quitamos 4: 1 columnas izquierda margen, columna derecha margen, columna scroll
 
-    /*
-    int tamanyo_ocupado_microdrive_ancho=(w->visible_width-3)*menu_char_width;
-    //quitamos 5: barra titulo,barra scroll, 2 lineas menu, 1 linea separacion
-    int tamanyo_ocupado_microdrive_alto=(w->visible_height-5)*menu_char_height;
-
-    int offset_x=menu_char_width*1;
-    int offset_y=menu_char_height*3;
-
-    //Ajustar escalas
-    //Relacion de aspecto ideal: 1000 ancho, 630 alto
-    //Sumamos 100 mas para los "semaforos" de hilow
-
-    int ancho_total_dibujo_virtual=1000;
-
-    if (semaforos_hilow) ancho_total_dibujo_virtual+=100;
-
-
-
-    int real_width=tamanyo_ocupado_microdrive_ancho;
-
-
-    //Desactivar este trocito si queremos que el ancho pueda crecer independientemente del alto de ventana. SOLO PARA PRUEBAS
-    int max_ancho_esperado_por_aspecto=(tamanyo_ocupado_microdrive_alto*ancho_total_dibujo_virtual)/630;
-    if (real_width>max_ancho_esperado_por_aspecto) {
-        //Con esto el microdrive siempre esta dentro de la ventana entero, independientemente del tamaño de la ventana
-        //printf("relacion ancho mal\n");
-        real_width=max_ancho_esperado_por_aspecto;
-    }
-
-
-    int real_height=(real_width*630)/ancho_total_dibujo_virtual;
-
-
-    */
 
     int ancho_total_dibujo_virtual=1000;
 
@@ -41434,8 +41392,6 @@ void menu_generic_visualtape(zxvision_window *w,
 
     zxvision_vecdraw_init(&dibujo_visualtape,w,ancho_total_dibujo_virtual,630,
         real_width,real_height,offset_x,offset_y);
-
-
 
 
 
@@ -41589,6 +41545,7 @@ void menu_hilow_visual_datadrive_overlay(void)
 
     //Calcular tamaños
 
+
     int tamanyo_ocupado_hilow_ancho=(w->visible_width-3)*menu_char_width;
     //quitamos 5: barra titulo,barra scroll, 2 lineas menu, 1 linea separacion
     int tamanyo_ocupado_hilow_alto=(w->visible_height-5)*menu_char_height;
@@ -41705,11 +41662,6 @@ void menu_hilow_visual_datadrive(MENU_ITEM_PARAMETERS)
 
     //para mostrar correctamente el color del fondo alterado por default_paper
     zxvision_draw_window_contents(ventana);
-
-	z80_byte tecla;
-
-
-	int salir=0;
 
 
     menu_hilow_visual_datadrive_window=ventana; //Decimos que el overlay lo hace sobre la ventana que tenemos aqui

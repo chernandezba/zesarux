@@ -412,14 +412,7 @@ LEC:
 
 
 -hilow datadrive:
-*pendiente documentar especificacion archivos ddh: sectores tal cual, sin cabeceras de cada sector?
-cara A y cara B seguidas. realmente a nivel de ddh da igual, sectores 0..127 son cara A, 128..255 son cara B
 
-
-
-
-
-ok-Debug I/o ver puerto lectura hilow
 
 -El cabezal siempre toca la cinta? Hay un botón de play como tal para sacar el cabezal? Ver la cinta Coleco
 
