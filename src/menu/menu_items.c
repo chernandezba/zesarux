@@ -40900,15 +40900,42 @@ void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS)
 #define GENERIC_VISUALTAPE_COLOR_FONDO AMIGAOS_COLOUR_blue
 #define GENERIC_VISUALTAPE_ANCHO_CINTA 1000
 #define GENERIC_VISUALTAPE_ALTO_CINTA 630
-#define GENERIC_VISUALTAPE_ROLLO_IZQUIERDO_X 280
-#define GENERIC_VISUALTAPE_ROLLO_IZQUIERDO_Y 290
-#define GENERIC_VISUALTAPE_ROLLO_DERECHO_X (GENERIC_VISUALTAPE_ANCHO_CINTA-GENERIC_VISUALTAPE_ROLLO_IZQUIERDO_X)
-#define GENERIC_VISUALTAPE_ROLLO_DERECHO_Y 290
+#define VISUALTAPE_RODILLO_ARRASTRE_IZQ_X 280
 
+#define GENERIC_VISUALTAPE_ROLLO_DERECHO_X (GENERIC_VISUALTAPE_ANCHO_CINTA-VISUALTAPE_RODILLO_ARRASTRE_IZQ_X)
+
+
+//radios para cantidad de cinta enrollada
 //para un maximo de una cinta de 90
 #define GENERIC_VISUALTAPE_ROLLO_MAX_RADIO 250
-
 #define GENERIC_VISUALTAPE_ROLLO_MIN_RADIO 110
+
+
+#define VISUALTAPE_COLOR_FONDO AMIGAOS_COLOUR_blue
+#define VISUALTAPE_COLOR_MARCO 7
+#define VISUALTAPE_COLOR_RODILLOS 15
+
+
+
+//Rodillos arrastre
+#define VISUALTAPE_RODILLO_ARRASTRE_MAX_RADIO 110
+#define VISUALTAPE_RODILLO_ARRASTRE_MIN_RADIO 55
+
+#define VISUALTAPE_RODILLO_ARRASTRE_DER_X (GENERIC_VISUALTAPE_ANCHO_CINTA-VISUALTAPE_RODILLO_ARRASTRE_IZQ_X)
+#define VISUALTAPE_RODILLO_ARRASTRE_Y 290
+
+#define VISUALTAPE_RODILLO_FIJO_IZQUIERDO_X 50
+#define VISUALTAPE_RODILLO_FIJO_DERECHO_X (GENERIC_VISUALTAPE_ANCHO_CINTA-50)
+#define VISUALTAPE_RODILLO_FIJO_Y (GENERIC_VISUALTAPE_ALTO_CINTA-100)
+#define VISUALTAPE_RODILLO_FIJO_RADIO 10
+
+//Rodillos inferiores
+#define VISUALTAPE_RODILLO_MOVIL_IZQUIERDO_X 90
+#define VISUALTAPE_RODILLO_MOVIL_DERECHO_X (GENERIC_VISUALTAPE_ANCHO_CINTA-90)
+#define VISUALTAPE_RODILLO_MOVIL_Y (GENERIC_VISUALTAPE_ALTO_CINTA-50)
+#define VISUALTAPE_RODILLO_MOVIL_RADIO 40
+#define VISUALTAPE_RODILLO_MOVIL_RADIO_INTERIOR 6
+
 
 void menu_generic_visualtape_dibujar_un_rollo(struct zxvision_vectorial_draw *d,int radio,int dibujar_borrar)
 {
@@ -40981,21 +41008,21 @@ void menu_generic_visualtape_dibujar_rollos(struct zxvision_vectorial_draw *d,in
 
     //Borrar
     d->pencil_off(d);
-    d->setpos(d,GENERIC_VISUALTAPE_ROLLO_IZQUIERDO_X,GENERIC_VISUALTAPE_ROLLO_IZQUIERDO_Y);
+    d->setpos(d,VISUALTAPE_RODILLO_ARRASTRE_IZQ_X,VISUALTAPE_RODILLO_ARRASTRE_Y);
     menu_generic_visualtape_dibujar_un_rollo(d,radio_rellenar_izquierdo,0);
 
     d->pencil_off(d);
-    d->setpos(d,GENERIC_VISUALTAPE_ROLLO_DERECHO_X,GENERIC_VISUALTAPE_ROLLO_DERECHO_Y);
+    d->setpos(d,GENERIC_VISUALTAPE_ROLLO_DERECHO_X,VISUALTAPE_RODILLO_ARRASTRE_Y);
     menu_generic_visualtape_dibujar_un_rollo(d,radio_rellenar_derecho,0);
 
 
     //Dibujar
     d->pencil_off(d);
-    d->setpos(d,GENERIC_VISUALTAPE_ROLLO_IZQUIERDO_X,GENERIC_VISUALTAPE_ROLLO_IZQUIERDO_Y);
+    d->setpos(d,VISUALTAPE_RODILLO_ARRASTRE_IZQ_X,VISUALTAPE_RODILLO_ARRASTRE_Y);
     menu_generic_visualtape_dibujar_un_rollo(d,radio_rellenar_izquierdo,1);
 
     d->pencil_off(d);
-    d->setpos(d,GENERIC_VISUALTAPE_ROLLO_DERECHO_X,GENERIC_VISUALTAPE_ROLLO_DERECHO_Y);
+    d->setpos(d,GENERIC_VISUALTAPE_ROLLO_DERECHO_X,VISUALTAPE_RODILLO_ARRASTRE_Y);
     menu_generic_visualtape_dibujar_un_rollo(d,radio_rellenar_derecho,1);
 
     //Paralelogramo de abajo
@@ -41009,30 +41036,7 @@ void menu_generic_visualtape_dibujar_rollos(struct zxvision_vectorial_draw *d,in
 
 }
 
-#define VISUALTAPE_COLOR_FONDO AMIGAOS_COLOUR_blue
-#define VISUALTAPE_COLOR_MARCO 7
-#define VISUALTAPE_COLOR_RODILLOS 15
-#define VISUALTAPE_ANCHO_CINTA 1000
-#define VISUALTAPE_ALTO_CINTA 630
 
-//Rodillos arrastre
-#define VISUALTAPE_RODILLO_ARRASTRE_MAX_RADIO 110
-#define VISUALTAPE_RODILLO_ARRASTRE_MIN_RADIO 55
-#define VISUALTAPE_RODILLO_ARRASTRE_IZQ_X 280
-#define VISUALTAPE_RODILLO_ARRASTRE_DER_X (VISUALTAPE_ANCHO_CINTA-VISUALTAPE_RODILLO_ARRASTRE_IZQ_X)
-#define VISUALTAPE_RODILLO_ARRASTRE_Y 290
-
-#define VISUALTAPE_RODILLO_FIJO_IZQUIERDO_X 50
-#define VISUALTAPE_RODILLO_FIJO_DERECHO_X (VISUALTAPE_ANCHO_CINTA-50)
-#define VISUALTAPE_RODILLO_FIJO_Y (VISUALTAPE_ALTO_CINTA-100)
-#define VISUALTAPE_RODILLO_FIJO_RADIO 10
-
-//Rodillos inferiores
-#define VISUALTAPE_RODILLO_MOVIL_IZQUIERDO_X 90
-#define VISUALTAPE_RODILLO_MOVIL_DERECHO_X (VISUALTAPE_ANCHO_CINTA-90)
-#define VISUALTAPE_RODILLO_MOVIL_Y (VISUALTAPE_ALTO_CINTA-50)
-#define VISUALTAPE_RODILLO_MOVIL_RADIO 40
-#define VISUALTAPE_RODILLO_MOVIL_RADIO_INTERIOR 6
 
 
 
@@ -41041,8 +41045,8 @@ void menu_generic_visualtape_dibujar_cinta_estatica(struct zxvision_vectorial_dr
 {
     int radio_bordes_esquinas=30;
 
-    int ancho_cinta=VISUALTAPE_ANCHO_CINTA;
-    int alto_cinta=VISUALTAPE_ALTO_CINTA;
+    int ancho_cinta=GENERIC_VISUALTAPE_ANCHO_CINTA;
+    int alto_cinta=GENERIC_VISUALTAPE_ALTO_CINTA;
     int color_marco=VISUALTAPE_COLOR_MARCO;
 
 
@@ -41122,7 +41126,7 @@ void menu_generic_visualtape_dibujar_cinta_estatica(struct zxvision_vectorial_dr
         d->jumppos(d,60,0);
         d->drawfilledrectangle(d,60,10);
 
-        d->jumppos(d,1000-60-60,0);
+        d->jumppos(d,GENERIC_VISUALTAPE_ANCHO_CINTA-60-60,0);
         d->drawfilledrectangle(d,60,10);
     }
 
@@ -41223,8 +41227,8 @@ void menu_generic_visualtape_cinta_rollos_rodillos(struct zxvision_vectorial_dra
     }
 
     //Izquierdo
-    int pos_x_origen=GENERIC_VISUALTAPE_ROLLO_IZQUIERDO_X-radio_rellenar_izquierdo;
-    int pos_y_origen=GENERIC_VISUALTAPE_ROLLO_IZQUIERDO_Y;
+    int pos_x_origen=VISUALTAPE_RODILLO_ARRASTRE_IZQ_X-radio_rellenar_izquierdo;
+    int pos_y_origen=VISUALTAPE_RODILLO_ARRASTRE_Y;
 
     d->jumppos(d,pos_x_origen,pos_y_origen);
     int color_cinta=color;
@@ -41239,7 +41243,7 @@ void menu_generic_visualtape_cinta_rollos_rodillos(struct zxvision_vectorial_dra
 
     //Derecho
     pos_x_origen=GENERIC_VISUALTAPE_ROLLO_DERECHO_X+radio_rellenar_derecho;
-    pos_y_origen=GENERIC_VISUALTAPE_ROLLO_DERECHO_Y;
+    pos_y_origen=VISUALTAPE_RODILLO_ARRASTRE_Y;
 
     d->jumppos(d,pos_x_origen,pos_y_origen);
 
