@@ -39055,20 +39055,32 @@ void menu_storage_hilow_file(MENU_ITEM_PARAMETERS)
 
             if (!util_compare_file_extension(hilow_file_name,"ddh")) {
 
+                int total_sectors=HILOW_MAX_SECTORS;
 
-                //Crear archivo vacio
-                FILE *ptr_hilowfile;
-                ptr_hilowfile=fopen(hilow_file_name,"wb");
+	            if (menu_ventana_scanf_numero_enhanced("Total sectors",&total_sectors,4,+1,3,HILOW_MAX_SECTORS,0)>=0) {
 
-                long long int totalsize=HILOW_DEVICE_SIZE;
-                z80_byte valor_grabar=0;
 
-                if (ptr_hilowfile!=NULL) {
-                    while (totalsize) {
-                        fwrite(&valor_grabar,1,1,ptr_hilowfile);
-                        totalsize--;
+                    //Crear archivo vacio
+                    FILE *ptr_hilowfile;
+                    ptr_hilowfile=fopen(hilow_file_name,"wb");
+
+                    long long int totalsize=total_sectors*HILOW_SECTOR_SIZE; //HILOW_DEVICE_SIZE;
+                    z80_byte valor_grabar=0;
+
+                    if (ptr_hilowfile!=NULL) {
+                        while (totalsize) {
+                            fwrite(&valor_grabar,1,1,ptr_hilowfile);
+                            totalsize--;
+                        }
+                        fclose(ptr_hilowfile);
                     }
-                    fclose(ptr_hilowfile);
+
+                }
+
+                else {
+                    //Quitar nombre
+                    hilow_file_name[0]=0;
+                    return;
                 }
 
             }
@@ -41112,10 +41124,12 @@ int menu_generic_visualtap_calculate_coord_grados(int sine,int longitud,int grad
     //a veces sobresale del circulo (cuando el dibujo es pequeño), a veces no llega a tocar al circulo (cuando el dibujo es grande)
 
     //pasar a dimensiones reales
-    longitud_y=(longitud_y*real_width)/virtual_width;
+    if (virtual_width==0) longitud_y=0;
+    else longitud_y=(longitud_y*real_width)/virtual_width;
 
     //y de vuelta a virtuales
-    longitud_y=(longitud_y*virtual_width)/real_width;
+    if (real_width==0) longitud_y=0;
+    else longitud_y=(longitud_y*virtual_width)/real_width;
 
     return longitud_y;
 
@@ -41308,7 +41322,52 @@ void menu_generic_visualtape_draw_rodillos_arrastre(struct zxvision_vectorial_dr
 
 }
 
+void menu_generic_visualtape_draw_un_semaforo(struct zxvision_vectorial_draw *d,int activo,int color)
+{
+    int x_semaforos=1050;
+    int radio_semaforos=30;
+    int y_inicial_semaforos=100;
+    int separacion_semaforos=200;
 
+    int color_relleno=GENERIC_VISUALTAPE_COLOR_FONDO;
+    if (activo) color_relleno=color+8; //activo con brillo
+    int i;
+
+    //Rellenar de color o bien de fondo
+    for (i=0;i<=radio_semaforos;i++) {
+        d->setcolour(d,color_relleno);
+        d->drawcircle(d,i);
+    }
+
+    //Recuadro exterior, para cuando no esta activo
+    if (!activo) {
+        d->setcolour(d,color);
+        d->drawcircle(d,radio_semaforos);
+    }
+
+}
+
+void menu_generic_visualtape_draw_semaforos_hilow(struct zxvision_vectorial_draw *d,int activo_rojo,int activo_amarillo,int activo_verde)
+{
+
+    int x_semaforos=1050;
+    int radio_semaforos=30;
+    int y_inicial_semaforos=100;
+    int separacion_semaforos=200;
+
+    //borrar o rellenar contenido
+    d->jumppos(d,x_semaforos,y_inicial_semaforos);
+    menu_generic_visualtape_draw_un_semaforo(d,activo_rojo,2);
+
+
+    d->jumppos(d,x_semaforos,y_inicial_semaforos+separacion_semaforos);
+    menu_generic_visualtape_draw_un_semaforo(d,activo_amarillo,6);
+
+
+    d->jumppos(d,x_semaforos,y_inicial_semaforos+separacion_semaforos+separacion_semaforos);
+    menu_generic_visualtape_draw_un_semaforo(d,activo_verde,4);
+
+}
 
 //Dibujar una cinta vectorial en pantalla
 //Parametros:
@@ -41316,15 +41375,22 @@ void menu_generic_visualtape_draw_rodillos_arrastre(struct zxvision_vectorial_dr
 //porcentaje_cinta_izquierdo: que tanto % de cinta esta llena en el cilindro izquierdo. En el derecho sera 100-porcentaje_cinta_izquierdo
 //redibujar_rollos: redibujar cinta enrollada, 0 o 1. Se le pone a 1 cuando ha cambiado significativamente
 //redibujar_parte_estatica: si redibujar partes estaticas: marco exterior, recuadros... todo aquello que no es dinamico
-void menu_generic_visualtape(zxvision_window *w,int porcentaje_cinta_izquierdo,int porcentaje_cinta_derecha,
+//semaforos_hilow: si se dibujan o no, y los activos:
+//bit 0: activo o no. Bit 1: si redibujarlos. Bit 2: si activo rojo, bit 3: si activo amarillo, bit 4: si activo verde
+void menu_generic_visualtape(zxvision_window *w,
+    int real_width,int real_height,int offset_x,int offset_y,
+    int porcentaje_cinta_izquierdo,int porcentaje_cinta_derecha,
     int antes_porcentaje_cinta_izquierdo,int antes_porcentaje_cinta_derecha,
-    int grados_rodillos,int antes_grados_rodillos,int redibujar_rollos,int redibujar_parte_estatica,int redibujar_rodillos_arrastre,int temblor)
+    int grados_rodillos,int antes_grados_rodillos,int redibujar_rollos,int redibujar_parte_estatica,int redibujar_rodillos_arrastre,
+    int temblor,int semaforos_hilow)
 {
 
     //Dibujo de la cinta
     struct zxvision_vectorial_draw dibujo_visualtape;
 
     //quitamos 4: 1 columnas izquierda margen, columna derecha margen, columna scroll
+
+    /*
     int tamanyo_ocupado_microdrive_ancho=(w->visible_width-3)*menu_char_width;
     //quitamos 5: barra titulo,barra scroll, 2 lineas menu, 1 linea separacion
     int tamanyo_ocupado_microdrive_alto=(w->visible_height-5)*menu_char_height;
@@ -41334,8 +41400,11 @@ void menu_generic_visualtape(zxvision_window *w,int porcentaje_cinta_izquierdo,i
 
     //Ajustar escalas
     //Relacion de aspecto ideal: 1000 ancho, 630 alto
+    //Sumamos 100 mas para los "semaforos" de hilow
 
     int ancho_total_dibujo_virtual=1000;
+
+    if (semaforos_hilow) ancho_total_dibujo_virtual+=100;
 
 
 
@@ -41354,7 +41423,11 @@ void menu_generic_visualtape(zxvision_window *w,int porcentaje_cinta_izquierdo,i
     int real_height=(real_width*630)/ancho_total_dibujo_virtual;
 
 
+    */
 
+    int ancho_total_dibujo_virtual=1000;
+
+    if (semaforos_hilow) ancho_total_dibujo_virtual+=100;
 
     zxvision_vecdraw_init(&dibujo_visualtape,w,ancho_total_dibujo_virtual,630,
         real_width,real_height,offset_x,offset_y);
@@ -41376,6 +41449,18 @@ void menu_generic_visualtape(zxvision_window *w,int porcentaje_cinta_izquierdo,i
 
    }
 
+   if (semaforos_hilow) {
+    //bit 0: activo o no. Bit 1: si redibujarlos. Bit 2: si activo rojo, bit 3: si activo amarillo, bit 4: si activo verde
+    if (semaforos_hilow & 2) {
+        printf("redibujando semaforos. %d\n",contador_segundo_infinito);
+        int activo_rojo=semaforos_hilow & 4;
+        int activo_amarillo=semaforos_hilow & 8;
+        int activo_verde=semaforos_hilow & 16;
+
+        menu_generic_visualtape_draw_semaforos_hilow(&dibujo_visualtape,activo_rojo,activo_amarillo,activo_verde);
+    }
+   }
+
 
 }
 
@@ -41390,6 +41475,8 @@ int menu_hilow_visual_datadrive_porcentaje_anterior=-1;
 int antes_hilow_visual_rodillo_arrastre_grados=-1;
 
 int menu_hilow_visual_datadrive_temblor=0;
+
+int menu_hilow_antes_semaforos=-1;
 
 void menu_hilow_visual_datadrive_overlay(void)
 {
@@ -41428,6 +41515,8 @@ void menu_hilow_visual_datadrive_overlay(void)
 
     int redibujar_rodillos_arrastre=0;
 
+    int redibujar_semaforos=0;
+
     //Si grados rodillos antes iguales a actual, no redibujar
     if (hilow_visual_rodillo_arrastre_grados!=antes_hilow_visual_rodillo_arrastre_grados) redibujar_rodillos_arrastre=1;
 
@@ -41437,6 +41526,7 @@ void menu_hilow_visual_datadrive_overlay(void)
         redibujar_parte_estatica=1;
         redibujar_rollos=1;
         redibujar_rodillos_arrastre=1;
+        redibujar_semaforos=1;
 
         menu_hilow_visual_datadrive_window->dirty_user_must_draw_contents=0;
     }
@@ -41449,13 +41539,86 @@ void menu_hilow_visual_datadrive_overlay(void)
     int antes_porcentaje_cinta_izquierdo=porc_90-menu_hilow_visual_datadrive_porcentaje_anterior;;
     int antes_porcentaje_cinta_derecho=menu_hilow_visual_datadrive_porcentaje_anterior;
 
-    menu_generic_visualtape(menu_hilow_visual_datadrive_window,porcentaje_cinta_izquierdo,porcentaje_cinta_derecho,
+
+
+    int semaforos_hilow=1;
+
+
+    //Solo un led a la vez
+
+    //rojo
+    if (last_hilow_port_value & HILOW_PORT_MASK_WRITE_EN) {
+        semaforos_hilow |=4;
+    }
+
+    //amarillo
+    else if (last_hilow_port_value & HILOW_PORT_MASK_MOTOR_ON) {
+        semaforos_hilow |=8;
+    }
+
+    //verde
+    else if (!hilow_cinta_en_movimiento && (last_hilow_port_value & HILOW_PORT_MASK_MOTOR_ON)==0) {
+        semaforos_hilow |=16;
+    }
+
+    if (semaforos_hilow!=menu_hilow_antes_semaforos) redibujar_semaforos=1;
+
+    menu_hilow_antes_semaforos=semaforos_hilow;
+
+    if (redibujar_semaforos) semaforos_hilow |=2;
+
+    //Si esta motor on, tiembla
+    if (last_hilow_port_value & HILOW_PORT_MASK_MOTOR_ON) {
+        menu_hilow_visual_datadrive_temblor^=1;
+        redibujar_rodillos_arrastre=1;
+    }
+
+    zxvision_window *w=menu_hilow_visual_datadrive_window;
+
+    //Calcular tamaños
+
+    int tamanyo_ocupado_microdrive_ancho=(w->visible_width-3)*menu_char_width;
+    //quitamos 5: barra titulo,barra scroll, 2 lineas menu, 1 linea separacion
+    int tamanyo_ocupado_microdrive_alto=(w->visible_height-5)*menu_char_height;
+
+    int offset_x=menu_char_width*1;
+    int offset_y=menu_char_height*3;
+
+    //Ajustar escalas
+    //Relacion de aspecto ideal: 1000 ancho, 630 alto
+    //Sumamos 100 mas para los "semaforos" de hilow
+
+    int ancho_total_dibujo_virtual=1000;
+
+    //Sumar espacio de los semaforos
+    ancho_total_dibujo_virtual+=100;
+
+
+
+    int real_width=tamanyo_ocupado_microdrive_ancho;
+
+
+    //Desactivar este trocito si queremos que el ancho pueda crecer independientemente del alto de ventana. SOLO PARA PRUEBAS
+    int max_ancho_esperado_por_aspecto=(tamanyo_ocupado_microdrive_alto*ancho_total_dibujo_virtual)/630;
+    if (real_width>max_ancho_esperado_por_aspecto) {
+        //Con esto el microdrive siempre esta dentro de la ventana entero, independientemente del tamaño de la ventana
+        //printf("relacion ancho mal\n");
+        real_width=max_ancho_esperado_por_aspecto;
+    }
+
+
+    int real_height=(real_width*630)/ancho_total_dibujo_virtual;
+
+
+
+    menu_generic_visualtape(menu_hilow_visual_datadrive_window,
+    real_width,real_height,offset_x,offset_y,
+    porcentaje_cinta_izquierdo,porcentaje_cinta_derecho,
     antes_porcentaje_cinta_izquierdo,antes_porcentaje_cinta_derecho,
     hilow_visual_rodillo_arrastre_grados,antes_hilow_visual_rodillo_arrastre_grados,
-    redibujar_rollos,redibujar_parte_estatica,redibujar_rodillos_arrastre,menu_hilow_visual_datadrive_temblor);
+    redibujar_rollos,redibujar_parte_estatica,redibujar_rodillos_arrastre,menu_hilow_visual_datadrive_temblor,semaforos_hilow);
 
-    //Si esta en movimiento, tiembla
-    if (hilow_cinta_en_movimiento) menu_hilow_visual_datadrive_temblor^=1;
+
 
     menu_hilow_visual_datadrive_porcentaje_anterior=porcentaje;
     antes_hilow_visual_rodillo_arrastre_grados=hilow_visual_rodillo_arrastre_grados;
@@ -41506,7 +41669,7 @@ void menu_hilow_visual_datadrive(MENU_ITEM_PARAMETERS)
         }
 
 
-        zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"Hilow Visual DataDrive",
+        zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"Visual Hilow DataDrive",
             "hilowvisualdatadrive",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
 
         ventana->can_be_backgrounded=1;
@@ -43571,10 +43734,12 @@ void menu_visual_microdrive_dibujar_microdrive_dinamico_dibuja_radio(struct zxvi
     //a veces sobresale del circulo (cuando el dibujo es pequeño), a veces no llega a tocar al circulo (cuando el dibujo es grande)
 
     //pasar a dimensiones reales
-    longitud_y=(longitud_y*d->real_width)/d->virtual_width;
+    if (d->virtual_width==0) longitud_y=0;
+    else longitud_y=(longitud_y*d->real_width)/d->virtual_width;
 
     //y de vuelta a virtuales
-    longitud_y=(longitud_y*d->virtual_width)/d->real_width;
+    if (d->real_width==0) longitud_y=0;
+    else longitud_y=(longitud_y*d->virtual_width)/d->real_width;
 
     //printf("longitud_y despues: %d\n",longitud_y);
 
@@ -43584,10 +43749,12 @@ void menu_visual_microdrive_dibujar_microdrive_dinamico_dibuja_radio(struct zxvi
 
     //reajustar comportamiento decimales para que se comporte como el dibujado de circulos
     //pasar a dimensiones reales
-    longitud_x=(longitud_x*d->real_heigth)/d->virtual_height;
+    if (d->virtual_height==0) longitud_x=0;
+    else longitud_x=(longitud_x*d->real_heigth)/d->virtual_height;
 
     //y de vuelta a virtuales
-    longitud_x=(longitud_x*d->virtual_height)/d->real_heigth;
+    if (d->real_heigth==0) longitud_x=0;
+    else longitud_x=(longitud_x*d->virtual_height)/d->real_heigth;
 
 
     int xfinal=x_origen_rodillo+longitud_x;

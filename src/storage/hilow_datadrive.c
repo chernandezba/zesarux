@@ -22,8 +22,9 @@
 /*
 Sobre formato ddh:
 
-Se define de manera simple 256 sectores de 2048 bytes cada sector, por simplificar el acceso.
+Se define de manera simple máximo 256 sectores de 2048 bytes cada sector, por simplificar el acceso (y mínimo 3 sectores)
 No se guardan las cabeceras de cada sector, que están presentes en las cintas, solo los datos.
+El tamaño es variable, permito desde 3 sectores hasta 256
 
 Sin embargo una cinta hilow al máximo de capacidad
 tiene menos espacio usado (menos de 256 sectores). Esto se deduce formateando una cinta en formato crudo (audio raw)
@@ -183,7 +184,8 @@ int hilow_cinta_en_movimiento=0;
 //Para debug cuando se usan rom traps
 int debug_hilow_last_sector=0;
 
-
+//Tamaño del archivo ddh leido
+int hilow_ddh_file_size=0;
 
 //
 //Fin gestion movimiento de la cinta
@@ -266,7 +268,7 @@ void hilow_flush_contents_to_disk(void)
 
     int escritos=0;
     long long int size;
-    size=HILOW_DEVICE_SIZE;
+    size=hilow_ddh_file_size; //HILOW_DEVICE_SIZE;
 
 
 
@@ -883,13 +885,14 @@ int hilow_write_mem_to_device(z80_int dir,int sector,int longitud,int offset_des
     return 0;
 }
 
-void hilow_device_set_sectores_disponible(int si_escribir_en_ram,int si_escribir_en_device)
+void hilow_device_set_sectores_disponible(int si_escribir_en_ram,int si_escribir_en_device,z80_byte sectores_disponibles)
 {
 
-    //del 03 hasta el fd (251)pero no esta 7e,7f,80,81,82, o sea 251-5=246 para asignar mas los 2 de directorio=248. = 496 total en crudo
 
-    int offset=1011;
-    z80_byte value_to_write=HILOW_MAX_DATA_USABLE_SECTORS;
+    int offset=1011; //1011 decimal =3f3H
+    z80_byte value_to_write=sectores_disponibles; //HILOW_MAX_DATA_USABLE_SECTORS;
+
+    debug_printf(VERBOSE_DEBUG,"Setting %d sectors available",value_to_write);
 
     if (si_escribir_en_ram) poke_byte_no_time(8192+offset,value_to_write);
     if (si_escribir_en_device) {
@@ -945,7 +948,7 @@ void hilow_device_set_usage_counter(int si_escribir_en_ram,int si_escribir_en_de
 
 }
 
-void hilow_create_sector_table(int si_escribir_en_ram,int si_escribir_en_device)
+int hilow_create_sector_table(int si_escribir_en_ram,int si_escribir_en_device)
 {
 
     debug_printf(VERBOSE_DEBUG,"HiLow: Creating free sectors table");
@@ -970,15 +973,20 @@ void hilow_create_sector_table(int si_escribir_en_ram,int si_escribir_en_device)
 
     offset++;
 
+    int sectores_disponibles=0;
+
+    int total_sectores=hilow_ddh_file_size/HILOW_SECTOR_SIZE;
 
     //Es <= dado que el id de sector siempre lo decrementamos
-    for (id_sector_tabla=0;id_sector_tabla<=255;id_sector_tabla++) {
+    for (id_sector_tabla=0;id_sector_tabla<total_sectores;id_sector_tabla++) {
         //sectores 00,01,02,7e,7f, 80,81,82,fe,ff  no lo metemos en tabla
         int id_sector_sin_cara=id_sector_tabla & 0x7f;
         //Sin considerar cara es sector 0,1,2,7e,7f, asi la comparacion nos vale para las dos caras
 
         if (id_sector_sin_cara!=0 && id_sector_sin_cara!=1 && id_sector_sin_cara!=2 &&
             id_sector_sin_cara!=0x7e &&  id_sector_sin_cara!=0x7f) {
+
+            sectores_disponibles++;
 
             if (si_escribir_en_device) {
                 //En ambas copias de directorio
@@ -996,6 +1004,8 @@ void hilow_create_sector_table(int si_escribir_en_ram,int si_escribir_en_device)
 
     //Y byte 0 para el final. No estoy seguro que sea necesario
     //poke_byte_no_time(8192+offset,0);
+
+    return sectores_disponibles;
 
 }
 
@@ -1080,9 +1090,10 @@ void hilow_device_mem_format(int si_escribir_en_ram,int si_escribir_en_device,ch
 
     hilow_set_tapelabel(si_escribir_en_ram,si_escribir_en_device,label);
 
-    hilow_device_set_sectores_disponible(si_escribir_en_ram,si_escribir_en_device);
+    int sectores_disponibles=hilow_create_sector_table(si_escribir_en_ram,si_escribir_en_device);
 
-    hilow_create_sector_table(si_escribir_en_ram,si_escribir_en_device);
+    hilow_device_set_sectores_disponible(si_escribir_en_ram,si_escribir_en_device,sectores_disponibles);
+
 }
 
 
@@ -1340,13 +1351,13 @@ void hilow_trap_format(void)
 
     //Asumimos siempre sector 0, pues rutina de formateo no llega a avanzar a siguientes sectores y da error  (error que interceptamos)
 
+    //Dado que no finaliza el formateo, tenemos que indicar nosotros la tabla de sectores
+    int sectores_disponibles=hilow_create_sector_table(1,0);
+
     //Rellenamos parte restante del sector 0
     //Dado que no finaliza el formateo, tenemos que indicar nosotros el total de sectores disponibles
-    hilow_device_set_sectores_disponible(1,0);
+    hilow_device_set_sectores_disponible(1,0,sectores_disponibles);
 
-
-    //Dado que no finaliza el formateo, tenemos que indicar nosotros la tabla de sectores
-    hilow_create_sector_table(1,0);
 
     //Finalmente escribimos tal cual el contenido de la memoria HiLow al dispositivo, en ambas copias de directorio
     hilow_write_mem_to_device(8192,1,HILOW_SECTOR_SIZE,0);
@@ -1654,7 +1665,9 @@ int hilow_load_ddh_device_file(void)
     debug_printf (VERBOSE_INFO,"Opening HiLow Data Drive File %s",hilow_file_name);
     ptr_hilowfile=fopen(hilow_file_name,"rb");
 
-
+    //Maximo a leer
+    //Nota: si se usa un archivo de mas capacidad, no se leera el resto
+    //y cuando se guarde, se grabara con el maximo tamaño, no con el tamaño que tenia antes
     unsigned int bytes_a_leer=HILOW_DEVICE_SIZE;
 
 
@@ -1664,10 +1677,17 @@ int hilow_load_ddh_device_file(void)
     }
 
     //leidos=fread(hilow_device_buffer,1,bytes_a_leer,ptr_hilowfile);
-    fread(hilow_device_buffer,1,bytes_a_leer,ptr_hilowfile);
+    unsigned int leidos=fread(hilow_device_buffer,1,bytes_a_leer,ptr_hilowfile);
     fclose(ptr_hilowfile);
 
+    //Al menos 3 sectores
+    int sectores=leidos/HILOW_SECTOR_SIZE;
+    if (sectores<3) {
+        debug_printf(VERBOSE_ERR,"Invalid file size");
+        return 1;
+    }
 
+    hilow_ddh_file_size=leidos;
 
     //De momento no comprobamos tamaño leido, por si en el futuro cambiamos el formato
     /*
