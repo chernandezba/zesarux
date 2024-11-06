@@ -433,6 +433,7 @@ LEC:
 *icono
 *tamaño por defecto ventana
 *ajustar temblor porque parece que se sale de cinta
+*eliminar debug print
 
 -visualcassettetape
 *icono
@@ -442,9 +443,9 @@ LEC:
 *tamaño por defecto ventana
 *ajustar temblor porque parece que se sale de cinta
 *si se avanza cinta desde visual real tape, con cinta parada, no refresca bien
+*eliminar debug print
 
 
--al insertar cinta, poner posicion cabezal en 0
 
 -----------------------
 ---FIN Hilow        ---
