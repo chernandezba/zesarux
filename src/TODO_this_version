@@ -424,15 +424,24 @@ LEC:
 
 -format ddh desde basic: ver si se puede hacer simple cara/doble cara
 
+-revisar sonido mezclado de datadrive en raw: excede el maximo de 127 o -128?
+
 -visual datadrive
 *indicar C60 o lo que sea. letras vectoriales?
 *otros detalles de una cinta real: nombre archivo? pestañas protección escritura (ambas cara A y B)
 *cabezal lectura?
 *icono
+*tamaño por defecto ventana
+*ajustar temblor porque parece que se sale de cinta
 
 -visualcassettetape
 *icono
 *soporte tap, tzx y otros formatos de cinta binaria
+*setting slow movement
+*revisar tmp y otras variables hilow
+*tamaño por defecto ventana
+*ajustar temblor porque parece que se sale de cinta
+*si se avanza cinta desde visual real tape, con cinta parada, no refresca bien
 
 
 -al insertar cinta, poner posicion cabezal en 0

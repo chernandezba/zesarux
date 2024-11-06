@@ -50219,9 +50219,7 @@ void menu_visual_cassette_tape_overlay(void)
     int semaforos_hilow=0;
 
 
-
-
-    //Si esta motor on, tiembla
+    //Si esta en movimiento, tiembla
     if (realtape_playing.v) {
         menu_visual_cassette_tape_temblor^=1;
         redibujar_rodillos_arrastre=1;
