@@ -7,6 +7,8 @@ Agregado emulación del ZX Microdrive en ZX Spectrum: incluye:
 - Emulación del microdrive en crudo (Raw). Soporta otros sistemas de archivos aparte del de la rom del interface1, como extensión del espacio del microdrive por el Multiface 128 o el CP/M para memoria LEC. Permitir ver mapa en crudo del microdrive (zonas vacías, bytes de sync, datos) y tener "problemas reales", como autogenerar sectores erróneos o estiramiento del microdrive cuando es nuevo.
 - Visual Microdrive: Permite ver un cartucho de microdrive en acción
 
+Agregada emulación en crudo de Hilow Datadrive Raw emulation, como el dispositivo real
+Agregada ventana de Visual Cassette Tape
 Agregada emulación de extensión de memoria LEC memory
 Agregadas máquinas Czerweny CZ 1000, CZ 1500, CZ 1000 Plus, CZ 1500 Plus, CZ 2000, CZ Spectrum, CZ Spectrum Plus
 Agregar función de "Memory Cheat": util para encontrar contadores de energia, bombas, munición o cualquier otro truco de un juego

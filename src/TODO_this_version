@@ -428,6 +428,11 @@ LEC:
 *indicar C60 o lo que sea. letras vectoriales?
 *otros detalles de una cinta real: nombre archivo? pestañas protección escritura (ambas cara A y B)
 *cabezal lectura?
+*icono
+
+-visualcassettetape
+*icono
+*soporte tap, tzx y otros formatos de cinta binaria
 
 
 -al insertar cinta, poner posicion cabezal en 0

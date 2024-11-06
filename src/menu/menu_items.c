@@ -50146,8 +50146,7 @@ int menu_visual_cassette_tape_temblor=0;
 int visual_cassette_tape_forzar_dibujado=0;
 
 
-//temp
-int visual_cassette_tape_rodillo_arrastre_grados=0;
+
 
 void menu_visual_cassette_tape_overlay(void)
 {
@@ -50158,28 +50157,26 @@ void menu_visual_cassette_tape_overlay(void)
     if (menu_visual_cassette_tape_window->is_minimized) return;
 
 
-    //Si no esta hilow activado y con cinta raw enabled, no mostrar
-    if (hilow_enabled.v==0) return;
 
-    if (hilow_rom_traps.v) return;
-
-    if (hilow_cinta_insertada_flag.v==0) return;
+    if (realtape_inserted.v==0) return;
 
 
     //Mostrar cinta, usar dibujo generico
 
-    int porcentaje_transcurrido=hilow_raw_transcurrido_cinta_porc();
-    int minutos_total_cinta=hilow_raw_get_minutes_tape();
+
+
+    int elapsed_seconds=realtape_get_elapsed_seconds();
+    int total_seconds=realtape_get_total_seconds();
 
     //Tenemos que dar el porcentaje sobre el maximo, que es de una cinta de 90 (45 minutos por cara)
     //Sacar el porcentaje que representa el total de la cinta sobre una de 90
-    int porc_90=(minutos_total_cinta*100)/90;
+    //int porc_90=100;
 
     //Y aplicamos el transcurrido sobre ese valor
-    int porcentaje=(porc_90*porcentaje_transcurrido)/100;
+    int porcentaje=(elapsed_seconds*100)/total_seconds;
 
 
-    int porcentaje_cinta_izquierdo=porc_90-porcentaje;
+    int porcentaje_cinta_izquierdo=100-porcentaje;
     int porcentaje_cinta_derecho=porcentaje;
 
     int redibujar_rollos=0;
@@ -50214,7 +50211,7 @@ void menu_visual_cassette_tape_overlay(void)
     }
 
 
-    int antes_porcentaje_cinta_izquierdo=porc_90-menu_visual_cassette_tape_porcentaje_anterior;;
+    int antes_porcentaje_cinta_izquierdo=100-menu_visual_cassette_tape_porcentaje_anterior;;
     int antes_porcentaje_cinta_derecho=menu_visual_cassette_tape_porcentaje_anterior;
 
 
@@ -50225,7 +50222,7 @@ void menu_visual_cassette_tape_overlay(void)
 
 
     //Si esta motor on, tiembla
-    if (last_hilow_port_value & HILOW_PORT_MASK_MOTOR_ON) {
+    if (realtape_playing.v) {
         menu_visual_cassette_tape_temblor^=1;
         redibujar_rodillos_arrastre=1;
     }
@@ -50380,11 +50377,8 @@ void menu_visual_cassette_tape(MENU_ITEM_PARAMETERS)
         zxvision_cls(ventana);
 
 
-        if (hilow_enabled.v==0) zxvision_print_string_defaults_fillspc(ventana,1,1,"Hilow is not enabled");
 
-        if (hilow_rom_traps.v) zxvision_print_string_defaults_fillspc(ventana,1,1,"You must insert a raw file");
-
-        if (hilow_cinta_insertada_flag.v==0) zxvision_print_string_defaults_fillspc(ventana,1,1,"Tape is not inserted");
+        if (realtape_inserted.v==0) zxvision_print_string_defaults_fillspc(ventana,1,1,"Tape is not inserted");
 
         zxvision_draw_window_contents(ventana);
 

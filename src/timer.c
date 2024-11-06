@@ -737,6 +737,8 @@ void timer_check_interrupt(void)
         //que si hay framedrop, rotaria mas lento
         menu_visualfloppy_increment_rotation();
 
+        realtape_visual_cassete_timer();
+
 
         textadv_location_timer_event();
 
