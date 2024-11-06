@@ -41022,7 +41022,7 @@ void menu_generic_visualtape_dibujar_rollos(struct zxvision_vectorial_draw *d,in
 #define VISUALTAPE_RODILLO_MOVIL_RADIO 40
 #define VISUALTAPE_RODILLO_MOVIL_RADIO_INTERIOR 6
 
-void menu_generic_visualtape_dibujar_cinta_estatica(struct zxvision_vectorial_draw *d)
+void menu_generic_visualtape_dibujar_cinta_estatica(struct zxvision_vectorial_draw *d,int pestanyas_escritura)
 {
     int radio_bordes_esquinas=30;
 
@@ -41100,6 +41100,15 @@ void menu_generic_visualtape_dibujar_cinta_estatica(struct zxvision_vectorial_dr
         d->drawcircle(d,i);
         d->jumppos(d,VISUALTAPE_RODILLO_MOVIL_DERECHO_X,VISUALTAPE_RODILLO_MOVIL_Y);
         d->drawcircle(d,i);
+    }
+
+    if (pestanyas_escritura) {
+        d->setcolour(d,0);
+        d->jumppos(d,60,0);
+        d->drawfilledrectangle(d,60,10);
+
+        d->jumppos(d,1000-60-60,0);
+        d->drawfilledrectangle(d,60,10);
     }
 
 
@@ -41387,7 +41396,7 @@ void menu_generic_visualtape(zxvision_window *w,
     int porcentaje_cinta_izquierdo,int porcentaje_cinta_derecha,
     int antes_porcentaje_cinta_izquierdo,int antes_porcentaje_cinta_derecha,
     int grados_rodillos,int antes_grados_rodillos,int redibujar_rollos,int redibujar_parte_estatica,int redibujar_rodillos_arrastre,
-    int temblor,int semaforos_hilow)
+    int temblor,int semaforos_hilow,int pestanyas_escritura)
 {
 
     //Dibujo de la cinta
@@ -41404,7 +41413,7 @@ void menu_generic_visualtape(zxvision_window *w,
 
 
 
-   if (redibujar_parte_estatica) menu_generic_visualtape_dibujar_cinta_estatica(&dibujo_visualtape);
+   if (redibujar_parte_estatica) menu_generic_visualtape_dibujar_cinta_estatica(&dibujo_visualtape,pestanyas_escritura);
    if (redibujar_rollos) menu_generic_visualtape_dibujar_rollos(&dibujo_visualtape,porcentaje_cinta_izquierdo,porcentaje_cinta_derecha);
 
    if (redibujar_rodillos_arrastre) {
@@ -41594,7 +41603,8 @@ void menu_hilow_visual_datadrive_overlay(void)
     porcentaje_cinta_izquierdo,porcentaje_cinta_derecho,
     antes_porcentaje_cinta_izquierdo,antes_porcentaje_cinta_derecho,
     hilow_visual_rodillo_arrastre_grados,antes_hilow_visual_rodillo_arrastre_grados,
-    redibujar_rollos,redibujar_parte_estatica,redibujar_rodillos_arrastre,menu_hilow_visual_datadrive_temblor,semaforos_hilow);
+    redibujar_rollos,redibujar_parte_estatica,redibujar_rodillos_arrastre,
+    menu_hilow_visual_datadrive_temblor,semaforos_hilow,hilow_write_protection.v ^1);
 
 
 
@@ -50267,7 +50277,7 @@ void menu_visual_cassette_tape_overlay(void)
     porcentaje_cinta_izquierdo,porcentaje_cinta_derecho,
     antes_porcentaje_cinta_izquierdo,antes_porcentaje_cinta_derecho,
     visual_cassette_tape_rodillo_arrastre_grados,antes_visual_cassette_tape_rodillo_arrastre_grados,
-    redibujar_rollos,redibujar_parte_estatica,redibujar_rodillos_arrastre,menu_visual_cassette_tape_temblor,semaforos_hilow);
+    redibujar_rollos,redibujar_parte_estatica,redibujar_rodillos_arrastre,menu_visual_cassette_tape_temblor,semaforos_hilow,1);
 
 
 
