@@ -430,7 +430,7 @@ LEC:
 *otros detalles de una cinta real: nombre archivo?
 *cabezal lectura?
 *icono
-*tamaño por defecto ventana
+ok *tamaño por defecto ventana
 ok *ajustar temblor porque parece que se sale de cinta
 *eliminar debug print
 
@@ -455,6 +455,7 @@ Hacer uno pequeño de 4 sectores
 -----------------------
 ---FIN Hilow        ---
 -----------------------
+
 
 -redocumentar efecto de brillo de color del Inves según ultima info con Pedro
 
