@@ -62,6 +62,7 @@ Por tanto en un archivo ddh se tendrán los sectores sin usar (y por tanto ocupa
 #include <stdio.h>
 #include <stdlib.h>
 #include <dirent.h>
+#include <string.h>
 
 //#if defined(__APPLE__)
 //        #include <sys/syslimits.h>
@@ -948,7 +949,7 @@ void hilow_device_set_usage_counter(int si_escribir_en_ram,int si_escribir_en_de
 
 }
 
-int hilow_create_sector_table(int si_escribir_en_ram,int si_escribir_en_device,int lados)
+int hilow_create_sector_table(int si_escribir_en_ram,int si_escribir_en_device,int lados,int *p_total_sectors)
 {
 
     debug_printf(VERBOSE_DEBUG,"HiLow: Creating free sectors table");
@@ -980,6 +981,8 @@ int hilow_create_sector_table(int si_escribir_en_ram,int si_escribir_en_device,i
     if (lados==1) {
         if (total_sectores>128) total_sectores=128;
     }
+
+    *p_total_sectors=total_sectores;
 
     //Es <= dado que el id de sector siempre lo decrementamos
     for (id_sector_tabla=0;id_sector_tabla<total_sectores;id_sector_tabla++) {
@@ -1043,7 +1046,33 @@ void hilow_set_tapelabel(int si_escribir_en_ram,int si_escribir_en_device,char *
 
 }
 
-void hilow_device_mem_format(int si_escribir_en_ram,int si_escribir_en_device,char *label,int lados)
+void hilow_device_clear_sectors(int total_sectors)
+{
+    int sector;
+
+    debug_printf(VERBOSE_INFO,"Clearing total sectors of %d",total_sectors);
+
+    //ignorar sectores no usables
+    //desde el sector 3 en adelante
+    for (sector=0;sector<total_sectors;sector++) {
+
+        int id_sector_sin_cara=sector & 0x7f;
+        //Sin considerar cara es sector 0,1,2,7e,7f, asi la comparacion nos vale para las dos caras
+
+        if (id_sector_sin_cara!=0 && id_sector_sin_cara!=1 && id_sector_sin_cara!=2 &&
+            id_sector_sin_cara!=0x7e &&  id_sector_sin_cara!=0x7f) {
+            debug_printf(VERBOSE_DEBUG,"Clearing sector %02XH",sector);
+            int offset;
+            for (offset=0;offset<HILOW_SECTOR_SIZE;offset++) {
+                hilow_write_byte_device(sector,offset,0);
+            }
+        }
+    }
+
+}
+
+
+void hilow_device_mem_format(int si_escribir_en_ram,int si_escribir_en_device,char *label,int lados,int con_borrado)
 {
 
     /*
@@ -1094,9 +1123,15 @@ void hilow_device_mem_format(int si_escribir_en_ram,int si_escribir_en_device,ch
 
     hilow_set_tapelabel(si_escribir_en_ram,si_escribir_en_device,label);
 
-    int sectores_disponibles=hilow_create_sector_table(si_escribir_en_ram,si_escribir_en_device,lados);
+    int total_sectors;
+
+    int sectores_disponibles=hilow_create_sector_table(si_escribir_en_ram,si_escribir_en_device,lados,&total_sectors);
 
     hilow_device_set_sectores_disponible(si_escribir_en_ram,si_escribir_en_device,sectores_disponibles);
+
+    if (con_borrado) {
+        hilow_device_clear_sectors(total_sectors);
+    }
 
 }
 
@@ -1354,27 +1389,38 @@ void hilow_trap_format(void)
 
 
 /*
+
+                LD      A,$01           ;1=con borrado
+                JR      Z,L08A9
+                XOR     A               ;0=sin borrado
+
 L08A9:          LD      (L3EF9),A
                 LD      A,$11           ;Pregunta: [SIMPLE LADO  DOBLE LADO]
                 CALL    L0B21           ;BIT 1 de $3EF9=1 SIMPLE
                 LD      A,(L3EF9)
                 JR      Z,L08BB         ;BIT 1 de $3EF9=0 DOBLE*/
 
-    z80_byte lado=peek_byte_no_time(0x3EF9);
+    z80_byte byte_flags=peek_byte_no_time(0x3EF9);
     //printf("lado: %02XH\n",lado);
 
-    int lados=(lado & 0x02 ? 2 : 1);
+    int lados=(byte_flags & 0x02 ? 2 : 1);
+    int con_borrado=byte_flags & 0x01;
 
-    debug_printf(VERBOSE_INFO,"HiLow: Formatting device, total sides: %d",lados);
+    debug_printf(VERBOSE_INFO,"HiLow: Formatting device, total sides: %d, with%s erasing",lados,(con_borrado ? "" : "out"));
 
     //Asumimos siempre sector 0, pues rutina de formateo no llega a avanzar a siguientes sectores y da error  (error que interceptamos)
 
     //Dado que no finaliza el formateo, tenemos que indicar nosotros la tabla de sectores
-    int sectores_disponibles=hilow_create_sector_table(1,0,lados);
+    int total_sectors;
+    int sectores_disponibles=hilow_create_sector_table(1,0,lados,&total_sectors);
 
     //Rellenamos parte restante del sector 0
     //Dado que no finaliza el formateo, tenemos que indicar nosotros el total de sectores disponibles
     hilow_device_set_sectores_disponible(1,0,sectores_disponibles);
+
+    if (con_borrado) {
+        hilow_device_clear_sectors(total_sectors);
+    }
 
 
     //Finalmente escribimos tal cual el contenido de la memoria HiLow al dispositivo, en ambas copias de directorio
@@ -1616,6 +1662,9 @@ void hilow_alloc_rom_ram_memory(void)
     if (hilow_memory_pointer==NULL) {
         cpu_panic ("No enough memory for hilow emulation");
     }
+
+    //vaciar esa memoria, para no dejar rastros en el dispositivo de cosas de la ram de ZEsarUX
+    memset(hilow_memory_pointer,0,size);
 
 
 }

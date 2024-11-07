@@ -422,8 +422,9 @@ LEC:
 
 -convertir ddh a raw
 
--format ddh desde basic: ver si se puede hacer simple cara/doble cara
+ok-format ddh desde basic: ver si se puede hacer simple cara/doble cara
 
+-documentar puerto FF en documento especificacion
 
 
 -visual datadrive

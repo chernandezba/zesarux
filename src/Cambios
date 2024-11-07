@@ -41,6 +41,7 @@ Mejorada emulación de Hilow Datadrive:
 -Agregada emulación en crudo (raw), como el dispositivo real
 -Permitir archivos ddh de tamaño variable (desde 3 hasta 256 sectores)
 -Permitir formatear solo una cara en archivos ddh
+-Permitir borrar contenido al formatear ("c/borrado" o "s/borrado")
 
 Mejorado Debug:
 - CPU history: permitir cambiar el puntero de memoria según el registro PC mostrado en el historial

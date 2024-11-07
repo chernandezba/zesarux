@@ -41,6 +41,7 @@ Improved Hilow Datadrive emulation:
 -Added Raw emulation, like the real device
 -Allow ddh variable size (from 3 up to 256 sectors)
 -Allow to format only one side on ddh files
+-Allow to clear contents when formatting ("c/borrado" or "s/borrado")
 
 Improved Debug:
 - CPU history: allow to change memory pointer to the PC register show in history
