@@ -39225,7 +39225,7 @@ void menu_storage_hilow_format(MENU_ITEM_PARAMETERS)
 
 void menu_storage_hilow_browser(MENU_ITEM_PARAMETERS)
 {
-    menu_hilow_datadrive_browser(hilow_device_buffer);
+    menu_hilow_datadrive_browser(hilow_device_buffer,hilow_ddh_file_size/HILOW_SECTOR_SIZE);
 }
 
 //Sectores usados por los archivos. En cada posicion N, indica que el sector N está usado si no es 0 el valor

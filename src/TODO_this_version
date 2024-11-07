@@ -416,13 +416,11 @@ LEC:
 
 -El cabezal siempre toca la cinta? Hay un botón de play como tal para sacar el cabezal? Ver la cinta Coleco
 
--Memory zone de hilow device solo debería ser visible si cinta ddh. O sea si traps a la rom activados
 
 -Comentarios en la ROM de hilow de Jane recopilar
 
 -convertir ddh a raw
 
-ok-format ddh desde basic: ver si se puede hacer simple cara/doble cara
 
 -documentar puerto FF en documento especificacion
 

@@ -4367,7 +4367,7 @@ void menu_hilow_browser_print_used_sectors(zxvision_window *w,z80_byte *puntero_
 
 }
 
-void menu_hilow_datadrive_browser(z80_byte *puntero_memoria_orig)
+void menu_hilow_datadrive_browser(z80_byte *puntero_memoria_orig,int ddh_file_total_sectors)
 {
 
     //Preguntar si ver copia del sector 0 o 1
@@ -4469,7 +4469,7 @@ Maximo sectores por archivo: 25
         char buffer_file_label[10];
         menu_hilow_datadrive_browser_aux_get_label(&puntero_memoria[2],buffer_file_label);
         buffer_file_label[9]=0;
-        zxvision_print_string_defaults_format(&ventana,1,linea++,"Label: %s",buffer_file_label);
+        zxvision_print_string_defaults_format(&ventana,1,linea++,"Total size: %3d KB Label: %s",ddh_file_total_sectors*HILOW_SECTOR_SIZE/1024,buffer_file_label);
 
         z80_int usage_counter=hilow_util_get_usage_counter(0,puntero_memoria);
         zxvision_print_string_defaults_format(&ventana,1,linea++,"Usage counter: %d",usage_counter);
@@ -4521,7 +4521,7 @@ Maximo sectores por archivo: 25
             int col=0;
             int i;
 
-            for (i=0;i<HILOW_MAX_SECTORS;i++) {
+            for (i=0;i<ddh_file_total_sectors/*HILOW_MAX_SECTORS*/;i++) {
                 char caracter='.';
 
                 if (i==0 || i==0x7e ||  i==0x7f || i==0x80 || i==0x81 || i==0x82 || i==0xfe ||  i==0xff)
@@ -4673,7 +4673,10 @@ void menu_file_ddh_browser_show(char *filename)
     int antes_menu_disable_special_chars=menu_disable_special_chars.v;
     menu_disable_special_chars.v=0;
 
-    menu_hilow_datadrive_browser(ddh_file_memory);
+    int total_size=get_file_size(filename);
+    int total_sectors=total_size/HILOW_SECTOR_SIZE;
+
+    menu_hilow_datadrive_browser(ddh_file_memory,total_sectors);
 
     menu_disable_special_chars.v=antes_menu_disable_special_chars;
 

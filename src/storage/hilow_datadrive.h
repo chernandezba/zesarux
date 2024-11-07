@@ -89,6 +89,8 @@ extern void hilow_device_mem_format(int si_escribir_en_ram,int si_escribir_en_de
 
 extern void hilow_tapa_action_was_opened(void);
 
+extern int hilow_ddh_file_size;
+
 extern void hilow_action_open_tape(void);
 extern void hilow_action_close_tape(void);
 
