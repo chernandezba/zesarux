@@ -424,11 +424,11 @@ LEC:
 
 -format ddh desde basic: ver si se puede hacer simple cara/doble cara
 
--revisar sonido mezclado de datadrive en raw: excede el maximo de 127 o -128?
+
 
 -visual datadrive
 *indicar C60 o lo que sea. letras vectoriales?
-*otros detalles de una cinta real: nombre archivo? pestañas protección escritura (ambas cara A y B)
+*otros detalles de una cinta real: nombre archivo?
 *cabezal lectura?
 *icono
 *tamaño por defecto ventana
@@ -446,6 +446,12 @@ ok *ajustar temblor porque parece que se sale de cinta
 *eliminar debug print
 
 
+-Test unitario cargar un ddh
+Hacer uno pequeño de 4 sectores
+
+
+-posibilidad otro algoritmo mas: si va para abajo: 0. si va para arriba: 1
+
 
 -----------------------
 ---FIN Hilow        ---
@@ -456,3 +462,10 @@ ok *ajustar temblor porque parece que se sale de cinta
 -en changelog decir que inves detecta bugs de:
 
 Error:    This game will probably crash due to the Inves write-on-interrupt bug (ISR=FCFCH, I=FBH, R=ACH, IM_MODE=2, IFF1=1
+
+
+-Poder ocultar botones de scroll de ventana: por ejemplo para microdrive raw map
+
+-Acciones con boton derecho sobre iconos inferiores, por ejemplo play una cinta real insertada, o abrir/cerrar tapa de hilow
+
+-Accion/F/icono para topspeed SI/NO

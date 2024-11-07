@@ -7,7 +7,6 @@ Added ZX Microdrive emulation on ZX Spectrum: that includes:
 - Raw microdrive emulation. Supporting other non-interface1 rom file formats, like extending microdrive space with Multiface 128 or CP/M for LEC memory. Allow to see microdrive raw map (gap zones, sync bytes, data) and have "real problems", like autogenerate bad sectors or stretching the microdrive when it's new.
 - Visual Microdrive: Allow to see a microdrive cartridge in action
 
-Added Hilow Datadrive Raw emulation, like the real device
 Added Visual Cassette Tape window
 Added LEC memory extension emulation
 Added machines Czerweny CZ 1000, CZ 1500, CZ 1000 Plus, CZ 1500 Plus, CZ 2000, CZ Spectrum, CZ Spectrum Plus
@@ -37,6 +36,11 @@ Improved Inves Spectrum+ emulation: alert when a game may crash due to the Inves
 Improved Jupiter Ace emulation: allow to hear MIC output
 Improved CPC emulation: allow to hear Cassete Out sound
 Improve Spectrum Z80 CPU emulation core: add wait state (needed to emulate microdrive)
+
+Improved Hilow Datadrive emulation:
+-Added Raw emulation, like the real device
+-Allow ddh variable size (from 3 up to 256 sectors)
+-Allow to format only one side on ddh files
 
 Improved Debug:
 - CPU history: allow to change memory pointer to the PC register show in history

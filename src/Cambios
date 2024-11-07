@@ -7,7 +7,6 @@ Agregado emulación del ZX Microdrive en ZX Spectrum: incluye:
 - Emulación del microdrive en crudo (Raw). Soporta otros sistemas de archivos aparte del de la rom del interface1, como extensión del espacio del microdrive por el Multiface 128 o el CP/M para memoria LEC. Permitir ver mapa en crudo del microdrive (zonas vacías, bytes de sync, datos) y tener "problemas reales", como autogenerar sectores erróneos o estiramiento del microdrive cuando es nuevo.
 - Visual Microdrive: Permite ver un cartucho de microdrive en acción
 
-Agregada emulación en crudo de Hilow Datadrive Raw emulation, como el dispositivo real
 Agregada ventana de Visual Cassette Tape
 Agregada emulación de extensión de memoria LEC memory
 Agregadas máquinas Czerweny CZ 1000, CZ 1500, CZ 1000 Plus, CZ 1500 Plus, CZ 2000, CZ Spectrum, CZ Spectrum Plus
@@ -37,6 +36,11 @@ Mejorada emulación del Inves Spectrum+: alertar cuando un juego puede resetears
 Mejorada emulación de Jupiter Ace: permitir escuchar salida MIC
 Mejorada emulación de CPC: permitir escuchar sonido de Salida Casette
 Mejorado el core de emulación de Spectrum de la CPU Z80: agregado estado wait (necesario para emular el microdrive)
+
+Mejorada emulación de Hilow Datadrive:
+-Agregada emulación en crudo (raw), como el dispositivo real
+-Permitir archivos ddh de tamaño variable (desde 3 hasta 256 sectores)
+-Permitir formatear solo una cara en archivos ddh
 
 Mejorado Debug:
 - CPU history: permitir cambiar el puntero de memoria según el registro PC mostrado en el historial

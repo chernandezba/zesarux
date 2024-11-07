@@ -28837,6 +28837,7 @@ void zxvision_vecdraw_init(struct zxvision_vectorial_draw *d,zxvision_window *w,
     d->pencil_enabled=0;
     d->pencil_colour=0;
 
+    //Acciones posibles
     d->setpos=zxvision_vecdraw_setpos;
     d->setrelpos=zxvision_vecdraw_setrelpos;
     d->jumppos=zxvision_vecdraw_jumppos;

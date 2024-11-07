@@ -39198,7 +39198,8 @@ void menu_storage_hilow_format(MENU_ITEM_PARAMETERS)
 
         if (menu_confirm_yesno_texto("Format drive","Really Sure?")) {
 
-            hilow_device_mem_format(0,1,buffer_nombre);
+            //TODO: de momento dos lados
+            hilow_device_mem_format(0,1,buffer_nombre,2);
 
             //Para indicar que hay que releer el sector 0
             hilow_tapa_action_was_opened();
@@ -41788,6 +41789,25 @@ void menu_storage_hilow_encendido(MENU_ITEM_PARAMETERS)
     else hilow_raw_power_on_player();
 }
 
+void menu_storage_hilow_diffencial_algorithm(MENU_ITEM_PARAMETERS)
+{
+    hilow_diffencial_algorithm_enabled.v ^=1;
+}
+
+void menu_storage_hilow_diffencial_algorithm_volume_range(MENU_ITEM_PARAMETERS)
+{
+    hilow_diffencial_algorithm_volume_range +=2;
+
+    if (hilow_diffencial_algorithm_volume_range==30) hilow_diffencial_algorithm_volume_range=0;
+
+}
+
+void menu_storage_hilow_invert_bit(MENU_ITEM_PARAMETERS)
+{
+    hilow_invert_bit.v ^=1;
+}
+
+
 void menu_hilow(MENU_ITEM_PARAMETERS)
 {
     menu_item *array_menu_hilow;
@@ -41844,6 +41864,27 @@ void menu_hilow(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_en_es_ca(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_hear_save,NULL,
                 "Hear save sound","Escuchar sonido de grabación","Escoltar so de gravació");
             menu_add_item_menu_prefijo_format(array_menu_hilow,"[%c] ",(hilow_hear_save_sound.v ? 'X' : ' ') );
+
+
+
+            menu_add_item_menu_en_es_ca(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_diffencial_algorithm,NULL,
+                "Differential algorithm","Algoritmo diferencial","Algoritme diferencial");
+            menu_add_item_menu_prefijo_format(array_menu_hilow,"[%c] ",(hilow_diffencial_algorithm_enabled.v ? 'X' : ' ') );
+            menu_add_item_menu_es_avanzado(array_menu_hilow);
+
+            if (hilow_diffencial_algorithm_enabled.v) {
+                menu_add_item_menu_en_es_ca(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_diffencial_algorithm_volume_range,NULL,
+                    "Volume range","Rango volumen","Rang volum");
+                menu_add_item_menu_prefijo_format(array_menu_hilow,"    ");
+                menu_add_item_menu_sufijo_format(array_menu_hilow," [%d]",hilow_diffencial_algorithm_volume_range);
+                menu_add_item_menu_es_avanzado(array_menu_hilow);
+            }
+
+            menu_add_item_menu_en_es_ca(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_invert_bit,NULL,
+                "Invert signal","Invertir señal","Invertir senyal");
+            menu_add_item_menu_prefijo_format(array_menu_hilow,"[%c] ",(hilow_invert_bit.v ? 'X' : ' ') );
+            menu_add_item_menu_es_avanzado(array_menu_hilow);
+
         }
 
 
@@ -41855,8 +41896,10 @@ void menu_hilow(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_prefijo_format(array_menu_hilow,"[%c] ", (hilow_reproductor_encendido.v ? 'X' : ' '));
             menu_add_item_menu_tooltip(array_menu_hilow,"If tape player is powered on or not");
             menu_add_item_menu_ayuda(array_menu_hilow,"If tape player is powered on or not");
+            menu_add_item_menu_es_avanzado(array_menu_hilow);
 
             menu_add_item_menu_separator(array_menu_hilow);
+            menu_add_item_menu_es_avanzado(array_menu_hilow);
         }
 
         menu_add_item_menu_en_es_ca(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_insert,NULL,
@@ -41873,6 +41916,8 @@ void menu_hilow(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_ayuda(array_menu_hilow,"This flag is only read by the ROM, tells the cover tape has been opened (but is not necessarily open now). "
                                 "Is is automatically reset when reading or writing. "
                                 "You can set it to force reading the directory sector when doing a SAVE \"CAT\" for example");
+        menu_add_item_menu_es_avanzado(array_menu_hilow);
+
 
         menu_add_item_menu_separator(array_menu_hilow);
 
@@ -45580,6 +45625,7 @@ void menu_interface1(MENU_ITEM_PARAMETERS)
             "- The first 50 times the microdrive can stretch 2% with a probability of 10%\n"
             "- Every 100 times, a position can be marked as bad with a probability of 5% "
         );
+        menu_add_item_menu_es_avanzado(array_menu_common);
 
 
         //De momento soportar hasta 4 microdrives en el menu , aunque se permiten hasta 8
@@ -45691,6 +45737,7 @@ void menu_interface1(MENU_ITEM_PARAMETERS)
                     menu_add_item_menu_se_cerrara(array_menu_common);
                     menu_add_item_menu_genera_ventana(array_menu_common);
                     menu_add_item_menu_valor_opcion(array_menu_common,i);
+                    menu_add_item_menu_es_avanzado(array_menu_common);
                 }
 
 
@@ -45700,6 +45747,7 @@ void menu_interface1(MENU_ITEM_PARAMETERS)
                 menu_add_item_menu_valor_opcion(array_menu_common,i);
                 menu_add_item_menu_se_cerrara(array_menu_common);
                 menu_add_item_menu_genera_ventana(array_menu_common);
+                menu_add_item_menu_es_avanzado(array_menu_common);
 
             }
 

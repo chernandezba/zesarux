@@ -85,7 +85,7 @@ extern z80_byte *hilow_device_buffer;
 //espacio en segundos al principio y final de cinta que no se puede escribir (esa parte en blanco sin zona magnetica)
 #define HILOW_RAW_ZONA_BLANCA_SEC 3
 
-extern void hilow_device_mem_format(int si_escribir_en_ram,int si_escribir_en_device,char *label);
+extern void hilow_device_mem_format(int si_escribir_en_ram,int si_escribir_en_device,char *label,int lados);
 
 extern void hilow_tapa_action_was_opened(void);
 
@@ -175,5 +175,9 @@ extern z80_byte hilow_read_port_ff_ddh(z80_int puerto GCC_UNUSED);
 extern int hilow_raw_get_minutes_tape(void);
 
 extern int hilow_raw_transcurrido_cinta_porc(void);
+
+extern z80_bit hilow_diffencial_algorithm_enabled;
+extern z80_bit hilow_invert_bit;
+extern int hilow_diffencial_algorithm_volume_range;
 
 #endif

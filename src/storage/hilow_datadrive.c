@@ -948,7 +948,7 @@ void hilow_device_set_usage_counter(int si_escribir_en_ram,int si_escribir_en_de
 
 }
 
-int hilow_create_sector_table(int si_escribir_en_ram,int si_escribir_en_device)
+int hilow_create_sector_table(int si_escribir_en_ram,int si_escribir_en_device,int lados)
 {
 
     debug_printf(VERBOSE_DEBUG,"HiLow: Creating free sectors table");
@@ -976,6 +976,10 @@ int hilow_create_sector_table(int si_escribir_en_ram,int si_escribir_en_device)
     int sectores_disponibles=0;
 
     int total_sectores=hilow_ddh_file_size/HILOW_SECTOR_SIZE;
+
+    if (lados==1) {
+        if (total_sectores>128) total_sectores=128;
+    }
 
     //Es <= dado que el id de sector siempre lo decrementamos
     for (id_sector_tabla=0;id_sector_tabla<total_sectores;id_sector_tabla++) {
@@ -1039,7 +1043,7 @@ void hilow_set_tapelabel(int si_escribir_en_ram,int si_escribir_en_device,char *
 
 }
 
-void hilow_device_mem_format(int si_escribir_en_ram,int si_escribir_en_device,char *label)
+void hilow_device_mem_format(int si_escribir_en_ram,int si_escribir_en_device,char *label,int lados)
 {
 
     /*
@@ -1090,7 +1094,7 @@ void hilow_device_mem_format(int si_escribir_en_ram,int si_escribir_en_device,ch
 
     hilow_set_tapelabel(si_escribir_en_ram,si_escribir_en_device,label);
 
-    int sectores_disponibles=hilow_create_sector_table(si_escribir_en_ram,si_escribir_en_device);
+    int sectores_disponibles=hilow_create_sector_table(si_escribir_en_ram,si_escribir_en_device,lados);
 
     hilow_device_set_sectores_disponible(si_escribir_en_ram,si_escribir_en_device,sectores_disponibles);
 
@@ -1347,12 +1351,26 @@ void hilow_trap_format(void)
     printf("\n");
     */
 
-    debug_printf(VERBOSE_INFO,"HiLow: Formatting device");
+
+
+/*
+L08A9:          LD      (L3EF9),A
+                LD      A,$11           ;Pregunta: [SIMPLE LADO  DOBLE LADO]
+                CALL    L0B21           ;BIT 1 de $3EF9=1 SIMPLE
+                LD      A,(L3EF9)
+                JR      Z,L08BB         ;BIT 1 de $3EF9=0 DOBLE*/
+
+    z80_byte lado=peek_byte_no_time(0x3EF9);
+    //printf("lado: %02XH\n",lado);
+
+    int lados=(lado & 0x02 ? 2 : 1);
+
+    debug_printf(VERBOSE_INFO,"HiLow: Formatting device, total sides: %d",lados);
 
     //Asumimos siempre sector 0, pues rutina de formateo no llega a avanzar a siguientes sectores y da error  (error que interceptamos)
 
     //Dado que no finaliza el formateo, tenemos que indicar nosotros la tabla de sectores
-    int sectores_disponibles=hilow_create_sector_table(1,0);
+    int sectores_disponibles=hilow_create_sector_table(1,0,lados);
 
     //Rellenamos parte restante del sector 0
     //Dado que no finaliza el formateo, tenemos que indicar nosotros el total de sectores disponibles
@@ -2147,7 +2165,7 @@ It is always a 1 when the drive is switched off.
 
 void hilow_mix_audio(void)
 {
-    if (hilow_hear_load_sound.v==0 && hilow_hear_save_sound.v) return;
+    if (hilow_hear_load_sound.v==0 && hilow_hear_save_sound.v==0) return;
 
     if (hilow_rom_traps.v) return;
 
@@ -2209,6 +2227,16 @@ z80_byte *hilow_get_audio_buffer(void)
     else return hilow_raw_device_buffer_side_b;
 }
 
+z80_bit hilow_diffencial_algorithm_enabled={0};
+int hilow_diffencial_algorithm_last_bit=0;
+z80_bit hilow_invert_bit={0};
+int hilow_diffencial_algorithm_volume_range=10;
+
+
+
+//z80_byte anterior_last_raw_audio_data_read;
+//int last_raw_audio_data_read_previous_return_value;
+
 z80_byte hilow_read_port_ff_raw(z80_int puerto GCC_UNUSED)
 {
 
@@ -2244,14 +2272,88 @@ Note: Cassette Motion can register as "stopped" when the motor is off, or when t
 
     if (hilow_tapa_has_been_opened.v==0) valor_retorno |=8; //No se ha abierto la tapa en algun momento
 
-    //margen volumen 10
-    if (last_raw_audio_data_read-128>10) {
+
+    if (last_raw_audio_data_read>128) {
         //printf("1\n");
         valor_retorno |=64;
     }
     else {
         //printf("0\n");
     }
+
+
+    //Algoritmo basado en que si es algo mayor que 128, sera un 1.
+    //Si es algo menor que 128 sera un 0
+    //Y si esta cerca de 128, sera el mismo valor anterior
+    //Esto deberia dar mejor resultado con señal proveniente de una cinta real, pues hay variaciones pequeñas que no queremos que altere el bit
+    if (hilow_diffencial_algorithm_enabled.v) {
+        int vol=hilow_diffencial_algorithm_volume_range;
+        if (last_raw_audio_data_read>128+vol) hilow_diffencial_algorithm_last_bit=1;
+        else if (last_raw_audio_data_read<128-vol) hilow_diffencial_algorithm_last_bit=0;
+        else {
+            //sin cambio en el bit
+        }
+
+        if (hilow_diffencial_algorithm_last_bit) valor_retorno |=64;
+        else valor_retorno &=(255-64);
+
+    }
+
+
+    //Otro algoritmo. Mirando si la cresta del valor sube o baja, teniendo en cuenta un margen donde no se cambia el valor anterior
+    /*
+    if (1) {
+
+
+        //realmente no hace falta inicializarlo a 0 pues siempre retornara valor,
+        //solo es para el compilador para que no se queje
+        char return_value=0;
+
+        //sacar diferencia valor anterior con actual
+        int diferencia=last_raw_audio_data_read-anterior_last_raw_audio_data_read;
+
+        if (diferencia<0) diferencia=-diferencia;
+
+        //Si la onda esta mas o menos igual, damos valor anterior
+        if (diferencia<=hilow_diffencial_algorithm_volume_range) {
+            //printf("igual\n");
+            return_value=last_raw_audio_data_read_previous_return_value;
+        }
+
+        else {
+
+            //Si la onda "sube", es +1
+            if (last_raw_audio_data_read>anterior_last_raw_audio_data_read) {
+                //printf ("superior\n");
+                return_value=1;
+            }
+            //Si la onda "baja", es -1
+            else if (last_raw_audio_data_read<anterior_last_raw_audio_data_read) {
+                return_value=0;
+                //printf("inferior\n");
+            }
+
+
+        }
+
+        anterior_last_raw_audio_data_read=last_raw_audio_data_read;
+        last_raw_audio_data_read_previous_return_value=return_value;
+
+        //printf("retornar %d\n",return_value);
+
+        if (return_value) valor_retorno |=64;
+        else valor_retorno &=(255-64);
+
+    }
+    //Fin //Otro algoritmo
+    */
+
+
+
+
+
+    if (hilow_invert_bit.v) valor_retorno ^=64;
+
 
     //Parece que bit 6 tambien se activa cuando cinta detenida
     if (!hilow_cinta_en_movimiento) {
