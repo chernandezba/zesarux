@@ -440,7 +440,7 @@ ok *ajustar temblor porque parece que se sale de cinta
 *eliminar debug print
 
 
--Test unitario cargar un ddh
+ok-Test unitario cargar un ddh
 Hacer uno pequeño de 4 sectores
 
 
@@ -463,4 +463,7 @@ Error:    This game will probably crash due to the Inves write-on-interrupt bug 
 
 -Acciones con boton derecho sobre iconos inferiores, por ejemplo play una cinta real insertada, o abrir/cerrar tapa de hilow
 
--Accion/F/icono para topspeed SI/NO
+-Accion/F/icono para topspeed SI/NO. ya existia!
+
+
+-en FAQ formatos MDR/RMD, DDH/RAW

@@ -72,3 +72,22 @@ if [ $? != 0 ]; then
 else
         echo "OK Load RAW Microdrive RMD"
 fi
+
+echo
+
+
+# Also test loading hilow ddh
+
+echo "Test Load Hilow DDH file"
+./zesarux --noconfigfile --ao null --vo stdout --tape tests/testddh.tap --hilow-file tests/testddh.ddh --hilow-no-persistent-writes --enable-hilow --exit-after 10 --fastautoload > $TEMPFILE
+
+grep "RUN PROGRAM OK" $TEMPFILE
+
+if [ $? != 0 ]; then
+        echo "ERROR Load Hilow DDH file"
+        exit 1
+else
+        echo "OK Load Hilow DDH file"
+fi
+
+echo
