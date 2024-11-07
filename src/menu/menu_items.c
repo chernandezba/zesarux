@@ -39196,15 +39196,23 @@ void menu_storage_hilow_format(MENU_ITEM_PARAMETERS)
         buffer_nombre[0]=0;
         menu_ventana_scanf("Drive label",buffer_nombre,10);
 
-        if (menu_confirm_yesno_texto("Format drive","Really Sure?")) {
+        int lados=menu_simple_two_choices("Two or One sides","Select:","Side A","Side A & B");
 
-            //TODO: de momento dos lados
-            hilow_device_mem_format(0,1,buffer_nombre,2);
+        if (lados==1 || lados==2) {
 
-            //Para indicar que hay que releer el sector 0
-            hilow_tapa_action_was_opened();
 
-            menu_generic_message_splash("Format","Ok. Device has been formatted");
+
+            if (menu_confirm_yesno_texto("Format drive","Really Sure?")) {
+
+
+                hilow_device_mem_format(0,1,buffer_nombre,lados);
+
+                //Para indicar que hay que releer el sector 0
+                hilow_tapa_action_was_opened();
+
+                menu_generic_message_splash("Format","Ok. Device has been formatted");
+
+            }
 
         }
 
