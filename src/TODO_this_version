@@ -414,7 +414,7 @@ LEC:
 
 -Comentarios en la ROM de hilow de Jane recopilar
 
--convertir ddh a raw
+-poder convertir ddh a raw
 
 
 -documentar puerto FF en documento especificacion
@@ -440,8 +440,6 @@ ok *ajustar temblor porque parece que se sale de cinta
 *eliminar debug print
 
 
-ok-Test unitario cargar un ddh
-Hacer uno pequeño de 4 sectores
 
 
 -posibilidad otro algoritmo mas: si va para abajo: 0. si va para arriba: 1

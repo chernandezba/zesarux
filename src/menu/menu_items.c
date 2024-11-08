@@ -264,7 +264,6 @@ int dandanator_opcion_seleccionada=0;
 int samram_opcion_seleccionada=0;
 int ifrom_opcion_seleccionada=0;
 int hilow_opcion_seleccionada=0;
-int superupgrade_opcion_seleccionada=0;
 int zxuno_spi_flash_opcion_seleccionada=0;
 int betadisk_opcion_seleccionada=0;
 int menu_inicio_opcion_seleccionada=0;
@@ -42099,127 +42098,6 @@ void menu_betadisk(MENU_ITEM_PARAMETERS)
         }
 
     } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
-
-
-
-
-}
-
-
-void menu_superupgrade_rom_file(MENU_ITEM_PARAMETERS)
-{
-        superupgrade_disable();
-
-        char *filtros[2];
-
-        filtros[0]="flash";
-        filtros[1]=0;
-
-
-        if (menu_filesel("Select Superupgrade File",filtros,superupgrade_rom_file_name)==1) {
-                if (!si_existe_archivo(superupgrade_rom_file_name)) {
-                        menu_error_message("File does not exist");
-                        superupgrade_rom_file_name[0]=0;
-                        return;
-
-
-
-                }
-
-                else {
-                        //Comprobar aqui tambien el tamanyo
-                        long long int size=get_file_size(superupgrade_rom_file_name);
-                        if (size!=SUPERUPGRADE_ROM_SIZE) {
-                                menu_error_message("Flash file must be 512 KB length");
-                                superupgrade_rom_file_name[0]=0;
-                                return;
-                        }
-                }
-
-
-        }
-        //Sale con ESC
-        else {
-                //Quitar nombre
-                superupgrade_rom_file_name[0]=0;
-
-        }
-
-}
-
-int menu_storage_superupgrade_emulation_cond(void)
-{
-        if (superupgrade_rom_file_name[0]==0) return 0;
-        return 1;
-}
-
-
-void menu_storage_superupgrade_emulation(MENU_ITEM_PARAMETERS)
-{
-        if (superupgrade_enabled.v) superupgrade_disable();
-        else superupgrade_enable(1);
-}
-
-void menu_storage_superupgrade_internal_rom(MENU_ITEM_PARAMETERS)
-{
-		//superupgrade_puerto_43b ^=0x20;
-		//if ( (superupgrade_puerto_43b & (32+64))==32) return 1;
-
-		superupgrade_puerto_43b &=(255-32-64);
-		superupgrade_puerto_43b |=32;
-}
-
-
-
-void menu_superupgrade(MENU_ITEM_PARAMETERS)
-{
-        menu_item *array_menu_superupgrade;
-        menu_item item_seleccionado;
-        int retorno_menu;
-        do {
-
-                char string_superupgrade_file_shown[13];
-
-
-                        menu_tape_settings_trunc_name(superupgrade_rom_file_name,string_superupgrade_file_shown,13);
-                        menu_add_item_menu_inicial_format(&array_menu_superupgrade,MENU_OPCION_NORMAL,menu_superupgrade_rom_file,NULL,"~~Flash File [%s]",string_superupgrade_file_shown);
-                        menu_add_item_menu_prefijo(array_menu_superupgrade,"    ");
-                        menu_add_item_menu_shortcut(array_menu_superupgrade,'f');
-                        menu_add_item_menu_tooltip(array_menu_superupgrade,"Flash Emulation file");
-                        menu_add_item_menu_ayuda(array_menu_superupgrade,"Flash Emulation file");
-
-
-                        menu_add_item_menu_format(array_menu_superupgrade,MENU_OPCION_NORMAL,menu_storage_superupgrade_emulation,menu_storage_superupgrade_emulation_cond,"[%c] ~~Superupgrade Enabled", (superupgrade_enabled.v ? 'X' : ' '));
-                        menu_add_item_menu_shortcut(array_menu_superupgrade,'s');
-                        menu_add_item_menu_tooltip(array_menu_superupgrade,"Enable superupgrade");
-                        menu_add_item_menu_ayuda(array_menu_superupgrade,"Enable superupgrade");
-
-
-												menu_add_item_menu_format(array_menu_superupgrade,MENU_OPCION_NORMAL,menu_storage_superupgrade_internal_rom,menu_storage_superupgrade_emulation_cond,"[%c] Show ~~internal ROM", (si_superupgrade_muestra_rom_interna() ? 'X' : ' '));
-												menu_add_item_menu_shortcut(array_menu_superupgrade,'i');
-												menu_add_item_menu_tooltip(array_menu_superupgrade,"Show internal ROM instead of Superupgrade flash");
-												menu_add_item_menu_ayuda(array_menu_superupgrade,"Show internal ROM instead of Superupgrade flash");
-
-
-
-                                menu_add_item_menu(array_menu_superupgrade,"",MENU_OPCION_SEPARADOR,NULL,NULL);
-
-                menu_add_ESC_item(array_menu_superupgrade);
-
-
-retorno_menu=menu_dibuja_menu_no_title_lang(&superupgrade_opcion_seleccionada,&item_seleccionado,array_menu_superupgrade,"Superupgrade" );
-
-
-                if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
-                        //llamamos por valor de funcion
-                        if (item_seleccionado.menu_funcion!=NULL) {
-                                //printf ("actuamos por funcion\n");
-                                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
-
-                        }
-                }
-
-        } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
 
 
 
