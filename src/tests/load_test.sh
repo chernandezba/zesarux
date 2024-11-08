@@ -29,10 +29,12 @@ for i in $MAQUINAS; do
 
 done
 
+COMMON_FIRST_SETTINGS="--noconfigfile --ao null --vo stdout"
+COMMON_SECOND_SETTINGS="--hardware-debug-ports --exit-after 10 --fastautoload"
 
 # Also test loading +3 Disk
 echo "Test Load +3 Disk"
-./zesarux --noconfigfile --ao null --vo stdout --machine p340 tests/testdsk.dsk --exit-after 10 --fastautoload > $TEMPFILE
+./zesarux $COMMON_FIRST_SETTINGS --machine p340 tests/testdsk.dsk $COMMON_SECOND_SETTINGS > $TEMPFILE
 
 grep "RUN PROGRAM OK" $TEMPFILE
 
@@ -48,7 +50,7 @@ echo
 
 # Also test loading microdrive
 echo "Test Load Standard Microdrive MDR"
-./zesarux --noconfigfile --ao null --vo stdout --tape tests/testmicrodrive.tap --zx-mdv-file 1 tests/testmicrodrive.mdr --zx-mdv-enable 1 --zx-mdv-no-persistent-writes 1 --enable-interface1 --exit-after 10 --fastautoload > $TEMPFILE
+./zesarux $COMMON_FIRST_SETTINGS --tape tests/testmicrodrive.tap --zx-mdv-file 1 tests/testmicrodrive.mdr --zx-mdv-enable 1 --zx-mdv-no-persistent-writes 1 --enable-interface1 $COMMON_SECOND_SETTINGS > $TEMPFILE
 
 grep "RUN PROGRAM OK" $TEMPFILE
 
@@ -62,7 +64,7 @@ fi
 echo
 
 echo "Test Load RAW Microdrive RMD"
-./zesarux --noconfigfile --ao null --vo stdout --tape tests/testmicrodrive.tap --zx-mdv-file 1 tests/testmicrodrive.rmd --zx-mdv-enable 1 --zx-mdv-no-persistent-writes 1 --enable-interface1 --exit-after 10 --fastautoload > $TEMPFILE
+./zesarux $COMMON_FIRST_SETTINGS --tape tests/testmicrodrive.tap --zx-mdv-file 1 tests/testmicrodrive.rmd --zx-mdv-enable 1 --zx-mdv-no-persistent-writes 1 --enable-interface1 $COMMON_SECOND_SETTINGS > $TEMPFILE
 
 grep "RUN PROGRAM OK" $TEMPFILE
 
@@ -79,7 +81,7 @@ echo
 # Also test loading hilow ddh
 
 echo "Test Load Hilow DDH file"
-./zesarux --noconfigfile --ao null --vo stdout --tape tests/testddh.tap --hilow-file tests/testddh.ddh --hilow-no-persistent-writes --enable-hilow --exit-after 10 --fastautoload > $TEMPFILE
+./zesarux $COMMON_FIRST_SETTINGS --tape tests/testddh.tap --hilow-file tests/testddh.ddh --hilow-no-persistent-writes --enable-hilow $COMMON_SECOND_SETTINGS > $TEMPFILE
 
 grep "RUN PROGRAM OK" $TEMPFILE
 

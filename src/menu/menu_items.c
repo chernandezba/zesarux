@@ -45,6 +45,7 @@
 
 #include "zxvision.h"
 #include "menu_items.h"
+#include "menu_items_storage.h"
 #include "menu_items_settings.h"
 #include "menu_debug_cpu.h"
 #include "menu_file_viewer_browser.h"
@@ -104,7 +105,6 @@
 #include "scmp.h"
 #include "esxdos_handler.h"
 #include "tsconf.h"
-#include "kartusho.h"
 #include "ifrom.h"
 #include "spritefinder.h"
 #include "snap_spg.h"
@@ -261,7 +261,6 @@ int storage_tape_opcion_seleccionada=0;
 int storage_opcion_seleccionada=0;
 int timexcart_opcion_seleccionada=0;
 int dandanator_opcion_seleccionada=0;
-int kartusho_opcion_seleccionada=0;
 int samram_opcion_seleccionada=0;
 int ifrom_opcion_seleccionada=0;
 int hilow_opcion_seleccionada=0;
@@ -38594,128 +38593,6 @@ void menu_dandanator(MENU_ITEM_PARAMETERS)
 }
 
 
-
-void menu_kartusho_rom_file(MENU_ITEM_PARAMETERS)
-{
-	kartusho_disable();
-
-        char *filtros[2];
-
-        filtros[0]="rom";
-        filtros[1]=0;
-
-
-        if (menu_filesel("Select kartusho File",filtros,kartusho_rom_file_name)==1) {
-                if (!si_existe_archivo(kartusho_rom_file_name)) {
-                        menu_error_message("File does not exist");
-                        kartusho_rom_file_name[0]=0;
-                        return;
-
-
-
-                }
-
-                else {
-                        //Comprobar aqui tambien el tamanyo
-                        long long int size=get_file_size(kartusho_rom_file_name);
-                        if (size!=KARTUSHO_SIZE) {
-                                menu_error_message("ROM file must be 512 KB length");
-                                kartusho_rom_file_name[0]=0;
-                                return;
-                        }
-                }
-
-
-        }
-        //Sale con ESC
-        else {
-                //Quitar nombre
-                kartusho_rom_file_name[0]=0;
-
-
-        }
-
-}
-
-int menu_storage_kartusho_emulation_cond(void)
-{
-	if (kartusho_rom_file_name[0]==0) return 0;
-        return 1;
-}
-
-int menu_storage_kartusho_press_button_cond(void)
-{
-	return kartusho_enabled.v;
-}
-
-
-void menu_storage_kartusho_emulation(MENU_ITEM_PARAMETERS)
-{
-	if (kartusho_enabled.v) kartusho_disable();
-	else kartusho_enable();
-}
-
-void menu_storage_kartusho_press_button(MENU_ITEM_PARAMETERS)
-{
-	kartusho_press_button();
-	//Y salimos de todos los menus
-	salir_todos_menus=1;
-
-}
-
-void menu_kartusho(MENU_ITEM_PARAMETERS)
-{
-        menu_item *array_menu_kartusho;
-        menu_item item_seleccionado;
-        int retorno_menu;
-        do {
-
-                char string_kartusho_file_shown[13];
-
-
-                        menu_tape_settings_trunc_name(kartusho_rom_file_name,string_kartusho_file_shown,13);
-                        menu_add_item_menu_inicial_format(&array_menu_kartusho,MENU_OPCION_NORMAL,menu_kartusho_rom_file,NULL,"~~ROM File [%s]",string_kartusho_file_shown);
-                        menu_add_item_menu_prefijo(array_menu_kartusho,"    ");
-                        menu_add_item_menu_shortcut(array_menu_kartusho,'r');
-                        menu_add_item_menu_tooltip(array_menu_kartusho,"ROM Emulation file");
-                        menu_add_item_menu_ayuda(array_menu_kartusho,"ROM Emulation file");
-
-
-                        			menu_add_item_menu_format(array_menu_kartusho,MENU_OPCION_NORMAL,menu_storage_kartusho_emulation,menu_storage_kartusho_emulation_cond,"[%c] ~~Kartusho Enabled", (kartusho_enabled.v ? 'X' : ' '));
-                        menu_add_item_menu_shortcut(array_menu_kartusho,'k');
-                        menu_add_item_menu_tooltip(array_menu_kartusho,"Enable kartusho");
-                        menu_add_item_menu_ayuda(array_menu_kartusho,"Enable kartusho");
-
-
-			menu_add_item_menu_format(array_menu_kartusho,MENU_OPCION_NORMAL,menu_storage_kartusho_press_button,menu_storage_kartusho_press_button_cond,"~~Press button");
-             menu_add_item_menu_prefijo(array_menu_kartusho,"    ");
-			menu_add_item_menu_shortcut(array_menu_kartusho,'p');
-                        menu_add_item_menu_tooltip(array_menu_kartusho,"Press button");
-                        menu_add_item_menu_ayuda(array_menu_kartusho,"Press button");
-
-
-                                menu_add_item_menu(array_menu_kartusho,"",MENU_OPCION_SEPARADOR,NULL,NULL);
-
-                menu_add_ESC_item(array_menu_kartusho);
-
-                retorno_menu=menu_dibuja_menu_no_title_lang(&kartusho_opcion_seleccionada,&item_seleccionado,array_menu_kartusho,"Kartusho" );
-
-
-                if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
-                        //llamamos por valor de funcion
-                        if (item_seleccionado.menu_funcion!=NULL) {
-                                //printf ("actuamos por funcion\n");
-                                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
-
-                        }
-                }
-
-        } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
-
-
-
-
-}
 
 void menu_samram_rom_file(MENU_ITEM_PARAMETERS)
 {
