@@ -79,5 +79,10 @@ extern void microdrive_raw_enlarge(int microdrive_seleccionado,int ampliacion);
 
 extern z80_bit microdrive_raw_real_life_problems;
 
+extern z80_bit microdrive_simulate_sound_read;
+extern z80_bit microdrive_simulate_sound_write;
+
+extern void microdrive_mix_audio(void);
+
 
 #endif

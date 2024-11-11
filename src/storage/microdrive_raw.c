@@ -119,6 +119,7 @@ https://microhobby.speccy.cz/sinclair.htm
 #include "compileoptions.h"
 #include "menu_items.h"
 #include "screen.h"
+#include "audio.h"
 
 //int microdrive_is_raw=1;
 
@@ -228,7 +229,75 @@ void microdrive_raw_advance_position(int microdrive_activo)
     microdrive_status[microdrive_activo].raw_current_position=microdrive_raw_current_position;
 }
 
+//Para simular sonido de carga o grabación
+int microdrive_mix_audio_output_bit=0;
 
+z80_bit microdrive_simulate_sound_read={0};
+z80_bit microdrive_simulate_sound_write={0};
+
+//Cada byte se escribe cada 168 t-estados, por tanto un bit cada 21 t-estados
+//ZEsarUX envia un sample de sonido cada 224 t-estados (15600 hz)
+//Realmente tendriamos que tener un sampleado de sonido mucho mayor a 15600 hz para escuchar sonido mas real
+//pero de momento esto es la mejor aproximacion que podemos tener
+//La frecuencia de sempleado ideal seria : 1 bit cada 21 t-estados, pero son dos pulsos entonces 1 sample cada 10.5 t-estados,
+// en un frame de video serian 69888/10.5 =  6656 samples
+// en un segundo son 6656*50=332800 hz=332 khz
+//esa seria la frecuencia de sampleado minima para poder escuchar bien el sonido del microdrive,
+//aunque el oido humano no capta eso ni de lejos)
+void microdrive_mix_audio(void)
+{
+    if (!microdrive_current_is_raw()) return;
+    if (microdrive_simulate_sound_read.v==0 && microdrive_simulate_sound_write.v==0) return;
+
+
+    int sonido_microdrive=microdrive_mix_audio_output_bit*255;
+    sonido_microdrive -=128;
+    sonido_microdrive /=2;
+
+
+    reset_silence_detection_counter();
+    audio_valor_enviar_sonido_izquierdo /=2;
+    audio_valor_enviar_sonido_izquierdo += sonido_microdrive;
+
+    audio_valor_enviar_sonido_derecho /=2;
+    audio_valor_enviar_sonido_derecho += sonido_microdrive;
+
+
+}
+
+
+void microdrive_mix_audio_generate_next_sample(void)
+{
+
+    z80_byte byte_a_samplear;
+
+    //Escribir o leer
+    if ((interface1_last_value_port_ef & 0x08)==0) {
+        //Escribir
+        if (microdrive_simulate_sound_write.v==0) return;
+
+        byte_a_samplear=microdrive_raw_last_byte_to_write;
+    }
+
+    else {
+        //leer
+        if (microdrive_simulate_sound_read.v==0) return;
+        byte_a_samplear=microdrive_raw_last_read_data;
+    }
+
+    //Microdrive escribe con codificacion Manchester:
+    //Si hay bit a 0, en un pulso se invierte el valor una vez
+    //Si hay bit a 1, en un pulso se invierte el valor dos veces, por tanto a final de pulso nos quedamos igual
+
+    int i;
+    for (i=0;i<8;i++) {
+        if ((byte_a_samplear&128)==0) microdrive_mix_audio_output_bit ^=1;
+
+        byte_a_samplear=byte_a_samplear<<1;
+
+    }
+
+}
 
 
 //Si ultima secuencia leida era sync. Cuando la secuencia esta entera
@@ -270,7 +339,7 @@ void microdrive_raw_move(void)
 
     //printf ("Avanzar posicion microdrive. t_estados: %d\n",t_estados);
 
-    //Erase o leer
+    //Escribir o leer
     if ((interface1_last_value_port_ef & 0x08)==0) {
         //Erase
 
@@ -424,6 +493,9 @@ void microdrive_raw_move(void)
     if (microdrive_activo>=0) {
         microdrive_raw_advance_position(microdrive_activo);
     }
+
+
+    microdrive_mix_audio_generate_next_sample();
 
 }
 

@@ -5,6 +5,7 @@ ZEsarUX 11.1 - Zorro edition. 30 Julio 2024
 Agregado emulación del ZX Microdrive en ZX Spectrum: incluye:
 - Emulación estándar MDR. Permitir navegar dentro de archivos MDR, ver mapa de archivos, fragmentación, renombrar archivos, información sectores, chkdsk y emular sectores erróneos
 - Emulación del microdrive en crudo (Raw). Soporta otros sistemas de archivos aparte del de la rom del interface1, como extensión del espacio del microdrive por el Multiface 128 o el CP/M para memoria LEC. Permitir ver mapa en crudo del microdrive (zonas vacías, bytes de sync, datos) y tener "problemas reales", como autogenerar sectores erróneos o estiramiento del microdrive cuando es nuevo.
+- Simular sonido de los datos en lectura y escritura
 - Visual Microdrive: Permite ver un cartucho de microdrive en acción
 
 Agregada ventana de Visual Cassette Tape

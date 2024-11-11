@@ -1799,7 +1799,7 @@ if1.o: storage/if1.c storage/if1.h storage/microdrive.h storage/microdrive_raw.h
 microdrive.o: storage/microdrive.c storage/microdrive.h storage/microdrive_raw.h storage/if1.h cpu.h debug.h utils.h operaciones.h zxvision/zxvision.h menu/menu_items.h video/screen.h
 	\$(CC) \$(CFLAGS) -c storage/microdrive.c
 
-microdrive_raw.o: storage/microdrive_raw.c storage/microdrive_raw.h storage/microdrive.h storage/if1.h cpu.h debug.h utils.h operaciones.h zxvision/zxvision.h menu/menu_items.h video/screen.h
+microdrive_raw.o: storage/microdrive_raw.c storage/microdrive_raw.h storage/microdrive.h storage/if1.h cpu.h debug.h utils.h operaciones.h zxvision/zxvision.h menu/menu_items.h video/screen.h audio/audio.h
 	\$(CC) \$(CFLAGS) -c storage/microdrive_raw.c
 
 ds1307.o: ds1307.c ds1307.h cpu.h debug.h utils.h operaciones.h zxvision/zxvision.h

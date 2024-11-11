@@ -480,6 +480,10 @@ void core_spectrum_fin_scanline(void)
             hilow_mix_audio();
         }
 
+        if (if1_enabled.v) {
+            microdrive_mix_audio();
+        }
+
         int leer_cinta_real=0;
 
         if (realtape_inserted.v && realtape_playing.v) leer_cinta_real=1;

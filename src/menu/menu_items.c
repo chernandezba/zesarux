@@ -45348,6 +45348,17 @@ void menu_interface1_raw_real_life_problems(MENU_ITEM_PARAMETERS)
     microdrive_raw_real_life_problems.v ^=1;
 }
 
+void menu_interface1_simulate_sound_read(MENU_ITEM_PARAMETERS)
+{
+    microdrive_simulate_sound_read.v ^=1;
+}
+
+void menu_interface1_simulate_sound_write(MENU_ITEM_PARAMETERS)
+{
+    microdrive_simulate_sound_write.v ^=1;
+}
+
+
 void menu_interface1(MENU_ITEM_PARAMETERS)
 {
     menu_item *array_menu_common;
@@ -45391,6 +45402,24 @@ void menu_interface1(MENU_ITEM_PARAMETERS)
             "It counts the times the microdrive is read/written completely (usage counter) and then:\n"
             "- The first 50 times the microdrive can stretch 2% with a probability of 10%\n"
             "- Every 100 times, a position can be marked as bad with a probability of 5% "
+        );
+        menu_add_item_menu_es_avanzado(array_menu_common);
+
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface1_simulate_sound_read,NULL,
+            "Simulate sound on read","Simular sonido en lectura","Simular so a lectura");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ", (microdrive_simulate_sound_read.v ? 'X' : ' ' ));
+        menu_add_item_menu_tooltip(array_menu_common,"When using RAW images (RMD) simulate sound on read");
+        menu_add_item_menu_ayuda(array_menu_common,"When using RAW images (RMD) simulate sound on read\n"
+            "The real device don't generate data sound, but ZEsarUX can simulate it just for your enjoyment"
+        );
+        menu_add_item_menu_es_avanzado(array_menu_common);
+
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface1_simulate_sound_write,NULL,
+            "Simulate sound on write","Simular sonido en escritura","Simular so a escriptura");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ", (microdrive_simulate_sound_write.v ? 'X' : ' ' ));
+        menu_add_item_menu_tooltip(array_menu_common,"When using RAW images (RMD) simulate sound on write");
+        menu_add_item_menu_ayuda(array_menu_common,"When using RAW images (RMD) simulate sound on write\n"
+            "The real device don't generate data sound, but ZEsarUX can simulate it just for your enjoyment"
         );
         menu_add_item_menu_es_avanzado(array_menu_common);
 
