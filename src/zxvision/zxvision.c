@@ -24836,8 +24836,10 @@ void menu_inicio_handle_lower_icon_presses(void)
             menu_warn_message("This device has no right-click associated action");
         }
         else {
+            zxvision_set_next_menu_position_from_current_mouse();
             funcion_accion=zdesktop_lowericons_array[indice_array].accion_boton_derecho;
             funcion_accion();
+            zxvision_reset_set_next_menu_position();
         }
     }
 

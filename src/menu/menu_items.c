@@ -51940,6 +51940,26 @@ void zxdesktop_lowericon_cassete_accion(void)
 	menu_storage_tape(0);
 }
 
+void zxdesktop_lowericon_cassete_std_accion_boton_derecho(void)
+{
+    if (menu_tape_input_insert_cond()) {
+        int opcion=menu_simple_two_choices("Standard Tape","--Action--","Reinsert tape","Close");
+
+        switch (opcion) {
+
+
+            case 1:
+                menu_reinsert_std_tape();
+            break;
+
+
+        }
+    }
+    else {
+        menu_warn_message("No standard tape inserted");
+    }
+}
+
 void zxdesktop_lowericon_cassete_real_accion_boton_derecho(void)
 {
     if (menu_realtape_inserted_cond()) {
@@ -52097,6 +52117,25 @@ void zxdesktop_lowericon_dandanator_accion(void)
     menu_dandanator(0);
 }
 
+void zxdesktop_lowericon_dandanator_accion_boton_derecho(void)
+{
+    if (dandanator_enabled.v) {
+        int opcion=menu_simple_two_choices("ZX Dandanator","--Action--","Press Button","Close");
+
+        switch (opcion) {
+
+
+            case 1:
+                dandanator_press_button();
+            break;
+
+
+        }
+    }
+    else {
+        menu_warn_message("ZX Dandanator not enabled");
+    }
+}
 
 //Funciones para hilow
 int zxdesktop_lowericon_hilow_is_visible(void)
@@ -52119,13 +52158,17 @@ void zxdesktop_lowericon_hilow_accion(void)
 
 void zxdesktop_lowericon_hilow_accion_boton_derecho(void)
 {
-    int opcion=menu_simple_two_choices("Hilow DataDrive","--Action--","Switch tape inserted flag","Close");
+    int opcion=menu_simple_three_choices("Hilow DataDrive","--Action--","Switch tape inserted flag","NMI","Close");
 
     switch (opcion) {
 
 
         case 1:
             menu_storage_hilow_insert(0);
+        break;
+
+        case 2:
+            generate_nmi();
         break;
 
 
@@ -52391,7 +52434,8 @@ int zxdesktop_icon_hilow_inverse=0;
 
 struct s_zxdesktop_lowericons_info zdesktop_lowericons_array[TOTAL_ZXDESKTOP_MAX_LOWER_ICONS]={
 	//cinta standard
-	{ zxdesktop_lowericon_cassete_is_visible, zxdesktop_lowericon_cassete_is_active,zxdesktop_lowericon_cassete_accion,NULL,
+	{ zxdesktop_lowericon_cassete_is_visible, zxdesktop_lowericon_cassete_is_active,zxdesktop_lowericon_cassete_accion,
+        zxdesktop_lowericon_cassete_std_accion_boton_derecho,
 		bitmap_lowericon_ext_desktop_cassette_std_active,bitmap_lowericon_ext_desktop_cassette_std_inactive,&zxdesktop_icon_tape_inverse},
 
 	//cinta real
@@ -52475,7 +52519,8 @@ struct s_zxdesktop_lowericons_info zdesktop_lowericons_array[TOTAL_ZXDESKTOP_MAX
 		bitmap_lowericon_ext_desktop_zxunoflash,bitmap_lowericon_ext_desktop_zxunoflash,&zxdesktop_icon_zxunoflash_inverse},
 
     //cartucho dandanator
-	{ zxdesktop_lowericon_dandanator_is_visible, zxdesktop_lowericon_dandanator_is_active, zxdesktop_lowericon_dandanator_accion,NULL,
+	{ zxdesktop_lowericon_dandanator_is_visible, zxdesktop_lowericon_dandanator_is_active, zxdesktop_lowericon_dandanator_accion,
+        zxdesktop_lowericon_dandanator_accion_boton_derecho,
 		bitmap_lowericon_ext_desktop_dandanator_active,bitmap_lowericon_ext_desktop_dandanator_inactive,&zxdesktop_icon_dandanator_inverse},
 
     //cinta HiLow
