@@ -400,7 +400,7 @@ La particularidad es que ese archivo tiene bloques a final de microdrive y al pr
 LEC:
 -agregar memory zone lec
 -mostrar paginas de memoria lec en debug cpu
--grabar video ejecutando cp/m y usando microdrives
+ok -grabar video ejecutando cp/m y usando microdrives
 
 
 -revisar sonido en Save en CPC(ok), MSX...
