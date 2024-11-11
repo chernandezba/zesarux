@@ -681,6 +681,11 @@ void microdrive_raw_insert(int microdrive_seleccionado)
         microdrive_seleccionado+1
     );
 
+    if (!si_existe_archivo(microdrive_status[microdrive_seleccionado].microdrive_file_name)) {
+        DBG_PRINT_MDR VERBOSE_ERR,"MDR: Microdrive file %s does not exist",microdrive_status[microdrive_seleccionado].microdrive_file_name);
+        return;
+    }
+
     //Leer tamanyo
     int tamanyo_archivo=get_file_size(microdrive_status[microdrive_seleccionado].microdrive_file_name);
 

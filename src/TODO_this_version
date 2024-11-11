@@ -457,13 +457,6 @@ ok *ajustar temblor porque parece que se sale de cinta
 Error:    This game will probably crash due to the Inves write-on-interrupt bug (ISR=FCFCH, I=FBH, R=ACH, IM_MODE=2, IFF1=1
 
 
--Poder ocultar botones de scroll de ventana, con un flag: por ejemplo para microdrive raw map
-que no se pueda hacer tampoco scroll con rueda de raton o con cursores
-tiene que haber algun sitio global (zxvision_scroll_?? funcion) para comprobar antes ese flag
-y a la hora de dibujar los botones de scroll mirar ese flag también
-
-
-
 -en FAQ formatos MDR/RMD, DDH/RAW
 
 -mas acciones boton derecho en dispositivos
