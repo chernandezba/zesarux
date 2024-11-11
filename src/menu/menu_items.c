@@ -51940,6 +51940,26 @@ void zxdesktop_lowericon_cassete_accion(void)
 	menu_storage_tape(0);
 }
 
+void zxdesktop_lowericon_cassete_real_accion_boton_derecho(void)
+{
+    if (menu_realtape_inserted_cond()) {
+        int opcion=menu_simple_two_choices("Real Tape","--Action--","Play/Pause","Close");
+
+        switch (opcion) {
+
+
+            case 1:
+                menu_realtape_pause_unpause(0);
+            break;
+
+
+        }
+    }
+    else {
+        menu_warn_message("No real tape inserted");
+    }
+}
+
 //Funciones para floppy +3
 
 
@@ -52375,7 +52395,8 @@ struct s_zxdesktop_lowericons_info zdesktop_lowericons_array[TOTAL_ZXDESKTOP_MAX
 		bitmap_lowericon_ext_desktop_cassette_std_active,bitmap_lowericon_ext_desktop_cassette_std_inactive,&zxdesktop_icon_tape_inverse},
 
 	//cinta real
-	{ zxdesktop_lowericon_cassete_is_visible, zxdesktop_lowericon_cassete_real_is_active,zxdesktop_lowericon_cassete_accion,NULL,
+	{ zxdesktop_lowericon_cassete_is_visible, zxdesktop_lowericon_cassete_real_is_active,zxdesktop_lowericon_cassete_accion,
+        zxdesktop_lowericon_cassete_real_accion_boton_derecho,
 		bitmap_lowericon_ext_desktop_cassette_active,bitmap_lowericon_ext_desktop_cassette_inactive,&zxdesktop_icon_tape_real_inverse},
 
 	//MDV1
