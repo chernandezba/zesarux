@@ -462,7 +462,6 @@ que no se pueda hacer tampoco scroll con rueda de raton o con cursores
 tiene que haber algun sitio global (zxvision_scroll_?? funcion) para comprobar antes ese flag
 y a la hora de dibujar los botones de scroll mirar ese flag también
 
--Acciones con boton derecho sobre iconos inferiores, por ejemplo play una cinta real insertada, o abrir/cerrar tapa de hilow
 
 
 -en FAQ formatos MDR/RMD, DDH/RAW

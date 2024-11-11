@@ -10665,6 +10665,8 @@ void zxvision_new_window_no_check_range(zxvision_window *w,int x,int y,int visib
 	w->can_be_resized=1;
 	//Decimos que se puede minimizar
 	w->can_be_minimized=1;
+    //Decimos que se puede cambiar scroll
+    w->can_be_scrolled=1;
 
 
     //Decimos que su contenido se puede redimensionar si se aumenta
@@ -12629,6 +12631,8 @@ int zxvision_get_effective_height(zxvision_window *w)
 
 int zxvision_if_vertical_scroll_bar(zxvision_window *w)
 {
+    if (!w->can_be_scrolled) return 0;
+
     //Si esta minimizada, no hay scroll
     if (w->is_minimized) return 0;
 
@@ -12644,6 +12648,8 @@ int zxvision_if_vertical_scroll_bar(zxvision_window *w)
 
 int zxvision_if_horizontal_scroll_bar(zxvision_window *w)
 {
+    if (!w->can_be_scrolled) return 0;
+
     //Si esta minimizada, no hay scroll
     if (w->is_minimized) return 0;
 
@@ -12724,6 +12730,8 @@ void zxvision_draw_scroll_bars(zxvision_window *w)
 	//int effective_height=zxvision_get_effective_height(w);
 	//int effective_width=zxvision_get_effective_width(w);
 	//int effective_width=w->visible_width-1;
+
+    if (!w->can_be_scrolled) return;
 
 	if (zxvision_if_vertical_scroll_bar(w)) {
 		zxvision_draw_vertical_scroll_bar(w,0);
@@ -12827,6 +12835,8 @@ int zxvision_maximum_offset_x(zxvision_window *w)
 void zxvision_set_offset_x(zxvision_window *w,int offset_x)
 {
 
+    if (!w->can_be_scrolled) return;
+
     int maximum_offset=zxvision_maximum_offset_x(w);
 
 	//Si se pasa por la derecha
@@ -12861,6 +12871,9 @@ int zxvision_maximum_offset_y(zxvision_window *w)
 
 void zxvision_set_offset_y(zxvision_window *w,int offset_y)
 {
+
+    if (!w->can_be_scrolled) return;
+
 	//Si se pasa por abajo
 
 	//if (offset_y+w->visible_height-2 > (w->total_height ) ) return; //-2 porque se pierde 2 linea scroll y la linea titulo

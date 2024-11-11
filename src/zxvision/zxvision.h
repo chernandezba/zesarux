@@ -129,6 +129,9 @@ struct s_zxvision_window {
 
     int can_be_minimized;
 
+    //Si se permite cambiar el offset/scroll de ventana
+    int can_be_scrolled;
+
     //Si el contenido se recrea al aumentar tamaño ventana
     int contents_can_be_enlarged;
 	int is_minimized;

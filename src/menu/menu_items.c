@@ -45133,6 +45133,9 @@ void menu_microdrive_raw_map(MENU_ITEM_PARAMETERS)
 
         ventana->can_be_backgrounded=1;
 
+        //No permitimos barras de scroll, el desplazamiento desde esta ventana se gestiona desplazando el mapa de microdrive
+        ventana->can_be_scrolled=0;
+
     }
 
     //Si ya existe, activar esta ventana
