@@ -59,6 +59,7 @@ Improved ZX Vision:
 - Improve cursor movement on menus when pressing PgDn/PgUp
 - Warn on the resize mark when a window has to be enlarged (because there is text beyond current size)
 - Process switcher is located at bottom-left part of the display by default
+- Allow right click on device icons
 
 Improved ZX Desktop:
 - Allow to enable/disable upper and lower buttons independently

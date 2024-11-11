@@ -1354,6 +1354,8 @@ int menu_pressed_zxdesktop_button_which=-1;
 int menu_pressed_zxdesktop_button_which_right_button=0;
 //En que lower icon se ha pulsado del menu
 int menu_pressed_zxdesktop_lower_icon_which=-1;
+//Que se ha pulsado con boton derecho
+int menu_pressed_zxdesktop_lower_icon_which_right_button=0;
 //En que icono configurable se ha pulsado del menu
 int menu_pressed_zxdesktop_configurable_icon_which=-1;
 //Se ha pulsado en boton derecho sobre el desktop
@@ -17415,7 +17417,7 @@ void zxvision_handle_mouse_events(zxvision_window *w)
             mouse_pixel_y *=zoom_y;
 
 
-            //Si esta en zona botones de zx desktop. Y si estan habilitados
+            //Si esta en zona botones superiores de zx desktop. Y si estan habilitados
             //Si pulsado boton derecho sobre iconos superiores
 
             if (menu_zxdesktop_upper_buttons_enabled.v) {
@@ -17439,6 +17441,47 @@ void zxvision_handle_mouse_events(zxvision_window *w)
 
                 }
             }
+
+            if (menu_zxdesktop_lower_buttons_enabled.v) {
+                //Si esta en zona de iconos lower de zx desktop. Y si estan habilitados
+
+
+                    int ancho_boton,alto_boton,xinicio_botones,xfinal_botones,yinicio_botones;
+                    menu_ext_desktop_lower_icons_get_geometry(&ancho_boton,&alto_boton,NULL,&xinicio_botones,&xfinal_botones,&yinicio_botones);
+
+                    if (mouse_pixel_x>=xinicio_botones && mouse_pixel_x<xfinal_botones &&
+                        mouse_pixel_y>=yinicio_botones && mouse_pixel_y<yinicio_botones+alto_boton
+                    ) {
+                        //printf ("Pulsado en zona lower icons del ext desktop\n");
+
+                        //en que boton?
+                        int numero_boton=(mouse_pixel_x-xinicio_botones)/ancho_boton;
+                        //printf("boton pulsado: %d\n",numero_boton);
+
+                        //Buscar indice array
+                        int indice_array=zxdesktop_lowericon_find_index(numero_boton);
+
+                        if (indice_array>=0) {
+
+                                //printf ("boton esta visible\n");
+
+
+                                menu_pressed_zxdesktop_lower_icon_which=numero_boton;
+
+                                menu_pressed_zxdesktop_lower_icon_which_right_button=1;
+
+                                zxvision_handle_mouse_events_aux_open_menu_while_in_menu();
+
+                                //return 1;
+                        }
+                        else {
+                            //printf ("boton NO esta visible\n");
+                        }
+
+                    }
+
+            }
+
 
             //Asumimos pulsado en fondo desktop
             if (zxdesktop_configurable_icons_enabled_and_visible()) {
@@ -24742,36 +24785,65 @@ void menu_inicio_handle_lower_icon_presses(void)
 
 	// Ver que este activo
 
-	        int total_botones;
+        int total_botones;
 
-        int ancho_boton;
-        int alto_boton;
+    int ancho_boton;
+    int alto_boton;
 
-        int yinicio;
+    int yinicio;
 
-        menu_ext_desktop_lower_icons_get_geometry(&ancho_boton,&alto_boton,&total_botones,NULL,NULL,&yinicio);
+    menu_ext_desktop_lower_icons_get_geometry(&ancho_boton,&alto_boton,&total_botones,NULL,NULL,&yinicio);
 
-        //printf("yinicio: %d\n",)
-
-
-        if (pulsado_boton>=total_botones) return;
-
-		//Ver indice del array
-
-		int indice_array=zxdesktop_lowericon_find_index(pulsado_boton);
-
-		if (indice_array<0) return;
+    //printf("yinicio: %d\n",)
 
 
+    if (pulsado_boton>=total_botones) return;
 
-//Ejecutar accion
+    //Ver indice del array
 
-        void (*funcion_accion)(void);
+    int indice_array=zxdesktop_lowericon_find_index(pulsado_boton);
+
+    if (indice_array<0) return;
 
 
-        funcion_accion=zdesktop_lowericons_array[indice_array].accion;
 
-		funcion_accion();
+    //Ejecutar accion
+
+    void (*funcion_accion)(void);
+
+    funcion_accion=zdesktop_lowericons_array[indice_array].accion;
+
+
+    //Si pulsado con boton derecho
+    if (menu_pressed_zxdesktop_lower_icon_which_right_button) {
+        menu_pressed_zxdesktop_lower_icon_which_right_button=0;
+        //printf("Pulsado con boton derecho sobre icono inferior %d\n",pulsado_boton);
+
+        //printf("salir_todos_menus %d menu_pressed_open_menu_while_in_menu.v %d "
+        //        "mouse_pressed_background_window %d mouse_pressed_close_window %d\n",
+        //        salir_todos_menus,menu_pressed_open_menu_while_in_menu.v,mouse_pressed_background_window,mouse_pressed_close_window);
+
+        //Resetear ciertas variables para que no se cierre de nuevo el menu que vamos a abrir
+        //salir_todos_menus=0;
+        //menu_pressed_open_menu_while_in_menu.v=0;
+
+
+        mouse_pressed_background_window=0;
+        mouse_pressed_close_window=0;
+
+        //Si accion boton derecho no es NULL
+        if (zdesktop_lowericons_array[indice_array].accion_boton_derecho==NULL) {
+            menu_warn_message("This device has no right-click associated action");
+        }
+        else {
+            funcion_accion=zdesktop_lowericons_array[indice_array].accion_boton_derecho;
+            funcion_accion();
+        }
+    }
+
+    else {
+        funcion_accion();
+    }
 
 	salir_todos_menus=1;
 

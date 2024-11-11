@@ -52097,6 +52097,21 @@ void zxdesktop_lowericon_hilow_accion(void)
     menu_hilow(0);
 }
 
+void zxdesktop_lowericon_hilow_accion_boton_derecho(void)
+{
+    int opcion=menu_simple_two_choices("Hilow DataDrive","--Action--","Switch tape inserted flag","Close");
+
+    switch (opcion) {
+
+
+        case 1:
+            menu_storage_hilow_insert(0);
+        break;
+
+
+    }
+}
+
 //Funciones para zxuno flash
 int zxdesktop_lowericon_zxunoflash_is_visible(void)
 {
@@ -52356,94 +52371,95 @@ int zxdesktop_icon_hilow_inverse=0;
 
 struct s_zxdesktop_lowericons_info zdesktop_lowericons_array[TOTAL_ZXDESKTOP_MAX_LOWER_ICONS]={
 	//cinta standard
-	{ zxdesktop_lowericon_cassete_is_visible, zxdesktop_lowericon_cassete_is_active,zxdesktop_lowericon_cassete_accion,
+	{ zxdesktop_lowericon_cassete_is_visible, zxdesktop_lowericon_cassete_is_active,zxdesktop_lowericon_cassete_accion,NULL,
 		bitmap_lowericon_ext_desktop_cassette_std_active,bitmap_lowericon_ext_desktop_cassette_std_inactive,&zxdesktop_icon_tape_inverse},
 
 	//cinta real
-	{ zxdesktop_lowericon_cassete_is_visible, zxdesktop_lowericon_cassete_real_is_active,zxdesktop_lowericon_cassete_accion,
+	{ zxdesktop_lowericon_cassete_is_visible, zxdesktop_lowericon_cassete_real_is_active,zxdesktop_lowericon_cassete_accion,NULL,
 		bitmap_lowericon_ext_desktop_cassette_active,bitmap_lowericon_ext_desktop_cassette_inactive,&zxdesktop_icon_tape_real_inverse},
 
 	//MDV1
-	{ zxdesktop_lowericon_mdv1_is_visible, zxdesktop_lowericon_mdv1_is_active, zxdesktop_lowericon_mdv_flp_accion,
+	{ zxdesktop_lowericon_mdv1_is_visible, zxdesktop_lowericon_mdv1_is_active, zxdesktop_lowericon_mdv_flp_accion,NULL,
 		bitmap_lowericon_ext_desktop_mdv_active,bitmap_lowericon_ext_desktop_mdv_inactive,&zxdesktop_icon_mdv1_inverse},
 
     //MDV2
-	{ zxdesktop_lowericon_mdv2_is_visible, zxdesktop_lowericon_mdv2_is_active, zxdesktop_lowericon_mdv_flp_accion,
+	{ zxdesktop_lowericon_mdv2_is_visible, zxdesktop_lowericon_mdv2_is_active, zxdesktop_lowericon_mdv_flp_accion,NULL,
 		bitmap_lowericon_ext_desktop_mdv_active,bitmap_lowericon_ext_desktop_mdv_inactive,&zxdesktop_icon_mdv2_inverse},
 
 	//MDV3
-	{ zxdesktop_lowericon_mdv3_is_visible, zxdesktop_lowericon_mdv3_is_active, zxdesktop_lowericon_mdv_flp_accion,
+	{ zxdesktop_lowericon_mdv3_is_visible, zxdesktop_lowericon_mdv3_is_active, zxdesktop_lowericon_mdv_flp_accion,NULL,
 		bitmap_lowericon_ext_desktop_mdv_active,bitmap_lowericon_ext_desktop_mdv_inactive,&zxdesktop_icon_mdv3_inverse},
 
     //MDV4
-	{ zxdesktop_lowericon_mdv4_is_visible, zxdesktop_lowericon_mdv4_is_active, zxdesktop_lowericon_mdv_flp_accion,
+	{ zxdesktop_lowericon_mdv4_is_visible, zxdesktop_lowericon_mdv4_is_active, zxdesktop_lowericon_mdv_flp_accion,NULL,
 		bitmap_lowericon_ext_desktop_mdv_active,bitmap_lowericon_ext_desktop_mdv_inactive,&zxdesktop_icon_mdv4_inverse},
 
     //Floppy QL.
-	{ zxdesktop_lowericon_flp1_is_visible, zxdesktop_lowericon_flp1_is_active, zxdesktop_lowericon_mdv_flp_accion,
+	{ zxdesktop_lowericon_flp1_is_visible, zxdesktop_lowericon_flp1_is_active, zxdesktop_lowericon_mdv_flp_accion,NULL,
 		bitmap_lowericon_ext_desktop_flp_active,bitmap_lowericon_ext_desktop_flp_inactive,&zxdesktop_icon_flp1_inverse},
 
 	//floppy +3
-	{ zxdesktop_lowericon_plus3_flp_is_visible, zxdesktop_lowericon_plus3_flp_is_active,zxdesktop_lowericon_plus3_flp_accion,
+	{ zxdesktop_lowericon_plus3_flp_is_visible, zxdesktop_lowericon_plus3_flp_is_active,zxdesktop_lowericon_plus3_flp_accion,NULL,
 		bitmap_lowericon_ext_desktop_plus3_flp_active,bitmap_lowericon_ext_desktop_plus3_flp_inactive,&zxdesktop_icon_plus3_inverse},
 
 	//betadisk
-	{ zxdesktop_lowericon_betadisk_is_visible, zxdesktop_lowericon_betadisk_is_active,zxdesktop_lowericon_betadisk_accion,
+	{ zxdesktop_lowericon_betadisk_is_visible, zxdesktop_lowericon_betadisk_is_active,zxdesktop_lowericon_betadisk_accion,NULL,
 		bitmap_lowericon_ext_desktop_betadisk_active,bitmap_lowericon_ext_desktop_betadisk_inactive,&zxdesktop_icon_betadisk_inverse},
 
 	//MMC
-	{ zxdesktop_lowericon_mmc_is_visible, zxdesktop_lowericon_mmc_is_active, zxdesktop_lowericon_mmc_accion,
+	{ zxdesktop_lowericon_mmc_is_visible, zxdesktop_lowericon_mmc_is_active, zxdesktop_lowericon_mmc_accion,NULL,
 		bitmap_lowericon_ext_desktop_mmc_active,bitmap_lowericon_ext_desktop_mmc_inactive,&zxdesktop_icon_mmc_inverse},
 
 	//IDE
-	{ zxdesktop_lowericon_ide_is_visible, zxdesktop_lowericon_ide_is_active, zxdesktop_lowericon_ide_accion,
+	{ zxdesktop_lowericon_ide_is_visible, zxdesktop_lowericon_ide_is_active, zxdesktop_lowericon_ide_accion,NULL,
 		bitmap_lowericon_ext_desktop_ide_active,bitmap_lowericon_ext_desktop_ide_inactive,&zxdesktop_icon_ide_inverse},
 
 	//ZXPand
-	{ zxdesktop_lowericon_zxpand_is_visible, zxdesktop_lowericon_zxpand_is_active, zxdesktop_lowericon_zxpand_accion,
+	{ zxdesktop_lowericon_zxpand_is_visible, zxdesktop_lowericon_zxpand_is_active, zxdesktop_lowericon_zxpand_accion,NULL,
 		bitmap_lowericon_ext_desktop_mmc_active,bitmap_lowericon_ext_desktop_mmc_inactive,&zxdesktop_icon_zxpand_inverse},
 
 	//Cartuchos msx, coleco, svi, sg1000, sms
-	{ zxdesktop_lowericon_cartridge_msx_is_visible, zxdesktop_lowericon_cartridge_msx_is_active, zxdesktop_lowericon_cartridge_accion,
+	{ zxdesktop_lowericon_cartridge_msx_is_visible, zxdesktop_lowericon_cartridge_msx_is_active, zxdesktop_lowericon_cartridge_accion,NULL,
 		bitmap_lowericon_ext_desktop_msx_cart_active,bitmap_lowericon_ext_desktop_msx_cart_inactive,&zxdesktop_common_icon_no_inverse},
 
-	{ zxdesktop_lowericon_cartridge_svi_is_visible, zxdesktop_lowericon_cartridge_svi_is_active, zxdesktop_lowericon_cartridge_accion,
+	{ zxdesktop_lowericon_cartridge_svi_is_visible, zxdesktop_lowericon_cartridge_svi_is_active, zxdesktop_lowericon_cartridge_accion,NULL,
 		bitmap_lowericon_ext_desktop_svi_active,bitmap_lowericon_ext_desktop_svi_inactive,&zxdesktop_common_icon_no_inverse},
 
-	{ zxdesktop_lowericon_cartridge_coleco_is_visible, zxdesktop_lowericon_cartridge_coleco_is_active, zxdesktop_lowericon_cartridge_accion,
+	{ zxdesktop_lowericon_cartridge_coleco_is_visible, zxdesktop_lowericon_cartridge_coleco_is_active, zxdesktop_lowericon_cartridge_accion,NULL,
 		bitmap_lowericon_ext_desktop_coleco_active,bitmap_lowericon_ext_desktop_coleco_inactive,&zxdesktop_common_icon_no_inverse},
 
-	{ zxdesktop_lowericon_cartridge_sg1000_is_visible, zxdesktop_lowericon_cartridge_sg1000_is_active, zxdesktop_lowericon_cartridge_accion,
+	{ zxdesktop_lowericon_cartridge_sg1000_is_visible, zxdesktop_lowericon_cartridge_sg1000_is_active, zxdesktop_lowericon_cartridge_accion,NULL,
 		bitmap_lowericon_ext_desktop_sg1000_active,bitmap_lowericon_ext_desktop_sg1000_inactive,&zxdesktop_common_icon_no_inverse},
 
-	{ zxdesktop_lowericon_cartridge_sms_is_visible, zxdesktop_lowericon_cartridge_sms_is_active, zxdesktop_lowericon_cartridge_accion,
+	{ zxdesktop_lowericon_cartridge_sms_is_visible, zxdesktop_lowericon_cartridge_sms_is_active, zxdesktop_lowericon_cartridge_accion,NULL,
 		bitmap_lowericon_ext_desktop_sms_active,bitmap_lowericon_ext_desktop_sms_inactive,&zxdesktop_common_icon_no_inverse},
 
 	//Cartuchos Timex TS2068
-	{ zxdesktop_lowericon_cart_timex_is_visible, zxdesktop_lowericon_cart_timex_is_active, zxdesktop_lowericon_cart_timex_accion,
+	{ zxdesktop_lowericon_cart_timex_is_visible, zxdesktop_lowericon_cart_timex_is_active, zxdesktop_lowericon_cart_timex_accion,NULL,
 		bitmap_lowericon_ext_desktop_cart_timex_active,bitmap_lowericon_ext_desktop_cart_timex_inactive,&zxdesktop_common_icon_no_inverse},
 
 
 	//3 Cartuchos de Z88.
-	{ zxdesktop_lowericon_z88_cart_is_visible, zxdesktop_lowericon_z88_cart_1_is_active, zxdesktop_lowericon_z88_cart_1_accion,
+	{ zxdesktop_lowericon_z88_cart_is_visible, zxdesktop_lowericon_z88_cart_1_is_active, zxdesktop_lowericon_z88_cart_1_accion,NULL,
 		bitmap_lowericon_ext_desktop_z88_slot_one_active,bitmap_lowericon_ext_desktop_z88_slot_one_inactive,&zxdesktop_common_icon_no_inverse},
 
-	{ zxdesktop_lowericon_z88_cart_is_visible, zxdesktop_lowericon_z88_cart_2_is_active, zxdesktop_lowericon_z88_cart_2_accion,
+	{ zxdesktop_lowericon_z88_cart_is_visible, zxdesktop_lowericon_z88_cart_2_is_active, zxdesktop_lowericon_z88_cart_2_accion,NULL,
 		bitmap_lowericon_ext_desktop_z88_slot_two_active,bitmap_lowericon_ext_desktop_z88_slot_two_inactive,&zxdesktop_common_icon_no_inverse},
 
-	{ zxdesktop_lowericon_z88_cart_is_visible, zxdesktop_lowericon_z88_cart_3_is_active, zxdesktop_lowericon_z88_cart_3_accion,
+	{ zxdesktop_lowericon_z88_cart_is_visible, zxdesktop_lowericon_z88_cart_3_is_active, zxdesktop_lowericon_z88_cart_3_accion,NULL,
 		bitmap_lowericon_ext_desktop_z88_slot_three_active,bitmap_lowericon_ext_desktop_z88_slot_three_inactive,&z88_slot3_activity_indicator},
 
     //zxuno flash. En este caso no hay distincion entre icono insertado y no insertado
-	{ zxdesktop_lowericon_zxunoflash_is_visible, zxdesktop_lowericon_zxunoflash_is_active, zxdesktop_lowericon_zxunoflash_accion,
+	{ zxdesktop_lowericon_zxunoflash_is_visible, zxdesktop_lowericon_zxunoflash_is_active, zxdesktop_lowericon_zxunoflash_accion,NULL,
 		bitmap_lowericon_ext_desktop_zxunoflash,bitmap_lowericon_ext_desktop_zxunoflash,&zxdesktop_icon_zxunoflash_inverse},
 
     //cartucho dandanator
-	{ zxdesktop_lowericon_dandanator_is_visible, zxdesktop_lowericon_dandanator_is_active, zxdesktop_lowericon_dandanator_accion,
+	{ zxdesktop_lowericon_dandanator_is_visible, zxdesktop_lowericon_dandanator_is_active, zxdesktop_lowericon_dandanator_accion,NULL,
 		bitmap_lowericon_ext_desktop_dandanator_active,bitmap_lowericon_ext_desktop_dandanator_inactive,&zxdesktop_icon_dandanator_inverse},
 
     //cinta HiLow
 	{ zxdesktop_lowericon_hilow_is_visible, zxdesktop_lowericon_hilow_is_active,zxdesktop_lowericon_hilow_accion,
+        zxdesktop_lowericon_hilow_accion_boton_derecho,
 		bitmap_lowericon_ext_desktop_hilow_active,bitmap_lowericon_ext_desktop_hilow_inactive,&zxdesktop_icon_hilow_inverse},
 
 };

@@ -1733,6 +1733,7 @@ struct s_zxdesktop_lowericons_info {
 	int (*is_visible)(void);
 	int (*is_active)(void);
 	void (*accion)(void);
+    void (*accion_boton_derecho)(void);
 	char **bitmap_active;
 	char **bitmap_inactive;
 	int *icon_is_inverse;
