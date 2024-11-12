@@ -463,6 +463,3 @@ Error:    This game will probably crash due to the Inves write-on-interrupt bug 
 
 -soportar comillas en parametros de acciones de breakpoints. ojo al grabarse en la config
 
--parametro en ventana para forzar letras inversa con hotkeys. lo que se hace con
-
-antes_menu_writing_inverse_color

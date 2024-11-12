@@ -335,7 +335,9 @@ void menu_file_viewer_read_text_file(char *title,char *file_name)
 
 		if (avisolimite) debug_printf (VERBOSE_ERR,"Read max text buffer: %d bytes. Showing only these",leidos);
 
-		menu_generic_message(title,file_read_memory);
+		//menu_generic_message(title,file_read_memory);
+        //Desactivar parseo de caracteres especiales ~~, $$ etc
+        zxvision_generic_message_tooltip(title , 1, 0 , 0, 0, 0, NULL, 1, "%s", file_read_memory);
 	}
 
 	free(file_read_memory);
