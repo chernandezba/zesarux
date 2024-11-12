@@ -41423,7 +41423,7 @@ void menu_hilow_visual_datadrive_overlay(void)
     }
 
 
-    int antes_porcentaje_cinta_izquierdo=porc_90-menu_hilow_visual_datadrive_porcentaje_anterior;;
+    int antes_porcentaje_cinta_izquierdo=porc_90-menu_hilow_visual_datadrive_porcentaje_anterior;
     int antes_porcentaje_cinta_derecho=menu_hilow_visual_datadrive_porcentaje_anterior;
 
 
@@ -41537,8 +41537,8 @@ void menu_hilow_visual_datadrive(MENU_ITEM_PARAMETERS)
         return;
     }
 
-    //forzar redibujar rollos
-    menu_hilow_visual_datadrive_porcentaje_anterior=-1;
+    //forzar redibujar rollos. esto no hace falta, ya se hace con visual_hilow_datadrive_forzar_dibujado
+    //menu_hilow_visual_datadrive_porcentaje_anterior=-1;
 
     zxvision_window *ventana;
     ventana=&zxvision_window_hilow_visual_datadrive;
@@ -50068,10 +50068,10 @@ void menu_visual_cassette_tape_overlay(void)
     }
 
 
-    int antes_porcentaje_cinta_izquierdo=100-menu_visual_cassette_tape_porcentaje_anterior;;
+    int antes_porcentaje_cinta_izquierdo=100-menu_visual_cassette_tape_porcentaje_anterior;
     int antes_porcentaje_cinta_derecho=menu_visual_cassette_tape_porcentaje_anterior;
 
-
+    //printf("%d\n",antes_porcentaje_cinta_derecho);
 
     int semaforos_hilow=0;
 
@@ -50155,8 +50155,8 @@ void menu_visual_cassette_tape(MENU_ITEM_PARAMETERS)
         return;
     }
 
-    //forzar redibujar rollos
-    menu_visual_cassette_tape_porcentaje_anterior=-1;
+    //forzar redibujar rollos. esto no hace falta, ya se hace con visual_cassette_tape_forzar_dibujado
+    //menu_visual_cassette_tape_porcentaje_anterior=-1;
 
     zxvision_window *ventana;
     ventana=&zxvision_window_visual_cassette_tape;
