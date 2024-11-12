@@ -400,7 +400,6 @@ La particularidad es que ese archivo tiene bloques a final de microdrive y al pr
 LEC:
 -agregar memory zone lec
 -mostrar paginas de memoria lec en debug cpu
-ok -grabar video ejecutando cp/m y usando microdrives
 
 
 -revisar sonido en Save en CPC(ok), MSX...
@@ -410,36 +409,17 @@ ok -grabar video ejecutando cp/m y usando microdrives
 ---INICIO Hilow     ---
 -----------------------
 
-
-
 -Comentarios en la ROM de hilow de Jane recopilar
 
 -poder convertir ddh a raw
 
-
 -documentar puerto FF en documento especificacion
-
 
 -visual datadrive
 *indicar C60 o lo que sea. letras vectoriales?
 *otros detalles de una cinta real: nombre archivo?
 *cabezal lectura?
-ok *icono
-ok *tamaño por defecto ventana
-ok *ajustar temblor porque parece que se sale de cinta
 *eliminar debug print
-
--visualcassettetape
-ok *icono
-*soporte tap, tzx y otros formatos de cinta binaria
-ok *setting slow movement
-*revisar tmp y otras variables hilow
-ok *tamaño por defecto ventana
-ok *ajustar temblor porque parece que se sale de cinta
-*si se avanza cinta desde visual real tape, con cinta parada, no refresca bien
-*eliminar debug print
-
-
 
 
 -posibilidad otro algoritmo mas: si va para abajo: 0. si va para arriba: 1
@@ -448,6 +428,12 @@ ok *ajustar temblor porque parece que se sale de cinta
 -----------------------
 ---FIN Hilow        ---
 -----------------------
+
+-visualcassettetape
+*soporte tap, tzx y otros formatos de cinta binaria
+*revisar tmp y otras variables hilow
+*si se avanza cinta desde visual real tape, con cinta parada, no refresca bien
+*eliminar debug print
 
 
 -redocumentar efecto de brillo de color del Inves según ultima info con Pedro
