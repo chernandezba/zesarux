@@ -424,17 +424,17 @@ ok -grabar video ejecutando cp/m y usando microdrives
 *indicar C60 o lo que sea. letras vectoriales?
 *otros detalles de una cinta real: nombre archivo?
 *cabezal lectura?
-*icono
+ok *icono
 ok *tamaño por defecto ventana
 ok *ajustar temblor porque parece que se sale de cinta
 *eliminar debug print
 
 -visualcassettetape
-*icono
+ok *icono
 *soporte tap, tzx y otros formatos de cinta binaria
 ok *setting slow movement
 *revisar tmp y otras variables hilow
-*tamaño por defecto ventana
+ok *tamaño por defecto ventana
 ok *ajustar temblor porque parece que se sale de cinta
 *si se avanza cinta desde visual real tape, con cinta parada, no refresca bien
 *eliminar debug print
