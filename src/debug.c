@@ -6480,6 +6480,23 @@ void debug_run_action_breakpoint(char *comando)
       debug_t_estados_parcial=0;
     }
 
+    //save-binary file addr len
+    else if (!strcmp(comando_sin_parametros,"save-binary")) {
+      breakpoint_action_parse_commands_argvc(parametros);
+      if (breakpoint_action_command_argc<3) debug_printf (VERBOSE_DEBUG,"Command needs three parameters");
+      else {
+
+        char *archivo=breakpoint_action_command_argv[0];
+        int direccion=exp_par_evaluate_expression_to_number(breakpoint_action_command_argv[1]);
+        int longitud=exp_par_evaluate_expression_to_number(breakpoint_action_command_argv[2]);
+
+        debug_printf (VERBOSE_DEBUG,"Running save-binary command file %s address %d length %d",archivo,direccion,longitud);
+
+        save_binary_file(archivo,direccion,longitud);
+
+      }
+    }
+
 
     else if (!strcmp(comando_sin_parametros,"start-transaction-log")) {
         debug_printf (VERBOSE_DEBUG,"Running start-transaction-log command");

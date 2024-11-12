@@ -189,6 +189,7 @@ extern int map_adventure_offset_y;
 "putv expression: Adds expression result value in the Debug Memory Zone. Result is always treated as a 8-bit value. Zone is cleared when running Reset\n" \
 "quicksave: Saves a quick snapshot\n" \
 "reset-tstatp: Resets t-states partial counter\n" \
+"save-binary file addr len: Save a file with the contents of the current memory zone\n" \
 "set-register expression: Sets register indicated on expression. Example: set-register PC=BC+10\n" \
 "start-transaction-log: Starts the transaction log, require that you define the log file before\n" \
 "stop-transaction-log: Stops the transaction log\n" \

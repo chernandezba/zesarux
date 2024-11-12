@@ -47,6 +47,7 @@ Improved Hilow Datadrive emulation:
 Improved Debug:
 - CPU history: allow to change memory pointer to the PC register show in history
 - Show when CPU is in wait state
+- Added breakpoint action save-binary
 
 Improved Hexadecimal editor:
 - Now the data is refreshed when the window has the focus too
