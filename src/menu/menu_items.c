@@ -44410,10 +44410,6 @@ void menu_microdrive_raw_map_draw_putpixel(zxvision_window *w,int zoom,int xorig
 void menu_microdrive_raw_map_mostrar_opciones(zxvision_window *ventana)
 {
 
-    //Forzar a mostrar atajos
-    z80_bit antes_menu_writing_inverse_color;
-    antes_menu_writing_inverse_color.v=menu_writing_inverse_color.v;
-    menu_writing_inverse_color.v=1;
 
     char buffer_show_char[50]="";
 
@@ -44493,9 +44489,6 @@ void menu_microdrive_raw_map_mostrar_opciones(zxvision_window *ventana)
     }
 
 
-
-    //Restaurar comportamiento atajos
-    menu_writing_inverse_color.v=antes_menu_writing_inverse_color.v;
 }
 
 //Retorna 0 si no es sync
@@ -45135,6 +45128,9 @@ void menu_microdrive_raw_map(MENU_ITEM_PARAMETERS)
 
         //No permitimos barras de scroll, el desplazamiento desde esta ventana se gestiona desplazando el mapa de microdrive
         ventana->can_be_scrolled=0;
+
+        //Forzar visibles hotkeys en esa ventana
+        ventana->writing_inverse_color=1;
 
     }
 

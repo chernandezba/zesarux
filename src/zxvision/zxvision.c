@@ -1476,6 +1476,8 @@ int f_functions;
 
 //Si hay que escribir las letras de atajos de menu en inverso. Esto solo sucede cuando salta el tooltip o cuando se pulsa una tecla
 //que no es atajo
+//NO se debe cambiar aqui directamente; la ventana que quiera desactivar esto, debe recurrir al parametro
+//writing_inverse_color de la ventana
 z80_bit menu_writing_inverse_color={0};
 
 //Si forzar letras en color inverso siempre
@@ -10551,6 +10553,7 @@ void zxvision_new_window_no_check_range(zxvision_window *w,int x,int y,int visib
 
 
     w->disable_special_chars=0;
+    w->writing_inverse_color=0;
 
 
     //Decimos que su contenido se puede redimensionar si se aumenta
@@ -14236,6 +14239,10 @@ void zxvision_print_string(zxvision_window *w,int x,int y,int tinta,int papel,in
     int antes_menu_disable_special_chars=menu_disable_special_chars.v;
     if (w->disable_special_chars) menu_disable_special_chars.v=1;
 
+    //Si la ventana muestra las letras de atajos de la ventana en inverso
+    int antes_menu_writing_inverse_color=menu_writing_inverse_color.v;
+    if (w->writing_inverse_color) menu_writing_inverse_color.v=1;
+
 	int inverso_letra=0;
 	int minuscula_letra=1;
 	int era_utf=0;
@@ -14345,6 +14352,7 @@ void zxvision_print_string(zxvision_window *w,int x,int y,int tinta,int papel,in
 	}
 
     menu_disable_special_chars.v=antes_menu_disable_special_chars;
+    menu_writing_inverse_color.v=antes_menu_writing_inverse_color;
 }
 
 

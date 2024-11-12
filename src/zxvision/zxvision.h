@@ -209,6 +209,9 @@ struct s_zxvision_window {
     //Si se desactiva el procesado de caracteres especiales en la ventana (~~, $$, etc)
     int disable_special_chars;
 
+    //Si hay que escribir las letras de atajos de la ventana en inverso.
+    int writing_inverse_color;
+
     //tiempo total transcurrido, en microsegundos, dibujando overlay
     long last_spent_time_overlay;
 
