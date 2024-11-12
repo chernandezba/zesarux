@@ -1486,6 +1486,8 @@ int menu_escribe_linea_startx=1;
 
 
 //Si se desactiva parseo caracteres especiales como ~~ o ^^ etc
+//NO se debe cambiar aqui directamente; la ventana que quiera desactivar esto, debe recurrir al parametro
+//disable_special_chars de la ventana
 z80_bit menu_disable_special_chars={0};
 
 //Colores franja speccy

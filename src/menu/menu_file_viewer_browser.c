@@ -5662,8 +5662,6 @@ void menu_file_z80_browser_show(char *filename)
 void menu_file_viewer_read_file(char *title,char *file_name)
 {
 
-	//No mostrar caracteres especiales
-	//menu_disable_special_chars.v=1;
 
     if (menu_file_viewer_always_hex.v) {
         menu_file_hexdump_browser_show(file_name);
@@ -5765,9 +5763,6 @@ void menu_file_viewer_read_file(char *title,char *file_name)
     }
 
 
-	//IMPORTANTE: siempre se debe salir de la funcion desde aqui abajo, para que se vuelva a mostrar los caracteres especiales
-	//Volver a mostrar caracteres especiales
-	//menu_disable_special_chars.v=0;
 }
 
 
