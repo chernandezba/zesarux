@@ -460,3 +460,18 @@ Error:    This game will probably crash due to the Inves write-on-interrupt bug 
 -en FAQ formatos MDR/RMD, DDH/RAW
 
 -mas acciones boton derecho en dispositivos
+
+-soportar comillas en parametros de acciones de breakpoints. ojo al grabarse en la config
+
+-bug hotkeys con varias ventanas. segun captura adjunta
+Esto es porque se desactivan aqui:
+
+void menu_file_viewer_read_file(char *title,char *file_name)
+{
+
+	//No mostrar caracteres especiales
+	menu_disable_special_chars.v=1;
+
+Y se deberían desactivar solo momentaneamente al hacer los print y luego recuperar
+
+en utils->view file tap tambien aparecen hotkeys de la otra ventana

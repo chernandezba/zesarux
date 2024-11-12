@@ -3271,50 +3271,7 @@ z80_byte menu_get_pressed_key(void)
 
 }
 
-//escribe la cadena de texto
-/*
-void menu_scanf_print_string(char *string,int offset_string,int max_length_shown,int x,int y)
-{
-	int papel=ESTILO_GUI_PAPEL_NORMAL;
-	int tinta=ESTILO_GUI_TINTA_NORMAL;
-	char cadena_buf[2];
 
-	string=&string[offset_string];
-
-	//contar que hay que escribir el cursor
-	max_length_shown--;
-
-	//y si offset>0, primer caracter sera '<'
-	if (offset_string) {
-		menu_escribe_texto(x,y,tinta,papel,"<");
-		max_length_shown--;
-		x++;
-		string++;
-	}
-
-	for (;max_length_shown && (*string)!=0;max_length_shown--) {
-		cadena_buf[0]=*string;
-		cadena_buf[1]=0;
-		menu_escribe_texto(x,y,tinta,papel,cadena_buf);
-		x++;
-		string++;
-	}
-
-        //menu_escribe_texto(x,y,tinta,papel,"_");
-				putchar_menu_overlay_parpadeo(x,y,'_',tinta,papel,1);
-        x++;
-
-
-        for (;max_length_shown!=0;max_length_shown--) {
-                menu_escribe_texto(x,y,tinta,papel," ");
-                x++;
-        }
-
-
-
-
-}
-*/
 
 //funcion que guarda el contenido del texto del menu. Usado por ejemplo en scanf cuando se usa teclado en pantalla
 void menu_save_overlay_text_contents(overlay_screen *destination,int size)
@@ -8385,17 +8342,7 @@ void menu_escribe_texto(int x,int y,int tinta,int papel,char *texto)
 
 
 
-//escribe una linea de texto
-//coordenadas relativas al interior de la ventana (0,0=inicio zona "blanca")
-/*
-void menu_escribe_texto_ventana(int x,int y,int tinta,int papel,char *texto)
-{
 
-	menu_escribe_texto(current_win_x+x,current_win_y+y+1,tinta,papel,texto);
-
-
-}
-*/
 
 int menu_if_speech_enabled(void)
 {
@@ -8794,75 +8741,7 @@ void menu_escribe_linea_opcion_zxvision(zxvision_window *ventana,int indice,int 
 }
 
 
-//escribe opcion de linea de texto
-//coordenadas "indice" relativa al interior de la ventana (0=inicio)
-//opcion_actual indica que numero de linea es la seleccionada
-//opcion activada indica a 1 que esa opcion es seleccionable
-/*
-void menu_escribe_linea_opcion(int indice,int opcion_actual,int opcion_activada,char *texto_entrada)
-{
 
-	char texto[64];
-
-        if (!strcmp(scr_new_driver_name,"stdout")) {
-		printf ("%s\n",texto_entrada);
-		scrstdout_menu_print_speech_macro (texto_entrada);
-		return;
-	}
-
-
-	int papel,tinta;
-	int i;
-
-	//tinta=0;
-
-
-	menu_retorna_colores_linea_opcion(indice,opcion_actual,opcion_activada,&papel,&tinta);
-
-
-	//Obtenemos colores de una opcion sin seleccion y activada, para poder tener texto en ventana con linea en dos colores
-	int papel_normal,tinta_normal;
-	menu_retorna_colores_linea_opcion(0,-1,1,&papel_normal,&tinta_normal);
-
-	//Buscamos a ver si en el texto hay el caracter "||" y en ese caso lo eliminamos del texto final
-	int encontrado=-1;
-	int destino=0;
-	for (i=0;texto_entrada[i];i++) {
-		if (menu_disable_special_chars.v==0 && texto_entrada[i]=='|' && texto_entrada[i+1]=='|') {
-			encontrado=i;
-			i ++;
-		}
-		else {
-			texto[destino++]=texto_entrada[i];
-		}
-	}
-
-	texto[destino]=0;
-
-
-	//linea entera con espacios
-	for (i=0;i<current_win_ancho;i++) menu_escribe_texto_ventana(i,indice,0,papel," ");
-
-	//y texto propiamente
-	int startx=menu_escribe_linea_startx;
-        menu_escribe_texto_ventana(startx,indice,tinta,papel,texto);
-
-	//Si tiene dos colores
-	if (encontrado>=0) {
-		menu_escribe_texto_ventana(startx+encontrado,indice,tinta_normal,papel_normal,&texto[encontrado]);
-	}
-
-	//si el driver de video no tiene colores o si el estilo de gui lo indica, indicamos opcion activa con un cursor
-	if (!scr_tiene_colores || ESTILO_GUI_MUESTRA_CURSOR) {
-		if (opcion_actual==indice) {
-			if (opcion_activada==1) menu_escribe_texto_ventana(0,indice,tinta,papel,">");
-			else menu_escribe_texto_ventana(0,indice,tinta,papel,"x");
-		}
-	}
-	menu_textspeech_send_text(texto);
-
-}
-*/
 
 
 
@@ -10669,6 +10548,9 @@ void zxvision_new_window_no_check_range(zxvision_window *w,int x,int y,int visib
     w->can_be_scrolled=1;
 
 
+    w->disable_special_chars=0;
+
+
     //Decimos que su contenido se puede redimensionar si se aumenta
     w->contents_can_be_enlarged=1;
 
@@ -11917,7 +11799,7 @@ int zxvision_generic_message_aux_justificar_lineas(char *orig_texto,int longitud
 
 }
 
-void zxvision_generic_message_crea_ventana(zxvision_window *ventana,int xventana,int yventana,int ancho_ventana,int alto_ventana,
+void zxvision_generic_message_crea_ventana(zxvision_window *ventana,int disable_special_chars,int xventana,int yventana,int ancho_ventana,int alto_ventana,
     int alto_total_ventana,char *titulo,int resizable,int mostrar_cursor,int lineas,char **buffer_lineas,
     int is_minimized,int is_maximized,int ancho_antes_minimize,int alto_antes_minimize)
 {
@@ -11933,6 +11815,8 @@ void zxvision_generic_message_crea_ventana(zxvision_window *ventana,int xventana
     }
 
 	if (mostrar_cursor) zxvision_set_visible_cursor(ventana);
+
+    if (disable_special_chars) ventana->disable_special_chars=1;
 
     ventana->is_minimized=is_minimized;
     ventana->is_maximized=is_maximized;
@@ -11961,11 +11845,13 @@ void zxvision_generic_message_crea_ventana(zxvision_window *ventana,int xventana
 
 
 //Muestra un mensaje en ventana troceando el texto en varias lineas de texto con estilo zxvision
+//disable_special_chars: a 1 si queremos desactivar el procesado de caracteres especiales ~~, $$ etc
 //volver_timeout: si vale 1, significa timeout normal como ventanas splash. Si vale 2, no finaliza, muestra franjas de color continuamente
 //return_after_print_text, si no es 0, se usa para que vuelva a la funcion que llama justo despues de escribir texto,
 //usado en opciones de mostrar First Aid y luego agregarle opciones de menu tabladas,
 //por lo que agrega cierta altura a la ventana. Se agregan tantas lineas como diga el parametro return_after_print_text
-void zxvision_generic_message_tooltip(char *titulo, int return_after_print_text,int volver_timeout, int tooltip_enabled, int mostrar_cursor, generic_message_tooltip_return *retorno, int resizable, const char * texto_format , ...)
+void zxvision_generic_message_tooltip(char *titulo, int disable_special_chars, int return_after_print_text,int volver_timeout, int tooltip_enabled,
+    int mostrar_cursor, generic_message_tooltip_return *retorno, int resizable, const char * texto_format , ...)
 {
 	//Buffer de entrada
 
@@ -12158,9 +12044,8 @@ void zxvision_generic_message_tooltip(char *titulo, int return_after_print_text,
 
 
 
-    zxvision_generic_message_crea_ventana(ventana,xventana,yventana,ancho_ventana,alto_ventana,alto_total_ventana,
+    zxvision_generic_message_crea_ventana(ventana,disable_special_chars,xventana,yventana,ancho_ventana,alto_ventana,alto_total_ventana,
         titulo,resizable,mostrar_cursor,indice_linea,punteros_buffer_lineas,0,0,ancho_ventana,alto_ventana);
-
 
 
 	if (return_after_print_text) {
@@ -12431,7 +12316,7 @@ void zxvision_generic_message_tooltip(char *titulo, int return_after_print_text,
 
                     alto_total_ventana=indice_linea;
 
-                    zxvision_generic_message_crea_ventana(ventana,xventana,yventana,ancho_ventana,alto_ventana,alto_total_ventana,
+                    zxvision_generic_message_crea_ventana(ventana,disable_special_chars,xventana,yventana,ancho_ventana,alto_ventana,alto_total_ventana,
                         titulo,resizable,mostrar_cursor,indice_linea,punteros_buffer_lineas,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
 
                 }
@@ -14345,6 +14230,9 @@ void zxvision_print_char_simple(zxvision_window *w,int x,int y,int tinta,int pap
 void zxvision_print_string(zxvision_window *w,int x,int y,int tinta,int papel,int parpadeo,char *texto)
 {
 
+    //Si la ventana tiene desactivado el parseo de caracteres especiales
+    int antes_menu_disable_special_chars=menu_disable_special_chars.v;
+    if (w->disable_special_chars) menu_disable_special_chars.v=1;
 
 	int inverso_letra=0;
 	int minuscula_letra=1;
@@ -14453,6 +14341,8 @@ void zxvision_print_string(zxvision_window *w,int x,int y,int tinta,int papel,in
 		if (!era_utf) x++;
 		texto++;
 	}
+
+    menu_disable_special_chars.v=antes_menu_disable_special_chars;
 }
 
 
@@ -19868,7 +19758,7 @@ void menu_dibuja_menu_help_tooltip(char *texto, int si_tooltip)
         if (si_tooltip) {
 			//menu_generic_message_tooltip("Tooltip",0,1,0,NULL,"%s",texto);
 			//printf ("justo antes de message tooltip\n");
-			zxvision_generic_message_tooltip("Tooltip" , 0 ,0,1,0,NULL,0,"%s",texto);
+			zxvision_generic_message_tooltip("Tooltip" , 0, 0 ,0,1,0,NULL,0,"%s",texto);
 		}
 
 		else menu_generic_message("Help",texto);
@@ -23949,7 +23839,7 @@ void menu_generic_message_format(char *titulo, const char * texto_format , ...)
 
 
 	//menu_generic_message_tooltip(titulo, 0, 0, 0, NULL, "%s", texto);
-	zxvision_generic_message_tooltip(titulo , 0 , 0, 0, 0, NULL, 1, "%s", texto);
+	zxvision_generic_message_tooltip(titulo , 0, 0 , 0, 0, 0, NULL, 1, "%s", texto);
 
 
 	//En Linux esto funciona bien sin tener que hacer las funciones va_ previas:
@@ -23963,7 +23853,7 @@ void menu_generic_message(char *titulo, const char * texto)
 {
 
         //menu_generic_message_tooltip(titulo, 0, 0, 0, NULL, "%s", texto);
-		zxvision_generic_message_tooltip(titulo , 0 , 0, 0, 0, NULL, 1, "%s", texto);
+		zxvision_generic_message_tooltip(titulo , 0, 0 , 0, 0, 0, NULL, 1, "%s", texto);
 }
 
 //Mensaje con setting para marcar
@@ -23975,7 +23865,7 @@ void zxvision_menu_generic_message_setting(char *titulo, const char *texto, char
 	//Asumimos opcion ya marcada
 	*valor_opcion=1;
 
-	zxvision_generic_message_tooltip(titulo , lineas_agregar , 0, 0, 0, NULL, 1, "%s", texto);
+	zxvision_generic_message_tooltip(titulo , 0, lineas_agregar , 0, 0, 0, NULL, 1, "%s", texto);
 
 	if (!strcmp(scr_new_driver_name,"stdout")) {
 		printf ("%s\n",texto_opcion);
@@ -24085,7 +23975,7 @@ int zxvision_menu_generic_message_two_buttons(char *titulo, const char *texto,
 		return -1;
 	}
 
-	zxvision_generic_message_tooltip(titulo , lineas_agregar , 0, 0, 0, NULL, 1, "%s", texto);
+	zxvision_generic_message_tooltip(titulo , 0, lineas_agregar , 0, 0, 0, NULL, 1, "%s", texto);
 
 	zxvision_window *ventana;
 
@@ -24157,7 +24047,7 @@ void menu_generic_message_splash(char *titulo, const char * texto)
 {
 
         //menu_generic_message_tooltip(titulo, 1, 0, 0, NULL, "%s", texto);
-		zxvision_generic_message_tooltip(titulo , 0 , 1, 0, 0, NULL, 0, "%s", texto);
+		zxvision_generic_message_tooltip(titulo , 0, 0 , 1, 0, 0, NULL, 0, "%s", texto);
 		menu_espera_no_tecla();
 }
 
@@ -24165,7 +24055,7 @@ void menu_generic_message_warn(char *titulo, const char * texto)
 {
 
         //menu_generic_message_tooltip(titulo, 1, 0, 0, NULL, "%s", texto);
-		zxvision_generic_message_tooltip(titulo , 0 , 2, 0, 0, NULL, 0, "%s", texto);
+		zxvision_generic_message_tooltip(titulo , 0, 0 , 2, 0, 0, NULL, 0, "%s", texto);
 }
 
 int menu_confirm_yesno(char *texto_ventana)
