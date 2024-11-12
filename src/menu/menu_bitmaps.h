@@ -196,6 +196,7 @@ extern char *bitmap_lowericon_ext_desktop_zxunoflash[];
 
 extern char *bitmap_lowericon_ext_desktop_hilow_active[];
 extern char *bitmap_lowericon_ext_desktop_hilow_inactive[];
+extern char *bitmap_button_ext_desktop_hilow_visual_datadrive[];
 extern char *bitmap_lowericon_ext_desktop_hilow_convert[];
 
 extern char *bitmap_button_ext_desktop_helpkeyboard[];

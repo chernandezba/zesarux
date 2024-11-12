@@ -2509,6 +2509,38 @@ char *bitmap_lowericon_ext_desktop_hilow_convert[EXT_DESKTOP_BUTTONS_ANCHO]={
 };
 
 
+
+char *bitmap_button_ext_desktop_hilow_visual_datadrive[EXT_DESKTOP_BUTTONS_ANCHO]={
+   //01234567890123456789012345
+    "                          ",     //0
+  	"                          ",
+	"                          ",
+	"                          ",
+	" wwwwwwwwwwwwwwwwwwwwww   ",
+	"wwxxxxxxxxxxxxxxxxxxxxwwww",
+	"wxx                  xxwww",
+	"wx   xxx              xRRw",
+	"wx  xxxxx       xxx   xRRw",
+	"wx xxxWxxx     xxWxx  xwww",
+	"wx xxWWWxx     xWWWx  xYYw",
+	"wx xxxWxxx     xxWxx  xYYw",
+    "wx xxxxxx       xxxx  xwww",
+	"wx x xxx           x  xggw",
+	"wx x               x  xggw",
+	"wx x               x  xwww",
+    "wx x               x  xwww",
+	"wx x  xxxxxxxxxxxx x  xwww",
+	"wx x  x          x x  xwww",
+	"wxxx  x          x x xxwww",
+	"wwxxxxxxxxxxxxxxxxxxxxwwww",
+	" wwwwwwwwwwwwwwwwwwwwww   ",
+	"                          ",
+	"                          ",
+	"                          ",
+	"                          "  //25
+
+};
+
 char *bitmap_button_ext_desktop_asciitable[EXT_DESKTOP_BUTTONS_ANCHO]={
 	//01234567890123456789012345
 	"  xxxxxxxxxxxxxxxxxxxxxx  ",	//0

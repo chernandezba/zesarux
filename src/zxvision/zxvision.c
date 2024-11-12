@@ -9623,7 +9623,7 @@ zxvision_known_window_names zxvision_known_window_names_array[]={
     {"helpshowkeyboard",    "helpkeybrd",   menu_help_show_keyboard,bitmap_button_ext_desktop_helpkeyboard},
     {"hexeditor",           "hex editor",   menu_debug_hexdump,bitmap_button_ext_desktop_hexeditor},
     {"hilowconvertaudio",   "hlw cnv au",   menu_hilow_convert_audio,bitmap_lowericon_ext_desktop_hilow_convert},
-    {"hilowvisualdatadrive",     "vsdatadrv",    menu_hilow_visual_datadrive,bitmap_button_ext_desktop_nothing},
+    {"hilowvisualdatadrive",     "vsdatadrv",    menu_hilow_visual_datadrive,bitmap_button_ext_desktop_hilow_visual_datadrive},
     {"memorycheat",         "memcheat",     menu_memory_cheat,bitmap_button_ext_desktop_memorycheat},
     {"microdriverawmap",    "mdv rawmap",  menu_microdrive_raw_map,bitmap_button_ext_desktop_mdvrawmap},
     {"networktraffic",      "nettraffic",   menu_network_traffic,bitmap_button_ext_desktop_networktrafiic},
