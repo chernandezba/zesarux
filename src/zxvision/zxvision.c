@@ -9638,7 +9638,7 @@ zxvision_known_window_names zxvision_known_window_names_array[]={
     {"tsconftbbluetilenav", "tile nav",menu_debug_tsconf_tbblue_msx_tilenav,bitmap_button_ext_desktop_tsconftbbluetilenav},
 	{"videoinfo",           "videoinfo",menu_debug_tsconf_tbblue_msx_videoregisters,bitmap_button_ext_desktop_videoinfo},
     {"videooutput",         "video outp",   menu_video_output,bitmap_button_ext_desktop_videooutput},
-    {"visualcassettetape",  "vis cas tap",  menu_visual_cassette_tape,bitmap_button_ext_desktop_nothing},
+    {"visualcassettetape",  "viscastap",    menu_visual_cassette_tape,bitmap_button_ext_desktop_visual_cassete_tape},
     {"visualfloppy",        "visual flp",   menu_visual_floppy,bitmap_button_ext_desktop_visualfloppy},
 #ifdef EMULATE_VISUALMEM
 	{"visualmem",           "visualmem",menu_debug_new_visualmem,bitmap_button_ext_desktop_visualmem},

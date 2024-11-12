@@ -2509,7 +2509,6 @@ char *bitmap_lowericon_ext_desktop_hilow_convert[EXT_DESKTOP_BUTTONS_ANCHO]={
 };
 
 
-
 char *bitmap_button_ext_desktop_hilow_visual_datadrive[EXT_DESKTOP_BUTTONS_ANCHO]={
    //01234567890123456789012345
     "                          ",     //0
@@ -2534,6 +2533,39 @@ char *bitmap_button_ext_desktop_hilow_visual_datadrive[EXT_DESKTOP_BUTTONS_ANCHO
 	"wxxxccxccccccccccxcxcxxwww",
 	"wwxxxxxxxxxxxxxxxxxxxxwwww",
 	" wwwwwwwwwwwwwwwwwwwwww   ",
+	"                          ",
+	"                          ",
+	"                          ",
+	"                          "  //25
+
+};
+
+
+
+char *bitmap_button_ext_desktop_visual_cassete_tape[EXT_DESKTOP_BUTTONS_ANCHO]={
+   //01234567890123456789012345
+    "                          ",     //0
+  	"                          ",
+	"                          ",
+	"                          ",
+	" wwwwwwwwwwwwwwwwwwwwwwww ",
+	"wwxxxxxxxxxxxxxxxxxxxxxxww",
+	"wxxccccccccccccccccccccxxw",
+	"wxcccxxxccccccccccccccccxw",
+	"wxccxxxxxcccccccccxxxcccxw",
+	"wxcxxxWxxxcccccccxxWxxccxw",
+	"wxcxxWWWxxcccccccxWWWxccxw",
+	"wxcxxxWxxxcccccccxxWxxccxw",
+	"wxcxxxxxxcccccccccxxxxccxw",
+	"wxcxcxxxcccccccccccccxccxw",
+	"wxcxcccccccccccccccccxccxw",
+	"wxcxcccccccccccccccccxccxw",
+	"wxcxcccccccccccccccccxccxw",
+	"wxcxccxxxxxxxxxxxxxxcxccxw",
+	"wxcxccxccccccccccccxcxccxw",
+	"wxxxccxccccccccccccxcxcxxw",
+	"wwxxxxxxxxxxxxxxxxxxxxxxww",
+	" wwwwwwwwwwwwwwwwwwwwwwww   ",
 	"                          ",
 	"                          ",
 	"                          ",
