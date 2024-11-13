@@ -2910,7 +2910,8 @@ void zoc_common_alive_user(int indice_socket)
             //printf("Enviando %s\n",buffer_enviar);
 
 
-        int return_value=zoc_common_send_command(indice_socket,buffer_enviar,"alive");
+        //int return_value=zoc_common_send_command(indice_socket,buffer_enviar,"alive");
+        zoc_common_send_command(indice_socket,buffer_enviar,"alive");
 
 
         //if (!return_value) return 0;

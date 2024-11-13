@@ -3199,8 +3199,8 @@ int load_zsf_eof(FILE *ptr_zsf_file,int longitud_memoria)
 //Si leer de archivo, filename contiene nombre y no se usa origin_memory ni longitud_memoria
 //Si leer en memoria, filename es NULL y origin_memory contiene puntero origen memoria y longitud_memoria contiene longitud bloque memoria
 //Si modo rapido, no resetea maquina al cargar snapshot
-//from_zeng_online indica que estamos cargando un snapshot desde zeng online
-void load_zsf_snapshot_file_mem(char *filename,z80_byte *origin_memory,int longitud_memoria,int load_fast_mode,int from_zeng_online)
+//from_zeng_online indica que estamos cargando un snapshot desde zeng online. Nota: parametro no usado
+void load_zsf_snapshot_file_mem(char *filename,z80_byte *origin_memory,int longitud_memoria,int load_fast_mode,int from_zeng_online GCC_UNUSED)
 {
 
   FILE *ptr_zsf_file;

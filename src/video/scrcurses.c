@@ -89,12 +89,16 @@ void scrcurses_z88_cpc_load_keymap(void)
 	debug_printf (VERBOSE_INFO,"Loading keymap");
 }
 
-void scrcurses_putpixel_final_rgb(int x GCC_UNUSED,int y GCC_UNUSED,unsigned int color_rgb GCC_UNUSED)
+void scrcurses_putpixel_final_rgb(int x,int y,unsigned int color_rgb)
 {
+    //Para que no se queje el compilador
+    x=y=color_rgb=0;
 }
 
-void scrcurses_putpixel_final(int x GCC_UNUSED,int y GCC_UNUSED,unsigned int color GCC_UNUSED)
+void scrcurses_putpixel_final(int x,int y,unsigned int color)
 {
+    //Para que no se queje el compilador
+    x=y=color=0;
 }
 
 
