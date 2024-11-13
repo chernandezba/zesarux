@@ -166,6 +166,7 @@ int samram_opcion_seleccionada=0;
 int hilow_opcion_seleccionada=0;
 int storage_tape_opcion_seleccionada=0;
 int visualhilow_opcion_seleccionada=0;
+int hilow_barbanegra_opcion_seleccionada=0;
 //Fin opciones seleccionadas para cada menu
 
 
@@ -4135,6 +4136,58 @@ void menu_hilow(MENU_ITEM_PARAMETERS)
                         item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
 
                 }
+        }
+
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+
+
+
+
+}
+
+
+
+
+void menu_hardware_hilow_barbanegra_enable(MENU_ITEM_PARAMETERS)
+{
+    if (hilow_bbn_enabled.v) {
+        hilow_bbn_disable();
+    }
+    else {
+        hilow_bbn_enable();
+    }
+}
+
+void menu_hilow_barbanegra(MENU_ITEM_PARAMETERS)
+{
+    menu_item *array_menu_common;
+    menu_item item_seleccionado;
+    int retorno_menu;
+    do {
+
+
+
+        menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_hardware_hilow_barbanegra_enable,
+                NULL,"[%c] ~~HiLow Barbanegra Enabled", (hilow_bbn_enabled.v ? 'X' : ' '));
+        menu_add_item_menu_shortcut(array_menu_common,'h');
+        menu_add_item_menu_tooltip(array_menu_common,"Enable HiLow barbanegra");
+        menu_add_item_menu_ayuda(array_menu_common,"Enable HiLow barbanegra");
+
+
+        menu_add_item_menu_separator(array_menu_common);
+
+        menu_add_ESC_item(array_menu_common);
+
+        retorno_menu=menu_dibuja_menu_no_title_lang(&hilow_barbanegra_opcion_seleccionada,&item_seleccionado,array_menu_common,"HiLow Barbanegra emulation");
+
+
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+            //llamamos por valor de funcion
+                if (item_seleccionado.menu_funcion!=NULL) {
+                //printf ("actuamos por funcion\n");
+                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+
+            }
         }
 
     } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);

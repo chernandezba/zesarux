@@ -36,6 +36,27 @@ extern void menu_realtape_open(MENU_ITEM_PARAMETERS);
 extern int menu_realtape_inserted_cond(void);
 extern void menu_timexcart(MENU_ITEM_PARAMETERS);
 extern void menu_dandanator(MENU_ITEM_PARAMETERS);
+extern void menu_hilow_barbanegra(MENU_ITEM_PARAMETERS);
+extern void menu_hilow_visual_datadrive(MENU_ITEM_PARAMETERS);
+
+extern void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS);
+
+extern char menu_hilow_convert_audio_last_audio_sample;
+
+extern int menu_hilow_convert_lento;
+
+extern int menu_hilow_convert_paused;
+
+extern int menu_hilow_convert_audio_has_been_opened;
+
+extern int hilow_convert_audio_thread_running;
+
+//extern char enviado_hilow_sample_convirtiendo;
+
+extern void menu_hilow_convert_get_audio_buffer(void);
+
+//extern void menu_hilow_visual_datadrive(MENU_ITEM_PARAMETERS);
+
 
 
 #endif

@@ -138,6 +138,7 @@
 #include "zvfs.h"
 #include "snap_ram.h"
 #include "menu_items.h"
+#include "menu_items_storage.h"
 #include "hilow_datadrive.h"
 #include "tape_smp.h"
 #include "utils_text_adventure.h"

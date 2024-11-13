@@ -48,6 +48,7 @@
 #include "zxvision_topbar.h"
 #include "menu_items.h"
 #include "menu_items_settings.h"
+#include "menu_items_storage.h"
 #include "menu_bitmaps.h"
 #include "menu_debug_cpu.h"
 #include "menu_file_viewer_browser.h"

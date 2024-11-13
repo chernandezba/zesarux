@@ -70,6 +70,7 @@
 #include "snap_ram.h"
 #include "z80_codsinpr.h"
 #include "menu_items.h"
+#include "menu_items_storage.h"
 #include "plus3dos_handler.h"
 #include "zeng_online_client.h"
 #include "if1.h"

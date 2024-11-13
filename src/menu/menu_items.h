@@ -226,7 +226,7 @@ extern void menu_debug_reset(MENU_ITEM_PARAMETERS);
 
 extern void menu_shortcuts_window(MENU_ITEM_PARAMETERS);
 
-extern void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS);
+
 
 extern void menu_debug_file_utils(MENU_ITEM_PARAMETERS);
 
@@ -234,19 +234,7 @@ extern void menu_in_memoriam_david_about(MENU_ITEM_PARAMETERS);
 
 extern void menu_process_f_functions_by_action_name(int id_funcion,int si_pulsado_icono_zxdesktop,int id_tecla_f_pulsada,int si_pulsado_boton_redefinido,int numero_boton);
 
-extern char menu_hilow_convert_audio_last_audio_sample;
 
-extern int menu_hilow_convert_lento;
-
-extern int menu_hilow_convert_paused;
-
-extern int menu_hilow_convert_audio_has_been_opened;
-
-extern int hilow_convert_audio_thread_running;
-
-extern char enviado_hilow_sample_convirtiendo;
-
-extern void menu_hilow_convert_get_audio_buffer(void);
 
 extern int menu_inicio_opcion_seleccionada;
 
@@ -256,7 +244,7 @@ extern void menu_visual_microdrive(MENU_ITEM_PARAMETERS);
 
 extern void menu_microdrive_raw_map(MENU_ITEM_PARAMETERS);
 
-extern void menu_hilow_visual_datadrive(MENU_ITEM_PARAMETERS);
+
 
 extern void menu_visual_cassette_tape(MENU_ITEM_PARAMETERS);
 
