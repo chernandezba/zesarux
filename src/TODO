@@ -421,7 +421,8 @@ E indicar valor por defecto
 
 -Reset parámetros por defecto en quickload también para spectrum
 
-
+-soportar comillas en parametros de acciones de breakpoints (archivo en save-binary por ejemplo). ojo al grabarse en la config;
+creo que no se podrá porque todos el comando de acción junto con sus parámetros ya están incluidos dentro de comillas
 
 -en sped52, si se hace poke
 49912,0

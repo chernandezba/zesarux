@@ -41314,30 +41314,30 @@ void menu_generic_visualtape(zxvision_window *w,
 
 
 
-   if (redibujar_parte_estatica) menu_generic_visualtape_dibujar_cinta_estatica(&dibujo_visualtape,pestanyas_escritura);
-   if (redibujar_rollos) menu_generic_visualtape_dibujar_rollos(&dibujo_visualtape,porcentaje_cinta_izquierdo,porcentaje_cinta_derecha);
+    if (redibujar_parte_estatica) menu_generic_visualtape_dibujar_cinta_estatica(&dibujo_visualtape,pestanyas_escritura);
+    if (redibujar_rollos) menu_generic_visualtape_dibujar_rollos(&dibujo_visualtape,porcentaje_cinta_izquierdo,porcentaje_cinta_derecha);
 
-   if (redibujar_rodillos_arrastre) {
+    if (redibujar_rodillos_arrastre) {
 
-    printf("Redibujando rodillos arrastre. %d\n",contador_segundo_infinito);
+        //printf("Redibujando rodillos arrastre. %d\n",contador_segundo_infinito);
 
-    menu_generic_visualtape_draw_rodillos_arrastre(&dibujo_visualtape,grados_rodillos,antes_grados_rodillos,
+        menu_generic_visualtape_draw_rodillos_arrastre(&dibujo_visualtape,grados_rodillos,antes_grados_rodillos,
         porcentaje_cinta_izquierdo,porcentaje_cinta_derecha,
         antes_porcentaje_cinta_izquierdo,antes_porcentaje_cinta_derecha,temblor);
 
-   }
-
-   if (semaforos_hilow) {
-    //bit 0: activo o no. Bit 1: si redibujarlos. Bit 2: si activo rojo, bit 3: si activo amarillo, bit 4: si activo verde
-    if (semaforos_hilow & 2) {
-        printf("redibujando semaforos. %d\n",contador_segundo_infinito);
-        int activo_rojo=semaforos_hilow & 4;
-        int activo_amarillo=semaforos_hilow & 8;
-        int activo_verde=semaforos_hilow & 16;
-
-        menu_generic_visualtape_draw_semaforos_hilow(&dibujo_visualtape,activo_rojo,activo_amarillo,activo_verde);
     }
-   }
+
+    if (semaforos_hilow) {
+    //bit 0: activo o no. Bit 1: si redibujarlos. Bit 2: si activo rojo, bit 3: si activo amarillo, bit 4: si activo verde
+        if (semaforos_hilow & 2) {
+            //printf("redibujando semaforos. %d\n",contador_segundo_infinito);
+            int activo_rojo=semaforos_hilow & 4;
+            int activo_amarillo=semaforos_hilow & 8;
+            int activo_verde=semaforos_hilow & 16;
+
+            menu_generic_visualtape_draw_semaforos_hilow(&dibujo_visualtape,activo_rojo,activo_amarillo,activo_verde);
+        }
+    }
 
 
 }
@@ -41407,7 +41407,7 @@ void menu_hilow_visual_datadrive_overlay(void)
 
     //No redibujar si no hay cambios de nada
     if (menu_hilow_visual_datadrive_window->dirty_user_must_draw_contents || visual_hilow_datadrive_forzar_dibujado) {
-        printf("Redibujando parte estatica y dinamica y rodillos arrastre. %d\n",contador_segundo_infinito);
+        //printf("Redibujando parte estatica y dinamica y rodillos arrastre. %d\n",contador_segundo_infinito);
         redibujar_parte_estatica=1;
         redibujar_rollos=1;
         redibujar_rodillos_arrastre=1;
@@ -41419,7 +41419,7 @@ void menu_hilow_visual_datadrive_overlay(void)
     visual_hilow_datadrive_forzar_dibujado=0;
 
     if (redibujar_rollos) {
-        printf("Redibujando parte dinamica. %d\n",contador_segundo_infinito);
+        //printf("Redibujando parte dinamica. %d\n",contador_segundo_infinito);
     }
 
 
@@ -50052,7 +50052,7 @@ void menu_visual_cassette_tape_overlay(void)
 
     //No redibujar si no hay cambios de nada
     if (menu_visual_cassette_tape_window->dirty_user_must_draw_contents || visual_cassette_tape_forzar_dibujado) {
-        printf("Redibujando parte estatica y dinamica y rodillos arrastre. %d\n",contador_segundo_infinito);
+        //printf("Redibujando parte estatica y dinamica y rodillos arrastre. %d\n",contador_segundo_infinito);
         redibujar_parte_estatica=1;
         redibujar_rollos=1;
         redibujar_rodillos_arrastre=1;
@@ -50064,7 +50064,7 @@ void menu_visual_cassette_tape_overlay(void)
     visual_cassette_tape_forzar_dibujado=0;
 
     if (redibujar_rollos) {
-        printf("Redibujando parte dinamica. %d\n",contador_segundo_infinito);
+        //printf("Redibujando parte dinamica. %d\n",contador_segundo_infinito);
     }
 
 

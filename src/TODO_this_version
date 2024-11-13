@@ -446,6 +446,5 @@ Error:    This game will probably crash due to the Inves write-on-interrupt bug 
 
 -mas acciones boton derecho en dispositivos
 
--soportar comillas en parametros de acciones de breakpoints (archivo en save-binary por ejemplo). ojo al grabarse en la config;
-creo que no se podrá porque todos el comando de acción junto con sus parámetros ya están incluidos dentro de comillas
+
 
