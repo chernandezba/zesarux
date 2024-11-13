@@ -56,7 +56,7 @@
 #include "vdp_9918a.h"
 #include "sn76489an.h"
 #include "snap_ram.h"
-#include "codsinpr.h"
+#include "z80_codsinpr.h"
 #include "zeng_online_client.h"
 
 

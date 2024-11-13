@@ -68,7 +68,7 @@
 #include "ds1307.h"
 #include "gs.h"
 #include "snap_ram.h"
-#include "codsinpr.h"
+#include "z80_codsinpr.h"
 #include "menu_items.h"
 #include "plus3dos_handler.h"
 #include "zeng_online_client.h"
