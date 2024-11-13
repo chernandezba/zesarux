@@ -305,5 +305,50 @@ extern int zxdesktop_icon_dandanator_inverse;
 extern int zxdesktop_icon_zxunoflash_inverse;
 extern int zxdesktop_icon_hilow_inverse;
 
+
+#define GENERIC_VISUALTAPE_COLOR_FONDO AMIGAOS_COLOUR_blue
+#define VISUALTAPE_COLOR_MARCO 7
+#define VISUALTAPE_COLOR_RODILLOS 15
+
+#define GENERIC_VISUALTAPE_ANCHO_CINTA 1000
+#define GENERIC_VISUALTAPE_ALTO_CINTA 630
+#define VISUALTAPE_RODILLO_ARRASTRE_IZQ_X 280
+
+#define GENERIC_VISUALTAPE_ROLLO_DERECHO_X (GENERIC_VISUALTAPE_ANCHO_CINTA-VISUALTAPE_RODILLO_ARRASTRE_IZQ_X)
+
+
+//radios para cantidad de cinta enrollada
+//para un maximo de una cinta de 90
+#define GENERIC_VISUALTAPE_ROLLO_MAX_RADIO 250
+#define GENERIC_VISUALTAPE_ROLLO_MIN_RADIO 110
+
+
+//Rodillos arrastre
+#define VISUALTAPE_RODILLO_ARRASTRE_MAX_RADIO 110
+#define VISUALTAPE_RODILLO_ARRASTRE_MIN_RADIO 55
+
+#define VISUALTAPE_RODILLO_ARRASTRE_DER_X (GENERIC_VISUALTAPE_ANCHO_CINTA-VISUALTAPE_RODILLO_ARRASTRE_IZQ_X)
+#define VISUALTAPE_RODILLO_ARRASTRE_Y 290
+
+#define VISUALTAPE_RODILLO_FIJO_IZQUIERDO_X 50
+#define VISUALTAPE_RODILLO_FIJO_DERECHO_X (GENERIC_VISUALTAPE_ANCHO_CINTA-50)
+#define VISUALTAPE_RODILLO_FIJO_Y (GENERIC_VISUALTAPE_ALTO_CINTA-100)
+#define VISUALTAPE_RODILLO_FIJO_RADIO 10
+
+//Rodillos inferiores
+#define VISUALTAPE_RODILLO_MOVIL_IZQUIERDO_X 90
+#define VISUALTAPE_RODILLO_MOVIL_DERECHO_X (GENERIC_VISUALTAPE_ANCHO_CINTA-90)
+#define VISUALTAPE_RODILLO_MOVIL_Y (GENERIC_VISUALTAPE_ALTO_CINTA-50)
+#define VISUALTAPE_RODILLO_MOVIL_RADIO 40
+#define VISUALTAPE_RODILLO_MOVIL_RADIO_INTERIOR 6
+
+extern void menu_generic_visualtape(zxvision_window *w,
+    int real_width,int real_height,int offset_x,int offset_y,
+    int porcentaje_cinta_izquierdo,int porcentaje_cinta_derecha,
+    int antes_porcentaje_cinta_izquierdo,int antes_porcentaje_cinta_derecha,
+    int grados_rodillos,int antes_grados_rodillos,int redibujar_rollos,int redibujar_parte_estatica,int redibujar_rodillos_arrastre,
+    int temblor,int semaforos_hilow,int pestanyas_escritura);
+
+
 #endif
 
