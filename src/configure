@@ -1575,23 +1575,23 @@ ql_zx8302.o: machines/ql_zx8302.c machines/ql_zx8302.h debug.h utils.h machines/
 	\$(CC) \$(CFLAGS) -c machines/ql_zx8302.c
 
 
-m68kcpu.o: m68kcpu.c
-	\$(CC) \$(CFLAGS) -c m68kcpu.c
+m68kcpu.o: cpus/m68kcpu.c
+	\$(CC) \$(CFLAGS) -c cpus/m68kcpu.c
 
-m68kdasm.o: m68kdasm.c
-	\$(CC) \$(CFLAGS) -c m68kdasm.c
+m68kdasm.o: cpus/m68kdasm.c
+	\$(CC) \$(CFLAGS) -c cpus/m68kdasm.c
 
-m68kops.o: m68kops.c
-	\$(CC) \$(CFLAGS) -c m68kops.c
+m68kops.o: cpus/m68kops.c
+	\$(CC) \$(CFLAGS) -c cpus/m68kops.c
 
-m68kopac.o: m68kopac.c
-	\$(CC) \$(CFLAGS) -c m68kopac.c
+m68kopac.o: cpus/m68kopac.c
+	\$(CC) \$(CFLAGS) -c cpus/m68kopac.c
 
-m68kopdm.o: m68kopdm.c
-	\$(CC) \$(CFLAGS) -c m68kopdm.c
+m68kopdm.o: cpus/m68kopdm.c
+	\$(CC) \$(CFLAGS) -c cpus/m68kopdm.c
 
-m68kopnz.o: m68kopnz.c
-	\$(CC) \$(CFLAGS) -c m68kopnz.c
+m68kopnz.o: cpus/m68kopnz.c
+	\$(CC) \$(CFLAGS) -c cpus/m68kopnz.c
 
 
 
