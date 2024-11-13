@@ -27,6 +27,7 @@
 
 extern void menu_kartusho(MENU_ITEM_PARAMETERS);
 extern void menu_superupgrade(MENU_ITEM_PARAMETERS);
+extern void menu_ifrom(MENU_ITEM_PARAMETERS);
 
 
 #endif
