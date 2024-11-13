@@ -170,6 +170,7 @@ int hilow_barbanegra_opcion_seleccionada=0;
 int interface1_opcion_seleccionada=0;
 int visualmicrodrive_opcion_seleccionada=0;
 int menu_mdv_simulate_bad_opcion_seleccionada=0;
+int betadisk_opcion_seleccionada=0;
 
 //Fin opciones seleccionadas para cada menu
 
@@ -7680,3 +7681,232 @@ void menu_interface1(MENU_ITEM_PARAMETERS)
     } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
 
 }
+
+
+void menu_storage_betadisk_emulation(MENU_ITEM_PARAMETERS)
+{
+	if (betadisk_enabled.v) betadisk_disable();
+	else betadisk_enable();
+}
+
+void menu_storage_betadisk_allow_boot(MENU_ITEM_PARAMETERS)
+{
+	betadisk_allow_boot_48k.v ^=1;
+}
+
+
+void menu_storage_trd_emulation(MENU_ITEM_PARAMETERS)
+{
+	if (trd_enabled.v) trd_disable();
+	else trd_enable();
+}
+
+void menu_storage_trd_write_protect(MENU_ITEM_PARAMETERS)
+{
+	trd_write_protection.v ^=1;
+}
+
+int menu_storage_trd_emulation_cond(void)
+{
+        if (trd_file_name[0]==0) return 0;
+        else return 1;
+}
+
+
+void menu_storage_trd_file(MENU_ITEM_PARAMETERS)
+{
+
+	trd_disable();
+
+        char *filtros[2];
+
+        filtros[0]="trd";
+        filtros[1]=0;
+
+        //guardamos directorio actual
+        char directorio_actual[PATH_MAX];
+        getcwd(directorio_actual,PATH_MAX);
+
+              //Obtenemos directorio de trd
+        //si no hay directorio, vamos a rutas predefinidas
+        if (trd_file_name[0]==0) menu_chdir_sharedfiles();
+
+        else {
+                char directorio[PATH_MAX];
+                util_get_dir(trd_file_name,directorio);
+                //printf ("strlen directorio: %d directorio: %s\n",strlen(directorio),directorio);
+
+                //cambiamos a ese directorio, siempre que no sea nulo
+                if (directorio[0]!=0) {
+                        debug_printf (VERBOSE_INFO,"Changing to last directory: %s",directorio);
+                        zvfs_chdir(directorio);
+                }
+        }
+
+
+        int ret=menu_filesel("Select TRD File",filtros,trd_file_name);
+        //volvemos a directorio inicial
+        zvfs_chdir(directorio_actual);
+
+        if (ret==1) {
+		if (!si_existe_archivo(trd_file_name)) {
+			if (menu_confirm_yesno_texto("File does not exist","Create?")==0) {
+                                trd_file_name[0]=0;
+                                return;
+                        }
+
+
+			//Crear archivo vacio
+		        FILE *ptr_trdfile;
+			ptr_trdfile=fopen(trd_file_name,"wb");
+
+		        long long int totalsize=640*1024;
+
+			z80_byte valor_grabar=0;
+
+		        if (ptr_trdfile!=NULL) {
+				while (totalsize) {
+					fwrite(&valor_grabar,1,1,ptr_trdfile);
+					totalsize--;
+				}
+		                fclose(ptr_trdfile);
+		        }
+
+		}
+
+		trd_enable();
+
+
+
+        }
+        //Sale con ESC
+        else {
+                //Quitar nombre
+                trd_file_name[0]=0;
+
+
+        }
+}
+
+
+void menu_storage_trd_browser(MENU_ITEM_PARAMETERS)
+{
+	//menu_file_trd_browser_show(trd_file_name,"TRD");
+	menu_file_viewer_read_file("TRD file viewer",trd_file_name);
+
+    //por coherencia cerrar menus al salir de aqui
+    salir_todos_menus=1;
+}
+
+
+void menu_storage_trd_persistent_writes(MENU_ITEM_PARAMETERS)
+{
+	trd_persistent_writes.v ^=1;
+}
+
+
+void menu_betadisk(MENU_ITEM_PARAMETERS)
+{
+    menu_item *array_menu_betadisk;
+    menu_item item_seleccionado;
+    int retorno_menu;
+    do {
+
+
+        char string_trd_file_shown[17];
+
+
+        menu_tape_settings_trunc_name(trd_file_name,string_trd_file_shown,17);
+        menu_add_item_menu_en_es_ca_inicial(&array_menu_betadisk,MENU_OPCION_NORMAL,menu_storage_trd_file,NULL,
+            "~~TRD File","Archivo ~~TRD","Arxiu ~~TRD");
+        menu_add_item_menu_sufijo_format(array_menu_betadisk," [%s]",string_trd_file_shown);
+        menu_add_item_menu_prefijo(array_menu_betadisk,"    ");
+        menu_add_item_menu_shortcut(array_menu_betadisk,'t');
+        menu_add_item_menu_tooltip(array_menu_betadisk,"TRD Emulation file");
+        menu_add_item_menu_ayuda(array_menu_betadisk,"TRD Emulation file");
+
+
+        menu_add_item_menu_en_es_ca(array_menu_betadisk,MENU_OPCION_NORMAL,menu_storage_trd_emulation,menu_storage_trd_emulation_cond,
+            "TRD ~~Emulation","~~Emulación TRD","~~Emulació TRD");
+        menu_add_item_menu_prefijo_format(array_menu_betadisk,"[%c] ", (trd_enabled.v ? 'X' : ' '));
+        menu_add_item_menu_shortcut(array_menu_betadisk,'e');
+        menu_add_item_menu_tooltip(array_menu_betadisk,"TRD Emulation");
+        menu_add_item_menu_ayuda(array_menu_betadisk,"TRD Emulation");
+
+
+        menu_add_item_menu_en_es_ca(array_menu_betadisk,MENU_OPCION_NORMAL,menu_storage_trd_write_protect,NULL,
+            "Wr~~ite protect","Protección escr~~itura","Protecció escr~~iptura");
+        menu_add_item_menu_prefijo_format(array_menu_betadisk,"[%c] ", (trd_write_protection.v ? 'X' : ' '));
+        menu_add_item_menu_shortcut(array_menu_betadisk,'i');
+        menu_add_item_menu_tooltip(array_menu_betadisk,"If TRD disk is write protected");
+        menu_add_item_menu_ayuda(array_menu_betadisk,"If TRD disk is write protected");
+
+
+        menu_add_item_menu_en_es_ca(array_menu_betadisk,MENU_OPCION_NORMAL,menu_storage_trd_persistent_writes,NULL,
+            "Persistent Writes","Escrituras Persistentes","Escriptures Persistents");
+        menu_add_item_menu_prefijo_format(array_menu_betadisk,"[%c] ",(trd_persistent_writes.v ? 'X' : ' ') );
+        menu_add_item_menu_tooltip(array_menu_betadisk,"Tells if TRD writes are saved to disk");
+        menu_add_item_menu_ayuda(array_menu_betadisk,"Tells if TRD writes are saved to disk. "
+        "Note: all writing operations to TRD are always saved to internal memory (unless you disable write permission), but this setting "
+        "tells if these changes are written to disk or not."
+        );
+
+
+
+        menu_add_item_menu(array_menu_betadisk,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+
+
+        menu_add_item_menu_en_es_ca(array_menu_betadisk,MENU_OPCION_NORMAL,menu_storage_betadisk_emulation,NULL,
+            "Betadis~~k Enabled","Betadis~~k Activado","Betadis~~k Activat");
+        menu_add_item_menu_prefijo_format(array_menu_betadisk,"[%c] ", (betadisk_enabled.v ? 'X' : ' '));
+        menu_add_item_menu_shortcut(array_menu_betadisk,'k');
+        menu_add_item_menu_tooltip(array_menu_betadisk,"Enable betadisk");
+        menu_add_item_menu_ayuda(array_menu_betadisk,"Enable betadisk");
+
+
+        menu_add_item_menu_en_es_ca(array_menu_betadisk,MENU_OPCION_NORMAL,menu_storage_betadisk_allow_boot,NULL,
+            "Allow ~~Boot","Permitir ~~Boot","Permetre ~~Boot");
+        menu_add_item_menu_prefijo_format(array_menu_betadisk,"[%c] ", (betadisk_allow_boot_48k.v ? 'X' : ' '));
+        menu_add_item_menu_shortcut(array_menu_betadisk,'b');
+        menu_add_item_menu_tooltip(array_menu_betadisk,"Allow autoboot on 48k machines");
+        menu_add_item_menu_ayuda(array_menu_betadisk,"Allow autoboot on 48k machines");
+
+        menu_add_item_menu(array_menu_betadisk,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+
+        menu_add_item_menu_en_es_ca(array_menu_betadisk,MENU_OPCION_NORMAL,menu_storage_trd_browser,menu_storage_trd_emulation_cond,
+            "TRD ~~Viewer","~~Visor TRD","~~Visor TRD");
+        menu_add_item_menu_prefijo(array_menu_betadisk,"    ");
+        menu_add_item_menu_shortcut(array_menu_betadisk,'v');
+        menu_add_item_menu_genera_ventana(array_menu_betadisk);
+        menu_add_item_menu_tooltip(array_menu_betadisk,"TRD Viewer");
+        menu_add_item_menu_ayuda(array_menu_betadisk,"TRD Viewer");
+
+        menu_add_item_menu_en_es_ca(array_menu_betadisk,MENU_OPCION_NORMAL,menu_visual_floppy,NULL,
+            "Visual Floppy","Visual Floppy","Visual Floppy");
+        menu_add_item_menu_prefijo(array_menu_betadisk,"    ");
+        menu_add_item_menu_se_cerrara(array_menu_betadisk);
+        menu_add_item_menu_genera_ventana(array_menu_betadisk);
+
+        menu_add_item_menu(array_menu_betadisk,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+
+        menu_add_ESC_item(array_menu_betadisk);
+
+        retorno_menu=menu_dibuja_menu_no_title_lang(&betadisk_opcion_seleccionada,&item_seleccionado,array_menu_betadisk,"Betadisk" );
+
+
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+            //llamamos por valor de funcion
+            if (item_seleccionado.menu_funcion!=NULL) {
+                //printf ("actuamos por funcion\n");
+                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+
+            }
+        }
+
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+
+
+
+
+}
+

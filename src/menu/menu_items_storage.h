@@ -49,6 +49,7 @@ extern void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS);
 extern void menu_interface1(MENU_ITEM_PARAMETERS);
 extern void menu_visual_microdrive(MENU_ITEM_PARAMETERS);
 extern void menu_microdrive_raw_map(MENU_ITEM_PARAMETERS);
+extern void menu_betadisk(MENU_ITEM_PARAMETERS);
 
 
 
