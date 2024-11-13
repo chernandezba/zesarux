@@ -1065,7 +1065,7 @@ extern int menu_ventana_scanf_numero_enhanced(char *titulo,int *variable,int max
 extern int zxvision_menu_filesel(char *titulo,char *filtros[],char *archivo);
 //extern char menu_filesel_last_directory_seen[];
 
-extern int menu_storage_string_root_dir(char *string_root_dir);
+
 
 extern void menu_add_item_menu_inicial(menu_item **m,char *texto,int tipo_opcion,t_menu_funcion menu_funcion,t_menu_funcion_activo menu_funcion_activo);
 extern void menu_add_item_menu_inicial_format(menu_item **p,int tipo_opcion,t_menu_funcion menu_funcion,t_menu_funcion_activo menu_funcion_activo,const char * format , ...);

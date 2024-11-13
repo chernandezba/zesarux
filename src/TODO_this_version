@@ -437,4 +437,11 @@ Error:    This game will probably crash due to the Inves write-on-interrupt bug 
 -mas acciones boton derecho en dispositivos
 
 
+-revisar esto de development:
+Para crear una carpeta nueva de codigo fuente
 
+-en configure, agregar a variable FILES_FOR_STATS
+-agregar a CFLAGS=
+-agregar a ONLYSOURCEFILES
+Ver si lo que hay ahora es correcto
+Simplificar escritura carpetas? para no repetir?

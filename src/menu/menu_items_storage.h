@@ -32,6 +32,8 @@ extern int hilow_convert_audio_thread_running;
 //extern char enviado_hilow_sample_convirtiendo;
 extern void menu_hilow_convert_get_audio_buffer(void);
 
+extern int menu_storage_string_root_dir(char *string_root_dir);
+
 extern void menu_kartusho(MENU_ITEM_PARAMETERS);
 extern void menu_superupgrade(MENU_ITEM_PARAMETERS);
 extern void menu_ifrom(MENU_ITEM_PARAMETERS);
@@ -50,6 +52,8 @@ extern void menu_interface1(MENU_ITEM_PARAMETERS);
 extern void menu_visual_microdrive(MENU_ITEM_PARAMETERS);
 extern void menu_microdrive_raw_map(MENU_ITEM_PARAMETERS);
 extern void menu_betadisk(MENU_ITEM_PARAMETERS);
+extern void menu_zxpand(MENU_ITEM_PARAMETERS);
+extern void menu_esxdos_traps(MENU_ITEM_PARAMETERS);
 
 
 

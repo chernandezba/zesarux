@@ -228,7 +228,6 @@ int ide_divide_opcion_seleccionada=0;
 int display_settings_opcion_seleccionada=0;
 int debug_tsconf_opcion_seleccionada=0;
 int windows_opcion_seleccionada=0;
-int zxpand_opcion_seleccionada=0;
 int ql_mdv_flp_opcion_seleccionada=0;
 int i8049_mixer_opcion_seleccionada=0;
 int midi_output_instrument_opcion_seleccionada=0;
@@ -248,7 +247,7 @@ int input_file_keyboard_opcion_seleccionada=0;
 int audio_opcion_seleccionada=0;
 int debug_opcion_seleccionada=0;
 int snapshot_opcion_seleccionada=0;
-int esxdos_traps_opcion_seleccionada=0;
+
 int plusthreedisk_opcion_seleccionada=0;
 int msxcart_opcion_seleccionada=0;
 int z88_eprom_size_opcion_seleccionada=0;
@@ -24009,84 +24008,6 @@ void menu_help_show_keyboard(MENU_ITEM_PARAMETERS)
 
 }
 
-void menu_storage_zxpand_enable(MENU_ITEM_PARAMETERS)
-{
-	if (zxpand_enabled.v) zxpand_disable();
-	else zxpand_enable();
-}
-
-void menu_storage_zxpand_root_dir(MENU_ITEM_PARAMETERS)
-{
-
-	int ret;
-	ret=menu_storage_string_root_dir(zxpand_root_dir);
-
-	//Si sale con ESC
-	if (ret==0) {
-       	//directorio zxpand vacio
-        zxpand_cwd[0]=0;
-	}
-
-}
-
-
-void menu_zxpand(MENU_ITEM_PARAMETERS)
-{
-
-
-
-        //Dado que es una variable local, siempre podemos usar este nombre array_menu_common
-        menu_item *array_menu_common;
-        menu_item item_seleccionado;
-        int retorno_menu;
-        do {
-
-
-
-			menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_storage_zxpand_enable,NULL,"[%c] ZX~~pand emulation",(zxpand_enabled.v ? 'X' : ' ') );
-                        menu_add_item_menu_shortcut(array_menu_common,'p');
-			menu_add_item_menu_tooltip(array_menu_common,"Enable ZXpand emulation");
-			menu_add_item_menu_ayuda(array_menu_common,"Enable ZXpand emulation");
-
-
-			if (zxpand_enabled.v) {
-				char string_zxpand_root_folder_shown[20];
-				menu_tape_settings_trunc_name(zxpand_root_dir,string_zxpand_root_folder_shown,20);
-
-				menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_storage_zxpand_root_dir,NULL,"~~Root dir: %s",string_zxpand_root_folder_shown);
-                menu_add_item_menu_prefijo(array_menu_common,"    ");
-                        	menu_add_item_menu_shortcut(array_menu_common,'r');
-				menu_add_item_menu_tooltip(array_menu_common,"Sets the root directory for ZXpand filesystem");
-				menu_add_item_menu_ayuda(array_menu_common,"Sets the root directory for ZXpand filesystem. "
-					"Only file and folder names valid for zxpand will be shown:\n"
-					"-Maximum 8 characters for name and 3 for extension\n"
-					"-Files and folders will be shown always in uppercase. Folders which are not uppercase, are shown but can not be accessed\n"
-					);
-
-			}
-
-
-
-			menu_add_item_menu_separator(array_menu_common);
-
-            menu_add_ESC_item(array_menu_common);
-
-            retorno_menu=menu_dibuja_menu_no_title_lang(&zxpand_opcion_seleccionada,&item_seleccionado,array_menu_common,"ZXpand" );
-
-
-                if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
-                        //llamamos por valor de funcion
-                        if (item_seleccionado.menu_funcion!=NULL) {
-                                //printf ("actuamos por funcion\n");
-                                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
-
-                        }
-                }
-
-        } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
-
-
-}
 
 void menu_ql_microdrive_floppy(MENU_ITEM_PARAMETERS)
 {
@@ -33480,150 +33401,7 @@ void menu_snapshot(MENU_ITEM_PARAMETERS)
 
 
 
-//Funcion para seleccionar un directorio con filesel
-//Solo cambia string_root_dir si se sale de filesel con ESC
-//Devuelve mismo valor que retorna menu_filesel
-int menu_storage_string_root_dir(char *string_root_dir)
-{
 
-        char *filtros[2];
-
-        filtros[0]="nofiles";
-        filtros[1]=0;
-
-
-        //guardamos directorio actual
-        char directorio_actual[PATH_MAX];
-        getcwd(directorio_actual,PATH_MAX);
-
-        int ret;
-
-
-	char nada[PATH_MAX];
-
-        //Obtenemos ultimo directorio visitado
-	zvfs_chdir(string_root_dir);
-
-
-        ret=menu_filesel("Enter dir & press ESC",filtros,nada);
-
-
-	//Si sale con ESC
-	if (ret==0) {
-		//Directorio root
-		sprintf (string_root_dir,"%s",menu_filesel_last_directory_seen);
-		debug_printf (VERBOSE_DEBUG,"Selected directory: %s",string_root_dir);
-
-	}
-
-    //volvemos a directorio inicial
-    zvfs_chdir(directorio_actual);
-
-	return ret;
-
-
-}
-
-
-
-
-
-void menu_storage_esxdos_traps_emulation(MENU_ITEM_PARAMETERS)
-{
-
-
-
-	if (esxdos_handler_enabled.v) esxdos_handler_disable();
-	else {
-		//Si no hay paging, avisar
-		if (diviface_enabled.v==0) {
-			if (menu_confirm_yesno_texto("No divide/mmc paging","Sure enable?")==0) return;
-		}
-		esxdos_handler_enable();
-	}
-}
-
-void menu_esxdos_traps_root_dir(MENU_ITEM_PARAMETERS)
-{
-
-
-	int ret;
-	ret=menu_storage_string_root_dir(esxdos_handler_root_dir);
-
-	//Si sale con ESC
-	if (ret==0) {
-        //directorio esxdos vacio
-	    esxdos_handler_cwd[0]=0;
-	}
-
-}
-
-void menu_esxdos_traps_readonly(MENU_ITEM_PARAMETERS)
-{
-    esxdos_handler_readonly.v ^=1;
-}
-
-
-void menu_esxdos_traps(MENU_ITEM_PARAMETERS)
-{
-    menu_item *array_menu_esxdos_traps;
-    menu_item item_seleccionado;
-    int retorno_menu;
-    do {
-
-        char string_esxdos_traps_root_dir_shown[18];
-
-
-        menu_add_item_menu_inicial_format(&array_menu_esxdos_traps,MENU_OPCION_NORMAL,menu_storage_esxdos_traps_emulation,NULL,"[%c] ~~Enabled", (esxdos_handler_enabled.v ? 'X' : ' ' ));
-        menu_add_item_menu_shortcut(array_menu_esxdos_traps,'e');
-        menu_add_item_menu_tooltip(array_menu_esxdos_traps,"Enable ESXDOS handler");
-        menu_add_item_menu_ayuda(array_menu_esxdos_traps,"Enable ESXDOS handler");
-
-        if (esxdos_handler_enabled.v) {
-            menu_tape_settings_trunc_name(esxdos_handler_root_dir,string_esxdos_traps_root_dir_shown,18);
-            menu_add_item_menu_format(array_menu_esxdos_traps,MENU_OPCION_NORMAL,menu_esxdos_traps_root_dir,NULL,"~~Root dir: %s",string_esxdos_traps_root_dir_shown);
-            menu_add_item_menu_prefijo(array_menu_esxdos_traps,"    ");
-            menu_add_item_menu_shortcut(array_menu_esxdos_traps,'r');
-
-            menu_add_item_menu_tooltip(array_menu_esxdos_traps,"Sets the root directory for ESXDOS filesystem");
-            menu_add_item_menu_ayuda(array_menu_esxdos_traps,"Sets the root directory for ESXDOS filesystem. "
-                "Only file and folder names valid for ESXDOS will be shown:\n"
-                "-Maximum 8 characters for name and 3 for extension\n"
-                "-Files and folders will be shown always in uppercase. Folders which are not uppercase, are shown but can not be accessed\n"
-                );
-
-            menu_add_item_menu_format(array_menu_esxdos_traps,MENU_OPCION_NORMAL,menu_esxdos_traps_readonly,NULL,"[%c] Read only",
-                (esxdos_handler_readonly.v ? 'X' : ' ' ) );
-
-        }
-
-
-
-
-
-
-        menu_add_item_menu(array_menu_esxdos_traps,"",MENU_OPCION_SEPARADOR,NULL,NULL);
-
-        menu_add_ESC_item(array_menu_esxdos_traps);
-
-        retorno_menu=menu_dibuja_menu_no_title_lang(&esxdos_traps_opcion_seleccionada,&item_seleccionado,array_menu_esxdos_traps,"ESXDOS handler" );
-
-
-        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
-            //llamamos por valor de funcion
-            if (item_seleccionado.menu_funcion!=NULL) {
-                    //printf ("actuamos por funcion\n");
-                    item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
-
-            }
-        }
-
-    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
-
-
-
-
-}
 
 
 void menu_storage_dskplusthree_file(MENU_ITEM_PARAMETERS)
