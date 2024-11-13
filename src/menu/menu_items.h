@@ -132,10 +132,10 @@ extern void menu_storage(MENU_ITEM_PARAMETERS);
 extern void menu_storage_tape(MENU_ITEM_PARAMETERS);
 extern void menu_plusthreedisk(MENU_ITEM_PARAMETERS);
 extern void menu_betadisk(MENU_ITEM_PARAMETERS);
-extern void menu_timexcart(MENU_ITEM_PARAMETERS);
+
 extern void menu_msxcart(MENU_ITEM_PARAMETERS);
 extern void menu_z88_slot_insert(MENU_ITEM_PARAMETERS);
-extern void menu_dandanator(MENU_ITEM_PARAMETERS);
+
 extern void menu_zxuno_spi_flash(MENU_ITEM_PARAMETERS);
 extern void menu_realtape_pause_unpause(MENU_ITEM_PARAMETERS);
 extern void menu_smartload(MENU_ITEM_PARAMETERS);
