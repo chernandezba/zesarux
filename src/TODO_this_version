@@ -414,16 +414,6 @@ LEC:
 -poder convertir ddh a raw
 
 
--visual datadrive
-*indicar C60 o lo que sea. letras vectoriales?
-*otros detalles de una cinta real: nombre archivo?
-*cabezal lectura?
-*eliminar debug print
-
-
--posibilidad otro algoritmo mas: si va para abajo: 0. si va para arriba: 1
-
-
 -----------------------
 ---FIN Hilow        ---
 -----------------------
@@ -432,7 +422,7 @@ LEC:
 *soporte tap, tzx y otros formatos de cinta binaria
 *revisar tmp y otras variables hilow
 *si se avanza cinta desde visual real tape, con cinta parada, no refresca bien
-*eliminar debug print
+
 
 
 -redocumentar efecto de brillo de color del Inves según ultima info con Pedro
