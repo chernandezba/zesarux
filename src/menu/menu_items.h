@@ -240,9 +240,7 @@ extern int menu_inicio_opcion_seleccionada;
 
 extern int force_menu_dibuja_menu_recorrer_menus;
 
-extern void menu_visual_microdrive(MENU_ITEM_PARAMETERS);
 
-extern void menu_microdrive_raw_map(MENU_ITEM_PARAMETERS);
 
 
 
