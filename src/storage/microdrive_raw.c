@@ -76,7 +76,7 @@ So my current implementation of the sync signal is:
 I have both algorithms available on my code, with the variable:
 microdrive_raw_new_sync_algorithm
 
-If it's set to 0, it uses my algorithm that works (byte AND previous byte). This is the default value.
+If it's set to 0, it uses my algorithm that works (reading from status port EF blocks the cpu). This is the default value.
 It it's set to 1, it uses the "real" behaviour from the ula, but it doesn't work well: after format from basic,
 the total available sectors are less than expected. Do NOT set it unless you know what you are doing
 I have kept the two algorithms so maybe in the future I can fix it and use the real algorithm
