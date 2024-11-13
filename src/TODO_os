@@ -4,6 +4,8 @@
 -cocoa: En Mac, si se pone en .zesaruxrc: --vo curses Inicializa la ventana en blanco de Cocoa y luego abre ventana de curses donde transcurre todo...
 Es poder saber antes las opciones de configuracion dado que la comprobacion del driver video (--vo) se hace en el main del scrcocoa.m
 
+-En Mac, con driver de audio null y cuando la ventana no tiene el foco, a veces se congela la aplicación.
+Pasa con la funcion timer_usleep de timer.c. Agregado al FAQ
 
 -script de speech say falla cuando texto empieza con "-", como en README
 -con app de "loopback audio", ejecutando ZEsarUX como app de Mac se oye diferente. ->  Desinstalando "loopback audio" no pasa
@@ -73,7 +75,7 @@ Es mas complicado pues luego va a buscar librerias de /usr/local/Cellar/openssl
 
 -footer en fullscreen no lo ubica bien. En SDL de Linux va bien
 
--Revisar al expulsar cinta si Windows lo libera 
+-Revisar al expulsar cinta si Windows lo libera
 
 -probar con sdl audio y video simpletext . parece que no se oye el sonido. En Linux va bien
 

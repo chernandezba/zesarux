@@ -217,14 +217,25 @@ long timer_get_current_seconds(void)
 }
 
 
-void timer_sleep(int milisec)
-{
-        usleep(milisec*1000);
-}
 
+//Pausa de microsegundos
+//Por alguna razón que desconozco, en Mac usando el driver de audio null, driver de video cocoa y cuando la aplicación no tiene el foco,
+//a veces este usleep tarda muchisimo, del orden de 10 segundos o asi
+//de tal manera que ZEsarUX se queda congelado
+//Bugs de usleep en Mac que comentan que a veces tarda mas, que podrian tener relación:
+//https://github.com/emscripten-core/emscripten/issues/16499
+//https://savannah.gnu.org/bugs/?46845
 void timer_usleep(int usec)
 {
 	usleep (usec);
+}
+
+
+//Pausa de milisegundos
+void timer_sleep(int milisec)
+{
+    //usleep(milisec*1000);
+    timer_usleep(milisec*1000);
 }
 
 

@@ -89,8 +89,8 @@ Ejemplo: AY Player, pulsar Editar playlist, y ahí cerrar todos menus
 *cargando desde browser de next, sale la intro y luego se cuelga
 *cargando con smartload, parece que carga archivos por esx pero no muestra nada en pantalla
 
--al conmutar de ventana de ZEsarUX, en Mac, a veces se congela la aplicación. por que? tanto pasa con menu abierto como cerrado.
-Creo que tiene que ver con driver ao null. Me cuesta reproducirlo
+
+
 
 -Si se crea ventana de alto negativo, acaba haciendo panic al asignar memoria. Quizá controlar esto?
 
@@ -446,5 +446,6 @@ Error:    This game will probably crash due to the Inves write-on-interrupt bug 
 
 -mas acciones boton derecho en dispositivos
 
--soportar comillas en parametros de acciones de breakpoints. ojo al grabarse en la config
+-soportar comillas en parametros de acciones de breakpoints (archivo en save-binary por ejemplo). ojo al grabarse en la config;
+creo que no se podrá porque todos el comando de acción junto con sus parámetros ya están incluidos dentro de comillas
 

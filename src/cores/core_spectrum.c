@@ -439,8 +439,8 @@ void core_spectrum_fin_frame_pantalla(void)
 
 void core_spectrum_fin_scanline(void)
 {
-//printf ("%d\n",t_estados);
-			//if (t_estados>69000) printf ("t_scanline casi final: %d\n",t_scanline);
+    //printf ("fin scanline en %d\n",t_estados);
+    //if (t_estados>69000) printf ("t_scanline casi final: %d\n",t_scanline);
 
     if (si_siguiente_sonido() ) {
 

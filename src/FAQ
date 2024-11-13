@@ -790,6 +790,10 @@ Q: I'm using cacalib or curses driver and the position of the kempston mouse is 
 A: Mouse position on text mode drivers (cacalib and curses) is only read when you push a button, and not when you move the mouse.
 
 
+Q: Sometimes ZEsarUX freezes when using the null audio driver on Mac OS X, when the window doesn't have the focus.
+A: It's a common issue. When this situation happens and randomly, an internal delay used to synchronize ZEsarUX (calling to system function usleep) lasts a lot longer (instead of 1 miliseconds it lasts 10 seconds aprox). It doesn't happen if using a different audio driver and/or having the focus in the ZEsarUX window.
+
+
 Q: How do I use the Artificial Intelligence feature to get realistic images for Text Adventure Descriptions?
 A: ZEsarUX guesses the Text Adventure description text, and then uses external scripts to get images from an Artificial Intelligence.
 You can use any AI API for that task, but I have prepared scripts for OpenAI (which uses the Dall-E feature). They are located on text_image_filters/ folder, and there are scripts for Windows and Linux.
