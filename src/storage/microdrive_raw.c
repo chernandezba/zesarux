@@ -64,7 +64,7 @@ When I mention ones and zeroes I'm talking about bit value (bytes are just an ab
 "
 
 When he says "a unique bit sequence (24 or more zero bits followed by 8 one bits) on each channel. " it means for the two tracks,
-so the sync sequence is formed by FF FF 00 00 00 00 00 00. This byte sequence triggers the sync signal.
+so the sync sequence is formed by 00 00 00 00 00 00 FF FF. This byte sequence triggers the sync signal.
 
 HOWEVER, if I emulate this behaviour, it doesn't format well from the interface 1 rom (I mean a normal FORMAT command from basic).
 The total available sectors are less than expected.
