@@ -66,6 +66,7 @@
 #include "hilow_datadrive.h"
 #include "dsk.h"
 #include "menu_items.h"
+#include "menu_items_storage.h"
 #include "pcw.h"
 #include "utils_text_adventure.h"
 #include "zeng_online.h"

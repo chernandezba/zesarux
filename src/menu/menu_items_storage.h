@@ -33,6 +33,10 @@ extern int hilow_convert_audio_thread_running;
 extern void menu_hilow_convert_get_audio_buffer(void);
 
 extern int menu_storage_string_root_dir(char *string_root_dir);
+extern void menu_visual_floppy_buffer_add(int pista,int sector,int byte_en_sector);
+extern void menu_visual_floppy_buffer_add_persistent(int pista,int sector,int byte_en_sector);
+extern void menu_visualfloppy_increment_rotation(void);
+extern void menu_visual_floppy_buffer_reset(void);
 
 extern void menu_kartusho(MENU_ITEM_PARAMETERS);
 extern void menu_superupgrade(MENU_ITEM_PARAMETERS);
@@ -54,6 +58,7 @@ extern void menu_microdrive_raw_map(MENU_ITEM_PARAMETERS);
 extern void menu_betadisk(MENU_ITEM_PARAMETERS);
 extern void menu_zxpand(MENU_ITEM_PARAMETERS);
 extern void menu_esxdos_traps(MENU_ITEM_PARAMETERS);
+extern void menu_visual_floppy(MENU_ITEM_PARAMETERS);
 
 
 

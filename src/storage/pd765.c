@@ -107,6 +107,7 @@ http://dunfield.classiccmp.org/r/765.pdf
 #include "utils.h"
 #include "dsk.h"
 #include "menu_items.h"
+#include "menu_items_storage.h"
 #include "screen.h"
 #include "settings.h"
 #include "pcw.h"
