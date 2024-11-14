@@ -16,7 +16,6 @@ Added Find text string on memory menu
 Added Quicksave screen function
 Added setting to disable persistent writes on Z88 Cards
 Added CPC Additional ROMS emulation
-Added Symbol Table loading to improve debugging
 
 * Improvements:
 
@@ -25,7 +24,7 @@ Allow hotswap to Pentagon and to Spectrum +3
 Allow hotswap from Spectrum 128 to Spectrum +3
 Allow to load .SP snapshots of 64kb (like Shadow of Unicorn)
 Improve Azimuth warning on External Audio Source Window
-Added Flash Color mode
+Added Flash Color mode (128 colors)
 Allow to not save snapshot when exiting ZEsarUX
 Allow to load an additional config file .zesaruxdevrc
 Allow to define Left Alt, Left Ctrl, Left Shift or TAB as Joystick Fire action
@@ -42,12 +41,13 @@ Improved Hilow Datadrive emulation:
 -Added Raw emulation, like the real device
 -Allow ddh variable size (from 3 up to 256 sectors)
 -Allow to format only one side on ddh files
--Allow to clear contents when formatting ("c/borrado" or "s/borrado")
+-Allow to clear contents when formatting ("c/borrado" or "s/borrado") on ddh files
 
 Improved Debug:
 - CPU history: allow to change memory pointer to the PC register show in history
 - Show when CPU is in wait state
 - Added breakpoint action save-binary
+- Added Symbol Table loading
 
 Improved Hexadecimal editor:
 - Now the data is refreshed when the window has the focus too

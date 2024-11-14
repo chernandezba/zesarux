@@ -16,7 +16,6 @@ Agregado menú para buscar cadenas de texto en memoria
 Agregado función de grabado rápido de pantalla
 Agregada opción para desactivar escrituras persistentes en tarjetas de Z88
 Agregada emulación de ROMS adicionales en CPC
-Agregada carga de Tabla de Símbolos para mejorar la depuración
 
 * Mejoras:
 
@@ -25,7 +24,7 @@ Permitir hotswap a Pentagon y a Spectrum +3
 Permitir hotswap desde Spectrum 128 a Spectrum +3
 Permitir cargar snapshots .SP de 64kb (como Shadow of Unicorn)
 Mejorar aviso de Azimuth en ventana External Audio Source
-Agregado modo Flash Color
+Agregado modo Flash Color (128 colores)
 Permitir no guardar snapshot al salir de ZEsarUX
 Permitir cargar un archivo de configuración adicional .zesaruxdevrc
 Permitir definir Alt Izq, Ctrl Izq, Shift Izq o TAB como acción de Fuego de Joystick
@@ -42,12 +41,13 @@ Mejorada emulación de Hilow Datadrive:
 -Agregada emulación en crudo (raw), como el dispositivo real
 -Permitir archivos ddh de tamaño variable (desde 3 hasta 256 sectores)
 -Permitir formatear solo una cara en archivos ddh
--Permitir borrar contenido al formatear ("c/borrado" o "s/borrado")
+-Permitir borrar contenido al formatear ("c/borrado" o "s/borrado") en archivos ddh
 
 Mejorado Debug:
 - CPU history: permitir cambiar el puntero de memoria según el registro PC mostrado en el historial
 - Mostar cuando la CPU está en estado wait
 - Agregada acción de breakpoint save-binary
+- Agregada carga de Tabla de Símbolos
 
 Mejorado Hexadecimal editor:
 - Ahora los datos se refrescan también cuando la ventana tiene el foco
