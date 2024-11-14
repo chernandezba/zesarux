@@ -435,9 +435,6 @@ LEC:
 
 
 
-ok-Process manager. Solo mostrar ventanas que tengan can be backgrounded. Para evitar mostrar ventanas de menús. Al final, una ventana que no puede ir a segundo plano no se puede considerar un proceso. O bien indicar que eso son ventanas sin proceso asociado
-
-
 -Documentar en development como va el indexado
 *para menus normales
 *no para items tabulados
