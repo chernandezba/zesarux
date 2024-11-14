@@ -23256,6 +23256,50 @@ int menu_confirm_yesno_texto(char *texto_ventana,char *texto_interior)
 
 
 //retorna 1 si opcion 1
+//retorna 0 si ESC
+int menu_simple_one_choices(char *texto_ventana,char *texto_interior,char *opcion1)
+{
+
+
+
+        menu_espera_no_tecla();
+
+
+	menu_item *array_menu_simple_two_choices;
+        menu_item item_seleccionado;
+        int retorno_menu;
+
+	//Siempre indicamos la primera opcion
+	int simple_two_choices_opcion_seleccionada=1;
+        do {
+
+		    menu_add_item_menu_inicial_format(&array_menu_simple_two_choices,MENU_OPCION_SEPARADOR,NULL,NULL,texto_interior);
+
+            menu_add_item_menu_format(array_menu_simple_two_choices,MENU_OPCION_NORMAL,NULL,NULL,opcion1);
+
+
+            //separador adicional para que quede mas grande la ventana y mas mono
+            menu_add_item_menu_format(array_menu_simple_two_choices,MENU_OPCION_SEPARADOR,NULL,NULL," ");
+
+
+
+            retorno_menu=menu_dibuja_menu_dialogo_no_title_lang(&simple_two_choices_opcion_seleccionada,&item_seleccionado,array_menu_simple_two_choices,texto_ventana);
+
+
+
+            if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+                    return simple_two_choices_opcion_seleccionada;
+            }
+
+        } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+
+	return 0;
+
+
+}
+
+
+//retorna 1 si opcion 1
 //retorna 2 si opcion 2
 //retorna 0 si ESC
 int menu_simple_two_choices(char *texto_ventana,char *texto_interior,char *opcion1,char *opcion2)

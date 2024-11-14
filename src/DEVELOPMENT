@@ -123,9 +123,7 @@ http://stackoverflow.com/questions/708238/how-do-i-add-an-icon-to-a-mingw-gcc-co
 
 Para crear una carpeta nueva de codigo fuente
 
--en configure, agregar a variable FILES_FOR_STATS
--agregar a CFLAGS=
--agregar a ONLYSOURCEFILES
+Leer comentario al principio archivo configure, en Nota: si se agregan carpetas nuevas de codigo fuente, agregar a:
 
 ---------------------
 

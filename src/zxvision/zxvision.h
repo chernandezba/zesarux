@@ -1151,6 +1151,7 @@ extern int menu_confirm_yesno(char *texto_ventana);
 extern int menu_confirm_yesno_texto(char *texto_ventana,char *texto_interior);
 extern int menu_confirm_yesno_texto_additional_item(char *texto_ventana,char *texto_interior,char *(*texto_adicional)(void),void (*funcion_trigger_texto_adicional) (void),char *(*texto_adicional2)(void),void (*funcion_trigger_texto_adicional2) (void) );
 //extern int menu_ask_no_append_truncate_texto(char *texto_ventana,char *texto_interior);
+extern int menu_simple_one_choices(char *texto_ventana,char *texto_interior,char *opcion1);
 extern int menu_simple_two_choices(char *texto_ventana,char *texto_interior,char *opcion1,char *opcion2);
 extern int menu_simple_three_choices(char *texto_ventana,char *texto_interior,char *opcion1,char *opcion2,char *opcion3);
 extern int menu_simple_four_choices(char *texto_ventana,char *texto_interior,char *opcion1,char *opcion2,char *opcion3,char *opcion4);

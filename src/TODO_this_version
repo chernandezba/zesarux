@@ -355,11 +355,12 @@ parece que es la llamada a menu_interface_border
 -top bar menu
 ok*primero poder desactivar solo botones de arriba bajo demanda
 ok*top bar tiene que poder aparecer como overlay. Así se puede hacer mostrar al mover ratón, y también mientras menús están activos
--si menu que se abre tiene seleccionado un item de submenu, al pulsar boton izquierdo en otro sitio provoca que esa ventana
+*si menu que se abre tiene seleccionado un item de submenu, al pulsar boton izquierdo en otro sitio provoca que esa ventana
 la deja en lista de submenu
--busqueda indexada. que cuando se haya abierto top bar agregue automaticamente "Main Menu" a todos, siempre que no venga indicado
+*busqueda indexada. que cuando se haya abierto top bar agregue automaticamente "Main Menu" a todos, siempre que no venga indicado
 claro. o no, porque si hay top bar, "Storage" menu por ejemplo es un menu directo sin tener que pasar por Main Menu
--al estar en un menu y pulsar en otro de topbar, que se reabra, el truco creo que esta en activar menu_pressed_open_menu_while_in_menu.v
+*al estar en un menu y pulsar en otro de topbar, que se reabra, el truco creo que esta en activar menu_pressed_open_menu_while_in_menu.v
+
 
 -quiza menu_ventana_scanf_numero_enhanced deberia mostrar el error en ventana en vez de soltarlo por debug_printf,
 porque luego hay sitios como Sectors info de microdrive que al cambiar de sector con tecla 's' tengo que detectar
@@ -434,14 +435,15 @@ Error:    This game will probably crash due to the Inves write-on-interrupt bug 
 
 -en FAQ formatos MDR/RMD, DDH/RAW
 
--mas acciones boton derecho en dispositivos
+-mas acciones boton derecho en dispositivos: mmc, ide
 
 
--revisar esto de development:
-Para crear una carpeta nueva de codigo fuente
 
--en configure, agregar a variable FILES_FOR_STATS
--agregar a CFLAGS=
--agregar a ONLYSOURCEFILES
-Ver si lo que hay ahora es correcto
-Simplificar escritura carpetas? para no repetir?
+ok-Process manager. Solo mostrar ventanas que tengan can be backgrounded. Para evitar mostrar ventanas de menús. Al final, una ventana que no puede ir a segundo plano no se puede considerar un proceso. O bien indicar que eso son ventanas sin proceso asociado
+
+
+-Documentar en development como va el indexado
+*para menus normales
+*no para items tabulados
+*no para menus declarados como dialogos (menu_dibuja_menu_dialogo_no_title_lang)
+*algo mas?

@@ -18508,6 +18508,13 @@ void menu_display_window_close_all(MENU_ITEM_PARAMETERS)
 
 void menu_display_window_list_get_window_flags(zxvision_window *ventana,char *texto)
 {
+
+    //Si es una ventana que no permite background, poner como flags "WIN" o algo asi, para indicar que no es un proceso
+    if (!ventana->can_be_backgrounded) {
+        strcpy(texto,"WIN");
+        return;
+    }
+
     if (!ventana->is_maximized && !ventana->is_minimized && !ventana->always_visible) {
         texto[0]=0;
         return;
@@ -42715,42 +42722,85 @@ void zxdesktop_lowericon_cassete_accion(void)
 
 void zxdesktop_lowericon_cassete_std_accion_boton_derecho(void)
 {
+
+    int tape_is_inserted=is_tape_inserted();
+
+    char buffer_insert[20];
+    if (tape_is_inserted) strcpy(buffer_insert,"Eject tape");
+    else strcpy(buffer_insert,"Open...");
+
+    int opcion;
+
     if (menu_tape_input_insert_cond()) {
-        int opcion=menu_simple_two_choices("Standard Tape","--Action--","Reinsert tape","Close");
-
-        switch (opcion) {
-
-
-            case 1:
-                menu_reinsert_std_tape();
-            break;
-
-
-        }
+        opcion=menu_simple_two_choices("Standard Tape","--Action--",buffer_insert,"Reinsert tape");
     }
     else {
-        menu_warn_message("No standard tape inserted");
+        opcion=menu_simple_one_choices("Standard Tape","--Action--",buffer_insert);
     }
+
+    switch (opcion) {
+        case 1:
+            if (tape_is_inserted) menu_tape_input_insert(0);
+            else menu_tape_open(0);
+        break;
+
+        case 2:
+            menu_reinsert_std_tape();
+        break;
+
+
+    }
+
+
 }
 
 void zxdesktop_lowericon_cassete_real_accion_boton_derecho(void)
 {
+
+    char buffer_insert[20];
+    if (realtape_inserted.v) strcpy(buffer_insert,"Eject tape");
+    else strcpy(buffer_insert,"Open...");
+
+    int opcion;
+
     if (menu_realtape_inserted_cond()) {
-        int opcion=menu_simple_two_choices("Real Tape","--Action--","Play/Pause","Close");
+        char buffer_play[20];
+        if (realtape_playing.v) strcpy(buffer_play,"Pause");
+        else strcpy(buffer_play,"Play");
 
-        switch (opcion) {
+        opcion=menu_simple_three_choices("Real Tape","--Action--",buffer_insert,"Reinsert tape",buffer_play);
 
-
-            case 1:
-                menu_realtape_pause_unpause(0);
-            break;
-
-
-        }
     }
     else {
-        menu_warn_message("No real tape inserted");
+        if (menu_realtape_cond()) {
+            opcion=menu_simple_two_choices("Real Tape","--Action--",buffer_insert,"Reinsert tape");
+        }
+        //Solo permite abrir cinta
+        else {
+            opcion=menu_simple_one_choices("Real Tape","--Action--",buffer_insert);
+        }
     }
+
+    switch (opcion) {
+
+        case 1:
+            if (realtape_inserted.v) menu_realtape_insert(0);
+            else menu_realtape_open(0);
+        break;
+
+
+
+        case 2:
+           menu_reinsert_real_tape();
+        break;
+
+        case 3:
+            menu_realtape_pause_unpause(0);
+        break;
+
+    }
+
+
 }
 
 //Funciones para floppy +3
@@ -42793,6 +42843,22 @@ void zxdesktop_lowericon_betadisk_accion(void)
 	menu_betadisk(0);
 }
 
+void zxdesktop_lowericon_betadisk_accion_boton_derecho(void)
+{
+    char buffer_insert[20];
+    if (trd_enabled.v) strcpy(buffer_insert,"Eject disk");
+    else strcpy(buffer_insert,"Open...");
+
+    int opcion=menu_simple_one_choices("Betadisk","--Action--",buffer_insert);
+
+    switch (opcion) {
+        case 1:
+            if (trd_enabled.v) menu_storage_trd_emulation(0);
+            else menu_storage_trd_file(0);
+        break;
+
+    }
+}
 
 //Funciones para MMC
 
@@ -42893,7 +42959,7 @@ void zxdesktop_lowericon_dandanator_accion(void)
 void zxdesktop_lowericon_dandanator_accion_boton_derecho(void)
 {
     if (dandanator_enabled.v) {
-        int opcion=menu_simple_two_choices("ZX Dandanator","--Action--","Press Button","Close");
+        int opcion=menu_simple_one_choices("ZX Dandanator","--Action--","Press Button");
 
         switch (opcion) {
 
@@ -42931,7 +42997,14 @@ void zxdesktop_lowericon_hilow_accion(void)
 
 void zxdesktop_lowericon_hilow_accion_boton_derecho(void)
 {
-    int opcion=menu_simple_three_choices("Hilow DataDrive","--Action--","Switch tape inserted flag","NMI","Close");
+    int opcion;
+
+    if (hilow_enabled.v) {
+        opcion=menu_simple_two_choices("Hilow DataDrive","--Action--","Switch tape inserted flag","NMI");
+    }
+    else {
+        opcion=menu_simple_one_choices("Hilow DataDrive","--Action--","Switch tape inserted flag");
+    }
 
     switch (opcion) {
 
@@ -43241,7 +43314,8 @@ struct s_zxdesktop_lowericons_info zdesktop_lowericons_array[TOTAL_ZXDESKTOP_MAX
 		bitmap_lowericon_ext_desktop_plus3_flp_active,bitmap_lowericon_ext_desktop_plus3_flp_inactive,&zxdesktop_icon_plus3_inverse},
 
 	//betadisk
-	{ zxdesktop_lowericon_betadisk_is_visible, zxdesktop_lowericon_betadisk_is_active,zxdesktop_lowericon_betadisk_accion,NULL,
+	{ zxdesktop_lowericon_betadisk_is_visible, zxdesktop_lowericon_betadisk_is_active,zxdesktop_lowericon_betadisk_accion,
+        zxdesktop_lowericon_betadisk_accion_boton_derecho,
 		bitmap_lowericon_ext_desktop_betadisk_active,bitmap_lowericon_ext_desktop_betadisk_inactive,&zxdesktop_icon_betadisk_inverse},
 
 	//MMC
