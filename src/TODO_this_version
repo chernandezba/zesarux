@@ -428,10 +428,6 @@ LEC:
 
 -redocumentar efecto de brillo de color del Inves según ultima info con Pedro
 
--en changelog decir que inves detecta bugs de:
-
-Error:    This game will probably crash due to the Inves write-on-interrupt bug (ISR=FCFCH, I=FBH, R=ACH, IM_MODE=2, IFF1=1
-
 
 -en FAQ formatos MDR/RMD, DDH/RAW
 
