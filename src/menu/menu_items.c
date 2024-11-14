@@ -42879,6 +42879,30 @@ void zxdesktop_lowericon_mmc_accion(void)
 	menu_mmc_divmmc(0);
 }
 
+void zxdesktop_lowericon_mmc_accion_boton_derecho(void)
+{
+    char buffer_insert[20];
+    if (mmc_enabled.v) strcpy(buffer_insert,"Eject MMC");
+    else strcpy(buffer_insert,"Open...");
+
+    int opcion=menu_simple_one_choices("MMC","--Action--",buffer_insert);
+
+    switch (opcion) {
+        case 1:
+            if (mmc_enabled.v) menu_storage_mmc_emulation(0);
+            else {
+                //Insertar archivo y habilitar
+                menu_storage_mmc_file(0);
+                menu_storage_mmc_emulation(0);
+                //Y si no estan los puertos divmmc, habilitarlos tambien (se deshabilitan al desactivar mmc)
+                if (divmmc_mmc_ports_enabled.v==0) menu_storage_divmmc_mmc_ports_emulation(0);
+            }
+        break;
+
+    }
+
+}
+
 //Funciones para IDE
 
 int zxdesktop_lowericon_ide_is_visible(void)
@@ -42896,6 +42920,30 @@ int zxdesktop_lowericon_ide_is_active(void)
 void zxdesktop_lowericon_ide_accion(void)
 {
 	menu_ide_divide(0);
+}
+
+void zxdesktop_lowericon_ide_accion_boton_derecho(void)
+{
+    char buffer_insert[20];
+    if (ide_enabled.v) strcpy(buffer_insert,"Eject IDE");
+    else strcpy(buffer_insert,"Open...");
+
+    int opcion=menu_simple_one_choices("IDE","--Action--",buffer_insert);
+
+    switch (opcion) {
+        case 1:
+            if (ide_enabled.v) menu_storage_ide_emulation(0);
+            else {
+                //Insertar archivo y habilitar
+                menu_storage_ide_file(0);
+                menu_storage_ide_emulation(0);
+                //Y si no estan los puertos divide, habilitarlos tambien (se deshabilitan al desactivar ide)
+                if (divide_ide_ports_enabled.v==0) menu_storage_divide_ide_ports_emulation(0);
+            }
+        break;
+
+    }
+
 }
 
 //Funciones para zxpand
@@ -43319,11 +43367,13 @@ struct s_zxdesktop_lowericons_info zdesktop_lowericons_array[TOTAL_ZXDESKTOP_MAX
 		bitmap_lowericon_ext_desktop_betadisk_active,bitmap_lowericon_ext_desktop_betadisk_inactive,&zxdesktop_icon_betadisk_inverse},
 
 	//MMC
-	{ zxdesktop_lowericon_mmc_is_visible, zxdesktop_lowericon_mmc_is_active, zxdesktop_lowericon_mmc_accion,NULL,
+	{ zxdesktop_lowericon_mmc_is_visible, zxdesktop_lowericon_mmc_is_active, zxdesktop_lowericon_mmc_accion,
+        zxdesktop_lowericon_mmc_accion_boton_derecho,
 		bitmap_lowericon_ext_desktop_mmc_active,bitmap_lowericon_ext_desktop_mmc_inactive,&zxdesktop_icon_mmc_inverse},
 
 	//IDE
-	{ zxdesktop_lowericon_ide_is_visible, zxdesktop_lowericon_ide_is_active, zxdesktop_lowericon_ide_accion,NULL,
+	{ zxdesktop_lowericon_ide_is_visible, zxdesktop_lowericon_ide_is_active, zxdesktop_lowericon_ide_accion,
+        zxdesktop_lowericon_ide_accion_boton_derecho,
 		bitmap_lowericon_ext_desktop_ide_active,bitmap_lowericon_ext_desktop_ide_inactive,&zxdesktop_icon_ide_inverse},
 
 	//ZXPand
