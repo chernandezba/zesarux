@@ -689,6 +689,9 @@ TSConf
 Q: When I do a hard reset, the screen goes to black and seems it runs nothing
 A: Do a hard reset and just after that, keep pressing Symbol Shift (CTRL or ALT) and you will return to the TSConf Bios
 
+Q: How do I exit from TSConf Bios? F12 keys seems to do nothing
+A: F12 on a real TSConf means Reset. So to simulate it you just open the ZEsarUX menu Debug->Reset
+
 Q: Some .spg games seem to fail loading
 A: Be sure you haven't enabled divmmc or divide paging, it's incompatible with some of them  
 

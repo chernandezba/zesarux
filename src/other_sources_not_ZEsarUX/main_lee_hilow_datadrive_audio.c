@@ -103,7 +103,7 @@ void hilow_read_audio_read_hilow_ddh_file(char *archivo)
 
 void hilow_read_audio_write_hilow_ddh_file(char *archivo)
 {
-    z80_byte *puntero;
+    //z80_byte *puntero;
 
     int tamanyo=HILOW_DEVICE_SIZE;
 
