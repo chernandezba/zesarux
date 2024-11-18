@@ -1075,6 +1075,12 @@ void reset_silence_detection_counter(void)
     silence_detection_counter=0;
 }
 
+void reset_beeper_silence_detection_counter(void)
+{
+    beeper_silence_detection_counter=0;
+    reset_silence_detection_counter();
+}
+
 
 void envio_audio(void)
 {

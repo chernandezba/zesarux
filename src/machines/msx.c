@@ -355,8 +355,7 @@ void msx_out_port_ppi(z80_byte puerto_l,z80_byte value)
             msx_ppi_register_c=value;
 
             //Con este registro se puede generar sonido por tanto reseteamos contadores de silencio
-            beeper_silence_detection_counter=0;
-            silence_detection_counter=0;
+            reset_beeper_silence_detection_counter();
 
             //Curiosidad: Chase HQ utiliza el sonido del keyclick
 			set_value_beeper_on_array(da_amplitud_speaker_msx() );
@@ -376,8 +375,7 @@ void msx_out_port_ppi(z80_byte puerto_l,z80_byte value)
                 //bit 0: set o reset
 
                 //Con este registro se puede generar sonido por tanto reseteamos contadores de silencio
-                beeper_silence_detection_counter=0;
-                silence_detection_counter=0;
+                reset_beeper_silence_detection_counter();
 
 
                 z80_byte bit_number=(value>>1)&7;

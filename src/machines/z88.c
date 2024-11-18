@@ -1238,8 +1238,7 @@ $74         SBR, screen base reg.   -
 			//Para el detector de silencio. Ver si bit 7 o 6 cambian
 			if (  (blink_com&(128+64)) != (value&(128+64))  ) {
 				//Cambio. posible sonido
-				silence_detection_counter=0;
-				beeper_silence_detection_counter=0;
+				reset_beeper_silence_detection_counter();
 			}
 
                         blink_com=value;

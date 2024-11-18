@@ -2551,8 +2551,7 @@ void menu_hilow_convert_audio_callback(int valor,int posicion)
 
     do {
         //Y para que no se vaya a silencio, decir que hay sonido y resetear contador de silencio
-        silence_detection_counter=0;
-        beeper_silence_detection_counter=0;
+        reset_beeper_silence_detection_counter();
 
         if (menu_hilow_convert_paused) usleep(20000);
 

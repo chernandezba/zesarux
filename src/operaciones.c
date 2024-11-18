@@ -3739,8 +3739,7 @@ void out_port_sam_no_time(z80_int puerto,z80_byte value)
 		modificado_border.v=1;
 
 		//Mismo comportamiento que Spectrum
-		silence_detection_counter=0;
-		beeper_silence_detection_counter=0;
+		reset_beeper_silence_detection_counter();
                 set_value_beeper( (!!(value & 0x10) << 1) + ( (!(value & 0x8))  ) );
 		set_value_beeper_on_array(value_beeper);
 		//printf ("beeper: %d\n",value_beeper);
@@ -5361,8 +5360,7 @@ z80_byte lee_puerto_zx80_no_time(z80_byte puerto_h,z80_byte puerto_l)
 
 			if (zx8081_vsync_sound.v==1) {
 				//solo resetea contador de silencio cuando esta activo el vsync sound - beeper
-				silence_detection_counter=0;
-				beeper_silence_detection_counter=0;
+				reset_beeper_silence_detection_counter();
 			}
 
 
@@ -7635,8 +7633,7 @@ void out_port_ace_no_time(z80_int puerto,z80_byte value)
 
         set_value_beeper_on_array(da_amplitud_speaker_ace() );
 
-        silence_detection_counter=0;
-        beeper_silence_detection_counter=0;
+        reset_beeper_silence_detection_counter();
 
 
     }
@@ -7748,8 +7745,7 @@ void out_port_zx80_no_time(z80_int puerto,z80_byte value)
 
 	if (zx8081_vsync_sound.v==1) {
 		//solo resetea contador de silencio cuando esta activo el vsync sound - beeper
-		silence_detection_counter=0;
-		beeper_silence_detection_counter=0;
+		reset_beeper_silence_detection_counter();
 	}
 
 

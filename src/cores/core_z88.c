@@ -399,8 +399,7 @@ void cpu_core_loop_z88(void)
         		if (tipo_sonido == 128) {
             	audio_valor_enviar_sonido = valor_sonido_3200hz;
             	//Sonido continuo 3200 hz. resetear contador silencio
-          		silence_detection_counter=0;
-							beeper_silence_detection_counter=0;
+          		reset_beeper_silence_detection_counter();
 	        	}
 
 						//Sonido de TxD. no implementado
