@@ -1085,7 +1085,7 @@ void reset_beeper_silence_detection_counter(void)
 void envio_audio(void)
 {
 
-	//beeper_silence_detection_counter=0;
+
 
 	//temporal. ver contenido buffer. deberia ser todo igual
 	//if (silence_detection_counter==SILENCE_DETECTION_MAX) {

@@ -8693,8 +8693,7 @@ void out_port_spectrum_border(z80_int puerto,z80_byte value)
 	z80_byte anterior_out_254=out_254;
 
     modificado_border.v=1;
-    silence_detection_counter=0;
-    beeper_silence_detection_counter=0;
+    reset_beeper_silence_detection_counter();
 
     //ay_player_silence_detection_counter=0;
 

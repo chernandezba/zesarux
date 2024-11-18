@@ -2061,8 +2061,7 @@ void realtape_get_byte_rwa(void)
     }
 
 
-    //silence_detection_counter=0;
-    //beeper_silence_detection_counter=0;
+    //reset_beeper_silence_detection_counter();
 	unsigned char valor_leido_audio;
 
 	fread(&valor_leido_audio, 1,1 , ptr_realtape);
