@@ -220,7 +220,7 @@ void gs_mix_dac_channels(void)
 	v /=2;
 	audio_valor_enviar_sonido_derecho=v;
 
-    silence_detection_counter=0;
+    reset_silence_detection_counter();
 
 }
 

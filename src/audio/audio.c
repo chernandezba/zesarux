@@ -1100,7 +1100,7 @@ void envio_audio(void)
 
 
 	//Si aofile, silencio=0
-	if (aofile_inserted.v) silence_detection_counter=0;
+	if (aofile_inserted.v) reset_silence_detection_counter();
 
     //Si esta el menu abierto pero la emulacion en menu esta pausada, volver
     //Nota: en el caso que no haya multitask, a esta funcion ya no se llama nunca
@@ -1120,9 +1120,9 @@ void envio_audio(void)
 	//Incrementar si conviene y avisar con mensaje por debug cuando se llega al maximo
 	if (silence_detection_counter!=SILENCE_DETECTION_MAX) {
 		silence_detection_counter++;
-		if (audio_using_sdl2) silence_detection_counter=0; //workaround para que no salte detector con sdl2
+		if (audio_using_sdl2) reset_silence_detection_counter(); //workaround para que no salte detector con sdl2
 
-		if (silence_detector_setting.v==0) silence_detection_counter=0;
+		if (silence_detector_setting.v==0) reset_silence_detection_counter();
 
 		if (silence_detection_counter==SILENCE_DETECTION_MAX) debug_printf(VERBOSE_DEBUG,"Silence detected");
 	}
@@ -3467,7 +3467,7 @@ void audio_send_mono_sample(char valor_sonido)
 void audiodac_send_sample_value(z80_byte value)
 {
 	audiodac_last_value_data=value;
-	silence_detection_counter=0;
+	reset_silence_detection_counter();
 }
 
 

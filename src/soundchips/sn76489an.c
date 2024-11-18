@@ -414,7 +414,7 @@ char sn_da_output_canal(short ultimo_valor_tono,z80_byte volumen)
 
 
 	valor=ultimo_valor_tono;
-	silence_detection_counter=0;
+	reset_silence_detection_counter();
 
 	volumen=volumen & 15; //Evitar valores de volumen fuera de rango que vengan de los registros de volumen
 
@@ -444,7 +444,7 @@ char sn_da_output_canal_ruido(void)
 
 
 	valor=sn_ultimo_valor_ruido;
-	silence_detection_counter=0;
+	reset_silence_detection_counter();
 
 
 
@@ -684,7 +684,7 @@ void sn_set_value_register(z80_byte value)
 {
 
 	//Resetear detector de silencio
-	silence_detection_counter=0;
+	reset_silence_detection_counter();
 
 
 

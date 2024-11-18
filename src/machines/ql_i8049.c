@@ -1265,7 +1265,7 @@ char ql_audio_da_output(void)
 
     if (!i8049_chip_present) return 0;
 
-    silence_detection_counter=0;
+    reset_silence_detection_counter();
 
     const int amplitud_onda=50;
 
