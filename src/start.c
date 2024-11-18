@@ -1188,7 +1188,7 @@ printf("\n"
         "--enable-xanniversary-logo                     Enable X Anniversary logo (enabled by default only on X version)\n"
         "--disable-xanniversary-logo                    Disable X Anniversary logo. It's the default behaviour, only kept here for backwards compatibility\n"
         "--disablemenufileutils                         Disable File Utilities menu\n"
-        "--disable-search-menu                          Disable search menu feature\n"
+        "--disable-search-menu                          Disable search menu feature (enabled by default)\n"
         "--enable-search-menu                           Enable search menu feature\n"
 		"--load-additional-config                       Loads an additional .zesaruxdevrc config file (if exists) after loading .zesaruxrc and parsing command line settings\n"
 

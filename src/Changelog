@@ -76,7 +76,7 @@ Fixed Amstrad CPC Scroll
 Fixed memory map and behaviour on Jupiter Ace: now it's perfect and better than any other emulator
 Fixed loading .nex snapshots and Layer 2 not being initialized (fixes errors on Head Over Heels for Next, for example)
 Fixed loading .nex snapshots and MMU not managed correctly
-Fixed Search menu feature
+Fixed Search menu feature. Now it's enabled by default
 Fixed bug saving .ZSF Z88 snapshot when RAM or Memory Card block is not compressed
 Fixed showing footer message F5/Button menu
 Fixed bug reopening menu when executing run command on debug cpu and --allow-background-windows setting was disabled
