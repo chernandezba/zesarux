@@ -35,6 +35,7 @@ Improve compilation: settings --enable-memptr --enable-visualmem --enable-cpusta
 Improved Inves Spectrum+ emulation: alert when a game may crash due to the Inves write-on-interrupt bug
 Improved Jupiter Ace emulation: allow to hear MIC output
 Improved CPC emulation: allow to hear Cassete Out sound
+Improved MSX emulation: allow to hear Cassete Out sound
 Improve Spectrum Z80 CPU emulation core: add wait state (needed to emulate microdrive)
 
 Improved Hilow Datadrive emulation:

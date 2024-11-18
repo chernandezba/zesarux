@@ -403,7 +403,7 @@ LEC:
 -mostrar paginas de memoria lec en debug cpu
 
 
--revisar sonido en Save en CPC(ok), MSX...
+
 
 
 -----------------------
@@ -440,3 +440,6 @@ LEC:
 *no para items tabulados
 *no para menus declarados como dialogos (menu_dibuja_menu_dialogo_no_title_lang)
 *algo mas?
+
+
+-revisar sonido en Save en CPC(ok), MSX...

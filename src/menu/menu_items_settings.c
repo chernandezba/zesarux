@@ -3809,6 +3809,11 @@ void menu_audio_cpc_mic(MENU_ITEM_PARAMETERS)
     cpc_sound_cassette_out.v ^=1;
 }
 
+void menu_audio_msx_mic(MENU_ITEM_PARAMETERS)
+{
+    msx_sound_cassette_out.v ^=1;
+}
+
 void menu_settings_audio(MENU_ITEM_PARAMETERS)
 {
         menu_item *array_menu_settings_audio;
@@ -3991,6 +3996,13 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
         if (MACHINE_IS_CPC) {
             menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_audio_cpc_mic,NULL,
                 "[%c] Enable Cassette Out sound",(cpc_sound_cassette_out.v ? 'X' : ' '));
+                menu_add_item_menu_tooltip(array_menu_settings_audio,"Allow to hear Cassette Out sound");
+                menu_add_item_menu_ayuda(array_menu_settings_audio,"Allow to hear Cassette Out sound");
+        }
+
+        if (MACHINE_IS_MSX) {
+            menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_audio_msx_mic,NULL,
+                "[%c] Enable Cassette Out sound",(msx_sound_cassette_out.v ? 'X' : ' '));
                 menu_add_item_menu_tooltip(array_menu_settings_audio,"Allow to hear Cassette Out sound");
                 menu_add_item_menu_ayuda(array_menu_settings_audio,"Allow to hear Cassette Out sound");
         }

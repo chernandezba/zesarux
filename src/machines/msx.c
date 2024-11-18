@@ -48,6 +48,10 @@ z80_byte msx_ppi_register_a;
 
 z80_byte msx_ppi_register_b;
 z80_byte msx_ppi_register_c;
+z80_byte msx_ppi_mode_port;
+
+//si se incluye Cassette out en la salida
+z80_bit msx_sound_cassette_out={0};
 
 
 //Aunque solo son 10 filas, metemos array de 16 pues es el maximo valor de indice seleccionable por el PPI
@@ -355,6 +359,35 @@ void msx_out_port_ppi(z80_byte puerto_l,z80_byte value)
 
 			set_value_beeper_on_array(da_amplitud_speaker_msx() );
 
+
+        break;
+
+        case 0xAB:
+            //Si bit 7=1, cambia el modo
+            if (value&128) {
+                msx_ppi_mode_port=value;
+            }
+            else {
+                //Si no, se utiliza para resetear/setear bits del registro C
+                //Formato:
+                //bits 3-1: bit del registro C
+                //bit 0: set o reset
+
+
+                z80_byte bit_number=(value>>1)&7;
+                z80_byte valor_or=1;
+
+                printf("Cambiar bit %d valor %d\n",bit_number,value&1);
+                printf("Antes: %02XH\n",msx_ppi_register_c);
+
+                if (bit_number) {
+                    valor_or=valor_or << bit_number;
+                }
+                z80_byte valor_mascara=valor_or^255;
+                msx_ppi_register_c=msx_ppi_register_c & valor_mascara;
+                if (value&1) msx_ppi_register_c=msx_ppi_register_c | valor_or;
+                printf("Resultado: %02XH (mascara %02XH valor_or %02XH)\n",msx_ppi_register_c,valor_mascara,valor_or);
+            }
 
         break;
     }

@@ -68,6 +68,9 @@ extern z80_byte msx_cabecera_firma[];
 extern int msx_cas_load_detect(void);
 extern void msx_cas_load(void);
 
+extern z80_byte msx_ppi_mode_port;
+extern z80_bit msx_sound_cassette_out;
+
 extern z80_bit msx_cartridge_inserted;
 extern z80_byte msx_read_psg(void);
 
