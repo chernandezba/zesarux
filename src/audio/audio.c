@@ -1110,7 +1110,7 @@ void envio_audio(void)
 		if (beeper_silence_detection_counter==SILENCE_DETECTION_MAX) debug_printf(VERBOSE_DEBUG,"Beeper Silence detected");
 	}
 
-
+    //printf("silence_detection_counter: %d\n",silence_detection_counter);
 	//Incrementar si conviene y avisar con mensaje por debug cuando se llega al maximo
 	if (silence_detection_counter!=SILENCE_DETECTION_MAX) {
 		silence_detection_counter++;
@@ -1193,7 +1193,10 @@ void envio_audio(void)
 
 void set_value_beeper_on_array(char value)
 {
-        if (beeper_silence_detection_counter==SILENCE_DETECTION_MAX) return;
+        if (beeper_silence_detection_counter==SILENCE_DETECTION_MAX) {
+            //printf("no escribir en buffer beeper\n");
+            return;
+        }
 
                 if (beeper_real_enabled) {
                         int i;

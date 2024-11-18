@@ -6139,6 +6139,9 @@ Bit 0 - Cassette Motion (0 = Moving, 1 = Stopped)
 
   		sprintf (buf_linea,"PPI Port C: %02X\n",msx_ppi_register_c);
   		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+  		sprintf (buf_linea,"PPI Mode Port: %02X\n",msx_ppi_mode_port);
+  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
   	}
 
   	if (MACHINE_IS_SVI) {

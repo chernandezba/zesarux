@@ -354,9 +354,11 @@ void msx_out_port_ppi(z80_byte puerto_l,z80_byte value)
         case 0xAA:
             msx_ppi_register_c=value;
 
-            //Curiosidad: Chase HQ utiliza esto
-            //printf ("Posible beep: %d\n",value&128);
+            //Con este registro se puede generar sonido por tanto reseteamos contadores de silencio
+            beeper_silence_detection_counter=0;
+            silence_detection_counter=0;
 
+            //Curiosidad: Chase HQ utiliza el sonido del keyclick
 			set_value_beeper_on_array(da_amplitud_speaker_msx() );
 
 
@@ -373,20 +375,24 @@ void msx_out_port_ppi(z80_byte puerto_l,z80_byte value)
                 //bits 3-1: bit del registro C
                 //bit 0: set o reset
 
+                //Con este registro se puede generar sonido por tanto reseteamos contadores de silencio
+                beeper_silence_detection_counter=0;
+                silence_detection_counter=0;
+
 
                 z80_byte bit_number=(value>>1)&7;
-                z80_byte valor_or=1;
+                z80_byte bit_value=1;
 
-                printf("Cambiar bit %d valor %d\n",bit_number,value&1);
-                printf("Antes: %02XH\n",msx_ppi_register_c);
+                //printf("Cambiar bit %d valor %d\n",bit_number,value&1);
+                //printf("Antes: %02XH\n",msx_ppi_register_c);
 
                 if (bit_number) {
-                    valor_or=valor_or << bit_number;
+                    bit_value=bit_value << bit_number;
                 }
-                z80_byte valor_mascara=valor_or^255;
+                z80_byte valor_mascara=bit_value^255;
                 msx_ppi_register_c=msx_ppi_register_c & valor_mascara;
-                if (value&1) msx_ppi_register_c=msx_ppi_register_c | valor_or;
-                printf("Resultado: %02XH (mascara %02XH valor_or %02XH)\n",msx_ppi_register_c,valor_mascara,valor_or);
+                if (value&1) msx_ppi_register_c=msx_ppi_register_c | bit_value;
+                //printf("Resultado: %02XH (mascara %02XH valor_or %02XH)\n",msx_ppi_register_c,valor_mascara,bit_value);
             }
 
         break;
