@@ -1152,6 +1152,10 @@ Bit 7	Bit 6	Function
 
                 //no estoy seguro si realmente debe seleccionar el registro del chip AY, o esto solo se hace con funcion 0
 				out_port_ay(65533,cpc_ppi_ports[0]);
+
+                //bit 5    Cassette Write data     Cassette Out (sometimes also used as Printer Bit7, see 8bit Printer Ports)
+                //Con este registro se puede generar sonido por tanto reseteamos contadores de silencio
+                reset_silence_detection_counter();
                 cpc_ppi_ports[2]=value;
 			}
 
@@ -1305,6 +1309,8 @@ Otherwise, if Bit 7 is "0" then the register is used to set or clear a single bi
 
 
 				//printf ("Valor despues Reg C: %d\n",cpc_ppi_ports[2]);
+                //Con este registro se puede generar sonido por tanto reseteamos contadores de silencio
+                reset_silence_detection_counter();
 
 				if (numero_bit==4) {
 					//motor control
