@@ -61,10 +61,10 @@ Mejorado ZX Vision:
 - Avisar en la marca de redimensionado cuando una ventana se tiene que aumentar de tamaño (porque hay texto mas allá del tamaño actual)
 - Permitir a una ventana desactivar acciones de scroll
 - El Process switcher se ubica en la parte izquierda-abajo de la pantalla por defecto
-- Permitir boton derecho en iconos de dispositivos
 
 Mejorado ZX Desktop:
 - Permitir activar/desactivar botones superiores e inferiores de manera independiente
+- Permitir boton derecho en los iconos de dispositivos ubicados en la parte inferior del ZX Desktop
 
 * Correcciones:
 

@@ -61,10 +61,10 @@ Improved ZX Vision:
 - Warn on the resize mark when a window has to be enlarged (because there is text beyond current size)
 - Allow a window to disable scroll actions
 - Process switcher is located at bottom-left part of the display by default
-- Allow right click on device icons
 
 Improved ZX Desktop:
 - Allow to enable/disable upper and lower buttons independently
+- Allow right click on the device icons located on the lower part of the ZX Desktop
 
 * Fixes:
 
