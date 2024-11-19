@@ -20992,8 +20992,7 @@ Hay que tener en cuenta que puede agregar cualquier nombre, exista o no dicha ve
 Esto permite que si en el futuro se borra alguna ventana por código, pero el usuario la estaba guardando por configuración,
 con --windowgeometry, no dará error si es de una ventana que ya no existe
 */
-int util_add_window_geometry(char *nombre,int x,int y,int ancho,int alto,int is_minimized,int is_maximized,int width_before_max_min_imize,int height_before_max_min_imize,
-    int x_before_max_min_imize,int y_before_max_min_imize)
+int util_add_window_geometry(char *nombre,int x,int y,int ancho,int alto,int is_minimized,int is_maximized,int width_before_max_min_imize,int height_before_max_min_imize)
 {
 
         int destino=total_config_window_geometry;
@@ -21029,8 +21028,6 @@ int util_add_window_geometry(char *nombre,int x,int y,int ancho,int alto,int is_
         saved_config_window_geometry_array[destino].is_maximized=is_maximized;
         saved_config_window_geometry_array[destino].width_before_max_min_imize=width_before_max_min_imize;
         saved_config_window_geometry_array[destino].height_before_max_min_imize=height_before_max_min_imize;
-        saved_config_window_geometry_array[destino].x_before_max_min_imize=x_before_max_min_imize;
-        saved_config_window_geometry_array[destino].y_before_max_min_imize=y_before_max_min_imize;
 
 
         if (!sustituir) total_config_window_geometry++;
@@ -21053,8 +21050,7 @@ void util_add_window_geometry_compact(zxvision_window *ventana)
         }
 
         util_add_window_geometry(nombre,ventana->x,ventana->y,ventana->visible_width,ventana->visible_height,
-                ventana->is_minimized,ventana->is_maximized, ventana->width_before_max_min_imize,ventana->height_before_max_min_imize,
-                ventana->x_before_max_min_imize,ventana->y_before_max_min_imize);
+                ventana->is_minimized,ventana->is_maximized, ventana->width_before_max_min_imize,ventana->height_before_max_min_imize);
 }
 
 void util_clear_all_windows_geometry(void)

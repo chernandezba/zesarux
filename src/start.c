@@ -6341,7 +6341,7 @@ int parse_cmdline_options(int desde_commandline) {
 					exit(1);
 				}
 
-				util_add_window_geometry(nombre,x,y,ancho,alto,0,0,ancho,alto,x,y);  //mantenido por compatibilidad minimizado=maximizado=0, ancho alto antes de minimizado
+				util_add_window_geometry(nombre,x,y,ancho,alto,0,0,ancho,alto);  //mantenido por compatibilidad minimizado=maximizado=0, ancho alto antes de minimizado
 
 			}
 
@@ -6373,7 +6373,7 @@ int parse_cmdline_options(int desde_commandline) {
 				siguiente_parametro_argumento();
 				is_minimized=parse_string_to_number(argv[puntero_parametro]);
 
-				util_add_window_geometry(nombre,x,y,ancho,alto,is_minimized,0,ancho,alto,x,y); //mantenido por compatibilidad ancho y alto antes de minimizado
+				util_add_window_geometry(nombre,x,y,ancho,alto,is_minimized,0,ancho,alto); //mantenido por compatibilidad ancho y alto antes de minimizado
 
 			}
 
@@ -6410,7 +6410,7 @@ int parse_cmdline_options(int desde_commandline) {
 				siguiente_parametro_argumento();
 				is_minimized=parse_string_to_number(argv[puntero_parametro]);
 
-				util_add_window_geometry(nombre,x,y,ancho,alto,is_minimized,0,ancho_antes_minimized,alto_antes_minimized,x,y); //mantenido por compatibilidad
+				util_add_window_geometry(nombre,x,y,ancho,alto,is_minimized,0,ancho_antes_minimized,alto_antes_minimized); //mantenido por compatibilidad
 
 			}
 
@@ -6451,7 +6451,7 @@ int parse_cmdline_options(int desde_commandline) {
                 siguiente_parametro_argumento();
                 is_maximized=parse_string_to_number(argv[puntero_parametro]);
 
-				util_add_window_geometry(nombre,x,y,ancho,alto,is_minimized,is_maximized,ancho_antes_minimized,alto_antes_minimized,x,y);
+				util_add_window_geometry(nombre,x,y,ancho,alto,is_minimized,is_maximized,ancho_antes_minimized,alto_antes_minimized);
 
 			}
 
