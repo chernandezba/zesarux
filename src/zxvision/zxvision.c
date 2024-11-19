@@ -15399,6 +15399,10 @@ void zxvision_handle_click_minimize(zxvision_window *w)
 			//printf ("Minimize window\n");
             //printf("Minimizar. before min: %d X %d\n",w->width_before_max_min_imize,w->height_before_max_min_imize);
 			w->is_minimized=1;
+
+            //Almacenar ultima posicion en caso que se haya movido
+            w->x_before_max_min_imize=w->x;
+            w->y_before_max_min_imize=w->y;
 		}
 
 		zxvision_draw_window(w);
@@ -15511,6 +15515,10 @@ void zxvision_handle_maximize(zxvision_window *w)
 
 
 			//printf ("visible width %d\n",max_width);
+            //Almacenar ultima posicion en caso que se haya movido
+            w->x_before_max_min_imize=w->x;
+            w->y_before_max_min_imize=w->y;
+
             zxvision_set_x_position(w,xinicial);
             zxvision_set_y_position(w,yinicial);
 			zxvision_set_visible_width(w,max_width);

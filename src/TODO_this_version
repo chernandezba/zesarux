@@ -446,7 +446,3 @@ LEC:
 -acciones boton derecho sobre botones superiores e inferiores se activan aunque haya ventanas por encima
 
 
--Al conmutar de ventana, no guarda del todo la posicion, pues no restaura bien al desmaximizar: ejemplo
-*Estoy en ascii table. Posicion 1. La muevo a otra posicion, Posicion 2
-*Conmuto a otra ventana (pulsando con raton en otra ventana). Vuelvo a ascii table. Maximizo, y desmaximizo. En vez de volver a Posicion 2, se va a Posicion 1.
-Para eso hay que agregar los dos parametros de posicion antes en util_find_window_geometry
