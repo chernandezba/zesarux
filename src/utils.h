@@ -610,7 +610,7 @@ typedef struct s_subzone_info subzone_info;
 struct s_saved_config_window_geometry
 {
 	char nombre[MAX_NAME_WINDOW_GEOMETRY];
-	int x,y,ancho,alto,is_minimized,is_maximized,width_before_max_min_imize,height_before_max_min_imize;
+	int x,y,ancho,alto,is_minimized,is_maximized,width_before_max_min_imize,height_before_max_min_imize,x_before_max_min_imize,y_before_max_min_imize;
 };
 
 typedef struct s_saved_config_window_geometry saved_config_window_geometry;
@@ -622,7 +622,7 @@ extern int total_config_window_geometry;
 //extern int legacy_util_find_window_geometry(char *nombre,int *x,int *y,int *ancho,int *alto,int *is_minimized,int *width_before_max_min_imize,int *height_before_max_min_imize);
 extern int util_find_window_geometry(char *nombre,int *x,int *y,int *ancho,int *alto,int *is_minimized,int *is_maximized,int *width_before_max_min_imize,int *height_before_max_min_imize);
 
-extern int util_add_window_geometry(char *nombre,int x,int y,int ancho,int alto,int is_minimized,int is_maximized,int width_before_max_min_imize,int height_before_max_min_imize);
+extern int util_add_window_geometry(char *nombre,int x,int y,int ancho,int alto,int is_minimized,int is_maximized,int width_before_max_min_imize,int height_before_max_min_imize,int x_before_max_min_imize,int y_before_max_min_imize);
 
 extern void util_add_window_geometry_compact(zxvision_window *ventana);
 

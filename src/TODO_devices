@@ -23,6 +23,8 @@ Quiza un modo mas facil (y menos real) en que cuando pida la cpu leer un byte, s
 lectura sectores de floppy debe usar los ids y no offset directo (llamando a traps_plus3dos_getoff_track_sector igual que traps)
 Y los ST0, ST1, etc de resultado, deben retornar los que hay en DSK? respuesta del comando es el siguiente sector, etc? o el actual?
 
+-sonido simulado de datos de floppy: de manera similar al microdrive, generamos sonido segun los bytes leidos. Pero para eso se necesita
+que lea/escriba a velocidad real (o sea mas lento que como hace ahora). Ahora las transferencias de sectores se hacen de golpe cada sector
 
 -mejorar dsk_extended_get_start_track. se tiene que parecer mas al basico
 

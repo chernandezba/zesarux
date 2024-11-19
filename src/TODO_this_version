@@ -425,7 +425,7 @@ LEC:
 
 -en FAQ formatos MDR/RMD, DDH/RAW
 
--mas acciones boton derecho en dispositivos: cartuchos msx, master sytem....
+-mas acciones boton derecho en dispositivos: +3 dsk, cartuchos msx, master sytem....
 
 
 -Documentar en development como va el indexado
@@ -447,5 +447,6 @@ LEC:
 
 
 -Al conmutar de ventana, no guarda del todo la posicion, pues no restaura bien al desmaximizar: ejemplo
-*Esto en ascii table. Posicion 1. La muevo a otra posicion, Posicion 2
+*Estoy en ascii table. Posicion 1. La muevo a otra posicion, Posicion 2
 *Conmuto a otra ventana (pulsando con raton en otra ventana). Vuelvo a ascii table. Maximizo, y desmaximizo. En vez de volver a Posicion 2, se va a Posicion 1.
+Para eso hay que agregar los dos parametros de posicion antes en util_find_window_geometry
