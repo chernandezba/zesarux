@@ -264,6 +264,21 @@ void core_svi_fin_scanline(void)
 
 				}
 
+                if (svi_sound_cassette_out.v) {
+
+                    int sonido_cassette_out=(svi_ppi_register_c & 0x20 ? 100 : -100);
+                    //printf("sonido %d\n",sonido_cassette_out);
+
+                    //de momento valor arbitrario
+
+                    audio_valor_enviar_sonido_izquierdo /=2;
+                    audio_valor_enviar_sonido_izquierdo += sonido_cassette_out/2;
+
+                    audio_valor_enviar_sonido_derecho /=2;
+                    audio_valor_enviar_sonido_derecho += sonido_cassette_out/2;
+
+                    //printf("sonido_mic: %d\n",sonido_mic);
+                }
 
 
                 int leer_cinta_real=0;

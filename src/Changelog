@@ -36,6 +36,7 @@ Improved Inves Spectrum+ emulation: alert when a game may crash due to the Inves
 Improved Jupiter Ace emulation: allow to hear MIC output
 Improved CPC emulation: allow to hear Cassete Out sound
 Improved MSX emulation: allow to hear Cassete Out sound
+Improved Spectravideo emulation: allow to hear Cassete Out sound
 Improve Spectrum Z80 CPU emulation core: add wait state (needed to emulate microdrive)
 
 Improved Hilow Datadrive emulation:

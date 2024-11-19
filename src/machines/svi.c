@@ -53,6 +53,10 @@ z80_byte svi_ppi_register_a;
 
 z80_byte svi_ppi_register_b;
 z80_byte svi_ppi_register_c;
+z80_byte svi_ppi_mode_port;
+
+//si se incluye Cassette out en la salida
+z80_bit svi_sound_cassette_out={0};
 
 
 //Aunque solo son 10 filas, metemos array de 16 pues es el maximo valor de indice seleccionable por el PPI
@@ -375,6 +379,38 @@ void svi_out_port_ppi(z80_byte puerto_l,z80_byte value)
     //int slot,segment;
 
     switch (puerto_l) {
+        case 0x97:
+            //Si bit 7=1, cambia el modo
+            if (value&128) {
+                svi_ppi_mode_port=value;
+            }
+            else {
+                //Si no, se utiliza para resetear/setear bits del registro C
+                //Formato:
+                //bits 3-1: bit del registro C
+                //bit 0: set o reset
+
+                //Con este registro se puede generar sonido por tanto reseteamos contadores de silencio
+                reset_beeper_silence_detection_counter();
+
+
+                z80_byte bit_number=(value>>1)&7;
+                z80_byte bit_value=1;
+
+                //printf("Cambiar bit %d valor %d\n",bit_number,value&1);
+                //printf("Antes: %02XH\n",svi_ppi_register_c);
+
+                if (bit_number) {
+                    bit_value=bit_value << bit_number;
+                }
+                z80_byte valor_mascara=bit_value^255;
+                svi_ppi_register_c=svi_ppi_register_c & valor_mascara;
+                if (value&1) svi_ppi_register_c=svi_ppi_register_c | bit_value;
+                //printf("Resultado: %02XH (mascara %02XH valor_or %02XH)\n",svi_ppi_register_c,valor_mascara,bit_value);
+            }
+
+        break;
+
         case 0x98:
             svi_ppi_register_a=value;
             //printf ("Out port ppi. Port %02XH value %02XH\n",puerto_l,value);
@@ -399,8 +435,9 @@ void svi_out_port_ppi(z80_byte puerto_l,z80_byte value)
         case 0x96:
             svi_ppi_register_c=value;
 
+            //Con este registro se puede generar sonido por tanto reseteamos contadores de silencio
+            reset_beeper_silence_detection_counter();
 
-                //printf ("Posible beep: %d\n",value&128);
 
 			set_value_beeper_on_array(da_amplitud_speaker_svi() );
 
@@ -416,6 +453,8 @@ z80_byte svi_in_port_ppi(z80_byte puerto_l)
     z80_byte valor;
 
     switch (puerto_l) {
+
+
 
         case 0x98:
             valor=255;
@@ -434,7 +473,9 @@ z80_byte svi_in_port_ppi(z80_byte puerto_l)
             //Bit 6 y 7 es:
             //6: Cassete ready (0=Ready, 1=not ready)
             //7: Cassette read data
-            //TODO Bit 6
+
+            //marcar bit cassete ready. Necesario tanto en la carga como grabacion
+            valor &=(255-64);
 
             int leer_cinta_real=0;
 
@@ -449,7 +490,7 @@ z80_byte svi_in_port_ppi(z80_byte puerto_l)
             if (leer_cinta_real) {
 
                 //marcar bit cassete ready
-                valor &=(255-64);
+                //valor &=(255-64);
 
 				//printf ("%d ",realtape_last_value);
 					if (realtape_get_current_bit_playing() ) { //-50
@@ -491,6 +532,8 @@ z80_byte svi_in_port_ppi(z80_byte puerto_l)
 
         break;
 
+
+        //TODO: no estoy seguro de este puerto
         case 0x96:
         //printf ("read tape??\n");
 
@@ -513,6 +556,8 @@ z80_byte svi_in_port_ppi(z80_byte puerto_l)
             //Devolver lo mismo que se ha escrito? TODO revisar esto
             return svi_ppi_register_c;
         break;
+
+
 
     }
 

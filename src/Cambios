@@ -36,6 +36,7 @@ Mejorada emulación del Inves Spectrum+: alertar cuando un juego puede resetears
 Mejorada emulación de Jupiter Ace: permitir escuchar salida MIC
 Mejorada emulación de CPC: permitir escuchar sonido de Salida Casette
 Mejorada emulación de MSX: permitir escuchar sonido de Salida Casette
+Mejorada emulación de Spectravideo: permitir escuchar sonido de Salida Casette
 Mejorado el core de emulación de Spectrum de la CPU Z80: agregado estado wait (necesario para emular el microdrive)
 
 Mejorada emulación de Hilow Datadrive:

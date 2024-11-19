@@ -30,6 +30,8 @@ extern z80_byte svi_ppi_register_a;
 extern z80_byte svi_ppi_register_b;
 extern z80_byte svi_ppi_register_c;
 
+extern z80_bit svi_sound_cassette_out;
+
 extern z80_byte svi_keyboard_table[];
 extern z80_byte svi_read_vram_byte(z80_int address);
 

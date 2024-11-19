@@ -454,3 +454,4 @@ Sucede cuando no hay ninguna ventana abierta en background
 ->creo que la clave esta en la llamada a zxvision_if_mouse_in_zlogo_or_buttons_desktop(). Ahi solo mira por boton izquierdo
 Revisar tambien porque no se ve el boton pulsado (hacia adentro) cuando se pulsa con boton derecho
 
+-En MSX y SVI no se usa msx_ppi_mode_port/svi_ppi_mode_port en lectura. Quien lo lee y para que?
