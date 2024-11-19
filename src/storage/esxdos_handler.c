@@ -2261,7 +2261,7 @@ eg for NextZXOS v1.94, DE=$0194 HL=language code:
 		break;*/
 
         case ESXDOS_RST8_DISK_FILEMAP:
-            //De momento esto solo lo he encontrado en el Pogie de Next
+            //De momento esto solo lo he encontrado en el Pogie de Next y en Atic Atac de Next
             if (MACHINE_IS_TBBLUE) {
                 /*
 ; *************************************************************************** ; * DISK_FILEMAP ($85) * ; ***************************************************************************
@@ -2280,13 +2280,25 @@ eg for NextZXOS v1.94, DE=$0194 HL=language code:
 ; Fc=1
 ;       A=error
                 */
-                debug_printf (VERBOSE_DEBUG,"ESXDOS handler: Unsupported ESXDOS_RST8_DISK_FILEMAP. File handle: %02XH DE=%04XH PC=%04XH",reg_a,DE,reg_pc);
+                debug_printf (VERBOSE_DEBUG,"ESXDOS handler: Unsupported ESXDOS_RST8_DISK_FILEMAP. File handle: %02XH DE=%04XH HL=%04XH PC=%04XH",
+                    reg_a,DE,HL,reg_pc);
                 //de momento dar error, no tengo claro como simular esto mediante esxdos handler, o directamente no tiene sentido
                 //a no ser que uses una MMC real
                 //DE=0;
                 //reg_a=0;
 	            //esxdos_handler_no_error_uncarry();
                 esxdos_handler_error_carry(ESXDOS_ERROR_EBADF);
+
+                //Temporal atic atac
+                //Info sacada de la documentacion de esxdos de next en la sd: /docs/NextZXOS/NextZXOS_and_esxDOS_APIs.pdf
+                /*
+                reg_a=0x02;
+                //Intentar decir que no esta fragmentado
+                DE=0x0001;
+                *registro_parametros_hl_ix=*registro_parametros_hl_ix+(6*DE);
+                esxdos_handler_no_error_uncarry();
+                */
+                //Fin temporal atic atac
 
                 esxdos_handler_new_return_call();
             }
