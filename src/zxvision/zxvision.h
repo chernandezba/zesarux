@@ -262,6 +262,9 @@ extern void (*menu_overlay_function)(void);
 
 extern int overlay_visible_when_menu_closed;
 
+//Para poder hacer debug_printf con la clase de debug adecuada
+#define DBG_PRINT_ZXVISION_EVENTS debug_printf(VERBOSE_CLASS_ZXVISION_EVENTS|
+
 extern char esc_key_message[];
 extern char *openmenu_key_message;
 
@@ -1466,6 +1469,7 @@ extern int lowericon_realtape_frame;
 extern int lowericon_cf2_floppy_frame;
 
 extern int menu_pressed_zxdesktop_lower_icon_which;
+extern int menu_pressed_zxdesktop_lower_icon_which_right_button;
 extern int menu_pressed_zxdesktop_button_which;
 extern int menu_pressed_zxdesktop_configurable_icon_which;
 extern int menu_pressed_zxdesktop_right_button_background;

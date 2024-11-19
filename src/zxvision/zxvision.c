@@ -15784,8 +15784,13 @@ int zxvision_if_mouse_in_zlogo_or_buttons_desktop(void)
 
 				//en que boton?
 				int numero_boton=(mouse_pixel_x-xinicio_botones)/ancho_boton;
-				//printf("boton pulsado: %d\n",numero_boton);
+				DBG_PRINT_ZXVISION_EVENTS VERBOSE_DEBUG,"ZXVISION_EVENTS: zxvision_if_mouse_in_zlogo_or_buttons_desktop. Upper button pressed: %d",numero_boton);
 				menu_pressed_zxdesktop_button_which=numero_boton;
+
+                //Puede ser un poco redundante que desde aqui tambien miremos boton derecho,
+                //porque se llama desde zxvision_if_mouse_in_zlogo_or_buttons_desktop al pulsar boton izquierdo
+                //pero se usa al abrirse el menu_inicio con boton derecho
+                if (mouse_right) menu_pressed_zxdesktop_button_which_right_button=1;
 
 				return 1;
 			}
@@ -15818,6 +15823,14 @@ int zxvision_if_mouse_in_zlogo_or_buttons_desktop(void)
 
 
 						menu_pressed_zxdesktop_lower_icon_which=numero_boton;
+
+                        DBG_PRINT_ZXVISION_EVENTS VERBOSE_INFO,"ZXVISION_EVENTS: Lower icon pressed: %d",numero_boton);
+
+                        //Puede ser un poco redundante que desde aqui tambien miremos boton derecho,
+                        //porque se llama desde zxvision_if_mouse_in_zlogo_or_buttons_desktop al pulsar boton izquierdo
+                        //pero se usa al abrirse el menu_inicio con boton derecho
+
+                        if (mouse_right) menu_pressed_zxdesktop_lower_icon_which_right_button=1;
 
 						return 1;
 				}
@@ -16468,6 +16481,8 @@ void zxvision_handle_mouse_events(zxvision_window *w)
         zxvision_handle_mouse_events_on_icons();
         return; // 0;
     }
+
+    //printf("inicio zxvision_handle_mouse_events. ventana no es NULL\n");
 
     menu_pressed_shift_cursor_window_doesnot_allow=0;
 
@@ -17301,7 +17316,8 @@ void zxvision_handle_mouse_events(zxvision_window *w)
 
     if (zxvision_pressed_right_mouse_button()) {
         //acciones con boton derecho, con menu abierto
-        //printf("Pulsado boton derecho\n");
+        //Este mensaje es cpu intensivo. Desactivado por defecto
+        //DBG_PRINT_ZXVISION_EVENTS VERBOSE_INFO,"ZXVISION_EVENTS: Pressed right button on zxvision_handle_mouse_events");
 
 
         //Si se pulsa boton derecho en alguna ventana
@@ -17315,12 +17331,15 @@ void zxvision_handle_mouse_events(zxvision_window *w)
         ventana_pulsada=zxvision_coords_in_below_windows(zxvision_current_window,absolute_mouse_x,absolute_mouse_y);
         if (ventana_pulsada!=NULL || si_menu_mouse_en_ventana()) {
             //Se pulsa en ventana de abajo o bien en la ventana actual
-            //printf("Pulsado boton derecho sobre ventana\n");
+            DBG_PRINT_ZXVISION_EVENTS VERBOSE_INFO,"ZXVISION_EVENTS: Pressed right click on a window");
 
         }
         else {
             //No se pulsa ni en icono ni en ventanas. Quedaria ver si en botones de menu superior o en botones de dispositivo inferior.
             //printf("mouse pixel x,y desde handle mouse events: %d,%d\n",mouse_pixel_x,mouse_pixel_y);
+
+            //Este mensaje es cpu intensivo. Desactivado por defecto
+            //DBG_PRINT_ZXVISION_EVENTS VERBOSE_INFO,"ZXVISION_EVENTS: Not pressed right click on a window");
 
 
             int mouse_pixel_x,mouse_pixel_y;
@@ -24730,13 +24749,14 @@ void menu_inicio_pre_retorno_reset_flags(void)
 }
 
 
-
+//Gestionar pulsaciones de botones inferiores
 void menu_inicio_handle_lower_icon_presses(void)
 {
 
 	int pulsado_boton=menu_pressed_zxdesktop_lower_icon_which;
 
-
+    DBG_PRINT_ZXVISION_EVENTS VERBOSE_DEBUG,"ZXVISION_EVENTS: menu_inicio_handle_lower_icon_presses. menu_pressed_zxdesktop_lower_icon_which: %d menu_pressed_zxdesktop_lower_icon_which_right_button: %d",
+            menu_pressed_zxdesktop_lower_icon_which,menu_pressed_zxdesktop_lower_icon_which_right_button);
 
 	//Para que no vuelva a saltar
 	menu_pressed_zxdesktop_lower_icon_which=-1;
@@ -24775,7 +24795,7 @@ void menu_inicio_handle_lower_icon_presses(void)
     //Si pulsado con boton derecho
     if (menu_pressed_zxdesktop_lower_icon_which_right_button) {
         menu_pressed_zxdesktop_lower_icon_which_right_button=0;
-        //printf("Pulsado con boton derecho sobre icono inferior %d\n",pulsado_boton);
+        DBG_PRINT_ZXVISION_EVENTS VERBOSE_INFO,"ZXVISION_EVENTS: menu_inicio_handle_lower_icon_presses. Pressed right button on a lower icon %d",pulsado_boton);
 
         //printf("salir_todos_menus %d menu_pressed_open_menu_while_in_menu.v %d "
         //        "mouse_pressed_background_window %d mouse_pressed_close_window %d\n",
@@ -25254,6 +25274,7 @@ void menu_inicio_handle_button_pressed_set_next_menu_position(int cual_boton)
     force_next_menu_position_y=y;
 }
 
+//Gestionar pulsaciones de botones superiores
 void menu_inicio_handle_button_presses(void)
 {
 
@@ -26066,6 +26087,28 @@ void menu_inicio(void)
         //    menu_pressed_zxdesktop_button_which,menu_pressed_zxdesktop_lower_icon_which,pulsado_alguna_ventana_con_menu_cerrado);
 
 	}
+
+    if (mouse_right) {
+        DBG_PRINT_ZXVISION_EVENTS VERBOSE_INFO,"ZXVISION_EVENTS: Opened menu by right click");
+
+        //Si pulsado en boton pero no pulsado en ventanas (ventanas siempre estan por encima y por tanto tienen prioridad)
+        //Hay que ver antes pulsado_alguna_ventana_con_menu_cerrado; si metemos en un solo if las dos condiciones
+        //!pulsado_alguna_ventana_con_menu_cerrado y zxvision_if_mouse_in_zlogo_or_buttons_desktop(), la segunda
+        //hace alterar el valor de menu_pressed_zxdesktop_button_which y por tanto estariamos diciendo que se ha pulsado en boton
+        if (!pulsado_alguna_ventana_con_menu_cerrado) {
+            if (zxvision_if_mouse_in_zlogo_or_buttons_desktop()) {
+                DBG_PRINT_ZXVISION_EVENTS VERBOSE_INFO,"ZXVISION_EVENTS: Pressed on a button with right click");
+                //debug_printf(VERBOSE_DEBUG,"Pressed in a button from menu_inicio. Mouse is dragging: %d mouse_movido: %d",mouse_is_dragging,mouse_movido);
+
+                //Dibujamos de otro color ese boton
+                //que boton=menu_pressed_zxdesktop_button_which
+
+                //menu_draw_ext_desktop_dibujar_boton_pulsado(menu_pressed_zxdesktop_button_which);
+                menu_draw_ext_desktop_dibujar_boton_or_lower_icon_pulsado();
+
+            }
+        }
+    }
 
 				//Esto se ha puesto a 1 antes desde zxvision_if_mouse_in_zlogo_or_buttons_desktop,
 				//indirectamente cuando llama a menu_calculate_mouse_xy_absolute_interface_pixel

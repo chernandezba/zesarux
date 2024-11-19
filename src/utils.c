@@ -5358,6 +5358,7 @@ int quickload_valid_extension(char *nombre) {
                 || !util_compare_file_extension(nombre,"trd")
                 || !util_compare_file_extension(nombre,"mdr")
                 || !util_compare_file_extension(nombre,"rmd")
+                || !util_compare_file_extension(nombre,"ddh")
                 || !util_compare_file_extension(nombre,"dsk")
                 || !util_compare_file_extension(nombre,"z80")
                 || !util_compare_file_extension(nombre,"tzx")
@@ -5794,6 +5795,31 @@ int quickload_continue(char *nombre) {
         betadisk_enable();
         trd_insert_disk(nombre);
 
+
+		return 0;
+
+	}
+
+	//DDH
+	else if (
+        !util_compare_file_extension(nombre,"ddh")
+	) {
+		//Aqui el autoload da igual. cambiamos siempre a Spectrum si conviene
+		if (!MACHINE_IS_SPECTRUM) {
+			current_machine_type=MACHINE_ID_SPECTRUM_48;
+			set_machine(NULL);
+
+            //establecer parametros por defecto. Incluido quitar slots de memoria
+            set_machine_params();
+            reset_cpu();
+
+        }
+
+        hilow_disable();
+
+        strcpy(hilow_file_name,nombre);
+
+        hilow_enable();
 
 		return 0;
 

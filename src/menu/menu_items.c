@@ -42065,8 +42065,9 @@ void menu_inicio_bucle_main(void)
             || menu_pressed_zxdesktop_configurable_icon_which>=0 || menu_pressed_zxdesktop_right_button_background>=0
             || pulsado_alguna_ventana_con_menu_cerrado) {
 
-            //printf("se cumple if: menu_pressed_zxdesktop_button_which %d menu_pressed_zxdesktop_lower_icon_which %d pulsado_alguna_ventana_con_menu_cerrado %d\n",
-            //    menu_pressed_zxdesktop_button_which,menu_pressed_zxdesktop_lower_icon_which,pulsado_alguna_ventana_con_menu_cerrado);
+            DBG_PRINT_ZXVISION_EVENTS VERBOSE_DEBUG,"ZXVISION_EVENTS: menu_inicio_bucle_main. Condition true: menu_pressed_zxdesktop_button_which %d menu_pressed_zxdesktop_lower_icon_which %d menu_pressed_zxdesktop_lower_icon_which_right_button %d pulsado_alguna_ventana_con_menu_cerrado %d",
+                menu_pressed_zxdesktop_button_which,menu_pressed_zxdesktop_lower_icon_which,
+                menu_pressed_zxdesktop_lower_icon_which_right_button,pulsado_alguna_ventana_con_menu_cerrado);
 
 			cls_menu_overlay();
 		//Si se habia pulsado boton de zx desktop y boton no es el 0
@@ -42077,10 +42078,12 @@ void menu_inicio_bucle_main(void)
 
 			//Si era 0 es el menu inicio y liberamos el boton
 			else if (menu_pressed_zxdesktop_button_which==0) {
+                DBG_PRINT_ZXVISION_EVENTS VERBOSE_INFO,"ZXVISION_EVENTS: menu_inicio_bucle_main. Handle upper button presses");
 				menu_pressed_zxdesktop_button_which=-1;
 			}
 
 			else if (menu_pressed_zxdesktop_lower_icon_which>=0) {
+                DBG_PRINT_ZXVISION_EVENTS VERBOSE_INFO,"ZXVISION_EVENTS: menu_inicio_bucle_main. Handle lower button presses");
 				menu_inicio_handle_lower_icon_presses();
 			}
 

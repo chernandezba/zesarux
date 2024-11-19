@@ -70,6 +70,7 @@ Improved ZX Desktop:
 * Fixes:
 
 Remove buffer full indicator when pressing shift+e on External Audio Source window
+Fixed right click on upper buttons when menu closed and no windows open
 Fixed alt key pressed when changing to another window by using alt-tab on xwindow, cocoa, sdl1 and sdl2 drivers
 Fixed TZX autoload as Real Tape on Spectrum +3
 Fixed hotswap ZX80 to ZX81, ZX81 to ZX80
