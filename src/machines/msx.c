@@ -985,7 +985,7 @@ z80_byte msx_read_psg(void)
 
 
 		if ( (ay_3_8912_registro_sel[ay_chip_selected] & 15) ==14) {
-			//printf ("Read AY register 14. read tape / joystick\n");
+			//printf ("Read AY register 14. read tape / joystick en PC=%04XH\n",reg_pc);
 
 			//Bit 7 cinta
 			/*

@@ -2046,6 +2046,49 @@ void esxdos_handler_begin_handling_commands(void)
 			esxdos_handler_new_return_call();
 		break;
 
+        case ESXDOS_RST8_M_DOSVERSION:
+
+            //Creo que esto solo esta en Next. En este caso se ve que se llama en Atic Atac de Next
+            if (MACHINE_IS_TBBLUE) {
+                debug_printf (VERBOSE_DEBUG,"ESXDOS handler: M_DOSVERSION");
+                /*
+; *****************************************************************************
+;Exit: ;
+;
+;
+;
+For esxDOS <= 0.8.6 Fc=1, error
+        A=14 ("no such device")
+For NextZXOS:
+        Fc=0, success
+        B='N',C='X' (NextZXOS signature)
+        DE=NextZXOS version in BCD format: D=major, E=minor version
+eg for NextZXOS v1.94, DE=$0194 HL=language code:
+             English: L='e',H='n'
+             Spanish: L='e',H='s'
+             Further languages may be available in the future
+        A=0 if running in NextZXOS mode (and zero flag is set)
+        A<>0 if running in 48K mode (and zero flag is reset)
+                */
+
+                reg_b='N';
+                reg_c='X';
+                //Asumimos nextzxos 2.07
+                reg_d=0x02;
+                reg_e=0x07;
+                reg_l='e';
+                reg_h='n';
+                reg_a=0;
+
+                esxdos_handler_no_error_uncarry();
+                esxdos_handler_new_return_call();
+            }
+            else {
+               debug_printf (VERBOSE_DEBUG,"ESXDOS handler: Unhandled ESXDOS_RST8 : %02XH (M_DOSVERSION)!! ",funcion);
+               rst(8);
+            }
+        break;
+
 
 		case ESXDOS_RST8_M_GETSETDRV:
 			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_M_GETSETDRV");
@@ -2237,7 +2280,7 @@ void esxdos_handler_begin_handling_commands(void)
 ; Fc=1
 ;       A=error
                 */
-                debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_DISK_FILEMAP. File handle: %02XH DE=%04XH PC=%04XH",reg_a,DE,reg_pc);
+                debug_printf (VERBOSE_DEBUG,"ESXDOS handler: Unsupported ESXDOS_RST8_DISK_FILEMAP. File handle: %02XH DE=%04XH PC=%04XH",reg_a,DE,reg_pc);
                 //de momento dar error, no tengo claro como simular esto mediante esxdos handler, o directamente no tiene sentido
                 //a no ser que uses una MMC real
                 //DE=0;

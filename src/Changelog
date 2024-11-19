@@ -33,10 +33,6 @@ Allow loading a 8kb rom in ZX80 (for example the ZX81 rom, like an upgraded ZX80
 Allow magnify sprites on View Sprites
 Improve compilation: settings --enable-memptr --enable-visualmem --enable-cpustats are enabled by default on ./configure
 Improved Inves Spectrum+ emulation: alert when a game may crash due to the Inves write-on-interrupt bug
-Improved Jupiter Ace emulation: allow to hear MIC output
-Improved CPC emulation: allow to hear Cassete Out sound
-Improved MSX emulation: allow to hear Cassete Out sound
-Improved Spectravideo emulation: allow to hear Cassete Out sound
 Improve Spectrum Z80 CPU emulation core: add wait state (needed to emulate microdrive)
 
 Improved Hilow Datadrive emulation:
@@ -76,6 +72,7 @@ Fixed alt key pressed when changing to another window by using alt-tab on xwindo
 Fixed TZX autoload as Real Tape on Spectrum +3
 Fixed hotswap ZX80 to ZX81, ZX81 to ZX80
 Fixed Amstrad CPC Scroll
+Fixed Cassette out sound: allow to hear it on computers: Jupiter Ace, CPC, MSX, Spectravideo
 Fixed memory map and behaviour on Jupiter Ace: now it's perfect and better than any other emulator
 Fixed loading .nex snapshots and Layer 2 not being initialized (fixes errors on Head Over Heels for Next, for example)
 Fixed loading .nex snapshots and MMU not managed correctly

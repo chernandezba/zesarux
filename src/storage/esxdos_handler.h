@@ -99,6 +99,7 @@ FA_USE_HEADER   equ             %01000000                       ; Use +3DOS head
 #define ESXDOS_RST8_DISK_INFO 0x84
 #define ESXDOS_RST8_DISK_FILEMAP 0x85
 
+#define ESXDOS_RST8_M_DOSVERSION 0x88
 #define ESXDOS_RST8_M_GETSETDRV   0x89
 #define ESXDOS_RST8_M_DRIVEINFO 0x8a
 

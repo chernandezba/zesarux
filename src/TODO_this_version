@@ -403,9 +403,6 @@ LEC:
 -mostrar paginas de memoria lec en debug cpu
 
 
-
-
-
 -----------------------
 ---INICIO Hilow     ---
 -----------------------
@@ -434,7 +431,6 @@ LEC:
 -mas acciones boton derecho en dispositivos: cartuchos msx, master sytem....
 
 
-
 -Documentar en development como va el indexado
 *para menus normales
 *no para items tabulados
@@ -442,16 +438,12 @@ LEC:
 *algo mas?
 
 
--revisar sonido en Save en CPC(ok), MSX...
 
 -ppi chip 8255 el mismo en cpc y msx...
 
 -con ddh insertado, si escojo otro ddh pero pulso ESC, se queda hilow habilitado pero apuntando a ningun archivo
 
--boton derecho sobre iconos de dispositivos solo va si menu abierto (con --noconfigfile). por alguna razon con mi config si que va.
-sucede lo mismo con botones superiores
-Sucede cuando no hay ninguna ventana abierta en background
-->creo que la clave esta en la llamada a zxvision_if_mouse_in_zlogo_or_buttons_desktop(). Ahi solo mira por boton izquierdo
-Revisar tambien porque no se ve el boton pulsado (hacia adentro) cuando se pulsa con boton derecho
 
 -En MSX y SVI no se usa msx_ppi_mode_port/svi_ppi_mode_port en lectura. Quien lo lee y para que?
+
+-acciones boton derecho sobre botones superiores e inferiores se activan aunque haya ventanas por encima

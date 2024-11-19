@@ -33,10 +33,6 @@ Permitir cargar rom de 8kb en ZX80 (por ejemplo la rom del ZX81, como un ZX80 ac
 Permitir aumentar sprites en View Sprites
 Mejorada compilación: opciones --enable-memptr --enable-visualmem --enable-cpustats están activadas por defecto en ./configure
 Mejorada emulación del Inves Spectrum+: alertar cuando un juego puede resetearse debido al bug de Inves de write-on-interrupt
-Mejorada emulación de Jupiter Ace: permitir escuchar salida MIC
-Mejorada emulación de CPC: permitir escuchar sonido de Salida Casette
-Mejorada emulación de MSX: permitir escuchar sonido de Salida Casette
-Mejorada emulación de Spectravideo: permitir escuchar sonido de Salida Casette
 Mejorado el core de emulación de Spectrum de la CPU Z80: agregado estado wait (necesario para emular el microdrive)
 
 Mejorada emulación de Hilow Datadrive:
@@ -75,6 +71,7 @@ Corregido tecla alt pulsada al cambiar de ventana pulsando alt-tab en drivers xw
 Corregida autocarga de TZX como Cinta Real en Spectrum +3
 Corregido hotswap ZX80 a ZX81, ZX81 a ZX80
 Corregido Scroll de Amstrad CPC
+Corregido sonido al grabar: permitir escucharlo en ordenadores: Jupiter Ace, CPC, MSX, Spectravideo
 Corregido mapa de memoria y comportamiento en Jupiter Ace: ahora es perfecto y mejor que cualquier otro emulador
 Corregida carga de snapshots .nex y la inicialización incorrecta de Layer 2 (corrige errores en Head Over Heels de Next por ejemplo)
 Corregida carga de snapshots .nex y la MMU no gestionada correctamente
