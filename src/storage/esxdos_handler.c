@@ -2338,7 +2338,7 @@ Main syscall entry point. Parameters are the same for code inside ESXDOS (.comma
 
 	registro_parametros_hl_ix=&reg_hl;
 	if (reg_pc>16383) {
-		debug_printf(VERBOSE_DEBUG,"Using IX register instead of HL because PC>16383");
+		debug_printf(VERBOSE_DEBUG,"ESXDOS handler: Using IX register instead of HL because PC>16383");
 		registro_parametros_hl_ix=&reg_ix;
 	}
 
