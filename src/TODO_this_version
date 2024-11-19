@@ -71,9 +71,7 @@ asi en smartload y similares no aparecerian -> pero en caso de UART si que deben
 -cambio de maquina con full screen (16k a 48k) peta: quiza son en Mac?
 
 
--Al conmutar de ventana, no guarda del todo la posicion, pues no restaura bien al desmaximizar: ejemplo
-*Esto en ascii table. Posicion 1. La muevo a otra posicion, Posicion 2
-*Conmuto a otra ventana (pulsando con raton en otra ventana). Vuelvo a ascii table. Maximizo, y desmaximizo. En vez de volver a Posicion 2, se va a Posicion 1.
+
 
 -si se pulsa boton de cerrar todos los menus, desde una ventana que se ha abierto desde otra con menu tabulado, se cierra esa ventana de menu tabulado,
 en vez de dejarse en background
@@ -87,7 +85,7 @@ Ejemplo: AY Player, pulsar Editar playlist, y ahí cerrar todos menus
 
 -Exploding fist next:
 *cargando desde browser de next, sale la intro y luego se cuelga
-*cargando con smartload, parece que carga archivos por esx pero no muestra nada en pantalla
+*cargando con smartload, parece que carga archivos por esx pero no muestra nada en pantalla. Usa filemap, como Atic Atac...
 
 
 
@@ -418,7 +416,6 @@ LEC:
 
 -visualcassettetape
 *soporte tap, tzx y otros formatos de cinta binaria
-*revisar tmp y otras variables hilow
 *si se avanza cinta desde visual real tape, con cinta parada, no refresca bien
 
 
@@ -447,3 +444,8 @@ LEC:
 -En MSX y SVI no se usa msx_ppi_mode_port/svi_ppi_mode_port en lectura. Quien lo lee y para que?
 
 -acciones boton derecho sobre botones superiores e inferiores se activan aunque haya ventanas por encima
+
+
+-Al conmutar de ventana, no guarda del todo la posicion, pues no restaura bien al desmaximizar: ejemplo
+*Esto en ascii table. Posicion 1. La muevo a otra posicion, Posicion 2
+*Conmuto a otra ventana (pulsando con raton en otra ventana). Vuelvo a ascii table. Maximizo, y desmaximizo. En vez de volver a Posicion 2, se va a Posicion 1.
