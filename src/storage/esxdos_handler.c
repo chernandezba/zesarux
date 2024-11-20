@@ -2366,9 +2366,9 @@ eg for NextZXOS v1.94, DE=$0194 HL=language code:
 
                     (*registro_parametros_hl_ix)+=6;
 
-                    sector_count-=65535;
+                    sector_count-=sectores_ocupa;
 
-                    offset_sector +=65535;
+                    offset_sector +=sectores_ocupa;
                     DE--;
                 }
 
