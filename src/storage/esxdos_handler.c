@@ -530,6 +530,7 @@ void esxdos_handler_call_f_open_post(int handle,char *nombre_archivo,char *fullp
 		//Y poner nombres para debug
 		strcpy(esxdos_fopen_files[handle].debug_name,nombre_archivo);
 		strcpy(esxdos_fopen_files[handle].debug_fullpath,fullpath);
+        //printf("nombre para debug (file handle %d): %s\n",handle,esxdos_fopen_files[handle].debug_fullpath);
 }
 
 void esxdos_handler_change_backslashes(char *string)
@@ -2280,21 +2281,51 @@ eg for NextZXOS v1.94, DE=$0194 HL=language code:
 ; Fc=1
 ;       A=error
                 */
-                debug_printf (VERBOSE_DEBUG,"ESXDOS handler: Unsupported ESXDOS_RST8_DISK_FILEMAP. File handle: %02XH DE=%04XH HL=%04XH IX=%04XH PC=%04XH",
+                debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_DISK_FILEMAP. File handle: %02XH DE=%04XH HL=%04XH IX=%04XH PC=%04XH",
                     reg_a,DE,HL,reg_ix,reg_pc);
+
+
+                int file_handler=reg_a;
+
+                if (file_handler>=ESXDOS_MAX_OPEN_FILES) {
+                    debug_printf (VERBOSE_DEBUG,"ESXDOS handler: Error from esxdos_handler_call_f_seek. Handler %d out of range",file_handler);
+                    esxdos_handler_error_carry(ESXDOS_ERROR_EBADF);
+                    esxdos_handler_old_return_call();
+                    return;
+                }
+
+                if (esxdos_fopen_files[file_handler].open_file.v==0) {
+                    debug_printf (VERBOSE_DEBUG,"ESXDOS handler: Error from esxdos_handler_call_f_seek. Handler %d not found",file_handler);
+                    esxdos_handler_error_carry(ESXDOS_ERROR_EBADF);
+                    esxdos_handler_old_return_call();
+                    return;
+                }
+
+                //Si es un directorio, error
+                if (esxdos_fopen_files[file_handler].is_a_directory.v) {
+                    debug_printf (VERBOSE_DEBUG,"ESXDOS handler: Error from esxdos_handler_call_f_seek. Handler %d is a directory",file_handler);
+                    esxdos_handler_error_carry(ESXDOS_ERROR_EBADF);
+                    esxdos_handler_old_return_call();
+                    return;
+                }
+
                 //de momento dar error, no tengo claro como simular esto mediante esxdos handler, o directamente no tiene sentido
                 //a no ser que uses una MMC real
                 //DE=0;
                 //reg_a=0;
 	            //esxdos_handler_no_error_uncarry();
-                esxdos_handler_error_carry(ESXDOS_ERROR_EBADF);
+                printf("Archivo (file handle %d): %s\n",reg_a,esxdos_fopen_files[file_handler].debug_fullpath);
+
+                //esxdos_handler_error_carry(ESXDOS_ERROR_EBADF);
 
                 //Temporal atic atac
                 //Info sacada de la documentacion de esxdos de next en la sd: /docs/NextZXOS/NextZXOS_and_esxDOS_APIs.pdf
-                /*
-                reg_a=0x02;
+
+
+
+
                 //Intentar decir que no esta fragmentado
-                DE=0x0001;
+                //DE=0x0000;
                 //*registro_parametros_hl_ix=*registro_parametros_hl_ix+(6*DE);
                 esxdos_handler_no_error_uncarry();
                 //Adicional Atic Atac. Lo que parece que intenta hacer es obtener la lista de sectores del archivo .NEX
@@ -2312,7 +2343,12 @@ eg for NextZXOS v1.94, DE=$0194 HL=language code:
 
                 int sector_size=512;
 
-                int sector_count=218112; //el archivo .nex / 512 (512 es un posible sector size)
+                int sector_count; //=218112; //el archivo .nex / 512 (512 es un posible sector size)
+
+                int file_size=get_file_size(esxdos_fopen_files[file_handler].debug_fullpath);
+                printf("file size: %d\n",file_size);
+                sector_count=file_size/sector_size;
+
                 int offset_sector=0;
                 int indice=0;
                 while (sector_count>0) {
@@ -2333,14 +2369,17 @@ eg for NextZXOS v1.94, DE=$0194 HL=language code:
                     sector_count-=65535;
 
                     offset_sector +=65535;
+                    DE--;
                 }
 
-                */
+
                 //(*registro_parametros_hl_ix)+=total_bytes;
 
 
 
                 //Fin temporal atic atac
+
+                reg_a=0x02;
 
                 esxdos_handler_new_return_call();
             }

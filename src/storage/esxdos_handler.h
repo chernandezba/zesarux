@@ -215,7 +215,7 @@ struct s_esxdos_fopen {
 
 	z80_bit is_a_directory;
 
-	//Usado solo por debug de ZRCP:
+	//Usado por debug de ZRCP y tambien por llamada de filemap:
 	char debug_name[PATH_MAX];
 	char debug_fullpath[PATH_MAX];
 };

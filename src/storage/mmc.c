@@ -327,6 +327,7 @@ Max capacity teniendo en cuenta sectores de (2^15)=32768 bytes:
 	}
 
 	debug_printf (VERBOSE_DEBUG,"mmc_size: %ld sector_size: %d (%d)",mmc_size,*valor_8_bits,*valor);
+    //printf ("mmc_size: %ld sector_size: %d (%d)\n",mmc_size,*valor_8_bits,*valor);
 
 }
 
