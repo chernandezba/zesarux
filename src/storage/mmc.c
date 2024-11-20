@@ -664,7 +664,7 @@ z80_byte mmc_read_byte_memory(unsigned int address)
 	else {
 		mmc_set_visualmem_read(address);
 
-
+        //printf("leyendo byte de direccion %XH\n",address);
 		return mmc_memory_pointer[address];
 	}
 }

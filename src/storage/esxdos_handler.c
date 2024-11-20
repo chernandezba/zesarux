@@ -2335,8 +2335,8 @@ eg for NextZXOS v1.94, DE=$0194 HL=language code:
                 //la tarjeta mmc, que lean sectores de la tabla virtual retornando este archivo que se ha mapeado aqui
 
                 //Espera 11 words a 0. Eso son 3+3+3+3=4 entradas de la tabla
-                int i;
-                int total_bytes=11*2;
+                //int i;
+                //int total_bytes=11*2;
                 //for (i=0;i<11*2;i++) {
                 //    poke_byte_no_time((*registro_parametros_hl_ix)+i,0);
                 //}
