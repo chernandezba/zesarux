@@ -1056,21 +1056,29 @@ unsigned int mmc_retorna_dir_32bit(z80_byte a,z80_byte b,z80_byte c,z80_byte d)
 void mmc_write(z80_byte value)
 {
 
-	if (mmc_enabled.v==0) return;
+	if (mmc_enabled.v==0) {
+        //printf("MMC no habilitada\n");
+        return;
+    }
 
         //Si seleccionada segunda tarjeta, volver sin mas
-        if (mmc_card_selected==1) return;
+        if (mmc_card_selected==1) {
+            //printf("MMC tarjeta seleccionada 1\n");
+            return;
+        }
 
 	mmc_footer_mmc_operating();
 
 
 	if (mmc_index_command==0) {
+        //printf("MMC Se recibe comando\n");
 		//Se recibe comando
 		mmc_last_command=value;
 		mmc_index_command++;
 	}
 
 	else {
+        //printf("MMC Se recibe parametro de comando\n");
 		//Se recibe parametro de comando
 		//Actuar segun mmc_last_command
 		switch (mmc_last_command) {

@@ -2280,8 +2280,8 @@ eg for NextZXOS v1.94, DE=$0194 HL=language code:
 ; Fc=1
 ;       A=error
                 */
-                debug_printf (VERBOSE_DEBUG,"ESXDOS handler: Unsupported ESXDOS_RST8_DISK_FILEMAP. File handle: %02XH DE=%04XH HL=%04XH PC=%04XH",
-                    reg_a,DE,HL,reg_pc);
+                debug_printf (VERBOSE_DEBUG,"ESXDOS handler: Unsupported ESXDOS_RST8_DISK_FILEMAP. File handle: %02XH DE=%04XH HL=%04XH IX=%04XH PC=%04XH",
+                    reg_a,DE,HL,reg_ix,reg_pc);
                 //de momento dar error, no tengo claro como simular esto mediante esxdos handler, o directamente no tiene sentido
                 //a no ser que uses una MMC real
                 //DE=0;
@@ -2295,9 +2295,51 @@ eg for NextZXOS v1.94, DE=$0194 HL=language code:
                 reg_a=0x02;
                 //Intentar decir que no esta fragmentado
                 DE=0x0001;
-                *registro_parametros_hl_ix=*registro_parametros_hl_ix+(6*DE);
+                //*registro_parametros_hl_ix=*registro_parametros_hl_ix+(6*DE);
                 esxdos_handler_no_error_uncarry();
+                //Adicional Atic Atac. Lo que parece que intenta hacer es obtener la lista de sectores del archivo .NEX
+                //y luego va leyendo por bloques mediante comandos MMC (ejemplo READ_MULTIPLE_BLOCK), directamente a la tarjeta
+                //Por tanto emular esto implicaria que cuando se lanza este file map, generar una tabla "virtual" de sectores,
+                //y luego los comandos mmc de lectura que detecten que hay esa tabla virtual y a cada lectura de sector, en vez de leer
+                //la tarjeta mmc, que lean sectores de la tabla virtual retornando este archivo que se ha mapeado aqui
+
+                //Espera 11 words a 0. Eso son 3+3+3+3=4 entradas de la tabla
+                int i;
+                int total_bytes=11*2;
+                //for (i=0;i<11*2;i++) {
+                //    poke_byte_no_time((*registro_parametros_hl_ix)+i,0);
+                //}
+
+                int sector_size=512;
+
+                int sector_count=218112; //el archivo .nex / 512 (512 es un posible sector size)
+                int offset_sector=0;
+                int indice=0;
+                while (sector_count>0) {
+                    printf("Construyendo mapa ESXDOS_RST8_DISK_FILEMAP. Offset sector: %XH sector remaining: %d\n",offset_sector,sector_count);
+                    poke_byte_no_time((*registro_parametros_hl_ix)+indice,(offset_sector) & 0xFF);
+                    poke_byte_no_time((*registro_parametros_hl_ix)+indice+1,(offset_sector>>8) & 0xFF);
+                    poke_byte_no_time((*registro_parametros_hl_ix)+indice+2,(offset_sector>>16) & 0xFF);
+                    poke_byte_no_time((*registro_parametros_hl_ix)+indice+3,(offset_sector>>24) & 0xFF);
+
+                    int sectores_ocupa=65535;
+                    if (sector_count<65536) sectores_ocupa=sector_count;
+
+                    poke_byte_no_time((*registro_parametros_hl_ix)+indice+4,(sectores_ocupa) & 0xFF);
+                    poke_byte_no_time((*registro_parametros_hl_ix)+indice+5,(sectores_ocupa>>8) & 0xFF);
+
+                    (*registro_parametros_hl_ix)+=6;
+
+                    sector_count-=65535;
+
+                    offset_sector +=65535;
+                }
+
                 */
+                //(*registro_parametros_hl_ix)+=total_bytes;
+
+
+
                 //Fin temporal atic atac
 
                 esxdos_handler_new_return_call();
