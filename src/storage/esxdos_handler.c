@@ -2265,9 +2265,12 @@ eg for NextZXOS v1.94, DE=$0194 HL=language code:
             //De momento esto solo lo he encontrado en el Pogie de Next y en Atic Atac de Next
             if (MACHINE_IS_TBBLUE) {
                 /*
-; *************************************************************************** ; * DISK_FILEMAP ($85) * ; ***************************************************************************
+; ***************************************************************************
+; * DISK_FILEMAP ($85) *
+; ***************************************************************************
 ; Obtain a map of card addresses describing the space occupied by the file.
-; Can be called multiple times if buffer is filled, continuing from previous. ; Entry:
+; Can be called multiple times if buffer is filled, continuing from previous.
+; Entry:
 ; A=file handle (just opened, or following previous DISK_FILEMAP calls)
 ;       IX [HL from dot command]=buffer (must be located >= $4000)
 ;       DE=max entries (each 6 bytes: 4 byte address, 2 byte sector count)
@@ -2276,10 +2279,24 @@ eg for NextZXOS v1.94, DE=$0194 HL=language code:
 ; DE=max entries-number of entries returned
 ;       HL=address in buffer after last entry
 ;       A=card flags: bit 0=card id (0 or 1)
+;                     bit 1=0 for byte addressing, 1 for block addressing
 ;
 ; Exit (failure):
 ; Fc=1
 ;       A=error
+;
+; NOTES:
+; Each entry may describe an area of the file between 2K and just under 32MB
+; in size, depending upon the fragmentation and disk format.
+;
+; If the file has been accessed, the filepointer should be reset to the start
+; using F_SEEK, and a single byte read (with F_READ) before making this call.
+; This will ensure that the current sector information maintained by the OS
+; is correctly pointing to the first sector of the file.
+;
+; The provided buffer address must be >=$4000 (ie dot commands will need to
+; allocate space in the main RAM area using the BC_SPACES call in the 48K
+; ROM, or page in an allocated bank).
                 */
                 debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_DISK_FILEMAP. File handle: %02XH DE=%04XH HL=%04XH IX=%04XH PC=%04XH",
                     reg_a,DE,HL,reg_ix,reg_pc);
@@ -2309,24 +2326,14 @@ eg for NextZXOS v1.94, DE=$0194 HL=language code:
                     return;
                 }
 
-                //de momento dar error, no tengo claro como simular esto mediante esxdos handler, o directamente no tiene sentido
-                //a no ser que uses una MMC real
-                //DE=0;
-                //reg_a=0;
-	            //esxdos_handler_no_error_uncarry();
+
                 printf("Archivo (file handle %d): %s\n",reg_a,esxdos_fopen_files[file_handler].debug_fullpath);
 
-                //esxdos_handler_error_carry(ESXDOS_ERROR_EBADF);
 
                 //Temporal atic atac
                 //Info sacada de la documentacion de esxdos de next en la sd: /docs/NextZXOS/NextZXOS_and_esxDOS_APIs.pdf
 
 
-
-
-                //Intentar decir que no esta fragmentado
-                //DE=0x0000;
-                //*registro_parametros_hl_ix=*registro_parametros_hl_ix+(6*DE);
                 esxdos_handler_no_error_uncarry();
                 //Adicional Atic Atac. Lo que parece que intenta hacer es obtener la lista de sectores del archivo .NEX
                 //y luego va leyendo por bloques mediante comandos MMC (ejemplo READ_MULTIPLE_BLOCK), directamente a la tarjeta
@@ -2334,12 +2341,7 @@ eg for NextZXOS v1.94, DE=$0194 HL=language code:
                 //y luego los comandos mmc de lectura que detecten que hay esa tabla virtual y a cada lectura de sector, en vez de leer
                 //la tarjeta mmc, que lean sectores de la tabla virtual retornando este archivo que se ha mapeado aqui
 
-                //Espera 11 words a 0. Eso son 3+3+3+3=4 entradas de la tabla
-                //int i;
-                //int total_bytes=11*2;
-                //for (i=0;i<11*2;i++) {
-                //    poke_byte_no_time((*registro_parametros_hl_ix)+i,0);
-                //}
+
 
                 int sector_size=512;
 
@@ -2372,12 +2374,8 @@ eg for NextZXOS v1.94, DE=$0194 HL=language code:
                     DE--;
                 }
 
-
-                //(*registro_parametros_hl_ix)+=total_bytes;
-
-
-
-                //Fin temporal atic atac
+                //De momento para que sea capaz de mapear el archivo de atic atac en mmc hay que poner dicho
+                //archivo como imagen de mmc tal cual
 
                 reg_a=0x02;
 
