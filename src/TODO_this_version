@@ -445,3 +445,5 @@ La particularidad es que ese archivo tiene bloques a final de microdrive y al pr
 
 -interface1
 -mostrar paginas de memoria interface1 en debug cpu
+
+-paginas memoria en debug para master system
