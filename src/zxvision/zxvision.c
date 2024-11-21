@@ -18752,52 +18752,7 @@ void menu_espera_tecla_timeout_tooltip(void)
 
 }
 
-/*
-void menu_espera_tecla_timeout_window_splash(void)
-{
-	//printf ("espera splash\n");
 
-        //Esperar a pulsar una tecla o timeout de window splash
-        z80_byte acumulado;
-
-        int contador_antes=menu_window_splash_counter_ms;
-        int trozos=4;
-        //WINDOW_SPLASH_SECONDS.
-        //5 pasos. total de WINDOW_SPLASH_SECONDS
-        int tiempototal=1000*WINDOW_SPLASH_SECONDS;
-        //Quitamos 1 segundo
-        tiempototal-=1000;
-
-        //Intervalo de cambio
-        int intervalo=tiempototal/5; //5 pasos
-        //printf ("intervalo: %d\n",intervalo);
-
-
-
-        do {
-                menu_cpu_core_loop();
-
-
-                acumulado=menu_da_todas_teclas();
-
-                //Cada 400 ms
-                if (menu_window_splash_counter_ms-contador_antes>intervalo) {
-                	trozos--;
-                	contador_antes=menu_window_splash_counter_ms;
-                	//printf ("dibujar franjas trozos: %d\n",trozos);
-                	if (trozos>=0) {
-                		menu_dibuja_ventana_franja_arcoiris_trozo_current(trozos);
-                	}
-                }
-
-
-		//printf ("menu_espera_tecla_timeout_tooltip acumulado: %d\n",acumulado);
-		//printf ("contador splash: %d\n",menu_window_splash_counter);
-
-
-	} while ( (acumulado & MENU_PUERTO_TECLADO_NINGUNA) ==MENU_PUERTO_TECLADO_NINGUNA && menu_window_splash_counter<WINDOW_SPLASH_SECONDS);
-
-}*/
 
 //tipo: 1 volver timeout normal como ventanas splash. 2. no finaliza, franjas continuamente moviendose
 void zxvision_espera_tecla_timeout_window_splash(int tipo)
@@ -18841,12 +18796,17 @@ void zxvision_espera_tecla_timeout_window_splash(int tipo)
 
                 //Cada 400 ms
                 if (menu_window_splash_counter_ms-contador_antes>intervalo) {
-                	trozos--;
+                	//trozos--;
                 	contador_antes=menu_window_splash_counter_ms;
                 	//printf ("dibujar franjas trozos: %d\n",trozos);
                 	if (trozos>=0) {
-                		if (tipo==1) menu_dibuja_ventana_franja_arcoiris_trozo_current(trozos);
+                		if (tipo==1) {
+                            menu_dibuja_ventana_franja_arcoiris_trozo_current(trozos);
+                            //printf("trozos: %d\n",trozos);
+                        }
                 	}
+
+                    trozos--;
 
 					if (tipo==2) menu_dibuja_ventana_franja_arcoiris_oscuro_current(indice_apagado);
 					indice_apagado++;
