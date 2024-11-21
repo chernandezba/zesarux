@@ -28,6 +28,7 @@
 #include "debug.h"
 #include "utils.h"
 #include "operaciones.h"
+#include "mem128.h"
 
 
 
@@ -100,6 +101,11 @@ void lec_init_memory_tables(void)
 	}
 }
 
+/*
+Memoria >=32768, siempre es lec. El chip de memoria "original" del spectrum se extrae
+Memoria <=32767, si esta mapeada all-ram, es memoria lec (y si hay una escritura, solo ira a lec).
+  Y si no esta mapeada all-ram, es memoria original del spectrum
+*/
 void lec_set_memory_pages(void)
 {
     z80_byte page;
@@ -110,6 +116,8 @@ void lec_set_memory_pages(void)
         case 0:
             lec_memory_pages[0]=lec_ram_memory_table[0];
             lec_memory_pages[1]=lec_ram_memory_table[1];
+            debug_paginas_memoria_mapeadas[0]=0;
+            debug_paginas_memoria_mapeadas[1]=1;
         break;
 
         //LEC-272
@@ -128,6 +136,9 @@ D4 - N0 selects the number of 32K RAM page at #0000-7fff,
 
 
             lec_memory_pages[1]=lec_ram_memory_table[7];
+
+            debug_paginas_memoria_mapeadas[0]=page;
+            debug_paginas_memoria_mapeadas[1]=7;
         break;
 
         case 2:
@@ -148,6 +159,9 @@ D3 - N3 selects the number of 32K RAM page at #0000-7fff, when PG=1. Don't care 
             //printf("lec 528 segment 0 has page %d\n",page);
 
             lec_memory_pages[1]=lec_ram_memory_table[15];
+
+            debug_paginas_memoria_mapeadas[0]=page;
+            debug_paginas_memoria_mapeadas[1]=15;
 
         break;
 

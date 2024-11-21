@@ -115,6 +115,7 @@
 #include "pcw.h"
 #include "if1.h"
 #include "microdrive.h"
+#include "lec.h"
 
 struct timeval debug_timer_antes, debug_timer_ahora;
 
@@ -6657,6 +6658,31 @@ void debug_registers_get_mem_page_extended(z80_byte segmento,char *texto_pagina,
 
         }
 
+        //Si es lec memory. Segmento alto
+        /*
+        Memoria >=32768, siempre es lec. El chip de memoria "original" del spectrum se extrae
+        Memoria <=32767, si esta mapeada all-ram, es memoria lec (y si hay una escritura, solo ira a lec).
+        Y si no esta mapeada all-ram, es memoria original del spectrum
+        */
+        if (lec_enabled.v) {
+            if (segmento==0) {
+                if (lec_all_ram() ) {
+                    sprintf (texto_pagina_short,"LE%d",debug_paginas_memoria_mapeadas[0]);
+                    sprintf (texto_pagina,"LEC RAM %d",debug_paginas_memoria_mapeadas[0]);
+                }
+
+                //Si no, lo dejamos tal cual estaba por defecto (ROM)
+                return;
+            }
+
+            if (segmento==1) {
+                sprintf (texto_pagina_short,"LE%d",debug_paginas_memoria_mapeadas[1]);
+                sprintf (texto_pagina,"LEC RAM %d",debug_paginas_memoria_mapeadas[1]);
+                return;
+            }
+
+        }
+
         //Con multiface
         if (segmento==0 && multiface_enabled.v && multiface_switched_on.v) {
                 strcpy(texto_pagina_short,"MLTF");
@@ -6860,6 +6886,12 @@ typedef struct s_debug_memory_segment debug_memory_segment;
                  //Si dandanator y maquina 48kb
                         if (MACHINE_IS_SPECTRUM_16_48 && dandanator_enabled.v && dandanator_switched_on.v) {
                                 debug_registers_get_mem_page_extended(0,segmentos[0].longname,segmentos[0].shortname);
+                        }
+
+                        //Si lec y maquina 48kb
+                        if (MACHINE_IS_SPECTRUM_16_48 && lec_enabled.v) {
+                            debug_registers_get_mem_page_extended(0,segmentos[0].longname,segmentos[0].shortname);
+                            debug_registers_get_mem_page_extended(1,segmentos[1].longname,segmentos[1].shortname);
                         }
 
                         //Si kartusho y maquina 48kb

@@ -38578,6 +38578,8 @@ void menu_lec_memory_type(MENU_ITEM_PARAMETERS)
 {
     lec_memory_type++;
     if (lec_memory_type==3) lec_memory_type=0;
+
+    lec_set_memory_pages();
 }
 
 
