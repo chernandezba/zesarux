@@ -446,5 +446,7 @@ LEC:
 -acciones boton derecho sobre botones superiores e inferiores se activan aunque haya ventanas por encima
 
 
--quitar avisos de tamaño mmc al mapear filemap, por ejemplo con pogie.
-Quiza hacer que al mapear con file map no sustituya archivo mmc, sino que lo ponga en un modo temporal
+ok-mapeo filemap: ver de que manera ese mapeo de mmc es temporal y en algun momento vuelve a mapearse el mmc que habia
+*por ejemplo con ruta a fichero temporal, que se cambie el otro con reset y se reinserte mmc?
+
+-estilos de gui como retromac, que no tienen franjas de colores, pero que aparezca algo con ventanas de tipo splash (que desaparecen con franja de color) o las de error (que la franja va moviendose continuamente). Revisar condiciones ESTILO_GUI_MUESTRA_RAINBOW

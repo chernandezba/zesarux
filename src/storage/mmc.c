@@ -119,6 +119,18 @@ z80_byte *mmc_memory_pointer;
 int mmc_flash_must_flush_to_disk=0;
 char mmc_file_name[PATH_MAX]="";
 
+//Si se mapea un archivo a mmc desde esxdos
+int mmc_filemap_from_esxdos=0;
+//Y el nombre de ese archivo
+char mmc_filemap_name[PATH_MAX]="";
+
+char *mmc_get_file_name(void)
+{
+    if (mmc_filemap_from_esxdos) return mmc_filemap_name;
+    else return mmc_file_name;
+}
+
+
 /*
 Inicializar una mmc desde plus3e:
 
@@ -187,6 +199,11 @@ void mmc_flush_flash_to_disk(void)
                 return;
         }
 
+        if (mmc_filemap_from_esxdos) {
+            debug_printf(VERBOSE_DEBUG,"Do not flush changes when MMC is mapped from ESXDOS");
+            return;
+        }
+
 
         debug_printf (VERBOSE_INFO,"Flushing MMC to disk");
 
@@ -250,8 +267,9 @@ int mmc_read_file_to_memory(void)
   FILE *ptr_mmcfile;
   unsigned int leidos=0;
 
-  debug_printf (VERBOSE_INFO,"Opening MMC File %s",mmc_file_name);
-  ptr_mmcfile=fopen(mmc_file_name,"rb");
+  debug_printf (VERBOSE_INFO,"Opening MMC File %s",mmc_get_file_name());
+
+  ptr_mmcfile=fopen(mmc_get_file_name(),"rb");
 
 
   unsigned int bytes_a_leer=mmc_size;
@@ -346,10 +364,10 @@ int mmc_read_hdf_header(void)
 
 
         FILE *ptr_inputfile;
-        ptr_inputfile=fopen(mmc_file_name,"rb");
+        ptr_inputfile=fopen(mmc_get_file_name(),"rb");
 
         if (ptr_inputfile==NULL) {
-                debug_printf (VERBOSE_ERR,"Error opening %s",mmc_file_name);
+                debug_printf (VERBOSE_ERR,"Error opening %s",mmc_get_file_name());
                 return 1;
         }
 
@@ -407,8 +425,8 @@ void mmc_insert(void)
 {
 
         //Si existe
-        if (!si_existe_archivo(mmc_file_name)) {
-                debug_printf (VERBOSE_ERR,"File %s does not exist",mmc_file_name);
+        if (!si_existe_archivo(mmc_get_file_name())) {
+                debug_printf (VERBOSE_ERR,"File %s does not exist",mmc_get_file_name());
                 mmc_disable();
                 return;
         }
@@ -419,11 +437,11 @@ void mmc_insert(void)
 		return;
 	}
 
-	mmc_size=get_file_size(mmc_file_name);
+	mmc_size=get_file_size(mmc_get_file_name());
 	debug_printf (VERBOSE_DEBUG,"mmc file size: %ld",mmc_size);
 
 	//Gestionar si archivo es tipo hdf
-	if (!util_compare_file_extension(mmc_file_name,"hdf")) {
+	if (!util_compare_file_extension(mmc_get_file_name(),"hdf")) {
 		debug_printf (VERBOSE_INFO,"File has hdf header");
 		if (mmc_read_hdf_header()) {
 			mmc_disable();
@@ -452,8 +470,10 @@ void mmc_insert(void)
 	//O de 16 MB en el caso de sectores de 32768 byes (para tarjetas > 1 GB)
 	long long int resultado=mmc_size/multiple;
 	long long int multiplicado=resultado*multiple;
+
+    //No mostramos esto como error por pantalla. Por ejemplo para mapeos desde esxdos con filemap no queremos que salte este error
 	if (multiplicado!=mmc_size) {
-		debug_printf (VERBOSE_ERR,"Error. MMC file should be multiple of %d KB. Use at your own risk!",multiple/1024);
+		debug_printf (VERBOSE_INFO,"Warning. MMC file should be multiple of %d KB. Use at your own risk!",multiple/1024);
 		//mmc_disable();
 		//return;
 	}
@@ -709,6 +729,8 @@ z80_byte mmc_read(void)
 		return mmc_r1;
 	}
 
+    //printf("MMC read. mmc_last_command=%02XH\n",mmc_last_command);
+
 	//Actuar segun mmc_last_command
 	switch (mmc_last_command) {
 
@@ -877,6 +899,13 @@ z80_byte mmc_read(void)
 				}
 
                                 //CRC. A FFh
+                                /*
+                                Nota: no estoy seguro viendo mi codigo si este crc se pretende que sean 1 byte o 2
+                                Porque tal y como está ahora, será 1 byte de crc. Si vemos sobre mmc_read_index:
+                                mmc_read_index=514. ultimo byte de datos
+                                mmc_read_index=515. se asigna value=crc=255. Se retorna ese value. Al incrementarse mmc_read_index pasa a ser 516 y luego a -1
+                                mmc_read_index=516. se asigna value=crc=255. Pero aqui NO se llega nunca pues mmc_read_index pasa de 515 a 516 y a -1 de golpe
+                                */
                                 if (mmc_read_index==515 || mmc_read_index==516) value=0xFF;
 
                                 //Si final
@@ -896,38 +925,38 @@ z80_byte mmc_read(void)
                         }
                 break;
 
-		//Este comando solo testeado en TBBlue
+		//Este comando solo testeado en el arranque del Next. Tambien lo usa el Atic Atac
 		case 0x52:
 			if (mmc_read_index>=0) {
 
 				//Debug vario
 				if (mmc_read_index>=3 && mmc_read_index<=514) {
 					debug_printf (VERBOSE_PARANOID,"MMC Read command READ_MULTIPLE_BLOCK. Adress=%XH Index=%d PC=%d A=%d BC=%d",
-					mmc_read_address+mmc_read_index-3,mmc_read_index,reg_pc,reg_a,reg_bc);
+					    mmc_read_address+mmc_read_index-3,mmc_read_index,reg_pc,reg_a,reg_bc);
 				}
 				else debug_printf (VERBOSE_PARANOID,"MMC Read command READ_MULTIPLE_BLOCK. Index=%d PC=%d",mmc_read_index,reg_pc);
 
-                                //valor primero, byte ncr time
-                                if (mmc_read_index==0) {
-					value=0xff;
-					//sleep(1);
-				}
+                //valor primero, byte ncr time
+                if (mmc_read_index==0) {
+                    value=0xff;
+                    //sleep(1);
+                }
 
-                                //valor segundo, command response 0
-                                if (mmc_read_index==1) value=0;
+                //valor segundo, command response 0
+                if (mmc_read_index==1) value=0;
 
-                                //Valor tercero feh
-                                if (mmc_read_index==2) value=0xFE;
+                //Valor tercero feh
+                if (mmc_read_index==2) value=0xFE;
 
-                                //Indice de 3-514, sector
-                                if (mmc_read_index>=3 && mmc_read_index<=514) {
-					value=mmc_read_byte_memory(mmc_read_address+mmc_read_index-3);
-					//printf ("Retornando byte numero %d con contenido 0x%02X ('%c')\n",mmc_read_index-3,value,
-					//(value>=32 && value<=127 ? value : '?') );
-				}
+                //Indice de 3-514, sector
+                if (mmc_read_index>=3 && mmc_read_index<=514) {
+                    value=mmc_read_byte_memory(mmc_read_address+mmc_read_index-3);
+                    //printf ("Retornando byte numero %d con contenido 0x%02X ('%c')\n",mmc_read_index-3,value,
+                    //    (value>=32 && value<=127 ? value : '?') );
+                }
 
-				//temp. cuando se han leido los 512 bytes, ir al siguiente sector
-				if (mmc_read_index==514) mmc_read_index=515;
+                //cuando se han leido los 512 bytes, ir al siguiente sector
+                if (mmc_read_index==514) mmc_read_index=515;
 
 				/*
 
@@ -937,29 +966,29 @@ z80_byte mmc_read(void)
 
 				*/
 
-                                //Si final
-                                mmc_read_index++;
-                                if (mmc_read_index==516) mmc_read_index=-1;
+                //Si final
+                mmc_read_index++;
+                if (mmc_read_index==516) mmc_read_index=-1;
 
 
-				//Siguiente bloque a leer
-				if (mmc_read_index==-1) {
-					mmc_read_index=0; //Esto es asi??
-					mmc_read_address +=512;
-					//printf ("Jumping to next Block Read\n");
-				}
+                //Siguiente bloque a leer
+                if (mmc_read_index==-1) {
+                    mmc_read_index=0;
+                    mmc_read_address +=512;
+                    debug_printf (VERBOSE_PARANOID,"MMC: After read 512 bytes on READ_MULTIPLE_BLOCK. Jumping to next Block Read. mmc_read_address=%XH",mmc_read_address);
+                }
 
-                                return value;
+                return value;
 
-                        }
+            }
 
-                        //Que devolvemos si aun no se ha enviado todo el comando 52?
-                        else {
+            //Que devolvemos si aun no se ha enviado todo el comando 52?
+            else {
 				debug_printf (VERBOSE_PARANOID,"MMC Read command READ_MULTIPLE_BLOCK. Index<0. Returning FFH. PC=%d",reg_pc);
 
-                                return 0xFF;
-                        }
-                break;
+                return 0xFF;
+            }
+        break;
 
                 case 0x58:
 			debug_printf (VERBOSE_PARANOID,"MMC Read command WRITE_BLOCK");
@@ -1072,14 +1101,14 @@ void mmc_write(z80_byte value)
 
 
 	if (mmc_index_command==0) {
-        //printf("MMC Se recibe comando\n");
+        //printf("MMC Se recibe comando %d (%02XH)\n",value,value);
 		//Se recibe comando
 		mmc_last_command=value;
 		mmc_index_command++;
 	}
 
 	else {
-        //printf("MMC Se recibe parametro de comando\n");
+        //printf("MMC Se recibe parametro de comando %02XH\n",mmc_last_command);
 		//Se recibe parametro de comando
 		//Actuar segun mmc_last_command
 		switch (mmc_last_command) {
@@ -1143,18 +1172,19 @@ void mmc_write(z80_byte value)
 
 
                 case 0x4C:
-                        debug_printf (VERBOSE_PARANOID,"MMC Write command STOP_TRANSMISSION");
+                    debug_printf (VERBOSE_PARANOID,"MMC Write command STOP_TRANSMISSION");
 
-			if (mmc_index_command==5) {
-                                        //Estado idle
-                                        mmc_r1=1;
-                                        //Reseteamos indice
-                                        mmc_index_command=0;
-                                }
-                                else mmc_index_command++;
-                        break;
 
+			        if (mmc_index_command==5) {
+                        //Estado idle
+                        mmc_r1=1;
+                        //Reseteamos indice
+                        mmc_index_command=0;
+                    }
+                    else mmc_index_command++;
                 break;
+
+            break;
 
 
 
@@ -1205,6 +1235,7 @@ void mmc_write(z80_byte value)
                                         unsigned int direccion=mmc_retorna_dir_32bit(mmc_parameters_sent[0],mmc_parameters_sent[1],
                                                 mmc_parameters_sent[2],mmc_parameters_sent[3]);
                                         //printf ("Direccion: 0x%X\n",direccion);
+                                        //printf ("MMC Write command READ_MULTIPLE_BLOCK. Address: %XH\n",direccion);
                                         mmc_read_address=direccion;
 
 

@@ -17317,6 +17317,8 @@ void menu_storage_mmc_file(MENU_ITEM_PARAMETERS)
 
 	mmc_disable();
 
+    mmc_filemap_from_esxdos=0;
+
         char *filtros[5];
 
         filtros[0]="mmc";
@@ -17566,6 +17568,9 @@ void menu_storage_mmc_use_local_tbblue(void)
 void menu_storage_mmc_autoconfigure_tbblue(MENU_ITEM_PARAMETERS)
 {
 
+    //desmapear posible mapeo de esxdos
+    mmc_filemap_from_esxdos=0;
+
 	int tipo_imagen;
 
     int available_download=1;
@@ -17612,16 +17617,31 @@ void menu_mmc_divmmc(MENU_ITEM_PARAMETERS)
         char string_mmc_file_shown[17];
         char string_divmmc_rom_file_shown[10];
 
+        menu_add_item_menu_inicial(&array_menu_mmc_divmmc,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
 
-        menu_tape_settings_trunc_name(mmc_file_name,string_mmc_file_shown,17);
-        menu_add_item_menu_en_es_ca_inicial(&array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_mmc_file,NULL,
-            "~~MMC File","Archivo ~~MMC","Arxiu ~~MMC");
-        menu_add_item_menu_sufijo_format(array_menu_mmc_divmmc," [%s]",string_mmc_file_shown);
-        menu_add_item_menu_prefijo(array_menu_mmc_divmmc,"    ");
-        menu_add_item_menu_shortcut(array_menu_mmc_divmmc,'m');
-        menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"MMC Emulation file");
-        menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"MMC Emulation file");
 
+        if (!mmc_filemap_from_esxdos) {
+
+
+            menu_tape_settings_trunc_name(mmc_file_name,string_mmc_file_shown,17);
+            menu_add_item_menu_en_es_ca(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_mmc_file,NULL,
+                "~~MMC File","Archivo ~~MMC","Arxiu ~~MMC");
+            menu_add_item_menu_sufijo_format(array_menu_mmc_divmmc," [%s]",string_mmc_file_shown);
+            menu_add_item_menu_prefijo(array_menu_mmc_divmmc,"    ");
+            menu_add_item_menu_shortcut(array_menu_mmc_divmmc,'m');
+            menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"MMC Emulation file");
+            menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"MMC Emulation file");
+
+        }
+        else {
+            menu_add_item_menu_en_es_ca(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,NULL,NULL,
+                "MMC is mapped from ESXDOS","MMC está mapeado desde ESXDOS","MMC está mapejat desde ESXDOS");
+            menu_add_item_menu_prefijo(array_menu_mmc_divmmc,"    ");
+
+            menu_add_item_menu_en_es_ca(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_mmc_file,NULL,
+                "~~MMC File","Archivo ~~MMC","Arxiu ~~MMC");
+            menu_add_item_menu_prefijo(array_menu_mmc_divmmc,"    ");
+        }
 
         if (MACHINE_IS_TBBLUE) {
 
@@ -17630,7 +17650,6 @@ void menu_mmc_divmmc(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_prefijo(array_menu_mmc_divmmc,"    ");
 
         }
-
 
 
         menu_add_item_menu_en_es_ca(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_mmc_emulation,menu_storage_mmc_emulation_cond,

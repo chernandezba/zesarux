@@ -1359,7 +1359,7 @@ struct s_estilos_gui {
 
         int muestra_recuadro; //si se muestra recuadro en ventana
 
-        int muestra_rainbow;  //si se muestra rainbow en titulo
+        int muestra_rainbow;  //si se muestra rainbow (franjas de colores) en titulo
 
         int solo_mayusculas; //para ZX80/81
 

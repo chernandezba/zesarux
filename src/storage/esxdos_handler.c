@@ -2265,7 +2265,7 @@ eg for NextZXOS v1.94, DE=$0194 HL=language code:
 		break;*/
 
         case ESXDOS_RST8_DISK_FILEMAP:
-            //De momento esto solo lo he encontrado en el Pogie de Next y en Atic Atac de Next
+            //De momento esto solo lo he encontrado en el Pogie de Next, en Atic Atac de Next y en Exploding Fist de Next
             if (MACHINE_IS_TBBLUE) {
                 /*
 ; ***************************************************************************
@@ -2301,6 +2301,9 @@ eg for NextZXOS v1.94, DE=$0194 HL=language code:
 ; allocate space in the main RAM area using the BC_SPACES call in the 48K
 ; ROM, or page in an allocated bank).
                 */
+
+                //TODO: Esto no esta soportado: Can be called multiple times if buffer is filled, continuing from previous.
+
                 debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_DISK_FILEMAP. File handle: %02XH DE=%04XH HL=%04XH IX=%04XH PC=%04XH",
                     reg_a,DE,HL,reg_ix,reg_pc);
 
@@ -2330,7 +2333,7 @@ eg for NextZXOS v1.94, DE=$0194 HL=language code:
                 }
 
 
-                printf("Archivo (file handle %d): %s\n",reg_a,esxdos_fopen_files[file_handler].debug_fullpath);
+                debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_DISK_FILEMAP. File (file handle %d): %s\n",file_handler,esxdos_fopen_files[file_handler].debug_fullpath);
 
 
                 //Temporal atic atac
@@ -2351,13 +2354,13 @@ eg for NextZXOS v1.94, DE=$0194 HL=language code:
                 int sector_count; //=218112; //el archivo .nex / 512 (512 es un posible sector size)
 
                 int file_size=get_file_size(esxdos_fopen_files[file_handler].debug_fullpath);
-                printf("file size: %d\n",file_size);
+                //printf("file size: %d\n",file_size);
                 sector_count=file_size/sector_size;
 
                 int offset_sector=0;
                 int indice=0;
-                while (sector_count>0) {
-                    printf("Construyendo mapa ESXDOS_RST8_DISK_FILEMAP. Offset sector: %XH sector remaining: %d\n",offset_sector,sector_count);
+                while (sector_count>0 && DE>0) {
+                    debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_DISK_FILEMAP. Building file map. Offset sector: %XH sector remaining: %d",offset_sector,sector_count);
                     poke_byte_no_time((*registro_parametros_hl_ix)+indice,(offset_sector) & 0xFF);
                     poke_byte_no_time((*registro_parametros_hl_ix)+indice+1,(offset_sector>>8) & 0xFF);
                     poke_byte_no_time((*registro_parametros_hl_ix)+indice+2,(offset_sector>>16) & 0xFF);
@@ -2380,19 +2383,22 @@ eg for NextZXOS v1.94, DE=$0194 HL=language code:
                 //Montar este archivo como imagen mmc
 
                 mmc_disable();
-                strcpy(mmc_file_name,esxdos_fopen_files[file_handler].debug_fullpath);
+                mmc_filemap_from_esxdos=1;
+                strcpy(mmc_filemap_name,esxdos_fopen_files[file_handler].debug_fullpath);
+                mmc_enable();
 
+                if (divmmc_diviface_enabled.v) divmmc_diviface_disable();
 
-                if (mmc_enabled.v==0) menu_storage_mmc_emulation(0);
+                if (divmmc_mmc_ports_enabled.v==0) divmmc_mmc_ports_enable();
 
-                if (divmmc_diviface_enabled.v) menu_storage_divmmc_diviface(0);
-
-                if (divmmc_mmc_ports_enabled.v==0) menu_storage_divmmc_mmc_ports_emulation(0);
-
+                //No queremos que las posibles escrituras MMC alteren el archivo mapeado
                 mmc_persistent_writes.v=0;
 
 
-
+/*
+;       A=card flags: bit 0=card id (0 or 1)
+;                     bit 1=0 for byte addressing, 1 for block addressing
+*/
 
                 reg_a=0x02;
 
@@ -2407,7 +2413,7 @@ eg for NextZXOS v1.94, DE=$0194 HL=language code:
 
 		default:
 			if (funcion>=0x80) {
-				debug_printf (VERBOSE_DEBUG,"ESXDOS handler: Unhandled ESXDOS_RST8: %02XH !! ",funcion);
+				debug_printf (VERBOSE_DEBUG,"ESXDOS handler: Unhandled ESXDOS_RST8 call: %02XH !! ",funcion);
 				char buffer_registros[1024];
 				print_registers(buffer_registros);
 				debug_printf (VERBOSE_DEBUG,"ESXDOS handler: %s",buffer_registros);
