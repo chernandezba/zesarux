@@ -441,12 +441,10 @@ LEC:
 -con ddh insertado, si escojo otro ddh pero pulso ESC, se queda hilow habilitado pero apuntando a ningun archivo
 
 
--En MSX y SVI no se usa msx_ppi_mode_port/svi_ppi_mode_port en lectura. Quien lo lee y para que?
+-En MSX y SVI no estoy usando usa msx_ppi_mode_port/svi_ppi_mode_port en lectura. Quien lo lee y para que?
 
 -acciones boton derecho sobre botones superiores e inferiores se activan aunque haya ventanas por encima
 
 
-ok-mapeo filemap: ver de que manera ese mapeo de mmc es temporal y en algun momento vuelve a mapearse el mmc que habia
-*por ejemplo con ruta a fichero temporal, que se cambie el otro con reset y se reinserte mmc?
 
 -estilos de gui como retromac, que no tienen franjas de colores, pero que aparezca algo con ventanas de tipo splash (que desaparecen con franja de color) o las de error (que la franja va moviendose continuamente). Revisar condiciones ESTILO_GUI_MUESTRA_RAINBOW

@@ -8992,7 +8992,7 @@ void menu_dibuja_ventana_franja_arcoiris_oscuro(int x, int y, int ancho,int indi
     z80_byte caracter_franja=128;
 
 
-	if (ESTILO_GUI_MUESTRA_RAINBOW) {
+	if (1/*ESTILO_GUI_MUESTRA_RAINBOW*/) {
 
 		if (si_complete_video_driver() ) {
 
@@ -9059,12 +9059,12 @@ void menu_dibuja_ventana_franja_arcoiris_trozo(int x, int y, int ancho,int franj
 
     z80_byte caracter_franja=128;
 
-	if (ESTILO_GUI_MUESTRA_RAINBOW) {
+	if (1/*ESTILO_GUI_MUESTRA_RAINBOW*/) {
 		//en el caso de drivers completos, hacerlo real
 		if (si_complete_video_driver() ) {
 			//5 espacios negro primero
 			int i;
-			for (i=margen;i>=margen-4;i--) putchar_menu_overlay(x+ancho-i,y,' ',ESTILO_GUI_PAPEL_TITULO,ESTILO_GUI_PAPEL_TITULO);
+			for (i=margen;i>=margen-4;i--) putchar_menu_overlay(x+ancho-i,y,menu_retorna_caracter_espacio_titulo(),ESTILO_GUI_TINTA_TITULO,ESTILO_GUI_PAPEL_TITULO);
 
             if (ESTILO_GUI_CARACTER_FRANJA!=0) {
                 caracter_franja=ESTILO_GUI_CARACTER_FRANJA;
