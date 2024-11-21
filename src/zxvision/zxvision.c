@@ -1961,7 +1961,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         -1, //si texto inverso solo cambia color tinta
         0, //rellenar titulo
         char_set_dos,
-        0 //caracter franja normal
+        153 //caracter franja cambiado
     },
 
 	{1,"QNX",QNX_COLOUR_GRAY,0,
@@ -1991,7 +1991,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         QNX_COLOUR_GREEN, //si texto inverso solo cambia color tinta
         0, //rellenar titulo
         char_set_beos,
-        0 //caracter franja normal
+        153 //caracter franja cambiado
     },
 
 	{1,"RetroMac",RETROMAC_COLOUR_paper,0,
@@ -2056,7 +2056,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         -1, //-1, //si texto inverso solo cambia color tinta
         0, //rellenar titulo
         char_set_dos,
-        0 //caracter franja normal
+        153 //caracter franja cambiado
     },
 
 	{0,"TempleOS",7+8,1,
@@ -2116,7 +2116,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         2+8, //si texto inverso solo cambia color tinta
         0, //rellenar titulo
         char_set_dos,
-        0 //caracter franja normal
+        153 //caracter franja cambiado
     },
 
     {1,"TurboVision",TURBOVISION_COLOUR_white,TURBOVISION_COLOUR_black,
@@ -2146,7 +2146,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         TURBOVISION_COLOUR_red, //si texto inverso solo cambia color tinta
         0, //rellenar titulo
         char_set_dos,
-        0 //caracter franja normal
+        153 //caracter franja cambiado
     },
 
 	{0,"Bloody",2,7,
@@ -2418,7 +2418,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         -1, //si texto inverso solo cambia color tinta
         0, //rellenar titulo
         char_set_spectrum,
-        0 //caracter franja normal
+        153 //caracter franja cambiado
     },
 
 	//Solo vale en video driver completo por los colores usados (primer valor de la estructura)
@@ -2450,7 +2450,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         -1, //si texto inverso solo cambia color tinta
         0, //rellenar titulo
         char_set_spectrum,
-        0 //caracter franja normal
+        153 //caracter franja cambiado
     }
 
 
@@ -8992,7 +8992,9 @@ void menu_dibuja_ventana_franja_arcoiris_oscuro(int x, int y, int ancho,int indi
     z80_byte caracter_franja=128;
 
     //Quiero que salgan las franjas aunque el estilo no lo permita en ventanas de error y splash message
-	if (1/*ESTILO_GUI_MUESTRA_RAINBOW*/) {
+    //Excepto BEOS
+    if (!ESTILO_GUI_NO_RELLENAR_TITULO) {
+	//if (1/*ESTILO_GUI_MUESTRA_RAINBOW*/) {
 
 		if (si_complete_video_driver() ) {
 
@@ -9060,7 +9062,9 @@ void menu_dibuja_ventana_franja_arcoiris_trozo(int x, int y, int ancho,int franj
     z80_byte caracter_franja=128;
 
     //Quiero que salgan las franjas aunque el estilo no lo permita en ventanas de error y splash message
-	if (1/*ESTILO_GUI_MUESTRA_RAINBOW*/) {
+    //Excepto BEOS
+    if (!ESTILO_GUI_NO_RELLENAR_TITULO) {
+	//if (1/*ESTILO_GUI_MUESTRA_RAINBOW*/) {
 		//en el caso de drivers completos, hacerlo real
 		if (si_complete_video_driver() ) {
 			//5 espacios negro primero
