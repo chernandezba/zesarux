@@ -37,6 +37,9 @@
 #include "utils.h"
 #include "diviface.h"
 #include "screen.h"
+#include "mmc.h"
+#include "divmmc.h"
+#include "menu_items.h"
 
 #if defined(__APPLE__)
 	#include <sys/syslimits.h>
@@ -2374,8 +2377,22 @@ eg for NextZXOS v1.94, DE=$0194 HL=language code:
                     DE--;
                 }
 
-                //De momento para que sea capaz de mapear el archivo de atic atac en mmc hay que poner dicho
-                //archivo como imagen de mmc tal cual
+                //Montar este archivo como imagen mmc
+
+                mmc_disable();
+                strcpy(mmc_file_name,esxdos_fopen_files[file_handler].debug_fullpath);
+
+
+                if (mmc_enabled.v==0) menu_storage_mmc_emulation(0);
+
+                if (divmmc_diviface_enabled.v) menu_storage_divmmc_diviface(0);
+
+                if (divmmc_mmc_ports_enabled.v==0) menu_storage_divmmc_mmc_ports_emulation(0);
+
+                mmc_persistent_writes.v=0;
+
+
+
 
                 reg_a=0x02;
 

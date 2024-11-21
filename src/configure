@@ -1531,7 +1531,7 @@ stats.o: stats.c stats.h cpu.h zxvision/zxvision.h compileoptions.h debug.h netw
 sensors.o: sensors.c sensors.h cpu.h debug.h soundchips/ay38912.h video/screen.h zxvision/zxvision.h timer.h stats.h audio/audio.h soundchips/sn76489an.h zrcp/zeng_online_client.h ula.h
 	\$(CC) \$(CFLAGS) -c sensors.c
 
-esxdos_handler.o: storage/esxdos_handler.c storage/esxdos_handler.h cpu.h operaciones.h debug.h utils.h storage/diviface.h video/screen.h menu/menu_filesel.h
+esxdos_handler.o: storage/esxdos_handler.c storage/esxdos_handler.h cpu.h operaciones.h debug.h utils.h storage/diviface.h video/screen.h menu/menu_filesel.h storage/mmc.h storage/divmmc.h menu/menu_items.h
 	\$(CC) \$(CFLAGS) -c storage/esxdos_handler.c
 
 tbblue.o: machines/tbblue.c machines/tbblue.h cpu.h mem128.h debug.h contend.h utils.h zxvision/zxvision.h storage/divmmc.h storage/diviface.h video/screen.h machines/timex.h audio/audio.h datagear.h soundchips/ay38912.h copy_interfaces/multiface.h uartbridge.h settings.h joystick.h

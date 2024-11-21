@@ -67,6 +67,7 @@ Mejorado ZX Desktop:
 * Correcciones:
 
 Quitar indicador de buffer lleno al pulsar shift+e en ventana de Fuente de sonido externa
+Corregido pulsación boton derecho en botones superiores con menu cerrado y sin ventanas abiertas
 Corregido tecla alt pulsada al cambiar de ventana pulsando alt-tab en drivers xwindow, cocoa, sdl1 y sdl2
 Corregida autocarga de TZX como Cinta Real en Spectrum +3
 Corregido hotswap ZX80 a ZX81, ZX81 a ZX80
@@ -75,6 +76,7 @@ Corregido sonido al grabar: permitir escucharlo en ordenadores: Jupiter Ace, CPC
 Corregido mapa de memoria y comportamiento en Jupiter Ace: ahora es perfecto y mejor que cualquier otro emulador
 Corregida carga de snapshots .nex y la inicialización incorrecta de Layer 2 (corrige errores en Head Over Heels de Next por ejemplo)
 Corregida carga de snapshots .nex y la MMU no gestionada correctamente
+Corregido llamada a esxdos DISK_FILEMAP en Next
 Corregida característica de Buscar menú. Ahora está habilitado por defecto
 Corregido error al grabar snapshots .ZSF de Z88 cuando el bloque de RAM o de tarjeta de memoria no está comprimido
 Corregido mostrar texto en footer de F5/Button menu
