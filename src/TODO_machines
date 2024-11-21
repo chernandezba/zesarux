@@ -1220,6 +1220,8 @@ O quizá esa rom es del 328 en vez del 318
 
 --- Master System ---
 
+-mostar paginas memoria mapeadas en debug cpu
+
 -Modo 50Hz o 60Hz para Master system?
 
 -fallos en varios juegos sms:

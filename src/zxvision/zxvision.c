@@ -1720,7 +1720,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         -1, //si texto inverso solo cambia color tinta
         0, //rellenar titulo
         char_set_msx,
-        0 //caracter franja normal
+        153 //caracter franja cambiado
     },
 
     {0,"QL",7+8,0,
@@ -1870,7 +1870,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         -1, //si texto inverso solo cambia color tinta
         0, //rellenar titulo
         char_set_amigaos,
-        0 //caracter franja normal
+        153 //caracter franja cambiado
     },
 
 	{1,"AtariTOS",ATARITOS_COLOUR_white,0,
@@ -1900,7 +1900,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         -1, //si texto inverso solo cambia color tinta
         0, //rellenar titulo
         char_set_ataritos,
-        0 //caracter franja normal
+        153 //caracter franja cambiado
     },
 
 	{1,"BeOS",BEOS_COLOUR_grey_menu,0,
@@ -2021,7 +2021,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         5, //si texto inverso solo cambia color tinta
         0, //rellenar titulo
         char_set_retromac,
-        0 //caracter franja normal
+        153 //caracter franja cambiado
     },
 
     //Risc Os V.1 ("Arthur")
