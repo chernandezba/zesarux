@@ -54,14 +54,40 @@ int lec_nested_id_peek_byte_no_time;
 int lec_nested_id_poke_byte;
 int lec_nested_id_poke_byte_no_time;
 
-//0=lec-80
-//1=lec-272
-//2=lec-528
+//Se quitan los ultimos 32 kb de ram. Entonces:
+//0=lec-80  (2*32= 64  kb de RAM lec+16 kb de RAM baja)
+//1=lec-272 (8*32= 256 kb de RAM lec+16 kb de RAM baja)
+//2=lec-528 (16*32=512 kb de RAM lec+16 kb de RAM baja)
 int lec_memory_type=0;
 
 int lec_all_ram(void)
 {
     return lec_port_fd & 128;
+}
+
+int lec_get_total_memory_pages(void)
+{
+    switch (lec_memory_type) {
+
+        //LEC-80
+        case 0:
+            return 2;
+        break;
+
+        //LEC-272
+        case 1:
+            return 8;
+        break;
+
+        default:
+            return 16;
+        break;
+    }
+}
+
+int lec_get_total_memory_size(void)
+{
+    return lec_get_total_memory_pages()*32768;
 }
 
 void lec_init_memory_tables(void)

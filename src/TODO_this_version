@@ -397,7 +397,6 @@ La particularidad es que ese archivo tiene bloques a final de microdrive y al pr
 -----------------------
 
 LEC:
--agregar memory zone lec
 -mostrar paginas de memoria lec en debug cpu
 
 
@@ -445,6 +444,3 @@ LEC:
 
 -acciones boton derecho sobre botones superiores e inferiores se activan aunque haya ventanas por encima
 
-
-
--estilos de gui como retromac, que no tienen franjas de colores, pero que aparezca algo con ventanas de tipo splash (que desaparecen con franja de color) o las de error (que la franja va moviendose continuamente). Revisar condiciones ESTILO_GUI_MUESTRA_RAINBOW

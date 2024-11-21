@@ -897,6 +897,7 @@ extern void snapshot_get_date_time_string(char *texto);
 #define MEMORY_ZONE_MDV2 50
 #define MEMORY_ZONE_MDV3 51
 #define MEMORY_ZONE_MDV4 52
+#define MEMORY_ZONE_LEC_MEMORY 53
 
 
 

@@ -161,6 +161,7 @@
 #include "if1.h"
 #include "microdrive.h"
 #include "microdrive_raw.h"
+#include "lec.h"
 
 //Archivo usado para entrada de teclas
 FILE *ptr_input_file_keyboard;
@@ -14690,6 +14691,13 @@ unsigned int machine_get_memory_zone_attrib(int zone, int *readwrite)
         }
     break;
 
+    case MEMORY_ZONE_LEC_MEMORY:
+        if (lec_enabled.v) {
+            *readwrite=1;
+            size=lec_get_total_memory_size();
+        }
+    break;
+
     case MEMORY_ZONE_MDV1:
         if (microdrive_status[0].microdrive_enabled) {
             *readwrite=1;
@@ -15218,6 +15226,12 @@ z80_byte *machine_get_memory_zone_pointer(int zone, int address)
     case MEMORY_ZONE_DSK_SECTOR:
         if (dsk_memory_zone_dsk_sector_enabled.v) {
             p=&p3dsk_buffer_disco[dsk_memory_zone_dsk_sector_start+address];
+        }
+    break;
+
+    case MEMORY_ZONE_LEC_MEMORY:
+        if (lec_enabled.v) {
+            p=&lec_ram_memory_pointer[address];
         }
     break;
 
@@ -15769,6 +15783,13 @@ void machine_get_memory_zone_name(int zone, char *name)
         if (dsk_memory_zone_dsk_sector_enabled.v) {
                        //123456789012345678901234567890
             strcpy(name,"DSK Sector");
+        }
+    break;
+
+    case MEMORY_ZONE_LEC_MEMORY:
+        if (lec_enabled.v) {
+                       //123456789012345678901234567890
+            strcpy(name,"LEC Memory");
         }
     break;
 

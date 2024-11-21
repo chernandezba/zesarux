@@ -38,4 +38,7 @@ extern int lec_memory_type;
 extern int lec_all_ram(void);
 extern z80_byte *lec_memory_pages[];
 
+extern int lec_get_total_memory_size(void);
+extern z80_byte *lec_ram_memory_pointer;
+
 #endif
