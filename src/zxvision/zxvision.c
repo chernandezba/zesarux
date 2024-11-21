@@ -8991,7 +8991,7 @@ void menu_dibuja_ventana_franja_arcoiris_oscuro(int x, int y, int ancho,int indi
 
     z80_byte caracter_franja=128;
 
-
+    //Quiero que salgan las franjas aunque el estilo no lo permita en ventanas de error y splash message
 	if (1/*ESTILO_GUI_MUESTRA_RAINBOW*/) {
 
 		if (si_complete_video_driver() ) {
@@ -9059,6 +9059,7 @@ void menu_dibuja_ventana_franja_arcoiris_trozo(int x, int y, int ancho,int franj
 
     z80_byte caracter_franja=128;
 
+    //Quiero que salgan las franjas aunque el estilo no lo permita en ventanas de error y splash message
 	if (1/*ESTILO_GUI_MUESTRA_RAINBOW*/) {
 		//en el caso de drivers completos, hacerlo real
 		if (si_complete_video_driver() ) {
