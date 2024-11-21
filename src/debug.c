@@ -6795,10 +6795,10 @@ int debug_get_memory_pages_extended(debug_memory_segment *segmentos)
 	segmentos[0].start=0;
 	segmentos[0].length=16384;
 
-        strcpy(segmentos[1].longname,"System RAM");
-        strcpy(segmentos[1].shortname,"RAM");
-        segmentos[1].start=16384;
-        segmentos[1].length=49152;
+    strcpy(segmentos[1].longname,"System RAM");
+    strcpy(segmentos[1].shortname,"RAM");
+    segmentos[1].start=16384;
+    segmentos[1].length=49152;
 
 
 
@@ -6845,39 +6845,39 @@ typedef struct s_debug_memory_segment debug_memory_segment;
 
 
 	if (MACHINE_IS_TBBLUE) {
-                                                      int pagina;
-                                                      //4 paginas, texto 5 caracteres max
-				segmentos_totales=8;
+        int pagina;
+        //4 paginas, texto 5 caracteres max
+        segmentos_totales=8;
 
-                            for (pagina=0;pagina<8;pagina++) {
+        for (pagina=0;pagina<8;pagina++) {
 
-                                                            //Caso tbblue y modo config en pagina 0
-                                                            if (pagina==0 || pagina==1) {
-                                                                    //z80_byte maquina=(tbblue_config1>>6)&3;
-                                                                    z80_byte maquina=(tbblue_registers[3])&3;
-                                                                    if (maquina==0){
-                                                                            if (tbblue_bootrom.v) {
-											strcpy (segmentos[pagina].shortname,"RO");
-											strcpy (segmentos[pagina].longname,"ROM");
-										}
-                                                                            else {
-                                                                                    z80_byte romram_page=(tbblue_registers[4]&31);
-                                                                                    sprintf (segmentos[pagina].shortname,"SR%d",romram_page);
-                                                                                    sprintf (segmentos[pagina].longname,"SRAM %d",romram_page);
-                                                                            }
-                                                                    }
-                                                                    else debug_registers_get_mem_page_tbblue_extended(pagina,segmentos[pagina].longname,segmentos[pagina].shortname);
-                                                            }
-                                                            else {
-                                                                    debug_registers_get_mem_page_tbblue_extended(pagina,segmentos[pagina].longname,segmentos[pagina].shortname);
-                                                            }
+            //Caso tbblue y modo config en pagina 0
+            if (pagina==0 || pagina==1) {
+                //z80_byte maquina=(tbblue_config1>>6)&3;
+                z80_byte maquina=(tbblue_registers[3])&3;
+                if (maquina==0){
+                    if (tbblue_bootrom.v) {
+                        strcpy (segmentos[pagina].shortname,"RO");
+                        strcpy (segmentos[pagina].longname,"ROM");
+                    }
+                    else {
+                        z80_byte romram_page=(tbblue_registers[4]&31);
+                        sprintf (segmentos[pagina].shortname,"SR%d",romram_page);
+                        sprintf (segmentos[pagina].longname,"SRAM %d",romram_page);
+                    }
+                }
+                else debug_registers_get_mem_page_tbblue_extended(pagina,segmentos[pagina].longname,segmentos[pagina].shortname);
+            }
+            else {
+                debug_registers_get_mem_page_tbblue_extended(pagina,segmentos[pagina].longname,segmentos[pagina].shortname);
+            }
 
-				segmentos[pagina].length=8192;
-                                segmentos[pagina].start=8192*pagina;
-                            }
+            segmentos[pagina].length=8192;
+            segmentos[pagina].start=8192*pagina;
+        }
 
 
-                      //D5
+
 
 
       }
