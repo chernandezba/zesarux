@@ -6683,6 +6683,13 @@ void debug_registers_get_mem_page_extended(z80_byte segmento,char *texto_pagina,
 
         }
 
+        //Con interface1
+        if (segmento==0 && if1_enabled.v && if1_rom_paged.v) {
+                strcpy(texto_pagina_short,"IF1");
+                strcpy(texto_pagina,"Interface1 ROM");
+                return;
+        }
+
         //Con multiface
         if (segmento==0 && multiface_enabled.v && multiface_switched_on.v) {
                 strcpy(texto_pagina_short,"MLTF");
@@ -6947,6 +6954,11 @@ typedef struct s_debug_memory_segment debug_memory_segment;
     //Si barbanegra
     if (MACHINE_IS_SPECTRUM && hilow_bbn_enabled.v && hilow_bbn_mapped_memory.v) {
             debug_registers_get_mem_page_extended(0,segmentos[0].longname,segmentos[0].shortname);
+    }
+
+    //Si interface1 y maquina 48kb o 128k
+    if ((MACHINE_IS_SPECTRUM_16_48 || MACHINE_IS_SPECTRUM_128) && if1_enabled.v && if1_rom_paged.v) {
+        debug_registers_get_mem_page_extended(0,segmentos[0].longname,segmentos[0].shortname);
     }
 
     //Si multiface y maquina 48kb. TODO. Si esta dandanator y tambien multiface, muestra siempre dandanator
