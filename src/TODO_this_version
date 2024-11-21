@@ -446,3 +446,5 @@ LEC:
 -acciones boton derecho sobre botones superiores e inferiores se activan aunque haya ventanas por encima
 
 
+-quitar avisos de tamaño mmc al mapear filemap, por ejemplo con pogie.
+Quiza hacer que al mapear con file map no sustituya archivo mmc, sino que lo ponga en un modo temporal
