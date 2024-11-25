@@ -5718,6 +5718,12 @@ else if (!strcmp(comando_sin_parametros,"smartload") || !strcmp(comando_sin_para
 			for (;items;items--) {
 				//z80_byte color=tbsprite_palette[index++];
         z80_int color=paleta[index++];  //primera paleta
+
+                if (!strcasecmp(remote_command_argv[0],"layer2")) {
+                    // layer 2 palette has extra priority bit in color (must be removed while mixing layers)
+                    color=color & (0xFFFF-TBBLUE_LAYER2_PRIORITY);
+                }
+
 				escribir_socket_format(misocket,"%03X ",color);
 			}
 

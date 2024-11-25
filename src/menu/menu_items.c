@@ -10859,12 +10859,14 @@ int menu_debug_sprites_return_index_palette(int paleta, z80_byte color)
 
 		case 9:
 			//TBBlue layer2 paleta 1
-			return tbblue_palette_layer2_first[color];
+            // layer 2 palette has extra priority bit in color (must be removed while mixing layers)
+			return tbblue_palette_layer2_first[color] & (0xFFFF-TBBLUE_LAYER2_PRIORITY);
 		break;
 
 		case 10:
 			//TBBlue layer2 paleta 2
-			return tbblue_palette_layer2_second[color];
+            // layer 2 palette has extra priority bit in color (must be removed while mixing layers)
+			return tbblue_palette_layer2_second[color] & (0xFFFF-TBBLUE_LAYER2_PRIORITY);
 		break;
 
 		case 11:

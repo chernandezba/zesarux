@@ -106,6 +106,8 @@ extern char *tbblue_get_layer2_mode_name(void);
 #define TBBLUE_SPRITE_PATTERN_PORT 0x5b
 #define TBBLUE_SPRITE_SPRITE_PORT 0x57
 
+#define TBBLUE_LAYER2_PRIORITY 0x8000
+
 
 #define TBBLUE_UART_TX_PORT 0x133b
 //Tambien byte de estado en lectura
