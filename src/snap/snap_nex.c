@@ -523,7 +523,7 @@ void load_nex_snapshot(char *archivo)
 		int bloque_cargar=array_bloques[i];
 		z80_byte esta_presente=nex_header[18+bloque_cargar];
 		if (esta_presente) {
-			debug_printf(VERBOSE_DEBUG,"Loading ram block %d",bloque_cargar);
+			debug_printf(VERBOSE_DEBUG,".nex snapshot. Loading ram block %d",bloque_cargar);
             //printf("Loading ram block %d\n",bloque_cargar);
 			z80_byte *destino=tbblue_ram_memory_pages[bloque_cargar*2];
 			leidos=fread(destino,1,16384,ptr_nexfile);
@@ -535,9 +535,10 @@ void load_nex_snapshot(char *archivo)
 		//int offset_bloque;
 		int bloque_cargar=i;
 		z80_byte esta_presente=nex_header[18+bloque_cargar];
+        //printf("bloque %d presente %d\n",i,esta_presente);
 		if (esta_presente) {
 			debug_printf(VERBOSE_DEBUG,"Loading ram block %d",bloque_cargar);
-            //printf("Loading ram block %d\n",bloque_cargar);
+            //printf(".nex snapshot. Loading ram block %d\n",bloque_cargar);
 			z80_byte *destino=tbblue_ram_memory_pages[bloque_cargar*2];
 			leidos=fread(destino,1,16384,ptr_nexfile);
 		}
