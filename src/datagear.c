@@ -160,6 +160,8 @@ void datagear_write_value(z80_byte value)
 	if (datagear_mask_commands) {
 		switch (datagear_last_command) {
 
+            //printf("Datagear datagear_last_command: %d. value=%02XH\n",datagear_last_command,value);
+
 			//WR0
 			case 0:
 				//si parametro de indice actual se salta porque mascara vale 0 en bit bajo
@@ -271,6 +273,7 @@ D7  D6  D5  D4  D3  D2  D1  D0  ZXN PRESCALAR (FIXED TIME TRANSFER)
 */
 
 						//printf ("Will receive ZXN Prescaler\n");
+                        //sleep(3);
 						datagear_last_command=128+2;
 
 						datagear_mask_commands=1;        //Realmente esto cualquier cosa diferente de 0 nos vale
@@ -331,6 +334,7 @@ D7  D6  D5  D4  D3  D2  D1  D0  ZXN PRESCALAR (FIXED TIME TRANSFER)
 				//printf ("Reading ZXN Prescaler = %02XH\n",value);
 				datagear_dma_tbblue_prescaler=value;
 				datagear_mask_commands=0;
+                //sleep(1);
 			break;
 
 		}
@@ -339,6 +343,7 @@ D7  D6  D5  D4  D3  D2  D1  D0  ZXN PRESCALAR (FIXED TIME TRANSFER)
 
 	else {
 
+        //printf("Datagear. tipo de comando. value=%02XH\n",value);
 		//datagear_last_command_byte=value;
 		datagear_command_index=0;
 	//Obtener tipo de comando
@@ -476,8 +481,20 @@ z80_byte datagear_read_operation(z80_int address,z80_byte dma_mem_type)
 
     z80_byte byte_leido;
 
-    if (dma_mem_type) byte_leido=lee_puerto_spectrum_no_time((address>>8)&0xFF,address & 0xFF);
-    else byte_leido=peek_byte_no_time(address);
+    if (dma_mem_type) {
+        z80_int puerto_h=(address>>8)&0xFF;
+        z80_int puerto_l=address & 0xFF;
+        //printf("Dma read i/o port=%02X%02XH\n",puerto_h,puerto_l);
+        byte_leido=lee_puerto_spectrum_no_time(puerto_h,puerto_l);
+    }
+    else {
+        //printf("Dma read mem address=%XH\n",address);
+
+        byte_leido=peek_byte_no_time(address);
+
+        //temp debug
+        //if (address>=0x1CE7 && address<=0x1Cf0) sleep(3);
+    }
 
     return byte_leido;
 }
@@ -485,12 +502,15 @@ z80_byte datagear_read_operation(z80_int address,z80_byte dma_mem_type)
 void datagear_write_operation(z80_int address,z80_byte value,z80_byte dma_mem_type)
 {
     if (dma_mem_type) {
+        //printf("dma write i/o port=%XH\n",address);
+        //if (address==0x253B) sleep(1);
 		out_port_spectrum_no_time(address,value);
 		//printf ("Port %04XH value %02XH\n",address,value);
 		t_estados +=1; //Por ejemplo ;)
 	}
 
     else {
+        //printf("dma write mem address=%XH\n",address);
 		poke_byte_no_time(address,value);
 	}
 }
@@ -502,7 +522,11 @@ int datagear_return_resta_testados(int anterior, int actual)
 
 	int resta=actual-anterior;
 
-	if (resta<0) resta=screen_testados_total-anterior+actual;
+	if (resta<0) {
+        resta=screen_testados_total-anterior+actual;
+    }
+
+    //printf("datagear resta testados: %d. testados %d\n",resta,t_estados);
 
 	return resta;
 }
@@ -510,7 +534,7 @@ int datagear_return_resta_testados(int anterior, int actual)
 int datagear_condicion_transferencia(z80_int transfer_length,int dma_continuous,int resta,int dmapre)
 {
 
-	//printf ("dma condicion length: %d dma_cont %d resta %d dmapre %d\n",transfer_length,dma_continuous,resta,dmapre);
+	//printf ("dma condition length: %d dma_cont %d resta %d dmapre %d\n",transfer_length,dma_continuous,resta,dmapre);
 
 	//Si hay bytes a transferir
 	if (transfer_length==0) return 0;
@@ -571,7 +595,11 @@ void datagear_handle_dma(void)
 		//Por defecto, modo continuo (todo de golpe) (dma_continuous=1). Modo burst (dma_continuous=0), permite ejecutar la cpu entre medio
 		int dma_continuous=1;
 
+        //printf("DMA WR4=%02XH\n",datagear_wr4);
+
 		z80_byte modo_transferencia=datagear_wr4 & (64+32);
+
+        // Burst mode nominally means the DMA lets the CPU run if either port is not ready
 		if (modo_transferencia==64) dma_continuous=0;
 
 /*
@@ -640,6 +668,14 @@ Excepción:
 
 			//dma_continuous=1;
 
+
+
+        //Si prescaler=0, no se permite ejecucion de la cpu
+        //TODO: gestionar otros valores de prescaler, permitiendo ejecucion de la cpu entre dos transferencias de la dma,
+        //las cuales estan separadas por un tiempo determinado por el propio prescaler
+        //Atic Atac usa prescaler=0
+        if (datagear_dma_tbblue_prescaler==0) dma_continuous=1;
+
 		//if (dma_continuous) printf ("Transferencia modo continuous\n");
 		//else printf ("Transferencia modo burst\n");
 
@@ -649,11 +685,13 @@ Excepción:
 				//printf ("dma op ");
 			           z80_byte byte_leido;
                     if (datagear_wr0 & 4) {
+                        //printf("DMA READ A, WRITE B\n");
                         byte_leido=datagear_read_operation(transfer_port_a,datagear_wr1 & 8);
 					    datagear_write_operation(transfer_port_b,byte_leido,datagear_wr2 & 8);
                     }
 
                     else {
+                        //printf("DMA READ B, WRITE A\n");
                         byte_leido=datagear_read_operation(transfer_port_b,datagear_wr2 & 8);
 					    datagear_write_operation(transfer_port_a,byte_leido,datagear_wr1 & 8);
                     }
