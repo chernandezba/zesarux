@@ -24,6 +24,7 @@ Allow hotswap to Pentagon and to Spectrum +3
 Allow hotswap from Spectrum 128 to Spectrum +3
 Allow to load .SP snapshots of 64kb (like Shadow of Unicorn)
 Improve Azimuth warning on External Audio Source Window
+Added SDHC cards addressing support
 Added Flash Color mode (128 colors)
 Allow to not save snapshot when exiting ZEsarUX
 Allow to load an additional config file .zesaruxdevrc
