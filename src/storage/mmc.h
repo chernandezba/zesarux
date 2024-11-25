@@ -54,4 +54,6 @@ extern z80_byte mmc_r1;
 extern char mmc_filemap_name[];
 extern int mmc_filemap_from_esxdos;
 
+extern z80_bit mmc_sdhc_addressing;
+
 #endif

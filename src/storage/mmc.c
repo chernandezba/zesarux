@@ -124,6 +124,9 @@ int mmc_filemap_from_esxdos=0;
 //Y el nombre de ese archivo
 char mmc_filemap_name[PATH_MAX]="";
 
+//Si se habilita mapeo de direcciones de sector en vez de byte, para tarjetas SDHC por ejemplo
+z80_bit mmc_sdhc_addressing={0};
+
 char *mmc_get_file_name(void)
 {
     if (mmc_filemap_from_esxdos) return mmc_filemap_name;
@@ -677,12 +680,11 @@ z80_byte mmc_read_byte_memory(unsigned int address)
 	if (mmc_memory_pointer==NULL) return 0xff;
 
 	if (address>=mmc_size) {
-		debug_printf (VERBOSE_ERR,"Error. Trying to read beyond mmc. Size: %ld Asked: %u. Disabling MMC",mmc_size,address);
-		mmc_disable();
+		debug_printf (VERBOSE_DEBUG,"Error. Trying to read beyond mmc. Size: %ld Asked: %u",mmc_size,address);
 		return 0;
 	}
 	else {
-		mmc_set_visualmem_read(address);
+        mmc_set_visualmem_read(address);
 
         //printf("leyendo byte de direccion %XH: %02XH. PC=%XH\n",address,mmc_memory_pointer[address],reg_pc);
 		return mmc_memory_pointer[address];
@@ -711,6 +713,8 @@ void mmc_write_byte_memory(unsigned int address,z80_byte value)
 
 
 z80_byte temporal_pruebas_stop_transmission=0;
+
+
 
 //Lectura de valor de la controladora mmc
 z80_byte mmc_read(void)
@@ -929,6 +933,8 @@ z80_byte mmc_read(void)
 		case 0x52:
 			if (mmc_read_index>=0) {
 
+                //printf("READ_MULTIPLE_BLOCK. mmc_read_index: %d\n",mmc_read_index);
+
 				//Debug vario
 				if (mmc_read_index>=3 && mmc_read_index<=514) {
 					debug_printf (VERBOSE_PARANOID,"MMC Read command READ_MULTIPLE_BLOCK. Adress=%XH Index=%d PC=%d A=%d BC=%d",
@@ -940,6 +946,11 @@ z80_byte mmc_read(void)
                 if (mmc_read_index==0) {
                     value=0xff;
                     //sleep(1);
+                    //TODO: atic atac requiere que el primer byte no sea ff, no entiendo del todo por que
+                    //aqui de momento lo hacemos cuando se habilita SDHC, lo cual creo que no es correcto
+                    //Habria que revisar la respuesta a este comando en la especificación a ver que sucede
+                    //En cambio con el Next Boot este valor tiene que ser FF el primero
+                    if (mmc_sdhc_addressing.v) value=0xfe;
                 }
 
                 //valor segundo, command response 0
@@ -1068,6 +1079,8 @@ z80_byte mmc_read(void)
 
 		default:
 			debug_printf (VERBOSE_DEBUG,"Reading parameter for MMC unknown command 0x%02X",mmc_last_command);
+
+            //printf ("Reading parameter for MMC unknown command 0x%02X\n",mmc_last_command);
                 break;
 
 	}
@@ -1078,6 +1091,9 @@ z80_byte mmc_read(void)
 unsigned int mmc_retorna_dir_32bit(z80_byte a,z80_byte b,z80_byte c,z80_byte d)
 {
 	unsigned int resultado=a*16777216+b*65536+c*256+d;
+
+    if (mmc_sdhc_addressing.v) resultado *=512;
+
 	return resultado;
 }
 
@@ -1234,6 +1250,7 @@ void mmc_write(z80_byte value)
 
                                         unsigned int direccion=mmc_retorna_dir_32bit(mmc_parameters_sent[0],mmc_parameters_sent[1],
                                                 mmc_parameters_sent[2],mmc_parameters_sent[3]);
+
                                         //printf ("Direccion: 0x%X\n",direccion);
                                         //printf ("MMC Write command READ_MULTIPLE_BLOCK. Address: %XH\n",direccion);
                                         mmc_read_address=direccion;

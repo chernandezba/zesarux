@@ -1489,12 +1489,13 @@ printf("\n"
 
 		"\n"
 		"\n"
-		"Storage - MMC Settings\n"
-		"----------------------\n"
+		"Storage - SD/MMC Settings\n"
+		"-------------------------\n"
 		"\n"
 
 		"--mmc-file f                    Set mmc image file\n"
 		"--enable-mmc                    Enable MMC emulation. Usually requires --mmc-file\n"
+        "--sd-enable-sdhc-addressing     Enable SDHC addressing (block addressing instead of byte addressing)\n"
 		"--mmc-write-protection          Enable MMC write protection\n"
 		"--mmc-no-persistent-writes      Disable MMC persistent writes\n");
 
@@ -4538,6 +4539,10 @@ int parse_cmdline_options(int desde_commandline) {
 
 			else if (!strcmp(argv[puntero_parametro],"--mmc-write-protection")) {
 				mmc_write_protection.v=1;
+			}
+
+            else if (!strcmp(argv[puntero_parametro],"--sd-enable-sdhc-addressing")) {
+				mmc_sdhc_addressing.v=1;
 			}
 
 			else if (!strcmp(argv[puntero_parametro],"--mmc-no-persistent-writes")) {

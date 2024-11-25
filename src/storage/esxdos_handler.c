@@ -2333,7 +2333,9 @@ eg for NextZXOS v1.94, DE=$0194 HL=language code:
                 }
 
 
-                debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_DISK_FILEMAP. File (file handle %d): %s\n",file_handler,esxdos_fopen_files[file_handler].debug_fullpath);
+                debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_DISK_FILEMAP. File (file handle %d): %s",file_handler,esxdos_fopen_files[file_handler].debug_fullpath);
+
+                printf ("ESXDOS handler: ESXDOS_RST8_DISK_FILEMAP. File (file handle %d): %s\n",file_handler,esxdos_fopen_files[file_handler].debug_fullpath);
 
 
                 //Temporal atic atac
@@ -2351,32 +2353,51 @@ eg for NextZXOS v1.94, DE=$0194 HL=language code:
 
                 int sector_size=512;
 
-                int sector_count; //=218112; //el archivo .nex / 512 (512 es un posible sector size)
+                //int sector_count; //=218112; //el archivo .nex / 512 (512 es un posible sector size)
 
-                int file_size=get_file_size(esxdos_fopen_files[file_handler].debug_fullpath);
+                long long file_size=get_file_size(esxdos_fopen_files[file_handler].debug_fullpath);
                 //printf("file size: %d\n",file_size);
-                sector_count=file_size/sector_size;
 
-                int offset_sector=0;
+
+                unsigned int offset_sector=0;
+
+
                 int indice=0;
-                while (sector_count>0 && DE>0) {
-                    debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_DISK_FILEMAP. Building file map. Offset sector: %XH sector remaining: %d",offset_sector,sector_count);
-                    poke_byte_no_time((*registro_parametros_hl_ix)+indice,(offset_sector) & 0xFF);
-                    poke_byte_no_time((*registro_parametros_hl_ix)+indice+1,(offset_sector>>8) & 0xFF);
-                    poke_byte_no_time((*registro_parametros_hl_ix)+indice+2,(offset_sector>>16) & 0xFF);
-                    poke_byte_no_time((*registro_parametros_hl_ix)+indice+3,(offset_sector>>24) & 0xFF);
 
-                    int sectores_ocupa=65535;
-                    if (sector_count<65536) sectores_ocupa=sector_count;
+                //Le decimos que ocupa bloques consecutivos
+                while (file_size>0 && DE>0) {
+
+                    //debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_DISK_FILEMAP. Building file map. Offset sector: %XH sector remaining: %d",offset_sector,sector_count);
+                    //printf ("ESXDOS handler: ESXDOS_RST8_DISK_FILEMAP. Building file map. Offset sector: %XH sector remaining: %d\n",offset_sector,sector_count);
+
+                    unsigned int offset_escribir=offset_sector;
+
+                    if (mmc_sdhc_addressing.v) offset_escribir /=sector_size;
+
+                    poke_byte_no_time((*registro_parametros_hl_ix)+indice,(offset_escribir) & 0xFF);
+                    poke_byte_no_time((*registro_parametros_hl_ix)+indice+1,(offset_escribir>>8) & 0xFF);
+                    poke_byte_no_time((*registro_parametros_hl_ix)+indice+2,(offset_escribir>>16) & 0xFF);
+                    poke_byte_no_time((*registro_parametros_hl_ix)+indice+3,(offset_escribir>>24) & 0xFF);
+
+
+                    unsigned int sectores_ocupa=65535;
+                    unsigned int tamanyo_bloque=sector_size*sectores_ocupa;
+
+                    offset_sector +=tamanyo_bloque;
+
+                    if (file_size<tamanyo_bloque) {
+                        sectores_ocupa=file_size/sector_size;
+                    }
+
+                    file_size -=tamanyo_bloque;
 
                     poke_byte_no_time((*registro_parametros_hl_ix)+indice+4,(sectores_ocupa) & 0xFF);
                     poke_byte_no_time((*registro_parametros_hl_ix)+indice+5,(sectores_ocupa>>8) & 0xFF);
 
+                    printf ("ESXDOS handler: ESXDOS_RST8_DISK_FILEMAP. Building file map. Offset sector: %XH segment size: %d sectors Remaining file size: %lld\n",offset_escribir,sectores_ocupa,file_size);
+
                     (*registro_parametros_hl_ix)+=6;
 
-                    sector_count-=sectores_ocupa;
-
-                    offset_sector +=sectores_ocupa;
                     DE--;
                 }
 
@@ -2400,7 +2421,10 @@ eg for NextZXOS v1.94, DE=$0194 HL=language code:
 ;                     bit 1=0 for byte addressing, 1 for block addressing
 */
 
-                reg_a=0x02;
+
+                reg_a=0;
+
+                if (mmc_sdhc_addressing.v) reg_a |=0x02;
 
                 esxdos_handler_new_return_call();
             }

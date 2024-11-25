@@ -17564,6 +17564,11 @@ void menu_storage_mmc_use_local_tbblue(void)
 
 }
 
+void menu_storage_mmc_sdhc_addressing(MENU_ITEM_PARAMETERS)
+{
+    mmc_sdhc_addressing.v ^=1;
+}
+
 
 void menu_storage_mmc_autoconfigure_tbblue(MENU_ITEM_PARAMETERS)
 {
@@ -17659,7 +17664,11 @@ void menu_mmc_divmmc(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"MMC Emulation");
         menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"MMC Emulation");
 
-
+        menu_add_item_menu_en_es_ca(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_mmc_sdhc_addressing,NULL,
+            "Enable SDHC addressing","Activar direccionamiento SDHC","Activar direccionament SDHC");
+        menu_add_item_menu_prefijo_format(array_menu_mmc_divmmc,"[%c] ", (mmc_sdhc_addressing.v ? 'X' : ' '));
+        menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"Enable SDHC addressing (block addressing instead of byte addressing)");
+        menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"Enable SDHC addressing (block addressing instead of byte addressing)");
 
 
         menu_add_item_menu_en_es_ca(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_mmc_write_protect,NULL,
@@ -17784,7 +17793,7 @@ void menu_mmc_divmmc(MENU_ITEM_PARAMETERS)
         //menu_add_item_menu(array_menu_mmc_divmmc,"ESC Back",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
         menu_add_ESC_item(array_menu_mmc_divmmc);
 
-        retorno_menu=menu_dibuja_menu_no_title_lang(&mmc_divmmc_opcion_seleccionada,&item_seleccionado,array_menu_mmc_divmmc,"MMC" );
+        retorno_menu=menu_dibuja_menu_no_title_lang(&mmc_divmmc_opcion_seleccionada,&item_seleccionado,array_menu_mmc_divmmc,"SD/MMC" );
 
 
         if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
@@ -38855,17 +38864,17 @@ void menu_storage(MENU_ITEM_PARAMETERS)
 
 		if (MACHINE_IS_SPECTRUM) {
 			//menu_tape_settings_trunc_name(mmc_file_name,string_mmc_file_shown,13);
-			menu_add_item_menu_format(array_menu_storage,MENU_OPCION_NORMAL,menu_mmc_divmmc,NULL,"~~MMC");
-			menu_add_item_menu_shortcut(array_menu_storage,'m');
-			menu_add_item_menu_tooltip(array_menu_storage,"MMC, DivMMC and ZXMMC settings");
-			menu_add_item_menu_ayuda(array_menu_storage,"MMC, DivMMC and ZXMMC settings");
+			menu_add_item_menu_format(array_menu_storage,MENU_OPCION_NORMAL,menu_mmc_divmmc,NULL,"~~SD/MMC");
+			menu_add_item_menu_shortcut(array_menu_storage,'s');
+			menu_add_item_menu_tooltip(array_menu_storage,"SD, MMC, DivMMC and ZXMMC settings");
+			menu_add_item_menu_ayuda(array_menu_storage,"SD, MMC, DivMMC and ZXMMC settings");
             menu_add_item_menu_tiene_submenu(array_menu_storage);
 		}
 
 
 	    if (MACHINE_IS_SPECTRUM_48) {
-            menu_add_item_menu_format(array_menu_storage,MENU_OPCION_NORMAL,menu_samram,NULL,"~~Samram");
-            menu_add_item_menu_shortcut(array_menu_storage,'s');
+            menu_add_item_menu_format(array_menu_storage,MENU_OPCION_NORMAL,menu_samram,NULL,"Samram");
+            //menu_add_item_menu_shortcut(array_menu_storage,'s');
 
             menu_add_item_menu_tooltip(array_menu_storage,"Samram settings");
             menu_add_item_menu_ayuda(array_menu_storage,"Settings for Gerton Lunter Samram emulation.\n"
