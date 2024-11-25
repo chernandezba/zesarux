@@ -2335,7 +2335,7 @@ eg for NextZXOS v1.94, DE=$0194 HL=language code:
 
                 debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_DISK_FILEMAP. File (file handle %d): %s",file_handler,esxdos_fopen_files[file_handler].debug_fullpath);
 
-                printf ("ESXDOS handler: ESXDOS_RST8_DISK_FILEMAP. File (file handle %d): %s\n",file_handler,esxdos_fopen_files[file_handler].debug_fullpath);
+                //printf ("ESXDOS handler: ESXDOS_RST8_DISK_FILEMAP. File (file handle %d): %s\n",file_handler,esxdos_fopen_files[file_handler].debug_fullpath);
 
 
                 //Temporal atic atac
@@ -2394,7 +2394,7 @@ eg for NextZXOS v1.94, DE=$0194 HL=language code:
                     poke_byte_no_time((*registro_parametros_hl_ix)+indice+4,(sectores_ocupa) & 0xFF);
                     poke_byte_no_time((*registro_parametros_hl_ix)+indice+5,(sectores_ocupa>>8) & 0xFF);
 
-                    printf ("ESXDOS handler: ESXDOS_RST8_DISK_FILEMAP. Building file map. Offset sector: %XH segment size: %d sectors Remaining file size: %lld\n",offset_escribir,sectores_ocupa,file_size);
+                    debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_DISK_FILEMAP. Building file map. Offset sector: %XH segment size: %d sectors Remaining file size: %lld",offset_escribir,sectores_ocupa,file_size);
 
                     (*registro_parametros_hl_ix)+=6;
 

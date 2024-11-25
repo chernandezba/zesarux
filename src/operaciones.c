@@ -9487,7 +9487,7 @@ Allowed to read / write port # xx57 teams INIR and OTIR. Example of reading the 
 	}
 
 	if (datagear_dma_emulation.v && (puerto_l==DATAGEAR_DMA_FIRST_PORT || puerto_l==DATAGEAR_DMA_SECOND_PORT) ) {
-			//printf ("Writing Datagear DMA port %04XH with value %02XH\n",puerto,value);
+			//printf ("Writing Datagear DMA port %04XH with value %02XH. PC=%02XH\n",puerto,value,reg_pc);
 			datagear_write_value(value);
 	}
 

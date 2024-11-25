@@ -1098,7 +1098,27 @@ void tbblue_set_value_palette_rw(z80_byte index,z80_int valor)
 
 	paleta=tbblue_get_palette_rw();
 
+    //z80_byte active_palette=(tbblue_registers[0x43]>>4)&7;
+/*
+(R/W) 0x43 (67) => Palette Control
+  bit 7 = '1' to disable palette write auto-increment.
+  bits 6-4 = Select palette for reading or writing:
+     000 = ULA first palette
+     100 = ULA secondary palette
+     001 = Layer 2 first palette
+     101 = Layer 2 secondary palette
+     010 = Sprites first palette
+     110 = Sprites secondary palette
+  bit 3 = Select Sprites palette (0 = first palette, 1 = secondary palette)
+  bit 2 = Select Layer 2 palette (0 = first palette, 1 = secondary palette)
+  bit 1 = Select ULA palette (0 = first palette, 1 = secondary palette)
+*/
+
+    //printf("---write palette %d index %d value %02XH\n",active_palette,index,valor);
+    //sleep(1);
+
 	paleta[index]=valor;
+
 }
 
 //Damos el valor del color de la paleta que se esta mostrando en pantalla para sprites
@@ -1386,6 +1406,8 @@ z80_int tbblue_get_9bit_colour(z80_byte valor)
 
 	valor16 |=bit_bajo;
 
+    //printf("valor16: %04XH\n",valor16);
+
 	return valor16;
 }
 
@@ -1593,6 +1615,7 @@ void tbblue_write_palette_value_high8(z80_byte valor)
 	//y or del valor de 1 bit de B
 	//valor16 |=color_actual;
 
+    //printf("Write palette high8 indice %d valor16 %04XH\n",indice,valor16);
 	tbblue_set_value_palette_rw(indice,valor16);
 
 //printf ("Escribir paleta\n");
@@ -1600,7 +1623,7 @@ void tbblue_write_palette_value_high8(z80_byte valor)
 
 }
 
-#define TBBLUE_LAYER2_PRIORITY 0x8000
+
 
 //Escribe valor de 1 bit inferior (de total de 9) para indice de color de paleta y incrementa indice
 void tbblue_write_palette_value_low1(z80_byte valor)
@@ -1660,6 +1683,7 @@ changing bit 7 to 0 for the non priority colour alternative.
 
 	color_actual |=valor;
 
+    //printf("Write palette low1 indice %d valor16 %04XH\n",indice,color_actual);
 	tbblue_set_value_palette_rw(indice,color_actual);
 
 	tbblue_increment_palette_index();
@@ -1740,6 +1764,8 @@ void tbblue_write_sprite_value(z80_byte indice,z80_byte subindice,z80_byte value
 
     tbsprite_new_sprites[indice][subindice]=value;
 
+    //printf("Write sprite index %d subindex %d value %02XH\n",indice,subindice,value);
+
     //tbsprite_last_visible_sprite
     if (subindice==3 && (value&128)) {
         //registro 3 e indica que sprite esta visible
@@ -1781,6 +1807,7 @@ The attribute pointer will roll over from sprite 127 to sprite 0.
 		tbsprite_index_sprite_subindex++;
 		//tbsprite_sprites[tbsprite_index_sprite][tbsprite_index_sprite_subindex]=0;
         tbblue_write_sprite_value(tbsprite_index_sprite,tbsprite_index_sprite_subindex,0);
+        //printf ("Out tbblue_out_sprite_sprite. Index: %d subindex: %d %02XH\n",tbsprite_index_sprite,tbsprite_index_sprite_subindex,0);
 	}
 
 	tbsprite_index_sprite_subindex++;
@@ -4514,6 +4541,7 @@ void tbblue_set_value_port_position(z80_byte index_position,z80_byte value)
       		100 = Pentagon 128K
       		*/
 
+            //printf("Write nextreg 03\n");
 
             if (previous_machine_type==0 || tbblue_bootrom.v) {
                 //printf("Changing machine to %XH\n",value&7);
@@ -4768,6 +4796,8 @@ void tbblue_set_value_port_position(z80_byte index_position,z80_byte value)
 		break;
 
 		case 67:
+            //printf("Write register 67. PC=%XH\n",reg_pc);
+            //sleep(2);
 			if ( (last_register_67&1) != (value&1) ) tbblue_splash_palette_format();
 		break;
 
