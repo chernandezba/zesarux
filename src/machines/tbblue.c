@@ -5374,8 +5374,8 @@ void tbblue_set_layer_priorities(void)
 
         //TODO Temporal sin blending
 		case 6:
-			p_layer_first=tbblue_layer_sprites;
-			p_layer_second=tbblue_layer_ula;
+            p_layer_first=tbblue_layer_ula;
+			p_layer_second=tbblue_layer_sprites;
             p_layer_third=tbblue_layer_tiles;
 			p_layer_fourth=tbblue_layer_layer2;
 
@@ -5383,8 +5383,8 @@ void tbblue_set_layer_priorities(void)
 
         //TODO Temporal sin blending
 		case 7:
-			p_layer_first=tbblue_layer_sprites;
-			p_layer_second=tbblue_layer_ula;
+            p_layer_first=tbblue_layer_ula;
+			p_layer_second=tbblue_layer_sprites;
             p_layer_third=tbblue_layer_tiles;
 			p_layer_fourth=tbblue_layer_layer2;
 
