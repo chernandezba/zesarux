@@ -712,7 +712,7 @@ void mmc_write_byte_memory(unsigned int address,z80_byte value)
 }
 
 
-z80_byte temporal_pruebas_stop_transmission=0;
+//z80_byte temporal_pruebas_stop_transmission=0;
 
 
 
@@ -866,10 +866,9 @@ z80_byte mmc_read(void)
 
 
                 case 0x4C:
-                        debug_printf (VERBOSE_PARANOID,"MMC Read command STOP_TRANSMISSION. PC=%d A=%d BC=%d",reg_pc,reg_a,reg_bc);
+                        //debug_printf (VERBOSE_PARANOID,"MMC Read command STOP_TRANSMISSION. PC=%d A=%d BC=%d",reg_pc,reg_a,reg_bc);
 
-			//temp
-			//return temporal_pruebas_stop_transmission++;
+
 
                         return 1;
                 break;
@@ -936,11 +935,13 @@ z80_byte mmc_read(void)
                 //printf("READ_MULTIPLE_BLOCK. mmc_read_index: %d\n",mmc_read_index);
 
 				//Debug vario
+                /*
 				if (mmc_read_index>=3 && mmc_read_index<=514) {
 					debug_printf (VERBOSE_PARANOID,"MMC Read command READ_MULTIPLE_BLOCK. Adress=%XH Index=%d PC=%d A=%d BC=%d",
 					    mmc_read_address+mmc_read_index-3,mmc_read_index,reg_pc,reg_a,reg_bc);
 				}
 				else debug_printf (VERBOSE_PARANOID,"MMC Read command READ_MULTIPLE_BLOCK. Index=%d PC=%d",mmc_read_index,reg_pc);
+                */
 
                 //valor primero, byte ncr time
                 if (mmc_read_index==0) {
@@ -986,7 +987,7 @@ z80_byte mmc_read(void)
                 if (mmc_read_index==-1) {
                     mmc_read_index=0;
                     mmc_read_address +=512;
-                    debug_printf (VERBOSE_PARANOID,"MMC: After read 512 bytes on READ_MULTIPLE_BLOCK. Jumping to next Block Read. mmc_read_address=%XH",mmc_read_address);
+                    //debug_printf (VERBOSE_PARANOID,"MMC: After read 512 bytes on READ_MULTIPLE_BLOCK. Jumping to next Block Read. mmc_read_address=%XH",mmc_read_address);
                 }
 
                 return value;
@@ -1188,7 +1189,7 @@ void mmc_write(z80_byte value)
 
 
                 case 0x4C:
-                    debug_printf (VERBOSE_PARANOID,"MMC Write command STOP_TRANSMISSION");
+                    //debug_printf (VERBOSE_PARANOID,"MMC Write command STOP_TRANSMISSION");
 
 
 			        if (mmc_index_command==5) {
@@ -1234,7 +1235,7 @@ void mmc_write(z80_byte value)
 
 			//READ MULTIPLE BLOCK
 			case 0x52:
-                                debug_printf (VERBOSE_PARANOID,"MMC Write command READ_MULTIPLE_BLOCK");
+                                //debug_printf (VERBOSE_PARANOID,"MMC Write command READ_MULTIPLE_BLOCK");
                                 mmc_parameters_sent[mmc_index_command-1]=value;
                                 mmc_index_command++;
 
@@ -1254,7 +1255,7 @@ void mmc_write(z80_byte value)
                                         //printf ("Direccion: 0x%X\n",direccion);
                                         //printf ("MMC Write command READ_MULTIPLE_BLOCK. Address: %XH\n",direccion);
                                         mmc_read_address=direccion;
-
+                                        debug_printf (VERBOSE_PARANOID,"MMC Write command READ_MULTIPLE_BLOCK. Address: %XH",direccion);
 
 
 

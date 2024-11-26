@@ -2338,22 +2338,12 @@ eg for NextZXOS v1.94, DE=$0194 HL=language code:
                 //printf ("ESXDOS handler: ESXDOS_RST8_DISK_FILEMAP. File (file handle %d): %s\n",file_handler,esxdos_fopen_files[file_handler].debug_fullpath);
 
 
-                //Temporal atic atac
-                //Info sacada de la documentacion de esxdos de next en la sd: /docs/NextZXOS/NextZXOS_and_esxDOS_APIs.pdf
-
 
                 esxdos_handler_no_error_uncarry();
-                //Adicional Atic Atac. Lo que parece que intenta hacer es obtener la lista de sectores del archivo .NEX
-                //y luego va leyendo por bloques mediante comandos MMC (ejemplo READ_MULTIPLE_BLOCK), directamente a la tarjeta
-                //Por tanto emular esto implicaria que cuando se lanza este file map, generar una tabla "virtual" de sectores,
-                //y luego los comandos mmc de lectura que detecten que hay esa tabla virtual y a cada lectura de sector, en vez de leer
-                //la tarjeta mmc, que lean sectores de la tabla virtual retornando este archivo que se ha mapeado aqui
-
 
 
                 int sector_size=512;
 
-                //int sector_count; //=218112; //el archivo .nex / 512 (512 es un posible sector size)
 
                 long long file_size=get_file_size(esxdos_fopen_files[file_handler].debug_fullpath);
                 //printf("file size: %d\n",file_size);
@@ -2366,9 +2356,6 @@ eg for NextZXOS v1.94, DE=$0194 HL=language code:
 
                 //Le decimos que ocupa bloques consecutivos
                 while (file_size>0 && DE>0) {
-
-                    //debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_DISK_FILEMAP. Building file map. Offset sector: %XH sector remaining: %d",offset_sector,sector_count);
-                    //printf ("ESXDOS handler: ESXDOS_RST8_DISK_FILEMAP. Building file map. Offset sector: %XH sector remaining: %d\n",offset_sector,sector_count);
 
                     unsigned int offset_escribir=offset_sector;
 
@@ -2402,6 +2389,8 @@ eg for NextZXOS v1.94, DE=$0194 HL=language code:
                 }
 
                 //Montar este archivo como imagen mmc
+
+                debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_DISK_FILEMAP. Mounting file [%s] as MMC image",esxdos_fopen_files[file_handler].debug_fullpath);
 
                 mmc_disable();
                 mmc_filemap_from_esxdos=1;
