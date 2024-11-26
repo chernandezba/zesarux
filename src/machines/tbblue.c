@@ -5358,6 +5358,15 @@ void tbblue_set_layer_priorities(void)
 
 		break;
 
+        //Prueba atic atac
+		/*case 7:
+			p_layer_first=tbblue_layer_sprites;
+			p_layer_second=tbblue_layer_ula;
+			p_layer_third=tbblue_layer_layer2;
+
+		break;*/
+
+        //Cualquier otra cosa no soportada
 		default:
 			p_layer_first=tbblue_layer_sprites;
 			p_layer_second=tbblue_layer_layer2;
