@@ -74,6 +74,7 @@ Corregido tecla alt pulsada al cambiar de ventana pulsando alt-tab en drivers xw
 Corregida autocarga de TZX como Cinta Real en Spectrum +3
 Corregido hotswap ZX80 a ZX81, ZX81 a ZX80
 Corregido Scroll de Amstrad CPC
+Corregido burst mode de DMA Datagear de Next cuando prescaler=0
 Corregido sonido al grabar: permitir escucharlo en ordenadores: Jupiter Ace, CPC, MSX, Spectravideo
 Corregido mapa de memoria y comportamiento en Jupiter Ace: ahora es perfecto y mejor que cualquier otro emulador
 Corregida carga de snapshots .nex y la inicialización incorrecta de Layer 2 (corrige errores en Head Over Heels de Next por ejemplo)
