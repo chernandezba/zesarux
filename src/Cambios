@@ -37,10 +37,15 @@ Mejorada emulación del Inves Spectrum+: alertar cuando un juego puede resetears
 Mejorado el core de emulación de Spectrum de la CPU Z80: agregado estado wait (necesario para emular el microdrive)
 
 Mejorada emulación de Hilow Datadrive:
--Agregada emulación en crudo (raw), como el dispositivo real
--Permitir archivos ddh de tamaño variable (desde 3 hasta 256 sectores)
--Permitir formatear solo una cara en archivos ddh
--Permitir borrar contenido al formatear ("c/borrado" o "s/borrado") en archivos ddh
+- Agregada emulación en crudo (raw), como el dispositivo real
+- Permitir archivos ddh de tamaño variable (desde 3 hasta 256 sectores)
+- Permitir formatear solo una cara en archivos ddh
+- Permitir borrar contenido al formatear ("c/borrado" o "s/borrado") en archivos ddh
+
+Improved Spectrum Next emulation:
+- Corregido burst mode de DMA Datagear cuando prescaler=0
+- Agregado modos de capas 6 and 7 (modos mezcla)
+- Corregido llamada a esxdos DISK_FILEMAP
 
 Mejorado Debug:
 - CPU history: permitir cambiar el puntero de memoria según el registro PC mostrado en el historial
@@ -74,12 +79,10 @@ Corregido tecla alt pulsada al cambiar de ventana pulsando alt-tab en drivers xw
 Corregida autocarga de TZX como Cinta Real en Spectrum +3
 Corregido hotswap ZX80 a ZX81, ZX81 a ZX80
 Corregido Scroll de Amstrad CPC
-Corregido burst mode de DMA Datagear de Next cuando prescaler=0
 Corregido sonido al grabar: permitir escucharlo en ordenadores: Jupiter Ace, CPC, MSX, Spectravideo
 Corregido mapa de memoria y comportamiento en Jupiter Ace: ahora es perfecto y mejor que cualquier otro emulador
 Corregida carga de snapshots .nex y la inicialización incorrecta de Layer 2 (corrige errores en Head Over Heels de Next por ejemplo)
 Corregida carga de snapshots .nex y la MMU no gestionada correctamente
-Corregido llamada a esxdos DISK_FILEMAP en Next
 Corregida característica de Buscar menú. Ahora está habilitado por defecto
 Corregido error al grabar snapshots .ZSF de Z88 cuando el bloque de RAM o de tarjeta de memoria no está comprimido
 Corregido mostrar texto en footer de F5/Button menu

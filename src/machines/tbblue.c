@@ -6174,6 +6174,44 @@ void tbblue_fast_render_ula_layer(z80_int *puntero_final_rainbow,int estamos_bor
 
 }
 
+int tbblue_blend_color(int color_primero, int color_layer,int modo_capas)
+{
+    //Retornar un color rgb9
+    //Obtener cada componente por separado
+    //En modo capas 6, se suman colores
+    //En modo capas 7, se suman colores y luego se resta 5
+
+	int c1_r=(color_primero>>6)&7;
+	int c1_g=(color_primero>>3)&7;
+	int c1_b=color_primero&7;
+
+	int c2_r=(color_layer>>6)&7;
+	int c2_g=(color_layer>>3)&7;
+	int c2_b=color_layer&7;
+
+
+    c1_r +=c2_r;
+    c1_g +=c2_g;
+    c1_b +=c2_b;
+
+    if (c1_r>7) c1_r=7;
+    if (c1_g>7) c1_g=7;
+    if (c1_b>7) c1_b=7;
+
+
+    if (modo_capas==7) {
+        c1_r -=5;
+        c1_g -=5;
+        c1_b -=5;
+
+        if (c1_r<0) c1_r=0;
+        if (c1_g<0) c1_g=0;
+        if (c1_b<0) c1_b=0;
+    }
+
+    return (c1_r<<6)|(c1_g<<3)|c1_b;
+
+}
 
 //Nos situamos en la linea justo donde empiezan los tiles
 void tbblue_render_layers_rainbow(int capalayer2,int capasprites)
@@ -6245,6 +6283,46 @@ void tbblue_render_layers_rainbow(int capalayer2,int capasprites)
 
 	tbblue_set_layer_priorities();
 
+    int modo_capas=tbblue_get_layers_priorities();
+
+    int blend_ula_layer2=0;
+    int blend_tiles_layer2=0;
+
+    if (modo_capas==6 || modo_capas==7) {
+        // atic atac hace blend ula con layer2, en pantalla azul oscura
+        /*
+        0x68 (104) => ULA Control
+        (R/W)
+        bit 7 = Disable ULA output (soft reset = 0)
+        bits 6:5 = Blending in SLU modes 6 & 7 (soft reset = 0)
+                = 00 for ula as blend colour
+                = 10 for ula/tilemap mix result as blend colour
+                = 11 for tilemap as blend colour
+                = 01 for no blending
+        */
+        z80_byte blend_mode=tbblue_registers[0x68] >> 5;
+
+        if (blend_mode==0 || blend_mode==2) blend_ula_layer2=1;
+        if (blend_mode==2 || blend_mode==3) blend_tiles_layer2=1;
+
+    }
+    /*
+
+    En modos blend 6 y 7 las capas son siempre: U S T L (Siendo L blend de ula/tiles con layer2)
+    Pero la capa U o la T no están cuando se hace blend con una de esas capas con layer 2, o sea:
+
+    ok if I blend with ula, layers will be: S T L(Blend Layer2+ula)
+
+    and If I blend with tiles, layers will be:
+
+    U S L(Blend layer2+tiles)
+
+    and if no blending (bits 6:5 of 0x68 - 01 for no blending)
+
+    U S T L
+    */
+
+
 	z80_int color;
 
 	//printf ("ancho total: %d size layers: %d\n",get_total_ancho_rainbow(),TBBLUE_LAYERS_PIXEL_WIDTH );
@@ -6266,6 +6344,9 @@ void tbblue_render_layers_rainbow(int capalayer2,int capasprites)
 
         for (i=0;i<ancho_rainbow;i++) {
 
+            int estamos_borde_derizq=0;
+
+            if (i<final_borde_izquierdo || i>=inicio_borde_derecho) estamos_borde_derizq=1;
 
             color = tbblue_layer_layer2[i];
 
@@ -6296,7 +6377,9 @@ void tbblue_render_layers_rainbow(int capalayer2,int capasprites)
 
                 //Primera capa
                 color=p_layer_first[i];
-                if (!tbblue_fn_pixel_layer_transp_first(color) ) {
+
+                //Modo blending 6/7 y la ula sera la primera capa. mezclarla en la capa de layer2 (la cuarta)
+                if (!tbblue_fn_pixel_layer_transp_first(color) && !blend_ula_layer2) {
                     *puntero_final_rainbow=RGB9_INDEX_FIRST_COLOR+color;
                     //doble de alto
                     puntero_final_rainbow[ancho_rainbow]=RGB9_INDEX_FIRST_COLOR+color;
@@ -6312,7 +6395,8 @@ void tbblue_render_layers_rainbow(int capalayer2,int capasprites)
 
                     else {
                         color=p_layer_third[i];
-                        if (!tbblue_fn_pixel_layer_transp_third(color) ) {
+                        //Modo blending 6/7 y tiles sera la tercera capa. mezclarla en la capa de layer2 (la cuarta)
+                        if (!tbblue_fn_pixel_layer_transp_third(color) && !blend_tiles_layer2) {
                             *puntero_final_rainbow=RGB9_INDEX_FIRST_COLOR+color;
                             //doble de alto
                             puntero_final_rainbow[ancho_rainbow]=RGB9_INDEX_FIRST_COLOR+color;
@@ -6321,6 +6405,34 @@ void tbblue_render_layers_rainbow(int capalayer2,int capasprites)
                         else {
                             color=p_layer_fourth[i];
                             if (!tbblue_fn_pixel_layer_transp_fourth(color) ) {
+                                if (blend_ula_layer2) {
+                                    //printf("hacemos blend\n");
+                                    //Mezclar color primera capa (ula) con este capa 4 (layer2)
+                                    z80_int color_ula=p_layer_first[i];
+                                    if (!tbblue_fn_pixel_layer_transp_first(color_ula)) {
+                                        color=tbblue_blend_color(color_ula,color,modo_capas);
+                                    }
+
+                                    //Si zona mas alla de 256x192 de la ula, hacer blend con palette source index 0
+                                    if (estamos_borde_supinf || estamos_borde_derizq) {
+                                        //printf("Estamos en el border\n");
+                                        color=tbblue_blend_color(tbblue_get_palette_active_ula(0),color,modo_capas);
+                                    }
+
+                                    //Nota: si hay clipping de la ula, se encontrara ciertas zonas con color transparente
+                                    //entonces el color final sera el color del layer 2 tal cual
+                                }
+
+                                if (blend_tiles_layer2) {
+                                    //printf("hacemos blend\n");
+                                    //Mezclar color tecera capa (tiles) con este capa 4 (layer2)
+                                    z80_int color_tiles=p_layer_third[i];
+                                    if (!tbblue_fn_pixel_layer_transp_first(color_tiles)) {
+                                        color=tbblue_blend_color(color_tiles,color,modo_capas);
+                                    }
+
+                                }
+
                                 *puntero_final_rainbow=RGB9_INDEX_FIRST_COLOR+color;
                                 //doble de alto
                                 puntero_final_rainbow[ancho_rainbow]=RGB9_INDEX_FIRST_COLOR+color;

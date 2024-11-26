@@ -37,10 +37,15 @@ Improved Inves Spectrum+ emulation: alert when a game may crash due to the Inves
 Improve Spectrum Z80 CPU emulation core: add wait state (needed to emulate microdrive)
 
 Improved Hilow Datadrive emulation:
--Added Raw emulation, like the real device
--Allow ddh variable size (from 3 up to 256 sectors)
--Allow to format only one side on ddh files
--Allow to clear contents when formatting ("c/borrado" or "s/borrado") on ddh files
+- Added Raw emulation, like the real device
+- Allow ddh variable size (from 3 up to 256 sectors)
+- Allow to format only one side on ddh files
+- Allow to clear contents when formatting ("c/borrado" or "s/borrado") on ddh files
+
+Improved Spectrum Next emulation:
+- Fixed DMA Datagear burst mode when prescaler=0
+- Added Layer modes 6 and 7 (blend modes)
+- Fixed esxdos call DISK_FILEMAP
 
 Improved Debug:
 - CPU history: allow to change memory pointer to the PC register show in history
@@ -74,12 +79,10 @@ Fixed alt key pressed when changing to another window by using alt-tab on xwindo
 Fixed TZX autoload as Real Tape on Spectrum +3
 Fixed hotswap ZX80 to ZX81, ZX81 to ZX80
 Fixed Amstrad CPC Scroll
-Fixed Next DMA Datagear burst mode when prescaler=0
 Fixed Cassette out sound: allow to hear it on computers: Jupiter Ace, CPC, MSX, Spectravideo
 Fixed memory map and behaviour on Jupiter Ace: now it's perfect and better than any other emulator
 Fixed loading .nex snapshots and Layer 2 not being initialized (fixes errors on Head Over Heels for Next, for example)
 Fixed loading .nex snapshots and MMU not managed correctly
-Fixed esxdos call DISK_FILEMAP on Next
 Fixed Search menu feature. Now it's enabled by default
 Fixed bug saving .ZSF Z88 snapshot when RAM or Memory Card block is not compressed
 Fixed showing footer message F5/Button menu
