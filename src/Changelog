@@ -46,6 +46,7 @@ Improved Spectrum Next emulation:
 - Fixed DMA Datagear burst mode when prescaler=0
 - Added Layer modes 6 and 7 (blend modes)
 - Fixed esxdos call DISK_FILEMAP
+- Fixed palette offset for layer 2
 
 Improved Debug:
 - CPU history: allow to change memory pointer to the PC register show in history

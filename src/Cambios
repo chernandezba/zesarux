@@ -46,6 +46,7 @@ Improved Spectrum Next emulation:
 - Corregido burst mode de DMA Datagear cuando prescaler=0
 - Agregado modos de capas 6 and 7 (modos mezcla)
 - Corregido llamada a esxdos DISK_FILEMAP
+- Corregido offset de paleta en layer 2
 
 Mejorado Debug:
 - CPU history: permitir cambiar el puntero de memoria según el registro PC mostrado en el historial

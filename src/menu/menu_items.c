@@ -21682,7 +21682,7 @@ void menu_debug_tsconf_tbblue_msx(MENU_ITEM_PARAMETERS)
 		//por defecto
 		strcpy(titulo_ventana,"Debug TSConf");
 
-		if (MACHINE_IS_TBBLUE)  strcpy(titulo_ventana,"Debug TBBlue");
+		if (MACHINE_IS_TBBLUE)  strcpy(titulo_ventana,"Debug Next");
 		if (MACHINE_IS_MSX)     strcpy(titulo_ventana,"Debug MSX");
 		if (MACHINE_IS_COLECO)  strcpy(titulo_ventana,"Debug Colecovision");
 		if (MACHINE_IS_SG1000)  strcpy(titulo_ventana,"Debug SG1000");
@@ -32626,7 +32626,7 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
                 menu_add_item_menu_tiene_submenu(array_menu_debug);
             }
 			if (MACHINE_IS_TBBLUE) {
-                menu_add_item_menu_format(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_tsconf_tbblue_msx,NULL,"~~TBBlue");
+                menu_add_item_menu_format(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_tsconf_tbblue_msx,NULL,"Spectrum Nex~~t");
                 menu_add_item_menu_shortcut(array_menu_debug,'t');
                 menu_add_item_menu_tiene_submenu(array_menu_debug);
             }

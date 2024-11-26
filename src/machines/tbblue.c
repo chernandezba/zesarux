@@ -6305,6 +6305,7 @@ void tbblue_render_layers_rainbow(int capalayer2,int capasprites)
         if (blend_mode==0 || blend_mode==2) blend_ula_layer2=1;
         if (blend_mode==2 || blend_mode==3) blend_tiles_layer2=1;
 
+        //Nota: solo modo capas_7 con blend_mode=0 se ha probado. Con Atic Atac
     }
     /*
 
@@ -6501,8 +6502,8 @@ void tbblue_do_layer2_overlay(int linea_render)
     int layer2_resolution=(tbblue_registers[112]>>4) & 3;
 
 
-    //Obtener offset paleta color
-    int palette_offset=tbblue_registers[112] & 15;
+    //Obtener offset paleta color. En multiples de 16
+    int palette_offset=(tbblue_registers[112] & 15)*16;
 
 
 

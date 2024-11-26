@@ -450,6 +450,7 @@ La particularidad es que ese archivo tiene bloques a final de microdrive y al pr
 
 -tbblue_fast_render_ula_layer de momento desactivado hasta incorporar render ahi de tilemap
 
+-en debug-tbblue-view layers mostrar bien modos 6 y 7
 
 -ojo con bit 0:
 
