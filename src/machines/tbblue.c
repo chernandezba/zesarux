@@ -310,6 +310,7 @@ int tbblue_initial_123b_port=-1;
 
 //Layers con el indice al color final en la paleta RGB9 (0..511)
 z80_int tbblue_layer_ula[TBBLUE_LAYERS_PIXEL_WIDTH];
+z80_int tbblue_layer_tiles[TBBLUE_LAYERS_PIXEL_WIDTH];
 z80_int tbblue_layer_layer2[TBBLUE_LAYERS_PIXEL_WIDTH];
 z80_int tbblue_layer_sprites[TBBLUE_LAYERS_PIXEL_WIDTH];
 
@@ -5260,10 +5261,11 @@ char *tbblue_get_string_layer_prio(int layer,z80_byte prio)
 
 
 
-//Inicializa punteros a los 3 layers
+//Inicializa punteros a los 4 layers
 z80_int *p_layer_first;
 z80_int *p_layer_second;
 z80_int *p_layer_third;
+z80_int *p_layer_fourth;
 
 
 
@@ -5274,6 +5276,7 @@ z80_int *p_layer_third;
 int (*tbblue_fn_pixel_layer_transp_first)(z80_int color);
 int (*tbblue_fn_pixel_layer_transp_second)(z80_int color);
 int (*tbblue_fn_pixel_layer_transp_third)(z80_int color);
+int (*tbblue_fn_pixel_layer_transp_fourth)(z80_int color);
 
 z80_byte tbblue_get_layers_priorities(void)
 {
@@ -5287,12 +5290,15 @@ void tbblue_set_layer_priorities(void)
 	p_layer_first=tbblue_layer_sprites;
 	p_layer_second=tbblue_layer_layer2;
 	p_layer_third=tbblue_layer_ula;
+    p_layer_fourth=tbblue_layer_tiles;
 
 
 
 	tbblue_fn_pixel_layer_transp_first=tbblue_si_sprite_transp_ficticio;
+    tbblue_fn_pixel_layer_transp_second=tbblue_si_sprite_transp_ficticio;
 	tbblue_fn_pixel_layer_transp_third=tbblue_si_sprite_transp_ficticio;
-	tbblue_fn_pixel_layer_transp_second=tbblue_si_sprite_transp_ficticio;
+    tbblue_fn_pixel_layer_transp_fourth=tbblue_si_sprite_transp_ficticio;
+
 
 	/*
 	(R/W) 0x15 (21) => Sprite and Layers system
@@ -5300,12 +5306,14 @@ void tbblue_set_layer_priorities(void)
   bits 6-5 = Reserved, must be 0
   bits 4-2 = set layers priorities:
      Reset default is 000, sprites over the Layer 2, over the ULA graphics
-     000 - S L U
-     001 - L S U
-     010 - S U L
-     011 - L U S
-     100 - U S L
-     101 - U L S
+     000 - S L U T
+     001 - L S U T
+     010 - S U T L
+     011 - L U T S
+     100 - U T S L
+     101 - U T L S
+    110 - (U|T)S(T|U)(B+L) Blending layer and Layer 2 combined, colours clamped to [0,7]
+    111 - (U|T)S(T|U)(B+L-5) Blending layer and Layer 2 combined, colours clamped to [0,7]
   bit 1 = Over border (1 = yes)(Back to 0 after a reset)
   bit 0 = Sprites visible (1 = visible)(Back to 0 after a reset)
   */
@@ -5319,6 +5327,7 @@ void tbblue_set_layer_priorities(void)
 			p_layer_first=tbblue_layer_sprites;
 			p_layer_second=tbblue_layer_layer2;
 			p_layer_third=tbblue_layer_ula;
+            p_layer_fourth=tbblue_layer_tiles;
 
 		break;
 
@@ -5326,6 +5335,7 @@ void tbblue_set_layer_priorities(void)
 			p_layer_first=tbblue_layer_layer2;
 			p_layer_second=tbblue_layer_sprites;
 			p_layer_third=tbblue_layer_ula;
+            p_layer_fourth=tbblue_layer_tiles;
 
 		break;
 
@@ -5333,45 +5343,59 @@ void tbblue_set_layer_priorities(void)
 		case 2:
 			p_layer_first=tbblue_layer_sprites;
 			p_layer_second=tbblue_layer_ula;
-			p_layer_third=tbblue_layer_layer2;
+            p_layer_third=tbblue_layer_tiles;
+			p_layer_fourth=tbblue_layer_layer2;
 
 		break;
 
 		case 3:
 			p_layer_first=tbblue_layer_layer2;
 			p_layer_second=tbblue_layer_ula;
-			p_layer_third=tbblue_layer_sprites;
+            p_layer_third=tbblue_layer_tiles;
+			p_layer_fourth=tbblue_layer_sprites;
 
 		break;
 
 		case 4:
 			p_layer_first=tbblue_layer_ula;
-			p_layer_second=tbblue_layer_sprites;
-			p_layer_third=tbblue_layer_layer2;
+            p_layer_second=tbblue_layer_tiles;
+			p_layer_third=tbblue_layer_sprites;
+			p_layer_fourth=tbblue_layer_layer2;
 
 		break;
 
 		case 5:
 			p_layer_first=tbblue_layer_ula;
-			p_layer_second=tbblue_layer_layer2;
-			p_layer_third=tbblue_layer_sprites;
+            p_layer_second=tbblue_layer_tiles;
+			p_layer_third=tbblue_layer_layer2;
+			p_layer_fourth=tbblue_layer_sprites;
 
 		break;
 
-        //Prueba atic atac
-		/*case 7:
+        //TODO Temporal sin blending
+		case 6:
 			p_layer_first=tbblue_layer_sprites;
 			p_layer_second=tbblue_layer_ula;
-			p_layer_third=tbblue_layer_layer2;
+            p_layer_third=tbblue_layer_tiles;
+			p_layer_fourth=tbblue_layer_layer2;
 
-		break;*/
+		break;
+
+        //TODO Temporal sin blending
+		case 7:
+			p_layer_first=tbblue_layer_sprites;
+			p_layer_second=tbblue_layer_ula;
+            p_layer_third=tbblue_layer_tiles;
+			p_layer_fourth=tbblue_layer_layer2;
+
+		break;
 
         //Cualquier otra cosa no soportada
 		default:
 			p_layer_first=tbblue_layer_sprites;
 			p_layer_second=tbblue_layer_layer2;
 			p_layer_third=tbblue_layer_ula;
-
+            p_layer_fourth=tbblue_layer_tiles;
 		break;
 	}
 
@@ -5570,9 +5594,9 @@ void tbblue_do_tile_putpixel(z80_byte pixel_color,z80_byte transparent_colour,z8
         color_previo_capa=*puntero_a_layer;
 
         //Poner pixel tile si color de ula era transparente o bien la ula está por debajo
-        if (tbblue_si_sprite_transp_ficticio(color_previo_capa) || !ula_over_tilemap) {
+        //if (tbblue_si_sprite_transp_ficticio(color_previo_capa) || !ula_over_tilemap) {
             *puntero_a_layer=tbblue_tile_return_color_index(pixel_color);
-        }
+        //}
 
     }
 
@@ -5727,11 +5751,10 @@ void tbblue_do_tile_overlay(int scanline)
 //borde izquierdo + pantalla + borde derecho
 #define TBBLUE_LAYERS_PIXEL_WIDTH (48+256+48)
 
-z80_int tbblue_layer_ula[TBBLUE_LAYERS_PIXEL_WIDTH];
 */
 
 	z80_int *puntero_a_layer;
-	puntero_a_layer=&tbblue_layer_ula[(48-32)*2]; //Inicio de pantalla es en offset 48, restamos 32 pixeles que es donde empieza el tile
+	puntero_a_layer=&tbblue_layer_tiles[(48-32)*2]; //Inicio de pantalla es en offset 48, restamos 32 pixeles que es donde empieza el tile
 																								//*2 porque es doble de ancho
 
 	z80_int *orig_puntero_a_layer;
@@ -6229,9 +6252,8 @@ void tbblue_render_layers_rainbow(int capalayer2,int capasprites)
 	int i;
 
 	//Si solo hay capa ula, hacer render mas rapido
-	//printf ("%d %d %d\n",capalayer2,capasprites,tbblue_get_layers_priorities());
-	//if (capalayer2==0 && capasprites==0 && tbblue_get_layers_priorities()==0) {  //prio 0=S L U
-	if (capalayer2==0 && capasprites==0) {
+	//TODO: temporal desactivado hasta incorporar en fast render la capa de tiles
+	if (0/*capalayer2==0 && capasprites==0*/) {
 		//Hará fast render cuando no haya capa de layer2 o sprites, aunque tambien,
 		//estando esas capas, cuando este en zona de border o no visible de dichas capas
 		tbblue_fast_render_ula_layer(puntero_final_rainbow,estamos_borde_supinf,final_borde_izquierdo,inicio_borde_derecho,ancho_rainbow);
@@ -6297,22 +6319,31 @@ void tbblue_render_layers_rainbow(int capalayer2,int capasprites)
                         }
 
                         else {
-                            if (estamos_borde_supinf) {
-                                //Si estamos en borde inferior o superior, no hacemos nada, dibujar color borde
+                            color=p_layer_fourth[i];
+                            if (!tbblue_fn_pixel_layer_transp_fourth(color) ) {
+                                *puntero_final_rainbow=RGB9_INDEX_FIRST_COLOR+color;
+                                //doble de alto
+                                puntero_final_rainbow[ancho_rainbow]=RGB9_INDEX_FIRST_COLOR+color;
                             }
 
                             else {
-                                //Borde izquierdo o derecho o pantalla. Ver si estamos en pantalla
-                                if (i>=final_borde_izquierdo && i<inicio_borde_derecho) {
-                                    //Poner color indicado por "Transparency colour fallback" registro:
-                                    *puntero_final_rainbow=fallbackcolour;
-                                    //doble de alto
-                                    puntero_final_rainbow[ancho_rainbow]=fallbackcolour;
-                                }
-                                else {
-                                    //Es borde. dejar ese color
+                                if (estamos_borde_supinf) {
+                                    //Si estamos en borde inferior o superior, no hacemos nada, dibujar color borde
                                 }
 
+                                else {
+                                    //Borde izquierdo o derecho o pantalla. Ver si estamos en pantalla
+                                    if (i>=final_borde_izquierdo && i<inicio_borde_derecho) {
+                                        //Poner color indicado por "Transparency colour fallback" registro:
+                                        *puntero_final_rainbow=fallbackcolour;
+                                        //doble de alto
+                                        puntero_final_rainbow[ancho_rainbow]=fallbackcolour;
+                                    }
+                                    else {
+                                        //Es borde. dejar ese color
+                                    }
+
+                                }
                             }
                         }
                     }
@@ -6566,6 +6597,7 @@ void tbblue_reveal_layer_draw(z80_int *layer)
 
 //Forzar a dibujar capa con color fijo, para debug
 z80_bit tbblue_reveal_layer_ula={0};
+z80_bit tbblue_reveal_layer_tiles={0};
 z80_bit tbblue_reveal_layer_layer2={0};
 z80_bit tbblue_reveal_layer_sprites={0};
 
@@ -6948,6 +6980,7 @@ void screen_store_scanline_rainbow_solo_display_tbblue(void)
 	//Tenemos que escribir en array de z80_int (2 bytes)
 	int tamanyo_clear=TBBLUE_LAYERS_PIXEL_WIDTH*2;
 	memset(tbblue_layer_ula,0xFF,tamanyo_clear);
+    memset(tbblue_layer_tiles,0xFF,tamanyo_clear);
 	memset(tbblue_layer_layer2,0xFF,tamanyo_clear);
 	memset(tbblue_layer_sprites,0xFF,tamanyo_clear);
 
@@ -7046,7 +7079,7 @@ void screen_store_scanline_rainbow_solo_display_tbblue(void)
     }
 
 
-    //Capa de tiles. Mezclarla directamente a la capa de ula tbblue_layer_ula
+    //Capa de tiles.
 
 
 	if ( tbblue_if_tilemap_enabled() && tbblue_force_disable_layer_tilemap.v==0) {
@@ -7067,6 +7100,11 @@ the central 256×192 display. The X coordinates are internally doubled to cover 
 			//capatiles=1;
 			tbblue_do_tile_overlay(y_tile);
 		}
+
+
+        if (tbblue_reveal_layer_tiles.v) {
+                tbblue_reveal_layer_draw(tbblue_layer_tiles);
+        }
 	}
 
 

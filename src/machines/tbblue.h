@@ -283,6 +283,7 @@ extern z80_int tbblue_copper_pc;
 #define TBBLUE_DISPLAY_HEIGHT 384
 
 extern z80_bit tbblue_reveal_layer_ula;
+extern z80_bit tbblue_reveal_layer_tiles;
 extern z80_bit tbblue_reveal_layer_layer2;
 extern z80_bit tbblue_reveal_layer_sprites;
 
