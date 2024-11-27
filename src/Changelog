@@ -43,7 +43,8 @@ Improved Hilow Datadrive emulation:
 - Allow to clear contents when formatting ("c/borrado" or "s/borrado") on ddh files
 
 Improved Spectrum Next emulation:
-- Fixed DMA Datagear burst mode when prescaler=0
+- Fixed DMA burst mode when prescaler=0
+- Fixed DMA Transfer restarting the byte count at the end of a transfer
 - Added Layer modes 6 and 7 (blend modes)
 - Fixed esxdos call DISK_FILEMAP
 - Fixed palette offset for layer 2
