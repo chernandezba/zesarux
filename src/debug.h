@@ -157,6 +157,7 @@ extern int core_spectrum_executed_halt_in_this_scanline;
 #define VERBOSE_CLASS_IF1 (1<<13)
 #define VERBOSE_CLASS_MDR (1<<14)
 #define VERBOSE_CLASS_ZXVISION_EVENTS (1<<15)
+#define VERBOSE_CLASS_DMA (1<<16)
 
 //Mensajes sin clase indicada. Bit 31 que seria de signo no lo toco. Uso bit 30 para el de anythingelse
 #define VERBOSE_CLASS_ANYTHINGELSE (1<<30)

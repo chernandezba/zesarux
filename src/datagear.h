@@ -56,4 +56,7 @@ extern z80_byte datagear_wr6;
 
 extern void datagear_handle_dma(void);
 
+//Para poder hacer debug_printf con la clase de debug adecuada
+#define DBG_PRINT_DMA debug_printf(VERBOSE_CLASS_DMA|
+
 #endif

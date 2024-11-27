@@ -482,3 +482,11 @@ La particularidad es que ese archivo tiene bloques a final de microdrive y al pr
   -ventana video layers hacerla que se pueda ejecutar en background
 
 -tiles que no salgan de pagina 16kb ram5 o 8bk de ram7
+
+-icono para accion: {"DebugCPUBreakpoints",F_FUNCION_DEBUGCPU,bitmap_button_ext_desktop_nothing,""},
+
+
+"Another place it does that is after the dma operation completes and the WR5 auto restart bit is set."
+; The auto restart feature causes the dma to automatically reload its source and
+; destination addresses and reset its byte counter to zero to repeat the last
+; transfer when a previous one is finished.

@@ -1072,6 +1072,7 @@ debug_masks_class debug_masks_class_list[]={
     {"INTERFACE1",VERBOSE_CLASS_IF1},
     {"MICRODRIVE",VERBOSE_CLASS_MDR},
     {"ZXVISION_EVENTS",VERBOSE_CLASS_ZXVISION_EVENTS},
+    {"DMA",VERBOSE_CLASS_DMA},
     {"ANYTHINGELSE",VERBOSE_CLASS_ANYTHINGELSE},
     {"",0}  //Siempre este al final
 };
