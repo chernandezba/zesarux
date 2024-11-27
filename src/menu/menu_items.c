@@ -42655,6 +42655,10 @@ void menu_process_f_functions_by_action_name(int id_funcion,int si_pulsado_icono
             menu_abierto=1;*/
 		break;
 
+		case F_FUNCION_DEBUGCPU_BREAKPOINTS:
+			menu_breakpoints(0);
+		break;
+
 		case F_FUNCION_DEBUGCPU_VIEW_ADVENTURE:
 			menu_debug_registers_view_adventure(0);
 		break;

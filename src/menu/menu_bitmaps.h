@@ -31,6 +31,8 @@ extern char **alter_zesarux_ascii_logo(char **p);
 extern char *zesarux_ascii_logo_whitebright[];
 extern char **get_zesarux_ascii_logo_whitebright(void);
 
+extern char *bitmap_button_ext_desktop_userdefined[];
+
 extern char *bitmap_button_ext_desktop_smartload[];
 extern char *bitmap_button_ext_desktop_snapshot[];
 extern char *bitmap_button_ext_desktop_machine[];
@@ -47,7 +49,6 @@ extern char *bitmap_button_ext_desktop_settings[];
 extern char *bitmap_button_ext_desktop_close_all_menus[];
 extern char *bitmap_button_ext_desktop_exit[];
 
-extern char *bitmap_button_ext_desktop_userdefined[];
 extern char *bitmap_button_ext_desktop_fullscreen[];
 extern char *bitmap_button_ext_desktop_waveform[];
 extern char *bitmap_button_ext_desktop_audioregisters[];

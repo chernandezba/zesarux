@@ -159,6 +159,7 @@ defined_f_function defined_direct_functions_array[MAX_F_FUNCTIONS]={
 	{"HardReset",F_FUNCION_HARDRESET,bitmap_button_ext_desktop_hardreset,""},
 	{"NMI",F_FUNCION_NMI,bitmap_button_ext_desktop_nmi,""},
 	{"DebugCPU",F_FUNCION_DEBUGCPU,bitmap_button_ext_desktop_debugcpu,"debugcpu"},
+    {"DebugCPUBreakpoints",F_FUNCION_DEBUGCPU_BREAKPOINTS,bitmap_button_ext_desktop_userdefined,""},
     {"DebugCPUViewAdv",F_FUNCION_DEBUGCPU_VIEW_ADVENTURE,bitmap_button_ext_desktop_debugcpu_view_adventure,""},
     {"Poke",F_FUNCION_POKE,bitmap_button_ext_desktop_poke,""},
     {"TextAdventureMap",F_FUNCION_TEXT_ADVENTURE_MAP,bitmap_button_ext_desktop_text_adventure_map,"textadvmap"},

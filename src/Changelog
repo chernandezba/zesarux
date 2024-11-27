@@ -68,6 +68,7 @@ Improved ZX Vision:
 - Allow a window to disable scroll actions
 - Process switcher is located at bottom-left part of the display by default
 - Now rainbow bars on windows title are visible on all GUI Styles when an error or splash message appears
+- Added a direct function to open Breakpoints window
 
 Improved ZX Desktop:
 - Allow to enable/disable upper and lower buttons independently

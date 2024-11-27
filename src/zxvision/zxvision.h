@@ -641,7 +641,7 @@ extern void menu_first_aid_init(void);
 extern void menu_first_aid_random_startup(void);
 extern int menu_first_aid_title(char *key_setting,char *title);
 
-#define MAX_F_FUNCTIONS 63
+#define MAX_F_FUNCTIONS 64
 
 enum defined_f_function_ids {
 	//reset, hard-reset, nmi, open menu, ocr, smartload, osd keyboard, exitemulator.
@@ -698,6 +698,7 @@ enum defined_f_function_ids {
     F_FUNCION_ZXUNO_PRISM,
     F_FUNCION_LEFTRIGHT_JOY,
     F_FUNCION_DEBUGCPU_VIEW_ADVENTURE,
+    F_FUNCION_DEBUGCPU_BREAKPOINTS,
     F_FUNCION_TEXT_ADVENTURE_MAP,
     F_FUNCION_DESKTOP_TRASH,
     F_FUNCION_DESKTOP_SNAPSHOT,
