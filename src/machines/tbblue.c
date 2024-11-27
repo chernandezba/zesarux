@@ -1319,6 +1319,47 @@ int tbblue_get_offset_start_layer2(void)
 
 }
 
+/*
+0x6E (110) => Tilemap Base Address
+(R/W) (soft reset = 0x6c00)
+  bit 7 = 1 to select bank 7, 0 to select bank 5
+  bit 6 = Reserved, must be 0
+  bits 5:0 = MSB of address of the tilemap in Bank 5
+  The value written into bits 5:0 is an offset into 16K bank 5 or 8K bank 7
+  allowing the tilemap to be placed at any multiple of 256 bytes. The value
+  written here can be thought of as the MSB of an address in bank 5 0x40-0x7f
+  or bank 7 0xc0-0xff. Because bank 7 is only 8K in size, addresses wrap
+  across the 8K boundary instead of the 16K boundary.
+
+0x6F (111) => Tile Definitions Base Address
+(R/W) (soft reset = 0x4c00)
+  bit 7 = 1 to select bank 7, 0 to select bank 5
+  bit 6 = Reserved, must be 0
+  bits 5:0 = MSB of address of tile definitions in Bank 5
+  The value written into bits 5:0 is an offset into 16K bank 5 or 8K bank 7
+  allowing the tile definitions to be placed at any multiple of 256 bytes. The
+  value written here can be thought of as the MSB of an address in bank 5
+  0x40-0x7f or bank 7 0xc0-0xff. Because bank 7 is only 8K in size, addresses
+  wrap across the 8K boundary instead of the 16K boundary.
+
+
+The SHADOW 128K ULA screen is in bank8k 14 so that is why tilemap data uses bank8k 15. The docs say bank16k 7 but it is the upper 8K
+
+*/
+//Lo retorna en bloque de ram de 8k
+z80_byte tbblue_get_ram_page_tilemap(void)
+{
+    if (tbblue_registers[110] & 128) return 7*2+1;
+    else return 5*2;
+}
+
+//Lo retorna en bloque de ram de 8k
+z80_byte tbblue_get_ram_page_tiledef(void)
+{
+    if (tbblue_registers[111] & 128) return 7*2+1;
+    else return 5*2;
+}
+
 int tbblue_get_offset_start_tilemap(void)
 {
 	return tbblue_registers[110]&63;
@@ -5842,8 +5883,10 @@ the central 256×192 display. The X coordinates are internally doubled to cover 
 
 	//printf ("clipwindow_min_x %d clipwindow_max_x %d\n",clipwindow_min_x,clipwindow_max_x);
 
+    z80_byte page_tilemap=tbblue_get_ram_page_tilemap();
+
 	//Inicio del tilemap
-	puntero_tilemap=tbblue_ram_memory_pages[5*2]+(256*tbblue_get_offset_start_tilemap());
+	puntero_tilemap=tbblue_ram_memory_pages[page_tilemap]+(256*tbblue_get_offset_start_tilemap());
 
 	//Obtener offset sobre tilemap
 	int offset_tilemap=tbblue_bytes_per_tile*tilemap_width*posicion_y;
@@ -5851,9 +5894,10 @@ the central 256×192 display. The X coordinates are internally doubled to cover 
 
 	puntero_tilemap +=offset_tilemap;  //Esto apuntara al primer tile de esa posicion y y con x=0
 
+    z80_byte page_tiledef=tbblue_get_ram_page_tiledef();
 
 	//Inicio del tiledef
-	puntero_tiledef=tbblue_ram_memory_pages[5*2]+(256*tbblue_get_offset_start_tiledef());
+	puntero_tiledef=tbblue_ram_memory_pages[page_tiledef]+(256*tbblue_get_offset_start_tiledef());
 
 	//puntero_a_layer -=scroll_x; //temp chapuza
 
@@ -5942,6 +5986,8 @@ Defines the transparent colour index for tiles. The 4-bit pixels of a tile defin
                         ula_over_tilemap = byte_second & ula_over_tilemap_mask;
                 }
 
+                //if (ula_over_tilemap) printf("ula_over_tilemap\n");
+
                 //printf ("Color independiente. tpal:%d byte_second: %02XH\n",tpal,byte_second);
 
                 //Sacar puntero a principio tiledef.
@@ -5975,6 +6021,7 @@ Defines the transparent colour index for tiles. The 4-bit pixels of a tile defin
 		z80_byte *puntero_this_tiledef;
 		puntero_this_tiledef=&puntero_tiledef[offset_tiledef];
 
+        //printf("offset_tiledef: %d\n",offset_tiledef);
 
 		//Incrementos de x e y
 		int incx=+1;

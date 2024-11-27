@@ -2764,19 +2764,19 @@ bits 5-0 = SRAM page (point to page 11 after a Reset)
 
         //tbblue_get_offset_start_layer2_reg
 
-            sprintf (texto_buffer,"Layer 2 mode:   %s",tbblue_get_layer2_mode_name() );
+            sprintf (texto_buffer,"Layer 2 mode:     %s",tbblue_get_layer2_mode_name() );
             zxvision_print_string_defaults(ventana,1,linea++,texto_buffer);
 
-            sprintf (texto_buffer,"Layer 2 addr:        %06XH",tbblue_get_offset_start_layer2_reg(tbblue_registers[18]) );
+            sprintf (texto_buffer,"Layer 2 addr:          %06XH",tbblue_get_offset_start_layer2_reg(tbblue_registers[18]) );
             zxvision_print_string_defaults(ventana,1,linea++,texto_buffer);
 
-            sprintf (texto_buffer,"Layer 2 shadow addr: %06XH",tbblue_get_offset_start_layer2_reg(tbblue_registers[19]) );
+            sprintf (texto_buffer,"Layer 2 shadow addr:   %06XH",tbblue_get_offset_start_layer2_reg(tbblue_registers[19]) );
             zxvision_print_string_defaults(ventana,1,linea++,texto_buffer);
 
-            sprintf (texto_buffer,"Tilemap base addr:     %02X00H",0x40+tbblue_get_offset_start_tilemap() );
+            sprintf (texto_buffer,"Tilemap base addr: RAM%d:%02X00H",tbblue_get_ram_page_tilemap(),tbblue_get_offset_start_tilemap());
             zxvision_print_string_defaults(ventana,1,linea++,texto_buffer);
 
-            sprintf (texto_buffer,"Tile definitions addr: %02X00H",0x40+tbblue_get_offset_start_tiledef() );
+            sprintf (texto_buffer,"Tile defin.  addr: RAM%d:%02X00H",tbblue_get_ram_page_tiledef(),tbblue_get_offset_start_tiledef() );
             zxvision_print_string_defaults(ventana,1,linea++,texto_buffer);
 
             sprintf (texto_buffer,"Tile width: %d columns",tbblue_get_tilemap_width() );
@@ -3708,8 +3708,8 @@ void menu_debug_tsconf_tbblue_msx_tilenav_lista_tiles(void)
 
 	else {  //TBBLUE
 		//puntero_tilemap=tbblue_ram_mem_table[5]+tbblue_get_offset_start_tilemap();
-			//Siempre saldra de ram 5
-		puntero_tilemap=tbblue_ram_memory_pages[5*2]+(256*tbblue_get_offset_start_tilemap());
+		z80_byte page_tilemap=tbblue_get_ram_page_tilemap();
+		puntero_tilemap=tbblue_ram_memory_pages[page_tilemap]+(256*tbblue_get_offset_start_tilemap());
 		//printf ("%XH\n",tbblue_get_offset_start_tilemap() );
 
 	}
