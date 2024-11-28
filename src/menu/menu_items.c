@@ -8856,7 +8856,7 @@ void menu_tsconf_layer_overlay_mostrar_texto(void)
 
 
 					int i;
-					for (i=0;i<3;i++) {
+					for (i=0;i<4;i++) {
 						char nombre_capa[32];
 						strcpy(nombre_capa,tbblue_get_string_layer_prio(i,prio) );
 						//if (strcmp(nombre_capa,"ULA&Tiles")) strcpy(nombre_capa,"  ULA  "); //meter espacios para centrarlo
@@ -8864,8 +8864,9 @@ void menu_tsconf_layer_overlay_mostrar_texto(void)
 
 													//     Sprites
 													//    ULA&Tiles
-						if (i!=2) strcpy (texto_layer,"|---------------|");
-						else      strcpy (texto_layer,"v---------------v");
+                                                    //   ULA+Tiles+Layer2 Blend-5
+						if (i!=3) strcpy (texto_layer,"|--------------------------|");
+						else      strcpy (texto_layer,"v--------------------------v");
 
 						//Centrar el nombre de capa
 						int longitud_medio=strlen(nombre_capa)/2;
@@ -9177,7 +9178,7 @@ void menu_tsconf_layer_settings(MENU_ITEM_PARAMETERS)
 
 	if (MACHINE_IS_TBBLUE) {
 		alto=22;
-        ancho=27;
+        ancho=30;
 		//y=1;
 	}
 

@@ -45,6 +45,7 @@
 #include "chardevice.h"
 #include "settings.h"
 #include "joystick.h"
+#include "operaciones.h"
 
 
 
@@ -297,12 +298,14 @@ int tbblue_initial_123b_port=-1;
   bits 6-5 = Reserved, must be 0
   bits 4-2 = set layers priorities:
      Reset default is 000, sprites over the Layer 2, over the ULA graphics
-     000 - S L U
-     001 - L S U
-     010 - S U L
-     011 - L U S
-     100 - U S L
-     101 - U L S
+     000 - S L U T
+     001 - L S U T
+     010 - S U T L
+     011 - L U T S
+     100 - U T S L
+     101 - U T L S
+    110 - (U|T)S(T|U)(B+L) Blending layer and Layer 2 combined, colours clamped to [0,7]
+    111 - (U|T)S(T|U)(B+L-5) Blending layer and Layer 2 combined, colours clamped to [0,7]
  */
 
 //Si en zona pantalla y todo es transparente, se pone un 0
@@ -402,7 +405,7 @@ void tbblue_copper_write_data(z80_byte value)
 	posicion &=(TBBLUE_COPPER_MEMORY-1);
 
 
-	//printf ("Writing copper data index %d data %02XH\n",posicion,value);
+	//printf ("Writing copper data index %d data %02XH Z80 PC=%02XH\n",posicion,value,reg_pc);
 
 	tbblue_copper_memory[posicion]=value;
 
@@ -553,7 +556,7 @@ void tbblue_copper_run_opcodes(void)
         //tbblue_copper_pc++;
 
         //tbblue_copper_pc++;
-        //printf ("Executing MOVE register %02XH value %02XH\n",indice_registro,valor_registro);
+        //printf ("Executing MOVE register %02XH value %02XH\n",indice_registro,byte_leido2);
         tbblue_set_value_port_position(indice_registro,byte_leido2);
 
         tbblue_copper_next_opcode();
@@ -3458,6 +3461,41 @@ void tbblue_set_memory_pages(void)
 
 		break;
 
+        //Maquina aun medio desconocida
+		case 7:
+
+
+            //romram_page=(tbblue_registers[4]&63);
+            romram_page=(tbblue_registers[4]&127);
+            indice=romram_page*16384;
+            printf ("page on 0-16383: %d offset: %06X\n",romram_page,indice);
+            tbblue_memory_paged[0]=&memoria_spectrum[indice];
+            tbblue_memory_paged[1]=&memoria_spectrum[indice+8192];
+            tbblue_low_segment_writable.v=1;
+            //printf ("low segment writable for machine default\n");
+
+            debug_paginas_memoria_mapeadas[0]=romram_page;
+            debug_paginas_memoria_mapeadas[1]=romram_page;
+
+
+
+			tbblue_set_ram_page(2);
+			tbblue_set_ram_page(3);
+			tbblue_set_ram_page(4);
+			tbblue_set_ram_page(5);
+
+
+			tbblue_set_ram_page(6);
+			tbblue_set_ram_page(7);
+
+
+            contend_pages_actual[0]=0; //Suponemos que esa pagina no tiene contienda
+            contend_pages_actual[1]=contend_pages_128k_p2a[5];
+            contend_pages_actual[2]=contend_pages_128k_p2a[2];
+            contend_pages_actual[3]=contend_pages_128k_p2a[7];
+
+		break;
+
 		default:
 
 			//Caso maquina 0 u otros no contemplados
@@ -3802,6 +3840,9 @@ Bit	Function
 
 	tbblue_registers[112]=0;
 
+    tbblue_registers[0xB8]=0x83;
+    tbblue_registers[0xBB]=0xCD;
+
 	tbblue_clip_windows[TBBLUE_CLIP_WINDOW_LAYER2][0]=0;
 	tbblue_clip_windows[TBBLUE_CLIP_WINDOW_LAYER2][1]=255;
 	tbblue_clip_windows[TBBLUE_CLIP_WINDOW_LAYER2][2]=0;
@@ -3952,9 +3993,19 @@ void tbblue_hard_reset(void)
 
 		tbblue_registers[80]=0xff;
 		tbblue_registers[81]=0xff;
+
+        //Enable divmmc
+        tbblue_registers[6] |=16;
+
 		tbblue_set_memory_pages();
 
+
+        tbblue_set_emulator_setting_divmmc();
+
 		if (tbblue_initial_123b_port>=0) tbblue_port_123b=tbblue_initial_123b_port;
+
+
+
 	}
 
 	else {
@@ -4455,6 +4506,33 @@ leaving I/O Mode is at most 64 scan lines.
 }
 
 
+
+void tbblue_generate_divmmc_nmi(void)
+{
+    printf("generate divmmc nmi\n");
+
+
+    generate_nmi();
+    divmmc_diviface_enable();
+    diviface_allow_automatic_paging.v=1;
+
+    diviface_paginacion_automatica_activa.v=1;
+
+    //TODO: estoy forzando mapear divmmc justo al entrar en 66h (prepost) y no en 67h como en muchos dipositivos
+    //realmente esto se tendria que tendria que ver del registro de Next BB:
+    /*
+    0xBB (187) => Divmmc Entry Points 1
+    (R/W) (soft reset = 0xCD)
+
+    bit 1 = 1 to enable automap on address 0x0066 (instruction fetch + button, instant)
+    bit 0 = 1 to enable automap on address 0x0066 (instruction fetch + button, delayed)
+
+    OJO porque alterar esto tambien implicaria cambiar el codigo de core_spectrum.c donde esta if (interrupcion_non_maskable_generada.v) {
+    */
+
+
+}
+
 //tbblue_last_register
 //void tbblue_set_value_port(z80_byte value)
 void tbblue_set_value_port_position(z80_byte index_position,z80_byte value)
@@ -4468,6 +4546,7 @@ void tbblue_set_value_port_position(z80_byte index_position,z80_byte value)
 
 	//printf ("register port %02XH value %02XH\n",index_position,value);
 
+    z80_byte last_register_2=tbblue_registers[2];
 	z80_byte last_register_5=tbblue_registers[5];
 	z80_byte last_register_6=tbblue_registers[6];
 	z80_byte last_register_7=tbblue_registers[7];
@@ -4485,7 +4564,7 @@ void tbblue_set_value_port_position(z80_byte index_position,z80_byte value)
 
 	if (index_position==3) {
 
-        //printf ("Cambiando registro tipo maquina 3: valor: %02XH\n",value);
+        printf ("Cambiando registro tipo maquina 3: valor: %02XH\n",value);
 
         //Controlar caso especial
         //(W) 0x03 (03) => Set machine type, only in IPL or config mode
@@ -4493,13 +4572,16 @@ void tbblue_set_value_port_position(z80_byte index_position,z80_byte value)
         //      		000 = Config mode
 
 
-        if (!(previous_machine_type==0 || tbblue_bootrom.v)) {
+        if (!(previous_machine_type==0 || previous_machine_type==7 || tbblue_bootrom.v || (value&7)==7)) {
             debug_printf(VERBOSE_DEBUG,"Can not change machine type (to %02XH) while in non config mode or non IPL mode",value);
-            //printf("Can not change machine type (to %02XH) while in non config mode or non IPL mode\n",value);
+            printf("Can not change machine type (to %02XH) while in non config mode or non IPL mode\n",value);
 
             //Preservar bits de maquina
+            //temp
+
             value &=(255-7);
             value |=previous_machine_type;
+
         }
     }
 
@@ -4526,23 +4608,28 @@ void tbblue_set_value_port_position(z80_byte index_position,z80_byte value)
 	{
 
 		case 2:
+        //printf("Write to register 2 reset. value= %02XH. PC=%02XH\n",value,reg_pc);
+        //debug_exec_show_backtrace();
+        //sleep(2);
 		/*
-0x02 (02) => Reset
-(R)
-  bit 7 = Indicates the reset signal to the expansion bus and esp is asserted
-  bits 6:2 = Reserved
-  bit 1 = Indicates the last reset was a hard reset
-  bit 0 = Indicates the last reset was a soft reset
-  * Only one of bits 1:0 will be set
-(W)
   bit 7 = Assert and hold reset to the expansion bus and the esp wifi (hard reset = 0)
-  bits 6:2 = Reserved, must be 0
-  bit 1 = Generate a hard reset (reboot)
-  bit 0 = Generate a soft reset
+  bits 6:5 = Reserved must be zero
+  bit 4 = Clear i/o trap (write zero to clear) (experimental) **
+  bit 3 = Generate multiface nmi (write zero to clear) **
+  bit 2 = Generate divmmc nmi (write zero to clear) **
+  bit 1 = Generate a hard reset (reboot) *
+  bit 0 = Generate a soft reset *
   * Hard reset has precedence
+  ** These signals are ignored if the multiface, divmmc, dma or external nmi master is active
+  ** Copper cannot clear these bits
+  ** An i/o trap could occur at the same time as mf / divmmc cause; always check this bit in nmi isr if important
 
 					*/
+
+
+
             if (value&2) {
+                printf("Hard reset. PC=%XH\n",reg_pc);
 
                 tbblue_bootrom.v=1;
 
@@ -4554,7 +4641,31 @@ void tbblue_set_value_port_position(z80_byte index_position,z80_byte value)
 
             //Hard reset has precedence. Entonces esto es un else, si hay hard reset, no haremos soft reset
             else if (value&1) {
+                //printf("Soft reset\n");
                 reg_pc=0;
+            }
+
+            z80_byte maquina=(tbblue_registers[3])&7;
+
+            //Solo se permite nmi si el bit estaba a 0 antes y si no esta en config mode
+            if (value&4 && (last_register_2&4)==0 && maquina!=0 && maquina!=7) {
+                printf("generate nmi\n");
+
+                /*
+                No an nmi cannot be generated when the divmmc or the multiface is already paged in. ¿?
+                */
+                /*
+                if (diviface_paginacion_automatica_activa.v) {
+                    printf("Tried to generate nmi inside divmmc. not allowed\n");
+                    tbblue_registers[2] &=(255-4);
+                }
+
+                else {
+                    tbblue_generate_divmmc_nmi();
+                }
+                */
+
+                tbblue_generate_divmmc_nmi();
             }
 
 
@@ -4565,28 +4676,30 @@ void tbblue_set_value_port_position(z80_byte index_position,z80_byte value)
 
 		case 3:
 		/*
-		(W) 0x03 (03) => Set machine type, only in IPL or config mode:
-   		A write in this register disables the IPL
-   		(0x0000-0x3FFF are mapped to the RAM instead of the internal ROM)
-   		bit 7 = lock timing
-   		bits 6-4 = Timing:
-      		000 or 001 = ZX 48K
-      		010 = ZX 128K
-      		011 = ZX +2/+3e
-      		100 = Pentagon 128K
-   		bit 3 = Reserved, must be 0
-   		bits 2-0 = Machine type:
-      		000 = Config mode
-      		001 = ZX 48K
-      		010 = ZX 128K
-      		011 = ZX +2/+3e
-      		100 = Pentagon 128K
+(W)
+  A write to this register disables the bootrom
+  bit 7 = 1 to allow changes to bits 6:4
+  bits 6:4 = Selects display timing
+    affects port decoding and contention
+    000 = Internal Use
+    001 = ZX 48K display timing
+    010 = ZX 128K/+2 display timing
+    011 = ZX +2A/+2B/+3 display timing
+    100 = Pentagon display timing (changes to 50 Hz)
+  bit 3 = 1 to toggle user lock on display timing (hard reset = 0)
+  bits 2:0 = Selects machine type (config mode only)
+    determines roms loaded
+    000 = Configuration mode
+    001 = ZX 48K
+    010 = ZX 128K/+2
+    011 = ZX +2A/+2B/+3
+    100 = Pentagon
       		*/
 
             //printf("Write nextreg 03\n");
 
-            if (previous_machine_type==0 || tbblue_bootrom.v) {
-                //printf("Changing machine to %XH\n",value&7);
+            if (previous_machine_type==0 || tbblue_bootrom.v || (value&7)==7 ) {
+                printf("Changing machine to %XH on PC=%X\n",value&7,reg_pc);
 
                 //Pentagon not supported yet. TODO
                 //last_value=tbblue_config1;
@@ -4594,6 +4707,9 @@ void tbblue_set_value_port_position(z80_byte index_position,z80_byte value)
                 //printf ("----setting bootrom to 0\n");
 
                 //printf ("Writing register 3 value %02XH\n",value);
+
+                //Maquina 7 es como maquina 0
+                //if ((value&7)==7) tbblue_registers[3]&=(255-7); //forzamos 0
 
                 tbblue_set_memory_pages();
 
@@ -5255,21 +5371,27 @@ z80_byte *get_lores_pointer(int y)
 
 
 struct s_tbblue_priorities_names {
-	char layers[3][20];
+	char layers[4][20];
 };
+
+const char *tbblue_prorities_name_blend_ula_layer2="ULA+Layer2 Blend";
+const char *tbblue_prorities_name_blend_ula_layer2_substract="ULA+Layer2 Blend-5";
+const char *tbblue_prorities_name_blend_tiles_layer2="Tiles+Layer2 Blend";
+const char *tbblue_prorities_name_blend_tiles_layer2_substract="Tiles+Layer2 Blend-5";
+const char *tbblue_prorities_name_blend_ula_tiles_layer2="ULA+Tiles+Layer2 Blend";
+const char *tbblue_prorities_name_blend_ula_tiles_layer2_substract="ULA+Tiles+Layer2 Blend-5";
+const char *tbblue_prorities_name_nothing="";
 
 
 struct s_tbblue_priorities_names tbblue_priorities_names[8]={
-	{ { "Sprites" ,  "Layer 2"  ,  "ULA&Tiles" } },
-	{ { "Layer 2" ,  "Sprites"  ,  "ULA&Tiles" } },
-	{ { "Sprites" ,  "ULA&Tiles"  ,  "Layer 2" } },
-	{ { "Layer 2" ,  "ULA&Tiles"  ,  "Sprites" } },
-	{ { "ULA&Tiles" ,  "Sprites"  ,  "Layer 2" } },
-	{ { "ULA&Tiles" ,  "Layer 2"  ,  "Sprites" } },
-
-//TODO:
-	{ { "Invalid" ,  "Invalid"  ,  "Invalid" } },
-	{ { "Invalid" ,  "Invalid"  ,  "Invalid" } },
+	{ { "Sprites" ,  "Layer 2"  ,  "ULA"      ,  "Tiles"   } },
+	{ { "Layer 2" ,  "Sprites"  ,  "ULA"      ,  "Tiles"   } },
+	{ { "Sprites" ,  "ULA"      ,  "Tiles"    ,  "Layer 2" } },
+	{ { "Layer 2" ,  "ULA"      ,  "Tiles"    ,  "Sprites" } },
+	{ { "ULA"     ,  "Tiles"    ,  "Sprites"  ,  "Layer 2" } },
+	{ { "ULA"     ,  "Tiles"    ,  "Layer 2"  ,  "Sprites" } },
+	{ { "ULA"     ,  "Sprites"  ,  "Tiles"    ,  "Layer 2" } },
+	{ { "ULA"     ,  "Sprites"  ,  "Tiles"    ,  "Layer 2" } },
 };
 
 //Retorna el texto de la capa que corresponde segun el byte de prioridad y la capa demandada en layer
@@ -5277,24 +5399,90 @@ struct s_tbblue_priorities_names tbblue_priorities_names[8]={
 char *tbblue_get_string_layer_prio(int layer,z80_byte prio)
 {
 /*
-     Reset default is 000, sprites over the Layer 2, over the ULA graphics
-     000 - S L U
-     001 - L S U
-     010 - S U L
-     011 - L U S
-     100 - U S L
-     101 - U L S
-
-	 TODO:
-	110 - (U|T)S(T|U)(B+L) Blending layer and Layer 2 combined, colours clamped to [0,7]
+     000 - S L U T
+     001 - L S U T
+     010 - S U T L
+     011 - L U T S
+     100 - U T S L
+     101 - U T L S
+    110 - (U|T)S(T|U)(B+L) Blending layer and Layer 2 combined, colours clamped to [0,7]
     111 - (U|T)S(T|U)(B+L-5) Blending layer and Layer 2 combined, colours clamped to [0,7]
+
+
+ok if I blend with ula, layers will be: S T L(Blend Layer2+ula)
+
+and If I blend with tiles, layers will be:
+
+U S L(Blend layer2+tiles)
+
+and if no blending (bits 6:5 of 0x68 - 01 for no blending)
+
+U S T L
 */
 
 	//por si acaso. capa entre 0 y 7
 	prio = prio & 7;
 
-	//layer entre 0 y 2
-	layer = layer % 3;
+	//layer entre 0 y 3
+    if (layer>3) layer=3;
+	//layer = layer % 3;
+
+
+    if (prio==6 || prio==7) {
+        int blend_ula_layer2=0;
+        int blend_tiles_layer2=0;
+        /*
+        0x68 (104) => ULA Control
+        (R/W)
+        bit 7 = Disable ULA output (soft reset = 0)
+        bits 6:5 = Blending in SLU modes 6 & 7 (soft reset = 0)
+                = 00 for ula as blend colour
+                = 10 for ula/tilemap mix result as blend colour
+                = 11 for tilemap as blend colour
+                = 01 for no blending
+        */
+        z80_byte blend_mode=tbblue_registers[0x68] >> 5;
+
+        if (blend_mode==0 || blend_mode==2) blend_ula_layer2=1;
+        if (blend_mode==2 || blend_mode==3) blend_tiles_layer2=1;
+
+        if (blend_ula_layer2) {
+            //Primera capa de sprites sale fuera
+            if (layer==0) return (char *)tbblue_prorities_name_nothing;
+        }
+
+        if (blend_tiles_layer2) {
+            //Tecera capa de tiles sale fuera
+            if (layer==2) return (char *)tbblue_prorities_name_nothing;
+        }
+
+        //Control de la ultima capa
+        if (layer==3) {
+            /*
+            const char *tbblue_prorities_name_blend_ula_layer2="ULA+Layer2 Blend";
+const char *tbblue_prorities_name_blend_ula_layer2_substract="ULA+Layer2 Blend-5";
+const char *tbblue_prorities_name_blend_tiles_layer2="Tiles+Layer2 Blend";
+const char *tbblue_prorities_name_blend_tiles_layer2_substract="Tiles+Layer2 Blend-5";
+const char *tbblue_prorities_name_blend_ula_tiles_layer2="Tiles+Layer2 Blend";
+const char *tbblue_prorities_name_blend_ula_tiles_layer2_substract="ULA+Tiles+Layer2 Blend-5";
+            */
+            if (blend_ula_layer2 && !blend_tiles_layer2) {
+                if (prio==6) return (char *)tbblue_prorities_name_blend_ula_layer2;
+                if (prio==7) return (char *)tbblue_prorities_name_blend_ula_layer2_substract;
+            }
+
+            if (!blend_ula_layer2 && blend_tiles_layer2) {
+                if (prio==6) return (char *)tbblue_prorities_name_blend_tiles_layer2;
+                if (prio==7) return (char *)tbblue_prorities_name_blend_tiles_layer2_substract;
+            }
+
+            if (blend_ula_layer2 && blend_tiles_layer2) {
+                if (prio==6) return (char *)tbblue_prorities_name_blend_ula_tiles_layer2;
+                if (prio==7) return (char *)tbblue_prorities_name_blend_ula_tiles_layer2_substract;
+            }
+        }
+
+    }
 
 	return tbblue_priorities_names[prio].layers[layer];
 
@@ -5413,7 +5601,6 @@ void tbblue_set_layer_priorities(void)
 
 		break;
 
-        //TODO Temporal sin blending
 		case 6:
             p_layer_first=tbblue_layer_ula;
 			p_layer_second=tbblue_layer_sprites;
@@ -5422,7 +5609,6 @@ void tbblue_set_layer_priorities(void)
 
 		break;
 
-        //TODO Temporal sin blending
 		case 7:
             p_layer_first=tbblue_layer_ula;
 			p_layer_second=tbblue_layer_sprites;
@@ -7640,3 +7826,59 @@ z80_byte tbblue_uartbridge_readstatus(void)
 
 	return status_retorno;
 }
+
+int tbblue_pendiente_retn_stackless=0;
+
+void tbblue_handle_nmi(void)
+{
+    //Si stackless nmi
+/*
+0xC0 (192) => Interrupt Control
+(R/W) (soft reset = 0)
+  bits 7:5 = Programmable portion of im2 vector*
+  bit 4 = Reserved must be 0
+  bit 3 = Enable stackless nmi response**
+  bits 2:1 = Current Z80 interrupt mode 0,1,2 (read only, write ignored)
+  bit 0 = Maskable interrupt mode: pulse (0) or hw im2 mode (1)
+* In hw im2 mode the interrupt vector generated is:
+  bits 7:5 = nextreg 0xC0 bits 7:5
+  bits 4:1 = 0  line interrupt (highest priority)
+    = 1  uart0 Rx
+    = 2  uart1 Rx
+    = 3-10  ctc channels 0-7
+    = 11 ula
+    = 12 uart0 Tx
+    = 13 uart1 Tx (lowest priority)
+  bit 0 = 0
+* In hw im2 mode the expansion bus is the lowest priority interrupter
+  and if no vector is supplied externally then 0xFF is generated.
+** The return address pushed during an nmi acknowledge cycle will
+  be written to nextreg instead of memory (the stack pointer will
+  be decremented) and the first RETN after the acknowledge will
+  take its return address from nextreg instead of memory (the stack
+  pointer will be incremented).  If bit 3 = 0 and in other
+  circumstances, RETN functions normally.
+
+0xC2 (194) => NMI Return Address LSB
+(R/W) (soft reset = 0)
+
+0xC3 (195) => NMI Return Address MSB
+(R/W) (soft reset = 0)
+*/
+
+    //TODO: El que mapee en la 66h o en la 67h el divmmc se debe mirar
+
+
+    if (tbblue_registers[0xC0] & 0x08) {
+        printf("stackless nmi. SP=%04XH PC=%04XH\n",reg_sp,reg_pc);
+        reg_sp -=2;
+        tbblue_registers[0xC2]=reg_pc & 0xFF;
+        tbblue_registers[0xC3]=(reg_pc>>8) & 0xFF;
+        tbblue_pendiente_retn_stackless=1;
+    }
+
+    else {
+        push_valor(reg_pc,PUSH_VALUE_TYPE_NON_MASKABLE_INTERRUPT);
+    }
+}
+
