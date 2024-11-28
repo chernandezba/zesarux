@@ -109,6 +109,104 @@ int get_diviface_total_ram(void)
 	int diviface_salta_trap_despaginacion_despues=0;
 
 
+
+void diviface_tbblue_map_unmap(void)
+{
+    /*
+    0xBB (187) => Divmmc Entry Points 1
+(R/W) (soft reset = 0xCD)
+  bit 7 = 1 to enable automap on addresses 0x3DXX (instruction fetch, instant, ROM3) > TRDOS
+  bit 6 = 1 to disable automap on addresses 0x1FF8-0x1FFF (instruction fetch, delayed)
+  bit 5 = 1 to enable automap on address 0x056A (instruction fetch, delayed, ROM3)   \ tape traps
+  bit 4 = 1 to enable automap on address 0x04D7 (instruction fetch, delayed, ROM3)   / nextzxos (better compatibility)
+  bit 3 = 1 to enable automap on address 0x0562 (instruction fetch, delayed, ROM3)   \ tape traps
+  bit 2 = 1 to enable automap on address 0x04C6 (instruction fetch, delayed, ROM3)   / esxdos + original divmmc
+  bit 1 = 1 to enable automap on address 0x0066 (instruction fetch + button, instant)
+  bit 0 = 1 to enable automap on address 0x0066 (instruction fetch + button, delayed)
+
+  TODO: de momento no hago instant o delayed
+
+  TODO: Resto de 0xB8 (184) => Divmmc Entry Points 0
+
+  TODO: No se hace correctamente el pre/post de 66H
+
+0xB8 (184) => Divmmc Entry Points 0
+(R/W) (soft reset = 0x83)
+  bit 7 = 1 to enable automap on address 0x0038 (instruction fetch)
+  bit 1 = 1 to enable automap on address 0x0008 (instruction fetch)
+  bit 0 = 1 to enable automap on address 0x0000 (instruction fetch)
+    */
+
+    z80_byte tbblue_divmmc_entry_points_one=tbblue_registers[0xBB];
+    z80_byte tbblue_divmmc_entry_points_zero=tbblue_registers[0xB8];
+
+    //Traps que paginan memoria y saltan despues de leer instruccion
+    switch (reg_pc) {
+        case 0x0000:
+            if (diviface_paginacion_automatica_activa.v==0 && (tbblue_divmmc_entry_points_zero&1)) {
+                //printf("Paginando divmmc cuando PC=%XH\n",reg_pc);
+                diviface_salta_trap_despues=1;
+            }
+        break;
+        case 0x0008:
+            if (diviface_paginacion_automatica_activa.v==0 && (tbblue_divmmc_entry_points_zero&2)) {
+                //printf("Paginando divmmc cuando PC=%XH\n",reg_pc);
+                diviface_salta_trap_despues=1;
+            }
+        break;
+        case 0x0038:
+            if (diviface_paginacion_automatica_activa.v==0 && (tbblue_divmmc_entry_points_zero&128)) {
+                //printf("Paginando divmmc cuando PC=%XH\n",reg_pc);
+                diviface_salta_trap_despues=1;
+            }
+        break;
+        case 0x0066:
+            if (diviface_paginacion_automatica_activa.v==0 && (tbblue_divmmc_entry_points_one&1 || tbblue_divmmc_entry_points_one&2) ) {
+                //printf("Paginando divmmc cuando PC=%XH\n",reg_pc);
+                diviface_salta_trap_despues=1;
+            }
+        break;
+        case 0x04c6:
+            if (diviface_paginacion_automatica_activa.v==0 && (tbblue_divmmc_entry_points_one&4) ) {
+                //printf("Paginando divmmc cuando PC=%XH\n",reg_pc);
+                diviface_salta_trap_despues=1;
+            }
+        break;
+        case 0x0562:
+            if (diviface_paginacion_automatica_activa.v==0 && (tbblue_divmmc_entry_points_one&8) ) {
+                //printf("Paginando divmmc cuando PC=%XH\n",reg_pc);
+                diviface_salta_trap_despues=1;
+            }
+        break;
+
+        case 0x04D7:
+            if (diviface_paginacion_automatica_activa.v==0 && (tbblue_divmmc_entry_points_one&16) ) {
+                //printf("Paginando divmmc cuando PC=%XH\n",reg_pc);
+                diviface_salta_trap_despues=1;
+            }
+        break;
+
+        case 0x056A:
+            if (diviface_paginacion_automatica_activa.v==0 && (tbblue_divmmc_entry_points_one&32) ) {
+                //printf("Paginando divmmc cuando PC=%XH\n",reg_pc);
+                diviface_salta_trap_despues=1;
+            }
+        break;
+    }
+
+
+    //Traps que paginan memoria y saltan antes de leer instruccion
+    if (reg_pc>=0x3d00 && reg_pc<=0x3dff &&  (tbblue_divmmc_entry_points_one&128) ) diviface_salta_trap_antes=1;
+
+    //Traps que despaginan memoria antes de leer instruccion
+    if (reg_pc>=0x1ff8 && reg_pc<=0x1fff && diviface_paginacion_automatica_activa.v && (tbblue_divmmc_entry_points_one&64) ) {
+        //printf ("Saltado trap de despaginacion pc actual: %d\n",reg_pc);
+        diviface_salta_trap_despaginacion_despues=1;
+    }
+
+}
+
+
 //Core de cpu loop para hacer traps de cpu
 void diviface_pre_opcode_fetch(void)
 {
@@ -157,27 +255,37 @@ refresh cycle of the instruction fetch from so called off-area, which is
 
 
 	if (diviface_allow_automatic_paging.v) {
-	//Traps que paginan memoria y saltan despues de leer instruccion
-	switch (reg_pc) {
-		case 0x0000:
-		case 0x0008:
-		case 0x0038:
-		case 0x0066:
-		case 0x04c6:
-		case 0x0562:
-			if (diviface_paginacion_automatica_activa.v==0) diviface_salta_trap_despues=1;
-		break;
-	}
+        if (MACHINE_IS_TBBLUE) {
+            diviface_tbblue_map_unmap();
+        }
+
+        else {
+            //Traps que paginan memoria y saltan despues de leer instruccion
+            switch (reg_pc) {
+                case 0x0000:
+                case 0x0008:
+                case 0x0038:
+                case 0x0066:
+                case 0x04c6:
+                case 0x0562:
+                    if (diviface_paginacion_automatica_activa.v==0) {
+                        //printf("Paginando divmmc cuando PC=%XH\n",reg_pc);
+                        diviface_salta_trap_despues=1;
+                    }
+                break;
+            }
 
 
-	//Traps que paginan memoria y saltan antes de leer instruccion
-	if (reg_pc>=0x3d00 && reg_pc<=0x3dff) diviface_salta_trap_antes=1;
+            //Traps que paginan memoria y saltan antes de leer instruccion
+            if (reg_pc>=0x3d00 && reg_pc<=0x3dff) diviface_salta_trap_antes=1;
 
-	//Traps que despaginan memoria antes de leer instruccion
-	if (reg_pc>=0x1ff8 && reg_pc<=0x1fff && diviface_paginacion_automatica_activa.v) {
-		//printf ("Saltado trap de despaginacion pc actual: %d\n",reg_pc);
-		diviface_salta_trap_despaginacion_despues=1;
-    }
+            //Traps que despaginan memoria antes de leer instruccion
+            if (reg_pc>=0x1ff8 && reg_pc<=0x1fff && diviface_paginacion_automatica_activa.v) {
+                //printf ("Saltado trap de despaginacion pc actual: %d\n",reg_pc);
+                diviface_salta_trap_despaginacion_despues=1;
+            }
+
+        }
 
 
 	}
@@ -213,14 +321,14 @@ void diviface_post_opcode_fetch(void)
 void diviface_write_control_register(z80_byte value)
 {
 
-	//printf ("Escribiendo registro de control diviface valor: 0x%02X (antes: %02XH)\n",value,diviface_control_register);
+	//printf ("Escribiendo registro de control diviface valor: 0x%02X (antes: %02XH). PC=%XH\n",value,diviface_control_register,reg_pc);
 	if (value&128) {
 		//printf ("Activando paginacion\n");
 		//diviface_paginacion_manual_activa.v=1;
 	}
 
 	else {
-		//printf ("Desactivando paginacion\n");
+		//printf ("Desactivando paginacion. PC=%XH\n",reg_pc);
 		//diviface_paginacion_manual_activa.v=0;
 	}
 
@@ -733,6 +841,8 @@ void diviface_enable(char *romfile)
 	diviface_enabled.v=1;
 	diviface_allow_automatic_paging.v=1;
 
+    //printf ("Enabling diviface on PC=%XH\n",reg_pc);
+
 }
 
 void diviface_disable(void)
@@ -741,6 +851,10 @@ void diviface_disable(void)
 	if (diviface_enabled.v==0) return;
 
 	debug_printf (VERBOSE_INFO,"Disabling diviface");
+
+    //printf ("Disabling diviface on PC=%XH\n",reg_pc);
+
+    //debug_exec_show_backtrace();
 
 
 	//Restaurar poke, peek funciones
