@@ -763,6 +763,9 @@ Excepción:
         //Y reseteamos contador de bytes inicial si conviene
         //printf("WR5: %02XH\n",datagear_wr5);
 
+        //TODO: Por alguna razón Atic Atac de Next necesita este restart pero no parece activar ese bit 0x20
+        //De todas maneras recargar la longitud de la transferencia no creo que sea un problema en otros juegos que lo usen,
+        //porque lo habitual es cargar todos los registros. Y el que no cargue la cantidad de bytes, ya tendrá autorestart aunque no haya activado este bit
         //if (datagear_wr5 & 0x20) {
             datagear_block_length_low=datagear_original_block_length_low;
             datagear_block_length_high=datagear_original_block_length_high;
