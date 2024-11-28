@@ -492,9 +492,34 @@ void codetests_tbblue_layers(void)
 
 	for (prio=0;prio<8;prio++) {
 		printf ("Priority %d\n",prio);
-		for (layer=0;layer<3;layer++) {
-			printf ("Layer %d : %s\n",layer,tbblue_get_string_layer_prio(layer,prio));
-		}
+
+        if (prio==6 || prio==7) {
+        /*
+        0x68 (104) => ULA Control
+        (R/W)
+        bit 7 = Disable ULA output (soft reset = 0)
+        bits 6:5 = Blending in SLU modes 6 & 7 (soft reset = 0)
+                = 00 for ula as blend colour
+                = 10 for ula/tilemap mix result as blend colour
+                = 11 for tilemap as blend colour
+                = 01 for no blending
+        */
+
+            int blend_mode=0;
+
+            for (blend_mode=0;blend_mode<4;blend_mode++) {
+
+                tbblue_registers[0x68] &=(255-64-32);
+                tbblue_registers[0x68] |= (blend_mode<<5);
+                printf(" Blend_mode=%d\n",blend_mode);
+
+                for (layer=0;layer<4;layer++) {
+                    printf ("Layer %d : %s\n",layer,tbblue_get_string_layer_prio(layer,prio));
+                }
+
+            }
+
+        }
 	}
 }
 
