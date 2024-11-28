@@ -666,7 +666,25 @@ void instruccion_ed_69 ()
 {
 	//RETN
 	iff1.v=iff2.v;
-	reg_pc=pop_valor();
+
+    if (MACHINE_IS_TBBLUE) {
+        //if (!tbblue_pendiente_retn_stackless) printf("Tbblue NO pendiente stackless en retn\n");
+        if ((tbblue_registers[0xC0] & 0x08) & tbblue_pendiente_retn_stackless) {
+            //printf("stackless nmi\n");
+            tbblue_pendiente_retn_stackless=0;
+            reg_sp +=2;
+            reg_pc=(tbblue_registers[0xC2])|(tbblue_registers[0xC3]<<8);
+            //printf("RETN stackless nmi return to : %04XH\n",reg_pc);
+        }
+
+        else {
+            reg_pc=pop_valor();
+        }
+    }
+
+	else {
+        reg_pc=pop_valor();
+    }
 
 	//Si se vuelve de una nmi especial
 	if (MACHINE_IS_ZXUNO && reg_pc==0x72) {
