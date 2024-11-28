@@ -46,6 +46,7 @@ Improved Spectrum Next emulation:
 - Fixed DMA burst mode when prescaler=0
 - Fixed DMA Transfer restarting the byte count at the end of a transfer
 - Added Layer modes 6 and 7 (blend modes)
+- Added stackless NMI
 - Fixed esxdos call DISK_FILEMAP
 - Fixed palette offset for layer 2
 - Allow tiles on RAM 7

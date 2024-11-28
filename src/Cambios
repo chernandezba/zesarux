@@ -46,6 +46,7 @@ Improved Spectrum Next emulation:
 - Corregido burst mode de DMA cuando prescaler=0
 - Corregida transferencia de DMA reiniciando el contador de bytes al final de una transferencia
 - Agregado modos de capas 6 and 7 (modos mezcla)
+- Agregado NMI sin stack
 - Corregido llamada a esxdos DISK_FILEMAP
 - Corregido offset de paleta en layer 2
 - Permitir tiles en RAM 7
