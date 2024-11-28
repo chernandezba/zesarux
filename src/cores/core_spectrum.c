@@ -650,9 +650,15 @@ void core_spectrum_handle_interrupts(void)
         t_estados += 14;
 
 
+        if (MACHINE_IS_TBBLUE) {
+            tbblue_handle_nmi();
+        }
 
-        push_valor(reg_pc,PUSH_VALUE_TYPE_NON_MASKABLE_INTERRUPT);
+        else {
+            push_valor(reg_pc,PUSH_VALUE_TYPE_NON_MASKABLE_INTERRUPT);
+        }
 
+        //printf("diviface_paginacion_automatica_activa.v despues handle nmi %d\n",diviface_paginacion_automatica_activa.v);
 
         reg_r++;
         iff1.v=0;
@@ -681,14 +687,34 @@ void core_spectrum_handle_interrupts(void)
 
         //Al recibir nmi tiene que poner paginacion normal. Luego ya saltara por autotrap de diviface
         if (diviface_enabled.v) {
+            //Chapuza para el atic atac versión con sonido. Si ha saltado por nmi generada por registro 2, no cambiar mapeo actual
+            //Esto sucede porque asumimos que todos los divmmc mapean en post, pero divmmc nmi desde tbblue puede mapear en pre
+            //Si el bit 1 del registro BB esta activo
+            /*
+                0x02 (02) => Reset
+                bit 2 = Generate divmmc nmi (write zero to clear) **
+
+                0xBB (187) => Divmmc Entry Points 1
+                (R/W) (soft reset = 0xCD)
+
+                bit 1 = 1 to enable automap on address 0x0066 (instruction fetch + button, instant)
+            */
+            if (MACHINE_IS_TBBLUE && (tbblue_registers[2]&4)) {
+            //if (MACHINE_IS_TBBLUE && (tbblue_registers[0xBB]&2)) {
+            }
+
+            else {
+
             //diviface_paginacion_manual_activa.v=0;
             diviface_control_register&=(255-128);
             diviface_paginacion_automatica_activa.v=0;
+
+            }
         }
 
         generate_nmi_prepare_fetch();
 
-
+        //printf("diviface_paginacion_automatica_activa.v despues ciclo nmi %d\n",diviface_paginacion_automatica_activa.v);
     }
 
 
@@ -858,6 +884,7 @@ void core_spectrum_ciclo_fetch(void)
     if (nmi_pending_pre_opcode) {
             //Dado que esto se activa despues de lanzar nmi y antes de leer opcode, aqui saltara cuando PC=66H
             //debug_printf (VERBOSE_DEBUG,"Handling nmi mapping pre opcode fetch at %04XH",reg_pc);
+            //printf ("Handling nmi mapping pre opcode fetch at %04XH\n",reg_pc);
             nmi_handle_pending_prepost_fetch();
     }
 
