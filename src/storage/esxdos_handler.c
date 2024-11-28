@@ -2397,7 +2397,10 @@ eg for NextZXOS v1.94, DE=$0194 HL=language code:
                 strcpy(mmc_filemap_name,esxdos_fopen_files[file_handler].debug_fullpath);
                 mmc_enable();
 
-                if (divmmc_diviface_enabled.v) divmmc_diviface_disable();
+                //Por ejemplo el Atic Atac (la versión completa con sonido) usa divmmc. Por tanto no desactivarlo
+                //No tiene que ser un problema, divmmc puede funcionar junto con esxdos handler, pues todas
+                //las llamadas a rst8 las intercepta esxdos handler
+                //if (divmmc_diviface_enabled.v) divmmc_diviface_disable();
 
                 if (divmmc_mmc_ports_enabled.v==0) divmmc_mmc_ports_enable();
 
