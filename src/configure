@@ -1534,7 +1534,7 @@ sensors.o: sensors.c sensors.h cpu.h debug.h soundchips/ay38912.h video/screen.h
 esxdos_handler.o: storage/esxdos_handler.c storage/esxdos_handler.h cpu.h operaciones.h debug.h utils.h storage/diviface.h video/screen.h menu/menu_filesel.h storage/mmc.h storage/divmmc.h menu/menu_items.h
 	\$(CC) \$(CFLAGS) -c storage/esxdos_handler.c
 
-tbblue.o: machines/tbblue.c machines/tbblue.h cpu.h mem128.h debug.h contend.h utils.h zxvision/zxvision.h storage/divmmc.h storage/diviface.h video/screen.h machines/timex.h audio/audio.h datagear.h soundchips/ay38912.h copy_interfaces/multiface.h uartbridge.h settings.h joystick.h
+tbblue.o: machines/tbblue.c machines/tbblue.h cpu.h mem128.h debug.h contend.h utils.h zxvision/zxvision.h storage/divmmc.h storage/diviface.h video/screen.h machines/timex.h audio/audio.h datagear.h soundchips/ay38912.h copy_interfaces/multiface.h uartbridge.h settings.h joystick.h operaciones.h
 	\$(CC) \$(CFLAGS) -c machines/tbblue.c
 
 zx8081.o: machines/zx8081.c machines/zx8081.h cpu.h video/screen.h debug.h audio/audio.h cores/core_zx8081.h operaciones.h zxvision/zxvision.h ula.h storage/zxpand.h
