@@ -53,6 +53,7 @@ Improved Spectrum Next emulation:
 
 Mejorado Debug:
 - CPU history: permitir cambiar el puntero de memoria según el registro PC mostrado en el historial
+- CPU history: permitir ver historial completo
 - Mostar cuando la CPU está en estado wait
 - Agregada acción de breakpoint save-binary
 - Agregada carga de Tabla de Símbolos
@@ -66,6 +67,7 @@ Mejorado ZX Vision:
 - Los menús muestran los previous menús al seleccionar submenús
 - Al seleccionar estilo de ZX Vision Style, se aplica al mover el cursor
 - Mejorar movimiento del cursor en menús al pulsar PgDn/PgUp
+- Permitir teclas Inicio/Fin en ventanas
 - Avisar en la marca de redimensionado cuando una ventana se tiene que aumentar de tamaño (porque hay texto mas allá del tamaño actual)
 - Permitir a una ventana desactivar acciones de scroll
 - El Process switcher se ubica en la parte izquierda-abajo de la pantalla por defecto

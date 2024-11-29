@@ -8021,15 +8021,25 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
 
 
                         case UTIL_KEY_HOME:
+                        //printf("pressed home\n");
+
+                                if (pressrelease) {
+                                        puerto_especial1 &=255-16;
+                                }
+                                else {
+                                        puerto_especial1 |=16;
+                                }
 
                         break;
 
                         case UTIL_KEY_END:
                                 if (pressrelease) {
+                                    puerto_especial1 &=255-8;
                                         //End en cpc es copy
                                         cpc_keyboard_table[1] &=(255-2);
                                 }
                                 else {
+                                    puerto_especial1 |=8;
                                         //End en cpc es copy
                                         cpc_keyboard_table[1] |=2;
                                 }

@@ -7379,6 +7379,37 @@ void menu_debug_cpu_history_select(MENU_ITEM_PARAMETERS)
     }
 }
 
+
+#define MENU_DEBUG_CPU_HISTORY_PAGE_LENGTH 1000
+
+int menu_debug_cpu_history_offset_inicial=0;
+
+int menu_debug_cpu_history_opcion_seleccionada=0;
+
+void menu_debug_cpu_history_next(MENU_ITEM_PARAMETERS)
+{
+    int total_items_history=cpu_history_get_total_elements();
+
+    if (menu_debug_cpu_history_offset_inicial+MENU_DEBUG_CPU_HISTORY_PAGE_LENGTH < total_items_history) {
+        menu_debug_cpu_history_offset_inicial +=MENU_DEBUG_CPU_HISTORY_PAGE_LENGTH;
+    }
+
+    menu_debug_cpu_history_opcion_seleccionada=0;
+
+}
+
+void menu_debug_cpu_history_previous(MENU_ITEM_PARAMETERS)
+{
+    menu_debug_cpu_history_offset_inicial -=MENU_DEBUG_CPU_HISTORY_PAGE_LENGTH;
+
+    if (menu_debug_cpu_history_offset_inicial<0) {
+        menu_debug_cpu_history_offset_inicial=0;
+    }
+
+    //Poner el cursor abajo del todo en la entrada de More...
+    menu_debug_cpu_history_opcion_seleccionada=MENU_DEBUG_CPU_HISTORY_PAGE_LENGTH+1;
+}
+
 void menu_debug_cpu_history(void)
 {
     if (cpu_history_enabled.v==0 || cpu_history_started.v==0) {
@@ -7395,13 +7426,23 @@ void menu_debug_cpu_history(void)
         return;
     }
 
-    int total_items_menus=cpu_history_get_total_elements();
+
+    int total_items_history=cpu_history_get_total_elements();
+
+    //int total_items_menus=total_items_history;
+
+    menu_debug_cpu_history_offset_inicial=0;
 
     //definir un maximo de 1000 a mostrar por pantalla
     //por ZRCP hay permitidos muchos mas
-    if (total_items_menus>1000) total_items_menus=1000;
 
-    int menu_debug_cpu_history_opcion_seleccionada=0;
+    //if (total_items_menus-offset_inicial>1000) offset_inicial=1000;
+
+
+
+
+
+    menu_debug_cpu_history_opcion_seleccionada=0;
 
     salir_lista_cpu_history=0;
 
@@ -7410,17 +7451,37 @@ void menu_debug_cpu_history(void)
     int retorno_menu;
     do {
 
-
+        int total_mostrar=total_items_history;
+        if (total_mostrar>MENU_DEBUG_CPU_HISTORY_PAGE_LENGTH) total_mostrar=MENU_DEBUG_CPU_HISTORY_PAGE_LENGTH;
 
         menu_add_item_menu_inicial(&array_menu_common,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
 
-        int total_elementos_in_history=cpu_history_get_total_elements();
+        if (menu_debug_cpu_history_offset_inicial>0) {
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_debug_cpu_history_previous,NULL,"Previous...");
+        }
+
+        //int total_elementos_in_history=cpu_history_get_total_elements();
+
+        int paginas_totales=total_items_history/MENU_DEBUG_CPU_HISTORY_PAGE_LENGTH;
+        //Para el usuario, si hay "media página" solamente (0.5), no queremos que diga que hay 0 páginas
+        if (paginas_totales==0) paginas_totales=1;
+
+
+        int digitos_paginas_totales=menu_debug_get_total_digits_dec(paginas_totales);
+
+        int pagina_actual=(menu_debug_cpu_history_offset_inicial/MENU_DEBUG_CPU_HISTORY_PAGE_LENGTH)+1;
 
         int i;
-        for (i=0;i<total_items_menus;i++) {
+
+        int digitos_offset_history=menu_debug_get_total_digits_dec(CPU_HISTORY_MAX_ALLOWED_ELEMENTS);
+
+
+        for (i=0;i<total_mostrar;i++) {
 
 			//Al solicitarlo, el 0 es el item mas reciente. el 1 es el anterior a este
-			int indice=total_elementos_in_history-i-1;
+            int pos_actual=menu_debug_cpu_history_offset_inicial+i;
+
+			int indice=total_items_history-pos_actual-1;
 
             char string_pc[32];
             //obtiene el historial de PC en esa posicion, en hexadecimal
@@ -7445,8 +7506,8 @@ void menu_debug_cpu_history(void)
             //quitamos la H de la string para no mostrarla, queda redundante
             string_pc[longitud-1]=0;
 
-            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_debug_cpu_history_select,NULL,"%s %s",
-                string_pc,string_disassemble);
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_debug_cpu_history_select,NULL,"%*d %s %s",
+                digitos_offset_history,pos_actual+1,string_pc,string_disassemble);
 
             menu_add_item_menu_ayuda(array_menu_common,"The element at the top is the most recent opcode ran");
 
@@ -7455,16 +7516,25 @@ void menu_debug_cpu_history(void)
             menu_add_item_menu_valor_opcion(array_menu_common,indice);
         }
 
-        if (total_items_menus==0) {
+        if (total_items_history==0) {
             menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"(Empty)");
         }
 
+        int pos_actual=menu_debug_cpu_history_offset_inicial+i;
+        if (pos_actual!=total_items_history) {
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_debug_cpu_history_next,NULL,"More...");
+        }
 
-        menu_add_item_menu_separator(array_menu_common);
 
-        menu_add_ESC_item(array_menu_common);
+        //menu_add_item_menu_separator(array_menu_common);
+        //menu_add_ESC_item(array_menu_common);
 
-        retorno_menu=menu_dibuja_menu_dialogo_no_title_lang(&menu_debug_cpu_history_opcion_seleccionada,&item_seleccionado,array_menu_common,"CPU History");
+
+        char titulo_ventana[40];
+        sprintf(titulo_ventana,"CPU History (Page %*d/%*d)",digitos_paginas_totales,pagina_actual,digitos_paginas_totales,paginas_totales);
+
+        retorno_menu=menu_dibuja_menu_dialogo_no_title_lang(&menu_debug_cpu_history_opcion_seleccionada,&item_seleccionado,
+            array_menu_common,titulo_ventana);
 
         //no queremos que al pulsar ESC aqui se cierren todos los menus anteriores
         salir_todos_menus=0;

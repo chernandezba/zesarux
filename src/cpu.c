@@ -479,7 +479,7 @@ z80_byte puerto_49150=255; //    db              255  ; H                J      
 z80_byte puerto_32766=255; //    db              255  ; B    N    M    Simb Space ;7
 
 //puertos especiales no presentes en spectrum
-z80_byte puerto_especial1=255; //   ;  .  .  PgDn  PgUp ESC ;
+z80_byte puerto_especial1=255; //   Home  End  PgDn  PgUp ESC ;
 z80_byte puerto_especial2=255; //   F5 F4 F3 F2 F1
 z80_byte puerto_especial3=255; //  F10 F9 F8 F7 F6
 z80_byte puerto_especial4=255; //  F15 F14 F13 F12 F11

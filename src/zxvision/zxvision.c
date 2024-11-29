@@ -2648,6 +2648,8 @@ valores de teclas especiales:
 21 F1
 24 PgUp
 25 PgDn
+26 Home
+27 End
 
 Joystick izquierda funcionara como Delete, no como cursor left. Resto de direcciones de joystick (up, down, right) se mapean como cursores
 
@@ -2985,6 +2987,13 @@ las condiciones de "ventana activa se puede enviar a background o no" son comune
 
 	//PgDn
 	if ((puerto_especial1&4)==0) return 25;
+
+	//Home
+	if ((puerto_especial1&16)==0) return 26;
+
+    //End
+	if ((puerto_especial1&8)==0) return 27;
+
 
     //F1
     if ((puerto_especial2&1)==0) return MENU_TECLA_AYUDA;
@@ -12137,6 +12146,8 @@ void zxvision_generic_message_tooltip(char *titulo, int disable_special_chars, i
 
 		int contador_pgdnup;
 
+        int limite_pgdnup;
+
         switch (tecla) {
 
             //Nota: No llamamos a funcion generica zxvision_handle_cursors_pgupdn en caso de arriba,abajo, pg, pgdn,
@@ -12179,8 +12190,15 @@ void zxvision_generic_message_tooltip(char *titulo, int disable_special_chars, i
             break;
 
             //PgUp
+            //Home
             case 24:
-                for (contador_pgdnup=0;contador_pgdnup<ventana->visible_height-2;contador_pgdnup++) {
+            case 26:
+                limite_pgdnup=ventana->visible_height-2;
+                if (tecla==26) limite_pgdnup=ventana->cursor_line+ventana->offset_y;
+
+                //printf("limite_pgdnup: %d\n",limite_pgdnup);
+
+                for (contador_pgdnup=0;contador_pgdnup<limite_pgdnup;contador_pgdnup++) {
                     zxvision_generic_message_cursor_up(ventana);
                 }
                 zxvision_sound_event_cursor_movement();
@@ -12193,8 +12211,16 @@ void zxvision_generic_message_tooltip(char *titulo, int disable_special_chars, i
             break;
 
             //PgDn
+            //End
             case 25:
-                for (contador_pgdnup=0;contador_pgdnup<ventana->visible_height-2;contador_pgdnup++) {
+            case 27:
+                limite_pgdnup=ventana->visible_height-2;
+
+                if (tecla==27) limite_pgdnup=ventana->total_height - ventana->cursor_line - ventana->offset_y;
+
+                //printf("limite_pgdnup: %d\n",limite_pgdnup);
+
+                for (contador_pgdnup=0;contador_pgdnup<limite_pgdnup;contador_pgdnup++) {
                     zxvision_generic_message_cursor_down(ventana);
                 }
                 zxvision_sound_event_cursor_movement();
@@ -20776,6 +20802,8 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 			else if (tecla_leida==13) tecla=13;
 			else if (tecla_leida==24) tecla=24;
 			else if (tecla_leida==25) tecla=25;
+			else if (tecla_leida==26) tecla=26;
+			else if (tecla_leida==27) tecla=27;
 
 
 			//Teclas para menus tabulados
@@ -20970,7 +20998,9 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 */
 
 			//PgUp
+            //Home
 			case 24:
+            case 26:
                 //Mover hacia arriba hasta que llega el scroll a valor esperado o se llega al maximo de opciones o se va a abajo del todo
 
                 //calcular el cursor donde esta relativamente en ventana
@@ -20981,9 +21011,11 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
                 else scroll_esperado_pgup=ventana->offset_y - (ventana->visible_height-3);
                 //printf("scroll esperado: %d\n",scroll_esperado_pgup);
 
+                //Tecla Home. hasta arriba del todo. Lo gestiono en el for
+
                 int salir_pgup=0;
 
-				for (conta_mover_pgup_dn=0;conta_mover_pgup_dn<max_opciones && ventana->offset_y>scroll_esperado_pgup && !salir_pgup;conta_mover_pgup_dn++) {
+				for (conta_mover_pgup_dn=0;conta_mover_pgup_dn<max_opciones && (ventana->offset_y>scroll_esperado_pgup || tecla==26) && !salir_pgup;conta_mover_pgup_dn++) {
                     int posicion_antes_pgdn=*opcion_inicial;
                     (*opcion_inicial)=menu_dibuja_menu_cursor_arriba_common((*opcion_inicial),max_opciones,m);
                     //Ajustar scroll de ventana
@@ -21004,29 +21036,12 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 
 			break;
 
-/*
-			//PgDn
-			case 25:
-				lineas_mover_pgup_dn=ventana->visible_height-3;
-				//Ver si al limite de abajo
-				if ((*opcion_inicial)+lineas_mover_pgup_dn>=max_opciones) {
-					lineas_mover_pgup_dn=max_opciones-(*opcion_inicial)-1-1; //el -1 final es por tener en cuenta el separador de siempre
-				}
 
-				//TODO esto movera el cursor tantas lineas como lineas visibles tiene el menu,
-				//si hay algun item como separador, se lo saltara, moviendo el cursor mas lineas de lo deseado
-				//printf ("lineas mover: %d\n",lineas_mover_pgup_dn);
-				//int i;
-				for (conta_mover_pgup_dn=0;conta_mover_pgup_dn<lineas_mover_pgup_dn;conta_mover_pgup_dn++) (*opcion_inicial)=menu_dibuja_menu_cursor_abajo_common((*opcion_inicial),max_opciones,m);
-
-                zxvision_sound_event_cursor_movement();
-
-			break;
-
-*/
 
 			//PgDn
+            //End
 			case 25:
+            case 27:
 
                 //Mover hacia abajo hasta que llega el scroll a valor esperado o se llega al maximo de opciones o se va a arriba del todo
 
@@ -21041,9 +21056,11 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
                 //printf("scroll esperado: %d\n",scroll_esperado_pgdn);
                 //printf("linea_seleccionada: %d offset_y: %d movido_en_ventana: %d\n",(*opcion_inicial),ventana->offset_y,movido_en_ventana);
 
+                //Tecla End. hasta abajo del todo. Lo gestiono en el for
+
                 int salir_pgdn=0;
 
-				for (conta_mover_pgup_dn=0;conta_mover_pgup_dn<max_opciones && ventana->offset_y<scroll_esperado_pgdn && !salir_pgdn;conta_mover_pgup_dn++) {
+				for (conta_mover_pgup_dn=0;conta_mover_pgup_dn<max_opciones && (ventana->offset_y<scroll_esperado_pgdn || tecla==27) && !salir_pgdn;conta_mover_pgup_dn++) {
                     int posicion_antes_pgdn=*opcion_inicial;
                     (*opcion_inicial)=menu_dibuja_menu_cursor_abajo_common((*opcion_inicial),max_opciones,m);
                     //Ajustar scroll de ventana

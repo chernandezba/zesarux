@@ -53,6 +53,7 @@ Improved Spectrum Next emulation:
 
 Improved Debug:
 - CPU history: allow to change memory pointer to the PC register show in history
+- CPU history: allow to see full history
 - Show when CPU is in wait state
 - Added breakpoint action save-binary
 - Added Symbol Table loading
@@ -66,6 +67,7 @@ Improved ZX Vision:
 - Menus show previous menus when selecting submenus
 - When selecting ZX Vision Style, it is applied on moving cursor
 - Improve cursor movement on menus when pressing PgDn/PgUp
+- Allow keys Home/End on windows
 - Warn on the resize mark when a window has to be enlarged (because there is text beyond current size)
 - Allow a window to disable scroll actions
 - Process switcher is located at bottom-left part of the display by default

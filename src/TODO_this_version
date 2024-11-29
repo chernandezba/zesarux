@@ -497,3 +497,8 @@ registro 4 de Next usa bits 6-0 no 4-0
 Pendiente
         bits 6:5 = Blending in SLU modes 6 & 7 (soft reset = 0)
                 = 10 for ula/tilemap mix result as blend colour
+
+-poder listar mas en el historial de cpu
+-rehabilitar historial de cpu despues de smartload
+
+-teclas Inicio/Fin en ventanas de menu. Por ejemplo en cpu history
