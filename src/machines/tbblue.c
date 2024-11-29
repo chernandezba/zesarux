@@ -4577,8 +4577,6 @@ void tbblue_set_value_port_position(z80_byte index_position,z80_byte value)
             printf("Can not change machine type (to %02XH) while in non config mode or non IPL mode\n",value);
 
             //Preservar bits de maquina
-            //temp
-
             value &=(255-7);
             value |=previous_machine_type;
 

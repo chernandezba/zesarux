@@ -465,7 +465,11 @@ La particularidad es que ese archivo tiene bloques a final de microdrive y al pr
   bit 1 = Activate 512 tile mode (soft reset = 0)
   bit 0 = Force tilemap on top of ULA (soft reset = 0)
 
-- ojo bit 2:
+- ojo bit 2, revisar bits 6:5 que se esten haciendo bien los 4 modos SLU:
+Pendiente
+        bits 6:5 = Blending in SLU modes 6 & 7 (soft reset = 0)
+                = 10 for ula/tilemap mix result as blend colour
+
   0x68 (104) => ULA Control
 (R/W)
   bit 7 = Disable ULA output (soft reset = 0)
@@ -494,11 +498,8 @@ La particularidad es que ese archivo tiene bloques a final de microdrive y al pr
 
 registro 4 de Next usa bits 6-0 no 4-0
 
-Pendiente
-        bits 6:5 = Blending in SLU modes 6 & 7 (soft reset = 0)
-                = 10 for ula/tilemap mix result as blend colour
 
--poder listar mas en el historial de cpu
+
+
 -rehabilitar historial de cpu despues de smartload
 
--teclas Inicio/Fin en ventanas de menu. Por ejemplo en cpu history
