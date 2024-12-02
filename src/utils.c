@@ -6157,6 +6157,9 @@ int quickload(char *nombre) {
     z80_bit antes_debug_breakpoints_enabled;
     antes_debug_breakpoints_enabled.v=debug_breakpoints_enabled.v;
 
+	z80_bit antes_cpu_history_enabled;
+	antes_cpu_history_enabled.v=cpu_history_enabled.v;
+
 
 	int retorno=quickload_continue(nombre);
 
@@ -6184,6 +6187,8 @@ int quickload(char *nombre) {
 		debug_printf (VERBOSE_DEBUG,"Reenabling superupgrade as it was enabled before quickload");
 		superupgrade_enable(0);
 	}
+
+	if (antes_cpu_history_enabled.v) set_cpu_core_history_enable();
 
     //Si estaba modo debug cpu, reactivar
     //Asegurarme que no este ya habilitado debug_breakpoints_enabled.v, puede suceder simplemente
