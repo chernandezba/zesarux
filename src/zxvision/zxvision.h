@@ -512,7 +512,7 @@ extern int zxvision_window_get_pixel_y_position(zxvision_window *ventana);
 #define MAX_LENGTH_TEXT_ICON 100
 
 //Maximo de ventanas que se pueden restaurar
-#define MAX_RESTORE_WINDOWS_START 50
+#define MAX_RESTORE_WINDOWS_START 100
 
 extern char restore_window_array[MAX_RESTORE_WINDOWS_START][MAX_NAME_WINDOW_GEOMETRY];
 
