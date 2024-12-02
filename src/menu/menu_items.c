@@ -8826,7 +8826,7 @@ void menu_tsconf_layer_overlay_mostrar_texto(zxvision_window *w)
 					linea +=3;
 				}
 
-				if (MACHINE_IS_TBBLUE) {
+				else if (MACHINE_IS_TBBLUE) {
 	                sprintf (texto_layer,"ULA:       %s",menu_tsconf_layer_aux_usedunused(tbblue_if_ula_is_enabled()) );
     	            //menu_escribe_linea_opcion(linea,-1,1,texto_layer);
 					zxvision_print_string_defaults_fillspc(menu_tsconf_layer_overlay_window,1,linea,texto_layer);
@@ -8889,7 +8889,7 @@ void menu_tsconf_layer_overlay_mostrar_texto(zxvision_window *w)
 					}
 				}
 
-                if (MACHINE_HAS_VDP_9918A) {
+                else if (MACHINE_HAS_VDP_9918A) {
 
                     //if (!vdp_9918a_si_sms_video_mode4()) {
                     if (!MACHINE_IS_SMS) {
@@ -8937,6 +8937,10 @@ void menu_tsconf_layer_overlay_mostrar_texto(zxvision_window *w)
 
                     }
 
+                }
+
+                else {
+                    //Maquina sin capas
                 }
 
 
@@ -9262,6 +9266,9 @@ void menu_video_layers(MENU_ITEM_PARAMETERS)
             return;
     }
 
+    //Borrar contenido por si se cambia de una maquina a otra
+    zxvision_cls(ventana);
+
     menu_item *array_menu_tsconf_layer_settings;
     menu_item item_seleccionado;
     int retorno_menu;
@@ -9314,7 +9321,7 @@ void menu_video_layers(MENU_ITEM_PARAMETERS)
 
 		}
 
-		if (MACHINE_IS_TBBLUE) {
+		else if (MACHINE_IS_TBBLUE) {
  			menu_add_item_menu_inicial_format(&array_menu_tsconf_layer_settings,MENU_OPCION_NORMAL,menu_tbblue_layer_settings_ula,NULL,"%s",(tbblue_force_disable_layer_ula.v ? "Disabled" : "Enabled "));
 			menu_add_item_menu_tabulado(array_menu_tsconf_layer_settings,1,lin);
  			menu_add_item_menu_format(array_menu_tsconf_layer_settings,MENU_OPCION_NORMAL,menu_tbblue_layer_reveal_ula,NULL,"%s",(tbblue_reveal_layer_ula.v ? "Reveal" : "Normal"));
@@ -9345,7 +9352,7 @@ void menu_video_layers(MENU_ITEM_PARAMETERS)
 
 		}
 
-        if (MACHINE_HAS_VDP_9918A) {
+        else if (MACHINE_HAS_VDP_9918A) {
 
             //if (!vdp_9918a_si_sms_video_mode4()) {
             if (!MACHINE_IS_SMS) {
@@ -9413,6 +9420,11 @@ void menu_video_layers(MENU_ITEM_PARAMETERS)
 
             }
 
+        }
+
+        else {
+            menu_add_item_menu_inicial_format(&array_menu_tsconf_layer_settings,MENU_OPCION_NORMAL,NULL,NULL,"Machine doesn't have layers");
+            menu_add_item_menu_tabulado(array_menu_tsconf_layer_settings,1,lin);
         }
 
 
