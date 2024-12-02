@@ -55,6 +55,7 @@ Mejorado Debug:
 - CPU history: permitir cambiar el puntero de memoria según el registro PC mostrado en el historial
 - CPU history: permitir ver historial completo
 - Mostar cuando la CPU está en estado wait
+- Desensamblar parámetros numéricos en opcodes Z80N (Z80 Spectrum Next) (NEXTREG NN,A, TEST N, etc)
 - Agregada acción de breakpoint save-binary
 - Agregada carga de Tabla de Símbolos
 

@@ -55,6 +55,7 @@ Improved Debug:
 - CPU history: allow to change memory pointer to the PC register show in history
 - CPU history: allow to see full history
 - Show when CPU is in wait state
+- Dissassemble numeric parameters on Z80N (Z80 Spectrum Next) opcodes (NEXTREG NN,A, TEST N, etc)
 - Added breakpoint action save-binary
 - Added Symbol Table loading
 

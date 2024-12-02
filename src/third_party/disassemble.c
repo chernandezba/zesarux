@@ -123,46 +123,47 @@ static const char *bit_op( z80_byte b );
 static int bit_op_bit( z80_byte b );
 
 struct s_tbblue_extended_string_opcode {
-	char text[32];
-	z80_byte opcode;
-  int sumar_longitud;
+    char text[32];
+    z80_byte opcode;
+    int parm1_bits,parm2_bits; //Bits de parametro 1 y 2
+    int sumar_longitud;
 };
 
 #define TOTAL_TBBLUE_EXTENDED_OPCODES 32
 
 struct s_tbblue_extended_string_opcode tbblue_extended_string_opcode[TOTAL_TBBLUE_EXTENDED_OPCODES]={
-	{"SWAPNIB",0x23,0},
-  {"MIRROR A",0x24,0},
-  {"LD HL,SP",0x25,0},
-  {"TEST N",0x27,1},
-  {"BSLA DE,B",0x28,0},
-	{"MUL",0x30,0},
-  {"ADD HL,A",0x31,0},
-  {"ADD DE,A",0x32,0},
-  {"ADD BC,A",0x33,0},
-  {"ADD HL,NN",0x34,2},
-  {"ADD DE,NN",0x35,2},
-  {"ADD BC,NN",0x36,2},
-  {"INC DEHL",0x37,0},
-  {"DEC DEHL",0x38,0},
-  {"ADD DEHL,A",0x39,0},
-  {"ADD DEHL,BC",0x3A,0},
-  {"ADD DEHL,NN",0x3B,2},
-  {"SUB DEHL,A",0x3C,0},
-  {"SUB DEHL,BC",0x3D,0},
-  {"PUSH NN",0x8A,2},
-  {"OUTINB",0x90,0},
-  {"NEXTREG N,N",0x91,2},
-  {"NEXTREG N,A",0x92,1},
-  {"PIXELDN",0x93,0},
-  {"PIXELAD",0x94,0},
-  {"SETAE",0x95,0},
-  {"LDIX",0xA4,0},
-  {"LDWS",0xA5,0},
-  {"LDIRX",0xB4,0},
-  {"LDDX",0xAC,0},
-  {"LDDRX",0xBC,0},
-  {"LDPIRX",0xB7,0}
+    {"SWAPNIB",             0x23,0,0,0},
+    {"MIRROR A",            0x24,0,0,0},
+    {"LD HL,SP",            0x25,0,0,0},
+    {"TEST %02X",           0x27,8,0,1},
+    {"BSLA DE,B",           0x28,0,0,0},
+    {"MUL",                 0x30,0,0,0},
+    {"ADD HL,A",            0x31,0,0,0},
+    {"ADD DE,A",            0x32,0,0,0},
+    {"ADD BC,A",            0x33,0,0,0},
+    {"ADD HL,%04X",         0x34,16,0,2},
+    {"ADD DE,%04X",         0x35,16,0,2},
+    {"ADD BC,%04X",         0x36,16,0,2},
+    {"INC DEHL",            0x37,0,0,0},
+    {"DEC DEHL",            0x38,0,0,0},
+    {"ADD DEHL,A",          0x39,0,0,0},
+    {"ADD DEHL,BC",         0x3A,0,0,0},
+    {"ADD DEHL,%04X",       0x3B,16,0,2},
+    {"SUB DEHL,A",          0x3C,0,0,0},
+    {"SUB DEHL,BC",         0x3D,0,0,0},
+    {"PUSH %04X",           0x8A,16,0,2},
+    {"OUTINB",              0x90,0,0,0},
+    {"NEXTREG %02X,%02X",   0x91,8,8,2},
+    {"NEXTREG %02X,A",      0x92,8,0,1},
+    {"PIXELDN",             0x93,0,0,0},
+    {"PIXELAD",             0x94,0,0,0},
+    {"SETAE",               0x95,0,0,0},
+    {"LDIX",                0xA4,0,0,0},
+    {"LDWS",                0xA5,0,0,0},
+    {"LDIRX",               0xB4,0,0,0},
+    {"LDDX",                0xAC,0,0,0},
+    {"LDDRX",               0xBC,0,0,0},
+    {"LDPIRX",              0xB7,0,0,0}
 };
 
 void debugger_handle_extended_tbblue_opcodes(char *buffer, unsigned int address, int *sumar_longitud)
@@ -172,11 +173,33 @@ void debugger_handle_extended_tbblue_opcodes(char *buffer, unsigned int address,
 			if (disassemble_peek_byte(address)==237) {
 				z80_byte opcode=disassemble_peek_byte(address+1);
 
+                z80_byte parm1=disassemble_peek_byte(address+2);
+                z80_byte parm2=disassemble_peek_byte(address+3);
+
 				int i;
 				for (i=0;i<TOTAL_TBBLUE_EXTENDED_OPCODES;i++) {
 					if (tbblue_extended_string_opcode[i].opcode==opcode) {
-						strcpy(buffer,tbblue_extended_string_opcode[i].text);
-            *sumar_longitud=tbblue_extended_string_opcode[i].sumar_longitud;
+
+                        //Opcode con un parametro de 8 bits
+                        if (tbblue_extended_string_opcode[i].parm1_bits==8 && tbblue_extended_string_opcode[i].parm2_bits==0) {
+						    sprintf(buffer,tbblue_extended_string_opcode[i].text,parm1);
+                        }
+
+                        //Opcode con dos parametros de 8 bits
+                        else if (tbblue_extended_string_opcode[i].parm1_bits==8 && tbblue_extended_string_opcode[i].parm2_bits==8) {
+						    sprintf(buffer,tbblue_extended_string_opcode[i].text,parm1,parm2);
+                        }
+
+                        //Opcode con un parametro de 16 bits
+                        else if (tbblue_extended_string_opcode[i].parm1_bits==16 && tbblue_extended_string_opcode[i].parm2_bits==0) {
+						    sprintf(buffer,tbblue_extended_string_opcode[i].text,parm2*256+parm1);
+                        }
+
+                        else {
+						    strcpy(buffer,tbblue_extended_string_opcode[i].text);
+                        }
+
+                        *sumar_longitud=tbblue_extended_string_opcode[i].sumar_longitud;
 					}
 
 				}
