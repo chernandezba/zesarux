@@ -3072,6 +3072,36 @@ char *bitmap_button_ext_desktop_networktrafiic[EXT_DESKTOP_BUTTONS_ANCHO]={
 	"bbbbbbbbbbbbbbbbbbbbbbbbbb"	//25
 };
 
+char *bitmap_button_ext_desktop_videolayers[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "                          ",     //0
+  	"                          ",
+	"RRRRRRRRRRRRRRRRRRRRRRRRRR",
+	"RrrrrrrrrrrrrrrrrrrrrrrrrR",
+	"Rr                      rR",
+	"Rr          x           rR",
+	"Rr        xxWxx         rR",
+	"Rr      xxWWWWWxx       rR",
+	"Rr    xxWWWWWWWWWxx     rR",
+	"Rr      xxWWWWWxx       rR",
+	"Rr      xWxxWxxWx       rR",	//10
+	"Rr    xxWWWWxWWWWxx     rR",
+	"Rr      xxWWWWWxx       rR",
+	"Rr      xWxxWxxWx       rR",
+	"Rr    xxWWWWxWWWWxx     rR",
+	"Rr      xxWWWWWxx       rR",
+	"Rr        xxWxx         rR",
+	"Rr          x           rR",
+	"Rr                      rR",
+	"Rr                      rR",
+	"RrrrrrrrrrrrrrrrrrrrrrrrrR",    //20
+	"RRRRRRRRRRRRRRRRRRRRRRRRRR",
+	"        RRRRRRRRRR        ",
+	"       RRRRRRRRRRRR       ",
+	"      RRRRRRRRRRRRRR      ",
+	"     rrrrrrrrrrrrrrrr     " 	 //25
+};
+
 
 char *bitmap_button_ext_desktop_videooutput[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345
