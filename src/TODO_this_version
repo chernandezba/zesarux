@@ -490,7 +490,6 @@ Pendiente
 
 -tiles que no salgan de pagina 16kb ram5 o 8bk de ram7
 
--icono para accion: {"DebugCPUBreakpoints",F_FUNCION_DEBUGCPU,bitmap_button_ext_desktop_nothing,""},
 
 
 "Another place it does that is after the dma operation completes and the WR5 auto restart bit is set."
@@ -503,4 +502,3 @@ registro 4 de Next usa bits 6-0 no 4-0
 
 video layers
 -icono para ventana video layers
--si maquina no es next ni tsconf ni... que aparece?
