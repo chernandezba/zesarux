@@ -320,6 +320,8 @@ extern void tbblue_get_string_palette_format(char *texto);
 extern int tbblue_pendiente_retn_stackless;
 extern void tbblue_handle_nmi(void);
 
+//extern int tbblue_prueba_dentro_nmi;
+
 extern int tbblue_get_offset_start_layer2_reg(z80_byte register_value);
 extern int tbblue_get_offset_start_tilemap(void);
 extern int tbblue_get_offset_start_tiledef(void);

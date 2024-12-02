@@ -681,6 +681,8 @@ void instruccion_ed_69 ()
             reg_sp +=2;
             reg_pc=(tbblue_registers[0xC2])|(tbblue_registers[0xC3]<<8);
             //printf("RETN stackless nmi return to : %04XH\n",reg_pc);
+
+            //tbblue_prueba_dentro_nmi=0;
         }
 
         else {

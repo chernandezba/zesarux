@@ -443,6 +443,9 @@ La particularidad es que ese archivo tiene bloques a final de microdrive y al pr
 
 -acciones boton derecho sobre botones superiores e inferiores se activan aunque haya ventanas por encima
 
+
+
+
 -como gestionar setting SDHC:
 *se desactiva al hacer reset cpu?
 *no se guarda en la config?

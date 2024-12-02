@@ -3453,9 +3453,23 @@ if (util_get_configfile_name(configfile)==0)  {
                       return 0;
               }
 
+
+    char creator_buffer[255];
+
+
+    //fecha grabacion
+    time_t tiempo = time(NULL);
+    struct tm tm = *localtime(&tiempo);
+
+
+    sprintf(creator_buffer,";ZEsarUX configuration file created from ZEsarUX %s on %02d/%02d/%04d %02d:%02d:%02d\n\n",
+        EMULATOR_VERSION,tm.tm_mday,tm.tm_mon+1,tm.tm_year + 1900,tm.tm_hour,tm.tm_min,tm.tm_sec);
+
+
+    fwrite(creator_buffer, 1, strlen(creator_buffer), ptr_configfile);
+
+
   char *sample_config=
-    ";ZEsarUX configuration file\n"
-    ";\n"
     ";Lines beginning with ; or # are ignored\n"
     ";You can specify here the same options passed on command line, for example:\n"
     ";--verbose 2\n"

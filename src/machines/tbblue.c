@@ -4649,6 +4649,11 @@ void tbblue_set_value_port_position(z80_byte index_position,z80_byte value)
             if (value&4 && (last_register_2&4)==0 && maquina!=0 && maquina!=7) {
                 printf("generate nmi\n");
 
+                /*if (tbblue_prueba_dentro_nmi) {
+                    printf("Ya dentro de otra nmi!!!\n");
+                    sleep(5);
+                }*/
+
                 /*
                 No an nmi cannot be generated when the divmmc or the multiface is already paged in. ¿?
                 */
@@ -4662,7 +4667,7 @@ void tbblue_set_value_port_position(z80_byte index_position,z80_byte value)
                     tbblue_generate_divmmc_nmi();
                 }
                 */
-
+                //tbblue_prueba_dentro_nmi=1;
                 tbblue_generate_divmmc_nmi();
             }
 
@@ -7826,6 +7831,9 @@ z80_byte tbblue_uartbridge_readstatus(void)
 }
 
 int tbblue_pendiente_retn_stackless=0;
+
+//prueba
+//int tbblue_prueba_dentro_nmi=0;
 
 void tbblue_handle_nmi(void)
 {
