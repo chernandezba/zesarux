@@ -213,9 +213,7 @@ Y lo mismo con posición de nuevos iconos
 
 
 
--mejorar icono para video output
 
--iconos para acciones: backgroundwindow, showbackgroundwindows
 
 -Debug console quizá ancho debería considerar siempre el Máximo al calcular posición siguiente línea, esto en print y scroll
 Asi se podría redimensionar siempre sin que se descuadren los textos anteriores . hecho?

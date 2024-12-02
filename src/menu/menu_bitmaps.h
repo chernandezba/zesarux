@@ -132,6 +132,9 @@ extern char *bitmap_button_ext_desktop_networktrafiic[];
 extern char *bitmap_button_ext_desktop_videooutput[];
 extern char *bitmap_button_ext_desktop_videolayers[];
 
+extern char *bitmap_button_ext_desktop_backgroundwindow[];
+extern char *bitmap_button_ext_desktop_showbackgroundwindows[];
+
 extern char **zxdesktop_buttons_bitmaps[];
 
 

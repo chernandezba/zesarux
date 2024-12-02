@@ -6885,3 +6885,65 @@ char *bitmap_button_ext_desktop_textadvlocimage[EXT_DESKTOP_BUTTONS_ANCHO]={
 	"     wWWWWWWxxxxxWWWWw    ",
 	"     wwwwwwwwwwwwwwwww    ", 	 //25
 };
+
+
+char *bitmap_button_ext_desktop_backgroundwindow[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "          xxxxxx          ",     //0
+  	"        xxxxxxxxxx        ",
+	"       xxWxWxxWxWxx       ",
+	"       xxxWxxxxWxxx       ",
+	"      xxxWxWxxWxWxxx      ",
+	"      xxWxWxxxxWxWxx      ",
+	"      xxxxxxxxxxxxxx      ",
+	"      xxxxxxxxxxxxxx      ",
+	"      xxWxWxxxWxWxxx      ",
+	"      xxxWxWxxxWxWxx      ",
+	"      xxWxWxxxWxWxxx      ",	//10
+	"      xxxWxWxxxWxWxx      ",
+	"      xxWxWxxxWxWxxx      ",
+	"      xxxxxxxxxxxxxx      ",
+	"      xxxxxxxxxxxxxx      ",
+	"      xxxWxWxxWxWxxx      ",
+	"      xxWxWxxxxWxWxx      ",
+	"      xxxWxWxxWxWxxx      ",
+	"      xxWxWxxxxWxWxx      ",
+	"      xxxWxWxxWxWxxx      ",
+	"      xxxxxxxxxxxxxx      ",    //20
+	"      xxxxxxxxxxxxxx      ",
+	"                          ",
+	"                          ",
+	"     xxxxxxxxxxxxxxxx     ",
+	"     xxxxxxxxxxxxxxxx     " 	 //25
+};
+
+
+char *bitmap_button_ext_desktop_showbackgroundwindows[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "          xxxxxx          ",     //0
+  	"        xxxxxxxxxx        ",
+	"       xxWxWxxWxWxx       ",
+	"       xxxWxxxxWxxx       ",
+	"      xxxWxWxxWxWxxx      ",
+	"      xxWxWxxxxWxWxx      ",
+	"      xxxxxxxxxxxxxx      ",
+	"      xxxxxxxxxxxxxx      ",
+	"      xxWxWxxxWxWxxx      ",
+	"      xxxWxWxxxWxWxx      ",
+	"      xxWxWxxxWxWxxx      ",	//10
+	"      xxxWxWxxxWxWxx      ",
+	"      xxWxWxxxWxWxxx      ",
+	"      xxxxxxxxxxxxxx      ",
+	"      xxxx                ",
+	"      xxxW   xx           ",
+	"      xxWx     xx         ",
+	"      xxxW    xWWxx       ",
+	"      xxWx   xWWWxWxx     ",
+	"      xxxW  xxxWWWxWWxx   ",
+	"      xxxx  xxxxWWxWWWWx  ",    //20
+	"      xxxx  xxxWWWxWWxx   ",
+	"             xWWWxWxx     ",
+	"              xWWxx       ",
+	"     xxxxx     xx         ",
+	"     xxxxx   xx           " 	 //25
+};

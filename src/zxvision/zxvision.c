@@ -219,9 +219,9 @@ defined_f_function defined_direct_functions_array[MAX_F_FUNCTIONS]={
     //Actuar sobre menus y ventanas
     {"CloseAllMenus",F_FUNCION_CLOSE_ALL_MENUS,bitmap_button_ext_desktop_close_all_menus,""},
 	{"ExitEmulator",F_FUNCION_EXITEMULATOR,bitmap_button_ext_desktop_exit,""},
-	{"BackgroundWindow",F_FUNCION_BACKGROUND_WINDOW,bitmap_button_ext_desktop_userdefined,""},
+	{"BackgroundWindow",F_FUNCION_BACKGROUND_WINDOW,bitmap_button_ext_desktop_backgroundwindow,""},
 	//Para el usuario, mejor esta descripcion de ShowBackgroundWindows en vez de overlay_windows
-	{"ShowBackgroundWindows",F_FUNCION_OVERLAY_WINDOWS,bitmap_button_ext_desktop_userdefined,""},
+	{"ShowBackgroundWindows",F_FUNCION_OVERLAY_WINDOWS,bitmap_button_ext_desktop_showbackgroundwindows,""},
     //Abrir una ventana cualquiera. Necesita nombre de la ventana en la extra info del icono
     {"OpenWindow",F_FUNCION_OPEN_WINDOW,bitmap_button_ext_desktop_openwindow,""},
 
