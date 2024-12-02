@@ -8945,27 +8945,6 @@ void menu_tsconf_layer_overlay_mostrar_texto(zxvision_window *w)
 
 
 
-void menu_tsconf_layer_overlay(void)
-{
-
-/*
- 	menu_speech_tecla_pulsada=1; //Si no, envia continuamente todo ese texto a speech
-
-
-    //esto hara ejecutar esto 2 veces por segundo
-    if ( ((contador_segundo%500) == 0 && menu_tsconf_layer_valor_contador_segundo_anterior!=contador_segundo) || menu_multitarea==0) {
-
-        menu_tsconf_layer_valor_contador_segundo_anterior=contador_segundo;
-        //printf ("Refrescando. contador_segundo=%d\n",contador_segundo);
-
-
-		menu_tsconf_layer_overlay_mostrar_texto();
-		zxvision_draw_window_contents(menu_tsconf_layer_overlay_window);
-
-    }
-    */
-}
-
 
 void menu_tsconf_layer_settings_ula(MENU_ITEM_PARAMETERS)
 {
@@ -9288,12 +9267,6 @@ void menu_video_layers(MENU_ITEM_PARAMETERS)
     int retorno_menu;
 
     do {
-
-		//Valido tanto para cuando multitarea es off y para que nada mas entrar aqui, se vea, sin tener que esperar el medio segundo
-		//que he definido en el overlay para que aparezca
-
-
-		//No usado ya esto. menu_tsconf_layer_overlay_mostrar_texto();
 
         int lin=1;
 
