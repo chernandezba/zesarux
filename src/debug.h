@@ -420,6 +420,7 @@ extern int debug_get_opcode_length(unsigned int direccion);
 extern void debug_cpu_step_over(void);
 
 extern int debug_return_brk_pc_dir_condition(menu_z80_moto_int direccion);
+extern int debug_return_brk_pc_dir_condition_enabled_or_not(menu_z80_moto_int direccion);
 extern int debug_return_brk_pc_dir_list(menu_z80_moto_int *lista);
 
 extern int debug_find_free_breakpoint(void);

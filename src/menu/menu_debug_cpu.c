@@ -2725,9 +2725,13 @@ Solo tienes que buscar en esa tabla el número de palabra de flag 33, que sea de
 
 					int tiene_brk=0;
 					int tiene_pc=0;
+                    int tiene_brk_enabled_or_not=0;
 
-					//Si linea tiene breakpoint
+					//Si linea tiene breakpoint activado
 					if (debug_return_brk_pc_dir_condition(puntero_dir)>=0) tiene_brk=1;
+
+					//Si linea tiene breakpoint aunque no este activado
+					if (debug_return_brk_pc_dir_condition_enabled_or_not(puntero_dir)>=0) tiene_brk_enabled_or_not=1;
 
 					//Si linea es donde esta el PC
 					if (puntero_dir==get_pc_register() ) tiene_pc=1;
@@ -2757,6 +2761,9 @@ Solo tienes que buscar en esa tabla el número de palabra de flag 33, que sea de
 						buffer_linea[0]='*';
 						opcion_activada=0;
 					}
+                    else if (tiene_brk_enabled_or_not) {
+                        buffer_linea[0]='-'; //Cuando hay un breakpoint pero que no esta activado
+                    }
 
 					if (tiene_pc && tiene_brk) buffer_linea[0]='+'; //Cuando coinciden breakpoint y cursor
 
@@ -3921,7 +3928,9 @@ void menu_debug_ret(void)
 	}
 }
 
-void menu_debug_toggle_breakpoint(void)
+
+//Parametros: borrar: diferente de 0 indica que si existe, borrara el breakpoint. si es 0, si existe, desactiva el breakpoint en vez de borrarlo
+void menu_debug_toggle_breakpoint(int borrar)
 {
 	//Buscar primero direccion que indica el cursor
 	menu_z80_moto_int direccion_cursor;
@@ -3931,11 +3940,17 @@ void menu_debug_toggle_breakpoint(void)
 
 	debug_printf (VERBOSE_DEBUG,"Address on cursor: %X",direccion_cursor);
 
-	//Si hay breakpoint ahi, quitarlo
-	int posicion=debug_return_brk_pc_dir_condition(direccion_cursor);
+	//Si hay breakpoint ahi, quitarlo, ya sea que este activado o no
+	int posicion=debug_return_brk_pc_dir_condition_enabled_or_not(direccion_cursor);
 	if (posicion>=0) {
-		debug_printf (VERBOSE_DEBUG,"Clearing breakpoint at index %d",posicion);
-		debug_clear_breakpoint(posicion);
+		if (borrar) {
+            debug_printf (VERBOSE_DEBUG,"Clearing breakpoint at index %d",posicion);
+            debug_clear_breakpoint(posicion);
+        }
+        else {
+            debug_printf (VERBOSE_DEBUG,"Toggling enable/disable breakpoint at index %d",posicion);
+            debug_breakpoints_conditions_toggle(posicion);
+        }
 
 	}
 
@@ -4325,11 +4340,11 @@ void menu_debug_get_legend(int linea,char *s,zxvision_window *w)
 				menu_get_legend_short_long(s,ancho_visible,
 							//01234567890123456789012345678901
 							// Chr brk wtch Togl Run Runto Ret
-							  "Ch~~r ~~brk ~~wtch Tog~~l Ru~~n R~~unto R~~et",
+							  "Ch~~r ~~brk ~~wtch Tog~~l~^L Ru~~n R~~unt R~~et",
 
 							// Changeregisters breakpoints watch Toggle Run Runto Ret
 							//012345678901234567890123456789012345678901234567890123456789012
-							  "Change~~registers ~~breakpoints ~~watches Togg~~le Ru~~n R~~unto R~~et"
+							  "Change~~registers ~~breakpoints ~~watches Togg~~l~^Le Ru~~n R~~unto R~~et"
 				);
 			}
 
@@ -7585,8 +7600,14 @@ void menu_debug_help(void)
         menu_generic_message("Ayuda",
         "En esta ventana de Debug CPU se pueden tener diferentes vistas (seleccionables con las teclas 1-8), cada una mostrando diferente información:\n"
         "1 - Vista por defecto. Se muestra una zona superior con desensamblado de instrucciones y registros. Esta zona se puede cambiar mediante tecla m, "
-        "la cual conmuta en vista de desensamblado, vista hexadecimal, vista ascii, y vista de desensamblado sin registros. En esta vista 1, "
-        "se puede mover el cursor mediante teclado o ratón; también, al pulsar con ratón en una linea de desensamblado, se asigna un breakpoint. \n"
+        "la cual conmuta en vista de desensamblado, vista hexadecimal, vista ascii, y vista de desensamblado sin registros.\n"
+        "En esta vista 1, se puede mover el cursor mediante teclado o ratón; también, al pulsar con ratón en una linea de desensamblado, se asigna un breakpoint. \n"
+        "Si hay un breakpoint en una dirección y está activado, se muestra esa línea en color rojo, y el primer carácter a la izquierda será:\n"
+        "+: Si el registro PC coincide con esta dirección\n"
+        "*: Si el registro PC no coincide con esta dirección\n"
+        "Si hay un breakpoint en una dirección y no está activado, el primer carácter a la izquierda es un guión (-).\n"
+        "El primer carácter a la izquierda es (>) Si el registro PC coincide con esta dirección y no hay un breakpoint.\n"
+        "\n"
         "En esta vista también se visualizan, en color rojo, los registros que modificará la instrucción en que está posicionado el cursor.\n"
         "\n"
         "2 - Vista de una línea de desensamblado, registros y diferentes puertos hardware\n"
@@ -7639,6 +7660,7 @@ void menu_debug_help(void)
         "w: Ir a la ventana de watches\n"
         "\n"
         "l: Poner/Quitar breakpoint en la posición indicada por el puntero\n"
+        "L: Poner/Desactivar breakpoint en la posición indicada por el puntero\n"
         "\n"
         "n: Salir de la vista de Debug CPU y seguir ejecutando\n"
         "\n"
@@ -7692,8 +7714,14 @@ void menu_debug_help(void)
         menu_generic_message("Ajuda",
         "En aquesta finestra de Debug CPU es poden tenir diferents vistes (seleccionables amb les tecles 1-8), cadascuna mostrant diferent informació:\n"
         "1 - Vista per defecte. Es mostra una zona superior amb desensamblat d'instruccions i registres. Aquesta zona es pot canviar mitjançant tecla m, "
-        "la qual commuta en vista de desassemblat, vista hexadecimal, vista ascii, i vista de desassemblat sense registres. En aquesta vista 1, "
-        "es pot moure el cursor mitjançant teclat o ratolí; també, en prémer amb ratolí en una línia de desassemblat, s'assigna un breakpoint. \n"
+        "la qual commuta en vista de desassemblat, vista hexadecimal, vista ascii, i vista de desassemblat sense registres.\n"
+        "En aquesta vista 1, es pot moure el cursor mitjançant teclat o ratolí; també, en prémer amb ratolí en una línia de desassemblat, s'assigna un breakpoint. \n"
+        "Si hi ha un breakpoint a una adreça i està activat, es veu aquesta línia en color vermell, i el primer caràcter a l'esquerra serà:\n"
+        "+: Si el registre PC coincideix amb aquesta adreça\n"
+        "*: Si el registre PC no coincideix amb aquesta adreça\n"
+        "Si hi ha un breakpoint a una adreça i no està activat, el primer caràcter a l'esquerra és un guió (-).\n"
+        "El primer caràcter a l'esquerra és (>) si el registre PC coincideix amb aquesta adreça i no hi ha un breakpoint.\n"
+        "\n"
         "En aquesta vista també es visualitzen, en color vermell, els registres que modificarà la instrucció en que està posicionat el cursor.\n"
         "\n"
         "2 - Vista d'una línia de desassemblatge, registres i diferents ports de maquinari\n"
@@ -7746,6 +7774,7 @@ void menu_debug_help(void)
         "w: Anar a la finestra de watches\n"
         "\n"
         "l: Posar/treure breakpoint a la posició indicada pel punter\n"
+        "L: Posar/desactivar breakpoint a la posició indicada pel punter\n"
         "\n"
         "n: Sortir de la vista de Debug CPU i continuar executant\n"
         "\n"
@@ -7800,8 +7829,14 @@ void menu_debug_help(void)
         menu_generic_message("Help",
         "This Debug CPU window can show different views (chosen with keys 1-8), each of them showing different information:\n"
         "1 - Default view. You see a top section with opcodes disassembly and registers. This section can be changed pressing key m, "
-        "switching from: disassembly, hexadecimal, ascii, and disassembly without registers. On this view 1, "
-        "you can move cursor by using keys or mouse; also, pressing mouse on a disassembly line, you set a breakpoint. \n"
+        "switching from: disassembly, hexadecimal, ascii, and disassembly without registers.\n"
+        "On this view 1, you can move cursor by using keys or mouse; also, pressing mouse on a disassembly line, you set a breakpoint. \n"
+        "If there is a breakpoint on an address and it's enabled, the line is shown in red color, and the first left caracter will be:\n"
+        "+: If PC register matches this address\n"
+        "*: If PC register doesn't match this address\n"
+        "If there is a breakpoint on an address and it's not enabled, the first left character will be a hyphen (-).\n"
+        "The first left character is (>) if PC register matches this address and there is no breakpoint.\n"
+        "\n"
         "In this view you can also see, in red color, which registers will be modified by the opcode the cursor is in.\n"
         "\n"
         "2 - View with one disassembly line, registers and different hardware ports\n"
@@ -7854,6 +7889,7 @@ void menu_debug_help(void)
         "w: Go to watches window\n"
         "\n"
         "l: Add/Remove breakpoint on the current pointer position\n"
+        "L: Add/Disable breakpoint on the current pointer position\n"
         "\n"
         "n: Exit from Debug CPU window and continue running\n"
         "\n"
@@ -8376,7 +8412,13 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
                 }
 
 				if (tecla=='l' && menu_debug_registers_current_view==1) {
-                    menu_debug_toggle_breakpoint();
+                    menu_debug_toggle_breakpoint(1);
+                    //Decimos que no hay tecla pulsada
+                    acumulado=MENU_PUERTO_TECLADO_NINGUNA;
+				}
+
+				if (tecla=='L' && menu_debug_registers_current_view==1) {
+                    menu_debug_toggle_breakpoint(0);
                     //Decimos que no hay tecla pulsada
                     acumulado=MENU_PUERTO_TECLADO_NINGUNA;
 				}
@@ -8987,12 +9029,20 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
                 }
 
 		        if (tecla=='l' && menu_debug_registers_current_view==1) {
-                    menu_debug_toggle_breakpoint();
+                    menu_debug_toggle_breakpoint(1);
                     //Decimos que no hay tecla pulsada
                     acumulado=MENU_PUERTO_TECLADO_NINGUNA;
                     //decirle que despues de pulsar esta tecla no tiene que ejecutar siguiente instruccion
                     si_ejecuta_una_instruccion=0;
                 }
+
+				if (tecla=='L' && menu_debug_registers_current_view==1) {
+                    menu_debug_toggle_breakpoint(0);
+                    //Decimos que no hay tecla pulsada
+                    acumulado=MENU_PUERTO_TECLADO_NINGUNA;
+                    //decirle que despues de pulsar esta tecla no tiene que ejecutar siguiente instruccion
+                    si_ejecuta_una_instruccion=0;
+				}
 
 				//Ret
 		        if (tecla=='e' && menu_debug_registers_current_view==1) {

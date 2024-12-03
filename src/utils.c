@@ -4171,6 +4171,10 @@ int util_write_configfile(void)
 				char buffer_temp[MAX_BREAKPOINT_CONDITION_LENGTH];
 				exp_par_tokens_to_exp(debug_breakpoints_conditions_array_tokens[i],buffer_temp,MAX_PARSER_TOKENS_NUM);
                                 ADD_STRING_CONFIG,"--set-breakpoint %d \"%s\"",i+1,buffer_temp);
+
+                if (!debug_breakpoints_conditions_enabled[i]) {
+                    ADD_STRING_CONFIG,"--disable-breakpoint %d",i+1);
+                }
 			}
 
 

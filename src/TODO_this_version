@@ -439,7 +439,7 @@ La particularidad es que ese archivo tiene bloques a final de microdrive y al pr
 
 -En MSX y SVI no estoy usando usa msx_ppi_mode_port/svi_ppi_mode_port en lectura. Quien lo lee y para que?
 
--acciones boton derecho sobre botones superiores e inferiores se activan aunque haya ventanas por encima
+
 
 
 
@@ -500,3 +500,8 @@ registro 4 de Next usa bits 6-0 no 4-0
 
 
 --restore-all-known-windows no parece abrir bien las ventanas. pasa con segun que ventanas ya puestas para restore en el zesaruxrc
+
+
+-Alto total de process switcher se amplía si necesita ubicar más iconos?
+Debería aumentar total_height si es necesario
+

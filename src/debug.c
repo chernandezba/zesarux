@@ -7712,7 +7712,7 @@ int debug_text_is_pc_condition(char *cond)
 	return 0;
 }
 
-//Retorna si el breakpoint indicado es de tipo PC=XXXX y action=""
+//Retorna si el breakpoint indicado es de tipo PC=XXXX y action="" y esta activado
 //Retorna 0 si no
 //Retorna 1 si es
 int debug_return_brk_pc_condition(int indice)
@@ -7737,6 +7737,63 @@ int debug_return_brk_pc_condition(int indice)
 
 
 	return 0;
+}
+
+//Retorna si el breakpoint indicado es de tipo PC=XXXX y action=""
+//Retorna 0 si no
+//Retorna 1 si es
+int debug_return_brk_pc_condition_enabled_or_not(int indice)
+{
+	if (debug_breakpoints_enabled.v==0) return -1;
+
+	char *cond;
+
+	int i=indice;
+
+
+			if (debug_breakpoints_actions_array[i][0]!=0) return 0;
+
+
+			char buffer_temp[MAX_BREAKPOINT_CONDITION_LENGTH];
+			exp_par_tokens_to_exp(debug_breakpoints_conditions_array_tokens[i],buffer_temp,MAX_PARSER_TOKENS_NUM);
+			cond=buffer_temp;
+
+
+			return debug_text_is_pc_condition(cond);
+
+
+
+	return 0;
+}
+
+//Retorna si hay breakpoint tipo PC=XXXX donde XXXX coincide con direccion y action=""
+//Teniendo en cuenta que breakpoints NO TIENE POR QUE estar enable, y ese breakpoint tambien tiene que estar activado
+//Retorna -1 si no
+//Retorna indice a breakpoint si coincide
+int debug_return_brk_pc_dir_condition_enabled_or_not(menu_z80_moto_int direccion)
+{
+
+	if (debug_breakpoints_enabled.v==0) return -1;
+
+	char *cond;
+
+	int i;
+	for (i=0;i<MAX_BREAKPOINTS_CONDITIONS;i++) {
+			if (debug_return_brk_pc_condition_enabled_or_not(i)) {
+
+
+			//TODO: esto se podria mejorar analizando los tokens
+			char buffer_temp[MAX_BREAKPOINT_CONDITION_LENGTH];
+			exp_par_tokens_to_exp(debug_breakpoints_conditions_array_tokens[i],buffer_temp,MAX_PARSER_TOKENS_NUM);
+			cond=buffer_temp;
+
+
+				menu_z80_moto_int valor=parse_string_to_number(&cond[3]);
+				if (valor==direccion) return i;
+			}
+	}
+
+	return -1;
 }
 
 //Retorna si hay breakpoint tipo PC=XXXX donde XXXX coincide con direccion y action=""

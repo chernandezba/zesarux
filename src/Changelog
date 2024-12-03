@@ -57,6 +57,7 @@ Improved Debug:
 - Show when CPU is in wait state
 - Dissassemble numeric parameters on Z80N (Z80 Spectrum Next) opcodes (NEXTREG NN,A, TEST N, etc)
 - Added breakpoint action save-binary
+- Allow to enable/disable breakpoint at an adress (not just enable/remove), using key 'L' uppercase. Disabled state is saved on configuration
 - Added Symbol Table loading
 
 Improved Hexadecimal editor:

@@ -962,6 +962,10 @@ printf(
 );
 
 printf(
+        "--disable-breakpoint n              Disables breakpoint (not deletes) at position n\n"
+);
+
+printf(
 		"--set-watch n s                     Set watch with string s at position n. n must be between 1 and %d. string s must be written in \"\" if has spaces\n",DEBUG_MAX_WATCHES
 );
 
@@ -5884,6 +5888,21 @@ int parse_cmdline_options(int desde_commandline) {
 			 debug_set_breakpoint(valor,argv[puntero_parametro]);
 
 		 }
+
+        else if (!strcmp(argv[puntero_parametro],"--disable-breakpoint")) {
+            siguiente_parametro_argumento();
+            int valor=atoi(argv[puntero_parametro]);
+            valor--;
+
+
+            if (valor<0 || valor>MAX_BREAKPOINTS_CONDITIONS-1) {
+                printf("Index %d out of range disabling breakpoint\n",valor+1);
+                exit(1);
+            }
+
+            debug_breakpoints_conditions_disable(valor);
+
+        }
 
 		 else if (!strcmp(argv[puntero_parametro],"--set-watch")) {
 			 siguiente_parametro_argumento();

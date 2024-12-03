@@ -57,6 +57,7 @@ Mejorado Debug:
 - Mostar cuando la CPU está en estado wait
 - Desensamblar parámetros numéricos en opcodes Z80N (Z80 Spectrum Next) (NEXTREG NN,A, TEST N, etc)
 - Agregada acción de breakpoint save-binary
+- Permitir activar/desactivar breakpoints en una dirección (no solo activar/eliminar), usando tecla 'L' mayúscula. Estado desactivado se guarda en la configuración
 - Agregada carga de Tabla de Símbolos
 
 Mejorado Hexadecimal editor:
