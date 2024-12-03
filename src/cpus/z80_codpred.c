@@ -668,26 +668,7 @@ void instruccion_ed_69 ()
 	iff1.v=iff2.v;
 
     if (MACHINE_IS_TBBLUE) {
-        //if (!tbblue_pendiente_retn_stackless) printf("Tbblue NO pendiente stackless en retn\n");
-        /*
-        0xC0 (192) => Interrupt Control
-        (R/W) (soft reset = 0)
-        bit 3 = Enable stackless nmi response**
-        */
-        //printf("RETN. tbblue_registers[0xC0] %02XH tbblue_pendiente_retn_stackless %d\n",tbblue_registers[0xC0],tbblue_pendiente_retn_stackless);
-        if ((tbblue_registers[0xC0] & 0x08) && tbblue_pendiente_retn_stackless) {
-            //printf("RETN. stackless nmi\n");
-            tbblue_pendiente_retn_stackless=0;
-            reg_sp +=2;
-            reg_pc=(tbblue_registers[0xC2])|(tbblue_registers[0xC3]<<8);
-            //printf("RETN stackless nmi return to : %04XH\n",reg_pc);
-
-            //tbblue_prueba_dentro_nmi=0;
-        }
-
-        else {
-            reg_pc=pop_valor();
-        }
+        tbblue_retn();
     }
 
 	else {

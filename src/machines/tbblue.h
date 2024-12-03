@@ -367,4 +367,6 @@ extern z80_byte tbblue_get_diviface_enabled(void);
 
 extern int debug_tbblue_sprite_visibility[];
 
+extern void tbblue_retn(void);
+
 #endif

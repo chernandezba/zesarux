@@ -4509,14 +4509,17 @@ leaving I/O Mode is at most 64 scan lines.
 
 void tbblue_generate_divmmc_nmi(void)
 {
-    printf("generate divmmc nmi\n");
+    printf("---generate divmmc nmi. Paging divmmc memory\n");
 
 
     generate_nmi();
+
+
     divmmc_diviface_enable();
     diviface_allow_automatic_paging.v=1;
 
     diviface_paginacion_automatica_activa.v=1;
+
 
     //TODO: estoy forzando mapear divmmc justo al entrar en 66h (prepost) y no en 67h como en muchos dipositivos
     //realmente esto se tendria que tendria que ver del registro de Next BB:
@@ -7888,3 +7891,31 @@ void tbblue_handle_nmi(void)
     }
 }
 
+void tbblue_retn(void)
+{
+    //if (!tbblue_pendiente_retn_stackless) printf("Tbblue NO pendiente stackless en retn\n");
+    /*
+    0xC0 (192) => Interrupt Control
+    (R/W) (soft reset = 0)
+    bit 3 = Enable stackless nmi response**
+    */
+    //printf("RETN. tbblue_registers[0xC0] %02XH tbblue_pendiente_retn_stackless %d\n",tbblue_registers[0xC0],tbblue_pendiente_retn_stackless);
+    if ((tbblue_registers[0xC0] & 0x08) && tbblue_pendiente_retn_stackless) {
+        //printf("RETN. stackless nmi\n");
+        tbblue_pendiente_retn_stackless=0;
+        reg_sp +=2;
+        reg_pc=(tbblue_registers[0xC2])|(tbblue_registers[0xC3]<<8);
+        //printf("RETN stackless nmi return to : %04XH\n",reg_pc);
+
+        //tbblue_prueba_dentro_nmi=0;
+
+    }
+
+    else {
+        reg_pc=pop_valor();
+    }
+
+    //desmapear divmmc cuando salta un retn
+    printf("--Unmapping divmmc from retn\n");
+    diviface_paginacion_automatica_activa.v=0;
+}

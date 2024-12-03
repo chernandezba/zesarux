@@ -162,7 +162,7 @@ void diviface_tbblue_map_unmap(void)
         break;
         case 0x0066:
             if (diviface_paginacion_automatica_activa.v==0 && (tbblue_divmmc_entry_points_one&1 || tbblue_divmmc_entry_points_one&2) ) {
-                //printf("Paginando divmmc cuando PC=%XH\n",reg_pc);
+                printf("---desde diviface.c Paginando divmmc cuando PC=%XH\n",reg_pc);
                 diviface_salta_trap_despues=1;
             }
         break;
@@ -200,7 +200,7 @@ void diviface_tbblue_map_unmap(void)
 
     //Traps que despaginan memoria antes de leer instruccion
     if (reg_pc>=0x1ff8 && reg_pc<=0x1fff && diviface_paginacion_automatica_activa.v && (tbblue_divmmc_entry_points_one&64) ) {
-        //printf ("Saltado trap de despaginacion pc actual: %d\n",reg_pc);
+        printf ("---Saltado trap de despaginacion pc actual: %d\n",reg_pc);
         diviface_salta_trap_despaginacion_despues=1;
     }
 
