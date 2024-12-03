@@ -25382,7 +25382,7 @@ void menu_inicio_handle_button_presses(void)
 
 }
 
-//Si se pulsa en alguna ventana con el menu cerrado
+//Si se pulsa con boton izquierdo en alguna ventana con el menu cerrado
 int pulsado_alguna_ventana_con_menu_cerrado=0;
 
 
@@ -26083,11 +26083,48 @@ void menu_inicio(void)
     if (mouse_right) {
         DBG_PRINT_ZXVISION_EVENTS VERBOSE_INFO,"ZXVISION_EVENTS: Opened menu by right click");
 
+        int pulsado_alguna_ventana_con_menu_cerrado_boton_derecho=0;
+
+
+        //Si pulsado en alguna ventana
+        if (menu_allow_background_windows && menu_multitarea && always_force_overlay_visible_when_menu_closed) {
+            int absolute_mouse_x,absolute_mouse_y;
+
+			menu_calculate_mouse_xy_absolute_interface(&absolute_mouse_x,&absolute_mouse_y);
+
+			//Vamos a ver en que ventana se ha pulsado, si tenemos background activado
+			zxvision_window *ventana_pulsada;
+
+            //Si pulsamos en la ventana que esta arriba
+			if (zxvision_coords_in_front_window(absolute_mouse_x,absolute_mouse_y)) {
+
+                pulsado_alguna_ventana_con_menu_cerrado_boton_derecho=1;
+
+			}
+
+            //O en alguna de background
+            else {
+
+                ventana_pulsada=zxvision_coords_in_below_windows(zxvision_current_window,absolute_mouse_x,absolute_mouse_y);
+
+                if (ventana_pulsada!=NULL) {
+
+                    pulsado_alguna_ventana_con_menu_cerrado_boton_derecho=1;
+
+                }
+            }
+
+
+
+        }
+
+
         //Si pulsado en boton pero no pulsado en ventanas (ventanas siempre estan por encima y por tanto tienen prioridad)
         //Hay que ver antes pulsado_alguna_ventana_con_menu_cerrado; si metemos en un solo if las dos condiciones
         //!pulsado_alguna_ventana_con_menu_cerrado y zxvision_if_mouse_in_zlogo_or_buttons_desktop(), la segunda
         //hace alterar el valor de menu_pressed_zxdesktop_button_which y por tanto estariamos diciendo que se ha pulsado en boton
-        if (!pulsado_alguna_ventana_con_menu_cerrado) {
+
+        if (!pulsado_alguna_ventana_con_menu_cerrado && !pulsado_alguna_ventana_con_menu_cerrado_boton_derecho) {
             if (zxvision_if_mouse_in_zlogo_or_buttons_desktop()) {
                 DBG_PRINT_ZXVISION_EVENTS VERBOSE_INFO,"ZXVISION_EVENTS: Pressed on a button with right click");
                 //debug_printf(VERBOSE_DEBUG,"Pressed in a button from menu_inicio. Mouse is dragging: %d mouse_movido: %d",mouse_is_dragging,mouse_movido);
