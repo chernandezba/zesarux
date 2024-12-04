@@ -513,8 +513,6 @@ desactivado tbblue_change_timing hasta que se corrija:
 
 -screen_estados_totales no actualizado segun turbo, justo al principio de cargar Atic Atac. activar debug del copper para verlo
 
--Implementar todos los dac de tbblue
-https://wiki.specnext.dev/SpecDrum/DAC
+-poder ver los canales DAC del next en una ventana
 
-
--cargar con smartload .nex no deberia activar divmmc, dejarlo como este. por ejemplo bubblegum falla
+-menu mouse sensitivity valor debe salir a  la derecha
