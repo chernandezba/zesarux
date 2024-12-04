@@ -161,7 +161,7 @@ void datagear_reset(void)
 void datagear_write_value(z80_byte value)
 {
 
-    DBG_PRINT_DMA VERBOSE_DEBUG,"DMA: Writing Datagear DMA port with value %02XH. PC=%02XH",value,reg_pc);
+    //DBG_PRINT_DMA VERBOSE_DEBUG,"DMA: Writing Datagear DMA port with value %02XH. PC=%02XH",value,reg_pc);
 
 	//gestionar si estamos esperando parametros de comando
 	if (datagear_mask_commands) {
@@ -186,24 +186,24 @@ void datagear_write_value(z80_byte value)
 				switch (datagear_command_index) {
 					case 0:
 						datagear_port_a_start_addr_low=value;
-						DBG_PRINT_DMA VERBOSE_DEBUG,"DMA: Setting port a start address low to %02XH",value);
+						//DBG_PRINT_DMA VERBOSE_DEBUG,"DMA: Setting port a start address low to %02XH",value);
 					break;
 
 					case 1:
 						datagear_port_a_start_addr_high=value;
-						DBG_PRINT_DMA VERBOSE_DEBUG,"DMA: Setting port a start address high to %02XH",value);
+						//DBG_PRINT_DMA VERBOSE_DEBUG,"DMA: Setting port a start address high to %02XH",value);
 					break;
 
 					case 2:
 						datagear_block_length_low=value;
                         datagear_original_block_length_low=value;
-						DBG_PRINT_DMA VERBOSE_DEBUG,"DMA: Setting block length low to %02XH",value);
+						//DBG_PRINT_DMA VERBOSE_DEBUG,"DMA: Setting block length low to %02XH",value);
 					break;
 
 					case 3:
 						datagear_block_length_high=value;
                         datagear_original_block_length_high=value;
-						DBG_PRINT_DMA VERBOSE_DEBUG,"DMA: Setting block length high to %02XH",value);
+						//DBG_PRINT_DMA VERBOSE_DEBUG,"DMA: Setting block length high to %02XH",value);
 					break;
 
 				}
@@ -227,7 +227,7 @@ void datagear_write_value(z80_byte value)
 				switch (datagear_command_index) {
 					case 0:
 						datagear_port_a_variable_timing_byte=value;
-						DBG_PRINT_DMA VERBOSE_DEBUG,"DMA: Setting port a variable timing byte to %02XH",value);
+						//DBG_PRINT_DMA VERBOSE_DEBUG,"DMA: Setting port a variable timing byte to %02XH",value);
 					break;
 
 				}
@@ -250,7 +250,7 @@ void datagear_write_value(z80_byte value)
 				switch (datagear_command_index) {
 					case 0:
 						datagear_port_b_variable_timing_byte=value;
-						DBG_PRINT_DMA VERBOSE_DEBUG,"DMA: Setting port b variable timing byte to %02XH",value);
+						//DBG_PRINT_DMA VERBOSE_DEBUG,"DMA: Setting port b variable timing byte to %02XH",value);
 						if (value&32 && MACHINE_IS_TBBLUE) {
 
 							//De momento solo leo el valor del prescaler, aunque no hago nada con el
@@ -317,12 +317,12 @@ D7  D6  D5  D4  D3  D2  D1  D0  ZXN PRESCALAR (FIXED TIME TRANSFER)
 				switch (datagear_command_index) {
 					case 0:
 						datagear_port_b_start_addr_low=value;
-						DBG_PRINT_DMA VERBOSE_DEBUG,"DMA: Setting port b start address low to %02X",value);
+						//DBG_PRINT_DMA VERBOSE_DEBUG,"DMA: Setting port b start address low to %02X",value);
 					break;
 
 					case 1:
 						datagear_port_b_start_addr_high=value;
-						DBG_PRINT_DMA VERBOSE_DEBUG,"DMA: Setting port b start address high to %02XH",value);
+						//DBG_PRINT_DMA VERBOSE_DEBUG,"DMA: Setting port b start address high to %02XH",value);
 					break;
 
 				}
@@ -363,7 +363,7 @@ D7  D6  D5  D4  D3  D2  D1  D0  ZXN PRESCALAR (FIXED TIME TRANSFER)
 	if (value_mask_wr0_wr3==1 || value_mask_wr0_wr3==2 ||value_mask_wr0_wr3==3 ) {
 		datagear_last_command=0;
 		datagear_wr0=value;
-        DBG_PRINT_DMA VERBOSE_DEBUG,"DMA: Set WR0=%02XH",datagear_wr0);
+        //DBG_PRINT_DMA VERBOSE_DEBUG,"DMA: Set WR0=%02XH",datagear_wr0);
 
 		//Ver bits 4,5,6,7 y longitud comando
 /*
@@ -392,13 +392,13 @@ D7  D6  D5  D4  D3  D2  D1  D0  ZXN PRESCALAR (FIXED TIME TRANSFER)
 	if (value_mask_wr0_wr3==128) {
 		datagear_last_command=3;
 		datagear_wr3=value;
-        DBG_PRINT_DMA VERBOSE_DEBUG,"DMA: Set WR3=%02XH",datagear_wr3);
+        //DBG_PRINT_DMA VERBOSE_DEBUG,"DMA: Set WR3=%02XH",datagear_wr3);
 	}
 
 	if (value_mask_wr0_wr3==129) {
 		datagear_last_command=4;
 		datagear_wr4=value;
-        DBG_PRINT_DMA VERBOSE_DEBUG,"DMA: Set WR4=%02XH",datagear_wr4);
+        //DBG_PRINT_DMA VERBOSE_DEBUG,"DMA: Set WR4=%02XH",datagear_wr4);
 
 		datagear_mask_commands=(value>>2)&3;
 
@@ -409,20 +409,20 @@ D7  D6  D5  D4  D3  D2  D1  D0  ZXN PRESCALAR (FIXED TIME TRANSFER)
 	if (value_mask_wr0_wr3==128+2+1) {
 		datagear_last_command=6;
 		datagear_wr6=value;
-        DBG_PRINT_DMA VERBOSE_DEBUG,"DMA: Set WR6=%02XH",datagear_wr6);
+        //DBG_PRINT_DMA VERBOSE_DEBUG,"DMA: Set WR6=%02XH",datagear_wr6);
 
 		//Tratar todos los diferentes comandos
 		switch (value) {
 			case 0xCF:
-				DBG_PRINT_DMA VERBOSE_DEBUG,"DMA: Load starting address for both ports, clear byte counter");
+				//DBG_PRINT_DMA VERBOSE_DEBUG,"DMA: Load starting address for both ports, clear byte counter");
 			break;
 
 			case 0xAB:
-				DBG_PRINT_DMA VERBOSE_DEBUG,"DMA: Enable interrupts");
+				//DBG_PRINT_DMA VERBOSE_DEBUG,"DMA: Enable interrupts");
 			break;
 
 			case 0x87:
-				DBG_PRINT_DMA VERBOSE_DEBUG,"DMA: Enable DMA");
+				//DBG_PRINT_DMA VERBOSE_DEBUG,"DMA: Enable DMA");
                 datagear_is_dma_transfering.v=1;
                 //datagear_do_transfer();
                 datagear_dma_last_testados=t_estados;
@@ -430,7 +430,7 @@ D7  D6  D5  D4  D3  D2  D1  D0  ZXN PRESCALAR (FIXED TIME TRANSFER)
 			break;
 
 			case 0x83:
-				DBG_PRINT_DMA VERBOSE_DEBUG,"DMA: Disable DMA");
+				//DBG_PRINT_DMA VERBOSE_DEBUG,"DMA: Disable DMA");
                 datagear_is_dma_transfering.v=0;
 
 			break;
@@ -453,7 +453,7 @@ D7  D6  D5  D4  D3  D2  D1  D0  ZXN PRESCALAR (FIXED TIME TRANSFER)
 	if (value_mask_wr1_wr2==4) {
 		datagear_last_command=1;
 		datagear_wr1=value;
-        DBG_PRINT_DMA VERBOSE_DEBUG,"DMA: Set WR1=%02XH",datagear_wr1);
+        //DBG_PRINT_DMA VERBOSE_DEBUG,"DMA: Set WR1=%02XH",datagear_wr1);
 
 		//Ver bits D6
         //D6 Port A variable timing byte
@@ -465,7 +465,7 @@ D7  D6  D5  D4  D3  D2  D1  D0  ZXN PRESCALAR (FIXED TIME TRANSFER)
 	if (value_mask_wr1_wr2==0) {
 		datagear_last_command=2;
 		datagear_wr2=value;
-        DBG_PRINT_DMA VERBOSE_DEBUG,"DMA: Set WR2=%02XH",datagear_wr2);
+        //DBG_PRINT_DMA VERBOSE_DEBUG,"DMA: Set WR2=%02XH",datagear_wr2);
 
 		//Ver bits D6
         //D6 Port B variable timing byte
@@ -477,7 +477,7 @@ D7  D6  D5  D4  D3  D2  D1  D0  ZXN PRESCALAR (FIXED TIME TRANSFER)
 	if (value_mask_wr5==128+2) {
 		datagear_last_command=5;
 		datagear_wr5=value;
-        DBG_PRINT_DMA VERBOSE_DEBUG,"DMA: Set WR5=%02XH",datagear_wr5);
+        //DBG_PRINT_DMA VERBOSE_DEBUG,"DMA: Set WR5=%02XH",datagear_wr5);
 	}
 
 	}
@@ -575,8 +575,8 @@ void datagear_handle_dma(void)
 					transfer_port_b=value_8_to_16(datagear_port_b_start_addr_high,datagear_port_b_start_addr_low);
 
 
-				if (datagear_wr0 & 4) DBG_PRINT_DMA VERBOSE_DEBUG,"DMA: DMA Transfer. Copying %d bytes from %04XH to %04XH",transfer_length,transfer_port_a,transfer_port_b);
-                else DBG_PRINT_DMA VERBOSE_DEBUG,"DMA: DMA Transfer. Copying %d bytes from %04XH to %04XH",transfer_length,transfer_port_b,transfer_port_a);
+				//if (datagear_wr0 & 4) DBG_PRINT_DMA VERBOSE_DEBUG,"DMA: DMA Transfer. Copying %d bytes from %04XH to %04XH",transfer_length,transfer_port_a,transfer_port_b);
+                //else DBG_PRINT_DMA VERBOSE_DEBUG,"DMA: DMA Transfer. Copying %d bytes from %04XH to %04XH",transfer_length,transfer_port_b,transfer_port_a);
 
 
 
@@ -759,7 +759,7 @@ Excepción:
 
     if (transfer_length==0) {
         datagear_is_dma_transfering.v=0;
-        DBG_PRINT_DMA VERBOSE_DEBUG,"DMA: End of transfer");
+        //DBG_PRINT_DMA VERBOSE_DEBUG,"DMA: End of transfer");
         //Y reseteamos contador de bytes inicial si conviene
         //printf("WR5: %02XH\n",datagear_wr5);
 
