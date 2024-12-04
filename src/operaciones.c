@@ -9483,6 +9483,36 @@ Allowed to read / write port # xx57 teams INIR and OTIR. Example of reading the 
 
 		if (puerto==TBBLUE_UART_TX_PORT) tbblue_uartbridge_writedata(value);
 
+        //DAC Next
+        switch (puerto_l) {
+            //A
+            case 0x1f:
+            case 0xf1:
+            case 0x3f:
+
+            //B
+            case 0x0f:
+            case 0xf3:
+
+            //C
+            case 0x4f:
+            case 0xf9:
+
+            //D
+            case 0x5f:
+
+            //A,D
+            case 0xdf:
+            case 0xfb:
+
+            //B,C
+            case 0xb3:
+
+
+                tbblue_out_port_dac(puerto_l,value);
+            break;
+        }
+
 
 	}
 

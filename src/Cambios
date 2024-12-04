@@ -49,6 +49,7 @@ Improved Spectrum Next emulation:
 - Agregado NMI sin stack
 - Corregido mapeo de DIVMMC después de RETN
 - Corregido llamada a esxdos DISK_FILEMAP
+- Corregido temporización del Copper
 - Corregido offset de paleta en layer 2
 - Permitir tiles en RAM 7
 

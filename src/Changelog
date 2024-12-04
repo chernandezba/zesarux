@@ -48,6 +48,7 @@ Improved Spectrum Next emulation:
 - Added Layer modes 6 and 7 (blend modes)
 - Added stackless NMI
 - Fixed DIVMMC mapping after RETN
+- Fixed Copper timings
 - Fixed esxdos call DISK_FILEMAP
 - Fixed palette offset for layer 2
 - Allow tiles on RAM 7

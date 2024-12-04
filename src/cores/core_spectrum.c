@@ -473,6 +473,10 @@ void core_spectrum_fin_scanline(void)
             audiodac_mix();
         }
 
+        if (MACHINE_IS_TBBLUE) {
+            tbblue_dac_mix();
+        }
+
         if (gs_enabled.v) {
             gs_mix_dac_channels();
         }

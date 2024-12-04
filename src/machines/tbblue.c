@@ -518,120 +518,71 @@ void tbblue_copper_next_opcode(void)
 
 //z80_bit tbblue_copper_ejecutando_halt={0};
 
-int copper_previo_t_estados=0;
+
+
+int delta_testados_copper=0;
+
 
 //Ejecuta opcodes del copper // hasta que se encuentra un wait
 void tbblue_copper_run_opcodes(void)
 {
 
-
 	z80_byte byte_leido=tbblue_copper_get_byte_pc();
 	z80_byte byte_leido2=tbblue_copper_get_byte(tbblue_copper_pc+1);
 
-
-
-    //tomamos referencia los t_estados del Next y dividimos por turbo
-    int t_estados_copper=t_estados / cpu_turbo_speed;
-
-    //printf("Previo multiply x8 t_estados_copper: %d\n",t_estados_copper);
-
-    //Copper siempre a 28 Mhz
-    t_estados_copper *=8;
-
-    int max_estados_copper=(screen_testados_total/cpu_turbo_speed)*8;
-
-    //printf("Executing copper opcode on t_estados: %d t_estados_copper: %d copper_previo_t_estados: %d cpu_turbo_speed: %d screen_testados_linea: %d\n",
-    //    t_estados,t_estados_copper,copper_previo_t_estados,cpu_turbo_speed,screen_testados_linea);
-
-    int delta_testados;
-
-
-    if (t_estados_copper>=copper_previo_t_estados) {
-        delta_testados=t_estados_copper-copper_previo_t_estados;
-    }
-
-    else {
-        //ha dado la vuelta
-        //printf("ha dado la vuelta. t_estados=%d interface1_estados_anterior=%d\n",t_estados,interface1_estados_anterior);
-        //printf("---ha dado la vuelta. screen_testados_total=%d\n",screen_testados_total);
-        delta_testados=max_estados_copper-copper_previo_t_estados;
-        //printf("parcial delta: %5d t_estados: %d screen_testados_total: %d\n",delta_testados,t_estados,screen_testados_total);
-        delta_testados +=t_estados_copper;
-    }
-
-    //printf("delta: %d\n",delta_testados);
 
     /*
-
-    COPPER NOOP is 1T , COPPER MOVE is 2T
+    COPPER NOOP is 1T , WAIT is 1T, COPPER MOVE is 2T
     */
 
-   //temp
-   delta_testados=1;
-
-    z80_byte copper_control_bits=tbblue_copper_get_control_bits();
-
-    int salir=0;
-   while (delta_testados>0 && copper_control_bits != TBBLUE_RCCH_COPPER_STOP && !salir) {
+    if ( (byte_leido&128)==0) {
+        //Es un move/NOOP
 
 
-	z80_byte byte_leido=tbblue_copper_get_byte_pc();
-	z80_byte byte_leido2=tbblue_copper_get_byte(tbblue_copper_pc+1);
+        z80_byte indice_registro=byte_leido&127;
 
+        /*
+        The WORD value 0x0000 is reserved for the NOOP instruction so no register
+        access is carried out for that special case. Register 0x00 is read-only so
+        not affected by the restriction of not being able to write zero to it.
+        */
 
-        if ( (byte_leido&128)==0) {
-            //Es un move
-            z80_byte indice_registro=byte_leido&127;
-            //tbblue_copper_pc++;
+        tbblue_set_value_port_position(indice_registro,byte_leido2);
 
-            //tbblue_copper_pc++;
-            //printf ("Executing MOVE register %02XH value %02XH\n",indice_registro,byte_leido2);
-            tbblue_set_value_port_position(indice_registro,byte_leido2);
-
-            tbblue_copper_next_opcode();
-
-            delta_testados -=2;
-            copper_previo_t_estados +=2;
-
+        if (byte_leido==0) {
+        //Es un NOOP
+            delta_testados_copper-=1;
         }
+
         else {
-            //Es un wait
-            //Si se cumple, saltar siguiente posicion
-            //z80_int linea, horiz;
-            //tbblue_copper_get_wait_opcode_parameters(&linea,&horiz);
-            if (tbblue_copper_wait_cond_fired () ) {
-                //printf ("Wait condition positive at copper_pc %02XH scanline %d raster %d\n",tbblue_copper_pc,t_scanline,tbblue_get_current_raster_position() );
-                tbblue_copper_next_opcode();
-                //printf ("Wait condition positive, after incrementing copper_pc %02XH\n",tbblue_copper_pc);
-            }
-
-            else {
-                printf("salir wait no cond\n");
-                salir=1;
-            }
-            //printf ("Waiting until scanline %d horiz %d\n",linea,horiz);
-
-            delta_testados -=1;
-            copper_previo_t_estados +=1;
-
+            delta_testados_copper-=2;
         }
 
-        if (copper_previo_t_estados>=max_estados_copper) copper_previo_t_estados-=max_estados_copper;
 
-        copper_control_bits=tbblue_copper_get_control_bits();
+        tbblue_copper_next_opcode();
+
 
     }
+    else {
+        //Es un wait
+        //Si se cumple, saltar siguiente posicion
 
-    //printf("Final copper ciclo. t_estados_copper: %d\n",copper_previo_t_estados);
-    //copper_previo_t_estados=t_estados_copper;
-    copper_previo_t_estados +=delta_testados;
+        if (tbblue_copper_wait_cond_fired () ) {
+            //printf ("Wait condition positive at copper_pc %02XH scanline %d raster %d\n",tbblue_copper_pc,t_scanline,tbblue_get_current_raster_position() );
+            tbblue_copper_next_opcode();
+            //printf ("Wait condition positive, after incrementing copper_pc %02XH\n",tbblue_copper_pc);
+        }
+        //printf ("Waiting until scanline %d horiz %d\n",linea,horiz);
+
+        delta_testados_copper -=1;
+
+    }
 
 }
 
 
 
-
-void tbblue_copper_handle_next_opcode(void)
+void tbblue_copper_handle_next_opcode_one(void)
 {
 
 	//Si esta activo copper
@@ -643,6 +594,66 @@ void tbblue_copper_handle_next_opcode(void)
 }
 
 
+//Ultima llamada a tbblue_copper_handle_next_opcode en contador de t_estados sin turbo
+int previous_copper_t_states=0;
+
+void tbblue_copper_handle_next_opcode(void)
+{
+
+    int t_estados_sin_turbo=t_estados / cpu_turbo_speed;
+
+    z80_byte copper_control_bits=tbblue_copper_get_control_bits();
+
+    //Si no esta activo, no entrar en bucle
+    if (copper_control_bits != TBBLUE_RCCH_COPPER_STOP) {
+
+        int screen_testados_total_sin_turbo=(screen_testados_total); ///cpu_turbo_speed);
+
+        int delta_testados_sin_turbo;
+
+
+        if (t_estados_sin_turbo>=previous_copper_t_states) {
+            delta_testados_sin_turbo=t_estados_sin_turbo-previous_copper_t_states;
+
+            //printf("---no ha dado la vuelta. t_estados=%d t_estados_anterior=%d delta_testados_sin_turbo=%d screen_testados_total_sin_turbo=%d\n",
+            //    t_estados_sin_turbo,previous_copper_t_states,delta_testados_sin_turbo,screen_testados_total_sin_turbo);
+        }
+
+        else {
+            //ha dado la vuelta
+            //printf("ha dado la vuelta. t_estados=%d interface1_estados_anterior=%d\n",t_estados,interface1_estados_anterior);
+
+            //temp
+            //delta_testados_sin_turbo=screen_testados_total_sin_turbo-previous_copper_t_states;
+            delta_testados_sin_turbo=0;
+
+            //printf("parcial delta: %5d t_estados: %d screen_testados_total: %d\n",delta_testados,t_estados,screen_testados_total);
+            delta_testados_sin_turbo +=t_estados_sin_turbo;
+
+            //printf("---Ha dado la vuelta. t_estados=%d t_estados_anterior=%d delta_testados_sin_turbo=%d screen_testados_total_sin_turbo=%d\n",
+            //    t_estados_sin_turbo,previous_copper_t_states,delta_testados_sin_turbo,screen_testados_total_sin_turbo);
+        }
+
+        delta_testados_copper=delta_testados_sin_turbo*8; //Copper va a 28 Mhz
+
+        //temp bajarle la velocidad para que no se cuelgue Atic Atac
+        //delta_testados_copper=(delta_testados_copper*50)/100;
+
+
+
+        while (delta_testados_copper>0) {
+            //printf("delta_testados_copper: %d\n",delta_testados_copper);
+            tbblue_copper_handle_next_opcode_one();
+        }
+
+    }
+
+
+
+    previous_copper_t_states=t_estados_sin_turbo;
+
+
+}
 
 
 z80_byte tbblue_copper_get_control_bits(void)
@@ -4052,13 +4063,13 @@ void tbblue_hard_reset(void)
 		tbblue_registers[80]=0xff;
 		tbblue_registers[81]=0xff;
 
-        //Enable divmmc
-        tbblue_registers[6] |=16;
+        //Enable divmmc. NO! Juegos como bubble gum o the next war fallarian
+        //tbblue_registers[6] |=16;
 
 		tbblue_set_memory_pages();
 
-
-        tbblue_set_emulator_setting_divmmc();
+        //Enable divmmc. NO! Juegos como bubble gum o the next war fallarian
+        //tbblue_set_emulator_setting_divmmc();
 
 		if (tbblue_initial_123b_port>=0) tbblue_port_123b=tbblue_initial_123b_port;
 
@@ -4109,6 +4120,7 @@ z80_byte old_tbblue_read_port_24d5(void)
 
 */
 
+/*
 void tbblue_set_timing_post_turbo(void)
 {
     screen_testados_linea *=cpu_turbo_speed;
@@ -4119,7 +4131,8 @@ void tbblue_set_timing_post_turbo(void)
     recalcular_get_total_ancho_rainbow();
     recalcular_get_total_alto_rainbow();
 
-    printf("tbblue_set_timing_post_turbo: cpu_turbo_speed %d screen_testados_linea: %d\n",cpu_turbo_speed,screen_testados_linea);
+    printf("tbblue_set_timing_post_turbo: cpu_turbo_speed %d screen_testados_linea: %d screen_testados_total: %d\n",
+        cpu_turbo_speed,screen_testados_linea,screen_testados_total);
 
 
     //Ajustes posteriores de t_estados
@@ -4139,6 +4152,9 @@ void tbblue_set_timing_post_turbo(void)
     init_cache_putpixel();
 }
 
+*/
+
+
 void tbblue_set_timing_128k(void)
 {
     printf("tbblue_set_timing_128k\n");
@@ -4157,7 +4173,7 @@ void tbblue_set_timing_128k(void)
     port_from_ula=port_from_ula_p2a;
     contend_pages_128k_p2a=contend_pages_p2a;
 
-    tbblue_set_timing_post_turbo();
+    //tbblue_set_timing_post_turbo();
 
 }
 
@@ -4181,12 +4197,20 @@ void tbblue_set_timing_48k(void)
     //esto no se usara...
     contend_pages_128k_p2a=contend_pages_128k;
 
-    tbblue_set_timing_post_turbo();
+    //tbblue_set_timing_post_turbo();
 
 }
 
 void tbblue_change_timing(int timing)
 {
+
+    /*
+    No tiene sentido cambiar el timing si está velocidad diferente de 1x
+    Probablemente este no es el comportamiento exacto de la máquina real,
+    pero como no hay documentación pues...
+    */
+    if (cpu_turbo_speed!=1) return;
+
     if (timing==0) tbblue_set_timing_48k();
     else if (timing==1) tbblue_set_timing_128k();
 
@@ -8012,4 +8036,75 @@ void tbblue_retn(void)
     //desmapear divmmc cuando salta un retn
     //printf("--Unmapping divmmc from retn\n");
     diviface_paginacion_automatica_activa.v=0;
+}
+
+z80_byte tbblue_dac_a=0;
+z80_byte tbblue_dac_b=0;
+z80_byte tbblue_dac_c=0;
+z80_byte tbblue_dac_d=0;
+
+void tbblue_out_port_dac(z80_byte puerto_l,z80_byte value)
+{
+
+    switch (puerto_l) {
+        case 0x1f:
+        case 0xf1:
+        case 0x3f:
+            tbblue_dac_a=value;
+        break;
+
+        case 0x0f:
+        case 0xf3:
+            tbblue_dac_b=value;
+        break;
+
+        case 0x4f:
+        case 0xf9:
+            tbblue_dac_c=value;
+        break;
+
+        case 0x5f:
+            tbblue_dac_d=value;
+        break;
+
+        case 0xdf:
+        case 0xfb:
+            tbblue_dac_a=tbblue_dac_d=value;
+        break;
+
+        case 0xb3:
+            tbblue_dac_b=tbblue_dac_c=value;
+        break;
+    }
+
+}
+
+void tbblue_dac_mix(void)
+{
+
+    //Si esta habilitado
+    // 0x08 (08) => Peripheral 3 Setting
+    //  bit 3 = Enable 8-bit DACs (A,B,C,D) (hard reset = 0)
+    if (!(tbblue_registers[8] & 0x08)) return;
+
+    int dac_a=tbblue_dac_a-128;
+    int dac_b=tbblue_dac_b-128;
+    int dac_c=tbblue_dac_c-128;
+    int dac_d=tbblue_dac_d-128;
+
+
+    //Sumar canales izquierdo y derecho
+    int dac_izquierdo=(dac_a+dac_b)/2;
+    int dac_derecho=(dac_c+dac_d)/2;
+
+	//Mezclar con el valor de salida
+	int v;
+	v=audio_valor_enviar_sonido_izquierdo+dac_izquierdo;
+	v /=2;
+	audio_valor_enviar_sonido_izquierdo=v;
+
+	v=audio_valor_enviar_sonido_derecho+dac_derecho;
+	v /=2;
+	audio_valor_enviar_sonido_derecho=v;
+
 }

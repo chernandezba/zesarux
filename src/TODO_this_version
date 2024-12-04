@@ -507,3 +507,14 @@ Debería aumentar total_height si es necesario
 
 
 -tbblue_set_timing_post_turbo hara petar si se activa setting tbblue_store_scanlines
+desactivado tbblue_change_timing hasta que se corrija:
+-si llama a tbblue_set_timing_post_turbo, velocidad se pone a 280Mhz
+-Si no lo llama, atic atac va super lento el copper
+
+-screen_estados_totales no actualizado segun turbo, justo al principio de cargar Atic Atac. activar debug del copper para verlo
+
+-Implementar todos los dac de tbblue
+https://wiki.specnext.dev/SpecDrum/DAC
+
+
+-cargar con smartload .nex no deberia activar divmmc, dejarlo como este. por ejemplo bubblegum falla

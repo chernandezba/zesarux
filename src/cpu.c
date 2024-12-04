@@ -555,7 +555,7 @@ char *realmachine_keymap_strings_types[]={
 	"Spanish"
 };
 
-//Modo turbo. 1=normal. 2=7 Mhz, 3=14 Mhz, etc
+//Modo turbo. 1=normal. 2=7 Mhz (2X), 3=14 Mhz (4X), etc
 int cpu_turbo_speed=1;
 
 

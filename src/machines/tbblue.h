@@ -369,4 +369,8 @@ extern int debug_tbblue_sprite_visibility[];
 
 extern void tbblue_retn(void);
 
+extern void tbblue_dac_mix(void);
+
+extern void tbblue_out_port_dac(z80_byte puerto_l,z80_byte value);
+
 #endif

@@ -11385,6 +11385,22 @@ int zxvision_scanf(zxvision_window *ventana,char *string,unsigned int max_length
                 zxvision_sound_event_cursor_movement();
 		}
 
+		//tecla End
+        //27 End
+        if (tecla==27) {
+                int mover=strlen(string)-(pos_cursor_x+offset_string);
+                //printf("mover: %d\n",mover);
+
+                while (mover>0) {
+				    menu_scanf_cursor_derecha(string,&pos_cursor_x,&offset_string,max_length_shown);
+                    mover--;
+                };
+				//printf ("offset_string %d pos_cursor %d\n",offset_string,pos_cursor_x);
+                refrescar=1;
+
+                zxvision_sound_event_cursor_movement();
+		}
+
 		//tecla borrar
 		if (tecla==12) {
 			//Si longitud texto no es 0
@@ -11420,6 +11436,23 @@ int zxvision_scanf(zxvision_window *ventana,char *string,unsigned int max_length
 		//tecla izquierda
 		if (tecla==8) {
 				menu_scanf_cursor_izquierda(&offset_string,&pos_cursor_x);
+				//printf ("offset_string %d pos_cursor %d\n",offset_string,pos_cursor_x);
+
+                refrescar=1;
+
+                zxvision_sound_event_cursor_movement();
+		}
+
+		//tecla home
+        //26 Home
+		if (tecla==26) {
+                int mover=offset_string+pos_cursor_x;
+                //printf("mover: %d\n",mover);
+
+                while (mover>0) {
+				    menu_scanf_cursor_izquierda(&offset_string,&pos_cursor_x);
+                    mover--;
+                };
 				//printf ("offset_string %d pos_cursor %d\n",offset_string,pos_cursor_x);
 
                 refrescar=1;

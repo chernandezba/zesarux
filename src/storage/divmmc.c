@@ -78,7 +78,8 @@ void divmmc_diviface_enable(void)
 	//printf ("%d\n",divmmc_diviface_enabled.v);
   //Si ya esta habilitado, salir
   if (divmmc_diviface_enabled.v) {
-  	debug_printf(VERBOSE_DEBUG,"Divmmc already enabled");
+    //Este debug print en Atic Atac, desde el copper, activa nmi continuamente y genera muchos mensajes y uso cpu. Desactivar mensaje
+  	//debug_printf(VERBOSE_DEBUG,"Divmmc already enabled");
   	return;
   }
 

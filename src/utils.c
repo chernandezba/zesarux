@@ -20993,7 +20993,10 @@ int util_get_available_drives(char *texto)
 
 int get_cpu_frequency(void)
 {
+
         int cpu_hz=screen_testados_total*50;
+
+        //printf("get_cpu_frequency. screen_testados_total=%d cpu_hz=%d\n",screen_testados_total,cpu_hz);
 
         return cpu_hz;
 }
