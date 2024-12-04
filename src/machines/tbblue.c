@@ -524,33 +524,10 @@ int copper_previo_t_estados=0;
 void tbblue_copper_run_opcodes(void)
 {
 
+
 	z80_byte byte_leido=tbblue_copper_get_byte_pc();
 	z80_byte byte_leido2=tbblue_copper_get_byte(tbblue_copper_pc+1);
 
-	//Asumimos que no
-	//tbblue_copper_ejecutando_halt.v=0;
-
-	//if (tbblue_copper_get_pc()==0x24) printf ("%02XH %02XH\n",byte_leido,byte_leido2);
-
-    //Special case of "value 0 to port 0" works as "no operation" (duration 1 CLOCK)
-	/*
-	Dado que el registro 0 es de solo lectura, no pasa nada si escribe en el: al leerlo se obtiene un valor calculado y no el del array
-    if (byte_leido==0 && byte_leido2==0) {
-      //printf("NOOP at %04XH\n",tbblue_copper_pc);
-	  tbblue_copper_next_opcode();
-      return;
-    }
-	*/
-
-    //Special case of "WAIT 63,511" works as "halt" instruction
-	/*
-    if (byte_leido==255 && byte_leido2==255) {
-	  //printf("HALT at %04XH\n",tbblue_copper_pc);
-	  tbblue_copper_ejecutando_halt.v=1;
-
-      return;
-    }
-	*/
 
 
     //tomamos referencia los t_estados del Next y dividimos por turbo
@@ -576,7 +553,7 @@ void tbblue_copper_run_opcodes(void)
     else {
         //ha dado la vuelta
         //printf("ha dado la vuelta. t_estados=%d interface1_estados_anterior=%d\n",t_estados,interface1_estados_anterior);
-        printf("---ha dado la vuelta. screen_testados_total=%d\n",screen_testados_total);
+        //printf("---ha dado la vuelta. screen_testados_total=%d\n",screen_testados_total);
         delta_testados=max_estados_copper-copper_previo_t_estados;
         //printf("parcial delta: %5d t_estados: %d screen_testados_total: %d\n",delta_testados,t_estados,screen_testados_total);
         delta_testados +=t_estados_copper;
@@ -589,7 +566,18 @@ void tbblue_copper_run_opcodes(void)
     COPPER NOOP is 1T , COPPER MOVE is 2T
     */
 
-   while (delta_testados>0) {
+   //temp
+   delta_testados=1;
+
+    z80_byte copper_control_bits=tbblue_copper_get_control_bits();
+
+    int salir=0;
+   while (delta_testados>0 && copper_control_bits != TBBLUE_RCCH_COPPER_STOP && !salir) {
+
+
+	z80_byte byte_leido=tbblue_copper_get_byte_pc();
+	z80_byte byte_leido2=tbblue_copper_get_byte(tbblue_copper_pc+1);
+
 
         if ( (byte_leido&128)==0) {
             //Es un move
@@ -612,9 +600,14 @@ void tbblue_copper_run_opcodes(void)
             //z80_int linea, horiz;
             //tbblue_copper_get_wait_opcode_parameters(&linea,&horiz);
             if (tbblue_copper_wait_cond_fired () ) {
-                                                        //printf ("Wait condition positive at copper_pc %02XH scanline %d raster %d\n",tbblue_copper_pc,t_scanline,tbblue_get_current_raster_position() );
-                                                        tbblue_copper_next_opcode();
-                                                        //printf ("Wait condition positive, after incrementing copper_pc %02XH\n",tbblue_copper_pc);
+                //printf ("Wait condition positive at copper_pc %02XH scanline %d raster %d\n",tbblue_copper_pc,t_scanline,tbblue_get_current_raster_position() );
+                tbblue_copper_next_opcode();
+                //printf ("Wait condition positive, after incrementing copper_pc %02XH\n",tbblue_copper_pc);
+            }
+
+            else {
+                printf("salir wait no cond\n");
+                salir=1;
             }
             //printf ("Waiting until scanline %d horiz %d\n",linea,horiz);
 
@@ -625,12 +618,32 @@ void tbblue_copper_run_opcodes(void)
 
         if (copper_previo_t_estados>=max_estados_copper) copper_previo_t_estados-=max_estados_copper;
 
+        copper_control_bits=tbblue_copper_get_control_bits();
+
     }
 
     //printf("Final copper ciclo. t_estados_copper: %d\n",copper_previo_t_estados);
     //copper_previo_t_estados=t_estados_copper;
+    copper_previo_t_estados +=delta_testados;
 
 }
+
+
+
+
+void tbblue_copper_handle_next_opcode(void)
+{
+
+	//Si esta activo copper
+    z80_byte copper_control_bits=tbblue_copper_get_control_bits();
+    if (copper_control_bits != TBBLUE_RCCH_COPPER_STOP) {
+        //printf ("running copper %d\n",tbblue_copper_pc);
+        tbblue_copper_run_opcodes();
+	}
+}
+
+
+
 
 z80_byte tbblue_copper_get_control_bits(void)
 {
@@ -690,16 +703,7 @@ int tbblue_copper_wait_cond_fired(void)
 
 
 
-void tbblue_copper_handle_next_opcode(void)
-{
 
-	//Si esta activo copper
-    z80_byte copper_control_bits=tbblue_copper_get_control_bits();
-    if (copper_control_bits != TBBLUE_RCCH_COPPER_STOP) {
-        //printf ("running copper %d\n",tbblue_copper_pc);
-        tbblue_copper_run_opcodes();
-	}
-}
 
 
 /*
