@@ -607,7 +607,7 @@ void tbblue_copper_handle_next_opcode(void)
     //Si no esta activo, no entrar en bucle
     if (copper_control_bits != TBBLUE_RCCH_COPPER_STOP) {
 
-        int screen_testados_total_sin_turbo=(screen_testados_total); ///cpu_turbo_speed);
+        int screen_testados_total_sin_turbo=(screen_testados_total/cpu_turbo_speed);
 
         int delta_testados_sin_turbo;
 
@@ -623,9 +623,10 @@ void tbblue_copper_handle_next_opcode(void)
             //ha dado la vuelta
             //printf("ha dado la vuelta. t_estados=%d interface1_estados_anterior=%d\n",t_estados,interface1_estados_anterior);
 
+
+            delta_testados_sin_turbo=screen_testados_total_sin_turbo-previous_copper_t_states;
             //temp
-            //delta_testados_sin_turbo=screen_testados_total_sin_turbo-previous_copper_t_states;
-            delta_testados_sin_turbo=0;
+            //delta_testados_sin_turbo=0;
 
             //printf("parcial delta: %5d t_estados: %d screen_testados_total: %d\n",delta_testados,t_estados,screen_testados_total);
             delta_testados_sin_turbo +=t_estados_sin_turbo;
@@ -4778,9 +4779,9 @@ void tbblue_set_value_port_position(z80_byte index_position,z80_byte value)
                 }*/
 
                 /*
-                No an nmi cannot be generated when the divmmc or the multiface is already paged in. ¿?
+                No an nmi cannot be generated when the divmmc or the multiface is already paged in.
                 */
-                /*
+
                 if (diviface_paginacion_automatica_activa.v) {
                     printf("Tried to generate nmi inside divmmc. not allowed\n");
                     tbblue_registers[2] &=(255-4);
@@ -4789,9 +4790,9 @@ void tbblue_set_value_port_position(z80_byte index_position,z80_byte value)
                 else {
                     tbblue_generate_divmmc_nmi();
                 }
-                */
+
                 //tbblue_prueba_dentro_nmi=1;
-                tbblue_generate_divmmc_nmi();
+                //tbblue_generate_divmmc_nmi();
             }
 
 
