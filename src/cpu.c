@@ -664,7 +664,7 @@ void cpu_set_turbo_speed(void)
         recalcular_get_total_ancho_rainbow();
         recalcular_get_total_alto_rainbow();
 
-
+    printf("cpu_turbo_speed: %d screen_testados_linea: %d\n",cpu_turbo_speed,screen_testados_linea);
 
 
 	//Ajustes posteriores de t_estados

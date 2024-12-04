@@ -982,6 +982,8 @@ void core_spectrum_ciclo_fetch(void)
     //Soporte Datagear/TBBlue DMA
     if (datagear_dma_emulation.v && datagear_dma_is_disabled.v==0) datagear_handle_dma();
 
+//printf("Executing opcode on t_estados: %d cpu_turbo_speed: %d screen_testados_total: %d\n",t_estados,cpu_turbo_speed,screen_testados_total);
+
     //Soporte TBBlue copper y otras...
     if (MACHINE_IS_TBBLUE) {
         //Si esta activo copper

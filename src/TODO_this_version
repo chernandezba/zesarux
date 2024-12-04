@@ -505,3 +505,5 @@ registro 4 de Next usa bits 6-0 no 4-0
 -Alto total de process switcher se amplía si necesita ubicar más iconos?
 Debería aumentar total_height si es necesario
 
+
+-tbblue_set_timing_post_turbo hara petar si se activa setting tbblue_store_scanlines

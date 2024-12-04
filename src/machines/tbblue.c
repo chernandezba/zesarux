@@ -518,6 +518,8 @@ void tbblue_copper_next_opcode(void)
 
 //z80_bit tbblue_copper_ejecutando_halt={0};
 
+int copper_previo_t_estados=0;
+
 //Ejecuta opcodes del copper // hasta que se encuentra un wait
 void tbblue_copper_run_opcodes(void)
 {
@@ -550,31 +552,83 @@ void tbblue_copper_run_opcodes(void)
     }
 	*/
 
-    if ( (byte_leido&128)==0) {
-        //Es un move
-        z80_byte indice_registro=byte_leido&127;
-        //tbblue_copper_pc++;
 
-        //tbblue_copper_pc++;
-        //printf ("Executing MOVE register %02XH value %02XH\n",indice_registro,byte_leido2);
-        tbblue_set_value_port_position(indice_registro,byte_leido2);
+    //tomamos referencia los t_estados del Next y dividimos por turbo
+    int t_estados_copper=t_estados / cpu_turbo_speed;
 
-        tbblue_copper_next_opcode();
+    //printf("Previo multiply x8 t_estados_copper: %d\n",t_estados_copper);
 
+    //Copper siempre a 28 Mhz
+    t_estados_copper *=8;
+
+    int max_estados_copper=(screen_testados_total/cpu_turbo_speed)*8;
+
+    //printf("Executing copper opcode on t_estados: %d t_estados_copper: %d copper_previo_t_estados: %d cpu_turbo_speed: %d screen_testados_linea: %d\n",
+    //    t_estados,t_estados_copper,copper_previo_t_estados,cpu_turbo_speed,screen_testados_linea);
+
+    int delta_testados;
+
+
+    if (t_estados_copper>=copper_previo_t_estados) {
+        delta_testados=t_estados_copper-copper_previo_t_estados;
     }
+
     else {
-        //Es un wait
-        //Si se cumple, saltar siguiente posicion
-        //z80_int linea, horiz;
-        //tbblue_copper_get_wait_opcode_parameters(&linea,&horiz);
-        if (tbblue_copper_wait_cond_fired () ) {
-                                                    //printf ("Wait condition positive at copper_pc %02XH scanline %d raster %d\n",tbblue_copper_pc,t_scanline,tbblue_get_current_raster_position() );
-                                                    tbblue_copper_next_opcode();
-                                                    //printf ("Wait condition positive, after incrementing copper_pc %02XH\n",tbblue_copper_pc);
+        //ha dado la vuelta
+        //printf("ha dado la vuelta. t_estados=%d interface1_estados_anterior=%d\n",t_estados,interface1_estados_anterior);
+        printf("---ha dado la vuelta. screen_testados_total=%d\n",screen_testados_total);
+        delta_testados=max_estados_copper-copper_previo_t_estados;
+        //printf("parcial delta: %5d t_estados: %d screen_testados_total: %d\n",delta_testados,t_estados,screen_testados_total);
+        delta_testados +=t_estados_copper;
+    }
+
+    //printf("delta: %d\n",delta_testados);
+
+    /*
+
+    COPPER NOOP is 1T , COPPER MOVE is 2T
+    */
+
+   while (delta_testados>0) {
+
+        if ( (byte_leido&128)==0) {
+            //Es un move
+            z80_byte indice_registro=byte_leido&127;
+            //tbblue_copper_pc++;
+
+            //tbblue_copper_pc++;
+            //printf ("Executing MOVE register %02XH value %02XH\n",indice_registro,byte_leido2);
+            tbblue_set_value_port_position(indice_registro,byte_leido2);
+
+            tbblue_copper_next_opcode();
+
+            delta_testados -=2;
+            copper_previo_t_estados +=2;
+
         }
-        //printf ("Waiting until scanline %d horiz %d\n",linea,horiz);
+        else {
+            //Es un wait
+            //Si se cumple, saltar siguiente posicion
+            //z80_int linea, horiz;
+            //tbblue_copper_get_wait_opcode_parameters(&linea,&horiz);
+            if (tbblue_copper_wait_cond_fired () ) {
+                                                        //printf ("Wait condition positive at copper_pc %02XH scanline %d raster %d\n",tbblue_copper_pc,t_scanline,tbblue_get_current_raster_position() );
+                                                        tbblue_copper_next_opcode();
+                                                        //printf ("Wait condition positive, after incrementing copper_pc %02XH\n",tbblue_copper_pc);
+            }
+            //printf ("Waiting until scanline %d horiz %d\n",linea,horiz);
+
+            delta_testados -=1;
+            copper_previo_t_estados +=1;
+
+        }
+
+        if (copper_previo_t_estados>=max_estados_copper) copper_previo_t_estados-=max_estados_copper;
 
     }
+
+    //printf("Final copper ciclo. t_estados_copper: %d\n",copper_previo_t_estados);
+    //copper_previo_t_estados=t_estados_copper;
 
 }
 
@@ -4051,8 +4105,39 @@ z80_byte old_tbblue_read_port_24d5(void)
 
 */
 
+void tbblue_set_timing_post_turbo(void)
+{
+    screen_testados_linea *=cpu_turbo_speed;
+    screen_set_video_params_indices();
+    inicializa_tabla_contend_cached_change_cpu_speed();
+
+    //Recalcular algunos valores cacheados
+    recalcular_get_total_ancho_rainbow();
+    recalcular_get_total_alto_rainbow();
+
+    printf("tbblue_set_timing_post_turbo: cpu_turbo_speed %d screen_testados_linea: %d\n",cpu_turbo_speed,screen_testados_linea);
+
+
+    //Ajustes posteriores de t_estados
+    //Ajustar t_estados para que se quede en mismo "sitio"
+    //t_estados=antes_t_estados * cpu_turbo_speed;
+
+
+    //t_estados_en_linea=t_estados % screen_testados_linea;
+
+    //t_estados_percx=(t_estados_en_linea*100)/screen_testados_linea;
+
+    //printf ("After changing turbo, t-states: %d, t-states in line: %d, percentaje column: %d%%\n",t_estados,t_estados_en_linea,t_estados_percx);
+    //printf ("Calculated t-scanline according to t-states: %d\n",t_estados / screen_testados_linea);
+
+
+    init_rainbow();
+    init_cache_putpixel();
+}
+
 void tbblue_set_timing_128k(void)
 {
+    printf("tbblue_set_timing_128k\n");
     contend_read=contend_read_128k;
     contend_read_no_mreq=contend_read_no_mreq_128k;
     contend_write_no_mreq=contend_write_no_mreq_128k;
@@ -4068,11 +4153,14 @@ void tbblue_set_timing_128k(void)
     port_from_ula=port_from_ula_p2a;
     contend_pages_128k_p2a=contend_pages_p2a;
 
+    tbblue_set_timing_post_turbo();
+
 }
 
 
 void tbblue_set_timing_48k(void)
 {
+    printf("tbblue_set_timing_48k\n");
     contend_read=contend_read_48k;
     contend_read_no_mreq=contend_read_no_mreq_48k;
     contend_write_no_mreq=contend_write_no_mreq_48k;
@@ -4088,6 +4176,8 @@ void tbblue_set_timing_48k(void)
 
     //esto no se usara...
     contend_pages_128k_p2a=contend_pages_128k;
+
+    tbblue_set_timing_post_turbo();
 
 }
 
@@ -4509,7 +4599,7 @@ leaving I/O Mode is at most 64 scan lines.
 
 void tbblue_generate_divmmc_nmi(void)
 {
-    printf("---generate divmmc nmi. Paging divmmc memory\n");
+    //printf("---generate divmmc nmi. Paging divmmc memory\n");
 
 
     generate_nmi();
@@ -4650,7 +4740,7 @@ void tbblue_set_value_port_position(z80_byte index_position,z80_byte value)
 
             //Solo se permite nmi si el bit estaba a 0 antes y si no esta en config mode
             if (value&4 && (last_register_2&4)==0 && maquina!=0 && maquina!=7) {
-                printf("generate nmi\n");
+                //printf("generate nmi\n");
 
                 /*if (tbblue_prueba_dentro_nmi) {
                     printf("Ya dentro de otra nmi!!!\n");
@@ -7879,7 +7969,7 @@ void tbblue_handle_nmi(void)
 
 
     if (tbblue_registers[0xC0] & 0x08) {
-        printf("stackless nmi. SP=%04XH PC=%04XH\n",reg_sp,reg_pc);
+        //printf("stackless nmi. SP=%04XH PC=%04XH\n",reg_sp,reg_pc);
         reg_sp -=2;
         tbblue_registers[0xC2]=reg_pc & 0xFF;
         tbblue_registers[0xC3]=(reg_pc>>8) & 0xFF;
@@ -7916,6 +8006,6 @@ void tbblue_retn(void)
     }
 
     //desmapear divmmc cuando salta un retn
-    printf("--Unmapping divmmc from retn\n");
+    //printf("--Unmapping divmmc from retn\n");
     diviface_paginacion_automatica_activa.v=0;
 }
