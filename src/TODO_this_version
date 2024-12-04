@@ -515,4 +515,10 @@ desactivado tbblue_change_timing hasta que se corrija:
 
 -poder ver los canales DAC del next en una ventana
 
+
 -menu mouse sensitivity valor debe salir a  la derecha
+
+-bugs Atic atac:
+*flashlight effect on blue dark room: I have to check the "smooth scroll" bit you told me some days ago. maybe that's the cause for that bug
+*swag room: all objects are visible
+*seems also some sprites (objects like food) are not clipped well when the scroll makes the object at the border of the display. I think I'm clipping all the sprite

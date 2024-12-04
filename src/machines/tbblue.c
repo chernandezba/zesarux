@@ -61,6 +61,11 @@ z80_byte tbblue_extra_512kb_blocks=3;
 
 int tbblue_use_rtc_traps=1;
 
+z80_byte tbblue_dac_a=0;
+z80_byte tbblue_dac_b=0;
+z80_byte tbblue_dac_c=0;
+z80_byte tbblue_dac_d=0;
+
 //Establece numero de bloques extra de 512kb en base a memoria indicada en KB
 void tbblue_set_ram_blocks(int memoria_kb)
 {
@@ -3800,13 +3805,13 @@ void tbblue_set_emulator_setting_reg_8(void)
 
   	//bit 3 = Enable Specdrum/Covox (1 = enabled)(0 after a PoR or Hard-reset)
 	if (value&8) {
-		audiodac_enabled.v=1;
-		audiodac_selected_type=0;
-		debug_printf (VERBOSE_DEBUG,"Enabling audiodac Specdrum");
+		//audiodac_enabled.v=1;
+		//audiodac_selected_type=0;
+		//debug_printf (VERBOSE_DEBUG,"Enabling audiodac Specdrum");
 	}
 	else {
-		audiodac_enabled.v=0;
-		debug_printf (VERBOSE_DEBUG,"Disabling audiodac Specdrum");
+		//audiodac_enabled.v=0;
+		//debug_printf (VERBOSE_DEBUG,"Disabling audiodac Specdrum");
 	}
 
 
@@ -4057,8 +4062,8 @@ void tbblue_hard_reset(void)
 
 		set_total_ay_chips(3);
 
-		audiodac_enabled.v=1;
-		audiodac_selected_type=0;
+		//audiodac_enabled.v=1;
+		//audiodac_selected_type=0;
 
 
 		tbblue_registers[80]=0xff;
@@ -5021,16 +5026,41 @@ void tbblue_set_value_port_position(z80_byte index_position,z80_byte value)
 
 
 /*
-(W) 0x2D (45) => SoundDrive (SpecDrum) port 0xDF mirror
- bits 7-0 = Data to be written at Soundrive
- this port can be used to send data to the SoundDrive using the Copper co-processor
+0x2C (44) => DAC B Mirror (left)
+
+(W)
+  bits 7:0 = 8-bit sample written to left side DAC B (soft reset = 0x80)
+
+0x2D (45) => DAC A+D Mirror (mono)
+
+(W)
+  bits 7:0 = 8-bit sample written to DACs A and D (soft reset = 0x80)
+
+0x2E (46) => DAC C Mirror (right)
+
+(W)
+  bits 7:0 = 8-bit sample written to right side DAC C (soft reset = 0x80)
 */
+
+		case 44:
+
+        tbblue_dac_b=value;
+
+		break;
 
 		case 45:
 
-		if (audiodac_enabled.v) {
+		/*if (audiodac_enabled.v) {
             audiodac_send_sample_value(value);
-        }
+        }*/
+
+        tbblue_dac_a=tbblue_dac_d=value;
+
+		break;
+
+		case 46:
+
+        tbblue_dac_c=value;
 
 		break;
 
@@ -8041,10 +8071,7 @@ void tbblue_retn(void)
     diviface_paginacion_automatica_activa.v=0;
 }
 
-z80_byte tbblue_dac_a=0;
-z80_byte tbblue_dac_b=0;
-z80_byte tbblue_dac_c=0;
-z80_byte tbblue_dac_d=0;
+
 
 void tbblue_out_port_dac(z80_byte puerto_l,z80_byte value)
 {
