@@ -4068,8 +4068,10 @@ void tbblue_hard_reset(void)
 
 		tbblue_set_memory_pages();
 
-        //Enable divmmc. NO! Juegos como bubble gum o the next war fallarian
-        //tbblue_set_emulator_setting_divmmc();
+        tbblue_set_emulator_setting_divmmc();
+
+        divmmc_diviface_disable();
+
 
 		if (tbblue_initial_123b_port>=0) tbblue_port_123b=tbblue_initial_123b_port;
 

@@ -43,15 +43,16 @@ Improved Hilow Datadrive emulation:
 - Allow to clear contents when formatting ("c/borrado" or "s/borrado") on ddh files
 
 Improved Spectrum Next emulation:
-- Fixed DMA burst mode when prescaler=0
-- Fixed DMA Transfer restarting the byte count at the end of a transfer
 - Added Layer modes 6 and 7 (blend modes)
 - Added stackless NMI
+- Added DAC Channels A,B,C,D
+- Allow tiles on RAM 7
 - Fixed DIVMMC mapping after RETN
 - Fixed Copper timings
 - Fixed esxdos call DISK_FILEMAP
 - Fixed palette offset for layer 2
-- Allow tiles on RAM 7
+- Fixed DMA burst mode when prescaler=0
+- Fixed DMA Transfer restarting the byte count at the end of a transfer
 
 Improved Debug:
 - CPU history: allow to change memory pointer to the PC register show in history

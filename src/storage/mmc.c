@@ -1255,7 +1255,7 @@ void mmc_write(z80_byte value)
                                         //printf ("Direccion: 0x%X\n",direccion);
                                         //printf ("MMC Write command READ_MULTIPLE_BLOCK. Address: %XH\n",direccion);
                                         mmc_read_address=direccion;
-                                        debug_printf (VERBOSE_PARANOID,"MMC Write command READ_MULTIPLE_BLOCK. Address: %XH",direccion);
+                                        //debug_printf (VERBOSE_PARANOID,"MMC Write command READ_MULTIPLE_BLOCK. Address: %XH",direccion);
 
 
 

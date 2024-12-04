@@ -42,16 +42,17 @@ Mejorada emulación de Hilow Datadrive:
 - Permitir formatear solo una cara en archivos ddh
 - Permitir borrar contenido al formatear ("c/borrado" o "s/borrado") en archivos ddh
 
-Improved Spectrum Next emulation:
-- Corregido burst mode de DMA cuando prescaler=0
-- Corregida transferencia de DMA reiniciando el contador de bytes al final de una transferencia
+Mejorada emulación de Spectrum Next:
 - Agregado modos de capas 6 and 7 (modos mezcla)
 - Agregado NMI sin stack
-- Corregido mapeo de DIVMMC después de RETN
-- Corregido llamada a esxdos DISK_FILEMAP
-- Corregido temporización del Copper
-- Corregido offset de paleta en layer 2
+- Agregado Canales DAC A,B,C,D
 - Permitir tiles en RAM 7
+- Corregido mapeo de DIVMMC después de RETN
+- Corregido temporización del Copper
+- Corregido llamada a esxdos DISK_FILEMAP
+- Corregido offset de paleta en layer 2
+- Corregido burst mode de DMA cuando prescaler=0
+- Corregida transferencia de DMA reiniciando el contador de bytes al final de una transferencia
 
 Mejorado Debug:
 - CPU history: permitir cambiar el puntero de memoria según el registro PC mostrado en el historial
