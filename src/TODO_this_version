@@ -538,3 +538,5 @@ desactivado tbblue_change_timing hasta que se corrija:
 * 61-54% llamando o no llamando a screen_tbblue_refresca_pantalla
 
 *62% compilado sin O3
+
+-ventana Datagear DMA que se pueda poner en segundo plano
