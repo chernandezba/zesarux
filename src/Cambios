@@ -47,6 +47,7 @@ Mejorada emulación de Spectrum Next:
 - Agregado NMI sin stack
 - Agregado Canales DAC A,B,C,D
 - Permitir tiles en RAM 7
+- Mejorar render de pantalla cuando solo capa de ula activada (reduce el uso de cpu un 6% menos de cpu en mi maquina)
 - Corregido mapeo de DIVMMC después de RETN
 - Corregido temporización del Copper
 - Corregido llamada a esxdos DISK_FILEMAP

@@ -3903,8 +3903,8 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
 
 
 
-
-		if (MACHINE_IS_SPECTRUM) {
+        //TBBLUE tiene su propio DAC
+		if (MACHINE_IS_SPECTRUM && !MACHINE_IS_TBBLUE) {
 
 			menu_add_item_menu(array_menu_settings_audio,"",MENU_OPCION_SEPARADOR,NULL,NULL);
             menu_add_item_menu_es_avanzado(array_menu_settings_audio);

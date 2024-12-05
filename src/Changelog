@@ -47,6 +47,7 @@ Improved Spectrum Next emulation:
 - Added stackless NMI
 - Added DAC Channels A,B,C,D
 - Allow tiles on RAM 7
+- Improve display render when only ula enabled (6% less cpu on my computer)
 - Fixed DIVMMC mapping after RETN
 - Fixed Copper timings
 - Fixed esxdos call DISK_FILEMAP

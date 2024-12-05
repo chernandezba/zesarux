@@ -441,17 +441,21 @@ La particularidad es que ese archivo tiene bloques a final de microdrive y al pr
 
 
 
-
-
-
 -como gestionar setting SDHC:
 *se desactiva al hacer reset cpu?
 *no se guarda en la config?
 
 
--tbblue_fast_render_ula_layer de momento desactivado hasta incorporar render ahi de tilemap
+-implementar CMD8 en mmc. en caso de tarjeta SDHC. Revisar especificación, en teoria algo como :
+According to the SD spec (SD Specifications, Part 1, Physical Layer, Simplified Specification, Version 2.00, July 27, 2006) figure 7-2: SPI Mode Initialization Flow, there are 5 possible outcomes:
+1) CMD8 fails and CMD58 fails: must be MMC, thus initialize using CMD1
+2) CMD8 fails and CMD58 passes: must be Ver1.x Standard Capacity SD Memory Card
+3) CMD8 passes and CMD58 passes (CCS = 0): must be Ver2.00 or later Standard Capacity SD Memory Card
+4) CMD8 passes and CMD58 passes (CCS = 1): must be Ver2.00 or later High Capacity SD Memory Card
+5) CMD8 passes and CMD58 passes but indicates non compatible voltage range: unusable card
 
--en debug-tbblue-view layers mostrar bien modos 6 y 7
+Por tanto si no es sdhc, hacer como ahora, no gestionar ese comando. y si lo es, retornar CCS=1?? Y creo que tambien cmd58
+
 
 -ojo con bit 0:
 
@@ -518,7 +522,12 @@ desactivado tbblue_change_timing hasta que se corrija:
 
 -menu mouse sensitivity valor debe salir a  la derecha
 
+-Bubblegumbros el marcador de arriba del todo en el menu sale cortado
+
 -bugs Atic atac:
 *flashlight effect on blue dark room: I have to check the "smooth scroll" bit you told me some days ago. maybe that's the cause for that bug
 *swag room: all objects are visible
 *seems also some sprites (objects like food) are not clipped well when the scroll makes the object at the border of the display. I think I'm clipping all the sprite
+
+-acabar de probar fast render / no fast render indicando con el printf que modo usa
+

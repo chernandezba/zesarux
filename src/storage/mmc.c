@@ -47,6 +47,49 @@ z80_byte mmc_ocr[5]={5,0,0,0,0};
 //primer byte: R1: xxx0sss1
 //sss: status: 010 data accepted
 //Siguientes 4 bytes indican voltaje y algun status bit. Indicamos 0 y es voltaje 1.45V-1.50V
+//Siguientes 4 bytes: (32 bits):
+//Del 0 al 23: voltaje
+//  0 1.45 - 1.50
+//  1 1.50 - 1.55
+//  2 1.55 - 1.60
+//  3 1.60 - 1.65
+//  4 1.65 - 1.70
+//  5 1.7 - 1.8
+//  6 1.8 - 1.9
+//  7 1.9 - 2.0
+//  8 2.0-2.1
+//  9 2.1-2.2
+// 10 2.2-2.3
+// 11 2.3-2.4
+// 12 2.4-2.5
+// 13 2.5-2.6
+// 14 2.6-2.7
+// 15 2.7-2.8
+// 16 2.8-2.9
+// 17 2.9-3.0
+// 18 3.0-3.1
+// 19 3.1-3.2
+// 20 3.2-3.3
+// 21 3.3-3.4
+// 22 3.4-3.5
+// 23 3.5-3.6
+// 24: Switching to 1.8 V Accepted
+// 25:28: reserved
+// 29: UHS-II Card Status
+// 30: Card Capacity Status (CCS): (CCS = 0): must be Ver2.00 or later Standard Capacity SD Memory Card, (CCS = 1): must be Ver2.00 or later High Capacity SD Memory Card
+// 31: Card power up status bit
+//Nota: en teoria para tarjetas SDHC se deberia retornar array: z80_byte mmc_ocr[5]={5,0,0,0,2}
+//      ya que el bit 30 (el de CCS) esta activo
+//Nota2: para soportar SDHC en imagenes .mmc/.sd/.sdhc en Spectrum Next por ejemplo se deberia:
+//1. Emular tarjeta de mas de 2 GB en ZEsarUX: creo que eso no funciona
+//2: Retornar ese bit de CCS activo
+//3: Setting --sd-enable-sdhc-addressing
+//Se probó (05/12/2024) a activar el bit CCS pero Next no iniciaba el boot, probablemente
+//por culpa de que no emulo correctamente tarjetas de mas de 2 GB, o quiza a que no gestiono correctamente el CMD8 SEND_IF_COND
+//Nota3: Si que se soporta SDHC pero no con un archivo de imagen .mmc/.sd/.sdhc sino mediante mapeo desde esxdos
+// (llamada DISK_FILEMAP) usada en Atic Atac por ejemplo
+
+
 
 //valores temporales
 /*
@@ -1152,13 +1195,6 @@ void mmc_write(z80_byte value)
 				debug_printf (VERBOSE_DEBUG,"MMC Write command CMD8 SEND_IF_COND unhandled");
 				//mmc_r1 |=4; //devolver error
 			break;
-
-			//RESERVED. TBBLUE Genera este. Que es???
-			/*
-			case 0x48:
-				debug_printf (VERBOSE_DEBUG,"MMC Write command Reserved (0x48)");
-			break;
-			*/
 
 
 

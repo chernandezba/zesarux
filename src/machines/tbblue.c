@@ -6604,7 +6604,7 @@ int tbblue_blend_color(int color_primero, int color_layer,int modo_capas)
 }
 
 //Nos situamos en la linea justo donde empiezan los tiles
-void tbblue_render_layers_rainbow(int capalayer2,int capasprites)
+void tbblue_render_layers_rainbow(int capalayer2,int capasprites,int capatiles)
 {
 
 
@@ -6721,8 +6721,8 @@ void tbblue_render_layers_rainbow(int capalayer2,int capasprites)
 	int i;
 
 	//Si solo hay capa ula, hacer render mas rapido
-	//TODO: temporal desactivado hasta incorporar en fast render la capa de tiles
-	if (0/*capalayer2==0 && capasprites==0*/) {
+	if (capalayer2==0 && capasprites==0 && capatiles==0) {
+        //printf("   Fast render. y=%3d modo_capas: %d\n",y,modo_capas);
 		//Hará fast render cuando no haya capa de layer2 o sprites, aunque tambien,
 		//estando esas capas, cuando este en zona de border o no visible de dichas capas
 		tbblue_fast_render_ula_layer(puntero_final_rainbow,estamos_borde_supinf,final_borde_izquierdo,inicio_borde_derecho,ancho_rainbow);
@@ -6732,6 +6732,8 @@ void tbblue_render_layers_rainbow(int capalayer2,int capasprites)
 
 
 	else {
+
+        //printf("NO Fast render. y=%3d modo_capas: %d capalayer2:%d capasprites:%d capatiles:%d\n",y,modo_capas,capalayer2,capasprites,capatiles);
 
         for (i=0;i<ancho_rainbow;i++) {
 
@@ -7494,7 +7496,7 @@ void screen_store_scanline_rainbow_solo_display_tbblue(void)
 
 	int capalayer2=0;
 	int capasprites=0;
-	//int capatiles=0;
+	int capatiles=0;
 
   	//En zona visible pantalla (no borde superior ni inferior)
   	if (t_scanline_draw>=screen_indice_inicio_pant && t_scanline_draw<screen_indice_fin_pant) {
@@ -7510,18 +7512,7 @@ void screen_store_scanline_rainbow_solo_display_tbblue(void)
             }
         }
 
-    //Overlay de layer2
-                        //Capa layer2
-            /*if (tbblue_is_active_layer2() && !tbblue_force_disable_layer_layer_two.v) {
-                if (scanline_copia>=tbblue_clip_windows[TBBLUE_CLIP_WINDOW_LAYER2][2] && scanline_copia<=tbblue_clip_windows[TBBLUE_CLIP_WINDOW_LAYER2][3]) {
-                    capalayer2=1;
 
-                    tbblue_do_layer2_overlay();
-                    if (tbblue_reveal_layer_layer2.v) {
-                            tbblue_reveal_layer_draw(tbblue_layer_layer2);
-                    }
-                }
-            }*/
 
 	}
 
@@ -7600,14 +7591,16 @@ the central 256×192 display. The X coordinates are internally doubled to cover 
 
 			//Tener en cuenta clip window
 		if (y_tile>=tbblue_clip_windows[TBBLUE_CLIP_WINDOW_TILEMAP][2] && y_tile<=tbblue_clip_windows[TBBLUE_CLIP_WINDOW_TILEMAP][3]) {
-			//capatiles=1;
+			capatiles=1;
 			tbblue_do_tile_overlay(y_tile);
+
+            if (tbblue_reveal_layer_tiles.v) {
+                    tbblue_reveal_layer_draw(tbblue_layer_tiles);
+            }
 		}
 
 
-        if (tbblue_reveal_layer_tiles.v) {
-                tbblue_reveal_layer_draw(tbblue_layer_tiles);
-        }
+
 	}
 
 
@@ -7615,33 +7608,36 @@ the central 256×192 display. The X coordinates are internally doubled to cover 
             tbblue_reveal_layer_draw(tbblue_layer_ula);
     }
 
+    if (tbblue_if_sprites_enabled() && !tbblue_force_disable_layer_sprites.v)  {
 
-
-	//capa sprites. Si clip window y corresponde:
-	z80_byte sprites_over_border=tbblue_registers[21]&2;
-	//Clip window on Sprites only work when the "over border bit" is disabled
-	int mostrar_sprites=1;
-	if (sprites_over_border==0) {
-		int scanline_copia=t_scanline_draw-screen_indice_inicio_pant;
-		if (scanline_copia<tbblue_clip_windows[TBBLUE_CLIP_WINDOW_SPRITES][2] || scanline_copia>tbblue_clip_windows[TBBLUE_CLIP_WINDOW_SPRITES][3]) mostrar_sprites=0;
-	}
-
-
-	if (mostrar_sprites && !tbblue_force_disable_layer_sprites.v) {
-		capasprites=1;
-		tbsprite_do_overlay();
-
-        if (tbblue_reveal_layer_sprites.v) {
-                tbblue_reveal_layer_draw(tbblue_layer_sprites);
+        //capa sprites. Si clip window y corresponde:
+        z80_byte sprites_over_border=tbblue_registers[21]&2;
+        //Clip window on Sprites only work when the "over border bit" is disabled
+        int mostrar_sprites=1;
+        if (sprites_over_border==0) {
+            int scanline_copia=t_scanline_draw-screen_indice_inicio_pant;
+            if (scanline_copia<tbblue_clip_windows[TBBLUE_CLIP_WINDOW_SPRITES][2] || scanline_copia>tbblue_clip_windows[TBBLUE_CLIP_WINDOW_SPRITES][3]) {
+                mostrar_sprites=0;
+            }
         }
 
-	}
+
+        if (mostrar_sprites) {
+            capasprites=1;
+            tbsprite_do_overlay();
+
+            if (tbblue_reveal_layer_sprites.v) {
+                    tbblue_reveal_layer_draw(tbblue_layer_sprites);
+            }
+
+        }
+    }
 
 
 
 
     //Renderizamos las 3 capas buffer rainbow
-	tbblue_render_layers_rainbow(capalayer2,capasprites);
+	tbblue_render_layers_rainbow(capalayer2,capasprites,capatiles);
 
 
 
