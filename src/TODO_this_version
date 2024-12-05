@@ -531,3 +531,5 @@ desactivado tbblue_change_timing hasta que se corrija:
 
 -acabar de probar fast render / no fast render indicando con el printf que modo usa
 
+-funciones de decaer volumen que soporten mas de 15 de ancho, para cosas como las salidas DAC del Next
+

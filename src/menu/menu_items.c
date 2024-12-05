@@ -31571,6 +31571,7 @@ void menu_specnext_audio_dac_overlay(void)
 
     int nivel_actual;
     char buf_nivel[33];
+    char letra_dac;
 
     for (i=0;i<4;i++) {
         //VU meters para DAC, para volumes
@@ -31581,18 +31582,22 @@ void menu_specnext_audio_dac_overlay(void)
         switch(i) {
             case 0:
                 valor_dac=tbblue_dac_a;
+                letra_dac='A';
             break;
 
             case 1:
                 valor_dac=tbblue_dac_b;
+                letra_dac='B';
             break;
 
             case 2:
                 valor_dac=tbblue_dac_c;
+                letra_dac='C';
             break;
 
             default:
                 valor_dac=tbblue_dac_d;
+                letra_dac='D';
             break;
 
         }
@@ -31616,7 +31621,7 @@ void menu_specnext_audio_dac_overlay(void)
 
 
         menu_string_volumen(buf_nivel,nivel_actual,menu_audio_specnext_dac_previos_dac[i]);
-        sprintf (buffer_linea,"DAC    #%d: %02XH %s",i,valor_dac,buf_nivel);
+        sprintf (buffer_linea,"DAC %c: %02XH %s",letra_dac,valor_dac,buf_nivel);
         zxvision_print_string_defaults_fillspc(ventana,1,linea++,buffer_linea);
 
         if (decaer_volumenes) {
@@ -31626,7 +31631,73 @@ void menu_specnext_audio_dac_overlay(void)
         }
     }
 
+    int dac_a=tbblue_dac_a-128;
+    int dac_b=tbblue_dac_b-128;
+    int dac_c=tbblue_dac_c-128;
+    int dac_d=tbblue_dac_d-128;
 
+
+    //Sumar canales izquierdo y derecho
+    int dac_izquierdo=(dac_a+dac_b)/2;
+    int dac_derecho=(dac_c+dac_d)/2;
+
+    //VU meters para Left
+
+
+    //Valor unsigned con 0 en 128
+    nivel_actual=dac_izquierdo;
+
+
+    //Valor absoluto
+    if (nivel_actual<0) nivel_actual=-nivel_actual;
+
+    //Y pasar de escala 0..128 a escala 0..15
+    nivel_actual /=8;
+
+    if (nivel_actual>=16) nivel_actual=15;
+
+    menu_audio_specnext_dac_previo_left=menu_decae_ajusta_valor_volumen(menu_audio_specnext_dac_previo_left,nivel_actual);
+
+
+    //char buf_nivel[33];
+
+
+    menu_string_volumen(buf_nivel,nivel_actual,menu_audio_specnext_dac_previo_left);
+    sprintf (buffer_linea,"Left Out:  %s",buf_nivel);
+    zxvision_print_string_defaults_fillspc(ventana,1,linea++,buffer_linea);
+
+    if (decaer_volumenes) {
+        menu_audio_specnext_dac_previo_left=menu_decae_dec_valor_volumen(menu_audio_specnext_dac_previo_left,nivel_actual);
+    }
+
+    //VU meters para Right
+
+
+    //Valor unsigned con 0 en 128
+    nivel_actual=dac_derecho;
+
+
+    //Valor absoluto
+    if (nivel_actual<0) nivel_actual=-nivel_actual;
+
+    //Y pasar de escala 0..128 a escala 0..15
+    nivel_actual /=8;
+
+    if (nivel_actual>=16) nivel_actual=15;
+
+    menu_audio_specnext_dac_previo_right=menu_decae_ajusta_valor_volumen(menu_audio_specnext_dac_previo_right,nivel_actual);
+
+
+    //char buf_nivel[33];
+
+
+    menu_string_volumen(buf_nivel,nivel_actual,menu_audio_specnext_dac_previo_right);
+    sprintf (buffer_linea,"Right Out: %s",buf_nivel);
+    zxvision_print_string_defaults_fillspc(ventana,1,linea++,buffer_linea);
+
+    if (decaer_volumenes) {
+        menu_audio_specnext_dac_previo_right=menu_decae_dec_valor_volumen(menu_audio_specnext_dac_previo_right,nivel_actual);
+    }
 
 
 
