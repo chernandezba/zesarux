@@ -7833,7 +7833,7 @@ void screen_tbblue_refresca_rainbow(void)
 	z80_int *puntero;
 
 	puntero=rainbow_buffer;
-	int dibujar;
+
 
 
 	//Si se reduce la pantalla 0.75
@@ -7851,23 +7851,15 @@ void screen_tbblue_refresca_rainbow(void)
 
 
 		for (x=0;x<ancho;x+=8) {
-			dibujar=1;
-
-			//Ver si esa zona esta ocupada por texto de menu u overlay
-
-			if (y>=margeny_arr && y<margeny_aba && x>=margenx_izq && x<margenx_der) {
-				if (!scr_ver_si_refrescar_por_menu_activo( (x-margenx_izq)/8, (y-margeny_arr)/8) )
-					dibujar=0;
-			}
 
 
-			if (dibujar==1) {
-                for (bit=0;bit<8;bit++) {
-                    color_pixel=*puntero++;
-                    scr_putpixel_zoom_rainbow(x+bit,y,color_pixel);
-                }
-			}
-			else puntero+=8;
+
+            for (bit=0;bit<8;bit++) {
+                color_pixel=*puntero++;
+                scr_putpixel_zoom_rainbow(x+bit,y,color_pixel);
+            }
+
+
 
 		}
 
