@@ -8391,9 +8391,9 @@ void screen_store_scanline_rainbow_solo_border_tbblue(void)
 	int ancho_pantalla=256;
 
 
-        //zona de border superior o inferior. Dibujar desde posicion x donde acaba el ancho izquierdo de borde, linea horizontal
-	//hasta derecha del todo, y luego trozo de ancho izquiero del borde de linea siguiente
-        if ( (t_scanline_draw>=screen_invisible_borde_superior && t_scanline_draw<screen_indice_inicio_pant) ||
+    //zona de border superior o inferior. Dibujar desde posicion x donde acaba el ancho izquierdo de borde, linea horizontal
+    //hasta derecha del todo, y luego trozo de ancho izquiero del borde de linea siguiente
+    if ( (t_scanline_draw>=screen_invisible_borde_superior && t_scanline_draw<screen_indice_inicio_pant) ||
              (t_scanline_draw>=screen_indice_fin_pant && t_scanline_draw<screen_indice_fin_pant+screen_total_borde_inferior)
 	   ) {
 
@@ -8403,18 +8403,18 @@ void screen_store_scanline_rainbow_solo_border_tbblue(void)
 
 
 
-        //zona de border + pantalla + border
+    //zona de border + pantalla + border
 	//Dibujar desde borde derecho hasta borde izquierdo de linea siguiente
-        else if (t_scanline_draw>=screen_indice_inicio_pant && t_scanline_draw<screen_indice_fin_pant) {
+    else if (t_scanline_draw>=screen_indice_inicio_pant && t_scanline_draw<screen_indice_fin_pant) {
 
-	        //linea que se debe leer
-	        //int scanline_copia=t_scanline_draw-screen_indice_inicio_pant;
+        //linea que se debe leer
+        //int scanline_copia=t_scanline_draw-screen_indice_inicio_pant;
 
-        	z80_int *puntero_buf_rainbow;
-	        //esto podria ser un contador y no hace falta que lo recalculemos cada vez. TODO
-        	int y;
+        z80_int *puntero_buf_rainbow;
+        //esto podria ser un contador y no hace falta que lo recalculemos cada vez. TODO
+        int y;
 
-	        y=t_scanline_draw-screen_invisible_borde_superior;
+        y=t_scanline_draw-screen_invisible_borde_superior;
 
 		//nos situamos en borde derecho
 		//y se dibujara desde el borde derecho hasta el izquierdo de la siguiente linea
@@ -8422,9 +8422,9 @@ void screen_store_scanline_rainbow_solo_border_tbblue(void)
 		puntero_buf_rainbow=&rainbow_buffer[ y*get_total_ancho_rainbow()*2+offset_derecha ]; //*2 porque es doble de alto
 
 
-	        screen_store_scanline_rainbow_border_comun(puntero_buf_rainbow,screen_total_borde_izquierdo+ancho_pantalla);
+        screen_store_scanline_rainbow_border_comun(puntero_buf_rainbow,screen_total_borde_izquierdo+ancho_pantalla);
 
-        }
+    }
 
 
 

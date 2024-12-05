@@ -6679,7 +6679,7 @@ void tbblue_render_layers_rainbow(int capalayer2,int capasprites,int capatiles)
     int blend_tiles_layer2=0;
 
     if (modo_capas==6 || modo_capas==7) {
-        // atic atac hace blend ula con layer2, en pantalla azul oscura
+        // atic atac hace blend ula con layer2, en pantalla azul oscura que se habilita la linterna
         /*
         0x68 (104) => ULA Control
         (R/W)
@@ -7562,8 +7562,6 @@ void screen_store_scanline_rainbow_solo_display_tbblue(void)
             tbblue_do_layer2_overlay(y_layer2);
 
 
-
-
             if (tbblue_reveal_layer_layer2.v) {
                     tbblue_reveal_layer_draw(tbblue_layer_layer2);
             }
@@ -7595,10 +7593,9 @@ the central 256×192 display. The X coordinates are internally doubled to cover 
 			tbblue_do_tile_overlay(y_tile);
 
             if (tbblue_reveal_layer_tiles.v) {
-                    tbblue_reveal_layer_draw(tbblue_layer_tiles);
+                tbblue_reveal_layer_draw(tbblue_layer_tiles);
             }
 		}
-
 
 
 	}
@@ -7632,7 +7629,6 @@ the central 256×192 display. The X coordinates are internally doubled to cover 
 
         }
     }
-
 
 
 
