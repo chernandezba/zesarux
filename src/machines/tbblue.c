@@ -7814,8 +7814,6 @@ void screen_tbblue_refresca_no_rainbow_border(void)
 void screen_tbblue_refresca_rainbow(void)
 {
 
-
-	//aqui no tiene sentido (o si?) el modo simular video zx80/81 en spectrum
 	int ancho,alto;
 
 	ancho=get_total_ancho_rainbow();
@@ -7823,17 +7821,10 @@ void screen_tbblue_refresca_rainbow(void)
 
 	int x,y,bit;
 
-	//margenes de zona interior de pantalla. Para overlay menu
-	int margenx_izq=TBBLUE_LEFT_BORDER_NO_ZOOM*border_enabled.v;
-	int margenx_der=TBBLUE_LEFT_BORDER_NO_ZOOM*border_enabled.v+TBBLUE_DISPLAY_WIDTH;
-	int margeny_arr=TBBLUE_TOP_BORDER_NO_ZOOM*border_enabled.v;
-	int margeny_aba=TBBLUE_BOTTOM_BORDER_NO_ZOOM*border_enabled.v+TBBLUE_DISPLAY_HEIGHT;
-
 	z80_int color_pixel;
 	z80_int *puntero;
 
 	puntero=rainbow_buffer;
-
 
 
 	//Si se reduce la pantalla 0.75
@@ -7844,27 +7835,18 @@ void screen_tbblue_refresca_rainbow(void)
 	//Fin reduccion pantalla 0.75
 
 
-
-
-
 	for (y=0;y<alto;y++) {
 
-
 		for (x=0;x<ancho;x+=8) {
-
-
 
             for (bit=0;bit<8;bit++) {
                 color_pixel=*puntero++;
                 scr_putpixel_zoom_rainbow(x+bit,y,color_pixel);
             }
 
-
-
 		}
 
 	}
-
 
 }
 
