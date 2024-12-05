@@ -373,4 +373,9 @@ extern void tbblue_dac_mix(void);
 
 extern void tbblue_out_port_dac(z80_byte puerto_l,z80_byte value);
 
+extern z80_byte tbblue_dac_a;
+extern z80_byte tbblue_dac_b;
+extern z80_byte tbblue_dac_c;
+extern z80_byte tbblue_dac_d;
+
 #endif

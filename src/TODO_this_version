@@ -518,11 +518,11 @@ desactivado tbblue_change_timing hasta que se corrija:
 -screen_estados_totales no actualizado segun turbo, justo al principio de cargar Atic Atac. activar debug del copper para verlo
 
 -poder ver los canales DAC del next en una ventana
-
+*falta icono
 
 -menu mouse sensitivity valor debe salir a  la derecha
 
--Bubblegumbros el marcador de arriba del todo en el menu sale cortado
+-Bubblegumbros el marcador de arriba del todo en el menu sale cortado: cargando desde cero se ve bien. algun registro de otro juego tendra que ver
 
 -bugs Atic atac:
 *flashlight effect on blue dark room: I have to check the "smooth scroll" bit you told me some days ago. maybe that's the cause for that bug

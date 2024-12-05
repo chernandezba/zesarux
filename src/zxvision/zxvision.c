@@ -9648,6 +9648,7 @@ zxvision_known_window_names zxvision_known_window_names_array[]={
     {"viewsensors",         "sensors",      menu_debug_view_sensors,bitmap_button_ext_desktop_view_sensors},
     {"shortcutshelper",     "shrtcuthlp",   menu_shortcuts_window,bitmap_button_ext_desktop_shortcutshelper},
     {"inspectrumanalyzer",  "spec anlys",   menu_input_spectrum_analyzer,bitmap_button_ext_desktop_inspectrumanalyzer},
+    {"specnextaudiodac",    "next DAC",menu_specnext_audio_dac,bitmap_button_ext_desktop_userdefined},
 	{"sprites",             "sprites",menu_debug_view_sprites,bitmap_button_ext_desktop_viewsprites},
 	{"tsconftbbluespritenav","sprite nav",menu_debug_tsconf_tbblue_msx_spritenav,bitmap_button_ext_desktop_tsconftbbluespritenav},
     {"textadvmap",          "textadvmap",   menu_debug_textadventure_map_connections,bitmap_button_ext_desktop_text_adventure_map},
