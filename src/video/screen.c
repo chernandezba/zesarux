@@ -1825,18 +1825,18 @@ void screen_prism_refresca_pantalla(void) {
 void screen_tbblue_refresca_pantalla(void)
 {
 
-                //modo clasico. sin rainbow
-                if (rainbow_enabled.v==0) {
-                        screen_tbblue_refresca_no_rainbow();
-                }
+    //modo clasico. sin rainbow
+    if (rainbow_enabled.v==0) {
+        screen_tbblue_refresca_no_rainbow();
+    }
 
-                else {
-                        //modo rainbow - real video
-                        //en spectrum normal era: scr_refresca_pantalla_rainbow_comun();
-//scr_refresca_pantalla_rainbow_comun(); //Se puede usar esta funcion comun a todos
+    else {
+        //modo rainbow - real video
+        //en spectrum normal era: scr_refresca_pantalla_rainbow_comun();
+        //scr_refresca_pantalla_rainbow_comun(); //Se puede usar esta funcion comun a todos
 
-			screen_tbblue_refresca_rainbow();
-                }
+        screen_tbblue_refresca_rainbow();
+    }
 
 }
 
