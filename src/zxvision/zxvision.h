@@ -1669,6 +1669,7 @@ extern void menu_reset_counters_tecla_repeticion(void);
 extern void menu_debug_cpu_stats_diss_complete_no_print (z80_byte opcode,char *buffer,z80_byte preffix1,z80_byte preffix2);
 
 extern void menu_string_volumen(char *texto,z80_byte registro_volumen,int indice_decae);
+extern void menu_string_volumen_n_longitud(char *texto,z80_byte registro_volumen,int indice_decae,int longitud);
 extern int menu_string_volumen_maxmin(char *texto,int valor_actual,int valor_previo,int valor_maximo);
 
 extern void menu_copy_clipboard(char *texto);

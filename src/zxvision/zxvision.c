@@ -22227,6 +22227,47 @@ void menu_string_volumen(char *texto,z80_byte registro_volumen,int indice_decae)
 }
 
 
+//llena el string con el valor del volumen
+//mete tambien caracter de "decae" si conviene (si >=0 y <=longitud)
+void menu_string_volumen_n_longitud(char *texto,z80_byte registro_volumen,int indice_decae,int longitud)
+{
+
+    if (registro_volumen>longitud) registro_volumen=longitud;
+    int i;
+    int destino;
+    int indicado_rojo=0;
+
+
+
+    for (i=0,destino=0;i<registro_volumen;i++) {
+        texto[destino++]='=';
+
+
+        //Codigo control color tinta.
+        if (i==longitud-4) {
+            texto[destino++]='$';
+            texto[destino++]='$';
+            texto[destino++]='0'+ESTILO_GUI_COLOR_AVISO;
+            indicado_rojo=1;
+        }
+    }
+
+    for (;i<longitud;i++) {
+        texto[destino++]=' ';
+    }
+
+    texto[destino]=0;
+
+    //Si indice es menor que volumen, forzar a valor que volumen
+    if (indice_decae<registro_volumen) indice_decae=registro_volumen;
+
+    if (indice_decae>=0 && indice_decae<=longitud-1 && indice_decae>=registro_volumen) texto[indice_decae+indicado_rojo*3]='>';
+
+    //printf ("registro volumen: %d indice decae: %d pos decae: %d\n",registro_volumen,indice_decae,indice_decae+indicado_rojo*3);
+
+}
+
+
 //llama a menu_string_volumen gestionando maximos. Retorna el valor escalado entre 0 y 15, para poder asignarlo como valor previo
 int menu_string_volumen_maxmin(char *texto,int valor_actual,int valor_previo,int valor_maximo)
 {

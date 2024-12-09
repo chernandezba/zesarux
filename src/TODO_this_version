@@ -541,3 +541,5 @@ desactivado tbblue_change_timing hasta que se corrija:
 
 -ventana Datagear DMA que se pueda poner en segundo plano
 *revisar si se puede decir si la operacion esta ejecutandose o no
+
+-puerto 0x5f de DAC D entra en conflicto con volumen canal A de chip AY?

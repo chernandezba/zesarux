@@ -31634,16 +31634,16 @@ void menu_specnext_audio_dac_overlay(void)
 
     //Controlar limites, dado que las variables entran sin inicializar
     for (i=0;i<4;i++) {
-        if (menu_audio_specnext_dac_previos_dac[i]>15) menu_audio_specnext_dac_previos_dac[i]=15;
+        if (menu_audio_specnext_dac_previos_dac[i]>31) menu_audio_specnext_dac_previos_dac[i]=31;
     }
 
 
-    if (menu_audio_specnext_dac_previo_left>15) menu_audio_specnext_dac_previo_left=15;
-    if (menu_audio_specnext_dac_previo_right>15) menu_audio_specnext_dac_previo_right=15;
+    if (menu_audio_specnext_dac_previo_left>31) menu_audio_specnext_dac_previo_left=31;
+    if (menu_audio_specnext_dac_previo_right>31) menu_audio_specnext_dac_previo_right=31;
 
 
     int nivel_actual;
-    char buf_nivel[33];
+    char buf_nivel[49];
     char letra_dac;
 
     for (i=0;i<4;i++) {
@@ -31682,10 +31682,10 @@ void menu_specnext_audio_dac_overlay(void)
         //Valor absoluto
         if (nivel_actual<0) nivel_actual=-nivel_actual;
 
-        //Y pasar de escala 0..128 a escala 0..15
-        nivel_actual /=8;
+        //Y pasar de escala 0..128 a escala 0..32
+        nivel_actual /=4;
 
-        if (nivel_actual>=16) nivel_actual=15;
+        if (nivel_actual>31) nivel_actual=31;
 
         menu_audio_specnext_dac_previos_dac[i]=menu_decae_ajusta_valor_volumen(menu_audio_specnext_dac_previos_dac[i],nivel_actual);
 
@@ -31693,7 +31693,7 @@ void menu_specnext_audio_dac_overlay(void)
         //char buf_nivel[33];
 
 
-        menu_string_volumen(buf_nivel,nivel_actual,menu_audio_specnext_dac_previos_dac[i]);
+        menu_string_volumen_n_longitud(buf_nivel,nivel_actual,menu_audio_specnext_dac_previos_dac[i],31);
         sprintf (buffer_linea,"DAC %c: %02XH %s",letra_dac,valor_dac,buf_nivel);
         zxvision_print_string_defaults_fillspc(ventana,1,linea++,buffer_linea);
 
@@ -31724,10 +31724,10 @@ void menu_specnext_audio_dac_overlay(void)
     //Valor absoluto
     if (nivel_actual<0) nivel_actual=-nivel_actual;
 
-    //Y pasar de escala 0..128 a escala 0..15
-    nivel_actual /=8;
+    //Y pasar de escala 0..128 a escala 0..32
+    nivel_actual /=4;
 
-    if (nivel_actual>=16) nivel_actual=15;
+    if (nivel_actual>31) nivel_actual=31;
 
     menu_audio_specnext_dac_previo_left=menu_decae_ajusta_valor_volumen(menu_audio_specnext_dac_previo_left,nivel_actual);
 
@@ -31735,7 +31735,7 @@ void menu_specnext_audio_dac_overlay(void)
     //char buf_nivel[33];
 
 
-    menu_string_volumen(buf_nivel,nivel_actual,menu_audio_specnext_dac_previo_left);
+    menu_string_volumen_n_longitud(buf_nivel,nivel_actual,menu_audio_specnext_dac_previo_left,31);
     sprintf (buffer_linea,"Left Out:  %s",buf_nivel);
     zxvision_print_string_defaults_fillspc(ventana,1,linea++,buffer_linea);
 
@@ -31754,9 +31754,9 @@ void menu_specnext_audio_dac_overlay(void)
     if (nivel_actual<0) nivel_actual=-nivel_actual;
 
     //Y pasar de escala 0..128 a escala 0..15
-    nivel_actual /=8;
+    nivel_actual /=4;
 
-    if (nivel_actual>=16) nivel_actual=15;
+    if (nivel_actual>31) nivel_actual=31;
 
     menu_audio_specnext_dac_previo_right=menu_decae_ajusta_valor_volumen(menu_audio_specnext_dac_previo_right,nivel_actual);
 
@@ -31764,7 +31764,7 @@ void menu_specnext_audio_dac_overlay(void)
     //char buf_nivel[33];
 
 
-    menu_string_volumen(buf_nivel,nivel_actual,menu_audio_specnext_dac_previo_right);
+    menu_string_volumen_n_longitud(buf_nivel,nivel_actual,menu_audio_specnext_dac_previo_right,31);
     sprintf (buffer_linea,"Right Out: %s",buf_nivel);
     zxvision_print_string_defaults_fillspc(ventana,1,linea++,buffer_linea);
 
@@ -31812,7 +31812,7 @@ void menu_specnext_audio_dac(MENU_ITEM_PARAMETERS)
         int xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
         if (!util_find_window_geometry("specnextaudiodac",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
-            ancho_ventana=30;
+            ancho_ventana=44;
             alto_ventana=8;
 
             xventana=menu_center_x()-ancho_ventana/2;
