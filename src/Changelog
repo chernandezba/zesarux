@@ -52,6 +52,7 @@ Improved Spectrum Next emulation:
 - Fixed Copper timings
 - Fixed esxdos call DISK_FILEMAP
 - Fixed palette offset for layer 2
+- Fixed ULA layer horizontal scroll
 - Fixed DMA burst mode when prescaler=0
 - Fixed DMA Transfer restarting the byte count at the end of a transfer
 

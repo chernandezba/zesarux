@@ -7139,6 +7139,249 @@ void tbblue_do_ula_standard_overlay(void)
 
 	*/
 
+
+    z80_byte tbblue_scroll_x=tbblue_registers[38];
+
+
+
+	/*
+0x27 (39) => ULA Y Scroll
+(R/W)
+  bits 7:0 = Y Offset (0-191) (soft reset = 0)
+
+
+	*/
+
+	z80_byte tbblue_scroll_y=tbblue_registers[39];
+
+
+	scanline_copia +=tbblue_scroll_y;
+	scanline_copia=scanline_copia % 192;
+
+
+    int indice_origen_bytes=0;
+
+	//Estos direccion y dir_atributo usados cuando hay scroll vertical y por tanto los pixeles y atributos salen de la pantalla tal cual (modo sin rainbow),
+	//y tambien en timex 512x192
+	direccion=screen_addr_table[(scanline_copia<<5)];
+
+	int fila=scanline_copia/8;
+	int dir_atributo=6144+(fila*32);
+
+
+	z80_byte *puntero_buffer_atributos;
+	z80_byte col6;
+	z80_byte tin6, pap6;
+
+	z80_byte timex_video_mode=timex_port_ff&7;
+	z80_bit si_timex_hires={0};
+	z80_bit si_timex_8_1={0};
+
+	if (timex_video_mode==2) si_timex_8_1.v=1;
+
+	//Por defecto
+	puntero_buffer_atributos=scanline_buffer;
+
+	if (timex_video_emulation.v) {
+	//Modos de video Timex
+	/*
+000 - Video data at address 16384 and 8x8 color attributes at address 22528 (like on ordinary Spectrum);
+
+001 - Video data at address 24576 and 8x8 color attributes at address 30720;
+
+010 - Multicolor mode: video data at address 16384 and 8x1 color attributes at address 24576;
+
+110 - Extended resolution: without color attributes, even columns of video data are taken from address 16384, and odd columns of video data are taken from address 24576
+	*/
+		switch (timex_video_mode) {
+
+			case 4:
+			case 6:
+				//512x192 monocromo.
+				//y color siempre fijo
+				/*
+	bits D3-D5: Selection of ink and paper color in extended screen resolution mode (000=black/white, 001=blue/yellow, 010=red/cyan, 011=magenta/green, 100=green/magenta, 101=cyan/red, 110=yellow/blue, 111=white/black); these bits are ignored when D2=0
+
+				black, blue, red, magenta, green, cyan, yellow, white
+				*/
+
+				//Si D2==0, these bits are ignored when D2=0?? Modo 4 que es??
+
+				tin6=get_timex_ink_mode6_color();
+
+
+				//Obtenemos color
+				pap6=get_timex_paper_mode6_color();
+				//printf ("papel: %d\n",pap6);
+
+				//Y con brillo
+				col6=((pap6*8)+tin6)+64;
+
+
+				si_timex_hires.v=1;
+			break;
+
+
+		}
+	}
+
+	//Capa de destino
+	int posicion_array_layer=0;
+	posicion_array_layer +=(screen_total_borde_izquierdo*border_enabled.v*2); //Doble de ancho
+
+
+	int columnas=32;
+
+	if (si_timex_hires.v) {
+		columnas=64;
+	}
+
+    for (x=0;x<columnas;x++) {
+
+		if (tbblue_scroll_y) {
+			//Si hay scroll vertical (no es 0) entonces el origen de los bytes no se obtiene del buffer de pixeles y color en alta resolucion,
+			//Si no que se obtiene de la pantalla tal cual
+			//TODO: esto es una limitacion de tal y como hace el render el tbblue, en que hago render de una linea cada vez,
+			//para corregir esto, habria que tener un buffer destino con todas las lineas de ula y hacer luego overlay con cada
+			//capa por separado, algo completamente impensable
+			//de todas maneras esto es algo extraño que suceda: que alguien le de por hacer efectos en color en alta resolucion, en capa ula,
+			//y activar el scroll vertical. En teoria tambien puede hacer parpadeos en juegos normales, pero quien va a querer cambiar el scroll en juegos
+			//que no estan preparados para hacer scroll?
+			byte_leido=screen[direccion];
+
+
+			if (si_timex_8_1.v==0) {
+				attribute=screen[dir_atributo];
+			}
+
+			else {
+				//timex 8x1
+				attribute=screen[direccion+8192];
+			}
+
+
+
+		}
+
+		else {
+
+			//Modo sin scroll vertical. Permite scroll horizontal. Es modo rainbow
+
+
+
+			//Pero si no tenemos scanline
+			if (tbblue_store_scanlines.v==0) {
+				byte_leido=screen[direccion];
+				attribute=screen[dir_atributo];
+			}
+
+			else {
+				byte_leido=puntero_buffer_atributos[indice_origen_bytes++];
+				attribute=puntero_buffer_atributos[indice_origen_bytes++];
+			}
+
+		}
+
+
+
+
+		if (si_timex_hires.v) {
+			if ((x&1)==0) byte_leido=screen[direccion];
+			else byte_leido=screen[direccion+8192];
+
+			attribute=col6;
+		}
+
+		get_pixel_color_tbblue(attribute,&ink,&paper);
+
+    	for (bit=0;bit<8;bit++) {
+			color= ( byte_leido & 128 ? ink : paper ) ;
+
+            //Posicion pixel. Para clip window registers
+            //Registro de scroll altera la posicion final donde se renderiza el pixel
+			int posx=x*8+bit-tbblue_scroll_x;
+			if (si_timex_hires.v) posx /=2;
+            if (posx<0) posx+=256;
+
+			//Tener en cuenta valor clip window
+
+			//(W) 0x1A (26) => Clip Window ULA/LoRes
+			if (posx>=tbblue_clip_windows[TBBLUE_CLIP_WINDOW_ULA][0] && posx<=tbblue_clip_windows[TBBLUE_CLIP_WINDOW_ULA][1] && scanline_copia>=tbblue_clip_windows[TBBLUE_CLIP_WINDOW_ULA][2] && scanline_copia<=tbblue_clip_windows[TBBLUE_CLIP_WINDOW_ULA][3]) {
+				if (!tbblue_force_disable_layer_ula.v) {
+					z80_int color_final=tbblue_get_palette_active_ula(color);
+
+					//Ver si color resultante es el transparente de ula, y cambiarlo por el color transparente ficticio
+					if (tbblue_si_transparent(color_final)) color_final=TBBLUE_SPRITE_TRANS_FICT;
+
+                    //Registro de scroll altera la posicion final donde se renderiza el pixel
+                    int destino_x_ula=(x*8+bit-tbblue_scroll_x);
+                    if (si_timex_hires.v==0) destino_x_ula *=2;
+
+                    if (destino_x_ula<0) destino_x_ula +=512;
+
+					tbblue_layer_ula[posicion_array_layer+destino_x_ula]=color_final;
+					if (si_timex_hires.v==0) tbblue_layer_ula[posicion_array_layer+destino_x_ula+1]=color_final; //doble de ancho
+
+				}
+			}
+
+
+        	byte_leido=byte_leido<<1;
+
+      	}
+
+		if (si_timex_hires.v) {
+				if (x&1) {
+                    direccion++;
+                    dir_atributo++;
+				}
+		}
+
+		else {
+            direccion++;
+            dir_atributo++;
+		}
+
+
+	  }
+
+}
+
+
+
+void old_tbblue_do_ula_standard_overlay(void)
+{
+
+
+	//Render de capa standard ULA (normal, timex)
+
+	//printf ("scan line de pantalla fisica (no border): %d\n",t_scanline_draw);
+
+	//linea que se debe leer
+	int scanline_copia=t_scanline_draw-screen_indice_inicio_pant;
+
+
+
+	int x,bit;
+	z80_int direccion;
+	z80_byte byte_leido;
+
+
+	int color=0;
+	z80_byte attribute;
+	z80_int ink,paper;
+
+
+	z80_byte *screen=get_base_mem_pantalla();
+
+
+	/*
+0x26 (38) => ULA X Scroll
+(R/W)
+  bits 7:0 = X Offset (0-255) (soft reset = 0)
+
+	*/
+
 	//entonces sumar 1 posicion por cada 8 del scroll
 
 	z80_byte ula_offset_x=tbblue_registers[38];
@@ -7354,6 +7597,7 @@ void tbblue_do_ula_standard_overlay(void)
 	  }
 
 }
+
 
 
 

@@ -52,6 +52,7 @@ Mejorada emulación de Spectrum Next:
 - Corregido temporización del Copper
 - Corregido llamada a esxdos DISK_FILEMAP
 - Corregido offset de paleta en layer 2
+- Corregido scroll horizontal de capa ULA
 - Corregido burst mode de DMA cuando prescaler=0
 - Corregida transferencia de DMA reiniciando el contador de bytes al final de una transferencia
 
