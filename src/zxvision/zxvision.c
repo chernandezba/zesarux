@@ -9632,6 +9632,7 @@ zxvision_known_window_names zxvision_known_window_names_array[]={
 #endif
     {"debugconsole",        "debug cons",   menu_debug_unnamed_console,bitmap_button_ext_desktop_debugconsole},
 	{"debugcpu",            "debug cpu",menu_debug_registers,bitmap_button_ext_desktop_debugcpu},
+    {"debugdma",            "debug dma",menu_debug_dma,bitmap_button_ext_desktop_userdefined},
     {"debugioports",        "debug i/o",    menu_debug_ioports,bitmap_button_ext_desktop_ioports},
     {"displaypalettes",     "dis palett",menu_display_total_palette,bitmap_button_ext_desktop_colour_palettes},
     {"externalaudiosource", "ext audio",    menu_realtape_record_input,bitmap_button_ext_desktop_record_input},

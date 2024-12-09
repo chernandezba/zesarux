@@ -50,7 +50,6 @@ extern int menu_audio_new_ayplayer_si_mostrar(void);
 extern void menu_debug_hexdump(MENU_ITEM_PARAMETERS);
 extern void menu_osd_adventure_keyboard(MENU_ITEM_PARAMETERS);
 extern void menu_osd_adventure_keyboard_next(void);
-extern void menu_debug_dma_tsconf_zxuno(MENU_ITEM_PARAMETERS);
 extern void menu_display_total_palette(MENU_ITEM_PARAMETERS);
 
 extern void menu_debug_disassemble(MENU_ITEM_PARAMETERS);
@@ -134,6 +133,8 @@ extern void menu_plusthreedisk(MENU_ITEM_PARAMETERS);
 extern void menu_video_layers(MENU_ITEM_PARAMETERS);
 
 extern void menu_specnext_audio_dac(MENU_ITEM_PARAMETERS);
+
+extern void menu_debug_dma(MENU_ITEM_PARAMETERS);
 
 extern void menu_msxcart(MENU_ITEM_PARAMETERS);
 extern void menu_z88_slot_insert(MENU_ITEM_PARAMETERS);

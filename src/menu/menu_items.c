@@ -209,7 +209,6 @@ int audio_new_waveform_opcion_seleccionada=0;
 int debug_new_visualmem_opcion_seleccionada=0;
 int audio_new_ayplayer_opcion_seleccionada=0;
 int osd_adventure_keyboard_opcion_seleccionada=0;
-int debug_tsconf_dma_opcion_seleccionada=0;
 int tsconf_layer_settings_opcion_seleccionada=0;
 int cpu_stats_opcion_seleccionada=0;
 int cpu_transaction_log_opcion_seleccionada=0;
@@ -8436,35 +8435,41 @@ void menu_osd_adventure_keyboard(MENU_ITEM_PARAMETERS)
 
 }
 
+int menu_debug_dma_existe_dma=0;
 
 
-
-
-
-
-
-
-//Usado dentro del overlay de tsconf_dma
-//int menu_tsconf_dma_valor_contador_segundo_anterior;
-
-zxvision_window *menu_debug_dma_tsconf_zxuno_overlay_window;
-
-
-void menu_debug_dma_tsconf_zxuno_overlay(void)
+void menu_debug_dma_draw(zxvision_window *w)
 {
 
+    zxvision_window *menu_debug_dma_tsconf_zxuno_overlay_window=w;
+
+	char nombre_dma[33];
+	//por defecto por si acaso
+	strcpy(nombre_dma,"DMA");
+
+	if (MACHINE_IS_ZXUNO) {
+		strcpy(nombre_dma,"ZXUNO DMA");
+		//alto_ventana++;
+	}
+
+	if (MACHINE_IS_TSCONF) strcpy(nombre_dma,"TSConf DMA");
+
+	if (datagear_dma_emulation.v) strcpy(nombre_dma,"Datagear DMA");
 
 
     int linea=0;
 
+    //primera linea para tipo dma
+    linea++;
 
-
-    	//mostrarlos siempre a cada refresco
-    menu_speech_tecla_pulsada=1; //Si no, envia continuamente todo ese texto a speech
+    //Asumimos no existe
+    menu_debug_dma_existe_dma=0;
 
 	char texto_dma[33];
 
 	if (datagear_dma_emulation.v) {
+        menu_debug_dma_existe_dma=1;
+
 		//NOTA: Si se activa datagear, no se vera si hay dma de tsconf o zxuno
 		z80_int dma_port_a=value_8_to_16(datagear_port_a_start_addr_high,datagear_port_a_start_addr_low);
 		z80_int dma_port_b=value_8_to_16(datagear_port_b_start_addr_high,datagear_port_b_start_addr_low);
@@ -8532,101 +8537,112 @@ void menu_debug_dma_tsconf_zxuno_overlay(void)
 		zxvision_print_string_defaults_fillspc(menu_debug_dma_tsconf_zxuno_overlay_window,1,linea++,texto_dma);
 
 
-
 	}
 
 	else {
 
-	if (MACHINE_IS_TSCONF) {
-		//Construimos 16 valores posibles segun rw (bit bajo) y ddev (bits altos)
-		int dma_type=debug_tsconf_dma_ddev*2+debug_tsconf_dma_rw;
-						//18 maximo el tipo
-						//  012345678901234567890123
-						//24. mas dos de margen banda y banda: 26
-		sprintf (texto_dma,"Type: %s",tsconf_dma_types[dma_type]);
-		//menu_escribe_linea_opcion(linea++,-1,1,texto_dma);
-		zxvision_print_string_defaults_fillspc(menu_debug_dma_tsconf_zxuno_overlay_window,1,linea++,texto_dma);
+        if (MACHINE_IS_TSCONF) {
+            menu_debug_dma_existe_dma=1;
 
-		sprintf (texto_dma,"Source:      %06XH",debug_tsconf_dma_source);
-		//menu_escribe_linea_opcion(linea++,-1,1,texto_dma);
-		zxvision_print_string_defaults_fillspc(menu_debug_dma_tsconf_zxuno_overlay_window,1,linea++,texto_dma);
+            //Construimos 16 valores posibles segun rw (bit bajo) y ddev (bits altos)
+            int dma_type=debug_tsconf_dma_ddev*2+debug_tsconf_dma_rw;
+                            //18 maximo el tipo
+                            //  012345678901234567890123
+                            //24. mas dos de margen banda y banda: 26
+            sprintf (texto_dma,"Type: %s",tsconf_dma_types[dma_type]);
+            //menu_escribe_linea_opcion(linea++,-1,1,texto_dma);
+            zxvision_print_string_defaults_fillspc(menu_debug_dma_tsconf_zxuno_overlay_window,1,linea++,texto_dma);
 
-		sprintf (texto_dma,"Destination: %06XH",debug_tsconf_dma_destination);
-		//menu_escribe_linea_opcion(linea++,-1,1,texto_dma);
-		zxvision_print_string_defaults_fillspc(menu_debug_dma_tsconf_zxuno_overlay_window,1,linea++,texto_dma);
+            sprintf (texto_dma,"Source:      %06XH",debug_tsconf_dma_source);
+            //menu_escribe_linea_opcion(linea++,-1,1,texto_dma);
+            zxvision_print_string_defaults_fillspc(menu_debug_dma_tsconf_zxuno_overlay_window,1,linea++,texto_dma);
 
-		sprintf (texto_dma,"Burst length: %3d",debug_tsconf_dma_burst_length);
-		//menu_escribe_linea_opcion(linea++,-1,1,texto_dma);
-		zxvision_print_string_defaults_fillspc(menu_debug_dma_tsconf_zxuno_overlay_window,1,linea++,texto_dma);
+            sprintf (texto_dma,"Destination: %06XH",debug_tsconf_dma_destination);
+            //menu_escribe_linea_opcion(linea++,-1,1,texto_dma);
+            zxvision_print_string_defaults_fillspc(menu_debug_dma_tsconf_zxuno_overlay_window,1,linea++,texto_dma);
 
-		sprintf (texto_dma,"Burst number: %3d",debug_tsconf_dma_burst_number);
-		//menu_escribe_linea_opcion(linea++,-1,1,texto_dma);
-		zxvision_print_string_defaults_fillspc(menu_debug_dma_tsconf_zxuno_overlay_window,1,linea++,texto_dma);
+            sprintf (texto_dma,"Burst length: %3d",debug_tsconf_dma_burst_length);
+            //menu_escribe_linea_opcion(linea++,-1,1,texto_dma);
+            zxvision_print_string_defaults_fillspc(menu_debug_dma_tsconf_zxuno_overlay_window,1,linea++,texto_dma);
 
-						//Maximo 25
-		sprintf (texto_dma,"Align: %s %s",(debug_tsconf_dma_s_align ? "Source" : "      "),(debug_tsconf_dma_d_align ? "Destination" : "") );
-		//menu_escribe_linea_opcion(linea++,-1,1,texto_dma);
-		zxvision_print_string_defaults_fillspc(menu_debug_dma_tsconf_zxuno_overlay_window,1,linea++,texto_dma);
+            sprintf (texto_dma,"Burst number: %3d",debug_tsconf_dma_burst_number);
+            //menu_escribe_linea_opcion(linea++,-1,1,texto_dma);
+            zxvision_print_string_defaults_fillspc(menu_debug_dma_tsconf_zxuno_overlay_window,1,linea++,texto_dma);
 
-		sprintf (texto_dma,"Align size: %d",(debug_tsconf_dma_addr_align_size+1)*256);
-		//menu_escribe_linea_opcion(linea++,-1,1,texto_dma);
-		zxvision_print_string_defaults_fillspc(menu_debug_dma_tsconf_zxuno_overlay_window,1,linea++,texto_dma);
+                            //Maximo 25
+            sprintf (texto_dma,"Align: %s %s",(debug_tsconf_dma_s_align ? "Source" : "      "),(debug_tsconf_dma_d_align ? "Destination" : "") );
+            //menu_escribe_linea_opcion(linea++,-1,1,texto_dma);
+            zxvision_print_string_defaults_fillspc(menu_debug_dma_tsconf_zxuno_overlay_window,1,linea++,texto_dma);
+
+            sprintf (texto_dma,"Align size: %d",(debug_tsconf_dma_addr_align_size+1)*256);
+            //menu_escribe_linea_opcion(linea++,-1,1,texto_dma);
+            zxvision_print_string_defaults_fillspc(menu_debug_dma_tsconf_zxuno_overlay_window,1,linea++,texto_dma);
+
+        }
+
+        else if (MACHINE_IS_ZXUNO) {
+            menu_debug_dma_existe_dma=1;
+
+            z80_byte dma_ctrl=zxuno_ports[0xa0];
+            z80_byte dma_type=(dma_ctrl & (4+8))>>2;
+            z80_byte dma_mode=dma_ctrl & 3;
+
+            z80_int dma_src=value_8_to_16(zxuno_dmareg[0][1],zxuno_dmareg[0][0]);
+            z80_int dma_dst=value_8_to_16(zxuno_dmareg[1][1],zxuno_dmareg[1][0]);
+            z80_int dma_pre=value_8_to_16(zxuno_dmareg[2][1],zxuno_dmareg[2][0]);
+            z80_int dma_len=value_8_to_16(zxuno_dmareg[3][1],zxuno_dmareg[3][0]);
+            z80_int dma_prob=value_8_to_16(zxuno_dmareg[4][1],zxuno_dmareg[4][0]);
+            z80_byte dma_stat=zxuno_ports[0xa6];
+
+            sprintf (texto_dma,"Type: %s",zxuno_dma_types[dma_type]);
+            //menu_escribe_linea_opcion(linea++,-1,1,texto_dma);
+            zxvision_print_string_defaults_fillspc(menu_debug_dma_tsconf_zxuno_overlay_window,1,linea++,texto_dma);
+
+            sprintf (texto_dma,"Mode: %s",zxuno_dma_modes[dma_mode]);
+            //menu_escribe_linea_opcion(linea++,-1,1,texto_dma);
+            zxvision_print_string_defaults_fillspc(menu_debug_dma_tsconf_zxuno_overlay_window,1,linea++,texto_dma);
+
+            sprintf (texto_dma,"Source:      %04XH",dma_src);
+            //menu_escribe_linea_opcion(linea++,-1,1,texto_dma);
+            zxvision_print_string_defaults_fillspc(menu_debug_dma_tsconf_zxuno_overlay_window,1,linea++,texto_dma);
+
+            sprintf (texto_dma,"Destination: %04XH",dma_dst);
+            //menu_escribe_linea_opcion(linea++,-1,1,texto_dma);
+            zxvision_print_string_defaults_fillspc(menu_debug_dma_tsconf_zxuno_overlay_window,1,linea++,texto_dma);
+
+            sprintf (texto_dma,"Length:      %5d",dma_len);
+            //menu_escribe_linea_opcion(linea++,-1,1,texto_dma);
+            zxvision_print_string_defaults_fillspc(menu_debug_dma_tsconf_zxuno_overlay_window,1,linea++,texto_dma);
+
+            sprintf (texto_dma,"Preescaler:  %5d",dma_pre);
+            //menu_escribe_linea_opcion(linea++,-1,1,texto_dma);
+            zxvision_print_string_defaults_fillspc(menu_debug_dma_tsconf_zxuno_overlay_window,1,linea++,texto_dma);
+
+            char prob_type[10];
+            if (dma_ctrl&16) strcpy(prob_type,"dst");
+            else strcpy(prob_type,"src");
+
+            sprintf (texto_dma,"Prob: (%s)  %04XH",prob_type,dma_prob);
+            //menu_escribe_linea_opcion(linea++,-1,1,texto_dma);
+            zxvision_print_string_defaults_fillspc(menu_debug_dma_tsconf_zxuno_overlay_window,1,linea++,texto_dma);
+
+            sprintf (texto_dma,"Stat:          %02XH",dma_stat);
+            //menu_escribe_linea_opcion(linea++,-1,1,texto_dma);
+            zxvision_print_string_defaults_fillspc(menu_debug_dma_tsconf_zxuno_overlay_window,1,linea++,texto_dma);
+
+        }
+
+        else {
+            //Maquina sin DMA
+        }
 
 	}
 
-	if (MACHINE_IS_ZXUNO) {
-		z80_byte dma_ctrl=zxuno_ports[0xa0];
-		z80_byte dma_type=(dma_ctrl & (4+8))>>2;
-		z80_byte dma_mode=dma_ctrl & 3;
+    if (menu_debug_dma_existe_dma) {
+        zxvision_print_string_defaults_fillspc_format(menu_debug_dma_tsconf_zxuno_overlay_window,1,0,"Type: %s",nombre_dma);
+    }
 
-		z80_int dma_src=value_8_to_16(zxuno_dmareg[0][1],zxuno_dmareg[0][0]);
-		z80_int dma_dst=value_8_to_16(zxuno_dmareg[1][1],zxuno_dmareg[1][0]);
-		z80_int dma_pre=value_8_to_16(zxuno_dmareg[2][1],zxuno_dmareg[2][0]);
-		z80_int dma_len=value_8_to_16(zxuno_dmareg[3][1],zxuno_dmareg[3][0]);
-		z80_int dma_prob=value_8_to_16(zxuno_dmareg[4][1],zxuno_dmareg[4][0]);
-		z80_byte dma_stat=zxuno_ports[0xa6];
 
-		sprintf (texto_dma,"Type: %s",zxuno_dma_types[dma_type]);
-		//menu_escribe_linea_opcion(linea++,-1,1,texto_dma);
-		zxvision_print_string_defaults_fillspc(menu_debug_dma_tsconf_zxuno_overlay_window,1,linea++,texto_dma);
-
-		sprintf (texto_dma,"Mode: %s",zxuno_dma_modes[dma_mode]);
-		//menu_escribe_linea_opcion(linea++,-1,1,texto_dma);
-		zxvision_print_string_defaults_fillspc(menu_debug_dma_tsconf_zxuno_overlay_window,1,linea++,texto_dma);
-
-		sprintf (texto_dma,"Source:      %04XH",dma_src);
-		//menu_escribe_linea_opcion(linea++,-1,1,texto_dma);
-		zxvision_print_string_defaults_fillspc(menu_debug_dma_tsconf_zxuno_overlay_window,1,linea++,texto_dma);
-
-		sprintf (texto_dma,"Destination: %04XH",dma_dst);
-		//menu_escribe_linea_opcion(linea++,-1,1,texto_dma);
-		zxvision_print_string_defaults_fillspc(menu_debug_dma_tsconf_zxuno_overlay_window,1,linea++,texto_dma);
-
-		sprintf (texto_dma,"Length:      %5d",dma_len);
-		//menu_escribe_linea_opcion(linea++,-1,1,texto_dma);
-		zxvision_print_string_defaults_fillspc(menu_debug_dma_tsconf_zxuno_overlay_window,1,linea++,texto_dma);
-
-		sprintf (texto_dma,"Preescaler:  %5d",dma_pre);
-		//menu_escribe_linea_opcion(linea++,-1,1,texto_dma);
-		zxvision_print_string_defaults_fillspc(menu_debug_dma_tsconf_zxuno_overlay_window,1,linea++,texto_dma);
-
-		char prob_type[10];
-		if (dma_ctrl&16) strcpy(prob_type,"dst");
-		else strcpy(prob_type,"src");
-
-		sprintf (texto_dma,"Prob: (%s)  %04XH",prob_type,dma_prob);
-		//menu_escribe_linea_opcion(linea++,-1,1,texto_dma);
-		zxvision_print_string_defaults_fillspc(menu_debug_dma_tsconf_zxuno_overlay_window,1,linea++,texto_dma);
-
-		sprintf (texto_dma,"Stat:          %02XH",dma_stat);
-		//menu_escribe_linea_opcion(linea++,-1,1,texto_dma);
-		zxvision_print_string_defaults_fillspc(menu_debug_dma_tsconf_zxuno_overlay_window,1,linea++,texto_dma);
-
-	}
-
-	}
-
-	zxvision_draw_window_contents(menu_debug_dma_tsconf_zxuno_overlay_window);
 }
 
 
@@ -8645,118 +8661,175 @@ void menu_debug_dma_tsconf_zxuno_disable(MENU_ITEM_PARAMETERS)
 }
 
 
-void menu_debug_dma_tsconf_zxuno(MENU_ITEM_PARAMETERS)
+
+zxvision_window *menu_debug_dma_window;
+
+
+void menu_debug_dma_overlay(void)
 {
- 	menu_espera_no_tecla();
-	menu_reset_counters_tecla_repeticion();
+
+    menu_speech_tecla_pulsada=1; //Si no, envia continuamente todo ese texto a speech
+
+    //si ventana minimizada, no ejecutar todo el codigo de overlay
+    if (menu_debug_dma_window->is_minimized) return;
+
+
+
+    menu_debug_dma_draw(menu_debug_dma_window);
+
+
+    //Mostrar contenido
+    zxvision_draw_window_contents(menu_debug_dma_window);
+
+}
 
 
 
 
-
-	char texto_ventana[33];
-	//por defecto por si acaso
-	strcpy(texto_ventana,"DMA");
-	int alto_ventana=11;
+//Almacenar la estructura de ventana aqui para que se pueda referenciar desde otros sitios
+zxvision_window zxvision_window_debug_dma;
 
 
-	if (MACHINE_IS_ZXUNO) {
-		strcpy(texto_ventana,"ZXUNO DMA");
-		alto_ventana++;
-	}
+void menu_debug_dma(MENU_ITEM_PARAMETERS)
+{
+	menu_espera_no_tecla();
 
-	if (MACHINE_IS_TSCONF) strcpy(texto_ventana,"TSConf DMA");
+    if (!menu_multitarea) {
+        menu_warn_message("This window needs multitask enabled");
+        return;
+    }
 
-	if (datagear_dma_emulation.v) strcpy(texto_ventana,"Datagear DMA");
+    zxvision_window *ventana;
+    ventana=&zxvision_window_debug_dma;
+
+	//IMPORTANTE! no crear ventana si ya existe. Esto hay que hacerlo en todas las ventanas que permiten background.
+	//si no se hiciera, se crearia la misma ventana, y en la lista de ventanas activas , al redibujarse,
+	//la primera ventana repetida apuntaria a la segunda, que es el mismo puntero, y redibujaria la misma, y se quedaria en bucle colgado
+	//zxvision_delete_window_if_exists(ventana);
+
+    //Crear ventana si no existe
+    if (!zxvision_if_window_already_exists(ventana)) {
+        int xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
+
+        if (!util_find_window_geometry("debugdma",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
+            ancho_ventana=27;
+            alto_ventana=13;
+
+            xventana=menu_center_x()-ancho_ventana/2;
+            yventana=menu_center_y()-alto_ventana/2;
+        }
 
 
-	//menu_dibuja_ventana(2,6,27,alto,texto_ventana);
-	zxvision_window ventana;
+        zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"Debug DMA",
+            "debugdma",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
 
-	//int posicionx=menu_origin_x()+2;
-	int ancho_ventana=27;
-	int posicionx=menu_center_x()-ancho_ventana/2;
+        ventana->can_be_backgrounded=1;
 
-	int posiciony=menu_center_y()-alto_ventana/2;
+    }
 
-	zxvision_new_window(&ventana,posicionx,posiciony,ancho_ventana,alto_ventana,
-							ancho_ventana-1,alto_ventana-2,texto_ventana);
-	zxvision_draw_window(&ventana);
+    //Si ya existe, activar esta ventana
+    else {
+        zxvision_activate_this_window(ventana);
+    }
 
 
-    menu_debug_dma_tsconf_zxuno_overlay_window=&ventana; //Decimos que el overlay lo hace sobre la ventana que tenemos aqui
 
-    //Cambiamos funcion overlay de texto de menu
+	zxvision_draw_window(ventana);
+
+
+    menu_debug_dma_window=ventana; //Decimos que el overlay lo hace sobre la ventana que tenemos aqui
+
 
     //cambio overlay
-    zxvision_set_window_overlay(&ventana,menu_debug_dma_tsconf_zxuno_overlay);
+    zxvision_set_window_overlay(ventana,menu_debug_dma_overlay);
 
+
+    //Toda ventana que este listada en zxvision_known_window_names_array debe permitir poder salir desde aqui
+    //Se sale despues de haber inicializado overlay y de cualquier otra variable que necesite el overlay
+    if (zxvision_currently_restoring_windows_on_start) {
+        //printf ("Saliendo de ventana ya que la estamos restaurando en startup\n");
+        return;
+    }
 
 
 
 	menu_item *array_menu_debug_dma_tsconf_zxuno;
-        menu_item item_seleccionado;
-        int retorno_menu;
-        do {
+    menu_item item_seleccionado;
+    int retorno_menu;
+    int opcion_seleccionada=0;
+    do {
 
 
-            //Hay que redibujar la ventana desde este bucle
-            //menu_debug_dma_tsconf_zxuno_dibuja_ventana();
-
-
-
-			int lin=8;
+        int lin=9;
 
 
 
-			int condicion_dma_disabled=tsconf_dma_disabled.v;
+        int condicion_dma_disabled=tsconf_dma_disabled.v;
 
 
-			if (MACHINE_IS_ZXUNO) {
-				lin++;
-				condicion_dma_disabled=zxuno_dma_disabled.v;
-			}
+        if (MACHINE_IS_ZXUNO) {
+            lin++;
+            condicion_dma_disabled=zxuno_dma_disabled.v;
+        }
 
-			if (datagear_dma_emulation.v) condicion_dma_disabled=datagear_dma_is_disabled.v;
+        if (datagear_dma_emulation.v) {
+            condicion_dma_disabled=datagear_dma_is_disabled.v;
+        }
 
-				menu_add_item_menu_inicial_format(&array_menu_debug_dma_tsconf_zxuno,MENU_OPCION_NORMAL,menu_debug_dma_tsconf_zxuno_disable,NULL,"~~DMA: %s",
-					(condicion_dma_disabled ? "Disabled" : "Enabled ") );  //Enabled acaba con espacio para borrar rastro de texto "Disabled"
-				menu_add_item_menu_shortcut(array_menu_debug_dma_tsconf_zxuno,'d');
-				menu_add_item_menu_ayuda(array_menu_debug_dma_tsconf_zxuno,"Disable DMA");
-				menu_add_item_menu_tabulado(array_menu_debug_dma_tsconf_zxuno,1,lin);
+        if (MACHINE_IS_TSCONF) {
+        }
 
+        if (menu_debug_dma_existe_dma) {
+            menu_add_item_menu_inicial_format(&array_menu_debug_dma_tsconf_zxuno,MENU_OPCION_NORMAL,menu_debug_dma_tsconf_zxuno_disable,NULL,"~~DMA: %s",
+                (condicion_dma_disabled ? "Disabled" : "Enabled ") );  //Enabled acaba con espacio para borrar rastro de texto "Disabled"
+            menu_add_item_menu_shortcut(array_menu_debug_dma_tsconf_zxuno,'d');
+            menu_add_item_menu_ayuda(array_menu_debug_dma_tsconf_zxuno,"Disable DMA");
+            menu_add_item_menu_tabulado(array_menu_debug_dma_tsconf_zxuno,1,lin);
+        }
+        else {
+            //Borrar cualquier resto de info de maquina anterior con DMA
+            zxvision_cls(ventana);
+            menu_add_item_menu_inicial_format(&array_menu_debug_dma_tsconf_zxuno,MENU_OPCION_NORMAL,NULL,NULL,"No DMA enabled");
+            menu_add_item_menu_tabulado(array_menu_debug_dma_tsconf_zxuno,1,0);
+        }
 
 
 
 		//Nombre de ventana solo aparece en el caso de stdout
-                retorno_menu=menu_dibuja_menu_no_title_lang(&debug_tsconf_dma_opcion_seleccionada,&item_seleccionado,array_menu_debug_dma_tsconf_zxuno,"TSConf DMA" );
+        retorno_menu=menu_dibuja_menu_no_title_lang(&opcion_seleccionada,&item_seleccionado,array_menu_debug_dma_tsconf_zxuno,"Debug DMA" );
 
 
-	//En caso de menus tabulados, es responsabilidad de este de borrar la ventana
+	    if (retorno_menu!=MENU_RETORNO_BACKGROUND) {
 
-                if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
-                        //llamamos por valor de funcion
-                        if (item_seleccionado.menu_funcion!=NULL) {
-                                //printf ("actuamos por funcion\n");
-                                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
-
-
-                        }
+            if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+                //llamamos por valor de funcion
+                if (item_seleccionado.menu_funcion!=NULL) {
+                    //printf ("actuamos por funcion\n");
+                    item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
                 }
+            }
+        }
 
-        } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
-
-
-
-
-
-        //En caso de menus tabulados, suele ser necesario esto. Si no, la ventana se quedaria visible
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus && retorno_menu!=MENU_RETORNO_BACKGROUND);
 
 
-	//En caso de menus tabulados, es responsabilidad de este de liberar ventana
-	zxvision_destroy_window(&ventana);
+    //En caso de menus tabulados, suele ser necesario esto. Si no, la ventana se quedaria visible
+	util_add_window_geometry_compact(ventana);
+
+
+    if (retorno_menu==MENU_RETORNO_BACKGROUND) {
+        zxvision_message_put_window_background();
+    }
+
+    else {
+        //En caso de menus tabulados, es responsabilidad de este de liberar ventana
+        zxvision_destroy_window(ventana);
+    }
+
 
 }
+
+
 
 
 
@@ -32986,7 +33059,7 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
         }
 
 		if (MACHINE_IS_TSCONF || MACHINE_IS_ZXUNO || datagear_dma_emulation.v) {
-			menu_add_item_menu_format(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_dma_tsconf_zxuno,NULL,"Debug D~~MA");
+			menu_add_item_menu_format(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_dma,NULL,"Debug D~~MA");
 			menu_add_item_menu_shortcut(array_menu_debug,'m');
             menu_add_item_menu_se_cerrara(array_menu_debug);
             menu_add_item_menu_genera_ventana(array_menu_debug);
@@ -43966,8 +44039,8 @@ void menu_template_window_can_be_backgrounded(MENU_ITEM_PARAMETERS)
     //Toda ventana que este listada en zxvision_known_window_names_array debe permitir poder salir desde aqui
     //Se sale despues de haber inicializado overlay y de cualquier otra variable que necesite el overlay
     if (zxvision_currently_restoring_windows_on_start) {
-            //printf ("Saliendo de ventana ya que la estamos restaurando en startup\n");
-            return;
+        //printf ("Saliendo de ventana ya que la estamos restaurando en startup\n");
+        return;
     }
 
     do {
@@ -44007,7 +44080,6 @@ void menu_template_window_can_be_backgrounded(MENU_ITEM_PARAMETERS)
 	}
 
 	else {
-
 		zxvision_destroy_window(ventana);
 	}
 

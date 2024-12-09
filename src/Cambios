@@ -75,6 +75,7 @@ Mejorado ZX Vision:
 - Mejorar movimiento del cursor en menús al pulsar PgDn/PgUp
 - Permitir teclas Inicio/Fin en ventanas
 - Ventana de Video layers ahora se puede tener en segundo plano
+- Ventana de Debug DMA ahora se puede tener en segundo plano
 - Avisar en la marca de redimensionado cuando una ventana se tiene que aumentar de tamaño (porque hay texto mas allá del tamaño actual)
 - Permitir a una ventana desactivar acciones de scroll
 - El Process switcher se ubica en la parte izquierda-abajo de la pantalla por defecto
