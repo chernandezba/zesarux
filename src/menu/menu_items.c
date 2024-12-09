@@ -31624,22 +31624,30 @@ void menu_specnext_audio_dac_overlay(void)
 
 
     int linea=0;
-    char buffer_linea[64];
-
+    char buffer_linea[73];
 
 
     int i;
+
+    //Escalar el maximo del vu-meter al ancho de la ventana
+    //13 es lo que ocupa el texto de "DAC %c: %02XH " y los dos mas de margen izquierda y derecha
+    int max_ancho_volumenes=ventana->visible_width-13;
+
+    if (max_ancho_volumenes>40) max_ancho_volumenes=40;
+    if (max_ancho_volumenes<10) max_ancho_volumenes=10;
+
+    int divisor=128/max_ancho_volumenes;
 
 
 
     //Controlar limites, dado que las variables entran sin inicializar
     for (i=0;i<4;i++) {
-        if (menu_audio_specnext_dac_previos_dac[i]>31) menu_audio_specnext_dac_previos_dac[i]=31;
+        if (menu_audio_specnext_dac_previos_dac[i]>max_ancho_volumenes) menu_audio_specnext_dac_previos_dac[i]=max_ancho_volumenes;
     }
 
 
-    if (menu_audio_specnext_dac_previo_left>31) menu_audio_specnext_dac_previo_left=31;
-    if (menu_audio_specnext_dac_previo_right>31) menu_audio_specnext_dac_previo_right=31;
+    if (menu_audio_specnext_dac_previo_left>max_ancho_volumenes) menu_audio_specnext_dac_previo_left=max_ancho_volumenes;
+    if (menu_audio_specnext_dac_previo_right>max_ancho_volumenes) menu_audio_specnext_dac_previo_right=max_ancho_volumenes;
 
 
     int nivel_actual;
@@ -31682,10 +31690,10 @@ void menu_specnext_audio_dac_overlay(void)
         //Valor absoluto
         if (nivel_actual<0) nivel_actual=-nivel_actual;
 
-        //Y pasar de escala 0..128 a escala 0..32
-        nivel_actual /=4;
+        //Y pasar de escala 0..128 a escala 0..max_ancho_volumenes
+        nivel_actual /=divisor;
 
-        if (nivel_actual>31) nivel_actual=31;
+        if (nivel_actual>max_ancho_volumenes) nivel_actual=max_ancho_volumenes;
 
         menu_audio_specnext_dac_previos_dac[i]=menu_decae_ajusta_valor_volumen(menu_audio_specnext_dac_previos_dac[i],nivel_actual);
 
@@ -31693,7 +31701,7 @@ void menu_specnext_audio_dac_overlay(void)
         //char buf_nivel[33];
 
 
-        menu_string_volumen_n_longitud(buf_nivel,nivel_actual,menu_audio_specnext_dac_previos_dac[i],31);
+        menu_string_volumen_n_longitud(buf_nivel,nivel_actual,menu_audio_specnext_dac_previos_dac[i],max_ancho_volumenes);
         sprintf (buffer_linea,"DAC %c: %02XH %s",letra_dac,valor_dac,buf_nivel);
         zxvision_print_string_defaults_fillspc(ventana,1,linea++,buffer_linea);
 
@@ -31724,18 +31732,17 @@ void menu_specnext_audio_dac_overlay(void)
     //Valor absoluto
     if (nivel_actual<0) nivel_actual=-nivel_actual;
 
-    //Y pasar de escala 0..128 a escala 0..32
-    nivel_actual /=4;
+    //Y pasar de escala 0..128 a escala 0..max_ancho_volumenes
+    nivel_actual /=divisor;
 
-    if (nivel_actual>31) nivel_actual=31;
+
+    if (nivel_actual>max_ancho_volumenes) nivel_actual=max_ancho_volumenes;
 
     menu_audio_specnext_dac_previo_left=menu_decae_ajusta_valor_volumen(menu_audio_specnext_dac_previo_left,nivel_actual);
 
 
-    //char buf_nivel[33];
 
-
-    menu_string_volumen_n_longitud(buf_nivel,nivel_actual,menu_audio_specnext_dac_previo_left,31);
+    menu_string_volumen_n_longitud(buf_nivel,nivel_actual,menu_audio_specnext_dac_previo_left,max_ancho_volumenes);
     sprintf (buffer_linea,"Left Out:  %s",buf_nivel);
     zxvision_print_string_defaults_fillspc(ventana,1,linea++,buffer_linea);
 
@@ -31753,18 +31760,17 @@ void menu_specnext_audio_dac_overlay(void)
     //Valor absoluto
     if (nivel_actual<0) nivel_actual=-nivel_actual;
 
-    //Y pasar de escala 0..128 a escala 0..15
-    nivel_actual /=4;
+    //Y pasar de escala 0..128 a escala 0..max_ancho_volumenes
+    nivel_actual /=divisor;
 
-    if (nivel_actual>31) nivel_actual=31;
+
+    if (nivel_actual>max_ancho_volumenes) nivel_actual=max_ancho_volumenes;
 
     menu_audio_specnext_dac_previo_right=menu_decae_ajusta_valor_volumen(menu_audio_specnext_dac_previo_right,nivel_actual);
 
 
-    //char buf_nivel[33];
 
-
-    menu_string_volumen_n_longitud(buf_nivel,nivel_actual,menu_audio_specnext_dac_previo_right,31);
+    menu_string_volumen_n_longitud(buf_nivel,nivel_actual,menu_audio_specnext_dac_previo_right,max_ancho_volumenes);
     sprintf (buffer_linea,"Right Out: %s",buf_nivel);
     zxvision_print_string_defaults_fillspc(ventana,1,linea++,buffer_linea);
 
