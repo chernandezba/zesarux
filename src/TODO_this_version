@@ -529,9 +529,7 @@ desactivado tbblue_change_timing hasta que se corrija:
 *swag room: all objects are visible
 *seems also some sprites (objects like food) are not clipped well when the scroll makes the object at the border of the display. I think I'm clipping all the sprite
 
--acabar de probar fast render / no fast render indicando con el printf que modo usa
 
--funciones de decaer volumen que soporten mas de 15 de ancho, para cosas como las salidas DAC del Next
 
 -posibles optimizaciones render. Probando test core305B.snx: (ZEsarUX compilado con O3)
 * 61-54% llamando o no llamando a tbblue_render_layers_rainbow

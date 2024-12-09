@@ -7106,7 +7106,7 @@ z80_bit tbblue_reveal_layer_tiles={0};
 z80_bit tbblue_reveal_layer_layer2={0};
 z80_bit tbblue_reveal_layer_sprites={0};
 
-void tbblue_do_ula_standard_overlay()
+void tbblue_do_ula_standard_overlay(void)
 {
 
 
