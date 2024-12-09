@@ -2908,11 +2908,11 @@ char *bitmap_button_ext_desktop_nextdac[EXT_DESKTOP_BUTTONS_ANCHO]={
     "                          ",
 	"      x   x   x   x   x   ",
     "xxxxxxxxxxxxxxxxxxxxxxxxxx",
-	"xxxwxxxwxwwwxxxwwxxxwwwxxx",
-	"xxxwwxxwxwxxwxwxxwxwxxxxxx",
-	"xxxwxwxwxwxxwxwwwwxwxxxxxx",
-	"xxxwxxwwxwxxwxwxxwxwxxxxxx",
-	"xxxwxxxwxwwwxxwxxwxxwwwxxx",
+	"xxxxxwxxxwxwwwxxxwwxxxwwwx",
+	"xwxxxwwxxwxwxxwxwxxwxwxxxx",
+	"xwwxxwxwxwxwxxwxwwwwxwxxxx",
+	"xwxxxwxxwwxwxxwxwxxwxwxxxx",
+	"xxxxxwxxxwxwwwxxwxxwxxwwwx",
 
 	"  x   x   x   x   x   x   "
 
