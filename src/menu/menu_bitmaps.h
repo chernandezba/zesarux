@@ -79,6 +79,7 @@ extern char *bitmap_button_ext_desktop_debugdma[];
 extern char *bitmap_button_ext_desktop_breakpoints[];
 extern char *bitmap_button_ext_desktop_ioports[];
 extern char *bitmap_button_ext_desktop_geneneralsoundregisters[];
+extern char *bitmap_button_ext_desktop_nextdac[];
 extern char *bitmap_button_ext_desktop_cpustatistics[];
 extern char *bitmap_button_ext_desktop_corestatistics[];
 extern char *bitmap_button_ext_desktop_debugcpu_view_adventure[];

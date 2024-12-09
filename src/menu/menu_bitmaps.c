@@ -2886,6 +2886,38 @@ char *bitmap_button_ext_desktop_geneneralsoundregisters[EXT_DESKTOP_BUTTONS_ANCH
 
 };
 
+char *bitmap_button_ext_desktop_nextdac[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "  x                       ",
+    " x x   xxxxxxxxxxx        ",
+    " x x                      ",
+    "  xxx  xxxxxxxxxxx        ",
+    "                          ",
+	" x                        ",
+	" xxx   xxxxxxxxxxxrrrrrrr ",
+	" x x                      ",
+	" xxx   xxxxxxxxxxxrrrrrrr ",
+	"                          ",
+    " xxx   xxxxx              ",
+	" x                        ",
+    " xxx   xxxxx              ",
+    "   x                      ",
+    " xxx   xxxxxxxxxxxrr      ",
+    " x x                      ",
+    " xxx   xxxxxxxxxxxrr      ",
+    "                          ",
+	"      x   x   x   x   x   ",
+    "xxxxxxxxxxxxxxxxxxxxxxxxxx",
+	"xxxwxxxwxwwwxxxwwxxxwwwxxx",
+	"xxxwwxxwxwxxwxwxxwxwxxxxxx",
+	"xxxwxwxwxwxxwxwwwwxwxxxxxx",
+	"xxxwxxwwxwxxwxwxxwxwxxxxxx",
+	"xxxwxxxwxwwwxxwxxwxxwwwxxx",
+
+	"  x   x   x   x   x   x   "
+
+};
+
 char *bitmap_button_ext_desktop_audiosheet[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345
 
