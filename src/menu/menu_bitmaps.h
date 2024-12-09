@@ -75,6 +75,7 @@ extern char *bitmap_button_ext_desktop_snapinramrewind[];
 extern char *bitmap_button_ext_desktop_snapinramffw[];
 extern char *bitmap_button_ext_desktop_pause[];
 extern char *bitmap_button_ext_desktop_debugcpu[];
+extern char *bitmap_button_ext_desktop_debugdma[];
 extern char *bitmap_button_ext_desktop_breakpoints[];
 extern char *bitmap_button_ext_desktop_ioports[];
 extern char *bitmap_button_ext_desktop_geneneralsoundregisters[];

@@ -3505,6 +3505,35 @@ char *bitmap_button_ext_desktop_debugcpu[EXT_DESKTOP_BUTTONS_ANCHO]={
     "       R    R             "   //25
 };
 
+char *bitmap_button_ext_desktop_debugdma[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+	"  x   x   x   x   x   x   ",	//0
+	"  x   x   x   x   x   x   ",
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
+	"xxxxxxxxxwwwxxwxxxwxxwwxxx",
+	"xwxxxxxxxwxxwxwwxwwxwxxwxx",
+	"xwwxxxxxxwxxwxwxwxwxwwwwxx",
+	"xwxxxxxxxwxxwxwxxxwxwxxwxx",
+	"xxxxxxxxxwwwxxwxxxwxwxxwxx",
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",  //10
+	"  x   x   x   x   x   x   ",
+	"  x   x   x   x   x   x   ",
+    "                          ",
+    "                 R        ",
+    "                R         ",
+  	"          RRRRRR          ",
+	"         RRRRRRRR         ",
+	"         RRRRRRRR         ",
+	"          RRRRRRR         ",
+	"         RR      R        ",	//20
+	"        RRRR  R   R       ",
+	"        RRRRRRR   R       ",
+	"         RR               ",
+	"        R  R              ",
+    "       R    R             "   //25
+};
 
 char *bitmap_button_ext_desktop_breakpoints[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345
