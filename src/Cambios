@@ -48,6 +48,7 @@ Mejorada emulación de Spectrum Next:
 - Agregado Canales DAC A,B,C,D
 - Permitir tiles en RAM 7
 - Mejorar render de pantalla cuando solo capa de ula activada (reduce el uso de cpu un 6% menos de cpu en mi maquina)
+- Corregido timings de 128k/+2a/Pentagon
 - Corregido mapeo de DIVMMC después de RETN
 - Corregido temporización del Copper
 - Corregido llamada a esxdos DISK_FILEMAP

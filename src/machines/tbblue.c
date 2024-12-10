@@ -109,8 +109,8 @@ z80_bit tbblue_fast_boot_mode={0};
 //Por defecto denegado
 z80_bit tbblue_deny_turbo_rom={1};
 
-//Maximo turbo permitido al habilitar tbblue_deny_turbo_rom. Por defecto maximo 2X
-int tbblue_deny_turbo_rom_max_allowed=2;
+//Maximo turbo permitido al habilitar tbblue_deny_turbo_rom. Por defecto maximo 4X
+int tbblue_deny_turbo_rom_max_allowed=4;
 
 
 //Por defecto no denegado
@@ -3761,6 +3761,7 @@ void tbblue_set_emulator_setting_reg_8(void)
 		//Desactivar contention. Solo hacerlo cuando hay cambio
 		if (contend_enabled.v) {
 			debug_printf (VERBOSE_DEBUG,"Disabling contention");
+            printf ("Disabling contention\n");
         	contend_enabled.v=0;
 	        inicializa_tabla_contend();
 		}
@@ -3770,6 +3771,7 @@ void tbblue_set_emulator_setting_reg_8(void)
 		//Activar contention. Solo hacerlo cuando hay cambio
 		if (contend_enabled.v==0) {
 			debug_printf (VERBOSE_DEBUG,"Enabling contention");
+            printf ("Enabling contention\n");
         	contend_enabled.v=1;
 	        inicializa_tabla_contend();
 		}
@@ -4162,10 +4164,8 @@ void tbblue_set_timing_post_turbo(void)
 
 */
 
-
-void tbblue_set_timing_128k(void)
+void tbblue_set_timing_128k_p2a_common(void)
 {
-    printf("tbblue_set_timing_128k\n");
     contend_read=contend_read_128k;
     contend_read_no_mreq=contend_read_no_mreq_128k;
     contend_write_no_mreq=contend_write_no_mreq_128k;
@@ -4178,6 +4178,51 @@ void tbblue_set_timing_128k(void)
     screen_invisible_borde_superior=7;
     screen_invisible_borde_derecho=104;
 
+    contend_pages_128k_p2a=contend_pages_128k;
+
+}
+
+void tbblue_set_timing_pentagon(void)
+{
+    printf("tbblue_set_timing_pentagon\n");
+    tbblue_set_timing_128k_p2a_common();
+
+    //Pent
+    screen_invisible_borde_superior=16;
+    screen_borde_superior=64;
+    screen_total_borde_inferior=48;
+
+    //los timings son realmente estos pero entonces necesitariamos mas tamanyo de ventana de ancho
+    /*screen_total_borde_izquierdo=64;
+    screen_total_borde_derecho=64;
+    screen_invisible_borde_derecho=64;*/
+
+    //dejamos estos que es el tamanyo normal
+    screen_total_borde_izquierdo=48;
+    screen_total_borde_derecho=48;
+    screen_invisible_borde_derecho=96;
+
+    screen_testados_linea=224;
+
+}
+
+
+
+void tbblue_set_timing_128k(void)
+{
+    printf("tbblue_set_timing_128k\n");
+    tbblue_set_timing_128k_p2a_common();
+
+    //tbblue_set_timing_post_turbo();
+
+}
+
+void tbblue_set_timing_p2a(void)
+{
+    printf("tbblue_set_timing_p2a\n");
+    tbblue_set_timing_128k_p2a_common();
+
+
     port_from_ula=port_from_ula_p2a;
     contend_pages_128k_p2a=contend_pages_p2a;
 
@@ -4189,6 +4234,12 @@ void tbblue_set_timing_128k(void)
 void tbblue_set_timing_48k(void)
 {
     printf("tbblue_set_timing_48k\n");
+
+    if (cpu_turbo_speed!=1) {
+        printf("Called to tbblue_set_timing_48k but cpu speed is not 1X\n");
+        return;
+    }
+
     contend_read=contend_read_48k;
     contend_read_no_mreq=contend_read_no_mreq_48k;
     contend_write_no_mreq=contend_write_no_mreq_48k;
@@ -4196,11 +4247,6 @@ void tbblue_set_timing_48k(void)
     ula_contend_port_early=ula_contend_port_early_48k;
     ula_contend_port_late=ula_contend_port_late_48k;
 
-    screen_testados_linea=224;
-    screen_invisible_borde_superior=8;
-    screen_invisible_borde_derecho=96;
-
-    port_from_ula=port_from_ula_48k;
 
     //esto no se usara...
     contend_pages_128k_p2a=contend_pages_128k;
@@ -4209,18 +4255,76 @@ void tbblue_set_timing_48k(void)
 
 }
 
-void tbblue_change_timing(int timing)
+void tbblue_new_change_timing(int timing)
 {
 
     /*
-    No tiene sentido cambiar el timing si está velocidad diferente de 1x
-    Probablemente este no es el comportamiento exacto de la máquina real,
-    pero como no hay documentación pues...
+0x03 (03) => Machine Type
+(R)
+  bit 7 = nextreg 0x44 second byte indicator
+  bits 6:4 = Display timing
+  bit 3 = User lock on display timing applied
+  bits 2-0 = Machine type
+(W)
+  A write to this register disables the bootrom
+  bit 7 = 1 to allow changes to bits 6:4
+  bits 6:4 = Selects display timing
+    affects port decoding and contention
+    000 = Internal Use
+    001 = ZX 48K display timing
+    010 = ZX 128K/+2 display timing
+    011 = ZX +2A/+2B/+3 display timing
+    100 = Pentagon display timing (changes to 50 Hz)
+  bit 3 = 1 to toggle user lock on display timing (hard reset = 0)
+  bits 2:0 = Selects machine type (config mode only)
+    determines roms loaded
+    000 = Configuration mode
+    001 = ZX 48K
+    010 = ZX 128K/+2
+    011 = ZX +2A/+2B/+3
+    100 = Pentagon
     */
-    if (cpu_turbo_speed!=1) return;
 
-    if (timing==0) tbblue_set_timing_48k();
-    else if (timing==1) tbblue_set_timing_128k();
+    /*
+       process (eff_nr_03_machine_timing)
+   begin
+
+      machine_timing_48 <= '0';
+      machine_timing_128 <= '0';
+      machine_timing_p3 <= '0';
+      machine_timing_pentagon <= '0';
+
+      if eff_nr_03_machine_timing(2) = '1' then
+         machine_timing_pentagon <= '1';
+      elsif eff_nr_03_machine_timing(1 downto 0) = "10" then
+         machine_timing_128 <= '1';
+      elsif eff_nr_03_machine_timing(1 downto 0) = "11" then
+         machine_timing_p3 <= '1';
+      else
+         machine_timing_48 <= '1';
+      end if;
+
+   end process;
+    */
+
+    //Valores por defecto
+    screen_invisible_borde_superior=8;
+    screen_borde_superior=56;
+
+    screen_total_borde_inferior=56;
+
+    screen_total_borde_izquierdo=48;
+    screen_total_borde_derecho=48;
+    screen_invisible_borde_derecho=96;
+    screen_testados_linea=224;
+
+    port_from_ula=port_from_ula_48k;
+
+
+    if (timing==4) tbblue_set_timing_pentagon();
+    else if (timing==2) tbblue_set_timing_128k();
+    else if (timing==3) tbblue_set_timing_p2a();
+    else tbblue_set_timing_48k();
 
     screen_set_video_params_indices();
     inicializa_tabla_contend();
@@ -4232,45 +4336,51 @@ void tbblue_change_timing(int timing)
 void tbblue_set_emulator_setting_timing(void)
 {
 	/*
-	(W) 0x03 (03) => Set machine type, only in IPL or config mode:
-	A write in this register disables the IPL
-	(0x0000-0x3FFF are mapped to the RAM instead of the internal ROM)
-	bit 7 = lock timing
-
-	bits 6-4 = Timing:
-	000 or 001 = ZX 48K
-	010 = ZX 128K
-	011 = ZX +2/+3e
-	100 = Pentagon 128K
-
-	bit 3 = Reserved, must be 0
-
-	bits 2-0 = Machine type:
-	000 = Config mode
-	001 = ZX 48K
-	010 = ZX 128K
-	011 = ZX +2/+3e
-	100 = Pentagon 128K
+0x03 (03) => Machine Type
+(R)
+  bit 7 = nextreg 0x44 second byte indicator
+  bits 6:4 = Display timing
+  bit 3 = User lock on display timing applied
+  bits 2-0 = Machine type
+(W)
+  A write to this register disables the bootrom
+  bit 7 = 1 to allow changes to bits 6:4
+  bits 6:4 = Selects display timing
+    affects port decoding and contention
+    000 = Internal Use
+    001 = ZX 48K display timing
+    010 = ZX 128K/+2 display timing
+    011 = ZX +2A/+2B/+3 display timing
+    100 = Pentagon display timing (changes to 50 Hz)
+  bit 3 = 1 to toggle user lock on display timing (hard reset = 0)
+  bits 2:0 = Selects machine type (config mode only)
+    determines roms loaded
+    000 = Configuration mode
+    001 = ZX 48K
+    010 = ZX 128K/+2
+    011 = ZX +2A/+2B/+3
+    100 = Pentagon
 	*/
 
 
-    //z80_byte t=(tbblue_config1 >> 6)&3;
     z80_byte t=(tbblue_registers[3]>>4)&7;
 
-    //TODO: otros timings
 
-    if (t<=1) {
-    //48k
-        debug_printf (VERBOSE_INFO,"Apply config.timing. change:48k");
-        tbblue_change_timing(0);
+
+    /*
+    No tiene sentido cambiar el timing si está velocidad diferente de 1x
+    Probablemente este no es el comportamiento exacto de la máquina real,
+    pero como no hay documentación pues...
+    */
+
+   printf("tbblue_set_emulator_setting_timing. t=%d\n",t);
+
+    if (cpu_turbo_speed!=1) {
+        printf("Called to tbblue_set_emulator_setting_timing but cpu speed is not 1X\n");
+        return;
     }
-    else {
-    //128k
-        debug_printf (VERBOSE_INFO,"Apply config.timing. change:128k");
-        tbblue_change_timing(1);
-    }
 
-
+    tbblue_new_change_timing(t);
 
 
 }
@@ -4676,6 +4786,7 @@ void tbblue_set_value_port_position(z80_byte index_position,z80_byte value)
 	//printf ("register port %02XH value %02XH\n",index_position,value);
 
     z80_byte last_register_2=tbblue_registers[2];
+    z80_byte last_register_3=tbblue_registers[3];
 	z80_byte last_register_5=tbblue_registers[5];
 	z80_byte last_register_6=tbblue_registers[6];
 	z80_byte last_register_7=tbblue_registers[7];
@@ -4710,6 +4821,28 @@ void tbblue_set_value_port_position(z80_byte index_position,z80_byte value)
             value |=previous_machine_type;
 
         }
+
+        //Ver si deja cambiar timings
+        /*
+        0x03 (03) => Machine Type
+        (W)
+        A write to this register disables the bootrom
+        bit 7 = 1 to allow changes to bits 6:4
+        bits 6:4 = Selects display timing
+            affects port decoding and contention
+            000 = Internal Use
+            001 = ZX 48K display timing
+            010 = ZX 128K/+2 display timing
+            011 = ZX +2A/+2B/+3 display timing
+            100 = Pentagon display timing (changes to 50 Hz)
+        */
+
+       if ((value&128)==0) {
+            printf("Do not allow timing changes as bit 7 is not 1\n");
+            z80_byte previous_timing=last_register_3 & 0x70;
+            value &=(255-0x70);
+            value |=previous_timing;
+       }
     }
 
 	if (index_position==28) {
@@ -4808,6 +4941,7 @@ void tbblue_set_value_port_position(z80_byte index_position,z80_byte value)
 
 		case 3:
 		/*
+0x03 (03) => Machine Type
 (W)
   A write to this register disables the bootrom
   bit 7 = 1 to allow changes to bits 6:4
@@ -4846,8 +4980,12 @@ void tbblue_set_value_port_position(z80_byte index_position,z80_byte value)
                 tbblue_set_memory_pages();
 
 
-                //Solo cuando hay cambio
-                //if ( last_register_3 != value )
+
+            }
+
+            //Permitir cambios de timings
+            //Solo cuando hay cambio
+            if ( last_register_3 != value ) {
                 tbblue_set_emulator_setting_timing();
             }
 		break;

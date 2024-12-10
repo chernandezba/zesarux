@@ -500,7 +500,6 @@ Pendiente
 ; transfer when a previous one is finished.
 
 
-registro 4 de Next usa bits 6-0 no 4-0
 
 
 --restore-all-known-windows no parece abrir bien las ventanas. pasa con segun que ventanas ya puestas para restore en el zesaruxrc
@@ -510,15 +509,6 @@ registro 4 de Next usa bits 6-0 no 4-0
 Debería aumentar total_height si es necesario
 
 
--tbblue_set_timing_post_turbo hara petar si se activa setting tbblue_store_scanlines
-desactivado tbblue_change_timing hasta que se corrija:
--si llama a tbblue_set_timing_post_turbo, velocidad se pone a 280Mhz
--Si no lo llama, atic atac va super lento el copper
-
--screen_estados_totales no actualizado segun turbo, justo al principio de cargar Atic Atac. activar debug del copper para verlo
-
--poder ver los canales DAC del next en una ventana
-*aumentar tamaño vu-meters
 
 -menu mouse sensitivity valor debe salir a  la derecha
 
@@ -527,6 +517,9 @@ desactivado tbblue_change_timing hasta que se corrija:
 -bugs Atic atac:
 ok *flashlight effect on blue dark room: I have to check the "smooth scroll" bit you told me some days ago. maybe that's the cause for that bug
 *swag room: all objects are visible
+LAYER 2 has all the objects in colour, the tilemap is used to hide them to a mono-yellow silhouette.
+
+
 *seems also some sprites (objects like food) are not clipped well when the scroll makes the object at the border of the display. I think I'm clipping all the sprite
 
 
@@ -543,3 +536,6 @@ ok *flashlight effect on blue dark room: I have to check the "smooth scroll" bit
 -puerto 0x5f de DAC D entra en conflicto con volumen canal A de chip AY?
 
 -bit scroll medio pixel de ula. registro 0x68.  bit 2 = ULA half pixel scroll (may change) (soft reset = 0)
+
+-Next: acabar de probar timings,efectos hi-color, etc
+
