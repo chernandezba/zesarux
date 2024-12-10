@@ -501,18 +501,15 @@ Pendiente
 
 
 
-
 --restore-all-known-windows no parece abrir bien las ventanas. pasa con segun que ventanas ya puestas para restore en el zesaruxrc
 
 
 -Alto total de process switcher se amplía si necesita ubicar más iconos?
 Debería aumentar total_height si es necesario
 
-
-
 -menu mouse sensitivity valor debe salir a  la derecha
 
--Bubblegumbros el marcador de arriba del todo en el menu sale cortado: cargando desde cero se ve bien. algun registro de otro juego tendra que ver
+
 
 -bugs Atic atac:
 ok *flashlight effect on blue dark room: I have to check the "smooth scroll" bit you told me some days ago. maybe that's the cause for that bug
@@ -530,8 +527,7 @@ LAYER 2 has all the objects in colour, the tilemap is used to hide them to a mon
 
 *62% compilado sin O3
 
--ventana Datagear DMA que se pueda poner en segundo plano
-*revisar si se puede decir si la operacion esta ejecutandose o no
+
 
 -puerto 0x5f de DAC D entra en conflicto con volumen canal A de chip AY?
 

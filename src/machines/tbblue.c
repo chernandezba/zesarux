@@ -6702,6 +6702,60 @@ void tbblue_fast_render_ula_layer(z80_int *puntero_final_rainbow,int estamos_bor
 
 }
 
+//Mezclar tres colores
+int tbblue_blend_three_color(int color_primero, int color_segundo,int color_layer,int modo_capas)
+{
+    //Retornar un color rgb9
+    //Obtener cada componente por separado
+    //En modo capas 6, se suman colores
+    //En modo capas 7, se suman colores y luego se resta 5
+
+	int c1_r=(color_primero>>6)&7;
+	int c1_g=(color_primero>>3)&7;
+	int c1_b=color_primero&7;
+
+
+	int c2_r=(color_segundo>>6)&7;
+	int c2_g=(color_segundo>>3)&7;
+	int c2_b=color_segundo&7;
+
+	int c3_r=(color_layer>>6)&7;
+	int c3_g=(color_layer>>3)&7;
+	int c3_b=color_layer&7;
+
+
+    /*c1_r +=c2_r;
+    c1_g +=c2_g;
+    c1_b +=c2_b;*/
+
+    c1_r=(c1_r+c2_r)/2;
+    c1_g=(c1_g+c2_g)/2;
+    c1_b=(c1_b+c2_b)/2;
+
+    c1_r +=c3_r;
+    c1_g +=c3_g;
+    c1_b +=c3_b;
+
+    if (c1_r>7) c1_r=7;
+    if (c1_g>7) c1_g=7;
+    if (c1_b>7) c1_b=7;
+
+
+    if (modo_capas==7) {
+        c1_r -=5;
+        c1_g -=5;
+        c1_b -=5;
+
+        if (c1_r<0) c1_r=0;
+        if (c1_g<0) c1_g=0;
+        if (c1_b<0) c1_b=0;
+    }
+
+    return (c1_r<<6)|(c1_g<<3)|c1_b;
+
+}
+
+//Mezclar dos colores
 int tbblue_blend_color(int color_primero, int color_layer,int modo_capas)
 {
     //Retornar un color rgb9
@@ -6936,7 +6990,7 @@ void tbblue_render_layers_rainbow(int capalayer2,int capasprites,int capatiles)
                         else {
                             color=p_layer_fourth[i];
                             if (!tbblue_fn_pixel_layer_transp_fourth(color) ) {
-                                if (blend_ula_layer2) {
+                                if (blend_ula_layer2 && !blend_tiles_layer2) {
                                     //printf("hacemos blend\n");
                                     //Mezclar color primera capa (ula) con este capa 4 (layer2)
                                     z80_int color_ula=p_layer_first[i];
@@ -6954,13 +7008,46 @@ void tbblue_render_layers_rainbow(int capalayer2,int capasprites,int capatiles)
                                     //entonces el color final sera el color del layer 2 tal cual
                                 }
 
-                                if (blend_tiles_layer2) {
+                                if (!blend_ula_layer2 && blend_tiles_layer2) {
                                     //printf("hacemos blend\n");
                                     //Mezclar color tecera capa (tiles) con este capa 4 (layer2)
                                     z80_int color_tiles=p_layer_third[i];
                                     if (!tbblue_fn_pixel_layer_transp_first(color_tiles)) {
                                         color=tbblue_blend_color(color_tiles,color,modo_capas);
                                     }
+
+                                }
+
+                                if (blend_ula_layer2 && blend_tiles_layer2) {
+                                    //printf("hacemos blend de los 3\n");
+                                    //Mezclar color primera capa (ula)
+                                    //Mezclar color tecera capa (tiles)
+                                    //con este capa 4(layer2)
+                                    z80_int color_tiles=p_layer_third[i];
+                                    z80_int color_ula=p_layer_first[i];
+
+                                    if (tbblue_fn_pixel_layer_transp_first(color_ula)) color_ula=color_tiles;
+                                    if (tbblue_fn_pixel_layer_transp_first(color_tiles)) color_tiles=color_ula;
+
+                                    if (!tbblue_fn_pixel_layer_transp_first(color_ula) && !tbblue_fn_pixel_layer_transp_first(color_tiles)) {
+                                        color=tbblue_blend_three_color(color_ula,color_tiles,color,modo_capas);
+                                    }
+
+                                    //Si zona mas alla de 256x192 de la ula, hacer blend con palette source index 0
+
+                                    //TODO: arreglar esto
+                                    if (estamos_borde_supinf || estamos_borde_derizq) {
+                                        //printf("Estamos en el border\n");
+                                        color=tbblue_blend_three_color(tbblue_get_palette_active_ula(0),color_tiles,color,modo_capas);
+                                    }
+
+                                    //Nota: si hay clipping de la ula, se encontrara ciertas zonas con color transparente
+                                    //entonces el color final sera el color del layer 2 tal cual
+
+
+                                    /*if (!tbblue_fn_pixel_layer_transp_first(color_tiles)) {
+                                        color=tbblue_blend_color(color_tiles,color,modo_capas);
+                                    }*/
 
                                 }
 
