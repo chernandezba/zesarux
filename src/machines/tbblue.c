@@ -7026,28 +7026,21 @@ void tbblue_render_layers_rainbow(int capalayer2,int capasprites,int capatiles)
                                     z80_int color_tiles=p_layer_third[i];
                                     z80_int color_ula=p_layer_first[i];
 
+                                    //Si zona mas alla de 256x192 de la ula, hacer blend con palette source index 0
+                                    if (estamos_borde_supinf || estamos_borde_derizq) {
+                                        color_ula=tbblue_get_palette_active_ula(0);
+                                    }
+
+                                    //Si alguno es transparente, decimos que es el color del otro, para que al mediar los dos colores,
+                                    //salta el mismo
                                     if (tbblue_fn_pixel_layer_transp_first(color_ula)) color_ula=color_tiles;
                                     if (tbblue_fn_pixel_layer_transp_first(color_tiles)) color_tiles=color_ula;
 
+                                    //Y si finalmente no son los dos transparentes
                                     if (!tbblue_fn_pixel_layer_transp_first(color_ula) && !tbblue_fn_pixel_layer_transp_first(color_tiles)) {
                                         color=tbblue_blend_three_color(color_ula,color_tiles,color,modo_capas);
                                     }
 
-                                    //Si zona mas alla de 256x192 de la ula, hacer blend con palette source index 0
-
-                                    //TODO: arreglar esto
-                                    if (estamos_borde_supinf || estamos_borde_derizq) {
-                                        //printf("Estamos en el border\n");
-                                        color=tbblue_blend_three_color(tbblue_get_palette_active_ula(0),color_tiles,color,modo_capas);
-                                    }
-
-                                    //Nota: si hay clipping de la ula, se encontrara ciertas zonas con color transparente
-                                    //entonces el color final sera el color del layer 2 tal cual
-
-
-                                    /*if (!tbblue_fn_pixel_layer_transp_first(color_tiles)) {
-                                        color=tbblue_blend_color(color_tiles,color,modo_capas);
-                                    }*/
 
                                 }
 
