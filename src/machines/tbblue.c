@@ -6793,7 +6793,7 @@ int tbblue_blend_color(int color_primero, int color_layer,int modo_capas)
 }
 
 //Nos situamos en la linea justo donde empiezan los tiles
-void tbblue_render_layers_rainbow(int capalayer2,int capasprites,int capatiles)
+void tbblue_render_layers_rainbow_modes_67(int capalayer2,int capasprites,int capatiles)
 {
 
     int modo_capas=tbblue_get_layers_priorities();
@@ -7042,6 +7042,209 @@ void tbblue_render_layers_rainbow(int capalayer2,int capasprites,int capatiles)
 
                                 }
 
+                                *puntero_final_rainbow=RGB9_INDEX_FIRST_COLOR+color;
+                                //doble de alto
+                                puntero_final_rainbow[ancho_rainbow]=RGB9_INDEX_FIRST_COLOR+color;
+                            }
+
+                            else {
+                                if (estamos_borde_supinf) {
+                                    //Si estamos en borde inferior o superior, no hacemos nada, dibujar color borde
+                                }
+
+                                else {
+                                    //Borde izquierdo o derecho o pantalla. Ver si estamos en pantalla
+                                    if (i>=final_borde_izquierdo && i<inicio_borde_derecho) {
+                                        //Poner color indicado por "Transparency colour fallback" registro:
+                                        *puntero_final_rainbow=fallbackcolour;
+                                        //doble de alto
+                                        puntero_final_rainbow[ancho_rainbow]=fallbackcolour;
+                                    }
+                                    else {
+                                        //Es borde. dejar ese color
+                                    }
+
+                                }
+                            }
+                        }
+                    }
+
+                }
+            }
+
+            puntero_final_rainbow++;
+
+
+        }
+
+	}
+}
+
+
+//Nos situamos en la linea justo donde empiezan los tiles
+void tbblue_render_layers_rainbow(int capalayer2,int capasprites,int capatiles)
+{
+
+    int modo_capas=tbblue_get_layers_priorities();
+
+    //Funcion aparte para modos 6 y 7, para no complicar mas esta funcion
+    if (modo_capas==6 || modo_capas==7) {
+        tbblue_render_layers_rainbow_modes_67(capalayer2,capasprites,capatiles);
+        return;
+    }
+
+	//(R/W) 0x4A (74) => Transparency colour fallback
+		//	bits 7-0 = Set the 8 bit colour.
+		//	(0 = black on reset on reset)
+	z80_int fallbackcolour = RGB9_INDEX_FIRST_COLOR + tbblue_get_9bit_colour(tbblue_registers[74]);
+
+	int y;
+	int diferencia_border_tiles;
+
+	//diferencia_border_tiles=screen_indice_inicio_pant-TBBLUE_TILES_BORDER;
+	//Tamaño del border efectivo restando espacio usado por tiles/layer2 en border
+	diferencia_border_tiles=screen_borde_superior-TBBLUE_TILES_BORDER;
+
+    y=t_scanline_draw-screen_invisible_borde_superior;
+
+
+	//y=t_scanline_draw-screen_indice_inicio_pant;
+    if (border_enabled.v==0) y=y-screen_borde_superior;
+
+
+    //if (y<diferencia_border_tiles || y>=(screen_indice_inicio_pant+192+TBBLUE_TILES_BORDER)) {
+
+    if (y<diferencia_border_tiles || y>=(screen_borde_superior+192+TBBLUE_TILES_BORDER)) {
+
+        //printf ("t_scanline_draw: %d y: %d diferencia_border_tiles: %d screen_indice_inicio_pant: %d screen_invisible_borde_superior: %d TBBLUE_TILES_BORDER: %d\n",
+        //	t_scanline_draw,y,diferencia_border_tiles,screen_indice_inicio_pant,screen_invisible_borde_superior,TBBLUE_TILES_BORDER);
+
+        //Si estamos por encima o por debajo de la zona de tiles/layer2,
+        //que es la mas alta de todas las capas
+
+        return;
+
+    }
+
+
+    //Calcular donde hay border
+    int final_border_superior=screen_indice_inicio_pant-screen_invisible_borde_superior;
+    int inicio_border_inferior=final_border_superior+192;
+
+    //Doble de alto
+    y *=2;
+
+    final_border_superior *=2;
+    inicio_border_inferior *=2;
+
+    //Vemos si linea esta en zona border
+    int estamos_borde_supinf=0;
+    if (y<final_border_superior || y>=inicio_border_inferior) estamos_borde_supinf=1;
+
+    //Zona borde izquierdo y derecho
+    int final_borde_izquierdo=2*screen_total_borde_izquierdo*border_enabled.v;
+    int inicio_borde_derecho=final_borde_izquierdo+TBBLUE_DISPLAY_WIDTH;
+
+
+
+
+    int ancho_rainbow=get_total_ancho_rainbow();
+
+	z80_int *puntero_final_rainbow=&rainbow_buffer[ y*ancho_rainbow ];
+
+	//Por defecto
+	//sprites over the Layer 2, over the ULA graphics
+
+
+	tbblue_set_layer_priorities();
+
+
+
+
+	z80_int color;
+
+	//printf ("ancho total: %d size layers: %d\n",get_total_ancho_rainbow(),TBBLUE_LAYERS_PIXEL_WIDTH );
+
+	int i;
+
+	//Si solo hay capa ula, hacer render mas rapido
+	if (capalayer2==0 && capasprites==0 && capatiles==0) {
+        //printf("   Fast render. y=%3d modo_capas: %d\n",y,modo_capas);
+		//Hará fast render cuando no haya capa de layer2 o sprites, aunque tambien,
+		//estando esas capas, cuando este en zona de border o no visible de dichas capas
+		tbblue_fast_render_ula_layer(puntero_final_rainbow,estamos_borde_supinf,final_borde_izquierdo,inicio_borde_derecho,ancho_rainbow);
+
+	}
+
+
+
+	else {
+
+        //printf("NO Fast render. y=%3d modo_capas: %d capalayer2:%d capasprites:%d capatiles:%d\n",y,modo_capas,capalayer2,capasprites,capatiles);
+
+        for (i=0;i<ancho_rainbow;i++) {
+
+            int estamos_borde_derizq=0;
+
+            if (i<final_borde_izquierdo || i>=inicio_borde_derecho) estamos_borde_derizq=1;
+
+            color = tbblue_layer_layer2[i];
+
+            //Si no se permite layer2 con priority bit, resetearlo
+            if (tbblue_allow_layer2_priority_bit.v==0) {
+                if (tbblue_color_is_layer2_priority(color)) {
+                    //Este para el check que viene luego de tbblue_color_is_layer2_priority, que no lo detecte como priority
+                    color &= 0x1FF;
+                    //Y este ya para el renderizado de capas, dejar un color normal de 9 bits
+                    tbblue_layer_layer2[i] &= 0x1FF;
+                }
+            }
+
+            //Si color de layer2 tiene bit de prioridad y no es el transparente
+            //Se mira que no sea el color ficticio de transparente porque este es 65535 (todos los bits a 1) y el
+            //TBBLUE_LAYER2_PRIORITY=0x8000, por lo que un color como transparente se podria interpretar como que es de layer2 con prioridad
+            if (tbblue_color_is_layer2_priority(color)) {
+                //printf("bit con prioridad\n");
+                //Tiene prioridad. Quitar ese bit de prioridad y cualquier otro que no es el indice de color
+                color &= 0x1FF;
+
+                *puntero_final_rainbow=RGB9_INDEX_FIRST_COLOR+color;
+                //doble de alto
+                puntero_final_rainbow[ancho_rainbow]=RGB9_INDEX_FIRST_COLOR+color;
+            }
+
+            else {
+
+                //Primera capa
+                color=p_layer_first[i];
+
+
+                if (!tbblue_fn_pixel_layer_transp_first(color)) {
+                    *puntero_final_rainbow=RGB9_INDEX_FIRST_COLOR+color;
+                    //doble de alto
+                    puntero_final_rainbow[ancho_rainbow]=RGB9_INDEX_FIRST_COLOR+color;
+                }
+
+                else {
+                    color=p_layer_second[i];
+                    if (!tbblue_fn_pixel_layer_transp_second(color) ) {
+                        *puntero_final_rainbow=RGB9_INDEX_FIRST_COLOR+color;
+                        //doble de alto
+                        puntero_final_rainbow[ancho_rainbow]=RGB9_INDEX_FIRST_COLOR+color;
+                    }
+
+                    else {
+                        color=p_layer_third[i];
+
+                        if (!tbblue_fn_pixel_layer_transp_third(color)) {
+                            *puntero_final_rainbow=RGB9_INDEX_FIRST_COLOR+color;
+                            //doble de alto
+                            puntero_final_rainbow[ancho_rainbow]=RGB9_INDEX_FIRST_COLOR+color;
+                        }
+
+                        else {
+                            color=p_layer_fourth[i];
+                            if (!tbblue_fn_pixel_layer_transp_fourth(color) ) {
                                 *puntero_final_rainbow=RGB9_INDEX_FIRST_COLOR+color;
                                 //doble de alto
                                 puntero_final_rainbow[ancho_rainbow]=RGB9_INDEX_FIRST_COLOR+color;
