@@ -2095,606 +2095,598 @@ void set_machine_params(void)
 203=CZ 1500 PLUS
 */
 
-		char mensaje_error[200];
-
-		//defaults
-		ay_chip_present.v=0;
-		sn_chip_present.v=0;
-        i8049_chip_present=0;
+    char mensaje_error[200];
+
+    //defaults
+    ay_chip_present.v=0;
+    sn_chip_present.v=0;
+    i8049_chip_present=0;
 
-		if (!MACHINE_IS_Z88) {
-			//timer_sleep_machine=original_timer_sleep_machine=20000;
-			original_timer_sleep_machine=20000;
-        	        set_emulator_speed();
-		}
+    if (!MACHINE_IS_Z88) {
+        //timer_sleep_machine=original_timer_sleep_machine=20000;
+        original_timer_sleep_machine=20000;
+                set_emulator_speed();
+    }
 
-		allow_write_rom.v=0;
+    allow_write_rom.v=0;
 
 
 
-        //Ya que se inicializa la maquina, todas las rutinas de nested core se pierden y hay que desactivar los interfaces asociados
-		dandanator_enabled.v=0;
-		superupgrade_enabled.v=0;
-		kartusho_enabled.v=0;
-		ifrom_enabled.v=0;
-		betadisk_enabled.v=0;
-		hilow_enabled.v=0;
-        samram_enabled.v=0;
-        hilow_bbn_enabled.v=0;
-        if1_enabled.v=0;
-        mhpokeador_enabled.v=0;
-        multiface_enabled.v=0;
-        transtape_enabled.v=0;
-        specmate_enabled.v=0;
-        phoenix_enabled.v=0;
-        defcon_enabled.v=0;
-        ramjet_enabled.v=0;
-        interface007_enabled.v=0;
-        dinamid3_enabled.v=0;
-        textadv_location_desc_enabled.v=0;
-
-		plus3dos_traps.v=0;
-		pd765_enabled.v=0;
+    //Ya que se inicializa la maquina, todas las rutinas de nested core se pierden y hay que desactivar los interfaces asociados
+    dandanator_enabled.v=0;
+    superupgrade_enabled.v=0;
+    kartusho_enabled.v=0;
+    ifrom_enabled.v=0;
+    betadisk_enabled.v=0;
+    hilow_enabled.v=0;
+    samram_enabled.v=0;
+    hilow_bbn_enabled.v=0;
+    if1_enabled.v=0;
+    mhpokeador_enabled.v=0;
+    multiface_enabled.v=0;
+    transtape_enabled.v=0;
+    specmate_enabled.v=0;
+    phoenix_enabled.v=0;
+    defcon_enabled.v=0;
+    ramjet_enabled.v=0;
+    interface007_enabled.v=0;
+    dinamid3_enabled.v=0;
+    textadv_location_desc_enabled.v=0;
 
-        //para que iba a querer desactivar esto ?
-		//dskplusthree_emulation.v=0;
+    plus3dos_traps.v=0;
+    pd765_enabled.v=0;
 
-		//nota: combiene que allow_write_rom.v sea 0 al desactivar superupgrade
-		//porque si estaba activo allow_write_rom.v antes, y desactivamos superupgrade,
-		//al intentar desactivar allow_write, se produce segmentation fault
+    //para que iba a querer desactivar esto ?
+    //dskplusthree_emulation.v=0;
 
-		//Si maquina anterior era pentagon, desactivar timing pentagon y activar contended memory
-		if (last_machine_type==MACHINE_ID_PENTAGON) {
-			debug_printf(VERBOSE_DEBUG,"Disabling pentagon timing and enabling contended memory because previous machine was Pentagon");
-			pentagon_timing.v=0;
-			contend_enabled.v=1;
-		}
+    //nota: combiene que allow_write_rom.v sea 0 al desactivar superupgrade
+    //porque si estaba activo allow_write_rom.v antes, y desactivamos superupgrade,
+    //al intentar desactivar allow_write, se produce segmentation fault
 
-		chloe_keyboard.v=0;
+    //Si maquina anterior era pentagon, desactivar timing pentagon y activar contended memory
+    if (last_machine_type==MACHINE_ID_PENTAGON) {
+        debug_printf(VERBOSE_DEBUG,"Disabling pentagon timing and enabling contended memory because previous machine was Pentagon");
+        pentagon_timing.v=0;
+        contend_enabled.v=1;
+    }
 
+    chloe_keyboard.v=0;
 
-		input_file_keyboard_turbo.v=0;
 
-		//Modo turbo no. No, parece que cambiarlo aqui sin mas no provoca cambios cuando se hace smartload
-		//no tocarlo, dejamos que el usuario se encargue de ponerlo a 1 si quiere
-		//printf ("Setting cpu speed to 1\n");
-		//sleep (3);
-		//cpu_turbo_speed=1;
+    input_file_keyboard_turbo.v=0;
 
-		//en spectrum, 32. en pentagon, 36
-		cpu_duracion_pulso_interrupcion=32;
+    //Modo turbo no. No, parece que cambiarlo aqui sin mas no provoca cambios cuando se hace smartload
+    //no tocarlo, dejamos que el usuario se encargue de ponerlo a 1 si quiere
+    //printf ("Setting cpu speed to 1\n");
+    //sleep (3);
+    //cpu_turbo_speed=1;
 
+    //en spectrum, 32. en pentagon, 36
+    cpu_duracion_pulso_interrupcion=32;
 
-		z80_cpu_current_type=Z80_TYPE_GENERIC;
 
+    z80_cpu_current_type=Z80_TYPE_GENERIC;
 
-		//cpu_core_loop=cpu_core_loop_spectrum;
-		if (MACHINE_IS_SPECTRUM) {
-			cpu_core_loop_active=CPU_CORE_SPECTRUM;
-		}
 
-		else if (MACHINE_IS_ZX8081) {
-			cpu_core_loop_active=CPU_CORE_ZX8081;
-		}
+    //cpu_core_loop=cpu_core_loop_spectrum;
+    if (MACHINE_IS_SPECTRUM) {
+        cpu_core_loop_active=CPU_CORE_SPECTRUM;
+    }
 
-		else if (MACHINE_IS_ACE) {
-			cpu_core_loop_active=CPU_CORE_ACE;
-		}
+    else if (MACHINE_IS_ZX8081) {
+        cpu_core_loop_active=CPU_CORE_ZX8081;
+    }
 
-		else if (MACHINE_IS_CPC) {
-			cpu_core_loop_active=CPU_CORE_CPC;
-		}
+    else if (MACHINE_IS_ACE) {
+        cpu_core_loop_active=CPU_CORE_ACE;
+    }
 
-		else if (MACHINE_IS_PCW) {
-			cpu_core_loop_active=CPU_CORE_PCW;
-		}
+    else if (MACHINE_IS_CPC) {
+        cpu_core_loop_active=CPU_CORE_CPC;
+    }
 
-		else if (MACHINE_IS_SAM) {
-			cpu_core_loop_active=CPU_CORE_SAM;
-		}
+    else if (MACHINE_IS_PCW) {
+        cpu_core_loop_active=CPU_CORE_PCW;
+    }
 
-		else if (MACHINE_IS_QL) {
-			cpu_core_loop_active=CPU_CORE_QL;
-		}
+    else if (MACHINE_IS_SAM) {
+        cpu_core_loop_active=CPU_CORE_SAM;
+    }
 
-		else if (MACHINE_IS_MK14) {
-			cpu_core_loop_active=CPU_CORE_MK14;
-		}
+    else if (MACHINE_IS_QL) {
+        cpu_core_loop_active=CPU_CORE_QL;
+    }
 
-		else if (MACHINE_IS_MSX) {
-			cpu_core_loop_active=CPU_CORE_MSX;
-		}
+    else if (MACHINE_IS_MK14) {
+        cpu_core_loop_active=CPU_CORE_MK14;
+    }
 
-		else if (MACHINE_IS_SVI) {
-			cpu_core_loop_active=CPU_CORE_SVI;
-		}
+    else if (MACHINE_IS_MSX) {
+        cpu_core_loop_active=CPU_CORE_MSX;
+    }
 
-		else if (MACHINE_IS_COLECO) {
-			cpu_core_loop_active=CPU_CORE_COLECO;
-		}
+    else if (MACHINE_IS_SVI) {
+        cpu_core_loop_active=CPU_CORE_SVI;
+    }
 
-		else if (MACHINE_IS_SG1000) {
-			cpu_core_loop_active=CPU_CORE_SG1000;
-		}
+    else if (MACHINE_IS_COLECO) {
+        cpu_core_loop_active=CPU_CORE_COLECO;
+    }
 
-		else if (MACHINE_IS_SMS) {
-			cpu_core_loop_active=CPU_CORE_SMS;
-		}
+    else if (MACHINE_IS_SG1000) {
+        cpu_core_loop_active=CPU_CORE_SG1000;
+    }
 
-        //TODO: de momento core Spectrum
-		else if (MACHINE_IS_PCW) {
-			cpu_core_loop_active=CPU_CORE_SPECTRUM;
-		}
+    else if (MACHINE_IS_SMS) {
+        cpu_core_loop_active=CPU_CORE_SMS;
+    }
 
-		else {
-			cpu_core_loop_active=CPU_CORE_Z88;
-		}
+    else {
+        cpu_core_loop_active=CPU_CORE_Z88;
+    }
 
-		debug_breakpoints_enabled.v=0;
-		set_cpu_core_loop();
+    debug_breakpoints_enabled.v=0;
+    set_cpu_core_loop();
 
-		//esto ya establece el cpu core. Debe estar antes de establecer peek, poke, lee_puerto, out_port
-		//dado que "restaura" dichas funciones a sus valores originales... pero la primera vez, esos valores originales valen 0
-		//breakpoints_disable();
+    //esto ya establece el cpu core. Debe estar antes de establecer peek, poke, lee_puerto, out_port
+    //dado que "restaura" dichas funciones a sus valores originales... pero la primera vez, esos valores originales valen 0
+    //breakpoints_disable();
 
-		out_port=out_port_spectrum;
+    out_port=out_port_spectrum;
 
 
-		//desactivar ram refresh emulation, cpu transaction log y cualquier otra funcion que altere el cpu_core, el peek_byte, etc
-		cpu_transaction_log_enabled.v=0;
-		cpu_code_coverage_enabled.v=0;
-		cpu_history_enabled.v=0;
-		machine_emulate_memory_refresh=0;
+    //desactivar ram refresh emulation, cpu transaction log y cualquier otra funcion que altere el cpu_core, el peek_byte, etc
+    cpu_transaction_log_enabled.v=0;
+    cpu_code_coverage_enabled.v=0;
+    cpu_history_enabled.v=0;
+    machine_emulate_memory_refresh=0;
 
-		push_valor=push_valor_default;
-		extended_stack_enabled.v=0;
+    push_valor=push_valor_default;
+    extended_stack_enabled.v=0;
 
 
-		//Valores usados en real video
-		//TODO. para 128k hay 1 linea menos superior. ZX80,ZX81??
-		screen_invisible_borde_superior=8;
-		screen_borde_superior=56;
+    //Valores usados en real video
+    screen_invisible_borde_superior=8;
+    screen_borde_superior=56;
 
-		screen_total_borde_inferior=56;
+    screen_total_borde_inferior=56;
 
-		screen_total_borde_izquierdo=48;
-		screen_total_borde_derecho=48;
-		screen_invisible_borde_derecho=96;
-		screen_testados_linea=224;
+    screen_total_borde_izquierdo=48;
+    screen_total_borde_derecho=48;
+    screen_invisible_borde_derecho=96;
+    screen_testados_linea=224;
 
-		//Reseteos para ZX80/81
+    //Reseteos para ZX80/81
 
-                //offset_zx8081_t_coordx=0;
-		video_zx8081_lnctr_adjust.v=0;
+    //offset_zx8081_t_coordx=0;
+    video_zx8081_lnctr_adjust.v=0;
 
-		video_zx8081_estabilizador_imagen.v=1;
+    video_zx8081_estabilizador_imagen.v=1;
 
-		disable_wrx();
-                //wrx_present.v=0;
-		//wrx_mueve_primera_columna.v=1;
-                zx8081_vsync_sound.v=0;
-		//video_zx8081_decremento_x_cuando_mayor=8;
-		minimo_duracion_vsync=DEFAULT_MINIMO_DURACION_VSYNC;
+    disable_wrx();
+    //wrx_present.v=0;
+    //wrx_mueve_primera_columna.v=1;
+    zx8081_vsync_sound.v=0;
+    //video_zx8081_decremento_x_cuando_mayor=8;
+    minimo_duracion_vsync=DEFAULT_MINIMO_DURACION_VSYNC;
 
-		//normalmente excepto +2a
-		port_from_ula=port_from_ula_48k;
+    //normalmente excepto +2a
+    port_from_ula=port_from_ula_48k;
 
-		fetch_opcode=fetch_opcode_spectrum;
+    fetch_opcode=fetch_opcode_spectrum;
 
-        hotswapped_from_zx81=0;
+    hotswapped_from_zx81=0;
 
-		//2 para ZX81 mejor
-		//0 para spectrum mejor
-		realtape_volumen=0;
-        realtape_algorithm_new_noise_reduction=0;
+    //2 para ZX81 mejor
+    //0 para spectrum mejor
+    realtape_volumen=0;
+    realtape_algorithm_new_noise_reduction=0;
 
 
-		//Resetear a zona memoria por defecto. Evita cuelgues al intentar usar una zona de memoria que ya no esta disponible,
-		//ejemplo: iniciar maquina msx. abrir view sprites->activar hardware. F5 y cambiar a spectravideo. F5. Floating point exception.
-		//menu_debug_set_memory_zone_mapped();
-		//En principio esto ya no hace falta, desde menu_debug_set_memory_zone_attr, menu_debug_get_mapped_byte y menu_debug_write_mapped_byte
-		//ya se está conmutando correctamente a memory mapped cuando la zona anterior ya no está disponible
+    //Resetear a zona memoria por defecto. Evita cuelgues al intentar usar una zona de memoria que ya no esta disponible,
+    //ejemplo: iniciar maquina msx. abrir view sprites->activar hardware. F5 y cambiar a spectravideo. F5. Floating point exception.
+    //menu_debug_set_memory_zone_mapped();
+    //En principio esto ya no hace falta, desde menu_debug_set_memory_zone_attr, menu_debug_get_mapped_byte y menu_debug_write_mapped_byte
+    //ya se está conmutando correctamente a memory mapped cuando la zona anterior ya no está disponible
 
-		screen_set_parameters_slow_machines();
+    screen_set_parameters_slow_machines();
 
-		//Cuando se viene aqui desde cambio modo turbo, no interesa vaciar buffer, si no, se oye fatal. Ejemplo: uwol en tsconf
-		if (set_machine_empties_audio_buffer.v) audio_empty_buffer();
+    //Cuando se viene aqui desde cambio modo turbo, no interesa vaciar buffer, si no, se oye fatal. Ejemplo: uwol en tsconf
+    if (set_machine_empties_audio_buffer.v) audio_empty_buffer();
 
-		//Inicializar paletas de colores. Colores basicos de spectrum y algunos derivados (gigascreen, etc) dependen de si paleta real activa y segun que maquina
-		//Cuando se viene aqui desde cambio modo turbo, no interesa reinicializar paleta, si no, se realentiza todo mucho. Ejemplo: uwol en tsconf
-		//Nota: Se le podria cambiar el nombre a la variable set_machine_empties_audio_buffer.v
-		if (set_machine_empties_audio_buffer.v) screen_init_colour_table();
+    //Inicializar paletas de colores. Colores basicos de spectrum y algunos derivados (gigascreen, etc) dependen de si paleta real activa y segun que maquina
+    //Cuando se viene aqui desde cambio modo turbo, no interesa reinicializar paleta, si no, se realentiza todo mucho. Ejemplo: uwol en tsconf
+    //Nota: Se le podria cambiar el nombre a la variable set_machine_empties_audio_buffer.v
+    if (set_machine_empties_audio_buffer.v) screen_init_colour_table();
 
-		set_machine_empties_audio_buffer.v=1;
+    set_machine_empties_audio_buffer.v=1;
 
-		if (MACHINE_IS_CHLOE) chloe_keyboard.v=1;
+    if (MACHINE_IS_CHLOE) chloe_keyboard.v=1;
 
-		//Cargar keymap de manera generica. De momento solo se usa en Z88, CPC y Chloe
-		if (scr_z88_cpc_load_keymap!=NULL) scr_z88_cpc_load_keymap();
+    //Cargar keymap de manera generica. De momento solo se usa en Z88, CPC y Chloe
+    if (scr_z88_cpc_load_keymap!=NULL) scr_z88_cpc_load_keymap();
 
 
-		if (MACHINE_IS_TBBLUE) datagear_dma_enable();
-		//else datagear_dma_disable();
+    if (MACHINE_IS_TBBLUE) datagear_dma_enable();
+    //else datagear_dma_disable();
 
-		//Pentagon no tiene modo Timex
-		if (MACHINE_IS_PENTAGON) {
-			if (timex_video_emulation.v) disable_timex_video();
-		}
+    //Pentagon no tiene modo Timex
+    if (MACHINE_IS_PENTAGON) {
+        if (timex_video_emulation.v) disable_timex_video();
+    }
 
-		//Quitar mensajes de footer establecidos con autoselectoptions.c
-		//Desactivado. Esto provoca:
-		//Al cambiar de maquina, si hay un mensaje pendiente, seguira desplazandose hasta que acabe
-		//Si en cambio activasemos esta linea comentada, pasaria que al cargar un snapshot que tenga .config,
-		//se estableceria el mensaje del programname del .config, y esta linea borraria el mensaje y no se veria
-		//temp tape_options_set_first_message_counter=tape_options_set_second_message_counter=0;
+    //Quitar mensajes de footer establecidos con autoselectoptions.c
+    //Desactivado. Esto provoca:
+    //Al cambiar de maquina, si hay un mensaje pendiente, seguira desplazandose hasta que acabe
+    //Si en cambio activasemos esta linea comentada, pasaria que al cargar un snapshot que tenga .config,
+    //se estableceria el mensaje del programname del .config, y esta linea borraria el mensaje y no se veria
+    //temp tape_options_set_first_message_counter=tape_options_set_second_message_counter=0;
 
 
-		if (MACHINE_IS_SPECTRUM_16_48) {
-			contend_read=contend_read_48k;
-			contend_read_no_mreq=contend_read_no_mreq_48k;
-			contend_write_no_mreq=contend_write_no_mreq_48k;
+    if (MACHINE_IS_SPECTRUM_16_48) {
+        contend_read=contend_read_48k;
+        contend_read_no_mreq=contend_read_no_mreq_48k;
+        contend_write_no_mreq=contend_write_no_mreq_48k;
 
-			ula_contend_port_early=ula_contend_port_early_48k;
-			ula_contend_port_late=ula_contend_port_late_48k;
+        ula_contend_port_early=ula_contend_port_early_48k;
+        ula_contend_port_late=ula_contend_port_late_48k;
 
-			//Ajustes para Inves
-			if (MACHINE_IS_INVES) {
-	                        screen_testados_linea=228;
-        	                screen_invisible_borde_superior=7;
-                	        screen_invisible_borde_derecho=104;
-                            keyboard_issue2.v=0; //El puerto FEH de Inves se comporta como issue 3
-			}
-		}
+        //Ajustes para Inves
+        if (MACHINE_IS_INVES) {
+            screen_testados_linea=228;
+            screen_invisible_borde_superior=7;
+            screen_invisible_borde_derecho=104;
+            keyboard_issue2.v=0; //El puerto FEH de Inves se comporta como issue 3
+        }
+    }
 
-		else if (MACHINE_IS_SPECTRUM_128_P2_P2A_P3) {
-                        contend_read=contend_read_128k;
-                        contend_read_no_mreq=contend_read_no_mreq_128k;
-                        contend_write_no_mreq=contend_write_no_mreq_128k;
+    else if (MACHINE_IS_SPECTRUM_128_P2_P2A_P3) {
+        contend_read=contend_read_128k;
+        contend_read_no_mreq=contend_read_no_mreq_128k;
+        contend_write_no_mreq=contend_write_no_mreq_128k;
 
-			ula_contend_port_early=ula_contend_port_early_128k;
-			ula_contend_port_late=ula_contend_port_late_128k;
+        ula_contend_port_early=ula_contend_port_early_128k;
+        ula_contend_port_late=ula_contend_port_late_128k;
 
 
-	                screen_testados_linea=228;
-        	        screen_invisible_borde_superior=7;
-                	screen_invisible_borde_derecho=104;
+        screen_testados_linea=228;
+        screen_invisible_borde_superior=7;
+        screen_invisible_borde_derecho=104;
 
-			contend_pages_128k_p2a=contend_pages_128k;
+        contend_pages_128k_p2a=contend_pages_128k;
 
-		        if (MACHINE_IS_SPECTRUM_P2A_P3) {
-                		port_from_ula=port_from_ula_p2a;
-				contend_pages_128k_p2a=contend_pages_p2a;
-			}
+        if (MACHINE_IS_SPECTRUM_P2A_P3) {
+            port_from_ula=port_from_ula_p2a;
+            contend_pages_128k_p2a=contend_pages_p2a;
+        }
 
-			if (MACHINE_IS_PENTAGON) {
-				contend_enabled.v=0;
-				ula_enable_pentagon_timing_no_common();
-			}
+        if (MACHINE_IS_PENTAGON) {
+            contend_enabled.v=0;
+            ula_enable_pentagon_timing_no_common();
+        }
 
-			if (MACHINE_IS_SPECTRUM_P3) {
-                //Habilitar pd765 a no ser que los traps esten activados
-                if (plus3dos_traps.v==0) pd765_enable();
-				//plus3dos_traps.v=1;
-			}
+        if (MACHINE_IS_SPECTRUM_P3) {
+            //Habilitar pd765 a no ser que los traps esten activados
+            if (plus3dos_traps.v==0) pd765_enable();
+            //plus3dos_traps.v=1;
+        }
 
-		}
+    }
 
-                else if (MACHINE_IS_ZXUNO) {
-			zxuno_set_timing_48k();
-                }
+    else if (MACHINE_IS_ZXUNO) {
+        zxuno_set_timing_48k();
+    }
 
 
-		else if (MACHINE_IS_ZX8081) {
+    else if (MACHINE_IS_ZX8081) {
 
-		        screen_invisible_borde_superior=16;
-			screen_borde_superior=48;
+        screen_invisible_borde_superior=16;
+        screen_borde_superior=48;
 
-                	contend_read=contend_read_zx8081;
-	                contend_read_no_mreq=contend_read_no_mreq_zx8081;
-        	        contend_write_no_mreq=contend_write_no_mreq_zx8081;
+        contend_read=contend_read_zx8081;
+        contend_read_no_mreq=contend_read_no_mreq_zx8081;
+        contend_write_no_mreq=contend_write_no_mreq_zx8081;
 
-			ula_contend_port_early=ula_contend_port_early_zx8081;
-			ula_contend_port_late=ula_contend_port_late_zx8081;
+        ula_contend_port_early=ula_contend_port_early_zx8081;
+        ula_contend_port_late=ula_contend_port_late_zx8081;
 
 
-			//2 para ZX81 mejor
-			//0 para spectrum mejor
-			realtape_volumen=2;
-            realtape_algorithm_new_noise_reduction=2;
+        //2 para ZX81 mejor
+        //0 para spectrum mejor
+        realtape_volumen=2;
+        realtape_algorithm_new_noise_reduction=2;
 
-		}
+    }
 
-		else if (MACHINE_IS_ACE) {
-		        screen_invisible_borde_superior=16;
-			screen_borde_superior=48;
+    else if (MACHINE_IS_ACE) {
+        screen_invisible_borde_superior=16;
+        screen_borde_superior=48;
 
-                        contend_read=contend_read_ace;
-                        contend_read_no_mreq=contend_read_no_mreq_ace;
-                        contend_write_no_mreq=contend_write_no_mreq_ace;
+        contend_read=contend_read_ace;
+        contend_read_no_mreq=contend_read_no_mreq_ace;
+        contend_write_no_mreq=contend_write_no_mreq_ace;
 
-                        ula_contend_port_early=ula_contend_port_early_ace;
-                        ula_contend_port_late=ula_contend_port_late_ace;
+        ula_contend_port_early=ula_contend_port_early_ace;
+        ula_contend_port_late=ula_contend_port_late_ace;
 
 
-                }
+    }
 
 
-	       else if (MACHINE_IS_CHLOE) {
-                        contend_read=contend_read_chloe;
-                        contend_read_no_mreq=contend_read_no_mreq_chloe;
-                        contend_write_no_mreq=contend_write_no_mreq_chloe;
+    else if (MACHINE_IS_CHLOE) {
+        contend_read=contend_read_chloe;
+        contend_read_no_mreq=contend_read_no_mreq_chloe;
+        contend_write_no_mreq=contend_write_no_mreq_chloe;
 
-                        ula_contend_port_early=ula_contend_port_early_chloe;
-                        ula_contend_port_late=ula_contend_port_late_chloe;
+        ula_contend_port_early=ula_contend_port_early_chloe;
+        ula_contend_port_late=ula_contend_port_late_chloe;
 
 
-                }
+    }
 
-		else if (MACHINE_IS_PRISM) {
-                        contend_read=contend_read_prism;
-                        contend_read_no_mreq=contend_read_no_mreq_prism;
-                        contend_write_no_mreq=contend_write_no_mreq_prism;
+    else if (MACHINE_IS_PRISM) {
+        contend_read=contend_read_prism;
+        contend_read_no_mreq=contend_read_no_mreq_prism;
+        contend_write_no_mreq=contend_write_no_mreq_prism;
 
-                        ula_contend_port_early=ula_contend_port_early_prism;
-                        ula_contend_port_late=ula_contend_port_late_prism;
+        ula_contend_port_early=ula_contend_port_early_prism;
+        ula_contend_port_late=ula_contend_port_late_prism;
 
-			screen_invisible_borde_superior=45;
-			screen_borde_superior=48;
-			screen_total_borde_inferior=48;
+        screen_invisible_borde_superior=45;
+        screen_borde_superior=48;
+        screen_total_borde_inferior=48;
 
-			screen_total_borde_izquierdo=64;
-			screen_total_borde_derecho=64;
-			screen_invisible_borde_derecho=158;
-			screen_testados_linea=133;
-                }
+        screen_total_borde_izquierdo=64;
+        screen_total_borde_derecho=64;
+        screen_invisible_borde_derecho=158;
+        screen_testados_linea=133;
+    }
 
-                if (MACHINE_IS_TBBLUE) {
-			tbblue_set_timing_48k();
+    if (MACHINE_IS_TBBLUE) {
+        printf("Set timing 48k from set_machine_params\n");
+        tbblue_set_timing_48k();
 
-		        //divmmc arranca desactivado, lo desactivamos asi para que no cambie las funciones peek/poke
-			//esto ya se desactiva en set_machine
-		        /*if (divmmc_enabled.v) {
-		                divmmc_enabled.v=0;
-		                diviface_enabled.v=0;
-		        }
-			*/
+        //divmmc arranca desactivado, lo desactivamos asi para que no cambie las funciones peek/poke
+        //esto ya se desactiva en set_machine
+        /*if (divmmc_enabled.v) {
+        divmmc_enabled.v=0;
+        diviface_enabled.v=0;
+        }
+        */
 
+    }
 
-                }
 
+    else if (MACHINE_IS_CHROME) {
+        contend_read=contend_read_chrome;
+        contend_read_no_mreq=contend_read_no_mreq_chrome;
+        contend_write_no_mreq=contend_write_no_mreq_chrome;
 
-								else if (MACHINE_IS_CHROME) {
-															 contend_read=contend_read_chrome;
-															 contend_read_no_mreq=contend_read_no_mreq_chrome;
-															 contend_write_no_mreq=contend_write_no_mreq_chrome;
+        ula_contend_port_early=ula_contend_port_early_chrome;
+        ula_contend_port_late=ula_contend_port_late_chrome;
 
-															 ula_contend_port_early=ula_contend_port_early_chrome;
-															 ula_contend_port_late=ula_contend_port_late_chrome;
 
+        screen_testados_linea=228;
+        screen_invisible_borde_superior=7;
+        screen_invisible_borde_derecho=104;
 
-			 	                		screen_testados_linea=228;
-			         	        		screen_invisible_borde_superior=7;
-			                 			screen_invisible_borde_derecho=104;
 
+    }
 
-											 }
+    else if (MACHINE_IS_TSCONF) {
+        contend_read=contend_read_tsconf;
+        contend_read_no_mreq=contend_read_no_mreq_tsconf;
+        contend_write_no_mreq=contend_write_no_mreq_tsconf;
 
-						else if (MACHINE_IS_TSCONF) {
-							contend_read=contend_read_tsconf;
-							contend_read_no_mreq=contend_read_no_mreq_tsconf;
-					        contend_write_no_mreq=contend_write_no_mreq_tsconf;
+        ula_contend_port_early=ula_contend_port_early_tsconf;
+        ula_contend_port_late=ula_contend_port_late_tsconf;
+        screen_testados_linea=224;
 
-				 			ula_contend_port_early=ula_contend_port_early_tsconf;
-				 			ula_contend_port_late=ula_contend_port_late_tsconf;
-					        screen_testados_linea=224;
 
 
+        screen_invisible_borde_superior	=32; //para que sumen 320
+        screen_borde_superior=48;
 
-							screen_invisible_borde_superior	=32; //para que sumen 320
-							screen_borde_superior=48;
+        screen_total_borde_inferior=48;
 
-							screen_total_borde_inferior=48;
+        /* Tiempos de tsconf:
+        Line, pixels:
+        blank - left border - pixels - right border
+        256x192: 88-52-256-52
+        320x200,
+        320x240: 88-20-320-20
+        360x288: 88-0-360-0
 
-							/* Tiempos de tsconf:
-							Line, pixels:
-blank - left border - pixels - right border
-256x192: 88-52-256-52
-320x200,
-320x240: 88-20-320-20
-360x288: 88-0-360-0
+        Frame, lines:
+        blank - upper border - pixels - lower border
+        256x192: 32-48-192-48
+        320x200: 32-44-200-44
+        320x240: 32-24-240-24
+        360x288: 32-0-288-0
 
-Frame, lines:
-blank - upper border - pixels - lower border
-256x192: 32-48-192-48
-320x200: 32-44-200-44
-320x240: 32-24-240-24
-360x288: 32-0-288-0
+        You don't need timings for H/V sync =)
 
-You don't need timings for H/V sync =)
+        */
 
-							*/
 
+        //los timings son realmente estos :
+        screen_total_borde_izquierdo=64;
+        screen_total_borde_derecho=64;
+        screen_invisible_borde_derecho=64;
 
-                        	//los timings son realmente estos :
-                        	screen_total_borde_izquierdo=64;
-                        	screen_total_borde_derecho=64;
-                        	screen_invisible_borde_derecho=64;
+        z80_cpu_current_type=Z80_TYPE_CMOS;
 
-							z80_cpu_current_type=Z80_TYPE_CMOS;
 
 
+    }
 
-				}
+    else if (MACHINE_IS_BASECONF) {
+        contend_read=contend_read_baseconf;
+        contend_read_no_mreq=contend_read_no_mreq_baseconf;
+        contend_write_no_mreq=contend_write_no_mreq_baseconf;
 
-					else if (MACHINE_IS_BASECONF) {
-							contend_read=contend_read_baseconf;
-							contend_read_no_mreq=contend_read_no_mreq_baseconf;
-					        contend_write_no_mreq=contend_write_no_mreq_baseconf;
+        ula_contend_port_early=ula_contend_port_early_baseconf;
+        ula_contend_port_late=ula_contend_port_late_baseconf;
 
-				 			ula_contend_port_early=ula_contend_port_early_baseconf;
-				 			ula_contend_port_late=ula_contend_port_late_baseconf;
+        z80_cpu_current_type=Z80_TYPE_CMOS;
 
-							 z80_cpu_current_type=Z80_TYPE_CMOS;
+        //Temp timings 128k
+        screen_testados_linea=228;
+        screen_invisible_borde_superior=7;
+        screen_invisible_borde_derecho=104;
 
-                                        //Temp timings 128k
-                        screen_testados_linea=228;
-                        screen_invisible_borde_superior=7;
-                        screen_invisible_borde_derecho=104;
+    }
 
+    else if (MACHINE_IS_TIMEX_TS_TC_2068) {
+        contend_read=contend_read_timex;
+        contend_read_no_mreq=contend_read_no_mreq_timex;
+        contend_write_no_mreq=contend_write_no_mreq_timex;
 
+        ula_contend_port_early=ula_contend_port_early_timex;
+        ula_contend_port_late=ula_contend_port_late_timex;
 
-				}
 
-               else if (MACHINE_IS_TIMEX_TS_TC_2068) {
-                        contend_read=contend_read_timex;
-                        contend_read_no_mreq=contend_read_no_mreq_timex;
-                        contend_write_no_mreq=contend_write_no_mreq_timex;
+    }
 
-                        ula_contend_port_early=ula_contend_port_early_timex;
-                        ula_contend_port_late=ula_contend_port_late_timex;
 
 
-                }
 
+    else if (MACHINE_IS_Z88) {
+        contend_read=contend_read_z88;
+        contend_read_no_mreq=contend_read_no_mreq_z88;
+        contend_write_no_mreq=contend_write_no_mreq_z88;
 
+        ula_contend_port_early=ula_contend_port_early_z88;
+        ula_contend_port_late=ula_contend_port_late_z88;
 
+        z80_cpu_current_type=Z80_TYPE_CMOS;
 
-                else if (MACHINE_IS_Z88) {
-                        contend_read=contend_read_z88;
-                        contend_read_no_mreq=contend_read_no_mreq_z88;
-                        contend_write_no_mreq=contend_write_no_mreq_z88;
+        //timer_sleep_machine=original_timer_sleep_machine=5000;
+        original_timer_sleep_machine=5000;
+        set_emulator_speed();
 
-                        ula_contend_port_early=ula_contend_port_early_z88;
-                        ula_contend_port_late=ula_contend_port_late_z88;
+    }
 
-						z80_cpu_current_type=Z80_TYPE_CMOS;
 
-			//timer_sleep_machine=original_timer_sleep_machine=5000;
-			original_timer_sleep_machine=5000;
-			set_emulator_speed();
+    else if (MACHINE_IS_CPC) {
+        contend_read=contend_read_cpc;
+        contend_read_no_mreq=contend_read_no_mreq_cpc;
+        contend_write_no_mreq=contend_write_no_mreq_cpc;
 
-                }
+        ula_contend_port_early=ula_contend_port_early_cpc;
+        ula_contend_port_late=ula_contend_port_late_cpc;
 
-
-		else if (MACHINE_IS_CPC) {
-                        contend_read=contend_read_cpc;
-                        contend_read_no_mreq=contend_read_no_mreq_cpc;
-                        contend_write_no_mreq=contend_write_no_mreq_cpc;
-
-                        ula_contend_port_early=ula_contend_port_early_cpc;
-                        ula_contend_port_late=ula_contend_port_late_cpc;
-
-                        if (MACHINE_IS_CPC_HAS_FLOPPY) {
-                            pd765_enable();
-                        }
-
-
-                }
-
-
-		else if (MACHINE_IS_PCW) {
-			contend_read=contend_read_pcw;
-			contend_read_no_mreq=contend_read_no_mreq_pcw;
-			contend_write_no_mreq=contend_write_no_mreq_pcw;
-
-			ula_contend_port_early=ula_contend_port_early_pcw;
-			ula_contend_port_late=ula_contend_port_late_pcw;
-
+        if (MACHINE_IS_CPC_HAS_FLOPPY) {
             pd765_enable();
-
-		}
-
-		else if (MACHINE_IS_MSX) {
-			contend_read=contend_read_msx1;
-			contend_read_no_mreq=contend_read_no_mreq_msx1;
-			contend_write_no_mreq=contend_write_no_mreq_msx1;
-
-			ula_contend_port_early=ula_contend_port_early_msx1;
-			ula_contend_port_late=ula_contend_port_late_msx1;
+        }
 
 
-			// 3579545 / 312 / 50
-			screen_testados_linea=229;
-
-            //TODO
-            //Parece que MSX usa CMOS tambien
-            //https://faqwiki.zxnet.co.uk/wiki/Z80#Differences_between_NMOS_and_CMOS_Z80s
-            //https://www.msx.org/forum/development/msx-development/bug-z80-emulation-or-tr-hw
-            //z80_cpu_current_type=Z80_TYPE_CMOS;
-            //Pero a falta de confirmar, de momento no lo toco
-
-		}
-
-		else if (MACHINE_IS_SVI) {
-			contend_read=contend_read_svi;
-			contend_read_no_mreq=contend_read_no_mreq_svi;
-			contend_write_no_mreq=contend_write_no_mreq_svi;
-
-			ula_contend_port_early=ula_contend_port_early_svi;
-			ula_contend_port_late=ula_contend_port_late_svi;
+    }
 
 
-			screen_testados_linea=228;
+    else if (MACHINE_IS_PCW) {
+        contend_read=contend_read_pcw;
+        contend_read_no_mreq=contend_read_no_mreq_pcw;
+        contend_write_no_mreq=contend_write_no_mreq_pcw;
 
-		}
+        ula_contend_port_early=ula_contend_port_early_pcw;
+        ula_contend_port_late=ula_contend_port_late_pcw;
 
-		else if (MACHINE_IS_COLECO) {
-			contend_read=contend_read_coleco;
-			contend_read_no_mreq=contend_read_no_mreq_coleco;
-			contend_write_no_mreq=contend_write_no_mreq_coleco;
+        pd765_enable();
 
-			ula_contend_port_early=ula_contend_port_early_coleco;
-			ula_contend_port_late=ula_contend_port_late_coleco;
+    }
 
+    else if (MACHINE_IS_MSX) {
+        contend_read=contend_read_msx1;
+        contend_read_no_mreq=contend_read_no_mreq_msx1;
+        contend_write_no_mreq=contend_write_no_mreq_msx1;
 
-			screen_testados_linea=215;
-
-		}
-
-		else if (MACHINE_IS_SG1000) {
-			contend_read=contend_read_sg1000;
-			contend_read_no_mreq=contend_read_no_mreq_sg1000;
-			contend_write_no_mreq=contend_write_no_mreq_sg1000;
-
-			ula_contend_port_early=ula_contend_port_early_sg1000;
-			ula_contend_port_late=ula_contend_port_late_sg1000;
+        ula_contend_port_early=ula_contend_port_early_msx1;
+        ula_contend_port_late=ula_contend_port_late_msx1;
 
 
-			screen_testados_linea=228;
+        // 3579545 / 312 / 50
+        screen_testados_linea=229;
 
-		}
+        //TODO
+        //Parece que MSX usa CMOS tambien
+        //https://faqwiki.zxnet.co.uk/wiki/Z80#Differences_between_NMOS_and_CMOS_Z80s
+        //https://www.msx.org/forum/development/msx-development/bug-z80-emulation-or-tr-hw
+        //z80_cpu_current_type=Z80_TYPE_CMOS;
+        //Pero a falta de confirmar, de momento no lo toco
 
-		else if (MACHINE_IS_SMS) {
-			contend_read=contend_read_sms;
-			contend_read_no_mreq=contend_read_no_mreq_sms;
-			contend_write_no_mreq=contend_write_no_mreq_sms;
+    }
 
-			ula_contend_port_early=ula_contend_port_early_sms;
-			ula_contend_port_late=ula_contend_port_late_sms;
+    else if (MACHINE_IS_SVI) {
+        contend_read=contend_read_svi;
+        contend_read_no_mreq=contend_read_no_mreq_svi;
+        contend_write_no_mreq=contend_write_no_mreq_svi;
 
-
-			screen_testados_linea=228;
-
-		}
-
-		else if (MACHINE_IS_SAM) {
-			contend_read=contend_read_sam;
-                        contend_read_no_mreq=contend_read_no_mreq_sam;
-                        contend_write_no_mreq=contend_write_no_mreq_sam;
-
-                        ula_contend_port_early=ula_contend_port_early_sam;
-                        ula_contend_port_late=ula_contend_port_late_sam;
-		}
+        ula_contend_port_early=ula_contend_port_early_svi;
+        ula_contend_port_late=ula_contend_port_late_svi;
 
 
-		else if (MACHINE_IS_MK14) {
-																	 contend_read=contend_read_mk14;
-																	 contend_read_no_mreq=contend_read_no_mreq_mk14;
-																	 contend_write_no_mreq=contend_write_no_mreq_mk14;
+        screen_testados_linea=228;
 
-								ula_contend_port_early=ula_contend_port_early_mk14;
-								ula_contend_port_late=ula_contend_port_late_mk14;
-		}
+    }
+
+    else if (MACHINE_IS_COLECO) {
+        contend_read=contend_read_coleco;
+        contend_read_no_mreq=contend_read_no_mreq_coleco;
+        contend_write_no_mreq=contend_write_no_mreq_coleco;
+
+        ula_contend_port_early=ula_contend_port_early_coleco;
+        ula_contend_port_late=ula_contend_port_late_coleco;
+
+
+        screen_testados_linea=215;
+
+    }
+
+    else if (MACHINE_IS_SG1000) {
+        contend_read=contend_read_sg1000;
+        contend_read_no_mreq=contend_read_no_mreq_sg1000;
+        contend_write_no_mreq=contend_write_no_mreq_sg1000;
+
+        ula_contend_port_early=ula_contend_port_early_sg1000;
+        ula_contend_port_late=ula_contend_port_late_sg1000;
+
+
+        screen_testados_linea=228;
+
+    }
+
+    else if (MACHINE_IS_SMS) {
+        contend_read=contend_read_sms;
+        contend_read_no_mreq=contend_read_no_mreq_sms;
+        contend_write_no_mreq=contend_write_no_mreq_sms;
+
+        ula_contend_port_early=ula_contend_port_early_sms;
+        ula_contend_port_late=ula_contend_port_late_sms;
+
+
+        screen_testados_linea=228;
+
+    }
+
+    else if (MACHINE_IS_SAM) {
+        contend_read=contend_read_sam;
+        contend_read_no_mreq=contend_read_no_mreq_sam;
+        contend_write_no_mreq=contend_write_no_mreq_sam;
+
+        ula_contend_port_early=ula_contend_port_early_sam;
+        ula_contend_port_late=ula_contend_port_late_sam;
+    }
+
+
+    else if (MACHINE_IS_MK14) {
+        contend_read=contend_read_mk14;
+        contend_read_no_mreq=contend_read_no_mreq_mk14;
+        contend_write_no_mreq=contend_write_no_mreq_mk14;
+
+        ula_contend_port_early=ula_contend_port_early_mk14;
+        ula_contend_port_late=ula_contend_port_late_mk14;
+    }
 
 
 
@@ -2702,11 +2694,11 @@ You don't need timings for H/V sync =)
 	switch (current_machine_type) {
 
 		case 0:
-		poke_byte=poke_byte_spectrum_16k;
-		peek_byte=peek_byte_spectrum_16k;
-		peek_byte_no_time=peek_byte_no_time_spectrum_16k;
-		poke_byte_no_time=poke_byte_no_time_spectrum_16k;
-		lee_puerto=lee_puerto_spectrum;
+            poke_byte=poke_byte_spectrum_16k;
+            peek_byte=peek_byte_spectrum_16k;
+            peek_byte_no_time=peek_byte_no_time_spectrum_16k;
+            poke_byte_no_time=poke_byte_no_time_spectrum_16k;
+            lee_puerto=lee_puerto_spectrum;
 		break;
 
 		case 1:
@@ -2716,320 +2708,314 @@ You don't need timings for H/V sync =)
         case MACHINE_ID_CZ_2000:
         case MACHINE_ID_CZ_SPECTRUM:
         case MACHINE_ID_CZ_SPECTRUM_PLUS:
-		poke_byte=poke_byte_spectrum_48k;
-		peek_byte=peek_byte_spectrum_48k;
-		peek_byte_no_time=peek_byte_no_time_spectrum_48k;
-		poke_byte_no_time=poke_byte_no_time_spectrum_48k;
-		lee_puerto=lee_puerto_spectrum;
+            poke_byte=poke_byte_spectrum_48k;
+            peek_byte=peek_byte_spectrum_48k;
+            peek_byte_no_time=peek_byte_no_time_spectrum_48k;
+            poke_byte_no_time=poke_byte_no_time_spectrum_48k;
+            lee_puerto=lee_puerto_spectrum;
 
-        if (MACHINE_IS_TIMEX_TC2048) {
-            enable_timex_video();
-        }
+            if (MACHINE_IS_TIMEX_TC2048) {
+                enable_timex_video();
+            }
 
 		break;
 
-                case 2:
-                poke_byte=poke_byte_spectrum_inves;
-                peek_byte=peek_byte_spectrum_inves;
-		peek_byte_no_time=peek_byte_no_time_spectrum_inves;
-		poke_byte_no_time=poke_byte_no_time_spectrum_inves;
-		lee_puerto=lee_puerto_spectrum;
-                break;
+        case 2:
+            poke_byte=poke_byte_spectrum_inves;
+            peek_byte=peek_byte_spectrum_inves;
+            peek_byte_no_time=peek_byte_no_time_spectrum_inves;
+            poke_byte_no_time=poke_byte_no_time_spectrum_inves;
+            lee_puerto=lee_puerto_spectrum;
+        break;
 
-                case MACHINE_ID_MICRODIGITAL_TK90X:
-                case MACHINE_ID_MICRODIGITAL_TK90X_SPA:
-                case MACHINE_ID_MICRODIGITAL_TK95:
-                case MACHINE_ID_MICRODIGITAL_TK95_SPA:
-                poke_byte=poke_byte_spectrum_48k;
-                peek_byte=peek_byte_spectrum_48k;
-		peek_byte_no_time=peek_byte_no_time_spectrum_48k;
-		poke_byte_no_time=poke_byte_no_time_spectrum_48k;
-                lee_puerto=lee_puerto_spectrum;
-                break;
-
-
-
-                case MACHINE_ID_SPECTRUM_128:
-                poke_byte=poke_byte_spectrum_128k;
-                peek_byte=peek_byte_spectrum_128k;
-		peek_byte_no_time=peek_byte_no_time_spectrum_128k;
-		poke_byte_no_time=poke_byte_no_time_spectrum_128k;
-                lee_puerto=lee_puerto_spectrum;
-		ay_chip_present.v=1;
-                break;
-
-                case MACHINE_ID_SPECTRUM_128_SPA:
-                poke_byte=poke_byte_spectrum_128k;
-                peek_byte=peek_byte_spectrum_128k;
-		peek_byte_no_time=peek_byte_no_time_spectrum_128k;
-		poke_byte_no_time=poke_byte_no_time_spectrum_128k;
-                lee_puerto=lee_puerto_spectrum;
-                ay_chip_present.v=1;
-                break;
+        case MACHINE_ID_MICRODIGITAL_TK90X:
+        case MACHINE_ID_MICRODIGITAL_TK90X_SPA:
+        case MACHINE_ID_MICRODIGITAL_TK95:
+        case MACHINE_ID_MICRODIGITAL_TK95_SPA:
+            poke_byte=poke_byte_spectrum_48k;
+            peek_byte=peek_byte_spectrum_48k;
+            peek_byte_no_time=peek_byte_no_time_spectrum_48k;
+            poke_byte_no_time=poke_byte_no_time_spectrum_48k;
+            lee_puerto=lee_puerto_spectrum;
+        break;
 
 
 
+        case MACHINE_ID_SPECTRUM_128:
+            poke_byte=poke_byte_spectrum_128k;
+            peek_byte=peek_byte_spectrum_128k;
+            peek_byte_no_time=peek_byte_no_time_spectrum_128k;
+            poke_byte_no_time=poke_byte_no_time_spectrum_128k;
+            lee_puerto=lee_puerto_spectrum;
+            ay_chip_present.v=1;
+        break;
 
-                case MACHINE_ID_SPECTRUM_P2:
-                case MACHINE_ID_SPECTRUM_P2_FRE:
-                case MACHINE_ID_SPECTRUM_P2_SPA:
-                poke_byte=poke_byte_spectrum_128k;
-                peek_byte=peek_byte_spectrum_128k;
-		        peek_byte_no_time=peek_byte_no_time_spectrum_128k;
-		        poke_byte_no_time=poke_byte_no_time_spectrum_128k;
-                lee_puerto=lee_puerto_spectrum;
-                ay_chip_present.v=1;
-                break;
-
-
-
-                //11=Amstrad +2A (ROM v4.0
-                case MACHINE_ID_SPECTRUM_P2A_40:
-                case MACHINE_ID_SPECTRUM_P2A_41:
-                case MACHINE_ID_SPECTRUM_P2A_SPA:
-                case MACHINE_ID_SPECTRUM_P3_40:
-                case MACHINE_ID_SPECTRUM_P3_41:
-                case MACHINE_ID_SPECTRUM_P3_SPA:
-                poke_byte=poke_byte_spectrum_128kp2a;
-                peek_byte=peek_byte_spectrum_128kp2a;
-		peek_byte_no_time=peek_byte_no_time_spectrum_128kp2a;
-		poke_byte_no_time=poke_byte_no_time_spectrum_128kp2a;
-                lee_puerto=lee_puerto_spectrum;
-                ay_chip_present.v=1;
-                break;
+        case MACHINE_ID_SPECTRUM_128_SPA:
+            poke_byte=poke_byte_spectrum_128k;
+            peek_byte=peek_byte_spectrum_128k;
+            peek_byte_no_time=peek_byte_no_time_spectrum_128k;
+            poke_byte_no_time=poke_byte_no_time_spectrum_128k;
+            lee_puerto=lee_puerto_spectrum;
+            ay_chip_present.v=1;
+        break;
 
 
 
 
-                case MACHINE_ID_ZXUNO:
-                poke_byte=poke_byte_zxuno;
-                peek_byte=peek_byte_zxuno;
-                peek_byte_no_time=peek_byte_no_time_zxuno;
-                poke_byte_no_time=poke_byte_no_time_zxuno;
-                lee_puerto=lee_puerto_spectrum;
-                ay_chip_present.v=1;
-                break;
+        case MACHINE_ID_SPECTRUM_P2:
+        case MACHINE_ID_SPECTRUM_P2_FRE:
+        case MACHINE_ID_SPECTRUM_P2_SPA:
+            poke_byte=poke_byte_spectrum_128k;
+            peek_byte=peek_byte_spectrum_128k;
+            peek_byte_no_time=peek_byte_no_time_spectrum_128k;
+            poke_byte_no_time=poke_byte_no_time_spectrum_128k;
+            lee_puerto=lee_puerto_spectrum;
+            ay_chip_present.v=1;
+        break;
+
+
+
+        //11=Amstrad +2A (ROM v4.0
+        case MACHINE_ID_SPECTRUM_P2A_40:
+        case MACHINE_ID_SPECTRUM_P2A_41:
+        case MACHINE_ID_SPECTRUM_P2A_SPA:
+        case MACHINE_ID_SPECTRUM_P3_40:
+        case MACHINE_ID_SPECTRUM_P3_41:
+        case MACHINE_ID_SPECTRUM_P3_SPA:
+            poke_byte=poke_byte_spectrum_128kp2a;
+            peek_byte=peek_byte_spectrum_128kp2a;
+            peek_byte_no_time=peek_byte_no_time_spectrum_128kp2a;
+            poke_byte_no_time=poke_byte_no_time_spectrum_128kp2a;
+            lee_puerto=lee_puerto_spectrum;
+            ay_chip_present.v=1;
+        break;
+
+
+
+
+        case MACHINE_ID_ZXUNO:
+            poke_byte=poke_byte_zxuno;
+            peek_byte=peek_byte_zxuno;
+            peek_byte_no_time=peek_byte_no_time_zxuno;
+            poke_byte_no_time=poke_byte_no_time_zxuno;
+            lee_puerto=lee_puerto_spectrum;
+            ay_chip_present.v=1;
+        break;
 
 
 		case 15:
 		case 16:
-                poke_byte=poke_byte_chloe;
-                peek_byte=peek_byte_chloe;
-                peek_byte_no_time=peek_byte_no_time_chloe;
-                poke_byte_no_time=poke_byte_no_time_chloe;
-                lee_puerto=lee_puerto_spectrum;
-                ay_chip_present.v=1;
-		enable_rainbow();
-		enable_ulaplus();
-		enable_timex_video();
+            poke_byte=poke_byte_chloe;
+            peek_byte=peek_byte_chloe;
+            peek_byte_no_time=peek_byte_no_time_chloe;
+            poke_byte_no_time=poke_byte_no_time_chloe;
+            lee_puerto=lee_puerto_spectrum;
+            ay_chip_present.v=1;
+            enable_rainbow();
+            enable_ulaplus();
+            enable_timex_video();
 
-		//Chloe 280SE lleva turbosound
-		if (MACHINE_IS_CHLOE_280SE) {
-		        ay_chip_selected=0;
-		        //turbosound_enabled.v=1;
-						total_ay_chips=2;
-		}
+            //Chloe 280SE lleva turbosound
+            if (MACHINE_IS_CHLOE_280SE) {
+                ay_chip_selected=0;
+                //turbosound_enabled.v=1;
+                total_ay_chips=2;
+            }
 
 
-                break;
+        break;
 
-                case MACHINE_ID_TIMEX_TS2068:
-                case MACHINE_ID_TIMEX_TC2068:
-                poke_byte=poke_byte_timex;
-                peek_byte=peek_byte_timex;
-                peek_byte_no_time=peek_byte_no_time_timex;
-                poke_byte_no_time=poke_byte_no_time_timex;
-                lee_puerto=lee_puerto_spectrum;
-                ay_chip_present.v=1;
-                enable_rainbow();
-                enable_timex_video();
-
-                break;
+        case MACHINE_ID_TIMEX_TS2068:
+        case MACHINE_ID_TIMEX_TC2068:
+            poke_byte=poke_byte_timex;
+            peek_byte=peek_byte_timex;
+            peek_byte_no_time=peek_byte_no_time_timex;
+            poke_byte_no_time=poke_byte_no_time_timex;
+            lee_puerto=lee_puerto_spectrum;
+            ay_chip_present.v=1;
+            enable_rainbow();
+            enable_timex_video();
+        break;
 
 		case 18:
-                poke_byte=poke_byte_prism;
-                peek_byte=peek_byte_prism;
-                peek_byte_no_time=peek_byte_no_time_prism;
-                poke_byte_no_time=poke_byte_no_time_prism;
-                lee_puerto=lee_puerto_spectrum;
-                ay_chip_present.v=1;
+            poke_byte=poke_byte_prism;
+            peek_byte=peek_byte_prism;
+            peek_byte_no_time=peek_byte_no_time_prism;
+            poke_byte_no_time=poke_byte_no_time_prism;
+            lee_puerto=lee_puerto_spectrum;
+            ay_chip_present.v=1;
+            enable_rainbow();
+            enable_ulaplus();
+            enable_timex_video();
+        break;
+
+        case 19:
+            poke_byte=poke_byte_tbblue;
+            peek_byte=peek_byte_tbblue;
+            peek_byte_no_time=peek_byte_no_time_tbblue;
+            poke_byte_no_time=poke_byte_no_time_tbblue;
+            lee_puerto=lee_puerto_spectrum;
+            ay_chip_present.v=1;
+
+            //Solo forzar real video una vez al entrar aquí. Para poder dejar real video desactivado si el usuario lo quiere,
+            //pues aqui se entra siempre al cambiar velocidad cpu (y eso pasa en la rom cada vez que te mueves por el menu del 128k por ejemplo)
+            //TODO: siempre que el usuario entre al emulador se activara la primera vez
+            if (!tbblue_already_autoenabled_rainbow) {
                 enable_rainbow();
-                enable_ulaplus();
+                //lo mismo para timex video
                 enable_timex_video();
+            }
 
-                break;
+            tbblue_already_autoenabled_rainbow=1;
 
-                case 19:
-                poke_byte=poke_byte_tbblue;
-                peek_byte=peek_byte_tbblue;
-                peek_byte_no_time=peek_byte_no_time_tbblue;
-                poke_byte_no_time=poke_byte_no_time_tbblue;
-                lee_puerto=lee_puerto_spectrum;
-                ay_chip_present.v=1;
+            multiface_type=MULTIFACE_TYPE_THREE;
 
-				//Solo forzar real video una vez al entrar aquí. Para poder dejar real video desactivado si el usuario lo quiere,
-				//pues aqui se entra siempre al cambiar velocidad cpu (y eso pasa en la rom cada vez que te mueves por el menu del 128k por ejemplo)
-				//TODO: siempre que el usuario entre al emulador se activara la primera vez
-				if (!tbblue_already_autoenabled_rainbow) {
-					enable_rainbow();
-					//lo mismo para timex video
-					enable_timex_video();
-				}
+            //Si maquina destino es tbblue, forzar a activar border. De momento no se ve bien con border desactivado
+            border_enabled.v=1;
 
-				tbblue_already_autoenabled_rainbow=1;
-
-				multiface_type=MULTIFACE_TYPE_THREE;
-
-								//Si maquina destino es tbblue, forzar a activar border. De momento no se ve bien con border desactivado
-								border_enabled.v=1;
-
-                break;
+        break;
 
 
-                case MACHINE_ID_PENTAGON:
+        case MACHINE_ID_PENTAGON:
 
-				//Pentagon
-                poke_byte=poke_byte_spectrum_128k;
-                peek_byte=peek_byte_spectrum_128k;
-                peek_byte_no_time=peek_byte_no_time_spectrum_128k;
-                poke_byte_no_time=poke_byte_no_time_spectrum_128k;
-                lee_puerto=lee_puerto_spectrum;
-                ay_chip_present.v=1;
-
-
-				//en spectrum, 32. en pentagon, 36
-				cpu_duracion_pulso_interrupcion=36;
-                break;
+            //Pentagon
+            poke_byte=poke_byte_spectrum_128k;
+            peek_byte=peek_byte_spectrum_128k;
+            peek_byte_no_time=peek_byte_no_time_spectrum_128k;
+            poke_byte_no_time=poke_byte_no_time_spectrum_128k;
+            lee_puerto=lee_puerto_spectrum;
+            ay_chip_present.v=1;
 
 
-								case MACHINE_ID_CHROME:
-														poke_byte=poke_byte_chrome;
-														peek_byte=peek_byte_chrome;
-														peek_byte_no_time=peek_byte_no_time_chrome;
-														poke_byte_no_time=poke_byte_no_time_chrome;
-														lee_puerto=lee_puerto_spectrum;
-														ay_chip_present.v=1;
-								break;
+            //en spectrum, 32. en pentagon, 36
+            cpu_duracion_pulso_interrupcion=36;
+        break;
 
 
-								case MACHINE_ID_TSCONF:
-								poke_byte=poke_byte_tsconf;
-								peek_byte=peek_byte_tsconf;
-								peek_byte_no_time=peek_byte_no_time_tsconf;
-								poke_byte_no_time=poke_byte_no_time_tsconf;
-								lee_puerto=lee_puerto_spectrum;
-								ay_chip_present.v=1;
+        case MACHINE_ID_CHROME:
+            poke_byte=poke_byte_chrome;
+            peek_byte=peek_byte_chrome;
+            peek_byte_no_time=peek_byte_no_time_chrome;
+            poke_byte_no_time=poke_byte_no_time_chrome;
+            lee_puerto=lee_puerto_spectrum;
+            ay_chip_present.v=1;
+        break;
 
-								//TSConf hacemos que active siempre realvideo (siempre que setting de autoactivar este yes)
-								//por conveniencia, dado que se verá todo mejor asi que no con real video off
-								if (autodetect_rainbow.v) enable_rainbow();
 
-								break;
+        case MACHINE_ID_TSCONF:
+            poke_byte=poke_byte_tsconf;
+            peek_byte=peek_byte_tsconf;
+            peek_byte_no_time=peek_byte_no_time_tsconf;
+            poke_byte_no_time=poke_byte_no_time_tsconf;
+            lee_puerto=lee_puerto_spectrum;
+            ay_chip_present.v=1;
 
-									case MACHINE_ID_BASECONF:
-								poke_byte=poke_byte_baseconf;
-								peek_byte=peek_byte_baseconf;
-								peek_byte_no_time=peek_byte_no_time_baseconf;
-								poke_byte_no_time=poke_byte_no_time_baseconf;
-								lee_puerto=lee_puerto_spectrum;
-								ay_chip_present.v=1;
+            //TSConf hacemos que active siempre realvideo (siempre que setting de autoactivar este yes)
+            //por conveniencia, dado que se verá todo mejor asi que no con real video off
+            if (autodetect_rainbow.v) enable_rainbow();
 
-								//baseConf hacemos que active siempre realvideo (siempre que setting de autoactivar este yes)
-								//por conveniencia, dado que se verá todo mejor asi que no con real video off
-								//if (autodetect_rainbow.v) enable_rainbow();
+        break;
 
-								break;
+        case MACHINE_ID_BASECONF:
+            poke_byte=poke_byte_baseconf;
+            peek_byte=peek_byte_baseconf;
+            peek_byte_no_time=peek_byte_no_time_baseconf;
+            poke_byte_no_time=poke_byte_no_time_baseconf;
+            lee_puerto=lee_puerto_spectrum;
+            ay_chip_present.v=1;
+
+            //baseConf hacemos que active siempre realvideo (siempre que setting de autoactivar este yes)
+            //por conveniencia, dado que se verá todo mejor asi que no con real video off
+            //if (autodetect_rainbow.v) enable_rainbow();
+
+        break;
 
 		case MACHINE_ID_COLECO:
-                poke_byte=poke_byte_coleco;
-                peek_byte=peek_byte_coleco;
-				peek_byte_no_time=peek_byte_no_time_coleco;
-				poke_byte_no_time=poke_byte_no_time_coleco;
-                lee_puerto=lee_puerto_coleco;
-				out_port=out_port_coleco;
-				fetch_opcode=fetch_opcode_coleco;
-				sn_chip_present.v=1;
+            poke_byte=poke_byte_coleco;
+            peek_byte=peek_byte_coleco;
+            peek_byte_no_time=peek_byte_no_time_coleco;
+            poke_byte_no_time=poke_byte_no_time_coleco;
+            lee_puerto=lee_puerto_coleco;
+            out_port=out_port_coleco;
+            fetch_opcode=fetch_opcode_coleco;
+            sn_chip_present.v=1;
         break;
 
 		case MACHINE_ID_SG1000:
-                poke_byte=poke_byte_sg1000;
-                peek_byte=peek_byte_sg1000;
-				peek_byte_no_time=peek_byte_no_time_sg1000;
-				poke_byte_no_time=poke_byte_no_time_sg1000;
-                lee_puerto=lee_puerto_sg1000;
-				out_port=out_port_sg1000;
-				fetch_opcode=fetch_opcode_sg1000;
-				sn_chip_present.v=1;
+            poke_byte=poke_byte_sg1000;
+            peek_byte=peek_byte_sg1000;
+            peek_byte_no_time=peek_byte_no_time_sg1000;
+            poke_byte_no_time=poke_byte_no_time_sg1000;
+            lee_puerto=lee_puerto_sg1000;
+            out_port=out_port_sg1000;
+            fetch_opcode=fetch_opcode_sg1000;
+            sn_chip_present.v=1;
         break;
 
 		case MACHINE_ID_SMS:
-                poke_byte=poke_byte_sms;
-                peek_byte=peek_byte_sms;
-				peek_byte_no_time=peek_byte_no_time_sms;
-				poke_byte_no_time=poke_byte_no_time_sms;
-                lee_puerto=lee_puerto_sms;
-				out_port=out_port_sms;
-				fetch_opcode=fetch_opcode_sms;
-				sn_chip_present.v=1;
+            poke_byte=poke_byte_sms;
+            peek_byte=peek_byte_sms;
+            peek_byte_no_time=peek_byte_no_time_sms;
+            poke_byte_no_time=poke_byte_no_time_sms;
+            lee_puerto=lee_puerto_sms;
+            out_port=out_port_sms;
+            fetch_opcode=fetch_opcode_sms;
+            sn_chip_present.v=1;
         break;
 
 		case MACHINE_ID_MSX1:
-                poke_byte=poke_byte_msx1;
-                peek_byte=peek_byte_msx1;
-				peek_byte_no_time=peek_byte_no_time_msx1;
-				poke_byte_no_time=poke_byte_no_time_msx1;
-                lee_puerto=lee_puerto_msx1;
-				out_port=out_port_msx1;
-				fetch_opcode=fetch_opcode_msx;
-				ay_chip_present.v=1;
-				ay_chip_selected=0;
-				total_ay_chips=1;
+            poke_byte=poke_byte_msx1;
+            peek_byte=peek_byte_msx1;
+            peek_byte_no_time=peek_byte_no_time_msx1;
+            poke_byte_no_time=poke_byte_no_time_msx1;
+            lee_puerto=lee_puerto_msx1;
+            out_port=out_port_msx1;
+            fetch_opcode=fetch_opcode_msx;
+            ay_chip_present.v=1;
+            ay_chip_selected=0;
+            total_ay_chips=1;
         break;
 
 
 		case MACHINE_ID_SVI_318:
 		case MACHINE_ID_SVI_328:
-                poke_byte=poke_byte_svi;
-                peek_byte=peek_byte_svi;
-				peek_byte_no_time=peek_byte_no_time_svi;
-				poke_byte_no_time=poke_byte_no_time_svi;
-                lee_puerto=lee_puerto_svi;
-				out_port=out_port_svi;
-				fetch_opcode=fetch_opcode_svi;
-				ay_chip_present.v=1;
-				ay_chip_selected=0;
-				total_ay_chips=1;
+            poke_byte=poke_byte_svi;
+            peek_byte=peek_byte_svi;
+            peek_byte_no_time=peek_byte_no_time_svi;
+            poke_byte_no_time=poke_byte_no_time_svi;
+            lee_puerto=lee_puerto_svi;
+            out_port=out_port_svi;
+            fetch_opcode=fetch_opcode_svi;
+            ay_chip_present.v=1;
+            ay_chip_selected=0;
+            total_ay_chips=1;
         break;
 
 
 		case MACHINE_ID_ZX80:
         case MACHINE_ID_MICRODIGITAL_TK80:
         case MACHINE_ID_MICRODIGITAL_TK82:
-                poke_byte=poke_byte_zx80;
-                peek_byte=peek_byte_zx80;
-		peek_byte_no_time=peek_byte_zx80_no_time;
-		poke_byte_no_time=poke_byte_zx80_no_time;
-		lee_puerto=lee_puerto_zx80;
+            poke_byte=poke_byte_zx80;
+            peek_byte=peek_byte_zx80;
+            peek_byte_no_time=peek_byte_zx80_no_time;
+            poke_byte_no_time=poke_byte_zx80_no_time;
+            lee_puerto=lee_puerto_zx80;
+
+            out_port=out_port_zx80;
+
+            nmi_generator_active.v=0;
+            hsync_generator_active.v=0;
+
+            debug_printf (VERBOSE_INFO,"Emulating ZX80 with %d KB (ramtop=%d)",(ramtop_zx8081-16383)/1024,ramtop_zx8081);
+            //printf ("ramtop: %d\n",ramtop_zx8081);
+
+            screen_testados_linea=207;
+            //offset_zx8081_t_estados=0;
+
+            fetch_opcode=fetch_opcode_zx81;
 
 
-		out_port=out_port_zx80;
-
-		nmi_generator_active.v=0;
-		hsync_generator_active.v=0;
-
-		debug_printf (VERBOSE_INFO,"Emulating ZX80 with %d KB (ramtop=%d)",(ramtop_zx8081-16383)/1024,ramtop_zx8081);
-		//printf ("ramtop: %d\n",ramtop_zx8081);
-
-		screen_testados_linea=207;
-                //offset_zx8081_t_estados=0;
-
-		fetch_opcode=fetch_opcode_zx81;
-
-
-
-		//video_zx8081_lnctr_adjust.v=0;
-
-
+            //video_zx8081_lnctr_adjust.v=0;
 
 		break;
 
@@ -3043,225 +3029,162 @@ You don't need timings for H/V sync =)
         case MACHINE_ID_CZ_1500:
         case MACHINE_ID_CZ_1000_PLUS:
         case MACHINE_ID_CZ_1500_PLUS:
-                poke_byte=poke_byte_zx80;
-                peek_byte=peek_byte_zx80;
-		peek_byte_no_time=peek_byte_zx80_no_time;
-		poke_byte_no_time=poke_byte_zx80_no_time;
+            poke_byte=poke_byte_zx80;
+            peek_byte=peek_byte_zx80;
+            peek_byte_no_time=peek_byte_zx80_no_time;
+            poke_byte_no_time=poke_byte_zx80_no_time;
 
-		lee_puerto=lee_puerto_zx81;
+            lee_puerto=lee_puerto_zx81;
 
-		out_port=out_port_zx81;
+            out_port=out_port_zx81;
 
-		nmi_generator_active.v=0;
-		hsync_generator_active.v=0;
+            nmi_generator_active.v=0;
+            hsync_generator_active.v=0;
 
-		debug_printf (VERBOSE_INFO,"Emulating ZX81 with %d KB (ramtop=%d)",(ramtop_zx8081-16383)/1024,ramtop_zx8081);
-		//printf ("ramtop: %d\n",ramtop_zx8081);
-		screen_testados_linea=207;
+            debug_printf (VERBOSE_INFO,"Emulating ZX81 with %d KB (ramtop=%d)",(ramtop_zx8081-16383)/1024,ramtop_zx8081);
+            //printf ("ramtop: %d\n",ramtop_zx8081);
+            screen_testados_linea=207;
 
-                //offset_zx8081_t_estados=0;
+            //offset_zx8081_t_estados=0;
 
-		fetch_opcode=fetch_opcode_zx81;
+            fetch_opcode=fetch_opcode_zx81;
 
 
-		//video_zx8081_lnctr_adjust.v=1;
+            //video_zx8081_lnctr_adjust.v=1;
 
 		break;
 
 		case 122:
 		//Jupiter Ace
-                poke_byte=poke_byte_ace;
-                peek_byte=peek_byte_ace;
-                peek_byte_no_time=peek_byte_ace_no_time;
-                poke_byte_no_time=poke_byte_ace_no_time;
+            poke_byte=poke_byte_ace;
+            peek_byte=peek_byte_ace;
+            peek_byte_no_time=peek_byte_ace_no_time;
+            poke_byte_no_time=poke_byte_ace_no_time;
 
-                lee_puerto=lee_puerto_ace;
+            lee_puerto=lee_puerto_ace;
 
-                out_port=out_port_ace;
+            out_port=out_port_ace;
 
-                //nmi_generator_active.v=0;
-                //hsync_generator_active.v=0;
+            //nmi_generator_active.v=0;
+            //hsync_generator_active.v=0;
 
-                debug_printf (VERBOSE_INFO,"Emulating Jupiter Ace with %d KB (ramtop=%d)",(ramtop_ace-16383)/1024+3,ramtop_ace);
-                screen_testados_linea=208;
+            debug_printf (VERBOSE_INFO,"Emulating Jupiter Ace with %d KB (ramtop=%d)",(ramtop_ace-16383)/1024+3,ramtop_ace);
+            screen_testados_linea=208;
 
-                //offset_zx8081_t_estados=0;
+            //offset_zx8081_t_estados=0;
 
-                fetch_opcode=fetch_opcode_ace;
+            fetch_opcode=fetch_opcode_ace;
 
-
-
-                break;
+        break;
 
 
-                case 130:
-                poke_byte=poke_byte_z88;
-                peek_byte=peek_byte_z88;
-                peek_byte_no_time=peek_byte_no_time_z88;
-                poke_byte_no_time=poke_byte_no_time_z88;
-                lee_puerto=lee_puerto_z88;
-		out_port=out_port_z88;
+        case 130:
+            poke_byte=poke_byte_z88;
+            peek_byte=peek_byte_z88;
+            peek_byte_no_time=peek_byte_no_time_z88;
+            poke_byte_no_time=poke_byte_no_time_z88;
+            lee_puerto=lee_puerto_z88;
+            out_port=out_port_z88;
 
-		init_z88_memory_slots();
+            init_z88_memory_slots();
 
-		disable_rainbow();
+            disable_rainbow();
 
-		//zx81
-		//screen_testados_linea=207;
-		//spectrum 3.5 Mhz
-		//screen_testados_linea=224;
+            //zx81
+            //screen_testados_linea=207;
+            //spectrum 3.5 Mhz
+            //screen_testados_linea=224;
 
-		//Z88 3,2768 MHz
-		screen_testados_linea=210;
-
-
-
+            //Z88 3,2768 MHz
+            screen_testados_linea=210;
 
 		break;
 
 
 		//CPC464
-                case MACHINE_ID_CPC_464:
-                poke_byte=poke_byte_cpc;
-                peek_byte=peek_byte_cpc;
-                peek_byte_no_time=peek_byte_no_time_cpc;
-                poke_byte_no_time=poke_byte_no_time_cpc;
-                lee_puerto=lee_puerto_cpc;
-		out_port=out_port_cpc;
-                ay_chip_present.v=1;
-                fetch_opcode=fetch_opcode_cpc;
-		//4Mhz
-		screen_testados_linea=256;
-
-		//temp
-		//screen_testados_linea=228;
-
-                //CBA Stereo
-                ay3_stereo_mode=4;
-
-                break;
-
-
-		//CPC4128
-                case MACHINE_ID_CPC_4128:
-                poke_byte=poke_byte_cpc;
-                peek_byte=peek_byte_cpc;
-                peek_byte_no_time=peek_byte_no_time_cpc;
-                poke_byte_no_time=poke_byte_no_time_cpc;
-                lee_puerto=lee_puerto_cpc;
-		out_port=out_port_cpc;
-                ay_chip_present.v=1;
-                fetch_opcode=fetch_opcode_cpc;
-		//4Mhz
-		screen_testados_linea=256;
-
-		//temp
-		//screen_testados_linea=228;
-                break;
-
+        //CPC4128
 		//CPC664
+        //CPC6128
+        case MACHINE_ID_CPC_464:
+        case MACHINE_ID_CPC_4128:
         case MACHINE_ID_CPC_664:
-                poke_byte=poke_byte_cpc;
-                peek_byte=peek_byte_cpc;
-                peek_byte_no_time=peek_byte_no_time_cpc;
-                poke_byte_no_time=poke_byte_no_time_cpc;
-                lee_puerto=lee_puerto_cpc;
-		        out_port=out_port_cpc;
-                ay_chip_present.v=1;
-                fetch_opcode=fetch_opcode_cpc;
-                //4Mhz
-                screen_testados_linea=256;
-
-
-        break;
-
-		//CPC6128
         case MACHINE_ID_CPC_6128:
-                poke_byte=poke_byte_cpc;
-                peek_byte=peek_byte_cpc;
-                peek_byte_no_time=peek_byte_no_time_cpc;
-                poke_byte_no_time=poke_byte_no_time_cpc;
-                lee_puerto=lee_puerto_cpc;
-		        out_port=out_port_cpc;
-                ay_chip_present.v=1;
-                fetch_opcode=fetch_opcode_cpc;
-                //4Mhz
-                screen_testados_linea=256;
+            poke_byte=poke_byte_cpc;
+            peek_byte=peek_byte_cpc;
+            peek_byte_no_time=peek_byte_no_time_cpc;
+            poke_byte_no_time=poke_byte_no_time_cpc;
+            lee_puerto=lee_puerto_cpc;
+            out_port=out_port_cpc;
+            ay_chip_present.v=1;
+            fetch_opcode=fetch_opcode_cpc;
+            //4Mhz
+            screen_testados_linea=256;
 
+
+            //CBA Stereo
+            ay3_stereo_mode=4;
 
         break;
 
 
         case MACHINE_ID_PCW_8256:
-		poke_byte=poke_byte_pcw;
-		peek_byte=peek_byte_pcw;
-		peek_byte_no_time=peek_byte_no_time_pcw;
-		poke_byte_no_time=poke_byte_no_time_pcw;
-		lee_puerto=lee_puerto_pcw;
-        out_port=out_port_pcw;
-        ay_chip_present.v=1;
-        fetch_opcode=fetch_opcode_pcw;
-
-		break;
-
         case MACHINE_ID_PCW_8512:
-		poke_byte=poke_byte_pcw;
-		peek_byte=peek_byte_pcw;
-		peek_byte_no_time=peek_byte_no_time_pcw;
-		poke_byte_no_time=poke_byte_no_time_pcw;
-		lee_puerto=lee_puerto_pcw;
-        out_port=out_port_pcw;
-        ay_chip_present.v=1;
-        fetch_opcode=fetch_opcode_pcw;
+            poke_byte=poke_byte_pcw;
+            peek_byte=peek_byte_pcw;
+            peek_byte_no_time=peek_byte_no_time_pcw;
+            poke_byte_no_time=poke_byte_no_time_pcw;
+            lee_puerto=lee_puerto_pcw;
+            out_port=out_port_pcw;
+            ay_chip_present.v=1;
+            fetch_opcode=fetch_opcode_pcw;
 
 		break;
+
 
 		case 150:
-                poke_byte=poke_byte_sam;
-                peek_byte=peek_byte_sam;
-                peek_byte_no_time=peek_byte_no_time_sam;
-                poke_byte_no_time=poke_byte_no_time_sam;
-                lee_puerto=lee_puerto_sam;
-                out_port=out_port_sam;
-                fetch_opcode=fetch_opcode_sam;
-		screen_testados_linea=384; //6 MHZ aprox
-		ay_chip_present.v=1; //Simulacion del chip SAA mediante el AY
+            poke_byte=poke_byte_sam;
+            peek_byte=peek_byte_sam;
+            peek_byte_no_time=peek_byte_no_time_sam;
+            poke_byte_no_time=poke_byte_no_time_sam;
+            lee_puerto=lee_puerto_sam;
+            out_port=out_port_sam;
+            fetch_opcode=fetch_opcode_sam;
+            screen_testados_linea=384; //6 MHZ aprox
+            ay_chip_present.v=1; //Simulacion del chip SAA mediante el AY
 
-		ay_chip_selected=0;
-                total_ay_chips=2;
+            ay_chip_selected=0;
+            total_ay_chips=2;
 
 
-                break;
+        break;
 
 		case MACHINE_ID_QL_STANDARD: //QL 160
 
+            poke_byte=poke_byte_legacy_ql;
+            peek_byte=peek_byte_legacy_ql;
+            peek_byte_no_time=peek_byte_no_time_legacy_ql;
+            poke_byte_no_time=poke_byte_no_time_legacy_ql;
+            lee_puerto=lee_puerto_legacy_ql;
+            out_port=out_port_legacy_ql;
+            fetch_opcode=fetch_opcode_legacy_ql;
 
-		poke_byte=poke_byte_legacy_ql;
-		peek_byte=peek_byte_legacy_ql;
-		peek_byte_no_time=peek_byte_no_time_legacy_ql;
-		poke_byte_no_time=poke_byte_no_time_legacy_ql;
-		lee_puerto=lee_puerto_legacy_ql;
-		out_port=out_port_legacy_ql;
-		fetch_opcode=fetch_opcode_legacy_ql;
-
-		ql_readbyte_no_ports_function=ql_readbyte_no_ports;
+            ql_readbyte_no_ports_function=ql_readbyte_no_ports;
 
 
-							//Hagamoslo mas lento
-								screen_testados_linea=80;
+            //Hagamoslo mas lento
+            screen_testados_linea=80;
 
             i8049_chip_present=1;
 		break;
 
 
 		case MACHINE_ID_MK14_STANDARD:
-		poke_byte=poke_byte_mk14;
-		peek_byte=peek_byte_mk14;
-		peek_byte_no_time=peek_byte_no_time_mk14;
-		poke_byte_no_time=poke_byte_no_time_mk14;
-		lee_puerto=lee_puerto_legacy_mk14;
+            poke_byte=poke_byte_mk14;
+            peek_byte=peek_byte_mk14;
+            peek_byte_no_time=peek_byte_no_time_mk14;
+            poke_byte_no_time=poke_byte_no_time_mk14;
+            lee_puerto=lee_puerto_legacy_mk14;
 		break;
-
 
 
 
@@ -3274,13 +3197,13 @@ You don't need timings for H/V sync =)
 
 
 	if (MACHINE_IS_SPECTRUM) {
-                //Activar deteccion automatica de rutina de impresion de caracteres, si conviene
-                if (chardetect_detect_char_enabled.v) {
-                        chardetect_init_automatic_char_detection();
-                }
+        //Activar deteccion automatica de rutina de impresion de caracteres, si conviene
+        if (chardetect_detect_char_enabled.v) {
+            chardetect_init_automatic_char_detection();
+        }
 
-		//Reactivar poke de spectra
-		if (spectra_enabled.v) spectra_set_poke();
+        //Reactivar poke de spectra
+        if (spectra_enabled.v) spectra_set_poke();
 
 	}
 
@@ -3290,7 +3213,6 @@ You don't need timings for H/V sync =)
 	//Recalcular algunos valores cacheados
 	recalcular_get_total_ancho_rainbow();
 	recalcular_get_total_alto_rainbow();
-
 
 
 }

@@ -1909,104 +1909,104 @@ int debug_exitrom=0;
 
 void set_cpu_core_loop(void)
 {
-        switch (cpu_core_loop_active) {
+    switch (cpu_core_loop_active) {
 
-                case CPU_CORE_SPECTRUM:
-                        debug_printf(VERBOSE_INFO,"Setting Spectrum CPU core");
-			if (core_spectrum_uses_reduced.v==0) {
-	                        cpu_core_loop=cpu_core_loop_spectrum;
-			}
-			else {
-				debug_printf(VERBOSE_WARN,"Setting REDUCED Spectrum CPU core, the following features will NOT be available or will NOT be properly emulated: Debug t-states, Char detection, PLUS3DOS traps, Save to tape, Divide, Divmmc, RZX, Raster interrupts, TBBlue Copper, Audio DAC, Video out to file");
-				cpu_core_loop=cpu_core_loop_reduced_spectrum;
-			}
-                        cpu_core_loop_name="Spectrum";
-                break;
+        case CPU_CORE_SPECTRUM:
+            debug_printf(VERBOSE_INFO,"Setting Spectrum CPU core");
+            if (core_spectrum_uses_reduced.v==0) {
+                cpu_core_loop=cpu_core_loop_spectrum;
+            }
+            else {
+                debug_printf(VERBOSE_WARN,"Setting REDUCED Spectrum CPU core, the following features will NOT be available or will NOT be properly emulated: Debug t-states, Char detection, PLUS3DOS traps, Save to tape, Divide, Divmmc, RZX, Raster interrupts, TBBlue Copper, Audio DAC, Video out to file");
+                cpu_core_loop=cpu_core_loop_reduced_spectrum;
+            }
+            cpu_core_loop_name="Spectrum";
+        break;
 
-                case CPU_CORE_ZX8081:
-                        debug_printf(VERBOSE_INFO,"Setting ZX80/81 CPU core");
-                        cpu_core_loop=cpu_core_loop_zx8081;
-                        cpu_core_loop_name="ZX80/81";
-                break;
+        case CPU_CORE_ZX8081:
+            debug_printf(VERBOSE_INFO,"Setting ZX80/81 CPU core");
+            cpu_core_loop=cpu_core_loop_zx8081;
+            cpu_core_loop_name="ZX80/81";
+        break;
 
-                case CPU_CORE_ACE:
-                        debug_printf(VERBOSE_INFO,"Setting Jupiter ACE core");
-                        cpu_core_loop=cpu_core_loop_ace;
-                        cpu_core_loop_name="Jupiter ACE";
-                break;
+        case CPU_CORE_ACE:
+            debug_printf(VERBOSE_INFO,"Setting Jupiter ACE core");
+            cpu_core_loop=cpu_core_loop_ace;
+            cpu_core_loop_name="Jupiter ACE";
+        break;
 
-                case CPU_CORE_CPC:
-                        debug_printf(VERBOSE_INFO,"Setting CPC core");
-                        cpu_core_loop=cpu_core_loop_cpc;
-                        cpu_core_loop_name="CPC";
-                break;
+        case CPU_CORE_CPC:
+            debug_printf(VERBOSE_INFO,"Setting CPC core");
+            cpu_core_loop=cpu_core_loop_cpc;
+            cpu_core_loop_name="CPC";
+        break;
 
-                case CPU_CORE_PCW:
-                        debug_printf(VERBOSE_INFO,"Setting PCW core");
-                        cpu_core_loop=cpu_core_loop_pcw;
-                        cpu_core_loop_name="PCW";
-                break;
+        case CPU_CORE_PCW:
+            debug_printf(VERBOSE_INFO,"Setting PCW core");
+            cpu_core_loop=cpu_core_loop_pcw;
+            cpu_core_loop_name="PCW";
+        break;
 
-                case CPU_CORE_Z88:
-                        debug_printf(VERBOSE_INFO,"Setting Z88 CPU core");
-                        cpu_core_loop=cpu_core_loop_z88;
-                        cpu_core_loop_name="Z88";
-                break;
+        case CPU_CORE_Z88:
+            debug_printf(VERBOSE_INFO,"Setting Z88 CPU core");
+            cpu_core_loop=cpu_core_loop_z88;
+            cpu_core_loop_name="Z88";
+        break;
 
-		case CPU_CORE_SAM:
-			debug_printf(VERBOSE_INFO,"Setting Sam Coupe CPU core");
-			cpu_core_loop=cpu_core_loop_sam;
-      cpu_core_loop_name="Sam Coupe";
-		break;
+        case CPU_CORE_SAM:
+            debug_printf(VERBOSE_INFO,"Setting Sam Coupe CPU core");
+            cpu_core_loop=cpu_core_loop_sam;
+            cpu_core_loop_name="Sam Coupe";
+        break;
 
-		case CPU_CORE_QL:
-			debug_printf(VERBOSE_INFO,"Setting QL CPU core");
-			cpu_core_loop=cpu_core_loop_ql;
-      cpu_core_loop_name="QL";
-		break;
+        case CPU_CORE_QL:
+            debug_printf(VERBOSE_INFO,"Setting QL CPU core");
+            cpu_core_loop=cpu_core_loop_ql;
+            cpu_core_loop_name="QL";
+        break;
 
-    case CPU_CORE_MK14:
-      debug_printf(VERBOSE_INFO,"Setting MK14 CPU core");
-      cpu_core_loop=cpu_core_loop_mk14;
-      cpu_core_loop_name="MK14";
-    break;
+        case CPU_CORE_MK14:
+            debug_printf(VERBOSE_INFO,"Setting MK14 CPU core");
+            cpu_core_loop=cpu_core_loop_mk14;
+            cpu_core_loop_name="MK14";
+        break;
 
-    case CPU_CORE_MSX:
-      debug_printf(VERBOSE_INFO,"Setting MSX CPU core");
-      cpu_core_loop=cpu_core_loop_msx;
-      cpu_core_loop_name="MSX";
-    break;
+        case CPU_CORE_MSX:
+            debug_printf(VERBOSE_INFO,"Setting MSX CPU core");
+            cpu_core_loop=cpu_core_loop_msx;
+            cpu_core_loop_name="MSX";
+        break;
 
-    case CPU_CORE_COLECO:
-      debug_printf(VERBOSE_INFO,"Setting COLECO CPU core");
-      cpu_core_loop=cpu_core_loop_coleco;
-      cpu_core_loop_name="COLECO";
-    break;
+        case CPU_CORE_COLECO:
+            debug_printf(VERBOSE_INFO,"Setting COLECO CPU core");
+            cpu_core_loop=cpu_core_loop_coleco;
+            cpu_core_loop_name="COLECO";
+        break;
 
-    case CPU_CORE_SG1000:
-      debug_printf(VERBOSE_INFO,"Setting SG1000 CPU core");
-      cpu_core_loop=cpu_core_loop_sg1000;
-      cpu_core_loop_name="SG1000";
-    break;
+        case CPU_CORE_SG1000:
+            debug_printf(VERBOSE_INFO,"Setting SG1000 CPU core");
+            cpu_core_loop=cpu_core_loop_sg1000;
+            cpu_core_loop_name="SG1000";
+        break;
 
-    case CPU_CORE_SMS:
-      debug_printf(VERBOSE_INFO,"Setting Master System CPU core");
-      cpu_core_loop=cpu_core_loop_sms;
-      cpu_core_loop_name="SMS";
-    break;
+        case CPU_CORE_SMS:
+            debug_printf(VERBOSE_INFO,"Setting Master System CPU core");
+            cpu_core_loop=cpu_core_loop_sms;
+            cpu_core_loop_name="SMS";
+        break;
 
-    case CPU_CORE_SVI:
-      debug_printf(VERBOSE_INFO,"Setting SVI CPU core");
-      cpu_core_loop=cpu_core_loop_svi;
-      cpu_core_loop_name="SVI";
-    break;
+        case CPU_CORE_SVI:
+            debug_printf(VERBOSE_INFO,"Setting SVI CPU core");
+            cpu_core_loop=cpu_core_loop_svi;
+            cpu_core_loop_name="SVI";
+        break;
 
 
-                default:
-                        cpu_panic("Unknown cpu core");
-                break;
+        default:
+            cpu_panic("Unknown cpu core");
+        break;
 
-        }
+    }
 
 	/*
         //Activar core de debug si es necesario
