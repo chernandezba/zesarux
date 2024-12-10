@@ -6796,6 +6796,7 @@ int tbblue_blend_color(int color_primero, int color_layer,int modo_capas)
 void tbblue_render_layers_rainbow(int capalayer2,int capasprites,int capatiles)
 {
 
+    int modo_capas=tbblue_get_layers_priorities();
 
 	//(R/W) 0x4A (74) => Transparency colour fallback
 		//	bits 7-0 = Set the 8 bit colour.
@@ -6862,7 +6863,7 @@ void tbblue_render_layers_rainbow(int capalayer2,int capasprites,int capatiles)
 
 	tbblue_set_layer_priorities();
 
-    int modo_capas=tbblue_get_layers_priorities();
+
 
     int blend_ula_layer2=0;
     int blend_tiles_layer2=0;
