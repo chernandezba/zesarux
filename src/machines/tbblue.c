@@ -6724,10 +6724,7 @@ int tbblue_blend_three_color(int color_primero, int color_segundo,int color_laye
 	int c3_b=color_layer&7;
 
 
-    /*c1_r +=c2_r;
-    c1_g +=c2_g;
-    c1_b +=c2_b;*/
-
+    //Nota: no se si esta mezcla de colores es correcta
     c1_r=(c1_r+c2_r)/2;
     c1_g=(c1_g+c2_g)/2;
     c1_b=(c1_b+c2_b)/2;
@@ -6771,7 +6768,7 @@ int tbblue_blend_color(int color_primero, int color_layer,int modo_capas)
 	int c2_g=(color_layer>>3)&7;
 	int c2_b=color_layer&7;
 
-
+    //Nota: no se si esta mezcla de colores es correcta
     c1_r +=c2_r;
     c1_g +=c2_g;
     c1_b +=c2_b;
@@ -7021,7 +7018,7 @@ void tbblue_render_layers_rainbow(int capalayer2,int capasprites,int capatiles)
                                 if (blend_ula_layer2 && blend_tiles_layer2) {
                                     //printf("hacemos blend de los 3\n");
                                     //Mezclar color primera capa (ula)
-                                    //Mezclar color tecera capa (tiles)
+                                    //Mezclar color tercera capa (tiles)
                                     //con este capa 4(layer2)
                                     z80_int color_tiles=p_layer_third[i];
                                     z80_int color_ula=p_layer_first[i];
