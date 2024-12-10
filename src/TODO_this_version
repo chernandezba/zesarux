@@ -537,5 +537,4 @@ LAYER 2 has all the objects in colour, the tilemap is used to hide them to a mon
 
 -bit scroll medio pixel de ula. registro 0x68.  bit 2 = ULA half pixel scroll (may change) (soft reset = 0)
 
--Next: acabar de probar timings,efectos hi-color, etc
 

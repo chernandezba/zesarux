@@ -8535,6 +8535,8 @@ void menu_debug_dma_draw(zxvision_window *w)
 		//menu_escribe_linea_opcion(linea++,-1,1,texto_dma);
 		zxvision_print_string_defaults_fillspc(menu_debug_dma_tsconf_zxuno_overlay_window,1,linea++,texto_dma);
 
+        zxvision_print_string_defaults_fillspc_format(menu_debug_dma_tsconf_zxuno_overlay_window,1,linea++,
+            "Current Transfer: %s",(datagear_is_dma_transfering.v ? "Yes" : "No"));
 
 	}
 
@@ -8712,7 +8714,7 @@ void menu_debug_dma(MENU_ITEM_PARAMETERS)
 
         if (!util_find_window_geometry("debugdma",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
             ancho_ventana=27;
-            alto_ventana=13;
+            alto_ventana=14;
 
             xventana=menu_center_x()-ancho_ventana/2;
             yventana=menu_center_y()-alto_ventana/2;
@@ -8772,6 +8774,7 @@ void menu_debug_dma(MENU_ITEM_PARAMETERS)
         }
 
         if (datagear_dma_emulation.v) {
+            lin++;
             condicion_dma_disabled=datagear_dma_is_disabled.v;
         }
 
