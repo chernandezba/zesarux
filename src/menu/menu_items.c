@@ -2736,8 +2736,8 @@ void menu_debug_tsconf_tbblue_msx_videoregisters_overlay(void)
             //menu_escribe_linea_opcion(linea++,-1,1,"ULA Video mode:");
             zxvision_print_string_defaults(ventana,1,linea++,"ULA Video mode:");
 
-            //menu_escribe_linea_opcion(linea++,-1,1,get_spectrum_ula_string_video_mode() );
-            zxvision_print_string_defaults(ventana,1,linea++,get_spectrum_ula_string_video_mode() );
+            //Con fillspc porque interesa borrar "restos" de modos de video anterior
+            zxvision_print_string_defaults_fillspc(ventana,1,linea++,get_spectrum_ula_string_video_mode() );
 
             linea++;
 
@@ -2998,7 +2998,6 @@ void menu_debug_tsconf_tbblue_msx_videoregisters(MENU_ITEM_PARAMETERS)
 
 
 
-        //zxvision_new_window(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"Video Info");
 
         zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"Video Info",
             "videoinfo",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
