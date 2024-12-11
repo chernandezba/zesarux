@@ -6364,9 +6364,11 @@ the central 256×192 display. The X coordinates are internally doubled to cover 
 
 	//printf ("clipwindow_min_x %d clipwindow_max_x %d\n",clipwindow_min_x,clipwindow_max_x);
 
+    //Obtencion TILEMAP
+
     z80_byte page_tilemap=tbblue_get_ram_page_tilemap();
 
-	//Inicio del tilemap
+	//Pagina RAM del tilemap
 	puntero_tilemap=tbblue_ram_memory_pages[page_tilemap];
 
 	//Obtener offset sobre tilemap
@@ -6384,10 +6386,11 @@ the central 256×192 display. The X coordinates are internally doubled to cover 
         //printf("wrap tilemap at 16k\n");
     }
 
+    //Obtencion TILEDEF
 
     z80_byte page_tiledef=tbblue_get_ram_page_tiledef();
 
-	//Inicio del tiledef
+	//Pagina RAM del tiledef
 	puntero_tiledef=tbblue_ram_memory_pages[page_tiledef];
 
 
@@ -6491,7 +6494,7 @@ Defines the transparent colour index for tiles. The 4-bit pixels of a tile defin
 
                 //printf ("Color independiente. tpal:%d byte_second: %02XH\n",tpal,byte_second);
 
-                //Sacar puntero a principio tiledef.
+                //Sacar offset a principio tiledef.
                 int offset_tiledef;
 
 

@@ -55,6 +55,7 @@ Improved Spectrum Next emulation:
 - Fixed esxdos handler changing local directory when a .nex snapshot is loaded
 - Fixed palette offset for layer 2
 - Fixed ULA layer horizontal scroll
+- Fixed Tile wrapping at 16k/8k
 - Fixed DMA burst mode when prescaler=0
 - Fixed DMA Transfer restarting the byte count at the end of a transfer
 
