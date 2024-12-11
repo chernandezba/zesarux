@@ -2648,7 +2648,7 @@ If the display of the sprites on the border is disabled, the coordinates of the 
                 El sentido normal de dibujado viene por ->, aumentando coordenada X
 
 
-        ->  ---X----
+            ->  ---X----
                 ---XX---
                 ---XXX--
                 ---XXXX-
@@ -2735,22 +2735,22 @@ bits 7-0 = Set the index value. (0XE3 after a reset)
 
                     if (index_color!=transparency_colour) {
 
-                    //Sumar palette offset. Logicamente si es >256 el resultado, dará la vuelta el contador
-                    index_color +=palette_offset;
+                        //Sumar palette offset. Logicamente si es >256 el resultado, dará la vuelta el contador
+                        index_color +=palette_offset;
 
-                    //printf ("index color: %d\n",index_color);
-                    //printf ("palette offset: %d\n",palette_offset);
+                        //printf ("index color: %d\n",index_color);
+                        //printf ("palette offset: %d\n",palette_offset);
 
 
-                    if (sprite_zoom_x==0) {
-                        tbsprite_put_color_line(sprite_x,index_color,rangoxmin,rangoxmax);
-                    }
-                    else {
-                        int zz=0;
-                        for (zz=0;zz<sumar_x;zz++) {
-                            tbsprite_put_color_line(sprite_x+zz,index_color,rangoxmin,rangoxmax);
+                        if (sprite_zoom_x==0) {
+                            tbsprite_put_color_line(sprite_x,index_color,rangoxmin,rangoxmax);
                         }
-                    }
+                        else {
+                            int zz=0;
+                            for (zz=0;zz<sumar_x;zz++) {
+                                tbsprite_put_color_line(sprite_x+zz,index_color,rangoxmin,rangoxmax);
+                            }
+                        }
 
                     }
                     sprite_x+=sumar_x;
