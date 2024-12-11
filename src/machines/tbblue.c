@@ -6388,7 +6388,7 @@ the central 256×192 display. The X coordinates are internally doubled to cover 
     z80_byte page_tiledef=tbblue_get_ram_page_tiledef();
 
 	//Inicio del tiledef
-	puntero_tiledef=tbblue_ram_memory_pages[page_tiledef]+(256*tbblue_get_offset_start_tiledef());
+	puntero_tiledef=tbblue_ram_memory_pages[page_tiledef];
 
 
     int wrap_tiledef=16383;
@@ -6503,6 +6503,7 @@ Defines the transparent colour index for tiles. The 4-bit pixels of a tile defin
                         offset_tiledef=tnum*(TBBLUE_TILE_WIDTH/2)*TBBLUE_TILE_HEIGHT;
                 }
 
+                offset_tiledef +=(256*tbblue_get_offset_start_tiledef());
 
 
 
