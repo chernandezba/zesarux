@@ -2587,6 +2587,8 @@ If the display of the sprites on the border is disabled, the coordinates of the 
             int diferencia=(y-sprite_y)>>sprite_zoom_y;
 
 
+            //TODO: creo que esta comprobacion de rangoymin,rangoymax no sirve ya que se ha hecho antes
+            //al comprobar el clipping
             int rangoymin, rangoymax;
 
             if (sprites_over_border) {
