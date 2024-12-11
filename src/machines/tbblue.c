@@ -1421,20 +1421,20 @@ int tbblue_get_offset_start_layer2(void)
   wrap across the 8K boundary instead of the 16K boundary.
 
 
-The SHADOW 128K ULA screen is in bank8k 14 so that is why tilemap data uses bank8k 15. The docs say bank16k 7 but it is the upper 8K
+
 
 */
 //Lo retorna en bloque de ram de 8k
 z80_byte tbblue_get_ram_page_tilemap(void)
 {
-    if (tbblue_registers[110] & 128) return 7*2+1;
+    if (tbblue_registers[110] & 128) return 7*2;
     else return 5*2;
 }
 
 //Lo retorna en bloque de ram de 8k
 z80_byte tbblue_get_ram_page_tiledef(void)
 {
-    if (tbblue_registers[111] & 128) return 7*2+1;
+    if (tbblue_registers[111] & 128) return 7*2;
     else return 5*2;
 }
 
@@ -6382,6 +6382,13 @@ the central 256×192 display. The X coordinates are internally doubled to cover 
 
 	//puntero_a_layer -=scroll_x; //temp chapuza
 
+    //TODO: tilemap y tiledef se mueven en un bloque de 16k (cuando usan ram 5*2) o en bloque de 8k (cuando usan ram 7*2)
+    //En este codigo no hago ese wrap y por tanto ambos se salen de bloque de 16k o 8k
+    //no es que sea un super bug, pero si alguien configura esos offsets cercanos del limite, cuando se vayan leyendo datos
+    //y se salga de ese bloque de 8k/16k, en vez de ir al principio del bloque, se irá al siguiente bloque de ram, cosa que es un error
+    //Para corregirlo, en vez de tener un puntero_tilemap y un puntero_tiledef, se deberia tener un offset, leer siempre
+    //calculando offset+start page, y haciendo un módulo 16k/8K (dependiendo si es ram 5*2 o 7*2)
+    //Como eso es raro que suceda, a no ser que alguien lo haga intencionadamente, de momento lo dejamos así sin corregir
 
 	int x;
 
