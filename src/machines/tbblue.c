@@ -6373,7 +6373,18 @@ the central 256×192 display. The X coordinates are internally doubled to cover 
 	int offset_tilemap=tbblue_bytes_per_tile*tilemap_width*posicion_y;
 
 
-	puntero_tilemap +=offset_tilemap;  //Esto apuntara al primer tile de esa posicion y y con x=0
+	//puntero_tilemap +=offset_tilemap;  //Esto apuntara al primer tile de esa posicion y y con x=0
+
+    int wrap_tilemap=16383;
+
+    if (page_tilemap==7*2) {
+        //printf("wrap tilemap at 8k\n");
+        wrap_tilemap=8191;
+    }
+    else {
+        //printf("wrap tilemap at 16k\n");
+    }
+
 
     z80_byte page_tiledef=tbblue_get_ram_page_tiledef();
 
@@ -6422,11 +6433,11 @@ Defines the transparent colour index for tiles. The 4-bit pixels of a tile defin
 
         for (x=0;x<tilemap_width;x++) {
                 //TODO stencil mode
-                byte_first=*puntero_tilemap;
-                puntero_tilemap++;
+                byte_first=puntero_tilemap[offset_tilemap & wrap_tilemap];
+                offset_tilemap++;
                 if (tbblue_bytes_per_tile==2) {
-                        byte_second=*puntero_tilemap;
-                        puntero_tilemap++;
+                        byte_second=puntero_tilemap[offset_tilemap & wrap_tilemap];
+                        offset_tilemap++;
                 } else {
                         byte_second = tbblue_default_tilemap_attr;
                 }
