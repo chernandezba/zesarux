@@ -52,6 +52,7 @@ Mejorada emulación de Spectrum Next:
 - Corregido mapeo de DIVMMC después de RETN
 - Corregido temporización del Copper
 - Corregido llamada a esxdos DISK_FILEMAP
+- Corregido cambio en directorio local en esxdos handler cuando se carga un snapshot .nex
 - Corregido offset de paleta en layer 2
 - Corregido scroll horizontal de capa ULA
 - Corregido burst mode de DMA cuando prescaler=0
@@ -94,6 +95,8 @@ Quitar indicador de buffer lleno al pulsar shift+e en ventana de Fuente de sonid
 Corregido pulsación boton derecho en botones superiores con menu cerrado y sin ventanas abiertas
 Corregido tecla alt pulsada al cambiar de ventana pulsando alt-tab en drivers xwindow, cocoa, sdl1 y sdl2
 Corregida autocarga de TZX como Cinta Real en Spectrum +3
+Corregida llamada a F_GETCWD en esxdos handler cuando directorio raíz (/)
+Corregida llamada a F_GETCWD en esxdos handler cuando directorio no existe
 Corregido hotswap ZX80 a ZX81, ZX81 a ZX80
 Corregido Scroll de Amstrad CPC
 Corregido sonido al grabar: permitir escucharlo en ordenadores: Jupiter Ace, CPC, MSX, Spectravideo

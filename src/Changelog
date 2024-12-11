@@ -51,7 +51,8 @@ Improved Spectrum Next emulation:
 - Fixed 128k/+2a/Pentagon timings
 - Fixed DIVMMC mapping after RETN
 - Fixed Copper timings
-- Fixed esxdos call DISK_FILEMAP
+- Fixed esxdos handler call DISK_FILEMAP
+- Fixed esxdos handler changing local directory when a .nex snapshot is loaded
 - Fixed palette offset for layer 2
 - Fixed ULA layer horizontal scroll
 - Fixed DMA burst mode when prescaler=0
@@ -94,6 +95,8 @@ Remove buffer full indicator when pressing shift+e on External Audio Source wind
 Fixed right click on upper buttons when menu closed and no windows open
 Fixed alt key pressed when changing to another window by using alt-tab on xwindow, cocoa, sdl1 and sdl2 drivers
 Fixed TZX autoload as Real Tape on Spectrum +3
+Fixed esxdos handler call F_GETCWD when root directory (/)
+Fixed esxdos handler call F_GETCWD when directory does not exist
 Fixed hotswap ZX80 to ZX81, ZX81 to ZX80
 Fixed Amstrad CPC Scroll
 Fixed Cassette out sound: allow to hear it on computers: Jupiter Ace, CPC, MSX, Spectravideo

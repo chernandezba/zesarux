@@ -82,6 +82,9 @@ void load_nex_snapshot_if_mount_exdos_folder(char *archivo)
 
     util_get_dir(archivo,esxdos_handler_root_dir);
 
+    //Ruta local a /
+    esxdos_handler_cwd[0]=0;
+
     //Y decir que al hacer reset, se quitara
     esxdos_umount_on_reset.v=1;
 }

@@ -1149,13 +1149,22 @@ void esxdos_handler_call_f_sync(void)
 
 
 //tener en cuenta raiz y directorio actual
-//si localdir no es NULL, devolver directorio local (quitando esxdos_handler_root_dir)
+//si localdir no es NULL, devolver directorio local (quitando esxdos_handler_root_dir). ejemplo /bin/
 //funcion igual a zxpand_get_final_directory, solo adaptando nombres de variables zxpand->esxdos_handler
-void esxdos_handler_get_final_directory(char *dir, char *finaldir, char *localdir)
+//finaldir es la ruta local completa en el PC: ejemplo /home/cesar/esxdos/bin/
+
+//Retorna no 0 si error
+int esxdos_handler_get_final_directory(char *dir, char *finaldir, char *localdir)
 {
 
 
 	//debug_printf (VERBOSE_DEBUG,"ESXDOS handler: esxdos_handler_get_final_directory. dir: %s esxdos_handler_root_dir: %s",dir,esxdos_handler_root_dir);
+    char copia_esxdos_handler_root_dir[PATH_MAX];
+    char copia_esxdos_handler_cwd[PATH_MAX];
+
+    strcpy(copia_esxdos_handler_root_dir,esxdos_handler_root_dir);
+    strcpy(copia_esxdos_handler_cwd,esxdos_handler_cwd);
+
 
 	//Guardamos directorio actual del emulador
 	char directorio_actual[PATH_MAX];
@@ -1200,6 +1209,7 @@ void esxdos_handler_get_final_directory(char *dir, char *finaldir, char *localdi
 		}
 	}
 
+    int retorno_error=0;
 
 	//Ahora hay que quitar la parte del directorio raiz
 	//debug_printf (VERBOSE_DEBUG,"ESXDOS handler: running strstr (%s,%s)",finaldir,esxdos_handler_root_dir);
@@ -1208,22 +1218,36 @@ void esxdos_handler_get_final_directory(char *dir, char *finaldir, char *localdi
 	if (s==NULL) {
 		debug_printf (VERBOSE_DEBUG,"ESXDOS handler: Directory change not allowed");
 		//directorio final es el mismo que habia
-		sprintf (finaldir,"%s",esxdos_handler_cwd);
-		return;
+        //dejar como estaba antes
+		//sprintf (finaldir,"%s",esxdos_handler_cwd);
+
+        strcpy(esxdos_handler_root_dir,copia_esxdos_handler_root_dir);
+        strcpy(esxdos_handler_cwd,copia_esxdos_handler_cwd);
+        //printf("esxdos_handler_root_dir [%s] esxdos_handler_cwd [%s] finaldir [%s]\n",esxdos_handler_root_dir,esxdos_handler_cwd,finaldir);
+
+        //dejar la misma ruta original
+        sprintf(finaldir,"%s/%s",esxdos_handler_root_dir,esxdos_handler_cwd);
+        //printf("despues ajuste finaldir: [%s]\n",finaldir);
+        retorno_error=1;
+		//return;
 	}
 
 	//Si esta bien, meter parte local
-	if (localdir!=NULL) {
-		int l=strlen(esxdos_handler_root_dir);
-		sprintf (localdir,"%s",&finaldir[l]);
-		//debug_printf (VERBOSE_DEBUG,"ESXDOS handler: local directory: %s",localdir);
-	}
+
+    if (localdir!=NULL) {
+        int l=strlen(esxdos_handler_root_dir);
+        sprintf (localdir,"%s",&finaldir[l]);
+        //debug_printf (VERBOSE_DEBUG,"ESXDOS handler: local directory: %s",localdir);
+    }
+
 
 	//debug_printf (VERBOSE_DEBUG,"ESXDOS handler: directorio final local de esxdos_handler: %s",finaldir);
 
 
 	//Restauramos directorio actual del emulador
 	chdir(directorio_actual);
+
+    return retorno_error;
 }
 
 
@@ -1235,14 +1259,23 @@ void esxdos_handler_call_f_chdir(void)
 
 
 
-		char directorio_final[PATH_MAX];
+    char directorio_final[PATH_MAX];
 
-		debug_printf (VERBOSE_DEBUG,"ESXDOS handler: Changing to directory %s",ruta);
+    debug_printf (VERBOSE_DEBUG,"ESXDOS handler: Changing to directory %s",ruta);
 
-		esxdos_handler_get_final_directory(ruta,directorio_final,esxdos_handler_cwd);
+    int error_retorno=esxdos_handler_get_final_directory(ruta,directorio_final,esxdos_handler_cwd);
 
-		debug_printf (VERBOSE_DEBUG,"ESXDOS handler: Final directory %s . cwd: %s",directorio_final,esxdos_handler_cwd);
 
+    debug_printf (VERBOSE_DEBUG,"ESXDOS handler: Final directory %s . cwd: %s",directorio_final,esxdos_handler_cwd);
+
+
+	//Si archivo es directorio, error
+	if (error_retorno) {
+		debug_printf (VERBOSE_DEBUG,"ESXDOS handler: Error changing directory");
+		esxdos_handler_error_carry(ESXDOS_ERROR_ENOENT);
+		esxdos_handler_old_return_call();
+		return;
+	}
 
 	esxdos_handler_no_error_uncarry();
 	esxdos_handler_old_return_call();
@@ -1285,9 +1318,17 @@ void esxdos_handler_call_f_getcwd(void)
 {
 
 	// Get current folder path (null-terminated)
-// to buffer. A=drive. HL=pointer to buffer.
+    // to buffer. A=drive. HL=pointer to buffer.
 
-	esxdos_handler_copy_string_to_hl(esxdos_handler_cwd);
+    if (esxdos_handler_cwd[0]==0) {
+        esxdos_handler_copy_string_to_hl("/");
+        debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_F_GETCWD. Return [/]");
+    }
+
+	else {
+        esxdos_handler_copy_string_to_hl(esxdos_handler_cwd);
+        debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_F_GETCWD. Return [%s]",esxdos_handler_cwd);
+    }
 
 	esxdos_handler_no_error_uncarry();
 	esxdos_handler_old_return_call();
@@ -2115,7 +2156,7 @@ eg for NextZXOS v1.94, DE=$0194 HL=language code:
 		case ESXDOS_RST8_F_OPEN:
 
 			esxdos_handler_copy_hl_to_string(buffer_fichero);
-			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_F_OPEN. Mode: %02XH File: %s",reg_b,buffer_fichero);
+			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_F_OPEN. Mode: %02XH File: [%s]",reg_b,buffer_fichero);
 			esxdos_handler_call_f_open();
 			esxdos_handler_new_return_call();
 
