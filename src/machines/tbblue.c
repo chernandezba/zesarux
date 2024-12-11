@@ -6490,12 +6490,16 @@ Defines the transparent colour index for tiles. The 4-bit pixels of a tile defin
                         offset_tiledef=tnum*(TBBLUE_TILE_WIDTH/2)*TBBLUE_TILE_HEIGHT;
                 }
 
-                //sumar posicion y
-                //offset_tiledef += linea_en_tile*4;
 
-                //tiledef
-
-                //printf ("tpal %d\n",tpal);
+                //wrap offset a 16k o 8k
+                if (page_tiledef==5*2) {
+                    //printf("wrap tiledef a 16k\n");
+                    offset_tiledef &=16383;
+                }
+                else {
+                    //printf("wrap tiledef a 8k\n");
+                    offset_tiledef &=8191;
+                }
 
 
 
