@@ -6445,18 +6445,18 @@ Defines the transparent colour index for tiles. The 4-bit pixels of a tile defin
 
 // Bloque mejorado del fork de Peter Ped Helcmanovsky
 
-        for (x=0;x<tilemap_width;x++) {
-                //TODO stencil mode
-                byte_first=puntero_tilemap[offset_tilemap & wrap_tilemap];
+    for (x=0;x<tilemap_width;x++) {
+        //TODO stencil mode
+        byte_first=puntero_tilemap[offset_tilemap & wrap_tilemap];
+        offset_tilemap++;
+        if (tbblue_bytes_per_tile==2) {
+                byte_second=puntero_tilemap[offset_tilemap & wrap_tilemap];
                 offset_tilemap++;
-                if (tbblue_bytes_per_tile==2) {
-                        byte_second=puntero_tilemap[offset_tilemap & wrap_tilemap];
-                        offset_tilemap++;
-                } else {
-                        byte_second = tbblue_default_tilemap_attr;
-                }
+        } else {
+                byte_second = tbblue_default_tilemap_attr;
+        }
 
-                int tnum=byte_first;
+        int tnum=byte_first;
 
 /*
   bits 15-12 : palette offset
@@ -6467,8 +6467,8 @@ Defines the transparent colour index for tiles. The 4-bit pixels of a tile defin
   bits   7-0 : tile number
   */
 
-                if (tbblue_tiles_are_monocrome()) {
-					//En modo texto:
+        if (tbblue_tiles_are_monocrome()) {
+            //En modo texto:
 // bits 15-9: palette offset (7 bits)
 // bit 8 : ULA over tilemap (in 512 tile mode, bit 8 of the tile number)
 // bits 7-0 : tile number
@@ -6476,86 +6476,88 @@ Defines the transparent colour index for tiles. The 4-bit pixels of a tile defin
 // The tiles are defined like UDGs (1 bit per pixel) and that 1 bit is combined with
 // the 7-bit palette offset to form the 8-bit pixel that gets looked up in the tilemap palette.
 
-						//Que mal documentado esta el tema de paleta... no se rota bits a la derecha
-                        tpal=(byte_second)&0xFE;
-                        xmirror=0;
-                        ymirror=0;
-                        rotate=0;
-                } else {
-						//Que mal documentado esta el tema de paleta... no se rota bits a la derecha
-                        tpal=(byte_second)&0xF0;
-                        xmirror=(byte_second>>3)&1;
-                        ymirror=(byte_second>>2)&1;
-                        rotate=(byte_second>>1)&1;
-                }
+            //Que mal documentado esta el tema de paleta... no se rota bits a la derecha
+            tpal=(byte_second)&0xFE;
+            xmirror=0;
+            ymirror=0;
+            rotate=0;
+        }
+
+        else {
+                //Que mal documentado esta el tema de paleta... no se rota bits a la derecha
+                tpal=(byte_second)&0xF0;
+                xmirror=(byte_second>>3)&1;
+                ymirror=(byte_second>>2)&1;
+                rotate=(byte_second>>1)&1;
+        }
 
 
-                if (tbblue_tilemap_control&2) {
-                        // 512 tile mode
-                        tnum |= (byte_second&1)<<8;
-                        ula_over_tilemap = ula_over_tilemap_mask;
-                } else {
-                        // 256 tile mode, "ULA over tilemap" bit used from attribute (plus "force tilemap")
-                        ula_over_tilemap = byte_second & ula_over_tilemap_mask;
-                }
+        if (tbblue_tilemap_control&2) {
+                // 512 tile mode
+                tnum |= (byte_second&1)<<8;
+                ula_over_tilemap = ula_over_tilemap_mask;
+        } else {
+                // 256 tile mode, "ULA over tilemap" bit used from attribute (plus "force tilemap")
+                ula_over_tilemap = byte_second & ula_over_tilemap_mask;
+        }
 
-                //if (ula_over_tilemap) printf("ula_over_tilemap\n");
+        //if (ula_over_tilemap) printf("ula_over_tilemap\n");
 
-                //printf ("Color independiente. tpal:%d byte_second: %02XH\n",tpal,byte_second);
+        //printf ("Color independiente. tpal:%d byte_second: %02XH\n",tpal,byte_second);
 
-                //Sacar offset a principio tiledef.
-                int offset_tiledef;
+        //Sacar offset a principio tiledef.
+        int offset_tiledef;
 
 
-                if (tbblue_tiles_are_monocrome()) {
-                        offset_tiledef=tnum*TBBLUE_TILE_HEIGHT;
-                }
-                else {
-                        //4 bpp. cada tiledef ocupa 4 bytes * 8 = 32
-                        offset_tiledef=tnum*(TBBLUE_TILE_WIDTH/2)*TBBLUE_TILE_HEIGHT;
-                }
+        if (tbblue_tiles_are_monocrome()) {
+            offset_tiledef=tnum*TBBLUE_TILE_HEIGHT;
+        }
+        else {
+            //4 bpp. cada tiledef ocupa 4 bytes * 8 = 32
+            offset_tiledef=tnum*(TBBLUE_TILE_WIDTH/2)*TBBLUE_TILE_HEIGHT;
+        }
 
-                offset_tiledef +=(256*tbblue_get_offset_start_tiledef());
+        offset_tiledef +=(256*tbblue_get_offset_start_tiledef());
 
 
 
 //FIN del bloque mejorado del fork de Peter Ped Helcmanovsky
 
 
-		//Renderizar los 8 pixeles del tile
-		int pixel_tile;
-		z80_byte *puntero_this_tiledef;
-		puntero_this_tiledef=&puntero_tiledef[offset_tiledef & wrap_tiledef];
+        //Renderizar los 8 pixeles del tile
+        int pixel_tile;
+        z80_byte *puntero_this_tiledef;
+        puntero_this_tiledef=&puntero_tiledef[offset_tiledef & wrap_tiledef];
 
         //printf("offset_tiledef: %d\n",offset_tiledef);
 
-		//Incrementos de x e y
-		int incx=+1;
-		int incy=0;
+        //Incrementos de x e y
+        int incx=+1;
+        int incy=0;
 
-		z80_byte sx=0,sy=0; //Coordenadas x,y dentro del tile
+        z80_byte sx=0,sy=0; //Coordenadas x,y dentro del tile
 
-		//sumar posicion y
-		sy += linea_en_tile;
-
-
-		//Aplicar mirror si conviene y situarnos en la ultima linea
-		if (ymirror) {
-			//sy=TBBLUE_TILE_HEIGHT-1-diferencia;
-			sy=TBBLUE_TILE_HEIGHT-1-linea_en_tile;
-		}
-		else {
-			//sy=diferencia;
-		}
-
-		//Cambiar offset si mirror x, ubicarlo a la derecha del todo
-		if (xmirror) {
-			sx=TBBLUE_TILE_WIDTH-1;
-			incx=-1;
-		}
+        //sumar posicion y
+        sy += linea_en_tile;
 
 
-	//Rotacion. Mismo metodo que con sprites
+        //Aplicar mirror si conviene y situarnos en la ultima linea
+        if (ymirror) {
+            //sy=TBBLUE_TILE_HEIGHT-1-diferencia;
+            sy=TBBLUE_TILE_HEIGHT-1-linea_en_tile;
+        }
+        else {
+            //sy=diferencia;
+        }
+
+        //Cambiar offset si mirror x, ubicarlo a la derecha del todo
+        if (xmirror) {
+            sx=TBBLUE_TILE_WIDTH-1;
+            incx=-1;
+        }
+
+
+	        //Rotacion. Mismo metodo que con sprites
 							/*
               Comparar bits rotacion con ejemplo en media/spectrum/tbblue/sprites/rotate_example.png
               */
@@ -6603,71 +6605,71 @@ Defines the transparent colour index for tiles. The 4-bit pixels of a tile defin
 				*/
 
 
-		if (rotate) {
-			z80_byte sy_old=sy;
-			sy=(TBBLUE_TILE_HEIGHT-1)-sx;
-			sx=sy_old;
+        if (rotate) {
+            z80_byte sy_old=sy;
+            sy=(TBBLUE_TILE_HEIGHT-1)-sx;
+            sx=sy_old;
 
-			incy=-incx;
-			incx=0;
-			//printf ("Tiles con rotacion size %d\n",tbblue_bytes_per_tile);
-		}
-
-
-		for (pixel_tile=0;pixel_tile<8;pixel_tile+=2) { //Saltamos de dos en dos porque son 4bpp
+            incy=-incx;
+            incx=0;
+            //printf ("Tiles con rotacion size %d\n",tbblue_bytes_per_tile);
+        }
 
 
-			z80_byte pixel_izq,pixel_der;
-
-			//Pixel izquierdo
-			pixel_izq=tbblue_get_pixel_tile_xy(sx,sy,puntero_this_tiledef);
-
-			if (destino_x_pixel>=clipwindow_min_x && destino_x_pixel<clipwindow_max_x) {
-				tbblue_do_tile_putpixel(pixel_izq,transparent_colour,tpal,puntero_a_layer,ula_over_tilemap);
-				if (tilemap_width==40) tbblue_do_tile_putpixel(pixel_izq,transparent_colour,tpal,puntero_a_layer+1,ula_over_tilemap);
-			}
-			puntero_a_layer++;
-			if (tilemap_width==40) puntero_a_layer++;
-			destino_x_pixel++;
+        for (pixel_tile=0;pixel_tile<8;pixel_tile+=2) { //Saltamos de dos en dos porque son 4bpp
 
 
+            z80_byte pixel_izq,pixel_der;
 
-			sx=sx+incx;
-			sy=sy+incy;
+            //Pixel izquierdo
+            pixel_izq=tbblue_get_pixel_tile_xy(sx,sy,puntero_this_tiledef);
 
-			//Controlar si se sale por la derecha (pues hay scroll)
-			if (destino_x_pixel==max_destino_x_pixel) {
-				destino_x_pixel=0;
-				puntero_a_layer=orig_puntero_a_layer;
-			}
+            if (destino_x_pixel>=clipwindow_min_x && destino_x_pixel<clipwindow_max_x) {
+                tbblue_do_tile_putpixel(pixel_izq,transparent_colour,tpal,puntero_a_layer,ula_over_tilemap);
+                if (tilemap_width==40) tbblue_do_tile_putpixel(pixel_izq,transparent_colour,tpal,puntero_a_layer+1,ula_over_tilemap);
+            }
+            puntero_a_layer++;
+            if (tilemap_width==40) puntero_a_layer++;
+            destino_x_pixel++;
 
 
 
-			//Pixel derecho
-			pixel_der=tbblue_get_pixel_tile_xy(sx,sy,puntero_this_tiledef);
+            sx=sx+incx;
+            sy=sy+incy;
 
-			if (destino_x_pixel>=clipwindow_min_x && destino_x_pixel<clipwindow_max_x) {
-				tbblue_do_tile_putpixel(pixel_der,transparent_colour,tpal,puntero_a_layer,ula_over_tilemap);
-				if (tilemap_width==40) tbblue_do_tile_putpixel(pixel_der,transparent_colour,tpal,puntero_a_layer+1,ula_over_tilemap);
-			}
-			puntero_a_layer++;
-			if (tilemap_width==40) puntero_a_layer++;
-			destino_x_pixel++;
-
-			sx=sx+incx;
-			sy=sy+incy;
-
-			//Controlar si se sale por la derecha (pues hay scroll)
-			if (destino_x_pixel==max_destino_x_pixel) {
-				destino_x_pixel=0;
-				puntero_a_layer=orig_puntero_a_layer;
-			}
+            //Controlar si se sale por la derecha (pues hay scroll)
+            if (destino_x_pixel==max_destino_x_pixel) {
+                destino_x_pixel=0;
+                puntero_a_layer=orig_puntero_a_layer;
+            }
 
 
-		}
+
+            //Pixel derecho
+            pixel_der=tbblue_get_pixel_tile_xy(sx,sy,puntero_this_tiledef);
+
+            if (destino_x_pixel>=clipwindow_min_x && destino_x_pixel<clipwindow_max_x) {
+                tbblue_do_tile_putpixel(pixel_der,transparent_colour,tpal,puntero_a_layer,ula_over_tilemap);
+                if (tilemap_width==40) tbblue_do_tile_putpixel(pixel_der,transparent_colour,tpal,puntero_a_layer+1,ula_over_tilemap);
+            }
+            puntero_a_layer++;
+            if (tilemap_width==40) puntero_a_layer++;
+            destino_x_pixel++;
+
+            sx=sx+incx;
+            sy=sy+incy;
+
+            //Controlar si se sale por la derecha (pues hay scroll)
+            if (destino_x_pixel==max_destino_x_pixel) {
+                destino_x_pixel=0;
+                puntero_a_layer=orig_puntero_a_layer;
+            }
 
 
-  }
+        }
+
+
+    }
 
 }
 
