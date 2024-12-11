@@ -6367,13 +6367,12 @@ the central 256×192 display. The X coordinates are internally doubled to cover 
     z80_byte page_tilemap=tbblue_get_ram_page_tilemap();
 
 	//Inicio del tilemap
-	puntero_tilemap=tbblue_ram_memory_pages[page_tilemap]+(256*tbblue_get_offset_start_tilemap());
+	puntero_tilemap=tbblue_ram_memory_pages[page_tilemap];
 
 	//Obtener offset sobre tilemap
-	int offset_tilemap=tbblue_bytes_per_tile*tilemap_width*posicion_y;
+	int offset_tilemap=tbblue_bytes_per_tile*tilemap_width*posicion_y+(256*tbblue_get_offset_start_tilemap());
 
 
-	//puntero_tilemap +=offset_tilemap;  //Esto apuntara al primer tile de esa posicion y y con x=0
 
     int wrap_tilemap=16383;
 
@@ -6391,15 +6390,18 @@ the central 256×192 display. The X coordinates are internally doubled to cover 
 	//Inicio del tiledef
 	puntero_tiledef=tbblue_ram_memory_pages[page_tiledef]+(256*tbblue_get_offset_start_tiledef());
 
-	//puntero_a_layer -=scroll_x; //temp chapuza
 
-    //TODO: tilemap y tiledef se mueven en un bloque de 16k (cuando usan ram 5*2) o en bloque de 8k (cuando usan ram 7*2)
-    //En este codigo no hago ese wrap y por tanto ambos se salen de bloque de 16k o 8k
-    //no es que sea un super bug, pero si alguien configura esos offsets cercanos del limite, cuando se vayan leyendo datos
-    //y se salga de ese bloque de 8k/16k, en vez de ir al principio del bloque, se irá al siguiente bloque de ram, cosa que es un error
-    //Para corregirlo, en vez de tener un puntero_tilemap y un puntero_tiledef, se deberia tener un offset, leer siempre
-    //calculando offset+start page, y haciendo un módulo 16k/8K (dependiendo si es ram 5*2 o 7*2)
-    //Como eso es raro que suceda, a no ser que alguien lo haga intencionadamente, de momento lo dejamos así sin corregir
+    int wrap_tiledef=16383;
+
+    if (page_tiledef==7*2) {
+        //printf("wrap tiledef at 8k\n");
+        wrap_tiledef=8191;
+    }
+    else {
+        //printf("wrap tiledef at 16k\n");
+    }
+
+
 
 	int x;
 
@@ -6502,15 +6504,7 @@ Defines the transparent colour index for tiles. The 4-bit pixels of a tile defin
                 }
 
 
-                //wrap offset a 16k o 8k
-                if (page_tiledef==5*2) {
-                    //printf("wrap tiledef a 16k\n");
-                    offset_tiledef &=16383;
-                }
-                else {
-                    //printf("wrap tiledef a 8k\n");
-                    offset_tiledef &=8191;
-                }
+
 
 
 
@@ -6522,7 +6516,7 @@ Defines the transparent colour index for tiles. The 4-bit pixels of a tile defin
 		//Renderizar los 8 pixeles del tile
 		int pixel_tile;
 		z80_byte *puntero_this_tiledef;
-		puntero_this_tiledef=&puntero_tiledef[offset_tiledef];
+		puntero_this_tiledef=&puntero_tiledef[offset_tiledef & wrap_tiledef];
 
         //printf("offset_tiledef: %d\n",offset_tiledef);
 
