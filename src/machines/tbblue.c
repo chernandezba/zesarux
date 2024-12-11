@@ -6364,7 +6364,11 @@ the central 256×192 display. The X coordinates are internally doubled to cover 
 
 	//printf ("clipwindow_min_x %d clipwindow_max_x %d\n",clipwindow_min_x,clipwindow_max_x);
 
+
+
+    //
     //Obtencion TILEMAP
+    //
 
     z80_byte page_tilemap=tbblue_get_ram_page_tilemap();
 
@@ -6372,10 +6376,11 @@ the central 256×192 display. The X coordinates are internally doubled to cover 
 	puntero_tilemap=tbblue_ram_memory_pages[page_tilemap];
 
 	//Obtener offset sobre tilemap
-	int offset_tilemap=tbblue_bytes_per_tile*tilemap_width*posicion_y+(256*tbblue_get_offset_start_tilemap());
+	int offset_tilemap=tbblue_bytes_per_tile*tilemap_width*posicion_y;
 
+    offset_tilemap +=(256*tbblue_get_offset_start_tilemap());
 
-
+    //Control de limites de pagina
     int wrap_tilemap=16383;
 
     if (page_tilemap==7*2) {
@@ -6386,14 +6391,18 @@ the central 256×192 display. The X coordinates are internally doubled to cover 
         //printf("wrap tilemap at 16k\n");
     }
 
+
+
+    //
     //Obtencion TILEDEF
+    //
 
     z80_byte page_tiledef=tbblue_get_ram_page_tiledef();
 
 	//Pagina RAM del tiledef
 	puntero_tiledef=tbblue_ram_memory_pages[page_tiledef];
 
-
+    //Control de limites de pagina
     int wrap_tiledef=16383;
 
     if (page_tiledef==7*2) {
@@ -6510,11 +6519,7 @@ Defines the transparent colour index for tiles. The 4-bit pixels of a tile defin
 
 
 
-
-
 //FIN del bloque mejorado del fork de Peter Ped Helcmanovsky
-
-
 
 
 		//Renderizar los 8 pixeles del tile
