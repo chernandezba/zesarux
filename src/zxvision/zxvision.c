@@ -15133,6 +15133,8 @@ void zxvision_widgets_draw_sphere(zxvision_window *ventana,int xinicio_widget,in
 
         int radio_aplicar=((radio_total/100)*util_get_sine(grados_vertical))/10000;
 
+        //printf("grados_vertical: %d radio_aplicar: %d\n",grados_vertical,radio_aplicar);
+
         for (grados=0;grados<360;grados++) {
             int xdestino=(radio_aplicar*util_get_cosine(grados))/10000;
             int ydestino=(radio_aplicar*util_get_sine(grados))/10000;
