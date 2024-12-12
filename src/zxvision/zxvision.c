@@ -15121,7 +15121,17 @@ void zxvision_widgets_draw_sphere(zxvision_window *ventana,int xinicio_widget,in
 
 
 
-    int max_vueltas;
+    // Dibujar una linea de referencia de suelo
+    // De largo igual que el doble de radio
+    // Nota: visualmente en 2D el suelo es menos largo que el ancho del radio,
+    // pero es debido al paso de coordenadas 3D a 2D en que la coordenada Y de 3D hace desplazar la X en plano 2D y
+    // por tanto el espacio ocupado en pantalla es algo mayor del suelo
+    int largo_suelo=longitud_linea*2;
+    int i;
+    for (i=-largo_suelo/2;i<largo_suelo/2;i++) {
+        //printf("i: %d\n",i);
+        zxvision_putpixel(ventana,x_centro_widget+i,ycentro_widget,ESTILO_GUI_TINTA_NORMAL);
+    }
 
 
     //Hacer varios circulos a diferentes alturas para simular esfera
@@ -15129,11 +15139,18 @@ void zxvision_widgets_draw_sphere(zxvision_window *ventana,int xinicio_widget,in
 
     for (grados_vertical=0;grados_vertical<360;grados_vertical +=20) {
 
+        //coordenada z variable dado que la esfera se aplasta
         int z=zorigen+(radio_vertical*util_get_cosine(grados_vertical))/10000;
+
+        //hacemos tambien que la esfera rebote. Si tiene porcentaje 100 el sensor, estara mas arriba. Si tiene 0, estara abajo
+        int sumar_z=(8*percentaje)/100;
+
+        z +=sumar_z;
 
         int radio_aplicar=((radio_total/100)*util_get_sine(grados_vertical))/10000;
 
         //printf("grados_vertical: %d radio_aplicar: %d\n",grados_vertical,radio_aplicar);
+        //printf("radio_aplicar: %d\n",radio_aplicar);
 
         for (grados=0;grados<360;grados++) {
             int xdestino=(radio_aplicar*util_get_cosine(grados))/10000;
@@ -15143,10 +15160,9 @@ void zxvision_widgets_draw_sphere(zxvision_window *ventana,int xinicio_widget,in
             //int ydestino=((radio_total/100)*util_get_sine(grados))/10000;
 
             int xplano,yplano;
-            //zxvision_widgets_draw_particles_3d_convert(xdestino,ydestino,z/100,&xplano,&yplano);
 
             zxvision_widgets_draw_particles_3d_convert_simple(xdestino,ydestino,z,&xplano,&yplano);
-            //if (yplano<0) printf("%d %d\n",xplano,yplano);
+
             zxvision_putpixel(ventana,x_centro_widget+xplano,ycentro_widget-yplano,color); //es -yplano porque si y es positiva, restamos (hacia arriba, pues el 0 de la y esta arriba del todo)
 
         }
