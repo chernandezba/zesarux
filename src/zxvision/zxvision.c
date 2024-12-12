@@ -15095,6 +15095,70 @@ void zxvision_widgets_draw_particles(zxvision_window *ventana,int xinicio_widget
 }
 
 
+void zxvision_widgets_draw_sphere(zxvision_window *ventana,int xinicio_widget,int ycentro_widget,int percentaje,int color,int longitud_linea)
+{
+
+
+    int radio_total=longitud_linea;
+
+    //int radio_porcentaje=(radio_total*percentaje)/100;
+
+    int radio_vertical=(radio_total*percentaje)/100;
+
+
+    int x_centro_widget=xinicio_widget+radio_total;
+
+    //con el uso de perspectiva simple, hay que desplazar algo mas a la derecha
+    x_centro_widget +=radio_total/3;
+
+    //radio total * 100 para poder usar "decimales"
+
+    radio_total *=100;
+
+    int grados;
+
+    int zorigen=radio_vertical;
+
+
+
+    int max_vueltas;
+
+
+    //Hacer varios circulos a diferentes alturas para simular esfera
+    int grados_vertical;
+
+    for (grados_vertical=0;grados_vertical<360;grados_vertical +=20) {
+
+        int z=zorigen+(radio_vertical*util_get_cosine(grados_vertical))/10000;
+
+        int radio_aplicar=((radio_total/100)*util_get_sine(grados_vertical))/10000;
+
+        for (grados=0;grados<360;grados++) {
+            int xdestino=(radio_aplicar*util_get_cosine(grados))/10000;
+            int ydestino=(radio_aplicar*util_get_sine(grados))/10000;
+
+            //int xdestino=((radio_total/100)*util_get_cosine(grados))/10000;
+            //int ydestino=((radio_total/100)*util_get_sine(grados))/10000;
+
+            int xplano,yplano;
+            //zxvision_widgets_draw_particles_3d_convert(xdestino,ydestino,z/100,&xplano,&yplano);
+
+            zxvision_widgets_draw_particles_3d_convert_simple(xdestino,ydestino,z,&xplano,&yplano);
+            //if (yplano<0) printf("%d %d\n",xplano,yplano);
+            zxvision_putpixel(ventana,x_centro_widget+xplano,ycentro_widget-yplano,color); //es -yplano porque si y es positiva, restamos (hacia arriba, pues el 0 de la y esta arriba del todo)
+
+        }
+
+    }
+
+
+
+
+
+
+}
+
+
 int zxvision_widgets_draw_sierpinsky_last_x=0;
 int zxvision_widgets_draw_sierpinsky_last_y=0;
 
@@ -15160,6 +15224,7 @@ char *zxvision_widget_types_names[ZXVISION_TOTAL_WIDGET_TYPES]={
     "Ellipse Concentric",
     "Curve",
     "3DParticles",
+    "Sphere",
     "Volume",
     "Only Value",
 	"Sierpinsky"
@@ -15324,6 +15389,16 @@ void zxvision_widgets_draw_metter_common_by_shortname(zxvision_window *ventana,i
         int xorigen_widget=(columna_texto*menu_char_width);
 
         zxvision_widgets_draw_particles(ventana,xorigen_widget,yorigen_linea,media_cpu_perc,color_pixeles,longitud_linea);
+
+    }
+
+    if (tipo==ZXVISION_WIDGET_TYPE_SPHERE) {
+        int longitud_linea=ZXVISION_WIDGET_TYPE_SPHERE_RADIUS;
+
+        int yorigen_linea=(fila_texto*menu_char_height)+longitud_linea+menu_char_height*2;  //menu_char_height*2 para que este dos lineas por debajo del texto
+        int xorigen_widget=(columna_texto*menu_char_width);
+
+        zxvision_widgets_draw_sphere(ventana,xorigen_widget,yorigen_linea,media_cpu_perc,color_pixeles,longitud_linea);
 
     }
 

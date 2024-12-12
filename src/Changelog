@@ -32,6 +32,7 @@ Allow to define Left Alt, Left Ctrl, Left Shift or TAB as Joystick Fire action
 Allow to change current tape read position on Input Tape Viewer for .tap files
 Allow loading a 8kb rom in ZX80 (for example the ZX81 rom, like an upgraded ZX80 to ZX81)
 Allow magnify sprites on View Sprites
+Added Sphere Meter Type to View Sensors
 Improve compilation: settings --enable-memptr --enable-visualmem --enable-cpustats are enabled by default on ./configure
 Improved Inves Spectrum+ emulation: alert when a game may crash due to the Inves write-on-interrupt bug
 Improve Spectrum Z80 CPU emulation core: add wait state (needed to emulate microdrive)
