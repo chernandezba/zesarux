@@ -55,6 +55,7 @@ Mejorada emulación de Spectrum Next:
 - Corregido cambio en directorio local en esxdos handler cuando se carga un snapshot .nex
 - Corregido offset de paleta en layer 2
 - Corregido scroll horizontal de capa ULA
+- Corregido clipping de sprites en borde izquierdo y superior
 - Corregido límites de Tile en 16k/8k
 - Corregido burst mode de DMA cuando prescaler=0
 - Corregida transferencia de DMA reiniciando el contador de bytes al final de una transferencia

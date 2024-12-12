@@ -1986,6 +1986,18 @@ void tbsprite_put_color_line(int x,z80_byte color,int rangoxmin,int rangoxmax)
 	//Si coordenadas invalidas, volver
 	//if (x<0 || x>=MAX_X_SPRITE_LINE) return;
 
+    //Display surface is 320x256
+    /*
+    The full extent 0-511 wraps on both axes, meaning a sprite 16 pixels wide
+    plotted at X coordinate 511 would see its first pixel not displayed
+    (coordinate 511) and the following pixels displayed in coordinates 0-14
+    */
+    //Por tanto, cualquier sprite en coordenada X > 319, es como si fuera coordenada negativa
+    //y lo que venga de coordenadas negativas, puede aparecer por la izquierda de la pantalla
+    //Esto corrige el clipping de personajes en Atic Atac que aparecen por la izquierda
+
+    if (x>319) x -=512;
+
 	//Si coordenadas fuera de la parte visible (border si o no), volver
 	if (x<rangoxmin || x>rangoxmax) return;
 
@@ -2582,6 +2594,19 @@ If the display of the sprites on the border is disabled, the coordinates of the 
             //if (conta_sprites==0 || conta_sprites==1) {
             //    printf("ANTES %d index_pattern: %d\n",conta_sprites,index_pattern);
             //}
+
+            //if (sprite_y==511) printf("sprite_y: %d\n",sprite_y);
+            //Display surface is 320x256
+            /*
+            The full extent 0-511 wraps on both axes, meaning a sprite 16 pixels wide
+            plotted at X coordinate 511 would see its first pixel not displayed
+            (coordinate 511) and the following pixels displayed in coordinates 0-14
+            */
+            //Por tanto, cualquier sprite en coordenada Y > 255, es como si fuera coordenada negativa
+            //y lo que venga de coordenadas negativas, puede aparecer por encima de la pantalla
+            //Esto corrige el clipping de personajes en Atic Atac que aparecen por arriba
+
+            if (sprite_y>255) sprite_y -=512;
 
             //Si coordenada y esta en margen y sprite activo
             int diferencia=(y-sprite_y)>>sprite_zoom_y;
