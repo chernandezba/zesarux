@@ -5211,6 +5211,8 @@ void tbblue_set_value_port_position(z80_byte index_position,z80_byte value)
 
         tbblue_dac_b=value;
 
+        reset_silence_detection_counter();
+
 		break;
 
 		case 45:
@@ -5221,11 +5223,15 @@ void tbblue_set_value_port_position(z80_byte index_position,z80_byte value)
 
         tbblue_dac_a=tbblue_dac_d=value;
 
+        reset_silence_detection_counter();
+
 		break;
 
 		case 46:
 
         tbblue_dac_c=value;
+
+        reset_silence_detection_counter();
 
 		break;
 
@@ -8787,6 +8793,8 @@ void tbblue_out_port_dac(z80_byte puerto_l,z80_byte value)
             tbblue_dac_b=tbblue_dac_c=value;
         break;
     }
+
+    reset_silence_detection_counter();
 
 }
 
