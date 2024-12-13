@@ -60,6 +60,7 @@ Improved Spectrum Next emulation:
 - Fixed Tile wrapping at 16k/8k
 - Fixed DMA burst mode when prescaler=0
 - Fixed DMA Transfer restarting the byte count at the end of a transfer
+- Fixed cpu speed when opening tape file
 
 Improved Debug:
 - CPU history: allow to change memory pointer to the PC register show in history

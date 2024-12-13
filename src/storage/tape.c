@@ -521,8 +521,10 @@ int tap_open(void)
         tape_block_open();
 
 
-        //if (noautoload.v==0 && !MACHINE_IS_TBBLUE) { //TODO: desactivamos autoload en TBBLUE
-        if (noautoload.v==0) {
+        //desactivamos autoload en TBBLUE ya que es demasiado lio, hay que saltar la pantalla de bienvenida,
+        //mover cursor en el menu, etc etc
+        if (noautoload.v==0 && !MACHINE_IS_TBBLUE) {
+        //if (noautoload.v==0) {
             debug_printf (VERBOSE_INFO,"Restarting autoload");
             initial_tap_load.v=1;
             initial_tap_sequence=0;
@@ -531,7 +533,7 @@ int tap_open(void)
             reset_cpu();
 
             //Activamos top speed si conviene
-            if (fast_autoload.v && !MACHINE_IS_MSX && !MACHINE_IS_ACE) {
+            if (fast_autoload.v && !MACHINE_IS_MSX && !MACHINE_IS_ACE && !MACHINE_IS_TBBLUE) {
                 debug_printf (VERBOSE_INFO,"Set top speed from TAP open");
                 top_speed_timer.v=1;
             }
@@ -1629,6 +1631,7 @@ int tap_save_detect_ace(void)
         return 0;
 }
 
+//Usado antiguamente en tbblue
 void gestionar_autoload_spectrum_start_cursorenter(void)
 {
         debug_printf (VERBOSE_INFO,"Autoload tape with Space, Cursor up (twice) and ENTER");
@@ -1896,31 +1899,33 @@ void gestionar_autoload_spectrum(void)
 
                         break;
 
-			case 19:
+			case MACHINE_ID_TBBLUE:
 				//Para TBBlue. Pasa como Prism
-				        //Para 128k, +2, +2a enviar enter
-                        //Siempre que no este en la rom de arranque,
-                        //pues acaba creyendose
-                                //que esta en la rom del basic pues entra en reg_pc==0x12a9
-                                if (tbblue_fast_boot_mode.v==0) {
-                                        if (!tbblue_bootrom.v) {
-                                                if (reg_pc==0x23f2) {
-                                                        //Solo envio de cursor arriba dos veces, enter , en menu NextOS
-                                                        //printf ("Sending autoload cursor up (2) + enter\n");
-                                                        gestionar_autoload_spectrum_start_cursorenter();
-                                                }
-                                        }
+                //Actualmente esto NO se usa
+
+                //Siempre que no este en la rom de arranque,
+                //pues acaba creyendose
+                //que esta en la rom del basic pues entra en reg_pc==0x12a9
+                if (tbblue_fast_boot_mode.v==0) {
+                        if (!tbblue_bootrom.v) {
+                            //printf("en gestionar_autoload_spectrum\n");
+                                if (reg_pc==0x23f2) {
+                                        //Solo envio de cursor arriba dos veces, enter , en menu NextOS
+                                        //printf ("------Sending autoload cursor up (2) + enter\n");
+                                        gestionar_autoload_spectrum_start_cursorenter();
                                 }
+                        }
+                }
 
-                                else {
-                                        //modo tbblue fast
-                                                //printf ("gestionar como spectrum 48k\n");
-                                                gestionar_autoload_spectrum_48kmode();
-                                }
+                else {
+                        //modo tbblue fast
+                                //printf ("gestionar como spectrum 48k\n");
+                                gestionar_autoload_spectrum_48kmode();
+                }
 
 
 
-          break;
+            break;
 
 			case 23:
                                 //Para TSConf. Pasa como zxuno
@@ -2710,9 +2715,10 @@ void realtape_insert(void)
         enable_rainbow();
     }
 
-
-    //if (noautoload.v==0 && !MACHINE_IS_TBBLUE) { //TODO: desactivamos autoload en TBBLUE
-    if (noautoload.v==0) {
+    //desactivamos autoload en TBBLUE ya que es demasiado lio, hay que saltar la pantalla de bienvenida,
+    //mover cursor en el menu, etc etc
+    if (noautoload.v==0 && !MACHINE_IS_TBBLUE) {
+    //if (noautoload.v==0) {
         debug_printf (VERBOSE_INFO,"Restarting autoload");
         initial_tap_load.v=1;
         initial_tap_sequence=0;

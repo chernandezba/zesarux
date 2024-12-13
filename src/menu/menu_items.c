@@ -27857,7 +27857,7 @@ int menu_debug_view_sensors_get_sensor_tipo(int tipo)
 
     menu_add_ESC_item(array_menu_common);
 
-    retorno_menu=menu_dibuja_menu_no_title_lang(&opcion_seleccionada,&item_seleccionado,array_menu_common,"Meter Type" );
+    retorno_menu=menu_dibuja_menu_dialogo_no_title_lang(&opcion_seleccionada,&item_seleccionado,array_menu_common,"Meter Type" );
 
 
 

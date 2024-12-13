@@ -36,7 +36,7 @@
 #include "audio.h"
 #include "zeng_online_client.h"
 #include "ula.h"
-
+#include "tbblue.h"
 
 
 
@@ -92,6 +92,44 @@ int sensor_ay_freq_chip_funcion_get_value(int id)
 
 }
 */
+
+//Retorna valor DAC de Next
+//Id es:
+//0=Dac A, 1=DAC B, etc
+int sensor_next_dac_funcion_get_value(int id)
+{
+    int valor;
+
+    switch(id) {
+        case 0:
+            valor=tbblue_dac_a;
+        break;
+
+        case 1:
+            valor=tbblue_dac_b;
+        break;
+
+        case 2:
+            valor=tbblue_dac_c;
+        break;
+
+        default:
+            valor=tbblue_dac_d;
+        break;
+    }
+
+    valor -=128;
+
+    //TODO: esto permite que un valor +127 o -128 sean el 100% del sensor,
+    //pero por otra parte impide ver el valor real del DAC desde aqui
+    //Quizá habría que extender estas funciones de sensors para que retornasen el valor real tambien, aparte del valor que ya se retorna ahora
+    int absoluto=util_get_absolute(valor);
+
+    //Considerar tambien un valor de +127 como +128 asi es el tope de 100%
+    if (absoluto==127) absoluto=128;
+    return absoluto;
+
+}
 
 
 int sensor_sn_vol_chip_funcion_get_value(int id)
@@ -362,6 +400,39 @@ pues de una octava a la otra es el doble de valor
     9999,-9999,
     sensor_fe_bit3_funcion_get_value,0
     },
+
+    {
+    "next_dac_a","Next DAC A","NEXTDAC_A",
+    0,128,
+    80,-80,
+    9999,-9999,
+    sensor_next_dac_funcion_get_value,0
+    },
+
+    {
+    "next_dac_b","Next DAC B","NEXTDAC_B",
+    0,128,
+    80,-80,
+    9999,-9999,
+    sensor_next_dac_funcion_get_value,1
+    },
+
+    {
+    "next_dac_c","Next DAC C","NEXTDAC_C",
+    0,128,
+    80,-80,
+    9999,-9999,
+    sensor_next_dac_funcion_get_value,2
+    },
+
+    {
+    "next_dac_d","Next DAC D","NEXTDAC_D",
+    0,128,
+    80,-80,
+    9999,-9999,
+    sensor_next_dac_funcion_get_value,3
+    },
+
 
     {
     "fps","Frames per second","FPS",

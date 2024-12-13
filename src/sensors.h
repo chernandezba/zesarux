@@ -22,7 +22,7 @@
 #ifndef SENSORS_H
 #define SENSORS_H
 
-#define TOTAL_SENSORS 33
+#define TOTAL_SENSORS 37
 
 #define SENSORS_MAX_SHORT_NAME 32
 
