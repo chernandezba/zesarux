@@ -89,6 +89,7 @@
 #include "sam.h"
 #include "pcw.h"
 #include "zeng_online_client.h"
+#include "datagear.h"
 
 
 #include "autoselectoptions.h"
@@ -859,6 +860,32 @@ z80_byte mk14_keystatus[8]
 -Block ID 73: ZSF_TBBLUE_CLIPWINDOWS
 z80_byte tbblue_clip_windows[4][4]
 
+-Block ID 74: ZSF_DATAGEAR_DMA
+z80_byte datagear_dma_block[22];
+
+datagear_dma_block[0]=datagear_mask_commands;
+datagear_dma_block[1]=datagear_command_index;
+datagear_dma_block[2]=datagear_last_command;
+datagear_dma_block[3]=datagear_port_a_start_addr_low;
+datagear_dma_block[4]=datagear_port_a_start_addr_high;
+datagear_dma_block[5]=datagear_port_b_start_addr_low;
+datagear_dma_block[6]=datagear_port_b_start_addr_high;
+datagear_dma_block[7]=datagear_block_length_low;
+datagear_dma_block[8]=datagear_block_length_high;
+datagear_dma_block[9]=datagear_original_block_length_low;
+datagear_dma_block[10]=datagear_original_block_length_high;
+datagear_dma_block[11]=datagear_port_a_variable_timing_byte;
+datagear_dma_block[12]=datagear_port_b_variable_timing_byte;
+datagear_dma_block[13]=datagear_wr0;
+datagear_dma_block[14]=datagear_wr1;
+datagear_dma_block[15]=datagear_wr2;
+datagear_dma_block[16]=datagear_wr3;
+datagear_dma_block[17]=datagear_wr4;
+datagear_dma_block[18]=datagear_wr5;
+datagear_dma_block[19]=datagear_wr6;
+datagear_dma_block[20]=datagear_is_dma_transfering.v;
+datagear_dma_block[21]=datagear_dma_tbblue_prescaler;
+
 
 -Como codificar bloques de memoria para Spectrum 128k, zxuno, tbblue, tsconf, etc?
 Con un numero de bloque (0...255) pero... que tamaño de bloque? tbblue usa paginas de 8kb, tsconf usa paginas de 16kb
@@ -943,10 +970,11 @@ char *zsf_block_id_names[]={
   "ZSF_KEY_PORTS_MSX_STATE",
   "ZSF_KEY_PORTS_SVI_STATE",
   "ZSF_KEY_PORTS_PCW_STATE",
-  "ZSF_KEY_PORTS_SAM_STATE",
+  "ZSF_KEY_PORTS_SAM_STATE", //70
   "ZSF_KEY_PORTS_Z88_STATE",
   "ZSF_KEY_PORTS_MK14_STATE",
   "ZSF_TBBLUE_CLIPWINDOWS",
+  "ZSF_DATAGEAR_DMA",
 
   "Unknown"  //Este siempre al final
 };
@@ -2117,13 +2145,40 @@ void load_zsf_ula(z80_byte *header)
 
 }
 
-void load_ZSF_FLASH_STATE(z80_byte *header)
+void load_zsf_flash_state(z80_byte *header)
 {
   contador_parpadeo=header[0];
   estado_parpadeo.v=header[1] & 1;
 
     //Por si acaso, valor no es 0 nunca
     if (!contador_parpadeo) contador_parpadeo=1;
+
+}
+
+void load_zsf_datagear_dma(z80_byte *header)
+{
+    datagear_mask_commands=header[0];
+    datagear_command_index=header[1];
+    datagear_last_command=header[2];
+    datagear_port_a_start_addr_low=header[3];
+    datagear_port_a_start_addr_high=header[4];
+    datagear_port_b_start_addr_low=header[5];
+    datagear_port_b_start_addr_high=header[6];
+    datagear_block_length_low=header[7];
+    datagear_block_length_high=header[8];
+    datagear_original_block_length_low=header[9];
+    datagear_original_block_length_high=header[10];
+    datagear_port_a_variable_timing_byte=header[11];
+    datagear_port_b_variable_timing_byte=header[12];
+    datagear_wr0=header[13];
+    datagear_wr1=header[14];
+    datagear_wr2=header[15];
+    datagear_wr3=header[16];
+    datagear_wr4=header[17];
+    datagear_wr5=header[18];
+    datagear_wr6=header[19];
+    datagear_is_dma_transfering.v=header[20];
+    datagear_dma_tbblue_prescaler=header[21];
 
 }
 
@@ -3605,7 +3660,7 @@ void load_zsf_snapshot_file_mem(char *filename,z80_byte *origin_memory,int longi
       break;
 
       case ZSF_FLASH_STATE:
-        load_ZSF_FLASH_STATE(block_data);
+        load_zsf_flash_state(block_data);
       break;
 
       case ZSF_KEY_PORTS_SPECTRUM_STATE:
@@ -3646,6 +3701,10 @@ void load_zsf_snapshot_file_mem(char *filename,z80_byte *origin_memory,int longi
 
       case ZSF_ZOC_ETC:
         load_zsf_zoc_etc(block_data);
+    break;
+
+    case ZSF_DATAGEAR_DMA:
+        load_zsf_datagear_dma(block_data);
     break;
 
       default:
@@ -3970,7 +4029,7 @@ void save_zsf_snapshot_file_mem(char *filename,z80_byte *destination_memory,int 
 
 
 
- //Ula block y timex. En caso de Spectrum
+ //Ula block y timex y datagear dma.  En caso de Spectrum
   if (MACHINE_IS_SPECTRUM) {
     z80_byte ulablock[1];
 
@@ -4002,6 +4061,38 @@ void save_zsf_snapshot_file_mem(char *filename,z80_byte *destination_memory,int 
     timexblock[1]=timex_port_ff;
 
     zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, timexblock,ZSF_TIMEX, 2);
+
+    if (datagear_dma_emulation.v) {
+
+        z80_byte datagear_dma_block[22];
+
+        datagear_dma_block[0]=datagear_mask_commands;
+        datagear_dma_block[1]=datagear_command_index;
+        datagear_dma_block[2]=datagear_last_command;
+        datagear_dma_block[3]=datagear_port_a_start_addr_low;
+        datagear_dma_block[4]=datagear_port_a_start_addr_high;
+        datagear_dma_block[5]=datagear_port_b_start_addr_low;
+        datagear_dma_block[6]=datagear_port_b_start_addr_high;
+        datagear_dma_block[7]=datagear_block_length_low;
+        datagear_dma_block[8]=datagear_block_length_high;
+        datagear_dma_block[9]=datagear_original_block_length_low;
+        datagear_dma_block[10]=datagear_original_block_length_high;
+        datagear_dma_block[11]=datagear_port_a_variable_timing_byte;
+        datagear_dma_block[12]=datagear_port_b_variable_timing_byte;
+        datagear_dma_block[13]=datagear_wr0;
+        datagear_dma_block[14]=datagear_wr1;
+        datagear_dma_block[15]=datagear_wr2;
+        datagear_dma_block[16]=datagear_wr3;
+        datagear_dma_block[17]=datagear_wr4;
+        datagear_dma_block[18]=datagear_wr5;
+        datagear_dma_block[19]=datagear_wr6;
+        datagear_dma_block[20]=datagear_is_dma_transfering.v;
+        datagear_dma_block[21]=datagear_dma_tbblue_prescaler;
+
+
+        zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, datagear_dma_block,ZSF_DATAGEAR_DMA, 22);
+
+    }
 
 
   }

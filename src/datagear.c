@@ -36,6 +36,10 @@
 //Si no es 0, indica cuantos parámetros le quedan por recibir
 //int datagear_receiving_parameters=0;
 
+//
+// Inicio variables que hay que guardar en un snapshot
+//
+
 //Mascara de los parametros a leer. Por ejemplo si WR0 enviara los 4 parametros, tendra valor 00001111b
 z80_byte datagear_mask_commands=0;
 
@@ -76,11 +80,7 @@ z80_byte datagear_wr4;
 z80_byte datagear_wr5;
 z80_byte datagear_wr6;
 
-//Si esta activada la emulacion de dma
-z80_bit datagear_dma_emulation={0};
 
-//Si esta desactivada la dma. Si esta desactivada, se puede acceder igualmente a todo, excepto que no ejecuta transferencias DMA
-z80_bit datagear_dma_is_disabled={0};
 
 //Si hay transferencia de dma activa
 z80_bit datagear_is_dma_transfering={0};
@@ -88,7 +88,22 @@ z80_bit datagear_is_dma_transfering={0};
 //Valor de la DMA de TBBLUE de prescaler
 z80_byte datagear_dma_tbblue_prescaler;
 
+
+//
+// Fin variables que hay que guardar en un snapshot
+//
+
+
 int datagear_dma_last_testados=0;
+
+
+//Si esta activada la emulacion de dma
+z80_bit datagear_dma_emulation={0};
+
+//Si esta desactivada la dma. Si esta desactivada, se puede acceder igualmente a todo, excepto que no ejecuta transferencias DMA
+z80_bit datagear_dma_is_disabled={0};
+
+
 
 void datagear_dma_disable(void)
 {

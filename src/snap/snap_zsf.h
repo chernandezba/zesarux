@@ -98,9 +98,10 @@
 #define ZSF_KEY_PORTS_Z88_STATE 71
 #define ZSF_KEY_PORTS_MK14_STATE 72
 #define ZSF_TBBLUE_CLIPWINDOWS 73
+#define ZSF_DATAGEAR_DMA 74
 
 //Id maximo de nombres
-#define MAX_ZSF_BLOCK_ID_NAMES 73
+#define MAX_ZSF_BLOCK_ID_NAMES 74
 
 //Importante NO alterar los ID existentes o se rompera compatibilidad hacia atras del formato ZSF
 //Siempre agregar, nunca modificar ni borrar

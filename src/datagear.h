@@ -54,6 +54,18 @@ extern z80_byte datagear_wr4;
 extern z80_byte datagear_wr5;
 extern z80_byte datagear_wr6;
 
+extern z80_byte datagear_mask_commands;
+extern int datagear_command_index;
+extern z80_byte datagear_last_command;
+
+extern z80_byte datagear_original_block_length_low;
+extern z80_byte datagear_original_block_length_high;
+
+extern z80_byte datagear_port_a_variable_timing_byte;
+extern z80_byte datagear_port_b_variable_timing_byte;
+
+extern z80_byte datagear_dma_tbblue_prescaler;
+
 extern void datagear_handle_dma(void);
 
 extern z80_bit datagear_is_dma_transfering;
