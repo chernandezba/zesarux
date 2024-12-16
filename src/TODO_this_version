@@ -489,3 +489,5 @@ Debería aumentar total_height si es necesario
 -probar si modo (o bit?) de tiles over ula funciona
 
 Debug video layers que retorne bien orden tile/ula cuando bit 0 a 1
+
+-hay un bit de tilemap encima de ula en tiles independientes?
