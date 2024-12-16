@@ -6537,11 +6537,14 @@ int parse_cmdline_options(int desde_commandline) {
 
                 int sensor_id=sensor_find(sensor_type);
                 if (sensor_id<0) {
-                    printf ("Invalid sensor type %s for setting --sensor-set\n",sensor_type);
-                    exit(1);
+                    //Si nombre sensor invalido, damos error pero seguimos, para facilitar
+                    //cargar configuraciones de versiones superiores con sensores que no reconocemos
+                    debug_printf (VERBOSE_ERR,"Invalid sensor type %s for setting --sensor-set",sensor_type);
                 }
 
-				strcpy (menu_debug_view_sensors_list_sensors[numero_sensor].short_name,sensor_type);
+                else {
+    				strcpy (menu_debug_view_sensors_list_sensors[numero_sensor].short_name,sensor_type);
+                }
 			}
 
             //sensor-set-widget position type
