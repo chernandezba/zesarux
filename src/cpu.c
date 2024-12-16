@@ -664,7 +664,7 @@ void cpu_set_turbo_speed(void)
         recalcular_get_total_ancho_rainbow();
         recalcular_get_total_alto_rainbow();
 
-    printf("cpu_turbo_speed: %d screen_testados_linea: %d\n",cpu_turbo_speed,screen_testados_linea);
+    debug_printf(VERBOSE_DEBUG,"Called to cpu_set_turbo_speed. cpu_turbo_speed: %d t-states per line: %d",cpu_turbo_speed,screen_testados_linea);
 
 
 	//Ajustes posteriores de t_estados
@@ -2443,7 +2443,7 @@ void set_machine_params(void)
     }
 
     if (MACHINE_IS_TBBLUE) {
-        printf("Set timing 48k from set_machine_params\n");
+        //printf("Set timing 48k from set_machine_params\n");
         tbblue_set_timing_48k();
 
         //divmmc arranca desactivado, lo desactivamos asi para que no cambie las funciones peek/poke

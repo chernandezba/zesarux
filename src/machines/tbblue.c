@@ -3789,7 +3789,6 @@ void tbblue_set_emulator_setting_reg_8(void)
 		//Desactivar contention. Solo hacerlo cuando hay cambio
 		if (contend_enabled.v) {
 			debug_printf (VERBOSE_DEBUG,"Disabling contention");
-            printf ("Disabling contention\n");
         	contend_enabled.v=0;
 	        inicializa_tabla_contend();
 		}
@@ -3799,7 +3798,6 @@ void tbblue_set_emulator_setting_reg_8(void)
 		//Activar contention. Solo hacerlo cuando hay cambio
 		if (contend_enabled.v==0) {
 			debug_printf (VERBOSE_DEBUG,"Enabling contention");
-            printf ("Enabling contention\n");
         	contend_enabled.v=1;
 	        inicializa_tabla_contend();
 		}
@@ -4212,7 +4210,7 @@ void tbblue_set_timing_128k_p2a_common(void)
 
 void tbblue_set_timing_pentagon(void)
 {
-    printf("tbblue_set_timing_pentagon\n");
+    debug_printf(VERBOSE_DEBUG,"tbblue_set_timing_pentagon");
     tbblue_set_timing_128k_p2a_common();
 
     //Pent
@@ -4238,7 +4236,7 @@ void tbblue_set_timing_pentagon(void)
 
 void tbblue_set_timing_128k(void)
 {
-    printf("tbblue_set_timing_128k\n");
+    debug_printf(VERBOSE_DEBUG,"tbblue_set_timing_128k");
     tbblue_set_timing_128k_p2a_common();
 
     //tbblue_set_timing_post_turbo();
@@ -4247,7 +4245,7 @@ void tbblue_set_timing_128k(void)
 
 void tbblue_set_timing_p2a(void)
 {
-    printf("tbblue_set_timing_p2a\n");
+    debug_printf(VERBOSE_DEBUG,"tbblue_set_timing_p2a");
     tbblue_set_timing_128k_p2a_common();
 
 
@@ -4261,10 +4259,10 @@ void tbblue_set_timing_p2a(void)
 
 void tbblue_set_timing_48k(void)
 {
-    printf("tbblue_set_timing_48k\n");
+    debug_printf(VERBOSE_DEBUG,"tbblue_set_timing_48k");
 
     if (cpu_turbo_speed!=1) {
-        printf("Called to tbblue_set_timing_48k but cpu speed is not 1X\n");
+        debug_printf(VERBOSE_DEBUG,"Called to tbblue_set_timing_48k but cpu speed is not 1X. Do not change timings");
         return;
     }
 
@@ -4401,10 +4399,10 @@ void tbblue_set_emulator_setting_timing(void)
     pero como no hay documentación pues...
     */
 
-   printf("tbblue_set_emulator_setting_timing. t=%d\n",t);
+    debug_printf(VERBOSE_DEBUG,"tbblue_set_emulator_setting_timing. t=%d",t);
 
     if (cpu_turbo_speed!=1) {
-        printf("Called to tbblue_set_emulator_setting_timing but cpu speed is not 1X\n");
+        debug_printf(VERBOSE_DEBUG,"Called to tbblue_set_emulator_setting_timing but cpu speed is not 1X. Do not change timings");
         return;
     }
 
@@ -4832,7 +4830,7 @@ void tbblue_set_value_port_position(z80_byte index_position,z80_byte value)
 
 	if (index_position==3) {
 
-        printf ("Cambiando registro tipo maquina 3: valor: %02XH\n",value);
+        //printf ("Cambiando registro tipo maquina 3: valor: %02XH\n",value);
 
         //Controlar caso especial
         //(W) 0x03 (03) => Set machine type, only in IPL or config mode
@@ -4842,7 +4840,7 @@ void tbblue_set_value_port_position(z80_byte index_position,z80_byte value)
 
         if (!(previous_machine_type==0 || tbblue_bootrom.v || (value&7)==7)) {
             debug_printf(VERBOSE_DEBUG,"Can not change machine type (to %02XH) while in non config mode or non IPL mode",value);
-            printf("Can not change machine type (to %02XH) while in non config mode or non IPL mode\n",value);
+            //printf("Can not change machine type (to %02XH) while in non config mode or non IPL mode\n",value);
 
             //Preservar bits de maquina
             value &=(255-7);
@@ -4866,7 +4864,7 @@ void tbblue_set_value_port_position(z80_byte index_position,z80_byte value)
         */
 
        if ((value&128)==0) {
-            printf("Do not allow timing changes as bit 7 is not 1\n");
+            debug_printf(VERBOSE_DEBUG,"Do not allow timing changes as bit 7 is not 1");
             z80_byte previous_timing=last_register_3 & 0x70;
             value &=(255-0x70);
             value |=previous_timing;
@@ -4917,7 +4915,7 @@ void tbblue_set_value_port_position(z80_byte index_position,z80_byte value)
 
 
             if (value&2) {
-                printf("Hard reset. PC=%XH\n",reg_pc);
+                debug_printf(VERBOSE_DEBUG,"Hard reset. PC=%XH",reg_pc);
 
                 tbblue_bootrom.v=1;
 
@@ -4939,17 +4937,13 @@ void tbblue_set_value_port_position(z80_byte index_position,z80_byte value)
             if (value&4 && (last_register_2&4)==0 && maquina!=0 && maquina!=7) {
                 //printf("generate nmi\n");
 
-                /*if (tbblue_prueba_dentro_nmi) {
-                    printf("Ya dentro de otra nmi!!!\n");
-                    sleep(5);
-                }*/
 
                 /*
-                No an nmi cannot be generated when the divmmc or the multiface is already paged in.
+                An nmi cannot be generated when the divmmc or the multiface is already paged in.
                 */
 
                 if (diviface_paginacion_automatica_activa.v) {
-                    printf("Tried to generate nmi inside divmmc. not allowed\n");
+                    debug_printf(VERBOSE_DEBUG,"Tried to generate nmi inside divmmc. not allowed");
                     tbblue_registers[2] &=(255-4);
                 }
 
@@ -4957,8 +4951,6 @@ void tbblue_set_value_port_position(z80_byte index_position,z80_byte value)
                     tbblue_generate_divmmc_nmi();
                 }
 
-                //tbblue_prueba_dentro_nmi=1;
-                //tbblue_generate_divmmc_nmi();
             }
 
 
@@ -4993,7 +4985,7 @@ void tbblue_set_value_port_position(z80_byte index_position,z80_byte value)
             //printf("Write nextreg 03\n");
 
             if (previous_machine_type==0 || tbblue_bootrom.v || (value&7)==7 ) {
-                printf("Changing machine to %XH on PC=%X\n",value&7,reg_pc);
+                debug_printf(VERBOSE_DEBUG,"Changing machine to %XH on PC=%X",value&7,reg_pc);
 
                 //Pentagon not supported yet. TODO
                 //last_value=tbblue_config1;
@@ -5002,12 +4994,10 @@ void tbblue_set_value_port_position(z80_byte index_position,z80_byte value)
 
                 //printf ("Writing register 3 value %02XH\n",value);
 
-                //Maquina 7 es como maquina 0
-                if ((value&7)==7) tbblue_registers[3]&=(255-7); //forzamos 0
+                //Se puede cambiar a maquina 0 escribiendo 7
+                if ((value&7)==7) tbblue_registers[3]&=(255-7);
 
                 tbblue_set_memory_pages();
-
-
 
             }
 
