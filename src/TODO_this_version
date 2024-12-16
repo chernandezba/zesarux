@@ -534,5 +534,7 @@ ok *seems also some sprites (objects like food) are not clipped well when the sc
 
 -probar si modo (o bit?) de tiles over ula funciona
 
--Tiles no se están guardando en snapshot .zsf? Probar con test core305B
-
+-Tiles no se están guardando en snapshot .zsf? Probar con test core305B. no es tiles necesariamente, se corrompe algo en los datos
+*no tiene que ver con compresion aparentemente
+*pasa tanto en modo fast boot como sin fast boot
+*layer2 ok. ula o sprites o tiles no ok
