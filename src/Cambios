@@ -1,4 +1,4 @@
-ZEsarUX 11.1-Beta1 - Bubble Bobble edition. 15 Noviembre 2024
+ZEsarUX 11.1-Beta2 - Bubble Bobble edition. 16 December 2024
 
 * Cosas nuevas agregadas:
 
@@ -39,12 +39,6 @@ Mejorado el core de emulación de Spectrum de la CPU Z80: agregado estado wait (
 Mejorado snapshot ZSF: guardar estado de Datagear DMA
 Permitir grabar snapshots .Z80 de TC2048, TC2068, TS2068. Permitir cargar snapshots .Z80 de TC2048, TC2068
 
-Mejorada emulación de Hilow Datadrive:
-- Agregada emulación en crudo (raw), como el dispositivo real
-- Permitir archivos ddh de tamaño variable (desde 3 hasta 256 sectores)
-- Permitir formatear solo una cara en archivos ddh
-- Permitir borrar contenido al formatear ("c/borrado" o "s/borrado") en archivos ddh
-
 Mejorada emulación de Spectrum Next:
 - Agregado modos de capas 6 and 7 (modos mezcla)
 - Agregado NMI sin stack
@@ -63,6 +57,12 @@ Mejorada emulación de Spectrum Next:
 - Corregido burst mode de DMA cuando prescaler=0
 - Corregida transferencia de DMA reiniciando el contador de bytes al final de una transferencia
 - Corregida velocidad cpu al abrir archivo de cinta
+
+Mejorada emulación de Hilow Datadrive:
+- Agregada emulación en crudo (raw), como el dispositivo real
+- Permitir archivos ddh de tamaño variable (desde 3 hasta 256 sectores)
+- Permitir formatear solo una cara en archivos ddh
+- Permitir borrar contenido al formatear ("c/borrado" o "s/borrado") en archivos ddh
 
 Mejorado Debug:
 - CPU history: permitir cambiar el puntero de memoria según el registro PC mostrado en el historial
@@ -116,9 +116,6 @@ Corregido bug que se reabria el menu al executar comando run desde debug cpu y l
 Corregido recuperación de posición de ventana después de restore/desminimizar
 Corregido sonido de MSX de pulsación de teclas
 
-* Cambios varios:
-
-...
 
 * Como siempre, hay otras mejoras y correcciones de errores menores.
 

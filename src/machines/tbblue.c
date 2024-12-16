@@ -5870,70 +5870,89 @@ void tbblue_set_layer_priorities(void)
 	//z80_byte prio=(tbblue_registers[0x15] >> 2)&7;
 	z80_byte prio=tbblue_get_layers_priorities();
 
+    z80_int *p_tbblue_layer_ula=tbblue_layer_ula;
+    z80_int *p_tbblue_layer_tiles=tbblue_layer_tiles;
+
+/*
+0x6B (107) => Tilemap Control
+(R/W)
+
+  bit 0 = Force tilemap on top of ULA (soft reset = 0)
+  */
+    z80_byte tbblue_tilemap_control=tbblue_registers[107];
+
+
+    int tilemap_over_ula = tbblue_tilemap_control&1;
+
+    if (tilemap_over_ula) {
+        p_tbblue_layer_ula=tbblue_layer_tiles;
+        p_tbblue_layer_tiles=tbblue_layer_ula;
+    }
+
 	//printf ("prio: %d\n",prio);
 
 	switch (prio) {
 		case 0:
 			p_layer_first=tbblue_layer_sprites;
 			p_layer_second=tbblue_layer_layer2;
-			p_layer_third=tbblue_layer_ula;
-            p_layer_fourth=tbblue_layer_tiles;
+			p_layer_third=p_tbblue_layer_ula;
+            p_layer_fourth=p_tbblue_layer_tiles;
 
 		break;
 
 		case 1:
 			p_layer_first=tbblue_layer_layer2;
 			p_layer_second=tbblue_layer_sprites;
-			p_layer_third=tbblue_layer_ula;
-            p_layer_fourth=tbblue_layer_tiles;
+			p_layer_third=p_tbblue_layer_ula;
+            p_layer_fourth=p_tbblue_layer_tiles;
 
 		break;
 
 
 		case 2:
 			p_layer_first=tbblue_layer_sprites;
-			p_layer_second=tbblue_layer_ula;
-            p_layer_third=tbblue_layer_tiles;
+			p_layer_second=p_tbblue_layer_ula;
+            p_layer_third=p_tbblue_layer_tiles;
 			p_layer_fourth=tbblue_layer_layer2;
 
 		break;
 
 		case 3:
 			p_layer_first=tbblue_layer_layer2;
-			p_layer_second=tbblue_layer_ula;
-            p_layer_third=tbblue_layer_tiles;
+			p_layer_second=p_tbblue_layer_ula;
+            p_layer_third=p_tbblue_layer_tiles;
 			p_layer_fourth=tbblue_layer_sprites;
 
 		break;
 
 		case 4:
-			p_layer_first=tbblue_layer_ula;
-            p_layer_second=tbblue_layer_tiles;
+			p_layer_first=p_tbblue_layer_ula;
+            p_layer_second=p_tbblue_layer_tiles;
 			p_layer_third=tbblue_layer_sprites;
 			p_layer_fourth=tbblue_layer_layer2;
 
 		break;
 
 		case 5:
-			p_layer_first=tbblue_layer_ula;
-            p_layer_second=tbblue_layer_tiles;
+			p_layer_first=p_tbblue_layer_ula;
+            p_layer_second=p_tbblue_layer_tiles;
 			p_layer_third=tbblue_layer_layer2;
 			p_layer_fourth=tbblue_layer_sprites;
 
 		break;
 
 		case 6:
-            p_layer_first=tbblue_layer_ula;
+            p_layer_first=p_tbblue_layer_ula;
 			p_layer_second=tbblue_layer_sprites;
-            p_layer_third=tbblue_layer_tiles;
+            p_layer_third=p_tbblue_layer_tiles;
 			p_layer_fourth=tbblue_layer_layer2;
 
 		break;
 
 		case 7:
-            p_layer_first=tbblue_layer_ula;
+            p_layer_first=p_tbblue_layer_ula;
 			p_layer_second=tbblue_layer_sprites;
-            p_layer_third=tbblue_layer_tiles;
+            p_layer_third=p_tbblue_layer_tiles;
 			p_layer_fourth=tbblue_layer_layer2;
 
 		break;
@@ -5942,8 +5961,8 @@ void tbblue_set_layer_priorities(void)
 		default:
 			p_layer_first=tbblue_layer_sprites;
 			p_layer_second=tbblue_layer_layer2;
-			p_layer_third=tbblue_layer_ula;
-            p_layer_fourth=tbblue_layer_tiles;
+			p_layer_third=p_tbblue_layer_ula;
+            p_layer_fourth=p_tbblue_layer_tiles;
 		break;
 	}
 

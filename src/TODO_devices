@@ -72,6 +72,15 @@ mmap tiene flags para decir que es solo lectura pero supongo que fallaria con se
 Sin persistent writes deberia hacerlo como siempre: escribiendo en memoria, sin mmap
 Con mmap, se deja de hacer flush, ya que lo hará automáticamente (??) el sistema operativo, al activar mmap
 
+-implementar CMD8 en mmc. en caso de tarjeta SDHC. Revisar especificación, en teoria algo como :
+According to the SD spec (SD Specifications, Part 1, Physical Layer, Simplified Specification, Version 2.00, July 27, 2006) figure 7-2: SPI Mode Initialization Flow, there are 5 possible outcomes:
+1) CMD8 fails and CMD58 fails: must be MMC, thus initialize using CMD1
+2) CMD8 fails and CMD58 passes: must be Ver1.x Standard Capacity SD Memory Card
+3) CMD8 passes and CMD58 passes (CCS = 0): must be Ver2.00 or later Standard Capacity SD Memory Card
+4) CMD8 passes and CMD58 passes (CCS = 1): must be Ver2.00 or later High Capacity SD Memory Card
+5) CMD8 passes and CMD58 passes but indicates non compatible voltage range: unusable card
+
+Por tanto si no es sdhc, hacer como ahora, no gestionar ese comando. y si lo es, retornar CCS=1?? Y creo que tambien cmd58
 
 -Revisar protección de escritura en páginas divmmc
 
