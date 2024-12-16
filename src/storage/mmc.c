@@ -168,6 +168,8 @@ int mmc_filemap_from_esxdos=0;
 char mmc_filemap_name[PATH_MAX]="";
 
 //Si se habilita mapeo de direcciones de sector en vez de byte, para tarjetas SDHC por ejemplo
+//De momento este setting no se autoguarda en archivo de configuración, que yo sepa solo
+//hay un juego que lo necesita: Atic Atac
 z80_bit mmc_sdhc_addressing={0};
 
 char *mmc_get_file_name(void)

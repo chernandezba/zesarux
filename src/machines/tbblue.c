@@ -4940,10 +4940,11 @@ void tbblue_set_value_port_position(z80_byte index_position,z80_byte value)
 
                 /*
                 An nmi cannot be generated when the divmmc or the multiface is already paged in.
+                Esto sucede en Atic Atac
                 */
 
                 if (diviface_paginacion_automatica_activa.v) {
-                    debug_printf(VERBOSE_DEBUG,"Tried to generate nmi inside divmmc. not allowed");
+                    debug_printf(VERBOSE_DEBUG,"Tried to generate nmi inside divmmc. Not allowed");
                     tbblue_registers[2] &=(255-4);
                 }
 
@@ -4995,6 +4996,7 @@ void tbblue_set_value_port_position(z80_byte index_position,z80_byte value)
                 //printf ("Writing register 3 value %02XH\n",value);
 
                 //Se puede cambiar a maquina 0 escribiendo 7
+                //Atic Atac utiliza esto
                 if ((value&7)==7) tbblue_registers[3]&=(255-7);
 
                 tbblue_set_memory_pages();

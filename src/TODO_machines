@@ -569,22 +569,6 @@ El parchecillo va en core_spectrum.c , aqui:
 -Agregar turbo spool setting en tbblue -> va relacionado con la funcion de peek_byte turbo que se ve alterada al cambiar
 la velocidad de la cpu en nextos
 
--registro paleta tiles. no hacemos las combinaciones de Tilemap
-0x43 (67) => Palette Control
-(R/W)
-  bit 7 = Disable palette write auto-increment (soft reset = 0)
-  bits 6-4 = Select palette for reading or writing (soft reset = 000)
-    000 = ULA first palette
-    100 = ULA second palette
-    001 = Layer 2 first palette
-    101 = Layer 2 second palette
-    010 = Sprites first palette
-    110 = Sprites second palette
-    011 = Tilemap first palette
-    111 = Tilemap second palette
-
-
-
 
  -otros cambios registros: ejemplo 0x68 , bits 5-1
 
@@ -613,8 +597,7 @@ https://specnext.dev/wiki/Next_Memory_Bank_Select
 -no dejar aumentar memoria divmmc mas de 128kb, pues tbblue no tiene mas que eso. sino, se accederia a memoria mas alla del divmmc
 
 -para emulacion de +3e, la sd se utiliza la sd secundaria. emular segunda SD????
--considerar algunas escrituras de puertos que dicen:
-only in bootrom or config mode:
+
 
 -estoy considerando igual estado hard reset que estado power on
 Ver registro 2:
@@ -655,8 +638,6 @@ Hay una lista de capas de prioridades en el codigo fuente de la fpga. Segun src/
    -- 48k-64k:
    --   1. mmu
 
-
--4 puertos Dac de Next. Que juegos los utilizan?
 
 
 -Allow config mode banking to reach the entire 2MB memory space (nextreg 0x04)
