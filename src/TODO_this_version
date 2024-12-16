@@ -536,5 +536,3 @@ ok *seems also some sprites (objects like food) are not clipped well when the sc
 
 -Tiles no se están guardando en snapshot .zsf? Probar con test core305B
 
--Sensores de view sensors que lean los datos de los DAC de Next y tambien de Specdrum
-*falta specdrum

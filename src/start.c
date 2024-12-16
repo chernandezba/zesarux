@@ -6561,11 +6561,13 @@ int parse_cmdline_options(int desde_commandline) {
 
                 int widget_id=zxvision_widget_find_name_type(sensor_type);
                 if (widget_id<0) {
-                    printf ("Invalid sensor widget type %s for setting --sensor-set-widget\n",sensor_type);
-                    exit(1);
+                    //Si nombre sensor invalido, damos error pero seguimos, para facilitar
+                    //cargar configuraciones de versiones superiores con sensores que no reconocemos
+                    debug_printf (VERBOSE_ERR,"Invalid sensor widget type %s for setting --sensor-set-widget",sensor_type);
                 }
-
-				menu_debug_view_sensors_list_sensors[numero_sensor].tipo=widget_id;
+                else {
+				    menu_debug_view_sensors_list_sensors[numero_sensor].tipo=widget_id;
+                }
 			}
 
             //mostrar valor en vez de porcentaje
