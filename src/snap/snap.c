@@ -2576,6 +2576,10 @@ void save_z80_snapshot(char *filename)
 			maquina_header=9;
 		break;
 
+        case MACHINE_ID_TIMEX_TC2048:
+            maquina_header=14;
+        break;
+
 
 		default:
 	                debug_printf (VERBOSE_ERR,".Z80 Snapshot not supported on machine %s",get_machine_name(current_machine_type));
@@ -3155,8 +3159,7 @@ void load_z80_snapshot_aux(char *archivo,z80_byte *buffer_lectura)
 					case 14:
 					case 15:
 						//TC2048
-						debug_printf(VERBOSE_ERR,"Unsupported machine type TC2048");
-						return;
+                        current_machine_type=MACHINE_ID_TIMEX_TC2048;
 					break;
 
 					case 128:
@@ -3233,7 +3236,7 @@ if (long_cabecera_adicional>25) {
 					comprimido=0;
 				}
 
-                debug_printf(VERBOSE_DEBUG,"Z80 block number %d length %d compressed: %d",numerobloque,longitudbloque,comprimido);
+                debug_printf(VERBOSE_DEBUG,"Z80 block number %d length %d compressed: %s",numerobloque,longitudbloque,(comprimido ? "Yes" : "No"));
 
 				if (MACHINE_IS_SPECTRUM_16_48 || MACHINE_IS_TIMEX_TS_TC_2068) {
 					//gestionar maquinas de 48 k
@@ -3268,7 +3271,8 @@ if (long_cabecera_adicional>25) {
 						break;
 
 						default:
-							debug_printf(VERBOSE_ERR,"Z80 snapshot page number %d unknown",numerobloque);
+							debug_printf(VERBOSE_ERR,"Z80 snapshot page number %d unknown. Block length: %d, compressed: %s",
+                                numerobloque,longitudbloque,(comprimido ? "Yes" : "No"));
 							return;
 						break;
 					}
