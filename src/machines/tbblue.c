@@ -3564,7 +3564,7 @@ void tbblue_set_memory_pages(void)
 		break;
 
         //Maquina aun medio desconocida
-		case 7:
+		/*case 7:
 
 
             //romram_page=(tbblue_registers[4]&63);
@@ -3597,6 +3597,7 @@ void tbblue_set_memory_pages(void)
             contend_pages_actual[3]=contend_pages_128k_p2a[7];
 
 		break;
+        */
 
 		default:
 
@@ -3643,8 +3644,8 @@ which allows you access to all SRAM.
 			tbblue_set_ram_page(5);
 
 			//En modo config, ram7 esta en segmento 3
-			tbblue_registers[80+6]=7*2;
-			tbblue_registers[80+7]=7*2+1;
+			//tbblue_registers[80+6]=7*2;
+			//tbblue_registers[80+7]=7*2+1;
 
 
 			tbblue_set_ram_page(6);
@@ -3654,7 +3655,7 @@ which allows you access to all SRAM.
             contend_pages_actual[0]=0; //Suponemos que esa pagina no tiene contienda
             contend_pages_actual[1]=contend_pages_128k_p2a[5];
             contend_pages_actual[2]=contend_pages_128k_p2a[2];
-            contend_pages_actual[3]=contend_pages_128k_p2a[7];
+            contend_pages_actual[3]=contend_pages_128k_p2a[0];
 
 		break;
 	}
@@ -4839,7 +4840,7 @@ void tbblue_set_value_port_position(z80_byte index_position,z80_byte value)
         //      		000 = Config mode
 
 
-        if (!(previous_machine_type==0 || previous_machine_type==7 || tbblue_bootrom.v || (value&7)==7)) {
+        if (!(previous_machine_type==0 || tbblue_bootrom.v || (value&7)==7)) {
             debug_printf(VERBOSE_DEBUG,"Can not change machine type (to %02XH) while in non config mode or non IPL mode",value);
             printf("Can not change machine type (to %02XH) while in non config mode or non IPL mode\n",value);
 
@@ -5002,7 +5003,7 @@ void tbblue_set_value_port_position(z80_byte index_position,z80_byte value)
                 //printf ("Writing register 3 value %02XH\n",value);
 
                 //Maquina 7 es como maquina 0
-                //if ((value&7)==7) tbblue_registers[3]&=(255-7); //forzamos 0
+                if ((value&7)==7) tbblue_registers[3]&=(255-7); //forzamos 0
 
                 tbblue_set_memory_pages();
 
