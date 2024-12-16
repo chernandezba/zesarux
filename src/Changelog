@@ -36,7 +36,7 @@ Added Sphere Meter Type to View Sensors
 Improve compilation: settings --enable-memptr --enable-visualmem --enable-cpustats are enabled by default on ./configure
 Improved Inves Spectrum+ emulation: alert when a game may crash due to the Inves write-on-interrupt bug
 Improve Spectrum Z80 CPU emulation core: add wait state (needed to emulate microdrive)
-Allow saving .Z80 TC2048 snapshots
+Allow saving .Z80 TC2048, TC2068, TS2068 snapshots. Allow loading .Z80 TC2048, TC2068 snapshots
 
 Improved Hilow Datadrive emulation:
 - Added Raw emulation, like the real device

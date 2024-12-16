@@ -2580,10 +2580,13 @@ void save_z80_snapshot(char *filename)
             maquina_header=14;
         break;
 
-        /*case MACHINE_ID_TIMEX_TC2068:
+        case MACHINE_ID_TIMEX_TC2068:
             maquina_header=15;
-        break;*/
+        break;
 
+        case MACHINE_ID_TIMEX_TS2068:
+            maquina_header=128;
+        break;
 
 		default:
 	                debug_printf (VERBOSE_ERR,".Z80 Snapshot not supported on machine %s",get_machine_name(current_machine_type));
@@ -2651,7 +2654,7 @@ void save_z80_snapshot(char *filename)
 	buff=malloc(20000);
         if (buff==NULL) cpu_panic("Cannot allocate memory when saving .z80 file");
 
-	if (MACHINE_IS_SPECTRUM_16_48) {
+	if (MACHINE_IS_SPECTRUM_16_48 || MACHINE_IS_TIMEX_TS_TC_2068) {
 		//Escritura de 48k
 		//tres bloques de 16kb cada uno
 		//debug_printf (VERBOSE_INFO,"Saving 16kb block for address 16384-32767");
