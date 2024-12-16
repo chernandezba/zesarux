@@ -2580,6 +2580,10 @@ void save_z80_snapshot(char *filename)
             maquina_header=14;
         break;
 
+        /*case MACHINE_ID_TIMEX_TC2068:
+            maquina_header=15;
+        break;*/
+
 
 		default:
 	                debug_printf (VERBOSE_ERR,".Z80 Snapshot not supported on machine %s",get_machine_name(current_machine_type));
@@ -3157,9 +3161,13 @@ void load_z80_snapshot_aux(char *archivo,z80_byte *buffer_lectura)
 					break;
 
 					case 14:
-					case 15:
 						//TC2048
                         current_machine_type=MACHINE_ID_TIMEX_TC2048;
+					break;
+
+					case 15:
+						//TC2068
+                        current_machine_type=MACHINE_ID_TIMEX_TC2068;
 					break;
 
 					case 128:
