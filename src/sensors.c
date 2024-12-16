@@ -132,6 +132,24 @@ int sensor_next_dac_funcion_get_value(int id)
 }
 
 
+//Retorna valor DAC de Spectrum (specdrum, etc)
+int sensor_spec_dac_funcion_get_value(int id GCC_UNUSED)
+{
+    int valor=audiodac_last_value_data;
+
+    valor -=128;
+
+    //TODO: esto permite que un valor +127 o -128 sean el 100% del sensor,
+    //pero por otra parte impide ver el valor real del DAC desde aqui
+    //Quizá habría que extender estas funciones de sensors para que retornasen el valor real tambien, aparte del valor que ya se retorna ahora
+    int absoluto=util_get_absolute(valor);
+
+    //Considerar tambien un valor de +127 como +128 asi es el tope de 100%
+    if (absoluto==127) absoluto=128;
+    return absoluto;
+
+}
+
 int sensor_sn_vol_chip_funcion_get_value(int id)
 {
     return 15 - (sn_chip_registers[6+id] & 15);
@@ -399,6 +417,14 @@ pues de una octava a la otra es el doble de valor
     80,-9999,
     9999,-9999,
     sensor_fe_bit3_funcion_get_value,0
+    },
+
+    {
+    "spec_dac","Spectrum DAC","SPECDAC",
+    0,128,
+    80,-80,
+    9999,-9999,
+    sensor_spec_dac_funcion_get_value,0
     },
 
     {
