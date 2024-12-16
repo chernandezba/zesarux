@@ -511,14 +511,6 @@ Debería aumentar total_height si es necesario
 
 
 
--bugs Atic atac:
-ok *flashlight effect on blue dark room: I have to check the "smooth scroll" bit you told me some days ago. maybe that's the cause for that bug
-ok *swag room: all objects are visible. LAYER 2 has all the objects in colour, the tilemap is used to hide them to a mono-yellow silhouette.
-ok *seems also some sprites (objects like food) are not clipped well when the scroll makes the object at the border of the display. I think I'm clipping all the sprite
-*enemigos parece que no te quitan energia hasta que te tocan al mitad del cuerpo. Si te tocan en la cabeza no quitan energia. normal?
-
-
-
 -posibles optimizaciones render. Probando test core305B.snx: (ZEsarUX compilado con O3)
 * 61-54% llamando o no llamando a tbblue_render_layers_rainbow
 * 61-54% llamando o no llamando a screen_tbblue_refresca_pantalla
