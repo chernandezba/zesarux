@@ -5703,6 +5703,8 @@ const char *tbblue_prorities_name_blend_ula_tiles_layer2="ULA+Tiles+Layer2 Blend
 const char *tbblue_prorities_name_blend_ula_tiles_layer2_substract="ULA+Tiles+Layer2 Blend-5";
 const char *tbblue_prorities_name_nothing="";
 
+const char *tbblue_prorities_name_ula="ULA";
+const char *tbblue_prorities_name_tiles="Tiles";
 
 struct s_tbblue_priorities_names tbblue_priorities_names[8]={
 	{ { "Sprites" ,  "Layer 2"  ,  "ULA"      ,  "Tiles"   } },
@@ -5805,7 +5807,20 @@ const char *tbblue_prorities_name_blend_ula_tiles_layer2_substract="ULA+Tiles+La
 
     }
 
-	return tbblue_priorities_names[prio].layers[layer];
+    char *string_retorno=tbblue_priorities_names[prio].layers[layer];
+
+    //Ver si está el bit activado de Tiles encima de la ULA
+    z80_byte tbblue_tilemap_control=tbblue_registers[107];
+
+    int tilemap_over_ula = tbblue_tilemap_control&1;
+
+    if (tilemap_over_ula) {
+        //Si es ULA o Tiles, retornar lo contrario
+        if (!strcmp(string_retorno,tbblue_prorities_name_ula)) string_retorno=(char *)tbblue_prorities_name_tiles;
+        else if (!strcmp(string_retorno,tbblue_prorities_name_tiles)) string_retorno=(char *)tbblue_prorities_name_ula;
+    }
+
+	return string_retorno;
 
 }
 
@@ -6160,10 +6175,38 @@ void tbblue_do_tile_putpixel(z80_byte pixel_color,z80_byte transparent_colour,z8
         z80_int color_previo_capa;
         color_previo_capa=*puntero_a_layer;
 
-        //Poner pixel tile si color de ula era transparente o bien la ula está por debajo
-        //if (tbblue_si_sprite_transp_ficticio(color_previo_capa) || !ula_over_tilemap) {
+        //Lo normal es ula over tilemap
+        //Al llegar aqui, la ula ya está renderizada en su capa
+        //Si en cambio viene tile sobre ula para este pixel.... com hacerlo?
+        //Una manera seria alterar desde aqui la capa de ula y quitarle el pixel (indicarle transparente)
+        if (ula_over_tilemap) {
             *puntero_a_layer=tbblue_tile_return_color_index(pixel_color);
-        //}
+        }
+
+        else {
+            //gestionar tile sobre ula. Hay que decir,
+            //que este pixel de tilemap está encima del pixel de la ula
+            //lo que hacemos es meter ese pixel de la ula como transparente
+
+            //Esto es un poco chapuza, calculamos el offset que estamos en la capa de tiles
+            //y aplicamos ese mismo offset a la capa de ula
+            //Nota: la resta de dos punteros devuelve la cantidad de elementos (no bytes) que separan los dos punteros
+            //Recordemos que son punteros que apuntan a z80_int (16 bits)
+            //Lo ideal seria que al llamar a esta funcion se le pasase el puntero a la capa de ula ya con el offset calculado
+            //Que yo sea, solo lo usa el programa de test de tiles (TM.NEX)
+            int offset=puntero_a_layer-tbblue_layer_tiles;
+            tbblue_layer_ula[offset]=TBBLUE_SPRITE_TRANS_FICT;
+
+            *puntero_a_layer=tbblue_tile_return_color_index(pixel_color);
+        }
+
+
+        /*
+        //Poner pixel tile si color de ula era transparente o bien la ula está por debajo
+        if (tbblue_si_sprite_transp_ficticio(color_previo_capa) || !ula_over_tilemap) {
+            *puntero_a_layer=tbblue_tile_return_color_index(pixel_color);
+        }
+        */
 
     }
 
@@ -6471,7 +6514,11 @@ the central 256×192 display. The X coordinates are internally doubled to cover 
 	int ula_over_tilemap;
 
     // 0 when tilemap-over-ULA is enforced, 1 when attribute ULA-over-tilemap bit should be used
-    int ula_over_tilemap_mask = (tbblue_tilemap_control&1)^1;
+    //int ula_over_tilemap_mask = (tbblue_tilemap_control&1)^1;
+
+    //Asumimos atributo normal de ula sobre tilemap. no miramos tbblue_tilemap_control porque ese bit
+    //se usa al sobreponer una capa sobre la otra, ya no es necesario aqui
+    int ula_over_tilemap_mask = 1;
 
 	//tilemap_width=40;
 /*
@@ -6544,6 +6591,8 @@ Defines the transparent colour index for tiles. The 4-bit pixels of a tile defin
         } else {
                 // 256 tile mode, "ULA over tilemap" bit used from attribute (plus "force tilemap")
                 ula_over_tilemap = byte_second & ula_over_tilemap_mask;
+
+                //if (!ula_over_tilemap) printf("tile sobre ula!\n");
         }
 
         //if (ula_over_tilemap) printf("ula_over_tilemap\n");

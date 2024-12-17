@@ -474,7 +474,7 @@ Debería aumentar total_height si es necesario
 
 
 
--tbblue ojo con bit 0:
+ok-tbblue ojo con bit 0:
 
 0x6B (107) => Tilemap Control
 (R/W)
@@ -486,8 +486,8 @@ Debería aumentar total_height si es necesario
   bit 2 = Reserved, must be 0
   bit 1 = Activate 512 tile mode (soft reset = 0)
   bit 0 = Force tilemap on top of ULA (soft reset = 0)
--probar si modo (o bit?) de tiles over ula funciona
+ok probar si modo (o bit?) de tiles over ula funciona
 
-Debug video layers que retorne bien orden tile/ula cuando bit 0 a 1
+ok Debug video layers que retorne bien orden tile/ula cuando bit 0 a 1
 
 -hay un bit de tilemap encima de ula en tiles independientes?
