@@ -441,15 +441,6 @@ La particularidad es que ese archivo tiene bloques a final de microdrive y al pr
 
 
 
-
-
-
-
--tiles que no salgan de pagina 16kb ram5 o 8bk de ram7
-
-
-
-
 --restore-all-known-windows no parece abrir bien las ventanas. pasa con segun que ventanas ya puestas para restore en el zesaruxrc
 
 
@@ -469,25 +460,3 @@ Debería aumentar total_height si es necesario
 
 
 -puerto 0x5f de DAC D entra en conflicto con volumen canal A de chip AY?
-
--bit scroll medio pixel de ula. registro 0x68.  bit 2 = ULA half pixel scroll (may change) (soft reset = 0)
-
-
-
-ok-tbblue ojo con bit 0:
-
-0x6B (107) => Tilemap Control
-(R/W)
-  bit 7 = 1 Enable the tilemap (soft reset = 0)
-  bit 6 = 0 for 40x32, 1 for 80x32 (soft reset = 0)
-  bit 5 = Eliminate the attribute entry in the tilemap (soft reset = 0)
-  bit 4 = Palette select (soft reset = 0)
-  bit 3 = Select textmode (soft reset = 0)
-  bit 2 = Reserved, must be 0
-  bit 1 = Activate 512 tile mode (soft reset = 0)
-  bit 0 = Force tilemap on top of ULA (soft reset = 0)
-ok probar si modo (o bit?) de tiles over ula funciona
-
-ok Debug video layers que retorne bien orden tile/ula cuando bit 0 a 1
-
--hay un bit de tilemap encima de ula en tiles independientes?

@@ -7853,7 +7853,16 @@ void tbblue_do_ula_standard_overlay(void)
 
                     //Registro de scroll altera la posicion final donde se renderiza el pixel
                     int destino_x_ula=(x*8+bit-tbblue_scroll_x);
-                    if (si_timex_hires.v==0) destino_x_ula *=2;
+                    if (si_timex_hires.v==0) {
+                        destino_x_ula *=2;
+                        //Scroll "medio pixel"
+                        /*
+                        0x68 (104) => ULA Control
+                        (R/W)
+                        bit 2 = ULA half pixel scroll (may change) (soft reset = 0)
+                        */
+                        if (tbblue_registers[0x68]&4) destino_x_ula--;
+                    }
 
                     if (destino_x_ula<0) destino_x_ula +=512;
 
