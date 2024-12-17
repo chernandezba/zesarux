@@ -41347,6 +41347,8 @@ void menu_visual_cassette_tape_overlay(void)
 
     //Si se ha forzado redibujado y cinta parada, hacer temblar la cinta, esto hace
     //que no queden "rastros" de cinta tocando el rodillo, por ejemplo al avanzar cinta desde Visual Real Tape
+    //Y hacemos temblar porque cuando reibuja los rodillos, borra la posicion anterior indicando temblor ^=1, y por tanto,
+    //tenemos que ir conmutando aqui el temblor para que el borrado funcione bien
     if (visual_cassette_tape_forzar_dibujado && realtape_playing.v==0) {
         menu_visual_cassette_tape_temblor^=1;
     }
