@@ -4247,7 +4247,7 @@ void menu_storage_microdrive_file(MENU_ITEM_PARAMETERS)
 
 
 
-		int ret=menu_filesel("Select MDR File",filtros,microdrive_status[microdrive_seleccionado].microdrive_file_name);
+		int ret=menu_filesel("Select Microdrive File",filtros,microdrive_status[microdrive_seleccionado].microdrive_file_name);
 		//volvemos a directorio inicial
         zvfs_chdir(directorio_actual);
 

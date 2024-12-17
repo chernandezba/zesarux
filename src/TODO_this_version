@@ -358,18 +358,14 @@ claro. o no, porque si hay top bar, "Storage" menu por ejemplo es un menu direct
 -quiza menu_ventana_scanf_numero_enhanced deberia mostrar el error en ventana en vez de soltarlo por debug_printf,
 porque luego hay sitios como Sectors info de microdrive que al cambiar de sector con tecla 's' tengo que detectar
 si hay un pending error message y mostrarlo
+->Al menos ya se retorna un valor de estado (si pulsado ESC o valor fuera de rango, retorna <0) por lo que algunas
+llamadas ahi retornan sin hacer nada cuando es <0
 
 -botones superiores e inferiores que no estén pegados a la pantalla: moverlos una columna a la derecha
 
 -----------------------
 ---INICIO microdrive---
 -----------------------
-
--Microdrive standard MDR
-*poder activar un sector no usado como usado:
--asignar nombre, recnum (0) , marcar como usado (stream quizá) y corregir checksums
--quiza desde ventana de microdrive map
-
 
 *convertir rmd a mdr y vuelta a rmd
 Con archivos p256, etc. creados con microdrive-test.tap
@@ -380,12 +376,6 @@ La particularidad es que ese archivo tiene bloques a final de microdrive y al pr
 -esa conversion de rmd a mdr, sin archivos (solo con el formateo) pasa de 126 a 125 sectores...
 
 
-
-
--quiza en wait solo deberia hacer:
-    if (z80_wait_signal.v) {
-        t_estados++;
-    }
 
 -----------------------
 ---FIN microdrive---

@@ -145,12 +145,18 @@ The &E3 Port is untouched. The &17 Port is 8bit, outputs are called Q0..Q7, as f
 ------------------
 
 
---- Interface 1 ---
+--- Interface 1/Microdrive ---
 
-Hacer un CAT se queda en bucle
-Ahora de momento solo lee microdrive de prueba prueba.mdr
-No hace ni read, ni write, ni format...
-rom quitada de la distribucion. tiene nombre if1-v2.rom.demomento_desactivada
+-Microdrive standard MDR
+*poder activar un sector no usado como usado:
+ asignar nombre, recnum (0) , marcar como usado (stream quizá) y corregir checksums
+ quiza desde ventana de microdrive map
+
+
+-quiza en wait solo deberia hacer:
+if (z80_wait_signal.v) {
+    t_estados++;
+}
 
 -------------------
 
