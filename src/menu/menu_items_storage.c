@@ -4266,7 +4266,8 @@ void menu_storage_microdrive_file(MENU_ITEM_PARAMETERS)
 					int total_sectors=MDR_MAX_SECTORS;
 
 					//Si se sale con Cancel o se pone valor incorrecto
-					if (menu_ventana_scanf_numero_enhanced("Total Sectors?",&total_sectors,4,+1,1,MDR_MAX_SECTORS,0)<0 || if_pending_error_message) {
+					if (menu_ventana_scanf_numero_enhanced("Total Sectors?",&total_sectors,4,+1,1,MDR_MAX_SECTORS,0)<0) {
+                        //printf("Salir con error\n");
 						microdrive_status[microdrive_seleccionado].microdrive_file_name[0]=0;
 						return;
 					}
@@ -4293,7 +4294,7 @@ void menu_storage_microdrive_file(MENU_ITEM_PARAMETERS)
 					int total_size=MICRODRIVE_RAW_COMMON_SIZE;
 
 					//Si se sale con Cancel o se pone valor incorrecto
-					if (menu_ventana_scanf_numero_enhanced("Total Size?",&total_size,7,+1,1,1000000,0)<0 || if_pending_error_message) {
+					if (menu_ventana_scanf_numero_enhanced("Total Size?",&total_size,7,+1,1,1000000,0)<0) {
 						microdrive_status[microdrive_seleccionado].microdrive_file_name[0]=0;
 						return;
 					}

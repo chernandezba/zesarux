@@ -359,7 +359,8 @@ claro. o no, porque si hay top bar, "Storage" menu por ejemplo es un menu direct
 porque luego hay sitios como Sectors info de microdrive que al cambiar de sector con tecla 's' tengo que detectar
 si hay un pending error message y mostrarlo
 ->Al menos ya se retorna un valor de estado (si pulsado ESC o valor fuera de rango, retorna <0) por lo que algunas
-llamadas ahi retornan sin hacer nada cuando es <0
+llamadas ahi retornan sin hacer nada cuando es <0. en algunos casos no es necesario detectar pending error message,
+pues si van a menu anterior, al abrir ese menu ya detectan error pendiente y lo mostraran
 
 -botones superiores e inferiores que no estén pegados a la pantalla: moverlos una columna a la derecha
 
