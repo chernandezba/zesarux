@@ -28613,7 +28613,8 @@ void menu_visual_realtape_overlay(void)
 }
 
 
-
+//Esto utilizado en ventana de Visual Casette tape, no de Visual real tape
+int visual_cassette_tape_forzar_dibujado=0;
 
 
 
@@ -28622,21 +28623,32 @@ zxvision_window zxvision_window_visual_realtape;
 void menu_visual_realtape_rewind(MENU_ITEM_PARAMETERS)
 {
     realtape_rewind_five();
+    //Para hacer que la ventana de Visual Casette Tape refresque bien, si es que esta abierta
+    visual_cassette_tape_forzar_dibujado=1;
 }
 
 void menu_visual_realtape_ffwd(MENU_ITEM_PARAMETERS)
 {
     realtape_ffwd_five();
+    //Para hacer que la ventana de Visual Casette Tape refresque bien, si es que esta abierta
+    visual_cassette_tape_forzar_dibujado=1;
+
 }
 
 void menu_visual_realtape_rewind_one(MENU_ITEM_PARAMETERS)
 {
     realtape_rewind_one();
+    //Para hacer que la ventana de Visual Casette Tape refresque bien, si es que esta abierta
+    visual_cassette_tape_forzar_dibujado=1;
+
 }
 
 void menu_visual_realtape_ffwd_one(MENU_ITEM_PARAMETERS)
 {
     realtape_ffwd_one();
+    //Para hacer que la ventana de Visual Casette Tape refresque bien, si es que esta abierta
+    visual_cassette_tape_forzar_dibujado=1;
+
 }
 
 void menu_visual_realtape_reinsert(MENU_ITEM_PARAMETERS)
@@ -41286,7 +41298,7 @@ int menu_visual_cassette_tape_temblor=0;
 
 
 
-int visual_cassette_tape_forzar_dibujado=0;
+
 
 
 
@@ -41333,6 +41345,11 @@ void menu_visual_cassette_tape_overlay(void)
 
     int redibujar_rodillos_arrastre=0;
 
+    //Si se ha forzado redibujado y cinta parada, hacer temblar la cinta, esto hace
+    //que no queden "rastros" de cinta tocando el rodillo, por ejemplo al avanzar cinta desde Visual Real Tape
+    if (visual_cassette_tape_forzar_dibujado && realtape_playing.v==0) {
+        menu_visual_cassette_tape_temblor^=1;
+    }
 
 
     //Si grados rodillos antes iguales a actual, no redibujar
