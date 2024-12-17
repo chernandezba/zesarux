@@ -5926,7 +5926,10 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
 			menu_add_item_menu_shortcut(array_menu_hardware_settings,'s');
 
 			if (kempston_mouse_emulation.v) {
-			menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_kempston_mouse_sensibilidad,NULL,"[%2d] Mouse Sensitivity",kempston_mouse_factor_sensibilidad);
+			menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_kempston_mouse_sensibilidad,NULL,
+                "Mouse Sensitivity");
+            menu_add_item_menu_sufijo_format(array_menu_hardware_settings," [%2d]",kempston_mouse_factor_sensibilidad);
+            menu_add_item_menu_prefijo_format(array_menu_hardware_settings,"    ");
             menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
 			}
 
