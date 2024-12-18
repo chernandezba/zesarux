@@ -679,6 +679,9 @@ Q: On NextZXOS everything seems to run slower than the real machine
 A: Verify setting Settings-> CPU-> Limit turbo on ROM. Starting from ZEsarUX 9.3, that setting is enabled by default and limits the maximum turbo speed the NextZXOS can set (does not apply to games/programs out of NextZXOS). That's enabled by default to limit the total amount of real cpu that needs NextZXOS (at least 8 times more than a regular emulated Spectrum), and could notice a performance problem in some machines. If your machine is fast enough, disable that setting (or increase the setting Settings-> CPU-> Max turbo allowed) to try to run at real Next speed.
 
 
+Q: I can't run game Atic Atac for Spectrum Next. I get the error "SDHC OR BETTER REQUIRED"
+A: You must enable Storage-> SD/MMC-> Enable SDHC addressing. Then, use Smartload to run the aticatac.nex file
+
 ----------------------------------------------------------------------------
 
 
