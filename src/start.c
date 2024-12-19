@@ -518,7 +518,7 @@ void print_funny_message(void)
         "Z80 panic: shut her down Scotty, she's sucking mud again", //28
         "Not enough memory to display the error m",
         "ERROR 1164 HOW IN THE HELL DID YOU GET HERE", //30
-        "Good afternoon, gentelman, I'm a HAL 9000 Computer",
+        "Good afternoon, gentlemen, I'm a HAL 9000 Computer",
         "Neo-Geo. MAX 330 MEGA - PRO GEAR SPEC"
 	};
 
