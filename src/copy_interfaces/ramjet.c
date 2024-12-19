@@ -59,14 +59,16 @@ z80_byte ramjet_read_rom_byte(z80_int dir)
     //D3 y D4 estan intercambiados
     z80_byte valor_leido=ramjet_memory_pointer[dir];
 
-    z80_byte valor_d3=valor_leido & 0x08;
-    z80_byte valor_d4=valor_leido & 0x10;
+    z80_byte valor_d3=valor_leido & 0x08;  //Aislar bit 3
+    z80_byte valor_d4=valor_leido & 0x10;  //Aislar bit 4
 
+    //Intercambiarlos
     valor_d3 <<=1;
     valor_d4 >>=1;
 
-    valor_leido &= 0xE7;
+    valor_leido &= 0xE7;  //En binario: 1110 0111 - para quitar bits 3 y 4
 
+    //Y ponerlos en la posición correcta
     valor_leido |=valor_d3;
     valor_leido |=valor_d4;
 
