@@ -523,7 +523,11 @@ int tap_open(void)
 
         //desactivamos autoload en TBBLUE ya que es demasiado lio, hay que saltar la pantalla de bienvenida,
         //mover cursor en el menu, etc etc
-        if (noautoload.v==0 && !MACHINE_IS_TBBLUE) {
+        //Si que permito tbblue en modo fast boot
+        int es_tbblue=0;
+        if (MACHINE_IS_TBBLUE && tbblue_fast_boot_mode.v==0) es_tbblue=1;
+
+        if (noautoload.v==0 && !es_tbblue) {
         //if (noautoload.v==0) {
             debug_printf (VERBOSE_INFO,"Restarting autoload");
             initial_tap_load.v=1;
@@ -1918,9 +1922,9 @@ void gestionar_autoload_spectrum(void)
                 }
 
                 else {
-                        //modo tbblue fast
-                                //printf ("gestionar como spectrum 48k\n");
-                                gestionar_autoload_spectrum_48kmode();
+                    //modo tbblue fast
+                    //printf ("gestionar como spectrum 48k\n");
+                    gestionar_autoload_spectrum_48kmode();
                 }
 
 
@@ -2717,7 +2721,11 @@ void realtape_insert(void)
 
     //desactivamos autoload en TBBLUE ya que es demasiado lio, hay que saltar la pantalla de bienvenida,
     //mover cursor en el menu, etc etc
-    if (noautoload.v==0 && !MACHINE_IS_TBBLUE) {
+    //Si que permito tbblue en modo fast boot
+    int es_tbblue=0;
+    if (MACHINE_IS_TBBLUE && tbblue_fast_boot_mode.v==0) es_tbblue=1;
+
+    if (noautoload.v==0 && !es_tbblue) {
     //if (noautoload.v==0) {
         debug_printf (VERBOSE_INFO,"Restarting autoload");
         initial_tap_load.v=1;
