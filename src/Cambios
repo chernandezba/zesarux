@@ -97,6 +97,7 @@ Mejorado ZX Desktop:
 
 * Correcciones:
 
+Corregido fallo de cpu+memory leak en Linux usando el driver Xwindow. Este es un error que ha existido siempre (un "error de larga vida" XD)
 Quitar indicador de buffer lleno al pulsar shift+e en ventana de Fuente de sonido externa
 Corregido pulsación boton derecho en botones superiores con menu cerrado y sin ventanas abiertas
 Corregido tecla alt pulsada al cambiar de ventana pulsando alt-tab en drivers xwindow, cocoa, sdl1 y sdl2

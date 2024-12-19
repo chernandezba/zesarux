@@ -840,15 +840,39 @@ void scrxwindows_refresca_pantalla_solo_driver(void)
                 //printf ("con shm dpy=%x ventana=%x gc=%x image=%x\n",dpy,ventana,gc,image);
                 //printf ("image=%x\n",image);
 
-                XShmPutImage(dpy, ventana, gc, image, 0, 0, 0, 0, ancho, alto, True);
+                XShmPutImage(dpy, ventana, gc, image, 0, 0, 0, 0, ancho, alto, False);
 
-                //temp probar para ver si esto detiene el uso de cpu incrementandose
-                //XSync(dpy, False);
+                /*
+                Parámetros:
 
-                //o tambien probar esto
-                //XFlush(dpy);
+                        Display *display;
+                        Drawable d;
+                        GC gc;
+                        XImage *image;
+                        int src_x, src_y, dest_x, dest_y;
+                        unsigned int width, height;
+                        bool send_event;
 
-    // FIXME: should wait for an ShmCompletion event here
+
+                Nota: establecemos send_event a False (desde ZEsarUX 11.1, antes estaba a True)
+                Tenerlo a True implica que se notifica mediante un evento tipo XShmCompletionEvent cuando
+                la operación se ha finalizado; significaria que antes de volver a llamar a XShmPutImage
+                deberiamos esperar a que llegase un evento XShmCompletionEvent. Si no se llega ese evento, indica
+                que no ha finalizado el renderizado anterior, y si volvemos a modificar este buffer,
+                se podría renderizar la pantalla "a cachos" o sea , provocar un efecto flicker en que aparece
+                parte del frame anterior y parte del actual
+                Dado que antes estaba a True y no esperaba nunca a ese evento y jamás vi renderizado a trozos, es mejor
+                ponerlo a False, sobretodo por otro aspecto mas importante aún:
+                Si está a TRUE y no recojo nunca ese evento, cada uno de esos eventos va ocupando memoria sin liberar,
+                haciendo que se vaya consumiendo mas RAM y de rebote, mas CPU (entiendo que consume mas CPU porque agregar
+                otro evento mas pendiente a la cola, cuesta mas cpu a medida que hay mas encolados - tiempo O(n) en vez de O(1)
+                Por ejemplo con ZEsarUX arrancado durante 1 hora, sucedía que pasabamos de usar 17% de cpu a 60% de cpu, y el uso de ram
+                aumenta de 5MB a 46 MB
+                Ese fallo de cpu/ram existe desde la primera versión de ZEsarUX hasta la anterior a la actual (11.1) donde
+                queda corregido
+
+                */
+
 
 #endif
 

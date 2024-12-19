@@ -3,36 +3,6 @@
 
 -breakpoint pc=0 no salta si debug->reset. Pero si que salta si se hace randomize usr 0
 
--uso de cpu aumenta con el tiempo, dejando maquina spectrum 48k recien arrancada
-Al cabo de una hora pasa a consumir 60% cuando lo normal seria 17%
-**Haciendo reset no recupera. Cambiando de driver de video tampoco.
-**Parece que en Mac os X no sucede
-**pruebas: ao null vo null no sucede
-**ao null vo xwindows si que sucede. haciendo CTRL-Z y volviendo no se corrige
-**ao null vo xwindows sin pthreads tambien sucede.
-**parece que con SDL no sucede
-**con xwindows, al arrancar, sin rainbow, sin memptr, sin visualmem, sin cpustats, con contended memory, 48k, ao null, vo x11, zoom 1
-  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
- 5519 chernan+  20   0  208860   5692   3708 S  17,6  0,1   0:02.95 zesarux
-
--cuando lleva un rato:
-  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
- 5519 chernan+  20   0  208860  46160   3708 S  65,7  0,6  26:10.33 zesarux
-
--con disableshm:
-al arrancar:
-  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
- 6288 chernan+  20   0  208864   5564   3288 S  16,6  0,1   0:02.71 zesarux
-cuando lleva un rato:
-  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
- 6288 chernan+  20   0  208864   5568   3288 S  16,2  0,1   7:29.56 zesarux
-
--Parece que es culpa de la shm!!
--ni XSync ni XFlush poniendolos detiene el uso de cpu aumentativo... debe ser algo que falte de la SHM.. o algo que falte ejecutar...
-quiza solo falla en el portatil?
--quiza hay que "FIXME: should wait for an ShmCompletion event here" tal y como dice en el codigo?
-
-
 -cintas de entrada (y de salida?) no realiza operacion fclose. Por tanto al abrir un archivo tap, tzx etc lo deja abierto. En
 sistemas Unix no pasa nada, pero en Windows significa que una cinta que se haya usado, se quedara abierta y si se quiere borrar dicho archivo
 tap, por ejemplo desde el windows explorer, dira que el archivo esta bloqueado, hasta que se cierre el emulador

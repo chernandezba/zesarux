@@ -97,6 +97,7 @@ Improved ZX Desktop:
 
 * Fixes:
 
+Fixed cpu+memory leak bug using Linux and Xwindow driver. This is a bug that has always existed (a "long life bug" XD)
 Remove buffer full indicator when pressing shift+e on External Audio Source window
 Fixed right click on upper buttons when menu closed and no windows open
 Fixed alt key pressed when changing to another window by using alt-tab on xwindow, cocoa, sdl1 and sdl2 drivers
