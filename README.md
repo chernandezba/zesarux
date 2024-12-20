@@ -217,7 +217,7 @@ __FEATURES__
 
 * Emulates Nec PD765 floppy disk controller, used on Spectrum +3, CPC 664, CPC 6128, PCW
 
-* Emulates ZX Microdrive on ZX Spectrum and QL: on ZX Spectrum supports MDR (standard file system format) and raw format (extension MDR). On QL is simulated by rom traps, accessing files from your computer and also from MDV (QLAY format)
+* Emulates ZX Microdrive on ZX Spectrum and QL: on ZX Spectrum supports MDR (standard file system format) and raw format (extension RMD). On QL is simulated by rom traps, accessing files from your computer and also from MDV (QLAY format)
 
 * Emulates Betadisk/TR-DOS. Direct support for .trd files. scl files can be converted from file selector pressing space
 
