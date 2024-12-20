@@ -98,7 +98,7 @@
 
 * Soporta formatos de snapshot: ZSF, ZX, Z80, SP, SPG, NEX, SNA, P, P81, O, Z81, ACE
 
-* Soporta formatos de microdrive: MDR (Spectrum) y MDV (formato QLAY format en QL)
+* Soporta formatos de microdrive: MDR, RMD y MDV
 
 * Soporta formatos de floppy disk: DSK
 
@@ -118,7 +118,7 @@
 
 * Emula controladora de disco Nec PD765, utilizada en Spectrum +3, CPC 664, CPC 6128, PCW
 
-* Emula ZX Microdrive en ZX Spectrum y QL: en ZX Spectrum soporta MDR (formato de sistema de archivos estándar) y formato en crudo "raw" (extensión MDR). En QL se simula mediante traps a la rom
+* Emula ZX Microdrive en ZX Spectrum y QL: en ZX Spectrum soporta MDR (formato de sistema de archivos estándar) y formato en crudo "raw" (extensión MDR). En QL se simula mediante traps a la rom accediendo a archivos de tu ordenador y también desde (formato QLAY)
 
 * Emula Betadisk/TR-DOS. Soporte directo para archivos .trd. scl files pueden convertirse desde el selector de archivos pulsando espacio
 
