@@ -327,6 +327,8 @@ __FEATURES__
 
 * Translation support: Can translate text from almost any program or game using external scripts
 
+* Memory Cheat: useful to find counters of energy, bombs, ammo or any other cheat in a game
+
 * Simulates upper RAM memory refresh on Spectrum 48Kb, losing its contents when changing R register very quickly
 
 * Supports command line settings, configuration file settings and per-game configuration settings

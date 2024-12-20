@@ -228,6 +228,8 @@
 
 * Soporta Traducción: Puede traducir texto de prácticamente cualquier programa o juego utilizando scripts externos
 
+* Memory Cheat: útil para encontrar contadores de energia, bombas, munición o cualquier otro truco de un juego
+
 * Simula refresco de memoria RAM alta en Spectrum 48Kb, perdiendo su contenido cuando se cambia el registro R muy rápidamente
 
 * Soporta opciones en línea de comandos, opciones en archivo de configuración, y opciones personalizadas para cada juego
