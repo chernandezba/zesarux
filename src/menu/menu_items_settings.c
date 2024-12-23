@@ -7201,6 +7201,11 @@ void menu_display_flash_color(MENU_ITEM_PARAMETERS)
     spectrum_flash_color_mode.v ^=1;
 }
 
+void menu_display_pcw_allow_videomode_change(MENU_ITEM_PARAMETERS)
+{
+    pcw_allow_videomode_change.v ^=1;
+}
+
 //menu display settings
 void menu_settings_display(MENU_ITEM_PARAMETERS)
 {
@@ -7460,6 +7465,11 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
                         "Palette","Paleta","Paleta");
                     menu_add_item_menu_prefijo_format(array_menu_settings_display,"[%d]  ",pcw_mode1_palette);
                 }
+
+                menu_add_item_menu_en_es_ca(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_pcw_allow_videomode_change,NULL,
+                    "Allow Plus models videomode changes","Permitir cambios de modo video modelos Plus","Permetre canvis de mode video models Plus");
+                menu_add_item_menu_prefijo_format(array_menu_settings_display,"[%c]  ",(pcw_allow_videomode_change.v ? 'X' : ' '));
+
 
                 menu_add_item_menu_en_es_ca(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_pcw_always_on,NULL,
                     "Always on monitor","Monitor simpre activo","Monitor sempre actiu");

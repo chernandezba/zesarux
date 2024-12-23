@@ -9504,6 +9504,12 @@ Bit 6 GRN1 most  significant bit of green.
     r=g=b=70;
     screen_set_colour_normal(INVES_BLACK_BRIGHT,(r<<16)|(g<<8)|b);
 
+    //Colores RGB8 PCW
+    for (i=0;i<256;i++) {
+        debug_printf (VERBOSE_PARANOID,"RGB8 color: %02XH 32 bit: %06XH",i,get_rgb8_color(i));
+        screen_set_colour_normal(PCW_RGB8_FIRST_COLOR+i,get_rgb8_color(i));
+    }
+
 
     //Si video inverso o grises
     //Modo de grises activo en screen_gray_mode
@@ -14609,11 +14615,10 @@ void screen_set_window_zoom(int z)
 
 
 
-//En DESUSO:
+
 //Retorna color RGB en formato 32 bits para un color rgb en formato 8 bit de RRRGGGBB.
-//Actualmente de momento solo usado en TBBLUE
 //NO es mismo formato que tabla de ulaplus. Ulaplus tiene formato GGGRRRBB
-/*
+
 int get_rgb8_color (z80_byte color)
 {
 	//Minitablas de conversion de 3 bits a 8 bits
@@ -14645,7 +14650,7 @@ int get_rgb8_color (z80_byte color)
 
 
 }
-*/
+
 
 
 //Retorna color RGB en formato 32 bits para un color rgb en formato 9 bit de RRRGGGBBB.

@@ -432,5 +432,10 @@ La particularidad es que ese archivo tiene bloques a final de microdrive y al pr
 -Alto total de process switcher se amplía si necesita ubicar más iconos?
 Debería aumentar total_height si es necesario
 
+-Next: puerto 0x5f de DAC D entra en conflicto con volumen canal A de chip AY?
 
--puerto 0x5f de DAC D entra en conflicto con volumen canal A de chip AY?
+
+-Modo minimizar ventanas que ni se vean. Quiza solo cuando process switcher este cargado
+y en ese modo al abrir la aplicación, se desminimice
+
+-PCW: poder cambiar colores tambien en modos 0 y 1

@@ -118,4 +118,9 @@ extern char *pcw_video_mode_names[];
 
 extern int pcw_mode1_palette;
 
+extern z80_bit pcw_allow_videomode_change;
+
+extern void pcw_out_port_video(z80_byte puerto_l,z80_byte value);
+extern z80_byte pcw_in_port_video(z80_byte puerto_l);
+
 #endif

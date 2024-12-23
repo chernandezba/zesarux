@@ -209,6 +209,15 @@ z80_byte pcw_port_f8_value;
 // Fin de variables necesarias para preservar el estado (o sea las que tienen que ir en un snapshot)
 //
 
+//Cambio de modos de video en los modelos ficticios Plus inventados por habisoft
+//Out puerto 80h,0. 81h, modo (0,1,2,3)
+//Out puerto 80h,20h+indice. 81h, color R,G,B (24 bits) en esa paleta. incrementando indice a cada escritura (cuando haya escrito los 3 RGB)
+z80_bit pcw_allow_videomode_change={1};
+
+z80_byte pcw_last_port_80_value=0;
+z80_byte pcw_last_port_81_value=0;
+int pcw_last_index_color_change=0;
+int pcw_last_index_color_change_component=0;
 
 z80_byte *pcw_get_memory_offset_read(z80_int dir)
 {
@@ -1293,3 +1302,131 @@ void pcw_boot_check_dsk_not_bootable(void)
 
 }
 
+void pcw_change_palette_colour(int indice_color,int rgb_color)
+{
+    switch (pcw_video_mode) {
+        case 0:
+            indice_color=indice_color % 2;
+            spectrum_colortable_normal[PCW_INDEX_FIRST_COLOR+indice_color]=rgb_color;
+        break;
+
+        case 1:
+            indice_color=indice_color % 16;
+            spectrum_colortable_normal[PCW_COLOUR_START_MODE1+indice_color]=rgb_color;
+        break;
+
+        case 2:
+        default:
+            indice_color=indice_color % 16;
+            spectrum_colortable_normal[PCW_COLOUR_START_MODE2+indice_color]=rgb_color;
+        break;
+
+    }
+}
+
+
+void pcw_out_port_video(z80_byte puerto_l,z80_byte value)
+{
+
+    if (puerto_l==0x80) {
+        pcw_last_port_80_value=value;
+
+        if (value>=16) {
+            pcw_last_index_color_change=value & 0xF;
+            pcw_last_index_color_change_component=0;
+        }
+    }
+
+    if (puerto_l==0x81) {
+        pcw_last_port_81_value=value;
+
+
+        if (pcw_last_port_80_value & 0x20) {
+            //Cambio color paleta mediante indice a colores
+
+            int indice_a_color;
+
+            indice_a_color=pcw_last_index_color_change;
+
+            //por si acaso
+            if (indice_a_color>16) indice_a_color=0;
+
+            int valor_a_cambiar=spectrum_colortable_normal[PCW_RGB8_FIRST_COLOR+value];
+
+            //printf("Cambio color paleta con indice %d por RGB=%06X\n",indice_a_color,valor_a_cambiar);
+
+            pcw_change_palette_colour(indice_a_color,valor_a_cambiar);
+
+
+            pcw_last_index_color_change++;
+            if (pcw_last_index_color_change>=16) pcw_last_index_color_change=0;
+        }
+
+        else if (pcw_last_port_80_value & 0x10) {
+            //Cambio color paleta mediante RGB
+
+
+            int indice_a_color;
+            int componente;
+
+
+            indice_a_color=pcw_last_index_color_change;
+            componente=pcw_last_index_color_change_component;
+
+            //por si acaso
+            if (indice_a_color>16) indice_a_color=0;
+            if (componente>2) componente=0;
+
+            //Llegan en orden B,G,R
+            //Si componente=0, red. si 1, green, si 2, blue
+            int valor_a_cambiar=spectrum_colortable_normal[PCW_COLOUR_START_MODE2+indice_a_color];
+            int rotaciones=componente;
+            rotaciones *=8;
+            //Si componente=0 (RED), rotaciones=2. si componente=1, rotaciones=8
+
+            int mascara_quitar=0xFF << rotaciones;
+            mascara_quitar ^=0xFFFFFF;
+
+            int valor_aplicar=value << rotaciones;
+
+            valor_a_cambiar &=mascara_quitar;
+            valor_a_cambiar |=valor_aplicar;
+
+            //printf("Cambio color paleta con rgb %d por RGB=%06X\n",indice_a_color,valor_a_cambiar);
+
+            pcw_change_palette_colour(indice_a_color,valor_a_cambiar);
+
+            pcw_last_index_color_change_component++;
+
+            if (pcw_last_index_color_change_component>=3) {
+                pcw_last_index_color_change_component=0;
+
+                pcw_last_index_color_change++;
+                if (pcw_last_index_color_change>=16*3) pcw_last_index_color_change=0;
+            }
+        }
+
+        else {
+            //Cambio modo
+            //TODO: de momento no soporto modo 3
+            if (value>=3) value=0;
+
+            pcw_video_mode=value;
+
+            char buffer_mensaje[256];
+            sprintf(buffer_mensaje,"Setting video mode %s",pcw_video_mode_names[pcw_video_mode]);
+            screen_print_splash_text_center_no_if_previous(ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,buffer_mensaje);
+
+        }
+    }
+
+}
+
+z80_byte pcw_in_port_video(z80_byte puerto_l)
+{
+    if (puerto_l==0x80) return pcw_last_port_80_value;
+    if (puerto_l==0x81) return pcw_last_port_81_value;
+
+    //Aqui no deberia llegar
+    return 255;
+}

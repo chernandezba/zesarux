@@ -3911,6 +3911,9 @@ void out_port_pcw_no_time(z80_int puerto,z80_byte value)
     if (puerto_l==0xAA && ay_chip_present.v) out_port_ay(65533,value);
     if (puerto_l==0xAB && ay_chip_present.v) out_port_ay(49149,value);
 
+    if (pcw_allow_videomode_change.v) {
+        if (puerto_l==0x80 || puerto_l==0x81) pcw_out_port_video(puerto_l,value);
+    }
 
 
     if (puerto_l!=0x01 && puerto_l!=0xF4 && puerto_l!=0xf8 && puerto_l!=0xAA && puerto_l!=0xAB && (puerto_l<0xf0 || puerto_l>0xf8)) {
@@ -3979,6 +3982,11 @@ z80_byte lee_puerto_pcw_no_time(z80_byte puerto_h GCC_UNUSED,z80_byte puerto_l)
     if (puerto_l==0xe0) {
         return pcw_in_port_e0();
     }
+
+    if (pcw_allow_videomode_change.v) {
+        if (puerto_l==0x80 || puerto_l==0x81) return pcw_in_port_video(puerto_l);
+    }
+
 
 
     //printf ("In Port %x unknown asked, PC after=0x%x\n",puerto_l+256*puerto_h,reg_pc);
