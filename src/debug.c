@@ -5797,7 +5797,7 @@ Bit 0 - Cassette Motion (0 = Moving, 1 = Stopped)
     if (MACHINE_IS_PCW) {
         int i;
         for (i=0;i<4;i++) {
-            sprintf (buf_linea,"PCW port %02XH: %02X <- Bank for %04XH\n",0x80+i,pcw_bank_registers[i],i*16384);
+            sprintf (buf_linea,"PCW port %02XH: %02X <- Bank for %04XH\n",0xF0+i,pcw_bank_registers[i],i*16384);
             sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
         }
         sprintf (buf_linea,"PCW port F4H: %02X Lock: %s %s %s %s\n",pcw_port_f4_value,
