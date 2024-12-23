@@ -1302,6 +1302,28 @@ void pcw_boot_check_dsk_not_bootable(void)
 
 }
 
+int pcw_get_palette_colour(int indice_color)
+{
+    switch (pcw_video_mode) {
+        case 0:
+            indice_color=indice_color % 2;
+            return spectrum_colortable_normal[PCW_INDEX_FIRST_COLOR+indice_color];
+        break;
+
+        case 1:
+            indice_color=indice_color % 16;
+            return spectrum_colortable_normal[PCW_COLOUR_START_MODE1+indice_color];
+        break;
+
+        case 2:
+        default:
+            indice_color=indice_color % 16;
+            return spectrum_colortable_normal[PCW_COLOUR_START_MODE2+indice_color];
+        break;
+
+    }
+}
+
 void pcw_change_palette_colour(int indice_color,int rgb_color)
 {
     switch (pcw_video_mode) {
@@ -1332,8 +1354,10 @@ void pcw_out_port_video(z80_byte puerto_l,z80_byte value)
         pcw_last_port_80_value=value;
 
         if (value>=16) {
-            pcw_last_index_color_change=value & 0xF;
+            pcw_last_index_color_change=value & 0x0F;
             pcw_last_index_color_change_component=0;
+
+            printf("Cambio indice a %d component %d\n",pcw_last_index_color_change,pcw_last_index_color_change_component);
         }
     }
 
@@ -1349,7 +1373,7 @@ void pcw_out_port_video(z80_byte puerto_l,z80_byte value)
             indice_a_color=pcw_last_index_color_change;
 
             //por si acaso
-            if (indice_a_color>16) indice_a_color=0;
+            if (indice_a_color>15) indice_a_color=0;
 
             int valor_a_cambiar=spectrum_colortable_normal[PCW_RGB8_FIRST_COLOR+value];
 
@@ -1374,12 +1398,12 @@ void pcw_out_port_video(z80_byte puerto_l,z80_byte value)
             componente=pcw_last_index_color_change_component;
 
             //por si acaso
-            if (indice_a_color>16) indice_a_color=0;
+            if (indice_a_color>15) indice_a_color=0;
             if (componente>2) componente=0;
 
             //Llegan en orden B,G,R
             //Si componente=0, red. si 1, green, si 2, blue
-            int valor_a_cambiar=spectrum_colortable_normal[PCW_COLOUR_START_MODE2+indice_a_color];
+            int valor_a_cambiar=pcw_get_palette_colour(indice_a_color);
             int rotaciones=componente;
             rotaciones *=8;
             //Si componente=0 (RED), rotaciones=2. si componente=1, rotaciones=8
@@ -1392,7 +1416,7 @@ void pcw_out_port_video(z80_byte puerto_l,z80_byte value)
             valor_a_cambiar &=mascara_quitar;
             valor_a_cambiar |=valor_aplicar;
 
-            //printf("Cambio color paleta con rgb %d por RGB=%06X\n",indice_a_color,valor_a_cambiar);
+            printf("Cambio color paleta con rgb %d (component %d) component value=%02X por RGB=%06X\n",indice_a_color,pcw_last_index_color_change_component,value,valor_a_cambiar);
 
             pcw_change_palette_colour(indice_a_color,valor_a_cambiar);
 
