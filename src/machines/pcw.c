@@ -1357,7 +1357,7 @@ void pcw_out_port_video(z80_byte puerto_l,z80_byte value)
             pcw_last_index_color_change=value & 0x0F;
             pcw_last_index_color_change_component=0;
 
-            printf("Cambio indice a %d component %d\n",pcw_last_index_color_change,pcw_last_index_color_change_component);
+            //printf("Cambio indice a %d component %d\n",pcw_last_index_color_change,pcw_last_index_color_change_component);
         }
     }
 
@@ -1416,7 +1416,7 @@ void pcw_out_port_video(z80_byte puerto_l,z80_byte value)
             valor_a_cambiar &=mascara_quitar;
             valor_a_cambiar |=valor_aplicar;
 
-            printf("Cambio color paleta con rgb %d (component %d) component value=%02X por RGB=%06X\n",indice_a_color,pcw_last_index_color_change_component,value,valor_a_cambiar);
+            //printf("Cambio color paleta con rgb %d (component %d) component value=%02X por RGB=%06X\n",indice_a_color,pcw_last_index_color_change_component,value,valor_a_cambiar);
 
             pcw_change_palette_colour(indice_a_color,valor_a_cambiar);
 
