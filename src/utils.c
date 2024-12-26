@@ -4592,6 +4592,7 @@ int util_write_configfile(void)
 
                                             ADD_STRING_CONFIG,"--joystickfirekey %d",joystick_defined_key_fire);
 
+  if (sms_swap_controls.v)                  ADD_STRING_CONFIG,"--sms-swap-controls");
 
   if (remote_protocol_enabled.v)                ADD_STRING_CONFIG,"--enable-remoteprotocol");
                                                 ADD_STRING_CONFIG,"--remoteprotocol-port %d",remote_protocol_port);

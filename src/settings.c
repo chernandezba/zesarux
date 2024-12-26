@@ -411,6 +411,9 @@ z80_bit zxvision_setting_movement_numbers={0};
 z80_bit keyboard_swap_enter_return={0};
 
 
+//Master system. Intercambiar controles player1 - player 2 : cursores/joyusb o opqamn
+z80_bit sms_swap_controls={0};
+
 
 //
 // Accessibility Settings

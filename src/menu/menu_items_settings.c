@@ -5827,7 +5827,10 @@ void menu_tbblue_machine_id(MENU_ITEM_PARAMETERS)
 }
 
 
-
+void menu_hardware_sms_swap_controls(MENU_ITEM_PARAMETERS)
+{
+    sms_swap_controls.v ^=1;
+}
 
 //menu hardware settings
 void menu_hardware_settings(MENU_ITEM_PARAMETERS)
@@ -5868,7 +5871,15 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_ayuda(array_menu_hardware_settings,"Define which key triggers the fire function for the joystick. "
             "Not all video drivers support reading all keys");
 
-
+        if (MACHINE_IS_SMS) {
+            menu_add_item_menu_en_es_ca(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_sms_swap_controls,NULL,
+                "SMS swap controls","SMS intercambiar controles","SMS intercanviar controls");
+            menu_add_item_menu_prefijo_format(array_menu_hardware_settings,"[%c] ",
+                (sms_swap_controls.v ? 'X' : ' ' ));
+            menu_add_item_menu_tooltip(array_menu_hardware_settings,"Swap controls player 1 <-> player 2");
+            menu_add_item_menu_ayuda(array_menu_hardware_settings,"Swap controls player 1 <-> player 2");
+            menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
+        }
 
 
         menu_add_item_menu_en_es_ca(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_autofire_enable,NULL,

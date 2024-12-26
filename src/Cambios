@@ -37,6 +37,7 @@ Mejorada compilación: opciones --enable-memptr --enable-visualmem --enable-cpus
 Mejorada emulación del Inves Spectrum+: alertar cuando un juego puede resetearse debido al bug de Inves de write-on-interrupt
 Mejorado el core de emulación de Spectrum de la CPU Z80: agregado estado wait (necesario para emular el microdrive)
 Mejorada emulación PCW: Permitir cambios de modo video modelos Plus
+Mejorada emulación de Sega Master System: permitir intercambiar controles jugador 1 <-> jugador 2
 Mejorado snapshot ZSF: guardar estado de Datagear DMA
 Permitir grabar snapshots .Z80 de TC2048, TC2068, TS2068. Permitir cargar snapshots .Z80 de TC2048, TC2068
 

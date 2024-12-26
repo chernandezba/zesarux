@@ -794,6 +794,11 @@ z80_byte sms_get_joypad_a(void)
     int pad_number_a=1;
     int pad_number_b=2;
 
+    if (sms_swap_controls.v) {
+        pad_number_a=2;
+        pad_number_b=1;
+    }
+
 /*
 Port $DC: I/O port A and B
 Bit	Function
@@ -850,8 +855,9 @@ z80_byte sms_get_joypad_b(void)
 
     z80_byte valor_joystick=255;
 
-    int pad_number_a=1;
     int pad_number_b=2;
+
+    if (sms_swap_controls.v) pad_number_b=1;
 
 /*
 Port $DD: I/O port B and miscellaneous

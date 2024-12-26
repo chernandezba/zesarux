@@ -184,5 +184,7 @@ extern z80_bit zxvision_topbar_menu_enabled;
 
 extern z80_bit zxvision_setting_movement_numbers;
 
+extern z80_bit sms_swap_controls;
+
 #endif
 
