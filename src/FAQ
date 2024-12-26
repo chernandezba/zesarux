@@ -55,8 +55,9 @@ The solution is to move the Speech program and the Stop speech program to a path
 
 
 Q: All these speech programs included in ZEsarUX are indeed speech synthesis programs, not screen readers. Can I use screen readers with ZEsarUX?
-A: Yes. There is a speech script which can be specified with --textspeechprogram ; See: http://github.com/sukiletxe/zesarux-ao2
+A: Yes. There is a filter which sends the text to the clipboard in Windows (speech_filters/win_clipboard.bat). You can use it with NVDA if you have the proper add-on installed, see the filter for the url. You may be able to use other screen readers too, provided you find a way for the clipboard changes to be automatically read by them.
 
+There is also a speech script which can be specified with --textspeechprogram which works with other screen readers and sends the text directly without affecting the clipboard, but it's rather old (but sort of works); See: http://github.com/sukiletxe/zesarux-ao2
 
 Q: How can I create my own speech script?
 A: Windows scripts receive on parameter %1 a file containing the text to send to speech, and on parameter %2 a temporal file that must be deleted
