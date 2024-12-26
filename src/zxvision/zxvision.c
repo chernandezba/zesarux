@@ -12184,6 +12184,12 @@ void zxvision_generic_message_tooltip(char *titulo, int disable_special_chars, i
 
         int limite_pgdnup;
 
+        //Teclas para teclados simples
+        if (zxvision_setting_movement_numbers.v && tecla=='5') tecla=8;
+        else if (zxvision_setting_movement_numbers.v && tecla=='6') tecla=10;
+        else if (zxvision_setting_movement_numbers.v && tecla=='7') tecla=11;
+        else if (zxvision_setting_movement_numbers.v && tecla=='8') tecla=9;
+
         switch (tecla) {
 
             //Nota: No llamamos a funcion generica zxvision_handle_cursors_pgupdn en caso de arriba,abajo, pg, pgdn,
@@ -20933,6 +20939,12 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 			else if (tecla_leida==25) tecla=25;
 			else if (tecla_leida==26) tecla=26;
 			else if (tecla_leida==27) tecla=27;
+
+            //Teclas para teclados simples
+            else if (zxvision_setting_movement_numbers.v && tecla_leida=='5') tecla='5';
+            else if (zxvision_setting_movement_numbers.v && tecla_leida=='6') tecla='6';
+            else if (zxvision_setting_movement_numbers.v && tecla_leida=='7') tecla='7';
+            else if (zxvision_setting_movement_numbers.v && tecla_leida=='8') tecla='8';
 
 
 			//Teclas para menus tabulados

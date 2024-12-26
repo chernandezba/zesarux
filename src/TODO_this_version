@@ -338,7 +338,7 @@ como matrices y cosas asi. pero en ese caso se pueden cargar y ya luego examinar
 --quiza en un menu_dibuja_menu_dialogo_no_title_lang, al pulsar ESC, no debe activar salir_todos_menus
 aunque no todos. por ejemplo en +3dsk, visor format disc, pulsar en archivo-> blocks, ahi si pulsa esc si que interesa que cierre todo
 
--revisar accesibilidad y submenus... a veces se lee submenu. ejemplo text to speech pulsar alguna opcion que conmuta en ese menu
+
 
 -con no border on full screen & no footer on full screen, al salir de full screen a veces peta
 parece que es la llamada a menu_interface_border
@@ -424,7 +424,7 @@ La particularidad es que ese archivo tiene bloques a final de microdrive y al pr
 
 -En MSX y SVI no estoy usando usa msx_ppi_mode_port/svi_ppi_mode_port en lectura. Quien lo lee y para que?
 
-
+-Poder similar joystick con opqam, por ejemplo con the spectrum y máster system
 
 --restore-all-known-windows no parece abrir bien las ventanas. pasa con segun que ventanas ya puestas para restore en el zesaruxrc
 
@@ -438,4 +438,11 @@ Debería aumentar total_height si es necesario
 -Modo minimizar ventanas que ni se vean. Quiza solo cuando process switcher este cargado
 y en ese modo al abrir la aplicación, se desminimice
 
--PCW: poder cambiar colores tambien en modos 0 y 1
+
+-revisar accesibilidad y submenus... a veces se lee submenu. ejemplo text to speech pulsar alguna opcion que conmuta en ese menu
+
+-movimiento menu con 5678
+*tecla para simular esc?
+*tecla para apertura menú?
+
+-Opción por defecto no permitir zoom x diferente de zoom y al redimensionar ventana mediante ratón. Quedarse con valor inferior de zoom

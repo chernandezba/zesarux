@@ -84,6 +84,7 @@ Improved ZX Vision:
 - When selecting ZX Vision Style, it is applied on moving cursor
 - Improve cursor movement on menus when pressing PgDn/PgUp
 - Allow keys Home/End on windows
+- Added setting to allow use keys 5678 as cursors on menu
 - Video layers window can now be backgrounded
 - Debug DMA window can now be backgrounded
 - Warn on the resize mark when a window has to be enlarged (because there is text beyond current size)
