@@ -660,42 +660,45 @@ Bit	Function
 //puerto_63486    db              255  ; 5    4    3    2    1     ;3
 //puerto_61438    db              255  ; 6    7    8    9    0     ;4
 
-			//z80_byte puerto_especial_joystick=0; //Fire Up Down Left Right
+    //z80_byte puerto_especial_joystick=0; //Fire Up Down Left Right
 
-			if ((puerto_especial_joystick&1)) valor_joystick &=(255-8);
-			if ((puerto_especial_joystick&2)) valor_joystick &=(255-4);
-			if ((puerto_especial_joystick&4)) valor_joystick &=(255-2);
-			if ((puerto_especial_joystick&8)) valor_joystick &=(255-1);
+    //Player 1. Right
+    if ((puerto_especial_joystick&1)) valor_joystick &=(255-8);
+    //Player 1. Left
+    if ((puerto_especial_joystick&2)) valor_joystick &=(255-4);
+    //Player 1. Down
+    if ((puerto_especial_joystick&4)) valor_joystick &=(255-2);
+    //Player 1. Up
+    if ((puerto_especial_joystick&8)) valor_joystick &=(255-1);
+    //Player 1. Fire 1
+    if ((puerto_especial_joystick&16)) valor_joystick &=(255-16);
 
-			if ((puerto_especial_joystick&16)) valor_joystick &=(255-16);
+    //Espacio tambien vale como Fire/A
+    //puerto_32766    db              255  ; B    N    M    Simb Space ;7
+    //Player 1. Fire 1
+    if ((puerto_32766 & 1)==0) valor_joystick &=(255-16);
 
-            //Espacio tambien vale como Fire/A
-            //puerto_32766    db              255  ; B    N    M    Simb Space ;7
-            if ((puerto_32766 & 1)==0) valor_joystick &=(255-16);
+    //Z tambien vale como Fire/A
+    //puerto_65278   db    255  ; V    C    X    Z    Sh    ;0
+    //Player 1. Fire 1
+    if ((puerto_65278 & 2)==0) valor_joystick &=(255-16);
 
-            //Z tambien vale como Fire/A
-            //puerto_65278   db    255  ; V    C    X    Z    Sh    ;0
-            if ((puerto_65278 & 2)==0) valor_joystick &=(255-16);
-
-            //Boton 2 = Tecla X
-
-            //puerto_65278   db    255  ; V    C    X    Z    Sh    ;0
-            if ((puerto_65278 & 4)==0) valor_joystick &=(255-32);
-
-
-
-
-            //Player 2. Q
-            //puerto_64510    db              255  ; T    R    E    W    Q     ;2
-            if ((puerto_64510 & 1)==0) valor_joystick &=(255-64);
-
+    //Boton 2 = Tecla X
+    //puerto_65278   db    255  ; V    C    X    Z    Sh    ;0
+    //Player 1. Fire 2
+    if ((puerto_65278 & 4)==0) valor_joystick &=(255-32);
 
 
 
-            //Player 2. A
-            //puerto_65022   db    255  ; G    F    D    S    A     ;1
-            if ((puerto_65022 & 1)==0) valor_joystick &=(255-128);
 
+    //Player 2. Up. Q
+    //puerto_64510    db              255  ; T    R    E    W    Q     ;2
+    if ((puerto_64510 & 1)==0) valor_joystick &=(255-64);
+
+
+    //Player 2. Down. A
+    //puerto_65022   db    255  ; G    F    D    S    A     ;1
+    if ((puerto_65022 & 1)==0) valor_joystick &=(255-128);
 
 
 
@@ -732,26 +735,26 @@ Bit	Function
 //puerto_63486    db              255  ; 5    4    3    2    1     ;3
 //puerto_61438    db              255  ; 6    7    8    9    0     ;4
 
-			//z80_byte puerto_especial_joystick=0; //Fire Up Down Left Right
+    //z80_byte puerto_especial_joystick=0; //Fire Up Down Left Right
 
 
-            //Player 2. O
-            //puerto_57342    db              255  ; Y    U    I    O    P     ;5
-            if ((puerto_57342 & 2)==0) valor_joystick &=(255-1);
+    //Player 2. Left. O
+    //puerto_57342    db              255  ; Y    U    I    O    P     ;5
+    if ((puerto_57342 & 2)==0) valor_joystick &=(255-1);
 
 
-            //Player 2. P
-            //puerto_57342    db              255  ; Y    U    I    O    P     ;5
-            if ((puerto_57342 & 1)==0) valor_joystick &=(255-2);
+    //Player 2. Right. P
+    //puerto_57342    db              255  ; Y    U    I    O    P     ;5
+    if ((puerto_57342 & 1)==0) valor_joystick &=(255-2);
 
 
-            //Player 2. N
-            //puerto_32766    db              255  ; B    N    M    Simb Space ;7
-            if ((puerto_32766 & 8)==0) valor_joystick &=(255-4);
+    //Player 2. Fire 1. N
+    //puerto_32766    db              255  ; B    N    M    Simb Space ;7
+    if ((puerto_32766 & 8)==0) valor_joystick &=(255-4);
 
-            //Player 2. M
-            //puerto_32766    db              255  ; B    N    M    Simb Space ;7
-            if ((puerto_32766 & 4)==0) valor_joystick &=(255-8);
+    //Player 2. Fire 2. M
+    //puerto_32766    db              255  ; B    N    M    Simb Space ;7
+    if ((puerto_32766 & 4)==0) valor_joystick &=(255-8);
 
 /*
              A B cont reset
