@@ -435,13 +435,20 @@ Debería aumentar total_height si es necesario
 -Next: puerto 0x5f de DAC D entra en conflicto con volumen canal A de chip AY?
 
 
--Modo minimizar ventanas que ni se vean. Quiza solo cuando process switcher este cargado
+-Modo minimizar ventanas que ni se vean. Quiza solo cuando process switcher este cargado?
 y en ese modo al abrir la aplicación, se desminimice
+*Y en process switcher se indica de alguna manera que está minimizada
+*con shift-flecha derecha aparecen también las minimizadas
+*opción que se llame algo como "hide on minimize"
+*problema que todas las funciones que activan ventana por posición, como al pulsar ventana, tienen que ver
+que ventana está minimizada y con el setting de "hide on minimize" activo
+
 
 
 -revisar accesibilidad y submenus... a veces se lee submenu. ejemplo text to speech pulsar alguna opcion que conmuta en ese menu
 
 -movimiento menu con 5678
+*ok 5678
 *tecla para simular esc?
 *tecla para apertura menú?
 
