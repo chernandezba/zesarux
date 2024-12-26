@@ -633,6 +633,46 @@ Player 2
 
 */
 
+int sms_if_joypad_a_left(void)
+{
+    if ((puerto_especial_joystick&2)) return 1;
+    else return 0;
+}
+
+int sms_if_joypad_a_right(void)
+{
+    if ((puerto_especial_joystick&1)) return 1;
+    else return 0;
+}
+
+int sms_if_joypad_a_down(void)
+{
+    if ((puerto_especial_joystick&4)) return 1;
+    else return 0;
+}
+
+int sms_if_joypad_a_up(void)
+{
+    if ((puerto_especial_joystick&8)) return 1;
+    else return 0;
+}
+
+int sms_if_joypad_a_fire1(void)
+{
+    if ((puerto_especial_joystick&16)) return 1;
+
+    //Espacio tambien vale como Fire/A
+    //puerto_32766    db              255  ; B    N    M    Simb Space ;7
+    //Player 1. Fire 1
+    if ((puerto_32766 & 1)==0) return 1;
+
+    //Z tambien vale como Fire/A
+    //puerto_65278   db    255  ; V    C    X    Z    Sh    ;0
+    //Player 1. Fire 1
+    if ((puerto_65278 & 2)==0) return 1;
+
+    return 0;
+}
 
 z80_byte sms_get_joypad_a(void)
 {
@@ -663,25 +703,17 @@ Bit	Function
     //z80_byte puerto_especial_joystick=0; //Fire Up Down Left Right
 
     //Player 1. Right
-    if ((puerto_especial_joystick&1)) valor_joystick &=(255-8);
+    if (sms_if_joypad_a_right()) valor_joystick &=(255-8);
     //Player 1. Left
-    if ((puerto_especial_joystick&2)) valor_joystick &=(255-4);
+    if (sms_if_joypad_a_left()) valor_joystick &=(255-4);
     //Player 1. Down
-    if ((puerto_especial_joystick&4)) valor_joystick &=(255-2);
+    if (sms_if_joypad_a_down()) valor_joystick &=(255-2);
     //Player 1. Up
-    if ((puerto_especial_joystick&8)) valor_joystick &=(255-1);
+    if (sms_if_joypad_a_up()) valor_joystick &=(255-1);
     //Player 1. Fire 1
-    if ((puerto_especial_joystick&16)) valor_joystick &=(255-16);
+    if (sms_if_joypad_a_fire1()) valor_joystick &=(255-16);
 
-    //Espacio tambien vale como Fire/A
-    //puerto_32766    db              255  ; B    N    M    Simb Space ;7
-    //Player 1. Fire 1
-    if ((puerto_32766 & 1)==0) valor_joystick &=(255-16);
 
-    //Z tambien vale como Fire/A
-    //puerto_65278   db    255  ; V    C    X    Z    Sh    ;0
-    //Player 1. Fire 1
-    if ((puerto_65278 & 2)==0) valor_joystick &=(255-16);
 
     //Boton 2 = Tecla X
     //puerto_65278   db    255  ; V    C    X    Z    Sh    ;0
