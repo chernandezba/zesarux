@@ -674,6 +674,114 @@ int sms_if_joypad_a_fire1(void)
     return 0;
 }
 
+int sms_if_joypad_a_fire2(void)
+{
+    //Boton 2 = Tecla X
+    //puerto_65278   db    255  ; V    C    X    Z    Sh    ;0
+    //Player 1. Fire 2
+    if ((puerto_65278 & 4)==0) return 1;
+
+    return 0;
+}
+
+
+
+
+int sms_if_joypad_b_left(void)
+{
+    //Player 2. Left. O
+    //puerto_57342    db              255  ; Y    U    I    O    P     ;5
+    if ((puerto_57342 & 2)==0) return 1;
+    else return 0;
+}
+
+int sms_if_joypad_b_right(void)
+{
+    //Player 2. Right. P
+    //puerto_57342    db              255  ; Y    U    I    O    P     ;5
+    if ((puerto_57342 & 1)==0) return 1;
+    else return 0;
+}
+
+int sms_if_joypad_b_down(void)
+{
+    //Player 2. Down. A
+    //puerto_65022   db    255  ; G    F    D    S    A     ;1
+    if ((puerto_65022 & 1)==0) return 1;
+    else return 0;
+}
+
+int sms_if_joypad_b_up(void)
+{
+    //Player 2. Up. Q
+    //puerto_64510    db              255  ; T    R    E    W    Q     ;2
+    if ((puerto_64510 & 1)==0) return 1;
+    else return 0;
+}
+
+int sms_if_joypad_b_fire1(void)
+{
+
+    //Player 2. Fire 1. N
+    //puerto_32766    db              255  ; B    N    M    Simb Space ;7
+    if ((puerto_32766 & 8)==0) return 1;
+
+    return 0;
+}
+
+int sms_if_joypad_b_fire2(void)
+{
+    //Player 2. Fire 2. M
+    //puerto_32766    db              255  ; B    N    M    Simb Space ;7
+    if ((puerto_32766 & 4)==0) return 1;
+
+    return 0;
+}
+
+
+
+//Joypad 1 o 2
+int sms_if_joypad_right(int joypad)
+{
+    if (joypad==1) return sms_if_joypad_a_right();
+    else return sms_if_joypad_b_right();
+}
+
+//Joypad 1 o 2
+int sms_if_joypad_left(int joypad)
+{
+    if (joypad==1) return sms_if_joypad_a_left();
+    else return sms_if_joypad_b_left();
+}
+
+//Joypad 1 o 2
+int sms_if_joypad_down(int joypad)
+{
+    if (joypad==1) return sms_if_joypad_a_down();
+    else return sms_if_joypad_b_down();
+}
+
+//Joypad 1 o 2
+int sms_if_joypad_up(int joypad)
+{
+    if (joypad==1) return sms_if_joypad_a_up();
+    else return sms_if_joypad_b_up();
+}
+
+//Joypad 1 o 2
+int sms_if_joypad_fire1(int joypad)
+{
+    if (joypad==1) return sms_if_joypad_a_fire1();
+    else return sms_if_joypad_b_fire1();
+}
+
+//Joypad 1 o 2
+int sms_if_joypad_fire2(int joypad)
+{
+    if (joypad==1) return sms_if_joypad_a_fire2();
+    else return sms_if_joypad_b_fire2();
+}
+
 z80_byte sms_get_joypad_a(void)
 {
 
@@ -682,6 +790,9 @@ z80_byte sms_get_joypad_a(void)
     if (zxvision_key_not_sent_emulated_mach() ) return 255;
 
     z80_byte valor_joystick=255;
+
+    int pad_number_a=1;
+    int pad_number_b=2;
 
 /*
 Port $DC: I/O port A and B
@@ -703,36 +814,25 @@ Bit	Function
     //z80_byte puerto_especial_joystick=0; //Fire Up Down Left Right
 
     //Player 1. Right
-    if (sms_if_joypad_a_right()) valor_joystick &=(255-8);
+    if (sms_if_joypad_right(pad_number_a)) valor_joystick &=(255-8);
     //Player 1. Left
-    if (sms_if_joypad_a_left()) valor_joystick &=(255-4);
+    if (sms_if_joypad_left(pad_number_a)) valor_joystick &=(255-4);
     //Player 1. Down
-    if (sms_if_joypad_a_down()) valor_joystick &=(255-2);
+    if (sms_if_joypad_down(pad_number_a)) valor_joystick &=(255-2);
     //Player 1. Up
-    if (sms_if_joypad_a_up()) valor_joystick &=(255-1);
+    if (sms_if_joypad_up(pad_number_a)) valor_joystick &=(255-1);
     //Player 1. Fire 1
-    if (sms_if_joypad_a_fire1()) valor_joystick &=(255-16);
-
-
-
-    //Boton 2 = Tecla X
-    //puerto_65278   db    255  ; V    C    X    Z    Sh    ;0
+    if (sms_if_joypad_fire1(pad_number_a)) valor_joystick &=(255-16);
     //Player 1. Fire 2
-    if ((puerto_65278 & 4)==0) valor_joystick &=(255-32);
+    if (sms_if_joypad_fire2(pad_number_a)) valor_joystick &=(255-32);
 
 
 
 
     //Player 2. Up. Q
-    //puerto_64510    db              255  ; T    R    E    W    Q     ;2
-    if ((puerto_64510 & 1)==0) valor_joystick &=(255-64);
-
-
+    if (sms_if_joypad_up(pad_number_b)) valor_joystick &=(255-64);
     //Player 2. Down. A
-    //puerto_65022   db    255  ; G    F    D    S    A     ;1
-    if ((puerto_65022 & 1)==0) valor_joystick &=(255-128);
-
-
+    if (sms_if_joypad_down(pad_number_b)) valor_joystick &=(255-128);
 
 
     return valor_joystick;
@@ -749,6 +849,9 @@ z80_byte sms_get_joypad_b(void)
 
 
     z80_byte valor_joystick=255;
+
+    int pad_number_a=1;
+    int pad_number_b=2;
 
 /*
 Port $DD: I/O port B and miscellaneous
@@ -771,22 +874,19 @@ Bit	Function
 
 
     //Player 2. Left. O
-    //puerto_57342    db              255  ; Y    U    I    O    P     ;5
-    if ((puerto_57342 & 2)==0) valor_joystick &=(255-1);
+    if (sms_if_joypad_left(pad_number_b)) valor_joystick &=(255-1);
 
 
     //Player 2. Right. P
-    //puerto_57342    db              255  ; Y    U    I    O    P     ;5
-    if ((puerto_57342 & 1)==0) valor_joystick &=(255-2);
+    if (sms_if_joypad_right(pad_number_b)) valor_joystick &=(255-2);
 
 
     //Player 2. Fire 1. N
-    //puerto_32766    db              255  ; B    N    M    Simb Space ;7
-    if ((puerto_32766 & 8)==0) valor_joystick &=(255-4);
+    if (sms_if_joypad_fire1(pad_number_b)) valor_joystick &=(255-4);
 
     //Player 2. Fire 2. M
     //puerto_32766    db              255  ; B    N    M    Simb Space ;7
-    if ((puerto_32766 & 4)==0) valor_joystick &=(255-8);
+    if (sms_if_joypad_fire2(pad_number_b)) valor_joystick &=(255-8);
 
 /*
              A B cont reset
