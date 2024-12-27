@@ -4242,7 +4242,7 @@ int util_write_configfile(void)
 
   if (menu_mouse_right_send_esc.v)          ADD_STRING_CONFIG,"--right-mouse-esc");
 
-  if (zxvision_setting_movement_numbers.v)  ADD_STRING_CONFIG,"--zxvision-use-speccy-keys");
+  if (zxvision_setting_use_speccy_keys.v)  ADD_STRING_CONFIG,"--zxvision-use-speccy-keys");
 
   if (setting_process_switcher_immutable.v)     ADD_STRING_CONFIG,"--process-switcher-immutable");
 

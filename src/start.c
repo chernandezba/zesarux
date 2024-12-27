@@ -5137,7 +5137,7 @@ int parse_cmdline_options(int desde_commandline) {
 			}
 
             else if (!strcmp(argv[puntero_parametro],"--zxvision-use-speccy-keys")) {
-                zxvision_setting_movement_numbers.v=1;
+                zxvision_setting_use_speccy_keys.v=1;
             }
 
             else if (!strcmp(argv[puntero_parametro],"--process-switcher-immutable")) {

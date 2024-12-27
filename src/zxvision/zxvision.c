@@ -2885,7 +2885,7 @@ z80_byte menu_get_pressed_key_no_modifier(void)
 	if ((puerto_especial1&1)==0) return 2;
 
     //Si movimiento en menu con 5678, caps+space es como ESC
-    if (zxvision_setting_movement_numbers.v && (puerto_65278 & 1)==0 && (puerto_32766 & 1)==0) return 2;
+    if (zxvision_setting_use_speccy_keys.v && (puerto_65278 & 1)==0 && (puerto_32766 & 1)==0) return 2;
 
 	//if (menu_pressed_background_key() && menu_allow_background_windows) return 3; //Tecla background F6
 	if (menu_if_pressed_background_button() && menu_allow_background_windows) {
@@ -12188,10 +12188,10 @@ void zxvision_generic_message_tooltip(char *titulo, int disable_special_chars, i
         int limite_pgdnup;
 
         //Teclas para teclados simples
-        if (zxvision_setting_movement_numbers.v && tecla=='5') tecla=8;
-        else if (zxvision_setting_movement_numbers.v && tecla=='6') tecla=10;
-        else if (zxvision_setting_movement_numbers.v && tecla=='7') tecla=11;
-        else if (zxvision_setting_movement_numbers.v && tecla=='8') tecla=9;
+        if (zxvision_setting_use_speccy_keys.v && tecla=='5') tecla=8;
+        else if (zxvision_setting_use_speccy_keys.v && tecla=='6') tecla=10;
+        else if (zxvision_setting_use_speccy_keys.v && tecla=='7') tecla=11;
+        else if (zxvision_setting_use_speccy_keys.v && tecla=='8') tecla=9;
 
         switch (tecla) {
 
@@ -20944,10 +20944,10 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 			else if (tecla_leida==27) tecla=27;
 
             //Teclas para teclados simples
-            else if (zxvision_setting_movement_numbers.v && tecla_leida=='5') tecla='5';
-            else if (zxvision_setting_movement_numbers.v && tecla_leida=='6') tecla='6';
-            else if (zxvision_setting_movement_numbers.v && tecla_leida=='7') tecla='7';
-            else if (zxvision_setting_movement_numbers.v && tecla_leida=='8') tecla='8';
+            else if (zxvision_setting_use_speccy_keys.v && tecla_leida=='5') tecla='5';
+            else if (zxvision_setting_use_speccy_keys.v && tecla_leida=='6') tecla='6';
+            else if (zxvision_setting_use_speccy_keys.v && tecla_leida=='7') tecla='7';
+            else if (zxvision_setting_use_speccy_keys.v && tecla_leida=='8') tecla='8';
 
 
 			//Teclas para menus tabulados
