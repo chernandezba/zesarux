@@ -2158,7 +2158,7 @@ void menu_interface_previous_submenus(MENU_ITEM_PARAMETERS)
     else menu_show_submenus_tree.v=1;
 }
 
-void menu_movement_numbers(MENU_ITEM_PARAMETERS)
+void menu_use_speccy_keys(MENU_ITEM_PARAMETERS)
 {
     zxvision_setting_use_speccy_keys.v ^=1;
 }
@@ -2427,7 +2427,7 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_ayuda(array_menu_common,"Right button mouse simulate ESC key or secondary actions");
         menu_add_item_menu_es_avanzado(array_menu_common);
 
-		menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_movement_numbers,NULL,
+		menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_use_speccy_keys,NULL,
             "Use speccy keys","Usar teclas speccy","Usar tecles speccy");
         menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(zxvision_setting_use_speccy_keys.v ? 'X' : ' ') );
         menu_add_item_menu_tooltip(array_menu_common,"On menu interaction, use keys 5678 as cursors, caps shift+space for ESC");
