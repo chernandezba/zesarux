@@ -5418,10 +5418,15 @@ FILE *ptr_scrfile;
 	                                  }
 					*/
 
+                    z80_byte *origen;
+		            origen=get_base_mem_pantalla();
+
 					z80_byte escrito;
 	        	                int i;
         	        	        for (i=0;i<6912;i++) {
-						escrito=peek_byte_no_time(16384+i);
+						//escrito=peek_byte_no_time(16384+i);
+                        escrito=*origen;
+                        origen++;
 						fwrite(&escrito,1,1,ptr_scrfile);
 		                        }
 

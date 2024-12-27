@@ -263,13 +263,6 @@ Cuidado que  en la consola si hay verbose debug, se muestra caracter extraño pa
 
 
 
-
-
--Mouse click derecho botones acciones:
--ok botones superiores, click derecho edita boton.
--Y en dispositivos? Quizá settings de ese dispositivo? la mayoria de dispositivos tienen opciones en menu storage y nada en settings->storage,
-solo tiene entrada en settings el tape
-
 -Teclado en pantalla en rpi borra el input de debajo
 
 
@@ -293,6 +286,7 @@ Y sin barra título
 -ZENG para msx ¿no? se leen los cursores en destino cuando se pulsan desde slave
 
 -gac debug con condactos y paso a paso
+
 - Emulación trs 80?
 
 -quiza que se permita ventanas que puedan moverse y estar parte fuera de rango visible. mientras origen ventana este dentro de rango,
@@ -448,7 +442,9 @@ que ventana está minimizada y con el setting de "hide on minimize" activo
 
 -movimiento menu con 5678
 *ok 5678
-*tecla para simular esc?
+*tecla para simular esc? Tecla Shift-space para simular escape
 *tecla para apertura menú?
 
 -Opción por defecto no permitir zoom x diferente de zoom y al redimensionar ventana mediante ratón. Quedarse con valor inferior de zoom
+
+-Conversión de .P a .P81
