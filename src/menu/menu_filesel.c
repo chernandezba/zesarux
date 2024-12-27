@@ -55,6 +55,7 @@
 #include "textspeech.h"
 #include "network.h"
 #include "ula.h"
+#include "settings.h"
 
 #if defined(__APPLE__)
 	#include <sys/syslimits.h>
@@ -5850,6 +5851,12 @@ int menu_filesel_if_save(char *titulo,char *filtros[],char *archivo,int si_save)
 
 				tecla=zxvision_common_getkey_refresh();
 				//printf ("Despues lee tecla\n");
+
+                //Teclas para teclados simples
+                if (zxvision_setting_use_speccy_keys.v && tecla=='5') tecla=8;
+                else if (zxvision_setting_use_speccy_keys.v && tecla=='6') tecla=10;
+                else if (zxvision_setting_use_speccy_keys.v && tecla=='7') tecla=11;
+                else if (zxvision_setting_use_speccy_keys.v && tecla=='8') tecla=9;
 
 
 				//Si se ha pulsado boton de raton

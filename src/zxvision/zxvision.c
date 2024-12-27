@@ -2878,7 +2878,7 @@ z80_byte menu_get_pressed_key_no_modifier(void)
 	z80_byte tecla;
 
 
-
+    //printf("menu_get_pressed_key_no_modifier\n");
 
 	//ESC significa Shift+Space en ZX-Uno y tambien ESC puerto_especial para menu.
 	//Por tanto si se pulsa ESC, hay que leer como tal ESC antes que el resto de teclas (Espacio o Shift)
@@ -2886,6 +2886,8 @@ z80_byte menu_get_pressed_key_no_modifier(void)
 
     //Si movimiento en menu con 5678, caps+space es como ESC
     if (zxvision_setting_use_speccy_keys.v && (puerto_65278 & 1)==0 && (puerto_32766 & 1)==0) return 2;
+    //Y caps+symbol es TAB
+    if (zxvision_setting_use_speccy_keys.v && (puerto_65278 & 1)==0 && (puerto_32766 & 2)==0) return 15;
 
 	//if (menu_pressed_background_key() && menu_allow_background_windows) return 3; //Tecla background F6
 	if (menu_if_pressed_background_button() && menu_allow_background_windows) {
@@ -3017,7 +3019,7 @@ z80_bit menu_tab={0};
 //devuelve tecla pulsada teniendo en cuenta mayus, sym shift
 z80_byte menu_get_pressed_key(void)
 {
-
+    //printf("menu_get_pressed_key\n");
 	//Ver tambien eventos de mouse de zxvision
 	//int pulsado_boton_cerrar=
 	zxvision_handle_mouse_events(zxvision_current_window);
@@ -18730,6 +18732,12 @@ z80_byte menu_da_todas_teclas_si_reset_mouse_movido(int reset_mouse_movido,int a
         //QL
         acumulado=acumulado &   ql_keyboard_table[0] & ql_keyboard_table[1] & ql_keyboard_table[2] & ql_keyboard_table[3] &
                                 ql_keyboard_table[4] & ql_keyboard_table[5] & ql_keyboard_table[6] & ql_keyboard_table[7];
+    }
+
+    if (zxvision_setting_use_speccy_keys.v && (puerto_65278 & 1)==0 && (puerto_32766 & 2)==0) {
+        //Considerar si pulsado symbol y shift a la vez (simula TAB)
+        //Habitualmente no consideramos ni symbol ni shift en esta función
+        acumulado &=(255-1);
     }
 
     //Boton shift+cursor en ventana que no permite background, cerrarla
