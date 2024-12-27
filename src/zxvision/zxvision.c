@@ -2614,7 +2614,7 @@ z80_byte puerto_49150=255; //    db              255  ; H    J    K    L    Ente
 z80_byte puerto_32766=255; //    db              255  ; B    N    M    Simb Space ;7
 
 //puertos especiales no presentes en spectrum
-z80_byte puerto_especial1=255; //   ;  .  .  .  . ESC ;
+z80_byte puerto_especial1=255; //   Home  End  PgDn  PgUp ESC
 z80_byte puerto_especial2=255; //   F5 F4 F3 F2 F1
 z80_byte puerto_especial3=255; //  F10 F9 F8 F7 F6
 z80_byte puerto_especial4=255; //  F15 F14 F13 F12 F11
@@ -2883,6 +2883,9 @@ z80_byte menu_get_pressed_key_no_modifier(void)
 	//ESC significa Shift+Space en ZX-Uno y tambien ESC puerto_especial para menu.
 	//Por tanto si se pulsa ESC, hay que leer como tal ESC antes que el resto de teclas (Espacio o Shift)
 	if ((puerto_especial1&1)==0) return 2;
+
+    //Si movimiento en menu con 5678, caps+space es como ESC
+    if (zxvision_setting_movement_numbers.v && (puerto_65278 & 1)==0 && (puerto_32766 & 1)==0) return 2;
 
 	//if (menu_pressed_background_key() && menu_allow_background_windows) return 3; //Tecla background F6
 	if (menu_if_pressed_background_button() && menu_allow_background_windows) {
@@ -20954,7 +20957,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 			else if (tecla_leida==2) {
 				//tecla=2; //ESC que viene de cerrar ventana al pulsar con raton boton de cerrar en titulo
 				tecla=MENU_RETORNO_ESC;
-				//printf ("tecla final es ESC\n");
+				//printf ("tecla final es ESC desde tecla_leida\n");
 			}
 
 			else if (tecla_leida==3) {
@@ -20965,7 +20968,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 
 			else if ((puerto_especial1 & 1)==0) {
 				//Enter
-				//printf ("Leido ESC\n");
+				//printf ("Leido ESC desde puerto_especial1\n");
 				tecla=MENU_RETORNO_ESC;
 			}
 

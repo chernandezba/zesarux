@@ -398,7 +398,7 @@ char online_download_path[PATH_MAX]="";
 //Busqueda de menus
 z80_bit index_menu_enabled={1};
 
-//Movimiento menu con teclas 5678, para teclados simples como el ZX Recreated
+//Movimiento menu con teclas 5678 caps shift+space (ESC), para teclados simples como el ZX Recreated
 z80_bit zxvision_setting_movement_numbers={0};
 
 //
