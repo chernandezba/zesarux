@@ -2428,10 +2428,10 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_es_avanzado(array_menu_common);
 
 		menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_movement_numbers,NULL,
-            "Menu movement with 5678","Movimiento menú con 5678","Moviment menú amb 5678");
+            "Use speccy keys","Usar teclas speccy","Usar tecles speccy");
         menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(zxvision_setting_movement_numbers.v ? 'X' : ' ') );
-        menu_add_item_menu_tooltip(array_menu_common,"Use keys 5678 as cursors on menu, caps shift+space for ESC");
-        menu_add_item_menu_ayuda(array_menu_common,"Use keys 5678 as cursors on menu, caps shift+space for ESC");
+        menu_add_item_menu_tooltip(array_menu_common,"On menu interaction, use keys 5678 as cursors, caps shift+space for ESC");
+        menu_add_item_menu_ayuda(array_menu_common,"On menu interaction, use keys 5678 as cursors, caps shift+space for ESC");
         menu_add_item_menu_es_avanzado(array_menu_common);
 
 

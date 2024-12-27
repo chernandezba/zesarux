@@ -1717,7 +1717,7 @@ printf("\n"
         "--no-change-frame-resize-zone            Do not change frame window when mouse if over resize zone\n"
 		"--invert-menu-mouse-scroll               Inverts mouse scroll movement\n"
         "--right-mouse-esc                        Right button mouse simulates ESC key and not secondary actions\n"
-        "--zxvision-cursors-5678                  Use keys 5678 as cursors on menu, caps shift+space for ESC\n"
+        "--zxvision-use-speccy-keys               On menu interaction, use keys 5678 as cursors, caps shift+space for ESC\n"
         "--process-switcher-immutable             Massive actions on menu Windows, like minimize all, cascade, etc, don't affect the Process switcher window\n"
         "--process-switcher-always-visible        Process switcher is always visible (on top of all windows)\n"
         "--process-switcher-no-left-bottom        Do not force process switcher to be located at left-bottom part of the display\n"
@@ -5136,7 +5136,7 @@ int parse_cmdline_options(int desde_commandline) {
                 menu_mouse_right_send_esc.v=1;
 			}
 
-            else if (!strcmp(argv[puntero_parametro],"--zxvision-cursors-5678")) {
+            else if (!strcmp(argv[puntero_parametro],"--zxvision-use-speccy-keys")) {
                 zxvision_setting_movement_numbers.v=1;
             }
 
