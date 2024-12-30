@@ -7967,6 +7967,13 @@ z80_byte antes_puerto_especial_joystick=puerto_especial_joystick;
 void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrelease)
 {
 
+    //Si se pulsa caps+symbol+m y el setting zxvision_setting_use_speccy_keys, simula F5
+    if (zxvision_setting_use_speccy_keys.v) {
+        if ((puerto_65278 & 1)==0 && (puerto_32766 & 2)==0 && tecla=='m') {
+            debug_printf(VERBOSE_INFO,"Pressed caps+symbol+m and setting zxvision_setting_use_speccy_keys enabled. Simulate F5");
+            tecla=UTIL_KEY_F5;
+        }
+    }
 
 
     switch (tecla) {

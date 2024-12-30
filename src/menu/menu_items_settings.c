@@ -2430,8 +2430,8 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
 		menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_use_speccy_keys,NULL,
             "Use speccy keys","Usar teclas speccy","Usar tecles speccy");
         menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(zxvision_setting_use_speccy_keys.v ? 'X' : ' ') );
-        menu_add_item_menu_tooltip(array_menu_common,"On menu interaction, use keys 5678 as cursors, caps shift+space for ESC, caps shift+ctrl for TAB");
-        menu_add_item_menu_ayuda(array_menu_common,"On menu interaction, use keys 5678 as cursors, caps shift+space for ESC, caps shift+ctrl for TAB");
+        menu_add_item_menu_tooltip(array_menu_common,"On menu interaction, use keys 5678 as cursors, caps shift+space for ESC, caps shift+ctrl for TAB, caps shift+ctrl+m for Open Menu (F5)");
+        menu_add_item_menu_ayuda(array_menu_common,"On menu interaction, use keys 5678 as cursors, caps shift+space for ESC, caps shift+ctrl for TAB, caps shift+ctrl+m for Open Menu (F5)");
         menu_add_item_menu_es_avanzado(array_menu_common);
 
 
