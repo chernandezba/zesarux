@@ -103,6 +103,7 @@ z80_bit ula_disabled_rom_paging={0};
 
 
 z80_bit recreated_zx_keyboard_support={0};
+z80_bit recreated_zx_keyboard_support_also_on_menu={0};
 
 z80_bit recreated_zx_keyboard_pressed_caps={0};
 

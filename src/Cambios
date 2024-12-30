@@ -39,6 +39,7 @@ Mejorado el core de emulación de Spectrum de la CPU Z80: agregado estado wait (
 Mejorada emulación PCW: Permitir cambios de modo video modelos Plus
 Mejorada emulación de Sega Master System: permitir intercambiar controles jugador 1 <-> jugador 2
 Mejorado snapshot ZSF: guardar estado de Datagear DMA
+Mejorada emulación de teclado ZX Recreated: permitir usarlo también en el menu
 Permitir grabar snapshots .Z80 de TC2048, TC2068, TS2068. Permitir cargar snapshots .Z80 de TC2048, TC2068
 
 Mejorada emulación de Spectrum Next (lo siguiente permite, por ejemplo, ejecutar la versión de Atic Atac para Next):

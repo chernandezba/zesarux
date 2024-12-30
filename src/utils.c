@@ -7302,8 +7302,19 @@ void util_set_reset_key_convert_recreated_yesno(enum util_teclas tecla,int press
 
 	//Para poder evitar que se vuelva a convertir cuando se llama desde convert_numeros_letras_puerto_teclado_continue
 	if (convertrecreated) {
-		//Si teclado recreated, y menu cerrado
-		if (!menu_abierto && recreated_zx_keyboard_support.v) {
+		//Si teclado recreated
+		if (recreated_zx_keyboard_support.v) {
+
+            int leer_recreated=0;
+
+            if (recreated_zx_keyboard_support_also_on_menu.v) leer_recreated=1;
+
+            else {
+                //Si no esta ese setting, solo funciona con menu cerrado
+                if (!menu_abierto) leer_recreated=1;
+            }
+
+            if (leer_recreated) {
 
 			enum util_teclas tecla_final;
 			int pressrelease_final;
@@ -7322,6 +7333,8 @@ void util_set_reset_key_convert_recreated_yesno(enum util_teclas tecla,int press
 				tecla=tecla_final;
 				pressrelease=pressrelease_final;
 			}
+
+            }
 		}
 	}
 

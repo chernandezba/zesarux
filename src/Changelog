@@ -39,6 +39,7 @@ Improved Spectrum Z80 CPU emulation core: add wait state (needed to emulate micr
 Improved PCW emulation: allow Plus models videomode changes
 Improved Sega Master System emulation: allow to swap controls player 1 <-> player 2
 Improved ZSF snapshot: save Datagear DMA state
+Improved ZX Recreated keyboard support: allow to use it also on menu
 Allow saving .Z80 TC2048, TC2068, TS2068 snapshots. Allow loading .Z80 TC2048, TC2068 snapshots
 
 Improved Spectrum Next emulation (the following allows, for example, run Atic Atac version for Next):
