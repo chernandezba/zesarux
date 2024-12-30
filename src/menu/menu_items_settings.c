@@ -7219,7 +7219,7 @@ void menu_display_pcw_do_not_scroll(MENU_ITEM_PARAMETERS)
 void menu_display_pcw_video_mode(MENU_ITEM_PARAMETERS)
 {
     pcw_video_mode++;
-    if (pcw_video_mode==3) pcw_video_mode=0;
+    if (pcw_video_mode==4) pcw_video_mode=0;
 }
 
 void menu_display_pcw_mode1_palette(MENU_ITEM_PARAMETERS)

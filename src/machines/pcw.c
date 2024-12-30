@@ -986,13 +986,14 @@ Modo 3 (360x256x16): los mismos colores que el modo 2. Aquí tenemos píxeles cu
     tenemos la mitad de memoria de vídeo, con lo que es más rápido el volcado, movimiento de sprites, etc.
 */
 
-//TODO: Modo 3. Hay algun juego que lo use?
+
 int pcw_video_mode=0;
 
 char *pcw_video_mode_names[]={
     "0 720x256x2",
     "1 360x256x4",
-    "2 180x256x16"
+    "2 180x256x16",
+    "3 360x256x16"
 };
 
 //Refresco sin rainbow
@@ -1055,6 +1056,8 @@ void scr_refresca_pantalla_pcw(void)
                 int bit;
                 int pixel_color;
 
+
+                //Modo 0 (720x256x2), el nativo del PCW: negro y verde, o Negro y blanco, a elegir vía puente.
                 if (pcw_video_mode==0) {
                     for (bit=0;bit<8;bit++) {
 
@@ -1067,6 +1070,7 @@ void scr_refresca_pantalla_pcw(void)
                     }
                 }
 
+                //Modo 1 (360x256x4): los colores de la paleta 1 con intensidad del modo de 4 colores de la CGA
                 if (pcw_video_mode==1) {
                     for (bit=0;bit<8;bit+=2) {
 
@@ -1080,6 +1084,7 @@ void scr_refresca_pantalla_pcw(void)
                     }
                 }
 
+                //Modo 2 (180x256x16): los colores de la paleta de la CGA (los 16 clásicos que trae por defecto la EGA).
                 if (pcw_video_mode==2) {
                     for (bit=0;bit<8;bit+=4) {
 
@@ -1092,6 +1097,25 @@ void scr_refresca_pantalla_pcw(void)
                         pcw_refresca_putpixel_mode2(x+bit+3,y+scanline,pixel_color);
 
                         byte_leido=byte_leido<<4;
+                    }
+                }
+
+                /*
+                Modo 3 (360x256x16): los mismos colores que el modo 2. Aquí tenemos píxeles cuadrados, como el modo 1
+                pero con los colores del modo 2. ¿La trampa? Es un modo de atributos: no podemos tener más de dos colores
+                distintos en una celda 1x8. Facilita mucho portar cosas de Spectrum, MSX, Thomson, … Y si mantenemos los colores
+                tenemos la mitad de memoria de vídeo, con lo que es más rápido el volcado, movimiento de sprites, etc.
+                */
+                if (pcw_video_mode==3) {
+                    for (bit=0;bit<8;bit+=2) {
+
+                        pixel_color=(byte_leido>>6) & 3;
+
+                        //Resolucion efectiva a mitad. en pantalla seguira siendo 720, solo que dos pixeles repetidos
+                        pcw_refresca_putpixel_mode1(x+bit,y+scanline,pixel_color);
+                        pcw_refresca_putpixel_mode1(x+bit+1,y+scanline,pixel_color);
+
+                        byte_leido=byte_leido<<2;
                     }
                 }
             }
@@ -1432,8 +1456,7 @@ void pcw_out_port_video(z80_byte puerto_l,z80_byte value)
 
         else {
             //Cambio modo
-            //TODO: de momento no soporto modo 3
-            if (value>=3) value=0;
+            if (value>=4) value=0;
 
             pcw_video_mode=value;
 
