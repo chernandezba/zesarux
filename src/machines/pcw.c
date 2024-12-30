@@ -1105,18 +1105,44 @@ void scr_refresca_pantalla_pcw(void)
                 pero con los colores del modo 2. ¿La trampa? Es un modo de atributos: no podemos tener más de dos colores
                 distintos en una celda 1x8. Facilita mucho portar cosas de Spectrum, MSX, Thomson, … Y si mantenemos los colores
                 tenemos la mitad de memoria de vídeo, con lo que es más rápido el volcado, movimiento de sprites, etc.
+                En este modo tenemos 360x256x16; sí, con 16 colores en vez de 4, a costa de sólo poder elegir dos en cada bloque 8x1.
+                Funciona interpretando el primer byte como los atributos de fondo y color (4 bits cada uno),
+                y el segundo como los 8 pixels a dibujar, fondo o color anteriormente especificado. De esta forma no se renuncia
+                a la resolución para conseguir más colores.
                 */
                 if (pcw_video_mode==3) {
-                    for (bit=0;bit<8;bit+=2) {
 
-                        pixel_color=(byte_leido>>6) & 3;
+                    //Dado que nuestro bucle con x salta de 8 en 8 hasta 720, y este modo es de 360,
+                    //tenemos que pillar cada x=0,x=16,etc
+                    if ((x%16)==0) {
+                        //Primer byte contiene los atributos
+                        int papel=(byte_leido>>4)&15;
+                        int tinta=byte_leido & 15;
 
-                        //Resolucion efectiva a mitad. en pantalla seguira siendo 720, solo que dos pixeles repetidos
-                        pcw_refresca_putpixel_mode1(x+bit,y+scanline,pixel_color);
-                        pcw_refresca_putpixel_mode1(x+bit+1,y+scanline,pixel_color);
 
-                        byte_leido=byte_leido<<2;
+                        //Obtener el siguiente byte, que contiene los pixeles
+                        address +=8;
+
+                        puntero_byte=pcw_ram_mem_table[address_block]+address;
+
+                        byte_leido=*puntero_byte;
+
+
+                        for (bit=0;bit<8;bit++) {
+
+                            if (byte_leido & 128) pixel_color=tinta;
+                            else pixel_color=papel;
+
+                            //Doble de ancho
+                            pcw_refresca_putpixel_mode2(x+bit*2,y+scanline,pixel_color);
+                            pcw_refresca_putpixel_mode2(x+bit*2+1,y+scanline,pixel_color);
+
+                            byte_leido=byte_leido<<1;
+                        }
                     }
+
+
+
                 }
             }
         }
