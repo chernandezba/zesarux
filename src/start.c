@@ -1203,17 +1203,18 @@ printf("\n"
 		"-----------------\n"
 		"\n"
 
-        "--emulatorspeed n       Set Emulator speed in percentage\n"
-		"--printerbitmapfile f   Sends printer output to image file. Supported formats: pbm, txt\n"
-		"--printertextfile f     Sends printer output to text file using OCR method. Printer output is saved to a text file using OCR method to guess text.\n"
-		"--redefinekey src dest  Redefine key scr to be key dest. You can write maximum 10 redefined keys\n"
-        "                        Key must be ascii character numbers or a character included in escaped quotes, like: 97 (for 'a') or \\'q\\'\n"
-        "                        (the escaped quotes are used only in command line; on configuration file, they are normal quotes '')\n"
-        "--recreatedzx           Enable support for Recreated ZX Spectrum Keyboard\n"
-        "--keyboard-issue2       Emulate ZX Spectrum Keyboard issue 2. Default issue 3\n"
-		"--keymap n              Which kind of physical keyboard you have. Default 0 (English) or 1 (Spanish)\n"
-		"--enablekempstonmouse   Enable kempston mouse emulation\n"
-		"--kempstonmouse-sens n  Set kempston mouse sensitivity (1-%d)\n",MAX_KMOUSE_SENSITIVITY);
+        "--emulatorspeed n           Set Emulator speed in percentage\n"
+		"--printerbitmapfile f       Sends printer output to image file. Supported formats: pbm, txt\n"
+		"--printertextfile f         Sends printer output to text file using OCR method. Printer output is saved to a text file using OCR method to guess text.\n"
+		"--redefinekey src dest      Redefine key scr to be key dest. You can write maximum 10 redefined keys\n"
+        "                            Key must be ascii character numbers or a character included in escaped quotes, like: 97 (for 'a') or \\'q\\'\n"
+        "                            (the escaped quotes are used only in command line; on configuration file, they are normal quotes '')\n"
+        "--recreatedzx               Enable support for Recreated ZX Spectrum Keyboard\n"
+        "--recreatedzx-also-on-menu  Use ZX Recreated mode also on menu\n"
+        "--keyboard-issue2           Emulate ZX Spectrum Keyboard issue 2. Default issue 3\n"
+		"--keymap n                  Which kind of physical keyboard you have. Default 0 (English) or 1 (Spanish)\n"
+		"--enablekempstonmouse       Enable kempston mouse emulation\n"
+		"--kempstonmouse-sens n      Set kempston mouse sensitivity (1-%d)\n",MAX_KMOUSE_SENSITIVITY);
 		printf (
 
 
@@ -3786,6 +3787,10 @@ int parse_cmdline_options(int desde_commandline) {
 
 			else if (!strcmp(argv[puntero_parametro],"--recreatedzx")) {
 				recreated_zx_keyboard_support.v=1;
+			}
+
+			else if (!strcmp(argv[puntero_parametro],"--recreatedzx-also-on-menu")) {
+				recreated_zx_keyboard_support_also_on_menu.v=1;
 			}
 
             else if (!strcmp(argv[puntero_parametro],"--keyboard-issue2")) {

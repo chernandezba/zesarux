@@ -3927,6 +3927,7 @@ int util_write_configfile(void)
   //TODO redefinekey
 
   if (recreated_zx_keyboard_support.v)	      ADD_STRING_CONFIG,"--recreatedzx");
+  if (recreated_zx_keyboard_support_also_on_menu.v)     ADD_STRING_CONFIG,"--recreatedzx-also-on-menu");
 
   if (keyboard_issue2.v)                        ADD_STRING_CONFIG,"--keyboard-issue2");
 

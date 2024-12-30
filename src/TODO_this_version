@@ -443,7 +443,7 @@ que ventana está minimizada y con el setting de "hide on minimize" activo
 -movimiento menu con 5678
 ok *5678
 ok *tecla para simular esc? Tecla Shift-space para simular escape
-*tecla para apertura menú?
+ok caps+sym+m *tecla para apertura menú?
 
 -Opción por defecto no permitir zoom x diferente de zoom y al redimensionar ventana mediante ratón. Quedarse con valor inferior de zoom
 
