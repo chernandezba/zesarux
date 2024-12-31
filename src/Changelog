@@ -36,7 +36,7 @@ Added Sphere Meter Type to View Sensors
 Improve compilation: settings --enable-memptr --enable-visualmem --enable-cpustats are enabled by default on ./configure
 Improved Inves Spectrum+ emulation: alert when a game may crash due to the Inves write-on-interrupt bug
 Improved Spectrum Z80 CPU emulation core: add wait state (needed to emulate microdrive)
-Improved PCW emulation: allow Plus models videomode changes, add mode 3 (360x256x16)
+Improved PCW emulation: add mode 3 (360x256x16), allow Plus models videomode changes
 Improved Sega Master System emulation: allow to swap controls player 1 <-> player 2
 Improved ZSF snapshot: save Datagear DMA state
 Improved ZX Recreated keyboard support: allow to use it also on menu
