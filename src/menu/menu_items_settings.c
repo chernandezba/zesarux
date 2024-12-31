@@ -7488,12 +7488,14 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
                 menu_add_item_menu_tooltip(array_menu_settings_display,"Changes PCW Video Mode");
                 menu_add_item_menu_ayuda(array_menu_settings_display,"Changes PCW Video Mode. Possible modes are: \n"
                     "Mode 0: 720x256: Default PCW native mode, two colours\n"
-                    "Mode 1: 360x256: 4 colours, like CGA palette 1 high intensity (black, cyan, magenta, white)\n"
-                    "Mode 2: 180x256: 16 colours, like the full CGA 16-colour palette\n"
+                    "Mode 1: 360x256: 4 colours, like CGA. Example game to use it: Knight Lore\n"
+
                     "Note: seems many games, although coded for monochrome images, look nice in Mode 1, "
                     "games from Opera Soft (Livingstone Supongo, Goody, etc) seem they have the same bitmaps as the PC CGA "
                     "version so they look perfect in this mode.\n"
-                    "Mode 3: 360x256: 16 colours, attributes 8x1"
+                    "\n"
+                    "Mode 2: 180x256: 16 colours, like the full CGA 16-colour palette\n"
+                    "Mode 3: 360x256: 16 colours, attributes 8x1. Example game to use it: Hundra"
                 );
 
                 if (pcw_video_mode==0) {
