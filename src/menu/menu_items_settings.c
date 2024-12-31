@@ -7483,7 +7483,8 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
 
                 menu_add_item_menu_en_es_ca(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_pcw_video_mode,NULL,
                     "Video mode","Modo video","Mode video");
-                menu_add_item_menu_prefijo_format(array_menu_settings_display,"[%s] ",(pcw_video_mode_names[pcw_video_mode]));
+                menu_add_item_menu_prefijo(array_menu_settings_display,"    ");
+                menu_add_item_menu_sufijo_format(array_menu_settings_display," [%s]",(pcw_video_mode_names[pcw_video_mode]));
                 menu_add_item_menu_tooltip(array_menu_settings_display,"Changes PCW Video Mode");
                 menu_add_item_menu_ayuda(array_menu_settings_display,"Changes PCW Video Mode. Possible modes are: \n"
                     "Mode 0: 720x256: Default PCW native mode, two colours\n"
@@ -7491,7 +7492,8 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
                     "Mode 2: 180x256: 16 colours, like the full CGA 16-colour palette\n"
                     "Note: seems many games, although coded for monochrome images, look nice in Mode 1, "
                     "games from Opera Soft (Livingstone Supongo, Goody, etc) seem they have the same bitmaps as the PC CGA "
-                    "version so they look perfect in this mode."
+                    "version so they look perfect in this mode.\n"
+                    "Mode 3: 360x256: 16 colours, attributes 8x1"
                 );
 
                 if (pcw_video_mode==0) {
@@ -7505,12 +7507,15 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
 
                     menu_add_item_menu_en_es_ca(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_pcw_mode1_palette,NULL,
                         "Palette","Paleta","Paleta");
-                    menu_add_item_menu_prefijo_format(array_menu_settings_display,"[%d]  ",pcw_mode1_palette);
+                    menu_add_item_menu_prefijo(array_menu_settings_display,"     ");
+                    menu_add_item_menu_sufijo_format(array_menu_settings_display," [%d]",pcw_mode1_palette);
                 }
 
                 menu_add_item_menu_en_es_ca(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_pcw_allow_videomode_change,NULL,
-                    "Allow Plus models videomode changes","Permitir cambios de modo video modelos Plus","Permetre canvis de mode video models Plus");
+                    "Allow videomode changes by i/o","Permitir cambios de modo video por i/o","Permetre canvis de mode video per i/o");
                 menu_add_item_menu_prefijo_format(array_menu_settings_display,"[%c]  ",(pcw_allow_videomode_change.v ? 'X' : ' '));
+                menu_add_item_menu_tooltip(array_menu_settings_display,"Allow change video mode by i/o port");
+                menu_add_item_menu_ayuda(array_menu_settings_display,"Allow change video mode by i/o port");
 
 
                 menu_add_item_menu_en_es_ca(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_pcw_always_on,NULL,
