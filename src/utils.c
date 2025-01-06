@@ -9529,6 +9529,7 @@ void labels_load_parse_lines(z80_byte *memoria,int longitud)
         //Buscar cr/lf o final de archivo
         if ((*memoria==10 || *memoria==13) || longitud==0) {
             *memoria=0;
+            debug_printf(VERBOSE_DEBUG,"Adding label, line: [%s]",inicio_linea);
             labels_load_parse_one_line(inicio_linea);
 
             //Siguiente caracter
