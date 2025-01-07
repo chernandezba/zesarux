@@ -155,6 +155,7 @@
 #include "zeng_online_client.h"
 #include "microdrive.h"
 #include "microdrive_raw.h"
+#include "debug_nested_functions.h"
 
 
 #ifdef COMPILE_STDOUT
@@ -7963,7 +7964,13 @@ void end_emulator_saveornot_config(int saveconfig)
     peek_byte=NULL;
     peek_byte_no_time=NULL;
 
-  exit(0);
+    nested_list_peek_byte=NULL;
+    nested_list_peek_byte_no_time=NULL;
+    nested_list_poke_byte=NULL;
+    nested_list_poke_byte_no_time=NULL;
+    nested_list_push_valor=NULL;
+
+    exit(0);
 
 }
 
