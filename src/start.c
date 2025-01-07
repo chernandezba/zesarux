@@ -7969,6 +7969,7 @@ void end_emulator_saveornot_config(int saveconfig)
     nested_list_poke_byte=NULL;
     nested_list_poke_byte_no_time=NULL;
     nested_list_push_valor=NULL;
+    nested_list_core=NULL;
 
     exit(0);
 
