@@ -1073,6 +1073,9 @@ void init_rainbow(void)
                 cpu_panic("Error allocating rainbow video buffer");
         }
 
+    //Inicializar esos buffers a 0
+    memset(rainbow_buffer_one,0,tamanyo);
+    memset(rainbow_buffer_two,0,tamanyo);
 
 
 
