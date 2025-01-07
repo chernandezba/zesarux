@@ -21426,6 +21426,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
     int menu_se_cerrara=menu_sel->menu_se_cerrara;
     int tiene_submenu=menu_sel->tiene_submenu;
     int genera_ventana=menu_sel->genera_ventana;
+    int no_es_realmente_un_menu=m->no_es_realmente_un_menu;
 
 	//printf ("misc selected: %s %s\n",item_seleccionado->texto_misc,menu_sel->texto_misc);
 
@@ -21445,6 +21446,12 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
         aux=nextfree;
     } while (aux!=NULL);
 
+    //
+    // CUIDADO!!!!!!
+    //
+    // A partir de aqui no se pueden usar items de menu (lista m)
+    // Cualquier referencia se tiene que haber hecho antes de liberar sobre otra variable, normalmente item_seleccionado
+
 
 	//Salir del menu diciendo que no se ha pulsado tecla
 	menu_speech_tecla_pulsada=0;
@@ -21459,7 +21466,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
         zxvision_next_do_not_play_close_window_sound=1;
 
         //si hay setting de submenu, no siempre se destruye ventana
-        if (menu_show_submenus_tree.v && m->no_es_realmente_un_menu==0) {
+        if (menu_show_submenus_tree.v && no_es_realmente_un_menu==0) {
             if (salir_con_flecha_izquierda ||
 
                 //con antiguo comportamiento, al pulsar ESC o seleccionar item esc, se comporta igual que salir con flecha izquierda
