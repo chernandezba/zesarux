@@ -7954,6 +7954,15 @@ void end_emulator_saveornot_config(int saveconfig)
 
 	if (remote_calling_end_emulator.v) end_remote_protocol();
 
+    //Desasignar algunos punteros a memoria no liberada para que herramientas como valgrind no avisen de memoria sin liberar con punteros en uso
+    //no es estrictamente necesario pero por evitar esos avisos de valgrind
+    //ATENCION!! Esto tiene que estar al final del emulador, justo antes del exit
+    cpu_core_loop=NULL;
+    poke_byte=NULL;
+    poke_byte_no_time=NULL;
+    peek_byte=NULL;
+    peek_byte_no_time=NULL;
+
   exit(0);
 
 }
