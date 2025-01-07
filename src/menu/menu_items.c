@@ -641,6 +641,7 @@ void menu_poke(MENU_ITEM_PARAMETERS)
                 menu_add_item_menu_inicial_format(&array_menu_poke,MENU_OPCION_NORMAL,menu_debug_poke,NULL,"~~Poke");
                 menu_add_item_menu_add_flags(array_menu_poke,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
                 menu_add_item_menu_shortcut(array_menu_poke,'p');
+                menu_add_item_menu_es_sencillo(array_menu_poke);
                 menu_add_item_menu_tooltip(array_menu_poke,"Poke address");
                 menu_add_item_menu_ayuda(array_menu_poke,"Poke address for infinite lives, etc... This item follows active memory zone. "
 					"You can also poke on read-only memory, depending on the current memory zone");
@@ -657,6 +658,7 @@ void menu_poke(MENU_ITEM_PARAMETERS)
 			menu_add_item_menu(array_menu_poke,"Poke from .POK ~~file",MENU_OPCION_NORMAL,menu_debug_poke_pok_file,NULL);
             menu_add_item_menu_add_flags(array_menu_poke,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
 			menu_add_item_menu_shortcut(array_menu_poke,'f');
+            menu_add_item_menu_es_sencillo(array_menu_poke);
 			menu_add_item_menu_tooltip(array_menu_poke,"Poke reading .POK file");
 			menu_add_item_menu_ayuda(array_menu_poke,"Poke reading .POK file");
 		}
@@ -30109,6 +30111,7 @@ void menu_machine_selection_manufacturer(MENU_ITEM_PARAMETERS)
         //menu_add_item_menu_inicial(&array_menu_machine_selection,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
         menu_add_item_menu_en_es_ca_inicial(&array_menu_machine_selection,MENU_OPCION_SEPARADOR,NULL,NULL,
         "--Select manufacturer--","--Selecciona fabricante--","--Selecciona fabricant--");
+        menu_add_item_menu_es_sencillo(array_menu_machine_selection);
 
         //Primer fabricante
         //menu_add_item_menu_inicial_format(&array_menu_machine_selection,MENU_OPCION_NORMAL,NULL,NULL,"%s",array_fabricantes_hotkey[0]);
@@ -30121,6 +30124,7 @@ void menu_machine_selection_manufacturer(MENU_ITEM_PARAMETERS)
             z80_byte letra=array_fabricantes_hotkey_letra[i];
             if (letra!=' ') menu_add_item_menu_shortcut(array_menu_machine_selection,letra);
             menu_add_item_menu_tiene_submenu(array_menu_machine_selection);
+            menu_add_item_menu_es_sencillo(array_menu_machine_selection);
         }
 
         menu_machine_selection_common_items(array_menu_machine_selection);
@@ -30267,10 +30271,12 @@ void menu_machine_selection_by_name(MENU_ITEM_PARAMETERS)
 
         menu_add_item_menu_en_es_ca_inicial(&array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,
             "--Select machine--","--Selecciona máquina--","--Selecciona màquina--");
+        menu_add_item_menu_es_sencillo(array_menu_common);
 
 		for (i=0;i<total_maquinas;i++) {
 			//printf ("sorted id: %03d nombre: %s\n",memoria_punteros[i]->id,memoria_punteros[i]->nombre_maquina);
 			menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_machine_selection_by_name_set,NULL,memoria_punteros[i]->nombre_maquina);
+            menu_add_item_menu_es_sencillo(array_menu_common);
 
 			menu_add_item_menu_valor_opcion(array_menu_common,memoria_punteros[i]->id);
 
@@ -42368,6 +42374,11 @@ void menu_search(MENU_ITEM_PARAMETERS)
 
 int force_menu_dibuja_menu_recorrer_menus=0;
 
+void menu_switch_simple_menus(MENU_ITEM_PARAMETERS)
+{
+    menu_show_simple_items.v ^=1;
+}
+
 int menu_inicio_mostrar_main_menu(int salir_menu)
 {
 
@@ -42388,6 +42399,7 @@ int menu_inicio_mostrar_main_menu(int salir_menu)
             //El menu smartload hara cerrar todas las ventanas o no dependiendo de setting no_close_menu_after_smartload
             //menu_add_item_menu_se_cerrara(array_menu_principal);
             menu_add_item_menu_genera_ventana(array_menu_principal);
+            menu_add_item_menu_es_sencillo(array_menu_principal);
             menu_add_item_menu_tooltip(array_menu_principal,"Smart load tapes, snapshots, floppies, memory cards, cartridges...");
             menu_add_item_menu_ayuda(array_menu_principal,"This option loads the file depending on its type: \n"
                 "-Binary tapes are inserted as standard tapes and loaded quickly\n"
@@ -42410,9 +42422,20 @@ int menu_inicio_mostrar_main_menu(int salir_menu)
             menu_add_item_menu_en_es_ca(array_menu_principal,MENU_OPCION_NORMAL,menu_machine_selection,NULL,
                 "~~Machine","~~Máquina","~~Màquina");
             menu_add_item_menu_shortcut(array_menu_principal,'m');
+            menu_add_item_menu_es_sencillo(array_menu_principal);
             menu_add_item_menu_tooltip(array_menu_principal,"Change active machine");
             menu_add_item_menu_ayuda(array_menu_principal,"You can switch to another machine. It also resets the machine");
             menu_add_item_menu_tiene_submenu(array_menu_principal);
+
+            //Este item solo sale en modo sencillo
+            if (menu_show_simple_items.v) {
+                menu_add_item_menu(array_menu_principal,"~~Poke",MENU_OPCION_NORMAL,menu_poke,NULL);
+                menu_add_item_menu_shortcut(array_menu_principal,'p');
+                menu_add_item_menu_es_sencillo(array_menu_principal);
+                menu_add_item_menu_tooltip(array_menu_principal,"Poke address manually or from .POK file");
+                menu_add_item_menu_ayuda(array_menu_principal,"Poke address for infinite lives, etc...");
+                menu_add_item_menu_tiene_submenu(array_menu_principal);
+            }
 
 
             menu_add_item_menu(array_menu_principal,"~~Audio",MENU_OPCION_NORMAL,menu_audio,NULL);
@@ -42470,6 +42493,18 @@ int menu_inicio_mostrar_main_menu(int salir_menu)
             menu_add_item_menu_ayuda(array_menu_principal,"General Settings");
             menu_add_item_menu_tiene_submenu(array_menu_principal);
 
+            //Poder conmutar de modo sencillo a normal pero solo cuando se ha arrancado desde modo sencillo
+            if (menu_show_simple_items_by_config.v) {
+                if (menu_show_simple_items.v) {
+                    menu_add_item_menu(array_menu_principal,"Show full menus",MENU_OPCION_NORMAL,menu_switch_simple_menus,NULL);
+                    menu_add_item_menu_es_sencillo(array_menu_principal);
+                }
+                else {
+                    menu_add_item_menu(array_menu_principal,"Show simple menus",MENU_OPCION_NORMAL,menu_switch_simple_menus,NULL);
+                    menu_add_item_menu_es_sencillo(array_menu_principal);
+                }
+            }
+
             if (index_menu_enabled.v) {
                 menu_add_item_menu_en_es_ca(array_menu_principal,MENU_OPCION_NORMAL,menu_search,NULL,
                     "Sea~~rch menu","Busca~~r menú","Busca~~r menú");
@@ -42506,6 +42541,7 @@ int menu_inicio_mostrar_main_menu(int salir_menu)
             menu_add_item_menu_en_es_ca(array_menu_principal,MENU_OPCION_NORMAL,menu_principal_salir_emulador,NULL,
                 "Exit ZEsarUX","Salir de ZEsarUX","Sortir de ZEsarUX");
             menu_add_item_menu_prefijo_format(array_menu_principal,"%s",(f_functions==1 ? "F10 ": "") );
+            menu_add_item_menu_es_sencillo(array_menu_principal);
             menu_add_item_menu_tooltip(array_menu_principal,"Exit ZEsarUX");
             menu_add_item_menu_ayuda(array_menu_principal,"Exit ZEsarUX");
 

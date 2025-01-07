@@ -3770,6 +3770,8 @@ char *menu_filesel_recent_files_folders(int *tipo)
                 //no agregar con funcion menu_add_item_menu_format o habra problemas si el nombre contiene % (que son especiales para printf)
                 menu_add_item_menu(array_menu_recent_files,elemento_mostrar,MENU_OPCION_NORMAL,menu_filesel_recent_files_folders_enter,NULL);
 
+                menu_add_item_menu_es_sencillo(array_menu_recent_files);
+
                 //Espacio conmutar entre archivos o directorios
                 menu_add_item_menu_espacio(array_menu_recent_files,menu_filesel_recent_files_folders_switch);
 
@@ -3780,7 +3782,10 @@ char *menu_filesel_recent_files_folders(int *tipo)
             }
         }
 
-        if (!hay_alguno) menu_add_item_menu_format(array_menu_recent_files,MENU_OPCION_NORMAL,NULL,NULL,"<Empty List>");
+        if (!hay_alguno) {
+            menu_add_item_menu_format(array_menu_recent_files,MENU_OPCION_NORMAL,NULL,NULL,"<Empty List>");
+            menu_add_item_menu_es_sencillo(array_menu_recent_files);
+        }
 
         menu_add_item_menu(array_menu_recent_files,"",MENU_OPCION_SEPARADOR,NULL,NULL);
         menu_add_item_menu_format(array_menu_recent_files,MENU_OPCION_NORMAL,menu_filesel_recent_files_clear,NULL,"Clear List");

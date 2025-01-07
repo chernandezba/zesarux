@@ -18217,8 +18217,15 @@ menu_item *old_menu_retorna_item(menu_item *m,int i)
 
 }
 
+
+//Retorna el item avanzado y/o item sencillo, en caso de estar en interfaz sencilla
 int menu_item_retornar_avanzados(menu_item *m)
 {
+    if (menu_show_simple_items.v) {
+        if (m->item_sencillo) return 1;
+        else return 0;
+    }
+
     if (m->item_avanzado && menu_show_advanced_items.v==0) return 0;
 
     else return 1;
@@ -21639,6 +21646,7 @@ void menu_add_item_menu_common_defaults(menu_item *m,int tipo_opcion,t_menu_func
     m->tiene_submenu=0;
     m->genera_ventana=0;
     m->item_avanzado=0;
+    m->item_sencillo=0;
     m->no_indexar_busqueda=0;
     m->one_time=0;
     m->opcion_marcada=0;
@@ -21879,6 +21887,18 @@ void menu_add_item_menu_es_avanzado(menu_item *m)
     }
 
     m->item_avanzado=1;
+}
+
+void menu_add_item_menu_es_sencillo(menu_item *m)
+{
+    //busca el ultimo item i le añade el indicado
+
+    while (m->siguiente_item!=NULL)
+    {
+            m=m->siguiente_item;
+    }
+
+    m->item_sencillo=1;
 }
 
 //Indicar que ese menu no se debe indexar la busqueda. Indicarlo en el primer item siempre
@@ -23383,31 +23403,38 @@ int menu_confirm_yesno_texto_additional_item(char *texto_ventana,char *texto_int
     do {
 
 		menu_add_item_menu_inicial_format(&array_menu_confirm_yes_no,MENU_OPCION_SEPARADOR,NULL,NULL,texto_interior);
+        menu_add_item_menu_es_sencillo(array_menu_confirm_yes_no);
 
 
         if (gui_language==GUI_LANGUAGE_SPANISH || gui_language==GUI_LANGUAGE_CATALAN) {
             menu_add_item_menu_format(array_menu_confirm_yes_no,MENU_OPCION_NORMAL,NULL,NULL,"~~Si");
 		    menu_add_item_menu_shortcut(array_menu_confirm_yes_no,'s');
+            menu_add_item_menu_es_sencillo(array_menu_confirm_yes_no);
         }
 
         else {
             menu_add_item_menu_format(array_menu_confirm_yes_no,MENU_OPCION_NORMAL,NULL,NULL,"~~Yes");
 		    menu_add_item_menu_shortcut(array_menu_confirm_yes_no,'y');
+            menu_add_item_menu_es_sencillo(array_menu_confirm_yes_no);
         }
 
         menu_add_item_menu_format(array_menu_confirm_yes_no,MENU_OPCION_NORMAL,NULL,NULL,"~~No");
 		menu_add_item_menu_shortcut(array_menu_confirm_yes_no,'n');
+        menu_add_item_menu_es_sencillo(array_menu_confirm_yes_no);
 
         //separador adicional para que quede mas grande la ventana y mas mono
         menu_add_item_menu_format(array_menu_confirm_yes_no,MENU_OPCION_SEPARADOR,NULL,NULL," ");
+        menu_add_item_menu_es_sencillo(array_menu_confirm_yes_no);
 
 
         if (texto_adicional!=NULL) {
             menu_add_item_menu_format(array_menu_confirm_yes_no,MENU_OPCION_NORMAL,NULL,NULL,texto_adicional() );
+            menu_add_item_menu_es_sencillo(array_menu_confirm_yes_no);
         }
 
         if (texto_adicional2!=NULL) {
             menu_add_item_menu_format(array_menu_confirm_yes_no,MENU_OPCION_NORMAL,NULL,NULL,texto_adicional2() );
+            menu_add_item_menu_es_sencillo(array_menu_confirm_yes_no);
         }
 
 

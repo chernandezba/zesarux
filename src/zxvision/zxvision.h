@@ -998,6 +998,9 @@ struct s_menu_item {
     //pero en cambio los items tabulados suelen ser para opciones de ventanas
     int item_avanzado;
 
+    //Si es un item que aparece en la interfaz sencilla
+    int item_sencillo;
+
     //Si no queremos indexar la busqueda en este menu. Por ejemplo Disk Info-> Tracks list
     int no_indexar_busqueda;
 
@@ -1103,6 +1106,7 @@ extern void menu_add_item_menu_add_flags(menu_item *m,int flags);
 extern void menu_add_item_menu_tiene_submenu(menu_item *m);
 extern void menu_add_item_menu_genera_ventana(menu_item *m);
 extern void menu_add_item_menu_es_avanzado(menu_item *m);
+extern void menu_add_item_menu_es_sencillo(menu_item *m);
 extern void menu_add_item_menu_se_cerrara(menu_item *m);
 
 

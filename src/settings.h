@@ -140,6 +140,10 @@ extern z80_bit sync_clock_to_z88;
 
 extern z80_bit menu_show_advanced_items;
 
+extern z80_bit menu_show_simple_items;
+
+extern z80_bit menu_show_simple_items_by_config;
+
 extern z80_bit keyboard_swap_enter_return;
 
 extern z80_bit zsf_snap_save_rom;

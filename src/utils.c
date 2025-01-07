@@ -4374,6 +4374,8 @@ int util_write_configfile(void)
 
   if (menu_show_advanced_items.v)               ADD_STRING_CONFIG,"--advancedmenus");
 
+  if (menu_show_simple_items.v)       ADD_STRING_CONFIG,"--simplemenus");
+
   if (setting_machine_selection_by_name.v)    ADD_STRING_CONFIG,"--setmachinebyname");
 
   if (menu_filesel_hide_dirs.v)         ADD_STRING_CONFIG,"--filebrowser-hide-dirs");

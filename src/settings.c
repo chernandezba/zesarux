@@ -332,6 +332,13 @@ z80_bit menu_file_viewer_always_hex={0};
 //Si mostrar items avanzados de menu
 z80_bit menu_show_advanced_items={0};
 
+//Si mostrar solo interfaz sencilla de menu
+z80_bit menu_show_simple_items={0};
+
+//Indica que el mostrar solo interfaz sencilla de menu viene por configuracion
+//Esto permite agregar un item en menu principal que conmute de modo sencillo a avanzado y al reves
+z80_bit menu_show_simple_items_by_config={0};
+
 //Si process switcher no se le altera tamaño o posición por acciones del menu Windows (minimize all, cascade, etc)
 z80_bit setting_process_switcher_immutable={0};
 
