@@ -1196,12 +1196,22 @@ char *menu_debug_registers_change_ptr_historial[UTIL_SCANF_HISTORY_MAX_LINES]={
     NULL
 };
 
+int menu_debug_registers_change_pedido_una_vez=0;
+
 void menu_debug_registers_change_ptr(void)
 {
 
     char string_address[10];
 
-    util_sprintf_address_hex(last_menu_debug_memory_pointer,string_address);
+    //La primera vez el input vendrá vacío, mas cómodo que no poner un 0000H
+    if (!menu_debug_registers_change_pedido_una_vez) {
+        menu_debug_registers_change_pedido_una_vez=1;
+        string_address[0]=0;
+    }
+
+    else {
+        util_sprintf_address_hex(last_menu_debug_memory_pointer,string_address);
+    }
 
     //menu_ventana_scanf("Value?",string_address,10);
     int tecla=zxvision_scanf_history("Value?",string_address,10,menu_debug_registers_change_ptr_historial);
