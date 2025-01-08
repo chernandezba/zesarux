@@ -1,6 +1,5 @@
 
--speech: caracteres con acentos, eñes etc no se leen bien
-->es la funcion textspeech_add_speech_fifo_filter_unknown que se los carga
+
 
 -redocumentar efecto de brillo de color del Inves según ultima info con Pedro
 

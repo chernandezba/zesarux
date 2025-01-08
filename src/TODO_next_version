@@ -430,6 +430,13 @@ que ventana está minimizada y con el setting de "hide on minimize" activo
 
 -Tecla en debug cpu para habilitar todos los breakpoints
 
+-speech: caracteres con acentos, eñes etc no se leen bien en ventanas como por ejemplo help->changelog cuando idioma es español
+sucede porque viene de zxvision_draw_window_contents y esta enviando por ejemplo caracter de eñe como 129, pues
+es como esta en la ventana. pero deberia convertir ese 129 a la eñe de utf8
+Para eso tendria que haber una tabla de cada caracter que uso desde 128 en adelante a su equivalente en utf8
+En cambio, items de menus si se leen bien porque ahi se le envia linea a linea el texto original (con utf8) y no
+se le envian los caracrteres desde zxvision_draw_window_contents
+
 -Conversión de .P a .P81
 
 -breakpoints que se disparen cuando se cumpla una condición N veces:
