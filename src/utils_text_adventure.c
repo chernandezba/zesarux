@@ -3892,6 +3892,9 @@ void debug_get_daad_step_breakpoint_string(char *texto)
 {
 	z80_int breakpoint_dir;
 
+    //Para que no avise de variable sin inicializar
+    breakpoint_dir=0;
+
 	if (util_daad_detect() ) breakpoint_dir=util_daad_get_pc_parser();
 	if (util_textadv_detect_paws_quill() ) breakpoint_dir=util_paws_get_pc_parser();
 
