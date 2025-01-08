@@ -29957,6 +29957,7 @@ void menu_machine_selection_manufacturer_machines(int fabricante)
 			//printf ("%d %s\n",m,nombre_maquina);
 
             menu_add_item_menu_format(array_menu_machine_selection_por_fabricante,MENU_OPCION_NORMAL,NULL,NULL,"%s",nombre_maquina);
+            menu_add_item_menu_es_sencillo(array_menu_machine_selection_por_fabricante);
 
 
 		}
