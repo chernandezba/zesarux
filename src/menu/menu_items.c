@@ -1574,7 +1574,7 @@ void menu_about_core_statistics_overlay_window_overlay(void)
 {
 
 
-    menu_speech_tecla_pulsada=1; //Si no, envia continuamente todo ese texto a speech
+    menu_speech_set_tecla_pulsada(); //Si no, envia continuamente todo ese texto a speech
 
     //si ventana minimizada, no ejecutar todo el codigo de overlay
     if (menu_about_core_statistics_overlay_window->is_minimized) return;
@@ -2020,7 +2020,7 @@ void menu_ay_registers_overlay(void)
 
 
 
-	menu_speech_tecla_pulsada=1; //Si no, envia continuamente todo ese texto a speech
+	menu_speech_set_tecla_pulsada(); //Si no, envia continuamente todo ese texto a speech
 
 
     //si ventana minimizada, no ejecutar todo el codigo de overlay
@@ -3473,7 +3473,7 @@ void menu_debug_tsconf_tbblue_msx_spritenav_draw_sprites(void)
 {
 
 
-    menu_speech_tecla_pulsada=1; //Si no, envia continuamente todo ese texto a speech
+    menu_speech_set_tecla_pulsada(); //Si no, envia continuamente todo ese texto a speech
 
 
     //si ventana minimizada, no ejecutar todo el codigo de overlay
@@ -3585,7 +3585,7 @@ void menu_debug_tsconf_tbblue_msx_spritenav(MENU_ITEM_PARAMETERS)
 
 
     do {
-    	menu_speech_tecla_pulsada=0; //Que envie a speech
+    	menu_speech_reset_tecla_pulsada(); //Que envie a speech
    		tecla=zxvision_common_getkey_refresh();
 		zxvision_handle_cursors_pgupdn(ventana,tecla);
 
@@ -4152,7 +4152,7 @@ void menu_debug_tsconf_tbblue_msx_tilenav_lista_tiles(void)
 void menu_debug_tsconf_tbblue_msx_tilenav_draw_tiles(void)
 {
 
-    menu_speech_tecla_pulsada=1; //Si no, envia continuamente todo ese texto a speech
+    menu_speech_set_tecla_pulsada(); //Si no, envia continuamente todo ese texto a speech
 
 
 
@@ -4331,7 +4331,7 @@ void menu_debug_tsconf_tbblue_msx_tilenav(MENU_ITEM_PARAMETERS)
 
 
 	do {
-    	menu_speech_tecla_pulsada=0; //Que envie a speech
+    	menu_speech_reset_tecla_pulsada(); //Que envie a speech
 
 		tecla=zxvision_common_getkey_refresh();
 
@@ -4492,7 +4492,7 @@ void menu_audio_draw_sound_wave(void)
 
 	char buffer_texto_medio[40]; //32+3+margen de posible color rojo del maximo
 
-	menu_speech_tecla_pulsada=1; //Si no, envia continuamente todo ese texto a speech
+	menu_speech_set_tecla_pulsada(); //Si no, envia continuamente todo ese texto a speech
 
 
     //si ventana minimizada, no ejecutar todo el codigo de overlay
@@ -4518,7 +4518,7 @@ void menu_audio_draw_sound_wave(void)
 
             //printf("Item seleccionado: %d\n",audio_new_waveform_opcion_seleccionada);
 
-		//menu_speech_tecla_pulsada=1; //Si no, envia continuamente todo ese texto a speech
+		//menu_speech_set_tecla_pulsada(); //Si no, envia continuamente todo ese texto a speech
 
 			//Average, min, max
 
@@ -6054,7 +6054,7 @@ void menu_audio_new_ayplayer_overlay(void)
 
 
 
-    menu_speech_tecla_pulsada=1; //Si no, envia continuamente todo ese texto a speech
+    menu_speech_set_tecla_pulsada(); //Si no, envia continuamente todo ese texto a speech
 
     //si ventana minimizada, no ejecutar todo el codigo de overlay
     if (menu_audio_new_ayplayer_overlay_window->is_minimized) return;
@@ -6078,7 +6078,7 @@ void menu_audio_new_ayplayer_overlay(void)
         char textovolumen[35]; //32+3 de posible color rojo del maximo
 
         //repetido
-        //menu_speech_tecla_pulsada=1; //Si no, envia continuamente todo ese texto a speech
+        //menu_speech_set_tecla_pulsada(); //Si no, envia continuamente todo ese texto a speech
 
         vol_A=ay_3_8912_registros[0][8] & 15;
         vol_B=ay_3_8912_registros[0][9] & 15;
@@ -7314,7 +7314,7 @@ void menu_debug_hexdump_overlay(void)
 {
 
 
-    menu_speech_tecla_pulsada=1; //Si no, envia continuamente todo ese texto a speech
+    menu_speech_set_tecla_pulsada(); //Si no, envia continuamente todo ese texto a speech
 
     //si ventana minimizada, no ejecutar todo el codigo de overlay
     if (menu_debug_hexdump_overlay_window->is_minimized) return;
@@ -8671,7 +8671,7 @@ zxvision_window *menu_debug_dma_window;
 void menu_debug_dma_overlay(void)
 {
 
-    menu_speech_tecla_pulsada=1; //Si no, envia continuamente todo ese texto a speech
+    menu_speech_set_tecla_pulsada(); //Si no, envia continuamente todo ese texto a speech
 
     //si ventana minimizada, no ejecutar todo el codigo de overlay
     if (menu_debug_dma_window->is_minimized) return;
@@ -9233,13 +9233,13 @@ zxvision_window *menu_video_layers_window;
 void menu_video_layers_overlay(void)
 {
 
-    menu_speech_tecla_pulsada=1; //Si no, envia continuamente todo ese texto a speech
+    menu_speech_set_tecla_pulsada(); //Si no, envia continuamente todo ese texto a speech
 
     //si ventana minimizada, no ejecutar todo el codigo de overlay
     if (menu_video_layers_window->is_minimized) return;
 
 
- 	menu_speech_tecla_pulsada=1; //Si no, envia continuamente todo ese texto a speech
+ 	menu_speech_set_tecla_pulsada(); //Si no, envia continuamente todo ese texto a speech
 
 
     //esto hara ejecutar esto 2 veces por segundo
@@ -9730,7 +9730,7 @@ void menu_display_total_palette_draw_barras(void)
     //if (mouse_is_dragging) printf("arrastrando\n");
 
 
-    menu_speech_tecla_pulsada=1; //Si no, envia continuamente todo ese texto a speech
+    menu_speech_set_tecla_pulsada(); //Si no, envia continuamente todo ese texto a speech
 
 
     //Mostrar lista colores
@@ -9899,7 +9899,7 @@ void menu_display_total_palette(MENU_ITEM_PARAMETERS)
 			menu_display_total_palette_total_colores_por_ventana=total_colores_por_ventana;
 
 
-			menu_speech_tecla_pulsada=0; //Que envie a speech
+			menu_speech_reset_tecla_pulsada(); //Que envie a speech
 
 			int linea=0;
 
@@ -10320,7 +10320,7 @@ void menu_debug_disassemble(MENU_ITEM_PARAMETERS)
             case 8:
 				/*
 				//Decir que se ha pulsado tecla para que no se relea
-				menu_speech_tecla_pulsada=1;*/
+				menu_speech_set_tecla_pulsada();*/
 				zxvision_handle_cursors_pgupdn(&ventana,tecla);
             break;
 
@@ -10328,7 +10328,7 @@ void menu_debug_disassemble(MENU_ITEM_PARAMETERS)
             case 9:
 				/*
 				//Decir que se ha pulsado tecla para que no se relea
-				menu_speech_tecla_pulsada=1;*/
+				menu_speech_set_tecla_pulsada();*/
 				zxvision_handle_cursors_pgupdn(&ventana,tecla);
 			break;
 
@@ -11425,7 +11425,7 @@ void menu_debug_draw_sprites(void)
 
 
 
-	menu_speech_tecla_pulsada=1; //Si no, envia continuamente todo ese texto a speech
+	menu_speech_set_tecla_pulsada(); //Si no, envia continuamente todo ese texto a speech
 
 
     //si ventana minimizada, no ejecutar todo el codigo de overlay
@@ -13319,7 +13319,7 @@ void menu_ay_partitura_overlay(void)
 
 
 
-	menu_speech_tecla_pulsada=1; //Si no, envia continuamente todo ese texto a speech, en el caso que se habilite piano de tipo texto
+	menu_speech_set_tecla_pulsada(); //Si no, envia continuamente todo ese texto a speech, en el caso que se habilite piano de tipo texto
 
 
     //si ventana minimizada, no ejecutar todo el codigo de overlay
@@ -16788,7 +16788,7 @@ void menu_network_traffic_draw_graph(zxvision_window *w,unsigned int *lista_valo
 void menu_network_traffic_overlay(void)
 {
 
-    menu_speech_tecla_pulsada=1; //Si no, envia continuamente todo ese texto a speech
+    menu_speech_set_tecla_pulsada(); //Si no, envia continuamente todo ese texto a speech
 
     //si ventana minimizada, no ejecutar todo el codigo de overlay
     if (menu_network_traffic_window->is_minimized) return;
@@ -18782,7 +18782,7 @@ void menu_display_window_list_overlay(void)
     //y actualizar last_spent_time_overlay de manera correspondiente
 
 
-    menu_speech_tecla_pulsada=1; //Si no, envia continuamente todo ese texto a speech
+    menu_speech_set_tecla_pulsada(); //Si no, envia continuamente todo ese texto a speech
 
     //si ventana minimizada, no ejecutar todo el codigo de overlay
     if (menu_display_window_list_window->is_minimized) return;
@@ -19476,7 +19476,7 @@ void menu_textadv_loc_image_overlay(void)
 	//Si no hay archivo bmp cargado
 	if (textadv_loc_image_bmp_file_mem==NULL) return;
 
-	menu_speech_tecla_pulsada=1; //Si no, envia continuamente todo ese texto a speech
+	menu_speech_set_tecla_pulsada(); //Si no, envia continuamente todo ese texto a speech
 
     //si ventana minimizada, no ejecutar todo el codigo de overlay
     if (menu_textadv_loc_image_overlay_window->is_minimized) return;
@@ -19941,7 +19941,7 @@ zxvision_window *menu_video_output_window;
 void menu_video_output_overlay(void)
 {
 
-    menu_speech_tecla_pulsada=1; //Si no, envia continuamente todo ese texto a speech
+    menu_speech_set_tecla_pulsada(); //Si no, envia continuamente todo ese texto a speech
 
     //si ventana minimizada, no ejecutar todo el codigo de overlay
     if (menu_video_output_window->is_minimized) return;
@@ -20792,7 +20792,7 @@ void menu_ay_pianokeyboard_overlay(void)
 
 
 
-	menu_speech_tecla_pulsada=1; //Si no, envia continuamente todo ese texto a speech, en el caso que se habilite piano de tipo texto
+	menu_speech_set_tecla_pulsada(); //Si no, envia continuamente todo ese texto a speech, en el caso que se habilite piano de tipo texto
 
 
     //si ventana minimizada, no ejecutar todo el codigo de overlay
@@ -21176,7 +21176,7 @@ void menu_beeper_pianokeyboard_overlay(void)
 {
 
 
-	menu_speech_tecla_pulsada=1; //Si no, envia continuamente todo ese texto a speech
+	menu_speech_set_tecla_pulsada(); //Si no, envia continuamente todo ese texto a speech
 
 
     //si ventana minimizada, no ejecutar todo el codigo de overlay
@@ -23503,7 +23503,7 @@ void menu_help_keyboard_overlay(void)
 	//Si no hay archivo bmp cargado
 	if (help_keyboard_bmp_file_mem==NULL) return;
 
-	menu_speech_tecla_pulsada=1; //Si no, envia continuamente todo ese texto a speech
+	menu_speech_set_tecla_pulsada(); //Si no, envia continuamente todo ese texto a speech
 
     //si ventana minimizada, no ejecutar todo el codigo de overlay
     if (menu_help_keyboard_overlay_window->is_minimized) return;
@@ -25172,7 +25172,7 @@ void menu_debug_ioports_overlay(void)
 
 
 
-    menu_speech_tecla_pulsada=1; //Si no, envia continuamente todo ese texto a speech
+    menu_speech_set_tecla_pulsada(); //Si no, envia continuamente todo ese texto a speech
 
     //si ventana minimizada, no ejecutar todo el codigo de overlay
     if (menu_debug_ioports_overlay_window->is_minimized) return;
@@ -25390,7 +25390,7 @@ void menu_new_about_window_overlay(void)
 
 
 
-    menu_speech_tecla_pulsada=1; //Si no, envia continuamente todo ese texto a speech
+    menu_speech_set_tecla_pulsada(); //Si no, envia continuamente todo ese texto a speech
 
 	zxvision_window *ventana;
 
@@ -27285,7 +27285,7 @@ zxvision_window *menu_memory_cheat_window;
 void menu_memory_cheat_overlay(void)
 {
 
-    menu_speech_tecla_pulsada=1; //Si no, envia continuamente todo ese texto a speech
+    menu_speech_set_tecla_pulsada(); //Si no, envia continuamente todo ese texto a speech
 
     //si ventana minimizada, no ejecutar todo el codigo de overlay
     if (menu_memory_cheat_window->is_minimized) return;
@@ -27744,7 +27744,7 @@ void menu_debug_view_sensors_print_cursor(zxvision_window *ventana)
 void menu_debug_view_sensors_overlay_window_overlay(void)
 {
 
-    menu_speech_tecla_pulsada=1; //Si no, envia continuamente todo ese texto a speech
+    menu_speech_set_tecla_pulsada(); //Si no, envia continuamente todo ese texto a speech
 
     //si ventana minimizada, no ejecutar todo el codigo de overlay
     if (menu_debug_view_sensors_overlay_window->is_minimized) return; //Sustituir xxxx_overlay_window por lo que convenga
@@ -28290,7 +28290,7 @@ void menu_visual_realtape_overlay(void)
 
 	char buffer_texto_medio[40];
 
-	menu_speech_tecla_pulsada=1; //Si no, envia continuamente todo ese texto a speech
+	menu_speech_set_tecla_pulsada(); //Si no, envia continuamente todo ese texto a speech
 
     //si ventana minimizada, no ejecutar todo el codigo de overlay
     if (menu_audio_visual_realtape_window->is_minimized) return;
@@ -28316,7 +28316,7 @@ void menu_visual_realtape_overlay(void)
         menu_visual_realtape_valor_contador_segundo_anterior=contador_segundo;
         //printf ("Refrescando. contador_segundo=%d\n",contador_segundo);
 
-        //menu_speech_tecla_pulsada=1; //Si no, envia continuamente todo ese texto a speech
+        //menu_speech_set_tecla_pulsada(); //Si no, envia continuamente todo ese texto a speech
 
         //borrar lo que haya
         zxvision_print_string_defaults_fillspc(menu_audio_visual_realtape_window,1,0,"");
@@ -31625,7 +31625,7 @@ zxvision_window *menu_specnext_audio_dac_window;
 void menu_specnext_audio_dac_overlay(void)
 {
 
-    menu_speech_tecla_pulsada=1; //Si no, envia continuamente todo ese texto a speech
+    menu_speech_set_tecla_pulsada(); //Si no, envia continuamente todo ese texto a speech
 
     //si ventana minimizada, no ejecutar todo el codigo de overlay
     if (menu_specnext_audio_dac_window->is_minimized) return;
@@ -32550,7 +32550,7 @@ void menu_shortcuts_helper_overlay(void)
 
 
 
-	menu_speech_tecla_pulsada=1; //Si no, envia continuamente todo ese texto a speech
+	menu_speech_set_tecla_pulsada(); //Si no, envia continuamente todo ese texto a speech
 
     //si ventana minimizada, no ejecutar todo el codigo de overlay
     if (menu_audio_shortcuts_helper_window->is_minimized) return;
@@ -32741,7 +32741,7 @@ int menu_ascii_table_modo_decimal=1;
 void menu_ascii_table_overlay(void)
 {
 
-    menu_speech_tecla_pulsada=1; //Si no, envia continuamente todo ese texto a speech
+    menu_speech_set_tecla_pulsada(); //Si no, envia continuamente todo ese texto a speech
 
     //si ventana minimizada, no ejecutar todo el codigo de overlay
     if (menu_ascii_table_window->is_minimized) return;
@@ -36854,7 +36854,7 @@ void menu_realtape_record_input_draw_tape(zxvision_window *w)
 void menu_realtape_record_input_overlay(void)
 {
 
-    menu_speech_tecla_pulsada=1; //Si no, envia continuamente todo ese texto a speech
+    menu_speech_set_tecla_pulsada(); //Si no, envia continuamente todo ese texto a speech
 
     //si ventana minimizada, no ejecutar todo el codigo de overlay
     if (menu_realtape_record_input_window->is_minimized) return;
@@ -37088,7 +37088,7 @@ zxvision_window *menu_input_spectrum_analyzer_window;
 void menu_input_spectrum_analyzer_overlay(void)
 {
 
-    menu_speech_tecla_pulsada=1; //Si no, envia continuamente todo ese texto a speech
+    menu_speech_set_tecla_pulsada(); //Si no, envia continuamente todo ese texto a speech
 
     //si ventana minimizada, no ejecutar todo el codigo de overlay
     if (menu_input_spectrum_analyzer_window->is_minimized) return;
@@ -39575,7 +39575,7 @@ void menu_toy_follow_mouse_overlay(void)
 
 
 
-    menu_speech_tecla_pulsada=1; //Si no, envia continuamente todo ese texto a speech
+    menu_speech_set_tecla_pulsada(); //Si no, envia continuamente todo ese texto a speech
 
     //si ventana minimizada, no ejecutar todo el codigo de overlay
     if (menu_toy_follow_mouse_window->is_minimized) return;
@@ -40108,7 +40108,7 @@ void menu_toy_zxlife_overlay(void)
 
 
 
-    menu_speech_tecla_pulsada=1; //Si no, envia continuamente todo ese texto a speech
+    menu_speech_set_tecla_pulsada(); //Si no, envia continuamente todo ese texto a speech
 
     //si ventana minimizada, no ejecutar todo el codigo de overlay
     if (menu_toy_zxlife_window->is_minimized) return;
@@ -41030,7 +41030,7 @@ int menu_process_switcher_sort_funct(const zxvision_window **d1, const zxvision_
 void menu_process_switcher_overlay(void)
 {
 
-    menu_speech_tecla_pulsada=1; //Si no, envia continuamente todo ese texto a speech
+    menu_speech_set_tecla_pulsada(); //Si no, envia continuamente todo ese texto a speech
 
     //si ventana minimizada, no ejecutar todo el codigo de overlay
     if (menu_process_switcher_window->is_minimized) return;
@@ -41313,7 +41313,7 @@ int menu_visual_cassette_tape_temblor=0;
 void menu_visual_cassette_tape_overlay(void)
 {
 
-    menu_speech_tecla_pulsada=1; //Si no, envia continuamente todo ese texto a speech
+    menu_speech_set_tecla_pulsada(); //Si no, envia continuamente todo ese texto a speech
 
     //si ventana minimizada, no ejecutar todo el codigo de overlay
     if (menu_visual_cassette_tape_window->is_minimized) return;
@@ -41773,7 +41773,7 @@ void menu_onscreen_keyboard_dibuja_cursor_aux(zxvision_window *ventana,char *s,i
 	else if (!strcmp(textospeech,"sp")) strcpy (textospeech,"space");
 
 	//Forzar que siempre suene en speech
-	menu_speech_tecla_pulsada=0;
+	menu_speech_reset_tecla_pulsada();
 
 
 	menu_textspeech_send_text(textospeech);
@@ -44023,7 +44023,7 @@ zxvision_window *menu_template_window_can_be_backgrounded_window;
 void menu_template_window_can_be_backgrounded_overlay(void)
 {
 
-    menu_speech_tecla_pulsada=1; //Si no, envia continuamente todo ese texto a speech
+    menu_speech_set_tecla_pulsada(); //Si no, envia continuamente todo ese texto a speech
 
     //si ventana minimizada, no ejecutar todo el codigo de overlay
     if (menu_template_window_can_be_backgrounded_window->is_minimized) return;

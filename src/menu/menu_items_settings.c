@@ -10499,7 +10499,7 @@ void menu_zxdesktop_set_userdef_button_func_action_overlay(void)
 
 
 
-    menu_speech_tecla_pulsada=1; //Si no, envia continuamente todo ese texto a speech
+    menu_speech_set_tecla_pulsada(); //Si no, envia continuamente todo ese texto a speech
 
     //si ventana minimizada, no ejecutar todo el codigo de overlay
     if (ventana->is_minimized) return;
@@ -10662,7 +10662,7 @@ void menu_zxdesktop_get_window_list_overlay(void)
 
 
 
-    menu_speech_tecla_pulsada=1; //Si no, envia continuamente todo ese texto a speech
+    menu_speech_set_tecla_pulsada(); //Si no, envia continuamente todo ese texto a speech
 
     //si ventana minimizada, no ejecutar todo el codigo de overlay
     if (ventana->is_minimized) return;

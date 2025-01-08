@@ -3453,7 +3453,7 @@ void menu_watches_overlay(void)
 
 
 
- 	menu_speech_tecla_pulsada=1; //Si no, envia continuamente todo ese texto a speech
+ 	menu_speech_set_tecla_pulsada(); //Si no, envia continuamente todo ese texto a speech
 
     //si ventana minimizada, no ejecutar todo el codigo de overlay
     if (menu_watches_overlay_window->is_minimized) return;
@@ -10706,7 +10706,7 @@ void menu_debug_textadventure_map_connections_overlay(void)
 {
     //printf("overlay %d\n",contador_segundo);
 
-    menu_speech_tecla_pulsada=1; //Si no, envia continuamente todo ese texto a speech
+    menu_speech_set_tecla_pulsada(); //Si no, envia continuamente todo ese texto a speech
 
     //si ventana minimizada, no ejecutar todo el codigo de overlay
     if (menu_debug_textadventure_map_connections_overlay_window->is_minimized) return;

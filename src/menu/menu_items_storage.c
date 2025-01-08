@@ -2948,7 +2948,7 @@ void menu_hilow_convert_audio_overlay(void)
 
 
 
-    menu_speech_tecla_pulsada=1; //Si no, envia continuamente todo ese texto a speech
+    menu_speech_set_tecla_pulsada(); //Si no, envia continuamente todo ese texto a speech
 
     //si ventana minimizada, no ejecutar todo el codigo de overlay
     if (menu_hilow_convert_audio_window->is_minimized) return;
@@ -3667,7 +3667,7 @@ int visual_hilow_datadrive_forzar_dibujado=0;
 void menu_hilow_visual_datadrive_overlay(void)
 {
 
-    menu_speech_tecla_pulsada=1; //Si no, envia continuamente todo ese texto a speech
+    menu_speech_set_tecla_pulsada(); //Si no, envia continuamente todo ese texto a speech
 
     //si ventana minimizada, no ejecutar todo el codigo de overlay
     if (menu_hilow_visual_datadrive_window->is_minimized) return;
@@ -5996,7 +5996,7 @@ void menu_visual_microdrive_dibujar_microdrive_dinamico(struct zxvision_vectoria
 void menu_visual_microdrive_overlay(void)
 {
 
-    menu_speech_tecla_pulsada=1; //Si no, envia continuamente todo ese texto a speech
+    menu_speech_set_tecla_pulsada(); //Si no, envia continuamente todo ese texto a speech
 
     //si ventana minimizada, no ejecutar todo el codigo de overlay
     if (menu_visual_microdrive_window->is_minimized) return;
@@ -7030,7 +7030,7 @@ void menu_microdrive_raw_map_draw(zxvision_window *w)
 void menu_microdrive_raw_map_overlay(void)
 {
 
-    menu_speech_tecla_pulsada=1; //Si no, envia continuamente todo ese texto a speech
+    menu_speech_set_tecla_pulsada(); //Si no, envia continuamente todo ese texto a speech
 
     //si ventana minimizada, no ejecutar todo el codigo de overlay
     if (menu_microdrive_raw_map_window->is_minimized) return;
@@ -8045,7 +8045,7 @@ void menu_visual_floppy_overlay(void)
 
 
 
-    menu_speech_tecla_pulsada=1; //Si no, envia continuamente todo ese texto a speech
+    menu_speech_set_tecla_pulsada(); //Si no, envia continuamente todo ese texto a speech
 
     //si ventana minimizada, no ejecutar todo el codigo de overlay
     if (menu_visual_floppy_window->is_minimized) return;

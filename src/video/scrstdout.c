@@ -331,7 +331,7 @@ void scrstdout_menu_kbhit()
 	if (textspeech_filter_program==NULL) return;
 
 	if (scrstdout_kbhit() ) {
-		menu_speech_tecla_pulsada=1;
+		menu_speech_set_tecla_pulsada();
 		textspeech_empty_speech_fifo();
 		//printf ("tecla pulsada\n");
 	}

@@ -488,7 +488,7 @@ void scrtextspeech_filter_run_pending(void)
     if (textspeech_filter_program==NULL) return;
 
     if (fifo_buffer_speech_size==0) return;
-
+//debug_exec_show_backtrace();
     int longit;
 	longit=strlen(buffer_speech_lineas[fifo_buffer_speech_read]);
 

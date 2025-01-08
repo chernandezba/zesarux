@@ -2576,7 +2576,8 @@ void file_utils_move_rename_copy_file_post(char *archivo,int rename_move)
         //parece que a veces no lee el titulo de la ventana y es importante
         //probablemente porque para elegir el directorio destino se pulsa ESC y por tanto
         //eso evita que se envie el siguiente texto a speech
-        menu_speech_tecla_pulsada=0;
+        menu_speech_reset_tecla_pulsada();
+        //printf("menu_speech_reset_tecla_pulsada filesel linea 2580\n");
 
 		if (menu_confirm_yesno_texto("Confirm operation","Sure?")==0) {
             return;
@@ -3234,7 +3235,8 @@ void menu_textspeech_say_current_directory(void)
         sprintf (buffer_texto,"Current directory: %s",current_dir);
 
 	//Quiero que siempre se escuche
-	menu_speech_tecla_pulsada=0;
+	menu_speech_reset_tecla_pulsada();
+    //printf("menu_speech_reset_tecla_pulsada filesel linea 3239\n");
 	menu_textspeech_send_text(buffer_texto);
 }
 
@@ -3493,9 +3495,12 @@ void zxvision_menu_print_dir(int inicial,zxvision_window *ventana)
 
         //Guardamos estado actual
         int antes_menu_speech_tecla_pulsada=menu_speech_tecla_pulsada;
-        menu_speech_tecla_pulsada=0;
+        menu_speech_reset_tecla_pulsada();
+        //printf("menu_speech_reset_tecla_pulsada filesel linea 3499\n");
 
+        //printf("before menu_textspeech_send_text. send text: [%s]\n",texto_opcion_activa);
         menu_textspeech_send_text(texto_opcion_activa);
+        //printf("after menu_textspeech_send_text\n");
 
         //Restauro estado
         //Pero si se ha pulsado tecla, no restaurar estado
@@ -3504,6 +3509,8 @@ void zxvision_menu_print_dir(int inicial,zxvision_window *ventana)
         //y luego al salir de aqui, se pierde el valor que se habia metido (1) y se vuelve a poner el 0 del principio
         //provocando que cada vez que se mueve el cursor, se relea la ventana entera
         if (menu_speech_tecla_pulsada==0) menu_speech_tecla_pulsada=antes_menu_speech_tecla_pulsada;
+
+        //printf("menu_speech_tecla_pulsada en fin de print_dir: %d\n",menu_speech_tecla_pulsada);
     }
 
 
@@ -3692,7 +3699,7 @@ int menu_filesel_set_cursor_at_mouse(zxvision_window *ventana)
                                 linea_cursor_final += filesel_linea_seleccionada;
                                 zxvision_set_cursor_line(ventana,linea_cursor_final);
 
-                                menu_speech_tecla_pulsada=1;
+                                menu_speech_set_tecla_pulsada();
 								return 1;
                             }
                             else {
@@ -5399,6 +5406,10 @@ void menu_filesel_overlay(void)
     //dibujando un preview, necesitamos que cuando no haya preview, este zxvision_draw_window_contents limpie
     //el contenido de la ventana gracias al parametro de must_clear_cache_on_draw que hemos activado al crear la ventana
     //Si no se hiciera esto, la cache de putchar veria que no hay modificaciones y no limpia el preview anterior
+
+    //No queremos que el overlay continuamente este enviando a speech
+    menu_speech_set_tecla_pulsada();
+
     zxvision_draw_window_contents(menu_filesel_overlay_window);
 }
 
@@ -5541,7 +5552,8 @@ int menu_filesel_if_save(char *titulo,char *filtros[],char *archivo,int si_save)
 
 
 	do {
-		menu_speech_tecla_pulsada=0;
+		menu_speech_reset_tecla_pulsada();
+        //printf("menu_speech_reset_tecla_pulsada filesel linea 5547\n");
 		menu_active_item_primera_vez=1;
 		filesel_linea_seleccionada=0;
 		filesel_archivo_seleccionado=0;
@@ -5708,7 +5720,8 @@ int menu_filesel_if_save(char *titulo,char *filtros[],char *archivo,int si_save)
 
 				zxvision_draw_window_contents(ventana);
                 		//para que haga lectura del edit box
-		                menu_speech_tecla_pulsada=0;
+		                menu_speech_reset_tecla_pulsada();
+                        //printf("menu_speech_reset_tecla_pulsada filesel linea 5716\n");
 
 				int ancho_mostrado=ventana->visible_width-6-2;
 				if (ancho_mostrado<2) {
@@ -5716,7 +5729,7 @@ int menu_filesel_if_save(char *titulo,char *filtros[],char *archivo,int si_save)
 					menu_reset_counters_tecla_repeticion();
 					filesel_zona_pantalla=1;
 					//no releer todos archivos
-					menu_speech_tecla_pulsada=1;
+					menu_speech_set_tecla_pulsada();
 
 				}
 
@@ -5731,7 +5744,7 @@ int menu_filesel_if_save(char *titulo,char *filtros[],char *archivo,int si_save)
 					menu_reset_counters_tecla_repeticion();
 					filesel_zona_pantalla=1;
 					//no releer todos archivos
-					menu_speech_tecla_pulsada=1;
+					menu_speech_set_tecla_pulsada();
 				}
 
 				//ESC
@@ -5851,7 +5864,7 @@ int menu_filesel_if_save(char *titulo,char *filtros[],char *archivo,int si_save)
 				zxvision_draw_window_contents(ventana);
 
 				//Para no releer todas las entradas
-				menu_speech_tecla_pulsada=1;
+				menu_speech_set_tecla_pulsada();
 
 
 				tecla=zxvision_common_getkey_refresh();
@@ -5920,7 +5933,7 @@ int menu_filesel_if_save(char *titulo,char *filtros[],char *archivo,int si_save)
 					case 10:
 						zxvision_menu_filesel_cursor_abajo(ventana);
 						//Para no releer todas las entradas
-						menu_speech_tecla_pulsada=1;
+						menu_speech_set_tecla_pulsada();
                         zxvision_sound_event_cursor_movement();
 					break;
 
@@ -5928,7 +5941,7 @@ int menu_filesel_if_save(char *titulo,char *filtros[],char *archivo,int si_save)
 					case 11:
 						zxvision_menu_filesel_cursor_arriba(ventana);
 						//Para no releer todas las entradas
-						menu_speech_tecla_pulsada=1;
+						menu_speech_set_tecla_pulsada();
                         zxvision_sound_event_cursor_movement();
 					break;
 
@@ -5951,7 +5964,8 @@ int menu_filesel_if_save(char *titulo,char *filtros[],char *archivo,int si_save)
 						for (aux_pgdnup=0;aux_pgdnup<zxvision_get_filesel_alto_dir(ventana);aux_pgdnup++)
 							zxvision_menu_filesel_cursor_abajo(ventana);
 						//releer todas entradas
-						menu_speech_tecla_pulsada=0;
+						menu_speech_reset_tecla_pulsada();
+                        //printf("menu_speech_reset_tecla_pulsada filesel linea 5959\n");
 						//y decir selected item
 						menu_active_item_primera_vez=1;
                         zxvision_sound_event_cursor_movement();
@@ -5962,7 +5976,8 @@ int menu_filesel_if_save(char *titulo,char *filtros[],char *archivo,int si_save)
 						for (aux_pgdnup=0;aux_pgdnup<zxvision_get_filesel_alto_dir(ventana);aux_pgdnup++)
 							zxvision_menu_filesel_cursor_arriba(ventana);
 						//releer todas entradas
-						menu_speech_tecla_pulsada=0;
+						menu_speech_reset_tecla_pulsada();
+                        //printf("menu_speech_reset_tecla_pulsada filesel linea 5971\n");
 						//y decir selected item
 						menu_active_item_primera_vez=1;
                         zxvision_sound_event_cursor_movement();
@@ -6199,7 +6214,8 @@ int menu_filesel_if_save(char *titulo,char *filtros[],char *archivo,int si_save)
 
 
 						    //releer con speech
-						    menu_speech_tecla_pulsada=0;
+						    menu_speech_reset_tecla_pulsada();
+                            //printf("menu_speech_reset_tecla_pulsada filesel linea 6209\n");
 
 							//Obtener nombre del archivo al que se apunta
 							char file_utils_file_selected[PATH_MAX]="";
@@ -6375,7 +6391,8 @@ int menu_filesel_if_save(char *titulo,char *filtros[],char *archivo,int si_save)
                                 zxvision_menu_print_dir(filesel_archivo_seleccionado,ventana);
 
                                 //para que haga lectura de los filtros
-                                menu_speech_tecla_pulsada=0;
+                                menu_speech_reset_tecla_pulsada();
+                                //printf("menu_speech_reset_tecla_pulsada filesel linea 6386\n");
 
 				zxvision_menu_filesel_print_filters(ventana,filesel_filtros);
 				zxvision_draw_window_contents(ventana);
@@ -6408,7 +6425,7 @@ int menu_filesel_if_save(char *titulo,char *filtros[],char *archivo,int si_save)
 					filesel_zona_pantalla=0;
 					zxvision_menu_filesel_print_filters(ventana,filesel_filtros);
 					//no releer todos archivos
-					menu_speech_tecla_pulsada=1;
+					menu_speech_set_tecla_pulsada();
 				}
 
 

@@ -30,7 +30,6 @@ extern z80_bit textspeech_filter_program_wait;
 
 extern void scrstdout_menu_print_speech(char *texto);
 
-
 //esto luego ira en speech
 //Linea actual en buffer
 #define MAX_BUFFER_SPEECH 1500

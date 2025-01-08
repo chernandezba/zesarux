@@ -122,6 +122,7 @@ Corregido error al grabar snapshots .ZSF de Z88 cuando el bloque de RAM o de tar
 Corregido mostrar texto en footer de F5/Button menu
 Corregido bug que se reabria el menu al executar comando run desde debug cpu y la opcion --allow-background-windows estaba desactivada
 Corregido recuperación de posición de ventana después de restore/desminimizar
+Corregido voces de accesibilidad en menu
 Corregido sonido de MSX de pulsación de teclas
 
 

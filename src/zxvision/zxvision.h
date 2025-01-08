@@ -1320,6 +1320,8 @@ extern int menu_contador_teclas_repeticion;
 extern int menu_segundo_contador_teclas_repeticion;
 
 extern int menu_speech_tecla_pulsada;
+extern void menu_speech_reset_tecla_pulsada(void);
+extern void menu_speech_set_tecla_pulsada(void);
 
 extern char binary_file_load[];
 extern char binary_file_save[];

@@ -1044,6 +1044,23 @@ void zxvision_empty_trash(void)
     }
 }
 
+void menu_speech_reset_tecla_pulsada(void)
+{
+    menu_speech_tecla_pulsada=0;
+    //printf("Reset tecla pulsada desde:\n");
+    //debug_exec_show_backtrace();
+}
+
+
+void menu_speech_set_tecla_pulsada(void)
+{
+
+    //printf("Set tecla pulsada desde:\n");
+    //debug_exec_show_backtrace();
+    menu_speech_tecla_pulsada=1;
+
+}
+
 //Si el abrir menu (tipica F5 o tecla joystick) esta limitado. De tal manera que para poderlo abrir habra que pulsar 3 veces seguidas en menos de 1 segundo
 z80_bit menu_limit_menu_open={0};
 
@@ -3518,7 +3535,7 @@ int menu_scanf(char *string,unsigned int max_length,int max_length_shown,int x,i
 				string[i]=0;
 
 				//Enviar a speech letra pulsada
-				menu_speech_tecla_pulsada=0;
+				menu_speech_reset_tecla_pulsada();
 			        sprintf (buf_speech,"%c",tecla);
         			menu_textspeech_send_text(buf_speech);
 
@@ -3536,7 +3553,7 @@ int menu_scanf(char *string,unsigned int max_length,int max_length_shown,int x,i
 
                                 //Enviar a speech letra borrada
 
-				menu_speech_tecla_pulsada=0;
+				menu_speech_reset_tecla_pulsada();
                                 sprintf (buf_speech,"%c",string[i]);
                                 menu_textspeech_send_text(buf_speech);
 
@@ -7647,6 +7664,10 @@ void normal_overlay_texto_menu_final(void)
 		//Conservar estado de tecla pulsada o no para el speech
 		int antes_menu_speech_tecla_pulsada=menu_speech_tecla_pulsada;
 		menu_draw_background_windows_overlay_after_normal();
+        //if (menu_speech_tecla_pulsada && !antes_menu_speech_tecla_pulsada) {
+        //    printf("Pasar de 1 a 0 desde \n");
+        //    debug_exec_show_backtrace();
+        //}
 		menu_speech_tecla_pulsada=antes_menu_speech_tecla_pulsada;
 	}
 
@@ -8436,7 +8457,13 @@ void menu_textspeech_send_text(char *texto_orig)
 {
 
 	if (!menu_if_speech_enabled() ) return;
+    //printf("menu_speech_tecla_pulsada en menu_textspeech_send_text: %d\n",menu_speech_tecla_pulsada);
 
+    //if (!menu_speech_tecla_pulsada) debug_exec_show_backtrace();
+
+    //printf ("Send text to speech: %s\n",texto_orig);
+    //printf ("Send text to speech from: \n");
+    //debug_exec_show_backtrace();
 
 	debug_printf (VERBOSE_DEBUG,"Send text to speech: %s",texto_orig);
 
@@ -8579,7 +8606,7 @@ void menu_textspeech_send_text(char *texto_orig)
 				//de momento cualquier tecla anula speech
 				textspeech_empty_speech_fifo();
 
-				menu_speech_tecla_pulsada=1;
+				menu_speech_set_tecla_pulsada();
 
                         }
 
@@ -9592,7 +9619,7 @@ void menu_dibuja_ventana(int x,int y,int ancho,int alto,char *titulo_original_ut
         menu_textspeech_send_text(buffer_titulo);
 
         //Forzar que siempre suene
-        //menu_speech_tecla_pulsada=0;
+        //menu_speech_reset_tecla_pulsada();
 
 
 
@@ -9797,7 +9824,7 @@ void zxvision_restore_one_window(char *ventana_a_restaurar)
 	zxvision_currently_restoring_windows_on_start=1;
 
 
-	menu_speech_tecla_pulsada=1; //Si no, envia continuamente los textos de las ventanas a speech
+	menu_speech_set_tecla_pulsada(); //Si no, envia continuamente los textos de las ventanas a speech
 
 
 	//Guardar valores funciones anteriores
@@ -9863,7 +9890,7 @@ void zxvision_restore_windows_on_startup(void)
 	//Iterar sobre todas
 	int i;
 
-	menu_speech_tecla_pulsada=1; //Si no, envia continuamente los textos de las ventanas a speech
+	menu_speech_set_tecla_pulsada(); //Si no, envia continuamente los textos de las ventanas a speech
 
 	//Si ha habido un error y mostramos al final
 	int error_restoring_window=0;
@@ -9912,6 +9939,9 @@ void zxvision_restore_windows_on_startup(void)
 		menu_overlay_activo=0;
 	}
 
+    //Lo siguiente ya se enviara a speech
+    menu_speech_reset_tecla_pulsada();
+
 }
 
 void zxvision_restart_all_background_windows(void)
@@ -9930,7 +9960,7 @@ void zxvision_restart_all_background_windows(void)
 
 
 
-	menu_speech_tecla_pulsada=1; //Si no, envia continuamente los textos de las ventanas a speech
+	menu_speech_set_tecla_pulsada(); //Si no, envia continuamente los textos de las ventanas a speech
 
 
 	//Guardar valores funciones anteriores
@@ -10143,9 +10173,14 @@ void zxvision_draw_below_windows_nospeech(zxvision_window *w)
 
 	int antes_menu_speech_tecla_pulsada=menu_speech_tecla_pulsada;
 	//No enviar a speech las ventanas por debajo
-	menu_speech_tecla_pulsada=1; //Si no, envia continuamente todo ese texto a speech
+	menu_speech_set_tecla_pulsada(); //Si no, envia continuamente todo ese texto a speech
 
 	zxvision_draw_below_windows(w);
+
+        /*if (menu_speech_tecla_pulsada && !antes_menu_speech_tecla_pulsada) {
+            printf("Pasar de 1 a 0 desde \n");
+            debug_exec_show_backtrace();
+        }*/
 
 	menu_speech_tecla_pulsada=antes_menu_speech_tecla_pulsada;
 	//printf ("despues draw below\n");
@@ -10351,13 +10386,13 @@ void zxvision_delete_window_if_exists(zxvision_window *ventana)
 
 		debug_printf (VERBOSE_DEBUG,"Window removed from background");
 
-		menu_speech_tecla_pulsada=1; //Para que no envie a speech la ventana que esta por debajo de la que borramos
+		menu_speech_set_tecla_pulsada(); //Para que no envie a speech la ventana que esta por debajo de la que borramos
 
 		//Al borrar la ventana se leeria la ventana que hay justo debajo
         zxvision_window_delete_this_window(ventana);
 
 		//Forzar a leer la siguiente ventana que se abra (o sea a la que conmutamos)
-		menu_speech_tecla_pulsada=0;
+		menu_speech_reset_tecla_pulsada();
 
     }
 }
@@ -10988,7 +11023,7 @@ void zxvision_destroy_window_if_redraw(zxvision_window *w,int redraw)
 
 	int antes_menu_speech_tecla_pulsada=menu_speech_tecla_pulsada;
 
-	menu_speech_tecla_pulsada=1; //Para no leer las ventanas de detrás al cerrar la actual
+	menu_speech_set_tecla_pulsada(); //Para no leer las ventanas de detrás al cerrar la actual
 
 	//Siguiente refresco de zxdesktop no hay framedrop, para forzar que se vea el cambio de cerrar ventana
 	no_next_frameskip_draw_zxdesktop_background.v=1;
@@ -11010,6 +11045,11 @@ void zxvision_destroy_window_if_redraw(zxvision_window *w,int redraw)
             //printf ("Dibujando ventana de debajo que ahora es de frente\n");
         }
 	}
+
+        /*if (menu_speech_tecla_pulsada && !antes_menu_speech_tecla_pulsada) {
+            printf("Pasar de 1 a 0 desde \n");
+            debug_exec_show_backtrace();
+        }*/
 
 	menu_speech_tecla_pulsada=antes_menu_speech_tecla_pulsada;
 
@@ -11051,7 +11091,7 @@ void zxvision_speech_read_current_window(void)
 	menu_espera_no_tecla();
 
 	//Decir que no hay tecla forzada, para releer el menu
-	menu_speech_tecla_pulsada=0;
+	menu_speech_reset_tecla_pulsada();
 	//Y simplemente dibujamos la ventana y su contenido, y eso hará releerla
 	menu_textspeech_send_text("Reading the window contents");
 
@@ -11067,10 +11107,10 @@ void zxvision_speech_read_current_window(void)
 	set_menu_overlay_function(normal_overlay_texto_menu);
 
 
-	menu_speech_tecla_pulsada=0;
+	menu_speech_reset_tecla_pulsada();
 	zxvision_draw_window(zxvision_current_window);
 
-	menu_speech_tecla_pulsada=0;
+	menu_speech_reset_tecla_pulsada();
 	zxvision_draw_window_contents(zxvision_current_window);
 
 
@@ -11361,7 +11401,7 @@ int zxvision_scanf(zxvision_window *ventana,char *string,unsigned int max_length
 
 
 				//Enviar a speech letra pulsada
-				menu_speech_tecla_pulsada=0;
+				menu_speech_reset_tecla_pulsada();
 			    sprintf (buf_speech,"%c",tecla);
         		menu_textspeech_send_text(buf_speech);
 
@@ -11377,7 +11417,7 @@ int zxvision_scanf(zxvision_window *ventana,char *string,unsigned int max_length
 			else {
 				//printf ("llegado al maximo\n");
 				//-que diga "too long" en speech cuando llega al maximo de longitud en scanf
-				menu_speech_tecla_pulsada=0;
+				menu_speech_reset_tecla_pulsada();
         		menu_textspeech_send_text("Too long");
 
 			}
@@ -11423,7 +11463,7 @@ int zxvision_scanf(zxvision_window *ventana,char *string,unsigned int max_length
 
                     //Enviar a speech letra borrada
 
-					menu_speech_tecla_pulsada=0;
+					menu_speech_reset_tecla_pulsada();
                     sprintf (buf_speech,"%c",string[pos_eliminar]);
                     menu_textspeech_send_text(buf_speech);
 
@@ -11478,7 +11518,7 @@ int zxvision_scanf(zxvision_window *ventana,char *string,unsigned int max_length
             else {
                 //borrar todo si es que no se sale con flecha abajo
                 //Enviar a speech decir borrar todo
-                menu_speech_tecla_pulsada=0;
+                menu_speech_reset_tecla_pulsada();
                 strcpy (buf_speech,"delete all");
                 menu_textspeech_send_text(buf_speech);
 
@@ -11893,7 +11933,7 @@ void zxvision_generic_message_crea_ventana(zxvision_window *ventana,int disable_
 
 
     //Decir que se ha pulsado tecla asi no se lee todo cuando el cursor esta visible
-    if (ventana->visible_cursor) menu_speech_tecla_pulsada=1;
+    if (ventana->visible_cursor) menu_speech_set_tecla_pulsada();
 
     int i;
 
@@ -12134,14 +12174,14 @@ void zxvision_generic_message_tooltip(char *titulo, int disable_special_chars, i
         //printf ("Line to speech: %s\n",buffer_lineas[linea_a_speech]);
 
         if (enviar_linea_a_speech) {
-            menu_speech_tecla_pulsada=0;
+            menu_speech_reset_tecla_pulsada();
             enviar_linea_a_speech=0;
             menu_textspeech_send_text(punteros_buffer_lineas[linea_a_speech]);
         }
 
 
 
-        menu_speech_tecla_pulsada=1;
+        menu_speech_set_tecla_pulsada();
         enviar_linea_a_speech=0;
 
 
@@ -12207,7 +12247,7 @@ void zxvision_generic_message_tooltip(char *titulo, int disable_special_chars, i
                 zxvision_sound_event_cursor_movement();
 
                 //Decir que se ha pulsado tecla para que no se relea
-                menu_speech_tecla_pulsada=1;
+                menu_speech_set_tecla_pulsada();
                 enviar_linea_a_speech=1;
             break;
 
@@ -12218,7 +12258,7 @@ void zxvision_generic_message_tooltip(char *titulo, int disable_special_chars, i
                 zxvision_sound_event_cursor_movement();
 
                 //Decir que se ha pulsado tecla para que no se relea
-                menu_speech_tecla_pulsada=1;
+                menu_speech_set_tecla_pulsada();
                 //primera_linea_a_speech=1;
                 enviar_linea_a_speech=1;
             break;
@@ -12251,7 +12291,7 @@ void zxvision_generic_message_tooltip(char *titulo, int disable_special_chars, i
                 zxvision_sound_event_cursor_movement();
 
                 //Decir que no se ha pulsado tecla para que se relea
-                menu_speech_tecla_pulsada=0;
+                menu_speech_reset_tecla_pulsada();
 
                 //Y recargar ventana para que la relea
                 zxvision_draw_window_contents(ventana);
@@ -12273,7 +12313,7 @@ void zxvision_generic_message_tooltip(char *titulo, int disable_special_chars, i
                 zxvision_sound_event_cursor_movement();
 
                 //Decir que no se ha pulsado tecla para que se relea
-                menu_speech_tecla_pulsada=0;
+                menu_speech_reset_tecla_pulsada();
 
                 //Y recargar ventana para que la relea
                 zxvision_draw_window_contents(ventana);
@@ -12345,7 +12385,7 @@ void zxvision_generic_message_tooltip(char *titulo, int disable_special_chars, i
                 }
 
                 else {
-                    menu_speech_tecla_pulsada=0; //para decir que siempre se escuchara el mensaje
+                    menu_speech_reset_tecla_pulsada(); //para decir que siempre se escuchara el mensaje
                     menu_warn_message("Text not found");
                 }
 
@@ -13127,7 +13167,10 @@ void zxvision_draw_below_windows(zxvision_window *w)
         debug_printf(VERBOSE_DEBUG,"Redrawing window %s",pointer_window->window_title);
 
 		zxvision_draw_window(pointer_window);
+        //printf("Decimos tecla pulsada\n");
+        //menu_speech_set_tecla_pulsada();
 	    zxvision_draw_window_contents(pointer_window);
+        //printf("Despues de tecla pulsada: menu_speech_tecla_pulsada: %d\n",menu_speech_tecla_pulsada);
 
         if (pointer_window->always_visible) always_visible_window=pointer_window;
 
@@ -13413,20 +13456,38 @@ void zxvision_reset_window_overlay(zxvision_window *ventana)
     ventana->overlay_function=NULL;
 }
 
-void zxvision_redraw_window_on_move(zxvision_window *w)
+void zxvision_redraw_window_on_move_if_disable_speech(zxvision_window *w,int disable_speech)
 {
 	cls_menu_overlay();
 	zxvision_draw_below_windows_nospeech(w);
 
     debug_printf(VERBOSE_DEBUG,"Redrawing window %s",w->window_title);
+
+    if (disable_speech) {
+        //no hacer speech tampoco de la ventana actual
+        menu_speech_set_tecla_pulsada();
+    }
+
 	zxvision_draw_window(w);
 	zxvision_draw_window_contents(w);
+}
+
+void zxvision_redraw_window_on_move(zxvision_window *w)
+{
+    zxvision_redraw_window_on_move_if_disable_speech(w,0);
 }
 
 void zxvision_redraw_all_windows(void)
 {
 	if (zxvision_current_window!=NULL) {
 		zxvision_redraw_window_on_move(zxvision_current_window);
+	}
+}
+
+void zxvision_redraw_all_windows_no_speech(void)
+{
+	if (zxvision_current_window!=NULL) {
+		zxvision_redraw_window_on_move_if_disable_speech(zxvision_current_window,1);
 	}
 }
 
@@ -13961,6 +14022,8 @@ void zxvision_draw_window_contents(zxvision_window *w)
 
     if (must_return) return;
 
+    //printf("menu_speech_tecla_pulsada en 1: %d\n",menu_speech_tecla_pulsada);
+
 
 	for (y=0;y<height;y++) {
 		int indice_speech=0;
@@ -14078,6 +14141,7 @@ void zxvision_draw_window_contents(zxvision_window *w)
 
 		}
 
+        //printf("menu_speech_tecla_pulsada en 2: %d\n",menu_speech_tecla_pulsada);
 		buffer_linea[indice_speech]=0;
 		menu_textspeech_send_text(buffer_linea);
 
@@ -14225,8 +14289,13 @@ void zxvision_draw_window_contents_no_speech(zxvision_window *ventana)
 {
                 //No queremos que el speech vuelva a leer la ventana, solo cargar ventana
 		int antes_menu_speech_tecla_pulsada=menu_speech_tecla_pulsada;
-                menu_speech_tecla_pulsada=1;
+                menu_speech_set_tecla_pulsada();
                 zxvision_draw_window_contents(ventana);
+
+        /*if (menu_speech_tecla_pulsada && !antes_menu_speech_tecla_pulsada) {
+            printf("Pasar de 1 a 0 desde \n");
+            debug_exec_show_backtrace();
+        }*/
 
 		menu_speech_tecla_pulsada=antes_menu_speech_tecla_pulsada;
 
@@ -17694,7 +17763,7 @@ void zxvision_handle_cursors_pgupdn(zxvision_window *ventana,z80_byte tecla)
 						zxvision_send_scroll_down(ventana);
 
 						//Decir que se ha pulsado tecla para que no se relea
-						menu_speech_tecla_pulsada=1;
+						menu_speech_set_tecla_pulsada();
                         break;
 
                         //arriba
@@ -17702,7 +17771,7 @@ void zxvision_handle_cursors_pgupdn(zxvision_window *ventana,z80_byte tecla)
 						zxvision_send_scroll_up(ventana);
 
 						//Decir que se ha pulsado tecla para que no se relea
-						menu_speech_tecla_pulsada=1;
+						menu_speech_set_tecla_pulsada();
                         break;
 
                         //izquierda
@@ -17710,7 +17779,7 @@ void zxvision_handle_cursors_pgupdn(zxvision_window *ventana,z80_byte tecla)
 						zxvision_send_scroll_left(ventana);
 
 						//Decir que se ha pulsado tecla para que no se relea
-						menu_speech_tecla_pulsada=1;
+						menu_speech_set_tecla_pulsada();
                         break;
 
                         //derecha
@@ -17718,7 +17787,7 @@ void zxvision_handle_cursors_pgupdn(zxvision_window *ventana,z80_byte tecla)
 						zxvision_send_scroll_right(ventana);
 
 						//Decir que se ha pulsado tecla para que no se relea
-						menu_speech_tecla_pulsada=1;
+						menu_speech_set_tecla_pulsada();
                         break;
 
 						//PgUp
@@ -17727,7 +17796,7 @@ void zxvision_handle_cursors_pgupdn(zxvision_window *ventana,z80_byte tecla)
 								zxvision_send_scroll_up(ventana);
 							}
 							//Decir que no se ha pulsado tecla para que se relea
-							menu_speech_tecla_pulsada=0;
+							menu_speech_reset_tecla_pulsada();
 						break;
 
                     	//PgDn
@@ -17737,7 +17806,7 @@ void zxvision_handle_cursors_pgupdn(zxvision_window *ventana,z80_byte tecla)
                         	}
 
 							//Decir que no se ha pulsado tecla para que se relea
-							menu_speech_tecla_pulsada=0;
+							menu_speech_reset_tecla_pulsada();
                     	break;
 
 						//Mover ventana
@@ -19404,7 +19473,7 @@ int menu_dibuja_menu_stdout(int *opcion_inicial,menu_item *item_seleccionado,men
 	int tecla=13;
 
 	//para speech stdout. asumir no tecla pulsada. si se pulsa tecla, para leer menu
-	menu_speech_tecla_pulsada=0;
+	menu_speech_reset_tecla_pulsada();
 
     do {
         if (menu_item_retornar_avanzados(aux)) {
@@ -19722,7 +19791,7 @@ void menu_escribe_opciones_zxvision(zxvision_window *ventana,menu_item *aux,int 
 
 			//Guardamos estado actual
 			int antes_menu_speech_tecla_pulsada=menu_speech_tecla_pulsada;
-			menu_speech_tecla_pulsada=0;
+			menu_speech_reset_tecla_pulsada();
 
 
 			//Al decir la linea seleccionada de menu, decir si la opcion está desabilitada
@@ -19730,12 +19799,15 @@ void menu_escribe_opciones_zxvision(zxvision_window *ventana,menu_item *aux,int 
 
 			menu_textspeech_send_text(texto_opcion_seleccionada);
 
-
+        /*if (menu_speech_tecla_pulsada && !antes_menu_speech_tecla_pulsada) {
+            printf("Pasar de 1 a 0 desde \n");
+            debug_exec_show_backtrace();
+        }*/
 
 			//Restauro estado
 			//Pero si se ha pulsado tecla, no restaurar estado
 			//Esto sino provocaria que , por ejemplo, en la ventana de confirmar yes/no,
-			//se entra con menu_speech_tecla_pulsada=0, se pulsa tecla mientras se esta leyendo el item activo,
+			//se entra con menu_speech_reset_tecla_pulsada(), se pulsa tecla mientras se esta leyendo el item activo,
 			//y luego al salir de aqui, se pierde el valor que se habia metido (1) y se vuelve a poner el 0 del principio
 			//provocando que cada vez que se mueve el cursor, se relea la ventana entera
 			if (menu_speech_tecla_pulsada==0) menu_speech_tecla_pulsada=antes_menu_speech_tecla_pulsada;
@@ -19764,7 +19836,7 @@ int menu_dibuja_menu_cursor_arriba(int linea_seleccionada,int max_opciones,menu_
 	while (menu_retorna_item(m,linea_seleccionada)->tipo_opcion==MENU_OPCION_SEPARADOR) linea_seleccionada--;
 
 	//Decir que se ha pulsado tecla
-	menu_speech_tecla_pulsada=1;
+	menu_speech_set_tecla_pulsada();
 
 	return linea_seleccionada;
 }
@@ -19789,7 +19861,7 @@ int menu_dibuja_menu_cursor_abajo(int linea_seleccionada,int max_opciones,menu_i
 	while (menu_retorna_item(m,linea_seleccionada)->tipo_opcion==MENU_OPCION_SEPARADOR) linea_seleccionada++;
 
 	//Decir que se ha pulsado tecla
-	menu_speech_tecla_pulsada=1;
+	menu_speech_set_tecla_pulsada();
 
 	return linea_seleccionada;
 }
@@ -19841,7 +19913,7 @@ int menu_dibuja_menu_cursor_abajo_tabulado(int linea_seleccionada,int max_opcion
 	}
 
 	//Decir que se ha pulsado tecla
-	menu_speech_tecla_pulsada=1;
+	menu_speech_set_tecla_pulsada();
 
 	return linea_seleccionada;
 }
@@ -19892,7 +19964,7 @@ int menu_dibuja_menu_cursor_arriba_tabulado(int linea_seleccionada,int max_opcio
 	}
 
 	//Decir que se ha pulsado tecla
-	menu_speech_tecla_pulsada=1;
+	menu_speech_set_tecla_pulsada();
 
 	return linea_seleccionada;
 }
@@ -20130,6 +20202,11 @@ void menu_dibuja_submenu_add_submenu(zxvision_window *w)
 void menu_dibuja_submenu_cierra_n_submenus(int veces)
 {
 
+    /*if (zxvision_current_window!=NULL) {
+        printf("Current window before on menu_dibuja_submenu_cierra_n_submenus: %s\n",zxvision_current_window->window_title);
+        //sleep(10);
+    }*/
+
     if (menu_show_submenus_tree.v==0) return;
 
     //printf("--Inicio menu_dibuja_submenu_cierra_n_submenus (%d)\n",veces);
@@ -20160,7 +20237,17 @@ void menu_dibuja_submenu_cierra_n_submenus(int veces)
 
     cls_menu_overlay();
 
-    zxvision_redraw_all_windows();
+    //Problema: aqui el current window es el primer menu del todo y cuando hace el redraw, lo envia a speech ese menu principal
+
+    zxvision_redraw_all_windows_no_speech();
+
+    /*if (zxvision_current_window!=NULL) {
+        printf("Current window on menu_dibuja_submenu_cierra_n_submenus: %s\n",zxvision_current_window->window_title);
+        //sleep(10);
+    }*/
+
+    //Lo siguiente ya lo enviara a speech
+    menu_speech_reset_tecla_pulsada();
 
     //printf("--Fin menu_dibuja_submenu_cierra_submenu_dos_ultimos\n");
 }
@@ -20404,7 +20491,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 */
 
 
-	//esto lo haremos ligeramente despues menu_speech_tecla_pulsada=0;
+	//esto lo haremos ligeramente despues menu_speech_reset_tecla_pulsada();
 
 	if (!menu_dibuja_menu_permite_repeticiones_hotk) {
 		//printf ("llamar a menu_reset_counters_tecla_repeticion desde menu_dibuja_menu al inicio\n");
@@ -20686,7 +20773,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 
 		//printf ("Linea seleccionada: %d\n",(*opcion_inicial));
 		//No queremos que el speech vuelva a leer la ventana
-		//menu_speech_tecla_pulsada=1;
+		//menu_speech_set_tecla_pulsada();
 		zxvision_draw_window_contents_no_speech(ventana);
 
 		//printf ("despues de zxvision_draw_window_contents_no_speech\n");
@@ -20796,7 +20883,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 			//menu_espera_no_tecla();
 			menu_dibuja_menu_espera_no_tecla();
 		}
-		menu_speech_tecla_pulsada=0;
+		menu_speech_reset_tecla_pulsada();
 
 		while (tecla==0 && redibuja_ventana==0 && menu_tooltip_counter<TOOLTIP_SECONDS) {
 
@@ -21000,7 +21087,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 					//Forzar que siempre suene
 					//Esperamos antes a liberar tecla, sino lo que hara sera que esa misma tecla F1 cancelara el speech texto de ayuda
 					menu_espera_no_tecla();
-					menu_speech_tecla_pulsada=0;
+					menu_speech_reset_tecla_pulsada();
 
 
 					menu_dibuja_menu_help_tooltip(texto_ayuda,0);
@@ -21348,7 +21435,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 		//Entonces tal y como esta ahora:
 		//Si la opcion seleccionada tiene tooltip, salta el tooltip
 		//Si no tiene tooltip, no salta tooltip, pero vuelve a decir "Selected item: ..."
-		menu_speech_tecla_pulsada=1;
+		menu_speech_set_tecla_pulsada();
 
 		//Si ventana no esta activa, no mostrar tooltips,
 		//porque esto hace que, por ejemplo, si el foco está en la máquina emulada, al saltar el tooltip, cambiaria el foco a la ventana de menu
@@ -21358,7 +21445,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 			if (texto_tooltip!=NULL) {
 				//printf ("mostramos tooltip\n");
 				//Forzar que siempre suene
-				menu_speech_tecla_pulsada=0;
+				menu_speech_reset_tecla_pulsada();
 
 
 				menu_dibuja_menu_help_tooltip(texto_tooltip,1);
@@ -21384,7 +21471,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 
 				//No queremos que se vuelva a leer cuando tooltip es inexistente. si no, estaria todo el rato releyendo la linea
 				//TODO: esto no tiene efecto, sigue releyendo cuando estas sobre item que no tiene tooltip
-				//menu_speech_tecla_pulsada=1;
+				//menu_speech_set_tecla_pulsada();
 
 			}
 
@@ -21455,7 +21542,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 
 
 	//Salir del menu diciendo que no se ha pulsado tecla
-	menu_speech_tecla_pulsada=0;
+	menu_speech_reset_tecla_pulsada();
 
     ventana->submenu_linea_seleccionada=*opcion_inicial;
 
@@ -23204,7 +23291,7 @@ void screen_print_splash_text_by_window(int lineas)
     int alto_antes_minimize=alto_ventana;
 
 
-    menu_speech_tecla_pulsada=1; //no anunciar por speech la creacion de esta ventana
+    menu_speech_set_tecla_pulsada(); //no anunciar por speech la creacion de esta ventana
 
     zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"Splash",
         "splashwindow",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
@@ -23322,7 +23409,7 @@ void screen_print_splash_text(int y,int tinta,int papel,char *texto)
         }
 
         if (mostrar_splash_con_ventana) {
-            menu_speech_tecla_pulsada=1; //Si no, envia continuamente todo ese texto a speech
+            menu_speech_set_tecla_pulsada(); //Si no, envia continuamente todo ese texto a speech
 
             zxvision_draw_window_contents(&zxvision_window_splash_text);
         }
@@ -25880,7 +25967,11 @@ menu_init_footer hace falta pues el layer de menu se borra y se queda negro en l
         //este footer me parece ya molesto.
 		//generic_footertext_print_operating("BKWIND");
 
-		zxvision_redraw_all_windows();
+        //No queremos que al redibujar todas las ventanas se relean en speech, dado que estan en background
+		zxvision_redraw_all_windows_no_speech();
+
+        //Y luego dejar que se lea speech normalmente
+        menu_speech_reset_tecla_pulsada();
 	}
 
     //if (snapshot_in_ram_pending_message_footer) {

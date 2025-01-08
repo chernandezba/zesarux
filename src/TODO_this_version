@@ -1,18 +1,20 @@
 
 
--con speech en menu habilitado
+ok-con speech en menu habilitado
 *teniendo varias ventanas abiertas
 *pulsar F5 para abrir menu principal
 *pulsar ESC
 *se cierra menu, se va el foco a la ventana de mas arriba, y se lee el contenido a speech. ERROR!
 *luego se quita el foco de esa ventana y todo prosigue normalmente
 
--revisar accesibilidad y submenus... a veces se lee submenu. ejemplo text to speech pulsar alguna opcion que conmuta en ese menu
+ok-revisar accesibilidad y submenus... a veces se lee submenu. ejemplo text to speech pulsar alguna opcion que conmuta en ese menu
 
 
--Accesibilidad: no debería leer símbolo ">" de los indicadores de submenús
+ok-Accesibilidad: no debería leer símbolo ">" de los indicadores de submenús
 
+ok-al ir a menu anterior tiene que releer entero. pasa por ejemplo desde main menu-settings-accesibility settings-print char traps
 
+-speech: caracteres con acentos, eñes etc no se leen bien
 
 -redocumentar efecto de brillo de color del Inves según ultima info con Pedro
 
@@ -27,5 +29,4 @@
 
 
 --restore-all-known-windows no parece abrir bien las ventanas. pasa con segun que ventanas ya puestas para restore en el zesaruxrc
-
 
