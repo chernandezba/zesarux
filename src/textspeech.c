@@ -718,10 +718,32 @@ void textspeech_add_speech_fifo_filter_unknown(void)
 	int i;
 	unsigned char c;
 
+
+    //printf("buffer_speech antes de filtros: [%s]\n",buffer_speech);
+
+    int leido_utf8=0;
+
 	for (i=0;buffer_speech[i];i++) {
+        //printf("i: %d leido_utf8: %d\n",i,leido_utf8);
 		c=buffer_speech[i];
-		if (c<32 || c>126 || c=='^' || c=='~') buffer_speech[i]=' ';
+        if (!leido_utf8) {
+            if (menu_es_prefijo_utf(c)) {
+                //Estos dos bytes siguientes no los validamos para speech, pues son caracteres utf8
+                //TODO: actualmente solo considero caracteres utf8 de 2 bytes. Hay de mas longitud?
+                leido_utf8=2;
+            }
+        }
+
+        if (!leido_utf8) {
+		    if (c<32 || c>126 || c=='^' || c=='~') buffer_speech[i]=' ';
+        }
+
+        else {
+            leido_utf8--;
+        }
 	}
+
+    //printf("buffer_speech despues de filtros: [%s]\n",buffer_speech);
 }
 
 void textspeech_add_speech_fifo(void)
