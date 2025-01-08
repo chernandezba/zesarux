@@ -8179,13 +8179,14 @@ void menu_textspeech(MENU_ITEM_PARAMETERS)
 #endif
 
 
-
-            if (chardetect_printchar_enabled.v) {
+            //Estas opciones visibles aunque no este trap print activado
+            //Porque por ejemplo textspeech_get_stdout puede alterar el funcionamiento del speech en menu
+            //if (chardetect_printchar_enabled.v) {
                 menu_add_item_menu(array_menu_textspeech,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
                 menu_add_item_menu_format(array_menu_textspeech,MENU_OPCION_NORMAL,NULL,NULL,"--Trap print to speech--");
-                menu_add_item_menu_tooltip(array_menu_textspeech,"Settings for texto coming from trap print and sent to speech");
-                menu_add_item_menu_ayuda(array_menu_textspeech,"Settings for texto coming from trap print and sent to speech");
+                menu_add_item_menu_tooltip(array_menu_textspeech,"Settings for text coming from trap print and sent to speech");
+                menu_add_item_menu_ayuda(array_menu_textspeech,"Settings for text coming from trap print and sent to speech");
 
                     menu_add_item_menu_format(array_menu_textspeech,MENU_OPCION_NORMAL,menu_chardetection_settings_stdout_line_width,NULL,"Line w~~idth [%d]",chardetect_line_width);
                     menu_add_item_menu_prefijo(array_menu_textspeech,"    ");
@@ -8224,7 +8225,7 @@ void menu_textspeech(MENU_ITEM_PARAMETERS)
                 menu_add_item_menu_tooltip(array_menu_textspeech,"Send stdout from script to debug console window");
                 menu_add_item_menu_ayuda(array_menu_textspeech,"Send stdout from script to debug console window");
 
-            }
+            //}
 
         }
 

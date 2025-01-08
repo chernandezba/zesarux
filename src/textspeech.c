@@ -540,16 +540,19 @@ void scrtextspeech_filter_run_pending(void)
         break;
 
         case 0:
+            //printf("Running %s\n",textspeech_filter_program);
             close (0);
             dup (fds[0]);
             close(fds[1]);
 
             //para capturar el stdout
             if (textspeech_get_stdout.v) {
+                //printf("Capture stdout\n");
                 dup2(textspeech_fds_output[1], STDOUT_FILENO);
                 close(textspeech_fds_output[1]);
             }
 
+            //printf("Antes exec\n");
             execlp(textspeech_filter_program,textspeech_filter_program,NULL);
 
             //Si se llega aqui es que ha habido un error al executar programa filtro
