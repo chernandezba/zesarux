@@ -4374,7 +4374,9 @@ int util_write_configfile(void)
 
   if (menu_show_advanced_items.v)               ADD_STRING_CONFIG,"--advancedmenus");
 
-  if (menu_show_simple_items.v)       ADD_STRING_CONFIG,"--simplemenus");
+  //Se guardara la opcion siempre que le haya entrado por config, sin tener en cuenta que el usuario
+  //haya conmutado a menu completo
+  if (menu_show_simple_items_by_config.v)       ADD_STRING_CONFIG,"--simplemenus");
 
   if (setting_machine_selection_by_name.v)    ADD_STRING_CONFIG,"--setmachinebyname");
 

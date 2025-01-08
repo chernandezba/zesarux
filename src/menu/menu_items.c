@@ -42376,6 +42376,8 @@ int force_menu_dibuja_menu_recorrer_menus=0;
 
 void menu_switch_simple_menus(MENU_ITEM_PARAMETERS)
 {
+    //La vista cambia pero el setting menu_show_simple_items_by_config.v se mantiene, por tanto
+    //si se ha entrado con vista simple, aunque el usuario conmute a vista completa, se guardara la configuración al salir como vista simple
     menu_show_simple_items.v ^=1;
 }
 
