@@ -21426,13 +21426,13 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
     int menu_se_cerrara=menu_sel->menu_se_cerrara;
     int tiene_submenu=menu_sel->tiene_submenu;
     int genera_ventana=menu_sel->genera_ventana;
-    int no_es_realmente_un_menu=m->no_es_realmente_un_menu;
 
 	//printf ("misc selected: %s %s\n",item_seleccionado->texto_misc,menu_sel->texto_misc);
 
-	//guardamos antes si el tipo es tabulado antes de
-	//liberar el item de menu
+	//guardamos antes si el tipo es tabulado y otros parámetros antes de
+	//liberar el item de menu, pues quedará inaccesible después de liberar
 	int es_tabulado=m->es_menu_tabulado;
+    int no_es_realmente_un_menu=m->no_es_realmente_un_menu;
 
 
 	//Liberar memoria del menu
@@ -21450,7 +21450,8 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
     // CUIDADO!!!!!!
     //
     // A partir de aqui no se pueden usar items de menu (lista m)
-    // Cualquier referencia se tiene que haber hecho antes de liberar sobre otra variable, normalmente item_seleccionado
+    // Cualquier referencia se tiene que haber hecho antes de liberar sobre otra variable, como por ejemplo
+    // no_es_realmente_un_menu, que guardan el estado del primer item
 
 
 	//Salir del menu diciendo que no se ha pulsado tecla
