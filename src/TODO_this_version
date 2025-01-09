@@ -1,6 +1,3 @@
-
-
-
 -redocumentar efecto de brillo de color del Inves según ultima info con Pedro
 
 
@@ -15,6 +12,8 @@
 
 
 -zxvision_if_window_already_exists usa estructuras sin inicializar. normal???
+->si, esta ok, porque comprueba que el puntero de la estructura esté en la lista de ventanas y no mira nada del contenido
+de la estructura (que está sin inicializar)
 
 
 -Llamadas a menu_warn_message y similares, al iniciar ZEsarUX, cuando esta restaurando ventanas, como la de menu_microdrive_raw_map (comentada al principio: menu_warn_message("Visual Memory window is opened),
