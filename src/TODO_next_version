@@ -21,7 +21,6 @@ Para versión siguiente:
 
 -archivos de cintas que no se cierran en windows al expulsarlas
 
--speech con caracteres con acentos no los envia, los filtra. acentos de menu? quiza habria que pasar primero otro filtro para solo acentos, convertirlos a sin acentos o caracteres con acentos utf
 
 -quiza en threads que no se cancelan en windows (zeng?) agregar llamada a pthread_testcancel();
 
@@ -295,9 +294,7 @@ el resto puede salir fuera -> comprobar al hacer print y putpixel que no sale fu
 
 -buscador opciones menu: creo que lo mejor es que cada menu indique, al crearse, la ruta donde se ubican
 Por ejemplo "Betadisk" está en Main Menu->Storage->Betadisk
-ok. agregar nombre de indice en todos los menus
 
-ok era un bug de ellos-head over heels next: personaje heels siempre se ve por detrás
 
 
 -menu display. teclado en pantalla. quiza poner aqui el nuevo de help keyboard. dejar ese viejo solo para drivers de video de tipo texto, cacalib, etc. considerar ademas que ese antiguo solo sale para spectrum y zx80/81. Ojo que el teclado en pantalla de texto debería también salir al pulsar tecla de OSD teclado, pero solo cuando es driver texto
