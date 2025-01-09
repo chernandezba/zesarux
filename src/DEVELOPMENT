@@ -147,11 +147,6 @@ menu_generic_message_splash("Reload MMC","OK. MMC file reloaded");
 menu_generic_message("Change DIVMMC ROM","OK. Remember to enable DIVMMC paging to load the firmware");
 menu_generic_message("Rename file","OK. File renamed");
 
------------------------------------------
-
-Si se utiliza funcion de crear menu pero no es un menu estrictamente, llamar a:
-
-menu_dibuja_menu_dialogo_no_title_lang
 
 -----------------------------------------
 
@@ -162,6 +157,18 @@ Items de menú:
 tiene este parametro. Por lo general, lo que son acciones (sin ventanas de confirmación) o submenus, no generan ventana y por tanto no tienen este parametro. Esto mostrará puntos suspensivos (...) a la derecha del item de menu. Independiente de si esa ventana permite background o no (por ejemplo osd aventure keyboard no permite background)
 * si disparar la accion, se cerraran todos los menus, agregarle menu_add_item_menu_se_cerrara
 * si solo visible con items avanzados, agregarle menu_add_item_menu_es_avanzado
+
+-----------------------------------------
+Sobre indexado de menus
+
+
+Si se utiliza funcion de crear menu pero no es un menu estrictamente, llamar a:
+
+menu_dibuja_menu_dialogo_no_title_lang
+
+Esto evita que se indexe dicho menu
+
+El indexado se hace para menus normales, que no sean tabulados
 
 
 -----------------------------------------

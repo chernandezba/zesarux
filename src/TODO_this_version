@@ -1,8 +1,0 @@
-
--Documentar en development como va el indexado
-*para menus normales
-*no para items tabulados
-*no para menus declarados como dialogos (menu_dibuja_menu_dialogo_no_title_lang)
-*algo mas?
-
--con ddh insertado, si escojo otro ddh pero pulso ESC, se queda hilow habilitado pero apuntando a ningun archivo
