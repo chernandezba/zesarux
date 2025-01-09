@@ -395,7 +395,9 @@ La particularidad es que ese archivo tiene bloques a final de microdrive y al pr
 -en FAQ formatos MDR/RMD, DDH/RAW
 
 
+-Soportar extensiones .sd y .sdhc? Las últimas deberían activar parámetro de direccionamiento sdhc
 
+-Sonido de lectura y escritura de floppy +3, según codificación. Manchester? Mfm?
 
 
 -ppi chip 8255 el mismo en cpc y msx...
