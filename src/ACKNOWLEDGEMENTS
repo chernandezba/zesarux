@@ -9,7 +9,7 @@ I want to thank the help and the collaboration of the following people (date sor
 -Samir Ribic, for helping me with the uploading of ZXSpectr, and for all the information included in his Warajevo emulator.
 -Martijn van der Heide, for uploading ZXSpectr on http://worldofspectrum.org/
 -Phillip Kendall, for telling me a bug with the BIT instruction on ZXSpectr. I also use some code from his Fuse emulator (opcode timings & disassemble function)
--Pedro Gimeno, for the timings of some opcodes, contended memory information, and bug on the Jupiter Ace memory map
+-Pedro Gimeno, for the timings of some opcodes, contended memory information, many info of Jupiter Ace, and lots of tests on Inves Spectrum+
 -Rodolfo Edison Guerra, for including ZXSpectr in his SpecBase, for all the information about TK90X and TK95 and lots more!
 -Paul Farrow, for the information and games for the ZX80 and ZX81 and Spectra Video modes. See http://www.fruitcake.plus.com/
 -Martin Korth, for the information about video signals on the ZX80 & ZX81. See http://nocash.emubase.de/zxdocs.htm

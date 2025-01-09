@@ -7472,9 +7472,16 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
 				if (MACHINE_IS_INVES) {
 					menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_inves_ula_bright_error,NULL,"[%c] Inves bright error",(inves_ula_bright_error.v ? 'X' : ' '));
 					menu_add_item_menu_tooltip(array_menu_settings_display,"Emulate Inves oddity when black colour and change from bright 0 to bright 1");
-					menu_add_item_menu_ayuda(array_menu_settings_display,"Emulate Inves oddity when black colour and change from bright 0 to bright 1. Seems it only happens with RF or RGB connection");
+					menu_add_item_menu_ayuda(array_menu_settings_display,"Emulate Inves oddity when black colour and change from bright 0 to bright 1. "
+                        "That generates a vertical line with 'bright black' colour. It's seems to happen because the 'bright' signal is always "
+                        "generated on bright attributes, but when a black colour is read, the bright signal has already been fired and it has to be disabled, "
+                        "this is why you can see only a small vertical line on bright black and not the entire 8x8 attribute; in fact, the vertical line "
+                        "seems to be smaller than one pixel width, but ZEsarUX is emulating a one pixel width."
+                        "\n"
+                        "Apart from black colour, seems Inves generate other glitches with different colours and bright attributes but the behaviour "
+                        "is not well know, we might need a perfect TV signal to see it"
+                    );
                     menu_add_item_menu_es_avanzado(array_menu_settings_display);
-
 				}
 
 			}

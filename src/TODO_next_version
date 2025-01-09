@@ -448,3 +448,7 @@ se le envian los caracrteres desde zxvision_draw_window_contents
 5) Cuando se crea un breakpoint desde linea de comandos se puede poner opcionalmente un passcount, si no se pone es 0. Al crearse, el contador interno es 0.
 6) Cuando se crea un breakpoint de cualquier otra manera (toggle, run to, los de DAAD/PAW, etc.) no pregunta, pass_count= 0.
 Yo creo que con eso vale, y la verdad, no se me ocurre en qué esceneario necesitaría una opción para resetear contadores.
+
+-Llamadas a menu_warn_message y similares, al iniciar ZEsarUX, cuando esta restaurando ventanas, como la de menu_microdrive_raw_map (comentada al principio: menu_warn_message("Visual Memory window is opened),
+deja la ventana de ZEsarUX en un estado inconsistente
+Quiza se deberia controlar que las llamadas a *message no hagan nada si no esta acabado de iniciar aun
