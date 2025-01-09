@@ -1893,6 +1893,8 @@ void menu_storage_hilow_file(MENU_ITEM_PARAMETERS)
     }
     //Sale con ESC
     else {
+        if (hilow_enabled.v) hilow_disable();
+
         //Quitar nombre
         hilow_file_name[0]=0;
     }

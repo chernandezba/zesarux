@@ -6,21 +6,3 @@
 *algo mas?
 
 -con ddh insertado, si escojo otro ddh pero pulso ESC, se queda hilow habilitado pero apuntando a ningun archivo
-
--super trux genera segfault al insertar tzx
-0   zesarux                             0x0000000107e196fe debug_exec_show_backtrace + 94
-1   zesarux                             0x0000000107e19b32 cpu_panic + 34
-2   zesarux                             0x0000000107da4c10 segfault_signal_handler + 32
-3   libsystem_platform.dylib            0x00007fff680b25fd _sigtramp + 29
-4   ???                                 0x0000700002594460 0x0 + 123145341715552
-5   libsystem_c.dylib                   0x00007fff67f4b891 __vfprintf + 5379
-6   libsystem_c.dylib                   0x00007fff67f71ad3 __v2printf + 475
-7   libsystem_c.dylib                   0x00007fff67f57ee7 _vsnprintf + 417
-8   libsystem_c.dylib                   0x00007fff67f57f90 vsnprintf + 68
-9   libsystem_c.dylib                   0x00007fff67f8672b __sprintf_chk + 142
-10  zesarux                             0x0000000107e3d188 spec_debug_cabecera + 744
-11  zesarux                             0x0000000107e3b5d6 main_spec_rwaatap + 1126
-12  zesarux                             0x0000000107fa6de7 util_realtape_browser + 663
-13  zesarux                             0x0000000107e3742c realtape_insert_detect_blocks_thread_function + 76
-14  libsystem_pthread.dylib             0x00007fff680be109 _pthread_start + 148
-15  libsystem_pthread.dylib             0x00007fff680b9b8b thread_start + 15
