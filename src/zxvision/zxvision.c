@@ -25386,7 +25386,7 @@ void menu_inicio_handle_configurable_icon_presses(void)
         //Acciones secundarias
         int pulsado_boton=menu_pressed_zxdesktop_configurable_icon_which;
 
-        debug_printf(VERBOSE_DEBUG,"Handling right button press on a configurable icon (%d)",pulsado_boton);
+        DBG_PRINT_ZXVISION_EVENTS VERBOSE_DEBUG,"ZXVISION_EVENTS: Handling right button press on a configurable icon (%d)",pulsado_boton);
 
         menu_zxdesktop_set_configurable_icons_modify(pulsado_boton);
 

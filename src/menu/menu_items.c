@@ -42630,9 +42630,13 @@ void menu_inicio_bucle_main(void)
             || menu_pressed_zxdesktop_configurable_icon_which>=0 || menu_pressed_zxdesktop_right_button_background>=0
             || pulsado_alguna_ventana_con_menu_cerrado) {
 
-            DBG_PRINT_ZXVISION_EVENTS VERBOSE_DEBUG,"ZXVISION_EVENTS: menu_inicio_bucle_main. Condition true: menu_pressed_zxdesktop_button_which %d menu_pressed_zxdesktop_lower_icon_which %d menu_pressed_zxdesktop_lower_icon_which_right_button %d pulsado_alguna_ventana_con_menu_cerrado %d",
+            DBG_PRINT_ZXVISION_EVENTS VERBOSE_DEBUG,"ZXVISION_EVENTS: menu_inicio_bucle_main. Condition true: "
+                "menu_pressed_zxdesktop_button_which %d menu_pressed_zxdesktop_lower_icon_which %d "
+                "menu_pressed_zxdesktop_lower_icon_which_right_button %d menu_pressed_zxdesktop_configurable_icon_right_button %d "
+                "pulsado_alguna_ventana_con_menu_cerrado %d",
                 menu_pressed_zxdesktop_button_which,menu_pressed_zxdesktop_lower_icon_which,
-                menu_pressed_zxdesktop_lower_icon_which_right_button,pulsado_alguna_ventana_con_menu_cerrado);
+                menu_pressed_zxdesktop_lower_icon_which_right_button,menu_pressed_zxdesktop_configurable_icon_right_button,
+                pulsado_alguna_ventana_con_menu_cerrado);
 
 			cls_menu_overlay();
 		//Si se habia pulsado boton de zx desktop y boton no es el 0
@@ -42653,10 +42657,12 @@ void menu_inicio_bucle_main(void)
 			}
 
             else if (menu_pressed_zxdesktop_configurable_icon_which>=0) {
+                DBG_PRINT_ZXVISION_EVENTS VERBOSE_INFO,"ZXVISION_EVENTS: menu_inicio_bucle_main. Handle desktop icons presses");
                 menu_inicio_handle_configurable_icon_presses();
             }
 
             else if (menu_pressed_zxdesktop_right_button_background>=0) {
+                DBG_PRINT_ZXVISION_EVENTS VERBOSE_INFO,"ZXVISION_EVENTS: menu_inicio_bucle_main. Handle right button background");
                 menu_inicio_handle_right_button_background();
             }
 			//printf ("despues menu_inicio_handle_button_presses\n");

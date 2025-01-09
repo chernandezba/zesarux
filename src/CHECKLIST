@@ -74,7 +74,12 @@ Drivers video:
 
 
 -iniciar con ./zesarux --noconfigfile
-habilitar zxdesktop, mover iconos, pulsar iconos
+habilitar zxdesktop
+hacer las acciones de mover iconos, pulsar iconos (botón izquierdo y derecho), pulsar botones superiores (menus) y superiores (dispositivos) con boton izquierdo y derecho de raton, en las siguientes situaciones:
+1. sin ninguna ventana y con menu cerrado
+2. sin ninguna ventana y con menu abierto
+3. con alguna ventana abierta y con menu cerrado
+4. con alguna ventana abierta y con menu abierto
 
 -iniciar sin archivo de configuracion (borrarlo temporalmente) y ver como se va comportando - first aid, abrir zx desktop, etc
 
