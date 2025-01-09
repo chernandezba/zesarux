@@ -7194,9 +7194,11 @@ void menu_microdrive_raw_map(MENU_ITEM_PARAMETERS)
         return;
     }
 
-    if (zxvision_find_window_in_background("visualmem")) {
-        menu_warn_message("Visual Memory window is opened. It may generate bad behaviour on Microdrive Raw Map having that window opened");
-    }
+    //No indicar esto aqui porque si se restaura al iniciar ZEsarUX, la ventana de ZEsarUX aun no esta creada bien del todo
+    // y esa llamada a menu_warn_message lo deja en un estado raro
+    //if (zxvision_find_window_in_background("visualmem")) {
+    //    menu_warn_message("Visual Memory window is opened. It may generate bad behaviour on Microdrive Raw Map having that window opened");
+    //}
 
     zxvision_window *ventana;
     ventana=&zxvision_window_microdrive_raw_map;
@@ -7257,6 +7259,10 @@ void menu_microdrive_raw_map(MENU_ITEM_PARAMETERS)
     if (zxvision_currently_restoring_windows_on_start) {
             //printf ("Saliendo de ventana ya que la estamos restaurando en startup\n");
             return;
+    }
+
+    if (zxvision_find_window_in_background("visualmem")) {
+        menu_warn_message("Visual Memory window is opened. It may generate bad behaviour on Microdrive Raw Map having that window opened");
     }
 
     do {

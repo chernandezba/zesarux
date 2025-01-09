@@ -5722,8 +5722,7 @@ void menu_debug_new_visualmem(MENU_ITEM_PARAMETERS)
     //Crear ventana si no existe
     if (!zxvision_if_window_already_exists(ventana)) {
 
-        int x,y,ancho,alto,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;;
-
+        int x,y,ancho,alto,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
         if (!util_find_window_geometry("visualmem",&x,&y,&ancho,&alto,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
             //x=VISUALMEM_DEFAULT_X;
