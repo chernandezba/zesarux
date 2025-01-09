@@ -108,6 +108,7 @@ Quitar indicador de buffer lleno al pulsar shift+e en ventana de Fuente de sonid
 Corregido pulsación boton derecho en botones superiores con menu cerrado y sin ventanas abiertas
 Corregido tecla alt pulsada al cambiar de ventana pulsando alt-tab en drivers xwindow, cocoa, sdl1 y sdl2
 Corregida autocarga de TZX como Cinta Real en Spectrum +3
+Corregida inserción de archivo TZX con tipo de cabecera inválida
 Corregida grabación de pantalla .scr cuando está ubicada en RAM 7
 Corregida llamada a F_GETCWD en esxdos handler cuando directorio raíz (/)
 Corregida llamada a F_GETCWD en esxdos handler cuando directorio no existe

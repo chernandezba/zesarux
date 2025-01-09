@@ -868,11 +868,12 @@ int main_leezx81(char *archivo_destino, char *texto_info_output,int si_load)
 
 
 char *spec_tipos_fichero[]={
-	"Program",
+	"Program",  //0
 	"Number Array",
 	"Character Array",
-	"Bytes",
-	"Flag"
+	"Bytes",  //3
+	"Flag",  //4
+    "Unknown" //5
 };
 
 //int spec_ondas_leidas;
@@ -1132,6 +1133,8 @@ void spec_debug_cabecera(int indice,int leidos)
 	}
 
 	tipo=spec_smp_memory[indice+1];
+
+    if (tipo>3) tipo=5; //Desconocido
 
 	for (n=0;n<10;n++) buffer_nombre[n]=spec_da_ascii(spec_smp_memory[indice+2+n]);
 	buffer_nombre[10]=0;
