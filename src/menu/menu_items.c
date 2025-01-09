@@ -17583,40 +17583,42 @@ void menu_storage_mmc_download_tbblue(void)
 
 	//http://zxspectrumnext.online/cspect/tbbluemmc-32mb.zip
 
-	char *host_final="zxspectrumnext.online";
+	char *host_final="zxnext.uk";
 
-	//char *url="/cspect/tbbluemmc-32mb.zip";
 
 	char url[NETWORK_MAX_URL];
 
+    char image_filename[100];
 
-	int opcion_tamanyo_imagen=menu_simple_four_choices("Image type","Which size?",
-														"Small   32 MB",
-														"Medium 128 MB",
-														"Big    512 MB",
-														"Large    2 GB");
+
+	int opcion_tamanyo_imagen=menu_simple_three_choices("Image type","Which size?",
+														"2 GB",
+														"4 GB",
+														"8 GB");
 
 	int estimated_size=64*1024*1024;
 
+    //Esos archivos son de 70, 70 y 145 MB respectivamente. por eso el estimated size no lo pongo a 2 GB por ejemplo
+    //pero le doy un margen bastante grande
+
 	switch (opcion_tamanyo_imagen) {
 		case 1:
-			strcpy(url,"/cspect/tbbluemmc-32mb.zip");
-			estimated_size=64*1024*1024;
-		break;
-
-		case 2:
-			strcpy(url,"/cspect/tbbluemmc-128mb.zip");
-			estimated_size=128*1024*1024;
-		break;
-
-		case 3:
-			strcpy(url,"/cspect/tbbluemmc-512mb.zip");
+			strcpy(url,"/hosted/index_files/hdfimages/cspect-next-2gb.zip");
+            strcpy(image_filename,"2gb/cspect-next-2gb.img");
 			estimated_size=512*1024*1024;
 		break;
 
-		case 4:
-			strcpy(url,"/cspect/cspect-next-2gb.zip");
-			estimated_size=512*1024*1024; //Pensamos que esa SD esta comprimida de 2 GB a 512 MB
+		case 2:
+			strcpy(url,"/hosted/index_files/hdfimages/cspect-next-4gb.zip");
+            strcpy(image_filename,"4gb/cspect-next-4gb.img");
+			estimated_size=512*1024*1024;
+		break;
+
+
+		case 3:
+			strcpy(url,"/hosted/index_files/hdfimages/cspect-next-8gb.zip");
+            strcpy(image_filename,"8gb/cspect-next-8gb.img");
+			estimated_size=512*1024*1024;
 		break;
 
 
@@ -17664,11 +17666,10 @@ void menu_storage_mmc_download_tbblue(void)
 		//Descomprimir con ventana de progreso y pthread aparte de descompresion
 		menu_uncompress_zip_progress(archivo_zip,final_mmc_dir);
 
-		//y abrimos menu de mmc. Deducimos archivo final "tbblue.mmc". TODO: en el caso de imagen 2gb de cspect esto no es asi
-		//char guessed_mmc_file[PATH_MAX];
-		sprintf(mmc_file_name,"%s/tbblue.mmc",final_mmc_dir);
-
-		//strcpy(mmc_file_name,guessed_mmc_file);
+		//y abrimos menu de mmc
+        //TODO: porque abrimos menu de mmc si ya le estamos pasando la ruta exacta al archivo de imagen?
+        //quizá es por evitar errores, por si la gente de Next cambia el nombre de la imagen, que el usuario pueda escogerla
+		sprintf(mmc_file_name,"%s/%s",final_mmc_dir,image_filename);
 
 		menu_storage_mmc_file(0);
 
