@@ -4,22 +4,6 @@ Para versión siguiente:
 ---Errores---
 -------------
 
----Indexado menu---
-
-
--Documentar funciones de menu respecto a indexado:
-
-menu_dibuja_menu: la normal
-
-menu_dibuja_menu_no_indexado: para usar ventanas con opciones pero no queremos que este indexado, como por ejemplo Tracks List
-
-menu_dibuja_menu_one_time: para opciones de menu en que se pulsa enter o esc y se sale siempre del menu, no se vuelve a dibujar ese menu,
-y por tanto a nivel de path de indexacion de busqueda, se pierde el ultimo path de submenu. Ejemplo de esto: menu_simple_ten_choices
-
-menu_dibuja_menu_dialogo_no_title_lang: misma apariencia que una ventana de menu, pero no queremos que este en el arbol de submenus, sino centrado en pantalla, y ademas que no esté indexado
-
---Fin Indexado menu---
-
 
 -exolon rzx, si se abre menu, se queda continuamente disparando y agachado (joystick seleccionado: cursor&shift, aunque parece que no importa esto)
 

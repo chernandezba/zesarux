@@ -1152,7 +1152,7 @@ extern void menu_add_ESC_item(menu_item *array_menu_item);
 extern int menu_dibuja_menu_no_title_lang(int *opcion_inicial,menu_item *item_seleccionado,menu_item *m,char *titulo);
 extern int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item *m,char *titulo_en,char *titulo_es,char *titulo_ca);
 extern int menu_dibuja_menu_dialogo_no_title_lang(int *opcion_inicial,menu_item *item_seleccionado,menu_item *m,char *titulo);
-extern int menu_dibuja_menu_no_indexado(int *opcion_inicial,menu_item *item_seleccionado,menu_item *m,char *titulo);
+//extern int menu_dibuja_menu_no_indexado(int *opcion_inicial,menu_item *item_seleccionado,menu_item *m,char *titulo);
 extern void menu_dibuja_submenu_cierra_todos_submenus(void);
 extern void menu_dibuja_submenu_free_all(void);
 extern void menu_tape_settings_trunc_name(char *orig,char *dest,int max);

@@ -21684,12 +21684,15 @@ int menu_dibuja_menu_no_title_lang(int *opcion_inicial,menu_item *item_seleccion
 //Igual que menu_dibuja_menu pero cuando no queremos que este indexado, por ejemplo para ventana de Tracks List
 //TODO: quiza cambiar el nombre de esta funcion a algo que diga que aun usando funcion de menu, no es un menu como tal,
 //sino que nos beneficiamos de la funcion de menu para mostrar una ventana con opciones en lineas
+//Función no usada
+/*
 int menu_dibuja_menu_no_indexado(int *opcion_inicial,menu_item *item_seleccionado,menu_item *m,char *titulo)
 {
     m->no_indexar_busqueda=1;
 
     return menu_dibuja_menu_no_title_lang(opcion_inicial,item_seleccionado,m,titulo);
 }
+*/
 
 //con titulo de menu igual en los 3 idiomas
 int menu_dibuja_menu_dialogo_no_title_lang(int *opcion_inicial,menu_item *item_seleccionado,menu_item *m,char *titulo)
@@ -21703,12 +21706,15 @@ int menu_dibuja_menu_dialogo_no_title_lang(int *opcion_inicial,menu_item *item_s
 //Igual que menu_dibuja_menu pero este menu se selecciona enter una vez o escape una vez, pero la funcion que la llamada no vuelve
 //a dibujar el menu, por tanto a nivel de path de indexacion de busqueda, se pierde el ultimo path de submenu
 //Ejemplo de esto: menu_simple_ten_choices
+//Función no usada
+/*
 int menu_dibuja_menu_one_time(int *opcion_inicial,menu_item *item_seleccionado,menu_item *m,char *titulo)
 {
     m->one_time=1;
 
     return menu_dibuja_menu_no_title_lang(opcion_inicial,item_seleccionado,m,titulo);
 }
+*/
 
 void menu_add_item_menu_common_defaults(menu_item *m,int tipo_opcion,t_menu_funcion menu_funcion,t_menu_funcion_activo menu_funcion_activo)
 {
