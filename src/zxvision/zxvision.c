@@ -16961,6 +16961,7 @@ void zxvision_handle_mouse_events(zxvision_window *w)
             //el codigo mas claro asi
 
             else if ((puerto_65278&1)==1 && !zxvision_if_mouse_in_zlogo_or_buttons_desktop()) {
+                //printf("zxvision_if_mouse_in_zlogo_or_buttons_desktop 1\n");
                 //printf("No pulsado shift. Cerramos ventanas\n");
                 salir_todos_menus=1;
 
@@ -16985,6 +16986,7 @@ void zxvision_handle_mouse_events(zxvision_window *w)
 
 			//Ver si hemos pulsado por la zona del logo en el ext desktop
 			else if (zxvision_if_mouse_in_zlogo_or_buttons_desktop()) {
+                //printf("zxvision_if_mouse_in_zlogo_or_buttons_desktop 2\n");
                 //printf("pulsado en un boton desde handle mouse events. menu_abierto %d\n",menu_abierto);
 				menu_draw_ext_desktop_dibujar_boton_or_lower_icon_pulsado();
 
@@ -17284,6 +17286,7 @@ void zxvision_handle_mouse_events(zxvision_window *w)
 			ventana_pulsada=zxvision_coords_in_below_windows(zxvision_current_window,absolute_mouse_x,absolute_mouse_y);
 
 			if (ventana_pulsada!=NULL || zxvision_if_mouse_in_zlogo_or_buttons_desktop()  /*&& !zxvision_keys_event_not_send_to_machine*/) {
+                //printf("zxvision_if_mouse_in_zlogo_or_buttons_desktop 3\n");
 				debug_printf (VERBOSE_DEBUG,"Clicked inside other window or zlogo. Events are not sent to emulated machine");
 				zxvision_keys_event_not_send_to_machine=1;
 				ventana_tipo_activa=1;
@@ -26218,6 +26221,7 @@ void menu_inicio(void)
         if (!pulsado_alguna_ventana_con_menu_cerrado) {
             //printf("llamar a if mouse in logo desde 26214\n");
             if (zxvision_if_mouse_in_zlogo_or_buttons_desktop()) {
+                //printf("zxvision_if_mouse_in_zlogo_or_buttons_desktop 4\n");
                 debug_printf(VERBOSE_DEBUG,"Pressed in a button from menu_inicio. Mouse is dragging: %d mouse_movido: %d",mouse_is_dragging,mouse_movido);
 
                 //Dibujamos de otro color ese boton
@@ -26468,6 +26472,7 @@ void menu_inicio(void)
             //TODO: aqui se deberia llamar realmente a zxvision_if_mouse_in_zlogo_or_buttons_desktop_boton_derecho,
             //o bien una funcion unificada que detecte si mouse_left o mouse_right
             if (zxvision_if_mouse_in_zlogo_or_buttons_desktop()) {
+                //printf("zxvision_if_mouse_in_zlogo_or_buttons_desktop 5\n");
                 DBG_PRINT_ZXVISION_EVENTS VERBOSE_INFO,"ZXVISION_EVENTS: Pressed on a button with right click");
                 //debug_printf(VERBOSE_DEBUG,"Pressed in a button from menu_inicio. Mouse is dragging: %d mouse_movido: %d",mouse_is_dragging,mouse_movido);
 
@@ -26934,6 +26939,7 @@ void menu_inicio(void)
                 if (!pulsado_alguna_ventana_con_menu_cerrado) {
                     //printf("llamar a if mouse in logo desde 26928\n");
                     if (zxvision_if_mouse_in_zlogo_or_buttons_desktop() ) {
+                        //printf("zxvision_if_mouse_in_zlogo_or_buttons_desktop 6\n");
                         //necesario para que no se piense que se está moviendo el raton
                         //Esto es un poco puñetero porque si no lo pongo aqui a 0,
                         //al lanzar por ejemplo smartload se queda al principio esperando que se
