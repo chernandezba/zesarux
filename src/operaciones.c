@@ -1520,8 +1520,21 @@ void poke_byte_no_time_zxuno(z80_int dir,z80_byte valor)
 
 	else {
 		//Modo no bootm. como un +2a
+        //No escribir si direccion < 16384, pero permitido cuando es paginacion RAM in ROM o si paginación Chloe y no es segmento ROM
+        int permitido_zxuno_chloe=0;
 
-		if (dir>16383 || (puerto_8189&1)==1 ) {  //Si en ram, o rom con page RAM in ROM
+        if (zxuno_is_chloe_mmu() ) {
+            //printf("paginacion chloe\n");
+
+            if (dir<16384) {
+                //Segmento 0 o 1
+                int segmento=dir/8192;
+                if (chloe_type_memory_paged[segmento]!=CHLOE_MEMORY_TYPE_ROM) permitido_zxuno_chloe=1;
+
+		    }
+        }
+
+		if (dir>16383 || (puerto_8189&1)==1 || permitido_zxuno_chloe ) {  //Si en ram, o rom con page RAM in ROM o si paginacion chloe
 #ifdef EMULATE_VISUALMEM
 
 set_visualmembuffer(dir);

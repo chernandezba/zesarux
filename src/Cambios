@@ -125,6 +125,7 @@ Corregido bug que se reabria el menu al executar comando run desde debug cpu y l
 Corregido recuperación de posición de ventana después de restore/desminimizar
 Corregido texto-a-voz en menu (fallos leyendo texto de submenús y ventanas)
 Corregido sonido de MSX de pulsación de teclas
+Corregido escritura en ZX-Uno en direcciones 0000h-3fffh al usar MMU de Chloe y segmento no es ROM
 
 
 * Como siempre, hay otras mejoras y correcciones de errores menores.

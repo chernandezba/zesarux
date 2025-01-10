@@ -124,6 +124,7 @@ Fixed recovering window position after restore/unminimize
 Fixed bug reopening menu when executing run command on debug cpu and --allow-background-windows setting was disabled
 Fixed text-to-speech on menu (bugs reading text on submenus and windows)
 Fixed MSX keyclick sound
+Fixed ZX-Uno write on addresses 0000h-3fffh when using Chloe MMU and segment is not ROM
 
 
 * As always, there are some other minor bugfixes and improvements
