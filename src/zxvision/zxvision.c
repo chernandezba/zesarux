@@ -16000,7 +16000,10 @@ int zxvision_if_mouse_in_lower_button_reduce_zxdesktop_height(void)
     return zxvision_if_mouse_in_lower_button_enlarge_reduce_zxdesktop_height(0);
 }
 
-int zxvision_if_mouse_in_zlogo_or_buttons_desktop(void)
+//Funcion de detectar si raton en botones upper, lower o iconos de desktop, pero ademas
+//con variable activar_accion que dice si se dispara la accion que habilita ese boton
+//Esa variable sirve para que en casos que solo queremos comprobar que el raton esta ahi pero sin disparar la accion
+int zxvision_if_mouse_in_zlogo_or_buttons_desktop_if_trigger(int activar_accion)
 {
 
     //printf("zxvision_if_mouse_in_zlogo_or_buttons_desktop. traza: \n");
@@ -16032,14 +16035,16 @@ int zxvision_if_mouse_in_zlogo_or_buttons_desktop(void)
 				//printf ("Pulsado en zona botones del ext desktop\n");
 
 				//en que boton?
-				int numero_boton=(mouse_pixel_x-xinicio_botones)/ancho_boton;
-				DBG_PRINT_ZXVISION_EVENTS VERBOSE_DEBUG,"ZXVISION_EVENTS: zxvision_if_mouse_in_zlogo_or_buttons_desktop. Upper button pressed: %d",numero_boton);
-				menu_pressed_zxdesktop_button_which=numero_boton;
+                int numero_boton=(mouse_pixel_x-xinicio_botones)/ancho_boton;
+                DBG_PRINT_ZXVISION_EVENTS VERBOSE_DEBUG,"ZXVISION_EVENTS: zxvision_if_mouse_in_zlogo_or_buttons_desktop. Upper button pressed: %d",numero_boton);
+                if (activar_accion) {
+                    menu_pressed_zxdesktop_button_which=numero_boton;
 
-                //Puede ser un poco redundante que desde aqui tambien miremos boton derecho,
-                //porque se llama desde zxvision_if_mouse_in_zlogo_or_buttons_desktop al pulsar boton izquierdo
-                //pero se usa al abrirse el menu_inicio con boton derecho
-                if (mouse_right) menu_pressed_zxdesktop_button_which_right_button=1;
+                    //Puede ser un poco redundante que desde aqui tambien miremos boton derecho,
+                    //porque se llama desde zxvision_if_mouse_in_zlogo_or_buttons_desktop al pulsar boton izquierdo
+                    //pero se usa al abrirse el menu_inicio con boton derecho
+                    if (mouse_right) menu_pressed_zxdesktop_button_which_right_button=1;
+                }
 
 				return 1;
 			}
@@ -16068,18 +16073,18 @@ int zxvision_if_mouse_in_zlogo_or_buttons_desktop(void)
 
 
 
-						//printf ("boton esta visible\n");
+                    //printf ("boton esta visible\n");
+                    DBG_PRINT_ZXVISION_EVENTS VERBOSE_INFO,"ZXVISION_EVENTS: Lower icon pressed: %d",numero_boton);
 
+                        if (activar_accion) {
+                            menu_pressed_zxdesktop_lower_icon_which=numero_boton;
 
-						menu_pressed_zxdesktop_lower_icon_which=numero_boton;
+                            //Puede ser un poco redundante que desde aqui tambien miremos boton derecho,
+                            //porque se llama desde zxvision_if_mouse_in_zlogo_or_buttons_desktop al pulsar boton izquierdo
+                            //pero se usa al abrirse el menu_inicio con boton derecho
 
-                        DBG_PRINT_ZXVISION_EVENTS VERBOSE_INFO,"ZXVISION_EVENTS: Lower icon pressed: %d",numero_boton);
-
-                        //Puede ser un poco redundante que desde aqui tambien miremos boton derecho,
-                        //porque se llama desde zxvision_if_mouse_in_zlogo_or_buttons_desktop al pulsar boton izquierdo
-                        //pero se usa al abrirse el menu_inicio con boton derecho
-
-                        if (mouse_right) menu_pressed_zxdesktop_lower_icon_which_right_button=1;
+                            if (mouse_right) menu_pressed_zxdesktop_lower_icon_which_right_button=1;
+                        }
 
 						return 1;
 				}
@@ -16103,25 +16108,32 @@ int zxvision_if_mouse_in_zlogo_or_buttons_desktop(void)
 
                 //debug_exec_show_backtrace();
 
+                if (activar_accion) {
+                    menu_pressed_zxdesktop_configurable_icon_which=icono_pulsado;
+                    //printf("Establecer menu_pressed_zxdesktop_configurable_icon_which desde linea 16107\n");
 
-                menu_pressed_zxdesktop_configurable_icon_which=icono_pulsado;
-                //printf("Establecer menu_pressed_zxdesktop_configurable_icon_which desde linea 16107\n");
-
-                //Puede ser un poco redundante que desde aqui tambien miremos boton derecho,
-                //porque se llama desde zxvision_if_mouse_in_zlogo_or_buttons_desktop al pulsar boton izquierdo
-                //pero se usa al abrirse el menu_inicio con boton derecho
-                if (mouse_right) menu_pressed_zxdesktop_configurable_icon_right_button=1;
+                    //Puede ser un poco redundante que desde aqui tambien miremos boton derecho,
+                    //porque se llama desde zxvision_if_mouse_in_zlogo_or_buttons_desktop al pulsar boton izquierdo
+                    //pero se usa al abrirse el menu_inicio con boton derecho
+                    if (mouse_right) menu_pressed_zxdesktop_configurable_icon_right_button=1;
 
 
-                //Para saber si se arrastra
-                menu_pressed_zxdesktop_configurable_icon_where_x=mouse_pixel_x;
-                menu_pressed_zxdesktop_configurable_icon_where_y=mouse_pixel_y;
+                    //Para saber si se arrastra
+                    menu_pressed_zxdesktop_configurable_icon_where_x=mouse_pixel_x;
+                    menu_pressed_zxdesktop_configurable_icon_where_y=mouse_pixel_y;
+                }
 
                 return 1;
             }
         }
 	}
 	return 0;
+}
+
+
+int zxvision_if_mouse_in_zlogo_or_buttons_desktop(void)
+{
+    return zxvision_if_mouse_in_zlogo_or_buttons_desktop_if_trigger(1);
 }
 
 //Decir que el siguiente menu se abre en posicion fija
@@ -16926,6 +16938,7 @@ void zxvision_handle_mouse_events(zxvision_window *w)
 		else if (!si_menu_mouse_en_ventana() && zxvision_keys_event_not_send_to_machine) {
 			//Si se pulsa fuera de ventana
 			debug_printf (VERBOSE_DEBUG,"Clicked outside window. Events are sent to emulated machine. X=%d Y=%d",menu_mouse_x,menu_mouse_y);
+            //printf ("Clicked outside window. Events are sent to emulated machine. X=%d Y=%d\n",menu_mouse_x,menu_mouse_y);
 			zxvision_keys_event_not_send_to_machine=0;
 			ventana_tipo_activa=0;
 
@@ -16954,13 +16967,16 @@ void zxvision_handle_mouse_events(zxvision_window *w)
 
 			}
 
-            //Ver si no se ha pulsado shift, con lo que cerraremos las ventanas, siempre que no se haya pulsado en botones
+            //Ver si no se ha pulsado shift, con lo que cerraremos las ventanas, siempre que no se haya pulsado en botones o iconos
+            //esa comprobación de pulsado en botones se hace mediante !zxvision_if_mouse_in_zlogo_or_buttons_desktop_if_trigger(0)
+            //con parámetro 0 dado que solo queremos ver que el ratón no esté por esas zonas, sin lanzar la acción de activado de esos
+            //botones o iconos
             //El comportamiento es muy parecido al otro else if de abajo , donde se
             //entra cuando se pulsan botones del desktop: cerrar menus (y en el caso de pulsar botones, avisar pulsar botones)
             //Se podria haber incluido esta condicion de no shift en el else if de abajo de pulsar botones, pero creo que queda
             //el codigo mas claro asi
 
-            else if ((puerto_65278&1)==1 && !zxvision_if_mouse_in_zlogo_or_buttons_desktop()) {
+            else if ((puerto_65278&1)==1 && !zxvision_if_mouse_in_zlogo_or_buttons_desktop_if_trigger(0)) {
                 //printf("zxvision_if_mouse_in_zlogo_or_buttons_desktop 1\n");
                 //printf("No pulsado shift. Cerramos ventanas\n");
                 salir_todos_menus=1;

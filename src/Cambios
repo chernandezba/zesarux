@@ -87,7 +87,6 @@ Mejorado ZX Vision:
 - Al seleccionar estilo de ZX Vision Style, se aplica al mover el cursor
 - Mejorar movimiento del cursor en menús al pulsar PgDn/PgUp
 - Permitir teclas Inicio/Fin en ventanas
-- Agregada opción para permitir usar teclas 5678 como cursores en el menú
 - Agregada opción para permitir usar teclas speccy para interacción con el menú: usar teclas 5678 como cursores, caps shift+space para ESC, caps shift+ctrl para TAB, caps shift+ctrl+m para Abrir Menu (F5)
 - Ventana de Video layers ahora se puede tener en segundo plano
 - Ventana de Debug DMA ahora se puede tener en segundo plano
@@ -103,10 +102,16 @@ Mejorado ZX Desktop:
 
 * Correcciones:
 
+Correciones en ZX Vision:
+- Corregido pulsación boton derecho en botones superiores con menu cerrado y sin ventanas abiertas
+- Corregido tecla alt pulsada al cambiar de ventana pulsando alt-tab en drivers xwindow, cocoa, sdl1 y sdl2
+- Corregido recuperación de posición de ventana después de restore/desminimizar
+- Corregido bug que se reabria el menu al executar comando run desde debug cpu y la opcion --allow-background-windows estaba desactivada
+- Corregido texto-a-voz en menu (fallos leyendo texto de submenús y ventanas)
+- Corregido pulsación izquierda en un icono cuando menú estaba abierto
+
 Corregido fallo de cpu+memory leak en Linux usando el driver Xwindow. Este es un error que ha existido siempre (un "error de larga vida" XD)
 Quitar indicador de buffer lleno al pulsar shift+e en ventana de Fuente de sonido externa
-Corregido pulsación boton derecho en botones superiores con menu cerrado y sin ventanas abiertas
-Corregido tecla alt pulsada al cambiar de ventana pulsando alt-tab en drivers xwindow, cocoa, sdl1 y sdl2
 Corregida autocarga de TZX como Cinta Real en Spectrum +3
 Corregida inserción de archivo TZX con tipo de cabecera inválida
 Corregida grabación de pantalla .scr cuando está ubicada en RAM 7
@@ -121,9 +126,6 @@ Corregida carga de snapshots .nex y la MMU no gestionada correctamente
 Corregida característica de Buscar menú. Ahora está habilitado por defecto
 Corregido error al grabar snapshots .ZSF de Z88 cuando el bloque de RAM o de tarjeta de memoria no está comprimido
 Corregido mostrar texto en footer de F5/Button menu
-Corregido bug que se reabria el menu al executar comando run desde debug cpu y la opcion --allow-background-windows estaba desactivada
-Corregido recuperación de posición de ventana después de restore/desminimizar
-Corregido texto-a-voz en menu (fallos leyendo texto de submenús y ventanas)
 Corregido sonido de MSX de pulsación de teclas
 Corregido escritura en ZX-Uno en direcciones 0000h-3fffh al usar MMU de Chloe y segmento no es ROM
 
