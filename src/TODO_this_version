@@ -1,10 +1,2 @@
 
--con menu abierto: NO va al pulsar boton izquierdo en iconos (pero sí derecho). ver current_checklist sobre esto
-Creo que tiene que ver donde dice:
-
-//Ver si no se ha pulsado shift, con lo que cerraremos las ventanas
-y la condicion !zxvision_if_mouse_in_zlogo_or_buttons_desktop()
-esa llamada altera el comportamiento, aunque si la quito, sigue sin ir (entonces cierra el menu pero no hace acción de clic
-izquierdo en icono)
-
 -con menu cerrado, sin ventanas: pulsar boton derecho en iconos, lo hace pero el menu contextual sale arriba del todo y no en la posición del cursor

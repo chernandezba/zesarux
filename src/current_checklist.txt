@@ -73,9 +73,9 @@ habilitar zxdesktop
 hacer las acciones de mover iconos, pulsar iconos (botón izquierdo y derecho), pulsar botones superiores (menus) e inferiores (dispositivos) con boto
 n izquierdo y derecho de raton, en las siguientes situaciones:
 1. sin ninguna ventana y con menu cerrado
-2. sin ninguna ventana y con menu abierto: NO va al pulsar boton izquierdo en iconos (no iba tampoco en la 11.0 pero si en la 10.3)
+2. sin ninguna ventana y con menu abierto
 3. con alguna ventana abierta y con menu cerrado
-4. con alguna ventana abierta y con menu abierto: NO va al pulsar boton izquierdo en iconos
+4. con alguna ventana abierta y con menu abierto
 
 -iniciar sin archivo de configuracion (borrarlo temporalmente) y ver como se va comportando - first aid, abrir zx desktop, etc
 
