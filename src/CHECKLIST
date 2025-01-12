@@ -24,6 +24,8 @@ echo "Porcentaje=$PERCCOMPLETADO %"
 
 -probar cambio idioma menu y ver diferentes menus
 
+-probar Search menu
+
 -probar 4 combinaciones de logo:
 ./zesarux --disable-xanniversary-logo
 ./zesarux --enable-xanniversary-logo
@@ -75,7 +77,7 @@ Drivers video:
 
 -iniciar con ./zesarux --noconfigfile
 habilitar zxdesktop
-hacer las acciones de mover iconos, pulsar iconos (botón izquierdo y derecho), pulsar botones superiores (menus) e inferiores (dispositivos) con boton izquierdo y derecho de raton, en las siguientes situaciones:
+hacer las acciones de:  mover iconos, pulsar iconos (botón izquierdo y derecho), pulsar botones superiores (menus) e inferiores (dispositivos) con boton izquierdo y derecho de raton, pulsar en fondo zx desktop con boton derecho, con boton izquierdo (para que se cierre el menu) y con boton izquierdo+shift (para enviar el foco al fondo) en las siguientes situaciones:
 1. sin ninguna ventana y con menu cerrado
 2. sin ninguna ventana y con menu abierto
 3. con alguna ventana abierta y con menu cerrado
