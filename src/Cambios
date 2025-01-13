@@ -111,6 +111,7 @@ Correciones en ZX Vision:
 - Corregido pulsación izquierda en un icono cuando menú estaba abierto
 
 Corregido fallo de cpu+memory leak en Linux usando el driver Xwindow. Este es un error que ha existido siempre (un "error de larga vida" XD)
+Corregido ZX81 Online browser
 Quitar indicador de buffer lleno al pulsar shift+e en ventana de Fuente de sonido externa
 Corregida autocarga de TZX como Cinta Real en Spectrum +3
 Corregida inserción de archivo TZX con tipo de cabecera inválida

@@ -111,6 +111,7 @@ Fixed ZX Vision:
 - Fixed left clicking on an icon when menu was open
 
 Fixed cpu+memory leak bug using Linux and Xwindow driver. This is a bug that has always existed (a "long life bug" XD)
+Fixed ZX81 Online browser
 Remove buffer full indicator when pressing shift+e on External Audio Source window
 Fixed TZX autoload as Real Tape on Spectrum +3
 Fixed inserting TZX file with invalid header type

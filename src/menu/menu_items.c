@@ -15248,16 +15248,23 @@ void menu_online_browse_zx81_create_menu(char *mem, char *mem_after_headers,int 
 				int leidos;
 				char *next_mem;
 
+                //printf("Restantes total_leidos antes de leer linea: %d\n",total_leidos);
 				next_mem=util_read_line(mem,buffer_linea,total_leidos,1024,&leidos);
+                //printf("Linea leida: [%s]\n",buffer_linea);
 				total_leidos -=leidos;
+                //printf("Restantes total_leidos despues de leer linea: %d\n",total_leidos);
 
-                //TODO: quiza solo se deberia salir cuando total_leidos <= 0
-				if (buffer_linea[0]==0) {
+                //Nota: antes se salia al leer una linea en blanco pero en algun momento del año 2024
+                //metieron una linea en blanco justo al principio (despues de <html>) y falló esto
+                /*
+                if (buffer_linea[0]==0) {
 					salir=1;
 					//printf ("salir con linea vacia final\n");
 					mem=next_mem;
 				}
+
 				else {
+                */
 					//printf ("cabecera %d: %s\n",i,buffer_linea);
 					//ver si contine texto de juego
 
@@ -15282,8 +15289,9 @@ void menu_online_browse_zx81_create_menu(char *mem, char *mem_after_headers,int 
 					}
 					i++;
 					mem=next_mem;
-				}
+				//}
 
+                //Salir al llegar al final de lo leido
 				if (total_leidos<=0) salir=1;
 
 			} while (!salir);
