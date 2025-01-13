@@ -93,7 +93,7 @@ ok * mac os x, con y sin optimizaciones
 
 -Funciones de Red:
 --Windows: Probar ZENG, Speccy browser, ZX81 browser, Download TBBLUE SD
---Mac: Probar ZENG, Speccy browser, ZX81 browser, Download TBBLUE SD
+ok --Mac: Probar ZENG, Speccy browser, ZX81 browser, Download TBBLUE SD
 --Linux: Probar ZENG, Speccy browser, ZX81 browser, Download TBBLUE SD 
 
 -Probar ZENG Online server

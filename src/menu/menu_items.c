@@ -15034,14 +15034,18 @@ void menu_zeng(MENU_ITEM_PARAMETERS)
 			menu_tape_settings_trunc_name(zeng_remote_hostname,string_host_shown,16);
 			menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_host,menu_zeng_host_cond,"Remote ~~Hosts [%s]",string_host_shown);
             menu_add_item_menu_prefijo(array_menu_common,"    ");
-            menu_add_item_menu_tooltip(array_menu_common,"You may specifify several hosts separated with comma (,) and no whitespace between them");
-            menu_add_item_menu_ayuda(array_menu_common,"You may specifify several hosts separated with comma (,) and no whitespace between them. "
+            menu_add_item_menu_tooltip(array_menu_common,"Remote hosts to connect to");
+            menu_add_item_menu_ayuda(array_menu_common,"You may specify several hosts separated with comma (,) and no whitespace between them. "
                 "You can also specify a different port using format host:port"
                 );
 			menu_add_item_menu_shortcut(array_menu_common,'h');
 
 
 			menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_port,menu_zeng_host_cond,"Remote Port [%d]",zeng_remote_port);
+            menu_add_item_menu_tooltip(array_menu_common,"Remote port to connect to; this port can be overriden in the previous Remote Hosts menu item "
+                "if written host:port");
+            menu_add_item_menu_ayuda(array_menu_common,"Remote port to connect to; this port can be overriden in the previous Remote Hosts menu item "
+                "if written host:port");
             menu_add_item_menu_prefijo(array_menu_common,"    ");
 
 			menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_master,menu_zeng_host_cond,"[%c] ~~Master",(zeng_i_am_master ? 'X' : ' ') );
@@ -17242,14 +17246,16 @@ void menu_network(MENU_ITEM_PARAMETERS)
 			menu_add_item_menu_tooltip(array_menu_common,"Setup ZEsarUX Network Gaming");
 			menu_add_item_menu_ayuda(array_menu_common,"ZEsarUX Network Gaming protocol (ZENG) allows you to play to any emulated game, using two or more ZEsarUX instances, "
 			  "located each one on any part of the world or in a local network.\n"
-			  "Games doesn't have to be modified, you can use any existing game. "
+			  "Games don't need to be modified, you can use any existing game. "
 			  "ZENG works by sending special commands through the ZRCP protocol, so in order to use ZENG you must enable ZRCP protocol on menu settings-debug. "
 			  "This protocol listens on tcp port 10000 so you should open your firewall/router to use it. "
 			  "One ZEsarUX instance will be the master node and the other instances will be the slaves nodes.\n"
 			  "Please do NOT set more than one node as master\n"
 			  "When you enable ZENG on all nodes:\n"
 			  "-all key/joystick presses will be sent between all nodes\n"
-			  "-every two seconds a snapshot will be sent from the master to all the slave nodes\n\n"
+			  "-every two seconds a snapshot will be sent from the master to all the slave nodes\n"
+              "-all nodes connect to all other nodes\n"
+              "\n"
 			  "Note about using joystick: real joystick (and cursors on keyboard) are sent to the other nodes as "
 			  "the direction/button (left,right,up,down or fire) but not the type of joystick emulated (kempston, fuller, etc). "
 			  "So you must configure same joystick emulation on all nodes. Also, real joystick to keys events are not sent by ZENG, just the joystick event"
