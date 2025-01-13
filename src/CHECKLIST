@@ -182,6 +182,8 @@ Probar delete, rename, etc y resto de acciones con CMDR, con archivos en minuscu
 -probar ifrom
 -probar betadisk. visual floppy de betadisk
 -probar discos +3. visual floppy de dsk
+-probar microdrive en spectrum
+-probar HiLow Datadrive
 -probar file browser
 
 -probar spectra. Test modos. Comparar con ZXSP. X128 NO es correcto del todo, falla la implementacion del flash

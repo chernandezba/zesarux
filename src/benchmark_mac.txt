@@ -261,13 +261,13 @@
         //sin memptr,sin visualmem, sin cpustats
         //con contended memory
         ./zesarux --noconfigfile --ao null --vo cocoa --zoom 1
-        //con cocoa-gl: 12%
+        //con cocoa: 12%
 
         //con rainbow
         //sin memptr,sin visualmem, sin cpustats
         //con contended memory
         ./zesarux --noconfigfile --ao null --vo cocoa --zoom 1 extras/media/spectrum/rainbow/over128.z80
-        //128k, ao null, vo cocoagl, zoom 1, frameskip 0, over128.z80, 20% cpu
+        //128k, ao null, vo cocoa, zoom 1, frameskip 0, over128.z80, 20% cpu
         //128k, ao null, vo xwindows, zoom 1, frameskip 0, over128.z80, 18% cpu
 
         //
