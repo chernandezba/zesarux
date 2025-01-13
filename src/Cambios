@@ -37,10 +37,10 @@ Agregado tipo de medidor Esfera en Ver Sensores
 Mejorada compilación: opciones --enable-memptr --enable-visualmem --enable-cpustats están activadas por defecto en ./configure
 Mejorada emulación del Inves Spectrum+: alertar cuando un juego puede resetearse debido al bug de Inves de write-on-interrupt
 Mejorado el core de emulación de Spectrum de la CPU Z80: agregado estado wait (necesario para emular el microdrive)
-Mejorada emulación PCW: agregar modo 3 (360x256x16), permitir cambios de modo video mediante puerto i/o,
+Mejorada emulación PCW: agregar modo 3 (360x256x16), permitir cambios de modo video mediante puerto i/o
 Mejorada emulación de Sega Master System: permitir intercambiar controles jugador 1 <-> jugador 2
 Mejorado snapshot ZSF: guardar estado de Datagear DMA
-Mejorada emulación de teclado ZX Recreated: permitir usarlo también en el menu
+Mejorada emulación de teclado ZX Recreated: permitir usarlo también en el menú
 Permitir grabar snapshots .Z80 de TC2048, TC2068, TS2068. Permitir cargar snapshots .Z80 de TC2048, TC2068
 
 Mejorada emulación de Spectrum Next (lo siguiente permite, por ejemplo, ejecutar la versión de Atic Atac para Next):
@@ -48,7 +48,7 @@ Mejorada emulación de Spectrum Next (lo siguiente permite, por ejemplo, ejecuta
 - Agregado NMI sin stack
 - Agregado Canales DAC A,B,C,D
 - Permitir tiles en RAM 7
-- Mejorar render de pantalla cuando solo capa de ula activada (reduce el uso de cpu un 6% menos de cpu en mi maquina)
+- Mejorar render de pantalla cuando solo capa de ula activada (reduce el uso de cpu un 6% menos de cpu en mi máquina)
 - Corregido timings de 128k/+2a/Pentagon
 - Corregido mapeo de DIVMMC después de RETN
 - Corregido temporización del Copper
@@ -71,11 +71,11 @@ Mejorada emulación de Hilow Datadrive:
 Mejorado Debug:
 - CPU history: permitir cambiar el puntero de memoria según el registro PC mostrado en el historial
 - CPU history: permitir ver historial completo
-- Mostar cuando la CPU está en estado wait
+- Mostrar cuando la CPU está en estado wait
 - Desensamblar parámetros numéricos en opcodes Z80N (Z80 Spectrum Next) (NEXTREG NN,A, TEST N, etc)
 - Agregada acción de breakpoint save-binary
 - Permitir activar/desactivar breakpoints en una dirección (no solo activar/eliminar), usando tecla 'L' mayúscula. Estado desactivado se guarda en la configuración
-- Agregada carga de Tabla de Símbolos
+- Agregada carga de Tabla de Símbolos
 
 Mejorado Hexadecimal editor:
 - Ahora los datos se refrescan también cuando la ventana tiene el foco
@@ -83,8 +83,8 @@ Mejorado Hexadecimal editor:
 
 Mejorado ZX Vision:
 - Mas mejoras en la interfaz siguiendo más indicaciones de la (retro)-especificación IBM CUA
-- Los menús muestran los previous menús al seleccionar submenús
-- Al seleccionar estilo de ZX Vision Style, se aplica al mover el cursor
+- Los menús muestran los menús previos al seleccionar submenús
+- Al seleccionar estilo de ZX Vision, se aplica al mover el cursor
 - Mejorar movimiento del cursor en menús al pulsar PgDn/PgUp
 - Permitir teclas Inicio/Fin en ventanas
 - Agregada opción para permitir usar teclas speccy para interacción con el menú: usar teclas 5678 como cursores, caps shift+space para ESC, caps shift+ctrl para TAB, caps shift+ctrl+m para Abrir Menu (F5)
@@ -98,7 +98,7 @@ Mejorado ZX Vision:
 
 Mejorado ZX Desktop:
 - Permitir activar/desactivar botones superiores e inferiores de manera independiente
-- Permitir boton derecho en los iconos de dispositivos ubicados en la parte inferior del ZX Desktop
+- Permitir botón derecho en los iconos de dispositivos ubicados en la parte inferior del ZX Desktop
 
 * Correcciones:
 
@@ -106,8 +106,8 @@ Correciones en ZX Vision:
 - Corregido pulsación boton derecho en botones superiores con menu cerrado y sin ventanas abiertas
 - Corregido tecla alt pulsada al cambiar de ventana pulsando alt-tab en drivers xwindow, cocoa, sdl1 y sdl2
 - Corregido recuperación de posición de ventana después de restore/desminimizar
-- Corregido bug que se reabria el menu al executar comando run desde debug cpu y la opcion --allow-background-windows estaba desactivada
-- Corregido texto-a-voz en menu (fallos leyendo texto de submenús y ventanas)
+- Corregido bug que se reabria el menu al ejecutar comando run desde debug cpu y la opcion --allow-background-windows estaba desactivada
+- Corregido texto-a-voz en menú (fallos leyendo texto de submenús y ventanas)
 - Corregido pulsación izquierda en un icono cuando menú estaba abierto
 
 Corregido fallo de cpu+memory leak en Linux usando el driver Xwindow. Este es un error que ha existido siempre (un "error de larga vida" XD)
