@@ -428,6 +428,10 @@ Con speech cuando salen las diferentes opciones de un juego (tzx, tap etc) no se
 
 -Visual real tape: con cinta cdt de CPC (zynaps.cdt) dice que hay bloques de spectrum y no es asi
 
+-con menu cerrado, sin ventanas: pulsar boton derecho en iconos del escritorio,
+lo hace pero el menu contextual sale arriba del todo y no en la posición del cursor
+
+
 -modo 60 hz en atic atac, para next. Y quizá empezar con maquinas timex que tienen 60 hz, que tienen menos scanlines...
 
 -breakpoints que se disparen cuando se cumpla una condición N veces:
