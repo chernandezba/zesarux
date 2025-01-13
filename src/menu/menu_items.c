@@ -15234,96 +15234,96 @@ void menu_online_browse_zx81_create_menu(char *mem, char *mem_after_headers,int 
 
 	int total_items=0;
 
-			int indice_destino=0;
+    int indice_destino=0;
 
-			int dif_header=mem_after_headers-mem;
-			total_leidos -=dif_header;
-			mem=mem_after_headers;
+    int dif_header=mem_after_headers-mem;
+    total_leidos -=dif_header;
+    mem=mem_after_headers;
 
-			//leer linea a linea
-			char buffer_linea[1024];
-			int i=0;
-			int salir=0;
-			do {
-				int leidos;
-				char *next_mem;
+    //leer linea a linea
+    char buffer_linea[1024];
+    int i=0;
+    int salir=0;
+    do {
+        int leidos;
+        char *next_mem;
 
-                //printf("Restantes total_leidos antes de leer linea: %d\n",total_leidos);
-				next_mem=util_read_line(mem,buffer_linea,total_leidos,1024,&leidos);
-                //printf("Linea leida: [%s]\n",buffer_linea);
-				total_leidos -=leidos;
-                //printf("Restantes total_leidos despues de leer linea: %d\n",total_leidos);
+        //printf("Restantes total_leidos antes de leer linea: %d\n",total_leidos);
+        next_mem=util_read_line(mem,buffer_linea,total_leidos,1024,&leidos);
+        //printf("Linea leida: [%s]\n",buffer_linea);
+        total_leidos -=leidos;
+        //printf("Restantes total_leidos despues de leer linea: %d\n",total_leidos);
 
-                //Nota: antes se salia al leer una linea en blanco pero en algun momento del año 2024
-                //metieron una linea en blanco justo al principio (despues de <html>) y falló esto
-                /*
-                if (buffer_linea[0]==0) {
-					salir=1;
-					//printf ("salir con linea vacia final\n");
-					mem=next_mem;
-				}
+        //Nota: antes se salia al leer una linea en blanco pero en algun momento del año 2024
+        //metieron una linea en blanco justo al principio (despues de <html>) y falló esto
+        /*
+        if (buffer_linea[0]==0) {
+            salir=1;
+            //printf ("salir con linea vacia final\n");
+            mem=next_mem;
+        }
 
-				else {
-                */
-					//printf ("cabecera %d: %s\n",i,buffer_linea);
-					//ver si contine texto de juego
+        else {
+        */
+        //printf ("cabecera %d: %s\n",i,buffer_linea);
+        //ver si contiene texto de juego
 
-					char *existe;
-					existe=strstr(buffer_linea,"/files/");
-					if (existe!=NULL) {
-						if (menu_online_zx81_letra(letra,existe[7])) {
-						//if (existe[7]==letra) {
-							//quitar desde comilla derecha
-							char *comilla;
-							comilla=strstr(&existe[7],"\"");
-							if (comilla!=NULL) *comilla=0;
-							debug_printf (VERBOSE_PARANOID,"Adding raw html line %s",buffer_linea);
-							//Todo controlar maximo buffer y maximo que puede mostrar ventana
-							sprintf(&texto_final[indice_destino],"%s\n",&existe[7]);
-							indice_destino +=strlen(&existe[7])+1;
+        char *existe;
+        existe=strstr(buffer_linea,"/files/");
+        if (existe!=NULL) {
+            if (menu_online_zx81_letra(letra,existe[7])) {
+            //if (existe[7]==letra) {
+                //quitar desde comilla derecha
+                char *comilla;
+                comilla=strstr(&existe[7],"\"");
+                if (comilla!=NULL) *comilla=0;
+                debug_printf (VERBOSE_PARANOID,"Adding raw html line %s",buffer_linea);
+                //Todo controlar maximo buffer y maximo que puede mostrar ventana
+                sprintf(&texto_final[indice_destino],"%s\n",&existe[7]);
+                indice_destino +=strlen(&existe[7])+1;
 
-							menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,&existe[7]);
-							debug_printf (VERBOSE_DEBUG,"Adding menu entry %s",&existe[7]);
-							total_items++;
-						}
-					}
-					i++;
-					mem=next_mem;
-				//}
+                menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,&existe[7]);
+                debug_printf (VERBOSE_DEBUG,"Adding menu entry %s",&existe[7]);
+                total_items++;
+            }
+        }
+        i++;
+        mem=next_mem;
+        //}
 
-                //Salir al llegar al final de lo leido
-				if (total_leidos<=0) salir=1;
+        //Salir al llegar al final de lo leido
+        if (total_leidos<=0) salir=1;
 
-			} while (!salir);
+    } while (!salir);
 
-			texto_final[indice_destino]=0;
-
-
-
-			menu_add_item_menu_separator(array_menu_common);
-
-            menu_add_ESC_item(array_menu_common);
-
-			if (total_items) {
-				//Si hay resultados con esa letra, normalmente si..
-            	retorno_menu=menu_dibuja_menu_dialogo_no_title_lang(&zx81_online_browser_opcion_seleccionada,&item_seleccionado,array_menu_common,"ZX81 Games" );
+    texto_final[indice_destino]=0;
 
 
-            	if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
-                	//que juego se ha seleccionado
 
-                	//item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
-                	//char *juego;
-                	strcpy(juego,item_seleccionado.texto_opcion);
-                	debug_printf (VERBOSE_INFO,"Selected game: %s",juego);
+    menu_add_item_menu_separator(array_menu_common);
 
-                	sprintf(url_juego,"/files/%s",juego);
-				}
-			}
+    menu_add_ESC_item(array_menu_common);
 
-			else {
-				menu_error_message("No results found");
-			}
+    if (total_items) {
+        //Si hay resultados con esa letra, normalmente si..
+        retorno_menu=menu_dibuja_menu_dialogo_no_title_lang(&zx81_online_browser_opcion_seleccionada,&item_seleccionado,array_menu_common,"ZX81 Games" );
+
+
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+            //que juego se ha seleccionado
+
+            //item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+            //char *juego;
+            strcpy(juego,item_seleccionado.texto_opcion);
+            debug_printf (VERBOSE_INFO,"Selected game: %s",juego);
+
+            sprintf(url_juego,"/files/%s",juego);
+        }
+    }
+
+    else {
+        menu_error_message("No results found");
+    }
 
 
 }
