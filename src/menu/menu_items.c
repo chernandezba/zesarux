@@ -43488,9 +43488,13 @@ void zxdesktop_lowericon_mmc_accion_boton_derecho(void)
             else {
                 //Insertar archivo y habilitar
                 menu_storage_mmc_file(0);
-                menu_storage_mmc_emulation(0);
-                //Y si no estan los puertos divmmc, habilitarlos tambien (se deshabilitan al desactivar mmc)
-                if (divmmc_mmc_ports_enabled.v==0) menu_storage_divmmc_mmc_ports_emulation(0);
+                //printf("File: [%s]\n",mmc_file_name);
+                //Si no se ha dejado archivo en blanco (salido con ESC)
+                if (mmc_file_name[0]) {
+                    menu_storage_mmc_emulation(0);
+                    //Y si no estan los puertos divmmc, habilitarlos tambien (se deshabilitan al desactivar mmc)
+                    if (divmmc_mmc_ports_enabled.v==0) menu_storage_divmmc_mmc_ports_emulation(0);
+                }
             }
         break;
 
@@ -43531,9 +43535,13 @@ void zxdesktop_lowericon_ide_accion_boton_derecho(void)
             else {
                 //Insertar archivo y habilitar
                 menu_storage_ide_file(0);
-                menu_storage_ide_emulation(0);
-                //Y si no estan los puertos divide, habilitarlos tambien (se deshabilitan al desactivar ide)
-                if (divide_ide_ports_enabled.v==0) menu_storage_divide_ide_ports_emulation(0);
+                //printf("file: [%s]\n",ide_file_name);
+                //Si no se ha dejado archivo en blanco (salido con ESC)
+                if (ide_file_name[0]) {
+                    menu_storage_ide_emulation(0);
+                    //Y si no estan los puertos divide, habilitarlos tambien (se deshabilitan al desactivar ide)
+                    if (divide_ide_ports_enabled.v==0) menu_storage_divide_ide_ports_emulation(0);
+                }
             }
         break;
 
