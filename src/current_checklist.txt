@@ -12,8 +12,6 @@ echo "Porcentaje=$PERCCOMPLETADO %"
 -probar rendimiento cpu (benchmark*txt). con ao null vo null y ao null vo x11, sin memptr,sin visualmem, sin cpustats
 ok Mac
 
--ejecutar tests/machines_test.sh
-
 -probar Valgrind en Linux 64 bits:
 compilar con :  
 export CFLAGS="-g -rdynamic"
@@ -55,6 +53,7 @@ Drivers video:
 **en fbdev, probar tambien con --no-use-ttyfbdev y --no-use-ttyrawfbdev y --decimal-full-scale-fbdev
 **probar recreated
 -ejecutar tests/videotest.sh
+ok Mac
 
 
 ok -iniciar con ./zesarux --noconfigfile
@@ -97,6 +96,7 @@ ok --Mac: Probar ZENG, Speccy browser, ZX81 browser, Download TBBLUE SD
 --Linux: Probar ZENG, Speccy browser, ZX81 browser, Download TBBLUE SD 
 
 -Probar ZENG Online server
+ok Mac 
 
 -probar aofile raw y wav
 -probar con --disable-sndfile
