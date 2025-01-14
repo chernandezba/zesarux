@@ -39308,7 +39308,9 @@ void menu_storage(MENU_ITEM_PARAMETERS)
 				"Use with caution, "
 				"only some ESXDOS calls are handled, the rest are handled from the mmc/ide virtual file firmware.\n"
 				"The list of supported calls are: \n"
-				"DISK_INFO, DISK_STATUS, F_CHDIR, F_CLOSE, F_FSTAT, F_GETCWD, F_MKDIR, F_MOUNT, F_OPEN, F_OPENDIR, F_READ, F_READDIR, F_RENAME, F_REWINDDIR, F_SEEK, F_SEEKDIR, F_STAT, F_SYNC, F_TELLDIR, F_UNLINK, F_WRITE, M_DRIVEINFO, M_GETSETDRV"
+				"DISK_FILEMAP, DISK_INFO, DISK_STATUS, F_CHDIR, F_CLOSE, F_FSTAT, F_GETCWD, F_MKDIR, F_MOUNT, F_OPEN, F_OPENDIR, F_READ, "
+                "F_READDIR, F_RENAME, F_REWINDDIR, F_SEEK, F_SEEKDIR, F_STAT, F_SYNC, F_TELLDIR, F_UNLINK, F_WRITE, "
+                "M_DOSVERSION, M_DRIVEINFO, M_GETSETDRV"
 				"\n"
 				"Note: you can also enable and disable ESXDOS handler whenever you want, for example in programs that use unsupported functions for handler."
 

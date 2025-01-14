@@ -12,7 +12,7 @@
 * Ajustar EMULATOR_GAME_EDITION
 * En changelog, decir qué comandos nuevos de ZRCP, haciendo diff con version anterior
 * sacar el listado de funciones admitidas por el esxdos handler y meterlo en el menu de ayuda del mismo, con la sentencia:
-cat esxdos_handler.c |grep ESXDOS_RST8_|grep -v ESXDOS_RST8_FA_|grep case|grep -v "/"|sed 's/.*case //'|sed 's/:/,/'|sed 's/ESXDOS_RST8_//'|sort|tr '\n' ' '
+cat storage/esxdos_handler.c |grep ESXDOS_RST8_|grep -v ESXDOS_RST8_FA_|grep case|grep -v "/"|sed 's/.*case //'|sed 's/:/,/'|sed 's/ESXDOS_RST8_//'|sort|tr '\n' ' '
 tener en cuenta de sacar de esta lista los casos que retornan hacia rst8 (con funcion esxdos_handler_run_normal_rst8), como DISK_READ
 
 * Actualizar features, segun lo agregado a Changelog
