@@ -9,9 +9,6 @@ PERCCOMPLETADO=$((100-$PERC))
 echo "Porcentaje=$PERCCOMPLETADO %"
 )
 
--probar rendimiento cpu (benchmark*txt). con ao null vo null y ao null vo x11, sin memptr,sin visualmem, sin cpustats
-ok Mac
-
 -probar Valgrind en Linux 64 bits:
 compilar con :  
 export CFLAGS="-g -rdynamic"
