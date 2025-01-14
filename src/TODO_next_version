@@ -447,3 +447,5 @@ Yo creo que con eso vale, y la verdad, no se me ocurre en qué esceneario necesi
 -Llamadas a menu_warn_message y similares, al iniciar ZEsarUX, cuando esta restaurando ventanas, como la de menu_microdrive_raw_map (comentada al principio: menu_warn_message("Visual Memory window is opened),
 deja la ventana de ZEsarUX en un estado inconsistente
 Quiza se deberia controlar que las llamadas a *message no hagan nada si no esta acabado de iniciar aun
+
+-vofile con output para archivo bitmap raw en blanco y negro, para posible enlace con pantalla e-ink

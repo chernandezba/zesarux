@@ -14384,7 +14384,8 @@ menu_item *array_menu_ay_mixer;
 		menu_add_item_menu_format(array_menu_ay_mixer,MENU_OPCION_NORMAL,menu_audio_aymid_rs232,menu_cond_ay_chip,"[%c] AY ~~MIDI registers", (aymidi_rs232_enabled.v==1 ? 'X' : ' '));
 		menu_add_item_menu_shortcut(array_menu_ay_mixer,'m');
 		menu_add_item_menu_tooltip(array_menu_ay_mixer,"Enable or disable AY MIDI registers");
-		menu_add_item_menu_ayuda(array_menu_ay_mixer,"It handles values sent to register 14 and 15");
+		menu_add_item_menu_ayuda(array_menu_ay_mixer,"It handles midi commands sent to register 14 and 15 and are routed to a "
+            "external midi device (enable it on Settings-> Audio-> Audio Chip to MIDI Output");
 
 
 		if (MACHINE_IS_SPECTRUM || MACHINE_IS_MSX || MACHINE_IS_SVI || MACHINE_IS_CPC) {
