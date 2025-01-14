@@ -199,7 +199,7 @@ The default pin number is set to 22, but you can change it to any other you want
 
 
 Q: How can I enable the MIDI output feature?
-A: You must select a machine with Audio Chip (Spectrum 128k, MSX, etc) and go to menu Settings-> Audio-> Audio Chip to MIDI Output
+A: You must select a machine with Audio Chip (Spectrum 128k, QL, MSX, Master System, etc) and go to menu Settings-> Audio-> Audio Chip to MIDI Output
 
 
 Q: I want to use the MIDI output feature but I don't have any MIDI device. Is there any way to use it?
