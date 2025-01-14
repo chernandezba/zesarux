@@ -4029,11 +4029,11 @@ void menu_hilow(MENU_ITEM_PARAMETERS)
 
         if (hilow_rom_traps.v==0) {
             menu_add_item_menu_en_es_ca(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_hear_load,NULL,
-                "Hear load sound","Escuchar sonido de carga","Escoltar so de càrrega");
+                "Emulate load sound","Emular sonido de carga","Emular so de càrrega");
             menu_add_item_menu_prefijo_format(array_menu_hilow,"[%c] ",(hilow_hear_load_sound.v ? 'X' : ' ') );
 
             menu_add_item_menu_en_es_ca(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_hear_save,NULL,
-                "Hear save sound","Escuchar sonido de grabación","Escoltar so de gravació");
+                "Emulate save sound","Emular sonido de grabación","Emular so de gravació");
             menu_add_item_menu_prefijo_format(array_menu_hilow,"[%c] ",(hilow_hear_save_sound.v ? 'X' : ' ') );
 
 
