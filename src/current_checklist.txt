@@ -30,7 +30,6 @@ En cambio errores como "still reachable", "definitely lost", "indirectly lost", 
 Probar de nuevo a lanzarlo con: valgrind -q ./zesarux --ao null > /tmp/report 2>&1
 Y solo mostrara los errores, no los memory leaks por ejemplo
 
-
 ok -iniciar con ./zesarux --noconfigfile
 habilitar zxdesktop
 hacer las acciones de:  mover iconos, pulsar iconos (botón izquierdo y derecho), pulsar botones superiores (menus) e inferiores (dispositivos) con boton izquierdo y derecho de raton, pulsar en fondo zx desktop con boton derecho, con boton izquierdo (para que se cierre el menu) y con boton izquierdo+shift (para enviar el foco al fondo) en las siguientes situaciones:
@@ -50,8 +49,6 @@ ok * mac os x, con y sin optimizaciones
 * windows mingw, con y sin pthreads
 * windows cygwin
 
-
-
 -Funciones de Red:
 --Windows: Probar ZENG, Speccy browser, ZX81 browser, Download TBBLUE SD
 ok --Mac: Probar ZENG, Speccy browser, ZX81 browser, Download TBBLUE SD
@@ -62,15 +59,7 @@ ok Mac
 
 -probar aofile raw y wav
 -probar con --disable-sndfile
--probar juegos varios de zx80,zx81, spectrum, aquellos que hacen efectos especiales hi-res, etc
--probar juegos zx81 multipart: wrx/voyage , wrx/blockbuster
 -probar custom rom desde menu y desde linea de comandos. probar todas roms
--probar realvideo spectrum
--probar realvideo zx80/81
--probar realvideo z88
--probar modos hi-res zx81: hrg, chr$128, udg, wrx, otros hi-res. probar xtricator, pacman 
--probar autodetect WRX mode on ZX80/81
--probar chip sonido AY, en spectrum (ay y fuller) y zx81 (quicksilva(asteroids, defenda zx80)  y bi-pak (aydemo, pink panther...))
 -probar opcion ay speech on/off con chase hq por ejemplo
 -probar abc/acb/bac stereo con demos y tests/stereotest.sh
 -probar menu ay piano, beeper piano. nota: beeper piano con notas largas, como la musica del Zorro
@@ -108,7 +97,6 @@ ok Mac
 -probar azerty. se puede probar pulsando guion o cedilla
 -probar redefinir teclas, en menu y linea comandos
 -probar desactivando contended memory en compilacion
-
 
 -probar desactivando memptr i pasar z80tests.tap de spectrum. probar activando memptr i pasar z80tests.tap
 -probar cpustats
@@ -209,13 +197,8 @@ nota: curses, lightgun no va muy fino en los juegos debido al tiempo de retencio
 
 pruebas Z88:
 -cambio ram interna
--agregar ram externa
--eprom (formatos .eprom, .epr y .63): crear eprom, agregar eprom (eprom, epr y .63), borrado eprom, copia de eprom (desde menu emulador y desde Filer), copia a eprom (desde menu emulador (y llenando la eprom hasta que no quepa mas)  y desde filer), reclaim free space eprom, undelete eprom, insertar eprom desde linea de comandos. insertar en slot 1 o 2 (no escritura)
--flash: crear flash, agregar flash, borrar flash, copia de flash (desde menu emulador y desde Filer), copia a flash (desde menu emulador (y llenando la flash hasta que no quepa mas)  y desde filer), inicializar flash desde flashstore (y ver que la funcion de erase lo graba con FF), reclaim free space flash, undelete flash, insertar flash desde linea de comandos. insertar en slot 1 o 2 (no escritura)
--probar card browser con flash y eprom.
 -tarjeta hibrida ram+eprom: insertar la de actualizacion a oz 4.7 a ver si la reconoce y si reconoce RAM
 -grabar snaps con eproms y flash en diferentes slots
 -probar en menus tarjetas de aplicaciones, archivos, desconocidas
--probar sonido normal beeper (teclas, juegos, etc) y 3200 hz snap_tests/test3200z88.zx
 
 pruebas QL
