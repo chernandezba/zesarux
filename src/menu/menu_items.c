@@ -6515,7 +6515,7 @@ void menu_ayplayer_edit_playlist(MENU_ITEM_PARAMETERS)
 
         menu_add_ESC_item(array_menu_common);
 
-        retorno_menu=menu_dibuja_menu_no_title_lang(&linea_seleccionada,&item_seleccionado,array_menu_common,"Playlist");
+        retorno_menu=menu_dibuja_menu_dialogo_no_title_lang(&linea_seleccionada,&item_seleccionado,array_menu_common,"Playlist");
 
         //no queremos que al pulsar ESC aqui se cierren todos los menus anteriores
         salir_todos_menus=0;
