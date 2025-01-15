@@ -62,7 +62,6 @@ ok Mac
 
 -probar aofile raw y wav
 -probar con --disable-sndfile
--probar vofile. Con spectrum (border on, border off, ulaplus, spectra, timex), zx80/81 (border on, border off), z88. Con xwindows, curses, stdout y simpletext: en estos drivers probar tanto spectrum, zx81, y z88
 -probar juegos varios de zx80,zx81, spectrum, aquellos que hacen efectos especiales hi-res, etc
 -probar juegos zx81 multipart: wrx/voyage , wrx/blockbuster
 -probar custom rom desde menu y desde linea de comandos. probar todas roms
@@ -96,16 +95,6 @@ ok Mac
 -probar fallback de cinta standard a real tape, juegos: dracula tzx, Death Wish 3 (Erbe - Serie Leyenda).tzx  (DeathWish3(IBSA).tzx.zip), mortadelo y filemon II, Rambo. Parece que silent service si se mete como standard tape no detecta como cargador
 -probar ZXMMC menor de 1 GB y mayor de 1 GB. Probar snap_tests/pruebasplus3e.mmc. cat tab, load, format to 0,4, etc
 
--probar spectra. Test modos. Comparar con ZXSP. X128 NO es correcto del todo, falla la implementacion del flash
-Comparar test 128 pantalla con tabla docs/spectra/SPECTRA 128 Test.txt
-
--probar modos video timex. Mode 0 standard, 1 dual screen, 2 hires colour 8x1), timex+ulaplus. Mode 6 (512x192 monochrome)
-Modo 0 con solo habilitarlo
-Modo 1 con testtimexmode1.tap
-Modo 2 con demos
-Modo 2 con timex+ulaplus demo slideshow_timex_64.tap, DemoHAM8, DemoHAM8x1.tzx
-Modo 6 512x192 real/simulado a 256x192 con timmy.tap y testtimexmode6.tap y testtimexmode6-ulaplus.tap y alternaterom_sebasic4_rom01.rom(mode 1)
-
 -probar simulacion de carga en spectrum, zx80, zx81
 -probar audio filter on rom save
 -probar verbose 3, 4, debugregisters
@@ -136,25 +125,21 @@ Modo 6 512x192 real/simulado a 256x192 con timmy.tap y testtimexmode6.tap y test
 -probar menu de stdout
 -probar cargar/grabar pantalla en spectrum 48, 128, +2a, zxuno. formatos scr, pbm, bmp
 -probar cargar/grabar archivo binario. probar cargar binario desde linea comandos
--probar archivo de configuracion, probar comillas en archivo configuracion (simples y dobles : por ejemplo : --joystickkeyev Up 't' (esto poniendo joystick a none para que se envie solo la t) o  --joystickemulated "Sinclair 2"). probar grabado archivo config
 -probar lightgun, para todos drivers que lo soportan: xwindows, cocoa, sdl, caca (consola texto y X), curses (consola texto y X). con juegos y testlightgun.zx, y con realvideo on y off
 nota: curses, lightgun no va muy fino en los juegos debido al tiempo de retencion del boton de fire
--probar kempston mouse, para todos drivers que lo soportan: xwindows, cocoa, sdl, caca (consola texto y X), curses (consola texto y X). con demo kempston, art studio
-nota: cacalib, curses  en consola texto (no X) el mouse solo notifica al pulsar fire (y no al mover)
 -probar buscador vidas infinitas. tambien con cpu top speed
+-probar memory cheat
 -probar debug i/o ports: spectrum zx80/81, z88, zx-uno, etc
 -probar breakpoint condicionales (=,<,> y con registros indirectos (hl), con and or xor) , operadores bitwise &|^ en variables
 -probar desactivar breakpoints con espacio
 -probar exportar disassemble a archivo texto
 -probar assembler, desde menu y ZRCP
 -probar watches
--probar remote command protocol ZRCP, en linux, mac y windows
 -probar zxi ports con extras/media/spectrum/tests/zesarux-zxi-ports.tap , extras/media/spectrum/tests/hardwaredebugport.tap
 -probar quill/paws/daad debugger
 -probar text adventure map
 -probar location graphics gac/paws/daad
 -probar autosave at interval, snapshots to ram
--probar todas opciones de menu en general, menus con mas opciones verticalmente de las visibles -> audio settings
 -probar impresora: en zx spectrum, zx81
 -probar COPY to printer
 -probar custom configuration file, con snap_tests/test_autoconfig.tap  (y hay snap_tests/test_autoconfig.tap.config) y snap_tests/test_autoconfig.p (y hay snap_tests/test_autoconfig.p.config)
@@ -182,7 +167,6 @@ nota: cacalib, curses  en consola texto (no X) el mouse solo notifica al pulsar 
 -probar frameskip
 -probar easter eggs
 -probar repeticion de teclas en selector de archivos, ayuda, etc (en opciones de menu no hace repeticion)
--probar rutinas autodeteccion caracteres: algunos de sslfunctions, otro no listado (como Spiderman o masters of the universe), hobbit (usa dos rutinas de caracteres). probar con stdout y xwindows, sdl, etc. probar --enableprintchartrap y --disableprintchartrap en stdout y xwindows
 -probar speech en stdout
 -probar F4 (pantalla a speech) en Spectrum (con texto normal y graficos), Z88, ZX81 (con y sin rainbow, y con texto normal y con graficos->4 combinaciones). ZX80
 -probar funcion Find. probar buscar pokes
@@ -200,8 +184,6 @@ nota: cacalib, curses  en consola texto (no X) el mouse solo notifica al pulsar 
 -keymaps en xwindows y sdl para z88, cpc, chloe, sam, ql, ...
 
 -probar Jupiter Ace. centipede (chip ay) y valkyr (speaker y chip ay). cargar y grabar ace. cargar wav
--probar Chloe 140, 280. Tests, carga trap, grabar tap, chloe keyboard
--probar Timex. Tests, carga trap, grabar tap
 -Probar Prism: extras/media/spectrum/prism/allvideotests.tap. Tests de chloe. Failsafe mode. Modos lineales de video extras/media/spectrum/prism/linear_modes/
 -Probar TBBlue. Copper (carpeta media... copper con demo specdrum y beast (beast con esxdos handler ) ) .  Sprites con Dungeonette (con esxdos handler), tiles. cargar con --noconfigfile y smartload un archivo .nex con archivos de recursos (usara esxdos handler), ver que cargue todo bien
 -Probar Amstrad cpc. Todas teclas. Para probar scroll hardware en cpc: https://syx.neocities.org/posts/old_games_with_scroll: boulder dash3, Doctor Who and the Mines of Terror, Five A Side Soccer, Legend of Kage, Street Machine, Xeno, 007 The Living Daylights (uso intensivo , se ve fatal), Bob Morane, Canadair, Vector Ball
@@ -237,19 +219,3 @@ pruebas Z88:
 -probar sonido normal beeper (teclas, juegos, etc) y 3200 hz snap_tests/test3200z88.zx
 
 pruebas QL
--teclado:
-
-the main thing to check is the character codes - use:
-REP Loop:print code(inkey$(-1))
-
-This will show the character code for each pressed key.
-
-In particular check 
-
-a (97)
-CTRL a (1) 
-and 
-ALT a ( ALT is awkard, it returns 255 plus the character code, so you should see on screen two values, 255 then 97 when you press this combination)
-
--cargar manualmente juegos en memoria mediante load binary
--cargar lbytes mediante emulacion de microdrive&floppy

@@ -434,6 +434,8 @@ lo hace pero el menu contextual sale arriba del todo y no en la posición del cu
 
 -modo 60 hz en atic atac, para next. Y quizá empezar con maquinas timex que tienen 60 hz, que tienen menos scanlines...
 
+-poder grabar a cinta desde MSX en archivo .cas. Revisar otras máquinas que se pueda hacer
+
 -breakpoints que se disparen cuando se cumpla una condición N veces:
 
 1) Olvídate de que el "pass count" (lo llamo así por ser como lo llama Turbo Pascal) sea una variable más de tus expresiones, no tiene sentido. Debe ser un valor opcional aparte.

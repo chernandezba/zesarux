@@ -212,7 +212,7 @@ Modo 6 512x192 real/simulado a 256x192 con timmy.tap y testtimexmode6.tap y test
 -probar desactivando contended memory en compilacion
 
 
--probar desactivando memptr i pasar z80tests.tap de spectrum. probar activando memptr i pasar z80tests.tap
+-probar desactivando memptr y pasar z80tests.tap de spectrum. probar activando memptr y pasar z80tests.tap
 -probar z80flags.tap. con memptr y --enable-undoc-scfccf son 6 de 152: fallan bit n,a ; bit n,[r,(hl)], ldi, ldd, ldir, lddr
 -probar cpustats
 -probar visualmem, tambien en drivers no graficos como curses, aa, etc
@@ -242,6 +242,7 @@ nota: curses, lightgun no va muy fino en los juegos debido al tiempo de retencio
 -probar kempston mouse, para todos drivers que lo soportan: xwindows, cocoa, sdl, caca (consola texto y X), curses (consola texto y X). con demo kempston, art studio
 nota: cacalib, curses  en consola texto (no X) el mouse solo notifica al pulsar fire (y no al mover)
 -probar buscador vidas infinitas. tambien con cpu top speed
+-probar memory cheat
 -probar debug i/o ports: spectrum zx80/81, z88, zx-uno, etc
 -probar debugger, step over interrupt, electron position, cursores, toggle, runto, etc
 -probar breakpoint condicionales (=,<,> y con registros indirectos (hl), con and or xor) , operadores bitwise &|^ en variables
