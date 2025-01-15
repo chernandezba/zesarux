@@ -42,24 +42,10 @@ hacer las acciones de:  mover iconos, pulsar iconos (botón izquierdo y derecho)
 -probar desactivando algun driver de video en compilacion, como x11, y ver que funcionan los otros
 
 -probar targets:
-* linux 32 bits
-ok * linux 64 bits
 * raspberry. y activando extensiones raspberry
-ok * mac os x, con y sin optimizaciones
-* windows mingw, con y sin pthreads
-* windows cygwin
-
--Funciones de Red:
---Windows: Probar ZENG, Speccy browser, ZX81 browser, Download TBBLUE SD
-ok --Mac: Probar ZENG, Speccy browser, ZX81 browser, Download TBBLUE SD
---Linux: Probar ZENG, Speccy browser, ZX81 browser, Download TBBLUE SD 
-
--Probar ZENG Online server
-ok Mac 
 
 -probar aofile raw y wav
 -probar con --disable-sndfile
--probar custom rom desde menu y desde linea de comandos. probar todas roms
 -probar opcion ay speech on/off con chase hq por ejemplo
 -probar abc/acb/bac stereo con demos y tests/stereotest.sh
 -probar menu ay piano, beeper piano. nota: beeper piano con notas largas, como la musica del Zorro
@@ -69,7 +55,6 @@ ok Mac
 -probar a guardar snapshots versiones anteriores .zx (1, 2, 3, 4, 5 y 6) y cargar en ZEsarUX versiones viejas y ZXSpectr
 -probar a guardar snapshots .zsf y cargar en ZEsarUX versiones viejas
 -probar archivos zip, tar, rar, gz
--probar expansor archivos tap, tzx, dsk, trd, etc
 -probar cambiando rutas a sox, gunzip, etc...
 
 -probar diferentes cargas, a continuacion, hay ejemplos en carpeta snap_tests y tambien alguno suelto, como canciones.smp y orquesta.smp
@@ -103,10 +88,6 @@ ok Mac
 -probar visualmem, tambien en drivers no graficos como curses, aa, etc
 -probar desactivando cpustats
 -probar desactivando visualmem
--probar ay player. Con versiones 00,01,02,3. Probar Spectrum y CPC
--probar paleta gris, roja, verde, azul, inverso, real, etc. tambien con modos ulaplus, gigascreen, scanlines, spectra, timex, prism, sam
--ver paletas de colores
--probar expansiones de ram de zx80/81
 -probar opcion desactivar contended memory en menu
 -probar fuller audio box emulation
 -probar advanced timing settings 
@@ -131,18 +112,6 @@ nota: curses, lightgun no va muy fino en los juegos debido al tiempo de retencio
 -probar impresora: en zx spectrum, zx81
 -probar COPY to printer
 -probar custom configuration file, con snap_tests/test_autoconfig.tap  (y hay snap_tests/test_autoconfig.tap.config) y snap_tests/test_autoconfig.p (y hay snap_tests/test_autoconfig.p.config)
--probar footer cuando se carga cinta/snap detectado por autoselectoptions o custom configuration file:
-* cuando el juego es generico y no se indica nombre (por ejemplo, aydemo)
-* juego que solo pone nombre pero no info, por ejemplo Dancing Demon y Pink Panther
-* cuando se indica juego (como por ejemplo, overscan.tap)
-* nombre con punto, como H.E.R.O.
-* cuando hay segundo mensaje:
-** Song in Lines 5 - no cabe entero 
-** Manic miner zx81 o orquesta - caben los : en el primer mensaje
-** segundo mensaje se desplaza porque no cabe, como beamrider 
-** primer y segundo mensaje se desplazan, como voyage of peril
-** FSCAPES.P, que no da tiempo a mostrar todo el segundo mensaje porque carga partes
-* Con y sin border enabled
 -probar diferentes joysticks: kempston (inves y no-inves), cursor, fuller, etc. autofire. autoleft/right
 -probar keyboard help. pulsar teclas. mantener teclas
 -probar on screen adventure keyboard 
