@@ -1,7 +1,7 @@
 * en cpu.h, actualizar numero de version, comentar SNAPSHOT_VERSION, borrar -SN o -RC sufijo de EMULATOR_VERSION
 * cambiar version en accion push de docker-zesarux.sh
 * cambiar fechas en EMULATOR_DATE, EMULATOR_SHORT_DATE
-* cambiar nombre edicion en EMULATOR_EDITION_NAME
+* cambiar nombre edicion en EMULATOR_GAME_EDITION
 * en Changelog cambiar nombre edicion y fechas
 * activar capture segmentation fault en start.c
 * activar capture floating point exception en start.c
@@ -9,7 +9,6 @@
 * Cambiar EMULATOR_VERSION en archivo configure
 * Cambiar version en macos/apptemplate/Contents/Info.plist, tag CFBundleVersion
 * Ajustar juego editionnamegame.tap, si juego no permitido distribucion, eliminar. Ajustar EDITION_NAME_GAME en cpu.h sobretodo si cambia a tap o tzx o dsk. Crear editionnamegame.tap.config o editionnamegame.tzx.config si es necesario
-* Ajustar EMULATOR_GAME_EDITION
 * En changelog, decir qué comandos nuevos de ZRCP, haciendo diff con version anterior
 * sacar el listado de funciones admitidas por el esxdos handler y meterlo en el menu de ayuda del mismo, con la sentencia:
 cat storage/esxdos_handler.c |grep ESXDOS_RST8_|grep -v ESXDOS_RST8_FA_|grep case|grep -v "/"|sed 's/.*case //'|sed 's/:/,/'|sed 's/ESXDOS_RST8_//'|sort|tr '\n' ' '
@@ -36,21 +35,6 @@ chase hq, Rescue on Fractalus, gunfright, xeno, Neula, world destruction, the gr
 cliff hanger, clive sinclair, carrier command, Abadia del Crimen, David, Bubble Bobble
 
 
---------------
-
-Ejemplos de nombres de archivos de una distribución estable y sus tamaños:
-
- ZEsarUX_extras-10.0.zip                        152 MB
- ZEsarUX_freebsd-10.0-freebsd12_x64.tar.gz      35.9 MB
- ZEsarUX_haiku-11.0.tar.gz                      35.9 MB
- ZEsarUX_linux-10.0-debian10_x32.tar.gz         36.1 MB
- ZEsarUX_linux-10.0-debian10_x64.tar.gz         36.1 MB
- ZEsarUX_macos-10.0-legacy.dmg                  34.3 MB
- ZEsarUX_macos-10.0.dmg                         34.5 MB
- ZEsarUX_raspberrypios-framebuffer-10.0.tar.gz  35.7 MB
- ZEsarUX_src-10.0.tar.gz                        37.4 MB
- ZEsarUX_windows-10.0-legacy.zip                37.5 MB
- ZEsarUX_windows-10.0.zip                       37.2 MB
 
 --------------
 
@@ -194,6 +178,22 @@ ZEsarUX_windows-[version]-legacy.zip
 ZEsarUX_windows-[version].zip
 
 Donde [version] es el numero de version, por ejemplo 10.3
+
+Ejemplos de nombres de archivos de una distribución estable y sus tamaños:
+
+ ZEsarUX_extras-11.0.zip                               152 MB
+ ZEsarUX_freebsd-11.0-freebsd12_x64.tar.gz             35.9 MB
+ ZEsarUX_haiku-11.0_x86_64.tar.gz                      35.9 MB
+ ZEsarUX_linux-11.0-debian11_x32.tar.gz                36.1 MB
+ ZEsarUX_linux-11.0-debian11_x64_64.tar.gz             36.1 MB
+ ZEsarUX_linux-11.0-fedora38_x86_64.tar.gz             36.1 MB
+ ZEsarUX_linux-11.0-ubuntu22_x86_64.tar.gz             36.1 MB
+ ZEsarUX_macos-11.0-legacy.dmg                         34.3 MB
+ ZEsarUX_macos-11.0.dmg                                34.5 MB
+ ZEsarUX_raspberrypios-framebuffer-11.0_armv6l.tar.gz  35.7 MB
+ ZEsarUX_src-11.0.tar.gz                               37.4 MB
+ ZEsarUX_windows-11.0-legacy.zip                       37.5 MB
+ ZEsarUX_windows-11.0.zip                              37.2 MB
 
 *generar también versión docker con: ./docker-zesarux.sh push
 

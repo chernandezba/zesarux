@@ -72,7 +72,7 @@
 
 * Usa su propio potente entorno de ventanas (ZX Vision) dentro de la ventana de la aplicación, teniendo el mismo estilo del GUI en todas las plataformas. Permite tener una vista extendida para ubicar menus y ventanas multitarea dentro del GUI (ZX Desktop)
 
-* Soporte parcial de menús en Español
+* Soporte parcial de menús en Español y Catalán
 
 * Se puede usar con joystick y entornos sin teclados, como Raspiboy / Retropie
 
@@ -110,7 +110,7 @@
 
 * Soporta reproducción RZX
 
-* Emula los siguientes Interfaces de Copia: Defcon, Dinamid3, Hilow Barbanegra, Interface007, Microhobby Pokeador Automatico, Multiface One, 128 y Three, Phoenix, Ramjet, Spec-Mate, Transtape
+* Emula los siguientes Interfaces de Copia: Defcon, Dinamid3, Hilow Barbanegra, Interface007, Microhobby Pokeador Automatico, Multiface (One, 128 y Three), Phoenix, Ramjet, Spec-Mate, Transtape
 
 * Emula Dinamic SD1
 
@@ -124,7 +124,7 @@
 
 * Emula ZX Spectrum MMC Interfaces: ZXMMC, DivMMC
 
-* Emula ZX Spectrum IDE Interface: DivIDE, 8-bit simple
+* Emula ZX Spectrum IDE Interfaces: DivIDE, 8-bit simple
 
 * Emula ZX Spectrum ESXDOS acceso de archivos usando archivos de tu ordenador
 
@@ -198,7 +198,7 @@
 
 * Soporta leer Pokes de archivos .POK
 
-* Utilidades de Chip de Audio Chip: Para los 3 chips emulados (AY-3-8912, SN76489AN, QL i8049): Partitura, Piano, Registros, exportar música a archivos midi (.mid)
+* Utilidades de Chip de Audio: Para los 3 chips emulados (AY-3-8912, SN76489AN, QL i8049): Partitura, Piano, Registros, exportar música a archivos midi (.mid)
 
 * Reproducción en Tiempo Real del Sonido del Chip de Audio (AY-3-8912, SN76489AN, QL i8049) a un dispositivo externo MIDI
 
@@ -208,7 +208,11 @@
 
 * Visual Real Tape: tienes una vista del audio de tu cinta, ver bloques de cinta y rebobinar o avanzar el reproductor de cintas
 
+* Visual Casette Tape: permite ver una cinta real y como se mueve a medida que se carga un juego
+
 * Visual Floppy: permite ver actividad en el floppy disk: movimiento del disco, lecturas, escrituras, posicionamiento del cabezal, etc
+
+* Visual Microdrive: permite ver un cartucho de microdrive en acción
 
 * Soporta ZEsarUX remote command protocol (ZRCP). Este es un potente protocolo de comunicaciones entre un cliente y ZEsarUX, utilizando un simple cliente telnet. Una de las cosas que puedes hacer es debugging mejorado en ZEsarUX desde Visual Studio Code (ver https://github.com/maziac/DeZog)
 

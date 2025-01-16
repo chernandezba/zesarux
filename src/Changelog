@@ -1,4 +1,4 @@
-ZEsarUX 12 - Bubble Bobble edition. 08 January 2025
+ZEsarUX 12 - Bubble Bobble edition. 16 January 2025
 
 * New things added:
 
@@ -79,7 +79,7 @@ Improved Debug:
 
 Improved Hexadecimal editor:
 - Now the data is refreshed when the window has the focus too
-- Now the memory pointer can follow a expression (CPU register for example)
+- Now the memory pointer can follow an expression (CPU register for example)
 
 Improved ZX Vision:
 - More GUI improvements following more guidelines from the (retro)-specification IBM CUA

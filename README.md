@@ -145,7 +145,7 @@ __FEATURES__
 
 * Emulates ULAplus: Standard 64 colour palette, linear modes with 16 colours per pixel: Radastan Mode: 128x96, ZEsarUX modes: 256x96, 128x192, 256x192
 
-* Emulates Flash Color mode (128 color)
+* Emulates Flash Color mode (128 colors)
 
 * Emulates Chroma81 ZX81 Colour mode
 
@@ -209,7 +209,7 @@ __FEATURES__
 
 * Handles RZX playback
 
-* Emulates the following Copy Interfaces: Defcon, Dinamid3, Hilow Barbanegra, Interface007, Microhobby Pokeador Automatico, Multiface One, 128 and Three, Phoenix, Ramjet, Spec-Mate, Transtape
+* Emulates the following Copy Interfaces: Defcon, Dinamid3, Hilow Barbanegra, Interface007, Microhobby Pokeador Automatico, Multiface (One, 128 and Three), Phoenix, Ramjet, Spec-Mate, Transtape
 
 * Emulates Dinamic SD1
 
@@ -223,7 +223,7 @@ __FEATURES__
 
 * Emulates ZX Spectrum MMC Interfaces: ZXMMC, DivMMC
 
-* Emulates ZX Spectrum IDE Interface: DivIDE, 8-bit simple
+* Emulates ZX Spectrum IDE Interfaces: DivIDE, 8-bit simple
 
 * Emulates ZX Spectrum ESXDOS file access using files from your computer
 
@@ -307,7 +307,11 @@ __FEATURES__
 
 * Visual Real Tape: you have an audio render of your tape, see tape blocks and rewind or move forward the cassette player
 
+* Visual Casette Tape: allow to see a real tape and the movement when loading a game
+
 * Visual Floppy: allow to see floppy activity: disk movement, reads, writes, head seek, etc
+
+* Visual Microdrive: allow to see microdrive activity
 
 * Supports ZEsarUX remote command protocol (ZRCP). This is a powerful communications protocol between a client and ZEsarUX, using a simple telnet client. One of the things you can do it is enhanced debugging on ZEsarUX from Visual Studio Code (see https://github.com/maziac/DeZog)
 

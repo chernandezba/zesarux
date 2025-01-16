@@ -1,4 +1,4 @@
-ZEsarUX 12 - Bubble Bobble edition. 08 Enero 2025
+ZEsarUX 12 - Bubble Bobble edition. 16 Enero 2025
 
 * Cosas nuevas agregadas:
 
@@ -44,7 +44,7 @@ Mejorada emulación de teclado ZX Recreated: permitir usarlo también en el men�
 Permitir grabar snapshots .Z80 de TC2048, TC2068, TS2068. Permitir cargar snapshots .Z80 de TC2048, TC2068
 
 Mejorada emulación de Spectrum Next (lo siguiente permite, por ejemplo, ejecutar la versión de Atic Atac para Next):
-- Agregado modos de capas 6 and 7 (modos mezcla)
+- Agregado modos de Layer 6 y 7 (modos blend)
 - Agregado NMI sin stack
 - Agregado Canales DAC A,B,C,D
 - Permitir tiles en RAM 7
@@ -127,7 +127,7 @@ Corregida carga de snapshots .nex y la MMU no gestionada correctamente
 Corregida característica de Buscar menú. Ahora está habilitado por defecto
 Corregido error al grabar snapshots .ZSF de Z88 cuando el bloque de RAM o de tarjeta de memoria no está comprimido
 Corregido mostrar texto en footer de F5/Button menu
-Corregido sonido de MSX de pulsación de teclas
+Corregido sonido de pulsación de teclas en MSX
 Corregido escritura en ZX-Uno en direcciones 0000h-3fffh al usar MMU de Chloe y segmento no es ROM
 
 
