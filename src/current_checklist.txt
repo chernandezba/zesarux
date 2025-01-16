@@ -30,14 +30,6 @@ En cambio errores como "still reachable", "definitely lost", "indirectly lost", 
 Probar de nuevo a lanzarlo con: valgrind -q ./zesarux --ao null > /tmp/report 2>&1
 Y solo mostrara los errores, no los memory leaks por ejemplo
 
-ok -iniciar con ./zesarux --noconfigfile
-habilitar zxdesktop
-hacer las acciones de:  mover iconos, pulsar iconos (botón izquierdo y derecho), pulsar botones superiores (menus) e inferiores (dispositivos) con boton izquierdo y derecho de raton, pulsar en fondo zx desktop con boton derecho, con boton izquierdo (para que se cierre el menu) y con boton izquierdo+shift (para enviar el foco al fondo) en las siguientes situaciones:
-1. sin ninguna ventana y con menu cerrado
-2. sin ninguna ventana y con menu abierto
-3. con alguna ventana abierta y con menu cerrado
-4. con alguna ventana abierta y con menu abierto
-
 -probar desactivando xextensions en configure con --disable-xext
 -probar desactivando algun driver de video en compilacion, como x11, y ver que funcionan los otros
 
