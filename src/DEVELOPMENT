@@ -196,6 +196,7 @@ Ejemplos de nombres de archivos de una distribución estable y sus tamaños:
  ZEsarUX_windows-11.0.zip                              37.2 MB
 
 *generar también versión docker con: ./docker-zesarux.sh push
+Y editar info en descripción inicial resumida y Repository overview para hacer referencia las instrucciones al número de versión actual
 
 Al final de la subida,
 Generar en servidor ZEsarUX, en ruta
