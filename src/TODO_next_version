@@ -457,3 +457,5 @@ Quiza se deberia controlar que las llamadas a *message no hagan nada si no esta 
 -callback sdl audio se usa el antiguo por defecto?
 
 -si tiene que avisar de nueva version disponible en github, parece que no sale aviso si salta un first aid de inicio (testeado en windows)
+
+-Zumbido ZEsarUX en versión Windows a que se debe? A detector de silencio? lo he llegado a escuchar en haiku, con callback new
