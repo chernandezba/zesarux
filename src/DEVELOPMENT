@@ -166,8 +166,8 @@ README
 ZEsarUX_extras-[version].zip
 ZEsarUX_freebsd-[version]-freebsd12_amd64.tar.gz
 ZEsarUX_haiku-[version]_x86_64.tar.gz
-ZEsarUX_linux-[version]-debian11_i686.tar.gz
-ZEsarUX_linux-[version]-debian11_x86_64.tar.gz
+ZEsarUX_linux-[version]-debian12_i686.tar.gz
+ZEsarUX_linux-[version]-debian12_x86_64.tar.gz
 ZEsarUX_linux-[version]-fedora38_x86_64.tar.gz
 ZEsarUX_linux-[version]-ubuntu22_x86_64.tar.gz
 ZEsarUX_macos-[version]-legacy.dmg
@@ -184,8 +184,8 @@ Ejemplos de nombres de archivos de una distribución estable y sus tamaños:
  ZEsarUX_extras-11.0.zip                               152 MB
  ZEsarUX_freebsd-11.0-freebsd12_x64.tar.gz             35.9 MB
  ZEsarUX_haiku-11.0_x86_64.tar.gz                      35.9 MB
- ZEsarUX_linux-11.0-debian11_x32.tar.gz                36.1 MB
- ZEsarUX_linux-11.0-debian11_x64_64.tar.gz             36.1 MB
+ ZEsarUX_linux-11.0-debian12_x32.tar.gz                36.1 MB
+ ZEsarUX_linux-11.0-debian12_x64_64.tar.gz             36.1 MB
  ZEsarUX_linux-11.0-fedora38_x86_64.tar.gz             36.1 MB
  ZEsarUX_linux-11.0-ubuntu22_x86_64.tar.gz             36.1 MB
  ZEsarUX_macos-11.0-legacy.dmg                         34.3 MB
@@ -215,8 +215,8 @@ Es el contenido del Changelog y el Cambios, solo del trozo de esta versión en c
 
 ** Linux
 Generar estos dos binarios de Linux (32 y 64 bits):
-ZEsarUX_linux-version-debian11_i686.tar.gz
-ZEsarUX_linux-version-debian11_x86_64.tar.gz
+ZEsarUX_linux-version-debian12_i686.tar.gz
+ZEsarUX_linux-version-debian12_x86_64.tar.gz
 Habilita drivers video: xwindows, sdl, fbdev, curses, stdout, simpletext y drivers audio: pulse, alsa, sdl, dsp, pcspeaker.
 
 con comandos:

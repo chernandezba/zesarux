@@ -454,4 +454,6 @@ Quiza se deberia controlar que las llamadas a *message no hagan nada si no esta 
 
 -vofile con output para archivo bitmap raw en blanco y negro, para posible enlace con pantalla e-ink
 
+-callback sdl audio se usa el antiguo por defecto?
+
 -si tiene que avisar de nueva version disponible en github, parece que no sale aviso si salta un first aid de inicio (testeado en windows)
