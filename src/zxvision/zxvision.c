@@ -6140,6 +6140,12 @@ void menu_ext_desktop_draw_configurable_icon(int index_icon,int pulsado)
                 //el icono llega a la derecha del todo y la linea de apertura se va mas 2 pixeles mas a la derecha
                 menu_draw_ext_desktop_one_configurable_icon_background(x,y_app_abierta,menu_get_ext_desktop_icons_size(),
                     1*zoom_y,ESTILO_GUI_COLOR_AVISO);
+
+                //Si esta minimizada
+                if (buscar_ventana_abierta->is_minimized) {
+                    menu_draw_ext_desktop_one_configurable_icon_background(x+menu_get_ext_desktop_icons_size()-3*zoom_x,y_app_abierta-3*zoom_y,
+                        zoom_x*2,zoom_y*2,ESTILO_GUI_TINTA_NO_DISPONIBLE);
+                }
             }
         }
     }

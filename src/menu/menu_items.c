@@ -40981,7 +40981,7 @@ void menu_process_switcher_draw_icon(zxvision_window *ventana,char *geometry_nam
         menu_process_switcher_draw_recuadro(ventana,offset_x,offset_y,ancho_recuadro,alto_recuadro,color_recuadro);
     }
 
-    //si esta minimizada, dibujarle un puntito
+    //Si esta minimizada, mismo puntito que sale en iconos de zx desktop con ventanas minimizadas
     if (minimizada) {
         //recuadro alrededor
         int x_puntito=offset_x+ZESARUX_ASCII_LOGO_ALTO-3;
