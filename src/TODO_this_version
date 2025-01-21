@@ -4,6 +4,10 @@
 y en ese modo al abrir la aplicación, se desminimice
 
 *Y en process switcher se indica de alguna manera que está minimizada. Ver si con recuadro o quiza texto en otro color
+Process switcher quizá dibujar un punto en ventanas minimizadas. No, eso es para iconos de ventanas abiertas
+Quizá recuadro en vez de punto
+
+
 
 ok *con shift-flecha derecha aparecen también las minimizadas
 *opción que se llame algo como "hide on minimize" o bien que se oculten si esta el process switcher abierto
@@ -17,4 +21,5 @@ ok *desminimizar al hacer una ventana activa, desde zxvision_handle_mouse_ev_swi
 *dialogos no se deben poder minimizar, como Trash Can
 
 *al ir desde el menu a una ventana minimizada, que la desminimice. supongo que con zxvision_activate_this_window,
-pero que la desminimice siempre que el setting de ocultar minimizadas esté activado
+pero que la desminimice siempre que el setting de ocultar minimizadas esté activado.
+En activate Windows quizá solo hace falta hacer toggle pero sin redibujar ventana pues ya se redibujara sola

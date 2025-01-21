@@ -1225,7 +1225,7 @@ z80_bit menu_hide_maximize_button={0};
 z80_bit menu_hide_close_button={0};
 
 //Si se ocultan ventanas minimizadas
-z80_bit zxvision_hide_minimized_windows={0};
+z80_bit zxvision_hide_minimized_windows={1};
 
 //Si se oculta boton de background ventana en ventana no activa (cuando deberia parpadear)
 //Quiero que por defecto esté oculto
@@ -10836,6 +10836,11 @@ void zxvision_window_move_this_window_on_top(zxvision_window *ventana)
 
 void zxvision_activate_this_window(zxvision_window *ventana)
 {
+
+    //Si esta minimizada y el setting de ocultarla, desminimizarla
+    if (ventana->is_minimized && zxvision_hide_minimized_windows.v) {
+        zxvision_toggle_minimize_window(ventana);
+    }
 
     zxvision_window_move_this_window_on_top(ventana);
     zxvision_keys_event_not_send_to_machine=1;
