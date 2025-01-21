@@ -2163,6 +2163,11 @@ void menu_use_speccy_keys(MENU_ITEM_PARAMETERS)
     zxvision_setting_use_speccy_keys.v ^=1;
 }
 
+void menu_interface_hide_minimized_windows(MENU_ITEM_PARAMETERS)
+{
+    zxvision_hide_minimized_windows.v ^=1;
+}
+
 void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
 {
     menu_item *array_menu_common;
@@ -2399,6 +2404,10 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_hide_close_button.v ? ' ' : 'X') );
         menu_add_item_menu_es_avanzado(array_menu_common);
 
+		menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_hide_minimized_windows,NULL,
+            "Hide minimized windows","Ocultar ventanas minimizadas","Ocultar finestres minimitzades");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(zxvision_hide_minimized_windows.v ? 'X' : ' ') );
+        menu_add_item_menu_es_avanzado(array_menu_common);
 
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_hide_background_button_on_inactive,NULL,
             "Background button on inactive","Botón de background en inactivo","Botó de background a inactiu");

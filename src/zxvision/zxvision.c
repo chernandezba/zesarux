@@ -1224,6 +1224,9 @@ z80_bit menu_hide_maximize_button={0};
 //Si se oculta boton de cerrar ventana
 z80_bit menu_hide_close_button={0};
 
+//Si se ocultan ventanas minimizadas
+z80_bit zxvision_hide_minimized_windows={0};
+
 //Si se oculta boton de background ventana en ventana no activa (cuando deberia parpadear)
 //Quiero que por defecto esté oculto
 z80_bit menu_hide_background_button_on_inactive={1};
@@ -12761,6 +12764,9 @@ void zxvision_set_mark_tried_write_beyond_size(zxvision_window *w)
 
 void zxvision_draw_window(zxvision_window *w)
 {
+
+    if (!zxvision_show_minimized(w)) return;
+
 	menu_dibuja_ventana(w->x,w->y,w->visible_width,w->visible_height,w->window_title);
 
 
@@ -13774,6 +13780,8 @@ void zxvision_draw_window_contents_stdout(zxvision_window *w)
 int zxvision_coords_in_window(zxvision_window *w,int x,int y)
 {
 
+    if (!zxvision_show_minimized(w)) return 0;
+
 	int other_x=w->x;
 	int other_y=w->y;
 	int other_width=w->visible_width;
@@ -13980,6 +13988,8 @@ void zxvision_draw_window_contents(zxvision_window *w)
         zxvision_reset_flag_dirty_must_draw_contents(w);
 		return;
 	}
+
+    if (!zxvision_show_minimized(w)) return;
 
 	//menu_textspeech_send_text(texto);
 
@@ -15676,6 +15686,21 @@ void zxvision_minimize_window(zxvision_window *w)
     }
 }
 
+//Si es una ventana minimizada y se debe mostrar
+int zxvision_show_minimized(zxvision_window *w)
+{
+
+    if (zxvision_hide_minimized_windows.v==0) return 1;
+
+    //No se si esto puede suceder pero por si acaso
+    if (w==NULL) return 1;
+
+
+    if (w->is_minimized) return 0;
+
+    return 1;
+}
+
 
 void zxvision_handle_maximize(zxvision_window *w)
 {
@@ -15851,6 +15876,12 @@ void zxvision_handle_mouse_ev_switch_back_wind(zxvision_window *ventana_pulsada)
 {
 	clicked_on_background_windows=1;
 	which_window_clicked_on_background=ventana_pulsada;
+
+    //desminimizar ventana si estaba minimizada
+    if (ventana_pulsada->is_minimized) {
+        //printf("desminimizar ventana\n");
+        zxvision_toggle_minimize_window(ventana_pulsada);
+    }
 
 	//Se ha pulsado en otra ventana. Conmutar a dicha ventana. Cerramos el menu y todos los menus raíz
 	salir_todos_menus=1;
@@ -16958,7 +16989,7 @@ void zxvision_handle_mouse_events(zxvision_window *w)
 			ventana_pulsada=zxvision_coords_in_below_windows(zxvision_current_window,absolute_mouse_x,absolute_mouse_y);
 
 
-			if (ventana_pulsada!=NULL) {
+			if (ventana_pulsada!=NULL && zxvision_show_minimized(ventana_pulsada)) {
 				debug_printf (VERBOSE_DEBUG,"Clicked on window: %s",ventana_pulsada->window_title);
 
 				zxvision_handle_mouse_ev_switch_back_wind(ventana_pulsada);
@@ -26199,7 +26230,7 @@ void menu_inicio(void)
 			zxvision_window *ventana_pulsada;
 
             //Si pulsamos en la ventana que esta arriba
-			if (zxvision_coords_in_front_window(absolute_mouse_x,absolute_mouse_y)) {
+			if (zxvision_coords_in_front_window(absolute_mouse_x,absolute_mouse_y) && zxvision_show_minimized(zxvision_current_window)) {
 				//printf("abierto menu y pulsado en ventana en foreground: %s\n",zxvision_current_window->window_title);
 
 				zxvision_handle_mouse_ev_switch_back_wind(zxvision_current_window);
@@ -26215,7 +26246,7 @@ void menu_inicio(void)
                 ventana_pulsada=zxvision_coords_in_below_windows(zxvision_current_window,absolute_mouse_x,absolute_mouse_y);
 
 
-                if (ventana_pulsada!=NULL) {
+                if (ventana_pulsada!=NULL && zxvision_show_minimized(ventana_pulsada)) {
                     //printf("abierto menu y pulsado en ventana en background: %s\n",ventana_pulsada->window_title);
 
                     zxvision_handle_mouse_ev_switch_back_wind(ventana_pulsada);

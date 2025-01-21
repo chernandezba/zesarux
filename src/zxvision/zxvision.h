@@ -487,6 +487,8 @@ extern void zxvision_maximize_window(zxvision_window *w);
 extern void zxvision_toggle_maximize_window(zxvision_window *w);
 extern void zxvision_handle_maximize(zxvision_window *w);
 
+extern int zxvision_show_minimized(zxvision_window *w);
+
 extern int zxvision_trocear_string_lineas(char *texto,char *buffer_lineas[]);
 extern void zxvision_print_mensaje_lineas_troceado(zxvision_window *ventana,char *mensaje_entrada);
 
@@ -1216,6 +1218,7 @@ extern z80_bit menu_hide_submenu_indicator;
 extern z80_bit menu_hide_minimize_button;
 extern z80_bit menu_hide_maximize_button;
 extern z80_bit menu_hide_close_button;
+extern z80_bit zxvision_hide_minimized_windows;
 extern z80_bit menu_change_frame_when_resize_zone;
 extern z80_bit menu_hide_background_button_on_inactive;
 extern z80_bit menu_invert_mouse_scroll;

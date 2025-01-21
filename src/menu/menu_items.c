@@ -40924,7 +40924,7 @@ void menu_process_switcher_draw_recuadro(zxvision_window *ventana,int offset_x,i
 }
 
 void menu_process_switcher_draw_icon(zxvision_window *ventana,char *geometry_name,int indice_icono,
-    int seleccionado_indice_icono,int si_tarea_actual)
+    int seleccionado_indice_icono,int si_tarea_actual,int minimizada)
 {
 
     char **puntero_bitmap;
@@ -40978,6 +40978,15 @@ void menu_process_switcher_draw_icon(zxvision_window *ventana,char *geometry_nam
         int alto_recuadro=ZESARUX_ASCII_LOGO_ALTO;
         int ancho_recuadro=ZESARUX_ASCII_LOGO_ANCHO;
         int color_recuadro=ESTILO_GUI_PAPEL_SELECCIONADO;
+        menu_process_switcher_draw_recuadro(ventana,offset_x,offset_y,ancho_recuadro,alto_recuadro,color_recuadro);
+    }
+
+    //si esta minimizada
+    if (minimizada) {
+        //recuadro alrededor
+        int alto_recuadro=ZESARUX_ASCII_LOGO_ALTO;
+        int ancho_recuadro=ZESARUX_ASCII_LOGO_ANCHO;
+        int color_recuadro=ESTILO_GUI_TINTA_NO_DISPONIBLE;
         menu_process_switcher_draw_recuadro(ventana,offset_x,offset_y,ancho_recuadro,alto_recuadro,color_recuadro);
     }
 
@@ -41112,7 +41121,9 @@ void menu_process_switcher_overlay(void)
 
             if (pointer_window==zxvision_current_window) si_tarea_actual=1;
 
-            menu_process_switcher_draw_icon(w,pointer_window->geometry_name,i,seleccionado_indice_icono,si_tarea_actual);
+            int minimizada=pointer_window->is_minimized;
+
+            menu_process_switcher_draw_icon(w,pointer_window->geometry_name,i,seleccionado_indice_icono,si_tarea_actual,minimizada);
         }
 
     }

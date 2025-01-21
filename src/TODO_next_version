@@ -397,13 +397,6 @@ Debería aumentar total_height si es necesario
 
 
 
--Modo minimizar ventanas que ni se vean. Quiza solo cuando process switcher este cargado?
-y en ese modo al abrir la aplicación, se desminimice
-*Y en process switcher se indica de alguna manera que está minimizada
-*con shift-flecha derecha aparecen también las minimizadas
-*opción que se llame algo como "hide on minimize"
-*problema que todas las funciones que activan ventana por posición, como al pulsar ventana, tienen que ver
-que ventana está minimizada y con el setting de "hide on minimize" activo
 
 -Opción por defecto no permitir zoom x diferente de zoom y al redimensionar ventana mediante ratón. Quedarse con valor inferior de zoom
 
