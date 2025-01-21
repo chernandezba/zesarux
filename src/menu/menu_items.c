@@ -40981,13 +40981,20 @@ void menu_process_switcher_draw_icon(zxvision_window *ventana,char *geometry_nam
         menu_process_switcher_draw_recuadro(ventana,offset_x,offset_y,ancho_recuadro,alto_recuadro,color_recuadro);
     }
 
-    //si esta minimizada
+    //si esta minimizada, dibujarle un puntito
     if (minimizada) {
         //recuadro alrededor
-        int alto_recuadro=ZESARUX_ASCII_LOGO_ALTO;
-        int ancho_recuadro=ZESARUX_ASCII_LOGO_ANCHO;
-        int color_recuadro=ESTILO_GUI_TINTA_NO_DISPONIBLE;
-        menu_process_switcher_draw_recuadro(ventana,offset_x,offset_y,ancho_recuadro,alto_recuadro,color_recuadro);
+        int x_puntito=offset_x+ZESARUX_ASCII_LOGO_ALTO-3;
+        int y_puntito=offset_y+ZESARUX_ASCII_LOGO_ANCHO-3;
+        int color_puntito=ESTILO_GUI_TINTA_NO_DISPONIBLE;
+
+        int x,y;
+        for (x=0;x<3;x++) {
+            for (y=0;y<3;y++) {
+                zxvision_putpixel(ventana,x_puntito+x,y_puntito+y,color_puntito);
+            }
+        }
+
     }
 
 
