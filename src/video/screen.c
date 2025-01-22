@@ -5282,9 +5282,7 @@ void scr_refresca_pantalla_y_border_zx8081(void)
 
 }
 
-
-
-void scr_refresca_pantalla_zx8081(void)
+void scr_refresca_pantalla_zx8081_putchar_function(void (*putchar_function) (int x,int y, z80_byte caracter))
 {
     int x,y;
     z80_byte caracter;
@@ -5318,7 +5316,7 @@ void scr_refresca_pantalla_zx8081(void)
             //rellenar con espacios hasta final de linea
             //if (x<32) printf ("compressed line %d \n",y);
             for (;x<32;x++) {
-                scr_putchar_zx8081(x,y,0);
+                putchar_function(x,y,0);
             }
             y++;
 
@@ -5326,7 +5324,7 @@ void scr_refresca_pantalla_zx8081(void)
         }
 
         else {
-            scr_putchar_zx8081(x,y,caracter);
+            putchar_function(x,y,caracter);
 
             x++;
 
@@ -5345,6 +5343,11 @@ void scr_refresca_pantalla_zx8081(void)
 
     }
 
+}
+
+void scr_refresca_pantalla_zx8081(void)
+{
+    scr_refresca_pantalla_zx8081_putchar_function(scr_putchar_zx8081);
 }
 
 void load_screen(char *scrfile)
