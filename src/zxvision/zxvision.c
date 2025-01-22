@@ -1451,11 +1451,7 @@ int menu_contador_conmutar_ventanas=0;
 int menu_simple_two_choices(char *texto_ventana,char *texto_interior,char *opcion1,char *opcion2);
 void zxvision_handle_mouse_ev_switch_back_wind(zxvision_window *ventana_pulsada);
 
-void menu_file_trd_browser_show(char *filename,char *tipo_imagen);
-void menu_file_mmc_browser_show(char *filename,char *tipo_imagen);
-void menu_file_viewer_read_file(char *title,char *file_name);
 
-void menu_file_dsk_browser_show(char *filename);
 
 
 
