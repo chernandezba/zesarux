@@ -5463,58 +5463,40 @@ void load_screen(char *scrfile)
 void save_screen_scr(char *scrfile)
 {
 
-                 if (MACHINE_IS_SPECTRUM) {
-                                debug_printf (VERBOSE_INFO,"Saving Screen File");
+    if (MACHINE_IS_SPECTRUM) {
+        debug_printf (VERBOSE_INFO,"Saving Screen File");
 
-FILE *ptr_scrfile;
-                                  ptr_scrfile=fopen(scrfile,"wb");
-                                  if (!ptr_scrfile)
-                                {
-                                      debug_printf (VERBOSE_ERR,"Unable to open Screen file");
-                                  }
-                                else {
+        FILE *ptr_scrfile;
+        ptr_scrfile=fopen(scrfile,"wb");
+        if (!ptr_scrfile) {
+            debug_printf (VERBOSE_ERR,"Unable to open Screen file");
+        }
 
+        else {
 
+            z80_byte *origen;
+            origen=get_base_mem_pantalla();
 
-					/*
-	                                   if (MACHINE_IS_SPECTRUM_16_48)
-							fwrite(memoria_spectrum+16384, 1, 6912, ptr_scrfile);
+            z80_byte escrito;
+            int i;
+            for (i=0;i<6912;i++) {
+                escrito=*origen;
+                origen++;
+                fwrite(&escrito,1,1,ptr_scrfile);
+            }
 
-					else {
+            fclose(ptr_scrfile);
 
-        	                                //modo 128k. grabar pagina 5 o 7
-                	                        int pagina=5;
-                        	                if ( (puerto_32765&8) ) pagina=7;
-						fwrite(ram_mem_table[pagina], 1, 6912, ptr_scrfile);
-	                                  }
-					*/
+        }
+    }
 
-                    z80_byte *origen;
-		            origen=get_base_mem_pantalla();
+    else if (MACHINE_IS_ZX8081) {
+        save_screen_zx8081_scr(scrfile);
+    }
 
-					z80_byte escrito;
-	        	                int i;
-        	        	        for (i=0;i<6912;i++) {
-						//escrito=peek_byte_no_time(16384+i);
-                        escrito=*origen;
-                        origen++;
-						fwrite(&escrito,1,1,ptr_scrfile);
-		                        }
-
-
-
-	                               fclose(ptr_scrfile);
-
-                                }
-                        }
-
-                        else if (MACHINE_IS_ZX8081) {
-                            save_screen_zx8081_scr(scrfile);
-                        }
-
-                        else {
-                                debug_printf (VERBOSE_ERR,"Screen .scr saving only allowed on Spectrum or ZX80/81 models");
-                        }
+    else {
+        debug_printf (VERBOSE_ERR,"Screen .scr saving only allowed on Spectrum or ZX80/81 models");
+    }
 
 
 }
