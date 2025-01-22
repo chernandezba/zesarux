@@ -9,6 +9,7 @@ Improved ZX Vision:
 
 Improved Debug CPU:
 - Show view number inside the window and not in the window title
+- Add option to enable/disable all breakpoints
 
 ----
 

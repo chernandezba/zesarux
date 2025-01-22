@@ -24,3 +24,10 @@ ok *dialogos no se deben poder minimizar, como Trash Can
 ok *al ir desde el menu a una ventana minimizada, que la desminimice. supongo que con zxvision_activate_this_window,
 pero que la desminimice siempre que el setting de ocultar minimizadas esté activado.
 En activate Windows quizá solo hace falta hacer toggle pero sin redibujar ventana pues ya se redibujara sola
+
+---
+
+-con menu cerrado, sin ventanas: pulsar boton derecho en iconos del escritorio,
+lo hace pero el menu contextual sale arriba del todo y no en la posición del cursor
+
+-Tecla en debug cpu para habilitar todos los breakpoints

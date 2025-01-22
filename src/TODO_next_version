@@ -404,7 +404,7 @@ Debería aumentar total_height si es necesario
 
 -Render con hilos. Cada 4 líneas, 4 CPU diferentes. Problemas con bloqueos?
 
--Tecla en debug cpu para habilitar todos los breakpoints
+
 
 -speech: caracteres con acentos, eñes etc no se leen bien en ventanas como por ejemplo help->changelog cuando idioma es español
 sucede porque viene de zxvision_draw_window_contents y esta enviando por ejemplo caracter de eñe como 129, pues
@@ -421,8 +421,7 @@ Con speech cuando salen las diferentes opciones de un juego (tzx, tap etc) no se
 
 -Visual real tape: con cinta cdt de CPC (zynaps.cdt) dice que hay bloques de spectrum y no es asi
 
--con menu cerrado, sin ventanas: pulsar boton derecho en iconos del escritorio,
-lo hace pero el menu contextual sale arriba del todo y no en la posición del cursor
+
 
 
 -modo 60 hz en atic atac, para next. Y quizá empezar con maquinas timex que tienen 60 hz, que tienen menos scanlines...

@@ -812,8 +812,42 @@ void menu_breakpoints_condition_enable_disable(MENU_ITEM_PARAMETERS)
 
 }
 
+void menu_breakpoints_enable_all(MENU_ITEM_PARAMETERS)
+{
+
+    int i;
+
+    for (i=0;i<MAX_BREAKPOINTS_CONDITIONS;i++) {
+
+        if (debug_breakpoints_conditions_array_tokens[i][0].tipo!=TPT_FIN && !debug_breakpoints_conditions_enabled[i]) {
+
+            //printf("Enabling %d\n",i);
+
+            debug_breakpoints_conditions_enable(i);
+        }
+
+    }
+
+}
 
 
+void menu_breakpoints_disable_all(MENU_ITEM_PARAMETERS)
+{
+
+    int i;
+
+    for (i=0;i<MAX_BREAKPOINTS_CONDITIONS;i++) {
+
+        if (debug_breakpoints_conditions_array_tokens[i][0].tipo!=TPT_FIN && debug_breakpoints_conditions_enabled[i]) {
+
+            //printf("Disabling %d\n",i);
+
+            debug_breakpoints_conditions_disable(i);
+        }
+
+    }
+
+}
 
 void menu_breakpoints(MENU_ITEM_PARAMETERS)
 {
@@ -849,6 +883,12 @@ void menu_breakpoints(MENU_ITEM_PARAMETERS)
 		menu_add_item_menu_shortcut(array_menu_breakpoints,'m');
         menu_add_item_menu_genera_ventana(array_menu_breakpoints);
         menu_add_item_menu_se_cerrara(array_menu_breakpoints);
+
+        menu_add_item_menu_en_es_ca(array_menu_breakpoints,MENU_OPCION_NORMAL,menu_breakpoints_enable_all,menu_breakpoints_cond,
+            "Enable all breakpoints","Activar todos los breakpoints","Activar tots els breakpoints");
+        menu_add_item_menu_en_es_ca(array_menu_breakpoints,MENU_OPCION_NORMAL,menu_breakpoints_disable_all,menu_breakpoints_cond,
+            "Disable all breakpoints","Desactivar todos los breakpoints","Desactivar tots els breakpoints");
+
 
 		menu_add_item_menu_format(array_menu_breakpoints,MENU_OPCION_NORMAL,menu_clear_all_breakpoints,NULL,"Clear all breakpoints");
 
