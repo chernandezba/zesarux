@@ -873,13 +873,15 @@ void menu_breakpoints(MENU_ITEM_PARAMETERS)
 
 
 
-		menu_add_item_menu_format(array_menu_breakpoints,MENU_OPCION_NORMAL,menu_breakpoints_condition_evaluate_new,NULL,"~~Evaluate Expression");
+		menu_add_item_menu_en_es_ca(array_menu_breakpoints,MENU_OPCION_NORMAL,menu_breakpoints_condition_evaluate_new,NULL,
+            "~~Evaluate Expression","~~Evaluar Expresión","~~Avaluar Expressió");
 		menu_add_item_menu_shortcut(array_menu_breakpoints,'e');
 		menu_add_item_menu_tooltip(array_menu_breakpoints,"Evaluate expression using parser");
 		menu_add_item_menu_ayuda(array_menu_breakpoints,"Evaluate expression using parser. It's the same parser as breakpoint conditions below");
 
 
-		menu_add_item_menu_format(array_menu_breakpoints,MENU_OPCION_NORMAL,menu_mem_breakpoints,NULL,"~~Memory breakpoints");
+		menu_add_item_menu_en_es_ca(array_menu_breakpoints,MENU_OPCION_NORMAL,menu_mem_breakpoints,NULL,
+            "~~Memory breakpoints","Breakpoints de ~~Memoria","Breakpoints de ~~Memoria");
 		menu_add_item_menu_shortcut(array_menu_breakpoints,'m');
         menu_add_item_menu_genera_ventana(array_menu_breakpoints);
         menu_add_item_menu_se_cerrara(array_menu_breakpoints);
@@ -890,7 +892,8 @@ void menu_breakpoints(MENU_ITEM_PARAMETERS)
             "Disable all breakpoints","Desactivar todos los breakpoints","Desactivar tots els breakpoints");
 
 
-		menu_add_item_menu_format(array_menu_breakpoints,MENU_OPCION_NORMAL,menu_clear_all_breakpoints,NULL,"Clear all breakpoints");
+		menu_add_item_menu_en_es_ca(array_menu_breakpoints,MENU_OPCION_NORMAL,menu_clear_all_breakpoints,NULL,
+            "Clear all breakpoints","Limpiar todos breakpoints","Netejar tots breakpoints");
 
 
 
