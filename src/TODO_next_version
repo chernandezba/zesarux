@@ -223,10 +223,6 @@ cp /Users/cesarhernandez/Downloads/libretro-super/dist/osx-x86_64/skeleton_libre
 
 
 
--numero de version que corresponda con el año de antigüedad de ZEsarUX? V11 : 2024, V12: 2025, V13: 2026?
-
-
-
 -al insertar cintas parece que no se cierra menu, y antes creo que si que se hacia
 
 -quiza recordar ultimo ancho de ventana en void zxvision_generic_message_tooltip(,
@@ -396,9 +392,7 @@ Debería aumentar total_height si es necesario
 
 
 
-
-
--Opción por defecto no permitir zoom x diferente de zoom y al redimensionar ventana mediante ratón. Quedarse con valor inferior de zoom
+-Opción por defecto no permitir "zoom x" diferente de "zoom y" al redimensionar ventana mediante ratón. Quedarse con valor inferior de zoom
 
 -Accesos mmc más allá del límite no deben desactivar la tarjeta. Solo log del aviso. En general para todos los dispositivos
 
@@ -420,7 +414,6 @@ Con speech cuando salen las diferentes opciones de un juego (tzx, tap etc) no se
 -Conversión de .P a .P81
 
 -Visual real tape: con cinta cdt de CPC (zynaps.cdt) dice que hay bloques de spectrum y no es asi
-
 
 
 

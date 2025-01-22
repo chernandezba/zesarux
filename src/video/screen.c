@@ -3735,6 +3735,7 @@ for (y=0;y<192;y+=8) {
 }
 
 
+//Esta funcion ya no tiene sentido. Escribir siempre, retorna 1
 //Retorna 0 si no hay que refrescar esa zona
 //Pese a que en cada driver de video, cuando refresca pantalla, luego llama a overlay menu
 //Pero en xwindows, se suele producir un refresco por parte del servidor X que provoc
@@ -5318,7 +5319,7 @@ void scr_refresca_pantalla_zx8081(void)
                         //rellenar con espacios hasta final de linea
 				//if (x<32) printf ("compressed line %d \n",y);
                                 for (;x<32;x++) {
-					if (scr_ver_si_refrescar_por_menu_activo(x,y)) scr_putchar_zx8081(x,y,0);
+					scr_putchar_zx8081(x,y,0);
                                 }
                                 y++;
 
@@ -5326,7 +5327,7 @@ void scr_refresca_pantalla_zx8081(void)
                 }
 
                 else {
-			if (scr_ver_si_refrescar_por_menu_activo(x,y)) scr_putchar_zx8081(x,y,caracter);
+			scr_putchar_zx8081(x,y,caracter);
 
                         x++;
 

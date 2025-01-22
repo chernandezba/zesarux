@@ -34,4 +34,5 @@ aunque si se pulsa en el titulo de la ventana, desaparece pero se queda activa
 -con menu cerrado, sin ventanas: pulsar boton derecho en iconos del escritorio,
 lo hace pero el menu contextual sale arriba del todo y no en la posición del cursor
 
--Tecla en debug cpu para habilitar todos los breakpoints
+
+-poder grabar pantalla zx81 a .scr spectrum
