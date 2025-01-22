@@ -18421,6 +18421,13 @@ void menu_display_save_screen(MENU_ITEM_PARAMETERS)
 		filtros[5]=0;
 	}
 
+	else if (MACHINE_IS_ZX8081) {
+        filtros[0]="scr";
+		filtros[1]="bmp";
+        filtros[2]="txt";
+		filtros[3]=0;
+	}
+
 	else {
 		filtros[0]="bmp";
         filtros[1]="txt";

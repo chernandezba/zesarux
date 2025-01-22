@@ -3,6 +3,8 @@ ZEsarUX 12.1 - xxx edition. 22 January 2025
 
 * Improvements
 
+Allow to save ZX80/81 screen to .scr file
+
 Improved ZX Vision:
 - Allow to hide minimized windows
 - Show when an icon is an open window but minimized with a dot

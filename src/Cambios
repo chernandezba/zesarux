@@ -3,6 +3,8 @@ ZEsarUX 12.1 - xxx edition. 22 Enero 2025
 
 * Mejoras
 
+Permitir grabar pantalla de ZX80/81 a archivo .scr
+
 Mejorado ZX Vision:
 - Permitir ocultar ventanas minimizadas
 - Mostrar cuando un icono es de una ventana abierta pero minimizada con un punto

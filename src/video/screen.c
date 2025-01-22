@@ -5350,6 +5350,71 @@ void scr_refresca_pantalla_zx8081(void)
     scr_refresca_pantalla_zx8081_putchar_function(scr_putchar_zx8081);
 }
 
+z80_byte *save_screen_zx8081_scr_mem_pointer;
+
+void save_screen_zx8081_scr_putchar_function(int x,int y, z80_byte caracter)
+{
+    //printf("x %d y %d char %d\n",x,y,caracter);
+
+    int scanline=y*8;
+    int scr_addr=screen_addr_table[scanline*32+x];
+
+    //printf("addr: %d\n",scr_addr);
+
+
+    //Calcular letra donde esta situada
+    z80_bit inverse;
+    z80_int direccion;
+
+
+	if (caracter>127) {
+        inverse.v=1;
+        caracter-=128;
+	}
+
+	else inverse.v=0;
+
+
+    //con los caracteres fuera de rango, devolvemos '?'
+    if (caracter>63) caracter=15;
+
+    if (MACHINE_IS_ZX80_TYPE) {
+        direccion=0x0E00;
+
+        if (hotswapped_from_zx81) direccion=0x1E00;
+    }
+    else direccion=0x1E00;
+
+    direccion +=caracter*8;
+
+
+
+    int linea;
+    for (linea=0;linea<8;linea++) {
+        z80_byte char_line=peek_byte_no_time(direccion++);
+        if (inverse.v) char_line ^= 255;
+        save_screen_zx8081_scr_mem_pointer[scr_addr]=char_line;
+        scr_addr +=256;
+    }
+}
+
+void save_screen_zx8081_scr(char *scrfile)
+{
+    save_screen_zx8081_scr_mem_pointer=util_malloc(6912,"Can not allocate memory for scr save");
+
+    //Limpiar esa memoria de pixeles
+    memset(save_screen_zx8081_scr_mem_pointer,0,6144);
+
+    //Atributo papel 7 tinta 0
+    memset(&save_screen_zx8081_scr_mem_pointer[6144],56,768);
+
+    scr_refresca_pantalla_zx8081_putchar_function(save_screen_zx8081_scr_putchar_function);
+
+    util_save_file(save_screen_zx8081_scr_mem_pointer, 6912, scrfile);
+
+    free(save_screen_zx8081_scr_mem_pointer);
+}
+
 void load_screen(char *scrfile)
 {
 
@@ -5443,8 +5508,12 @@ FILE *ptr_scrfile;
                                 }
                         }
 
+                        else if (MACHINE_IS_ZX8081) {
+                            save_screen_zx8081_scr(scrfile);
+                        }
+
                         else {
-                                debug_printf (VERBOSE_ERR,"Screen .scr saving only allowed on Spectrum models");
+                                debug_printf (VERBOSE_ERR,"Screen .scr saving only allowed on Spectrum or ZX80/81 models");
                         }
 
 
