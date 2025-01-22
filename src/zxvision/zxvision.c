@@ -6141,7 +6141,7 @@ void menu_ext_desktop_draw_configurable_icon(int index_icon,int pulsado)
                 menu_draw_ext_desktop_one_configurable_icon_background(x,y_app_abierta,menu_get_ext_desktop_icons_size(),
                     1*zoom_y,ESTILO_GUI_COLOR_AVISO);
 
-                //Si esta minimizada
+                //Si esta minimizada, mismo puntito que sale en el process switcher con ventanas minimizadas
                 if (buscar_ventana_abierta->is_minimized) {
                     menu_draw_ext_desktop_one_configurable_icon_background(x+menu_get_ext_desktop_icons_size()-3*zoom_x,y_app_abierta-3*zoom_y,
                         zoom_x*2,zoom_y*2,ESTILO_GUI_TINTA_NO_DISPONIBLE);
