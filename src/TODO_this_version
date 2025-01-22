@@ -25,6 +25,9 @@ ok *al ir desde el menu a una ventana minimizada, que la desminimice. supongo qu
 pero que la desminimice siempre que el setting de ocultar minimizadas esté activado.
 En activate Windows quizá solo hace falta hacer toggle pero sin redibujar ventana pues ya se redibujara sola
 
+* al minimizar se ve inicialmente la ventana minimizada, y al refrescar, desaparece.
+Esto es un efecto no provocado aunque creo que queda bien
+
 ---
 
 -con menu cerrado, sin ventanas: pulsar boton derecho en iconos del escritorio,
