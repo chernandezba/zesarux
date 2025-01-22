@@ -7,6 +7,9 @@ Mejorado ZX Vision:
 - Permitir ocultar ventanas minimizadas
 - Mostrar cuando un icono es de una ventana abierta pero minimizada con un punto
 
+Mejorado Debug CPU:
+- Mostrar número de vista dentro de la ventana en vez de en el título de la ventana
+
 ----
 
 

@@ -7,6 +7,9 @@ Improved ZX Vision:
 - Allow to hide minimized windows
 - Show when an icon is an open window but minimized with a dot
 
+Improved Debug CPU:
+- Show view number inside the window and not in the window title
+
 ----
 
 

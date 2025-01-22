@@ -3239,20 +3239,20 @@ void menu_debug_registers_set_title(zxvision_window *w)
 
     //Por defecto
                     //0123456789012345678901
-    sprintf (titulo,"Debug CPU           V%d",menu_debug_registers_current_view);
+    sprintf (titulo,"Debug CPU");
 
     if (menu_breakpoint_exception_pending_show.v==1 || menu_breakpoint_exception.v) {
                        //0123456789012345678901
-        sprintf (titulo,"Debug CPU (brk cnd) V%d",menu_debug_registers_current_view);
+        sprintf (titulo,"Debug CPU (brk cnd)");
         //printf ("breakpoint pending show\n");
     }
     else {
 
         if (cpu_step_mode.v) {
                                                                     //0123456789012345678901
-            if (indice_debug_cpu_backwards_history) sprintf (titulo,"Debug CPU (bckstep) V%d",menu_debug_registers_current_view);
+            if (indice_debug_cpu_backwards_history) sprintf (titulo,"Debug CPU (bckstep)");
                                 //0123456789012345678901
-            else sprintf (titulo,"Debug CPU (step)    V%d",menu_debug_registers_current_view);
+            else sprintf (titulo,"Debug CPU (step)");
 
             menu_footer_activity("STEP");
         }
@@ -4200,11 +4200,11 @@ int menu_debug_registers_show_ptr_text(zxvision_window *w,int linea)
 
 				if (util_textadventure_is_daad_quill_paws_gac() ) maxima_vista='8';
 
-								sprintf(buffer_mensaje_short,"~~Mptr:%sH [%c] ~~FlwPC ~~1-~~%c:View",
-                                        string_direccion,(menu_debug_follow_pc.v ? 'X' : ' '),maxima_vista );
+								sprintf(buffer_mensaje_short,"~~Mptr:%sH [%c] ~~FlwPC ~~1-~~%c:V%d",
+                                        string_direccion,(menu_debug_follow_pc.v ? 'X' : ' '),maxima_vista,menu_debug_registers_current_view );
 
-								sprintf(buffer_mensaje_long,"~~Memptr:%sH [%c] ~~FollowPC ~~1-~~%c:View",
-                                        string_direccion,(menu_debug_follow_pc.v ? 'X' : ' '),maxima_vista );
+								sprintf(buffer_mensaje_long,"~~Memptr:%sH [%c] ~~FollowPC ~~1-~~%c:View %d",
+                                        string_direccion,(menu_debug_follow_pc.v ? 'X' : ' '),maxima_vista,menu_debug_registers_current_view );
 
 
 
