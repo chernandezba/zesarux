@@ -27,6 +27,7 @@ En activate Windows quizá solo hace falta hacer toggle pero sin redibujar venta
 
 * al minimizar se ve inicialmente la ventana minimizada, y al refrescar, desaparece.
 Esto es un efecto no provocado aunque creo que queda bien
+aunque si se pulsa en el titulo de la ventana, desaparece pero se queda activa
 
 ---
 
