@@ -15702,6 +15702,9 @@ int zxvision_show_minimized(zxvision_window *w)
     //No se si esto puede suceder pero por si acaso
     if (w==NULL) return 1;
 
+    //Si la ventana no se puede enviar a segundo plano, no ocultar
+    if (!w->can_be_backgrounded) return 1;
+
 
     if (w->is_minimized) return 0;
 

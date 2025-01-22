@@ -19,7 +19,7 @@ donde estaria ocupado el titulo
 ok *que no pueda conmutar ahi al pulsar sobre la barra de titulo
 ok *desminimizar al hacer una ventana activa, desde zxvision_handle_mouse_ev_switch_back_wind
 
-*dialogos no se deben poder minimizar, como Trash Can
+ok *dialogos no se deben poder minimizar, como Trash Can
 
 ok *al ir desde el menu a una ventana minimizada, que la desminimice. supongo que con zxvision_activate_this_window,
 pero que la desminimice siempre que el setting de ocultar minimizadas esté activado.
