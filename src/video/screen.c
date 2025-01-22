@@ -5286,14 +5286,14 @@ void scr_refresca_pantalla_y_border_zx8081(void)
 
 void scr_refresca_pantalla_zx8081(void)
 {
-        int x,y;
-        z80_byte caracter;
+    int x,y;
+    z80_byte caracter;
 
-        //zx81
-        z80_int video_pointer;
+    //zx81
+    z80_int video_pointer;
 
-	//puntero pantalla en DFILE
-        video_pointer=peek_word_no_time(0x400C);
+    //puntero pantalla en DFILE
+    video_pointer=peek_word_no_time(0x400C);
 
 
 	//Pruebas alterando video pointer para ver si funcionan los juegos flicker free
@@ -5302,46 +5302,45 @@ void scr_refresca_pantalla_zx8081(void)
 	while (video_pointer>ramtop_zx8081) {
 		//debug_printf (VERBOSE_DEBUG,"invalid video_pointer: %d",video_pointer);
 		video_pointer -=0x4000;
-                //debug_printf (VERBOSE_DEBUG,"new video_pointer: %d",video_pointer);
+        //debug_printf (VERBOSE_DEBUG,"new video_pointer: %d",video_pointer);
 
 	}
 
 
+    //se supone que el primer byte es 118 . saltarlo
+    video_pointer++;
+    y=0;
+    x=0;
+    while (y<24) {
 
-        //se supone que el primer byte es 118 . saltarlo
-        video_pointer++;
-        y=0;
-        x=0;
-        while (y<24) {
+        caracter=memoria_spectrum[video_pointer++];
+        if (caracter==118) {
+            //rellenar con espacios hasta final de linea
+            //if (x<32) printf ("compressed line %d \n",y);
+            for (;x<32;x++) {
+                scr_putchar_zx8081(x,y,0);
+            }
+            y++;
 
-                caracter=memoria_spectrum[video_pointer++];
-                if (caracter==118) {
-                        //rellenar con espacios hasta final de linea
-				//if (x<32) printf ("compressed line %d \n",y);
-                                for (;x<32;x++) {
-					scr_putchar_zx8081(x,y,0);
-                                }
-                                y++;
+            x=0;
+        }
 
-                                x=0;
+        else {
+            scr_putchar_zx8081(x,y,caracter);
+
+            x++;
+
+            if (x==32) {
+                if (memoria_spectrum[video_pointer]!=118) {
+                    //debug_printf (VERBOSE_DEBUG,"End of line %d is not 118 opcode. Is: 0x%x",y,memoria_spectrum[video_pointer]);
                 }
+                //saltamos el HALT que debe haber en el caso de linea con 32 caracteres
+                video_pointer++;
+                x=0;
+                y++;
+            }
 
-                else {
-			scr_putchar_zx8081(x,y,caracter);
-
-                        x++;
-
-                        if (x==32) {
-                                if (memoria_spectrum[video_pointer]!=118) {
-									//debug_printf (VERBOSE_DEBUG,"End of line %d is not 118 opcode. Is: 0x%x",y,memoria_spectrum[video_pointer]);
-								}
-                                //saltamos el HALT que debe haber en el caso de linea con 32 caracteres
-                                video_pointer++;
-                                x=0;
-                                y++;
-                        }
-
-                }
+        }
 
 
     }
