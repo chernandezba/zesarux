@@ -7611,8 +7611,9 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_es_avanzado(array_menu_settings_display);
 
 
-			menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_lost_vsync,NULL,
-				"[%c] Simulate lost VSYNC",(simulate_lost_vsync.v==1 ? 'X' : ' '));
+			menu_add_item_menu_en_es_ca(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_lost_vsync,NULL,
+				"Simulate lost VSYNC","Simular pérdida de VSYNC","Simular pèrdua de VSYNC");
+			menu_add_item_menu_prefijo_format(array_menu_settings_display,"[%c] ",(simulate_lost_vsync.v==1 ? 'X' : ' '));
             menu_add_item_menu_es_avanzado(array_menu_settings_display);
 
 			menu_add_item_menu_en_es_ca(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_autodetect_wrx,NULL,
@@ -7649,16 +7650,22 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
 		if (MACHINE_IS_ZX8081) {
 
 
-			menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_force_zx81_chr_128,NULL,"[%c] Force CHR$ 128",(force_zx81_chr_128.v ? 'X' : ' '));
+			menu_add_item_menu_en_es_ca(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_force_zx81_chr_128,NULL,
+                "Force CHR$ 128","Forzar CHR$ 128","Forçar CHR$ 128");
+            menu_add_item_menu_prefijo_format(array_menu_settings_display,"[%c] ",(force_zx81_chr_128.v ? 'X' : ' '));
 			menu_add_item_menu_tooltip(array_menu_settings_display,"When CHR$ mode used, force 128 characters, is the autodetection doesn't work");
 			menu_add_item_menu_ayuda(array_menu_settings_display,"When CHR$ mode used, force 128 characters, is the autodetection doesn't work");
 
-			menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_autodetect_chroma81,NULL,"[%c] Autodetect Chroma81",(autodetect_chroma81.v ? 'X' : ' '));
+			menu_add_item_menu_en_es_ca(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_autodetect_chroma81,NULL,
+                "Autodetect Chroma81","Autodetectar Chroma81","Autodetectar Chroma81");
+            menu_add_item_menu_prefijo_format(array_menu_settings_display,"[%c] ",(autodetect_chroma81.v ? 'X' : ' '));
 			menu_add_item_menu_tooltip(array_menu_settings_display,"Autodetect Chroma81");
 			menu_add_item_menu_ayuda(array_menu_settings_display,"Detects when Chroma81 video mode is needed and enable it");
 
 
-			menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_chroma81,NULL,"[%c] Chro~~ma81 support",(chroma81.v ? 'X' : ' '));
+			menu_add_item_menu_en_es_ca(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_chroma81,NULL,
+                "Chro~~ma81","Chro~~ma81","Chro~~ma81");
+            menu_add_item_menu_prefijo_format(array_menu_settings_display,"[%c] ",(chroma81.v ? 'X' : ' '));
 			menu_add_item_menu_shortcut(array_menu_settings_display,'m');
 			menu_add_item_menu_tooltip(array_menu_settings_display,"Enables Chroma81 colour video mode");
 			menu_add_item_menu_ayuda(array_menu_settings_display,"Enables Chroma81 colour video mode");
@@ -7785,14 +7792,17 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
 
 
 		if (MACHINE_IS_SPECTRUM || MACHINE_IS_ZX8081 || MACHINE_IS_CPC) {
-			menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_osd_word_kb_length,NULL,"OSD Adv. KB length [%d] ",adventure_keyboard_key_length);
+			menu_add_item_menu_en_es_ca(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_osd_word_kb_length,NULL,
+                "OSD Adv. KB length","OSD Aven. TECL longitud","OSD Aven. TECL longitut");
+            menu_add_item_menu_sufijo_format(array_menu_settings_display," [%d]",adventure_keyboard_key_length);
             menu_add_item_menu_prefijo_format(array_menu_settings_display,"    ");
 			menu_add_item_menu_tooltip(array_menu_settings_display,"Define the duration for every key press on the Adventure Text OSD Keyboard");
 			menu_add_item_menu_ayuda(array_menu_settings_display,"Define the duration for every key press on the Adventure Text OSD Keyboard, in 1/50 seconds (default 50)");
             menu_add_item_menu_es_avanzado(array_menu_settings_display);
 
-			menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_osd_word_kb_finalspc,NULL,"[%c] OSD Adv. final space",
-				(adventure_keyboard_send_final_spc ? 'X' : ' '));
+			menu_add_item_menu_en_es_ca(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_osd_word_kb_finalspc,NULL,
+                "OSD Adv. final space","OSD Aven. espacio final","OSD Aven. espai final");
+			menu_add_item_menu_prefijo_format(array_menu_settings_display,"[%c] ",(adventure_keyboard_send_final_spc ? 'X' : ' '));
 			menu_add_item_menu_tooltip(array_menu_settings_display,"Sends a space after every word on the Adventure Text OSD Keyboard");
 			menu_add_item_menu_ayuda(array_menu_settings_display,"Sends a space after every word on the Adventure Text OSD Keyboard");
             menu_add_item_menu_es_avanzado(array_menu_settings_display);
@@ -7848,7 +7858,9 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_ayuda(array_menu_settings_display,"Show Z88 shortcuts below the display");
         }
 
-		menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_ocr_23606,NULL,"[%c] OCR Alternate chars", (ocr_settings_not_look_23606.v==0 ? 'X' : ' ') );
+		menu_add_item_menu_en_es_ca(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_ocr_23606,NULL,
+            "OCR Alternate chars","OCR Caracteres alternativos","OCR Caràcters alternatius");
+        menu_add_item_menu_prefijo_format(array_menu_settings_display,"[%c] ",(ocr_settings_not_look_23606.v==0 ? 'X' : ' ') );
 		menu_add_item_menu_tooltip(array_menu_settings_display,"Tells to look for an alternate character set other than the ROM default on OCR functions");
 		menu_add_item_menu_ayuda(array_menu_settings_display,"Tells to look for an alternate character set other than the ROM default on OCR functions. "
 							"It will look also for another character set which table is set on sysvar 23606/7. It may generate false positives "
