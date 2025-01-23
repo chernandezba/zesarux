@@ -29,6 +29,8 @@ En activate Windows quizá solo hace falta hacer toggle pero sin redibujar venta
 Esto es un efecto no provocado aunque creo que queda bien
 aunque si se pulsa en el titulo de la ventana, desaparece pero se queda activa
 
+*Setting de ocultar al minimizar guardar en config cuando esté estable
+
 ---
 
 -con menu cerrado, sin ventanas: pulsar boton derecho en iconos del escritorio,

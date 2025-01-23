@@ -10204,6 +10204,57 @@ int convert_p_to_rwa(char *origen, char *destino)
         return convert_o_p_to_rwa(origen,destino,1);
 }
 
+int convert_p_to_p81(char *origen, char *destino)
+{
+    FILE *ptr_origen;
+    ptr_origen=fopen(origen,"rb");
+    if (ptr_origen==NULL) {
+        debug_printf (VERBOSE_ERR,"Error reading source file");
+        return 1;
+    }
+
+    FILE *ptr_destino;
+    ptr_destino=fopen(destino,"wb");
+    if (ptr_destino==NULL) {
+        debug_printf (VERBOSE_ERR,"Error creating target file: %s",destino);
+        return 1;
+    }
+
+    //agregar nombre de archivo al inicio
+
+
+    char nombre_corto[PATH_MAX];
+    util_get_file_no_directory(origen,nombre_corto);
+
+    char nombre_sin_extension[PATH_MAX];
+    util_get_file_without_extension(nombre_corto,nombre_sin_extension);
+
+    debug_printf(VERBOSE_INFO,"Adding filename [%s] at the beginning of the p81 file",nombre_sin_extension);
+
+    int i;
+    int longitud_nombre=strlen(nombre_sin_extension);
+    for (i=0;i<longitud_nombre;i++) {
+        z80_byte caracter_zx81=ascii_to_zx81(nombre_sin_extension[i]);
+        if (i==longitud_nombre-1) caracter_zx81 |=128; //Indicar caracter final
+        fwrite(&caracter_zx81,1,1,ptr_destino);
+    }
+
+    //metemos datos
+    z80_byte leido;
+    while (!feof(ptr_origen)) {
+        fread(&leido, 1,1 , ptr_origen);
+
+        //If duplicado porque al leer mas alla del final es cuando se activa feof, si no pusiera
+        //el if aqui, se repetiria el byte del final
+        if (!feof(ptr_origen)) fwrite(&leido,1,1,ptr_destino);
+    }
+
+    fclose(ptr_origen);
+    fclose(ptr_destino);
+
+    return 0;
+
+}
 
 void convert_tap_to_rwa_write_silence(FILE *ptr_archivo,int segundos)
 {

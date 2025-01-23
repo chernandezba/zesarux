@@ -2041,11 +2041,49 @@ extern int convert_p_to_rwa_tmpdir(char *origen, char *destino);
                 }
         }
 
-        else if (!util_compare_file_extension(archivo,"p") || !util_compare_file_extension(archivo,"p81")) {
+        else if (!util_compare_file_extension(archivo,"p") ) {
                 char *opciones[]={
-                        "P/P81 to RWA",
-			"P/P81 to WAV",
-			"P/P81 to SCR",
+                        "P to P81",
+                        "P to RWA",
+			"P to WAV",
+			"P to SCR",
+                        NULL};
+
+                int opcion=menu_ask_list_texto("File converter","Select conversion",opciones);
+		if (opcion<0) {
+			//Salido con ESC
+			return;
+		}
+                switch (opcion) {
+                        case 0:
+                                sprintf(archivo_destino,"%s/%s.p81",directorio,archivo);
+                                convert_p_to_p81(fullpath,archivo_destino);
+                        break;
+
+                        case 1:
+                                sprintf(archivo_destino,"%s/%s.rwa",directorio,archivo);
+                                convert_p_to_rwa(fullpath,archivo_destino);
+                        break;
+
+                        case 2:
+                                sprintf(archivo_destino,"%s/%s.wav",directorio,archivo);
+                                convert_any_to_wav(fullpath,archivo_destino);
+                        break;
+
+                        case 3:
+                                sprintf(archivo_destino,"%s/%s.scr",directorio,archivo);
+								util_convert_p_to_scr(fullpath,archivo_destino);
+                        break;
+
+
+                }
+        }
+
+        else if (!util_compare_file_extension(archivo,"p81")) {
+                char *opciones[]={
+                        "P81 to RWA",
+			"P81 to WAV",
+			"P81 to SCR",
                         NULL};
 
                 int opcion=menu_ask_list_texto("File converter","Select conversion",opciones);
