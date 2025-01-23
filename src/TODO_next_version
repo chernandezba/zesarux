@@ -411,10 +411,8 @@ se le envian los caracrteres desde zxvision_draw_window_contents
 -Speccy online browser
 Con speech cuando salen las diferentes opciones de un juego (tzx, tap etc) no se escuchan porque se lee la línea del nombre del juego y no la de debajo que dice el tipo
 
--Conversión de .P a .P81
 
 -Visual real tape: con cinta cdt de CPC (zynaps.cdt) dice que hay bloques de spectrum y no es asi
-
 
 
 -modo 60 hz en atic atac, para next. Y quizá empezar con maquinas timex que tienen 60 hz, que tienen menos scanlines...

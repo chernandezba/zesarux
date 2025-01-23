@@ -7301,13 +7301,15 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
 		if (!MACHINE_IS_Z88) {
 
 
-				menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_autodetect_rainbow,NULL,"[%c] Autodetect Real Video",(autodetect_rainbow.v==1 ? 'X' : ' '));
-				menu_add_item_menu_tooltip(array_menu_settings_display,"Autodetect the need to enable Real Video");
-				menu_add_item_menu_ayuda(array_menu_settings_display,"This option detects whenever is needed to enable Real Video. "
-								"On Spectrum, it detects the reading of idle bus or repeated border changes. "
-								"On ZX80/81, it detects the I register on a non-normal value when executing video display. "
-			"On all machines, it also detects when loading a real tape. "
-								);
+            menu_add_item_menu_en_es_ca(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_autodetect_rainbow,NULL,
+                "Autodetect Real Video","Autodetectar Real Video","Autodetectar Real Video");
+            menu_add_item_menu_prefijo_format(array_menu_settings_display,"[%c] ",(autodetect_rainbow.v==1 ? 'X' : ' '));
+            menu_add_item_menu_tooltip(array_menu_settings_display,"Autodetect the need to enable Real Video");
+            menu_add_item_menu_ayuda(array_menu_settings_display,"This option detects whenever is needed to enable Real Video. "
+                            "On Spectrum, it detects the reading of idle bus or repeated border changes. "
+                            "On ZX80/81, it detects the I register on a non-normal value when executing video display. "
+        "On all machines, it also detects when loading a real tape. "
+                            );
 		}
 
 
@@ -7423,7 +7425,9 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
 
 			if (menu_cond_realvideo() ) {
                 if (MACHINE_IS_SPECTRUM || MACHINE_IS_ZX8081) {
-                    menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_interlace,menu_cond_realvideo,"[%c] ~~Interlaced mode", (video_interlaced_mode.v==1 ? 'X' : ' '));
+                    menu_add_item_menu_en_es_ca(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_interlace,menu_cond_realvideo,
+                        "~~Interlaced mode","Modo ~~Interlaced","Mode ~~Interlaced");
+                    menu_add_item_menu_prefijo_format(array_menu_settings_display,"[%c] ", (video_interlaced_mode.v==1 ? 'X' : ' '));
                     menu_add_item_menu_shortcut(array_menu_settings_display,'i');
                     menu_add_item_menu_tooltip(array_menu_settings_display,"Enable interlaced mode");
                     menu_add_item_menu_ayuda(array_menu_settings_display,"Interlaced mode draws the screen like the machine on a real TV: "
@@ -7575,7 +7579,9 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
 
 		//z80_bit video_zx8081_estabilizador_imagen;
 
-			menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_estabilizador_imagen,menu_cond_zx8081_realvideo,"[%c] Horizontal stabilization", (video_zx8081_estabilizador_imagen.v==1 ? 'X' : ' '));
+			menu_add_item_menu_en_es_ca(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_estabilizador_imagen,menu_cond_zx8081_realvideo,
+                "Horizontal stabilization","Estabilización Horizontal","Estabilització Horitzontal");
+            menu_add_item_menu_prefijo_format(array_menu_settings_display,"[%c] ", (video_zx8081_estabilizador_imagen.v==1 ? 'X' : ' '));
 			menu_add_item_menu_tooltip(array_menu_settings_display,"Horizontal image stabilization");
 			menu_add_item_menu_ayuda(array_menu_settings_display,"Horizontal image stabilization. Usually enabled.");
 
@@ -7609,7 +7615,9 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
 				"[%c] Simulate lost VSYNC",(simulate_lost_vsync.v==1 ? 'X' : ' '));
             menu_add_item_menu_es_avanzado(array_menu_settings_display);
 
-			menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_autodetect_wrx,NULL,"[%c] Autodetect WRX",(autodetect_wrx.v==1 ? 'X' : ' '));
+			menu_add_item_menu_en_es_ca(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_autodetect_wrx,NULL,
+                "Autodetect WRX","Autodetectar WRX","Autodetectar WRX");
+            menu_add_item_menu_prefijo_format(array_menu_settings_display,"[%c] ",(autodetect_wrx.v==1 ? 'X' : ' '));
 			menu_add_item_menu_tooltip(array_menu_settings_display,"Autodetect the need to enable WRX mode on ZX80/81");
 			menu_add_item_menu_ayuda(array_menu_settings_display,"This option detects whenever is needed to enable WRX. "
 									"On ZX80/81, it detects the I register on a non-normal value when executing video display. "
@@ -7628,7 +7636,9 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
 		else {
 
 			if (menu_cond_zx8081() ) {
-				menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_emulate_fast_zx8081,menu_cond_zx8081_no_realvideo,"[%c] ZX80/81 detect fast mode", (video_fast_mode_emulation.v==1 ? 'X' : ' '));
+				menu_add_item_menu_en_es_ca(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_emulate_fast_zx8081,menu_cond_zx8081_no_realvideo,
+                    "Detect fast mode","Detectar modo fast","Detectar mode fast");
+                menu_add_item_menu_prefijo_format(array_menu_settings_display,"[%c] ", (video_fast_mode_emulation.v==1 ? 'X' : ' '));
 				menu_add_item_menu_tooltip(array_menu_settings_display,"Detect fast mode and simulate it, on non-realvideo mode");
 				menu_add_item_menu_ayuda(array_menu_settings_display,"Detect fast mode and simulate it, on non-realvideo mode");
                 menu_add_item_menu_es_avanzado(array_menu_settings_display);
