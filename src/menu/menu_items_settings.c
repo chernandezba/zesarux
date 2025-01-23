@@ -7819,7 +7819,9 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
 		}
 
 		if (MACHINE_HAS_VDP_9918A) {
-			menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_vdp_9918a_unlimited_sprites_line,NULL,"[%c] Unlimited sprites per line", (vdp_9918a_unlimited_sprites_line.v ? 'X' : ' ') );
+			menu_add_item_menu_en_es_ca(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_vdp_9918a_unlimited_sprites_line,NULL,
+                "Unlimited sprites per line","Sprites Ilimitados por linea","Sprites ilimitats per línia");
+            menu_add_item_menu_prefijo_format(array_menu_settings_display,"[%c] ", (vdp_9918a_unlimited_sprites_line.v ? 'X' : ' ') );
             menu_add_item_menu_es_avanzado(array_menu_settings_display);
 		}
 
@@ -7844,7 +7846,9 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
 		}
 
 		if (MACHINE_IS_MSX) {
-			menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_msx_loading_stripes,NULL,"[%c] Loading stripes", (msx_loading_stripes.v ? 'X' : ' ') );
+			menu_add_item_menu_en_es_ca(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_msx_loading_stripes,NULL,
+                "Loading stripes","Franjas de Carga","Franges de Càrrega");
+            menu_add_item_menu_prefijo_format(array_menu_settings_display,"[%c] ", (msx_loading_stripes.v ? 'X' : ' ') );
 			menu_add_item_menu_tooltip(array_menu_settings_display,"Simulates loading border stripes when loading from real tape");
 			menu_add_item_menu_ayuda(array_menu_settings_display,"Simulates loading border stripes when loading from real tape");
             menu_add_item_menu_es_avanzado(array_menu_settings_display);
