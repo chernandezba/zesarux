@@ -1031,5 +1031,6 @@ extern void screen_render_menu_overlay_if_active(void);
 extern void scr_driver_redraw_desktop_windows(void);
 extern void scr_set_pending_redraw_desktop_windows(void);
 
+extern void scr_adjust_zoom_equals(int *p_zx,int *p_zy);
 
 #endif

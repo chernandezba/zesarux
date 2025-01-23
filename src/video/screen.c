@@ -108,6 +108,10 @@ z80_bit screen_reduce_075={0};
 //Antialias al reducir
 z80_bit screen_reduce_075_antialias={1};
 
+//Si se debe mantener siempre zoom_x=zoom_y
+z80_bit screen_keep_both_zoom_equals={1};
+
+
 int screen_reduce_offset_x=0;
 int screen_reduce_offset_y=0;
 
@@ -15754,4 +15758,22 @@ void scr_driver_redraw_desktop_windows(void)
 void scr_set_pending_redraw_desktop_windows(void)
 {
     scr_pendiente_redraw_desktop_windows=1;
+}
+
+void scr_adjust_zoom_equals(int *p_zx,int *p_zy)
+{
+    if (screen_keep_both_zoom_equals.v==0) return;
+
+    int zx=*p_zx;
+    int zy=*p_zy;
+
+    if (zx!=zy) {
+        //Me quedo con el menor
+        if (zy>zx) zy=zx;
+        else zx=zy;
+    }
+
+    *p_zx=zx;
+    *p_zy=zy;
+
 }
