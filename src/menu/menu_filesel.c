@@ -2081,6 +2081,7 @@ extern int convert_p_to_rwa_tmpdir(char *origen, char *destino);
 
         else if (!util_compare_file_extension(archivo,"p81")) {
                 char *opciones[]={
+                        "P81 to P",
                         "P81 to RWA",
 			"P81 to WAV",
 			"P81 to SCR",
@@ -2093,16 +2094,21 @@ extern int convert_p_to_rwa_tmpdir(char *origen, char *destino);
 		}
                 switch (opcion) {
                         case 0:
+                                sprintf(archivo_destino,"%s/%s.p",directorio,archivo);
+                                convert_p81_to_p(fullpath,archivo_destino);
+                        break;
+
+                        case 1:
                                 sprintf(archivo_destino,"%s/%s.rwa",directorio,archivo);
                                 convert_p_to_rwa(fullpath,archivo_destino);
                         break;
 
-                        case 1:
+                        case 2:
                                 sprintf(archivo_destino,"%s/%s.wav",directorio,archivo);
                                 convert_any_to_wav(fullpath,archivo_destino);
                         break;
 
-                        case 2:
+                        case 3:
                                 sprintf(archivo_destino,"%s/%s.scr",directorio,archivo);
 								util_convert_p_to_scr(fullpath,archivo_destino);
                         break;

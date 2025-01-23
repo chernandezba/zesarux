@@ -10256,6 +10256,47 @@ int convert_p_to_p81(char *origen, char *destino)
 
 }
 
+int convert_p81_to_p(char *origen, char *destino)
+{
+    FILE *ptr_origen;
+    ptr_origen=fopen(origen,"rb");
+    if (ptr_origen==NULL) {
+        debug_printf (VERBOSE_ERR,"Error reading source file");
+        return 1;
+    }
+
+    FILE *ptr_destino;
+    ptr_destino=fopen(destino,"wb");
+    if (ptr_destino==NULL) {
+        debug_printf (VERBOSE_ERR,"Error creating target file: %s",destino);
+        return 1;
+    }
+
+
+    int leyendo_nombre=1;
+
+    //metemos datos
+    z80_byte leido;
+    while (!feof(ptr_origen)) {
+        fread(&leido, 1,1 , ptr_origen);
+
+        //If duplicado porque al leer mas alla del final es cuando se activa feof, si no pusiera
+        //el if aqui, se repetiria el byte del final
+        if (!feof(ptr_origen)) {
+            if (!leyendo_nombre) fwrite(&leido,1,1,ptr_destino);
+        }
+
+        //final nombre dentro de p81 se acaba con bit 7 alzado
+        if (leido&128) leyendo_nombre=0;
+    }
+
+    fclose(ptr_origen);
+    fclose(ptr_destino);
+
+    return 0;
+
+}
+
 void convert_tap_to_rwa_write_silence(FILE *ptr_archivo,int segundos)
 {
         int i;

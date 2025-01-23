@@ -4,6 +4,7 @@ ZEsarUX 12.1 - xxx edition. 22 January 2025
 * Improvements
 
 Allow to save ZX80/81 screen to .scr file
+Added conversion of ZX81 files P to P81, and P81 to P
 
 Improved ZX Vision:
 - Allow to hide minimized windows

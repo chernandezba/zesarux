@@ -439,6 +439,7 @@ extern int convert_o_to_rwa_tmpdir(char *origen, char *destino);
 extern int convert_p_to_rwa(char *origen, char *destino);
 extern int convert_p_to_rwa_tmpdir(char *origen, char *destino);
 extern int convert_p_to_p81(char *origen, char *destino);
+extern int convert_p81_to_p(char *origen, char *destino);
 
 extern int convert_tap_to_rwa_tmpdir(char *origen, char *destino);
 extern int convert_tap_to_rwa(char *origen, char *destino);
