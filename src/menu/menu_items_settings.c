@@ -7469,7 +7469,7 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
 
 				if (MACHINE_IS_SPECTRUM && !MACHINE_IS_ZXEVO && !MACHINE_IS_TBBLUE)  {
 
-					menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_snow_effect,NULL,"[%c] Snow effect support", (snow_effect_enabled.v==1 ? 'X' : ' '));
+					menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_snow_effect,NULL,"[%c] Snow effect", (snow_effect_enabled.v==1 ? 'X' : ' '));
 					menu_add_item_menu_tooltip(array_menu_settings_display,"Enable snow effect on Spectrum");
 					menu_add_item_menu_ayuda(array_menu_settings_display,"Snow effect is a bug on some Spectrum models "
 						"(models except +2A and +3) that draws corrupted pixels when I register is pointed to "
@@ -7674,7 +7674,7 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
 
 
 		if (MACHINE_IS_SPECTRUM && !MACHINE_IS_TBBLUE) {
-			menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_ulaplus,NULL,"[%c] ULA~~plus support",(ulaplus_presente.v ? 'X' : ' '));
+			menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_ulaplus,NULL,"[%c] ULA~~plus",(ulaplus_presente.v ? 'X' : ' '));
 			menu_add_item_menu_shortcut(array_menu_settings_display,'p');
 			menu_add_item_menu_tooltip(array_menu_settings_display,"Enables ULAplus support");
 			menu_add_item_menu_ayuda(array_menu_settings_display,"The following ULAplus modes are supported:\n"
@@ -7688,7 +7688,7 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
 		}
 
 		if (MACHINE_IS_PENTAGON) {
-			menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_16c_mode,NULL,"[%c] 16C mode support",(pentagon_16c_mode_available.v ? 'X' : ' '));
+			menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_16c_mode,NULL,"[%c] 16C mode",(pentagon_16c_mode_available.v ? 'X' : ' '));
 			menu_add_item_menu_tooltip(array_menu_settings_display,"Enables 16C video mode support");
 			menu_add_item_menu_ayuda(array_menu_settings_display,"Enables 16C video mode support. That brings you mode 256x192x16 colour on Pentagon");
             menu_add_item_menu_es_avanzado(array_menu_settings_display);
@@ -7698,7 +7698,9 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
 
 
 			if (!MACHINE_IS_PENTAGON) {
-				menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_timex_video,NULL,"[%c] ~~Timex video support",(timex_video_emulation.v ? 'X' : ' '));
+				menu_add_item_menu_en_es_ca(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_timex_video,NULL,
+                    "~~Timex video modes","Modos video ~~Timex","Modes video ~~Timex");
+                menu_add_item_menu_prefijo_format(array_menu_settings_display,"[%c] ",(timex_video_emulation.v ? 'X' : ' '));
 				menu_add_item_menu_shortcut(array_menu_settings_display,'t');
 				menu_add_item_menu_tooltip(array_menu_settings_display,"Enables Timex Video modes");
 				menu_add_item_menu_ayuda(array_menu_settings_display,"The following Timex Video modes are emulated:\n"
@@ -7738,7 +7740,7 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
 
 			if (!MACHINE_IS_ZXEVO) {
 
-				menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_spectra,NULL,"[%c] Sp~~ectra support",(spectra_enabled.v ? 'X' : ' '));
+				menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_spectra,NULL,"[%c] Sp~~ectra",(spectra_enabled.v ? 'X' : ' '));
 				menu_add_item_menu_shortcut(array_menu_settings_display,'e');
 				menu_add_item_menu_tooltip(array_menu_settings_display,"Enables Spectra video modes");
 				menu_add_item_menu_ayuda(array_menu_settings_display,"Enables Spectra video modes. All video modes are fully emulated");
@@ -7762,7 +7764,9 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
 			menu_add_item_menu(array_menu_settings_display,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
 
-			menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_emulate_zx8081display_spec,menu_display_settings_disp_zx8081_spectrum,"[%c] ZX80/81 Display on Speccy", (simulate_screen_zx8081.v==1 ? 'X' : ' '));
+			menu_add_item_menu_en_es_ca(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_emulate_zx8081display_spec,menu_display_settings_disp_zx8081_spectrum,
+                "ZX80/81 Display on Spectrum","ZX80/81 Pantalla en Spectrum","ZX80/81 Pantalla al Spectrum");
+            menu_add_item_menu_prefijo_format(array_menu_settings_display,"[%c] ", (simulate_screen_zx8081.v==1 ? 'X' : ' '));
 			menu_add_item_menu_tooltip(array_menu_settings_display,"Simulates the resolution of ZX80/81 on the Spectrum");
 			menu_add_item_menu_ayuda(array_menu_settings_display,"It makes the resolution of display on Spectrum like a ZX80/81, with no colour. "
 					"This mode is not supported with real video enabled");
@@ -7770,7 +7774,9 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
 
 
 			if (menu_display_emulate_zx8081_cond() ){
-				menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_emulate_zx8081_thres,menu_display_emulate_zx8081_cond,"[%d] Pixel threshold",umbral_simulate_screen_zx8081);
+				menu_add_item_menu_en_es_ca(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_emulate_zx8081_thres,menu_display_emulate_zx8081_cond,
+                    "Pixel threshold","Umbral de Pixel","Umbral de Pixel");
+                menu_add_item_menu_prefijo_format(array_menu_settings_display,"[%d] ",umbral_simulate_screen_zx8081);
 				menu_add_item_menu_tooltip(array_menu_settings_display,"Pixel Threshold to draw black or white in a 4x4 rectangle, "
 						"when ZX80/81 Display on Speccy enabled");
 				menu_add_item_menu_ayuda(array_menu_settings_display,"Pixel Threshold to draw black or white in a 4x4 rectangle, "
@@ -7783,7 +7789,9 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
 		}
 
         if (MACHINE_IS_SPECTRUM) {
-			menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_refresca_sin_colores,NULL,"[%c] Colours enabled",(scr_refresca_sin_colores.v==0 ? 'X' : ' '));
+			menu_add_item_menu_en_es_ca(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_refresca_sin_colores,NULL,
+                "Colours enabled","Colores activados","Colors activats");
+            menu_add_item_menu_prefijo_format(array_menu_settings_display,"[%c] ",(scr_refresca_sin_colores.v==0 ? 'X' : ' '));
 			menu_add_item_menu_tooltip(array_menu_settings_display,"Disables colours for Spectrum display");
 			menu_add_item_menu_ayuda(array_menu_settings_display,"Disables colours for Spectrum display");
             menu_add_item_menu_es_avanzado(array_menu_settings_display);
