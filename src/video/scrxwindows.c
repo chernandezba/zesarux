@@ -261,6 +261,16 @@ int scrxwindows_setwindowparms(void)
 	sizeHints->max_aspect.x = 100;
 	sizeHints->max_aspect.y = 0;    //Indica 100.0
 
+    // Si no se permite valores de zoom_x y zoom_y diferentes
+    if (screen_keep_both_zoom_equals.v) {
+        //Ajustamos para que se mantenga siempre la proporcion
+        sizeHints->min_aspect.x = sizeHints->min_width;
+        sizeHints->min_aspect.y = sizeHints->min_height;
+
+        sizeHints->max_aspect.x = sizeHints->min_width;
+        sizeHints->max_aspect.y = sizeHints->min_height;
+    }
+
 	wmHints->flags=StateHint | InputHint;
 
 	wmHints->initial_state=NormalState;
@@ -646,7 +656,8 @@ void scrxwindows_resize(int width,int height)
 
 	debug_printf (VERBOSE_INFO,"zoom_x: %d zoom_y: %d zoom_x_calculated: %d zoom_y_calculated: %d",zoom_x,zoom_y,zoom_x_calculado,zoom_y_calculado);
 
-    // Si se permite valores de zoom_x y zoom_y diferentes
+    // Si no se permite valores de zoom_x y zoom_y diferentes
+    //En este caso el ajuste lo realiza el gestor de ventanas y lo definimos al inicializar la ventana
     //scr_adjust_zoom_equals(&zoom_x_calculado,&zoom_y_calculado);
 
 	if (zoom_x_calculado!=zoom_x || zoom_y_calculado!=zoom_y) {
