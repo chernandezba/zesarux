@@ -40,8 +40,8 @@ lo hace pero el menu contextual sale arriba del todo y no en la posición del cu
 
 -Opción por defecto no permitir "zoom x" diferente de "zoom y" al redimensionar ventana mediante ratón. Quedarse con valor inferior de zoom
 ok *pendiente sdl1,sdl2,X11. acabar de probar bien
-
-*pendiente setting en menu
+*parece que x11 con Mac no respeta proporciones. usar llamada a scr_adjust_zoom_equals que esta comentada
+ok *pendiente setting en menu
 *pendiente setting linea comandos - config
 *pendiente autoguardado config
 *si setting desactivado, permitir cambiar zoom x,y desde menu por separado

@@ -1134,6 +1134,11 @@ void menu_full_index_search(MENU_ITEM_PARAMETERS)
     }
 }
 
+void menu_interface_both_zoom_equals(MENU_ITEM_PARAMETERS)
+{
+    screen_keep_both_zoom_equals.v ^=1;
+}
+
 void menu_general_settings(MENU_ITEM_PARAMETERS)
 {
         menu_item *array_menu_window_settings;
@@ -1287,6 +1292,13 @@ void menu_general_settings(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_shortcut(array_menu_window_settings,'z');
             menu_add_item_menu_tooltip(array_menu_window_settings,"Change Window Zoom");
             menu_add_item_menu_ayuda(array_menu_window_settings,"Changes Window Size Zoom (width and height)");
+
+            menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_both_zoom_equals,NULL,
+                "Zoom horizontal equal to vertical","Zoom horizontal y vertical iguales","Zoom horitzontal i vertical iguals");
+            menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c] ",(screen_keep_both_zoom_equals.v ? 'X' : ' '));
+            menu_add_item_menu_tooltip(array_menu_window_settings,"Keep zoom horizontal equal to vertical to have proportional window sizes");
+            menu_add_item_menu_ayuda(array_menu_window_settings,"Keep zoom horizontal equal to vertical to have proportional window sizes");
+            menu_add_item_menu_es_avanzado(array_menu_window_settings);
 
                 menu_add_item_menu_format(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_zoom_autochange_big_display,NULL,
                     "[%c] Autochange Zoom big display",(autochange_zoom_big_display.v ? 'X' : ' ' ));
