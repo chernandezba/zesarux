@@ -500,6 +500,9 @@ Se probaron cambios presentes en carpeta tbblue_cambios_pruebas_ultimo_cambio_al
 ---- fin tbblue
 
 
+-Exploding fist next:
+*cargando desde browser de next, sale la intro y luego se cuelga
+*cargando con smartload, parece que carga archivos por esx pero no muestra nada en pantalla. Usa filemap, como Atic Atac...
 
 -Activar el kempston mouse entra en conflicto con el editor de basic.
 Al mover raton hace cosas raras. Tambien en el menu de tbblue: probablemente eso sea error de NextOS tal cual,
@@ -962,6 +965,9 @@ Modo 3 (360x256x16): los mismos colores que el modo 2. Aquí tenemos píxeles cu
 --- Mejoras especificas de ZX-Uno: ---
 
 -traps de cinta de bios zxuno deberia considerar solo opcodes y no registro pc
+
+-cambio modo stereo de zxuno mediante hardware. registro F7. https://www.zxuno.com/wiki/index.php/ZX_Spectrum
+algun programa que lo use? el zxunocfg?
 
 -al escribir archivo default spi flash, al buscarlo por entre todas las rutas, si en una lo encuentra pero no se puede escribir,
 que no siga buscando y alerte del error de que esta pero no puede escribirlo, en vez de andar buscandolo por el resto de rutas

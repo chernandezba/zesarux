@@ -47,6 +47,8 @@ Esto puede comportar problemas por variables que no se resetean correctamente (q
 se podria llegar a integrar dentro del gestor de tareas si da muchos problemas, como "pseudo" tareas
 -Quizá botón derecho y izquierdo sobre iconos y escritorio no entra en función multitarea. Y se debería crear una tarea ficticia para ello
 
+-tooltips en botones superiores y en dispositivos inferiores, y en botones de ventanas
+
 
 -Icono al grabar scr con quickscr. Que se guarde en misma ruta que autosnap
 

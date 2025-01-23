@@ -210,6 +210,10 @@ pero el impacto de no liberar esos pthreads es minimo, y como acabo de descubrir
 
 -página man de ZEsarUX. que no diga opciones, que haga referencia a --help y --experthelp
 
+-dall-e. text aventure location image
+*esperar a waitpid?
+*en hobbit las descripciones salen antes de borrar la pantalla
+*en linux: cierro ventana imagen, borro output imagen, abro y segfault
 
 *** Proceso compilacion ***
 
@@ -457,7 +461,9 @@ http://gafz.enterpriseforever.com/Dokumentacio/Konyvek/EXOS_2.1_technikal_inform
 
 Muchos modos de video diferentes. En un mismo frame se permiten varios modos
 
-
+-lambda 8300
+-Microace. https://www.timexsinclair.com/computers/microace/
+-Ringo R470
 
 
 https://en.m.wikipedia.org/wiki/Exidy_Sorcerer

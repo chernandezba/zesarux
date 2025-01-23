@@ -34,7 +34,6 @@ Para versión siguiente:
 -extractor dsk creo que a veces lee archivos con cabecera plus3dos. ejemplo : chase hq2. tampoco parece obtener bien siempre los datos (de otro sitio...)
 lecturas de plus3dos headers no van bien: Real length file SCREEN  .    read from PLUS3DOS header: 55560
 
--quiza seek beyond limit en floppy no deberia saltar error (solo verbose), caso de tauceti pcw. no consigo sacar ese error? otro juego que salga?
 
 -rutinas speech y kill speech se llaman aunque no haya nada pendiente. desde timer, llama a scrtextspeech_filter_run_pending
 
@@ -55,7 +54,6 @@ asi en smartload y similares no aparecerian -> pero en caso de UART si que deben
 
 
 
-
 -si se pulsa boton de cerrar todos los menus, desde una ventana que se ha abierto desde otra con menu tabulado, se cierra esa ventana de menu tabulado,
 en vez de dejarse en background
 Ejemplo: AY Player, pulsar Editar playlist, y ahí cerrar todos menus
@@ -65,12 +63,6 @@ Ejemplo: AY Player, pulsar Editar playlist, y ahí cerrar todos menus
 
 -en linux, con "stop emulation on menu", raton no mueve opciones de menu, ni deja mover ventanas
 ->no he conseguido reproducirlo
-
--Exploding fist next:
-*cargando desde browser de next, sale la intro y luego se cuelga
-*cargando con smartload, parece que carga archivos por esx pero no muestra nada en pantalla. Usa filemap, como Atic Atac...
-
-
 
 
 -Si se crea ventana de alto negativo, acaba haciendo panic al asignar memoria. Quizá controlar esto?
@@ -94,12 +86,6 @@ no genera codigo de tecla al pulsar esas extendidas
 *implementar relleno: mapa de puntos rellenos, y mostrar con tramado adecuado. solo fill cuando ventana esté dirty (misma logica que Location Image o ZXLife por ejemplo). algoritmo relleno recursivo? habria que tener un mapa de pixeles de spectrum de 256x192 tal cual
 
 
-
-
--dall-e. text aventure location image
-*esperar a waitpid?
-*en hobbit las descripciones salen antes de borrar la pantalla
-*en linux: cierro ventana imagen, borro output imagen, abro y segfault
 
 
 -text adventure map: texto en mapa deberia seguir char filter. Pero char filter
@@ -155,12 +141,6 @@ menu_download_file
 
 
 
--cambio modo stereo de zxuno mediante hardware. registro F7. https://www.zxuno.com/wiki/index.php/ZX_Spectrum
-algun programa que lo use? el zxunocfg?
-
-
-
-
 
 -algun tipo de indicacion en un menu que diga que no debe activar salir_todos_menus al pulsar ESC, por ejemplo en algunos no quiero
 que se cierren los anteriores, ejemplo:
@@ -174,8 +154,6 @@ En estos casos de momento lo que he hecho es que al final de cada menu se haga u
 -Process management: Render emulated display incluye tiempo de todas las ventanas? Si abro el text adventure map, que consume 6 ms con la guerra
 de las vajillas, el tiempo de render dice 8 ms. si cierro text adventure map, el render baja a 3 ms
 
--tooltips en botones superiores y en dispositivos inferiores, y en botones de ventanas
-
 
 
 -si se desactivan botones inferiores y superiores, el limite al mover iconos sigue siendo la zona de esos botones, aunque ya no existan
@@ -188,8 +166,6 @@ Y lo mismo con posición de nuevos iconos
 *idioma: english, español, català
 *zx desktop activado (junto con background windows)
 *etc...
-
-
 
 
 
@@ -236,9 +212,7 @@ Cuidado que  en la consola si hay verbose debug, se muestra caracter extraño pa
 
 
 
-
 -Teclado en pantalla en rpi borra el input de debajo
-
 
 
 
@@ -280,10 +254,6 @@ el resto puede salir fuera -> comprobar al hacer print y putpixel que no sale fu
 --- Fin Documentar ---
 
 
-
--lambda 8300
--Microace. https://www.timexsinclair.com/computers/microace/
--Ringo R470
 
 -quiza hsync_generator_active.v en zx80/81, que no se usa practicamente, puede servir para estabilizar la imagen en horizontal
 
@@ -392,7 +362,6 @@ Debería aumentar total_height si es necesario
 
 
 
--Opción por defecto no permitir "zoom x" diferente de "zoom y" al redimensionar ventana mediante ratón. Quedarse con valor inferior de zoom
 
 -Accesos mmc más allá del límite no deben desactivar la tarjeta. Solo log del aviso. En general para todos los dispositivos
 
