@@ -1371,6 +1371,9 @@ void scrsdl_resize(int width,int height)
 
     debug_printf (VERBOSE_INFO,"scrsdl_resize: zoom_x: %d zoom_y: %d zoom_x_calculated: %d zoom_y_calculated: %d",zoom_x,zoom_y,zoom_x_calculado,zoom_y_calculado);
 
+    // Si se permite valores de zoom_x y zoom_y diferentes
+    scr_adjust_zoom_equals(&zoom_x_calculado,&zoom_y_calculado);
+
     if (zoom_x_calculado!=zoom_x || zoom_y_calculado!=zoom_y) {
         //resize
         debug_printf (VERBOSE_INFO,"Resizing window");
