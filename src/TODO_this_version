@@ -48,3 +48,20 @@ ok *pendiente setting en menu
 
 
 -sdl en debian 12 inicializa muy lento
+
+-poder guardar una nota de texto en un snapshot zsf
+*como se agrega la nota? quiza desde menu snapshot: add note to saved zsf snapshot
+*como se visualiza la nota? : view note to loaded zsf snapshot, edit note to loaded zsf snapshot, remove note
+y la nota se carga al cargar zsf, se sobreescribe el texto que haya, y se guardara nota siempre que esté activa
+Ejemplo: si se carga zsf con nota, esa nota se guardara en el siguiente? NO deberia
+
+Quiza:
+
+load snapshot
+save snapshot
+
+edit snapshot note. en blanco por defecto. si está en blanco no guarda nota.
+
+view snapshot note (del ultimo cargado, si es que tiene nota). al cargar snapshot inicialmente se le quitara la nota
+
+Por tanto hay dos strings guardados, el de la nota del snapshot cargado, y el de la nota del snapshot que grabaremos

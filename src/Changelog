@@ -5,6 +5,7 @@ ZEsarUX 12.1 - xxx edition. 22 January 2025
 
 Allow to save ZX80/81 screen to .scr file
 Added conversion of ZX81 files P to P81, and P81 to P
+Allow to save text note on a ZSF snapshot
 
 Improved ZX Vision:
 - Allow to hide minimized windows

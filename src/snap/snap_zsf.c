@@ -99,6 +99,12 @@
 #endif
 
 
+//Nota a agregar al salvar snapshot. Si es en blanco, no se agrega
+char snap_zsf_note_save[SNAP_ZSF_NOTE_LENGTH]="";
+
+//Nota del ultimo snapshot cargado
+char snap_zsf_note_loaded[SNAP_ZSF_NOTE_LENGTH]="";
+
 
 
 int zsf_force_uncompressed=0; //Si forzar bloques no comprimidos
@@ -887,6 +893,10 @@ datagear_dma_block[20]=datagear_is_dma_transfering.v;
 datagear_dma_block[21]=datagear_dma_tbblue_prescaler;
 
 
+-Block ID 75: ZSF_TEXT_NOTE
+char snap_zsf_note_save[SNAP_ZSF_NOTE_LENGTH]
+
+
 -Como codificar bloques de memoria para Spectrum 128k, zxuno, tbblue, tsconf, etc?
 Con un numero de bloque (0...255) pero... que tamaño de bloque? tbblue usa paginas de 8kb, tsconf usa paginas de 16kb
 Quizá numero de bloque y parametro que diga tamaño, para tener un block id comun para todos ellos
@@ -975,6 +985,7 @@ char *zsf_block_id_names[]={
   "ZSF_KEY_PORTS_MK14_STATE",
   "ZSF_TBBLUE_CLIPWINDOWS",
   "ZSF_DATAGEAR_DMA",
+  "ZSF_TEXT_NOTE",
 
   "Unknown"  //Este siempre al final
 };
@@ -2155,6 +2166,13 @@ void load_zsf_flash_state(z80_byte *header)
 
 }
 
+void load_zsf_text_note(z80_byte *header)
+{
+    strcpy(snap_zsf_note_loaded,(char *)header);
+
+    debug_printf(VERBOSE_INFO,"ZSF Text note: [%s]",snap_zsf_note_loaded);
+}
+
 void load_zsf_datagear_dma(z80_byte *header)
 {
     datagear_mask_commands=header[0];
@@ -3307,6 +3325,8 @@ void load_zsf_snapshot_file_mem(char *filename,z80_byte *origin_memory,int longi
     return;
   }
 
+    //Inicializar nota zsf a vacio
+    snap_zsf_note_loaded[0]=0;
 
   z80_byte block_header[6];
 
@@ -3707,6 +3727,10 @@ void load_zsf_snapshot_file_mem(char *filename,z80_byte *origin_memory,int longi
         load_zsf_datagear_dma(block_data);
     break;
 
+    case ZSF_TEXT_NOTE:
+        load_zsf_text_note(block_data);
+    break;
+
       default:
         debug_printf(VERBOSE_ERR,"Unknown ZSF Block ID: %u. Continue anyway",block_id);
       break;
@@ -4013,6 +4037,11 @@ void save_zsf_snapshot_file_mem(char *filename,z80_byte *destination_memory,int 
 
     zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, datetime_buffer,ZSF_DATETIME, 6);
 
+
+    // Save text note
+    if (snap_zsf_note_save[0]) {
+        zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, (z80_byte *)snap_zsf_note_save,ZSF_TEXT_NOTE, SNAP_ZSF_NOTE_LENGTH);
+    }
 
 
   //Save cpu registers. Z80 or Moto or MK14

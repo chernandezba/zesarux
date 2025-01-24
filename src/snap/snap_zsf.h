@@ -99,9 +99,10 @@
 #define ZSF_KEY_PORTS_MK14_STATE 72
 #define ZSF_TBBLUE_CLIPWINDOWS 73
 #define ZSF_DATAGEAR_DMA 74
+#define ZSF_TEXT_NOTE 75
 
 //Id maximo de nombres
-#define MAX_ZSF_BLOCK_ID_NAMES 74
+#define MAX_ZSF_BLOCK_ID_NAMES 75
 
 //Importante NO alterar los ID existentes o se rompera compatibilidad hacia atras del formato ZSF
 //Siempre agregar, nunca modificar ni borrar
@@ -112,7 +113,7 @@
 
 
 
-
+#define SNAP_ZSF_NOTE_LENGTH 100
 
 
 
@@ -133,5 +134,8 @@ extern void load_zsf_snapshot_block_data_addr(z80_byte *block_data,z80_byte *des
 extern z80_byte *pending_zrcp_put_snapshot_buffer_destino;
 extern int pending_zrcp_put_snapshot_longitud;
 extern void check_pending_zrcp_put_snapshot(void);
+
+extern char snap_zsf_note_save[];
+extern char snap_zsf_note_loaded[];
 
 #endif

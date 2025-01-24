@@ -991,6 +991,8 @@ struct s_menu_item {
     int tiene_submenu;
 
     //si este item de menu despliega una ventana y por tanto agregamos puntos suspensivos
+    //gran parte de los items de menu que tiene genera_ventana tambien se le habilita el parametro menu_se_cerrara llamando
+    //a menu_add_item_menu_se_cerrara
     int genera_ventana;
 
     //Si es un item avanzado

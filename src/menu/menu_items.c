@@ -33842,7 +33842,17 @@ void menu_snapshot_save_game_config(MENU_ITEM_PARAMETERS)
 }
 
 
+void menu_snapshot_add_note(MENU_ITEM_PARAMETERS)
+{
 
+    menu_ventana_scanf("Snapshot note",snap_zsf_note_save,SNAP_ZSF_NOTE_LENGTH);
+
+}
+
+void menu_snapshot_view_loaded_note(MENU_ITEM_PARAMETERS)
+{
+    menu_generic_message("Loaded note",snap_zsf_note_loaded);
+}
 
 void menu_snapshot(MENU_ITEM_PARAMETERS)
 {
@@ -33872,6 +33882,25 @@ void menu_snapshot(MENU_ITEM_PARAMETERS)
                 "You must write the file name with the extension");
 
         menu_add_item_menu(array_menu_snapshot,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+
+        menu_add_item_menu_en_es_ca(array_menu_snapshot,MENU_OPCION_NORMAL,menu_snapshot_add_note,NULL,
+            "Add note to next ZSF snapshot","Agregar nota a siguiente snapshot ZSF","Agregar nota a següent snapshot ZSF");
+        menu_add_item_menu_tooltip(array_menu_snapshot,"Next saved ZSF snapshot will have this text note");
+        menu_add_item_menu_ayuda(array_menu_snapshot,"Next saved ZSF snapshot will have this text note");
+        menu_add_item_menu_es_avanzado(array_menu_snapshot);
+        menu_add_item_menu_genera_ventana(array_menu_snapshot);
+        menu_add_item_menu_se_cerrara(array_menu_snapshot);
+
+        if (snap_zsf_note_loaded[0]) {
+            menu_add_item_menu_en_es_ca(array_menu_snapshot,MENU_OPCION_NORMAL,menu_snapshot_view_loaded_note,NULL,
+                "View loaded ZSF note","Ver nota del ZSF cargado","Veure nota del ZSF carregat");
+            menu_add_item_menu_es_avanzado(array_menu_snapshot);
+            menu_add_item_menu_genera_ventana(array_menu_snapshot);
+            menu_add_item_menu_se_cerrara(array_menu_snapshot);
+        }
+
+        menu_add_item_menu(array_menu_snapshot,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_es_avanzado(array_menu_snapshot);
 
         if (rzx_reproduciendo) {
             menu_add_item_menu_en_es_ca(array_menu_snapshot,MENU_OPCION_NORMAL,menu_snapshot_stop_rzx_play,NULL,
@@ -33909,6 +33938,7 @@ void menu_snapshot(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_ayuda(array_menu_snapshot,"Generate .config file with common settings. Used to define custom settings for games, "
             "by default it asks to generate a .config file for the last smartloaded game");
         menu_add_item_menu_es_avanzado(array_menu_snapshot);
+        menu_add_item_menu_se_cerrara(array_menu_snapshot);
         menu_add_item_menu_genera_ventana(array_menu_snapshot);
 
 
