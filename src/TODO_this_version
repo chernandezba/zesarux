@@ -65,3 +65,10 @@ edit snapshot note. en blanco por defecto. si está en blanco no guarda nota.
 view snapshot note (del ultimo cargado, si es que tiene nota). al cargar snapshot inicialmente se le quitara la nota
 
 Por tanto hay dos strings guardados, el de la nota del snapshot cargado, y el de la nota del snapshot que grabaremos
+
+----
+
+ZENG Online
+
+-Si se hace get-snapshot sin haber uno primero, creo que peta
+-Cliente sin permisos de get-snapshot, en el footer acaba diciendo OFFLINE. No deberia poner ese mensaje si no tiene permisos de get-snapshot

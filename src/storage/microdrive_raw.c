@@ -914,19 +914,36 @@ void microdrive_raw_create_header(z80_byte *destino,unsigned int usagecounter)
 
 /*
 -Firma:
-offset  Descripcion
+offset  Description
 0       “RAWMDV” 6 bytes
-6       -Version. byte. actual: 0
-7       -Creator: 30 bytes. 0 del final opcional. Ejemplo “ZEsarUX 11.1-SN”
-37      -Machine: para que máquina se está usando. 0 del final opcional. 20 bytes:
+6       -Version. byte. current: 0
+7       -Creator: 30 bytes. String ended with 0 byte (0 final optional). Example “ZEsarUX 11.1-SN”
+37      -Machine: What machine uses this microdrive. String ended with 0 byte  (0 final optional). 20 bytes: examples:
         “Spectrum”
         “QL”
-57      19 bytes. 0 del final opcional
-        -Fecha: 19 bytes. 0 del final opcional
+57      19 bytes.
+        -Date: 19 bytes. String ended with 0 byte (0 final optional)
         “DD/MM/AAAA HH:MM:SS”
 
-76-79   Usage counter, cantidad de veces que se ha pasado por la posición 0 del microdrive. Entero sin signo de 32 bits, little endian
-80-255  Reservado. A 0
+76-79   Usage counter, times the microdrive has been full read (times the header position has passed position 0). Unsigned integer 32 bits, little endian
+80-255  Reserved. Set to 0
+
+After the header comes the data and then the type of all data. For example, for a 90 KB raw microdrive, here it comes:
+
+90 KB of data: just the raw data
+90 KB of type for all the data: every position of data can be: gap or data.
+And also, every position can be marked as "bad position" (emulating a microdrive with sections of data that can't be written or read).
+Every one of this data type is a mask of bits, currently only bits 0 and 1 are used:
+
+Bit 0: Data or Gap. If set bit, it's a data. If not, it's a gap
+Bit 1: Bad position. If set, it's a bad positiion. If not, it's a "good" position
+
+For example if the first 5 bytes of data are: Gap, Gap, Data, Data, Data+Bad, the data types will be:
+
+00, 00, 01, 01, 03
+
+Following the same 90 KB example, the total size of the RMD file will be: 256+92160+92160=184576 bytes
+
 */
     strcpy((char *)destino,MICRODRIVE_RAW_SIGNATURE);
 
