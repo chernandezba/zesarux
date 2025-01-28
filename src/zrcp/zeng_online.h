@@ -142,6 +142,15 @@ struct zeng_online_room {
 
     z_atomic_semaphore semaphore_writing_snapshot;
 
+    //Para modo streaming
+    int streaming_enabled;
+
+    int streaming_display_size; //Tamaño del bloque guardado con snapshot-put-display
+    z80_byte *streaming_display_memory; //Donde esta guardada esa pantalla
+
+    z_atomic_semaphore mutex_reading_streaming_display;
+    z_atomic_semaphore semaphore_writing_streaming_display;
+
     //donde se almacenan los eventos. Es un array circular, si se llega al final se sobreescriben
     //No pasa nada si sobreescribimos la posicion donde un cliente esta leyendo, si se pierde el evento, se pierde...
     //Ya le llegara un snapshot que lo corrija

@@ -593,11 +593,17 @@ void init_zeng_online_rooms(void)
         zeng_online_rooms_list[i].index_waiting_join_first=0;
         zeng_online_rooms_list[i].total_waiting_join=0;
 
+        zeng_online_rooms_list[i].streaming_enabled=0;
+        zeng_online_rooms_list[i].streaming_display_memory=NULL;
+
         z_atomic_reset(&zeng_online_rooms_list[i].mutex_reading_snapshot);
         z_atomic_reset(&zeng_online_rooms_list[i].semaphore_writing_snapshot);
         z_atomic_reset(&zeng_online_rooms_list[i].semaphore_events);
         z_atomic_reset(&zeng_online_rooms_list[i].semaphore_joined_users);
         z_atomic_reset(&zeng_online_rooms_list[i].semaphore_allowed_keys);
+
+        z_atomic_reset(&zeng_online_rooms_list[i].mutex_reading_streaming_display);
+        z_atomic_reset(&zeng_online_rooms_list[i].semaphore_writing_streaming_display);
 
 
     }

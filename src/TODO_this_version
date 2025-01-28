@@ -72,3 +72,31 @@ ZENG Online
 
 -Si se hace get-snapshot sin haber uno primero, creo que peta
 -Cliente sin permisos de get-snapshot, en el footer acaba diciendo OFFLINE. No deberia poner ese mensaje si no tiene permisos de get-snapshot
+
+-Modo streaming
+*comandos streaming-put-display, streaming-get-display, streaming-enable, streaming-disable, streaming-get-status
+
+*formato datos enviados de put-display:
+byte 0. Que diga si es pantalla entera o diferencias del anterior. Que diga si es sin comprimir o comprimido zip
+Byte 1. valor puerto FE (realmente solo color border)
+Byte 2- : datos
+
+
+Solo permitido en spectrum de momento
+Quizá es un modo que lo active el cliente master con un parámetro. Y por defecto activado
+
+Puede presentar parpadeo al no escribirse la memoria cuando corresponde según el juego
+
+Otro comando para traerse el buffer de audio. Que el master envíe el buffer anterior al actual.
+Compresión zip se habilitaba a nivel global en el server creo
+Quizá otro byte con color border
+
+Que FPS lo diga de la cantidad de pantallas que se trae por segundo
+
+*si esta en modo streaming (modo streaming lo habilita el master, se define antes de crear la room y no deja cambiarla luego):
+
+-master no envia snapshot. envia display
+-slave no recibe snapshot. recibe display
+
+Al crear room, el master envia automaticamente un streaming-enable o streaming-disable dependiendo si su setting (en menu
+zeng-online-client) esta activado o no
