@@ -75,8 +75,8 @@ ZENG Online
 
 -Modo streaming
 *comandos
-streaming-put-display
-streaming-get-display
+streaming-put-display: pendiente
+streaming-get-display: pendiente
 streaming-enable, streaming-disable: quiza no hace falta porque lo establece al crear la habitacion
 streaming-is-enabled. ok comando creado, aunque quien lo usa? porque el slave al conectarse lee el modo
 streaming de la respuesta del join, no hace falta lanzar el streaming-is-enabled
@@ -102,7 +102,3 @@ Que FPS lo diga de la cantidad de pantallas que se trae por segundo
 
 -master no envia snapshot. envia display
 -slave no recibe snapshot y no recibe teclas. recibe display. y su cpu no emula
-
-Al crear room, el master envia automaticamente un streaming-enable o streaming-disable dependiendo si su setting (en menu
-zeng-online-client) esta activado o no
-Al slave al conectarse tiene que llamar un streaming-is-enabled, para actuar de una manera u otra
