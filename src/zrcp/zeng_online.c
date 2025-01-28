@@ -853,30 +853,6 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
         zeng_online_create_room(misocket,room_number,comando_argv[2]);
     }
 
-    //TODO esto solo es temporal
-    /*else if (!strcmp(comando_argv[0],"pass-room")) {
-        if (!zeng_online_enabled) {
-            escribir_socket(misocket,"ERROR. ZENG Online is not enabled");
-            return;
-        }
-
-        if (comando_argc<1) {
-            escribir_socket(misocket,"ERROR. Needs one parameter");
-            return;
-        }
-
-        int room_number=parse_string_to_number(comando_argv[1]);
-
-        if (!zeng_online_rooms_list[room_number].created) {
-            escribir_socket(misocket,"ERROR. Room is not created");
-            return;
-        }
-
-
-        escribir_socket_format(misocket,"%s",zeng_online_rooms_list[room_number].user_password);
-    }
-    */
-
 
 
     //get-join-queue-size creator_pass n
