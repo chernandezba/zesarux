@@ -105,3 +105,4 @@ Que FPS lo diga de la cantidad de pantallas que se trae por segundo
 
 Al crear room, el master envia automaticamente un streaming-enable o streaming-disable dependiendo si su setting (en menu
 zeng-online-client) esta activado o no
+Al slave al conectarse tiene que llamar un streaming-is-enabled, para actuar de una manera u otra

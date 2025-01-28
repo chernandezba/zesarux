@@ -931,7 +931,7 @@ struct s_items_ayuda items_ayuda[]={
     "get-snapshot-id user_pass n                     This command returns the last snapshot id from room n, returns ERROR if no snapshot there. Requires user_pass\n"
     "get-kicked-user user_pass n                     This command returns the last kicked user, returning its uuid\n"
     "is-enabled                                      Returns enabled status\n"
-    "join n nickname uuid [creator_pass]             Joins to room n. Returns the user_password and the permissions. If parameter creator_pass is not set, it will need authorization from the master\n"
+    "join n nickname uuid [creator_pass]             Joins to room n. Returns the user_password, permissions and if streaming mode is enabled. If parameter creator_pass is not set, it will need authorization from the master\n"
     "                                                uuid is a unique identifier for the client, usually can be the same as Statistics uuid\n"
     "kick creator_pass n uuid                        Kick user identified by uuid\n"
     "leave n user_pass uuid                          Leaves room n.\n"

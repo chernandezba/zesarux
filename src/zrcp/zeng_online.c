@@ -2182,13 +2182,13 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
 
         }
 
-        //TODO: seguro que hay que hacer mas cosas en el join...
 
 
         zoc_add_user_to_joined_users(room_number,comando_argv[2],comando_argv[3]);
 
-        //Y retornamos el user_password
-        escribir_socket_format(misocket,"%s %d",zeng_online_rooms_list[room_number].user_password,permissions);
+        //Y retornamos el user_password, permissions y streaming mode
+        escribir_socket_format(misocket,"%s %d %d",
+            zeng_online_rooms_list[room_number].user_password,permissions,zeng_online_rooms_list[room_number].streaming_enabled);
 
 
         //Y notificarlo con un broadcast message

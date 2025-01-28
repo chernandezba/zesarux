@@ -143,6 +143,9 @@ char created_room_user_password[ZENG_ROOM_PASSWORD_LENGTH+1];
 //Los permisos de una room que nos hemos unido
 int created_room_user_permissions;
 
+//Si tiene modo streaming habilitado en la room que nos hemos unido
+int created_room_streaming_mode;
+
 int param_join_room_number;
 char param_join_room_creator_password[ZENG_ROOM_PASSWORD_LENGTH+1];
 
@@ -2061,7 +2064,7 @@ int zeng_online_client_join_room_connect(void)
             return 0;
         }
 
-        //Dividir el user_password y los permisos
+        //Dividir el user_password y los permisos y el streaming mode
         int i;
         for (i=0;buffer[i] && buffer[i]!=' ';i++);
 
@@ -2077,11 +2080,31 @@ int zeng_online_client_join_room_connect(void)
 
         //Y seguir hasta buscar los permisos
         i++;
-        created_room_user_permissions=parse_string_to_number(&buffer[i]);
+
+        int inicio_index_permissions=i;
+
+        for (;buffer[i] && buffer[i]!=' ';i++);
+
+        if (buffer[i]==0) {
+            //llegado al final sin que haya espacios. error
+            DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Error joining room, no streaming mode detected: %s",buffer);
+            return 0;
+        }
+
+        //truncar de momento hasta aqui
+        buffer[i]=0;
+
+        created_room_user_permissions=parse_string_to_number(&buffer[inicio_index_permissions]);
+
+
+
+        i++;
+
+        created_room_streaming_mode=parse_string_to_number(&buffer[i]);
 
         DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: User password: [%s]",created_room_user_password);
         DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: User permissions: [%d]",created_room_user_permissions);
-
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Streaming mode: [%d]",created_room_streaming_mode);
 
 		//finalizar conexion
         z_sock_close_connection(indice_socket);
