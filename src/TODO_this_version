@@ -74,7 +74,12 @@ ZENG Online
 -Cliente sin permisos de get-snapshot, en el footer acaba diciendo OFFLINE. No deberia poner ese mensaje si no tiene permisos de get-snapshot
 
 -Modo streaming
-*comandos streaming-put-display, streaming-get-display, streaming-enable, streaming-disable, streaming-get-status
+*comandos
+streaming-put-display
+streaming-get-display
+streaming-enable
+streaming-disable
+streaming-is-enabled
 
 *formato datos enviados de put-display:
 byte 0. Que diga si es pantalla entera o diferencias del anterior. Que diga si es sin comprimir o comprimido zip

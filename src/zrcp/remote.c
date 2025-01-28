@@ -951,6 +951,7 @@ struct s_items_ayuda items_ayuda[]={
     "set-key-profile creator_pass n p k1 k2 k3 ...   Defines profile (p) keys for room n.\n"
     "set-key-profile-assign creator_pass n p [uuid]  Assigns profile (p) keys for room n to user uuid. Set uuid to blank \"\" or leave undefined to deassign.\n"
     "set-max-players creator_pass n m                Define max-players (m) for room (n). Requires creator_pass of that room\n"
+    "streaming-is-enabled user_pass n                Tells if streaming mode is enabled or not on this room\n"
 
 },
 
