@@ -101,7 +101,7 @@ Que FPS lo diga de la cantidad de pantallas que se trae por segundo
 *si esta en modo streaming (modo streaming lo habilita el master, se define antes de crear la room y no deja cambiarla luego):
 
 -master no envia snapshot. envia display
--slave no recibe snapshot. recibe display
+-slave no recibe snapshot y no recibe teclas. recibe display. y su cpu no emula
 
 Al crear room, el master envia automaticamente un streaming-enable o streaming-disable dependiendo si su setting (en menu
 zeng-online-client) esta activado o no
