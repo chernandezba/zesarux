@@ -3058,22 +3058,52 @@ void *zoc_master_thread_function(void *nada GCC_UNUSED)
 
             //printf("before get snapshot\n");
 
-            if (created_room_user_permissions & ZENG_ONLINE_PERMISSIONS_PUT_SNAPSHOT) {
+            //En modo streaming escribimos display en vez de pantalla
 
+            if (created_room_streaming_mode) {
+                printf("Modo streaming. Escribimos display en vez de snapshot\n");
 
-                if (zoc_pending_send_snapshot) {
-                    int error=zoc_send_snapshot(indice_socket);
+                if (created_room_user_permissions & ZENG_ONLINE_PERMISSIONS_PUT_DISPLAY) {
 
-                    if (error<0) {
-                        //TODO
-                        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Error sending snapshot to zeng online server");
+                    printf("Putting display\n");
+
+                    /*if (zoc_pending_send_snapshot) {
+                        int error=zoc_send_snapshot(indice_socket);
+
+                        if (error<0) {
+                            //TODO
+                            DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Error sending snapshot to zeng online server");
+                        }
+
+                        //Enviado. Avisar no pendiente
+                        zoc_pending_send_snapshot=0;
+                        //zeng_online_client_reset_scanline_counter();
+                        //printf("Snapshot sent\n");
                     }
-
-                    //Enviado. Avisar no pendiente
-                    zoc_pending_send_snapshot=0;
-                    //zeng_online_client_reset_scanline_counter();
-                    //printf("Snapshot sent\n");
+                    */
                 }
+            }
+
+            else {
+
+                if (created_room_user_permissions & ZENG_ONLINE_PERMISSIONS_PUT_SNAPSHOT) {
+
+
+                    if (zoc_pending_send_snapshot) {
+                        int error=zoc_send_snapshot(indice_socket);
+
+                        if (error<0) {
+                            //TODO
+                            DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Error sending snapshot to zeng online server");
+                        }
+
+                        //Enviado. Avisar no pendiente
+                        zoc_pending_send_snapshot=0;
+                        //zeng_online_client_reset_scanline_counter();
+                        //printf("Snapshot sent\n");
+                    }
+                }
+
             }
 
             //Un master que recibe snapshots
@@ -3555,33 +3585,60 @@ void *zoc_slave_thread_function(void *nada GCC_UNUSED)
         if (zeng_online_client_end_frame_reached) {
             zeng_online_client_end_frame_reached=0;
 
-            //Como se puede ver es el cliente quien gestiona los permisos en base a lo que el join le retornó el server
-            //Pero luego el server no valida que el cliente tenga los permisos que está usando
-            if (created_room_user_permissions & ZENG_ONLINE_PERMISSIONS_GET_SNAPSHOT) {
-
-                //Recibir snapshot
+            //En modo streaming solo leemos pantalla, y no leemos ni snapshot ni teclas
+            if (created_room_streaming_mode) {
+                printf("Modo streaming. solo leemos pantalla\n");
 
 
-                int error=zoc_receive_snapshot(indice_socket);
-                //TODO gestionar bien este error
-                if (error<0) {
-                    //TODO
-                    DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Error getting snapshot from zeng online server");
-                    usleep(10000); //dormir 10 ms
+                if (created_room_user_permissions & ZENG_ONLINE_PERMISSIONS_GET_DISPLAY) {
+
+                    //Recibir snapshot
+                    printf("Recibir pantalla\n");
+
+                    /*int error=zoc_receive_snapshot(indice_socket);
+                    //TODO gestionar bien este error
+                    if (error<0) {
+                        //TODO
+                        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Error getting snapshot from zeng online server");
+                        usleep(10000); //dormir 10 ms
+                    }*/
+
+
+                }
+            }
+
+            else {
+
+
+                //Como se puede ver es el cliente quien gestiona los permisos en base a lo que el join le retornó el server
+                //Pero luego el server no valida que el cliente tenga los permisos que está usando
+                if (created_room_user_permissions & ZENG_ONLINE_PERMISSIONS_GET_SNAPSHOT) {
+
+                    //Recibir snapshot
+
+
+                    int error=zoc_receive_snapshot(indice_socket);
+                    //TODO gestionar bien este error
+                    if (error<0) {
+                        //TODO
+                        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Error getting snapshot from zeng online server");
+                        usleep(10000); //dormir 10 ms
+                    }
+
+
+                }
+
+                if (created_room_user_permissions & ZENG_ONLINE_PERMISSIONS_GET_KEYS) {
+                    //recepcion teclas
+                    //TODO gestionar error
+                    //Tecnicamente no haria falta esto, pues las teclas ya nos llegan
+                    //por el volcado de puertos que tiene el snapshot
+                    //PERO esto permite que lleguen mas rapido antes que el snapshot
+                    zoc_get_keys(indice_socket_get_keys);
                 }
 
 
             }
-
-            if (created_room_user_permissions & ZENG_ONLINE_PERMISSIONS_GET_KEYS) {
-                //recepcion teclas
-                //TODO gestionar error
-                //Tecnicamente no haria falta esto, pues las teclas ya nos llegan
-                //por el volcado de puertos que tiene el snapshot
-                //PERO esto permite que lleguen mas rapido antes que el snapshot
-                zoc_get_keys(indice_socket_get_keys);
-            }
-
 
             if (created_room_user_permissions & ZENG_ONLINE_PERMISSIONS_SEND_KEYS) {
                 //Enviar teclas
