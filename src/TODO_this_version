@@ -79,7 +79,8 @@ streaming-put-display
 streaming-get-display
 streaming-enable
 streaming-disable
-streaming-is-enabled. ok comando creado, falta slave tiene que leer modo al conectar
+streaming-is-enabled. ok comando creado, aunque quien lo usa? porque el slave al conectarse lee el modo
+streaming de la respuesta del join, no hace falta lanzar el streaming-is-enabled
 
 *formato datos enviados de put-display:
 byte 0. Que diga si es pantalla entera o diferencias del anterior. Que diga si es sin comprimir o comprimido zip

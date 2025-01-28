@@ -152,6 +152,9 @@ char param_join_room_creator_password[ZENG_ROOM_PASSWORD_LENGTH+1];
 //Se indicara que queremos obtener el snapshot que habia ya que estamos reentrando como master
 int zoc_rejoining_as_master=0;
 
+//Crear una habitacion con modo streaming o no
+int streaming_enabled_when_creating=0;
+
 //Perfiles de teclas que se han cargado del servidor como master/manager para la habitacion actual
 int allowed_keys[ZOC_MAX_KEYS_PROFILES][ZOC_MAX_KEYS_ITEMS];
 //Perfiles asignados a cada uuid. Si es "", no esta asignado
@@ -2223,7 +2226,7 @@ int zeng_online_client_create_room_connect(void)
 		DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Sending create-room");
 
         char buffer_enviar[1024];
-        sprintf(buffer_enviar,"zeng-online create-room %d \"%s\"\n",param_create_room_number,param_create_room_name);
+        sprintf(buffer_enviar,"zeng-online create-room %d \"%s\" %d\n",param_create_room_number,param_create_room_name,streaming_enabled_when_creating);
 
 		int escritos=z_sock_write_string(indice_socket,buffer_enviar);
 

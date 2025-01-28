@@ -692,7 +692,7 @@ void zeng_online_assign_room_passwords(int room)
 
 }
 
-void zeng_online_create_room(int misocket,int room_number,char *room_name)
+void zeng_online_create_room(int misocket,int room_number,char *room_name,int streaming_enabled)
 {
     //comprobaciones
     if (room_number<0 || room_number>=zeng_online_current_max_rooms) {
@@ -715,6 +715,8 @@ void zeng_online_create_room(int misocket,int room_number,char *room_name)
     zeng_online_rooms_list[room_number].snapshot_memory=NULL;
 
     zeng_online_rooms_list[room_number].autojoin_enabled=0;
+
+    zeng_online_rooms_list[room_number].streaming_enabled=streaming_enabled;
 
     zeng_online_rooms_list[room_number].broadcast_message_id=0;
     zeng_online_rooms_list[room_number].broadcast_message[0]=0;
@@ -835,8 +837,8 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
             return;
         }
 
-        if (comando_argc<2) {
-            escribir_socket(misocket,"ERROR. Needs two parameters");
+        if (comando_argc<3) {
+            escribir_socket(misocket,"ERROR. Needs three parameters");
             return;
         }
 
@@ -850,7 +852,8 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
         }
 
         int room_number=parse_string_to_number(comando_argv[1]);
-        zeng_online_create_room(misocket,room_number,comando_argv[2]);
+        int streaming_mode=parse_string_to_number(comando_argv[3]);
+        zeng_online_create_room(misocket,room_number,comando_argv[2],streaming_mode);
     }
 
 

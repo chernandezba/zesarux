@@ -1531,6 +1531,13 @@ void menu_zeng_online_allow_instant_keys(MENU_ITEM_PARAMETERS)
     zeng_online_allow_instant_keys.v ^=1;
 }
 
+void menu_zeng_online_streaming_enabled_when_creating(MENU_ITEM_PARAMETERS)
+{
+    streaming_enabled_when_creating ^=1;
+}
+
+
+
 void menu_zeng_online(MENU_ITEM_PARAMETERS)
 {
     menu_item *array_menu_common;
@@ -1742,6 +1749,15 @@ void menu_zeng_online(MENU_ITEM_PARAMETERS)
 
             }
         }
+
+        menu_add_item_menu_separator(array_menu_common);
+        menu_add_item_menu_es_avanzado(array_menu_common);
+
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_streaming_enabled_when_creating,menu_zeng_online_not_connected_cond,
+        "Streaming mode on create","Modo streaming al crear","Mode streaming al crear");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",
+            (streaming_enabled_when_creating ? 'X' : ' '));
+        menu_add_item_menu_es_avanzado(array_menu_common);
 
         //TODO: desconectar con zeng_online_connected.v=0;
 
