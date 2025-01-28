@@ -79,7 +79,7 @@ streaming-put-display
 streaming-get-display
 streaming-enable
 streaming-disable
-streaming-is-enabled
+streaming-is-enabled. ok comando creado, falta slave tiene que leer modo al conectar
 
 *formato datos enviados de put-display:
 byte 0. Que diga si es pantalla entera o diferencias del anterior. Que diga si es sin comprimir o comprimido zip
