@@ -43,6 +43,10 @@ extern int zrcp_command_close_all_menus;
 #define ZRCP_GET_PUT_SNAPSHOT_MEM MAX_ZSF_SNAPSHOT_SIZE
 
 
+//Para que quepa una pantalla y bastantes mas bytes
+#define ZRCP_GET_PUT_STREAMING_DISPLAY_MEM (6912+2048)
+
+
 #define MAX_LENGTH_PROTOCOL_COMMAND ((ZRCP_GET_PUT_SNAPSHOT_MEM*2)+1024)
 
 

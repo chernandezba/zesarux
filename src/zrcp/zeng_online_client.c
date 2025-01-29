@@ -53,6 +53,7 @@ Functions starting with zoc_ means: zeng online client
 #include "autoselectoptions.h"
 #include "textspeech.h"
 #include "settings.h"
+#include "mem128.h"
 
 
 
@@ -168,6 +169,11 @@ z80_byte *zoc_get_snapshot_mem_binary=NULL;
 int zoc_get_snapshot_mem_binary_longitud=0;
 int zoc_pending_apply_received_snapshot=0;
 z80_byte *zoc_get_snapshot_mem_binary_comprimido=NULL;
+
+char *zoc_get_streaming_display_mem_hexa=NULL;
+z80_byte *zoc_get_streaming_display_mem_binary=NULL;
+int zoc_get_streaming_display_mem_binary_longitud=0;
+int zoc_pending_apply_received_streaming_display=0;
 
 int zoc_receive_snapshot_last_id=0;
 
@@ -3492,6 +3498,136 @@ int zoc_receive_snapshot(int indice_socket)
 
 }
 
+
+
+int zoc_receive_streaming_display(int indice_socket)
+{
+
+
+    DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"ZENG Online Client: Receiving streaming display");
+
+    int posicion_command;
+    int escritos,leidos;
+
+
+    char buffer_comando[200];
+
+
+
+    if (!zoc_pending_apply_received_streaming_display) {
+
+        #define ZENG_BUFFER_INITIAL_CONNECT 199
+
+        //Leer algo
+        char buffer[ZENG_BUFFER_INITIAL_CONNECT+1];
+
+
+
+        //get-streaming_display user_pass n
+        sprintf(buffer_comando,"zeng-online get-streaming-display %s %d\n",created_room_user_password,zeng_online_joined_to_room_number);
+        escritos=z_sock_write_string(indice_socket,buffer_comando);
+        //printf("after z_sock_write_string 1\n");
+        if (escritos<0) return escritos;
+
+
+
+//Ver si hay datos disponibles y no esta pendiente aplicar ultimo streaming_display
+
+        if (zoc_get_streaming_display_mem_hexa==NULL) {
+            zoc_get_streaming_display_mem_hexa=util_malloc(ZRCP_GET_PUT_STREAMING_DISPLAY_MEM*2,"Can not allocate memory for getting streaming_display"); //16 MB es mas que suficiente
+        }
+
+        //Leer hasta prompt
+        //printf("before zsock_read_all_until_command\n");
+        leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)zoc_get_streaming_display_mem_hexa,ZRCP_GET_PUT_STREAMING_DISPLAY_MEM*2,&posicion_command);
+
+        //printf("leidos despues de get-streaming_display: %d\n",leidos);
+
+
+        if (leidos>0) {
+            zoc_get_streaming_display_mem_hexa[leidos]=0; //fin de texto
+            //DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Received text for get-streaming_display (length %d): \n[\n%s\n]",leidos,zoc_get_streaming_display_mem_hexa);
+        }
+
+        if (leidos<0) {
+            DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't receive get-streaming-display: %s",z_sock_get_error(leidos));
+            return 0;
+        }
+
+
+        //printf("after zsock_read_all_until_command\n");
+        // printf("Recibido respuesta despues de get-streaming_display: [%s]\n",zoc_get_streaming_display_mem_hexa);
+
+        //1 mas para eliminar el salto de linea anterior a "command>"
+        if (posicion_command>=1) {
+            zoc_get_streaming_display_mem_hexa[posicion_command-1]=0;
+            //DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Received text: %s",zoc_get_streaming_display_mem_hexa);
+        }
+        else {
+            DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Error receiving ZEsarUX zeng-online get-streaming_display");
+            return 0;
+        }
+
+        //printf("Recibido respuesta despues de truncar: [%s]\n",zoc_get_streaming_display_mem_hexa);
+
+
+        //printf("Buffer despues de truncar: [%s]\n",&zoc_get_streaming_display_mem_hexa[inicio_datos_streaming_display]);
+
+        //TODO: detectar texto ERROR en respuesta
+        //return leidos;
+
+        //Convertir hexa a memoria
+        if (zoc_get_streaming_display_mem_binary==NULL) {
+            zoc_get_streaming_display_mem_binary=util_malloc(ZRCP_GET_PUT_STREAMING_DISPLAY_MEM*2,"Can not allocate memory for apply streaming_display");
+        }
+
+
+        char *s=zoc_get_streaming_display_mem_hexa;
+        int parametros_recibidos=0;
+
+
+
+        z80_byte *destino;
+        destino=zoc_get_streaming_display_mem_binary;
+
+        while (*s) {
+            *destino=(util_hex_nibble_to_byte(*s)<<4) | util_hex_nibble_to_byte(*(s+1));
+            destino++;
+
+            parametros_recibidos++;
+
+            s++;
+            if (*s) s++;
+        }
+
+
+        int zoc_get_streaming_display_mem_binary_longitud=parametros_recibidos;
+
+
+        //printf("Apply streaming_display. Compressed %d Uncompressed %d\n",zoc_get_streaming_display_mem_binary_longitud_comprimido,zoc_get_streaming_display_mem_binary_longitud);
+
+        zoc_pending_apply_received_streaming_display=1;
+
+
+
+    }
+    else {
+        //printf("get-streaming_display no disponible. esperar\n");
+
+    }
+
+    //Esperar algo. 10 ms, suficiente porque es un mitad de frame
+    //usleep(10000); //dormir 10 ms
+
+//}
+
+DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"ZENG Online Client: End Receiving streaming_display");
+return 1;
+
+
+}
+
+
 //contiene el valor anterior de contador_segundo_infinito de la anterior consulta de kick
 int contador_kick_anteriorsegundos=0;
 
@@ -3595,13 +3731,13 @@ void *zoc_slave_thread_function(void *nada GCC_UNUSED)
                     //Recibir snapshot
                     printf("Recibir pantalla\n");
 
-                    /*int error=zoc_receive_snapshot(indice_socket);
+                    int error=zoc_receive_streaming_display(indice_socket);
                     //TODO gestionar bien este error
                     if (error<0) {
                         //TODO
-                        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Error getting snapshot from zeng online server");
+                        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Error getting streaming display from zeng online server");
                         usleep(10000); //dormir 10 ms
-                    }*/
+                    }
 
 
                 }
@@ -3790,6 +3926,47 @@ void zeng_online_client_apply_pending_received_snapshot(void)
 
 
 
+void zeng_online_client_apply_pending_received_streaming_display(void)
+{
+    if (zeng_online_connected.v==0) return;
+
+    if (!zoc_pending_apply_received_streaming_display) return;
+
+
+
+    if (zeng_online_i_am_master.v) return;
+
+
+    //load_zsf_streaming_display_file_mem(NULL,zoc_get_streaming_display_mem_binary,zoc_get_streaming_display_mem_binary_longitud,1,1);
+    //Aplicarlo a la pantalla
+    //Formato: byte 0: flags. TODO
+    //byte 1: datos
+
+    z80_byte *screen=get_base_mem_pantalla();
+    memcpy(screen,&zoc_get_streaming_display_mem_binary[1],6912);
+
+
+    free(zoc_get_streaming_display_mem_binary);
+    zoc_get_streaming_display_mem_binary=NULL;
+
+
+    zoc_pending_apply_received_streaming_display=0;
+
+    //Si estaba offline, reactualizamos
+    /*if (zoc_last_streaming_display_received_counter==0) {
+        zoc_show_bottom_line_footer_connected(); //Para actualizar la linea de abajo del todo con texto ZEsarUX version bla bla - ONLINE
+        generic_footertext_print_operating("ONLINE");
+    }*/
+
+    //5 segundos de timeout, para aceptar teclas slave si no hay streaming_display
+    //zoc_last_streaming_display_received_counter=ZOC_TIMEOUT_NO_streaming_display;
+
+    //zeng_online_client_reset_scanline_counter();
+
+}
+
+
+
 //Inicio del thread de master
 void zoc_start_master_thread(void)
 {
@@ -3823,6 +4000,7 @@ void zoc_stop_slave_thread(void)
 {
     pthread_cancel(thread_zoc_slave_thread);
     zoc_pending_apply_received_snapshot=0;
+    zoc_pending_apply_received_streaming_display=0;
 }
 
 
@@ -3978,7 +4156,14 @@ void zeng_online_client_end_frame_from_core_functions(void)
     //El orden en el caso de rejoin as master es importante,
     //primero aplicaremos el snapshot recibido al entrar como master,
     //luego ya iremos enviando los siguientes como master normal
-    zeng_online_client_apply_pending_received_snapshot();
+
+    if (created_room_streaming_mode) {
+        zeng_online_client_apply_pending_received_streaming_display();
+    }
+    else {
+        zeng_online_client_apply_pending_received_snapshot();
+    }
+
     zeng_online_client_prepare_snapshot_if_needed();
 
 

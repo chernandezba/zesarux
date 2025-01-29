@@ -1392,7 +1392,7 @@ int zeng_utils_sync_local_to_remote_connect(void)
 
                 if (posicion_command>=1) {
                     buffer[posicion_command-1]=0;
-                    //debug_printf(VERBOSE_DEBUG,"ZENG: Received text: %s",zoc_get_snapshot_mem_hexa);
+
                 }
 
         //TODO gestionar posibles errores
