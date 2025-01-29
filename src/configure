@@ -1498,7 +1498,7 @@ zeng.o: zrcp/zeng.c zrcp/zeng.h cpu.h debug.h utils.h network.h compileoptions.h
 zeng_online.o: zrcp/zeng_online.c zrcp/zeng_online.h cpu.h debug.h utils.h network.h compileoptions.h zrcp/remote.h snap/snap_zsf.h autoselectoptions.h soundchips/ay38912.h atomic.h stats.h textspeech.h settings.h timer.h
 	\$(CC) \$(CFLAGS) -c zrcp/zeng_online.c
 
-zeng_online_client.o: zrcp/zeng_online_client.c zrcp/zeng_online_client.h cpu.h debug.h utils.h network.h compileoptions.h zrcp/remote.h snap/snap_zsf.h zrcp/zeng_online.h zrcp/zeng.h stats.h video/screen.h timer.h autoselectoptions.h textspeech.h settings.h mem128.h
+zeng_online_client.o: zrcp/zeng_online_client.c zrcp/zeng_online_client.h cpu.h debug.h utils.h network.h compileoptions.h zrcp/remote.h snap/snap_zsf.h zrcp/zeng_online.h zrcp/zeng.h stats.h video/screen.h timer.h autoselectoptions.h textspeech.h settings.h mem128.h ula.h
 	\$(CC) \$(CFLAGS) -c zrcp/zeng_online_client.c
 
 zvfs.o: zvfs.c zvfs.h cpu.h debug.h utils.h third_party/ff.h compileoptions.h

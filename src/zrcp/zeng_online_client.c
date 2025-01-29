@@ -54,6 +54,7 @@ Functions starting with zoc_ means: zeng online client
 #include "textspeech.h"
 #include "settings.h"
 #include "mem128.h"
+#include "ula.h"
 
 
 
@@ -3636,7 +3637,7 @@ int zoc_receive_streaming_display(int indice_socket)
 
         //Convertir hexa a memoria
         if (zoc_get_streaming_display_mem_binary==NULL) {
-            zoc_get_streaming_display_mem_binary=util_malloc(ZRCP_GET_PUT_STREAMING_DISPLAY_MEM*2,"Can not allocate memory for apply streaming_display");
+            zoc_get_streaming_display_mem_binary=util_malloc(ZRCP_GET_PUT_STREAMING_DISPLAY_MEM,"Can not allocate memory for apply streaming_display");
         }
 
 
@@ -3998,10 +3999,15 @@ void zeng_online_client_apply_pending_received_streaming_display(void)
     //load_zsf_streaming_display_file_mem(NULL,zoc_get_streaming_display_mem_binary,zoc_get_streaming_display_mem_binary_longitud,1,1);
     //Aplicarlo a la pantalla
     //Formato: byte 0: flags. TODO
-    //byte 1: datos
+    //byte 1: color border
+    //byte 2-: datos
+
+    out_254 &=(255-7);
+    out_254 |=(zoc_get_streaming_display_mem_binary[1] & 7);
+    modificado_border.v=1;
 
     z80_byte *screen=get_base_mem_pantalla();
-    memcpy(screen,&zoc_get_streaming_display_mem_binary[1],6912);
+    memcpy(screen,&zoc_get_streaming_display_mem_binary[2],6912);
 
 
     free(zoc_get_streaming_display_mem_binary);
@@ -4234,11 +4240,15 @@ void zeng_online_client_prepare_streaming_display_if_needed(void)
 
 
 
-  					longitud_sin_comprimir=6913;
+  					longitud_sin_comprimir=6912+2;
                     buffer_temp_sin_comprimir[0]=0; //flags. TODO
+
+                    //byte 1: color border
+                    buffer_temp_sin_comprimir[1]=out_254 & 7;
+
                     z80_byte *screen=get_base_mem_pantalla();
 
-                    memcpy(&buffer_temp_sin_comprimir[1],screen,6912);
+                    memcpy(&buffer_temp_sin_comprimir[2],screen,6912);
 
 
 
