@@ -923,8 +923,10 @@ void core_spectrum_ciclo_fetch(void)
 #endif
 
 
-    //Si la cpu está detenida por señal HALT o WAIT, reemplazar opcode por NOP
-    if (z80_halt_signal.v || z80_wait_signal.v) {
+    //Si la cpu está detenida por señal HALT o WAIT, o estamos en modo zeng online slave y con modo streaming, reemplazar opcode por NOP
+    // Nota: durante un breve intervalo de tiempo al crear una room (con streaming activo) y unirse como master, se cumple que esta conectado,
+    //master=0 y streaming=1 por tanto la emulacion genera nops durante unos instantes
+    if (z80_halt_signal.v || z80_wait_signal.v || (zeng_online_connected.v && zeng_online_i_am_master.v==0 && created_room_streaming_mode) ) {
         byte_leido_core_spectrum=0;
     }
     else {

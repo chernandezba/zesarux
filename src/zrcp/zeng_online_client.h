@@ -65,6 +65,8 @@ extern int zeng_online_snapshot_diff_media;
 
 extern int streaming_enabled_when_creating;
 
+extern int created_room_streaming_mode;
+
 //Para poder hacer debug_printf con la clase adecuada
 #define DBG_PRINT_ZENG_ONLINE_CLIENT debug_printf(VERBOSE_CLASS_ZENG_ONLINE_CLIENT|
 
