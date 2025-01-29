@@ -75,8 +75,8 @@ ZENG Online
 
 -Modo streaming
 *comandos
-streaming-put-display: pendiente
-streaming-get-display: pendiente
+ok streaming-put-display
+ok streaming-get-display
 streaming-enable, streaming-disable: quiza no hace falta porque lo establece al crear la habitacion
 streaming-is-enabled. ok comando creado, aunque quien lo usa? porque el slave al conectarse lee el modo
 streaming de la respuesta del join, no hace falta lanzar el streaming-is-enabled

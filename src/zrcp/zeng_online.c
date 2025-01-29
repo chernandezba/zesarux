@@ -592,6 +592,51 @@ void zengonline_streaming_put_display(int room,z80_byte *origen,int longitud)
 
 }
 
+int zengonline_streaming_get_display(int room,z80_byte *destino)
+{
+    //Adquirir lock mutex
+	while(z_atomic_test_and_set(&zeng_online_rooms_list[room].mutex_reading_streaming_display)) {
+		//printf("Esperando a liberar lock mutex_reading_streaming_display en zengonline_streaming_get_display\n");
+	}
+
+    //Incrementar contador de cuantos leen
+    zeng_online_rooms_list[room].reading_streaming_display_count++;
+    if (zeng_online_rooms_list[room].reading_streaming_display_count==1) {
+        //Si es el primer lector, bloqueamos escritura
+
+    	while(z_atomic_test_and_set(&zeng_online_rooms_list[room].semaphore_writing_streaming_display)) {
+		    //printf("Esperando a liberar lock semaphore_writing_streaming_display en zengonline_streaming_get_display\n");
+	    }
+    }
+
+    //Liberar lock mutex
+	z_atomic_reset(&zeng_online_rooms_list[room].mutex_reading_streaming_display);
+
+    int longitud_display=zeng_online_rooms_list[room].streaming_display_size;
+
+    memcpy(destino,zeng_online_rooms_list[room].streaming_display_memory,longitud_display);
+
+    //Adquirir lock mutex
+	while(z_atomic_test_and_set(&zeng_online_rooms_list[room].mutex_reading_streaming_display)) {
+	    //printf("Esperando a liberar lock mutex_reading_streaming_display en zengonline_streaming_get_display\n");
+	}
+
+
+    zeng_online_rooms_list[room].reading_streaming_display_count--;
+    //Si somos el ultimo lector, liberar bloqueo escritura
+
+    if (zeng_online_rooms_list[room].reading_streaming_display_count==0) {
+        z_atomic_reset(&zeng_online_rooms_list[room].semaphore_writing_streaming_display);
+    }
+
+    //Liberar lock mutex
+    z_atomic_reset(&zeng_online_rooms_list[room].mutex_reading_streaming_display);
+
+    return longitud_display;
+
+
+}
+
 void zoc_send_broadcast_message(int room_number,char *message)
 {
     //No hace falta indicar room number dado que solo se mostraran mensajes de nuestro room
@@ -623,6 +668,7 @@ void init_zeng_online_rooms(void)
 
         zeng_online_rooms_list[i].streaming_enabled=0;
         zeng_online_rooms_list[i].streaming_display_memory=NULL;
+        zeng_online_rooms_list[i].reading_streaming_display_count=0;
 
         z_atomic_reset(&zeng_online_rooms_list[i].mutex_reading_snapshot);
         z_atomic_reset(&zeng_online_rooms_list[i].semaphore_writing_snapshot);
@@ -1479,6 +1525,66 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
         zengonline_streaming_put_display(room_number,buffer_destino,longitud_pantalla);
 
         free(buffer_destino);
+
+
+    }
+
+
+    //"streaming-get-display user_pass n               This command returns the streaming display from room n, returns ERROR if no display there. Requires user_pass\n"
+    else if (!strcmp(comando_argv[0],"streaming-get-display")) {
+        if (!zeng_online_enabled) {
+            escribir_socket(misocket,"ERROR. ZENG Online is not enabled");
+            return;
+        }
+
+        if (comando_argc<2) {
+            escribir_socket(misocket,"ERROR. Needs two parameters");
+            return;
+        }
+
+        int room_number=parse_string_to_number(comando_argv[2]);
+
+        if (room_number<0 || room_number>=zeng_online_current_max_rooms) {
+            escribir_socket_format(misocket,"ERROR. Room number beyond limit");
+            return;
+        }
+
+        if (!zeng_online_rooms_list[room_number].created) {
+            escribir_socket(misocket,"ERROR. Room is not created");
+            return;
+        }
+
+        //validar user_pass. comando_argv[1]
+        if (strcmp(comando_argv[1],zeng_online_rooms_list[room_number].user_password)) {
+            escribir_socket(misocket,"ERROR. Invalid user password for that room");
+            return;
+        }
+
+        if (!zeng_online_rooms_list[room_number].streaming_enabled) {
+            escribir_socket(misocket,"ERROR. Streaming is not enabled for that room");
+            return;
+        }
+
+        if (!zeng_online_rooms_list[room_number].streaming_display_size) {
+            escribir_socket(misocket,"ERROR. There is no streaming display on this room");
+            return;
+        }
+
+
+
+        z80_byte *puntero_display=util_malloc(ZRCP_GET_PUT_SNAPSHOT_MEM*2,"Can not allocate memory for streaming get display");
+
+        int longitud=zengonline_streaming_get_display(room_number,puntero_display);
+
+
+        int i;
+        for (i=0;i<longitud;i++) {
+            escribir_socket_format(misocket,"%02X",puntero_display[i]);
+        }
+
+        free(puntero_display);
+
+
 
 
     }

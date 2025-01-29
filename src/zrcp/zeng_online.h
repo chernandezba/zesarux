@@ -151,6 +151,8 @@ struct zeng_online_room {
     z80_byte *streaming_display_memory; //Donde esta guardada esa pantalla
 
     z_atomic_semaphore mutex_reading_streaming_display;
+    int reading_streaming_display_count;
+
     z_atomic_semaphore semaphore_writing_streaming_display;
 
     //donde se almacenan los eventos. Es un array circular, si se llega al final se sobreescriben
