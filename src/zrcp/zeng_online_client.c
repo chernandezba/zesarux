@@ -109,6 +109,8 @@ int zeng_online_joined_to_room_number=0;
 
 int zoc_pending_send_snapshot=0;
 
+int zoc_pending_send_streaming_display=0;
+
 //Si esta conectado
 z80_bit zeng_online_connected={0};
 
@@ -2395,6 +2397,62 @@ int zoc_send_snapshot(int indice_socket)
 
 }
 
+char *zoc_send_streaming_display_mem_hexa=NULL;
+
+int zoc_send_streaming_display(int indice_socket)
+{
+
+		DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"ZENG Online Client: Sending streaming_display");
+
+		int posicion_command;
+		int escritos,leidos;
+
+
+        char buffer_comando[200];
+        //printf ("Sending put-streaming_display\n");
+        //put-streaming_display creator_pass n data
+        sprintf(buffer_comando,"zeng-online streaming-put-display %s %d ",created_room_creator_password,zeng_online_joined_to_room_number);
+
+        //printf("Sending command: [%s]\n",buffer_comando);
+
+        escritos=z_sock_write_string(indice_socket,buffer_comando);
+        //printf("after z_sock_write_string 1\n");
+        if (escritos<0) return escritos;
+
+
+        //TODO esto es ineficiente y que tiene que calcular la longitud. hacer otra z_sock_write sin tener que calcular
+        //printf("before z_sock_write_string 2\n");
+        //printf("Sending streaming_display data length: %lu\n",strlen(zoc_send_streaming_display_mem_hexa));
+        //printf("First bytes of streaming_display: %c%c%c%c\n",
+          //  zoc_send_streaming_display_mem_hexa[0],zoc_send_streaming_display_mem_hexa[1],zoc_send_streaming_display_mem_hexa[2],zoc_send_streaming_display_mem_hexa[3]);
+
+        escritos=z_sock_write_string(indice_socket,zoc_send_streaming_display_mem_hexa);
+        //printf("after z_sock_write_string 2\n");
+
+
+
+        if (escritos<0) return escritos;
+
+
+
+        z80_byte buffer[200];
+        //buffer[0]=0; //temp para tener buffer limpio
+        //Leer hasta prompt
+        //printf("before zsock_read_all_until_command\n");
+        leidos=zsock_read_all_until_command(indice_socket,buffer,199,&posicion_command);
+        //printf("after zsock_read_all_until_command\n");
+
+                if (posicion_command>=1) {
+                    buffer[posicion_command-1]=0;
+                    //DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Received text: %s",zoc_get_streaming_display_mem_hexa);
+                }
+
+        //printf("Recibido respuesta despues de put-streaming_display: [%s]\n",buffer);
+        return leidos;
+
+
+}
+
 
 
 
@@ -3073,20 +3131,20 @@ void *zoc_master_thread_function(void *nada GCC_UNUSED)
 
                     printf("Putting display\n");
 
-                    /*if (zoc_pending_send_snapshot) {
-                        int error=zoc_send_snapshot(indice_socket);
+                    if (zoc_pending_send_streaming_display) {
+                        int error=zoc_send_streaming_display(indice_socket);
 
                         if (error<0) {
                             //TODO
-                            DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Error sending snapshot to zeng online server");
+                            DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Error sending streaming_display to zeng online server");
                         }
 
                         //Enviado. Avisar no pendiente
-                        zoc_pending_send_snapshot=0;
+                        zoc_pending_send_streaming_display=0;
                         //zeng_online_client_reset_scanline_counter();
-                        //printf("Snapshot sent\n");
+                        //printf("streaming_display sent\n");
                     }
-                    */
+
                 }
             }
 
@@ -4146,6 +4204,109 @@ void zeng_online_client_prepare_snapshot_if_needed(void)
 }
 
 
+
+
+void zeng_online_client_prepare_streaming_display_if_needed(void)
+{
+
+	if (zeng_online_connected.v==0) return;
+
+	if (zeng_online_i_am_master.v) {
+
+
+		if (!zoc_rejoining_as_master) {
+
+				//Si esta el anterior streaming_display aun pendiente de enviar
+				if (zoc_pending_send_streaming_display) {
+
+
+				}
+				else {
+
+
+					//zona de memoria donde se guarda el streaming_display pero sin pasar a hexa. y sin comprimir zip
+					z80_byte *buffer_temp_sin_comprimir;
+					buffer_temp_sin_comprimir=malloc(ZRCP_GET_PUT_STREAMING_DISPLAY_MEM);
+
+					if (buffer_temp_sin_comprimir==NULL) cpu_panic("Can not allocate memory for sending streaming_display");
+
+					int longitud_sin_comprimir;
+
+
+
+  					longitud_sin_comprimir=6913;
+                    buffer_temp_sin_comprimir[0]=0; //flags. TODO
+                    z80_byte *screen=get_base_mem_pantalla();
+
+                    memcpy(&buffer_temp_sin_comprimir[1],screen,6912);
+
+
+
+
+                    int longitud;
+                    z80_byte *buffer_temp;
+
+
+
+                        buffer_temp=buffer_temp_sin_comprimir;
+                        longitud=longitud_sin_comprimir;
+
+
+
+
+                    //temp_memoria_asignada++;
+                    //printf("Asignada: %d liberada: %d\n",temp_memoria_asignada,temp_memoria_liberada);
+                    //printf("Created streaming_display original size %d compressed size %d\n",longitud_sin_comprimir,longitud);
+
+					if (zoc_send_streaming_display_mem_hexa==NULL) zoc_send_streaming_display_mem_hexa=malloc(ZRCP_GET_PUT_STREAMING_DISPLAY_MEM*2); //16 MB es mas que suficiente
+
+					//int char_destino=0;
+
+					int i;
+
+                    z80_byte *origen=buffer_temp;
+                    char *destino=zoc_send_streaming_display_mem_hexa;
+                    z80_byte byte_leido;
+
+					for (i=0;i<longitud;i++/*,char_destino +=2*/) {
+                        //En vez de sprintf, que es poco optimo, usar alternativa
+                        //Comparativa: con un streaming_display con un di y un jp 16384, tarda
+                        //con sprintf: 116 microsegundos el tiempo mas bajo
+                        //con util_byte_to_hex_nibble: 5 microsegundos el tiempo mas bajo
+						//sprintf (&zoc_send_streaming_display_mem_hexa[char_destino],"%02X",buffer_temp[i]);
+                        byte_leido=*origen++;
+                        *destino++=util_byte_to_hex_nibble(byte_leido>>4);
+                        *destino++=util_byte_to_hex_nibble(byte_leido);
+					}
+
+
+
+					//metemos salto de linea y 0 al final
+					//strcpy (&zoc_send_streaming_display_mem_hexa[char_destino],"\n");
+                    *destino++ ='\n';
+                    *destino++ =0;
+
+
+
+                    //printf ("ZENG Online: Queuing streaming_display to send, length: %d\n",longitud);
+
+
+
+                    free(buffer_temp_sin_comprimir);
+
+
+					zoc_pending_send_streaming_display=1;
+
+                    DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"ZENG Online Client: Queuing streaming_display to send, length: %d bytes",longitud);
+
+
+				}
+		}
+	}
+}
+
+
+
 void zeng_online_client_end_frame_from_core_functions(void)
 {
 
@@ -4164,7 +4325,13 @@ void zeng_online_client_end_frame_from_core_functions(void)
         zeng_online_client_apply_pending_received_snapshot();
     }
 
-    zeng_online_client_prepare_snapshot_if_needed();
+    if (created_room_streaming_mode) {
+        zeng_online_client_prepare_streaming_display_if_needed();
+    }
+
+    else {
+        zeng_online_client_prepare_snapshot_if_needed();
+    }
 
 
 
