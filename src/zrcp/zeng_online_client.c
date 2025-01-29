@@ -3524,7 +3524,7 @@ int zoc_receive_streaming_display(int indice_socket)
 
 
         //get-streaming_display user_pass n
-        sprintf(buffer_comando,"zeng-online get-streaming-display %s %d\n",created_room_user_password,zeng_online_joined_to_room_number);
+        sprintf(buffer_comando,"zeng-online streaming-get-display %s %d\n",created_room_user_password,zeng_online_joined_to_room_number);
         escritos=z_sock_write_string(indice_socket,buffer_comando);
         //printf("after z_sock_write_string 1\n");
         if (escritos<0) return escritos;
