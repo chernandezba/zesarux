@@ -3782,13 +3782,13 @@ void *zoc_slave_thread_function(void *nada GCC_UNUSED)
 
             //En modo streaming solo leemos pantalla, y no leemos ni snapshot ni teclas
             if (created_room_streaming_mode) {
-                printf("Modo streaming. solo leemos pantalla\n");
+                //printf("Modo streaming. solo leemos pantalla\n");
 
 
                 if (created_room_user_permissions & ZENG_ONLINE_PERMISSIONS_GET_DISPLAY) {
 
                     //Recibir snapshot
-                    printf("Recibir pantalla\n");
+                    //printf("Recibir pantalla\n");
 
                     int error=zoc_receive_streaming_display(indice_socket);
                     //TODO gestionar bien este error
@@ -4002,9 +4002,16 @@ void zeng_online_client_apply_pending_received_streaming_display(void)
     //byte 1: color border
     //byte 2-: datos
 
-    out_254 &=(255-7);
-    out_254 |=(zoc_get_streaming_display_mem_binary[1] & 7);
-    modificado_border.v=1;
+    z80_byte current_border_color=out_254 & 7;
+
+    z80_byte streaming_border_color=zoc_get_streaming_display_mem_binary[1] & 7;
+
+    if (current_border_color != streaming_border_color) {
+        out_254 &=(255-7);
+        out_254 |=streaming_border_color;
+        modificado_border.v=1;
+        //printf("Modificado border\n");
+    }
 
     z80_byte *screen=get_base_mem_pantalla();
     memcpy(screen,&zoc_get_streaming_display_mem_binary[2],6912);
