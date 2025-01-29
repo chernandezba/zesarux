@@ -8679,6 +8679,9 @@ void siguiente_frame_pantalla(void)
 
                                 framedrop_total=0;
                                 frames_total=0;
+
+                //Si conectado a zeng online, modo streaming y somos slave
+                zeng_online_client_get_fps_streaming();
         }
 
 

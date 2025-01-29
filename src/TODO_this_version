@@ -90,15 +90,15 @@ Byte 2- : datos
 Solo permitido en spectrum de momento
 Quizá es un modo que lo active el cliente master con un parámetro. Y por defecto activado
 
-Puede presentar parpadeo al no escribirse la memoria cuando corresponde según el juego
 
 Otro comando para traerse el buffer de audio. Que el master envíe el buffer anterior al actual.
 Compresión zip se habilitaba a nivel global en el server creo
 Quizá otro byte con color border
 
-Que FPS lo diga de la cantidad de pantallas que se trae por segundo
 
 *si esta en modo streaming (modo streaming lo habilita el master, se define antes de crear la room y no deja cambiarla luego):
 
 -master no envia snapshot. envia display
 -slave no recibe snapshot y no recibe teclas. recibe display. y su cpu no emula
+
+-Deteccion de Lag y Offline en modo streaming slave no deberia funcionar igual, o directamente no decirlo

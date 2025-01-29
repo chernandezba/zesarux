@@ -3982,7 +3982,14 @@ void zeng_online_client_apply_pending_received_snapshot(void)
 }
 
 
+//Conteo de veces llamado a  zeng_online_client_end_frame_from_core_functions, y por tanto frames de video
+//Usado para obtener FPS en modo streaming
+int zoc_client_video_frames=0;
 
+//Conteo de cuantas pantallas recibidas, se usa para obtener el FPS
+int zoc_client_streaming_display_count=0;
+
+int zoc_client_streaming_display_fps=0;
 
 
 void zeng_online_client_apply_pending_received_streaming_display(void)
@@ -4022,6 +4029,8 @@ void zeng_online_client_apply_pending_received_streaming_display(void)
 
 
     zoc_pending_apply_received_streaming_display=0;
+
+    zoc_client_streaming_display_count++;
 
     //Si estaba offline, reactualizamos
     /*if (zoc_last_streaming_display_received_counter==0) {
@@ -4337,6 +4346,19 @@ void zeng_online_client_end_frame_from_core_functions(void)
 
     if (created_room_streaming_mode) {
         zeng_online_client_apply_pending_received_streaming_display();
+
+        if (zeng_online_i_am_master.v==0) {
+            zoc_client_video_frames++;
+            if (zoc_client_video_frames==50) {
+
+                zoc_client_video_frames=0;
+
+                zoc_client_streaming_display_fps=zoc_client_streaming_display_count;
+                zoc_client_streaming_display_count=0;
+
+                //printf("1 segundo. FPS=%d\n",zoc_client_streaming_display_fps);
+            }
+        }
     }
     else {
         zeng_online_client_apply_pending_received_snapshot();
@@ -4365,6 +4387,20 @@ void zeng_online_client_end_frame_from_core_functions(void)
         }
     }
 
+}
+
+void zeng_online_client_get_fps_streaming(void)
+{
+    if (zeng_online_connected.v && zeng_online_i_am_master.v==0 && created_room_streaming_mode) {
+        //Nota: estos FPS son de recepcion, no es un valor completamente real siempre. Por ejemplo:
+        //Si master envia 50 FPS y slave recibe 50 FPS, ok, mostrara 50 FPS
+        //Si master no tiene mucho ancho de banda y envia a 22 FPS, el slave puede recibir 50 FPS y mostrara 50 FPS
+        //Esto es porque el slave no tiene manera de saber si el frame recibido es el mismo que habia antes o no
+        //Pero bueno, se tomara este FPS mostrado como una medida de velocidad del slave:
+        //Si dice 50 FPS, consideremos que el slave está bien (aunque el master podria estar mal)
+        //Si dice menos de 50 FPS, al menos el slave está mal (y el master podria estar mal también)
+        ultimo_fps=zoc_client_streaming_display_fps;
+    }
 }
 
 #else
