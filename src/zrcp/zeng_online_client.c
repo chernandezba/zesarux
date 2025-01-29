@@ -3125,11 +3125,11 @@ void *zoc_master_thread_function(void *nada GCC_UNUSED)
             //En modo streaming escribimos display en vez de pantalla
 
             if (created_room_streaming_mode) {
-                printf("Modo streaming. Escribimos display en vez de snapshot\n");
+                //printf("Modo streaming. Escribimos display en vez de snapshot\n");
 
                 if (created_room_user_permissions & ZENG_ONLINE_PERMISSIONS_PUT_DISPLAY) {
 
-                    printf("Putting display\n");
+                    //printf("Putting display\n");
 
                     if (zoc_pending_send_streaming_display) {
                         int error=zoc_send_streaming_display(indice_socket);
