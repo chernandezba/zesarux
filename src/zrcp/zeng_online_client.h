@@ -59,6 +59,8 @@ extern void zeng_online_client_send_profile_keys(void);
 extern void zeng_online_client_kick_user(char *message);
 extern void zeng_online_client_max_players_room(int valor);
 
+extern void zeng_online_client_alter_fps_streaming(void);
+
 extern int zeng_online_snapshot_diff;
 
 extern int zeng_online_snapshot_diff_media;
@@ -84,7 +86,8 @@ extern char *zeng_remote_list_users_buffer;
 extern void zoc_stop_master_thread(void);
 extern void zoc_stop_slave_thread(void);
 
-
+//Valor es evidente pero por no repetir siempre el mismo valor
+#define ZOC_STREAM_DISPLAY_SIZE 6912
 
 //extern void zoc_start_snapshot_sending(void);
 

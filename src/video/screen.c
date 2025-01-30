@@ -62,6 +62,7 @@
 #include "chardetect.h"
 #include "pcw.h"
 #include "textspeech.h"
+#include "zeng_online_client.h"
 
 //Incluimos estos dos para la funcion de fade out
 #ifdef COMPILE_XWINDOWS
@@ -8681,7 +8682,7 @@ void siguiente_frame_pantalla(void)
                                 frames_total=0;
 
                 //Si conectado a zeng online, modo streaming y somos slave
-                zeng_online_client_get_fps_streaming();
+                zeng_online_client_alter_fps_streaming();
         }
 
 

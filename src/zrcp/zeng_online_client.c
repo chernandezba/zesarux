@@ -3996,12 +3996,14 @@ void zeng_online_client_apply_pending_received_streaming_display(void)
 {
     if (zeng_online_connected.v==0) return;
 
-    if (!zoc_pending_apply_received_streaming_display) return;
-
-
-
     if (zeng_online_i_am_master.v) return;
 
+    if (!zoc_pending_apply_received_streaming_display) {
+        //printf("NO apply pending %d\n",contador_segundo);
+        return;
+    }
+
+    //printf("Apply pending %d\n",contador_segundo);
 
     //load_zsf_streaming_display_file_mem(NULL,zoc_get_streaming_display_mem_binary,zoc_get_streaming_display_mem_binary_longitud,1,1);
     //Aplicarlo a la pantalla
@@ -4021,7 +4023,7 @@ void zeng_online_client_apply_pending_received_streaming_display(void)
     }
 
     z80_byte *screen=get_base_mem_pantalla();
-    memcpy(screen,&zoc_get_streaming_display_mem_binary[2],6912);
+    memcpy(screen,&zoc_get_streaming_display_mem_binary[2],ZOC_STREAM_DISPLAY_SIZE);
 
 
     free(zoc_get_streaming_display_mem_binary);
@@ -4256,7 +4258,7 @@ void zeng_online_client_prepare_streaming_display_if_needed(void)
 
 
 
-  					longitud_sin_comprimir=6912+2;
+  					longitud_sin_comprimir=ZOC_STREAM_DISPLAY_SIZE+2;
                     buffer_temp_sin_comprimir[0]=0; //flags. TODO
 
                     //byte 1: color border
@@ -4264,7 +4266,7 @@ void zeng_online_client_prepare_streaming_display_if_needed(void)
 
                     z80_byte *screen=get_base_mem_pantalla();
 
-                    memcpy(&buffer_temp_sin_comprimir[2],screen,6912);
+                    memcpy(&buffer_temp_sin_comprimir[2],screen,ZOC_STREAM_DISPLAY_SIZE);
 
 
 
@@ -4376,12 +4378,18 @@ void zeng_online_client_end_frame_from_core_functions(void)
 
     if (zeng_online_i_am_master.v==0) {
         if (zoc_last_snapshot_received_counter>0) {
-            zoc_last_snapshot_received_counter--;
 
-            if (zoc_last_snapshot_received_counter==0) {
-                DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_INFO,"ZENG Online Client: Timeout receiving snapshots from master. Allowing local key press");
-                zoc_show_bottom_line_footer_connected(); //Para actualizar la linea de abajo del todo con texto ZEsarUX version bla bla - OFFLINE
-                generic_footertext_print_operating("OFFLIN");
+            //En modo streaming no haremos saltar el aviso OFFLINE
+            if (!created_room_streaming_mode) {
+
+                zoc_last_snapshot_received_counter--;
+
+                if (zoc_last_snapshot_received_counter==0) {
+                    DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_INFO,"ZENG Online Client: Timeout receiving snapshots from master. Allowing local key press");
+                    zoc_show_bottom_line_footer_connected(); //Para actualizar la linea de abajo del todo con texto ZEsarUX version bla bla - OFFLINE
+                    generic_footertext_print_operating("OFFLIN");
+                }
+
             }
 
         }
@@ -4389,7 +4397,7 @@ void zeng_online_client_end_frame_from_core_functions(void)
 
 }
 
-void zeng_online_client_get_fps_streaming(void)
+void zeng_online_client_alter_fps_streaming(void)
 {
     if (zeng_online_connected.v && zeng_online_i_am_master.v==0 && created_room_streaming_mode) {
         //Nota: estos FPS son de recepcion, no es un valor completamente real siempre. Por ejemplo:
@@ -4490,6 +4498,10 @@ void zeng_online_client_get_profile_keys(void)
 }
 
 void zeng_online_client_send_profile_keys(void)
+{
+}
+
+void zeng_online_client_alter_fps_streaming(void)
 {
 }
 
