@@ -103,3 +103,9 @@ Quizá otro byte con color border
 
 ok-Deteccion de Lag y Offline en modo streaming slave no deberia funcionar igual, o directamente no decirlo
 -Probar build sin threads, por lo de las funciones vacias en no-threads, ver si falta alguna
+
+-parametro de cada cuanto forzamos force_full_display, parametro configurable en menu
+O que idealmente el cliente se lo pida al servidor??? y lo cambie segun sus fps? pero esto afectaria a todos los clientes conectados
+Quiza esa pantalla entera se debe guardar en otro sitio y que el cliente lo pida explicitamente
+Porque si no, se generara uno de cada 50 y el cliente igual cuando pide display nunca (o pocas veces) pilla ese, porque no esta
+haciendo 50 fps

@@ -4288,12 +4288,9 @@ int zoc_generate_differential_display(z80_byte *current_screen)
     int i;
     int excede_limite=0;
 
-    //Generar una copia de la pantalla actual para evitar modificaciones entre medias
-    z80_byte *copia_screen=util_malloc(ZOC_STREAM_DISPLAY_SIZE,"Can not allocate memory for display copy");
-    memcpy(copia_screen,current_screen,ZOC_STREAM_DISPLAY_SIZE);
 
     for (i=0;i<ZOC_STREAM_DISPLAY_SIZE && !excede_limite;i++) {
-        z80_byte readed_byte=copia_screen[i];
+        z80_byte readed_byte=current_screen[i];
         if (zoc_last_streaming_display[i]!=readed_byte) {
 
             if (bytes_diferentes>=ZOC_STREAM_DISPLAY_SIZE/3) {
@@ -4315,9 +4312,8 @@ int zoc_generate_differential_display(z80_byte *current_screen)
 
     printf("Bytes diferentes: %d\n",bytes_diferentes);
 
-    memcpy(zoc_last_streaming_display,copia_screen,ZOC_STREAM_DISPLAY_SIZE);
+    memcpy(zoc_last_streaming_display,current_screen,ZOC_STREAM_DISPLAY_SIZE);
 
-    free(copia_screen);
 
     if (excede_limite) return -1;
 
