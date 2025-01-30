@@ -2408,11 +2408,15 @@ int zoc_send_streaming_display(int indice_socket)
 		int posicion_command;
 		int escritos,leidos;
 
+        int slot;
+
+        //temporal
+        slot=0;
 
         char buffer_comando[200];
         //printf ("Sending put-streaming_display\n");
-        //put-streaming_display creator_pass n data
-        sprintf(buffer_comando,"zeng-online streaming-put-display %s %d ",created_room_creator_password,zeng_online_joined_to_room_number);
+        //streaming-put-display creator_pass n s data
+        sprintf(buffer_comando,"zeng-online streaming-put-display %s %d %d ",created_room_creator_password,zeng_online_joined_to_room_number,slot);
 
         //printf("Sending command: [%s]\n",buffer_comando);
 
@@ -3580,10 +3584,13 @@ int zoc_receive_streaming_display(int indice_socket)
         //Leer algo
         char buffer[ZENG_BUFFER_INITIAL_CONNECT+1];
 
+        int slot;
 
+        //temporal
+        slot=0;
 
-        //get-streaming_display user_pass n
-        sprintf(buffer_comando,"zeng-online streaming-get-display %s %d\n",created_room_user_password,zeng_online_joined_to_room_number);
+        //streaming-get-display user_pass n s
+        sprintf(buffer_comando,"zeng-online streaming-get-display %s %d %d\n",created_room_user_password,zeng_online_joined_to_room_number,slot);
         escritos=z_sock_write_string(indice_socket,buffer_comando);
         //printf("after z_sock_write_string 1\n");
         if (escritos<0) return escritos;
@@ -4323,6 +4330,52 @@ int zoc_generate_differential_display(z80_byte *current_screen)
 
 int zoc_generated_differential_displays_counter=0;
 
+int zoc_get_streaming_display(z80_byte *buffer_temp_sin_comprimir,int force_full_display)
+{
+
+    int longitud_sin_comprimir;
+
+    z80_byte *screen=get_base_mem_pantalla();
+
+
+    int longitud_pantalla_diferencial=-1;
+
+    if (!force_full_display) {
+        longitud_pantalla_diferencial=zoc_generate_differential_display(screen);
+    }
+
+    //Flags byte 0:
+    //bit 0: pantalla diferencial o no
+
+    if (longitud_pantalla_diferencial>=0) {
+        buffer_temp_sin_comprimir[0]=1;
+        longitud_sin_comprimir=longitud_pantalla_diferencial;
+        memcpy(&buffer_temp_sin_comprimir[2],zoc_differential_display,longitud_sin_comprimir);
+        zoc_generated_differential_displays_counter++;
+    }
+
+    else {
+
+
+        longitud_sin_comprimir=ZOC_STREAM_DISPLAY_SIZE;
+        buffer_temp_sin_comprimir[0]=0;
+
+        memcpy(&buffer_temp_sin_comprimir[2],screen,ZOC_STREAM_DISPLAY_SIZE);
+
+    }
+
+    //byte 1: color border
+    buffer_temp_sin_comprimir[1]=out_254 & 7;
+
+    longitud_sin_comprimir +=2;
+
+    //Almacenar la ultima pantalla para comparar luego la diferencial
+    memcpy(zoc_last_streaming_display,screen,ZOC_STREAM_DISPLAY_SIZE);
+
+    return longitud_sin_comprimir;
+
+}
+
 void zeng_online_client_prepare_streaming_display_if_needed(void)
 {
 
@@ -4348,69 +4401,19 @@ void zeng_online_client_prepare_streaming_display_if_needed(void)
 					if (buffer_temp_sin_comprimir==NULL) cpu_panic("Can not allocate memory for sending streaming_display");
 
 
-                    z80_byte *screen=get_base_mem_pantalla();
-
-                    int longitud_sin_comprimir;
-
                     int force_full_display=0;
 
                     if (zoc_generated_differential_displays_counter==10) {
                         zoc_generated_differential_displays_counter=0;
                         //Generar una pantalla entera cada X diferenciales
 
-
                         force_full_display=1;
                         printf("Forzada pantalla entera\n");
                     }
 
-                    int longitud_pantalla_diferencial=-1;
 
-                    if (!force_full_display) {
-                        longitud_pantalla_diferencial=zoc_generate_differential_display(screen);
-                    }
+                    int longitud_sin_comprimir=zoc_get_streaming_display(buffer_temp_sin_comprimir,force_full_display);
 
-                    //Flags byte 0:
-                    //bit 0: pantalla diferencial o no
-
-                    if (longitud_pantalla_diferencial>=0) {
-                        buffer_temp_sin_comprimir[0]=1;
-                        longitud_sin_comprimir=longitud_pantalla_diferencial;
-                        memcpy(&buffer_temp_sin_comprimir[2],zoc_differential_display,longitud_sin_comprimir);
-                        zoc_generated_differential_displays_counter++;
-                    }
-
-                    else {
-
-
-                        longitud_sin_comprimir=ZOC_STREAM_DISPLAY_SIZE;
-                        buffer_temp_sin_comprimir[0]=0;
-
-                        memcpy(&buffer_temp_sin_comprimir[2],screen,ZOC_STREAM_DISPLAY_SIZE);
-
-                    }
-
-                    //byte 1: color border
-                    buffer_temp_sin_comprimir[1]=out_254 & 7;
-
-                    longitud_sin_comprimir +=2;
-
-                    //Almacenar la ultima pantalla para comparar luego la diferencial
-                    memcpy(zoc_last_streaming_display,screen,ZOC_STREAM_DISPLAY_SIZE);
-
-                    //int longitud;
-                    //z80_byte *buffer_temp;
-
-
-
-                        //buffer_temp=buffer_temp_sin_comprimir;
-                        //longitud=longitud_sin_comprimir;
-
-
-
-
-                    //temp_memoria_asignada++;
-                    //printf("Asignada: %d liberada: %d\n",temp_memoria_asignada,temp_memoria_liberada);
-                    //printf("Created streaming_display original size %d compressed size %d\n",longitud_sin_comprimir,longitud);
 
 					if (zoc_send_streaming_display_mem_hexa==NULL) {
                         zoc_send_streaming_display_mem_hexa=util_malloc(ZRCP_GET_PUT_STREAMING_DISPLAY_MEM*2,"Can not allocate memory for streaming display");
