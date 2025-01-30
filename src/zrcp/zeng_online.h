@@ -121,6 +121,8 @@ struct s_zoc_join_waiting_request {
     int permissions; //TODO: esto hace falta tenerlo aqui o directamente ira hacia el cliente?
 };
 
+#define ZENG_ONLINE_DISPLAY_SLOTS 2
+
 //Estructura de una habitacion de zeng online
 struct zeng_online_room {
     int created;
@@ -147,8 +149,9 @@ struct zeng_online_room {
     //Para modo streaming
     int streaming_enabled;
 
-    int streaming_display_size; //Tamaño del bloque guardado con snapshot-put-display
-    z80_byte *streaming_display_memory; //Donde esta guardada esa pantalla
+    //Para los dos slots de displays
+    int streaming_display_slots_size[ZENG_ONLINE_DISPLAY_SLOTS]; //Tamaño del bloque guardado con put-display
+    z80_byte *streaming_display_slots_memory[ZENG_ONLINE_DISPLAY_SLOTS]; //Donde esta guardada esa pantalla
 
     z_atomic_semaphore mutex_reading_streaming_display;
     int reading_streaming_display_count;
