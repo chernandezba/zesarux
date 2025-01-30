@@ -4281,8 +4281,12 @@ int zoc_generate_differential_display(z80_byte *current_screen)
     int i;
     int excede_limite=0;
 
+    //Generar una copia de la pantalla actual para evitar modificaciones entre medias
+    z80_byte *copia_screen=util_malloc(ZOC_STREAM_DISPLAY_SIZE,"Can not allocate memory for display copy");
+    memcpy(copia_screen,current_screen,ZOC_STREAM_DISPLAY_SIZE);
+
     for (i=0;i<ZOC_STREAM_DISPLAY_SIZE && !excede_limite;i++) {
-        z80_byte readed_byte=current_screen[i];
+        z80_byte readed_byte=copia_screen[i];
         if (zoc_last_streaming_display[i]!=readed_byte) {
 
             if (bytes_diferentes>=ZOC_STREAM_DISPLAY_SIZE/3) {
@@ -4304,13 +4308,17 @@ int zoc_generate_differential_display(z80_byte *current_screen)
 
     printf("Bytes diferentes: %d\n",bytes_diferentes);
 
-    memcpy(zoc_last_streaming_display,current_screen,ZOC_STREAM_DISPLAY_SIZE);
+    memcpy(zoc_last_streaming_display,copia_screen,ZOC_STREAM_DISPLAY_SIZE);
+
+    free(copia_screen);
 
     if (excede_limite) return -1;
 
     else return bytes_diferentes*3;
 
 }
+
+int zoc_generated_differential_displays_counter=0;
 
 void zeng_online_client_prepare_streaming_display_if_needed(void)
 {
@@ -4341,7 +4349,20 @@ void zeng_online_client_prepare_streaming_display_if_needed(void)
 
                     int longitud_sin_comprimir;
 
-                    int longitud_pantalla_diferencial=zoc_generate_differential_display(screen);
+                    int force_full_display=0;
+
+                    if (zoc_generated_differential_displays_counter==50) {
+                        zoc_generated_differential_displays_counter=0;
+                        //Generar una pantalla entera cada 50 diferenciales
+                        force_full_display=1;
+                        printf("Forzada pantalla entera\n");
+                    }
+
+                    int longitud_pantalla_diferencial=-1;
+
+                    if (!force_full_display) {
+                        longitud_pantalla_diferencial=zoc_generate_differential_display(screen);
+                    }
 
                     //Flags byte 0:
                     //bit 0: pantalla diferencial o no
@@ -4350,6 +4371,7 @@ void zeng_online_client_prepare_streaming_display_if_needed(void)
                         buffer_temp_sin_comprimir[0]=1;
                         longitud_sin_comprimir=longitud_pantalla_diferencial;
                         memcpy(&buffer_temp_sin_comprimir[2],zoc_differential_display,longitud_sin_comprimir);
+                        zoc_generated_differential_displays_counter++;
                     }
 
                     else {
