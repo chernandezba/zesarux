@@ -115,3 +115,6 @@ servidor envia diferenciales siempre y se guarda en "caja 0". y una entera cada 
 Pero que sucede cuando un diferencial ocupa mas que una entera? esa diferencial se convertira en la entera. pero a que caja lo guardo?
 
 cliente pide diferenciales. y pide una entera cada Z frames
+
+Parametro cada cuanto el cliente pide una diferencial , configurable. if (zoc_slave_differential_displays==10) {
+    configurable y/o autosetting en base a los ultimos fps ?

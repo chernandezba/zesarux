@@ -3565,7 +3565,7 @@ int zoc_receive_snapshot(int indice_socket)
 
 
 
-int zoc_receive_streaming_display(int indice_socket)
+int zoc_receive_streaming_display(int indice_socket,int slot)
 {
 
 
@@ -3586,10 +3586,6 @@ int zoc_receive_streaming_display(int indice_socket)
         //Leer algo
         char buffer[ZENG_BUFFER_INITIAL_CONNECT+1];
 
-        int slot;
-
-        //temporal
-        slot=0;
 
         //streaming-get-display user_pass n s
         sprintf(buffer_comando,"zeng-online streaming-get-display %s %d %d\n",created_room_user_password,zeng_online_joined_to_room_number,slot);
@@ -3731,6 +3727,7 @@ int zoc_check_if_kicked(int indice_socket)
     return 0;
 }
 
+int zoc_slave_differential_displays=0;
 
 void *zoc_slave_thread_function(void *nada GCC_UNUSED)
 {
@@ -3800,7 +3797,23 @@ void *zoc_slave_thread_function(void *nada GCC_UNUSED)
                     //Recibir snapshot
                     //printf("Recibir pantalla\n");
 
-                    int error=zoc_receive_streaming_display(indice_socket);
+                    int slot=0;
+
+                    //slot 0 es diferencial. Cada X frames diferenciales, pedir uno entero
+
+                    zoc_slave_differential_displays++;
+
+                    if (zoc_slave_differential_displays==10) {
+                        zoc_slave_differential_displays=0;
+                        slot=1;
+                        printf("Pedir pantalla entera\n");
+                    }
+
+                    else {
+                        printf("Pedir pantalla diferencial\n");
+                    }
+
+                    int error=zoc_receive_streaming_display(indice_socket,slot);
                     //TODO gestionar bien este error
                     if (error<0) {
                         //TODO
@@ -4035,7 +4048,7 @@ void zeng_online_client_apply_pending_received_streaming_display(void)
 
     //Pantalla diferencial
     if (zoc_get_streaming_display_mem_binary[0] & 1) {
-        printf("pantalla diferencial\n");
+        printf("Aplicar pantalla diferencial\n");
         int longitud_pantalla_diferencial=zoc_get_streaming_display_mem_binary_longitud-2;
 
         longitud_pantalla_diferencial /=3; //Cada entrada son 3 bytes
@@ -4060,7 +4073,7 @@ void zeng_online_client_apply_pending_received_streaming_display(void)
     }
 
     else {
-        printf("pantalla entera\n");
+        printf("Aplicar pantalla entera\n");
 
         memcpy(screen,&zoc_get_streaming_display_mem_binary[2],ZOC_STREAM_DISPLAY_SIZE);
     }
