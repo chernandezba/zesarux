@@ -2398,9 +2398,10 @@ int zoc_send_snapshot(int indice_socket)
 
 }
 
-char *zoc_send_streaming_display_mem_hexa=NULL;
+//Para las dos pantallas que se envian cada vez: la diferencial y la completa
+char *zoc_send_streaming_display_mem_hexa[2]={NULL,NULL};
 
-int zoc_send_streaming_display(int indice_socket)
+int zoc_send_streaming_display(int indice_socket,int slot)
 {
 
 		DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"ZENG Online Client: Sending streaming_display");
@@ -2408,10 +2409,6 @@ int zoc_send_streaming_display(int indice_socket)
 		int posicion_command;
 		int escritos,leidos;
 
-        int slot;
-
-        //temporal
-        slot=0;
 
         char buffer_comando[200];
         //printf ("Sending put-streaming_display\n");
@@ -2426,7 +2423,7 @@ int zoc_send_streaming_display(int indice_socket)
 
 
 
-        escritos=z_sock_write_string(indice_socket,zoc_send_streaming_display_mem_hexa);
+        escritos=z_sock_write_string(indice_socket,zoc_send_streaming_display_mem_hexa[slot]);
         //printf("after z_sock_write_string 2\n");
 
 
@@ -3132,7 +3129,17 @@ void *zoc_master_thread_function(void *nada GCC_UNUSED)
                     //printf("Putting display\n");
 
                     if (zoc_pending_send_streaming_display) {
-                        int error=zoc_send_streaming_display(indice_socket);
+
+                        //Enviar la incremental y la completa
+                        int error=zoc_send_streaming_display(indice_socket,0);
+
+                        if (error<0) {
+                            //TODO
+                            DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Error sending streaming_display to zeng online server");
+                        }
+
+                        error=zoc_send_streaming_display(indice_socket,1);
+
 
                         if (error<0) {
                             //TODO
@@ -4371,7 +4378,7 @@ int zoc_get_streaming_display(z80_byte *buffer_temp_sin_comprimir,int force_full
 
 }
 
-void zoc_prepare_streaming_display(void)
+void zoc_prepare_streaming_display(int force_full_display,int slot)
 {
 
     //zona de memoria donde se guarda el streaming_display pero sin pasar a hexa. y sin comprimir zip
@@ -4381,29 +4388,18 @@ void zoc_prepare_streaming_display(void)
     if (buffer_temp_sin_comprimir==NULL) cpu_panic("Can not allocate memory for sending streaming_display");
 
 
-    int force_full_display=0;
-
-    if (zoc_generated_differential_displays_counter==10) {
-        zoc_generated_differential_displays_counter=0;
-        //Generar una pantalla entera cada X diferenciales
-
-        force_full_display=1;
-        printf("Forzada pantalla entera\n");
-    }
-
-
     int longitud_sin_comprimir=zoc_get_streaming_display(buffer_temp_sin_comprimir,force_full_display);
 
 
-    if (zoc_send_streaming_display_mem_hexa==NULL) {
-        zoc_send_streaming_display_mem_hexa=util_malloc(ZRCP_GET_PUT_STREAMING_DISPLAY_MEM*2,"Can not allocate memory for streaming display");
+    if (zoc_send_streaming_display_mem_hexa[slot]==NULL) {
+        zoc_send_streaming_display_mem_hexa[slot]=util_malloc(ZRCP_GET_PUT_STREAMING_DISPLAY_MEM*2,"Can not allocate memory for streaming display");
     }
 
 
     int i;
 
     z80_byte *origen=buffer_temp_sin_comprimir;
-    char *destino=zoc_send_streaming_display_mem_hexa;
+    char *destino=zoc_send_streaming_display_mem_hexa[slot];
     z80_byte byte_leido;
 
     for (i=0;i<longitud_sin_comprimir;i++) {
@@ -4443,10 +4439,21 @@ void zeng_online_client_prepare_streaming_display_if_needed(void)
 				}
 				else {
 
+                    /*int force_full_display=0;
 
-                    zoc_prepare_streaming_display();
+                    if (zoc_generated_differential_displays_counter==10) {
+                        zoc_generated_differential_displays_counter=0;
+                        //Generar una pantalla entera cada X diferenciales
 
+                        force_full_display=1;
+                        printf("Forzada pantalla entera\n");
+                    }*/
 
+                    //Slot 0 diferencial
+                    zoc_prepare_streaming_display(0,0);
+
+                    //Slot 1 completo
+                    zoc_prepare_streaming_display(1,1);
 
 					zoc_pending_send_streaming_display=1;
 
