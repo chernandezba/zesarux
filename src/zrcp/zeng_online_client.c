@@ -4371,6 +4371,61 @@ int zoc_get_streaming_display(z80_byte *buffer_temp_sin_comprimir,int force_full
 
 }
 
+void zoc_prepare_streaming_display(void)
+{
+
+    //zona de memoria donde se guarda el streaming_display pero sin pasar a hexa. y sin comprimir zip
+    z80_byte *buffer_temp_sin_comprimir;
+    buffer_temp_sin_comprimir=malloc(ZRCP_GET_PUT_STREAMING_DISPLAY_MEM);
+
+    if (buffer_temp_sin_comprimir==NULL) cpu_panic("Can not allocate memory for sending streaming_display");
+
+
+    int force_full_display=0;
+
+    if (zoc_generated_differential_displays_counter==10) {
+        zoc_generated_differential_displays_counter=0;
+        //Generar una pantalla entera cada X diferenciales
+
+        force_full_display=1;
+        printf("Forzada pantalla entera\n");
+    }
+
+
+    int longitud_sin_comprimir=zoc_get_streaming_display(buffer_temp_sin_comprimir,force_full_display);
+
+
+    if (zoc_send_streaming_display_mem_hexa==NULL) {
+        zoc_send_streaming_display_mem_hexa=util_malloc(ZRCP_GET_PUT_STREAMING_DISPLAY_MEM*2,"Can not allocate memory for streaming display");
+    }
+
+
+    int i;
+
+    z80_byte *origen=buffer_temp_sin_comprimir;
+    char *destino=zoc_send_streaming_display_mem_hexa;
+    z80_byte byte_leido;
+
+    for (i=0;i<longitud_sin_comprimir;i++) {
+        byte_leido=*origen++;
+        *destino++=util_byte_to_hex_nibble(byte_leido>>4);
+        *destino++=util_byte_to_hex_nibble(byte_leido);
+    }
+
+
+    //metemos salto de linea y 0 al final
+    *destino++ ='\n';
+    *destino++ =0;
+
+
+
+    free(buffer_temp_sin_comprimir);
+
+    DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"ZENG Online Client: Queuing streaming_display to send, length: %d bytes",longitud_sin_comprimir);
+
+
+}
+
 void zeng_online_client_prepare_streaming_display_if_needed(void)
 {
 
@@ -4389,57 +4444,12 @@ void zeng_online_client_prepare_streaming_display_if_needed(void)
 				else {
 
 
-					//zona de memoria donde se guarda el streaming_display pero sin pasar a hexa. y sin comprimir zip
-					z80_byte *buffer_temp_sin_comprimir;
-					buffer_temp_sin_comprimir=malloc(ZRCP_GET_PUT_STREAMING_DISPLAY_MEM);
+                    zoc_prepare_streaming_display();
 
-					if (buffer_temp_sin_comprimir==NULL) cpu_panic("Can not allocate memory for sending streaming_display");
-
-
-                    int force_full_display=0;
-
-                    if (zoc_generated_differential_displays_counter==10) {
-                        zoc_generated_differential_displays_counter=0;
-                        //Generar una pantalla entera cada X diferenciales
-
-                        force_full_display=1;
-                        printf("Forzada pantalla entera\n");
-                    }
-
-
-                    int longitud_sin_comprimir=zoc_get_streaming_display(buffer_temp_sin_comprimir,force_full_display);
-
-
-					if (zoc_send_streaming_display_mem_hexa==NULL) {
-                        zoc_send_streaming_display_mem_hexa=util_malloc(ZRCP_GET_PUT_STREAMING_DISPLAY_MEM*2,"Can not allocate memory for streaming display");
-                    }
-
-
-					int i;
-
-                    z80_byte *origen=buffer_temp_sin_comprimir;
-                    char *destino=zoc_send_streaming_display_mem_hexa;
-                    z80_byte byte_leido;
-
-					for (i=0;i<longitud_sin_comprimir;i++) {
-                        byte_leido=*origen++;
-                        *destino++=util_byte_to_hex_nibble(byte_leido>>4);
-                        *destino++=util_byte_to_hex_nibble(byte_leido);
-					}
-
-
-					//metemos salto de linea y 0 al final
-                    *destino++ ='\n';
-                    *destino++ =0;
-
-
-
-                    free(buffer_temp_sin_comprimir);
 
 
 					zoc_pending_send_streaming_display=1;
 
-                    DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"ZENG Online Client: Queuing streaming_display to send, length: %d bytes",longitud_sin_comprimir);
 
 
 				}
