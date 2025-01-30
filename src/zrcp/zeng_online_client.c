@@ -4028,6 +4028,8 @@ void zeng_online_client_apply_pending_received_streaming_display(void)
         printf("pantalla diferencial\n");
         int longitud_pantalla_diferencial=zoc_get_streaming_display_mem_binary_longitud-2;
         printf("zoc_get_streaming_display_mem_binary_longitud %d\n",zoc_get_streaming_display_mem_binary_longitud);
+
+
         if (longitud_pantalla_diferencial==0) printf("no cambios\n");
 
         z80_byte *mem_pantalla_diferencial=zoc_get_streaming_display_mem_binary+2;
