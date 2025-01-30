@@ -4414,7 +4414,6 @@ void zeng_online_client_prepare_streaming_display_if_needed(void)
                         zoc_send_streaming_display_mem_hexa=util_malloc(ZRCP_GET_PUT_STREAMING_DISPLAY_MEM*2,"Can not allocate memory for streaming display");
                     }
 
-					//int char_destino=0;
 
 					int i;
 
@@ -4422,27 +4421,16 @@ void zeng_online_client_prepare_streaming_display_if_needed(void)
                     char *destino=zoc_send_streaming_display_mem_hexa;
                     z80_byte byte_leido;
 
-					for (i=0;i<longitud_sin_comprimir;i++/*,char_destino +=2*/) {
-                        //En vez de sprintf, que es poco optimo, usar alternativa
-                        //Comparativa: con un streaming_display con un di y un jp 16384, tarda
-                        //con sprintf: 116 microsegundos el tiempo mas bajo
-                        //con util_byte_to_hex_nibble: 5 microsegundos el tiempo mas bajo
-						//sprintf (&zoc_send_streaming_display_mem_hexa[char_destino],"%02X",buffer_temp[i]);
+					for (i=0;i<longitud_sin_comprimir;i++) {
                         byte_leido=*origen++;
                         *destino++=util_byte_to_hex_nibble(byte_leido>>4);
                         *destino++=util_byte_to_hex_nibble(byte_leido);
 					}
 
 
-
 					//metemos salto de linea y 0 al final
-					//strcpy (&zoc_send_streaming_display_mem_hexa[char_destino],"\n");
                     *destino++ ='\n';
                     *destino++ =0;
-
-
-
-                    //printf ("ZENG Online: Queuing streaming_display to send, length: %d\n",longitud_sin_comprimir);
 
 
 
