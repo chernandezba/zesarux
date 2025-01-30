@@ -3606,6 +3606,7 @@ int zoc_receive_streaming_display(int indice_socket)
         if (leidos>0) {
             zoc_get_streaming_display_mem_hexa[leidos]=0; //fin de texto
             //DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Received text for get-streaming_display (length %d): \n[\n%s\n]",leidos,zoc_get_streaming_display_mem_hexa);
+            //printf("respuesta leido: [%s]\n",zoc_get_streaming_display_mem_hexa);
         }
 
         if (leidos<0) {
@@ -4027,6 +4028,9 @@ void zeng_online_client_apply_pending_received_streaming_display(void)
     if (zoc_get_streaming_display_mem_binary[0] & 1) {
         printf("pantalla diferencial\n");
         int longitud_pantalla_diferencial=zoc_get_streaming_display_mem_binary_longitud-2;
+
+        longitud_pantalla_diferencial /=3; //Cada entrada son 3 bytes
+
         printf("zoc_get_streaming_display_mem_binary_longitud %d\n",zoc_get_streaming_display_mem_binary_longitud);
 
 
@@ -4039,6 +4043,7 @@ void zeng_online_client_apply_pending_received_streaming_display(void)
         for (i=0;i<longitud_pantalla_diferencial;i++) {
             z80_int offset_byte=mem_pantalla_diferencial[offset_pantalla_diferencial]+256*mem_pantalla_diferencial[offset_pantalla_diferencial+1];
             z80_byte valor_a_escribir=mem_pantalla_diferencial[offset_pantalla_diferencial+2];
+            //printf("Direccion: %d valor: %d\n",offset_byte+16384,valor_a_escribir);
             screen[offset_byte]=valor_a_escribir;
             offset_pantalla_diferencial +=3;
         }
@@ -4356,6 +4361,8 @@ void zeng_online_client_prepare_streaming_display_if_needed(void)
                     if (zoc_generated_differential_displays_counter==50) {
                         zoc_generated_differential_displays_counter=0;
                         //Generar una pantalla entera cada 50 diferenciales
+
+
                         force_full_display=1;
                         printf("Forzada pantalla entera\n");
                     }
