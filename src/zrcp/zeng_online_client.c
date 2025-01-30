@@ -3803,7 +3803,7 @@ void *zoc_slave_thread_function(void *nada GCC_UNUSED)
 
                     zoc_slave_differential_displays++;
 
-                    if (zoc_slave_differential_displays==10) {
+                    if (zoc_slave_differential_displays==5) {
                         zoc_slave_differential_displays=0;
                         slot=1;
                         printf("Pedir pantalla entera\n");
