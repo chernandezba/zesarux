@@ -2425,11 +2425,6 @@ int zoc_send_streaming_display(int indice_socket)
         if (escritos<0) return escritos;
 
 
-        //TODO esto es ineficiente y que tiene que calcular la longitud. hacer otra z_sock_write sin tener que calcular
-        //printf("before z_sock_write_string 2\n");
-        //printf("Sending streaming_display data length: %lu\n",strlen(zoc_send_streaming_display_mem_hexa));
-        //printf("First bytes of streaming_display: %c%c%c%c\n",
-          //  zoc_send_streaming_display_mem_hexa[0],zoc_send_streaming_display_mem_hexa[1],zoc_send_streaming_display_mem_hexa[2],zoc_send_streaming_display_mem_hexa[3]);
 
         escritos=z_sock_write_string(indice_socket,zoc_send_streaming_display_mem_hexa);
         //printf("after z_sock_write_string 2\n");
