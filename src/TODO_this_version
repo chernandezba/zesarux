@@ -109,3 +109,9 @@ O que idealmente el cliente se lo pida al servidor??? y lo cambie segun sus fps?
 Quiza esa pantalla entera se debe guardar en otro sitio y que el cliente lo pida explicitamente
 Porque si no, se generara uno de cada 50 y el cliente igual cuando pide display nunca (o pocas veces) pilla ese, porque no esta
 haciendo 50 fps
+
+->seria entonces:
+servidor envia diferenciales siempre y se guarda en "caja 0". y una entera cada X frames y se guarda en "caja 1"
+Pero que sucede cuando un diferencial ocupa mas que una entera? esa diferencial se convertira en la entera. pero a que caja lo guardo?
+
+cliente pide diferenciales. y pide una entera cada Z frames

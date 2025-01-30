@@ -4354,9 +4354,9 @@ void zeng_online_client_prepare_streaming_display_if_needed(void)
 
                     int force_full_display=0;
 
-                    if (zoc_generated_differential_displays_counter==50) {
+                    if (zoc_generated_differential_displays_counter==10) {
                         zoc_generated_differential_displays_counter=0;
-                        //Generar una pantalla entera cada 50 diferenciales
+                        //Generar una pantalla entera cada X diferenciales
 
 
                         force_full_display=1;
