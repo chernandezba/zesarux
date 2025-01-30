@@ -4412,7 +4412,9 @@ void zeng_online_client_prepare_streaming_display_if_needed(void)
                     //printf("Asignada: %d liberada: %d\n",temp_memoria_asignada,temp_memoria_liberada);
                     //printf("Created streaming_display original size %d compressed size %d\n",longitud_sin_comprimir,longitud);
 
-					if (zoc_send_streaming_display_mem_hexa==NULL) zoc_send_streaming_display_mem_hexa=malloc(ZRCP_GET_PUT_STREAMING_DISPLAY_MEM*2); //16 MB es mas que suficiente
+					if (zoc_send_streaming_display_mem_hexa==NULL) {
+                        zoc_send_streaming_display_mem_hexa=util_malloc(ZRCP_GET_PUT_STREAMING_DISPLAY_MEM*2,"Can not allocate memory for streaming display");
+                    }
 
 					//int char_destino=0;
 
