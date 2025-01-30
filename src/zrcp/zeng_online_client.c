@@ -4312,7 +4312,7 @@ int zoc_generate_differential_display(z80_byte *current_screen)
 
     printf("Bytes diferentes: %d\n",bytes_diferentes);
 
-    memcpy(zoc_last_streaming_display,current_screen,ZOC_STREAM_DISPLAY_SIZE);
+
 
 
     if (excede_limite) return -1;
@@ -4393,6 +4393,9 @@ void zeng_online_client_prepare_streaming_display_if_needed(void)
                     buffer_temp_sin_comprimir[1]=out_254 & 7;
 
                     longitud_sin_comprimir +=2;
+
+                    //Almacenar la ultima pantalla para comparar luego la diferencial
+                    memcpy(zoc_last_streaming_display,screen,ZOC_STREAM_DISPLAY_SIZE);
 
                     //int longitud;
                     //z80_byte *buffer_temp;
