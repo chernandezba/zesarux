@@ -3803,52 +3803,52 @@ void *zoc_slave_thread_function(void *nada GCC_UNUSED)
                 if (created_room_user_permissions & ZENG_ONLINE_PERMISSIONS_GET_DISPLAY) {
 
                     if (!zoc_pending_apply_received_streaming_display) {
-                    //Recibir snapshot
-                    //printf("Recibir pantalla\n");
+                        //Recibir snapshot
+                        //printf("Recibir pantalla\n");
 
-                    int slot=0;
+                        int slot=0;
 
-                    //slot 0 es diferencial. Cada X frames diferenciales, pedir uno entero
+                        //slot 0 es diferencial. Cada X frames diferenciales, pedir uno entero
 
-                    if (zoc_slave_differential_displays_counter>=zoc_slave_differential_displays_limit_full) {
-                        zoc_slave_differential_displays_counter=0;
-                        slot=1;
-                        printf("Pedir pantalla entera\n");
-                    }
+                        if (zoc_slave_differential_displays_counter>=zoc_slave_differential_displays_limit_full) {
+                            zoc_slave_differential_displays_counter=0;
+                            slot=1;
+                            printf("Pedir pantalla entera\n");
+                        }
 
-                    else {
-                        printf("Pedir pantalla diferencial\n");
-                        zoc_slave_differential_displays_counter++;
-                    }
+                        else {
+                            printf("Pedir pantalla diferencial\n");
+                            zoc_slave_differential_displays_counter++;
+                        }
 
-                    //sleep(1);
-
-                    int error=zoc_receive_streaming_display(indice_socket,slot);
-                    //TODO gestionar bien este error
-                    if (error<0) {
-                        //TODO
-                        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Error getting streaming display from zeng online server");
-                        usleep(10000); //dormir 10 ms
-                    }
-
-                    else {
                         //sleep(1);
-                        //Ver si la pantalla recibida era al final una completa
-                        if (zoc_get_streaming_display_mem_binary!=NULL) {
-                            printf("Recibida pantalla longitud %d\n",zoc_get_streaming_display_mem_binary_longitud);
-                            if ((zoc_get_streaming_display_mem_binary[0] & 1)==0) {
 
-                                if (slot==0) {
-                                    printf("------Pedida diferencial pero era pantalla entera------- %d %02X %02X %02X\n",
-                                        zoc_get_streaming_display_mem_binary_longitud,
-                                        zoc_get_streaming_display_mem_binary[0],
-                                        zoc_get_streaming_display_mem_binary[1],
-                                        zoc_get_streaming_display_mem_binary[2]
-                                    );
+                        int error=zoc_receive_streaming_display(indice_socket,slot);
+                        //TODO gestionar bien este error
+                        if (error<0) {
+                            //TODO
+                            DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Error getting streaming display from zeng online server");
+                            usleep(10000); //dormir 10 ms
+                        }
+
+                        else {
+                            //sleep(1);
+                            //Ver si la pantalla recibida era al final una completa
+                            if (zoc_get_streaming_display_mem_binary!=NULL) {
+                                printf("Recibida pantalla longitud %d\n",zoc_get_streaming_display_mem_binary_longitud);
+                                if ((zoc_get_streaming_display_mem_binary[0] & 1)==0) {
+
+                                    if (slot==0) {
+                                        printf("------Pedida diferencial pero era pantalla entera------- %d %02X %02X %02X\n",
+                                            zoc_get_streaming_display_mem_binary_longitud,
+                                            zoc_get_streaming_display_mem_binary[0],
+                                            zoc_get_streaming_display_mem_binary[1],
+                                            zoc_get_streaming_display_mem_binary[2]
+                                        );
+                                    }
                                 }
                             }
                         }
-                    }
                     }
 
                 }
