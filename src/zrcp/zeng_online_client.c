@@ -3590,7 +3590,7 @@ int zoc_receive_streaming_display(int indice_socket,int slot)
         //streaming-get-display user_pass n s
         sprintf(buffer_comando,"zeng-online streaming-get-display %s %d %d\n",created_room_user_password,zeng_online_joined_to_room_number,slot);
 
-        printf("buffer_comando: [%s]\n",buffer_comando);
+        //printf("buffer_comando: [%s]\n",buffer_comando);
 
         escritos=z_sock_write_string(indice_socket,buffer_comando);
         //printf("after z_sock_write_string 1\n");
@@ -3835,8 +3835,13 @@ void *zoc_slave_thread_function(void *nada GCC_UNUSED)
                             //sleep(1);
                             //Ver si la pantalla recibida era al final una completa
                             if (zoc_get_streaming_display_mem_binary!=NULL) {
-                                printf("Recibida pantalla longitud %d\n",zoc_get_streaming_display_mem_binary_longitud);
+                                //printf("Recibida pantalla longitud %d\n",zoc_get_streaming_display_mem_binary_longitud);
                                 if ((zoc_get_streaming_display_mem_binary[0] & 1)==0) {
+
+                                    //Ha venido una pantalla entera, bien porque se ha pedido asi o bien porque
+                                    //se ha pedido una diferencial y era demasiado grande y se genera una entera
+                                    //Por tanto reiniciar el conteo
+                                    zoc_slave_differential_displays_counter=0;
 
                                     if (slot==0) {
                                         printf("------Pedida diferencial pero era pantalla entera------- %d %02X %02X %02X\n",
