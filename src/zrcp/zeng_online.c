@@ -585,7 +585,7 @@ void zengonline_streaming_put_display(int room,z80_byte *origen,int longitud,int
     zeng_online_rooms_list[room].streaming_display_slots_memory[slot]=destino_display;
     zeng_online_rooms_list[room].streaming_display_slots_size[slot]=longitud;
 
-    printf("zengonline_streaming_put_display slot %d longitud %d\n",slot,longitud);
+    //printf("zengonline_streaming_put_display slot %d longitud %d\n",slot,longitud);
 
 
 	//Liberar lock
@@ -1538,7 +1538,7 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
 
         zengonline_streaming_put_display(room_number,buffer_destino,longitud_pantalla,slot);
 
-        printf("Putting display to slot %d\n",slot);
+        //printf("Putting display to slot %d\n",slot);
 
         free(buffer_destino);
 
@@ -1597,11 +1597,11 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
 
         z80_byte *puntero_display=util_malloc(ZRCP_GET_PUT_SNAPSHOT_MEM*2,"Can not allocate memory for streaming get display");
 
-        printf("get-display slot %d\n",slot);
+        //printf("get-display slot %d\n",slot);
 
         int longitud=zengonline_streaming_get_display(room_number,puntero_display,slot);
 
-        printf("display slot %d length %d\n",slot,longitud);
+        //printf("display slot %d length %d\n",slot,longitud);
 
 
         int i;

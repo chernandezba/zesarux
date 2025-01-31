@@ -3589,6 +3589,9 @@ int zoc_receive_streaming_display(int indice_socket,int slot)
 
         //streaming-get-display user_pass n s
         sprintf(buffer_comando,"zeng-online streaming-get-display %s %d %d\n",created_room_user_password,zeng_online_joined_to_room_number,slot);
+
+        printf("buffer_comando: [%s]\n",buffer_comando);
+
         escritos=z_sock_write_string(indice_socket,buffer_comando);
         //printf("after z_sock_write_string 1\n");
         if (escritos<0) return escritos;
@@ -3678,6 +3681,7 @@ int zoc_receive_streaming_display(int indice_socket,int slot)
     }
     else {
         //printf("get-streaming_display no disponible. esperar\n");
+        printf("Pantalla pendiente de aplicar aun\n");
 
     }
 
@@ -3798,6 +3802,7 @@ void *zoc_slave_thread_function(void *nada GCC_UNUSED)
 
                 if (created_room_user_permissions & ZENG_ONLINE_PERMISSIONS_GET_DISPLAY) {
 
+                    if (!zoc_pending_apply_received_streaming_display) {
                     //Recibir snapshot
                     //printf("Recibir pantalla\n");
 
@@ -3816,6 +3821,8 @@ void *zoc_slave_thread_function(void *nada GCC_UNUSED)
                         zoc_slave_differential_displays_counter++;
                     }
 
+                    //sleep(1);
+
                     int error=zoc_receive_streaming_display(indice_socket,slot);
                     //TODO gestionar bien este error
                     if (error<0) {
@@ -3824,6 +3831,25 @@ void *zoc_slave_thread_function(void *nada GCC_UNUSED)
                         usleep(10000); //dormir 10 ms
                     }
 
+                    else {
+                        //sleep(1);
+                        //Ver si la pantalla recibida era al final una completa
+                        if (zoc_get_streaming_display_mem_binary!=NULL) {
+                            printf("Recibida pantalla longitud %d\n",zoc_get_streaming_display_mem_binary_longitud);
+                            if ((zoc_get_streaming_display_mem_binary[0] & 1)==0) {
+
+                                if (slot==0) {
+                                    printf("------Pedida diferencial pero era pantalla entera------- %d %02X %02X %02X\n",
+                                        zoc_get_streaming_display_mem_binary_longitud,
+                                        zoc_get_streaming_display_mem_binary[0],
+                                        zoc_get_streaming_display_mem_binary[1],
+                                        zoc_get_streaming_display_mem_binary[2]
+                                    );
+                                }
+                            }
+                        }
+                    }
+                    }
 
                 }
             }
@@ -4366,6 +4392,9 @@ int zoc_get_streaming_display(z80_byte *buffer_temp_sin_comprimir,int force_full
     //bit 0: pantalla diferencial o no
 
     if (longitud_pantalla_diferencial>=0) {
+
+        //printf("Generating differential display\n");
+
         buffer_temp_sin_comprimir[0]=1;
         longitud_sin_comprimir=longitud_pantalla_diferencial;
         memcpy(&buffer_temp_sin_comprimir[2],zoc_differential_display,longitud_sin_comprimir);
@@ -4374,6 +4403,8 @@ int zoc_get_streaming_display(z80_byte *buffer_temp_sin_comprimir,int force_full
 
     else {
 
+        //Generar pantalla entera porque la diferencial ocupa demasiado
+        if (!force_full_display) printf("Generating full display because differential was big\n");
 
         longitud_sin_comprimir=ZOC_STREAM_DISPLAY_SIZE;
         buffer_temp_sin_comprimir[0]=0;
