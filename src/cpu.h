@@ -25,11 +25,11 @@
 #include "compileoptions.h"
 
 
-//#define EMULATOR_VERSION "12.0-SN"
-//#define EMULATOR_VERSION "12.0-B2"
-//#define EMULATOR_VERSION "12.0-RC"
-#define EMULATOR_VERSION "12.0"
-//#define SNAPSHOT_VERSION
+#define EMULATOR_VERSION "12.1-SN"
+//#define EMULATOR_VERSION "12.1-B2"
+//#define EMULATOR_VERSION "12.1-RC"
+//#define EMULATOR_VERSION "12.1"
+#define SNAPSHOT_VERSION
 
 /*
 EMULATOR_NUMBER_VERSION format:
@@ -56,7 +56,7 @@ Examples
 
 #define EMULATOR_DATE "16 January 2025"
 #define EMULATOR_SHORT_DATE "16/01/2025"
-#define EMULATOR_GAME_EDITION "Bubble Bobble"
+#define EMULATOR_GAME_EDITION "xxx"
 #define EMULATOR_EDITION_NAME EMULATOR_GAME_EDITION " edition"
 #define ZESARUX_EXTRAS_HOST "github.com"
 

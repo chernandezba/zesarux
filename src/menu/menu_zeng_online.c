@@ -235,18 +235,21 @@ int menu_zeng_online_list_rooms(int *room_number,int *created,int *autojoin,int 
         //menu_generic_message("Rooms",zeng_remote_list_rooms_buffer);
 
         //Mostrar latencia
-        long latencia=zeng_online_get_last_list_rooms_latency();
+        if (menu_show_advanced_items.v) {
+            long latencia=zeng_online_get_last_list_rooms_latency();
 
-        char buffer_latencia[30];
-        //Es en microsegundos. Si es >1000, mostrar en ms
-        if (latencia>=1000) {
-            sprintf(buffer_latencia,"%ld ms",latencia/1000);
-        }
-        else {
-            sprintf(buffer_latencia,"%ld us",latencia);
-        }
+            char buffer_latencia[30];
+            //Es en microsegundos. Si es >1000, mostrar en ms
+            if (latencia>=1000) {
+                sprintf(buffer_latencia,"%ld ms",latencia/1000);
+            }
+            else {
+                sprintf(buffer_latencia,"%ld us",latencia);
+            }
 
-        menu_generic_message_format("ZENG online latency","Latency is: %s",buffer_latencia );
+            menu_generic_message_format("ZENG online latency","Latency is: %s",buffer_latencia );
+
+        }
 
 
     menu_item *array_menu_common;
@@ -1536,6 +1539,43 @@ void menu_zeng_online_streaming_enabled_when_creating(MENU_ITEM_PARAMETERS)
     streaming_enabled_when_creating ^=1;
 }
 
+void menu_zeng_online_full_display_interval(MENU_ITEM_PARAMETERS)
+{
+
+    int opcion=menu_simple_seven_choices("Interval?","One of:","0","2","5","10","15","25","50");
+
+    switch (opcion) {
+        case 1:
+            zoc_slave_differential_displays_limit_full=0;
+        break;
+
+        case 2:
+            zoc_slave_differential_displays_limit_full=2;
+        break;
+
+        case 3:
+            zoc_slave_differential_displays_limit_full=5;
+        break;
+
+        case 4:
+            zoc_slave_differential_displays_limit_full=10;
+        break;
+
+        case 5:
+            zoc_slave_differential_displays_limit_full=15;
+        break;
+
+        case 6:
+            zoc_slave_differential_displays_limit_full=25;
+        break;
+
+        case 7:
+            zoc_slave_differential_displays_limit_full=50;
+        break;
+
+    }
+
+}
 
 
 void menu_zeng_online(MENU_ITEM_PARAMETERS)
@@ -1629,6 +1669,12 @@ void menu_zeng_online(MENU_ITEM_PARAMETERS)
                 (created_room_user_permissions & ZENG_ONLINE_PERMISSIONS_SEND_KEYS ? "WK" : "  "),
                 (created_room_user_permissions & ZENG_ONLINE_PERMISSIONS_SEND_MESSAGE ? "WM" : "  ")
             );
+            menu_add_item_menu_es_avanzado(array_menu_common);
+
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,
+            "Streaming mode:","Modo Streaming:","Mode Streaming:");
+
+            menu_add_item_menu_sufijo_format(array_menu_common," %s",(created_room_streaming_mode ? "Yes" : "No"));
             menu_add_item_menu_es_avanzado(array_menu_common);
 
 
@@ -1725,6 +1771,30 @@ void menu_zeng_online(MENU_ITEM_PARAMETERS)
                     "Footer lag indicator","Indicador lag en footer","Indicador lag al footer");
                     menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",
                         (zeng_online_show_footer_lag_indicator.v ? 'X' : ' '));
+                    menu_add_item_menu_es_avanzado(array_menu_common);
+
+                }
+
+                if (created_room_streaming_mode && (created_room_user_permissions & ZENG_ONLINE_PERMISSIONS_GET_DISPLAY)) {
+                    menu_add_item_menu_separator(array_menu_common);
+                    menu_add_item_menu_es_avanzado(array_menu_common);
+
+                    menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_full_display_interval,NULL,
+                    "Perfect display interval","Intervalo pantalla perfecta","Interval pantalla perfecta");
+                    menu_add_item_menu_sufijo_format(array_menu_common," [%d]",zoc_slave_differential_displays_limit_full);
+                    menu_add_item_menu_tooltip(array_menu_common,"How many differential displays have to ask to get a full display frame");
+                    menu_add_item_menu_ayuda(array_menu_common,"How many differential displays have to ask to get a full display frame. "
+                        "\n"
+                        "Example values:"
+                        "\n"
+                        "0:  will always get a full display, so no glitches on the screen. "
+                        "Set it when you have high bandwidth and very low latency to the ZENG Online Server\n"
+                        "\n"
+                        "5:  will get a full display every 5 differential displays, some glitches on the screen when you don't have 50 FPS "
+                        "(due to latency to the server or low bandwidth\n"
+                        "\n"
+                        "50: will get a full display every 50 differential displays, many glitches on the screen, set it if you have very low bandwidth"
+                    );
                     menu_add_item_menu_es_avanzado(array_menu_common);
 
                 }

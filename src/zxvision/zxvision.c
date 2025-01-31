@@ -25766,8 +25766,18 @@ void menu_inicio_handle_button_presses(void)
 
     }
 
-    //si ha generado error, no salir
-    if (!if_pending_error_message) salir_todos_menus=1;
+
+    //si ha generado error, no salir. Esto cubre el caso de que se ha abierto un menu que activa salir_todos_menus
+    //pero dicho menu ha generado un error
+    //Entonces iremos al menu principal
+    if (if_pending_error_message) {
+        salir_todos_menus=0;
+    }
+
+    else {
+        //Cerrar todos menus. De lo contrario nos iriamos al menu principal si por ejemplo al pulsar el boton Network pulsamos flecha izquierda
+        salir_todos_menus=1;
+    }
 
 	//Y decir que el siguiente menu ya no se abre desde boton y por tanto no se posiciona debajo del boton
 	//Antes se quitaba el flag tambien en menu_dibuja_menu, pero ya no. Asi conseguimos que todos los menus

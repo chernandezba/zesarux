@@ -1,13 +1,15 @@
 * en cpu.h, actualizar numero de version, comentar SNAPSHOT_VERSION, borrar -SN o -RC sufijo de EMULATOR_VERSION
 * cambiar version en accion push de docker-zesarux.sh
-* cambiar fechas en EMULATOR_DATE, EMULATOR_SHORT_DATE
-* cambiar nombre edicion en EMULATOR_GAME_EDITION
+* Cambiar EMULATOR_VERSION en archivo configure
+* Cambiar version en macos/apptemplate/Contents/Info.plist, tag CFBundleVersion
+* en cpu.h, cambiar fechas en EMULATOR_DATE, EMULATOR_SHORT_DATE
+* en cpu.h, cambiar nombre edicion en EMULATOR_GAME_EDITION
 * en Changelog cambiar nombre edicion y fechas
+
 * activar capture segmentation fault en start.c
 * activar capture floating point exception en start.c
 * ZESARUX_EXTRAS_URL en cpu.h en principio no hay que tocarlo
-* Cambiar EMULATOR_VERSION en archivo configure
-* Cambiar version en macos/apptemplate/Contents/Info.plist, tag CFBundleVersion
+
 * Ajustar juego editionnamegame.tap, si juego no permitido distribucion, eliminar. Ajustar EDITION_NAME_GAME en cpu.h sobretodo si cambia a tap o tzx o dsk. Crear editionnamegame.tap.config o editionnamegame.tzx.config si es necesario
 * En changelog, decir qué comandos nuevos de ZRCP, haciendo diff con version anterior
 * sacar el listado de funciones admitidas por el esxdos handler y meterlo en el menu de ayuda del mismo, con la sentencia:

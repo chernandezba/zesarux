@@ -66,6 +66,18 @@ view snapshot note (del ultimo cargado, si es que tiene nota). al cargar snapsho
 
 Por tanto hay dos strings guardados, el de la nota del snapshot cargado, y el de la nota del snapshot que grabaremos
 
+
+-Botones superiores no gestionan errores generados por un item
+Ejemplo:
+pulsamos boton network-> zeng online client-> list rooms
+Si el remoto tiene diferente versión ZRCP, se genera error por debug_printf pero no se ve en el menu. El menu se cierra. Aparece el error al abrir el menu con F5
+Si vamos desde menu principal-> network-> zeng online client-> list rooms, el error si que se ve
+O sea parece que al pulsar desde los botones, se sale del menu y se quita el aviso de "abre menu debido a error"
+(    	    	if_pending_error_message=1;
+menu_fire_event_open_menu();
+)
+
+
 ----
 
 ZENG Online
