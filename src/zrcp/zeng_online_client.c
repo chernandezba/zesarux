@@ -4694,8 +4694,8 @@ int zoc_slave_differential_displays_limit_full_autoadjust_seconds_counter=0;*/
                                         }
 
                                         else if (zoc_slave_differential_displays_limit_full<5) {
-                                            //de estos solo hacer 1 cada 1 minuto o asi
-                                            if (contador_segundo_infinito-ultimo_try_increment_diferenciales_contador_segundo>=60*1000) {
+                                            //de estos solo hacer 1 cada 5 minuto o asi
+                                            if (contador_segundo_infinito-ultimo_try_increment_diferenciales_contador_segundo>=5*60*1000) {
 
                                                 printf("Same FPS than before. Try increment differentials\n");
                                                 zec_increment_differential_display_parameter();
