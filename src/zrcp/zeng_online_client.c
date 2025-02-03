@@ -4698,7 +4698,7 @@ int zoc_slave_differential_displays_limit_full_autoadjust_seconds_counter=0;*/
                                     }
 
                                     if (zoc_client_streaming_display_fps_last_interval>zoc_slave_differential_displays_limit_full_previous_fps) {
-                                        printf("Biggher FPS than before. Reduce differentials\n");
+                                        printf("Bigger FPS than before. Reduce differentials\n");
                                         zec_decrement_differential_display_parameter();
 
                                         autoajuste_diferenciales_estado=2;

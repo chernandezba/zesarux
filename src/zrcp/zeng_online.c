@@ -639,6 +639,83 @@ int zengonline_streaming_get_display(int room,z80_byte *destino,int slot)
 
 }
 
+
+//Lo mueve de una memoria a la memoria del audio de esa habitacion
+void zengonline_streaming_put_audio(int room,z80_byte *origen,int longitud)
+{
+    z80_byte *destino_audio;
+    destino_audio=util_malloc(longitud,"Can not allocate memory for new audio");
+
+    memcpy(destino_audio,origen,longitud);
+
+    //Aqui llega la parte exclusiva, parte del problema de writer-readers
+	//Adquirir lock
+	while(z_atomic_test_and_set(&zeng_online_rooms_list[room].semaphore_writing_streaming_audio)) {
+		//printf("Esperando a liberar lock semaphore_writing_snapshot en zengonline_put_snapshot\n");
+	}
+
+
+    //Aqui cambiamos el audio de la habitacion por ese otro
+    if (zeng_online_rooms_list[room].streaming_audio_memory!=NULL) free(zeng_online_rooms_list[room].streaming_audio_memory);
+
+    zeng_online_rooms_list[room].streaming_audio_memory=destino_audio;
+    zeng_online_rooms_list[room].streaming_audio_size=longitud;
+
+
+    //Incrementamos el id de audio
+    zeng_online_rooms_list[room].audio_streaming_id++;
+
+	//Liberar lock
+	z_atomic_reset(&zeng_online_rooms_list[room].semaphore_writing_streaming_audio);
+
+
+}
+
+int zengonline_streaming_get_audio(int room,z80_byte *destino)
+{
+    //Adquirir lock mutex
+	while(z_atomic_test_and_set(&zeng_online_rooms_list[room].mutex_reading_streaming_audio)) {
+		//printf("Esperando a liberar lock mutex_reading_streaming_audio en zengonline_streaming_get_audio\n");
+	}
+
+    //Incrementar contador de cuantos leen
+    zeng_online_rooms_list[room].reading_streaming_audio_count++;
+    if (zeng_online_rooms_list[room].reading_streaming_audio_count==1) {
+        //Si es el primer lector, bloqueamos escritura
+
+    	while(z_atomic_test_and_set(&zeng_online_rooms_list[room].semaphore_writing_streaming_audio)) {
+		    //printf("Esperando a liberar lock semaphore_writing_streaming_audio en zengonline_streaming_get_audio\n");
+	    }
+    }
+
+    //Liberar lock mutex
+	z_atomic_reset(&zeng_online_rooms_list[room].mutex_reading_streaming_audio);
+
+    int longitud_audio=zeng_online_rooms_list[room].streaming_audio_size;
+    memcpy(destino,zeng_online_rooms_list[room].streaming_audio_memory,longitud_audio);
+
+
+    //Adquirir lock mutex
+	while(z_atomic_test_and_set(&zeng_online_rooms_list[room].mutex_reading_streaming_audio)) {
+	    //printf("Esperando a liberar lock mutex_reading_streaming_audio en zengonline_streaming_get_audio\n");
+	}
+
+
+    zeng_online_rooms_list[room].reading_streaming_audio_count--;
+    //Si somos el ultimo lector, liberar bloqueo escritura
+
+    if (zeng_online_rooms_list[room].reading_streaming_audio_count==0) {
+        z_atomic_reset(&zeng_online_rooms_list[room].semaphore_writing_streaming_audio);
+    }
+
+    //Liberar lock mutex
+    z_atomic_reset(&zeng_online_rooms_list[room].mutex_reading_streaming_audio);
+
+    return longitud_audio;
+
+}
+
+
 void zoc_send_broadcast_message(int room_number,char *message)
 {
     //No hace falta indicar room number dado que solo se mostraran mensajes de nuestro room
@@ -673,9 +750,14 @@ void init_zeng_online_rooms(void)
         int j;
         for (j=0;j<ZENG_ONLINE_DISPLAY_SLOTS;j++) {
             zeng_online_rooms_list[i].streaming_display_slots_memory[j]=NULL;
+            zeng_online_rooms_list[i].streaming_display_slots_size[j]=0;
         }
-
         zeng_online_rooms_list[i].reading_streaming_display_count=0;
+
+        zeng_online_rooms_list[i].streaming_audio_memory=NULL;
+        zeng_online_rooms_list[i].streaming_audio_size=0;
+        zeng_online_rooms_list[i].reading_streaming_audio_count=0;
+        zeng_online_rooms_list[i].audio_streaming_id=0;
 
         z_atomic_reset(&zeng_online_rooms_list[i].mutex_reading_snapshot);
         z_atomic_reset(&zeng_online_rooms_list[i].semaphore_writing_snapshot);
@@ -686,6 +768,8 @@ void init_zeng_online_rooms(void)
         z_atomic_reset(&zeng_online_rooms_list[i].mutex_reading_streaming_display);
         z_atomic_reset(&zeng_online_rooms_list[i].semaphore_writing_streaming_display);
 
+        z_atomic_reset(&zeng_online_rooms_list[i].mutex_reading_streaming_audio);
+        z_atomic_reset(&zeng_online_rooms_list[i].semaphore_writing_streaming_audio);
 
     }
 }
@@ -1615,6 +1699,181 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
 
 
     }
+
+
+    //"streaming-put-audio creator_pass n data         Put a streaming audio on room n, requieres creator_pass for that room. Data must be hexadecimal characters without spaces\n"
+    else if (!strcmp(comando_argv[0],"streaming-put-audio")) {
+        if (!zeng_online_enabled) {
+            escribir_socket(misocket,"ERROR. ZENG Online is not enabled");
+            return;
+        }
+
+        if (comando_argc<3) {
+            escribir_socket(misocket,"ERROR. Needs fothreeur parameters");
+            return;
+        }
+
+        int room_number=parse_string_to_number(comando_argv[2]);
+
+        if (room_number<0 || room_number>=zeng_online_current_max_rooms) {
+            escribir_socket_format(misocket,"ERROR. Room number beyond limit");
+            return;
+        }
+
+        if (!zeng_online_rooms_list[room_number].created) {
+            escribir_socket(misocket,"ERROR. Room is not created");
+            return;
+        }
+
+        //validar user_pass. comando_argv[1]
+        if (strcmp(comando_argv[1],zeng_online_rooms_list[room_number].creator_password)) {
+            escribir_socket(misocket,"ERROR. Invalid creator password for that room");
+            return;
+        }
+
+
+        if (!zeng_online_rooms_list[room_number].streaming_enabled) {
+            escribir_socket(misocket,"ERROR. Streaming is not enabled for that room");
+            return;
+        }
+
+        //longitud de la pantalla es la longitud del parametro snapshot /2 (porque viene en hexa)
+        int longitud_audio=strlen(comando_argv[3])/2;
+
+        if (longitud_audio<1) {
+            escribir_socket(misocket,"ERROR. Received an empty audio");
+            return;
+        }
+
+        char *s=comando_argv[3];
+        //int parametros_recibidos=0;
+
+        z80_byte *buffer_destino;
+        buffer_destino=malloc(longitud_audio);
+        if (buffer_destino==NULL) cpu_panic("Can not allocate memory for streaming-put-audio");
+
+
+        z80_byte *destino=buffer_destino;
+        while (*s) {
+            *destino=(util_hex_nibble_to_byte(*s)<<4) | util_hex_nibble_to_byte(*(s+1));
+            destino++;
+
+            s++;
+            if (*s) s++;
+        }
+
+        zengonline_streaming_put_audio(room_number,buffer_destino,longitud_audio);
+
+        //printf("Putting audio to slot %d\n",slot);
+
+        free(buffer_destino);
+
+
+    }
+
+    //"streaming-get-audio user_pass n                 This command returns the streaming audio from room n, returns ERROR if no audio there. Requires user_pass\n"
+    else if (!strcmp(comando_argv[0],"streaming-get-audio")) {
+        if (!zeng_online_enabled) {
+            escribir_socket(misocket,"ERROR. ZENG Online is not enabled");
+            return;
+        }
+
+        if (comando_argc<2) {
+            escribir_socket(misocket,"ERROR. Needs two parameters");
+            return;
+        }
+
+        int room_number=parse_string_to_number(comando_argv[2]);
+
+        if (room_number<0 || room_number>=zeng_online_current_max_rooms) {
+            escribir_socket_format(misocket,"ERROR. Room number beyond limit");
+            return;
+        }
+
+        if (!zeng_online_rooms_list[room_number].created) {
+            escribir_socket(misocket,"ERROR. Room is not created");
+            return;
+        }
+
+        //validar user_pass. comando_argv[1]
+        if (strcmp(comando_argv[1],zeng_online_rooms_list[room_number].user_password)) {
+            escribir_socket(misocket,"ERROR. Invalid user password for that room");
+            return;
+        }
+
+
+
+        if (!zeng_online_rooms_list[room_number].streaming_enabled) {
+            escribir_socket(misocket,"ERROR. Streaming is not enabled for that room");
+            return;
+        }
+
+        if (!zeng_online_rooms_list[room_number].streaming_audio_size) {
+            escribir_socket(misocket,"ERROR. There is no streaming audio on this room");
+            return;
+        }
+
+
+
+        z80_byte *puntero_audio=util_malloc(ZRCP_GET_PUT_SNAPSHOT_MEM*2,"Can not allocate memory for streaming get audio");
+
+
+        int longitud=zengonline_streaming_get_audio(room_number,puntero_audio);
+
+
+        int i;
+        for (i=0;i<longitud;i++) {
+            escribir_socket_format(misocket,"%02X",puntero_audio[i]);
+        }
+
+        free(puntero_audio);
+
+    }
+
+    //"streaming-get-audio-id user_pass n              This command returns the last audio id from room n, returns ERROR if no audio there. Requires user_pass\n"
+    else if (!strcmp(comando_argv[0],"get-audio-id")) {
+        if (!zeng_online_enabled) {
+            escribir_socket(misocket,"ERROR. ZENG Online is not enabled");
+            return;
+        }
+
+        if (comando_argc<2) {
+            escribir_socket(misocket,"ERROR. Needs two parameters");
+            return;
+        }
+
+        int room_number=parse_string_to_number(comando_argv[2]);
+
+        if (room_number<0 || room_number>=zeng_online_current_max_rooms) {
+            escribir_socket_format(misocket,"ERROR. Room number beyond limit");
+            return;
+        }
+
+        if (!zeng_online_rooms_list[room_number].created) {
+            escribir_socket(misocket,"ERROR. Room is not created");
+            return;
+        }
+
+        //validar user_pass. comando_argv[1]
+        if (strcmp(comando_argv[1],zeng_online_rooms_list[room_number].user_password)) {
+            escribir_socket(misocket,"ERROR. Invalid user password for that room");
+            return;
+        }
+
+        if (!zeng_online_rooms_list[room_number].streaming_audio_size) {
+            escribir_socket(misocket,"ERROR. There is no audio on this room");
+            return;
+        }
+
+
+
+        escribir_socket_format(misocket,"%d",zeng_online_rooms_list[room_number].audio_streaming_id);
+
+
+
+    }
+
+
 
     //kick creator_pass n uuid                        Kick user identified by uuid\n"
     else if (!strcmp(comando_argv[0],"kick")) {

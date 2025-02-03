@@ -160,6 +160,17 @@ struct zeng_online_room {
 
     z_atomic_semaphore semaphore_writing_streaming_display;
 
+    //Almacenaje de streaming audio
+    int streaming_audio_size; //Tamaño del bloque guardado con put-audio
+    z80_byte *streaming_audio_memory; //Donde esta guardado ese audio
+
+    z_atomic_semaphore mutex_reading_streaming_audio;
+    int reading_streaming_audio_count;
+
+    z_atomic_semaphore semaphore_writing_streaming_audio;
+
+    int audio_streaming_id; //Para saber cuando cambia el audio
+
     //donde se almacenan los eventos. Es un array circular, si se llega al final se sobreescriben
     //No pasa nada si sobreescribimos la posicion donde un cliente esta leyendo, si se pierde el evento, se pierde...
     //Ya le llegara un snapshot que lo corrija
