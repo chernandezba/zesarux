@@ -3859,7 +3859,6 @@ int zoc_receive_streaming_audio(int indice_socket)
     }
 
 
-
     if (leer_audio) {
 
         printf("Obteniendo stream audio\n");
@@ -3870,13 +3869,6 @@ int zoc_receive_streaming_audio(int indice_socket)
         escritos=z_sock_write_string(indice_socket,buffer_comando);
         //printf("after z_sock_write_string 1\n");
         if (escritos<0) return escritos;
-
-        //int sock=get_socket_number(indice_socket);
-
-
-        //printf("despues enviar get-snaps\n");
-
-
 
 
         char *zoc_get_audio_mem_hexa=util_malloc(ZOC_STREAMING_AUDIO_BUFFER_SIZE*2+100,"Can not allocate memory for getting audio");
@@ -5196,9 +5188,11 @@ void zeng_online_client_end_audio_frame_stuff(void)
     if (zeng_online_connected.v && zeng_online_i_am_master.v==0 && created_room_streaming_mode) {
         //Tareas del slave. Aplicar audio que esta pendiente
 
+        reset_beeper_silence_detection_counter();
+
         if (zoc_pending_apply_received_streaming_audio) {
             printf("Aplicar sonido\n");
-            reset_beeper_silence_detection_counter();
+
             memcpy(audio_buffer,zoc_get_audio_mem_binary_second_buffer,ZOC_STREAMING_AUDIO_BUFFER_SIZE);
 
             zoc_pending_apply_received_streaming_audio=0;
