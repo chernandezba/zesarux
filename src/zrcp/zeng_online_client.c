@@ -2450,6 +2450,60 @@ int zoc_send_streaming_display(int indice_socket,int slot)
 
 }
 
+char *zoc_send_streaming_audio_mem_hexa=NULL;
+int zoc_master_pending_send_streaming_audio=0;
+
+
+int zoc_send_streaming_audio(int indice_socket)
+{
+
+		DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"ZENG Online Client: Sending streaming_audio");
+
+		int posicion_command;
+		int escritos,leidos;
+
+
+        char buffer_comando[200];
+        //printf ("Sending put-streaming_display\n");
+        //"streaming-put-audio creator_pass n data
+        sprintf(buffer_comando,"zeng-online streaming-put-audio %s %d ",created_room_creator_password,zeng_online_joined_to_room_number );
+
+        //printf("Sending command: [%s]\n",buffer_comando);
+
+        escritos=z_sock_write_string(indice_socket,buffer_comando);
+        //printf("after z_sock_write_string 1\n");
+        if (escritos<0) return escritos;
+
+
+
+        escritos=z_sock_write_string(indice_socket,zoc_send_streaming_audio_mem_hexa);
+        //printf("after z_sock_write_string 2\n");
+
+
+
+        if (escritos<0) return escritos;
+
+
+
+        z80_byte buffer[200];
+        //buffer[0]=0; //temp para tener buffer limpio
+        //Leer hasta prompt
+        //printf("before zsock_read_all_until_command\n");
+        leidos=zsock_read_all_until_command(indice_socket,buffer,199,&posicion_command);
+        //printf("after zsock_read_all_until_command\n");
+
+            if (posicion_command>=1) {
+                buffer[posicion_command-1]=0;
+                //DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Received text: %s",zoc_get_streaming_display_mem_hexa);
+            }
+
+        //printf("Recibido respuesta despues de put-streaming_display: [%s]\n",buffer);
+        return leidos;
+
+
+}
+
+
 
 
 
@@ -3158,10 +3212,18 @@ void *zoc_master_thread_function(void *nada GCC_UNUSED)
 
                     //printf("Putting audio\n");
 
-                    /*if (zoc_pending_send_streaming_display) {
+                    if (zoc_master_pending_send_streaming_audio) {
+
+                        int error=zoc_send_streaming_audio(indice_socket);
+
+                        if (error<0) {
+                            //TODO
+                            DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Error sending streaming_audio to zeng online server");
+                        }
 
 
-                    }*/
+                        zoc_master_pending_send_streaming_audio=0;
+                    }
 
                 }
 
@@ -4874,8 +4936,58 @@ void zeng_online_client_alter_fps_streaming(void)
     }
 }
 
+//
+
+
+
+
 void zeng_online_client_end_audio_frame_stuff(void)
 {
+    if (zeng_online_connected.v && zeng_online_i_am_master.v && created_room_streaming_mode) {
+        //Tareas del master. Poner buffer audio para enviar
+
+        if (!zoc_master_pending_send_streaming_audio) {
+
+            z80_byte *zoc_streaming_audio_to_send=util_malloc(ZOC_STREAMING_AUDIO_BUFFER_SIZE,"Can not allocate memory for stream audio");
+
+            memcpy(zoc_streaming_audio_to_send,audio_buffer,ZOC_STREAMING_AUDIO_BUFFER_SIZE);
+
+            if (zoc_send_streaming_audio_mem_hexa==NULL) {
+                zoc_send_streaming_audio_mem_hexa=util_malloc(ZOC_STREAMING_AUDIO_BUFFER_SIZE*2+100,"Can not allocate memory for streaming audio");
+            }
+
+            int i;
+
+            int longitud=ZOC_STREAMING_AUDIO_BUFFER_SIZE;
+
+            z80_byte *origen=zoc_streaming_audio_to_send;
+            char *destino=zoc_send_streaming_audio_mem_hexa;
+            z80_byte byte_leido;
+
+            for (i=0;i<longitud;i++) {
+                byte_leido=*origen++;
+                *destino++=util_byte_to_hex_nibble(byte_leido>>4);
+                *destino++=util_byte_to_hex_nibble(byte_leido);
+            }
+
+
+            //metemos salto de linea y 0 al final
+            *destino++ ='\n';
+            *destino++ =0;
+
+
+
+            free(zoc_streaming_audio_to_send);
+
+            zoc_master_pending_send_streaming_audio=1;
+        }
+
+    }
+
+    if (zeng_online_connected.v && zeng_online_i_am_master.v==0 && created_room_streaming_mode) {
+        //Tareas del slave. Recibir audio que esta pendiente
+    }
+
 }
 
 #else
