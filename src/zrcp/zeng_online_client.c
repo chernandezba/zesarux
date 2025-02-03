@@ -3770,6 +3770,194 @@ return 1;
 
 }
 
+int zoc_pending_apply_received_streaming_audio=0;
+
+int zoc_last_id_stream_audio=-1;
+
+
+
+z80_byte *zoc_get_audio_mem_binary=NULL;
+
+int zoc_get_audio_mem_binary_longitud=0;
+
+int zoc_receive_streaming_audio(int indice_socket)
+{
+
+    DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"ZENG Online Client: Receiving streaming audio");
+
+    int posicion_command;
+    int escritos,leidos;
+
+
+    char buffer_comando[200];
+
+
+    #define ZENG_BUFFER_INITIAL_CONNECT 199
+
+    //Leer algo
+    char buffer[ZENG_BUFFER_INITIAL_CONNECT+1];
+
+    //Ver si el id de audio ha cambiado
+
+    //"streaming-get-audio-id user_pass n
+    sprintf(buffer_comando,"zeng-online streaming-get-audio-id %s %d\n",created_room_user_password,zeng_online_joined_to_room_number);
+    escritos=z_sock_write_string(indice_socket,buffer_comando);
+    //printf("after z_sock_write_string 1\n");
+    if (escritos<0) return escritos;
+
+    //Leer hasta prompt
+    //printf("before zsock_read_all_until_command\n");
+    leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)buffer,ZENG_BUFFER_INITIAL_CONNECT,&posicion_command);
+
+    if (leidos>0) {
+        buffer[leidos]=0; //fin de texto
+
+    }
+
+    if (leidos<0) {
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't receive streaming-get-audio-id: %s",z_sock_get_error(leidos));
+        return 0;
+    }
+
+
+
+
+    //1 mas para eliminar el salto de linea anterior a "command>"
+    if (posicion_command>=1) {
+        buffer[posicion_command-1]=0;
+
+    }
+    else {
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Error receiving ZEsarUX get-stream-audio-id");
+        return 0;
+    }
+
+    //printf("Recibido respuesta despues de truncar: [%s]\n",buffer);
+
+    int leer_audio=0;
+
+    //Detectar si error
+    if (strstr(buffer,"ERROR")!=NULL) {
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Error getting streaming-get-audio-id");
+    }
+    else {
+        //Ver si id diferente
+        //printf("audio id: %s\n",buffer);
+
+        int nuevo_id=parse_string_to_number(buffer);
+        if (nuevo_id!=zoc_last_id_stream_audio) {
+
+
+            zoc_last_id_stream_audio=nuevo_id;
+            leer_audio=1;
+        }
+        else {
+            //printf("stream audio es el mismo que el anterior\n");
+        }
+    }
+
+
+
+    if (leer_audio) {
+
+        //printf("Obteniendo stream audio\n");
+
+
+        //"streaming-get-audio user_pass n
+        sprintf(buffer_comando,"zeng-online streaming-get-audio %s %d\n",created_room_user_password,zeng_online_joined_to_room_number);
+        escritos=z_sock_write_string(indice_socket,buffer_comando);
+        //printf("after z_sock_write_string 1\n");
+        if (escritos<0) return escritos;
+
+        //int sock=get_socket_number(indice_socket);
+
+
+        //printf("despues enviar get-snaps\n");
+
+
+
+
+        char *zoc_get_audio_mem_hexa=util_malloc(ZOC_STREAMING_AUDIO_BUFFER_SIZE*2+100,"Can not allocate memory for getting audio");
+
+
+        //Leer hasta prompt
+        //printf("before zsock_read_all_until_command\n");
+        leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)zoc_get_audio_mem_hexa,ZOC_STREAMING_AUDIO_BUFFER_SIZE*2+100,&posicion_command);
+
+
+
+
+        if (leidos>0) {
+            zoc_get_audio_mem_hexa[leidos]=0; //fin de texto
+
+        }
+
+        if (leidos<0) {
+            DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't receive get-audio: %s",z_sock_get_error(leidos));
+            return 0;
+        }
+
+
+        //printf("after zsock_read_all_until_command\n");
+
+
+        //1 mas para eliminar el salto de linea anterior a "command>"
+        if (posicion_command>=1) {
+            zoc_get_audio_mem_hexa[posicion_command-1]=0;
+            //DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Received text: %s",zoc_get_audio_mem_hexa);
+        }
+        else {
+            DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Error receiving ZEsarUX zeng-online get-audio");
+            return 0;
+        }
+
+
+
+        //printf("Buffer despues de truncar: [%s]\n",&zoc_get_audio_mem_hexa[inicio_datos_snapshot]);
+
+        //TODO: detectar texto ERROR en respuesta
+        //return leidos;
+
+        //Convertir hexa a memoria
+        if (zoc_get_audio_mem_binary==NULL) {
+            zoc_get_audio_mem_binary=util_malloc(ZOC_STREAMING_AUDIO_BUFFER_SIZE*2+100,"Can not allocate memory for apply display");
+        }
+
+
+        char *s=zoc_get_audio_mem_hexa;
+        int parametros_recibidos=0;
+
+
+
+        z80_byte *destino;
+        destino=zoc_get_audio_mem_binary;
+
+        while (*s) {
+            *destino=(util_hex_nibble_to_byte(*s)<<4) | util_hex_nibble_to_byte(*(s+1));
+            destino++;
+
+            parametros_recibidos++;
+
+            s++;
+            if (*s) s++;
+        }
+
+
+        zoc_get_audio_mem_binary_longitud=parametros_recibidos;
+
+        free(zoc_get_audio_mem_hexa);
+
+
+
+    }
+
+    return 1;
+
+
+}
+
+
+
 
 //contiene el valor anterior de contador_segundo_infinito de la anterior consulta de kick
 int contador_kick_anteriorsegundos=0;
@@ -3945,12 +4133,22 @@ void *zoc_slave_thread_function(void *nada GCC_UNUSED)
 
                 if (created_room_user_permissions & ZENG_ONLINE_PERMISSIONS_GET_AUDIO) {
 
-                    /*
-                    if (!zoc_pending_apply_received_streaming_display) {
-                        //Recibir audio
 
+                   /*
+                   Cliente: thread
+
+                    Si está aplicado, buscar en el servidor. Preguntar id. Si es mismo id, no traer. Si es diferente, traer y decir que está pendiente aplicar
+
+
+                    Si no está aplicado audio aún, no buscar audio al servidor
+                   */
+
+
+                    if (!zoc_pending_apply_received_streaming_audio) {
+                        zoc_receive_streaming_audio(indice_socket);
+                        zoc_pending_apply_received_streaming_audio=1;
                     }
-                    */
+
 
                 }
 
@@ -4936,8 +5134,6 @@ void zeng_online_client_alter_fps_streaming(void)
     }
 }
 
-//
-
 
 
 
@@ -4985,7 +5181,18 @@ void zeng_online_client_end_audio_frame_stuff(void)
     }
 
     if (zeng_online_connected.v && zeng_online_i_am_master.v==0 && created_room_streaming_mode) {
-        //Tareas del slave. Recibir audio que esta pendiente
+        //Tareas del slave. Aplicar audio que esta pendiente
+
+        if (zoc_pending_apply_received_streaming_audio) {
+            memcpy(audio_buffer,zoc_get_audio_mem_binary,ZOC_STREAMING_AUDIO_BUFFER_SIZE);
+
+            zoc_pending_apply_received_streaming_audio=0;
+        }
+        else {
+            //TODO: no recibido sonido aun. meter silencioo
+
+        }
+
     }
 
 }
