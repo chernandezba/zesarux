@@ -5184,12 +5184,16 @@ void zeng_online_client_end_audio_frame_stuff(void)
         //Tareas del slave. Aplicar audio que esta pendiente
 
         if (zoc_pending_apply_received_streaming_audio) {
+            printf("Aplicar sonido\n");
+            reset_beeper_silence_detection_counter();
             memcpy(audio_buffer,zoc_get_audio_mem_binary,ZOC_STREAMING_AUDIO_BUFFER_SIZE);
 
             zoc_pending_apply_received_streaming_audio=0;
         }
         else {
-            //TODO: no recibido sonido aun. meter silencioo
+            //TODO: no recibido sonido aun. meter silencio
+            printf("Sonido no disponible aun\n");
+            memset(audio_buffer,0,ZOC_STREAMING_AUDIO_BUFFER_SIZE);
 
         }
 
