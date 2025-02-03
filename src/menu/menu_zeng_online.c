@@ -1577,6 +1577,11 @@ void menu_zeng_online_full_display_interval(MENU_ITEM_PARAMETERS)
 
 }
 
+void menu_zeng_online_full_display_interval_autoadjust(MENU_ITEM_PARAMETERS)
+{
+    zoc_slave_differential_displays_limit_full_autoadjust.v ^=1;
+}
+
 
 void menu_zeng_online(MENU_ITEM_PARAMETERS)
 {
@@ -1778,6 +1783,15 @@ void menu_zeng_online(MENU_ITEM_PARAMETERS)
                 if (created_room_streaming_mode && (created_room_user_permissions & ZENG_ONLINE_PERMISSIONS_GET_DISPLAY)) {
                     menu_add_item_menu_separator(array_menu_common);
                     menu_add_item_menu_es_avanzado(array_menu_common);
+
+                    menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_full_display_interval_autoadjust,NULL,
+                    "Autoadjust perfect display interval","Autoajustar intervalo pantalla perfecta","Autoajustar interval pantalla perfecta");
+                    menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",
+                        (zoc_slave_differential_displays_limit_full_autoadjust.v ? 'X' : ' ' ));
+
+
+                    menu_add_item_menu_es_avanzado(array_menu_common);
+
 
                     menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_full_display_interval,NULL,
                     "Perfect display interval","Intervalo pantalla perfecta","Interval pantalla perfecta");

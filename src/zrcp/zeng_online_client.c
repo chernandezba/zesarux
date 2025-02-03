@@ -3735,7 +3735,18 @@ int zoc_check_if_kicked(int indice_socket)
 int zoc_slave_differential_displays_counter=0;
 
 //Cada cuantas pantallas diferenciales hay que pedir una entera
-int zoc_slave_differential_displays_limit_full=5;
+int zoc_slave_differential_displays_limit_full=2;
+
+//Si autoajustar parametro de zoc_slave_differential_displays_limit_full
+z80_bit zoc_slave_differential_displays_limit_full_autoadjust={1};
+
+//FPS del anterior intervalo para autoajuste de diferenciales
+int zoc_slave_differential_displays_limit_full_previous_fps=-1;
+
+//Cada cuanto se autoajusta (en segundos)
+int zoc_slave_differential_displays_limit_full_autoadjust_seconds_interval=10;
+int zoc_slave_differential_displays_limit_full_autoadjust_seconds_counter=0;
+
 
 void *zoc_slave_thread_function(void *nada GCC_UNUSED)
 {
@@ -3813,11 +3824,11 @@ void *zoc_slave_thread_function(void *nada GCC_UNUSED)
                         if (zoc_slave_differential_displays_counter>=zoc_slave_differential_displays_limit_full) {
                             zoc_slave_differential_displays_counter=0;
                             slot=1;
-                            printf("Pedir pantalla entera\n");
+                            //printf("Pedir pantalla entera\n");
                         }
 
                         else {
-                            printf("Pedir pantalla diferencial\n");
+                            //printf("Pedir pantalla diferencial\n");
                             zoc_slave_differential_displays_counter++;
                         }
 
@@ -3844,12 +3855,12 @@ void *zoc_slave_thread_function(void *nada GCC_UNUSED)
                                     zoc_slave_differential_displays_counter=0;
 
                                     if (slot==0) {
-                                        printf("------Pedida diferencial pero era pantalla entera------- %d %02X %02X %02X\n",
+                                        /*printf("------Pedida diferencial pero era pantalla entera------- %d %02X %02X %02X\n",
                                             zoc_get_streaming_display_mem_binary_longitud,
                                             zoc_get_streaming_display_mem_binary[0],
                                             zoc_get_streaming_display_mem_binary[1],
                                             zoc_get_streaming_display_mem_binary[2]
-                                        );
+                                        );*/
                                     }
                                 }
                             }
@@ -4048,6 +4059,10 @@ int zoc_client_streaming_display_count=0;
 
 int zoc_client_streaming_display_fps=0;
 
+//Usado para obtener la media de fps en un intervalo dado
+int zoc_client_streaming_display_fps_seconds=0;
+int zoc_client_streaming_display_fps_sum=0;
+int zoc_client_streaming_display_fps_last_interval=0;
 
 void zeng_online_client_apply_pending_received_streaming_display(void)
 {
@@ -4516,7 +4531,35 @@ void zeng_online_client_prepare_streaming_display_if_needed(void)
 	}
 }
 
+//Modo en el que estamos
+//0: inicial o sin cambios
+//1: hemos incrementado diferenciales para mejorar fps
+//2: hemos decrementado diferenciales para mejorar calidad.
+int autoajuste_diferenciales_estado=0;
 
+
+int ultimo_try_increment_diferenciales_contador_segundo=0;
+
+void zec_increment_differential_display_parameter(void)
+{
+    //0,2,5,10,15,20...
+    if (zoc_slave_differential_displays_limit_full==0) zoc_slave_differential_displays_limit_full=2;
+    else if (zoc_slave_differential_displays_limit_full==2) zoc_slave_differential_displays_limit_full=5;
+    else zoc_slave_differential_displays_limit_full +=5;
+
+    if (zoc_slave_differential_displays_limit_full>=50) zoc_slave_differential_displays_limit_full=50;
+
+}
+
+void zec_decrement_differential_display_parameter(void)
+{
+    //0,2,5,10,15,20...
+    if (zoc_slave_differential_displays_limit_full==5) zoc_slave_differential_displays_limit_full=2;
+    else if (zoc_slave_differential_displays_limit_full==2) zoc_slave_differential_displays_limit_full=0;
+    else zoc_slave_differential_displays_limit_full -=5;
+
+    if (zoc_slave_differential_displays_limit_full<=0) zoc_slave_differential_displays_limit_full=0;
+}
 
 void zeng_online_client_end_frame_from_core_functions(void)
 {
@@ -4542,6 +4585,219 @@ void zeng_online_client_end_frame_from_core_functions(void)
                 zoc_client_streaming_display_count=0;
 
                 //printf("1 segundo. FPS=%d\n",zoc_client_streaming_display_fps);
+
+
+                zoc_client_streaming_display_fps_sum +=zoc_client_streaming_display_fps;
+
+
+                zoc_client_streaming_display_fps_seconds++;
+
+                //Por si acaso, aunque incrementamos siempre antes de dividir, podria ser que el contador hiciera overflow
+                //y llegase a ser 0
+
+                if (zoc_client_streaming_display_fps_seconds==0) {
+                    zoc_client_streaming_display_fps_last_interval=0;
+                }
+
+                else {
+                    zoc_client_streaming_display_fps_last_interval=zoc_client_streaming_display_fps_sum/zoc_client_streaming_display_fps_seconds;
+                }
+
+                printf("FPS average in the last %d seconds: %d\n",
+                    zoc_client_streaming_display_fps_seconds,zoc_client_streaming_display_fps_last_interval);
+
+                if (zoc_slave_differential_displays_limit_full_autoadjust.v) {
+
+
+
+/*int zoc_slave_differential_displays_limit_full_autoadjust=1;
+
+//FPS del anterior intervalo para autoajuste de diferenciales
+int zoc_slave_differential_displays_limit_full_previous_fps=0;
+
+//Cada cuanto se autoajusta (en segundos)
+int zoc_slave_differential_displays_limit_full_autoadjust_seconds_interval=10;
+int zoc_slave_differential_displays_limit_full_autoadjust_seconds_counter=0;*/
+
+                    zoc_slave_differential_displays_limit_full_autoadjust_seconds_counter++;
+
+                    if (zoc_slave_differential_displays_limit_full_autoadjust_seconds_counter>=zoc_slave_differential_displays_limit_full_autoadjust_seconds_interval) {
+
+                        zoc_slave_differential_displays_limit_full_autoadjust_seconds_counter=0;
+
+                        printf("Autoadjusting differentials. Previous FPS: %d Last FPS: %d Differentials parameter: %d\n",
+                            zoc_slave_differential_displays_limit_full_previous_fps,zoc_client_streaming_display_fps_last_interval,zoc_slave_differential_displays_limit_full);
+
+
+                        //Reseteamos intervalo
+                        zoc_client_streaming_display_fps_seconds=0;
+                        zoc_client_streaming_display_fps_sum=0;
+
+
+                        //Recalcular parametro segun algoritmo
+                        /*
+                        En momento X cualquiera:
+                        -calcular puntuación media durante 1 minuto
+                        -calcular puntuación media durante 1 minuto
+
+                        Si tenemos 50 fps de media y 0 diferenciales, no hacer nada
+
+                        Si fps menor que antes, aumentar diferenciales (si diferenciales no es 50). Buscamos aumentar fps a costa de reducir calidad
+
+
+                        Si fps mayor o igual que antes, reducir diferenciales (si diferenciales no es 0). Aumentamos calidad a ver si Fps no se altera mucho
+
+                        Calcular también puntuación media del último minuto o 5 minutos y actuar igual
+
+                        Los aumentos / decrementos de incrementales quizás van de 5 en 5, no de 1 en 1 que se notaría poco
+
+                        */
+
+                        //Evitar valor inicial
+                        if (zoc_slave_differential_displays_limit_full_previous_fps>=0) {
+
+                            //Si 50 fps y diferenciales 0
+                            if (zoc_client_streaming_display_fps_last_interval==50 && zoc_slave_differential_displays_limit_full==0) {
+                                printf("50 FPS and 0 differentials. Ideal state. Do nothing\n");
+                            }
+                            else {
+
+                                //Si en estado inicial o de no tocar nada
+                                if (autoajuste_diferenciales_estado==0) {
+                                    printf("Estado: 0 inicial o estable\n");
+                                    if (zoc_client_streaming_display_fps_last_interval<zoc_slave_differential_displays_limit_full_previous_fps) {
+                                        printf("FPS less than before. Increment differentials\n");
+                                        zec_increment_differential_display_parameter();
+
+                                        autoajuste_diferenciales_estado=1;
+
+                                    }
+
+                                    if (zoc_client_streaming_display_fps_last_interval>zoc_slave_differential_displays_limit_full_previous_fps) {
+                                        printf("Biggher FPS than before. Reduce differentials\n");
+                                        zec_decrement_differential_display_parameter();
+
+                                        autoajuste_diferenciales_estado=2;
+                                    }
+
+                                    //Si no ha variado, probamos a subir si es que no esta en un valor relativamente alto
+                                    if (zoc_client_streaming_display_fps_last_interval==zoc_slave_differential_displays_limit_full_previous_fps) {
+
+                                        //Si no ha variado, probamos a bajar si es que esta en un valor relativamente alto
+                                        //Esto antes , mas prioritario que subir incrementales
+                                        if (zoc_slave_differential_displays_limit_full>0) {
+                                            printf("Same FPS than before. Try reducing differentials\n");
+                                            zec_decrement_differential_display_parameter();
+
+
+                                            autoajuste_diferenciales_estado=2;
+                                        }
+
+                                        else if (zoc_slave_differential_displays_limit_full<5) {
+                                            //de estos solo hacer 1 cada 1 minuto o asi
+                                            if (contador_segundo_infinito-ultimo_try_increment_diferenciales_contador_segundo>=60*1000) {
+
+                                                printf("Same FPS than before. Try increment differentials\n");
+                                                zec_increment_differential_display_parameter();
+
+                                                autoajuste_diferenciales_estado=1;
+                                                ultimo_try_increment_diferenciales_contador_segundo=contador_segundo_infinito;
+                                            }
+
+                                            else {
+                                                printf("--Ibamos a hacer un try increment diferenciales pero no ha pasado mas de 1 minuto del anterior: %d\n",
+                                                    contador_segundo_infinito-ultimo_try_increment_diferenciales_contador_segundo);
+                                            }
+                                        }
+
+
+                                    }
+
+                                }
+
+                                //Si en estado de que hemos incrementado
+                                //Si empeora fps, reducir y volvemos a estado 0. Si mejora, aumentar diferenciales
+                                else if (autoajuste_diferenciales_estado==1) {
+                                    printf("Estado: 1 de incrementado diferenciales\n");
+                                    if (zoc_client_streaming_display_fps_last_interval<zoc_slave_differential_displays_limit_full_previous_fps) {
+                                        printf("FPS less than before. Decrement differentials\n");
+                                        zec_decrement_differential_display_parameter();
+
+                                        autoajuste_diferenciales_estado=0;
+                                    }
+
+                                    if (zoc_client_streaming_display_fps_last_interval>zoc_slave_differential_displays_limit_full_previous_fps) {
+                                        printf("Biggher FPS than before. Increment differentials\n");
+
+                                        zec_increment_differential_display_parameter();
+
+                                        if (zoc_slave_differential_displays_limit_full>=50) {
+
+                                            //Estado estable porque hemos llegado al limite
+                                            autoajuste_diferenciales_estado=0;
+                                        }
+
+                                        else {
+                                            autoajuste_diferenciales_estado=1;
+                                        }
+                                    }
+
+                                    if (zoc_client_streaming_display_fps_last_interval==zoc_slave_differential_displays_limit_full_previous_fps) {
+                                        printf("Same FPS than before. Reduce differentials and Going to stable state\n");
+                                        autoajuste_diferenciales_estado=0;
+
+                                        zec_decrement_differential_display_parameter();
+                                    }
+                                }
+
+                                //Si en estado de que hemos decrementado. Estamos buscando mantener fps o mejorarlos
+                                //Si empeora fps, aumentar y volvemos a estado 0. Si mejora, disminuir diferenciales
+                                else if (autoajuste_diferenciales_estado==2) {
+                                    printf("Estado: 2 de decrementado diferenciales\n");
+                                    if (zoc_client_streaming_display_fps_last_interval<zoc_slave_differential_displays_limit_full_previous_fps) {
+                                        printf("FPS less than before. Increment differentials\n");
+
+                                        zec_increment_differential_display_parameter();
+
+                                        autoajuste_diferenciales_estado=0;
+
+                                    }
+
+                                    if (zoc_client_streaming_display_fps_last_interval>zoc_slave_differential_displays_limit_full_previous_fps) {
+                                        printf("Same or biggher FPS than before. Decrement differentials\n");
+
+                                        zec_decrement_differential_display_parameter();
+                                        if (zoc_slave_differential_displays_limit_full<=0) {
+                                            //Estado estable porque hemos llegado al limite
+                                            autoajuste_diferenciales_estado=0;
+                                        }
+                                        else {
+                                            autoajuste_diferenciales_estado=2;
+                                        }
+                                    }
+
+                                    if (zoc_client_streaming_display_fps_last_interval==zoc_slave_differential_displays_limit_full_previous_fps) {
+                                        printf("Same FPS than before. Going to stable state\n");
+                                        autoajuste_diferenciales_estado=0;
+                                    }
+                                }
+
+                                printf("Estado despues de ajustes: %d\n",autoajuste_diferenciales_estado);
+
+                            }
+                        }
+
+                        printf("After algorithm autoadjust differentials. Differentials parameter: %d\n",
+                            zoc_slave_differential_displays_limit_full);
+
+
+
+                        zoc_slave_differential_displays_limit_full_previous_fps=zoc_client_streaming_display_fps_last_interval;
+
+                    }
+                }
+
+
             }
         }
     }

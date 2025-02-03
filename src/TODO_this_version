@@ -130,3 +130,8 @@ cliente pide diferenciales. y pide una entera cada Z frames
 
 Parametro cada cuanto el cliente pide una diferencial , configurable. if (zoc_slave_differential_displays==10) {
     configurable y/o autosetting en base a los ultimos fps ?
+
+
+-Incrementos con autoajuste fps hacer:
+
+0-2-5-10-15-20-25...

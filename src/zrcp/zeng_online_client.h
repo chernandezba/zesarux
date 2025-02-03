@@ -91,6 +91,8 @@ extern void zoc_stop_slave_thread(void);
 
 extern int zoc_slave_differential_displays_limit_full;
 
+extern z80_bit zoc_slave_differential_displays_limit_full_autoadjust;
+
 //extern void zoc_start_snapshot_sending(void);
 
 extern char zeng_remote_join_list_buffer[];
