@@ -1831,7 +1831,7 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
     }
 
     //"streaming-get-audio-id user_pass n              This command returns the last audio id from room n, returns ERROR if no audio there. Requires user_pass\n"
-    else if (!strcmp(comando_argv[0],"get-audio-id")) {
+    else if (!strcmp(comando_argv[0],"streaming-get-audio-id")) {
         if (!zeng_online_enabled) {
             escribir_socket(misocket,"ERROR. ZENG Online is not enabled");
             return;
