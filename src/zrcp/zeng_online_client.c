@@ -3854,14 +3854,14 @@ int zoc_receive_streaming_audio(int indice_socket)
             leer_audio=1;
         }
         else {
-            //printf("stream audio es el mismo que el anterior\n");
+            printf("stream audio es el mismo que el anterior\n");
         }
     }
 
 
     if (leer_audio) {
 
-        printf("Obteniendo stream audio\n");
+        printf("Obteniendo stream audio remoto\n");
 
 
         //"streaming-get-audio user_pass n
@@ -5191,15 +5191,16 @@ void zeng_online_client_end_audio_frame_stuff(void)
         reset_beeper_silence_detection_counter();
 
         if (zoc_pending_apply_received_streaming_audio) {
-            printf("Aplicar sonido\n");
+            printf("End audio frame. Sonido disponible\n");
 
             memcpy(audio_buffer,zoc_get_audio_mem_binary_second_buffer,ZOC_STREAMING_AUDIO_BUFFER_SIZE);
 
             zoc_pending_apply_received_streaming_audio=0;
         }
         else {
-            //TODO: no recibido sonido aun. meter silencio
-            printf("Sonido no disponible aun\n");
+
+            printf("End audio frame. Sonido NO disponible aun\n");
+            //Meter silencio
             memset(audio_buffer,0,ZOC_STREAMING_AUDIO_BUFFER_SIZE);
 
         }
