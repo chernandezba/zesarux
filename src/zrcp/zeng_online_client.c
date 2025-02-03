@@ -3778,6 +3778,8 @@ int zoc_last_id_stream_audio=-1;
 
 z80_byte *zoc_get_audio_mem_binary=NULL;
 
+z80_byte *zoc_get_audio_mem_binary_second_buffer=NULL;
+
 int zoc_get_audio_mem_binary_longitud=0;
 
 int zoc_receive_streaming_audio(int indice_socket)
@@ -3860,7 +3862,7 @@ int zoc_receive_streaming_audio(int indice_socket)
 
     if (leer_audio) {
 
-        //printf("Obteniendo stream audio\n");
+        printf("Obteniendo stream audio\n");
 
 
         //"streaming-get-audio user_pass n
@@ -3920,7 +3922,7 @@ int zoc_receive_streaming_audio(int indice_socket)
 
         //Convertir hexa a memoria
         if (zoc_get_audio_mem_binary==NULL) {
-            zoc_get_audio_mem_binary=util_malloc(ZOC_STREAMING_AUDIO_BUFFER_SIZE*2+100,"Can not allocate memory for apply display");
+            zoc_get_audio_mem_binary=util_malloc(ZOC_STREAMING_AUDIO_BUFFER_SIZE,"Can not allocate memory for apply audio");
         }
 
 
@@ -3946,6 +3948,17 @@ int zoc_receive_streaming_audio(int indice_socket)
         zoc_get_audio_mem_binary_longitud=parametros_recibidos;
 
         free(zoc_get_audio_mem_hexa);
+
+        if (!zoc_pending_apply_received_streaming_audio) {
+            //copiar el buffer recibido al segundo buffer
+            printf("Copiar el buffer recibido al segundo buffer\n");
+            if (zoc_get_audio_mem_binary_second_buffer==NULL) {
+                zoc_get_audio_mem_binary_second_buffer=util_malloc(ZOC_STREAMING_AUDIO_BUFFER_SIZE,"Can not allocate memory for apply audio");
+            }
+
+            memcpy(zoc_get_audio_mem_binary_second_buffer,zoc_get_audio_mem_binary,ZOC_STREAMING_AUDIO_BUFFER_SIZE);
+            zoc_pending_apply_received_streaming_audio=1;
+        }
 
 
 
@@ -4144,10 +4157,10 @@ void *zoc_slave_thread_function(void *nada GCC_UNUSED)
                    */
 
 
-                    if (!zoc_pending_apply_received_streaming_audio) {
+                    //if (!zoc_pending_apply_received_streaming_audio) {
                         zoc_receive_streaming_audio(indice_socket);
-                        zoc_pending_apply_received_streaming_audio=1;
-                    }
+                        //zoc_pending_apply_received_streaming_audio=1;
+                    //}
 
 
                 }
@@ -5186,7 +5199,7 @@ void zeng_online_client_end_audio_frame_stuff(void)
         if (zoc_pending_apply_received_streaming_audio) {
             printf("Aplicar sonido\n");
             reset_beeper_silence_detection_counter();
-            memcpy(audio_buffer,zoc_get_audio_mem_binary,ZOC_STREAMING_AUDIO_BUFFER_SIZE);
+            memcpy(audio_buffer,zoc_get_audio_mem_binary_second_buffer,ZOC_STREAMING_AUDIO_BUFFER_SIZE);
 
             zoc_pending_apply_received_streaming_audio=0;
         }
