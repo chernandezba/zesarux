@@ -4850,6 +4850,10 @@ void zeng_online_client_alter_fps_streaming(void)
     }
 }
 
+void zeng_online_client_end_audio_frame_stuff(void)
+{
+}
+
 #else
 
 //Funciones sin pthreads. ZENG no se llama nunca cuando no hay pthreads, pero hay que crear estas funciones vacias
@@ -4941,6 +4945,10 @@ void zeng_online_client_send_profile_keys(void)
 }
 
 void zeng_online_client_alter_fps_streaming(void)
+{
+}
+
+void zeng_online_client_end_audio_frame_stuff(void)
 {
 }
 

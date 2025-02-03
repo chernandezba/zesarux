@@ -1420,7 +1420,7 @@ tape_tzx.o: storage/tape_tzx.c storage/tape_tzx.h storage/tape.h cpu.h operacion
 tape_pzx.o: storage/tape_pzx.c storage/tape_pzx.h storage/tape.h cpu.h operaciones.h debug.h utils.h zvfs.h settings.h snap/snap.h
 	\$(CC) \$(CFLAGS) -c storage/tape_pzx.c
 
-audio.o: audio/audio.c audio/audio.h cpu.h start.h debug.h video/screen.h utils.h machines/zx8081.h audio/audionull.h machines/jupiterace.h autoselectoptions.h operaciones.h machines/cpc.h settings.h audio/audio_sine_table.h machines/msx.h machines/svi.h machines/coleco.h machines/sg1000.h machines/sms.h soundchips/sn76489an.h machines/ql_i8049.h compileoptions.h zvfs.h menu/menu_filesel.h atomic.h menu/menu_items.h timer.h
+audio.o: audio/audio.c audio/audio.h cpu.h start.h debug.h video/screen.h utils.h machines/zx8081.h audio/audionull.h machines/jupiterace.h autoselectoptions.h operaciones.h machines/cpc.h settings.h audio/audio_sine_table.h machines/msx.h machines/svi.h machines/coleco.h machines/sg1000.h machines/sms.h soundchips/sn76489an.h machines/ql_i8049.h compileoptions.h zvfs.h menu/menu_filesel.h atomic.h menu/menu_items.h timer.h zrcp/zeng_online_client.h
 	\$(CC) \$(CFLAGS) -c audio/audio.c
 
 audio_sine_table.o: audio/audio_sine_table.c audio/audio_sine_table.h audio/audio.h

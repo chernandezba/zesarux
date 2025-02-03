@@ -122,6 +122,8 @@ extern char created_room_creator_password[];
 extern int created_room_user_permissions;
 extern void zoc_show_bottom_line_footer_connected(void);
 
+extern void zeng_online_client_end_audio_frame_stuff(void);
+
 
 //5 segundos de timeout, para aceptar teclas slave si no hay snapshot
 #define ZOC_TIMEOUT_NO_SNAPSHOT 250

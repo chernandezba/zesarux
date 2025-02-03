@@ -48,6 +48,7 @@
 #include "atomic.h"
 #include "menu_items.h"
 #include "timer.h"
+#include "zeng_online_client.h"
 
 #include "audionull.h"
 
@@ -1168,6 +1169,10 @@ void envio_audio(void)
 		}
 
 		//conmutar audio buffer
+        //Antes lanzar tareas ZENG Online, si hay que enviar o recibir un buffer de audio
+        zeng_online_client_end_audio_frame_stuff();
+
+
 		audio_buffer_switch.v ^=1;
 		audio_buffer_indice=0;
 		set_active_audio_buffer();
