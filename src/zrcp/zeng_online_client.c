@@ -3153,6 +3153,18 @@ void *zoc_master_thread_function(void *nada GCC_UNUSED)
                     }
 
                 }
+
+                if (created_room_user_permissions & ZENG_ONLINE_PERMISSIONS_PUT_AUDIO) {
+
+                    //printf("Putting audio\n");
+
+                    /*if (zoc_pending_send_streaming_display) {
+
+
+                    }*/
+
+                }
+
             }
 
             else {
@@ -3868,6 +3880,18 @@ void *zoc_slave_thread_function(void *nada GCC_UNUSED)
                     }
 
                 }
+
+                if (created_room_user_permissions & ZENG_ONLINE_PERMISSIONS_GET_AUDIO) {
+
+                    /*
+                    if (!zoc_pending_apply_received_streaming_display) {
+                        //Recibir audio
+
+                    }
+                    */
+
+                }
+
             }
 
             else {

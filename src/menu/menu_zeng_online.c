@@ -432,6 +432,11 @@ void menu_zeng_online_ask_custom_permissions_get_display(MENU_ITEM_PARAMETERS)
     menu_zeng_online_ask_custom_permissions_value ^= ZENG_ONLINE_PERMISSIONS_GET_DISPLAY;
 }
 
+void menu_zeng_online_ask_custom_permissions_get_audio(MENU_ITEM_PARAMETERS)
+{
+    menu_zeng_online_ask_custom_permissions_value ^= ZENG_ONLINE_PERMISSIONS_GET_AUDIO;
+}
+
 void menu_zeng_online_ask_custom_permissions_get_keys(MENU_ITEM_PARAMETERS)
 {
     menu_zeng_online_ask_custom_permissions_value ^= ZENG_ONLINE_PERMISSIONS_GET_KEYS;
@@ -479,6 +484,12 @@ int menu_zeng_online_ask_custom_permissions(void)
             "Read Display","Leer Pantalla","Llegir Pantalla");
         menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",
             (menu_zeng_online_ask_custom_permissions_value & ZENG_ONLINE_PERMISSIONS_GET_DISPLAY ? 'X' : ' ')
+        );
+
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_ask_custom_permissions_get_audio,NULL,
+            "Read Audio","Leer Audio","Llegir Audio");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",
+            (menu_zeng_online_ask_custom_permissions_value & ZENG_ONLINE_PERMISSIONS_GET_AUDIO ? 'X' : ' ')
         );
 
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_ask_custom_permissions_get_keys,NULL,
@@ -545,7 +556,7 @@ int menu_zeng_online_ask_permissions(void)
             break;
 
             case 2:
-                permisos=ZENG_ONLINE_PERMISSIONS_GET_SNAPSHOT | ZENG_ONLINE_PERMISSIONS_GET_DISPLAY | ZENG_ONLINE_PERMISSIONS_GET_KEYS;
+                permisos=ZENG_ONLINE_PERMISSIONS_GET_SNAPSHOT | ZENG_ONLINE_PERMISSIONS_GET_DISPLAY | ZENG_ONLINE_PERMISSIONS_GET_AUDIO | ZENG_ONLINE_PERMISSIONS_GET_KEYS;
             break;
 
             case 3:
@@ -1665,11 +1676,13 @@ void menu_zeng_online(MENU_ITEM_PARAMETERS)
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,
             "My room permissions: ","Mis permisos habitación: ","Meus permisos habitació: ");
-            menu_add_item_menu_sufijo_format(array_menu_common,"%s-%s-%s-%s-%s-%s-%s",
+            menu_add_item_menu_sufijo_format(array_menu_common,"%s-%s-%s-%s-%s-%s-%s-%s-%s",
                 (created_room_user_permissions & ZENG_ONLINE_PERMISSIONS_GET_SNAPSHOT ? "RS" : "  "),
                 (created_room_user_permissions & ZENG_ONLINE_PERMISSIONS_PUT_SNAPSHOT ? "WS" : "  "),
                 (created_room_user_permissions & ZENG_ONLINE_PERMISSIONS_GET_DISPLAY ? "RD" : "  "),
+                (created_room_user_permissions & ZENG_ONLINE_PERMISSIONS_GET_AUDIO ? "RA" : "  "),
                 (created_room_user_permissions & ZENG_ONLINE_PERMISSIONS_PUT_DISPLAY ? "WD" : "  "),
+                (created_room_user_permissions & ZENG_ONLINE_PERMISSIONS_PUT_AUDIO ? "WA" : "  "),
                 (created_room_user_permissions & ZENG_ONLINE_PERMISSIONS_GET_KEYS ? "RK" : "  "),
                 (created_room_user_permissions & ZENG_ONLINE_PERMISSIONS_SEND_KEYS ? "WK" : "  "),
                 (created_room_user_permissions & ZENG_ONLINE_PERMISSIONS_SEND_MESSAGE ? "WM" : "  ")
