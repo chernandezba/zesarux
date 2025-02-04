@@ -1838,6 +1838,7 @@ void menu_zeng_online(MENU_ITEM_PARAMETERS)
                     menu_add_item_menu_sufijo_format(array_menu_common," [%s] [%d]",
                         get_menu_zoc_display_quality_string(zoc_slave_differential_displays_limit_full),
                         zoc_slave_differential_displays_limit_full);
+                    menu_add_item_menu_prefijo_format(array_menu_common,"    ");
 
                     menu_add_item_menu_tooltip(array_menu_common,"How many differential displays have to ask to get a full display frame");
                     menu_add_item_menu_ayuda(array_menu_common,"How many differential displays have to ask to get a full display frame. "

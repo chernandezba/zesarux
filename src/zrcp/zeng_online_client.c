@@ -2713,7 +2713,7 @@ int zoc_get_stream_audio_continuous(int indice_socket)
 
 
 
-    printf("--Obteniendo stream audio remoto %d\n",contador_segundo);
+    //printf("--Obteniendo stream audio remoto %d\n",contador_segundo);
 
 
     int max_stream_continuo=ZOC_STREAMING_AUDIO_BUFFER_SIZE*2*100;
@@ -2745,13 +2745,11 @@ int zoc_get_stream_audio_continuous(int indice_socket)
 
     //printf("Buffer audio leido: [%s]\n",zoc_get_audio_mem_hexa);
 
-    printf("--Despues obtener audio remoto. posicion_command=%d leidos=%d\n",posicion_command,leidos);
+    //printf("--Despues obtener audio remoto. posicion_command=%d leidos=%d\n",posicion_command,leidos);
 
 
 
-    //Nota: puede haber una respuesta parcial
-
-    printf("--Fin recepcion obtener audio remoto. %d\n",contador_segundo);
+    //printf("--Fin recepcion obtener audio remoto. %d\n",contador_segundo);
 
     //printf("Buffer despues de truncar: [%s]\n",&zoc_get_audio_mem_hexa[inicio_datos_snapshot]);
 
@@ -2796,7 +2794,7 @@ int zoc_get_stream_audio_continuous(int indice_socket)
 
     if (!zoc_pending_apply_received_streaming_audio) {
         //copiar el buffer recibido al segundo buffer
-        printf("Copiar el buffer recibido al segundo buffer\n");
+        //printf("Copiar el buffer recibido al segundo buffer\n");
         if (zoc_get_audio_mem_binary_second_buffer==NULL) {
             zoc_get_audio_mem_binary_second_buffer=util_malloc(ZOC_STREAMING_AUDIO_BUFFER_SIZE,"Can not allocate memory for apply audio");
         }
@@ -2805,7 +2803,7 @@ int zoc_get_stream_audio_continuous(int indice_socket)
         zoc_pending_apply_received_streaming_audio=1;
     }
 
-    printf("--Fin obtener audio remoto. %d\n",contador_segundo);
+    //printf("--Fin obtener audio remoto. %d\n",contador_segundo);
 
     return 1;
 
@@ -5289,21 +5287,11 @@ void zeng_online_client_end_frame_from_core_functions(void)
                     zoc_client_streaming_display_fps_last_interval=zoc_client_streaming_display_fps_sum/zoc_client_streaming_display_fps_seconds;
                 }
 
-                printf("FPS average in the last %d seconds: %d\n",
-                    zoc_client_streaming_display_fps_seconds,zoc_client_streaming_display_fps_last_interval);
+                //printf("FPS average in the last %d seconds: %d\n",zoc_client_streaming_display_fps_seconds,zoc_client_streaming_display_fps_last_interval);
 
                 if (zoc_slave_differential_displays_limit_full_autoadjust.v) {
 
 
-
-/*int zoc_slave_differential_displays_limit_full_autoadjust=1;
-
-//FPS del anterior intervalo para autoajuste de diferenciales
-int zoc_slave_differential_displays_limit_full_previous_fps=0;
-
-//Cada cuanto se autoajusta (en segundos)
-int zoc_slave_differential_displays_limit_full_autoadjust_seconds_interval=10;
-int zoc_slave_differential_displays_limit_full_autoadjust_seconds_counter=0;*/
 
                     zoc_slave_differential_displays_limit_full_autoadjust_seconds_counter++;
 
@@ -5588,7 +5576,7 @@ void zeng_online_client_end_audio_frame_stuff(void)
         reset_beeper_silence_detection_counter();
 
         if (zoc_pending_apply_received_streaming_audio) {
-            printf("End audio frame. Sonido disponible.        %d\n",contador_segundo);
+            //printf("End audio frame. Sonido disponible.        %d\n",contador_segundo);
 
             memcpy(audio_buffer,zoc_get_audio_mem_binary_second_buffer,ZOC_STREAMING_AUDIO_BUFFER_SIZE);
 
