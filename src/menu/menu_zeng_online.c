@@ -1593,6 +1593,29 @@ void menu_zeng_online_full_display_interval_autoadjust(MENU_ITEM_PARAMETERS)
     zoc_slave_differential_displays_limit_full_autoadjust.v ^=1;
 }
 
+//English, Spanish, Catalan
+const char *s_display_quality_perfect_en[]={"Perfect","Perfecta","Perfecta"};
+const char *s_display_quality_good_en[]={"Good","Buena","Bona"};
+const char *s_display_quality_medium_en[]={"Medium","Media","Mitja"};
+const char *s_display_quality_low_en[]={"Low","Baja","Baixa"};
+
+
+
+const char *get_menu_zoc_display_quality_string(int interval)
+{
+
+    int indice;
+
+    if (gui_language==GUI_LANGUAGE_SPANISH) indice=1;
+    else if (gui_language==GUI_LANGUAGE_CATALAN) indice=2;
+    else indice=0;
+
+    if (interval==0) return s_display_quality_perfect_en[indice];
+    else if (interval<=5) return s_display_quality_good_en[indice];
+    else if (interval<=10) return s_display_quality_medium_en[indice];
+    else return s_display_quality_low_en[indice];
+
+}
 
 void menu_zeng_online(MENU_ITEM_PARAMETERS)
 {
@@ -1798,7 +1821,7 @@ void menu_zeng_online(MENU_ITEM_PARAMETERS)
                     menu_add_item_menu_es_avanzado(array_menu_common);
 
                     menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_full_display_interval_autoadjust,NULL,
-                    "Autoadjust perfect display interval","Autoajustar intervalo pantalla perfecta","Autoajustar interval pantalla perfecta");
+                    "Autoadjust Display quality","Autoajustar Calidad pantalla","Autoajustar Qualitat pantalla");
                     menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",
                         (zoc_slave_differential_displays_limit_full_autoadjust.v ? 'X' : ' ' ));
 
@@ -1807,8 +1830,11 @@ void menu_zeng_online(MENU_ITEM_PARAMETERS)
 
 
                     menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_full_display_interval,NULL,
-                    "Perfect display interval","Intervalo pantalla perfecta","Interval pantalla perfecta");
-                    menu_add_item_menu_sufijo_format(array_menu_common," [%d]",zoc_slave_differential_displays_limit_full);
+                    "Display quality","Calidad pantalla","Qualitat pantalla");
+                    menu_add_item_menu_sufijo_format(array_menu_common," [%s] [%d]",
+                        get_menu_zoc_display_quality_string(zoc_slave_differential_displays_limit_full),
+                        zoc_slave_differential_displays_limit_full);
+
                     menu_add_item_menu_tooltip(array_menu_common,"How many differential displays have to ask to get a full display frame");
                     menu_add_item_menu_ayuda(array_menu_common,"How many differential displays have to ask to get a full display frame. "
                         "\n"
