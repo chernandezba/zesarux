@@ -188,6 +188,21 @@ int zeng_online_snapshot_diff=0;
 
 int zeng_online_snapshot_diff_media=0;
 
+int zoc_slave_differential_displays_counter=0;
+
+//Cada cuantas pantallas diferenciales hay que pedir una entera
+int zoc_slave_differential_displays_limit_full=2;
+
+//Si autoajustar parametro de zoc_slave_differential_displays_limit_full
+z80_bit zoc_slave_differential_displays_limit_full_autoadjust={1};
+
+//FPS del anterior intervalo para autoajuste de diferenciales
+int zoc_slave_differential_displays_limit_full_previous_fps=-1;
+
+//Cada cuanto se autoajusta (en segundos)
+int zoc_slave_differential_displays_limit_full_autoadjust_seconds_interval=10;
+int zoc_slave_differential_displays_limit_full_autoadjust_seconds_counter=0;
+
 //Retornar puerto y hostname del server
 int zeng_online_get_server_and_port(char *buffer_hostname)
 {
@@ -4320,20 +4335,7 @@ int zoc_check_if_kicked(int indice_socket)
 }
 
 
-int zoc_slave_differential_displays_counter=0;
 
-//Cada cuantas pantallas diferenciales hay que pedir una entera
-int zoc_slave_differential_displays_limit_full=2;
-
-//Si autoajustar parametro de zoc_slave_differential_displays_limit_full
-z80_bit zoc_slave_differential_displays_limit_full_autoadjust={1};
-
-//FPS del anterior intervalo para autoajuste de diferenciales
-int zoc_slave_differential_displays_limit_full_previous_fps=-1;
-
-//Cada cuanto se autoajusta (en segundos)
-int zoc_slave_differential_displays_limit_full_autoadjust_seconds_interval=10;
-int zoc_slave_differential_displays_limit_full_autoadjust_seconds_counter=0;
 
 
 void *zoc_slave_thread_function(void *nada GCC_UNUSED)

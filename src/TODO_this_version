@@ -86,34 +86,12 @@ ZENG Online
 -Cliente sin permisos de get-snapshot, en el footer acaba diciendo OFFLINE. No deberia poner ese mensaje si no tiene permisos de get-snapshot
 
 -Modo streaming
-*comandos
-ok streaming-put-display
-ok streaming-get-display
-streaming-enable, streaming-disable: quiza no hace falta porque lo establece al crear la habitacion
-streaming-is-enabled. ok comando creado, aunque quien lo usa? porque el slave al conectarse lee el modo
-streaming de la respuesta del join, no hace falta lanzar el streaming-is-enabled
-
-*formato datos enviados de put-display:
-byte 0. Que diga si es pantalla entera o diferencias del anterior. Que diga si es sin comprimir o comprimido zip
-Byte 1. valor puerto FE (realmente solo color border)
-Byte 2- : datos
-
-
-Solo permitido en spectrum de momento
-Quizá es un modo que lo active el cliente master con un parámetro. Y por defecto activado
-
-
-Otro comando para traerse el buffer de audio. Que el master envíe el buffer anterior al actual.
-Compresión zip se habilitaba a nivel global en el server creo
-Quizá otro byte con color border
-
-
-*si esta en modo streaming (modo streaming lo habilita el master, se define antes de crear la room y no deja cambiarla luego):
+* controlar solo spectrum
 
 -master no envia snapshot. envia display
 -slave no recibe snapshot y no recibe teclas. recibe display. y su cpu no emula
 
-ok-Deteccion de Lag y Offline en modo streaming slave no deberia funcionar igual, o directamente no decirlo
+
 -Probar build sin threads, por lo de las funciones vacias en no-threads, ver si falta alguna
 
 -parametro de cada cuanto forzamos force_full_display, parametro configurable en menu
@@ -131,7 +109,3 @@ cliente pide diferenciales. y pide una entera cada Z frames
 Parametro cada cuanto el cliente pide una diferencial , configurable. if (zoc_slave_differential_displays==10) {
     configurable y/o autosetting en base a los ultimos fps ?
 
-
--Incrementos con autoajuste fps hacer:
-
-0-2-5-10-15-20-25...
