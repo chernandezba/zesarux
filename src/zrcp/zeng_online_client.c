@@ -4910,9 +4910,11 @@ int zoc_get_streaming_display(z80_byte *buffer_temp_sin_comprimir,int force_full
 
     else {
 
-        //Generar pantalla entera porque la diferencial ocupa demasiado
+        //Generar pantalla entera, ya sea porque se ha pedido asi o bien porque la diferencial ocupa demasiado
+
         if (!force_full_display) {
-            //printf("Generating full display because differential was big\n");
+            //Generar pantalla entera porque la diferencial ocupa demasiado
+            printf("Generating full display because differential was big\n");
         }
 
         longitud_sin_comprimir=ZOC_STREAM_DISPLAY_SIZE;
