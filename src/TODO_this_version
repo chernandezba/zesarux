@@ -86,7 +86,8 @@ ZENG Online
 -Cliente sin permisos de get-snapshot, en el footer acaba diciendo OFFLINE. No deberia poner ese mensaje si no tiene permisos de get-snapshot
 
 -Modo streaming
-* controlar solo spectrum
+ok * controlar solo spectrum al crear
+*controlar solo spectrum al cambiar de maquina. pero eso no se puede dado que la room ya esta creada y no se puede cambiar su modo
 
 -master no envia snapshot. envia display
 -slave no recibe snapshot y no recibe teclas. recibe display. y su cpu no emula
@@ -94,18 +95,12 @@ ZENG Online
 
 -Probar build sin threads, por lo de las funciones vacias en no-threads, ver si falta alguna
 
--parametro de cada cuanto forzamos force_full_display, parametro configurable en menu
-O que idealmente el cliente se lo pida al servidor??? y lo cambie segun sus fps? pero esto afectaria a todos los clientes conectados
-Quiza esa pantalla entera se debe guardar en otro sitio y que el cliente lo pida explicitamente
-Porque si no, se generara uno de cada 50 y el cliente igual cuando pide display nunca (o pocas veces) pilla ese, porque no esta
-haciendo 50 fps
+
 
 ->seria entonces:
 servidor envia diferenciales siempre y se guarda en "caja 0". y una entera cada X frames y se guarda en "caja 1"
-Pero que sucede cuando un diferencial ocupa mas que una entera? esa diferencial se convertira en la entera. pero a que caja lo guardo?
+Pero que sucede cuando un diferencial ocupa mas que una entera? esa diferencial se convertira en la entera. pero a que caja lo guardo? en la 0 como siempre
 
 cliente pide diferenciales. y pide una entera cada Z frames
 
-Parametro cada cuanto el cliente pide una diferencial , configurable. if (zoc_slave_differential_displays==10) {
-    configurable y/o autosetting en base a los ultimos fps ?
 

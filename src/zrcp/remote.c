@@ -953,7 +953,8 @@ struct s_items_ayuda items_ayuda[]={
     "set-max-players creator_pass n m                Define max-players (m) for room (n). Requires creator_pass of that room\n"
     "streaming-is-enabled user_pass n                Tells if streaming mode is enabled or not on this room\n"
     "streaming-get-audio user_pass n                 This command returns the streaming audio from room n, returns ERROR if no audio there. Requires user_pass\n"
-    "streaming-get-audio-cont user_pass n            Same as streaming-get-audio but this command returns continuously (never ends)\n"
+    "streaming-get-audio-cont user_pass n            Same as streaming-get-audio but this command returns continuously (never ends). Every one separated by NL character.\n"
+    "                                                If there is not any stream to get, it will block until one is generated\n"
     "streaming-get-audio-id user_pass n              This command returns the last audio id from room n, returns ERROR if no audio there. Requires user_pass\n"
     "streaming-put-audio creator_pass n data         Put a streaming audio on room n, requieres creator_pass for that room. Data must be hexadecimal characters without spaces\n"
 

@@ -2211,7 +2211,8 @@ int param_create_room_number;
 int zeng_online_client_create_room_connect(void)
 {
 
-
+    //Si maquina no es spectrum, desactivar modo streaming
+    if (!MACHINE_IS_SPECTRUM) streaming_enabled_when_creating=0;
 
         //zeng_remote_list_rooms_buffer[0]=0;
 
@@ -2709,8 +2710,9 @@ int zoc_get_stream_audio_continuous(int indice_socket)
 
     //printf("Pidiendo stream audio continuo\n");
 
-    int posicion_command;
-    int escritos,leidos;
+    //int posicion_command;
+    //int escritos;
+    int leidos;
 
     //Ver si hay datos disponibles en el socket
 	int sock_number=get_socket_number(indice_socket);
@@ -3558,9 +3560,7 @@ void *zoc_master_thread_function(void *nada GCC_UNUSED)
 void *zoc_master_thread_function_stream_audio(void *nada GCC_UNUSED)
 {
 
-    //conectar a remoto
-    //Inicializar timeout para no recibir tempranos mensajes de "OFFLINE"
-    zoc_last_snapshot_received_counter=ZOC_TIMEOUT_NO_SNAPSHOT;
+
 
     //zeng_remote_list_rooms_buffer[0]=0;
 
@@ -3570,7 +3570,7 @@ void *zoc_master_thread_function_stream_audio(void *nada GCC_UNUSED)
 
     int indice_socket=z_sock_open_connection(server,puerto,0,"");
 
-    int contador_obtener_autorizaciones=0;
+
 
     if (indice_socket<0) {
         DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Error connecting to %s:%d. %s",
@@ -3604,16 +3604,6 @@ void *zoc_master_thread_function_stream_audio(void *nada GCC_UNUSED)
     while (1) {
 
 
-
-            //Nota: un master normal deberia tener todos permisos, sin necesidad de comprobarlos
-            //PERO si queremos un master que solo gestione autorizaciones, cambios de parametros en room, etc,
-            //sin que envie snapshots o reciba teclas o envie teclas, se le pueden quitar dichos permisos,
-            //y podremos gestionar el resto
-
-            //printf("before get snapshot\n");
-
-            //En modo streaming escribimos display en vez de pantalla
-
             if (created_room_streaming_mode) {
                 //printf("Modo streaming. Escribimos display en vez de snapshot\n");
 
@@ -3625,7 +3615,7 @@ void *zoc_master_thread_function_stream_audio(void *nada GCC_UNUSED)
 
                     if (zoc_master_pending_send_streaming_audio) {
 
-                        printf("Putting audio\n");
+                        //printf("Putting audio\n");
 
                         int error=zoc_send_streaming_audio(indice_socket);
 
@@ -4004,7 +3994,7 @@ int zoc_receive_streaming_display(int indice_socket,int slot)
         #define ZENG_BUFFER_INITIAL_CONNECT 199
 
         //Leer algo
-        char buffer[ZENG_BUFFER_INITIAL_CONNECT+1];
+        //char buffer[ZENG_BUFFER_INITIAL_CONNECT+1];
 
 
         //streaming-get-display user_pass n s

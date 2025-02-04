@@ -1867,7 +1867,7 @@ void menu_zeng_online(MENU_ITEM_PARAMETERS)
                         (zeng_online_allow_instant_keys.v ? 'X' : ' '));
                     menu_add_item_menu_tooltip(array_menu_common,"Key presses are sent instantly to the emulated machine, "
                         "instead of waiting for the event to go to the server and come back ");
-                    menu_add_item_menu_tooltip(array_menu_common,"Key presses are sent instantly to the emulated machine, "
+                    menu_add_item_menu_ayuda(array_menu_common,"Key presses are sent instantly to the emulated machine, "
                         "instead of waiting for the event to go to the server and come back. This can be useful in some cases");
 
                     menu_add_item_menu_es_avanzado(array_menu_common);
@@ -1885,6 +1885,10 @@ void menu_zeng_online(MENU_ITEM_PARAMETERS)
         "Streaming mode on create","Modo streaming al crear","Mode streaming al crear");
         menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",
             (streaming_enabled_when_creating ? 'X' : ' '));
+        menu_add_item_menu_tooltip(array_menu_common,"Stream mode runs a game only on the master and the slaves only receive display and audio. "
+            "Only available on Spectrum");
+        menu_add_item_menu_ayuda(array_menu_common,"Stream mode runs a game only on the master and the slaves only receive display and audio. "
+            "Only available on Spectrum");
         menu_add_item_menu_es_avanzado(array_menu_common);
 
         //TODO: desconectar con zeng_online_connected.v=0;
