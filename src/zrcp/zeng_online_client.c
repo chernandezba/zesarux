@@ -4873,6 +4873,7 @@ int zoc_generate_differential_display(z80_byte *current_screen)
 
 
 
+    //Diferencial demasiado grande
     if (excede_limite) return -1;
 
     else return bytes_diferentes*3;
