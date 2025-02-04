@@ -260,220 +260,192 @@ int zoc_receive_snapshot(int indice_socket);
 int zeng_online_client_list_rooms_connect(void)
 {
 
-    //Inicialmente desconectado
-    //zeng_remote_socket=-1;
-
-    //Almacenar aqui hostname hasta la ,
-    /*char buffer_hostname[MAX_ZENG_HOSTNAME];
-
-    //Almacenar aqui la copia del campo entero, para facilitar cortar
-    char copia_zeng_remote_hostname[MAX_ZENG_HOSTNAME];
-
-    strcpy(copia_zeng_remote_hostname,zeng_remote_hostname);
 
 
-    char *puntero_hostname=copia_zeng_remote_hostname;
+    //Calculo aproximado de memoria necesaria para listado de habitaciones
+    //escribir_socket(misocket,"N.  Name                           Created Players Max\n");
+    int espacio_por_room=ZENG_ONLINE_MAX_ROOM_NAME+1024; //Margen mas que suficiente
+    int total_listado_rooms_memoria=espacio_por_room*ZENG_ONLINE_MAX_ROOMS;
 
-    zeng_total_remotes=0;*/
+
+    DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Getting zeng-online rooms");
+    if (zeng_remote_list_rooms_buffer==NULL) {
+
+        zeng_remote_list_rooms_buffer=util_malloc(total_listado_rooms_memoria,"Can not allocate memory for getting list-rooms");
 
 
 
+    }
+    zeng_remote_list_rooms_buffer[0]=0;
 
-        //Calculo aproximado de memoria necesaria para listado de habitaciones
-        //escribir_socket(misocket,"N.  Name                           Created Players Max\n");
-        int espacio_por_room=ZENG_ONLINE_MAX_ROOM_NAME+1024; //Margen mas que suficiente
-        int total_listado_rooms_memoria=espacio_por_room*ZENG_ONLINE_MAX_ROOMS;
+    //Empezar a contar latencia
 
+    struct timeval list_rooms_time_antes,list_rooms_time_despues;
 
-		DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Getting zeng-online rooms");
-        if (zeng_remote_list_rooms_buffer==NULL) {
+    //calcular tiempo que tarda en dibujarse
 
-            zeng_remote_list_rooms_buffer=util_malloc(total_listado_rooms_memoria,"Can not allocate memory for getting list-rooms");
+    timer_stats_current_time(&list_rooms_time_antes);
 
+    char server[NETWORK_MAX_URL+1];
+    int puerto;
+    puerto=zeng_online_get_server_and_port(server);
 
-            /*
-                    for (i=0;i<zeng_online_current_max_rooms;i++) {
-            escribir_socket_format(misocket,"%3d %s %d     %3d       %3d\n",
-                i,
-                zeng_online_rooms_list[i].name,
-                zeng_online_rooms_list[i].created,
-                zeng_online_rooms_list[i].current_players,
-                zeng_online_rooms_list[i].max_players
-            );
-            }
-            */
-
-        }
-        zeng_remote_list_rooms_buffer[0]=0;
-
-        //Empezar a contar latencia
-
-        struct timeval list_rooms_time_antes,list_rooms_time_despues;
-
-        //calcular tiempo que tarda en dibujarse
-
-	    timer_stats_current_time(&list_rooms_time_antes);
-
-        char server[NETWORK_MAX_URL+1];
-        int puerto;
-        puerto=zeng_online_get_server_and_port(server);
-
-		int indice_socket=z_sock_open_connection(server,puerto,0,"");
+    int indice_socket=z_sock_open_connection(server,puerto,0,"");
 
 
-        zeng_online_last_list_rooms_latency=timer_stats_diference_time(&list_rooms_time_antes,&list_rooms_time_despues);
+    zeng_online_last_list_rooms_latency=timer_stats_diference_time(&list_rooms_time_antes,&list_rooms_time_despues);
 
-		if (indice_socket<0) {
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Error connecting to %s:%d. %s",
-                server,puerto,
-                z_sock_get_error(indice_socket));
-			return 0;
-		}
+    if (indice_socket<0) {
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Error connecting to %s:%d. %s",
+            server,puerto,
+            z_sock_get_error(indice_socket));
+        return 0;
+    }
 
-		 int posicion_command;
+        int posicion_command;
 
 #define ZENG_BUFFER_INITIAL_CONNECT 199
 
-		//Leer algo
-		char buffer[ZENG_BUFFER_INITIAL_CONNECT+1];
+    //Leer algo
+    char buffer[ZENG_BUFFER_INITIAL_CONNECT+1];
 
-		//int leidos=z_sock_read(indice_socket,buffer,199);
-		int leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)buffer,ZENG_BUFFER_INITIAL_CONNECT,&posicion_command);
-		if (leidos>0) {
-			buffer[leidos]=0; //fin de texto
-			//printf("Received text (length: %d):\n[\n%s\n]\n",leidos,buffer);
-		}
+    //int leidos=z_sock_read(indice_socket,buffer,199);
+    int leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)buffer,ZENG_BUFFER_INITIAL_CONNECT,&posicion_command);
+    if (leidos>0) {
+        buffer[leidos]=0; //fin de texto
+        //printf("Received text (length: %d):\n[\n%s\n]\n",leidos,buffer);
+    }
 
-		if (leidos<0) {
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't read remote prompt: %s",z_sock_get_error(leidos));
-			return 0;
-		}
+    if (leidos<0) {
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't read remote prompt: %s",z_sock_get_error(leidos));
+        return 0;
+    }
 
-		//zsock_wait_until_command_prompt(indice_socket);
+    //zsock_wait_until_command_prompt(indice_socket);
 
-		DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Sending get-version");
+    DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Sending get-version");
 
-		//Enviar un get-version
-		int escritos=z_sock_write_string(indice_socket,"get-version\n");
+    //Enviar un get-version
+    int escritos=z_sock_write_string(indice_socket,"get-version\n");
 
-		if (escritos<0) {
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't send get-version: %s",z_sock_get_error(escritos));
-			return 0;
-		}
-
-
-		//reintentar
-		leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)buffer,ZENG_BUFFER_INITIAL_CONNECT,&posicion_command);
-		if (leidos>0) {
-			buffer[leidos]=0; //fin de texto
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Received text for get-version (length %d): \n[\n%s\n]",leidos,buffer);
-		}
-
-		if (leidos<0) {
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't receive version: %s",z_sock_get_error(leidos));
-			return 0;
-		}
-
-		//1 mas para eliminar el salto de linea anterior a "command>"
-		if (posicion_command>=1) {
-			buffer[posicion_command-1]=0;
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Received version: %s",buffer);
-		}
-		else {
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Error receiving ZEsarUX remote version");
-			return 0;
-		}
-
-		//Comprobar que version remota sea como local
-        char myversion[30];
-        util_get_emulator_version_number(myversion);
-        if (strcasecmp(myversion,buffer)) {
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Local and remote ZEsarUX versions do not match");
-            //printf("Local %s remote %s\n",myversion,buffer);
-			return 0;
-		}
+    if (escritos<0) {
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't send get-version: %s",z_sock_get_error(escritos));
+        return 0;
+    }
 
 
-		//Comprobar que, si nosotros somos master, el remoto no lo sea
-		//El usuario puede activarlo, aunque no es recomendable. Yo solo compruebo y ya que haga lo que quiera
+    //reintentar
+    leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)buffer,ZENG_BUFFER_INITIAL_CONNECT,&posicion_command);
+    if (leidos>0) {
+        buffer[leidos]=0; //fin de texto
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Received text for get-version (length %d): \n[\n%s\n]",leidos,buffer);
+    }
+
+    if (leidos<0) {
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't receive version: %s",z_sock_get_error(leidos));
+        return 0;
+    }
+
+    //1 mas para eliminar el salto de linea anterior a "command>"
+    if (posicion_command>=1) {
+        buffer[posicion_command-1]=0;
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Received version: %s",buffer);
+    }
+    else {
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Error receiving ZEsarUX remote version");
+        return 0;
+    }
+
+    //Comprobar que version remota sea como local
+    char myversion[30];
+    util_get_emulator_version_number(myversion);
+    if (strcasecmp(myversion,buffer)) {
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Local and remote ZEsarUX versions do not match");
+        //printf("Local %s remote %s\n",myversion,buffer);
+        return 0;
+    }
 
 
-        //ver si zeng online enabled
-		DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: ZENG Online: Getting zeng-online status");
-
-		escritos=z_sock_write_string(indice_socket,"zeng-online is-enabled\n");
-
-		if (escritos<0) {
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't send zeng-online is-enabled: %s",z_sock_get_error(escritos));
-			return 0;
-		}
-
-		leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)buffer,ZENG_BUFFER_INITIAL_CONNECT,&posicion_command);
-		if (leidos>0) {
-			buffer[leidos]=0; //fin de texto
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"ZENG Online Client: Received text for zeng-online is-enabled (length %d): \n[\n%s\n]",leidos,buffer);
-		}
-
-		if (leidos<0) {
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't receive zeng-online is-enabled: %s",z_sock_get_error(leidos));
-			return 0;
-		}
-
-		//1 mas para eliminar el salto de linea anterior a "command>"
-		if (posicion_command>=1) {
-			buffer[posicion_command-1]=0;
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Received zeng-online is-enabled: %s",buffer);
-		}
-		else {
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Error receiving ZEsarUX zeng-online is-enabled");
-			return 0;
-		}
-
-        //Si somos master, que el remoto no lo sea tambien
-        int esta_activado=parse_string_to_number(buffer);
-        if (!esta_activado) {
-            DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ZENG Online is not enabled on remote server");
-            return 0;
-        }
+    //Comprobar que, si nosotros somos master, el remoto no lo sea
+    //El usuario puede activarlo, aunque no es recomendable. Yo solo compruebo y ya que haga lo que quiera
 
 
-        //Obtener rooms
+    //ver si zeng online enabled
+    DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: ZENG Online: Getting zeng-online status");
+
+    escritos=z_sock_write_string(indice_socket,"zeng-online is-enabled\n");
+
+    if (escritos<0) {
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't send zeng-online is-enabled: %s",z_sock_get_error(escritos));
+        return 0;
+    }
+
+    leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)buffer,ZENG_BUFFER_INITIAL_CONNECT,&posicion_command);
+    if (leidos>0) {
+        buffer[leidos]=0; //fin de texto
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"ZENG Online Client: Received text for zeng-online is-enabled (length %d): \n[\n%s\n]",leidos,buffer);
+    }
+
+    if (leidos<0) {
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't receive zeng-online is-enabled: %s",z_sock_get_error(leidos));
+        return 0;
+    }
+
+    //1 mas para eliminar el salto de linea anterior a "command>"
+    if (posicion_command>=1) {
+        buffer[posicion_command-1]=0;
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Received zeng-online is-enabled: %s",buffer);
+    }
+    else {
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Error receiving ZEsarUX zeng-online is-enabled");
+        return 0;
+    }
+
+    //Si somos master, que el remoto no lo sea tambien
+    int esta_activado=parse_string_to_number(buffer);
+    if (!esta_activado) {
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ZENG Online is not enabled on remote server");
+        return 0;
+    }
+
+
+    //Obtener rooms
 
 
 
-		escritos=z_sock_write_string(indice_socket,"zeng-online list-rooms\n");
+    escritos=z_sock_write_string(indice_socket,"zeng-online list-rooms\n");
 
-		if (escritos<0) {
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't send zeng-online list-rooms: %s",z_sock_get_error(escritos));
-			return 0;
-		}
+    if (escritos<0) {
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't send zeng-online list-rooms: %s",z_sock_get_error(escritos));
+        return 0;
+    }
 
-		leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)zeng_remote_list_rooms_buffer,total_listado_rooms_memoria,&posicion_command);
-		if (leidos>0) {
-			buffer[leidos]=0; //fin de texto
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"ZENG Online Client: Received text for zeng-online list-rooms (length %d): \n[\n%s\n]",leidos,zeng_remote_list_rooms_buffer);
-		}
+    leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)zeng_remote_list_rooms_buffer,total_listado_rooms_memoria,&posicion_command);
+    if (leidos>0) {
+        buffer[leidos]=0; //fin de texto
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"ZENG Online Client: Received text for zeng-online list-rooms (length %d): \n[\n%s\n]",leidos,zeng_remote_list_rooms_buffer);
+    }
 
-		if (leidos<0) {
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't receive zeng-online list-rooms: %s %s",zeng_remote_list_rooms_buffer,z_sock_get_error(leidos));
-			return 0;
-		}
+    if (leidos<0) {
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't receive zeng-online list-rooms: %s %s",zeng_remote_list_rooms_buffer,z_sock_get_error(leidos));
+        return 0;
+    }
 
-		//1 mas para eliminar el salto de linea anterior a "command>"
-		if (posicion_command>=1) {
-			zeng_remote_list_rooms_buffer[posicion_command-1]=0;
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Received zeng-online list-rooms",zeng_remote_list_rooms_buffer);
-            //printf("ZENG: Received zeng-online list-rooms: %s\n",zeng_remote_list_rooms_buffer);
-		}
-		else {
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Error receiving ZEsarUX zeng-online list-rooms");
-			return 0;
-		}
+    //1 mas para eliminar el salto de linea anterior a "command>"
+    if (posicion_command>=1) {
+        zeng_remote_list_rooms_buffer[posicion_command-1]=0;
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Received zeng-online list-rooms",zeng_remote_list_rooms_buffer);
+        //printf("ZENG: Received zeng-online list-rooms: %s\n",zeng_remote_list_rooms_buffer);
+    }
+    else {
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Error receiving ZEsarUX zeng-online list-rooms");
+        return 0;
+    }
 
-        //printf("Habitaciones: %s\n",zeng_remote_list_rooms_buffer);
+    //printf("Habitaciones: %s\n",zeng_remote_list_rooms_buffer);
 
-		//finalizar conexion
-        z_sock_close_connection(indice_socket);
+    //finalizar conexion
+    z_sock_close_connection(indice_socket);
 
 
 
@@ -490,91 +462,91 @@ int zeng_online_client_list_users_connect(void)
 
 
 
-        //Calculo aproximado de memoria necesaria para listado de usuarios
-        int espacio_necesario=ZENG_ONLINE_MAX_PLAYERS_PER_ROOM*(ZOC_MAX_NICKNAME_LENGTH+STATS_UUID_MAX_LENGTH+30); //+30 mas que suficiente margen
+    //Calculo aproximado de memoria necesaria para listado de usuarios
+    int espacio_necesario=ZENG_ONLINE_MAX_PLAYERS_PER_ROOM*(ZOC_MAX_NICKNAME_LENGTH+STATS_UUID_MAX_LENGTH+30); //+30 mas que suficiente margen
 
 
 
-		DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: ZENG Online: Getting zeng-online users");
-        if (zeng_remote_list_users_buffer==NULL) {
+    DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: ZENG Online: Getting zeng-online users");
+    if (zeng_remote_list_users_buffer==NULL) {
 
-            zeng_remote_list_users_buffer=util_malloc(espacio_necesario,"Can not allocate memory for getting list-users");
+        zeng_remote_list_users_buffer=util_malloc(espacio_necesario,"Can not allocate memory for getting list-users");
 
-        }
-        zeng_remote_list_users_buffer[0]=0;
-
-
-
-        char server[NETWORK_MAX_URL+1];
-        int puerto;
-        puerto=zeng_online_get_server_and_port(server);
-
-		int indice_socket=z_sock_open_connection(server,puerto,0,"");
+    }
+    zeng_remote_list_users_buffer[0]=0;
 
 
 
+    char server[NETWORK_MAX_URL+1];
+    int puerto;
+    puerto=zeng_online_get_server_and_port(server);
 
-		if (indice_socket<0) {
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Error connecting to %s:%d. %s",
-                server,puerto,
-                z_sock_get_error(indice_socket));
-			return 0;
-		}
+    int indice_socket=z_sock_open_connection(server,puerto,0,"");
 
-		 int posicion_command;
+
+
+
+    if (indice_socket<0) {
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Error connecting to %s:%d. %s",
+            server,puerto,
+            z_sock_get_error(indice_socket));
+        return 0;
+    }
+
+        int posicion_command;
 
 #define ZENG_BUFFER_INITIAL_CONNECT 199
 
-		//Leer algo
-		char buffer[ZENG_BUFFER_INITIAL_CONNECT+1];
+    //Leer algo
+    char buffer[ZENG_BUFFER_INITIAL_CONNECT+1];
 
-		//int leidos=z_sock_read(indice_socket,buffer,199);
-		int leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)buffer,ZENG_BUFFER_INITIAL_CONNECT,&posicion_command);
-		if (leidos>0) {
-			buffer[leidos]=0; //fin de texto
-			//printf("Received text (length: %d):\n[\n%s\n]\n",leidos,buffer);
-		}
+    //int leidos=z_sock_read(indice_socket,buffer,199);
+    int leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)buffer,ZENG_BUFFER_INITIAL_CONNECT,&posicion_command);
+    if (leidos>0) {
+        buffer[leidos]=0; //fin de texto
+        //printf("Received text (length: %d):\n[\n%s\n]\n",leidos,buffer);
+    }
 
-		if (leidos<0) {
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't read remote prompt: %s",z_sock_get_error(leidos));
-			return 0;
-		}
+    if (leidos<0) {
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't read remote prompt: %s",z_sock_get_error(leidos));
+        return 0;
+    }
 
-        char buffer_comando[200];
-        sprintf(buffer_comando,"zeng-online list-users %s %d\n",created_room_user_password,zeng_online_joined_to_room_number);
+    char buffer_comando[200];
+    sprintf(buffer_comando,"zeng-online list-users %s %d\n",created_room_user_password,zeng_online_joined_to_room_number);
 
-		int escritos=z_sock_write_string(indice_socket,buffer_comando);
+    int escritos=z_sock_write_string(indice_socket,buffer_comando);
 
-		if (escritos<0) {
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't send zeng-online list-users: %s",z_sock_get_error(escritos));
-			return 0;
-		}
+    if (escritos<0) {
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't send zeng-online list-users: %s",z_sock_get_error(escritos));
+        return 0;
+    }
 
-		leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)zeng_remote_list_users_buffer,espacio_necesario,&posicion_command);
-		if (leidos>0) {
-			buffer[leidos]=0; //fin de texto
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"ZENG Online Client: Received text for zeng-online list-users (length %d): \n[\n%s\n]",leidos,zeng_remote_list_users_buffer);
-		}
+    leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)zeng_remote_list_users_buffer,espacio_necesario,&posicion_command);
+    if (leidos>0) {
+        buffer[leidos]=0; //fin de texto
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"ZENG Online Client: Received text for zeng-online list-users (length %d): \n[\n%s\n]",leidos,zeng_remote_list_users_buffer);
+    }
 
-		if (leidos<0) {
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't receive zeng-online list-users: %s %s",zeng_remote_list_users_buffer,z_sock_get_error(leidos));
-			return 0;
-		}
+    if (leidos<0) {
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't receive zeng-online list-users: %s %s",zeng_remote_list_users_buffer,z_sock_get_error(leidos));
+        return 0;
+    }
 
-		//1 mas para eliminar el salto de linea anterior a "command>"
-		if (posicion_command>=1) {
-			zeng_remote_list_users_buffer[posicion_command-1]=0;
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Received zeng-online list-users: %s",zeng_remote_list_users_buffer);
-		}
-		else {
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Error receiving ZEsarUX zeng-online list-users");
-			return 0;
-		}
+    //1 mas para eliminar el salto de linea anterior a "command>"
+    if (posicion_command>=1) {
+        zeng_remote_list_users_buffer[posicion_command-1]=0;
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Received zeng-online list-users: %s",zeng_remote_list_users_buffer);
+    }
+    else {
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Error receiving ZEsarUX zeng-online list-users");
+        return 0;
+    }
 
-        //printf("usuarios: %s\n",zeng_remote_list_users_buffer);
+    //printf("usuarios: %s\n",zeng_remote_list_users_buffer);
 
-		//finalizar conexion
-        z_sock_close_connection(indice_socket);
+    //finalizar conexion
+    z_sock_close_connection(indice_socket);
 
 
 
@@ -601,7 +573,7 @@ int zoc_common_open(void)
         return -1;
     }
 
-        int posicion_command;
+    int posicion_command;
 
 #define ZENG_BUFFER_INITIAL_CONNECT 199
 
@@ -758,85 +730,85 @@ int parm_zeng_online_client_authorize_join_permissions;
 //Devuelve 0 si no conectado
 int zeng_online_client_authorize_join_connect(void)
 {
-           char server[NETWORK_MAX_URL+1];
-        int puerto;
-        puerto=zeng_online_get_server_and_port(server);
+    char server[NETWORK_MAX_URL+1];
+    int puerto;
+    puerto=zeng_online_get_server_and_port(server);
 
-		int indice_socket=z_sock_open_connection(server,puerto,0,"");
+    int indice_socket=z_sock_open_connection(server,puerto,0,"");
 
 
 
-		if (indice_socket<0) {
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Error connecting to %s:%d. %s",
-                server,puerto,
-                z_sock_get_error(indice_socket));
-			return 0;
-		}
+    if (indice_socket<0) {
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Error connecting to %s:%d. %s",
+            server,puerto,
+            z_sock_get_error(indice_socket));
+        return 0;
+    }
 
-		 int posicion_command;
+    int posicion_command;
 
 #define ZENG_BUFFER_INITIAL_CONNECT 199
 
-		//Leer algo
-		char buffer[ZENG_BUFFER_INITIAL_CONNECT+1];
+    //Leer algo
+    char buffer[ZENG_BUFFER_INITIAL_CONNECT+1];
 
-		//int leidos=z_sock_read(indice_socket,buffer,199);
-		int leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)buffer,ZENG_BUFFER_INITIAL_CONNECT,&posicion_command);
-		if (leidos>0) {
-			buffer[leidos]=0; //fin de texto
-			//printf("Received text (length: %d):\n[\n%s\n]\n",leidos,buffer);
-		}
+    //int leidos=z_sock_read(indice_socket,buffer,199);
+    int leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)buffer,ZENG_BUFFER_INITIAL_CONNECT,&posicion_command);
+    if (leidos>0) {
+        buffer[leidos]=0; //fin de texto
+        //printf("Received text (length: %d):\n[\n%s\n]\n",leidos,buffer);
+    }
 
-		if (leidos<0) {
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't read remote prompt: %s",z_sock_get_error(leidos));
-			return 0;
-		}
-
-
-
-        char buffer_envio_comando[200];
-        //authorize-join creator_pass n perm
-        sprintf(buffer_envio_comando,"zeng-online authorize-join %s %d %d\n",
-            created_room_creator_password,zeng_online_joined_to_room_number,parm_zeng_online_client_authorize_join_permissions);
-
-        //DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Authorizing by: %s",buffer_envio_comando);
-        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Authorizing user");
-
-        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Permissions: %d",parm_zeng_online_client_authorize_join_permissions);
+    if (leidos<0) {
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't read remote prompt: %s",z_sock_get_error(leidos));
+        return 0;
+    }
 
 
-		int escritos=z_sock_write_string(indice_socket,buffer_envio_comando);
 
-		if (escritos<0) {
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't send zeng-online authorize-join: %s",z_sock_get_error(escritos));
-			return 0;
-		}
+    char buffer_envio_comando[200];
+    //authorize-join creator_pass n perm
+    sprintf(buffer_envio_comando,"zeng-online authorize-join %s %d %d\n",
+        created_room_creator_password,zeng_online_joined_to_room_number,parm_zeng_online_client_authorize_join_permissions);
 
-		leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)buffer,ZENG_BUFFER_INITIAL_CONNECT,&posicion_command);
-		if (leidos>0) {
-			buffer[leidos]=0; //fin de texto
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"ZENG Online Client: Received text for zeng-online authorize-join (length %d): \n[\n%s\n]",leidos,buffer);
-		}
+    //DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Authorizing by: %s",buffer_envio_comando);
+    DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Authorizing user");
 
-		if (leidos<0) {
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't receive zeng-online authorize-join: %s %s",buffer,z_sock_get_error(leidos));
-			return 0;
-		}
+    DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Permissions: %d",parm_zeng_online_client_authorize_join_permissions);
 
-		//1 mas para eliminar el salto de linea anterior a "command>"
-		if (posicion_command>=1) {
-			buffer[posicion_command-1]=0;
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Received zeng-online authorize-join: %s",buffer);
-		}
-		else {
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Error receiving ZEsarUX zeng-online authorize-join");
-			return 0;
-		}
 
-        //printf("return authorize-join list: %s\n",buffer);
+    int escritos=z_sock_write_string(indice_socket,buffer_envio_comando);
 
-		//finalizar conexion
-        z_sock_close_connection(indice_socket);
+    if (escritos<0) {
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't send zeng-online authorize-join: %s",z_sock_get_error(escritos));
+        return 0;
+    }
+
+    leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)buffer,ZENG_BUFFER_INITIAL_CONNECT,&posicion_command);
+    if (leidos>0) {
+        buffer[leidos]=0; //fin de texto
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"ZENG Online Client: Received text for zeng-online authorize-join (length %d): \n[\n%s\n]",leidos,buffer);
+    }
+
+    if (leidos<0) {
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't receive zeng-online authorize-join: %s %s",buffer,z_sock_get_error(leidos));
+        return 0;
+    }
+
+    //1 mas para eliminar el salto de linea anterior a "command>"
+    if (posicion_command>=1) {
+        buffer[posicion_command-1]=0;
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Received zeng-online authorize-join: %s",buffer);
+    }
+    else {
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Error receiving ZEsarUX zeng-online authorize-join");
+        return 0;
+    }
+
+    //printf("return authorize-join list: %s\n",buffer);
+
+    //finalizar conexion
+    z_sock_close_connection(indice_socket);
 
 
 
@@ -851,92 +823,87 @@ int zeng_online_client_join_list_connect(void)
 {
 
 
+    zeng_remote_join_list_buffer[0]=0;
 
-
-        zeng_remote_join_list_buffer[0]=0;
-
-        //Empezar a contar latencia
-
-
-
-        char server[NETWORK_MAX_URL+1];
-        int puerto;
-        puerto=zeng_online_get_server_and_port(server);
-
-		int indice_socket=z_sock_open_connection(server,puerto,0,"");
+    //Empezar a contar latencia
 
 
 
-		if (indice_socket<0) {
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Error connecting to %s:%d. %s",
-                server,puerto,
-                z_sock_get_error(indice_socket));
-			return 0;
-		}
+    char server[NETWORK_MAX_URL+1];
+    int puerto;
+    puerto=zeng_online_get_server_and_port(server);
 
-		 int posicion_command;
+    int indice_socket=z_sock_open_connection(server,puerto,0,"");
+
+
+
+    if (indice_socket<0) {
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Error connecting to %s:%d. %s",
+            server,puerto,
+            z_sock_get_error(indice_socket));
+        return 0;
+    }
+
+    int posicion_command;
 
 #define ZENG_BUFFER_INITIAL_CONNECT 199
 
-		//Leer algo
-		char buffer[ZENG_BUFFER_INITIAL_CONNECT+1];
+    //Leer algo
+    char buffer[ZENG_BUFFER_INITIAL_CONNECT+1];
 
-		//int leidos=z_sock_read(indice_socket,buffer,199);
-		int leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)buffer,ZENG_BUFFER_INITIAL_CONNECT,&posicion_command);
-		if (leidos>0) {
-			buffer[leidos]=0; //fin de texto
-			//printf("Received text (length: %d):\n[\n%s\n]\n",leidos,buffer);
-		}
+    //int leidos=z_sock_read(indice_socket,buffer,199);
+    int leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)buffer,ZENG_BUFFER_INITIAL_CONNECT,&posicion_command);
+    if (leidos>0) {
+        buffer[leidos]=0; //fin de texto
+        //printf("Received text (length: %d):\n[\n%s\n]\n",leidos,buffer);
+    }
 
-		if (leidos<0) {
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't read remote prompt: %s",z_sock_get_error(leidos));
-			return 0;
-		}
-
-
+    if (leidos<0) {
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't read remote prompt: %s",z_sock_get_error(leidos));
+        return 0;
+    }
 
 
 
+    //Obtener join list
+    char buffer_envio_comando[200];
 
-        //Obtener join list
-        char buffer_envio_comando[200];
-
-        sprintf(buffer_envio_comando,"zeng-online get-join-first-element-queue %s %d\n",created_room_creator_password,zeng_online_joined_to_room_number);
+    sprintf(buffer_envio_comando,"zeng-online get-join-first-element-queue %s %d\n",created_room_creator_password,zeng_online_joined_to_room_number);
 
 
-		int escritos=z_sock_write_string(indice_socket,buffer_envio_comando);
+    int escritos=z_sock_write_string(indice_socket,buffer_envio_comando);
 
-		if (escritos<0) {
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't send zeng-online list-rooms: %s",z_sock_get_error(escritos));
-			return 0;
-		}
+    if (escritos<0) {
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't send zeng-online list-rooms: %s",z_sock_get_error(escritos));
+        return 0;
+    }
 
-		leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)zeng_remote_join_list_buffer,1023,&posicion_command);
-		if (leidos>0) {
-			zeng_remote_join_list_buffer[leidos]=0; //fin de texto
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"ZENG Online Client: Received text for zeng-online list-rooms (length %d): \n[\n%s\n]",leidos,zeng_remote_join_list_buffer);
-		}
+    leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)zeng_remote_join_list_buffer,1023,&posicion_command);
+    if (leidos>0) {
+        zeng_remote_join_list_buffer[leidos]=0; //fin de texto
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"ZENG Online Client: Received text for zeng-online list-rooms (length %d): \n[\n%s\n]",leidos,zeng_remote_join_list_buffer);
+    }
 
-		if (leidos<0) {
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't receive zeng-online list-rooms: %s %s",zeng_remote_join_list_buffer,z_sock_get_error(leidos));
-			return 0;
-		}
+    if (leidos<0) {
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't receive zeng-online list-rooms: %s %s",zeng_remote_join_list_buffer,z_sock_get_error(leidos));
+        return 0;
+    }
 
-		//1 mas para eliminar el salto de linea anterior a "command>"
-		if (posicion_command>=1) {
-			zeng_remote_join_list_buffer[posicion_command-1]=0;
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Received zeng-online list-rooms");
-            //printf("ZENG: Received zeng-online list-rooms: %s\n",zeng_remote_join_list_buffer);
-		}
-		else {
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Error receiving ZEsarUX zeng-online list-rooms");
-			return 0;
-		}
+    //1 mas para eliminar el salto de linea anterior a "command>"
+    if (posicion_command>=1) {
+        zeng_remote_join_list_buffer[posicion_command-1]=0;
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Received zeng-online list-rooms");
+        //printf("ZENG: Received zeng-online list-rooms: %s\n",zeng_remote_join_list_buffer);
+    }
+    else {
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Error receiving ZEsarUX zeng-online list-rooms");
+        return 0;
+    }
 
-        //printf("join llist: %s\n",zeng_remote_join_list_buffer);
+    //printf("join llist: %s\n",zeng_remote_join_list_buffer);
 
-		//finalizar conexion
-        z_sock_close_connection(indice_socket);
+    //finalizar conexion
+    z_sock_close_connection(indice_socket);
 
 
 
@@ -963,14 +930,11 @@ void *zeng_online_client_leave_room_function(void *nada GCC_UNUSED)
 
 
 
-
 	zeng_online_client_leave_room_thread_running=0;
 
 	return 0;
 
 }
-
-
 
 
 
@@ -1330,9 +1294,6 @@ int zeng_online_client_get_profile_keys_connect(void)
     char buffer_enviar[1024];
 
 
-
-
-
     //return zoc_open_command_close(buffer_enviar,"set-allow-messages");
 
 
@@ -1439,8 +1400,6 @@ int zeng_online_client_send_profile_keys_connect(void)
 {
 
     char buffer_enviar[1024];
-
-
 
 
 
@@ -1637,11 +1596,6 @@ void *zeng_online_client_list_rooms_function(void *nada GCC_UNUSED)
 
 
 
-
-
-	//zeng_enabled.v=1;
-
-
 	zeng_online_client_list_rooms_thread_running=0;
 
 	return 0;
@@ -1672,10 +1626,6 @@ void *zeng_online_client_list_users_function(void *nada GCC_UNUSED)
 
 
 
-
-	//zeng_enabled.v=1;
-
-
 	zeng_online_client_list_users_thread_running=0;
 
 	return 0;
@@ -1702,11 +1652,6 @@ void *zeng_online_client_join_list_function(void *nada GCC_UNUSED)
 	}
 
 
-
-
-
-
-	//zeng_enabled.v=1;
 
 
 	zeng_online_client_join_list_thread_running=0;
@@ -1737,10 +1682,6 @@ void *zeng_online_client_authorize_join_function(void *nada GCC_UNUSED)
 
 
 
-
-
-
-	//zeng_enabled.v=1;
 
 
 	zeng_online_client_authorize_join_thread_running=0;
@@ -1994,153 +1935,150 @@ void zeng_online_client_authorize_join(int permissions)
 int zeng_online_client_join_room_connect(void)
 {
 
+    //zeng_remote_list_rooms_buffer[0]=0;
 
+    char server[NETWORK_MAX_URL+1];
+    int puerto;
+    puerto=zeng_online_get_server_and_port(server);
 
+    int indice_socket=z_sock_open_connection(server,puerto,0,"");
 
-        //zeng_remote_list_rooms_buffer[0]=0;
+    if (indice_socket<0) {
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Error connecting to %s:%d. %s",
+            server,puerto,
+            z_sock_get_error(indice_socket));
+        return 0;
+    }
 
-        char server[NETWORK_MAX_URL+1];
-        int puerto;
-        puerto=zeng_online_get_server_and_port(server);
-
-		int indice_socket=z_sock_open_connection(server,puerto,0,"");
-
-		if (indice_socket<0) {
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Error connecting to %s:%d. %s",
-                server,puerto,
-                z_sock_get_error(indice_socket));
-			return 0;
-		}
-
-		 int posicion_command;
+    int posicion_command;
 
 #define ZENG_BUFFER_INITIAL_CONNECT 199
 
-		//Leer algo
-		char buffer[ZENG_BUFFER_INITIAL_CONNECT+1];
+    //Leer algo
+    char buffer[ZENG_BUFFER_INITIAL_CONNECT+1];
 
-		//int leidos=z_sock_read(indice_socket,buffer,199);
-		int leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)buffer,ZENG_BUFFER_INITIAL_CONNECT,&posicion_command);
-		if (leidos>0) {
-			buffer[leidos]=0; //fin de texto
-			//printf("Received text (length: %d):\n[\n%s\n]\n",leidos,buffer);
-		}
+    //int leidos=z_sock_read(indice_socket,buffer,199);
+    int leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)buffer,ZENG_BUFFER_INITIAL_CONNECT,&posicion_command);
+    if (leidos>0) {
+        buffer[leidos]=0; //fin de texto
+        //printf("Received text (length: %d):\n[\n%s\n]\n",leidos,buffer);
+    }
 
-		if (leidos<0) {
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't read remote prompt: %s",z_sock_get_error(leidos));
-			return 0;
-		}
+    if (leidos<0) {
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't read remote prompt: %s",z_sock_get_error(leidos));
+        return 0;
+    }
 
-		//zsock_wait_until_command_prompt(indice_socket);
+    //zsock_wait_until_command_prompt(indice_socket);
 
-		DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Sending join-room");
+    DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Sending join-room");
 
-        char buffer_enviar[1024];
+    char buffer_enviar[1024];
 
-        //Join desde el master le envia el creator password
-        if (param_join_room_creator_password[0]!=0) {
-            sprintf(buffer_enviar,"zeng-online join %d \"%s\" %s %s\n",param_join_room_number,zeng_online_nickname,stats_uuid,param_join_room_creator_password);
+    //Join desde el master le envia el creator password
+    if (param_join_room_creator_password[0]!=0) {
+        sprintf(buffer_enviar,"zeng-online join %d \"%s\" %s %s\n",param_join_room_number,zeng_online_nickname,stats_uuid,param_join_room_creator_password);
+    }
+    else {
+        sprintf(buffer_enviar,"zeng-online join %d \"%s\" %s\n",param_join_room_number,zeng_online_nickname,stats_uuid);
+    }
+
+    int escritos=z_sock_write_string(indice_socket,buffer_enviar);
+
+    if (escritos<0) {
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't send zeng-online join: %s",z_sock_get_error(escritos));
+        return 0;
+    }
+
+    //Esperar la autorizacion, hasta numero reintentos
+    //TODO: ajustar esto hasta 1 o 2 minutos por ejemplo. dependera de los reintentos y sleeps de zsock_read_all_until_command
+    int reintentos=30;
+
+    //reintentar
+    do {
+        leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)buffer,ZENG_BUFFER_INITIAL_CONNECT,&posicion_command);
+        if (leidos>0) {
+            buffer[leidos]=0; //fin de texto
+            DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"ZENG Online Client: Received text for zeng-online join (length %d): \n[\n%s\n]",leidos,buffer);
         }
-        else {
-            sprintf(buffer_enviar,"zeng-online join %d \"%s\" %s\n",param_join_room_number,zeng_online_nickname,stats_uuid);
-        }
 
-		int escritos=z_sock_write_string(indice_socket,buffer_enviar);
-
-		if (escritos<0) {
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't send zeng-online join: %s",z_sock_get_error(escritos));
-			return 0;
-		}
-
-        //Esperar la autorizacion, hasta numero reintentos
-        //TODO: ajustar esto hasta 1 o 2 minutos por ejemplo. dependera de los reintentos y sleeps de zsock_read_all_until_command
-        int reintentos=30;
-
-		//reintentar
-        do {
-            leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)buffer,ZENG_BUFFER_INITIAL_CONNECT,&posicion_command);
-            if (leidos>0) {
-                buffer[leidos]=0; //fin de texto
-                DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"ZENG Online Client: Received text for zeng-online join (length %d): \n[\n%s\n]",leidos,buffer);
-            }
-
-            if (leidos<0) {
-                DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't receive zeng-online join: %s",z_sock_get_error(leidos));
-                return 0;
-            }
-
-            if (leidos==0) {
-                DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: No response read from join yet");
-            }
-
-            reintentos--;
-        } while (leidos==0 && reintentos>0);
-
-		//1 mas para eliminar el salto de linea anterior a "command>"
-		if (posicion_command>=1) {
-			buffer[posicion_command-1]=0;
-			//DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Received text: %s",buffer);
-		}
-		else {
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Error receiving ZEsarUX zeng-online join");
-			return 0;
-		}
-
-        //printf("Retorno join-room: [%s]\n",buffer);
-        //Si hay ERROR
-        if (strstr(buffer,"ERROR")!=NULL) {
-            DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Error joining room: %s",buffer);
+        if (leidos<0) {
+            DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't receive zeng-online join: %s",z_sock_get_error(leidos));
             return 0;
         }
 
-        //Dividir el user_password y los permisos y el streaming mode
-        int i;
-        for (i=0;buffer[i] && buffer[i]!=' ';i++);
-
-        if (buffer[i]==0) {
-            //llegado al final sin que haya espacios. error
-            DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Error joining room, no permissions detected: %s",buffer);
-            return 0;
+        if (leidos==0) {
+            DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: No response read from join yet");
         }
 
-        //truncar de momento hasta aqui
-        buffer[i]=0;
-        strcpy(created_room_user_password,buffer);
+        reintentos--;
+    } while (leidos==0 && reintentos>0);
 
-        //Y seguir hasta buscar los permisos
-        i++;
+    //1 mas para eliminar el salto de linea anterior a "command>"
+    if (posicion_command>=1) {
+        buffer[posicion_command-1]=0;
+        //DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Received text: %s",buffer);
+    }
+    else {
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Error receiving ZEsarUX zeng-online join");
+        return 0;
+    }
 
-        int inicio_index_permissions=i;
+    //printf("Retorno join-room: [%s]\n",buffer);
+    //Si hay ERROR
+    if (strstr(buffer,"ERROR")!=NULL) {
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Error joining room: %s",buffer);
+        return 0;
+    }
 
-        for (;buffer[i] && buffer[i]!=' ';i++);
+    //Dividir el user_password y los permisos y el streaming mode
+    int i;
+    for (i=0;buffer[i] && buffer[i]!=' ';i++);
 
-        if (buffer[i]==0) {
-            //llegado al final sin que haya espacios. error
-            DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Error joining room, no streaming mode detected: %s",buffer);
-            return 0;
-        }
+    if (buffer[i]==0) {
+        //llegado al final sin que haya espacios. error
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Error joining room, no permissions detected: %s",buffer);
+        return 0;
+    }
 
-        //truncar de momento hasta aqui
-        buffer[i]=0;
+    //truncar de momento hasta aqui
+    buffer[i]=0;
+    strcpy(created_room_user_password,buffer);
 
-        created_room_user_permissions=parse_string_to_number(&buffer[inicio_index_permissions]);
+    //Y seguir hasta buscar los permisos
+    i++;
+
+    int inicio_index_permissions=i;
+
+    for (;buffer[i] && buffer[i]!=' ';i++);
+
+    if (buffer[i]==0) {
+        //llegado al final sin que haya espacios. error
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Error joining room, no streaming mode detected: %s",buffer);
+        return 0;
+    }
+
+    //truncar de momento hasta aqui
+    buffer[i]=0;
+
+    created_room_user_permissions=parse_string_to_number(&buffer[inicio_index_permissions]);
 
 
 
-        i++;
+    i++;
 
-        created_room_streaming_mode=parse_string_to_number(&buffer[i]);
+    created_room_streaming_mode=parse_string_to_number(&buffer[i]);
 
-        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: User password: [%s]",created_room_user_password);
-        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: User permissions: [%d]",created_room_user_permissions);
-        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Streaming mode: [%d]",created_room_streaming_mode);
+    DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: User password: [%s]",created_room_user_password);
+    DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: User permissions: [%d]",created_room_user_permissions);
+    DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Streaming mode: [%d]",created_room_streaming_mode);
 
-		//finalizar conexion
-        z_sock_close_connection(indice_socket);
+    //finalizar conexion
+    z_sock_close_connection(indice_socket);
 
-        zeng_online_connected.v=1;
+    zeng_online_connected.v=1;
 
-        zeng_online_joined_to_room_number=param_join_room_number;
+    zeng_online_joined_to_room_number=param_join_room_number;
 
 
 
@@ -2169,11 +2107,6 @@ void *zeng_online_client_join_room_function(void *nada GCC_UNUSED)
 	}
 
 
-
-
-
-
-	//zeng_enabled.v=1;
 
 
 	zeng_online_client_join_room_thread_running=0;
@@ -2214,89 +2147,89 @@ int zeng_online_client_create_room_connect(void)
     //Si maquina no es spectrum, desactivar modo streaming
     if (!MACHINE_IS_SPECTRUM) streaming_enabled_when_creating=0;
 
-        //zeng_remote_list_rooms_buffer[0]=0;
+    //zeng_remote_list_rooms_buffer[0]=0;
 
-        char server[NETWORK_MAX_URL+1];
-        int puerto;
-        puerto=zeng_online_get_server_and_port(server);
+    char server[NETWORK_MAX_URL+1];
+    int puerto;
+    puerto=zeng_online_get_server_and_port(server);
 
-		int indice_socket=z_sock_open_connection(server,puerto,0,"");
+    int indice_socket=z_sock_open_connection(server,puerto,0,"");
 
-		if (indice_socket<0) {
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Error connecting to %s:%d. %s",
-                server,puerto,
-                z_sock_get_error(indice_socket));
-			return 0;
-		}
+    if (indice_socket<0) {
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Error connecting to %s:%d. %s",
+            server,puerto,
+            z_sock_get_error(indice_socket));
+        return 0;
+    }
 
-		 int posicion_command;
+    int posicion_command;
 
 #define ZENG_BUFFER_INITIAL_CONNECT 199
 
-		//Leer algo
-		char buffer[ZENG_BUFFER_INITIAL_CONNECT+1];
+    //Leer algo
+    char buffer[ZENG_BUFFER_INITIAL_CONNECT+1];
 
-		//int leidos=z_sock_read(indice_socket,buffer,199);
-		int leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)buffer,ZENG_BUFFER_INITIAL_CONNECT,&posicion_command);
-		if (leidos>0) {
-			buffer[leidos]=0; //fin de texto
-			//printf("Received text (length: %d):\n[\n%s\n]\n",leidos,buffer);
-		}
+    //int leidos=z_sock_read(indice_socket,buffer,199);
+    int leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)buffer,ZENG_BUFFER_INITIAL_CONNECT,&posicion_command);
+    if (leidos>0) {
+        buffer[leidos]=0; //fin de texto
+        //printf("Received text (length: %d):\n[\n%s\n]\n",leidos,buffer);
+    }
 
-		if (leidos<0) {
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't read remote prompt: %s",z_sock_get_error(leidos));
-			return 0;
-		}
+    if (leidos<0) {
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't read remote prompt: %s",z_sock_get_error(leidos));
+        return 0;
+    }
 
-		//zsock_wait_until_command_prompt(indice_socket);
+    //zsock_wait_until_command_prompt(indice_socket);
 
-		DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Sending create-room");
+    DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Sending create-room");
 
-        char buffer_enviar[1024];
-        sprintf(buffer_enviar,"zeng-online create-room %d \"%s\" %d\n",param_create_room_number,param_create_room_name,streaming_enabled_when_creating);
+    char buffer_enviar[1024];
+    sprintf(buffer_enviar,"zeng-online create-room %d \"%s\" %d\n",param_create_room_number,param_create_room_name,streaming_enabled_when_creating);
 
-		int escritos=z_sock_write_string(indice_socket,buffer_enviar);
+    int escritos=z_sock_write_string(indice_socket,buffer_enviar);
 
-		if (escritos<0) {
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't send zeng-online create-room: %s",z_sock_get_error(escritos));
-			return 0;
-		}
+    if (escritos<0) {
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't send zeng-online create-room: %s",z_sock_get_error(escritos));
+        return 0;
+    }
 
 
-		//reintentar
-		leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)buffer,ZENG_BUFFER_INITIAL_CONNECT,&posicion_command);
-		if (leidos>0) {
-			buffer[leidos]=0; //fin de texto
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"ZENG Online Client: Received text for zeng-online create-room (length %d): \n[\n%s\n]",leidos,buffer);
-		}
+    //reintentar
+    leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)buffer,ZENG_BUFFER_INITIAL_CONNECT,&posicion_command);
+    if (leidos>0) {
+        buffer[leidos]=0; //fin de texto
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"ZENG Online Client: Received text for zeng-online create-room (length %d): \n[\n%s\n]",leidos,buffer);
+    }
 
-		if (leidos<0) {
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't receive zeng-online create-room: %s",z_sock_get_error(leidos));
-			return 0;
-		}
+    if (leidos<0) {
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't receive zeng-online create-room: %s",z_sock_get_error(leidos));
+        return 0;
+    }
 
-		//1 mas para eliminar el salto de linea anterior a "command>"
-		if (posicion_command>=1) {
-			buffer[posicion_command-1]=0;
-			//DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Received text: %s",buffer);
-		}
-		else {
-			DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Error receiving ZEsarUX zeng-online create-room");
-			return 0;
-		}
+    //1 mas para eliminar el salto de linea anterior a "command>"
+    if (posicion_command>=1) {
+        buffer[posicion_command-1]=0;
+        //DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Received text: %s",buffer);
+    }
+    else {
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Error receiving ZEsarUX zeng-online create-room");
+        return 0;
+    }
 
-        //printf("Retorno crear-room: [%s]\n",buffer);
-        //Si hay ERROR
-        if (strstr(buffer,"ERROR")!=NULL) {
-            DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Error creating room: %s",buffer);
-            return 0;
-        }
-        strcpy(created_room_creator_password,buffer);
+    //printf("Retorno crear-room: [%s]\n",buffer);
+    //Si hay ERROR
+    if (strstr(buffer,"ERROR")!=NULL) {
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Error creating room: %s",buffer);
+        return 0;
+    }
+    strcpy(created_room_creator_password,buffer);
 
-        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Creator password: [%s]",created_room_creator_password);
+    DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Creator password: [%s]",created_room_creator_password);
 
-		//finalizar conexion
-        z_sock_close_connection(indice_socket);
+    //finalizar conexion
+    z_sock_close_connection(indice_socket);
 
     zeng_online_room_was_created.v=1;
 
@@ -2326,8 +2259,6 @@ void *zeng_online_client_create_room_function(void *nada GCC_UNUSED)
 		return 0;
 	}
 
-
-	//zeng_enabled.v=1;
 
 
 	zeng_online_client_create_room_thread_running=0;
@@ -2365,53 +2296,48 @@ char *zoc_send_snapshot_mem_hexa=NULL;
 int zoc_send_snapshot(int indice_socket)
 {
 	//Enviar snapshot cada 20*250=5000 ms->5 segundos
-		DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"ZENG Online Client: Sending snapshot");
+    DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"ZENG Online Client: Sending snapshot");
 
-		int posicion_command;
-		int escritos,leidos;
-
-
-        char buffer_comando[200];
-        //printf ("Sending put-snapshot\n");
-        //put-snapshot creator_pass n data
-        sprintf(buffer_comando,"zeng-online put-snapshot %s %d ",created_room_creator_password,zeng_online_joined_to_room_number);
-
-        //printf("Sending command: [%s]\n",buffer_comando);
-
-        escritos=z_sock_write_string(indice_socket,buffer_comando);
-        //printf("after z_sock_write_string 1\n");
-        if (escritos<0) return escritos;
+    int posicion_command;
+    int escritos,leidos;
 
 
-        //TODO esto es ineficiente y que tiene que calcular la longitud. hacer otra z_sock_write sin tener que calcular
-        //printf("before z_sock_write_string 2\n");
-        //printf("Sending snapshot data length: %lu\n",strlen(zoc_send_snapshot_mem_hexa));
-        //printf("First bytes of snapshot: %c%c%c%c\n",
-          //  zoc_send_snapshot_mem_hexa[0],zoc_send_snapshot_mem_hexa[1],zoc_send_snapshot_mem_hexa[2],zoc_send_snapshot_mem_hexa[3]);
+    char buffer_comando[200];
+    //printf ("Sending put-snapshot\n");
+    //put-snapshot creator_pass n data
+    sprintf(buffer_comando,"zeng-online put-snapshot %s %d ",created_room_creator_password,zeng_online_joined_to_room_number);
 
-        escritos=z_sock_write_string(indice_socket,zoc_send_snapshot_mem_hexa);
-        //printf("after z_sock_write_string 2\n");
+    //printf("Sending command: [%s]\n",buffer_comando);
+
+    escritos=z_sock_write_string(indice_socket,buffer_comando);
+    //printf("after z_sock_write_string 1\n");
+    if (escritos<0) return escritos;
 
 
 
-        if (escritos<0) return escritos;
+    escritos=z_sock_write_string(indice_socket,zoc_send_snapshot_mem_hexa);
+    //printf("after z_sock_write_string 2\n");
 
 
 
-        z80_byte buffer[200];
-        //buffer[0]=0; //temp para tener buffer limpio
-        //Leer hasta prompt
-        //printf("before zsock_read_all_until_command\n");
-        leidos=zsock_read_all_until_command(indice_socket,buffer,199,&posicion_command);
-        //printf("after zsock_read_all_until_command\n");
+    if (escritos<0) return escritos;
 
-                if (posicion_command>=1) {
-                    buffer[posicion_command-1]=0;
-                    //DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Received text: %s",zoc_get_snapshot_mem_hexa);
-                }
 
-        //printf("Recibido respuesta despues de put-snapshot: [%s]\n",buffer);
-        return leidos;
+
+    z80_byte buffer[200];
+    //buffer[0]=0; //temp para tener buffer limpio
+    //Leer hasta prompt
+    //printf("before zsock_read_all_until_command\n");
+    leidos=zsock_read_all_until_command(indice_socket,buffer,199,&posicion_command);
+    //printf("after zsock_read_all_until_command\n");
+
+    if (posicion_command>=1) {
+        buffer[posicion_command-1]=0;
+        //DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Received text: %s",zoc_get_snapshot_mem_hexa);
+    }
+
+    //printf("Recibido respuesta despues de put-snapshot: [%s]\n",buffer);
+    return leidos;
 
 
 }
@@ -2422,48 +2348,48 @@ char *zoc_send_streaming_display_mem_hexa[2]={NULL,NULL};
 int zoc_send_streaming_display(int indice_socket,int slot)
 {
 
-		DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"ZENG Online Client: Sending streaming_display");
+    DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"ZENG Online Client: Sending streaming_display");
 
-		int posicion_command;
-		int escritos,leidos;
-
-
-        char buffer_comando[200];
-        //printf ("Sending put-streaming_display\n");
-        //streaming-put-display creator_pass n s data
-        sprintf(buffer_comando,"zeng-online streaming-put-display %s %d %d ",created_room_creator_password,zeng_online_joined_to_room_number,slot);
-
-        //printf("Sending command: [%s]\n",buffer_comando);
-
-        escritos=z_sock_write_string(indice_socket,buffer_comando);
-        //printf("after z_sock_write_string 1\n");
-        if (escritos<0) return escritos;
+    int posicion_command;
+    int escritos,leidos;
 
 
+    char buffer_comando[200];
+    //printf ("Sending put-streaming_display\n");
+    //streaming-put-display creator_pass n s data
+    sprintf(buffer_comando,"zeng-online streaming-put-display %s %d %d ",created_room_creator_password,zeng_online_joined_to_room_number,slot);
 
-        escritos=z_sock_write_string(indice_socket,zoc_send_streaming_display_mem_hexa[slot]);
-        //printf("after z_sock_write_string 2\n");
+    //printf("Sending command: [%s]\n",buffer_comando);
+
+    escritos=z_sock_write_string(indice_socket,buffer_comando);
+    //printf("after z_sock_write_string 1\n");
+    if (escritos<0) return escritos;
 
 
 
-        if (escritos<0) return escritos;
+    escritos=z_sock_write_string(indice_socket,zoc_send_streaming_display_mem_hexa[slot]);
+    //printf("after z_sock_write_string 2\n");
 
 
 
-        z80_byte buffer[200];
-        //buffer[0]=0; //temp para tener buffer limpio
-        //Leer hasta prompt
-        //printf("before zsock_read_all_until_command\n");
-        leidos=zsock_read_all_until_command(indice_socket,buffer,199,&posicion_command);
-        //printf("after zsock_read_all_until_command\n");
+    if (escritos<0) return escritos;
 
-                if (posicion_command>=1) {
-                    buffer[posicion_command-1]=0;
-                    //DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Received text: %s",zoc_get_streaming_display_mem_hexa);
-                }
 
-        //printf("Recibido respuesta despues de put-streaming_display: [%s]\n",buffer);
-        return leidos;
+
+    z80_byte buffer[200];
+    //buffer[0]=0; //temp para tener buffer limpio
+    //Leer hasta prompt
+    //printf("before zsock_read_all_until_command\n");
+    leidos=zsock_read_all_until_command(indice_socket,buffer,199,&posicion_command);
+    //printf("after zsock_read_all_until_command\n");
+
+    if (posicion_command>=1) {
+        buffer[posicion_command-1]=0;
+        //DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Received text: %s",zoc_get_streaming_display_mem_hexa);
+    }
+
+    //printf("Recibido respuesta despues de put-streaming_display: [%s]\n",buffer);
+    return leidos;
 
 
 }
@@ -2475,52 +2401,51 @@ int zoc_master_pending_send_streaming_audio=0;
 int zoc_send_streaming_audio(int indice_socket)
 {
 
-		DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"ZENG Online Client: Sending streaming_audio");
+    DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"ZENG Online Client: Sending streaming_audio");
 
-		int posicion_command;
-		int escritos,leidos;
-
-
-        char buffer_comando[200];
-        //printf ("Sending put-streaming_display\n");
-        //"streaming-put-audio creator_pass n data
-        sprintf(buffer_comando,"zeng-online streaming-put-audio %s %d ",created_room_creator_password,zeng_online_joined_to_room_number );
-
-        //printf("Sending command: [%s]\n",buffer_comando);
-
-        escritos=z_sock_write_string(indice_socket,buffer_comando);
-        //printf("after z_sock_write_string 1\n");
-        if (escritos<0) return escritos;
+    int posicion_command;
+    int escritos,leidos;
 
 
+    char buffer_comando[200];
+    //printf ("Sending put-streaming_display\n");
+    //"streaming-put-audio creator_pass n data
+    sprintf(buffer_comando,"zeng-online streaming-put-audio %s %d ",created_room_creator_password,zeng_online_joined_to_room_number );
 
-        escritos=z_sock_write_string(indice_socket,zoc_send_streaming_audio_mem_hexa);
-        //printf("after z_sock_write_string 2\n");
+    //printf("Sending command: [%s]\n",buffer_comando);
+
+    escritos=z_sock_write_string(indice_socket,buffer_comando);
+    //printf("after z_sock_write_string 1\n");
+    if (escritos<0) return escritos;
 
 
 
-        if (escritos<0) return escritos;
+    escritos=z_sock_write_string(indice_socket,zoc_send_streaming_audio_mem_hexa);
+    //printf("after z_sock_write_string 2\n");
 
 
 
-        z80_byte buffer[200];
-        //buffer[0]=0; //temp para tener buffer limpio
-        //Leer hasta prompt
-        //printf("before zsock_read_all_until_command\n");
-        leidos=zsock_read_all_until_command(indice_socket,buffer,199,&posicion_command);
-        //printf("after zsock_read_all_until_command\n");
-
-        if (posicion_command>=1) {
-            buffer[posicion_command-1]=0;
-            //DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Received text: %s",zoc_get_streaming_display_mem_hexa);
-        }
+    if (escritos<0) return escritos;
 
 
-        return leidos;
+
+    z80_byte buffer[200];
+    //buffer[0]=0; //temp para tener buffer limpio
+    //Leer hasta prompt
+    //printf("before zsock_read_all_until_command\n");
+    leidos=zsock_read_all_until_command(indice_socket,buffer,199,&posicion_command);
+    //printf("after zsock_read_all_until_command\n");
+
+    if (posicion_command>=1) {
+        buffer[posicion_command-1]=0;
+        //DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Received text: %s",zoc_get_streaming_display_mem_hexa);
+    }
+
+
+    return leidos;
 
 
 }
-
 
 
 
@@ -2544,152 +2469,152 @@ void zoc_get_keys(int indice_socket)
 
 
 
-        //Ir leyendo cada linea
-        //buffer suficientemente grande por si llegan varios eventos de golpe
-        char buffer[1024];
+    //Ir leyendo cada linea
+    //buffer suficientemente grande por si llegan varios eventos de golpe
+    char buffer[1024];
 
-        //Leer hasta prompt
-        int posicion_command;
+    //Leer hasta prompt
+    int posicion_command;
 
-        //printf ("antes de leer hasta command prompt\n");
-        int leidos=zsock_read_all_until_newline(indice_socket,(z80_byte *)buffer,1023,&posicion_command);
-        //printf("leidos on zoc_get_keys: %d\n",leidos);
+    //printf ("antes de leer hasta command prompt\n");
+    int leidos=zsock_read_all_until_newline(indice_socket,(z80_byte *)buffer,1023,&posicion_command);
+    //printf("leidos on zoc_get_keys: %d\n",leidos);
 
-        if (leidos>0) {
-            buffer[leidos]=0; //fin de texto
-            //printf("Received text after get-keys: (length: %d):\n[\n%s\n]\n",leidos,buffer);
-        }
+    if (leidos>0) {
+        buffer[leidos]=0; //fin de texto
+        //printf("Received text after get-keys: (length: %d):\n[\n%s\n]\n",leidos,buffer);
+    }
 
-        if (leidos<0) {
-            DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't read remote prompt: %s",z_sock_get_error(leidos));
-            //TODO return -1;
-        }
+    if (leidos<0) {
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't read remote prompt: %s",z_sock_get_error(leidos));
+        //TODO return -1;
+    }
 
-        //Ir leyendo a cada final de linea
-        int i;
-        int inicio_linea=0;
+    //Ir leyendo a cada final de linea
+    int i;
+    int inicio_linea=0;
 
-        for (i=0;buffer[i];i++) {
-            if (buffer[i]=='\n') {
-                //Lo cambiamos a fin de cadena con 0
-                buffer[i]=0;
-                //printf("procesar linea: [%s]\n",&buffer[inicio_linea]);
-                ////Returned format is: uuid key event nomenu"
+    for (i=0;buffer[i];i++) {
+        if (buffer[i]=='\n') {
+            //Lo cambiamos a fin de cadena con 0
+            buffer[i]=0;
+            //printf("procesar linea: [%s]\n",&buffer[inicio_linea]);
+            ////Returned format is: uuid key event nomenu"
 
-                //campo_inicio y final almacenan el caracter "#"
+            //campo_inicio y final almacenan el caracter "#"
 
-                //La longitud de los campos casi ninguno deberia exceder mas de 4 o 5 caracteres,
-                //pero que dado que podemos haber recibido una respuesta parcial (si la anterior llamada a zsock_read_all_until_newline
-                //no era completa) los campos pueden haber llegado en mal orden y por tanto tendremos que considerar el maximo
-                //ancho de todos los campos, que es STATS_UUID_MAX_LENGTH
-                char campo_inicio[STATS_UUID_MAX_LENGTH+1];
-                char campo_final[STATS_UUID_MAX_LENGTH+1];
+            //La longitud de los campos casi ninguno deberia exceder mas de 4 o 5 caracteres,
+            //pero que dado que podemos haber recibido una respuesta parcial (si la anterior llamada a zsock_read_all_until_newline
+            //no era completa) los campos pueden haber llegado en mal orden y por tanto tendremos que considerar el maximo
+            //ancho de todos los campos, que es STATS_UUID_MAX_LENGTH
+            char campo_inicio[STATS_UUID_MAX_LENGTH+1];
+            char campo_final[STATS_UUID_MAX_LENGTH+1];
 
-                char received_uuid[STATS_UUID_MAX_LENGTH+1];
-                char received_key[STATS_UUID_MAX_LENGTH+1];
-                char received_event[STATS_UUID_MAX_LENGTH+1];
-                char received_nomenu[STATS_UUID_MAX_LENGTH+1];
-                //ir procesando segun espacios
-                int campos_leidos=0;
+            char received_uuid[STATS_UUID_MAX_LENGTH+1];
+            char received_key[STATS_UUID_MAX_LENGTH+1];
+            char received_event[STATS_UUID_MAX_LENGTH+1];
+            char received_nomenu[STATS_UUID_MAX_LENGTH+1];
+            //ir procesando segun espacios
+            int campos_leidos=0;
 
-                int j;
-                int inicio_campo=inicio_linea;
-                for (j=inicio_linea;buffer[j] && campos_leidos<6;j++) {
-                    if (buffer[j]==' ') {
-                        buffer[j]=0;
-                        //printf("read field: campos_leidos: %d\n",campos_leidos);
-                        //printf("read field: [%s]\n",&buffer[inicio_campo]);
+            int j;
+            int inicio_campo=inicio_linea;
+            for (j=inicio_linea;buffer[j] && campos_leidos<6;j++) {
+                if (buffer[j]==' ') {
+                    buffer[j]=0;
+                    //printf("read field: campos_leidos: %d\n",campos_leidos);
+                    //printf("read field: [%s]\n",&buffer[inicio_campo]);
 
-                        switch(campos_leidos) {
-                            case 0:
-                                strcpy(campo_inicio,&buffer[inicio_campo]);
-                            break;
+                    switch(campos_leidos) {
+                        case 0:
+                            strcpy(campo_inicio,&buffer[inicio_campo]);
+                        break;
 
-                            case 1:
-                                strcpy(received_uuid,&buffer[inicio_campo]);
-                            break;
+                        case 1:
+                            strcpy(received_uuid,&buffer[inicio_campo]);
+                        break;
 
-                            case 2:
-                                strcpy(received_key,&buffer[inicio_campo]);
-                            break;
+                        case 2:
+                            strcpy(received_key,&buffer[inicio_campo]);
+                        break;
 
-                            case 3:
-                                strcpy(received_event,&buffer[inicio_campo]);
-                            break;
+                        case 3:
+                            strcpy(received_event,&buffer[inicio_campo]);
+                        break;
 
-                            case 4:
-                                strcpy(received_nomenu,&buffer[inicio_campo]);
-                            break;
-                        }
-
-                        campos_leidos++;
-                        inicio_campo=j+1;
+                        case 4:
+                            strcpy(received_nomenu,&buffer[inicio_campo]);
+                        break;
                     }
+
+                    campos_leidos++;
+                    inicio_campo=j+1;
                 }
+            }
 
-                //campo final?
-                if (campos_leidos==5) {
-                    //printf("read last field: [%s]\n",&buffer[inicio_campo]);
-                    strcpy(campo_final,&buffer[inicio_campo]);
+            //campo final?
+            if (campos_leidos==5) {
+                //printf("read last field: [%s]\n",&buffer[inicio_campo]);
+                strcpy(campo_final,&buffer[inicio_campo]);
 
-                    //printf("Received event: uuid: [%s] key: [%s] event: [%s] nomenu: [%s]\n",
-                      //  received_uuid,received_key,received_event,received_nomenu);
+                //printf("Received event: uuid: [%s] key: [%s] event: [%s] nomenu: [%s]\n",
+                    //  received_uuid,received_key,received_event,received_nomenu);
 
-                    //Validar que empiece y acabe con "#"
-                    int valido=0;
+                //Validar que empiece y acabe con "#"
+                int valido=0;
 
-                    if (!strcmp(campo_inicio,"#") && !strcmp(campo_final,"#")) valido=1;
+                if (!strcmp(campo_inicio,"#") && !strcmp(campo_final,"#")) valido=1;
 
-                    if (!valido) {
-                        //printf("linea no valida\n");
+                if (!valido) {
+                    //printf("linea no valida\n");
+                }
+                else {
+
+                    //Si uuid yo soy mismo, no procesarlo
+                    if (!strcmp(received_uuid,stats_uuid)) {
+                        //printf("The event is mine. Do not process it\n");
                     }
                     else {
+                        int numero_key=parse_string_to_number(received_key);
+                        int numero_event=parse_string_to_number(received_event);
+                        int numero_nomenu=parse_string_to_number(received_nomenu);
 
-                        //Si uuid yo soy mismo, no procesarlo
-                        if (!strcmp(received_uuid,stats_uuid)) {
-                            //printf("The event is mine. Do not process it\n");
-                        }
-                        else {
-                            int numero_key=parse_string_to_number(received_key);
-                            int numero_event=parse_string_to_number(received_event);
-                            int numero_nomenu=parse_string_to_number(received_nomenu);
-
-                            int enviar=1;
-                            if (numero_nomenu && menu_abierto) enviar=0;
+                        int enviar=1;
+                        if (numero_nomenu && menu_abierto) enviar=0;
 
 
-                            //Enviar la tecla pero que no vuelva a entrar por zeng
-                            if (enviar) {
-                                DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"ZENG Online Client: Processing from ZRCP command send-keys-event: key %d event %d",numero_key,numero_event);
-                                //printf ("Processing from ZRCP command send-keys-event: key %d event %d\n",numero_key,numero_event);
+                        //Enviar la tecla pero que no vuelva a entrar por zeng
+                        if (enviar) {
+                            DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"ZENG Online Client: Processing from ZRCP command send-keys-event: key %d event %d",numero_key,numero_event);
+                            //printf ("Processing from ZRCP command send-keys-event: key %d event %d\n",numero_key,numero_event);
 
-                                DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"ZENG Online Client: Info joystick: fire: %d up: %d down: %d left: %d right: %d",
-                                    UTIL_KEY_JOY_FIRE,UTIL_KEY_JOY_UP,UTIL_KEY_JOY_DOWN,UTIL_KEY_JOY_LEFT,UTIL_KEY_JOY_RIGHT);
+                            DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"ZENG Online Client: Info joystick: fire: %d up: %d down: %d left: %d right: %d",
+                                UTIL_KEY_JOY_FIRE,UTIL_KEY_JOY_UP,UTIL_KEY_JOY_DOWN,UTIL_KEY_JOY_LEFT,UTIL_KEY_JOY_RIGHT);
 
-                                //Si tecla especial de reset todas teclas. usado en driver curses
-                                if (numero_key==UTIL_KEY_RESET_ALL) {
-                                    //printf("Reset todas teclas\n");
-                                    reset_keyboard_ports();
-                                }
+                            //Si tecla especial de reset todas teclas. usado en driver curses
+                            if (numero_key==UTIL_KEY_RESET_ALL) {
+                                //printf("Reset todas teclas\n");
+                                reset_keyboard_ports();
+                            }
 
-                                else {
-                                    //printf("Recibida tecla desde zeng online. Antes Puerto puerto_61438: %d\n",puerto_61438);
-                                    util_set_reset_key_continue_after_zeng(numero_key,numero_event);
-                                    //printf("Recibida tecla desde zeng online. Despues Puerto puerto_61438: %d\n",puerto_61438);
-                                }
+                            else {
+                                //printf("Recibida tecla desde zeng online. Antes Puerto puerto_61438: %d\n",puerto_61438);
+                                util_set_reset_key_continue_after_zeng(numero_key,numero_event);
+                                //printf("Recibida tecla desde zeng online. Despues Puerto puerto_61438: %d\n",puerto_61438);
                             }
                         }
                     }
                 }
-
-                else {
-                    DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Received answer for get_keys with invalid number of fields");
-                }
-
-
-                inicio_linea=i+1;
             }
+
+            else {
+                DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Received answer for get_keys with invalid number of fields");
+            }
+
+
+            inicio_linea=i+1;
         }
+    }
 
 }
 
@@ -2729,7 +2654,6 @@ int zoc_get_stream_audio_continuous(int indice_socket)
     }
 
 
-
     //printf("--Obteniendo stream audio remoto %d\n",contador_segundo);
 
 
@@ -2739,15 +2663,8 @@ int zoc_get_stream_audio_continuous(int indice_socket)
     char *zoc_get_audio_mem_hexa=util_malloc(max_stream_continuo,"Can not allocate memory for getting audio");
 
 
-    //Leer hasta prompt
-    //printf("before zsock_read_all_until_command\n");
-    //leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)zoc_get_audio_mem_hexa,ZOC_STREAMING_AUDIO_BUFFER_SIZE*2+100,&posicion_command);
 
-
-
-    //printf ("antes de leer hasta command prompt\n");
     leidos=zsock_read_all_until_newline_streamaudio(indice_socket,(z80_byte *)zoc_get_audio_mem_hexa,max_stream_continuo);
-    //printf("leidos on zoc_get_keys: %d\n",leidos);
 
 
 
@@ -2868,7 +2785,7 @@ int zoc_start_connection_get_keys(void)
         return 0;
     }
 
-        int posicion_command;
+    int posicion_command;
 
 #define ZENG_BUFFER_INITIAL_CONNECT 199
 
@@ -2897,7 +2814,6 @@ int zoc_start_connection_get_keys(void)
    char buffer_comando[256];
 
 
-
     ////command> zo get-keys OCAAYKWGYA 0
 
     sprintf(buffer_comando,"zeng-online get-keys %s %d\n",
@@ -2908,15 +2824,13 @@ int zoc_start_connection_get_keys(void)
 
 
 
-   //Si ha habido error al escribir en socket
+    //Si ha habido error al escribir en socket
     if (escritos<0) {
         //TODO return escritos;
     }
 
 
     else {
-
-
 
         //printf ("before read command sending get-keys on zoc_start_connection_get_keys\n");
         //1 segundo maximo de reintentos
@@ -2957,7 +2871,7 @@ int zoc_start_connection_get_stream_audio(void)
         return 0;
     }
 
-        int posicion_command;
+    int posicion_command;
 
 #define ZENG_BUFFER_INITIAL_CONNECT 199
 
@@ -2976,10 +2890,6 @@ int zoc_start_connection_get_stream_audio(void)
         DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't read remote prompt: %s",z_sock_get_error(leidos));
         return 0;
     }
-
-    //bucle continuo de leer teclas de remoto
-    //TODO: ver posible manera de salir de aqui??
-    //int error_desconectar=0;
 
 
 
@@ -3003,8 +2913,6 @@ int zoc_start_connection_get_stream_audio(void)
 
 
     else {
-
-
 
         //printf ("before read command sending get-keys on streaming-get-audio-cont\n");
         //1 segundo maximo de reintentos
@@ -3106,7 +3014,6 @@ int zoc_keys_tecla_repetida(zeng_key_presses *elemento)
 
 
 
-
 int zoc_keys_send_pending(int indice_socket,int *enviada_alguna_tecla)
 {
 
@@ -3121,9 +3028,9 @@ int zoc_keys_send_pending(int indice_socket,int *enviada_alguna_tecla)
     int tamanyo_cola=zeng_fifo_get_current_size();
 
 
-        //if (tamanyo_cola) {
-            //printf("Tamanyo fifo antes enviar a remote: %d\n",tamanyo_cola);
-        //}
+    //if (tamanyo_cola) {
+        //printf("Tamanyo fifo antes enviar a remote: %d\n",tamanyo_cola);
+    //}
 
     while (tamanyo_cola>0 && !error_desconectar) {
         if (!zeng_fifo_read_element(&elemento)) {
@@ -3170,87 +3077,87 @@ int zoc_get_pending_authorization_size(int indice_socket)
 
 
 
-                #define ZENG_BUFFER_INITIAL_CONNECT 199
+    #define ZENG_BUFFER_INITIAL_CONNECT 199
 
-                //Leer algo
-                char buffer[ZENG_BUFFER_INITIAL_CONNECT+1];
+    //Leer algo
+    char buffer[ZENG_BUFFER_INITIAL_CONNECT+1];
 
-                //zo get-join-queue-size LPBPPHZPXV 0
+    //zo get-join-queue-size LPBPPHZPXV 0
 
-                sprintf(buffer_comando,"zeng-online get-join-queue-size %s %d\n",created_room_creator_password,zeng_online_joined_to_room_number);
-                escritos=z_sock_write_string(indice_socket,buffer_comando);
-                //printf("after z_sock_write_string 1\n");
-                if (escritos<0) return escritos;
+    sprintf(buffer_comando,"zeng-online get-join-queue-size %s %d\n",created_room_creator_password,zeng_online_joined_to_room_number);
+    escritos=z_sock_write_string(indice_socket,buffer_comando);
+    //printf("after z_sock_write_string 1\n");
+    if (escritos<0) return escritos;
 
-                //Leer hasta prompt
-                //printf("before zsock_read_all_until_command\n");
-                leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)buffer,ZENG_BUFFER_INITIAL_CONNECT,&posicion_command);
+    //Leer hasta prompt
+    //printf("before zsock_read_all_until_command\n");
+    leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)buffer,ZENG_BUFFER_INITIAL_CONNECT,&posicion_command);
 
-                if (leidos>0) {
-                    buffer[leidos]=0; //fin de texto
-                    DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"ZENG Online Client: Received text for get-join-queue-size (length %d)",leidos);
-                    //printf("ZENG: Received text for get-join-queue-size (length %d): \n[\n%s\n]\n",leidos,buffer);
-                }
+    if (leidos>0) {
+        buffer[leidos]=0; //fin de texto
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"ZENG Online Client: Received text for get-join-queue-size (length %d)",leidos);
+        //printf("ZENG: Received text for get-join-queue-size (length %d): \n[\n%s\n]\n",leidos,buffer);
+    }
 
-                if (leidos<0) {
-                    DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't receive get-join-queue-size: %s",z_sock_get_error(leidos));
-                    return 0;
-                }
-
-
-                //printf("after zsock_read_all_until_command\n");
-                //printf("Recibido respuesta despues de get-snapshot-id: [%s]\n",buffer);
-
-                //1 mas para eliminar el salto de linea anterior a "command>"
-                if (posicion_command>=1) {
-                    buffer[posicion_command-1]=0;
-                    //DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Received text: %s",zoc_get_snapshot_mem_hexa);
-                }
-                else {
-                    DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Error receiving ZEsarUX get-join-queue-size");
-                    return 0;
-                }
-
-                //printf("Recibido respuesta despues de truncar: [%s]\n",buffer);
-
-                //int leer_snap=0;
-
-                //Detectar si error
-                if (strstr(buffer,"ERROR")!=NULL) {
-                    DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Error getting get-join-queue-size");
-                }
-                else {
-                    //Ver si id diferente
-                    int queue_size=parse_string_to_number(buffer);
-                    //printf("Waiting room queue size: %d\n",queue_size);
-
-                    if (queue_size) {
-
-                        if (queue_size!=zoc_get_pending_authorization_size_last_queue_size) {
-                            //Escribir en footer solo cuando valor anterior cambia
-                            //TODO quiza habria que usar algun tipo de bloqueo para esto
+    if (leidos<0) {
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't receive get-join-queue-size: %s",z_sock_get_error(leidos));
+        return 0;
+    }
 
 
-                            zoc_get_pending_authorization_size_last_queue_size=queue_size-1;
+    //printf("after zsock_read_all_until_command\n");
+    //printf("Recibido respuesta despues de get-snapshot-id: [%s]\n",buffer);
 
-                            //Y lo mostramos en el footer
-                            char mensaje[AUTOSELECTOPTIONS_MAX_FOOTER_LENGTH+ZOC_MAX_NICKNAME_LENGTH+1];
+    //1 mas para eliminar el salto de linea anterior a "command>"
+    if (posicion_command>=1) {
+        buffer[posicion_command-1]=0;
+        //DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Received text: %s",zoc_get_snapshot_mem_hexa);
+    }
+    else {
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Error receiving ZEsarUX get-join-queue-size");
+        return 0;
+    }
 
-                            sprintf(mensaje,"ZOC clients waiting on room");
+    //printf("Recibido respuesta despues de truncar: [%s]\n",buffer);
 
-                            //Por si acaso truncar al maximo que permite el footer
-                            mensaje[AUTOSELECTOPTIONS_MAX_FOOTER_LENGTH]=0;
+    //int leer_snap=0;
 
-                            put_footer_first_message(mensaje);
+    //Detectar si error
+    if (strstr(buffer,"ERROR")!=NULL) {
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Error getting get-join-queue-size");
+    }
+    else {
+        //Ver si id diferente
+        int queue_size=parse_string_to_number(buffer);
+        //printf("Waiting room queue size: %d\n",queue_size);
 
-                            //Y enviarlo a speech
-                            textspeech_print_speech(mensaje);
+        if (queue_size) {
 
-                        }
+            if (queue_size!=zoc_get_pending_authorization_size_last_queue_size) {
+                //Escribir en footer solo cuando valor anterior cambia
+                //TODO quiza habria que usar algun tipo de bloqueo para esto
 
 
-                    }
-                }
+                zoc_get_pending_authorization_size_last_queue_size=queue_size-1;
+
+                //Y lo mostramos en el footer
+                char mensaje[AUTOSELECTOPTIONS_MAX_FOOTER_LENGTH+ZOC_MAX_NICKNAME_LENGTH+1];
+
+                sprintf(mensaje,"ZOC clients waiting on room");
+
+                //Por si acaso truncar al maximo que permite el footer
+                mensaje[AUTOSELECTOPTIONS_MAX_FOOTER_LENGTH]=0;
+
+                put_footer_first_message(mensaje);
+
+                //Y enviarlo a speech
+                textspeech_print_speech(mensaje);
+
+            }
+
+
+        }
+    }
 
 
     return 1;
@@ -3372,7 +3279,7 @@ void *zoc_master_thread_function(void *nada GCC_UNUSED)
         return 0;
     }
 
-        int posicion_command;
+    int posicion_command;
 
 #define ZENG_BUFFER_INITIAL_CONNECT 199
 
@@ -3441,7 +3348,7 @@ void *zoc_master_thread_function(void *nada GCC_UNUSED)
 
                         //Enviado. Avisar no pendiente
                         zoc_pending_send_streaming_display=0;
-                        //zeng_online_client_reset_scanline_counter();
+
                         //printf("streaming_display sent\n");
                     }
 
@@ -3508,8 +3415,6 @@ void *zoc_master_thread_function(void *nada GCC_UNUSED)
                 zoc_get_keys(indice_socket_get_keys);
             }
 
-            //printf("Contador scanline: %d\n",zeng_online_scanline_counter);
-
 
 
 
@@ -3539,8 +3444,6 @@ void *zoc_master_thread_function(void *nada GCC_UNUSED)
 void *zoc_master_thread_function_stream_audio(void *nada GCC_UNUSED)
 {
 
-
-    //zeng_remote_list_rooms_buffer[0]=0;
 
     char server[NETWORK_MAX_URL+1];
     int puerto;
@@ -3577,12 +3480,10 @@ void *zoc_master_thread_function_stream_audio(void *nada GCC_UNUSED)
     }
 
 
-    //bucle continuo de si hay snapshot de final de frame, enviarlo a remoto
-    //TODO: ver posible manera de salir de aqui??
     while (1) {
 
         if (created_room_streaming_mode) {
-            //printf("Modo streaming. Escribimos display en vez de snapshot\n");
+
 
             if (created_room_user_permissions & ZENG_ONLINE_PERMISSIONS_PUT_AUDIO) {
 
@@ -3633,291 +3534,270 @@ int zoc_receive_snapshot(int indice_socket)
 
     char buffer_comando[200];
 
-    //while (1) {
 
-            if (!zoc_pending_apply_received_snapshot) {
 
-                #define ZENG_BUFFER_INITIAL_CONNECT 199
+    if (!zoc_pending_apply_received_snapshot) {
 
-                //Leer algo
-                char buffer[ZENG_BUFFER_INITIAL_CONNECT+1];
+        #define ZENG_BUFFER_INITIAL_CONNECT 199
 
-                //Ver si el id de snapshot ha cambiado
+        //Leer algo
+        char buffer[ZENG_BUFFER_INITIAL_CONNECT+1];
 
-                sprintf(buffer_comando,"zeng-online get-snapshot-id %s %d\n",created_room_user_password,zeng_online_joined_to_room_number);
-                escritos=z_sock_write_string(indice_socket,buffer_comando);
-                //printf("after z_sock_write_string 1\n");
-                if (escritos<0) return escritos;
+        //Ver si el id de snapshot ha cambiado
 
-                //Leer hasta prompt
-                //printf("before zsock_read_all_until_command\n");
-                leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)buffer,ZENG_BUFFER_INITIAL_CONNECT,&posicion_command);
+        sprintf(buffer_comando,"zeng-online get-snapshot-id %s %d\n",created_room_user_password,zeng_online_joined_to_room_number);
+        escritos=z_sock_write_string(indice_socket,buffer_comando);
+        //printf("after z_sock_write_string 1\n");
+        if (escritos<0) return escritos;
 
-                if (leidos>0) {
-                    buffer[leidos]=0; //fin de texto
-                    //DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Received text for get-snapshot-id (length %d): \n[\n%s\n]",leidos,buffer);
-                }
+        //Leer hasta prompt
+        //printf("before zsock_read_all_until_command\n");
+        leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)buffer,ZENG_BUFFER_INITIAL_CONNECT,&posicion_command);
 
-                if (leidos<0) {
-                    DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't receive get-snapshot-id: %s",z_sock_get_error(leidos));
-                    return 0;
-                }
+        if (leidos>0) {
+            buffer[leidos]=0; //fin de texto
+            //DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Received text for get-snapshot-id (length %d): \n[\n%s\n]",leidos,buffer);
+        }
 
+        if (leidos<0) {
+            DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't receive get-snapshot-id: %s",z_sock_get_error(leidos));
+            return 0;
+        }
 
-                //printf("after zsock_read_all_until_command\n");
-                //printf("Recibido respuesta despues de get-snapshot-id: [%s]\n",buffer);
 
-                //1 mas para eliminar el salto de linea anterior a "command>"
-                if (posicion_command>=1) {
-                    buffer[posicion_command-1]=0;
-                    //DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Received text: %s",zoc_get_snapshot_mem_hexa);
-                }
-                else {
-                    DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Error receiving ZEsarUX get-snapshot-id");
-                    return 0;
-                }
+        //printf("after zsock_read_all_until_command\n");
+        //printf("Recibido respuesta despues de get-snapshot-id: [%s]\n",buffer);
 
-                //printf("Recibido respuesta despues de truncar: [%s]\n",buffer);
-
-                int leer_snap=0;
-
-                //Detectar si error
-                if (strstr(buffer,"ERROR")!=NULL) {
-                    DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Error getting snapshot-id");
-                }
-                else {
-                    //Ver si id diferente
-                    //printf("snapshot id: %s\n",buffer);
-
-                    int nuevo_id=parse_string_to_number(buffer);
-                    if (nuevo_id!=zoc_receive_snapshot_last_id) {
-                        zeng_online_snapshot_diff=nuevo_id-zoc_receive_snapshot_last_id;
-                        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"ZENG Online Client: Snapshot id difference from last snapshot: %d",zeng_online_snapshot_diff);
-
-                        zeng_online_snapshot_diff_media=(zeng_online_snapshot_diff+zeng_online_snapshot_diff_media)/2;
-
-                        int alertar_diferencia=10;
-
-                        //si no es zip lo habitual es que haya mayor diferencia
-                        //aunque bueno... 10 snapshots de retraso es mucho,
-                        //aunque no sea zip, pero para no alertar continuamente cuando no es zip,
-                        //porque es lo habitual, que sea mas de 10 para no zip y conexion contra servidor remoto
-                        //Lo normal es que el master esté enviando siempre con compresión zip, a no ser que alguien
-                        //lo quiera desactivar por alguna razón que no se me ocurre ahora...
-                        if (!zoc_ultimo_snapshot_recibido_es_zip) alertar_diferencia=20;
-
-                        //Si han pasado mas de 10 snapshots, avisar con "algo" el el footer
-                        if (zeng_online_snapshot_diff>alertar_diferencia) {
-                            if (zeng_online_show_footer_lag_indicator.v) {
-                                generic_footertext_print_operating("LAG");
-                            }
-                        }
-
-                        zoc_receive_snapshot_last_id=nuevo_id;
-                        leer_snap=1;
-                    }
-                    else {
-                        //printf("Snapshot es el mismo que el anterior\n");
-                    }
-                }
-
-
-
-                if (leer_snap) {
-
-                    //printf("Obteniendo snapshot\n");
-
-                    //printf("antes enviar get-snaps\n");
-                    //get-snapshot user_pass n
-                    sprintf(buffer_comando,"zeng-online get-snapshot %s %d\n",created_room_user_password,zeng_online_joined_to_room_number);
-                    escritos=z_sock_write_string(indice_socket,buffer_comando);
-                    //printf("after z_sock_write_string 1\n");
-                    if (escritos<0) return escritos;
-
-                    //int sock=get_socket_number(indice_socket);
-
-
-                    //printf("despues enviar get-snaps\n");
-
-
-
-            //Ver si hay datos disponibles y no esta pendiente aplicar ultimo snapshot
-
-                    if (zoc_get_snapshot_mem_hexa==NULL) {
-                        zoc_get_snapshot_mem_hexa=util_malloc(ZRCP_GET_PUT_SNAPSHOT_MEM*2,"Can not allocate memory for getting snapshot"); //16 MB es mas que suficiente
-                    }
-
-                    //Leer hasta prompt
-                    //printf("before zsock_read_all_until_command\n");
-                    leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)zoc_get_snapshot_mem_hexa,ZRCP_GET_PUT_SNAPSHOT_MEM*2,&posicion_command);
-
-                    //printf("leidos despues de get-snapshot: %d\n",leidos);
-
-
-                    if (leidos>0) {
-                        zoc_get_snapshot_mem_hexa[leidos]=0; //fin de texto
-                        //DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Received text for get-snapshot (length %d): \n[\n%s\n]",leidos,zoc_get_snapshot_mem_hexa);
-                    }
-
-                    if (leidos<0) {
-                        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't receive get-snapshot: %s",z_sock_get_error(leidos));
-                        return 0;
-                    }
-
-
-                    //printf("after zsock_read_all_until_command\n");
-                   // printf("Recibido respuesta despues de get-snapshot: [%s]\n",zoc_get_snapshot_mem_hexa);
-
-                    //1 mas para eliminar el salto de linea anterior a "command>"
-                    if (posicion_command>=1) {
-                        zoc_get_snapshot_mem_hexa[posicion_command-1]=0;
-                        //DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Received text: %s",zoc_get_snapshot_mem_hexa);
-                    }
-                    else {
-                        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Error receiving ZEsarUX zeng-online get-snapshot");
-                        return 0;
-                    }
-
-                    //printf("Recibido respuesta despues de truncar: [%s]\n",zoc_get_snapshot_mem_hexa);
-
-                    //Nos quedamos con la respuesta hasta el ultimo
-                    //Es decir, si en get-snapshot el server remoto nos ha dejado en cola 2, 3 o mas snapshots, estamos pillando el ultimo
-                    //Recordemos que lo envia de manera continua con saltos de linea despues de cada uno de ellos
-                    //TODO: esto esta MAL. Hay que escoger el que tiene el ultimo salto de linea
-                    //int i;
-
-                    /*int inicio_datos_snapshot=0;
-                    //int leidos_saltos_linea=0;
-
-                    for (i=0;i<leidos;i++) {
-                        if (zoc_get_snapshot_mem_hexa[i]=='\n') {
-                            //Y quitar ese salto de linea, si es el final no queremos que se procese
-                            zoc_get_snapshot_mem_hexa[i]=0;
-
-                            //Si hay algo mas despues del salto de linea
-                            if (i!=leidos-1) inicio_datos_snapshot=i+1;
-                        }
-                    }
-                    */
-
-                    //printf("Buffer despues de truncar: [%s]\n",&zoc_get_snapshot_mem_hexa[inicio_datos_snapshot]);
-
-                    //TODO: detectar texto ERROR en respuesta
-                    //return leidos;
-
-                    //Convertir hexa a memoria
-                    if (zoc_get_snapshot_mem_binary_comprimido==NULL) {
-                        zoc_get_snapshot_mem_binary_comprimido=util_malloc(ZRCP_GET_PUT_SNAPSHOT_MEM*2,"Can not allocate memory for apply snapshot");
-                    }
-
-
-                    char *s=zoc_get_snapshot_mem_hexa;
-                    int parametros_recibidos=0;
-
-                    /*
-                    z80_byte valor;
-
-
-                    while (*s) {
-                        char buffer_valor[4];
-                        buffer_valor[0]=s[0];
-                        buffer_valor[1]=s[1];
-                        buffer_valor[2]='H';
-                        buffer_valor[3]=0;
-                        //printf ("%s\n",buffer_valor);
-                        valor=parse_string_to_number(buffer_valor);
-                        //printf ("valor: %d\n",valor);
-
-                        zoc_get_snapshot_mem_binary_comprimido[parametros_recibidos++]=valor;
-                        //menu_debug_write_mapped_byte(direccion++,valor);
-
-                        s++;
-                        if (*s) s++;
-                    }*/
-
-                    z80_byte *destino;
-                    destino=zoc_get_snapshot_mem_binary_comprimido;
-
-                    while (*s) {
-                        *destino=(util_hex_nibble_to_byte(*s)<<4) | util_hex_nibble_to_byte(*(s+1));
-                        destino++;
-
-                        parametros_recibidos++;
-
-                        s++;
-                        if (*s) s++;
-                    }
-
-
-                    int zoc_get_snapshot_mem_binary_longitud_comprimido=parametros_recibidos;
-
-                    //"PK" = 50 4b
-                    //printf("Firma ZIP: %02XH %02XH\n",zoc_get_snapshot_mem_binary_comprimido[0],zoc_get_snapshot_mem_binary_comprimido[1]);
-
-                    zoc_ultimo_snapshot_recibido_es_zip=0;
-
-                    if (zoc_get_snapshot_mem_binary_longitud_comprimido>1) {
-                        if (zoc_get_snapshot_mem_binary_comprimido[0]==0x50 &&
-                            zoc_get_snapshot_mem_binary_comprimido[1]==0x4b) {
-                            zoc_ultimo_snapshot_recibido_es_zip=1;
-                        }
-                    }
-
-
-                    if (zoc_ultimo_snapshot_recibido_es_zip) {
-                        //Descomprimir zip
-                        //printf("Es snapshot comprimido\n");
-                        //calcular el tiempo en descomprimirlo
-
-
-                        //calcular tiempo que tarda en descomprimir
-
-                        timer_stats_current_time(&zeng_online_uncompress_time_antes);
-
-
-                        zoc_get_snapshot_mem_binary=util_uncompress_memory_zip(zoc_get_snapshot_mem_binary_comprimido,
-                            zoc_get_snapshot_mem_binary_longitud_comprimido,&zoc_get_snapshot_mem_binary_longitud,"snapshot.zsf");
-
-                        zeng_online_uncompress_difftime=timer_stats_diference_time(&zeng_online_uncompress_time_antes,&zeng_online_uncompress_time_despues);
-
-                        //media de tiempo.
-                        zeng_online_uncompress_media=(zeng_online_uncompress_media+zeng_online_uncompress_difftime)/2;
-
-                        //printf("Tiempo en descomprimir: %ld us\n",zeng_online_uncompress_difftime);
-
-                        //solo liberamos en este caso que hay el espacio comprimido
-                        free(zoc_get_snapshot_mem_binary_comprimido);
-                    }
-
-                    else {
-                        //printf("No es snapshot comprimido\n");
-                        //aqui no haremos free dado que no existe compresion y entonces
-                        //zoc_get_snapshot_mem_binary y zoc_get_snapshot_mem_binary_comprimido apuntan al mismo sitio
-                        //ya se liberara desde zoc_get_snapshot_mem_binary_comprimido al aplicar el snapshot
-                        zoc_get_snapshot_mem_binary=zoc_get_snapshot_mem_binary_comprimido;
-                        zoc_get_snapshot_mem_binary_longitud=zoc_get_snapshot_mem_binary_longitud_comprimido;
-
-                    }
-
-
-                    zoc_get_snapshot_mem_binary_comprimido=NULL;
-
-                    //printf("Apply snapshot. Compressed %d Uncompressed %d\n",zoc_get_snapshot_mem_binary_longitud_comprimido,zoc_get_snapshot_mem_binary_longitud);
-
-                    zoc_pending_apply_received_snapshot=1;
-
-                }
-
+        //1 mas para eliminar el salto de linea anterior a "command>"
+        if (posicion_command>=1) {
+            buffer[posicion_command-1]=0;
+            //DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Received text: %s",zoc_get_snapshot_mem_hexa);
         }
         else {
-            //printf("get-snapshot no disponible. esperar\n");
+            DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Error receiving ZEsarUX get-snapshot-id");
+            return 0;
+        }
+
+        //printf("Recibido respuesta despues de truncar: [%s]\n",buffer);
+
+        int leer_snap=0;
+
+        //Detectar si error
+        if (strstr(buffer,"ERROR")!=NULL) {
+            DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Error getting snapshot-id");
+        }
+        else {
+            //Ver si id diferente
+            //printf("snapshot id: %s\n",buffer);
+
+            int nuevo_id=parse_string_to_number(buffer);
+            if (nuevo_id!=zoc_receive_snapshot_last_id) {
+                zeng_online_snapshot_diff=nuevo_id-zoc_receive_snapshot_last_id;
+                DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"ZENG Online Client: Snapshot id difference from last snapshot: %d",zeng_online_snapshot_diff);
+
+                zeng_online_snapshot_diff_media=(zeng_online_snapshot_diff+zeng_online_snapshot_diff_media)/2;
+
+                int alertar_diferencia=10;
+
+                //si no es zip lo habitual es que haya mayor diferencia
+                //aunque bueno... 10 snapshots de retraso es mucho,
+                //aunque no sea zip, pero para no alertar continuamente cuando no es zip,
+                //porque es lo habitual, que sea mas de 10 para no zip y conexion contra servidor remoto
+                //Lo normal es que el master esté enviando siempre con compresión zip, a no ser que alguien
+                //lo quiera desactivar por alguna razón que no se me ocurre ahora...
+                if (!zoc_ultimo_snapshot_recibido_es_zip) alertar_diferencia=20;
+
+                //Si han pasado mas de 10 snapshots, avisar con "algo" el el footer
+                if (zeng_online_snapshot_diff>alertar_diferencia) {
+                    if (zeng_online_show_footer_lag_indicator.v) {
+                        generic_footertext_print_operating("LAG");
+                    }
+                }
+
+                zoc_receive_snapshot_last_id=nuevo_id;
+                leer_snap=1;
+            }
+            else {
+                //printf("Snapshot es el mismo que el anterior\n");
+            }
+        }
+
+
+
+        if (leer_snap) {
+
+            //printf("Obteniendo snapshot\n");
+
+            //printf("antes enviar get-snaps\n");
+            //get-snapshot user_pass n
+            sprintf(buffer_comando,"zeng-online get-snapshot %s %d\n",created_room_user_password,zeng_online_joined_to_room_number);
+            escritos=z_sock_write_string(indice_socket,buffer_comando);
+            //printf("after z_sock_write_string 1\n");
+            if (escritos<0) return escritos;
+
+
+
+
+            //printf("despues enviar get-snaps\n");
+
+
+
+    //Ver si hay datos disponibles y no esta pendiente aplicar ultimo snapshot
+
+            if (zoc_get_snapshot_mem_hexa==NULL) {
+                zoc_get_snapshot_mem_hexa=util_malloc(ZRCP_GET_PUT_SNAPSHOT_MEM*2,"Can not allocate memory for getting snapshot"); //16 MB es mas que suficiente
+            }
+
+            //Leer hasta prompt
+            //printf("before zsock_read_all_until_command\n");
+            leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)zoc_get_snapshot_mem_hexa,ZRCP_GET_PUT_SNAPSHOT_MEM*2,&posicion_command);
+
+            //printf("leidos despues de get-snapshot: %d\n",leidos);
+
+
+            if (leidos>0) {
+                zoc_get_snapshot_mem_hexa[leidos]=0; //fin de texto
+                //DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Received text for get-snapshot (length %d): \n[\n%s\n]",leidos,zoc_get_snapshot_mem_hexa);
+            }
+
+            if (leidos<0) {
+                DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't receive get-snapshot: %s",z_sock_get_error(leidos));
+                return 0;
+            }
+
+
+            //printf("after zsock_read_all_until_command\n");
+            // printf("Recibido respuesta despues de get-snapshot: [%s]\n",zoc_get_snapshot_mem_hexa);
+
+            //1 mas para eliminar el salto de linea anterior a "command>"
+            if (posicion_command>=1) {
+                zoc_get_snapshot_mem_hexa[posicion_command-1]=0;
+                //DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Received text: %s",zoc_get_snapshot_mem_hexa);
+            }
+            else {
+                DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Error receiving ZEsarUX zeng-online get-snapshot");
+                return 0;
+            }
+
+            //printf("Recibido respuesta despues de truncar: [%s]\n",zoc_get_snapshot_mem_hexa);
+
+            //Nos quedamos con la respuesta hasta el ultimo
+            //Es decir, si en get-snapshot el server remoto nos ha dejado en cola 2, 3 o mas snapshots, estamos pillando el ultimo
+            //Recordemos que lo envia de manera continua con saltos de linea despues de cada uno de ellos
+            //TODO: esto esta MAL. Hay que escoger el que tiene el ultimo salto de linea
+            //int i;
+
+            /*int inicio_datos_snapshot=0;
+            //int leidos_saltos_linea=0;
+
+            for (i=0;i<leidos;i++) {
+                if (zoc_get_snapshot_mem_hexa[i]=='\n') {
+                    //Y quitar ese salto de linea, si es el final no queremos que se procese
+                    zoc_get_snapshot_mem_hexa[i]=0;
+
+                    //Si hay algo mas despues del salto de linea
+                    if (i!=leidos-1) inicio_datos_snapshot=i+1;
+                }
+            }
+            */
+
+            //printf("Buffer despues de truncar: [%s]\n",&zoc_get_snapshot_mem_hexa[inicio_datos_snapshot]);
+
+            //TODO: detectar texto ERROR en respuesta
+            //return leidos;
+
+            //Convertir hexa a memoria
+            if (zoc_get_snapshot_mem_binary_comprimido==NULL) {
+                zoc_get_snapshot_mem_binary_comprimido=util_malloc(ZRCP_GET_PUT_SNAPSHOT_MEM*2,"Can not allocate memory for apply snapshot");
+            }
+
+
+            char *s=zoc_get_snapshot_mem_hexa;
+            int parametros_recibidos=0;
+
+
+
+            z80_byte *destino;
+            destino=zoc_get_snapshot_mem_binary_comprimido;
+
+            //Uso util_hex_nibble_to_byte porque es mas rapido que no andar haciendo parse_string_to_number a string de cada byte
+            while (*s) {
+                *destino=(util_hex_nibble_to_byte(*s)<<4) | util_hex_nibble_to_byte(*(s+1));
+                destino++;
+
+                parametros_recibidos++;
+
+                s++;
+                if (*s) s++;
+            }
+
+
+            int zoc_get_snapshot_mem_binary_longitud_comprimido=parametros_recibidos;
+
+            //"PK" = 50 4b
+            //printf("Firma ZIP: %02XH %02XH\n",zoc_get_snapshot_mem_binary_comprimido[0],zoc_get_snapshot_mem_binary_comprimido[1]);
+
+            zoc_ultimo_snapshot_recibido_es_zip=0;
+
+            if (zoc_get_snapshot_mem_binary_longitud_comprimido>1) {
+                if (zoc_get_snapshot_mem_binary_comprimido[0]==0x50 &&
+                    zoc_get_snapshot_mem_binary_comprimido[1]==0x4b) {
+                    zoc_ultimo_snapshot_recibido_es_zip=1;
+                }
+            }
+
+
+            if (zoc_ultimo_snapshot_recibido_es_zip) {
+                //Descomprimir zip
+                //printf("Es snapshot comprimido\n");
+                //calcular el tiempo en descomprimirlo
+
+
+                //calcular tiempo que tarda en descomprimir
+
+                timer_stats_current_time(&zeng_online_uncompress_time_antes);
+
+
+                zoc_get_snapshot_mem_binary=util_uncompress_memory_zip(zoc_get_snapshot_mem_binary_comprimido,
+                    zoc_get_snapshot_mem_binary_longitud_comprimido,&zoc_get_snapshot_mem_binary_longitud,"snapshot.zsf");
+
+                zeng_online_uncompress_difftime=timer_stats_diference_time(&zeng_online_uncompress_time_antes,&zeng_online_uncompress_time_despues);
+
+                //media de tiempo.
+                zeng_online_uncompress_media=(zeng_online_uncompress_media+zeng_online_uncompress_difftime)/2;
+
+                //printf("Tiempo en descomprimir: %ld us\n",zeng_online_uncompress_difftime);
+
+                //solo liberamos en este caso que hay el espacio comprimido
+                free(zoc_get_snapshot_mem_binary_comprimido);
+            }
+
+            else {
+                //printf("No es snapshot comprimido\n");
+                //aqui no haremos free dado que no existe compresion y entonces
+                //zoc_get_snapshot_mem_binary y zoc_get_snapshot_mem_binary_comprimido apuntan al mismo sitio
+                //ya se liberara desde zoc_get_snapshot_mem_binary_comprimido al aplicar el snapshot
+                zoc_get_snapshot_mem_binary=zoc_get_snapshot_mem_binary_comprimido;
+                zoc_get_snapshot_mem_binary_longitud=zoc_get_snapshot_mem_binary_longitud_comprimido;
+
+            }
+
+
+            zoc_get_snapshot_mem_binary_comprimido=NULL;
+
+            //printf("Apply snapshot. Compressed %d Uncompressed %d\n",zoc_get_snapshot_mem_binary_longitud_comprimido,zoc_get_snapshot_mem_binary_longitud);
+
+            zoc_pending_apply_received_snapshot=1;
 
         }
 
-        //Esperar algo. 10 ms, suficiente porque es un mitad de frame
-        //usleep(10000); //dormir 10 ms
+    }
+    else {
+        //printf("get-snapshot no disponible. esperar\n");
 
-    //}
+    }
+
+
 
     DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"ZENG Online Client: End Receiving snapshot");
     return 1;
@@ -4047,13 +3927,10 @@ int zoc_receive_streaming_display(int indice_socket,int slot)
 
     }
 
-    //Esperar algo. 10 ms, suficiente porque es un mitad de frame
-    //usleep(10000); //dormir 10 ms
 
-//}
 
-DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"ZENG Online Client: End Receiving streaming_display");
-return 1;
+    DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"ZENG Online Client: End Receiving streaming_display");
+    return 1;
 
 
 }
@@ -4287,7 +4164,7 @@ void *zoc_slave_thread_function(void *nada GCC_UNUSED)
     //Inicializar timeout para no recibir tempranos mensajes de "OFFLINE"
     zoc_last_snapshot_received_counter=ZOC_TIMEOUT_NO_SNAPSHOT;
 
-    //zeng_remote_list_rooms_buffer[0]=0;
+
 
     char server[NETWORK_MAX_URL+1];
     int puerto;
@@ -4302,7 +4179,7 @@ void *zoc_slave_thread_function(void *nada GCC_UNUSED)
         return 0;
     }
 
-        int posicion_command;
+    int posicion_command;
 
 #define ZENG_BUFFER_INITIAL_CONNECT 199
 
@@ -4331,10 +4208,7 @@ void *zoc_slave_thread_function(void *nada GCC_UNUSED)
 
     //int indice_socket_get_stream_audio=zoc_start_connection_get_stream_audio();
 
-    //bucle continuo de recepcion snapshot
-    //TODO: ver posible manera de salir de aqui??
 
-    //int temppppp=0;
 
     while (1) {
 
@@ -4367,7 +4241,7 @@ void *zoc_slave_thread_function(void *nada GCC_UNUSED)
                             zoc_slave_differential_displays_counter++;
                         }
 
-                        //sleep(1);
+
 
                         int error=zoc_receive_streaming_display(indice_socket,slot);
                         //TODO gestionar bien este error
@@ -4378,7 +4252,7 @@ void *zoc_slave_thread_function(void *nada GCC_UNUSED)
                         }
 
                         else {
-                            //sleep(1);
+
                             //Ver si la pantalla recibida era al final una completa
                             if (zoc_get_streaming_display_mem_binary!=NULL) {
                                 //printf("Recibida pantalla longitud %d\n",zoc_get_streaming_display_mem_binary_longitud);
@@ -4487,9 +4361,6 @@ void *zoc_slave_thread_function(void *nada GCC_UNUSED)
 
 
 
-            //printf("siguiente segundo. contador_segundo=%d. temppppp=%d\n",contador_segundo,temppppp++);
-
-
         }
 
         //TODO este parametro configurable
@@ -4500,8 +4371,6 @@ void *zoc_slave_thread_function(void *nada GCC_UNUSED)
 	return 0;
 
 }
-
-
 
 
 
@@ -4557,8 +4426,6 @@ void *zoc_slave_thread_function_stream_audio(void *nada GCC_UNUSED)
 
 
 
-
-
 int zoc_start_connection_get_snapshot(void)
 {
     //conectar a remoto
@@ -4578,7 +4445,7 @@ int zoc_start_connection_get_snapshot(void)
         return -1;
     }
 
-        int posicion_command;
+    int posicion_command;
 
 #define ZENG_BUFFER_INITIAL_CONNECT 199
 
@@ -4635,12 +4502,7 @@ void zeng_online_client_apply_pending_received_snapshot(void)
     free(zoc_get_snapshot_mem_binary);
     zoc_get_snapshot_mem_binary=NULL;
 
-/*
-#ifdef ZENG_ONLINE_USE_ZIP_SNAPSHOT
-    free(zoc_get_snapshot_mem_binary_comprimido);
-#endif
-    zoc_get_snapshot_mem_binary_comprimido=NULL;
-*/
+
 
     zoc_pending_apply_received_snapshot=0;
 
@@ -4818,8 +4680,6 @@ void zoc_stop_slave_thread(void)
 
 
 
-
-
 void zeng_online_client_prepare_snapshot_if_needed(void)
 {
 
@@ -4831,128 +4691,128 @@ void zeng_online_client_prepare_snapshot_if_needed(void)
 
 
 		if (zoc_contador_envio_snapshot>=zoc_frames_video_cada_snapshot && !zoc_rejoining_as_master) {
-                zoc_contador_envio_snapshot=0;
-				//Si esta el anterior snapshot aun pendiente de enviar
-				if (zoc_pending_send_snapshot) {
-                    zoc_snapshots_not_sent++;
-					DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"ZENG Online Client: Last snapshot has not been sent yet. Total unsent: %d",zoc_snapshots_not_sent);
+            zoc_contador_envio_snapshot=0;
+            //Si esta el anterior snapshot aun pendiente de enviar
+            if (zoc_pending_send_snapshot) {
+                zoc_snapshots_not_sent++;
+                DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"ZENG Online Client: Last snapshot has not been sent yet. Total unsent: %d",zoc_snapshots_not_sent);
 
-                    //Si llegado a un limite, reconectar. Suele suceder con ZENG en slave windows
-                    //Sucede que se queda la operacion de send a socket que no acaba
-                    /*
-                    Aun con esto, parece que a veces va enviando snapshots pero el remoto no parece procesarlos,
-                    con lo que aqui lo da como bueno y no incrementa el contador de retries
-                    */
+                //Si llegado a un limite, reconectar. Suele suceder con ZENG en slave windows
+                //Sucede que se queda la operacion de send a socket que no acaba
+                /*
+                Aun con esto, parece que a veces va enviando snapshots pero el remoto no parece procesarlos,
+                con lo que aqui lo da como bueno y no incrementa el contador de retries
+                */
 
-                   //TODO
-                   /*
-                    if (zeng_force_reconnect_failed_retries.v) {
-                        if (zoc_snapshots_not_sent>=3*50) { //Si pasan mas de 3 segundos y no ha enviado aun el ultimo snapshot
-                            DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_INFO,"ZENG Online Client: ZENG: Forcing reconnect");
-                            //printf("Before forcing ZENG reconnect\n");
-                            zeng_force_reconnect();
-                            //printf("After forcing ZENG reconnect\n");
-                        }
+                //TODO
+                /*
+                if (zeng_force_reconnect_failed_retries.v) {
+                    if (zoc_snapshots_not_sent>=3*50) { //Si pasan mas de 3 segundos y no ha enviado aun el ultimo snapshot
+                        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_INFO,"ZENG Online Client: ZENG: Forcing reconnect");
+                        //printf("Before forcing ZENG reconnect\n");
+                        zeng_force_reconnect();
+                        //printf("After forcing ZENG reconnect\n");
                     }
-                    */
-				}
-				else {
-                    zoc_snapshots_not_sent=0;
+                }
+                */
+            }
+            else {
+                zoc_snapshots_not_sent=0;
 
-					//zona de memoria donde se guarda el snapshot pero sin pasar a hexa. y sin comprimir zip
-					z80_byte *buffer_temp_sin_comprimir;
-					buffer_temp_sin_comprimir=malloc(ZRCP_GET_PUT_SNAPSHOT_MEM); //16 MB es mas que suficiente
+                //zona de memoria donde se guarda el snapshot pero sin pasar a hexa. y sin comprimir zip
+                z80_byte *buffer_temp_sin_comprimir;
+                buffer_temp_sin_comprimir=malloc(ZRCP_GET_PUT_SNAPSHOT_MEM); //16 MB es mas que suficiente
 
-					if (buffer_temp_sin_comprimir==NULL) cpu_panic("Can not allocate memory for sending snapshot");
+                if (buffer_temp_sin_comprimir==NULL) cpu_panic("Can not allocate memory for sending snapshot");
 
-					int longitud_sin_comprimir;
+                int longitud_sin_comprimir;
 
-                    //La compresion nativa del zsf (repeticiones de bytes) la forzamos siempre activa
-                    int antes_zsf_force_uncompressed=zsf_force_uncompressed;
-                    zsf_force_uncompressed=0;
+                //La compresion nativa del zsf (repeticiones de bytes) la forzamos siempre activa
+                int antes_zsf_force_uncompressed=zsf_force_uncompressed;
+                zsf_force_uncompressed=0;
 
-  					save_zsf_snapshot_file_mem(NULL,buffer_temp_sin_comprimir,&longitud_sin_comprimir,1);
+                save_zsf_snapshot_file_mem(NULL,buffer_temp_sin_comprimir,&longitud_sin_comprimir,1);
 
-                    zsf_force_uncompressed=antes_zsf_force_uncompressed;
+                zsf_force_uncompressed=antes_zsf_force_uncompressed;
 
-                    int longitud;
-                    z80_byte *buffer_temp;
+                int longitud;
+                z80_byte *buffer_temp;
 
-                    //Obtener copia de la variable por si se modifica el setting (cosa muy improbable) antes de la segunda vez de usar el setting
-                    int comprimir_zip=zeng_online_zip_compress_snapshots.v;
+                //Obtener copia de la variable por si se modifica el setting (cosa muy improbable) antes de la segunda vez de usar el setting
+                int comprimir_zip=zeng_online_zip_compress_snapshots.v;
 
-                    if (comprimir_zip) {
+                if (comprimir_zip) {
 
-                        timer_stats_current_time(&zeng_online_compress_time_antes);
+                    timer_stats_current_time(&zeng_online_compress_time_antes);
 
-                        //Comprimir a zip
-                        buffer_temp=util_compress_memory_zip(buffer_temp_sin_comprimir,longitud_sin_comprimir,
-                                        &longitud,"snapshot.zsf");
+                    //Comprimir a zip
+                    buffer_temp=util_compress_memory_zip(buffer_temp_sin_comprimir,longitud_sin_comprimir,
+                                    &longitud,"snapshot.zsf");
 
-                        zeng_online_compress_difftime=timer_stats_diference_time(&zeng_online_compress_time_antes,&zeng_online_compress_time_despues);
+                    zeng_online_compress_difftime=timer_stats_diference_time(&zeng_online_compress_time_antes,&zeng_online_compress_time_despues);
 
-                        //media de tiempo.
-                        zeng_online_compress_media=(zeng_online_compress_media+zeng_online_compress_difftime)/2;
+                    //media de tiempo.
+                    zeng_online_compress_media=(zeng_online_compress_media+zeng_online_compress_difftime)/2;
 
-                    }
+                }
 
-                    else {
-                        buffer_temp=buffer_temp_sin_comprimir;
-                        longitud=longitud_sin_comprimir;
-                    }
-
-
-
-                    //temp_memoria_asignada++;
-                    //printf("Asignada: %d liberada: %d\n",temp_memoria_asignada,temp_memoria_liberada);
-                    //printf("Created snapshot original size %d compressed size %d\n",longitud_sin_comprimir,longitud);
-
-					if (zoc_send_snapshot_mem_hexa==NULL) zoc_send_snapshot_mem_hexa=malloc(ZRCP_GET_PUT_SNAPSHOT_MEM*2); //16 MB es mas que suficiente
-
-					//int char_destino=0;
-
-					int i;
-
-                    z80_byte *origen=buffer_temp;
-                    char *destino=zoc_send_snapshot_mem_hexa;
-                    z80_byte byte_leido;
-
-					for (i=0;i<longitud;i++/*,char_destino +=2*/) {
-                        //En vez de sprintf, que es poco optimo, usar alternativa
-                        //Comparativa: con un snapshot con un di y un jp 16384, tarda
-                        //con sprintf: 116 microsegundos el tiempo mas bajo
-                        //con util_byte_to_hex_nibble: 5 microsegundos el tiempo mas bajo
-						//sprintf (&zoc_send_snapshot_mem_hexa[char_destino],"%02X",buffer_temp[i]);
-                        byte_leido=*origen++;
-                        *destino++=util_byte_to_hex_nibble(byte_leido>>4);
-                        *destino++=util_byte_to_hex_nibble(byte_leido);
-					}
+                else {
+                    buffer_temp=buffer_temp_sin_comprimir;
+                    longitud=longitud_sin_comprimir;
+                }
 
 
 
-					//metemos salto de linea y 0 al final
-					//strcpy (&zoc_send_snapshot_mem_hexa[char_destino],"\n");
-                    *destino++ ='\n';
-                    *destino++ =0;
+
+                //printf("Asignada: %d liberada: %d\n",temp_memoria_asignada,temp_memoria_liberada);
+                //printf("Created snapshot original size %d compressed size %d\n",longitud_sin_comprimir,longitud);
+
+                if (zoc_send_snapshot_mem_hexa==NULL) zoc_send_snapshot_mem_hexa=malloc(ZRCP_GET_PUT_SNAPSHOT_MEM*2); //16 MB es mas que suficiente
 
 
 
-                    //printf ("ZENG Online: Queuing snapshot to send, length: %d\n",longitud);
+                int i;
+
+                z80_byte *origen=buffer_temp;
+                char *destino=zoc_send_snapshot_mem_hexa;
+                z80_byte byte_leido;
+
+                for (i=0;i<longitud;i++/*,char_destino +=2*/) {
+                    //En vez de sprintf, que es poco optimo, usar alternativa
+                    //Comparativa: con un snapshot con un di y un jp 16384, tarda
+                    //con sprintf: 116 microsegundos el tiempo mas bajo
+                    //con util_byte_to_hex_nibble: 5 microsegundos el tiempo mas bajo
+                    //sprintf (&zoc_send_snapshot_mem_hexa[char_destino],"%02X",buffer_temp[i]);
+                    byte_leido=*origen++;
+                    *destino++=util_byte_to_hex_nibble(byte_leido>>4);
+                    *destino++=util_byte_to_hex_nibble(byte_leido);
+                }
 
 
-					//Liberar memoria que ya no se usa
-                    if (comprimir_zip) {
-					    free(buffer_temp);
-                    }
-                    free(buffer_temp_sin_comprimir);
+
+                //metemos salto de linea y 0 al final
+                //strcpy (&zoc_send_snapshot_mem_hexa[char_destino],"\n");
+                *destino++ ='\n';
+                *destino++ =0;
 
 
-					zoc_pending_send_snapshot=1;
 
-                    DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"ZENG Online Client: Queuing snapshot to send, length: %d bytes",longitud);
+                //printf ("ZENG Online: Queuing snapshot to send, length: %d\n",longitud);
 
 
-				}
+                //Liberar memoria que ya no se usa
+                if (comprimir_zip) {
+                    free(buffer_temp);
+                }
+                free(buffer_temp_sin_comprimir);
+
+
+                zoc_pending_send_snapshot=1;
+
+                DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"ZENG Online Client: Queuing snapshot to send, length: %d bytes",longitud);
+
+
+            }
 		}
 	}
 }
@@ -4993,7 +4853,7 @@ int zoc_generate_differential_display(z80_byte *current_screen)
         if (zoc_last_streaming_display[i]!=readed_byte) {
 
             if (bytes_diferentes>=ZOC_STREAM_DISPLAY_SIZE/3) {
-                printf("Excede limite\n");
+                //printf("Excede limite\n");
                 excede_limite=1;
             }
 
@@ -5010,7 +4870,6 @@ int zoc_generate_differential_display(z80_byte *current_screen)
     }
 
     DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"Differential display. Different bytes from previous display: %d",bytes_diferentes);
-
 
 
 
@@ -5052,7 +4911,9 @@ int zoc_get_streaming_display(z80_byte *buffer_temp_sin_comprimir,int force_full
     else {
 
         //Generar pantalla entera porque la diferencial ocupa demasiado
-        if (!force_full_display) printf("Generating full display because differential was big\n");
+        if (!force_full_display) {
+            //printf("Generating full display because differential was big\n");
+        }
 
         longitud_sin_comprimir=ZOC_STREAM_DISPLAY_SIZE;
         buffer_temp_sin_comprimir[0]=0;
@@ -5125,36 +4986,26 @@ void zeng_online_client_prepare_streaming_display_if_needed(void)
 	if (zeng_online_i_am_master.v) {
 
 
-		if (!zoc_rejoining_as_master) {
+    if (!zoc_rejoining_as_master) {
 
-				//Si esta el anterior streaming_display aun pendiente de enviar
-				if (zoc_pending_send_streaming_display) {
-
-
-				}
-				else {
-
-                    /*int force_full_display=0;
-
-                    if (zoc_generated_differential_displays_counter==10) {
-                        zoc_generated_differential_displays_counter=0;
-                        //Generar una pantalla entera cada X diferenciales
-
-                        force_full_display=1;
-                        printf("Forzada pantalla entera\n");
-                    }*/
-
-                    //Slot 0 diferencial
-                    zoc_prepare_streaming_display(0,0);
-
-                    //Slot 1 completo
-                    zoc_prepare_streaming_display(1,1);
-
-					zoc_pending_send_streaming_display=1;
+            //Si esta el anterior streaming_display aun pendiente de enviar
+            if (zoc_pending_send_streaming_display) {
 
 
+            }
+            else {
 
-				}
+
+                //Slot 0 diferencial
+                zoc_prepare_streaming_display(0,0);
+
+                //Slot 1 completo
+                zoc_prepare_streaming_display(1,1);
+
+
+                zoc_pending_send_streaming_display=1;
+
+            }
 		}
 	}
 }
@@ -5187,6 +5038,188 @@ void zec_decrement_differential_display_parameter(void)
     else zoc_slave_differential_displays_limit_full -=5;
 
     if (zoc_slave_differential_displays_limit_full<=0) zoc_slave_differential_displays_limit_full=0;
+}
+
+void zec_autoadjust_differentials_display(void)
+{
+    zoc_slave_differential_displays_limit_full_autoadjust_seconds_counter++;
+
+    if (zoc_slave_differential_displays_limit_full_autoadjust_seconds_counter>=zoc_slave_differential_displays_limit_full_autoadjust_seconds_interval) {
+
+        zoc_slave_differential_displays_limit_full_autoadjust_seconds_counter=0;
+
+        //printf("Autoadjusting differentials. Previous FPS: %d Last FPS: %d Differentials parameter: %d\n",
+        //    zoc_slave_differential_displays_limit_full_previous_fps,zoc_client_streaming_display_fps_last_interval,zoc_slave_differential_displays_limit_full);
+
+
+        //Reseteamos intervalo
+        zoc_client_streaming_display_fps_seconds=0;
+        zoc_client_streaming_display_fps_sum=0;
+
+
+        //Recalcular parametro segun algoritmo
+        /*
+        En momento X cualquiera:
+        -calcular puntuación media durante 1 minuto
+        -calcular puntuación media durante 1 minuto
+
+        Si tenemos 50 fps de media y 0 diferenciales, no hacer nada
+
+        Si fps menor que antes, aumentar diferenciales (si diferenciales no es 50). Buscamos aumentar fps a costa de reducir calidad
+
+
+        Si fps mayor o igual que antes, reducir diferenciales (si diferenciales no es 0). Aumentamos calidad a ver si Fps no se altera mucho
+
+        Calcular también puntuación media del último minuto o 5 minutos y actuar igual
+
+        Los aumentos / decrementos de incrementales quizás van de 5 en 5, no de 1 en 1 que se notaría poco
+
+        */
+
+        //Evitar valor inicial
+        if (zoc_slave_differential_displays_limit_full_previous_fps>=0) {
+
+            //Si 50 fps y diferenciales 0
+            if (zoc_client_streaming_display_fps_last_interval==50 && zoc_slave_differential_displays_limit_full==0) {
+                //printf("50 FPS and 0 differentials. Ideal state. Do nothing\n");
+            }
+            else {
+
+                //Si en estado inicial o de no tocar nada
+                if (autoajuste_diferenciales_estado==0) {
+                    //printf("Estado: 0 inicial o estable\n");
+
+                    if (zoc_client_streaming_display_fps_last_interval<zoc_slave_differential_displays_limit_full_previous_fps) {
+                        //printf("FPS less than before. Increment differentials\n");
+                        zec_increment_differential_display_parameter();
+
+                        autoajuste_diferenciales_estado=1;
+
+                    }
+
+                    if (zoc_client_streaming_display_fps_last_interval>zoc_slave_differential_displays_limit_full_previous_fps) {
+                        //printf("Bigger FPS than before. Reduce differentials\n");
+                        zec_decrement_differential_display_parameter();
+
+                        autoajuste_diferenciales_estado=2;
+                    }
+
+                    //Si no ha variado, probamos a subir si es que no esta en un valor relativamente alto
+                    if (zoc_client_streaming_display_fps_last_interval==zoc_slave_differential_displays_limit_full_previous_fps) {
+
+                        //Si no ha variado, probamos a bajar si es que esta en un valor relativamente alto
+                        //Esto antes , mas prioritario que subir incrementales
+                        if (zoc_slave_differential_displays_limit_full>0) {
+                            //printf("Same FPS than before. Try reducing differentials\n");
+                            zec_decrement_differential_display_parameter();
+
+
+                            autoajuste_diferenciales_estado=2;
+                        }
+
+                        else if (zoc_slave_differential_displays_limit_full<5) {
+                            //de estos solo hacer 1 cada 5 minuto o asi
+                            if (contador_segundo_infinito-ultimo_try_increment_diferenciales_contador_segundo>=5*60*1000) {
+
+                                //printf("Same FPS than before. Try increment differentials\n");
+                                zec_increment_differential_display_parameter();
+
+                                autoajuste_diferenciales_estado=1;
+                                ultimo_try_increment_diferenciales_contador_segundo=contador_segundo_infinito;
+                            }
+
+                            else {
+                                //printf("--Ibamos a hacer un try increment diferenciales pero no ha pasado mas de 1 minuto del anterior: %d\n",
+                                //    contador_segundo_infinito-ultimo_try_increment_diferenciales_contador_segundo);
+                            }
+                        }
+
+
+                    }
+
+                }
+
+                //Si en estado de que hemos incrementado
+                //Si empeora fps, reducir y volvemos a estado 0. Si mejora, aumentar diferenciales
+                else if (autoajuste_diferenciales_estado==1) {
+                    //printf("Estado: 1 de incrementado diferenciales\n");
+                    if (zoc_client_streaming_display_fps_last_interval<zoc_slave_differential_displays_limit_full_previous_fps) {
+                        //printf("FPS less than before. Decrement differentials\n");
+                        zec_decrement_differential_display_parameter();
+
+                        autoajuste_diferenciales_estado=0;
+                    }
+
+                    if (zoc_client_streaming_display_fps_last_interval>zoc_slave_differential_displays_limit_full_previous_fps) {
+                        //printf("Bigger FPS than before. Increment differentials\n");
+
+                        zec_increment_differential_display_parameter();
+
+                        if (zoc_slave_differential_displays_limit_full>=50) {
+
+                            //Estado estable porque hemos llegado al limite
+                            autoajuste_diferenciales_estado=0;
+                        }
+
+                        else {
+                            autoajuste_diferenciales_estado=1;
+                        }
+                    }
+
+                    if (zoc_client_streaming_display_fps_last_interval==zoc_slave_differential_displays_limit_full_previous_fps) {
+                        //printf("Same FPS than before. Reduce differentials and Going to stable state\n");
+                        autoajuste_diferenciales_estado=0;
+
+                        zec_decrement_differential_display_parameter();
+                    }
+                }
+
+                //Si en estado de que hemos decrementado. Estamos buscando mantener fps o mejorarlos
+                //Si empeora fps, aumentar y volvemos a estado 0. Si mejora, disminuir diferenciales
+                else if (autoajuste_diferenciales_estado==2) {
+                    //printf("Estado: 2 de decrementado diferenciales\n");
+                    if (zoc_client_streaming_display_fps_last_interval<zoc_slave_differential_displays_limit_full_previous_fps) {
+                        //printf("FPS less than before. Increment differentials\n");
+
+                        zec_increment_differential_display_parameter();
+
+                        autoajuste_diferenciales_estado=0;
+
+                    }
+
+                    if (zoc_client_streaming_display_fps_last_interval>zoc_slave_differential_displays_limit_full_previous_fps) {
+                        //printf("Same or biggher FPS than before. Decrement differentials\n");
+
+                        zec_decrement_differential_display_parameter();
+                        if (zoc_slave_differential_displays_limit_full<=0) {
+                            //Estado estable porque hemos llegado al limite
+                            autoajuste_diferenciales_estado=0;
+                        }
+                        else {
+                            autoajuste_diferenciales_estado=2;
+                        }
+                    }
+
+                    if (zoc_client_streaming_display_fps_last_interval==zoc_slave_differential_displays_limit_full_previous_fps) {
+                        //printf("Same FPS than before. Going to stable state\n");
+                        autoajuste_diferenciales_estado=0;
+                    }
+                }
+
+                //printf("Estado despues de ajustes: %d\n",autoajuste_diferenciales_estado);
+
+            }
+        }
+
+        //printf("After algorithm autoadjust differentials. Differentials parameter: %d\n",
+        //    zoc_slave_differential_displays_limit_full);
+
+
+
+        zoc_slave_differential_displays_limit_full_previous_fps=zoc_client_streaming_display_fps_last_interval;
+
+    }
+
 }
 
 void zeng_online_client_end_frame_from_core_functions(void)
@@ -5233,186 +5266,9 @@ void zeng_online_client_end_frame_from_core_functions(void)
 
                 //printf("FPS average in the last %d seconds: %d\n",zoc_client_streaming_display_fps_seconds,zoc_client_streaming_display_fps_last_interval);
 
+                //Nota: este algoritmo de autoajuste del parametro de diferenciales es muy mejorable, funciona pero "de aquella manera"
                 if (zoc_slave_differential_displays_limit_full_autoadjust.v) {
-
-
-
-                    zoc_slave_differential_displays_limit_full_autoadjust_seconds_counter++;
-
-                    if (zoc_slave_differential_displays_limit_full_autoadjust_seconds_counter>=zoc_slave_differential_displays_limit_full_autoadjust_seconds_interval) {
-
-                        zoc_slave_differential_displays_limit_full_autoadjust_seconds_counter=0;
-
-                        printf("Autoadjusting differentials. Previous FPS: %d Last FPS: %d Differentials parameter: %d\n",
-                            zoc_slave_differential_displays_limit_full_previous_fps,zoc_client_streaming_display_fps_last_interval,zoc_slave_differential_displays_limit_full);
-
-
-                        //Reseteamos intervalo
-                        zoc_client_streaming_display_fps_seconds=0;
-                        zoc_client_streaming_display_fps_sum=0;
-
-
-                        //Recalcular parametro segun algoritmo
-                        /*
-                        En momento X cualquiera:
-                        -calcular puntuación media durante 1 minuto
-                        -calcular puntuación media durante 1 minuto
-
-                        Si tenemos 50 fps de media y 0 diferenciales, no hacer nada
-
-                        Si fps menor que antes, aumentar diferenciales (si diferenciales no es 50). Buscamos aumentar fps a costa de reducir calidad
-
-
-                        Si fps mayor o igual que antes, reducir diferenciales (si diferenciales no es 0). Aumentamos calidad a ver si Fps no se altera mucho
-
-                        Calcular también puntuación media del último minuto o 5 minutos y actuar igual
-
-                        Los aumentos / decrementos de incrementales quizás van de 5 en 5, no de 1 en 1 que se notaría poco
-
-                        */
-
-                        //Evitar valor inicial
-                        if (zoc_slave_differential_displays_limit_full_previous_fps>=0) {
-
-                            //Si 50 fps y diferenciales 0
-                            if (zoc_client_streaming_display_fps_last_interval==50 && zoc_slave_differential_displays_limit_full==0) {
-                                printf("50 FPS and 0 differentials. Ideal state. Do nothing\n");
-                            }
-                            else {
-
-                                //Si en estado inicial o de no tocar nada
-                                if (autoajuste_diferenciales_estado==0) {
-                                    printf("Estado: 0 inicial o estable\n");
-                                    if (zoc_client_streaming_display_fps_last_interval<zoc_slave_differential_displays_limit_full_previous_fps) {
-                                        printf("FPS less than before. Increment differentials\n");
-                                        zec_increment_differential_display_parameter();
-
-                                        autoajuste_diferenciales_estado=1;
-
-                                    }
-
-                                    if (zoc_client_streaming_display_fps_last_interval>zoc_slave_differential_displays_limit_full_previous_fps) {
-                                        printf("Bigger FPS than before. Reduce differentials\n");
-                                        zec_decrement_differential_display_parameter();
-
-                                        autoajuste_diferenciales_estado=2;
-                                    }
-
-                                    //Si no ha variado, probamos a subir si es que no esta en un valor relativamente alto
-                                    if (zoc_client_streaming_display_fps_last_interval==zoc_slave_differential_displays_limit_full_previous_fps) {
-
-                                        //Si no ha variado, probamos a bajar si es que esta en un valor relativamente alto
-                                        //Esto antes , mas prioritario que subir incrementales
-                                        if (zoc_slave_differential_displays_limit_full>0) {
-                                            printf("Same FPS than before. Try reducing differentials\n");
-                                            zec_decrement_differential_display_parameter();
-
-
-                                            autoajuste_diferenciales_estado=2;
-                                        }
-
-                                        else if (zoc_slave_differential_displays_limit_full<5) {
-                                            //de estos solo hacer 1 cada 5 minuto o asi
-                                            if (contador_segundo_infinito-ultimo_try_increment_diferenciales_contador_segundo>=5*60*1000) {
-
-                                                printf("Same FPS than before. Try increment differentials\n");
-                                                zec_increment_differential_display_parameter();
-
-                                                autoajuste_diferenciales_estado=1;
-                                                ultimo_try_increment_diferenciales_contador_segundo=contador_segundo_infinito;
-                                            }
-
-                                            else {
-                                                printf("--Ibamos a hacer un try increment diferenciales pero no ha pasado mas de 1 minuto del anterior: %d\n",
-                                                    contador_segundo_infinito-ultimo_try_increment_diferenciales_contador_segundo);
-                                            }
-                                        }
-
-
-                                    }
-
-                                }
-
-                                //Si en estado de que hemos incrementado
-                                //Si empeora fps, reducir y volvemos a estado 0. Si mejora, aumentar diferenciales
-                                else if (autoajuste_diferenciales_estado==1) {
-                                    printf("Estado: 1 de incrementado diferenciales\n");
-                                    if (zoc_client_streaming_display_fps_last_interval<zoc_slave_differential_displays_limit_full_previous_fps) {
-                                        printf("FPS less than before. Decrement differentials\n");
-                                        zec_decrement_differential_display_parameter();
-
-                                        autoajuste_diferenciales_estado=0;
-                                    }
-
-                                    if (zoc_client_streaming_display_fps_last_interval>zoc_slave_differential_displays_limit_full_previous_fps) {
-                                        printf("Biggher FPS than before. Increment differentials\n");
-
-                                        zec_increment_differential_display_parameter();
-
-                                        if (zoc_slave_differential_displays_limit_full>=50) {
-
-                                            //Estado estable porque hemos llegado al limite
-                                            autoajuste_diferenciales_estado=0;
-                                        }
-
-                                        else {
-                                            autoajuste_diferenciales_estado=1;
-                                        }
-                                    }
-
-                                    if (zoc_client_streaming_display_fps_last_interval==zoc_slave_differential_displays_limit_full_previous_fps) {
-                                        printf("Same FPS than before. Reduce differentials and Going to stable state\n");
-                                        autoajuste_diferenciales_estado=0;
-
-                                        zec_decrement_differential_display_parameter();
-                                    }
-                                }
-
-                                //Si en estado de que hemos decrementado. Estamos buscando mantener fps o mejorarlos
-                                //Si empeora fps, aumentar y volvemos a estado 0. Si mejora, disminuir diferenciales
-                                else if (autoajuste_diferenciales_estado==2) {
-                                    printf("Estado: 2 de decrementado diferenciales\n");
-                                    if (zoc_client_streaming_display_fps_last_interval<zoc_slave_differential_displays_limit_full_previous_fps) {
-                                        printf("FPS less than before. Increment differentials\n");
-
-                                        zec_increment_differential_display_parameter();
-
-                                        autoajuste_diferenciales_estado=0;
-
-                                    }
-
-                                    if (zoc_client_streaming_display_fps_last_interval>zoc_slave_differential_displays_limit_full_previous_fps) {
-                                        printf("Same or biggher FPS than before. Decrement differentials\n");
-
-                                        zec_decrement_differential_display_parameter();
-                                        if (zoc_slave_differential_displays_limit_full<=0) {
-                                            //Estado estable porque hemos llegado al limite
-                                            autoajuste_diferenciales_estado=0;
-                                        }
-                                        else {
-                                            autoajuste_diferenciales_estado=2;
-                                        }
-                                    }
-
-                                    if (zoc_client_streaming_display_fps_last_interval==zoc_slave_differential_displays_limit_full_previous_fps) {
-                                        printf("Same FPS than before. Going to stable state\n");
-                                        autoajuste_diferenciales_estado=0;
-                                    }
-                                }
-
-                                printf("Estado despues de ajustes: %d\n",autoajuste_diferenciales_estado);
-
-                            }
-                        }
-
-                        printf("After algorithm autoadjust differentials. Differentials parameter: %d\n",
-                            zoc_slave_differential_displays_limit_full);
-
-
-
-                        zoc_slave_differential_displays_limit_full_previous_fps=zoc_client_streaming_display_fps_last_interval;
-
-                    }
+                    zec_autoadjust_differentials_display();
                 }
 
 
