@@ -68,7 +68,9 @@ pthread_t thread_zeng_online_client_list_rooms;
 pthread_t thread_zeng_online_client_create_room;
 pthread_t thread_zeng_online_client_join_room;
 pthread_t thread_zoc_master_thread;
+pthread_t thread_zoc_master_thread_stream_audio;
 pthread_t thread_zoc_slave_thread;
+pthread_t thread_zoc_slave_thread_stream_audio;
 pthread_t thread_zeng_online_client_join_list;
 pthread_t thread_zeng_online_client_authorize_join;
 pthread_t thread_zeng_online_client_leave_room;
@@ -2675,6 +2677,140 @@ void zoc_get_keys(int indice_socket)
 
 }
 
+int zoc_pending_apply_received_streaming_audio=0;
+
+int zoc_last_id_stream_audio=-1;
+
+
+
+z80_byte *zoc_get_audio_mem_binary=NULL;
+
+z80_byte *zoc_get_audio_mem_binary_second_buffer=NULL;
+
+int zoc_get_audio_mem_binary_longitud=0;
+
+int zoc_get_stream_audio_continuous(int indice_socket)
+{
+
+    //printf("Pidiendo stream audio continuo\n");
+
+    int posicion_command;
+    int escritos,leidos;
+
+    //Ver si hay datos disponibles en el socket
+	int sock_number=get_socket_number(indice_socket);
+
+	if (sock_number<0) {
+		return 0;
+	}
+
+    //printf("see if data available on zoc_get_stream_audio_continuous\n");
+
+    if (!zsock_available_data(sock_number)) {
+        //printf("no data available on zoc_get_stream_audio_continuous\n");
+        return 1;
+    }
+
+
+
+    printf("--Obteniendo stream audio remoto %d\n",contador_segundo);
+
+
+    int max_stream_continuo=ZOC_STREAMING_AUDIO_BUFFER_SIZE*2*100;
+
+
+    char *zoc_get_audio_mem_hexa=util_malloc(max_stream_continuo,"Can not allocate memory for getting audio");
+
+
+    //Leer hasta prompt
+    //printf("before zsock_read_all_until_command\n");
+    //leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)zoc_get_audio_mem_hexa,ZOC_STREAMING_AUDIO_BUFFER_SIZE*2+100,&posicion_command);
+
+
+
+    //printf ("antes de leer hasta command prompt\n");
+    leidos=zsock_read_all_until_newline_streamaudio(indice_socket,(z80_byte *)zoc_get_audio_mem_hexa,max_stream_continuo);
+    //printf("leidos on zoc_get_keys: %d\n",leidos);
+
+
+
+    if (leidos>0) {
+        zoc_get_audio_mem_hexa[leidos]=0; //fin de texto
+    }
+
+    if (leidos<0) {
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't receive get-audio: %s",z_sock_get_error(leidos));
+        return 0;
+    }
+
+    //printf("Buffer audio leido: [%s]\n",zoc_get_audio_mem_hexa);
+
+    printf("--Despues obtener audio remoto. posicion_command=%d leidos=%d\n",posicion_command,leidos);
+
+
+
+    //Nota: puede haber una respuesta parcial
+
+    printf("--Fin recepcion obtener audio remoto. %d\n",contador_segundo);
+
+    //printf("Buffer despues de truncar: [%s]\n",&zoc_get_audio_mem_hexa[inicio_datos_snapshot]);
+
+    //TODO: detectar texto ERROR en respuesta
+    //return leidos;
+
+    //Convertir hexa a memoria
+    if (zoc_get_audio_mem_binary==NULL) {
+        zoc_get_audio_mem_binary=util_malloc(ZOC_STREAMING_AUDIO_BUFFER_SIZE,"Can not allocate memory for apply audio");
+    }
+
+
+    char *s=zoc_get_audio_mem_hexa;
+    int parametros_recibidos=0;
+
+
+
+    z80_byte *destino;
+    destino=zoc_get_audio_mem_binary;
+
+    int total_stream_procesado=0;
+
+    //No leer mas de un stream de audio
+    while (*s && total_stream_procesado<ZOC_STREAMING_AUDIO_BUFFER_SIZE && leidos) {
+        *destino=(util_hex_nibble_to_byte(*s)<<4) | util_hex_nibble_to_byte(*(s+1));
+        destino++;
+
+        parametros_recibidos++;
+
+        s++;
+        if (*s) s++;
+
+        total_stream_procesado++;
+
+        leidos--;
+    }
+
+
+    zoc_get_audio_mem_binary_longitud=parametros_recibidos;
+
+    free(zoc_get_audio_mem_hexa);
+
+    if (!zoc_pending_apply_received_streaming_audio) {
+        //copiar el buffer recibido al segundo buffer
+        printf("Copiar el buffer recibido al segundo buffer\n");
+        if (zoc_get_audio_mem_binary_second_buffer==NULL) {
+            zoc_get_audio_mem_binary_second_buffer=util_malloc(ZOC_STREAMING_AUDIO_BUFFER_SIZE,"Can not allocate memory for apply audio");
+        }
+
+        memcpy(zoc_get_audio_mem_binary_second_buffer,zoc_get_audio_mem_binary,ZOC_STREAMING_AUDIO_BUFFER_SIZE);
+        zoc_pending_apply_received_streaming_audio=1;
+    }
+
+    printf("--Fin obtener audio remoto. %d\n",contador_segundo);
+
+    return 1;
+
+}
+
 //Contador desde el ultimo snapshot enviado/recibido, se incrementa con cada scanline
 //int zeng_online_scanline_counter=0;
 
@@ -2772,6 +2908,94 @@ int zoc_start_connection_get_keys(void)
         //sobretodo util en la primera conexion, dado que el buffer vendra vacio, siempre esperara 1 segundo
         int leidos=zsock_read_all_until_command_max_reintentos(indice_socket,(z80_byte *)buffer_initial,ZENG_BUFFER_INITIAL_CONNECT,&posicion_command,100);
         //printf ("after read command sending get-keys on zoc_start_connection_get_keys. leidos=%d\n",leidos);
+
+        if (leidos>0) {
+            buffer_initial[leidos]=0; //fin de texto
+            //printf("Received text after get-keys: (length: %d):\n[\n%s\n]\n",leidos,buffer_initial);
+        }
+
+        if (leidos<0) {
+            DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't read remote prompt: %s",z_sock_get_error(leidos));
+            //TODO return -1;
+        }
+
+
+    }
+
+    return indice_socket;
+
+}
+
+int zoc_start_connection_get_stream_audio(void)
+{
+    //conectar a remoto
+
+    char server[NETWORK_MAX_URL+1];
+    int puerto;
+    puerto=zeng_online_get_server_and_port(server);
+    int indice_socket=z_sock_open_connection(server,puerto,0,"");
+
+    if (indice_socket<0) {
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Error connecting to %s:%d. %s",
+            server,puerto,
+            z_sock_get_error(indice_socket));
+        return 0;
+    }
+
+        int posicion_command;
+
+#define ZENG_BUFFER_INITIAL_CONNECT 199
+
+    //Leer algo
+    char buffer_initial[ZENG_BUFFER_INITIAL_CONNECT+1];
+
+    //int leidos=z_sock_read(indice_socket,buffer,199);
+    int leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)buffer_initial,ZENG_BUFFER_INITIAL_CONNECT,&posicion_command);
+    //printf("leidos on zoc_start_connection_get_keys: %d\n",leidos);
+    if (leidos>0) {
+        buffer_initial[leidos]=0; //fin de texto
+        //printf("Received text on zoc_start_connection_get_keys (length: %d):\n[\n%s\n]\n",leidos,buffer_initial);
+    }
+
+    if (leidos<0) {
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't read remote prompt: %s",z_sock_get_error(leidos));
+        return 0;
+    }
+
+    //bucle continuo de leer teclas de remoto
+    //TODO: ver posible manera de salir de aqui??
+    //int error_desconectar=0;
+
+
+
+   char buffer_comando[256];
+
+
+
+    //streaming-get-audio-cont user_pass n
+    sprintf(buffer_comando,"zeng-online streaming-get-audio-cont %s %d\n",
+        created_room_user_password,zeng_online_joined_to_room_number);
+
+
+    int escritos=z_sock_write_string(indice_socket,buffer_comando);
+
+
+
+   //Si ha habido error al escribir en socket
+    if (escritos<0) {
+        //TODO return escritos;
+    }
+
+
+    else {
+
+
+
+        //printf ("before read command sending get-keys on streaming-get-audio-cont\n");
+        //1 segundo maximo de reintentos
+        //sobretodo util en la primera conexion, dado que el buffer vendra vacio, siempre esperara 1 segundo
+        int leidos=zsock_read_all_until_command_max_reintentos(indice_socket,(z80_byte *)buffer_initial,ZENG_BUFFER_INITIAL_CONNECT,&posicion_command,100);
+        //printf ("after read command sending get-keys on streaming-get-audio-cont. leidos=%d\n",leidos);
 
         if (leidos>0) {
             buffer_initial[leidos]=0; //fin de texto
@@ -3212,7 +3436,9 @@ void *zoc_master_thread_function(void *nada GCC_UNUSED)
 
                     //printf("Putting audio\n");
 
-                    if (zoc_master_pending_send_streaming_audio) {
+                    //Lo hago en otro thread
+
+                    /*if (zoc_master_pending_send_streaming_audio) {
 
                         int error=zoc_send_streaming_audio(indice_socket);
 
@@ -3223,7 +3449,7 @@ void *zoc_master_thread_function(void *nada GCC_UNUSED)
 
 
                         zoc_master_pending_send_streaming_audio=0;
-                    }
+                    }*/
 
                 }
 
@@ -3314,6 +3540,113 @@ void *zoc_master_thread_function(void *nada GCC_UNUSED)
 	return 0;
 
 }
+
+
+void *zoc_master_thread_function_stream_audio(void *nada GCC_UNUSED)
+{
+
+    //conectar a remoto
+    //Inicializar timeout para no recibir tempranos mensajes de "OFFLINE"
+    zoc_last_snapshot_received_counter=ZOC_TIMEOUT_NO_SNAPSHOT;
+
+    //zeng_remote_list_rooms_buffer[0]=0;
+
+    char server[NETWORK_MAX_URL+1];
+    int puerto;
+    puerto=zeng_online_get_server_and_port(server);
+
+    int indice_socket=z_sock_open_connection(server,puerto,0,"");
+
+    int contador_obtener_autorizaciones=0;
+
+    if (indice_socket<0) {
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Error connecting to %s:%d. %s",
+            server,puerto,
+            z_sock_get_error(indice_socket));
+        return 0;
+    }
+
+        int posicion_command;
+
+#define ZENG_BUFFER_INITIAL_CONNECT 199
+
+    //Leer algo
+    char buffer[ZENG_BUFFER_INITIAL_CONNECT+1];
+
+    //int leidos=z_sock_read(indice_socket,buffer,199);
+    int leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)buffer,ZENG_BUFFER_INITIAL_CONNECT,&posicion_command);
+    if (leidos>0) {
+        buffer[leidos]=0; //fin de texto
+        //printf("Received text (length: %d):\n[\n%s\n]\n",leidos,buffer);
+    }
+
+    if (leidos<0) {
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't read remote prompt: %s",z_sock_get_error(leidos));
+        return 0;
+    }
+
+
+    //bucle continuo de si hay snapshot de final de frame, enviarlo a remoto
+    //TODO: ver posible manera de salir de aqui??
+    while (1) {
+
+
+
+            //Nota: un master normal deberia tener todos permisos, sin necesidad de comprobarlos
+            //PERO si queremos un master que solo gestione autorizaciones, cambios de parametros en room, etc,
+            //sin que envie snapshots o reciba teclas o envie teclas, se le pueden quitar dichos permisos,
+            //y podremos gestionar el resto
+
+            //printf("before get snapshot\n");
+
+            //En modo streaming escribimos display en vez de pantalla
+
+            if (created_room_streaming_mode) {
+                //printf("Modo streaming. Escribimos display en vez de snapshot\n");
+
+
+
+                if (created_room_user_permissions & ZENG_ONLINE_PERMISSIONS_PUT_AUDIO) {
+
+
+
+                    if (zoc_master_pending_send_streaming_audio) {
+
+                        printf("Putting audio\n");
+
+                        int error=zoc_send_streaming_audio(indice_socket);
+
+                        if (error<0) {
+                            //TODO
+                            DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Error sending streaming_audio to zeng online server");
+                        }
+
+
+                        zoc_master_pending_send_streaming_audio=0;
+                    }
+
+                }
+
+            }
+
+
+
+
+
+
+
+        //TODO: parametro configurable
+        usleep(100); //0.1 ms (20 ms es un frame de video)
+
+    }
+
+	return 0;
+
+}
+
+//Pruebas
+//int esperar_por_envio_alguna_tecla=0;
+
 
 //Pruebas
 //int esperar_por_envio_alguna_tecla=0;
@@ -3770,17 +4103,7 @@ return 1;
 
 }
 
-int zoc_pending_apply_received_streaming_audio=0;
 
-int zoc_last_id_stream_audio=-1;
-
-
-
-z80_byte *zoc_get_audio_mem_binary=NULL;
-
-z80_byte *zoc_get_audio_mem_binary_second_buffer=NULL;
-
-int zoc_get_audio_mem_binary_longitud=0;
 
 int zoc_receive_streaming_audio(int indice_socket)
 {
@@ -4063,6 +4386,9 @@ void *zoc_slave_thread_function(void *nada GCC_UNUSED)
 
     int indice_socket_get_keys=zoc_start_connection_get_keys();
 
+
+    //int indice_socket_get_stream_audio=zoc_start_connection_get_stream_audio();
+
     //bucle continuo de recepcion snapshot
     //TODO: ver posible manera de salir de aqui??
 
@@ -4149,10 +4475,12 @@ void *zoc_slave_thread_function(void *nada GCC_UNUSED)
                    */
 
 
-                    //if (!zoc_pending_apply_received_streaming_audio) {
-                        zoc_receive_streaming_audio(indice_socket);
-                        //zoc_pending_apply_received_streaming_audio=1;
-                    //}
+                    //Metodo sin stream continuo
+                    //zoc_receive_streaming_audio(indice_socket);
+
+                    //Metodo con stream continuo
+                    //LO hago desde otro thread aparte
+                    //zoc_get_stream_audio_continuous(indice_socket_get_stream_audio);
 
 
                 }
@@ -4234,6 +4562,55 @@ void *zoc_slave_thread_function(void *nada GCC_UNUSED)
 
 
 
+
+
+void *zoc_slave_thread_function_stream_audio(void *nada GCC_UNUSED)
+{
+
+    int indice_socket_get_stream_audio=zoc_start_connection_get_stream_audio();
+    //TODO: gestionar errores
+
+
+    while (1) {
+
+
+        if (created_room_streaming_mode) {
+            //printf("Modo streaming. solo leemos pantalla\n");
+
+
+            if (created_room_user_permissions & ZENG_ONLINE_PERMISSIONS_GET_AUDIO) {
+
+
+                /*
+                Cliente: thread
+
+                Si está aplicado, buscar en el servidor. Preguntar id. Si es mismo id, no traer. Si es diferente, traer y decir que está pendiente aplicar
+
+
+                Si no está aplicado audio aún, no buscar audio al servidor
+                */
+
+
+                //Metodo sin stream continuo
+                //zoc_receive_streaming_audio(indice_socket);
+
+                //Metodo con stream continuo
+                zoc_get_stream_audio_continuous(indice_socket_get_stream_audio);
+
+
+            }
+
+        }
+
+
+        //TODO este parametro configurable
+        usleep(10); //0.01 ms (20 ms es un frame de video)
+
+    }
+
+	return 0;
+
+}
 
 
 
@@ -4450,6 +4827,14 @@ void zoc_start_master_thread(void)
 
 	//y pthread en estado detached asi liberara su memoria asociada a thread al finalizar, sin tener que hacer un pthread_join
 	pthread_detach(thread_zoc_master_thread);
+
+	if (pthread_create( &thread_zoc_master_thread_stream_audio, NULL, &zoc_master_thread_function_stream_audio, NULL) ) {
+		DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Can not create zeng online send snapshot pthread");
+		return;
+	}
+
+	//y pthread en estado detached asi liberara su memoria asociada a thread al finalizar, sin tener que hacer un pthread_join
+	pthread_detach(thread_zoc_master_thread_stream_audio);
 }
 
 //Inicio del thread de slave
@@ -4462,16 +4847,28 @@ void zoc_start_slave_thread(void)
 
 	//y pthread en estado detached asi liberara su memoria asociada a thread al finalizar, sin tener que hacer un pthread_join
 	pthread_detach(thread_zoc_slave_thread);
+
+
+    //Slave thread streaming audio
+	if (pthread_create( &thread_zoc_slave_thread_stream_audio, NULL, &zoc_slave_thread_function_stream_audio, NULL) ) {
+		DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Can not create zeng online send snapshot pthread");
+		return;
+	}
+
+	//y pthread en estado detached asi liberara su memoria asociada a thread al finalizar, sin tener que hacer un pthread_join
+	pthread_detach(thread_zoc_slave_thread_stream_audio);
 }
 
 void zoc_stop_master_thread(void)
 {
     pthread_cancel(thread_zoc_master_thread);
+    pthread_cancel(thread_zoc_master_thread_stream_audio);
 }
 
 void zoc_stop_slave_thread(void)
 {
     pthread_cancel(thread_zoc_slave_thread);
+    pthread_cancel(thread_zoc_slave_thread_stream_audio);
     zoc_pending_apply_received_snapshot=0;
     zoc_pending_apply_received_streaming_display=0;
 }

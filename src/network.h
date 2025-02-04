@@ -77,6 +77,7 @@ extern int zsock_wait_until_command_prompt(int indice_tabla);
 extern int zsock_read_all_until_command(int indice_tabla,z80_byte *buffer,int max_buffer,int *posicion_command);
 extern int zsock_read_all_until_command_max_reintentos(int indice_tabla,z80_byte *buffer,int max_buffer,int *posicion_command,int max_reintentos);
 extern int zsock_read_all_until_newline(int indice_tabla,z80_byte *buffer,int max_buffer,int *posicion_command);
+extern int zsock_read_all_until_newline_streamaudio(int indice_tabla,z80_byte *buffer,int max_buffer);
 extern int get_socket_number(int indice_tabla);
 extern int zsock_available_data(int socket);
 

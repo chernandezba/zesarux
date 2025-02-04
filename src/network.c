@@ -1136,8 +1136,16 @@ int zsock_read_all_until_command(int indice_tabla,z80_byte *buffer,int max_buffe
 
 }
 
+//Funcion usada en get-keys y solo para ahi
+//De hecho no es muy optima porque finaliza solo cuando el ultimo byte recibido es \n
+//pero no siempre llega eso al final, porque lee por trozos y a veces el ultimo byte no es ese
+//de hecho esta funcion se deberia arreglar y hacer que get-keys la use de manera diferente
+//por tanto mejor que NO se use esta función en otros sitios; funciona, pero algo mal
+//Tambien existe la posibilidad que yo tuviera contemplado que el final se espere con \n y no en medio de una linea,
+//aunque esto parece que ralentiza en la conexión inicial
+//En cualquier caso, recomiendo NO usar esta función
 
-//devuelve en posicion_command donde empieza el salto de linea, si es >=0
+//Devuelve en posicion_command donde empieza el salto de linea, si es >=0
 int zsock_read_all_until_newline(int indice_tabla,z80_byte *buffer,int max_buffer,int *posicion_command)
 {
 
@@ -1212,6 +1220,81 @@ int zsock_read_all_until_newline(int indice_tabla,z80_byte *buffer,int max_buffe
 
 	//TODO: si se llega aqui sin haber recibido command prompt. Se gestionara en retorno mediante posicion_command
 	return total_leidos;
+
+}
+
+
+int zsock_read_all_until_newline_streamaudio(int indice_tabla,z80_byte *buffer,int max_buffer)
+{
+
+	//Leemos hasta que no haya mas datos para leer. Idealmente estara el "\n"
+	int leidos;
+
+
+
+	int sock=get_socket_number(indice_tabla);
+
+	if (sock<0) {
+		return sock;
+	}
+
+
+	int pos_destino=0;
+	int total_leidos=0;
+	int leido_command_prompt=0;
+	int reintentos=0;
+
+    int pos_final_stream=0;
+
+	do {
+
+        int pos_destino_orig=pos_destino;
+
+
+
+		do {
+			//if (chardevice_status(sock) & CHDEV_ST_RD_AVAIL_DATA) {
+			if (zsock_available_data(sock)) {
+				leidos=z_sock_read(indice_tabla,&buffer[pos_destino],max_buffer);
+				//printf ("leidos en zsock_wait_until_command_prompt: %d\n",leidos);
+				if (leidos<0) return -1;
+				else {
+
+                    int i;
+                    for (i=0;i<leidos && !leido_command_prompt;i++) {
+                        //printf("%02XH",buffer[pos_destino_orig+i]);
+                        if (buffer[pos_destino+i]=='\n') {
+                            //printf("\nEncontrado salto de linea\n");
+                            leido_command_prompt=1;
+                            pos_final_stream=pos_destino+i;
+                        }
+                    }
+
+                    max_buffer -=leidos;
+                    total_leidos +=leidos;
+                    pos_destino +=leidos;
+				}
+			}
+			else {
+				leidos=0;
+                //no_data_disponible=1;
+			}
+		} while (leidos>0 && max_buffer>0 && !leido_command_prompt);
+
+
+		if (!leido_command_prompt) {
+			//printf ("NO recibido command prompt en zsock_read_all_until_newline. Reintentar\n");
+			usleep(100); //0.1 ms
+		}
+
+		reintentos++;
+
+		//TODO controlar maximo reintentos
+	} while (!leido_command_prompt && reintentos<500);
+	//5 segundos de reintentos
+
+
+	return pos_final_stream;
 
 }
 

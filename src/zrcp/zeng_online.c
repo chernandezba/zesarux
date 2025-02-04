@@ -1830,6 +1830,82 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
 
     }
 
+    //"streaming-get-audio-cont user_pass n                 This command returns the streaming audio from room n, returns ERROR if no audio there. Requires user_pass\n"
+    else if (!strcmp(comando_argv[0],"streaming-get-audio-cont")) {
+        if (!zeng_online_enabled) {
+            escribir_socket(misocket,"ERROR. ZENG Online is not enabled");
+            return;
+        }
+
+        if (comando_argc<2) {
+            escribir_socket(misocket,"ERROR. Needs two parameters");
+            return;
+        }
+
+        int room_number=parse_string_to_number(comando_argv[2]);
+
+        if (room_number<0 || room_number>=zeng_online_current_max_rooms) {
+            escribir_socket_format(misocket,"ERROR. Room number beyond limit");
+            return;
+        }
+
+        if (!zeng_online_rooms_list[room_number].created) {
+            escribir_socket(misocket,"ERROR. Room is not created");
+            return;
+        }
+
+        //validar user_pass. comando_argv[1]
+        if (strcmp(comando_argv[1],zeng_online_rooms_list[room_number].user_password)) {
+            escribir_socket(misocket,"ERROR. Invalid user password for that room");
+            return;
+        }
+
+
+
+        if (!zeng_online_rooms_list[room_number].streaming_enabled) {
+            escribir_socket(misocket,"ERROR. Streaming is not enabled for that room");
+            return;
+        }
+
+        if (!zeng_online_rooms_list[room_number].streaming_audio_size) {
+            escribir_socket(misocket,"ERROR. There is no streaming audio on this room");
+            return;
+        }
+
+
+
+        z80_byte *puntero_audio=util_malloc(ZOC_STREAMING_AUDIO_BUFFER_SIZE,"Can not allocate memory for streaming get audio");
+
+        int previous_id=-1;
+
+        //TODO: ver posible manera de salir de aqui??
+        while (1) {
+            if (zeng_online_rooms_list[room_number].audio_streaming_id!=previous_id) {
+                previous_id=zeng_online_rooms_list[room_number].audio_streaming_id;
+                int longitud=zengonline_streaming_get_audio(room_number,puntero_audio);
+
+
+                int i;
+                for (i=0;i<longitud;i++) {
+                    escribir_socket_format(misocket,"%02X",puntero_audio[i]);
+                }
+
+                escribir_socket(misocket,"\n");
+
+            }
+
+            else {
+                //TODO: parametro configurable
+                usleep(1000); // (20 ms es un frame entero)
+            }
+
+        }
+
+        free(puntero_audio);
+
+
+    }
+
     //"streaming-get-audio-id user_pass n              This command returns the last audio id from room n, returns ERROR if no audio there. Requires user_pass\n"
     else if (!strcmp(comando_argv[0],"streaming-get-audio-id")) {
         if (!zeng_online_enabled) {

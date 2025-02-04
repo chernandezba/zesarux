@@ -24,6 +24,7 @@
 
 #include "atomic.h"
 #include "stats.h"
+#include "audio.h"
 
 //Esto para poder usar timeval aqui
 #include "compileoptions.h"
@@ -97,6 +98,8 @@ extern int zeng_online_enabled;
 extern void enable_zeng_online(void);
 extern void disable_zeng_online(void);
 
+
+#define ZOC_STREAMING_AUDIO_BUFFER_SIZE (AUDIO_BUFFER_SIZE*2)
 
 //Para poder hacer debug_printf con la clase adecuada
 #define DBG_PRINT_ZENG_ONLINE debug_printf(VERBOSE_CLASS_ZENG_ONLINE|

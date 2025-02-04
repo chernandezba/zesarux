@@ -24,7 +24,7 @@
 
 #include "zeng_online.h"
 #include "stats.h"
-#include "audio.h"
+
 
 extern int zeng_online_client_list_rooms_thread_running;
 extern int zeng_online_client_create_room_thread_running;
@@ -125,7 +125,7 @@ extern void zoc_show_bottom_line_footer_connected(void);
 
 extern void zeng_online_client_end_audio_frame_stuff(void);
 
-#define ZOC_STREAMING_AUDIO_BUFFER_SIZE (AUDIO_BUFFER_SIZE*2)
+
 
 
 //5 segundos de timeout, para aceptar teclas slave si no hay snapshot
