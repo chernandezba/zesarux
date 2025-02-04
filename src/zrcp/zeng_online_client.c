@@ -5524,6 +5524,17 @@ void zeng_online_client_end_audio_frame_stuff(void)
 
             memcpy(audio_buffer,zoc_get_audio_mem_binary_second_buffer,ZOC_STREAMING_AUDIO_BUFFER_SIZE);
 
+            //Ajustar volumen de todo el frame de audio
+            //Nota: el audio viene del cliente master con volumen aplicado, si no tiene 100%
+            //lo normal seria que el master pusiera 100% y cada slave lo ajuste en su menu
+            if (audiovolume!=100) {
+                int i;
+                for (i=0;i<ZOC_STREAMING_AUDIO_BUFFER_SIZE;i++) {
+                    audio_buffer[i]=audio_adjust_volume(audio_buffer[i]);
+                }
+
+            }
+
             zoc_pending_apply_received_streaming_audio=0;
         }
         else {
