@@ -2510,12 +2510,12 @@ int zoc_send_streaming_audio(int indice_socket)
         leidos=zsock_read_all_until_command(indice_socket,buffer,199,&posicion_command);
         //printf("after zsock_read_all_until_command\n");
 
-            if (posicion_command>=1) {
-                buffer[posicion_command-1]=0;
-                //DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Received text: %s",zoc_get_streaming_display_mem_hexa);
-            }
+        if (posicion_command>=1) {
+            buffer[posicion_command-1]=0;
+            //DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Received text: %s",zoc_get_streaming_display_mem_hexa);
+        }
 
-        //printf("Recibido respuesta despues de put-streaming_display: [%s]\n",buffer);
+
         return leidos;
 
 
@@ -3412,7 +3412,7 @@ void *zoc_master_thread_function(void *nada GCC_UNUSED)
 
             //printf("before get snapshot\n");
 
-            //En modo streaming escribimos display en vez de pantalla
+            //En modo streaming escribimos display en vez de snapshot
 
             if (created_room_streaming_mode) {
                 //printf("Modo streaming. Escribimos display en vez de snapshot\n");
@@ -3444,27 +3444,6 @@ void *zoc_master_thread_function(void *nada GCC_UNUSED)
                         //zeng_online_client_reset_scanline_counter();
                         //printf("streaming_display sent\n");
                     }
-
-                }
-
-                if (created_room_user_permissions & ZENG_ONLINE_PERMISSIONS_PUT_AUDIO) {
-
-                    //printf("Putting audio\n");
-
-                    //Lo hago en otro thread
-
-                    /*if (zoc_master_pending_send_streaming_audio) {
-
-                        int error=zoc_send_streaming_audio(indice_socket);
-
-                        if (error<0) {
-                            //TODO
-                            DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Error sending streaming_audio to zeng online server");
-                        }
-
-
-                        zoc_master_pending_send_streaming_audio=0;
-                    }*/
 
                 }
 
@@ -3561,7 +3540,6 @@ void *zoc_master_thread_function_stream_audio(void *nada GCC_UNUSED)
 {
 
 
-
     //zeng_remote_list_rooms_buffer[0]=0;
 
     char server[NETWORK_MAX_URL+1];
@@ -3579,7 +3557,7 @@ void *zoc_master_thread_function_stream_audio(void *nada GCC_UNUSED)
         return 0;
     }
 
-        int posicion_command;
+    int posicion_command;
 
 #define ZENG_BUFFER_INITIAL_CONNECT 199
 
@@ -3603,38 +3581,30 @@ void *zoc_master_thread_function_stream_audio(void *nada GCC_UNUSED)
     //TODO: ver posible manera de salir de aqui??
     while (1) {
 
+        if (created_room_streaming_mode) {
+            //printf("Modo streaming. Escribimos display en vez de snapshot\n");
 
-            if (created_room_streaming_mode) {
-                //printf("Modo streaming. Escribimos display en vez de snapshot\n");
-
-
-
-                if (created_room_user_permissions & ZENG_ONLINE_PERMISSIONS_PUT_AUDIO) {
+            if (created_room_user_permissions & ZENG_ONLINE_PERMISSIONS_PUT_AUDIO) {
 
 
+                if (zoc_master_pending_send_streaming_audio) {
 
-                    if (zoc_master_pending_send_streaming_audio) {
+                    //printf("Putting audio\n");
 
-                        //printf("Putting audio\n");
+                    int error=zoc_send_streaming_audio(indice_socket);
 
-                        int error=zoc_send_streaming_audio(indice_socket);
-
-                        if (error<0) {
-                            //TODO
-                            DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Error sending streaming_audio to zeng online server");
-                        }
-
-
-                        zoc_master_pending_send_streaming_audio=0;
+                    if (error<0) {
+                        //TODO
+                        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Error sending streaming_audio to zeng online server");
                     }
 
+
+                    zoc_master_pending_send_streaming_audio=0;
                 }
 
             }
 
-
-
-
+        }
 
 
 
@@ -3646,24 +3616,6 @@ void *zoc_master_thread_function_stream_audio(void *nada GCC_UNUSED)
 	return 0;
 
 }
-
-//Pruebas
-//int esperar_por_envio_alguna_tecla=0;
-
-
-//Pruebas
-//int esperar_por_envio_alguna_tecla=0;
-/*void temp_esperar_por_envio_alguna_tecla(void)
-{
-    esperar_por_envio_alguna_tecla=50;
-}*/
-
-//int zoc_client_pulsada_alguna_tecla_local=0;
-
-/*void zoc_decir_pulsada_alguna_tecla_local(void)
-{
-    zoc_client_pulsada_alguna_tecla_local=1;
-}*/
 
 
 
@@ -4811,7 +4763,7 @@ void zeng_online_client_apply_pending_received_streaming_display(void)
 void zoc_start_master_thread(void)
 {
 	if (pthread_create( &thread_zoc_master_thread, NULL, &zoc_master_thread_function, NULL) ) {
-		DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Can not create zeng online send snapshot pthread");
+		DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Can not create zeng online master pthread");
 		return;
 	}
 
@@ -4819,7 +4771,7 @@ void zoc_start_master_thread(void)
 	pthread_detach(thread_zoc_master_thread);
 
 	if (pthread_create( &thread_zoc_master_thread_stream_audio, NULL, &zoc_master_thread_function_stream_audio, NULL) ) {
-		DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Can not create zeng online send snapshot pthread");
+		DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Can not create zeng online streaming audio master pthread");
 		return;
 	}
 
@@ -4831,7 +4783,7 @@ void zoc_start_master_thread(void)
 void zoc_start_slave_thread(void)
 {
 	if (pthread_create( &thread_zoc_slave_thread, NULL, &zoc_slave_thread_function, NULL) ) {
-		DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Can not create zeng online send snapshot pthread");
+		DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Can not create zeng online slave pthread");
 		return;
 	}
 
@@ -4841,7 +4793,7 @@ void zoc_start_slave_thread(void)
 
     //Slave thread streaming audio
 	if (pthread_create( &thread_zoc_slave_thread_stream_audio, NULL, &zoc_slave_thread_function_stream_audio, NULL) ) {
-		DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Can not create zeng online send snapshot pthread");
+		DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Can not create zeng online streaming audio slave pthread");
 		return;
 	}
 

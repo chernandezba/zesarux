@@ -1749,8 +1749,7 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
         //int parametros_recibidos=0;
 
         z80_byte *buffer_destino;
-        buffer_destino=malloc(longitud_audio);
-        if (buffer_destino==NULL) cpu_panic("Can not allocate memory for streaming-put-audio");
+        buffer_destino=util_malloc(longitud_audio,"Can not allocate memory for streaming-put-audio");
 
 
         z80_byte *destino=buffer_destino;
@@ -1772,6 +1771,7 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
     }
 
     //"streaming-get-audio user_pass n                 This command returns the streaming audio from room n, returns ERROR if no audio there. Requires user_pass\n"
+    //Nota: este comando no se usa , se usa streaming-get-audio-cont
     else if (!strcmp(comando_argv[0],"streaming-get-audio")) {
         if (!zeng_online_enabled) {
             escribir_socket(misocket,"ERROR. ZENG Online is not enabled");
