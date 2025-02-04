@@ -5009,7 +5009,7 @@ int zoc_generate_differential_display(z80_byte *current_screen)
         }
     }
 
-    printf("Bytes diferentes: %d\n",bytes_diferentes);
+    DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"Differential display. Different bytes from previous display: %d",bytes_diferentes);
 
 
 
