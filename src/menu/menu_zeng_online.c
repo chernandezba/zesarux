@@ -1550,43 +1550,7 @@ void menu_zeng_online_streaming_enabled_when_creating(MENU_ITEM_PARAMETERS)
     streaming_enabled_when_creating ^=1;
 }
 
-void menu_zeng_online_full_display_interval(MENU_ITEM_PARAMETERS)
-{
 
-    int opcion=menu_simple_seven_choices("Interval?","One of:","0","2","5","10","15","25","50");
-
-    switch (opcion) {
-        case 1:
-            zoc_slave_differential_displays_limit_full=0;
-        break;
-
-        case 2:
-            zoc_slave_differential_displays_limit_full=2;
-        break;
-
-        case 3:
-            zoc_slave_differential_displays_limit_full=5;
-        break;
-
-        case 4:
-            zoc_slave_differential_displays_limit_full=10;
-        break;
-
-        case 5:
-            zoc_slave_differential_displays_limit_full=15;
-        break;
-
-        case 6:
-            zoc_slave_differential_displays_limit_full=25;
-        break;
-
-        case 7:
-            zoc_slave_differential_displays_limit_full=50;
-        break;
-
-    }
-
-}
 
 void menu_zeng_online_full_display_interval_autoadjust(MENU_ITEM_PARAMETERS)
 {
@@ -1594,14 +1558,14 @@ void menu_zeng_online_full_display_interval_autoadjust(MENU_ITEM_PARAMETERS)
 }
 
 //English, Spanish, Catalan
-const char *s_display_quality_perfect_en[]={"Perfect","Perfecta","Perfecta"};
-const char *s_display_quality_good_en[]={"Good","Buena","Bona"};
-const char *s_display_quality_medium_en[]={"Medium","Media","Mitja"};
-const char *s_display_quality_low_en[]={"Low","Baja","Baixa"};
+char *s_display_quality_perfect_en[]={"Perfect","Perfecta","Perfecta"};
+char *s_display_quality_good_en[]={"Good","Buena","Bona"};
+char *s_display_quality_medium_en[]={"Medium","Media","Mitja"};
+char *s_display_quality_low_en[]={"Low","Baja","Baixa"};
 
 
 
-const char *get_menu_zoc_display_quality_string(int interval)
+char *get_menu_zoc_display_quality_string(int interval)
 {
 
     int indice;
@@ -1614,6 +1578,46 @@ const char *get_menu_zoc_display_quality_string(int interval)
     else if (interval<=5) return s_display_quality_good_en[indice];
     else if (interval<=10) return s_display_quality_medium_en[indice];
     else return s_display_quality_low_en[indice];
+
+}
+
+void menu_zeng_online_full_display_interval(MENU_ITEM_PARAMETERS)
+{
+
+    int opcion=menu_simple_five_choices("Interval?","One of:",
+        get_menu_zoc_display_quality_string(0),
+        get_menu_zoc_display_quality_string(2),
+        get_menu_zoc_display_quality_string(10),
+        get_menu_zoc_display_quality_string(20),
+        "Custom");
+
+
+    switch (opcion) {
+        case 1:
+            zoc_slave_differential_displays_limit_full=0;
+        break;
+
+        case 2:
+            zoc_slave_differential_displays_limit_full=2;
+        break;
+
+        case 3:
+            zoc_slave_differential_displays_limit_full=10;
+        break;
+
+        case 4:
+            zoc_slave_differential_displays_limit_full=20;
+        break;
+
+        case 5:
+
+            menu_ventana_scanf_numero_enhanced("Full display interval",&zoc_slave_differential_displays_limit_full,3,+1,0,50,0);
+
+        break;
+
+
+
+    }
 
 }
 
