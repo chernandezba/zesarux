@@ -124,3 +124,6 @@ O NO, porque si hay poco ancho de banda no quiero que se quede el tráfico encol
 -aun en modo streaming, se envia y recibe un snapshot cada 1 minuto, por si el cliente se desconecta, que tenga un estado
 relativamente reciente del juego
 A nivel de thread y tambien a nivel de final de frame de video, controlar que se haga cada 1 minuto
+
+
+-server de config desktop no acepta teclas como master. culpa de mismo id en las dos config!

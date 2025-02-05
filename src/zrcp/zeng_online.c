@@ -2211,6 +2211,7 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
 
     //"send-keys user_pass n uuid key event nomenu   Simulates sending key press/release to room n.\n"
     else if (!strcmp(comando_argv[0],"send-keys")) {
+        //printf("Server receives send-keys\n");
         if (!zeng_online_enabled) {
             escribir_socket(misocket,"ERROR. ZENG Online is not enabled");
             return;
@@ -2247,6 +2248,7 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
 		int nomenu=parse_string_to_number(comando_argv[6]);
 
         if (zengonline_valid_event(room_number,comando_argv[3],tecla)) {
+            //printf("Adding valid event tecla %d\n",tecla);
             zengonline_add_event(room_number,comando_argv[3],tecla,event_type,nomenu);
         }
 
