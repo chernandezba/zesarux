@@ -4205,7 +4205,12 @@ void *zoc_slave_thread_function(void *nada GCC_UNUSED)
     //printf("Initial message id: %d\n",zoc_last_message_id);
 
 
-    int indice_socket_get_keys=zoc_start_connection_get_keys();
+    int indice_socket_get_keys;
+
+    //No iniciar conexion para get keys si estamos en modo streaming
+    if (!created_room_streaming_mode) {
+        indice_socket_get_keys=zoc_start_connection_get_keys();
+    }
 
 
     //int indice_socket_get_stream_audio=zoc_start_connection_get_stream_audio();
