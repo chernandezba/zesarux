@@ -173,6 +173,11 @@ int menu_zeng_online_max_players_room_cond(zxvision_window *w GCC_UNUSED)
 	return !zeng_online_client_max_players_room_thread_running;
 }
 
+int menu_zeng_online_rename_room_cond(zxvision_window *w GCC_UNUSED)
+{
+	return !zeng_online_client_rename_room_thread_running;
+}
+
 int menu_zeng_online_allow_message_room_cond(zxvision_window *w GCC_UNUSED)
 {
 	return !zeng_online_client_allow_message_room_thread_running;
@@ -1264,6 +1269,25 @@ void menu_zeng_online_max_players_room(MENU_ITEM_PARAMETERS)
 
 }
 
+void menu_zeng_online_rename_room(MENU_ITEM_PARAMETERS)
+{
+
+    char room_name[ZENG_ONLINE_MAX_ROOM_NAME+1];
+
+
+    strcpy(room_name,"<used>");
+
+    if (menu_ventana_scanf("Room name?",room_name,ZENG_ONLINE_MAX_ROOM_NAME+1)<0) {
+        return;
+    }
+
+
+    zeng_online_client_rename_room(room_name);
+    zxvision_simple_progress_window("Rename room", menu_zeng_online_rename_room_cond,menu_zeng_online_connecting_common_print);
+
+
+}
+
 void menu_zeng_online_restricted_keys_click(MENU_ITEM_PARAMETERS)
 {
     //validar que no se marca mas de un maximo de ZOC_MAX_KEYS_ITEMS
@@ -1750,6 +1774,10 @@ void menu_zeng_online(MENU_ITEM_PARAMETERS)
 
                 menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_disable_autojoin_room,NULL,
                 "Reset autojoin","Desactivar autounir","Desactivar autounir");
+                menu_add_item_menu_add_flags(array_menu_common,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
+
+                menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_rename_room,NULL,
+                "Rename room","Renombrar habitación","Renombrar habitació");
                 menu_add_item_menu_add_flags(array_menu_common,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
 
                 menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_restricted_keys,NULL,

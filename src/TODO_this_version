@@ -96,10 +96,7 @@ conectado con room en modo streaming, si cambio a maquina no spectrum genera pan
 -slave no recibe snapshot y no recibe teclas. recibe display. y su cpu no emula
 
 
-
 -ventana waveform parece que va conmutando un frame de video sin sonido con otro del sonido del buffer
-
--Comando Zeng online para renombrar una habitación. Password de máster. En menú deja renombrar habitación en la cual está conectado el máster
 
 
 ->seria entonces:

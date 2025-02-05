@@ -42,6 +42,7 @@ extern int zeng_online_client_get_profile_keys_thread_running;
 extern int zeng_online_client_send_profile_keys_thread_running;
 extern int zeng_online_client_kick_user_thread_running;
 extern int zeng_online_client_max_players_room_thread_running;
+extern int zeng_online_client_rename_room_thread_running;
 
 extern void zeng_online_client_list_rooms(void);
 extern void zeng_online_client_create_room(int room_number,char *room_name);
@@ -59,6 +60,7 @@ extern void zeng_online_client_get_profile_keys(void);
 extern void zeng_online_client_send_profile_keys(void);
 extern void zeng_online_client_kick_user(char *message);
 extern void zeng_online_client_max_players_room(int valor);
+extern void zeng_online_client_rename_room(char *name);
 
 extern void zeng_online_client_alter_fps_streaming(void);
 

@@ -84,6 +84,7 @@ pthread_t thread_zeng_online_client_get_profile_keys;
 pthread_t thread_zeng_online_client_send_profile_keys;
 pthread_t thread_zeng_online_client_kick_user;
 pthread_t thread_zeng_online_client_max_players_room;
+pthread_t thread_zeng_online_client_rename_room;
 
 
 #endif
@@ -105,6 +106,7 @@ int zeng_online_client_get_profile_keys_thread_running=0;
 int zeng_online_client_send_profile_keys_thread_running=0;
 int zeng_online_client_kick_user_thread_running=0;
 int zeng_online_client_max_players_room_thread_running=0;
+int zeng_online_client_rename_room_thread_running=0;
 
 z80_bit zeng_online_i_am_master={0};
 //z80_bit zeng_online_i_am_joined={0};
@@ -1121,6 +1123,26 @@ int zeng_online_client_max_players_room_connect(void)
 
 }
 
+char *param_zeng_online_client_rename_room;
+
+//Devuelve 0 si no conectado
+int zeng_online_client_rename_room_connect(void)
+{
+
+    char buffer_enviar[1024];
+
+    //rename-room creator_pass n name
+    sprintf(buffer_enviar,"zeng-online rename-room %s %d \"%s\"\n",
+        created_room_creator_password,
+        zeng_online_joined_to_room_number,
+        param_zeng_online_client_rename_room);
+
+    return zoc_open_command_close(buffer_enviar,"rename-room");
+
+}
+
+
+
 int param_zeng_online_client_allow_message_room_allow_disallow;
 
 //Devuelve 0 si no conectado
@@ -1259,6 +1281,29 @@ void *zeng_online_client_max_players_room_function(void *nada GCC_UNUSED)
 
 
 	zeng_online_client_max_players_room_thread_running=0;
+
+	return 0;
+
+}
+
+void *zeng_online_client_rename_room_function(void *nada GCC_UNUSED)
+{
+    zeng_online_client_rename_room_thread_running=1;
+
+	//Conectar a remoto
+
+	if (!zeng_online_client_rename_room_connect()) {
+		//Desconectar solo si el socket estaba conectado
+
+        //Desconectar los que esten conectados
+        //TODO zeng_disconnect_remote();
+
+		zeng_online_client_rename_room_thread_running=0;
+		return 0;
+	}
+
+
+	zeng_online_client_rename_room_thread_running=0;
 
 	return 0;
 
@@ -1825,6 +1870,24 @@ void zeng_online_client_max_players_room(int valor)
 
 	//y pthread en estado detached asi liberara su memoria asociada a thread al finalizar, sin tener que hacer un pthread_join
 	pthread_detach(thread_zeng_online_client_max_players_room);
+
+
+}
+
+void zeng_online_client_rename_room(char *name)
+{
+
+	//Inicializar thread
+    param_zeng_online_client_rename_room=name;
+
+
+	if (pthread_create( &thread_zeng_online_client_rename_room, NULL, &zeng_online_client_rename_room_function, NULL) ) {
+		DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Can not create zeng online rename room pthread");
+		return;
+	}
+
+	//y pthread en estado detached asi liberara su memoria asociada a thread al finalizar, sin tener que hacer un pthread_join
+	pthread_detach(thread_zeng_online_client_rename_room);
 
 
 }
