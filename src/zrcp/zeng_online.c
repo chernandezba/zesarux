@@ -1878,28 +1878,59 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
 
         int previous_id=-1;
 
-        //TODO: ver posible manera de salir de aqui??
-        while (1) {
+
+        int errores_escribir=0;
+
+        //Salir si falla x veces seguidas el envio de respuesta
+        while (errores_escribir<30) {
+            //printf("En bucle streaming-get-audio-cont %d\n",contador_segundo);
             if (zeng_online_rooms_list[room_number].audio_streaming_id!=previous_id) {
+                //printf("Stream id ha cambiado\n");
                 previous_id=zeng_online_rooms_list[room_number].audio_streaming_id;
                 int longitud=zengonline_streaming_get_audio(room_number,puntero_audio);
 
+                //printf("Antes escribir en socket\n");
+
+                //Si el cliente se desconecta, con un leave room, se queda la operacion de escritura
+                //congelada. Durante cuanto tiempo??
+
+                //Si el cliente cierra ZEsarUX, el socket se corta y la operacion de escritura fallara
 
                 int i;
                 for (i=0;i<longitud;i++) {
                     escribir_socket_format(misocket,"%02X",puntero_audio[i]);
                 }
 
-                escribir_socket(misocket,"\n");
+                //Nota: solo vemos el error al escribir este \n
+                //Se podria tambien ver el error del escribir_socket_format pero al final, si falla el socket,
+                //fallan las dos escrituras, con comprobarlo aqui es suficiente
+                int retorno_escribir=escribir_socket(misocket,"\n");
+
+                if (retorno_escribir<=0) {
+                    printf("Error returning data from command streaming-get-audio-cont. Retries: %d Source IP=%s\n",errores_escribir,ip_source_address);
+                    errores_escribir++;
+
+                    sleep(1);
+
+                }
+
+                else {
+                    errores_escribir=0;
+                }
+
+                //printf("Despues escribir en socket\n");
 
             }
 
             else {
+                //printf("Stream id NO ha cambiado\n");
                 //TODO: parametro configurable
                 usleep(1000); // (20 ms es un frame entero)
             }
 
         }
+
+        printf("Exiting command streaming-get-audio-cont from server because the remote socket is not connected. Source IP=%s\n",ip_source_address);
 
         free(puntero_audio);
 
