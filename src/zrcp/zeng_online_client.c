@@ -3446,6 +3446,8 @@ void *zoc_master_thread_function(void *nada GCC_UNUSED)
 void *zoc_master_thread_function_stream_audio(void *nada GCC_UNUSED)
 {
 
+    //TODO: este thread se crea siempre, pero si no hemos habilitado el modo streaming, no tiene sentido lanzarlo
+    //porque al final no hara nada
 
     char server[NETWORK_MAX_URL+1];
     int puerto;
