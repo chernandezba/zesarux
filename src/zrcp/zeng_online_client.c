@@ -3938,7 +3938,7 @@ int zoc_receive_streaming_display(int indice_socket,int slot)
 }
 
 
-
+//Este metodo no se usa, y se usa zoc_get_stream_audio_continuous
 int zoc_receive_streaming_audio(int indice_socket)
 {
 
@@ -4286,25 +4286,7 @@ void *zoc_slave_thread_function(void *nada GCC_UNUSED)
                 }
 
                 if (created_room_user_permissions & ZENG_ONLINE_PERMISSIONS_GET_AUDIO) {
-
-
-                   /*
-                   Cliente: thread
-
-                    Si está aplicado, buscar en el servidor. Preguntar id. Si es mismo id, no traer. Si es diferente, traer y decir que está pendiente aplicar
-
-
-                    Si no está aplicado audio aún, no buscar audio al servidor
-                   */
-
-
-                    //Metodo sin stream continuo
-                    //zoc_receive_streaming_audio(indice_socket);
-
-                    //Metodo con stream continuo
-                    //LO hago desde otro thread aparte
-                    //zoc_get_stream_audio_continuous(indice_socket_get_stream_audio);
-
+                    // Leo el audio desde otro thread aparte
 
                 }
 
@@ -4385,7 +4367,11 @@ void *zoc_slave_thread_function(void *nada GCC_UNUSED)
 void *zoc_slave_thread_function_stream_audio(void *nada GCC_UNUSED)
 {
 
-    int indice_socket_get_stream_audio=zoc_start_connection_get_stream_audio();
+    int indice_socket_get_stream_audio;
+
+    if (created_room_streaming_mode) {
+        indice_socket_get_stream_audio=zoc_start_connection_get_stream_audio();
+    }
     //TODO: gestionar errores
 
 
@@ -4393,20 +4379,10 @@ void *zoc_slave_thread_function_stream_audio(void *nada GCC_UNUSED)
 
 
         if (created_room_streaming_mode) {
-            //printf("Modo streaming. solo leemos pantalla\n");
 
 
             if (created_room_user_permissions & ZENG_ONLINE_PERMISSIONS_GET_AUDIO) {
 
-
-                /*
-                Cliente: thread
-
-                Si está aplicado, buscar en el servidor. Preguntar id. Si es mismo id, no traer. Si es diferente, traer y decir que está pendiente aplicar
-
-
-                Si no está aplicado audio aún, no buscar audio al servidor
-                */
 
 
                 //Metodo sin stream continuo
