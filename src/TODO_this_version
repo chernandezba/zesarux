@@ -88,6 +88,7 @@ ZENG Online
 -Modo streaming
 ok * controlar solo spectrum al crear
 *controlar solo spectrum al cambiar de maquina. pero eso no se puede dado que la room ya esta creada y no se puede cambiar su modo
+conectado con room en modo streaming, si cambio a maquina no spectrum genera panic porque get_base_mem_pantalla no tiene sentido
 
 -master no envia snapshot. envia display
 -slave no recibe snapshot y no recibe teclas. recibe display. y su cpu no emula
@@ -97,6 +98,12 @@ ok * controlar solo spectrum al crear
 
 
 
+-ventana waveform parece que va conmutando un frame de video sin sonido con otro del sonido del buffer
+
+-Comando Zeng online para renombrar una habitación. Password de máster. En menú deja renombrar habitación en la cual está conectado el máster
+
+-No iniciar get keys en slave si modo streaming
+
 ->seria entonces:
 servidor envia diferenciales siempre y se guarda en "caja 0". y una entera cada X frames y se guarda en "caja 1"
 Pero que sucede cuando un diferencial ocupa mas que una entera? esa diferencial se convertira en la entera. pero a que caja lo guardo? en la 0 como siempre
@@ -104,3 +111,16 @@ Pero que sucede cuando un diferencial ocupa mas que una entera? esa diferencial 
 cliente pide diferenciales. y pide una entera cada Z frames
 
 
+-uso de cpu en el server, no baja cuando:
+*cliente conectado y sale con Exit ZEsarUX
+*cliente conectado y hace leave room? Confirmar esto
+supuestamente por comando get-streaming-audio-cont.
+quiza hay que ver si escritura en el socket falla, reintentar varias veces. y si sigue fallando, salir de la funcion
+
+-obtencion de pantalla tambien en modo continuo como hace el audio
+Revisar tambien el uso de cpu en el server en este caso cuando se desconecta un cliente
+O NO, porque si hay poco ancho de banda no quiero que se quede el tráfico encolado, mejor perder frames que no tener imagenes atrasadas
+
+-aun en modo streaming, se envia y recibe un snapshot cada 1 minuto, por si el cliente se desconecta, que tenga un estado
+relativamente reciente del juego
+A nivel de thread y tambien a nivel de final de frame de video, controlar que se haga cada 1 minuto

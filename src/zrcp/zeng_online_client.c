@@ -159,7 +159,7 @@ char param_join_room_creator_password[ZENG_ROOM_PASSWORD_LENGTH+1];
 int zoc_rejoining_as_master=0;
 
 //Crear una habitacion con modo streaming o no
-int streaming_enabled_when_creating=0;
+int streaming_enabled_when_creating=1;
 
 //Perfiles de teclas que se han cargado del servidor como master/manager para la habitacion actual
 int allowed_keys[ZOC_MAX_KEYS_PROFILES][ZOC_MAX_KEYS_ITEMS];
@@ -2144,8 +2144,10 @@ int param_create_room_number;
 int zeng_online_client_create_room_connect(void)
 {
 
+    int modo_streaming_efectivo=streaming_enabled_when_creating;
+
     //Si maquina no es spectrum, desactivar modo streaming
-    if (!MACHINE_IS_SPECTRUM) streaming_enabled_when_creating=0;
+    if (!MACHINE_IS_SPECTRUM) modo_streaming_efectivo=0;
 
     //zeng_remote_list_rooms_buffer[0]=0;
 
@@ -2186,7 +2188,7 @@ int zeng_online_client_create_room_connect(void)
     DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Sending create-room");
 
     char buffer_enviar[1024];
-    sprintf(buffer_enviar,"zeng-online create-room %d \"%s\" %d\n",param_create_room_number,param_create_room_name,streaming_enabled_when_creating);
+    sprintf(buffer_enviar,"zeng-online create-room %d \"%s\" %d\n",param_create_room_number,param_create_room_name,modo_streaming_efectivo);
 
     int escritos=z_sock_write_string(indice_socket,buffer_enviar);
 

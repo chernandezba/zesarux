@@ -1835,7 +1835,7 @@ void menu_zeng_online(MENU_ITEM_PARAMETERS)
 
                     menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_full_display_interval,NULL,
                     "Display quality","Calidad pantalla","Qualitat pantalla");
-                    menu_add_item_menu_sufijo_format(array_menu_common," [%s] [%d]",
+                    menu_add_item_menu_sufijo_format(array_menu_common," [%s] (%d)",
                         get_menu_zoc_display_quality_string(zoc_slave_differential_displays_limit_full),
                         zoc_slave_differential_displays_limit_full);
                     menu_add_item_menu_prefijo_format(array_menu_common,"    ");
