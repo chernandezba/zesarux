@@ -106,14 +106,6 @@ Pero que sucede cuando un diferencial ocupa mas que una entera? esa diferencial 
 cliente pide diferenciales. y pide una entera cada Z frames
 
 
--uso de cpu en el server, no baja cuando:
-*cliente conectado y hace leave room? Confirmar esto
-supuestamente por comando get-streaming-audio-cont.
-quiza hay que ver si escritura en el socket falla, reintentar varias veces. y si sigue fallando, salir de la funcion
-
--obtencion de pantalla tambien en modo continuo como hace el audio
-Revisar tambien el uso de cpu en el server en este caso cuando se desconecta un cliente
-O NO, porque si hay poco ancho de banda no quiero que se quede el tráfico encolado, mejor perder frames que no tener imagenes atrasadas
 
 
 -Joystick redefinido como tecla debe enviar por Zeng online la tecla y no el movimiento de joystick
@@ -121,11 +113,7 @@ Así permitiría jugar 2 jugadores ambos con joystick
 En uno se envía como joystick igual
 En otro se envía como opqam por ejemplo. O incluso mejor 5678, así se puede usar en menú también (habilitando opción 5678 de mover menú)
 
--Rutina get base Mem pantalla que retorne null a función intermedia si máquina no tiene sentido
-Luego desde Zeng se gestiona ese null y muestra error
-Si es desde otros sitios, se generará panic
-
-O quizá que Zeng detecte si no spectrum antes de llamar a get base mem pantalla
-
 -Mismo fix de recibir audio continuo a recibir teclas. En general cualquier recepción que esté en bucle
 Ver si cuando se corta el socket en envío de audio acaba también saliendo de ZRCP
+
+-si cliente se conecta y es modo streaming, si no esta en spectrum , que cambie a spectrum

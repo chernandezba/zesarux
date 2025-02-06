@@ -1125,6 +1125,16 @@ void menu_zeng_online_join_room(MENU_ITEM_PARAMETERS)
             menu_generic_message_splash("Join room","Room joined");
             zoc_show_bottom_line_footer_connected();
             strcpy(zeng_online_joined_as_text,"Slave");
+
+            //Si es modo streaming y no es maquina spectrum, cambiar a spectrum
+            if (created_room_streaming_mode && !MACHINE_IS_SPECTRUM) {
+
+                debug_printf(VERBOSE_INFO,"Changing to Spectrum machine because room has streaming enabled");
+
+                current_machine_type=MACHINE_ID_SPECTRUM_48;
+
+                set_machine(NULL);
+            }
         }
 
 

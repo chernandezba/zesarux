@@ -4399,7 +4399,7 @@ void *zoc_slave_thread_function(void *nada GCC_UNUSED)
                 zoc_snapshot_slave_streaming_counter++;
                 if (zoc_snapshot_slave_streaming_counter>=ZOC_INTERVAL_SNAPSHOT_ON_STREAMING) {
                     zoc_snapshot_slave_streaming_counter=0;
-                    DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_INFO,"Streaming mode. Getting snapshot to use on leave room");
+                    DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_INFO,"ZENG Online Client: Streaming mode. Getting snapshot to use on leave room");
 
                     //Forzar a recibir snapshot aunque no hemos aplicado el anterior
                     zoc_pending_apply_received_snapshot=0;
@@ -4617,6 +4617,13 @@ int zoc_client_streaming_display_fps_seconds=0;
 int zoc_client_streaming_display_fps_sum=0;
 int zoc_client_streaming_display_fps_last_interval=0;
 
+z80_byte *zoc_get_base_mem_pantalla(void)
+{
+    if (!MACHINE_IS_SPECTRUM) return NULL;
+
+    return get_base_mem_pantalla();
+}
+
 void zeng_online_client_apply_pending_received_streaming_display(void)
 {
     if (zeng_online_connected.v==0) return;
@@ -4646,7 +4653,13 @@ void zeng_online_client_apply_pending_received_streaming_display(void)
         modificado_border.v=1;
         //printf("Modificado border\n");
     }
-    z80_byte *screen=get_base_mem_pantalla();
+    z80_byte *screen=zoc_get_base_mem_pantalla();
+
+    if (screen==NULL) {
+        //Cliente no es Spectrum. No hacemos nada
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"Can not use streaming display on non Spectrum machine");
+        return;
+    }
 
     //Pantalla diferencial
     if (zoc_get_streaming_display_mem_binary[0] & 1) {
@@ -4970,7 +4983,16 @@ int zoc_get_streaming_display(z80_byte *buffer_temp_sin_comprimir,int force_full
 
     int longitud_sin_comprimir;
 
-    z80_byte *screen=get_base_mem_pantalla();
+    z80_byte *screen=zoc_get_base_mem_pantalla();
+
+    if (screen==NULL) {
+        //Master no es Spectrum
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"Can not generate streaming display on non Spectrum machine");
+        //Generamos un diferencial sin nada
+        buffer_temp_sin_comprimir[0]=1;
+        buffer_temp_sin_comprimir[1]=0;
+        return 2;
+    }
 
 
     int longitud_pantalla_diferencial=-1;
