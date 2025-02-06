@@ -966,6 +966,13 @@ void menu_zeng_online_leave_room_slave(MENU_ITEM_PARAMETERS)
 {
 
     if (menu_confirm_yesno("Leave room?")) {
+        //Al salir, en modo streaming, aplicamos un snapshot entero que se van recibiendo menos frecuentemente
+        if (created_room_streaming_mode && zeng_online_i_am_master.v==0) {
+            debug_printf(VERBOSE_INFO,"Apply last snapshot on leave");
+            zeng_online_client_apply_pending_received_snapshot();
+        }
+
+
         //Detener el thread de slave
         zoc_stop_slave_thread();
 

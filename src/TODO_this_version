@@ -115,7 +115,17 @@ quiza hay que ver si escritura en el socket falla, reintentar varias veces. y si
 Revisar tambien el uso de cpu en el server en este caso cuando se desconecta un cliente
 O NO, porque si hay poco ancho de banda no quiero que se quede el tráfico encolado, mejor perder frames que no tener imagenes atrasadas
 
--aun en modo streaming, se envia y recibe un snapshot cada 1 minuto, por si el cliente se desconecta, que tenga un estado
-relativamente reciente del juego
-A nivel de thread y tambien a nivel de final de frame de video, controlar que se haga cada 1 minuto
 
+-Joystick redefinido como tecla debe enviar por Zeng online la tecla y no el movimiento de joystick
+Así permitiría jugar 2 jugadores ambos con joystick
+En uno se envía como joystick igual
+En otro se envía como opqam por ejemplo. O incluso mejor 5678, así se puede usar en menú también (habilitando opción 5678 de mover menú)
+
+-Rutina get base Mem pantalla que retorne null a función intermedia si máquina no tiene sentido
+Luego desde Zeng se gestiona ese null y muestra error
+Si es desde otros sitios, se generará panic
+
+O quizá que Zeng detecte si no spectrum antes de llamar a get base mem pantalla
+
+-Mismo fix de recibir audio continuo a recibir teclas. En general cualquier recepción que esté en bucle
+Ver si cuando se corta el socket en envío de audio acaba también saliendo de ZRCP

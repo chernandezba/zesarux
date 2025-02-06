@@ -205,6 +205,9 @@ int zoc_slave_differential_displays_limit_full_previous_fps=-1;
 int zoc_slave_differential_displays_limit_full_autoadjust_seconds_interval=10;
 int zoc_slave_differential_displays_limit_full_autoadjust_seconds_counter=0;
 
+//A cada minuto enviar/recibir snapshot en modo streaming
+#define ZOC_INTERVAL_SNAPSHOT_ON_STREAMING (50*60)
+
 //Retornar puerto y hostname del server
 int zeng_online_get_server_and_port(char *buffer_hostname)
 {
@@ -3320,6 +3323,28 @@ void zoc_common_get_messages_slave_master(int indice_socket)
     }
 }
 
+void master_thread_put_snapshot(int indice_socket)
+{
+    if (created_room_user_permissions & ZENG_ONLINE_PERMISSIONS_PUT_SNAPSHOT) {
+
+
+        if (zoc_pending_send_snapshot) {
+            //printf("Putting snapshot\n");
+            int error=zoc_send_snapshot(indice_socket);
+
+            if (error<0) {
+                //TODO
+                DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Error sending snapshot to zeng online server");
+            }
+
+            //Enviado. Avisar no pendiente
+            zoc_pending_send_snapshot=0;
+            //zeng_online_client_reset_scanline_counter();
+            //printf("Snapshot sent\n");
+        }
+    }
+}
+
 void *zoc_master_thread_function(void *nada GCC_UNUSED)
 {
 
@@ -3419,27 +3444,14 @@ void *zoc_master_thread_function(void *nada GCC_UNUSED)
 
                 }
 
+                //En modo streaming tambien enviamos snapshot pero mucho menos frecuentemente
+                master_thread_put_snapshot(indice_socket);
+
             }
 
             else {
 
-                if (created_room_user_permissions & ZENG_ONLINE_PERMISSIONS_PUT_SNAPSHOT) {
-
-
-                    if (zoc_pending_send_snapshot) {
-                        int error=zoc_send_snapshot(indice_socket);
-
-                        if (error<0) {
-                            //TODO
-                            DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Error sending snapshot to zeng online server");
-                        }
-
-                        //Enviado. Avisar no pendiente
-                        zoc_pending_send_snapshot=0;
-                        //zeng_online_client_reset_scanline_counter();
-                        //printf("Snapshot sent\n");
-                    }
-                }
+                master_thread_put_snapshot(indice_socket);
 
             }
 
@@ -3652,6 +3664,7 @@ int zoc_receive_snapshot(int indice_socket)
         //Detectar si error
         if (strstr(buffer,"ERROR")!=NULL) {
             DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Error getting snapshot-id");
+            //printf ("ZENG Online Client: Error getting snapshot-id: [%s]\n",buffer);
         }
         else {
             //Ver si id diferente
@@ -3734,7 +3747,7 @@ int zoc_receive_snapshot(int indice_socket)
 
 
             //printf("after zsock_read_all_until_command\n");
-            // printf("Recibido respuesta despues de get-snapshot: [%s]\n",zoc_get_snapshot_mem_hexa);
+            //printf("Recibido respuesta despues de get-snapshot: [%s]\n",zoc_get_snapshot_mem_hexa);
 
             //1 mas para eliminar el salto de linea anterior a "command>"
             if (posicion_command>=1) {
@@ -4221,7 +4234,29 @@ int zoc_check_if_kicked(int indice_socket)
 }
 
 
+void slave_thread_get_snapshot(int indice_socket)
+{
+    //Como se puede ver es el cliente quien gestiona los permisos en base a lo que el join le retornó el server
+    //Pero luego el server no valida que el cliente tenga los permisos que está usando
+    if (created_room_user_permissions & ZENG_ONLINE_PERMISSIONS_GET_SNAPSHOT) {
 
+        //Recibir snapshot
+
+
+        int error=zoc_receive_snapshot(indice_socket);
+        //TODO gestionar bien este error
+        if (error<0) {
+            //TODO
+            DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Error getting snapshot from zeng online server");
+            usleep(10000); //dormir 10 ms
+        }
+
+
+    }
+
+}
+
+int zoc_snapshot_slave_streaming_counter=0;
 
 
 void *zoc_slave_thread_function(void *nada GCC_UNUSED)
@@ -4355,28 +4390,28 @@ void *zoc_slave_thread_function(void *nada GCC_UNUSED)
 
                 }
 
+                //En modo streaming tambien se obtiene snapshot pero menos frecuentemente
+                //Lo leemos pero lo aplicaremos al hacer leave room,
+                //para no ir aplicando ese snapshot continuamente que generaria efectos inesperados
+                //Nota: hay la posibilidad de que si se acaba de crear la sala en modo streaming, aun no haya entrado
+                //un snapshot. En este caso la peticion aqui fallaria aunque no se alerta al usuario
+                //Se recibiria un error de ZRCP "ERROR. There is no snapshot on this room"
+                zoc_snapshot_slave_streaming_counter++;
+                if (zoc_snapshot_slave_streaming_counter>=ZOC_INTERVAL_SNAPSHOT_ON_STREAMING) {
+                    zoc_snapshot_slave_streaming_counter=0;
+                    DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_INFO,"Streaming mode. Getting snapshot to use on leave room");
+
+                    //Forzar a recibir snapshot aunque no hemos aplicado el anterior
+                    zoc_pending_apply_received_snapshot=0;
+                    slave_thread_get_snapshot(indice_socket);
+                }
+
             }
 
             else {
 
+                slave_thread_get_snapshot(indice_socket);
 
-                //Como se puede ver es el cliente quien gestiona los permisos en base a lo que el join le retornó el server
-                //Pero luego el server no valida que el cliente tenga los permisos que está usando
-                if (created_room_user_permissions & ZENG_ONLINE_PERMISSIONS_GET_SNAPSHOT) {
-
-                    //Recibir snapshot
-
-
-                    int error=zoc_receive_snapshot(indice_socket);
-                    //TODO gestionar bien este error
-                    if (error<0) {
-                        //TODO
-                        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Error getting snapshot from zeng online server");
-                        usleep(10000); //dormir 10 ms
-                    }
-
-
-                }
 
                 if (created_room_user_permissions & ZENG_ONLINE_PERMISSIONS_GET_KEYS) {
                     //recepcion teclas
@@ -4733,7 +4768,7 @@ void zeng_online_client_prepare_snapshot_if_needed(void)
 
 	if (zeng_online_connected.v==0) return;
 
-	if (zeng_online_i_am_master.v) {
+
 		zoc_contador_envio_snapshot++;
 		//printf ("%d %d\n",contador_envio_snapshot,(contador_envio_snapshot % (50*zeng_segundos_cada_snapshot) ));
 
@@ -4862,7 +4897,7 @@ void zeng_online_client_prepare_snapshot_if_needed(void)
 
             }
 		}
-	}
+
 }
 
 
@@ -5034,17 +5069,17 @@ void zeng_online_client_prepare_streaming_display_if_needed(void)
 
 	if (zeng_online_connected.v==0) return;
 
-	if (zeng_online_i_am_master.v) {
+
 
 
     if (!zoc_rejoining_as_master) {
 
-            //Si esta el anterior streaming_display aun pendiente de enviar
-            if (zoc_pending_send_streaming_display) {
+        //Si esta el anterior streaming_display aun pendiente de enviar
+        if (zoc_pending_send_streaming_display) {
 
 
-            }
-            else {
+        }
+        else {
 
 
                 //Slot 0 diferencial
@@ -5056,8 +5091,8 @@ void zeng_online_client_prepare_streaming_display_if_needed(void)
 
                 zoc_pending_send_streaming_display=1;
 
-            }
-		}
+        }
+
 	}
 }
 
@@ -5273,6 +5308,50 @@ void zec_autoadjust_differentials_display(void)
 
 }
 
+//Calcular los fps del ultimo segundo, la media de los ultimos segundos, y autoajustar parametro de pantallas diferenciales
+void zoc_client_manage_fps_diferential_display(void)
+{
+
+    zoc_client_video_frames++;
+    if (zoc_client_video_frames==50) {
+
+        zoc_client_video_frames=0;
+
+        zoc_client_streaming_display_fps=zoc_client_streaming_display_count;
+        zoc_client_streaming_display_count=0;
+
+        //printf("1 segundo. FPS=%d\n",zoc_client_streaming_display_fps);
+
+
+        zoc_client_streaming_display_fps_sum +=zoc_client_streaming_display_fps;
+
+
+        zoc_client_streaming_display_fps_seconds++;
+
+        //Por si acaso, aunque incrementamos siempre antes de dividir, podria ser que el contador hiciera overflow
+        //y llegase a ser 0
+
+        if (zoc_client_streaming_display_fps_seconds==0) {
+            zoc_client_streaming_display_fps_last_interval=0;
+        }
+
+        else {
+            zoc_client_streaming_display_fps_last_interval=zoc_client_streaming_display_fps_sum/zoc_client_streaming_display_fps_seconds;
+        }
+
+        //printf("FPS average in the last %d seconds: %d\n",zoc_client_streaming_display_fps_seconds,zoc_client_streaming_display_fps_last_interval);
+
+        //Nota: este algoritmo de autoajuste del parametro de diferenciales es muy mejorable, funciona pero "de aquella manera"
+        if (zoc_slave_differential_displays_limit_full_autoadjust.v) {
+            zec_autoadjust_differentials_display();
+        }
+
+
+    }
+}
+
+int zoc_snapshot_master_streaming_counter=0;
+
 void zeng_online_client_end_frame_from_core_functions(void)
 {
 
@@ -5288,54 +5367,39 @@ void zeng_online_client_end_frame_from_core_functions(void)
         zeng_online_client_apply_pending_received_streaming_display();
 
         if (zeng_online_i_am_master.v==0) {
-            zoc_client_video_frames++;
-            if (zoc_client_video_frames==50) {
-
-                zoc_client_video_frames=0;
-
-                zoc_client_streaming_display_fps=zoc_client_streaming_display_count;
-                zoc_client_streaming_display_count=0;
-
-                //printf("1 segundo. FPS=%d\n",zoc_client_streaming_display_fps);
-
-
-                zoc_client_streaming_display_fps_sum +=zoc_client_streaming_display_fps;
-
-
-                zoc_client_streaming_display_fps_seconds++;
-
-                //Por si acaso, aunque incrementamos siempre antes de dividir, podria ser que el contador hiciera overflow
-                //y llegase a ser 0
-
-                if (zoc_client_streaming_display_fps_seconds==0) {
-                    zoc_client_streaming_display_fps_last_interval=0;
-                }
-
-                else {
-                    zoc_client_streaming_display_fps_last_interval=zoc_client_streaming_display_fps_sum/zoc_client_streaming_display_fps_seconds;
-                }
-
-                //printf("FPS average in the last %d seconds: %d\n",zoc_client_streaming_display_fps_seconds,zoc_client_streaming_display_fps_last_interval);
-
-                //Nota: este algoritmo de autoajuste del parametro de diferenciales es muy mejorable, funciona pero "de aquella manera"
-                if (zoc_slave_differential_displays_limit_full_autoadjust.v) {
-                    zec_autoadjust_differentials_display();
-                }
-
-
-            }
+            zoc_client_manage_fps_diferential_display();
         }
     }
     else {
         zeng_online_client_apply_pending_received_snapshot();
     }
 
-    if (created_room_streaming_mode) {
-        zeng_online_client_prepare_streaming_display_if_needed();
-    }
 
-    else {
-        zeng_online_client_prepare_snapshot_if_needed();
+    //Envio pantalla y snapshot de master
+    if (zeng_online_i_am_master.v) {
+        if (created_room_streaming_mode) {
+
+            zeng_online_client_prepare_streaming_display_if_needed();
+
+            //En modo streaming enviamos 1 snapshot cada minuto
+
+            zoc_snapshot_master_streaming_counter++;
+            if (zoc_snapshot_master_streaming_counter>=ZOC_INTERVAL_SNAPSHOT_ON_STREAMING) {
+                zoc_snapshot_master_streaming_counter=0;
+                //printf("Preparing snapshot on streaming mode\n");
+                DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_INFO,"ZENG Online Client: Streaming mode. Preparing snapshot to use on leave room on the slave");
+
+                zeng_online_client_prepare_snapshot_if_needed();
+                //printf("zoc_pending_send_snapshot: %d\n",zoc_pending_send_snapshot);
+            }
+
+        }
+
+        else {
+
+            zeng_online_client_prepare_snapshot_if_needed();
+
+        }
     }
 
 

@@ -62,6 +62,8 @@ extern void zeng_online_client_kick_user(char *message);
 extern void zeng_online_client_max_players_room(int valor);
 extern void zeng_online_client_rename_room(char *name);
 
+extern void zeng_online_client_apply_pending_received_snapshot(void);
+
 extern void zeng_online_client_alter_fps_streaming(void);
 
 extern int zeng_online_snapshot_diff;
