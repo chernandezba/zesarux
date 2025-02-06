@@ -2328,8 +2328,11 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
         //Siempre empiezo desde la posicion actual del buffer
         int indice_lectura=zeng_online_rooms_list[room_number].index_event;
 
-        //TODO: ver posible manera de salir de aqui??
-        while (1) {
+        int errores_escribir=0;
+
+        //Salir si falla x veces seguidas el envio de respuesta
+        while (errores_escribir<30) {
+
             if (zeng_online_rooms_list[room_number].index_event==indice_lectura) {
                 //Esperar algo.
                 //TODO: parametro configurable
@@ -2359,13 +2362,22 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
 
                 //printf("Escritos socket: %d\n",escritos);
                 if (escritos<0) {
-                    DBG_PRINT_ZENG_ONLINE VERBOSE_DEBUG,"ZENG Online: Error returning zeng-online get-keys. Client connection may be closed");
-                    return;
+                    DBG_PRINT_ZENG_ONLINE VERBOSE_DEBUG,"ZENG Online: Error returning zeng-online get-keys. Retries: %d Source IP=%s",errores_escribir,ip_source_address);
+                    errores_escribir++;
+
+                    sleep(1);
+
                 }
+
+                else {
+                    errores_escribir=0;
+                }
+
 
             }
         }
 
+        DBG_PRINT_ZENG_ONLINE VERBOSE_DEBUG,"ZENG Online: Error returning zeng-online get-keys. Client connection may be closed. Source IP=%s",ip_source_address);
 
     }
 
