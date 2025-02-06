@@ -1791,14 +1791,17 @@ void menu_zeng_online(MENU_ITEM_PARAMETERS)
 
                 menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_disable_autojoin_room,NULL,
                 "Reset autojoin","Desactivar autounir","Desactivar autounir");
+                menu_add_item_menu_es_avanzado(array_menu_common);
                 menu_add_item_menu_add_flags(array_menu_common,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
 
                 menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_rename_room,NULL,
                 "Rename room","Renombrar habitación","Renombrar habitació");
+                menu_add_item_menu_es_avanzado(array_menu_common);
                 menu_add_item_menu_add_flags(array_menu_common,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
 
                 menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_restricted_keys,NULL,
                 "Restricted keys","Teclas restringidas","Tecles restringides");
+                menu_add_item_menu_es_avanzado(array_menu_common);
                 menu_add_item_menu_add_flags(array_menu_common,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
 
                 menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_kick_user,NULL,
@@ -1807,16 +1810,19 @@ void menu_zeng_online(MENU_ITEM_PARAMETERS)
 
                 menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_max_players_room,NULL,
                 "Set max players per room","Definir max jugadores por hab.","Definir max jugadors per hab.");
+                menu_add_item_menu_es_avanzado(array_menu_common);
                 menu_add_item_menu_add_flags(array_menu_common,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
 
                 menu_add_item_menu_separator(array_menu_common);
 
                 menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_allow_message_room,NULL,
                 "Allow broadcast messages","Permitir mensajes difusión","Permetre missatges difusió");
+                menu_add_item_menu_es_avanzado(array_menu_common);
                 menu_add_item_menu_add_flags(array_menu_common,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
 
                 menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_disallow_message_room,NULL,
                 "Disallow broadcast messages","No permitir mensajes difusión","No permetre missatges difusió");
+                menu_add_item_menu_es_avanzado(array_menu_common);
                 menu_add_item_menu_add_flags(array_menu_common,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
 
                 menu_add_item_menu_separator(array_menu_common);
