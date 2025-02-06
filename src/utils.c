@@ -8563,7 +8563,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                         break;
 
 
-                        //las 5 son botones de joystick que vienen desde ZENG (entrade de comando por ZRCP) exclusivamente.
+                        //las 5 son botones de joystick que vienen desde ZENG (entrada de comando por ZRCP) exclusivamente.
                         //Se diferencian de las anteriores en que no vuelven a generar evento ZENG de nuevo
                         case UTIL_KEY_JOY_FIRE:
                                 if (pressrelease) {

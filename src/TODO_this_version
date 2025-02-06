@@ -108,12 +108,8 @@ cliente pide diferenciales. y pide una entera cada Z frames
 
 
 
--Joystick redefinido como tecla debe enviar por Zeng online la tecla y no el movimiento de joystick
-Así permitiría jugar 2 jugadores ambos con joystick
-En uno se envía como joystick igual
-En otro se envía como opqam por ejemplo. O incluso mejor 5678, así se puede usar en menú también (habilitando opción 5678 de mover menú)
-
 -Mismo fix de recibir audio continuo a recibir teclas. En general cualquier recepción que esté en bucle
 Ver si cuando se corta el socket en envío de audio acaba también saliendo de ZRCP
 
--si cliente se conecta y es modo streaming, si no esta en spectrum , que cambie a spectrum
+
+-envio eventos joystick por zeng acaba llenando la fifo de manera muy rapida

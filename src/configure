@@ -1810,7 +1810,7 @@ ds1307.o: ds1307.c ds1307.h cpu.h debug.h utils.h operaciones.h zxvision/zxvisio
 printers.o: printers.c printers.h cpu.h debug.h utils.h video/screen.h zxvision/zxvision.h
 	\$(CC) \$(CFLAGS) -c printers.c
 
-realjoystick.o: realjoystick.c realjoystick.h cpu.h debug.h joystick.h zxvision/zxvision.h utils.h  video/screen.h compileoptions.h snap/snap_ram.h
+realjoystick.o: realjoystick.c realjoystick.h cpu.h debug.h joystick.h zxvision/zxvision.h utils.h  video/screen.h compileoptions.h snap/snap_ram.h zrcp/zeng.h
 	\$(CC) \$(CFLAGS) -c realjoystick.c
 
 ulaplus.o: video_chips/ulaplus.c video_chips/ulaplus.h cpu.h debug.h video/screen.h video_chips/spectra.h zxvision/zxvision.h

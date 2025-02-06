@@ -46,6 +46,7 @@
 #include "screen.h"
 #include "compileoptions.h"
 #include "snap_ram.h"
+#include "zeng.h"
 
 
 
@@ -536,12 +537,14 @@ void realjoystick_set_reset_key(int index,int value)
 	if (value) {
 		debug_printf (VERBOSE_DEBUG,"set key %c",tecla);
 		ascii_to_keyboard_port(tecla);
+        zeng_send_key_event(tecla,1);
 	}
 
 
         else {
 		debug_printf (VERBOSE_DEBUG,"reset key %c",tecla);
 		ascii_to_keyboard_port_set_clear(tecla,0);
+        zeng_send_key_event(tecla,0);
 	}
 
 }
