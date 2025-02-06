@@ -82,18 +82,13 @@ menu_fire_event_open_menu();
 
 ZENG Online
 
--Si se hace get-snapshot sin haber uno primero, creo que peta
+-Si se hace get-snapshot sin haber uno primero, creo que peta: no deberia porque se controla que el size no sea 0
 -Cliente sin permisos de get-snapshot, en el footer acaba diciendo OFFLINE. No deberia poner ese mensaje si no tiene permisos de get-snapshot
 -Probar build sin threads, por lo de las funciones vacias en no-threads, ver si falta alguna
 
 
 -Modo streaming
-ok * controlar solo spectrum al crear
-*controlar solo spectrum al cambiar de maquina. pero eso no se puede dado que la room ya esta creada y no se puede cambiar su modo
-conectado con room en modo streaming, si cambio a maquina no spectrum genera panic porque get_base_mem_pantalla no tiene sentido
-
--master no envia snapshot. envia display
--slave no recibe snapshot y no recibe teclas. recibe display. y su cpu no emula
+acabar de probar cambios maquina spectrum y no spectrum en master y slave, antes y despues de conectar
 
 
 -ventana waveform parece que va conmutando un frame de video sin sonido con otro del sonido del buffer
@@ -107,9 +102,5 @@ cliente pide diferenciales. y pide una entera cada Z frames
 
 
 
-
--Mismo fix de recibir audio continuo a recibir teclas. En general cualquier recepción que esté en bucle
-Ver si cuando se corta el socket en envío de audio acaba también saliendo de ZRCP
-
-
--envio eventos joystick por zeng acaba llenando la fifo de manera muy rapida
+-envio eventos joystick por zeng acaba llenando la fifo de manera muy rapida. al menos aquellos que se asignan desde boton a tecla
+esto parece que al llenar la fifo se pierden eventos y el personaje no se mueve como debe
