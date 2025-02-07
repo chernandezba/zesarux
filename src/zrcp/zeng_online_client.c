@@ -2813,7 +2813,7 @@ int zoc_get_stream_audio_continuous(int indice_socket)
             //Esto es debido a que alterariamos el ultimo valor de sample reproducido
             //En cambio con esto repetimos el ultimo valor de sample y asi no se escucha nada extraño
             memset(zoc_get_audio_mem_binary_second_buffer,zoc_get_audio_mem_binary[0],ZOC_STREAMING_AUDIO_BUFFER_SIZE);
-            printf("Periodo silencio %d\n",contador_segundo);
+            printf("Periodo silencio %d. write %d\n",contador_segundo,(char) zoc_get_audio_mem_binary[0]);
         }
 
         else {
@@ -5484,7 +5484,7 @@ void zeng_online_client_alter_fps_streaming(void)
 }
 
 
-
+char zoc_last_audio_value_received=0;
 
 void zeng_online_client_end_audio_frame_stuff(void)
 {
@@ -5592,13 +5592,16 @@ void zeng_online_client_end_audio_frame_stuff(void)
 
             }
 
+            zoc_last_audio_value_received=audio_buffer[ZOC_STREAMING_AUDIO_BUFFER_SIZE-1];
+
             zoc_pending_apply_received_streaming_audio=0;
         }
         else {
 
-            printf("End audio frame. Sonido NO disponible aun. %d\n",contador_segundo);
+            printf("End audio frame. Sonido NO disponible aun. %d. Write %d\n",contador_segundo,zoc_last_audio_value_received);
             //Meter silencio
-            memset(audio_buffer,0,ZOC_STREAMING_AUDIO_BUFFER_SIZE);
+            //Metemos ultimo valor recibido para que no suene petardeo
+            memset(audio_buffer,zoc_last_audio_value_received,ZOC_STREAMING_AUDIO_BUFFER_SIZE);
 
         }
 
