@@ -71,6 +71,7 @@ extern int zeng_online_snapshot_diff;
 extern int zeng_online_snapshot_diff_media;
 
 extern int streaming_enabled_when_creating;
+extern int streaming_silence_detection;
 
 extern int created_room_streaming_mode;
 

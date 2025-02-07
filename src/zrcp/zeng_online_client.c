@@ -163,6 +163,9 @@ int zoc_rejoining_as_master=0;
 //Crear una habitacion con modo streaming o no
 int streaming_enabled_when_creating=1;
 
+//Detectar silencio en sonido en streaming
+int streaming_silence_detection=1;
+
 //Perfiles de teclas que se han cargado del servidor como master/manager para la habitacion actual
 int allowed_keys[ZOC_MAX_KEYS_PROFILES][ZOC_MAX_KEYS_ITEMS];
 //Perfiles asignados a cada uuid. Si es "", no esta asignado
@@ -2796,12 +2799,28 @@ int zoc_get_stream_audio_continuous(int indice_socket)
 
     if (!zoc_pending_apply_received_streaming_audio) {
         //copiar el buffer recibido al segundo buffer
-        //printf("Copiar el buffer recibido al segundo buffer\n");
+        //printf("Copiar el buffer recibido al segundo buffer. longitud=%d\n",zoc_get_audio_mem_binary_longitud);
+
+
         if (zoc_get_audio_mem_binary_second_buffer==NULL) {
             zoc_get_audio_mem_binary_second_buffer=util_malloc(ZOC_STREAMING_AUDIO_BUFFER_SIZE,"Can not allocate memory for apply audio");
         }
 
-        memcpy(zoc_get_audio_mem_binary_second_buffer,zoc_get_audio_mem_binary,ZOC_STREAMING_AUDIO_BUFFER_SIZE);
+        if (zoc_get_audio_mem_binary_longitud<=2) {
+            //Se indica que son dos valores (canales estereo) en periodo de silencio. Hay que escribir ese valor repetido en todo el sample
+            //Si en vez de esto metieramos simplemente 0, se escucharian molestos clics por ejemplo al mover el cursor
+            //al moverse por el menu del spectrum 128k
+            //Esto es debido a que alterariamos el ultimo valor de sample reproducido
+            //En cambio con esto repetimos el ultimo valor de sample y asi no se escucha nada extraño
+            memset(zoc_get_audio_mem_binary_second_buffer,zoc_get_audio_mem_binary[0],ZOC_STREAMING_AUDIO_BUFFER_SIZE);
+            printf("Periodo silencio %d\n",contador_segundo);
+        }
+
+        else {
+            printf("Periodo no silencio %d\n",contador_segundo);
+            memcpy(zoc_get_audio_mem_binary_second_buffer,zoc_get_audio_mem_binary,ZOC_STREAMING_AUDIO_BUFFER_SIZE);
+        }
+
         zoc_pending_apply_received_streaming_audio=1;
     }
 
@@ -3569,7 +3588,7 @@ void *zoc_master_thread_function_stream_audio(void *nada GCC_UNUSED)
 
                 if (zoc_master_pending_send_streaming_audio) {
 
-                    //printf("Putting audio\n");
+                    //printf("Putting audio %d\n",contador_segundo);
 
                     int error=zoc_send_streaming_audio(indice_socket);
 
@@ -3688,7 +3707,10 @@ int zoc_receive_snapshot(int indice_socket)
                 if (!zoc_ultimo_snapshot_recibido_es_zip) alertar_diferencia=20;
 
                 //Si han pasado mas de 10 snapshots, avisar con "algo" el el footer
-                if (zeng_online_snapshot_diff>alertar_diferencia) {
+                //Pero en modo streaming no quiero que salte
+                //Nota: en modo streaming tambien se reciben snapshots pero solo 1 cada minuto
+                //y solo se aplica al hacer un leave
+                if (!created_room_streaming_mode && zeng_online_snapshot_diff>alertar_diferencia) {
                     if (zeng_online_show_footer_lag_indicator.v) {
                         generic_footertext_print_operating("LAG");
                     }
@@ -4016,7 +4038,7 @@ int zoc_receive_streaming_display(int indice_socket,int slot)
 }
 
 
-//Este metodo no se usa, y se usa zoc_get_stream_audio_continuous
+//Este metodo NO se usa, y se usa zoc_get_stream_audio_continuous
 int zoc_receive_streaming_audio(int indice_socket)
 {
 
@@ -4178,7 +4200,7 @@ int zoc_receive_streaming_audio(int indice_socket)
 
         if (!zoc_pending_apply_received_streaming_audio) {
             //copiar el buffer recibido al segundo buffer
-            printf("Copiar el buffer recibido al segundo buffer\n");
+            //printf("Copiar el buffer recibido al segundo buffer. longitud=%d\n",zoc_get_audio_mem_binary_longitud);
             if (zoc_get_audio_mem_binary_second_buffer==NULL) {
                 zoc_get_audio_mem_binary_second_buffer=util_malloc(ZOC_STREAMING_AUDIO_BUFFER_SIZE,"Can not allocate memory for apply audio");
             }
@@ -5471,38 +5493,80 @@ void zeng_online_client_end_audio_frame_stuff(void)
 
         if (!zoc_master_pending_send_streaming_audio) {
 
-            z80_byte *zoc_streaming_audio_to_send=util_malloc(ZOC_STREAMING_AUDIO_BUFFER_SIZE,"Can not allocate memory for stream audio");
-
-            memcpy(zoc_streaming_audio_to_send,audio_buffer,ZOC_STREAMING_AUDIO_BUFFER_SIZE);
-
-            if (zoc_send_streaming_audio_mem_hexa==NULL) {
-                zoc_send_streaming_audio_mem_hexa=util_malloc(ZOC_STREAMING_AUDIO_BUFFER_SIZE*2+100,"Can not allocate memory for streaming audio");
-            }
-
+            //Ver si el buffer tiene sonido o está en silencio. Comparamos si el valor es el mismo
+            int diferente=0;
             int i;
+            char valor_inicial=audio_buffer[0];
 
-            int longitud=ZOC_STREAMING_AUDIO_BUFFER_SIZE;
+            int longitud_enviar_audio=ZOC_STREAMING_AUDIO_BUFFER_SIZE;
 
-            z80_byte *origen=zoc_streaming_audio_to_send;
-            char *destino=zoc_send_streaming_audio_mem_hexa;
-            z80_byte byte_leido;
+            if (streaming_silence_detection) {
 
-            for (i=0;i<longitud;i++) {
-                byte_leido=*origen++;
-                *destino++=util_byte_to_hex_nibble(byte_leido>>4);
-                *destino++=util_byte_to_hex_nibble(byte_leido);
+                for (i=0;i<ZOC_STREAMING_AUDIO_BUFFER_SIZE;i++) {
+                    //printf("%d\n",i);
+                    if (valor_inicial!=audio_buffer[i]) {
+                        //printf("Diferente %d\n",i);
+                        diferente=1;
+                        break;
+                    }
+                }
             }
 
+            else {
+                diferente=1;
+            }
 
-            //metemos salto de linea y 0 al final
-            *destino++ ='\n';
-            *destino++ =0;
+            if (!diferente) {
+                //printf("Buffer audio has silence. i=%d\n",i);
+                //En ese caso solo enviamos dos valores del sample (canal izquierdo y derecho)
+                //que son los que usara el remoto para repetir esos valores en destino
+                longitud_enviar_audio=2;
+            }
+
+            else {
+
+                //printf("Buffer audio has NO silence. Send it. i=%d\n",i);
+
+            }
+
+            //else {
+
+
+                z80_byte *zoc_streaming_audio_to_send=util_malloc(longitud_enviar_audio,"Can not allocate memory for stream audio");
+
+                memcpy(zoc_streaming_audio_to_send,audio_buffer,longitud_enviar_audio);
+
+                if (zoc_send_streaming_audio_mem_hexa==NULL) {
+                    //Preparo siempre memoria para el maximo, aunque solo se envien los dos bytes identificando silencio
+                    zoc_send_streaming_audio_mem_hexa=util_malloc(ZOC_STREAMING_AUDIO_BUFFER_SIZE*2+100,"Can not allocate memory for streaming audio");
+                }
 
 
 
-            free(zoc_streaming_audio_to_send);
+                int longitud=longitud_enviar_audio;
 
-            zoc_master_pending_send_streaming_audio=1;
+                z80_byte *origen=zoc_streaming_audio_to_send;
+                char *destino=zoc_send_streaming_audio_mem_hexa;
+                z80_byte byte_leido;
+
+                for (i=0;i<longitud;i++) {
+                    byte_leido=*origen++;
+                    *destino++=util_byte_to_hex_nibble(byte_leido>>4);
+                    *destino++=util_byte_to_hex_nibble(byte_leido);
+                }
+
+
+                //metemos salto de linea y 0 al final
+                *destino++ ='\n';
+                *destino++ =0;
+
+
+
+                free(zoc_streaming_audio_to_send);
+
+                zoc_master_pending_send_streaming_audio=1;
+
+            //}
         }
 
     }

@@ -1662,6 +1662,11 @@ void menu_zeng_online_full_display_interval(MENU_ITEM_PARAMETERS)
 
 }
 
+void menu_zeng_online_streaming_silence_detection(MENU_ITEM_PARAMETERS)
+{
+    streaming_silence_detection ^=1;
+}
+
 void menu_zeng_online(MENU_ITEM_PARAMETERS)
 {
     menu_item *array_menu_common;
@@ -1942,7 +1947,18 @@ void menu_zeng_online(MENU_ITEM_PARAMETERS)
             "Only available on Spectrum");
         menu_add_item_menu_es_avanzado(array_menu_common);
 
-        //TODO: desconectar con zeng_online_connected.v=0;
+        if (zeng_online_connected.v && zeng_online_i_am_master.v && streaming_enabled_when_creating) {
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_streaming_silence_detection,NULL,
+            "Streaming silence detection","Detección silencio en Streaming","Detecció silenci en Streaming");
+            menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",
+                (streaming_silence_detection ? 'X' : ' '));
+            menu_add_item_menu_tooltip(array_menu_common,"On master with streaming, do not send audio if there's silence");
+            menu_add_item_menu_ayuda(array_menu_common,"On master with streaming, do not send audio if there's silence. "
+                "Actually it sends audio but not a full audio frame, just a few bytes");
+            menu_add_item_menu_es_avanzado(array_menu_common);
+
+        }
+
 
         menu_add_item_menu_separator(array_menu_common);
 
