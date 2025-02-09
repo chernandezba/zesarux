@@ -2813,11 +2813,11 @@ int zoc_get_stream_audio_continuous(int indice_socket)
             //Esto es debido a que alterariamos el ultimo valor de sample reproducido
             //En cambio con esto repetimos el ultimo valor de sample y asi no se escucha nada extraño
             memset(zoc_get_audio_mem_binary_second_buffer,zoc_get_audio_mem_binary[0],ZOC_STREAMING_AUDIO_BUFFER_SIZE);
-            printf("Periodo silencio %d. write %d\n",contador_segundo,(char) zoc_get_audio_mem_binary[0]);
+            //printf("Periodo silencio %d. write %d\n",contador_segundo,(char) zoc_get_audio_mem_binary[0]);
         }
 
         else {
-            printf("Periodo no silencio %d\n",contador_segundo);
+            //printf("Periodo no silencio %d\n",contador_segundo);
             memcpy(zoc_get_audio_mem_binary_second_buffer,zoc_get_audio_mem_binary,ZOC_STREAMING_AUDIO_BUFFER_SIZE);
         }
 
@@ -4025,7 +4025,7 @@ int zoc_receive_streaming_display(int indice_socket,int slot)
     }
     else {
         //printf("get-streaming_display no disponible. esperar\n");
-        printf("Pantalla pendiente de aplicar aun\n");
+        //printf("Pantalla pendiente de aplicar aun\n");
 
     }
 
@@ -4111,14 +4111,14 @@ int zoc_receive_streaming_audio(int indice_socket)
             leer_audio=1;
         }
         else {
-            printf("stream audio es el mismo que el anterior\n");
+            //printf("stream audio es el mismo que el anterior\n");
         }
     }
 
 
     if (leer_audio) {
 
-        printf("Obteniendo stream audio remoto %d\n",contador_segundo);
+        //printf("Obteniendo stream audio remoto %d\n",contador_segundo);
 
 
         //"streaming-get-audio user_pass n
@@ -4162,7 +4162,7 @@ int zoc_receive_streaming_audio(int indice_socket)
             return 0;
         }
 
-        printf("Fin recepcion obtener audio remoto. %d\n",contador_segundo);
+        //printf("Fin recepcion obtener audio remoto. %d\n",contador_segundo);
 
         //printf("Buffer despues de truncar: [%s]\n",&zoc_get_audio_mem_hexa[inicio_datos_snapshot]);
 
@@ -4209,7 +4209,7 @@ int zoc_receive_streaming_audio(int indice_socket)
             zoc_pending_apply_received_streaming_audio=1;
         }
 
-        printf("Fin obtener audio remoto. %d\n",contador_segundo);
+        //printf("Fin obtener audio remoto. %d\n",contador_segundo);
 
     }
 
@@ -5598,7 +5598,7 @@ void zeng_online_client_end_audio_frame_stuff(void)
         }
         else {
 
-            printf("End audio frame. Sonido NO disponible aun. %d. Write %d\n",contador_segundo,zoc_last_audio_value_received);
+            DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: End audio frame. Sound not available yet");
             //Meter silencio
             //Metemos ultimo valor recibido para que no suene petardeo
             memset(audio_buffer,zoc_last_audio_value_received,ZOC_STREAMING_AUDIO_BUFFER_SIZE);

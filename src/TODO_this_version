@@ -101,11 +101,9 @@ Pero que sucede cuando un diferencial ocupa mas que una entera? esa diferencial 
 cliente pide diferenciales. y pide una entera cada Z frames
 
 
-
 -envio eventos joystick por zeng acaba llenando la fifo de manera muy rapida. al menos aquellos que se asignan desde boton a tecla
 esto parece que al llenar la fifo se pierden eventos y el personaje no se mueve como debe
 
 -quiza LAG en modo streaming podria saltar cuando el audio se ha cortado varias veces seguidas
 Aunque eso no es LAG propiamente, sino baja calidad de sonido, no tiene porque haber LAG cuando pasa eso
 
--opcion deteccion silencio en streaming, al conmutar, peta
