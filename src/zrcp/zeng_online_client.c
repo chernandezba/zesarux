@@ -5597,7 +5597,9 @@ void zeng_online_client_end_audio_frame_stuff(void)
             zoc_pending_apply_received_streaming_audio=0;
         }
         else {
-
+            //TODO: Windows alterna a cada frame de audio este perido de no available junto con el available,
+            //pero solo cuando es un periodo de silencio. No se por que, quizá no se llama al timer de manera precisa
+            //Quiza porque Windows no usa threads en timer sino que utiliza el reloj? Aunque si pruebo timer con threads tampoco va bien
             DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: End audio frame. Sound not available yet");
             //Meter silencio
             //Metemos ultimo valor recibido para que no suene petardeo
