@@ -229,6 +229,35 @@ int zeng_fifo_read_element(zeng_key_presses *elemento)
 }
 
 
+//Leer elemento de la fifo
+//Retorna 1 si esta vacia
+int zeng_fifo_read_element_no_lock(zeng_key_presses *elemento)
+{
+
+	if (zeng_fifo_current_size==0) return 1;
+
+
+	//Leer de la posicion actual
+	elemento->tecla=zeng_key_presses_array[zeng_fifo_read_position].tecla;
+	elemento->pressrelease=zeng_key_presses_array[zeng_fifo_read_position].pressrelease;
+    //elemento->contador_scanline=zeng_key_presses_array[zeng_fifo_read_position].contador_scanline;
+
+	//Y poner siguiente posicion
+	zeng_fifo_read_position=zeng_next_position(zeng_fifo_read_position);
+
+	//Y restar total elementos
+	zeng_fifo_current_size--;
+    //printf("restamos zeng_fifo_current_size despues read. actual=%d\n",zeng_fifo_current_size);
+    //debug_exec_show_backtrace();
+
+
+    //printf("Zeng fifo reading element. Size: %d\n",zeng_fifo_get_current_size() );
+
+
+	return 0;
+
+}
+
 //Ver si elemento ya esta en la fifo
 int zeng_fifo_element_exists(zeng_key_presses *elemento)
 {
@@ -290,6 +319,26 @@ int zeng_fifo_peek_element(zeng_key_presses *elemento)
     //elemento->contador_scanline=zeng_key_presses_array[zeng_fifo_read_position].contador_scanline;
 
     zeng_fifo_end_lock();
+
+
+	return 0;
+
+}
+
+//Leer elemento de la fifo sin eliminarlo de la fifo
+//Retorna 1 si esta vacia
+int zeng_fifo_peek_element_no_lock(zeng_key_presses *elemento)
+{
+
+
+	if (zeng_fifo_current_size==0) return 1;
+
+
+	//Leer de la posicion actual
+	elemento->tecla=zeng_key_presses_array[zeng_fifo_read_position].tecla;
+	elemento->pressrelease=zeng_key_presses_array[zeng_fifo_read_position].pressrelease;
+    //elemento->contador_scanline=zeng_key_presses_array[zeng_fifo_read_position].contador_scanline;
+
 
 
 	return 0;

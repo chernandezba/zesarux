@@ -3093,16 +3093,21 @@ int zoc_keys_tecla_conmutada(zeng_key_presses *elemento)
     //Con esto vemos si la tecla se ha pulsado y liberado, con lo cual, quitaremos esas dos acciones
     zeng_key_presses elemento_siguiente;
 
-    zeng_fifo_peek_element(&elemento_siguiente);
+    zeng_fifo_begin_lock();
+
+    zeng_fifo_peek_element_no_lock(&elemento_siguiente);
 
     if (elemento_siguiente.pressrelease && elemento_siguiente.tecla==elemento->tecla) {
         DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Removing repeated toggle key %d, possible due to X11",elemento_siguiente.tecla);
         //printf("ZENG Online Client: Removing repeated toggle key %d, possible due to X11\n",elemento_siguiente.tecla);
         //quitar el siguiente elemento
         //por tanto lo que se quedara es el release
-        zeng_fifo_read_element(&elemento_siguiente);
+        zeng_fifo_read_element_no_lock(&elemento_siguiente);
+        zeng_fifo_end_lock();
         return 1;
     }
+
+    zeng_fifo_end_lock();
 
     return 0;
 
@@ -3140,15 +3145,13 @@ int zoc_keys_send_pending(int indice_socket,int *enviada_alguna_tecla)
                 UTIL_KEY_JOY_FIRE,UTIL_KEY_JOY_UP,UTIL_KEY_JOY_DOWN,UTIL_KEY_JOY_LEFT,UTIL_KEY_JOY_RIGHT);
 
 
-            //Ya no vemos si tecla conmuta, pues simplemente vemos si hay alguna tecla repetida en la fifo
-            //antes de agregarla con la llamada a zeng_fifo_element_exists
-            //if (!zoc_keys_tecla_conmutada(&elemento)) {
+            if (!zoc_keys_tecla_conmutada(&elemento)) {
 
             //command> help send-keys-event
             //Syntax: send-keys-event key event
                 int error=zoc_send_keys(indice_socket,&elemento);
                 if (error<0) error_desconectar=1;
-            //}
+            }
         }
 
 
