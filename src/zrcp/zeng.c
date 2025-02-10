@@ -142,7 +142,7 @@ void zeng_fifo_semaphore_init(void)
 void zeng_fifo_begin_lock(void)
 {
 	while(z_atomic_test_and_set(&semaphore_zeng_fifo)) {
-		//printf("Esperando a liberar lock en zoc_begin_lock_joined_users\n");
+		//printf("Esperando a liberar lock en zeng_fifo_begin_lock\n");
 	}
 }
 
@@ -220,6 +220,8 @@ int zeng_fifo_read_element(zeng_key_presses *elemento)
     //debug_exec_show_backtrace();
 
     zeng_fifo_end_lock();
+
+    //printf("Zeng fifo reading element. Size: %d\n",zeng_fifo_get_current_size() );
 
 
 	return 0;
@@ -326,8 +328,10 @@ void zeng_send_key_event(enum util_teclas tecla,int pressrelease)
 
 	//printf ("Adding zeng key tecla %3d pressrelease %d to fifo\n",elemento.tecla,elemento.pressrelease);
 
+    //printf ("Adding zeng key event. FIFO Size: %d\n",zeng_fifo_get_current_size() );
+
 	if (zeng_fifo_add_element(&elemento)) {
-		debug_printf (VERBOSE_DEBUG,"Error adding zeng key event. FIFO full");
+		debug_printf (VERBOSE_DEBUG,"Error adding zeng key event. FIFO full (size: %d)",zeng_fifo_get_current_size() );
         //printf ("Error adding zeng key event. FIFO full\n");
 		return;
 	}

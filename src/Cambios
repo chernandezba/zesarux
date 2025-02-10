@@ -3,6 +3,7 @@ ZEsarUX 12.1 - xxx edition. 22 Enero 2025
 
 * Mejoras
 
+Agregado modo Streaming a ZENG Online para ZX Spectrum. Mejora la experiencia de juego: reduce lag y elimina cualquier inconsistencia de estado de juego en todos los jugadores
 Permitir grabar pantalla de ZX80/81 a archivo .scr
 Agregada conversión de archivos ZX81 P a P81, y P81 a P
 Permitir grabar una nota de texto en un snapshot ZSF

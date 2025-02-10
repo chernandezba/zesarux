@@ -2542,13 +2542,19 @@ void zoc_get_keys(int indice_socket)
 
     //Ir leyendo cada linea
     //buffer suficientemente grande por si llegan varios eventos de golpe
-    char buffer[1024];
+    //Si el tamaño del total de eventos permitidos en la fifo excede nuestro buffer, la llamada
+    //a zsock_read_all_until_newline seguramente se quedaria esperando hasta hacer timeout porque no encontraria el newline final
+    //Unos 30 caracteres por linea. 50 maximo la fifo zeng (ZENG_FIFO_SIZE)
+    //char buffer[1024];
+    #define ZOC_GET_KEYS_MAX_BUFFER (ZENG_FIFO_SIZE*30*2)
+    char buffer[ZOC_GET_KEYS_MAX_BUFFER+1];
 
     //Leer hasta prompt
     int posicion_command;
 
     //printf ("antes de leer hasta command prompt\n");
-    int leidos=zsock_read_all_until_newline(indice_socket,(z80_byte *)buffer,1023,&posicion_command);
+    //int leidos=zsock_read_all_until_newline(indice_socket,(z80_byte *)buffer,1023,&posicion_command);
+    int leidos=zsock_read_all_until_newline(indice_socket,(z80_byte *)buffer,ZOC_GET_KEYS_MAX_BUFFER,&posicion_command);
     //printf("leidos on zoc_get_keys: %d\n",leidos);
 
     if (leidos>0) {
@@ -3129,13 +3135,13 @@ int zoc_keys_send_pending(int indice_socket,int *enviada_alguna_tecla)
             DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"ZENG Online Client: Info joystick: fire: %d up: %d down: %d left: %d right: %d",
                 UTIL_KEY_JOY_FIRE,UTIL_KEY_JOY_UP,UTIL_KEY_JOY_DOWN,UTIL_KEY_JOY_LEFT,UTIL_KEY_JOY_RIGHT);
 
-                if (!zoc_keys_tecla_repetida(&elemento)) {
+            if (!zoc_keys_tecla_repetida(&elemento)) {
 
-                //command> help send-keys-event
-                //Syntax: send-keys-event key event
-                    int error=zoc_send_keys(indice_socket,&elemento);
-                    if (error<0) error_desconectar=1;
-                }
+            //command> help send-keys-event
+            //Syntax: send-keys-event key event
+                int error=zoc_send_keys(indice_socket,&elemento);
+                if (error<0) error_desconectar=1;
+            }
         }
 
 

@@ -1208,7 +1208,7 @@ int zsock_read_all_until_newline(int indice_tabla,z80_byte *buffer,int max_buffe
 
 
 		if (!leido_command_prompt) {
-			//printf ("NO recibido command prompt. Reintentar\n");
+			//printf ("NO recibido command prompt. Reintentar. %d\n",reintentos);
 			usleep(10000); //10 ms
 		}
 
@@ -1248,7 +1248,7 @@ int zsock_read_all_until_newline_streamaudio(int indice_tabla,z80_byte *buffer,i
 
 	do {
 
-        int pos_destino_orig=pos_destino;
+        //int pos_destino_orig=pos_destino;
 
 
 
