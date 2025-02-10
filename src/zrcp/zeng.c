@@ -229,6 +229,51 @@ int zeng_fifo_read_element(zeng_key_presses *elemento)
 }
 
 
+//Ver si elemento ya esta en la fifo
+int zeng_fifo_element_exists(zeng_key_presses *elemento)
+{
+
+	if (zeng_fifo_current_size==0) return 0;
+
+    zeng_fifo_begin_lock();
+
+    int total_elementos=zeng_fifo_current_size;
+    int posicion=zeng_fifo_read_position;
+
+    int pressrelease;
+    enum util_teclas tecla;
+
+    while (total_elementos>0) {
+
+        //Leer de la posicion actual
+        tecla=zeng_key_presses_array[posicion].tecla;
+        pressrelease=zeng_key_presses_array[posicion].pressrelease;
+        //elemento->contador_scanline=zeng_key_presses_array[zeng_fifo_read_position].contador_scanline;
+
+        //printf("Pos %2d tecla %3d pressrelease %d\n",posicion,tecla,pressrelease);
+
+        if (tecla==elemento->tecla && pressrelease==elemento->pressrelease) {
+            zeng_fifo_end_lock();
+            return 1;
+        }
+
+        //Y poner siguiente posicion
+        posicion=zeng_next_position(posicion);
+
+        total_elementos--;
+    }
+
+
+    zeng_fifo_end_lock();
+
+    //printf("Zeng fifo reading element. Size: %d\n",zeng_fifo_get_current_size() );
+
+
+	return 0;
+
+}
+
+
 //Leer elemento de la fifo sin eliminarlo de la fifo
 //Retorna 1 si esta vacia
 int zeng_fifo_peek_element(zeng_key_presses *elemento)
@@ -326,9 +371,20 @@ void zeng_send_key_event(enum util_teclas tecla,int pressrelease)
 	elemento.pressrelease=pressrelease;
     //elemento.contador_scanline=zeng_online_scanline_counter;
 
-	//printf ("Adding zeng key tecla %3d pressrelease %d to fifo\n",elemento.tecla,elemento.pressrelease);
+	//printf ("Adding zeng key tecla %3d (%c) pressrelease %d to fifo\n",elemento.tecla,
+    //(elemento.tecla>=32 && elemento.tecla<=126 ? elemento.tecla : '.'),
+    //elemento.pressrelease);
 
     //printf ("Adding zeng key event. FIFO Size: %d\n",zeng_fifo_get_current_size() );
+
+    //Ver si evento ya está en fifo local y último estado coincide con el que pretendemos agregar   En ese caso no agregar
+    if (zeng_fifo_element_exists(&elemento)) {
+        //printf ("Already exists zeng key tecla %3d (%c) pressrelease %d to fifo (size %d)\n",elemento.tecla,
+        //    (elemento.tecla>=32 && elemento.tecla<=126 ? elemento.tecla : '.'),
+        //    elemento.pressrelease,zeng_fifo_get_current_size());
+        return;
+    }
+
 
 	if (zeng_fifo_add_element(&elemento)) {
 		debug_printf (VERBOSE_DEBUG,"Error adding zeng key event. FIFO full (size: %d)",zeng_fifo_get_current_size() );
