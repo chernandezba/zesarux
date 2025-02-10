@@ -102,3 +102,8 @@ esto parece que al llenar la fifo se pierden eventos y el personaje no se mueve 
 Aunque eso no es LAG propiamente, sino baja calidad de sonido, no tiene porque haber LAG cuando pasa eso
 
 -timer windows con pthreads? mejora o empeora? o igual?
+
+-sobre envio teclas zeng:
+*si pongo eliminar teclas repetidas, en X11 no libera bien teclas cuando hace repeticion
+*si quito eso, eventos de joystick en mac acaban llenando la fifo
+*lo de control conmutar es necesario, ahora ya deberia funcionar en teoria porque toda la funcion esta en un bloque de lock
