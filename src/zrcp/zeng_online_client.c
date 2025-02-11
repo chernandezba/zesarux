@@ -3129,10 +3129,12 @@ int zoc_keys_send_pending(int indice_socket,int *enviada_alguna_tecla)
     int tamanyo_cola=zeng_fifo_get_current_size();
 
 
-    //if (tamanyo_cola) {
-    //    printf("\n");
-    //    printf("Tamanyo fifo antes enviar a remote: %d\n",tamanyo_cola);
-    //}
+    if (tamanyo_cola) {
+        printf("\n");
+        printf("Tamanyo fifo antes enviar a remote: %d\n",tamanyo_cola);
+    }
+
+    zeng_fifo_debug_show_fifo();
 
     while (tamanyo_cola>0 && !error_desconectar) {
         if (!zeng_fifo_read_element(&elemento)) {
@@ -3151,6 +3153,10 @@ int zoc_keys_send_pending(int indice_socket,int *enviada_alguna_tecla)
             //Syntax: send-keys-event key event
                 int error=zoc_send_keys(indice_socket,&elemento);
                 if (error<0) error_desconectar=1;
+            }
+
+            else {
+                printf("No enviar tecla conmutada %d pressrelease %d\n",elemento.tecla,elemento.pressrelease);
             }
         }
 

@@ -286,6 +286,7 @@ int zeng_fifo_element_exists(zeng_key_presses *elemento)
 
         if (tecla==elemento->tecla) {
             if (pressrelease==elemento->pressrelease) {
+                printf("Existe en pos %d\n",posicion);
                 existe=1;
             }
             else {
@@ -465,9 +466,9 @@ void zeng_send_key_event(enum util_teclas tecla,int pressrelease)
 	elemento.pressrelease=pressrelease;
     //elemento.contador_scanline=zeng_online_scanline_counter;
 
-	//printf ("Adding zeng key tecla %3d (%c) pressrelease %d to fifo\n",elemento.tecla,
-    //(elemento.tecla>=32 && elemento.tecla<=126 ? elemento.tecla : '.'),
-    //elemento.pressrelease);
+	printf ("--Adding zeng key tecla %3d (%c) pressrelease %d to fifo (size %d)\n",elemento.tecla,
+    (elemento.tecla>=32 && elemento.tecla<=126 ? elemento.tecla : '.'),
+    elemento.pressrelease,zeng_fifo_get_current_size());
 
     //printf ("Adding zeng key event. FIFO Size: %d\n",zeng_fifo_get_current_size() );
 
@@ -482,7 +483,7 @@ void zeng_send_key_event(enum util_teclas tecla,int pressrelease)
 
 	if (zeng_fifo_add_element(&elemento)) {
 		debug_printf (VERBOSE_DEBUG,"Error adding zeng key event. FIFO full (size: %d)",zeng_fifo_get_current_size() );
-        printf ("Error adding zeng key event. FIFO full (size: %d)\n",zeng_fifo_get_current_size() );
+        printf ("############Error adding zeng key event. FIFO full (size: %d)\n",zeng_fifo_get_current_size() );
         zeng_fifo_debug_show_fifo();
 		return;
 	}
