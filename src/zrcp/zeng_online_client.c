@@ -2544,7 +2544,7 @@ void zoc_get_keys(int indice_socket)
     //buffer suficientemente grande por si llegan varios eventos de golpe
     //Si el tamaño del total de eventos permitidos en la fifo excede nuestro buffer, la llamada
     //a zsock_read_all_until_newline seguramente se quedaria esperando hasta hacer timeout porque no encontraria el newline final
-    //Unos 30 caracteres por linea. 50 maximo la fifo zeng (ZENG_FIFO_SIZE)
+    //Unos 30 caracteres por linea. * el maximo de fifo, *2 para margen suficiente
     //char buffer[1024];
     #define ZOC_GET_KEYS_MAX_BUFFER (ZENG_FIFO_SIZE*30*2)
     char buffer[ZOC_GET_KEYS_MAX_BUFFER+1];
