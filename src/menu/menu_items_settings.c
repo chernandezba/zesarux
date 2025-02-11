@@ -9203,6 +9203,7 @@ void menu_settings(MENU_ITEM_PARAMETERS)
 		menu_add_item_menu_tooltip(array_menu_settings,"Statistics settings");
 		menu_add_item_menu_ayuda(array_menu_settings,"Statistics settings");
         menu_add_item_menu_tiene_submenu(array_menu_settings);
+        menu_add_item_menu_es_avanzado(array_menu_settings);
 
 #endif
 
