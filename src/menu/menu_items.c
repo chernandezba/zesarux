@@ -276,7 +276,6 @@ int menu_display_window_list_opcion_seleccionada=0;
 int toys_opcion_seleccionada=0;
 int zxlife_opcion_seleccionada=0;
 int text_adventure_tools_opcion_seleccionada=0;
-int zeng_online_server_opcion_seleccionada=0;
 int in_memoriam_opcion_seleccionada=0;
 int in_memoriam_david_opcion_seleccionada=0;
 int in_memoriam_diego_opcion_seleccionada=0;
@@ -16401,183 +16400,6 @@ void menu_network_http_request(MENU_ITEM_PARAMETERS)
 	if (mem!=NULL) free (mem);
 }
 
-void menu_zeng_online_server_enable_disable(MENU_ITEM_PARAMETERS)
-{
-
-    if (zeng_online_enabled) {
-        disable_zeng_online();
-    }
-
-    else {
-        //Si no esta ZRCP, activar tambien
-        if (remote_protocol_enabled.v==0) {
-            enable_and_init_remote_protocol();
-        }
-
-        enable_zeng_online();
-
-    }
-
-
-}
-
-void menu_zeng_online_server_view_creator_passwords(MENU_ITEM_PARAMETERS)
-{
-
-    menu_item *array_menu_common;
-    menu_item item_seleccionado;
-    int retorno_menu;
-    int opcion_seleccionada=0;
-    do {
-
-        menu_add_item_menu_inicial(&array_menu_common,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
-
-        int i;
-
-        int total_passwords=0;
-
-        for (i=0;i<zeng_online_current_max_rooms;i++) {
-            if (zeng_online_rooms_list[i].created) {
-                menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Room %d Pass: %s",
-                    i,zeng_online_rooms_list[i].creator_password);
-                total_passwords++;
-
-            }
-        }
-
-        if (!total_passwords) {
-            menu_add_item_menu(array_menu_common,"No created rooms",MENU_OPCION_NORMAL,NULL,NULL);
-        }
-
-        menu_add_item_menu_separator(array_menu_common);
-
-        menu_add_ESC_item(array_menu_common);
-
-        retorno_menu=menu_dibuja_menu_dialogo_no_title_lang(&opcion_seleccionada,&item_seleccionado,array_menu_common,"Creator room passwords");
-
-
-        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
-                //llamamos por valor de funcion
-                if (item_seleccionado.menu_funcion!=NULL) {
-                        //printf ("actuamos por funcion\n");
-                        item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
-
-                }
-        }
-
-    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
-}
-
-void menu_zeng_online_server_expire_rooms_without_players(MENU_ITEM_PARAMETERS)
-{
-    zeng_online_destroy_rooms_without_players.v ^=1;
-}
-
-void menu_zeng_online_server_allow_room_creation_from_any_ip(MENU_ITEM_PARAMETERS)
-{
-    zeng_online_allow_room_creation_from_any_ip.v ^=1;
-}
-
-void menu_zeng_online_server_max_rooms(MENU_ITEM_PARAMETERS)
-{
-    //zeng_online_current_max_rooms
-    int last_room=zeng_online_get_last_used_room();
-    last_room++;
-
-    int valor=zeng_online_current_max_rooms;
-
-    menu_ventana_scanf_numero_enhanced("Max rooms",&valor,5,+1,1,ZENG_ONLINE_MAX_ROOMS,0);
-
-    if (valor<last_room) {
-        menu_error_message("Limit can't be less than the highest created room");
-        return;
-    }
-
-    zeng_online_current_max_rooms=valor;
-}
-
-void menu_zeng_online_server_max_players_per_room(MENU_ITEM_PARAMETERS)
-{
-
-    menu_ventana_scanf_numero_enhanced("Max players per room",&zeng_online_current_max_players_per_room,4,+1,1,ZENG_ONLINE_MAX_PLAYERS_PER_ROOM,0);
-
-}
-
-void menu_zeng_online_server_allow_zrcp_only_zeng_online(MENU_ITEM_PARAMETERS)
-{
-    zeng_online_server_allow_zrcp_only_zeng_online.v ^=1;
-}
-
-void menu_zeng_online_server(MENU_ITEM_PARAMETERS)
-{
-
-    menu_item *array_menu_common;
-    menu_item item_seleccionado;
-    int retorno_menu;
-    do {
-
-
-        menu_add_item_menu_en_es_ca_inicial(&array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_server_enable_disable,NULL,
-            "Enable ~~Server","Activar ~~Servidor","Activar ~~Servidor");
-        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(zeng_online_enabled ? 'X' : ' ' ));
-        menu_add_item_menu_shortcut(array_menu_common,'s');
-
-        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_server_view_creator_passwords,NULL,
-            "    View creator room ~~passwords","    Ver ~~passwords creación habitaciones","    Veure ~~passwords creació habitacions");
-        menu_add_item_menu_shortcut(array_menu_common,'p');
-        menu_add_item_menu_genera_ventana(array_menu_common);
-
-        menu_add_item_menu_separator(array_menu_common);
-
-        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_server_expire_rooms_without_players,NULL,
-            "Destroy rooms without players","Destruir habitaciones sin jugadores","Destruir habitacions sense jugadors");
-        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(zeng_online_destroy_rooms_without_players.v ? 'X' : ' ' ));
-
-        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_server_allow_room_creation_from_any_ip,NULL,
-            "Allow room creation from any ip","Permitir crear habitaciones desde cualquier ip","Permetre crear habitacions desde qualsevol ip");
-        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(zeng_online_allow_room_creation_from_any_ip.v ? 'X' : ' ' ));
-        menu_add_item_menu_tooltip(array_menu_common,"If room creation is allowed from any source ip");
-        menu_add_item_menu_ayuda(array_menu_common,"If room creation is allowed from any source ip. Creation from localhost is always allowed");
-
-        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_server_max_rooms,NULL,
-            "Maximum rooms","Máximo habitaciones","Màxim habitacions");
-        menu_add_item_menu_sufijo_format(array_menu_common," [%d]",zeng_online_current_max_rooms);
-        menu_add_item_menu_prefijo(array_menu_common,"    ");
-
-
-        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_server_max_players_per_room,NULL,
-            "Default max players per room","Max jugadores por hab. defecto","Max jugadors per hab. defecte");
-        menu_add_item_menu_sufijo_format(array_menu_common," [%d]",zeng_online_current_max_players_per_room);
-        menu_add_item_menu_prefijo(array_menu_common,"    ");
-
-
-
-        if (zeng_online_enabled) {
-            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_server_allow_zrcp_only_zeng_online,NULL,
-                "Allow only ZRCP ZENG Online commands","Solo permitir comandos ZRCP de ZENG Online","Només permetre comandes ZRCP de ZENG Online");
-            menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(zeng_online_server_allow_zrcp_only_zeng_online.v ? 'X' : ' ' ));
-        }
-
-
-        menu_add_item_menu_separator(array_menu_common);
-
-        menu_add_ESC_item(array_menu_common);
-
-        retorno_menu=menu_dibuja_menu_no_title_lang(&zeng_online_server_opcion_seleccionada,&item_seleccionado,array_menu_common,"ZENG Online Server");
-
-
-        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
-                //llamamos por valor de funcion
-                if (item_seleccionado.menu_funcion!=NULL) {
-                        //printf ("actuamos por funcion\n");
-                        item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
-
-                }
-        }
-
-    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
-}
-
 
 void menu_online_download_extras(MENU_ITEM_PARAMETERS)
 {
@@ -17240,6 +17062,8 @@ void menu_network(MENU_ITEM_PARAMETERS)
 
             menu_add_item_menu_separator(array_menu_common);
 
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,
+            "--Network Gaming--","--Juego en Red--","--Joc en Xarxa");
 
 
 			menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_zeng,NULL,"Z~~ENG");
@@ -17274,13 +17098,6 @@ void menu_network(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_tiene_submenu(array_menu_common);
 
 
-			menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_server,NULL,"ZENG Online Server");
-			menu_add_item_menu_tooltip(array_menu_common,"Setup ZEsarUX Network Gaming Online server");
-			menu_add_item_menu_ayuda(array_menu_common,"ZEsarUX Network Gaming protocol Online (ZENG Online) allows you to play to any emulated game, using two or more ZEsarUX instances, "
-			  "located each one on any part of the world or in a local network.\n"
-              "It's similar to ZENG but uses a central online server\n"
-			);
-            menu_add_item_menu_tiene_submenu(array_menu_common);
 
 
 //Fin de condicion ifndef NETWORKING_DISABLED

@@ -116,6 +116,7 @@
 #include "expression_parser.h"
 #include "uartbridge.h"
 #include "zeng.h"
+#include "zeng_online.h"
 #include "network.h"
 #include "stats.h"
 #include "vdp_9918a.h"
@@ -223,6 +224,8 @@ int fileselector_settings_opcion_seleccionada=0;
 int debug_verbose_filter_opcion_seleccionada=0;
 int settings_statistics_opcion_seleccionada=0;
 int menu_tbblue_hardware_id_opcion_seleccionada=0;
+int network_settings_opcion_seleccionada=0;
+int zeng_online_server_opcion_seleccionada=0;
 
 //Fin opciones seleccionadas para cada menu
 
@@ -2844,47 +2847,6 @@ void menu_breakpoints_condition_behaviour(MENU_ITEM_PARAMETERS)
 	debug_breakpoints_cond_behaviour.v ^=1;
 }
 
-void menu_debug_configuration_remoteproto_port(MENU_ITEM_PARAMETERS)
-{
-	char string_port[6];
-	int port;
-
-	sprintf (string_port,"%d",remote_protocol_port);
-
-	menu_ventana_scanf("Port",string_port,6);
-
-	if (string_port[0]==0) return;
-
-	else {
-			port=parse_string_to_number(string_port);
-
-			if (port<1 || port>65535) {
-								debug_printf (VERBOSE_ERR,"Invalid port %d",port);
-								return;
-			}
-
-            //Si esta habilitado, reiniciamos ZRCP
-            if (remote_protocol_enabled.v) {
-                printf("Restart ZRCP\n");
-                end_remote_protocol();
-            }
-
-            remote_protocol_port=port;
-
-            if (remote_protocol_enabled.v) {
-                init_remote_protocol();
-            }
-	}
-
-}
-
-void menu_debug_configuration_remoteproto_prompt(MENU_ITEM_PARAMETERS)
-{
-    menu_ventana_scanf("ZRCP prompt",remote_prompt_command_string,REMOTE_MAX_PROMPT_LENGTH);
-
-    //Si se deja en blanco, restaurar por defecto
-    if (remote_prompt_command_string[0]==0) strcpy(remote_prompt_command_string,"command");
-}
 
 void menu_debug_shows_invalid_opcode(MENU_ITEM_PARAMETERS)
 {
@@ -2906,17 +2868,7 @@ void menu_debug_settings_show_scanline(MENU_ITEM_PARAMETERS)
 	menu_debug_registers_if_showscan.v ^=1;
 }
 
-void menu_debug_configuration_remoteproto(MENU_ITEM_PARAMETERS)
-{
-	if (remote_protocol_enabled.v) {
-		end_remote_protocol();
-		remote_protocol_enabled.v=0;
-	}
 
-	else {
-		enable_and_init_remote_protocol();
-	}
-}
 
 
 void menu_debug_verbose(MENU_ITEM_PARAMETERS)
@@ -3288,38 +3240,6 @@ void menu_settings_debug(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_ayuda(array_menu_settings_debug,ayuda_leyenda);
 
 
-		menu_add_item_menu(array_menu_settings_debug,"",MENU_OPCION_SEPARADOR,NULL,NULL);
-
-
-#ifndef NETWORKING_DISABLED
-		menu_add_item_menu_en_es_ca(array_menu_settings_debug,MENU_OPCION_NORMAL, menu_debug_configuration_remoteproto,NULL,
-            "ZRCP Remote protocol","ZRCP protocolo Remoto","ZRCP protocol Remot");
-        menu_add_item_menu_prefijo_format(array_menu_settings_debug,"[%c] ",(remote_protocol_enabled.v ? 'X' : ' ') );
-		menu_add_item_menu_tooltip(array_menu_settings_debug,"Enables or disables ZEsarUX remote command protocol (ZRCP)");
-		menu_add_item_menu_ayuda(array_menu_settings_debug,"Enables or disables ZEsarUX remote command protocol (ZRCP)");
-		menu_add_item_menu_shortcut(array_menu_settings_debug,'r');
-
-		//if (remote_protocol_enabled.v) {
-			menu_add_item_menu_en_es_ca(array_menu_settings_debug,MENU_OPCION_NORMAL, menu_debug_configuration_remoteproto_port,NULL,
-                "ZRCP ~~port","~~Puerto ZRCP","~~Port ZRCP");
-            menu_add_item_menu_prefijo_format(array_menu_settings_debug,"    ");
-            menu_add_item_menu_sufijo_format(array_menu_settings_debug," [%d]",remote_protocol_port );
-			menu_add_item_menu_tooltip(array_menu_settings_debug,"Changes remote command protocol port");
-			menu_add_item_menu_ayuda(array_menu_settings_debug,"Changes remote command protocol port");
-			menu_add_item_menu_shortcut(array_menu_settings_debug,'p');
-
-            char string_prompt[20];
-            menu_tape_settings_trunc_name(remote_prompt_command_string,string_prompt,20);
-			menu_add_item_menu_en_es_ca(array_menu_settings_debug,MENU_OPCION_NORMAL, menu_debug_configuration_remoteproto_prompt,NULL,
-                "ZRCP pro~~mpt","ZRCP pro~~mpt","ZRCP pro~~mpt");
-            menu_add_item_menu_prefijo_format(array_menu_settings_debug,"    ");
-            menu_add_item_menu_sufijo_format(array_menu_settings_debug," [%s]",string_prompt );
-			menu_add_item_menu_tooltip(array_menu_settings_debug,"Changes remote command protocol prompt");
-			menu_add_item_menu_ayuda(array_menu_settings_debug,"Changes remote command protocol prompt");
-			menu_add_item_menu_shortcut(array_menu_settings_debug,'m');
-		//}
-
-#endif
 
         menu_add_item_menu_separator(array_menu_settings_debug);
 
@@ -8854,6 +8774,316 @@ void menu_zxvision_settings_advanced_enable(MENU_ITEM_PARAMETERS)
 }
 
 
+
+#ifndef NETWORKING_DISABLED
+
+void menu_zeng_online_server_enable_disable(MENU_ITEM_PARAMETERS)
+{
+
+    if (zeng_online_enabled) {
+        disable_zeng_online();
+    }
+
+    else {
+        //Si no esta ZRCP, activar tambien
+        if (remote_protocol_enabled.v==0) {
+            enable_and_init_remote_protocol();
+        }
+
+        enable_zeng_online();
+
+    }
+
+
+}
+
+void menu_zeng_online_server_view_creator_passwords(MENU_ITEM_PARAMETERS)
+{
+
+    menu_item *array_menu_common;
+    menu_item item_seleccionado;
+    int retorno_menu;
+    int opcion_seleccionada=0;
+    do {
+
+        menu_add_item_menu_inicial(&array_menu_common,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
+
+        int i;
+
+        int total_passwords=0;
+
+        for (i=0;i<zeng_online_current_max_rooms;i++) {
+            if (zeng_online_rooms_list[i].created) {
+                menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Room %d Pass: %s",
+                    i,zeng_online_rooms_list[i].creator_password);
+                total_passwords++;
+
+            }
+        }
+
+        if (!total_passwords) {
+            menu_add_item_menu(array_menu_common,"No created rooms",MENU_OPCION_NORMAL,NULL,NULL);
+        }
+
+        menu_add_item_menu_separator(array_menu_common);
+
+        menu_add_ESC_item(array_menu_common);
+
+        retorno_menu=menu_dibuja_menu_dialogo_no_title_lang(&opcion_seleccionada,&item_seleccionado,array_menu_common,"Creator room passwords");
+
+
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+                //llamamos por valor de funcion
+                if (item_seleccionado.menu_funcion!=NULL) {
+                        //printf ("actuamos por funcion\n");
+                        item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+
+                }
+        }
+
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+}
+
+void menu_zeng_online_server_expire_rooms_without_players(MENU_ITEM_PARAMETERS)
+{
+    zeng_online_destroy_rooms_without_players.v ^=1;
+}
+
+void menu_zeng_online_server_allow_room_creation_from_any_ip(MENU_ITEM_PARAMETERS)
+{
+    zeng_online_allow_room_creation_from_any_ip.v ^=1;
+}
+
+void menu_zeng_online_server_max_rooms(MENU_ITEM_PARAMETERS)
+{
+    //zeng_online_current_max_rooms
+    int last_room=zeng_online_get_last_used_room();
+    last_room++;
+
+    int valor=zeng_online_current_max_rooms;
+
+    menu_ventana_scanf_numero_enhanced("Max rooms",&valor,5,+1,1,ZENG_ONLINE_MAX_ROOMS,0);
+
+    if (valor<last_room) {
+        menu_error_message("Limit can't be less than the highest created room");
+        return;
+    }
+
+    zeng_online_current_max_rooms=valor;
+}
+
+void menu_zeng_online_server_max_players_per_room(MENU_ITEM_PARAMETERS)
+{
+
+    menu_ventana_scanf_numero_enhanced("Max players per room",&zeng_online_current_max_players_per_room,4,+1,1,ZENG_ONLINE_MAX_PLAYERS_PER_ROOM,0);
+
+}
+
+void menu_zeng_online_server_allow_zrcp_only_zeng_online(MENU_ITEM_PARAMETERS)
+{
+    zeng_online_server_allow_zrcp_only_zeng_online.v ^=1;
+}
+
+void menu_zeng_online_server(MENU_ITEM_PARAMETERS)
+{
+
+    menu_item *array_menu_common;
+    menu_item item_seleccionado;
+    int retorno_menu;
+    do {
+
+
+        menu_add_item_menu_en_es_ca_inicial(&array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_server_enable_disable,NULL,
+            "Enable ~~Server","Activar ~~Servidor","Activar ~~Servidor");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(zeng_online_enabled ? 'X' : ' ' ));
+        menu_add_item_menu_shortcut(array_menu_common,'s');
+
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_server_view_creator_passwords,NULL,
+            "    View creator room ~~passwords","    Ver ~~passwords creación habitaciones","    Veure ~~passwords creació habitacions");
+        menu_add_item_menu_shortcut(array_menu_common,'p');
+        menu_add_item_menu_genera_ventana(array_menu_common);
+
+        menu_add_item_menu_separator(array_menu_common);
+
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_server_expire_rooms_without_players,NULL,
+            "Destroy rooms without players","Destruir habitaciones sin jugadores","Destruir habitacions sense jugadors");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(zeng_online_destroy_rooms_without_players.v ? 'X' : ' ' ));
+
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_server_allow_room_creation_from_any_ip,NULL,
+            "Allow room creation from any ip","Permitir crear habitaciones desde cualquier ip","Permetre crear habitacions desde qualsevol ip");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(zeng_online_allow_room_creation_from_any_ip.v ? 'X' : ' ' ));
+        menu_add_item_menu_tooltip(array_menu_common,"If room creation is allowed from any source ip");
+        menu_add_item_menu_ayuda(array_menu_common,"If room creation is allowed from any source ip. Creation from localhost is always allowed");
+
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_server_max_rooms,NULL,
+            "Maximum rooms","Máximo habitaciones","Màxim habitacions");
+        menu_add_item_menu_sufijo_format(array_menu_common," [%d]",zeng_online_current_max_rooms);
+        menu_add_item_menu_prefijo(array_menu_common,"    ");
+
+
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_server_max_players_per_room,NULL,
+            "Default max players per room","Max jugadores por hab. defecto","Max jugadors per hab. defecte");
+        menu_add_item_menu_sufijo_format(array_menu_common," [%d]",zeng_online_current_max_players_per_room);
+        menu_add_item_menu_prefijo(array_menu_common,"    ");
+
+
+
+        if (zeng_online_enabled) {
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_server_allow_zrcp_only_zeng_online,NULL,
+                "Allow only ZRCP ZENG Online commands","Solo permitir comandos ZRCP de ZENG Online","Només permetre comandes ZRCP de ZENG Online");
+            menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(zeng_online_server_allow_zrcp_only_zeng_online.v ? 'X' : ' ' ));
+        }
+
+
+        menu_add_item_menu_separator(array_menu_common);
+
+        menu_add_ESC_item(array_menu_common);
+
+        retorno_menu=menu_dibuja_menu_no_title_lang(&zeng_online_server_opcion_seleccionada,&item_seleccionado,array_menu_common,"ZENG Online Server");
+
+
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+                //llamamos por valor de funcion
+                if (item_seleccionado.menu_funcion!=NULL) {
+                        //printf ("actuamos por funcion\n");
+                        item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+
+                }
+        }
+
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+}
+
+void menu_debug_configuration_remoteproto_port(MENU_ITEM_PARAMETERS)
+{
+	char string_port[6];
+	int port;
+
+	sprintf (string_port,"%d",remote_protocol_port);
+
+	menu_ventana_scanf("Port",string_port,6);
+
+	if (string_port[0]==0) return;
+
+	else {
+			port=parse_string_to_number(string_port);
+
+			if (port<1 || port>65535) {
+								debug_printf (VERBOSE_ERR,"Invalid port %d",port);
+								return;
+			}
+
+            //Si esta habilitado, reiniciamos ZRCP
+            if (remote_protocol_enabled.v) {
+                printf("Restart ZRCP\n");
+                end_remote_protocol();
+            }
+
+            remote_protocol_port=port;
+
+            if (remote_protocol_enabled.v) {
+                init_remote_protocol();
+            }
+	}
+
+}
+
+void menu_debug_configuration_remoteproto_prompt(MENU_ITEM_PARAMETERS)
+{
+    menu_ventana_scanf("ZRCP prompt",remote_prompt_command_string,REMOTE_MAX_PROMPT_LENGTH);
+
+    //Si se deja en blanco, restaurar por defecto
+    if (remote_prompt_command_string[0]==0) strcpy(remote_prompt_command_string,"command");
+}
+
+void menu_debug_configuration_remoteproto(MENU_ITEM_PARAMETERS)
+{
+	if (remote_protocol_enabled.v) {
+		end_remote_protocol();
+		remote_protocol_enabled.v=0;
+	}
+
+	else {
+		enable_and_init_remote_protocol();
+	}
+}
+
+void menu_network_settings(MENU_ITEM_PARAMETERS)
+{
+    menu_item *array_menu_common;
+    menu_item item_seleccionado;
+    int retorno_menu;
+
+
+    do {
+
+
+		menu_add_item_menu_en_es_ca_inicial(&array_menu_common,MENU_OPCION_NORMAL, menu_debug_configuration_remoteproto,NULL,
+            "ZRCP Remote protocol","ZRCP protocolo Remoto","ZRCP protocol Remot");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(remote_protocol_enabled.v ? 'X' : ' ') );
+		menu_add_item_menu_tooltip(array_menu_common,"Enables or disables ZEsarUX remote command protocol (ZRCP)");
+		menu_add_item_menu_ayuda(array_menu_common,"Enables or disables ZEsarUX remote command protocol (ZRCP)");
+		menu_add_item_menu_shortcut(array_menu_common,'r');
+
+
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL, menu_debug_configuration_remoteproto_port,NULL,
+            "ZRCP ~~port","~~Puerto ZRCP","~~Port ZRCP");
+        menu_add_item_menu_prefijo_format(array_menu_common,"    ");
+        menu_add_item_menu_sufijo_format(array_menu_common," [%d]",remote_protocol_port );
+        menu_add_item_menu_tooltip(array_menu_common,"Changes remote command protocol port");
+        menu_add_item_menu_ayuda(array_menu_common,"Changes remote command protocol port");
+        menu_add_item_menu_shortcut(array_menu_common,'p');
+
+        char string_prompt[20];
+        menu_tape_settings_trunc_name(remote_prompt_command_string,string_prompt,20);
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL, menu_debug_configuration_remoteproto_prompt,NULL,
+            "ZRCP pro~~mpt","ZRCP pro~~mpt","ZRCP pro~~mpt");
+        menu_add_item_menu_prefijo_format(array_menu_common,"    ");
+        menu_add_item_menu_sufijo_format(array_menu_common," [%s]",string_prompt );
+        menu_add_item_menu_tooltip(array_menu_common,"Changes remote command protocol prompt");
+        menu_add_item_menu_ayuda(array_menu_common,"Changes remote command protocol prompt");
+        menu_add_item_menu_shortcut(array_menu_common,'m');
+
+
+
+
+        menu_add_item_menu_separator(array_menu_common);
+
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_server,NULL,"ZENG Online Server");
+        menu_add_item_menu_tooltip(array_menu_common,"Setup ZEsarUX Network Gaming Online server");
+        menu_add_item_menu_ayuda(array_menu_common,"ZEsarUX Network Gaming protocol Online (ZENG Online) allows you to play to any emulated game, using two or more ZEsarUX instances, "
+            "located each one on any part of the world or in a local network.\n"
+            "It's similar to ZENG but uses a central online server\n"
+        );
+        menu_add_item_menu_tiene_submenu(array_menu_common);
+
+
+        menu_add_item_menu_separator(array_menu_common);
+        menu_add_ESC_item(array_menu_common);
+
+
+        //Nota: si no se agrega el nombre del path del indice, se generará uno automáticamente
+        menu_add_item_menu_index_full_path(array_menu_common,
+            "Main Menu-> Settings-> Network Settings","Menú Principal-> Opciones-> Opciones Red","Menú Principal-> Opcions-> Opcions Xarxa");
+
+        retorno_menu=menu_dibuja_menu(&network_settings_opcion_seleccionada,&item_seleccionado,array_menu_common,
+            "Network Settings","Opciones Red","Opcions Xarxa" );
+
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+            //llamamos por valor de funcion
+            if (item_seleccionado.menu_funcion!=NULL) {
+                //printf ("actuamos por funcion\n");
+                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+
+            }
+        }
+
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+
+}
+#endif
+
+
 //menu settings
 void menu_settings(MENU_ITEM_PARAMETERS)
 {
@@ -8941,6 +9171,13 @@ void menu_settings(MENU_ITEM_PARAMETERS)
 		menu_add_item_menu_tooltip(array_menu_settings,"Other hardware settings for the running machine (not CPU or ULA)");
 		menu_add_item_menu_ayuda(array_menu_settings,"Select different settings for the machine and change its behaviour (not CPU or ULA)");
         menu_add_item_menu_tiene_submenu(array_menu_settings);
+
+
+#ifndef NETWORKING_DISABLED
+		menu_add_item_menu_en_es_ca(array_menu_settings,MENU_OPCION_NORMAL,menu_network_settings,NULL,"Network","Red","Xarxa");
+        menu_add_item_menu_tiene_submenu(array_menu_settings);
+        menu_add_item_menu_es_avanzado(array_menu_settings);
+#endif
 
 		menu_add_item_menu_format(array_menu_settings,MENU_OPCION_NORMAL,menu_osd_settings,NULL,"~~OSD");
 		menu_add_item_menu_shortcut(array_menu_settings,'o');
