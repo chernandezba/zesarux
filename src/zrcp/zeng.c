@@ -480,6 +480,16 @@ void zeng_send_key_event(enum util_teclas tecla,int pressrelease)
         return;
     }
 
+    //Si nos acercamos a llenar la fifo (80%), solo aceptar eventos de release, no de press
+    //Al menos si se llena la fifo, no se quedara ninguna tecla pulsada
+    int limit_fifo=(ZENG_FIFO_SIZE*80)/100;
+    if (zeng_fifo_get_current_size()>=limit_fifo) {
+        printf("ZENG fifo almost full (%d). Only accept release events\n",zeng_fifo_get_current_size());
+        if (elemento.pressrelease) {
+            printf("ZENG event is a press, not release. Do not accept because fifo is almost full\n");
+            return;
+        }
+    }
 
 	if (zeng_fifo_add_element(&elemento)) {
 		debug_printf (VERBOSE_DEBUG,"Error adding zeng key event. FIFO full (size: %d)",zeng_fifo_get_current_size() );
