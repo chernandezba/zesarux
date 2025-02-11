@@ -95,21 +95,9 @@ acabar de probar cambios maquina spectrum y no spectrum en master y slave, antes
 
 
 
--envio eventos joystick por zeng acaba llenando la fifo de manera muy rapida. al menos aquellos que se asignan desde boton a tecla
-esto parece que al llenar la fifo se pierden eventos y el personaje no se mueve como debe
-
 -quiza LAG en modo streaming podria saltar cuando el audio se ha cortado varias veces seguidas
 Aunque eso no es LAG propiamente, sino baja calidad de sonido, no tiene porque haber LAG cuando pasa eso
 
 -timer windows con pthreads? mejora o empeora? o igual?
 
--sobre envio teclas zeng:
-*si pongo eliminar teclas repetidas, en X11 no libera bien teclas cuando hace repeticion
-*si quito eso, eventos de joystick en mac acaban llenando la fifo
-*lo de control conmutar es necesario, ahora ya deberia funcionar en teoria porque toda la funcion esta en un bloque de lock
-*revisar joystick en mac porque parece que no lo hace bien del todo
 
--quiza si la fifo se llena hacer que en unos segundos se liberen las teclas? porque se corre el riesgo de que se quede alguna pulsada
-pero esa liberacion deberia llegar al servidor zeng en forma de comando zrcp del tipo "release all keys"
-Investigar por que realmente se llena la fifo, si es al pulsar muchas teclas diferentes continuamente, quiza se podrian compactar...
-Aunque eso ya es lo que se hace con las funciones de eliminar conmutacion y eliminar repetidos, aunque no lo hace muy bien
