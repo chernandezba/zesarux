@@ -107,3 +107,4 @@ Aunque eso no es LAG propiamente, sino baja calidad de sonido, no tiene porque h
 *si pongo eliminar teclas repetidas, en X11 no libera bien teclas cuando hace repeticion
 *si quito eso, eventos de joystick en mac acaban llenando la fifo
 *lo de control conmutar es necesario, ahora ya deberia funcionar en teoria porque toda la funcion esta en un bloque de lock
+*revisar joystick en mac porque parece que no lo hace bien del todo
