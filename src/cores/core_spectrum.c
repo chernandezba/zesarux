@@ -556,7 +556,16 @@ void core_spectrum_fin_scanline(void)
                 //temp_vv =-temp_vv;
             }
 
-            else audio_send_stereo_sample(audio_valor_enviar_sonido_izquierdo,audio_valor_enviar_sonido_derecho);
+            else {
+                //Si estamos conectados a zeng online y en modo streaming, no tocamos el buffer de sonido,
+                //ya nos vendrá desde el streaming de audio
+                //Ademas esto evita que se vean zonas a cero en ventana de waveform
+                if (zeng_online_connected.v && zeng_online_i_am_master.v==0 && created_room_streaming_mode) {
+                }
+                else {
+                    audio_send_stereo_sample(audio_valor_enviar_sonido_izquierdo,audio_valor_enviar_sonido_derecho);
+                }
+            }
         }
 
 
