@@ -91,10 +91,6 @@ ZENG Online
 acabar de probar cambios maquina spectrum y no spectrum en master y slave, antes y despues de conectar
 
 
--ventana waveform parece que va conmutando un frame de video sin sonido con otro del sonido del buffer
-
-
-
 -quiza LAG en modo streaming podria saltar cuando el audio se ha cortado varias veces seguidas
 Aunque eso no es LAG propiamente, sino baja calidad de sonido, no tiene porque haber LAG cuando pasa eso
 
