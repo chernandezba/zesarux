@@ -4483,6 +4483,8 @@ void menu_waveform_draw_array(int ancho,int alto,int xorigen,int yorigen,int for
 
 int menu_audio_draw_sound_wave_si_scroll_hilow_audio;
 
+//char copia_audio_buffer[AUDIO_BUFFER_SIZE*2];
+
 void menu_audio_draw_sound_wave(void)
 {
 
@@ -4543,6 +4545,8 @@ void menu_audio_draw_sound_wave(void)
 
 	}
 
+
+    char *audio_buffer_origen=audio_buffer;
 
 	int ancho;
 
@@ -4745,7 +4749,7 @@ void menu_audio_draw_sound_wave(void)
 
                 //Canales separados
                 if (menu_waveform_separar_canales.v) {
-                    suma_canales=audio_buffer[canal+puntero_audio*2];
+                    suma_canales=audio_buffer_origen[canal+puntero_audio*2];
                     valor_medio=valor_medio+suma_canales;
                 }
 
@@ -4753,7 +4757,7 @@ void menu_audio_draw_sound_wave(void)
 
                 //Stereo junto
 
-                    suma_canales=audio_buffer[puntero_audio*2]+audio_buffer[(puntero_audio*2)+1];
+                    suma_canales=audio_buffer_origen[puntero_audio*2]+audio_buffer_origen[(puntero_audio*2)+1];
                     suma_canales /=2;
                     valor_medio=valor_medio+suma_canales;
                 }
