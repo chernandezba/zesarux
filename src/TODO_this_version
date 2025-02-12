@@ -94,6 +94,8 @@ acabar de probar cambios maquina spectrum y no spectrum en master y slave, antes
 -quiza LAG en modo streaming podria saltar cuando el audio se ha cortado varias veces seguidas
 Aunque eso no es LAG propiamente, sino baja calidad de sonido, no tiene porque haber LAG cuando pasa eso
 
+-revisar algoritmo de autoajustar diferenciales
+
 -timer windows con pthreads? mejora o empeora? o igual?
 
 
