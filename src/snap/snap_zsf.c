@@ -2044,6 +2044,7 @@ void load_zsf_ql_snapshot_block_data(z80_byte *block_data,int longitud_original)
 {
 
 
+    int pagina_mas_alta=(ql_get_current_ram_kb()/16)-1;
 
   int i=0;
   z80_byte block_flags=block_data[i];
@@ -2058,6 +2059,14 @@ void load_zsf_ql_snapshot_block_data(z80_byte *block_data,int longitud_original)
 
   z80_byte ram_page=block_data[i];
   i++;
+
+    //Aumentar la RAM si pagina mas alla de RAM disponible
+    //printf("Pagina mas alta: %d pagina a cargar: %d\n",pagina_mas_alta,ram_page);
+    if (ram_page>pagina_mas_alta) {
+        int total_ram=(ram_page+1)*16;
+        debug_printf(VERBOSE_DEBUG,"Setting new QL RAM Size: %d",total_ram);
+        ql_set_memory_size(total_ram);
+    }
 
   debug_printf (VERBOSE_DEBUG,"Block ram_page: %d start: %d Length: %d Compressed: %s Length_source: %d",ram_page,block_start,block_lenght,(block_flags&1 ? "Yes" : "No"),longitud_original);
 
@@ -6601,7 +6610,10 @@ Byte Fields:
   */
 
     //128kb , desde 20000-3FFFF)
-  int paginas=128/16;
+
+    int total_ram_kb=ql_get_current_ram_kb();
+
+  int paginas=total_ram_kb/16;
   z80_int ram_page; //porque pagina puede ir de 0 a 255, y cuando llega a 256 acabamos el bucle for
 
   for (ram_page=0;ram_page<paginas;ram_page++) {

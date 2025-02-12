@@ -98,7 +98,7 @@ Aunque eso no es LAG propiamente, sino baja calidad de sonido, no tiene porque h
 
 
 -QL RAM:
-*revisar guardado snapshots zsf, carga (en carga tendra que cambiar total ql ram size segun snap)
+ok*revisar guardado snapshots zsf, carga (en carga tendra que cambiar total ql ram size segun snap)
 *revisar visualmem que parece que no muestra bien dibujo, quiza hace AND en vez de MOD
-*agregar parametro linea de comandos, guardado config
-*agregar changelog
+ok*agregar parametro linea de comandos, guardado config
+ok*agregar changelog
