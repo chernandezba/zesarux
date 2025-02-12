@@ -138,7 +138,7 @@ void cpu_core_loop_ql(void)
 
 	//Ejecutar opcode
 #ifdef EMULATE_VISUALMEM
-        set_visualmemopcodebuffer(get_pc_register()&ql_mem_limit ); //Le hago el AND porque a veces se sale de limite
+        set_visualmemopcodebuffer(get_pc_register() % (ql_mem_limit+1) ); //Le hago el modulo porque a veces se sale de limite
 #endif
 
                 // Values to execute determine the interleave rate.

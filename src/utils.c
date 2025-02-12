@@ -13891,8 +13891,7 @@ unsigned int adjust_address_space_cpu(unsigned int direccion)
 {
   if (!CPU_IS_MOTOROLA) direccion &=0xFFFF;
   else {
-        //direccion &=0xFFFFF; //20 bits direccion
-        direccion &=ql_mem_limit; //si son 256k totales, esto vale 0x3FFFF
+        direccion %=(ql_mem_limit+1);
   }
 
   return direccion;

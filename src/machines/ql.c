@@ -55,7 +55,7 @@ unsigned int ql_mem_limit=(1024*256)-1;
 
 void ql_writebyte(unsigned int Address, unsigned char Data)
 {
-    Address&=ql_mem_limit;
+    Address %=(ql_mem_limit+1);
 
     if (Address>=0x18000 && Address<=0x1BFFF) {
         ql_zx8032_write(Address,Data);
@@ -89,7 +89,7 @@ void ql_writebyte(unsigned int Address, unsigned char Data)
 
 unsigned char ql_readbyte(unsigned int Address)
 {
-    Address&=ql_mem_limit;
+    Address %=(ql_mem_limit+1);
 
     if (Address>=0x18000 && Address<=0x1BFFF) {
 
@@ -132,7 +132,7 @@ unsigned char ql_readbyte_no_ports_vacio(unsigned int Address GCC_UNUSED)
 
 unsigned char ql_readbyte_no_ports(unsigned int Address)
 {
-	Address&=ql_mem_limit;
+	Address %=(ql_mem_limit+1);
 	unsigned char valor=memoria_ql[Address];
 	return valor;
 
@@ -140,7 +140,7 @@ unsigned char ql_readbyte_no_ports(unsigned int Address)
 
 void ql_writebyte_no_ports(unsigned int Address,unsigned char valor)
 {
-	Address&=ql_mem_limit;
+	Address %=(ql_mem_limit+1);
 	memoria_ql[Address]=valor;
 
 }
