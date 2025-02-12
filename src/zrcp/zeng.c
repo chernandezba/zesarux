@@ -344,8 +344,6 @@ void zeng_fifo_debug_show_fifo(void)
 
     //printf("Zeng fifo reading element. Size: %d\n",zeng_fifo_get_current_size() );
 
-
-
 }
 
 
@@ -494,7 +492,7 @@ void zeng_send_key_event(enum util_teclas tecla,int pressrelease)
 	if (zeng_fifo_add_element(&elemento)) {
 		debug_printf (VERBOSE_DEBUG,"Error adding zeng key event. FIFO full (size: %d)",zeng_fifo_get_current_size() );
         printf ("############Error adding zeng key event. FIFO full (size: %d)\n",zeng_fifo_get_current_size() );
-        zeng_fifo_debug_show_fifo();
+        //zeng_fifo_debug_show_fifo();
 		return;
 	}
 

@@ -3134,7 +3134,7 @@ int zoc_keys_send_pending(int indice_socket,int *enviada_alguna_tecla)
         printf("Tamanyo fifo antes enviar a remote: %d\n",tamanyo_cola);
     }
 
-    zeng_fifo_debug_show_fifo();
+    //zeng_fifo_debug_show_fifo();
 
     while (tamanyo_cola>0 && !error_desconectar) {
         if (!zeng_fifo_read_element(&elemento)) {
