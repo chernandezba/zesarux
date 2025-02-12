@@ -48,6 +48,8 @@ extern unsigned int ql_mem_limit;
 extern  unsigned char *memoria_ql;
 
 extern void ql_set_memory_size(int kb_ram);
+extern int ql_get_maximum_ram_kb(void);
+extern int ql_get_current_ram_kb(void);
 
 extern unsigned char (*ql_readbyte_no_ports_function)(unsigned int Address);
 extern unsigned char ql_readbyte_no_ports_vacio(unsigned int Address);

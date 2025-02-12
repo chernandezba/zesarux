@@ -1298,9 +1298,13 @@ printf("\n"
         "--zx8081ram16K8000  Emulate 16K RAM in 8000H for ZX80/ZX81\n"
         "--zx8081ram16KC000  Emulate 16K RAM in C000H for ZX80/ZX81\n"
 		"--acemem n          Emulate 3, 19, 35 or 51 kb of memory on Jupiter Ace\n"
-		"--128kmem n         Set more than 128k RAM for 128k machines. Allowed values: 128, 256, 512\n"
+		"--128kmem n         Set more than 128k RAM for Spectrum 128k machines. Allowed values: 128, 256, 512\n"
+        "--qlrammem n        Set RAM size on Sinclair QL. Minimum: 128KB, maximum: ");
+
+        printf("%d KB\n",ql_get_maximum_ram_kb() );
 
 
+        printf(
 		"\n"
 		"\n"
 		"Network\n"
@@ -3219,6 +3223,17 @@ int parse_cmdline_options(int desde_commandline) {
 				mem_set_multiplicador_128(multiplicador);
       }
 
+
+
+            else if (!strcmp(argv[puntero_parametro],"--qlrammem")) {
+                siguiente_parametro_argumento();
+                int valor=parse_string_to_number(argv[puntero_parametro]);
+                if (valor<128 || valor>ql_get_maximum_ram_kb()) {
+                    printf ("Invalid QL RAM Mem value\n");
+                    exit(1);
+                }
+                ql_set_memory_size(valor);
+            }
 
 			else if (!strcmp(argv[puntero_parametro],"--scr")) {
 				siguiente_parametro_argumento();

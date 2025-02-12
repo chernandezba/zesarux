@@ -4896,10 +4896,9 @@ void menu_hardware_tbblue_ram(MENU_ITEM_PARAMETERS)
 void menu_hardware_ql_ram(MENU_ITEM_PARAMETERS)
 {
 
-    int current_ram_kb=((ql_mem_limit+1)/1024)-128;
+    int current_ram_kb=ql_get_current_ram_kb();
 
-    //#define QL_MAXIMUM_MEM_LIMIT ((1024*2048)-1)
-    int maxima_ram_kb=((QL_MAXIMUM_MEM_LIMIT+1)/1024)-128;
+    int maxima_ram_kb=ql_get_maximum_ram_kb();
 
     int opcion=menu_simple_seven_choices("RAM size","Select:",
         "128 KB",

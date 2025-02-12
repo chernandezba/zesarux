@@ -58,6 +58,17 @@ void ql_set_memory_size(int kb_ram)
     ql_mem_limit=(1024*(128+kb_ram))-1;
 }
 
+int ql_get_current_ram_kb(void)
+{
+    return ((ql_mem_limit+1)/1024)-128;
+}
+
+//Retorna el maximo asignable de RAM
+int ql_get_maximum_ram_kb(void)
+{
+    return ((QL_MAXIMUM_MEM_LIMIT+1)/1024)-128;
+}
+
 void ql_writebyte(unsigned int Address, unsigned char Data)
 {
     Address %=(ql_mem_limit+1);
