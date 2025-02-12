@@ -49,7 +49,7 @@ unsigned char *memoria_ql;
 
 //ultima direccion de memoria válida
 //128k de rom + 128k de ram por defecto
-unsigned int ql_mem_limit=(1024*256)-1;
+unsigned int ql_mem_limit=(1024*(128+128))-1;
 
 
 
