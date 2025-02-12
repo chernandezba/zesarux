@@ -5185,7 +5185,7 @@ void menu_visualmem_get_start_end(int *inicio,int *final)
 		//inicio_puntero_membuffer=0x18000;
 		//la ram propiamente empieza en 20000H
 		inicio_puntero_membuffer=0x20000;
-		final_puntero_membuffer=QL_MAXIMUM_MEM_LIMIT+1;
+		final_puntero_membuffer=ql_mem_limit+1;
 	}
 
 	//Si es de opcode o read, puede ser desde cualquier sitio desde la rom
@@ -25833,7 +25833,7 @@ void menu_snapshot_rewind(MENU_ITEM_PARAMETERS)
 
 int get_efectivo_tamanyo_find_buffer(void)
 {
-	if (MACHINE_IS_QL) return QL_MAXIMUM_MEM_LIMIT+1;
+	if (MACHINE_IS_QL) return ql_mem_limit+1;
 	return 65536;
 }
 

@@ -4686,7 +4686,7 @@ void interpreta_comando(char *comando,int misocket,char *buffer_lectura_socket_a
 		}
 
 		int final_visualmem=65536;
-		if (MACHINE_IS_QL) final_visualmem=QL_MAXIMUM_MEM_LIMIT+1;
+		if (MACHINE_IS_QL) final_visualmem=ql_mem_limit+1;
 
 		if (salida_compacta) {
 			remote_visualmem_generic_compact(misocket,visualmem_buffer,final_visualmem);
@@ -4713,7 +4713,7 @@ void interpreta_comando(char *comando,int misocket,char *buffer_lectura_socket_a
 		}
 
 		int final_visualmem=65536;
-		if (MACHINE_IS_QL) final_visualmem=QL_MAXIMUM_MEM_LIMIT+1;
+		if (MACHINE_IS_QL) final_visualmem=ql_mem_limit+1;
 
 		if (salida_compacta) {
 			remote_visualmem_generic_compact(misocket,visualmem_read_buffer,final_visualmem);
@@ -4740,7 +4740,7 @@ void interpreta_comando(char *comando,int misocket,char *buffer_lectura_socket_a
 		}
 
 		int final_visualmem=65536;
-		if (MACHINE_IS_QL) final_visualmem=QL_MAXIMUM_MEM_LIMIT+1;
+		if (MACHINE_IS_QL) final_visualmem=ql_mem_limit+1;
 
 		if (salida_compacta) {
 			remote_visualmem_generic_compact(misocket,visualmem_opcode_buffer,final_visualmem);

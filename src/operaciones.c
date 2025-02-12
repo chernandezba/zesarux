@@ -128,7 +128,7 @@ z80_byte sz53p_table[256];
 
 #ifdef EMULATE_VISUALMEM
 
-
+//El maximo de visualmem es el maximo de memoria direccionable por una cpu, en este caso el QL
 int get_visualmem_size(void)
 {
 	int visualmem_size=(QL_MAXIMUM_MEM_LIMIT)+1;
@@ -167,9 +167,7 @@ z80_byte *visualmem_microdrive_write_buffer=NULL;
 
 void init_visualmembuffer(void)
 {
-	//int visualmem_size=65536;
 
-	//int visualmem_size=(QL_MAXIMUM_MEM_LIMIT)+1;
 	int visualmem_size=get_visualmem_size();
 
 	debug_printf(VERBOSE_INFO,"Allocating %d bytes for visualmem write buffer",visualmem_size);

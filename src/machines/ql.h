@@ -44,7 +44,7 @@ typedef struct s_moto_bit moto_bit;
 
 #define QL_MAXIMUM_MEM_LIMIT ((1024*256)-1)
 
-
+extern unsigned int ql_mem_limit;
 extern  unsigned char *memoria_ql;
 
 
