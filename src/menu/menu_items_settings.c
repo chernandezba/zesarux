@@ -4913,33 +4913,33 @@ void menu_hardware_ql_ram(MENU_ITEM_PARAMETERS)
 
     switch (opcion) {
         case 1:
-            ql_mem_limit=(1024*(128+128))-1;
+            ql_set_memory_size(128);
         break;
 
         case 2:
-            ql_mem_limit=(1024*(128+256))-1;
+            ql_set_memory_size(256);
         break;
 
         case 3:
-            ql_mem_limit=(1024*(128+384))-1;
+            ql_set_memory_size(384);
         break;
 
         case 4:
-            ql_mem_limit=(1024*(128+512))-1;
+            ql_set_memory_size(512);
         break;
 
         case 5:
-            ql_mem_limit=(1024*(128+640))-1;
+            ql_set_memory_size(640);
         break;
 
         case 6:
-            ql_mem_limit=(1024*(128+896))-1;
+            ql_set_memory_size(896);
         break;
 
         case 7:
 
             menu_ventana_scanf_numero_enhanced("RAM size (KB)",&current_ram_kb,5,+1,128,maxima_ram_kb,0);
-            ql_mem_limit=(1024*(128+current_ram_kb))-1;
+            ql_set_memory_size(current_ram_kb);
 
         break;
 
