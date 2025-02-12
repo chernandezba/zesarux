@@ -97,3 +97,5 @@ Aunque eso no es LAG propiamente, sino baja calidad de sonido, no tiene porque h
 -timer windows con pthreads? mejora o empeora? o igual?
 
 
+-QL RAM: revisar guardado snapshots zsf, carga (en carga tendra que cambiar total ql ram size segun snap)
+revisar visualmem que parece que no muestra bien dibujo, quiza hace AND en vez de MOD

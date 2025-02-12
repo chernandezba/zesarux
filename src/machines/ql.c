@@ -52,6 +52,11 @@ unsigned char *memoria_ql;
 unsigned int ql_mem_limit=(1024*(128+128))-1;
 
 
+//Define el total de RAM del QL
+void ql_set_memory_size(int kb_ram)
+{
+    ql_mem_limit=(1024*(128+kb_ram))-1;
+}
 
 void ql_writebyte(unsigned int Address, unsigned char Data)
 {

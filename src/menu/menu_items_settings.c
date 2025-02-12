@@ -4893,7 +4893,63 @@ void menu_hardware_tbblue_ram(MENU_ITEM_PARAMETERS)
 	else tbblue_extra_512kb_blocks++;
 }
 
+void menu_hardware_ql_ram(MENU_ITEM_PARAMETERS)
+{
 
+    int current_ram_kb=((ql_mem_limit+1)/1024)-128;
+
+    //#define QL_MAXIMUM_MEM_LIMIT ((1024*2048)-1)
+    int maxima_ram_kb=((QL_MAXIMUM_MEM_LIMIT+1)/1024)-128;
+
+    int opcion=menu_simple_seven_choices("RAM size","Select:",
+        "128 KB",
+        "256 KB",
+        "384 KB",
+        "512 KB",
+        "640 KB",
+        "896 KB",
+        "Custom");
+
+
+    switch (opcion) {
+        case 1:
+            ql_mem_limit=(1024*(128+128))-1;
+        break;
+
+        case 2:
+            ql_mem_limit=(1024*(128+256))-1;
+        break;
+
+        case 3:
+            ql_mem_limit=(1024*(128+384))-1;
+        break;
+
+        case 4:
+            ql_mem_limit=(1024*(128+512))-1;
+        break;
+
+        case 5:
+            ql_mem_limit=(1024*(128+640))-1;
+        break;
+
+        case 6:
+            ql_mem_limit=(1024*(128+896))-1;
+        break;
+
+        case 7:
+
+            menu_ventana_scanf_numero_enhanced("RAM size (KB)",&current_ram_kb,5,+1,128,maxima_ram_kb,0);
+            ql_mem_limit=(1024*(128+current_ram_kb))-1;
+
+        break;
+
+
+
+    }
+
+    //printf("ql_mem_limit=%d %XH\n",ql_mem_limit,ql_mem_limit);
+
+}
 
 void menu_hardware_ace_ramtop(MENU_ITEM_PARAMETERS)
 {
@@ -5052,6 +5108,10 @@ void menu_hardware_memory_settings(MENU_ITEM_PARAMETERS)
 
 		if (MACHINE_IS_PCW) {
 			menu_add_item_menu_format(array_menu_hardware_memory_settings,MENU_OPCION_NORMAL,menu_hardware_pcw_ram,NULL,"RAM size [%d KB]",pcw_total_ram/1024 );
+		}
+
+		if (MACHINE_IS_QL) {
+			menu_add_item_menu_format(array_menu_hardware_memory_settings,MENU_OPCION_NORMAL,menu_hardware_ql_ram,NULL,"RAM size [%d KB]",(ql_mem_limit+1)/1024-128 );
 		}
 
 		if (menu_cond_zx8081() ) {

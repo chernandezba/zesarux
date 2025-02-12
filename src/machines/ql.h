@@ -47,7 +47,7 @@ typedef struct s_moto_bit moto_bit;
 extern unsigned int ql_mem_limit;
 extern  unsigned char *memoria_ql;
 
-
+extern void ql_set_memory_size(int kb_ram);
 
 extern unsigned char (*ql_readbyte_no_ports_function)(unsigned int Address);
 extern unsigned char ql_readbyte_no_ports_vacio(unsigned int Address);
