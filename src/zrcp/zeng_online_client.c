@@ -5180,6 +5180,8 @@ void zec_increment_differential_display_parameter(void)
 
     if (zoc_slave_differential_displays_limit_full>=50) zoc_slave_differential_displays_limit_full=50;
 
+    DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Autoadjust differentials. New value: %d",zoc_slave_differential_displays_limit_full);
+
 }
 
 void zec_decrement_differential_display_parameter(void)
@@ -5190,6 +5192,8 @@ void zec_decrement_differential_display_parameter(void)
     else zoc_slave_differential_displays_limit_full -=5;
 
     if (zoc_slave_differential_displays_limit_full<=0) zoc_slave_differential_displays_limit_full=0;
+
+    DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Autoadjust differentials. New value: %d",zoc_slave_differential_displays_limit_full);
 }
 
 void zec_autoadjust_differentials_display(void)
