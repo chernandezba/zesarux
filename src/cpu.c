@@ -1995,9 +1995,9 @@ void malloc_mem_machine(void) {
 
 	else if (MACHINE_IS_QL) {
 		//Asignar 256 kb de ram
-		malloc_machine(QL_MEM_LIMIT+1);
+		malloc_machine(QL_MAXIMUM_MEM_LIMIT+1);
 		memoria_ql=memoria_spectrum;
-		//random_ram(memoria_ql,QL_MEM_LIMIT+1);
+		//random_ram(memoria_ql,QL_MAXIMUM_MEM_LIMIT+1);
 	}
 
 	else {

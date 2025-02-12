@@ -13892,7 +13892,7 @@ unsigned int adjust_address_space_cpu(unsigned int direccion)
   if (!CPU_IS_MOTOROLA) direccion &=0xFFFF;
   else {
         //direccion &=0xFFFFF; //20 bits direccion
-        direccion &=QL_MEM_LIMIT; //si son 256k totales, esto vale 0x3FFFF
+        direccion &=QL_MAXIMUM_MEM_LIMIT; //si son 256k totales, esto vale 0x3FFFF
   }
 
   return direccion;
@@ -14336,7 +14336,7 @@ unsigned int machine_get_memory_zone_attrib(int zone, int *readwrite)
       }
 
       if (MACHINE_IS_QL) {
-        size=QL_MEM_LIMIT+1-131072;
+        size=QL_MAXIMUM_MEM_LIMIT+1-131072;
       }
 
       if (MACHINE_IS_CPC_HAS_64K) {

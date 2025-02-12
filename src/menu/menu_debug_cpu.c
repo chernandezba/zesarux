@@ -245,7 +245,7 @@ void menu_debug_set_memory_zone_attr(void)
 
 	if (menu_debug_show_memory_zones==0) {
 		menu_debug_memory_zone_size=65536;
-		if (MACHINE_IS_QL) menu_debug_memory_zone_size=QL_MEM_LIMIT+1;
+		if (MACHINE_IS_QL) menu_debug_memory_zone_size=QL_MAXIMUM_MEM_LIMIT+1;
 		return;
 	}
 

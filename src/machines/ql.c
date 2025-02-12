@@ -54,7 +54,7 @@ unsigned char *memoria_ql;
 
 void ql_writebyte(unsigned int Address, unsigned char Data)
 {
-    Address&=QL_MEM_LIMIT;
+    Address&=QL_MAXIMUM_MEM_LIMIT;
 
     if (Address>=0x18000 && Address<=0x1BFFF) {
         ql_zx8032_write(Address,Data);
@@ -70,7 +70,7 @@ void ql_writebyte(unsigned int Address, unsigned char Data)
         return; //Espacio i/o
     }
 
-    if (Address<0x18000 || Address>QL_MEM_LIMIT) return;
+    if (Address<0x18000 || Address>QL_MAXIMUM_MEM_LIMIT) return;
 
 
     unsigned char valor=Data;
@@ -88,7 +88,7 @@ void ql_writebyte(unsigned int Address, unsigned char Data)
 
 unsigned char ql_readbyte(unsigned int Address)
 {
-    Address&=QL_MEM_LIMIT;
+    Address&=QL_MAXIMUM_MEM_LIMIT;
 
     if (Address>=0x18000 && Address<=0x1BFFF) {
 
@@ -105,7 +105,7 @@ unsigned char ql_readbyte(unsigned int Address)
     }
 
 
-    if (Address>QL_MEM_LIMIT) return(0);
+    if (Address>QL_MAXIMUM_MEM_LIMIT) return(0);
 
     #ifdef EMULATE_VISUALMEM
 
@@ -131,7 +131,7 @@ unsigned char ql_readbyte_no_ports_vacio(unsigned int Address GCC_UNUSED)
 
 unsigned char ql_readbyte_no_ports(unsigned int Address)
 {
-	Address&=QL_MEM_LIMIT;
+	Address&=QL_MAXIMUM_MEM_LIMIT;
 	unsigned char valor=memoria_ql[Address];
 	return valor;
 
@@ -139,7 +139,7 @@ unsigned char ql_readbyte_no_ports(unsigned int Address)
 
 void ql_writebyte_no_ports(unsigned int Address,unsigned char valor)
 {
-	Address&=QL_MEM_LIMIT;
+	Address&=QL_MAXIMUM_MEM_LIMIT;
 	memoria_ql[Address]=valor;
 
 }

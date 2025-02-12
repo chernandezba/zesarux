@@ -5185,7 +5185,7 @@ void menu_visualmem_get_start_end(int *inicio,int *final)
 		//inicio_puntero_membuffer=0x18000;
 		//la ram propiamente empieza en 20000H
 		inicio_puntero_membuffer=0x20000;
-		final_puntero_membuffer=QL_MEM_LIMIT+1;
+		final_puntero_membuffer=QL_MAXIMUM_MEM_LIMIT+1;
 	}
 
 	//Si es de opcode o read, puede ser desde cualquier sitio desde la rom
@@ -25833,7 +25833,7 @@ void menu_snapshot_rewind(MENU_ITEM_PARAMETERS)
 
 int get_efectivo_tamanyo_find_buffer(void)
 {
-	if (MACHINE_IS_QL) return QL_MEM_LIMIT+1;
+	if (MACHINE_IS_QL) return QL_MAXIMUM_MEM_LIMIT+1;
 	return 65536;
 }
 
@@ -26256,7 +26256,7 @@ void menu_find_bytes_alloc_if_needed(void)
 					//65536 elementos del array, cada uno de tamanyo unsigned char
 					//total_tamanyo_find_buffer=get_total_tamanyo_find_buffer();
 
-					menu_find_bytes_mem_pointer=malloc(QL_MEM_LIMIT+1); //Asignamos el maximo (maquina QL)
+					menu_find_bytes_mem_pointer=malloc(QL_MAXIMUM_MEM_LIMIT+1); //Asignamos el maximo (maquina QL)
 					if (menu_find_bytes_mem_pointer==NULL) cpu_panic("Error allocating find array");
 
 					//inicializamos array

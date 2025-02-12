@@ -7453,7 +7453,7 @@ $c400-$ffff	System RAM (mirrored every 1KB)
         strcpy(segmentos[2].longname,"System RAM");
         strcpy(segmentos[2].shortname,"RAM");
         segmentos[2].start=0x20000;
-        segmentos[2].length=QL_MEM_LIMIT+1-0x20000;
+        segmentos[2].length=QL_MAXIMUM_MEM_LIMIT+1-0x20000;
 
     }
 
