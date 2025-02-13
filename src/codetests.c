@@ -2604,11 +2604,11 @@ void codetests_main(int main_argc,char *main_argv[])
 //    codetests_simple_atomic();
 
 
-//#ifdef USE_PTHREADS
-//	printf ("\nRunning atomic tests\n");
-//  init_network_tables();
-//	codetests_atomic();
-//#endif
+#ifdef USE_PTHREADS
+	printf ("\nRunning atomic tests\n");
+  init_network_tables();
+	codetests_atomic();
+#endif
 
 
 //#ifdef USE_PTHREADS
