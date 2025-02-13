@@ -94,13 +94,13 @@ acabar de probar cambios maquina spectrum y no spectrum en master y slave, antes
 -quiza LAG en modo streaming podria saltar cuando el audio se ha cortado varias veces seguidas
 Aunque eso no es LAG propiamente, sino baja calidad de sonido, no tiene porque haber LAG cuando pasa eso
 
--revisar algoritmo de autoajustar diferenciales
+ok-revisar algoritmo de autoajustar diferenciales
 
 -timer windows con pthreads? mejora o empeora? o igual?
 
 
 -QL RAM:
 ok*revisar guardado snapshots zsf, carga (en carga tendra que cambiar total ql ram size segun snap)
-*revisar visualmem que parece que no muestra bien dibujo, quiza hace AND en vez de MOD
+ok parece que ya va bien *revisar visualmem que parece que no muestra bien dibujo, quiza hace AND en vez de MOD
 ok*agregar parametro linea de comandos, guardado config
 ok*agregar changelog
