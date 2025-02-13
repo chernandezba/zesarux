@@ -2489,7 +2489,7 @@ int zoc_send_streaming_audio(int indice_socket)
     //printf("after z_sock_write_string 1\n");
     if (escritos<0) return escritos;
 
-
+    //printf("Length audio: %d\n",strlen(zoc_send_streaming_audio_mem_hexa));
 
     escritos=z_sock_write_string(indice_socket,zoc_send_streaming_audio_mem_hexa);
     //printf("after z_sock_write_string 2\n");
@@ -2823,8 +2823,8 @@ int zoc_get_stream_audio_continuous(int indice_socket)
         }
 
         else {
-            //printf("Periodo no silencio %d\n",contador_segundo);
             memcpy(zoc_get_audio_mem_binary_second_buffer,zoc_get_audio_mem_binary,ZOC_STREAMING_AUDIO_BUFFER_SIZE);
+            //printf("Periodo no silencio %d\n",contador_segundo);
         }
 
         zoc_pending_apply_received_streaming_audio=1;
@@ -3613,6 +3613,9 @@ void *zoc_master_thread_function_stream_audio(void *nada GCC_UNUSED)
                     //printf("Putting audio %d\n",contador_segundo);
 
                     int error=zoc_send_streaming_audio(indice_socket);
+
+                    //printf("After putting audio %d\n",contador_segundo);
+
 
                     if (error<0) {
                         //TODO
@@ -5653,6 +5656,8 @@ void zeng_online_client_end_audio_frame_stuff(void)
             zoc_last_audio_value_received=audio_buffer[ZOC_STREAMING_AUDIO_BUFFER_SIZE-1];
 
             zoc_pending_apply_received_streaming_audio=0;
+
+            zoc_veces_audio_no_recibido_contador=0;
         }
         else {
             //TODO: Windows alterna a cada frame de audio este perido de no available junto con el available,
@@ -5672,6 +5677,9 @@ void zeng_online_client_end_audio_frame_stuff(void)
             //Nota: obviamente esto requiere que el auto ajuste de incrementales esté activado
             //Podria hacer una funcion aparte para que no dependiera de eso pero no me parece tan importante este mensaje en el footer
             //printf("zoc_veces_audio_no_recibido_contador %d\n",zoc_veces_audio_no_recibido_contador);
+            //Nota2: usando mi zeng server remoto, los periodos de silencio se tardan mas en enviarse desde el master que
+            //los periodos de audio normal, no acabo de entender porque. Por tanto se alterna 1 periodo de silencio con 1 de no audio, y asi seguido
+            //No saltara el aviso de dropout dado que reseteo el contador cuando se recibe audio (sea o no silencio)
             if (zeng_online_show_footer_lag_indicator.v) {
                 if (zoc_veces_audio_no_recibido_contador>5) {
                     generic_footertext_print_operating("DROPOUT");

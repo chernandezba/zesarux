@@ -1803,7 +1803,7 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
 
         zengonline_streaming_put_audio(room_number,buffer_destino,longitud_audio);
 
-        //printf("Putting audio to slot %d\n",slot);
+        //printf("ZENG Server Putting streaming audio. length: %d\n",longitud_audio);
 
         free(buffer_destino);
 
