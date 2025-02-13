@@ -64,31 +64,26 @@ void z_atomic_reset(z_atomic_semaphore *s)
     atomic_fetch_and_explicit(s,0,memory_order_relaxed);
 }
 
-    #else
+#else
 
     #ifdef MINGW
-        //En Windows
-        //TODO: how to use semafores on mingw
 
+
+        //En Windows
 
 int z_atomic_test_and_set(z_atomic_semaphore *s)
 {
-	//Estaba a 1, no establecemos bloqueo
-	if (*s) return 1;
-
-	//Adquirimos bloqueo
-	*s=1;
-	return 0;
+    return atomic_fetch_or_explicit(s,1,memory_order_relaxed);
 }
 
 void z_atomic_reset(z_atomic_semaphore *s)
 {
-	*s=0;
+    atomic_fetch_and_explicit(s,0,memory_order_relaxed);
 }
 
 
 
-        #else
+    #else
 
             //En Linux
             //Son builtins de Gcc

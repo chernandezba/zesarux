@@ -37,14 +37,15 @@
     typedef _Atomic int z_atomic_semaphore;
 
 
-    #else
+#else
 
     #ifdef MINGW
         //En Windows
-        //TODO: how to use semafores on mingw
-            typedef int z_atomic_semaphore;
+    #include <stdatomic.h>
 
-        #else
+    typedef _Atomic int z_atomic_semaphore;
+
+    #else
 
             //En Linux
             //#include <asm/atomic.h>
