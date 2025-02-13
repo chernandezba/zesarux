@@ -1493,12 +1493,11 @@ void *thread_codetests_function(void *nada GCC_UNUSED)
 			//printf ("  Esperando a adquirir lock en secondary pthread\n");
 		}
 
-        printf("2 Locked from secondary thread\n");
+        //printf("2 Locked from secondary thread\n");
 
-		//printf("Message from secondary pthread\n");
-		printf("2 Message from secondary pthread\n");
+		//printf("2 Message from secondary pthread\n");
 
-		usleep(1000);
+		//usleep(1000);
 
         int a=codetests_atomic_common_variable;
 		//printf ("hola\n");
@@ -1513,14 +1512,14 @@ void *thread_codetests_function(void *nada GCC_UNUSED)
 
         codetests_atomic_common_variable--;
 
-        printf("2 Unlock from secondary thread\n");
+        //printf("2 Unlock from secondary thread\n");
 
 		//Liberar lock
 		z_atomic_reset(&codetest_semaforo);
 
 
 		//Pausa de test
-		usleep(1000);
+		//usleep(1000);
 	}
 }
 
@@ -1563,13 +1562,13 @@ void codetests_atomic(void)
 			//printf ("  Esperando a adquirir lock en primary pthread\n");
 		}
 
-        printf("1 Locked from primary thread\n");
+        //printf("1 Locked from primary thread\n");
 
 
 		//printf("Message from primary pthread\n");
-		printf("1 Message from primary pthread\n");
+		//printf("1 Message from primary pthread\n");
 
-		usleep(1000);
+		//usleep(1000);
 		//printf ("hola\n");
 
         int a=codetests_atomic_common_variable;
@@ -1584,14 +1583,14 @@ void codetests_atomic(void)
 
         codetests_atomic_common_variable--;
 
-        printf("1 Unlock from primary thread\n");
+        //printf("1 Unlock from primary thread\n");
 
 		//Liberar lock
 		z_atomic_reset(&codetest_semaforo);
 
 
 		//Pausa de test
-		usleep(1000);
+		//usleep(1000);
 	}
 
 }
