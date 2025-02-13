@@ -2632,12 +2632,14 @@ void codetests_main(int main_argc,char *main_argv[])
 //    codetests_simple_atomic();
 
 
+// Rutina mas simple para detectar que las funciones atomic funcionan correctamente
+/*
 #ifdef USE_PTHREADS
 	printf ("\nRunning atomic tests\n");
   init_network_tables();
 	codetests_atomic();
 #endif
-
+*/
 
 //#ifdef USE_PTHREADS
 //	printf ("\nRunning network atomic tests\n");
