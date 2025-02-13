@@ -1482,6 +1482,7 @@ void codetests_atomic_debug_printf(void)
 
 }
 
+int codetests_atomic_common_variable=0;
 
 
 void *thread_codetests_function(void *nada GCC_UNUSED)
@@ -1498,6 +1499,14 @@ void *thread_codetests_function(void *nada GCC_UNUSED)
 		printf("2 Message from secondary pthread\n");
 		usleep(1000);
 		//printf ("hola\n");
+
+        codetests_atomic_common_variable++;
+        if (codetests_atomic_common_variable!=1) {
+            printf("codetests_atomic_common_variable is not 1. Atomic operations doesn't work\n");
+            exit(1);
+        }
+
+        codetests_atomic_common_variable--;
 
         printf("2 Unlock from secondary thread\n");
 
@@ -1556,6 +1565,14 @@ void codetests_atomic(void)
 		printf("1 Message from primary pthread\n");
 		usleep(1000);
 		//printf ("hola\n");
+
+        codetests_atomic_common_variable++;
+        if (codetests_atomic_common_variable!=1) {
+            printf("codetests_atomic_common_variable is not 1. Atomic operations doesn't work\n");
+            exit(1);
+        }
+
+        codetests_atomic_common_variable--;
 
         printf("1 Unlock from primary thread\n");
 
