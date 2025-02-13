@@ -73,6 +73,8 @@ extern int zeng_online_snapshot_diff_media;
 extern int streaming_enabled_when_creating;
 extern int streaming_silence_detection;
 
+extern void zec_veces_audio_no_recibido_timer(void);
+
 extern int created_room_streaming_mode;
 
 //Para poder hacer debug_printf con la clase adecuada

@@ -4241,7 +4241,23 @@ int zoc_receive_streaming_audio(int indice_socket)
 }
 
 
+//Para dar un margen al principio de conectar antes de salir aviso de dropout
+int zoc_veces_audio_no_recibido_contador=-20;
 
+
+int zoc_veces_audio_no_recibido_segundos=0;
+
+void zec_veces_audio_no_recibido_timer(void)
+{
+    if (zeng_online_connected.v && zeng_online_i_am_master.v==0 && created_room_streaming_mode) {
+        //Contar intervalos cada 10 segundos
+        zoc_veces_audio_no_recibido_segundos++;
+        if (zoc_veces_audio_no_recibido_segundos>=10) {
+            zoc_veces_audio_no_recibido_segundos=0;
+            zoc_veces_audio_no_recibido_contador=0;
+        }
+    }
+}
 
 //contiene el valor anterior de contador_segundo_infinito de la anterior consulta de kick
 int contador_kick_anteriorsegundos=0;
@@ -4359,7 +4375,8 @@ void *zoc_slave_thread_function(void *nada GCC_UNUSED)
 
     //int indice_socket_get_stream_audio=zoc_start_connection_get_stream_audio();
 
-
+    //Para dar un margen al principio de conectar antes de salir aviso de dropout
+    zoc_veces_audio_no_recibido_contador=-20;
 
     while (1) {
 
@@ -5645,6 +5662,23 @@ void zeng_online_client_end_audio_frame_stuff(void)
             //Meter silencio
             //Metemos ultimo valor recibido para que no suene petardeo
             memset(audio_buffer,zoc_last_audio_value_received,ZOC_STREAMING_AUDIO_BUFFER_SIZE);
+
+            //vemos si esto sucede a menudo
+            zoc_veces_audio_no_recibido_contador++;
+
+
+            //Aparte de autoajustar incrementales, vemos si han habido varios cortes de audio en este intervalo,
+            //y avisar con un mensaje en el footer
+            //Nota: obviamente esto requiere que el auto ajuste de incrementales esté activado
+            //Podria hacer una funcion aparte para que no dependiera de eso pero no me parece tan importante este mensaje en el footer
+            printf("zoc_veces_audio_no_recibido_contador %d\n",zoc_veces_audio_no_recibido_contador);
+            if (zeng_online_show_footer_lag_indicator.v) {
+                if (zoc_veces_audio_no_recibido_contador>5) {
+                    generic_footertext_print_operating("DROPOUT");
+                    zoc_veces_audio_no_recibido_contador=0;
+                }
+            }
+
 
         }
 

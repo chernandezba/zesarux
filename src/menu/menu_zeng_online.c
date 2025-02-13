@@ -1869,7 +1869,7 @@ void menu_zeng_online(MENU_ITEM_PARAMETERS)
                     menu_add_item_menu_es_avanzado(array_menu_common);
 
                     menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_lag_indicator,NULL,
-                    "Footer lag indicator","Indicador lag en footer","Indicador lag al footer");
+                    "Footer lag/dropout indicator","Indicador lag/mal sonido en footer","Indicador lag/so dolent al footer");
                     menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",
                         (zeng_online_show_footer_lag_indicator.v ? 'X' : ' '));
                     menu_add_item_menu_es_avanzado(array_menu_common);

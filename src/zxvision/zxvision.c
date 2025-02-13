@@ -4067,8 +4067,8 @@ void menu_footer_activity(char *texto)
 
 void menu_delete_footer_activity(void)
 {
-	//45678901
-	menu_putstring_footer(24,1,"        ",WINDOW_FOOTER_INK,WINDOW_FOOTER_PAPER);
+	                          //345678901
+	menu_putstring_footer(23,1,"         ",WINDOW_FOOTER_INK,WINDOW_FOOTER_PAPER);
 }
 
 //Escribir info tarjetas memoria Z88

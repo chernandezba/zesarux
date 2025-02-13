@@ -450,7 +450,7 @@ z80_bit zeng_online_server_allow_zrcp_only_zeng_online={1};
 //Decir que se comprimen en zip los snapshots de zeng online
 z80_bit zeng_online_zip_compress_snapshots={1};
 
-//Decir que se muestra indicador de lag en el footer
+//Decir que se muestra indicador de lag en el footer o de dropout de audio
 z80_bit zeng_online_show_footer_lag_indicator={1};
 
 //Decir que pulsaciones locales de teclas en slave se envian a la maquina al momento, y no se eliminan para esperar que vengan como eventos
