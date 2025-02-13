@@ -1543,7 +1543,7 @@ void codetests_atomic(void)
 
 
 	/*Empezar a escribir debug info en este pthread y en el otro
-    Si funcionan bien los bloqueos, la secuencia de texto tiene que ser siempre:
+    Si funcionan bien los bloqueos, la secuencia de texto si se habilita tiene que ser siempre:
     1 ...
     1 ...
     1 ...
@@ -1553,6 +1553,8 @@ void codetests_atomic(void)
 
     O sea, 3 mensajes del thread primario, 3 del secundario, etc
     Si se intercalan el primario con el secundario es que no funciona bien el bloqueo
+
+    De todas maneras en el propio codigo se detectara si atomic no funciona bien mirando la variable codetests_atomic_common_variable
 
     */
 
