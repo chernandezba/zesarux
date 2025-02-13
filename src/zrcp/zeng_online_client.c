@@ -5671,7 +5671,7 @@ void zeng_online_client_end_audio_frame_stuff(void)
             //y avisar con un mensaje en el footer
             //Nota: obviamente esto requiere que el auto ajuste de incrementales esté activado
             //Podria hacer una funcion aparte para que no dependiera de eso pero no me parece tan importante este mensaje en el footer
-            printf("zoc_veces_audio_no_recibido_contador %d\n",zoc_veces_audio_no_recibido_contador);
+            //printf("zoc_veces_audio_no_recibido_contador %d\n",zoc_veces_audio_no_recibido_contador);
             if (zeng_online_show_footer_lag_indicator.v) {
                 if (zoc_veces_audio_no_recibido_contador>5) {
                     generic_footertext_print_operating("DROPOUT");
