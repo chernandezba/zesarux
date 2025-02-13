@@ -1483,6 +1483,95 @@ void codetests_atomic_debug_printf(void)
 }
 
 
+
+void *thread_codetests_function(void *nada GCC_UNUSED)
+{
+	while (1) {
+		//Adquirir lock
+		while(z_atomic_test_and_set(&codetest_semaforo)) {
+			//printf ("  Esperando a adquirir lock en secondary pthread\n");
+		}
+
+        printf("2 Locked from secondary thread\n");
+
+		//printf("Message from secondary pthread\n");
+		printf("2 Message from secondary pthread\n");
+		usleep(1000);
+		//printf ("hola\n");
+
+        printf("2 Unlock from secondary thread\n");
+
+		//Liberar lock
+		z_atomic_reset(&codetest_semaforo);
+
+
+		//Pausa de test
+		usleep(1000);
+	}
+}
+
+
+
+void codetests_atomic(void)
+{
+
+    z_atomic_reset(&codetest_semaforo);
+	scr_messages_debug=codetests_messages_debug;
+	verbose_level=VERBOSE_PARANOID;
+	scr_set_driver_name("");
+
+
+		//Inicializar thread
+
+	if (pthread_create( &thread_codetests, NULL, &thread_codetests_function, NULL) ) {
+		debug_printf(VERBOSE_ERR,"Can not create codetests pthread");
+		exit(1);
+	}
+
+
+	/*Empezar a escribir debug info en este pthread y en el otro
+    Si funcionan bien los bloqueos, la secuencia de texto tiene que ser siempre:
+    1 ...
+    1 ...
+    1 ...
+    2 ...
+    2 ...
+    2 ...
+
+    O sea, 3 mensajes del thread primario, 3 del secundario, etc
+    Si se intercalan el primario con el secundario es que no funciona bien el bloqueo
+
+    */
+
+	while (1) {
+		//Adquirir lock
+		while(z_atomic_test_and_set(&codetest_semaforo)) {
+			//printf ("  Esperando a adquirir lock en primary pthread\n");
+		}
+
+        printf("1 Locked from primary thread\n");
+
+
+		//printf("Message from primary pthread\n");
+		printf("1 Message from primary pthread\n");
+		usleep(1000);
+		//printf ("hola\n");
+
+        printf("1 Unlock from primary thread\n");
+
+		//Liberar lock
+		z_atomic_reset(&codetest_semaforo);
+
+
+		//Pausa de test
+		usleep(1000);
+	}
+
+}
+
+
+
+
 pthread_t pthread_zengonline_put_snapshot_thread;
 pthread_t pthread_zengonline_get_snapshot_thread;
 
@@ -2514,6 +2603,12 @@ void codetests_main(int main_argc,char *main_argv[])
 
 //    codetests_simple_atomic();
 
+
+//#ifdef USE_PTHREADS
+//	printf ("\nRunning atomic tests\n");
+//  init_network_tables();
+//	codetests_atomic();
+//#endif
 
 
 //#ifdef USE_PTHREADS
