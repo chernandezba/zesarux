@@ -5677,7 +5677,7 @@ void zeng_online_client_end_audio_frame_stuff(void)
             //Nota: obviamente esto requiere que el auto ajuste de incrementales esté activado
             //Podria hacer una funcion aparte para que no dependiera de eso pero no me parece tan importante este mensaje en el footer
             //printf("zoc_veces_audio_no_recibido_contador %d\n",zoc_veces_audio_no_recibido_contador);
-            //Nota2: usando mi zeng server remoto, los periodos de silencio se tardan mas en enviarse desde el master que
+            //Nota2: usando mi zeng server remoto (usando server local no pasa), los periodos de silencio se tardan mas en enviarse desde el master que
             //los periodos de audio normal, no acabo de entender porque. Por tanto se alterna 1 periodo de silencio con 1 de no audio, y asi seguido
             //No saltara el aviso de dropout dado que reseteo el contador cuando se recibe audio (sea o no silencio)
             if (zeng_online_show_footer_lag_indicator.v) {

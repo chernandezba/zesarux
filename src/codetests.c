@@ -1417,7 +1417,7 @@ void codetests_simple_atomic(void)
 
 
 
-void *thread_codetests_function(void *nada GCC_UNUSED)
+void *thread_codetests_function_debug_printf(void *nada GCC_UNUSED)
 {
 	while (1) {
 		//Adquirir lock
@@ -1441,8 +1441,8 @@ void *thread_codetests_function(void *nada GCC_UNUSED)
 }
 
 
-
-void codetests_atomic(void)
+//Prueba de bloqueo al escribir con debug printf
+void codetests_atomic_debug_printf(void)
 {
 
     z_atomic_reset(&codetest_semaforo);
@@ -1453,7 +1453,7 @@ void codetests_atomic(void)
 
 		//Inicializar thread
 
-	if (pthread_create( &thread_codetests, NULL, &thread_codetests_function, NULL) ) {
+	if (pthread_create( &thread_codetests, NULL, &thread_codetests_function_debug_printf, NULL) ) {
 		debug_printf(VERBOSE_ERR,"Can not create codetests pthread");
 		exit(1);
 	}
@@ -2507,9 +2507,9 @@ void codetests_main(int main_argc,char *main_argv[])
 	//if (r<0) printf ("Error: %s\n",z_sock_get_error(r));
 
 //#ifdef USE_PTHREADS
-//	printf ("\nRunning atomic tests\n");
+//	printf ("\nRunning atomic debug_printf tests\n");
 //  init_network_tables();
-//	codetests_atomic();
+//	codetests_atomic_debug_printf();
 //#endif
 
 //    codetests_simple_atomic();
