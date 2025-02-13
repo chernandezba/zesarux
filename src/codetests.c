@@ -1497,10 +1497,15 @@ void *thread_codetests_function(void *nada GCC_UNUSED)
 
 		//printf("Message from secondary pthread\n");
 		printf("2 Message from secondary pthread\n");
+
 		usleep(1000);
+
+        int a=codetests_atomic_common_variable;
 		//printf ("hola\n");
 
-        codetests_atomic_common_variable++;
+        a++;
+
+        codetests_atomic_common_variable=a;
         if (codetests_atomic_common_variable!=1) {
             printf("codetests_atomic_common_variable is not 1. Atomic operations doesn't work\n");
             exit(1);
@@ -1563,10 +1568,15 @@ void codetests_atomic(void)
 
 		//printf("Message from primary pthread\n");
 		printf("1 Message from primary pthread\n");
+
 		usleep(1000);
 		//printf ("hola\n");
 
-        codetests_atomic_common_variable++;
+        int a=codetests_atomic_common_variable;
+
+        a++;
+
+        codetests_atomic_common_variable=a;
         if (codetests_atomic_common_variable!=1) {
             printf("codetests_atomic_common_variable is not 1. Atomic operations doesn't work\n");
             exit(1);
