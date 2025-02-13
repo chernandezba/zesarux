@@ -40,7 +40,7 @@
 #else
 
     #ifdef MINGW
-        //En Windows
+        //En Windows mismas funciones que Mac
     #include <stdatomic.h>
 
     typedef _Atomic int z_atomic_semaphore;

@@ -69,7 +69,7 @@ void z_atomic_reset(z_atomic_semaphore *s)
     #ifdef MINGW
 
 
-        //En Windows
+        //En Windows mismas funciones que Mac
 
 int z_atomic_test_and_set(z_atomic_semaphore *s)
 {
