@@ -90,11 +90,7 @@ ZENG Online
 -Modo streaming
 acabar de probar cambios maquina spectrum y no spectrum en master y slave, antes y despues de conectar
 
-
--quiza LAG en modo streaming podria saltar cuando el audio se ha cortado varias veces seguidas
-Aunque eso no es LAG propiamente, sino baja calidad de sonido, no tiene porque haber LAG cuando pasa eso
-
-ok-revisar algoritmo de autoajustar diferenciales
+-Parametro de autoajustar diferenciales que se guarde en config (por defecto activado)
 
 -timer windows con pthreads? mejora o empeora? o igual?
 
