@@ -90,9 +90,9 @@ ZENG Online
 -Modo streaming
 acabar de probar cambios maquina spectrum y no spectrum en master y slave, antes y despues de conectar
 
--Parametro de autoajustar diferenciales que se guarde en config (por defecto activado)
 
 -timer windows con pthreads? mejora o empeora? o igual?
+-en windows va a trompicones, se para cada 1 segundo o asi durante unas decimas de segundo
 
 
 -QL RAM:

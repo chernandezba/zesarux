@@ -12,7 +12,7 @@ Allow to save text note on a ZSF snapshot
 
 Improved ZX Vision:
 - Allow to hide minimized windows
-- Show when an icon is an open window but minimized with a dot
+- Show, with a dot, when an icon is an open window but minimized
 
 Improved Debug CPU:
 - Show view number inside the window and not in the window title

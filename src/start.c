@@ -1322,6 +1322,9 @@ printf("\n"
         "--zeng-online-nickname s                        Sets nickname for ZENG Online\n"
         "--zeng-online-no-zip-snapshots                  Do not compress snapshots with zip format\n"
         "--zeng-online-no-footer-lag-indicator           Show lag or dropout indicator on footer when snapshots are coming late\n"
+        "--zeng-online-no-streaming-create               Do not enable streaming mode when creating rooms\n"
+        "--zeng-online-no-autoadjust-display-quality     Do not autoadjust display quality\n"
+
         "--enable-zeng-online-server                     Enable ZENG Online server. Requires ZRCP\n"
         "--zeng-online-server-allow-create               Allows this ZENG Online server to allow create rooms from any ip address. By default, only creation from localhost is allowed\n"
         "--zeng-online-server-max-rooms n                Set maximum rooms for this ZENG Online server\n"
@@ -5892,6 +5895,14 @@ int parse_cmdline_options(int desde_commandline) {
 
         else if (!strcmp(argv[puntero_parametro],"--zeng-online-no-footer-lag-indicator")) {
             zeng_online_show_footer_lag_indicator.v=0;
+        }
+
+        else if (!strcmp(argv[puntero_parametro],"--zeng-online-no-streaming-create")) {
+            streaming_enabled_when_creating=0;
+        }
+
+        else if (!strcmp(argv[puntero_parametro],"--zeng-online-no-autoadjust-display-quality")) {
+            zoc_slave_differential_displays_limit_full_autoadjust.v=0;
         }
 
 
