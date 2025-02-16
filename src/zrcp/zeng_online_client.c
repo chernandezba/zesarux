@@ -5216,6 +5216,40 @@ void zec_decrement_differential_display_parameter(void)
     DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Autoadjust differentials. New value: %d",zoc_slave_differential_displays_limit_full);
 }
 
+#define ZEC_AUTOADJUST_MARGIN_COMPARISON 3
+
+//Dice si el primer valor es menor que el segundo, pero por un margen definido
+int zec_autoadjust_differentials_less(int a,int b)
+{
+    //Si A=10, B=12, margen=3: no es menor
+    //Si A=9, B=12, margen=3: es menor
+    //Si A=8, B=12, margen=3: es menor
+    if (b-a>=ZEC_AUTOADJUST_MARGIN_COMPARISON) return 1;
+    else return 0;
+}
+
+//Dice si el primer valor es mayor que el segundo, pero por un margen definido
+int zec_autoadjust_differentials_greater(int a,int b)
+{
+    //Si A=12, B=10, margen=3: no es mayor
+    //Si A=12, B=9, margen=3: es mayor
+    //Si A=12, B=8, margen=3: es mayor
+    if (a-b>=ZEC_AUTOADJUST_MARGIN_COMPARISON) return 1;
+    else return 0;
+}
+
+//Dice si el primer valor es igual que el segundo, pero por un margen definido
+int zec_autoadjust_differentials_equal(int a,int b)
+{
+    //Si A=12, B=10, margen=3: es igual
+    //Si A=10, B=12, margen=3: es igual
+    //Si A=12, B=9, margen=3: no es igual
+    //Si A=9, B=12, margen=3: no es igual
+    //Si A=12, B=8, margen=3: no es igual
+    if (util_abs(a-b)<ZEC_AUTOADJUST_MARGIN_COMPARISON) return 1;
+    else return 0;
+}
+
 void zec_autoadjust_differentials_display(void)
 {
     zoc_slave_differential_displays_limit_full_autoadjust_seconds_counter++;
@@ -5265,7 +5299,7 @@ void zec_autoadjust_differentials_display(void)
                 if (autoajuste_diferenciales_estado==0) {
                     //printf("Estado: 0 inicial o estable\n");
 
-                    if (zoc_client_streaming_display_fps_last_interval<zoc_slave_differential_displays_limit_full_previous_fps) {
+                    if (zec_autoadjust_differentials_less(zoc_client_streaming_display_fps_last_interval,zoc_slave_differential_displays_limit_full_previous_fps)) {
                         DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Autoadjust differentials. State: stable. "
                             "FPS less than before (now: %d before: %d). Increment differentials",zoc_client_streaming_display_fps_last_interval,zoc_slave_differential_displays_limit_full_previous_fps);
                         zec_increment_differential_display_parameter();
@@ -5274,7 +5308,7 @@ void zec_autoadjust_differentials_display(void)
 
                     }
 
-                    if (zoc_client_streaming_display_fps_last_interval>zoc_slave_differential_displays_limit_full_previous_fps) {
+                    if (zec_autoadjust_differentials_greater(zoc_client_streaming_display_fps_last_interval,zoc_slave_differential_displays_limit_full_previous_fps)) {
                         DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Autoadjust differentials. State: stable. "
                             "Bigger FPS than before (now: %d before: %d). Reduce differentials",zoc_client_streaming_display_fps_last_interval,zoc_slave_differential_displays_limit_full_previous_fps);
                         zec_decrement_differential_display_parameter();
@@ -5283,7 +5317,7 @@ void zec_autoadjust_differentials_display(void)
                     }
 
                     //Si no ha variado
-                    if (zoc_client_streaming_display_fps_last_interval==zoc_slave_differential_displays_limit_full_previous_fps) {
+                    if (zec_autoadjust_differentials_equal(zoc_client_streaming_display_fps_last_interval,zoc_slave_differential_displays_limit_full_previous_fps)) {
 
                         //Si no ha variado, probamos a bajar si es que esta en un valor relativamente alto
                         //Esto antes , mas prioritario que subir incrementales
@@ -5324,7 +5358,7 @@ void zec_autoadjust_differentials_display(void)
                 else if (autoajuste_diferenciales_estado==1) {
                     //printf("Estado: 1 de incrementado diferenciales\n");
                     //Si empeora fps, reducir y volvemos a estado 0.
-                    if (zoc_client_streaming_display_fps_last_interval<zoc_slave_differential_displays_limit_full_previous_fps) {
+                    if (zec_autoadjust_differentials_less(zoc_client_streaming_display_fps_last_interval,zoc_slave_differential_displays_limit_full_previous_fps)) {
                         DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Autoadjust differentials. State: incrementing. "
                             "FPS less than before (now: %d before: %d). Decrement differentials",zoc_client_streaming_display_fps_last_interval,zoc_slave_differential_displays_limit_full_previous_fps);
                         zec_decrement_differential_display_parameter();
@@ -5333,7 +5367,7 @@ void zec_autoadjust_differentials_display(void)
                     }
 
                     //Si mejora FPS, aumentar diferenciales
-                    if (zoc_client_streaming_display_fps_last_interval>zoc_slave_differential_displays_limit_full_previous_fps) {
+                    if (zec_autoadjust_differentials_greater(zoc_client_streaming_display_fps_last_interval,zoc_slave_differential_displays_limit_full_previous_fps)) {
                         DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Autoadjust differentials. State: incrementing. "
                             "Bigger FPS than before (now: %d before: %d). Increment differentials",zoc_client_streaming_display_fps_last_interval,zoc_slave_differential_displays_limit_full_previous_fps);
 
@@ -5351,7 +5385,7 @@ void zec_autoadjust_differentials_display(void)
                     }
 
                     //Si mismos FPS, reducir incrementales
-                    if (zoc_client_streaming_display_fps_last_interval==zoc_slave_differential_displays_limit_full_previous_fps) {
+                    if (zec_autoadjust_differentials_equal(zoc_client_streaming_display_fps_last_interval,zoc_slave_differential_displays_limit_full_previous_fps)) {
                         DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Autoadjust differentials. State: incrementing. "
                             "Same FPS than before (now: %d before: %d). Reduce differentials and going to stable state",zoc_client_streaming_display_fps_last_interval,zoc_slave_differential_displays_limit_full_previous_fps);
                         autoajuste_diferenciales_estado=0;
@@ -5364,7 +5398,7 @@ void zec_autoadjust_differentials_display(void)
                 else if (autoajuste_diferenciales_estado==2) {
                     //printf("Estado: 2 de decrementado diferenciales\n");
                     //Si empeora fps, aumentar incrementales y volvemos a estado 0.
-                    if (zoc_client_streaming_display_fps_last_interval<zoc_slave_differential_displays_limit_full_previous_fps) {
+                    if (zec_autoadjust_differentials_less(zoc_client_streaming_display_fps_last_interval,zoc_slave_differential_displays_limit_full_previous_fps)) {
                         DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Autoadjust differentials. State: decrementing. "
                             "FPS less than before (now: %d before: %d). Increment differentials",zoc_client_streaming_display_fps_last_interval,zoc_slave_differential_displays_limit_full_previous_fps);
 
@@ -5375,7 +5409,7 @@ void zec_autoadjust_differentials_display(void)
                     }
 
                     //Si mejora FPS, disminuir diferenciales
-                    if (zoc_client_streaming_display_fps_last_interval>zoc_slave_differential_displays_limit_full_previous_fps) {
+                    if (zec_autoadjust_differentials_greater(zoc_client_streaming_display_fps_last_interval,zoc_slave_differential_displays_limit_full_previous_fps)) {
                         DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Autoadjust differentials. State: decrementing. "
                             "Bigger FPS than before (now: %d before: %d). Decrement differentials",zoc_client_streaming_display_fps_last_interval,zoc_slave_differential_displays_limit_full_previous_fps);
 
@@ -5390,7 +5424,7 @@ void zec_autoadjust_differentials_display(void)
                     }
 
                     //Mismos FPS y estabamos reduciendo. No reducir diferenciales
-                    if (zoc_client_streaming_display_fps_last_interval==zoc_slave_differential_displays_limit_full_previous_fps) {
+                    if (zec_autoadjust_differentials_equal(zoc_client_streaming_display_fps_last_interval,zoc_slave_differential_displays_limit_full_previous_fps)) {
                         DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Autoadjust differentials. State: decrementing. "
                             "Same FPS than before (now: %d before: %d). Going to stable state",zoc_client_streaming_display_fps_last_interval,zoc_slave_differential_displays_limit_full_previous_fps);
                         autoajuste_diferenciales_estado=0;
