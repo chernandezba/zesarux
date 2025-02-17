@@ -1947,7 +1947,7 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
                 int retorno_escribir=escribir_socket(misocket,"\n");
 
                 if (retorno_escribir<=0) {
-                    printf("Error returning data from command streaming-get-audio-cont. Retries: %d Source IP=%s\n",errores_escribir,ip_source_address);
+                    DBG_PRINT_ZENG_ONLINE VERBOSE_DEBUG,"ZENG Online: Error returning data from command streaming-get-audio-cont. Retries: %d Source IP=%s",errores_escribir,ip_source_address);
                     errores_escribir++;
 
                     sleep(1);
@@ -1970,7 +1970,7 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
 
         }
 
-        printf("Exiting command streaming-get-audio-cont from server because the remote socket is not connected. Source IP=%s\n",ip_source_address);
+        DBG_PRINT_ZENG_ONLINE VERBOSE_DEBUG,"ZENG Online: Exiting command streaming-get-audio-cont from server because the remote socket is not connected. Source IP=%s",ip_source_address);
 
         free(puntero_audio);
 
