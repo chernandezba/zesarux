@@ -1202,7 +1202,7 @@ int zsock_read_all_until_command_max_reintentos_message_id(int indice_tabla,z80_
 
 
 		if (!leido_command_prompt) {
-			printf ("NO recibido command prompt. Reintentar\n");
+			printf ("NO recibido command prompt. Reintentar. total_leidos %d\n",total_leidos);
 			usleep(10000); //10 ms
 		}
 

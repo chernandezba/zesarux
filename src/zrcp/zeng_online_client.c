@@ -3367,11 +3367,12 @@ void zoc_common_alive_user(int indice_socket)
                 zeng_online_joined_to_room_number,
                 stats_uuid
             );
-            //printf("Enviando %s\n",buffer_enviar);
+            printf("Enviando alive %s\n",buffer_enviar);
 
-
+        printf("1 antes alive contador_segundo_infinito: %d\n",contador_segundo_infinito);
         //int return_value=zoc_common_send_command(indice_socket,buffer_enviar,"alive");
         zoc_common_send_command(indice_socket,buffer_enviar,"alive");
+        printf("2 despues alive contador_segundo_infinito: %d\n",contador_segundo_infinito);
 
 
         //if (!return_value) return 0;
