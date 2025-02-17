@@ -9034,7 +9034,7 @@ void menu_debug_configuration_remoteproto_port(MENU_ITEM_PARAMETERS)
 
             //Si esta habilitado, reiniciamos ZRCP
             if (remote_protocol_enabled.v) {
-                printf("Restart ZRCP\n");
+                debug_printf(VERBOSE_DEBUG,"Restart ZRCP");
                 end_remote_protocol();
             }
 
