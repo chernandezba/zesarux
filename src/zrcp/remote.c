@@ -6200,7 +6200,7 @@ else if (!strcmp(comando_sin_parametros,"write-port") ) {
 
 	else if (!strcmp(comando_sin_parametros,"zeng-online") || !strcmp(comando_sin_parametros,"zo")) {
         remote_parse_commands_argvc(parametros,&remote_command_argc,remote_command_argv);
-        int retorno;
+        int retorno=0;
         zeng_online_parse_command(misocket,remote_command_argc,remote_command_argv,ip_source_address,&retorno);
         *mostrar_debug=retorno;
         return;
