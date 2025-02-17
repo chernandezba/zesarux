@@ -6395,6 +6395,8 @@ void *zrcp_handle_new_connection(void *entrada)
             int leidos;
             int salir_bucle=0;
             do {
+
+                if (mostrar_debug) printf("antes leer_socket: %d\n",contador_segundo_infinito);
                 leidos=leer_socket(sock_connected_client, &buffer_lectura_socket[indice_destino], MAX_LENGTH_PROTOCOL_COMMAND-1);
 
                 if (mostrar_debug) printf("despues leer_socket: %d\n",contador_segundo_infinito);
