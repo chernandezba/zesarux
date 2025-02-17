@@ -286,7 +286,7 @@ int zeng_fifo_element_exists(zeng_key_presses *elemento)
 
         if (tecla==elemento->tecla) {
             if (pressrelease==elemento->pressrelease) {
-                printf("Existe en pos %d\n",posicion);
+                //printf("Existe en pos %d\n",posicion);
                 existe=1;
             }
             else {
@@ -464,15 +464,15 @@ void zeng_send_key_event(enum util_teclas tecla,int pressrelease)
 	elemento.pressrelease=pressrelease;
     //elemento.contador_scanline=zeng_online_scanline_counter;
 
-	printf ("--Adding zeng key tecla %3d (%c) pressrelease %d to fifo (size %d)\n",elemento.tecla,
-    (elemento.tecla>=32 && elemento.tecla<=126 ? elemento.tecla : '.'),
-    elemento.pressrelease,zeng_fifo_get_current_size());
+	debug_printf (VERBOSE_PARANOID,"Adding zeng key %3d (%c) pressrelease %d to fifo (size %d)",elemento.tecla,
+        (elemento.tecla>=32 && elemento.tecla<=126 ? elemento.tecla : '.'),
+        elemento.pressrelease,zeng_fifo_get_current_size());
 
     //printf ("Adding zeng key event. FIFO Size: %d\n",zeng_fifo_get_current_size() );
 
     //Ver si evento ya está en fifo local y último estado coincide con el que pretendemos agregar   En ese caso no agregar
     if (zeng_fifo_element_exists(&elemento)) {
-        printf ("Already exists zeng key tecla %3d (%c) pressrelease %d to fifo (size %d)\n",elemento.tecla,
+        debug_printf (VERBOSE_PARANOID,"Already exists zeng key %3d (%c) pressrelease %d to fifo (size %d)",elemento.tecla,
             (elemento.tecla>=32 && elemento.tecla<=126 ? elemento.tecla : '.'),
             elemento.pressrelease,zeng_fifo_get_current_size());
         return;
@@ -482,16 +482,15 @@ void zeng_send_key_event(enum util_teclas tecla,int pressrelease)
     //Al menos si se llena la fifo, no se quedara ninguna tecla pulsada
     int limit_fifo=(ZENG_FIFO_SIZE*80)/100;
     if (zeng_fifo_get_current_size()>=limit_fifo) {
-        printf("ZENG fifo almost full (%d). Only accept release events\n",zeng_fifo_get_current_size());
+        debug_printf (VERBOSE_DEBUG,"ZENG fifo almost full (%d). Only accept release events",zeng_fifo_get_current_size());
         if (elemento.pressrelease) {
-            printf("ZENG event is a press, not release. Do not accept because fifo is almost full\n");
+            debug_printf (VERBOSE_DEBUG,"ZENG event is a press, not release. Do not accept because fifo is almost full");
             return;
         }
     }
 
 	if (zeng_fifo_add_element(&elemento)) {
 		debug_printf (VERBOSE_DEBUG,"Error adding zeng key event. FIFO full (size: %d)",zeng_fifo_get_current_size() );
-        printf ("############Error adding zeng key event. FIFO full (size: %d)\n",zeng_fifo_get_current_size() );
         //zeng_fifo_debug_show_fifo();
 		return;
 	}
