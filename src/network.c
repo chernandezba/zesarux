@@ -1200,9 +1200,9 @@ int zsock_read_all_until_command_max_reintentos_message_id(int indice_tabla,z80_
 			//printf ("total leidos: %d\n",total_leidos);
 		}
 
-
+extern int contador_segundo_infinito;
 		if (!leido_command_prompt) {
-			printf ("NO recibido command prompt. Reintentar. total_leidos %d\n",total_leidos);
+			printf ("NO recibido command prompt. Reintentar. total_leidos %d conta segundo %d\n",total_leidos,contador_segundo_infinito);
 			usleep(10000); //10 ms
 		}
 
