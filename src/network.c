@@ -1136,6 +1136,98 @@ int zsock_read_all_until_command(int indice_tabla,z80_byte *buffer,int max_buffe
 
 }
 
+//devuelve en posicion_command donde empieza el "command>", si es >=0
+//permite establecer maximo reintentos
+int zsock_read_all_until_command_max_reintentos_message_id(int indice_tabla,z80_byte *buffer,int max_buffer,int *posicion_command,int max_reintentos)
+{
+
+	//printf ("inicio zsock_read_all_until_command\n");
+
+	//Leemos hasta que no haya mas datos para leer. Idealmente estara el "command> "
+	int leidos;
+
+	//Inicialmente no sabemos la posicion del command>
+	*posicion_command=-1;
+
+	int sock=get_socket_number(indice_tabla);
+
+	if (sock<0) {
+		return sock;
+	}
+
+
+	int pos_destino=0;
+	int total_leidos=0;
+	int leido_command_prompt=0;
+	int reintentos=0;
+	//printf ("entrando bucle zsock_read_all_until_command\n");
+	do {
+
+		do {
+			//if (chardevice_status(sock) & CHDEV_ST_RD_AVAIL_DATA) {
+			if (zsock_available_data(sock)) {
+				leidos=z_sock_read(indice_tabla,&buffer[pos_destino],max_buffer);
+				//printf ("leidos en zsock_wait_until_command_prompt: %d\n",leidos);
+				if (leidos<0) return -1;
+				else {
+					max_buffer -=leidos;
+					total_leidos +=leidos;
+					pos_destino +=leidos;
+				}
+			}
+			else {
+				leidos=0;
+			}
+		} while (leidos>0 && max_buffer>0);
+
+		//Ver si hay "command> al final"
+		if (total_leidos>=9) { //"command> " ocupa 9
+			//printf ("Leido al final: %02XH %02XH [%c%c]\n",buffer[total_leidos-2],buffer[total_leidos-1],
+			//util_printable_char(buffer[total_leidos-2]),util_printable_char(buffer[total_leidos-1]));
+
+			//printf ("Leido todo: ");
+			//zsock_debug_dump_ascii(buffer,total_leidos);
+			//printf ("\n");
+
+			if (buffer[total_leidos-1]==' ' && buffer[total_leidos-2]=='>') {
+				leido_command_prompt=1;
+				*posicion_command=total_leidos-9;
+				//printf ("Recibido command prompt\n");
+			}
+		}
+
+		else {
+			//printf ("total leidos: %d\n",total_leidos);
+		}
+
+
+		if (!leido_command_prompt) {
+			printf ("NO recibido command prompt. Reintentar\n");
+			usleep(10000); //10 ms
+		}
+
+		reintentos++;
+
+
+	} while (!leido_command_prompt && reintentos<max_reintentos);
+
+
+	//TODO: si se llega aqui sin haber recibido command prompt. Se gestionara en retorno mediante posicion_command
+	return total_leidos;
+
+}
+
+
+int zsock_read_all_until_command_message_id(int indice_tabla,z80_byte *buffer,int max_buffer,int *posicion_command)
+{
+
+    //5 segundos de reintentos
+    return zsock_read_all_until_command_max_reintentos_message_id(indice_tabla,buffer,max_buffer,posicion_command,500);
+
+
+
+}
+
 //Funcion usada en get-keys y solo para ahi
 //De hecho no es muy optima porque finaliza solo cuando el ultimo byte recibido es \n
 //pero no siempre llega eso al final, porque lee por trozos y a veces el ultimo byte no es ese
