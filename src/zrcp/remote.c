@@ -6385,7 +6385,7 @@ void *zrcp_handle_new_connection(void *entrada)
 
         if (mostrar_debug) printf("despues escribir_socket prompt (%s): %d\n",prompt,contador_segundo_infinito);
 
-        mostrar_debug=0;
+        //mostrar_debug=0;
 
         int indice_destino=0;
 
@@ -6396,6 +6396,12 @@ void *zrcp_handle_new_connection(void *entrada)
             int salir_bucle=0;
             do {
                 leidos=leer_socket(sock_connected_client, &buffer_lectura_socket[indice_destino], MAX_LENGTH_PROTOCOL_COMMAND-1);
+
+                if (mostrar_debug) printf("despues leer_socket: %d\n",contador_segundo_infinito);
+
+
+                mostrar_debug=0;
+
                 debug_printf (VERBOSE_DEBUG,"ZRCP: Read block %d bytes index: %d",leidos,indice_destino);
 
                 /*
