@@ -1211,6 +1211,8 @@ int zsock_read_all_until_command_max_reintentos_message_id(int indice_tabla,z80_
 
 	} while (!leido_command_prompt && reintentos<max_reintentos);
 
+    printf ("recibido command prompt.  total_leidos %d\n",total_leidos);
+
 
 	//TODO: si se llega aqui sin haber recibido command prompt. Se gestionara en retorno mediante posicion_command
 	return total_leidos;

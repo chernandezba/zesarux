@@ -6439,11 +6439,14 @@ void *zrcp_handle_new_connection(void *entrada)
                     }
                 }
 
+                printf("antes interpreta_comando: %d\n",contador_segundo_infinito);
                 interpreta_comando(buffer_lectura_socket,sock_connected_client,
 					buffer_lectura_socket_anterior,&remote_salir_conexion_cliente,ip_source_address);
 
                 //Liberar lock
                 z_atomic_reset(&zrcp_command_semaforo);
+
+                printf("despues interpreta_comando: %d\n",contador_segundo_infinito);
             }
 
         } //Fin if (!remote_salir_conexion_cliente)
