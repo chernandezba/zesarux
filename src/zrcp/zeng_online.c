@@ -935,7 +935,7 @@ void zeng_online_destroy_room(int misocket,int room_number)
 
 }
 
-void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv,char *ip_source_address)
+void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv,char *ip_source_address,int *retorno)
 {
     //TODO: si el parse para un comando largo, como put-snapshot, fuese lento, habria que procesarlo diferente:
     //ir hasta el primer espacio, y no procesar los dos parametros
@@ -2217,6 +2217,8 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
         escribir_socket_format(misocket,"%d",zeng_online_rooms_list[room_number].broadcast_message_id);
 
         printf("despues get-message-id: %d\n",contador_segundo_infinito);
+
+        *retorno=1;
 
     }
     //"get-message user_pass n             Gets the broadcast message from room\n"
