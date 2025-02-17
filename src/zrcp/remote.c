@@ -6383,7 +6383,7 @@ void *zrcp_handle_new_connection(void *entrada)
         else sprintf (prompt,"\n%s> ",remote_prompt_command_string);
         if (escribir_socket(sock_connected_client,prompt)<0) remote_salir_conexion_cliente=1;
 
-        if (mostrar_debug) printf("despues escribir_socket: %d\n",contador_segundo_infinito);
+        if (mostrar_debug) printf("despues escribir_socket prompt (%s): %d\n",prompt,contador_segundo_infinito);
 
         mostrar_debug=0;
 
