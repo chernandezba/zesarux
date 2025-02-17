@@ -2212,11 +2212,11 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
         }
 
 
-        printf("antes get-message-id: %d\n",contador_segundo_infinito);
+        printf("server antes get-message-id: %d\n",contador_segundo_infinito);
 
         escribir_socket_format(misocket,"%d",zeng_online_rooms_list[room_number].broadcast_message_id);
 
-        printf("despues get-message-id: %d\n",contador_segundo_infinito);
+        printf("server despues get-message-id: %d\n",contador_segundo_infinito);
 
         *retorno=1;
 

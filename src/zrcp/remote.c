@@ -6383,7 +6383,7 @@ void *zrcp_handle_new_connection(void *entrada)
         else sprintf (prompt,"\n%s> ",remote_prompt_command_string);
         if (escribir_socket(sock_connected_client,prompt)<0) remote_salir_conexion_cliente=1;
 
-        if (mostrar_debug) printf("despues escribir_socket prompt (%s): %d\n",prompt,contador_segundo_infinito);
+        if (mostrar_debug) printf("server despues escribir_socket prompt (%s): %d\n",prompt,contador_segundo_infinito);
 
         //mostrar_debug=0;
 
@@ -6396,10 +6396,10 @@ void *zrcp_handle_new_connection(void *entrada)
             int salir_bucle=0;
             do {
 
-                if (mostrar_debug) printf("antes leer_socket: %d\n",contador_segundo_infinito);
+                if (mostrar_debug) printf("server antes leer_socket: %d\n",contador_segundo_infinito);
                 leidos=leer_socket(sock_connected_client, &buffer_lectura_socket[indice_destino], MAX_LENGTH_PROTOCOL_COMMAND-1);
 
-                if (mostrar_debug) printf("despues leer_socket: %d\n",contador_segundo_infinito);
+                if (mostrar_debug) printf("server despues leer_socket: %d\n",contador_segundo_infinito);
 
 
                 mostrar_debug=0;
@@ -6464,7 +6464,7 @@ void *zrcp_handle_new_connection(void *entrada)
                 //Liberar lock
                 z_atomic_reset(&zrcp_command_semaforo);
 
-                if (mostrar_debug) printf("despues interpreta_comando: %d\n",contador_segundo_infinito);
+                if (mostrar_debug) printf("server despues interpreta_comando: %d\n",contador_segundo_infinito);
             }
 
         } //Fin if (!remote_salir_conexion_cliente)
