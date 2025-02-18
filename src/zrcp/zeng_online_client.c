@@ -68,6 +68,7 @@ pthread_t thread_zeng_online_client_list_rooms;
 pthread_t thread_zeng_online_client_create_room;
 pthread_t thread_zeng_online_client_join_room;
 pthread_t thread_zoc_master_thread;
+pthread_t thread_zoc_master_thread_secondary_commands;
 pthread_t thread_zoc_master_thread_stream_audio;
 pthread_t thread_zoc_slave_thread;
 pthread_t thread_zoc_slave_thread_secondary_commands;
@@ -3535,7 +3536,9 @@ void *zoc_master_thread_function(void *nada GCC_UNUSED)
             }
 
 
+            /*
 
+            Muevo todo esto a secondary thread
 
             //Tambien a final de cada frame, y cada 50 veces (o sea 1 segundo), ver si hay pendientes autorizaciones
             contador_obtener_autorizaciones++;
@@ -3548,6 +3551,8 @@ void *zoc_master_thread_function(void *nada GCC_UNUSED)
 
             zoc_common_alive_user(indice_socket);
 
+            */
+
         }
 
         //TODO: parametro configurable
@@ -3558,6 +3563,75 @@ void *zoc_master_thread_function(void *nada GCC_UNUSED)
 	return 0;
 
 }
+
+void *zoc_master_thread_function_secondary_commands(void *nada GCC_UNUSED)
+{
+
+
+    //zeng_remote_list_rooms_buffer[0]=0;
+
+    char server[NETWORK_MAX_URL+1];
+    int puerto;
+    puerto=zeng_online_get_server_and_port(server);
+
+    int indice_socket=z_sock_open_connection(server,puerto,0,"");
+
+    int contador_obtener_autorizaciones=0;
+
+    if (indice_socket<0) {
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Error connecting to %s:%d. %s",
+            server,puerto,
+            z_sock_get_error(indice_socket));
+        return 0;
+    }
+
+    int posicion_command;
+
+#define ZENG_BUFFER_INITIAL_CONNECT 199
+
+    //Leer algo
+    char buffer[ZENG_BUFFER_INITIAL_CONNECT+1];
+
+    //int leidos=z_sock_read(indice_socket,buffer,199);
+    int leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)buffer,ZENG_BUFFER_INITIAL_CONNECT,&posicion_command);
+    if (leidos>0) {
+        buffer[leidos]=0; //fin de texto
+        //printf("Received text (length: %d):\n[\n%s\n]\n",leidos,buffer);
+    }
+
+    if (leidos<0) {
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't read remote prompt: %s",z_sock_get_error(leidos));
+        return 0;
+    }
+
+
+    //Leer id de mensaje de broadcast para saber cuando llega uno nuevo
+    zoc_last_message_id=zoc_get_message_id(indice_socket);
+    printf("Initial message id: %d\n",zoc_last_message_id);
+
+
+
+
+    while (1) {
+
+
+
+        zoc_get_pending_authorization_size(indice_socket);
+
+        zoc_common_get_messages_slave_master(indice_socket);
+
+        zoc_common_alive_user(indice_socket);
+
+
+        //TODO: parametro configurable
+        sleep(1);
+
+    }
+
+	return 0;
+
+}
+
 
 
 void *zoc_master_thread_function_stream_audio(void *nada GCC_UNUSED)
@@ -4878,6 +4952,14 @@ void zoc_start_master_thread(void)
 	//y pthread en estado detached asi liberara su memoria asociada a thread al finalizar, sin tener que hacer un pthread_join
 	pthread_detach(thread_zoc_master_thread);
 
+	if (pthread_create( &thread_zoc_master_thread_secondary_commands, NULL, &zoc_master_thread_function_secondary_commands, NULL) ) {
+		DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Can not create zeng online secondary commands master pthread");
+		return;
+	}
+
+	//y pthread en estado detached asi liberara su memoria asociada a thread al finalizar, sin tener que hacer un pthread_join
+	pthread_detach(thread_zoc_master_thread_secondary_commands);
+
 	if (pthread_create( &thread_zoc_master_thread_stream_audio, NULL, &zoc_master_thread_function_stream_audio, NULL) ) {
 		DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Can not create zeng online streaming audio master pthread");
 		return;
@@ -4921,6 +5003,7 @@ void zoc_start_slave_thread(void)
 void zoc_stop_master_thread(void)
 {
     pthread_cancel(thread_zoc_master_thread);
+    pthread_cancel(thread_zoc_master_thread_secondary_commands);
     pthread_cancel(thread_zoc_master_thread_stream_audio);
 }
 
