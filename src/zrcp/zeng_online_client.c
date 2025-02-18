@@ -678,6 +678,8 @@ int zoc_common_send_command_buffer_message_id(int indice_socket,char *buffer_env
 
     int escritos=z_sock_write_string(indice_socket,buffer_enviar);
 
+    z_sock_write_string(indice_socket,"\n");
+
 
     if (escritos<0) {
         //Solo mostrar ese mensaje cuando aun no se ha declarado desconectado
