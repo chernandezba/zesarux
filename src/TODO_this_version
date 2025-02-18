@@ -100,3 +100,7 @@ ok*revisar guardado snapshots zsf, carga (en carga tendra que cambiar total ql r
 ok parece que ya va bien *revisar visualmem que parece que no muestra bien dibujo, quiza hace AND en vez de MOD
 ok*agregar parametro linea de comandos, guardado config
 ok*agregar changelog
+
+
+//TODO: hacer que salgan todos los threads si hay kick de usuario - en slave. y revisar el de master
+if (zoc_check_if_kicked(indice_socket)) {

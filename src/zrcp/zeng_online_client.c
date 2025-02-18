@@ -70,6 +70,7 @@ pthread_t thread_zeng_online_client_join_room;
 pthread_t thread_zoc_master_thread;
 pthread_t thread_zoc_master_thread_stream_audio;
 pthread_t thread_zoc_slave_thread;
+pthread_t thread_zoc_slave_thread_secondary_commands;
 pthread_t thread_zoc_slave_thread_stream_audio;
 pthread_t thread_zeng_online_client_join_list;
 pthread_t thread_zeng_online_client_authorize_join;
@@ -4364,7 +4365,7 @@ void *zoc_slave_thread_function(void *nada GCC_UNUSED)
     }
 
     //Leer id de mensaje de broadcast para saber cuando llega uno nuevo
-    zoc_last_message_id=zoc_get_message_id(indice_socket);
+    //zoc_last_message_id=zoc_get_message_id(indice_socket);
     //printf("Initial message id: %d\n",zoc_last_message_id);
 
 
@@ -4499,6 +4500,11 @@ void *zoc_slave_thread_function(void *nada GCC_UNUSED)
 
             }
 
+
+            /*
+
+            Estos comandos los aparto al secondary commands thread
+
             zoc_common_get_messages_slave_master(indice_socket);
 
             zoc_common_alive_user(indice_socket);
@@ -4512,12 +4518,92 @@ void *zoc_slave_thread_function(void *nada GCC_UNUSED)
                 return NULL;
             }
 
+            */
+
 
 
         }
 
         //TODO este parametro configurable
         usleep(1000); //1 ms (20 ms es un frame de video)
+
+    }
+
+	return 0;
+
+}
+
+//Apartar comandos como get-message-id y otros que envian y reciben y si hay algo de latencia, molestarian
+//en los comandos de recibir streaming de video (ralentizarian la recepcion de video)
+void *zoc_slave_thread_function_secondary_commands(void *nada GCC_UNUSED)
+{
+
+    //conectar a remoto
+    //Inicializar timeout para no recibir tempranos mensajes de "OFFLINE"
+    zoc_last_snapshot_received_counter=ZOC_TIMEOUT_NO_SNAPSHOT;
+
+
+
+    char server[NETWORK_MAX_URL+1];
+    int puerto;
+    puerto=zeng_online_get_server_and_port(server);
+
+    int indice_socket=z_sock_open_connection(server,puerto,0,"");
+
+    if (indice_socket<0) {
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Error connecting to %s:%d. %s",
+            server,puerto,
+            z_sock_get_error(indice_socket));
+        return 0;
+    }
+
+    int posicion_command;
+
+#define ZENG_BUFFER_INITIAL_CONNECT 199
+
+    //Leer algo
+    char buffer[ZENG_BUFFER_INITIAL_CONNECT+1];
+
+    //int leidos=z_sock_read(indice_socket,buffer,199);
+    int leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)buffer,ZENG_BUFFER_INITIAL_CONNECT,&posicion_command);
+    if (leidos>0) {
+        buffer[leidos]=0; //fin de texto
+        //printf("Received text (length: %d):\n[\n%s\n]\n",leidos,buffer);
+    }
+
+    if (leidos<0) {
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't read remote prompt: %s",z_sock_get_error(leidos));
+        return 0;
+    }
+
+    //Leer id de mensaje de broadcast para saber cuando llega uno nuevo
+    zoc_last_message_id=zoc_get_message_id(indice_socket);
+
+
+    printf("Initial message id: %d\n",zoc_last_message_id);
+
+
+    while (1) {
+
+
+        zoc_common_get_messages_slave_master(indice_socket);
+
+        zoc_common_alive_user(indice_socket);
+
+
+        //TODO: hacer que salgan todos los threads si hay kick de usuario
+        if (zoc_check_if_kicked(indice_socket)) {
+            //Logicamente el usuario puede intentar entrar de nuevo pero
+            //mientras no se haga kick de otro usuario diferente, este primero quedara en la lista de kick
+            //y siempre se le echara
+            //Ademas como va relacionado por el uuid, aunque cambie su nick, el kick seguirá siendo efectivo
+            return NULL;
+        }
+
+
+
+        //TODO este parametro configurable
+        sleep(1);
 
     }
 
@@ -4812,6 +4898,15 @@ void zoc_start_slave_thread(void)
 	//y pthread en estado detached asi liberara su memoria asociada a thread al finalizar, sin tener que hacer un pthread_join
 	pthread_detach(thread_zoc_slave_thread);
 
+    //Slave thread secondary commands
+	if (pthread_create( &thread_zoc_slave_thread_secondary_commands, NULL, &zoc_slave_thread_function_secondary_commands, NULL) ) {
+		DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Can not create zeng online secondary commands slave pthread");
+		return;
+	}
+
+	//y pthread en estado detached asi liberara su memoria asociada a thread al finalizar, sin tener que hacer un pthread_join
+	pthread_detach(thread_zoc_slave_thread_secondary_commands);
+
 
     //Slave thread streaming audio
 	if (pthread_create( &thread_zoc_slave_thread_stream_audio, NULL, &zoc_slave_thread_function_stream_audio, NULL) ) {
@@ -4832,6 +4927,7 @@ void zoc_stop_master_thread(void)
 void zoc_stop_slave_thread(void)
 {
     pthread_cancel(thread_zoc_slave_thread);
+    pthread_cancel(thread_zoc_slave_thread_secondary_commands);
     pthread_cancel(thread_zoc_slave_thread_stream_audio);
     zoc_pending_apply_received_snapshot=0;
     zoc_pending_apply_received_streaming_display=0;
