@@ -213,6 +213,11 @@ int zoc_slave_differential_displays_limit_full_autoadjust_seconds_counter=0;
 //A cada minuto enviar/recibir snapshot en modo streaming
 #define ZOC_INTERVAL_SNAPSHOT_ON_STREAMING (50*60)
 
+
+//Decir a los threads de salir de la habitacion, por ejemplo si hacen kick del usuario
+int zoc_exit_from_room=0;
+
+
 //Retornar puerto y hostname del server
 int zeng_online_get_server_and_port(char *buffer_hostname)
 {
@@ -3607,7 +3612,7 @@ void *zoc_master_thread_function_secondary_commands(void *nada GCC_UNUSED)
 
     //Leer id de mensaje de broadcast para saber cuando llega uno nuevo
     zoc_last_message_id=zoc_get_message_id(indice_socket);
-    printf("Initial message id: %d\n",zoc_last_message_id);
+    //printf("Initial message id: %d\n",zoc_last_message_id);
 
 
 
@@ -4397,6 +4402,7 @@ void slave_thread_get_snapshot(int indice_socket)
 int zoc_snapshot_slave_streaming_counter=0;
 
 
+
 void *zoc_slave_thread_function(void *nada GCC_UNUSED)
 {
 
@@ -4456,7 +4462,7 @@ void *zoc_slave_thread_function(void *nada GCC_UNUSED)
     //Para dar un margen al principio de conectar antes de salir aviso de dropout
     zoc_veces_audio_no_recibido_contador=-20;
 
-    while (1) {
+    while (!zoc_exit_from_room) {
 
         if (zeng_online_client_end_frame_reached) {
             zeng_online_client_end_frame_reached=0;
@@ -4601,6 +4607,8 @@ void *zoc_slave_thread_function(void *nada GCC_UNUSED)
         //TODO este parametro configurable
         usleep(1000); //1 ms (20 ms es un frame de video)
 
+        //printf("en slave thread %d\n",contador_segundo_infinito);
+
     }
 
 	return 0;
@@ -4654,10 +4662,10 @@ void *zoc_slave_thread_function_secondary_commands(void *nada GCC_UNUSED)
     zoc_last_message_id=zoc_get_message_id(indice_socket);
 
 
-    printf("Initial message id: %d\n",zoc_last_message_id);
+    //printf("Initial message id: %d\n",zoc_last_message_id);
 
 
-    while (1) {
+    while (!zoc_exit_from_room) {
 
 
         zoc_common_get_messages_slave_master(indice_socket);
@@ -4671,13 +4679,15 @@ void *zoc_slave_thread_function_secondary_commands(void *nada GCC_UNUSED)
             //mientras no se haga kick de otro usuario diferente, este primero quedara en la lista de kick
             //y siempre se le echara
             //Ademas como va relacionado por el uuid, aunque cambie su nick, el kick seguirá siendo efectivo
-            return NULL;
+            zoc_exit_from_room=1;
         }
 
 
 
         //TODO este parametro configurable
         sleep(1);
+
+        //printf("en slave thread secondary commands %d\n",contador_segundo_infinito);
 
     }
 
@@ -4699,7 +4709,7 @@ void *zoc_slave_thread_function_stream_audio(void *nada GCC_UNUSED)
     //TODO: gestionar errores
 
 
-    while (1) {
+    while (!zoc_exit_from_room) {
 
 
         if (created_room_streaming_mode) {
@@ -4723,6 +4733,8 @@ void *zoc_slave_thread_function_stream_audio(void *nada GCC_UNUSED)
 
         //TODO este parametro configurable
         usleep(10); //0.01 ms (20 ms es un frame de video)
+
+        //printf("en slave thread stream audio %d\n",contador_segundo_infinito);
 
     }
 
@@ -4972,6 +4984,9 @@ void zoc_start_master_thread(void)
 //Inicio del thread de slave
 void zoc_start_slave_thread(void)
 {
+
+    zoc_exit_from_room=0;
+
 	if (pthread_create( &thread_zoc_slave_thread, NULL, &zoc_slave_thread_function, NULL) ) {
 		DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Can not create zeng online slave pthread");
 		return;
