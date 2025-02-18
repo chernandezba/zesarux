@@ -1156,7 +1156,7 @@ int zsock_read_all_until_command_max_reintentos_message_id(int indice_tabla,z80_
 	}
 
 //prueba
-//z_sock_write_string(indice_tabla,"\n");
+z_sock_write_string(indice_tabla,"\n");
 
 	int pos_destino=0;
 	int total_leidos=0;

@@ -1054,7 +1054,7 @@ int zoc_get_message_id(int indice_socket)
     char buffer_enviar[1024];
 
     //get-message-id user_pass n
-    sprintf(buffer_enviar,"zeng-online get-message-id %s %d\n\n",
+    sprintf(buffer_enviar,"zeng-online get-message-id %s %d\n",
         created_room_user_password,zeng_online_joined_to_room_number);
 
     #define ZENG_BUFFER_INITIAL_CONNECT 199
