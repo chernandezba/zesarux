@@ -91,8 +91,6 @@ extern void omplir_adr_internet_semaforo_init(void);
 extern unsigned int network_traffic_counter_read;
 extern unsigned int network_traffic_counter_write;
 
-extern int zsock_read_all_until_command_message_id(int indice_tabla,z80_byte *buffer,int max_buffer,int *posicion_command);
-
 //el -1 es un error generico
 #define Z_ERR_NUM_TCP_SOCK -2
 #define Z_ERR_NUM_HOST_NOT_FOUND -3

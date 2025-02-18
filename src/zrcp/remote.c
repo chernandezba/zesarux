@@ -3753,9 +3753,9 @@ void remote_visualmem_generic_compact(int misocket, z80_byte *buffer, int final_
 
 //char *parametros;
 
-void interpreta_comando(char *comando,int misocket,char *buffer_lectura_socket_anterior,int *remote_salir_conexion_cliente,char *ip_source_address,int *mostrar_debug)
+void interpreta_comando(char *comando,int misocket,char *buffer_lectura_socket_anterior,int *remote_salir_conexion_cliente,char *ip_source_address)
 {
-    *mostrar_debug=0;
+
 	char buffer_retorno[2048];
     char *parametros;
     int remote_command_argc;
@@ -6200,10 +6200,8 @@ else if (!strcmp(comando_sin_parametros,"write-port") ) {
 
 	else if (!strcmp(comando_sin_parametros,"zeng-online") || !strcmp(comando_sin_parametros,"zo")) {
         remote_parse_commands_argvc(parametros,&remote_command_argc,remote_command_argv);
-        int retorno=0;
-        zeng_online_parse_command(misocket,remote_command_argc,remote_command_argv,ip_source_address,&retorno);
-        *mostrar_debug=retorno;
-        return;
+        zeng_online_parse_command(misocket,remote_command_argc,remote_command_argv,ip_source_address);
+
 	}
 
 
@@ -6373,8 +6371,6 @@ void *zrcp_handle_new_connection(void *entrada)
 
     int remote_salir_conexion_cliente=0;
 
-    int mostrar_debug=0;
-
     while (!remote_salir_conexion_cliente) {
 
         char prompt[1024];
@@ -6382,10 +6378,6 @@ void *zrcp_handle_new_connection(void *entrada)
         else if (remote_protocol_assembling.v) sprintf (prompt,"assemble at %XH> ",direccion_assembling);
         else sprintf (prompt,"\n%s> ",remote_prompt_command_string);
         if (escribir_socket(sock_connected_client,prompt)<0) remote_salir_conexion_cliente=1;
-
-        if (mostrar_debug) printf("server despues escribir_socket prompt (%s): %d\n",prompt,contador_segundo_infinito);
-
-        //mostrar_debug=0;
 
         int indice_destino=0;
 
@@ -6395,15 +6387,7 @@ void *zrcp_handle_new_connection(void *entrada)
             int leidos;
             int salir_bucle=0;
             do {
-
-                if (mostrar_debug) printf("server antes leer_socket: %d\n",contador_segundo_infinito);
                 leidos=leer_socket(sock_connected_client, &buffer_lectura_socket[indice_destino], MAX_LENGTH_PROTOCOL_COMMAND-1);
-
-                if (mostrar_debug) printf("server despues leer_socket: %d\n",contador_segundo_infinito);
-
-
-                mostrar_debug=0;
-
                 debug_printf (VERBOSE_DEBUG,"ZRCP: Read block %d bytes index: %d",leidos,indice_destino);
 
                 /*
@@ -6455,16 +6439,11 @@ void *zrcp_handle_new_connection(void *entrada)
                     }
                 }
 
-                //printf("antes interpreta_comando: %d\n",contador_segundo_infinito);
                 interpreta_comando(buffer_lectura_socket,sock_connected_client,
-					buffer_lectura_socket_anterior,&remote_salir_conexion_cliente,ip_source_address,&mostrar_debug);
-
-                //mostrar_debug=retorno;
+					buffer_lectura_socket_anterior,&remote_salir_conexion_cliente,ip_source_address);
 
                 //Liberar lock
                 z_atomic_reset(&zrcp_command_semaforo);
-
-                if (mostrar_debug) printf("server despues interpreta_comando: %d\n",contador_segundo_infinito);
             }
 
         } //Fin if (!remote_salir_conexion_cliente)

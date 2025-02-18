@@ -663,69 +663,6 @@ int zoc_common_send_command_buffer(int indice_socket,char *buffer_enviar,char *c
 
 }
 
-
-
-//Funcion comun para enviar un comando con una conexion abierta. Retorna 0 si error
-//Guarda resultado en buffer
-int zoc_common_send_command_buffer_message_id(int indice_socket,char *buffer_enviar,char *command_name_for_info,char *buffer,int max_buffer)
-{
-
-    //#define ZENG_BUFFER_INITIAL_CONNECT 199
-
-    //Leer algo
-    //char buffer[ZENG_BUFFER_INITIAL_CONNECT+1];
-    int posicion_command;
-
-    int escritos=z_sock_write_string(indice_socket,buffer_enviar);
-
-    //Solucion magica para que funcione rapida la respuesta. Pero si en cambio metemos dos saltos de linea en buffer_enviar, no es lo mismo!
-    z_sock_write_string(indice_socket,"\n");
-
-
-    if (escritos<0) {
-        //Solo mostrar ese mensaje cuando aun no se ha declarado desconectado
-        if (zoc_last_snapshot_received_counter) DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't send zeng-online %s: %s",command_name_for_info,z_sock_get_error(escritos));
-        return 0;
-    }
-
-
-    int leidos=zsock_read_all_until_command_message_id(indice_socket,(z80_byte *)buffer,max_buffer,&posicion_command);
-    if (leidos>0) {
-        buffer[leidos]=0; //fin de texto
-        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"ZENG Online Client: Received text for zeng-online %s (length %d): \n[\n%s\n]",command_name_for_info,leidos,buffer);
-    }
-
-    if (leidos<0) {
-        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't receive zeng-online %s: %s",command_name_for_info,z_sock_get_error(leidos));
-        return 0;
-    }
-
-
-
-    //1 mas para eliminar el salto de linea anterior a "command>"
-    if (posicion_command>=1) {
-        buffer[posicion_command-1]=0;
-        //DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Received text: %s",buffer);
-    }
-    else {
-        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Error receiving ZEsarUX zeng-online %s",command_name_for_info);
-        return 0;
-    }
-
-    //printf("Retorno %s: [%s]\n",command_name_for_info,buffer);
-    //Si hay ERROR
-    if (strstr(buffer,"ERROR")!=NULL) {
-        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Error %s room: %s",command_name_for_info,buffer);
-        return 0;
-    }
-
-
-
-    return 1;
-
-}
-
-
 //Funcion comun para enviar un comando con una conexion abierta. Retorna 0 si error
 int zoc_common_send_command(int indice_socket,char *buffer_enviar,char *command_name_for_info)
 {
@@ -1065,13 +1002,9 @@ int zoc_get_message_id(int indice_socket)
     //buffer retorno
     char buffer[ZENG_BUFFER_INITIAL_CONNECT+1];
 
-    printf("2 contador_segundo_infinito: %d\n",contador_segundo_infinito);
+    int return_value=zoc_common_send_command_buffer(indice_socket,buffer_enviar,"get-message-id",buffer,ZENG_BUFFER_INITIAL_CONNECT);
 
-    int return_value=zoc_common_send_command_buffer_message_id(indice_socket,buffer_enviar,"get-message-id",buffer,ZENG_BUFFER_INITIAL_CONNECT);
-
-    printf("3 contador_segundo_infinito: %d\n",contador_segundo_infinito);
-
-    printf("get_message_id: [%s]\n",buffer);
+    //printf("get_message_id: [%s]\n",buffer);
 
     if (!return_value) {
         return -1;
@@ -1098,7 +1031,7 @@ int zoc_get_kicked_user(int indice_socket,char *buffer_destino)
 
     int return_value=zoc_common_send_command_buffer(indice_socket,buffer_enviar,"get-kicked-user",buffer,ZENG_BUFFER_INITIAL_CONNECT);
 
-    //printf("get-kicked-user: [%s]\n",buffer);
+    //printf("get_message_id: [%s]\n",buffer);
 
     if (!return_value) {
         return -1;
@@ -3370,12 +3303,11 @@ void zoc_common_alive_user(int indice_socket)
                 zeng_online_joined_to_room_number,
                 stats_uuid
             );
-            printf("Enviando alive %s\n",buffer_enviar);
+            //printf("Enviando %s\n",buffer_enviar);
 
-        printf("1 antes alive contador_segundo_infinito: %d\n",contador_segundo_infinito);
+
         //int return_value=zoc_common_send_command(indice_socket,buffer_enviar,"alive");
         zoc_common_send_command(indice_socket,buffer_enviar,"alive");
-        printf("2 despues alive contador_segundo_infinito: %d\n",contador_segundo_infinito);
 
 
         //if (!return_value) return 0;
@@ -3392,7 +3324,7 @@ void zoc_common_get_messages_slave_master(int indice_socket)
     if (diferencia_tiempo>50*20) {
         contador_mensajes_anteriorsegundos=contador_segundo_infinito;
 
-        printf("1 contador_segundo_infinito: %d\n",contador_segundo_infinito);
+        //printf("contador_segundo_infinito: %d\n",contador_segundo_infinito);
 
         //prueba mostrar trafico
         /*unsigned int diferencia_read=network_traffic_counter_read-antes_network_traffic_counter_read;
@@ -3405,7 +3337,6 @@ void zoc_common_get_messages_slave_master(int indice_socket)
         //fin prueba mostrar trafico
 
         int id_actual=zoc_get_message_id(indice_socket);
-        printf("4 contador_segundo_infinito: %d\n",contador_segundo_infinito);
         if (id_actual!=zoc_last_message_id) {
             DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: There is a new message");
             char buffer_mensaje[ZENG_ONLINE_MAX_BROADCAST_MESSAGE_SHOWN_LENGTH+1];
@@ -4568,7 +4499,6 @@ void *zoc_slave_thread_function(void *nada GCC_UNUSED)
 
             }
 
-            //sospechoso
             zoc_common_get_messages_slave_master(indice_socket);
 
             zoc_common_alive_user(indice_socket);
