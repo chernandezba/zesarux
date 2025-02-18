@@ -3563,6 +3563,8 @@ void *zoc_master_thread_function(void *nada GCC_UNUSED)
         //TODO: parametro configurable
         usleep(1000); //1 ms (20 ms es un frame de video)
 
+        pthread_testcancel();
+
     }
 
 	return 0;
@@ -3630,6 +3632,8 @@ void *zoc_master_thread_function_secondary_commands(void *nada GCC_UNUSED)
 
         //TODO: parametro configurable
         sleep(1);
+
+        pthread_testcancel();
 
     }
 
@@ -3714,6 +3718,8 @@ void *zoc_master_thread_function_stream_audio(void *nada GCC_UNUSED)
 
         //TODO: parametro configurable
         usleep(100); //0.1 ms (20 ms es un frame de video)
+
+        pthread_testcancel();
 
     }
 
@@ -4609,6 +4615,8 @@ void *zoc_slave_thread_function(void *nada GCC_UNUSED)
 
         //printf("en slave thread %d\n",contador_segundo_infinito);
 
+        pthread_testcancel();
+
     }
 
 	return 0;
@@ -4689,6 +4697,8 @@ void *zoc_slave_thread_function_secondary_commands(void *nada GCC_UNUSED)
 
         //printf("en slave thread secondary commands %d\n",contador_segundo_infinito);
 
+        pthread_testcancel();
+
     }
 
 	return 0;
@@ -4735,6 +4745,8 @@ void *zoc_slave_thread_function_stream_audio(void *nada GCC_UNUSED)
         usleep(10); //0.01 ms (20 ms es un frame de video)
 
         //printf("en slave thread stream audio %d\n",contador_segundo_infinito);
+
+        pthread_testcancel();
 
     }
 

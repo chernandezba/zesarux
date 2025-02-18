@@ -102,5 +102,4 @@ ok*agregar parametro linea de comandos, guardado config
 ok*agregar changelog
 
 
-//TODO: hacer que salgan todos los threads si hay kick de usuario - en slave. y revisar el de master
-if (zoc_check_if_kicked(indice_socket)) {
+Revisar si hay mas sitios donde es necesario  pthread_testcancel();

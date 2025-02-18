@@ -2460,6 +2460,7 @@ void menu_hilow_convert_audio_callback(int valor,int posicion)
 
     //Esta funcion, si el thread no se tiene que cancelar, no hace nada
     //Y si se tiene que cancelar, la cancela
+    //Esto parece que solo es necesario en Windows
     pthread_testcancel();
 #endif
 

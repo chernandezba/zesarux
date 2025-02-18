@@ -22,7 +22,7 @@ Para versión siguiente:
 -archivos de cintas que no se cierran en windows al expulsarlas
 
 
--quiza en threads que no se cancelan en windows (zeng?) agregar llamada a pthread_testcancel();
+
 
 -en daad debug, pulsar m de condmessage, sale dos veces (con cozumel 1 y inventario)
 
