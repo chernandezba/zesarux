@@ -678,7 +678,8 @@ int zoc_common_send_command_buffer_message_id(int indice_socket,char *buffer_env
 
     int escritos=z_sock_write_string(indice_socket,buffer_enviar);
 
-    //z_sock_write_string(indice_socket,"\n");
+    //Solucion magica para que funcione rapida la respuesta. Pero si en cambio metemos dos saltos de linea en buffer_enviar, no es lo mismo!
+    z_sock_write_string(indice_socket,"\n");
 
 
     if (escritos<0) {
@@ -1056,7 +1057,7 @@ int zoc_get_message_id(int indice_socket)
     char buffer_enviar[1024];
 
     //get-message-id user_pass n
-    sprintf(buffer_enviar,"zeng-online get-message-id %s %d\n\n",
+    sprintf(buffer_enviar,"zeng-online get-message-id %s %d\n",
         created_room_user_password,zeng_online_joined_to_room_number);
 
     #define ZENG_BUFFER_INITIAL_CONNECT 199
