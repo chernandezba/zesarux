@@ -1743,6 +1743,9 @@ void menu_zeng_online(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_add_flags(array_menu_common,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
 
 
+            menu_add_item_menu_separator(array_menu_common);
+            menu_add_item_menu_es_avanzado(array_menu_common);
+
         }
         else {
 
@@ -1866,8 +1869,18 @@ void menu_zeng_online(MENU_ITEM_PARAMETERS)
 
 
                 if (created_room_user_permissions & ZENG_ONLINE_PERMISSIONS_PUT_SNAPSHOT) {
+
                     menu_add_item_menu_separator(array_menu_common);
                     menu_add_item_menu_es_avanzado(array_menu_common);
+
+                    menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,
+                        "--------","--------","--------");
+                    menu_add_item_menu_es_avanzado(array_menu_common);
+
+                    menu_add_item_menu_separator(array_menu_common);
+                    menu_add_item_menu_es_avanzado(array_menu_common);
+
+
                     menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_zip_snapshot,NULL,
                     "Zip compress snapshot","Comprimir snapshot zip","Comprimir snapshot zip");
                     menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",
@@ -1885,9 +1898,23 @@ void menu_zeng_online(MENU_ITEM_PARAMETERS)
                 "Leave room","Abandonar habitación","Abandonar habitació");
                 menu_add_item_menu_add_flags(array_menu_common,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
 
+
+
+                menu_add_item_menu_separator(array_menu_common);
+                menu_add_item_menu_es_avanzado(array_menu_common);
+
+                menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,
+                    "--------","--------","--------");
+                menu_add_item_menu_es_avanzado(array_menu_common);
+
+                menu_add_item_menu_separator(array_menu_common);
+                menu_add_item_menu_es_avanzado(array_menu_common);
+
+
+
                 if (created_room_user_permissions & ZENG_ONLINE_PERMISSIONS_GET_SNAPSHOT) {
-                    menu_add_item_menu_separator(array_menu_common);
-                    menu_add_item_menu_es_avanzado(array_menu_common);
+                    //menu_add_item_menu_separator(array_menu_common);
+                    //menu_add_item_menu_es_avanzado(array_menu_common);
 
                     menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_lag_indicator,NULL,
                     "Footer lag/dropout indicator","Indicador lag/mal sonido en footer","Indicador lag/so dolent al footer");
@@ -1898,8 +1925,8 @@ void menu_zeng_online(MENU_ITEM_PARAMETERS)
                 }
 
                 if (created_room_streaming_mode && (created_room_user_permissions & ZENG_ONLINE_PERMISSIONS_GET_DISPLAY)) {
-                    menu_add_item_menu_separator(array_menu_common);
-                    menu_add_item_menu_es_avanzado(array_menu_common);
+                    //menu_add_item_menu_separator(array_menu_common);
+                    //menu_add_item_menu_es_avanzado(array_menu_common);
 
                     menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_full_display_interval_autoadjust,NULL,
                     "Autoadjust Display quality","Autoajustar Calidad pantalla","Autoajustar Qualitat pantalla");
@@ -1935,8 +1962,8 @@ void menu_zeng_online(MENU_ITEM_PARAMETERS)
                 }
 
                 if (created_room_user_permissions & ZENG_ONLINE_PERMISSIONS_SEND_KEYS) {
-                    menu_add_item_menu_separator(array_menu_common);
-                    menu_add_item_menu_es_avanzado(array_menu_common);
+                    //menu_add_item_menu_separator(array_menu_common);
+                    //menu_add_item_menu_es_avanzado(array_menu_common);
 
                     menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_allow_instant_keys,NULL,
                     "Allow instant keys","Permitir teclas instantáneas","Permetre tecles instantànies");
@@ -1955,8 +1982,6 @@ void menu_zeng_online(MENU_ITEM_PARAMETERS)
             }
         }
 
-        menu_add_item_menu_separator(array_menu_common);
-        menu_add_item_menu_es_avanzado(array_menu_common);
 
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_streaming_enabled_when_creating,menu_zeng_online_not_connected_cond,
         "Streaming mode on create","Modo streaming al crear","Mode streaming al crear");

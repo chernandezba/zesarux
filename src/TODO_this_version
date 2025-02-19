@@ -100,23 +100,6 @@ acabar de probar cambios maquina spectrum y no spectrum en master y slave, antes
 Revisar si hay mas sitios donde es necesario  pthread_testcancel();
 
 
-Revisar si al salir de una habitacion se liberan los sockets. despues de entrar y salir varias veces veo:
-Error:    Too many ZEsarUX open sockets (30)
-Error:    ZENG Online Client: Error connecting to 51.83.33.13:10000. Network error
-Error:    Too many ZEsarUX open sockets (30)
-Error:    Error connecting to 51.83.33.13:10000. Network error
-Error:    Too many ZEsarUX open sockets (30)
-Error:    Error connecting to 51.83.33.13:10000. Network error
-Error:    Too many ZEsarUX open sockets (30)
-Error:    ZENG Online Client: Error connecting to 51.83.33.13:10000. Network error
-Error:    Too many ZEsarUX open sockets (30)
-Error:    ZENG Online Client: Error connecting to 51.83.33.13:10000. Network error
-Error:    Too many ZEsarUX open sockets (30)
-Error:    ZENG Online Client: Error connecting to 51.83.33.13:10000. Network error
-Error:    Too many ZEsarUX open sockets (30)
-Error:    ZENG Online Client: Error connecting to 51.83.33.13:10000. Network error
-
-
 En modo streaming en debug CPU indicarlo de alguna manera
 
 Al hacer debug cpu->reset salir de online? Independientemente de si es modo streaming?
