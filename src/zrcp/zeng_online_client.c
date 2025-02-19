@@ -1765,6 +1765,10 @@ void *zoc_stop_slave_thread_function(void *nada GCC_UNUSED)
 
     //Y luego cancelar los threads, si es que siguen vivos
     //En teoria no sucede nada si se intenta cancelar un thread que ya no existe
+    //Realmente retorna error de : ESRCH  No thread with the ID thread could be found.
+    //Creo que si desde que finaliza el thread, hasta que se cancela, si se crea un nuevo
+    //thread en medio, con mismo ID (no se si eso es posible), entonces se cancelaria ese nuevo thread
+    //Como en teoria no estoy creando un thread en medio, no sucederá nunca eso
     pthread_cancel(thread_zoc_slave_thread);
     pthread_cancel(thread_zoc_slave_thread_secondary_commands);
     pthread_cancel(thread_zoc_slave_thread_stream_audio);
