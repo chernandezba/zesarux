@@ -163,6 +163,11 @@ int menu_zeng_online_disable_autojoin_room_cond(zxvision_window *w GCC_UNUSED)
 	return !zeng_online_client_disable_autojoin_room_thread_running;
 }
 
+int menu_zeng_online_stop_master_thread_cond(zxvision_window *w GCC_UNUSED)
+{
+	return !zeng_online_client_stop_master_thread_thread_running;
+}
+
 int menu_zeng_online_stop_slave_thread_cond(zxvision_window *w GCC_UNUSED)
 {
 	return !zeng_online_client_stop_slave_thread_thread_running;
@@ -944,8 +949,10 @@ void menu_zeng_online_leave_room_master_aux(void)
 
 
 
-        //Detener el thread de slave
-        zoc_stop_master_thread();
+        //Detener el thread de master
+        //zoc_stop_master_thread();
+        zeng_online_client_stop_master_thread();
+        zxvision_simple_progress_window("Stopping master thread", menu_zeng_online_stop_master_thread_cond,menu_zeng_online_stop_threads_common_print );
 
         zeng_online_client_leave_room();
 
