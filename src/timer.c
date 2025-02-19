@@ -70,6 +70,7 @@
 #include "pcw.h"
 #include "utils_text_adventure.h"
 #include "zeng_online.h"
+#include "zeng_online_client.h"
 #include "zxvision_topbar.h"
 #include "microdrive.h"
 

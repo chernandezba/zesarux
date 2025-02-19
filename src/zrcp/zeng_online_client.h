@@ -70,6 +70,8 @@ extern void zeng_online_client_apply_pending_received_snapshot(void);
 
 extern void zeng_online_client_alter_fps_streaming(void);
 
+extern void zec_veces_audio_no_recibido_timer(void);
+
 extern int zeng_online_snapshot_diff;
 
 extern int zeng_online_snapshot_diff_media;

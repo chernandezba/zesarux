@@ -268,6 +268,24 @@ void zoc_show_bottom_line_footer_connected(void)
     menu_footer_bottom_line(); //Para actualizar la linea de abajo del todo con texto ZEsarUX version bla bla y ONLINE/OFFLINE si conviene
 }
 
+//Para dar un margen al principio de conectar antes de salir aviso de dropout
+int zoc_veces_audio_no_recibido_contador=-20;
+
+
+int zoc_veces_audio_no_recibido_segundos=0;
+
+void zec_veces_audio_no_recibido_timer(void)
+{
+    if (zeng_online_connected.v && zeng_online_i_am_master.v==0 && created_room_streaming_mode) {
+        //Contar intervalos cada 10 segundos
+        zoc_veces_audio_no_recibido_segundos++;
+        if (zoc_veces_audio_no_recibido_segundos>=10) {
+            zoc_veces_audio_no_recibido_segundos=0;
+            zoc_veces_audio_no_recibido_contador=0;
+        }
+    }
+}
+
 
 #ifdef USE_PTHREADS
 
@@ -4429,23 +4447,7 @@ int zoc_receive_streaming_audio(int indice_socket)
 }
 
 
-//Para dar un margen al principio de conectar antes de salir aviso de dropout
-int zoc_veces_audio_no_recibido_contador=-20;
 
-
-int zoc_veces_audio_no_recibido_segundos=0;
-
-void zec_veces_audio_no_recibido_timer(void)
-{
-    if (zeng_online_connected.v && zeng_online_i_am_master.v==0 && created_room_streaming_mode) {
-        //Contar intervalos cada 10 segundos
-        zoc_veces_audio_no_recibido_segundos++;
-        if (zoc_veces_audio_no_recibido_segundos>=10) {
-            zoc_veces_audio_no_recibido_segundos=0;
-            zoc_veces_audio_no_recibido_contador=0;
-        }
-    }
-}
 
 //contiene el valor anterior de contador_segundo_infinito de la anterior consulta de kick
 int contador_kick_anteriorsegundos=0;
