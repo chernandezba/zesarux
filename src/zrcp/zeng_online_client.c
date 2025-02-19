@@ -6090,6 +6090,14 @@ void zoc_stop_master_thread(void)
 {
 }
 
+void zeng_online_client_stop_slave_thread(void)
+{
+}
+
+void zeng_online_client_stop_master_thread(void)
+{
+}
+
 void zeng_online_client_end_frame_from_core_functions(void)
 {
 }
@@ -6122,6 +6130,10 @@ void zeng_online_client_join_room(int room_number,char *creator_password)
 {
 }
 
+void zeng_online_client_rename_room(char *name)
+{
+}
+
 void zeng_online_client_list_users(void)
 {
 }
@@ -6139,6 +6151,10 @@ void zeng_online_client_alter_fps_streaming(void)
 }
 
 void zeng_online_client_end_audio_frame_stuff(void)
+{
+}
+
+void zeng_online_client_apply_pending_received_snapshot(void)
 {
 }
 
