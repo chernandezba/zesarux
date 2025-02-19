@@ -77,6 +77,11 @@ O sea parece que al pulsar desde los botones, se sale del menu y se quita el avi
 menu_fire_event_open_menu();
 )
 
+-QL RAM:
+ok*revisar guardado snapshots zsf, carga (en carga tendra que cambiar total ql ram size segun snap)
+ok parece que ya va bien *revisar visualmem que parece que no muestra bien dibujo, quiza hace AND en vez de MOD
+ok*agregar parametro linea de comandos, guardado config
+ok*agregar changelog
 
 ----
 
@@ -90,16 +95,6 @@ ZENG Online
 -Modo streaming
 acabar de probar cambios maquina spectrum y no spectrum en master y slave, antes y despues de conectar
 
-
--timer windows con pthreads? mejora o empeora? o igual?
--en windows va a trompicones, se para cada 1 segundo o asi durante unas decimas de segundo
-
-
--QL RAM:
-ok*revisar guardado snapshots zsf, carga (en carga tendra que cambiar total ql ram size segun snap)
-ok parece que ya va bien *revisar visualmem que parece que no muestra bien dibujo, quiza hace AND en vez de MOD
-ok*agregar parametro linea de comandos, guardado config
-ok*agregar changelog
 
 
 Revisar si hay mas sitios donde es necesario  pthread_testcancel();
@@ -120,3 +115,8 @@ Error:    Too many ZEsarUX open sockets (30)
 Error:    ZENG Online Client: Error connecting to 51.83.33.13:10000. Network error
 Error:    Too many ZEsarUX open sockets (30)
 Error:    ZENG Online Client: Error connecting to 51.83.33.13:10000. Network error
+
+
+En modo streaming en debug CPU indicarlo de alguna manera
+
+Al hacer debug cpu->reset salir de online? Independientemente de si es modo streaming?
