@@ -87,6 +87,7 @@ pthread_t thread_zeng_online_client_send_profile_keys;
 pthread_t thread_zeng_online_client_kick_user;
 pthread_t thread_zeng_online_client_max_players_room;
 pthread_t thread_zeng_online_client_rename_room;
+pthread_t thread_zeng_online_client_stop_slave_thread;
 
 
 #endif
@@ -109,6 +110,7 @@ int zeng_online_client_send_profile_keys_thread_running=0;
 int zeng_online_client_kick_user_thread_running=0;
 int zeng_online_client_max_players_room_thread_running=0;
 int zeng_online_client_rename_room_thread_running=0;
+int zeng_online_client_stop_slave_thread_thread_running=0;
 
 z80_bit zeng_online_i_am_master={0};
 //z80_bit zeng_online_i_am_joined={0};
@@ -1748,6 +1750,29 @@ void *zeng_online_client_authorize_join_function(void *nada GCC_UNUSED)
 
 }
 
+
+void *zoc_stop_slave_thread_function(void *nada GCC_UNUSED)
+//void zoc_stop_slave_thread(void)
+{
+    zeng_online_client_stop_slave_thread_thread_running=1;
+
+    //Primero intentar que salga de las habitaciones de manera controlada y darle un minimo de tiempo
+    //El thread con mas pausa entre comprobaciones es de 1 segundo, por tanto 2 segundos deberia ser suficiente
+    zoc_exit_from_room=1;
+    sleep(2);
+
+    //Y luego cancelar los threads, si es que siguen vivos
+    //En teoria no sucede nada si se intenta cancelar un thread que ya no existe
+    pthread_cancel(thread_zoc_slave_thread);
+    pthread_cancel(thread_zoc_slave_thread_secondary_commands);
+    pthread_cancel(thread_zoc_slave_thread_stream_audio);
+    zoc_pending_apply_received_snapshot=0;
+    zoc_pending_apply_received_streaming_display=0;
+
+    zeng_online_client_stop_slave_thread_thread_running=0;
+}
+
+
 void zeng_online_client_list_rooms(void)
 {
 
@@ -1825,6 +1850,23 @@ void zeng_online_client_disable_autojoin_room(void)
 
 	//y pthread en estado detached asi liberara su memoria asociada a thread al finalizar, sin tener que hacer un pthread_join
 	pthread_detach(thread_zeng_online_client_disable_autojoin_room);
+
+
+}
+
+//Hilo que se encarga de detener los hilos de slave
+void zeng_online_client_stop_slave_thread(void)
+{
+
+	//Inicializar thread
+
+	if (pthread_create( &thread_zeng_online_client_stop_slave_thread, NULL, &zoc_stop_slave_thread_function, NULL) ) {
+		DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Can not create zeng online stop slave thread");
+		return;
+	}
+
+	//y pthread en estado detached asi liberara su memoria asociada a thread al finalizar, sin tener que hacer un pthread_join
+	pthread_detach(thread_zeng_online_client_stop_slave_thread);
 
 
 }
@@ -5078,21 +5120,8 @@ void zoc_stop_master_thread(void)
     pthread_cancel(thread_zoc_master_thread_stream_audio);
 }
 
-void zoc_stop_slave_thread(void)
-{
-    //Primero intentar que salga de las habitaciones de manera controlada y darle un minimo de tiempo
-    //El thread con mas pausa entre comprobaciones es de 1 segundo, por tanto 2 segundos deberia ser suficiente
-    zoc_exit_from_room=1;
-    sleep(2);
 
-    //Y luego cancelar los threads, si es que siguen vivos
-    //En teoria no sucede nada si se intenta cancelar un thread que ya no existe
-    pthread_cancel(thread_zoc_slave_thread);
-    pthread_cancel(thread_zoc_slave_thread_secondary_commands);
-    pthread_cancel(thread_zoc_slave_thread_stream_audio);
-    zoc_pending_apply_received_snapshot=0;
-    zoc_pending_apply_received_streaming_display=0;
-}
+
 
 
 

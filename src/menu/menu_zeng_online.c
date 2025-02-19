@@ -158,6 +158,11 @@ int menu_zeng_online_disable_autojoin_room_cond(zxvision_window *w GCC_UNUSED)
 	return !zeng_online_client_disable_autojoin_room_thread_running;
 }
 
+int menu_zeng_online_stop_slave_thread_cond(zxvision_window *w GCC_UNUSED)
+{
+	return !zeng_online_client_stop_slave_thread_thread_running;
+}
+
 int menu_zeng_online_write_message_room_cond(zxvision_window *w GCC_UNUSED)
 {
 	return !zeng_online_client_write_message_room_thread_running;
@@ -974,12 +979,14 @@ void menu_zeng_online_leave_room_slave(MENU_ITEM_PARAMETERS)
 
 
         //Detener el thread de slave
-        zoc_stop_slave_thread();
+        //zoc_stop_slave_thread();
+        zeng_online_client_stop_slave_thread();
+        zxvision_simple_progress_window("Stopping slave thread", menu_zeng_online_stop_slave_thread_cond,menu_zeng_online_connecting_common_print );
 
 
         zeng_online_client_leave_room();
-
         zxvision_simple_progress_window("Leave room", menu_zeng_online_leave_room_cond,menu_zeng_online_connecting_common_print );
+
 
         menu_generic_message_splash("Leave room","Left room");
 
@@ -1028,6 +1035,8 @@ void menu_zeng_online_disable_autojoin_room(MENU_ITEM_PARAMETERS)
     zxvision_simple_progress_window("Disable Autojoin room", menu_zeng_online_disable_autojoin_room_cond,menu_zeng_online_connecting_common_print );
 
 }
+
+
 
 void menu_zeng_online_write_message_room(MENU_ITEM_PARAMETERS)
 {
