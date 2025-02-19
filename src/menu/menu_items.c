@@ -27102,7 +27102,7 @@ void menu_memory_cheat_first_scan_change_first_parameter(MENU_ITEM_PARAMETERS)
 {
     char string_valor[4];
     sprintf (string_valor,"%XH",memory_cheat_first_scan_condition_first_parameter);
-    menu_ventana_scanf("Address: ",string_valor,4);
+    menu_ventana_scanf("Value: ",string_valor,4);
     memory_cheat_first_scan_condition_first_parameter=parse_string_to_number(string_valor);
 }
 
@@ -27110,7 +27110,7 @@ void menu_memory_cheat_first_scan_change_second_parameter(MENU_ITEM_PARAMETERS)
 {
     char string_valor[4];
     sprintf (string_valor,"%XH",memory_cheat_first_scan_condition_second_parameter);
-    menu_ventana_scanf("Address: ",string_valor,4);
+    menu_ventana_scanf("Value: ",string_valor,4);
     memory_cheat_first_scan_condition_second_parameter=parse_string_to_number(string_valor);
 }
 
