@@ -62,6 +62,7 @@ extern void zeng_online_client_send_profile_keys(void);
 extern void zeng_online_client_kick_user(char *message);
 extern void zeng_online_client_max_players_room(int valor);
 extern void zeng_online_client_rename_room(char *name);
+extern void zeng_online_client_stop_slave_thread(void);
 
 extern void zeng_online_client_apply_pending_received_snapshot(void);
 

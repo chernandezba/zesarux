@@ -141,6 +141,11 @@ void menu_zeng_online_connecting_common_print(zxvision_window *w)
 }
 
 
+void menu_zeng_online_stop_threads_common_print(zxvision_window *w)
+{
+
+    menu_common_connect_print(w,"Stopping threads");
+}
 
 
 int menu_zeng_online_leave_room_cond(zxvision_window *w GCC_UNUSED)
@@ -981,7 +986,7 @@ void menu_zeng_online_leave_room_slave(MENU_ITEM_PARAMETERS)
         //Detener el thread de slave
         //zoc_stop_slave_thread();
         zeng_online_client_stop_slave_thread();
-        zxvision_simple_progress_window("Stopping slave thread", menu_zeng_online_stop_slave_thread_cond,menu_zeng_online_connecting_common_print );
+        zxvision_simple_progress_window("Stopping slave thread", menu_zeng_online_stop_slave_thread_cond,menu_zeng_online_stop_threads_common_print );
 
 
         zeng_online_client_leave_room();
