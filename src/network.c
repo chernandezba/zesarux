@@ -720,7 +720,7 @@ int find_free_socket(void)
 	for (i=0;i<MAX_Z_SOCKETS;i++) {
 		if (sockets_list[i].used==0) {
 			debug_printf (VERBOSE_PARANOID,"Found free socket at index %d",i);
-            printf ("Found free socket at index %d\n",i);
+            //printf ("Found free socket at index %d\n",i);
 			return i;
 		}
 	}
@@ -886,7 +886,7 @@ int z_sock_close_connection(int indice_tabla)
 
 	}
 
-    printf("Closing zsock index %d\n",indice_tabla);
+    debug_printf (VERBOSE_PARANOID,"Closing zsock index %d",indice_tabla);
 
     //debug_exec_show_backtrace();
 

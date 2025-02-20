@@ -3670,10 +3670,10 @@ void *zoc_master_thread_function(void *nada GCC_UNUSED)
     }
 
     //finalizar conexion
-    printf("Closing socket on zoc_master_thread_function\n");
+    DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Closing socket on zoc_master_thread_function");
     z_sock_close_connection(indice_socket);
 
-    printf("Closing socket on zoc_master_thread_function - indice_socket_get_keys\n");
+    DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Closing socket on zoc_master_thread_function - indice_socket_get_keys");
     z_sock_close_connection(indice_socket_get_keys);
 
 	return 0;
@@ -3747,7 +3747,7 @@ void *zoc_master_thread_function_secondary_commands(void *nada GCC_UNUSED)
     }
 
     //finalizar conexion
-    printf("Closing socket on zoc_master_thread_function_secondary_commands\n");
+    DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Closing socket on zoc_master_thread_function_secondary_commands");
     z_sock_close_connection(indice_socket);
 
 	return 0;
@@ -3837,7 +3837,7 @@ void *zoc_master_thread_function_stream_audio(void *nada GCC_UNUSED)
     }
 
     //finalizar conexion
-    printf("Closing socket on zoc_master_thread_function_stream_audio\n");
+    DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Closing socket on zoc_master_thread_function_stream_audio");
     z_sock_close_connection(indice_socket);
 
 	return 0;
@@ -4722,11 +4722,11 @@ void *zoc_slave_thread_function(void *nada GCC_UNUSED)
 
 
     //finalizar conexion
-    printf("Closing socket on zoc_slave_thread_function\n");
+    DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Closing socket on zoc_slave_thread_function");
     z_sock_close_connection(indice_socket);
 
     if (!created_room_streaming_mode) {
-        printf("Closing socket on zoc_slave_thread_function - indice_socket_get_keys\n");
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Closing socket on zoc_slave_thread_function - indice_socket_get_keys");
         z_sock_close_connection(indice_socket_get_keys);
     }
 
@@ -4813,7 +4813,7 @@ void *zoc_slave_thread_function_secondary_commands(void *nada GCC_UNUSED)
     }
 
     //finalizar conexion
-    printf("Closing socket on zoc_slave_thread_function_secondary_commands\n");
+    DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Closing socket on zoc_slave_thread_function_secondary_commands");
     z_sock_close_connection(indice_socket);
 
 	return 0;
@@ -4867,7 +4867,7 @@ void *zoc_slave_thread_function_stream_audio(void *nada GCC_UNUSED)
 
     if (created_room_streaming_mode) {
         //finalizar conexion
-        printf("Closing socket on zoc_slave_thread_function_stream_audio\n");
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Closing socket on zoc_slave_thread_function_stream_audio");
         z_sock_close_connection(indice_socket_get_stream_audio);
     }
 
