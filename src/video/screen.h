@@ -849,7 +849,7 @@ extern void scr_refresca_pantalla_y_border_ql(void);
 
 extern z80_bit no_fadeout_exit;
 
-extern void screen_set_window_zoom(int z);
+extern void screen_set_window_zoom(int zx,int zy);
 
 extern int get_rgb8_color (z80_byte color);
 extern int get_rgb9_color (z80_int color);

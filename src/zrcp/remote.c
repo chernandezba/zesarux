@@ -5513,7 +5513,7 @@ else if (!strcmp(comando_sin_parametros,"set-memory-zone") || !strcmp(comando_si
 
 			int z=parse_string_to_number(parametros);
 
-			screen_set_window_zoom(z);
+			screen_set_window_zoom(z,z);
 
 
 			remote_cpu_exit_step(misocket);

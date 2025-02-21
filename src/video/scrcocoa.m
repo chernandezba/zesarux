@@ -2442,7 +2442,7 @@ int scrcocoa_keymap_z88_cpc_leftz; //Tecla a la izquierda de la Z. usada en Chlo
 
 - (void) setzoomone:(id)sender
 {
-	screen_set_window_zoom(1);
+	screen_set_window_zoom(1,1);
 }
 
 

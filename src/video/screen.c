@@ -14639,11 +14639,16 @@ void screen_restart_pantalla_restore_overlay(void (*previous_function)(void),int
 	}
 }
 
-void screen_set_window_zoom(int z)
+void screen_set_window_zoom(int zx,int zy)
 {
 
-	if (z>9 || z<1) {
-		debug_printf (VERBOSE_ERR,"Invalid zoom value %d",z);
+	if (zx>9 || zx<1) {
+		debug_printf (VERBOSE_ERR,"Invalid zoom_x value %d",zx);
+		return;
+	}
+
+	if (zy>9 || zy<1) {
+		debug_printf (VERBOSE_ERR,"Invalid zoom_y value %d",zy);
 		return;
 	}
 
@@ -14660,7 +14665,8 @@ void screen_set_window_zoom(int z)
 
 	//printf ("despues end pantalla\n");
 
-	zoom_x=zoom_y=z;
+	zoom_x=zx;
+    zoom_y=zy;
 	modificado_border.v=1;
 
 	screen_init_pantalla_and_others_and_realjoystick();
