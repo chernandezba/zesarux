@@ -12,7 +12,8 @@ Permitir grabar una nota de texto en un snapshot ZSF
 
 Mejorado ZX Vision:
 - Permitir ocultar ventanas minimizadas
-- Mostrar,con un punto, cuando un icono es de una ventana abierta pero minimizada
+- Mostrar, con un punto, cuando un icono es de una ventana abierta pero minimizada
+- Mantener las proporciones de tamaño de la ventana de ZEsarUX (no permitir zoom x/y diferente) por defecto
 
 Mejorado Debug CPU:
 - Mostrar número de vista dentro de la ventana en vez de en el título de la ventana

@@ -3614,8 +3614,11 @@ int util_write_configfile(void)
 
 
 
-  //TODO: por que no estamos guardando zoom_x y zoom_y??
-                                              ADD_STRING_CONFIG,"--zoom %d",zoom_x);
+  if (zoom_x==zoom_y) ADD_STRING_CONFIG,"--zoom %d",zoom_x);
+  else {
+    ADD_STRING_CONFIG,"--zoomx %d",zoom_x);
+    ADD_STRING_CONFIG,"--zoomy %d",zoom_y);
+  }
 
   if (autochange_zoom_big_display.v==0)       ADD_STRING_CONFIG,"--no-autochange-zoom-big-display");
 
