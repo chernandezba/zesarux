@@ -173,10 +173,10 @@ void scrxwindows_messages_debug(char *s)
 //	z80_byte prueba_car=33;
 
 
-      Display *dpy;
+Display *dpy;
 
 
-      Window ventana=0;
+Window ventana=0;
 
 
 GC gc;
@@ -343,7 +343,7 @@ void scrxwindows_reset_fullscreen(void)
 
 
 #else
-        debug_printf(VERBOSE_ERR,"Full screen support not compiled");
+    debug_printf(VERBOSE_ERR,"Full screen support not compiled");
 
 #endif
 
@@ -917,7 +917,6 @@ void scrxwindows_refresca_pantalla(void)
     scr_driver_redraw_desktop_windows();
 
 	if (MACHINE_IS_ZX8081) {
-
 
         //scr_refresca_pantalla_rainbow_comun();
         scrxwindows_refresca_pantalla_zx81();
@@ -1887,61 +1886,62 @@ void scrxwindows_actualiza_tablas_teclado(void)
 z80_byte scrxwindows_lee_puerto(z80_byte puerto_h,z80_byte puerto_l)
 {
 
-        //Para evitar warnings al compilar de "unused parameter"
-        puerto_h=puerto_l;
-        puerto_l=puerto_h;
+    //Para evitar warnings al compilar de "unused parameter"
+    puerto_h=puerto_l;
+    puerto_l=puerto_h;
 
 
-//de momento nada
-	return 255;
+    //de momento nada
+    return 255;
 }
 
 
 static int xdisplay_find_visual (void)
 {
-  XVisualInfo visual_tmpl;
-  XVisualInfo *vis;
-  int nvis, i;
-  int sel_v = -1;
-  int sel_v_depth = -1;
-  int sel_v_class = -1;
+    XVisualInfo visual_tmpl;
+    XVisualInfo *vis;
+    int nvis, i;
+    int sel_v = -1;
+    int sel_v_depth = -1;
+    int sel_v_class = -1;
 
-int xui_screenNum = DefaultScreen(dpy);
+    int xui_screenNum = DefaultScreen(dpy);
 
 
-  visual_tmpl.screen = xui_screenNum;
-  vis = XGetVisualInfo( dpy,
-                             VisualScreenMask,
-                             &visual_tmpl, &nvis );
-  if( vis != NULL ) {
-    for( i = 0; i < nvis; i++ ) {
-            /*
-             * Save the visual index and its depth, if this is the first
-             * truecolor visual, or a visual that is 'preferred' over the
-             * previous 'best' visual.
-             */
-      if( ( sel_v_depth == -1 && vis[i].depth >= 4 ) || /* depth >= 4  */
-          ( vis[i].depth > sel_v_depth &&
-                vis[i].depth <= 16 ) ||                 /* depth up to 16 */
-          ( vis[i].depth <= 8 && vis[i].depth == sel_v_depth &&
-                vis[i].class != sel_v_class &&
-                    vis[i].class == PseudoColor ) || /* indexed changable palette */
-          ( vis[i].depth > 8 && vis[i].depth == sel_v_depth &&
-                vis[i].class != sel_v_class &&
-                    vis[i].class == TrueColor ) /* decomposed constatant colors */
-      ) {
-        sel_v = i;
-        sel_v_depth = vis[i].depth;
-        sel_v_class = vis[i].class;
-      }
+    visual_tmpl.screen = xui_screenNum;
+    vis = XGetVisualInfo( dpy,
+        VisualScreenMask,
+        &visual_tmpl, &nvis );
+
+    if( vis != NULL ) {
+        for( i = 0; i < nvis; i++ ) {
+                /*
+                    * Save the visual index and its depth, if this is the first
+                    * truecolor visual, or a visual that is 'preferred' over the
+                    * previous 'best' visual.
+                    */
+            if( ( sel_v_depth == -1 && vis[i].depth >= 4 ) || /* depth >= 4  */
+                ( vis[i].depth > sel_v_depth &&
+                    vis[i].depth <= 16 ) ||                 /* depth up to 16 */
+                ( vis[i].depth <= 8 && vis[i].depth == sel_v_depth &&
+                    vis[i].class != sel_v_class &&
+                        vis[i].class == PseudoColor ) || /* indexed changable palette */
+                ( vis[i].depth > 8 && vis[i].depth == sel_v_depth &&
+                    vis[i].class != sel_v_class &&
+                        vis[i].class == TrueColor ) /* decomposed constatant colors */
+            ) {
+            sel_v = i;
+            sel_v_depth = vis[i].depth;
+            sel_v_class = vis[i].class;
+            }
+        }
+
+        if ( sel_v != -1 ) {
+            xdisplay_visual = vis[sel_v].visual;
+            xdisplay_depth = vis[sel_v].depth;
+        }
+        XFree(vis);
     }
-
-    if ( sel_v != -1 ) {
-      xdisplay_visual = vis[sel_v].visual;
-      xdisplay_depth = vis[sel_v].depth;
-    }
-XFree(vis);
-  }
   return sel_v == -1 ? 1 : 0;
 }
 
@@ -1972,9 +1972,9 @@ void scrxwindows_hide_mouse_pointer(void)
 
 void scrxwindows_detectedchar_print(z80_byte caracter)
 {
-        printf ("%c",caracter);
-        //flush de salida standard
-        fflush(stdout);
+    printf ("%c",caracter);
+    //flush de salida standard
+    fflush(stdout);
 
 }
 
@@ -1982,33 +1982,33 @@ void scrxwindows_detectedchar_print(z80_byte caracter)
 //Estos valores no deben ser mayores de OVERLAY_SCREEN_MAX_WIDTH y OVERLAY_SCREEN_MAX_HEIGTH
 int scrxwindows_get_menu_width(void)
 {
-        int max=screen_get_emulated_display_width_no_zoom_border_en();
+    int max=screen_get_emulated_display_width_no_zoom_border_en();
 
-        max +=screen_get_ext_desktop_width_no_zoom();
+    max +=screen_get_ext_desktop_width_no_zoom();
 
-        max=max/menu_char_width/menu_gui_zoom;
+    max=max/menu_char_width/menu_gui_zoom;
 
 
-        if (max>OVERLAY_SCREEN_MAX_WIDTH) max=OVERLAY_SCREEN_MAX_WIDTH;
+    if (max>OVERLAY_SCREEN_MAX_WIDTH) max=OVERLAY_SCREEN_MAX_WIDTH;
 
-                //printf ("max x: %d %d\n",max,screen_get_emulated_display_width_no_zoom_border_en());
+    //printf ("max x: %d %d\n",max,screen_get_emulated_display_width_no_zoom_border_en());
 
-        return max;
+    return max;
 }
 
 
 int scrxwindows_get_menu_height(void)
 {
-        int max=screen_get_emulated_display_height_no_zoom_border_en();
+    int max=screen_get_emulated_display_height_no_zoom_border_en();
 
-        max +=screen_get_ext_desktop_height_no_zoom();
+    max +=screen_get_ext_desktop_height_no_zoom();
 
-        max=max/menu_char_height/menu_gui_zoom;
+    max=max/menu_char_height/menu_gui_zoom;
 
-        if (max>OVERLAY_SCREEN_MAX_HEIGTH) max=OVERLAY_SCREEN_MAX_HEIGTH;
+    if (max>OVERLAY_SCREEN_MAX_HEIGTH) max=OVERLAY_SCREEN_MAX_HEIGTH;
 
-                //printf ("max y: %d %d\n",max,screen_get_emulated_display_height_no_zoom_border_en());
-        return max;
+    //printf ("max y: %d %d\n",max,screen_get_emulated_display_height_no_zoom_border_en());
+    return max;
 }
 
 /*
@@ -2021,40 +2021,40 @@ int scrxwindows_driver_can_ext_desktop (void)
 
 int scrxwindows_init (void) {
 
-	debug_printf (VERBOSE_INFO,"Init XWindows Video Driver");
+    debug_printf (VERBOSE_INFO,"Init XWindows Video Driver");
 
     //Esto tiene que ir al principio de inicializar driver para leer correctamente el tamaño de ventana
     screen_este_driver_permite_ext_desktop=1;
 
 
-	// Open the display
+    // Open the display
 
-	dpy = XOpenDisplay(NIL);
+    dpy = XOpenDisplay(NIL);
 
-	if (!dpy) {
-		debug_printf (VERBOSE_ERR,"xwindows driver. Error opening display");
-		return 1;
-	}
-	//assert(dpy);
+    if (!dpy) {
+        debug_printf (VERBOSE_ERR,"xwindows driver. Error opening display");
+        return 1;
+    }
+    //assert(dpy);
 
-	// Get some colors
+    // Get some colors
 
-	int blackColor = BlackPixel(dpy, DefaultScreen(dpy));
-	int whiteColor = WhitePixel(dpy, DefaultScreen(dpy));
+    int blackColor = BlackPixel(dpy, DefaultScreen(dpy));
+    int whiteColor = WhitePixel(dpy, DefaultScreen(dpy));
 
-	// Create the window
+    // Create the window
 
-	//Esto asignarlo antes para que el driver vea correctamente el tamaño
-	//scr_driver_can_ext_desktop=scrxwindows_driver_can_ext_desktop;
+    //Esto asignarlo antes para que el driver vea correctamente el tamaño
+    //scr_driver_can_ext_desktop=scrxwindows_driver_can_ext_desktop;
 
-int ancho,alto;
-ancho=screen_get_window_size_width_zoom_border_en();
+    int ancho,alto;
+    ancho=screen_get_window_size_width_zoom_border_en();
 
-ancho +=screen_get_ext_desktop_width_zoom();
+    ancho +=screen_get_ext_desktop_width_zoom();
 
-alto=screen_get_window_size_height_zoom_border_en();
+    alto=screen_get_window_size_height_zoom_border_en();
 
-alto +=screen_get_ext_desktop_height_zoom();
+    alto +=screen_get_ext_desktop_height_zoom();
 
 	ventana = XCreateSimpleWindow(dpy, DefaultRootWindow(dpy), 0, 0, ancho, alto,0, blackColor, blackColor);
 
@@ -2095,15 +2095,9 @@ alto +=screen_get_ext_desktop_height_zoom();
 
 
 
-
-
-
-
-
-
 	scrxwindows_alloc_image(ancho, alto);
 
-scr_reallocate_layers_menu(ancho,alto);
+    scr_reallocate_layers_menu(ancho,alto);
 
 	if (!shm_used) debug_printf (VERBOSE_WARN,"No X11 Shared memory. Expect poor performance");
 
@@ -2124,25 +2118,25 @@ scr_reallocate_layers_menu(ancho,alto);
 
 
 
-	//Inicializaciones necesarias
-	scr_putpixel=scrxwindows_putpixel;
-  scr_putpixel_final=scrxwindows_putpixel_final;
-  scr_putpixel_final_rgb=scrxwindows_putpixel_final_rgb;
-        scr_get_menu_width=scrxwindows_get_menu_width;
-        scr_get_menu_height=scrxwindows_get_menu_height;
+    //Inicializaciones necesarias
+    scr_putpixel=scrxwindows_putpixel;
+    scr_putpixel_final=scrxwindows_putpixel_final;
+    scr_putpixel_final_rgb=scrxwindows_putpixel_final_rgb;
+    scr_get_menu_width=scrxwindows_get_menu_width;
+    scr_get_menu_height=scrxwindows_get_menu_height;
 
 
-	scr_putchar_zx8081=scrxwindows_putchar_zx8081;
-        scr_debug_registers=scrxwindows_debug_registers;
-        scr_messages_debug=scrxwindows_messages_debug;
-	scr_putchar_menu=scrxwindows_putchar_menu;
-	scr_putchar_footer=scrxwindows_putchar_footer;
-	scr_set_fullscreen=scrxwindows_set_fullscreen;
-	scr_reset_fullscreen=scrxwindows_reset_fullscreen;
-	scr_z88_cpc_load_keymap=scrxwindows_z88_cpc_load_keymap;
-	scr_detectedchar_print=scrxwindows_detectedchar_print;
-	scr_tiene_colores=1;
-	screen_refresh_menu=1;
+    scr_putchar_zx8081=scrxwindows_putchar_zx8081;
+    scr_debug_registers=scrxwindows_debug_registers;
+    scr_messages_debug=scrxwindows_messages_debug;
+    scr_putchar_menu=scrxwindows_putchar_menu;
+    scr_putchar_footer=scrxwindows_putchar_footer;
+    scr_set_fullscreen=scrxwindows_set_fullscreen;
+    scr_reset_fullscreen=scrxwindows_reset_fullscreen;
+    scr_z88_cpc_load_keymap=scrxwindows_z88_cpc_load_keymap;
+    scr_detectedchar_print=scrxwindows_detectedchar_print;
+    scr_tiene_colores=1;
+    screen_refresh_menu=1;
 
 
 	//Esta funcion quiza no iba antes, pero en un xorg reciente funciona
@@ -2157,7 +2151,7 @@ scr_reallocate_layers_menu(ancho,alto);
 	scr_set_driver_name("xwindows");
 
 
-        scr_z88_cpc_load_keymap();
+    scr_z88_cpc_load_keymap();
 
 
 	if (ventana_fullscreen) {
@@ -2174,25 +2168,25 @@ scr_reallocate_layers_menu(ancho,alto);
 #ifdef X_USE_SHM
 static int try_shm (void)
 {
-  int id;
-  int error;
+    int id;
+    int error;
 
-  if( !XShmQueryExtension( dpy ) ) return 0;
+    if( !XShmQueryExtension( dpy ) ) return 0;
 
-  shm_eventtype = XShmGetEventBase( dpy ) + ShmCompletion;
+    shm_eventtype = XShmGetEventBase( dpy ) + ShmCompletion;
 
-int ancho;
+    int ancho;
 
-int alto;
+    int alto;
 
-scrxwindows_get_display_size(&ancho,&alto);
+    scrxwindows_get_display_size(&ancho,&alto);
 
 
 
-image = XShmCreateImage( dpy, xdisplay_visual,
-                           xdisplay_depth, ZPixmap,
-                           NULL, &shm_info,
-ancho, alto );
+    image = XShmCreateImage( dpy, xdisplay_visual,
+                            xdisplay_depth, ZPixmap,
+                            NULL, &shm_info,
+                            ancho, alto );
 
 
 /*
@@ -2292,29 +2286,29 @@ static void xdisplay_destroy_image (void)
   /* Free the XImage used to store screen data; also frees the malloc'd
      data */
 #ifdef X_USE_SHM
-  if( shm_used ) {
-    XShmDetach( dpy, &shm_info );
-    shmdt( shm_info.shmaddr );
-    image->data = NULL;
-    shm_used = 0;
-  }
+    if( shm_used ) {
+        XShmDetach( dpy, &shm_info );
+        shmdt( shm_info.shmaddr );
+        image->data = NULL;
+        shm_used = 0;
+    }
 #endif
-  if( image ) XDestroyImage( image ); image = NULL;
+    if( image ) XDestroyImage( image ); image = NULL;
 }
 
 
 
 int xdisplay_end (void)
 {
-  xdisplay_destroy_image();
-  /* Free the allocated GC */
-  if( gc ) XFreeGC( dpy, gc );
-  gc = 0;
+    xdisplay_destroy_image();
+    /* Free the allocated GC */
+    if( gc ) XFreeGC( dpy, gc );
+    gc = 0;
 
-  XDestroyWindow(dpy,ventana);
-  XCloseDisplay(dpy);
+    XDestroyWindow(dpy,ventana);
+    XCloseDisplay(dpy);
 
-  return 0;
+    return 0;
 }
 
 
