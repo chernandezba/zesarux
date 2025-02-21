@@ -3619,6 +3619,8 @@ int util_write_configfile(void)
 
   if (autochange_zoom_big_display.v==0)       ADD_STRING_CONFIG,"--no-autochange-zoom-big-display");
 
+  if (screen_keep_both_zoom_equals.v==0)        ADD_STRING_CONFIG,"--zoom-allow-different-xy");
+
   if (frameskip)                              ADD_STRING_CONFIG,"--frameskip %d",frameskip);
 
 

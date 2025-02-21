@@ -1,4 +1,4 @@
-
+--Inicio Minimizado de ventanas
 
 -Modo minimizar ventanas que ni se vean. Quiza solo cuando process switcher este cargado?
 y en ese modo al abrir la aplicación, se desminimice
@@ -29,7 +29,7 @@ En activate Windows quizá solo hace falta hacer toggle pero sin redibujar venta
 Esto es un efecto no provocado aunque creo que queda bien
 aunque si se pulsa en el titulo de la ventana, desaparece pero se queda activa
 
-*Setting de ocultar al minimizar guardar en config cuando esté estable
+--Fin Minimizado de ventanas
 
 ---
 
@@ -42,8 +42,8 @@ lo hace pero el menu contextual sale arriba del todo y no en la posición del cu
 ok *pendiente sdl1,sdl2,X11. acabar de probar bien
 *parece que x11 con Mac no respeta proporciones. usar llamada a scr_adjust_zoom_equals que esta comentada
 ok *pendiente setting en menu
-*pendiente setting linea comandos - config
-*pendiente autoguardado config
+ok*pendiente setting linea comandos - config
+ok*pendiente autoguardado config
 *si setting desactivado, permitir cambiar zoom x,y desde menu por separado
 
 
@@ -85,7 +85,7 @@ ZENG Online
 
 -Si se hace get-snapshot sin haber uno primero, creo que peta: no deberia porque se controla que el size no sea 0
 -Cliente sin permisos de get-snapshot, en el footer acaba diciendo OFFLINE. No deberia poner ese mensaje si no tiene permisos de get-snapshot
--Probar build sin threads, por lo de las funciones vacias en no-threads, ver si falta alguna
+
 
 
 -Modo streaming

@@ -1157,6 +1157,7 @@ printf("\n"
 
 		"--zoomx n                                      Horizontal Zoom Factor\n"
 		"--zoomy n                                      Vertical Zoom Factor\n"
+        "--zoom-allow-different-xy                      Allow Zoom horizontal different to vertical\n"
         "--no-autochange-zoom-big-display               No autochange to zoom 1 when switching to machine with big display (Next, QL, CPC, ...)\n"
 
 		"--reduce-075                                   Reduce display size 4/3 (divide by 4, multiply by 3)\n"
@@ -2667,6 +2668,10 @@ int parse_cmdline_options(int desde_commandline) {
 
                 zoom_y=valor;
 			}
+
+            else if (!strcmp(argv[puntero_parametro],"--zoom-allow-different-xy")) {
+                screen_keep_both_zoom_equals.v=0;
+            }
 
             else if (!strcmp(argv[puntero_parametro],"--no-autochange-zoom-big-display")) {
                 autochange_zoom_big_display.v=0;
