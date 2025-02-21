@@ -1169,6 +1169,11 @@ void menu_interface_both_zoom_equals(MENU_ITEM_PARAMETERS)
 {
     screen_keep_both_zoom_equals.v ^=1;
 
+    //Realmente lo que sucede es que en X11 se define esa proporcion al inicio del driver, y por tanto,
+    //si se cambia este setting, se deberia reiniciar el driver, y no lo veo necesario
+    //Mejor aviso al usuario y quien quiera cambiarlo mediante redimensionado usando el raton, que reinicie ZEsarUX
+    //Sin reiniciar, cambiando desde el menu los settings de zoom_x y zoom_y si que deja, lo que no deja sin reiniciar
+    //es cambiarlo usando el raton
     menu_warn_message("Some video drivers require that you restart ZEsarUX in order for this setting to take effect, like X11");
 }
 
