@@ -657,8 +657,9 @@ void scrxwindows_resize(int width,int height)
 	debug_printf (VERBOSE_INFO,"zoom_x: %d zoom_y: %d zoom_x_calculated: %d zoom_y_calculated: %d",zoom_x,zoom_y,zoom_x_calculado,zoom_y_calculado);
 
     // Si no se permite valores de zoom_x y zoom_y diferentes
-    //En este caso el ajuste lo realiza el gestor de ventanas y lo definimos al inicializar la ventana
-    //scr_adjust_zoom_equals(&zoom_x_calculado,&zoom_y_calculado);
+    //Este ajuste ya lo realiza el gestor de ventanas y lo definimos al inicializar la ventana
+    //PERO en xwindows desde Mac no lo hace y tenemos que ajustarlo aquí
+    scr_adjust_zoom_equals(&zoom_x_calculado,&zoom_y_calculado);
 
 	if (zoom_x_calculado!=zoom_x || zoom_y_calculado!=zoom_y) {
         //resize
