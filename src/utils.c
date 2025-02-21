@@ -4231,6 +4231,8 @@ int util_write_configfile(void)
   if (menu_hide_maximize_button.v)           ADD_STRING_CONFIG,"--hide-menu-maximize-button");
   if (menu_hide_close_button.v)              ADD_STRING_CONFIG,"--hide-menu-close-button");
 
+  if (zxvision_hide_minimized_windows.v)     ADD_STRING_CONFIG,"--hide-minimized-windows");
+
   if (menu_hide_background_button_on_inactive.v==0) ADD_STRING_CONFIG,"--show-menu-background-button");
 
   if (menu_change_frame_when_resize_zone.v==0)      ADD_STRING_CONFIG,"--no-change-frame-resize-zone");

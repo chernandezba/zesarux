@@ -77,11 +77,7 @@ O sea parece que al pulsar desde los botones, se sale del menu y se quita el avi
 menu_fire_event_open_menu();
 )
 
--QL RAM:
-ok*revisar guardado snapshots zsf, carga (en carga tendra que cambiar total ql ram size segun snap)
-ok parece que ya va bien *revisar visualmem que parece que no muestra bien dibujo, quiza hace AND en vez de MOD
-ok*agregar parametro linea de comandos, guardado config
-ok*agregar changelog
+
 
 ----
 

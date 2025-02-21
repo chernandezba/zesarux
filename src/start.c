@@ -1723,6 +1723,7 @@ printf("\n"
 		"--hide-menu-minimize-button              Hides minimize button on the title window\n"
         "--hide-menu-maximize-button              Hides maximize button on the title window\n"
 		"--hide-menu-close-button                 Hides close button on the title window\n"
+		"--hide-minimized-windows                 Hide minimized windows\n"
         "--show-menu-background-button            Shows background button on inactive windows\n"
         "--no-change-frame-resize-zone            Do not change frame window when mouse if over resize zone\n"
 		"--invert-menu-mouse-scroll               Inverts mouse scroll movement\n"
@@ -5156,6 +5157,10 @@ int parse_cmdline_options(int desde_commandline) {
 
 			else if (!strcmp(argv[puntero_parametro],"--hide-menu-close-button")) {
                                 menu_hide_close_button.v=1;
+			}
+
+			else if (!strcmp(argv[puntero_parametro],"--hide-minimized-windows")) {
+                zxvision_hide_minimized_windows.v=1;
 			}
 
 			else if (!strcmp(argv[puntero_parametro],"--invert-menu-mouse-scroll")) {
