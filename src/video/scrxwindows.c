@@ -826,79 +826,79 @@ void scrxwindows_get_display_size(int *p_ancho,int *p_alto)
 
 void scrxwindows_refresca_pantalla_solo_driver(void)
 {
-   //Dibujar normal toda la pantalla entera
+    //Dibujar normal toda la pantalla entera
 
-	 int ancho;
+    int ancho;
 
-	 int alto;
+    int alto;
 
-	 scrxwindows_get_display_size(&ancho,&alto);
+    scrxwindows_get_display_size(&ancho,&alto);
 
-        if( shm_used ) {
+    if( shm_used ) {
 
 #ifdef X_USE_SHM
-                //printf ("con shm dpy=%x ventana=%x gc=%x image=%x\n",dpy,ventana,gc,image);
-                //printf ("image=%x\n",image);
+        //printf ("con shm dpy=%x ventana=%x gc=%x image=%x\n",dpy,ventana,gc,image);
+        //printf ("image=%x\n",image);
 
-                XShmPutImage(dpy, ventana, gc, image, 0, 0, 0, 0, ancho, alto, False);
+        XShmPutImage(dpy, ventana, gc, image, 0, 0, 0, 0, ancho, alto, False);
 
-                /*
-                Parámetros:
+        /*
+        Parámetros:
 
-                        Display *display;
-                        Drawable d;
-                        GC gc;
-                        XImage *image;
-                        int src_x, src_y, dest_x, dest_y;
-                        unsigned int width, height;
-                        bool send_event;
+                Display *display;
+                Drawable d;
+                GC gc;
+                XImage *image;
+                int src_x, src_y, dest_x, dest_y;
+                unsigned int width, height;
+                bool send_event;
 
 
-                Nota: establecemos send_event a False (desde ZEsarUX 11.1, antes estaba a True)
-                Tenerlo a True implica que se notifica mediante un evento tipo XShmCompletionEvent cuando
-                la operación se ha finalizado; significaria que antes de volver a llamar a XShmPutImage
-                deberiamos esperar a que llegase un evento XShmCompletionEvent. Si no se llega ese evento, indica
-                que no ha finalizado el renderizado anterior, y si volvemos a modificar este buffer,
-                se podría renderizar la pantalla "a cachos" o sea , provocar un efecto flicker en que aparece
-                parte del frame anterior y parte del actual
-                Dado que antes estaba a True y no esperaba nunca a ese evento y jamás vi renderizado a trozos, es mejor
-                ponerlo a False, sobretodo por otro aspecto mas importante aún:
-                Si está a TRUE y no recojo nunca ese evento, cada uno de esos eventos va ocupando memoria sin liberar,
-                haciendo que se vaya consumiendo mas RAM y de rebote, mas CPU (entiendo que consume mas CPU porque agregar
-                otro evento mas pendiente a la cola, cuesta mas cpu a medida que hay mas encolados - tiempo O(n) en vez de O(1)
-                Por ejemplo con ZEsarUX arrancado durante 1 hora, sucedía que pasabamos de usar 17% de cpu a 60% de cpu, y el uso de ram
-                aumenta de 5MB a 46 MB
-                Ese fallo de cpu/ram existe desde la primera versión de ZEsarUX hasta la anterior a la actual (11.1) donde
-                queda corregido
+        Nota: establecemos send_event a False (desde ZEsarUX 11.1, antes estaba a True)
+        Tenerlo a True implica que se notifica mediante un evento tipo XShmCompletionEvent cuando
+        la operación se ha finalizado; significaria que antes de volver a llamar a XShmPutImage
+        deberiamos esperar a que llegase un evento XShmCompletionEvent. Si no se llega ese evento, indica
+        que no ha finalizado el renderizado anterior, y si volvemos a modificar este buffer,
+        se podría renderizar la pantalla "a cachos" o sea , provocar un efecto flicker en que aparece
+        parte del frame anterior y parte del actual
+        Dado que antes estaba a True y no esperaba nunca a ese evento y jamás vi renderizado a trozos, es mejor
+        ponerlo a False, sobretodo por otro aspecto mas importante aún:
+        Si está a TRUE y no recojo nunca ese evento, cada uno de esos eventos va ocupando memoria sin liberar,
+        haciendo que se vaya consumiendo mas RAM y de rebote, mas CPU (entiendo que consume mas CPU porque agregar
+        otro evento mas pendiente a la cola, cuesta mas cpu a medida que hay mas encolados - tiempo O(n) en vez de O(1)
+        Por ejemplo con ZEsarUX arrancado durante 1 hora, sucedía que pasabamos de usar 17% de cpu a 60% de cpu, y el uso de ram
+        aumenta de 5MB a 46 MB
+        Ese fallo de cpu/ram existe desde la primera versión de ZEsarUX hasta la anterior a la actual (11.1) donde
+        queda corregido
 
-                */
+        */
 
 
 #endif
 
 
-        }
+    }
 
-        else {
-                //printf ("sin shm dpy=%x ventana=%x gc=%x image=%x\n",dpy,ventana,gc,image);
-                XPutImage(dpy, ventana, gc, image, 0, 0, 0, 0, ancho, alto );
+    else {
+        //printf ("sin shm dpy=%x ventana=%x gc=%x image=%x\n",dpy,ventana,gc,image);
+        XPutImage(dpy, ventana, gc, image, 0, 0, 0, 0, ancho, alto );
 
-        }
+    }
 
-        /*
-        Hacemos flush de todo lo enviado a la pantalla. La docu de XFlush dice:
-        The XFlush() function flushes the output buffer. Most client applications need not use this function because
-        the output buffer is automatically flushed as needed by calls to XPending(), XNextEvent(), and XWindowEvent().
-        Events generated by the server may be enqueued into the library's event queue.
+    /*
+    Hacemos flush de todo lo enviado a la pantalla. La docu de XFlush dice:
+    The XFlush() function flushes the output buffer. Most client applications need not use this function because
+    the output buffer is automatically flushed as needed by calls to XPending(), XNextEvent(), and XWindowEvent().
+    Events generated by the server may be enqueued into the library's event queue.
 
-        Me parece perfecto... si no llamo a XFlush lo hace automáticamente, es cierto. PERO lo hace cuando le da la gana,
-        y entonces sucede que se ven parpadeos en el menu en los recuadros de ventana, en waveform, en aysheet... en monton de sitios,
-        porque en esas ventanas hay texto por ejemplo en blanco que va debajo y luego dibujo encima pixeles, pero como lo refresca
-        cuando quiere (si no hay XFlush) eso produce los parpadeos, de mostrar momentos intermedios en que aún no he finalizado de dibujar
-        completamente la ventana
+    Me parece perfecto... si no llamo a XFlush lo hace automáticamente, es cierto. PERO lo hace cuando le da la gana,
+    y entonces sucede que se ven parpadeos en el menu en los recuadros de ventana, en waveform, en aysheet... en monton de sitios,
+    porque en esas ventanas hay texto por ejemplo en blanco que va debajo y luego dibujo encima pixeles, pero como lo refresca
+    cuando quiere (si no hay XFlush) eso produce los parpadeos, de mostrar momentos intermedios en que aún no he finalizado de dibujar
+    completamente la ventana
 
-        */
-        XFlush(dpy);
+    */
+    XFlush(dpy);
 
 }
 
@@ -906,30 +906,30 @@ void scrxwindows_refresca_pantalla(void)
 {
 
 
-        if (sem_screen_refresh_reallocate_layers) {
-                //printf ("--Screen layers are being reallocated. return\n");
-                //debug_exec_show_backtrace();
-                return;
-        }
+    if (sem_screen_refresh_reallocate_layers) {
+        //printf ("--Screen layers are being reallocated. return\n");
+        //debug_exec_show_backtrace();
+        return;
+    }
 
-        sem_screen_refresh_reallocate_layers=1;
+    sem_screen_refresh_reallocate_layers=1;
 
     scr_driver_redraw_desktop_windows();
 
 	if (MACHINE_IS_ZX8081) {
 
 
-		//scr_refresca_pantalla_rainbow_comun();
-	        scrxwindows_refresca_pantalla_zx81();
+        //scr_refresca_pantalla_rainbow_comun();
+        scrxwindows_refresca_pantalla_zx81();
 	}
 
-        else if (MACHINE_IS_PRISM) {
-                screen_prism_refresca_pantalla();
-        }
+    else if (MACHINE_IS_PRISM) {
+            screen_prism_refresca_pantalla();
+    }
 
-        else if (MACHINE_IS_TBBLUE) {
-                screen_tbblue_refresca_pantalla();
-        }
+    else if (MACHINE_IS_TBBLUE) {
+            screen_tbblue_refresca_pantalla();
+    }
 
 
 	else if (MACHINE_IS_SPECTRUM) {
@@ -937,27 +937,27 @@ void scrxwindows_refresca_pantalla(void)
 		if (MACHINE_IS_TSCONF)	screen_tsconf_refresca_pantalla();
 
 
-		  else { //Spectrum no TSConf
+        else { //Spectrum no TSConf
 
-		//modo clasico. sin rainbow
-		if (rainbow_enabled.v==0) {
-			if (border_enabled.v) {
-				//ver si hay que refrescar border
-				if (modificado_border.v)
-				{
-				        scrxwindows_refresca_border();
-				        modificado_border.v=0;
-				}
+            //modo clasico. sin rainbow
+            if (rainbow_enabled.v==0) {
+                if (border_enabled.v) {
+                    //ver si hay que refrescar border
+                    if (modificado_border.v)
+                    {
+                            scrxwindows_refresca_border();
+                            modificado_border.v=0;
+                    }
 
-			}
+                }
 
-			scr_refresca_pantalla_comun();
-		}
+                scr_refresca_pantalla_comun();
+            }
 
-		else {
-			//modo rainbow - real video
-			scr_refresca_pantalla_rainbow_comun();
-		}
+            else {
+                //modo rainbow - real video
+                scr_refresca_pantalla_rainbow_comun();
+            }
 
 		}
 	}
@@ -966,9 +966,9 @@ void scrxwindows_refresca_pantalla(void)
 		screen_z88_refresca_pantalla();
 	}
 
-        else if (MACHINE_IS_ACE) {
-                scr_refresca_pantalla_y_border_ace();
-        }
+    else if (MACHINE_IS_ACE) {
+            scr_refresca_pantalla_y_border_ace();
+    }
 
 	else if (MACHINE_IS_CPC) {
                 scr_refresca_pantalla_y_border_cpc();
@@ -982,13 +982,13 @@ void scrxwindows_refresca_pantalla(void)
 		scr_refresca_pantalla_y_border_sam();
 	}
 
-        else if (MACHINE_IS_QL) {
-                scr_refresca_pantalla_y_border_ql();
-        }
+    else if (MACHINE_IS_QL) {
+            scr_refresca_pantalla_y_border_ql();
+    }
 
-        else if (MACHINE_IS_MK14) {
-                scr_refresca_pantalla_y_border_mk14();
-        }
+    else if (MACHINE_IS_MK14) {
+            scr_refresca_pantalla_y_border_mk14();
+    }
 
 	else if (MACHINE_IS_MSX) {
 		scr_refresca_pantalla_y_border_msx();
@@ -1021,7 +1021,7 @@ void scrxwindows_refresca_pantalla(void)
 
 
 
-sem_screen_refresh_reallocate_layers=0;
+    sem_screen_refresh_reallocate_layers=0;
 
 }
 
