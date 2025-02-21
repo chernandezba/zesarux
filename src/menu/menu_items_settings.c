@@ -1168,6 +1168,8 @@ void menu_full_index_search(MENU_ITEM_PARAMETERS)
 void menu_interface_both_zoom_equals(MENU_ITEM_PARAMETERS)
 {
     screen_keep_both_zoom_equals.v ^=1;
+
+    menu_warn_message("Some video drivers require that you restart ZEsarUX in order for this setting to take effect, like X11");
 }
 
 void menu_general_settings(MENU_ITEM_PARAMETERS)
