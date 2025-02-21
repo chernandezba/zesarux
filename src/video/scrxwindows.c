@@ -308,36 +308,36 @@ void scrxwindows_reset_fullscreen(void)
 
 #ifdef USE_XVIDMODE
 	debug_printf (VERBOSE_INFO,"Resetting fullscreen");
-        ventana_fullscreen=0;
+    ventana_fullscreen=0;
 
 
-        //Activar decoraciones de ventana
+    //Activar decoraciones de ventana
 
 
-        PropMwmHints hints;
+    PropMwmHints hints;
 
-        Atom    property;
+    Atom    property;
 
-        hints.flags = 2;        // Specify that we're changing the ventana decorations.
-        hints.decorations = 1;  // true
-        property = XInternAtom(dpy,"_MOTIF_WM_HINTS",True);
-        XChangeProperty(dpy,ventana,property,property,32,PropModeReplace,(unsigned char *)&hints,5);
+    hints.flags = 2;        // Specify that we're changing the ventana decorations.
+    hints.decorations = 1;  // true
+    property = XInternAtom(dpy,"_MOTIF_WM_HINTS",True);
+    XChangeProperty(dpy,ventana,property,property,32,PropModeReplace,(unsigned char *)&hints,5);
 
 
-	//Liberar raton
-        XMapRaised(dpy,ventana);
+    //Liberar raton
+    XMapRaised(dpy,ventana);
 
-        XUngrabPointer(dpy,CurrentTime);
+    XUngrabPointer(dpy,CurrentTime);
 
-        XUngrabKeyboard(dpy,CurrentTime);
+    XUngrabKeyboard(dpy,CurrentTime);
 
 
 	//Poner resolucion anterior
 	XF86VidModeSwitchToMode(dpy,DefaultScreen(dpy),videomodes[0] );
 
 
-        //Ajustar parametros, concretamente el que indica incrementos de ventana, para ponerlo en modo normal
-        scrxwindows_setwindowparms();
+    //Ajustar parametros, concretamente el que indica incrementos de ventana, para ponerlo en modo normal
+    scrxwindows_setwindowparms();
 
 
 
@@ -383,9 +383,6 @@ void scrxwindows_set_fullscreen(void)
 
 
 
-
-
-
 	int vm_event, vm_error;
 
 	//Comprobar si existe esa extension
@@ -396,17 +393,12 @@ void scrxwindows_set_fullscreen(void)
 
 
 
-
 	XF86VidModeQueryVersion(dpy, &vmMajor, &vmMinor);
 
 	debug_printf(VERBOSE_INFO,"XF86 VideoMode extension version %d.%d", vmMajor, vmMinor);
 
 
-
-
-
 	XF86VidModeGetAllModeLines(dpy, screen, &modeNum, &videomodes);
-
 
 
 
@@ -424,11 +416,11 @@ void scrxwindows_set_fullscreen(void)
 	int heightspectrum;
 
 	//Resolucion de ventana
-        widthspectrum=screen_get_window_size_width_no_zoom_border_en()*zoom_futuro_x;
-				widthspectrum +=(screen_get_ext_desktop_width_no_zoom()*zoom_futuro_x);
+    widthspectrum=screen_get_window_size_width_no_zoom_border_en()*zoom_futuro_x;
+    widthspectrum +=(screen_get_ext_desktop_width_no_zoom()*zoom_futuro_x);
 
-        heightspectrum=screen_get_window_size_height_no_zoom_border_en()*zoom_futuro_y;
-        heightspectrum +=(screen_get_ext_desktop_height_no_zoom()*zoom_futuro_y);
+    heightspectrum=screen_get_window_size_height_no_zoom_border_en()*zoom_futuro_y;
+    heightspectrum +=(screen_get_ext_desktop_height_no_zoom()*zoom_futuro_y);
 
 
 
@@ -446,7 +438,7 @@ void scrxwindows_set_fullscreen(void)
 	//Pero esto no me funciona. Lo unico que funciona bien es obtener la resolucion actual mediante DisplayWidth,  etc
 	//Obtener resolucion actual
 	//Luego la resolucion actual no la encuentro en ninguno de los *videomodes[]...
-    	screen_prefull_width  = DisplayWidth( dpy, screen );
+    screen_prefull_width  = DisplayWidth( dpy, screen );
 	screen_prefull_height = DisplayHeight( dpy, screen );
 
 	//debug_printf(VERBOSE_INFO,"Current video mode: %d x %d",screen_prefull_width,screen_prefull_height);
@@ -454,9 +446,7 @@ void scrxwindows_set_fullscreen(void)
 	/* look for mode with best resolution */
 	debug_printf(VERBOSE_INFO,"minimum desired size: %d x %d",widthspectrum,heightspectrum);
 
-	for (i = 0; i < modeNum; i++)
-
-	{
+	for (i = 0; i < modeNum; i++) {
 
 		int leidowidth,leidoheight;
 
@@ -479,8 +469,6 @@ void scrxwindows_set_fullscreen(void)
 			}
 		}
 
-
-
 	}
 
 
@@ -498,8 +486,6 @@ void scrxwindows_set_fullscreen(void)
 
 	debug_printf(VERBOSE_INFO,"best mode: %d %4d x %4d",bestMode,bestwidth,bestheight);
 
-
-	//
 
 
 	//para que sea pantalla completa, tamanyo de ventana tiene que ser el mismo que pantalla
@@ -538,12 +524,12 @@ void scrxwindows_set_fullscreen(void)
 
 
 
-        //Ajustar centro de la ventana
-        int xcentro = (fullscreen_width-widthspectrum)/2;
-        int ycentro = (fullscreen_height-heightspectrum)/2;
+    //Ajustar centro de la ventana
+    int xcentro = (fullscreen_width-widthspectrum)/2;
+    int ycentro = (fullscreen_height-heightspectrum)/2;
 	debug_printf(VERBOSE_INFO,"Center: x %d y %d",xcentro,ycentro);
 
-        XF86VidModeSetViewPort(dpy,DefaultScreen(dpy),xcentro,ycentro);
+    XF86VidModeSetViewPort(dpy,DefaultScreen(dpy),xcentro,ycentro);
 
 
 
@@ -566,43 +552,42 @@ void scrxwindows_alloc_image(int width,int height)
 {
 
 #ifdef X_USE_SHM
-if (!disable_shm)
-  shm_used = try_shm();
+    if (!disable_shm) shm_used = try_shm();
 #endif                          /* #ifdef X_USE_SHM */
 
 
-if( !shm_used ) {
+    if( !shm_used ) {
 
-	//free mem if needed
-	if (image!=NULL) {
-		debug_printf(VERBOSE_INFO,"Free non shm image data");
-		free(image->data);
-	}
+        //free mem if needed
+        if (image!=NULL) {
+            debug_printf(VERBOSE_INFO,"Free non shm image data");
+            free(image->data);
+        }
 
 
-    image = XCreateImage( dpy, xdisplay_visual,
-                       xdisplay_depth, ZPixmap, 0, NULL, width,height,8,0);
+        image = XCreateImage( dpy, xdisplay_visual,
+                        xdisplay_depth, ZPixmap, 0, NULL, width,height,8,0);
 
-    if(!image) {
-      debug_printf(VERBOSE_ERR,"Couldn't create image");
-      exit(1);
+        if(!image) {
+        debug_printf(VERBOSE_ERR,"Couldn't create image");
+        exit(1);
+        }
+
+        if( ( image->data = malloc( image->bytes_per_line *
+                                                    image->height ) ) == NULL ) {
+        debug_printf(VERBOSE_ERR," Out of memory for image data");
+        exit(1);
+        }
+            //printf ("despues xcreateimage image=%x\n",image);
+
+
+
     }
 
-    if( ( image->data = malloc( image->bytes_per_line *
-                                                 image->height ) ) == NULL ) {
-      debug_printf(VERBOSE_ERR," Out of memory for image data");
-      exit(1);
+    else {
+        debug_printf (VERBOSE_INFO,"Using X11 Shared memory");
+        //printf ("con shm dpy=%x ventana=%x gc=%x image=%x\n",dpy,ventana,gc,image);
     }
-        //printf ("despues xcreateimage image=%x\n",image);
-
-
-
-}
-
-else {
-debug_printf (VERBOSE_INFO,"Using X11 Shared memory");
-//printf ("con shm dpy=%x ventana=%x gc=%x image=%x\n",dpy,ventana,gc,image);
-}
 
 
 }
@@ -695,10 +680,10 @@ void scrxwindows_resize(int width,int height)
 void scrxwindows_debug_registers(void)
 {
 
-char buffer[2048];
-print_registers(buffer);
+    char buffer[2048];
+    print_registers(buffer);
 
-printf ("%s\r",buffer);
+    printf ("%s\r",buffer);
 
 }
 
@@ -745,17 +730,17 @@ void scrxwindows_putpixel_final(int x,int y,unsigned int color)
 void scrxwindows_putpixel(int x,int y,unsigned int color)
 {
 
-	if (menu_overlay_activo==0) {
-                //Putpixel con menu cerrado
-                scrxwindows_putpixel_final(x,y,color);
-                return;
-  }
+    if (menu_overlay_activo==0) {
+        //Putpixel con menu cerrado
+        scrxwindows_putpixel_final(x,y,color);
+        return;
+    }
 
-  //Metemos pixel en layer adecuado
-	buffer_layer_machine[y*ancho_layer_menu_machine+x]=color;
+    //Metemos pixel en layer adecuado
+    buffer_layer_machine[y*ancho_layer_menu_machine+x]=color;
 
-  //Putpixel haciendo mix
-  screen_putpixel_mix_layers(x,y);
+    //Putpixel haciendo mix
+    screen_putpixel_mix_layers(x,y);
 
 
 }
@@ -778,14 +763,14 @@ void scrxwindows_putchar_zx8081(int x,int y, z80_byte caracter)
 void scrxwindows_putchar_menu(int x,int y, z80_byte caracter,int tinta,int papel)
 {
 
-        z80_bit inverse;
+    z80_bit inverse;
 
-        inverse.v=0;
+    inverse.v=0;
 
-	//128 y 129 corresponden a franja de menu y a letra enye minuscula
-        if (caracter<32 || caracter>MAX_CHARSET_GRAPHIC) caracter='?';
+    //128 y 129 corresponden a franja de menu y a letra enye minuscula
+    if (caracter<32 || caracter>MAX_CHARSET_GRAPHIC) caracter='?';
 
-        scr_putchar_menu_comun_zoom(caracter,x,y,inverse,tinta,papel,menu_gui_zoom);
+    scr_putchar_menu_comun_zoom(caracter,x,y,inverse,tinta,papel,menu_gui_zoom);
 
 
 }
