@@ -57,7 +57,12 @@ Uint32 commonsdl_timer_callback( Uint32 interval, void* param )
 
 int commonsdl_init_timer(void)
 {
-    SDL_TimerID timerID = SDL_AddTimer( timer_sleep_machine/1000, commonsdl_timer_callback, NULL );
+    int interval_ms= timer_sleep_machine/1000;
+    printf("Setting SDL timer for %d ms\n",interval_ms);
+
+    //La documentacion de SDL1 dice que el minimo de timer es 10 ms, por tanto uno como Z88, que es 5 ms, saltara realmente a 10ms
+
+    SDL_TimerID timerID = SDL_AddTimer( interval_ms, commonsdl_timer_callback, NULL );
     if (timerID==NULL) return 0;
 
     else return 1;
