@@ -38,12 +38,21 @@ z80_bit scrsdl_inicializado={0};
 Uint32 commonsdl_timer_callback( Uint32 interval, void* param )
 {
 
-    printf("Called Timer callback. interval=%d\n",interval);
-
     timer_trigger_interrupt();
 
     //Retornar mismo intervalo para decir que queremos generar la interrupcion de nuevo
-    return interval;
+
+    //return interval;
+    int return_intervalo=timer_sleep_machine/1000;
+
+    //en condiciones normales, la mayoria tiene interrupción cada 20ms (20000 microsec) y Z88 cada 5 ms
+    //Si en cambio alteramos cpu speed, este valor se altera y podria llegar a ser 0
+    //Retornar 0 desde este callback significaria no volver a llamar al callback, y para evitar eso, retornamos 1
+    if (return_intervalo==0) return_intervalo=1;
+
+    printf("Called Timer callback. interval called=%d return interval=%d\n",interval);
+
+    return return_intervalo;
 }
 
 int commonsdl_init_timer(void)

@@ -274,6 +274,10 @@ void start_timer_thread(void)
     int use_sdl_timer=0;
 
     //Si hay SDL, usar su timer
+    //Nota: en caso que se cambie de driver de video desde menu a otro driver, el timer de SDL
+    //seguira activo. No es un problema, pues ademas, si no quisieramos que fuese asi,
+    //al salir del driver de video habria que llamar a SDL_RemoveTimer y ademas volver a llamar aqui a start_timer_thread
+    //para poner un timer de thread
 #ifdef COMPILE_SDL
     if (!strcmp(scr_new_driver_name,"sdl")) {
         use_sdl_timer=1;
