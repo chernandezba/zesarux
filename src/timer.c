@@ -279,7 +279,8 @@ void start_timer_thread(void)
     //al salir del driver de video habria que llamar a SDL_RemoveTimer y ademas volver a llamar aqui a start_timer_thread
     //para poner un timer de thread
 #ifdef COMPILE_SDL
-    if (!strcmp(scr_new_driver_name,"sdl")) {
+    //SDL no permite timer < 10 ms
+    if (!strcmp(scr_new_driver_name,"sdl") && timer_sleep_machine>=10000) {
         use_sdl_timer=1;
         printf("Using SDL timer\n");
         int retorno=commonsdl_init_timer();

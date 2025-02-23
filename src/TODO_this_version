@@ -94,3 +94,13 @@ Revisar si hay mas sitios donde es necesario  pthread_testcancel();
 En modo streaming en debug CPU indicarlo de alguna manera
 
 Al hacer debug cpu->reset salir de online? Independientemente de si es modo streaming?
+
+------
+
+Problemas de usar el SDL_Timer:
+
+-No se puede usar para interrupciones del Z88: es de 5 ms y SDL minimo salta a 10 ms. Solucion? Quiza si es maquina Z88, quitar
+timer del SDL y activar el de thread
+
+
+-Al ser minimo 10 ms, no se puede acelear la emulacion a mas de 200%
