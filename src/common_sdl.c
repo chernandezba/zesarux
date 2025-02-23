@@ -52,6 +52,15 @@ Uint32 commonsdl_timer_callback( Uint32 interval, void* param )
 
     printf("Called Timer callback. interval called=%d return interval=%d\n",interval,return_intervalo);
 
+
+    //SDL no permite timer < 10 ms
+    if (timer_sleep_machine<10000) {
+        printf("SDL callback pretends to call at %d microsec but minimum is 10000. Set a non-threads timer\n");
+        use_threads_timer=0;
+        start_timer_thread();
+    }
+
+
     return return_intervalo;
 }
 

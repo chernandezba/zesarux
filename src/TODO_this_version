@@ -100,7 +100,9 @@ Al hacer debug cpu->reset salir de online? Independientemente de si es modo stre
 Problemas de usar el SDL_Timer:
 
 -No se puede usar para interrupciones del Z88: es de 5 ms y SDL minimo salta a 10 ms. Solucion? Quiza si es maquina Z88, quitar
-timer del SDL y activar el de thread
+timer del SDL y activar el de thread. pero el de thread no va bien en windows, porque no hace usleep correctamente, habria que usar el no pthread
 
 
 -Al ser minimo 10 ms, no se puede acelear la emulacion a mas de 200%
+-configurable si queremos pthread_timer o por date (en caso que esten ambos).
+-configurable si queremos pthread_sdl en caso que este disponible
