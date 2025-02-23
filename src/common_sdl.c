@@ -34,6 +34,24 @@
 z80_bit audiosdl_inicializado={0};
 z80_bit scrsdl_inicializado={0};
 
+Uint32 commonsdl_timer_callback( Uint32 interval, void* param )
+{
+
+    printf("Timer callback\n");
+
+    timer_pthread_generada=1;
+
+    return 0;
+}
+
+int commonsdl_init_timer(void)
+{
+    SDL_TimerID timerID = SDL_AddTimer( timer_sleep_machine/1000, commonsdl_timer_callback, NULL );
+    if (timerID==NULL) return 0;
+
+    else return 1;
+}
+
 int commonsdl_init(void)
 {
 
@@ -44,7 +62,7 @@ int commonsdl_init(void)
 
 	debug_printf (VERBOSE_DEBUG,"Calling SDL_Init");
 
-        if (SDL_Init(SDL_INIT_VIDEO|SDL_INIT_AUDIO)<0) {
+    if (SDL_Init(SDL_INIT_VIDEO|SDL_INIT_AUDIO|SDL_INIT_TIMER)<0) {
 		debug_printf (VERBOSE_INFO,"Error SDL message: %s",SDL_GetError() );
 		return 1;
 	}

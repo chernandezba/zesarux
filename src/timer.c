@@ -265,10 +265,27 @@ void start_timer_thread(void)
 
 	debug_printf(VERBOSE_INFO,"Creating timer thread");
 
+    int use_sdl_timer=0;
 
+    //Si hay SDL, usar su timer
+#ifdef COMPILE_SDL
+    if (!strcmp(scr_new_driver_name,"sdl")) {
+        use_sdl_timer=1;
+        printf("Using SDL timer\n");
+        int retorno=commonsdl_init_timer();
+        if (!retorno) {
+            printf("Error starting SDL timer. Fallback to thread timer\n");
+            use_sdl_timer=0;
+        }
+    }
+#endif
+
+    if (!use_sdl_timer) {
+        printf("Using pthread timer\n");
 	                if (pthread_create( &thread_timer, NULL, &thread_timer_function, NULL) ) {
                         cpu_panic("Can not create timer pthread");
                 }
+    }
 
 #endif
 }
