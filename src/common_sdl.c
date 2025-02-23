@@ -30,6 +30,7 @@
 #include "common_sdl.h"
 #include "cpu.h"
 #include "debug.h"
+#include "timer.h"
 
 z80_bit audiosdl_inicializado={0};
 z80_bit scrsdl_inicializado={0};

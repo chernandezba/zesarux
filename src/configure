@@ -2201,7 +2201,7 @@ scrsdl.o: video/scrsdl.c cpu.h video/scrsdl.h debug.h video/screen.h mem128.h co
 audiosdl.o: audio/audiosdl.c audio/audiosdl.h cpu.h audio/audio.h compileoptions.h debug.h common_sdl.h settings.h timer.h
 	\$(CC) \$(CFLAGS) -c audio/audiosdl.c
 
-common_sdl.o: common_sdl.c common_sdl.h cpu.h compileoptions.h debug.h
+common_sdl.o: common_sdl.c common_sdl.h cpu.h compileoptions.h debug.h timer.h
 	\$(CC) \$(CFLAGS) -c common_sdl.c
 
 _EOF
