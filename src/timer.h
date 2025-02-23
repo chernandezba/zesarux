@@ -31,6 +31,7 @@ extern void timer_check_interrupt(void);
 extern void timer_reset(void);
 extern void start_timer_thread(void);
 extern void timer_trigger_interrupt(void);
+extern int use_threads_timer;
 
 extern int timer_sleep_machine;
 extern int original_timer_sleep_machine;
