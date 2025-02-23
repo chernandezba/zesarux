@@ -240,6 +240,12 @@ void timer_sleep(int milisec)
     timer_usleep(milisec*1000);
 }
 
+void timer_trigger_interrupt(void)
+{
+    timer_pthread_generada=1;
+}
+
+
 
 void *thread_timer_function(void *nada)
 {
@@ -247,7 +253,7 @@ void *thread_timer_function(void *nada)
 		timer_usleep(timer_sleep_machine);
 
 		//printf ("tick timer\n");
-		timer_pthread_generada=1;
+		timer_trigger_interrupt();
 	}
 
 	//para que no se queje el compilador de variable no usada

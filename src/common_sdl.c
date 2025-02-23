@@ -38,10 +38,11 @@ z80_bit scrsdl_inicializado={0};
 Uint32 commonsdl_timer_callback( Uint32 interval, void* param )
 {
 
-    printf("Called Timer callback\n");
+    printf("Called Timer callback. interval=%d\n",interval);
 
-    timer_pthread_generada=1;
+    timer_trigger_interrupt();
 
+    //Retornar mismo intervalo para decir que queremos generar la interrupcion de nuevo
     return interval;
 }
 
