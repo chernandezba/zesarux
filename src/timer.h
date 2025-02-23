@@ -30,6 +30,7 @@ extern void timer_pause_waiting_end_frame(void);
 extern void timer_check_interrupt(void);
 extern void timer_reset(void);
 extern void start_timer_thread(void);
+extern int timer_pthread_generada;
 
 extern int timer_sleep_machine;
 extern int original_timer_sleep_machine;
