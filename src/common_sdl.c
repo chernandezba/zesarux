@@ -50,7 +50,7 @@ Uint32 commonsdl_timer_callback( Uint32 interval, void* param )
     //Retornar 0 desde este callback significaria no volver a llamar al callback, y para evitar eso, retornamos 1
     if (return_intervalo==0) return_intervalo=1;
 
-    printf("Called Timer callback. interval called=%d return interval=%d\n",interval);
+    printf("Called Timer callback. interval called=%d return interval=%d\n",interval,return_intervalo);
 
     return return_intervalo;
 }
