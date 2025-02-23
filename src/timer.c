@@ -83,11 +83,11 @@
 #endif
 
 
-#ifdef MINGW
+/*#ifdef MINGW
 	//Parece que en Windows el timer en pthreads no funciona bien... lo desactivamos
 	//Esto parece que resuelve algunos de los "clicks" en el audio en Windows
 	#undef USE_PTHREADS
-#endif
+#endif*/
 
 
 
