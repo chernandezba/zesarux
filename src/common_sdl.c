@@ -58,6 +58,7 @@ Uint32 commonsdl_timer_callback( Uint32 interval, void* param )
         printf("SDL callback pretends to call at %d microsec but minimum is 10000. Set a non-threads timer\n");
         use_threads_timer=0;
         start_timer_thread();
+        return 0;
     }
 
 
