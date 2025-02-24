@@ -9246,6 +9246,7 @@ void menu_settings_danger_zone_timer(MENU_ITEM_PARAMETERS)
 
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_settings_danger_zone_timer_set_thread,NULL,"Thread");
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_settings_danger_zone_timer_set_date,NULL,"Date");
+
         if (!strcmp(scr_new_driver_name,"sdl")) {
             menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_settings_danger_zone_timer_set_sdl,NULL,"SDL");
         }

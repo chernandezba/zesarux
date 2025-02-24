@@ -30,6 +30,7 @@ extern z80_bit scrsdl_inicializado;
 
 extern int commonsdl_init(void);
 extern void commonsdl_end(void);
-
+extern int commonsdl_init_timer(void);
+extern void commonsdl_stop_timer(void);
 
 #endif
