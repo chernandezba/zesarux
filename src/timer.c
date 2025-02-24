@@ -408,7 +408,9 @@ int timer_init_thread(void)
 void timer_stop_thread(void)
 {
     printf("Stop timer thread\n");
+#ifdef USE_PTHREADS
     pthread_cancel(thread_timer);
+#endif
 }
 
 int timer_init_sdl(void)
