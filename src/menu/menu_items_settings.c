@@ -226,6 +226,7 @@ int settings_statistics_opcion_seleccionada=0;
 int menu_tbblue_hardware_id_opcion_seleccionada=0;
 int network_settings_opcion_seleccionada=0;
 int zeng_online_server_opcion_seleccionada=0;
+int settings_danger_zone_opcion_seleccionada=0;
 
 //Fin opciones seleccionadas para cada menu
 
@@ -9203,6 +9204,122 @@ void menu_network_settings(MENU_ITEM_PARAMETERS)
 }
 #endif
 
+void menu_settings_danger_zone_timer_set_auto(MENU_ITEM_PARAMETERS)
+{
+    stop_timer();
+    timer_preferred_user=TIMER_UNASSIGNED;
+    start_timer();
+}
+
+void menu_settings_danger_zone_timer_set_thread(MENU_ITEM_PARAMETERS)
+{
+    stop_timer();
+    timer_preferred_user=TIMER_THREAD;
+    start_timer();
+}
+
+void menu_settings_danger_zone_timer_set_date(MENU_ITEM_PARAMETERS)
+{
+    stop_timer();
+    timer_preferred_user=TIMER_DATE;
+    start_timer();
+}
+
+void menu_settings_danger_zone_timer_set_sdl(MENU_ITEM_PARAMETERS)
+{
+    stop_timer();
+    timer_preferred_user=TIMER_SDL;
+    start_timer();
+}
+
+void menu_settings_danger_zone_timer(MENU_ITEM_PARAMETERS)
+{
+
+    menu_item *array_menu_common;
+    menu_item item_seleccionado;
+    int retorno_menu;
+
+    int opcion_seleccionada=0;
+
+    do {
+
+        menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_settings_danger_zone_timer_set_auto,NULL,"Auto");
+
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_settings_danger_zone_timer_set_thread,NULL,"Thread");
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_settings_danger_zone_timer_set_date,NULL,"Date");
+        if (!strcmp(scr_new_driver_name,"sdl")) {
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_settings_danger_zone_timer_set_sdl,NULL,"SDL");
+        }
+
+
+        menu_add_item_menu_separator(array_menu_common);
+
+        menu_add_ESC_item(array_menu_common);
+
+
+        retorno_menu=menu_dibuja_menu_dialogo_no_title_lang(&opcion_seleccionada,&item_seleccionado,array_menu_common,
+            "Timer" );
+
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+            //llamamos por valor de funcion
+            if (item_seleccionado.menu_funcion!=NULL) {
+                //printf ("actuamos por funcion\n");
+                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+
+                //Volver a menu anterior
+                return;
+            }
+        }
+
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+
+}
+
+
+
+void menu_settings_danger_zone(MENU_ITEM_PARAMETERS)
+{
+    menu_item *array_menu_common;
+    menu_item item_seleccionado;
+    int retorno_menu;
+
+
+    do {
+        char timer_name[30];
+        if (timer_preferred_user==TIMER_UNASSIGNED) strcpy(timer_name,"Auto");
+        else timer_debug_get_timer_name(timer_preferred_user,timer_name);
+
+        menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_settings_danger_zone_timer,NULL,"Timer");
+		menu_add_item_menu_prefijo_format(array_menu_common,"    ");
+        menu_add_item_menu_sufijo_format(array_menu_common," [%s]",timer_name);
+
+
+
+        menu_add_item_menu_separator(array_menu_common);
+
+        menu_add_ESC_item(array_menu_common);
+
+
+        //Nota: si no se agrega el nombre del path del indice, se generará uno automáticamente
+        menu_add_item_menu_index_full_path(array_menu_common,
+            "Main Menu-> Settings-> Danger Zone","Menú Principal-> Opciones-> Danger Zone","Menú Principal-> Opcions-> Danger Zone");
+
+        retorno_menu=menu_dibuja_menu(&settings_danger_zone_opcion_seleccionada,&item_seleccionado,array_menu_common,
+            "Danger Zone","Danger Zone","Danger Zone" );
+
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+            //llamamos por valor de funcion
+            if (item_seleccionado.menu_funcion!=NULL) {
+                //printf ("actuamos por funcion\n");
+                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+
+            }
+        }
+
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+
+}
+
 
 //menu settings
 void menu_settings(MENU_ITEM_PARAMETERS)
@@ -9233,6 +9350,11 @@ void menu_settings(MENU_ITEM_PARAMETERS)
 		menu_add_item_menu_tooltip(array_menu_settings,"Configuration file");
 		menu_add_item_menu_ayuda(array_menu_settings,"Configuration file");
         menu_add_item_menu_tiene_submenu(array_menu_settings);
+
+		menu_add_item_menu_en_es_ca(array_menu_settings,MENU_OPCION_NORMAL,menu_settings_danger_zone,NULL,
+            "Danger Zone","Danger Zone","Danger Zone");
+        menu_add_item_menu_tiene_submenu(array_menu_settings);
+        menu_add_item_menu_es_avanzado(array_menu_settings);
 
 		/*menu_add_item_menu_format(array_menu_settings,MENU_OPCION_NORMAL,menu_cpu_settings,NULL,"~~CPU");
 		menu_add_item_menu_shortcut(array_menu_settings,'c');

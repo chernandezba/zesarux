@@ -80,18 +80,10 @@
 
 
 
-
-
-
 #ifdef USE_PTHREADS
 #include <pthread.h>
 
 pthread_t thread_timer;
-
-
-
-#else
-
 
 
 #endif
@@ -345,6 +337,8 @@ void *thread_timer_function(void *nada)
 
 		//printf ("tick timer\n");
 		timer_trigger_interrupt();
+
+        pthread_testcancel();
 	}
 
 	//para que no se queje el compilador de variable no usada
@@ -357,7 +351,7 @@ void *thread_timer_function(void *nada)
 
 enum timer_type timer_selected=TIMER_UNASSIGNED;
 
-//TODO: poder cambiar esto el usuario desde el menu
+
 enum timer_type timer_preferred_user=TIMER_UNASSIGNED;
 
 
@@ -388,6 +382,12 @@ int timer_init_thread(void)
     return 0;
 }
 
+void timer_stop_thread(void)
+{
+    printf("Stop timer thread\n");
+    pthread_cancel(thread_timer);
+}
+
 int timer_init_sdl(void)
 {
     printf("timer_init_sdl\n");
@@ -414,6 +414,19 @@ int timer_init_sdl(void)
     return 0;
 
 }
+
+void timer_stop_sdl(void)
+{
+    printf("timer_stop_sdl\n");
+
+#ifdef COMPILE_SDL
+
+    commonsdl_stop_timer();
+
+#endif
+
+}
+
 
 int init_timer_selected(enum timer_type t)
 {
@@ -448,6 +461,42 @@ int init_timer_selected(enum timer_type t)
     }
 
     return return_init;
+
+}
+
+void stop_timer(void)
+{
+
+    enum timer_type t;
+
+    //Si el usuario tiene un timer favorito
+    if (timer_preferred_user!=TIMER_UNASSIGNED) {
+        t=timer_preferred_user;
+    }
+
+    else t=timer_selected;
+
+
+    switch(t) {
+        case TIMER_THREAD:
+            timer_stop_thread();
+        break;
+
+        case TIMER_DATE:
+            //No tiene thread ni nada por tanto no hay que hacer nada para que se aplique
+        break;
+
+        case TIMER_SDL:
+            timer_stop_sdl();
+        break;
+
+
+        //Solo para que no se queje el compilador
+        case TIMER_UNASSIGNED:
+        default:
+        break;
+    }
+
 
 }
 

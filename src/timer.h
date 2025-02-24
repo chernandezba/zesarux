@@ -40,6 +40,9 @@ extern void timer_debug_get_timer_name(enum timer_type timer,char *destination_s
 extern void timer_add_timer_to_top(enum timer_type *timer_list,enum timer_type timer_to_add);
 extern void timer_remove_timer(enum timer_type *timer_list,enum timer_type timer_to_remove);
 
+extern enum timer_type timer_selected;
+extern enum timer_type timer_preferred_user;
+
 extern void timer_pause_waiting_end_frame(void);
 extern void timer_check_interrupt(void);
 extern void timer_reset(void);
