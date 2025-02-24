@@ -515,6 +515,8 @@ void start_timer(void)
 
         printf("Trying %s preferred timer initialization\n",timer_name);
 
+        timer_selected=timer_preferred_user;
+
 
         if (!init_timer_selected(timer_preferred_user)) {
             printf("Preferred timer by the user failed initialization. Trying all available\n");
