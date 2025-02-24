@@ -492,7 +492,10 @@ int timer_init_sdl(void)
 #ifdef COMPILE_SDL
 
     //SDL no permite timer < 10 ms
-    if (timer_sleep_machine<10000) return 0;
+    if (timer_sleep_machine<10000) {
+        printf("SDL callback pretends to call at %d microsec but minimum is 10000. Set a non-sdl timer\n",timer_sleep_machine);
+        return 0;
+    }
 
 
     int retorno=commonsdl_init_timer();

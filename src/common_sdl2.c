@@ -61,7 +61,7 @@ Uint32 commonsdl_timer_callback( Uint32 interval, void* param )
     //Nota: Pero en linux se supone que deberia ir bien usar un timer de threads con tiempos <10ms
     //lo que deberiamos hacer es denegar el timer de sdl, pero en windows si que deberia saltar a usar un timer de no threads
     if (timer_sleep_machine<10000) {
-        printf("SDL callback pretends to call at %d microsec but minimum is 10000. Set a non-sdl timer\n");
+        printf("SDL callback pretends to call at %d microsec but minimum is 10000. Set a non-sdl timer\n",timer_sleep_machine);
         start_timer();
         //Devolvemos 0 para desactivar el timer de sdl
         return 0;
