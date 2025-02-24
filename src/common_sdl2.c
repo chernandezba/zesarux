@@ -35,6 +35,70 @@
 z80_bit audiosdl_inicializado={0};
 z80_bit scrsdl_inicializado={0};
 
+Uint32 commonsdl_timer_callback( Uint32 interval, void* param )
+{
+
+    timer_trigger_interrupt();
+
+    //Retornar mismo intervalo para decir que queremos generar la interrupcion de nuevo
+
+    //return interval;
+    int return_intervalo=timer_sleep_machine/1000;
+
+    //en condiciones normales, la mayoria tiene interrupción cada 20ms (20000 microsec) y Z88 cada 5 ms
+    //Si en cambio alteramos cpu speed, este valor se altera y podria llegar a ser 0
+    //Retornar 0 desde este callback significaria no volver a llamar al callback, y para evitar eso, retornamos 1
+    if (return_intervalo==0) return_intervalo=1;
+
+    printf("Called Timer callback. interval called=%d return interval=%d\n",interval,return_intervalo);
+
+
+    //SDL no permite timer < 10 ms
+    //Aqui se saltaria en caso de que se tenga una maquina con timer >10ms, por ejemplo Spectrum,
+    //y se cambie a otra maquina con timer <10ms (5ms, Z88) o tambien subiendo el cpu speed > 200%
+    //En este caso desactivamos este timer de SDL y cualquier otro timer basado en threads, por lo que usara el de date
+    //Nota: Pero en linux se supone que deberia ir bien usar un timer de threads con tiempos <10ms
+    //lo que deberiamos hacer es denegar el timer de sdl, pero en windows si que deberia saltar a usar un timer de no threads
+    if (timer_sleep_machine<10000) {
+        printf("SDL callback pretends to call at %d microsec but minimum is 10000. Set a non-sdl timer\n");
+        start_timer();
+        //Devolvemos 0 para desactivar el timer de sdl
+        return 0;
+    }
+
+
+    return return_intervalo;
+}
+
+SDL_TimerID timerID;
+
+//Retorna 0 si error. No 0 si ok
+int commonsdl_init_timer(void)
+{
+    int interval_ms= timer_sleep_machine/1000;
+    printf("Setting SDL timer for %d ms\n",interval_ms);
+
+    //La documentacion de SDL1 dice que el minimo de timer es 10 ms, por tanto uno como Z88, que es 5 ms, saltara realmente a 10ms
+
+    timerID = SDL_AddTimer( interval_ms, commonsdl_timer_callback, NULL );
+    if (timerID==NULL) {
+        //Error
+        return 0;
+    }
+
+    else {
+        return 1;
+    }
+}
+
+void commonsdl_stop_timer(void)
+{
+    printf("SDL stop timer\n");
+    if (timerID!=NULL) {
+        SDL_RemoveTimer(timerID);
+    }
+}
+
 int commonsdl_init(void)
 {
 
@@ -45,7 +109,7 @@ int commonsdl_init(void)
 
 	debug_printf (VERBOSE_DEBUG,"Calling SDL_Init");
 
-        if (SDL_Init(SDL_INIT_VIDEO|SDL_INIT_AUDIO)<0) {
+        if (SDL_Init(SDL_INIT_VIDEO|SDL_INIT_AUDIO|SDL_INIT_TIMER)<0) {
 		debug_printf (VERBOSE_INFO,"Error SDL message: %s",SDL_GetError() );
 		return 1;
 	}
