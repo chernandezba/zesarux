@@ -9294,7 +9294,7 @@ void menu_settings_danger_zone(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_sufijo_format(array_menu_common," [%s]",timer_name);
 
         if (timer_preferred_user==TIMER_UNASSIGNED) {
-            menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,"Timer priorities:");
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,"Timer priority list:");
             menu_add_item_menu_prefijo_format(array_menu_common,"    ");
 
 
