@@ -292,16 +292,17 @@ void start_timer_thread(void)
 
             //SDL no permite timer < 10 ms
             if (timer_sleep_machine<10000) use_sdl_timer=0;
+        }
 
-            if (use_sdl_timer) {
+        if (use_sdl_timer) {
 
-                printf("Using SDL timer\n");
-                int retorno=commonsdl_init_timer();
-                if (!retorno) {
-                    printf("Error starting SDL timer. Fallback to thread timer\n");
-                    use_sdl_timer=0;
-                }
+            printf("Using SDL timer\n");
+            int retorno=commonsdl_init_timer();
+            if (!retorno) {
+                printf("Error starting SDL timer. Fallback to thread timer\n");
+                use_sdl_timer=0;
             }
+
         }
     #endif
 
@@ -323,7 +324,7 @@ void start_timer_thread(void)
                 }
             }
 
-    #endif
+#endif
 
         }
 
