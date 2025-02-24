@@ -9,6 +9,7 @@ Allow to increase Sinclair QL RAM size
 Allow to save ZX80/81 screen to .scr file
 Added conversion of ZX81 files P to P81, and P81 to P
 Allow to save text note on a ZSF snapshot
+Improve Windows timing and any other system using SDL video driver. Now uses SDL Timing
 
 Improved ZX Vision:
 - Allow to hide minimized windows
