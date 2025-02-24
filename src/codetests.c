@@ -2646,6 +2646,21 @@ void codetests_timer(void)
     //Validar. de manera automatica
     codetests_timer_check(codetests_timers_list,codetests_timers_list_expected_no_thread);
 
+    printf("Adding Thread timer to bottom\n");
+
+    timer_add_timer_to_bottom(codetests_timers_list,TIMER_THREAD);
+
+    //Valido (visualmente)
+    codetest_timer_print(codetests_timers_list);
+
+
+    enum timer_type codetests_timers_list_expected_thread_bottom[TIMER_LIST_MAX_SIZE]={
+        TIMER_SDL,TIMER_DATE,TIMER_THREAD,
+        TIMER_END
+    };
+
+    //Validar. de manera automatica
+    codetests_timer_check(codetests_timers_list,codetests_timers_list_expected_thread_bottom);
 
 }
 

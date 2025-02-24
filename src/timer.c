@@ -156,6 +156,29 @@ void timer_add_timer_to_top(enum timer_type *timer_list,enum timer_type timer_to
 
 }
 
+//Agrega un temporizador al final de la lista
+void timer_add_timer_to_bottom(enum timer_type *timer_list,enum timer_type timer_to_add)
+{
+
+    //Mover todos hacia abajo
+    int i;
+
+    for (i=0;i<TIMER_LIST_MAX_SIZE-1;i++) {
+       if (timer_list[i]==TIMER_END) break;
+    }
+
+    //Ver que no estemos en el ultimo (que seria el TIMER_END) y no habria sitio para meter otro
+    //Ni el final (que significaria que no hemos encontrado el TIMER_END)
+    if (i>=TIMER_LIST_MAX_SIZE-1) {
+        debug_printf(VERBOSE_DEBUG,"Can not add timer to bottom");
+        return;
+    }
+
+    timer_list[i]=timer_to_add;
+    timer_list[i+1]=TIMER_END;
+
+}
+
 //Quito un temporizador de la lista
 void timer_remove_timer(enum timer_type *timer_list,enum timer_type timer_to_remove)
 {
@@ -582,14 +605,16 @@ void init_timer(void)
 
 
 #if defined(__APPLE__)
-    //En Mac OS X el timer en pthreads no funciona bien... lo desactivamos
+    //En Mac OS X el timer en pthreads no funciona bien... lo metemos al final de la lista de prioridades
     timer_remove_timer(available_timers,TIMER_THREAD);
+    timer_add_timer_to_bottom(available_timers,TIMER_THREAD);
 #endif
 
 
 #ifdef MINGW
-    //Parece que en Windows el timer en pthreads no funciona bien... lo desactivamos
+    //Parece que en Windows el timer en pthreads no funciona bien... lo metemos al final de la lista de prioridades
     timer_remove_timer(available_timers,TIMER_THREAD);
+    timer_add_timer_to_bottom(available_timers,TIMER_THREAD);
 #endif
 
 
