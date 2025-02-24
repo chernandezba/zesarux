@@ -81,11 +81,21 @@
 
 
 #ifdef USE_PTHREADS
+
 #include <pthread.h>
 
 pthread_t thread_timer;
 
+#endif
 
+
+#ifdef COMPILE_SDL
+
+	#ifdef COMPILE_SDL2
+		#include "common_sdl2.h"
+	#else
+		#include "common_sdl.h"
+	#endif
 #endif
 
 
