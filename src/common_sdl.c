@@ -61,7 +61,8 @@ Uint32 commonsdl_timer_callback( Uint32 interval, void* param )
     //lo que deberiamos hacer es denegar el timer de sdl, pero en windows si que deberia saltar a usar un timer de no threads
     if (timer_sleep_machine<10000) {
         printf("SDL callback pretends to call at %d microsec but minimum is 10000. Set a non-sdl timer\n");
-        start_timer_thread();
+        start_timer();
+        //Devolvemos 0 para desactivar el timer de sdl
         return 0;
     }
 
@@ -69,6 +70,7 @@ Uint32 commonsdl_timer_callback( Uint32 interval, void* param )
     return return_intervalo;
 }
 
+//Retorna 0 si error. No 0 si ok
 int commonsdl_init_timer(void)
 {
     int interval_ms= timer_sleep_machine/1000;
@@ -77,9 +79,14 @@ int commonsdl_init_timer(void)
     //La documentacion de SDL1 dice que el minimo de timer es 10 ms, por tanto uno como Z88, que es 5 ms, saltara realmente a 10ms
 
     SDL_TimerID timerID = SDL_AddTimer( interval_ms, commonsdl_timer_callback, NULL );
-    if (timerID==NULL) return 0;
+    if (timerID==NULL) {
+        //Error
+        return 0;
+    }
 
-    else return 1;
+    else {
+        return 1;
+    }
 }
 
 int commonsdl_init(void)

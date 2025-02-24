@@ -24,14 +24,27 @@
 
 #include "cpu.h"
 
+//El TIMER_END nos sirve para no tener que mantener una variable con el tamaño de la lista
+//Empezamos en el 100 asi cualquier elemento no inicializado en la lista (available_timers) sera un 0 y por tanto algo indefinido
+enum timer_type {
+    TIMER_THREAD=100,
+    TIMER_DATE,
+    TIMER_SDL,
+    TIMER_END,
+    TIMER_UNASSIGNED
+};
 
+#define TIMER_LIST_MAX_SIZE 10
+
+extern void timer_debug_get_timer_name(enum timer_type timer,char *destination_string);
+extern void timer_add_timer_to_top(enum timer_type *timer_list,enum timer_type timer_to_add);
+extern void timer_remove_timer(enum timer_type *timer_list,enum timer_type timer_to_remove);
 
 extern void timer_pause_waiting_end_frame(void);
 extern void timer_check_interrupt(void);
 extern void timer_reset(void);
-extern void start_timer_thread(void);
+extern void init_timer(void);
 extern void timer_trigger_interrupt(void);
-extern int use_threads_timer;
 
 extern int timer_sleep_machine;
 extern int original_timer_sleep_machine;

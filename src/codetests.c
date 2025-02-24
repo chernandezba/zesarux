@@ -34,6 +34,7 @@
 #include "debug.h"
 #include "utils.h"
 #include "operaciones.h"
+#include "timer.h"
 #include "ula.h"
 #include "mem128.h"
 #include "screen.h"
@@ -2568,6 +2569,86 @@ void codetests_labeltree(void)
 
 }
 
+
+
+void codetest_timer_print(enum timer_type *codetests_timers_list)
+{
+    int i;
+
+    for (i=0;i<TIMER_LIST_MAX_SIZE;i++) {
+        char timer_name[30];
+        timer_debug_get_timer_name(codetests_timers_list[i],timer_name);
+
+        printf("Timer %d Value %d string: [%s]\n",i,codetests_timers_list[i],timer_name);
+    }
+
+}
+
+void codetests_timer_check(enum timer_type *codetests_timers_list_one,enum timer_type *codetests_timers_list_two)
+{
+    int i;
+
+    for (i=0;i<TIMER_LIST_MAX_SIZE;i++) {
+        if (codetests_timers_list_one[i]!=codetests_timers_list_two[i]) {
+            printf("Error checking timer lists!\n");
+            exit(1);
+        }
+
+        //Si llegado al final
+        if (codetests_timers_list_one[i]==TIMER_END) return;
+    }
+
+}
+
+void codetests_timer(void)
+{
+
+    enum timer_type codetests_timers_list[TIMER_LIST_MAX_SIZE]={
+        TIMER_THREAD,TIMER_DATE,
+        TIMER_END
+    };
+
+
+    //Primero print de una lista generada por mi
+    codetest_timer_print(codetests_timers_list);
+
+    printf("Adding sdl timer\n");
+
+    //Agrego un sdl
+    timer_add_timer_to_top(codetests_timers_list,TIMER_SDL);
+
+    //Valido (visualmente)
+    codetest_timer_print(codetests_timers_list);
+
+    enum timer_type codetests_timers_list_expected_sdl[TIMER_LIST_MAX_SIZE]={
+        TIMER_SDL,TIMER_THREAD,TIMER_DATE,
+        TIMER_END
+    };
+
+    //Validar. de manera automatica
+    codetests_timer_check(codetests_timers_list,codetests_timers_list_expected_sdl);
+
+
+    printf("Removing thread timer\n");
+
+    //Quito el thread
+    timer_remove_timer(codetests_timers_list,TIMER_THREAD);
+
+    //Valido (visualmente)
+    codetest_timer_print(codetests_timers_list);
+
+
+    enum timer_type codetests_timers_list_expected_no_thread[TIMER_LIST_MAX_SIZE]={
+        TIMER_SDL,TIMER_DATE,
+        TIMER_END
+    };
+
+    //Validar. de manera automatica
+    codetests_timer_check(codetests_timers_list,codetests_timers_list_expected_no_thread);
+
+
+}
+
 void codetests_main(int main_argc,char *main_argv[])
 {
 
@@ -2695,6 +2776,9 @@ void codetests_main(int main_argc,char *main_argv[])
 
     printf("\nRunning labeltree tests\n");
     codetests_labeltree();
+
+    printf("\nRunning timer tests\n");
+    codetests_timer();
 
     //printf("\nRunning codetests stl\n");
     //codetests_stl();

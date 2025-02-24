@@ -26,6 +26,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include <time.h>
 #include <sys/time.h>
 #ifndef MINGW
@@ -33,7 +34,7 @@
 #endif
 
 
-
+#include "timer.h"
 #include "cpu.h"
 #include "start.h"
 #include "audio.h"
@@ -82,19 +83,112 @@
 
 
 
-
 #ifdef USE_PTHREADS
 #include <pthread.h>
 
 pthread_t thread_timer;
 
-int use_threads_timer=1;
+
 
 #else
 
-int use_threads_timer=0;
+
 
 #endif
+
+
+enum timer_type available_timers[TIMER_LIST_MAX_SIZE]={
+    TIMER_DATE,
+    TIMER_END
+};
+
+void timer_debug_get_timer_name(enum timer_type timer,char *destination_string)
+{
+    switch (timer) {
+        case TIMER_THREAD:
+            strcpy(destination_string,"thread");
+        break;
+
+        case TIMER_DATE:
+            strcpy(destination_string,"date");
+        break;
+
+        case TIMER_SDL:
+            strcpy(destination_string,"sdl");
+        break;
+
+        //Este no deberia suceder nunca pero por si acaso
+        case TIMER_END:
+            strcpy(destination_string,"end");
+        break;
+
+        case TIMER_UNASSIGNED:
+            strcpy(destination_string,"unasigned");
+        break;
+
+        default:
+            strcpy(destination_string,"undefined");
+        break;
+
+    }
+
+}
+
+void timer_debug_print_timer_list(enum timer_type *lista)
+{
+    int i;
+
+    for (i=0;i<TIMER_LIST_MAX_SIZE;i++) {
+        char timer_name[30];
+        timer_debug_get_timer_name(lista[i],timer_name);
+
+        printf("Timer %d Value %d string: [%s]\n",i,lista[i],timer_name);
+    }
+
+}
+
+//Agrega un temporizador al principio de la list
+//Nota: siempre le paso el puntero al array asi puedo tener diferentes arrays, uno para los timers normales y el otro para codetests
+void timer_add_timer_to_top(enum timer_type *timer_list,enum timer_type timer_to_add)
+{
+
+    //Mover todos hacia abajo
+    int i;
+
+    for (i=TIMER_LIST_MAX_SIZE-1;i>=1;i--) {
+       timer_list[i]=timer_list[i-1];
+    }
+
+    //Agregar al primero
+    timer_list[0]=timer_to_add;
+
+}
+
+//Quito un temporizador de la lista
+void timer_remove_timer(enum timer_type *timer_list,enum timer_type timer_to_remove)
+{
+
+    //Primero buscarlo
+    int i;
+
+    for (i=0;i<TIMER_LIST_MAX_SIZE;i++) {
+        if (timer_list[i]==timer_to_remove) break;
+    }
+
+    if (i==TIMER_LIST_MAX_SIZE) {
+        debug_printf(VERBOSE_DEBUG,"Timer to remove %d not found",timer_to_remove);
+        return;
+    }
+
+    //Mover todos hacia el que queremos borrar
+
+    for (;i<TIMER_LIST_MAX_SIZE-1;i++) {
+       timer_list[i]=timer_list[i+1];
+    }
+
+
+}
+
 
 
 int timer_pthread_generada=0;
@@ -261,8 +355,202 @@ void *thread_timer_function(void *nada)
 	return NULL;
 }
 
+enum timer_type timer_selected=TIMER_UNASSIGNED;
 
-void start_timer_thread(void)
+//TODO: poder cambiar esto el usuario desde el menu
+enum timer_type timer_preferred_user=TIMER_UNASSIGNED;
+
+
+
+int timer_init_date(void)
+{
+    printf("timer_init_date\n");
+    //Siempre inicializa
+    return 1;
+}
+
+int timer_init_thread(void)
+{
+    printf("timer_init_thread\n");
+
+#ifdef USE_PTHREADS
+    if (pthread_create( &thread_timer, NULL, &thread_timer_function, NULL) ) {
+        //Error al lanzar el thread
+        return 0;
+    }
+    else {
+        //Ok inicializando
+        return 1;
+    }
+#endif
+
+    //No inicializa
+    return 0;
+}
+
+int timer_init_sdl(void)
+{
+    printf("timer_init_sdl\n");
+
+#ifdef COMPILE_SDL
+
+    //SDL no permite timer < 10 ms
+    if (timer_sleep_machine<10000) return 0;
+
+
+    int retorno=commonsdl_init_timer();
+    if (!retorno) {
+        printf("Error starting SDL timer\n");
+        return 0;
+    }
+    else {
+        //Ok inicializado
+        return 1;
+    }
+
+#endif
+
+    //no inicializa
+    return 0;
+
+}
+
+int init_timer_selected(enum timer_type t)
+{
+    int return_init=0;
+
+    switch(t) {
+        case TIMER_THREAD:
+            return_init=timer_init_thread();
+        break;
+
+        case TIMER_DATE:
+            return_init=timer_init_date();
+        break;
+
+        case TIMER_SDL:
+            return_init=timer_init_sdl();
+        break;
+
+        case TIMER_END:
+            //Al menos el de date deberia haber inicializado
+            //Pero si aun asi, lo forzamos aqui
+            printf("Can not initialize any available timer. Fallback to date timer\n");
+            timer_selected=TIMER_DATE;
+            timer_init_date();
+            return_init=1;
+        break;
+
+        //Solo para que no se queje el compilador
+        case TIMER_UNASSIGNED:
+        default:
+        break;
+    }
+
+    return return_init;
+
+}
+
+void start_timer(void)
+{
+    printf("start_timer\n");
+
+
+
+    //Si el usuario tiene un timer favorito
+    if (timer_preferred_user!=TIMER_UNASSIGNED) {
+
+        char timer_name[30];
+
+        timer_debug_get_timer_name(timer_preferred_user,timer_name);
+
+        printf("Trying %s preferred timer initialization\n",timer_name);
+
+
+        if (!init_timer_selected(timer_preferred_user)) {
+            printf("Preferred timer by the user failed initialization. Trying all available\n");
+        }
+        else {
+            return;
+        }
+    }
+
+    //Ir recorriendo del primero al ultimo y quedarse con el primero que de ok al inicializar
+    printf("start_timer. Try list:\n");
+    timer_debug_print_timer_list(available_timers);
+
+    int i;
+
+    int return_init=0;
+
+    for (i=0;i<TIMER_LIST_MAX_SIZE;i++) {
+        timer_selected=available_timers[i];
+
+        char timer_name[30];
+
+        timer_debug_get_timer_name(timer_selected,timer_name);
+
+        printf("Trying %s timer initialization\n",timer_name);
+
+        //Las funciones init de cada timer retornan 0 si error. No 0 si ok
+        return_init=init_timer_selected(timer_selected);
+
+
+        if (return_init) {
+            printf("Inicializado\n");
+            return;
+        }
+
+    }
+
+}
+
+
+void init_timer(void)
+{
+
+    printf("Initial available timers\n");
+    timer_debug_print_timer_list(available_timers);
+
+    //Primero quitar o poner timers segun drivers y segun sistema operativo
+
+#ifdef USE_PTHREADS
+    timer_add_timer_to_top(available_timers,TIMER_THREAD);
+#endif
+
+
+#ifdef COMPILE_SDL
+    if (!strcmp(scr_new_driver_name,"sdl")) {
+        timer_add_timer_to_top(available_timers,TIMER_SDL);
+    }
+#endif
+
+    printf("Available timers after adding some\n");
+    timer_debug_print_timer_list(available_timers);
+
+
+
+#if defined(__APPLE__)
+    //En Mac OS X el timer en pthreads no funciona bien... lo desactivamos
+    timer_remove_timer(available_timers,TIMER_THREAD);
+#endif
+
+
+#ifdef MINGW
+    //Parece que en Windows el timer en pthreads no funciona bien... lo desactivamos
+    timer_remove_timer(available_timers,TIMER_THREAD);
+#endif
+
+
+    start_timer();
+
+}
+
+
+/*
+
+
+void old_start_timer_thread(void)
 {
 #if defined(__APPLE__)
 	//En Mac OS X el timer en pthreads no funciona bien... lo desactivamos
@@ -337,6 +625,7 @@ void start_timer_thread(void)
     }
 
 }
+*/
 
 
 z80_bit top_speed_timer={0};
@@ -522,11 +811,12 @@ int get_timer_check_interrupt(void)
 {
     int si_saltado_interrupcion;
 
-
-    if (use_threads_timer) {
+    //Timer que salta con hilo
+    if (timer_selected==TIMER_THREAD || timer_selected==TIMER_SDL) {
 	    si_saltado_interrupcion=timer_check_interrupt_thread();
     }
 
+    //Timer de tipo Date
     else {
         si_saltado_interrupcion=timer_check_interrupt_no_thread();
     }

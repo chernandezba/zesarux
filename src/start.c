@@ -7743,7 +7743,8 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
        menu_set_menu_abierto(1);
     }
 
-	start_timer_thread();
+    init_timer();
+	//start_timer_thread();
 
 	gettimeofday(&z80_interrupts_timer_antes, NULL);
 
