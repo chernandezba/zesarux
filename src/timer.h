@@ -55,6 +55,9 @@ extern void timer_reset(void);
 extern void init_timer(void);
 extern void timer_trigger_interrupt(void);
 
+extern void start_timer(void);
+extern void stop_timer(void);
+
 extern int timer_sleep_machine;
 extern int original_timer_sleep_machine;
 extern void timer_sleep(int milisec);

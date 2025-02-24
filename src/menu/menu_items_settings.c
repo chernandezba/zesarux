@@ -9204,32 +9204,31 @@ void menu_network_settings(MENU_ITEM_PARAMETERS)
 }
 #endif
 
-void menu_settings_danger_zone_timer_set_auto(MENU_ITEM_PARAMETERS)
+void menu_settings_danger_zone_timer_set_parm(enum timer_type t)
 {
     stop_timer();
-    timer_preferred_user=TIMER_UNASSIGNED;
+    timer_preferred_user=t;
     start_timer();
+}
+
+void menu_settings_danger_zone_timer_set_auto(MENU_ITEM_PARAMETERS)
+{
+    menu_settings_danger_zone_timer_set_parm(TIMER_UNASSIGNED);
 }
 
 void menu_settings_danger_zone_timer_set_thread(MENU_ITEM_PARAMETERS)
 {
-    stop_timer();
-    timer_preferred_user=TIMER_THREAD;
-    start_timer();
+    menu_settings_danger_zone_timer_set_parm(TIMER_THREAD);
 }
 
 void menu_settings_danger_zone_timer_set_date(MENU_ITEM_PARAMETERS)
 {
-    stop_timer();
-    timer_preferred_user=TIMER_DATE;
-    start_timer();
+    menu_settings_danger_zone_timer_set_parm(TIMER_DATE);
 }
 
 void menu_settings_danger_zone_timer_set_sdl(MENU_ITEM_PARAMETERS)
 {
-    stop_timer();
-    timer_preferred_user=TIMER_SDL;
-    start_timer();
+    menu_settings_danger_zone_timer_set_parm(TIMER_SDL);
 }
 
 void menu_settings_danger_zone_timer(MENU_ITEM_PARAMETERS)
