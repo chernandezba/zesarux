@@ -43,6 +43,8 @@ extern void timer_remove_timer(enum timer_type *timer_list,enum timer_type timer
 extern enum timer_type timer_selected;
 extern enum timer_type timer_preferred_user;
 
+extern enum timer_type available_timers[];
+
 extern void timer_pause_waiting_end_frame(void);
 extern void timer_check_interrupt(void);
 extern void timer_reset(void);
