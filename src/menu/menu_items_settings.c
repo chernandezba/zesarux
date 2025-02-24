@@ -9310,13 +9310,15 @@ void menu_settings_danger_zone(MENU_ITEM_PARAMETERS)
             }
 
 
-            char current_timer_name[30];
-            timer_debug_get_timer_name(timer_selected,current_timer_name);
 
-            menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,"Current Timer");
-            menu_add_item_menu_prefijo_format(array_menu_common,"    ");
-            menu_add_item_menu_sufijo_format(array_menu_common," [%s]",current_timer_name);
         }
+
+        char current_timer_name[30];
+        timer_debug_get_timer_name(timer_selected,current_timer_name);
+
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,"Current Timer");
+        menu_add_item_menu_prefijo_format(array_menu_common,"    ");
+        menu_add_item_menu_sufijo_format(array_menu_common," [%s]",current_timer_name);
 
 
         menu_add_item_menu_separator(array_menu_common);

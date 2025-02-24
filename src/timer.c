@@ -361,7 +361,10 @@ void *thread_timer_function(void *nada)
 		//printf ("tick timer\n");
 		timer_trigger_interrupt();
 
+#ifdef USE_PTHREADS
         pthread_testcancel();
+#endif
+
 	}
 
 	//para que no se queje el compilador de variable no usada
@@ -609,14 +612,22 @@ void init_timer(void)
 #if defined(__APPLE__)
     //En Mac OS X el timer en pthreads no funciona bien... lo metemos al final de la lista de prioridades
     timer_remove_timer(available_timers,TIMER_THREAD);
+
+#ifdef USE_PTHREADS
     timer_add_timer_to_bottom(available_timers,TIMER_THREAD);
+#endif
+
 #endif
 
 
 #ifdef MINGW
     //Parece que en Windows el timer en pthreads no funciona bien... lo metemos al final de la lista de prioridades
     timer_remove_timer(available_timers,TIMER_THREAD);
+
+#ifdef USE_PTHREADS
     timer_add_timer_to_bottom(available_timers,TIMER_THREAD);
+#endif
+
 #endif
 
 
