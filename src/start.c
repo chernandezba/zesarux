@@ -1842,6 +1842,14 @@ printf (
 		"--history-item-add-poke-ptr s            Add string as history for poke pointer\n"
 		"--history-item-add-poke-value s          Add string as history for poke value\n"
 
+		"\n"
+		"\n"
+		"Danger Zone\n"
+		"-----------\n"
+		"\n"
+
+		"--preferred-timer s   Set preferred timer\n"
+
 
 		"\n\n"
 
@@ -6668,6 +6676,12 @@ int parse_cmdline_options(int desde_commandline) {
 			else if (!strcmp(argv[puntero_parametro],"--history-item-add-poke-value")) {
 				siguiente_parametro_argumento();
                 util_scanf_history_insert(menu_debug_poke_value_historial,argv[puntero_parametro]);
+			}
+
+
+			else if (!strcmp(argv[puntero_parametro],"--preferred-timer")) {
+				siguiente_parametro_argumento();
+                timer_set_preferred_by_name(argv[puntero_parametro]);
 			}
 
 

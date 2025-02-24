@@ -4464,6 +4464,13 @@ int util_write_configfile(void)
   if (avoid_christmas_mode.v)               ADD_STRING_CONFIG,"--avoid-christmas-mode");
 
 
+  if (timer_preferred_user!=TIMER_UNASSIGNED) {
+        char timer_name[TIMER_MAX_NAME];
+        timer_debug_get_timer_name(timer_preferred_user,timer_name);
+        ADD_STRING_CONFIG,"--preferred-timer %s",timer_name);
+  }
+
+
   if (do_no_show_changelog_when_update.v)     ADD_STRING_CONFIG,"--no-show-changelog");
 
   if (do_no_show_david_in_memoriam.v)         ADD_STRING_CONFIG,"--no-show-david-in-memoriam");

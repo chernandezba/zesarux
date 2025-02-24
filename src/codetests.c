@@ -2662,6 +2662,25 @@ void codetests_timer(void)
     //Validar. de manera automatica
     codetests_timer_check(codetests_timers_list,codetests_timers_list_expected_thread_bottom);
 
+    //Validacion nombres
+    enum timer_type t;
+
+    t=timer_debug_get_timer_type("sdl");
+
+    if (t!=TIMER_SDL) {
+        printf("Error converting string to timer type\n");
+        exit(1);
+    }
+
+    t=timer_debug_get_timer_type("invalid text");
+
+    //Tiene que dar indefinido=0
+    if (t!=0)  {
+        printf("Error converting string to timer type. t=%d\n",t);
+        exit(1);
+    }
+
+
 }
 
 void codetests_main(int main_argc,char *main_argv[])

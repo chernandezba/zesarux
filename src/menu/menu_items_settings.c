@@ -9285,11 +9285,11 @@ void menu_settings_danger_zone(MENU_ITEM_PARAMETERS)
 
 
     do {
-        char timer_name[30];
+        char timer_name[TIMER_MAX_NAME];
         if (timer_preferred_user==TIMER_UNASSIGNED) strcpy(timer_name,"Auto");
         else timer_debug_get_timer_name(timer_preferred_user,timer_name);
 
-        menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_settings_danger_zone_timer,NULL,"Timer");
+        menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_settings_danger_zone_timer,NULL,"Preferred Timer");
 		menu_add_item_menu_prefijo_format(array_menu_common,"    ");
         menu_add_item_menu_sufijo_format(array_menu_common," [%s]",timer_name);
 
@@ -9301,7 +9301,7 @@ void menu_settings_danger_zone(MENU_ITEM_PARAMETERS)
             int i;
 
             for (i=0;i<TIMER_LIST_MAX_SIZE && available_timers[i]!=TIMER_END;i++) {
-                char timer_priorities_name[30];
+                char timer_priorities_name[TIMER_MAX_NAME];
                 timer_debug_get_timer_name(available_timers[i],timer_priorities_name);
 
                 //printf("Timer %d Value %d string: [%s]\n",i,lista[i],timer_priorities_name);
@@ -9313,7 +9313,7 @@ void menu_settings_danger_zone(MENU_ITEM_PARAMETERS)
 
         }
 
-        char current_timer_name[30];
+        char current_timer_name[TIMER_MAX_NAME];
         timer_debug_get_timer_name(timer_selected,current_timer_name);
 
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,"Current Timer");

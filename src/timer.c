@@ -94,7 +94,69 @@ enum timer_type available_timers[TIMER_LIST_MAX_SIZE]={
     TIMER_END
 };
 
+struct s_timer_names {
+    enum timer_type timer;
+    char name[TIMER_MAX_NAME];
+};
+
+struct s_timer_names timer_names[]={
+    {TIMER_THREAD,"thread"},
+    {TIMER_DATE,"date"},
+    {TIMER_SDL,"sdl"},
+    {TIMER_UNASSIGNED,"unassigned"},
+
+    //Este siempre al final
+    {TIMER_END,"end"}
+};
+
+enum timer_type timer_selected=TIMER_UNASSIGNED;
+enum timer_type timer_preferred_user=TIMER_UNASSIGNED;
+
 void timer_debug_get_timer_name(enum timer_type timer,char *destination_string)
+{
+    int i=0;
+
+    do {
+        if (timer==timer_names[i].timer) {
+            strcpy(destination_string,timer_names[i].name);
+            return;
+        }
+
+    } while (timer_names[i++].timer!=TIMER_END);
+
+    strcpy(destination_string,"undefined");
+
+}
+
+//Convierte string a tipo timer. Retorna 0 si no coincide con nada
+enum timer_type timer_debug_get_timer_type(char *name)
+{
+    int i=0;
+
+    do {
+        if (!strcasecmp(name,timer_names[i].name)) {
+            return timer_names[i].timer;
+        }
+
+    } while (timer_names[i++].timer!=TIMER_END);
+
+    return 0;
+
+}
+
+void timer_set_preferred_by_name(char *name)
+{
+    enum timer_type t=timer_debug_get_timer_type(name);
+    if (t==0) {
+        debug_printf(VERBOSE_ERR,"Unknown timer type %s",name);
+    }
+    else {
+        timer_preferred_user=t;
+    }
+}
+
+
+void old_timer_debug_get_timer_name(enum timer_type timer,char *destination_string)
 {
     switch (timer) {
         case TIMER_THREAD:
@@ -131,7 +193,7 @@ void timer_debug_print_timer_list(enum timer_type *lista)
     int i;
 
     for (i=0;i<TIMER_LIST_MAX_SIZE;i++) {
-        char timer_name[30];
+        char timer_name[TIMER_MAX_NAME];
         timer_debug_get_timer_name(lista[i],timer_name);
 
         printf("Timer %d Value %d string: [%s]\n",i,lista[i],timer_name);
@@ -375,10 +437,7 @@ void *thread_timer_function(void *nada)
 	return NULL;
 }
 
-enum timer_type timer_selected=TIMER_UNASSIGNED;
 
-
-enum timer_type timer_preferred_user=TIMER_UNASSIGNED;
 
 
 
@@ -537,7 +596,7 @@ void start_timer(void)
     //Si el usuario tiene un timer favorito
     if (timer_preferred_user!=TIMER_UNASSIGNED) {
 
-        char timer_name[30];
+        char timer_name[TIMER_MAX_NAME];
 
         timer_debug_get_timer_name(timer_preferred_user,timer_name);
 
@@ -565,7 +624,7 @@ void start_timer(void)
     for (i=0;i<TIMER_LIST_MAX_SIZE;i++) {
         timer_selected=available_timers[i];
 
-        char timer_name[30];
+        char timer_name[TIMER_MAX_NAME];
 
         timer_debug_get_timer_name(timer_selected,timer_name);
 
