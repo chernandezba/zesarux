@@ -20,6 +20,7 @@
 */
 
 #include <stdio.h>
+
 #if defined(__APPLE__)
         #include <SDL.h>
 #else

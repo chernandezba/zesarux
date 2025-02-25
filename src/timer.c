@@ -537,7 +537,7 @@ int init_timer_selected(enum timer_type t)
         case TIMER_END:
             //Al menos el de date deberia haber inicializado
             //Pero si aun asi, lo forzamos aqui
-            printf("Can not initialize any available timer. Fallback to date timer\n");
+            debug_printf(VERBOSE_INFO,"Can not initialize any available timer. Fallback to date timer");
             timer_selected=TIMER_DATE;
             timer_init_date();
             return_init=1;
@@ -591,9 +591,7 @@ void stop_timer(void)
 
 void start_timer(void)
 {
-    printf("start_timer\n");
-
-
+    //debug_printf(VERBOSE_INFO,"Start Timer");
 
     //Si el usuario tiene un timer favorito
     if (timer_preferred_user!=TIMER_UNASSIGNED) {
@@ -602,13 +600,13 @@ void start_timer(void)
 
         timer_debug_get_timer_name(timer_preferred_user,timer_name);
 
-        printf("Trying %s preferred timer initialization\n",timer_name);
+        debug_printf(VERBOSE_INFO,"Trying %s preferred timer initialization",timer_name);
 
         timer_selected=timer_preferred_user;
 
 
         if (!init_timer_selected(timer_preferred_user)) {
-            printf("Preferred timer by the user failed initialization. Trying all available\n");
+            debug_printf(VERBOSE_INFO,"Preferred timer by the user failed initialization. Trying all available");
         }
         else {
             return;
@@ -616,8 +614,8 @@ void start_timer(void)
     }
 
     //Ir recorriendo del primero al ultimo y quedarse con el primero que de ok al inicializar
-    printf("start_timer. Try list:\n");
-    timer_debug_print_timer_list(available_timers);
+    debug_printf(VERBOSE_DEBUG,"Try available timers in order");
+    //timer_debug_print_timer_list(available_timers);
 
     int i;
 
@@ -630,14 +628,14 @@ void start_timer(void)
 
         timer_debug_get_timer_name(timer_selected,timer_name);
 
-        printf("Trying %s timer initialization\n",timer_name);
+        debug_printf(VERBOSE_DEBUG,"Trying %s timer initialization",timer_name);
 
         //Las funciones init de cada timer retornan 0 si error. No 0 si ok
         return_init=init_timer_selected(timer_selected);
 
 
         if (return_init) {
-            printf("Inicializado\n");
+            //printf("Inicializado\n");
             return;
         }
 
@@ -649,7 +647,7 @@ void start_timer(void)
 void init_timer(void)
 {
 
-    printf("Initial available timers\n");
+    debug_printf(VERBOSE_DEBUG,"Preparing available timers. Initials:");
     timer_debug_print_timer_list(available_timers);
 
     //Primero quitar o poner timers segun drivers y segun sistema operativo
@@ -665,7 +663,7 @@ void init_timer(void)
     }
 #endif
 
-    printf("Available timers after adding some\n");
+    debug_printf(VERBOSE_DEBUG,"Available timers after adding some:");
     timer_debug_print_timer_list(available_timers);
 
 
@@ -690,6 +688,9 @@ void init_timer(void)
 #endif
 
 #endif
+
+    debug_printf(VERBOSE_DEBUG,"Available timers:");
+    timer_debug_print_timer_list(available_timers);
 
 
     start_timer();

@@ -76,10 +76,7 @@ SDL_TimerID timerID;
 //Retorna 0 si error. No 0 si ok
 int commonsdl_init_timer_continue(void)
 {
-    int interval_ms= timer_sleep_machine/1000;
-    debug_printf(VERBOSE_INFO,"Initializing timer SDL for %d ms",interval_ms);
-
-    //La documentacion de SDL1 dice que el minimo de timer es 10 ms, por tanto uno como Z88, que es 5 ms, saltara realmente a 10ms
+    int interval_ms=timer_sleep_machine/1000;
 
     timerID = SDL_AddTimer( interval_ms, commonsdl_timer_callback, NULL );
     if (timerID==NULL) {
@@ -90,6 +87,32 @@ int commonsdl_init_timer_continue(void)
     else {
         return 1;
     }
+}
+
+int commonsdl_init_timer(void)
+{
+
+    debug_printf(VERBOSE_INFO,"Initializing timer SDL for %d ms",timer_sleep_machine/10000);
+
+    //SDL no permite timer < 10 ms
+    if (timer_sleep_machine<10000) {
+        debug_printf(VERBOSE_INFO,"SDL callback pretends to call at %d microsec but minimum is 10000. Can't set SDL timer",timer_sleep_machine);
+        return 0;
+    }
+
+
+    int retorno=commonsdl_init_timer_continue();
+    if (!retorno) {
+        debug_printf(VERBOSE_INFO,"Error starting SDL timer");
+        return 0;
+    }
+    else {
+        //Ok inicializado
+        return 1;
+    }
+
+
+
 }
 
 void commonsdl_stop_timer(void)
@@ -110,7 +133,7 @@ int commonsdl_init(void)
 
 	debug_printf (VERBOSE_DEBUG,"Calling SDL_Init");
 
-        if (SDL_Init(SDL_INIT_VIDEO|SDL_INIT_AUDIO|SDL_INIT_TIMER)<0) {
+    if (SDL_Init(SDL_INIT_VIDEO|SDL_INIT_AUDIO|SDL_INIT_TIMER)<0) {
 		debug_printf (VERBOSE_INFO,"Error SDL message: %s",SDL_GetError() );
 		return 1;
 	}
