@@ -51,7 +51,7 @@ Uint32 commonsdl_timer_callback( Uint32 interval, void* param )
     //Retornar 0 desde este callback significaria no volver a llamar al callback, y para evitar eso, retornamos 1
     if (return_intervalo==0) return_intervalo=1;
 
-    printf("Called Timer callback. interval called=%d return interval=%d\n",interval,return_intervalo);
+    //printf("Called Timer callback. interval called=%d return interval=%d\n",interval,return_intervalo);
 
 
     //SDL no permite timer < 10 ms
@@ -61,7 +61,7 @@ Uint32 commonsdl_timer_callback( Uint32 interval, void* param )
     //Nota: Pero en linux se supone que deberia ir bien usar un timer de threads con tiempos <10ms
     //lo que deberiamos hacer es denegar el timer de sdl, pero en windows si que deberia saltar a usar un timer de no threads
     if (timer_sleep_machine<10000) {
-        printf("SDL callback pretends to call at %d microsec but minimum is 10000. Set a non-sdl timer\n",timer_sleep_machine);
+        debug_printf(VERBOSE_INFO,"SDL callback pretends to call at %d microsec but minimum is 10000. Set a non-sdl timer",timer_sleep_machine);
         start_timer();
         //Devolvemos 0 para desactivar el timer de sdl
         return 0;
@@ -74,10 +74,10 @@ Uint32 commonsdl_timer_callback( Uint32 interval, void* param )
 SDL_TimerID timerID;
 
 //Retorna 0 si error. No 0 si ok
-int commonsdl_init_timer(void)
+int commonsdl_init_timer_continue(void)
 {
     int interval_ms= timer_sleep_machine/1000;
-    printf("Setting SDL timer for %d ms\n",interval_ms);
+    debug_printf(VERBOSE_INFO,"Initializing timer SDL for %d ms",interval_ms);
 
     //La documentacion de SDL1 dice que el minimo de timer es 10 ms, por tanto uno como Z88, que es 5 ms, saltara realmente a 10ms
 
@@ -94,7 +94,7 @@ int commonsdl_init_timer(void)
 
 void commonsdl_stop_timer(void)
 {
-    printf("SDL stop timer\n");
+    debug_printf(VERBOSE_INFO,"Stopping timer SDL");
     if (timerID!=NULL) {
         SDL_RemoveTimer(timerID);
     }

@@ -2485,7 +2485,10 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
             "Hide minimized windows","Ocultar ventanas minimizadas","Ocultar finestres minimitzades");
         menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(zxvision_hide_minimized_windows.v ? 'X' : ' ') );
         menu_add_item_menu_tooltip(array_menu_common,"Hide minimized windows");
-        menu_add_item_menu_ayuda(array_menu_common,"Hide minimized windows. Only minimized windows that are applications that can be backgrounded are hidden");
+        menu_add_item_menu_ayuda(array_menu_common,"Hide minimized windows. "
+            "Only minimized windows that are applications that can be backgrounded are hidden. "
+            "Hidden minimized windows can be seen on the Process Switcher"
+            );
         menu_add_item_menu_es_avanzado(array_menu_common);
 
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_hide_background_button_on_inactive,NULL,

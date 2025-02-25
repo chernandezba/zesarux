@@ -2845,6 +2845,8 @@ void codetests_main(int main_argc,char *main_argv[])
 	}
 	*/
 
+    printf("Codetests OK\n");
+
 	exit(0);
 }
 

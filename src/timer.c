@@ -206,7 +206,7 @@ void timer_debug_print_timer_list(enum timer_type *lista)
         char timer_name[TIMER_MAX_NAME];
         timer_debug_get_timer_name(lista[i],timer_name);
 
-        printf("Timer %d Value %d string: [%s]\n",i,lista[i],timer_name);
+        debug_printf(VERBOSE_DEBUG,"Timer %d Value %d string: [%s]",i,lista[i],timer_name);
     }
 
 }
@@ -453,14 +453,17 @@ void *thread_timer_function(void *nada)
 
 int timer_init_date(void)
 {
-    printf("timer_init_date\n");
+    debug_printf(VERBOSE_INFO,"Initializing timer Date");
     //Siempre inicializa
     return 1;
 }
 
 int timer_init_thread(void)
 {
-    printf("timer_init_thread\n");
+    //printf("timer_init_thread\n");
+    int interval_ms=timer_sleep_machine/1000;
+    debug_printf(VERBOSE_INFO,"Initializing timer Thread for %d ms",interval_ms);
+
 
 #ifdef USE_PTHREADS
     if (pthread_create( &thread_timer, NULL, &thread_timer_function, NULL) ) {
@@ -479,7 +482,8 @@ int timer_init_thread(void)
 
 void timer_stop_thread(void)
 {
-    printf("Stop timer thread\n");
+    debug_printf(VERBOSE_INFO,"Stopping timer Thread");
+
 #ifdef USE_PTHREADS
     pthread_cancel(thread_timer);
 #endif
@@ -487,26 +491,11 @@ void timer_stop_thread(void)
 
 int timer_init_sdl(void)
 {
-    printf("timer_init_sdl\n");
+    //printf("timer_init_sdl\n");
 
 #ifdef COMPILE_SDL
 
-    //SDL no permite timer < 10 ms
-    if (timer_sleep_machine<10000) {
-        printf("SDL callback pretends to call at %d microsec but minimum is 10000. Set a non-sdl timer\n",timer_sleep_machine);
-        return 0;
-    }
-
-
-    int retorno=commonsdl_init_timer();
-    if (!retorno) {
-        printf("Error starting SDL timer\n");
-        return 0;
-    }
-    else {
-        //Ok inicializado
-        return 1;
-    }
+    return commonsdl_init_timer();
 
 #endif
 
@@ -517,7 +506,7 @@ int timer_init_sdl(void)
 
 void timer_stop_sdl(void)
 {
-    printf("timer_stop_sdl\n");
+    //printf("timer_stop_sdl\n");
 
 #ifdef COMPILE_SDL
 
