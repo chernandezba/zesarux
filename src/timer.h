@@ -30,6 +30,7 @@ enum timer_type {
     TIMER_THREAD=100,
     TIMER_DATE,
     TIMER_SDL,
+    TIMER_MAC,
     TIMER_END,
     TIMER_UNASSIGNED
 };

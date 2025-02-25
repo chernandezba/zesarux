@@ -2289,6 +2289,65 @@ int scrcocoa_keymap_z88_cpc_leftz; //Tecla a la izquierda de la Z. usada en Chlo
     isMouseGrabed = FALSE;
 }
 
+
+NSTimer *timer=nil;
+
+int cocoatimeractivo=0;
+
+- (int)startTimer
+{
+    debug_printf(VERBOSE_INFO,"Initializing timer Mac for %d microsec",timer_sleep_machine);
+
+    if (timer == nil)
+    {
+        printf("timer_sleep_machine %d\n",timer_sleep_machine);
+        //NSTimeInterval ti=timer_sleep_machine/1000000.0;
+        //printf("ti= %f\n",ti);
+
+        //timer_sleep_machine en microsegundos. pasamos a segundos
+
+        timer = [NSTimer scheduledTimerWithTimeInterval:timer_sleep_machine/1000000.0
+                                                 target:self
+                                               selector:@selector(timerTickHandler)
+                                               userInfo:nil
+                                                repeats:YES];
+
+        //Error al inicializar
+        //Nota: suponemos que scheduledTimerWithTimeInterval puede fallar y dar nil en retorno, pero no estoy seguro
+        if (timer==nil) return 0;
+    }
+
+    cocoatimeractivo=1;
+
+    printf("Started Mac timer. timer=%p\n",timer);
+
+    return 1;
+}
+
+- (void)stopTimer
+{
+    //Invalidar el timer hace que no se pueda volver a llamar nunca mas, incluso al llamar a scheduledTimerWithTimeInterval
+    //Por tanto lo mejor es gestionarlo con un simple flag de activo o no activo
+    //Esto permite ir al menu de ZEsarUX, quitar este timer, poner otro, y volver a activar este
+
+    //[timer invalidate];
+    //timer = nil;
+
+    cocoatimeractivo=0;
+
+    printf("Stopped Mac timer\n");
+}
+
+- (void)timerTickHandler
+{
+    if (!cocoatimeractivo) return;
+    printf("timerTickHandler. %d\n",contador_segundo);
+    timer_trigger_interrupt();
+}
+
+
+
+
 - (void) setAbsoluteEnabled:(BOOL)tIsAbsoluteEnabled {isAbsoluteEnabled = tIsAbsoluteEnabled;}
 - (BOOL) isMouseGrabed {return isMouseGrabed;}
 - (BOOL) isAbsoluteEnabled {return isAbsoluteEnabled;}
@@ -3223,3 +3282,24 @@ int scrcocoa_init (void) {
 	return 0;
 }
 
+
+
+int scrcocoa_init_timer(void)
+{
+
+    debug_printf(VERBOSE_INFO,"Initializing timer Mac for %d microsec",timer_sleep_machine);
+
+    return [cocoaView startTimer];
+
+
+    //Ok inicializado
+    return 1;
+
+
+}
+
+void scrcocoa_stop_timer(void)
+{
+    debug_printf(VERBOSE_INFO,"Stopping timer Mac");
+    [cocoaView stopTimer];
+}

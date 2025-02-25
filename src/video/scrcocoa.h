@@ -33,6 +33,10 @@ extern z80_byte scrcocoa_lee_puerto(z80_byte puerto_h,z80_byte puerto_l);
 extern void scrcocoa_actualiza_tablas_teclado(void);
 extern void scrcocoa_debug_registers(void);
 extern void scrcocoa_messages_debug(char *s);
+
+extern int scrcocoa_init_timer(void);
+extern void scrcocoa_stop_timer(void);
+
 //estos valores son arbitrarios, solo son para meterlos en el array y luego leerlos, deben ser >255 y no repetirse
 #define COCOA_KEY_RETURN 256
 #define COCOA_KEY_TAB 257

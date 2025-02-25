@@ -98,6 +98,10 @@ pthread_t thread_timer;
 	#endif
 #endif
 
+#ifdef USE_COCOA
+    #include "scrcocoa.h"
+#endif
+
 
 enum timer_type available_timers[TIMER_LIST_MAX_SIZE]={
     TIMER_DATE,
@@ -113,6 +117,7 @@ struct s_timer_names timer_names[]={
     {TIMER_THREAD,"thread"},
     {TIMER_DATE,"date"},
     {TIMER_SDL,"sdl"},
+    {TIMER_MAC,"mac"},
     {TIMER_UNASSIGNED,"unassigned"},
 
     //Este siempre al final
@@ -516,6 +521,34 @@ void timer_stop_sdl(void)
 }
 
 
+int timer_init_mac(void)
+{
+    //printf("timer_init_mac\n");
+
+#ifdef USE_COCOA
+
+    return scrcocoa_init_timer();
+
+#endif
+
+    //no inicializa
+    return 0;
+
+}
+
+void timer_stop_mac(void)
+{
+    //printf("timer_stop_mac\n");
+
+#ifdef USE_COCOA
+
+    scrcocoa_stop_timer();
+
+#endif
+
+}
+
+
 int init_timer_selected(enum timer_type t)
 {
     int return_init=0;
@@ -531,6 +564,10 @@ int init_timer_selected(enum timer_type t)
 
         case TIMER_SDL:
             return_init=timer_init_sdl();
+        break;
+
+        case TIMER_MAC:
+            return_init=timer_init_mac();
         break;
 
         case TIMER_END:
@@ -578,6 +615,9 @@ void stop_timer(void)
             timer_stop_sdl();
         break;
 
+        case TIMER_MAC:
+            timer_stop_mac();
+        break;
 
         //Solo para que no se queje el compilador
         case TIMER_UNASSIGNED:
@@ -671,9 +711,16 @@ void init_timer(void)
     //En Mac OS X el timer en pthreads no funciona bien... lo metemos al final de la lista de prioridades
     timer_remove_timer(available_timers,TIMER_THREAD);
 
-#ifdef USE_PTHREADS
-    timer_add_timer_to_bottom(available_timers,TIMER_THREAD);
-#endif
+    #ifdef USE_PTHREADS
+        timer_add_timer_to_bottom(available_timers,TIMER_THREAD);
+    #endif
+
+    #ifdef USE_COCOA
+        //Agregar timer de Mac el primero
+        if (!strcmp(scr_new_driver_name,"cocoa")) {
+            timer_add_timer_to_top(available_timers,TIMER_MAC);
+        }
+    #endif
 
 #endif
 
@@ -961,14 +1008,15 @@ int get_timer_check_interrupt(void)
 {
     int si_saltado_interrupcion;
 
-    //Timer que salta con hilo
-    if (timer_selected==TIMER_THREAD || timer_selected==TIMER_SDL) {
-	    si_saltado_interrupcion=timer_check_interrupt_thread();
+    //Timer de tipo Date
+    if (timer_selected==TIMER_DATE) {
+        si_saltado_interrupcion=timer_check_interrupt_no_thread();
     }
 
-    //Timer de tipo Date
+
+    //Timer que salta con hilo. TIMER_THREAD, TIMER_SDL, TIMER_MAC
     else {
-        si_saltado_interrupcion=timer_check_interrupt_no_thread();
+	    si_saltado_interrupcion=timer_check_interrupt_thread();
     }
 
 
