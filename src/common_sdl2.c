@@ -92,7 +92,7 @@ int commonsdl_init_timer_continue(void)
 int commonsdl_init_timer(void)
 {
 
-    debug_printf(VERBOSE_INFO,"Initializing timer SDL for %d ms",timer_sleep_machine/10000);
+    debug_printf(VERBOSE_INFO,"Initializing timer SDL for %d microsec",timer_sleep_machine);
 
     //SDL no permite timer < 10 ms
     if (timer_sleep_machine<10000) {

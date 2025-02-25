@@ -461,8 +461,7 @@ int timer_init_date(void)
 int timer_init_thread(void)
 {
     //printf("timer_init_thread\n");
-    int interval_ms=timer_sleep_machine/1000;
-    debug_printf(VERBOSE_INFO,"Initializing timer Thread for %d ms",interval_ms);
+    debug_printf(VERBOSE_INFO,"Initializing timer Thread for %d microsec",timer_sleep_machine);
 
 
 #ifdef USE_PTHREADS
