@@ -3221,6 +3221,27 @@ void realjoystick_cocoa_main(void)
     //de momento esto no hace nada, ya que los eventos de pulsaciones se reciben directamente
 }
 
+int scrcocoa_init_timer(void)
+{
+
+    debug_printf(VERBOSE_INFO,"Initializing timer Mac for %d microsec",timer_sleep_machine);
+
+    return [cocoaView startTimer];
+
+
+    //Ok inicializado
+    return 1;
+
+
+}
+
+void scrcocoa_stop_timer(void)
+{
+    debug_printf(VERBOSE_INFO,"Stopping timer Mac");
+    [cocoaView stopTimer];
+}
+
+
 int scrcocoa_init (void) {
 
 
@@ -3309,27 +3330,19 @@ int scrcocoa_init (void) {
     realjoystick_initialize_joystick();
 
 
+
+    //En Mac OS X el timer en pthreads no funciona bien... lo metemos al final de la lista de prioridades
+    #ifdef USE_PTHREADS
+        timer_remove_timer(available_timers,TIMER_THREAD);
+        timer_add_timer_to_bottom_thread();
+    #endif
+
+
+    timer_add_timer_to_top(available_timers,TIMER_MAC,"mac",scrcocoa_init_timer,scrcocoa_stop_timer);
+
+
 	return 0;
 }
 
 
 
-int scrcocoa_init_timer(void)
-{
-
-    debug_printf(VERBOSE_INFO,"Initializing timer Mac for %d microsec",timer_sleep_machine);
-
-    return [cocoaView startTimer];
-
-
-    //Ok inicializado
-    return 1;
-
-
-}
-
-void scrcocoa_stop_timer(void)
-{
-    debug_printf(VERBOSE_INFO,"Stopping timer Mac");
-    [cocoaView stopTimer];
-}

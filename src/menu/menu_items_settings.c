@@ -9209,7 +9209,7 @@ void menu_network_settings(MENU_ITEM_PARAMETERS)
 
 void menu_settings_danger_zone_timer_set_parm(enum timer_type t)
 {
-    stop_timer();
+    //TODO stop_timer();
     timer_preferred_user=t;
     start_timer();
 }

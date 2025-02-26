@@ -186,9 +186,10 @@ void timer_debug_print_timer_list(struct s_zesarux_timer *lista)
 
     for (i=0;i<TIMER_LIST_MAX_SIZE;i++) {
         char timer_name[TIMER_MAX_NAME];
-        timer_debug_get_timer_name(lista[i].timer,timer_name);
+        //timer_debug_get_timer_name(lista[i].timer,timer_name);
 
         debug_printf(VERBOSE_DEBUG,"Timer %d Value %d string: [%s]",i,lista[i],timer_name);
+        printf("Timer %d Value %d string: [%s]\n",i,lista[i].timer,lista[i].name);
     }
 
 }
@@ -241,21 +242,21 @@ void timer_add_timer_to_bottom(struct s_zesarux_timer *timer_list,enum timer_typ
 
 
     timer_list[i+1].timer=TIMER_END;
-    strcpy(timer_list[i].name,"end");
-    timer_list[i].start=NULL;
-    timer_list[i].stop=NULL;
+    strcpy(timer_list[i+1].name,"end");
+    timer_list[i+1].start=NULL;
+    timer_list[i+1].stop=NULL;
 
 }
 
 //Quito un temporizador de la lista
-void timer_remove_timer(enum timer_type *timer_list,enum timer_type timer_to_remove)
+void timer_remove_timer(struct s_zesarux_timer *timer_list,enum timer_type timer_to_remove)
 {
 
     //Primero buscarlo
     int i;
 
     for (i=0;i<TIMER_LIST_MAX_SIZE;i++) {
-        if (timer_list[i]==timer_to_remove) break;
+        if (timer_list[i].timer==timer_to_remove) break;
     }
 
     if (i==TIMER_LIST_MAX_SIZE) {
@@ -266,7 +267,10 @@ void timer_remove_timer(enum timer_type *timer_list,enum timer_type timer_to_rem
     //Mover todos hacia el que queremos borrar
 
     for (;i<TIMER_LIST_MAX_SIZE-1;i++) {
-       timer_list[i]=timer_list[i+1];
+       timer_list[i].timer=timer_list[i+1].timer;
+       strcpy(timer_list[i].name,timer_list[i+1].name);
+       timer_list[i].start=timer_list[i+1].start;
+       timer_list[i].stop=timer_list[i+1].stop;
     }
 
 
@@ -454,6 +458,11 @@ int timer_init_date(void)
     return 1;
 }
 
+void timer_stop_date(void)
+{
+    //No hace nada realmente
+}
+
 int timer_init_thread(void)
 {
     //printf("timer_init_thread\n");
@@ -540,7 +549,7 @@ void timer_stop_mac(void)
 }
 
 
-int init_timer_selected(enum timer_type t)
+int old_init_timer_selected(enum timer_type t)
 {
     int return_init=0;
 
@@ -580,7 +589,7 @@ int init_timer_selected(enum timer_type t)
 
 }
 
-void stop_timer(void)
+void old_stop_timer(void)
 {
 
     enum timer_type t;
@@ -624,7 +633,9 @@ void start_timer(void)
     //debug_printf(VERBOSE_INFO,"Start Timer");
 
     //Si el usuario tiene un timer favorito
-    if (timer_preferred_user!=TIMER_UNASSIGNED) {
+
+    //TODO
+    /*if (timer_preferred_user!=TIMER_UNASSIGNED) {
 
         char timer_name[TIMER_MAX_NAME];
 
@@ -642,26 +653,33 @@ void start_timer(void)
             return;
         }
     }
+    */
 
     //Ir recorriendo del primero al ultimo y quedarse con el primero que de ok al inicializar
     debug_printf(VERBOSE_DEBUG,"Try available timers in order");
-    //timer_debug_print_timer_list(available_timers);
+    printf("Try available timers in order\n");
+    timer_debug_print_timer_list(available_timers);
 
     int i;
 
     int return_init=0;
 
     for (i=0;i<TIMER_LIST_MAX_SIZE;i++) {
-        timer_selected=available_timers[i];
+        timer_selected=available_timers[i].timer;
 
         char timer_name[TIMER_MAX_NAME];
 
-        timer_debug_get_timer_name(timer_selected,timer_name);
+        //timer_debug_get_timer_name(timer_selected,timer_name);
+        strcpy(timer_name,available_timers[i].name);
 
         debug_printf(VERBOSE_DEBUG,"Trying %s timer initialization",timer_name);
 
+        printf("Trying %s timer initialization\n",timer_name);
+
         //Las funciones init de cada timer retornan 0 si error. No 0 si ok
-        return_init=init_timer_selected(timer_selected);
+        //return_init=init_timer_selected(timer_selected);
+
+        return_init=available_timers[i].start();
 
 
         if (return_init) {
@@ -673,6 +691,15 @@ void start_timer(void)
 
 }
 
+void timer_add_timer_to_top_thread(void)
+{
+    timer_add_timer_to_top(available_timers,TIMER_THREAD,"thread",timer_init_thread,timer_stop_thread);
+}
+
+void timer_add_timer_to_bottom_thread(void)
+{
+    timer_add_timer_to_bottom(available_timers,TIMER_THREAD,"thread",timer_init_thread,timer_stop_thread);
+}
 
 void init_timer(void)
 {
@@ -682,8 +709,11 @@ void init_timer(void)
 
     //Primero quitar o poner timers segun drivers y segun sistema operativo
 
+    //Date siempre disponible
+    timer_add_timer_to_top(available_timers,TIMER_DATE,"date",timer_init_date,timer_stop_date);
+
 #ifdef USE_PTHREADS
-    timer_add_timer_to_top(available_timers,TIMER_THREAD);
+    timer_add_timer_to_top_thread();
 #endif
 
 
@@ -698,30 +728,12 @@ void init_timer(void)
 
 
 
-#if defined(__APPLE__)
-    //En Mac OS X el timer en pthreads no funciona bien... lo metemos al final de la lista de prioridades
-    timer_remove_timer(available_timers,TIMER_THREAD);
-
-    #ifdef USE_PTHREADS
-        timer_add_timer_to_bottom(available_timers,TIMER_THREAD);
-    #endif
-
-    #ifdef USE_COCOA
-        //Agregar timer de Mac el primero
-        if (!strcmp(scr_new_driver_name,"cocoa")) {
-            timer_add_timer_to_top(available_timers,TIMER_MAC);
-        }
-    #endif
-
-#endif
-
-
 #ifdef MINGW
     //Parece que en Windows el timer en pthreads no funciona bien... lo metemos al final de la lista de prioridades
     timer_remove_timer(available_timers,TIMER_THREAD);
 
 #ifdef USE_PTHREADS
-    timer_add_timer_to_bottom(available_timers,TIMER_THREAD);
+    timer_add_timer_to_bottom_thread();
 #endif
 
 #endif
@@ -729,8 +741,6 @@ void init_timer(void)
     debug_printf(VERBOSE_DEBUG,"Available timers:");
     timer_debug_print_timer_list(available_timers);
 
-
-    start_timer();
 
 }
 

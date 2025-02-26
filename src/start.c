@@ -7423,6 +7423,8 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
 	//el tamaño de zx desktop se multiplica por el gui zoom y entonces la memoria a asignar del driver de video es mayor
     set_menu_gui_zoom();
 
+    //Preparar los timers disponibles
+    init_timer();
 
     //Inicializamos Video antes que el resto de cosas.
     main_init_video();
@@ -7757,7 +7759,8 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
        menu_set_menu_abierto(1);
     }
 
-    init_timer();
+    //Iniciar el timer
+    start_timer();
 	//start_timer_thread();
 
 	gettimeofday(&z80_interrupts_timer_antes, NULL);

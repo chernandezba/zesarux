@@ -38,17 +38,6 @@ enum timer_type {
 #define TIMER_LIST_MAX_SIZE 10
 #define TIMER_MAX_NAME 30
 
-extern void timer_debug_get_timer_name(enum timer_type timer,char *destination_string);
-extern enum timer_type timer_debug_get_timer_type(char *name);
-extern void timer_add_timer_to_top(struct s_zesarux_timer *timer_list,enum timer_type timer_to_add,char *name,int (*start)(void),void (*stop)(void));
-extern void timer_add_timer_to_bottom(struct s_zesarux_timer *timer_list,enum timer_type timer_to_add,char *name,int (*start)(void),void (*stop)(void));
-
-extern void timer_remove_timer(enum timer_type *timer_list,enum timer_type timer_to_remove);
-extern void timer_set_preferred_by_name(char *name);
-
-extern enum timer_type timer_selected;
-extern enum timer_type timer_preferred_user;
-
 struct s_zesarux_timer {
     enum timer_type timer;
     char name[TIMER_MAX_NAME];
@@ -57,6 +46,19 @@ struct s_zesarux_timer {
 };
 
 extern struct s_zesarux_timer available_timers[];
+
+extern void timer_debug_get_timer_name(enum timer_type timer,char *destination_string);
+extern enum timer_type timer_debug_get_timer_type(char *name);
+extern void timer_add_timer_to_top(struct s_zesarux_timer *timer_list,enum timer_type timer_to_add,char *name,int (*start)(void),void (*stop)(void));
+extern void timer_add_timer_to_bottom(struct s_zesarux_timer *timer_list,enum timer_type timer_to_add,char *name,int (*start)(void),void (*stop)(void));
+
+extern void timer_remove_timer(struct s_zesarux_timer *timer_list,enum timer_type timer_to_remove);
+extern void timer_set_preferred_by_name(char *name);
+
+extern enum timer_type timer_selected;
+extern enum timer_type timer_preferred_user;
+
+
 
 //extern enum timer_type available_timers[];
 

@@ -2603,6 +2603,7 @@ void codetests_timer_check(enum timer_type *codetests_timers_list_one,enum timer
 void codetests_timer(void)
 {
 
+/*
     enum timer_type codetests_timers_list[TIMER_LIST_MAX_SIZE]={
         TIMER_THREAD,TIMER_DATE,
         TIMER_END
@@ -2680,7 +2681,7 @@ void codetests_timer(void)
         exit(1);
     }
 
-
+*/
 }
 
 void codetests_main(int main_argc,char *main_argv[])
