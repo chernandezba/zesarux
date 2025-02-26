@@ -110,7 +110,7 @@ Otros archivos como .tap etc se pueden pulsar (como ahora con los accesos direct
 
 ok *lista de disponibles tiene que tener estructura que apunte a inicio y fin, el numero de tipo enum, y el string de texto
 
-*al desregistrarse, si ese driver estaba activo, hay que inicializar de nuevo al que este disponible (o el preferido del usuario)
+ok*al desregistrarse, si ese driver estaba activo, hay que inicializar de nuevo al que este disponible (o el preferido del usuario)
 
 *vigilar llamadas a stop y start de driver video que se hacen (creo) al cambiar zoom o quitar border. al hacer stop del driver,
 se quita de disponible y si esta activo, se inicializa otro. pero al hacer start , luego al cambiar zoom etc debe inicializar de nuevo

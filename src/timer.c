@@ -248,6 +248,18 @@ void timer_add_timer_to_bottom(struct s_zesarux_timer *timer_list,enum timer_typ
 
 }
 
+int timer_find(struct s_zesarux_timer *timer_list,enum timer_type timer_to_find)
+{
+    int i;
+
+    for (i=0;i<TIMER_LIST_MAX_SIZE;i++) {
+        if (timer_list[i].timer==timer_to_find) return i;
+    }
+
+    return -1;
+
+}
+
 //Quito un temporizador de la lista
 void timer_remove_timer(struct s_zesarux_timer *timer_list,enum timer_type timer_to_remove)
 {
@@ -639,32 +651,54 @@ void old_stop_timer(void)
 
 }
 
+int start_timer_specified(struct s_zesarux_timer *t)
+{
+    int (*start_function)(void);
+    start_function=t->start;
+
+    if (start_function==NULL) {
+        cpu_panic("Timer start function is NULL");
+    }
+
+    int return_init=start_function();
+
+    return return_init;
+}
+
 void start_timer(void)
 {
     //debug_printf(VERBOSE_INFO,"Start Timer");
 
     //Si el usuario tiene un timer favorito
 
-    //TODO
-    /*if (timer_preferred_user!=TIMER_UNASSIGNED) {
+    if (timer_preferred_user!=TIMER_UNASSIGNED) {
 
-        char timer_name[TIMER_MAX_NAME];
+        int pos=timer_find(available_timers,timer_preferred_user);
 
-        timer_debug_get_timer_name(timer_preferred_user,timer_name);
+        if (pos>=0) {
 
-        debug_printf(VERBOSE_INFO,"Trying %s preferred timer initialization",timer_name);
+            char timer_name[TIMER_MAX_NAME];
 
-        timer_selected=timer_preferred_user;
+            //timer_debug_get_timer_name(timer_preferred_user,timer_name);
+            strcpy(timer_name,available_timers[pos].name);
+
+            debug_printf(VERBOSE_INFO,"Trying %s preferred timer initialization",timer_name);
+
+            printf("Trying %s preferred timer initialization\n",timer_name);
+
+            timer_selected=timer_preferred_user;
 
 
-        if (!init_timer_selected(timer_preferred_user)) {
-            debug_printf(VERBOSE_INFO,"Preferred timer by the user failed initialization. Trying all available");
-        }
-        else {
-            return;
+            //if (!init_timer_selected(timer_preferred_user)) {
+            if (!start_timer_specified(&available_timers[pos])) {
+                debug_printf(VERBOSE_INFO,"Preferred timer by the user failed initialization. Trying all available");
+            }
+            else {
+                return;
+            }
         }
     }
-    */
+
 
     //Ir recorriendo del primero al ultimo y quedarse con el primero que de ok al inicializar
     debug_printf(VERBOSE_DEBUG,"Try available timers in order");
@@ -690,11 +724,12 @@ void start_timer(void)
         //Las funciones init de cada timer retornan 0 si error. No 0 si ok
         //return_init=init_timer_selected(timer_selected);
 
-        return_init=available_timers[i].start();
+        return_init=start_timer_specified(&available_timers[i]);
+
 
 
         if (return_init) {
-            //printf("Inicializado\n");
+            printf("Inicializado\n");
             return;
         }
 
