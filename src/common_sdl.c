@@ -93,6 +93,7 @@ int commonsdl_init_timer(void)
 {
 
     debug_printf(VERBOSE_INFO,"Initializing timer SDL for %d microsec",timer_sleep_machine);
+    printf("Initializing timer SDL for %d microsec\n",timer_sleep_machine);
 
     //SDL no permite timer < 10 ms
     if (timer_sleep_machine<10000) {
@@ -118,6 +119,7 @@ int commonsdl_init_timer(void)
 void commonsdl_stop_timer(void)
 {
     debug_printf(VERBOSE_INFO,"Stopping timer SDL");
+    printf("Stopping timer SDL\n");
     if (timerID!=NULL) {
         SDL_RemoveTimer(timerID);
     }
@@ -138,6 +140,9 @@ int commonsdl_init(void)
 		return 1;
 	}
 
+    timer_add_timer_to_top(available_timers,TIMER_SDL,"sdl",commonsdl_init_timer,commonsdl_stop_timer);
+
+
 	return 0;
 
 }
@@ -148,6 +153,10 @@ void commonsdl_end(void)
 
 	//Aun hay algun driver funcionando. Volvemos sin hacer nada
 	if (audiosdl_inicializado.v || scrsdl_inicializado.v) return;
+
+    //Desregistrar timer sdl
+    timer_remove_timer(available_timers,TIMER_SDL);
+
 
 	debug_printf (VERBOSE_DEBUG,"Calling SDL_Quit");
 

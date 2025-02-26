@@ -129,3 +129,5 @@ el timer. y por tanto el timer sdl no se llamara y se queda colgado
 *al agregar un timer no deberia agregarse si ya existe en la lista de disponibles. no deberia suceder nunca, en teoria, agregar uno ya disponible,
 pero por si acaso
 
+*corregir seleccion timer desde menu -  partes comentadas
+*si se puede quitar funciones que convierten de id timer a string y viceversa

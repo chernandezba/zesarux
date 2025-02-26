@@ -807,11 +807,7 @@ void init_timer(void)
 #endif
 
 
-#ifdef COMPILE_SDL
-    if (!strcmp(scr_new_driver_name,"sdl")) {
-        timer_add_timer_to_top(available_timers,TIMER_SDL);
-    }
-#endif
+
 
     debug_printf(VERBOSE_DEBUG,"Available timers after adding some:");
     timer_debug_print_timer_list(available_timers);
