@@ -138,3 +138,5 @@ Eso evitaría tener que comprobar en las funciones de trigger timer de  Mac y sd
 
 *preferred timer thread en linux, deja sdl fuera de la lista
 *preferred timer thread en sdl no aparece sdl en la lista. quiza por el orden de actuacion de dicho parametro preferred timer
+
+*pendiente probar en windows
