@@ -107,13 +107,19 @@ Otros archivos como .tap etc se pueden pulsar (como ahora con los accesos direct
 
 -Nueva manera de usar los timers:
 *cada driver se registra como disponible o se desregistra al finalizar el driver
-*lista de disponibles tiene que tener estructura que apunte a inicio y fin, el numero de tipo enum, y el string de texto
+
+ok *lista de disponibles tiene que tener estructura que apunte a inicio y fin, el numero de tipo enum, y el string de texto
+
 *al desregistrarse, si ese driver estaba activo, hay que inicializar de nuevo al que este disponible (o el preferido del usuario)
+
 *vigilar llamadas a stop y start de driver video que se hacen (creo) al cambiar zoom o quitar border. al hacer stop del driver,
 se quita de disponible y si esta activo, se inicializa otro. pero al hacer start , luego al cambiar zoom etc debe inicializar de nuevo
 el timer al disponible (o preferido). Asi si tenemos por ejemplo sdl timer, al hacer stop y start al final tenemos que seguir usando sdl timer
+
 *disponibles se compila hardcoded con timer date (asi como sus funciones start y stop)
-* timer thread por ejemplo se registra al inicio de init_timer() siempre que este compilado soporte de threads
+
+ok * timer thread por ejemplo se registra al inicio de init_timer() siempre que este compilado soporte de threads
+
 * podrian haber otros timers que no estuvieran vinculados a un driver de video, como algun driver de sonido por ejemplo (si es que es posible)
 
 *Ahora por ejemplo si inicio --vo sdl y --ao pulse, si cambio de driver de video desde el menu, finaliza sdl y tambien finaliza

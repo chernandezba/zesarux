@@ -3066,6 +3066,10 @@ void scrcocoa_end(void)
 
     //Conservar estado joystick por si se cierra y abre driver, como ejemplo de quitar border, conservar valor anterior
     scrcocoa_ultimo_estado_realjoystick_present=realjoystick_present.v;
+
+    //Desregistrar timer mac
+    timer_remove_timer(available_timers,TIMER_MAC);
+
 }
 
 

@@ -264,6 +264,12 @@ void timer_remove_timer(struct s_zesarux_timer *timer_list,enum timer_type timer
         return;
     }
 
+    //Si el timer activo es el que quitamos, tenemos que parar ese timer
+    if (timer_to_remove==timer_selected) {
+        printf("Stopping current timer as it has been deleted\n");
+        timer_list[i].stop();
+    }
+
     //Mover todos hacia el que queremos borrar
 
     for (;i<TIMER_LIST_MAX_SIZE-1;i++) {
@@ -273,6 +279,11 @@ void timer_remove_timer(struct s_zesarux_timer *timer_list,enum timer_type timer
        timer_list[i].stop=timer_list[i+1].stop;
     }
 
+    //Si el timer activo es el que quitamos, tenemos que inicializar el timer disponible
+    if (timer_to_remove==timer_selected) {
+        printf("Starting available timer as the current timer has been deleted\n");
+        start_timer();
+    }
 
 }
 
