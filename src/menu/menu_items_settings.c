@@ -9314,9 +9314,9 @@ void menu_settings_danger_zone(MENU_ITEM_PARAMETERS)
 
             int i;
 
-            for (i=0;i<TIMER_LIST_MAX_SIZE && available_timers[i]!=TIMER_END;i++) {
+            for (i=0;i<TIMER_LIST_MAX_SIZE && available_timers[i].timer!=TIMER_END;i++) {
                 char timer_priorities_name[TIMER_MAX_NAME];
-                timer_debug_get_timer_name(available_timers[i],timer_priorities_name);
+                timer_debug_get_timer_name(available_timers[i].timer,timer_priorities_name);
 
                 //printf("Timer %d Value %d string: [%s]\n",i,lista[i],timer_priorities_name);
                 menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,timer_priorities_name);

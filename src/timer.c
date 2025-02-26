@@ -103,9 +103,16 @@ pthread_t thread_timer;
 #endif
 
 
-enum timer_type available_timers[TIMER_LIST_MAX_SIZE]={
+
+
+
+/*enum timer_type available_timers[TIMER_LIST_MAX_SIZE]={
     TIMER_DATE,
     TIMER_END
+};*/
+
+struct s_zesarux_timer available_timers[TIMER_LIST_MAX_SIZE]={
+    { TIMER_END,"end",NULL,NULL}
 };
 
 struct s_timer_names {
@@ -171,45 +178,15 @@ void timer_set_preferred_by_name(char *name)
 }
 
 
-void old_timer_debug_get_timer_name(enum timer_type timer,char *destination_string)
-{
-    switch (timer) {
-        case TIMER_THREAD:
-            strcpy(destination_string,"thread");
-        break;
 
-        case TIMER_DATE:
-            strcpy(destination_string,"date");
-        break;
 
-        case TIMER_SDL:
-            strcpy(destination_string,"sdl");
-        break;
-
-        //Este no deberia suceder nunca pero por si acaso
-        case TIMER_END:
-            strcpy(destination_string,"end");
-        break;
-
-        case TIMER_UNASSIGNED:
-            strcpy(destination_string,"unasigned");
-        break;
-
-        default:
-            strcpy(destination_string,"undefined");
-        break;
-
-    }
-
-}
-
-void timer_debug_print_timer_list(enum timer_type *lista)
+void timer_debug_print_timer_list(struct s_zesarux_timer *lista)
 {
     int i;
 
     for (i=0;i<TIMER_LIST_MAX_SIZE;i++) {
         char timer_name[TIMER_MAX_NAME];
-        timer_debug_get_timer_name(lista[i],timer_name);
+        timer_debug_get_timer_name(lista[i].timer,timer_name);
 
         debug_printf(VERBOSE_DEBUG,"Timer %d Value %d string: [%s]",i,lista[i],timer_name);
     }
@@ -218,30 +195,36 @@ void timer_debug_print_timer_list(enum timer_type *lista)
 
 //Agrega un temporizador al principio de la list
 //Nota: siempre le paso el puntero al array asi puedo tener diferentes arrays, uno para los timers normales y el otro para codetests
-void timer_add_timer_to_top(enum timer_type *timer_list,enum timer_type timer_to_add)
+void timer_add_timer_to_top(struct s_zesarux_timer *timer_list,enum timer_type timer_to_add,char *name,int (*start)(void),void (*stop)(void))
 {
 
     //Mover todos hacia abajo
     int i;
 
     for (i=TIMER_LIST_MAX_SIZE-1;i>=1;i--) {
-       timer_list[i]=timer_list[i-1];
+       timer_list[i].timer=timer_list[i-1].timer;
+       strcpy(timer_list[i].name,timer_list[i-1].name);
+       timer_list[i].start=timer_list[i-1].start;
+       timer_list[i].stop=timer_list[i-1].stop;
     }
 
     //Agregar al primero
-    timer_list[0]=timer_to_add;
+    timer_list[0].timer=timer_to_add;
+    strcpy(timer_list[0].name,name);
+    timer_list[0].start=start;
+    timer_list[0].stop=stop;
 
 }
 
 //Agrega un temporizador al final de la lista
-void timer_add_timer_to_bottom(enum timer_type *timer_list,enum timer_type timer_to_add)
+void timer_add_timer_to_bottom(struct s_zesarux_timer *timer_list,enum timer_type timer_to_add,char *name,int (*start)(void),void (*stop)(void))
 {
 
     //Mover todos hacia abajo
     int i;
 
     for (i=0;i<TIMER_LIST_MAX_SIZE-1;i++) {
-       if (timer_list[i]==TIMER_END) break;
+       if (timer_list[i].timer==TIMER_END) break;
     }
 
     //Ver que no estemos en el ultimo (que seria el TIMER_END) y no habria sitio para meter otro
@@ -251,8 +234,16 @@ void timer_add_timer_to_bottom(enum timer_type *timer_list,enum timer_type timer
         return;
     }
 
-    timer_list[i]=timer_to_add;
-    timer_list[i+1]=TIMER_END;
+    timer_list[i].timer=timer_to_add;
+    strcpy(timer_list[i].name,name);
+    timer_list[i].start=start;
+    timer_list[i].stop=stop;
+
+
+    timer_list[i+1].timer=TIMER_END;
+    strcpy(timer_list[i].name,"end");
+    timer_list[i].start=NULL;
+    timer_list[i].stop=NULL;
 
 }
 
