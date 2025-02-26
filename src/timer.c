@@ -713,6 +713,8 @@ void start_timer(void)
 
     if (timer_preferred_user!=TIMER_UNASSIGNED) {
 
+        printf("Trying preferred timer %d initialization\n",timer_preferred_user);
+
         int pos=timer_find(available_timers,timer_preferred_user);
 
         if (pos>=0) {

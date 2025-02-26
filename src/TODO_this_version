@@ -130,4 +130,11 @@ el timer. y por tanto el timer sdl no se llamara y se queda colgado
 pero por si acaso
 
 *corregir seleccion timer desde menu -  partes comentadas
+
 *si se puede quitar funciones que convierten de id timer a string y viceversa
+
+*Quizá cuando se define timer sleep machine, si hay cambio de frecuencia, hacer stop timer y rellamar a set timer , pasando por auto o preferred
+Eso evitaría tener que comprobar en las funciones de trigger timer de  Mac y sdl si hay cambio de frecuencia o si frecuencia < 10 ms
+
+*preferred timer thread en linux, deja sdl fuera de la lista
+*preferred timer thread en sdl no aparece sdl en la lista. quiza por el orden de actuacion de dicho parametro preferred timer
