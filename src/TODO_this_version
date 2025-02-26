@@ -126,7 +126,7 @@ ok * timer thread por ejemplo se registra al inicio de init_timer() siempre que 
 el timer. y por tanto el timer sdl no se llamara y se queda colgado
 *buscar todos los sitios donde se hace video driver stop y ver sus implicaciones (scr_end_pantalla)
 *timer date nunca se deberia llamar a stop en teoria. siempre deberia estar disponible
-*al agregar un timer no deberia agregarse si ya existe en la lista de disponibles. no deberia suceder nunca, en teoria, agregar uno ya disponible,
+ok*al agregar un timer no deberia agregarse si ya existe en la lista de disponibles. no deberia suceder nunca, en teoria, agregar uno ya disponible,
 pero por si acaso
 
 *corregir seleccion timer desde menu -  partes comentadas
@@ -138,5 +138,6 @@ Eso evitaría tener que comprobar en las funciones de trigger timer de  Mac y sd
 
 *preferred timer thread en linux, deja sdl fuera de la lista
 *preferred timer thread en sdl no aparece sdl en la lista. quiza por el orden de actuacion de dicho parametro preferred timer
+*sdl parece que se inicializa dos veces??
 
 *pendiente probar en windows
