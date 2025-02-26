@@ -93,7 +93,7 @@ int commonsdl_init_timer(void)
 {
 
     debug_printf(VERBOSE_INFO,"Initializing timer SDL for %d microsec",timer_sleep_machine);
-    printf("Initializing timer SDL for %d microsec\n",timer_sleep_machine);
+    printf("Initializing timer SDL2 for %d microsec\n",timer_sleep_machine);
 
     //SDL no permite timer < 10 ms
     if (timer_sleep_machine<10000) {
@@ -119,7 +119,7 @@ int commonsdl_init_timer(void)
 void commonsdl_stop_timer(void)
 {
     debug_printf(VERBOSE_INFO,"Stopping timer SDL");
-    printf("Stopping timer SDL\n");
+    printf("Stopping timer SDL2\n");
     if (timerID!=NULL) {
         SDL_RemoveTimer(timerID);
     }
