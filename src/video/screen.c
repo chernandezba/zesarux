@@ -15478,6 +15478,12 @@ int screen_init_pantalla_and_others(void)
 	//printf ("screen_init_pantalla_and_others\n");
 	//menu_init_footer();
 
+    //Y volver a seleccionar el timer deseado, pues puede haber desaparecido el que estaba activo,
+    //en ese caso al volver a activar el driver de video aparece en la lista pero no sera el activo
+    stop_current_timer();
+
+    start_timer();
+
 	return retorno;
 }
 

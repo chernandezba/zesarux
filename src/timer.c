@@ -175,6 +175,8 @@ void timer_set_preferred_by_name(char *name)
     else {
         timer_preferred_user=t;
     }
+
+    printf("Timer set: %d\n",t);
 }
 
 
@@ -194,10 +196,29 @@ void timer_debug_print_timer_list(struct s_zesarux_timer *lista)
 
 }
 
+int timer_find(struct s_zesarux_timer *timer_list,enum timer_type timer_to_find)
+{
+    int i;
+
+    for (i=0;i<TIMER_LIST_MAX_SIZE;i++) {
+        if (timer_list[i].timer==timer_to_find) return i;
+    }
+
+    return -1;
+
+}
+
 //Agrega un temporizador al principio de la list
 //Nota: siempre le paso el puntero al array asi puedo tener diferentes arrays, uno para los timers normales y el otro para codetests
 void timer_add_timer_to_top(struct s_zesarux_timer *timer_list,enum timer_type timer_to_add,char *name,int (*start)(void),void (*stop)(void))
 {
+
+    //No agregar si ya esta
+    if (timer_find(available_timers,timer_to_add)>=0) {
+        printf("Timer %s already exists\n",name);
+        return;
+    }
+
 
     //Mover todos hacia abajo
     int i;
@@ -220,6 +241,12 @@ void timer_add_timer_to_top(struct s_zesarux_timer *timer_list,enum timer_type t
 //Agrega un temporizador al final de la lista
 void timer_add_timer_to_bottom(struct s_zesarux_timer *timer_list,enum timer_type timer_to_add,char *name,int (*start)(void),void (*stop)(void))
 {
+
+    //No agregar si ya esta
+    if (timer_find(available_timers,timer_to_add)>=0) {
+        printf("Timer %s already exists\n",name);
+        return;
+    }
 
     //Mover todos hacia abajo
     int i;
@@ -248,17 +275,7 @@ void timer_add_timer_to_bottom(struct s_zesarux_timer *timer_list,enum timer_typ
 
 }
 
-int timer_find(struct s_zesarux_timer *timer_list,enum timer_type timer_to_find)
-{
-    int i;
 
-    for (i=0;i<TIMER_LIST_MAX_SIZE;i++) {
-        if (timer_list[i].timer==timer_to_find) return i;
-    }
-
-    return -1;
-
-}
 
 //Quito un temporizador de la lista
 void timer_remove_timer(struct s_zesarux_timer *timer_list,enum timer_type timer_to_remove)
@@ -299,6 +316,29 @@ void timer_remove_timer(struct s_zesarux_timer *timer_list,enum timer_type timer
 
 }
 
+
+void stop_current_timer(void)
+{
+
+    int pos=timer_find(available_timers,timer_selected);
+
+    if (pos>=0) {
+
+        void (*stop_function)(void);
+        stop_function=available_timers[pos].stop;
+
+        if (stop_function==NULL) {
+            cpu_panic("Timer stop function is NULL");
+        }
+
+        stop_function();
+    }
+    else {
+        printf("Can not stop current timer as it can not be found\n");
+    }
+
+
+}
 
 
 int timer_pthread_generada=0;
@@ -697,6 +737,10 @@ void start_timer(void)
                 return;
             }
         }
+
+        else {
+            printf("Preferred timer %d not found\n",timer_preferred_user);
+        }
     }
 
 
@@ -729,7 +773,7 @@ void start_timer(void)
 
 
         if (return_init) {
-            printf("Inicializado\n");
+            printf("Inicializado %s timer\n",timer_name);
             return;
         }
 

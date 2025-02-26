@@ -106,17 +106,17 @@ Otros archivos como .tap etc se pueden pulsar (como ahora con los accesos direct
 -Mac timer. probar diferentes escenarios. probar con Z88 y lemmings. probar con carga desde cinta real
 
 -Nueva manera de usar los timers:
-*cada driver se registra como disponible o se desregistra al finalizar el driver
+ok*cada driver se registra como disponible o se desregistra al finalizar el driver
 
 ok *lista de disponibles tiene que tener estructura que apunte a inicio y fin, el numero de tipo enum, y el string de texto
 
 ok*al desregistrarse, si ese driver estaba activo, hay que inicializar de nuevo al que este disponible (o el preferido del usuario)
 
-*vigilar llamadas a stop y start de driver video que se hacen (creo) al cambiar zoom o quitar border. al hacer stop del driver,
+ok *vigilar llamadas a stop y start de driver video que se hacen (creo) al cambiar zoom o quitar border. al hacer stop del driver,
 se quita de disponible y si esta activo, se inicializa otro. pero al hacer start , luego al cambiar zoom etc debe inicializar de nuevo
 el timer al disponible (o preferido). Asi si tenemos por ejemplo sdl timer, al hacer stop y start al final tenemos que seguir usando sdl timer
 
-*disponibles se compila hardcoded con timer date (asi como sus funciones start y stop)
+ok *disponibles se compila hardcoded con timer date (asi como sus funciones start y stop)
 
 ok * timer thread por ejemplo se registra al inicio de init_timer() siempre que este compilado soporte de threads
 
@@ -128,3 +128,4 @@ el timer. y por tanto el timer sdl no se llamara y se queda colgado
 *timer date nunca se deberia llamar a stop en teoria. siempre deberia estar disponible
 *al agregar un timer no deberia agregarse si ya existe en la lista de disponibles. no deberia suceder nunca, en teoria, agregar uno ya disponible,
 pero por si acaso
+

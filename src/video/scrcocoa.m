@@ -3242,6 +3242,7 @@ int scrcocoa_init_timer(void)
 void scrcocoa_stop_timer(void)
 {
     debug_printf(VERBOSE_INFO,"Stopping timer Mac");
+    printf("Stopping timer Mac\n");
     [cocoaView stopTimer];
 }
 
@@ -3341,7 +3342,7 @@ int scrcocoa_init (void) {
         timer_add_timer_to_bottom_thread();
     #endif
 
-
+    printf("Adding mac timer\n");
     timer_add_timer_to_top(available_timers,TIMER_MAC,"mac",scrcocoa_init_timer,scrcocoa_stop_timer);
 
 
