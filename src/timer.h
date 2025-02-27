@@ -56,7 +56,9 @@ extern void timer_remove_timer(struct s_zesarux_timer *timer_list,enum timer_typ
 extern void timer_set_preferred_by_name(char *name);
 
 extern enum timer_type timer_selected;
-extern enum timer_type timer_preferred_user;
+//extern enum timer_type timer_preferred_user;
+
+extern char timer_user_preferred[];
 
 
 

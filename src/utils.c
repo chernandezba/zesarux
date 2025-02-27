@@ -4464,10 +4464,9 @@ int util_write_configfile(void)
   if (avoid_christmas_mode.v)               ADD_STRING_CONFIG,"--avoid-christmas-mode");
 
 
-  if (timer_preferred_user!=TIMER_UNASSIGNED) {
-        char timer_name[TIMER_MAX_NAME];
-        timer_debug_get_timer_name(timer_preferred_user,timer_name);
-        ADD_STRING_CONFIG,"--preferred-timer %s",timer_name);
+  if (timer_user_preferred!=TIMER_UNASSIGNED) {
+    printf("save config timer preferred: %s\n",timer_user_preferred);
+        ADD_STRING_CONFIG,"--preferred-timer %s",timer_user_preferred);
   }
 
 

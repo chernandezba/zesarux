@@ -132,7 +132,9 @@ struct s_timer_names timer_names[]={
 };
 
 enum timer_type timer_selected=TIMER_UNASSIGNED;
-enum timer_type timer_preferred_user=TIMER_UNASSIGNED;
+
+//enum timer_type timer_preferred_user=TIMER_UNASSIGNED;
+char timer_user_preferred[TIMER_MAX_NAME]="";
 
 void timer_debug_get_timer_name(enum timer_type timer,char *destination_string)
 {
@@ -168,7 +170,7 @@ enum timer_type timer_debug_get_timer_type(char *name)
 
 void timer_set_preferred_by_name(char *name)
 {
-    enum timer_type t=timer_debug_get_timer_type(name);
+    /*enum timer_type t=timer_debug_get_timer_type(name);
     if (t==0) {
         debug_printf(VERBOSE_ERR,"Unknown timer type %s",name);
     }
@@ -177,6 +179,10 @@ void timer_set_preferred_by_name(char *name)
     }
 
     printf("Timer set: %d\n",t);
+    */
+
+   strcpy(timer_user_preferred,name);
+   printf("Timer set: %s\n",name);
 }
 
 
@@ -202,6 +208,18 @@ int timer_find(struct s_zesarux_timer *timer_list,enum timer_type timer_to_find)
 
     for (i=0;i<TIMER_LIST_MAX_SIZE;i++) {
         if (timer_list[i].timer==timer_to_find) return i;
+    }
+
+    return -1;
+
+}
+
+int timer_find_by_name(struct s_zesarux_timer *timer_list,char *timer_to_find)
+{
+    int i;
+
+    for (i=0;i<TIMER_LIST_MAX_SIZE;i++) {
+        if (!strcmp(timer_list[i].name,timer_to_find)) return i;
     }
 
     return -1;
@@ -658,11 +676,11 @@ void old_stop_timer(void)
     enum timer_type t;
 
     //Si el usuario tiene un timer favorito
-    if (timer_preferred_user!=TIMER_UNASSIGNED) {
-        t=timer_preferred_user;
-    }
+    //if (timer_preferred_user!=TIMER_UNASSIGNED) {
+    //    t=timer_preferred_user;
+    //}
 
-    else t=timer_selected;
+    //else t=timer_selected;
 
 
     switch(t) {
@@ -711,11 +729,11 @@ void start_timer(void)
 
     //Si el usuario tiene un timer favorito
 
-    if (timer_preferred_user!=TIMER_UNASSIGNED) {
+    if (timer_user_preferred[0]) {
 
-        printf("Trying preferred timer %d initialization\n",timer_preferred_user);
+        printf("Trying preferred timer %s initialization\n",timer_user_preferred);
 
-        int pos=timer_find(available_timers,timer_preferred_user);
+        int pos=timer_find_by_name(available_timers,timer_user_preferred);
 
         if (pos>=0) {
 
@@ -728,7 +746,8 @@ void start_timer(void)
 
             printf("Trying %s preferred timer initialization\n",timer_name);
 
-            timer_selected=timer_preferred_user;
+            //timer_selected=timer_preferred_user;
+            timer_selected=available_timers[pos].timer;
 
 
             //if (!init_timer_selected(timer_preferred_user)) {
@@ -741,7 +760,7 @@ void start_timer(void)
         }
 
         else {
-            printf("Preferred timer %d not found\n",timer_preferred_user);
+            printf("Preferred timer %s not found\n",timer_user_preferred);
         }
     }
 

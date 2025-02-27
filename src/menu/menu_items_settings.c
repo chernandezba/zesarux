@@ -9207,36 +9207,36 @@ void menu_network_settings(MENU_ITEM_PARAMETERS)
 }
 #endif
 
-void menu_settings_danger_zone_timer_set_parm(enum timer_type t)
+void menu_settings_danger_zone_timer_set_parm(char *t)
 {
-    //TODO stop_timer();
-    timer_preferred_user=t;
+    stop_current_timer();
+    strcpy(timer_user_preferred,t);
     start_timer();
 }
 
 void menu_settings_danger_zone_timer_set_auto(MENU_ITEM_PARAMETERS)
 {
-    menu_settings_danger_zone_timer_set_parm(TIMER_UNASSIGNED);
+    menu_settings_danger_zone_timer_set_parm("");
 }
 
 void menu_settings_danger_zone_timer_set_thread(MENU_ITEM_PARAMETERS)
 {
-    menu_settings_danger_zone_timer_set_parm(TIMER_THREAD);
+    menu_settings_danger_zone_timer_set_parm("thread");
 }
 
 void menu_settings_danger_zone_timer_set_date(MENU_ITEM_PARAMETERS)
 {
-    menu_settings_danger_zone_timer_set_parm(TIMER_DATE);
+    menu_settings_danger_zone_timer_set_parm("date");
 }
 
 void menu_settings_danger_zone_timer_set_sdl(MENU_ITEM_PARAMETERS)
 {
-    menu_settings_danger_zone_timer_set_parm(TIMER_SDL);
+    menu_settings_danger_zone_timer_set_parm("sdl");
 }
 
 void menu_settings_danger_zone_timer_set_mac(MENU_ITEM_PARAMETERS)
 {
-    menu_settings_danger_zone_timer_set_parm(TIMER_MAC);
+    menu_settings_danger_zone_timer_set_parm("mac");
 }
 
 void menu_settings_danger_zone_timer(MENU_ITEM_PARAMETERS)
@@ -9300,14 +9300,14 @@ void menu_settings_danger_zone(MENU_ITEM_PARAMETERS)
 
     do {
         char timer_name[TIMER_MAX_NAME];
-        if (timer_preferred_user==TIMER_UNASSIGNED) strcpy(timer_name,"Auto");
-        else timer_debug_get_timer_name(timer_preferred_user,timer_name);
+        if (!timer_user_preferred[0]) strcpy(timer_name,"Auto");
+        else strcpy(timer_name,timer_user_preferred);
 
         menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_settings_danger_zone_timer,NULL,"Preferred Timer");
 		menu_add_item_menu_prefijo_format(array_menu_common,"    ");
         menu_add_item_menu_sufijo_format(array_menu_common," [%s]",timer_name);
 
-        if (timer_preferred_user==TIMER_UNASSIGNED) {
+        if (!timer_user_preferred[0]) {
             menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,"Timer priority list:");
             menu_add_item_menu_prefijo_format(array_menu_common,"    ");
 
