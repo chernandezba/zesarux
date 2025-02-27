@@ -745,7 +745,7 @@ void start_timer(void)
 
     int return_init=0;
 
-    for (i=0;i<TIMER_LIST_MAX_SIZE;i++) {
+    for (i=0;i<TIMER_LIST_MAX_SIZE && available_timers[i].timer!=TIMER_END;i++) {
         timer_selected=available_timers[i].timer;
 
         char timer_name[TIMER_MAX_NAME];
@@ -774,6 +774,12 @@ void start_timer(void)
         }
 
     }
+
+    //Llegado aqui han fallado todos los timers. Hacermos fallback al timer date que deberia funcionar siempre
+    //y que deberia haber estado en la lista de disponibles, pero por si acaso
+    printf("All timers failed initialization. Fallback to date timer\n");
+    timer_selected=TIMER_DATE;
+
 
 }
 
