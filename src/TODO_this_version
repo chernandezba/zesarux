@@ -110,7 +110,7 @@ ok*cada driver se registra como disponible o se desregistra al finalizar el driv
 
 ok *lista de disponibles tiene que tener estructura que apunte a inicio y fin, el numero de tipo enum, y el string de texto
 
-ok*al desregistrarse, si ese driver estaba activo, hay que inicializar de nuevo al que este disponible (o el preferido del usuario)
+ok *al desregistrarse, si ese driver estaba activo, hay que inicializar de nuevo al que este disponible (o el preferido del usuario)
 
 ok *vigilar llamadas a stop y start de driver video que se hacen (creo) al cambiar zoom o quitar border. al hacer stop del driver,
 se quita de disponible y si esta activo, se inicializa otro. pero al hacer start , luego al cambiar zoom etc debe inicializar de nuevo
@@ -124,20 +124,24 @@ ok * timer thread por ejemplo se registra al inicio de init_timer() siempre que 
 
 *Ahora por ejemplo si inicio --vo sdl y --ao pulse, si cambio de driver de video desde el menu, finaliza sdl y tambien finaliza
 el timer. y por tanto el timer sdl no se llamara y se queda colgado
+
 *buscar todos los sitios donde se hace video driver stop y ver sus implicaciones (scr_end_pantalla)
+
 *timer date nunca se deberia llamar a stop en teoria. siempre deberia estar disponible
+
 ok*al agregar un timer no deberia agregarse si ya existe en la lista de disponibles. no deberia suceder nunca, en teoria, agregar uno ya disponible,
 pero por si acaso
 
 ok *corregir seleccion timer desde menu -  partes comentadas
 
-*si se puede quitar funciones que convierten de id timer a string y viceversa
+*si se puede quitar funciones que convierten de id timer a string y viceversa. dos alternativas:
+-dejarlas. y entonces funciones de add y remove no necesitarian pasar el string de timer
+-quitarlas. entonces no habria manera de convertir un numero de timer, que no esta en la lista de disponibles, a string. es necesario esto ultimo?
 
 *Quizá cuando se define timer sleep machine, si hay cambio de frecuencia, hacer stop timer y rellamar a set timer , pasando por auto o preferred
 Eso evitaría tener que comprobar en las funciones de trigger timer de  Mac y sdl si hay cambio de frecuencia o si frecuencia < 10 ms
 
-*preferred timer thread en linux, deja sdl fuera de la lista
-*preferred timer thread en sdl no aparece sdl en la lista. quiza por el orden de actuacion de dicho parametro preferred timer
-*sdl parece que se inicializa dos veces??
+
 
 *pendiente probar en windows
+*codetests timer

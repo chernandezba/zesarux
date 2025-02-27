@@ -230,6 +230,7 @@ int timer_find_by_name(struct s_zesarux_timer *timer_list,char *timer_to_find)
 //Nota: siempre le paso el puntero al array asi puedo tener diferentes arrays, uno para los timers normales y el otro para codetests
 void timer_add_timer_to_top(struct s_zesarux_timer *timer_list,enum timer_type timer_to_add,char *name,int (*start)(void),void (*stop)(void))
 {
+    printf("Add timer to top %s\n",name);
 
     //No agregar si ya esta
     if (timer_find(available_timers,timer_to_add)>=0) {
@@ -259,6 +260,7 @@ void timer_add_timer_to_top(struct s_zesarux_timer *timer_list,enum timer_type t
 //Agrega un temporizador al final de la lista
 void timer_add_timer_to_bottom(struct s_zesarux_timer *timer_list,enum timer_type timer_to_add,char *name,int (*start)(void),void (*stop)(void))
 {
+    printf("Add timer to bottom %s\n",name);
 
     //No agregar si ya esta
     if (timer_find(available_timers,timer_to_add)>=0) {
@@ -299,6 +301,9 @@ void timer_add_timer_to_bottom(struct s_zesarux_timer *timer_list,enum timer_typ
 void timer_remove_timer(struct s_zesarux_timer *timer_list,enum timer_type timer_to_remove)
 {
 
+
+    printf("remove timer id %d\n",timer_to_remove);
+
     //Primero buscarlo
     int i;
 
@@ -337,6 +342,16 @@ void timer_remove_timer(struct s_zesarux_timer *timer_list,enum timer_type timer
 
 void stop_current_timer(void)
 {
+
+
+    printf("stop_current_timer %d\n",timer_selected);
+
+    //debug_exec_show_backtrace();
+
+    if (timer_selected==TIMER_UNASSIGNED) {
+        printf("Timer has not been assigned. Return without stopping any timer\n");
+        return;
+    }
 
     int pos=timer_find(available_timers,timer_selected);
 
@@ -729,6 +744,9 @@ void start_timer(void)
 
     //Si el usuario tiene un timer favorito
 
+    printf("start_timer. Available timers:\n");
+    timer_debug_print_timer_list(available_timers);
+
     if (timer_user_preferred[0]) {
 
         printf("Trying preferred timer %s initialization\n",timer_user_preferred);
@@ -768,7 +786,7 @@ void start_timer(void)
     //Ir recorriendo del primero al ultimo y quedarse con el primero que de ok al inicializar
     debug_printf(VERBOSE_DEBUG,"Try available timers in order");
     printf("Try available timers in order\n");
-    timer_debug_print_timer_list(available_timers);
+
 
     int i;
 
