@@ -145,3 +145,100 @@ Eso evitaría tener que comprobar en las funciones de trigger timer de  Mac y sd
 
 *pendiente probar en windows
 *codetests timer
+
+*cambio de timer de cualquier cosa hacia mac se debe de hacer en el hilo interno de cocoa. Ejemplo:
+
+//F8 pulsado. osdkeyboard
+case COCOA_KEY_F8:
+        util_set_reset_key(UTIL_KEY_F8,pressrelease);
+
+if (pressrelease) {
+stop_current_timer();
+strcpy(timer_user_preferred,"mac");
+start_timer();
+}
+
+#### Esto es inicializacion de timer ok desde el principio, que funciona:
+
+Try available timers in order
+Trying mac timer initialization
+--scrcocoa scrcocoa_init_timer
+0   zesarux                             0x000000010c8ed48e debug_exec_show_backtrace + 94
+1   zesarux                             0x000000010c876f5e scrcocoa_init_timer + 30
+2   zesarux                             0x000000010ca45e02 start_timer_specified + 50
+3   zesarux                             0x000000010ca45908 start_timer + 536
+4   zesarux                             0x000000010c888f63 zesarux_main + 6003
+5   zesarux                             0x000000010c875753 -[ZesaruxCocoaAppController startEmulationWithArgc:argv:] + 35
+6   zesarux                             0x000000010c8756cf -[ZesaruxCocoaAppController applicationDidFinishLaunching:] + 63
+7   CoreFoundation                      0x00007fff37d2aa5f __CFNOTIFICATIONCENTER_IS_CALLING_OUT_TO_AN_OBSERVER__ + 12
+8   CoreFoundation                      0x00007fff37d2a9f3 ___CFXRegistrationPost1_block_invoke + 63
+9   CoreFoundation                      0x00007fff37d2a968 _CFXRegistrationPost1 + 372
+10  CoreFoundation                      0x00007fff37d2a5d4 ___CFXNotificationPost_block_invoke + 80
+11  CoreFoundation                      0x00007fff37cfa72d -[_CFXNotificationRegistrar find:object:observer:enumerator:] + 1554
+12  CoreFoundation                      0x00007fff37cf9bd9 _CFXNotificationPost + 1351
+13  Foundation                          0x00007fff3a37c096 -[NSNotificationCenter postNotificationName:object:userInfo:] + 59
+14  AppKit                              0x00007fff35003873 -[NSApplication _postDidFinishNotification] + 312
+15  AppKit                              0x00007fff350035b2 -[NSApplication _sendFinishLaunchingNotification] + 208
+16  AppKit                              0x00007fff35000673 -[NSApplication(NSAppleEventHandling) _handleAEOpenEvent:] + 549
+17  AppKit                              0x00007fff350002b8 -[NSApplication(NSAppleEventHandling) _handleCoreEvent:withReplyEvent:] + 688
+18  Foundation                          0x00007fff3a3a7336 -[NSAppleEventManager dispatchRawAppleEvent:withRawReply:handlerRefCon:] + 308
+19  Foundation                          0x00007fff3a3a71a0 _NSAppleEventManagerGenericHandler + 98
+20  AE                                  0x00007fff390a9203 _AppleEventsCheckInAppWithBlock + 18103
+21  AE                                  0x00007fff390a8929 _AppleEventsCheckInAppWithBlock + 15837
+22  AE                                  0x00007fff390a0bd7 aeProcessAppleEvent + 449
+23  HIToolbox                           0x00007fff369c37ea AEProcessAppleEvent + 54
+24  AppKit                              0x00007fff34ffa661 _DPSNextEvent + 1547
+25  AppKit                              0x00007fff34ff8c10 -[NSApplication(NSEvent) _nextEventMatchingEventMask:untilDate:inMode:dequeue:] + 1352
+26  AppKit                              0x00007fff34fea91e -[NSApplication run] + 658
+27  zesarux                             0x000000010c8761eb main + 2363
+28  libdyld.dylib                       0x00007fff70db3cc9 start + 1
+Initializing timer Mac for 20000 microsec
+--scrcocoa startTimer. cocoatimeractivo=1
+Started Mac timer. timer=0x7fa5f2741d90 cocoatimeractivo=1
+Inicializado mac timer
+timerTickHandler. 0
+timerTickHandler. 0
+
+
+
+### Esto es cambio de timer lo que sea hacia mac, que NO funciona
+
+stop_current_timer 101
+start_timer. Available timers:
+Timer 0 Value 103 string: [mac]
+Timer 1 Value 101 string: [date]
+Timer 2 Value 100 string: [thread]
+Timer 3 Value 104 string: [end]
+Timer 4 Value 0 string: []
+Timer 5 Value 0 string: []
+Timer 6 Value 0 string: []
+Timer 7 Value 0 string: []
+Timer 8 Value 0 string: []
+Timer 9 Value 0 string: []
+Try available timers in order
+Trying mac timer initialization
+--scrcocoa scrcocoa_init_timer
+0   zesarux                             0x000000010141848e debug_exec_show_backtrace + 94
+1   zesarux                             0x00000001013a1f5e scrcocoa_init_timer + 30
+2   zesarux                             0x0000000101570e02 start_timer_specified + 50
+3   zesarux                             0x0000000101570908 start_timer + 536
+4   zesarux                             0x0000000101545026 menu_settings_danger_zone_timer_set_parm + 54
+5   zesarux                             0x0000000101545047 menu_settings_danger_zone_timer_set_auto + 23
+6   zesarux                             0x0000000101545259 menu_settings_danger_zone_timer + 393
+7   zesarux                             0x00000001015455da menu_settings_danger_zone + 746
+8   zesarux                             0x0000000101545fb1 menu_settings + 2385
+9   zesarux                             0x00000001014f550f menu_inicio_mostrar_main_menu + 2415
+10  zesarux                             0x00000001014f58ff menu_inicio_bucle_main + 863
+11  zesarux                             0x0000000101499497 menu_inicio_bucle + 247
+12  zesarux                             0x000000010149a5ef menu_inicio + 3647
+13  zesarux                             0x00000001013a2512 emulator_main_loop + 34
+14  zesarux                             0x00000001013a3351 thread_main_loop_function + 17
+15  libsystem_pthread.dylib             0x00007fff70fb8109 _pthread_start + 148
+16  libsystem_pthread.dylib             0x00007fff70fb3b8b thread_start + 15
+Initializing timer Mac for 20000 microsec
+--scrcocoa startTimer. cocoatimeractivo=0
+timer_sleep_machine 20000
+Started Mac timer. timer=0x7f840fcc1220 cocoatimeractivo=1
+Inicializado mac timer
+
+Hay que pensar en poder lanzar un evento a ese thread. quiza simplemente con pulsacion de tecla

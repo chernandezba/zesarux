@@ -1569,6 +1569,9 @@ int scrcocoa_keymap_z88_cpc_colon;
 int scrcocoa_keymap_z88_cpc_arroba;
 int scrcocoa_keymap_z88_cpc_leftz; //Tecla a la izquierda de la Z. usada en Chloe y PCW
 
+
+int pendiente_activar_este_timer=0;
+
 //- (void) gestionTecla:(NSEvent *)event pressrelease:(int)pressrelease
 - (void) gestionTecla: (NSEvent *)event : (int)pressrelease
 {
@@ -1583,6 +1586,11 @@ int scrcocoa_keymap_z88_cpc_leftz; //Tecla a la izquierda de la Z. usada en Chlo
 		return;
 	}
 	*/
+
+    if (pendiente_activar_este_timer) {
+        start_timer();
+        pendiente_activar_este_timer=0;
+    }
 
 	//printf ("cmd key: %d\n",scrcocoa_antespulsadocmd_l);
 
@@ -2299,6 +2307,8 @@ int previous_timer_sleep_machine=0;
 
 - (int)startTimer
 {
+    printf("--scrcocoa startTimer. cocoatimeractivo=%d\n",cocoatimeractivo);
+
     debug_printf(VERBOSE_INFO,"Initializing timer Mac for %d microsec",timer_sleep_machine);
 
     //Si lo lanzamos de nuevo pero esta vez con intervalo diferente, no soporta cambio de intervalo,
@@ -2340,13 +2350,16 @@ int previous_timer_sleep_machine=0;
 
     cocoatimeractivo=1;
 
-    printf("Started Mac timer. timer=%p\n",timer);
+    printf("Started Mac timer. timer=%p cocoatimeractivo=%d\n",timer,cocoatimeractivo);
 
     return 1;
 }
 
 - (void)stopTimer
 {
+
+    printf("--scrcocoa stopTimer\n");
+
     //Invalidar el timer hace que no se pueda volver a llamar nunca mas, incluso al llamar a scheduledTimerWithTimeInterval
     //Por tanto lo mejor es gestionarlo con un simple flag de activo o no activo
     //Esto permite ir al menu de ZEsarUX, quitar este timer, poner otro, y volver a activar este
@@ -2361,6 +2374,7 @@ int previous_timer_sleep_machine=0;
 
 - (void)timerTickHandler
 {
+    //printf("timerTickHandler\n");
     if (!cocoatimeractivo) return;
 
     //Cocoa timer no permite cambiar el intervalo. Invalidarlo si por ejemplo cambiamos de maquina spectrum a z88
@@ -3225,16 +3239,74 @@ void realjoystick_cocoa_main(void)
     //de momento esto no hace nada, ya que los eventos de pulsaciones se reciben directamente
 }
 
-int scrcocoa_init_timer(void)
+/*
+int temp_startTimer(void)
 {
+    printf("--scrcocoa startTimer. cocoatimeractivo=%d\n",cocoatimeractivo);
 
     debug_printf(VERBOSE_INFO,"Initializing timer Mac for %d microsec",timer_sleep_machine);
 
+    //Si lo lanzamos de nuevo pero esta vez con intervalo diferente, no soporta cambio de intervalo,
+    //por tanto devolvemos error para que no use este tipo de timer
+    //Esto pasa por ejemplo si estamos en maquina Spectrum y saltamos a Z88
+
+
+
+    //hay intervalo previo. ver si son iguales
+    if (previous_timer_sleep_machine>0) {
+        if (timer_sleep_machine!=previous_timer_sleep_machine) {
+            printf("Start cocoa timer but timer frequency has been changed, can not change cocoa timer interval. Invalidating this timer\n");
+            return 0;
+        }
+    }
+
+
+    previous_timer_sleep_machine=timer_sleep_machine;
+
+    if (timer == nil)
+    {
+        printf("timer_sleep_machine %d\n",timer_sleep_machine);
+        //NSTimeInterval ti=timer_sleep_machine/1000000.0;
+        //printf("ti= %f\n",ti);
+
+
+        //timer_sleep_machine en microsegundos. pasamos a segundos
+
+        timer = [NSTimer scheduledTimerWithTimeInterval:timer_sleep_machine/1000000.0
+                                                 target:cocoaView
+                                               selector:@selector(timerTickHandler)
+                                               userInfo:nil
+                                                repeats:YES];
+
+        //Error al inicializar
+        //Nota: suponemos que scheduledTimerWithTimeInterval puede fallar y dar nil en retorno, pero no estoy seguro
+        if (timer==nil) return 0;
+    }
+
+    cocoatimeractivo=1;
+
+    printf("Started Mac timer. timer=%p cocoatimeractivo=%d\n",timer,cocoatimeractivo);
+
+    return 1;
+}
+*/
+
+int scrcocoa_init_timer(void)
+{
+
+    printf("--scrcocoa scrcocoa_init_timer\n");
+
+    debug_exec_show_backtrace();
+
+
+    debug_printf(VERBOSE_INFO,"Initializing timer Mac for %d microsec",timer_sleep_machine);
+
+    printf("Initializing timer Mac for %d microsec\n",timer_sleep_machine);
+
+    //return temp_startTimer();
+
     return [cocoaView startTimer];
 
-
-    //Ok inicializado
-    return 1;
 
 
 }
@@ -3350,4 +3422,9 @@ int scrcocoa_init (void) {
 }
 
 
+
+void scrcocoa_set_pending_this_timer(void)
+{
+    pendiente_activar_este_timer=1;
+}
 
