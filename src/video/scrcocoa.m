@@ -1588,7 +1588,10 @@ int pendiente_activar_este_timer=0;
 	*/
 
     if (pendiente_activar_este_timer) {
-        start_timer();
+        printf("Pendiente activar este timer\n");
+        if (timer_selected==TIMER_MAC) {
+            start_timer();
+        }
         pendiente_activar_este_timer=0;
     }
 
@@ -3425,6 +3428,7 @@ int scrcocoa_init (void) {
 
 void scrcocoa_set_pending_this_timer(void)
 {
+    printf("Called scrcocoa_set_pending_this_timer\n");
     pendiente_activar_este_timer=1;
 }
 

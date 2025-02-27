@@ -146,7 +146,9 @@ Eso evitaría tener que comprobar en las funciones de trigger timer de  Mac y sd
 *pendiente probar en windows
 *codetests timer
 
-*cambio de timer de cualquier cosa hacia mac se debe de hacer en el hilo interno de cocoa. Ejemplo:
+*cambio de timer de cualquier cosa hacia mac se debe de hacer en el hilo interno de cocoa. como hacerlo?
+
+Ejemplo de que sucede:
 
 //F8 pulsado. osdkeyboard
 case COCOA_KEY_F8:

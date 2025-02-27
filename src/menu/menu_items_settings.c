@@ -9214,15 +9214,13 @@ void menu_settings_danger_zone_timer_set_parm(char *t)
 
     //Si es mac, se activa un tanto diferente, para que salte desde el thread que toca
     //TODO: queda gestionar cuando es Auto y saltara el timer mac
-    if (!strcasecmp(timer_user_preferred,"mac")) {
-#ifdef USE_COCOA
-        scrcocoa_set_pending_this_timer();
-#endif
-    }
 
-    else {
-        start_timer();
-    }
+#ifdef USE_COCOA
+    scrcocoa_set_pending_this_timer();
+#endif
+
+
+    start_timer();
 
 }
 
