@@ -463,6 +463,8 @@ int pendiente_z88_draw_lower=0;
 - (void) setSizeScreen:(int)w height:(int)h ;
 - (void) grabMouse;
 - (void) ungrabMouse;
+- (int) startTimer:(id)sender;
+- (void) stopTimer:(id)sender;
 - (void) toggleFullScreen:(id)sender;
 - (void) migestionEvento:(NSEvent *)event;
 - (void) gestionTecla: (NSEvent *)event : (int)pressrelease;
@@ -2324,7 +2326,8 @@ int cocoatimeractivo=0;
 int previous_timer_sleep_machine=0;
 
 
-- (int)startTimer
+//- (int)startTimer
+- (int)  startTimer:(id)sender;
 {
     printf("--scrcocoa startTimer. cocoatimeractivo=%d\n",cocoatimeractivo);
 
@@ -2374,7 +2377,8 @@ int previous_timer_sleep_machine=0;
     return 1;
 }
 
-- (void)stopTimer
+//- (void)stopTimer
+- (void)  stopTimer:(id)sender;
 {
 
     printf("--scrcocoa stopTimer\n");
@@ -3322,9 +3326,18 @@ int scrcocoa_init_timer(void)
 
     printf("Initializing timer Mac for %d microsec\n",timer_sleep_machine);
 
-    //return temp_startTimer();
 
-    return [cocoaView startTimer];
+
+    //return [cocoaView startTimer];
+
+    //hay que iniciar el timer desde el hilo principal
+    //nota: si se inicia el timer al arrancar ZEsarUX, ya estaremos en el hilo principal y la llamada podria ser simplemente:
+    //[cocoaView startTimer]
+    //Pero si cambiamos el timer (pasando por ejemplo de Date a Mac) desde menu settings, entonces al llegar aqui no estaremos en el hilo
+    //principal, por eso hay que hacer la llamada asi
+    [cocoaView performSelectorOnMainThread:@selector(startTimer:) withObject:nil waitUntilDone:YES];
+
+    return 1;
 
 
 
@@ -3334,7 +3347,9 @@ void scrcocoa_stop_timer(void)
 {
     debug_printf(VERBOSE_INFO,"Stopping timer Mac");
     printf("Stopping timer Mac\n");
-    [cocoaView stopTimer];
+
+    [cocoaView performSelectorOnMainThread:@selector(stopTimer:) withObject:nil waitUntilDone:YES];
+    //[cocoaView stopTimer];
 }
 
 
@@ -3446,7 +3461,6 @@ void scrcocoa_set_pending_this_timer(void)
 {
     printf("Called scrcocoa_set_pending_this_timer\n");
     pendiente_activar_este_timer=1;
-
 
 }
 

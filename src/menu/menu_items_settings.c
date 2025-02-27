@@ -9217,7 +9217,7 @@ void menu_settings_danger_zone_timer_set_parm(char *t)
 
     if (!strcmp(scr_new_driver_name,"cocoa")) {
 #ifdef USE_COCOA
-        start_timer_prepare_cocoa_thread();
+        //start_timer_prepare_cocoa_thread();
 #endif
     }
 
