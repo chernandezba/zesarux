@@ -82,7 +82,7 @@
 int gArgc;
 char **gArgv;
 
-
+int retorno_start_timer=0;
 
 //Silenciar avisos de OpenGL tipo: scrcocoa.m:638:3: warning: 'glEnable' is deprecated: first deprecated in macOS 10.14 - OpenGL API deprecated. (Define GL_SILENCE_DEPRECATION to silence these warnings) [-Wdeprecated-declarations]
 //En algun momento del futuro tocará migrar a Metal...
@@ -463,7 +463,7 @@ int pendiente_z88_draw_lower=0;
 - (void) setSizeScreen:(int)w height:(int)h ;
 - (void) grabMouse;
 - (void) ungrabMouse;
-- (int) startTimer:(id)sender;
+- (void) startTimer:(id)sender;
 - (void) stopTimer:(id)sender;
 - (void) toggleFullScreen:(id)sender;
 - (void) migestionEvento:(NSEvent *)event;
@@ -1256,7 +1256,7 @@ int cocoa_raton_oculto=0;
 
     //printf("mouse moved. scr_driver_can_ext_desktop=%p\n",scr_driver_can_ext_desktop);
 
-    check_if_pendiente_activar_este_timer();
+    //check_if_pendiente_activar_este_timer();
 
     NSPoint locationInView = [self convertPoint:[event locationInWindow]
                                     fromView:nil];
@@ -1573,8 +1573,8 @@ int scrcocoa_keymap_z88_cpc_colon;
 int scrcocoa_keymap_z88_cpc_arroba;
 int scrcocoa_keymap_z88_cpc_leftz; //Tecla a la izquierda de la Z. usada en Chloe y PCW
 
-
-int pendiente_activar_este_timer=0;
+/*
+//int pendiente_activar_este_timer=0;
 
 //Manera de hacer que al activar este timer desde menu settings se haga desde el hilo principal, comprobando
 //desde eventos de teclado o raton
@@ -1583,6 +1583,7 @@ int pendiente_activar_este_timer=0;
 //perder el tiempo mirando documentacion de cocoa y objetive c. Creo que la clave seria algo similar a:
 //[cocoaView performSelectorOnMainThread:@selector(startTimer:) withObject:nil waitUntilDone:YES];
 //pero eso ya lo he probado y no funciona porque startTimer no esta definido como selector
+
 void check_if_pendiente_activar_este_timer(void)
 {
     if (pendiente_activar_este_timer) {
@@ -1594,6 +1595,7 @@ void check_if_pendiente_activar_este_timer(void)
     }
 
 }
+*/
 
 //- (void) gestionTecla:(NSEvent *)event pressrelease:(int)pressrelease
 - (void) gestionTecla: (NSEvent *)event : (int)pressrelease
@@ -1610,7 +1612,7 @@ void check_if_pendiente_activar_este_timer(void)
 	}
 	*/
 
-    check_if_pendiente_activar_este_timer();
+    //check_if_pendiente_activar_este_timer();
 
 
 	//printf ("cmd key: %d\n",scrcocoa_antespulsadocmd_l);
@@ -2327,7 +2329,7 @@ int previous_timer_sleep_machine=0;
 
 
 //- (int)startTimer
-- (int)  startTimer:(id)sender;
+- (void)  startTimer:(id)sender;
 {
     printf("--scrcocoa startTimer. cocoatimeractivo=%d\n",cocoatimeractivo);
 
@@ -2343,7 +2345,8 @@ int previous_timer_sleep_machine=0;
     if (previous_timer_sleep_machine>0) {
         if (timer_sleep_machine!=previous_timer_sleep_machine) {
             printf("Start cocoa timer but timer frequency has been changed, can not change cocoa timer interval. Invalidating this timer\n");
-            return 0;
+            retorno_start_timer=0;
+            return;
         }
     }
 
@@ -2367,14 +2370,18 @@ int previous_timer_sleep_machine=0;
 
         //Error al inicializar
         //Nota: suponemos que scheduledTimerWithTimeInterval puede fallar y dar nil en retorno, pero no estoy seguro
-        if (timer==nil) return 0;
+        if (timer==nil) {
+            retorno_start_timer=0;
+            return;
+        }
     }
 
     cocoatimeractivo=1;
 
     printf("Started Mac timer. timer=%p cocoatimeractivo=%d\n",timer,cocoatimeractivo);
 
-    return 1;
+    retorno_start_timer=1;
+
 }
 
 //- (void)stopTimer
@@ -3314,6 +3321,8 @@ int temp_startTimer(void)
 }
 */
 
+
+
 int scrcocoa_init_timer(void)
 {
 
@@ -3335,9 +3344,14 @@ int scrcocoa_init_timer(void)
     //[cocoaView startTimer]
     //Pero si cambiamos el timer (pasando por ejemplo de Date a Mac) desde menu settings, entonces al llegar aqui no estaremos en el hilo
     //principal, por eso hay que hacer la llamada asi
+
+    //No podemos obtener resultado de la llamada de ese thread directamente, pero lo sacamos de la variable global retorno_start_timer
+    //Hay que tener en cuenta que aqui esperamos a que finalice esa llamada (waitUntilDone:YES) por lo que el valor de retorno_start_timer
+    //sera el que haya modificado la funcion de starTimer
     [cocoaView performSelectorOnMainThread:@selector(startTimer:) withObject:nil waitUntilDone:YES];
 
-    return 1;
+    printf("On exiting scrcocoa_init_timer\n");
+    return retorno_start_timer;
 
 
 
@@ -3456,11 +3470,11 @@ int scrcocoa_init (void) {
 }
 
 
-
+/*
 void scrcocoa_set_pending_this_timer(void)
 {
     printf("Called scrcocoa_set_pending_this_timer\n");
     pendiente_activar_este_timer=1;
 
 }
-
+*/

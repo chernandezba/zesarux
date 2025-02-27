@@ -725,12 +725,14 @@ void old_stop_timer(void)
 }
 
 //Cuando se cambia timer desde menu settings, si es timer Mac (cocoa) se hará que tiene que cambiar timer desde su hilo principal
+/*
 int start_timer_cocoa_main_thread=0;
 
 void start_timer_prepare_cocoa_thread(void)
 {
     start_timer_cocoa_main_thread=1;
 }
+*/
 
 
 int start_timer_specified(struct s_zesarux_timer *t)
@@ -841,6 +843,10 @@ void start_timer(void)
         if (return_init) {
             printf("Inicializado %s timer\n",timer_name);
             return;
+        }
+
+        else {
+            printf("Failed timer initialization. Trying next\n");
         }
 
     }

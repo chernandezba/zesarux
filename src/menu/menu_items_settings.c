@@ -9212,14 +9212,16 @@ void menu_settings_danger_zone_timer_set_parm(char *t)
     stop_current_timer();
     strcpy(timer_user_preferred,t);
 
-    //Si es mac, se activa un tanto diferente, para que salte desde el thread que toca
-    //TODO: queda gestionar cuando es Auto y saltara el timer mac
 
+/*
+    //Si es mac, se activa un tanto diferente, para que salte desde el thread que toca
     if (!strcmp(scr_new_driver_name,"cocoa")) {
 #ifdef USE_COCOA
         //start_timer_prepare_cocoa_thread();
 #endif
     }
+
+*/
 
     start_timer();
 
