@@ -1254,6 +1254,8 @@ int cocoa_raton_oculto=0;
 
     //printf("mouse moved. scr_driver_can_ext_desktop=%p\n",scr_driver_can_ext_desktop);
 
+    check_if_pendiente_activar_este_timer();
+
     NSPoint locationInView = [self convertPoint:[event locationInWindow]
                                     fromView:nil];
 
@@ -1572,6 +1574,25 @@ int scrcocoa_keymap_z88_cpc_leftz; //Tecla a la izquierda de la Z. usada en Chlo
 
 int pendiente_activar_este_timer=0;
 
+//Manera de hacer que al activar este timer desde menu settings se haga desde el hilo principal, comprobando
+//desde eventos de teclado o raton
+//TODO: esto es un poco chapucero, lo ideal seria que cuando se active este timer desde menu settings,
+//se lanzase scrcocoa_init_timer pero llamandolo desde su hilo principal, pero no se como hacerlo y no quiero
+//perder el tiempo mirando documentacion de cocoa y objetive c. Creo que la clave seria algo similar a:
+//[cocoaView performSelectorOnMainThread:@selector(startTimer:) withObject:nil waitUntilDone:YES];
+//pero eso ya lo he probado y no funciona porque startTimer no esta definido como selector
+void check_if_pendiente_activar_este_timer(void)
+{
+    if (pendiente_activar_este_timer) {
+        printf("Pendiente activar este timer\n");
+        if (timer_selected==TIMER_MAC) {
+            scrcocoa_init_timer();
+        }
+        pendiente_activar_este_timer=0;
+    }
+
+}
+
 //- (void) gestionTecla:(NSEvent *)event pressrelease:(int)pressrelease
 - (void) gestionTecla: (NSEvent *)event : (int)pressrelease
 {
@@ -1587,13 +1608,8 @@ int pendiente_activar_este_timer=0;
 	}
 	*/
 
-    if (pendiente_activar_este_timer) {
-        printf("Pendiente activar este timer\n");
-        if (timer_selected==TIMER_MAC) {
-            start_timer();
-        }
-        pendiente_activar_este_timer=0;
-    }
+    check_if_pendiente_activar_este_timer();
+
 
 	//printf ("cmd key: %d\n",scrcocoa_antespulsadocmd_l);
 
@@ -3430,5 +3446,7 @@ void scrcocoa_set_pending_this_timer(void)
 {
     printf("Called scrcocoa_set_pending_this_timer\n");
     pendiente_activar_este_timer=1;
+
+
 }
 

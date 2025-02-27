@@ -9215,10 +9215,11 @@ void menu_settings_danger_zone_timer_set_parm(char *t)
     //Si es mac, se activa un tanto diferente, para que salte desde el thread que toca
     //TODO: queda gestionar cuando es Auto y saltara el timer mac
 
+    if (!strcmp(scr_new_driver_name,"cocoa")) {
 #ifdef USE_COCOA
-    scrcocoa_set_pending_this_timer();
+        start_timer_prepare_cocoa_thread();
 #endif
-
+    }
 
     start_timer();
 

@@ -724,8 +724,33 @@ void old_stop_timer(void)
 
 }
 
+//Cuando se cambia timer desde menu settings, si es timer Mac (cocoa) se hará que tiene que cambiar timer desde su hilo principal
+int start_timer_cocoa_main_thread=0;
+
+void start_timer_prepare_cocoa_thread(void)
+{
+    start_timer_cocoa_main_thread=1;
+}
+
+
 int start_timer_specified(struct s_zesarux_timer *t)
 {
+
+    //Con esto lo que hacemos es que la inicializacion del timer en cocoa la haga mediante su hilo principal,
+    //para ello activamos una señal en scrcocoa_set_pending_this_timer que lo lee con un evento de teclado o movimiento de raton
+    if (t->timer==TIMER_MAC && start_timer_cocoa_main_thread) {
+        #ifdef USE_COCOA
+        scrcocoa_set_pending_this_timer();
+        #endif
+
+        start_timer_cocoa_main_thread=0;
+
+        return 1;
+    }
+
+    start_timer_cocoa_main_thread=0;
+
+
     int (*start_function)(void);
     start_function=t->start;
 
@@ -768,7 +793,6 @@ void start_timer(void)
             timer_selected=available_timers[pos].timer;
 
 
-            //if (!init_timer_selected(timer_preferred_user)) {
             if (!start_timer_specified(&available_timers[pos])) {
                 debug_printf(VERBOSE_INFO,"Preferred timer by the user failed initialization. Trying all available");
             }
