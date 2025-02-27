@@ -645,84 +645,7 @@ void timer_stop_mac(void)
 }
 
 
-int old_init_timer_selected(enum timer_type t)
-{
-    int return_init=0;
 
-    switch(t) {
-        case TIMER_THREAD:
-            return_init=timer_init_thread();
-        break;
-
-        case TIMER_DATE:
-            return_init=timer_init_date();
-        break;
-
-        case TIMER_SDL:
-            return_init=timer_init_sdl();
-        break;
-
-        case TIMER_MAC:
-            return_init=timer_init_mac();
-        break;
-
-        case TIMER_END:
-            //Al menos el de date deberia haber inicializado
-            //Pero si aun asi, lo forzamos aqui
-            debug_printf(VERBOSE_INFO,"Can not initialize any available timer. Fallback to date timer");
-            timer_selected=TIMER_DATE;
-            timer_init_date();
-            return_init=1;
-        break;
-
-        //Solo para que no se queje el compilador
-        case TIMER_UNASSIGNED:
-        default:
-        break;
-    }
-
-    return return_init;
-
-}
-
-void old_stop_timer(void)
-{
-
-    enum timer_type t;
-
-    //Si el usuario tiene un timer favorito
-    //if (timer_preferred_user!=TIMER_UNASSIGNED) {
-    //    t=timer_preferred_user;
-    //}
-
-    //else t=timer_selected;
-
-
-    switch(t) {
-        case TIMER_THREAD:
-            timer_stop_thread();
-        break;
-
-        case TIMER_DATE:
-            //No tiene thread ni nada por tanto no hay que hacer nada para que se aplique
-        break;
-
-        case TIMER_SDL:
-            timer_stop_sdl();
-        break;
-
-        case TIMER_MAC:
-            timer_stop_mac();
-        break;
-
-        //Solo para que no se queje el compilador
-        case TIMER_UNASSIGNED:
-        default:
-        break;
-    }
-
-
-}
 
 //Cuando se cambia timer desde menu settings, si es timer Mac (cocoa) se hará que tiene que cambiar timer desde su hilo principal
 /*
@@ -757,7 +680,8 @@ int start_timer_specified(struct s_zesarux_timer *t)
     start_function=t->start;
 
     if (start_function==NULL) {
-        cpu_panic("Timer start function is NULL");
+        printf("Timer start function is NULL\n");
+        return 0;
     }
 
     int return_init=start_function();

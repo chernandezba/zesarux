@@ -1579,10 +1579,7 @@ int scrcocoa_keymap_z88_cpc_leftz; //Tecla a la izquierda de la Z. usada en Chlo
 //Manera de hacer que al activar este timer desde menu settings se haga desde el hilo principal, comprobando
 //desde eventos de teclado o raton
 //TODO: esto es un poco chapucero, lo ideal seria que cuando se active este timer desde menu settings,
-//se lanzase scrcocoa_init_timer pero llamandolo desde su hilo principal, pero no se como hacerlo y no quiero
-//perder el tiempo mirando documentacion de cocoa y objetive c. Creo que la clave seria algo similar a:
-//[cocoaView performSelectorOnMainThread:@selector(startTimer:) withObject:nil waitUntilDone:YES];
-//pero eso ya lo he probado y no funciona porque startTimer no esta definido como selector
+//se lanzase scrcocoa_init_timer pero llamandolo desde su hilo principal
 
 void check_if_pendiente_activar_este_timer(void)
 {
