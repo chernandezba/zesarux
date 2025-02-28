@@ -520,13 +520,12 @@ void timer_trigger_interrupt(void)
 }
 
 
-
 void *thread_timer_function(void *nada)
 {
 	while (1) {
 		timer_usleep(timer_sleep_machine);
 
-		//printf ("tick timer\n");
+		printf ("tick timer thread %d\n",contador_segundo);
 		timer_trigger_interrupt();
 
 #ifdef USE_PTHREADS
@@ -563,6 +562,8 @@ int timer_init_thread(void)
 {
     //printf("timer_init_thread\n");
     debug_printf(VERBOSE_INFO,"Initializing timer Thread for %d microsec",timer_sleep_machine);
+    printf("----Llamado a timer_init_thread\n");
+    debug_exec_show_backtrace();
 
 
 #ifdef USE_PTHREADS
@@ -571,7 +572,10 @@ int timer_init_thread(void)
         return 0;
     }
     else {
-        //Ok inicializando
+        //Ok inicializado
+        //y pthread en estado detached asi liberara su memoria asociada a thread al finalizar, sin tener que hacer un pthread_join
+	    pthread_detach(thread_timer);
+
         return 1;
     }
 #endif
@@ -585,7 +589,12 @@ void timer_stop_thread(void)
     debug_printf(VERBOSE_INFO,"Stopping timer Thread");
 
 #ifdef USE_PTHREADS
-    pthread_cancel(thread_timer);
+    printf("Stopping timer Thread %p\n",thread_timer);
+    int returncode=pthread_cancel(thread_timer);
+    if (returncode) {
+        printf("Error canceling timer thread err=%d\n",returncode);
+    }
+
 #endif
 }
 
@@ -689,6 +698,9 @@ int start_timer_specified(struct s_zesarux_timer *t)
     return return_init;
 }
 
+
+//IMPORTANTE: Todas las llamadas a start_timer deben ir precedidas de un stop_current_timer, para evitar
+//arrancar dos timers a la vez
 void start_timer(void)
 {
     //debug_printf(VERBOSE_INFO,"Start Timer");
@@ -781,6 +793,17 @@ void start_timer(void)
     timer_selected=TIMER_DATE;
 
 
+}
+
+
+void timer_change(char *t)
+{
+    //Parar el timer sin activar otro tendria consecuencias catastróficas ya que nadie estaria activando
+    //como timer y cualquier evento del menu o de la emulación que dependa de tiempo no funcionaria (probablemente se colgaria)
+    //Por tanto debe activarse otro timer a continuación
+    stop_current_timer();
+    strcpy(timer_user_preferred,t);
+    start_timer();
 }
 
 void timer_add_timer_to_top_thread(void)

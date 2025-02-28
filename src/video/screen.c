@@ -15473,7 +15473,7 @@ int screen_init_pantalla_and_others(void)
 	int retorno=scr_init_pantalla();
 
 	//Siempre que se redimensiona tamanyo ventana (sin contar zoom) o se reinicia driver video hay que reiniciar cache putpixel
-  init_cache_putpixel();
+    init_cache_putpixel();
 
 	//printf ("screen_init_pantalla_and_others\n");
 	//menu_init_footer();

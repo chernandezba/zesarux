@@ -60,7 +60,7 @@ extern enum timer_type timer_selected;
 
 extern char timer_user_preferred[];
 
-
+extern void timer_change(char *t);
 
 //extern enum timer_type available_timers[];
 
@@ -72,6 +72,7 @@ extern void timer_trigger_interrupt(void);
 
 extern void start_timer(void);
 extern void stop_timer(void);
+extern void stop_current_timer(void);
 
 extern int timer_sleep_machine;
 extern int original_timer_sleep_machine;

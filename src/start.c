@@ -7760,6 +7760,9 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
     }
 
     //Iniciar el timer
+    //Puede que ya haya arrancado desde screen_init_pantalla_and_others, por tanto antes de iniciar el activo, lo paramos
+    stop_current_timer();
+
     start_timer();
 	//start_timer_thread();
 
