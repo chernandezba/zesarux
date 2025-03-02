@@ -110,42 +110,13 @@ struct s_zesarux_timer available_timers[TIMER_LIST_MAX_SIZE]={
     { TIMER_END,"end",NULL,NULL}
 };
 
-struct s_timer_names {
-    enum timer_type timer;
-    char name[TIMER_MAX_NAME];
-};
-
-struct s_timer_names timer_names[]={
-    {TIMER_THREAD,"thread"},
-    {TIMER_DATE,"date"},
-    {TIMER_SDL,"sdl"},
-    {TIMER_MAC,"mac"},
-    {TIMER_UNASSIGNED,"unassigned"},
-
-    //Este siempre al final
-    {TIMER_END,"end"}
-};
 
 enum timer_type timer_selected=TIMER_UNASSIGNED;
 
 //enum timer_type timer_preferred_user=TIMER_UNASSIGNED;
 char timer_user_preferred[TIMER_MAX_NAME]="";
 
-void timer_debug_get_timer_name(enum timer_type timer,char *destination_string)
-{
-    int i=0;
 
-    do {
-        if (timer==timer_names[i].timer) {
-            strcpy(destination_string,timer_names[i].name);
-            return;
-        }
-
-    } while (timer_names[i++].timer!=TIMER_END);
-
-    strcpy(destination_string,"undefined");
-
-}
 
 
 
@@ -165,10 +136,7 @@ void timer_debug_print_timer_list(struct s_zesarux_timer *lista)
     int i;
 
     for (i=0;i<TIMER_LIST_MAX_SIZE;i++) {
-        char timer_name[TIMER_MAX_NAME];
-        //timer_debug_get_timer_name(lista[i].timer,timer_name);
-
-        debug_printf(VERBOSE_DEBUG,"Timer %d Value %d string: [%s]",i,lista[i],timer_name);
+        debug_printf(VERBOSE_DEBUG,"Timer %d Value %d string: [%s]",i,lista[i].timer,lista[i].name);
         printf("Timer %d Value %d string: [%s]\n",i,lista[i].timer,lista[i].name);
     }
 
@@ -692,7 +660,6 @@ void start_timer(void)
 
             char timer_name[TIMER_MAX_NAME];
 
-            //timer_debug_get_timer_name(timer_preferred_user,timer_name);
             strcpy(timer_name,available_timers[pos].name);
 
             debug_printf(VERBOSE_INFO,"Trying %s preferred timer initialization",timer_name);
@@ -734,7 +701,6 @@ void start_timer(void)
 
         char timer_name[TIMER_MAX_NAME];
 
-        //timer_debug_get_timer_name(timer_selected,timer_name);
         strcpy(timer_name,available_timers[i].name);
 
         debug_printf(VERBOSE_DEBUG,"Trying %s timer initialization",timer_name);

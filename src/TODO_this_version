@@ -134,11 +134,6 @@ el timer. y por tanto el timer sdl no se llamara y se queda colgado
 ok*al agregar un timer no deberia agregarse si ya existe en la lista de disponibles. no deberia suceder nunca, en teoria, agregar uno ya disponible,
 pero por si acaso
 
-ok *corregir seleccion timer desde menu -  partes comentadas
-
-*si se puede quitar funciones que convierten de id timer a string y viceversa. dos alternativas:
--dejarlas. y entonces funciones de add y remove no necesitarian pasar el string de timer
--quitarlas. entonces no habria manera de convertir un numero de timer, que no esta en la lista de disponibles, a string. es necesario esto ultimo?
 
 *Quizá cuando se define timer sleep machine, si hay cambio de frecuencia, hacer stop timer y rellamar a set timer , pasando por auto o preferred
 Eso evitaría tener que comprobar en las funciones de trigger timer de  Mac y sdl si hay cambio de frecuencia o si frecuencia < 10 ms

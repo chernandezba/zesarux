@@ -9315,11 +9315,7 @@ void menu_settings_danger_zone(MENU_ITEM_PARAMETERS)
             int i;
 
             for (i=0;i<TIMER_LIST_MAX_SIZE && available_timers[i].timer!=TIMER_END;i++) {
-                char timer_priorities_name[TIMER_MAX_NAME];
-                timer_debug_get_timer_name(available_timers[i].timer,timer_priorities_name);
-
-                //printf("Timer %d Value %d string: [%s]\n",i,lista[i],timer_priorities_name);
-                menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,timer_priorities_name);
+                menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,available_timers[i].name);
                 menu_add_item_menu_prefijo_format(array_menu_common,"     ");
             }
 
@@ -9328,7 +9324,16 @@ void menu_settings_danger_zone(MENU_ITEM_PARAMETERS)
         }
 
         char current_timer_name[TIMER_MAX_NAME];
-        timer_debug_get_timer_name(timer_selected,current_timer_name);
+        int pos=timer_find(available_timers,timer_selected);
+
+        if (pos>=0) {
+            strcpy(current_timer_name,available_timers[pos].name);
+        }
+        else {
+            //Esto no deberia pasar
+            strcpy(current_timer_name,"unknown");
+        }
+
 
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,"Current Timer");
         menu_add_item_menu_prefijo_format(array_menu_common,"    ");
