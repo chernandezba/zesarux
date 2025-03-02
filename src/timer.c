@@ -106,11 +106,6 @@ pthread_t thread_timer;
 
 
 
-/*enum timer_type available_timers[TIMER_LIST_MAX_SIZE]={
-    TIMER_DATE,
-    TIMER_END
-};*/
-
 struct s_zesarux_timer available_timers[TIMER_LIST_MAX_SIZE]={
     { TIMER_END,"end",NULL,NULL}
 };
@@ -152,34 +147,11 @@ void timer_debug_get_timer_name(enum timer_type timer,char *destination_string)
 
 }
 
-//Convierte string a tipo timer. Retorna 0 si no coincide con nada
-enum timer_type timer_debug_get_timer_type(char *name)
-{
-    int i=0;
 
-    do {
-        if (!strcasecmp(name,timer_names[i].name)) {
-            return timer_names[i].timer;
-        }
-
-    } while (timer_names[i++].timer!=TIMER_END);
-
-    return 0;
-
-}
 
 void timer_set_preferred_by_name(char *name)
 {
-    /*enum timer_type t=timer_debug_get_timer_type(name);
-    if (t==0) {
-        debug_printf(VERBOSE_ERR,"Unknown timer type %s",name);
-    }
-    else {
-        timer_preferred_user=t;
-    }
 
-    printf("Timer set: %d\n",t);
-    */
 
    strcpy(timer_user_preferred,name);
    printf("Timer set: %s\n",name);
