@@ -1573,26 +1573,7 @@ int scrcocoa_keymap_z88_cpc_colon;
 int scrcocoa_keymap_z88_cpc_arroba;
 int scrcocoa_keymap_z88_cpc_leftz; //Tecla a la izquierda de la Z. usada en Chloe y PCW
 
-/*
-//int pendiente_activar_este_timer=0;
 
-//Manera de hacer que al activar este timer desde menu settings se haga desde el hilo principal, comprobando
-//desde eventos de teclado o raton
-//TODO: esto es un poco chapucero, lo ideal seria que cuando se active este timer desde menu settings,
-//se lanzase scrcocoa_init_timer pero llamandolo desde su hilo principal
-
-void check_if_pendiente_activar_este_timer(void)
-{
-    if (pendiente_activar_este_timer) {
-        printf("Pendiente activar este timer\n");
-        if (timer_selected==TIMER_MAC) {
-            scrcocoa_init_timer();
-        }
-        pendiente_activar_este_timer=0;
-    }
-
-}
-*/
 
 //- (void) gestionTecla:(NSEvent *)event pressrelease:(int)pressrelease
 - (void) gestionTecla: (NSEvent *)event : (int)pressrelease
@@ -1609,7 +1590,6 @@ void check_if_pendiente_activar_este_timer(void)
 	}
 	*/
 
-    //check_if_pendiente_activar_este_timer();
 
 
 	//printf ("cmd key: %d\n",scrcocoa_antespulsadocmd_l);
@@ -3467,11 +3447,3 @@ int scrcocoa_init (void) {
 }
 
 
-/*
-void scrcocoa_set_pending_this_timer(void)
-{
-    printf("Called scrcocoa_set_pending_this_timer\n");
-    pendiente_activar_este_timer=1;
-
-}
-*/

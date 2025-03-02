@@ -109,30 +109,12 @@ TIMERS
 
 -Mac timer. probar diferentes escenarios. probar con Z88 y lemmings. probar con carga desde cinta real
 
--Nueva manera de usar los timers:
-ok*cada driver se registra como disponible o se desregistra al finalizar el driver
 
-
-ok *al desregistrarse, si ese driver estaba activo, hay que inicializar de nuevo al que este disponible (o el preferido del usuario)
-
-ok *vigilar llamadas a stop y start de driver video que se hacen (creo) al cambiar zoom o quitar border. al hacer stop del driver,
-se quita de disponible y si esta activo, se inicializa otro. pero al hacer start , luego al cambiar zoom etc debe inicializar de nuevo
-el timer al disponible (o preferido). Asi si tenemos por ejemplo sdl timer, al hacer stop y start al final tenemos que seguir usando sdl timer
-
-
-ok * timer thread por ejemplo se registra al inicio de init_timer() siempre que este compilado soporte de threads
 
 * podrian haber otros timers que no estuvieran vinculados a un driver de video, como algun driver de sonido por ejemplo (si es que es posible)
 
 *Ahora por ejemplo si inicio --vo sdl y --ao pulse, si cambio de driver de video desde el menu, finaliza sdl y tambien finaliza
 el timer. y por tanto el timer sdl no se llamara y se queda colgado
-
-*buscar todos los sitios donde se hace video driver stop y ver sus implicaciones (scr_end_pantalla)
-
-*timer date nunca se deberia llamar a stop en teoria. siempre deberia estar disponible
-
-ok*al agregar un timer no deberia agregarse si ya existe en la lista de disponibles. no deberia suceder nunca, en teoria, agregar uno ya disponible,
-pero por si acaso
 
 
 *Quizá cuando se define timer sleep machine, si hay cambio de frecuencia, hacer stop timer y rellamar a set timer , pasando por auto o preferred
@@ -141,9 +123,7 @@ Eso evitaría tener que comprobar en las funciones de trigger timer de  Mac y sd
 
 
 *pendiente probar en windows
-ok*codetests timer
 
-ok *cambio de timer de cualquier cosa hacia mac se debe de hacer en el hilo interno de cocoa.
 
 FIN TIMERS
 ------
