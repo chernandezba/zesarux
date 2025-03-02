@@ -144,6 +144,6 @@ Eso evitaría tener que comprobar en las funciones de trigger timer de  Mac y sd
 
 
 *pendiente probar en windows
-*codetests timer
+ok*codetests timer
 
 ok *cambio de timer de cualquier cosa hacia mac se debe de hacer en el hilo interno de cocoa.

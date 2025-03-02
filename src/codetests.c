@@ -2570,45 +2570,72 @@ void codetests_labeltree(void)
 }
 
 
-
-void codetest_timer_print(enum timer_type *codetests_timers_list)
+void codetest_timer_print(struct s_zesarux_timer *codetests_timers_list)
 {
     int i;
 
     for (i=0;i<TIMER_LIST_MAX_SIZE;i++) {
-        char timer_name[30];
-        timer_debug_get_timer_name(codetests_timers_list[i],timer_name);
-
-        printf("Timer %d Value %d string: [%s]\n",i,codetests_timers_list[i],timer_name);
+        printf("Timer %d Value %d string: [%s]\n",i,codetests_timers_list[i].timer,codetests_timers_list[i].name);
     }
 
 }
 
-void codetests_timer_check(enum timer_type *codetests_timers_list_one,enum timer_type *codetests_timers_list_two)
+void codetests_timer_check(struct s_zesarux_timer *codetests_timers_list_one,struct s_zesarux_timer *codetests_timers_list_two)
 {
     int i;
 
     for (i=0;i<TIMER_LIST_MAX_SIZE;i++) {
-        if (codetests_timers_list_one[i]!=codetests_timers_list_two[i]) {
-            printf("Error checking timer lists!\n");
+		//Validar id timer
+        if (codetests_timers_list_one[i].timer!=codetests_timers_list_two[i].timer) {
+            printf("Error checking timer lists. id different!\n");
+            exit(1);
+        }
+
+		//Validar string timer
+        if (strcmp(codetests_timers_list_one[i].name,codetests_timers_list_two[i].name)) {
+            printf("Error checking timer lists. name different!\n");
+            exit(1);
+        }
+
+		//Validar start function
+        if (codetests_timers_list_one[i].start!=codetests_timers_list_two[i].start) {
+            printf("Error checking timer lists. start different!\n");
+            exit(1);
+        }
+
+		//Validar stop function
+        if (codetests_timers_list_one[i].stop!=codetests_timers_list_two[i].stop) {
+            printf("Error checking timer lists. stop different!\n");
             exit(1);
         }
 
         //Si llegado al final
-        if (codetests_timers_list_one[i]==TIMER_END) return;
+        if (codetests_timers_list_one[i].timer==TIMER_END) return;
     }
+
+}
+
+int codetests_timer_start_function(void)
+{
+	//Retornar ok
+	return 1;
+}
+
+void codetests_timer_stop_function(void)
+{
 
 }
 
 void codetests_timer(void)
 {
 
-/*
-    enum timer_type codetests_timers_list[TIMER_LIST_MAX_SIZE]={
-        TIMER_THREAD,TIMER_DATE,
-        TIMER_END
-    };
 
+
+	struct s_zesarux_timer codetests_timers_list[TIMER_LIST_MAX_SIZE]={
+		{ TIMER_THREAD,"thread",codetests_timer_start_function,codetests_timer_stop_function},
+		{ TIMER_DATE,"date",codetests_timer_start_function,codetests_timer_stop_function},
+		{ TIMER_END,"end",NULL,NULL}
+	};
 
     //Primero print de una lista generada por mi
     codetest_timer_print(codetests_timers_list);
@@ -2616,14 +2643,16 @@ void codetests_timer(void)
     printf("Adding sdl timer\n");
 
     //Agrego un sdl
-    timer_add_timer_to_top(codetests_timers_list,TIMER_SDL);
+    timer_add_timer_to_top(codetests_timers_list,TIMER_SDL,"sdl",codetests_timer_start_function,codetests_timer_stop_function);
 
     //Valido (visualmente)
     codetest_timer_print(codetests_timers_list);
 
-    enum timer_type codetests_timers_list_expected_sdl[TIMER_LIST_MAX_SIZE]={
-        TIMER_SDL,TIMER_THREAD,TIMER_DATE,
-        TIMER_END
+    struct s_zesarux_timer codetests_timers_list_expected_sdl[TIMER_LIST_MAX_SIZE]={
+		{ TIMER_SDL,"sdl",codetests_timer_start_function,codetests_timer_stop_function},
+		{ TIMER_THREAD,"thread",codetests_timer_start_function,codetests_timer_stop_function},
+		{ TIMER_DATE,"date",codetests_timer_start_function,codetests_timer_stop_function},
+		{ TIMER_END,"end",NULL,NULL}
     };
 
     //Validar. de manera automatica
@@ -2639,9 +2668,10 @@ void codetests_timer(void)
     codetest_timer_print(codetests_timers_list);
 
 
-    enum timer_type codetests_timers_list_expected_no_thread[TIMER_LIST_MAX_SIZE]={
-        TIMER_SDL,TIMER_DATE,
-        TIMER_END
+    struct s_zesarux_timer codetests_timers_list_expected_no_thread[TIMER_LIST_MAX_SIZE]={
+		{ TIMER_SDL,"sdl",codetests_timer_start_function,codetests_timer_stop_function},
+		{ TIMER_DATE,"date",codetests_timer_start_function,codetests_timer_stop_function},
+		{ TIMER_END,"end",NULL,NULL}
     };
 
     //Validar. de manera automatica
@@ -2649,15 +2679,17 @@ void codetests_timer(void)
 
     printf("Adding Thread timer to bottom\n");
 
-    timer_add_timer_to_bottom(codetests_timers_list,TIMER_THREAD);
+    timer_add_timer_to_bottom(codetests_timers_list,TIMER_THREAD,"thread",codetests_timer_start_function,codetests_timer_stop_function);
 
     //Valido (visualmente)
     codetest_timer_print(codetests_timers_list);
 
 
-    enum timer_type codetests_timers_list_expected_thread_bottom[TIMER_LIST_MAX_SIZE]={
-        TIMER_SDL,TIMER_DATE,TIMER_THREAD,
-        TIMER_END
+    struct s_zesarux_timer codetests_timers_list_expected_thread_bottom[TIMER_LIST_MAX_SIZE]={
+		{ TIMER_SDL,"sdl",codetests_timer_start_function,codetests_timer_stop_function},
+		{ TIMER_DATE,"date",codetests_timer_start_function,codetests_timer_stop_function},
+		{ TIMER_THREAD,"thread",codetests_timer_start_function,codetests_timer_stop_function},
+		{ TIMER_END,"end",NULL,NULL}
     };
 
     //Validar. de manera automatica
@@ -2681,7 +2713,7 @@ void codetests_timer(void)
         exit(1);
     }
 
-*/
+
 }
 
 void codetests_main(int main_argc,char *main_argv[])
