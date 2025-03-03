@@ -301,10 +301,13 @@ void stop_current_timer(void)
         stop_function=available_timers[pos].stop;
 
         if (stop_function==NULL) {
-            cpu_panic("Timer stop function is NULL");
+            printf("Timer stop function is NULL\n");
+        }
+        else {
+            stop_function();
         }
 
-        stop_function();
+
     }
     else {
         printf("Can not stop current timer as it can not be found\n");
@@ -744,6 +747,12 @@ void timer_change(char *t)
     start_timer();
 }
 
+void timer_restart(void)
+{
+    stop_current_timer();
+    start_timer();
+}
+
 void timer_add_timer_to_top_thread(void)
 {
     timer_add_timer_to_top(available_timers,TIMER_THREAD,"thread",timer_init_thread,timer_stop_thread);
@@ -795,85 +804,7 @@ void init_timer(void)
 }
 
 
-/*
 
-
-void old_start_timer_thread(void)
-{
-#if defined(__APPLE__)
-	//En Mac OS X el timer en pthreads no funciona bien... lo desactivamos
-    use_threads_timer=0;
-#endif
-
-
-
-    if (use_threads_timer) {
-
-#ifdef USE_PTHREADS
-
-        debug_printf(VERBOSE_INFO,"Creating timer thread");
-
-        int use_sdl_timer=0;
-
-        //Si hay SDL, usar su timer
-        //En Windows esto mejora mucho la sincronización
-        //Nota: en caso que se cambie de driver de video desde menu a otro driver, el timer de SDL
-        //seguira activo. No es un problema, pues ademas, si no quisieramos que fuese asi,
-        //al salir del driver de video habria que llamar a SDL_RemoveTimer y ademas volver a llamar aqui a start_timer_thread
-        //para poner un timer de thread
-    #ifdef COMPILE_SDL
-        //SDL no permite timer < 10 ms
-        if (!strcmp(scr_new_driver_name,"sdl")) {
-            use_sdl_timer=1;
-
-            //SDL no permite timer < 10 ms
-            if (timer_sleep_machine<10000) use_sdl_timer=0;
-        }
-
-        if (use_sdl_timer) {
-
-            printf("Using SDL timer\n");
-            int retorno=commonsdl_init_timer();
-            if (!retorno) {
-                printf("Error starting SDL timer. Fallback to thread timer\n");
-                use_sdl_timer=0;
-            }
-
-        }
-    #endif
-
-
-
-        if (!use_sdl_timer) {
-
-            #ifdef MINGW
-                //Parece que en Windows el timer en pthreads no funciona bien... lo desactivamos
-                //Esto parece que resuelve algunos de los "clicks" en el audio en Windows
-                use_threads_timer=0;
-            #endif
-
-
-            if (use_threads_timer) {
-                printf("Using pthread timer\n");
-                if (pthread_create( &thread_timer, NULL, &thread_timer_function, NULL) ) {
-                                cpu_panic("Can not create timer pthread");
-                }
-            }
-
-#endif
-
-        }
-
-
-
-    }
-
-    if (!use_threads_timer) {
-        printf("Using non-pthread timer\n");
-    }
-
-}
-*/
 
 
 z80_bit top_speed_timer={0};

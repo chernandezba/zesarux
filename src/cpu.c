@@ -1547,36 +1547,15 @@ char *get_machine_name(z80_byte machine)
 void set_emulator_speed(void)
 {
 
-/*
-	int forzarcambio=0;
-
-	//Si se cambia entre maquina Z88 y cualquier otra, forzar
-	if (MACHINE_IS_Z88 && maquina_anterior_cambio_cpu_speed!=30 ||
-	    !MACHINE_IS_Z88 && maquina_anterior_cambio_cpu_speed==30) {
-		forzarcambio=1;
-		debug_printf ("
-	}
-
-
-	maquina_anterior_cambio_cpu_speed=machine_type;
-*/
-
-	/*
-	if (porcentaje_velocidad_emulador==100) {
-		//Si velocidad es la normal, no hacer ningun recalculo
-		timer_sleep_machine=original_timer_sleep_machine;
-	}
-
-	else {
-		timer_sleep_machine=original_timer_sleep_machine*100/porcentaje_velocidad_emulador;
-		if (timer_sleep_machine==0) timer_sleep_machine=1;
-
-	}
-	*/
-
-	//Calcular velocidad. caso normal que porcentaje=100, valor queda timer_sleep_machine=original_timer_sleep_machine*100/100 = original_timer_sleep_machine
+    printf("set_emulator_speed\n");
+    sleep(1);
+	//Calcular velocidad. caso normal que porcentaje=100, valor queda timer_sleep_machine es original_timer_sleep_machine*100/100 = original_timer_sleep_machine
 	timer_sleep_machine=original_timer_sleep_machine*100/porcentaje_velocidad_emulador;
 	if (timer_sleep_machine==0) timer_sleep_machine=1;
+
+    //Reiniciar timer por si se activa maquina como Z88 donde el timer SDL no permite esa velocidad
+    //o tambien si cpu speed es demasiado alta y tampoco permite algun timer concreto
+    timer_restart();
 
 	//Si ha cambiado velocidad, reiniciar driver audio con frecuencia adecuada
 	if (anterior_porcentaje_velocidad_emulador!=porcentaje_velocidad_emulador) {
@@ -2102,7 +2081,6 @@ void set_machine_params(void)
     i8049_chip_present=0;
 
     if (!MACHINE_IS_Z88) {
-        //timer_sleep_machine=original_timer_sleep_machine=20000;
         original_timer_sleep_machine=20000;
                 set_emulator_speed();
     }
@@ -2560,7 +2538,6 @@ void set_machine_params(void)
 
         z80_cpu_current_type=Z80_TYPE_CMOS;
 
-        //timer_sleep_machine=original_timer_sleep_machine=5000;
         original_timer_sleep_machine=5000;
         set_emulator_speed();
 

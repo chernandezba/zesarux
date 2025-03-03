@@ -83,10 +83,14 @@ int commonsdl_init_timer(void)
 
     debug_printf(VERBOSE_INFO,"Initializing timer SDL for %d microsec",timer_sleep_machine);
     printf("Initializing timer SDL for %d microsec\n",timer_sleep_machine);
+    debug_exec_show_backtrace();
+    sleep(2);
 
     //SDL no permite timer < 10 ms
     if (timer_sleep_machine<10000) {
         debug_printf(VERBOSE_INFO,"SDL callback pretends to call at %d microsec but minimum is 10000. Can't set SDL timer",timer_sleep_machine);
+        printf("SDL callback pretends to call at %d microsec but minimum is 10000. Can't set SDL timer\n",timer_sleep_machine);
+        sleep(5);
         return 0;
     }
 
