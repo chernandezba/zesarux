@@ -2718,6 +2718,8 @@ void codetests_timer(void)
     //Validar. de manera automatica
     codetests_timer_check(codetests_timers_to_fill_repeated,codetests_timers_to_fill_repeated_expected);
 
+	//Nota: Estos chequeos de llenado de lista están pensados para valor de TIMER_LIST_MAX_SIZE=10
+	//Si se cambia esa constante, hay que modificar los arrays *expected de manera correcta
 
 	printf("Testing adding to top when list full\n");
 

@@ -172,7 +172,7 @@ int timer_list_is_full(struct s_zesarux_timer *timer_list)
 {
     //Si el ultimo es end, no hay mas sitio
     int end_pos=timer_find(timer_list,TIMER_END);
-    printf("end_pos: %d\n",end_pos);
+    //printf("end_pos: %d\n",end_pos);
     if (end_pos==TIMER_LIST_MAX_SIZE-1) {
         return 1;
     }
