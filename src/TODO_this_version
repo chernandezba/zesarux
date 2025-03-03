@@ -124,6 +124,8 @@ Eso evitaría tener que comprobar en las funciones de trigger timer de  Mac y sd
 
 *pendiente probar en windows
 
+*cocoa permite timer <10ms para z88?
+
 
 FIN TIMERS
 ------

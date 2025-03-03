@@ -54,18 +54,7 @@ Uint32 commonsdl_timer_callback( Uint32 interval, void* param )
     //printf("Called Timer callback. interval called=%d return interval=%d\n",interval,return_intervalo);
 
 
-    //SDL no permite timer < 10 ms
-    //Aqui se saltaria en caso de que se tenga una maquina con timer >10ms, por ejemplo Spectrum,
-    //y se cambie a otra maquina con timer <10ms (5ms, Z88) o tambien subiendo el cpu speed > 200%
-    //En este caso desactivamos este timer de SDL y cualquier otro timer basado en threads, por lo que usara el de date
-    //Nota: Pero en linux se supone que deberia ir bien usar un timer de threads con tiempos <10ms
-    //lo que deberiamos hacer es denegar el timer de sdl, pero en windows si que deberia saltar a usar un timer de no threads
-    if (timer_sleep_machine<10000) {
-        debug_printf(VERBOSE_INFO,"SDL callback pretends to call at %d microsec but minimum is 10000. Set a non-sdl timer",timer_sleep_machine);
-        start_timer();
-        //Devolvemos 0 para desactivar el timer de sdl
-        return 0;
-    }
+
 
 
     return return_intervalo;

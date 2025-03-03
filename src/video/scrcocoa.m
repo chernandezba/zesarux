@@ -2384,13 +2384,7 @@ int previous_timer_sleep_machine=0;
     //printf("timerTickHandler\n");
     if (!cocoatimeractivo) return;
 
-    //Cocoa timer no permite cambiar el intervalo. Invalidarlo si por ejemplo cambiamos de maquina spectrum a z88
-    if (timer_sleep_machine!=previous_timer_sleep_machine) {
-        printf("Timer frequency has been changed, can not change cocoa timer interval. Invalidating this timer\n");
-        cocoatimeractivo=0;
-        start_timer();
-        return;
-    }
+
 
     printf("timerTickHandler. %d\n",contador_segundo);
     timer_trigger_interrupt();
@@ -3246,57 +3240,7 @@ void realjoystick_cocoa_main(void)
     //de momento esto no hace nada, ya que los eventos de pulsaciones se reciben directamente
 }
 
-/*
-int temp_startTimer(void)
-{
-    printf("--scrcocoa startTimer. cocoatimeractivo=%d\n",cocoatimeractivo);
 
-    debug_printf(VERBOSE_INFO,"Initializing timer Mac for %d microsec",timer_sleep_machine);
-
-    //Si lo lanzamos de nuevo pero esta vez con intervalo diferente, no soporta cambio de intervalo,
-    //por tanto devolvemos error para que no use este tipo de timer
-    //Esto pasa por ejemplo si estamos en maquina Spectrum y saltamos a Z88
-
-
-
-    //hay intervalo previo. ver si son iguales
-    if (previous_timer_sleep_machine>0) {
-        if (timer_sleep_machine!=previous_timer_sleep_machine) {
-            printf("Start cocoa timer but timer frequency has been changed, can not change cocoa timer interval. Invalidating this timer\n");
-            return 0;
-        }
-    }
-
-
-    previous_timer_sleep_machine=timer_sleep_machine;
-
-    if (timer == nil)
-    {
-        printf("timer_sleep_machine %d\n",timer_sleep_machine);
-        //NSTimeInterval ti=timer_sleep_machine/1000000.0;
-        //printf("ti= %f\n",ti);
-
-
-        //timer_sleep_machine en microsegundos. pasamos a segundos
-
-        timer = [NSTimer scheduledTimerWithTimeInterval:timer_sleep_machine/1000000.0
-                                                 target:cocoaView
-                                               selector:@selector(timerTickHandler)
-                                               userInfo:nil
-                                                repeats:YES];
-
-        //Error al inicializar
-        //Nota: suponemos que scheduledTimerWithTimeInterval puede fallar y dar nil en retorno, pero no estoy seguro
-        if (timer==nil) return 0;
-    }
-
-    cocoatimeractivo=1;
-
-    printf("Started Mac timer. timer=%p cocoatimeractivo=%d\n",timer,cocoatimeractivo);
-
-    return 1;
-}
-*/
 
 
 
