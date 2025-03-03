@@ -2696,6 +2696,101 @@ void codetests_timer(void)
     codetests_timer_check(codetests_timers_list,codetests_timers_list_expected_thread_bottom);
 
 
+	//Validar que no agregue uno si existe
+	printf("Adding repeated timer\n");
+	struct s_zesarux_timer codetests_timers_to_fill_repeated[TIMER_LIST_MAX_SIZE]={
+		{ TIMER_END,"end",NULL,NULL}
+	};
+
+	timer_add_timer_to_top(codetests_timers_to_fill_repeated,TIMER_SDL,"sdl",codetests_timer_start_function,codetests_timer_stop_function);
+	timer_add_timer_to_top(codetests_timers_to_fill_repeated,TIMER_SDL,"sdl",codetests_timer_start_function,codetests_timer_stop_function);
+
+
+    //Valido (visualmente)
+    codetest_timer_print(codetests_timers_to_fill_repeated);
+
+
+	struct s_zesarux_timer codetests_timers_to_fill_repeated_expected[TIMER_LIST_MAX_SIZE]={
+		{ TIMER_SDL,"sdl",codetests_timer_start_function,codetests_timer_stop_function},
+		{ TIMER_END,"end",NULL,NULL}
+	};
+
+    //Validar. de manera automatica
+    codetests_timer_check(codetests_timers_to_fill_repeated,codetests_timers_to_fill_repeated_expected);
+
+
+	printf("Testing adding to top when list full\n");
+
+
+	//Validar llenando en top
+	struct s_zesarux_timer codetests_timers_to_fill_full[TIMER_LIST_MAX_SIZE]={
+		{ TIMER_END,"end",NULL,NULL}
+	};
+
+	int i;
+	for (i=0;i<TIMER_LIST_MAX_SIZE;i++) {
+		//printf("add timer id %d\n",i);
+		timer_add_timer_to_top(codetests_timers_to_fill_full,i,"mytimer",codetests_timer_start_function,codetests_timer_stop_function);
+	}
+
+    //Valido (visualmente)
+    codetest_timer_print(codetests_timers_to_fill_full);
+
+	//Dado que se empieza con 1 (el end) e intento agregar el total (TIMER_LIST_MAX_SIZE), hay uno que no entrara
+
+	struct s_zesarux_timer codetests_timers_to_fill_full_expected[TIMER_LIST_MAX_SIZE]={
+		{ 8,"mytimer",codetests_timer_start_function,codetests_timer_stop_function},
+		{ 7,"mytimer",codetests_timer_start_function,codetests_timer_stop_function},
+		{ 6,"mytimer",codetests_timer_start_function,codetests_timer_stop_function},
+		{ 5,"mytimer",codetests_timer_start_function,codetests_timer_stop_function},
+		{ 4,"mytimer",codetests_timer_start_function,codetests_timer_stop_function},
+		{ 3,"mytimer",codetests_timer_start_function,codetests_timer_stop_function},
+		{ 2,"mytimer",codetests_timer_start_function,codetests_timer_stop_function},
+		{ 1,"mytimer",codetests_timer_start_function,codetests_timer_stop_function},
+		{ 0,"mytimer",codetests_timer_start_function,codetests_timer_stop_function},
+		{ TIMER_END,"end",NULL,NULL}
+	};
+
+
+    //Validar. de manera automatica
+    codetests_timer_check(codetests_timers_to_fill_full,codetests_timers_to_fill_full_expected);
+
+
+	printf("Testing adding to bottom when list full\n");
+
+
+	//Validar llenando en bottom
+	struct s_zesarux_timer codetests_timers_to_fill_full_bottom[TIMER_LIST_MAX_SIZE]={
+		{ TIMER_END,"end",NULL,NULL}
+	};
+
+	for (i=0;i<TIMER_LIST_MAX_SIZE;i++) {
+		//printf("add timer id %d\n",i);
+		timer_add_timer_to_bottom(codetests_timers_to_fill_full_bottom,i,"mytimer",codetests_timer_start_function,codetests_timer_stop_function);
+	}
+
+    //Valido (visualmente)
+    codetest_timer_print(codetests_timers_to_fill_full_bottom);
+
+	//Dado que se empieza con 1 (el end) e intento agregar el total (TIMER_LIST_MAX_SIZE), hay uno que no entrara
+
+	struct s_zesarux_timer codetests_timers_to_fill_full_bottom_expected[TIMER_LIST_MAX_SIZE]={
+		{ 0,"mytimer",codetests_timer_start_function,codetests_timer_stop_function},
+		{ 1,"mytimer",codetests_timer_start_function,codetests_timer_stop_function},
+		{ 2,"mytimer",codetests_timer_start_function,codetests_timer_stop_function},
+		{ 3,"mytimer",codetests_timer_start_function,codetests_timer_stop_function},
+		{ 4,"mytimer",codetests_timer_start_function,codetests_timer_stop_function},
+		{ 5,"mytimer",codetests_timer_start_function,codetests_timer_stop_function},
+		{ 6,"mytimer",codetests_timer_start_function,codetests_timer_stop_function},
+		{ 7,"mytimer",codetests_timer_start_function,codetests_timer_stop_function},
+		{ 8,"mytimer",codetests_timer_start_function,codetests_timer_stop_function},
+		{ TIMER_END,"end",NULL,NULL}
+	};
+
+
+    //Validar. de manera automatica
+    codetests_timer_check(codetests_timers_to_fill_full_bottom,codetests_timers_to_fill_full_bottom_expected);
+
 
 }
 

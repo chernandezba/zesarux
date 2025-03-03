@@ -111,14 +111,17 @@ TIMERS
 
 
 
-* podrian haber otros timers que no estuvieran vinculados a un driver de video, como algun driver de sonido por ejemplo (si es que es posible)
+* podrian haber otros timers que no estuvieran vinculados a un driver de video, como algun driver de sonido por
+ejemplo (si es que es posible)
 
 *Ahora por ejemplo si inicio --vo sdl y --ao pulse, si cambio de driver de video desde el menu, finaliza sdl y tambien finaliza
 el timer. y por tanto el timer sdl no se llamara y se queda colgado
 
 
-*Quizá cuando se define timer sleep machine, si hay cambio de frecuencia, hacer stop timer y rellamar a set timer , pasando por auto o preferred
-Eso evitaría tener que comprobar en las funciones de trigger timer de  Mac y sdl si hay cambio de frecuencia o si frecuencia < 10 ms
+ok *Quizá cuando se define timer sleep machine, si hay cambio de frecuencia, hacer stop timer y rellamar a set timer ,
+pasando por auto o preferred
+Eso evitaría tener que comprobar en las funciones de trigger timer de  Mac y sdl si hay cambio de frecuencia o si
+frecuencia < 10 ms
 *relacionado con esto: timer mac, sdl etc de Z88, tanto iniciar con Z88 como cambiar de spectrum a z88
 
 

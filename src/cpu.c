@@ -1548,7 +1548,7 @@ void set_emulator_speed(void)
 {
 
     printf("set_emulator_speed\n");
-    sleep(1);
+
 	//Calcular velocidad. caso normal que porcentaje=100, valor queda timer_sleep_machine es original_timer_sleep_machine*100/100 = original_timer_sleep_machine
 	timer_sleep_machine=original_timer_sleep_machine*100/porcentaje_velocidad_emulador;
 	if (timer_sleep_machine==0) timer_sleep_machine=1;

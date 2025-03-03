@@ -105,7 +105,7 @@ pthread_t thread_timer;
 
 
 
-
+//El TIMER_END siempre se mantiene como delimitador de final
 struct s_zesarux_timer available_timers[TIMER_LIST_MAX_SIZE]={
     { TIMER_END,"end",NULL,NULL}
 };
@@ -113,11 +113,8 @@ struct s_zesarux_timer available_timers[TIMER_LIST_MAX_SIZE]={
 
 enum timer_type timer_selected=TIMER_UNASSIGNED;
 
-//enum timer_type timer_preferred_user=TIMER_UNASSIGNED;
+
 char timer_user_preferred[TIMER_MAX_NAME]="";
-
-
-
 
 
 void timer_set_preferred_by_name(char *name)
@@ -148,6 +145,9 @@ int timer_find(struct s_zesarux_timer *timer_list,enum timer_type timer_to_find)
 
     for (i=0;i<TIMER_LIST_MAX_SIZE;i++) {
         if (timer_list[i].timer==timer_to_find) return i;
+
+        //Si llegamos al fin. Nota: se puede haber buscado el TIMER_END y en ese caso saldria por la condicion anterior
+        if (timer_list[i].timer==TIMER_END) return -1;
     }
 
     return -1;
@@ -160,10 +160,24 @@ int timer_find_by_name(struct s_zesarux_timer *timer_list,char *timer_to_find)
 
     for (i=0;i<TIMER_LIST_MAX_SIZE;i++) {
         if (!strcmp(timer_list[i].name,timer_to_find)) return i;
+        if (timer_list[i].timer==TIMER_END) return -1;
     }
 
     return -1;
 
+}
+
+
+int timer_list_is_full(struct s_zesarux_timer *timer_list)
+{
+    //Si el ultimo es end, no hay mas sitio
+    int end_pos=timer_find(timer_list,TIMER_END);
+    printf("end_pos: %d\n",end_pos);
+    if (end_pos==TIMER_LIST_MAX_SIZE-1) {
+        return 1;
+    }
+
+    else return 0;
 }
 
 //Agrega un temporizador al principio de la list
@@ -172,9 +186,17 @@ void timer_add_timer_to_top(struct s_zesarux_timer *timer_list,enum timer_type t
 {
     printf("Add timer to top %s\n",name);
 
+    //Ver si hay sitio para meter otro
+    if (timer_list_is_full(timer_list)) {
+        debug_printf(VERBOSE_DEBUG,"Can not add timer to top. List is full");
+        printf("Can not add timer to top. List is full\n");
+        return;
+    }
+
     //No agregar si ya esta
-    if (timer_find(available_timers,timer_to_add)>=0) {
-        printf("Timer %s already exists\n",name);
+    int pos_exists=timer_find(timer_list,timer_to_add);
+    if (pos_exists>=0) {
+        printf("Timer %s already exists on position %d\n",name,pos_exists);
         return;
     }
 
@@ -202,8 +224,15 @@ void timer_add_timer_to_bottom(struct s_zesarux_timer *timer_list,enum timer_typ
 {
     printf("Add timer to bottom %s\n",name);
 
+    //Ver si hay sitio para meter otro
+    if (timer_list_is_full(timer_list)) {
+        debug_printf(VERBOSE_DEBUG,"Can not add timer to bottom. List is full");
+        printf("Can not add timer to bottom. List is full\n");
+        return;
+    }
+
     //No agregar si ya esta
-    if (timer_find(available_timers,timer_to_add)>=0) {
+    if (timer_find(timer_list,timer_to_add)>=0) {
         printf("Timer %s already exists\n",name);
         return;
     }
@@ -215,12 +244,6 @@ void timer_add_timer_to_bottom(struct s_zesarux_timer *timer_list,enum timer_typ
        if (timer_list[i].timer==TIMER_END) break;
     }
 
-    //Ver que no estemos en el ultimo (que seria el TIMER_END) y no habria sitio para meter otro
-    //Ni el final (que significaria que no hemos encontrado el TIMER_END)
-    if (i>=TIMER_LIST_MAX_SIZE-1) {
-        debug_printf(VERBOSE_DEBUG,"Can not add timer to bottom");
-        return;
-    }
 
     timer_list[i].timer=timer_to_add;
     strcpy(timer_list[i].name,name);
