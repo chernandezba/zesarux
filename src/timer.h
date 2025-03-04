@@ -73,6 +73,7 @@ extern void timer_trigger_interrupt(void);
 extern void start_timer(void);
 extern void stop_timer(void);
 extern void stop_current_timer(void);
+extern void timer_restart(void);
 
 extern int timer_sleep_machine;
 extern int original_timer_sleep_machine;

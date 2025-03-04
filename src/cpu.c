@@ -1547,7 +1547,7 @@ char *get_machine_name(z80_byte machine)
 void set_emulator_speed(void)
 {
 
-    printf("set_emulator_speed\n");
+    //printf("set_emulator_speed\n");
 
 	//Calcular velocidad. caso normal que porcentaje=100, valor queda timer_sleep_machine es original_timer_sleep_machine*100/100 = original_timer_sleep_machine
 	timer_sleep_machine=original_timer_sleep_machine*100/porcentaje_velocidad_emulador;

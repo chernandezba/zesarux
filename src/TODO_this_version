@@ -95,6 +95,9 @@ En modo streaming en debug CPU indicarlo de alguna manera
 
 Al hacer debug cpu->reset salir de online? Independientemente de si es modo streaming?
 
+-Si por ejemplo conectado a partida online desde spectrum, cambio a maquina z88,
+y se sigue escuchando la musica del juego online
+
 ------
 
 
@@ -110,24 +113,12 @@ TIMERS
 -Mac timer. probar diferentes escenarios. probar con Z88 y lemmings. probar con carga desde cinta real
 
 
-
-* podrian haber otros timers que no estuvieran vinculados a un driver de video, como algun driver de sonido por
-ejemplo (si es que es posible)
-
-*Ahora por ejemplo si inicio --vo sdl y --ao pulse, si cambio de driver de video desde el menu, finaliza sdl y tambien finaliza
-el timer. y por tanto el timer sdl no se llamara y se queda colgado
-
-
-ok *Quizá cuando se define timer sleep machine, si hay cambio de frecuencia, hacer stop timer y rellamar a set timer ,
-pasando por auto o preferred
-Eso evitaría tener que comprobar en las funciones de trigger timer de  Mac y sdl si hay cambio de frecuencia o si
-frecuencia < 10 ms
-*relacionado con esto: timer mac, sdl etc de Z88, tanto iniciar con Z88 como cambiar de spectrum a z88
-
-
 *pendiente probar en windows
 
 *cocoa permite timer <10ms para z88?
+-eliminar print debug
+-eliminar funciones o variables que no se usan
+-agregar externs necesarios
 
 
 FIN TIMERS

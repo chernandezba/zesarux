@@ -119,10 +119,8 @@ char timer_user_preferred[TIMER_MAX_NAME]="";
 
 void timer_set_preferred_by_name(char *name)
 {
-
-
    strcpy(timer_user_preferred,name);
-   printf("Timer set: %s\n",name);
+   //printf("Timer set: %s\n",name);
 }
 
 
@@ -133,8 +131,9 @@ void timer_debug_print_timer_list(struct s_zesarux_timer *lista)
     int i;
 
     for (i=0;i<TIMER_LIST_MAX_SIZE;i++) {
-        debug_printf(VERBOSE_DEBUG,"Timer %d Value %d string: [%s]",i,lista[i].timer,lista[i].name);
-        printf("Timer %d Value %d string: [%s]\n",i,lista[i].timer,lista[i].name);
+        debug_printf(VERBOSE_DEBUG,"Timer %d Name: [%s] Value %d",i,lista[i].name,lista[i].timer);
+        //printf("Timer %d Name: [%s] Value %d\n",i,lista[i].name,lista[i].timer);
+        if (lista[i].timer==TIMER_END) break;
     }
 
 }
@@ -184,19 +183,19 @@ int timer_list_is_full(struct s_zesarux_timer *timer_list)
 //Nota: siempre le paso el puntero al array asi puedo tener diferentes arrays, uno para los timers normales y el otro para codetests
 void timer_add_timer_to_top(struct s_zesarux_timer *timer_list,enum timer_type timer_to_add,char *name,int (*start)(void),void (*stop)(void))
 {
-    printf("Add timer to top %s\n",name);
+    debug_printf(VERBOSE_DEBUG,"Add timer %s to top",name);
 
     //Ver si hay sitio para meter otro
     if (timer_list_is_full(timer_list)) {
-        debug_printf(VERBOSE_DEBUG,"Can not add timer to top. List is full");
-        printf("Can not add timer to top. List is full\n");
+        debug_printf(VERBOSE_DEBUG,"Can not add timer %s to top. List is full",name);
+        //printf("Can not add timer to top. List is full\n");
         return;
     }
 
     //No agregar si ya esta
     int pos_exists=timer_find(timer_list,timer_to_add);
     if (pos_exists>=0) {
-        printf("Timer %s already exists on position %d\n",name,pos_exists);
+        debug_printf(VERBOSE_DEBUG,"Timer %s already exists on position %d",name,pos_exists);
         return;
     }
 
@@ -222,18 +221,19 @@ void timer_add_timer_to_top(struct s_zesarux_timer *timer_list,enum timer_type t
 //Agrega un temporizador al final de la lista
 void timer_add_timer_to_bottom(struct s_zesarux_timer *timer_list,enum timer_type timer_to_add,char *name,int (*start)(void),void (*stop)(void))
 {
-    printf("Add timer to bottom %s\n",name);
+    debug_printf(VERBOSE_DEBUG,"Add timer %s to bottom",name);
 
     //Ver si hay sitio para meter otro
     if (timer_list_is_full(timer_list)) {
-        debug_printf(VERBOSE_DEBUG,"Can not add timer to bottom. List is full");
-        printf("Can not add timer to bottom. List is full\n");
+        debug_printf(VERBOSE_DEBUG,"Can not add timer %s to bottom. List is full",name);
+        //printf("Can not add timer to bottom. List is full\n");
         return;
     }
 
     //No agregar si ya esta
-    if (timer_find(timer_list,timer_to_add)>=0) {
-        printf("Timer %s already exists\n",name);
+    int pos_exists=timer_find(timer_list,timer_to_add);
+    if (pos_exists>=0) {
+        debug_printf(VERBOSE_DEBUG,"Timer %s already exists on position %d",name,pos_exists);
         return;
     }
 
@@ -264,8 +264,7 @@ void timer_add_timer_to_bottom(struct s_zesarux_timer *timer_list,enum timer_typ
 void timer_remove_timer(struct s_zesarux_timer *timer_list,enum timer_type timer_to_remove)
 {
 
-
-    printf("remove timer id %d\n",timer_to_remove);
+    debug_printf(VERBOSE_DEBUG,"Remove timer id %d",timer_to_remove);
 
     //Primero buscarlo
     int i;
@@ -281,7 +280,7 @@ void timer_remove_timer(struct s_zesarux_timer *timer_list,enum timer_type timer
 
     //Si el timer activo es el que quitamos, tenemos que parar ese timer
     if (timer_to_remove==timer_selected) {
-        printf("Stopping current timer as it has been deleted\n");
+        debug_printf(VERBOSE_INFO,"Stopping current timer as it has been deleted");
         timer_list[i].stop();
     }
 
@@ -296,7 +295,7 @@ void timer_remove_timer(struct s_zesarux_timer *timer_list,enum timer_type timer
 
     //Si el timer activo es el que quitamos, tenemos que inicializar el timer disponible
     if (timer_to_remove==timer_selected) {
-        printf("Starting available timer as the current timer has been deleted\n");
+        debug_printf(VERBOSE_DEBUG,"Starting available timer as the current timer has been deleted");
         start_timer();
     }
 
@@ -307,12 +306,12 @@ void stop_current_timer(void)
 {
 
 
-    printf("stop_current_timer %d\n",timer_selected);
+    debug_printf(VERBOSE_DEBUG,"Stop current timer %d",timer_selected);
 
     //debug_exec_show_backtrace();
 
     if (timer_selected==TIMER_UNASSIGNED) {
-        printf("Timer has not been assigned. Return without stopping any timer\n");
+        debug_printf(VERBOSE_DEBUG,"Timer has not been assigned. Return without stopping any timer");
         return;
     }
 
@@ -324,7 +323,7 @@ void stop_current_timer(void)
         stop_function=available_timers[pos].stop;
 
         if (stop_function==NULL) {
-            printf("Timer stop function is NULL\n");
+            debug_printf(VERBOSE_DEBUG,"Timer stop function is NULL");
         }
         else {
             stop_function();
@@ -333,7 +332,7 @@ void stop_current_timer(void)
 
     }
     else {
-        printf("Can not stop current timer as it can not be found\n");
+        debug_printf(VERBOSE_DEBUG,"Can not stop current timer as it can not be found");
     }
 
 
@@ -622,16 +621,6 @@ void timer_stop_mac(void)
 
 
 
-//Cuando se cambia timer desde menu settings, si es timer Mac (cocoa) se hará que tiene que cambiar timer desde su hilo principal
-/*
-int start_timer_cocoa_main_thread=0;
-
-void start_timer_prepare_cocoa_thread(void)
-{
-    start_timer_cocoa_main_thread=1;
-}
-*/
-
 
 int start_timer_specified(struct s_zesarux_timer *t)
 {
@@ -667,6 +656,8 @@ int start_timer_specified(struct s_zesarux_timer *t)
 
 //IMPORTANTE: Todas las llamadas a start_timer deben ir precedidas de un stop_current_timer, para evitar
 //arrancar dos timers a la vez
+//Adicional: aunque ahora los timers van vinculados a un driver de video (sdl) o sistema (mac-cocoa), podria
+//haber otros timers vinculados a una señal hardware, como un cristal de cuarzo que genera 50 hz o cosas asi
 void start_timer(void)
 {
     //debug_printf(VERBOSE_INFO,"Start Timer");
