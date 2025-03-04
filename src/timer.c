@@ -384,7 +384,7 @@ void *thread_timer_function(void *nada)
 	while (1) {
 		timer_usleep(timer_sleep_machine);
 
-		printf ("tick timer thread %d\n",contador_segundo);
+		//printf ("tick timer thread %d\n",contador_segundo);
 		timer_trigger_interrupt();
 
 #ifdef USE_PTHREADS
@@ -408,8 +408,8 @@ int timer_init_thread(void)
 {
     //printf("timer_init_thread\n");
     debug_printf(VERBOSE_INFO,"Initializing timer Thread for %d microsec",timer_sleep_machine);
-    printf("----Llamado a timer_init_thread\n");
-    debug_exec_show_backtrace();
+    //printf("----Llamado a timer_init_thread\n");
+    //debug_exec_show_backtrace();
 
 
 #ifdef USE_PTHREADS
@@ -435,10 +435,10 @@ void timer_stop_thread(void)
     debug_printf(VERBOSE_INFO,"Stopping timer Thread");
 
 #ifdef USE_PTHREADS
-    printf("Stopping timer Thread %p\n",thread_timer);
+    //printf("Stopping timer Thread %p\n",thread_timer);
     int returncode=pthread_cancel(thread_timer);
     if (returncode) {
-        printf("Error canceling timer thread err=%d\n",returncode);
+        debug_printf(VERBOSE_INFO,"Error canceling timer thread err=%d",returncode);
     }
 
 #endif
@@ -450,26 +450,13 @@ void timer_stop_thread(void)
 int start_timer_specified(struct s_zesarux_timer *t)
 {
 
-    //Con esto lo que hacemos es que la inicializacion del timer en cocoa la haga mediante su hilo principal,
-    //para ello activamos una señal en scrcocoa_set_pending_this_timer que lo lee con un evento de teclado o movimiento de raton
-    /*if (t->timer==TIMER_MAC && start_timer_cocoa_main_thread) {
-        #ifdef USE_COCOA
-        scrcocoa_set_pending_this_timer();
-        #endif
-
-        start_timer_cocoa_main_thread=0;
-
-        return 1;
-    }*/
-
-    //start_timer_cocoa_main_thread=0;
 
 
     int (*start_function)(void);
     start_function=t->start;
 
     if (start_function==NULL) {
-        printf("Timer start function is NULL\n");
+        debug_printf(VERBOSE_DEBUG,"Timer start function is NULL");
         return 0;
     }
 
@@ -489,7 +476,7 @@ void start_timer(void)
 
     //Si el usuario tiene un timer favorito
 
-    printf("start_timer. Available timers:\n");
+    debug_printf(VERBOSE_DEBUG,"Start timer. Available timers:");
     timer_debug_print_timer_list(available_timers);
 
     if (timer_user_preferred[0]) {
