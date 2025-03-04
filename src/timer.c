@@ -339,126 +339,6 @@ void stop_current_timer(void)
 }
 
 
-int timer_pthread_generada=0;
-
-//tiempo en microsegundos que dura cada interrupcion de timer
-int timer_sleep_machine=20000;
-
-//valor original antes de aplicar cpu speed
-int original_timer_sleep_machine=20000;
-
-
-//Va desde 0 a 1000. Si llega a 1000 se pone a 0. Se incrementa en 20 cada 20 ms
-int contador_segundo=0;
-
-//Mismo que contador_segundo pero no se resetea a 0. Se usa en draw overlays, es mejor que comparar contra contador_segundo cuando
-//se redibuja por ejemplo dos veces por segundo, en que muchas veces coincide el contador anterior con el actual y refresca
-//menos de lo que deberia
-int contador_segundo_infinito;
-
-//Va desde 0 a 20000. Cuando llega a 20000 se pone a 0. Indica cuando se ha pasado 20 ms
-int contador_20ms=0;
-
-
-
-
-int conta_envio_audio=0;
-
-
-//Contador que se decrementa(si esta activo) cada 1/50 s, e indica cuando se debe liberar una tecla pulsada desde el menu de On Screen Keyboard
-int timer_on_screen_key=0;
-
-//Parecido pero para adventure keyboard
-int timer_on_screen_adv_key=0;
-
-
-//lo que dura un frame en microsegundos  (20 ms = 200000 milisec)
-//#define FRAME_MICROSECONDS (1000000/50)
-
-
-
-//Estadisticas de diferentes partes del emulador
-
-// Tiempo que se tarda en ejecutar todas las instrucciones de un frame completo de pantalla
-//Tiempos antes y despues
-struct timeval core_cpu_timer_frame_antes,core_cpu_timer_frame_despues;
-//Ultimo intervalo de tiempo
-long core_cpu_timer_frame_difftime;
-//Media de todos los intervalos
-long core_cpu_timer_frame_media=0;
-
-// Tiempo que se tarda en refrescar la pantalla
-//Tiempos antes y despues
-struct timeval core_cpu_timer_refresca_pantalla_antes,core_cpu_timer_refresca_pantalla_despues;
-//Ultimo intervalo de tiempo
-long core_cpu_timer_refresca_pantalla_difftime;
-//Media de todos los intervalos
-long core_cpu_timer_refresca_pantalla_media=0;
-
-
-//Tiempo entre cada refresco de pantalla. Idealmente: 20 ms
-//Tiempos antes y despues
-struct timeval core_cpu_timer_each_frame_antes,core_cpu_timer_each_frame_despues;
-//Ultimo intervalo de tiempo
-long core_cpu_timer_each_frame_difftime;
-//Media de todos los intervalos
-long core_cpu_timer_each_frame_media=0;
-
-
-//Tiempo de renderizado de la funcion de overlay
-struct timeval core_render_menu_overlay_antes,core_render_menu_overlay_despues;
-//Ultimo intervalo de tiempo
-long core_render_menu_overlay_difftime;
-//Media de todos los intervalos
-long core_render_menu_overlay_media=0;
-
-//Tiempo en descomprimir un snapshot zip de ZENG Online. En microsegundos
-struct timeval zeng_online_uncompress_time_antes,zeng_online_uncompress_time_despues;
-//Ultimo intervalo de tiempo
-long zeng_online_uncompress_difftime;
-//Media de todos los intervalos
-long zeng_online_uncompress_media=0;
-
-//Tiempo en comprimir un snapshot zip de ZENG Online. En microsegundos
-struct timeval zeng_online_compress_time_antes,zeng_online_compress_time_despues;
-//Ultimo intervalo de tiempo
-long zeng_online_compress_difftime;
-//Media de todos los intervalos
-long zeng_online_compress_media=0;
-
-
-void timer_stats_current_time(struct timeval *tiempo)
-{
-	gettimeofday(tiempo, NULL);
-}
-
-
-//Diferencia de dos tiempos pero calculando el tiempo_despues segun tiempo actual
-//En microsegundos
-long timer_stats_diference_time(struct timeval *tiempo_antes, struct timeval *tiempo_despues)
-{
-	timer_stats_current_time(tiempo_despues);
-	long difftime_seconds, difftime_useconds;
-
-	difftime_seconds = tiempo_despues->tv_sec  - tiempo_antes->tv_sec;
-	difftime_useconds = tiempo_despues->tv_usec  - tiempo_antes->tv_usec;
-
-	long difftime = ((difftime_seconds) * 1000000 + difftime_useconds);
-
-	return difftime;
-}
-
-long timer_get_current_seconds(void)
-{
-    struct timeval struct_tiempo_ahora;
-
-    timer_stats_current_time(&struct_tiempo_ahora);
-
-    return struct_tiempo_ahora.tv_sec;
-}
-
-
-
 //Pausa de microsegundos
 //Por alguna razón que desconozco, en Mac usando el driver de audio null, driver de video cocoa y cuando la aplicación no tiene el foco,
 //a veces este usleep tarda muchisimo, del orden de 10 segundos o asi
@@ -478,6 +358,20 @@ void timer_sleep(int milisec)
     //usleep(milisec*1000);
     timer_usleep(milisec*1000);
 }
+
+int timer_init_date(void)
+{
+    debug_printf(VERBOSE_INFO,"Initializing timer Date");
+    //Siempre inicializa
+    return 1;
+}
+
+void timer_stop_date(void)
+{
+    //No hace nada realmente
+}
+
+int timer_pthread_generada=0;
 
 void timer_trigger_interrupt(void)
 {
@@ -509,19 +403,6 @@ void *thread_timer_function(void *nada)
 
 
 
-
-
-int timer_init_date(void)
-{
-    debug_printf(VERBOSE_INFO,"Initializing timer Date");
-    //Siempre inicializa
-    return 1;
-}
-
-void timer_stop_date(void)
-{
-    //No hace nada realmente
-}
 
 int timer_init_thread(void)
 {
@@ -562,62 +443,6 @@ void timer_stop_thread(void)
 
 #endif
 }
-
-int timer_init_sdl(void)
-{
-    //printf("timer_init_sdl\n");
-
-#ifdef COMPILE_SDL
-
-    return commonsdl_init_timer();
-
-#endif
-
-    //no inicializa
-    return 0;
-
-}
-
-void timer_stop_sdl(void)
-{
-    //printf("timer_stop_sdl\n");
-
-#ifdef COMPILE_SDL
-
-    commonsdl_stop_timer();
-
-#endif
-
-}
-
-
-int timer_init_mac(void)
-{
-    //printf("timer_init_mac\n");
-
-#ifdef USE_COCOA
-
-    return scrcocoa_init_timer();
-
-#endif
-
-    //no inicializa
-    return 0;
-
-}
-
-void timer_stop_mac(void)
-{
-    //printf("timer_stop_mac\n");
-
-#ifdef USE_COCOA
-
-    scrcocoa_stop_timer();
-
-#endif
-
-}
-
 
 
 
@@ -816,6 +641,128 @@ void init_timer(void)
 
 
 }
+
+
+
+//tiempo en microsegundos que dura cada interrupcion de timer
+int timer_sleep_machine=20000;
+
+//valor original antes de aplicar cpu speed
+int original_timer_sleep_machine=20000;
+
+
+//Va desde 0 a 1000. Si llega a 1000 se pone a 0. Se incrementa en 20 cada 20 ms
+int contador_segundo=0;
+
+//Mismo que contador_segundo pero no se resetea a 0. Se usa en draw overlays, es mejor que comparar contra contador_segundo cuando
+//se redibuja por ejemplo dos veces por segundo, en que muchas veces coincide el contador anterior con el actual y refresca
+//menos de lo que deberia
+int contador_segundo_infinito;
+
+//Va desde 0 a 20000. Cuando llega a 20000 se pone a 0. Indica cuando se ha pasado 20 ms
+int contador_20ms=0;
+
+
+
+
+int conta_envio_audio=0;
+
+
+//Contador que se decrementa(si esta activo) cada 1/50 s, e indica cuando se debe liberar una tecla pulsada desde el menu de On Screen Keyboard
+int timer_on_screen_key=0;
+
+//Parecido pero para adventure keyboard
+int timer_on_screen_adv_key=0;
+
+
+//lo que dura un frame en microsegundos  (20 ms = 200000 milisec)
+//#define FRAME_MICROSECONDS (1000000/50)
+
+
+
+//Estadisticas de diferentes partes del emulador
+
+// Tiempo que se tarda en ejecutar todas las instrucciones de un frame completo de pantalla
+//Tiempos antes y despues
+struct timeval core_cpu_timer_frame_antes,core_cpu_timer_frame_despues;
+//Ultimo intervalo de tiempo
+long core_cpu_timer_frame_difftime;
+//Media de todos los intervalos
+long core_cpu_timer_frame_media=0;
+
+// Tiempo que se tarda en refrescar la pantalla
+//Tiempos antes y despues
+struct timeval core_cpu_timer_refresca_pantalla_antes,core_cpu_timer_refresca_pantalla_despues;
+//Ultimo intervalo de tiempo
+long core_cpu_timer_refresca_pantalla_difftime;
+//Media de todos los intervalos
+long core_cpu_timer_refresca_pantalla_media=0;
+
+
+//Tiempo entre cada refresco de pantalla. Idealmente: 20 ms
+//Tiempos antes y despues
+struct timeval core_cpu_timer_each_frame_antes,core_cpu_timer_each_frame_despues;
+//Ultimo intervalo de tiempo
+long core_cpu_timer_each_frame_difftime;
+//Media de todos los intervalos
+long core_cpu_timer_each_frame_media=0;
+
+
+//Tiempo de renderizado de la funcion de overlay
+struct timeval core_render_menu_overlay_antes,core_render_menu_overlay_despues;
+//Ultimo intervalo de tiempo
+long core_render_menu_overlay_difftime;
+//Media de todos los intervalos
+long core_render_menu_overlay_media=0;
+
+//Tiempo en descomprimir un snapshot zip de ZENG Online. En microsegundos
+struct timeval zeng_online_uncompress_time_antes,zeng_online_uncompress_time_despues;
+//Ultimo intervalo de tiempo
+long zeng_online_uncompress_difftime;
+//Media de todos los intervalos
+long zeng_online_uncompress_media=0;
+
+//Tiempo en comprimir un snapshot zip de ZENG Online. En microsegundos
+struct timeval zeng_online_compress_time_antes,zeng_online_compress_time_despues;
+//Ultimo intervalo de tiempo
+long zeng_online_compress_difftime;
+//Media de todos los intervalos
+long zeng_online_compress_media=0;
+
+
+void timer_stats_current_time(struct timeval *tiempo)
+{
+	gettimeofday(tiempo, NULL);
+}
+
+
+//Diferencia de dos tiempos pero calculando el tiempo_despues segun tiempo actual
+//En microsegundos
+long timer_stats_diference_time(struct timeval *tiempo_antes, struct timeval *tiempo_despues)
+{
+	timer_stats_current_time(tiempo_despues);
+	long difftime_seconds, difftime_useconds;
+
+	difftime_seconds = tiempo_despues->tv_sec  - tiempo_antes->tv_sec;
+	difftime_useconds = tiempo_despues->tv_usec  - tiempo_antes->tv_usec;
+
+	long difftime = ((difftime_seconds) * 1000000 + difftime_useconds);
+
+	return difftime;
+}
+
+long timer_get_current_seconds(void)
+{
+    struct timeval struct_tiempo_ahora;
+
+    timer_stats_current_time(&struct_tiempo_ahora);
+
+    return struct_tiempo_ahora.tv_sec;
+}
+
+
+
+
 
 
 
