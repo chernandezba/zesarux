@@ -143,6 +143,7 @@ int timer_find(struct s_zesarux_timer *timer_list,enum timer_type timer_to_find)
     int i;
 
     for (i=0;i<TIMER_LIST_MAX_SIZE;i++) {
+        //printf("%d %d %d\n",i,timer_list[i].timer,timer_to_find);
         if (timer_list[i].timer==timer_to_find) return i;
 
         //Si llegamos al fin. Nota: se puede haber buscado el TIMER_END y en ese caso saldria por la condicion anterior

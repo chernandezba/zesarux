@@ -2587,7 +2587,8 @@ void codetests_timer_check(struct s_zesarux_timer *codetests_timers_list_one,str
     for (i=0;i<TIMER_LIST_MAX_SIZE;i++) {
 		//Validar id timer
         if (codetests_timers_list_one[i].timer!=codetests_timers_list_two[i].timer) {
-            printf("Error checking timer lists. id different!\n");
+            printf("Error checking timer lists position %d. id different! (%d and %d)\n",
+				i,codetests_timers_list_one[i].timer,codetests_timers_list_two[i].timer);
             exit(1);
         }
 
@@ -2729,10 +2730,13 @@ void codetests_timer(void)
 		{ TIMER_END,"end",NULL,NULL}
 	};
 
+//Empezar mas alla en los id asignados para no usar cosas como el TIMER_END
+#define INITIAL_ID_TIMER (TIMER_UNASSIGNED+1)
+
 	int i;
 	for (i=0;i<TIMER_LIST_MAX_SIZE;i++) {
 		//printf("add timer id %d\n",i);
-		timer_add_timer_to_top(codetests_timers_to_fill_full,i,"mytimer",codetests_timer_start_function,codetests_timer_stop_function);
+		timer_add_timer_to_top(codetests_timers_to_fill_full,INITIAL_ID_TIMER+i,"mytimer",codetests_timer_start_function,codetests_timer_stop_function);
 	}
 
     //Valido (visualmente)
@@ -2741,15 +2745,15 @@ void codetests_timer(void)
 	//Dado que se empieza con 1 (el end) e intento agregar el total (TIMER_LIST_MAX_SIZE), hay uno que no entrara
 
 	struct s_zesarux_timer codetests_timers_to_fill_full_expected[TIMER_LIST_MAX_SIZE]={
-		{ 8,"mytimer",codetests_timer_start_function,codetests_timer_stop_function},
-		{ 7,"mytimer",codetests_timer_start_function,codetests_timer_stop_function},
-		{ 6,"mytimer",codetests_timer_start_function,codetests_timer_stop_function},
-		{ 5,"mytimer",codetests_timer_start_function,codetests_timer_stop_function},
-		{ 4,"mytimer",codetests_timer_start_function,codetests_timer_stop_function},
-		{ 3,"mytimer",codetests_timer_start_function,codetests_timer_stop_function},
-		{ 2,"mytimer",codetests_timer_start_function,codetests_timer_stop_function},
-		{ 1,"mytimer",codetests_timer_start_function,codetests_timer_stop_function},
-		{ 0,"mytimer",codetests_timer_start_function,codetests_timer_stop_function},
+		{ INITIAL_ID_TIMER+8,"mytimer",codetests_timer_start_function,codetests_timer_stop_function},
+		{ INITIAL_ID_TIMER+7,"mytimer",codetests_timer_start_function,codetests_timer_stop_function},
+		{ INITIAL_ID_TIMER+6,"mytimer",codetests_timer_start_function,codetests_timer_stop_function},
+		{ INITIAL_ID_TIMER+5,"mytimer",codetests_timer_start_function,codetests_timer_stop_function},
+		{ INITIAL_ID_TIMER+4,"mytimer",codetests_timer_start_function,codetests_timer_stop_function},
+		{ INITIAL_ID_TIMER+3,"mytimer",codetests_timer_start_function,codetests_timer_stop_function},
+		{ INITIAL_ID_TIMER+2,"mytimer",codetests_timer_start_function,codetests_timer_stop_function},
+		{ INITIAL_ID_TIMER+1,"mytimer",codetests_timer_start_function,codetests_timer_stop_function},
+		{ INITIAL_ID_TIMER+0,"mytimer",codetests_timer_start_function,codetests_timer_stop_function},
 		{ TIMER_END,"end",NULL,NULL}
 	};
 
@@ -2768,7 +2772,7 @@ void codetests_timer(void)
 
 	for (i=0;i<TIMER_LIST_MAX_SIZE;i++) {
 		//printf("add timer id %d\n",i);
-		timer_add_timer_to_bottom(codetests_timers_to_fill_full_bottom,i,"mytimer",codetests_timer_start_function,codetests_timer_stop_function);
+		timer_add_timer_to_bottom(codetests_timers_to_fill_full_bottom,INITIAL_ID_TIMER+i,"mytimer",codetests_timer_start_function,codetests_timer_stop_function);
 	}
 
     //Valido (visualmente)
@@ -2777,15 +2781,15 @@ void codetests_timer(void)
 	//Dado que se empieza con 1 (el end) e intento agregar el total (TIMER_LIST_MAX_SIZE), hay uno que no entrara
 
 	struct s_zesarux_timer codetests_timers_to_fill_full_bottom_expected[TIMER_LIST_MAX_SIZE]={
-		{ 0,"mytimer",codetests_timer_start_function,codetests_timer_stop_function},
-		{ 1,"mytimer",codetests_timer_start_function,codetests_timer_stop_function},
-		{ 2,"mytimer",codetests_timer_start_function,codetests_timer_stop_function},
-		{ 3,"mytimer",codetests_timer_start_function,codetests_timer_stop_function},
-		{ 4,"mytimer",codetests_timer_start_function,codetests_timer_stop_function},
-		{ 5,"mytimer",codetests_timer_start_function,codetests_timer_stop_function},
-		{ 6,"mytimer",codetests_timer_start_function,codetests_timer_stop_function},
-		{ 7,"mytimer",codetests_timer_start_function,codetests_timer_stop_function},
-		{ 8,"mytimer",codetests_timer_start_function,codetests_timer_stop_function},
+		{ INITIAL_ID_TIMER+0,"mytimer",codetests_timer_start_function,codetests_timer_stop_function},
+		{ INITIAL_ID_TIMER+1,"mytimer",codetests_timer_start_function,codetests_timer_stop_function},
+		{ INITIAL_ID_TIMER+2,"mytimer",codetests_timer_start_function,codetests_timer_stop_function},
+		{ INITIAL_ID_TIMER+3,"mytimer",codetests_timer_start_function,codetests_timer_stop_function},
+		{ INITIAL_ID_TIMER+4,"mytimer",codetests_timer_start_function,codetests_timer_stop_function},
+		{ INITIAL_ID_TIMER+5,"mytimer",codetests_timer_start_function,codetests_timer_stop_function},
+		{ INITIAL_ID_TIMER+6,"mytimer",codetests_timer_start_function,codetests_timer_stop_function},
+		{ INITIAL_ID_TIMER+7,"mytimer",codetests_timer_start_function,codetests_timer_stop_function},
+		{ INITIAL_ID_TIMER+8,"mytimer",codetests_timer_start_function,codetests_timer_stop_function},
 		{ TIMER_END,"end",NULL,NULL}
 	};
 

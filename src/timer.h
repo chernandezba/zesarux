@@ -25,10 +25,8 @@
 #include "cpu.h"
 
 //El TIMER_END nos sirve para no tener que mantener una variable con el tamaño de la lista
-//Empezamos en el 100 asi cualquier elemento no inicializado en la lista (available_timers) sera un 0 y por tanto algo indefinido
-//Realmente esto no haria falta, esos 0 se usaban por las funciones de codetests para ver que lo de "mas alla" del end era undefined
 enum timer_type {
-    TIMER_THREAD=100,
+    TIMER_THREAD,
     TIMER_DATE,
     TIMER_SDL,
     TIMER_MAC,
