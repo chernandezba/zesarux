@@ -954,10 +954,10 @@ void menu_change_video_driver_apply(MENU_ITEM_PARAMETERS)
 	}
 
 
-	//Guardar funcion de texto overlay activo, para desactivarlo temporalmente. No queremos que se salte a realloc_layers simultaneamente,
-	//mientras se hace putpixel desde otro sitio -> provocaria escribir pixel en layer que se esta reasignando
-  void (*previous_function)(void);
-  int menu_antes;
+    //Guardar funcion de texto overlay activo, para desactivarlo temporalmente. No queremos que se salte a realloc_layers simultaneamente,
+    //mientras se hace putpixel desde otro sitio -> provocaria escribir pixel en layer que se esta reasignando
+    void (*previous_function)(void);
+    int menu_antes;
 
 	screen_end_pantalla_save_overlay(&previous_function,&menu_antes);
 
@@ -965,51 +965,51 @@ void menu_change_video_driver_apply(MENU_ITEM_PARAMETERS)
 
 	screen_reset_scr_driver_params();
 
-        int (*funcion_init) ();
-        int (*funcion_set) ();
+    int (*funcion_init) ();
+    int (*funcion_set) ();
 
-        funcion_init=scr_driver_array[num_menu_scr_driver].funcion_init;
-        funcion_set=scr_driver_array[num_menu_scr_driver].funcion_set;
+    funcion_init=scr_driver_array[num_menu_scr_driver].funcion_init;
+    funcion_set=scr_driver_array[num_menu_scr_driver].funcion_set;
 
 	int resultado=funcion_init();
 	set_menu_gui_zoom();
 	clear_putpixel_cache();
 
-screen_restart_pantalla_restore_overlay(previous_function,menu_antes);
+    screen_restart_pantalla_restore_overlay(previous_function,menu_antes);
 
 
-                if ( resultado == 0 ) {
-                        funcion_set();
-			menu_generic_message_splash("Apply Driver","OK. Driver applied");
-	                //Y salimos de todos los menus
-	                salir_todos_menus=1;
+    if ( resultado == 0 ) {
+        funcion_set();
+        menu_generic_message_splash("Apply Driver","OK. Driver applied");
+        //Y salimos de todos los menus
+        salir_todos_menus=1;
 
-                }
+    }
 
-		else {
-			debug_printf(VERBOSE_ERR,"Can not set video driver. Restoring to previous driver %s",scr_new_driver_name);
-			menu_change_video_driver_get();
-
-
-			screen_end_pantalla_save_overlay(&previous_function,&menu_antes);
+    else {
+        debug_printf(VERBOSE_ERR,"Can not set video driver. Restoring to previous driver %s",scr_new_driver_name);
+        menu_change_video_driver_get();
 
 
-			//Restaurar video driver
-			screen_reset_scr_driver_params();
-		        funcion_init=scr_driver_array[num_previo_menu_scr_driver].funcion_init;
-			set_menu_gui_zoom();
-
-		        funcion_set=scr_driver_array[num_previo_menu_scr_driver].funcion_set;
-
-			funcion_init();
-			clear_putpixel_cache();
-			funcion_set();
+        screen_end_pantalla_save_overlay(&previous_function,&menu_antes);
 
 
-			screen_restart_pantalla_restore_overlay(previous_function,menu_antes);
-		}
+        //Restaurar video driver
+        screen_reset_scr_driver_params();
+        funcion_init=scr_driver_array[num_previo_menu_scr_driver].funcion_init;
+        set_menu_gui_zoom();
 
-        //scr_init_pantalla();
+        funcion_set=scr_driver_array[num_previo_menu_scr_driver].funcion_set;
+
+        funcion_init();
+        clear_putpixel_cache();
+        funcion_set();
+
+
+        screen_restart_pantalla_restore_overlay(previous_function,menu_antes);
+    }
+
+    //scr_init_pantalla();
 
 	modificado_border.v=1;
 
