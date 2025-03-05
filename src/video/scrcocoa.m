@@ -2308,9 +2308,9 @@ int previous_timer_sleep_machine=0;
 //- (int)startTimer
 - (void)  startTimer:(id)sender;
 {
-    printf("--scrcocoa startTimer. cocoatimeractivo=%d\n",cocoatimeractivo);
+    //printf("--scrcocoa startTimer. cocoatimeractivo=%d\n",cocoatimeractivo);
 
-    debug_printf(VERBOSE_INFO,"Initializing timer Mac for %d microsec",timer_sleep_machine);
+    //debug_printf(VERBOSE_DEBUG,"Initializing Mac timer for %d microsec",timer_sleep_machine);
 
     //Si lo lanzamos de nuevo pero esta vez con intervalo diferente, no soporta cambio de intervalo,
     //por tanto devolvemos error para que no use este tipo de timer
@@ -2321,7 +2321,7 @@ int previous_timer_sleep_machine=0;
     //hay intervalo previo. ver si son iguales
     if (previous_timer_sleep_machine>0) {
         if (timer_sleep_machine!=previous_timer_sleep_machine) {
-            printf("Start cocoa timer but timer frequency has been changed, can not change cocoa timer interval. Invalidating this timer\n");
+            debug_printf(VERBOSE_DEBUG,"Start Mac timer but timer frequency has been changed, can not change cocoa timer interval. Invalidating this timer");
             retorno_start_timer=0;
             return;
         }
@@ -2332,7 +2332,7 @@ int previous_timer_sleep_machine=0;
 
     if (timer == nil)
     {
-        printf("timer_sleep_machine %d\n",timer_sleep_machine);
+        //printf("timer_sleep_machine %d\n",timer_sleep_machine);
         //NSTimeInterval ti=timer_sleep_machine/1000000.0;
         //printf("ti= %f\n",ti);
 
@@ -2355,7 +2355,7 @@ int previous_timer_sleep_machine=0;
 
     cocoatimeractivo=1;
 
-    printf("Started Mac timer. timer=%p cocoatimeractivo=%d\n",timer,cocoatimeractivo);
+    //printf("Started Mac timer. timer=%p cocoatimeractivo=%d\n",timer,cocoatimeractivo);
 
     retorno_start_timer=1;
 
@@ -2365,7 +2365,7 @@ int previous_timer_sleep_machine=0;
 - (void)  stopTimer:(id)sender;
 {
 
-    printf("--scrcocoa stopTimer\n");
+    //printf("--scrcocoa stopTimer\n");
 
     //Invalidar el timer hace que no se pueda volver a llamar nunca mas, incluso al llamar a scheduledTimerWithTimeInterval
     //Por tanto lo mejor es gestionarlo con un simple flag de activo o no activo
@@ -2376,7 +2376,7 @@ int previous_timer_sleep_machine=0;
 
     cocoatimeractivo=0;
 
-    printf("Stopped Mac timer\n");
+    debug_printf(VERBOSE_DEBUG,"Stopped Mac timer");
 }
 
 - (void)timerTickHandler
@@ -2384,9 +2384,8 @@ int previous_timer_sleep_machine=0;
     //printf("timerTickHandler\n");
     if (!cocoatimeractivo) return;
 
+    //printf("timerTickHandler. %d\n",contador_segundo);
 
-
-    printf("timerTickHandler. %d\n",contador_segundo);
     timer_trigger_interrupt();
 }
 
@@ -3247,14 +3246,14 @@ void realjoystick_cocoa_main(void)
 int scrcocoa_init_timer(void)
 {
 
-    printf("--scrcocoa scrcocoa_init_timer\n");
+    //printf("--scrcocoa scrcocoa_init_timer\n");
 
     debug_exec_show_backtrace();
 
 
-    debug_printf(VERBOSE_INFO,"Initializing timer Mac for %d microsec",timer_sleep_machine);
+    debug_printf(VERBOSE_DEBUG,"Initializing Mac timer for %d microsec",timer_sleep_machine);
 
-    printf("Initializing timer Mac for %d microsec\n",timer_sleep_machine);
+    //printf("Initializing timer Mac for %d microsec\n",timer_sleep_machine);
 
 
 
@@ -3268,10 +3267,10 @@ int scrcocoa_init_timer(void)
 
     //No podemos obtener resultado de la llamada de ese thread directamente, pero lo sacamos de la variable global retorno_start_timer
     //Hay que tener en cuenta que aqui esperamos a que finalice esa llamada (waitUntilDone:YES) por lo que el valor de retorno_start_timer
-    //sera el que haya modificado la funcion de starTimer
+    //sera el que haya modificado la funcion de startTimer
     [cocoaView performSelectorOnMainThread:@selector(startTimer:) withObject:nil waitUntilDone:YES];
 
-    printf("On exiting scrcocoa_init_timer\n");
+    //printf("On exiting scrcocoa_init_timer\n");
     return retorno_start_timer;
 
 
@@ -3280,8 +3279,8 @@ int scrcocoa_init_timer(void)
 
 void scrcocoa_stop_timer(void)
 {
-    debug_printf(VERBOSE_INFO,"Stopping timer Mac");
-    printf("Stopping timer Mac\n");
+    debug_printf(VERBOSE_INFO,"Stopping Mac timer");
+    //printf("Stopping timer Mac\n");
 
     [cocoaView performSelectorOnMainThread:@selector(stopTimer:) withObject:nil waitUntilDone:YES];
     //[cocoaView stopTimer];
@@ -3383,7 +3382,7 @@ int scrcocoa_init (void) {
         timer_add_timer_to_bottom_thread();
     #endif
 
-    printf("Adding mac timer\n");
+    //printf("Adding mac timer\n");
     timer_add_timer_to_top(available_timers,TIMER_MAC,"mac",scrcocoa_init_timer,scrcocoa_stop_timer);
 
 
