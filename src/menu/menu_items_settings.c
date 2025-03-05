@@ -3412,6 +3412,9 @@ void menu_change_audio_driver_apply(MENU_ITEM_PARAMETERS)
                 }
 
 
+    //Por si por ejemplo cambiamos a driver SDL, aparece timer SDL y se seleccionara si esta en auto
+    timer_restart();
+
 
 }
 
