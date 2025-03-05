@@ -3388,28 +3388,28 @@ void menu_change_audio_driver_apply(MENU_ITEM_PARAMETERS)
 
 	audio_end();
 
-        int (*funcion_init) ();
-        int (*funcion_set) ();
+    int (*funcion_init) ();
+    int (*funcion_set) ();
 
-        funcion_init=audio_driver_array[num_menu_audio_driver].funcion_init;
-        funcion_set=audio_driver_array[num_menu_audio_driver].funcion_set;
-                if ( (funcion_init()) ==0) {
-                        funcion_set();
-			menu_generic_message_splash("Apply Driver","OK. Driver applied");
-			salir_todos_menus=1;
-                }
+    funcion_init=audio_driver_array[num_menu_audio_driver].funcion_init;
+    funcion_set=audio_driver_array[num_menu_audio_driver].funcion_set;
+    if ( (funcion_init()) ==0) {
+        funcion_set();
+        menu_generic_message_splash("Apply Driver","OK. Driver applied");
+        salir_todos_menus=1;
+    }
 
-                else {
-                        debug_printf(VERBOSE_ERR,"Can not set audio driver. Restoring to previous driver %s",audio_new_driver_name);
-			menu_change_audio_driver_get();
+    else {
+        debug_printf(VERBOSE_ERR,"Can not set audio driver. Restoring to previous driver %s",audio_new_driver_name);
+        menu_change_audio_driver_get();
 
-                        //Restaurar audio driver
-                        funcion_init=audio_driver_array[num_previo_menu_audio_driver].funcion_init;
-                        funcion_set=audio_driver_array[num_previo_menu_audio_driver].funcion_set;
+        //Restaurar audio driver
+        funcion_init=audio_driver_array[num_previo_menu_audio_driver].funcion_init;
+        funcion_set=audio_driver_array[num_previo_menu_audio_driver].funcion_set;
 
-                        funcion_init();
-                        funcion_set();
-                }
+        funcion_init();
+        funcion_set();
+    }
 
 
     //Por si por ejemplo cambiamos a driver SDL, aparece timer SDL y se seleccionara si esta en auto
