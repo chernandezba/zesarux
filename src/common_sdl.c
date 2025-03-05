@@ -54,9 +54,6 @@ Uint32 commonsdl_timer_callback( Uint32 interval, void* param )
     //printf("Called Timer callback. interval called=%d return interval=%d\n",interval,return_intervalo);
 
 
-
-
-
     return return_intervalo;
 }
 
@@ -81,15 +78,15 @@ int commonsdl_init_timer_continue(void)
 int commonsdl_init_timer(void)
 {
 
-    debug_printf(VERBOSE_INFO,"Initializing timer SDL for %d microsec",timer_sleep_machine);
-    printf("Initializing timer SDL for %d microsec\n",timer_sleep_machine);
-    debug_exec_show_backtrace();
-    //sleep(2);
+    debug_printf(VERBOSE_DEBUG,"Initializing timer SDL for %d microsec",timer_sleep_machine);
+    //printf("Initializing timer SDL for %d microsec\n",timer_sleep_machine);
+    //debug_exec_show_backtrace();
+
 
     //SDL no permite timer < 10 ms
     if (timer_sleep_machine<10000) {
-        debug_printf(VERBOSE_INFO,"SDL callback pretends to call at %d microsec but minimum is 10000. Can't set SDL timer",timer_sleep_machine);
-        printf("SDL callback pretends to call at %d microsec but minimum is 10000. Can't set SDL timer\n",timer_sleep_machine);
+        debug_printf(VERBOSE_DEBUG,"SDL callback pretends to call at %d microsec but minimum is 10000. Can't set SDL timer",timer_sleep_machine);
+        //printf("SDL callback pretends to call at %d microsec but minimum is 10000. Can't set SDL timer\n",timer_sleep_machine);
         //sleep(5);
         return 0;
     }
@@ -97,7 +94,7 @@ int commonsdl_init_timer(void)
 
     int retorno=commonsdl_init_timer_continue();
     if (!retorno) {
-        debug_printf(VERBOSE_INFO,"Error starting SDL timer");
+        debug_printf(VERBOSE_DEBUG,"Error starting SDL timer");
         return 0;
     }
     else {
@@ -111,8 +108,8 @@ int commonsdl_init_timer(void)
 
 void commonsdl_stop_timer(void)
 {
-    debug_printf(VERBOSE_INFO,"Stopping timer SDL");
-    printf("Stopping timer SDL\n");
+    debug_printf(VERBOSE_DEBUG,"Stopping timer SDL");
+    //printf("Stopping timer SDL\n");
     if (timerID!=NULL) {
         SDL_RemoveTimer(timerID);
     }

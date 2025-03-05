@@ -72,7 +72,7 @@ O sea parece que al pulsar desde los botones, se sale del menu y se quita el avi
 menu_fire_event_open_menu();
 )
 
-
+-Audio sdl callback esta por defecto el old callback o el new?
 
 ----
 

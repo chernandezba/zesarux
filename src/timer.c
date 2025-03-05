@@ -131,7 +131,7 @@ void timer_debug_print_timer_list(struct s_zesarux_timer *lista)
     int i;
 
     for (i=0;i<TIMER_LIST_MAX_SIZE;i++) {
-        debug_printf(VERBOSE_DEBUG,"Timer %d Name: [%s] Value %d",i,lista[i].name,lista[i].timer);
+        debug_printf(VERBOSE_DEBUG,"Timer %d Name: [%s] ID timer %d",i,lista[i].name,lista[i].timer);
         //printf("Timer %d Name: [%s] Value %d\n",i,lista[i].name,lista[i].timer);
         if (lista[i].timer==TIMER_END) break;
     }
@@ -306,7 +306,7 @@ void stop_current_timer(void)
 {
 
 
-    debug_printf(VERBOSE_DEBUG,"Stop current timer %d",timer_selected);
+    debug_printf(VERBOSE_DEBUG,"Stop current timer ID timer %d",timer_selected);
 
     //debug_exec_show_backtrace();
 

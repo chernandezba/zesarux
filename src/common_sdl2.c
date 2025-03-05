@@ -54,9 +54,6 @@ Uint32 commonsdl_timer_callback( Uint32 interval, void* param )
     //printf("Called Timer callback. interval called=%d return interval=%d\n",interval,return_intervalo);
 
 
-
-
-
     return return_intervalo;
 }
 
@@ -81,19 +78,19 @@ int commonsdl_init_timer_continue(void)
 int commonsdl_init_timer(void)
 {
 
-    debug_printf(VERBOSE_INFO,"Initializing timer SDL for %d microsec",timer_sleep_machine);
-    printf("Initializing timer SDL2 for %d microsec\n",timer_sleep_machine);
+    debug_printf(VERBOSE_DEBUG,"Initializing timer SDL2 for %d microsec",timer_sleep_machine);
+    //printf("Initializing timer SDL2 for %d microsec\n",timer_sleep_machine);
 
     //SDL no permite timer < 10 ms
     if (timer_sleep_machine<10000) {
-        debug_printf(VERBOSE_INFO,"SDL callback pretends to call at %d microsec but minimum is 10000. Can't set SDL timer",timer_sleep_machine);
+        debug_printf(VERBOSE_DEBUG,"SDL2 callback pretends to call at %d microsec but minimum is 10000. Can't set SDL timer",timer_sleep_machine);
         return 0;
     }
 
 
     int retorno=commonsdl_init_timer_continue();
     if (!retorno) {
-        debug_printf(VERBOSE_INFO,"Error starting SDL timer");
+        debug_printf(VERBOSE_DEBUG,"Error starting SDL2 timer");
         return 0;
     }
     else {
@@ -107,8 +104,8 @@ int commonsdl_init_timer(void)
 
 void commonsdl_stop_timer(void)
 {
-    debug_printf(VERBOSE_INFO,"Stopping timer SDL");
-    printf("Stopping timer SDL2\n");
+    debug_printf(VERBOSE_DEBUG,"Stopping timer SDL2");
+    //printf("Stopping timer SDL2\n");
     if (timerID!=NULL) {
         SDL_RemoveTimer(timerID);
     }
