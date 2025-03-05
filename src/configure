@@ -2217,7 +2217,7 @@ scrsdl2.o: video/scrsdl2.c cpu.h video/scrsdl2.h debug.h video/screen.h mem128.h
 audiosdl2.o: audio/audiosdl2.c audio/audiosdl2.h cpu.h audio/audio.h compileoptions.h debug.h common_sdl2.h utils.h settings.h timer.h
 	\$(CC) \$(CFLAGS) -c audio/audiosdl2.c
 
-common_sdl2.o: common_sdl2.c common_sdl2.h cpu.h compileoptions.h debug.h
+common_sdl2.o: common_sdl2.c common_sdl2.h cpu.h compileoptions.h debug.h timer.h
 	\$(CC) \$(CFLAGS) -c common_sdl2.c
 
 _EOF

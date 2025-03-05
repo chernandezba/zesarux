@@ -74,6 +74,8 @@ menu_fire_event_open_menu();
 
 -Audio sdl callback esta por defecto el old callback o el new?
 
+-SDL2 no deja cambiar a zoom 2 redimensionando con ratón
+
 ----
 
 ZENG Online
@@ -116,7 +118,7 @@ TIMERS
 *pendiente probar en windows
 
 *cocoa permite timer <10ms para z88?
--eliminar print debug
+
 -eliminar funciones o variables que no se usan
 -agregar externs necesarios
 
