@@ -1009,6 +1009,9 @@ void menu_change_video_driver_apply(MENU_ITEM_PARAMETERS)
         screen_restart_pantalla_restore_overlay(previous_function,menu_antes);
     }
 
+    //Por si por ejemplo cambiamos a driver SDL, aparece timer SDL y se seleccionara si esta en auto
+    timer_restart();
+
     //scr_init_pantalla();
 
 	modificado_border.v=1;
