@@ -445,7 +445,7 @@ fi
 SISTEMA_RELEASE="$SISTEMA"
 
 if [ -e /etc/os-release ]; then
-	SISTEMA_RELEASE=`cat /etc/os-release |grep PRETTY_NAME|cut -d '"' -f2`
+	SISTEMA_RELEASE=`cat /etc/os-release |grep PRETTY_NAME| head -n1 |cut -d '"' -f2`
 fi
 
 echo -n "Checking for $CCOMPILER compiler ... "
