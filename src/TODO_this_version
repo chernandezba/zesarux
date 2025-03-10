@@ -104,24 +104,10 @@ y se sigue escuchando la musica del juego online
 
 
 
-Concepto de zx desktop que muestra archivos de una carpeta.
+-Concepto de zx desktop que muestra archivos de una carpeta.
 Archivos especiales .zxicons identifican iconos del tipo de ahora.
 Otros archivos como .tap etc se pueden pulsar (como ahora con los accesos directos) y cargarlos
 
------
 
-TIMERS
 
 -Mac timer. probar diferentes escenarios. probar con Z88 y lemmings. probar con carga desde cinta real
-
-
-*pendiente probar en windows
-
-*cocoa permite timer <10ms para z88?
-
--eliminar funciones o variables que no se usan
--agregar externs necesarios
-
-
-FIN TIMERS
-------
