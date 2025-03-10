@@ -612,7 +612,7 @@ void init_timer(void)
 
 
 #ifdef MINGW
-    //Parece que en Windows el timer en pthreads no funciona bien... lo metemos al final de la lista de prioridades
+    //Parece que en Windows el timer usleep no funciona bien... lo metemos al final de la lista de prioridades
     timer_remove_timer(available_timers,TIMER_USLEEP);
 
 #ifdef USE_PTHREADS
