@@ -616,7 +616,7 @@ void init_timer(void)
     timer_remove_timer(available_timers,TIMER_USLEEP);
 
 #ifdef USE_PTHREADS
-    timer_add_timer_sleep_to_bottom();
+    timer_add_timer_usleep_to_bottom();
 #endif
 
 #endif
