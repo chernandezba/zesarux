@@ -1695,21 +1695,3 @@ int scrsdl_init (void) {
 }
 
 
-
-/* Esto no usado. Eran pruebas antiguas
-SDL_Thread *sdl2_timer_pthread;
-
-
-static int sdl2_timer_pthread_fn(void *ptr)
-{
-  thread_timer_function(NULL);
-
-  return 0; //aunque aqui nunca llega
-}
-
-void scrsdl_crear_timer_thread(void)
-{
-  debug_printf(VERBOSE_INFO,"Creating thread using SDL2 SDL_CreateThread");
-  sdl2_timer_pthread=SDL_CreateThread(sdl2_timer_pthread_fn,"SDL2 Timer thread",NULL);
-}
-*/
