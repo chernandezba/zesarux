@@ -84,7 +84,7 @@
 
 #include <pthread.h>
 
-pthread_t thread_timer;
+pthread_t thread_usleep_timer;
 
 #endif
 
@@ -380,7 +380,7 @@ void timer_trigger_interrupt(void)
 }
 
 
-void *thread_timer_function(void *nada)
+void *usleep_timer_function(void *nada)
 {
 	while (1) {
 		timer_usleep(timer_sleep_machine);
@@ -405,23 +405,23 @@ void *thread_timer_function(void *nada)
 
 
 
-int timer_init_thread(void)
+int timer_init_usleep(void)
 {
-    //printf("timer_init_thread\n");
-    debug_printf(VERBOSE_INFO,"Initializing timer Thread for %d microsec",timer_sleep_machine);
-    //printf("----Llamado a timer_init_thread\n");
+    //printf("timer_init_usleep\n");
+    debug_printf(VERBOSE_INFO,"Initializing timer Usleep for %d microsec",timer_sleep_machine);
+    //printf("----Llamado a timer_init_usleep\n");
     //debug_exec_show_backtrace();
 
 
 #ifdef USE_PTHREADS
-    if (pthread_create( &thread_timer, NULL, &thread_timer_function, NULL) ) {
+    if (pthread_create( &thread_usleep_timer, NULL, &usleep_timer_function, NULL) ) {
         //Error al lanzar el thread
         return 0;
     }
     else {
         //Ok inicializado
         //y pthread en estado detached asi liberara su memoria asociada a thread al finalizar, sin tener que hacer un pthread_join
-	    pthread_detach(thread_timer);
+	    pthread_detach(thread_usleep_timer);
 
         return 1;
     }
@@ -431,15 +431,15 @@ int timer_init_thread(void)
     return 0;
 }
 
-void timer_stop_thread(void)
+void timer_stop_usleep(void)
 {
-    debug_printf(VERBOSE_INFO,"Stopping timer Thread");
+    debug_printf(VERBOSE_INFO,"Stopping timer Usleep");
 
 #ifdef USE_PTHREADS
-    //printf("Stopping timer Thread %p\n",thread_timer);
-    int returncode=pthread_cancel(thread_timer);
+    //printf("Stopping timer Usleep %p\n",thread_usleep_timer);
+    int returncode=pthread_cancel(thread_usleep_timer);
     if (returncode) {
-        debug_printf(VERBOSE_INFO,"Error canceling timer thread err=%d",returncode);
+        debug_printf(VERBOSE_INFO,"Error canceling timer usleep err=%d",returncode);
     }
 
 #endif
@@ -579,14 +579,14 @@ void timer_restart(void)
     start_timer();
 }
 
-void timer_add_timer_to_top_thread(void)
+void timer_add_timer_usleep_to_top(void)
 {
-    timer_add_timer_to_top(available_timers,TIMER_THREAD,"thread",timer_init_thread,timer_stop_thread);
+    timer_add_timer_to_top(available_timers,TIMER_USLEEP,"usleep",timer_init_usleep,timer_stop_usleep);
 }
 
-void timer_add_timer_thread_to_bottom(void)
+void timer_add_timer_usleep_to_bottom(void)
 {
-    timer_add_timer_to_bottom(available_timers,TIMER_THREAD,"thread",timer_init_thread,timer_stop_thread);
+    timer_add_timer_to_bottom(available_timers,TIMER_USLEEP,"usleep",timer_init_usleep,timer_stop_usleep);
 }
 
 void init_timer(void)
@@ -601,7 +601,7 @@ void init_timer(void)
     timer_add_timer_to_top(available_timers,TIMER_DATE,"date",timer_init_date,timer_stop_date);
 
 #ifdef USE_PTHREADS
-    timer_add_timer_to_top_thread();
+    timer_add_timer_usleep_to_top();
 #endif
 
 
@@ -612,10 +612,10 @@ void init_timer(void)
 
 #ifdef MINGW
     //Parece que en Windows el timer en pthreads no funciona bien... lo metemos al final de la lista de prioridades
-    timer_remove_timer(available_timers,TIMER_THREAD);
+    timer_remove_timer(available_timers,TIMER_USLEEP);
 
 #ifdef USE_PTHREADS
-    timer_add_timer_thread_to_bottom();
+    timer_add_timer_sleep_to_bottom();
 #endif
 
 #endif
@@ -942,7 +942,7 @@ int get_timer_check_interrupt(void)
     }
 
 
-    //Timer que salta con hilo. TIMER_THREAD, TIMER_SDL, TIMER_MAC
+    //Timer que salta con hilo. TIMER_USLEEP, TIMER_SDL, TIMER_MAC
     else {
 	    si_saltado_interrupcion=timer_check_interrupt_thread();
     }

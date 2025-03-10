@@ -2633,7 +2633,7 @@ void codetests_timer(void)
 
 
 	struct s_zesarux_timer codetests_timers_list[TIMER_LIST_MAX_SIZE]={
-		{ TIMER_THREAD,"thread",codetests_timer_start_function,codetests_timer_stop_function},
+		{ TIMER_USLEEP,"usleep",codetests_timer_start_function,codetests_timer_stop_function},
 		{ TIMER_DATE,"date",codetests_timer_start_function,codetests_timer_stop_function},
 		{ TIMER_END,"end",NULL,NULL}
 	};
@@ -2651,7 +2651,7 @@ void codetests_timer(void)
 
     struct s_zesarux_timer codetests_timers_list_expected_sdl[TIMER_LIST_MAX_SIZE]={
 		{ TIMER_SDL,"sdl",codetests_timer_start_function,codetests_timer_stop_function},
-		{ TIMER_THREAD,"thread",codetests_timer_start_function,codetests_timer_stop_function},
+		{ TIMER_USLEEP,"usleep",codetests_timer_start_function,codetests_timer_stop_function},
 		{ TIMER_DATE,"date",codetests_timer_start_function,codetests_timer_stop_function},
 		{ TIMER_END,"end",NULL,NULL}
     };
@@ -2660,41 +2660,41 @@ void codetests_timer(void)
     codetests_timer_check(codetests_timers_list,codetests_timers_list_expected_sdl);
 
 
-    printf("Removing thread timer\n");
+    printf("Removing usleep timer\n");
 
-    //Quito el thread
-    timer_remove_timer(codetests_timers_list,TIMER_THREAD);
+    //Quito el usleep
+    timer_remove_timer(codetests_timers_list,TIMER_USLEEP);
 
     //Valido (visualmente)
     codetest_timer_print(codetests_timers_list);
 
 
-    struct s_zesarux_timer codetests_timers_list_expected_no_thread[TIMER_LIST_MAX_SIZE]={
+    struct s_zesarux_timer codetests_timers_list_expected_no_usleep[TIMER_LIST_MAX_SIZE]={
 		{ TIMER_SDL,"sdl",codetests_timer_start_function,codetests_timer_stop_function},
 		{ TIMER_DATE,"date",codetests_timer_start_function,codetests_timer_stop_function},
 		{ TIMER_END,"end",NULL,NULL}
     };
 
     //Validar. de manera automatica
-    codetests_timer_check(codetests_timers_list,codetests_timers_list_expected_no_thread);
+    codetests_timer_check(codetests_timers_list,codetests_timers_list_expected_no_usleep);
 
-    printf("Adding Thread timer to bottom\n");
+    printf("Adding Usleep timer to bottom\n");
 
-    timer_add_timer_to_bottom(codetests_timers_list,TIMER_THREAD,"thread",codetests_timer_start_function,codetests_timer_stop_function);
+    timer_add_timer_to_bottom(codetests_timers_list,TIMER_USLEEP,"usleep",codetests_timer_start_function,codetests_timer_stop_function);
 
     //Valido (visualmente)
     codetest_timer_print(codetests_timers_list);
 
 
-    struct s_zesarux_timer codetests_timers_list_expected_thread_bottom[TIMER_LIST_MAX_SIZE]={
+    struct s_zesarux_timer codetests_timers_list_expected_usleep_bottom[TIMER_LIST_MAX_SIZE]={
 		{ TIMER_SDL,"sdl",codetests_timer_start_function,codetests_timer_stop_function},
 		{ TIMER_DATE,"date",codetests_timer_start_function,codetests_timer_stop_function},
-		{ TIMER_THREAD,"thread",codetests_timer_start_function,codetests_timer_stop_function},
+		{ TIMER_USLEEP,"usleep",codetests_timer_start_function,codetests_timer_stop_function},
 		{ TIMER_END,"end",NULL,NULL}
     };
 
     //Validar. de manera automatica
-    codetests_timer_check(codetests_timers_list,codetests_timers_list_expected_thread_bottom);
+    codetests_timer_check(codetests_timers_list,codetests_timers_list_expected_usleep_bottom);
 
 
 	//Validar que no agregue uno si existe

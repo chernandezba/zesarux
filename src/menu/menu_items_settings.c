@@ -9225,9 +9225,9 @@ void menu_settings_danger_zone_timer_set_auto(MENU_ITEM_PARAMETERS)
     menu_settings_danger_zone_timer_set_parm("");
 }
 
-void menu_settings_danger_zone_timer_set_thread(MENU_ITEM_PARAMETERS)
+void menu_settings_danger_zone_timer_set_usleep(MENU_ITEM_PARAMETERS)
 {
-    menu_settings_danger_zone_timer_set_parm("thread");
+    menu_settings_danger_zone_timer_set_parm("usleep");
 }
 
 void menu_settings_danger_zone_timer_set_date(MENU_ITEM_PARAMETERS)
@@ -9258,7 +9258,7 @@ void menu_settings_danger_zone_timer(MENU_ITEM_PARAMETERS)
 
         menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_settings_danger_zone_timer_set_auto,NULL,"Auto");
 
-        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_settings_danger_zone_timer_set_thread,NULL,"Thread");
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_settings_danger_zone_timer_set_usleep,NULL,"Usleep");
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_settings_danger_zone_timer_set_date,NULL,"Date");
 
         if (!strcmp(scr_new_driver_name,"sdl")) {

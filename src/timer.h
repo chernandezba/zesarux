@@ -26,7 +26,7 @@
 
 //El TIMER_END nos sirve para no tener que mantener una variable con el tamaño de la lista
 enum timer_type {
-    TIMER_THREAD,
+    TIMER_USLEEP,
     TIMER_DATE,
     TIMER_SDL,
     TIMER_MAC,
@@ -48,7 +48,7 @@ extern struct s_zesarux_timer available_timers[];
 
 extern void timer_add_timer_to_top(struct s_zesarux_timer *timer_list,enum timer_type timer_to_add,char *name,int (*start)(void),void (*stop)(void));
 extern void timer_add_timer_to_bottom(struct s_zesarux_timer *timer_list,enum timer_type timer_to_add,char *name,int (*start)(void),void (*stop)(void));
-extern void timer_add_timer_thread_to_bottom(void);
+extern void timer_add_timer_usleep_to_bottom(void);
 
 extern void timer_remove_timer(struct s_zesarux_timer *timer_list,enum timer_type timer_to_remove);
 extern void timer_set_preferred_by_name(char *name);

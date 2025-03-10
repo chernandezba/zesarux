@@ -3378,8 +3378,8 @@ int scrcocoa_init (void) {
 
     //En Mac OS X el timer en pthreads no funciona bien... lo metemos al final de la lista de prioridades
     #ifdef USE_PTHREADS
-        timer_remove_timer(available_timers,TIMER_THREAD);
-        timer_add_timer_thread_to_bottom();
+        timer_remove_timer(available_timers,TIMER_USLEEP);
+        timer_add_timer_usleep_to_bottom();
     #endif
 
     //printf("Adding mac timer\n");
