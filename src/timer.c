@@ -584,7 +584,7 @@ void timer_add_timer_to_top_thread(void)
     timer_add_timer_to_top(available_timers,TIMER_THREAD,"thread",timer_init_thread,timer_stop_thread);
 }
 
-void timer_add_timer_to_bottom_thread(void)
+void timer_add_timer_thread_to_bottom(void)
 {
     timer_add_timer_to_bottom(available_timers,TIMER_THREAD,"thread",timer_init_thread,timer_stop_thread);
 }
@@ -615,7 +615,7 @@ void init_timer(void)
     timer_remove_timer(available_timers,TIMER_THREAD);
 
 #ifdef USE_PTHREADS
-    timer_add_timer_to_bottom_thread();
+    timer_add_timer_thread_to_bottom();
 #endif
 
 #endif

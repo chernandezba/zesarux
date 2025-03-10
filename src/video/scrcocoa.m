@@ -3248,7 +3248,7 @@ int scrcocoa_init_timer(void)
 
     //printf("--scrcocoa scrcocoa_init_timer\n");
 
-    debug_exec_show_backtrace();
+    //debug_exec_show_backtrace();
 
 
     debug_printf(VERBOSE_DEBUG,"Initializing Mac timer for %d microsec",timer_sleep_machine);
@@ -3379,7 +3379,7 @@ int scrcocoa_init (void) {
     //En Mac OS X el timer en pthreads no funciona bien... lo metemos al final de la lista de prioridades
     #ifdef USE_PTHREADS
         timer_remove_timer(available_timers,TIMER_THREAD);
-        timer_add_timer_to_bottom_thread();
+        timer_add_timer_thread_to_bottom();
     #endif
 
     //printf("Adding mac timer\n");
