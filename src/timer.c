@@ -372,6 +372,7 @@ void timer_stop_date(void)
     //No hace nada realmente
 }
 
+//Interrupcion de timer generada por timers que se lanzan desde thread, como por ejemplo usleep o sdl
 int timer_pthread_generada=0;
 
 void timer_trigger_interrupt(void)

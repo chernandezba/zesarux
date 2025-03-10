@@ -4465,8 +4465,7 @@ int util_write_configfile(void)
 
 
   if (timer_user_preferred[0]) {
-    printf("save config timer preferred: %s\n",timer_user_preferred);
-        ADD_STRING_CONFIG,"--preferred-timer %s",timer_user_preferred);
+    ADD_STRING_CONFIG,"--preferred-timer %s",timer_user_preferred);
   }
 
 
