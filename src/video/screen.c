@@ -5459,8 +5459,36 @@ void load_screen(char *scrfile)
 
 	}
 
+
+	else if (MACHINE_IS_QL) {
+		debug_printf (VERBOSE_INFO,"Loading Screen File");
+		FILE *ptr_scrfile;
+		ptr_scrfile=fopen(scrfile,"rb");
+        if (!ptr_scrfile) {
+			debug_printf (VERBOSE_ERR,"Unable to open Screen file");
+		}
+
+		else {
+            z80_byte mc_stat=ql_mc_stat;
+
+            unsigned char *memoria_pantalla_ql;
+
+            memoria_pantalla_ql=&memoria_ql[0x20000 + ((mc_stat & 0x80) << 8)];
+
+			z80_byte leido;
+			int i;
+			for (i=0;i<32768;i++) {
+				fread(&leido,1,1,ptr_scrfile);
+                memoria_pantalla_ql[i]=leido;
+			}
+
+			fclose(ptr_scrfile);
+		}
+
+	}
+
 	else {
-		debug_printf (VERBOSE_ERR,"Screen loading only allowed on Spectrum models");
+		debug_printf (VERBOSE_ERR,"Screen loading only allowed on Spectrum or QL models");
 	}
 
 }
@@ -5495,12 +5523,42 @@ void save_screen_scr(char *scrfile)
         }
     }
 
+    else if (MACHINE_IS_QL) {
+        debug_printf (VERBOSE_INFO,"Saving Screen File");
+
+        FILE *ptr_scrfile;
+        ptr_scrfile=fopen(scrfile,"wb");
+        if (!ptr_scrfile) {
+            debug_printf (VERBOSE_ERR,"Unable to open Screen file");
+        }
+
+        else {
+
+            z80_byte mc_stat=ql_mc_stat;
+
+            unsigned char *memoria_pantalla_ql;
+
+            memoria_pantalla_ql=&memoria_ql[0x20000 + ((mc_stat & 0x80) << 8)];
+
+            z80_byte escrito;
+            int i;
+            for (i=0;i<32768;i++) {
+                escrito=*memoria_pantalla_ql;
+                memoria_pantalla_ql++;
+                fwrite(&escrito,1,1,ptr_scrfile);
+            }
+
+            fclose(ptr_scrfile);
+
+        }
+    }
+
     else if (MACHINE_IS_ZX8081) {
         save_screen_zx8081_scr(scrfile);
     }
 
     else {
-        debug_printf (VERBOSE_ERR,"Screen .scr saving only allowed on Spectrum or ZX80/81 models");
+        debug_printf (VERBOSE_ERR,"Screen .scr saving only allowed on Spectrum or ZX80/81 or QL models");
     }
 
 

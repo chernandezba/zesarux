@@ -18245,6 +18245,13 @@ void menu_display_save_screen(MENU_ITEM_PARAMETERS)
 		filtros[3]=0;
 	}
 
+	else if (MACHINE_IS_QL) {
+        filtros[0]="scr";
+		filtros[1]="bmp";
+        filtros[2]="txt";
+		filtros[3]=0;
+	}
+
 	else {
 		filtros[0]="bmp";
         filtros[1]="txt";
@@ -19940,7 +19947,7 @@ void menu_display_settings(MENU_ITEM_PARAMETERS)
         //Como no sabemos cual sera el item inicial, metemos este sin asignar, que se sobreescribe en el siguiente menu_add_item_menu
 		menu_add_item_menu_inicial(&array_menu_display_settings,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
 
-		if (MACHINE_IS_SPECTRUM) {
+		if (MACHINE_IS_SPECTRUM || MACHINE_IS_QL) {
 			menu_add_item_menu_en_es_ca(array_menu_display_settings,MENU_OPCION_NORMAL,menu_display_load_screen,NULL,
                 "~~Load Screen","~~Load Pantalla","~~Load Pantalla");
 			menu_add_item_menu_shortcut(array_menu_display_settings,'l');
