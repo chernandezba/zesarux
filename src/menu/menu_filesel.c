@@ -4669,8 +4669,7 @@ void menu_filesel_preview_render_scr(char *archivo_scr)
 		int ancho=256;
 		int alto=256;
 
-        //  1 = 8 colour (mode 8)
-
+        //  Asumimos que son pantallas de QL en modo 8: 8 colores, 256x256
 
 		int elementos=ancho*alto;
 
@@ -4680,79 +4679,74 @@ void menu_filesel_preview_render_scr(char *archivo_scr)
 
 
 
-
-
-
-
 ////// Trocito extraido de scr_refresca_pantalla_ql y adaptado al preview
-    int total_alto;
-    int total_ancho;
-    int x,y;
+        int total_alto;
+        int total_ancho;
+        int x,y;
 
-    unsigned int color1;
-    //unsigned int color2;
+        unsigned int color1;
+        //unsigned int color2;
 
-    z80_byte green,red,blue;
+        z80_byte green,red,blue;
 
-    z80_byte byte_leido_h,byte_leido_l;
-
-
-    int memoria_pantalla_ql=0;
-
-    int offset_destino=0;
+        z80_byte byte_leido_h,byte_leido_l;
 
 
+        int memoria_pantalla_ql=0;
 
-    total_alto=256;
-    total_ancho=512;
-
-    int flashing_color;
-
-    for (y=0;y<total_alto;y++){
-        //Al principio de cada linea, flash es siempre 0
-        int ql_linea_flashing=0;
-        for (x=0;x<256;) {
-
-/*
-In 512-pixel mode, two bits per pixel are used, and the GREEN and BLUE signals are tied together, giving a choice of four colours:
-black, white, green and red. On a monochrome screen, this will translate as a four level greyscale.
-In 256-pixel mode, four bits per pixel are used: one bit each for Red, Green and Blue, and one bit for flashing.
-The flash bit operates as a toggle: when set for the first time, it freezes the background colour at the value set by R, G and B,
-and starts flashing at the next bit in the line; when set for the second time, it stops flashing.
-Flashing is always cleared at the beginning of a raster line.
+        int offset_destino=0;
 
 
-Addressing for display memory starts at the bottom of dynamic RAM and progresses in the order of the raster
-scan - from left to right and from top to bottom of the picture. Each word in display memory is formatted as follows:
 
-High byte (A0=0)						Low Byte (A0=1)						Mode
-D7 D6 D5 D4 D3 D2 D1 D0			D7 D6 D5 D4 D3 D2 D1 D0
-G7 G6 G5 G4 G3 G2 G1 G0			R7 R6 R5 R4 R3 R2 R1 R0		512-pixel
-G3 F3 G2 F2 G1 F1 G0 F0			R3 B3 R2 B2 R1 B1 R0 B0		256-pixel
+        total_alto=256;
+        total_ancho=512;
 
+        int flashing_color;
 
-R, G, Band F in the above refer to Red, Green, Blue and Flash. The numbering is such that a binary
-word appears written as it will appear on the display: ie R0 is the value of Red for the rightmost pixel,
-that is the last pixel to be shifted out onto the raster.
-10.3 Display Control Register
-This is a write-only register, which is at $18063 in the QL .
-One of its bits is available through the Qdos MT.DMODE trap: bit 3, which is 0 for 512-pixel mode and 1 for 256-pixel mode.
-The other two bits of the display control register are not supported by Qdos, these being bit 1 of the display
-control register, which can be used to blank the display completely, and bit 7, which can be used to switch the base of
-screen memory from $20000 to $28000. Future versions of Qdos may allow the system variables to be
-initialised at $30000 to take advantage of this dual- screen feature: the present version does not.
-Bits 0,2,4,5 and 6 of the display control register should never be set to anything other than zero, as they are
-reserved and may have unpredictable results in future versions of the QL hardware.
-*/
-            //En modo 256x256 hay parpadeo
+        for (y=0;y<total_alto;y++){
+            //Al principio de cada linea, flash es siempre 0
+            int ql_linea_flashing=0;
+            for (x=0;x<256;) {
+
+    /*
+    In 512-pixel mode, two bits per pixel are used, and the GREEN and BLUE signals are tied together, giving a choice of four colours:
+    black, white, green and red. On a monochrome screen, this will translate as a four level greyscale.
+    In 256-pixel mode, four bits per pixel are used: one bit each for Red, Green and Blue, and one bit for flashing.
+    The flash bit operates as a toggle: when set for the first time, it freezes the background colour at the value set by R, G and B,
+    and starts flashing at the next bit in the line; when set for the second time, it stops flashing.
+    Flashing is always cleared at the beginning of a raster line.
 
 
-            byte_leido_h=buf_pantalla[memoria_pantalla_ql];
-            memoria_pantalla_ql++;
+    Addressing for display memory starts at the bottom of dynamic RAM and progresses in the order of the raster
+    scan - from left to right and from top to bottom of the picture. Each word in display memory is formatted as follows:
 
-            byte_leido_l=buf_pantalla[memoria_pantalla_ql];
-            memoria_pantalla_ql++;
+    High byte (A0=0)						Low Byte (A0=1)						Mode
+    D7 D6 D5 D4 D3 D2 D1 D0			D7 D6 D5 D4 D3 D2 D1 D0
+    G7 G6 G5 G4 G3 G2 G1 G0			R7 R6 R5 R4 R3 R2 R1 R0		512-pixel
+    G3 F3 G2 F2 G1 F1 G0 F0			R3 B3 R2 B2 R1 B1 R0 B0		256-pixel
 
+
+    R, G, Band F in the above refer to Red, Green, Blue and Flash. The numbering is such that a binary
+    word appears written as it will appear on the display: ie R0 is the value of Red for the rightmost pixel,
+    that is the last pixel to be shifted out onto the raster.
+    10.3 Display Control Register
+    This is a write-only register, which is at $18063 in the QL .
+    One of its bits is available through the Qdos MT.DMODE trap: bit 3, which is 0 for 512-pixel mode and 1 for 256-pixel mode.
+    The other two bits of the display control register are not supported by Qdos, these being bit 1 of the display
+    control register, which can be used to blank the display completely, and bit 7, which can be used to switch the base of
+    screen memory from $20000 to $28000. Future versions of Qdos may allow the system variables to be
+    initialised at $30000 to take advantage of this dual- screen feature: the present version does not.
+    Bits 0,2,4,5 and 6 of the display control register should never be set to anything other than zero, as they are
+    reserved and may have unpredictable results in future versions of the QL hardware.
+    */
+                //En modo 256x256 hay parpadeo
+
+
+                byte_leido_h=buf_pantalla[memoria_pantalla_ql];
+                memoria_pantalla_ql++;
+
+                byte_leido_l=buf_pantalla[memoria_pantalla_ql];
+                memoria_pantalla_ql++;
 
 
                 int npixel;
@@ -4783,16 +4777,18 @@ const int ql_colortable_original[8]={
                     color1=green*4+red*2+blue;	// GRB
                     //printf ("estado parpadeo: %d\n",estado_parpadeo.v);
 
-                    if (ql_linea_flashing && estado_parpadeo.v) {
-                        color1=flashing_color;
-                    }
-
-
                     int color_con_flash;
                     int color_sin_flash;
 
-                    //TODO: flash en el QL
                     color_con_flash=color_sin_flash=color1;
+
+                    if (ql_linea_flashing && estado_parpadeo.v) {
+                        //color1=flashing_color;
+                        color_con_flash=flashing_color;
+                    }
+
+
+
                     buffer_intermedio[offset_destino++]=color_sin_flash | (color_con_flash << 4);
                     x++;
 
@@ -4807,13 +4803,10 @@ const int ql_colortable_original[8]={
                     }
 
 
-
-
-
+                }
             }
         }
-    }
-////// Fin Trocito extraido de scr_refresca_pantalla_ql y adaptado al preview
+    ////// Fin Trocito extraido de scr_refresca_pantalla_ql y adaptado al preview
 
 
 
