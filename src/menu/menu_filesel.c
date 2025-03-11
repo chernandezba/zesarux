@@ -4735,6 +4735,9 @@ void menu_filesel_preview_render_scr(char *archivo_scr)
         //256x256 se tendria que ver bien, pero la reducción que hacemos del preview a la mitad no es un algoritmo bueno...
         int desactivar_flash;
 
+        //Es un umbral detectado viendo muchas imagenes en modo 0 que se activa el parpadeo sin tener que hacerlo
+        //en cambio con una imagen con modo 8 con parpadeo intencionado (una linea de texto) no se llega a ese umbral
+        //y por tanto hara parpadeo
         if (total_bits_flash>10000) desactivar_flash=1;
         else desactivar_flash=0;
 
