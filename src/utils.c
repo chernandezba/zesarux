@@ -23327,6 +23327,7 @@ void util_extract_preview_file_simple(char *nombre,char *tmpdir,char *tmpfile_sc
 
 	if (!util_compare_file_extension(nombre,"scr")
         || file_size==6912
+        || (file_size==32768 && MACHINE_IS_QL)
         ) {
 		debug_printf(VERBOSE_DEBUG,"File is a scr screen");
 
@@ -23440,7 +23441,8 @@ int util_get_extract_preview_type_file(char *nombre,long long int file_size)
         !util_compare_file_extension(nombre,"p") ||
         !util_compare_file_extension(nombre,"p81") ||
         !util_compare_file_extension(nombre,"zsf") ||
-        file_size==6912
+        file_size==6912 ||
+        (file_size==32768 && MACHINE_IS_QL)
     ) {
         return 2;
     }

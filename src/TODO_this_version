@@ -1,29 +1,9 @@
 --Inicio Minimizado de ventanas
 
--Modo minimizar ventanas que ni se vean. Quiza solo cuando process switcher este cargado?
-y en ese modo al abrir la aplicación, se desminimice
 
-ok *Y en process switcher se indica de alguna manera que está minimizada. Ver si con recuadro o quiza texto en otro color
-Process switcher quizá dibujar un punto en ventanas minimizadas. No, eso es para iconos de ventanas abiertas
-Quizá recuadro en vez de punto
-
-
-
-ok *con shift-flecha derecha aparecen también las minimizadas
-*opción que se llame algo como "hide on minimize" o bien que se oculten si esta el process switcher abierto
 ok? *problema que todas las funciones que activan ventana por posición, como al pulsar ventana, tienen que ver
 que ventana está minimizada y con el setting de "hide on minimize" activo
 
-ok *tener en cuenta si esta encima la minimizada de otra que hace draw de pixeles, que no borre esos pixeles
-donde estaria ocupado el titulo
-ok *que no pueda conmutar ahi al pulsar sobre la barra de titulo
-ok *desminimizar al hacer una ventana activa, desde zxvision_handle_mouse_ev_switch_back_wind
-
-ok *dialogos no se deben poder minimizar, como Trash Can
-
-ok *al ir desde el menu a una ventana minimizada, que la desminimice. supongo que con zxvision_activate_this_window,
-pero que la desminimice siempre que el setting de ocultar minimizadas esté activado.
-En activate Windows quizá solo hace falta hacer toggle pero sin redibujar ventana pues ya se redibujara sola
 
 * al minimizar se ve inicialmente la ventana minimizada, y al refrescar, desaparece.
 Esto es un efecto no provocado aunque creo que queda bien
@@ -43,23 +23,6 @@ ok *pendiente sdl1,sdl2,X11. acabar de probar bien
 
 
 -sdl en debian 12 32 bits inicializa muy lento
-
--poder guardar una nota de texto en un snapshot zsf
-*como se agrega la nota? quiza desde menu snapshot: add note to saved zsf snapshot
-*como se visualiza la nota? : view note to loaded zsf snapshot, edit note to loaded zsf snapshot, remove note
-y la nota se carga al cargar zsf, se sobreescribe el texto que haya, y se guardara nota siempre que esté activa
-Ejemplo: si se carga zsf con nota, esa nota se guardara en el siguiente? NO deberia
-
-Quiza:
-
-load snapshot
-save snapshot
-
-edit snapshot note. en blanco por defecto. si está en blanco no guarda nota.
-
-view snapshot note (del ultimo cargado, si es que tiene nota). al cargar snapshot inicialmente se le quitara la nota
-
-Por tanto hay dos strings guardados, el de la nota del snapshot cargado, y el de la nota del snapshot que grabaremos
 
 
 -Botones superiores no gestionan errores generados por un item
@@ -111,3 +74,17 @@ Otros archivos como .tap etc se pueden pulsar (como ahora con los accesos direct
 
 
 -Mac timer. probar diferentes escenarios. probar con Z88 y lemmings. probar con carga desde cinta real
+
+-Documentar decir que antes en Windows se usaba timer Date
+Decir otros casos que timer se usaba
+
+-Detector silencio de la tarjeta de sonido  en vez de hacer directamente no enviar sonido,
+debería meter un frame de audio antes donde se pase del último valor al 0, suponiendo que es en el 0
+donde se queda la tarjeta al desconectarse
+
+
+-preview ql
+
+en modo
+256x256
+32768 bytes

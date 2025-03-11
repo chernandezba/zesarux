@@ -4183,6 +4183,8 @@ void menu_filesel_overlay_assign_memory_preview(int width,int height)
 
 	if (menu_filesel_overlay_last_preview_memory==NULL) cpu_panic("Cannot allocate memory for image preview");
 
+    //printf("Asignar ancho y alto %d %d\n",width,height);
+
 	menu_filesel_overlay_last_preview_width=width;
 	menu_filesel_overlay_last_preview_height=height;
 }
@@ -4641,11 +4643,204 @@ void menu_filesel_preview_render_scr(char *archivo_scr)
 	}
 
 
+    //Si pantalla de QL (32768 bytes) y estamos en QL
+    if (MACHINE_IS_QL && get_file_size(archivo_scr)==32768) {
+		debug_printf(VERBOSE_DEBUG,"Rendering QL SCR");
+
+
+		//buffer lectura archivo
+		z80_byte *buf_pantalla;
+
+		buf_pantalla=malloc(32768);
+
+		if (buf_pantalla==NULL) cpu_panic("Can not allocate buffer for screen read");
+
+        //printf("Leyendo archivo_scr %s\n",archivo_scr);
+
+		int leidos=lee_archivo(archivo_scr,(char *)buf_pantalla,32768);
+
+		if (leidos<=0) return;
+
+
+
+		//Asignamos primero buffer intermedio
+		int *buffer_intermedio;
+
+		int ancho=256;
+		int alto=256;
+
+        //  1 = 8 colour (mode 8)
+
+
+		int elementos=ancho*alto;
+
+		buffer_intermedio=malloc(sizeof(int)*elementos);
+
+		if (buffer_intermedio==NULL)  cpu_panic("Cannot allocate memory for reduce buffer");
+
+
+
+
+
+
+
+////// Trocito extraido de scr_refresca_pantalla_ql y adaptado al preview
+    int total_alto;
+    int total_ancho;
+    int x,y;
+
+    unsigned int color1;
+    //unsigned int color2;
+
+    z80_byte green,red,blue;
+
+    z80_byte byte_leido_h,byte_leido_l;
+
+
+    int memoria_pantalla_ql=0;
+
+    int offset_destino=0;
+
+
+
+    total_alto=256;
+    total_ancho=512;
+
+    int flashing_color;
+
+    for (y=0;y<total_alto;y++){
+        //Al principio de cada linea, flash es siempre 0
+        int ql_linea_flashing=0;
+        for (x=0;x<256;) {
+
+/*
+In 512-pixel mode, two bits per pixel are used, and the GREEN and BLUE signals are tied together, giving a choice of four colours:
+black, white, green and red. On a monochrome screen, this will translate as a four level greyscale.
+In 256-pixel mode, four bits per pixel are used: one bit each for Red, Green and Blue, and one bit for flashing.
+The flash bit operates as a toggle: when set for the first time, it freezes the background colour at the value set by R, G and B,
+and starts flashing at the next bit in the line; when set for the second time, it stops flashing.
+Flashing is always cleared at the beginning of a raster line.
+
+
+Addressing for display memory starts at the bottom of dynamic RAM and progresses in the order of the raster
+scan - from left to right and from top to bottom of the picture. Each word in display memory is formatted as follows:
+
+High byte (A0=0)						Low Byte (A0=1)						Mode
+D7 D6 D5 D4 D3 D2 D1 D0			D7 D6 D5 D4 D3 D2 D1 D0
+G7 G6 G5 G4 G3 G2 G1 G0			R7 R6 R5 R4 R3 R2 R1 R0		512-pixel
+G3 F3 G2 F2 G1 F1 G0 F0			R3 B3 R2 B2 R1 B1 R0 B0		256-pixel
+
+
+R, G, Band F in the above refer to Red, Green, Blue and Flash. The numbering is such that a binary
+word appears written as it will appear on the display: ie R0 is the value of Red for the rightmost pixel,
+that is the last pixel to be shifted out onto the raster.
+10.3 Display Control Register
+This is a write-only register, which is at $18063 in the QL .
+One of its bits is available through the Qdos MT.DMODE trap: bit 3, which is 0 for 512-pixel mode and 1 for 256-pixel mode.
+The other two bits of the display control register are not supported by Qdos, these being bit 1 of the display
+control register, which can be used to blank the display completely, and bit 7, which can be used to switch the base of
+screen memory from $20000 to $28000. Future versions of Qdos may allow the system variables to be
+initialised at $30000 to take advantage of this dual- screen feature: the present version does not.
+Bits 0,2,4,5 and 6 of the display control register should never be set to anything other than zero, as they are
+reserved and may have unpredictable results in future versions of the QL hardware.
+*/
+            //En modo 256x256 hay parpadeo
+
+
+            byte_leido_h=buf_pantalla[memoria_pantalla_ql];
+            memoria_pantalla_ql++;
+
+            byte_leido_l=buf_pantalla[memoria_pantalla_ql];
+            memoria_pantalla_ql++;
+
+
+
+                int npixel;
+                for (npixel=7;npixel>=0;npixel-=2) {
+
+                    //G3 F3 G2 F2 G1 F1 G0 F0                 R3 B3 R2 B2 R1 B1 R0 B0         256-pixel
+
+
+                    green=((byte_leido_h)>>npixel)&1;
+                    red=((byte_leido_l)>>npixel)&1;
+                    blue=((byte_leido_l)>>(npixel-1))&1;
+
+
+/*
+//colores para QL
+const int ql_colortable_original[8]={
+0x000000, //Negro
+0x0000ff, //Azul
+0xff0000, //Rojo
+0xff00ff, //Magenta
+0x00ff00, //Verde
+0x00ffff, //Cyan
+0xffff00, //Amarillo
+0xffffff  //Blanco
+};
+*/
+
+                    color1=green*4+red*2+blue;	// GRB
+                    //printf ("estado parpadeo: %d\n",estado_parpadeo.v);
+
+                    if (ql_linea_flashing && estado_parpadeo.v) {
+                        color1=flashing_color;
+                    }
+
+
+                    int color_con_flash;
+                    int color_sin_flash;
+
+                    //TODO: flash en el QL
+                    color_con_flash=color_sin_flash=color1;
+                    buffer_intermedio[offset_destino++]=color_sin_flash | (color_con_flash << 4);
+                    x++;
+
+                    //ql_putpixel_zoom(x++,y,color1);
+
+
+                    //Ver si cambia valor bit flash
+                    int bit_flashing=((byte_leido_h)>>(npixel-1))&1;
+                    if (bit_flashing) {
+                        ql_linea_flashing ^=1;
+                        flashing_color=color1;
+                    }
+
+
+
+
+
+            }
+        }
+    }
+////// Fin Trocito extraido de scr_refresca_pantalla_ql y adaptado al preview
+
+
+
+
+
+
+
+		free(buf_pantalla);
+
+
+
+
+        //Ahora siempre se lee el preview a tamaño completo,
+        //y si hay que reducirlo se hace sobre la marcha en la funcion de overlay
+        menu_filesel_overlay_assign_memory_preview(ancho,alto);
+
+        menu_filesel_preview_no_reduce_scr(buffer_intermedio,ancho,alto);
+
+		free(buffer_intermedio);
+
+        return;
+    }
 
 		//Leemos el archivo en memoria
 
 
-		debug_printf(VERBOSE_DEBUG,"Rendering SCR");
+		debug_printf(VERBOSE_DEBUG,"Rendering Spectrum SCR");
 
 		//buffer lectura archivo
 		z80_byte *buf_pantalla;
@@ -5077,12 +5272,16 @@ void menu_filesel_overlay_render_preview_aux(int es_directorio,char *archivo_pre
             tipo_extraccion=util_get_extract_preview_type_file(archivo_preview,file_size);
         }
 
+        //printf("tipo_extraccion 0: %d\n",tipo_extraccion);
+
         if (tipo_extraccion) {
 
             file_size=get_file_size(archivo_preview);
 
+            //printf("tipo_extraccion 1: %d\n",tipo_extraccion);
+
             if (tipo_extraccion==1) util_extract_preview_file_expandable(archivo_preview,tmpdir);
-            if (tipo_extraccion==2 || file_size==6912) {
+            if (tipo_extraccion==2 || file_size==6912 || (file_size==32768 && MACHINE_IS_QL)) {
 
                 util_extract_preview_file_simple(archivo_preview,tmpdir,preview_scr,file_size);
             }

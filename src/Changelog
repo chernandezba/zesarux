@@ -7,6 +7,7 @@ Added Streaming mode to ZENG Online for ZX Spectrum. It improves gaming experien
 Improve maximum sent keys to ZENG/ZENG Online
 Allow to increase Sinclair QL RAM size
 Allow to save ZX80/81 screen to .scr file
+Added QL Screen file previews
 Added conversion of ZX81 files P to P81, and P81 to P
 Allow to save text note on a ZSF snapshot
 Improved Windows timing and any other system using SDL video driver. Now uses SDL Timing
