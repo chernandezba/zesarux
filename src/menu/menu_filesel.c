@@ -4630,6 +4630,69 @@ void menu_filesel_preview_no_reduce_scr(int *buffer_intermedio,int ancho, int al
 
 }
 
+//Contar la cantidad de bits con flash en la pantalla
+int menu_filesel_preview_render_scr_ql_count_flash_bits(z80_byte *buf_pantalla)
+{
+
+////// Trocito extraido de scr_refresca_pantalla_ql y adaptado al preview
+        int total_alto;
+        int total_ancho;
+        int x,y;
+
+
+        z80_byte byte_leido_h;
+
+
+        int memoria_pantalla_ql=0;
+
+
+        int total_bit_flash=0;
+
+        total_alto=256;
+        total_ancho=512;
+
+
+
+        for (y=0;y<total_alto;y++){
+            //Al principio de cada linea, flash es siempre 0
+
+            for (x=0;x<256;) {
+
+
+                byte_leido_h=buf_pantalla[memoria_pantalla_ql];
+                memoria_pantalla_ql++;
+                memoria_pantalla_ql++;
+
+
+                int npixel;
+                for (npixel=7;npixel>=0;npixel-=2) {
+
+
+                    x++;
+
+                    //ql_putpixel_zoom(x++,y,color1);
+
+
+                    //Ver si cambia valor bit flash
+                    int bit_flashing=((byte_leido_h)>>(npixel-1))&1;
+                    if (bit_flashing) {
+                        total_bit_flash++;
+                    }
+
+
+                }
+            }
+        }
+    ////// Fin Trocito extraido de scr_refresca_pantalla_ql y adaptado al preview
+
+
+
+
+    //printf("Total bits con flash: %d\n",total_bit_flash);
+
+    return total_bit_flash;
+}
+
 void menu_filesel_preview_render_scr(char *archivo_scr)
 {
 			//printf("es pantalla\n");
@@ -4661,7 +4724,19 @@ void menu_filesel_preview_render_scr(char *archivo_scr)
 
 		if (leidos<=0) return;
 
+        int total_bits_flash=menu_filesel_preview_render_scr_ql_count_flash_bits(buf_pantalla);
 
+        //Si se pasa de un umbral de flash en toda la pantalla, podemos pensar que realmente
+        //es una pantalla en modo 0 y que por tanto es sin flash. Aun asi la renderizaremos
+        //como pantalla en modo 8 pero sin poner flash, que sera molesto
+        //TODO: en este caso podriamos renderizar como modo 0 (512x256 4 colores) pero
+        //un preview de 512x256 queda demasiado grande, ademas para que la relacion de aspecto fuese
+        //buena, se tendria que hacer de 512x512. Luego, podriamos pensar que si el preview se hace a mitad
+        //256x256 se tendria que ver bien, pero la reducción que hacemos del preview a la mitad no es un algoritmo bueno...
+        int desactivar_flash;
+
+        if (total_bits_flash>10000) desactivar_flash=1;
+        else desactivar_flash=0;
 
 		//Asignamos primero buffer intermedio
 		int *buffer_intermedio;
@@ -4695,7 +4770,6 @@ void menu_filesel_preview_render_scr(char *archivo_scr)
         int memoria_pantalla_ql=0;
 
         int offset_destino=0;
-
 
 
         total_alto=256;
@@ -4792,7 +4866,7 @@ const int ql_colortable_original[8]={
 
                     color_con_flash=color_sin_flash=color1;
 
-                    if (ql_linea_flashing && estado_parpadeo.v) {
+                    if (ql_linea_flashing && estado_parpadeo.v && !desactivar_flash) {
                         //color1=flashing_color;
                         color_con_flash=flashing_color;
                     }
