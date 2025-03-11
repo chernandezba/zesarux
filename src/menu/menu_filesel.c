@@ -4777,6 +4777,16 @@ const int ql_colortable_original[8]={
                     color1=green*4+red*2+blue;	// GRB
                     //printf ("estado parpadeo: %d\n",estado_parpadeo.v);
 
+                    //TODO: estoy usando colores de la paleta del Spectrum en vez del QL,
+                    //esto es culpa de la manera de almacenar el color con flash y sin flash, que va metido en los 8 bits bajos,
+                    //aun siendo un int, no uso los 8 bits altos
+                    //Aunque usase los 8 bits bajos para color sin flash y los altos para color con flash, el numero de color
+                    //estaria limitado a 0-255, eso vale para Spectrum pero el numero de color en la paleta de QL es mayor que 256
+
+                    //Entonces la mejor solucion es meter el numero de color de spectrum con brillo, que al final
+                    //son los mismos valores RGB que uso para QL
+                    color1 +=8;
+
                     int color_con_flash;
                     int color_sin_flash;
 
@@ -4787,11 +4797,7 @@ const int ql_colortable_original[8]={
                         color_con_flash=flashing_color;
                     }
 
-                    //TODO: estoy usando colores de la paleta del Spectrum en vez del QL,
-                    //esto es culpa de la manera de almacenar el color con flash y sin flash, que va metido en los 8 bits bajos,
-                    //aun siendo un int, no uso los 8 bits altos
-                    //Aunque usase los 8 bits bajos para color sin flash y los altos para color con flash, el numero de color
-                    //estaria limitado a 0-255, eso vale para Spectrum pero el numero de color en la paleta de QL es mayor que 256
+
 
                     buffer_intermedio[offset_destino++]=color_sin_flash | (color_con_flash << 4);
                     x++;
