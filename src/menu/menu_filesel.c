@@ -4787,7 +4787,11 @@ const int ql_colortable_original[8]={
                         color_con_flash=flashing_color;
                     }
 
-
+                    //TODO: estoy usando colores de la paleta del Spectrum en vez del QL,
+                    //esto es culpa de la manera de almacenar el color con flash y sin flash, que va metido en los 8 bits bajos,
+                    //aun siendo un int, no uso los 8 bits altos
+                    //Aunque usase los 8 bits bajos para color sin flash y los altos para color con flash, el numero de color
+                    //estaria limitado a 0-255, eso vale para Spectrum pero el numero de color en la paleta de QL es mayor que 256
 
                     buffer_intermedio[offset_destino++]=color_sin_flash | (color_con_flash << 4);
                     x++;
