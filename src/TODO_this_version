@@ -82,9 +82,3 @@ Decir otros casos que timer se usaba
 debería meter un frame de audio antes donde se pase del último valor al 0, suponiendo que es en el 0
 donde se queda la tarjeta al desconectarse
 
-
--preview ql
-
-en modo
-256x256
-32768 bytes
