@@ -1773,7 +1773,8 @@ struct s_zxdesktop_lowericons_info {
 
 #define TOTAL_ZXDESKTOP_MAX_LOWER_ICONS 24
 
-
+//Cada 12 frames de pantalla lanzar las funciones de print y condicion
+#define ZXVISION_SIMPLE_PROGRESS_WINDOW_FRAMES_REFRESH 12
 
 extern void zxvision_espera_tecla_condicion_progreso(zxvision_window *w,int (*funcioncond) (zxvision_window *),void (*funcionprint) (zxvision_window *) );
 extern void zxvision_simple_progress_window(char *titulo, int (*funcioncond) (zxvision_window *),void (*funcionprint) (zxvision_window *) );

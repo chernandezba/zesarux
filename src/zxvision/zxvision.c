@@ -19154,8 +19154,10 @@ void zxvision_espera_tecla_timeout_window_splash(int tipo)
 
 }
 
+
+
 //Esperar a tecla ESC, o que la condicion de funcion sea diferente de 0
-//Cada medio segundo se llama la condicion y tambien la funcion de print
+//Cada x fraccion de segundo se llama la condicion y tambien la funcion de print
 //Poner alguna a NULL si no se quiere llamar
 //Funciones de condicion y progreso tambien funcionan aun sin multitarea
 void zxvision_espera_tecla_condicion_progreso(zxvision_window *w,int (*funcioncond) (zxvision_window *),void (*funcionprint) (zxvision_window *) )
@@ -19164,7 +19166,7 @@ void zxvision_espera_tecla_condicion_progreso(zxvision_window *w,int (*funcionco
 	z80_byte tecla;
 	int condicion=0;
 	int contador_antes=menu_window_splash_counter_ms;
-	int intervalo=20*12; //12 frames de pantalla
+	int intervalo=20*ZXVISION_SIMPLE_PROGRESS_WINDOW_FRAMES_REFRESH; //En milisegundos
 
 	//contador en us
 	int contador_no_multitask=0;
@@ -19181,12 +19183,13 @@ void zxvision_espera_tecla_condicion_progreso(zxvision_window *w,int (*funcionco
 				//y salga cuando aun no ha finalizado
 				//Seria raro, porque el intervalo de comprobacion es cada 1/4 de segundo, y en ese tiempo se tiene que haber lanzado el thread de sobra
 
+                //En caso que no haya multitarea, activar las funciones de print y condicion de otra manera
 	 			if (!menu_multitarea) {
 					contador_no_multitask+=MENU_CPU_CORE_LOOP_SLEEP_NO_MULTITASK;
 
-					//Cuando se llega a 1/4 segundo ms
+
 					if (contador_no_multitask>=intervalo*1000) {
-						//printf ("Pasado medio segundo %d\n",contador_no_multitask);
+						//printf ("Pasado medio segundo %d\n",contador_segundo);
 						contador_no_multitask=0;
 						pasado_cuarto_segundo=1;
 

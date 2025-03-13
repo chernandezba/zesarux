@@ -140,6 +140,11 @@ void menu_zeng_online_connecting_common_print(zxvision_window *w)
     menu_common_connect_print(w,buf_temp);
 }
 
+void menu_zeng_online_get_snapshot_common_print(zxvision_window *w)
+{
+
+    menu_common_connect_print(w,"Getting snapshot");
+}
 
 void menu_zeng_online_stop_threads_common_print(zxvision_window *w)
 {
@@ -166,6 +171,21 @@ int menu_zeng_online_disable_autojoin_room_cond(zxvision_window *w GCC_UNUSED)
 int menu_zeng_online_stop_master_thread_cond(zxvision_window *w GCC_UNUSED)
 {
 	return !zeng_online_client_stop_master_thread_thread_running;
+}
+
+//Contador por si el snapshot pedido nunca llega (por ejemplo que el master aun no lo haya enviado y de error al recibirlo)
+int menu_zeng_online_get_snapshot_applied_cond_counter=0;
+
+int menu_zeng_online_get_snapshot_applied_cond(zxvision_window *w GCC_UNUSED)
+{
+
+
+    menu_zeng_online_get_snapshot_applied_cond_counter+= ZXVISION_SIMPLE_PROGRESS_WINDOW_FRAMES_REFRESH;
+
+    //en 5 segundos, timeout
+    if (menu_zeng_online_get_snapshot_applied_cond_counter>5*50) return 1;
+
+	return zeng_online_client_get_snapshot_applied_finished;
 }
 
 int menu_zeng_online_stop_slave_thread_cond(zxvision_window *w GCC_UNUSED)
@@ -985,6 +1005,20 @@ void menu_zeng_online_leave_room_slave(MENU_ITEM_PARAMETERS)
     if (menu_confirm_yesno("Leave room?")) {
         //Al salir, en modo streaming, aplicamos un snapshot entero que se van recibiendo menos frecuentemente
         if (created_room_streaming_mode && zeng_online_i_am_master.v==0) {
+            zeng_online_client_get_snapshot_applied_finished=0;
+
+            //Obtenemos el ultimo snapshot
+            //Nota: ese snapshot es el que envia el master cada 1 minuto, por tanto tampoco va a ser
+            //un snapshot muy reciente, pero es mejor esta alternativa a la que teniamos antes, donde era el thread de slave
+            //quien se traia el snapshot a cada minuto, esa manera de antes de hacerlo podia comportar dos cosas:
+            //1. Si hace join y leave room en menos de 1 minuto, no se ha traido ningun snapshot
+            //2. Entre el envio del snapshot del master (cada 1 minuto) y la recepcion de slave (cada 1 minuto), al final
+            //el snapshot puede tener hasta 2 minutos de retraso
+            zoc_slave_set_force_get_snapshot();
+
+            menu_zeng_online_get_snapshot_applied_cond_counter=0;
+            zxvision_simple_progress_window("Getting last full snapshot", menu_zeng_online_get_snapshot_applied_cond,menu_zeng_online_get_snapshot_common_print );
+
             debug_printf(VERBOSE_INFO,"Apply last snapshot on leave");
             zeng_online_client_apply_pending_received_snapshot();
         }

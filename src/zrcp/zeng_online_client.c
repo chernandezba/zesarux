@@ -4119,6 +4119,9 @@ int zoc_receive_snapshot(int indice_socket)
 
             zoc_pending_apply_received_snapshot=1;
 
+            //Esto es solo para que la ventana de progreso al hacer un leave room vea que ya se ha aplicado el snapshot
+            zeng_online_client_get_snapshot_applied_finished=1;
+
         }
 
     }
@@ -4498,6 +4501,7 @@ void slave_thread_get_snapshot(int indice_socket)
         if (error<0) {
             //TODO
             DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Error getting snapshot from zeng online server");
+            //printf("ZENG Online Client: Error getting snapshot from zeng online server\n");
             usleep(10000); //dormir 10 ms
         }
 
@@ -4506,9 +4510,11 @@ void slave_thread_get_snapshot(int indice_socket)
 
 }
 
-int zoc_snapshot_slave_streaming_counter=0;
+//int zoc_snapshot_slave_streaming_counter=0;
 
+int zoc_slave_force_get_snapshot=0;
 
+int zeng_online_client_get_snapshot_applied_finished=0;
 
 void *zoc_slave_thread_function(void *nada GCC_UNUSED)
 {
@@ -4642,18 +4648,16 @@ void *zoc_slave_thread_function(void *nada GCC_UNUSED)
 
                 }
 
-                //En modo streaming tambien se obtiene snapshot pero menos frecuentemente
-                //Lo leemos pero lo aplicaremos al hacer leave room,
-                //para no ir aplicando ese snapshot continuamente que generaria efectos inesperados
+                //En modo streaming obtendremos snapshot al hacer leave room
                 //Nota: hay la posibilidad de que si se acaba de crear la sala en modo streaming, aun no haya entrado
                 //un snapshot. En este caso la peticion aqui fallaria aunque no se alerta al usuario
                 //Se recibiria un error de ZRCP "ERROR. There is no snapshot on this room"
-                zoc_snapshot_slave_streaming_counter++;
-                if (zoc_snapshot_slave_streaming_counter>=ZOC_INTERVAL_SNAPSHOT_ON_STREAMING) {
-                    zoc_snapshot_slave_streaming_counter=0;
-                    DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_INFO,"ZENG Online Client: Streaming mode. Getting snapshot to use on leave room");
 
-                    //Forzar a recibir snapshot aunque no hemos aplicado el anterior
+                if (zoc_slave_force_get_snapshot) {
+                    zoc_slave_force_get_snapshot=0;
+                    DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_INFO,"ZENG Online Client: Streaming mode. Getting snapshot to use on leave room");
+                    //printf("ZENG Online Client: Streaming mode. Getting snapshot to use on leave room\n");
+
                     zoc_pending_apply_received_snapshot=0;
                     slave_thread_get_snapshot(indice_socket);
                 }
@@ -4732,6 +4736,23 @@ void *zoc_slave_thread_function(void *nada GCC_UNUSED)
 
 	return 0;
 
+}
+
+
+//Decirle al slave thread que tiene que traerse un snapshot, en modo streaming, la hacer leave room
+//Nota: se podria hacer casi todo desde aqui pero no tenemos el numero de socket con el que está conectado,
+//aunque se podria abrir conexión nueva pero mejor hacerlo asi y reaprovechar el socket ya abierto
+void zoc_slave_set_force_get_snapshot(void)
+{
+    if (created_room_streaming_mode) {
+        if (created_room_user_permissions & ZENG_ONLINE_PERMISSIONS_GET_DISPLAY) {
+            zoc_slave_force_get_snapshot=1;
+            return;
+        }
+    }
+
+    //No se cumple nada de eso. No esperar
+    zeng_online_client_get_snapshot_applied_finished=1;
 }
 
 //Apartar comandos como get-message-id y otros que envian y reciben y si hay algo de latencia, molestarian
