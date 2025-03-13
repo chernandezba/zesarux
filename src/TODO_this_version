@@ -60,7 +60,8 @@ En modo streaming en debug CPU indicarlo de alguna manera
 
 Al hacer debug cpu->reset salir de online? Independientemente de si es modo streaming?
 
--Si por ejemplo conectado a partida online desde spectrum, cambio a maquina z88,
+
+Si por ejemplo conectado a partida online desde spectrum, cambio a maquina z88,
 y se sigue escuchando la musica del juego online
 
 ------
@@ -82,3 +83,4 @@ Decir otros casos que timer se usaba
 debería meter un frame de audio antes donde se pase del último valor al 0, suponiendo que es en el 0
 donde se queda la tarjeta al desconectarse
 
+-Modo streaming video para ql? Moviendo memoria de video

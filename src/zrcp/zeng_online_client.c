@@ -5014,6 +5014,9 @@ z80_byte *zoc_get_base_mem_pantalla(void)
     return get_base_mem_pantalla();
 }
 
+//Decir si se bloquea temporalmente la aplicacion de streaming de video
+int zoc_slave_forbid_apply_streaming_video=0;
+
 void zeng_online_client_apply_pending_received_streaming_display(void)
 {
     if (zeng_online_connected.v==0) return;
@@ -5024,6 +5027,8 @@ void zeng_online_client_apply_pending_received_streaming_display(void)
         //printf("NO apply pending %d\n",contador_segundo);
         return;
     }
+
+    if (zoc_slave_forbid_apply_streaming_video) return;
 
     //printf("Apply pending %d\n",contador_segundo);
 

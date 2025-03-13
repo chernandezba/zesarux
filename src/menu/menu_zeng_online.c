@@ -1014,6 +1014,13 @@ void menu_zeng_online_leave_room_slave(MENU_ITEM_PARAMETERS)
             //1. Si hace join y leave room en menos de 1 minuto, no se ha traido ningun snapshot
             //2. Entre el envio del snapshot del master (cada 1 minuto) y la recepcion de slave (cada 1 minuto), al final
             //el snapshot puede tener hasta 2 minutos de retraso
+
+            //Le decimos que no aplique recepcion de streaming de video, no vaya a ser que entre
+            //que desde que se recibe el snapshot y se hace leave, entre algo de streaming de video
+            //y queda nuestra pantalla local algo inconsistente
+
+            zoc_slave_forbid_apply_streaming_video=1;
+
             zoc_slave_set_force_get_snapshot();
 
             menu_zeng_online_get_snapshot_applied_cond_counter=0;
@@ -1039,6 +1046,9 @@ void menu_zeng_online_leave_room_slave(MENU_ITEM_PARAMETERS)
         //printf("Estado conexion: %d\n",zeng_online_connected.v);
 
         zoc_show_bottom_line_footer_connected();
+
+        //Importante siempre desbloquear esto, sino no se recibiria luego ningun streaming de video
+        zoc_slave_forbid_apply_streaming_video=0;
 
 
     }
