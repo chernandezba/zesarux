@@ -2634,7 +2634,7 @@ int zoc_send_streaming_audio(int indice_socket)
 }
 
 
-
+int zoc_get_keys_counter=0;
 
 void zoc_get_keys(int indice_socket)
 {
@@ -2761,6 +2761,8 @@ void zoc_get_keys(int indice_socket)
                     //printf("linea no valida\n");
                 }
                 else {
+
+                    zoc_get_keys_counter++;
 
                     //Si uuid yo soy mismo, no procesarlo
                     if (!strcmp(received_uuid,stats_uuid)) {

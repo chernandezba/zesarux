@@ -1796,6 +1796,13 @@ void menu_zeng_online_status_window_overlay(void)
             }
         }
         zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Keys sent: %d",zoc_keys_send_counter);
+
+        //Solo recibe teclas:
+        //Master (en modo streaming o no streaming)
+        //Slave (en modo no streaming)
+        if (zeng_online_i_am_master.v || (zeng_online_i_am_master.v==0 && !created_room_streaming_mode)) {
+            zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Keys received: %d",zoc_get_keys_counter);
+        }
         zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Alive packets sent: %d",zoc_common_alive_user_send_counter);
         zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Broadcast Messages received: %d",zoc_common_get_messages_received_counter);
     }
