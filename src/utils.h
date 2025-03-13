@@ -1014,6 +1014,8 @@ extern void util_extract_preview_file_simple(char *nombre,char *tmpdir,char *tmp
 extern int util_get_extract_preview_type_file(char *nombre,long long int file_size);
 extern void util_normalize_file_name_for_temp_dir(char *nombre);
 
+extern int util_preview_file_is_ql_screen(int file_size);
+
 extern int util_if_filesystem_plusidedos(z80_byte *memoria,int total_size);
 extern int util_if_filesystem_fat16(z80_byte *memoria,int total_size);
 

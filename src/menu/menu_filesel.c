@@ -4705,9 +4705,10 @@ void menu_filesel_preview_render_scr(char *archivo_scr)
 		return;
 	}
 
+    int file_size=get_file_size(archivo_scr);
 
     //Si pantalla de QL (32768 bytes) y estamos en QL
-    if (MACHINE_IS_QL && get_file_size(archivo_scr)==32768) {
+    if (util_preview_file_is_ql_screen(file_size) ) {
 		debug_printf(VERBOSE_DEBUG,"Rendering QL SCR");
 
 
@@ -5361,7 +5362,7 @@ void menu_filesel_overlay_render_preview_aux(int es_directorio,char *archivo_pre
             //printf("tipo_extraccion 1: %d\n",tipo_extraccion);
 
             if (tipo_extraccion==1) util_extract_preview_file_expandable(archivo_preview,tmpdir);
-            if (tipo_extraccion==2 || file_size==6912 || (file_size==32768 && MACHINE_IS_QL)) {
+            if (tipo_extraccion==2 || file_size==6912 || util_preview_file_is_ql_screen(file_size) ) {
 
                 util_extract_preview_file_simple(archivo_preview,tmpdir,preview_scr,file_size);
             }

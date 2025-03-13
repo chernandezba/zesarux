@@ -64,6 +64,9 @@ Al hacer debug cpu->reset salir de online? Independientemente de si es modo stre
 Si por ejemplo conectado a partida online desde spectrum, cambio a maquina z88,
 y se sigue escuchando la musica del juego online
 
+
+- Posible diagrama gráfico de una conexión ZENG/ZENG online donde se vea como se están recibiendo/enviando paquetes de datos etc.
+En diferentes roles (master/slave), en partida streaming o no, si se trae snapshot, o stream de video, o stream de audio
 ------
 
 

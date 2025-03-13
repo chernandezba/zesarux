@@ -23320,6 +23320,15 @@ int util_extract_preview_file_expandable(char *nombre,char *tmpdir)
             return retorno;
 }
 
+//Dice si archivo puede ser pantalla de QL en base a su tamaño y que la maquina activa tiene que ser QL
+//Si maquina activa no es QL no decir que es una posible pantalla, porque cosas como una rom de 32kb darian positivo
+//al estar en maquina Spectrum y no queremos que pase esto
+int util_preview_file_is_ql_screen(int file_size)
+{
+    if (file_size==32768 && MACHINE_IS_QL) return 1;
+    else return 0;
+}
+
 
 //Extraer preview de diferentes tipos de archivos que no requieren expandir
 void util_extract_preview_file_simple(char *nombre,char *tmpdir,char *tmpfile_scr,int file_size)
@@ -23327,7 +23336,7 @@ void util_extract_preview_file_simple(char *nombre,char *tmpdir,char *tmpfile_sc
 
 	if (!util_compare_file_extension(nombre,"scr")
         || file_size==6912
-        || (file_size==32768 && MACHINE_IS_QL)
+        || util_preview_file_is_ql_screen(file_size)
         ) {
 		debug_printf(VERBOSE_DEBUG,"File is a scr screen");
 
@@ -23442,7 +23451,7 @@ int util_get_extract_preview_type_file(char *nombre,long long int file_size)
         !util_compare_file_extension(nombre,"p81") ||
         !util_compare_file_extension(nombre,"zsf") ||
         file_size==6912 ||
-        (file_size==32768 && MACHINE_IS_QL)
+        util_preview_file_is_ql_screen(file_size)
     ) {
         return 2;
     }
