@@ -3491,6 +3491,8 @@ void zoc_common_get_messages_slave_master(int indice_socket)
     }
 }
 
+int zoc_sent_snapshots_counter=0;
+
 void master_thread_put_snapshot(int indice_socket)
 {
     if (created_room_user_permissions & ZENG_ONLINE_PERMISSIONS_PUT_SNAPSHOT) {
@@ -3509,6 +3511,8 @@ void master_thread_put_snapshot(int indice_socket)
             zoc_pending_send_snapshot=0;
             //zeng_online_client_reset_scanline_counter();
             //printf("Snapshot sent\n");
+
+            zoc_sent_snapshots_counter++;
         }
     }
 }

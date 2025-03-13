@@ -1781,6 +1781,8 @@ void menu_zeng_online_status_window_overlay(void)
             else {
                 //Modo no streaming
             }
+
+            zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Snapshots sent: %d",zoc_sent_snapshots_counter);
         }
         else {
             //Slave
