@@ -3232,7 +3232,7 @@ int zoc_keys_tecla_conmutada(zeng_key_presses *elemento)
 
 }
 
-
+int zoc_keys_send_counter=0;
 
 int zoc_keys_send_pending(int indice_socket,int *enviada_alguna_tecla)
 {
@@ -3272,6 +3272,8 @@ int zoc_keys_send_pending(int indice_socket,int *enviada_alguna_tecla)
                 //Syntax: send-keys-event key event
                 int error=zoc_send_keys(indice_socket,&elemento);
                 if (error<0) error_desconectar=1;
+
+                zoc_keys_send_counter++;
             }
 
             else {

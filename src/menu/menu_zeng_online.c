@@ -1795,7 +1795,7 @@ void menu_zeng_online_status_window_overlay(void)
                 //Modo no streaming
             }
         }
-
+        zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Keys sent: %d",zoc_keys_send_counter);
         zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Alive packets sent: %d",zoc_common_alive_user_send_counter);
         zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Broadcast Messages received: %d",zoc_common_get_messages_received_counter);
     }

@@ -93,6 +93,7 @@ extern int zoc_common_get_messages_received_counter;
 extern int zoc_send_streaming_display_counter;
 extern int zoc_send_streaming_audio_counter;
 extern int zoc_sent_snapshots_counter;
+extern int zoc_keys_send_counter;
 
 extern int created_room_streaming_mode;
 
