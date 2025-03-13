@@ -1795,7 +1795,13 @@ void menu_zeng_online_status_window_overlay(void)
                 //Modo no streaming
             }
         }
-        zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Keys sent: %d",zoc_keys_send_counter);
+
+        //Solo envia teclas:
+        //Slave (en modo streaming o no streaming)
+        //Master (en modo no streaming)
+        if (zeng_online_i_am_master.v==0 || (zeng_online_i_am_master.v && !created_room_streaming_mode)) {
+            zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Keys sent: %d",zoc_keys_send_counter);
+        }
 
         //Solo recibe teclas:
         //Master (en modo streaming o no streaming)

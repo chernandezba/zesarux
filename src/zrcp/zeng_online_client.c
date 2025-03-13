@@ -3657,10 +3657,13 @@ void *zoc_master_thread_function(void *nada GCC_UNUSED)
 
             //Enviar teclas
             //TODO gestionar error_desconectar
+            //Solo en modo no streaming
             if (created_room_user_permissions & ZENG_ONLINE_PERMISSIONS_SEND_KEYS) {
-                int enviada_alguna_tecla;
-                //int error_desconectar=
-                zoc_keys_send_pending(indice_socket,&enviada_alguna_tecla);
+                if (!created_room_streaming_mode) {
+                    int enviada_alguna_tecla;
+                    //int error_desconectar=
+                    zoc_keys_send_pending(indice_socket,&enviada_alguna_tecla);
+                }
             }
 
             if (created_room_user_permissions & ZENG_ONLINE_PERMISSIONS_GET_KEYS) {
