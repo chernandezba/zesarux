@@ -3400,7 +3400,7 @@ int contador_alive_anteriorsegundos=0;
 //unsigned int antes_network_traffic_counter_read=0;
 //unsigned int antes_network_traffic_counter_write=0;
 
-int zoc_zoc_common_alive_user_send_counter=0;
+int zoc_common_alive_user_send_counter=0;
 
 void zoc_common_alive_user(int indice_socket)
 {
@@ -3424,13 +3424,15 @@ void zoc_common_alive_user(int indice_socket)
         //int return_value=zoc_common_send_command(indice_socket,buffer_enviar,"alive");
         zoc_common_send_command(indice_socket,buffer_enviar,"alive");
 
-        zoc_zoc_common_alive_user_send_counter++;
+        zoc_common_alive_user_send_counter++;
 
 
         //if (!return_value) return 0;
 
     }
 }
+
+int zoc_common_get_messages_received_counter=0;
 
 void zoc_common_get_messages_slave_master(int indice_socket)
 {
@@ -3472,6 +3474,8 @@ void zoc_common_get_messages_slave_master(int indice_socket)
 
                 //Y enviarlo a speech
                 textspeech_print_speech(mensaje);
+
+                zoc_common_get_messages_received_counter++;
 
             }
 
@@ -4823,7 +4827,7 @@ void *zoc_slave_thread_function_secondary_commands(void *nada GCC_UNUSED)
         zoc_common_alive_user(indice_socket);
 
 
-        //TODO: hacer que salgan todos los threads si hay kick de usuario
+        //hacer que salgan todos los threads si hay kick de usuario
         if (zoc_check_if_kicked(indice_socket)) {
             //Logicamente el usuario puede intentar entrar de nuevo pero
             //mientras no se haga kick de otro usuario diferente, este primero quedara en la lista de kick

@@ -88,7 +88,8 @@ extern void zec_veces_audio_no_recibido_timer(void);
 
 extern int zoc_streaming_display_received_counter;
 extern int zoc_streaming_audio_received_counter;
-extern int zoc_zoc_common_alive_user_send_counter;
+extern int zoc_common_alive_user_send_counter;
+extern int zoc_common_get_messages_received_counter;
 
 extern int created_room_streaming_mode;
 
