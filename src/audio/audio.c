@@ -1088,16 +1088,7 @@ void envio_audio(void)
 
 
 
-	//temporal. ver contenido buffer. deberia ser todo igual
-	//if (silence_detection_counter==SILENCE_DETECTION_MAX) {
-	//	int i;
-	//	for (i=0;i<AUDIO_BUFFER_SIZE;i++) {
-        //                printf ("%02X ",audio_buffer[i]);
-	//	}
-	//}
 
-	//temporal
-	//if (beeper_silence_detection_counter==SILENCE_DETECTION_MAX) printf ("silencio beeper\n");
 
 
 	//Si aofile, silencio=0

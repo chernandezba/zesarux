@@ -378,10 +378,7 @@ void cpu_core_loop_ace(void)
 
         }
 
-        //else {
-        //	//Si no hay vsync sound, beeper sound off, forzamos que hay silencio de beepr
-        //	beeper_silence_detection_counter=SILENCE_DETECTION_MAX;
-        //}
+
 
 
         int leer_cinta_real=0;

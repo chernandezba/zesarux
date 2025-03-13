@@ -82,5 +82,6 @@ Decir otros casos que timer se usaba
 -Detector silencio de la tarjeta de sonido  en vez de hacer directamente no enviar sonido,
 debería meter un frame de audio antes donde se pase del último valor al 0, suponiendo que es en el 0
 donde se queda la tarjeta al desconectarse
+->solo se oye el "click" con alsa
 
 -Modo streaming video para ql? Moviendo memoria de video
