@@ -3400,6 +3400,8 @@ int contador_alive_anteriorsegundos=0;
 //unsigned int antes_network_traffic_counter_read=0;
 //unsigned int antes_network_traffic_counter_write=0;
 
+int zoc_zoc_common_alive_user_send_counter=0;
+
 void zoc_common_alive_user(int indice_socket)
 {
 
@@ -3421,6 +3423,8 @@ void zoc_common_alive_user(int indice_socket)
 
         //int return_value=zoc_common_send_command(indice_socket,buffer_enviar,"alive");
         zoc_common_send_command(indice_socket,buffer_enviar,"alive");
+
+        zoc_zoc_common_alive_user_send_counter++;
 
 
         //if (!return_value) return 0;
