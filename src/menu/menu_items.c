@@ -18247,9 +18247,7 @@ void menu_display_save_screen(MENU_ITEM_PARAMETERS)
 
 	else if (MACHINE_IS_QL) {
         filtros[0]="scr";
-		filtros[1]="bmp";
-        filtros[2]="txt";
-		filtros[3]=0;
+		filtros[1]=0;
 	}
 
 	else {
