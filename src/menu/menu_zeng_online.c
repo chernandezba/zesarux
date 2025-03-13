@@ -1732,6 +1732,191 @@ void menu_zeng_online_streaming_silence_detection(MENU_ITEM_PARAMETERS)
     streaming_silence_detection ^=1;
 }
 
+
+/*
+Inicio de Template de ventana de menu que se puede enviar a background
+Sustituir "zeng_online_status_window" por el nombre de la ventana
+Sustituir "zengonlinestatus" por el nombre corto de la ventana (nombre identificativo de geometria, string sin _)
+Sustituir "ZENG Online Status" por el titulo de la ventana
+Y definirla en zxvision_known_window_names_array
+*/
+
+
+zxvision_window *menu_zeng_online_status_window_window;
+
+
+void menu_zeng_online_status_window_overlay(void)
+{
+
+    menu_speech_set_tecla_pulsada(); //Si no, envia continuamente todo ese texto a speech
+
+    //si ventana minimizada, no ejecutar todo el codigo de overlay
+    if (menu_zeng_online_status_window_window->is_minimized) return;
+
+
+    //Print....
+    //Tambien contar si se escribe siempre o se tiene en cuenta contador_segundo...
+
+    zxvision_window *w=menu_zeng_online_status_window_window;
+
+    if (zeng_online_connected.v==0) {
+        zxvision_cls(w);
+        zxvision_print_string_defaults_fillspc(w,1,0,"ZENG Online not connected");
+    }
+    else {
+        //Quitar posible mensaje de not connected
+        zxvision_print_string_defaults_fillspc(w,1,0,"");
+
+        int linea=0;
+
+        zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Joined as: %s",zeng_online_joined_as_text);
+
+        if (zeng_online_i_am_master.v) {
+            //Master
+            if (created_room_streaming_mode) {
+                //Modo streaming
+            }
+            else {
+                //Modo no streaming
+            }
+        }
+        else {
+            //Slave
+            if (created_room_streaming_mode) {
+                //Modo streaming
+                zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Streaming displays received: %d",zoc_streaming_display_received_counter);
+                zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Streaming audios received: %d",zoc_streaming_audio_received_counter);
+            }
+            else {
+                //Modo no streaming
+            }
+        }
+    }
+
+
+    //Mostrar contenido
+    zxvision_draw_window_contents(menu_zeng_online_status_window_window);
+
+}
+
+
+
+
+//Almacenar la estructura de ventana aqui para que se pueda referenciar desde otros sitios
+zxvision_window zxvision_window_zeng_online_status_window;
+
+
+void menu_zeng_online_status_window(MENU_ITEM_PARAMETERS)
+{
+	menu_espera_no_tecla();
+
+    if (!menu_multitarea) {
+        menu_warn_message("This window needs multitask enabled");
+        return;
+    }
+
+    zxvision_window *ventana;
+    ventana=&zxvision_window_zeng_online_status_window;
+
+	//IMPORTANTE! no crear ventana si ya existe. Esto hay que hacerlo en todas las ventanas que permiten background.
+	//si no se hiciera, se crearia la misma ventana, y en la lista de ventanas activas , al redibujarse,
+	//la primera ventana repetida apuntaria a la segunda, que es el mismo puntero, y redibujaria la misma, y se quedaria en bucle colgado
+	//zxvision_delete_window_if_exists(ventana);
+
+    //Crear ventana si no existe
+    if (!zxvision_if_window_already_exists(ventana)) {
+        int xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
+
+        if (!util_find_window_geometry("zengonlinestatus",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
+            ancho_ventana=30;
+            alto_ventana=20;
+
+            xventana=menu_center_x()-ancho_ventana/2;
+            yventana=menu_center_y()-alto_ventana/2;
+        }
+
+
+        zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"ZENG Online Status",
+            "zengonlinestatus",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
+
+        ventana->can_be_backgrounded=1;
+
+    }
+
+    //Si ya existe, activar esta ventana
+    else {
+        zxvision_activate_this_window(ventana);
+    }
+
+	zxvision_draw_window(ventana);
+
+	z80_byte tecla;
+
+
+	int salir=0;
+
+
+    menu_zeng_online_status_window_window=ventana; //Decimos que el overlay lo hace sobre la ventana que tenemos aqui
+
+
+    //cambio overlay
+    zxvision_set_window_overlay(ventana,menu_zeng_online_status_window_overlay);
+
+
+    //Toda ventana que este listada en zxvision_known_window_names_array debe permitir poder salir desde aqui
+    //Se sale despues de haber inicializado overlay y de cualquier otra variable que necesite el overlay
+    if (zxvision_currently_restoring_windows_on_start) {
+        //printf ("Saliendo de ventana ya que la estamos restaurando en startup\n");
+        return;
+    }
+
+    do {
+
+
+		tecla=zxvision_common_getkey_refresh();
+
+
+        switch (tecla) {
+
+            case 11:
+                //arriba
+                //blablabla
+            break;
+
+
+
+            //Salir con ESC
+            case 2:
+                salir=1;
+            break;
+
+            //O tecla background
+            case 3:
+                salir=1;
+            break;
+        }
+
+
+    } while (salir==0);
+
+
+	util_add_window_geometry_compact(ventana);
+
+	if (tecla==3) {
+		zxvision_message_put_window_background();
+	}
+
+	else {
+		zxvision_destroy_window(ventana);
+	}
+
+
+}
+
+
+
+
+
 void menu_zeng_online(MENU_ITEM_PARAMETERS)
 {
     menu_item *array_menu_common;
@@ -1911,6 +2096,9 @@ void menu_zeng_online(MENU_ITEM_PARAMETERS)
                 menu_add_item_menu_shortcut(array_menu_common,'d');
                 menu_add_item_menu_add_flags(array_menu_common,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
 
+                menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_status_window,NULL,
+                "ZENG Status Window","Ventana de Estado ZENG","Finestra d'Estat ZENG");
+                menu_add_item_menu_add_flags(array_menu_common,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
 
                 if (created_room_user_permissions & ZENG_ONLINE_PERMISSIONS_PUT_SNAPSHOT) {
 
@@ -1942,7 +2130,9 @@ void menu_zeng_online(MENU_ITEM_PARAMETERS)
                 "Leave room","Abandonar habitación","Abandonar habitació");
                 menu_add_item_menu_add_flags(array_menu_common,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
 
-
+                menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_status_window,NULL,
+                "ZENG Status Window","Ventana de Estado ZENG","Finestra d'Estat ZENG");
+                menu_add_item_menu_add_flags(array_menu_common,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
 
                 menu_add_item_menu_separator(array_menu_common);
                 menu_add_item_menu_es_avanzado(array_menu_common);

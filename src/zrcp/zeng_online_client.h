@@ -86,6 +86,9 @@ extern int streaming_silence_detection;
 
 extern void zec_veces_audio_no_recibido_timer(void);
 
+extern int zoc_streaming_display_received_counter;
+extern int zoc_streaming_audio_received_counter;
+
 extern int created_room_streaming_mode;
 
 //Para poder hacer debug_printf con la clase adecuada

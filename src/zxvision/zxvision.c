@@ -53,6 +53,7 @@
 #include "menu_debug_cpu.h"
 #include "menu_file_viewer_browser.h"
 #include "menu_filesel.h"
+#include "menu_zeng_online.h"
 #include "screen.h"
 #include "cpu.h"
 #include "start.h"
@@ -9705,6 +9706,7 @@ zxvision_known_window_names zxvision_known_window_names_array[]={
     {"waveform",            "waveform",menu_audio_new_waveform,bitmap_button_ext_desktop_waveform},
     {"wavepiano",           "wave piano",menu_beeper_pianokeyboard,bitmap_button_ext_desktop_wavepiano},
     {"toyzxeyes",           "zx eyes",      menu_toy_follow_mouse,bitmap_button_ext_desktop_zxeyes},
+    {"zengonlinestatus",    "zengonlinest",      menu_zeng_online_status_window,bitmap_button_ext_desktop_userdefined},
     {"zxlife",              "zx life",      menu_toys_zxlife,bitmap_button_ext_desktop_zxlife},
 
 	{"","",NULL,bitmap_button_ext_desktop_userdefined} //NO BORRAR ESTA!!

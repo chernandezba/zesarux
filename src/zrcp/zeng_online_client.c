@@ -2816,6 +2816,8 @@ z80_byte *zoc_get_audio_mem_binary_second_buffer=NULL;
 
 int zoc_get_audio_mem_binary_longitud=0;
 
+int zoc_streaming_audio_received_counter=0;
+
 int zoc_get_stream_audio_continuous(int indice_socket)
 {
 
@@ -2937,6 +2939,8 @@ int zoc_get_stream_audio_continuous(int indice_socket)
         }
 
         zoc_pending_apply_received_streaming_audio=1;
+
+        zoc_streaming_audio_received_counter++;
     }
 
     //printf("--Fin obtener audio remoto. %d\n",contador_segundo);
@@ -4138,7 +4142,7 @@ int zoc_receive_snapshot(int indice_socket)
 
 }
 
-
+int zoc_streaming_display_received_counter=0;
 
 int zoc_receive_streaming_display(int indice_socket,int slot)
 {
@@ -4250,6 +4254,8 @@ int zoc_receive_streaming_display(int indice_socket,int slot)
         //printf("Apply streaming_display. Compressed %d Uncompressed %d\n",zoc_get_streaming_display_mem_binary_longitud_comprimido,zoc_get_streaming_display_mem_binary_longitud);
 
         zoc_pending_apply_received_streaming_display=1;
+
+        zoc_streaming_display_received_counter++;
 
 
 
