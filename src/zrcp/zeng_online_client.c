@@ -2522,6 +2522,8 @@ int zoc_send_snapshot(int indice_socket)
 
 }
 
+int zoc_send_streaming_display_counter=0;
+
 //Para las dos pantallas que se envian cada vez: la diferencial y la completa
 char *zoc_send_streaming_display_mem_hexa[2]={NULL,NULL};
 
@@ -2568,6 +2570,8 @@ int zoc_send_streaming_display(int indice_socket,int slot)
         //DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Received text: %s",zoc_get_streaming_display_mem_hexa);
     }
 
+    zoc_send_streaming_display_counter++;
+
     //printf("Recibido respuesta despues de put-streaming_display: [%s]\n",buffer);
     return leidos;
 
@@ -2577,6 +2581,7 @@ int zoc_send_streaming_display(int indice_socket,int slot)
 char *zoc_send_streaming_audio_mem_hexa=NULL;
 int zoc_master_pending_send_streaming_audio=0;
 
+int zoc_send_streaming_audio_counter=0;
 
 int zoc_send_streaming_audio(int indice_socket)
 {
@@ -2621,6 +2626,7 @@ int zoc_send_streaming_audio(int indice_socket)
         //DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Received text: %s",zoc_get_streaming_display_mem_hexa);
     }
 
+    zoc_send_streaming_audio_counter++;
 
     return leidos;
 

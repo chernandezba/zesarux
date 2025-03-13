@@ -1775,6 +1775,8 @@ void menu_zeng_online_status_window_overlay(void)
             //Master
             if (created_room_streaming_mode) {
                 //Modo streaming
+                zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Streaming displays sent: %d",zoc_send_streaming_display_counter);
+                zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Streaming audios sent: %d",zoc_send_streaming_audio_counter);
             }
             else {
                 //Modo no streaming
