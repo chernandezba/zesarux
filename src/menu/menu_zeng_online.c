@@ -1780,6 +1780,8 @@ void menu_zeng_online_status_window_overlay(void)
                 zxvision_print_string_defaults_fillspc_format(w,1,linea++," Differential: %d",zoc_generated_differential_displays_counter);
 
                 zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Streaming audios sent: %d",zoc_send_streaming_audio_counter);
+                zxvision_print_string_defaults_fillspc_format(w,1,linea++," Silence: %d",zoc_sent_streaming_audio_silence_counter);
+                zxvision_print_string_defaults_fillspc_format(w,1,linea++," No Silence: %d",zoc_sent_streaming_audio_no_silence_counter);
             }
             else {
                 //Modo no streaming

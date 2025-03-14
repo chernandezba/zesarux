@@ -5985,6 +5985,9 @@ void zeng_online_client_alter_fps_streaming(void)
 
 char zoc_last_audio_value_received=0;
 
+int zoc_sent_streaming_audio_silence_counter=0;
+int zoc_sent_streaming_audio_no_silence_counter=0;
+
 void zeng_online_client_end_audio_frame_stuff(void)
 {
     if (zeng_online_connected.v && zeng_online_i_am_master.v && created_room_streaming_mode) {
@@ -6020,11 +6023,13 @@ void zeng_online_client_end_audio_frame_stuff(void)
                 //En ese caso solo enviamos dos valores del sample (canal izquierdo y derecho)
                 //que son los que usara el remoto para repetir esos valores en destino
                 longitud_enviar_audio=2;
+                zoc_sent_streaming_audio_silence_counter++;
             }
 
             else {
 
                 //printf("Buffer audio has NO silence. Send it. i=%d\n",i);
+                zoc_sent_streaming_audio_no_silence_counter++;
 
             }
 
