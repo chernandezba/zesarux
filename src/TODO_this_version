@@ -67,7 +67,8 @@ y se sigue escuchando la musica del juego online
 
 - Posible diagrama gráfico de una conexión ZENG/ZENG online donde se vea como se están recibiendo/enviando paquetes de datos etc.
 En diferentes roles (master/slave), en partida streaming o no, si se trae snapshot, o stream de video, o stream de audio
-
+-revisar zoc_get_pending_authorization_size_last_queue_size y contador de autorizaciones pendientes recibidas
+por que -1????
 
 Alternativa en modo texto
 icono para zengonlinestatus

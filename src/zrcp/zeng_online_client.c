@@ -3295,6 +3295,8 @@ int zoc_keys_send_pending(int indice_socket,int *enviada_alguna_tecla)
 
 int zoc_get_pending_authorization_size_last_queue_size=0;
 
+int zoc_get_pending_authorization_counter=0;
+
 int zoc_get_pending_authorization_size(int indice_socket)
 {
     //printf("Inicio zoc_receive_snapshot llamado desde:\n");
@@ -3368,8 +3370,9 @@ int zoc_get_pending_authorization_size(int indice_socket)
             if (queue_size!=zoc_get_pending_authorization_size_last_queue_size) {
                 //Escribir en footer solo cuando valor anterior cambia
                 //TODO quiza habria que usar algun tipo de bloqueo para esto
+                //printf("queue_size: %d\n",queue_size);
 
-
+                //TODO: no entiendo el -1 de aqui pero si no quito no gestiona bien las autorizaciones
                 zoc_get_pending_authorization_size_last_queue_size=queue_size-1;
 
                 //Y lo mostramos en el footer
@@ -3384,6 +3387,10 @@ int zoc_get_pending_authorization_size(int indice_socket)
 
                 //Y enviarlo a speech
                 textspeech_print_speech(mensaje);
+
+                printf("mensaje clientes esperando\n");
+
+                zoc_get_pending_authorization_counter++;
 
             }
 
@@ -3873,7 +3880,7 @@ void *zoc_master_thread_function_stream_audio(void *nada GCC_UNUSED)
 
 }
 
-
+int zoc_received_snapshot_counter=0;
 
 
 int zoc_receive_snapshot(int indice_socket)
@@ -4150,6 +4157,8 @@ int zoc_receive_snapshot(int indice_socket)
 
             //Esto es solo para que la ventana de progreso al hacer un leave room vea que ya se ha aplicado el snapshot
             zeng_online_client_get_snapshot_applied_finished=1;
+
+            zoc_received_snapshot_counter++;
 
         }
 

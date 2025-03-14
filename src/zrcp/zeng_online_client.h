@@ -95,6 +95,8 @@ extern int zoc_send_streaming_audio_counter;
 extern int zoc_sent_snapshots_counter;
 extern int zoc_keys_send_counter;
 extern int zoc_get_keys_counter;
+extern int zoc_received_snapshot_counter;
+extern int zoc_get_pending_authorization_counter;
 
 extern int created_room_streaming_mode;
 
