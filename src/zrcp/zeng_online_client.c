@@ -3373,7 +3373,9 @@ int zoc_get_pending_authorization_size(int indice_socket)
                 //printf("queue_size: %d\n",queue_size);
 
                 //TODO: no entiendo el -1 de aqui pero si no quito no gestiona bien las autorizaciones
-                zoc_get_pending_authorization_size_last_queue_size=queue_size-1;
+                //zoc_get_pending_authorization_size_last_queue_size=queue_size-1;
+
+
 
                 //Y lo mostramos en el footer
                 char mensaje[AUTOSELECTOPTIONS_MAX_FOOTER_LENGTH+ZOC_MAX_NICKNAME_LENGTH+1];
@@ -3388,7 +3390,7 @@ int zoc_get_pending_authorization_size(int indice_socket)
                 //Y enviarlo a speech
                 textspeech_print_speech(mensaje);
 
-                printf("mensaje clientes esperando\n");
+                //printf("mensaje clientes esperando\n");
 
                 zoc_get_pending_authorization_counter++;
 
@@ -3396,6 +3398,8 @@ int zoc_get_pending_authorization_size(int indice_socket)
 
 
         }
+
+        zoc_get_pending_authorization_size_last_queue_size=queue_size;
     }
 
 
@@ -5047,6 +5051,9 @@ int zoc_client_streaming_display_fps_seconds=0;
 int zoc_client_streaming_display_fps_sum=0;
 int zoc_client_streaming_display_fps_last_interval=0;
 
+int zoc_streaming_display_differential_received_counter=0;
+int zoc_streaming_display_full_received_counter=0;
+
 z80_byte *zoc_get_base_mem_pantalla(void)
 {
     if (!MACHINE_IS_SPECTRUM) return NULL;
@@ -5098,6 +5105,7 @@ void zeng_online_client_apply_pending_received_streaming_display(void)
 
     //Pantalla diferencial
     if (zoc_get_streaming_display_mem_binary[0] & 1) {
+        zoc_streaming_display_differential_received_counter++;
         //printf("Aplicar pantalla diferencial\n");
         int longitud_pantalla_diferencial=zoc_get_streaming_display_mem_binary_longitud-2;
 
@@ -5124,6 +5132,8 @@ void zeng_online_client_apply_pending_received_streaming_display(void)
 
     else {
         //printf("Aplicar pantalla entera\n");
+
+        zoc_streaming_display_full_received_counter++;
 
         memcpy(screen,&zoc_get_streaming_display_mem_binary[2],ZOC_STREAM_DISPLAY_SIZE);
     }
