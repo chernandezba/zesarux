@@ -2826,6 +2826,9 @@ int zoc_get_audio_mem_binary_longitud=0;
 
 int zoc_streaming_audio_received_counter=0;
 
+int zoc_streaming_audio_no_silence_received_counter=0;
+int zoc_streaming_audio_silence_received_counter=0;
+
 int zoc_get_stream_audio_continuous(int indice_socket)
 {
 
@@ -2932,6 +2935,7 @@ int zoc_get_stream_audio_continuous(int indice_socket)
         }
 
         if (zoc_get_audio_mem_binary_longitud<=2) {
+            //Esto es un periodo de silencio
             //Se indica que son dos valores (canales estereo) en periodo de silencio. Hay que escribir ese valor repetido en todo el sample
             //Si en vez de esto metieramos simplemente 0, se escucharian molestos clics por ejemplo al mover el cursor
             //al moverse por el menu del spectrum 128k
@@ -2939,11 +2943,14 @@ int zoc_get_stream_audio_continuous(int indice_socket)
             //En cambio con esto repetimos el ultimo valor de sample y asi no se escucha nada extraño
             memset(zoc_get_audio_mem_binary_second_buffer,zoc_get_audio_mem_binary[0],ZOC_STREAMING_AUDIO_BUFFER_SIZE);
             //printf("Periodo silencio %d. write %d\n",contador_segundo,(char) zoc_get_audio_mem_binary[0]);
+
+            zoc_streaming_audio_silence_received_counter++;
         }
 
         else {
             memcpy(zoc_get_audio_mem_binary_second_buffer,zoc_get_audio_mem_binary,ZOC_STREAMING_AUDIO_BUFFER_SIZE);
             //printf("Periodo no silencio %d\n",contador_segundo);
+            zoc_streaming_audio_no_silence_received_counter++;
         }
 
         zoc_pending_apply_received_streaming_audio=1;

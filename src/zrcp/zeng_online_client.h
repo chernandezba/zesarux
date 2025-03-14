@@ -99,6 +99,8 @@ extern int zoc_received_snapshot_counter;
 extern int zoc_get_pending_authorization_counter;
 extern int zoc_streaming_display_differential_received_counter;
 extern int zoc_streaming_display_full_received_counter;
+extern int zoc_streaming_audio_no_silence_received_counter;
+extern int zoc_streaming_audio_silence_received_counter;
 
 extern int created_room_streaming_mode;
 
