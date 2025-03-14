@@ -1776,6 +1776,9 @@ void menu_zeng_online_status_window_overlay(void)
             if (created_room_streaming_mode) {
                 //Modo streaming
                 zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Streaming displays sent: %d",zoc_send_streaming_display_counter);
+                zxvision_print_string_defaults_fillspc_format(w,1,linea++," Full: %d",zoc_generated_full_displays_counter);
+                zxvision_print_string_defaults_fillspc_format(w,1,linea++," Differential: %d",zoc_generated_differential_displays_counter);
+
                 zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Streaming audios sent: %d",zoc_send_streaming_audio_counter);
             }
             else {

@@ -101,6 +101,8 @@ extern int zoc_streaming_display_differential_received_counter;
 extern int zoc_streaming_display_full_received_counter;
 extern int zoc_streaming_audio_no_silence_received_counter;
 extern int zoc_streaming_audio_silence_received_counter;
+extern int zoc_generated_differential_displays_counter;
+extern int zoc_generated_full_displays_counter;
 
 extern int created_room_streaming_mode;
 

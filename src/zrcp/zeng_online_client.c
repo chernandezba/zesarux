@@ -5442,6 +5442,7 @@ int zoc_generate_differential_display(z80_byte *current_screen)
 }
 
 int zoc_generated_differential_displays_counter=0;
+int zoc_generated_full_displays_counter=0;
 
 int zoc_get_streaming_display(z80_byte *buffer_temp_sin_comprimir,int force_full_display)
 {
@@ -5492,6 +5493,8 @@ int zoc_get_streaming_display(z80_byte *buffer_temp_sin_comprimir,int force_full
         buffer_temp_sin_comprimir[0]=0;
 
         memcpy(&buffer_temp_sin_comprimir[2],screen,ZOC_STREAM_DISPLAY_SIZE);
+
+        zoc_generated_full_displays_counter++;
 
     }
 
