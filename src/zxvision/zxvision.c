@@ -6293,20 +6293,7 @@ void menu_draw_ext_desktop_footer(void)
 			}
 		}
 
-	//Meter logo en parte derecha. Siempre que quepa en alto
-	/*
-	if (alto>=ZESARUX_ASCII_LOGO_ALTO) {
-		int xlogo;
-		int ylogo;
-		xlogo=xinicio+ancho-ZESARUX_ASCII_LOGO_ANCHO-ZESARUX_WATERMARK_LOGO_MARGIN;
-		ylogo=yinicio+alto-ZESARUX_ASCII_LOGO_ALTO-ZESARUX_WATERMARK_LOGO_MARGIN;
 
-		//menu_ext_desktop_get_logo_coords(&xfinal,&yfinal);
-
-		//El ancho y el puntero dan igual, no los vamos a usar
-		screen_put_watermark_generic(NULL,xlogo,ylogo,0, menu_draw_ext_desktop_putpixel_bitmap);
-	}
-	*/
 
 
 

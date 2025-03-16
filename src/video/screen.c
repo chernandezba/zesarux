@@ -4398,42 +4398,7 @@ z80_int *new_scalled_rainbow_buffer_gigascren_two=NULL;
 
 void screen_scale_075_and_watermark_function(z80_int *origen,z80_int *destino,int ancho,int alto)
 {
-			//int ancho_destino=ancho; // (ancho*3)/4;
-		//int alto_destino=alto; //(alto*3)/4;
 
-		//solo asignar buffer la primera vez o si ha cambiado el tamanyo
-		//int asignar=0;
-
-		//Si ha cambiado el tamanyo
-		/*if (scalled_rainbow_ancho!=ancho || scalled_rainbow_alto!=alto) {
-			//Liberar si existia
-			if (scalled_rainbow_buffer!=NULL) {
-				debug_printf(VERBOSE_DEBUG,"Freeing previous scaled rainbow buffer");
-				free (scalled_rainbow_buffer);
-				scalled_rainbow_buffer=NULL;
-
-
-			}
-
-			asignar=1;
-		}
-
-		//O si no hay buffer asignado
-		if (scalled_rainbow_buffer==NULL) asignar=1;
-
-		if (asignar) {
-			debug_printf(VERBOSE_DEBUG,"Allocating scaled rainbow buffer");
-			scalled_rainbow_buffer=malloc(ancho*alto*2); // *2 por que son valores de 16 bits
-			if (scalled_rainbow_buffer==NULL) cpu_panic("Can not allocate scalled rainbow buffer");
-
-			//Llenarlo de cero
-			int i;
-			for (i=0;i<ancho*alto;i++) scalled_rainbow_buffer[i]=0;
-
-			scalled_rainbow_ancho=ancho;
-			scalled_rainbow_alto=alto;
-		}
-		*/
 
 		screen_scale_rainbow_43(origen,ancho,alto,destino);
 
@@ -4451,8 +4416,7 @@ void screen_scale_075_and_watermark_function(z80_int *origen,z80_int *destino,in
 
 		screen_put_watermark_generic(destino,watermark_x,watermark_y,scalled_rainbow_ancho,screen_generic_putpixel_indexcolour);
 
-		//Y decimos que el puntero de dibujado ahora lo pilla de la pantalla escalada
-		//return scalled_rainbow_buffer;
+
 
 
 }
@@ -4800,7 +4764,6 @@ void screen_add_watermark_no_rainbow(void)
                 screen_get_offsets_watermark_position(screen_watermark_position,ancho,alto,&watermark_x,&watermark_y);
 
                 screen_put_watermark_generic(rainbow_buffer,watermark_x,watermark_y,ancho,screen_generic_putpixel_no_rainbow_watermark);
-                //screen_put_watermark_generic(rainbow_buffer,watermark_x,watermark_y,ancho,screen_generic_putpixel_indexcolour);
 
         }
 
