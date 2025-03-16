@@ -961,6 +961,8 @@ extern void screen_put_asciibitmap_generic_offset_inicio(char **origen,z80_int *
 
 #define ZESARUX_WATERMARK_LOGO_MARGIN 4
 
+extern void timer_loading_change_watermark(void);
+
 extern int screen_colores_rainbow[];
 extern int screen_colores_rainbow_nobrillo[];
 

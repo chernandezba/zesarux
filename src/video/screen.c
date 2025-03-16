@@ -63,6 +63,7 @@
 #include "pcw.h"
 #include "textspeech.h"
 #include "zeng_online_client.h"
+#include "tape.h"
 
 //Incluimos estos dos para la funcion de fade out
 #ifdef COMPILE_XWINDOWS
@@ -4345,6 +4346,22 @@ void screen_put_asciibitmap_generic(char **origen,z80_int *destino,int x,int y,i
 }
 
 
+int screen_put_watermark_generic_rotate_colors_counter=0;
+
+void screen_put_watermark_generic_rotate_colors(char colores_cambios[4][2])
+{
+    int i,j;
+    for (i=0;i<screen_put_watermark_generic_rotate_colors_counter;i++) {
+        //Rotar hacia adelante
+        //Guardamos el ultimo
+        char color_final=colores_cambios[3][1];
+        for (j=3;j>=1;j--) {
+            colores_cambios[j][1]=colores_cambios[j-1][1];
+        }
+        colores_cambios[j][1]=color_final;
+    }
+}
+
 void screen_put_watermark_generic(z80_int *destino,int x,int y,int ancho_destino, void (*putpixel) (z80_int *destino,int x,int y,int ancho,int color) )
 {
     char **logo=get_zesarux_ascii_logo();
@@ -4381,6 +4398,9 @@ void screen_put_watermark_generic(z80_int *destino,int x,int y,int ancho_destino
     colores_cambios[3][0]='c';
     colores_cambios[3][1]='c';
 
+    //Rotar colores una cantidad de veces
+    screen_put_watermark_generic_rotate_colors(colores_cambios);
+
 
     int offset_logo_destino=0;
 
@@ -4396,10 +4416,12 @@ void screen_put_watermark_generic(z80_int *destino,int x,int y,int ancho_destino
             char color_leido=linea[j];
             //Mirar si coincide con alguno de los 4 colores y cambiar
             int k;
-            for (k=0;k<4;k++) {
-                //printf("%d,%d,%d\n",i,j,k);
+            int cambiado=0;
+            for (k=0;k<4 && !cambiado;k++) {
+                //printf("%d,%d,%d %c,%c\n",i,j,k,colores_cambios[k][0],colores_cambios[k][1]);
                 if (color_leido==colores_cambios[k][0]) {
                     color_leido=colores_cambios[k][1];
+                    cambiado=1;
                 }
             }
             //printf("%c\n",color_leido);
@@ -4415,6 +4437,16 @@ void screen_put_watermark_generic(z80_int *destino,int x,int y,int ancho_destino
 	screen_put_asciibitmap_generic(lineas_logo_copiado,destino,x,y,ZESARUX_ASCII_LOGO_ANCHO,ZESARUX_ASCII_LOGO_ALTO, ancho_destino,putpixel,1,0);
 
     free(logo_copiado);
+}
+
+//Cambia los colores de la franja de watermark si esta cargando desde real tape
+void timer_loading_change_watermark(void)
+{
+    if (realtape_playing.v) {
+        screen_put_watermark_generic_rotate_colors_counter++;
+        if (screen_put_watermark_generic_rotate_colors_counter>=4) screen_put_watermark_generic_rotate_colors_counter=0;
+    }
+    else screen_put_watermark_generic_rotate_colors_counter=0;
 }
 
 void screen_get_offsets_watermark_position(int position,int ancho, int alto, int *x, int *y)

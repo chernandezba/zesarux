@@ -1375,6 +1375,8 @@ void timer_check_interrupt(void)
 
             zec_veces_audio_no_recibido_timer();
 
+            timer_loading_change_watermark();
+
 
             //escritura de contenido de flash de superupgrade a disco
             superupgrade_flush_flash_to_disk();
