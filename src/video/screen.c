@@ -4348,8 +4348,73 @@ void screen_put_asciibitmap_generic(char **origen,z80_int *destino,int x,int y,i
 void screen_put_watermark_generic(z80_int *destino,int x,int y,int ancho_destino, void (*putpixel) (z80_int *destino,int x,int y,int ancho,int color) )
 {
     char **logo=get_zesarux_ascii_logo();
-    //if (xanniversary_logo.v) screen_put_asciibitmap_generic(zesarux_ascii_logo_xanniversary,destino,x,y,ZESARUX_ASCII_LOGO_ANCHO,ZESARUX_ASCII_LOGO_ALTO, ancho_destino,putpixel,1,0);
-	screen_put_asciibitmap_generic(logo,destino,x,y,ZESARUX_ASCII_LOGO_ANCHO,ZESARUX_ASCII_LOGO_ALTO, ancho_destino,putpixel,1,0);
+
+    char *lineas_logo_copiado[ZESARUX_ASCII_LOGO_ALTO];
+
+    //Asignar memoria para ubicar el logo copiado
+    //+1 para caracter 0 del final aunque creo que no hace falta
+    char *logo_copiado=util_malloc((ZESARUX_ASCII_LOGO_ANCHO+1)*ZESARUX_ASCII_LOGO_ALTO,"Can not allocate memory for OSD logo");
+
+
+    //Copiar el logo original por si se modifican colores
+
+    //Alterar logo si condición de carga y border modificado
+
+    int i,j;
+
+    //Colores a alterar
+    //rrrryyyyggggcc
+    //Posicion 0: color original. Posicion 1: color a poner
+    //Y eso por los 4 colores red, yellow, green, cyan
+    char colores_cambios[4][2];
+
+    //Red
+    colores_cambios[0][0]='r';
+    colores_cambios[0][1]='r';
+    //Yellow
+    colores_cambios[1][0]='y';
+    colores_cambios[1][1]='y';
+    //Green
+    colores_cambios[2][0]='g';
+    colores_cambios[2][1]='g';
+    //Cyan
+    colores_cambios[3][0]='c';
+    colores_cambios[3][1]='c';
+
+
+    int offset_logo_destino=0;
+
+    for (i=0;i<ZESARUX_ASCII_LOGO_ALTO;i++) {
+        char *linea=logo[i];
+
+        //Asignar puntero de linea
+        lineas_logo_copiado[i]=&logo_copiado[offset_logo_destino];
+
+        char *linea_destino=lineas_logo_copiado[i];
+
+        for (j=0;linea[j];j++) {
+            char color_leido=linea[j];
+            //Mirar si coincide con alguno de los 4 colores y cambiar
+            int k;
+            for (k=0;k<4;k++) {
+                //printf("%d,%d,%d\n",i,j,k);
+                if (color_leido==colores_cambios[k][0]) {
+                    color_leido=colores_cambios[k][1];
+                }
+            }
+            //printf("%c\n",color_leido);
+            linea_destino[j]=color_leido;
+        }
+
+        linea_destino[j]=0; //Fin de linea
+
+        offset_logo_destino +=ZESARUX_ASCII_LOGO_ANCHO+1;
+    }
+
+
+	screen_put_asciibitmap_generic(lineas_logo_copiado,destino,x,y,ZESARUX_ASCII_LOGO_ANCHO,ZESARUX_ASCII_LOGO_ALTO, ancho_destino,putpixel,1,0);
+
+    free(logo_copiado);
 }
 
 void screen_get_offsets_watermark_position(int position,int ancho, int alto, int *x, int *y)
