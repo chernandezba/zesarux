@@ -470,6 +470,7 @@ void ide_footer_ide_operating(void)
 {
 
 	generic_footertext_print_operating("IDE");
+    watermark_tell_device_activity();
 
 	//Y poner icono en inverso
 	if (!zxdesktop_icon_ide_inverse) {

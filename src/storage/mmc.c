@@ -218,6 +218,7 @@ void mmc_footer_mmc_operating(void)
 {
 
 	generic_footertext_print_operating("MMC");
+    watermark_tell_device_activity();
 
 	//Y poner icono de mmc en inverso
 	if (!zxdesktop_icon_mmc_inverse) {

@@ -472,7 +472,6 @@ void microdrive_footer_operating(void)
     //printf("%s\n",buffer);
 
     generic_footertext_print_operating(buffer);
-
     watermark_tell_device_activity();
 
     //Y poner icono en inverso

@@ -62,7 +62,8 @@ z80_bit esxdos_handler_readonly={0};
 void esxdos_handler_footer_esxdos_handler_operating(void)
 {
 
-        generic_footertext_print_operating("ESX");
+    generic_footertext_print_operating("ESX");
+    watermark_tell_device_activity();
 }
 
 

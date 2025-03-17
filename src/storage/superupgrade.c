@@ -136,6 +136,7 @@ void superupgrade_footer_print_flash_operating(void)
 {
 
     generic_footertext_print_operating("FLASH");
+    watermark_tell_device_activity();
 
 }
 

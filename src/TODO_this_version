@@ -100,5 +100,5 @@ donde se queda la tarjeta al desconectarse
 *ok con cinta estandar hacer tambien que se mueva, si se ha cargado algo en los ultimos segundos, mover barras
 *ok opcion que se pueda quitar esa rotacion
 *ok entrada en changelog
-*llamada a watermark_tell_loading desde cualquier dispositivo de carga y maquina (Ace load, microdrive, etc etc)
-*""Rotate colors on load" -> on device activity
+*ok llamada a watermark_tell_loading desde cualquier dispositivo de carga y maquina (Ace load, microdrive, etc etc)
+*ok ""Rotate colors on load" -> on device activity

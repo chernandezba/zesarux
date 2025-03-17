@@ -199,6 +199,7 @@ void dandanator_run_command_46(void)
 void dandanator_footer_operating(void)
 {
     generic_footertext_print_operating("DANDAN");
+    watermark_tell_device_activity();
 
     //Y poner icono en inverso
     if (!zxdesktop_icon_dandanator_inverse) {

@@ -395,6 +395,7 @@ void zxuno_footer_print_flash_operating(void)
 
 
 	generic_footertext_print_operating("FLASH");
+    watermark_tell_device_activity();
 
     //Y poner icono en inverso
     if (!zxdesktop_icon_zxunoflash_inverse) {

@@ -86,6 +86,7 @@ void ql_footer_mdflp_operating(void)
     if (ql_qdos_last_unit_used==0) {
 
         generic_footertext_print_operating("MDV1");
+        watermark_tell_device_activity();
 
         //Y poner icono en inverso
         if (!zxdesktop_icon_mdv1_inverse) {
@@ -98,6 +99,7 @@ void ql_footer_mdflp_operating(void)
     if (ql_qdos_last_unit_used==1) {
 
         generic_footertext_print_operating("MDV2");
+        watermark_tell_device_activity();
 
         //Y poner icono en inverso
         if (!zxdesktop_icon_mdv2_inverse) {
@@ -110,6 +112,7 @@ void ql_footer_mdflp_operating(void)
     if (ql_qdos_last_unit_used==2) {
 
         generic_footertext_print_operating("FLP1");
+        watermark_tell_device_activity();
 
         //Y poner icono en inverso
         if (!zxdesktop_icon_flp1_inverse) {

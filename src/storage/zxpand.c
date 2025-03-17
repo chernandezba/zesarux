@@ -203,6 +203,7 @@ void zxpand_footer_print_zxpand_operating(void)
 {
 
 	generic_footertext_print_operating("ZXPAND");
+    watermark_tell_device_activity();
 
 	//Y poner icono en inverso
 	if (!zxdesktop_icon_zxpand_inverse) {

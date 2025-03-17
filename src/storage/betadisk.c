@@ -201,6 +201,7 @@ void betadisk_show_activity(void)
 {
 
 	generic_footertext_print_operating("TRD");
+    watermark_tell_device_activity();
 
 	//Y poner icono en inverso
 	if (!zxdesktop_icon_betadisk_inverse) {

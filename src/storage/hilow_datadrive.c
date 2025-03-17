@@ -544,6 +544,7 @@ void hilow_nmi(void)
 void hilow_footer_operating(void)
 {
     generic_footertext_print_operating("HILOW");
+    watermark_tell_device_activity();
 
     //Y poner icono en inverso
     if (!zxdesktop_icon_hilow_inverse) {
