@@ -1795,13 +1795,22 @@ void menu_zeng_online_status_window_overlay(void)
             //Slave
             if (created_room_streaming_mode) {
                 //Modo streaming
+                int porcentaje_full_displays=0;
+                if (zoc_streaming_display_received_counter!=0) {
+                    porcentaje_full_displays=(zoc_streaming_display_full_received_counter*100)/zoc_streaming_display_received_counter;
+                }
                 zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Streaming displays received: %d",zoc_streaming_display_received_counter);
-                zxvision_print_string_defaults_fillspc_format(w,1,linea++," Full: %d",zoc_streaming_display_full_received_counter);
-                zxvision_print_string_defaults_fillspc_format(w,1,linea++," Differential: %d",zoc_streaming_display_differential_received_counter);
+                zxvision_print_string_defaults_fillspc_format(w,1,linea++," Full: %d (%d %%)",zoc_streaming_display_full_received_counter,porcentaje_full_displays);
+                zxvision_print_string_defaults_fillspc_format(w,1,linea++," Differential: %d (%d %%)",zoc_streaming_display_differential_received_counter,100-porcentaje_full_displays);
 
+                int porcentaje_no_silence=0;
+                if (zoc_streaming_audio_received_counter!=0) {
+                    porcentaje_no_silence=(zoc_streaming_audio_no_silence_received_counter*100)/zoc_streaming_audio_received_counter;
+                }
                 zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Streaming audios received: %d",zoc_streaming_audio_received_counter);
-                zxvision_print_string_defaults_fillspc_format(w,1,linea++," Silence: %d",zoc_streaming_audio_silence_received_counter);
-                zxvision_print_string_defaults_fillspc_format(w,1,linea++," No Silence: %d",zoc_streaming_audio_no_silence_received_counter);
+                zxvision_print_string_defaults_fillspc_format(w,1,linea++," No Silence: %d (%d %%)",zoc_streaming_audio_no_silence_received_counter,porcentaje_no_silence);
+                zxvision_print_string_defaults_fillspc_format(w,1,linea++," Silence: %d (%d %%)",zoc_streaming_audio_silence_received_counter,100-porcentaje_no_silence);
+
             }
             else {
                 //Modo no streaming
