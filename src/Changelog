@@ -27,6 +27,7 @@ Improved Debug CPU:
 - Add option to enable/disable all breakpoints
 
 Fixed semaphore locking on Windows
+Fixed cpu usage calculation when footer is disabled
 
 ----
 

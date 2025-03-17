@@ -27,6 +27,7 @@ Mejorado Debug CPU:
 - Agregar opción para activar/desactivar todos los breakpoints
 
 Corregido bloqueo de semáforos en Windows
+Corregido cálculo de uso de cpu cuando el footer está desactivado
 
 ----
 

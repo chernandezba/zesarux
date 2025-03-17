@@ -1378,6 +1378,8 @@ void timer_check_interrupt(void)
 
             timer_device_activity_change_watermark_colors();
 
+            timer_get_cpu_use();
+
 
             //escritura de contenido de flash de superupgrade a disco
             superupgrade_flush_flash_to_disk();

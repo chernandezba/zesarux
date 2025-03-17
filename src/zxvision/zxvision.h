@@ -1270,6 +1270,7 @@ extern int menu_da_ancho_titulo(char *titulo);
 extern int menu_tooltip_counter;
 
 extern void menu_footer_f5_menu_timer(void);
+extern void timer_get_cpu_use(void);
 
 extern int menu_window_splash_counter;
 extern int menu_window_splash_counter_ms;

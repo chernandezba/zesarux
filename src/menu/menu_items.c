@@ -1786,7 +1786,7 @@ Calculando ese tiempo: 12% cpu
 
 		//Uso cpu no se ve en windows
 #ifndef MINGW
-        if (screen_show_cpu_usage.v && menu_footer) {
+        if (screen_show_cpu_usage.v) {
 
             //mostrar una barra de llenado del buffer
             //usa las mismas funciones de volumen de AY chip donde el maximo es 15

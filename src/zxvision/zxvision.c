@@ -7372,6 +7372,12 @@ void menu_draw_cpu_use_last(void)
 
 }
 
+
+void timer_get_cpu_use(void)
+{
+    menu_get_cpu_use_perc();
+}
+
 void menu_draw_cpu_use(void)
 {
 
@@ -7391,7 +7397,7 @@ void menu_draw_cpu_use(void)
         //cada 5 segundos
         draw_cpu_use=50*5;
 
-	menu_get_cpu_use_perc();
+	//menu_get_cpu_use_perc();
 
 	int cpu_use=menu_last_cpu_use;
 	debug_printf (VERBOSE_PARANOID,"cpu: %d",cpu_use );
