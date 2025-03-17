@@ -599,6 +599,8 @@ void dsk_show_activity(void)
 			zxdesktop_icon_plus3_inverse=1;
 			menu_draw_ext_desktop();
 	}
+
+    watermark_tell_device_activity();
 }
 
 

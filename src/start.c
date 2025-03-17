@@ -1341,9 +1341,11 @@ printf("\n"
 		"\n"
 
 
-		"--enable-watermark      Adds a watermark to the display. Needs realvideo\n"
-		"--watermark-position n  Where to put watermark. 0: Top left, 1: Top right. 2: Bottom left. 3: Bottom right\n"
-        "--nosplash              Disable all splash texts\n"
+		"--enable-watermark                     Adds a watermark to the display. Needs realvideo\n"
+		"--watermark-position n                 Where to put watermark. 0: Top left, 1: Top right. 2: Bottom left. 3: Bottom right\n"
+        "--watermark-only-when-device-activity  If watermark is enabled, it's only shown when loading and saving\n"
+        "--watermark-no-rotate-device-activity  Do not rotate watermark colors when loading or saving\n"
+        "--nosplash                             Disable all splash texts\n"
 
 
 
@@ -2953,6 +2955,15 @@ int parse_cmdline_options(int desde_commandline) {
 				siguiente_parametro_argumento();
 				screen_watermark_position=atoi(argv[puntero_parametro]);
 			}
+			else if (!strcmp(argv[puntero_parametro],"--watermark-only-when-device-activity")) {
+                screen_watermark_enabled_only_when_device_activity.v=1;
+            }
+
+			else if (!strcmp(argv[puntero_parametro],"--watermark-no-rotate-device-activity")) {
+                screen_watermark_rotate_colors_device_activity.v=0;
+            }
+
+
 
 			else if (!strcmp(argv[puntero_parametro],"--menucharwidth")) {
 				siguiente_parametro_argumento();

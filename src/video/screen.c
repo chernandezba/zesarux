@@ -612,6 +612,11 @@ int screen_watermark_position=3; //0: arriba izq 1: arriba der 2 abajo izq 3 aba
 //Si marca de agua habilitada
 z80_bit screen_watermark_enabled={0};
 
+//Si marca de agua habilitada pero solo al cargar
+z80_bit screen_watermark_enabled_only_when_device_activity={0};
+
+//Si marca de agua rota colores al cargar
+z80_bit screen_watermark_rotate_colors_device_activity={1};
 
 //Indica que el driver de video (por el momento, solo xwindows y fbdev) debe repintar la pantalla
 //teniendo en cuenta si hay menu activo, y por tanto evitar pintar zonas donde hay texto del menu
@@ -4348,6 +4353,41 @@ void screen_put_asciibitmap_generic(char **origen,z80_int *destino,int x,int y,i
 
 int screen_put_watermark_generic_rotate_colors_counter=0;
 
+//Para las franjas de watermark que cambian al cargar o grabar
+int watermark_cargado_algo_counter=0;
+
+void watermark_tell_device_activity(void)
+{
+    //2 segundos mostrar watermark desde la ultima accion de carga o grabación
+    watermark_cargado_algo_counter=100;
+}
+
+
+void timer_watermark_device_activity_decrement_counter(void)
+{
+    if (watermark_cargado_algo_counter>0) {
+        watermark_cargado_algo_counter--;
+        //printf("%d\n",watermark_cargado_algo_counter);
+    }
+}
+
+int watermark_is_device_activity(void)
+{
+    //if (realtape_playing.v || watermark_cargado_algo_counter>0) return 1;
+    if (watermark_cargado_algo_counter>0) return 1;
+    else return 0;
+}
+
+//Cambia los colores de la franja de watermark si esta cargando
+void timer_device_activity_change_watermark_colors(void)
+{
+    if (watermark_is_device_activity() && screen_watermark_rotate_colors_device_activity.v) {
+        screen_put_watermark_generic_rotate_colors_counter++;
+        if (screen_put_watermark_generic_rotate_colors_counter>=4) screen_put_watermark_generic_rotate_colors_counter=0;
+    }
+    else screen_put_watermark_generic_rotate_colors_counter=0;
+}
+
 void screen_put_watermark_generic_rotate_colors(char colores_cambios[4][2])
 {
     int i,j;
@@ -4439,15 +4479,7 @@ void screen_put_watermark_generic(z80_int *destino,int x,int y,int ancho_destino
     free(logo_copiado);
 }
 
-//Cambia los colores de la franja de watermark si esta cargando desde real tape
-void timer_loading_change_watermark(void)
-{
-    if (realtape_playing.v || tap_load_cargado_algo_counter>0) {
-        screen_put_watermark_generic_rotate_colors_counter++;
-        if (screen_put_watermark_generic_rotate_colors_counter>=4) screen_put_watermark_generic_rotate_colors_counter=0;
-    }
-    else screen_put_watermark_generic_rotate_colors_counter=0;
-}
+
 
 void screen_get_offsets_watermark_position(int position,int ancho, int alto, int *x, int *y)
 {
@@ -4826,8 +4858,19 @@ void screen_scale_075_function(int ancho,int alto)
 
 void screen_add_watermark_rainbow(void)
 {
-	//Si esta opcion de watermark general pero no esta el reduce de 0.75 (porque este reduce fuerza siempre watermark)
-	if (screen_watermark_enabled.v && screen_reduce_075.v==0) {
+
+    int mostrar_watermark=0;
+
+    if (screen_watermark_enabled.v) {
+        mostrar_watermark=1;
+
+        if (screen_watermark_enabled_only_when_device_activity.v) {
+            if (!watermark_is_device_activity() ) mostrar_watermark=0;
+        }
+    }
+
+    //Si esta opcion de watermark general pero no esta el reduce de 0.75 (porque este reduce fuerza siempre watermark)
+	if (mostrar_watermark && screen_reduce_075.v==0) {
 		int watermark_x;
 		int watermark_y;
 
@@ -4847,8 +4890,19 @@ void screen_add_watermark_rainbow(void)
 
 void screen_add_watermark_no_rainbow(void)
 {
-        //Si esta opcion de watermark general pero no esta el reduce de 0.75 (porque este reduce fuerza siempre watermark)
-        if (screen_watermark_enabled.v && screen_reduce_075.v==0) {
+    int mostrar_watermark=0;
+
+    if (screen_watermark_enabled.v) {
+        mostrar_watermark=1;
+
+        if (screen_watermark_enabled_only_when_device_activity.v) {
+            if (!watermark_is_device_activity()) mostrar_watermark=0;
+        }
+    }
+
+    //Si esta opcion de watermark general pero no esta el reduce de 0.75 (porque este reduce fuerza siempre watermark)
+	if (mostrar_watermark && screen_reduce_075.v==0) {
+
                 int watermark_x;
                 int watermark_y;
 

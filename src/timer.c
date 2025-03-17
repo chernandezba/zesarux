@@ -1235,7 +1235,7 @@ void timer_check_interrupt(void)
 
         realtape_visual_cassete_timer();
 
-        timer_tap_load_decrement_counter();
+        timer_watermark_device_activity_decrement_counter();
 
         textadv_location_timer_event();
 
@@ -1376,7 +1376,7 @@ void timer_check_interrupt(void)
 
             zec_veces_audio_no_recibido_timer();
 
-            timer_loading_change_watermark();
+            timer_device_activity_change_watermark_colors();
 
 
             //escritura de contenido de flash de superupgrade a disco

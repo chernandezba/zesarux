@@ -2690,6 +2690,17 @@ void menu_interface_show_splash_texts(MENU_ITEM_PARAMETERS)
 	screen_show_splash_texts.v ^=1;
 }
 
+void menu_osd_settings_watermark_rotate_device_activity(MENU_ITEM_PARAMETERS)
+{
+    screen_watermark_rotate_colors_device_activity.v ^=1;
+}
+
+void menu_osd_settings_watermark_visibility(MENU_ITEM_PARAMETERS)
+{
+    screen_watermark_enabled_only_when_device_activity.v ^=1;
+}
+
+
 
 void menu_osd_settings(MENU_ITEM_PARAMETERS)
 {
@@ -2707,17 +2718,35 @@ void menu_osd_settings(MENU_ITEM_PARAMETERS)
     menu_add_item_menu_ayuda(array_menu_osd_settings,"Show on display some splash texts, like display mode change or watches");
     menu_add_item_menu_shortcut(array_menu_osd_settings,'s');
 
+    menu_add_item_menu_separator(array_menu_osd_settings);
+
+    menu_add_item_menu_en_es_ca(array_menu_osd_settings,MENU_OPCION_NORMAL,NULL,NULL,
+        "--Watermark--","--Marca de agua--","--Marca d'aigüa--");
 
     menu_add_item_menu_en_es_ca(array_menu_osd_settings,MENU_OPCION_NORMAL,menu_osd_settings_watermark,NULL,
-        "W~~atermark","Marca de ~~agua","Marca d'~~aigüa");
+        "Enabled","Activado","Activat");
     menu_add_item_menu_prefijo_format(array_menu_osd_settings,"[%c] ",(screen_watermark_enabled.v ? 'X' : ' ' ) );
     menu_add_item_menu_tooltip(array_menu_osd_settings,"Adds a watermark to the display");
     menu_add_item_menu_ayuda(array_menu_osd_settings,"Adds a watermark to the display. May produce flickering if not enabled realvideo. If using reduce window setting, it will be forced enabled");
-    menu_add_item_menu_shortcut(array_menu_osd_settings,'a');
+
+
+    menu_add_item_menu_en_es_ca(array_menu_osd_settings,MENU_OPCION_NORMAL,menu_osd_settings_watermark_visibility,NULL,
+        "Visibility","Visibilidad","Visibilitat");
+    menu_add_item_menu_sufijo_format(array_menu_osd_settings," [%s]",(screen_watermark_enabled_only_when_device_activity.v ? "Device activity" : "Always") );
+    menu_add_item_menu_prefijo_format(array_menu_osd_settings,"    ");
+    menu_add_item_menu_tooltip(array_menu_osd_settings,"Tells if watermark is shown always or only when loading and saving");
+    menu_add_item_menu_ayuda(array_menu_osd_settings,"Tells if watermark is shown always or only when loading and saving");
+
+    menu_add_item_menu_en_es_ca(array_menu_osd_settings,MENU_OPCION_NORMAL,menu_osd_settings_watermark_rotate_device_activity,NULL,
+        "Rotate colors on device act.","Rotar colores actividad disp","Rotar colors activitat disp");
+    menu_add_item_menu_prefijo_format(array_menu_osd_settings,"[%c] ",(screen_watermark_rotate_colors_device_activity.v ? 'X' : ' ' ) );
+    menu_add_item_menu_tooltip(array_menu_osd_settings,"Rotate colors when loading and saving");
+    menu_add_item_menu_ayuda(array_menu_osd_settings,"Rotate colors when loading and saving");
+
 
     //Esta posicion afecta tanto al watermark normal como al forzado de 0.75
     menu_add_item_menu_en_es_ca(array_menu_osd_settings,MENU_OPCION_NORMAL,menu_osd_settings_watermark_position,NULL,
-        "Watermark ~~position","~~Posición marca de agua","~~Posició marca d'aigüa");
+        "~~Position","~~Posición","~~Posició");
     menu_add_item_menu_sufijo_format(array_menu_osd_settings," [%d]",screen_watermark_position);
     menu_add_item_menu_prefijo_format(array_menu_osd_settings,"    ");
     menu_add_item_menu_shortcut(array_menu_osd_settings,'p');

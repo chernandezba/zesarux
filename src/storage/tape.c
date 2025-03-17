@@ -183,7 +183,6 @@ void draw_tape_text(void)
 //printf("draw_tape_text\n");
 		//tape_loading_counter=2;
 
-		//color inverso
 		if (top_speed_timer.v) {
 			draw_tape_text_top_speed();
 		}
@@ -194,6 +193,8 @@ void draw_tape_text(void)
                         //Y poner icono de cinta en inverso
                         draw_tape_icon_activity();
 		}
+
+    watermark_tell_device_activity();
 
 }
 
@@ -880,23 +881,10 @@ void tape_seek_to_block(int index_to_seek)
 
 }
 
-//Para las franjas de watermark que cambian con carga de cinta estándar
-int tap_load_cargado_algo_counter=0;
-
-void timer_tap_load_decrement_counter(void)
-{
-    if (tap_load_cargado_algo_counter>0) {
-        tap_load_cargado_algo_counter--;
-        //printf("%d\n",tap_load_cargado_algo_counter);
-    }
-}
-
 void tap_load(void)
 {
 
 //printf ("tap load\n");
-
-    tap_load_cargado_algo_counter=50;
 
 
 			if (buffer_tap_read==NULL) {
@@ -2198,6 +2186,10 @@ void realtape_print_footer(void)
 
     //Y poner icono de cinta en inverso
     draw_realtape_icon_activity();
+
+
+    //Decir tambien al watermark que estamos cargando
+    watermark_tell_device_activity();
 }
 
 //comun para ambos. si accion=1, es avanzar

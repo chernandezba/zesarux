@@ -10,6 +10,7 @@ Agregada conversión de archivos ZX81 P a P81, y P81 a P
 Permitir grabar una nota de texto en un snapshot ZSF
 Mejorada temporización en Windows y otros sistemas que usen driver de video SDL. Ahora usa temporización de SDL
 Mejorada temporización en Mac usando temporizador nativo
+Mejoado logo de marca de agua: puede mostrarse sólo al cargar, puede cambiar colores al cargar
 
 Mejorada emulación de Sinclair QL:
 - Permitir aumentar tamaño RAM de Sinclair QL

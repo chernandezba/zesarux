@@ -3643,6 +3643,9 @@ int util_write_configfile(void)
 
                                                 ADD_STRING_CONFIG,"--watermark-position %d",screen_watermark_position);
 
+  if (screen_watermark_enabled_only_when_device_activity.v)     ADD_STRING_CONFIG,"--watermark-only-when-device-activity");
+  if (screen_watermark_rotate_colors_device_activity.v==0)      ADD_STRING_CONFIG,"--watermark-no-rotate-device-activity");
+
 
   if (screen_ext_desktop_enabled)             ADD_STRING_CONFIG,"--enable-zxdesktop");
                                               ADD_STRING_CONFIG,"--zxdesktop-width %d",zxdesktop_width);

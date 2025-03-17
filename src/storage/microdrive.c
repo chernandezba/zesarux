@@ -473,6 +473,8 @@ void microdrive_footer_operating(void)
 
     generic_footertext_print_operating(buffer);
 
+    watermark_tell_device_activity();
+
     //Y poner icono en inverso
 
     switch (motor_activo) {

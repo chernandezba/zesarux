@@ -953,6 +953,9 @@ extern int screen_watermark_position;
 
 extern z80_bit screen_watermark_enabled;
 
+extern z80_bit screen_watermark_enabled_only_when_device_activity;
+extern z80_bit screen_watermark_rotate_colors_device_activity;
+
 extern void screen_put_watermark_generic(z80_int *destino,int x,int y,int ancho, void (*putpixel) (z80_int *destino,int x,int y,int ancho,int color) );
 extern void screen_put_asciibitmap_generic(char **origen,z80_int *destino,int x,int y,int ancho_orig, int alto_orig, int ancho_destino, void (*putpixel) (z80_int *destino,int x,int y,int ancho_destino,int color),int zoom,int inverso );
 extern void screen_put_asciibitmap_generic_offset_inicio(char **origen,z80_int *destino,int x,int y,int ancho_orig, int alto_orig, int ancho_destino, void (*putpixel) (z80_int *destino,int x,int y,int ancho_destino,int color),int zoom,int inverso,int offset_inicio_agregar );
@@ -961,7 +964,10 @@ extern void screen_put_asciibitmap_generic_offset_inicio(char **origen,z80_int *
 
 #define ZESARUX_WATERMARK_LOGO_MARGIN 4
 
-extern void timer_loading_change_watermark(void);
+extern void timer_device_activity_change_watermark_colors(void);
+extern void timer_watermark_device_activity_decrement_counter(void);
+
+extern void watermark_tell_device_activity(void);
 
 extern int screen_colores_rainbow[];
 extern int screen_colores_rainbow_nobrillo[];
