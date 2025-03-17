@@ -30477,7 +30477,7 @@ void menu_about_running_info(MENU_ITEM_PARAMETERS)
 
     //Uso cpu no se ve en windows
 #ifndef MINGW
-	if (screen_show_cpu_usage.v && menu_footer) {
+	if (screen_show_cpu_usage.v) {
 		sprintf(mensaje_cpu_usage,"Total Average CPU Use: %d%%\n",media_cpu);
 	}
 #endif
