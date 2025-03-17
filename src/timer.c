@@ -1235,6 +1235,7 @@ void timer_check_interrupt(void)
 
         realtape_visual_cassete_timer();
 
+        timer_tap_load_decrement_counter();
 
         textadv_location_timer_event();
 

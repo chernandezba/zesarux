@@ -38,6 +38,9 @@ extern char *tape_out_file;
 extern z80_bit initial_tap_load;
 extern int initial_tap_sequence;
 
+extern int tap_load_cargado_algo_counter;
+extern void timer_tap_load_decrement_counter(void);
+
 extern z80_bit tape_any_flag_loading;
 
 extern int is_tape_inserted(void);

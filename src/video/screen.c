@@ -4442,7 +4442,7 @@ void screen_put_watermark_generic(z80_int *destino,int x,int y,int ancho_destino
 //Cambia los colores de la franja de watermark si esta cargando desde real tape
 void timer_loading_change_watermark(void)
 {
-    if (realtape_playing.v) {
+    if (realtape_playing.v || tap_load_cargado_algo_counter>0) {
         screen_put_watermark_generic_rotate_colors_counter++;
         if (screen_put_watermark_generic_rotate_colors_counter>=4) screen_put_watermark_generic_rotate_colors_counter=0;
     }

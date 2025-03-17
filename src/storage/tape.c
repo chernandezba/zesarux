@@ -880,10 +880,23 @@ void tape_seek_to_block(int index_to_seek)
 
 }
 
+//Para las franjas de watermark que cambian con carga de cinta estándar
+int tap_load_cargado_algo_counter=0;
+
+void timer_tap_load_decrement_counter(void)
+{
+    if (tap_load_cargado_algo_counter>0) {
+        tap_load_cargado_algo_counter--;
+        //printf("%d\n",tap_load_cargado_algo_counter);
+    }
+}
+
 void tap_load(void)
 {
 
 //printf ("tap load\n");
+
+    tap_load_cargado_algo_counter=50;
 
 
 			if (buffer_tap_read==NULL) {
