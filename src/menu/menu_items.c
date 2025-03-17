@@ -1694,11 +1694,7 @@ Calculando ese tiempo: 12% cpu
         core_statistics_last_perc_dropped=perc_dropped;
         zxvision_print_string_defaults(ventana,1,linea++,texto_buffer);
 
-        /*int media_cpu=0;
 
-        if (cpu_use_total_acumulado_medidas>0) {
-            media_cpu=cpu_use_total_acumulado/cpu_use_total_acumulado_medidas;
-        }*/
 
         //Dejamos hueco para estadisticas de chars
         core_statistics_linea_mostrar_estadisticas_chars=linea;
@@ -30459,14 +30455,7 @@ void menu_about_running_info(MENU_ITEM_PARAMETERS)
 				timer_get_texto_time(&zesarux_start_time,hora_inicio);
 
 
-	//int cpu_use_total_acumulado=0;
-	//int cpu_use_total_acumulado_medidas=0;
 
-	/*int media_cpu=0;
-
-	if (cpu_use_total_acumulado_medidas>0) {
-		media_cpu=cpu_use_total_acumulado/cpu_use_total_acumulado_medidas;
-	}*/
 
     int media_cpu=sensor_get_percentaje_value("total_avg_cpu");
 

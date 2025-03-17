@@ -7376,6 +7376,21 @@ void menu_draw_cpu_use_last(void)
 void timer_get_cpu_use(void)
 {
     menu_get_cpu_use_perc();
+
+    //Y calcular el acumulado
+	int cpu_use=menu_last_cpu_use;
+
+	//error
+	if (cpu_use<0) return;
+
+	//control de rango
+	if (cpu_use>100) cpu_use=100;
+	if (cpu_use<0) cpu_use=0;
+
+
+	cpu_use_total_acumulado +=cpu_use;
+	cpu_use_total_acumulado_medidas++;
+
 }
 
 void menu_draw_cpu_use(void)
@@ -7399,7 +7414,8 @@ void menu_draw_cpu_use(void)
 
 	//menu_get_cpu_use_perc();
 
-	int cpu_use=menu_last_cpu_use;
+	/*
+    int cpu_use=menu_last_cpu_use;
 	debug_printf (VERBOSE_PARANOID,"cpu: %d",cpu_use );
 
 	//error
@@ -7412,6 +7428,7 @@ void menu_draw_cpu_use(void)
 
 	cpu_use_total_acumulado +=cpu_use;
 	cpu_use_total_acumulado_medidas++;
+    */
 
 	menu_draw_cpu_use_last();
 
