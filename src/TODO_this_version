@@ -67,8 +67,6 @@ y se sigue escuchando la musica del juego online
 
 - Posible diagrama gráfico de una conexión ZENG/ZENG online donde se vea como se están recibiendo/enviando paquetes de datos etc.
 En diferentes roles (master/slave), en partida streaming o no, si se trae snapshot, o stream de video, o stream de audio
-
-
 Alternativa en modo texto
 icono para zengonlinestatus
 
@@ -104,8 +102,3 @@ donde se queda la tarjeta al desconectarse
 *ok entrada en changelog
 *ok llamada a watermark_tell_loading desde cualquier dispositivo de carga y maquina (Ace load, microdrive, etc etc)
 *ok ""Rotate colors on load" -> on device activity
-
-
--calculo de int media_cpu=sensor_get_percentaje_value("total_avg_cpu"); depende de acumulados realizados en el footer
-hacer esos acumulados en el timer
-Esto va en el running info: total average cpu use

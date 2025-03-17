@@ -1772,12 +1772,11 @@ Calculando ese tiempo: 12% cpu
                                                     core_statistics_previo_audio_record_buffer,tamanyo_buffer_audio);
 
 
-        sprintf (texto_buffer,"Record Buffer%s: %6d/%6d (%3d%%) [%s]",
-                    (!audio_is_recording_input ? " (Not Recording)" : ""),
+        sprintf (texto_buffer,"Record Buffer: %6d/%6d (%3d%%) [%s]",
                     posicion_buffer_audio,tamanyo_buffer_audio,perc_audio,buf_volumen_canal);
+        zxvision_print_string_defaults_fillspc(ventana,1,linea++,texto_buffer);
 
-        //core_statistics_last_perc_audio=perc_audio;
-
+        sprintf (texto_buffer," %s",(!audio_is_recording_input ? "(Not Recording)" : "(Recording)"));
         zxvision_print_string_defaults_fillspc(ventana,1,linea++,texto_buffer);
 
 		//Uso cpu no se ve en windows
@@ -1833,7 +1832,7 @@ Calculando ese tiempo: 12% cpu
 
     //Medidores de rendimiento
 
-    int fila_texto=16;
+    int fila_texto=17;
     int margen_horizontal=ZXVISION_WIDGET_TYPE_SPEEDOMETER_LINE_LENGTH;
 
     int longitud_linea=ZXVISION_WIDGET_TYPE_SPEEDOMETER_LINE_LENGTH;
@@ -1926,7 +1925,7 @@ void menu_about_core_statistics(MENU_ITEM_PARAMETERS)
 
         //Recuperar geometria
         if (!util_find_window_geometry("corestatistics",&x_ventana,&y_ventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
-            alto_ventana=16;
+            alto_ventana=18;
             ancho_ventana=32;
 
             x_ventana=menu_center_x()-ancho_ventana/2;
