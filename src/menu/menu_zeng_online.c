@@ -1749,7 +1749,7 @@ void menu_zoc_status_print_link_bar(char *destino,int max_length,int position_cu
 zxvision_window *menu_zeng_online_status_window_window;
 
 #define ZOC_STATUS_LENGTH_STRING_LINK_BAR 20
-#define ZOC_STATUS_MULTIPLIER_CURSOR 10
+#define ZOC_STATUS_MULTIPLIER_CURSOR 2
 
 int menu_zoc_status_previous_streaming_display_received_counter=0;
 //Posicion cursor sera esta posicion / multiplicador
