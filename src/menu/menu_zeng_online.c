@@ -1733,17 +1733,32 @@ void menu_zeng_online_streaming_silence_detection(MENU_ITEM_PARAMETERS)
 }
 
 
-/*
-Inicio de Template de ventana de menu que se puede enviar a background
-Sustituir "zeng_online_status_window" por el nombre de la ventana
-Sustituir "zengonlinestatus" por el nombre corto de la ventana (nombre identificativo de geometria, string sin _)
-Sustituir "ZENG Online Status" por el titulo de la ventana
-Y definirla en zxvision_known_window_names_array
-*/
+//max_length sin contar el 0 del final
+void menu_zoc_status_print_link_bar(char *destino,int max_length,int position_cursor,char caracter_cursor)
+{
+    int i;
+
+    for (i=0;i<max_length;i++) {
+        if (i==position_cursor) destino[i]=caracter_cursor;
+        else destino[i]='=';
+    }
+    destino[i]=0;
+}
 
 
 zxvision_window *menu_zeng_online_status_window_window;
 
+#define ZOC_STATUS_LENGTH_STRING_LINK_BAR 20
+#define ZOC_STATUS_MULTIPLIER_CURSOR 10
+
+int menu_zoc_status_previous_streaming_display_received_counter=0;
+//Posicion cursor sera esta posicion / multiplicador
+int menu_zoc_status_cursor_streaming_display_received=0;
+
+
+int menu_zoc_status_previous_streaming_audio_received_counter=0;
+//Posicion cursor sera esta posicion / multiplicador
+int menu_zoc_status_cursor_streaming_audio_received=0;
 
 void menu_zeng_online_status_window_overlay(void)
 {
@@ -1833,6 +1848,64 @@ void menu_zeng_online_status_window_overlay(void)
         }
         zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Alive packets sent: %d",zoc_common_alive_user_send_counter);
         zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Broadcast Messages received: %d",zoc_common_get_messages_received_counter);
+
+        linea++;
+
+        //Barra de streaming displays received
+        if (zeng_online_i_am_master.v==0 && created_room_streaming_mode) {
+            char buffer_texto[ZOC_STATUS_LENGTH_STRING_LINK_BAR+1];
+
+
+            menu_zoc_status_print_link_bar(buffer_texto,ZOC_STATUS_LENGTH_STRING_LINK_BAR,
+                menu_zoc_status_cursor_streaming_display_received/ZOC_STATUS_MULTIPLIER_CURSOR,'<');
+            zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Local display %s ZENG Online Server",buffer_texto);
+
+            //Ver diferencia entre contador anterior y actual
+            int diff=zoc_streaming_display_received_counter-menu_zoc_status_previous_streaming_display_received_counter;
+
+            int max_pos=ZOC_STATUS_LENGTH_STRING_LINK_BAR*ZOC_STATUS_MULTIPLIER_CURSOR;
+
+            menu_zoc_status_cursor_streaming_display_received -=diff;
+
+            if (menu_zoc_status_cursor_streaming_display_received<0) {
+                //Aparecer por la derecha
+                menu_zoc_status_cursor_streaming_display_received +=max_pos;
+
+                menu_zoc_status_cursor_streaming_display_received %=max_pos;
+
+            }
+
+            menu_zoc_status_previous_streaming_display_received_counter=zoc_streaming_display_received_counter;
+
+        }
+
+        //Barra de streaming audios received
+        if (zeng_online_i_am_master.v==0 && created_room_streaming_mode) {
+            char buffer_texto[ZOC_STATUS_LENGTH_STRING_LINK_BAR+1];
+
+
+            menu_zoc_status_print_link_bar(buffer_texto,ZOC_STATUS_LENGTH_STRING_LINK_BAR,
+                menu_zoc_status_cursor_streaming_audio_received/ZOC_STATUS_MULTIPLIER_CURSOR,'<');
+            zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Local audio   %s ZENG Online Server",buffer_texto);
+
+            //Ver diferencia entre contador anterior y actual
+            int diff=zoc_streaming_audio_received_counter-menu_zoc_status_previous_streaming_audio_received_counter;
+
+            int max_pos=ZOC_STATUS_LENGTH_STRING_LINK_BAR*ZOC_STATUS_MULTIPLIER_CURSOR;
+
+            menu_zoc_status_cursor_streaming_audio_received -=diff;
+
+            if (menu_zoc_status_cursor_streaming_audio_received<0) {
+                //Aparecer por la derecha
+                menu_zoc_status_cursor_streaming_audio_received +=max_pos;
+
+                menu_zoc_status_cursor_streaming_audio_received %=max_pos;
+
+            }
+
+            menu_zoc_status_previous_streaming_audio_received_counter=zoc_streaming_audio_received_counter;
+
+        }
     }
 
 
@@ -1919,12 +1992,6 @@ void menu_zeng_online_status_window(MENU_ITEM_PARAMETERS)
 
 
         switch (tecla) {
-
-            case 11:
-                //arriba
-                //blablabla
-            break;
-
 
 
             //Salir con ESC
