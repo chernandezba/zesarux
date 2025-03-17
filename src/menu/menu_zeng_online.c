@@ -1760,6 +1760,14 @@ int menu_zoc_status_previous_streaming_audio_received_counter=0;
 //Posicion cursor sera esta posicion / multiplicador
 int menu_zoc_status_cursor_streaming_audio_received=0;
 
+
+int menu_zoc_status_previous_sent_keys_counter=0;
+//Posicion cursor sera esta posicion / multiplicador
+int menu_zoc_status_cursor_sent_keys=0;
+
+//indica cuantas teclas enviando
+int menu_zoc_status_moving_sent_keys=0;
+
 void menu_zeng_online_status_window_overlay(void)
 {
 
@@ -1858,7 +1866,7 @@ void menu_zeng_online_status_window_overlay(void)
 
             menu_zoc_status_print_link_bar(buffer_texto,ZOC_STATUS_LENGTH_STRING_LINK_BAR,
                 menu_zoc_status_cursor_streaming_display_received/ZOC_STATUS_MULTIPLIER_CURSOR,'<');
-            zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Local display %s ZENG Online Server",buffer_texto);
+            zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Local display  %s ZENG Online Server",buffer_texto);
 
             //Ver diferencia entre contador anterior y actual
             int diff=zoc_streaming_display_received_counter-menu_zoc_status_previous_streaming_display_received_counter;
@@ -1886,7 +1894,7 @@ void menu_zeng_online_status_window_overlay(void)
 
             menu_zoc_status_print_link_bar(buffer_texto,ZOC_STATUS_LENGTH_STRING_LINK_BAR,
                 menu_zoc_status_cursor_streaming_audio_received/ZOC_STATUS_MULTIPLIER_CURSOR,'<');
-            zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Local audio   %s ZENG Online Server",buffer_texto);
+            zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Local audio    %s ZENG Online Server",buffer_texto);
 
             //Ver diferencia entre contador anterior y actual
             int diff=zoc_streaming_audio_received_counter-menu_zoc_status_previous_streaming_audio_received_counter;
@@ -1905,6 +1913,37 @@ void menu_zeng_online_status_window_overlay(void)
 
             menu_zoc_status_previous_streaming_audio_received_counter=zoc_streaming_audio_received_counter;
 
+        }
+
+        if (zeng_online_i_am_master.v==0 || (zeng_online_i_am_master.v && !created_room_streaming_mode)) {
+            char buffer_texto[ZOC_STATUS_LENGTH_STRING_LINK_BAR+1];
+
+            menu_zoc_status_print_link_bar(buffer_texto,ZOC_STATUS_LENGTH_STRING_LINK_BAR,
+                menu_zoc_status_cursor_sent_keys,'>');
+            zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Local keyboard %s ZENG Online Server",buffer_texto);
+
+            if (menu_zoc_status_moving_sent_keys) {
+
+                menu_zoc_status_cursor_sent_keys++;
+                if (menu_zoc_status_cursor_sent_keys==ZOC_STATUS_LENGTH_STRING_LINK_BAR) {
+                    //ha enviado una tecla. meter cursor a posicion inicial y decrementar teclas restantes
+                    menu_zoc_status_moving_sent_keys--;
+                    menu_zoc_status_cursor_sent_keys=0;
+                }
+            }
+
+
+            if (zoc_keys_send_counter!=menu_zoc_status_previous_sent_keys_counter) {
+                //Activar movimiento hacia la derecha
+                //Decir cuantas teclas hay que enviar
+                menu_zoc_status_moving_sent_keys +=zoc_keys_send_counter-menu_zoc_status_previous_sent_keys_counter;
+
+                //Limite visual de 10 en cola, para que no se quede mucho rato moviendose el cursor despues de haber liberado teclas
+                if (menu_zoc_status_moving_sent_keys>10) menu_zoc_status_moving_sent_keys=10;
+
+                //Contador anterior para saber cuando se envian nuevas
+                menu_zoc_status_previous_sent_keys_counter=zoc_keys_send_counter;
+            }
         }
     }
 
