@@ -1766,11 +1766,11 @@ zxvision_window *menu_zeng_online_status_window_window;
 //int menu_zoc_status_cursor_streaming_audio_sent=0;
 
 
-int menu_zoc_status_previous_sent_keys_counter=0;
+//int menu_zoc_status_previous_sent_keys_counter=0;
 //Posicion cursor
-int menu_zoc_status_cursor_sent_keys=0;
+//int menu_zoc_status_cursor_sent_keys=0;
 //indica cuantas teclas enviando
-int menu_zoc_status_moving_sent_keys=0;
+//int menu_zoc_status_moving_sent_keys=0;
 
 int menu_zoc_status_previous_alive_user_sent_counter=0;
 //Posicion cursor
@@ -1779,11 +1779,11 @@ int menu_zoc_status_cursor_alive_user_sent=0;
 int menu_zoc_status_moving_alive_user_sent=0;
 
 
-int menu_zoc_status_previous_received_keys_counter=0;
+//int menu_zoc_status_previous_received_keys_counter=0;
 //Posicion cursor
-int menu_zoc_status_cursor_received_keys=ZOC_STATUS_LENGTH_STRING_LINK_BAR-1;
+//int menu_zoc_status_cursor_received_keys=ZOC_STATUS_LENGTH_STRING_LINK_BAR-1;
 //indica cuantas teclas recibidno
-int menu_zoc_status_moving_received_keys=0;
+//int menu_zoc_status_moving_received_keys=0;
 
 //int menu_zoc_status_previous_pending_auth_counter=0;
 //Posicion cursor
@@ -1909,6 +1909,19 @@ struct s_menu_zoc_status_common_link_no_multiplier vars_pending_authorization={
     0,ZOC_STATUS_LENGTH_STRING_LINK_BAR-1,
     0
 };
+
+struct s_menu_zoc_status_common_link_no_multiplier vars_keys_send={
+    1,'>',
+    0,0,
+    0
+};
+
+struct s_menu_zoc_status_common_link_no_multiplier vars_keys_received={
+    0,'<',
+    0,ZOC_STATUS_LENGTH_STRING_LINK_BAR-1,
+    0
+};
+
 
 
 
@@ -2201,8 +2214,9 @@ void menu_zeng_online_status_window_overlay(void)
         if (zeng_online_i_am_master.v==0 || (zeng_online_i_am_master.v && !created_room_streaming_mode)) {
             //Keys sent
 
-            old_menu_zoc_status_common_link_no_multiplier(buffer_texto,1,'>',zoc_keys_send_counter,
-                &menu_zoc_status_previous_sent_keys_counter,&menu_zoc_status_cursor_sent_keys,&menu_zoc_status_moving_sent_keys);
+            //old_menu_zoc_status_common_link_no_multiplier(buffer_texto,1,'>',zoc_keys_send_counter,
+            //    &menu_zoc_status_previous_sent_keys_counter,&menu_zoc_status_cursor_sent_keys,&menu_zoc_status_moving_sent_keys);
+            menu_zoc_status_common_link_no_multiplier(buffer_texto,zoc_keys_send_counter,&vars_keys_send);
 
             zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Keyboard %s  |",buffer_texto);
         }
@@ -2214,8 +2228,10 @@ void menu_zeng_online_status_window_overlay(void)
 
             //Keys received
 
-            old_menu_zoc_status_common_link_no_multiplier(buffer_texto,0,'<',zoc_get_keys_counter,
-                &menu_zoc_status_previous_received_keys_counter,&menu_zoc_status_cursor_received_keys,&menu_zoc_status_moving_received_keys);
+            //old_menu_zoc_status_common_link_no_multiplier(buffer_texto,0,'<',zoc_get_keys_counter,
+            //    &menu_zoc_status_previous_received_keys_counter,&menu_zoc_status_cursor_received_keys,&menu_zoc_status_moving_received_keys);
+            menu_zoc_status_common_link_no_multiplier(buffer_texto,zoc_get_keys_counter,&vars_keys_received);
+
 
             zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Keyboard %s  |",buffer_texto);
         }
