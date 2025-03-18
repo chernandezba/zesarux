@@ -1753,17 +1753,17 @@ zxvision_window *menu_zeng_online_status_window_window;
 
 
 
-int menu_zoc_status_previous_sent_snapshots_counter=0;
+//int menu_zoc_status_previous_sent_snapshots_counter=0;
 //Posicion cursor sera esta posicion / multiplicador
-int menu_zoc_status_cursor_send_snapshots=0;
+//int menu_zoc_status_cursor_send_snapshots=0;
 
 //int menu_zoc_status_previous_streaming_display_sent_counter=0;
 //Posicion cursor sera esta posicion / multiplicador
 //int menu_zoc_status_cursor_streaming_display_sent=0;
 
-int menu_zoc_status_previous_streaming_audio_sent_counter=0;
+//int menu_zoc_status_previous_streaming_audio_sent_counter=0;
 //Posicion cursor sera esta posicion / multiplicador
-int menu_zoc_status_cursor_streaming_audio_sent=0;
+//int menu_zoc_status_cursor_streaming_audio_sent=0;
 
 
 int menu_zoc_status_previous_sent_keys_counter=0;
@@ -1825,8 +1825,16 @@ struct s_menu_zoc_status_common_link vars_send_streaming_display={
     0,0
 };
 
-                //old_menu_zoc_status_common_link(buffer_texto,1,'>',zoc_send_streaming_display_counter,
-                //    &menu_zoc_status_previous_streaming_display_sent_counter,&menu_zoc_status_cursor_streaming_display_sent);
+struct s_menu_zoc_status_common_link vars_send_streaming_audio={
+    1,'>',
+    0,0
+};
+
+struct s_menu_zoc_status_common_link vars_send_snapshots={
+    1,'>',
+    0,0
+};
+
 
 
 //Para barras de enlace que se desplazan a la izquierda y con multiplicador
@@ -2077,8 +2085,10 @@ void menu_zeng_online_status_window_overlay(void)
 
 
                 //Barra de streaming audios sent
-                old_menu_zoc_status_common_link(buffer_texto,1,'>',zoc_send_streaming_audio_counter,
-                    &menu_zoc_status_previous_streaming_audio_sent_counter,&menu_zoc_status_cursor_streaming_audio_sent);
+                //old_menu_zoc_status_common_link(buffer_texto,1,'>',zoc_send_streaming_audio_counter,
+                //    &menu_zoc_status_previous_streaming_audio_sent_counter,&menu_zoc_status_cursor_streaming_audio_sent);
+                menu_zoc_status_common_link(buffer_texto,zoc_send_streaming_audio_counter,&vars_send_streaming_audio);
+
 
                 zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Audio    %s  |",buffer_texto);
 
@@ -2091,10 +2101,11 @@ void menu_zeng_online_status_window_overlay(void)
 
 
             //Barra de snapshots sent
-                old_menu_zoc_status_common_link(buffer_texto,1,'>',zoc_sent_snapshots_counter,
-                    &menu_zoc_status_previous_sent_snapshots_counter,&menu_zoc_status_cursor_send_snapshots);
+            //old_menu_zoc_status_common_link(buffer_texto,1,'>',zoc_sent_snapshots_counter,
+            //    &menu_zoc_status_previous_sent_snapshots_counter,&menu_zoc_status_cursor_send_snapshots);
+            menu_zoc_status_common_link(buffer_texto,zoc_sent_snapshots_counter,&vars_send_snapshots);
 
-                zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Snapshot %s  |",buffer_texto);
+            zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Snapshot %s  |",buffer_texto);
 
 
 
