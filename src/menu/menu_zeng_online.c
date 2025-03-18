@@ -1801,7 +1801,7 @@ int menu_zoc_status_moving_alive_user_sent=0;
 
 //Para barras de enlace que se desplazan a la izquierda y con multiplicador
 //Como streaming displays, streaming audio etc
-void menu_zoc_status_common_left_link(char *buffer_texto,int direccion_derecha,char caracter_cursor,int variable_estadistica,int *valor_variable_estadistica_anterior,int *pos_cursor)
+void menu_zoc_status_common_link(char *buffer_texto,int direccion_derecha,char caracter_cursor,int variable_estadistica,int *valor_variable_estadistica_anterior,int *pos_cursor)
 {
     menu_zoc_status_print_link_bar(buffer_texto,ZOC_STATUS_LENGTH_STRING_LINK_BAR,
         (*pos_cursor)/ZOC_STATUS_MULTIPLIER_CURSOR,caracter_cursor);
@@ -1990,20 +1990,18 @@ void menu_zeng_online_status_window_overlay(void)
                 //Modo streaming
                 char buffer_texto[ZOC_STATUS_LENGTH_STRING_LINK_BAR+1];
                 //Barra de streaming displays sent
-                menu_zoc_status_common_left_link(buffer_texto,1,'>',zoc_send_streaming_display_counter,
+                menu_zoc_status_common_link(buffer_texto,1,'>',zoc_send_streaming_display_counter,
                     &menu_zoc_status_previous_streaming_display_sent_counter,&menu_zoc_status_cursor_streaming_display_sent);
 
                 zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Local display  %s ZENG Online Server",buffer_texto);
 
 
                 //Barra de streaming audios sent
-                menu_zoc_status_common_left_link(buffer_texto,1,'>',zoc_send_streaming_audio_counter,
+                menu_zoc_status_common_link(buffer_texto,1,'>',zoc_send_streaming_audio_counter,
                     &menu_zoc_status_previous_streaming_audio_sent_counter,&menu_zoc_status_cursor_streaming_audio_sent);
 
                 zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Local audio    %s ZENG Online Server",buffer_texto);
-                /*
 
-                zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Streaming audios sent: %d",zoc_send_streaming_audio_counter);*/
             }
             else {
                 //Modo no streaming
@@ -2014,7 +2012,7 @@ void menu_zeng_online_status_window_overlay(void)
 
 
             //Barra de snapshots sent
-                menu_zoc_status_common_left_link(buffer_texto,1,'>',zoc_sent_snapshots_counter,
+                menu_zoc_status_common_link(buffer_texto,1,'>',zoc_sent_snapshots_counter,
                     &menu_zoc_status_previous_sent_snapshots_counter,&menu_zoc_status_cursor_send_snapshots_received);
 
                 zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Local snapshot %s ZENG Online Server",buffer_texto);
@@ -2029,14 +2027,14 @@ void menu_zeng_online_status_window_overlay(void)
                 char buffer_texto[ZOC_STATUS_LENGTH_STRING_LINK_BAR+1];
 
                 //Barra de streaming displays received
-                menu_zoc_status_common_left_link(buffer_texto,0,'<',zoc_streaming_display_received_counter,
+                menu_zoc_status_common_link(buffer_texto,0,'<',zoc_streaming_display_received_counter,
                     &menu_zoc_status_previous_streaming_display_received_counter,&menu_zoc_status_cursor_streaming_display_received);
 
                 zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Local display  %s ZENG Online Server",buffer_texto);
 
 
                 //Barra de streaming audios received
-                menu_zoc_status_common_left_link(buffer_texto,0,'<',zoc_streaming_audio_received_counter,
+                menu_zoc_status_common_link(buffer_texto,0,'<',zoc_streaming_audio_received_counter,
                     &menu_zoc_status_previous_streaming_audio_received_counter,&menu_zoc_status_cursor_streaming_audio_received);
 
                 zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Local audio    %s ZENG Online Server",buffer_texto);
