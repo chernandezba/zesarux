@@ -1803,13 +1803,13 @@ int menu_zoc_status_previous_received_snapshots_counter=0;
 //Posicion cursor sera esta posicion / multiplicador
 int menu_zoc_status_cursor_received_snapshots_received=(ZOC_STATUS_LENGTH_STRING_LINK_BAR-1)*2;
 
-int menu_zoc_status_previous_streaming_display_received_counter=0;
+//int menu_zoc_status_previous_streaming_display_received_counter=0;
 //Posicion cursor sera esta posicion / multiplicador
-int menu_zoc_status_cursor_streaming_display_received=(ZOC_STATUS_LENGTH_STRING_LINK_BAR-1)*2;
+//int menu_zoc_status_cursor_streaming_display_received=(ZOC_STATUS_LENGTH_STRING_LINK_BAR-1)*2;
 
-int menu_zoc_status_previous_streaming_audio_received_counter=0;
+//int menu_zoc_status_previous_streaming_audio_received_counter=0;
 //Posicion cursor sera esta posicion / multiplicador
-int menu_zoc_status_cursor_streaming_audio_received=(ZOC_STATUS_LENGTH_STRING_LINK_BAR-1)*2;
+//int menu_zoc_status_cursor_streaming_audio_received=(ZOC_STATUS_LENGTH_STRING_LINK_BAR-1)*2;
 
 
 struct s_menu_zoc_status_common_link {
@@ -1833,6 +1833,16 @@ struct s_menu_zoc_status_common_link vars_send_streaming_audio={
 struct s_menu_zoc_status_common_link vars_send_snapshots={
     1,'>',
     0,0
+};
+
+struct s_menu_zoc_status_common_link vars_received_streaming_display={
+    0,'<',
+    0,(ZOC_STATUS_LENGTH_STRING_LINK_BAR-1)*2
+};
+
+struct s_menu_zoc_status_common_link vars_received_streaming_audio={
+    0,'<',
+    0,(ZOC_STATUS_LENGTH_STRING_LINK_BAR-1)*2
 };
 
 
@@ -2123,15 +2133,17 @@ void menu_zeng_online_status_window_overlay(void)
 
 
                 //Barra de streaming displays received
-                old_menu_zoc_status_common_link(buffer_texto,0,'<',zoc_streaming_display_received_counter,
-                    &menu_zoc_status_previous_streaming_display_received_counter,&menu_zoc_status_cursor_streaming_display_received);
+                //old_menu_zoc_status_common_link(buffer_texto,0,'<',zoc_streaming_display_received_counter,
+                //    &menu_zoc_status_previous_streaming_display_received_counter,&menu_zoc_status_cursor_streaming_display_received);
+                menu_zoc_status_common_link(buffer_texto,zoc_streaming_display_received_counter,&vars_received_streaming_display);
 
                 zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Display  %s  |",buffer_texto);
 
 
                 //Barra de streaming audios received
-                old_menu_zoc_status_common_link(buffer_texto,0,'<',zoc_streaming_audio_received_counter,
-                    &menu_zoc_status_previous_streaming_audio_received_counter,&menu_zoc_status_cursor_streaming_audio_received);
+                //old_menu_zoc_status_common_link(buffer_texto,0,'<',zoc_streaming_audio_received_counter,
+                //    &menu_zoc_status_previous_streaming_audio_received_counter,&menu_zoc_status_cursor_streaming_audio_received);
+                menu_zoc_status_common_link(buffer_texto,zoc_streaming_audio_received_counter,&vars_received_streaming_audio);
 
                 zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Audio    %s  |",buffer_texto);
 
