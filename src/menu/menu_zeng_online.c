@@ -1751,14 +1751,11 @@ zxvision_window *menu_zeng_online_status_window_window;
 #define ZOC_STATUS_LENGTH_STRING_LINK_BAR 20
 #define ZOC_STATUS_MULTIPLIER_CURSOR 2
 
+
+
 int menu_zoc_status_previous_sent_snapshots_counter=0;
 //Posicion cursor sera esta posicion / multiplicador
-int menu_zoc_status_cursor_send_snapshots_received=0;
-
-
-int menu_zoc_status_previous_streaming_display_received_counter=0;
-//Posicion cursor sera esta posicion / multiplicador
-int menu_zoc_status_cursor_streaming_display_received=0;
+int menu_zoc_status_cursor_send_snapshots=0;
 
 int menu_zoc_status_previous_streaming_display_sent_counter=0;
 //Posicion cursor sera esta posicion / multiplicador
@@ -1767,10 +1764,6 @@ int menu_zoc_status_cursor_streaming_display_sent=0;
 int menu_zoc_status_previous_streaming_audio_sent_counter=0;
 //Posicion cursor sera esta posicion / multiplicador
 int menu_zoc_status_cursor_streaming_audio_sent=0;
-
-int menu_zoc_status_previous_streaming_audio_received_counter=0;
-//Posicion cursor sera esta posicion / multiplicador
-int menu_zoc_status_cursor_streaming_audio_received=0;
 
 
 int menu_zoc_status_previous_sent_keys_counter=0;
@@ -1781,9 +1774,21 @@ int menu_zoc_status_moving_sent_keys=0;
 
 int menu_zoc_status_previous_received_keys_counter=0;
 //Posicion cursor
-int menu_zoc_status_cursor_received_keys=0;
+int menu_zoc_status_cursor_received_keys=ZOC_STATUS_LENGTH_STRING_LINK_BAR-1;
 //indica cuantas teclas enviando
 int menu_zoc_status_moving_received_keys=0;
+
+int menu_zoc_status_previous_pending_auth_counter=0;
+//Posicion cursor
+int menu_zoc_status_cursor_pending_auth=ZOC_STATUS_LENGTH_STRING_LINK_BAR-1;
+//indica cuantas teclas enviando
+int menu_zoc_status_moving_pending_auth=0;
+
+int menu_zoc_status_previous_alive_user_sent_counter=0;
+//Posicion cursor
+int menu_zoc_status_cursor_alive_user_sent=0;
+//indica cuantas  enviando
+int menu_zoc_status_moving_alive_user_sent=0;
 
 
 int menu_zoc_status_previous_broadcast_messages_counter=0;
@@ -1792,12 +1797,20 @@ int menu_zoc_status_cursor_broadcast_messages=ZOC_STATUS_LENGTH_STRING_LINK_BAR-
 //indica cuantas  enviando
 int menu_zoc_status_moving_broadcast_messages=0;
 
+int menu_zoc_status_previous_received_snapshots_counter=0;
+//Posicion cursor sera esta posicion / multiplicador
+int menu_zoc_status_cursor_received_snapshots_received=ZOC_STATUS_LENGTH_STRING_LINK_BAR-1;
 
-int menu_zoc_status_previous_alive_user_sent_counter=0;
-//Posicion cursor
-int menu_zoc_status_cursor_alive_user_sent=0;
-//indica cuantas  enviando
-int menu_zoc_status_moving_alive_user_sent=0;
+int menu_zoc_status_previous_streaming_display_received_counter=0;
+//Posicion cursor sera esta posicion / multiplicador
+int menu_zoc_status_cursor_streaming_display_received=ZOC_STATUS_LENGTH_STRING_LINK_BAR-1;
+
+int menu_zoc_status_previous_streaming_audio_received_counter=0;
+//Posicion cursor sera esta posicion / multiplicador
+int menu_zoc_status_cursor_streaming_audio_received=ZOC_STATUS_LENGTH_STRING_LINK_BAR-1;
+
+
+
 
 //Para barras de enlace que se desplazan a la izquierda y con multiplicador
 //Como streaming displays, streaming audio etc
@@ -2013,12 +2026,20 @@ void menu_zeng_online_status_window_overlay(void)
 
             //Barra de snapshots sent
                 menu_zoc_status_common_link(buffer_texto,1,'>',zoc_sent_snapshots_counter,
-                    &menu_zoc_status_previous_sent_snapshots_counter,&menu_zoc_status_cursor_send_snapshots_received);
+                    &menu_zoc_status_previous_sent_snapshots_counter,&menu_zoc_status_cursor_send_snapshots);
 
                 zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Local snapshot %s ZENG Online Server",buffer_texto);
 
 
             //zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Pending authorizations received: %d",zoc_get_pending_authorization_counter);
+
+            //Barra de Pending authorizations received
+
+            menu_zoc_status_common_link_no_multiplier(buffer_texto,0,'<',zoc_get_pending_authorization_counter,
+                &menu_zoc_status_previous_pending_auth_counter,&menu_zoc_status_cursor_pending_auth,&menu_zoc_status_moving_pending_auth);
+
+            zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Local Pending auth %s ZENG Online Server",buffer_texto);
+
         }
         else {
             //Slave
@@ -2044,6 +2065,12 @@ void menu_zeng_online_status_window_overlay(void)
             else {
                 //Modo no streaming
                 //zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Snapshots received: %d",zoc_received_snapshot_counter);
+                char buffer_texto[ZOC_STATUS_LENGTH_STRING_LINK_BAR+1];
+                //Barra de snapshots received
+                menu_zoc_status_common_link(buffer_texto,0,'<',zoc_received_snapshot_counter,
+                    &menu_zoc_status_previous_received_snapshots_counter,&menu_zoc_status_cursor_received_snapshots_received);
+
+                zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Local snapshot %s ZENG Online Server",buffer_texto);
             }
         }
 
