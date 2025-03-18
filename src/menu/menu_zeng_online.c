@@ -1772,11 +1772,11 @@ zxvision_window *menu_zeng_online_status_window_window;
 //indica cuantas teclas enviando
 //int menu_zoc_status_moving_sent_keys=0;
 
-int menu_zoc_status_previous_alive_user_sent_counter=0;
+//int menu_zoc_status_previous_alive_user_sent_counter=0;
 //Posicion cursor
-int menu_zoc_status_cursor_alive_user_sent=0;
+//int menu_zoc_status_cursor_alive_user_sent=0;
 //indica cuantas  enviando
-int menu_zoc_status_moving_alive_user_sent=0;
+//int menu_zoc_status_moving_alive_user_sent=0;
 
 
 //int menu_zoc_status_previous_received_keys_counter=0;
@@ -1793,11 +1793,11 @@ int menu_zoc_status_moving_alive_user_sent=0;
 
 
 
-int menu_zoc_status_previous_broadcast_messages_counter=0;
+//int menu_zoc_status_previous_broadcast_messages_counter=0;
 //Posicion cursor
-int menu_zoc_status_cursor_broadcast_messages=ZOC_STATUS_LENGTH_STRING_LINK_BAR-1;
+//int menu_zoc_status_cursor_broadcast_messages=ZOC_STATUS_LENGTH_STRING_LINK_BAR-1;
 //indica cuantos recibiendo
-int menu_zoc_status_moving_broadcast_messages=0;
+//int menu_zoc_status_moving_broadcast_messages=0;
 
 //int menu_zoc_status_previous_received_snapshots_counter=0;
 //Posicion cursor sera esta posicion / multiplicador
@@ -1922,6 +1922,18 @@ struct s_menu_zoc_status_common_link_no_multiplier vars_keys_received={
     0
 };
 
+struct s_menu_zoc_status_common_link_no_multiplier vars_alive_sent={
+    1,'>',
+    0,0,
+    0
+};
+
+
+struct s_menu_zoc_status_common_link_no_multiplier vars_broadcast_messages={
+    0,'<',
+    0,ZOC_STATUS_LENGTH_STRING_LINK_BAR-1,
+    0
+};
 
 
 
@@ -2238,14 +2250,19 @@ void menu_zeng_online_status_window_overlay(void)
 
 
         //Alive packets
-        old_menu_zoc_status_common_link_no_multiplier(buffer_texto,1,'>',zoc_common_alive_user_send_counter,
-            &menu_zoc_status_previous_alive_user_sent_counter,&menu_zoc_status_cursor_alive_user_sent,&menu_zoc_status_moving_alive_user_sent);
+        //old_menu_zoc_status_common_link_no_multiplier(buffer_texto,1,'>',zoc_common_alive_user_send_counter,
+        //    &menu_zoc_status_previous_alive_user_sent_counter,&menu_zoc_status_cursor_alive_user_sent,&menu_zoc_status_moving_alive_user_sent);
+        menu_zoc_status_common_link_no_multiplier(buffer_texto,zoc_common_alive_user_send_counter,&vars_alive_sent);
+
         zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Alive    %s  |",buffer_texto);
 
 
         //Broadcast messages
-        old_menu_zoc_status_common_link_no_multiplier(buffer_texto,0,'<',zoc_common_get_messages_received_counter,
-            &menu_zoc_status_previous_broadcast_messages_counter,&menu_zoc_status_cursor_broadcast_messages,&menu_zoc_status_moving_broadcast_messages);
+        //old_menu_zoc_status_common_link_no_multiplier(buffer_texto,0,'<',zoc_common_get_messages_received_counter,
+        //    &menu_zoc_status_previous_broadcast_messages_counter,&menu_zoc_status_cursor_broadcast_messages,&menu_zoc_status_moving_broadcast_messages);
+        menu_zoc_status_common_link_no_multiplier(buffer_texto,zoc_common_get_messages_received_counter,&vars_broadcast_messages);
+
+
         zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Messages %s  |",buffer_texto);
 
     }
