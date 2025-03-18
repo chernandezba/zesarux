@@ -67,7 +67,7 @@ y se sigue escuchando la musica del juego online
 
 - Posible diagrama gráfico de una conexión ZENG/ZENG online donde se vea como se están recibiendo/enviando paquetes de datos etc.
 En diferentes roles (master/slave), en partida streaming o no, si se trae snapshot, o stream de video, o stream de audio
-Alternativa en modo texto
+*mostrar porcentajes de full/differential silence/nosilence de envio streaming
 icono para zengonlinestatus
 
 Teclado en pantalla no va con Zeng online?

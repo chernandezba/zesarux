@@ -1761,32 +1761,32 @@ struct s_menu_zoc_status_common_link {
     int pos_cursor;
 };
 
-struct s_menu_zoc_status_common_link vars_send_streaming_display={
+struct s_menu_zoc_status_common_link menu_zoc_status_vars_send_streaming_display={
     1,'>',
     0,0
 };
 
-struct s_menu_zoc_status_common_link vars_send_streaming_audio={
+struct s_menu_zoc_status_common_link menu_zoc_status_vars_send_streaming_audio={
     1,'>',
     0,0
 };
 
-struct s_menu_zoc_status_common_link vars_send_snapshots={
+struct s_menu_zoc_status_common_link menu_zoc_status_vars_send_snapshots={
     1,'>',
     0,0
 };
 
-struct s_menu_zoc_status_common_link vars_received_streaming_display={
+struct s_menu_zoc_status_common_link menu_zoc_status_vars_received_streaming_display={
     0,'<',
     0,(ZOC_STATUS_LENGTH_STRING_LINK_BAR-1)*2
 };
 
-struct s_menu_zoc_status_common_link vars_received_streaming_audio={
+struct s_menu_zoc_status_common_link menu_zoc_status_vars_received_streaming_audio={
     0,'<',
     0,(ZOC_STATUS_LENGTH_STRING_LINK_BAR-1)*2
 };
 
-struct s_menu_zoc_status_common_link vars_received_snapshots={
+struct s_menu_zoc_status_common_link menu_zoc_status_vars_received_snapshots={
     0,'<',
     0,(ZOC_STATUS_LENGTH_STRING_LINK_BAR-1)*2
 };
@@ -1844,37 +1844,37 @@ struct s_menu_zoc_status_common_link_no_multiplier {
     int cantidad_movimiento;
 };
 
-struct s_menu_zoc_status_common_link_no_multiplier vars_pending_authorization={
+struct s_menu_zoc_status_common_link_no_multiplier menu_zoc_status_vars_pending_authorization={
     0,'<',
     0,ZOC_STATUS_LENGTH_STRING_LINK_BAR-1,
     0
 };
 
-struct s_menu_zoc_status_common_link_no_multiplier vars_keys_send={
+struct s_menu_zoc_status_common_link_no_multiplier menu_zoc_status_vars_keys_send={
     1,'>',
     0,0,
     0
 };
 
-struct s_menu_zoc_status_common_link_no_multiplier vars_keys_received={
+struct s_menu_zoc_status_common_link_no_multiplier menu_zoc_status_vars_keys_received={
     0,'<',
     0,ZOC_STATUS_LENGTH_STRING_LINK_BAR-1,
     0
 };
 
-struct s_menu_zoc_status_common_link_no_multiplier vars_alive_sent={
+struct s_menu_zoc_status_common_link_no_multiplier menu_zoc_status_vars_alive_sent={
     1,'>',
     0,0,
     0
 };
 
-struct s_menu_zoc_status_common_link_no_multiplier vars_broadcast_messages={
+struct s_menu_zoc_status_common_link_no_multiplier menu_zoc_status_vars_broadcast_messages={
     0,'<',
     0,ZOC_STATUS_LENGTH_STRING_LINK_BAR-1,
     0
 };
 
-struct s_menu_zoc_status_common_link_no_multiplier vars_send_snapshots_no_multiplier={
+struct s_menu_zoc_status_common_link_no_multiplier menu_zoc_status_vars_send_snapshots_no_multiplier={
     1,'>',
     0,0,
     0
@@ -2040,12 +2040,12 @@ void menu_zeng_online_status_window_overlay(void)
             if (created_room_streaming_mode) {
                 //Modo streaming
                 //Barra de streaming displays sent
-                menu_zoc_status_common_link(buffer_texto,zoc_send_streaming_display_counter,&vars_send_streaming_display);
+                menu_zoc_status_common_link(buffer_texto,zoc_send_streaming_display_counter,&menu_zoc_status_vars_send_streaming_display);
                 zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Display  %s  |",buffer_texto);
 
 
                 //Barra de streaming audios sent
-                menu_zoc_status_common_link(buffer_texto,zoc_send_streaming_audio_counter,&vars_send_streaming_audio);
+                menu_zoc_status_common_link(buffer_texto,zoc_send_streaming_audio_counter,&menu_zoc_status_vars_send_streaming_audio);
                 zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Audio    %s  |",buffer_texto);
 
             }
@@ -2058,16 +2058,16 @@ void menu_zeng_online_status_window_overlay(void)
             //Barra de snapshots sent
             //Si es modo streaming, usamos movimiento como el de send keys, o sea, que se mueve de punta a punta cuando hay 1 envio
             if (created_room_streaming_mode) {
-                menu_zoc_status_common_link_no_multiplier(buffer_texto,zoc_sent_snapshots_counter,&vars_send_snapshots_no_multiplier);
+                menu_zoc_status_common_link_no_multiplier(buffer_texto,zoc_sent_snapshots_counter,&menu_zoc_status_vars_send_snapshots_no_multiplier);
             }
             else {
-                menu_zoc_status_common_link(buffer_texto,zoc_sent_snapshots_counter,&vars_send_snapshots);
+                menu_zoc_status_common_link(buffer_texto,zoc_sent_snapshots_counter,&menu_zoc_status_vars_send_snapshots);
             }
             zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Snapshot %s  |",buffer_texto);
 
 
             //Barra de Pending authorizations received
-            menu_zoc_status_common_link_no_multiplier(buffer_texto,zoc_get_pending_authorization_counter,&vars_pending_authorization);
+            menu_zoc_status_common_link_no_multiplier(buffer_texto,zoc_get_pending_authorization_counter,&menu_zoc_status_vars_pending_authorization);
             zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Pnd auth %s  |",buffer_texto);
 
         }
@@ -2076,12 +2076,12 @@ void menu_zeng_online_status_window_overlay(void)
             if (created_room_streaming_mode) {
 
                 //Barra de streaming displays received
-                menu_zoc_status_common_link(buffer_texto,zoc_streaming_display_received_counter,&vars_received_streaming_display);
+                menu_zoc_status_common_link(buffer_texto,zoc_streaming_display_received_counter,&menu_zoc_status_vars_received_streaming_display);
                 zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Display  %s  |",buffer_texto);
 
 
                 //Barra de streaming audios received
-                menu_zoc_status_common_link(buffer_texto,zoc_streaming_audio_received_counter,&vars_received_streaming_audio);
+                menu_zoc_status_common_link(buffer_texto,zoc_streaming_audio_received_counter,&menu_zoc_status_vars_received_streaming_audio);
                 zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Audio    %s  |",buffer_texto);
 
             }
@@ -2089,7 +2089,7 @@ void menu_zeng_online_status_window_overlay(void)
                 //Modo no streaming
 
                 //Barra de snapshots received
-                menu_zoc_status_common_link(buffer_texto,zoc_received_snapshot_counter,&vars_received_snapshots);
+                menu_zoc_status_common_link(buffer_texto,zoc_received_snapshot_counter,&menu_zoc_status_vars_received_snapshots);
                 zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Snapshot %s  |",buffer_texto);
             }
         }
@@ -2100,7 +2100,7 @@ void menu_zeng_online_status_window_overlay(void)
 
         if (zeng_online_i_am_master.v==0 || (zeng_online_i_am_master.v && !created_room_streaming_mode)) {
             //Keys sent
-            menu_zoc_status_common_link_no_multiplier(buffer_texto,zoc_keys_send_counter,&vars_keys_send);
+            menu_zoc_status_common_link_no_multiplier(buffer_texto,zoc_keys_send_counter,&menu_zoc_status_vars_keys_send);
             zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Keyboard %s  |",buffer_texto);
         }
 
@@ -2110,17 +2110,17 @@ void menu_zeng_online_status_window_overlay(void)
         if (zeng_online_i_am_master.v || (zeng_online_i_am_master.v==0 && !created_room_streaming_mode)) {
 
             //Keys received
-            menu_zoc_status_common_link_no_multiplier(buffer_texto,zoc_get_keys_counter,&vars_keys_received);
+            menu_zoc_status_common_link_no_multiplier(buffer_texto,zoc_get_keys_counter,&menu_zoc_status_vars_keys_received);
             zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Keyboard %s  |",buffer_texto);
         }
 
         //Alive packets
-        menu_zoc_status_common_link_no_multiplier(buffer_texto,zoc_common_alive_user_send_counter,&vars_alive_sent);
+        menu_zoc_status_common_link_no_multiplier(buffer_texto,zoc_common_alive_user_send_counter,&menu_zoc_status_vars_alive_sent);
         zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Alive    %s  |",buffer_texto);
 
 
         //Broadcast messages
-        menu_zoc_status_common_link_no_multiplier(buffer_texto,zoc_common_get_messages_received_counter,&vars_broadcast_messages);
+        menu_zoc_status_common_link_no_multiplier(buffer_texto,zoc_common_get_messages_received_counter,&menu_zoc_status_vars_broadcast_messages);
         zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Messages %s  |",buffer_texto);
 
     }
