@@ -1760,6 +1760,10 @@ int menu_zoc_status_previous_streaming_display_received_counter=0;
 //Posicion cursor sera esta posicion / multiplicador
 int menu_zoc_status_cursor_streaming_display_received=0;
 
+int menu_zoc_status_previous_streaming_display_sent_counter=0;
+//Posicion cursor sera esta posicion / multiplicador
+int menu_zoc_status_cursor_streaming_display_sent=0;
+
 
 int menu_zoc_status_previous_streaming_audio_received_counter=0;
 //Posicion cursor sera esta posicion / multiplicador
@@ -1981,13 +1985,16 @@ void menu_zeng_online_status_window_overlay(void)
             //Master
             if (created_room_streaming_mode) {
                 //Modo streaming
-                /*zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Streaming displays sent: %d",zoc_send_streaming_display_counter);
-                zxvision_print_string_defaults_fillspc_format(w,1,linea++," Full: %d",zoc_generated_full_displays_counter);
-                zxvision_print_string_defaults_fillspc_format(w,1,linea++," Differential: %d",zoc_generated_differential_displays_counter);
+                char buffer_texto[ZOC_STATUS_LENGTH_STRING_LINK_BAR+1];
+                //Barra de streaming displays sent
+                menu_zoc_status_common_left_link(buffer_texto,1,'>',zoc_send_streaming_display_counter,
+                    &menu_zoc_status_previous_streaming_display_sent_counter,&menu_zoc_status_cursor_streaming_display_sent);
 
-                zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Streaming audios sent: %d",zoc_send_streaming_audio_counter);
-                zxvision_print_string_defaults_fillspc_format(w,1,linea++," Silence: %d",zoc_sent_streaming_audio_silence_counter);
-                zxvision_print_string_defaults_fillspc_format(w,1,linea++," No Silence: %d",zoc_sent_streaming_audio_no_silence_counter);*/
+                zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Local display  %s ZENG Online Server",buffer_texto);
+
+                /*zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Streaming displays sent: %d",zoc_send_streaming_display_counter);
+
+                zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Streaming audios sent: %d",zoc_send_streaming_audio_counter);*/
             }
             else {
                 //Modo no streaming
@@ -1995,7 +2002,8 @@ void menu_zeng_online_status_window_overlay(void)
             }
 
             char buffer_texto[ZOC_STATUS_LENGTH_STRING_LINK_BAR+1];
-            //zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Snapshots sent: %d",zoc_sent_snapshots_counter);
+
+
             //Barra de snapshots sent
                 menu_zoc_status_common_left_link(buffer_texto,1,'>',zoc_sent_snapshots_counter,
                     &menu_zoc_status_previous_sent_snapshots_counter,&menu_zoc_status_cursor_send_snapshots_received);
