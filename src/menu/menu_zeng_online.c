@@ -1757,9 +1757,9 @@ int menu_zoc_status_previous_sent_snapshots_counter=0;
 //Posicion cursor sera esta posicion / multiplicador
 int menu_zoc_status_cursor_send_snapshots=0;
 
-int menu_zoc_status_previous_streaming_display_sent_counter=0;
+//int menu_zoc_status_previous_streaming_display_sent_counter=0;
 //Posicion cursor sera esta posicion / multiplicador
-int menu_zoc_status_cursor_streaming_display_sent=0;
+//int menu_zoc_status_cursor_streaming_display_sent=0;
 
 int menu_zoc_status_previous_streaming_audio_sent_counter=0;
 //Posicion cursor sera esta posicion / multiplicador
@@ -1812,11 +1812,68 @@ int menu_zoc_status_previous_streaming_audio_received_counter=0;
 int menu_zoc_status_cursor_streaming_audio_received=(ZOC_STATUS_LENGTH_STRING_LINK_BAR-1)*2;
 
 
+struct s_menu_zoc_status_common_link {
+    int direccion_derecha;
+    char caracter_cursor;
+
+    int valor_variable_estadistica_anterior;
+    int pos_cursor;
+};
+
+struct s_menu_zoc_status_common_link vars_send_streaming_display={
+    1,'>',
+    0,0
+};
+
+                //old_menu_zoc_status_common_link(buffer_texto,1,'>',zoc_send_streaming_display_counter,
+                //    &menu_zoc_status_previous_streaming_display_sent_counter,&menu_zoc_status_cursor_streaming_display_sent);
 
 
 //Para barras de enlace que se desplazan a la izquierda y con multiplicador
 //Como streaming displays, streaming audio etc
-void menu_zoc_status_common_link(char *buffer_texto,int direccion_derecha,char caracter_cursor,int variable_estadistica,int *valor_variable_estadistica_anterior,int *pos_cursor)
+void menu_zoc_status_common_link(char *buffer_texto,/*int direccion_derecha,char caracter_cursor,*/
+    int variable_estadistica,struct s_menu_zoc_status_common_link *vars/*int *valor_variable_estadistica_anterior,int *pos_cursor*/)
+{
+    menu_zoc_status_print_link_bar(buffer_texto,ZOC_STATUS_LENGTH_STRING_LINK_BAR,
+        (vars->pos_cursor)/ZOC_STATUS_MULTIPLIER_CURSOR,vars->caracter_cursor);
+
+
+    //Ver diferencia entre contador anterior y actual
+    int diff=variable_estadistica-(vars->valor_variable_estadistica_anterior);
+
+    int max_pos=ZOC_STATUS_LENGTH_STRING_LINK_BAR*ZOC_STATUS_MULTIPLIER_CURSOR;
+
+    if (vars->direccion_derecha) {
+        (vars->pos_cursor) +=diff;
+
+        if (vars->pos_cursor>max_pos) {
+            //Aparecer por la izquierda
+            vars->pos_cursor -=max_pos;
+
+            vars->pos_cursor %=max_pos;
+
+        }
+    }
+
+    else {
+
+        (vars->pos_cursor) -=diff;
+
+        if (vars->pos_cursor<0) {
+            //Aparecer por la derecha
+            vars->pos_cursor +=max_pos;
+
+            vars->pos_cursor %=max_pos;
+
+        }
+    }
+
+    vars->valor_variable_estadistica_anterior=variable_estadistica;
+}
+
+//Para barras de enlace que se desplazan a la izquierda y con multiplicador
+//Como streaming displays, streaming audio etc
+void old_menu_zoc_status_common_link(char *buffer_texto,int direccion_derecha,char caracter_cursor,int variable_estadistica,int *valor_variable_estadistica_anterior,int *pos_cursor)
 {
     menu_zoc_status_print_link_bar(buffer_texto,ZOC_STATUS_LENGTH_STRING_LINK_BAR,
         (*pos_cursor)/ZOC_STATUS_MULTIPLIER_CURSOR,caracter_cursor);
@@ -1857,7 +1914,7 @@ void menu_zoc_status_common_link(char *buffer_texto,int direccion_derecha,char c
 
 //Para barras de enlace que se desplazan izquierda/derecha sin multiplicador, como keys sent o broadcast messages received
 //y que se quedan moviendo hasta que llegan a un extremo
-void menu_zoc_status_common_link_no_multiplier(char *buffer_texto,int direccion_derecha,char caracter_cursor,
+void old_menu_zoc_status_common_link_no_multiplier(char *buffer_texto,int direccion_derecha,char caracter_cursor,
     int variable_estadistica,int *valor_variable_estadistica_anterior,int *pos_cursor,int *cantidad_movimiento)
 {
 
@@ -2011,14 +2068,16 @@ void menu_zeng_online_status_window_overlay(void)
             if (created_room_streaming_mode) {
                 //Modo streaming
                 //Barra de streaming displays sent
-                menu_zoc_status_common_link(buffer_texto,1,'>',zoc_send_streaming_display_counter,
-                    &menu_zoc_status_previous_streaming_display_sent_counter,&menu_zoc_status_cursor_streaming_display_sent);
+                //old_menu_zoc_status_common_link(buffer_texto,1,'>',zoc_send_streaming_display_counter,
+                //    &menu_zoc_status_previous_streaming_display_sent_counter,&menu_zoc_status_cursor_streaming_display_sent);
+
+                menu_zoc_status_common_link(buffer_texto,zoc_send_streaming_display_counter,&vars_send_streaming_display);
 
                 zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Display  %s  |",buffer_texto);
 
 
                 //Barra de streaming audios sent
-                menu_zoc_status_common_link(buffer_texto,1,'>',zoc_send_streaming_audio_counter,
+                old_menu_zoc_status_common_link(buffer_texto,1,'>',zoc_send_streaming_audio_counter,
                     &menu_zoc_status_previous_streaming_audio_sent_counter,&menu_zoc_status_cursor_streaming_audio_sent);
 
                 zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Audio    %s  |",buffer_texto);
@@ -2032,7 +2091,7 @@ void menu_zeng_online_status_window_overlay(void)
 
 
             //Barra de snapshots sent
-                menu_zoc_status_common_link(buffer_texto,1,'>',zoc_sent_snapshots_counter,
+                old_menu_zoc_status_common_link(buffer_texto,1,'>',zoc_sent_snapshots_counter,
                     &menu_zoc_status_previous_sent_snapshots_counter,&menu_zoc_status_cursor_send_snapshots);
 
                 zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Snapshot %s  |",buffer_texto);
@@ -2041,7 +2100,7 @@ void menu_zeng_online_status_window_overlay(void)
 
             //Barra de Pending authorizations received
 
-            menu_zoc_status_common_link_no_multiplier(buffer_texto,0,'<',zoc_get_pending_authorization_counter,
+            old_menu_zoc_status_common_link_no_multiplier(buffer_texto,0,'<',zoc_get_pending_authorization_counter,
                 &menu_zoc_status_previous_pending_auth_counter,&menu_zoc_status_cursor_pending_auth,&menu_zoc_status_moving_pending_auth);
 
             zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Pnd auth %s  |",buffer_texto);
@@ -2053,14 +2112,14 @@ void menu_zeng_online_status_window_overlay(void)
 
 
                 //Barra de streaming displays received
-                menu_zoc_status_common_link(buffer_texto,0,'<',zoc_streaming_display_received_counter,
+                old_menu_zoc_status_common_link(buffer_texto,0,'<',zoc_streaming_display_received_counter,
                     &menu_zoc_status_previous_streaming_display_received_counter,&menu_zoc_status_cursor_streaming_display_received);
 
                 zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Display  %s  |",buffer_texto);
 
 
                 //Barra de streaming audios received
-                menu_zoc_status_common_link(buffer_texto,0,'<',zoc_streaming_audio_received_counter,
+                old_menu_zoc_status_common_link(buffer_texto,0,'<',zoc_streaming_audio_received_counter,
                     &menu_zoc_status_previous_streaming_audio_received_counter,&menu_zoc_status_cursor_streaming_audio_received);
 
                 zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Audio    %s  |",buffer_texto);
@@ -2071,7 +2130,7 @@ void menu_zeng_online_status_window_overlay(void)
                 //Modo no streaming
 
                 //Barra de snapshots received
-                menu_zoc_status_common_link(buffer_texto,0,'<',zoc_received_snapshot_counter,
+                old_menu_zoc_status_common_link(buffer_texto,0,'<',zoc_received_snapshot_counter,
                     &menu_zoc_status_previous_received_snapshots_counter,&menu_zoc_status_cursor_received_snapshots_received);
 
                 zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Snapshot %s  |",buffer_texto);
@@ -2085,7 +2144,7 @@ void menu_zeng_online_status_window_overlay(void)
         if (zeng_online_i_am_master.v==0 || (zeng_online_i_am_master.v && !created_room_streaming_mode)) {
             //Keys sent
 
-            menu_zoc_status_common_link_no_multiplier(buffer_texto,1,'>',zoc_keys_send_counter,
+            old_menu_zoc_status_common_link_no_multiplier(buffer_texto,1,'>',zoc_keys_send_counter,
                 &menu_zoc_status_previous_sent_keys_counter,&menu_zoc_status_cursor_sent_keys,&menu_zoc_status_moving_sent_keys);
 
             zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Keyboard %s  |",buffer_texto);
@@ -2098,7 +2157,7 @@ void menu_zeng_online_status_window_overlay(void)
 
             //Keys received
 
-            menu_zoc_status_common_link_no_multiplier(buffer_texto,0,'<',zoc_get_keys_counter,
+            old_menu_zoc_status_common_link_no_multiplier(buffer_texto,0,'<',zoc_get_keys_counter,
                 &menu_zoc_status_previous_received_keys_counter,&menu_zoc_status_cursor_received_keys,&menu_zoc_status_moving_received_keys);
 
             zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Keyboard %s  |",buffer_texto);
@@ -2106,13 +2165,13 @@ void menu_zeng_online_status_window_overlay(void)
 
 
         //Alive packets
-        menu_zoc_status_common_link_no_multiplier(buffer_texto,1,'>',zoc_common_alive_user_send_counter,
+        old_menu_zoc_status_common_link_no_multiplier(buffer_texto,1,'>',zoc_common_alive_user_send_counter,
             &menu_zoc_status_previous_alive_user_sent_counter,&menu_zoc_status_cursor_alive_user_sent,&menu_zoc_status_moving_alive_user_sent);
         zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Alive    %s  |",buffer_texto);
 
 
         //Broadcast messages
-        menu_zoc_status_common_link_no_multiplier(buffer_texto,0,'<',zoc_common_get_messages_received_counter,
+        old_menu_zoc_status_common_link_no_multiplier(buffer_texto,0,'<',zoc_common_get_messages_received_counter,
             &menu_zoc_status_previous_broadcast_messages_counter,&menu_zoc_status_cursor_broadcast_messages,&menu_zoc_status_moving_broadcast_messages);
         zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Messages %s  |",buffer_texto);
 
