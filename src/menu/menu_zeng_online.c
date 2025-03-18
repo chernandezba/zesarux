@@ -2040,7 +2040,7 @@ void menu_zeng_online_status_window_overlay(void)
             menu_zoc_status_common_link_no_multiplier(buffer_texto,0,'<',zoc_get_pending_authorization_counter,
                 &menu_zoc_status_previous_pending_auth_counter,&menu_zoc_status_cursor_pending_auth,&menu_zoc_status_moving_pending_auth);
 
-            zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Local Pending auth %s ZENG Online Server",buffer_texto);
+            zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Local Pnd auth %s ZENG Online Server",buffer_texto);
 
         }
         else {
