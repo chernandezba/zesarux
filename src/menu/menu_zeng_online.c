@@ -1991,7 +1991,8 @@ void menu_zeng_online_status_window_overlay(void)
         zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Alive packets sent: %d",zoc_common_alive_user_send_counter);
         zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Broadcast Messages received: %d",zoc_common_get_messages_received_counter);
 
-        linea++;
+        //Linea en blanco. Lo hacemos asi por borrar posibles restos
+        zxvision_print_string_defaults_fillspc_format(w,1,linea++,"");
 
         //
         //
@@ -1999,11 +2000,12 @@ void menu_zeng_online_status_window_overlay(void)
         //
         //
 
+        char buffer_texto[ZOC_STATUS_LENGTH_STRING_LINK_BAR+1];
+
         if (zeng_online_i_am_master.v) {
             //Master
             if (created_room_streaming_mode) {
                 //Modo streaming
-                char buffer_texto[ZOC_STATUS_LENGTH_STRING_LINK_BAR+1];
                 //Barra de streaming displays sent
                 menu_zoc_status_common_link(buffer_texto,1,'>',zoc_send_streaming_display_counter,
                     &menu_zoc_status_previous_streaming_display_sent_counter,&menu_zoc_status_cursor_streaming_display_sent);
@@ -2023,7 +2025,6 @@ void menu_zeng_online_status_window_overlay(void)
                 //Aqui vendria: envio de snapshots (cubierto mas abajo), envio de teclas (cubierto mas abajo)
             }
 
-            char buffer_texto[ZOC_STATUS_LENGTH_STRING_LINK_BAR+1];
 
 
             //Barra de snapshots sent
@@ -2033,7 +2034,6 @@ void menu_zeng_online_status_window_overlay(void)
                 zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Local snapshot %s ZENG Online Server",buffer_texto);
 
 
-            //zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Pending authorizations received: %d",zoc_get_pending_authorization_counter);
 
             //Barra de Pending authorizations received
 
@@ -2047,7 +2047,6 @@ void menu_zeng_online_status_window_overlay(void)
             //Slave
             if (created_room_streaming_mode) {
 
-                char buffer_texto[ZOC_STATUS_LENGTH_STRING_LINK_BAR+1];
 
                 //Barra de streaming displays received
                 menu_zoc_status_common_link(buffer_texto,0,'<',zoc_streaming_display_received_counter,
@@ -2066,8 +2065,7 @@ void menu_zeng_online_status_window_overlay(void)
             }
             else {
                 //Modo no streaming
-                //zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Snapshots received: %d",zoc_received_snapshot_counter);
-                char buffer_texto[ZOC_STATUS_LENGTH_STRING_LINK_BAR+1];
+
                 //Barra de snapshots received
                 menu_zoc_status_common_link(buffer_texto,0,'<',zoc_received_snapshot_counter,
                     &menu_zoc_status_previous_received_snapshots_counter,&menu_zoc_status_cursor_received_snapshots_received);
@@ -2082,7 +2080,6 @@ void menu_zeng_online_status_window_overlay(void)
 
         if (zeng_online_i_am_master.v==0 || (zeng_online_i_am_master.v && !created_room_streaming_mode)) {
             //Keys sent
-            char buffer_texto[ZOC_STATUS_LENGTH_STRING_LINK_BAR+1];
 
             menu_zoc_status_common_link_no_multiplier(buffer_texto,1,'>',zoc_keys_send_counter,
                 &menu_zoc_status_previous_sent_keys_counter,&menu_zoc_status_cursor_sent_keys,&menu_zoc_status_moving_sent_keys);
@@ -2094,10 +2091,8 @@ void menu_zeng_online_status_window_overlay(void)
         //Master (en modo streaming o no streaming)
         //Slave (en modo no streaming)
         if (zeng_online_i_am_master.v || (zeng_online_i_am_master.v==0 && !created_room_streaming_mode)) {
-            //zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Keys received: %d",zoc_get_keys_counter);
 
             //Keys received
-            char buffer_texto[ZOC_STATUS_LENGTH_STRING_LINK_BAR+1];
 
             menu_zoc_status_common_link_no_multiplier(buffer_texto,0,'<',zoc_get_keys_counter,
                 &menu_zoc_status_previous_received_keys_counter,&menu_zoc_status_cursor_received_keys,&menu_zoc_status_moving_received_keys);
@@ -2105,7 +2100,6 @@ void menu_zeng_online_status_window_overlay(void)
             zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Local keyboard %s ZENG Online Server",buffer_texto);
         }
 
-        char buffer_texto[ZOC_STATUS_LENGTH_STRING_LINK_BAR+1];
 
         //Alive packets
         menu_zoc_status_common_link_no_multiplier(buffer_texto,1,'>',zoc_common_alive_user_send_counter,
