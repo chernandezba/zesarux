@@ -1772,10 +1772,17 @@ int menu_zoc_status_cursor_sent_keys=0;
 //indica cuantas teclas enviando
 int menu_zoc_status_moving_sent_keys=0;
 
+int menu_zoc_status_previous_alive_user_sent_counter=0;
+//Posicion cursor
+int menu_zoc_status_cursor_alive_user_sent=0;
+//indica cuantas  enviando
+int menu_zoc_status_moving_alive_user_sent=0;
+
+
 int menu_zoc_status_previous_received_keys_counter=0;
 //Posicion cursor
 int menu_zoc_status_cursor_received_keys=ZOC_STATUS_LENGTH_STRING_LINK_BAR-1;
-//indica cuantas teclas enviando
+//indica cuantas teclas recibidno
 int menu_zoc_status_moving_received_keys=0;
 
 int menu_zoc_status_previous_pending_auth_counter=0;
@@ -1784,30 +1791,25 @@ int menu_zoc_status_cursor_pending_auth=ZOC_STATUS_LENGTH_STRING_LINK_BAR-1;
 //indica cuantas teclas enviando
 int menu_zoc_status_moving_pending_auth=0;
 
-int menu_zoc_status_previous_alive_user_sent_counter=0;
-//Posicion cursor
-int menu_zoc_status_cursor_alive_user_sent=0;
-//indica cuantas  enviando
-int menu_zoc_status_moving_alive_user_sent=0;
 
 
 int menu_zoc_status_previous_broadcast_messages_counter=0;
 //Posicion cursor
 int menu_zoc_status_cursor_broadcast_messages=ZOC_STATUS_LENGTH_STRING_LINK_BAR-1;
-//indica cuantas  enviando
+//indica cuantos recibiendo
 int menu_zoc_status_moving_broadcast_messages=0;
 
 int menu_zoc_status_previous_received_snapshots_counter=0;
 //Posicion cursor sera esta posicion / multiplicador
-int menu_zoc_status_cursor_received_snapshots_received=ZOC_STATUS_LENGTH_STRING_LINK_BAR-1;
+int menu_zoc_status_cursor_received_snapshots_received=(ZOC_STATUS_LENGTH_STRING_LINK_BAR-1)*2;
 
 int menu_zoc_status_previous_streaming_display_received_counter=0;
 //Posicion cursor sera esta posicion / multiplicador
-int menu_zoc_status_cursor_streaming_display_received=ZOC_STATUS_LENGTH_STRING_LINK_BAR-1;
+int menu_zoc_status_cursor_streaming_display_received=(ZOC_STATUS_LENGTH_STRING_LINK_BAR-1)*2;
 
 int menu_zoc_status_previous_streaming_audio_received_counter=0;
 //Posicion cursor sera esta posicion / multiplicador
-int menu_zoc_status_cursor_streaming_audio_received=ZOC_STATUS_LENGTH_STRING_LINK_BAR-1;
+int menu_zoc_status_cursor_streaming_audio_received=(ZOC_STATUS_LENGTH_STRING_LINK_BAR-1)*2;
 
 
 
