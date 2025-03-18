@@ -1764,6 +1764,9 @@ int menu_zoc_status_previous_streaming_display_sent_counter=0;
 //Posicion cursor sera esta posicion / multiplicador
 int menu_zoc_status_cursor_streaming_display_sent=0;
 
+int menu_zoc_status_previous_streaming_audio_sent_counter=0;
+//Posicion cursor sera esta posicion / multiplicador
+int menu_zoc_status_cursor_streaming_audio_sent=0;
 
 int menu_zoc_status_previous_streaming_audio_received_counter=0;
 //Posicion cursor sera esta posicion / multiplicador
@@ -1992,7 +1995,13 @@ void menu_zeng_online_status_window_overlay(void)
 
                 zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Local display  %s ZENG Online Server",buffer_texto);
 
-                /*zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Streaming displays sent: %d",zoc_send_streaming_display_counter);
+
+                //Barra de streaming audios sent
+                menu_zoc_status_common_left_link(buffer_texto,1,'>',zoc_send_streaming_audio_counter,
+                    &menu_zoc_status_previous_streaming_audio_sent_counter,&menu_zoc_status_cursor_streaming_audio_sent);
+
+                zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Local audio    %s ZENG Online Server",buffer_texto);
+                /*
 
                 zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Streaming audios sent: %d",zoc_send_streaming_audio_counter);*/
             }
