@@ -2001,6 +2001,10 @@ void menu_zeng_online_status_window_overlay(void)
         //
 
         char buffer_texto[ZOC_STATUS_LENGTH_STRING_LINK_BAR+1];
+                                                                // 0123456789012345678901234567890123456
+        zxvision_print_string_defaults_fillspc_format(w,1,linea++,"This ZEsarUX          ZENG Online Server",buffer_texto);
+        zxvision_print_string_defaults_fillspc_format(w,1,linea++,"    |                          |",buffer_texto);
+        zxvision_print_string_defaults_fillspc_format(w,1,linea++,"    |                          |",buffer_texto);
 
         if (zeng_online_i_am_master.v) {
             //Master
@@ -2010,14 +2014,14 @@ void menu_zeng_online_status_window_overlay(void)
                 menu_zoc_status_common_link(buffer_texto,1,'>',zoc_send_streaming_display_counter,
                     &menu_zoc_status_previous_streaming_display_sent_counter,&menu_zoc_status_cursor_streaming_display_sent);
 
-                zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Local display  %s ZENG Online Server",buffer_texto);
+                zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Display  %s  |",buffer_texto);
 
 
                 //Barra de streaming audios sent
                 menu_zoc_status_common_link(buffer_texto,1,'>',zoc_send_streaming_audio_counter,
                     &menu_zoc_status_previous_streaming_audio_sent_counter,&menu_zoc_status_cursor_streaming_audio_sent);
 
-                zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Local audio    %s ZENG Online Server",buffer_texto);
+                zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Audio    %s  |",buffer_texto);
 
             }
             else {
@@ -2031,7 +2035,7 @@ void menu_zeng_online_status_window_overlay(void)
                 menu_zoc_status_common_link(buffer_texto,1,'>',zoc_sent_snapshots_counter,
                     &menu_zoc_status_previous_sent_snapshots_counter,&menu_zoc_status_cursor_send_snapshots);
 
-                zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Local snapshot %s ZENG Online Server",buffer_texto);
+                zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Snapshot %s  |",buffer_texto);
 
 
 
@@ -2040,7 +2044,7 @@ void menu_zeng_online_status_window_overlay(void)
             menu_zoc_status_common_link_no_multiplier(buffer_texto,0,'<',zoc_get_pending_authorization_counter,
                 &menu_zoc_status_previous_pending_auth_counter,&menu_zoc_status_cursor_pending_auth,&menu_zoc_status_moving_pending_auth);
 
-            zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Local Pnd auth %s ZENG Online Server",buffer_texto);
+            zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Pnd auth %s  |",buffer_texto);
 
         }
         else {
@@ -2052,14 +2056,14 @@ void menu_zeng_online_status_window_overlay(void)
                 menu_zoc_status_common_link(buffer_texto,0,'<',zoc_streaming_display_received_counter,
                     &menu_zoc_status_previous_streaming_display_received_counter,&menu_zoc_status_cursor_streaming_display_received);
 
-                zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Local display  %s ZENG Online Server",buffer_texto);
+                zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Display  %s  |",buffer_texto);
 
 
                 //Barra de streaming audios received
                 menu_zoc_status_common_link(buffer_texto,0,'<',zoc_streaming_audio_received_counter,
                     &menu_zoc_status_previous_streaming_audio_received_counter,&menu_zoc_status_cursor_streaming_audio_received);
 
-                zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Local audio    %s ZENG Online Server",buffer_texto);
+                zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Audio    %s  |",buffer_texto);
 
 
             }
@@ -2070,7 +2074,7 @@ void menu_zeng_online_status_window_overlay(void)
                 menu_zoc_status_common_link(buffer_texto,0,'<',zoc_received_snapshot_counter,
                     &menu_zoc_status_previous_received_snapshots_counter,&menu_zoc_status_cursor_received_snapshots_received);
 
-                zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Local snapshot %s ZENG Online Server",buffer_texto);
+                zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Snapshot %s  |",buffer_texto);
             }
         }
 
@@ -2084,7 +2088,7 @@ void menu_zeng_online_status_window_overlay(void)
             menu_zoc_status_common_link_no_multiplier(buffer_texto,1,'>',zoc_keys_send_counter,
                 &menu_zoc_status_previous_sent_keys_counter,&menu_zoc_status_cursor_sent_keys,&menu_zoc_status_moving_sent_keys);
 
-            zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Local keyboard %s ZENG Online Server",buffer_texto);
+            zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Keyboard %s  |",buffer_texto);
         }
 
         //Solo recibe teclas:
@@ -2097,20 +2101,20 @@ void menu_zeng_online_status_window_overlay(void)
             menu_zoc_status_common_link_no_multiplier(buffer_texto,0,'<',zoc_get_keys_counter,
                 &menu_zoc_status_previous_received_keys_counter,&menu_zoc_status_cursor_received_keys,&menu_zoc_status_moving_received_keys);
 
-            zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Local keyboard %s ZENG Online Server",buffer_texto);
+            zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Keyboard %s  |",buffer_texto);
         }
 
 
         //Alive packets
         menu_zoc_status_common_link_no_multiplier(buffer_texto,1,'>',zoc_common_alive_user_send_counter,
             &menu_zoc_status_previous_alive_user_sent_counter,&menu_zoc_status_cursor_alive_user_sent,&menu_zoc_status_moving_alive_user_sent);
-        zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Local alive    %s ZENG Online Server",buffer_texto);
+        zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Alive    %s  |",buffer_texto);
 
 
         //Broadcast messages
         menu_zoc_status_common_link_no_multiplier(buffer_texto,0,'<',zoc_common_get_messages_received_counter,
             &menu_zoc_status_previous_broadcast_messages_counter,&menu_zoc_status_cursor_broadcast_messages,&menu_zoc_status_moving_broadcast_messages);
-        zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Local messages %s ZENG Online Server",buffer_texto);
+        zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Messages %s  |",buffer_texto);
 
     }
 
