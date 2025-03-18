@@ -1874,6 +1874,11 @@ struct s_menu_zoc_status_common_link_no_multiplier vars_broadcast_messages={
     0
 };
 
+struct s_menu_zoc_status_common_link_no_multiplier vars_send_snapshots_no_multiplier={
+    1,'>',
+    0,0,
+    0
+};
 
 
 //Para barras de enlace que se desplazan izquierda/derecha sin multiplicador, como keys sent o broadcast messages received
@@ -2051,7 +2056,13 @@ void menu_zeng_online_status_window_overlay(void)
 
 
             //Barra de snapshots sent
-            menu_zoc_status_common_link(buffer_texto,zoc_sent_snapshots_counter,&vars_send_snapshots);
+            //Si es modo streaming, usamos movimiento como el de send keys, o sea, que se mueve de punta a punta cuando hay 1 envio
+            if (created_room_streaming_mode) {
+                menu_zoc_status_common_link_no_multiplier(buffer_texto,zoc_sent_snapshots_counter,&vars_send_snapshots_no_multiplier);
+            }
+            else {
+                menu_zoc_status_common_link(buffer_texto,zoc_sent_snapshots_counter,&vars_send_snapshots);
+            }
             zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Snapshot %s  |",buffer_texto);
 
 
