@@ -1785,11 +1785,11 @@ int menu_zoc_status_cursor_received_keys=ZOC_STATUS_LENGTH_STRING_LINK_BAR-1;
 //indica cuantas teclas recibidno
 int menu_zoc_status_moving_received_keys=0;
 
-int menu_zoc_status_previous_pending_auth_counter=0;
+//int menu_zoc_status_previous_pending_auth_counter=0;
 //Posicion cursor
-int menu_zoc_status_cursor_pending_auth=ZOC_STATUS_LENGTH_STRING_LINK_BAR-1;
+//int menu_zoc_status_cursor_pending_auth=ZOC_STATUS_LENGTH_STRING_LINK_BAR-1;
 //indica cuantas teclas enviando
-int menu_zoc_status_moving_pending_auth=0;
+//int menu_zoc_status_moving_pending_auth=0;
 
 
 
@@ -1855,8 +1855,7 @@ struct s_menu_zoc_status_common_link vars_received_snapshots={
 
 //Para barras de enlace que se desplazan a la izquierda y con multiplicador
 //Como streaming displays, streaming audio etc
-void menu_zoc_status_common_link(char *buffer_texto,/*int direccion_derecha,char caracter_cursor,*/
-    int variable_estadistica,struct s_menu_zoc_status_common_link *vars/*int *valor_variable_estadistica_anterior,int *pos_cursor*/)
+void menu_zoc_status_common_link(char *buffer_texto,int variable_estadistica,struct s_menu_zoc_status_common_link *vars)
 {
     menu_zoc_status_print_link_bar(buffer_texto,ZOC_STATUS_LENGTH_STRING_LINK_BAR,
         (vars->pos_cursor)/ZOC_STATUS_MULTIPLIER_CURSOR,vars->caracter_cursor);
@@ -1895,6 +1894,72 @@ void menu_zoc_status_common_link(char *buffer_texto,/*int direccion_derecha,char
     vars->valor_variable_estadistica_anterior=variable_estadistica;
 }
 
+
+struct s_menu_zoc_status_common_link_no_multiplier {
+    int direccion_derecha;
+    char caracter_cursor;
+
+    int valor_variable_estadistica_anterior;
+    int pos_cursor;
+    int cantidad_movimiento;
+};
+
+struct s_menu_zoc_status_common_link_no_multiplier vars_pending_authorization={
+    0,'<',
+    0,ZOC_STATUS_LENGTH_STRING_LINK_BAR-1,
+    0
+};
+
+
+
+
+//Para barras de enlace que se desplazan izquierda/derecha sin multiplicador, como keys sent o broadcast messages received
+//y que se quedan moviendo hasta que llegan a un extremo
+void menu_zoc_status_common_link_no_multiplier(char *buffer_texto,/*int direccion_derecha,char caracter_cursor,*/
+    int variable_estadistica,/*int *valor_variable_estadistica_anterior,int *pos_cursor,int *cantidad_movimiento,*/
+    struct s_menu_zoc_status_common_link_no_multiplier *vars)
+{
+
+    menu_zoc_status_print_link_bar(buffer_texto,ZOC_STATUS_LENGTH_STRING_LINK_BAR,
+        vars->pos_cursor,vars->caracter_cursor);
+
+
+    if (vars->cantidad_movimiento) {
+
+        if (vars->direccion_derecha) {
+            //Mueve hacia la derecha
+            (vars->pos_cursor)++;
+            if ((vars->pos_cursor)==ZOC_STATUS_LENGTH_STRING_LINK_BAR) {
+                //ha enviado una tecla. meter cursor a posicion inicial y decrementar teclas restantes
+                (vars->cantidad_movimiento)--;
+                vars->pos_cursor=0;
+            }
+        }
+
+        else {
+            //Mueve hacia la izquierda
+            (vars->pos_cursor)--;
+            if ((vars->pos_cursor)<0) {
+                //ha enviado una tecla. meter cursor a posicion inicial y decrementar teclas restantes
+                (vars->cantidad_movimiento)--;
+                vars->pos_cursor=ZOC_STATUS_LENGTH_STRING_LINK_BAR-1;
+            }
+        }
+    }
+
+
+    if (variable_estadistica!=vars->valor_variable_estadistica_anterior) {
+        //Activar movimiento
+        //Decir cuantas teclas hay que enviar
+        vars->cantidad_movimiento +=variable_estadistica-(vars->valor_variable_estadistica_anterior);
+
+        //Limite visual de 10 en cola, para que no se quede mucho rato moviendose el cursor despues de haber liberado teclas
+        if ((vars->cantidad_movimiento)>10) vars->cantidad_movimiento=10;
+
+        //Contador anterior para saber cuando se envian nuevas
+        vars->valor_variable_estadistica_anterior=variable_estadistica;
+    }
+}
 
 
 //Para barras de enlace que se desplazan izquierda/derecha sin multiplicador, como keys sent o broadcast messages received
@@ -2088,8 +2153,9 @@ void menu_zeng_online_status_window_overlay(void)
 
             //Barra de Pending authorizations received
 
-            old_menu_zoc_status_common_link_no_multiplier(buffer_texto,0,'<',zoc_get_pending_authorization_counter,
-                &menu_zoc_status_previous_pending_auth_counter,&menu_zoc_status_cursor_pending_auth,&menu_zoc_status_moving_pending_auth);
+            //old_menu_zoc_status_common_link_no_multiplier(buffer_texto,0,'<',zoc_get_pending_authorization_counter,
+            //    &menu_zoc_status_previous_pending_auth_counter,&menu_zoc_status_cursor_pending_auth,&menu_zoc_status_moving_pending_auth);
+            menu_zoc_status_common_link_no_multiplier(buffer_texto,zoc_get_pending_authorization_counter,&vars_pending_authorization);
 
             zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Pnd auth %s  |",buffer_texto);
 
