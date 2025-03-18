@@ -1799,9 +1799,9 @@ int menu_zoc_status_cursor_broadcast_messages=ZOC_STATUS_LENGTH_STRING_LINK_BAR-
 //indica cuantos recibiendo
 int menu_zoc_status_moving_broadcast_messages=0;
 
-int menu_zoc_status_previous_received_snapshots_counter=0;
+//int menu_zoc_status_previous_received_snapshots_counter=0;
 //Posicion cursor sera esta posicion / multiplicador
-int menu_zoc_status_cursor_received_snapshots_received=(ZOC_STATUS_LENGTH_STRING_LINK_BAR-1)*2;
+//int menu_zoc_status_cursor_received_snapshots_received=(ZOC_STATUS_LENGTH_STRING_LINK_BAR-1)*2;
 
 //int menu_zoc_status_previous_streaming_display_received_counter=0;
 //Posicion cursor sera esta posicion / multiplicador
@@ -1841,6 +1841,12 @@ struct s_menu_zoc_status_common_link vars_received_streaming_display={
 };
 
 struct s_menu_zoc_status_common_link vars_received_streaming_audio={
+    0,'<',
+    0,(ZOC_STATUS_LENGTH_STRING_LINK_BAR-1)*2
+};
+
+
+struct s_menu_zoc_status_common_link vars_received_snapshots={
     0,'<',
     0,(ZOC_STATUS_LENGTH_STRING_LINK_BAR-1)*2
 };
@@ -1889,46 +1895,7 @@ void menu_zoc_status_common_link(char *buffer_texto,/*int direccion_derecha,char
     vars->valor_variable_estadistica_anterior=variable_estadistica;
 }
 
-//Para barras de enlace que se desplazan a la izquierda y con multiplicador
-//Como streaming displays, streaming audio etc
-void old_menu_zoc_status_common_link(char *buffer_texto,int direccion_derecha,char caracter_cursor,int variable_estadistica,int *valor_variable_estadistica_anterior,int *pos_cursor)
-{
-    menu_zoc_status_print_link_bar(buffer_texto,ZOC_STATUS_LENGTH_STRING_LINK_BAR,
-        (*pos_cursor)/ZOC_STATUS_MULTIPLIER_CURSOR,caracter_cursor);
 
-
-    //Ver diferencia entre contador anterior y actual
-    int diff=variable_estadistica-(*valor_variable_estadistica_anterior);
-
-    int max_pos=ZOC_STATUS_LENGTH_STRING_LINK_BAR*ZOC_STATUS_MULTIPLIER_CURSOR;
-
-    if (direccion_derecha) {
-        (*pos_cursor) +=diff;
-
-        if (*pos_cursor>max_pos) {
-            //Aparecer por la izquierda
-            *pos_cursor -=max_pos;
-
-            *pos_cursor %=max_pos;
-
-        }
-    }
-
-    else {
-
-        (*pos_cursor) -=diff;
-
-        if (*pos_cursor<0) {
-            //Aparecer por la derecha
-            *pos_cursor +=max_pos;
-
-            *pos_cursor %=max_pos;
-
-        }
-    }
-
-    *valor_variable_estadistica_anterior=variable_estadistica;
-}
 
 //Para barras de enlace que se desplazan izquierda/derecha sin multiplicador, como keys sent o broadcast messages received
 //y que se quedan moviendo hasta que llegan a un extremo
@@ -2153,8 +2120,9 @@ void menu_zeng_online_status_window_overlay(void)
                 //Modo no streaming
 
                 //Barra de snapshots received
-                old_menu_zoc_status_common_link(buffer_texto,0,'<',zoc_received_snapshot_counter,
-                    &menu_zoc_status_previous_received_snapshots_counter,&menu_zoc_status_cursor_received_snapshots_received);
+                //old_menu_zoc_status_common_link(buffer_texto,0,'<',zoc_received_snapshot_counter,
+                //    &menu_zoc_status_previous_received_snapshots_counter,&menu_zoc_status_cursor_received_snapshots_received);
+                menu_zoc_status_common_link(buffer_texto,zoc_received_snapshot_counter,&vars_received_snapshots);
 
                 zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Snapshot %s  |",buffer_texto);
             }
