@@ -1981,7 +1981,10 @@ void menu_zeng_online_status_window_overlay(void)
 
         int linea=0;
 
-        zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Joined as: %s",zeng_online_joined_as_text);
+        zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Joined as: %s. Streaming mode: %s",
+            zeng_online_joined_as_text,
+            (created_room_streaming_mode ? "Yes" : "No")
+        );
 
         if (zeng_online_i_am_master.v) {
             //Master
@@ -2197,8 +2200,8 @@ void menu_zeng_online_status_window(MENU_ITEM_PARAMETERS)
         int xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
         if (!util_find_window_geometry("zengonlinestatus",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
-            ancho_ventana=30;
-            alto_ventana=20;
+            ancho_ventana=43;
+            alto_ventana=29;
 
             xventana=menu_center_x()-ancho_ventana/2;
             yventana=menu_center_y()-alto_ventana/2;
