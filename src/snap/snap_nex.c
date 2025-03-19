@@ -82,6 +82,14 @@ void load_nex_snapshot_if_mount_exdos_folder(char *archivo)
 
     util_get_dir(archivo,esxdos_handler_root_dir);
 
+    //printf("esxdos_handler_root_dir: [%s]\n",esxdos_handler_root_dir);
+
+    //Si directorio vacio, es que es el directorio actual
+    if (esxdos_handler_root_dir[0]==0) {
+        getcwd(esxdos_handler_root_dir,PATH_MAX);
+        //printf("esxdos_handler_root_dir after adjust: [%s]\n",esxdos_handler_root_dir);
+    }
+
     //Ruta local a /
     esxdos_handler_cwd[0]=0;
 
