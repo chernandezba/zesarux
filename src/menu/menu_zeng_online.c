@@ -1734,13 +1734,13 @@ void menu_zeng_online_streaming_silence_detection(MENU_ITEM_PARAMETERS)
 
 
 //max_length sin contar el 0 del final
-void menu_zoc_status_print_link_bar(char *destino,int max_length,int position_cursor,char caracter_cursor)
+void menu_zoc_status_print_link_bar(char *destino,int max_length,int position_cursor,char caracter_cursor,char caracter_enlace)
 {
     int i;
 
     for (i=0;i<max_length;i++) {
         if (i==position_cursor) destino[i]=caracter_cursor;
-        else destino[i]='=';
+        else destino[i]=caracter_enlace;
     }
     destino[i]=0;
 }
@@ -1759,36 +1759,37 @@ struct s_menu_zoc_status_common_link {
 
     int valor_variable_estadistica_anterior;
     int pos_cursor;
+    int temporizador_enlace;
 };
 
 struct s_menu_zoc_status_common_link menu_zoc_status_vars_send_streaming_display={
     1,'>',
-    0,0
+    0,0,0
 };
 
 struct s_menu_zoc_status_common_link menu_zoc_status_vars_send_streaming_audio={
     1,'>',
-    0,0
+    0,0,0
 };
 
 struct s_menu_zoc_status_common_link menu_zoc_status_vars_send_snapshots={
     1,'>',
-    0,0
+    0,0,0
 };
 
 struct s_menu_zoc_status_common_link menu_zoc_status_vars_received_streaming_display={
     0,'<',
-    0,(ZOC_STATUS_LENGTH_STRING_LINK_BAR-1)*2
+    0,(ZOC_STATUS_LENGTH_STRING_LINK_BAR-1)*2,0
 };
 
 struct s_menu_zoc_status_common_link menu_zoc_status_vars_received_streaming_audio={
     0,'<',
-    0,(ZOC_STATUS_LENGTH_STRING_LINK_BAR-1)*2
+    0,(ZOC_STATUS_LENGTH_STRING_LINK_BAR-1)*2,0
 };
 
 struct s_menu_zoc_status_common_link menu_zoc_status_vars_received_snapshots={
     0,'<',
-    0,(ZOC_STATUS_LENGTH_STRING_LINK_BAR-1)*2
+    0,(ZOC_STATUS_LENGTH_STRING_LINK_BAR-1)*2,0
 };
 
 
@@ -1797,12 +1798,17 @@ struct s_menu_zoc_status_common_link menu_zoc_status_vars_received_snapshots={
 //Como streaming displays, streaming audio etc
 void menu_zoc_status_common_link(char *buffer_texto,int variable_estadistica,struct s_menu_zoc_status_common_link *vars)
 {
-    menu_zoc_status_print_link_bar(buffer_texto,ZOC_STATUS_LENGTH_STRING_LINK_BAR,
-        (vars->pos_cursor)/ZOC_STATUS_MULTIPLIER_CURSOR,vars->caracter_cursor);
+    char caracter_enlace='-';
 
 
     //Ver diferencia entre contador anterior y actual
     int diff=variable_estadistica-(vars->valor_variable_estadistica_anterior);
+
+    if (diff!=0) {
+        //Aguantarlo hasta 1 segundo (50 frames) despues de que haya actividad
+        //1 segundo suponiendo que esta ventana refresca 50 veces por segundo, que la hemos definido ya asi
+        vars->temporizador_enlace=50;
+    }
 
     int max_pos=ZOC_STATUS_LENGTH_STRING_LINK_BAR*ZOC_STATUS_MULTIPLIER_CURSOR;
 
@@ -1832,6 +1838,15 @@ void menu_zoc_status_common_link(char *buffer_texto,int variable_estadistica,str
     }
 
     vars->valor_variable_estadistica_anterior=variable_estadistica;
+
+
+    if (vars->temporizador_enlace) {
+        vars->temporizador_enlace--;
+        caracter_enlace='=';
+    }
+
+    menu_zoc_status_print_link_bar(buffer_texto,ZOC_STATUS_LENGTH_STRING_LINK_BAR,
+        (vars->pos_cursor)/ZOC_STATUS_MULTIPLIER_CURSOR,vars->caracter_cursor,caracter_enlace);
 }
 
 
@@ -1842,42 +1857,43 @@ struct s_menu_zoc_status_common_link_no_multiplier {
     int valor_variable_estadistica_anterior;
     int pos_cursor;
     int cantidad_movimiento;
+    int temporizador_enlace;
 };
 
 struct s_menu_zoc_status_common_link_no_multiplier menu_zoc_status_vars_pending_authorization={
     0,'<',
     0,ZOC_STATUS_LENGTH_STRING_LINK_BAR-1,
-    0
+    0,0
 };
 
 struct s_menu_zoc_status_common_link_no_multiplier menu_zoc_status_vars_keys_send={
     1,'>',
     0,0,
-    0
+    0,0
 };
 
 struct s_menu_zoc_status_common_link_no_multiplier menu_zoc_status_vars_keys_received={
     0,'<',
     0,ZOC_STATUS_LENGTH_STRING_LINK_BAR-1,
-    0
+    0,0
 };
 
 struct s_menu_zoc_status_common_link_no_multiplier menu_zoc_status_vars_alive_sent={
     1,'>',
     0,0,
-    0
+    0,0
 };
 
 struct s_menu_zoc_status_common_link_no_multiplier menu_zoc_status_vars_broadcast_messages={
     0,'<',
     0,ZOC_STATUS_LENGTH_STRING_LINK_BAR-1,
-    0
+    0,0
 };
 
 struct s_menu_zoc_status_common_link_no_multiplier menu_zoc_status_vars_send_snapshots_no_multiplier={
     1,'>',
     0,0,
-    0
+    0,0
 };
 
 
@@ -1886,12 +1902,14 @@ struct s_menu_zoc_status_common_link_no_multiplier menu_zoc_status_vars_send_sna
 void menu_zoc_status_common_link_no_multiplier(char *buffer_texto,int variable_estadistica,
     struct s_menu_zoc_status_common_link_no_multiplier *vars)
 {
-
-    menu_zoc_status_print_link_bar(buffer_texto,ZOC_STATUS_LENGTH_STRING_LINK_BAR,
-        vars->pos_cursor,vars->caracter_cursor);
+    char caracter_enlace='-';
 
 
     if (vars->cantidad_movimiento) {
+
+        //Aguantarlo hasta 1 segundo (50 frames) despues de que haya actividad
+        //1 segundo suponiendo que esta ventana refresca 50 veces por segundo, que la hemos definido ya asi
+        vars->temporizador_enlace=50;
 
         if (vars->direccion_derecha) {
             //Mueve hacia la derecha
@@ -1926,6 +1944,14 @@ void menu_zoc_status_common_link_no_multiplier(char *buffer_texto,int variable_e
         //Contador anterior para saber cuando se envian nuevas
         vars->valor_variable_estadistica_anterior=variable_estadistica;
     }
+
+    if (vars->temporizador_enlace) {
+        vars->temporizador_enlace--;
+        caracter_enlace='=';
+    }
+
+    menu_zoc_status_print_link_bar(buffer_texto,ZOC_STATUS_LENGTH_STRING_LINK_BAR,
+        vars->pos_cursor,vars->caracter_cursor,caracter_enlace);
 }
 
 
@@ -2028,6 +2054,9 @@ void menu_zeng_online_status_window_overlay(void)
         //Zona de barras de enlaces
         //
         //
+
+        zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Flows status:");
+        zxvision_print_string_defaults_fillspc_format(w,1,linea++,"");
 
         char buffer_texto[ZOC_STATUS_LENGTH_STRING_LINK_BAR+1];
                                                                 // 0123456789012345678901234567890123456
@@ -2209,7 +2238,6 @@ void menu_zeng_online_status_window(MENU_ITEM_PARAMETERS)
 
 
         switch (tecla) {
-
 
             //Salir con ESC
             case 2:
@@ -2423,7 +2451,7 @@ void menu_zeng_online(MENU_ITEM_PARAMETERS)
                 menu_add_item_menu_add_flags(array_menu_common,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
 
                 menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_status_window,NULL,
-                "ZENG Status Window","Ventana de Estado ZENG","Finestra d'Estat ZENG");
+                "Status Window","Ventana de Estado","Finestra d'Estat");
                 menu_add_item_menu_add_flags(array_menu_common,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
 
                 if (created_room_user_permissions & ZENG_ONLINE_PERMISSIONS_PUT_SNAPSHOT) {
