@@ -22,8 +22,6 @@ Para versión siguiente:
 -archivos de cintas que no se cierran en windows al expulsarlas
 
 
-
-
 -en daad debug, pulsar m de condmessage, sale dos veces (con cozumel 1 y inventario)
 
 
@@ -84,7 +82,6 @@ no genera codigo de tecla al pulsar esas extendidas
 -mejorar render paws/gac/daad/quill:
 *uso atributos igual que spectrum: 8x8 paper+tinta
 *implementar relleno: mapa de puntos rellenos, y mostrar con tramado adecuado. solo fill cuando ventana esté dirty (misma logica que Location Image o ZXLife por ejemplo). algoritmo relleno recursivo? habria que tener un mapa de pixeles de spectrum de 256x192 tal cual
-
 
 
 
@@ -199,7 +196,7 @@ cp /Users/cesarhernandez/Downloads/libretro-super/dist/osx-x86_64/skeleton_libre
 
 
 
--al insertar cintas parece que no se cierra menu, y antes creo que si que se hacia
+
 
 -quiza recordar ultimo ancho de ventana en void zxvision_generic_message_tooltip(,
 util por ejemplo para leer archivos de licencia,
@@ -386,7 +383,7 @@ Con speech cuando salen las diferentes opciones de un juego (tzx, tap etc) no se
 
 -modo 60 hz en atic atac, para next. Y quizá empezar con maquinas timex que tienen 60 hz, que tienen menos scanlines...
 
--ay player poder cargar playlist de archivo, grabar playlist
+
 
 -poder grabar a cinta desde MSX en archivo .cas. Revisar otras máquinas que se pueda hacer
 
@@ -406,7 +403,7 @@ Quiza se deberia controlar que las llamadas a *message no hagan nada si no esta 
 
 -vofile con output para archivo bitmap raw en blanco y negro, para posible enlace con pantalla e-ink
 
--callback sdl audio se usa el antiguo por defecto?
+
 
 -si tiene que avisar de nueva version disponible en github, parece que no sale aviso si salta un first aid de inicio (testeado en windows)
 

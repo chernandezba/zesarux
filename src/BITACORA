@@ -1,0 +1,18 @@
+20 Marzo 2025
+
+Aquí nace un nuevo archivo dentro de ZEsarUX, una bitácora de desarrollo con la intención de ir describiendo los cambios realizados en él.
+Es curioso que hasta ahora (y después de 12 años casi) no se me hubiera ocurrido; a decir verdad, la idea me la he "copiado" de Jane McKay,
+autora del emulador x128. Ella tiene una web donde va anotando los cambios realizados en su emulador.
+No sé si lo mantendré siempre y con qué frecuencia, pero creo que puede estar bien explicar ciertos cambios; en un futuro me puede servir
+para echar la vista atrás y saber qué andaba haciendo en fechas concretas. Alguno podría decir que eso ya me lo da git... pero sinceramente,
+git tiene muchas posibilidades pero prefiero depender lo mínimo de él. Además, no solo se trata de ver commits y cambios, se trata de explicar
+el por qué de esos cambios, o si corregir un fallo me ha costado mucho, etc. Iremos viendo...
+
+Por estrenar la primera entrada, ando mejorando la pantalla de Status de ZENG Online, donde manera "pseudo-gráfica" se ven los paquetes del
+protocolo ZENG Online como se van moviendo entre ZEsarUX y el servidor remoto (obviamente otro ZEsarUX, pero con el ZENG Online server activado).
+
+También he realizado los últimos cambios al hecho de poder mostrar el logo de ZEsarUX en pantalla sólo cuando se carga, y además, que las
+franjas de color de dicho logo cambien a medida que va cargando. Esto me vino como idea al ver a David Carrión, con su pantalla led, que tiene
+exactamente 256x192, donde no se ve ni el border ni el footer, y a veces no se sabe si una carga de un juego ha finalizado o no.
+Con estas nuevas opciones, ya se puede saber cuando se está cargando (obviamente se podría escuchar, si es una carga real, pero no siempre se oye
+cuando se está en un entorno ruidoso, como un evento retro)
