@@ -2493,7 +2493,7 @@ void menu_zeng_online(MENU_ITEM_PARAMETERS)
                 menu_add_item_menu_add_flags(array_menu_common,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
 
                 menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_status_window,NULL,
-                "ZENG Status Window","Ventana de Estado ZENG","Finestra d'Estat ZENG");
+                "Status Window","Ventana de Estado","Finestra d'Estat");
                 menu_add_item_menu_add_flags(array_menu_common,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
 
                 menu_add_item_menu_separator(array_menu_common);
