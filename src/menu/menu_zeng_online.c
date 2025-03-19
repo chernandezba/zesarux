@@ -1987,13 +1987,21 @@ void menu_zeng_online_status_window_overlay(void)
             //Master
             if (created_room_streaming_mode) {
                 //Modo streaming
+                int porcentaje_full_displays=0;
+                if (zoc_send_streaming_display_counter!=0) {
+                    porcentaje_full_displays=(zoc_generated_full_displays_counter*100)/zoc_send_streaming_display_counter;
+                }
                 zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Streaming displays sent: %d",zoc_send_streaming_display_counter);
-                zxvision_print_string_defaults_fillspc_format(w,1,linea++," Full: %d",zoc_generated_full_displays_counter);
-                zxvision_print_string_defaults_fillspc_format(w,1,linea++," Differential: %d",zoc_generated_differential_displays_counter);
+                zxvision_print_string_defaults_fillspc_format(w,1,linea++," Full: %d (%d %%)",zoc_generated_full_displays_counter,porcentaje_full_displays);
+                zxvision_print_string_defaults_fillspc_format(w,1,linea++," Differential: %d (%d %%)",zoc_generated_differential_displays_counter,100-porcentaje_full_displays);
 
+                int porcentaje_no_silence=0;
+                if (zoc_send_streaming_audio_counter!=0) {
+                    porcentaje_no_silence=(zoc_sent_streaming_audio_no_silence_counter*100)/zoc_send_streaming_audio_counter;
+                }
                 zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Streaming audios sent: %d",zoc_send_streaming_audio_counter);
-                zxvision_print_string_defaults_fillspc_format(w,1,linea++," No Silence: %d",zoc_sent_streaming_audio_no_silence_counter);
-                zxvision_print_string_defaults_fillspc_format(w,1,linea++," Silence: %d",zoc_sent_streaming_audio_silence_counter);
+                zxvision_print_string_defaults_fillspc_format(w,1,linea++," No Silence: %d (%d %%)",zoc_sent_streaming_audio_no_silence_counter,porcentaje_no_silence);
+                zxvision_print_string_defaults_fillspc_format(w,1,linea++," Silence: %d (%d %%)",zoc_sent_streaming_audio_silence_counter,100-porcentaje_no_silence);
             }
             else {
                 //Modo no streaming
