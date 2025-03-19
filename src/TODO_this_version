@@ -69,7 +69,7 @@ y se sigue escuchando la musica del juego online
 En diferentes roles (master/slave), en partida streaming o no, si se trae snapshot, o stream de video, o stream de audio
 ok *mostrar porcentajes de full/differential silence/nosilence de envio streaming
 *icono para zengonlinestatus
-*definir tamaño por defecto ventana
+ok *definir tamaño por defecto ventana
 
 Teclado en pantalla no va con Zeng online?
 ------
@@ -96,10 +96,4 @@ donde se queda la tarjeta al desconectarse
 
 -Modo streaming video para ql? Moviendo memoria de video
 
--Watermark que cambia al cargar
-*ok para real tape
-*ok con cinta estandar hacer tambien que se mueva, si se ha cargado algo en los ultimos segundos, mover barras
-*ok opcion que se pueda quitar esa rotacion
-*ok entrada en changelog
-*ok llamada a watermark_tell_loading desde cualquier dispositivo de carga y maquina (Ace load, microdrive, etc etc)
-*ok ""Rotate colors on load" -> on device activity
+

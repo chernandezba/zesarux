@@ -1,4 +1,4 @@
-ZEsarUX 12.1 - xxx edition. 22 January 2025
+ZEsarUX 12.1 - xxx edition. 19 March 2025
 
 
 * Improvements
@@ -10,7 +10,7 @@ Added conversion of ZX81 files P to P81, and P81 to P
 Allow to save text note on a ZSF snapshot
 Improved Windows timing and any other system using SDL video driver. Now uses SDL Timing
 Improved Mac timing by using native timer
-Improved Watermark Logo: can be shown only when loading, can change colors when loading
+Improved Watermark Logo: can be shown only when loading/saving, can change colors when loading/saving
 
 Improved Sinclair QL emulation:
 - Allow to increase Sinclair QL RAM size

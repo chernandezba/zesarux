@@ -54,8 +54,8 @@ Examples
 //Para obtener EMULATOR_NUMBER_VERSION se deberia usar siempre util_get_emulator_version_number
 #define EMULATOR_NUMBER_VERSION EMULATOR_VERSION
 
-#define EMULATOR_DATE "16 January 2025"
-#define EMULATOR_SHORT_DATE "16/01/2025"
+#define EMULATOR_DATE "19 March 2025"
+#define EMULATOR_SHORT_DATE "19/03/2025"
 #define EMULATOR_GAME_EDITION "xxx"
 #define EMULATOR_EDITION_NAME EMULATOR_GAME_EDITION " edition"
 #define ZESARUX_EXTRAS_HOST "github.com"
