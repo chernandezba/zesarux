@@ -42770,7 +42770,7 @@ void menu_process_f_functions_by_action_name(int id_funcion,int si_pulsado_icono
 	//char final_name[PATH_MAX];
     int indice_icono;
 
-    char buffer_mensaje[256];
+    //char buffer_mensaje[256];
 
 	switch (id_funcion)
 	{
