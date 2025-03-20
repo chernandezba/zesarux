@@ -6458,46 +6458,57 @@ void menu_ayplayer_start_playing_playlist(MENU_ITEM_PARAMETERS)
 
 void menu_ayplayer_load_playlist(MENU_ITEM_PARAMETERS)
 {
-    //Obtener nombre sistema operativo en ejecucion
-    //void util_get_operating_system_release(char *destino,int maximo)
-    //{
 
-    char *archivo="noname.pls";
 
-    int longitud_archivo=get_file_size(archivo);
+	char archivo_playlist[PATH_MAX];
+
+	char *filtros[2];
 
 
 
-    z80_byte *buffer_temporal=util_malloc(longitud_archivo+1,"Can not allocate memory for reading playlist");
-
-    int total_leidos=util_load_file_bytes((z80_byte *)buffer_temporal,archivo,longitud_archivo);
-
-    if (total_leidos<=0) return;
-
-    buffer_temporal[total_leidos]=0;
+    filtros[0]="pls";
+    filtros[1]=0;
 
 
-    //leer linea a linea
-    char buffer_linea[PATH_MAX+1];
 
-    char *mem=buffer_temporal;
+	if (menu_filesel("Select Playlist File",filtros,archivo_playlist)==1) {
 
 
-    do {
-        int leidos;
-        char *next_mem;
+        int longitud_archivo=get_file_size(archivo_playlist);
 
-        next_mem=util_read_line(mem,buffer_linea,total_leidos,PATH_MAX+1,&leidos);
-        printf("Reading playlist file, line: [%s]\n",buffer_linea);
-        total_leidos -=leidos;
+        z80_byte *buffer_temporal=util_malloc(longitud_archivo+1,"Can not allocate memory for reading playlist");
 
+        int total_leidos=util_load_file_bytes((z80_byte *)buffer_temporal,archivo_playlist,longitud_archivo);
 
-        mem=next_mem;
+        if (total_leidos<=0) return;
 
-    } while (total_leidos>0);
+        buffer_temporal[total_leidos]=0;
 
 
-    free(buffer_temporal);
+        //leer linea a linea
+        char buffer_linea[PATH_MAX+1];
+
+        char *mem=buffer_temporal;
+
+
+        do {
+            int leidos;
+            char *next_mem;
+
+            next_mem=util_read_line(mem,buffer_linea,total_leidos,PATH_MAX+1,&leidos);
+            debug_printf(VERBOSE_INFO,"Reading playlist file, line: [%s]",buffer_linea);
+            ay_player_add_file(buffer_linea);
+            total_leidos -=leidos;
+
+
+            mem=next_mem;
+
+        } while (total_leidos>0);
+
+
+        free(buffer_temporal);
+
+    }
 }
 
 void menu_ayplayer_save_playlist(MENU_ITEM_PARAMETERS)
