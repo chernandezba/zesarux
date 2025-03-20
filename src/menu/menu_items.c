@@ -6559,14 +6559,19 @@ void menu_ayplayer_edit_playlist(MENU_ITEM_PARAMETERS)
 
 
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_ayplayer_load_playlist,NULL,"Load playlist");
+        //menu_add_item_menu_add_flags(array_menu_common,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
+        menu_add_item_menu_add_flags(array_menu_common,MENU_ITEM_FLAG_GENERA_VENTANA);
 
         if (ay_player_playlist_get_total_elements()!=0) {
 
             menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_ayplayer_append_playlist,NULL,"Append playlist");
+            menu_add_item_menu_add_flags(array_menu_common,MENU_ITEM_FLAG_GENERA_VENTANA);
 
             menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_ayplayer_save_playlist,NULL,"Save playlist");
+            menu_add_item_menu_add_flags(array_menu_common,MENU_ITEM_FLAG_GENERA_VENTANA);
 
             menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_ayplayer_playlist_remove_all,NULL,"Clear playlist");
+            menu_add_item_menu_add_flags(array_menu_common,MENU_ITEM_FLAG_GENERA_VENTANA);
 
 
             menu_add_item_menu_separator(array_menu_common);
