@@ -6473,40 +6473,7 @@ void menu_ayplayer_load_playlist(MENU_ITEM_PARAMETERS)
 
 	if (menu_filesel("Select Playlist File",filtros,archivo_playlist)==1) {
 
-
-        int longitud_archivo=get_file_size(archivo_playlist);
-
-        z80_byte *buffer_temporal=util_malloc(longitud_archivo+1,"Can not allocate memory for reading playlist");
-
-        int total_leidos=util_load_file_bytes((z80_byte *)buffer_temporal,archivo_playlist,longitud_archivo);
-
-        if (total_leidos<=0) return;
-
-        buffer_temporal[total_leidos]=0;
-
-
-        //leer linea a linea
-        char buffer_linea[PATH_MAX+1];
-
-        char *mem=buffer_temporal;
-
-
-        do {
-            int leidos;
-            char *next_mem;
-
-            next_mem=util_read_line(mem,buffer_linea,total_leidos,PATH_MAX+1,&leidos);
-            debug_printf(VERBOSE_INFO,"Reading playlist file, line: [%s]",buffer_linea);
-            ay_player_add_file(buffer_linea);
-            total_leidos -=leidos;
-
-
-            mem=next_mem;
-
-        } while (total_leidos>0);
-
-
-        free(buffer_temporal);
+        ay_player_load_playlist(archivo_playlist);
 
     }
 }

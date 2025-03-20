@@ -2641,7 +2641,7 @@ void ay_player_playlist_remove_all(void)
 
     while (item_to_delete!=NULL) {
 
-        printf("Eliminando %s\n",item_to_delete->nombre);
+        debug_printf(VERBOSE_INFO,"Removing %s",item_to_delete->nombre);
 
         ay_player_playlist_item *next_item=item_to_delete->next_item;
 
@@ -2655,6 +2655,46 @@ void ay_player_playlist_remove_all(void)
     ay_player_playlist_total_elements=0;
 
     ay_player_first_item_playlist=NULL;
+
+}
+
+void ay_player_load_playlist(char *archivo_playlist)
+{
+
+    int longitud_archivo=get_file_size(archivo_playlist);
+
+    z80_byte *buffer_temporal=util_malloc(longitud_archivo+1,"Can not allocate memory for reading playlist");
+
+    int total_leidos=util_load_file_bytes((z80_byte *)buffer_temporal,archivo_playlist,longitud_archivo);
+
+    if (total_leidos<=0) return;
+
+    buffer_temporal[total_leidos]=0;
+
+
+    //leer linea a linea
+    char buffer_linea[PATH_MAX+1];
+
+    char *mem=buffer_temporal;
+
+
+    do {
+        int leidos;
+        char *next_mem;
+
+        next_mem=util_read_line(mem,buffer_linea,total_leidos,PATH_MAX+1,&leidos);
+        debug_printf(VERBOSE_INFO,"Reading playlist file, line: [%s]",buffer_linea);
+        ay_player_add_file(buffer_linea);
+        total_leidos -=leidos;
+
+
+        mem=next_mem;
+
+    } while (total_leidos>0);
+
+
+    free(buffer_temporal);
+
 
 }
 
