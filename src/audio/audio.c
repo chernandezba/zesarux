@@ -2698,6 +2698,46 @@ void ay_player_load_playlist(char *archivo_playlist)
 
 }
 
+void ay_player_save_playlist(char *destination_file)
+{
+
+
+    FILE *ptr_destination_file;
+
+    //Soporte para FatFS
+    FIL fil;        /* File object */
+    //FRESULT fr;     /* FatFs return code */
+
+    int in_fatfs;
+
+    if (zvfs_fopen_write(destination_file,&in_fatfs,&ptr_destination_file,&fil)<0) {
+        debug_printf (VERBOSE_ERR,"Can not open %s",destination_file);
+        return;
+    }
+
+
+    //Recorrer toda la playlist
+    ay_player_playlist_item *playitem=ay_player_first_item_playlist;
+
+    while (playitem!=NULL) {
+        char nombre_archivo[PATH_MAX+1]; //+1 para el salto de linea
+
+
+        sprintf(nombre_archivo,"%s\n",playitem->nombre);
+
+        int longitud_linea=strlen(nombre_archivo);
+        zvfs_fwrite(in_fatfs,(z80_byte *)nombre_archivo,longitud_linea,ptr_destination_file,&fil);
+
+        playitem=playitem->next_item;
+
+    }
+
+    zvfs_fclose(in_fatfs,ptr_destination_file,&fil);
+
+
+
+}
+
 void ay_player_playlist_get_item(int position,char *nombre)
 {
 

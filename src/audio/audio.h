@@ -311,6 +311,7 @@ extern void ay_player_playlist_remove(int position);
 extern void ay_player_playlist_remove_all(void);
 extern void ay_player_playlist_get_item(int position,char *nombre);
 extern void ay_player_load_playlist(char *archivo_playlist);
+extern void ay_player_save_playlist(char *destination_file);
 extern int ay_player_playlist_item_actual;
 extern char ay_player_filename_playing[];
 extern void ay_player_play_current_item(void);
