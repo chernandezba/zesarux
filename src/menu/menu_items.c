@@ -6576,6 +6576,17 @@ void menu_ayplayer_save_playlist(MENU_ITEM_PARAMETERS)
 
 }
 
+void menu_ayplayer_playlist_remove_all(MENU_ITEM_PARAMETERS)
+{
+
+
+    if (menu_confirm_yesno("Clear playlist")) {
+        ay_player_playlist_remove_all();
+        menu_generic_message_splash("Clear playlist","OK. Playlist has been cleared");
+    }
+
+}
+
 void menu_ayplayer_edit_playlist(MENU_ITEM_PARAMETERS)
 {
     menu_item *array_menu_common;
@@ -6603,10 +6614,12 @@ void menu_ayplayer_edit_playlist(MENU_ITEM_PARAMETERS)
 
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_ayplayer_load_playlist,NULL,"Load playlist");
 
-        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_ayplayer_save_playlist,NULL,"Save playlist");
-
-
         if (ay_player_playlist_get_total_elements()!=0) {
+
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_ayplayer_save_playlist,NULL,"Save playlist");
+
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_ayplayer_playlist_remove_all,NULL,"Clear playlist");
+
 
             menu_add_item_menu_separator(array_menu_common);
 

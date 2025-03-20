@@ -2633,6 +2633,31 @@ void ay_player_playlist_remove(int position)
 
 }
 
+void ay_player_playlist_remove_all(void)
+{
+
+    ay_player_playlist_item *item_to_delete=ay_player_first_item_playlist;
+
+
+    while (item_to_delete!=NULL) {
+
+        printf("Eliminando %s\n",item_to_delete->nombre);
+
+        ay_player_playlist_item *next_item=item_to_delete->next_item;
+
+        //Liberar memoria del current
+        free(item_to_delete);
+
+        item_to_delete=next_item;
+    }
+
+
+    ay_player_playlist_total_elements=0;
+
+    ay_player_first_item_playlist=NULL;
+
+}
+
 void ay_player_playlist_get_item(int position,char *nombre)
 {
 
