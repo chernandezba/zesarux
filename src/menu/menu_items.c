@@ -6459,22 +6459,65 @@ void menu_ayplayer_start_playing_playlist(MENU_ITEM_PARAMETERS)
 void menu_ayplayer_save_playlist(MENU_ITEM_PARAMETERS)
 {
 
-    //Recorrer toda la playlist
-    ay_player_playlist_item *playitem=ay_player_first_item_playlist;
+	char destination_file[PATH_MAX];
 
-    while (playitem!=NULL) {
-        char nombre_archivo[PATH_MAX];
-
-        util_get_file_no_directory(playitem->nombre,nombre_archivo);
-
-        printf("%s\n",nombre_archivo);
+	char *filtros[2];
 
 
-        playitem=playitem->next_item;
+
+    filtros[0]="pls";
+    filtros[1]=0;
+
+
+
+	if (menu_filesel_save("Select Playlist File",filtros,destination_file)==1) {
+
+		//Ver si archivo existe y preguntar
+
+		if (si_existe_archivo(destination_file)) {
+
+			if (menu_confirm_yesno_texto("File exists","Overwrite?")==0) return;
+
+		}
+
+
+
+        FILE *ptr_destination_file;
+
+        //Soporte para FatFS
+        FIL fil;        /* File object */
+        //FRESULT fr;     /* FatFs return code */
+
+        int in_fatfs;
+
+        if (zvfs_fopen_write(destination_file,&in_fatfs,&ptr_destination_file,&fil)<0) {
+            debug_printf (VERBOSE_ERR,"Can not open %s",destination_file);
+            return;
+        }
+
+
+        //Recorrer toda la playlist
+        ay_player_playlist_item *playitem=ay_player_first_item_playlist;
+
+        while (playitem!=NULL) {
+            char nombre_archivo[PATH_MAX+1]; //+1 para el salto de linea
+
+
+            sprintf(nombre_archivo,"%s\n",playitem->nombre);
+
+            int longitud_linea=strlen(nombre_archivo);
+            zvfs_fwrite(in_fatfs,(z80_byte *)nombre_archivo,longitud_linea,ptr_destination_file,&fil);
+
+            playitem=playitem->next_item;
+
+        }
+
+        zvfs_fclose(in_fatfs,ptr_destination_file,&fil);
+
+        //Si ha ido bien la grabacion
+        if (!if_pending_error_message) menu_generic_message_splash("Save Playlist","OK. Playlist saved");
 
     }
-
-
 
 }
 
