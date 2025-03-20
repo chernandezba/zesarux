@@ -6456,6 +6456,28 @@ void menu_ayplayer_start_playing_playlist(MENU_ITEM_PARAMETERS)
     ay_player_play_this_item(0);
 }
 
+void menu_ayplayer_save_playlist(MENU_ITEM_PARAMETERS)
+{
+
+    //Recorrer toda la playlist
+    ay_player_playlist_item *playitem=ay_player_first_item_playlist;
+
+    while (playitem!=NULL) {
+        char nombre_archivo[PATH_MAX];
+
+        util_get_file_no_directory(playitem->nombre,nombre_archivo);
+
+        printf("%s\n",nombre_archivo);
+
+
+        playitem=playitem->next_item;
+
+    }
+
+
+
+}
+
 void menu_ayplayer_edit_playlist(MENU_ITEM_PARAMETERS)
 {
     menu_item *array_menu_common;
@@ -6479,6 +6501,8 @@ void menu_ayplayer_edit_playlist(MENU_ITEM_PARAMETERS)
         }
 
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_ayplayer_add_directory_playlist,NULL,"Add directory");
+
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_ayplayer_save_playlist,NULL,"Save playlist");
 
 
         if (ay_player_playlist_get_total_elements()!=0) {
