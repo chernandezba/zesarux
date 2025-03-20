@@ -6456,6 +6456,50 @@ void menu_ayplayer_start_playing_playlist(MENU_ITEM_PARAMETERS)
     ay_player_play_this_item(0);
 }
 
+void menu_ayplayer_load_playlist(MENU_ITEM_PARAMETERS)
+{
+    //Obtener nombre sistema operativo en ejecucion
+    //void util_get_operating_system_release(char *destino,int maximo)
+    //{
+
+    char *archivo="noname.pls";
+
+    int longitud_archivo=get_file_size(archivo);
+
+
+
+    z80_byte *buffer_temporal=util_malloc(longitud_archivo+1,"Can not allocate memory for reading playlist");
+
+    int total_leidos=util_load_file_bytes((z80_byte *)buffer_temporal,archivo,longitud_archivo);
+
+    if (total_leidos<=0) return;
+
+    buffer_temporal[total_leidos]=0;
+
+
+    //leer linea a linea
+    char buffer_linea[PATH_MAX+1];
+
+    char *mem=buffer_temporal;
+
+
+    do {
+        int leidos;
+        char *next_mem;
+
+        next_mem=util_read_line(mem,buffer_linea,total_leidos,PATH_MAX+1,&leidos);
+        printf("Reading playlist file, line: [%s]\n",buffer_linea);
+        total_leidos -=leidos;
+
+
+        mem=next_mem;
+
+    } while (total_leidos>0);
+
+
+    free(buffer_temporal);
+}
+
 void menu_ayplayer_save_playlist(MENU_ITEM_PARAMETERS)
 {
 
@@ -6544,6 +6588,9 @@ void menu_ayplayer_edit_playlist(MENU_ITEM_PARAMETERS)
         }
 
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_ayplayer_add_directory_playlist,NULL,"Add directory");
+
+
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_ayplayer_load_playlist,NULL,"Load playlist");
 
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_ayplayer_save_playlist,NULL,"Save playlist");
 
