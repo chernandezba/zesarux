@@ -2776,14 +2776,7 @@ void ay_player_set_random_item(void)
 {
     int total_elements=ay_player_playlist_get_total_elements();
 
-    ay_randomize(0);
-
-    int valor_random=randomize_noise[0];
-
-    //un poco mas aleatorio
-    //como util_random_noise es valor en ms de tiempo pulsado tecla o raton, habitualmente
-    //esto ira de 0 a 1000
-    valor_random +=util_random_noise;
+    int valor_random=util_get_random();
 
     //Por si acaso evitar división por cero
     if (total_elements==0) ay_player_playlist_item_actual=0;
