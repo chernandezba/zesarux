@@ -6466,7 +6466,7 @@ void menu_ayplayer_append_playlist(MENU_ITEM_PARAMETERS)
 
 
 
-    filtros[0]="pls";
+    filtros[0]="m3u";
     filtros[1]=0;
 
 
@@ -6506,7 +6506,7 @@ void menu_ayplayer_save_playlist(MENU_ITEM_PARAMETERS)
 
 
 
-    filtros[0]="pls";
+    filtros[0]="m3u";
     filtros[1]=0;
 
 
