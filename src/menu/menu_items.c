@@ -42770,6 +42770,8 @@ void menu_process_f_functions_by_action_name(int id_funcion,int si_pulsado_icono
 	//char final_name[PATH_MAX];
     int indice_icono;
 
+    char buffer_mensaje[256];
+
 	switch (id_funcion)
 	{
 		case F_FUNCION_DEFAULT:
@@ -42998,6 +43000,24 @@ void menu_process_f_functions_by_action_name(int id_funcion,int si_pulsado_icono
 
         case F_FUNCION_AYPLAYER:
             menu_audio_new_ayplayer(0);
+        break;
+
+        case F_FUNCION_VOLUME_DECREMENT:
+            audiovolume -=10;
+            if (audiovolume<=0) audiovolume=0;
+
+            //Parece que no se ve mensaje de splash porque se abre y se cierra el menu
+            //sprintf(buffer_mensaje,"Volume set to %d %%",audiovolume);
+            //screen_print_splash_text_center_no_if_previous(ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,buffer_mensaje);
+
+            //Lo mismo pasa con mensajes en el footer
+            //sprintf(buffer_mensaje,"V%d",audiovolume);
+            //generic_footertext_print_operating(buffer_mensaje);
+        break;
+
+        case F_FUNCION_VOLUME_INCREMENT:
+            audiovolume +=10;
+            if (audiovolume>=100) audiovolume=100;
         break;
 
         case F_FUNCION_COLOUR_PALETTES:

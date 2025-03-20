@@ -12,6 +12,7 @@ Permitir cargar y grabar lista de reproducción del AY Player
 Mejorada temporización en Windows y otros sistemas que usen driver de video SDL. Ahora usa temporización de SDL
 Mejorada temporización en Mac usando temporizador nativo
 Mejoado logo de marca de agua: puede mostrarse sólo al cargar/grabar, puede cambiar colores al cargar/grabar
+Agregadas funciones directas para aumentar/reducir el Volumen del Sonido
 
 Mejorada emulación de Sinclair QL:
 - Permitir aumentar tamaño RAM de Sinclair QL

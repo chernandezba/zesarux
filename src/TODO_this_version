@@ -102,6 +102,10 @@ donde se queda la tarjeta al desconectarse
 --ay player poder cargar playlist de archivo, grabar playlist
 ok *permitir cargar playlist desde linea de comandos
 ok *mejorar random del ay player (para sl shuffle) usando el mismo algoritmo que zxlife y otros
+*muchos archivos ay de la carpeta de demos de spectrum no cargan. ejemplo: thelyra2demo05,icecreammain.ay
 
 -Audio sdl callback esta por defecto el old callback o el new? depende de si windows o linux.
 Ver comentarios en el código donde está explicado
+
+-tecla F para reducir/aumentar volumen en 10%
+*icono para aumentar y reducir

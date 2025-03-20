@@ -9326,7 +9326,10 @@ void menu_settings_danger_zone_timer(MENU_ITEM_PARAMETERS)
 void menu_settings_danger_zone(MENU_ITEM_PARAMETERS)
 {
 
-    menu_warn_message("This is DANGER ZONE. Be careful changing these parameters as ZEsarUX could stop working normally!!! You have been warned");
+    //No mostrar este mensaje si estamos en un full rescan del indice de busqueda
+    if (!menu_dibuja_menu_recorrer_menus) {
+        menu_warn_message("This is DANGER ZONE. Be careful changing these parameters as ZEsarUX could stop working normally!!! You have been warned");
+    }
 
     menu_item *array_menu_common;
     menu_item item_seleccionado;
