@@ -2684,7 +2684,7 @@ void ay_player_load_playlist(char *archivo_playlist)
 
         next_mem=util_read_line(mem,buffer_linea,total_leidos,PATH_MAX+1,&leidos);
         debug_printf(VERBOSE_INFO,"Reading playlist file, line: [%s]",buffer_linea);
-        ay_player_add_file(buffer_linea);
+        ay_player_playlist_add(buffer_linea);
         total_leidos -=leidos;
 
 

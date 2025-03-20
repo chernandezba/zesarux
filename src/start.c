@@ -791,6 +791,7 @@ printf (
 		"--audiovolume n                  Sets the audio output volume to percentage n\n"
 		"--zx8081vsyncsound               Enable vsync/tape sound on ZX80/81\n"
         "--ayplayer-add-dir d             Add directory containing AY files to playlist\n"
+        "--ayplayer-load-playlist f       Load playlist file\n"
         "--ayplayer-start-playlist        Start playing playlist when start ZEsarUX\n"
         "--ayplayer-shuffle               Random playback\n"
         "--ayplayer-no-silence-detection  Do not jump to next track if silence detected during 10 seconds\n"
@@ -5394,6 +5395,11 @@ int parse_cmdline_options(int desde_commandline) {
             else if (!strcmp(argv[puntero_parametro],"--ayplayer-add-dir")) {
                 siguiente_parametro_argumento();
                 ay_player_add_directory_playlist(argv[puntero_parametro]);
+            }
+
+            else if (!strcmp(argv[puntero_parametro],"--ayplayer-load-playlist")) {
+                siguiente_parametro_argumento();
+                ay_player_load_playlist(argv[puntero_parametro]);
             }
 
             else if (!strcmp(argv[puntero_parametro],"--ayplayer-start-playlist")) {
