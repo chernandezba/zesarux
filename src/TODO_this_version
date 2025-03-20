@@ -102,4 +102,5 @@ donde se queda la tarjeta al desconectarse
 --ay player poder cargar playlist de archivo, grabar playlist
 
 
--Audio sdl callback esta por defecto el old callback o el new?
+-Audio sdl callback esta por defecto el old callback o el new? depende de si windows o linux.
+Ver comentarios en el código donde está explicado

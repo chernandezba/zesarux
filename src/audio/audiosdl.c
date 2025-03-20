@@ -339,21 +339,26 @@ Este callback soluciona los problemas de "clicks" en windows (y en algunos linux
 
 el problema con el sonido en windows tiene su origen en el windows propiamente y también en la manera como estaba enviando yo el sonido
 lo resumo de manera rápida:
--en el driver de audio sdl (el que uso en windows, y que también puedes usar en linux) es el propio driver el que llama a una función, que defino de mi código de ZEsarUX, cuando "necesita" enviar mas sonido
+-en el driver de audio sdl (el que uso en windows, y que también puedes usar en linux) es el propio driver el que llama a una función,
+que defino de mi código de ZEsarUX, cuando "necesita" enviar mas sonido
 o sea, te dice "oye necesito 10ms de sonido, dámelos"
 ese sonido yo lo tengo pre-generado en otro sitio, desde el bucle de emulación de la cpu
 y aquí pueden suceder dos cosas:
 1) que ese buffer que yo tengo pre-generado tenga ya al menos esos 10ms de sonido, por tanto le paso el trozo que me pide. hasta aqui ok
-2) que ese buffer que yo tengo pre-generado no tenga aun 10ms de sonido, que haya menos. hasta ahora lo que yo hacia era: no te doy nada de sonido. con lo que el driver estaba enviando silencio (los clicks)
+2) que ese buffer que yo tengo pre-generado no tenga aun 10ms de sonido, que haya menos.
+hasta ahora lo que yo hacia era: no te doy nada de sonido. con lo que el driver estaba enviando silencio (los clicks)
 ahora el caso 2) con el nuevo callback hace otra cosa: te envío el mismo sonido que te había enviado antes
 
-por tanto, eso se puede llegar  a apreciar con musica funcionando, no hay clicks pero te puede sonar raro a veces. es verdad que esos fragmentos son muy cortos (menos de 10ms realmente) y cuesta apreciarlos
+por tanto, eso se puede llegar  a apreciar con musica funcionando, no hay clicks pero te puede sonar raro a veces.
+es verdad que esos fragmentos son muy cortos (menos de 10ms realmente) y cuesta apreciarlos
 
 ese caso 2 lo estaba gestionando mal, pero también es verdad que en linux (en maquina fisica) no me solia suceder (aunque si en maquina virtual)
 
-por qué no sucedia en linux? porque linux gestiona mucho mejor las temporalizaciones que en windows, por tanto, el linux físico cuando me pedia ese trocito de sonido yo ya lo tenia generado, porque todo va mas "a su tiempo justo"
+por qué no sucedia en linux? porque linux gestiona mucho mejor las temporalizaciones que en windows, por tanto,
+el linux físico cuando me pedia ese trocito de sonido yo ya lo tenia generado, porque todo va mas "a su tiempo justo"
 
-pero windows parece que no, cuando el driver de sonido me pedia sonid, mi bucle de emulacion aún no había llegado a ese punto (por error en las temporalizaciones de windows) y de ahí que se manifestase ese problema en el audio (el underrun se llama)
+pero windows parece que no, cuando el driver de sonido me pedia sonido, mi bucle de emulacion aún no había llegado a ese punto
+(por error en las temporalizaciones de windows) y de ahí que se manifestase ese problema en el audio (el underrun se llama)
 
 viendo código de otros emuladores que usan sdl vi varias maneras de gestionar eso
 
