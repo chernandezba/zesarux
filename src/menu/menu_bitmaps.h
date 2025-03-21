@@ -70,6 +70,8 @@ extern char *bitmap_button_ext_desktop_ayplayer_next_track[];
 extern char *bitmap_button_ext_desktop_ayplayer_next_file[];
 extern char *bitmap_button_ext_desktop_ayplayer_previous_track[];
 extern char *bitmap_button_ext_desktop_ayplayer_previous_file[];
+extern char *bitmap_button_ext_desktop_volume_increment[];
+extern char *bitmap_button_ext_desktop_volume_decrement[];
 extern char *bitmap_button_ext_desktop_colour_palettes[];
 extern char *bitmap_button_ext_desktop_reset[];
 extern char *bitmap_button_ext_desktop_hardreset[];

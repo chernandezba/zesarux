@@ -4051,6 +4051,35 @@ char *bitmap_button_ext_desktop_visualfloppy[EXT_DESKTOP_BUTTONS_ANCHO]={
 	"          xxxxxx          " 	//25
 };
 
+char *bitmap_button_ext_desktop_volume_increment[EXT_DESKTOP_BUTTONS_ANCHO]={
+   //01234567890123456789012345
+    "          wwwwww          ",//0
+  	"       wwwwwwwwwwww       ",
+	"     wwwwwwwwwwwwwwww     ",
+	"    wwwwwwwwwwwwwwwwww    ",
+	"   wwwwwwwwwwwwwwwwwwww   ",
+	"   wwwwwwwwwwwwwwwwwwww   ",
+	"  wwwwwwwwwwwwwwwwwwwwww  ",
+	"  wwwwwwwwwwwwwwwwwwwwww  ",
+	"  wwwwwwwwwwwwwwwwwwwwww  ",
+	" wwwwwwwwwwwwwwwwwwwwwwww ",
+	" wwwwwwwwwwwwwwwwwwwwwwww ",	//10
+	" wwwwwwwwwwwwwwwwwwwwwwww ",
+	" wwwwwwwwwwwwwwwwwwwwwwww ",
+	" wwwwwwwwwwwwwwwwwwwwwwww ",
+	" wwwwwwwwwwwwwwwwwwwwwwww ",
+	"  wwwwwwwwwwwwwwwwwwwwww  ",
+	"  wwwwwwwwwwwwwwwwwwwwww  ",
+	"  wwwwwwwwwwwwwwwwwwwwww  ",
+	"   wwwwwwwwwwwwwwwwwwww   ",
+	"   wwwwwwwwwwwwwwwwwwww   ",
+	"    wwwwwwwwwwwwwwwwww    ", //20
+	"     wwwwwwwwwwwwwwww     ",
+	"       wwwwwwwwwwww       ",
+	"          wwwwww          ",
+	"                          ",
+    "                          " 	//25
+};
 
 char *bitmap_button_ext_desktop_debugcpu_view_adventure[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345
