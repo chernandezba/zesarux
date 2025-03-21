@@ -195,7 +195,7 @@ defined_f_function defined_direct_functions_array[MAX_F_FUNCTIONS]={
     {"AYPlayerNextFile",F_FUNCION_AYPLAYER_NEXT_FILE,bitmap_button_ext_desktop_ayplayer_next_file,""},
     {"AYPlayerPrevFile",F_FUNCION_AYPLAYER_PREVIOUS_FILE,bitmap_button_ext_desktop_ayplayer_previous_file,""},
     {"AYPlayerPause",F_FUNCION_AYPLAYER_PAUSE,bitmap_button_ext_desktop_ayplayer_pause,""},
-    {"VolumeDecrement",F_FUNCION_VOLUME_DECREMENT,bitmap_button_ext_desktop_userdefined,""},
+    {"VolumeDecrement",F_FUNCION_VOLUME_DECREMENT,bitmap_button_ext_desktop_volume_decrement,""},
     {"VolumeIncrement",F_FUNCION_VOLUME_INCREMENT,bitmap_button_ext_desktop_volume_increment,""},
     //menu display
     {"ColourPalettes",F_FUNCION_COLOUR_PALETTES,bitmap_button_ext_desktop_colour_palettes,"displaypalettes"},
