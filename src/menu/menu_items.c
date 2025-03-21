@@ -6258,14 +6258,14 @@ void menu_audio_new_ayplayer_load(MENU_ITEM_PARAMETERS)
 void menu_audio_new_ayplayer_prev(MENU_ITEM_PARAMETERS)
 {
 	ay_player_previous_track();
-    ayplayer_force_refresh=1;
+    //ayplayer_force_refresh=1;
 
 }
 
 void menu_audio_new_ayplayer_next(MENU_ITEM_PARAMETERS)
 {
 	ay_player_next_track();
-    ayplayer_force_refresh=1;
+    //ayplayer_force_refresh=1;
 
 }
 
@@ -6353,13 +6353,13 @@ void menu_ayplayer_detect_silence(MENU_ITEM_PARAMETERS)
 void menu_ayplayer_next_file(MENU_ITEM_PARAMETERS)
 {
     ay_player_next_file();
-    ayplayer_force_refresh=1;
+    //ayplayer_force_refresh=1;
 }
 
 void menu_ayplayer_previous_file(MENU_ITEM_PARAMETERS)
 {
     ay_player_previous_file();
-    ayplayer_force_refresh=1;
+    //ayplayer_force_refresh=1;
 }
 
 /*
@@ -43000,6 +43000,26 @@ void menu_process_f_functions_by_action_name(int id_funcion,int si_pulsado_icono
 
         case F_FUNCION_AYPLAYER:
             menu_audio_new_ayplayer(0);
+        break;
+
+        case F_FUNCION_AYPLAYER_PREVIOUS_TRACK:
+            ay_player_previous_track();
+        break;
+
+        case F_FUNCION_AYPLAYER_NEXT_TRACK:
+            ay_player_next_track();
+        break;
+
+        case F_FUNCION_AYPLAYER_PREVIOUS_FILE:
+            ay_player_previous_file();
+        break;
+
+        case F_FUNCION_AYPLAYER_NEXT_FILE:
+            ay_player_next_file();
+        break;
+
+        case F_FUNCION_AYPLAYER_PAUSE:
+            ay_player_pause_unpause();
         break;
 
         case F_FUNCION_VOLUME_DECREMENT:

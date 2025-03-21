@@ -2675,7 +2675,7 @@ void ay_player_load_playlist(char *archivo_playlist)
     //leer linea a linea
     char buffer_linea[PATH_MAX+1];
 
-    char *mem=buffer_temporal;
+    char *mem=(char *)buffer_temporal;
 
 
     do {
@@ -2833,6 +2833,8 @@ void ay_player_next_file(void)
         }
 
     }
+
+    ayplayer_force_refresh=1;
 }
 
 void ay_player_previous_file(void)
@@ -2844,6 +2846,8 @@ void ay_player_previous_file(void)
     }
 
     ay_player_play_current_item();
+
+    ayplayer_force_refresh=1;
 
 
 }
@@ -2891,6 +2895,8 @@ void ay_player_next_track(void)
 	}
 
 	audio_ay_player_play_song(ay_player_pista_actual);
+
+    ayplayer_force_refresh=1;
 }
 
 
@@ -2903,6 +2909,8 @@ void ay_player_previous_track (void)
 	else ay_player_pista_actual--;
 
 	audio_ay_player_play_song(ay_player_pista_actual);
+
+    ayplayer_force_refresh=1;
 }
 
 //A los 10 segundos de silencio, saltar siguiente pista

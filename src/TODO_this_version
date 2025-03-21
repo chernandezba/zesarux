@@ -110,5 +110,17 @@ Ver comentarios en el código donde está explicado
 -tecla F para reducir/aumentar volumen en 10%
 *icono para aumentar y reducir
 
--tecla F para siguiente/anterior pista en ay player
--tecla F para siguiente/anterior archivo en ay player
+AY Player
+ok-tecla F para siguiente/anterior pista en ay player
+ok-tecla F para siguiente/anterior archivo en ay player
+*tecla para agregar archivo a favoritos, generando una playlist de favoritos que se puede luego guardar
+*poder generar archivos ay?
+*parece que no calcula correctamente tiempos en algunas canciones, saca algo menos. Por ejemplo toi acid game pista 9 (la musica de intro de la primera y segunda parte)
+Parece que esos de toi estan mal definidos, dura unos 3 segundos mas
+->Parametro para poder sumar tiempo a las canciones. Tocar en ay_player_playing_timer, if (ay_song_length_counter>ay_song_length+Incremento) {
+*Video ay player con todas nuevas features
+
+
+
+-Al dejar una ventana con items de menu, en background, se deberia quitar el color del item seleccionado. Si no parece que esa ventana esta activa.
+Ejemplo con AY Player

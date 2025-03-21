@@ -190,6 +190,11 @@ defined_f_function defined_direct_functions_array[MAX_F_FUNCTIONS]={
     {"Waveform",F_FUNCION_WAVEFORM,bitmap_button_ext_desktop_waveform,"waveform"},
     {"AYMixer",F_FUNCION_AYMIXER,bitmap_button_ext_desktop_aymixer,""},
     {"AYPlayer",F_FUNCION_AYPLAYER,bitmap_button_ext_desktop_ayplayer,"ayplayer"},
+    {"AYPlayerNextTrack",F_FUNCION_AYPLAYER_NEXT_TRACK,bitmap_button_ext_desktop_ayplayer_next_track,""},
+    {"AYPlayerPrevTrack",F_FUNCION_AYPLAYER_PREVIOUS_TRACK,bitmap_button_ext_desktop_ayplayer_previous_track,""},
+    {"AYPlayerNextFile",F_FUNCION_AYPLAYER_NEXT_FILE,bitmap_button_ext_desktop_ayplayer_next_file,""},
+    {"AYPlayerPrevFile",F_FUNCION_AYPLAYER_PREVIOUS_FILE,bitmap_button_ext_desktop_ayplayer_previous_file,""},
+    {"AYPlayerPause",F_FUNCION_AYPLAYER_PAUSE,bitmap_button_ext_desktop_ayplayer_pause,""},
     {"VolumeDecrement",F_FUNCION_VOLUME_DECREMENT,bitmap_button_ext_desktop_userdefined,""},
     {"VolumeIncrement",F_FUNCION_VOLUME_INCREMENT,bitmap_button_ext_desktop_userdefined,""},
     //menu display

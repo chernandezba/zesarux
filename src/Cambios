@@ -1,18 +1,24 @@
 ZEsarUX 12.1 - xxx edition. 19 Marzo 2025
 
-
-* Mejoras
+* Cosas nuevas agregadas:
 
 Agregado modo Streaming a ZENG Online para ZX Spectrum. Mejora la experiencia de juego: reduce lag y elimina cualquier inconsistencia de estado de juego en todos los jugadores
-Mejorado máximo de teclas enviado a ZENG/ZENG Online
-Permitir grabar pantalla de ZX80/81 a archivo .scr
 Agregada conversión de archivos ZX81 P a P81, y P81 a P
+Agregadas funciones directas para aumentar/reducir el Volumen del Sonido
+Permitir grabar pantalla de ZX80/81 a archivo .scr
 Permitir grabar una nota de texto en un snapshot ZSF
-Permitir cargar y grabar lista de reproducción del AY Player
+
+* Mejoras:
+
+Mejorado máximo de teclas enviado a ZENG/ZENG Online
 Mejorada temporización en Windows y otros sistemas que usen driver de video SDL. Ahora usa temporización de SDL
 Mejorada temporización en Mac usando temporizador nativo
 Mejoado logo de marca de agua: puede mostrarse sólo al cargar/grabar, puede cambiar colores al cargar/grabar
-Agregadas funciones directas para aumentar/reducir el Volumen del Sonido
+
+Mejorado AY Player:
+- Permitir cargar y grabar lista de reproducción del AY Player
+- Agregadas funciones directas para siguente/anterior pista/archivo
+- Mejor algoritmo de aleatorio
 
 Mejorada emulación de Sinclair QL:
 - Permitir aumentar tamaño RAM de Sinclair QL
@@ -27,6 +33,8 @@ Mejorado ZX Vision:
 Mejorado Debug CPU:
 - Mostrar número de vista dentro de la ventana en vez de en el título de la ventana
 - Agregar opción para activar/desactivar todos los breakpoints
+
+* Correcciones:
 
 Corregido bloqueo de semáforos en Windows
 Corregido cálculo de uso de cpu cuando el footer está desactivado
