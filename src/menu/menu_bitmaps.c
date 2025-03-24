@@ -4053,7 +4053,8 @@ char *bitmap_button_ext_desktop_visualfloppy[EXT_DESKTOP_BUTTONS_ANCHO]={
 
 char *bitmap_button_ext_desktop_volume_increment[EXT_DESKTOP_BUTTONS_ANCHO]={
    //01234567890123456789012345
-    "          xxxxxx          ",//0
+    "                          ", //0
+    "          xxxxxx          ",
   	"       xxxwwwwwwxxx       ",
 	"     xxwwwwwwwwwwwwxx     ",
 	"    xwwwwwwwwwwwwwwwwx    ",
@@ -4062,8 +4063,8 @@ char *bitmap_button_ext_desktop_volume_increment[EXT_DESKTOP_BUTTONS_ANCHO]={
 	"  xwwwwwwwwwxxwxwwwwwwwx  ",
 	"  xwwwwwwwxxwwwxwwwwwwwx  ",
 	"  xwwwwwxxwwwwwxwwwwwwwx  ",
-	" xwwxxxxwwwwwwwxwwwxxwwwx ",
-	" xwwxwwxwwwwwwwxwwwxxwwwx ",	//10
+	" xwwxxxxwwwwwwwxwwwxxwwwx ", //10
+	" xwwxwwxwwwwwwwxwwwxxwwwx ",
 	" xwwxwwxwwwwwwwxwxxxxxxwx ",
 	" xwwxwwxwwwwwwwxwxxxxxxwx ",
 	" xwwxwwxwwwwwwwxwwwxxwwwx ",
@@ -4072,18 +4073,18 @@ char *bitmap_button_ext_desktop_volume_increment[EXT_DESKTOP_BUTTONS_ANCHO]={
 	"  xwwwwwwwxxwwwxwwwwwwwx  ",
 	"  xwwwwwwwwwxxwxwwwwwwwx  ",
 	"   xwwwwwwwwwwxxwwwwwwx   ",
-	"   xwwwwwwwwwwwwwwwwwwx   ",
-	"    xwwwwwwwwwwwwwwwwx    ", //20
+	"   xwwwwwwwwwwwwwwwwwwx   ", //20
+	"    xwwwwwwwwwwwwwwwwx    ",
 	"     xxwwwwwwwwwwwwxx     ",
 	"       xxxwwwwwwxxx       ",
 	"          xxxxxx          ",
-	"                          ",
     "                          " 	//25
 };
 
 char *bitmap_button_ext_desktop_volume_decrement[EXT_DESKTOP_BUTTONS_ANCHO]={
    //01234567890123456789012345
-    "          xxxxxx          ",//0
+    "                          ", //0
+    "          xxxxxx          ",
   	"       xxxwwwwwwxxx       ",
 	"     xxwwwwwwwwwwwwxx     ",
 	"    xwwwwwwwwwwwwwwwwx    ",
@@ -4092,8 +4093,8 @@ char *bitmap_button_ext_desktop_volume_decrement[EXT_DESKTOP_BUTTONS_ANCHO]={
 	"  xwwwwwwwwwxxwxwwwwwwwx  ",
 	"  xwwwwwwwxxwwwxwwwwwwwx  ",
 	"  xwwwwwxxwwwwwxwwwwwwwx  ",
-	" xwwxxxxwwwwwwwxwwwwwwwwx ",
-	" xwwxwwxwwwwwwwxwwwwwwwwx ",	//10
+	" xwwxxxxwwwwwwwxwwwwwwwwx ", //10
+	" xwwxwwxwwwwwwwxwwwwwwwwx ",
 	" xwwxwwxwwwwwwwxwxxxxxxwx ",
 	" xwwxwwxwwwwwwwxwxxxxxxwx ",
 	" xwwxwwxwwwwwwwxwwwwwwwwx ",
@@ -4102,12 +4103,11 @@ char *bitmap_button_ext_desktop_volume_decrement[EXT_DESKTOP_BUTTONS_ANCHO]={
 	"  xwwwwwwwxxwwwxwwwwwwwx  ",
 	"  xwwwwwwwwwxxwxwwwwwwwx  ",
 	"   xwwwwwwwwwwxxwwwwwwx   ",
-	"   xwwwwwwwwwwwwwwwwwwx   ",
-	"    xwwwwwwwwwwwwwwwwx    ", //20
+	"   xwwwwwwwwwwwwwwwwwwx   ", //20
+	"    xwwwwwwwwwwwwwwwwx    ",
 	"     xxwwwwwwwwwwwwxx     ",
 	"       xxxwwwwwwxxx       ",
 	"          xxxxxx          ",
-	"                          ",
     "                          " 	//25
 };
 
