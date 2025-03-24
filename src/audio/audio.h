@@ -294,6 +294,8 @@ extern int ay_player_silence_detection_counter;
 struct s_ay_player_playlist_item {
     char nombre[PATH_MAX];
 
+    int marcado;
+
     struct s_ay_player_playlist_item *next_item;
 };
 
@@ -311,7 +313,7 @@ extern void ay_player_playlist_remove(int position);
 extern void ay_player_playlist_remove_all(void);
 extern void ay_player_playlist_get_item(int position,char *nombre);
 extern void ay_player_load_playlist(char *archivo_playlist);
-extern void ay_player_save_playlist(char *destination_file);
+extern void ay_player_save_playlist(char *destination_file,int marked_items,int append);
 extern int ay_player_playlist_item_actual;
 extern char ay_player_filename_playing[];
 extern void ay_player_play_current_item(void);
@@ -321,6 +323,8 @@ extern void ay_player_next_file(void);
 extern void ay_player_previous_file(void);
 extern void ay_player_play_this_item(int item);
 extern void ay_player_start_playing_all_items(void);
+extern ay_player_playlist_item *ay_player_search_item(int position);
+extern void ay_player_mark_unmark_this_item(int position);
 
 extern z80_byte audiodac_last_value_data;
 

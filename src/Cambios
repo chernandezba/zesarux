@@ -16,6 +16,8 @@ Mejorada temporización en Mac usando temporizador nativo
 Mejoado logo de marca de agua: puede mostrarse sólo al cargar/grabar, puede cambiar colores al cargar/grabar
 
 Mejorado AY Player:
+- Permitir cargar lista de reproducción del AY Player
+- Permitir grabar lista de reproducción del AY Player (lista entera o sólo archivos marcados)
 - Permitir cargar y grabar lista de reproducción del AY Player
 - Agregadas funciones directas para siguente/anterior pista/archivo
 - Mejor algoritmo de aleatorio

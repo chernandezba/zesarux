@@ -186,6 +186,47 @@ int zvfs_fopen_write(char *file_name,int *in_fatfs,FILE **ptr_file_name,FIL *fil
 
 }
 
+//funcion fopen que soporta nativo del sistema o fatfs
+//retorna <0 si error
+int zvfs_fopen_write_append(char *file_name,int *in_fatfs,FILE **ptr_file_name,FIL *fil)
+{
+	//FILE *ptr_file_name;
+
+    //Soporte para FatFS
+    //FIL fil;        /* File object */
+    FRESULT fr;     /* FatFs return code */
+
+    *in_fatfs=util_path_is_mmc_fatfs(file_name);
+    //printf("txt esta en fatfs: %d\n",*in_fatfs);
+
+    if (*in_fatfs) {
+        fr = f_open(fil, file_name, FA_OPEN_APPEND | FA_WRITE );
+        if (fr!=FR_OK)
+        {
+            //debug_printf (VERBOSE_ERR,"Unable to open file for writing",file_name);
+            return -1;
+        }
+
+        //Esto solo para que no se queje el compilador al llamar a zvfs_fread
+        *ptr_file_name=NULL;
+    }
+
+    else {
+	    *ptr_file_name=fopen(file_name,"ab");
+
+
+
+        if (!(*ptr_file_name))
+        {
+            //debug_printf (VERBOSE_ERR,"Unable to open %s file",file_name);
+            return -1;
+        }
+    }
+
+    return 0;
+
+
+}
 
 //funcion fread que soporta nativo del sistema o fatfs
 int zvfs_fread(int in_fatfs,z80_byte *puntero_memoria,int bytes_to_load,FILE *ptr_file_hexdump_browser,FIL *fil)

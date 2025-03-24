@@ -2571,6 +2571,8 @@ void ay_player_playlist_add(char *archivo)
 
     strcpy(new_item->nombre,archivo);
 
+    new_item->marcado=0;
+
     //Es el ultimo y por tanto no tiene siguiente
     new_item->next_item=NULL;
 
@@ -2592,6 +2594,40 @@ void ay_player_playlist_add(char *archivo)
     }
 
     ay_player_playlist_total_elements++;
+}
+
+ay_player_playlist_item *ay_player_search_item(int position)
+{
+
+    if (position<0 || position>ay_player_playlist_total_elements-1) {
+        debug_printf(VERBOSE_ERR,"Can not search beyond total items: Position asked: %d",position);
+        return NULL;
+    }
+
+
+    ay_player_playlist_item *item_to_search=ay_player_first_item_playlist;
+
+
+
+    int i;
+
+    for (i=0;i<position;i++) {
+        item_to_search=item_to_search->next_item;
+    }
+
+    return item_to_search;
+
+}
+
+void ay_player_mark_unmark_this_item(int position)
+{
+
+
+    ay_player_playlist_item *item_to_search=ay_player_search_item(position);
+    if (item_to_search==NULL) return;
+
+    item_to_search->marcado ^=1;
+
 }
 
 void ay_player_playlist_remove(int position)
@@ -2698,7 +2734,8 @@ void ay_player_load_playlist(char *archivo_playlist)
 
 }
 
-void ay_player_save_playlist(char *destination_file)
+//Guardar una playlist. Indica en marked_items si solo se guardan los items marcados (si valor no 0) o todos
+void ay_player_save_playlist(char *destination_file,int marked_items,int append)
 {
 
 
@@ -2710,9 +2747,20 @@ void ay_player_save_playlist(char *destination_file)
 
     int in_fatfs;
 
-    if (zvfs_fopen_write(destination_file,&in_fatfs,&ptr_destination_file,&fil)<0) {
-        debug_printf (VERBOSE_ERR,"Can not open %s",destination_file);
-        return;
+    if (append) {
+        if (zvfs_fopen_write_append(destination_file,&in_fatfs,&ptr_destination_file,&fil)<0) {
+            debug_printf (VERBOSE_ERR,"Can not open %s",destination_file);
+            return;
+        }
+    }
+
+    else {
+
+        if (zvfs_fopen_write(destination_file,&in_fatfs,&ptr_destination_file,&fil)<0) {
+            debug_printf (VERBOSE_ERR,"Can not open %s",destination_file);
+            return;
+        }
+
     }
 
 
@@ -2720,13 +2768,25 @@ void ay_player_save_playlist(char *destination_file)
     ay_player_playlist_item *playitem=ay_player_first_item_playlist;
 
     while (playitem!=NULL) {
-        char nombre_archivo[PATH_MAX+1]; //+1 para el salto de linea
+
+        int grabar=0;
+
+        if (!marked_items) grabar=1;
+        else {
+            grabar=playitem->marcado;
+        }
+
+        if (grabar) {
+
+            char nombre_archivo[PATH_MAX+1]; //+1 para el salto de linea
+
+            sprintf(nombre_archivo,"%s\n",playitem->nombre);
+
+            int longitud_linea=strlen(nombre_archivo);
+            zvfs_fwrite(in_fatfs,(z80_byte *)nombre_archivo,longitud_linea,ptr_destination_file,&fil);
+        }
 
 
-        sprintf(nombre_archivo,"%s\n",playitem->nombre);
-
-        int longitud_linea=strlen(nombre_archivo);
-        zvfs_fwrite(in_fatfs,(z80_byte *)nombre_archivo,longitud_linea,ptr_destination_file,&fil);
 
         playitem=playitem->next_item;
 
@@ -2741,19 +2801,9 @@ void ay_player_save_playlist(char *destination_file)
 void ay_player_playlist_get_item(int position,char *nombre)
 {
 
-    if (position<0 || position>ay_player_playlist_total_elements-1) {
-        debug_printf(VERBOSE_ERR,"Can not get beyond total items: Position asked: %d",position);
-        strcpy(nombre,"Unknown");
-        return;
-    }
+    ay_player_playlist_item *current_item=ay_player_search_item(position);
 
-    ay_player_playlist_item *current_item=ay_player_first_item_playlist;
-
-    int i;
-
-    for (i=0;i<position;i++) {
-        current_item=current_item->next_item;
-    }
+    if (current_item==NULL) return;
 
     strcpy(nombre,current_item->nombre);
 

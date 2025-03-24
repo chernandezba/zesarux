@@ -28,6 +28,7 @@ extern void zvfs_fclose(int in_fatfs,FILE *ptr_file_name,FIL *fil);
 extern int zvfs_feof(int in_fatfs,FILE *ptr_file_name,FIL *fil);
 extern int zvfs_fopen_read(char *file_name,int *in_fatfs,FILE **ptr_file_name,FIL *fil);
 extern int zvfs_fopen_write(char *file_name,int *in_fatfs,FILE **ptr_file_name,FIL *fil);
+extern int zvfs_fopen_write_append(char *file_name,int *in_fatfs,FILE **ptr_file_name,FIL *fil);
 extern int zvfs_fread(int in_fatfs,z80_byte *puntero_memoria,int bytes_to_load,FILE *ptr_file_hexdump_browser,FIL *fil);
 extern int zvfs_fwrite(int in_fatfs,z80_byte *puntero_memoria,int bytes_to_save,FILE *ptr_file_hexdump_browser,FIL *fil);
 extern void zvfs_getcwd(char *dir,int len);

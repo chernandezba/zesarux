@@ -23682,6 +23682,75 @@ int menu_confirm_yesno_texto(char *texto_ventana,char *texto_interior)
 }
 
 
+//Retorna 0=Cancel, 1=Append, 2=Truncate, 3=Rotate
+int menu_ask_no_append_truncate_texto(char *texto_ventana,char *texto_interior,int allow_rotate)
+{
+
+
+        menu_espera_no_tecla();
+
+
+	menu_item *array_menu_ask_no_append_truncate;
+        menu_item item_seleccionado;
+        int retorno_menu;
+
+	//Siempre indicamos el Cancel
+	int ask_no_append_truncate_opcion_seleccionada=1;
+	do {
+
+		menu_add_item_menu_inicial_format(&array_menu_ask_no_append_truncate,MENU_OPCION_SEPARADOR,NULL,NULL,texto_interior);
+
+		menu_add_item_menu_format(array_menu_ask_no_append_truncate,MENU_OPCION_NORMAL,NULL,NULL,"~~Cancel");
+		menu_add_item_menu_shortcut(array_menu_ask_no_append_truncate,'c');
+		menu_add_item_menu_tooltip(array_menu_ask_no_append_truncate,"Cancel operation and don't set file");
+		menu_add_item_menu_ayuda(array_menu_ask_no_append_truncate,"Cancel operation and don't set file");
+
+		menu_add_item_menu_format(array_menu_ask_no_append_truncate,MENU_OPCION_NORMAL,NULL,NULL,"~~Append");
+		menu_add_item_menu_shortcut(array_menu_ask_no_append_truncate,'a');
+		menu_add_item_menu_tooltip(array_menu_ask_no_append_truncate,"Open the selected file in append mode");
+		menu_add_item_menu_ayuda(array_menu_ask_no_append_truncate,"Open the selected file in append mode");
+
+		menu_add_item_menu_format(array_menu_ask_no_append_truncate,MENU_OPCION_NORMAL,NULL,NULL,"~~Truncate");
+		menu_add_item_menu_shortcut(array_menu_ask_no_append_truncate,'t');
+		menu_add_item_menu_tooltip(array_menu_ask_no_append_truncate,"Truncates selected file to 0 size");
+		menu_add_item_menu_ayuda(array_menu_ask_no_append_truncate,"Truncates selected file to 0 size");
+
+
+        if (allow_rotate) {
+		menu_add_item_menu_format(array_menu_ask_no_append_truncate,MENU_OPCION_NORMAL,NULL,NULL,"~~Rotate");
+		menu_add_item_menu_shortcut(array_menu_ask_no_append_truncate,'r');
+		menu_add_item_menu_tooltip(array_menu_ask_no_append_truncate,"Rotate selected file to keep history files");
+		menu_add_item_menu_ayuda(array_menu_ask_no_append_truncate,"Rename selected file adding extension suffix .1. \n"
+			"If that file also exists, the extension suffix is renamed to .2. \n"
+			"If that file also exists, the extension suffix is renamed to .3, and so on... \n"
+			"You can set the maximum file rotations, by default 10."
+
+			);
+        }
+
+		//separador adicional para que quede mas grande la ventana y mas mono
+		menu_add_item_menu_format(array_menu_ask_no_append_truncate,MENU_OPCION_SEPARADOR,NULL,NULL," ");
+
+
+
+		retorno_menu=menu_dibuja_menu_dialogo_no_title_lang(&ask_no_append_truncate_opcion_seleccionada,&item_seleccionado,array_menu_ask_no_append_truncate,texto_ventana);
+
+
+
+		if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+				//llamamos por valor de funcion
+	//if (ask_no_append_truncate_opcion_seleccionada==1) return 1;
+	//else return 0;
+				return ask_no_append_truncate_opcion_seleccionada-1; //0=Cancel, 1=Append, 2=Truncate, 3=Rotate
+		}
+
+	} while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+
+	return 0;
+
+
+}
+
 //retorna 1 si opcion 1
 //retorna 0 si ESC
 int menu_simple_one_choices(char *texto_ventana,char *texto_interior,char *opcion1)
