@@ -125,7 +125,7 @@ ok*Icono de volumen centrarlo en vertical
 ok*Marcar canción en playlist (no favorita) tanto en lista de playlist como en player, y opción para grabar ítems marcados en playlist
 ok*Al salvar playlist de marcados (y también playlist normal?) decir si append o truncate, para poder añadir más canciones marcadas
 ok*si se borra playlist deberia pararse reproduccion. porque si no, se quedan activos los botones de next y previous?
-*probar zvfs_fopen_write_append en mmc haciendo append de una playlist grabada en imagen mmc
+ok*probar zvfs_fopen_write_append en mmc haciendo append de una playlist grabada en imagen mmc
 ok*probar sobreescribir tap out y que aparezca opcion de rotate y que funcione rotate
 
 

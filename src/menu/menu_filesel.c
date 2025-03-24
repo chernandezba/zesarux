@@ -6138,7 +6138,8 @@ int menu_filesel_if_save(char *titulo,char *filtros[],char *archivo,int si_save)
 
                         //unimos directorio y nombre archivo. siempre que inicio != '/'
 						if (filesel_nombre_archivo_seleccionado[0]!='/') {
-                        	getcwd(archivo,PATH_MAX);
+                        	//getcwd(archivo,PATH_MAX);
+                            zvfs_getcwd(archivo,PATH_MAX);
                             sprintf(&archivo[strlen(archivo)],"/%s",filesel_nombre_archivo_seleccionado);
 						}
 
