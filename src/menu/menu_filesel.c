@@ -6439,7 +6439,8 @@ int menu_filesel_if_save(char *titulo,char *filtros[],char *archivo,int si_save)
 									if (menu_avisa_si_extension_no_habitual(filtros,filesel_nombre_archivo_seleccionado)) {
 
 									//unimos directorio y nombre archivo
-									getcwd(archivo,PATH_MAX);
+									//getcwd(archivo,PATH_MAX);
+                                    zvfs_getcwd(archivo,PATH_MAX);
 									sprintf(&archivo[strlen(archivo)],"/%s",item_seleccionado->d_name);
 
 									zvfs_chdir(filesel_directorio_inicial);

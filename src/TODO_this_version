@@ -115,7 +115,7 @@ ok-tecla F para siguiente/anterior pista en ay player
 ok-tecla F para siguiente/anterior archivo en ay player
 ok*tecla para agregar archivo a favoritos, generando una playlist de favoritos que se puede luego guardar
 *smartload de m3u
-*si se borra playlist luego deja hacer next file y da un error
+ok *si se borra playlist luego deja hacer next file y da un error
 *poder generar archivos ay?
 *parece que no calcula correctamente tiempos en algunas canciones, saca algo menos. Por ejemplo toi acid game pista 9 (la musica de intro de la primera y segunda parte)
 Parece que esos de toi estan mal definidos, dura unos 3 segundos mas
@@ -131,3 +131,9 @@ ok*probar sobreescribir tap out y que aparezca opcion de rotate y que funcione r
 
 -Al dejar una ventana con items de menu, en background, se deberia quitar el color del item seleccionado. Si no parece que esa ventana esta activa.
 Ejemplo con AY Player
+
+-grabar archivo en imagen mmc no deja. hago mount, y le indico ruta en 0://archivo.m3u por ejemplo
+(por cierto hay que forzar mostrar unidad mmc al cambiar unidad en Drives)
+
+-Poder enviar eventos a ventanas. Por ejemplo para el ay player, una función de diga enviar un mensaje (“next track”) q ventana (“ayplayer”). El como acepta ese evento de momento es una incógnita
+Quizá llama a la función que crea la ventana con algún flag específico
