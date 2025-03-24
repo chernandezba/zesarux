@@ -25312,7 +25312,7 @@ void menu_zxdesktop_add_direct_smartload(void)
 {
     //Los mismos que smartload
 
-        char *filtros[39];
+        char *filtros[40];
 
         filtros[0]="zx";
         filtros[1]="sp";
@@ -25377,7 +25377,9 @@ void menu_zxdesktop_add_direct_smartload(void)
 
     filtros[37]="p81";
 
-	filtros[38]=0;
+	filtros[38]="m3u";
+
+    filtros[39]=0;
 
 
     //guardamos directorio actual

@@ -41658,7 +41658,7 @@ void menu_smartload(MENU_ITEM_PARAMETERS)
 
     char *filtros[]={
         "63", "80", "81", "ace","ay",   "bin",  "cas","cdt",
-        "col","dck","dsk","epr","eprom","flash","nex","o",
+        "col","dck","dsk","epr","eprom","flash","m3u","nex","o",
         "p",  "p81", "pok","pzx","rom","rwa",  "rzx",  "scr",
         "sg", "smp","sms","sna","snx","sp",   "spg",  "tap",
         "trd", "mdr", "rmd", "tzx","wav","z80","z81","zmenu",

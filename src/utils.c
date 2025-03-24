@@ -5443,6 +5443,7 @@ int quickload_valid_extension(char *nombre) {
     || !util_compare_file_extension(nombre,"cas")
 
     || !util_compare_file_extension(nombre,"zmenu")
+    || !util_compare_file_extension(nombre,"m3u")
 	) {
 		return 1;
 	}
@@ -5952,6 +5953,17 @@ int quickload_continue(char *nombre) {
 
     }
 
+	//Playlist
+    else if (
+            !util_compare_file_extension(nombre,"m3u")
+
+        ) {
+
+        ay_player_playlist_remove_all();
+        ay_player_load_playlist(nombre);
+
+        return 0;
+    }
     else if (
         !util_compare_file_extension(nombre,"scr")
     ) {
