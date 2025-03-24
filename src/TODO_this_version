@@ -107,8 +107,7 @@ ok *mejorar random del ay player (para sl shuffle) usando el mismo algoritmo que
 -Audio sdl callback esta por defecto el old callback o el new? depende de si windows o linux.
 Ver comentarios en el código donde está explicado
 
--tecla F para reducir/aumentar volumen en 10%
-ok *icono para aumentar y reducir
+
 
 AY Player
 ok-tecla F para siguiente/anterior pista en ay player
@@ -116,25 +115,23 @@ ok-tecla F para siguiente/anterior archivo en ay player
 ok*tecla para agregar archivo a favoritos, generando una playlist de favoritos que se puede luego guardar
 ok*smartload de m3u
 ok *si se borra playlist luego deja hacer next file y da un error
-*poder generar archivos ay?
-*parece que no calcula correctamente tiempos en algunas canciones, saca algo menos. Por ejemplo toi acid game pista 9 (la musica de intro de la primera y segunda parte)
-Parece que esos de toi estan mal definidos, dura unos 3 segundos mas
-->Parametro para poder sumar tiempo a las canciones. Tocar en ay_player_playing_timer, if (ay_song_length_counter>ay_song_length+Incremento) {
-*Video ay player con todas nuevas features
 ok*Icono de volumen centrarlo en vertical
 ok*Marcar canción en playlist (no favorita) tanto en lista de playlist como en player, y opción para grabar ítems marcados en playlist
 ok*Al salvar playlist de marcados (y también playlist normal?) decir si append o truncate, para poder añadir más canciones marcadas
 ok*si se borra playlist deberia pararse reproduccion. porque si no, se quedan activos los botones de next y previous?
 ok*probar zvfs_fopen_write_append en mmc haciendo append de una playlist grabada en imagen mmc
 ok*probar sobreescribir tap out y que aparezca opcion de rotate y que funcione rotate
+*poder generar archivos ay?
+*Video ay player con todas nuevas features
+*parece que no calcula correctamente tiempos en algunas canciones, saca algo menos. Por ejemplo toi acid game pista 9 (la musica de intro de la primera y segunda parte)
+Parece que esos de toi estan mal definidos, dura unos 3 segundos mas
+->Parametro para poder sumar tiempo a las canciones. Tocar en ay_player_playing_timer, if (ay_song_length_counter>ay_song_length+Incremento) {
 
 
--Al dejar una ventana con items de menu, en background, se deberia quitar el color del item seleccionado. Si no parece que esa ventana esta activa.
+
+-Al dejar una ventana con items de menu, en background, se deberia quitar el color del item seleccionado. Si no, parece que esa ventana esta activa.
 Ejemplo con AY Player
 
-ok-grabar archivo en imagen mmc no deja. hago mount, y le indico ruta en 0://archivo.m3u por ejemplo
-(por cierto hay que forzar mostrar unidad mmc al cambiar unidad en Drives)
-->Permito mostrar unidad mmc siempre que este montada
 
 -Corregir algunos casos (todos?) en que se intenta cargar/grabar archivos desde una imagen mmc montada
 y no va porque no uso funciones zvfs. Ejemplo cargar snapshot .z80

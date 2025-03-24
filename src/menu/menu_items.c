@@ -6603,6 +6603,7 @@ void menu_ayplayer_edit_playlist(MENU_ITEM_PARAMETERS)
 
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_ayplayer_add_directory_playlist,NULL,"Add directory");
         linea_seleccionada++;
+        menu_add_item_menu_add_flags(array_menu_common,MENU_ITEM_FLAG_GENERA_VENTANA);
 
 
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_ayplayer_load_playlist,NULL,"Load playlist");
@@ -6632,7 +6633,8 @@ void menu_ayplayer_edit_playlist(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_separator(array_menu_common);
             linea_seleccionada++;
 
-
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Playlist contents:");
+            linea_seleccionada++;
 
             linea_seleccionada+=ay_player_playlist_item_actual;
 
