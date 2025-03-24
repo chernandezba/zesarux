@@ -2201,6 +2201,8 @@ int audio_ay_player_play_song(z80_byte song)
 
 	//printf ("Song length: %d 1/50s (%d s)\n",ay_song_length,ay_song_length/50);
 
+    //printf("Fade length: %d 1/50s\n",audio_ay_player_get_be_word(song_data+6));
+
 	ay_song_length_counter=0;
 	ay_player_playing.v=1;
     ay_player_paused.v=0;
