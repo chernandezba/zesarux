@@ -2435,6 +2435,16 @@ int audio_ay_player_play_song(z80_byte song)
         bloque_longitud=audio_ay_player_get_be_word(pdata+2);
         bloque_offset=audio_ay_player_get_be_word(pdata+4);
 
+        /*
+          In case Address+Length > 65536, DeliAY decreases the size to make it
+            == 65536.
+        */
+
+        int final=bloque_direccion+bloque_longitud;
+        if (final>65535) {
+            //printf("Adjusting block length\n");
+            bloque_longitud=65536-bloque_direccion;
+        }
 
 
         if (bloque_direccion!=0) {
@@ -2479,6 +2489,8 @@ int audio_ay_player_play_song(z80_byte song)
             minutos_total,segundos_total);
 
     }
+
+    //printf("PC register: %04XH\n",reg_pc);
 
 
     return 0;
