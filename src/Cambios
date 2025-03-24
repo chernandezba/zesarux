@@ -14,6 +14,7 @@ Mejorado máximo de teclas enviado a ZENG/ZENG Online
 Mejorada temporización en Windows y otros sistemas que usen driver de video SDL. Ahora usa temporización de SDL
 Mejorada temporización en Mac usando temporizador nativo
 Mejoado logo de marca de agua: puede mostrarse sólo al cargar/grabar, puede cambiar colores al cargar/grabar
+Mejorado Selector de Archivos: permitir usar ruta a una imagen montada FAT en todos los casos
 
 Mejorado AY Player:
 - Permitir cargar lista de reproducción del AY Player

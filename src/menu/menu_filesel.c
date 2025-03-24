@@ -3677,10 +3677,13 @@ void menu_filesel_cambiar_unidad_common(char *destino)
 #endif
 
     //Si hay imagen montada y (esta file utils o bien permitimos mostrar en drives), permitir seleccionarla
-    //No queremos que en ventanas que no sean file utils, se pueda seleccionar 0:/
-    if (menu_mmc_image_montada &&
-    (menu_filesel_show_utils.v || menu_filesel_drives_allow_fatfs.v)
-    )
+    //No queremos que en ventanas que no sean file utils, se pueda seleccionar 0:/. Por que??
+    //Lo permito siempre que esté montada
+    //if (menu_mmc_image_montada &&
+    //(menu_filesel_show_utils.v || menu_filesel_drives_allow_fatfs.v)
+    //)
+
+    if (menu_mmc_image_montada)
     {
         menu_add_item_menu_format(array_menu_filesel_unidad,MENU_OPCION_NORMAL,NULL,NULL,"0:/");
         menu_add_item_menu_tooltip(array_menu_filesel_unidad,"This is the first mmc mounted image");
