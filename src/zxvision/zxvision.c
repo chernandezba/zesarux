@@ -21629,6 +21629,9 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
     //despues de la llamada a menu_dibuja_menu, si que se veria parpadeo
     //Nota 3: Para mi yo del futuro: considerar esta Nota 2 por si alguna vez en alguna ventana con menu tabulado
     //se ve parpadeo al pulsar enter en alguna opción, es debido a esto
+
+    //No enviarlo a speech
+    menu_speech_set_tecla_pulsada();
     menu_escribe_opciones_zxvision(ventana,m,-1,max_opciones);
 
 

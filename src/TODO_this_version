@@ -132,7 +132,8 @@ Parece que esos de toi estan mal definidos, dura unos 3 segundos mas
 
 ok probarlo mas-Al dejar una ventana con items de menu, en background, se deberia quitar el color del item seleccionado. Si no, parece que esa ventana esta activa.
 Ejemplo con AY Player
-
+ok-al llamar a menu_escribe_opciones_zxvision, no deberia llamar a speech o releerá todas las opciones
+-Al salir de menú no debe redibujar si driver stdout etc
 
 -Corregir algunos casos (todos?) en que se intenta cargar/grabar archivos desde una imagen mmc montada
 y no va porque no uso funciones zvfs. Ejemplo cargar snapshot .z80
