@@ -6839,12 +6839,12 @@ void menu_audio_new_ayplayer(MENU_ITEM_PARAMETERS)
 
                 menu_add_item_menu_format(array_menu_audio_new_ayplayer,MENU_OPCION_NORMAL,menu_ayplayer_previous_file,NULL,"P~~rev");
                 menu_add_item_menu_shortcut(array_menu_audio_new_ayplayer,'r');
-                //menu_add_item_menu_ayuda(array_menu_audio_new_ayplayer,"Add AY file");
+                menu_add_item_menu_ayuda(array_menu_audio_new_ayplayer,"Play previous file");
                 menu_add_item_menu_tabulado(array_menu_audio_new_ayplayer,15,linea);
 
                 menu_add_item_menu_format(array_menu_audio_new_ayplayer,MENU_OPCION_NORMAL,menu_ayplayer_next_file,NULL,"N~~ext");
                 menu_add_item_menu_shortcut(array_menu_audio_new_ayplayer,'e');
-                //menu_add_item_menu_ayuda(array_menu_audio_new_ayplayer,"Add AY file");
+                menu_add_item_menu_ayuda(array_menu_audio_new_ayplayer,"Play next file");
                 menu_add_item_menu_tabulado(array_menu_audio_new_ayplayer,20,linea);
 
 
@@ -6858,7 +6858,7 @@ void menu_audio_new_ayplayer(MENU_ITEM_PARAMETERS)
                 menu_add_item_menu_format(array_menu_audio_new_ayplayer,MENU_OPCION_NORMAL,menu_ayplayer_mark_file,NULL,"%s",
                     (marcado ? "Un~~mark" : "~~Mark") );
                 menu_add_item_menu_shortcut(array_menu_audio_new_ayplayer,'m');
-                //menu_add_item_menu_ayuda(array_menu_audio_new_ayplayer,"Add AY file");
+                menu_add_item_menu_ayuda(array_menu_audio_new_ayplayer,"Mark/unmark file");
                 menu_add_item_menu_tabulado(array_menu_audio_new_ayplayer,25,linea);
 
             }
@@ -6872,8 +6872,8 @@ void menu_audio_new_ayplayer(MENU_ITEM_PARAMETERS)
 
             menu_add_item_menu_format(array_menu_audio_new_ayplayer,MENU_OPCION_NORMAL,menu_ayplayer_edit_playlist,NULL,"E~~dit");
             menu_add_item_menu_shortcut(array_menu_audio_new_ayplayer,'d');
-            //menu_add_item_menu_ayuda(array_menu_audio_new_ayplayer,"Add AY file");
-            menu_add_item_menu_tabulado(array_menu_audio_new_ayplayer,30+2*marcado,linea);
+            menu_add_item_menu_ayuda(array_menu_audio_new_ayplayer,"Edit playlist");
+            menu_add_item_menu_tabulado(array_menu_audio_new_ayplayer,32,linea);
 
             /*menu_add_item_menu_format(array_menu_audio_new_ayplayer,MENU_OPCION_NORMAL,NULL,NULL,
                 "playlist (%d/%d)",ay_player_playlist_item_actual+1,ay_player_playlist_get_total_elements() );
@@ -6947,7 +6947,7 @@ void menu_audio_new_ayplayer(MENU_ITEM_PARAMETERS)
 				if (ay_player_limit_infinite_tracks==0) sprintf(textoplayer,"[no] Inf. Len");
 				else sprintf(textoplayer,"[%ds] Inf. Len",ay_player_limit_infinite_tracks/50);
 				menu_add_item_menu_format(array_menu_audio_new_ayplayer,MENU_OPCION_NORMAL,menu_audio_new_ayplayer_inftracks,NULL,textoplayer);
-				menu_add_item_menu_ayuda(array_menu_audio_new_ayplayer,"Time limit for songs which doesn't have time limit");
+				menu_add_item_menu_ayuda(array_menu_audio_new_ayplayer,"Time limit for songs which doesn't have time limit (they are \"infinite\")");
 				menu_add_item_menu_tabulado(array_menu_audio_new_ayplayer,1,linea);
 
 				if (ay_player_limit_any_track==0) sprintf(textoplayer,"[no limit] Max len");
