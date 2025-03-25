@@ -6919,12 +6919,12 @@ void menu_audio_new_ayplayer(MENU_ITEM_PARAMETERS)
 
 				menu_add_item_menu_format(array_menu_audio_new_ayplayer,MENU_OPCION_NORMAL,menu_audio_new_ayplayer_repeat,NULL,"[%c] Repeat",
 					(ay_player_repeat_file.v ? 'X' : ' '));
-				menu_add_item_menu_ayuda(array_menu_audio_new_ayplayer,"Repeat file from the beginning when finished all songs");
+				menu_add_item_menu_ayuda(array_menu_audio_new_ayplayer,"Repeat file from the beginning when finished all tracks of a file");
 				menu_add_item_menu_tabulado(array_menu_audio_new_ayplayer,14,linea);
 
 				menu_add_item_menu_format(array_menu_audio_new_ayplayer,MENU_OPCION_NORMAL,menu_audio_new_ayplayer_exitend,NULL,"[%c] Exitend",
 					(ay_player_exit_emulator_when_finish.v ? 'X' : ' ') );
-				menu_add_item_menu_ayuda(array_menu_audio_new_ayplayer,"Exit emulator when finished all songs");
+				menu_add_item_menu_ayuda(array_menu_audio_new_ayplayer,"Exit emulator when finished all files");
 				menu_add_item_menu_tabulado(array_menu_audio_new_ayplayer,25,linea);
 
                 linea++;
