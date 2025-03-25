@@ -20,6 +20,7 @@ Mejorado Selector de Archivos: permitir usar ruta a una imagen montada FAT en to
 Mejorado AY Player:
 - Permitir cargar lista de reproducción del AY Player
 - Permitir grabar lista de reproducción del AY Player (lista entera o sólo archivos marcados)
+- Permitir incrementar longitud de pista (para algunas pistas con longitud incorrecta)
 - Agregadas funciones directas para siguente/anterior pista/archivo
 - Mejor algoritmo de aleatorio
 

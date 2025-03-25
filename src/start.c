@@ -801,6 +801,7 @@ printf (
 		"--ayplayer-end-repeat            Repeat playing from the beginning when end playing current ay file\n"
 		"--ayplayer-inf-length n          Limit to n seconds to ay tracks with infinite length\n"
 		"--ayplayer-any-length n          Limit to n seconds to all ay tracks\n"
+        "--ayplayer-add-to-track n        Add n seconds length to all tracks\n"
 		"--ayplayer-cpc                   Set AY Player to CPC mode (default: Spectrum)\n"
         "--ayplayer-show-info-console     Show AY Player information about current file and song on console\n"
         "--audiopiano-zoom n              Set zoom for Audio Chip Piano and Wave Piano (1-3)\n"
@@ -5447,6 +5448,16 @@ int parse_cmdline_options(int desde_commandline) {
 					exit(1);
 				}
 				ay_player_limit_any_track=valor*50;
+			}
+
+			else if (!strcmp(argv[puntero_parametro],"--ayplayer-add-to-track")) {
+				siguiente_parametro_argumento();
+				int valor=atoi(argv[puntero_parametro]);
+				if (valor<0 || valor>60) {
+					printf ("Invalid length value. Must be between 0 and 60\n");
+					exit(1);
+				}
+				ay_player_add_to_track=valor;
 			}
 
 			else if (!strcmp(argv[puntero_parametro],"--ayplayer-cpc")) {

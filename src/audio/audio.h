@@ -281,6 +281,7 @@ extern char ay_player_file_misc[];
 extern z80_bit ay_player_exit_emulator_when_finish;
 extern z80_int ay_player_limit_infinite_tracks;
 extern z80_int ay_player_limit_any_track;
+extern z80_int ay_player_add_to_track;
 extern z80_bit ay_player_repeat_file;
 
 extern z80_bit ay_player_cpc_mode;

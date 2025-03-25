@@ -1896,6 +1896,10 @@ z80_int ay_player_limit_infinite_tracks=0;
 //Limite en 1/50 segundos para cualquier cancion. Si es 0, no limitar
 z80_int ay_player_limit_any_track=0;
 
+//Tiempo en segundos para sumarle a la duración de cada pista, por algunos pocos casos
+//en que la duración está mal (ejemplo pista 9 de toi acid game)
+z80_int ay_player_add_to_track=0;
+
 //Ir a primera pista cuando se llega al final
 //En versiones previas a la 10.10 esto venia activado por defecto
 z80_bit ay_player_repeat_file={0};
@@ -3009,7 +3013,7 @@ void ay_player_playing_timer(void)
 
 	//printf ("Contador cancion: %d limite: %d  (%d s)\n",ay_song_length_counter,ay_song_length,ay_song_length/50);
 
-	if (ay_song_length_counter>ay_song_length) {
+	if (ay_song_length_counter>ay_song_length+ay_player_add_to_track*50) {
 		ay_player_next_track();
 	}
 

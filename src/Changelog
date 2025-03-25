@@ -20,6 +20,7 @@ Improved File Selector: allow to use path to a a FAT mounted image on all cases
 Improved AY Player:
 - Allow to load playlist
 - Allow to save playlist (full playlist or just marked files)
+- Allow to increase track length (for some tracks with incorrect length)
 - Added direct functions to next/previous track/file
 - Better shuffle algorithm
 

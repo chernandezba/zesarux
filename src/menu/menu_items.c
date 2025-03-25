@@ -6301,8 +6301,6 @@ void menu_audio_new_ayplayer_cpcmode(MENU_ITEM_PARAMETERS)
 void menu_audio_new_ayplayer_inftracks(MENU_ITEM_PARAMETERS)
 {
 
-
-
 	char string_length[5];
 	sprintf(string_length,"%d",ay_player_limit_infinite_tracks/50);
 
@@ -6314,6 +6312,24 @@ void menu_audio_new_ayplayer_inftracks(MENU_ITEM_PARAMETERS)
 	}
 
 	else ay_player_limit_infinite_tracks=l*50;
+
+
+}
+
+void menu_audio_new_ayplayer_add_to_track(MENU_ITEM_PARAMETERS)
+{
+
+	char string_length[3];
+	sprintf(string_length,"%d",ay_player_add_to_track);
+
+	menu_ventana_scanf("Length (0-60)",string_length,3);
+	int l=parse_string_to_number(string_length);
+
+	if (l<0 || l>60) {
+		menu_error_message("Invalid length value");
+	}
+
+	else ay_player_add_to_track=l;
 
 
 }
@@ -6925,11 +6941,16 @@ void menu_audio_new_ayplayer(MENU_ITEM_PARAMETERS)
                 linea++;
 
 
-				if (ay_player_limit_any_track==0) sprintf(textoplayer,"[no limit] Max any track");
-				else sprintf(textoplayer,"[%ds] Max any track",ay_player_limit_any_track/50);
+				if (ay_player_limit_any_track==0) sprintf(textoplayer,"[no limit] Max track");
+				else sprintf(textoplayer,"[%ds] Max track",ay_player_limit_any_track/50);
 				menu_add_item_menu_format(array_menu_audio_new_ayplayer,MENU_OPCION_NORMAL,menu_audio_new_ayplayer_len_anytracks,NULL,textoplayer);
 				menu_add_item_menu_ayuda(array_menu_audio_new_ayplayer,"Time limit for all songs");
 				menu_add_item_menu_tabulado(array_menu_audio_new_ayplayer,1,linea);
+
+				menu_add_item_menu_format(array_menu_audio_new_ayplayer,MENU_OPCION_NORMAL,menu_audio_new_ayplayer_add_to_track,NULL,
+                    "[%ds] Add to track",ay_player_add_to_track);
+				menu_add_item_menu_ayuda(array_menu_audio_new_ayplayer,"Increase track duration");
+				menu_add_item_menu_tabulado(array_menu_audio_new_ayplayer,22,linea);
 
                 linea++;
 
