@@ -1358,10 +1358,9 @@ void open_sharedfile_write_open(char *archivo,FILE **f)
 //1) ruta actual
 //2) ../Resources/
 //3) INSTALLPREFIX/
-//normalmente usado para cargar roms
 //modifica puntero FILE adecuadamente
 //Primero mira que el archivo exista y luego intenta abrirlo para escritura
-void open_sharedfile_write(char *archivo,FILE **f)
+void old_open_sharedfile_write(char *archivo,FILE **f)
 {
         char buffer_nombre[1024];
 
@@ -1391,6 +1390,25 @@ void open_sharedfile_write(char *archivo,FILE **f)
         }
 
 	//printf ("file: %d\n",*f);
+
+}
+
+//Abre un archivo en escritura buscandolo en las rutas habituales
+//modifica puntero FILE adecuadamente
+//Primero mira que el archivo exista y luego intenta abrirlo para escritura
+void open_sharedfile_write(char *archivo,FILE **f)
+{
+
+    //Asumimos NULL
+    *f=NULL;
+
+    char archivo_with_path[PATH_MAX];
+
+	int existe=find_sharedfile(archivo,archivo_with_path);
+
+    if (existe) {
+        *f=fopen(archivo_with_path,"wb");
+    }
 
 }
 
