@@ -20,7 +20,6 @@ Mejorado Selector de Archivos: permitir usar ruta a una imagen montada FAT en to
 Mejorado AY Player:
 - Permitir cargar lista de reproducción del AY Player
 - Permitir grabar lista de reproducción del AY Player (lista entera o sólo archivos marcados)
-- Permitir cargar y grabar lista de reproducción del AY Player
 - Agregadas funciones directas para siguente/anterior pista/archivo
 - Mejor algoritmo de aleatorio
 
@@ -33,6 +32,7 @@ Mejorado ZX Vision:
 - Permitir ocultar ventanas minimizadas
 - Mostrar, con un punto, cuando un icono es de una ventana abierta pero minimizada
 - Mantener las proporciones de tamaño de la ventana de ZEsarUX (no permitir zoom x/y diferente) por defecto
+- Borrar el cursor al enviar una ventana a segundo plano
 
 Mejorado Debug CPU:
 - Mostrar número de vista dentro de la ventana en vez de en el título de la ventana

@@ -32,6 +32,7 @@ Improved ZX Vision:
 - Allow to hide minimized windows
 - Show, with a dot, when an icon is an open window but minimized
 - Keep ZEsarUX window size proportions (disallow different zoom x/y) by default
+- Delete cursor when sending a window to background
 
 Improved Debug CPU:
 - Show view number inside the window and not in the window title
