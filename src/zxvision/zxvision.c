@@ -20572,12 +20572,12 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 		//2- pues es una ventana de stdout y se "dibuja" tal cual en consola
 		menu_muestra_pending_error_message();
 
-                //se abre menu con driver stdout. Llamar a menu alternativo
+        //se abre menu con driver stdout. Llamar a menu alternativo
 
 		//si hay menu tabulado, agregamos ESC (pues no se incluye nunca)
 		if (m->es_menu_tabulado) menu_add_ESC_item(m);
 
-                return menu_dibuja_menu_stdout(opcion_inicial,item_seleccionado,m,titulo);
+        return menu_dibuja_menu_stdout(opcion_inicial,item_seleccionado,m,titulo);
     }
 /*
         if (if_pending_error_message) {
