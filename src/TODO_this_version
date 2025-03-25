@@ -126,7 +126,7 @@ ok*probar sobreescribir tap out y que aparezca opcion de rotate y que funcione r
 *Video ay player con todas nuevas features
 *parece que no calcula correctamente tiempos en algunas canciones, saca algo menos. Por ejemplo toi acid game pista 9 (la musica de intro de la primera y segunda parte)
 Parece que esos de toi estan mal definidos, dura unos 3 segundos mas
-->Parametro para poder sumar tiempo a las canciones. Tocar en ay_player_playing_timer, if (ay_song_length_counter>ay_song_length+Incremento) {
+ok->Parametro para poder sumar tiempo a las canciones. Tocar en ay_player_playing_timer, if (ay_song_length_counter>ay_song_length+Incremento) {
 
 
 
