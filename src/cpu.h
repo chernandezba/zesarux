@@ -740,7 +740,6 @@ extern char parameter_disablebetawarning[];
 
 extern int total_minutes_use;
 
-extern char macos_path_to_executable[];
 
 
 #endif

@@ -274,6 +274,8 @@ int argc;
 char **argv;
 int puntero_parametro;
 
+//Ruta desde donde se está ejecutando el binario de ZEsarUX
+char zesarux_path_location[PATH_MAX]="";
 
 //Si activado el homenaje para David
 z80_bit activated_in_memoriam_david={0};
@@ -6903,6 +6905,7 @@ int zesarux_main (int main_argc,char *main_argv[]) {
 	//Cambiar a la carpeta donde estamos ejecutando el binario
 
 	//por si acaso, por defecto a cadena vacia
+    char macos_path_to_executable[PATH_MAX];
 	macos_path_to_executable[0]=0;
 
 	uint32_t bufsize=PATH_MAX;
@@ -6911,11 +6914,10 @@ int zesarux_main (int main_argc,char *main_argv[]) {
 
 	if (macos_path_to_executable[0]!=0) {
 
-			char dir[PATH_MAX];
-			util_get_dir(macos_path_to_executable,dir);
+			util_get_dir(macos_path_to_executable,zesarux_path_location);
 
-			printf ("Changing to Mac App bundle directory: %s\n",dir);
-			chdir(dir);
+			printf ("Changing to Mac App bundle directory: %s\n",zesarux_path_location);
+			chdir(zesarux_path_location);
 
 	}
 	/*
@@ -6924,8 +6926,13 @@ int zesarux_main (int main_argc,char *main_argv[]) {
 	tccutil reset SystemPolicyDownloadsFolder com.cesarhernandez.zesarux
 	tccutil reset SystemPolicyDesktopFolder com.cesarhernandez.zesarux
 	*/
+
+#else
+    //Guardar la ruta desde donde está ejecutado ZEsarUX para luego buscar archivos de rom, etc
+    util_get_dir(main_argv[0],zesarux_path_location);
 #endif
 
+    //printf("zesarux_path_location: [%s]\n",zesarux_path_location);
 
 /*
 Note for developers: If you are doing modifications to ZEsarUX, you should follow the rules from GPL license, as well as

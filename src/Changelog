@@ -7,6 +7,7 @@ Added conversion of ZX81 files P to P81, and P81 to P
 Added direct functions to increase/decrease Audio Volume
 Allow to save ZX80/81 screen to .scr file
 Allow to save text note on a ZSF snapshot
+Allow to locate rom files running ZEsarUX from a current folder different than the rom path
 
 * Improvements:
 

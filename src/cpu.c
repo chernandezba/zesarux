@@ -3597,8 +3597,12 @@ void rom_load(char *romfilename)
         romfilename=custom_romfile;
     }
 
-    open_sharedfile(romfilename,&ptr_romfile);
-    if (!ptr_romfile)
+
+    char romfilename_with_path[PATH_MAX];
+
+	int existe=find_sharedfile(romfilename,romfilename_with_path);
+
+    if (!existe)
     {
         debug_printf(VERBOSE_ERR,"Unable to open rom file %s",romfilename);
 
@@ -3608,7 +3612,13 @@ void rom_load(char *romfilename)
         return;
     }
 
-    int tamanyo_archivo_rom=get_file_size(romfilename);
+
+    ptr_romfile=fopen(romfilename_with_path,"rb");
+
+
+    int tamanyo_archivo_rom=get_file_size(romfilename_with_path);
+
+    debug_printf(VERBOSE_DEBUG,"Rom file [%s] size: [%d]",romfilename,tamanyo_archivo_rom);
 
     int expected_rom_size=get_rom_size(current_machine_type);
 
@@ -3940,7 +3950,6 @@ int joystickkey_definidas=0;
 
 
 
-char macos_path_to_executable[PATH_MAX];
 
 //Valor asignado desde BUILDNUMBER
 unsigned int buildnumber_int=0;

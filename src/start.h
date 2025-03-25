@@ -40,6 +40,8 @@ extern int argc;
 extern char **argv;
 extern int puntero_parametro;
 
+extern char zesarux_path_location[];
+
 extern int siguiente_parametro(void);
 
 extern void siguiente_parametro_argumento(void);
