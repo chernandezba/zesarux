@@ -99,10 +99,7 @@ donde se queda la tarjeta al desconectarse
 
 -al insertar cintas parece que no se cierra menu, y antes creo que si que se hacia. creo que al meter cinta en real tape
 
---ay player poder cargar playlist de archivo, grabar playlist
-ok *permitir cargar playlist desde linea de comandos
-ok *mejorar random del ay player (para sl shuffle) usando el mismo algoritmo que zxlife y otros
-*muchos archivos ay de la carpeta de demos de spectrum no cargan. ejemplo: thelyra2demo05,icecreammain.ay
+
 
 -Audio sdl callback esta por defecto el old callback o el new? depende de si windows o linux.
 Ver comentarios en el código donde está explicado
@@ -110,6 +107,10 @@ Ver comentarios en el código donde está explicado
 
 
 AY Player
+ok ay player poder cargar playlist de archivo, grabar playlist
+ok *permitir cargar playlist desde linea de comandos
+ok *mejorar random del ay player (para sl shuffle) usando el mismo algoritmo que zxlife y otros
+*muchos archivos ay de la carpeta de demos de spectrum no cargan. ejemplo: thelyra2demo05,icecreammain.ay
 ok-tecla F para siguiente/anterior pista en ay player
 ok-tecla F para siguiente/anterior archivo en ay player
 ok*tecla para agregar archivo a favoritos, generando una playlist de favoritos que se puede luego guardar
