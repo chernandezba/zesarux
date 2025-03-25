@@ -8709,7 +8709,17 @@ void menu_retorna_colores_linea_opcion(int indice,int opcion_actual,int opcion_a
 
 }
 
+//Dice si el menu es de tipo stdout
+int menu_es_stdout(void)
+{
+    if (!strcmp(scr_new_driver_name,"stdout")) {
+        return 1;
+    }
 
+    else {
+        return 0;
+    }
+}
 
 //escribe opcion de linea de texto
 //coordenadas "indice" relativa al interior de la ventana (0=inicio)
@@ -8722,7 +8732,7 @@ void menu_escribe_linea_opcion_zxvision(zxvision_window *ventana,int indice,int 
 	char texto[MAX_ESCR_LINEA_OPCION_ZXVISION_LENGTH+1];
 	//Le doy 1 byte mas. Por si acaso alguien llama aqui sin contar el byte 0 del final y la lia...
 
-        if (!strcmp(scr_new_driver_name,"stdout")) {
+    if (menu_es_stdout()) {
 		printf ("%s\n",texto_entrada);
 		scrstdout_menu_print_speech_macro (texto_entrada);
 		return;
@@ -8823,7 +8833,7 @@ void menu_escribe_linea_opcion_tabulado_zxvision(zxvision_window *ventana,int in
     int x,int y,int opcion_marcada)
 {
 
-        if (!strcmp(scr_new_driver_name,"stdout")) {
+        if (menu_es_stdout()) {
                 printf ("%s\n",texto);
                 scrstdout_menu_print_speech_macro (texto);
                 return;
@@ -9501,7 +9511,7 @@ void menu_dibuja_ventana(int x,int y,int ancho,int alto,char *titulo_original_ut
 	if (!no_dibuja_ventana_muestra_pending_error_message && !zxvision_currently_restoring_windows_on_start) menu_muestra_pending_error_message();
 
 	//En el caso de stdout, solo escribimos el texto
-        if (!strcmp(scr_new_driver_name,"stdout")) {
+        if (menu_es_stdout()) {
                 printf ("%s\n",titulo_original_utf);
 		scrstdout_menu_print_speech_macro(titulo_original_utf);
 		printf ("------------------------\n\n");
@@ -12002,7 +12012,7 @@ void zxvision_generic_message_tooltip(char *titulo, int disable_special_chars, i
     //printf("return_after_print_text: %d\n",return_after_print_text);
 
 	//En caso de stdout, es mas simple, mostrar texto y esperar tecla
-    if (!strcmp(scr_new_driver_name,"stdout")) {
+    if (menu_es_stdout()) {
 		//printf ("%d\n",strlen(texto));
 
 
@@ -14009,7 +14019,7 @@ int zxvision_coords_in_front_window(int x,int y)
 void zxvision_draw_window_contents(zxvision_window *w)
 {
 
-	if (!strcmp(scr_new_driver_name,"stdout")) {
+	if (menu_es_stdout()) {
 		zxvision_draw_window_contents_stdout(w);
         zxvision_reset_flag_dirty_must_draw_contents(w);
 		return;
@@ -20564,7 +20574,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 	//Primera vez decir selected item. Luego solo el nombre del item
 	menu_active_item_primera_vez=1;
 
-    if (!strcmp(scr_new_driver_name,"stdout") ) {
+    if (menu_es_stdout()) {
 
 		//Para que se envie a speech
 		//TODO: el texto se muestra dos veces en consola:
@@ -22475,7 +22485,7 @@ void menu_add_ESC_item(menu_item *array_menu_item)
 
         //Si antiguo comportamiento o si driver stdout
         //pues el menu de stdout no tiene el comportamiento de "cerrar todos menus" que se activa con menu_add_item_menu_se_cerrara()
-        if (menu_old_behaviour_close_menus.v || !strcmp(scr_new_driver_name,"stdout") ) {
+        if (menu_old_behaviour_close_menus.v || menu_es_stdout() ) {
             accion_esc="Volver";
             accio_esc="Tornar";
             action_esc="Back";
@@ -23589,7 +23599,7 @@ int menu_confirm_yesno_texto_additional_item(char *texto_ventana,char *texto_int
 	//printf ("confirm\n");
 
     //En caso de stdout, es mas simple, mostrar texto y esperar tecla
-    if (!strcmp(scr_new_driver_name,"stdout")) {
+    if (menu_es_stdout()) {
 		char buffer_texto[256];
         printf ("%s\n%s\n",texto_ventana,texto_interior);
 
@@ -24435,7 +24445,7 @@ void zxvision_menu_generic_message_setting(char *titulo, const char *texto, char
 
 	zxvision_generic_message_tooltip(titulo , 0, lineas_agregar , 0, 0, 0, NULL, 1, "%s", texto);
 
-	if (!strcmp(scr_new_driver_name,"stdout")) {
+	if (menu_es_stdout()) {
 		printf ("%s\n",texto_opcion);
 		scrstdout_menu_print_speech_macro (texto_opcion);
 		printf("Enable or disable setting? 0 or 1?\n");
@@ -24529,7 +24539,7 @@ int zxvision_menu_generic_message_two_buttons(char *titulo, const char *texto,
 	int lineas_agregar=2;
 
 
-	if (!strcmp(scr_new_driver_name,"stdout")) {
+	if (menu_es_stdout()) {
         printf("%s\n",texto);
         char buffer_opciones[200];
         sprintf(buffer_opciones,"1) %s  2) %s  0) exit",texto_opcion1,texto_opcion2);
@@ -24638,7 +24648,7 @@ int menu_ventana_scanf(char *titulo,char *texto,int max_length)
 {
 
     //En caso de stdout, es mas simple, mostrar texto y esperar texto
-	if (!strcmp(scr_new_driver_name,"stdout")) {
+	if (menu_es_stdout()) {
 		printf ("%s\n",titulo);
 		scrstdout_menu_print_speech_macro(titulo);
 
@@ -24707,7 +24717,7 @@ int zxvision_scanf_history(char *titulo,char *texto,int max_length,char **textos
 {
 
     //En caso de stdout, es mas simple, mostrar texto y esperar texto
-	if (!strcmp(scr_new_driver_name,"stdout")) {
+	if (menu_es_stdout()) {
 		printf ("%s\n",titulo);
 		scrstdout_menu_print_speech_macro(titulo);
 
@@ -25008,7 +25018,7 @@ int menu_ventana_scanf_numero(char *titulo,char *texto,int max_length,int increm
 
     //En caso de stdout, es mas simple, mostrar texto y esperar texto
 	//Lo gestiona la propia rutina de menu_ventana_scanf
-	if (!strcmp(scr_new_driver_name,"stdout")) {
+	if (menu_es_stdout()) {
 		menu_ventana_scanf(titulo,texto,max_length);
 		return 0;
 	}
