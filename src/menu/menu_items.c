@@ -6919,45 +6919,13 @@ void menu_audio_new_ayplayer(MENU_ITEM_PARAMETERS)
 
 				menu_add_item_menu_format(array_menu_audio_new_ayplayer,MENU_OPCION_NORMAL,menu_audio_new_ayplayer_repeat,NULL,"[%c] Repeat",
 					(ay_player_repeat_file.v ? 'X' : ' '));
-				menu_add_item_menu_ayuda(array_menu_audio_new_ayplayer,"Repeat from the beginning when finished all songs");
-				menu_add_item_menu_tabulado(array_menu_audio_new_ayplayer,13,linea);
-
-                linea++;
-
-				menu_add_item_menu_format(array_menu_audio_new_ayplayer,MENU_OPCION_NORMAL,menu_audio_new_ayplayer_exitend,NULL,"[%c] Exit end",
-					(ay_player_exit_emulator_when_finish.v ? 'X' : ' ') );
-				menu_add_item_menu_ayuda(array_menu_audio_new_ayplayer,"Exit emulator when finished all songs");
-				menu_add_item_menu_tabulado(array_menu_audio_new_ayplayer,1,linea);
-
-
-
-
-				if (ay_player_limit_infinite_tracks==0) sprintf(textoplayer,"[inf] Inf. tracks");
-				else sprintf(textoplayer,"[%ds] Inf. tracks",ay_player_limit_infinite_tracks/50);
-				menu_add_item_menu_format(array_menu_audio_new_ayplayer,MENU_OPCION_NORMAL,menu_audio_new_ayplayer_inftracks,NULL,textoplayer);
-				menu_add_item_menu_ayuda(array_menu_audio_new_ayplayer,"Time limit for songs which doesn't have time limit");
+				menu_add_item_menu_ayuda(array_menu_audio_new_ayplayer,"Repeat file from the beginning when finished all songs");
 				menu_add_item_menu_tabulado(array_menu_audio_new_ayplayer,14,linea);
 
-                linea++;
-
-
-				if (ay_player_limit_any_track==0) sprintf(textoplayer,"[no limit] Max track");
-				else sprintf(textoplayer,"[%ds] Max track",ay_player_limit_any_track/50);
-				menu_add_item_menu_format(array_menu_audio_new_ayplayer,MENU_OPCION_NORMAL,menu_audio_new_ayplayer_len_anytracks,NULL,textoplayer);
-				menu_add_item_menu_ayuda(array_menu_audio_new_ayplayer,"Time limit for all songs");
-				menu_add_item_menu_tabulado(array_menu_audio_new_ayplayer,1,linea);
-
-				menu_add_item_menu_format(array_menu_audio_new_ayplayer,MENU_OPCION_NORMAL,menu_audio_new_ayplayer_add_to_track,NULL,
-                    "[%ds] Add to track",ay_player_add_to_track);
-				menu_add_item_menu_ayuda(array_menu_audio_new_ayplayer,"Increase track duration");
-				menu_add_item_menu_tabulado(array_menu_audio_new_ayplayer,22,linea);
-
-                linea++;
-
-				menu_add_item_menu_format(array_menu_audio_new_ayplayer,MENU_OPCION_NORMAL,menu_ayplayer_detect_silence,NULL,"[%c] Detect silence",
-					(ay_player_silence_detection.v ? 'X' : ' '));
-				menu_add_item_menu_ayuda(array_menu_audio_new_ayplayer,"Jump to next track if silence detected during 10 seconds");
-				menu_add_item_menu_tabulado(array_menu_audio_new_ayplayer,1,linea);
+				menu_add_item_menu_format(array_menu_audio_new_ayplayer,MENU_OPCION_NORMAL,menu_audio_new_ayplayer_exitend,NULL,"[%c] Exitend",
+					(ay_player_exit_emulator_when_finish.v ? 'X' : ' ') );
+				menu_add_item_menu_ayuda(array_menu_audio_new_ayplayer,"Exit emulator when finished all songs");
+				menu_add_item_menu_tabulado(array_menu_audio_new_ayplayer,25,linea);
 
                 linea++;
 
@@ -6970,6 +6938,39 @@ void menu_audio_new_ayplayer(MENU_ITEM_PARAMETERS)
 					(ay_player_show_info_console.v ? 'X' : ' '));
 				menu_add_item_menu_ayuda(array_menu_audio_new_ayplayer,"Show information about AY file and song played in console too");
 				menu_add_item_menu_tabulado(array_menu_audio_new_ayplayer,14,linea);
+
+                linea++;
+
+                zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"--Track settings--");
+
+
+				if (ay_player_limit_infinite_tracks==0) sprintf(textoplayer,"[no] Inf. Len");
+				else sprintf(textoplayer,"[%ds] Inf. Len",ay_player_limit_infinite_tracks/50);
+				menu_add_item_menu_format(array_menu_audio_new_ayplayer,MENU_OPCION_NORMAL,menu_audio_new_ayplayer_inftracks,NULL,textoplayer);
+				menu_add_item_menu_ayuda(array_menu_audio_new_ayplayer,"Time limit for songs which doesn't have time limit");
+				menu_add_item_menu_tabulado(array_menu_audio_new_ayplayer,1,linea);
+
+				if (ay_player_limit_any_track==0) sprintf(textoplayer,"[no limit] Max len");
+				else sprintf(textoplayer,"[%ds] Max len",ay_player_limit_any_track/50);
+				menu_add_item_menu_format(array_menu_audio_new_ayplayer,MENU_OPCION_NORMAL,menu_audio_new_ayplayer_len_anytracks,NULL,textoplayer);
+				menu_add_item_menu_ayuda(array_menu_audio_new_ayplayer,"Time limit for all songs");
+				menu_add_item_menu_tabulado(array_menu_audio_new_ayplayer,18,linea);
+
+                linea++;
+
+				menu_add_item_menu_format(array_menu_audio_new_ayplayer,MENU_OPCION_NORMAL,menu_audio_new_ayplayer_add_to_track,NULL,
+                    "[%ds] Add Len",ay_player_add_to_track);
+				menu_add_item_menu_ayuda(array_menu_audio_new_ayplayer,"Increase track duration");
+				menu_add_item_menu_tabulado(array_menu_audio_new_ayplayer,1,linea);
+
+
+
+
+				menu_add_item_menu_format(array_menu_audio_new_ayplayer,MENU_OPCION_NORMAL,menu_ayplayer_detect_silence,NULL,"[%c] Detect silence",
+					(ay_player_silence_detection.v ? 'X' : ' '));
+				menu_add_item_menu_ayuda(array_menu_audio_new_ayplayer,"Jump to next track if silence detected during 10 seconds");
+				menu_add_item_menu_tabulado(array_menu_audio_new_ayplayer,18,linea);
+
 
 			}
 
