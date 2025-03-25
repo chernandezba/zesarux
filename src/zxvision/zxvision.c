@@ -21618,11 +21618,17 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
     int no_es_realmente_un_menu=m->no_es_realmente_un_menu;
 
     //Al salir de menu, reescribir las opciones pero sin que se vea cursor activo
-    //Esto evita que se vea el cursor seleccionado en ventanas abiertas en segundo plano, como ay player
+    //Esto evita que se vea el cursor seleccionado en ventanas abiertas en segundo plano, como ay player,
+    //que es confuso para el usuario tener ventanas en segundo plano con cursor activo. Solo es para esto, es por corregir
+    //ese "glitch" de la ventana
     //Nota: se podria hacer esto solo para menus tabulados y no para menus normales, pero asi tengo el código uniforme
     //y funciona igual en cualquier caso de menu
     //Nota 2: mi intuicion me dice que provocaria parpadeo del cursor al pulsar enter en una opcion, porque se
     //sale y se entra en la funcion de menu, pero parece que no se ve dicho parpadeo porque no se está refrescando la ventana entre medias
+    //Si se hiciera zxvision_draw_window_contents(ventana); menu_refresca_pantalla();
+    //despues de la llamada a menu_dibuja_menu, si que se veria parpadeo
+    //Nota 3: Para mi yo del futuro: considerar esta Nota 2 por si alguna vez en alguna ventana con menu tabulado
+    //se ve parpadeo al pulsar enter en alguna opción, es debido a esto
     menu_escribe_opciones_zxvision(ventana,m,-1,max_opciones);
 
 
