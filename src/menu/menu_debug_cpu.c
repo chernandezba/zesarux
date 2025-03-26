@@ -88,7 +88,7 @@ menu_z80_moto_int menu_debug_disassemble_bajar(menu_z80_moto_int dir_inicial)
 }
 
 
-menu_z80_moto_int menu_debug_disassemble_subir(menu_z80_moto_int dir_inicial)
+menu_z80_moto_int nuevo_menu_debug_disassemble_subir(menu_z80_moto_int dir_inicial)
 {
 	//Subir 1 opcode en el listado
 
@@ -109,6 +109,8 @@ menu_z80_moto_int menu_debug_disassemble_subir(menu_z80_moto_int dir_inicial)
     int dado_la_vuelta=0;
 
     if (decremento>dir_inicial) {
+        //Da la vuelta, o sea, pasamos de direcciones bajas 000... hacia FFFF...
+        //ajustamos direccion, quitando lo que excede de 0, y luego quitando el resto del maximo (menu_debug_memory_zone_size)
         decremento -=dir_inicial;
         dir=menu_debug_memory_zone_size-decremento;
         dado_la_vuelta=1;
@@ -170,7 +172,7 @@ menu_z80_moto_int menu_debug_disassemble_subir(menu_z80_moto_int dir_inicial)
 
 }
 
-menu_z80_moto_int old_menu_debug_disassemble_subir(menu_z80_moto_int dir_inicial)
+menu_z80_moto_int menu_debug_disassemble_subir(menu_z80_moto_int dir_inicial)
 {
 	//Subir 1 opcode en el listado
 
@@ -189,15 +191,33 @@ menu_z80_moto_int old_menu_debug_disassemble_subir(menu_z80_moto_int dir_inicial
 	if (CPU_IS_MOTOROLA) decremento=30; //En el caso de motorola mejor empezar antes
 
 
-	dir=dir_inicial-decremento;
+	//dir=dir_inicial-decremento;
 
-	dir=menu_debug_hexdump_adjusta_en_negativo(dir,1);
+	//dir=menu_debug_hexdump_adjusta_en_negativo(dir,1);
+
+
+
+    if (decremento>dir_inicial) {
+        //Da la vuelta, o sea, pasamos de direcciones bajas 000... hacia FFFF...
+        //ajustamos direccion, quitando lo que excede de 0, y luego quitando el resto del maximo (menu_debug_memory_zone_size)
+        int copia_decremento=decremento;
+        copia_decremento -=dir_inicial;
+        dir=menu_debug_memory_zone_size-copia_decremento;
+        printf("dado la vuelta\n");
+    }
+
+	else {
+        dir=dir_inicial-decremento;
+    }
+
+    printf ("dir inicial sin ajuste %04XH\n",dir);
+
 
 	//menu_z80_moto_int dir_anterior=dir;
 
 	int puntero_ficticio=0;
 
-    printf ("dir inicial %X puntero_ficticio %d\n",dir,puntero_ficticio);
+    printf ("dir inicial %04XH puntero_ficticio %d\n",dir,puntero_ficticio);
 
 
 	do {
@@ -210,7 +230,7 @@ menu_z80_moto_int old_menu_debug_disassemble_subir(menu_z80_moto_int dir_inicial
 		dir=adjust_address_memory_size(dir);
 		puntero_ficticio+=longitud_opcode;
 
-		printf ("dir %X puntero_ficticio %d\n",dir,puntero_ficticio);
+		printf ("dir %04XH puntero_ficticio %d\n",dir,puntero_ficticio);
 
 		if (puntero_ficticio>=decremento) {
             printf("salir subir arriba\n");
