@@ -143,3 +143,12 @@ la deja en lista de submenu
 *busqueda indexada. que cuando se haya abierto top bar agregue automaticamente "Main Menu" a todos, siempre que no venga indicado
 claro. o no, porque si hay top bar, "Storage" menu por ejemplo es un menu directo sin tener que pasar por Main Menu
 *al estar en un menu y pulsar en otro de topbar, que se reabra, el truco creo que esta en activar menu_pressed_open_menu_while_in_menu.v
+
+
+-Si se abre una ventana que la ultima vez se habia minimizado, deberia desminimizarse.
+Pasos:
+-minimizo una ventana, ejemplo view sensors
+-salgo ZEsarUX
+-edito .zesaruxrc y quito de la linea de restorewindow esa ventana
+-entro en ZEsarUX
+-abro view sensors. se inicia minimizada. Se deberia desminimizar
