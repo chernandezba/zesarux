@@ -127,7 +127,7 @@ menu_z80_moto_int menu_debug_disassemble_subir(menu_z80_moto_int dir_inicial)
 		dir=adjust_address_memory_size(dir);
 		puntero_ficticio+=longitud_opcode;
 
-		//printf ("dir %X dir_anterior %X puntero_ficticio %d\n",dir,dir_anterior,puntero_ficticio);
+		//printf ("dir %X puntero_ficticio %d\n",dir,puntero_ficticio);
 
 		if (puntero_ficticio>=decremento) {
 			return menu_debug_hexdump_adjusta_en_negativo(dir_inicial-longitud_opcode,1);

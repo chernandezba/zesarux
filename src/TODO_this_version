@@ -107,31 +107,11 @@ Ver comentarios en el código donde está explicado
 
 
 AY Player
-ok ay player poder cargar playlist de archivo, grabar playlist
-ok *permitir cargar playlist desde linea de comandos
-ok *mejorar random del ay player (para sl shuffle) usando el mismo algoritmo que zxlife y otros
-ok-tecla F para siguiente/anterior pista en ay player
-ok-tecla F para siguiente/anterior archivo en ay player
-ok*tecla para agregar archivo a favoritos, generando una playlist de favoritos que se puede luego guardar
-ok*smartload de m3u
-ok *si se borra playlist luego deja hacer next file y da un error
-ok*Icono de volumen centrarlo en vertical
-ok*Marcar canción en playlist (no favorita) tanto en lista de playlist como en player, y opción para grabar ítems marcados en playlist
-ok*Al salvar playlist de marcados (y también playlist normal?) decir si append o truncate, para poder añadir más canciones marcadas
-ok*si se borra playlist deberia pararse reproduccion. porque si no, se quedan activos los botones de next y previous?
-ok*probar zvfs_fopen_write_append en mmc haciendo append de una playlist grabada en imagen mmc
-ok*probar sobreescribir tap out y que aparezca opcion de rotate y que funcione rotate
 *poder generar archivos ay?
 *Video ay player con todas nuevas features
 *muchos archivos ay de la carpeta de demos de spectrum no cargan. ejemplo: thelyra2demo05,icecreammain.ay
-Parece que esos de toi estan mal definidos, dura unos 3 segundos mas
-ok->Parametro para poder sumar tiempo a las canciones. Tocar en ay_player_playing_timer, if (ay_song_length_counter>ay_song_length+Incremento) {
-ok *ventana ay player con tamaño por defecto avisa en el marco inferior derecho que le falta ancho
 
-ok-View file .ay: mostrar autor, misc, canciones etc. Ver la info que saca desde audio_ay_player_load
 
--ay mixer: poder silenciar canales, tener en cuenta hasta los 3 chips (9 canales)
--tener en cuenta otros chips (el de la master system o el del ql)
 
 -Corregir algunos casos (todos?) en que se intenta cargar/grabar archivos desde una imagen mmc montada
 y no va porque no uso funciones zvfs. Ejemplo cargar snapshot .z80
@@ -141,3 +121,8 @@ Quizá llama a la función que crea la ventana con algún flag específico
 
 -wizard para la primera vez. Y opcion para saltarselo si no se quiere. Que aparezca inicialmente en los 3 idiomas y luego
 cada mensaje en cada idioma
+
+-Más botones joystick, hablado con david - el de los juegos de Next
+
+-Desensamblado hacia arriba en zona cercana a 0 tiene que ver qué condición
+no parar cuando dirección mayor, porque ya es mayor al empezar..
