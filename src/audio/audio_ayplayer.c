@@ -19,6 +19,10 @@
 
 */
 
+/*
+   AY Player related stuff
+*/
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -29,8 +33,6 @@
 #include "audio.h"
 #include "debug.h"
 #include "autoselectoptions.h"
-
-
 #include "utils.h"
 #include "operaciones.h"
 #include "cpc.h"
@@ -39,16 +41,6 @@
 #include "start.h"
 #include "menu_items.h"
 #include "menu_filesel.h"
-
-
-
-
-
-//
-// Inicio funciones AY Player
-//
-
-
 
 
 
@@ -244,9 +236,6 @@ int audio_ay_player_load(char *filename)
     }
 
 
-
-
-
 	if (file_version>3) {
 		debug_printf(VERBOSE_ERR,"File version>3 not supported yet (file version: %d)",file_version);
 		return 1;
@@ -343,8 +332,6 @@ int audio_ay_player_play_song(z80_byte song)
 
 
 
-
-
 	int song_data=audio_ay_player_get_abs_index(song_struct+2);
 
 
@@ -390,7 +377,6 @@ int audio_ay_player_play_song(z80_byte song)
 	if (ay_player_limit_any_track>0) {
 		if (ay_song_length>ay_player_limit_any_track || ay_song_length==0) ay_song_length=ay_player_limit_any_track;
 	}
-
 
 
 	//printf ("Song length: %d 1/50s (%d s)\n",ay_song_length,ay_song_length/50);
@@ -1141,15 +1127,11 @@ void ay_player_next_track(void)
     }
 
 	else {
-
-
-
 			if (ay_player_repeat_file.v) ay_player_pista_actual=1;
 			else {
 				ay_player_next_file();
 				return;
 			}
-
 	}
 
 	audio_ay_player_play_song(ay_player_pista_actual);
@@ -1185,7 +1167,6 @@ void ay_player_playing_timer(void)
 	ay_song_length_counter++;
 
 
-
     //Si hay detector de silencio de ayplayer
     if (ay_player_silence_detection.v) {
         //printf("Contador silencio: %d\n",ay_player_silence_detection_counter);
@@ -1206,7 +1187,6 @@ void ay_player_playing_timer(void)
 	if (ay_song_length_counter>ay_song_length+ay_player_add_to_track*50) {
 		ay_player_next_track();
 	}
-
 
 }
 
@@ -1361,13 +1341,5 @@ void ay_player_get_elapsed_current_song(z80_byte *minutos,z80_byte *segundos,z80
     *segundos=(ay_song_length_counter/50)%60;
     *decimas_segundos=(ay_song_length_counter % 50)*2; //1 frame de video=20ms=2 décimas de segundo
 }
-
-
-
-
-//
-// Fin funciones AY Player
-//
-
 
 
