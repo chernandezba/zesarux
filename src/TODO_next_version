@@ -138,7 +138,6 @@ menu_download_file
 
 
 
-
 -algun tipo de indicacion en un menu que diga que no debe activar salir_todos_menus al pulsar ESC, por ejemplo en algunos no quiero
 que se cierren los anteriores, ejemplo:
 *cambio de zona de memoria desde debug cpu o hexdump
@@ -156,14 +155,6 @@ de las vajillas, el tiempo de render dice 8 ms. si cierro text adventure map, el
 -si se desactivan botones inferiores y superiores, el limite al mover iconos sigue siendo la zona de esos botones, aunque ya no existan
 Lo mismo pasa con un reorder
 Y lo mismo con posición de nuevos iconos
-
-
-
--algún tipo de asistente para el primer arranque? Tipo:
-*idioma: english, español, català
-*zx desktop activado (junto con background windows)
-*etc...
-
 
 
 -Debug console quizá ancho debería considerar siempre el Máximo al calcular posición siguiente línea, esto en print y scroll
@@ -193,8 +184,6 @@ cd /Users/cesarhernandez/Downloads/libretro-super
 
 cd "/Users/cesarhernandez/Library/Application Support/RetroArch/cores"
 cp /Users/cesarhernandez/Downloads/libretro-super/dist/osx-x86_64/skeleton_libretro.dylib .
-
-
 
 
 
@@ -233,13 +222,12 @@ Y sin barra título
 
 - Emulación trs 80?
 
--quiza que se permita ventanas que puedan moverse y estar parte fuera de rango visible. mientras origen ventana este dentro de rango,
-el resto puede salir fuera -> comprobar al hacer print y putpixel que no sale fuera
+
 
 -Incorporar bittransfe como manera de generar snapshot en .tap. Agregar parámetro de estado interrupciones, registro i. Otros registros que falten? R? Problema que está guardando algunos registros en parte alta de la memoria y puede interferir con el stack si no se ha cambiado el CLEAR
 
 
--carpetas con acentos en file selector sale a la derecha el texto de <dir> movido
+
 
 --- Documentar ---
 
@@ -249,7 +237,6 @@ el resto puede salir fuera -> comprobar al hacer print y putpixel que no sale fu
 -diagrama de como funciona zeng online
 
 --- Fin Documentar ---
-
 
 
 -quiza hsync_generator_active.v en zx80/81, que no se usa practicamente, puede servir para estabilizar la imagen en horizontal
@@ -277,14 +264,7 @@ parece que es la llamada a menu_interface_border
 
 -zona de memoria nueva que apunte a buffers internos, como real video, audio buffer o cosas asi. tiene sentido?
 
--top bar menu
-ok*primero poder desactivar solo botones de arriba bajo demanda
-ok*top bar tiene que poder aparecer como overlay. Así se puede hacer mostrar al mover ratón, y también mientras menús están activos
-*si menu que se abre tiene seleccionado un item de submenu, al pulsar boton izquierdo en otro sitio provoca que esa ventana
-la deja en lista de submenu
-*busqueda indexada. que cuando se haya abierto top bar agregue automaticamente "Main Menu" a todos, siempre que no venga indicado
-claro. o no, porque si hay top bar, "Storage" menu por ejemplo es un menu directo sin tener que pasar por Main Menu
-*al estar en un menu y pulsar en otro de topbar, que se reabra, el truco creo que esta en activar menu_pressed_open_menu_while_in_menu.v
+
 
 
 -quiza menu_ventana_scanf_numero_enhanced deberia mostrar el error en ventana en vez de soltarlo por debug_printf,
@@ -335,7 +315,6 @@ La particularidad es que ese archivo tiene bloques a final de microdrive y al pr
 
 
 
-
 -en FAQ formatos MDR/RMD, DDH/RAW
 
 
@@ -356,7 +335,6 @@ La particularidad es que ese archivo tiene bloques a final de microdrive y al pr
 Debería aumentar total_height si es necesario
 
 -Next: puerto 0x5f de DAC D entra en conflicto con volumen canal A de chip AY?
-
 
 
 

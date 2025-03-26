@@ -120,6 +120,26 @@ Quizá llama a la función que crea la ventana con algún flag específico
 
 -wizard para la primera vez. Y opcion para saltarselo si no se quiere. Que aparezca inicialmente en los 3 idiomas y luego
 cada mensaje en cada idioma
+*idioma: english, español, català
+*zx desktop activado (junto con background windows)
+*etc...
 
 -Más botones joystick, hablado con david - el de los juegos de Next
 
+-Juego mighty steel fighters cpc. Requiere expansión de RAM? Emularla
+"Mighty Steel Fighters GGP" Amstrad CPC by AmstradGGP
+
+
+-quiza que se permita ventanas que puedan moverse y estar parte fuera de rango visible. mientras origen ventana este dentro de rango,
+el resto puede salir fuera -> comprobar al hacer print y putpixel que no sale fuera
+
+-carpetas con acentos en file selector sale a la derecha el texto de <dir> movido
+
+-top bar menu
+ok*primero poder desactivar solo botones de arriba bajo demanda
+ok*top bar tiene que poder aparecer como overlay. Así se puede hacer mostrar al mover ratón, y también mientras menús están activos
+*si menu que se abre tiene seleccionado un item de submenu, al pulsar boton izquierdo en otro sitio provoca que esa ventana
+la deja en lista de submenu
+*busqueda indexada. que cuando se haya abierto top bar agregue automaticamente "Main Menu" a todos, siempre que no venga indicado
+claro. o no, porque si hay top bar, "Storage" menu por ejemplo es un menu directo sin tener que pasar por Main Menu
+*al estar en un menu y pulsar en otro de topbar, que se reabra, el truco creo que esta en activar menu_pressed_open_menu_while_in_menu.v
