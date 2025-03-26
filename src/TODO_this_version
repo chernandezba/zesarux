@@ -110,7 +110,6 @@ AY Player
 ok ay player poder cargar playlist de archivo, grabar playlist
 ok *permitir cargar playlist desde linea de comandos
 ok *mejorar random del ay player (para sl shuffle) usando el mismo algoritmo que zxlife y otros
-*muchos archivos ay de la carpeta de demos de spectrum no cargan. ejemplo: thelyra2demo05,icecreammain.ay
 ok-tecla F para siguiente/anterior pista en ay player
 ok-tecla F para siguiente/anterior archivo en ay player
 ok*tecla para agregar archivo a favoritos, generando una playlist de favoritos que se puede luego guardar
@@ -124,14 +123,21 @@ ok*probar zvfs_fopen_write_append en mmc haciendo append de una playlist grabada
 ok*probar sobreescribir tap out y que aparezca opcion de rotate y que funcione rotate
 *poder generar archivos ay?
 *Video ay player con todas nuevas features
-*parece que no calcula correctamente tiempos en algunas canciones, saca algo menos. Por ejemplo toi acid game pista 9 (la musica de intro de la primera y segunda parte)
+*muchos archivos ay de la carpeta de demos de spectrum no cargan. ejemplo: thelyra2demo05,icecreammain.ay
 Parece que esos de toi estan mal definidos, dura unos 3 segundos mas
 ok->Parametro para poder sumar tiempo a las canciones. Tocar en ay_player_playing_timer, if (ay_song_length_counter>ay_song_length+Incremento) {
+ok *ventana ay player con tamaño por defecto avisa en el marco inferior derecho que le falta ancho
 
+ok-View file .ay: mostrar autor, misc, canciones etc. Ver la info que saca desde audio_ay_player_load
 
+-ay mixer: poder silenciar canales, tener en cuenta hasta los 3 chips (9 canales)
+-tener en cuenta otros chips (el de la master system o el del ql)
 
 -Corregir algunos casos (todos?) en que se intenta cargar/grabar archivos desde una imagen mmc montada
 y no va porque no uso funciones zvfs. Ejemplo cargar snapshot .z80
 
 -Poder enviar eventos a ventanas. Por ejemplo para el ay player, una función de diga enviar un mensaje (“next track”) q ventana (“ayplayer”). El como acepta ese evento de momento es una incógnita
 Quizá llama a la función que crea la ventana con algún flag específico
+
+-wizard para la primera vez. Y opcion para saltarselo si no se quiere. Que aparezca inicialmente en los 3 idiomas y luego
+cada mensaje en cada idioma

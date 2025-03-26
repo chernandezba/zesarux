@@ -6050,8 +6050,11 @@ int ayplayer_previo_valor_volume_C=0;
 
 zxvision_window *menu_audio_new_ayplayer_overlay_window;
 
-#define AYPLAYER_ALTO_VENTANA 24
-#define AYPLAYER_INICIO_LINEA_MENU 14
+#define AYPLAYER_ALTO_VENTANA 25
+#define AYPLAYER_INICIO_LINEA_TRACK 3
+#define AYPLAYER_INICIO_LINEA_VU_METERS 10
+#define AYPLAYER_INICIO_LINEA_MENU 15
+
 
 int ayplayer_force_refresh=0;
 
@@ -6070,16 +6073,28 @@ void menu_audio_new_ayplayer_overlay(void)
     int linea;
 
 
-    linea=9;
+
 	int valor_escalado;
 
 	int vol_A,vol_B,vol_C;
 
 
 
-
+    //Los volumenes mostrarlos siempre a cada refresco
     if (menu_audio_new_ayplayer_si_mostrar()) {
-    	//Los volumenes mostrarlos siempre a cada refresco
+        //Linea Track. Refrescar siempre para que se muevan las decimas de segundo con cada frame
+        z80_byte minutos,segundos,decimas_segundo,minutos_total,segundos_total,decimas_segundo_total;
+        ay_player_get_elapsed_current_song(&minutos,&segundos,&decimas_segundo);
+
+
+        ay_player_get_duration_current_song(&minutos_total,&segundos_total,&decimas_segundo_total);
+
+
+        zxvision_print_string_defaults_fillspc_format(menu_audio_new_ayplayer_overlay_window,1,AYPLAYER_INICIO_LINEA_TRACK,
+            "Track: %03d/%03d  (%02d:%02d.%02d/%02d:%02d.%02d)",ay_player_pista_actual,ay_player_total_songs(),
+            minutos,segundos,decimas_segundo,
+            minutos_total,segundos_total,decimas_segundo_total);
+
         char volumen[32];
         char textovolumen[35]; //32+3 de posible color rojo del maximo
 
@@ -6094,7 +6109,7 @@ void menu_audio_new_ayplayer_overlay(void)
         ayplayer_previo_valor_volume_B=menu_decae_ajusta_valor_volumen(ayplayer_previo_valor_volume_B,vol_B);
         ayplayer_previo_valor_volume_C=menu_decae_ajusta_valor_volumen(ayplayer_previo_valor_volume_C,vol_C);
 
-
+        linea=AYPLAYER_INICIO_LINEA_VU_METERS;
 
 	    menu_string_volumen(volumen,ay_3_8912_registros[0][8],ayplayer_previo_valor_volume_A);
         sprintf (textovolumen,"Volume A: %s",volumen);
@@ -6199,6 +6214,9 @@ void menu_audio_new_ayplayer_overlay(void)
 
 
             zxvision_print_string_defaults_fillspc_format(menu_audio_new_ayplayer_overlay_window,1,linea++,
+                "Player Version: %d Size: %d bytes",ay_player_version(),ay_player_size() );
+
+            zxvision_print_string_defaults_fillspc_format(menu_audio_new_ayplayer_overlay_window,1,linea++,
                 "Playlist: %d/%d",ay_player_playlist_item_actual+1,ay_player_playlist_get_total_elements() );
 
             //Indicadores de volumen que decaen
@@ -6210,16 +6228,11 @@ void menu_audio_new_ayplayer_overlay(void)
             ayplayer_previo_valor_volume_C=menu_decae_dec_valor_volumen(ayplayer_previo_valor_volume_C,vol_C);
 
 
-
-			z80_byte minutos,segundos,minutos_total,segundos_total;
-			ay_player_get_elapsed_current_song(&minutos,&segundos);
-
-            ay_player_get_duration_current_song(&minutos_total,&segundos_total);
+            //Linea Track
+            //Vacia. Se refresca en todos los frames, mas arriba
 
 
-
-			zxvision_print_string_defaults_fillspc_format(menu_audio_new_ayplayer_overlay_window,1,linea++,
-                "Track: %03d/%03d  (%02d:%02d/%02d:%02d)",ay_player_pista_actual,ay_player_total_songs(),minutos,segundos,minutos_total,segundos_total);
+            linea++;
 
 
 			ayplayer_new_contador_string_track_name=menu_ay_player_get_continuous_string(menu_audio_new_ayplayer_overlay_window,
@@ -6764,6 +6777,9 @@ void menu_audio_new_ayplayer(MENU_ITEM_PARAMETERS)
         //strcpy(ventana->geometry_name,"ayplayer");
         //restaurar estado minimizado de ventana
         //ventana->is_minimized=is_minimized;
+
+        //no indicar que se ha escrito mas alla del tamanyo, porque los textos de titulo etc pueden ser muy largos (y ya se hara scroll automatico)
+        ventana->do_not_warn_tried_write_beyond_size=1;
 
     }
 

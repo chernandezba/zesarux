@@ -3091,6 +3091,123 @@ void menu_file_o_browser_show(char *filename)
 
 
 
+//Retorna valor de 16 bit apuntado como big endian
+z80_int menu_file_ay_browser_show_get_be_word(z80_byte first_byte,z80_byte second_byte)
+{
+	return first_byte*256 + second_byte;
+}
+
+
+//Retorna valor a indice teniendo como entrada indice y un puntero de 16 bits absoluto en ese indice inicial
+int menu_file_ay_browser_show_get_abs_index(z80_byte *memoria,int initial_index)
+{
+	int final_index;
+
+    z80_byte first_byte,second_byte;
+
+    first_byte=memoria[initial_index];
+    second_byte=memoria[initial_index+1];
+
+	final_index=initial_index+menu_file_ay_browser_show_get_be_word(first_byte,second_byte);
+
+	return final_index;
+}
+
+
+void menu_file_ay_browser_show(char *filename)
+{
+
+	//Leemos archivo
+    int tamanyo_archivo=get_file_size(filename);
+
+    if (tamanyo_archivo<=0) {
+        debug_printf(VERBOSE_ERR,"Error reading file");
+        return;
+    }
+
+    z80_byte *buffer_memoria=util_malloc(tamanyo_archivo,"Can not allocate memory for ay file");
+
+    FILE *ptr_file_ay_browser;
+
+    //Soporte para FatFS
+    FIL fil;        /* File object */
+    //FRESULT fr;     /* FatFs return code */
+
+    int in_fatfs;
+
+    //printf("menu_file_p_browser_show %s\n",filename);
+
+    if (zvfs_fopen_read(filename,&in_fatfs,&ptr_file_ay_browser,&fil)<0) {
+        debug_printf(VERBOSE_ERR,"Unable to open file");
+        return;
+    }
+
+
+
+
+        int leidos;
+
+    leidos=zvfs_fread(in_fatfs,buffer_memoria,tamanyo_archivo,ptr_file_ay_browser,&fil);
+
+
+	if (leidos==0) {
+        debug_printf(VERBOSE_ERR,"Error reading file");
+        return;
+    }
+
+    zvfs_fclose(in_fatfs,ptr_file_ay_browser,&fil);
+
+
+	char buffer_texto[1000];
+
+	//int longitud_bloque;
+
+	//int longitud_texto;
+
+	char *texto_browser=util_malloc_max_texto_browser();
+	int indice_buffer=0;
+
+
+    //Mostrar información de la canción
+	int indice_autor=menu_file_ay_browser_show_get_abs_index(buffer_memoria,12);
+	int indice_misc=menu_file_ay_browser_show_get_abs_index(buffer_memoria,14);
+
+
+
+	sprintf(buffer_texto,"Player Version: %d",buffer_memoria[9]);
+	indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
+
+	sprintf(buffer_texto,"File Release Version: %d",buffer_memoria[8]);
+	indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
+
+	sprintf(buffer_texto,"Total songs: %d",buffer_memoria[16]+1);
+	indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
+
+	sprintf(buffer_texto,"First song: %d",buffer_memoria[17]+1);
+	indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
+
+	sprintf(buffer_texto,"Author: %s",&buffer_memoria[indice_autor]);
+	indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
+
+	sprintf(buffer_texto,"Misc: %s",&buffer_memoria[indice_misc]);
+	indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
+
+
+
+	texto_browser[indice_buffer]=0;
+
+    zxvision_generic_message_tooltip("AY file browser" , 1, 0 , 0, 0, 1, NULL, 1, "%s", texto_browser);
+
+
+
+    free(texto_browser);
+
+    free(buffer_memoria);
+}
+
+
+
+
 void menu_file_hexdump_browser_show(char *filename)
 {
 
@@ -5711,6 +5828,8 @@ void menu_file_viewer_read_file(char *title,char *file_name)
         else if (!util_compare_file_extension(file_name,"p") || !util_compare_file_extension(file_name,"p81")) menu_file_p_browser_show(file_name);
 
         else if (!util_compare_file_extension(file_name,"o")) menu_file_o_browser_show(file_name);
+
+        else if (!util_compare_file_extension(file_name,"ay")) menu_file_ay_browser_show(file_name);
 
         //TODO .mmc viewer no soportado cuando el archivo .mmc esta dentro de una imagen fatfs (o sea no soporta zvfs)
         else if (!util_compare_file_extension(file_name,"mmc")) menu_file_mmc_browser_show(file_name,"MMC");

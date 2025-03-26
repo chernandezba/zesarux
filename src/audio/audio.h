@@ -304,9 +304,11 @@ typedef struct s_ay_player_playlist_item ay_player_playlist_item;
 
 extern ay_player_playlist_item *ay_player_first_item_playlist;
 
-extern void ay_player_get_duration_current_song(z80_byte *minutos_total,z80_byte *segundos_total);
-extern void ay_player_get_elapsed_current_song(z80_byte *minutos,z80_byte *segundos);
-
+extern void ay_player_get_duration_current_song(z80_byte *minutos_total,z80_byte *segundos_total,z80_byte *decimas_segundos_total);
+extern void ay_player_get_elapsed_current_song(z80_byte *minutos,z80_byte *segundos,z80_byte *decimas_segundos);
+extern z80_byte ay_player_version(void);
+extern z80_byte ay_player_release_file_version(void);
+extern int ay_player_size(void);
 extern void ay_player_playlist_init(void);
 extern int ay_player_playlist_get_total_elements(void);
 extern void ay_player_playlist_add(char *archivo);

@@ -8,6 +8,7 @@ Added direct functions to increase/decrease Audio Volume
 Allow to save ZX80/81 screen to .scr file
 Allow to save text note on a ZSF snapshot
 Allow to locate rom files running ZEsarUX from a current folder different than the rom path
+Added .ay file support to File Viewer
 
 * Improvements:
 
@@ -22,7 +23,9 @@ Improved AY Player:
 - Allow to save playlist (full playlist or just marked files)
 - Allow to increase track length (for some tracks with incorrect length)
 - Added direct functions to next/previous track/file
+- Show tenths of a second on song length and time elapsed
 - Better shuffle algorithm
+- Fixed silence detection when playback paused
 
 Improved Sinclair QL emulation:
 - Allow to increase Sinclair QL RAM size

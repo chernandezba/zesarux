@@ -1878,6 +1878,8 @@ int temp_audio_return_frecuencia_buffer(void)
 
 z80_byte *audio_ay_player_mem;
 
+int audio_ay_player_file_size=0;
+
 //Longitud de la cancion en 1/50s
 z80_int ay_song_length=0;
 //Contador actual de transcurrido
@@ -1953,7 +1955,17 @@ z80_byte ay_player_first_song(void)
 
 z80_byte ay_player_version(void)
 {
+	return audio_ay_player_mem[9];
+}
+
+z80_byte ay_player_release_file_version(void)
+{
 	return audio_ay_player_mem[8];
+}
+
+int ay_player_size(void)
+{
+	return audio_ay_player_file_size;
 }
 
 void ay_player_set_footer(char *texto1,char *texto2)
@@ -1996,6 +2008,8 @@ int audio_ay_player_load(char *filename)
 
 	//Leemos archivo en memoria
 	int total_mem=get_file_size(filename);
+
+    audio_ay_player_file_size=total_mem;
 
 
     FILE *ptr_ayfile;
@@ -2485,12 +2499,12 @@ int audio_ay_player_play_song(z80_byte song)
     //		p) Start Z80 emulation*/
 
     if (ay_player_show_info_console.v) {
-        z80_byte minutos_total,segundos_total;
+        z80_byte minutos_total,segundos_total,decimas_segundos_total;
 
-        ay_player_get_duration_current_song(&minutos_total,&segundos_total);
+        ay_player_get_duration_current_song(&minutos_total,&segundos_total,&decimas_segundos_total);
 
-        printf ("Playing song %d name: %s. Duration: %02d:%02d\n",song,&audio_ay_player_mem[indice_nombre],
-            minutos_total,segundos_total);
+        printf ("Playing song %d name: %s. Duration: %02d:%02d.%02d\n",song,&audio_ay_player_mem[indice_nombre],
+            minutos_total,segundos_total,decimas_segundos_total);
 
     }
 
@@ -3038,10 +3052,11 @@ void ay_player_stop_player(void)
 	reset_cpu();
 }
 
-void ay_player_get_duration_current_song(z80_byte *minutos_total,z80_byte *segundos_total)
+void ay_player_get_duration_current_song(z80_byte *minutos_total,z80_byte *segundos_total,z80_byte *decimas_segundos_total)
 {
     *minutos_total=ay_song_length/60/50;
     *segundos_total=(ay_song_length/50)%60;
+    *decimas_segundos_total=(ay_song_length % 50)*2; //1 frame de video=20ms=2 décimas de segundo
 }
 
 
@@ -3164,10 +3179,11 @@ void ay_player_add_directory_playlist(char *directorio)
 
 }
 
-void ay_player_get_elapsed_current_song(z80_byte *minutos,z80_byte *segundos)
+void ay_player_get_elapsed_current_song(z80_byte *minutos,z80_byte *segundos,z80_byte *decimas_segundos)
 {
     *minutos=ay_song_length_counter/60/50;
     *segundos=(ay_song_length_counter/50)%60;
+    *decimas_segundos=(ay_song_length_counter % 50)*2; //1 frame de video=20ms=2 décimas de segundo
 }
 
 //Mezclar la salida actual de sonido con el audiodac.
@@ -3616,7 +3632,8 @@ void audio_send_stereo_sample(char valor_sonido_izquierdo,char valor_sonido_dere
 	//}
 
     //Si valor actual es mismo que el anterior, asumimos silencio
-    if (previous_valor_sonido_izquierdo==valor_sonido_izquierdo && previous_valor_sonido_derecho==valor_sonido_derecho) {
+    //Y siempre que no este en pausa
+    if (previous_valor_sonido_izquierdo==valor_sonido_izquierdo && previous_valor_sonido_derecho==valor_sonido_derecho && ay_player_paused.v==0) {
         ay_player_silence_detection_counter++;
     }
     else {

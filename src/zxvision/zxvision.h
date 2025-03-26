@@ -198,6 +198,7 @@ struct s_zxvision_window {
     //indica que esta ventana no se avisara de que se ha intentado escribir mas alla del tamanyo de la ventana
     //por ejemplo ventana Filesel cuando hace scroll de campo de carpeta actual, intenta escribir mas alla
     //y no quiero que indique
+    //O en AY Player porque el texto del titulo de la cancion puede ir mas alla del ancho para hacer scroll automatico
     int do_not_warn_tried_write_beyond_size;
 
 	//Posicion del cursor y si esta visible
