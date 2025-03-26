@@ -88,8 +88,89 @@ menu_z80_moto_int menu_debug_disassemble_bajar(menu_z80_moto_int dir_inicial)
 }
 
 
-
 menu_z80_moto_int menu_debug_disassemble_subir(menu_z80_moto_int dir_inicial)
+{
+	//Subir 1 opcode en el listado
+
+	//Metodo:
+	//Empezamos en direccion-10 (en QL: direccion-30)
+
+
+	char buffer[32];
+	size_t longitud_opcode;
+
+	menu_z80_moto_int dir;
+
+	int decremento=10;
+
+	if (CPU_IS_MOTOROLA) decremento=30; //En el caso de motorola mejor empezar antes
+
+    //dice si al empezar hacia atrás hemos "dado la vuelta", o sea, hemos pasado de direcciones bajas (ejemplo 0005H) a altas (FFF3H)
+    int dado_la_vuelta=0;
+
+    if (decremento>dir_inicial) {
+        decremento -=dir_inicial;
+        dir=menu_debug_memory_zone_size-decremento;
+        dado_la_vuelta=1;
+        printf("dado la vuelta\n");
+    }
+
+	else {
+        dir=dir_inicial-decremento;
+    }
+
+    printf ("dir inicial sin ajuste %04XH\n",dir);
+
+	//dir=menu_debug_hexdump_adjusta_en_negativo(dir,1);
+
+	menu_z80_moto_int dir_anterior=dir;
+
+
+
+    printf ("dir inicial %04XH\n",dir);
+
+    //por si acaso no se saliese nunca, tener un limite
+    int limite_subir=30;
+
+
+	do {
+
+		dir_anterior=dir;
+
+		debugger_disassemble(buffer,30,&longitud_opcode,dir);
+
+		dir+=longitud_opcode;
+		dir=adjust_address_memory_size(dir);
+
+		printf ("dir %04XH\n",dir);
+
+        if (dado_la_vuelta) {
+            if (dir<dir_anterior) {
+                dado_la_vuelta=0;
+                printf("salido de dado la vuelta\n");
+            }
+        }
+
+		if (dir>=dir_inicial && !dado_la_vuelta) {
+            printf("salir subir arriba\n");
+			return menu_debug_hexdump_adjusta_en_negativo(dir_inicial-longitud_opcode,1);
+		}
+
+        limite_subir--;
+
+        if (limite_subir==0) {
+            //salido forzado. salimos como podemos (restar 1 byte a la direccion inicial)
+            printf("salir forzado por limite de 30\n");
+            return dir_inicial-1;
+        }
+
+
+	} while (1);
+
+
+}
+
+menu_z80_moto_int old_menu_debug_disassemble_subir(menu_z80_moto_int dir_inicial)
 {
 	//Subir 1 opcode en el listado
 
@@ -116,6 +197,8 @@ menu_z80_moto_int menu_debug_disassemble_subir(menu_z80_moto_int dir_inicial)
 
 	int puntero_ficticio=0;
 
+    printf ("dir inicial %X puntero_ficticio %d\n",dir,puntero_ficticio);
+
 
 	do {
 
@@ -127,9 +210,10 @@ menu_z80_moto_int menu_debug_disassemble_subir(menu_z80_moto_int dir_inicial)
 		dir=adjust_address_memory_size(dir);
 		puntero_ficticio+=longitud_opcode;
 
-		//printf ("dir %X puntero_ficticio %d\n",dir,puntero_ficticio);
+		printf ("dir %X puntero_ficticio %d\n",dir,puntero_ficticio);
 
 		if (puntero_ficticio>=decremento) {
+            printf("salir subir arriba\n");
 			return menu_debug_hexdump_adjusta_en_negativo(dir_inicial-longitud_opcode,1);
 		}
 

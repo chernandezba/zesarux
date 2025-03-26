@@ -41,6 +41,7 @@ Improved ZX Vision:
 Improved Debug CPU:
 - Show view number inside the window and not in the window title
 - Added option to enable/disable all breakpoints
+- Fixed moving cursor up when address near 0
 
 * Fixes:
 

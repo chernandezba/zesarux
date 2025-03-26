@@ -41,6 +41,7 @@ Mejorado ZX Vision:
 Mejorado Debug CPU:
 - Mostrar número de vista dentro de la ventana en vez de en el título de la ventana
 - Agregar opción para activar/desactivar todos los breakpoints
+- Corregido al mover cursor arriba cuando la dirección está cercana a 0
 
 * Correcciones:
 
