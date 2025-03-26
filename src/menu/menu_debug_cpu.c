@@ -88,6 +88,7 @@ menu_z80_moto_int menu_debug_disassemble_bajar(menu_z80_moto_int dir_inicial)
 }
 
 
+//Prueba algoritmo nuevo aunque no mejor que el que hay ahora
 menu_z80_moto_int nuevo_menu_debug_disassemble_subir(menu_z80_moto_int dir_inicial)
 {
 	//Subir 1 opcode en el listado
@@ -108,7 +109,7 @@ menu_z80_moto_int nuevo_menu_debug_disassemble_subir(menu_z80_moto_int dir_inici
     //dice si al empezar hacia atrás hemos "dado la vuelta", o sea, hemos pasado de direcciones bajas (ejemplo 0005H) a altas (FFF3H)
     int dado_la_vuelta=0;
 
-    if (decremento>dir_inicial) {
+    if ((unsigned int)decremento>dir_inicial) {
         //Da la vuelta, o sea, pasamos de direcciones bajas 000... hacia FFFF...
         //ajustamos direccion, quitando lo que excede de 0, y luego quitando el resto del maximo (menu_debug_memory_zone_size)
         decremento -=dir_inicial;
@@ -178,8 +179,8 @@ menu_z80_moto_int menu_debug_disassemble_subir(menu_z80_moto_int dir_inicial)
 
 	//Metodo:
 	//Empezamos en direccion-10 (en QL: direccion-30)
-	//inicializamos un puntero ficticio de direccion a 0, mientras que mantenemos la posicion de memoria de lectura inicial en direccion-10/30
-	//Vamos leyendo opcodes. Cuando el puntero ficticio este >=10 (o 30), nuestra direccion final será la inicial - longitud opcode anterior
+	//inicializamos longitud_acumulada a 0, mientras que mantenemos la posicion de memoria de lectura inicial en direccion-10/30
+	//Vamos leyendo opcodes. Cuando longitud_acumulada este >=10 (o 30), nuestra direccion final será la inicial - longitud opcode anterior
 
 	char buffer[32];
 	size_t longitud_opcode;
@@ -190,53 +191,45 @@ menu_z80_moto_int menu_debug_disassemble_subir(menu_z80_moto_int dir_inicial)
 
 	if (CPU_IS_MOTOROLA) decremento=30; //En el caso de motorola mejor empezar antes
 
-
 	//dir=dir_inicial-decremento;
 
 	//dir=menu_debug_hexdump_adjusta_en_negativo(dir,1);
 
 
-
-    if (decremento>dir_inicial) {
+    if ((unsigned int)decremento>dir_inicial) {
         //Da la vuelta, o sea, pasamos de direcciones bajas 000... hacia FFFF...
         //ajustamos direccion, quitando lo que excede de 0, y luego quitando el resto del maximo (menu_debug_memory_zone_size)
         int copia_decremento=decremento;
         copia_decremento -=dir_inicial;
         dir=menu_debug_memory_zone_size-copia_decremento;
-        printf("dado la vuelta\n");
+        //printf("dado la vuelta. menu_debug_memory_zone_size=%d\n",menu_debug_memory_zone_size);
     }
 
 	else {
         dir=dir_inicial-decremento;
     }
 
-    printf ("dir inicial sin ajuste %04XH\n",dir);
+    //printf ("dir inicial sin ajuste %04XH\n",dir);
 
 
-	//menu_z80_moto_int dir_anterior=dir;
+	int longitud_acumulada=0;
 
-	int puntero_ficticio=0;
-
-    printf ("dir inicial %04XH puntero_ficticio %d\n",dir,puntero_ficticio);
-
+    //printf ("dir inicial %04XH longitud_acumulada %d\n",dir,longitud_acumulada);
 
 	do {
-
-		//dir_anterior=dir;
 
 		debugger_disassemble(buffer,30,&longitud_opcode,dir);
 
 		dir+=longitud_opcode;
 		dir=adjust_address_memory_size(dir);
-		puntero_ficticio+=longitud_opcode;
+		longitud_acumulada+=longitud_opcode;
 
-		printf ("dir %04XH puntero_ficticio %d\n",dir,puntero_ficticio);
+		//printf ("dir %04XH longitud_acumulada %d\n",dir,longitud_acumulada);
 
-		if (puntero_ficticio>=decremento) {
-            printf("salir subir arriba\n");
+		if (longitud_acumulada>=decremento) {
+            //printf("salir subir arriba\n");
 			return menu_debug_hexdump_adjusta_en_negativo(dir_inicial-longitud_opcode,1);
 		}
-
 
 	} while (1);
 

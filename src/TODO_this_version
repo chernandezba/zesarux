@@ -100,7 +100,6 @@ donde se queda la tarjeta al desconectarse
 -al insertar cintas parece que no se cierra menu, y antes creo que si que se hacia. creo que al meter cinta en real tape
 
 
-
 -Audio sdl callback esta por defecto el old callback o el new? depende de si windows o linux.
 Ver comentarios en el código donde está explicado
 
@@ -110,7 +109,6 @@ AY Player
 *poder generar archivos ay?
 *Video ay player con todas nuevas features
 *muchos archivos ay de la carpeta de demos de spectrum no cargan. ejemplo: thelyra2demo05,icecreammain.ay
-
 
 
 -Corregir algunos casos (todos?) en que se intenta cargar/grabar archivos desde una imagen mmc montada
@@ -124,6 +122,3 @@ cada mensaje en cada idioma
 
 -Más botones joystick, hablado con david - el de los juegos de Next
 
--Desensamblado hacia arriba en zona cercana a 0 tiene que ver qué condición
-no parar cuando dirección mayor, porque ya es mayor al empezar..
-->probar bien en diferentes roms 128k, en motorola
