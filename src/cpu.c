@@ -56,6 +56,7 @@
 #include "tape_tzx.h"
 #include "tape_smp.h"
 #include "audio.h"
+#include "audio_ayplayer.h"
 #include "screen.h"
 #include "ay38912.h"
 #include "mem128.h"

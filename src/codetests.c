@@ -44,6 +44,7 @@
 #include "assemble.h"
 #include "expression_parser.h"
 #include "audio.h"
+#include "audio_ayplayer.h"
 #include "zeng.h"
 #include "network.h"
 #include "settings.h"

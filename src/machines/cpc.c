@@ -40,6 +40,7 @@
 #include "operaciones.h"
 #include "utils.h"
 #include "audio.h"
+#include "audio_ayplayer.h"
 #include "ay38912.h"
 #include "tape.h"
 #include "dsk.h"

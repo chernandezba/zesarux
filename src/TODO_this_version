@@ -109,6 +109,7 @@ AY Player
 *poder generar archivos ay?
 *Video ay player con todas nuevas features
 *muchos archivos ay de la carpeta de demos de spectrum no cargan. ejemplo: thelyra2demo05,icecreammain.ay
+*ejemplo en el FAQ para reproducir archivos ay random, hacerlo ahora con las opciones de cargar carpeta en playlist y opcion random
 
 
 -Corregir algunos casos (todos?) en que se intenta cargar/grabar archivos desde una imagen mmc montada

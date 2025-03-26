@@ -38,6 +38,7 @@
 #include "cpu.h"
 #include "start.h"
 #include "audio.h"
+#include "audio_ayplayer.h"
 #include "debug.h"
 #include "zxvision.h"
 #include "tape.h"

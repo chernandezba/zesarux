@@ -60,6 +60,7 @@
 #include "ay38912.h"
 #include "tape.h"
 #include "audio.h"
+#include "audio_ayplayer.h"
 #include "timer.h"
 #include "snap.h"
 #include "operaciones.h"

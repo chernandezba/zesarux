@@ -46,6 +46,7 @@
 #include "menu_items.h"
 #include "menu_debug_cpu.h"
 #include "audio.h"
+#include "audio_ayplayer.h"
 #include "timer.h"
 #include "screen.h"
 #include "ay38912.h"

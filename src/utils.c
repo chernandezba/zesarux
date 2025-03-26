@@ -69,6 +69,7 @@
 #include "menu_debug_cpu.h"
 #include "z88.h"
 #include "audio.h"
+#include "audio_ayplayer.h"
 #include "playtzx.h"
 #include "tape_tzx.h"
 #include "tape_pzx.h"
