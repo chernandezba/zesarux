@@ -2236,6 +2236,32 @@ extern int convert_p_to_rwa_tmpdir(char *origen, char *destino);
                 }
         }
 
+		else if (!util_compare_file_extension(archivo,"rzx")) {
+                char *opciones[]={
+					"RZX to SCR",
+                    "RZX to Z80",
+                        NULL};
+
+        int opcion=menu_ask_list_texto("File converter","Select conversion",opciones);
+		if (opcion<0) {
+			//Salido con ESC
+			return;
+		}
+                switch (opcion) {
+                        case 0:
+                                sprintf(archivo_destino,"%s/%s.scr",directorio,archivo);
+								util_convert_any_to_scr(fullpath,archivo_destino);
+                        break;
+
+                        case 1:
+                                sprintf(archivo_destino,"%s/%s.z80",directorio,archivo);
+								util_convert_rzx_to_z80(fullpath,archivo_destino);
+                        break;
+
+
+                }
+        }
+
 
 		else if (!util_compare_file_extension(archivo,"zsf")) {
                 char *opciones[]={
@@ -3096,7 +3122,7 @@ int menu_filesel_file_can_be_expanded(char *archivo)
     char *extensiones_validas[]={
         "hdf","tap","tzx","cdt","pzx",
         "trd","dsk","epr","eprom",
-        "flash","p","p81","o","mdv","scl","ddh","mdr","rmd",
+        "flash","p","p81","o","mdv","scl","ddh","mdr","rmd","rzx",
         NULL
     };
 
@@ -3175,6 +3201,11 @@ int menu_filesel_expand(char *archivo,char *tmpdir)
         else if (!util_compare_file_extension(archivo,"dsk") ) {
                 debug_printf (VERBOSE_DEBUG,"Is a dsk file");
                 return util_extract_dsk(archivo,tmpdir);
+        }
+
+        else if (!util_compare_file_extension(archivo,"rzx") ) {
+                debug_printf (VERBOSE_DEBUG,"Is a rzx file");
+                return util_extract_rzx(archivo,tmpdir,NULL,NULL);
         }
 
         //TODO: epr, eprom, flash no se puede expandir si el archivo esta en una imagen mmc

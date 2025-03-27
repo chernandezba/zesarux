@@ -742,6 +742,8 @@ extern int si_existe_editionnamegame(char *nombre_final);
 
 extern int util_extract_mdv(char *mdvname, char *dest_dir);
 extern int util_extract_hdf(char *hdfname, char *dest_dir);
+extern int util_extract_rzx(char *filename,char *tempdir,char *z80_destination,char *force_z80_file_name);
+extern int util_convert_rzx_to_z80(char *filename,char *archivo_destino);
 
 extern void util_save_file(z80_byte *origin, long long int tamanyo_origen, char *destination_file);
 extern int util_load_file_bytes(z80_byte *taperead,char *filename,int total_leer);
