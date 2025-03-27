@@ -997,25 +997,124 @@ index b9211404..8ae300f0 100644
 Para poder agregar soporte de tipo de archivos en el file selector para expandir, mostrar vista previa, convertir a SCR, convertir a Z80, usar como fondo del ZX Desktop:
 
 - Convertir a SCR, convertir a Z80:
-Entrada correspondiente en función file_utils_file_convert
+* Entrada correspondiente en función file_utils_file_convert
+
+Ejemplo:
++               else if (!util_compare_file_extension(archivo,"rzx")) {
++                char *opciones[]={
++                                       "RZX to SCR",
++                    "RZX to Z80",
++                        NULL};
++
++        int opcion=menu_ask_list_texto("File converter","Select conversion",opciones);
++               if (opcion<0) {
++                       //Salido con ESC
++                       return;
++               }
++                switch (opcion) {
++                        case 0:
++                                sprintf(archivo_destino,"%s/%s.scr",directorio,archivo);
++                                                               util_convert_any_to_scr(fullpath,archivo_destino);
++                        break;
++
++                        case 1:
++                                sprintf(archivo_destino,"%s/%s.z80",directorio,archivo);
++                                                               util_convert_rzx_to_z80(fullpath,archivo_destino);
++                        break;
++
++
++                 }
 
 
 - Expandir archivo:
 
-Lista de extensiones válidas en menu_filesel_file_can_be_expanded
-Entrada en función menu_filesel_expand
+* Lista de extensiones válidas en menu_filesel_file_can_be_expanded
+Ejemplo:
+     char *extensiones_validas[]={
+         "hdf","tap","tzx","cdt","pzx",
+         "trd","dsk","epr","eprom",
+-        "flash","p","p81","o","mdv","scl","ddh","mdr","rmd",
++        "flash","p","p81","o","mdv","scl","ddh","mdr","rmd","rzx",
+
+* Entrada en función menu_filesel_expand
+Ejemplo:
++        else if (!util_compare_file_extension(archivo,"rzx") ) {
++                debug_printf (VERBOSE_DEBUG,"Is a rzx file");
++                return util_extract_rzx(archivo,tmpdir,NULL,NULL);
++        }
 
 
 - Usar como fondo en ZX Desktop
 
-Agregar extensión en función menu_zxdesktop_scrfile
-Entrada en función util_convert_any_to_scr
+* Agregar extensión en función menu_zxdesktop_scrfile
+Ejemplo:
+ void menu_zxdesktop_scrfile(MENU_ITEM_PARAMETERS)
+ {
+-    char *filtros[15];
++    char *filtros[16];
+
+     filtros[0]="scr";
+     filtros[1]="tap";
+@@ -11954,7 +11954,8 @@ void menu_zxdesktop_scrfile(MENU_ITEM_PARAMETERS)
+     filtros[11]="p";
+     filtros[12]="mdr";
+     filtros[13]="rmd";
+-    filtros[14]=0;
++    filtros[14]="rzx";
++    filtros[15]=0;
+
+* Entrada en función util_convert_any_to_scr
+Ejemplo:
++       else if (!util_compare_file_extension(filename,"rzx")) {
++        char z80_destination[PATH_MAX]="";
++        retorno=util_extract_rzx(filename,tmpdir,z80_destination,NULL);
++
++        if (z80_destination[0]) {
++                   util_convert_z80_to_scr(z80_destination,archivo_destino);
++            //No hay que buscar archivo de pantalla. ya lo extrae directo. volvemos
++            return 0;
++        }
++       }
 
 - Mostrar vista previa
 
-Lista de extensiones válidas en util_get_extract_preview_type_file
-Entrada en util_extract_preview_file_simple o util_extract_preview_file_expandable
+* Lista de extensiones válidas en util_get_extract_preview_type_file
+Ejemplo:
+         !util_compare_file_extension(nombre,"mdr") ||
++        !util_compare_file_extension(nombre,"rzx") ||
+         !util_compare_file_extension(nombre,"rmd")
+
+
+* Entrada en util_extract_preview_file_simple o util_extract_preview_file_expandable
 dependiendo de si hay conversión directa del archivo a pantalla, o se extraen varios archivos
+Ejemplo:
++                       else if (!util_compare_file_extension(nombre,"rzx") ) {
++                    //Hay que extraer el z80 de dentro del rzx, y luego despues de ese, sacar el scr
++                                       debug_printf (VERBOSE_DEBUG,"Is a rzx file");
++                    char z80_destination[PATH_MAX]="";
++                                       util_extract_rzx(nombre,tmpdir,z80_destination,NULL);
++
++                    if (z80_destination[0]) {
++                        char scr_destino[PATH_MAX];
++
++                        char nombre_sin_dir[PATH_MAX];
++
++                        util_get_file_no_directory(nombre,nombre_sin_dir);
++
++                        sprintf(scr_destino,"%s/%s.scr",tmpdir,nombre_sin_dir); //z80_destination);
++                        //printf("Convertir a %s\n",scr_destino);
++                        retorno=util_convert_z80_to_scr(z80_destination,scr_destino);
++
++                        //Y como esto no es una conversión directa (rzx expande a una carpeta y de ahi sale un z80 y luego un scr)
++                        //hay que indicarle mediante MENU_SCR_INFO_FILE_NAME la ruta al archivo scr
++
++                        char buff_preview_scr[PATH_MAX];
++                        sprintf(buff_preview_scr,"%s/%s",tmpdir,MENU_SCR_INFO_FILE_NAME);
++
++                        //Meter en archivo MENU_SCR_INFO_FILE_NAME la ruta al archivo de pantalla
++                        util_save_file((z80_byte *)scr_destino,strlen(scr_destino)+1,buff_preview_scr);
++                    }
++                       }
 
 ------------------------------
 
