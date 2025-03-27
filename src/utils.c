@@ -19798,7 +19798,7 @@ int util_extract_o(char *filename,char *tempdir)
 
 z80_byte util_extract_rzx_get_byte(int posicion,int longitud,z80_byte *memoria)
 {
-    if (posicion>=longitud) {
+    if (posicion>=longitud || posicion<0) {
         //printf("Trying to read beyond rzx file. Asked: %d Size rzx: %d\n",posicion,longitud);
         //debug_printf(VERBOSE_ERR,"Trying to read beyond rzx file. Asked: %d Size rzx: %d",posicion,longitud_rzx);
         return 0;
@@ -19926,11 +19926,13 @@ int util_extract_rzx(char *archivo,char *tempdir,char *return_z80_destination_na
     while (!final) {
         block_type=util_extract_rzx_get_byte(posicion_puntero,longitud_rzx,memoria);
 
-        //debug_printf (VERBOSE_DEBUG,"Block type %d",block_type);
+        //debug_printf (VERBOSE_DEBUG,"Block type %02XH",block_type);
+
 
         aux_block_length=util_extract_rzx_get_byte(posicion_puntero+1,longitud_rzx,memoria) + 256*util_extract_rzx_get_byte(posicion_puntero+2,longitud_rzx,memoria) +
                             65536*util_extract_rzx_get_byte(posicion_puntero+3,longitud_rzx,memoria) + 16777216*util_extract_rzx_get_byte(posicion_puntero+4,longitud_rzx,memoria);
 
+        //printf ("posicion_puntero %d Block type %02XH block length: %u\n",posicion_puntero,block_type,aux_block_length);
 
         switch (block_type) {
 
@@ -20035,15 +20037,21 @@ int util_extract_rzx(char *archivo,char *tempdir,char *return_z80_destination_na
 
             default:
                 //debug_printf (VERBOSE_ERR,"Unknown RZX block type %d",block_type);
+                //Aun sin conocer el significado de ese bloque, nos arriesgamos a avanzar asumiendo que la longitud está donde siempre
+                posicion_puntero+=aux_block_length;
                 //final=1;
             break;
         }
 
-        if (posicion_puntero>=longitud_rzx) {
+        //printf("despues switch\n");
+
+        if (posicion_puntero>=longitud_rzx || posicion_puntero<0) {
             //printf("Llegado al final\n");
             final=1;
         }
     }
+
+    //printf("Final util_extract_rzx\n");
 
     free(memoria);
     return 0;

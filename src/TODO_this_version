@@ -144,8 +144,9 @@ la deja en lista de submenu
 claro. o no, porque si hay top bar, "Storage" menu por ejemplo es un menu directo sin tener que pasar por Main Menu
 *al estar en un menu y pulsar en otro de topbar, que se reabra, el truco creo que esta en activar menu_pressed_open_menu_while_in_menu.v
 
--preview pantalla archivos rzx. extraer snapshot z80
-*sacar diff de lo necesario habitualmente para soporte de tipo archivos en file selector: can be expanded, show file previews,
+
+ok -preview pantalla archivos rzx. extraer snapshot z80
+ok *sacar diff de lo necesario habitualmente para soporte de tipo archivos en file selector: can be expanded, show file previews,
 convert to SCR, use as desktop background
 ok *cambiar los printf por debug_printf
 
