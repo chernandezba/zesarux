@@ -147,7 +147,7 @@ claro. o no, porque si hay top bar, "Storage" menu por ejemplo es un menu direct
 -preview pantalla archivos rzx. extraer snapshot z80
 *sacar diff de lo necesario habitualmente para soporte de tipo archivos en file selector: can be expanded, show file previews,
 convert to SCR, use as desktop background
-*cambiar los printf por debug_printf
+ok *cambiar los printf por debug_printf
 
 -expandir .z80 para sacar pantalla. tiene sentido? pero entonces se deberia hacer con los sna, sp, zsf, etc
 
