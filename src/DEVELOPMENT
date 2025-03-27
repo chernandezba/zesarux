@@ -994,6 +994,31 @@ index b9211404..8ae300f0 100644
 
 ------------------------------
 
+Para poder agregar soporte de tipo de archivos en el file selector para expandir, mostrar vista previa, convertir a SCR, convertir a Z80, usar como fondo del ZX Desktop:
+
+- Convertir a SCR, convertir a Z80:
+Entrada correspondiente en función file_utils_file_convert
+
+
+- Expandir archivo:
+
+Lista de extensiones válidas en menu_filesel_file_can_be_expanded
+Entrada en función menu_filesel_expand
+
+
+- Usar como fondo en ZX Desktop
+
+Agregar extensión en función menu_zxdesktop_scrfile
+Entrada en función util_convert_any_to_scr
+
+- Mostrar vista previa
+
+Lista de extensiones válidas en util_get_extract_preview_type_file
+Entrada en util_extract_preview_file_simple o util_extract_preview_file_expandable
+dependiendo de si hay conversión directa del archivo a pantalla, o se extraen varios archivos
+
+------------------------------
+
 Sobre tipos de datos
 
 Usar "long"/"long int" es un error , pues en sistemas de 32 bits es un tipo de dato de 32 bits, pero en sistemas de 64 bits ocupa 64 bits
