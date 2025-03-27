@@ -19798,62 +19798,62 @@ int util_extract_o(char *filename,char *tempdir)
 
 z80_byte util_extract_rzx_get_byte(int posicion,int longitud,z80_byte *memoria)
 {
-  if (posicion>=longitud) {
-    printf("Trying to read beyond rzx file. Asked: %d Size rzx: %d\n",posicion,longitud);
-    //debug_printf(VERBOSE_ERR,"Trying to read beyond rzx file. Asked: %d Size rzx: %d",posicion,longitud_rzx);
-    return 0;
-  }
+    if (posicion>=longitud) {
+        //printf("Trying to read beyond rzx file. Asked: %d Size rzx: %d\n",posicion,longitud);
+        //debug_printf(VERBOSE_ERR,"Trying to read beyond rzx file. Asked: %d Size rzx: %d",posicion,longitud_rzx);
+        return 0;
+    }
 
-  return memoria[posicion];
+    return memoria[posicion];
 }
 
 
 void util_extract_rzx_create_temporary_file(char *destino, int puntero, int longitud,z80_byte *memoria,int longitud_rzx)
 {
 
-  printf ("Creating temporary file %s. longitud: %d\n",destino,longitud);
+    //printf ("Creating temporary file %s. longitud: %d\n",destino,longitud);
 
-  FILE *ptr_destino;
-  ptr_destino=fopen(destino,"wb");
-  if (ptr_destino==NULL) {
-          //debug_printf (VERBOSE_ERR,"Error creating target file");
-          return;
-  }
+    FILE *ptr_destino;
+    ptr_destino=fopen(destino,"wb");
+    if (ptr_destino==NULL) {
+        //debug_printf (VERBOSE_ERR,"Error creating target file");
+        return;
+    }
 
-  z80_byte byte_leido;
-  for (;longitud;longitud--,puntero++) {
-    byte_leido=util_extract_rzx_get_byte(puntero,longitud_rzx,memoria);
-    fwrite(&byte_leido,1,1,ptr_destino);
-  }
+    z80_byte byte_leido;
+    for (;longitud;longitud--,puntero++) {
+        byte_leido=util_extract_rzx_get_byte(puntero,longitud_rzx,memoria);
+        fwrite(&byte_leido,1,1,ptr_destino);
+    }
 
-  fclose(ptr_destino);
+    fclose(ptr_destino);
 
 }
 
 
 void util_extract_rzx_create_temporary_gz_file(char *nombre_base,char *destino, int puntero, int longitud,z80_byte *memoria,int longitud_rzx)
 {
-  sprintf (destino,"%s/%s.gz",get_tmpdir_base(),nombre_base);
-  printf ("Creating temporary file %s\n",destino);
+    sprintf (destino,"%s/%s.gz",get_tmpdir_base(),nombre_base);
+    //printf ("Creating temporary file %s\n",destino);
 
-  FILE *ptr_destino;
-  ptr_destino=fopen(destino,"wb");
-  if (ptr_destino==NULL) {
-          debug_printf (VERBOSE_ERR,"Error creating target file");
-          return;
-  }
+    FILE *ptr_destino;
+    ptr_destino=fopen(destino,"wb");
+    if (ptr_destino==NULL) {
+        //debug_printf (VERBOSE_ERR,"Error creating target file");
+        return;
+    }
 
-  //Escribir cabecera gz
-  char gz_header[]="\x1f\x8b\x08\x00\x00\x00\x00\x00";
-  fwrite(gz_header,1,8,ptr_destino);
+    //Escribir cabecera gz
+    char gz_header[]="\x1f\x8b\x08\x00\x00\x00\x00\x00";
+    fwrite(gz_header,1,8,ptr_destino);
 
-  z80_byte byte_leido;
-  for (;longitud;longitud--,puntero++) {
-    byte_leido=util_extract_rzx_get_byte(puntero,longitud_rzx,memoria);
-    fwrite(&byte_leido,1,1,ptr_destino);
-  }
+    z80_byte byte_leido;
+    for (;longitud;longitud--,puntero++) {
+        byte_leido=util_extract_rzx_get_byte(puntero,longitud_rzx,memoria);
+        fwrite(&byte_leido,1,1,ptr_destino);
+    }
 
-  fclose(ptr_destino);
+    fclose(ptr_destino);
 
 }
 
@@ -19861,206 +19861,192 @@ void util_extract_rzx_create_temporary_gz_file(char *nombre_base,char *destino, 
 int util_extract_rzx(char *archivo,char *tempdir,char *return_z80_destination_name,char *force_z80_file_name)
 {
 
-	if (util_compare_file_extension(archivo,"rzx")!=0) {
-		debug_printf(VERBOSE_ERR,"Expander not supported for this file type");
-		return 1;
-	}
+    if (util_compare_file_extension(archivo,"rzx")!=0) {
+        debug_printf(VERBOSE_ERR,"Expander not supported for this file type");
+        return 1;
+    }
 
 
-  int longitud_rzx=get_file_size(archivo);
+    int longitud_rzx=get_file_size(archivo);
 
-  if (longitud_rzx==0) {
-    //debug_printf(VERBOSE_ERR,"RZX file is empty");
-    return 1;
-  }
+    if (longitud_rzx==0) {
+        //debug_printf(VERBOSE_ERR,"RZX file is empty");
+        return 1;
+    }
 
-  z80_byte *memoria;
+    z80_byte *memoria;
 
 
 
-  //Asignar
-  memoria=util_malloc(longitud_rzx,"Error allocating memory to read RZX file");
+    //Asignar
+    memoria=util_malloc(longitud_rzx,"Error allocating memory to read RZX file");
 
-  //Leer archivo
+    //Leer archivo
 
-  FILE *ptr_rzxfile;
-  ptr_rzxfile=fopen(archivo,"rb");
+    FILE *ptr_rzxfile;
+    ptr_rzxfile=fopen(archivo,"rb");
 
-  if (!ptr_rzxfile) {
+    if (!ptr_rzxfile) {
         //debug_printf(VERBOSE_ERR,"Unable to open rzx file");
         return 1;
-  }
+    }
 
-  int leidos=fread(memoria,1,longitud_rzx,ptr_rzxfile);
+    int leidos=fread(memoria,1,longitud_rzx,ptr_rzxfile);
 
-  if (leidos!=longitud_rzx) {
-    //debug_printf(VERBOSE_ERR,"Error reading RZX file");
-    return 1;
-  }
+    if (leidos!=longitud_rzx) {
+        //debug_printf(VERBOSE_ERR,"Error reading RZX file");
+        return 1;
+    }
 
 
   fclose(ptr_rzxfile);
 
-  //Leer primero firma de archivo
-  if (util_extract_rzx_get_byte(0,longitud_rzx,memoria)!='R' ||
-      util_extract_rzx_get_byte(1,longitud_rzx,memoria)!='Z' ||
-      util_extract_rzx_get_byte(2,longitud_rzx,memoria)!='X' ||
-      util_extract_rzx_get_byte(3,longitud_rzx,memoria)!='!') {
-        //debug_printf(VERBOSE_ERR,"RZX header invalid");
-        printf("RZX header invalid\n");
-        //eject_rzx_file();
-        return 1;
-  }
-
-  //debug_printf (VERBOSE_INFO,"RZX file version %d.%d",util_extract_rzx_get_byte(4),util_extract_rzx_get_byte(5));
-
-
-  int posicion_puntero=10;
-
-  //Gestionar tipos de ids
-  z80_byte block_type;
-
-  int final=0;
-  z80_long_int aux_block_length;
-  int i;
-
-  printf("Iniciando bucle\n");
-
-  while (!final) {
-    block_type=util_extract_rzx_get_byte(posicion_puntero,longitud_rzx,memoria);
-
-    debug_printf (VERBOSE_DEBUG,"Block type %d",block_type);
-
-    printf ("Block type %02XH\n",block_type);
-
-    aux_block_length=util_extract_rzx_get_byte(posicion_puntero+1,longitud_rzx,memoria) + 256*util_extract_rzx_get_byte(posicion_puntero+2,longitud_rzx,memoria) +
-                        65536*util_extract_rzx_get_byte(posicion_puntero+3,longitud_rzx,memoria) + 16777216*util_extract_rzx_get_byte(posicion_puntero+4,longitud_rzx,memoria);
-
-
-    switch (block_type) {
-
-      //Creator information block
-      case 0x10:
-      //Security information block
-      case 0x20:
-      //Security signature block
-      case 0x21:
-      //Input recording block
-      case 0x80:
-
-        posicion_puntero+=aux_block_length;
-      break;
-
-
-      //Snapshot block
-      case 0x30:
-
-        printf ("Snapshot block. Length: %d\n",aux_block_length);
-
-        z80_byte snapshot_flags=util_extract_rzx_get_byte(posicion_puntero+5,longitud_rzx,memoria);
-
-        debug_printf (VERBOSE_DEBUG,"First snapshot flags byte: %d",snapshot_flags);
-
-        char snapshot_extension[4];
-
-        for (i=0;i<4;i++) snapshot_extension[i]=util_extract_rzx_get_byte(posicion_puntero+9+i,longitud_rzx,memoria);
-
-        printf ("Snapshot extension : %s\n",snapshot_extension );
-
-
-        z80_long_int uncompressed_snapshot_length=util_extract_rzx_get_byte(posicion_puntero+13,longitud_rzx,memoria) + 256*util_extract_rzx_get_byte(posicion_puntero+14,longitud_rzx,memoria) +
-                      65536*util_extract_rzx_get_byte(posicion_puntero+15,longitud_rzx,memoria) + 16777216*util_extract_rzx_get_byte(posicion_puntero+16,longitud_rzx,memoria);
-
-        printf ("Uncompressed snapshot length: %d\n",uncompressed_snapshot_length);
-
-        //Cargar snapshot a partir de posicion_puntero+0x11
-        //De momento comprobar tipo snapshot
-        if (!strcasecmp(snapshot_extension,"z80")) {
-          debug_printf (VERBOSE_INFO,"Loading z80 snapshot");
-          //Dado que actualmente la lectura de snap z80 lo hace mediante ruta a archivo, creamos archivo temporal
-          //con contenido del snapshot contenido en el archivo rzx y se lo enviamos
-          //Si esta comprimido
-
-          char nombre_final[PATH_MAX];
-
-          char nombre_sin_dir[PATH_MAX];
-
-          util_get_file_no_directory(archivo,nombre_sin_dir);
-
-          if (snapshot_flags&2) {
-
-            printf("RZX comprimido\n");
-
-            //Suponemos descompresion con GZ
-            util_extract_rzx_create_temporary_gz_file(nombre_sin_dir, nombre_final, posicion_puntero+0x11, aux_block_length-17,memoria,longitud_rzx);
-
-            //Y descomprimimos ese archivo
-            char descomprimido[PATH_MAX];
-
-            if (force_z80_file_name!=NULL) {
-                strcpy(descomprimido,force_z80_file_name);
-            }
-            else sprintf (descomprimido,"%s/%s.z80",tempdir,nombre_sin_dir);
-
-            printf("Descomprimido %s\n",descomprimido);
-
-            if (uncompress_gz(nombre_final,descomprimido)) {
-              debug_printf (VERBOSE_ERR,"RZX: Error uncompressing snapshot");
-              //eject_rzx_file();
-              final=1;
-            }
-
-            if (return_z80_destination_name!=NULL) strcpy(return_z80_destination_name,descomprimido);
-
-            //rzx_load_z80_included_snapshot(descomprimido);
-          }
-
-          else {
-            printf("RZX no comprimido\n");
-            if (force_z80_file_name!=NULL) {
-                strcpy(nombre_final,force_z80_file_name);
-            }
-
-            else sprintf (nombre_final,"%s/%s.z80",tempdir,nombre_sin_dir);
-            util_extract_rzx_create_temporary_file(nombre_final, posicion_puntero+0x11, aux_block_length-17,memoria,longitud_rzx);
-            //rzx_load_z80_included_snapshot(nombre_final);
-            if (return_z80_destination_name!=NULL) strcpy(return_z80_destination_name,nombre_final);
-          }
-        }
-
-
-        else {
-          //debug_printf (VERBOSE_ERR,"Unknown snapshot type %s",snapshot_extension);
-          printf ("Unknown snapshot type %s\n",snapshot_extension);
-          //eject_rzx_file();
-
-          final=1;
-        }
-
-        posicion_puntero+=aux_block_length;
-
-        final=1;
-
-      break;
-
-
-
-      default:
-        //debug_printf (VERBOSE_ERR,"Unknown RZX block type %d",block_type);
-        printf("Unknown RZX block type %02XH\n",block_type);
-        //eject_rzx_file();
-        final=1;
-      break;
+    //Leer primero firma de archivo
+    if (util_extract_rzx_get_byte(0,longitud_rzx,memoria)!='R' ||
+        util_extract_rzx_get_byte(1,longitud_rzx,memoria)!='Z' ||
+        util_extract_rzx_get_byte(2,longitud_rzx,memoria)!='X' ||
+        util_extract_rzx_get_byte(3,longitud_rzx,memoria)!='!') {
+            //debug_printf(VERBOSE_ERR,"RZX header invalid");
+            return 1;
     }
 
-    if (posicion_puntero>=longitud_rzx) {
-        printf("Llegado al final\n");
-        final=1;
-    }
-  }
+    //debug_printf (VERBOSE_INFO,"RZX file version %d.%d",util_extract_rzx_get_byte(4),util_extract_rzx_get_byte(5));
 
-  free(memoria);
-   return 0;
+
+    int posicion_puntero=10;
+
+    //Gestionar tipos de ids
+    z80_byte block_type;
+
+    int final=0;
+    z80_long_int aux_block_length;
+    int i;
+
+
+    while (!final) {
+        block_type=util_extract_rzx_get_byte(posicion_puntero,longitud_rzx,memoria);
+
+        //debug_printf (VERBOSE_DEBUG,"Block type %d",block_type);
+
+        aux_block_length=util_extract_rzx_get_byte(posicion_puntero+1,longitud_rzx,memoria) + 256*util_extract_rzx_get_byte(posicion_puntero+2,longitud_rzx,memoria) +
+                            65536*util_extract_rzx_get_byte(posicion_puntero+3,longitud_rzx,memoria) + 16777216*util_extract_rzx_get_byte(posicion_puntero+4,longitud_rzx,memoria);
+
+
+        switch (block_type) {
+
+            //Creator information block
+            case 0x10:
+            //Security information block
+            case 0x20:
+            //Security signature block
+            case 0x21:
+            //Input recording block
+            case 0x80:
+
+                posicion_puntero+=aux_block_length;
+            break;
+
+
+            //Snapshot block
+            case 0x30:
+
+                final=1;
+                //printf ("Snapshot block. Length: %d\n",aux_block_length);
+
+                z80_byte snapshot_flags=util_extract_rzx_get_byte(posicion_puntero+5,longitud_rzx,memoria);
+
+                //debug_printf (VERBOSE_DEBUG,"First snapshot flags byte: %d",snapshot_flags);
+
+                char snapshot_extension[4];
+
+                for (i=0;i<4;i++) snapshot_extension[i]=util_extract_rzx_get_byte(posicion_puntero+9+i,longitud_rzx,memoria);
+
+                //printf ("Snapshot extension : %s\n",snapshot_extension );
+
+
+                //z80_long_int uncompressed_snapshot_length=util_extract_rzx_get_byte(posicion_puntero+13,longitud_rzx,memoria) + 256*util_extract_rzx_get_byte(posicion_puntero+14,longitud_rzx,memoria) +
+                //        65536*util_extract_rzx_get_byte(posicion_puntero+15,longitud_rzx,memoria) + 16777216*util_extract_rzx_get_byte(posicion_puntero+16,longitud_rzx,memoria);
+
+                //printf ("Uncompressed snapshot length: %d\n",uncompressed_snapshot_length);
+
+                //Cargar snapshot a partir de posicion_puntero+0x11
+                //De momento comprobar tipo snapshot
+                if (!strcasecmp(snapshot_extension,"z80")) {
+
+                    //Si esta comprimido
+
+
+                    char nombre_final[PATH_MAX];
+
+                    char nombre_sin_dir[PATH_MAX];
+
+                    util_get_file_no_directory(archivo,nombre_sin_dir);
+
+                    if (snapshot_flags&2) {
+
+                        //printf("RZX comprimido\n");
+
+                        //Suponemos descompresion con GZ
+                        util_extract_rzx_create_temporary_gz_file(nombre_sin_dir, nombre_final, posicion_puntero+0x11, aux_block_length-17,memoria,longitud_rzx);
+
+                        //Y descomprimimos ese archivo
+                        char descomprimido[PATH_MAX];
+
+                        if (force_z80_file_name!=NULL) {
+                            strcpy(descomprimido,force_z80_file_name);
+                        }
+                        else sprintf (descomprimido,"%s/%s.z80",tempdir,nombre_sin_dir);
+
+                        //printf("Descomprimido %s\n",descomprimido);
+
+                        if (uncompress_gz(nombre_final,descomprimido)) {
+                            debug_printf (VERBOSE_DEBUG,"RZX: Error uncompressing snapshot");
+                        }
+
+                        if (return_z80_destination_name!=NULL) strcpy(return_z80_destination_name,descomprimido);
+
+                    }
+
+                    else {
+                        //printf("RZX no comprimido\n");
+                        if (force_z80_file_name!=NULL) {
+                            strcpy(nombre_final,force_z80_file_name);
+                        }
+
+                        else sprintf (nombre_final,"%s/%s.z80",tempdir,nombre_sin_dir);
+                        util_extract_rzx_create_temporary_file(nombre_final, posicion_puntero+0x11, aux_block_length-17,memoria,longitud_rzx);
+                        //rzx_load_z80_included_snapshot(nombre_final);
+                        if (return_z80_destination_name!=NULL) strcpy(return_z80_destination_name,nombre_final);
+                    }
+                }
+
+
+                else {
+                    //debug_printf (VERBOSE_ERR,"Unknown snapshot type %s",snapshot_extension);
+                }
+
+                posicion_puntero+=aux_block_length;
+
+
+
+            break;
+
+
+
+            default:
+                //debug_printf (VERBOSE_ERR,"Unknown RZX block type %d",block_type);
+                //final=1;
+            break;
+        }
+
+        if (posicion_puntero>=longitud_rzx) {
+            //printf("Llegado al final\n");
+            final=1;
+        }
+    }
+
+    free(memoria);
+    return 0;
 
 }
 
@@ -23591,7 +23577,7 @@ int util_extract_preview_file_expandable(char *nombre,char *tmpdir)
                         util_get_file_no_directory(nombre,nombre_sin_dir);
 
                         sprintf(scr_destino,"%s/%s.scr",tmpdir,nombre_sin_dir); //z80_destination);
-                        printf("Convertir a %s\n",scr_destino);
+                        //printf("Convertir a %s\n",scr_destino);
                         retorno=util_convert_z80_to_scr(z80_destination,scr_destino);
 
                         //Y como esto no es una conversión directa (rzx expande a una carpeta y de ahi sale un z80 y luego un scr)
