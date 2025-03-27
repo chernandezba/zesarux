@@ -10795,6 +10795,29 @@ void zxvision_window_delete_all_windows(void)
         //al pasar a pantalla completa, y no queremos dejarnos ninguna abierta en ese caso
 		zxvision_window *previa;
 
+        //Antes de cerrarlas, desminimizar las que estén minimizadas. No quiero que tengan su geometria como minimizadas
+        //si ya no están abiertas. Por que si no, se guardarian como minimizadas, quedarian cerradas,
+        //y al arrancarlas de nuevo no se verian porque arrancan minimizadas. Y habria que arrancarlas dos veces para que la
+        //segunda vez ya se desminimicen
+
+        if (ventana->is_minimized) {
+
+            debug_printf(VERBOSE_INFO,"Unminimize window [%s] before closing it",ventana->window_title);
+
+            //Luego simulamos accion de pulsar boton de minimizar ventana
+            //zxvision_handle_click_minimize(ventana);
+
+            //Hacemos esto otro que va mas rapido. No restaura tamaños y demas pero es que simular el click va mucho mas lento
+            ventana->is_minimized=0;
+
+
+            //Y guardar la geometria
+            //printf("antes grabar geometria\n");
+            util_add_window_geometry_compact(ventana);
+            //printf("despues grabar geometria\n");
+
+        }
+
 		previa=ventana->previous_window;
 		zxvision_window_delete_this_window(ventana);
 

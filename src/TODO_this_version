@@ -152,10 +152,19 @@ ok *cambiar los printf por debug_printf
 
 -expandir .z80 para sacar pantalla. tiene sentido? pero entonces se deberia hacer con los sna, sp, zsf, etc
 
--Si se abre una ventana que la ultima vez se habia minimizado, deberia desminimizarse.
+ok-Si se abre una ventana que la ultima vez se habia minimizado, deberia desminimizarse.
 Pasos:
 -minimizo una ventana, ejemplo view sensors
 -salgo ZEsarUX
 -edito .zesaruxrc y quito de la linea de restorewindow esa ventana
 -entro en ZEsarUX
 -abro view sensors. se inicia minimizada. Se deberia desminimizar
+->Pero es el mismo caso que dejamos ventanas minimizadas y abrimos ZEsarUX. Se abren pero minimizadas
+Por tanto no se puede distinguir el caso de cuando se arranca ZEsarUX y hay restore de ventanas minimizadas (que queremos que se vean minimizadas)
+o de abrir una ventana, que tenia geometria de minimizada, pero no se habia restaurado al iniciar ZEsarUX
+De todas maneras esto es un caso muy concreto que no sucede siempre:
+-si las minimiza el usuario y sale y entra en ZEsarUX, estarán minimizadas. Si abre una ventana de esas, se desminimizan
+-para que estén sin restorewindow y minimizadas, o bien edita el archivo de config o bien hace un close all windows, asi se guardan minimizadas
+pero no se restauran.
+Solución: hacer que cuando se cierren todas las ventanas, antes se quite el minimizado (y se guarde geometria)
+->corregido
