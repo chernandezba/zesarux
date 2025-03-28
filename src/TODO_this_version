@@ -168,3 +168,8 @@ De todas maneras esto es un caso muy concreto que no sucede siempre:
 pero no se restauran.
 Solución: hacer que cuando se cierren todas las ventanas, antes se quite el minimizado (y se guarde geometria)
 ->corregido
+
+-segfault al hacer ctrl-c de consola con menu abierto
+
+-cambiar tipo icono del desktop no deberia cambiar el nombre. ojo que hay una funcion comun, esto deberia ser algo como:
+*si se cambia tipo desde menu, me guardo el nombre anterior, cambio el tipo, restauro el nombre

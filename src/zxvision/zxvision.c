@@ -6160,9 +6160,25 @@ void menu_ext_desktop_draw_configurable_icon(int index_icon,int pulsado)
     int separacion_texto=2*menu_get_ext_desktop_icons_zoom();
     int y_texto_icono=y+menu_get_ext_desktop_icons_size()+separacion_texto;
 
+    char texto_mostrado[MAX_LENGTH_TEXT_ICON];
+    strcpy(texto_mostrado,zxdesktop_configurable_icons_list[index_icon].text_icon);
+
+
+    if (menu_ext_desktop_configurable_icons_short_text.v) {
+        //Si excede, acortar
+        int l=strlen(texto_mostrado);
+
+        if (l>MAX_LENGTH_TEXT_SHORT_ICON) {
+            texto_mostrado[MAX_LENGTH_TEXT_SHORT_ICON]=0;
+            texto_mostrado[MAX_LENGTH_TEXT_SHORT_ICON-1]='.';
+            //texto_mostrado[MAX_LENGTH_TEXT_SHORT_ICON-2]='.';
+            //texto_mostrado[MAX_LENGTH_TEXT_SHORT_ICON-3]='.';
+        }
+    }
+
     //Si background para el texto
     if (menu_ext_desktop_configurable_icons_text_background.v) {
-        int longitud_texto=strlen(zxdesktop_configurable_icons_list[index_icon].text_icon);
+        int longitud_texto=strlen(texto_mostrado);
 
         //int zoom_iconos=menu_get_ext_desktop_icons_zoom();
 
@@ -6171,7 +6187,7 @@ void menu_ext_desktop_draw_configurable_icon(int index_icon,int pulsado)
     }
 
 
-    menu_draw_ext_desktop_one_icon_text(x,y_texto_icono,zxdesktop_configurable_icons_list[index_icon].text_icon);
+    menu_draw_ext_desktop_one_icon_text(x,y_texto_icono,texto_mostrado);
 }
 
 //Dibujar los iconos configurables por el usuario
@@ -6272,6 +6288,9 @@ z80_bit menu_ext_desktop_transparent_configurable_icons={1};
 
 //Si se escribe el texto de los iconos con texto de fondo
 z80_bit menu_ext_desktop_configurable_icons_text_background={1};
+
+//Si mostrar el texto de los iconos mas corto para que no exceda en ancho
+z80_bit menu_ext_desktop_configurable_icons_short_text={0};
 
 int menu_ext_desktop_fill_rainbow_counter;
 
@@ -25569,7 +25588,9 @@ void menu_inicio_handle_right_button_background(void)
             break;
 
             case 4:
-                zxvision_reorder_configurable_icons();
+                if (menu_confirm_yesno("Reorder icons")) {
+                    zxvision_reorder_configurable_icons();
+                }
             break;
 
             case 5:

@@ -565,15 +565,15 @@ ZXUno Team
 #define FABRICANTE_MILES_GORDON                 10
 #define FABRICANTE_NEDOPC                       11
 #define FABRICANTE_NEW_HORIZONS                 12
-#define FABRICANTE_PENTAGON                     13
-#define FABRICANTE_SCIENCE_OF_CAMBRIDGE         14
-#define FABRICANTE_SEGA                         15
-#define FABRICANTE_SINCLAIR                     16
-#define FABRICANTE_SPECTRAVIDEO_INTERNATIONAL   17
-#define FABRICANTE_TIMEX_COMPUTERS              18
-#define FABRICANTE_TIMEX_SINCLAIR               19
-#define FABRICANTE_TSLABS                       20
-#define FABRICANTE_TBBLUE                       21
+#define FABRICANTE_NEXT_TEAM                    13
+#define FABRICANTE_PENTAGON                     14
+#define FABRICANTE_SCIENCE_OF_CAMBRIDGE         15
+#define FABRICANTE_SEGA                         16
+#define FABRICANTE_SINCLAIR                     17
+#define FABRICANTE_SPECTRAVIDEO_INTERNATIONAL   18
+#define FABRICANTE_TIMEX_COMPUTERS              19
+#define FABRICANTE_TIMEX_SINCLAIR               20
+#define FABRICANTE_TSLABS                       21
 #define FABRICANTE_ZXUNO_TEAM                   22
 
 

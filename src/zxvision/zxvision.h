@@ -512,7 +512,11 @@ extern void zxvision_window_save_size(zxvision_window *ventana,int *ventana_anch
 extern int zxvision_window_get_pixel_x_position(zxvision_window *ventana);
 extern int zxvision_window_get_pixel_y_position(zxvision_window *ventana);
 
+//Maximo texto de un icono
 #define MAX_LENGTH_TEXT_ICON 100
+
+//Maximo texto de un icono cuando se muestra cortado (ancho del icono / ancho de caracter) + poco margen mas
+#define MAX_LENGTH_TEXT_SHORT_ICON ( (EXT_DESKTOP_BUTTONS_ANCHO/(CHARSET_ICONS_ANCHO+1) )+1)
 
 //Maximo de ventanas que se pueden restaurar
 #define MAX_RESTORE_WINDOWS_START 100
@@ -1487,6 +1491,7 @@ extern z80_bit menu_ext_desktop_disable_box_lower_icons;
 
 extern z80_bit menu_ext_desktop_transparent_configurable_icons;
 extern z80_bit menu_ext_desktop_configurable_icons_text_background;
+extern z80_bit menu_ext_desktop_configurable_icons_short_text;
 
 extern int lowericon_realtape_frame;
 extern int lowericon_cf2_floppy_frame;

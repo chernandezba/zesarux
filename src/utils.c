@@ -614,6 +614,7 @@ char *array_fabricantes_hotkey[]={
         "Miles Gordon Technolog~~y",
         "N~~edoPC",
         "Ne~~w Horizons",
+        "Ne~~xt Team",
         "~~Pentagon",
         "Scie~~nce of Cambridge",
         "Se~~ga",
@@ -622,12 +623,11 @@ char *array_fabricantes_hotkey[]={
         "Timex Computer",
         "~~Timex Sinclair",
         "TS ~~Labs",
-        "~~VTrucco/FB Labs",
         "~~ZXUno Team"
 };
 
 //Si letra es espacio->no hay letra. spectravideo o timex computer no hay letras libres
-char array_fabricantes_hotkey_letra[]="aobcd iurmyewpngs  tlvz";
+char array_fabricantes_hotkey_letra[]="aobcd iurmyewxpngs  tlz";
 
 
 
@@ -789,7 +789,7 @@ int *return_maquinas_fabricante(int fabricante)
 			return array_maquinas_jeff_braine;
 		break;
 
-		case FABRICANTE_TBBLUE:
+		case FABRICANTE_NEXT_TEAM:
 			return array_maquinas_tbblue;
 		break;
 
@@ -932,7 +932,7 @@ int return_fabricante_maquina(int maquina)
 		break;
 
 		case 19:
-			return FABRICANTE_TBBLUE;
+			return FABRICANTE_NEXT_TEAM;
 		break;
 
 		case 150:
@@ -3669,6 +3669,8 @@ int util_write_configfile(void)
 	if (menu_ext_desktop_transparent_configurable_icons.v==0)  ADD_STRING_CONFIG,"--zxdesktop-no-transparent-configurable-icons");
 
     if (menu_ext_desktop_configurable_icons_text_background.v==0)   ADD_STRING_CONFIG,"--zxdesktop-no-configurable-icons-text-bg");
+
+    if (menu_ext_desktop_configurable_icons_short_text.v)   ADD_STRING_CONFIG,"--zxdesktop-configurable-icons-short-text");
 
     if (menu_ext_desktop_disable_box_upper_icons.v)   ADD_STRING_CONFIG,"--zxdesktop-disable-box-upper-buttons");
 

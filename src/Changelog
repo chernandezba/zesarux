@@ -37,6 +37,7 @@ Improved ZX Vision:
 - Show, with a dot, when an icon is an open window but minimized
 - Keep ZEsarUX window size proportions (disallow different zoom x/y) by default
 - Delete cursor when sending a window to background
+- Allow to show short text for icons on ZX Desktop
 - Added rzx files support for file selector: can be expanded (to z80 snap file), show file previews, convert to SCR, convert to Z80, use as ZX Desktop background
 
 Improved Debug CPU:
