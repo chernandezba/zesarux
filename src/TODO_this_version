@@ -171,5 +171,9 @@ Solución: hacer que cuando se cierren todas las ventanas, antes se quite el min
 
 -segfault al hacer ctrl-c de consola con menu abierto
 
+-seleccion de maquina por tipo: Spectrum, ZX81, ZX80, CPC, etc
+
 -cambiar tipo icono del desktop no deberia cambiar el nombre. ojo que hay una funcion comun, esto deberia ser algo como:
 *si se cambia tipo desde menu, me guardo el nombre anterior, cambio el tipo, restauro el nombre
+
+ok -Opción mostrar nombre de iconos cortado y con ... al final
