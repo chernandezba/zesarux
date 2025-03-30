@@ -41408,24 +41408,47 @@ void menu_visual_cassette_tape_overlay(void)
 
 
 
-    if (realtape_inserted.v==0) return;
+    if (realtape_inserted.v==0 && !is_tape_inserted() ) return;
 
 
     //Mostrar cinta, usar dibujo generico
+    int dirty_por_standard_tape=0;
 
-
-
-    int elapsed_seconds=realtape_get_elapsed_seconds();
-    int total_seconds=realtape_get_total_seconds();
-
-    //Tenemos que dar el porcentaje sobre el maximo, que es de una cinta de 90 (45 minutos por cara)
-    //Sacar el porcentaje que representa el total de la cinta sobre una de 90
-    //int porc_90=100;
-
-    //Y aplicamos el transcurrido sobre ese valor
     int porcentaje;
-    if (total_seconds==0) porcentaje=0;
-    else porcentaje=(elapsed_seconds*100)/total_seconds;
+
+
+    if (realtape_inserted.v) {
+        //Para realtape
+        int elapsed_seconds=realtape_get_elapsed_seconds();
+        int total_seconds=realtape_get_total_seconds();
+
+        //Tenemos que dar el porcentaje sobre el maximo, que es de una cinta de 90 (45 minutos por cara)
+        //Sacar el porcentaje que representa el total de la cinta sobre una de 90
+        //int porc_90=100;
+
+        //Y aplicamos el transcurrido sobre ese valor
+
+        if (total_seconds==0) porcentaje=0;
+        else porcentaje=(elapsed_seconds*100)/total_seconds;
+
+    }
+    else {
+        //Para cinta estándar
+        long longitud_total=get_file_size(tapefile);
+        long pos_actual=tape_block_ftell();
+        if (longitud_total==0) porcentaje=0;
+        else porcentaje=(pos_actual*100)/longitud_total;
+
+        printf("Total: %ld actual %ld porcentaje %d\n",longitud_total,pos_actual,porcentaje);
+
+        if (porcentaje!=menu_visual_cassette_tape_porcentaje_anterior) {
+            visual_cassette_tape_forzar_dibujado=1;
+            //menu_visual_cassette_tape_temblor^=1;
+            //zxvision_cls(menu_visual_cassette_tape_window);
+            dirty_por_standard_tape=1;
+        }
+
+    }
 
 
     int porcentaje_cinta_izquierdo=100-porcentaje;
@@ -41444,8 +41467,10 @@ void menu_visual_cassette_tape_overlay(void)
     //que no queden "rastros" de cinta tocando el rodillo, por ejemplo al avanzar cinta desde Visual Real Tape
     //Y hacemos temblar porque cuando reibuja los rodillos, borra la posicion anterior indicando temblor ^=1, y por tanto,
     //tenemos que ir conmutando aqui el temblor para que el borrado funcione bien
-    if (visual_cassette_tape_forzar_dibujado && realtape_playing.v==0) {
-        menu_visual_cassette_tape_temblor^=1;
+    if (realtape_inserted.v) {
+        if (visual_cassette_tape_forzar_dibujado && realtape_playing.v==0) {
+          menu_visual_cassette_tape_temblor^=1;
+        }
     }
 
 
@@ -41466,7 +41491,7 @@ void menu_visual_cassette_tape_overlay(void)
     visual_cassette_tape_forzar_dibujado=0;
 
     if (redibujar_rollos) {
-        //printf("Redibujando parte dinamica. %d\n",contador_segundo_infinito);
+        printf("Redibujando parte dinamica. %d\n",contador_segundo_infinito);
     }
 
 
@@ -41479,9 +41504,11 @@ void menu_visual_cassette_tape_overlay(void)
 
 
     //Si esta en movimiento, tiembla
-    if (realtape_playing.v) {
-        menu_visual_cassette_tape_temblor^=1;
-        redibujar_rodillos_arrastre=1;
+    if (realtape_inserted.v) {
+        if (realtape_playing.v) {
+            menu_visual_cassette_tape_temblor^=1;
+            redibujar_rodillos_arrastre=1;
+        }
     }
 
     zxvision_window *w=menu_visual_cassette_tape_window;
@@ -41517,7 +41544,9 @@ void menu_visual_cassette_tape_overlay(void)
 
     int real_height=(real_width*GENERIC_VISUALTAPE_ALTO_CINTA)/ancho_total_dibujo_virtual;
 
-
+    if (dirty_por_standard_tape) {
+        menu_visual_cassette_tape_window->dirty_user_must_draw_contents=1;
+    }
 
     menu_generic_visualtape(menu_visual_cassette_tape_window,
     real_width,real_height,offset_x,offset_y,
@@ -41632,7 +41661,7 @@ void menu_visual_cassette_tape(MENU_ITEM_PARAMETERS)
 
 
 
-        if (realtape_inserted.v==0) zxvision_print_string_defaults_fillspc(ventana,1,1,"Tape is not inserted");
+        if (realtape_inserted.v==0 && !is_tape_inserted() ) zxvision_print_string_defaults_fillspc(ventana,1,1,"Tape is not inserted");
 
         zxvision_draw_window_contents(ventana);
 

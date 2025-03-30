@@ -31,6 +31,7 @@ extern int tape_block_tap_readlength(void);
 extern int tape_block_tap_seek(int longitud,int direccion);
 extern int tape_block_tap_feof(void);
 extern void tape_block_tap_rewindbegin(void);
+extern long tape_block_tap_ftell(void);
 
 extern int tape_out_block_tap_open(void);
 extern int tape_out_block_tap_close(void);

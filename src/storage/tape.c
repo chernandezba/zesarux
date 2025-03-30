@@ -113,6 +113,7 @@ int (*tape_block_read)(void *dir,int longitud);
 int (*tape_block_seek)(int longitud,int direccion);
 int (*tape_block_feof)(void);
 void (*tape_block_rewindbegin)(void);
+long (*tape_block_ftell)(void);
 
 int (*tape_out_block_open)(void);
 int (*tape_out_block_close)(void);
@@ -304,6 +305,12 @@ void tape_block_default_rewindbegin(void)
 }
 
 
+//Esta no hace nada, solo se crea porque es necesario indicar una funcion para esto
+long tape_block_default_ftell(void)
+{
+    return 0;
+}
+
 void tape_init(void)
 {
 
@@ -315,6 +322,7 @@ void tape_init(void)
 
     tape_block_feof=tape_block_default_feof;
     tape_block_rewindbegin=tape_block_default_rewindbegin;
+    tape_block_ftell=tape_block_default_ftell;
 
 
 
@@ -330,6 +338,7 @@ void tape_init(void)
                                         tape_block_seek=tape_block_tap_seek;
                                         tape_block_feof=tape_block_tap_feof;
                                         tape_block_rewindbegin=tape_block_tap_rewindbegin;
+                                        tape_block_ftell=tape_block_tap_ftell;
                                         insert_tape_load();
                                 }
 

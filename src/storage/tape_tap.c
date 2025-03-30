@@ -98,6 +98,11 @@ void tape_block_tap_rewindbegin(void)
     fseek(ptr_mycinta,0, SEEK_SET);
 }
 
+long tape_block_tap_ftell(void)
+{
+    return ftell(ptr_mycinta);
+}
+
 int tape_block_tap_seek(int longitud,int direccion)
 {
 

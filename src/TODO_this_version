@@ -145,10 +145,6 @@ claro. o no, porque si hay top bar, "Storage" menu por ejemplo es un menu direct
 *al estar en un menu y pulsar en otro de topbar, que se reabra, el truco creo que esta en activar menu_pressed_open_menu_while_in_menu.v
 
 
-ok -preview pantalla archivos rzx. extraer snapshot z80
-ok *sacar diff de lo necesario habitualmente para soporte de tipo archivos en file selector: can be expanded, show file previews,
-convert to SCR, use as desktop background
-ok *cambiar los printf por debug_printf
 
 -expandir .z80 para sacar pantalla. tiene sentido? pero entonces se deberia hacer con los sna, sp, zsf, etc
 
@@ -175,5 +171,10 @@ Solución: hacer que cuando se cierren todas las ventanas, antes se quite el min
 
 -cambiar tipo icono del desktop no deberia cambiar el nombre. ojo que hay una funcion comun, esto deberia ser algo como:
 *si se cambia tipo desde menu, me guardo el nombre anterior, cambio el tipo, restauro el nombre
+->quizá no tiene mucho sentido, si el tipo estaba mal, qué sentido tiene conservar el texto anterior? probablemente el texto
+anterior estaba relacionado con la acción anterior
 
-ok -Opción mostrar nombre de iconos cortado y con ... al final
+
+-visualcassettetape
+*soporte tap, tzx y otros formatos de cinta binaria
+->implementar tape_block_tap_ftell para todos tipos de cintas estandard
