@@ -178,3 +178,4 @@ anterior estaba relacionado con la acción anterior
 -visualcassettetape
 *soporte tap, tzx y otros formatos de cinta binaria
 ->implementar tape_block_tap_ftell para todos tipos de cintas estandard
+ok->borrar rastros de pixeles de rodillo anterior

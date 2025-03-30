@@ -41443,8 +41443,14 @@ void menu_visual_cassette_tape_overlay(void)
 
         if (porcentaje!=menu_visual_cassette_tape_porcentaje_anterior) {
             visual_cassette_tape_forzar_dibujado=1;
-            //menu_visual_cassette_tape_temblor^=1;
+
+            //Temblor para que borre restos de cinta de porcentaje anterior
+            menu_visual_cassette_tape_temblor^=1;
+
+            //menu_visual_cassette_tape_window->dirty_user_must_draw_contents=1;
             //zxvision_cls(menu_visual_cassette_tape_window);
+
+            //Para que borre restos de borrado de cinta sobre rodillo
             dirty_por_standard_tape=1;
         }
 
