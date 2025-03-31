@@ -76,6 +76,12 @@ int tape_block_tzx_open(void)
 
 }
 
+long tape_block_tzx_ftell(void)
+{
+    if (!is_tape_inserted()) return 0;
+    else return ftell(ptr_mycinta_tzx);
+}
+
 void tape_block_tzx_rewindbegin(void)
 {
     fseek(ptr_mycinta_tzx,0, SEEK_SET);
@@ -185,6 +191,8 @@ int tape_block_tzx_read(void *dir,int longitud)
 	}
 
 	do {
+
+        tape_visual_casette_advance_reel();
 
 		switch (last_id_read) {
 

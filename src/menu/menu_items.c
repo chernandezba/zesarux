@@ -41434,7 +41434,7 @@ void menu_visual_cassette_tape_overlay(void)
     }
     else {
         //Para cinta estándar
-        long longitud_total=get_file_size(tapefile);
+        long longitud_total=tape_get_file_size();
         long pos_actual=tape_block_ftell();
         if (longitud_total==0) porcentaje=0;
         else porcentaje=(pos_actual*100)/longitud_total;

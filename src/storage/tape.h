@@ -56,6 +56,9 @@ extern long (*tape_block_ftell)(void);
 extern int (*tape_block_save)(void *dir,int longitud);
 extern void (*tape_block_begin_save)(int longitud,z80_byte flag);
 
+extern long long tape_get_file_size(void);
+extern void tape_visual_casette_advance_reel(void);
+
 extern void tape_init(void);
 extern void tape_out_init(void);
 

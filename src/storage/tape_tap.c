@@ -61,15 +61,17 @@ int tape_block_tap_open(void)
 
 
 
-
 int tape_block_tap_read(void *dir,int longitud)
 {
 
-if (ptr_mycinta) return fread(dir,1,longitud,ptr_mycinta);
-else {
-	debug_printf (VERBOSE_ERR,"Tape uninitialized");
-	return 0;
-}
+    if (ptr_mycinta)  {
+        tape_visual_casette_advance_reel();
+        return fread(dir,1,longitud,ptr_mycinta);
+    }
+    else {
+        debug_printf (VERBOSE_ERR,"Tape uninitialized");
+        return 0;
+    }
 
 }
 
@@ -100,7 +102,8 @@ void tape_block_tap_rewindbegin(void)
 
 long tape_block_tap_ftell(void)
 {
-    return ftell(ptr_mycinta);
+    if (!is_tape_inserted()) return 0;
+    else return ftell(ptr_mycinta);
 }
 
 int tape_block_tap_seek(int longitud,int direccion)

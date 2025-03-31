@@ -33,6 +33,8 @@ extern int tape_block_tzx_seek(int longitud,int direccion);
 extern int tape_block_tzx_feof(void);
 extern void tape_block_tzx_rewindbegin(void);
 
+extern long tape_block_tzx_ftell(void);
+
 extern int tape_out_block_tzx_open(void);
 extern int tape_out_block_tzx_close(void);
 extern int tape_block_tzx_save(void *dir,int longitud);

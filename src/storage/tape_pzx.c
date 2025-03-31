@@ -121,6 +121,12 @@ int tape_block_pzx_open(void)
 
 }
 
+long tape_block_pzx_ftell(void)
+{
+    if (!is_tape_inserted()) return 0;
+    else return ftell(ptr_mycintanew_pzx);
+}
+
 void tape_block_pzx_rewindbegin(void)
 {
     fseek(ptr_mycintanew_pzx,0, SEEK_SET);
@@ -190,7 +196,7 @@ int tape_block_pzx_read(void *dir,int longitud)
 
 
 
-
+    tape_visual_casette_advance_reel();
 
     debug_printf(VERBOSE_DEBUG,"Reading %d bytes.",longitud);
     int leidos=tape_block_pzx_blockmem_fread(dir,longitud);

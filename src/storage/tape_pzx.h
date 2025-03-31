@@ -31,6 +31,7 @@ extern int tape_block_pzx_readlength(void);
 extern int tape_block_pzx_seek(int longitud,int direccion);
 extern int tape_block_pzx_feof(void);
 extern void tape_block_pzx_rewindbegin(void);
+extern long tape_block_pzx_ftell(void);
 
 extern int tape_out_block_pzx_open(void);
 extern int tape_out_block_pzx_close(void);

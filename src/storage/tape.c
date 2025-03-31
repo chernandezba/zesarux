@@ -311,6 +311,19 @@ long tape_block_default_ftell(void)
     return 0;
 }
 
+long long tape_get_file_size(void)
+{
+    if (!is_tape_inserted()) return 0;
+    else return get_file_size(tapefile);
+}
+
+//Simular movimiento de cinta en visual casette tape
+void tape_visual_casette_advance_reel(void)
+{
+    visual_cassette_tape_rodillo_arrastre_grados +=7;
+    visual_cassette_tape_rodillo_arrastre_grados=(visual_cassette_tape_rodillo_arrastre_grados % 360);
+}
+
 void tape_init(void)
 {
 
@@ -350,6 +363,7 @@ void tape_init(void)
                                         tape_block_seek=tape_block_tzx_seek;
                                         tape_block_feof=tape_block_tzx_feof;
                                         tape_block_rewindbegin=tape_block_tzx_rewindbegin;
+                                        tape_block_ftell=tape_block_tzx_ftell;
                                 }
 
                         else if (!util_compare_file_extension(tapefile,"pzx") ) {
@@ -360,6 +374,7 @@ void tape_init(void)
                                         tape_block_seek=tape_block_pzx_seek;
                                         tape_block_feof=tape_block_pzx_feof;
                                         tape_block_rewindbegin=tape_block_pzx_rewindbegin;
+                                        tape_block_ftell=tape_block_pzx_ftell;
                                 }
 
 
