@@ -5572,7 +5572,7 @@ char *zesarux_ascii_logo[ZESARUX_ASCII_LOGO_ALTO]={
 void menu_draw_ext_desktop_buttons(int xinicio)
 {
 
-    if (menu_zxdesktop_upper_buttons_enabled.v) {
+    if (menu_zxdesktop_upper_buttons_enabled.v && zxvision_topbar_menu_enabled.v==0) {
         menu_draw_ext_desktop_upper_icons(xinicio);
     }
 
@@ -15840,7 +15840,7 @@ void zxvision_handle_maximize(zxvision_window *w)
 
 
                 //Si hay botones parte superior zxdesktop, origen_y lo incrementamos
-                if (menu_zxdesktop_upper_buttons_enabled.v) {
+                if (menu_zxdesktop_upper_buttons_enabled.v && zxvision_topbar_menu_enabled.v==0) {
                     yinicial=EXT_DESKTOP_BUTTONS_TOTAL_SIZE/8;
 
                     //Y quitamos ese alto disponible para no sobreescribir botones inferiores
@@ -16137,7 +16137,7 @@ int zxvision_if_mouse_in_zlogo_or_buttons_desktop_if_trigger(int activar_accion)
 
 		//Si esta en zona botones de zx desktop. Y si estan habilitados
 
-		if (menu_zxdesktop_upper_buttons_enabled.v) {
+		if (menu_zxdesktop_upper_buttons_enabled.v && zxvision_topbar_menu_enabled.v==0) {
 			int ancho_boton,alto_boton,total_botones,xinicio_botones,xfinal_botones;
 			menu_ext_desktop_buttons_get_geometry(&ancho_boton,&alto_boton,&total_botones,&xinicio_botones,&xfinal_botones);
 
@@ -17745,7 +17745,7 @@ void zxvision_handle_mouse_events(zxvision_window *w)
             //Si esta en zona botones superiores de zx desktop. Y si estan habilitados
             //Si pulsado boton derecho sobre iconos superiores
 
-            if (menu_zxdesktop_upper_buttons_enabled.v) {
+            if (menu_zxdesktop_upper_buttons_enabled.v && zxvision_topbar_menu_enabled.v==0) {
                 int ancho_boton,alto_boton,total_botones,xinicio_botones,xfinal_botones;
                 menu_ext_desktop_buttons_get_geometry(&ancho_boton,&alto_boton,&total_botones,&xinicio_botones,&xfinal_botones);
 
@@ -18259,7 +18259,7 @@ void zxvision_rearrange_background_windows(int si_cascada,int si_aplicar_a_inmut
 	int origen_y=0;
 
 	//Si hay botones parte superior zxdesktop, origen_y lo incrementamos
-	if (screen_ext_desktop_enabled && scr_driver_can_ext_desktop() && menu_zxdesktop_upper_buttons_enabled.v) {
+	if (screen_ext_desktop_enabled && scr_driver_can_ext_desktop() && menu_zxdesktop_upper_buttons_enabled.v && zxvision_topbar_menu_enabled.v==0) {
 		origen_y=EXT_DESKTOP_BUTTONS_TOTAL_SIZE/8;
 
         //Y quitamos ese alto disponible para no sobreescribir botones inferiores

@@ -12449,7 +12449,7 @@ void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(menu_zxdesktop_upper_buttons_enabled.v ? 'X' : ' ' ) );
             //menu_add_item_menu_shortcut(array_menu_ext_desktop_settings,'d');
 
-			if (menu_zxdesktop_upper_buttons_enabled.v) {
+			if (menu_zxdesktop_upper_buttons_enabled.v && zxvision_topbar_menu_enabled.v==0) {
 				menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_upper_transparent,NULL,
                     "Transparent upper buttons","Botones superiores transparentes","Botons superiors transparents");
                 menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(menu_ext_desktop_transparent_upper_icons.v ? 'X' : ' ' ) );

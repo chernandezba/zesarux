@@ -143,27 +143,16 @@ la deja en lista de submenu
 *busqueda indexada. que cuando se haya abierto top bar agregue automaticamente "Main Menu" a todos, siempre que no venga indicado
 claro. o no, porque si hay top bar, "Storage" menu por ejemplo es un menu directo sin tener que pasar por Main Menu
 *al estar en un menu y pulsar en otro de topbar, que se reabra, el truco creo que esta en activar menu_pressed_open_menu_while_in_menu.v
-
+*con top bar no van pulsaciones botones inferiores. tampoco van botones superiores (aunque superiores se deberian ocultar
+si esta top bar menu)
+*con topbar, no van pulsaciones de raton sobre zx desktop
+ok * desactivar botones superiores si esta topbar
+*al salir de topbar, no refresca bien las ventanas en background
 
 
 -expandir .z80 para sacar pantalla. tiene sentido? pero entonces se deberia hacer con los sna, sp, zsf, etc
 
-ok-Si se abre una ventana que la ultima vez se habia minimizado, deberia desminimizarse.
-Pasos:
--minimizo una ventana, ejemplo view sensors
--salgo ZEsarUX
--edito .zesaruxrc y quito de la linea de restorewindow esa ventana
--entro en ZEsarUX
--abro view sensors. se inicia minimizada. Se deberia desminimizar
-->Pero es el mismo caso que dejamos ventanas minimizadas y abrimos ZEsarUX. Se abren pero minimizadas
-Por tanto no se puede distinguir el caso de cuando se arranca ZEsarUX y hay restore de ventanas minimizadas (que queremos que se vean minimizadas)
-o de abrir una ventana, que tenia geometria de minimizada, pero no se habia restaurado al iniciar ZEsarUX
-De todas maneras esto es un caso muy concreto que no sucede siempre:
--si las minimiza el usuario y sale y entra en ZEsarUX, estarán minimizadas. Si abre una ventana de esas, se desminimizan
--para que estén sin restorewindow y minimizadas, o bien edita el archivo de config o bien hace un close all windows, asi se guardan minimizadas
-pero no se restauran.
-Solución: hacer que cuando se cierren todas las ventanas, antes se quite el minimizado (y se guarde geometria)
-->corregido
+
 
 -segfault al hacer ctrl-c de consola con menu abierto
 
@@ -174,9 +163,3 @@ Solución: hacer que cuando se cierren todas las ventanas, antes se quite el min
 ->quizá no tiene mucho sentido, si el tipo estaba mal, qué sentido tiene conservar el texto anterior? probablemente el texto
 anterior estaba relacionado con la acción anterior
 
-
--visualcassettetape
-*soporte tap, tzx y otros formatos de cinta binaria
-pzx, tap, tzx ->implementar tape_block_tap_ftell para todos tipos de cintas estandard
-*soporte .smp?
-ok->borrar rastros de pixeles de rodillo anterior
