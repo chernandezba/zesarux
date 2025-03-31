@@ -170,3 +170,4 @@ ok * print no sale fuera, lo controla putchar_menu_overlay_parpadeo_cache_or_not
 ok * putpixel controlado
 ok * y scr_putpixel_final , el que va al driver de video. esta controlado desde scr_redraw_machine_layer
 ok * limites al crear ventana
+ok * no permitir escribir ventanas en footer

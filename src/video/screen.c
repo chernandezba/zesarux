@@ -2426,7 +2426,7 @@ void scr_putpixel_layer_menu_no_zoom(int x,int y,int color)
 	int xdestino=xzoom;
 	int ydestino=yzoom;
 
-    if (xdestino>=ancho_layer_menu_machine || ydestino>=alto_layer_menu_machine) {
+    if (xdestino>=ancho_layer_menu_machine || ydestino>=alto_layer_menu_machine-WINDOW_FOOTER_SIZE*zoom_y) {
         //printf ("fuera de rango x/y scr_putpixel_layer_menu_no_zoom %d %d\n",xdestino,ydestino);
     }
 
@@ -2473,7 +2473,7 @@ void scr_putpixel_layer_menu(int x,int y,int color)
 			int xdestino=xzoom+zx;
 			int ydestino=yzoom+zy;
 
-            if (xdestino>=ancho_layer_menu_machine || ydestino>=alto_layer_menu_machine) {
+            if (xdestino>=ancho_layer_menu_machine || ydestino>=alto_layer_menu_machine-WINDOW_FOOTER_SIZE*zoom_y) {
                 //printf ("fuera de rango x/y scr_putpixel_layer_menu %d %d\n",xdestino,ydestino);
             }
 
