@@ -35,6 +35,7 @@ Improved Sinclair QL emulation:
 
 Improved ZX Vision:
 - Allow to hide minimized windows
+- Allow to place windows beyond ZEsarUX main window limits
 - Show, with a dot, when an icon is an open window but minimized
 - Keep ZEsarUX window size proportions (disallow different zoom x/y) by default
 - Delete cursor when sending a window to background

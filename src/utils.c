@@ -4239,6 +4239,8 @@ int util_write_configfile(void)
 
   if (zxvision_hide_minimized_windows.v)     ADD_STRING_CONFIG,"--hide-minimized-windows");
 
+  if (zxvision_allow_windows_beyond_limit.v)    ADD_STRING_CONFIG,"--beyond-limits-windows");
+
   if (menu_hide_background_button_on_inactive.v==0) ADD_STRING_CONFIG,"--show-menu-background-button");
 
   if (menu_change_frame_when_resize_zone.v==0)      ADD_STRING_CONFIG,"--no-change-frame-resize-zone");
