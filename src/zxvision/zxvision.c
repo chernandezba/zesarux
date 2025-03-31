@@ -1235,6 +1235,9 @@ z80_bit menu_hide_close_button={0};
 //Si se ocultan ventanas minimizadas
 z80_bit zxvision_hide_minimized_windows={0};
 
+//Si se permite salir a las ventanas de la zona del zx desktop visible
+z80_bit zxvision_allow_windows_beyond_limit={0};
+
 //Si se oculta boton de background ventana en ventana no activa (cuando deberia parpadear)
 //Quiero que por defecto esté oculto
 z80_bit menu_hide_background_button_on_inactive={1};
@@ -10245,6 +10248,12 @@ void zxvision_draw_below_windows_nospeech(zxvision_window *w)
 int zxvision_new_window_check_range_aux_x(int x,int visible_width)
 {
 
+    if (zxvision_allow_windows_beyond_limit.v) {
+        //Permitir ventanas que salgan del ZX Desktop
+        //Minimo 2x2
+        visible_width=2;
+    }
+
 
 	if (
 
@@ -10273,6 +10282,12 @@ int zxvision_new_window_check_range_aux_x(int x,int visible_width)
 //no 0: admitido
 int zxvision_new_window_check_range_aux_y(int y,int visible_height)
 {
+
+    if (zxvision_allow_windows_beyond_limit.v) {
+        //Permitir ventanas que salgan del ZX Desktop
+        //Minimo 2x2
+        visible_height=2;
+    }
 
 
 	if (
@@ -10337,8 +10352,8 @@ void zxvision_new_window_check_range(int *x,int *y,int *visible_width,int *visib
     }
 }
 
-//Comprobar que el alto y ancho no pase de un fijo estatico (32x24 normalmente),
-//para tener ventanas que normalmente no excedan ese 32x24 al crearse
+//Comprobar que el alto y ancho no pase de un fijo estatico
+//para tener ventanas que normalmente no excedan ese limite al crearse
 //Nota: menu_filesel no hace este check
 void zxvision_new_window_check_static_size_range(int *x,int *y,int *visible_width,int *visible_height)
 {
@@ -13192,6 +13207,15 @@ int zxvision_out_bonds(int x,int y,int ancho,int alto)
 {
 	if (x<0 || y<0) return 1;
 
+
+    if (zxvision_allow_windows_beyond_limit.v) {
+        //Permitir ventanas que salgan del ZX Desktop
+        //Minimo 2x2
+        ancho=2;
+        alto=2;
+    }
+
+    //No permitir ventanas que salgan del ZX Desktop
 	if (x+ancho>scr_get_menu_width() || y+alto>scr_get_menu_height()) return 1;
 
 	return 0;

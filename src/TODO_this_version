@@ -130,8 +130,7 @@ cada mensaje en cada idioma
 "Mighty Steel Fighters GGP" Amstrad CPC by AmstradGGP
 
 
--quiza que se permita ventanas que puedan moverse y estar parte fuera de rango visible. mientras origen ventana este dentro de rango,
-el resto puede salir fuera -> comprobar al hacer print y putpixel que no sale fuera
+
 
 -carpetas con acentos en file selector sale a la derecha el texto de <dir> movido
 
@@ -163,3 +162,11 @@ ok * desactivar botones superiores si esta topbar
 ->quizá no tiene mucho sentido, si el tipo estaba mal, qué sentido tiene conservar el texto anterior? probablemente el texto
 anterior estaba relacionado con la acción anterior
 
+
+
+-quiza que se permita ventanas que puedan moverse y estar parte fuera de rango visible. mientras origen ventana este dentro de rango,
+el resto puede salir fuera -> comprobar al hacer print y putpixel que no sale fuera
+ok * print no sale fuera, lo controla putchar_menu_overlay_parpadeo_cache_or_not
+ok * putpixel controlado
+ok * y scr_putpixel_final , el que va al driver de video. esta controlado desde scr_redraw_machine_layer
+ok * limites al crear ventana

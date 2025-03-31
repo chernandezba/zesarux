@@ -2248,6 +2248,11 @@ void menu_interface_hide_minimized_windows(MENU_ITEM_PARAMETERS)
     zxvision_hide_minimized_windows.v ^=1;
 }
 
+void menu_interface_allow_windows_beyond_limit(MENU_ITEM_PARAMETERS)
+{
+    zxvision_allow_windows_beyond_limit.v ^=1;
+}
+
 void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
 {
     menu_item *array_menu_common;
@@ -2492,6 +2497,13 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
             "Only minimized windows that are applications that can be backgrounded are hidden. "
             "Hidden minimized windows can be seen on the Process Switcher"
             );
+        menu_add_item_menu_es_avanzado(array_menu_common);
+
+		menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_allow_windows_beyond_limit,NULL,
+            "Allow windows beyond limits","Permitir ventanas fuera límites","Permetre finestres fora límits");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(zxvision_allow_windows_beyond_limit.v ? 'X' : ' ') );
+        menu_add_item_menu_tooltip(array_menu_common,"Allow windows beyond limits");
+        menu_add_item_menu_ayuda(array_menu_common,"Allow windows beyond limits");
         menu_add_item_menu_es_avanzado(array_menu_common);
 
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_hide_background_button_on_inactive,NULL,

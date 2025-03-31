@@ -2425,27 +2425,35 @@ void scr_putpixel_layer_menu_no_zoom(int x,int y,int color)
 
 	int xdestino=xzoom;
 	int ydestino=yzoom;
-	//scr_putpixel(xzoom+zx,yzoom+zy,color);
-	if (buffer_layer_menu==NULL) {
-		//printf ("scr_putpixel_layer_menu NULL\n"); //?????
-	}
-	else {
-		//Proteger que no se salga de rango
-		int offset=ydestino*ancho_layer_menu_machine+xdestino;
 
-		if (offset<tamanyo_memoria_buffer_layer_menu) {
+    if (xdestino>=ancho_layer_menu_machine || ydestino>=alto_layer_menu_machine) {
+        //printf ("fuera de rango x/y scr_putpixel_layer_menu_no_zoom %d %d\n",xdestino,ydestino);
+    }
 
-			buffer_layer_menu[offset]=color;
+    else {
 
-			//Y hacer mix
-			screen_putpixel_mix_layers(xdestino,ydestino);
-		}
+        //scr_putpixel(xzoom+zx,yzoom+zy,color);
+        if (buffer_layer_menu==NULL) {
+            //printf ("scr_putpixel_layer_menu NULL\n"); //?????
+        }
+        else {
+            //Proteger que no se salga de rango. Esto ya no deberia hacer falta porque se comprueba x/y mas arriba
+            int offset=ydestino*ancho_layer_menu_machine+xdestino;
 
-		else {
-			//printf ("fuera de rango %d %d\n",xdestino,ydestino);
-		}
-	}
+            if (offset<tamanyo_memoria_buffer_layer_menu) {
 
+                buffer_layer_menu[offset]=color;
+
+                //Y hacer mix
+                screen_putpixel_mix_layers(xdestino,ydestino);
+            }
+
+            else {
+                //printf ("fuera de rango scr_putpixel_layer_menu_no_zoom %d %d\n",xdestino,ydestino);
+            }
+        }
+
+    }
 
 
 
@@ -2464,26 +2472,35 @@ void scr_putpixel_layer_menu(int x,int y,int color)
 		for (zy=0;zy<zoom_y;zy++) {
 			int xdestino=xzoom+zx;
 			int ydestino=yzoom+zy;
-			//scr_putpixel(xzoom+zx,yzoom+zy,color);
-			if (buffer_layer_menu==NULL) {
-				//printf ("scr_putpixel_layer_menu NULL\n"); //?????
-			}
-			else {
-				//Proteger que no se salga de rango
-				int offset=ydestino*ancho_layer_menu_machine+xdestino;
 
-				if (offset<tamanyo_memoria_buffer_layer_menu) {
+            if (xdestino>=ancho_layer_menu_machine || ydestino>=alto_layer_menu_machine) {
+                //printf ("fuera de rango x/y scr_putpixel_layer_menu %d %d\n",xdestino,ydestino);
+            }
 
-					buffer_layer_menu[offset]=color;
+            else {
 
-					//Y hacer mix
-					screen_putpixel_mix_layers(xdestino,ydestino);
-				}
-				else {
-					//printf ("fuera de rango %d %d\n",xdestino,ydestino);
-				}
+                //scr_putpixel(xzoom+zx,yzoom+zy,color);
+                if (buffer_layer_menu==NULL) {
+                    //printf ("scr_putpixel_layer_menu NULL\n"); //?????
+                }
+                else {
+                    //Proteger que no se salga de rango. Esto ya no deberia hacer falta porque se comprueba x/y mas arriba
+                    int offset=ydestino*ancho_layer_menu_machine+xdestino;
 
-			}
+                    if (offset<tamanyo_memoria_buffer_layer_menu) {
+
+                        buffer_layer_menu[offset]=color;
+
+                        //Y hacer mix
+                        screen_putpixel_mix_layers(xdestino,ydestino);
+                    }
+                    else {
+                        //printf ("fuera de rango scr_putpixel_layer_menu %d %d\n",xdestino,ydestino);
+                    }
+
+                }
+
+            }
 
 
 		}

@@ -41439,7 +41439,7 @@ void menu_visual_cassette_tape_overlay(void)
         if (longitud_total==0) porcentaje=0;
         else porcentaje=(pos_actual*100)/longitud_total;
 
-        printf("Total: %ld actual %ld porcentaje %d\n",longitud_total,pos_actual,porcentaje);
+        //printf("Total: %ld actual %ld porcentaje %d\n",longitud_total,pos_actual,porcentaje);
 
         if (porcentaje!=menu_visual_cassette_tape_porcentaje_anterior) {
             visual_cassette_tape_forzar_dibujado=1;
@@ -41497,7 +41497,7 @@ void menu_visual_cassette_tape_overlay(void)
     visual_cassette_tape_forzar_dibujado=0;
 
     if (redibujar_rollos) {
-        printf("Redibujando parte dinamica. %d\n",contador_segundo_infinito);
+        //printf("Redibujando parte dinamica. %d\n",contador_segundo_infinito);
     }
 
 

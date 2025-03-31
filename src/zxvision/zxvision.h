@@ -1233,6 +1233,7 @@ extern z80_bit menu_hide_minimize_button;
 extern z80_bit menu_hide_maximize_button;
 extern z80_bit menu_hide_close_button;
 extern z80_bit zxvision_hide_minimized_windows;
+extern z80_bit zxvision_allow_windows_beyond_limit;
 extern z80_bit menu_change_frame_when_resize_zone;
 extern z80_bit menu_hide_background_button_on_inactive;
 extern z80_bit menu_invert_mouse_scroll;
