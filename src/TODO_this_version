@@ -21,6 +21,7 @@ lo hace pero el menu contextual sale arriba del todo y no en la posición del cu
 -Opción por defecto no permitir "zoom x" diferente de "zoom y" al redimensionar ventana mediante ratón. Quedarse con valor inferior de zoom
 ok *pendiente sdl1,sdl2,X11. acabar de probar bien
 
+-SDL2 no deja cambiar a zoom 2 redimensionando con ratón
 
 -sdl en debian 12 32 bits inicializa muy lento
 
@@ -37,7 +38,7 @@ menu_fire_event_open_menu();
 
 
 
--SDL2 no deja cambiar a zoom 2 redimensionando con ratón
+
 
 ----
 
@@ -65,11 +66,6 @@ Si por ejemplo conectado a partida online desde spectrum, cambio a maquina z88,
 y se sigue escuchando la musica del juego online
 
 
-- Posible diagrama gráfico de una conexión ZENG/ZENG online donde se vea como se están recibiendo/enviando paquetes de datos etc.
-En diferentes roles (master/slave), en partida streaming o no, si se trae snapshot, o stream de video, o stream de audio
-ok *mostrar porcentajes de full/differential silence/nosilence de envio streaming
-ok *icono para zengonlinestatus
-ok *definir tamaño por defecto ventana
 
 Teclado en pantalla no va con Zeng online?
 ------
