@@ -7281,7 +7281,7 @@ char *bitmap_button_ext_desktop_zengonlinemessage[EXT_DESKTOP_BUTTONS_ANCHO]={
 };
 
 
-//de momento este icono no lo usa nadie, lo tomo como plantilla para los derivados: zeng status window, etc
+
 char *bitmap_button_ext_desktop_zengonline[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345
     "         xxxxxx           ",     //0

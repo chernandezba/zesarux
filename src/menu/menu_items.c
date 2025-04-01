@@ -43288,6 +43288,10 @@ void menu_process_f_functions_by_action_name(int id_funcion,int si_pulsado_icono
 			if (menu_zeng_send_message_cond()) menu_zeng_send_message(0);
 		break;
 
+		case F_FUNCION_ZENG_ONLINE:
+			menu_zeng_online(0);
+		break;
+
 		case F_FUNCION_ZENG_ONLINE_SENDMESSAGE:
 			menu_zeng_online_write_message_room(0);
 		break;
