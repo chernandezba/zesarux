@@ -7217,3 +7217,68 @@ char *bitmap_button_ext_desktop_showbackgroundwindows[EXT_DESKTOP_BUTTONS_ANCHO]
 	"     xxxxx     xx         ",
 	"     xxxxx   xx           " 	 //25
 };
+
+
+char *bitmap_button_ext_desktop_zengonline_status[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "         xxxxxx           ",     //0
+  	"       xx      xx         ",
+	"      x          x        ",
+	"      x          x        ",
+	"     x    xxxx    x       ",
+	"     x   x    x   x       ",
+	"        x      x          ",
+	"        x      x          ",
+	"           xx             ",
+    "          x  x            ",
+	"                          ",	//10
+	" xxxxxxxxxxxxxxxxxxxxxxxx ",
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
+	"xxwwxwxwwxwwxxxxxxxxxxxxxx",
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
+	"wwwwwwwxwwxwwxwwxwwxwwxxxx",
+	"wwbbwwxxxxxxxxxxxxxxxxxxxx",
+	"wwwwwwwwxwwxwwxwwxwwxwwxxx",
+	"wbbbwwxxxxxxxxxxxxxxxxxxxr",    //20
+	"wwbbwwxwwxwwxwwxwwxwwxwwry",
+	"wwbbwwxxxxxxxxxxxxxxxxxryg",
+	"wwbbwwwwxwwxwwxwwxwwxwrygb",
+	"wbbbbwxxxxxxxxxxxxxxxrygbx",
+	"wwwwwwxxxxxxxxxxxxxxrygbx " 	 //25
+};
+
+
+//de momento este icono no lo usa nadie, lo tomo como plantilla para los derivados: zeng status window, etc
+char *bitmap_button_ext_desktop_zengonline[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "         xxxxxx           ",     //0
+  	"       xx      xx         ",
+	"      x          x        ",
+	"      x          x        ",
+	"     x    xxxx    x       ",
+	"     x   x    x   x       ",
+	"        x      x          ",
+	"        x      x          ",
+	"           xx             ",
+    "          x  x            ",
+	"                          ",	//10
+	" xxxxxxxxxxxxxxxxxxxxxxxx ",
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
+	"xxwwxwxwwxwwxxxxxxxxxxxxxx",
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
+	"xxwwxwwxwwxwwxwwxwwxwwxxxx",
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
+	"xxxwwxwwxwwxwwxwwxwwxwwxxx",
+	"xxxxxxxxxxxxxxxxxxxxxxxxxr",    //20
+	"xxxxwwxwwxwwxwwxwwxwwxwwry",
+	"xxxxxxxxxxxxxxxxxxxxxxxryg",
+	"xxxwwxwwxwwxwwxwwxwwxwrygb",
+	"xxxxxxxxxxxxxxxxxxxxxrygbx",
+	" xxxxxxxxxxxxxxxxxxxrygbx " 	 //25
+};
+
+

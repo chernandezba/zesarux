@@ -115,7 +115,8 @@ AY Player
 -Corregir algunos casos (todos?) en que se intenta cargar/grabar archivos desde una imagen mmc montada
 y no va porque no uso funciones zvfs. Ejemplo cargar snapshot .z80
 
--Poder enviar eventos a ventanas. Por ejemplo para el ay player, una función de diga enviar un mensaje (“next track”) q ventana (“ayplayer”). El como acepta ese evento de momento es una incógnita
+-Poder enviar eventos a ventanas. Por ejemplo para el ay player, una función de diga enviar un mensaje (“next track”) a ventana (“ayplayer”).
+El como acepta ese evento de momento es una incógnita
 Quizá llama a la función que crea la ventana con algún flag específico
 
 -wizard para la primera vez. Y opcion para saltarselo si no se quiere. Que aparezca inicialmente en los 3 idiomas y luego
