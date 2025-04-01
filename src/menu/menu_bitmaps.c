@@ -4938,7 +4938,7 @@ char *bitmap_button_ext_desktop_zengmessage[EXT_DESKTOP_BUTTONS_ANCHO]={
 };
 
 
-char *bitmap_button_ext_desktop_zengonlinemessage[EXT_DESKTOP_BUTTONS_ANCHO]={
+char *old_bitmap_button_ext_desktop_zengonlinemessage[EXT_DESKTOP_BUTTONS_ANCHO]={
    //01234567890123456789012345
     "                          ",     //0
   	"  xxxxxxxxxxxxxxxxxxxxxx  ",
@@ -7247,6 +7247,37 @@ char *bitmap_button_ext_desktop_zengonline_status[EXT_DESKTOP_BUTTONS_ANCHO]={
 	"wwbbwwwwxwwxwwxwwxwwxwrygb",
 	"wbbbbwxxxxxxxxxxxxxxxrygbx",
 	"wwwwwwxxxxxxxxxxxxxxrygbx " 	 //25
+};
+
+
+char *bitmap_button_ext_desktop_zengonlinemessage[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "    xxxxxx      xxxxxxxxx ",     //0
+  	"  xx      xx   x         x",
+	" x          x  x bbbbbbb x",
+	" x          x  x         x",
+	"x    xxxx    x x bbbbbbb x",
+	"x   x    x   x x         x",
+	"   x      x    x         x",
+	"   x      x     xxx xxxxx ",
+	"      xx          xx      ",
+    "     x  x         x       ",
+	"                          ",	//10
+	" xxxxxxxxxxxxxxxxxxxxxxxx ",
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
+	"xxwwxwxwwxwwxxxxxxxxxxxxxx",
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
+	"xxwwxwwxwwxwwxwwxwwxwwxxxx",
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
+	"xxxwwxwwxwwxwwxwwxwwxwwxxx",
+	"xxxxxxxxxxxxxxxxxxxxxxxxxr",    //20
+	"xxxxwwxwwxwwxwwxwwxwwxwwry",
+	"xxxxxxxxxxxxxxxxxxxxxxxryg",
+	"xxxwwxwwxwwxwwxwwxwwxwrygb",
+	"xxxxxxxxxxxxxxxxxxxxxrygbx",
+	" xxxxxxxxxxxxxxxxxxxrygbx " 	 //25
 };
 
 
