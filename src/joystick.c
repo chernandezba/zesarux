@@ -65,57 +65,69 @@ char *joystick_defined_fire_texto[]={
     "Tab"
 };
 
+void handle_pressed_a_fire_key(int joy_fire_to_check,int key_pressed,int pressrelease)
+{
+    if (joystick_defined_key_fire==joy_fire_to_check && joystick_emulation!=JOYSTICK_NONE) util_set_reset_key(UTIL_KEY_FIRE,pressrelease);
+    else util_set_reset_key(key_pressed,pressrelease);
+}
+
 //Funciones que segun la tecla pulsada de posibles joystick fire (home, rightalt, etc)
 //acaban actuando sobre el fire o sobre la tecla
 void joystick_possible_home_key(int pressrelease)
 {
-    if (joystick_defined_key_fire==JOYSTICK_KEY_FIRE_IS_HOME && joystick_emulation!=JOYSTICK_NONE) util_set_reset_key(UTIL_KEY_FIRE,pressrelease);
-    else util_set_reset_key(UTIL_KEY_HOME,pressrelease);
+    handle_pressed_a_fire_key(JOYSTICK_KEY_FIRE_IS_HOME,UTIL_KEY_HOME,pressrelease);
+    //if (joystick_defined_key_fire==JOYSTICK_KEY_FIRE_IS_HOME && joystick_emulation!=JOYSTICK_NONE) util_set_reset_key(UTIL_KEY_FIRE,pressrelease);
+    //else util_set_reset_key(UTIL_KEY_HOME,pressrelease);
 }
 
 
 void joystick_possible_rightshift_key(int pressrelease)
 {
-    if (joystick_defined_key_fire==JOYSTICK_KEY_FIRE_IS_RIGHTSHIFT && joystick_emulation!=JOYSTICK_NONE) util_set_reset_key(UTIL_KEY_FIRE,pressrelease);
-    else util_set_reset_key(UTIL_KEY_SHIFT_R,pressrelease);
+    handle_pressed_a_fire_key(JOYSTICK_KEY_FIRE_IS_RIGHTSHIFT,UTIL_KEY_SHIFT_R,pressrelease);
+    //if (joystick_defined_key_fire==JOYSTICK_KEY_FIRE_IS_RIGHTSHIFT && joystick_emulation!=JOYSTICK_NONE) util_set_reset_key(UTIL_KEY_FIRE,pressrelease);
+    //else util_set_reset_key(UTIL_KEY_SHIFT_R,pressrelease);
 }
 
 void joystick_possible_rightalt_key(int pressrelease)
 {
-
-    if (joystick_defined_key_fire==JOYSTICK_KEY_FIRE_IS_RIGHTALT && joystick_emulation!=JOYSTICK_NONE) util_set_reset_key(UTIL_KEY_FIRE,pressrelease);
-    else util_set_reset_key(UTIL_KEY_ALT_R,pressrelease);
+    handle_pressed_a_fire_key(JOYSTICK_KEY_FIRE_IS_RIGHTALT,UTIL_KEY_ALT_R,pressrelease);
+    //if (joystick_defined_key_fire==JOYSTICK_KEY_FIRE_IS_RIGHTALT && joystick_emulation!=JOYSTICK_NONE) util_set_reset_key(UTIL_KEY_FIRE,pressrelease);
+    //else util_set_reset_key(UTIL_KEY_ALT_R,pressrelease);
 }
 
 void joystick_possible_rightctrl_key(int pressrelease)
 {
-    if (joystick_defined_key_fire==JOYSTICK_KEY_FIRE_IS_RIGHTCTRL && joystick_emulation!=JOYSTICK_NONE) util_set_reset_key(UTIL_KEY_FIRE,pressrelease);
-    else util_set_reset_key(UTIL_KEY_CONTROL_R,pressrelease);
+    handle_pressed_a_fire_key(JOYSTICK_KEY_FIRE_IS_RIGHTCTRL,UTIL_KEY_CONTROL_R,pressrelease);
+    //if (joystick_defined_key_fire==JOYSTICK_KEY_FIRE_IS_RIGHTCTRL && joystick_emulation!=JOYSTICK_NONE) util_set_reset_key(UTIL_KEY_FIRE,pressrelease);
+    //else util_set_reset_key(UTIL_KEY_CONTROL_R,pressrelease);
 }
 
 void joystick_possible_leftshift_key(int pressrelease)
 {
-    if (joystick_defined_key_fire==JOYSTICK_KEY_FIRE_IS_LEFTSHIFT && joystick_emulation!=JOYSTICK_NONE) util_set_reset_key(UTIL_KEY_FIRE,pressrelease);
-    else util_set_reset_key(UTIL_KEY_SHIFT_L,pressrelease);
+    handle_pressed_a_fire_key(JOYSTICK_KEY_FIRE_IS_LEFTSHIFT,UTIL_KEY_SHIFT_L,pressrelease);
+    //if (joystick_defined_key_fire==JOYSTICK_KEY_FIRE_IS_LEFTSHIFT && joystick_emulation!=JOYSTICK_NONE) util_set_reset_key(UTIL_KEY_FIRE,pressrelease);
+    //else util_set_reset_key(UTIL_KEY_SHIFT_L,pressrelease);
 }
 
 void joystick_possible_leftalt_key(int pressrelease)
 {
-
-    if (joystick_defined_key_fire==JOYSTICK_KEY_FIRE_IS_LEFTALT && joystick_emulation!=JOYSTICK_NONE) util_set_reset_key(UTIL_KEY_FIRE,pressrelease);
-    else util_set_reset_key(UTIL_KEY_ALT_L,pressrelease);
+    handle_pressed_a_fire_key(JOYSTICK_KEY_FIRE_IS_LEFTALT,UTIL_KEY_ALT_L,pressrelease);
+    //if (joystick_defined_key_fire==JOYSTICK_KEY_FIRE_IS_LEFTALT && joystick_emulation!=JOYSTICK_NONE) util_set_reset_key(UTIL_KEY_FIRE,pressrelease);
+    //else util_set_reset_key(UTIL_KEY_ALT_L,pressrelease);
 }
 
 void joystick_possible_leftctrl_key(int pressrelease)
 {
-    if (joystick_defined_key_fire==JOYSTICK_KEY_FIRE_IS_LEFTCTRL && joystick_emulation!=JOYSTICK_NONE) util_set_reset_key(UTIL_KEY_FIRE,pressrelease);
-    else util_set_reset_key(UTIL_KEY_CONTROL_L,pressrelease);
+    handle_pressed_a_fire_key(JOYSTICK_KEY_FIRE_IS_LEFTCTRL,UTIL_KEY_CONTROL_L,pressrelease);
+    //if (joystick_defined_key_fire==JOYSTICK_KEY_FIRE_IS_LEFTCTRL && joystick_emulation!=JOYSTICK_NONE) util_set_reset_key(UTIL_KEY_FIRE,pressrelease);
+    //else util_set_reset_key(UTIL_KEY_CONTROL_L,pressrelease);
 }
 
 void joystick_possible_tab_key(int pressrelease)
 {
-    if (joystick_defined_key_fire==JOYSTICK_KEY_FIRE_IS_TAB && joystick_emulation!=JOYSTICK_NONE) util_set_reset_key(UTIL_KEY_FIRE,pressrelease);
-    else util_set_reset_key(UTIL_KEY_TAB,pressrelease);
+    handle_pressed_a_fire_key(JOYSTICK_KEY_FIRE_IS_TAB,UTIL_KEY_TAB,pressrelease);
+    //if (joystick_defined_key_fire==JOYSTICK_KEY_FIRE_IS_TAB && joystick_emulation!=JOYSTICK_NONE) util_set_reset_key(UTIL_KEY_FIRE,pressrelease);
+    //else util_set_reset_key(UTIL_KEY_TAB,pressrelease);
 }
 
 int gunstick_emulation=0;

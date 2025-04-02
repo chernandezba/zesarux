@@ -4771,13 +4771,8 @@ void menu_hardware_tbblue_core_version(MENU_ITEM_PARAMETERS)
 
 
 }
-/*
-void old_menu_hardware_joystick_fire_key(MENU_ITEM_PARAMETERS)
-{
-    joystick_defined_key_fire++;
-    if (joystick_defined_key_fire==7) joystick_defined_key_fire=0;
-}
-*/
+
+
 
 void menu_hardware_joystick_fire_key(MENU_ITEM_PARAMETERS)
 {

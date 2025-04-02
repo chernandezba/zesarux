@@ -122,9 +122,9 @@ cada mensaje en cada idioma
 "Mighty Steel Fighters GGP" Amstrad CPC by AmstradGGP
 
 
-
-
 -carpetas con acentos en file selector sale a la derecha el texto de <dir> movido
+
+
 
 -top bar menu
 ok*primero poder desactivar solo botones de arriba bajo demanda
@@ -142,7 +142,6 @@ ok * desactivar botones superiores si esta topbar
 
 
 -expandir .z80 para sacar pantalla. tiene sentido? pero entonces se deberia hacer con los sna, sp, zsf, etc
-
 
 
 -segfault al hacer ctrl-c de consola con menu abierto
