@@ -1242,7 +1242,7 @@ printf("\n"
 
 
 	printf(
-        "--joystickfirekey n         Define which key triggers the fire function for the joystick: 0=Home, 1=RightAlt, 2=RightCtrl, 3=RightShift, 4=LeftAlt, 5=LeftCtrl, 6=LeftShift, 7=Tab\n"
+        "--joystickfirekey n         Define which key triggers the fire function for the joystick: -1=None, 0=Home, 1=RightAlt, 2=RightCtrl, 3=RightShift, 4=LeftAlt, 5=LeftCtrl, 6=LeftShift, 7=Tab\n"
         "--sms-swap-controls         Sega Master System swap controls player 1 <-> player 2\n"
 		"--disablerealjoystick       Disable real joystick emulation\n"
 		"--realjoystickpath f        Change default real joystick device path (used on Linux)\n"
@@ -6172,7 +6172,7 @@ int parse_cmdline_options(int desde_commandline) {
             else if (!strcmp(argv[puntero_parametro],"--joystickfirekey")) {
                 siguiente_parametro_argumento();
                 int valor=parse_string_to_number(argv[puntero_parametro]);
-				if (valor<0 || valor>=JOYSTICK_KEY_FIRE_TOTAL) {
+				if (valor>=JOYSTICK_KEY_FIRE_TOTAL) {
 					printf ("Invalid value %d for setting --joystickfirekey\n",valor);
                     exit(1);
 				}

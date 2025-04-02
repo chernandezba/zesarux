@@ -48,6 +48,7 @@ int joystick_autoleftright_counter=0;
 int joystick_autoleftright_status=0;
 
 //Que tecla actua como el Fire del joystick. Por defecto, Home
+//Si es <0, no actua ninguna tecla
 //#define JOYSTICK_KEY_FIRE_IS_HOME 0
 //#define JOYSTICK_KEY_FIRE_IS_RIGHTALT 1
 //#define JOYSTICK_KEY_FIRE_IS_RIGHTCTRL 2

@@ -4781,10 +4781,12 @@ void menu_hardware_joystick_fire_key(MENU_ITEM_PARAMETERS)
     menu_item *array_menu_common;
     menu_item item_seleccionado;
     int retorno_menu;
-    int opcion_seleccionada=joystick_defined_key_fire;
+
+    //Se empieza por la -1 (None)
+    int opcion_seleccionada=joystick_defined_key_fire+1;
 
 
-    menu_add_item_menu_inicial(&array_menu_common,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
+    menu_add_item_menu_inicial(&array_menu_common,"None",MENU_OPCION_NORMAL,NULL,NULL);
 
     int i;
 
@@ -4803,11 +4805,7 @@ void menu_hardware_joystick_fire_key(MENU_ITEM_PARAMETERS)
 
 
     if (retorno_menu==MENU_RETORNO_NORMAL && (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0) {
-        joystick_defined_key_fire=opcion_seleccionada;
-        //Al volver de esta manera, hay que indicar al index_search que se "va atras" un menu
-        //Esto ya se llama por defecto en gestion de menu, cuando se pulsa ESC o flecha atras,
-        //pero en este caso, se sale con la aceptacion de la opcion, y no es ni ESC ni flecha atras
-        //zxvision_index_delete_last_submenu_path();
+        joystick_defined_key_fire=opcion_seleccionada-1;
     }
 
 }
@@ -5994,7 +5992,9 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_en_es_ca(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_joystick_fire_key,NULL,
             "Fire key","Tecla disparo","Tecla foc");
         menu_add_item_menu_prefijo_format(array_menu_hardware_settings,"    ");
-        menu_add_item_menu_sufijo_format(array_menu_hardware_settings," [%s]",joystick_defined_fire_texto[joystick_defined_key_fire]);
+
+        if (joystick_defined_key_fire<0) menu_add_item_menu_sufijo_format(array_menu_hardware_settings," [None]");
+        else menu_add_item_menu_sufijo_format(array_menu_hardware_settings," [%s]",joystick_defined_fire_texto[joystick_defined_key_fire]);
         menu_add_item_menu_tooltip(array_menu_hardware_settings,"Define which key triggers the fire function for the joystick");
         menu_add_item_menu_ayuda(array_menu_hardware_settings,"Define which key triggers the fire function for the joystick. "
             "Not all video drivers support reading all keys");
