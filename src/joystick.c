@@ -185,8 +185,8 @@ int mouse_wheel_horizontal=0;
 z80_byte kempston_mouse_x=0,kempston_mouse_y=0;
 
 
-
-z80_byte puerto_especial_joystick=0; //Fire Up Down Left Right
+//Mascara de bits (desde 7 hasta 0): Fire4 Fire3 Fire2 Fire1 Up Down Left Right
+z80_byte puerto_especial_joystick=0;
 
 //z80_byte puerto_especial_gunstick=0; //Fire 0 o 1
 
