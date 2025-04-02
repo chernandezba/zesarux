@@ -322,7 +322,16 @@ enum util_teclas
 	UTIL_KEY_JOY_RIGHT,
 
     //Esta es para enviar mediante ZENG una orden de reset todas teclas. Usado en driver curses
-    UTIL_KEY_RESET_ALL
+    UTIL_KEY_RESET_ALL,
+
+    //Para diferentes botones de joystick
+    UTIL_KEY_FIRE2,
+    UTIL_KEY_FIRE3,
+    UTIL_KEY_FIRE4,
+
+    UTIL_KEY_JOY_FIRE2,
+    UTIL_KEY_JOY_FIRE3,
+    UTIL_KEY_JOY_FIRE4
 };
 
 //valores usados en funcion util_set_reset_key_z88_keymap

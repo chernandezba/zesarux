@@ -2132,7 +2132,8 @@ void scrcurses_actualiza_tablas_teclado(void)
                 //Soporte zeng. Dado que scrcurses no utiliza funcion util_set_reset_key para enviar la tecla,
                 //pues no soporta varias teclas a la vez, tenemos que agregar este trozo zeng aqui
                 //Enviar tecla si no es cursor (esto se trata como joystick aparte)
-                if (c!=UTIL_KEY_FIRE && c!=UTIL_KEY_LEFT && c!=UTIL_KEY_RIGHT && c!=UTIL_KEY_DOWN && c!=UTIL_KEY_UP) {
+                if (c!=UTIL_KEY_FIRE && c!=UTIL_KEY_FIRE2 && c!=UTIL_KEY_FIRE3 && c!=UTIL_KEY_FIRE4 &&
+                    c!=UTIL_KEY_LEFT && c!=UTIL_KEY_RIGHT && c!=UTIL_KEY_DOWN && c!=UTIL_KEY_UP) {
                     //scrcurses_ultima_tecla_zeng=c;
 
                     int tecla_zeng_enviar=c;
