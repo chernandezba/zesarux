@@ -473,6 +473,16 @@ int start_timer_specified(struct s_zesarux_timer *t)
 //arrancar dos timers a la vez
 //Adicional: aunque ahora los timers van vinculados a un driver de video (sdl) o sistema (mac-cocoa), podria
 //haber otros timers vinculados a una señal hardware, como un cristal de cuarzo que genera 50 hz o cosas asi
+/*
+
+Antes de implementar este nuevo sistema de timers, funcionaba así:
+
+- Si no habia soporte de threads en compilación, se utilizaba timer Date
+- Si habia soporte de threads en compilación, se utilizaba:
+  - En Mac, timer Date (porque no es preciso el timer Sleep en este caso, y va todo algo mas rápido)
+  - En Windows, timer Date (porque generaba algunos "clicks" en el audio)
+  - En el resto, timer Sleep
+*/
 void start_timer(void)
 {
     //debug_printf(VERBOSE_INFO,"Start Timer");

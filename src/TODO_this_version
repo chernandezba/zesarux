@@ -78,11 +78,6 @@ Otros archivos como .tap etc se pueden pulsar (como ahora con los accesos direct
 
 
 
--Mac timer. probar diferentes escenarios. probar con Z88 y lemmings. probar con carga desde cinta real
-
--Documentar decir que antes en Windows se usaba timer Date
-Decir otros casos que timer se usaba
-
 -Detector silencio de la tarjeta de sonido  en vez de hacer directamente no enviar sonido,
 debería meter un frame de audio antes donde se pase del último valor al 0, suponiendo que es en el 0
 donde se queda la tarjeta al desconectarse
