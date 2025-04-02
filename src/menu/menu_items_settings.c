@@ -12085,8 +12085,12 @@ void menu_zxdesktop_set_configurable_icons_choose(MENU_ITEM_PARAMETERS)
         //Asignar funcion
         zxdesktop_configurable_icons_list[icono_seleccionado].indice_funcion=indice_retorno;
 
-        //Asignar nombre accion
-        strcpy(zxdesktop_configurable_icons_list[icono_seleccionado].text_icon,defined_direct_functions_array[indice_retorno].texto_funcion);
+        //Asignar nombre accion, siempre que antes estuviera vacio. Si no, conservar texto anterior
+        //Al crear iconos nuevos, el texto anterior está vacio, y se llama a esta función, es por eso que si el texto anterior
+        //estaba vacío, sí se sobreescribe el nombre, para que los iconos nuevos tengan nombre
+        if (zxdesktop_configurable_icons_list[icono_seleccionado].text_icon[0]==0) {
+            strcpy(zxdesktop_configurable_icons_list[icono_seleccionado].text_icon,defined_direct_functions_array[indice_retorno].texto_funcion);
+        }
 
         //Resetear parametros para no heredar parametros de accion anterior
         zxdesktop_configurable_icons_list[icono_seleccionado].extra_info[0]=0;

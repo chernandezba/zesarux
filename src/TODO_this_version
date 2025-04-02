@@ -149,11 +149,6 @@ ok * desactivar botones superiores si esta topbar
 
 -seleccion de maquina por tipo: Spectrum, ZX81, ZX80, CPC, etc
 
--cambiar tipo icono del desktop no deberia cambiar el nombre. ojo que hay una funcion comun, esto deberia ser algo como:
-*si se cambia tipo desde menu, me guardo el nombre anterior, cambio el tipo, restauro el nombre
-->quizá no tiene mucho sentido, si el tipo estaba mal, qué sentido tiene conservar el texto anterior? probablemente el texto
-anterior estaba relacionado con la acción anterior
-
 
 
 -quiza que se permita ventanas que puedan moverse y estar parte fuera de rango visible. mientras origen ventana este dentro de rango,
