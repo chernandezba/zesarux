@@ -341,7 +341,12 @@ void joystick_set_fire(int si_enviar_zeng_event,int fire_button)
     puerto_especial_joystick |=mascara_fuego;
 	debug_printf(VERBOSE_DEBUG,"joystick_set_fire");
 
-	if (si_enviar_zeng_event) zeng_send_key_event(UTIL_KEY_JOY_FIRE,1);
+	if (si_enviar_zeng_event) {
+        if (fire_button==0)      zeng_send_key_event(UTIL_KEY_JOY_FIRE,1);
+        else if (fire_button==1) zeng_send_key_event(UTIL_KEY_JOY_FIRE2,1);
+        else if (fire_button==2) zeng_send_key_event(UTIL_KEY_JOY_FIRE3,1);
+        else if (fire_button==3) zeng_send_key_event(UTIL_KEY_JOY_FIRE4,1);
+    }
 }
 
 //fire_button: indica que boton de fuego: 0 primer boton, 1 segundo boton, etc
@@ -351,7 +356,12 @@ void joystick_release_fire(int si_enviar_zeng_event,int fire_button)
     puerto_especial_joystick &=255-mascara_fuego;
 	debug_printf(VERBOSE_DEBUG,"joystick_release_fire");
 
-	if (si_enviar_zeng_event) zeng_send_key_event(UTIL_KEY_JOY_FIRE,0);
+	if (si_enviar_zeng_event) {
+        if (fire_button==0)      zeng_send_key_event(UTIL_KEY_JOY_FIRE,0);
+        else if (fire_button==1) zeng_send_key_event(UTIL_KEY_JOY_FIRE2,0);
+        else if (fire_button==2) zeng_send_key_event(UTIL_KEY_JOY_FIRE3,0);
+        else if (fire_button==3) zeng_send_key_event(UTIL_KEY_JOY_FIRE4,0);
+    }
 }
 
 
