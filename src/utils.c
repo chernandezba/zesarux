@@ -4612,10 +4612,10 @@ int util_write_configfile(void)
                                               ADD_STRING_CONFIG,"--joystickemulated \"%s\"",joystick_texto[joystick_emulation]);
 
 
-                                            ADD_STRING_CONFIG,"--joystickfirekey %d",joystick_defined_key_fire);
-                                            ADD_STRING_CONFIG,"--joystickfirekey2 %d",joystick_defined_key_fire2);
-                                            ADD_STRING_CONFIG,"--joystickfirekey3 %d",joystick_defined_key_fire3);
-                                            ADD_STRING_CONFIG,"--joystickfirekey4 %d",joystick_defined_key_fire4);
+                                            ADD_STRING_CONFIG,"--joystickfirekey %d",joystick_defined_key_fire_array[0]);
+                                            ADD_STRING_CONFIG,"--joystickfirekey2 %d",joystick_defined_key_fire_array[1]);
+                                            ADD_STRING_CONFIG,"--joystickfirekey3 %d",joystick_defined_key_fire_array[2]);
+                                            ADD_STRING_CONFIG,"--joystickfirekey4 %d",joystick_defined_key_fire_array[3]);
 
   if (sms_swap_controls.v)                  ADD_STRING_CONFIG,"--sms-swap-controls");
 

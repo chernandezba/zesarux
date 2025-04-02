@@ -1242,7 +1242,10 @@ printf("\n"
 
 
 	printf(
-        "--joystickfirekey n         Define which key triggers the fire function for the joystick: -1=None, 0=Home, 1=RightAlt, 2=RightCtrl, 3=RightShift, 4=LeftAlt, 5=LeftCtrl, 6=LeftShift, 7=Tab\n"
+        "--joystickfirekey n         Define which key triggers the first fire function for the joystick: -1=None, 0=Home, 1=RightAlt, 2=RightCtrl, 3=RightShift, 4=LeftAlt, 5=LeftCtrl, 6=LeftShift, 7=Tab\n"
+        "--joystickfirekey2 n        Define which key triggers the second fire function for the joystick: -1=None, 0=Home, 1=RightAlt, 2=RightCtrl, 3=RightShift, 4=LeftAlt, 5=LeftCtrl, 6=LeftShift, 7=Tab\n"
+        "--joystickfirekey3 n        Define which key triggers the third fire function for the joystick: -1=None, 0=Home, 1=RightAlt, 2=RightCtrl, 3=RightShift, 4=LeftAlt, 5=LeftCtrl, 6=LeftShift, 7=Tab\n"
+        "--joystickfirekey4 n        Define which key triggers the fourth fire function for the joystick: -1=None, 0=Home, 1=RightAlt, 2=RightCtrl, 3=RightShift, 4=LeftAlt, 5=LeftCtrl, 6=LeftShift, 7=Tab\n"
         "--sms-swap-controls         Sega Master System swap controls player 1 <-> player 2\n"
 		"--disablerealjoystick       Disable real joystick emulation\n"
 		"--realjoystickpath f        Change default real joystick device path (used on Linux)\n"
@@ -6176,7 +6179,7 @@ int parse_cmdline_options(int desde_commandline) {
 					printf ("Invalid value %d for setting --joystickfirekey\n",valor);
                     exit(1);
 				}
-				joystick_defined_key_fire=valor;
+				joystick_defined_key_fire_array[0]=valor;
             }
 
             else if (!strcmp(argv[puntero_parametro],"--joystickfirekey2")) {
@@ -6186,7 +6189,7 @@ int parse_cmdline_options(int desde_commandline) {
 					printf ("Invalid value %d for setting --joystickfirekey2\n",valor);
                     exit(1);
 				}
-				joystick_defined_key_fire2=valor;
+				joystick_defined_key_fire_array[1]=valor;
             }
 
             else if (!strcmp(argv[puntero_parametro],"--joystickfirekey3")) {
@@ -6196,7 +6199,7 @@ int parse_cmdline_options(int desde_commandline) {
 					printf ("Invalid value %d for setting --joystickfirekey3\n",valor);
                     exit(1);
 				}
-				joystick_defined_key_fire3=valor;
+				joystick_defined_key_fire_array[2]=valor;
             }
 
             else if (!strcmp(argv[puntero_parametro],"--joystickfirekey4")) {
@@ -6206,7 +6209,7 @@ int parse_cmdline_options(int desde_commandline) {
 					printf ("Invalid value %d for setting --joystickfirekey4\n",valor);
                     exit(1);
 				}
-				joystick_defined_key_fire4=valor;
+				joystick_defined_key_fire_array[3]=valor;
             }
 
             else if (!strcmp(argv[puntero_parametro],"--sms-swap-controls")) {

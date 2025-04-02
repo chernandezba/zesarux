@@ -120,10 +120,12 @@ extern void joystick_cycle_next_type_autofire(void);
 #define JOYSTICK_KEY_FIRE_IS_TAB 7
 
 extern char *joystick_defined_fire_texto[];
-extern int joystick_defined_key_fire;
-extern int joystick_defined_key_fire2;
-extern int joystick_defined_key_fire3;
-extern int joystick_defined_key_fire4;
+//extern int joystick_defined_key_fire;
+//extern int joystick_defined_key_fire2;
+//extern int joystick_defined_key_fire3;
+//extern int joystick_defined_key_fire4;
+
+extern int joystick_defined_key_fire_array[];
 
 extern void joystick_possible_home_key(int pressrelease);
 extern void joystick_possible_rightshift_key(int pressrelease);

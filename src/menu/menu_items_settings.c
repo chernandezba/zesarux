@@ -4785,11 +4785,14 @@ void menu_hardware_joystick_fire_key(MENU_ITEM_PARAMETERS)
     int retorno_menu;
 
     //Se empieza por la -1 (None)
-    int opcion_seleccionada=joystick_defined_key_fire+1;
 
-    if (boton_fire==1) opcion_seleccionada=joystick_defined_key_fire2+1;
-    else if (boton_fire==2) opcion_seleccionada=joystick_defined_key_fire3+1;
-    else if (boton_fire==3) opcion_seleccionada=joystick_defined_key_fire4+1;
+    //int opcion_seleccionada=joystick_defined_key_fire+1;
+
+    //if (boton_fire==1) opcion_seleccionada=joystick_defined_key_fire2+1;
+    //else if (boton_fire==2) opcion_seleccionada=joystick_defined_key_fire3+1;
+    //else if (boton_fire==3) opcion_seleccionada=joystick_defined_key_fire4+1;
+
+    int opcion_seleccionada=joystick_defined_key_fire_array[boton_fire]+1;
 
 
     menu_add_item_menu_inicial(&array_menu_common,"None",MENU_OPCION_NORMAL,NULL,NULL);
@@ -4811,10 +4814,12 @@ void menu_hardware_joystick_fire_key(MENU_ITEM_PARAMETERS)
 
 
     if (retorno_menu==MENU_RETORNO_NORMAL && (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0) {
-        if (boton_fire==1) joystick_defined_key_fire2=opcion_seleccionada-1;
-        else if (boton_fire==2) joystick_defined_key_fire3=opcion_seleccionada-1;
-        else if (boton_fire==3) joystick_defined_key_fire4=opcion_seleccionada-1;
-        else joystick_defined_key_fire=opcion_seleccionada-1;
+        //if (boton_fire==1) joystick_defined_key_fire2=opcion_seleccionada-1;
+        //else if (boton_fire==2) joystick_defined_key_fire3=opcion_seleccionada-1;
+        //else if (boton_fire==3) joystick_defined_key_fire4=opcion_seleccionada-1;
+        //else joystick_defined_key_fire=opcion_seleccionada-1;
+
+        joystick_defined_key_fire_array[boton_fire]=opcion_seleccionada-1;
     }
 
 }
@@ -6007,18 +6012,20 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
                 "Fire key","Tecla disparo","Tecla foc");
             menu_add_item_menu_prefijo_format(array_menu_hardware_settings,"    ");
 
-            int indice_fire=joystick_defined_key_fire;
+            int indice_fire=joystick_defined_key_fire_array[i];
 
-            if (i==1) indice_fire=joystick_defined_key_fire2;
-            else if (i==2) indice_fire=joystick_defined_key_fire3;
-            else if (i==3) indice_fire=joystick_defined_key_fire4;
+            //int indice_fire=joystick_defined_key_fire;
+
+            //if (i==1) indice_fire=joystick_defined_key_fire2;
+            //else if (i==2) indice_fire=joystick_defined_key_fire3;
+            //else if (i==3) indice_fire=joystick_defined_key_fire4;
 
             if (indice_fire<0) menu_add_item_menu_sufijo_format(array_menu_hardware_settings," %d [None]",i+1);
             else menu_add_item_menu_sufijo_format(array_menu_hardware_settings," %d [%s]",i+1,joystick_defined_fire_texto[indice_fire]);
             menu_add_item_menu_valor_opcion(array_menu_hardware_settings,i);
             menu_add_item_menu_tooltip(array_menu_hardware_settings,"Define which key triggers the fire function for the joystick");
             menu_add_item_menu_ayuda(array_menu_hardware_settings,"Define which key triggers the fire function for the joystick. "
-                "Not all video drivers support reading all keys");
+                "Not all video drivers support reading all keys. Only kempston joystick allows more than one fire button");
         }
 
         if (MACHINE_IS_SMS) {

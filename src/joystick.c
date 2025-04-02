@@ -53,12 +53,15 @@ int joystick_autoleftright_status=0;
 //#define JOYSTICK_KEY_FIRE_IS_RIGHTALT 1
 //#define JOYSTICK_KEY_FIRE_IS_RIGHTCTRL 2
 //#define JOYSTICK_KEY_FIRE_IS_RIGHTSHIFT 3
-int joystick_defined_key_fire=JOYSTICK_KEY_FIRE_IS_HOME;
+//int joystick_defined_key_fire=JOYSTICK_KEY_FIRE_IS_HOME;
 
 //Para los otros 3 posibles botones de joystick
-int joystick_defined_key_fire2=-1;
-int joystick_defined_key_fire3=-1;
-int joystick_defined_key_fire4=-1;
+//int joystick_defined_key_fire2=-1;
+//int joystick_defined_key_fire3=-1;
+//int joystick_defined_key_fire4=-1;
+
+//Para los 4 botones de joystick
+int joystick_defined_key_fire_array[4]={JOYSTICK_KEY_FIRE_IS_HOME,-1,-1,-1};
 
 char *joystick_defined_fire_texto[]={
     "Home",
@@ -73,10 +76,10 @@ char *joystick_defined_fire_texto[]={
 
 void handle_pressed_a_fire_key(int joy_fire_to_check,int key_pressed,int pressrelease)
 {
-    if (joystick_defined_key_fire==joy_fire_to_check && joystick_emulation!=JOYSTICK_NONE) util_set_reset_key(UTIL_KEY_FIRE,pressrelease);
-    else if (joystick_defined_key_fire2==joy_fire_to_check && joystick_emulation!=JOYSTICK_NONE) util_set_reset_key(UTIL_KEY_FIRE2,pressrelease);
-    else if (joystick_defined_key_fire3==joy_fire_to_check && joystick_emulation!=JOYSTICK_NONE) util_set_reset_key(UTIL_KEY_FIRE3,pressrelease);
-    else if (joystick_defined_key_fire4==joy_fire_to_check && joystick_emulation!=JOYSTICK_NONE) util_set_reset_key(UTIL_KEY_FIRE4,pressrelease);
+    if (joystick_defined_key_fire_array[0]==joy_fire_to_check && joystick_emulation!=JOYSTICK_NONE) util_set_reset_key(UTIL_KEY_FIRE,pressrelease);
+    else if (joystick_defined_key_fire_array[1]==joy_fire_to_check && joystick_emulation!=JOYSTICK_NONE) util_set_reset_key(UTIL_KEY_FIRE2,pressrelease);
+    else if (joystick_defined_key_fire_array[2]==joy_fire_to_check && joystick_emulation!=JOYSTICK_NONE) util_set_reset_key(UTIL_KEY_FIRE3,pressrelease);
+    else if (joystick_defined_key_fire_array[3]==joy_fire_to_check && joystick_emulation!=JOYSTICK_NONE) util_set_reset_key(UTIL_KEY_FIRE4,pressrelease);
     else util_set_reset_key(key_pressed,pressrelease);
 }
 
