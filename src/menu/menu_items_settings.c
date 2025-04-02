@@ -4777,6 +4777,8 @@ void menu_hardware_tbblue_core_version(MENU_ITEM_PARAMETERS)
 void menu_hardware_joystick_fire_key(MENU_ITEM_PARAMETERS)
 {
 
+    int boton_fire=valor_opcion;
+
 
     menu_item *array_menu_common;
     menu_item item_seleccionado;
@@ -4784,6 +4786,10 @@ void menu_hardware_joystick_fire_key(MENU_ITEM_PARAMETERS)
 
     //Se empieza por la -1 (None)
     int opcion_seleccionada=joystick_defined_key_fire+1;
+
+    if (boton_fire==1) opcion_seleccionada=joystick_defined_key_fire2+1;
+    else if (boton_fire==2) opcion_seleccionada=joystick_defined_key_fire3+1;
+    else if (boton_fire==3) opcion_seleccionada=joystick_defined_key_fire4+1;
 
 
     menu_add_item_menu_inicial(&array_menu_common,"None",MENU_OPCION_NORMAL,NULL,NULL);
@@ -4805,7 +4811,10 @@ void menu_hardware_joystick_fire_key(MENU_ITEM_PARAMETERS)
 
 
     if (retorno_menu==MENU_RETORNO_NORMAL && (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0) {
-        joystick_defined_key_fire=opcion_seleccionada-1;
+        if (boton_fire==1) joystick_defined_key_fire2=opcion_seleccionada-1;
+        else if (boton_fire==2) joystick_defined_key_fire3=opcion_seleccionada-1;
+        else if (boton_fire==3) joystick_defined_key_fire4=opcion_seleccionada-1;
+        else joystick_defined_key_fire=opcion_seleccionada-1;
     }
 
 }
