@@ -6179,6 +6179,36 @@ int parse_cmdline_options(int desde_commandline) {
 				joystick_defined_key_fire=valor;
             }
 
+            else if (!strcmp(argv[puntero_parametro],"--joystickfirekey2")) {
+                siguiente_parametro_argumento();
+                int valor=parse_string_to_number(argv[puntero_parametro]);
+				if (valor>=JOYSTICK_KEY_FIRE_TOTAL) {
+					printf ("Invalid value %d for setting --joystickfirekey2\n",valor);
+                    exit(1);
+				}
+				joystick_defined_key_fire2=valor;
+            }
+
+            else if (!strcmp(argv[puntero_parametro],"--joystickfirekey3")) {
+                siguiente_parametro_argumento();
+                int valor=parse_string_to_number(argv[puntero_parametro]);
+				if (valor>=JOYSTICK_KEY_FIRE_TOTAL) {
+					printf ("Invalid value %d for setting --joystickfirekey3\n",valor);
+                    exit(1);
+				}
+				joystick_defined_key_fire3=valor;
+            }
+
+            else if (!strcmp(argv[puntero_parametro],"--joystickfirekey4")) {
+                siguiente_parametro_argumento();
+                int valor=parse_string_to_number(argv[puntero_parametro]);
+				if (valor>=JOYSTICK_KEY_FIRE_TOTAL) {
+					printf ("Invalid value %d for setting --joystickfirekey4\n",valor);
+                    exit(1);
+				}
+				joystick_defined_key_fire4=valor;
+            }
+
             else if (!strcmp(argv[puntero_parametro],"--sms-swap-controls")) {
                 sms_swap_controls.v=1;
             }

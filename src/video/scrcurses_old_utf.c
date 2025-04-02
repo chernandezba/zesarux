@@ -1761,7 +1761,7 @@ void scrcurses_actualiza_tablas_teclado(void)
 
 		switch (c) {
 			        case KEY_HOME:
-                                        joystick_set_fire();
+                                        joystick_set_fire(1,0);
                                 break;
 
                                 case KEY_LEFT:

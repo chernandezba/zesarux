@@ -66,8 +66,9 @@ extern void joystick_set_down(int si_enviar_zeng_event);
 extern void joystick_release_down(int si_enviar_zeng_event);
 extern void joystick_set_up(int si_enviar_zeng_event);
 extern void joystick_release_up(int si_enviar_zeng_event);
-extern void joystick_set_fire(int si_enviar_zeng_event);
-extern void joystick_release_fire(int si_enviar_zeng_event);
+
+extern void joystick_set_fire(int si_enviar_zeng_event,int fire_button);
+extern void joystick_release_fire(int si_enviar_zeng_event,int fire_button);
 
 extern int gunstick_emulation;
 
@@ -120,6 +121,9 @@ extern void joystick_cycle_next_type_autofire(void);
 
 extern char *joystick_defined_fire_texto[];
 extern int joystick_defined_key_fire;
+extern int joystick_defined_key_fire2;
+extern int joystick_defined_key_fire3;
+extern int joystick_defined_key_fire4;
 
 extern void joystick_possible_home_key(int pressrelease);
 extern void joystick_possible_rightshift_key(int pressrelease);

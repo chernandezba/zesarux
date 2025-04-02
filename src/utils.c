@@ -4613,6 +4613,9 @@ int util_write_configfile(void)
 
 
                                             ADD_STRING_CONFIG,"--joystickfirekey %d",joystick_defined_key_fire);
+                                            ADD_STRING_CONFIG,"--joystickfirekey2 %d",joystick_defined_key_fire2);
+                                            ADD_STRING_CONFIG,"--joystickfirekey3 %d",joystick_defined_key_fire3);
+                                            ADD_STRING_CONFIG,"--joystickfirekey4 %d",joystick_defined_key_fire4);
 
   if (sms_swap_controls.v)                  ADD_STRING_CONFIG,"--sms-swap-controls");
 
@@ -8480,12 +8483,51 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
 
                         case UTIL_KEY_FIRE:
                                 if (pressrelease) {
-                                        joystick_set_fire(1);
+                                        joystick_set_fire(1,0);
 
 
                                 }
                                 else {
-                                        joystick_release_fire(1);
+                                        joystick_release_fire(1,0);
+
+
+                                }
+                        break;
+
+                        case UTIL_KEY_FIRE2:
+                                if (pressrelease) {
+                                        joystick_set_fire(1,1);
+
+
+                                }
+                                else {
+                                        joystick_release_fire(1,1);
+
+
+                                }
+                        break;
+
+                        case UTIL_KEY_FIRE3:
+                                if (pressrelease) {
+                                        joystick_set_fire(1,2);
+
+
+                                }
+                                else {
+                                        joystick_release_fire(1,2);
+
+
+                                }
+                        break;
+
+                        case UTIL_KEY_FIRE4:
+                                if (pressrelease) {
+                                        joystick_set_fire(1,3);
+
+
+                                }
+                                else {
+                                        joystick_release_fire(1,3);
 
 
                                 }
@@ -8600,12 +8642,51 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                         //Se diferencian de las anteriores en que no vuelven a generar evento ZENG de nuevo
                         case UTIL_KEY_JOY_FIRE:
                                 if (pressrelease) {
-                                        joystick_set_fire(0);
+                                        joystick_set_fire(0,0);
 
 
                                 }
                                 else {
-                                        joystick_release_fire(0);
+                                        joystick_release_fire(0,0);
+
+
+                                }
+                        break;
+
+                        case UTIL_KEY_JOY_FIRE2:
+                                if (pressrelease) {
+                                        joystick_set_fire(0,1);
+
+
+                                }
+                                else {
+                                        joystick_release_fire(0,1);
+
+
+                                }
+                        break;
+
+                        case UTIL_KEY_JOY_FIRE3:
+                                if (pressrelease) {
+                                        joystick_set_fire(0,2);
+
+
+                                }
+                                else {
+                                        joystick_release_fire(0,2);
+
+
+                                }
+                        break;
+
+                        case UTIL_KEY_JOY_FIRE4:
+                                if (pressrelease) {
+                                        joystick_set_fire(0,3);
+
+
+                                }
+                                else {
+                                        joystick_release_fire(0,3);
 
 
                                 }

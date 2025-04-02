@@ -5989,15 +5989,28 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
         //pues al activar una tecla como fire (por ejemplo right shift) hace que esa tecla ya no se comporte como right shift, sino solo fire
         //esto en Z88 podria ser critico, pues no funcionaria el right shift y ademas el usuario no podria reasignar el fire a home y dejar
         //right shift como right shift del Z88
-        menu_add_item_menu_en_es_ca(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_joystick_fire_key,NULL,
-            "Fire key","Tecla disparo","Tecla foc");
-        menu_add_item_menu_prefijo_format(array_menu_hardware_settings,"    ");
 
-        if (joystick_defined_key_fire<0) menu_add_item_menu_sufijo_format(array_menu_hardware_settings," [None]");
-        else menu_add_item_menu_sufijo_format(array_menu_hardware_settings," [%s]",joystick_defined_fire_texto[joystick_defined_key_fire]);
-        menu_add_item_menu_tooltip(array_menu_hardware_settings,"Define which key triggers the fire function for the joystick");
-        menu_add_item_menu_ayuda(array_menu_hardware_settings,"Define which key triggers the fire function for the joystick. "
-            "Not all video drivers support reading all keys");
+        //Hasta 4 botones de fuego
+        int i;
+        for (i=0;i<4;i++) {
+
+            menu_add_item_menu_en_es_ca(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_joystick_fire_key,NULL,
+                "Fire key","Tecla disparo","Tecla foc");
+            menu_add_item_menu_prefijo_format(array_menu_hardware_settings,"    ");
+
+            int indice_fire=joystick_defined_key_fire;
+
+            if (i==1) indice_fire=joystick_defined_key_fire2;
+            else if (i==2) indice_fire=joystick_defined_key_fire3;
+            else if (i==3) indice_fire=joystick_defined_key_fire4;
+
+            if (indice_fire<0) menu_add_item_menu_sufijo_format(array_menu_hardware_settings," %d [None]",i+1);
+            else menu_add_item_menu_sufijo_format(array_menu_hardware_settings," %d [%s]",i+1,joystick_defined_fire_texto[indice_fire]);
+            menu_add_item_menu_valor_opcion(array_menu_hardware_settings,i);
+            menu_add_item_menu_tooltip(array_menu_hardware_settings,"Define which key triggers the fire function for the joystick");
+            menu_add_item_menu_ayuda(array_menu_hardware_settings,"Define which key triggers the fire function for the joystick. "
+                "Not all video drivers support reading all keys");
+        }
 
         if (MACHINE_IS_SMS) {
             menu_add_item_menu_en_es_ca(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_sms_swap_controls,NULL,

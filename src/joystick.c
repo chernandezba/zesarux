@@ -55,6 +55,11 @@ int joystick_autoleftright_status=0;
 //#define JOYSTICK_KEY_FIRE_IS_RIGHTSHIFT 3
 int joystick_defined_key_fire=JOYSTICK_KEY_FIRE_IS_HOME;
 
+//Para los otros 3 posibles botones de joystick
+int joystick_defined_key_fire2=-1;
+int joystick_defined_key_fire3=-1;
+int joystick_defined_key_fire4=-1;
+
 char *joystick_defined_fire_texto[]={
     "Home",
     "RightAlt",
@@ -69,6 +74,9 @@ char *joystick_defined_fire_texto[]={
 void handle_pressed_a_fire_key(int joy_fire_to_check,int key_pressed,int pressrelease)
 {
     if (joystick_defined_key_fire==joy_fire_to_check && joystick_emulation!=JOYSTICK_NONE) util_set_reset_key(UTIL_KEY_FIRE,pressrelease);
+    else if (joystick_defined_key_fire2==joy_fire_to_check && joystick_emulation!=JOYSTICK_NONE) util_set_reset_key(UTIL_KEY_FIRE2,pressrelease);
+    else if (joystick_defined_key_fire3==joy_fire_to_check && joystick_emulation!=JOYSTICK_NONE) util_set_reset_key(UTIL_KEY_FIRE3,pressrelease);
+    else if (joystick_defined_key_fire4==joy_fire_to_check && joystick_emulation!=JOYSTICK_NONE) util_set_reset_key(UTIL_KEY_FIRE4,pressrelease);
     else util_set_reset_key(key_pressed,pressrelease);
 }
 
@@ -320,20 +328,24 @@ void joystick_release_up(int si_enviar_zeng_event)
 	if (si_enviar_zeng_event) zeng_send_key_event(UTIL_KEY_JOY_UP,0);
 }
 
-void joystick_set_fire(int si_enviar_zeng_event)
+//fire_button: indica que boton de fuego: 0 primer boton, 1 segundo boton, etc
+void joystick_set_fire(int si_enviar_zeng_event,int fire_button)
 {
     joystick_clear_leftright();
 
-        //z80_byte puerto_especial_joystick=0; //Fire Up Down Left Right
-        puerto_especial_joystick |=16;
+    //z80_byte puerto_especial_joystick=0; //Fire Up Down Left Right
+    int mascara_fuego=16 << fire_button;
+    puerto_especial_joystick |=mascara_fuego;
 	debug_printf(VERBOSE_DEBUG,"joystick_set_fire");
 
 	if (si_enviar_zeng_event) zeng_send_key_event(UTIL_KEY_JOY_FIRE,1);
 }
 
-void joystick_release_fire(int si_enviar_zeng_event)
+//fire_button: indica que boton de fuego: 0 primer boton, 1 segundo boton, etc
+void joystick_release_fire(int si_enviar_zeng_event,int fire_button)
 {
-        puerto_especial_joystick &=255-16;
+    int mascara_fuego=16 << fire_button;
+    puerto_especial_joystick &=255-mascara_fuego;
 	debug_printf(VERBOSE_DEBUG,"joystick_release_fire");
 
 	if (si_enviar_zeng_event) zeng_send_key_event(UTIL_KEY_JOY_FIRE,0);

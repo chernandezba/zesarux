@@ -586,8 +586,8 @@ void realjoystick_set_reset_action(int index,int value)
 		break;
 
 		case REALJOYSTICK_EVENT_FIRE:
-			if (value) joystick_set_fire(1);
-			else joystick_release_fire(1);
+			if (value) joystick_set_fire(1,0);
+			else joystick_release_fire(1,0);
 		break;
 
 
