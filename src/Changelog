@@ -9,7 +9,10 @@ Allow to save ZX80/81 screen to .scr file
 Allow to save text note on a ZSF snapshot
 Allow to locate rom files running ZEsarUX from a current folder different than the rom path
 Added .ay file support to File Viewer
-Added support for 4 joystick fire buttons (currently only readable from Spectrum - Kempston, Master System, SG1000, ColecoVision)
+Added support for up to 4 joystick fire buttons on:
+- Kempston joystick (Spectrum): 4 buttons
+- Amstrad CPC: 3 buttons
+- Master System, SG1000, Colecovision: 2 buttons
 
 * Improvements:
 

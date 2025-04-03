@@ -958,12 +958,14 @@ I/O address	A9	A8	Description	Read/Write status	Used Direction	Used for
                             //si estamos con menu abierto, no retornar nada
                             if (zxvision_key_not_sent_emulated_mach() ) return valor_joystick;
 
-                            //z80_byte puerto_especial_joystick=0; //Fire Up Down Left Right
+                            //z80_byte puerto_especial_joystick=0; //Fire4 Fire3 Fire2 Fire1 Up Down Left Right
                             if ((puerto_especial_joystick&1)) valor_joystick &=(255-8);   //right
                             if ((puerto_especial_joystick&2)) valor_joystick &=(255-4);   //left
                             if ((puerto_especial_joystick&4)) valor_joystick &=(255-2);  //down
                             if ((puerto_especial_joystick&8)) valor_joystick &=(255-1);  //up
                             if ((puerto_especial_joystick&16)) valor_joystick &=(255-16);  //fire1
+                            if ((puerto_especial_joystick&32)) valor_joystick &=(255-32);  //fire2
+                            if ((puerto_especial_joystick&64)) valor_joystick &=(255-64);  //fire3
                         }
 
                         return valor_joystick;

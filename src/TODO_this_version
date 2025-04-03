@@ -173,5 +173,16 @@ ok * limites al crear ventana
 ok * no permitir escribir ventanas en footer
 
 -Soporte 4 botones: agregar a mas maquinas
-* ok kempston, master system, sg1000.
+* ok kempston, master system, sg1000, coleco, cpc.
+
+Para testear dos botones:
+- master system: streets of rage, street fighter ii
+- sg1000: hero
+- coleco: hero
+- cpc: commando
 -que es common A/B en sg1000??
+
+
+
+-Head over heels enhanced hace un efecto extraño al cambiar de pantalla,
+creo que es al redefinir paleta de colores, que corrige al abrir menu por ejemplo
