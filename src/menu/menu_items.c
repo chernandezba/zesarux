@@ -22252,9 +22252,9 @@ int keyboard_map_table_coords_ace[40*4]={
 
 //4 de direccion, 2 botones
 int keyboard_map_table_coords_sms[6*4]={
-66,106,86,124, 28,106,48,124, 44,124,68,146, 44,86,68,108, 130,114,154,136,
+66,92,86,110, 28,92,48,110, 44,110,68,132, 44,72,68,94, 130,100,154,122,
 
-164,114,188,136,
+164,100,188,122,
 
 };
 
@@ -22664,7 +22664,7 @@ keyboard_help_double_key keyboard_map_additional_next[]={
 };
 
 keyboard_help_double_key keyboard_map_additional_sms[]={
-    { 164,114,188,136,      &puerto_65278,4,   NULL,0 }, //segundo boton=tecla X
+    { 164,100,188,122,      &puerto_65278,4,   NULL,0 }, //segundo boton=tecla X
 
     { 0,0,0,0,NULL,0,NULL,0 }
 };
