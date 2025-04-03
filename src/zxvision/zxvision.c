@@ -19014,7 +19014,10 @@ z80_byte menu_da_todas_teclas_si_reset_mouse_movido(int reset_mouse_movido,int a
 
 
 	//no ignorar disparo
-	z80_byte valor_joystick=(puerto_especial_joystick&31)^255;
+	//z80_byte valor_joystick=(puerto_especial_joystick&31)^255;
+
+    //no ignorar ninguno de los 4 botones de disparo
+    z80_byte valor_joystick=puerto_especial_joystick ^ 255;
 
 	acumulado=acumulado & valor_joystick;
 
