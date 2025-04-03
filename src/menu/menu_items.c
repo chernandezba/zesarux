@@ -22258,8 +22258,9 @@ int keyboard_map_table_coords_sms[6*4]={
 
 };
 
-int keyboard_map_table_coords_sg1000[5*4]={
+int keyboard_map_table_coords_sg1000[6*4]={
 54,70,76,88, 12,70,38,88, 34,94,56,110, 40,48,58,66, 14,46,32,68,
+66,46,80,68,
 
 };
 
@@ -23459,13 +23460,13 @@ z80_byte **get_keyboard_map_ports_table(int *total_columnas,int *total_filas)
         return keyboard_map_ports_table_z88;
     }
 
-    if (MACHINE_IS_SMS) {
+    if (MACHINE_IS_SMS || MACHINE_IS_SG1000) {
         *total_columnas=6;
         *total_filas=1;
         return keyboard_map_ports_table_joystick;
     }
 
-    if (MACHINE_IS_SG1000 || MACHINE_IS_COLECO) {
+    if (MACHINE_IS_COLECO) {
         *total_columnas=5;
         *total_filas=1;
         return keyboard_map_ports_table_joystick;
