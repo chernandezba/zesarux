@@ -676,6 +676,9 @@ int sms_if_joypad_a_fire1(void)
 
 int sms_if_joypad_a_fire2(void)
 {
+
+    if ((puerto_especial_joystick&32)) return 1;
+
     //Boton 2 = Tecla X
     //puerto_65278   db    255  ; V    C    X    Z    Sh    ;0
     //Player 1. Fire 2
