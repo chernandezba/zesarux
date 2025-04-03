@@ -22250,8 +22250,11 @@ int keyboard_map_table_coords_ace[40*4]={
 464,158,514,184, 416,158,446,184, 368,158,398,184, 320,156,350,184, 272,156,302,184,
 };
 
-int keyboard_map_table_coords_sms[5*4]={
+//4 de direccion, 2 botones
+int keyboard_map_table_coords_sms[6*4]={
 66,106,86,124, 28,106,48,124, 44,124,68,146, 44,86,68,108, 130,114,154,136,
+
+164,114,188,136,
 
 };
 
@@ -23456,11 +23459,18 @@ z80_byte **get_keyboard_map_ports_table(int *total_columnas,int *total_filas)
         return keyboard_map_ports_table_z88;
     }
 
-    if (MACHINE_IS_SMS || MACHINE_IS_SG1000 || MACHINE_IS_COLECO) {
+    if (MACHINE_IS_SMS) {
+        *total_columnas=6;
+        *total_filas=1;
+        return keyboard_map_ports_table_joystick;
+    }
+
+    if (MACHINE_IS_SG1000 || MACHINE_IS_COLECO) {
         *total_columnas=5;
         *total_filas=1;
         return keyboard_map_ports_table_joystick;
     }
+
     if (MACHINE_IS_MK14) {
         *total_columnas=4;
         *total_filas=8;
