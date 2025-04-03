@@ -130,6 +130,9 @@ char *realjoystick_event_names[]={
     "Left",
     "Right",
     "Fire",
+    "Fire2",
+    "Fire3",
+    "Fire4",
     "EscMenu",
     "ExitEmulator",
     "Enter",
@@ -590,6 +593,20 @@ void realjoystick_set_reset_action(int index,int value)
 			else joystick_release_fire(1,0);
 		break;
 
+		case REALJOYSTICK_EVENT_FIRE2:
+			if (value) joystick_set_fire(1,1);
+			else joystick_release_fire(1,1);
+		break;
+
+		case REALJOYSTICK_EVENT_FIRE3:
+			if (value) joystick_set_fire(1,2);
+			else joystick_release_fire(1,2);
+		break;
+
+		case REALJOYSTICK_EVENT_FIRE4:
+			if (value) joystick_set_fire(1,3);
+			else joystick_release_fire(1,3);
+		break;
 
 		//Evento de ESC representa ESC para navegar entre menus y tambien abrir el menu (lo que ahora es con F5 y antes era ESC)
 		//NO activa ESC de Z88

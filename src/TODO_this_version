@@ -126,8 +126,11 @@ cada mensaje en cada idioma
 "LeftCtrl",
 "LeftShift",
 "Tab"
-* poder asignar mas botones de fuego en joysticks usb, para los nuevos 3 botones kempston
+ok * poder asignar mas botones de fuego en joysticks usb, para los nuevos 3 botones kempston
 * probar zeng online con prueba puerto 31 y con juego haoken
+* Soporte a más máquinas y consolas para más botones de fuego. Ejemplo master system. Y actualizar los help keyboard indicando fire1, fire2, etc
+en cpc hasta 3 botones de fuego para 2 joysticks
+https://www.cpcwiki.eu/index.php/Programming:Keyboard_scanning
 
 -Juego mighty steel fighters cpc. Requiere expansión de RAM? Emularla
 "Mighty Steel Fighters GGP" Amstrad CPC by AmstradGGP

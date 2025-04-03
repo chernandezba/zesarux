@@ -2916,13 +2916,10 @@ int parse_cmdline_options(int desde_commandline) {
                 siguiente_parametro_argumento();
                 int y=parse_string_to_number(argv[puntero_parametro]);
                 siguiente_parametro_argumento();
-                int indice_funcion=get_defined_direct_functions(argv[puntero_parametro]);
-                siguiente_parametro_argumento();
 
-                if (indice_funcion<0) {
-                    printf ("Invalid action for icon: %s\n",argv[puntero_parametro]);
-                    exit(1);
-                }
+                char *icon_action=argv[puntero_parametro];
+                int indice_funcion=get_defined_direct_functions(icon_action);
+                siguiente_parametro_argumento();
 
                 char *text_icon=argv[puntero_parametro];
                 siguiente_parametro_argumento();
@@ -2930,37 +2927,48 @@ int parse_cmdline_options(int desde_commandline) {
                 char *extra_info=argv[puntero_parametro];
                 siguiente_parametro_argumento();
 
-                enum zxdesktop_custom_icon_status_ids status;
-
-                if (!strcasecmp("exists",argv[puntero_parametro])) {
-                    status=ZXDESKTOP_CUSTOM_ICON_EXISTS;
-                }
-
-                else if (!strcasecmp("deleted",argv[puntero_parametro])) {
-                    status=ZXDESKTOP_CUSTOM_ICON_DELETED;
+                //Si accion no reconocida, mostrar error y seguir
+                //Esto permite compatibilidad hacia atrás por si se ejecuta una versión de ZEsarUX con una config de versión
+                //superior con acciones nuevas
+                if (indice_funcion<0) {
+                    debug_printf (VERBOSE_ERR,"Invalid action for icon: %s",icon_action);
                 }
 
                 else {
-                    printf("Invalid icon status %s\n",argv[puntero_parametro]);
-                    exit(1);
+
+                    enum zxdesktop_custom_icon_status_ids status;
+
+                    if (!strcasecmp("exists",argv[puntero_parametro])) {
+                        status=ZXDESKTOP_CUSTOM_ICON_EXISTS;
+                    }
+
+                    else if (!strcasecmp("deleted",argv[puntero_parametro])) {
+                        status=ZXDESKTOP_CUSTOM_ICON_DELETED;
+                    }
+
+                    else {
+                        printf("Invalid icon status %s\n",argv[puntero_parametro]);
+                        exit(1);
+                    }
+
+
+
+                    int indice_icono=zxvision_add_configurable_icon_no_add_position(indice_funcion);
+                    if (indice_icono<0) {
+                        printf("Can not add more icons, limit reached: %d\n",MAX_ZXDESKTOP_CONFIGURABLE_ICONS);
+                        exit(1);
+                    }
+
+                    //Asignamos x,y a mano dado que aqui aun no sabemos el tamaño de la ventana y por tanto no sabemos si sale de rango
+                    zxdesktop_configurable_icons_list[indice_icono].pos_x=x;
+                    zxdesktop_configurable_icons_list[indice_icono].pos_y=y;
+
+                    zxvision_set_configurable_icon_text(indice_icono,text_icon);
+                    zxvision_set_configurable_icon_extra_info(indice_icono,extra_info);
+
+                    zxdesktop_configurable_icons_list[indice_icono].status=status;
+
                 }
-
-
-
-                int indice_icono=zxvision_add_configurable_icon_no_add_position(indice_funcion);
-                if (indice_icono<0) {
-                    printf("Can not add more icons, limit reached: %d\n",MAX_ZXDESKTOP_CONFIGURABLE_ICONS);
-                    exit(1);
-                }
-
-                //Asignamos x,y a mano dado que aqui aun no sabemos el tamaño de la ventana y por tanto no sabemos si sale de rango
-                zxdesktop_configurable_icons_list[indice_icono].pos_x=x;
-                zxdesktop_configurable_icons_list[indice_icono].pos_y=y;
-
-                zxvision_set_configurable_icon_text(indice_icono,text_icon);
-                zxvision_set_configurable_icon_extra_info(indice_icono,extra_info);
-
-                zxdesktop_configurable_icons_list[indice_icono].status=status;
 
 
             }
@@ -3902,25 +3910,33 @@ int parse_cmdline_options(int desde_commandline) {
             }
 
 			else if (!strcmp(argv[puntero_parametro],"--def-f-function")) {
+
+                //Poder continuar la carga aunque algun parametro esté mal
+                int error_parametros=0;
+
 				siguiente_parametro_argumento();
 				if (argv[puntero_parametro][0]!='F' && argv[puntero_parametro][0]!='f') {
-					printf ("Unknown key\n");
-					exit(1);
+                    debug_printf (VERBOSE_ERR,"Unknown key for f-function: %s",argv[puntero_parametro]);
+
+                    error_parametros=1;
 				}
 
-				int valor=atoi(&argv[puntero_parametro][1]);
+                int valor=atoi(&argv[puntero_parametro][1]);
 
-				if (valor<1 || valor>MAX_F_FUNCTIONS_KEYS) {
-					printf ("Invalid key\n");
-					exit(1);
-				}
+                if (valor<1 || valor>MAX_F_FUNCTIONS_KEYS) {
+                    debug_printf (VERBOSE_ERR,"Invalid key for f-function: %d",valor);
+                    error_parametros=1;
+                }
 
-				siguiente_parametro_argumento();
+                siguiente_parametro_argumento();
 
-				if (menu_define_key_function(valor,argv[puntero_parametro])) {
-					printf ("Invalid f-function action: %s\n",argv[puntero_parametro]);
-					exit(1);
-				}
+                if (!error_parametros) {
+
+                    if (menu_define_key_function(valor,argv[puntero_parametro])) {
+                        debug_printf (VERBOSE_ERR,"Invalid f-function action: %s",argv[puntero_parametro]);
+                    }
+
+                }
 
 
 			}
@@ -6262,9 +6278,9 @@ int parse_cmdline_options(int desde_commandline) {
 				text_event=argv[puntero_parametro];
 
 				//Y definir el evento
-				if (realjoystick_set_button_event(text_button,text_event)) {
-                                        exit(1);
-                                }
+                //No salir si hay error, simplemente saldra error por VERBOSE_ERR
+				realjoystick_set_button_event(text_button,text_event);
+
 
 
 			}

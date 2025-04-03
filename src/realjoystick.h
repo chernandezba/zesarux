@@ -110,26 +110,29 @@ extern z80_bit realjoystick_disabled;
 #define REALJOYSTICK_EVENT_LEFT                 2
 #define REALJOYSTICK_EVENT_RIGHT                3
 #define REALJOYSTICK_EVENT_FIRE                 4
-#define REALJOYSTICK_EVENT_ESC_MENU             5
-#define REALJOYSTICK_EVENT_EXIT_EMULATOR        6
-#define REALJOYSTICK_EVENT_ENTER                7
-#define REALJOYSTICK_EVENT_MENU_TAB             8
-#define REALJOYSTICK_EVENT_QUICKLOAD            9
-#define REALJOYSTICK_EVENT_QUICKSAVE            10
-#define REALJOYSTICK_EVENT_OSDKEYBOARD          11
-#define REALJOYSTICK_EVENT_OSD_TEXT_KEYBOARD    12
-#define REALJOYSTICK_EVENT_NUMBERSELECT         13
-#define REALJOYSTICK_EVENT_NUMBERACTION         14
-#define REALJOYSTICK_EVENT_JOYSELECT            15
-#define REALJOYSTICK_EVENT_AUX1                 16
-#define REALJOYSTICK_EVENT_AUX2                 17
-#define REALJOYSTICK_EVENT_AUX3                 18
-#define REALJOYSTICK_EVENT_AUX4                 19
-#define REALJOYSTICK_EVENT_REWIND               20
-#define REALJOYSTICK_EVENT_FFORWARD             21
+#define REALJOYSTICK_EVENT_FIRE2                5
+#define REALJOYSTICK_EVENT_FIRE3                6
+#define REALJOYSTICK_EVENT_FIRE4                7
+#define REALJOYSTICK_EVENT_ESC_MENU             8
+#define REALJOYSTICK_EVENT_EXIT_EMULATOR        9
+#define REALJOYSTICK_EVENT_ENTER                10
+#define REALJOYSTICK_EVENT_MENU_TAB             11
+#define REALJOYSTICK_EVENT_QUICKLOAD            12
+#define REALJOYSTICK_EVENT_QUICKSAVE            13
+#define REALJOYSTICK_EVENT_OSDKEYBOARD          14
+#define REALJOYSTICK_EVENT_OSD_TEXT_KEYBOARD    15
+#define REALJOYSTICK_EVENT_NUMBERSELECT         16
+#define REALJOYSTICK_EVENT_NUMBERACTION         17
+#define REALJOYSTICK_EVENT_JOYSELECT            18
+#define REALJOYSTICK_EVENT_AUX1                 19
+#define REALJOYSTICK_EVENT_AUX2                 20
+#define REALJOYSTICK_EVENT_AUX3                 21
+#define REALJOYSTICK_EVENT_AUX4                 22
+#define REALJOYSTICK_EVENT_REWIND               23
+#define REALJOYSTICK_EVENT_FFORWARD             24
 
 //este valor es el numero de ultimo REALJOYSTICK_EVENT_XX +1
-#define MAX_EVENTS_JOYSTICK 22
+#define MAX_EVENTS_JOYSTICK 25
 
 extern char *realjoystick_event_names[];
 
