@@ -9,7 +9,7 @@ Permitir grabar pantalla de ZX80/81 a archivo .scr
 Permitir grabar una nota de texto en un snapshot ZSF
 Permitir encontrar archivos de rom al ejecutar ZEsarUX desde una carpeta actual diferente de la ruta de las roms
 Agregado soporte para archivos .ay en Visor de Archivos
-Agregado suporte para 4 botones de fuego de joystick (de momento solo se puede leer desde Kempston y Master System)
+Agregado suporte para 4 botones de fuego de joystick (de momento sólo se puede leer desde Spectrum - Kempston, Master System, SG1000, ColecoVision)
 
 * Mejoras:
 

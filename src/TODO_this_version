@@ -171,3 +171,7 @@ ok * putpixel controlado
 ok * y scr_putpixel_final , el que va al driver de video. esta controlado desde scr_redraw_machine_layer
 ok * limites al crear ventana
 ok * no permitir escribir ventanas en footer
+
+-Soporte 4 botones: agregar a mas maquinas
+* ok kempston, master system, sg1000.
+-que es common A/B en sg1000??

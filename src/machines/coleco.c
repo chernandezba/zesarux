@@ -604,9 +604,10 @@ z80_byte coleco_get_keypad_a(void)
     //puerto_61438    db              255  ; 6    7    8    9    0     ;4
     if ((puerto_61438 & 2)==0) valor_joystick &=0x0b;  //binario 1011
 
-    //# -> tecla Z
+    //# -> tecla Z o fire2
     //puerto_65278   db    255  ; V    C    X    Z    Sh    ;0
     if ((puerto_65278 & 2)==0) valor_joystick &=0x06;  //binario 0110
+    if ((puerto_especial_joystick&32)) valor_joystick &=0x06;  //binario 0110
 
     //* -> tecla X
     //puerto_65278   db    255  ; V    C    X    Z    Sh    ;0
