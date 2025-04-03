@@ -409,6 +409,7 @@ JOYPAD1_UP:     = 0b00000001;
 			if ((puerto_especial_joystick&8)) valor_joystick &=(255-1);
 
 			if ((puerto_especial_joystick&16)) valor_joystick &=(255-16);
+            if ((puerto_especial_joystick&32)) valor_joystick &=(255-32);
 
             //Espacio tambien vale como Fire/A
             //puerto_32766    db              255  ; B    N    M    Simb Space ;7
