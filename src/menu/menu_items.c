@@ -30394,11 +30394,11 @@ void menu_machine_selection(MENU_ITEM_PARAMETERS)
 	}
 }
 
-
-void menu_about_read_file(char *title,char *aboutfile,int show_err_if_big)
+//Retorna puntero a memoria con contenido de archivo leido. NULL si ha habido algun error
+char *menu_about_read_file_only_read(char *aboutfile,int show_err_if_big)
 {
 
-    char *about_file=util_malloc(MAX_TEXTO_GENERIC_MESSAGE,"Can not allocate memory for reading the file");
+    char *buffer_memory=util_malloc(MAX_TEXTO_GENERIC_MESSAGE,"Can not allocate memory for reading the file");
 
 	debug_printf (VERBOSE_INFO,"Loading %s File",aboutfile);
 	FILE *ptr_aboutfile;
@@ -30408,10 +30408,12 @@ void menu_about_read_file(char *title,char *aboutfile,int show_err_if_big)
 	if (!ptr_aboutfile)
 	{
 		debug_printf (VERBOSE_ERR,"Unable to open %s file",aboutfile);
+        free(buffer_memory);
+        return NULL;
 	}
 	else {
 
-		int leidos=fread(about_file,1,MAX_TEXTO_GENERIC_MESSAGE,ptr_aboutfile);
+		int leidos=fread(buffer_memory,1,MAX_TEXTO_GENERIC_MESSAGE,ptr_aboutfile);
 		debug_printf (VERBOSE_INFO,"Read %d bytes of file: %s",leidos,aboutfile);
 
         int message_verbose=VERBOSE_DEBUG;
@@ -30425,16 +30427,32 @@ void menu_about_read_file(char *title,char *aboutfile,int show_err_if_big)
 			leidos--;
 		}
 
-		about_file[leidos]=0;
+		buffer_memory[leidos]=0;
 
 
 		fclose(ptr_aboutfile);
 
-		menu_generic_message(title,about_file);
 
 	}
 
-    free(about_file);
+    return buffer_memory;
+
+
+}
+
+
+
+void menu_about_read_file(char *title,char *aboutfile,int show_err_if_big)
+{
+
+    char *buffer_memory=menu_about_read_file_only_read(aboutfile,show_err_if_big);
+
+    if (buffer_memory==NULL) return;
+
+    menu_generic_message(title,buffer_memory);
+
+    free(buffer_memory);
+
 
 }
 
@@ -30506,7 +30524,28 @@ void menu_about_acknowledgements(MENU_ITEM_PARAMETERS)
 
 void menu_about_donate(MENU_ITEM_PARAMETERS)
 {
-        menu_about_read_file("Donate","DONATE",1);
+    char *buffer_memory=menu_about_read_file_only_read("DONATE",1);
+
+    if (buffer_memory==NULL) return;
+
+    char *string_to_add="\n"
+                        "To donate, go to the ZEsarUX website (https://github.com/chernandezba/zesarux) "
+                        "and look for the DONATE section"
+                        "\n"
+                        "\n"
+                        "Thanks!";
+
+    if (util_concat_string(buffer_memory,string_to_add,MAX_TEXTO_GENERIC_MESSAGE)) {
+        debug_printf(VERBOSE_ERR,"Error appending text");
+    }
+
+    else {
+        menu_generic_message("Donate",buffer_memory);
+    }
+
+
+    free(buffer_memory);
+
 }
 
 void menu_about_donors(MENU_ITEM_PARAMETERS)

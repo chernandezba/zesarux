@@ -39,6 +39,16 @@ echo "__DONATE__"
 echo
 cat DONATE
 
+cat << _EOF
+
+Just click:
+
+[ZEsarUX donation](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=E5RSRST8N7KWS&lc=ES&item_name=Donativo%20ZEsarUX&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted)
+
+
+Thanks!
+_EOF
+
 echo
 echo
 echo "__FEATURES__"

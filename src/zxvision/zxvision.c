@@ -28034,7 +28034,11 @@ int total_first_aid=0;
 void menu_first_aid_add(char *key_string,int *puntero_setting,char *texto_opcion,int si_startup)
 {
 
-	if (total_first_aid==MAX_MENU_FIRST_AID) return; //error
+    //printf("total_first_aid %d\n",total_first_aid);
+	if (total_first_aid==MAX_MENU_FIRST_AID) {
+        debug_printf(VERBOSE_ERR,"Can not add more first aid messages");
+        return;
+    }
 
 	//first_aid_list[total_first_aid].indice_setting=indice_aid;
 	strcpy(first_aid_list[total_first_aid].config_name,key_string);
@@ -28048,7 +28052,9 @@ void menu_first_aid_add(char *key_string,int *puntero_setting,char *texto_opcion
 
 //No mostrar la opcion. por defecto a 0 (mostrarla)
 
+//
 //Items que se disparan en ciertos eventos, con parametro si_startup=0
+//
 int first_aid_no_filesel_uppercase_keys=0;
 char *first_aid_string_filesel_uppercase_keys="If you want to select a file by its initial letter, please press the letter as it is. "
 							"If you want to execute actions shown in the bottom of the window, in inverted colour, please press shift+letter";
@@ -28112,10 +28118,16 @@ char *first_aid_string_hilow_format="You can also format the Data Drive using th
 
 int first_aid_no_hilow_convert_bside=0;
 char *first_aid_string_hilow_convert_bside="When changing b-size flag, you must stop and start conversion again in order to read again the input file.";
+
+
+int first_aid_no_ext_audio_source=0;
+char *first_aid_string_ext_audio_source="Audio is read from the current recording device and input on your computer, you must use the "
+    "operating system settings to switch to your desired device and input (probably Line In)";
+
+
+//
 //Items que se disparan en startup
-
-
-
+//
 
 int first_aid_no_startup_aid=0;
 char *first_aid_string_startup_aid="This is a first aid help message. You will be shown some of these at the emulator startup, but also "
@@ -28196,20 +28208,20 @@ int first_aid_no_zxdesktop_custombuttons=0;
 char *first_aid_string_zxdesktop_custombuttons="You can customize upper ZX Desktop buttons to trigger different actions. "
 				"Go to Settings-> ZX Desktop-> Customize buttons";
 
-
 int first_aid_no_snapshot_save_zsf=0;
 char *first_aid_string_snapshot_save_zsf="When saving snapshots, the recommended extension is ZSF, as this is the native "
     "ZEsarUX snapshot format. If you want to save a different format snapshot, just change the extension. If you want to overwrite "
     "a existing snapshot, just select it";
 
-
 int first_aid_no_advanced_menu=0;
 char *first_aid_string_advanced_menu="The menu interface has many items which are hidden by default. You can show them by "
     "enabling Settings-> Advanced menu items";
 
-int first_aid_no_ext_audio_source=0;
-char *first_aid_string_ext_audio_source="Audio is read from the current recording device and input on your computer, you must use the "
-    "operating system settings to switch to your desired device and input (probably Line In)";
+int first_aid_no_donate=0;
+char *first_aid_string_donate="Have you donated to ZEsarUX? ZEsarUX will always cost you nothing to use, but that doesn't mean it costs me "
+                              "nothing to make. So if you want to demonstrate your appreciation to it and also help me cover the costs of my "
+                              "development servers, go to the ZEsarUX website and look for the DONATE section. Thanks!";
+
 
 void menu_first_aid_init(void)
 {
@@ -28255,6 +28267,7 @@ void menu_first_aid_init(void)
     menu_first_aid_add("zxdesktop",&first_aid_no_zxdesktop,first_aid_string_zxdesktop,1);
     menu_first_aid_add("zxdesktopcustombuttons",&first_aid_no_zxdesktop_custombuttons,first_aid_string_zxdesktop_custombuttons,1);
     menu_first_aid_add("advancedmenu",&first_aid_no_advanced_menu,first_aid_string_advanced_menu,1);
+    menu_first_aid_add("donate",&first_aid_no_donate,first_aid_string_donate,1);
 
 }
 
