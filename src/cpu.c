@@ -148,6 +148,7 @@
 #include "plus3dos_handler.h"
 #include "pcw.h"
 #include "lec.h"
+#include "zxmmcplus.h"
 
 
 #ifdef COMPILE_STDOUT
@@ -1241,6 +1242,8 @@ util_stats_init();
         if (ide_enabled.v) ide_reset();
 
 	if (superupgrade_enabled.v) superupgrade_set_memory_pages();
+
+    if (zxmmcplus_enabled.v) zxmmcplus_reset();
 
 	ay_player_playing.v=0;
 

@@ -138,7 +138,7 @@ void zxmmcplus_poke_ram(z80_int dir,z80_byte value)
 void zxmmcplus_poke_rom(z80_int dir,z80_byte value)
 {
 
-    //TODO
+    printf("Writing rom address %X value %X\n",dir,value);
 
 }
 
@@ -162,7 +162,7 @@ z80_byte zxmmcplus_poke_byte(z80_int dir,z80_byte valor)
     //Llamar a anterior
     debug_nested_poke_byte_call_previous(zxmmcplus_nested_id_poke_byte,dir,valor);
 
-	zxmmcplus_poke(dir,valor);
+    if (dir<16384) zxmmcplus_poke(dir,valor);
 
 	//Para que no se queje el compilador, aunque este valor de retorno no lo usamos
 	return 0;
@@ -177,7 +177,7 @@ z80_byte zxmmcplus_poke_byte_no_time(z80_int dir,z80_byte valor)
 	debug_nested_poke_byte_no_time_call_previous(zxmmcplus_nested_id_poke_byte_no_time,dir,valor);
 
 
-	zxmmcplus_poke(dir,valor);
+	if (dir<16384) zxmmcplus_poke(dir,valor);
 
 	//Para que no se queje el compilador, aunque este valor de retorno no lo usamos
 	return 0;
@@ -334,6 +334,9 @@ void zxmmcplus_enable(void)
 
 	zxmmcplus_reset();
 
+    //Y lo mandamos al boot
+    reg_pc=0;
+
 }
 
 void zxmmcplus_disable(void)
@@ -361,7 +364,7 @@ void zxmmcplus_write_port(z80_byte value)
 
 z80_byte zxmmcplus_read_port(void)
 {
-    printf("zxmmcplus_read_port value %02XH pc: %04XH\n",zxmmcplus_port_7f_value,reg_pc);
+    printf("zxmmcplus_read_port value %02XH (page %d) pc: %04XH\n",zxmmcplus_port_7f_value,zxmmcplus_port_7f_value & 0x1F,reg_pc);
     return zxmmcplus_port_7f_value;
 
 
