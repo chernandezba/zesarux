@@ -93,6 +93,7 @@
 #include "dsk.h"
 #include "utils_text_adventure.h"
 #include "lec.h"
+#include "zxmmcplus.h"
 
 
 void (*poke_byte)(z80_int dir,z80_byte valor);
@@ -7316,6 +7317,9 @@ z80_byte lee_puerto_spectrum_no_time(z80_byte puerto_h,z80_byte puerto_l)
 
         }
 
+    //Puerto ZXMMC+
+    if (zxmmcplus_enabled.v && puerto_l==0x7f) return zxmmcplus_read_port();
+
 	//Puertos 8-bit simple ide
 	if (eight_bit_simple_ide_enabled.v && (puerto_l&16)==0) {
 		return eight_bit_simple_ide_read(puerto_l);
@@ -9701,6 +9705,11 @@ Allowed to read / write port # xx57 teams INIR and OTIR. Example of reading the 
         if (puerto_enmascarado==1 || puerto_enmascarado==65 || puerto_enmascarado==129) {
             transtape_write_port(puerto_enmascarado,value);
         }
+    }
+
+    //Puerto zxmmc plus
+    if (zxmmcplus_enabled.v && puerto_l==0x7f) {
+        zxmmcplus_write_port(value);
     }
 
 

@@ -4,6 +4,7 @@ ZEsarUX 12.1 - xxx edition. 19 March 2025
 
 Added Streaming mode to ZENG Online for ZX Spectrum. It improves gaming experience: reduces lag and drops all game state inconsistencies between all players
 Added conversion of ZX81 files P to P81, and P81 to P
+Added ZXMMC+ emulation
 Added direct functions to increase/decrease Audio Volume
 Allow to save ZX80/81 screen to .scr file
 Allow to save text note on a ZSF snapshot

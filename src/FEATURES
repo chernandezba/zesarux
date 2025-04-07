@@ -122,7 +122,7 @@
 
 * Emulates Betadisk/TR-DOS. Direct support for .trd files. scl files can be converted from file selector pressing space
 
-* Emulates ZX Spectrum MMC Interfaces: ZXMMC, DivMMC
+* Emulates ZX Spectrum MMC Interfaces: ZXMMC, ZXMMC+, DivMMC
 
 * Emulates ZX Spectrum IDE Interfaces: DivIDE, 8-bit simple
 

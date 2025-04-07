@@ -153,6 +153,7 @@
 #include "microdrive.h"
 #include "microdrive_raw.h"
 #include "lec.h"
+#include "zxmmcplus.h"
 
 #ifdef COMPILE_ALSA
 #include "audioalsa.h"
@@ -285,8 +286,8 @@ int menu_memory_cheat_first_scan_opcion_seleccionada=0;
 int menu_memory_cheat_next_scan_opcion_seleccionada=0;
 int cpc_additional_roms_opcion_seleccionada=0;
 int lec_memory_opcion_seleccionada=0;
-
 int visualcasette_tape_opcion_seleccionada=0;
+int zxmmcplus_opcion_seleccionada=0;
 //int mdv_simulate_bad_sectors_opcion_seleccionada=0;
 
 //Fin opciones seleccionadas para cada menu
@@ -39256,7 +39257,53 @@ void menu_lec_memory(MENU_ITEM_PARAMETERS)
 }
 
 
+void menu_zxmmcplus_enable(MENU_ITEM_PARAMETERS)
+{
+    if (zxmmcplus_enabled.v) {
+        zxmmcplus_disable();
+    }
+    else {
+        zxmmcplus_enable();
+    }
+}
 
+
+
+void menu_zxmmcplus(MENU_ITEM_PARAMETERS)
+{
+    menu_item *array_menu_common;
+    menu_item item_seleccionado;
+    int retorno_menu;
+    do {
+
+
+
+        menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_zxmmcplus_enable,
+                NULL,"[%c] ZXMMC+ Enabled", (zxmmcplus_enabled.v ? 'X' : ' '));
+
+
+        menu_add_item_menu_separator(array_menu_common);
+
+        menu_add_ESC_item(array_menu_common);
+
+        retorno_menu=menu_dibuja_menu_no_title_lang(&zxmmcplus_opcion_seleccionada,&item_seleccionado,array_menu_common,"Transtape emulation");
+
+
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+            //llamamos por valor de funcion
+                if (item_seleccionado.menu_funcion!=NULL) {
+                //printf ("actuamos por funcion\n");
+                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+
+            }
+        }
+
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+
+
+
+
+}
 
 
 //menu storage
@@ -39521,6 +39568,12 @@ void menu_storage(MENU_ITEM_PARAMETERS)
         }
 
 
+		if (MACHINE_IS_SPECTRUM) {
+			menu_add_item_menu_format(array_menu_storage,MENU_OPCION_NORMAL,menu_zxmmcplus,NULL,"ZXMMC+");
+			menu_add_item_menu_tooltip(array_menu_storage,"ZXMMC+ settings");
+			menu_add_item_menu_ayuda(array_menu_storage,"ZXMMC+ settings");
+            menu_add_item_menu_tiene_submenu(array_menu_storage);
+		}
 
 
 		if (MACHINE_IS_ZX8081) {
