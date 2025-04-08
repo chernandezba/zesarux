@@ -490,7 +490,7 @@ void zxmmcplus_nmi(void)
 //Establecer rutinas propias
 void zxmmcplus_set_peek_poke_functions(void)
 {
-    debug_printf (VERBOSE_DEBUG,"Setting zxmmcplus poke / peek functions");
+    debug_printf (VERBOSE_DEBUG,"Setting zxmmc+ poke / peek functions");
 
 	//Asignar mediante nuevas funciones de core anidados
 	zxmmcplus_nested_id_poke_byte=debug_nested_poke_byte_add(zxmmcplus_poke_byte,"zxmmcplus poke_byte");
@@ -523,9 +523,9 @@ void zxmmcplus_alloc_rom_ram_memory(void)
     //memoria de la ram y rom
     int size=ZXMMCPLUS_RAM_SIZE+ZXMMCPLUS_FLASHROM_SIZE;
 
-    debug_printf (VERBOSE_DEBUG,"Allocating %d kb of memory for zxmmcplus emulation",size/1024);
+    debug_printf (VERBOSE_DEBUG,"Allocating %d kb of memory for zxmmc+ emulation",size/1024);
 
-    zxmmcplus_memory_pointer=util_malloc(size,"No enough memory for zxmmcplus emulation");
+    zxmmcplus_memory_pointer=util_malloc(size,"No enough memory for zxmmc+ emulation");
 
 
 }
@@ -539,11 +539,11 @@ int zxmmcplus_load_rom(void)
     int leidos=0;
 
 
-    debug_printf (VERBOSE_INFO,"Loading zxmmcplus rom %s",ZXMMCPLUS_FLASHROM_FILE_NAME);
+    debug_printf (VERBOSE_INFO,"Loading zxmmc+ flash rom %s",ZXMMCPLUS_FLASHROM_FILE_NAME);
 
     open_sharedfile(ZXMMCPLUS_FLASHROM_FILE_NAME,&ptr_zxmmcplus_romfile);
     if (!ptr_zxmmcplus_romfile) {
-        debug_printf (VERBOSE_ERR,"Unable to open ROM file");
+        debug_printf (VERBOSE_ERR,"Unable to open flash rom file");
     }
 
     if (ptr_zxmmcplus_romfile!=NULL) {
@@ -556,7 +556,7 @@ int zxmmcplus_load_rom(void)
 
 
     if (leidos!=ZXMMCPLUS_FLASHROM_SIZE || ptr_zxmmcplus_romfile==NULL) {
-        debug_printf (VERBOSE_ERR,"Error reading zxmmcplus rom");
+        debug_printf (VERBOSE_ERR,"Error reading zxmmc+ flash rom");
         return 1;
     }
 
@@ -580,16 +580,16 @@ void zxmmcplus_enable(void)
 {
 
     if (!MACHINE_IS_SPECTRUM) {
-        debug_printf(VERBOSE_INFO,"Can not enable zxmmcplus on non Spectrum machine");
+        debug_printf(VERBOSE_INFO,"Can not enable zxmmc+ on non Spectrum machine");
         return;
     }
 
 	if (zxmmcplus_enabled.v) {
-		debug_printf (VERBOSE_DEBUG,"zxmmcplus Already enabled");
+		debug_printf (VERBOSE_DEBUG,"zxmmc+ Already enabled");
 		return;
 	}
 
-    debug_printf (VERBOSE_DEBUG,"Enabling zxmmcplus interface");
+    debug_printf (VERBOSE_DEBUG,"Enabling zxmmc+ interface");
 
 	zxmmcplus_alloc_rom_ram_memory();
 

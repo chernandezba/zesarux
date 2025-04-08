@@ -31,5 +31,10 @@
 
 extern z80_bit zxmmcplus_enabled;
 extern void zxmmcplus_mmc_cs(z80_byte value);
+extern void zxmmcplus_reset(void);
+extern z80_byte zxmmcplus_read_port(void);
+extern void zxmmcplus_write_port(z80_byte value);
+extern void zxmmcplus_disable(void);
+extern void zxmmcplus_enable(void);
 
 #endif
