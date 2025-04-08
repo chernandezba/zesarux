@@ -637,3 +637,10 @@ z80_byte zxmmcplus_read_port(void)
 
 
 }
+
+
+//Card select. Solo guardar el valor cuando mmc esta desactivado, ese mmc_last_port_value_1f se usa en la proteccion de rom
+void zxmmcplus_mmc_cs(z80_byte value)
+{
+    mmc_last_port_value_1f=value;
+}

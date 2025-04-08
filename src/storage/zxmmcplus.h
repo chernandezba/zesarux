@@ -30,5 +30,6 @@
 #define ZXMMCPLUS_FLASHROM_FILE_NAME "zxmmcplus.rom"
 
 extern z80_bit zxmmcplus_enabled;
+extern void zxmmcplus_mmc_cs(z80_byte value);
 
 #endif

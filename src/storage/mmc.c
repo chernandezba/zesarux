@@ -620,7 +620,7 @@ void mmc_disable(void)
 	mmc_enabled.v=0;
 
 	//Desactivar ZXMMC
-	//zxmmc_emulation.v=0;
+	zxmmc_emulation.v=0;
 
 	//Desactivar Divmmc ports
 	divmmc_mmc_ports_disable();

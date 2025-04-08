@@ -9605,6 +9605,10 @@ Allowed to read / write port # xx57 teams INIR and OTIR. Example of reading the 
         zxmmc_write_port(puerto_l,value);
 	}
 
+    if (zxmmc_emulation.v==0 && zxmmcplus_enabled.v && puerto_l==0x1f) {
+        zxmmcplus_mmc_cs(value);
+    }
+
        //Puertos 8-bit simple ide
         if (eight_bit_simple_ide_enabled.v && (puerto_l&16)==0) {
                 eight_bit_simple_ide_write(puerto_l,value);
