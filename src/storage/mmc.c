@@ -652,6 +652,8 @@ void mmc_cs(z80_byte value)
 	mmc_cid_index=-1;
 	mmc_ocr_index=-1;
 
+    //printf("mmc_cs value %02XH\n",value);
+
 	if (value==0xFE) mmc_card_selected=0;
 	//cualquier otra cosa, tarjeta 2 no disponible
 	else mmc_card_selected=1;
