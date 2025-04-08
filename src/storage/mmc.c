@@ -34,6 +34,7 @@
 #include "divmmc.h"
 #include "compileoptions.h"
 #include "operaciones.h"
+#include "zxmmcplus.h"
 
 
 //valores temporales
@@ -654,6 +655,12 @@ void mmc_cs(z80_byte value)
 	if (value==0xFE) mmc_card_selected=0;
 	//cualquier otra cosa, tarjeta 2 no disponible
 	else mmc_card_selected=1;
+
+    //Para ZXMMC+, indicar que siempre la tarjeta esta disponible
+    //TODO: mejorar esto y ver exactamente que hay que devolver cuando solo hay una tarjeta,
+    //o bien, quizá es que como ZXMMC+ tiene dos tarjetas, le engañamos, diciendo que siempre están las dos, aunque
+    //realmente solo emulo una
+    if (zxmmcplus_enabled.v) mmc_card_selected=0;
 
 	//TSConf selecciona tarjeta 1. Lo cambiamos a 0
 	//if (MACHINE_IS_TSCONF && mmc_card_selected==1) mmc_card_selected=0;
