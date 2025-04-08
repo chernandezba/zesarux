@@ -8972,6 +8972,8 @@ Port: 10-- ---- ---- --0-
                 	        //asignar rom
                         	mem_page_rom_128k();
 
+                if (zxmmcplus_enabled.v) zxmmcplus_sync_bit_7ffd();
+
 			}
 
 

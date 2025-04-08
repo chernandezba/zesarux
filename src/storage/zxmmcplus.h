@@ -36,5 +36,6 @@ extern z80_byte zxmmcplus_read_port(void);
 extern void zxmmcplus_write_port(z80_byte value);
 extern void zxmmcplus_disable(void);
 extern void zxmmcplus_enable(void);
+extern void zxmmcplus_sync_bit_7ffd(void);
 
 #endif

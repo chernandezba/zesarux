@@ -33,6 +33,7 @@
 #include "operaciones.h"
 #include "zesarux.h"
 #include "mmc.h"
+#include "mem128.h"
 
 
 
@@ -95,6 +96,21 @@ z80_byte zxmmcplus_flashrom_status=0;
 int zxmmcplus_get_page_number(void)
 {
     return zxmmcplus_port_7f_value & 0x1F;
+}
+
+void zxmmcplus_sync_bit_7ffd(void)
+{
+    //This feature is disabled when zxmmc+ RAM is paged-in
+    if ( (zxmmcplus_port_7f_value & 0x60) == 0x40) return;
+
+
+    z80_byte bit_d4=(puerto_32765 >> 4) & 1;
+
+    zxmmcplus_port_7f_value &=0xFE;
+
+    zxmmcplus_port_7f_value |=bit_d4;
+
+    printf("Sync bit D4 of 7ffd=%02XH zxmmcplus_port_7f_value=%02XH\n",puerto_32765,zxmmcplus_port_7f_value);
 }
 
 z80_byte zxmmcplus_read_rom_byte(z80_int dir)
