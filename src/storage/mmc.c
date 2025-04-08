@@ -620,7 +620,7 @@ void mmc_disable(void)
 	mmc_enabled.v=0;
 
 	//Desactivar ZXMMC
-	zxmmc_emulation.v=0;
+	//zxmmc_emulation.v=0;
 
 	//Desactivar Divmmc ports
 	divmmc_mmc_ports_disable();
@@ -1391,5 +1391,29 @@ Similarly, if an illegal command has been received, a card shall not change its 
 
 		}
 	}
+
+}
+
+
+void zxmmc_write_port(z80_byte puerto_l,z80_byte value)
+{
+
+    if (puerto_l==0x1f) mmc_cs(value);
+    if (puerto_l==0x3f) mmc_write(value);
+
+}
+
+z80_byte zxmmc_read_port(z80_byte puerto_l)
+{
+
+    //printf ("Puerto ZXMMC Read: 0x%02x\n",puerto_l);
+    if (puerto_l==0x3f) {
+        z80_byte valor_leido=mmc_read();
+        //printf ("Valor leido: %d\n",valor_leido);
+        return valor_leido;
+    }
+
+    return 255;
+
 
 }

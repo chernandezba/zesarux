@@ -36,6 +36,10 @@ extern char mmc_file_name[];
 
 extern z80_byte mmc_last_port_value_1f;
 
+extern void zxmmc_write_port(z80_byte puerto_l,z80_byte value);
+
+extern z80_byte zxmmc_read_port(z80_byte puerto_l);
+
 extern z80_byte mmc_read(void);
 
 extern void mmc_write(z80_byte value);

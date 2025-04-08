@@ -17950,7 +17950,7 @@ void menu_mmc_divmmc(MENU_ITEM_PARAMETERS)
         menu_add_item_menu(array_menu_mmc_divmmc,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
 
-        menu_add_item_menu_en_es_ca(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_zxmmc_emulation,menu_storage_mmc_if_enabled_cond,
+        menu_add_item_menu_en_es_ca(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_zxmmc_emulation,NULL,
             "~~ZXMMC Enabled","~~ZXMMC Activado","~~ZXMMC Activat");
         menu_add_item_menu_prefijo_format(array_menu_mmc_divmmc,"[%c] ",(zxmmc_emulation.v ? 'X' : ' ') );
         menu_add_item_menu_shortcut(array_menu_mmc_divmmc,'z');

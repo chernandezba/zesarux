@@ -7304,18 +7304,11 @@ z80_byte lee_puerto_spectrum_no_time(z80_byte puerto_h,z80_byte puerto_l)
 			return 0;
 	}
 
-        //Puertos ZXMMC. Interfiere con Fuller Audio Box
-        if (zxmmc_emulation.v && (puerto_l==0x1f || puerto_l==0x3f) ) {
-              //printf ("Puerto ZXMMC Read: 0x%02x\n",puerto_l);
-		if (puerto_l==0x3f) {
-			z80_byte valor_leido=mmc_read();
-			//printf ("Valor leido: %d\n",valor_leido);
-			return valor_leido;
-		}
-
-		return 255;
-
-        }
+    //Puertos ZXMMC. Interfiere con Fuller Audio Box
+    if (zxmmc_emulation.v && (puerto_l==0x1f || puerto_l==0x3f) ) {
+        //printf ("Puerto ZXMMC Read: 0x%02x\n",puerto_l);
+        return zxmmc_read_port(puerto_l);
+    }
 
     //Puerto ZXMMC+
     if (zxmmcplus_enabled.v && puerto_l==0x7f) return zxmmcplus_read_port();
@@ -9609,8 +9602,7 @@ Allowed to read / write port # xx57 teams INIR and OTIR. Example of reading the 
 	//Puertos ZXMMC. Interfiere con Fuller Audio Box
 	if (zxmmc_emulation.v && (puerto_l==0x1f || puerto_l==0x3f)) {
 		//printf ("Puerto ZXMMC Write: 0x%02x valor: 0x%02X\n",puerto_l,value);
-		if (puerto_l==0x1f) mmc_cs(value);
-		if (puerto_l==0x3f) mmc_write(value);
+        zxmmc_write_port(puerto_l,value);
 	}
 
        //Puertos 8-bit simple ide
