@@ -434,9 +434,11 @@ void zxmmcplus_poke_rom(z80_int dir,z80_byte value)
                 return;
             }
             else if (value==0x30) {
-                //Fin comando Block Erase. Usar address como numero de bloque (de 64kb, bloque 0...7)
-                printf("Block Erase block %d\n",dir_final & 0x7);
-                zxmmc_flashrom_blockerase(dir_final & 0x7);
+                //Fin comando Block Erase.
+                //Bloque se identifica con la dirección
+                int bloque=dir_final/65536;
+                printf("Block Erase block %d (addr %X)\n",bloque,dir_final);
+                zxmmc_flashrom_blockerase(bloque);
                 zxmmcplus_romwrite_index=1;
 
                 //Y despues de erase la primera lectura de la rom devuelve el status
