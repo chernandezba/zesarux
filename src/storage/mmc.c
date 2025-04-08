@@ -630,11 +630,13 @@ void mmc_disable(void)
 
 }
 
-
+z80_byte mmc_last_port_value_1f=0;
 
 //Card select
 void mmc_cs(z80_byte value)
 {
+    mmc_last_port_value_1f=value;
+
 	//Hay que ir a idle??
 	mmc_r1=1;
 

@@ -194,3 +194,5 @@ https://www.probosci.de/zxbada/zxmmcp/index.html
 
 https://www.probosci.de/zxbada/zxmmcp/technical.html
 *agregar zxmmcplus.rom al repo y paquete, o como se llame la extension .flash? .flashrom?
+*comandos flash rom. quizá permitir escrituras solo en el ultimo bloque que ha solicitar resetearlo a cero
+(creo que block erase)

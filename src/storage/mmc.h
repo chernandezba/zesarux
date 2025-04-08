@@ -34,6 +34,8 @@ extern void mmc_flush_flash_to_disk(void);
 
 extern char mmc_file_name[];
 
+extern z80_byte mmc_last_port_value_1f;
+
 extern z80_byte mmc_read(void);
 
 extern void mmc_write(z80_byte value);
