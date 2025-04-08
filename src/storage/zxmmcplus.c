@@ -224,6 +224,8 @@ void zxmmcplus_poke_rom(z80_int dir,z80_byte value)
 
     printf("Writing rom. Index command=%d\n",zxmmcplus_romwrite_index);
 
+    int i;
+
     switch (zxmmcplus_romwrite_index) {
         //Primer byte de comando
         case 1:
@@ -423,10 +425,12 @@ void zxmmcplus_poke_rom(z80_int dir,z80_byte value)
         //Sexto byte de comando
         case 6:
             if (command==0x555 && value==0x10) {
-                //Fin comando Chip Erase. TODO
+                //Fin comando Chip Erase.
+                printf("Chip Erase\n");
+                for (i=0;i<8;i++) zxmmc_flashrom_blockerase(i);
                 zxmmcplus_romwrite_index=1;
-                printf("Fin Comando Chip Erase. TODO\n");
-                sleep(5);
+                zxmmcplus_pending_read_flashrom_status=1;
+                zxmmcplus_flashrom_status=255;
                 return;
             }
             else if (value==0x30) {
