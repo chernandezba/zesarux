@@ -197,5 +197,8 @@ https://www.probosci.de/zxbada/zxmmcp/technical.html
 *comandos flash rom. quizá permitir escrituras solo en el ultimo bloque que ha solicitar resetearlo a cero
 (creo que block erase)
 ok *soporte para spectrum 128k
+ok *snapshots en flashrom sin sd (tecla R desde nmi para grabar, T desde boot para cargar)
+*snapshots en sd
+*task manager residos
 
 -mmc_cs se envia un valor en serie al seleccionar tarjeta. residos de zxmmc+ dice que hay 23 tarjetas disponibles...
