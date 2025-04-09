@@ -206,5 +206,6 @@ ok*task manager residos
 *manual en extras
 *zonas memoria ram y flashrom residos
 *debug mostrar paginas mapeadas
+*boot rom zxmmc+ parece que necesita 2 tarjetas SD para poder activar sus snapshots en sd. activar opcion de mirror tarjeta 2 cuando se quiera usar
 
 -mmc_cs se envia un valor en serie al seleccionar tarjeta. residos de zxmmc+ dice que hay 23 tarjetas disponibles...
