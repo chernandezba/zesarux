@@ -655,21 +655,23 @@ void mmc_cs(z80_byte value)
 	mmc_cid_index=-1;
 	mmc_ocr_index=-1;
 
-    printf("mmc_cs value %02XH\n",value);
+    //printf("mmc_cs value %02XH\n",value);
 
     //2 bit chip select register (D0 = MMC0; D1 = MMC1), active LOW
+    //Al parecer residos soporta hasta 3 tarjetas, aunque la documentacion oficial dice 2
     z80_byte seleccion_tarjeta=value & 0x03;
 
     if (seleccion_tarjeta==0x02) mmc_card_selected=0;
     else if (seleccion_tarjeta==0x01 && mmc_mirror_second_card.v) {
         mmc_card_selected=1;
     }
+
     else {
         //no valida
         mmc_card_selected=-1;
     }
 
-    printf("Card selected: %d\n",mmc_card_selected);
+    //printf("Card selected: %d\n",mmc_card_selected);
 
 	debug_printf (VERBOSE_PARANOID,"Card selected: %d",mmc_card_selected);
 }
