@@ -156,7 +156,10 @@ void zxmmcplus_poke_ram(z80_int dir,z80_byte value)
 
     if (zxmmcplus_port_7f_value & 128) {
         int dir_final=zxmmcplus_get_offset_to_ram_dir(dir);
-        //printf("Poke to ram address %X value %X\n",dir,value);
+
+        if ((zxmmcplus_port_7f_value & 32)==0) {
+            //printf("--Poke to ram address with rom visible for reading %X value %X\n",dir,value);
+        }
         zxmmcplus_memory_pointer[dir_final]=value;
     }
 
@@ -462,9 +465,11 @@ void zxmmcplus_poke_rom(z80_int dir,z80_byte value)
 
 void zxmmcplus_poke(z80_int dir,z80_byte value)
 {
-    //Si RAM o ROM mapeada
+    //Si ROM mapeada
     if (zxmmcplus_port_7f_value & 32) zxmmcplus_poke_rom(dir,value);
-    else zxmmcplus_poke_ram(dir,value);
+
+    //RAM puede escribirse aun estando rom mapeada
+    zxmmcplus_poke_ram(dir,value);
 }
 
 z80_byte zxmmcplus_peek(z80_int dir)
