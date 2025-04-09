@@ -10,6 +10,7 @@ Allow to save ZX80/81 screen to .scr file
 Allow to save text note on a ZSF snapshot
 Allow to locate rom files running ZEsarUX from a current folder different than the rom path
 Added .ay file support to File Viewer
+Allow to emulate a second MMC/SD card which is a mirror of the first card
 Added support for up to 4 joystick fire buttons on:
 - Kempston joystick (Spectrum): 4 buttons
 - Amstrad CPC: 3 buttons

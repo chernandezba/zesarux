@@ -195,9 +195,12 @@ cat tab para ver contenido disco
 
 
 //0: primera tarjeta
-//1: segunda tarjeta (no implementada)
+//1: segunda tarjeta. Si se habilita, es simoplemente clon de la primera, no soporto dos independientes
+//-1: no valida
 int mmc_card_selected=0;
 
+//Decir que hay una segunda unidad mmc pero en realidad es clon de la primera
+z80_bit mmc_mirror_second_card={0};
 
 z80_bit mmc_write_protection={0};
 
@@ -652,23 +655,21 @@ void mmc_cs(z80_byte value)
 	mmc_cid_index=-1;
 	mmc_ocr_index=-1;
 
-    //printf("mmc_cs value %02XH\n",value);
+    printf("mmc_cs value %02XH\n",value);
 
-	if (value==0xFE) mmc_card_selected=0;
-	//cualquier otra cosa, tarjeta 2 no disponible
-	else mmc_card_selected=1;
+    //2 bit chip select register (D0 = MMC0; D1 = MMC1), active LOW
+    z80_byte seleccion_tarjeta=value & 0x03;
 
-    //Para ZXMMC+, indicar que siempre la tarjeta esta disponible
-    //TODO: mejorar esto y ver exactamente que hay que devolver cuando solo hay una tarjeta,
-    //o bien, quizá es que como ZXMMC+ tiene dos tarjetas, le engañamos, diciendo que siempre están las dos, aunque
-    //realmente solo emulo una
-    if (zxmmcplus_enabled.v) mmc_card_selected=0;
+    if (seleccion_tarjeta==0x02) mmc_card_selected=0;
+    else if (seleccion_tarjeta==0x01 && mmc_mirror_second_card.v) {
+        mmc_card_selected=1;
+    }
+    else {
+        //no valida
+        mmc_card_selected=-1;
+    }
 
-	//TSConf selecciona tarjeta 1. Lo cambiamos a 0
-	//if (MACHINE_IS_TSCONF && mmc_card_selected==1) mmc_card_selected=0;
-
-	//if (value==0xFE) mmc_card_selected=0;
-	//if (value==0xFD) mmc_card_selected=1;
+    printf("Card selected: %d\n",mmc_card_selected);
 
 	debug_printf (VERBOSE_PARANOID,"Card selected: %d",mmc_card_selected);
 }
@@ -778,8 +779,8 @@ z80_byte mmc_read(void)
 {
 	if (mmc_enabled.v==0) return 0xFF;
 
-	//Si seleccionada segunda tarjeta, volver sin mas
-	if (mmc_card_selected==1) return 0;
+	//Si seleccionada tarjeta invalida, volver sin mas
+	if (mmc_card_selected<0) return 0;
 
 	mmc_footer_mmc_operating();
 
@@ -1165,9 +1166,8 @@ void mmc_write(z80_byte value)
         return;
     }
 
-        //Si seleccionada segunda tarjeta, volver sin mas
-        if (mmc_card_selected==1) {
-            //printf("MMC tarjeta seleccionada 1\n");
+        //Si seleccionada tarjeta invalida, volver sin mas
+        if (mmc_card_selected<0) {
             return;
         }
 

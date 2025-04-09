@@ -17799,6 +17799,10 @@ void menu_storage_mmc_autoconfigure_tbblue(MENU_ITEM_PARAMETERS)
 
 }
 
+void menu_storage_mmc_mirror_second_card(MENU_ITEM_PARAMETERS)
+{
+    mmc_mirror_second_card.v ^=1;
+}
 
 //menu MMC/Divmmc
 void menu_mmc_divmmc(MENU_ITEM_PARAMETERS)
@@ -17859,6 +17863,12 @@ void menu_mmc_divmmc(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"Enable SDHC addressing (block addressing instead of byte addressing)");
         menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"Enable SDHC addressing (block addressing instead of byte addressing)");
 
+        menu_add_item_menu_en_es_ca(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_mmc_mirror_second_card,NULL,
+            "Mirror Card 1 to 2","Espejo tarjeta 1 a 2","Mirall targeta 1 a 2");
+        menu_add_item_menu_prefijo_format(array_menu_mmc_divmmc,"[%c] ", (mmc_mirror_second_card.v ? 'X' : ' '));
+        menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"Emulate a second MMC/SD card which is a mirror of the first card");
+        menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"Emulate a second MMC/SD card which is a mirror of the first card. "
+            "ZEsarUX does not emulate a second card (yet) but this setting enables a second card which is the same as the first");
 
         menu_add_item_menu_en_es_ca(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_mmc_write_protect,NULL,
             "Wr~~ite protect","Protección escr~~itura","Protecció escr~~iptura");

@@ -681,13 +681,13 @@ void zxmmcplus_write_port(z80_byte value)
 {
 
     zxmmcplus_port_7f_value=value;
-    printf("zxmmcplus_write_port value %02XH (page %d) pc: %04XH\n",value,zxmmcplus_port_7f_value & 0x1F,reg_pc);
+    //printf("zxmmcplus_write_port value %02XH (page %d) pc: %04XH\n",value,zxmmcplus_port_7f_value & 0x1F,reg_pc);
 
 }
 
 z80_byte zxmmcplus_read_port(void)
 {
-    printf("zxmmcplus_read_port value %02XH (page %d) pc: %04XH\n",zxmmcplus_port_7f_value,zxmmcplus_port_7f_value & 0x1F,reg_pc);
+    //printf("zxmmcplus_read_port value %02XH (page %d) pc: %04XH\n",zxmmcplus_port_7f_value,zxmmcplus_port_7f_value & 0x1F,reg_pc);
     return zxmmcplus_port_7f_value;
 
 
