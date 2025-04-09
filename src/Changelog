@@ -23,6 +23,7 @@ Improved Mac timing by using native timer
 Improved Watermark Logo: can be shown only when loading/saving, can change colors when loading/saving
 Improved File Selector: allow to use path to a a FAT mounted image on all cases
 Improved Visual Cassette Tape window: support standard tape too
+Improved Custom rom setting adding a Reset machine option
 
 Improved AY Player:
 - Allow to load playlist

@@ -29879,7 +29879,8 @@ void menu_hotswap_machine(MENU_ITEM_PARAMETERS)
 
 
 
-
+//Si se acaba de tocar parametros de custom rom, habilitar una opcion para hacer reset a esa maquina
+int menu_custom_rom_changed=0;
 
 
 void menu_custom_machine_romfile(MENU_ITEM_PARAMETERS)
@@ -29899,6 +29900,8 @@ void menu_custom_machine_romfile(MENU_ITEM_PARAMETERS)
         else {
                 custom_romfile[0]=0;
         }
+
+        menu_custom_rom_changed=1;
 }
 
 
@@ -30090,6 +30093,7 @@ void menu_machine_selection_manufacturer_machines(int fabricante)
 void menu_custom_machine_toggle(MENU_ITEM_PARAMETERS)
 {
     setting_set_machine_enable_custom_rom ^=1;
+    menu_custom_rom_changed=1;
 }
 
 void menu_custom_machine_set_p2e(MENU_ITEM_PARAMETERS)
@@ -30100,6 +30104,17 @@ void menu_custom_machine_set_p2e(MENU_ITEM_PARAMETERS)
         debug_printf(VERBOSE_ERR,"Unable to find %s",CUSTOM_MACHINE_2E_MMC_ROM_FILE);
         return;
     }
+
+    menu_custom_rom_changed=1;
+}
+
+
+
+
+void menu_custom_machine_reset(MENU_ITEM_PARAMETERS)
+{
+    menu_custom_rom_changed=0;
+    menu_machine_set_machine_by_id(current_machine_type);
 }
 
 //Agregar items comunes a los dos menus de maquina: por fabricante o por nombre de maquina
@@ -30130,6 +30145,12 @@ void menu_machine_selection_common_items(menu_item *m)
                     " Set +2e/+3e rom"," Establecer rom +2e/+3e"," Establir rom +2e/+3e");
                 menu_add_item_menu_es_avanzado(m);
             }
+        }
+
+        if (menu_custom_rom_changed) {
+            menu_add_item_menu_en_es_ca(m,MENU_OPCION_NORMAL,menu_custom_machine_reset,NULL,
+            " Reset machine"," Reset máquina"," Reset màquina");
+            menu_add_item_menu_es_avanzado(m);
         }
 
         //Solo separar en modo avanzado, para las opciones de hotswap y custom machine
@@ -30387,6 +30408,7 @@ void menu_machine_selection_by_name(MENU_ITEM_PARAMETERS)
 
 void menu_machine_selection(MENU_ITEM_PARAMETERS)
 {
+    menu_custom_rom_changed=0;
 	if (setting_machine_selection_by_name.v==0) {
 		menu_machine_selection_manufacturer(0);
 	}
