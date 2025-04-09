@@ -195,7 +195,7 @@ cat tab para ver contenido disco
 
 
 //0: primera tarjeta
-//1: segunda tarjeta. Si se habilita, es simoplemente clon de la primera, no soporto dos independientes
+//1: segunda tarjeta. Si se habilita, es simplemente clon de la primera, no soporto dos independientes
 //-1: no valida
 int mmc_card_selected=0;
 

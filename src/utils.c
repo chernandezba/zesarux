@@ -4043,6 +4043,7 @@ int util_write_configfile(void)
 
   if (mmc_write_protection.v)		      ADD_STRING_CONFIG,"--mmc-write-protection");
   if (mmc_persistent_writes.v==0)	      ADD_STRING_CONFIG,"--mmc-no-persistent-writes");
+  if (mmc_mirror_second_card.v)           ADD_STRING_CONFIG,"--mmc-second-card-mirror");
 
   if (if1_enabled.v)                        ADD_STRING_CONFIG,"--enable-interface1");
 

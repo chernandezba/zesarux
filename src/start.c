@@ -1522,6 +1522,7 @@ printf("\n"
 		"--mmc-file f                    Set mmc image file\n"
 		"--enable-mmc                    Enable MMC emulation. Usually requires --mmc-file\n"
         "--sd-enable-sdhc-addressing     Enable SDHC addressing (block addressing instead of byte addressing)\n"
+        "--mmc-second-card-mirror        Emulate a second MMC/SD card which is a mirror of the first card\n"
 		"--mmc-write-protection          Enable MMC write protection\n"
 		"--mmc-no-persistent-writes      Disable MMC persistent writes\n");
 
@@ -4636,6 +4637,10 @@ int parse_cmdline_options(int desde_commandline) {
             else if (!strcmp(argv[puntero_parametro],"--sd-enable-sdhc-addressing")) {
 				mmc_sdhc_addressing.v=1;
 			}
+
+            else if (!strcmp(argv[puntero_parametro],"--mmc-second-card-mirror")) {
+                mmc_mirror_second_card.v=1;
+            }
 
 			else if (!strcmp(argv[puntero_parametro],"--mmc-no-persistent-writes")) {
 				mmc_persistent_writes.v=0;
