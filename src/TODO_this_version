@@ -199,6 +199,12 @@ https://www.probosci.de/zxbada/zxmmcp/technical.html
 ok *soporte para spectrum 128k
 ok *snapshots en flashrom sin sd (tecla R desde nmi para grabar, T desde boot para cargar)
 *snapshots en sd
-*task manager residos
+ok*task manager residos
+*quiza una imagen mmc para residos (formato plus3dos) con algunas cosillas
+*incluir ram residos en snapshot zsf
+*escrituras flashrom en disco duro (flush, etc). archivo flashrom seleccionable
+*manual en extras
+*zonas memoria ram y flashrom residos
+*debug mostrar paginas mapeadas
 
 -mmc_cs se envia un valor en serie al seleccionar tarjeta. residos de zxmmc+ dice que hay 23 tarjetas disponibles...
