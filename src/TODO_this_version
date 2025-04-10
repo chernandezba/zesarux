@@ -198,7 +198,7 @@ https://www.probosci.de/zxbada/zxmmcp/technical.html
 (creo que block erase)
 ok *soporte para spectrum 128k
 ok *snapshots en flashrom sin sd (tecla R desde nmi para grabar, T desde boot para cargar)
-*snapshots en sd
+*snapshots en sd usando la nmi de las roms parcheadas de zxmmcplus (teclas w en nmi por ejemplo)
 ok*task manager residos
 *quiza una imagen mmc para residos (formato plus3dos) con algunas cosillas
 *incluir ram residos en snapshot zsf
@@ -206,13 +206,11 @@ ok*task manager residos
 *manual en extras
 *zonas memoria ram y flashrom residos
 *debug mostrar paginas mapeadas
-*boot rom zxmmc+ parece que requiere la tarjeta de trabajo de las nmi en el slot 2
+ok documentar esto *boot rom zxmmc+ parece que requiere la tarjeta de trabajo de las nmi en el slot 2
 
--mmc_cs se envia un valor en serie al seleccionar tarjeta. residos de zxmmc+ dice que hay 23 tarjetas disponibles...
 
 
 -mmc dos tarjetas
-
 ok: menu_storage_mmc_file(0); en download_tbblue, menu_storage_mmc_emulation
 ok-funciones de mmc.c que no son de i/o no deben usar [mmc_card_selected], sino parametro [tarjeta] que venga como argumento de la función
 -tiene sentido mmc_mirror_second_card?
