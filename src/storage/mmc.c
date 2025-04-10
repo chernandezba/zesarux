@@ -121,6 +121,8 @@ metemos 7 15 = Julio 2012 = 0111 1111 = 127
 
 z80_byte mmc_cid[16]={1,'Z','E','s','a','r','U','X',' ',1,1,1,1,1,127,128};
 
+
+
 //Parametros enviados en operacion de escritura
 z80_byte mmc_parameters_sent[10];
 
@@ -173,11 +175,7 @@ char mmc_filemap_name[PATH_MAX]="";
 //hay un juego que lo necesita: Atic Atac
 z80_bit mmc_sdhc_addressing={0};
 
-char *mmc_get_file_name(void)
-{
-    if (mmc_filemap_from_esxdos) return mmc_filemap_name;
-    else return mmc_file_name;
-}
+z80_byte mmc_last_port_value_1f=0;
 
 
 /*
@@ -195,8 +193,8 @@ cat tab para ver contenido disco
 
 
 //0: primera tarjeta
-//1: segunda tarjeta. Si se habilita, es simplemente clon de la primera, no soporto dos independientes
-//-1: no valida
+//1: segunda tarjeta.
+
 int mmc_card_selected=0;
 
 //Decir que hay una segunda unidad mmc pero en realidad es clon de la primera
@@ -231,7 +229,11 @@ void mmc_footer_mmc_operating(void)
 	}
 }
 
-
+char *mmc_get_file_name(void)
+{
+    if (mmc_filemap_from_esxdos) return mmc_filemap_name;
+    else return mmc_file_name;
+}
 
 
 
@@ -634,7 +636,7 @@ void mmc_disable(void)
 
 }
 
-z80_byte mmc_last_port_value_1f=0;
+int mmc_tarjeta_invalida_seleccionada=0;
 
 //Card select
 void mmc_cs(z80_byte value)
@@ -657,6 +659,8 @@ void mmc_cs(z80_byte value)
 
     //printf("mmc_cs value %02XH\n",value);
 
+    mmc_tarjeta_invalida_seleccionada=0;
+
     //2 bit chip select register (D0 = MMC0; D1 = MMC1), active LOW
     //Al parecer residos soporta hasta 3 tarjetas, aunque la documentacion oficial dice 2
     z80_byte seleccion_tarjeta=value & 0x03;
@@ -668,12 +672,14 @@ void mmc_cs(z80_byte value)
 
     else {
         //no valida
-        mmc_card_selected=-1;
+        mmc_tarjeta_invalida_seleccionada=1;
+        //por si acaso, aunque con mmc_tarjeta_invalida_seleccionada no se debe realizar ninguna accion
+        mmc_card_selected=0;
     }
 
     //printf("Card selected: %d\n",mmc_card_selected);
 
-	debug_printf (VERBOSE_PARANOID,"Card selected: %d",mmc_card_selected);
+	//debug_printf (VERBOSE_PARANOID,"Card selected: %d",mmc_card_selected);
 }
 
 
@@ -782,7 +788,7 @@ z80_byte mmc_read(void)
 	if (mmc_enabled.v==0) return 0xFF;
 
 	//Si seleccionada tarjeta invalida, volver sin mas
-	if (mmc_card_selected<0) return 0;
+	if (mmc_tarjeta_invalida_seleccionada) return 0;
 
 	mmc_footer_mmc_operating();
 
@@ -1169,7 +1175,7 @@ void mmc_write(z80_byte value)
     }
 
         //Si seleccionada tarjeta invalida, volver sin mas
-        if (mmc_card_selected<0) {
+        if (mmc_tarjeta_invalida_seleccionada) {
             return;
         }
 
