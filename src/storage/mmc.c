@@ -122,6 +122,19 @@ metemos 7 15 = Julio 2012 = 0111 1111 = 127
 z80_byte mmc_cid[16]={1,'Z','E','s','a','r','U','X',' ',1,1,1,1,1,127,128};
 
 
+//0: primera tarjeta
+//1: segunda tarjeta.
+
+int mmc_card_selected=0;
+
+//Decir que hay una segunda unidad mmc pero en realidad es clon de la primera
+z80_bit mmc_mirror_second_card={0};
+
+int mmc_tarjeta_invalida_seleccionada=0;
+
+
+//Variables que son arrays para cada una de las tarjetas
+
 
 //Parametros enviados en operacion de escritura
 z80_byte mmc_parameters_sent[10];
@@ -192,13 +205,7 @@ cat tab para ver contenido disco
 
 
 
-//0: primera tarjeta
-//1: segunda tarjeta.
 
-int mmc_card_selected=0;
-
-//Decir que hay una segunda unidad mmc pero en realidad es clon de la primera
-z80_bit mmc_mirror_second_card={0};
 
 z80_bit mmc_write_protection={0};
 
@@ -636,7 +643,7 @@ void mmc_disable(void)
 
 }
 
-int mmc_tarjeta_invalida_seleccionada=0;
+
 
 //Card select
 void mmc_cs(z80_byte value)

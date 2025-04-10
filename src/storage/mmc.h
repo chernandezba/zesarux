@@ -24,6 +24,8 @@
 
 #include "cpu.h"
 
+#define MMC_MAX_CARDS 2
+
 extern z80_bit mmc_enabled;
 extern void mmc_cs(z80_byte value);
 
