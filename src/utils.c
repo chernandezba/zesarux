@@ -4039,13 +4039,13 @@ int util_write_configfile(void)
                                               ADD_STRING_CONFIG,"--tool-unrar-path \"%s\"",external_tool_unrar);
 
   //Primera tarjeta MMC
-  if (mmc_file_name[0][0]!=0)                    ADD_STRING_CONFIG,"--mmc-file \"%s\"",mmc_file_name);
+  if (mmc_file_name[0][0]!=0)                    ADD_STRING_CONFIG,"--mmc-file \"%s\"",mmc_file_name[0]);
   if (mmc_enabled[0].v)                          ADD_STRING_CONFIG,"--enable-mmc");
   if (mmc_write_protection[0].v)		      ADD_STRING_CONFIG,"--mmc-write-protection");
   if (mmc_persistent_writes[0].v==0)	      ADD_STRING_CONFIG,"--mmc-no-persistent-writes");
 
   //Segunda tarjeta MMC
-  if (mmc_file_name[1][0]!=0)                    ADD_STRING_CONFIG,"--mmc-file-2 \"%s\"",mmc_file_name);
+  if (mmc_file_name[1][0]!=0)                    ADD_STRING_CONFIG,"--mmc-file-2 \"%s\"",mmc_file_name[1]);
   if (mmc_enabled[1].v)                          ADD_STRING_CONFIG,"--enable-mmc-2");
   if (mmc_write_protection[1].v)		      ADD_STRING_CONFIG,"--mmc-write-protection-2");
   if (mmc_persistent_writes[1].v==0)	      ADD_STRING_CONFIG,"--mmc-no-persistent-writes-2");
