@@ -1237,8 +1237,12 @@ util_stats_init();
 		sam_set_memory_pages();
 	}
 
+        int i;
+        for (i=0;i<MMC_MAX_CARDS;i++) {
+            if (mmc_enabled[i].v) mmc_reset(i);
+        }
 
-        if (mmc_enabled.v) mmc_reset();
+
         if (ide_enabled.v) ide_reset();
 
 	if (superupgrade_enabled.v) superupgrade_set_memory_pages();

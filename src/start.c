@@ -295,6 +295,7 @@ z80_bit command_line_chroma81={0};
 z80_bit command_line_zxpand={0};
 z80_bit command_line_esxdos_handler={0};
 z80_bit command_line_mmc={0};
+z80_bit command_line_mmc_2={0};
 z80_bit command_line_zxmmc={0};
 z80_bit command_line_divmmc={0};
 z80_bit command_line_divmmc_ports={0};
@@ -1520,11 +1521,17 @@ printf("\n"
 		"\n"
 
 		"--mmc-file f                    Set mmc image file\n"
+        "--mmc-file-2 f                  Set mmc image file for second card\n"
 		"--enable-mmc                    Enable MMC emulation. Usually requires --mmc-file\n"
+        "--enable-mmc-2                  Enable MMC emulation for second card. Usually requires --mmc-file-2\n"
+
+
         "--sd-enable-sdhc-addressing     Enable SDHC addressing (block addressing instead of byte addressing)\n"
-        "--mmc-second-card-mirror        Emulate a second MMC/SD card which is a mirror of the first card\n"
+        "--sd-enable-sdhc-addressing-2   Enable SDHC addressing (block addressing instead of byte addressing) for second card\n"
 		"--mmc-write-protection          Enable MMC write protection\n"
-		"--mmc-no-persistent-writes      Disable MMC persistent writes\n");
+        "--mmc-write-protection-2        Enable MMC write protection for second card\n"
+		"--mmc-no-persistent-writes      Disable MMC persistent writes\n"
+        "--mmc-no-persistent-writes-2    Disable MMC persistent writes for second card\n");
 
         printf(
             "--copy-file-to-mmc source dest  Add file from local filesystem to the mmc, before starting ZEsarUX. That copies the files in "
@@ -1533,6 +1540,7 @@ printf("\n"
             MAX_COPY_FILES_TO_MMC);
 
         printf(
+        "--mmc-second-card-mirror        Emulate a second MMC/SD card which is a mirror of the first card\n"
 		"--enable-divmmc-ports           Enable DIVMMC emulation ports only, but not paging. Usually requires --enable-mmc\n"
 		"--enable-divmmc-paging          Enable DIVMMC paging only\n"
 		"--enable-divmmc                 Enable DIVMMC emulation: ports & paging. Usually requires --enable-mmc\n"
@@ -4602,18 +4610,45 @@ int parse_cmdline_options(int desde_commandline) {
                                         char directorio_actual[PATH_MAX];
                                         getcwd(directorio_actual,PATH_MAX);
 
-                                        sprintf (mmc_file_name,"%s/%s",directorio_actual,argv[puntero_parametro]);
+                                        sprintf (mmc_file_name[0],"%s/%s",directorio_actual,argv[puntero_parametro]);
 
                                 }
 
 				else {
-					sprintf (mmc_file_name,"%s",argv[puntero_parametro]);
+					sprintf (mmc_file_name[0],"%s",argv[puntero_parametro]);
+				}
+
+			}
+
+			else if (!strcmp(argv[puntero_parametro],"--mmc-file-2")) {
+				siguiente_parametro_argumento();
+
+                                //Si es ruta relativa, poner ruta absoluta
+                                if (!si_ruta_absoluta(argv[puntero_parametro])) {
+                                        //printf ("es ruta relativa\n");
+
+                                        //TODO: quiza hacer esto con convert_relative_to_absolute pero esa funcion es para directorios,
+                                        //no para directorios con archivo, por tanto quiza habria que hacer un paso intermedio separando
+                                        //directorio de archivo
+                                        char directorio_actual[PATH_MAX];
+                                        getcwd(directorio_actual,PATH_MAX);
+
+                                        sprintf (mmc_file_name[1],"%s/%s",directorio_actual,argv[puntero_parametro]);
+
+                                }
+
+				else {
+					sprintf (mmc_file_name[1],"%s",argv[puntero_parametro]);
 				}
 
 			}
 
 			else if (!strcmp(argv[puntero_parametro],"--enable-mmc")) {
 				command_line_mmc.v=1;
+			}
+
+			else if (!strcmp(argv[puntero_parametro],"--enable-mmc-2")) {
+				command_line_mmc_2.v=1;
 			}
 
             else if (!strcmp(argv[puntero_parametro],"--copy-file-to-mmc")) {
@@ -4631,21 +4666,32 @@ int parse_cmdline_options(int desde_commandline) {
             }
 
 			else if (!strcmp(argv[puntero_parametro],"--mmc-write-protection")) {
-				mmc_write_protection.v=1;
+				mmc_write_protection[0].v=1;
+			}
+
+			else if (!strcmp(argv[puntero_parametro],"--mmc-write-protection-2")) {
+				mmc_write_protection[1].v=1;
 			}
 
             else if (!strcmp(argv[puntero_parametro],"--sd-enable-sdhc-addressing")) {
-				mmc_sdhc_addressing.v=1;
+				mmc_sdhc_addressing[0].v=1;
+			}
+
+            else if (!strcmp(argv[puntero_parametro],"--sd-enable-sdhc-addressing-2")) {
+				mmc_sdhc_addressing[1].v=1;
+			}
+
+			else if (!strcmp(argv[puntero_parametro],"--mmc-no-persistent-writes")) {
+				mmc_persistent_writes[0].v=0;
+			}
+
+			else if (!strcmp(argv[puntero_parametro],"--mmc-no-persistent-writes-2")) {
+				mmc_persistent_writes[1].v=0;
 			}
 
             else if (!strcmp(argv[puntero_parametro],"--mmc-second-card-mirror")) {
                 mmc_mirror_second_card.v=1;
             }
-
-			else if (!strcmp(argv[puntero_parametro],"--mmc-no-persistent-writes")) {
-				mmc_persistent_writes.v=0;
-			}
-
 
 			else if (!strcmp(argv[puntero_parametro],"--enable-divmmc-ports")) {
 				command_line_divmmc_ports.v=1;
@@ -7725,7 +7771,8 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
     //Antes ver si hay que copiar archivos
     util_copy_files_to_mmc_doit();
 
-	if (command_line_mmc.v) mmc_enable();
+	if (command_line_mmc.v) mmc_enable(0);
+    if (command_line_mmc_2.v) mmc_enable(1);
 
 	if (command_line_divmmc_ports.v) {
 		divmmc_mmc_ports_enable();

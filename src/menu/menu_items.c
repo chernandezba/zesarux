@@ -17347,7 +17347,7 @@ void menu_network(MENU_ITEM_PARAMETERS)
 
 void menu_storage_mmc_reload(MENU_ITEM_PARAMETERS)
 {
-	if (mmc_read_file_to_memory()==0) {
+	if (mmc_read_file_to_memory(valor_opcion)==0) {
 		menu_generic_message_splash("Reload MMC","OK. MMC file reloaded");
 	}
 }
@@ -17389,13 +17389,13 @@ void menu_storage_diviface_eprom_write_jumper(MENU_ITEM_PARAMETERS)
 
 void menu_storage_mmc_write_protect(MENU_ITEM_PARAMETERS)
 {
-	mmc_write_protection.v ^=1;
+	mmc_write_protection[valor_opcion].v ^=1;
 }
 
 
 void menu_storage_mmc_persistent_writes(MENU_ITEM_PARAMETERS)
 {
-	mmc_persistent_writes.v ^=1;
+	mmc_persistent_writes[valor_opcion].v ^=1;
 }
 
 /* No tiene sentido este viewer aqui, mucho mejor el browser
@@ -17432,26 +17432,29 @@ void menu_storage_mmc_ide_browser(char *file_image)
 
 void menu_storage_mmc_browser(MENU_ITEM_PARAMETERS)
 {
-	menu_storage_mmc_ide_browser(mmc_file_name);
+	menu_storage_mmc_ide_browser(mmc_file_name[valor_opcion]);
 }
 
 void menu_storage_mmc_emulation(MENU_ITEM_PARAMETERS)
 {
-	if (mmc_enabled.v) mmc_disable();
-	else mmc_enable();
+	if (mmc_enabled[valor_opcion].v) mmc_disable(valor_opcion);
+	else mmc_enable(valor_opcion);
 }
 
-
+/*
 int menu_storage_mmc_emulation_cond(void)
 {
         if (mmc_file_name[0]==0) return 0;
         else return 1;
 }
+*/
 
+/*
 int menu_storage_mmc_if_enabled_cond(void)
 {
 	return mmc_enabled.v;
 }
+*/
 
 void menu_storage_zxmmc_emulation(MENU_ITEM_PARAMETERS)
 {
@@ -17470,7 +17473,7 @@ void menu_storage_divmmc_diviface(MENU_ITEM_PARAMETERS)
 	else {
 		divmmc_diviface_enable();
                 //Tambien activamos puertos si esta mmc activado. Luego si quiere el usuario que los desactive
-                if (mmc_enabled.v) divmmc_mmc_ports_enable();
+                if (mmc_enabled[0].v || mmc_enabled[1].v) divmmc_mmc_ports_enable();
 	}
 }
 
@@ -17487,7 +17490,7 @@ void menu_storage_mmc_file_after_select_ask_configure_tbblue(void)
 					//4) Hard reset
 
 					//Sabemos que esto estara desactivado pero bueno, mejor lo chequeamos para que no conmute en caso que ya estuviera
-					if (mmc_enabled.v==0) menu_storage_mmc_emulation(0);
+					if (mmc_enabled[0].v==0) menu_storage_mmc_emulation(0);
 
 					if (divmmc_diviface_enabled.v) menu_storage_divmmc_diviface(0);
 
@@ -17503,9 +17506,11 @@ void menu_storage_mmc_file_after_select_ask_configure_tbblue(void)
 void menu_storage_mmc_file(MENU_ITEM_PARAMETERS)
 {
 
-	mmc_disable();
+    int tarjeta_seleccionada=valor_opcion;
 
-    mmc_filemap_from_esxdos=0;
+	mmc_disable(tarjeta_seleccionada);
+
+    mmc_filemap_from_esxdos[tarjeta_seleccionada]=0;
 
         char *filtros[5];
 
@@ -17523,11 +17528,11 @@ void menu_storage_mmc_file(MENU_ITEM_PARAMETERS)
 
               //Obtenemos directorio de trd
         //si no hay directorio, vamos a rutas predefinidas
-        if (mmc_file_name[0]==0) menu_chdir_sharedfiles();
+        if (mmc_file_name[tarjeta_seleccionada][0]==0) menu_chdir_sharedfiles();
 
         else {
                 char directorio[PATH_MAX];
-                util_get_dir(mmc_file_name,directorio);
+                util_get_dir(mmc_file_name[tarjeta_seleccionada],directorio);
                 //printf ("strlen directorio: %d directorio: %s\n",strlen(directorio),directorio);
 
                 //cambiamos a ese directorio, siempre que no sea nulo
@@ -17539,15 +17544,15 @@ void menu_storage_mmc_file(MENU_ITEM_PARAMETERS)
 
 
 
-		int ret=menu_filesel("Select MMC File",filtros,mmc_file_name);
+		int ret=menu_filesel("Select MMC File",filtros,mmc_file_name[tarjeta_seleccionada]);
 		//volvemos a directorio inicial
         zvfs_chdir(directorio_actual);
 
 
         if (ret==1) {
-		if (!si_existe_archivo(mmc_file_name)) {
+		if (!si_existe_archivo(mmc_file_name[tarjeta_seleccionada])) {
 			if (menu_confirm_yesno_texto("File does not exist","Create?")==0) {
-                                mmc_file_name[0]=0;
+                                mmc_file_name[tarjeta_seleccionada][0]=0;
                                 return;
                         }
 
@@ -17558,7 +17563,7 @@ void menu_storage_mmc_file(MENU_ITEM_PARAMETERS)
 			int size=parse_string_to_number(string_tamanyo);
 			if (size<1) {
 				debug_printf (VERBOSE_ERR,"Invalid file size");
-				mmc_file_name[0]=0;
+				mmc_file_name[tarjeta_seleccionada][0]=0;
                                 return;
 			}
 
@@ -17569,7 +17574,7 @@ void menu_storage_mmc_file(MENU_ITEM_PARAMETERS)
 
 			//Crear archivo vacio
 		        FILE *ptr_mmcfile;
-			ptr_mmcfile=fopen(mmc_file_name,"wb");
+			ptr_mmcfile=fopen(mmc_file_name[tarjeta_seleccionada],"wb");
 
 		        long long int totalsize=size;
 			totalsize=totalsize*1024*1024;
@@ -17587,7 +17592,7 @@ void menu_storage_mmc_file(MENU_ITEM_PARAMETERS)
 
 		else {
 			//Comprobar aqui tambien el tamanyo
-			long long int size=get_file_size(mmc_file_name);
+			long long int size=get_file_size(mmc_file_name[tarjeta_seleccionada]);
 			if (size>1073741824L) {
 				menu_warn_message("Using MMC bigger than 1 GB can be very slow");
             }
@@ -17603,7 +17608,7 @@ void menu_storage_mmc_file(MENU_ITEM_PARAMETERS)
         //Sale con ESC
         else {
                 //Quitar nombre
-                mmc_file_name[0]=0;
+                mmc_file_name[tarjeta_seleccionada][0]=0;
 
 
         }
@@ -17619,7 +17624,7 @@ void menu_storage_divmmc_diviface_total_ram(MENU_ITEM_PARAMETERS)
 //Descargar imagen MMC oficial de tbblue
 void menu_storage_mmc_download_tbblue(void)
 {
-
+    int tarjeta_seleccionada=0;
 	menu_first_aid("tbblue_download_sd_bug");
 
 	//http://zxspectrumnext.online/cspect/tbbluemmc-32mb.zip
@@ -17710,7 +17715,7 @@ void menu_storage_mmc_download_tbblue(void)
 		//y abrimos menu de mmc
         //TODO: porque abrimos menu de mmc si ya le estamos pasando la ruta exacta al archivo de imagen?
         //quizá es por evitar errores, por si la gente de Next cambia el nombre de la imagen, que el usuario pueda escogerla
-		sprintf(mmc_file_name,"%s/%s",final_mmc_dir,image_filename);
+		sprintf(mmc_file_name[tarjeta_seleccionada],"%s/%s",final_mmc_dir,image_filename);
 
 		menu_storage_mmc_file(0);
 
@@ -17740,7 +17745,7 @@ void menu_storage_mmc_use_local_tbblue(void)
 	if (find_sharedfile("tbblue.mmc",buffer_nombre)) {
 		//Asignar la MMC
 		//TODO: esto mete ruta relativa (en caso de . o ../Resources). Se podria meter ruta absoluta
-		strcpy(mmc_file_name,buffer_nombre);
+		strcpy(mmc_file_name[0],buffer_nombre);
 
 
 		//Luego preguntar si aplicar divmmc etc
@@ -17755,7 +17760,7 @@ void menu_storage_mmc_use_local_tbblue(void)
 
 void menu_storage_mmc_sdhc_addressing(MENU_ITEM_PARAMETERS)
 {
-    mmc_sdhc_addressing.v ^=1;
+    mmc_sdhc_addressing[valor_opcion].v ^=1;
 }
 
 
@@ -17763,7 +17768,8 @@ void menu_storage_mmc_autoconfigure_tbblue(MENU_ITEM_PARAMETERS)
 {
 
     //desmapear posible mapeo de esxdos
-    mmc_filemap_from_esxdos=0;
+    mmc_filemap_from_esxdos[0]=0;
+    mmc_filemap_from_esxdos[1]=0;
 
 	int tipo_imagen;
 
@@ -17817,51 +17823,96 @@ void menu_mmc_divmmc(MENU_ITEM_PARAMETERS)
 
         menu_add_item_menu_inicial(&array_menu_mmc_divmmc,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
 
+        int i;
 
-        if (!mmc_filemap_from_esxdos) {
+        for (i=0;i<MMC_MAX_CARDS;i++) {
+
+            if (!mmc_filemap_from_esxdos[i]) {
 
 
-            menu_tape_settings_trunc_name(mmc_file_name,string_mmc_file_shown,17);
-            menu_add_item_menu_en_es_ca(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_mmc_file,NULL,
-                "~~MMC File","Archivo ~~MMC","Arxiu ~~MMC");
-            menu_add_item_menu_sufijo_format(array_menu_mmc_divmmc," [%s]",string_mmc_file_shown);
-            menu_add_item_menu_prefijo(array_menu_mmc_divmmc,"    ");
-            menu_add_item_menu_shortcut(array_menu_mmc_divmmc,'m');
-            menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"MMC Emulation file");
-            menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"MMC Emulation file");
+                menu_tape_settings_trunc_name(mmc_file_name[i],string_mmc_file_shown,17);
+                menu_add_item_menu_en_es_ca(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_mmc_file,NULL,
+                    "~~MMC File","Archivo ~~MMC","Arxiu ~~MMC");
+                menu_add_item_menu_sufijo_format(array_menu_mmc_divmmc," [%s]",string_mmc_file_shown);
+                menu_add_item_menu_prefijo(array_menu_mmc_divmmc,"    ");
+                menu_add_item_menu_valor_opcion(array_menu_mmc_divmmc,i);
+                menu_add_item_menu_shortcut(array_menu_mmc_divmmc,'m');
+                menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"MMC Emulation file");
+                menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"MMC Emulation file");
+
+            }
+            else {
+                menu_add_item_menu_en_es_ca(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,NULL,NULL,
+                    "MMC is mapped from ESXDOS","MMC está mapeado desde ESXDOS","MMC está mapejat desde ESXDOS");
+                menu_add_item_menu_prefijo(array_menu_mmc_divmmc,"    ");
+
+                menu_add_item_menu_en_es_ca(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_mmc_file,NULL,
+                    "~~MMC File","Archivo ~~MMC","Arxiu ~~MMC");
+                menu_add_item_menu_prefijo(array_menu_mmc_divmmc,"    ");
+                menu_add_item_menu_valor_opcion(array_menu_mmc_divmmc,i);
+            }
+
+            if (MACHINE_IS_TBBLUE) {
+
+                menu_add_item_menu_en_es_ca(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_mmc_autoconfigure_tbblue,NULL,
+                    "Autoconfigure Next SD","Autoconfigurar Next SD","Autoconfigurar Next SD");
+                menu_add_item_menu_prefijo(array_menu_mmc_divmmc,"    ");
+
+            }
+
+            if (mmc_file_name[i][0]) {
+                menu_add_item_menu_en_es_ca(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_mmc_emulation,NULL,
+                    "MMC ~~Emulation","~~Emulación MMC","~~Emulació MMC");
+                menu_add_item_menu_prefijo_format(array_menu_mmc_divmmc,"[%c] ", (mmc_enabled[i].v ? 'X' : ' '));
+                menu_add_item_menu_valor_opcion(array_menu_mmc_divmmc,i);
+                menu_add_item_menu_shortcut(array_menu_mmc_divmmc,'e');
+                menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"MMC Emulation");
+                menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"MMC Emulation");
+            }
+
+            menu_add_item_menu_en_es_ca(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_mmc_sdhc_addressing,NULL,
+                "Enable SDHC addressing","Activar direccionamiento SDHC","Activar direccionament SDHC");
+            menu_add_item_menu_prefijo_format(array_menu_mmc_divmmc,"[%c] ", (mmc_sdhc_addressing[i].v ? 'X' : ' '));
+            menu_add_item_menu_valor_opcion(array_menu_mmc_divmmc,i);
+            menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"Enable SDHC addressing (block addressing instead of byte addressing)");
+            menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"Enable SDHC addressing (block addressing instead of byte addressing)");
+
+
+
+            menu_add_item_menu_en_es_ca(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_mmc_write_protect,NULL,
+                "Wr~~ite protect","Protección escr~~itura","Protecció escr~~iptura");
+            menu_add_item_menu_prefijo_format(array_menu_mmc_divmmc,"[%c] ", (mmc_write_protection[i].v ? 'X' : ' '));
+            menu_add_item_menu_valor_opcion(array_menu_mmc_divmmc,i);
+            menu_add_item_menu_shortcut(array_menu_mmc_divmmc,'i');
+            menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"If MMC disk is write protected");
+            menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"If MMC disk is write protected");
+
+
+            menu_add_item_menu_en_es_ca(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_mmc_persistent_writes,NULL,
+                "Persistent Writes","Escrituras Persistentes","Escriptures Persistents");
+            menu_add_item_menu_prefijo_format(array_menu_mmc_divmmc,"[%c] ",(mmc_persistent_writes[i].v ? 'X' : ' ') );
+            menu_add_item_menu_valor_opcion(array_menu_mmc_divmmc,i);
+            menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"Tells if MMC writes are saved to disk");
+            menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"Tells if MMC writes are saved to disk. "
+            "Note: all writing operations to MMC are always saved to internal memory (unless you disable write permission), but this setting "
+            "tells if these changes are written to disk or not."
+            );
+
+            if (mmc_enabled[i].v) {
+                menu_add_item_menu_en_es_ca(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_mmc_reload,NULL,
+                    "Reload MMC file","Recargar archivo MMC","Recarregar arxiu MMC");
+                menu_add_item_menu_prefijo(array_menu_mmc_divmmc,"    ");
+                menu_add_item_menu_valor_opcion(array_menu_mmc_divmmc,i);
+                menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"Reload MMC contents from MMC file to emulator memory");
+                menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"Reload MMC contents from MMC file to emulator memory. You can modify the MMC file "
+                    "outside the emulator, and reload its contents without having to disable and enable MM.");
+            }
+
+
+            menu_add_item_menu_separator(array_menu_mmc_divmmc);
 
         }
-        else {
-            menu_add_item_menu_en_es_ca(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,NULL,NULL,
-                "MMC is mapped from ESXDOS","MMC está mapeado desde ESXDOS","MMC está mapejat desde ESXDOS");
-            menu_add_item_menu_prefijo(array_menu_mmc_divmmc,"    ");
 
-            menu_add_item_menu_en_es_ca(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_mmc_file,NULL,
-                "~~MMC File","Archivo ~~MMC","Arxiu ~~MMC");
-            menu_add_item_menu_prefijo(array_menu_mmc_divmmc,"    ");
-        }
-
-        if (MACHINE_IS_TBBLUE) {
-
-            menu_add_item_menu_en_es_ca(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_mmc_autoconfigure_tbblue,NULL,
-                "Autoconfigure Next SD","Autoconfigurar Next SD","Autoconfigurar Next SD");
-            menu_add_item_menu_prefijo(array_menu_mmc_divmmc,"    ");
-
-        }
-
-
-        menu_add_item_menu_en_es_ca(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_mmc_emulation,menu_storage_mmc_emulation_cond,
-            "MMC ~~Emulation","~~Emulación MMC","~~Emulació MMC");
-        menu_add_item_menu_prefijo_format(array_menu_mmc_divmmc,"[%c] ", (mmc_enabled.v ? 'X' : ' '));
-        menu_add_item_menu_shortcut(array_menu_mmc_divmmc,'e');
-        menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"MMC Emulation");
-        menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"MMC Emulation");
-
-        menu_add_item_menu_en_es_ca(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_mmc_sdhc_addressing,NULL,
-            "Enable SDHC addressing","Activar direccionamiento SDHC","Activar direccionament SDHC");
-        menu_add_item_menu_prefijo_format(array_menu_mmc_divmmc,"[%c] ", (mmc_sdhc_addressing.v ? 'X' : ' '));
-        menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"Enable SDHC addressing (block addressing instead of byte addressing)");
-        menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"Enable SDHC addressing (block addressing instead of byte addressing)");
 
         menu_add_item_menu_en_es_ca(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_mmc_mirror_second_card,NULL,
             "Mirror Card 1 to 2","Espejo tarjeta 1 a 2","Mirall targeta 1 a 2");
@@ -17869,33 +17920,6 @@ void menu_mmc_divmmc(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"Emulate a second MMC/SD card which is a mirror of the first card");
         menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"Emulate a second MMC/SD card which is a mirror of the first card. "
             "ZEsarUX does not emulate a second card (yet) but this setting enables a second card which is the same as the first");
-
-        menu_add_item_menu_en_es_ca(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_mmc_write_protect,NULL,
-            "Wr~~ite protect","Protección escr~~itura","Protecció escr~~iptura");
-        menu_add_item_menu_prefijo_format(array_menu_mmc_divmmc,"[%c] ", (mmc_write_protection.v ? 'X' : ' '));
-        menu_add_item_menu_shortcut(array_menu_mmc_divmmc,'i');
-        menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"If MMC disk is write protected");
-        menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"If MMC disk is write protected");
-
-
-        menu_add_item_menu_en_es_ca(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_mmc_persistent_writes,NULL,
-            "Persistent Writes","Escrituras Persistentes","Escriptures Persistents");
-        menu_add_item_menu_prefijo_format(array_menu_mmc_divmmc,"[%c] ",(mmc_persistent_writes.v ? 'X' : ' ') );
-        menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"Tells if MMC writes are saved to disk");
-        menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"Tells if MMC writes are saved to disk. "
-        "Note: all writing operations to MMC are always saved to internal memory (unless you disable write permission), but this setting "
-        "tells if these changes are written to disk or not."
-        );
-
-        if (mmc_enabled.v) {
-            menu_add_item_menu_en_es_ca(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_mmc_reload,NULL,
-                "Reload MMC file","Recargar archivo MMC","Recarregar arxiu MMC");
-            menu_add_item_menu_prefijo(array_menu_mmc_divmmc,"    ");
-            menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"Reload MMC contents from MMC file to emulator memory");
-            menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"Reload MMC contents from MMC file to emulator memory. You can modify the MMC file "
-                "outside the emulator, and reload its contents without having to disable and enable MM.");
-        }
-
 
 
         menu_add_item_menu(array_menu_mmc_divmmc,"",MENU_OPCION_SEPARADOR,NULL,NULL);
@@ -17948,24 +17972,25 @@ void menu_mmc_divmmc(MENU_ITEM_PARAMETERS)
         }
 
 
-
-        menu_add_item_menu_en_es_ca(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_divmmc_mmc_ports_emulation,menu_storage_mmc_if_enabled_cond,
-            "DIVMMC ~~ports","~~Puertos DIVMMC","~~Ports DIVMMC");
-        menu_add_item_menu_prefijo_format(array_menu_mmc_divmmc,"[%c] ",(divmmc_mmc_ports_enabled.v ? 'X' : ' ') );
-        menu_add_item_menu_shortcut(array_menu_mmc_divmmc,'p');
-        menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"Enables DIVMMC access ports");
-        menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"Enables DIVMMC access ports. Requires enabling MMC Emulation");
-
-
-        menu_add_item_menu(array_menu_mmc_divmmc,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        if (mmc_enabled[0].v || mmc_enabled[1].v) {
+            menu_add_item_menu_en_es_ca(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_divmmc_mmc_ports_emulation,NULL,
+                "DIVMMC ~~ports","~~Puertos DIVMMC","~~Ports DIVMMC");
+            menu_add_item_menu_prefijo_format(array_menu_mmc_divmmc,"[%c] ",(divmmc_mmc_ports_enabled.v ? 'X' : ' ') );
+            menu_add_item_menu_shortcut(array_menu_mmc_divmmc,'p');
+            menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"Enables DIVMMC access ports");
+            menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"Enables DIVMMC access ports. Requires enabling MMC Emulation");
 
 
-        menu_add_item_menu_en_es_ca(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_zxmmc_emulation,menu_storage_mmc_if_enabled_cond,
-            "~~ZXMMC Enabled","~~ZXMMC Activado","~~ZXMMC Activat");
-        menu_add_item_menu_prefijo_format(array_menu_mmc_divmmc,"[%c] ",(zxmmc_emulation.v ? 'X' : ' ') );
-        menu_add_item_menu_shortcut(array_menu_mmc_divmmc,'z');
-        menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"Access MMC using ZXMMC");
-        menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"Enables ZXMMC ports to access MMC");
+            menu_add_item_menu(array_menu_mmc_divmmc,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+
+
+            menu_add_item_menu_en_es_ca(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_zxmmc_emulation,NULL,
+                "~~ZXMMC Enabled","~~ZXMMC Activado","~~ZXMMC Activat");
+            menu_add_item_menu_prefijo_format(array_menu_mmc_divmmc,"[%c] ",(zxmmc_emulation.v ? 'X' : ' ') );
+            menu_add_item_menu_shortcut(array_menu_mmc_divmmc,'z');
+            menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"Access MMC using ZXMMC");
+            menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"Enables ZXMMC ports to access MMC");
+        }
 
 
         menu_add_item_menu_separator(array_menu_mmc_divmmc);
@@ -17978,14 +18003,19 @@ void menu_mmc_divmmc(MENU_ITEM_PARAMETERS)
         */
 
 
-        menu_add_item_menu_en_es_ca(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_mmc_browser,menu_storage_mmc_emulation_cond,
-            "MMC ~~Browser","MMC ~~Browser","MMC ~~Browser");
-        menu_add_item_menu_prefijo(array_menu_mmc_divmmc,"    ");
-        menu_add_item_menu_shortcut(array_menu_mmc_divmmc,'b');
-        menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"MMC Browser");
-        menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"MMC Browser");
-        menu_add_item_menu_genera_ventana(array_menu_mmc_divmmc);
-        menu_add_item_menu_se_cerrara(array_menu_mmc_divmmc);
+        for (i=0;i<MMC_MAX_CARDS;i++) {
+            if (mmc_file_name[i][0]) {
+                menu_add_item_menu_en_es_ca(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_mmc_browser,NULL,
+                    "MMC ~~Browser","MMC ~~Browser","MMC ~~Browser");
+                menu_add_item_menu_prefijo(array_menu_mmc_divmmc,"    ");
+                menu_add_item_menu_valor_opcion(array_menu_mmc_divmmc,i);
+                menu_add_item_menu_shortcut(array_menu_mmc_divmmc,'b');
+                menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"MMC Browser");
+                menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"MMC Browser");
+                menu_add_item_menu_genera_ventana(array_menu_mmc_divmmc);
+                menu_add_item_menu_se_cerrara(array_menu_mmc_divmmc);
+            }
+        }
 
 
         menu_add_item_menu(array_menu_mmc_divmmc,"",MENU_OPCION_SEPARADOR,NULL,NULL);
@@ -43455,7 +43485,8 @@ void menu_process_f_functions_by_action_name(int id_funcion,int si_pulsado_icono
 		break;
 
 		case F_FUNCION_RELOADMMC:
-			mmc_read_file_to_memory();
+            //TODO: solo hace reload de tarjeta primera
+			mmc_read_file_to_memory(0);
 		break;
 
 		case F_FUNCION_REINSERTSTDTAPE:
@@ -43745,7 +43776,13 @@ int zxdesktop_lowericon_mmc_is_visible(void)
 
 int zxdesktop_lowericon_mmc_is_active(void)
 {
-	if (mmc_enabled.v) return 1;
+	if (mmc_enabled[0].v) return 1;
+	else return 0;
+}
+
+int zxdesktop_lowericon_mmc_is_active_second(void)
+{
+	if (mmc_enabled[1].v) return 1;
 	else return 0;
 }
 
@@ -43754,23 +43791,25 @@ void zxdesktop_lowericon_mmc_accion(void)
 	menu_mmc_divmmc(0);
 }
 
-void zxdesktop_lowericon_mmc_accion_boton_derecho(void)
+
+
+void zxdesktop_lowericon_mmc_accion_boton_derecho_common(int tarjeta)
 {
     char buffer_insert[20];
-    if (mmc_enabled.v) strcpy(buffer_insert,"Eject MMC");
+    if (mmc_enabled[tarjeta].v) strcpy(buffer_insert,"Eject MMC");
     else strcpy(buffer_insert,"Open...");
 
     int opcion=menu_simple_one_choices("MMC","--Action--",buffer_insert);
 
     switch (opcion) {
         case 1:
-            if (mmc_enabled.v) menu_storage_mmc_emulation(0);
+            if (mmc_enabled[tarjeta].v) menu_storage_mmc_emulation(0);
             else {
                 //Insertar archivo y habilitar
                 menu_storage_mmc_file(0);
                 //printf("File: [%s]\n",mmc_file_name);
                 //Si no se ha dejado archivo en blanco (salido con ESC)
-                if (mmc_file_name[0]) {
+                if (mmc_file_name[tarjeta][0]) {
                     menu_storage_mmc_emulation(0);
                     //Y si no estan los puertos divmmc, habilitarlos tambien (se deshabilitan al desactivar mmc)
                     if (divmmc_mmc_ports_enabled.v==0) menu_storage_divmmc_mmc_ports_emulation(0);
@@ -43779,6 +43818,18 @@ void zxdesktop_lowericon_mmc_accion_boton_derecho(void)
         break;
 
     }
+
+}
+
+void zxdesktop_lowericon_mmc_accion_boton_derecho(void)
+{
+    zxdesktop_lowericon_mmc_accion_boton_derecho_common(0);
+
+}
+
+void zxdesktop_lowericon_mmc_accion_boton_derecho_second(void)
+{
+    zxdesktop_lowericon_mmc_accion_boton_derecho_common(1);
 
 }
 
@@ -44195,6 +44246,7 @@ int zxdesktop_icon_tape_inverse=0;
 int zxdesktop_icon_tape_real_inverse=0;
 
 int zxdesktop_icon_mmc_inverse=0;
+int zxdesktop_icon_mmc_inverse_second=0;
 int zxdesktop_icon_plus3_inverse=0;
 int zxdesktop_icon_betadisk_inverse=0;
 int zxdesktop_icon_ide_inverse=0;
@@ -44253,6 +44305,11 @@ struct s_zxdesktop_lowericons_info zdesktop_lowericons_array[TOTAL_ZXDESKTOP_MAX
 	{ zxdesktop_lowericon_mmc_is_visible, zxdesktop_lowericon_mmc_is_active, zxdesktop_lowericon_mmc_accion,
         zxdesktop_lowericon_mmc_accion_boton_derecho,
 		bitmap_lowericon_ext_desktop_mmc_active,bitmap_lowericon_ext_desktop_mmc_inactive,&zxdesktop_icon_mmc_inverse},
+
+	//MMC segunda tarjeta
+	{ zxdesktop_lowericon_mmc_is_visible, zxdesktop_lowericon_mmc_is_active_second, zxdesktop_lowericon_mmc_accion,
+        zxdesktop_lowericon_mmc_accion_boton_derecho_second,
+		bitmap_lowericon_ext_desktop_mmc_active,bitmap_lowericon_ext_desktop_mmc_inactive,&zxdesktop_icon_mmc_inverse_second},
 
 	//IDE
 	{ zxdesktop_lowericon_ide_is_visible, zxdesktop_lowericon_ide_is_active, zxdesktop_lowericon_ide_accion,

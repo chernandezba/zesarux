@@ -2401,7 +2401,7 @@ eg for NextZXOS v1.94, DE=$0194 HL=language code:
 
                     unsigned int offset_escribir=offset_sector;
 
-                    if (mmc_sdhc_addressing.v) offset_escribir /=sector_size;
+                    if (mmc_sdhc_addressing[0].v) offset_escribir /=sector_size;
 
                     poke_byte_no_time((*registro_parametros_hl_ix)+indice,(offset_escribir) & 0xFF);
                     poke_byte_no_time((*registro_parametros_hl_ix)+indice+1,(offset_escribir>>8) & 0xFF);
@@ -2434,10 +2434,10 @@ eg for NextZXOS v1.94, DE=$0194 HL=language code:
 
                 debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_DISK_FILEMAP. Mounting file [%s] as MMC image",esxdos_fopen_files[file_handler].debug_fullpath);
 
-                mmc_disable();
-                mmc_filemap_from_esxdos=1;
-                strcpy(mmc_filemap_name,esxdos_fopen_files[file_handler].debug_fullpath);
-                mmc_enable();
+                mmc_disable(0);
+                mmc_filemap_from_esxdos[0]=1;
+                strcpy(mmc_filemap_name[0],esxdos_fopen_files[file_handler].debug_fullpath);
+                mmc_enable(0);
 
                 //Por ejemplo el Atic Atac (la versión completa con sonido) usa divmmc. Por tanto no desactivarlo
                 //No tiene que ser un problema, divmmc puede funcionar junto con esxdos handler, pues todas
@@ -2447,7 +2447,7 @@ eg for NextZXOS v1.94, DE=$0194 HL=language code:
                 if (divmmc_mmc_ports_enabled.v==0) divmmc_mmc_ports_enable();
 
                 //No queremos que las posibles escrituras MMC alteren el archivo mapeado
-                mmc_persistent_writes.v=0;
+                mmc_persistent_writes[0].v=0;
 
 
 /*
@@ -2458,7 +2458,7 @@ eg for NextZXOS v1.94, DE=$0194 HL=language code:
 
                 reg_a=0;
 
-                if (mmc_sdhc_addressing.v) reg_a |=0x02;
+                if (mmc_sdhc_addressing[0].v) reg_a |=0x02;
 
                 esxdos_handler_new_return_call();
             }

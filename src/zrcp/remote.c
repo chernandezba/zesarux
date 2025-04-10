@@ -4872,13 +4872,14 @@ void interpreta_comando(char *comando,int misocket,char *buffer_lectura_socket_a
 			remote_simple_help(misocket);
 	}
 
+    //TODO: esto es solo para la primera tarjeta
 	else if (!strcmp(comando_sin_parametros,"mmc-reload")) {
-        if (mmc_enabled.v==0) {
+        if (mmc_enabled[0].v==0) {
             escribir_socket(misocket,"ERROR. MMC is not enabled");
         }
 
         else {
-            if (mmc_read_file_to_memory()==0) {
+            if (mmc_read_file_to_memory(0)==0) {
                 escribir_socket(misocket,"OK. MMC file reloaded");
             }
             else {

@@ -15151,6 +15151,7 @@ void delete_generic_footertext(void)
 	zxdesktop_icon_tape_inverse=0;
     zxdesktop_icon_tape_real_inverse=0;
 	zxdesktop_icon_mmc_inverse=0;
+    zxdesktop_icon_mmc_inverse_second=0;
 	zxdesktop_icon_plus3_inverse=0;
 	zxdesktop_icon_betadisk_inverse=0;
 	zxdesktop_icon_ide_inverse=0;

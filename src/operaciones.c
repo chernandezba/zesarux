@@ -7538,38 +7538,38 @@ if (MACHINE_IS_SPECTRUM_128_P2)
 		//In Port fbdf unknown asked, PC after=0xe292
 		//In Port ffdf unknown asked, PC after=0xe2a2
 
-
-		//Puertos SD
-		if (mmc_enabled.v && puerto_l==0x77) {
-			//Read: always 0 (the card is inserted in the regime R / W - in accordance with the interpretation of the Z-controller). The actual presence of maps should attempt to verify its initialization time an out.
-			//printf ("Returning SD port %04XH value 1\n",puerto);
-			return 1; //1=inserted
-		}
+        int i;
+        if (puerto_l==0x77) {
+            for (i=0;i<MMC_MAX_CARDS;i++) {
+                //Puertos SD
+                if (mmc_enabled[i].v && puerto_l==0x77) {
+                    //Read: always 0 (the card is inserted in the regime R / W - in accordance with the interpretation of the Z-controller). The actual presence of maps should attempt to verify its initialization time an out.
+                    //printf ("Returning SD port %04XH value 1\n",puerto);
+                    return 1; //1=inserted
+                 }
+            }
+        }
 
 		//if (!sdc->image || !sdc->on || sdc->cs) return 0xff;    // no image or OFF or !CS
 
-		 if (mmc_enabled.v && puerto_l==0x57) {
-			if (!baseconf_sd_enabled || baseconf_sd_cs) return 0xFF;
-                        z80_byte valor_leido=mmc_read();
-			//printf ("Returning SD port %04XH value %02XH PC=%04XH\n",puerto,valor_leido,reg_pc);
 
-			//algunos  0 , lo convertimos en FF. chapuza muy fea para probar
-			/*if (valor_leido==0) {
-				if (temp_tsconf_first_sd_0) {
-					//printf ("Changing return value to ff\n");
-					valor_leido=0xFF;
-				}
-				temp_tsconf_first_sd_0--;
-			}*/
+        if (puerto_l==0x57) {
 
-			//otro parche feo
-			if (reg_pc==0x06B3 || reg_pc==0x695) {
-				//printf ("Changing return value to ff\n");
-				return 0xff; //Parche
-			}
+            for (i=0;i<MMC_MAX_CARDS;i++)
+                if (mmc_enabled[i].v) {
+                    if (!baseconf_sd_enabled || baseconf_sd_cs) return 0xFF;
 
-			return valor_leido;
-		}
+                    z80_byte valor_leido=mmc_read();
+
+                    //otro parche feo
+                    if (reg_pc==0x06B3 || reg_pc==0x695) {
+                        //printf ("Changing return value to ff\n");
+                        return 0xff; //Parche
+                    }
+
+                    return valor_leido;
+                }
+        }
 
 
 	}
@@ -9401,46 +9401,60 @@ acts as expected unless this registe is explicitly changed by the user/software.
 					//Puertos SD
 					//if (puerto_l==0x57 || puerto_l==0x77) printf ("Writing SD port %04XH value %02XH\n",puerto,value);
 
-					if (puerto_l==0x77 && mmc_enabled.v) {
-						//printf ("Writing SD port %04Xh value %02XH\n",puerto,value);
-/*
-Bits 7 .. 2: set to 0 for compatibility
+                    if (puerto_l==0x77) {
+                        int i;
+                        int salir=0;
+                        for (i=0;i<MMC_MAX_CARDS && !salir;i++) {
+                            if (mmc_enabled[i].v) {
+                                //printf ("Writing SD port %04Xh value %02XH\n",puerto,value);
+        /*
+        Bits 7 .. 2: set to 0 for compatibility
 
-Bit 1: signal CS, 1 after the reset, set to 0 to select the SD-card
+        Bit 1: signal CS, 1 after the reset, set to 0 to select the SD-card
 
-Bit 0: Set to 1 for compatibility with Z-controller
+        Bit 0: Set to 1 for compatibility with Z-controller
 
 
-        comp->sdc->on = val & 1;
-        comp->sdc->cs = (val & 2) ? 1 : 0;
+                comp->sdc->on = val & 1;
+                comp->sdc->cs = (val & 2) ? 1 : 0;
 
-*/
+        */
 
-						baseconf_sd_enabled=value&1;
-						baseconf_sd_cs=(value & 2) ? 1 : 0;
+                                baseconf_sd_enabled=value&1;
+                                baseconf_sd_cs=(value & 2) ? 1 : 0;
 
-						mmc_cs(0xFE);  //TODO. Este valor FE deberia depender de baseconf_sd_cs...
-					}
+                                mmc_cs(0xFE);  //TODO. Este valor FE deberia depender de baseconf_sd_cs...
+                                salir=1;
+                            }
+                        }
+                    }
 
-					if (puerto_l==0x57 && mmc_enabled.v) {
-						//printf ("Writing SD port %04XH 57h value %02XH\n",puerto,value);
+                    if (puerto_l==0x57) {
+                        int i;
+                        int salir=0;
+                        for (i=0;i<MMC_MAX_CARDS && !salir;i++) {
+                            if (mmc_enabled[i].v) {
+                                //printf ("Writing SD port %04XH 57h value %02XH\n",puerto,value);
 
-/* Envia valores FF y no se porque. Quien entienda esto que me lo explique...
+        /* Envia valores FF y no se porque. Quien entienda esto que me lo explique...
 
-Note: in the cycle of exchange on the SPI, initiated by writing or reading port # xx57, occurs simultaneously sending bytes to the SD-card and receive bytes from it. Sending byte is the same as that recorded in the port (if the cycle is initiated by the exchange of records), or # FF, if the cycle of exchange initiated by reading the port.
-Received bytes is stored in an internal buffer and is available for the reading from the same port. This reading of the re-initiates the cycle of exchange, etc.
-Allowed to read / write port # xx57 teams INIR and OTIR. Example of reading the sector:
+        Note: in the cycle of exchange on the SPI, initiated by writing or reading port # xx57, occurs simultaneously sending bytes to the SD-card and receive bytes from it. Sending byte is the same as that recorded in the port (if the cycle is initiated by the exchange of records), or # FF, if the cycle of exchange initiated by reading the port.
+        Received bytes is stored in an internal buffer and is available for the reading from the same port. This reading of the re-initiates the cycle of exchange, etc.
+        Allowed to read / write port # xx57 teams INIR and OTIR. Example of reading the sector:
 
-	LD	C,#57
-	LD	B,0
-	INIR
-	INIR
+            LD	C,#57
+            LD	B,0
+            INIR
+            INIR
 
-*/
-					if (!baseconf_sd_enabled || baseconf_sd_cs) return;
+        */
+                                if (!baseconf_sd_enabled || baseconf_sd_cs) return;
 
-						mmc_write(value);
-					}
+                                mmc_write(value);
+                                salir=1;
+                            }
+                        }
+                    }
 
 					//Puertos ZIFI
 					if (puerto==TSCONF_ZIFI_COMMAND_REG) tsconf_zifi_write_command_reg(value);

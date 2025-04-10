@@ -209,3 +209,10 @@ ok*task manager residos
 *boot rom zxmmc+ parece que necesita 2 tarjetas SD para poder activar sus snapshots en sd. activar opcion de mirror tarjeta 2 cuando se quiera usar
 
 -mmc_cs se envia un valor en serie al seleccionar tarjeta. residos de zxmmc+ dice que hay 23 tarjetas disponibles...
+
+
+-mmc dos tarjetas
+
+TODO: menu_storage_mmc_file(0); en download_tbblue, menu_storage_mmc_emulation
+-funciones de mmc.c que no son de i/o no deben usar [mmc_card_selected], sino parametro [tarjeta] que venga como argumento de la función
+-pendiente implementar mmc_mirror_second_card de nuevo

@@ -4037,12 +4037,21 @@ int util_write_configfile(void)
                                               ADD_STRING_CONFIG,"--tool-gunzip-path \"%s\"",external_tool_gunzip);
                                               ADD_STRING_CONFIG,"--tool-tar-path \"%s\"",external_tool_tar);
                                               ADD_STRING_CONFIG,"--tool-unrar-path \"%s\"",external_tool_unrar);
-  if (mmc_file_name[0]!=0)                    ADD_STRING_CONFIG,"--mmc-file \"%s\"",mmc_file_name);
-  if (mmc_enabled.v)                          ADD_STRING_CONFIG,"--enable-mmc");
-  if (divmmc_mmc_ports_enabled.v)             ADD_STRING_CONFIG,"--enable-divmmc-ports");
 
-  if (mmc_write_protection.v)		      ADD_STRING_CONFIG,"--mmc-write-protection");
-  if (mmc_persistent_writes.v==0)	      ADD_STRING_CONFIG,"--mmc-no-persistent-writes");
+  //Primera tarjeta MMC
+  if (mmc_file_name[0][0]!=0)                    ADD_STRING_CONFIG,"--mmc-file \"%s\"",mmc_file_name);
+  if (mmc_enabled[0].v)                          ADD_STRING_CONFIG,"--enable-mmc");
+  if (mmc_write_protection[0].v)		      ADD_STRING_CONFIG,"--mmc-write-protection");
+  if (mmc_persistent_writes[0].v==0)	      ADD_STRING_CONFIG,"--mmc-no-persistent-writes");
+
+  //Segunda tarjeta MMC
+  if (mmc_file_name[1][0]!=0)                    ADD_STRING_CONFIG,"--mmc-file-2 \"%s\"",mmc_file_name);
+  if (mmc_enabled[1].v)                          ADD_STRING_CONFIG,"--enable-mmc-2");
+  if (mmc_write_protection[1].v)		      ADD_STRING_CONFIG,"--mmc-write-protection-2");
+  if (mmc_persistent_writes[1].v==0)	      ADD_STRING_CONFIG,"--mmc-no-persistent-writes-2");
+
+
+  if (divmmc_mmc_ports_enabled.v)             ADD_STRING_CONFIG,"--enable-divmmc-ports");
   if (mmc_mirror_second_card.v)           ADD_STRING_CONFIG,"--mmc-second-card-mirror");
 
   if (if1_enabled.v)                        ADD_STRING_CONFIG,"--enable-interface1");
@@ -22668,21 +22677,21 @@ void util_copy_files_to_mmc_doit(void)
 {
     if (!copy_files_to_mmc_total) return;
 
-    if (mmc_file_name[0]==0) {
+    if (mmc_file_name[0][0]==0) {
         debug_printf(VERBOSE_ERR,"No mmc file name set using --copy-file-to-mmc");
         return;
     }
 
 
-    strcpy(fatfs_disk_zero_path,mmc_file_name);
+    strcpy(fatfs_disk_zero_path,mmc_file_name[0]);
 
-    printf("Mounting mmc image %s\n",mmc_file_name);
+    printf("Mounting mmc image %s\n",mmc_file_name[0]);
 
     /* Gives a work area to the default drive */
     FRESULT resultado=f_mount(&FatFs_util_copy_files_to_mmc, "", 1);
 
     if (resultado!=FR_OK) {
-        debug_printf(VERBOSE_ERR,"Error %d mounting image %s: %s",resultado,mmc_file_name,zvfs_get_strerror(resultado));
+        debug_printf(VERBOSE_ERR,"Error %d mounting image %s: %s",resultado,mmc_file_name[0],zvfs_get_strerror(resultado));
         return;
     }
 
