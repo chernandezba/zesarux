@@ -680,7 +680,10 @@ void mmc_cs(z80_byte value)
     //Al parecer residos soporta hasta 3 tarjetas, aunque la documentacion oficial dice 2
     z80_byte seleccion_tarjeta=value & 0x03;
 
-    if (seleccion_tarjeta==0x02) mmc_card_selected=0;
+    if (seleccion_tarjeta==0x02) {
+        mmc_card_selected=0;
+    }
+
     else if (seleccion_tarjeta==0x01) {
         mmc_card_selected=1;
     }
