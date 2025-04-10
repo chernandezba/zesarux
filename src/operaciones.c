@@ -9625,14 +9625,14 @@ acts as expected unless this registe is explicitly changed by the user/software.
         zxmmcplus_mmc_cs(value);
     }
 
-       //Puertos 8-bit simple ide
-        if (eight_bit_simple_ide_enabled.v && (puerto_l&16)==0) {
-                eight_bit_simple_ide_write(puerto_l,value);
-        }
+    //Puertos 8-bit simple ide
+    if (eight_bit_simple_ide_enabled.v && (puerto_l&16)==0) {
+            eight_bit_simple_ide_write(puerto_l,value);
+    }
 
 
-        //Puertos DIVMMC. El de MMC
-        if (divmmc_mmc_ports_enabled.v && (puerto_l==0xe7 || puerto_l==0xeb) ) {
+    //Puertos DIVMMC. El de MMC
+    if (divmmc_mmc_ports_enabled.v && (puerto_l==0xe7 || puerto_l==0xeb) ) {
 		//printf ("Puerto DIVMMC Write: 0x%02x valor: 0x%02X\n",puerto_l,value);
         	//Si en ZXUNO y DIVEN desactivado
                 //Aunque cuando se toca el bit DIVEN de ZX-Uno se sincroniza divmmc_enable,
@@ -9641,14 +9641,18 @@ acts as expected unless this registe is explicitly changed by the user/software.
 	        //if (MACHINE_IS_ZXUNO_DIVEN_DISABLED) return;
 		//if (!MACHINE_IS_ZXUNO_DIVEN_DISABLED) {
 
-	                if (puerto_l==0xe7) {
-				//Parece que F6 es la tarjeta 0 en divmmc
-				if (value==0xF6) value=0xFE;
-				mmc_cs(value);
-			}
-        	        if (puerto_l==0xeb) mmc_write(value);
-		//}
+
+        if (puerto_l==0xe7) {
+
+            //Parece que F6 es la tarjeta 0 en divmmc
+            //if (value==0xF6) value=0xFE;
+
+            mmc_cs(value);
         }
+
+        if (puerto_l==0xeb) mmc_write(value);
+
+    }
 
         //Puertos DIVIDE. El de IDE
         if (divide_ide_ports_enabled.v && ( (puerto_l&(128+64+32+2+1))==128+32+2+1) ) {

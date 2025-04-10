@@ -227,6 +227,8 @@ z80_bit mmc_persistent_writes[MMC_MAX_CARDS]={{1},{1}};
 void mmc_footer_mmc_operating(int tarjeta)
 {
 
+    //printf("mmc_footer_mmc_operating card %d\n",tarjeta);
+
 	generic_footertext_print_operating("MMC");
     watermark_tell_device_activity();
 
@@ -235,6 +237,7 @@ void mmc_footer_mmc_operating(int tarjeta)
         if (!zxdesktop_icon_mmc_inverse) {
             zxdesktop_icon_mmc_inverse=1;
             menu_draw_ext_desktop();
+            //printf("Inverso icono card 0\n");
         }
     }
 
@@ -243,6 +246,7 @@ void mmc_footer_mmc_operating(int tarjeta)
         if (!zxdesktop_icon_mmc_inverse_second) {
             zxdesktop_icon_mmc_inverse_second=1;
             menu_draw_ext_desktop();
+            //printf("Inverso icono card 1\n");
         }
     }
 }
@@ -691,7 +695,10 @@ void mmc_cs(z80_byte value)
 
     if (mmc_tarjeta_invalida_seleccionada) return;
 
-	//Hay que ir a idle??
+    //Al cambiar de tarjeta reiniciar todos estos registros
+    //Si no hiciera esto, por ejemplo NextOS no es capaz de iniciar con dos tarjetas
+
+    //Hay que ir a idle??
 	mmc_r1=1;
 
 	mmc_last_command=0;
@@ -705,13 +712,7 @@ void mmc_cs(z80_byte value)
 	mmc_cid_index=-1;
 	mmc_ocr_index=-1;
 
-    //printf("mmc_cs value %02XH\n",value);
 
-
-
-    //printf("Card selected: %d\n",mmc_card_selected);
-
-	//debug_printf (VERBOSE_PARANOID,"Card selected: %d",mmc_card_selected);
 }
 
 
