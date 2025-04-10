@@ -10,7 +10,7 @@ Permitir grabar pantalla de ZX80/81 a archivo .scr
 Permitir grabar una nota de texto en un snapshot ZSF
 Permitir encontrar archivos de rom al ejecutar ZEsarUX desde una carpeta actual diferente de la ruta de las roms
 Agregado soporte para archivos .ay en Visor de Archivos
-Permitir emular una segunda tarjeta MMC/SD que es una imagen espejo de la primera tarjeta
+Agregado emulación de una segunda tarjeta de MMC/SD
 Agregado suporte para 4 botones de fuego de joystick en:
 - Kempston joystick (Spectrum): 4 botones
 - Amstrad CPC: 3 botones

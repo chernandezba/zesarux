@@ -17481,7 +17481,7 @@ void menu_storage_divmmc_diviface(MENU_ITEM_PARAMETERS)
 void menu_storage_mmc_file_after_select_ask_configure_tbblue(void)
 {
 		if (MACHINE_IS_TBBLUE) {
-				if (menu_confirm_yesno("Configure MMC settings?")) {
+				if (menu_confirm_yesno("Configure Next MMC settings?")) {
 
 					//Repetir sentencia de usuario:
 					//1) Habilitar MMC
@@ -17599,7 +17599,9 @@ void menu_storage_mmc_file(MENU_ITEM_PARAMETERS)
 
 
 			//Y pedir si configurar automaticamente en caso de TBBLUE
-			menu_storage_mmc_file_after_select_ask_configure_tbblue();
+            if (tarjeta_seleccionada==0) {
+			    menu_storage_mmc_file_after_select_ask_configure_tbblue();
+            }
 
 		}
 
@@ -17827,16 +17829,20 @@ void menu_mmc_divmmc(MENU_ITEM_PARAMETERS)
 
         for (i=0;i<MMC_MAX_CARDS;i++) {
 
+            menu_add_item_menu_en_es_ca(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,NULL,NULL,
+            "--Card","--Tarjeta","--Targeta");
+            menu_add_item_menu_sufijo_format(array_menu_mmc_divmmc," %d--",i);
+
             if (!mmc_filemap_from_esxdos[i]) {
 
 
                 menu_tape_settings_trunc_name(mmc_file_name[i],string_mmc_file_shown,17);
                 menu_add_item_menu_en_es_ca(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_mmc_file,NULL,
-                    "~~MMC File","Archivo ~~MMC","Arxiu ~~MMC");
+                    "MMC File","Archivo MMC","Arxiu MMC");
                 menu_add_item_menu_sufijo_format(array_menu_mmc_divmmc," [%s]",string_mmc_file_shown);
                 menu_add_item_menu_prefijo(array_menu_mmc_divmmc,"    ");
                 menu_add_item_menu_valor_opcion(array_menu_mmc_divmmc,i);
-                menu_add_item_menu_shortcut(array_menu_mmc_divmmc,'m');
+                //menu_add_item_menu_shortcut(array_menu_mmc_divmmc,'m');
                 menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"MMC Emulation file");
                 menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"MMC Emulation file");
 
@@ -17852,7 +17858,7 @@ void menu_mmc_divmmc(MENU_ITEM_PARAMETERS)
                 menu_add_item_menu_valor_opcion(array_menu_mmc_divmmc,i);
             }
 
-            if (MACHINE_IS_TBBLUE) {
+            if (MACHINE_IS_TBBLUE && i==0) {
 
                 menu_add_item_menu_en_es_ca(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_mmc_autoconfigure_tbblue,NULL,
                     "Autoconfigure Next SD","Autoconfigurar Next SD","Autoconfigurar Next SD");
@@ -17862,10 +17868,10 @@ void menu_mmc_divmmc(MENU_ITEM_PARAMETERS)
 
             if (mmc_file_name[i][0]) {
                 menu_add_item_menu_en_es_ca(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_mmc_emulation,NULL,
-                    "MMC ~~Emulation","~~Emulación MMC","~~Emulació MMC");
+                    "MMC Emulation","Emulación MMC","Emulació MMC");
                 menu_add_item_menu_prefijo_format(array_menu_mmc_divmmc,"[%c] ", (mmc_enabled[i].v ? 'X' : ' '));
                 menu_add_item_menu_valor_opcion(array_menu_mmc_divmmc,i);
-                menu_add_item_menu_shortcut(array_menu_mmc_divmmc,'e');
+                //menu_add_item_menu_shortcut(array_menu_mmc_divmmc,'e');
                 menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"MMC Emulation");
                 menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"MMC Emulation");
             }
@@ -17880,10 +17886,10 @@ void menu_mmc_divmmc(MENU_ITEM_PARAMETERS)
 
 
             menu_add_item_menu_en_es_ca(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_mmc_write_protect,NULL,
-                "Wr~~ite protect","Protección escr~~itura","Protecció escr~~iptura");
+                "Write protect","Protección escritura","Protecció escriptura");
             menu_add_item_menu_prefijo_format(array_menu_mmc_divmmc,"[%c] ", (mmc_write_protection[i].v ? 'X' : ' '));
             menu_add_item_menu_valor_opcion(array_menu_mmc_divmmc,i);
-            menu_add_item_menu_shortcut(array_menu_mmc_divmmc,'i');
+            //menu_add_item_menu_shortcut(array_menu_mmc_divmmc,'i');
             menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"If MMC disk is write protected");
             menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"If MMC disk is write protected");
 
@@ -17912,10 +17918,10 @@ void menu_mmc_divmmc(MENU_ITEM_PARAMETERS)
 
             if (mmc_file_name[i][0]) {
                 menu_add_item_menu_en_es_ca(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_mmc_browser,NULL,
-                    "MMC ~~Browser Card","MMC ~~Browser Tarjeta","MMC ~~Browser Targeta");
+                    "MMC Browser Card","MMC Browser Tarjeta","MMC Browser Targeta");
                 menu_add_item_menu_prefijo(array_menu_mmc_divmmc,"    ");
                 menu_add_item_menu_valor_opcion(array_menu_mmc_divmmc,i);
-                menu_add_item_menu_shortcut(array_menu_mmc_divmmc,'b');
+                //menu_add_item_menu_shortcut(array_menu_mmc_divmmc,'b');
                 menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"MMC Browser");
                 menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"MMC Browser");
                 menu_add_item_menu_genera_ventana(array_menu_mmc_divmmc);
@@ -43806,14 +43812,14 @@ void zxdesktop_lowericon_mmc_accion_boton_derecho_common(int tarjeta)
 
     switch (opcion) {
         case 1:
-            if (mmc_enabled[tarjeta].v) menu_storage_mmc_emulation(0);
+            if (mmc_enabled[tarjeta].v) menu_storage_mmc_emulation(tarjeta);
             else {
                 //Insertar archivo y habilitar
-                menu_storage_mmc_file(0);
+                menu_storage_mmc_file(tarjeta);
                 //printf("File: [%s]\n",mmc_file_name);
                 //Si no se ha dejado archivo en blanco (salido con ESC)
                 if (mmc_file_name[tarjeta][0]) {
-                    menu_storage_mmc_emulation(0);
+                    menu_storage_mmc_emulation(tarjeta);
                     //Y si no estan los puertos divmmc, habilitarlos tambien (se deshabilitan al desactivar mmc)
                     if (divmmc_mmc_ports_enabled.v==0) menu_storage_divmmc_mmc_ports_emulation(0);
                 }
